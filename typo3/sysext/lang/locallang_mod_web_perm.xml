@@ -195,19 +195,19 @@
 			<label index="Owner">Propriétaire</label>
 			<label index="Group">Groupe</label>
 			<label index="Everybody">Tout le monde</label>
-			<label index="EditLock">Bloquer</label>
-			<label index="EditLock_descr">La page et son contenu sont bloqués à l'édition pour tout utilisateur non-Administrateur</label>
+			<label index="EditLock">Verrouiller</label>
+			<label index="EditLock_descr">La page et son contenu sont verrouillés à l'édition pour tout utilisateur non-admin.</label>
 			<label index="Save">Enregistrer</label>
 			<label index="Abort">Annuler</label>
-			<label index="Edit">Editer</label>
+			<label index="Edit">EDITER</label>
 			<label index="recursive">Appliquer recursivement</label>
 			<label index="pages_affected">pages affectées</label>
-			<label index="user_overview">Résumé de l'utilisateur</label>
+			<label index="user_overview">Utilisateur (vue d'ensemble)</label>
 			<label index="Mode">Mode</label>
 			<label index="Depth">Profondeur</label>
 			<label index="levels">Niveaux</label>
 			<label index="User">Utilisateur</label>
-			<label index="def">Définition : le 'contenu' est constitué de tous les enregistrements d'une page, à l'exception des enregistrements de la table 'pages'.</label>
+			<label index="def">Définition: le 'contenu' est constitué de tous les enregistrements d'une page, à l'exception des enregistrements de la table 'pages'.</label>
 			<label index="A_Granted">Accès autorisé</label>
 			<label index="A_Denied">Accès refusé</label>
 			<numIndex index="1">Visualiser la page</numIndex>
@@ -215,9 +215,9 @@
 			<numIndex index="2">Editer la page</numIndex>
 			<numIndex index="4">Supprimer la page</numIndex>
 			<numIndex index="8">Créer de nouvelles pages</numIndex>
-			<label index="1_t">Visualiser / copier page et contenu.</label>
-			<label index="16_t">Modifier / Ajouter / Supprimer / Transférer contenu.</label>
-			<label index="2_t">Modifier / Transférer page, par ex. modifier le titre d'une page, etc.</label>
+			<label index="1_t">Afficher/Copier page et contenu.</label>
+			<label index="16_t">Modifier/Ajouter/Supprimer/Déplacer le contenu.</label>
+			<label index="2_t">Modifier/Déplacer la page, par ex. modifier le titre de la page, etc.</label>
 			<label index="4_t">Supprimer page et contenu.</label>
 			<label index="8_t">Ajouter des pages sous cette page.</label>
 			<label index="mlang_labels_tablabel">Droits d'accès aux pages</label>
@@ -270,7 +270,7 @@
 			<label index="EditLock">Vergrendeld</label>
 			<label index="EditLock_descr">Deze pagina en alle inhoud is vergrendeld voor bewerken door alle niet-Admin gebruikers.</label>
 			<label index="Save">Opslaan</label>
-			<label index="Abort">Afbreken</label>
+			<label index="Abort">Annuleren</label>
 			<label index="Edit">BEWERKEN</label>
 			<label index="recursive">Plaats recursief</label>
 			<label index="pages_affected">Betreffende pagina's</label>
@@ -293,7 +293,7 @@
 			<label index="4_t">Verwijder pagina en inhoud</label>
 			<label index="8_t">Maak nieuwe pagina's onder deze pagina</label>
 			<label index="mlang_labels_tablabel">Rechten voor het bewerken van pagina's</label>
-			<label index="mlang_labels_tabdescr">De instelling van paginarechten is van vitaal belang om toegang te regelen voor de pagina's van de BeheerSitegebruikers. U kan een gebruiker en een groep de rechten van eigenaar van een pagina toekennen en toegangsrechten voor ieder bepalen.</label>
+			<label index="mlang_labels_tabdescr">Het instellen van paginarechten is van vitaal belang voor het regelen van backendgebruiker toegang tot pagina's. U kunt een gebruiker en een groep de rechten van eigenaar van een pagina toekennen en toegangsrechten voor ieder bepalen.</label>
 			<label index="mlang_tabs_tab">Toegang</label>
 		</languageKey>
 		<languageKey index="cz" type="array">
@@ -363,7 +363,7 @@
 			<label index="4_t">Usuń stronę wraz z treścią.</label>
 			<label index="8_t">Dodaj nową podstronę.</label>
 			<label index="mlang_labels_tablabel">Uprawnienia dostępu do stron</label>
-			<label index="mlang_labels_tabdescr">Uprawnienia do stron są potrzebne, jeśli chcesz kontrolować prawa jakie mają poszczególni użytkownicy. Możesz przydzielać niezależnie prawa dla właściciela strony lub dla całej grupy.</label>
+			<label index="mlang_labels_tabdescr">Uprawnienia do stron są potrzebne, jeśli chcesz kontrolować dostęp użytkowników backendu do stron. Możesz przydzielać niezależnie prawa dla właściciela strony lub dla całej grupy.</label>
 			<label index="mlang_tabs_tab">Uprawnienia</label>
 		</languageKey>
 		<languageKey index="si" type="array">
@@ -471,7 +471,7 @@
 			<label index="4_t">Sayfa ve içeriği sil.</label>
 			<label index="8_t">Bu sayfanın altında yeni sayfalar yarat.</label>
 			<label index="mlang_labels_tablabel">Sayfa düzenleme yetkileri</label>
-			<label index="mlang_labels_tabdescr">Sayfa izinlerinin atanması arkaplan kullanıcılarının sayfalarına erişimini kontrol etmek  açısından hayati önem taşıyor. Sayfanın sahipleri olarak bir kullanıcı ve bir grup atayabilir ve herbiri için erişim izinleri kurabilirsiniz.</label>
+			<label index="mlang_labels_tabdescr">Sayfa izinlerinin atanması arkaplana erişme açısından hayati önem taşıyor.Kullanıcı sayfaya erişir. Sayfanın sahipleri olarak bir kullanıcı ve bir grup atayabilir ve herbiri için erişim izinleri kurabilirsiniz.</label>
 			<label index="mlang_tabs_tab">Erişim</label>
 		</languageKey>
 		<languageKey index="se" type="array">
@@ -481,6 +481,8 @@
 			<label index="Owner">Ägare</label>
 			<label index="Group">Grupp</label>
 			<label index="Everybody">Vem som helst</label>
+			<label index="EditLock">Lås</label>
+			<label index="EditLock_descr">Sidan och dess innehåll är låst, så att ingen utan administratörsrättigheter kan editera den.</label>
 			<label index="Save">Spara</label>
 			<label index="Abort">Avbryt</label>
 			<label index="Edit">ÄNDRA</label>
@@ -549,6 +551,8 @@
 			<label index="Owner">Владелец</label>
 			<label index="Group">Группа</label>
 			<label index="Everybody">Все</label>
+			<label index="EditLock">Доступ закрыт</label>
+			<label index="EditLock_descr">Страница со всеми записями закрыта для всех пользователей, кроме Администраторов.</label>
 			<label index="Save">Сохранить</label>
 			<label index="Abort">Отменить</label>
 			<label index="Edit">РЕДАКТИРОВАНИЕ</label>
@@ -848,6 +852,8 @@
 			<label index="Owner">擁有者</label>
 			<label index="Group">群組</label>
 			<label index="Everybody">所有人</label>
+			<label index="EditLock">鎖上</label>
+			<label index="EditLock_descr">這網頁和所有內容被鎖上防止被非系統管理員使用者修改。</label>
 			<label index="Save">儲存</label>
 			<label index="Abort">關於</label>
 			<label index="Edit">修改</label>
@@ -872,7 +878,7 @@
 			<label index="4_t">刪除網頁及內容</label>
 			<label index="8_t">在此網頁之下建立新網頁</label>
 			<label index="mlang_labels_tablabel">網頁修改權限</label>
-			<label index="mlang_labels_tabdescr">網頁修改的權限的設定，對控制後勸使用者的存取是很重要的。你可以設定一個使用者或一個群組成為一個網頁的擁有者，並且設定存取權限</label>
+			<label index="mlang_labels_tabdescr">網頁修改的權限的設定，對控制後勸使用者的存取是很重要的。你可以設定一個使用者或一個群組成為一個網頁的擁有者，並且設定每個使人者或羣組的存取權限</label>
 			<label index="mlang_tabs_tab">存取</label>
 		</languageKey>
 		<languageKey index="eu" type="array">
@@ -952,6 +958,8 @@
 			<label index="Owner">Proprietário</label>
 			<label index="Group">Grupo</label>
 			<label index="Everybody">Todos</label>
+			<label index="EditLock">Travar</label>
+			<label index="EditLock_descr">A página e todo seu conteúdo foram travados para edição por todos os usuários não-Administradores.</label>
 			<label index="Save">Salvar</label>
 			<label index="Abort">Cancelar</label>
 			<label index="Edit">EDITAR</label>
@@ -1054,6 +1062,8 @@
 			<label index="Owner">בעלים</label>
 			<label index="Group">קבוצה</label>
 			<label index="Everybody">כולם</label>
+			<label index="EditLock">נעילה</label>
+			<label index="EditLock_descr">הדף וכל התוכן נעול לעריכה על ידי משתמשים (לא מנהלים)</label>
 			<label index="Save">שמירה</label>
 			<label index="Abort">ביטול</label>
 			<label index="Edit">עריכה</label>
@@ -1078,7 +1088,7 @@
 			<label index="4_t">מחק דף ותוכן.</label>
 			<label index="8_t">צור דפים חדשים תחת דף זה.</label>
 			<label index="mlang_labels_tablabel">הרשאות עריכה של דף</label>
-			<label index="mlang_labels_tabdescr">קביעת הרשאות של דף הכרחי כדי לשלוט על גישה לדפים למשתמשים אחוריים. הנך יכול להקצות משתמש וקבוצה בתור בעלים של דף ולקבוע הרשאות כניסה לכל אחד.</label>
+			<label index="mlang_labels_tabdescr">קביעת הרשאות של דף הכרחי כדי לשלוט על גישה לדפים למשתמשי ממשק אחורי. הנך יכול להקצות משתמש וקבוצה בתור בעלים של דף ולקבוע הרשאות כניסה לכל אחד.</label>
 			<label index="mlang_tabs_tab">גישה</label>
 		</languageKey>
 		<languageKey index="ua" type="array">
@@ -1152,7 +1162,7 @@
 			<label index="4_t" type="integer">38381151</label>
 			<label index="8_t" type="integer">102802306</label>
 			<label index="mlang_labels_tablabel" type="integer">237456773</label>
-			<label index="mlang_labels_tabdescr" type="integer">115809010</label>
+			<label index="mlang_labels_tabdescr" type="double">6517083</label>
 			<label index="mlang_tabs_tab" type="integer">200750040</label>
 			<label index="EditLock" type="integer">189288807</label>
 			<label index="EditLock_descr" type="integer">122566549</label>
@@ -1188,7 +1198,7 @@
 			<label index="4_t" type="integer">38381151</label>
 			<label index="8_t" type="integer">102802306</label>
 			<label index="mlang_labels_tablabel" type="integer">237456773</label>
-			<label index="mlang_labels_tabdescr" type="integer">115809010</label>
+			<label index="mlang_labels_tabdescr" type="double">6517083</label>
 			<label index="mlang_tabs_tab" type="integer">200750040</label>
 			<label index="EditLock" type="integer">189288807</label>
 			<label index="EditLock_descr" type="integer">122566549</label>
@@ -1224,7 +1234,7 @@
 			<label index="4_t" type="integer">38381151</label>
 			<label index="8_t" type="integer">102802306</label>
 			<label index="mlang_labels_tablabel" type="integer">237456773</label>
-			<label index="mlang_labels_tabdescr" type="integer">115809010</label>
+			<label index="mlang_labels_tabdescr" type="double">6517083</label>
 			<label index="mlang_tabs_tab" type="integer">200750040</label>
 			<label index="EditLock" type="integer">189288807</label>
 			<label index="EditLock_descr" type="integer">122566549</label>
@@ -1368,7 +1378,7 @@
 			<label index="4_t" type="integer">38381151</label>
 			<label index="8_t" type="integer">102802306</label>
 			<label index="mlang_labels_tablabel" type="integer">237456773</label>
-			<label index="mlang_labels_tabdescr" type="integer">115809010</label>
+			<label index="mlang_labels_tabdescr" type="double">6517083</label>
 			<label index="mlang_tabs_tab" type="integer">200750040</label>
 			<label index="EditLock" type="integer">189288807</label>
 			<label index="EditLock_descr" type="integer">122566549</label>
@@ -1438,7 +1448,7 @@
 			<label index="4_t" type="integer">38381151</label>
 			<label index="8_t" type="integer">102802306</label>
 			<label index="mlang_labels_tablabel" type="integer">237456773</label>
-			<label index="mlang_labels_tabdescr" type="integer">115809010</label>
+			<label index="mlang_labels_tabdescr" type="double">6517083</label>
 			<label index="mlang_tabs_tab" type="integer">200750040</label>
 			<label index="EditLock" type="integer">189288807</label>
 			<label index="EditLock_descr" type="integer">122566549</label>
@@ -1510,7 +1520,7 @@
 			<label index="4_t" type="integer">38381151</label>
 			<label index="8_t" type="integer">102802306</label>
 			<label index="mlang_labels_tablabel" type="integer">237456773</label>
-			<label index="mlang_labels_tabdescr" type="integer">115809010</label>
+			<label index="mlang_labels_tabdescr" type="double">6517083</label>
 			<label index="mlang_tabs_tab" type="integer">200750040</label>
 			<label index="EditLock" type="integer">189288807</label>
 			<label index="EditLock_descr" type="integer">122566549</label>
@@ -1546,7 +1556,7 @@
 			<label index="4_t" type="integer">38381151</label>
 			<label index="8_t" type="integer">102802306</label>
 			<label index="mlang_labels_tablabel" type="integer">237456773</label>
-			<label index="mlang_labels_tabdescr" type="integer">115809010</label>
+			<label index="mlang_labels_tabdescr" type="double">6517083</label>
 			<label index="mlang_tabs_tab" type="integer">200750040</label>
 			<label index="EditLock" type="integer">189288807</label>
 			<label index="EditLock_descr" type="integer">122566549</label>
@@ -1582,8 +1592,10 @@
 			<label index="4_t" type="integer">38381151</label>
 			<label index="8_t" type="integer">102802306</label>
 			<label index="mlang_labels_tablabel" type="integer">237456773</label>
-			<label index="mlang_labels_tabdescr" type="integer">115809010</label>
+			<label index="mlang_labels_tabdescr" type="double">6517083</label>
 			<label index="mlang_tabs_tab" type="integer">200750040</label>
+			<label index="EditLock" type="integer">189288807</label>
+			<label index="EditLock_descr" type="integer">122566549</label>
 		</languageKey>
 		<languageKey index="pt" type="array">
 			<label index="permissions" type="integer">218680565</label>
@@ -1650,8 +1662,10 @@
 			<label index="4_t" type="integer">38381151</label>
 			<label index="8_t" type="integer">102802306</label>
 			<label index="mlang_labels_tablabel" type="integer">237456773</label>
-			<label index="mlang_labels_tabdescr" type="integer">115809010</label>
+			<label index="mlang_labels_tabdescr" type="double">6517083</label>
 			<label index="mlang_tabs_tab" type="integer">200750040</label>
+			<label index="EditLock" type="integer">189288807</label>
+			<label index="EditLock_descr" type="integer">122566549</label>
 		</languageKey>
 		<languageKey index="ro" type="array">
 			<label index="permissions" type="integer">218680565</label>
@@ -1873,7 +1887,7 @@
 			<label index="4_t" type="integer">38381151</label>
 			<label index="8_t" type="integer">102802306</label>
 			<label index="mlang_labels_tablabel" type="integer">237456773</label>
-			<label index="mlang_labels_tabdescr" type="integer">115809010</label>
+			<label index="mlang_labels_tabdescr" type="double">6517083</label>
 			<label index="mlang_tabs_tab" type="integer">200750040</label>
 			<label index="EditLock" type="integer">189288807</label>
 			<label index="EditLock_descr" type="integer">122566549</label>
@@ -1949,8 +1963,10 @@
 			<label index="4_t" type="integer">38381151</label>
 			<label index="8_t" type="integer">102802306</label>
 			<label index="mlang_labels_tablabel" type="integer">237456773</label>
-			<label index="mlang_labels_tabdescr" type="integer">115809010</label>
+			<label index="mlang_labels_tabdescr" type="double">6517083</label>
 			<label index="mlang_tabs_tab" type="integer">200750040</label>
+			<label index="EditLock" type="integer">189288807</label>
+			<label index="EditLock_descr" type="integer">122566549</label>
 		</languageKey>
 		<languageKey index="eu" type="array">
 			<label index="permissions" type="integer">218680565</label>
@@ -2053,8 +2069,10 @@
 			<label index="4_t" type="integer">38381151</label>
 			<label index="8_t" type="integer">102802306</label>
 			<label index="mlang_labels_tablabel" type="integer">237456773</label>
-			<label index="mlang_labels_tabdescr" type="integer">115809010</label>
+			<label index="mlang_labels_tabdescr" type="double">6517083</label>
 			<label index="mlang_tabs_tab" type="integer">200750040</label>
+			<label index="EditLock" type="integer">189288807</label>
+			<label index="EditLock_descr" type="integer">122566549</label>
 		</languageKey>
 		<languageKey index="et" type="array">
 			<label index="permissions" type="integer">218680565</label>
@@ -2155,8 +2173,10 @@
 			<label index="4_t" type="integer">38381151</label>
 			<label index="8_t" type="integer">102802306</label>
 			<label index="mlang_labels_tablabel" type="integer">237456773</label>
-			<label index="mlang_labels_tabdescr" type="integer">115809010</label>
+			<label index="mlang_labels_tabdescr" type="double">6517083</label>
 			<label index="mlang_tabs_tab" type="integer">200750040</label>
+			<label index="EditLock" type="integer">189288807</label>
+			<label index="EditLock_descr" type="integer">122566549</label>
 		</languageKey>
 		<languageKey index="ua" type="array">
 		</languageKey>

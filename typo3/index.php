@@ -291,8 +291,7 @@ class SC_index {
 										<td><input type="submit" name="commandLI" value="'.htmlspecialchars($this->L_vars[3]).'" class="c-submit" /></td>
 									</tr>
 									<tr class="c-info">
-										<td></td>
-										<td><p class="c-info">'.htmlspecialchars($this->L_vars[7]).'</p></td>
+										<td colspan="2"><p class="c-info">'.htmlspecialchars($this->L_vars[7]).'</p></td>
 									</tr>
 								</table>';
 
@@ -565,7 +564,7 @@ class SC_index {
 				}
 			}
 		} else {	// If no rotation folder configured, print default image:
-			$loginImage = 'loginbox_image_dev.png';
+			$loginImage = 'loginimage.jpg';
 			$imagecopy = $loginImage=='loginbox_image_dev.png' ? 'You are running the CVS version of TYPO3 '.$GLOBALS['TYPO_VERSION'] : 'Photo: &copy; 2004 Kasper Sk&#229;rh&#248;j';	// Directly outputted in image attributes...
 			$loginboxImage = '<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/'.$loginImage,'width="200" height="133"').' id="loginbox-image" alt="'.$imagecopy.'" title="'.$imagecopy.'" />';
 		}

@@ -73,6 +73,7 @@ $TYPO3_CONF_VARS = Array(
 		't3lib_cs_utils' => '',					// String (values: "iconv", "recode", "mbstring", default is homemade PHP-code). Defines which of these PHP-features to use for various Charset processing functions in t3lib_cs. Will speed up charset functions radically.
 		'no_pconnect' => 0,						// Boolean: If true, "connect" is used instead of "pconnect" when connecting to the database!
 		'multiplyDBfieldSize' => 1,				// Double: 1-5: Amount used to multiply the DB field size when the install tool is evaluating the database size (eg. "2.5"). This is useful if you want to expand the size of fields for utf-8 etc. For western european sites using utf-8 the need should not be for more than twice the normal single-byte size (2) and for chinese / asian languages 3 should suffice.
+		'setMemoryLimit' => 0,					// Integer, memory_limit in MB: If more than 16, TYPO3 will try to use ini_set() to set the memory limit of PHP to the value. This works only if the function ini_set() is not disabled by your sysadmin.
 	),
 	'EXT' => Array (	// Options related to the Extension Management
 		'noEdit' => 1,							// Boolean: If set, the Extension Manager does NOT allow extension files to be edited! (Otherwise both local and global extensions can be edited.)
@@ -136,13 +137,13 @@ $TYPO3_CONF_VARS = Array(
 			// If no fileextension, true is returned if 'allow' is '*', false if 'deny' is '*' and true if none of these matches
 			// This configuration below accepts everything in ftpspace and everything in webspace except php3 or php files
 		'fileExtensions' => array (
-			'webspace' => array('allow'=>'', 'deny'=>'php3,php'),
+			'webspace' => array('allow'=>'', 'deny'=>'php,php3,php4,php5'),
 			'ftpspace' => array('allow'=>'*', 'deny'=>'')
 		),
 		'customPermOptions' => array(),			// Array with sets of custom permission options. Syntax is; 'key' => array('header' => 'header string, language splitted', 'items' => array('key' => array('label, language splitted', 'icon reference', 'Description text, language splitted'))). Keys cannot contain ":|," characters.
-		'fileDenyPattern' => '\.php\.|\.php3\.',	// A regular expression that - if it matches a filename - will deny the file upload/rename or whatever in the webspace. Matching with eregi() (case-insensitive).
+		'fileDenyPattern' => '\.php$|\.php.$',	// A regular expression that - if it matches a filename - will deny the file upload/rename or whatever in the webspace. Matching with eregi() (case-insensitive).
 		'interfaces' => 'backend',					// This determines which interface options is available in the login prompt and in which order (All options: ",backend,frontend")
-		'loginLabels' => 'Username|Password|Interface|Log In|Log Out|Backend,Front End|Administration Login on ###SITENAME###|(Note: Cookies must be enabled!)|Important Messages:|Your login attempt did not succeed. Make sure to spell your username and password correctly, including upper/lowercase characters.',		// Language labels of the login prompt.
+		'loginLabels' => 'Username|Password|Interface|Log In|Log Out|Backend,Front End|Administration Login on ###SITENAME###|(Note: Cookies and JavaScript must be enabled!)|Important Messages:|Your login attempt did not succeed. Make sure to spell your username and password correctly, including upper/lowercase characters.',		// Language labels of the login prompt.
 		'loginNews' => array(),						// In this array you can define news-items for the login screen. To this array, add arrays with assoc keys 'date', 'header', 'content' (HTML content) and for those appropriate value pairs
 		'XCLASS' => Array(),					// See 'Inside TYPO3' document for more information.
 		'XLLfile' => Array(),					// For extension/overriding of the arrays in 'locallang' files in the backend. See 'Inside TYPO3' for more information.
@@ -206,7 +207,7 @@ $TYPO3_CONF_VARS = Array(
 $T3_VAR = array();	// Initialize.
 
 	// TYPO3 version
-$TYPO_VERSION = '3.7.0-dev';
+$TYPO_VERSION = '3.7.0RC2';
 define('TYPO3_version', $TYPO_VERSION);
 
 // Database-variables are cleared!
@@ -297,6 +298,13 @@ function debugEnd() {
 
 	// Init services array:
 $T3_SERVICES = array();
+
+
+	// Set PHP memory limit depending on value of $TYPO3_CONF_VARS["SYS"]["setMemoryLimit"]
+if(intval($TYPO3_CONF_VARS["SYS"]["setMemoryLimit"])>16) {
+	@ini_set('memory_limit',intval($TYPO3_CONF_VARS["SYS"]["setMemoryLimit"]).'m');
+}
+
 
 
 // Load extensions:

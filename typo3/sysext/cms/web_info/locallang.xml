@@ -113,12 +113,15 @@
 			<label index="hits_title">Sidevisningsstatistikk</label>
 			<label index="lang_renderl10n_viewPage">Vis side</label>
 			<label index="lang_renderl10n_editDefaultLanguagePage">Rediger sidehode standard språk</label>
+			<label index="lang_renderl10n_editLangOverlays">Redigér samtlige språklige innholdselementer</label>
 			<label index="lang_renderl10n_editPageHeaders">Rediger alle sidehoder</label>
 			<label index="lang_renderl10n_editPage">Rediger side</label>
 			<label index="lang_renderl10n_editPageLang">Rediger oversettelse av side</label>
 			<label index="lang_renderl10n_badThingThereAre">FEIL: det er to eller flere &quot;page overlay records&quot; for dette spåket. Bare et er tillatt.</label>
+			<label index="lang_renderl10n_editLanguageOverlayRecord">Redigér språklig innhold</label>
 			<label index="lang_renderl10n_page">Side</label>
 			<label index="lang_renderl10n_default">Standard</label>
+			<label index="lang_getlangsta_createNewTranslationHeaders">Opprett nye titler for oversettelse</label>
 			<label index="lang_renderl10n_CEcount">Antall innholdselementer</label>
 		</languageKey>
 		<languageKey index="it" type="array">
@@ -225,11 +228,11 @@
 			<label index="pI_lastChangeContent">Laatste wijziging, inhoud</label>
 			<label index="hits_title">Statistieken van hits</label>
 			<label index="lang_renderl10n_viewPage">Bekijk pagina</label>
-			<label index="lang_renderl10n_editDefaultLanguagePage">Bewerk standaard taal pagina kop</label>
+			<label index="lang_renderl10n_editDefaultLanguagePage">Bewerk pagina-info voor de standaard taal</label>
 			<label index="lang_renderl10n_editLangOverlays">Bewerk alle taal gelaagde records</label>
 			<label index="lang_renderl10n_editPageHeaders">Bewerk alle pagina koppen</label>
 			<label index="lang_renderl10n_editPage">Bewerk pagina</label>
-			<label index="lang_renderl10n_editPageLang">Bwerk vertaling pagina</label>
+			<label index="lang_renderl10n_editPageLang">Bewerk vertaling pagina</label>
 			<label index="lang_renderl10n_badThingThereAre">FOUT: er zijn twee of meer gelaagde records voor deze taal! Er is maar een gelaagd record toegestaan.</label>
 			<label index="lang_renderl10n_editLanguageOverlayRecord">Bewerk taal gelaagde record</label>
 			<label index="lang_renderl10n_page">Pagina</label>
@@ -374,6 +377,18 @@
 			<label index="pI_lastChange">Senast ändrad</label>
 			<label index="pI_lastChangeContent">Senast ändrad, innehåll</label>
 			<label index="hits_title">Statistik över träffar</label>
+			<label index="lang_renderl10n_viewPage">Visa sida</label>
+			<label index="lang_renderl10n_editDefaultLanguagePage">Ändra sidhuvud för standardspråk</label>
+			<label index="lang_renderl10n_editLangOverlays">Ändra alla språknivåers filer</label>
+			<label index="lang_renderl10n_editPageHeaders">Ändra alla sidhuvud</label>
+			<label index="lang_renderl10n_editPage">Ändra sida</label>
+			<label index="lang_renderl10n_editPageLang">Ändra sidans översättning</label>
+			<label index="lang_renderl10n_badThingThereAre">FEL: det finns två eller flere nivåfiler för detta språk! Endast en fil är tillåten!</label>
+			<label index="lang_renderl10n_editLanguageOverlayRecord">Ändra språknivåfilen</label>
+			<label index="lang_renderl10n_page">Sida</label>
+			<label index="lang_renderl10n_default">Standard</label>
+			<label index="lang_getlangsta_createNewTranslationHeaders">Skapa ny översättningsrubrik</label>
+			<label index="lang_renderl10n_CEcount">Innehållselementräknare</label>
 		</languageKey>
 		<languageKey index="pt" type="array">
 			<label index="page_title">Visualização da Árvore</label>
@@ -397,17 +412,29 @@
 			<label index="page_sysnote">Заметки</label>
 			<label index="pageInformation">Информация о странице</label>
 			<label index="pages_0">Основные параметры</label>
-			<label index="pages_2">Кеш и Возраст</label>
+			<label index="pages_2">Кэш и возраст</label>
 			<label index="pages_1">Просмотр записи</label>
 			<label index="stat_type_0">Хиты страницы</label>
 			<label index="stat_type_1">Всего хитов</label>
-			<label index="stat_type_2">Хиты в основном разделе</label>
+			<label index="stat_type_2">Хиты в основных разделах</label>
 			<label index="stat_period">Статистика в период %s назад до %s</label>
 			<label index="pI_crUser">Автор</label>
 			<label index="pI_crDate">Дата создания</label>
 			<label index="pI_lastChange">Последние изменения</label>
-			<label index="pI_lastChangeContent">Последние изменения, содержимое</label>
+			<label index="pI_lastChangeContent">Последние изменения содержимого</label>
 			<label index="hits_title">Статистика хитов</label>
+			<label index="lang_renderl10n_viewPage">Просмотр страницы</label>
+			<label index="lang_renderl10n_editDefaultLanguagePage">Править заголовок страницы на основном языке</label>
+			<label index="lang_renderl10n_editLangOverlays">Править все переводы заголовка страницы</label>
+			<label index="lang_renderl10n_editPageHeaders">Править все заголовки страниц</label>
+			<label index="lang_renderl10n_editPage">Править страницу</label>
+			<label index="lang_renderl10n_editPageLang">Править перевод страницы</label>
+			<label index="lang_renderl10n_badThingThereAre">ОШИБКА: перевод на данный язык уже существует! Разрешен только один перевод!</label>
+			<label index="lang_renderl10n_editLanguageOverlayRecord">Править запись перевода</label>
+			<label index="lang_renderl10n_page">Страница</label>
+			<label index="lang_renderl10n_default">Основной</label>
+			<label index="lang_getlangsta_createNewTranslationHeaders">Создать новый перевод заголовка</label>
+			<label index="lang_renderl10n_CEcount">Счетчик записей</label>
 		</languageKey>
 		<languageKey index="ro" type="array">
 			<label index="page_title">Structura de pagini</label>
@@ -613,6 +640,18 @@
 			<label index="pI_lastChange">最後更新</label>
 			<label index="pI_lastChangeContent">最後更新內容</label>
 			<label index="hits_title">溜覽次數統計</label>
+			<label index="lang_renderl10n_viewPage">檢視網頁</label>
+			<label index="lang_renderl10n_editDefaultLanguagePage">修改預設語言網頁標題</label>
+			<label index="lang_renderl10n_editLangOverlays">修改所有語言網頁標題</label>
+			<label index="lang_renderl10n_editPageHeaders">修改所有網頁標題</label>
+			<label index="lang_renderl10n_editPage">修改</label>
+			<label index="lang_renderl10n_editPageLang">修改網頁譒譯</label>
+			<label index="lang_renderl10n_badThingThereAre">錯誤：這個語言有兩個重覆的記錄！只容許一個！</label>
+			<label index="lang_renderl10n_editLanguageOverlayRecord">修改重覆的語言記錄</label>
+			<label index="lang_renderl10n_page">網頁</label>
+			<label index="lang_renderl10n_default">預設</label>
+			<label index="lang_getlangsta_createNewTranslationHeaders">建立新的譒譯標題</label>
+			<label index="lang_renderl10n_CEcount">內容元件計算</label>
 		</languageKey>
 		<languageKey index="eu" type="array">
 		</languageKey>
@@ -649,6 +688,15 @@
 			<label index="pI_lastChange">Última alteração</label>
 			<label index="pI_lastChangeContent">Última alteração, conteúdo</label>
 			<label index="hits_title">Estatísticas de Visualização</label>
+			<label index="lang_renderl10n_viewPage">Visualizar página</label>
+			<label index="lang_renderl10n_editDefaultLanguagePage">Editar cabeçalho-padrão da página de idioma</label>
+			<label index="lang_renderl10n_editPageHeaders">Editar todos os cabeçalhos das páginas</label>
+			<label index="lang_renderl10n_editPage">Editar página</label>
+			<label index="lang_renderl10n_editPageLang">Editar tradução da página</label>
+			<label index="lang_renderl10n_page">Página</label>
+			<label index="lang_renderl10n_default">Padrão</label>
+			<label index="lang_getlangsta_createNewTranslationHeaders">Criar novos cabeçalhos de tradução</label>
+			<label index="lang_renderl10n_CEcount">Contagem de Elementos de Conteúdo</label>
 		</languageKey>
 		<languageKey index="et" type="array">
 			<label index="page_title">Sisupuu ülevaade</label>
@@ -685,6 +733,18 @@
 			<label index="pI_lastChange">שינוי אחרון</label>
 			<label index="pI_lastChangeContent">שינוי אחרון, תוכן</label>
 			<label index="hits_title">סטטיסטיקת הורדות</label>
+			<label index="lang_renderl10n_viewPage">הצג דף</label>
+			<label index="lang_renderl10n_editDefaultLanguagePage">עריכת כותרת של שפת ברירת מחדל</label>
+			<label index="lang_renderl10n_editLangOverlays">עריכת כל רשומות של ציפוי שפה</label>
+			<label index="lang_renderl10n_editPageHeaders">עריכת כל כותרות של דף</label>
+			<label index="lang_renderl10n_editPage">עריכת דף</label>
+			<label index="lang_renderl10n_editPageLang">עריכת תרגום של דף</label>
+			<label index="lang_renderl10n_badThingThereAre">שגיעה!! ישנם 2 או יותר רשומות של ציפוי דף לשפה זו! מותר רק 1!</label>
+			<label index="lang_renderl10n_editLanguageOverlayRecord">עריכת רשומה של ציפוי שפה</label>
+			<label index="lang_renderl10n_page">דף</label>
+			<label index="lang_renderl10n_default">ברירת מחדל</label>
+			<label index="lang_getlangsta_createNewTranslationHeaders">צור כותרות תרגום חדשות</label>
+			<label index="lang_renderl10n_CEcount">כמות פרטי תוכן</label>
 		</languageKey>
 		<languageKey index="ua" type="array">
 			<label index="page_title">Огляд дерева сторінок</label>
@@ -838,6 +898,9 @@
 			<label index="lang_renderl10n_editPageHeaders" type="integer">237110134</label>
 			<label index="lang_renderl10n_editPageLang" type="integer">110674105</label>
 			<label index="lang_renderl10n_badThingThereAre" type="integer">258445119</label>
+			<label index="lang_renderl10n_editLangOverlays" type="integer">193717971</label>
+			<label index="lang_renderl10n_editLanguageOverlayRecord" type="integer">80463324</label>
+			<label index="lang_getlangsta_createNewTranslationHeaders" type="integer">193499435</label>
 		</languageKey>
 		<languageKey index="it" type="array">
 			<label index="page_title" type="integer">46867233</label>
@@ -1092,6 +1155,18 @@
 			<label index="pI_lastChange" type="integer">48593502</label>
 			<label index="pI_lastChangeContent" type="integer">239918564</label>
 			<label index="hits_title" type="integer">55072016</label>
+			<label index="lang_renderl10n_viewPage" type="integer">258274582</label>
+			<label index="lang_renderl10n_editDefaultLanguagePage" type="integer">171833861</label>
+			<label index="lang_renderl10n_editLangOverlays" type="integer">193717971</label>
+			<label index="lang_renderl10n_editPageHeaders" type="integer">237110134</label>
+			<label index="lang_renderl10n_editPage" type="integer">66732081</label>
+			<label index="lang_renderl10n_editPageLang" type="integer">110674105</label>
+			<label index="lang_renderl10n_badThingThereAre" type="integer">258445119</label>
+			<label index="lang_renderl10n_editLanguageOverlayRecord" type="integer">80463324</label>
+			<label index="lang_renderl10n_page" type="integer">26464201</label>
+			<label index="lang_renderl10n_default" type="integer">128029197</label>
+			<label index="lang_getlangsta_createNewTranslationHeaders" type="integer">193499435</label>
+			<label index="lang_renderl10n_CEcount" type="integer">196252064</label>
 		</languageKey>
 		<languageKey index="pt" type="array">
 			<label index="page_title" type="integer">46867233</label>
@@ -1126,6 +1201,18 @@
 			<label index="pI_lastChange" type="integer">48593502</label>
 			<label index="pI_lastChangeContent" type="integer">239918564</label>
 			<label index="hits_title" type="integer">55072016</label>
+			<label index="lang_renderl10n_viewPage" type="integer">258274582</label>
+			<label index="lang_renderl10n_editDefaultLanguagePage" type="integer">171833861</label>
+			<label index="lang_renderl10n_editLangOverlays" type="integer">193717971</label>
+			<label index="lang_renderl10n_editPageHeaders" type="integer">237110134</label>
+			<label index="lang_renderl10n_editPage" type="integer">66732081</label>
+			<label index="lang_renderl10n_editPageLang" type="integer">110674105</label>
+			<label index="lang_renderl10n_badThingThereAre" type="integer">258445119</label>
+			<label index="lang_renderl10n_editLanguageOverlayRecord" type="integer">80463324</label>
+			<label index="lang_renderl10n_page" type="integer">26464201</label>
+			<label index="lang_renderl10n_default" type="integer">128029197</label>
+			<label index="lang_getlangsta_createNewTranslationHeaders" type="integer">193499435</label>
+			<label index="lang_renderl10n_CEcount" type="integer">196252064</label>
 		</languageKey>
 		<languageKey index="ro" type="array">
 			<label index="page_title" type="integer">46867233</label>
@@ -1331,6 +1418,18 @@
 			<label index="pI_lastChange" type="integer">48593502</label>
 			<label index="pI_lastChangeContent" type="integer">239918564</label>
 			<label index="hits_title" type="integer">55072016</label>
+			<label index="lang_renderl10n_viewPage" type="integer">258274582</label>
+			<label index="lang_renderl10n_editDefaultLanguagePage" type="integer">171833861</label>
+			<label index="lang_renderl10n_editLangOverlays" type="integer">193717971</label>
+			<label index="lang_renderl10n_editPageHeaders" type="integer">237110134</label>
+			<label index="lang_renderl10n_editPage" type="integer">66732081</label>
+			<label index="lang_renderl10n_editPageLang" type="integer">110674105</label>
+			<label index="lang_renderl10n_badThingThereAre" type="integer">258445119</label>
+			<label index="lang_renderl10n_editLanguageOverlayRecord" type="integer">80463324</label>
+			<label index="lang_renderl10n_page" type="integer">26464201</label>
+			<label index="lang_renderl10n_default" type="integer">128029197</label>
+			<label index="lang_getlangsta_createNewTranslationHeaders" type="integer">193499435</label>
+			<label index="lang_renderl10n_CEcount" type="integer">196252064</label>
 		</languageKey>
 		<languageKey index="eu" type="array">
 		</languageKey>
@@ -1367,6 +1466,15 @@
 			<label index="pI_lastChange" type="integer">48593502</label>
 			<label index="pI_lastChangeContent" type="integer">239918564</label>
 			<label index="hits_title" type="integer">55072016</label>
+			<label index="lang_renderl10n_viewPage" type="integer">258274582</label>
+			<label index="lang_renderl10n_editDefaultLanguagePage" type="integer">171833861</label>
+			<label index="lang_renderl10n_editPageHeaders" type="integer">237110134</label>
+			<label index="lang_renderl10n_editPage" type="integer">66732081</label>
+			<label index="lang_renderl10n_editPageLang" type="integer">110674105</label>
+			<label index="lang_renderl10n_page" type="integer">26464201</label>
+			<label index="lang_renderl10n_default" type="integer">128029197</label>
+			<label index="lang_getlangsta_createNewTranslationHeaders" type="integer">193499435</label>
+			<label index="lang_renderl10n_CEcount" type="integer">196252064</label>
 		</languageKey>
 		<languageKey index="et" type="array">
 			<label index="page_title" type="integer">46867233</label>
@@ -1403,6 +1511,18 @@
 			<label index="pI_lastChange" type="integer">48593502</label>
 			<label index="pI_lastChangeContent" type="integer">239918564</label>
 			<label index="hits_title" type="integer">55072016</label>
+			<label index="lang_renderl10n_viewPage" type="integer">258274582</label>
+			<label index="lang_renderl10n_editDefaultLanguagePage" type="integer">171833861</label>
+			<label index="lang_renderl10n_editLangOverlays" type="integer">193717971</label>
+			<label index="lang_renderl10n_editPageHeaders" type="integer">237110134</label>
+			<label index="lang_renderl10n_editPage" type="integer">66732081</label>
+			<label index="lang_renderl10n_editPageLang" type="integer">110674105</label>
+			<label index="lang_renderl10n_badThingThereAre" type="integer">258445119</label>
+			<label index="lang_renderl10n_editLanguageOverlayRecord" type="integer">80463324</label>
+			<label index="lang_renderl10n_page" type="integer">26464201</label>
+			<label index="lang_renderl10n_default" type="integer">128029197</label>
+			<label index="lang_getlangsta_createNewTranslationHeaders" type="integer">193499435</label>
+			<label index="lang_renderl10n_CEcount" type="integer">196252064</label>
 		</languageKey>
 		<languageKey index="ua" type="array">
 			<label index="page_title" type="integer">46867233</label>

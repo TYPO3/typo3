@@ -102,7 +102,7 @@ define ('T3_ERR_SV_NO_INPUT', -4); // passed subtype is not possible with this s
 
 define ('T3_ERR_SV_FILE_NOT_FOUND', -20); // File not found which the service should process
 define ('T3_ERR_SV_FILE_READ', -21); // File not readable
-define ('T3_ERR_SV_FILE_WRITE', -22); // File not writeable
+define ('T3_ERR_SV_FILE_WRITE', -22); // File not writable
 
 define ('T3_ERR_SV_PROG_NOT_FOUND', -40); // passed subtype is not possible with this service
 define ('T3_ERR_SV_PROG_FAILED', -41); // passed subtype is not possible with this service

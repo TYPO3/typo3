@@ -37,8 +37,6 @@
 			<label index="seeAlso">Se også</label>
 			<label index="goBack">Gå tilbage</label>
 			<label index="fullDescription">Se hele tabelbeskrivelsen</label>
-			<label index="close">Luk</label>
-			<label index="title">TYPO3 lokal hjælp</label>
 			<label index="fullDescription_module">Se hele modulbeskrivelsen</label>
 			<label index="goToToc">Gå til indholdsfortegnelsen</label>
 			<label index="to_top">Til toppen</label>
@@ -46,13 +44,15 @@
 			<label index="TOC_core">TYPO3 Kerne-funktioner</label>
 			<label index="TOC_modules">Backend-moduler</label>
 			<label index="TOC_tables">Databasetabeller</label>
+			<label index="TOC_extensions">Extensions</label>
 			<label index="TOC_other">Andre</label>
+			<label index="close">Luk</label>
+			<label index="title">TYPO3 lokal hjælp</label>
 			<label index="manual_title">TYPO3 lokal brugermanual</label>
 			<label index="introduction">Introduktion</label>
 			<label index="description">TYPO3 lokal brugermanual er dynamisk sammensat fra de tilgængelige hjælpe-kilder i denne TYPO3 installation (Kontekst Sensitiv Hjælp). Her kan du finde en generel beskrivelse af TYPO3s kerne-moduler, beskrivelse af installationsspecifikke backend moduler og database tabeller som er tilgængelige for dig med dine brugerrettigheder.</label>
 			<label index="full_manual">Fuld manual (én side)</label>
 			<label index="full_manual_chapters">Manual kapitler</label>
-			<label index="TOC_extensions">Extensions</label>
 		</languageKey>
 		<languageKey index="de" type="array">
 			<label index="details">Details</label>
@@ -60,8 +60,6 @@
 			<label index="seeAlso">Siehe auch</label>
 			<label index="goBack">Zurück</label>
 			<label index="fullDescription">Komplette Beschreibung der Tabelle ansehen</label>
-			<label index="close">Schliessen</label>
-			<label index="title">Lokale TYPO3 Hilfe</label>
 			<label index="fullDescription_module">Komplette Beschreibung des Moduls ansehen</label>
 			<label index="goToToc">Zum Inhaltsverzeichnis</label>
 			<label index="to_top">Nach oben</label>
@@ -71,6 +69,8 @@
 			<label index="TOC_tables">Datenbank Tabellen</label>
 			<label index="TOC_extensions">Erweiterungen</label>
 			<label index="TOC_other">Sonstiges</label>
+			<label index="close">Schliessen</label>
+			<label index="title">Lokale TYPO3 Hilfe</label>
 			<label index="manual_title">Lokales TYPO3 Handbuch</label>
 			<label index="introduction">Einleitung</label>
 			<label index="description">Das lokale TYPO3 Handbuch wird dynamisch aus den Hilfetexten dieser TYPO3 Installation erzeugt (Kontext-sensitive Hilfe). Sie enthält eine generelle Beschreibung der Kernmodule von TYPO3, Beschreibungen zur Installation bestimmter Backend Module und Datenbank Tabellen, die abhängig von Ihren Zugriffsrechten zur Verfügung stehen.</label>
@@ -83,12 +83,22 @@
 			<label index="seeAlso">Se også</label>
 			<label index="goBack">Gå tilbake</label>
 			<label index="fullDescription">Se hele tabellbeskrivelsen</label>
+			<label index="fullDescription_module">Se full beskrivelse av modulen</label>
+			<label index="goToToc">Gå til innholdsfortegnelse</label>
 			<label index="to_top">Til toppen</label>
 			<label index="TOC">Innholdsoversikt</label>
-			<label index="TOC_tables">Database tabeller</label>
+			<label index="TOC_core">TYPO3 hovedfunksjoner</label>
+			<label index="TOC_modules">Backend-moduler</label>
+			<label index="TOC_tables">Database-tabeller</label>
+			<label index="TOC_extensions">Tilleggsmoduler</label>
 			<label index="TOC_other">Andre</label>
 			<label index="close">Lukk</label>
-			<label index="title">TYPO3 Inline Hjelp</label>
+			<label index="title">TYPO3 Innebygd Hjelp</label>
+			<label index="manual_title">TYPO3 innebygd brukerhåndbok</label>
+			<label index="introduction">Introduksjon</label>
+			<label index="description">TYPO3 Innebygd brukerhåndbok består av de tilgjengelige kontekstuelle hjelpetekstene i denne installasjonen av TYPO3. Her finner du en generell beskrivelse av TYPO3s hovedfunksjoner, samt Backend-moduler og database-tabeller som er tlgjengelige for din bruker.</label>
+			<label index="full_manual">Full brukerhåndbok (på samme side)</label>
+			<label index="full_manual_chapters">Håndbok-kapitler</label>
 		</languageKey>
 		<languageKey index="it" type="array">
 			<label index="details">Dettagli</label>
@@ -121,19 +131,20 @@
 			<label index="fullDescription">Voir la description complète de la table</label>
 			<label index="fullDescription_module">Voir la description complète du modules</label>
 			<label index="goToToc">Aller à la table des matières</label>
-			<label index="to_top">Aller en haut de page</label>
+			<label index="to_top">En haut</label>
 			<label index="TOC">Table des Matières</label>
 			<label index="TOC_core">Typo3 Fonction principale</label>
-			<label index="TOC_modules">Modules principales</label>
+			<label index="TOC_modules">Modules Backend</label>
 			<label index="TOC_tables">Tables de la base de données</label>
-			<label index="TOC_extensions">Extentions</label>
+			<label index="TOC_extensions">Extensions</label>
 			<label index="TOC_other">Autres</label>
 			<label index="close">Fermer</label>
 			<label index="title">Aide en ligne TYPO3</label>
-			<label index="manual_title">Maneuel en ligne Typo3</label>
+			<label index="manual_title">Manuel Utilisateur en Ligne Typo3</label>
 			<label index="introduction">Introduction</label>
-			<label index="full_manual">Manuel d'utilisation complet (en une page)</label>
-			<label index="full_manual_chapters">Chapitres du Manuel d'utilisation</label>
+			<label index="full_manual">Manuel Complet (en une page)</label>
+			<label index="full_manual_chapters">Chapitres du Manuel</label>
+			<label index="description">Le Manuel Utilisateur en Ligne Typo3 est composed from the disponible aide dans cette Installation TYPO3 (Context Sensitive Help). Here you will find une description générale of the TYPO3 Core modules, installation specific Backend Modules and Database Tables that are available based on your login credentials.</label>
 		</languageKey>
 		<languageKey index="es" type="array">
 			<label index="details">Detalles</label>
@@ -177,7 +188,7 @@
 			<label index="title">TYPO3 Inline Help</label>
 			<label index="manual_title">TYPO3 Inline Gebruikershandleiding</label>
 			<label index="introduction">Introductie</label>
-			<label index="description">De TYPO3 Inline Help is dynamisch gegenereerd uit de verschillende bronnen in deze TYPO3 Installatie. Hier vind je een algemene beschrijving van de TYPO3 basis modules, beschrijving van de installatie specifieke Backend Modules en Database Tabellen welke beschikbaar zijn op basis van uw gebruikersrechten.</label>
+			<label index="description">De TYPO3 Inline Help is samengesteld uit de helpbestanden in deze TYPO3 Installatie. Hier vind je een algemene beschrijving van de TYPO3 basis modules, installatie specifieke Backend Modules en Database Tabellen welke beschikbaar zijn op basis van uw gebruikersrechten.</label>
 			<label index="full_manual">Volledige Handleiding (op één pagina)</label>
 			<label index="full_manual_chapters">Hoofdstukken Handleiding</label>
 		</languageKey>
@@ -209,7 +220,7 @@
 			<label index="title">Wewnętrzna Pomoc TYPO3</label>
 			<label index="manual_title">Wewnętrzna Instrukcja Użytkownika TYPO3</label>
 			<label index="introduction">Wprowadzenie</label>
-			<label index="description">Wewnętrzna Instrukcja Użytkownika TYPO3 tworzona jest dynamicznie ze wszystkich dostępnych źródeł pomocy, dostępnych w systemie (Pomoc Kontekstowa). Znajdziesz w niej ogólny opis modułów podstawowych, modułów specyficznych zainstalowanych w Twoim systemie oraz Tabel Bazy Danych do których masz uprawnienia.</label>
+			<label index="description">Wewnętrzna Instrukcja Użytkownika TYPO3 tworzona jest z całej dostępnej pomocy, zawartej w systemie (Pomoc Kontekstowa). Znajdziesz w niej ogólny opis modułów podstawowych, modułów specyficznych zainstalowanych w Twoim systemie oraz Tabel Bazy Danych do których masz uprawnienia.</label>
 			<label index="full_manual">Pełna Instrukcja (na jednej stronie)</label>
 			<label index="full_manual_chapters">Rozdziały Instrukcji</label>
 		</languageKey>
@@ -263,7 +274,7 @@
 			<label index="title">TYPO3 Inline yardım</label>
 			<label index="manual_title">TYPO3 satıriçi kullanıcı kılavuzu</label>
 			<label index="introduction">Tanıtım</label>
-			<label index="description">TYPO3 içkısım kullanıcı kılavuzu TYPO3 installation kısmında yardım kaynaklarından dinamik olaraqk oluşturulmuştur (Context Sensitive Help). Burda TYPO3 Core Modullerinin genel detaylarını bulabilirsiniz, belirtilen Arkaplan modulleri yükleme detayları ve Veritabanı Tabloları güvenli giriş yapmanıza bağlı olarak vardır.</label>
+			<label index="description">TYPO3 içkısım kullanıcı kılavuzu TYPO3 installation yardım kısmında oluşturulmuştur (Context Sensitive Help). Burda TYPO3 Core Modullerinin genel detaylarını bulabilirsiniz, belirtilen Arkaplan modulleri yükleme ve Veritabanı Tabloları güvenli giriş yapmanıza bağlı olarak vardır.</label>
 			<label index="full_manual">Tüm kılavuz (Bir sayfa içinde)</label>
 			<label index="full_manual_chapters">Kılavuz Bölümleri</label>
 		</languageKey>
@@ -272,9 +283,23 @@
 			<label index="syntax">Syntax</label>
 			<label index="seeAlso">Se också</label>
 			<label index="goBack">Gå tillbaka</label>
-			<label index="fullDescription">Se full förklaring över tabellen</label>
+			<label index="fullDescription">Se tabellens fulla förklaring</label>
+			<label index="fullDescription_module">Se modulens fulla förklaring</label>
+			<label index="goToToc">Gå till innehållsförteckningen</label>
+			<label index="to_top">Högst upp</label>
+			<label index="TOC">Innehållsförteckning</label>
+			<label index="TOC_core">TYPO3 standardegeneskaper</label>
+			<label index="TOC_modules">Backend-moduler</label>
+			<label index="TOC_tables">Databastabeller</label>
+			<label index="TOC_extensions">Extensioner</label>
+			<label index="TOC_other">Annat</label>
 			<label index="close">Stäng</label>
 			<label index="title">Typo3 Inline-hjälp</label>
+			<label index="manual_title">TYPO3 Inline användarmanual</label>
+			<label index="introduction">Introduktion</label>
+			<label index="description">TYPO3 Inline användarmanual skapas från de tillbudsstående  hjälpavsnitten i denna installation av TYPO3 (Context Sensitive Help). Här hittar du en allmän förklaring över Typo3 standardmoduler, installationsspecifika Backend moduler och databastabeller som är beroende på dina inloggningsrättigheter.</label>
+			<label index="full_manual">Full manual (på en sida)</label>
+			<label index="full_manual_chapters">Manualens kapitel</label>
 		</languageKey>
 		<languageKey index="pt" type="array">
 			<label index="details">Detalhes</label>
@@ -303,6 +328,7 @@
 			<label index="title">Диалоговая помощь TYPO3</label>
 			<label index="manual_title">Диалоговое руководство пользователя TYPO3</label>
 			<label index="introduction">Введение</label>
+			<label index="description">Встроенный справочник состоит из записей контекстной помощи данной инсталяции TYPO3. Здесь вы найдете общую информацию о системных модулях TYPO3, установленных специфических служебных модулях и таблиц базы данных доступных для данного пользователя.</label>
 			<label index="full_manual">Полная документация (одной страницей)</label>
 			<label index="full_manual_chapters">Полная документация (по главам)</label>
 		</languageKey>
@@ -405,7 +431,7 @@
 			<label index="title">TYPO3 Inline Súgó</label>
 			<label index="manual_title">TYPO3 Belső Leírás</label>
 			<label index="introduction">Bevezetés</label>
-			<label index="description">A TYPO3 Belső Leírás dinamikusan jön létre a segítség (CSH) alapján. Leírást találhatsz a TYPO3 alap moduljairól, a telepítéstől függő Backend modulokról és adatbázis táblákról.</label>
+			<label index="description">A TYPO3 Belső Leírás a segítség (CSH) alapján jön létre. Leírást találhatsz a TYPO3 alap moduljairól, a telepítéstől függő Backend modulokról és adatbázis táblákról.</label>
 			<label index="full_manual">Teljes leírás (egy oldalon)</label>
 			<label index="full_manual_chapters">Leírás fejezetei</label>
 		</languageKey>
@@ -441,9 +467,23 @@
 			<label index="syntax">語法</label>
 			<label index="seeAlso">參看</label>
 			<label index="goBack">返回</label>
-			<label index="fullDescription">檢視表格的完整介紹</label>
+			<label index="fullDescription">參閱表格的完整介紹</label>
+			<label index="fullDescription_module">參閱模組的完整介紹</label>
+			<label index="goToToc">到 TOC</label>
+			<label index="to_top">到頂部</label>
+			<label index="TOC">內容目錄</label>
+			<label index="TOC_core">TYPO3 核心功能</label>
+			<label index="TOC_modules">後勤模組</label>
+			<label index="TOC_tables">資料庫表格</label>
+			<label index="TOC_extensions">延伸工具</label>
+			<label index="TOC_other">其他</label>
 			<label index="close">關閉</label>
 			<label index="title">TYPO3 線上支援</label>
+			<label index="manual_title">TYPO3 內部使用者手冊</label>
+			<label index="introduction">引言</label>
+			<label index="description">TYPO3 內部使用者手冊是從這個TYPO3安裝中的內容主導輔助說明構建成的。在這裡你會找到TYPO3各模組的一般簡介，基於你的登入權限分配給你可供安裝的專門的後勤模組和資料庫表格</label>
+			<label index="full_manual">完整的使用者手冊（在一頁）</label>
+			<label index="full_manual_chapters">使用者手冊章節</label>
 		</languageKey>
 		<languageKey index="eu" type="array">
 		</languageKey>
@@ -462,8 +502,20 @@
 			<label index="seeAlso">Veja também</label>
 			<label index="goBack">Voltar</label>
 			<label index="fullDescription">Ver descrição completa da tabela</label>
+			<label index="fullDescription_module">Ver descrição completa do módulo</label>
+			<label index="goToToc">Ir para o Sumário</label>
+			<label index="to_top">Topo</label>
+			<label index="TOC">Sumário</label>
+			<label index="TOC_modules">Módulos de Administração</label>
+			<label index="TOC_tables">Tabelas do Banco de Dados</label>
+			<label index="TOC_extensions">Extensões</label>
+			<label index="TOC_other">Outros</label>
 			<label index="close">Fechar</label>
 			<label index="title">Ajuda Inline TYPO3</label>
+			<label index="manual_title">Manual Inline do Usuário TYPO3</label>
+			<label index="introduction">Introdução</label>
+			<label index="full_manual">Manual Completo (em uma página)</label>
+			<label index="full_manual_chapters">Capítulos do Manual</label>
 		</languageKey>
 		<languageKey index="et" type="array">
 			<label index="details">Detailid</label>
@@ -489,8 +541,18 @@
 			<label index="seeAlso">ראה גם</label>
 			<label index="goBack">עבור חזרה</label>
 			<label index="fullDescription">ראה תיאור מלא של טבלה</label>
+			<label index="fullDescription_module">ראה תיאור מלא של מודול</label>
+			<label index="goToToc">עבור ל-TOC</label>
+			<label index="to_top">לראש</label>
+			<label index="TOC">טבלת התכנים</label>
+			<label index="TOC_core">מאפיינים עיקריים של TYPO3</label>
+			<label index="TOC_tables">טבלאות מאגר מידע</label>
+			<label index="TOC_other">אחר</label>
 			<label index="close">סגור</label>
 			<label index="title">עזרה באינטרנט</label>
+			<label index="introduction">מבוא</label>
+			<label index="full_manual">הוראות שימוש המלאות (בדף אחד)</label>
+			<label index="full_manual_chapters">ראשי פרקים של הוראות שימוש</label>
 		</languageKey>
 		<languageKey index="ua" type="array">
 		</languageKey>
@@ -527,7 +589,7 @@
 			<label index="TOC_other" type="integer">103881441</label>
 			<label index="manual_title" type="integer">89488469</label>
 			<label index="introduction" type="integer">12031893</label>
-			<label index="description" type="integer">54171837</label>
+			<label index="description" type="integer">55775014</label>
 			<label index="full_manual" type="integer">68472336</label>
 			<label index="full_manual_chapters" type="integer">161891675</label>
 			<label index="TOC_extensions" type="integer">98760179</label>
@@ -551,7 +613,7 @@
 			<label index="TOC_other" type="integer">103881441</label>
 			<label index="manual_title" type="integer">89488469</label>
 			<label index="introduction" type="integer">12031893</label>
-			<label index="description" type="integer">54171837</label>
+			<label index="description" type="integer">55775014</label>
 			<label index="full_manual" type="integer">68472336</label>
 			<label index="full_manual_chapters" type="integer">161891675</label>
 		</languageKey>
@@ -567,6 +629,16 @@
 			<label index="TOC" type="double">5416024</label>
 			<label index="TOC_tables" type="integer">247039840</label>
 			<label index="TOC_other" type="integer">103881441</label>
+			<label index="fullDescription_module" type="integer">201003905</label>
+			<label index="goToToc" type="integer">21517239</label>
+			<label index="TOC_core" type="integer">164327555</label>
+			<label index="TOC_modules" type="integer">39991288</label>
+			<label index="TOC_extensions" type="integer">98760179</label>
+			<label index="manual_title" type="integer">89488469</label>
+			<label index="introduction" type="double">12031893</label>
+			<label index="description" type="integer">55775014</label>
+			<label index="full_manual" type="integer">68472336</label>
+			<label index="full_manual_chapters" type="integer">161891675</label>
 		</languageKey>
 		<languageKey index="it" type="array">
 			<label index="details" type="integer">65812061</label>
@@ -612,6 +684,7 @@
 			<label index="TOC_core" type="integer">164327555</label>
 			<label index="TOC_modules" type="integer">39991288</label>
 			<label index="manual_title" type="integer">89488469</label>
+			<label index="description" type="integer">55775014</label>
 		</languageKey>
 		<languageKey index="es" type="array">
 			<label index="details" type="integer">65812061</label>
@@ -654,7 +727,7 @@
 			<label index="full_manual" type="integer">68472336</label>
 			<label index="full_manual_chapters" type="integer">161891675</label>
 			<label index="TOC_extensions" type="integer">98760179</label>
-			<label index="description" type="integer">54171837</label>
+			<label index="description" type="integer">55775014</label>
 			<label index="TOC_core" type="integer">164327555</label>
 			<label index="TOC_modules" type="integer">39991288</label>
 			<label index="TOC_other" type="integer">103881441</label>
@@ -689,7 +762,7 @@
 			<label index="introduction" type="double">12031893</label>
 			<label index="full_manual" type="integer">68472336</label>
 			<label index="full_manual_chapters" type="integer">161891675</label>
-			<label index="description" type="integer">54171837</label>
+			<label index="description" type="integer">55775014</label>
 		</languageKey>
 		<languageKey index="si" type="array">
 			<label index="details" type="integer">65812061</label>
@@ -719,7 +792,7 @@
 			<label index="TOC_extensions" type="integer">98760179</label>
 			<label index="TOC_other" type="integer">103881441</label>
 			<label index="introduction" type="double">12031893</label>
-			<label index="description" type="integer">54171837</label>
+			<label index="description" type="integer">55775014</label>
 			<label index="full_manual_chapters" type="integer">161891675</label>
 		</languageKey>
 		<languageKey index="tr" type="array">
@@ -741,7 +814,7 @@
 			<label index="TOC_other" type="integer">103881441</label>
 			<label index="manual_title" type="integer">89488469</label>
 			<label index="introduction" type="double">12031893</label>
-			<label index="description" type="integer">54171837</label>
+			<label index="description" type="integer">55775014</label>
 			<label index="full_manual" type="integer">68472336</label>
 			<label index="full_manual_chapters" type="integer">161891675</label>
 		</languageKey>
@@ -753,6 +826,20 @@
 			<label index="fullDescription" type="integer">233674735</label>
 			<label index="close" type="integer">222113377</label>
 			<label index="title" type="integer">184225760</label>
+			<label index="fullDescription_module" type="integer">201003905</label>
+			<label index="goToToc" type="integer">21517239</label>
+			<label index="to_top" type="integer">256968027</label>
+			<label index="TOC" type="double">5416024</label>
+			<label index="TOC_core" type="integer">164327555</label>
+			<label index="TOC_modules" type="integer">39991288</label>
+			<label index="TOC_tables" type="integer">247039840</label>
+			<label index="TOC_extensions" type="integer">98760179</label>
+			<label index="TOC_other" type="integer">103881441</label>
+			<label index="manual_title" type="integer">89488469</label>
+			<label index="introduction" type="double">12031893</label>
+			<label index="description" type="integer">55775014</label>
+			<label index="full_manual" type="integer">68472336</label>
+			<label index="full_manual_chapters" type="integer">161891675</label>
 		</languageKey>
 		<languageKey index="pt" type="array">
 			<label index="details" type="integer">65812061</label>
@@ -783,6 +870,7 @@
 			<label index="introduction" type="double">12031893</label>
 			<label index="full_manual" type="integer">68472336</label>
 			<label index="full_manual_chapters" type="integer">161891675</label>
+			<label index="description" type="integer">55775014</label>
 		</languageKey>
 		<languageKey index="ro" type="array">
 			<label index="details" type="integer">65812061</label>
@@ -883,7 +971,7 @@
 			<label index="TOC_other" type="integer">103881441</label>
 			<label index="manual_title" type="integer">89488469</label>
 			<label index="introduction" type="double">12031893</label>
-			<label index="description" type="integer">54171837</label>
+			<label index="description" type="integer">55775014</label>
 			<label index="full_manual" type="integer">68472336</label>
 			<label index="full_manual_chapters" type="integer">161891675</label>
 		</languageKey>
@@ -922,6 +1010,20 @@
 			<label index="fullDescription" type="integer">233674735</label>
 			<label index="close" type="integer">222113377</label>
 			<label index="title" type="integer">184225760</label>
+			<label index="fullDescription_module" type="integer">201003905</label>
+			<label index="goToToc" type="integer">21517239</label>
+			<label index="to_top" type="integer">256968027</label>
+			<label index="TOC_core" type="integer">164327555</label>
+			<label index="TOC_modules" type="integer">39991288</label>
+			<label index="TOC_tables" type="integer">247039840</label>
+			<label index="TOC_extensions" type="integer">98760179</label>
+			<label index="TOC_other" type="integer">103881441</label>
+			<label index="manual_title" type="integer">89488469</label>
+			<label index="introduction" type="double">12031893</label>
+			<label index="TOC" type="double">5416024</label>
+			<label index="description" type="integer">55775014</label>
+			<label index="full_manual" type="integer">68472336</label>
+			<label index="full_manual_chapters" type="integer">161891675</label>
 		</languageKey>
 		<languageKey index="eu" type="array">
 		</languageKey>
@@ -942,6 +1044,18 @@
 			<label index="fullDescription" type="integer">233674735</label>
 			<label index="close" type="integer">222113377</label>
 			<label index="title" type="integer">184225760</label>
+			<label index="fullDescription_module" type="integer">201003905</label>
+			<label index="goToToc" type="integer">21517239</label>
+			<label index="to_top" type="integer">256968027</label>
+			<label index="TOC" type="double">5416024</label>
+			<label index="TOC_modules" type="integer">39991288</label>
+			<label index="TOC_tables" type="integer">247039840</label>
+			<label index="TOC_extensions" type="integer">98760179</label>
+			<label index="TOC_other" type="integer">103881441</label>
+			<label index="manual_title" type="integer">89488469</label>
+			<label index="introduction" type="double">12031893</label>
+			<label index="full_manual" type="integer">68472336</label>
+			<label index="full_manual_chapters" type="integer">161891675</label>
 		</languageKey>
 		<languageKey index="et" type="array">
 			<label index="details" type="integer">65812061</label>
@@ -969,6 +1083,16 @@
 			<label index="fullDescription" type="integer">233674735</label>
 			<label index="close" type="integer">222113377</label>
 			<label index="title" type="integer">184225760</label>
+			<label index="fullDescription_module" type="integer">201003905</label>
+			<label index="goToToc" type="integer">21517239</label>
+			<label index="to_top" type="integer">256968027</label>
+			<label index="TOC" type="double">5416024</label>
+			<label index="TOC_core" type="integer">164327555</label>
+			<label index="TOC_tables" type="integer">247039840</label>
+			<label index="TOC_other" type="integer">103881441</label>
+			<label index="introduction" type="double">12031893</label>
+			<label index="full_manual" type="integer">68472336</label>
+			<label index="full_manual_chapters" type="integer">161891675</label>
 		</languageKey>
 		<languageKey index="ua" type="array">
 		</languageKey>

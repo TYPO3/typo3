@@ -113,7 +113,7 @@
 			<label index="wiz_changeOrder_tCreate">Gemaakt op</label>
 			<label index="wiz_changeOrder_tChange">Gewijzigd op</label>
 			<label index="wiz_changeOrder_REVERSE">Volgorde omdraaien</label>
-			<label index="wiz_changeOrder_msg1">Weet U zeker dat U de volgorde van de pagina's hierboven wilt wijzigen.</label>
+			<label index="wiz_changeOrder_msg1">Weet U zeker dat U de volgorde van de pagina's hierboven wilt wijzigen?</label>
 		</languageKey>
 		<languageKey index="cz" type="array">
 			<label index="wiz_sort">Uspořádat stránky</label>
@@ -298,12 +298,31 @@
 		<languageKey index="bg" type="array">
 		</languageKey>
 		<languageKey index="br" type="array">
+			<label index="wiz_sort">Ordenar páginas</label>
+			<label index="wiz_W">W!</label>
+			<label index="wiz_currentPageOrder">Ordem da página atual</label>
+			<label index="wiz_changeOrder">Ordenar estas páginas por</label>
+			<label index="wiz_changeOrder_title">Título da página</label>
+			<label index="wiz_changeOrder_subtitle">Sub-título</label>
+			<label index="wiz_changeOrder_tCreate">Criado em</label>
+			<label index="wiz_changeOrder_tChange">Alterado em</label>
+			<label index="wiz_changeOrder_REVERSE">Inverter ordem atual</label>
+			<label index="wiz_changeOrder_msg1">Você está prestes a mudar a ordem das páginas acima. Tem certeza de que quer continuar?</label>
 		</languageKey>
 		<languageKey index="et" type="array">
 		</languageKey>
 		<languageKey index="ar" type="array">
 		</languageKey>
 		<languageKey index="he" type="array">
+			<label index="wiz_sort">מיין דפים</label>
+			<label index="wiz_currentPageOrder">סדר דפים נוכחי</label>
+			<label index="wiz_changeOrder">מיין דפים אלא לפי</label>
+			<label index="wiz_changeOrder_title">כותרת דף</label>
+			<label index="wiz_changeOrder_subtitle">תת-כותרת</label>
+			<label index="wiz_changeOrder_tCreate">שעת יצירה</label>
+			<label index="wiz_changeOrder_tChange">שעת ביצוע שינוי</label>
+			<label index="wiz_changeOrder_REVERSE">הפוך סדר נוכחי</label>
+			<label index="wiz_changeOrder_msg1">הנך עומד לשנות סדר הדפים. האם הנך בטוח כי ברצונך להמשיך?</label>
 		</languageKey>
 		<languageKey index="ua" type="array">
 		</languageKey>
@@ -588,12 +607,31 @@
 		<languageKey index="bg" type="array">
 		</languageKey>
 		<languageKey index="br" type="array">
+			<label index="wiz_sort" type="integer">66209340</label>
+			<label index="wiz_W" type="integer">247242126</label>
+			<label index="wiz_currentPageOrder" type="integer">22140872</label>
+			<label index="wiz_changeOrder" type="integer">239009776</label>
+			<label index="wiz_changeOrder_title" type="integer">19706881</label>
+			<label index="wiz_changeOrder_subtitle" type="double">3536098</label>
+			<label index="wiz_changeOrder_tCreate" type="double">9880846</label>
+			<label index="wiz_changeOrder_tChange" type="integer">21265808</label>
+			<label index="wiz_changeOrder_REVERSE" type="integer">175002343</label>
+			<label index="wiz_changeOrder_msg1" type="integer">138623442</label>
 		</languageKey>
 		<languageKey index="et" type="array">
 		</languageKey>
 		<languageKey index="ar" type="array">
 		</languageKey>
 		<languageKey index="he" type="array">
+			<label index="wiz_sort" type="integer">66209340</label>
+			<label index="wiz_currentPageOrder" type="integer">22140872</label>
+			<label index="wiz_changeOrder" type="integer">239009776</label>
+			<label index="wiz_changeOrder_title" type="integer">19706881</label>
+			<label index="wiz_changeOrder_subtitle" type="double">3536098</label>
+			<label index="wiz_changeOrder_tCreate" type="double">9880846</label>
+			<label index="wiz_changeOrder_tChange" type="integer">21265808</label>
+			<label index="wiz_changeOrder_REVERSE" type="integer">175002343</label>
+			<label index="wiz_changeOrder_msg1" type="integer">138623442</label>
 		</languageKey>
 		<languageKey index="ua" type="array">
 		</languageKey>
