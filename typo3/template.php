@@ -266,7 +266,8 @@ class template {
 	 * @return	string		The link-wrapped input string.
 	 */
 	function wrapClickMenuOnIcon($str,$table,$uid='',$listFr=1)	{
-		$onClick = 'top.loadTopMenu(\''.$this->backPath.'alt_clickmenu.php?item='.rawurlencode($table.'|'.$uid.'|'.$listFr).($this->backPath?'&backPath='.rawurlencode($this->backPath.'|'.md5($this->backPath.'|'.$GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'])):'').'\');'.$this->thisBlur().'return false;';
+		$backPath = '&backPath='.rawurlencode($this->backPath).'|'.md5($this->backPath.'|'.$GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']);
+		$onClick = 'top.loadTopMenu(\''.$this->backPath.'alt_clickmenu.php?item='.rawurlencode($table.'|'.$uid.'|'.$listFr).$backPath.'\');'.$this->thisBlur().'return false;';
 		return '<a href="#" onclick="'.htmlspecialchars($onClick).'">'.$str.'</a>';
 	}
 
