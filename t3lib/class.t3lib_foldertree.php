@@ -42,7 +42,7 @@
  *   88:     function t3lib_folderTree()
  *  106:     function wrapIcon($icon,$row)
  *  126:     function getId($v)
- *  136:     function getJumpToParm($v)
+ *  136:     function getJumpToParam($v)
  *  148:     function getTitleStr($row,$titleLen=30)
  *  158:     function getBrowsableTree()
  *  221:     function getFolderTree($files_path, $depth=999, $depthData='')
@@ -111,7 +111,7 @@ class t3lib_folderTree extends t3lib_treeView  {
 		if (!$this->ext_IconMode)	{
 			$theFolderIcon = $GLOBALS['TBE_TEMPLATE']->wrapClickMenuOnIcon($theFolderIcon,$row['path'],'',0);
 		} elseif (!strcmp($this->ext_IconMode,'titlelink'))	{
-			$aOnClick = 'return jumpTo('.$this->getJumpToParm($row).'\',this,\''.$this->domIdPrefix.$this->getId($row).'_'.$this->bank.'\');';
+			$aOnClick = 'return jumpTo(\''.$this->getJumpToParam($row).'\',this,\''.$this->domIdPrefix.$this->getId($row).'_'.$this->bank.'\');';
 			$theFolderIcon='<a href="#" onclick="'.htmlspecialchars($aOnClick).'">'.$theFolderIcon.'</a>';
 		}
 		return $theFolderIcon;
@@ -133,8 +133,8 @@ class t3lib_folderTree extends t3lib_treeView  {
 	 * @param	array		The record array.
 	 * @return	string		The jump-url parameter.
 	 */
-	function getJumpToParm($v) {
-		return "'".rawurlencode($v['path'])."'";
+	function getJumpToParam($v) {
+		return rawurlencode($v['path']);
 	}
 
 	/**
