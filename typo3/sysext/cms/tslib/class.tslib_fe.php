@@ -760,8 +760,12 @@
 			}
 				// If still no page...
 			if (!count($this->page))	{
-				$this->printError('The requested page does not exist!');
-				exit;
+				if ($this->TYPO3_CONF_VARS['FE']['pageNotFound_handling'])	{
+					$this->pageNotFoundHandler($this->TYPO3_CONF_VARS['FE']['pageNotFound_handling'],$this->TYPO3_CONF_VARS['FE']['pageNotFound_handling_statheader']);
+				} else {
+					$this->printError('The requested page does not exist!');
+					exit;
+				}
 			}
 		}
 			// Is the ID a link to another page??
