@@ -1120,7 +1120,9 @@ class user_feAdmin	{
 						$this->cObj->DBgetDelete($this->theTable, $theUid, TRUE);
 					} else {
 						$newFieldList = implode(',',array_intersect(t3lib_div::trimExplode(',',$this->fieldList),t3lib_div::trimExplode(',',implode($fieldArr,','),1)));
-						$this->cObj->DBgetUpdate($this->theTable, $theUid, $fD, $newFieldList, TRUE);
+						$this->cObj->DBgetUpdate($this->theTable, $theUid, $fD, $newFieldList, TRUE);^
+						$this->currentArr = $GLOBALS['TSFE']->sys_page->getRawRecord($this->theTable,$theUid);
+						$this->userProcess_alt($this->conf['setfixed.']['userFunc_afterSave'],$this->conf['setfixed.']['userFunc_afterSave.'],array('rec'=>$this->currentArr, 'origRec'=>$origArr));
 					}
 
 						// Outputting template

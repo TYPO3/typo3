@@ -671,14 +671,19 @@ $str.=$this->docBodyTagBegin().
 				t3lib_BEfunc::getSetUpdateSignal().
 				$this->parseTime().
 				($this->form?'
-</form>':'').
-				($this->divClass?'
+</form>':'');
+		
+		if ($this->docType!='xhtml_frames') {
+		
+			$str .= ($this->divClass?'
 
 <!-- Wrapping DIV-section for whole page END -->
-</div>':'').
-				'
-</body>
-</html>	';
+</div>':'').'
+</body>	';
+
+		}
+
+		$str .= '</html>';
 
 			// Logging: Can't find better place to put it:
 		if (TYPO3_DLOG)	t3lib_div::devLog('END of BACKEND session','',0,array('_FLUSH'=>TRUE));

@@ -288,6 +288,7 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 	 * @return	string		Part of where clause. Prefix " AND " to this.
 	 */
 	function getPagePermsClause($perms)	{
+		global $TYPO3_CONF_VARS;
 		if (is_array($this->user))	{
 			if ($this->isAdmin())	{
 				return ' 1=1';
@@ -299,6 +300,18 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 				'OR(pages.perms_userid = '.$this->user['uid'].' AND pages.perms_user & '.$perms.' = '.$perms.')';	// User
 			if ($this->groupList){$str.='OR(pages.perms_groupid in ('.$this->groupList.') AND pages.perms_group & '.$perms.' = '.$perms.')';}	// Group (if any is set)
 			$str.=')';
+			
+			// ****************
+			// getPagePermsClause-HOOK
+			// ****************
+			if (is_array($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_userauthgroup.php']['getPagePermsClause'])) {
+				
+				foreach($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_userauthgroup.php']['getPagePermsClause'] as $_funcRef) {
+					$_params = array('currentClause' => $str, 'perms' => $perms);
+					$str = t3lib_div::callUserFunction($_funcRef, $_params, $this);
+				}
+			}
+			
 			return $str;
 		} else {
 			return ' 1=0';
@@ -314,6 +327,7 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 	 * @return	integer		Bitwise representation of the users permissions in relation to input page row, $row
 	 */
 	function calcPerms($row)	{
+		global $TYPO3_CONF_VARS;
 		if ($this->isAdmin()) {return 31;}		// Return 31 for admin users.
 
 		$out=0;
@@ -326,6 +340,20 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 			}
 			$out|=$row['perms_everybody'];
 		}
+		
+		// ****************
+		// CALCPERMS hook
+		// ****************
+		if (is_array($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_userauthgroup.php']['calcPerms'])) {
+			foreach($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_userauthgroup.php']['calcPerms'] as $_funcRef) {
+				$_params = array(
+					'row' => $row,
+					'outputPermissions' => $out
+				);
+				$out = t3lib_div::callUserFunction($_funcRef, $_params, $this);
+			}
+		}
+		
 		return $out;
 	}
 
