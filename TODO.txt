@@ -472,7 +472,7 @@ XQCR: wizard_rte.php
 XQCR: wizard_table.php
 XQCR: wizard_tsconfig.php
 
-XQCR: mod/help/about/index.php:		TODO: Modernize content
+XQCR: mod/help/about/index.php:
 XQCR: mod/tools/em/index.php
 XQCR: mod/web/info/index.php
 XQCR: mod/web/func/index.php
