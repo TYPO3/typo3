@@ -563,9 +563,13 @@ class template {
 	 * @see endPage()
 	 */
 	function startPage($title)	{
+			// Get META tag containing the currently selected charset for backend output. The function sets $this->charSet.
 		$charSet = $this->initCharset();
 		$generator = $this->generator();
-		
+
+			// Send HTTP header for selected charset. Added by Robert Lemke 23.10.2003
+		header ('Content-Type:text/html;charset='.$this->charset);
+
 		switch($this->docType)	{
 			case 'xhtml_strict':
 				$headerStart= '<?xml version="1.0" encoding="'.$this->charset.'"?>
