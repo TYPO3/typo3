@@ -218,7 +218,7 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 	 **********************************************/
 
 	/**
-	 * Tranform value for RTE based on specConf in the direction specified by $direction (rte/db)
+	 * Transform value for RTE based on specConf in the direction specified by $direction (rte/db)
 	 * This is the main function called from tcemain and transfer data classes
 	 *
 	 * @param	string		Input value
@@ -1165,7 +1165,7 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 				if (is_array($subLines))	{	// So, if there happend to be sub-nesting of p/div, this is written directly as the new content of THIS section. (This would be considered 'an error')
 					// No noting.
 				} else {	//... but if NO subsection was found, we process it as a TRUE line without erronous content:
-					$subLines=array($subLines);
+					$subLines = array($subLines);
 					if (!$this->procOptions['dontConvBRtoParagraph'])	{	// process break-tags, if configured for. Simply, the breaktags will here be treated like if each was a line of content...
 						$subLines = spliti('<br[[:space:]]*[\/]?>',$v);
 					}
