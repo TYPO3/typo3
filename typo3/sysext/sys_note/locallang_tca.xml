@@ -1,0 +1,647 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+    <meta type="array">
+        <description>Table labels for sys_note</description>
+        <type>database</type>
+        <csh_table></csh_table>
+        <fileId>EXT:sys_note/locallang_tca.xml</fileId>
+        <labelContext type="array">
+            <label index="sys_note"></label>
+            <label index="sys_note.category.I.1"></label>
+            <label index="sys_note.category.I.2"></label>
+            <label index="sys_note.category.I.3"></label>
+            <label index="sys_note.category.I.4"></label>
+            <label index="sys_note.subject"></label>
+            <label index="sys_note.message"></label>
+            <label index="sys_note.personal"></label>
+        </labelContext>
+    </meta>
+    <data type="array">
+        <languageKey index="default" type="array">
+            <label index="sys_note">Internal note</label>
+            <label index="sys_note.category.I.1">Instructions</label>
+            <label index="sys_note.category.I.2">Notes</label>
+            <label index="sys_note.category.I.3">To-do</label>
+            <label index="sys_note.category.I.4">Template</label>
+            <label index="sys_note.subject">Subject:</label>
+            <label index="sys_note.message">Message:</label>
+            <label index="sys_note.personal">Personal:</label>
+        </languageKey>
+        <languageKey index="dk" type="array">
+            <label index="sys_note">Intern note</label>
+            <label index="sys_note.category.I.1">Vejledning</label>
+            <label index="sys_note.category.I.2">Noter</label>
+            <label index="sys_note.category.I.3">To-do</label>
+            <label index="sys_note.category.I.4">Skabelon</label>
+            <label index="sys_note.subject">Emne:</label>
+            <label index="sys_note.message">Indhold:</label>
+            <label index="sys_note.personal">Personlig:</label>
+        </languageKey>
+        <languageKey index="de" type="array">
+            <label index="sys_note">Interne Notiz</label>
+            <label index="sys_note.category.I.1">Anweisung</label>
+            <label index="sys_note.category.I.2">Notiz</label>
+            <label index="sys_note.category.I.3">To-do</label>
+            <label index="sys_note.category.I.4">Template</label>
+            <label index="sys_note.subject">Titel:</label>
+            <label index="sys_note.message">Inhalt:</label>
+            <label index="sys_note.personal">Persönlich:</label>
+        </languageKey>
+        <languageKey index="no" type="array">
+            <label index="sys_note">Internt notis</label>
+            <label index="sys_note.category.I.1">Veiledning</label>
+            <label index="sys_note.category.I.2">Notis</label>
+            <label index="sys_note.category.I.3">Oppgave</label>
+            <label index="sys_note.category.I.4">Mal</label>
+            <label index="sys_note.subject">Emne:</label>
+            <label index="sys_note.message">Innhold:</label>
+            <label index="sys_note.personal">Personlig:</label>
+        </languageKey>
+        <languageKey index="it" type="array">
+            <label index="sys_note">Note interne</label>
+            <label index="sys_note.category.I.1">Istruzioni</label>
+            <label index="sys_note.category.I.2">Note</label>
+            <label index="sys_note.category.I.3">To-do</label>
+            <label index="sys_note.category.I.4">Template</label>
+            <label index="sys_note.subject">Oggetto:</label>
+            <label index="sys_note.message">Messaggio:</label>
+            <label index="sys_note.personal">Personale:</label>
+        </languageKey>
+        <languageKey index="fr" type="array">
+            <label index="sys_note">Note interne</label>
+            <label index="sys_note.category.I.1">Insctructions</label>
+            <label index="sys_note.category.I.2">Notes</label>
+            <label index="sys_note.category.I.3">A Faire</label>
+            <label index="sys_note.category.I.4">Gabarit</label>
+            <label index="sys_note.subject">Sujet:</label>
+            <label index="sys_note.message">Message:</label>
+            <label index="sys_note.personal">Personnel:</label>
+        </languageKey>
+        <languageKey index="es" type="array">
+            <label index="sys_note">Nota Interna</label>
+            <label index="sys_note.category.I.1">Instructies</label>
+            <label index="sys_note.category.I.2">Notas</label>
+            <label index="sys_note.category.I.3">Por hacer</label>
+            <label index="sys_note.subject">Asunto:</label>
+            <label index="sys_note.message">Mensaje:</label>
+            <label index="sys_note.personal">Personal:</label>
+        </languageKey>
+        <languageKey index="nl" type="array">
+            <label index="sys_note">Interne opmerking</label>
+            <label index="sys_note.category.I.1">Instructies</label>
+            <label index="sys_note.category.I.2">Opmerkingen</label>
+            <label index="sys_note.category.I.3">Te-Doen</label>
+            <label index="sys_note.category.I.4">Template</label>
+            <label index="sys_note.subject">Onderwerp:</label>
+            <label index="sys_note.message">Bericht:</label>
+            <label index="sys_note.personal">Persoonlijk:</label>
+        </languageKey>
+        <languageKey index="cz" type="array">
+            <label index="sys_note">Interní poznámka</label>
+            <label index="sys_note.category.I.1">Instrukce</label>
+            <label index="sys_note.category.I.2">Poznámky</label>
+            <label index="sys_note.category.I.3">Úkoly</label>
+            <label index="sys_note.category.I.4">Šablona</label>
+            <label index="sys_note.subject">Předmět:</label>
+            <label index="sys_note.message">Zpráva:</label>
+            <label index="sys_note.personal">Osobní:</label>
+        </languageKey>
+        <languageKey index="pl" type="array">
+            <label index="sys_note">Notatka wewnętrzna</label>
+            <label index="sys_note.category.I.1">Instrukcja</label>
+            <label index="sys_note.category.I.2">Notatka</label>
+            <label index="sys_note.category.I.3">Do zrobienia</label>
+            <label index="sys_note.category.I.4">Szablon</label>
+            <label index="sys_note.subject">Temat:</label>
+            <label index="sys_note.message">Wiadomość:</label>
+            <label index="sys_note.personal">Skrócona:</label>
+        </languageKey>
+        <languageKey index="si" type="array">
+            <label index="sys_note">Interna opomba</label>
+            <label index="sys_note.category.I.1">Navodila</label>
+            <label index="sys_note.category.I.2">Opombe</label>
+            <label index="sys_note.category.I.3">Naloge</label>
+            <label index="sys_note.category.I.4">Predloga</label>
+            <label index="sys_note.subject">Predmet:</label>
+            <label index="sys_note.message">Sporočilo:</label>
+            <label index="sys_note.personal">Osebno:</label>
+        </languageKey>
+        <languageKey index="fi" type="array">
+            <label index="sys_note">Sisäinen tiedote</label>
+            <label index="sys_note.category.I.1">Ohjeet</label>
+            <label index="sys_note.category.I.2">Muistiot</label>
+            <label index="sys_note.category.I.3">To-Do</label>
+            <label index="sys_note.category.I.4">Malli</label>
+            <label index="sys_note.subject">Asia:</label>
+            <label index="sys_note.message">Viesti:</label>
+            <label index="sys_note.personal">Henkilökohtainen:</label>
+        </languageKey>
+        <languageKey index="tr" type="array">
+            <label index="sys_note">İç kısma ait not</label>
+            <label index="sys_note.category.I.1">Kılavuz</label>
+            <label index="sys_note.category.I.2">Notlar</label>
+            <label index="sys_note.category.I.3">Yapılacak işler</label>
+            <label index="sys_note.category.I.4">Şablon</label>
+            <label index="sys_note.subject">Konu:</label>
+            <label index="sys_note.message">Mesaj:</label>
+            <label index="sys_note.personal">Kişisel:</label>
+        </languageKey>
+        <languageKey index="se" type="array">
+            <label index="sys_note">Intern anmärkning</label>
+            <label index="sys_note.category.I.1">Instruktioner</label>
+            <label index="sys_note.category.I.2">Anmärkningar</label>
+            <label index="sys_note.category.I.3">Att göra</label>
+            <label index="sys_note.category.I.4">Modell</label>
+            <label index="sys_note.subject">Rubrik:</label>
+            <label index="sys_note.message">Meddelande:</label>
+            <label index="sys_note.personal">Personlig:</label>
+        </languageKey>
+        <languageKey index="pt" type="array">
+            <label index="sys_note">Nota interna</label>
+            <label index="sys_note.category.I.1">Instruções</label>
+            <label index="sys_note.category.I.2">Notas</label>
+            <label index="sys_note.category.I.3">A-Fazer</label>
+            <label index="sys_note.category.I.4">Modelo</label>
+            <label index="sys_note.subject">Assunto:</label>
+            <label index="sys_note.message">Mensagem:</label>
+            <label index="sys_note.personal">Pessoal:</label>
+        </languageKey>
+        <languageKey index="ru" type="array">
+            <label index="sys_note">Служебная заметка</label>
+            <label index="sys_note.category.I.1">Указания</label>
+            <label index="sys_note.category.I.2">Заметки</label>
+            <label index="sys_note.category.I.3">Инструкции</label>
+            <label index="sys_note.category.I.4">Шаблон</label>
+            <label index="sys_note.subject">Тема:</label>
+            <label index="sys_note.message">Сообщение:</label>
+            <label index="sys_note.personal">Личное:</label>
+        </languageKey>
+        <languageKey index="ro" type="array">
+            <label index="sys_note">Note interne</label>
+            <label index="sys_note.category.I.1">Instructiuni</label>
+            <label index="sys_note.category.I.2">Note</label>
+            <label index="sys_note.category.I.3">De facut</label>
+            <label index="sys_note.category.I.4">Sablon</label>
+            <label index="sys_note.subject">Subiect</label>
+            <label index="sys_note.message">Mesaj</label>
+            <label index="sys_note.personal">Personal</label>
+        </languageKey>
+        <languageKey index="ch" type="array">
+        </languageKey>
+        <languageKey index="sk" type="array">
+            <label index="sys_note">Interná poznámka</label>
+            <label index="sys_note.category.I.1">Inštrukcie</label>
+            <label index="sys_note.category.I.2">Poznámky</label>
+            <label index="sys_note.category.I.3">Úlohy</label>
+            <label index="sys_note.category.I.4">Šablona</label>
+            <label index="sys_note.subject">Predmet :</label>
+            <label index="sys_note.message">Správa :</label>
+            <label index="sys_note.personal">Súkromne :</label>
+        </languageKey>
+        <languageKey index="lt" type="array">
+        </languageKey>
+        <languageKey index="is" type="array">
+        </languageKey>
+        <languageKey index="hr" type="array">
+            <label index="sys_note">Interna napomena</label>
+            <label index="sys_note.category.I.1">Instrukcije</label>
+            <label index="sys_note.category.I.2">Napomene</label>
+            <label index="sys_note.category.I.3">To-do</label>
+            <label index="sys_note.category.I.4">Predložak</label>
+            <label index="sys_note.subject">Naslov:</label>
+            <label index="sys_note.message">Poruka:</label>
+            <label index="sys_note.personal">Osobno:</label>
+        </languageKey>
+        <languageKey index="hu" type="array">
+            <label index="sys_note">Belső jegyzet</label>
+            <label index="sys_note.category.I.1">Instrukciók</label>
+            <label index="sys_note.category.I.2">Jegyzet</label>
+            <label index="sys_note.category.I.3">Tennivaló</label>
+            <label index="sys_note.category.I.4">Séma</label>
+            <label index="sys_note.subject">Tárgy</label>
+            <label index="sys_note.message">Üzenet</label>
+            <label index="sys_note.personal">Személy</label>
+        </languageKey>
+        <languageKey index="gl" type="array">
+        </languageKey>
+        <languageKey index="th" type="array">
+        </languageKey>
+        <languageKey index="gr" type="array">
+        </languageKey>
+        <languageKey index="hk" type="array">
+            <label index="sys_note">內部筆記</label>
+            <label index="sys_note.category.I.1">指引</label>
+            <label index="sys_note.category.I.2">筆記</label>
+            <label index="sys_note.category.I.3">要做的工作</label>
+            <label index="sys_note.category.I.4">樣板</label>
+            <label index="sys_note.subject">主題：</label>
+            <label index="sys_note.message">訊息：</label>
+            <label index="sys_note.personal">個人的：</label>
+        </languageKey>
+        <languageKey index="eu" type="array">
+        </languageKey>
+        <languageKey index="bg" type="array">
+            <label index="sys_note">Вътрешна бележка</label>
+            <label index="sys_note.category.I.1">Инструкции</label>
+            <label index="sys_note.category.I.2">Бележки</label>
+            <label index="sys_note.category.I.3">За правене</label>
+            <label index="sys_note.category.I.4">Шаблон</label>
+            <label index="sys_note.subject">Относно:</label>
+            <label index="sys_note.message">Съобщение:</label>
+            <label index="sys_note.personal">Личен:</label>
+        </languageKey>
+        <languageKey index="br" type="array">
+            <label index="sys_note">Nota interna</label>
+            <label index="sys_note.category.I.1">Instruções</label>
+            <label index="sys_note.category.I.2">Anotações</label>
+            <label index="sys_note.category.I.3">A fazer</label>
+            <label index="sys_note.category.I.4">Modelo</label>
+            <label index="sys_note.subject">Assunto:</label>
+            <label index="sys_note.message">Mensagem:</label>
+            <label index="sys_note.personal">Pessoal:</label>
+        </languageKey>
+        <languageKey index="et" type="array">
+            <label index="sys_note">Sisemine märge</label>
+            <label index="sys_note.category.I.1">Instruktsioonid</label>
+            <label index="sys_note.category.I.2">Märkmed</label>
+            <label index="sys_note.category.I.3">Ülesanded</label>
+            <label index="sys_note.category.I.4">Kujundusmall</label>
+            <label index="sys_note.subject">Teema:</label>
+            <label index="sys_note.message">Teade:</label>
+            <label index="sys_note.personal">Personaalne:</label>
+        </languageKey>
+        <languageKey index="ar" type="array">
+        </languageKey>
+        <languageKey index="he" type="array">
+        </languageKey>
+        <languageKey index="ua" type="array">
+        </languageKey>
+        <languageKey index="lv" type="array">
+        </languageKey>
+        <languageKey index="jp" type="array">
+        </languageKey>
+        <languageKey index="vn" type="array">
+        </languageKey>
+        <languageKey index="ca" type="array">
+        </languageKey>
+        <languageKey index="ba" type="array">
+        </languageKey>
+        <languageKey index="kr" type="array">
+        </languageKey>
+    </data>
+    <orig_hash type="array">
+        <languageKey index="default" type="array">
+            <label index="sys_note" type="integer">8799194</label>
+            <label index="sys_note.category.I.1" type="integer">77383910</label>
+            <label index="sys_note.category.I.2" type="integer">256667525</label>
+            <label index="sys_note.category.I.3" type="integer">70127075</label>
+            <label index="sys_note.category.I.4" type="integer">41469073</label>
+            <label index="sys_note.subject" type="integer">75107304</label>
+            <label index="sys_note.message" type="integer">155215423</label>
+            <label index="sys_note.personal" type="integer">77420418</label>
+        </languageKey>
+        <languageKey index="dk" type="array">
+            <label index="sys_note" type="integer">8799194</label>
+            <label index="sys_note.category.I.1" type="integer">77383910</label>
+            <label index="sys_note.category.I.2" type="integer">256667525</label>
+            <label index="sys_note.category.I.3" type="integer">70127075</label>
+            <label index="sys_note.category.I.4" type="integer">41469073</label>
+            <label index="sys_note.subject" type="integer">75107304</label>
+            <label index="sys_note.message" type="integer">155215423</label>
+            <label index="sys_note.personal" type="integer">77420418</label>
+        </languageKey>
+        <languageKey index="de" type="array">
+            <label index="sys_note" type="integer">8799194</label>
+            <label index="sys_note.category.I.1" type="integer">77383910</label>
+            <label index="sys_note.category.I.2" type="integer">256667525</label>
+            <label index="sys_note.category.I.3" type="integer">70127075</label>
+            <label index="sys_note.category.I.4" type="integer">41469073</label>
+            <label index="sys_note.subject" type="integer">75107304</label>
+            <label index="sys_note.message" type="integer">155215423</label>
+            <label index="sys_note.personal" type="integer">77420418</label>
+        </languageKey>
+        <languageKey index="no" type="array">
+            <label index="sys_note" type="integer">8799194</label>
+            <label index="sys_note.category.I.1" type="integer">77383910</label>
+            <label index="sys_note.category.I.2" type="integer">256667525</label>
+            <label index="sys_note.category.I.3" type="integer">70127075</label>
+            <label index="sys_note.category.I.4" type="integer">41469073</label>
+            <label index="sys_note.subject" type="integer">75107304</label>
+            <label index="sys_note.message" type="integer">155215423</label>
+            <label index="sys_note.personal" type="integer">77420418</label>
+        </languageKey>
+        <languageKey index="it" type="array">
+            <label index="sys_note" type="integer">8799194</label>
+            <label index="sys_note.category.I.1" type="integer">77383910</label>
+            <label index="sys_note.category.I.2" type="integer">256667525</label>
+            <label index="sys_note.category.I.3" type="integer">70127075</label>
+            <label index="sys_note.category.I.4" type="integer">41469073</label>
+            <label index="sys_note.subject" type="integer">75107304</label>
+            <label index="sys_note.message" type="integer">155215423</label>
+            <label index="sys_note.personal" type="integer">77420418</label>
+        </languageKey>
+        <languageKey index="fr" type="array">
+            <label index="sys_note" type="integer">8799194</label>
+            <label index="sys_note.category.I.1" type="integer">77383910</label>
+            <label index="sys_note.category.I.2" type="integer">256667525</label>
+            <label index="sys_note.category.I.3" type="integer">70127075</label>
+            <label index="sys_note.category.I.4" type="integer">41469073</label>
+            <label index="sys_note.subject" type="integer">75107304</label>
+            <label index="sys_note.message" type="integer">155215423</label>
+            <label index="sys_note.personal" type="integer">77420418</label>
+        </languageKey>
+        <languageKey index="es" type="array">
+            <label index="sys_note" type="integer">8799194</label>
+            <label index="sys_note.category.I.1" type="integer">77383910</label>
+            <label index="sys_note.category.I.2" type="integer">256667525</label>
+            <label index="sys_note.category.I.3" type="integer">70127075</label>
+            <label index="sys_note.subject" type="integer">75107304</label>
+            <label index="sys_note.message" type="integer">155215423</label>
+            <label index="sys_note.personal" type="integer">77420418</label>
+        </languageKey>
+        <languageKey index="nl" type="array">
+            <label index="sys_note" type="integer">8799194</label>
+            <label index="sys_note.category.I.1" type="integer">77383910</label>
+            <label index="sys_note.category.I.2" type="integer">256667525</label>
+            <label index="sys_note.category.I.3" type="integer">70127075</label>
+            <label index="sys_note.category.I.4" type="integer">41469073</label>
+            <label index="sys_note.subject" type="integer">75107304</label>
+            <label index="sys_note.message" type="integer">155215423</label>
+            <label index="sys_note.personal" type="integer">77420418</label>
+        </languageKey>
+        <languageKey index="cz" type="array">
+            <label index="sys_note" type="integer">8799194</label>
+            <label index="sys_note.category.I.1" type="integer">77383910</label>
+            <label index="sys_note.category.I.2" type="integer">256667525</label>
+            <label index="sys_note.category.I.3" type="integer">70127075</label>
+            <label index="sys_note.category.I.4" type="integer">41469073</label>
+            <label index="sys_note.subject" type="integer">75107304</label>
+            <label index="sys_note.message" type="integer">155215423</label>
+            <label index="sys_note.personal" type="integer">77420418</label>
+        </languageKey>
+        <languageKey index="pl" type="array">
+            <label index="sys_note" type="integer">8799194</label>
+            <label index="sys_note.category.I.1" type="integer">77383910</label>
+            <label index="sys_note.category.I.2" type="integer">256667525</label>
+            <label index="sys_note.category.I.3" type="integer">70127075</label>
+            <label index="sys_note.category.I.4" type="integer">41469073</label>
+            <label index="sys_note.subject" type="integer">75107304</label>
+            <label index="sys_note.message" type="integer">155215423</label>
+            <label index="sys_note.personal" type="integer">77420418</label>
+        </languageKey>
+        <languageKey index="si" type="array">
+            <label index="sys_note" type="integer">8799194</label>
+            <label index="sys_note.category.I.1" type="integer">77383910</label>
+            <label index="sys_note.category.I.2" type="integer">256667525</label>
+            <label index="sys_note.category.I.3" type="integer">70127075</label>
+            <label index="sys_note.category.I.4" type="integer">41469073</label>
+            <label index="sys_note.subject" type="integer">75107304</label>
+            <label index="sys_note.message" type="integer">155215423</label>
+            <label index="sys_note.personal" type="integer">77420418</label>
+        </languageKey>
+        <languageKey index="fi" type="array">
+            <label index="sys_note" type="integer">8799194</label>
+            <label index="sys_note.category.I.1" type="integer">77383910</label>
+            <label index="sys_note.category.I.2" type="integer">256667525</label>
+            <label index="sys_note.category.I.3" type="integer">70127075</label>
+            <label index="sys_note.category.I.4" type="integer">41469073</label>
+            <label index="sys_note.subject" type="integer">75107304</label>
+            <label index="sys_note.message" type="integer">155215423</label>
+            <label index="sys_note.personal" type="integer">77420418</label>
+        </languageKey>
+        <languageKey index="tr" type="array">
+            <label index="sys_note" type="integer">8799194</label>
+            <label index="sys_note.category.I.1" type="integer">77383910</label>
+            <label index="sys_note.category.I.2" type="integer">256667525</label>
+            <label index="sys_note.category.I.3" type="integer">70127075</label>
+            <label index="sys_note.category.I.4" type="integer">41469073</label>
+            <label index="sys_note.subject" type="integer">75107304</label>
+            <label index="sys_note.message" type="integer">155215423</label>
+            <label index="sys_note.personal" type="integer">77420418</label>
+        </languageKey>
+        <languageKey index="se" type="array">
+            <label index="sys_note" type="integer">8799194</label>
+            <label index="sys_note.category.I.1" type="integer">77383910</label>
+            <label index="sys_note.category.I.2" type="integer">256667525</label>
+            <label index="sys_note.category.I.3" type="integer">70127075</label>
+            <label index="sys_note.category.I.4" type="integer">41469073</label>
+            <label index="sys_note.subject" type="integer">75107304</label>
+            <label index="sys_note.message" type="integer">155215423</label>
+            <label index="sys_note.personal" type="integer">77420418</label>
+        </languageKey>
+        <languageKey index="pt" type="array">
+            <label index="sys_note" type="integer">8799194</label>
+            <label index="sys_note.category.I.1" type="integer">77383910</label>
+            <label index="sys_note.category.I.2" type="integer">256667525</label>
+            <label index="sys_note.category.I.3" type="integer">70127075</label>
+            <label index="sys_note.category.I.4" type="integer">41469073</label>
+            <label index="sys_note.subject" type="integer">75107304</label>
+            <label index="sys_note.message" type="integer">155215423</label>
+            <label index="sys_note.personal" type="integer">77420418</label>
+        </languageKey>
+        <languageKey index="ru" type="array">
+            <label index="sys_note" type="integer">8799194</label>
+            <label index="sys_note.category.I.1" type="integer">77383910</label>
+            <label index="sys_note.category.I.2" type="integer">256667525</label>
+            <label index="sys_note.category.I.3" type="integer">70127075</label>
+            <label index="sys_note.category.I.4" type="integer">41469073</label>
+            <label index="sys_note.subject" type="integer">75107304</label>
+            <label index="sys_note.message" type="integer">155215423</label>
+            <label index="sys_note.personal" type="integer">77420418</label>
+        </languageKey>
+        <languageKey index="ro" type="array">
+            <label index="sys_note" type="integer">8799194</label>
+            <label index="sys_note.category.I.1" type="integer">77383910</label>
+            <label index="sys_note.category.I.2" type="integer">256667525</label>
+            <label index="sys_note.category.I.3" type="integer">70127075</label>
+            <label index="sys_note.category.I.4" type="integer">41469073</label>
+            <label index="sys_note.subject" type="integer">75107304</label>
+            <label index="sys_note.message" type="integer">155215423</label>
+            <label index="sys_note.personal" type="integer">77420418</label>
+        </languageKey>
+        <languageKey index="ch" type="array">
+        </languageKey>
+        <languageKey index="sk" type="array">
+            <label index="sys_note" type="integer">8799194</label>
+            <label index="sys_note.category.I.1" type="integer">77383910</label>
+            <label index="sys_note.category.I.2" type="integer">256667525</label>
+            <label index="sys_note.category.I.3" type="integer">70127075</label>
+            <label index="sys_note.category.I.4" type="integer">41469073</label>
+            <label index="sys_note.subject" type="integer">75107304</label>
+            <label index="sys_note.message" type="integer">155215423</label>
+            <label index="sys_note.personal" type="integer">77420418</label>
+        </languageKey>
+        <languageKey index="lt" type="array">
+        </languageKey>
+        <languageKey index="is" type="array">
+        </languageKey>
+        <languageKey index="hr" type="array">
+            <label index="sys_note" type="integer">8799194</label>
+            <label index="sys_note.category.I.1" type="integer">77383910</label>
+            <label index="sys_note.category.I.2" type="integer">256667525</label>
+            <label index="sys_note.category.I.3" type="integer">70127075</label>
+            <label index="sys_note.category.I.4" type="integer">41469073</label>
+            <label index="sys_note.subject" type="integer">75107304</label>
+            <label index="sys_note.message" type="integer">155215423</label>
+            <label index="sys_note.personal" type="integer">77420418</label>
+        </languageKey>
+        <languageKey index="hu" type="array">
+            <label index="sys_note" type="integer">8799194</label>
+            <label index="sys_note.category.I.1" type="integer">77383910</label>
+            <label index="sys_note.category.I.2" type="integer">256667525</label>
+            <label index="sys_note.category.I.3" type="integer">70127075</label>
+            <label index="sys_note.category.I.4" type="integer">41469073</label>
+            <label index="sys_note.subject" type="integer">75107304</label>
+            <label index="sys_note.message" type="integer">155215423</label>
+            <label index="sys_note.personal" type="integer">77420418</label>
+        </languageKey>
+        <languageKey index="gl" type="array">
+        </languageKey>
+        <languageKey index="th" type="array">
+        </languageKey>
+        <languageKey index="gr" type="array">
+        </languageKey>
+        <languageKey index="hk" type="array">
+            <label index="sys_note" type="integer">8799194</label>
+            <label index="sys_note.category.I.1" type="integer">77383910</label>
+            <label index="sys_note.category.I.2" type="integer">256667525</label>
+            <label index="sys_note.category.I.3" type="integer">70127075</label>
+            <label index="sys_note.category.I.4" type="integer">41469073</label>
+            <label index="sys_note.subject" type="integer">75107304</label>
+            <label index="sys_note.message" type="integer">155215423</label>
+            <label index="sys_note.personal" type="integer">77420418</label>
+        </languageKey>
+        <languageKey index="eu" type="array">
+        </languageKey>
+        <languageKey index="bg" type="array">
+            <label index="sys_note" type="integer">8799194</label>
+            <label index="sys_note.category.I.1" type="integer">77383910</label>
+            <label index="sys_note.category.I.2" type="integer">256667525</label>
+            <label index="sys_note.category.I.3" type="integer">70127075</label>
+            <label index="sys_note.category.I.4" type="integer">41469073</label>
+            <label index="sys_note.subject" type="integer">75107304</label>
+            <label index="sys_note.message" type="integer">155215423</label>
+            <label index="sys_note.personal" type="integer">77420418</label>
+        </languageKey>
+        <languageKey index="br" type="array">
+            <label index="sys_note" type="integer">8799194</label>
+            <label index="sys_note.category.I.1" type="integer">77383910</label>
+            <label index="sys_note.category.I.2" type="integer">256667525</label>
+            <label index="sys_note.category.I.3" type="integer">70127075</label>
+            <label index="sys_note.category.I.4" type="integer">41469073</label>
+            <label index="sys_note.subject" type="integer">75107304</label>
+            <label index="sys_note.message" type="integer">155215423</label>
+            <label index="sys_note.personal" type="integer">77420418</label>
+        </languageKey>
+        <languageKey index="et" type="array">
+            <label index="sys_note" type="integer">8799194</label>
+            <label index="sys_note.category.I.1" type="integer">77383910</label>
+            <label index="sys_note.category.I.2" type="integer">256667525</label>
+            <label index="sys_note.category.I.3" type="integer">70127075</label>
+            <label index="sys_note.category.I.4" type="integer">41469073</label>
+            <label index="sys_note.subject" type="integer">75107304</label>
+            <label index="sys_note.message" type="integer">155215423</label>
+            <label index="sys_note.personal" type="integer">77420418</label>
+        </languageKey>
+        <languageKey index="ar" type="array">
+        </languageKey>
+        <languageKey index="he" type="array">
+        </languageKey>
+        <languageKey index="ua" type="array">
+        </languageKey>
+        <languageKey index="lv" type="array">
+        </languageKey>
+        <languageKey index="jp" type="array">
+        </languageKey>
+        <languageKey index="vn" type="array">
+        </languageKey>
+        <languageKey index="ca" type="array">
+        </languageKey>
+        <languageKey index="ba" type="array">
+        </languageKey>
+        <languageKey index="kr" type="array">
+        </languageKey>
+    </orig_hash>
+    <orig_text type="array">
+        <languageKey index="default" type="array">
+        </languageKey>
+        <languageKey index="dk" type="array">
+        </languageKey>
+        <languageKey index="de" type="array">
+        </languageKey>
+        <languageKey index="no" type="array">
+        </languageKey>
+        <languageKey index="it" type="array">
+        </languageKey>
+        <languageKey index="fr" type="array">
+        </languageKey>
+        <languageKey index="es" type="array">
+        </languageKey>
+        <languageKey index="nl" type="array">
+        </languageKey>
+        <languageKey index="cz" type="array">
+        </languageKey>
+        <languageKey index="pl" type="array">
+        </languageKey>
+        <languageKey index="si" type="array">
+        </languageKey>
+        <languageKey index="fi" type="array">
+        </languageKey>
+        <languageKey index="tr" type="array">
+        </languageKey>
+        <languageKey index="se" type="array">
+        </languageKey>
+        <languageKey index="pt" type="array">
+        </languageKey>
+        <languageKey index="ru" type="array">
+        </languageKey>
+        <languageKey index="ro" type="array">
+        </languageKey>
+        <languageKey index="ch" type="array">
+        </languageKey>
+        <languageKey index="sk" type="array">
+        </languageKey>
+        <languageKey index="lt" type="array">
+        </languageKey>
+        <languageKey index="is" type="array">
+        </languageKey>
+        <languageKey index="hr" type="array">
+        </languageKey>
+        <languageKey index="hu" type="array">
+        </languageKey>
+        <languageKey index="gl" type="array">
+        </languageKey>
+        <languageKey index="th" type="array">
+        </languageKey>
+        <languageKey index="gr" type="array">
+        </languageKey>
+        <languageKey index="hk" type="array">
+        </languageKey>
+        <languageKey index="eu" type="array">
+        </languageKey>
+        <languageKey index="bg" type="array">
+        </languageKey>
+        <languageKey index="br" type="array">
+        </languageKey>
+        <languageKey index="et" type="array">
+        </languageKey>
+        <languageKey index="ar" type="array">
+        </languageKey>
+        <languageKey index="he" type="array">
+        </languageKey>
+        <languageKey index="ua" type="array">
+        </languageKey>
+        <languageKey index="lv" type="array">
+        </languageKey>
+        <languageKey index="jp" type="array">
+        </languageKey>
+        <languageKey index="vn" type="array">
+        </languageKey>
+        <languageKey index="ca" type="array">
+        </languageKey>
+        <languageKey index="ba" type="array">
+        </languageKey>
+        <languageKey index="kr" type="array">
+        </languageKey>
+    </orig_text>
+</T3locallang>

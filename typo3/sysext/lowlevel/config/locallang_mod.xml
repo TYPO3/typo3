@@ -1,0 +1,386 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+    <meta type="array">
+        <description>Module labels</description>
+        <type>module</type>
+        <csh_table></csh_table>
+        <fileId>EXT:lowlevel/config/locallang_mod.xml</fileId>
+        <labelContext type="array">
+            <label index="mlang_labels_tablabel"></label>
+            <label index="mlang_labels_tabdescr"></label>
+            <label index="mlang_tabs_tab"></label>
+        </labelContext>
+    </meta>
+    <data type="array">
+        <languageKey index="default" type="array">
+            <label index="mlang_labels_tablabel">View configuration from localconf.php and tables.php</label>
+            <label index="mlang_labels_tabdescr">Allows you to browse the values of the $TCA array (table configuration) and $TYPO3_CONF_VARS. You cannot set any values, only browse them.&lt;br /&gt;&lt;em&gt;Access for 'admin' users only!&lt;/em&gt;</label>
+            <label index="mlang_tabs_tab">Configuration</label>
+        </languageKey>
+        <languageKey index="dk" type="array">
+            <label index="mlang_labels_tablabel">Se konfigurationen i localconf.php og tables.php</label>
+            <label index="mlang_labels_tabdescr">Lader dig gennemse værdierne i $TCA array'et (tabel konfiguration) samt $TYPO3_CONF_VARS. Du kan ikke ændre nogen værdier, kun se dem.&lt;br /&gt;&lt;em&gt;Adgang kun for 'admin' brugere!&lt;/em&gt;</label>
+            <label index="mlang_tabs_tab">Konfiguration</label>
+        </languageKey>
+        <languageKey index="de" type="array">
+            <label index="mlang_labels_tablabel">Zeige die Konfiguration von localconf.php und tables.php an</label>
+            <label index="mlang_labels_tabdescr">Hier können Sie durch die Werte die Felder $TCA (Tabellenkonfoguration) und $TYPO3_CONF_VARS navigieren. Sie haben allerdings nur einen lesenden Zugriff auf die einzelnen Werte.&lt;br /&gt;&lt;em&gt;Zugriff nur für Administratoren!&lt;/em&gt;</label>
+            <label index="mlang_tabs_tab">Konfiguration</label>
+        </languageKey>
+        <languageKey index="no" type="array">
+            <label index="mlang_labels_tablabel">Se konfigurasjonen i localconf.php og tables.php</label>
+            <label index="mlang_labels_tabdescr">Lar deg se gjennom verdiene i $TCA array'en (tabell konfigurasjon) samt $TYPO3_CONF_VARS. Du kan ikke endre noen verdier, kun se dem.&lt;br /&gt;&lt;em&gt;Adgang kun for 'admin' brukere!&lt;/em&gt;</label>
+            <label index="mlang_tabs_tab">Konfigurasjon</label>
+        </languageKey>
+        <languageKey index="it" type="array">
+            <label index="mlang_labels_tablabel">Configurazione localconf.php e tables.php</label>
+            <label index="mlang_labels_tabdescr">Consente di sfogliare i valori dell'array $TCA (configurazione delle tabelle) e di $TYPO3_CONF_VARS. Non potete impostare alcun valore, ma solo leggerli.&lt;br /&gt;&lt;em&gt;Accesso riservato ai soli utenti 'admin'!&lt;/em&gt;</label>
+            <label index="mlang_tabs_tab">Configurazione</label>
+        </languageKey>
+        <languageKey index="fr" type="array">
+            <label index="mlang_labels_tablabel">Voir la configuration depuis localconf.php et tables.php</label>
+            <label index="mlang_labels_tabdescr">Vous pouvez depuis ici naviguer dans les propriétés du tableau $TCA (Configuration des tables) et $TYPO3_CONF_VARS. Vous ne pouvez pas modifer les valeurs, seulement les consulter.</label>
+            <label index="mlang_tabs_tab">Configuration</label>
+        </languageKey>
+        <languageKey index="es" type="array">
+            <label index="mlang_labels_tablabel">Ver configuración en localconf.php y tables.php</label>
+            <label index="mlang_labels_tabdescr">Permite el ver los valores del arreglo $TCA (configuración de las tablas) y $TYPO3_CONF_VARS. No puede modificar ningún valor, solamente ver.&lt;br /&gt;&lt;em&gt;¡Acceso solamente para usuarios 'administrador'!&lt;/em&gt;</label>
+            <label index="mlang_tabs_tab">Configuración</label>
+        </languageKey>
+        <languageKey index="nl" type="array">
+            <label index="mlang_labels_tablabel">Toon configuratie vanuit localconf.php en tables.php</label>
+            <label index="mlang_labels_tabdescr">Biedt je de mogelijkheid te bladeren door de waardes van de $TCA array (tabel configuratie) en $TYPO3_CONF_VARS. Je kan geen waardes instellen, alleen doorbladeren is mogelijk. &lt;br /&gt;&lt;em&gt;Alleen toegang voor 'admin' gebruikers!&lt;/em&gt;</label>
+            <label index="mlang_tabs_tab">Configuratie</label>
+        </languageKey>
+        <languageKey index="cz" type="array">
+            <label index="mlang_labels_tablabel">Zobrazit konfiguraci z localconf.php a tables.php</label>
+            <label index="mlang_labels_tabdescr">Umožňuje procházet hodnoty $TCA array (konfigurace tabulek) a $TYPO3_CONF_VARS. Nemůžete žádné hodnoty nastavovat, jen je procházet.&lt;br /&gt;&lt;em&gt;Přístup pouze pro 'admin' uživatele!&lt;/em&gt;</label>
+            <label index="mlang_tabs_tab">Konfigurace</label>
+        </languageKey>
+        <languageKey index="pl" type="array">
+            <label index="mlang_labels_tablabel">Zobacz konfigurację z localconf.php i tables.php</label>
+            <label index="mlang_labels_tabdescr">Umożliwia przeglądanie wartości z tablicy $TCA (tablicy konfiguracyjnej) oraz $TYPO3_CONF_VARS. Nie można zmieniać tych wartości a jedynie przeglądać. &lt;br /&gt;&lt;em&gt;Dostęp tylko dla administratorów!&lt;em&gt;</label>
+            <label index="mlang_tabs_tab">Konfiguracja</label>
+        </languageKey>
+        <languageKey index="si" type="array">
+            <label index="mlang_labels_tablabel">Preglej nastavitve v datotekah localconf.php in tables.php</label>
+            <label index="mlang_labels_tabdescr">Omogoča pregled vrste spremenljivk $TCA (konfiguracija tabel) in $TYPO3_CONF_VARS. Vrednosti spremenljivk ne morete spreminjati, lahko jih le preglejujete.&lt;BR&gt;&lt;em&gt;Uporaba je dovoljena le 'admin' uporabnikom!&lt;/em&gt;</label>
+            <label index="mlang_tabs_tab">Nastavitve</label>
+        </languageKey>
+        <languageKey index="fi" type="array">
+            <label index="mlang_labels_tablabel">Katsele localconf.php ja tables.php määrityksiä</label>
+            <label index="mlang_labels_tabdescr">Täällä voit selailla $TCA arvoja (taulujen määritykset) ja $TYPO3_CONF_VARS arvoja. Et voi asettaa mitään arvoja ainoastaan selailla.&lt;br /&gt;&lt;em&gt;Sallittu vain 'Admin' käyttäjille!&lt;/em&gt;</label>
+            <label index="mlang_tabs_tab">Asetukset</label>
+        </languageKey>
+        <languageKey index="tr" type="array">
+            <label index="mlang_labels_tablabel">Localconf.php ve tables.php den konfigürasyonun görüntülenmesi</label>
+            <label index="mlang_labels_tabdescr">$TCA düzenindeki (tablo konfigürasyonu) değerlerde gezinmenize izin verir ve $TYPO3_CONF_VARS. Bazi değerleri kuramazsınız, sadece gözatmak için.&lt;br /&gt;&lt;em&gt;Sadece kullanıcıların 'yönetim' için geçişi!&lt;/em&gt;</label>
+            <label index="mlang_tabs_tab">Konfigurasyon</label>
+        </languageKey>
+        <languageKey index="se" type="array">
+            <label index="mlang_labels_tablabel">Visa konfigurationer gjorda i localconf.php och tables.php</label>
+            <label index="mlang_labels_tabdescr">Ger dej en möjlighet att visa värdena i $TCA -strängen (tabellkonfiguration) och $TYPO3_CONF_VARS. Du tillåts inte ändra på värdena,  endast visa dem.&lt;br /&gt;&lt;em&gt;Tillåtet endast för  'admin'-användare!&lt;/em&gt;</label>
+            <label index="mlang_tabs_tab">Konfiguration</label>
+        </languageKey>
+        <languageKey index="pt" type="array">
+            <label index="mlang_labels_tablabel">Vêr configuração a partir de localconf.php e tables.php</label>
+            <label index="mlang_labels_tabdescr">Permite-lhe navegar pelos valores do array $TCA (tabela de configuração) e $TYPO3_CONF_VARS. Não pode definir nenhum valor, somente visualizá-los.&lt;br /&gt;&lt;em&gt;Acesso só para utilizadores 'admin'!&lt;/em&gt;</label>
+            <label index="mlang_tabs_tab">Configuração</label>
+        </languageKey>
+        <languageKey index="ru" type="array">
+            <label index="mlang_labels_tablabel">Просмотр конфигурации файлов localconf.php и tables.php</label>
+            <label index="mlang_labels_tabdescr">Позволяет просмотр значений массивов $TCA (конфигурация таблиц) и $TYPO3_CONF_VARS. Изменение значений здесь невозможно, только просмотр.&lt;BR&gt;&lt;em&gt;Доступ только для администраторов!&lt;/em&gt;</label>
+            <label index="mlang_tabs_tab">Конфигурация</label>
+        </languageKey>
+        <languageKey index="ro" type="array">
+            <label index="mlang_labels_tablabel">Vezi configuraţia din fişierul localconf.php şi tables.php</label>
+            <label index="mlang_labels_tabdescr">Îţi permite să răsfoieşti valorile din şirul $TCA (tabel de configurare) şi $TZPO3_CONF_VARS. Nu puteţi modifica valorile, doar le puteţi verifica. &lt;br /&gt;&lt;em&gt;Accesul permis doar utilizatorilor administratori!&lt;/em&gt;</label>
+            <label index="mlang_tabs_tab">Configurare</label>
+        </languageKey>
+        <languageKey index="ch" type="array">
+        </languageKey>
+        <languageKey index="sk" type="array">
+            <label index="mlang_labels_tablabel">Zobraziť konfiguráciu z localconf.php tables.php</label>
+            <label index="mlang_labels_tabdescr">Umožnuje prechádzať hodnotami $TCA  array (konfiguráciu tabuliek) a $TYPO3_CONF_VARS. Nemôžeš hodnoty nastavovať , len ich prechádzať. .&lt;BR&gt;&lt;em&gt;Prístup len pre 'admin' užívateľa !&lt;/em&gt;</label>
+            <label index="mlang_tabs_tab">Konfigurácia</label>
+        </languageKey>
+        <languageKey index="lt" type="array">
+        </languageKey>
+        <languageKey index="is" type="array">
+        </languageKey>
+        <languageKey index="hr" type="array">
+            <label index="mlang_labels_tablabel">Pregledaj konfiguraciju iz localconf.php i tables.php</label>
+            <label index="mlang_labels_tabdescr">Omogućava pregledavanje vrijednosti $TCA niza (konfiguracija tablice) te $TYPO3_CONF_VARS. Omogućen je samo pregled vrijednosti, ne i njihova promjena.&lt;BR&gt;&lt;em&gt;Pristup samo za 'admin' korisnike!&lt;/em&gt;</label>
+            <label index="mlang_tabs_tab">Konfiguracija</label>
+        </languageKey>
+        <languageKey index="hu" type="array">
+            <label index="mlang_labels_tablabel">Beállítások megjelenítése a localconf.php és a tables.php alapján</label>
+            <label index="mlang_labels_tabdescr">Lehetővé teszi a $TCA tömb (tábla beállítások) és a $TYPO3_CONF_VARS böngészését. Az értékeken nem tudsz változtatni, csak megnézni azokat.&lt;br /&gt;&lt;em&gt;Csak 'admin' felhasználóknak!&lt;/em&gt;</label>
+            <label index="mlang_tabs_tab">Beállítások</label>
+        </languageKey>
+        <languageKey index="gl" type="array">
+        </languageKey>
+        <languageKey index="th" type="array">
+        </languageKey>
+        <languageKey index="gr" type="array">
+        </languageKey>
+        <languageKey index="hk" type="array">
+        </languageKey>
+        <languageKey index="eu" type="array">
+        </languageKey>
+        <languageKey index="bg" type="array">
+        </languageKey>
+        <languageKey index="br" type="array">
+            <label index="mlang_labels_tablabel">Ver configuração a partir de localconf.php e tables.php</label>
+            <label index="mlang_labels_tabdescr">Permite-lhe navegar pelos valores do array $TCA (configuração de tabela) e $TYPO3_CONF_VARS. Você não pode definir nenhum valor, somente visualizá-los.&lt;br /&gt;&lt;em&gt;Acesso só para usuários 'admin'!&lt;/em&gt;</label>
+            <label index="mlang_tabs_tab">Configuração</label>
+        </languageKey>
+        <languageKey index="et" type="array">
+        </languageKey>
+        <languageKey index="ar" type="array">
+        </languageKey>
+        <languageKey index="he" type="array">
+        </languageKey>
+        <languageKey index="ua" type="array">
+        </languageKey>
+        <languageKey index="lv" type="array">
+        </languageKey>
+        <languageKey index="jp" type="array">
+        </languageKey>
+        <languageKey index="vn" type="array">
+        </languageKey>
+        <languageKey index="ca" type="array">
+        </languageKey>
+        <languageKey index="ba" type="array">
+        </languageKey>
+        <languageKey index="kr" type="array">
+        </languageKey>
+    </data>
+    <orig_hash type="array">
+        <languageKey index="default" type="array">
+            <label index="mlang_labels_tablabel" type="integer">205342864</label>
+            <label index="mlang_labels_tabdescr" type="integer">172430134</label>
+            <label index="mlang_tabs_tab" type="integer">39122498</label>
+        </languageKey>
+        <languageKey index="dk" type="array">
+            <label index="mlang_labels_tablabel" type="integer">205342864</label>
+            <label index="mlang_labels_tabdescr" type="integer">172430134</label>
+            <label index="mlang_tabs_tab" type="integer">39122498</label>
+        </languageKey>
+        <languageKey index="de" type="array">
+            <label index="mlang_labels_tablabel" type="integer">205342864</label>
+            <label index="mlang_labels_tabdescr" type="integer">172430134</label>
+            <label index="mlang_tabs_tab" type="integer">39122498</label>
+        </languageKey>
+        <languageKey index="no" type="array">
+            <label index="mlang_labels_tablabel" type="integer">205342864</label>
+            <label index="mlang_labels_tabdescr" type="integer">172430134</label>
+            <label index="mlang_tabs_tab" type="integer">39122498</label>
+        </languageKey>
+        <languageKey index="it" type="array">
+            <label index="mlang_labels_tablabel" type="integer">205342864</label>
+            <label index="mlang_labels_tabdescr" type="integer">172430134</label>
+            <label index="mlang_tabs_tab" type="integer">39122498</label>
+        </languageKey>
+        <languageKey index="fr" type="array">
+            <label index="mlang_labels_tablabel" type="integer">205342864</label>
+            <label index="mlang_labels_tabdescr" type="integer">172430134</label>
+            <label index="mlang_tabs_tab" type="integer">39122498</label>
+        </languageKey>
+        <languageKey index="es" type="array">
+            <label index="mlang_labels_tablabel" type="integer">205342864</label>
+            <label index="mlang_labels_tabdescr" type="integer">172430134</label>
+            <label index="mlang_tabs_tab" type="integer">39122498</label>
+        </languageKey>
+        <languageKey index="nl" type="array">
+            <label index="mlang_labels_tablabel" type="integer">205342864</label>
+            <label index="mlang_labels_tabdescr" type="integer">172430134</label>
+            <label index="mlang_tabs_tab" type="integer">39122498</label>
+        </languageKey>
+        <languageKey index="cz" type="array">
+            <label index="mlang_labels_tablabel" type="integer">205342864</label>
+            <label index="mlang_labels_tabdescr" type="integer">172430134</label>
+            <label index="mlang_tabs_tab" type="integer">39122498</label>
+        </languageKey>
+        <languageKey index="pl" type="array">
+            <label index="mlang_labels_tablabel" type="integer">205342864</label>
+            <label index="mlang_labels_tabdescr" type="integer">172430134</label>
+            <label index="mlang_tabs_tab" type="integer">39122498</label>
+        </languageKey>
+        <languageKey index="si" type="array">
+            <label index="mlang_labels_tablabel" type="integer">205342864</label>
+            <label index="mlang_labels_tabdescr" type="integer">172430134</label>
+            <label index="mlang_tabs_tab" type="integer">39122498</label>
+        </languageKey>
+        <languageKey index="fi" type="array">
+            <label index="mlang_labels_tablabel" type="integer">205342864</label>
+            <label index="mlang_labels_tabdescr" type="integer">172430134</label>
+            <label index="mlang_tabs_tab" type="integer">39122498</label>
+        </languageKey>
+        <languageKey index="tr" type="array">
+            <label index="mlang_labels_tablabel" type="integer">205342864</label>
+            <label index="mlang_labels_tabdescr" type="integer">172430134</label>
+            <label index="mlang_tabs_tab" type="integer">39122498</label>
+        </languageKey>
+        <languageKey index="se" type="array">
+            <label index="mlang_labels_tablabel" type="integer">205342864</label>
+            <label index="mlang_labels_tabdescr" type="integer">172430134</label>
+            <label index="mlang_tabs_tab" type="integer">39122498</label>
+        </languageKey>
+        <languageKey index="pt" type="array">
+            <label index="mlang_labels_tablabel" type="integer">205342864</label>
+            <label index="mlang_labels_tabdescr" type="integer">172430134</label>
+            <label index="mlang_tabs_tab" type="integer">39122498</label>
+        </languageKey>
+        <languageKey index="ru" type="array">
+            <label index="mlang_labels_tablabel" type="integer">205342864</label>
+            <label index="mlang_labels_tabdescr" type="integer">172430134</label>
+            <label index="mlang_tabs_tab" type="integer">39122498</label>
+        </languageKey>
+        <languageKey index="ro" type="array">
+            <label index="mlang_labels_tablabel" type="integer">205342864</label>
+            <label index="mlang_labels_tabdescr" type="integer">172430134</label>
+            <label index="mlang_tabs_tab" type="integer">39122498</label>
+        </languageKey>
+        <languageKey index="ch" type="array">
+        </languageKey>
+        <languageKey index="sk" type="array">
+            <label index="mlang_labels_tablabel" type="integer">205342864</label>
+            <label index="mlang_labels_tabdescr" type="integer">172430134</label>
+            <label index="mlang_tabs_tab" type="integer">39122498</label>
+        </languageKey>
+        <languageKey index="lt" type="array">
+        </languageKey>
+        <languageKey index="is" type="array">
+        </languageKey>
+        <languageKey index="hr" type="array">
+            <label index="mlang_labels_tablabel" type="integer">205342864</label>
+            <label index="mlang_labels_tabdescr" type="integer">172430134</label>
+            <label index="mlang_tabs_tab" type="integer">39122498</label>
+        </languageKey>
+        <languageKey index="hu" type="array">
+            <label index="mlang_labels_tablabel" type="integer">205342864</label>
+            <label index="mlang_labels_tabdescr" type="integer">172430134</label>
+            <label index="mlang_tabs_tab" type="integer">39122498</label>
+        </languageKey>
+        <languageKey index="gl" type="array">
+        </languageKey>
+        <languageKey index="th" type="array">
+        </languageKey>
+        <languageKey index="gr" type="array">
+        </languageKey>
+        <languageKey index="hk" type="array">
+        </languageKey>
+        <languageKey index="eu" type="array">
+        </languageKey>
+        <languageKey index="bg" type="array">
+        </languageKey>
+        <languageKey index="br" type="array">
+            <label index="mlang_labels_tablabel" type="integer">205342864</label>
+            <label index="mlang_labels_tabdescr" type="integer">172430134</label>
+            <label index="mlang_tabs_tab" type="integer">39122498</label>
+        </languageKey>
+        <languageKey index="et" type="array">
+        </languageKey>
+        <languageKey index="ar" type="array">
+        </languageKey>
+        <languageKey index="he" type="array">
+        </languageKey>
+        <languageKey index="ua" type="array">
+        </languageKey>
+        <languageKey index="lv" type="array">
+        </languageKey>
+        <languageKey index="jp" type="array">
+        </languageKey>
+        <languageKey index="vn" type="array">
+        </languageKey>
+        <languageKey index="ca" type="array">
+        </languageKey>
+        <languageKey index="ba" type="array">
+        </languageKey>
+        <languageKey index="kr" type="array">
+        </languageKey>
+    </orig_hash>
+    <orig_text type="array">
+        <languageKey index="default" type="array">
+        </languageKey>
+        <languageKey index="dk" type="array">
+        </languageKey>
+        <languageKey index="de" type="array">
+        </languageKey>
+        <languageKey index="no" type="array">
+        </languageKey>
+        <languageKey index="it" type="array">
+        </languageKey>
+        <languageKey index="fr" type="array">
+        </languageKey>
+        <languageKey index="es" type="array">
+        </languageKey>
+        <languageKey index="nl" type="array">
+        </languageKey>
+        <languageKey index="cz" type="array">
+        </languageKey>
+        <languageKey index="pl" type="array">
+        </languageKey>
+        <languageKey index="si" type="array">
+        </languageKey>
+        <languageKey index="fi" type="array">
+        </languageKey>
+        <languageKey index="tr" type="array">
+        </languageKey>
+        <languageKey index="se" type="array">
+        </languageKey>
+        <languageKey index="pt" type="array">
+        </languageKey>
+        <languageKey index="ru" type="array">
+        </languageKey>
+        <languageKey index="ro" type="array">
+        </languageKey>
+        <languageKey index="ch" type="array">
+        </languageKey>
+        <languageKey index="sk" type="array">
+        </languageKey>
+        <languageKey index="lt" type="array">
+        </languageKey>
+        <languageKey index="is" type="array">
+        </languageKey>
+        <languageKey index="hr" type="array">
+        </languageKey>
+        <languageKey index="hu" type="array">
+        </languageKey>
+        <languageKey index="gl" type="array">
+        </languageKey>
+        <languageKey index="th" type="array">
+        </languageKey>
+        <languageKey index="gr" type="array">
+        </languageKey>
+        <languageKey index="hk" type="array">
+        </languageKey>
+        <languageKey index="eu" type="array">
+        </languageKey>
+        <languageKey index="bg" type="array">
+        </languageKey>
+        <languageKey index="br" type="array">
+        </languageKey>
+        <languageKey index="et" type="array">
+        </languageKey>
+        <languageKey index="ar" type="array">
+        </languageKey>
+        <languageKey index="he" type="array">
+        </languageKey>
+        <languageKey index="ua" type="array">
+        </languageKey>
+        <languageKey index="lv" type="array">
+        </languageKey>
+        <languageKey index="jp" type="array">
+        </languageKey>
+        <languageKey index="vn" type="array">
+        </languageKey>
+        <languageKey index="ca" type="array">
+        </languageKey>
+        <languageKey index="ba" type="array">
+        </languageKey>
+        <languageKey index="kr" type="array">
+        </languageKey>
+    </orig_text>
+</T3locallang>

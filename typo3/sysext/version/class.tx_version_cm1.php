@@ -77,8 +77,9 @@ class tx_version_cm1 {
 	 * Includes the [extDir]/locallang.php and returns the $LOCAL_LANG array found in that file.
 	 */
 	function includeLL()	{
-		include(t3lib_extMgm::extPath("version")."locallang.php");
-		return $LOCAL_LANG;
+		global $LANG;
+
+		return $LANG->includeLLFile('EXT:version/locallang.php',FALSE);
 	}
 }
 

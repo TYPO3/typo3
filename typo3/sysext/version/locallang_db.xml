@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+    <meta type="array">
+        <description>Module labels</description>
+        <type>module</type>
+        <csh_table></csh_table>
+        <fileId>EXT:version/locallang_db.xml</fileId>
+        <labelContext type="array">
+            <label index="moduleFunction.tx_version_modfunc1"></label>
+        </labelContext>
+    </meta>
+    <data type="array">
+        <languageKey index="default" type="array">
+            <label index="moduleFunction.tx_version_modfunc1">Versioning</label>
+        </languageKey>
+    </data>
+    <orig_hash type="array">
+        <languageKey index="default" type="array">
+            <label index="moduleFunction.tx_version_modfunc1" type="integer">26780425</label>
+        </languageKey>
+    </orig_hash>
+    <orig_text type="array">
+        <languageKey index="default" type="array">
+        </languageKey>
+    </orig_text>
+</T3locallang>

@@ -81,7 +81,8 @@ class tx_belog_webinfo extends t3lib_extobjbase {
 	// MAIN function for log display
 	// ***********************************
 	function localLang()	{
-		include_once($this->thisPath."/mod/locallang.php");
+		$LOCAL_LANG = $GLOBALS['LANG']->includeLLFile('EXT:belog/mod/locallang.xml',FALSE);
+
 		$GLOBALS["LOCAL_LANG"]=t3lib_div::array_merge_recursive_overrule($GLOBALS["LOCAL_LANG"],$LOCAL_LANG);
 	}
 

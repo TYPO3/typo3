@@ -1,3 +1,7 @@
+2004-11-17  Kasper Skårhøj,,,  <kasper@typo3.com>
+
+	* Converted locallang*.php to locallang*.xml in new system extensions.
+
 2004-11-16  Ingmar Schlecht  <ingmar@typo3.org>
 
 	* Fixed bug #0000416: Removing spurious DEFAULT '0' in SQL create table statements of uid columns right before they're executed in t3lib_install.

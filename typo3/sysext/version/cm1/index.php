@@ -35,7 +35,6 @@ require ("conf.php");
 require ($BACK_PATH."init.php");
 require ($BACK_PATH."template.php");
 $LANG->includeLLFile("EXT:version/cm1/locallang.php");
-#include ("locallang.php");
 require_once (PATH_t3lib."class.t3lib_scbase.php");
 	// ....(But no access check here...)
 	// DEFAULT initialization of a module [END]

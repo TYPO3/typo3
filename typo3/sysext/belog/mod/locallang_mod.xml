@@ -1,0 +1,363 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+    <meta type="array">
+        <description>Module labels</description>
+        <type>module</type>
+        <csh_table></csh_table>
+        <fileId>EXT:belog/mod/locallang_mod.xml</fileId>
+    </meta>
+    <data type="array">
+        <languageKey index="default" type="array">
+            <label index="mlang_labels_tablabel">Viewing log</label>
+            <label index="mlang_labels_tabdescr">Allows you access to the full backend changelog in TYPO3.&lt;br /&gt;&lt;em&gt;Access for 'admin' users only!&lt;/em&gt;</label>
+            <label index="mlang_tabs_tab">Log</label>
+        </languageKey>
+        <languageKey index="dk" type="array">
+            <label index="mlang_labels_tablabel">Log-visning</label>
+            <label index="mlang_labels_tabdescr">Giver dig mulighed for at se den komplette opdateringslog i TYPO3.&lt;br /&gt;&lt;em&gt;Adgang kun for 'admin' brugere!&lt;/em&gt;</label>
+            <label index="mlang_tabs_tab">Log</label>
+        </languageKey>
+        <languageKey index="de" type="array">
+            <label index="mlang_labels_tablabel">Log-Ansicht</label>
+            <label index="mlang_labels_tabdescr">Gibt Ihnen Zugriff zu der kompletten TYPO3 Änderungsprotokollierung.&lt;br /&gt;&lt;em&gt;Zugriff nur durch Administratoren!&lt;/em&gt;</label>
+            <label index="mlang_tabs_tab">Log</label>
+        </languageKey>
+        <languageKey index="no" type="array">
+            <label index="mlang_labels_tablabel">Logg-visning</label>
+            <label index="mlang_labels_tabdescr">Gir deg mulighet til å se den komplette oppdateringsloggen i TYPO3.&lt;br /&gt;&lt;em&gt;Adgang kun for 'admin' brukere!&lt;/em&gt;</label>
+            <label index="mlang_tabs_tab">Logg</label>
+        </languageKey>
+        <languageKey index="it" type="array">
+            <label index="mlang_labels_tablabel">Mostra log</label>
+            <label index="mlang_labels_tabdescr">Accesso a tutto il log dei cambiamenti. &lt;br&gt;&lt;em&gt;Accesso riservato solo agli utenti di tipo 'admin'!&lt;/em&gt;</label>
+            <label index="mlang_tabs_tab">Log</label>
+        </languageKey>
+        <languageKey index="fr" type="array">
+            <label index="mlang_labels_tablabel">Visualisation du fichier journal</label>
+            <label index="mlang_labels_tabdescr">Vous pouvez accéder depuis ici à tous les fichiers journaux de TYPO3.&lt;br /&gt;&lt;em&gt;Accès pour l'Administrateur uniquement&lt;/em&gt;</label>
+            <label index="mlang_tabs_tab">Fichier journal</label>
+        </languageKey>
+        <languageKey index="es" type="array">
+            <label index="mlang_labels_tablabel">Bitácora de visitas</label>
+            <label index="mlang_labels_tabdescr">Permite acceder a la bitácora completa del backend de TYPO3.&lt;br /&gt;&lt;em&gt;¡Acceso solamente para 'administradores'!&lt;/em&gt;</label>
+            <label index="mlang_tabs_tab">Bitácora</label>
+        </languageKey>
+        <languageKey index="nl" type="array">
+            <label index="mlang_labels_tablabel">Toon log</label>
+            <label index="mlang_labels_tabdescr">Geeft je toegang tot het log van wijzigingen voor de BeheerSite van TYPO3.&lt;br /&gt;&lt;em&gt;Alleen toegang voor 'admin' gebruikers!&lt;/em&gt;</label>
+            <label index="mlang_tabs_tab">Log</label>
+        </languageKey>
+        <languageKey index="cz" type="array">
+            <label index="mlang_labels_tablabel">Ukázat log</label>
+            <label index="mlang_labels_tabdescr">Umožňuje přistoupit k záznamu změn v backendu v TYPO3.&lt;br /&gt;&lt;em&gt;Přístup pouze pro 'admin' uživatele!&lt;/em&gt;</label>
+            <label index="mlang_tabs_tab">Log</label>
+        </languageKey>
+        <languageKey index="pl" type="array">
+            <label index="mlang_labels_tablabel">Pokaż log</label>
+            <label index="mlang_labels_tabdescr">Dostęp do logu systemowego TYPO3.&lt;br /&gt;&lt;em&gt;Dostęp tylko dla administratorów!&lt;em&gt;</label>
+            <label index="mlang_tabs_tab">Log</label>
+        </languageKey>
+        <languageKey index="si" type="array">
+            <label index="mlang_labels_tablabel">Dnevnik ogledov</label>
+            <label index="mlang_labels_tabdescr">Dnevnik sprememb v Typo3 sistemu.&lt;BR&gt;&lt;em&gt;Uporaba dovoljena le 'admin' uporabnikom!&lt;/em&gt;</label>
+            <label index="mlang_tabs_tab">Dnevnik</label>
+        </languageKey>
+        <languageKey index="fi" type="array">
+            <label index="mlang_labels_tablabel">Katsele lokia</label>
+            <label index="mlang_labels_tabdescr">Täältä on mahdollisuus katsella TYPO3n backend lokia.&lt;br /&gt;&lt;em&gt;Pääsy vain 'Admin' käyttäjille !&lt;/em&gt;</label>
+            <label index="mlang_tabs_tab">Loki</label>
+        </languageKey>
+        <languageKey index="tr" type="array">
+            <label index="mlang_labels_tablabel">Log un gösterilmesi</label>
+            <label index="mlang_labels_tabdescr">TYPO3 içinde tüm arkaplan log değişikliklerinin erişimine izin verir.&lt;br /&gt;&lt;em&gt;Sadece kullanıcıların 'yönetim' için geçişi!&lt;/em&gt;</label>
+            <label index="mlang_tabs_tab">Log</label>
+        </languageKey>
+        <languageKey index="se" type="array">
+            <label index="mlang_labels_tablabel">Visa loggen</label>
+            <label index="mlang_labels_tabdescr">Ger möjlighet att nå hela TYPO3 -backendloggen.&lt;br /&gt;&lt;em&gt;Endast för 'admin'-användare!&lt;/em&gt;</label>
+            <label index="mlang_tabs_tab">Logg</label>
+        </languageKey>
+        <languageKey index="pt" type="array">
+            <label index="mlang_labels_tablabel">Visualizar diário</label>
+            <label index="mlang_labels_tabdescr">Permite acesso a todo o diário de modificações do TYPO3.&lt;br /&gt;Acesso só para utilizadores 'admin'!&lt;/em&gt;</label>
+            <label index="mlang_tabs_tab">Diário</label>
+        </languageKey>
+        <languageKey index="ru" type="array">
+        </languageKey>
+        <languageKey index="ro" type="array">
+        </languageKey>
+        <languageKey index="ch" type="array">
+        </languageKey>
+        <languageKey index="sk" type="array">
+        </languageKey>
+        <languageKey index="lt" type="array">
+        </languageKey>
+        <languageKey index="is" type="array">
+        </languageKey>
+        <languageKey index="hr" type="array">
+            <label index="mlang_labels_tablabel">Pregledavanje logova</label>
+            <label index="mlang_labels_tabdescr">Omogućava pristup backend logovima u Typo3 sustavu.&lt;BR /&gt;&lt;em&gt; Pristup samo za admin korisnike!&lt;/em&gt;</label>
+            <label index="mlang_tabs_tab">Log</label>
+        </languageKey>
+        <languageKey index="hu" type="array">
+            <label index="mlang_labels_tablabel">Napló megjelenítése</label>
+            <label index="mlang_labels_tabdescr">A Typo3 teljes backend változási naplójának elérése.&lt;BR&gt;&lt;em&gt;Csak 'admin' felhasználóknak!&lt;/em&gt;</label>
+            <label index="mlang_tabs_tab">Napló</label>
+        </languageKey>
+        <languageKey index="gl" type="array">
+        </languageKey>
+        <languageKey index="th" type="array">
+        </languageKey>
+        <languageKey index="gr" type="array">
+        </languageKey>
+        <languageKey index="hk" type="array">
+        </languageKey>
+        <languageKey index="eu" type="array">
+        </languageKey>
+        <languageKey index="bg" type="array">
+        </languageKey>
+        <languageKey index="br" type="array">
+            <label index="mlang_labels_tablabel">Visualizar log</label>
+            <label index="mlang_labels_tabdescr">Permite acesso a todo o log de modificações do Typo3.&lt;br&gt;Acesso só para usuários 'admin'!&lt;/em&gt;</label>
+            <label index="mlang_tabs_tab">Log</label>
+        </languageKey>
+        <languageKey index="et" type="array">
+        </languageKey>
+        <languageKey index="ar" type="array">
+        </languageKey>
+        <languageKey index="he" type="array">
+        </languageKey>
+        <languageKey index="ua" type="array">
+        </languageKey>
+        <languageKey index="lv" type="array">
+        </languageKey>
+        <languageKey index="jp" type="array">
+        </languageKey>
+        <languageKey index="vn" type="array">
+        </languageKey>
+        <languageKey index="ca" type="array">
+        </languageKey>
+        <languageKey index="ba" type="array">
+        </languageKey>
+        <languageKey index="kr" type="array">
+        </languageKey>
+    </data>
+    <orig_hash type="array">
+        <languageKey index="default" type="array">
+            <label index="mlang_labels_tablabel" type="integer">176857693</label>
+            <label index="mlang_labels_tabdescr" type="integer">137042454</label>
+            <label index="mlang_tabs_tab" type="integer">216055409</label>
+        </languageKey>
+        <languageKey index="dk" type="array">
+            <label index="mlang_labels_tablabel" type="integer">176857693</label>
+            <label index="mlang_labels_tabdescr" type="integer">137042454</label>
+            <label index="mlang_tabs_tab" type="integer">216055409</label>
+        </languageKey>
+        <languageKey index="de" type="array">
+            <label index="mlang_labels_tablabel" type="integer">176857693</label>
+            <label index="mlang_labels_tabdescr" type="integer">137042454</label>
+            <label index="mlang_tabs_tab" type="integer">216055409</label>
+        </languageKey>
+        <languageKey index="no" type="array">
+            <label index="mlang_labels_tablabel" type="integer">176857693</label>
+            <label index="mlang_labels_tabdescr" type="integer">137042454</label>
+            <label index="mlang_tabs_tab" type="integer">216055409</label>
+        </languageKey>
+        <languageKey index="it" type="array">
+            <label index="mlang_labels_tablabel" type="integer">176857693</label>
+            <label index="mlang_labels_tabdescr" type="integer">137042454</label>
+            <label index="mlang_tabs_tab" type="integer">216055409</label>
+        </languageKey>
+        <languageKey index="fr" type="array">
+            <label index="mlang_labels_tablabel" type="integer">176857693</label>
+            <label index="mlang_labels_tabdescr" type="integer">137042454</label>
+            <label index="mlang_tabs_tab" type="integer">216055409</label>
+        </languageKey>
+        <languageKey index="es" type="array">
+            <label index="mlang_labels_tablabel" type="integer">176857693</label>
+            <label index="mlang_labels_tabdescr" type="integer">137042454</label>
+            <label index="mlang_tabs_tab" type="integer">216055409</label>
+        </languageKey>
+        <languageKey index="nl" type="array">
+            <label index="mlang_labels_tablabel" type="integer">176857693</label>
+            <label index="mlang_labels_tabdescr" type="integer">137042454</label>
+            <label index="mlang_tabs_tab" type="integer">216055409</label>
+        </languageKey>
+        <languageKey index="cz" type="array">
+            <label index="mlang_labels_tablabel" type="integer">176857693</label>
+            <label index="mlang_labels_tabdescr" type="integer">137042454</label>
+            <label index="mlang_tabs_tab" type="integer">216055409</label>
+        </languageKey>
+        <languageKey index="pl" type="array">
+            <label index="mlang_labels_tablabel" type="integer">176857693</label>
+            <label index="mlang_labels_tabdescr" type="integer">137042454</label>
+            <label index="mlang_tabs_tab" type="integer">216055409</label>
+        </languageKey>
+        <languageKey index="si" type="array">
+            <label index="mlang_labels_tablabel" type="integer">176857693</label>
+            <label index="mlang_labels_tabdescr" type="integer">137042454</label>
+            <label index="mlang_tabs_tab" type="integer">216055409</label>
+        </languageKey>
+        <languageKey index="fi" type="array">
+            <label index="mlang_labels_tablabel" type="integer">176857693</label>
+            <label index="mlang_labels_tabdescr" type="integer">137042454</label>
+            <label index="mlang_tabs_tab" type="integer">216055409</label>
+        </languageKey>
+        <languageKey index="tr" type="array">
+            <label index="mlang_labels_tablabel" type="integer">176857693</label>
+            <label index="mlang_labels_tabdescr" type="integer">137042454</label>
+            <label index="mlang_tabs_tab" type="integer">216055409</label>
+        </languageKey>
+        <languageKey index="se" type="array">
+            <label index="mlang_labels_tablabel" type="integer">176857693</label>
+            <label index="mlang_labels_tabdescr" type="integer">137042454</label>
+            <label index="mlang_tabs_tab" type="integer">216055409</label>
+        </languageKey>
+        <languageKey index="pt" type="array">
+            <label index="mlang_labels_tablabel" type="integer">176857693</label>
+            <label index="mlang_labels_tabdescr" type="integer">137042454</label>
+            <label index="mlang_tabs_tab" type="integer">216055409</label>
+        </languageKey>
+        <languageKey index="ru" type="array">
+        </languageKey>
+        <languageKey index="ro" type="array">
+        </languageKey>
+        <languageKey index="ch" type="array">
+        </languageKey>
+        <languageKey index="sk" type="array">
+        </languageKey>
+        <languageKey index="lt" type="array">
+        </languageKey>
+        <languageKey index="is" type="array">
+        </languageKey>
+        <languageKey index="hr" type="array">
+            <label index="mlang_labels_tablabel" type="integer">176857693</label>
+            <label index="mlang_labels_tabdescr" type="integer">137042454</label>
+            <label index="mlang_tabs_tab" type="integer">216055409</label>
+        </languageKey>
+        <languageKey index="hu" type="array">
+            <label index="mlang_labels_tablabel" type="integer">176857693</label>
+            <label index="mlang_labels_tabdescr" type="integer">137042454</label>
+            <label index="mlang_tabs_tab" type="integer">216055409</label>
+        </languageKey>
+        <languageKey index="gl" type="array">
+        </languageKey>
+        <languageKey index="th" type="array">
+        </languageKey>
+        <languageKey index="gr" type="array">
+        </languageKey>
+        <languageKey index="hk" type="array">
+        </languageKey>
+        <languageKey index="eu" type="array">
+        </languageKey>
+        <languageKey index="bg" type="array">
+        </languageKey>
+        <languageKey index="br" type="array">
+            <label index="mlang_labels_tablabel" type="integer">176857693</label>
+            <label index="mlang_labels_tabdescr" type="integer">137042454</label>
+            <label index="mlang_tabs_tab" type="integer">216055409</label>
+        </languageKey>
+        <languageKey index="et" type="array">
+        </languageKey>
+        <languageKey index="ar" type="array">
+        </languageKey>
+        <languageKey index="he" type="array">
+        </languageKey>
+        <languageKey index="ua" type="array">
+        </languageKey>
+        <languageKey index="lv" type="array">
+        </languageKey>
+        <languageKey index="jp" type="array">
+        </languageKey>
+        <languageKey index="vn" type="array">
+        </languageKey>
+        <languageKey index="ca" type="array">
+        </languageKey>
+        <languageKey index="ba" type="array">
+        </languageKey>
+        <languageKey index="kr" type="array">
+        </languageKey>
+    </orig_hash>
+    <orig_text type="array">
+        <languageKey index="default" type="array">
+        </languageKey>
+        <languageKey index="dk" type="array">
+        </languageKey>
+        <languageKey index="de" type="array">
+        </languageKey>
+        <languageKey index="no" type="array">
+        </languageKey>
+        <languageKey index="it" type="array">
+        </languageKey>
+        <languageKey index="fr" type="array">
+        </languageKey>
+        <languageKey index="es" type="array">
+        </languageKey>
+        <languageKey index="nl" type="array">
+        </languageKey>
+        <languageKey index="cz" type="array">
+        </languageKey>
+        <languageKey index="pl" type="array">
+        </languageKey>
+        <languageKey index="si" type="array">
+        </languageKey>
+        <languageKey index="fi" type="array">
+        </languageKey>
+        <languageKey index="tr" type="array">
+        </languageKey>
+        <languageKey index="se" type="array">
+        </languageKey>
+        <languageKey index="pt" type="array">
+        </languageKey>
+        <languageKey index="ru" type="array">
+        </languageKey>
+        <languageKey index="ro" type="array">
+        </languageKey>
+        <languageKey index="ch" type="array">
+        </languageKey>
+        <languageKey index="sk" type="array">
+        </languageKey>
+        <languageKey index="lt" type="array">
+        </languageKey>
+        <languageKey index="is" type="array">
+        </languageKey>
+        <languageKey index="hr" type="array">
+        </languageKey>
+        <languageKey index="hu" type="array">
+        </languageKey>
+        <languageKey index="gl" type="array">
+        </languageKey>
+        <languageKey index="th" type="array">
+        </languageKey>
+        <languageKey index="gr" type="array">
+        </languageKey>
+        <languageKey index="hk" type="array">
+        </languageKey>
+        <languageKey index="eu" type="array">
+        </languageKey>
+        <languageKey index="bg" type="array">
+        </languageKey>
+        <languageKey index="br" type="array">
+        </languageKey>
+        <languageKey index="et" type="array">
+        </languageKey>
+        <languageKey index="ar" type="array">
+        </languageKey>
+        <languageKey index="he" type="array">
+        </languageKey>
+        <languageKey index="ua" type="array">
+        </languageKey>
+        <languageKey index="lv" type="array">
+        </languageKey>
+        <languageKey index="jp" type="array">
+        </languageKey>
+        <languageKey index="vn" type="array">
+        </languageKey>
+        <languageKey index="ca" type="array">
+        </languageKey>
+        <languageKey index="ba" type="array">
+        </languageKey>
+        <languageKey index="kr" type="array">
+        </languageKey>
+    </orig_text>
+</T3locallang>

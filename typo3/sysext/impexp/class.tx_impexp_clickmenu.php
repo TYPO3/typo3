@@ -1,22 +1,22 @@
 <?php
 /***************************************************************
 *  Copyright notice
-*  
+*
 *  (c) 1999-2004 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
-*  This script is part of the TYPO3 project. The TYPO3 project is 
+*  This script is part of the TYPO3 project. The TYPO3 project is
 *  free software; you can redistribute it and/or modify
 *  it under the terms of the GNU General Public License as published by
 *  the Free Software Foundation; either version 2 of the License, or
 *  (at your option) any later version.
-* 
+*
 *  The GNU General Public License can be found at
 *  http://www.gnu.org/copyleft/gpl.html.
-*  A copy is found in the textfile GPL.txt and important notices to the license 
+*  A copy is found in the textfile GPL.txt and important notices to the license
 *  from the author is found in LICENSE.txt distributed with these scripts.
 *
-* 
+*
 *  This script is distributed in the hope that it will be useful,
 *  but WITHOUT ANY WARRANTY; without even the implied warranty of
 *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -24,7 +24,7 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-/** 
+/**
  * Adding Import/Export clickmenu item
  *
  * Revised for TYPO3 3.6 December/2003 by Kasper Skaarhoj
@@ -37,15 +37,15 @@
  *
  *
  *
- *   64: class tx_impexp_clickmenu 
- *   73:     function main(&$backRef,$menuItems,$table,$uid)	
- *  115:     function includeLL()	
+ *   64: class tx_impexp_clickmenu
+ *   73:     function main(&$backRef,$menuItems,$table,$uid)
+ *  115:     function includeLL()
  *
  * TOTAL FUNCTIONS: 2
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
- 
+
 
 
 
@@ -59,7 +59,7 @@
 
 /**
  * Adding Import/Export clickmenu item
- * 
+ *
  * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage tx_impexp
@@ -76,12 +76,12 @@ class tx_impexp_clickmenu {
 	 */
 	function main(&$backRef,$menuItems,$table,$uid)	{
 		global $BE_USER,$TCA;
-	
+
 		$localItems=array();
 		if ($backRef->cmLevel && t3lib_div::_GP('subname')=='moreoptions')	{
 
 			$LL = $this->includeLL();
-		
+
 			$url = t3lib_extMgm::extRelPath('impexp').'app/index.php?tx_impexp[action]=export';
 			if ($table=='pages')	{
 				$url.='&tx_impexp[pagetree][id]='.$uid;
@@ -113,12 +113,13 @@ class tx_impexp_clickmenu {
 
 	/**
 	 * Include local lang file and return $LOCAL_LANG array loaded.
-	 * 
+	 *
 	 * @return	array		Local lang array
 	 */
 	function includeLL()	{
-		include(t3lib_extMgm::extPath('impexp').'app/locallang.php');
-		return $LOCAL_LANG;
+		global $LANG;
+
+		return $LANG->includeLLFile('EXT:impexp/app/locallang.php',FALSE);
 	}
 }
 
