@@ -101,6 +101,8 @@ class t3lib_recordList {
 	var $eCounter=0;
 	var $HTMLcode='';			// String with accumulated HTML content
 
+	var $pageOverlays = array();			// Contains page translation languages
+	var $languageIconTitles = array();		// Contains sys language icons and titles
 
 
 
@@ -328,6 +330,82 @@ class t3lib_recordList {
 	}
 
 		';
+	}
+
+	/**
+	 * Initializes page languages and icons
+	 *
+	 * @return	void
+	 */
+	function initializeLanguages()	{
+		global $TCA,$LANG;
+
+			// Look up page overlays:
+		$this->pageOverlays = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+			'*',
+			'pages_language_overlay',
+			'pid='.intval($this->id).
+				t3lib_BEfunc::deleteClause('pages_language_overlay'),
+			'',
+			'',
+			'',
+			'sys_language_uid'
+		);
+
+			// icons and language titles:
+		t3lib_div::loadTCA ('sys_language');
+		$flagAbsPath = t3lib_div::getFileAbsFileName($TCA['sys_language']['columns']['flag']['config']['fileFolder']);
+		$flagIconPath = $this->backPath.'../'.substr($flagAbsPath, strlen(PATH_site));
+
+		$this->modSharedTSconfig = t3lib_BEfunc::getModTSconfig($this->id, 'mod.SHARED');
+		$this->languageIconTitles = array();
+
+			// Set default:
+		$this->languageIconTitles[0]=array(
+			'uid' => 0,
+			'title' => strlen ($this->modSharedTSconfig['properties']['defaultLanguageFlag']) ? $this->modSharedTSconfig['properties']['defaultLanguageLabel'].' ('.$LANG->getLL('defaultLanguage').')' : $LANG->getLL('defaultLanguage'),
+			'ISOcode' => 'DEF',
+			'flagIcon' => strlen($this->modSharedTSconfig['properties']['defaultLanguageFlag']) && @is_file($flagAbsPath.$this->modSharedTSconfig['properties']['defaultLanguageFlag']) ? $flagIconPath.$this->modSharedTSconfig['properties']['defaultLanguageFlag'] : null,
+		);
+
+			// Set "All" language:
+		$this->languageIconTitles[-1]=array(
+			'uid' => -1,
+			'title' => $LANG->getLL ('multipleLanguages'),
+			'ISOcode' => 'DEF',
+			'flagIcon' => $flagIconPath.'multi-language.gif',
+		);
+
+			// Find all system languages:
+		$sys_languages = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+			'*',
+			'sys_language',
+			''
+		);
+		foreach($sys_languages as $row)		{
+			$this->languageIconTitles[$row['uid']] = $row;
+
+			if ($row['static_lang_isocode'])	{
+				$staticLangRow = t3lib_BEfunc::getRecord('static_languages',$row['static_lang_isocode'],'lg_iso_2');
+				if ($staticLangRow['lg_iso_2']) {
+					$this->languageIconTitles[$row['uid']]['ISOcode'] = $staticLangRow['lg_iso_2'];
+				}
+			}
+			if (strlen ($row['flag'])) {
+				$this->languageIconTitles[$row['uid']]['flagIcon'] = @is_file($flagAbsPath.$row['flag']) ? $flagIconPath.$row['flag'] : '';
+			}
+		}
+	}
+
+	/**
+	 * Return the icon for the language
+	 *
+	 * @param	integer		Sys language uid
+	 * @return	string		Language icon
+	 */
+	function languageFlag($sys_language_uid)	{
+		return ($this->languageIconTitles[$sys_language_uid]['flagIcon'] ? '<img src="'.$this->languageIconTitles[$sys_language_uid]['flagIcon'].'" class="absmiddle" alt="" />&nbsp;' : '').
+				htmlspecialchars($this->languageIconTitles[$sys_language_uid]['title']);
 	}
 }
 

@@ -2828,6 +2828,23 @@ if (version == "n3") {
 	}
 
 	/**
+	 * Prefixing the input URL with ->baseUrl If ->baseUrl is set and the input url is not absolute in some way.
+	 * Designed as a wrapper functions for use with all frontend links that are processed by JavaScript (for "realurl" compatibility!). So each time a URL goes into window.open, document.location or otherwise, wrap it with this function!
+	 *
+	 * @param	string		Input URL, relative or absolute
+	 * @return	string		Processed input value.
+	 */
+	function baseUrlWrap($url)	{
+		if ($this->baseUrl)	{
+			$urlParts = parse_url($url);
+			if (!strlen($urlParts['scheme']) && $url{0}!=='/')	{
+				$url = $this->baseUrl.$url;
+			}
+		}
+		return $url;
+	}
+
+	/**
 	 * Prints error msg/header.
 	 * Echoes out the HTML content
 	 *

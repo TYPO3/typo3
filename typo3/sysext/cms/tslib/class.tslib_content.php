@@ -2538,7 +2538,7 @@ class tslib_cObj {
 					$offset = t3lib_div::intExplode(',',$conf['JSwindow.']['expand'].',');
 
 					$a1='<a href="#" onclick="'.
-						htmlspecialchars('openPic(\''.$url.'\',\''.($conf['JSwindow.']['newWindow']?md5($url):'thePicture').'\',\'width='.($dims[0]+$offset[0]).',height='.($dims[1]+$offset[1]).',status=0,menubar=0\'); return false;').
+						htmlspecialchars('openPic(\''.$GLOBALS['TSFE']->baseUrlWrap($url).'\',\''.($conf['JSwindow.']['newWindow']?md5($url):'thePicture').'\',\'width='.($dims[0]+$offset[0]).',height='.($dims[1]+$offset[1]).',status=0,menubar=0\'); return false;').
 						'"'.$GLOBALS['TSFE']->ATagParams.'>';
 					$a2='</a>';
 					$GLOBALS['TSFE']->setJS('openPic');
@@ -5028,7 +5028,7 @@ class tslib_cObj {
 			}
 
 			if ($JSwindowParams)	{
-				$onClick="vHWin=window.open('".$finalTagParts['url']."','FEopenLink','".$JSwindowParams."');vHWin.focus();return false;";
+				$onClick="vHWin=window.open('".$GLOBALS['TSFE']->baseUrlWrap($finalTagParts['url'])."','FEopenLink','".$JSwindowParams."');vHWin.focus();return false;";
 				$res = '<a href="#" onclick="'.htmlspecialchars($onClick).'"'.($linkClass?' class="'.$linkClass.'"':'').$finalTagParts['aTagParams'].'>';
 			} else {
 				$res = '<a href="'.htmlspecialchars($finalTagParts['url']).'"'.$finalTagParts['targetParams'].($linkClass?' class="'.$linkClass.'"':'').$finalTagParts['aTagParams'].'>';
@@ -6291,12 +6291,12 @@ class tslib_cObj {
 
 		if ($conf['languageField'])	{
 			if ($GLOBALS['TSFE']->sys_language_contentOL && $TCA[$table] && $TCA[$table]['ctrl']['languageField'] && $TCA[$table]['ctrl']['transOrigPointerField'])	{
-					// Sys language content is set to zero - and it is expected that whatever routine processes the output will OVERLAY the records with localized version!
-				$sys_language_content = 0;
+					// Sys language content is set to zero/-1 - and it is expected that whatever routine processes the output will OVERLAY the records with localized versions!
+				$sys_language_content = '0,-1';
 			} else {
-				$sys_language_content = $GLOBALS['TSFE']->sys_language_content;
+				$sys_language_content = intval($GLOBALS['TSFE']->sys_language_content);
 			}
-			$query.=' AND '.$conf['languageField'].'='.intval($sys_language_content);
+			$query.=' AND '.$conf['languageField'].' IN ('.$sys_language_content.')';
 		}
 
 		$andWhere = trim($this->stdWrap($conf['andWhere'],$conf['andWhere.']));

@@ -874,9 +874,7 @@ class t3lib_stdGraphic	{
 				return $conf['fontSize'];
 				//  ################ no calc for spacing yet !!!!!!
 			} else {
-				$fontSize = $conf['fontSize'];
 				do {
-					$conf['fontSize'] = $fontSize;
 						// determine bounding box.
 					$bounds = $this->ImageTTFBBoxWrapper($conf['fontSize'], $conf['angle'], $conf['fontFile'], $this->recodeString($conf['text']), $conf['splitRendering.']);
 					if ($conf['angle']< 0) {
@@ -886,12 +884,14 @@ class t3lib_stdGraphic	{
 					} else {
 						$pixelWidth = abs($bounds[4]-$bounds[6]);
 					}
-						// This is a very raw calculation but it makes it in one step
-					$fontSize=(int)($maxWidth*$fontSize/$pixelWidth);
-					if ($fontSize >= $conf['fontSize'])	{
-						$fontSize = $conf['fontSize']-1;
+
+						// Size is fine, exit:
+					if ($pixelWidth <= $maxWidth)	{
+						break;
+					} else {
+						$conf['fontSize']--;
 					}
-				} while ($pixelWidth > $maxWidth);
+				} while ($conf['fontSize']>1);
 			}//if spacing
 		}
 		return $conf['fontSize'];

@@ -195,10 +195,10 @@ TABLE.typo3-dyntabmenu TD A { color:grey; text-decoration:none; display: block; 
 TABLE.typo3-dyntabmenu TD.tabact A { color:#000; padding-left:10px; padding-right:10px; }
 TABLE.typo3-dyntabmenu TD A:hover { color:#000; background: #f6eab7; text-decoration:none; }
 DIV.typo3-dyntabmenu-divs-foldout DIV.c-tablayer {margin-left: 20px;}
-DIV.typo3-dyntabmenu-divs-foldout DIV.tab { background: #c4d4cd;  background-image: url(gfx/ol/plusonly.gif); background-repeat: no-repeat; border: solid black 1px; }
-DIV.typo3-dyntabmenu-divs-foldout DIV.tabact {  background: #e7dba8; background-image: url(gfx/ol/minusonly.gif); background-repeat: no-repeat; border: solid black 1px;  margin-top: 5px; }
-DIV.typo3-dyntabmenu-divs-foldout DIV.disabled { color:#999999; border: solid black 1px; background: #cccccc;  padding: 2px 2px 2px 22px; }
-DIV.typo3-dyntabmenu-divs-foldout DIV.tab A, DIV.typo3-dyntabmenu-divs-foldout DIV.tabact A { text-decoration:none; display: block; padding: 2px 2px 2px 22px; }
+DIV.typo3-dyntabmenu-divs-foldout DIV.tab { background: #c4d4cd;  background-image: url(gfx/ol/plusbullet.gif); background-repeat: no-repeat; border: solid black 1px; }
+DIV.typo3-dyntabmenu-divs-foldout DIV.tabact {  background: #e7dba8; background-image: url(gfx/ol/minusbullet.gif); background-repeat: no-repeat; border: solid black 1px;  margin-top: 5px; }
+DIV.typo3-dyntabmenu-divs-foldout DIV.disabled { color:#999999; border: solid black 1px; background: #cccccc;  padding: 2px 2px 2px 18px; }
+DIV.typo3-dyntabmenu-divs-foldout DIV.tab A, DIV.typo3-dyntabmenu-divs-foldout DIV.tabact A { text-decoration:none; display: block; padding: 2px 2px 2px 18px; }
 
 
 /* Logo frame (alt_toplogo.php) */

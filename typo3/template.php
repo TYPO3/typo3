@@ -1484,13 +1484,14 @@ $str.=$this->docBodyTagBegin().
 	 *
 	 * @param	array	Numeric array where each entry is an array in itself with associative keys: "label" contains the label for the TAB, "content" contains the HTML content that goes into the div-layer of the tabs content. "description" contains description text to be shown in the layer. "linkTitle" is short text for the title attribute of the tab-menu link (mouse-over text of tab). "stateIcon" indicates a standard status icon (see ->icon(), values: -1, 1, 2, 3). "icon" is an image tag placed before the text.
 	 * @param	string	Identification string. This should be unique for every instance of a dynamic menu!
-	 * @param	boolean		If set, then enabling one tab does not hide the others - they simply toggles each sheet on/off. This makes most sense together with the $foldout option
+	 * @param	integer		If "1", then enabling one tab does not hide the others - they simply toggles each sheet on/off. This makes most sense together with the $foldout option. If "-1" then it acts normally where only one tab can be active at a time BUT you can click a tab and it will close so you have no active tabs.
 	 * @param	boolean		If set, the tabs are rendered as headers instead over each sheet. Effectively this means there is no tab menu, but rather a foldout/foldin menu. Make sure to set $toggle as well for this option.
 	 * @param	integer		Character limit for a new row.
 	 * @param	boolean		If set, tab table cells are not allowed to wrap their content
+	 * @param	integer		Default tab to open (for toggle <=0). Value corresponds to integer-array index + 1 (index zero is "1", index "1" is 2 etc.). A value of zero (or something non-existing) will result in no default tab open.
 	 * @return	string	JavaScript section for the HTML header.
 	 */
-	function getDynTabMenu($menuItems,$identString,$toggle=FALSE,$foldout=FALSE,$newRowCharLimit=50,$noWrap=1,$fullWidth=FALSE)	{
+	function getDynTabMenu($menuItems,$identString,$toggle=0,$foldout=FALSE,$newRowCharLimit=50,$noWrap=1,$fullWidth=FALSE,$defaultTabIndex=1)	{
 		$content = '';
 
 		if (is_array($menuItems))	{
@@ -1507,6 +1508,8 @@ $str.=$this->docBodyTagBegin().
 			$tabRows=0;
 			$titleLenCount = 0;
 			foreach($menuItems as $index => $def) {
+				$index+=1;	// Need to add one so checking for first index in JavaScript is different than if it is not set at all.
+
 					// Switch to next tab row if needed
 				if (!$foldout && $titleLenCount>$newRowCharLimit)	{	// 50 characters is probably a reasonable count of characters before switching to next row of tabs.
 					$titleLenCount=0;
@@ -1514,10 +1517,10 @@ $str.=$this->docBodyTagBegin().
 					$options[$tabRows] = array();
 				}
 
-				if ($toggle)	{
+				if ($toggle==1)	{
 					$onclick = 'this.blur(); DTM_toggle("'.$id.'","'.$index.'"); return false;';
 				} else {
-					$onclick = 'this.blur(); DTM_activate("'.$id.'","'.$index.'"); return false;';
+					$onclick = 'this.blur(); DTM_activate("'.$id.'","'.$index.'", '.($toggle<0?1:0).'); return false;';
 				}
 
 				$isActive = strcmp($def['content'],'');
@@ -1554,7 +1557,7 @@ $str.=$this->docBodyTagBegin().
 					$JSinit[] = '
 							DTM_array["'.$id.'"]['.$c.'] = "'.$id.'-'.$index.'";
 					';
-					if ($toggle)	{
+					if ($toggle==1)	{
 						$JSinit[] = '
 							if (top.DTM_currentTabs["'.$id.'-'.$index.'"]) { DTM_toggle("'.$id.'","'.$index.'"); }
 						';
@@ -1596,7 +1599,7 @@ $str.=$this->docBodyTagBegin().
 					DTM_array["'.$id.'"] = new Array();
 					'.implode('',$JSinit).'
 
-					'.(!$toggle ? 'DTM_activate("'.$id.'",top.DTM_currentTabs["'.$id.'"]?top.DTM_currentTabs["'.$id.'"]:0);' : '').'
+					'.($toggle<=0 ? 'DTM_activate("'.$id.'", top.DTM_currentTabs["'.$id.'"]?top.DTM_currentTabs["'.$id.'"]:'.intval($defaultTabIndex).', 0);' : '').'
 				</script>
 
 				';
@@ -1617,7 +1620,7 @@ $str.=$this->docBodyTagBegin().
 			/*<![CDATA[*/
 				var DTM_array = new Array();
 
-				function DTM_activate(idBase,index)	{	//
+				function DTM_activate(idBase,index,doToogle)	{	//
 						// Hiding all:
 					if (DTM_array[idBase])	{
 						for(cnt = 0; cnt < DTM_array[idBase].length ; cnt++)	{
@@ -1630,11 +1633,15 @@ $str.=$this->docBodyTagBegin().
 
 						// Showing one:
 					if (document.getElementById(idBase+"-"+index+"-DIV"))	{
-						document.getElementById(idBase+"-"+index+"-DIV").style.display = "block";
-						document.getElementById(idBase+"-"+index+"-MENU").attributes.getNamedItem("class").nodeValue = "tabact";
-
-							// Setting current tab index in top of browser.
-						top.DTM_currentTabs[idBase] = index;
+						if (doToogle && document.getElementById(idBase+"-"+index+"-DIV").style.display == "block")	{
+							document.getElementById(idBase+"-"+index+"-DIV").style.display = "none";
+							document.getElementById(idBase+"-"+index+"-MENU").attributes.getNamedItem("class").nodeValue = "tab";
+							top.DTM_currentTabs[idBase] = -1;
+						} else {
+							document.getElementById(idBase+"-"+index+"-DIV").style.display = "block";
+							document.getElementById(idBase+"-"+index+"-MENU").attributes.getNamedItem("class").nodeValue = "tabact";
+							top.DTM_currentTabs[idBase] = index;
+						}
 					}
 				}
 				function DTM_toggle(idBase,index)	{	//

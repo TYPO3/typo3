@@ -144,6 +144,7 @@ class tslib_menu {
 	var $subLevelClass = '';			// Points to the menu-class, that should be used for the next level
 	var $spacerIDList = '199';			// The doktype-number that defines a spacer
 	var $doktypeExcludeList = '5,6';			// doktypes that define which should not be included in a menu
+	var $alwaysActivePIDlist=array();
 	var $imgNamePrefix = 'img';
 	var $imgNameNotRandom=0;
 	var $debug = 0;
@@ -193,6 +194,11 @@ class tslib_menu {
 		if ($this->conf[$this->menuNumber] && is_object($tmpl) && is_object($sys_page))	{
 			$this->tmpl = &$tmpl;
 			$this->sys_page = &$sys_page;
+
+				// alwaysActivePIDlist initialized:
+			if (trim($this->conf['alwaysActivePIDlist']))	{
+				$this->alwaysActivePIDlist = t3lib_div::intExplode(',', $this->conf['alwaysActivePIDlist']);
+			}
 
 				// 'not in menu' doktypes
 			if($this->conf['excludeDoktypes']) {
@@ -1111,14 +1117,15 @@ class tslib_menu {
 			$conf=$this->mconf['JSWindow.'];
 			$url=$LD['totalURL'];
 			$LD['totalURL'] = '#';
-			$onClick= 'openPic(\''.$url.'\',\''.($conf['newWindow']?md5($url):'theNewPage').'\',\''.$conf['params'].'\'); return false;';
+			$onClick= 'openPic(\''.$GLOBALS['TSFE']->baseUrlWrap($url).'\',\''.($conf['newWindow']?md5($url):'theNewPage').'\',\''.$conf['params'].'\'); return false;';
 			$GLOBALS['TSFE']->setJS('openPic');
 		}
+
 			// out:
 		$list = array();
-		$list['HREF']=$LD['totalURL'];
-		$list['TARGET']=$LD['target'];
-		$list['onClick']=$onClick;
+		$list['HREF'] = strlen($LD['totalURL']) ? $LD['totalURL'] : $GLOBALS['TSFE']->baseUrl;	// Added this check: What it does is to enter the baseUrl (if set, which it should for "realurl" based sites) as URL if the calculated value is empty. The problem is that no link is generated with a blank URL and blank URLs might appear when the realurl encoding is used and a link to the frontpage is generated.
+		$list['TARGET'] = $LD['target'];
+		$list['onClick'] = $onClick;
 
 		return $list;
 	}
@@ -1173,6 +1180,12 @@ class tslib_menu {
 	 * @see subMenu()
 	 */
 	function isNext($uid, $MPvar='')	{
+
+			// Check for always active PIDs:
+		if (count($this->alwaysActivePIDlist) && in_array($uid,$this->alwaysActivePIDlist))	{
+			return TRUE;
+		}
+
 		$testUid = $uid.($MPvar?':'.$MPvar:'');
 		if ($uid && $testUid==$this->nextActive)	{
 			return TRUE;
@@ -1188,10 +1201,16 @@ class tslib_menu {
 	 * @access private
 	 */
 	function isActive($uid, $MPvar='')	{
+
+			// Check for always active PIDs:
+		if (count($this->alwaysActivePIDlist) && in_array($uid,$this->alwaysActivePIDlist))	{
+			return TRUE;
+		}
+
 		$testUid = $uid.($MPvar?':'.$MPvar:'');
 		if ($uid && in_array('ITEM:'.$testUid, $this->rL_uidRegister))	{
 			return TRUE;
-	}
+		}
 	}
 
 	/**
@@ -2620,7 +2639,7 @@ class tslib_jsmenu extends tslib_menu {
 						$url = rawurlencode($LD['totalURL']);
 						$target = rawurlencode($LD['target']);
 					}
-					$codeLines.="\n".$var.$count."=".$menuName.".add(".$parent.",".$prev.",0,'".$title."','".$url."','".$target."');";
+					$codeLines.="\n".$var.$count."=".$menuName.".add(".$parent.",".$prev.",0,'".$title."','".$GLOBALS['TSFE']->baseUrlWrap($url)."','".$target."');";
 						// If the active one should be chosen...
 					$active = ($levelConf['showActive'] && $data['uid'] == $this->tmpl->rootLine[$count]['uid']);
 						// If the first item should be shown

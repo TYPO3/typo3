@@ -89,7 +89,7 @@ $BE_USER->modAccess($MCONF,1);
 class SC_mod_web_perm_index {
 
 		// External, static:
-	var $getLevels=3;			// Number of levels to enable recursive settings for
+	var $getLevels = 10;			// Number of levels to enable recursive settings for
 
 		// Internal, static:
 	var $MCONF=array();			// Module config

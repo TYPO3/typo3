@@ -69,7 +69,7 @@
  * @see tslib_cObj::typoLink()
  */
 function user_typoLinkPopUp($content,$conf)	{
-	$aOnClick = 'openPic(\''.$content['url'].'\',\'popupwin\',\'width=400,height=500,status=0,menubar=0\'); return false;';
+	$aOnClick = 'openPic(\''.$GLOBALS['TSFE']->baseUrlWrap($content['url']).'\',\'popupwin\',\'width=400,height=500,status=0,menubar=0\'); return false;';
 	$TAG = 	'<a href="#" onclick="'.htmlspecialchars($aOnClick).'"'.$content['aTagParams'].'>';
 	return $TAG;
 }

@@ -253,6 +253,16 @@ Extensions:
 
 
 
+*****************
+PHP issues
+*****************
+Generally: TYPO3 works with PHP5. But...:
+- UTF-8 strings to freetype doesn't work! Renders box instead.
+- array_merge must always have arrays as arguments. When this problem is found in TYPO3 it is regarded a TYPO3 bug and we fix it.
+- Errors regarding treating strings as arrays: Normally, just check if the variable is an array first.
+	- Details: Non-existing indexes is not a problem if the variable is unset - only if it is another type (eg. string). This means we can normally just check if the first index is an array and it will work: is (is_array($a) && $a[key1][key2][key3]) ...
+
+
 
 *****************
 NOTES

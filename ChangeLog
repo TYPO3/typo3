@@ -1,3 +1,44 @@
+2004-09-11  Kasper Skårhøj,,,  <kasper@typo3.com>
+
+	* Updated changelog for 09/09
+	* Fixed bug in stdgraphic::fontResize that made it go into eternal loops if the size could not be obtained in the lower end, basically when fontsize reached zero...
+	* Fixed bug in alt_menu_functions which prevented Condensed Mode from working. But most likely it breaks something else, maybe some options around alternative navigation frame scripts that rene introduced.
+	* Fixed a bug introduced yesterday where TYPO3 would not work with PHP versions below 4.100.0... :-) - clearly testifying to the fact that I have now run TYPO3 on PHP5 with TemplaVoila et al. for five days without problems.
+	* Added new option for the dynamic tab menus where you can configure a free initial default tab index and even close all items totally (like toggle mode, but still with only one tab open at a time).
+	* Increased levels of possible recursive permission setting to 10.
+	* Web>Page: Introduced localization flags, removed move-up/down/new buttons for languages in default-content-binding mode and made the selection of default elements include the "All" language in default-content-binding mode which will correspond to how sys_language_overlay works in the frontend.
+	* Introduced baseUrlWrap() function in tslib_fe (TSFE) which can be called for wrapping URLs with absolute baseUrl prefix in case you are using "realurl" of sorts. This is necessary to do for all urls that is handled by JavaScript, like "document.location" or "window.open" cases.
+	* Fixed the realurl related bug with click-enlarged images that would open a non-existing URL (see "baseUrlWrap()" above). Also wrapped other JavaScript URls like in JSMENU and typolink related JSwindow action.
+	* Introduced a global setting for GIFBUILDER TEXT objects to configure alternative font files for certain Unicode char ranges. This feature makes it very easy to set up eg. a japanese truetype font for all usages of GIFBUILDER where you still want another specific font used for the latin characters.
+	* Introduced new HMENU feature: "alwaysActivePIDlist" which can configure certain page id which will always be expanded in menu as if they were "active".
+	* Fixed problem with empty URLs in menu generation. Empty URLs may occur when a realurl points to the frontpage (which is a blank suffix to the base url). In such cases the URL now becomes the baseUrl of the site (if that is configured!). This should fix it very specifically for all realurl cases.
+	* Fixed install tools incapability to delete files with certain prefixes in typo3temp/ folder.
+
+2004-09-09  Kasper Skårhøj,,,  <kasper@typo3.com>
+Sorry for writing these changelog entries with a delay of two days. I write them based on a CVS patch and it took ages to make that from a parking lot in Suresnes, Paris, 4 am in the morning. Its becoming harder to find a stable hotspot in Paris I think... But here we go:
+	* Changed all HTTP_*_VARS to $_* superglobals. Also raised PHP requirement version to 4.1.0
+	* Added wrapping functions to array browser class. Also updated the Configuration module to use these features so you can now click a key and get a string served ready to implement in eg. localconf.php
+	* !!! Removed obsolete function "t3lib_div::setGPvars()"
+	* Added $MCONF['shy'] feature (requested by Rene Fritz)
+	* Added longblob in sqlparser
+	* Added configurable JPG quality setting to stdGraphic class. Use $TYPO4_CONF_VARS[GFX][im_jpg_quality]
+	* Added stdgraphic::ImageTTFTextWrapper() and stdgraphic::ImageTTFBBoxWrapper functions. Behind these changes a new feature has been implemented which makes it possible to render a single GIFBUILDER TEXT object with more than one font file for various criteria. The most important criteria is that a certain range of unicode chars can be rendered using another truetype font supporting eg. japanese glyphs while you still use another specific font for the design of latin chracters. This feature is known as "splitRendering" in GIFBUILDER TEXT objects.
+	* Added new swapping mode setting for versioning: swapContent = ALL which is what you use if you want to swap the SUBTREE of a page as well!
+	* Fixed a bug in transferdata class where too many field values were returned in wrong situations.
+	* Fixed the timetrack class whitespace issue, removed the DAM module key in stddb/tables.php and removed the temporary class "t3lib_TCEforms_SelectTreeView" made by Rene Fritz.
+	* Implemented configurable session timeout for backend users.
+	* Changed the TYPO3 version number variable into a constant available before ext_localconf.php files are included.
+	* Added "location" bar to the re-login screen. Inspired by Johannes Reichart who once many years ago sent me a mail about how the login screen should be protected against someone designing a similar prompt to trick users into giving them their passwords. I couldn't find a better idea than making the URL visible so people can validate the domain themselves.
+	* Added localization view mode in Web>List module, allowing to see localization details for records, grouping them by their language and providing a "localization copy" button.
+	* Updated english labels for backend/CSH according to change suggestions by 3EV from UK. Thanks.
+	* Added obTS specific hook in tslib_content class. For Dan Frost and his empire...
+	* Impleemnted third option for stdWrap crop feature (by Peter Klein)
+	* Fixed typolink that would reject links to virtual files and folders locally, eg. links made by realurl etc. Previously such files HAD to exist, otherwise the link would not be rendered.
+	* Changed stuff around the pagenotfound handling.
+	* moved <meta charset...> in frontend output to be the first tag after the <html> tag.
+	* Fixed old bug in tslib_search which cropped off the last char of a search word.
+	* Fixed extra_page_cm_options that didn't detect itself properly when making the second menu. So now the elements from that extension will NOT anymore pop up in other second level menus... :-)
+
 2004-09-10  Michael Stucki  <mundaun@gmx.ch>
 
 	* Replaced t3lib_div::uniqueArray with native PHP function array_unique. The old function will remain for compatibility reasons only. Please do not use it anymore!

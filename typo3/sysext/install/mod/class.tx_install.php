@@ -1071,7 +1071,7 @@ th { font-family: verdana,arial, helvetica, sans-serif; font-size: 10pt; font-we
 					}
 					if ($ok)	{
 						$hashPart=substr(basename($theFile),-14,10);
-						if (!ereg("[^a-f0-9]",$hashPart))	{		// This is a kind of check that the file being deleted has a 10 char hash in it
+						if (!ereg("[^a-f0-9]",$hashPart) || substr($theFile,-6)==='.cache' || substr($theFile,-4)==='.tbl' || substr(basename($theFile),0,8)==='install_')	{		// This is a kind of check that the file being deleted has a 10 char hash in it
 							if ($action && $deleteCounter<$action)	{
 								$deleteCounter++;
 								unlink($theFile);

@@ -111,6 +111,7 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 	var $data = Array();		// This is the array from which data->field: [key] is fetched. So this is the current record!
 	var $objBB = Array();
 	var $myClassName = 'gifbuilder';
+	var $charRangeMap=array();
 
 	/**
 	 * Initialization of the GIFBUILDER objects, in particular TEXT and IMAGE. This includes finding the bounding box, setting dimensions and offset values before the actual rendering is started.
@@ -128,6 +129,23 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 		if (is_array($conf))	{
 			$this->setup = $conf;
 			$this->data = $data;
+
+				// Initializing global Char Range Map
+			$this->charRangeMap = array();
+			if (is_array($GLOBALS['TSFE']->tmpl->setup['_GIFBUILDER.']['charRangeMap.']))	{
+				foreach($GLOBALS['TSFE']->tmpl->setup['_GIFBUILDER.']['charRangeMap.'] as $cRMcfgkey => $cRMcfg)	{
+					if (is_array($cRMcfg))	{
+
+							// Initializing:
+						$cRMkey = $GLOBALS['TSFE']->tmpl->setup['_GIFBUILDER.']['charRangeMap.'][substr($cRMcfgkey,0,-1)];
+						$this->charRangeMap[$cRMkey] = array();
+						$this->charRangeMap[$cRMkey]['charMapConfig'] =  $cRMcfg['charMapConfig.'];
+						$this->charRangeMap[$cRMkey]['cfgKey'] = substr($cRMcfgkey,0,-1);
+						$this->charRangeMap[$cRMkey]['multiplicator'] = (double)$cRMcfg['fontSizeMultiplicator'];
+						$this->charRangeMap[$cRMkey]['pixelSpace'] = intval($cRMcfg['pixelSpaceFontSizeRef']);
+					}
+				}
+			}
 
 				// Getting sorted list of TypoScript keys from setup.
 			$sKeyArray=t3lib_TStemplate::sortedKeyList($this->setup);
@@ -162,10 +180,14 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 						// Swipes through TEXT and IMAGE-objects
 					switch($theValue)	{
 						case 'TEXT':
-							if ($this->setup[$theKey.'.']=$this->checkTextObj($conf))	{
+							if ($this->setup[$theKey.'.'] = $this->checkTextObj($conf))	{
+
+									// Adjust font width if max size is set:
 								if ($this->setup[$theKey.'.']['maxWidth'])	{
 									$this->setup[$theKey.'.']['fontSize'] = $this->fontResize($this->setup[$theKey.'.']); //RTF - this has to be done before calcBBox
 								}
+
+									// Calculate bounding box:
 								$txtInfo=$this->calcBBox($this->setup[$theKey.'.']);
 								$this->setup[$theKey.'.']['BBOX']=$txtInfo;
 								$this->objBB[$theKey]=$txtInfo;
@@ -471,6 +493,47 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 		$tlen = intval($conf['textMaxLength']) ? intval($conf['textMaxLength']) : 100;
 		$conf['text'] = substr($conf['text'],0,$tlen);
 		if ((string)$conf['text']!='')	{
+
+				// Char range map thingie:
+			$fontBaseName = basename($conf['fontFile']);
+			if (is_array($this->charRangeMap[$fontBaseName]))	{
+
+					// Initialize splitRendering array:
+				if (!is_array($conf['splitRendering.']))	{
+					$conf['splitRendering.'] = array();
+				}
+
+				$cfgK = $this->charRangeMap[$fontBaseName]['cfgKey'];
+				if (!isset($conf['splitRendering.'][$cfgK]))	{	// Do not impose settings if a splitRendering object already exists:
+						// Set configuration:
+					$conf['splitRendering.'][$cfgK] = 'charRange';
+					$conf['splitRendering.'][$cfgK.'.'] = $this->charRangeMap[$fontBaseName]['charMapConfig'];
+
+						// multiplicator of fontsize:
+					if ($this->charRangeMap[$fontBaseName]['multiplicator'])	{
+						$conf['splitRendering.'][$cfgK.'.']['fontSize'] = round($conf['fontSize'] * $this->charRangeMap[$fontBaseName]['multiplicator']);
+					}
+						// multiplicator of pixelSpace:
+					if ($this->charRangeMap[$fontBaseName]['pixelSpace'])	{
+						$travKeys = array('xSpaceBefore','xSpaceAfter','ySpaceBefore','ySpaceAfter');
+						foreach($travKeys as $pxKey)	{
+							if (isset($conf['splitRendering.'][$cfgK.'.'][$pxKey]))	{
+								$conf['splitRendering.'][$cfgK.'.'][$pxKey] = round($conf['splitRendering.'][$cfgK.'.'][$pxKey] * ($conf['fontSize'] / $this->charRangeMap[$fontBaseName]['pixelSpace']));
+							}
+						}
+					}
+				}
+			}
+			if (is_array($conf['splitRendering.']))	{
+				foreach($conf['splitRendering.'] as $key => $value)	{
+					if (is_array($conf['splitRendering.'][$key]))	{
+						if (isset($conf['splitRendering.'][$key]['fontFile']))	{
+							$conf['splitRendering.'][$key]['fontFile'] = $this->checkFile($conf['splitRendering.'][$key]['fontFile']);
+						}
+					}
+				}
+			}
+
 			return $conf;
 		}
 	}

@@ -116,7 +116,7 @@ class alt_menu_functions {
 		while(list($moduleName,$moduleInfo)=each($theModules))	{
 			$mC++;
 
-			$prefix=$this->getNavFramePrefix ($moduleInfo);				
+			$prefix=$this->getNavFramePrefix ($moduleInfo);
 			if ($prefix) {
 				$this->fsMod[]='fsMod.recentIds["'.$moduleName.'"]="";';
 			}
@@ -155,7 +155,7 @@ class alt_menu_functions {
 
 				// Creating the various links:
 			$label = $LANG->moduleLabels['tabs'][$moduleKey];
-			if ($link && $prefix)	$link=$prefix.'"+top.TS.PATH_typo3_enc+"'.rawurlencode($link);
+			if ($link && $prefix)	$link=$prefix.rawurlencode($link);
 			if ($link && !$dontLink)	{
 				$label = '<a href="#" onclick="top.goToModule(\''.$moduleName.'\');'.$onBlur.'return false;">'.$label.'</a>';	//  && !$link_sub
 
@@ -203,8 +203,8 @@ class alt_menu_functions {
 					}
 
 					$link = $subInfo['script'];
-					$prefix=$this->getNavFramePrefix ($moduleInfo, $subInfo);	
-					
+					$prefix=$this->getNavFramePrefix ($moduleInfo, $subInfo);
+
 					$subKey = $moduleName.'_'.$subName.'_tab';
 					$moduleCSSId = 'ID_'.t3lib_div::md5int($moduleName.'_'.$subName);
 
@@ -225,7 +225,7 @@ class alt_menu_functions {
 					$label_descr = ' title="'.htmlspecialchars($LANG->moduleLabels['labels'][$subKey.'label']).'"';
 					$flabel = htmlspecialchars($label);
 					$origLink = $link;
-					if ($link && $prefix)	$link=$prefix.'"+top.TS.PATH_typo3_enc+"'.rawurlencode($link);
+					if ($link && $prefix)	$link=$prefix.rawurlencode($link);
 
 						// Setting additional JavaScript if frameset script:
 					$addJS = '';
@@ -399,6 +399,8 @@ class alt_menu_functions {
 	 * @return	string		Result url string
 	 */
 	function getNavFramePrefix ($moduleInfo, $subModuleInfo=array()) {
+		global $BE_USER;
+
 		$prefix = '';
 		$navFrameScriptParam = $subModuleInfo['navFrameScriptParam'] ? $subModuleInfo['navFrameScriptParam'] : $moduleInfo['navFrameScriptParam'];
 		if ($moduleInfo['navFrameScript'])	{
@@ -413,7 +415,7 @@ class alt_menu_functions {
 		}
 		return $prefix;
 	}
-		
+
 	/**
 	 * Returns $Ifilename readable for script in PATH_typo3.
 	 * That means absolute names are just returned while relative names are prepended with $backPath (pointing back to typo3/ dir)

@@ -1214,17 +1214,6 @@ class localRecordList extends recordList {
 		return '&returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'));
 	}
 
-	/**
-	 * Return the icon for the language
-	 *
-	 * @param	integer		Sys language uid
-	 * @return	string		Language icon
-	 */
-	function languageFlag($sys_language_uid)	{
-		return ($this->languageIconTitles[$sys_language_uid]['flagIcon'] ? '<img src="'.$this->languageIconTitles[$sys_language_uid]['flagIcon'].'" class="absmiddle" alt="" />&nbsp;' : '').
-				htmlspecialchars($this->languageIconTitles[$sys_language_uid]['title']);
-	}
-
 
 
 

@@ -373,6 +373,8 @@ class tx_cms_layout extends recordList {
 	function getTable_tt_content($id)	{
 		global $TCA;
 
+		$this->initializeLanguages();
+
 			// Initialize:
 		$RTE = $GLOBALS['BE_USER']->isRTE();
 		$lMarg=1;
@@ -409,7 +411,7 @@ class tx_cms_layout extends recordList {
 
 				// For EACH languages... :
 			foreach($langListArr as $lP)	{	// If NOT languageMode, then we'll only be through this once.
-				$showLanguage = ' AND sys_language_uid='.$lP;
+				$showLanguage = $this->defLangBinding && $lP==0 ? ' AND sys_language_uid IN (0,-1)' : ' AND sys_language_uid='.$lP;
 				$cList = explode(',',$this->tt_contentConfig['cols']);
 				$content = array();
 				$head = array();
@@ -437,7 +439,7 @@ class tx_cms_layout extends recordList {
 						if (!$lP) $defLanguageCount[$key][] = $row['uid'];
 
 						$editUidList.= $row['uid'].',';
-						$singleElementHTML.= $this->tt_content_drawHeader($row,$this->tt_contentConfig['showInfo']?15:5);
+						$singleElementHTML.= $this->tt_content_drawHeader($row,$this->tt_contentConfig['showInfo']?15:5, $this->defLangBinding && $lP>0, TRUE);
 
 						$isRTE = $RTE && $this->isRTEforField('tt_content',$row,'bodytext');
 						$singleElementHTML.= $this->tt_content_drawItem($row,$isRTE);
@@ -590,98 +592,104 @@ class tx_cms_layout extends recordList {
 				$out.= t3lib_BEfunc::cshItem($this->descrTable,'language_list',$GLOBALS['BACK_PATH']);
 			}
 		} else {		// SINGLE column mode (columns shown beneath each other):
+#debug('single column');
+			if ($this->tt_contentConfig['sys_language_uid']==0 || !$this->defLangBinding)	{
 
-				// Initialize:
-			$showLanguage = ' AND sys_language_uid='.$this->tt_contentConfig['sys_language_uid'];
-			$cList = explode(',',$this->tt_contentConfig['showSingleCol']);
-			$content=array();
-			$out='';
+					// Initialize:
+				$showLanguage = $this->defLangBinding && $this->tt_contentConfig['sys_language_uid']==0 ? ' AND sys_language_uid IN (0,-1)' : ' AND sys_language_uid='.$this->tt_contentConfig['sys_language_uid'];
 
-				// Expand the table to some preset dimensions:
-			$out.='
-				<tr>
-					<td><img src="clear.gif" width="'.$lMarg.'" height="1" alt="" /></td>
-					<td valign="top"><img src="clear.gif" width="150" height="1" alt="" /></td>
-					<td><img src="clear.gif" width="10" height="1" alt="" /></td>
-					<td valign="top"><img src="clear.gif" width="300" height="1" alt="" /></td>
-				</tr>';
+				$cList = explode(',',$this->tt_contentConfig['showSingleCol']);
+				$content=array();
+				$out='';
 
-				// Traverse columns to display top-on-top
-			while(list($counter,$key)=each($cList))	{
-
-					// Select content elements:
-				$queryParts = $this->makeQueryArray('tt_content', $id, 'AND colPos='.intval($key).$showHidden.$showLanguage);
-				$result = $GLOBALS['TYPO3_DB']->exec_SELECT_queryArray($queryParts);
-				$c = 0;
-				$rowArr = $this->getResult($result);
-				$rowOut = '';
-
-					// If it turns out that there are not content elements in the column, then display a big button which links directly to the wizard script:
-				if ($this->doEdit && $this->option_showBigButtons && !intval($key) && !$GLOBALS['TYPO3_DB']->sql_num_rows($result))	{
-					$onClick="document.location='db_new_content_el.php?id=".$id.'&colPos='.intval($key).'&sys_language_uid='.$lP.'&uid_pid='.$id.'&returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))."';";
-					$theNewButton=$GLOBALS['SOBE']->doc->t3Button($onClick,$GLOBALS['LANG']->getLL('newPageContent'));
-					$theNewButton='<img src="clear.gif" width="1" height="5" alt="" /><br />'.$theNewButton;
-				} else $theNewButton='';
-
-					// Traverse any selected elements:
-				foreach($rowArr as $row)	{
-					$c++;
-					$editUidList.=$row['uid'].',';
-					$isRTE=$RTE && $this->isRTEforField('tt_content',$row,'bodytext');
-
-						// Create row output:
-					$rowOut.='
-						<tr>
-							<td></td>
-							<td valign="top">'.$this->tt_content_drawHeader($row).'</td>
-							<td></td>
-							<td valign="top">'.$this->tt_content_drawItem($row,$isRTE).'</td>
-						</tr>';
-
-						// If the element was not the last element, add a divider line:
-					if ($c != $GLOBALS['TYPO3_DB']->sql_num_rows($result))	{
-						$rowOut.='
-						<tr>
-							<td></td>
-							<td colspan="3"><img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/stiblet_medium2.gif','width="468" height="1"').' class="c-divider" alt="" /></td>
-						</tr>';
-					}
-				}
-
-					// Add spacer between sections in the vertical list
-				if ($counter)	{
-					$out.='
-						<tr>
-							<td></td>
-							<td colspan="3"><br /><br /><br /><br /></td>
-						</tr>';
-				}
-
-					// Add section header:
-				$newP = $this->newContentElementOnClick($id,$key,$this->tt_contentConfig['sys_language_uid']);
+					// Expand the table to some preset dimensions:
 				$out.='
-
-					<!-- Column header: -->
 					<tr>
-						<td></td>
-						<td valign="top" colspan="3">'.
-							$this->tt_content_drawColHeader(t3lib_BEfunc::getProcessedValue('tt_content','colPos',$key), ($this->doEdit&&count($rowArr)?'&edit[tt_content]['.$editUidList.']=edit'.$pageTitleParamForAltDoc:''), $newP).
-							$theNewButton.
-							'<br /></td>
+						<td><img src="clear.gif" width="'.$lMarg.'" height="1" alt="" /></td>
+						<td valign="top"><img src="clear.gif" width="150" height="1" alt="" /></td>
+						<td><img src="clear.gif" width="10" height="1" alt="" /></td>
+						<td valign="top"><img src="clear.gif" width="300" height="1" alt="" /></td>
 					</tr>';
 
-					// Finally, add the content from the records in this column:
-				$out.=$rowOut;
+					// Traverse columns to display top-on-top
+				while(list($counter,$key)=each($cList))	{
+
+						// Select content elements:
+					$queryParts = $this->makeQueryArray('tt_content', $id, 'AND colPos='.intval($key).$showHidden.$showLanguage);
+					$result = $GLOBALS['TYPO3_DB']->exec_SELECT_queryArray($queryParts);
+					$c = 0;
+					$rowArr = $this->getResult($result);
+					$rowOut = '';
+
+						// If it turns out that there are not content elements in the column, then display a big button which links directly to the wizard script:
+					if ($this->doEdit && $this->option_showBigButtons && !intval($key) && !$GLOBALS['TYPO3_DB']->sql_num_rows($result))	{
+						$onClick="document.location='db_new_content_el.php?id=".$id.'&colPos='.intval($key).'&sys_language_uid='.$lP.'&uid_pid='.$id.'&returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))."';";
+						$theNewButton=$GLOBALS['SOBE']->doc->t3Button($onClick,$GLOBALS['LANG']->getLL('newPageContent'));
+						$theNewButton='<img src="clear.gif" width="1" height="5" alt="" /><br />'.$theNewButton;
+					} else $theNewButton='';
+
+						// Traverse any selected elements:
+					foreach($rowArr as $row)	{
+						$c++;
+						$editUidList.=$row['uid'].',';
+						$isRTE=$RTE && $this->isRTEforField('tt_content',$row,'bodytext');
+
+							// Create row output:
+						$rowOut.='
+							<tr>
+								<td></td>
+								<td valign="top">'.$this->tt_content_drawHeader($row).'</td>
+								<td></td>
+								<td valign="top">'.$this->tt_content_drawItem($row,$isRTE).'</td>
+							</tr>';
+
+							// If the element was not the last element, add a divider line:
+						if ($c != $GLOBALS['TYPO3_DB']->sql_num_rows($result))	{
+							$rowOut.='
+							<tr>
+								<td></td>
+								<td colspan="3"><img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/stiblet_medium2.gif','width="468" height="1"').' class="c-divider" alt="" /></td>
+							</tr>';
+						}
+					}
+
+						// Add spacer between sections in the vertical list
+					if ($counter)	{
+						$out.='
+							<tr>
+								<td></td>
+								<td colspan="3"><br /><br /><br /><br /></td>
+							</tr>';
+					}
+
+						// Add section header:
+					$newP = $this->newContentElementOnClick($id,$key,$this->tt_contentConfig['sys_language_uid']);
+					$out.='
+
+						<!-- Column header: -->
+						<tr>
+							<td></td>
+							<td valign="top" colspan="3">'.
+								$this->tt_content_drawColHeader(t3lib_BEfunc::getProcessedValue('tt_content','colPos',$key), ($this->doEdit&&count($rowArr)?'&edit[tt_content]['.$editUidList.']=edit'.$pageTitleParamForAltDoc:''), $newP).
+								$theNewButton.
+								'<br /></td>
+						</tr>';
+
+						// Finally, add the content from the records in this column:
+					$out.=$rowOut;
+				}
+
+					// Finally, wrap all table rows in one, big table:
+				$out = '
+					<table border="0" cellpadding="0" cellspacing="0" width="400" class="typo3-page-columnsMode">
+						'.$out.'
+					</table>';
+
+					// CSH:
+				$out.= t3lib_BEfunc::cshItem($this->descrTable,'columns_single',$GLOBALS['BACK_PATH']);
+			} else {
+				$out = '<br/><br/>'.$GLOBALS['SOBE']->doc->icons(1).'Sorry, you cannot view a single language in this localization mode (Default Language Binding is enabled)<br/><br/>';
 			}
-
-				// Finally, wrap all table rows in one, big table:
-			$out = '
-				<table border="0" cellpadding="0" cellspacing="0" width="400" class="typo3-page-columnsMode">
-					'.$out.'
-				</table>';
-
-				// CSH:
-			$out.= t3lib_BEfunc::cshItem($this->descrTable,'columns_single',$GLOBALS['BACK_PATH']);
 		}
 
 
@@ -1471,7 +1479,7 @@ class tx_cms_layout extends recordList {
 	 * @param	integer		Amount of pixel space above the header.
 	 * @return	string		HTML table with the record header.
 	 */
-	function tt_content_drawHeader($row,$space=0)	{
+	function tt_content_drawHeader($row,$space=0,$disableMoveAndNewButtons=FALSE,$langMode=FALSE)	{
 		global $TCA;
 
 			// Load full table description:
@@ -1487,6 +1495,7 @@ class tx_cms_layout extends recordList {
 			// Create header with icon/lock-icon/title:
 		$header = $this->getIcon('tt_content',$row).
 				$lockIcon.
+				($langMode ? $this->languageFlag($row['sys_language_uid']) : '').
 				'&nbsp;<b>'.htmlspecialchars($this->CType_labels[$row['CType']]).'</b>';
 		$out = '
 					<tr>
@@ -1515,34 +1524,36 @@ class tx_cms_layout extends recordList {
 						'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/edit2.gif','width="11" height="12"').' title="'.htmlspecialchars($this->nextThree>1?sprintf($GLOBALS['LANG']->getLL('nextThree'),$this->nextThree):$GLOBALS['LANG']->getLL('edit')).'" alt="" />'.
 						'</a>';
 
-					// New content element:
-				if ($this->option_newWizard)	{
-					$onClick="document.location='db_new_content_el.php?id=".$row['pid'].'&sys_language_uid='.$row['sys_language_uid'].'&colPos='.$row['colPos'].'&uid_pid='.(-$row['uid']).'&returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))."';";
-				} else {
-					$params='&edit[tt_content]['.(-$row['uid']).']=new';
-					$onClick = t3lib_BEfunc::editOnClick($params,$this->backPath);
-				}
-				$out.='<a href="#" onclick="'.htmlspecialchars($onClick).'">'.
-						'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/new_record.gif','width="16" height="12"').' title="'.$GLOBALS['LANG']->getLL('newAfter',1).'" alt="" />'.
-						'</a>';
+				if (!$disableMoveAndNewButtons)	{
+						// New content element:
+					if ($this->option_newWizard)	{
+						$onClick="document.location='db_new_content_el.php?id=".$row['pid'].'&sys_language_uid='.$row['sys_language_uid'].'&colPos='.$row['colPos'].'&uid_pid='.(-$row['uid']).'&returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))."';";
+					} else {
+						$params='&edit[tt_content]['.(-$row['uid']).']=new';
+						$onClick = t3lib_BEfunc::editOnClick($params,$this->backPath);
+					}
+					$out.='<a href="#" onclick="'.htmlspecialchars($onClick).'">'.
+							'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/new_record.gif','width="16" height="12"').' title="'.$GLOBALS['LANG']->getLL('newAfter',1).'" alt="" />'.
+							'</a>';
 
-					// Move element up:
-				if ($this->tt_contentData['prev'][$row['uid']])	{
-					$params='&cmd[tt_content]['.$row['uid'].'][move]='.$this->tt_contentData['prev'][$row['uid']];
-					$out.='<a href="'.htmlspecialchars($GLOBALS['SOBE']->doc->issueCommand($params)).'">'.
-							'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/button_up.gif','width="11" height="10"').' title="'.$GLOBALS['LANG']->getLL('moveUp',1).'" alt="" />'.
-							'</a>';
-				} else {
-					$out.='<img src="clear.gif" '.t3lib_iconWorks::skinImg($this->backPath,'gfx/button_up.gif','width="11" height="10"',2).' alt="" />';
-				}
-					// Move element down:
-				if ($this->tt_contentData['next'][$row['uid']])	{
-					$params='&cmd[tt_content]['.$row['uid'].'][move]='.$this->tt_contentData['next'][$row['uid']];
-					$out.='<a href="'.htmlspecialchars($GLOBALS['SOBE']->doc->issueCommand($params)).'">'.
-							'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/button_down.gif','width="11" height="10"').' title="'.$GLOBALS['LANG']->getLL('moveDown',1).'" alt="" />'.
-							'</a>';
-				} else {
-					$out.='<img src="clear.gif" '.t3lib_iconWorks::skinImg($this->backPath,'gfx/button_down.gif','width="11" height="10"',2).' alt="" />';
+						// Move element up:
+					if ($this->tt_contentData['prev'][$row['uid']])	{
+						$params='&cmd[tt_content]['.$row['uid'].'][move]='.$this->tt_contentData['prev'][$row['uid']];
+						$out.='<a href="'.htmlspecialchars($GLOBALS['SOBE']->doc->issueCommand($params)).'">'.
+								'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/button_up.gif','width="11" height="10"').' title="'.$GLOBALS['LANG']->getLL('moveUp',1).'" alt="" />'.
+								'</a>';
+					} else {
+						$out.='<img src="clear.gif" '.t3lib_iconWorks::skinImg($this->backPath,'gfx/button_up.gif','width="11" height="10"',2).' alt="" />';
+					}
+						// Move element down:
+					if ($this->tt_contentData['next'][$row['uid']])	{
+						$params='&cmd[tt_content]['.$row['uid'].'][move]='.$this->tt_contentData['next'][$row['uid']];
+						$out.='<a href="'.htmlspecialchars($GLOBALS['SOBE']->doc->issueCommand($params)).'">'.
+								'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/button_down.gif','width="11" height="10"').' title="'.$GLOBALS['LANG']->getLL('moveDown',1).'" alt="" />'.
+								'</a>';
+					} else {
+						$out.='<img src="clear.gif" '.t3lib_iconWorks::skinImg($this->backPath,'gfx/button_down.gif','width="11" height="10"',2).' alt="" />';
+					}
 				}
 
 					// Hide element:

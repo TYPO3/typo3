@@ -389,7 +389,7 @@ class tslib_pibase {
 		if (eregi('(.*)(<a[^>]*>)(.*)',$str,$match))	{
 			$aTagContent = t3lib_div::get_tag_attributes($match[2]);
 			$match[2]='<a href="#" onclick="'.
-				htmlspecialchars('vHWin=window.open(\''.$aTagContent['href'].'\',\''.($winName?$winName:md5($aTagContent['href'])).'\',\''.$winParams.'\');vHWin.focus();return false;').
+				htmlspecialchars('vHWin=window.open(\''.$GLOBALS['TSFE']->baseUrlWrap($aTagContent['href']).'\',\''.($winName?$winName:md5($aTagContent['href'])).'\',\''.$winParams.'\');vHWin.focus();return false;').
 				'">';
 			$str=$match[1].$match[2].$match[3];
 		}

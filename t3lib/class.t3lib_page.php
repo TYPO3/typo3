@@ -292,7 +292,7 @@ class t3lib_pageSelect {
 	 * @param	string	Overlay mode. If "hideNonTranslated" then records without translation will not be returned un-translated but unset (and return value is false)
 	 * @return	mixed	Returns the input record, possibly overlaid with a translation. But if $OLmode is "hideNonTranslated" then it will return false if no translation is found.
 	 */
-	function getRecordOverlay($table,$row,$sys_language_content,$OLmode)	{
+	function getRecordOverlay($table,$row,$sys_language_content,$OLmode='')	{
 		global $TCA;
 
 		if ($row['uid']>0 && $row['pid']>0)	{
@@ -332,7 +332,7 @@ class t3lib_pageSelect {
 										}
 									}
 								}
-							} elseif ($OLmode=='hideNonTranslated' && $row[$TCA[$table]['ctrl']['languageField']]==0)	{	// Unset, if non-translated records should be hidden. ONLY done if the source record really is default language and not [All] in which case it is allowed.
+							} elseif ($OLmode==='hideNonTranslated' && $row[$TCA[$table]['ctrl']['languageField']]==0)	{	// Unset, if non-translated records should be hidden. ONLY done if the source record really is default language and not [All] in which case it is allowed.
 								unset($row);
 							}
 
