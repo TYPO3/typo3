@@ -49,6 +49,21 @@ Teknisk set har alle database elementer et felt, "uid", som er et unikt identifi
 	'de' => Array (
 	),
 	'no' => Array (
+		'title.description' => 'Skriv inn tittelen pÂ siden eller mappen.',
+		'title.syntax' => 'Du mÂ skrive inn en sidetittel. Dette feltet er pÂkrevd.',
+		'.description' => 'Et "Side" element representerer normalt en webside i TYPO3. Alle sider har et ID nummer som kan benyttes for Â referere eller linke til sidene. Side-elementet inneholder ikke sidens innhold selv ñ til dette formÂlet b¯r du opprette "Innholdselementer".',
+		'.details' => 'Avhengig av sidens "Type" kan siden ogsÂ vÊre en innholdsmappe for database elementer i TYPO3. I slike tilfeller er ikke siden n¯dvendigvis tilgjengelig som en webside, men kun internt i sidetreet som et sted hvor elementer som brukere, innmeldinger etc. kan lagres.
+Side-tabellen er selve TYPO3s ryggrad. Alle element (records) som kan redigeres med TYPO3 skal "tilh¯re" en side. Det er akkurat som med filer og mapper pÂ din datamaskins harddisk.
+Sidene er organisert i en trestruktur som ikke bare er veldig praktisk metode for strukturering i alminnelighet, men som ogsÂ er en optimal gjengivelse av hvordan du b¯r organisere sidene pÂ webomrÂdet ditt. PÂ den mÂten vil du se at sidetreet normalt er en refleksjon av webomrÂdets navigasjonstruktur.
+
+Teknisk sett har alle database elementer et felt, "uid", som er et unikt identifikasjonsnummer. Utover dette mÂ alle elementer ha et "pid" felt som inneholder uid-nummeret for den siden (page id) som de tilh¯rer. Hvis pid-feltet er null tih¯rer elementet "roten" av sidetreet. Det er kun administratorer som har tilgang til roten av sidetreet og videre mÂ en tabell konfigureres til Â tilh¯re enten roten eller et sted i sidetreets grener.',
+		'doktype.description' => 'Velg sidetype. Dette pÂvirker hvorvidt siden er en synlig webside eller brukes til andre formÂl.',
+		'doktype.details' => '"Standard" typen er en webside.
+"SysFolder" er en ikke-webside ñ en mappe som fungerer som oppbevaringsplass for valgfrie elementer.
+"Papirkurv" er ogsÂ et valg.
+
+<b>Merk:</b> Hver type har normalt et eget ikon tilknyttet. Dessuten kan visse typer vÊre utilgjengelige for en bruker (sÂ du kan oppleve at noen muligheter ikke er tilgjengelige for deg!). Hver type er satt opp til kun Â tillate visse tabellelementer pÂ siden. (SysFolder vil dog tillate et hvilket som helst element hvis du skulle fÂ problemer).',
+		'TSconfig.description' => 'TypoScript konfigurasjonskode for siden.',
 	),
 	'it' => Array (
 	),
@@ -65,6 +80,27 @@ Teknisk set har alle database elementer et felt, "uid", som er et unikt identifi
 	'si' => Array (
 	),
 	'fi' => Array (
+		'title.description' => 'Anna sivun tai hakemiston nimi.',
+		'title.syntax' => 'Sinun tulee antaa nimi sivulle. T‰m‰ on pakollinen tieto.',
+		'.description' => '\'Sivu\' (\'Page\')  tieto esitt‰‰ useimmiten kokonaista www-sivua Typo3ssa. Kaikilla sivuilla on ID-numero jonka perusteella niit‰ voidaan linkitt‰‰ ja referoida. \'Sivu\' tiedossa ei itsess‰‰n ole sis‰ltˆ‰ vaan t‰h‰n tarkoitukseen on Sinun luotava \'Sivun sis‰ltˆ\' (\'Page content\') tiedot.',
+		'.details' => '\'Tyyppi\' (\'\'Type\') valinnasta riippuen sivu voi toimia myˆs yleisen‰ Typo3 tietokannan elementtien varastona. T‰ss‰ tapauksessa sivut eiv‰t ole v‰ltt‰m‰tt‰ varsinaisia www-sivuston sivuja vaan sis‰isi‰ sivuja puurakenteessa jonne on talletettu tietoja, kuten k‰ytt‰j‰t, linkit, linkkiluokat tms.
+Sivutaulu on TYPO3n selk‰ranka. Kaikkien keskeisill‰ aliohjelmilla muokattavien tietojen TYPO3ssa on \'kuuluttavat\' sivulle. Tilanne on saman kaltainen kuin tiedostot ja hakemistot oman tietokoneesi kovalevyll‰.
+Sivut on j‰rjestetty puurakenteeseen joka ei ole ainoastaan k‰yt‰nnˆllinen menetelm‰ mutta  vastaa kuinka Sinun tulisi j‰rjest‰‰ sivut  optimaalisesti www-sivustollesi. N‰in huomaat normaalisti myˆs ett‰ puurakenne vastaa myˆs siirtymisi‰ www-sivustolla.
+
+Teknisesti kaikissa tietokannan elementeiss\' on \'uid\' joka on yksilˆllinen tunnus. Edelleen elementeill‰ tulee olla tieto \'pid\' joka sis‰lt‰‰ kunkin sivun \'uid\' tunnuksen mik‰m kukin elemntti kuuluu. Jos \'pid\' tieyto on nolla, tietoa kutsutaan silloin ns. juureksi (root).  Vain admistraattoreilla on oikeus juuren k‰sittelyyn. Lis‰ksi kaikkien taulun tietojen tulee olla asetettuja kuulumaan joko johonkin sivuun tai juureen.',
+		'doktype.description' => 'Valitse sivun tyyppi. T‰m‰n vaikutus on; kuuluuko sivu johonkin n‰kyv‰‰n sivuun vai k‰ytet‰‰nkˆ sit‰ muuhun tarkoitukseen.',
+		'doktype.details' => '\'Standard\' tyyppi on normaali esitett‰v‰ www-sivu.
+\'SysFolder\' tarkoittaa ei-esitett‰v‰‰ sivua - se esitt‰‰ hakemistoa jonne on tallennettu haluamiasi tietoja.
+\'Filecycler\' tarkoittaa roskakoria.
+
+<B>Huomautus:</B>Eri tyypeill‰ on yleens‰ erilaiset ikonit. On huomattavaa ettei kaikkia tyyppej‰ ole k‰ytˆss‰ erilaisilla k‰ytt‰jill‰ (voit ehk‰ huomata sen nytkin!) Ja lopuksi, erilaiset tyypit on konfiguroitu k‰ytt‰m‰‰n ainoastaan m‰‰rittyj‰ taulu tietoja sivuilla (SysFolder mahdollistaa mink‰ tahansa tiedon jos Sinulla on ongelmia).',
+		'TSconfig.description' => 'Sivun TypoScript asetukset.',
+		'TSconfig.details' => 'Periaatteessa \'TypoScript\' on konsepti jolla annetaan arvoja puu-rakenteessa. T‰m‰ tulee erityisesti esille luotaessamallinteita TYPO3 www-sivustoille.
+Kuitenkin samaa periaatetta k‰ytet‰‰n kun annetaan arvoja hierarkkisesti konfiguroitaessa erilaisia ominaisuuksia taustatoiminnoille, apuohjelmien toiminnalle jne.
+Lopputuloksena syntyy sivulle \'TSconfig\' joka on itse asiassa kaikkien arvojen summa juuresta kullekin sivulle asti. Myˆs ko. sivun alasivut saavat vaikutuksen ylemmist‰.Sivun TSconfig tiedodoista saa tulosteen valikosta \'Sivun TSconfig\' (\'Page TSconfig\') \'Web>Info\' modulissa (lis‰ohjelma "info_pagetsconfig" tuleeolla asennettuna).',
+		'TSconfig.syntax' => 'Perus TypoScript syntaksi <em>ilman</em> \'Conditions\' ja \'Constants\'.
+
+Suositellaan vain admin-k‰ytt‰jille p‰‰sy‰ t‰h‰n tietoon!',
 	),
 	'tr' => Array (
 	),

@@ -48,6 +48,27 @@ Your PHP-configuration may also impose other restrictions on you if safe-mode li
 	'si' => Array (
 	),
 	'fi' => Array (
+		'.description' => 'Tiedostoasetukset (filemount) kuvaavattiedostopolkua palvelimella, relatiivista tai absoluuuttista.',
+		'.details' => 'Luomalla tiedostoasetus tiedon ja asettamalla sen viitteeksi Tausta käyttäjäjoukolla voit antaa käyttäjäoikeuksia tiedostoasetuksille File->List aliohjelmassa.
+Sinun tulee luoda vähintään yksi tiedostoasetus jossa hakemistona on \'_temp_\' jotta käyttäjä pystyvät myös viemään tiedostoja palvelimelle.
+Tiedostoasetuksella voidaan konfiguroida ,yös polku jonne käyttäjällä on FTP-oikeus. Muista vain asettaa tiedosto-oikeudetoikein siten että www-palvelinkäyttäjä (millä PHP toimii) on vähintäin luku oikeus FTP-hakemistoon.',
+		'_.seeAlso' => 'be_users,
+be_groups',
+		'title.description' => 'Anna tiedostoasetuksen (Filemount) nimi',
+		'path.description' => 'Anna tiedostoasetusten polku, joko relatiivinen tai absoluuttinen, riippuen BASE asetuksista.',
+		'path.details' => 'Jos Base on asetettu relatiiviseksi, voimassa oleva polku löytyy hakemiston fileadmin/ alta www-palvelimessa.
+Näin ollen Sinun tulee asettaa hakemisto \'fileadmin/\' poluksi. Esimerkiksi jos haluat tiedostoasetukseksi "fileadmin/user_upload/all/" on Sinun annettava PATH tiedoksi "user_upload/all/".
+Jos BASE on absoluuttinen, on Sinun annettava absoluuttinen polku palvelimessa, esim. /home/ftp_upload" tai "C:/home/ftp_upload". 
+
+<strong>Huomautus:</strong> Kaikissa tapuksissa, varmista että palvelinkäyttäjä jolla PHP toimii on <em>ainakint</em> luku-oikeudet polkuun. Jos näin ei ole, tiedostoasetukset eivät yksinkertaisesti tule näkyviin eikä varoituksia.
+Jos Sinulla on ongelmia - erityisesti absoluuttisten asetusten kanssa - yrita asettaa jotain \'yksinkertaista\' kuten relatiivinen asetus fileadmin hakemiston sisällä. Jos tämätoimii oikein yritä asettaa absoluuttinen polku.
+
+Voi olla että myös PHP-asetukset aiheuttavat rajoituksia Sinulle. kuten esimerkikis safe-moodi asetukset. Käytä silloin relatiivisia asetuksia.',
+		'_path.seeAlso' => 'sys_filemounts:base',
+		'hidden.description' => 'Käytä tätä vaihtoehtoa poistaaksesi tiedostoasetukset väliaikaisesti.',
+		'hidden.details' => 'Kenelläkään taustkäyttäjälle ei ole enää oikeuksia tiedostoasetukseen. Tämä koskee myös \'Admin\'-käyttäjiä.',
+		'base.description' => 'Tällä päätellään onko PATH kentän tieto tunnistettava absoluuttiseksi vai relatiiviseksi poluksi fileadmin/ hakemiston alla olevaksi alihakemistoksi',
+		'_base.seeAlso' => 'sys_filemounts:path',
 	),
 	'tr' => Array (
 	),

@@ -20,6 +20,10 @@ $LOCAL_LANG = Array (
 	'de' => Array (
 	),
 	'no' => Array (
+		'quickEdit.description' => 'Hurtigredigering gir deg direkte adgang til formfeltene for sidens innhold.',
+		'quickEdit.details' => 'Hurtigredigering er designet for å skjære ned på antall museklikk som trengs for å redigere en sides innhold. Du klikker ganske enkelt på sidens tittel i sidetreet og du vil straks se det første innholdselementet fra den normale tekstkolonnen innlest i liste-vinduet. I verktøylinjen øverst kan du velge andre innholdselementer på siden.',
+		'quickEdit_selElement.description' => 'Dette er en oversikt over innholdselementene på denne siden. Velg et annet element eller klikk på et "Ny" ikon for å opprette et nytt innholdselement.',
+		'columns.description' => 'Via "Kolonne" visningen kan du kontrollere innholdet på siden i henhold til hvordan det er plassert i kolonner.',
 	),
 	'it' => Array (
 	),
@@ -28,14 +32,25 @@ $LOCAL_LANG = Array (
 	'es' => Array (
 	),
 	'nl' => Array (
+		'quickEdit.description' => 'SnelBewerken geeft directe toegang tot de formulier velden van de pagina-inhoud.',
+		'quickEdit.details' => 'SnelBewerken is bedoeld om met zo weinig mogelijk kliks bij de pagina-inhoud te komen. Door op de paginatitel in de paginaboom te klikken wordt het eerste inhoudselement in de kolom \'NORMAAL\' geladen in het lijstframe. In de knoppenbalk bovenin kunnen middels een selectieveld de andere inhoudselementen worden gekozen.',
+		'quickEdit_selElement.description' => 'Dit is een overzicht van de inhoudselementen op deze pagina. Selecteer een ander element om te bewerken of klik een "Nieuw" pictogram om een nieuw inhoudselement aan te maken.',
+		'columns.description' => 'Middels het "Kolommen" aanzicht kan de positie van de inhoud worden gemanipuleerd in de aanwezige kolommen.',
 	),
 	'cz' => Array (
 	),
 	'pl' => Array (
+		'quickEdit.description' => 'Szybki Edytor umo¿liwia bezpo¶redni± edycjê pól formatki dla elementów tre¶ci.',
+		'quickEdit_selElement.description' => 'To jest ogólny widok elementów tre¶ci na tej stronie. Wybierz element do edycji lub kliknij ikonê "Nowy" aby dodaæ now± zawarto¶æ.',
+		'columns.description' => 'W widoku "kolumnowym" mo¿esz kontrolowaæ zawarto¶æ strony przyporz±dkowan± do poszczególnych kolumn.',
 	),
 	'si' => Array (
 	),
 	'fi' => Array (
+		'quickEdit.description' => 'Quick Editor antaaSinulle suoraan pääsyn lomakkeen tietoihin sisältö sivulla.',
+		'quickEdit.details' => 'Quick Editor on suunniteltu vähentämään näppäin valintoja päästäksesi muotoilemaan sivun sisältöä. Näpsäyttämällä sivun otsikko sivujen puurakenteessa saat ladatuksi ensimmäisen sisältöelementin normaalina sarakkeena. Ylävalikosta voit valita muita sisältöelementtejä.',
+		'quickEdit_selElement.description' => 'Tämä on yleiskatsaus sisältöelementteihin tällä sivulla. Valitse toinen elementti muotoiltavaksi tai näpsäytä "new"/"Uusi" ikonia luodaksesi uuden sisältö elementin.',
+		'columns.description' => 'Sarake näkymässä voit hallita websivun sisältöä kuten se on muotoiltu sarakkeisiin.',
 	),
 	'tr' => Array (
 	),
@@ -56,6 +71,10 @@ $LOCAL_LANG = Array (
 	'is' => Array (
 	),
 	'hr' => Array (
+		'quickEdit.description' => 'Brzi "Quick" editor daje direktan pristup poljima sadraja na stranicama.',
+		'quickEdit.details' => 'Brzi "Quick" editor je napravljen da smanji broj klikova potrebnih za editiranje sadraja stranice. Jednostavnim klikom na naslov stranice u stablu dobijate prvi sadrajni element u "normal" koloni uèitan u "list" okvir. Na alatnoj traci pri vrhu moete odabrati druge elemente na stranici.',
+		'quickEdit_selElement.description' => 'Ovo je pregled elementa koji èine sadraj stranice. Odaberite novi element za ureğivanje ili kliknite ikonu "Novo" za kreiranje novog elementa.',
+		'columns.description' => 'Pogledom "Kolone" moete upravljati sadrajem web stranice kao da je posloen u kolonama.',
 	),
 	'hu' => Array (
 	),

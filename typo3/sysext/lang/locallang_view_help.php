@@ -27,6 +27,7 @@ $LOCAL_LANG = Array (
 		'goBack' => 'Zurück',
 		'fullDescription' => 'Komplette Beschreibung der Tabelle ansehen',
 		'close' => 'Schliessen',
+		'title' => 'TYPO3 Online Hilfe',
 	),
 	'no' => Array (
 		'details' => 'Detaljer',
@@ -35,6 +36,7 @@ $LOCAL_LANG = Array (
 		'goBack' => 'Gå tilbake',
 		'fullDescription' => 'Se hele tabellbeskrivelsen',
 		'close' => 'Lukk',
+		'title' => 'TYPO3 Online Hjelp',
 	),
 	'it' => Array (
 		'details' => 'Dettagli',
@@ -65,8 +67,9 @@ $LOCAL_LANG = Array (
 		'syntax' => 'Syntax',
 		'seeAlso' => 'Zie ook',
 		'goBack' => 'Ga terug',
-		'fullDescription' => 'Zie volledige omschrijving van deze tabel.',
+		'fullDescription' => 'Bekijk volledige omschrijving van deze tabel.',
 		'close' => 'Sluiten',
+		'title' => 'TYPO3 Online Help',
 	),
 	'cz' => Array (
 		'details' => 'Detaily',
@@ -83,6 +86,7 @@ $LOCAL_LANG = Array (
 		'goBack' => 'Powrót',
 		'fullDescription' => 'Zobacz pe³ny opis tablicy',
 		'close' => 'Zamknij',
+		'title' => 'Pomoc online TYPO3',
 	),
 	'si' => Array (
 		'details' => 'Podrobnosti',
@@ -97,8 +101,9 @@ $LOCAL_LANG = Array (
 		'syntax' => 'Syntaksi',
 		'seeAlso' => 'Katso myös',
 		'goBack' => 'Takaisin',
-		'fullDescription' => 'Katso koko tauln kuvausta',
+		'fullDescription' => 'Katso koko taulun kuvausta',
 		'close' => 'Sulje',
+		'title' => 'Typo3 online ohjeet',
 	),
 	'tr' => Array (
 		'details' => 'Ayrntılar',

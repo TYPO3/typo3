@@ -318,6 +318,7 @@ class t3lib_iconWorks	{
 	 * @param	integer		The number of the fe_group record uid if applicable
 	 * @param	boolean		Flag determines if the protected-section icon should be applied.
 	 * @param	string		Absolute path to file from which to create the icon.
+	 * @param	string		The filename that this icon should have had, basically [icon base name]_[flags].[extension] - used for part of temporary filename
 	 * @return	string		Filename relative to PATH_typo3
 	 * @access private
 	 */

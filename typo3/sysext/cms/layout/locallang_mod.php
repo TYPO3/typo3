@@ -103,7 +103,7 @@ $LOCAL_LANG = Array (
 	),
 	'hr' => Array (
 		'mlang_labels_tablabel' => 'Sadraj stranice',
-		'mlang_labels_tabdescr' => 'Ovaj modul omugaæava kreiranje i ureğivanje web stranica. Ovdje se nalazi Quick-Editor za trenutni pristup osnovnom sadraju stranice. Uz to ovdje se moe upravljati raznim jezicima ili kolonama sadraja po stranici. Konaèno odavdje se moe pristupiti posebnim sadrajima stranice poput uestbookam, foruma ili shopping cart-a. Modul isto tako prikazuje statistiku posjeta stranicama za pojedinu stranicu.',
+		'mlang_labels_tabdescr' => 'Ovaj modul omugaæava kreiranje i ureğivanje web stranica. Ovdje se nalazi Quick-Editor za trenutni pristup osnovnom sadraju stranice. Uz to ovdje se moe upravljati raznim jezicima ili kolonama sadraja po stranici. Na kraju, odavdje se moe pristupiti posebnim sadrajima stranice poput guestbooka, foruma ili shopping cart-a. Modul isto tako prikazuje statistiku posjeta stranicama za pojedinu stranicu.',
 		'mlang_tabs_tab' => 'Stranica',
 	),
 	'hu' => Array (

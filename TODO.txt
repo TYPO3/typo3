@@ -997,3 +997,35 @@ Innovation, brainstorming for future
 - Drop tt_content for content rendering and let extensions be the sole source of new content element types?
 - Check sitecore ideas for adding new fields etc.
 - Backend for PDAs/Lynx
+
+
+************************************
+Translation of Extensions
+************************************
+
+These [global] extensions has priority when translating extensions:
+
+lang
+cms
+extra_page_cm_options
+rte
+imagelist
+aboutmodules
+lowlevel
+beuser
+setup
+taskcenter
+sys_action
+sys_messages
+sys_notepad
+taskcenter_recent
+taskcenter_rootlist
+sys_todos
+sys_workflows
+func_wizards
+wizard_crpages
+wizard_sortpages
+info_pagetsconfig
+indexed_search
+tt_guest
+mininews
