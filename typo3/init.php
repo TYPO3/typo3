@@ -153,6 +153,15 @@ require_once (PATH_t3lib.'class.t3lib_befunc.php');
 require_once (PATH_t3lib.'class.t3lib_cs.php');
 
 // **********************
+// Check Hardcoded lock on BE:
+// **********************
+if ($TYPO3_CONF_VARS['BE']['adminOnly'] < 0)	{
+	header('Status: 404 Not Found');	// Send Not Found header - if the webserver can make use of it...
+	header('Location: http://');	// Just point us away from here...
+	exit;	// ... and exit good!
+}
+
+// **********************
 // Check IP
 // **********************
 if (trim($TYPO3_CONF_VARS['BE']['IPmaskList']))	{

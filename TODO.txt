@@ -818,7 +818,7 @@ DB->HTML
 - Basically this is an rsync/ftp sync question which requires a set of static files.
 - Also a "mixed mode" concept where static files not found are server dynamically by TYPO3, but where the TYPO3 install does NOT allow backend access at all - only frontend delivery.
 
-Two situation:
+Two situations:
 - Publish static for local server, using mod_rewrite to direct requests transparently (static/dynamic). So all *.html requests WILL be found, static or dynamically! (Static/Dynamic blend)
 - Publish static for FTP server. All *.html requests MUST exist. (Purely static, limitations acceptable.)
 

@@ -163,12 +163,12 @@ class t3lib_beUserAuth extends t3lib_userAuthGroup {
 	 */
 	function checkLockToIP()	{
 		global $TYPO3_CONF_VARS;
-		$out=1;
+		$out = 1;
 		if ($TYPO3_CONF_VARS['BE']['enabledBeUserIPLock'])	{
 			$IPList = $this->getTSConfigVal('options.lockToIP');
 			if (trim($IPList))	{
 				$baseIP = t3lib_div::getIndpEnv('REMOTE_ADDR');
-				$out=t3lib_div::cmpIP($baseIP, $IPList);
+				$out = t3lib_div::cmpIP($baseIP, $IPList);
 			}
 		}
 		return $out;

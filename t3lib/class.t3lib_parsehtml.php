@@ -519,6 +519,24 @@ class t3lib_parsehtml {
 											if (strcmp($params['removeIfEquals'],'') && !strcmp($this->caseShift($tagAttrib[0][$attr],$params['casesensitiveComp']),$this->caseShift($params['removeIfEquals'],$params['casesensitiveComp'])))	{
 												unset($tagAttrib[0][$attr]);
 											}
+											if ($params['prefixLocalAnchors'])	{
+												if (substr($tagAttrib[0][$attr],0,1)=='#')	{
+													$prefix = t3lib_div::getIndpEnv('TYPO3_REQUEST_URL');
+													$tagAttrib[0][$attr] = $prefix.$tagAttrib[0][$attr];
+													if ($params['prefixLocalAnchors']==2 && t3lib_div::isFirstPartOfStr($prefix,t3lib_div::getIndpEnv('TYPO3_SITE_URL')))		{
+														$tagAttrib[0][$attr] = substr($tagAttrib[0][$attr],strlen(t3lib_div::getIndpEnv('TYPO3_SITE_URL')));
+													}
+												}
+											}
+											if ($params['prefixRelPathWith'])	{
+												$urlParts = parse_url($tagAttrib[0][$attr]);
+												if (!$urlParts['scheme'] && substr($urlParts['path'],0,1)!='/')	{	// If it is NOT an absolute URL (by http: or starting "/")
+													$tagAttrib[0][$attr] = $params['prefixRelPathWith'].$tagAttrib[0][$attr];
+												}
+											}
+											if ($params['userFunc'])	{
+												$tagAttrib[0][$attr] = t3lib_div::callUserFunction($params['userFunc'],$tagAttrib[0][$attr],$this);
+											}
 										}
 									}
 									$tagParts[1]=$this->compileTagAttribs($tagAttrib[0],$tagAttrib[1]);

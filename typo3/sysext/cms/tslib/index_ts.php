@@ -177,7 +177,7 @@ if ($HTTP_COOKIE_VARS['be_typo_user']) {		// If the backend cookie is set, we pr
 			$BE_USER->fetchGroupData();
 			$TSFE->beUserLogin=1; 
 		}
-		if ($BE_USER->checkLockToIP())	{
+		if ($BE_USER->checkLockToIP() && $BE_USER->checkBackendAccessSettingsFromInitPhp())	{
 			$BE_USER->extInitFeAdmin();
 			if ($BE_USER->extAdmEnabled)	{
 				require_once(t3lib_extMgm::extPath('lang').'lang.php');
@@ -218,7 +218,7 @@ if ($HTTP_COOKIE_VARS['be_typo_user']) {		// If the backend cookie is set, we pr
 					}
 				}
 	
-				if ($TSFE->forceTemplateParsing || $TSFE->displayEditIcons || $TSFE->displayFieldEditIcons)	{$TSFE->set_no_cache();}
+				if ($TSFE->forceTemplateParsing || $TSFE->displayEditIcons || $TSFE->displayFieldEditIcons)	{ $TSFE->set_no_cache(); }
 			}
 	
 	//		$WEBMOUNTS = (string)($BE_USER->groupData['webmounts'])!='' ? explode(',',$BE_USER->groupData['webmounts']) : Array();

@@ -1044,9 +1044,10 @@
 				// Setting these specifically (like in the init-function):
 			if (isset($GET_VARS['type']))		$this->type = $GET_VARS['type'];
 			if (isset($GET_VARS['cHash']))		$this->cHash = $GET_VARS['cHash'];
-			if (isset($GET_VARS['no_cache']))	$this->no_cache = $GET_VARS['no_cache'] ? 1 : 0;
 			if (isset($GET_VARS['jumpurl']))	$this->jumpurl = $GET_VARS['jumpurl'];
 			if (isset($GET_VARS['MP']))			$this->MP = $this->TYPO3_CONF_VARS['FE']['enable_mount_pids'] ? $GET_VARS['MP'] : '';
+
+			if (isset($GET_VARS['no_cache']) && $GET_VARS['no_cache'])	$this->set_no_cache();
 		}
 	}	
 	
