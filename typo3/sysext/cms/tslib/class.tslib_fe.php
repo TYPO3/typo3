@@ -49,7 +49,7 @@
  *
  *              SECTION: Initializing, resolving page id
  *  436:     function initFEuser()	
- *  490:     function checkAlternativeIdMethods()	
+ *  490:     function checkAlternativeIdMethods()
  *  543:     function clear_preview()	
  *  556:     function determineId()	
  *  637:     function fetch_the_id()	
@@ -531,7 +531,7 @@
 			foreach($TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['checkAlternativeIdMethods-PostProc'] as $_funcRef)	{
 				t3lib_div::callUserFunction($_funcRef,$_params,$this);
 			}
-		}			
+		}
 	}
 	
 	/**

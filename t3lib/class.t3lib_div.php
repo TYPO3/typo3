@@ -2962,11 +2962,11 @@ class t3lib_div {
 	 *
 	 * Usage: 3
 	 *
-	 * @param	string		Method reference, [class]->[method] or [function]. You can prefix this reference with "[file-reference]:" and t3lib_div::getFileAbsFileName() will then be used to resolve the filename and subsequently include it by "require_once()" which means you don't have to worry about including the class file either! Example: "EXT:realurl/class.tx_realurl.php:tx_realurl->>encodeSpURL". Finally; for method references the normal operator "->" creates a new instance each time; if you use "->>" instead you will reuse the previous instance of the object identified by the full reference string (meaning; if you call another method in the same class another object is created for that).
+	 * @param	string		Function/Method reference, '[file-reference":"]["&"]class/function["->"method-name]'. You can prefix this reference with "[file-reference]:" and t3lib_div::getFileAbsFileName() will then be used to resolve the filename and subsequently include it by "require_once()" which means you don't have to worry about including the class file either! Example: "EXT:realurl/class.tx_realurl.php:&tx_realurl->encodeSpURL". Finally; you can prefix the class name with "&" if you want to reuse a former instance of the same object call.
 	 * @param	mixed		Parameters to be pass along (typically an array) (REFERENCE!)
 	 * @param	mixed		Reference to be passed along (typically "$this" - being a reference to the calling object) (REFERENCE!)
 	 * @param	string		Required prefix of class or function name
-	 * @param	boolean		If set, not debug() error message is shown if class/function is not present.
+	 * @param	boolean		If set, no debug() error message is shown if class/function is not present.
 	 * @return	mixed		Content from method/function call
 	 * @see getUserObj()
 	 */
@@ -2991,12 +2991,20 @@ class t3lib_div {
 			$funcRef = $funcName;
 		}
 
+			// Check for persistent object token, "&"
+		if (substr($funcRef,0,1)=='&')	{
+			$funcRef = substr($funcRef,1);
+			$storePersistentObject = TRUE;
+		} else {
+			$storePersistentObject = FALSE;
+		}
+
 			// Check prefix is valid:
 		if ($checkPrefix &&
 			!t3lib_div::isFirstPartOfStr(trim($funcRef),$checkPrefix) &&
 			!t3lib_div::isFirstPartOfStr(trim($funcRef),'tx_')
 			)	{
-			if (!$silent)	debug("Function '".$funcRef."' was not prepended with '".$checkPrefix."'",1);
+			if (!$silent)	debug("Function/Class '".$funcRef."' was not prepended with '".$checkPrefix."'",1);
 			return FALSE;
 		}
 
@@ -3004,15 +3012,19 @@ class t3lib_div {
 		$parts = explode('->',$funcRef);
 		if (count($parts)==2)	{	// Class
 
-				// Check for persistent object token, "->>"
-			if (substr($parts[1],0,1)=='>')	{
-				$parts[1] = substr($parts[1],1);
-				$storePersistentObject = TRUE;
-			} else $storePersistentObject = FALSE;
-
 				// Check if class/method exists:
 			if (class_exists($parts[0]))	{
-				$classObj = new $parts[0];
+
+					// Get/Create object of class:
+				if ($storePersistentObject)	{	// Get reference to current instance of class:
+					if (!is_object($GLOBALS['T3_VAR']['callUserFunction_classPool'][$parts[0]]))	{
+						$GLOBALS['T3_VAR']['callUserFunction_classPool'][$parts[0]] = &t3lib_div::makeInstance($parts[0]);
+					}
+					$classObj = &$GLOBALS['T3_VAR']['callUserFunction_classPool'][$parts[0]];
+				} else {	// Create new object:
+					$classObj = &t3lib_div::makeInstance($parts[0]);
+				}
+
 				if (method_exists($classObj, $parts[1]))	{
 
 						// If persistent object should be created, set reference:
@@ -3045,13 +3057,18 @@ class t3lib_div {
 		return $content;
 	}
 
+
+
+
+
+
 	/**
 	 * Creates and returns reference to a user defined object.
-	 * This function can return an object reference if you like. Just prefix the function call with "&": "$objRef = &t3lib_div::getUserObj('EXT:myext/class.tx_myext_myclass.php:>tx_myext_myclass');"
+	 * This function can return an object reference if you like. Just prefix the function call with "&": "$objRef = &t3lib_div::getUserObj('EXT:myext/class.tx_myext_myclass.php:&tx_myext_myclass');". This will work ONLY if you prefix the class name with "&" as well. See description of function arguments.
 	 *
-	 * @param	string		Class reference, [file-reference]:[[">"]class-reference]. You can prefix the class name with "[file-reference]:" and t3lib_div::getFileAbsFileName() will then be used to resolve the filename and subsequently include it by "require_once()" which means you don't have to worry about including the class file either! Example: "EXT:realurl/class.tx_realurl.php:>tx_realurl". Finally; for the class name you can prefix it with ">" and you will reuse the previous instance of the object identified by the full reference string (meaning; if you ask for the same object later in another place in the code you will get a reference to the first created one!).
-	 * @param	string		Required prefix of class name
-	 * @param	boolean		If set, not debug() error message is shown if class/function is not present.
+	 * @param	string		Class reference, '[file-reference":"]["&"]class-name'. You can prefix the class name with "[file-reference]:" and t3lib_div::getFileAbsFileName() will then be used to resolve the filename and subsequently include it by "require_once()" which means you don't have to worry about including the class file either! Example: "EXT:realurl/class.tx_realurl.php:&tx_realurl". Finally; for the class name you can prefix it with "&" and you will reuse the previous instance of the object identified by the full reference string (meaning; if you ask for the same $classRef later in another place in the code you will get a reference to the first created one!).
+	 * @param	string		Required prefix of class name. By default "tx_" is allowed.
+	 * @param	boolean		If set, no debug() error message is shown if class/function is not present.
 	 * @return	object		The instance of the class asked for. Instance is created with t3lib_div::makeInstance
 	 * @see callUserFunction()
 	 */
@@ -3071,24 +3088,27 @@ class t3lib_div {
 				$class = $classRef;
 			}
 
-				// Check for persistent object token, ">"
-			if (substr($class,0,1)=='>')	{
+				// Check for persistent object token, "&"
+			if (substr($class,0,1)=='&')	{
 				$class = substr($class,1);
 				$storePersistentObject = TRUE;
-			} else $storePersistentObject = FALSE;
+			} else {
+				$storePersistentObject = FALSE;
+			}
 
 				// Check prefix is valid:
 			if ($checkPrefix &&
 				!t3lib_div::isFirstPartOfStr(trim($class),$checkPrefix) &&
 				!t3lib_div::isFirstPartOfStr(trim($class),'tx_')
 				)	{
-				if (!$silent)	debug("Function '".$class."' was not prepended with '".$checkPrefix."'",1);
+				if (!$silent)	debug("Class '".$class."' was not prepended with '".$checkPrefix."'",1);
 				return FALSE;
 			}
 
-				// Check if class/method exists:
+				// Check if class exists:
 			if (class_exists($class))	{
-				$classObj = t3lib_div::makeInstance($class);
+				$classObj = &t3lib_div::makeInstance($class);
+
 					// If persistent object should be created, set reference:
 				if ($storePersistentObject)	{
 					$GLOBALS['T3_VAR']['getUserObj'][$classRef] = &$classObj;

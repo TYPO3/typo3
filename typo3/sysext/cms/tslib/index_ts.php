@@ -180,7 +180,7 @@ if ($HTTP_COOKIE_VARS['be_typo_user']) {		// If the backend cookie is set, we pr
 		$BE_USER->unpack_uc('');
 		if ($BE_USER->user['uid'])	{
 			$BE_USER->fetchGroupData();
-			$TSFE->beUserLogin=1; 
+			$TSFE->beUserLogin = 1;
 		}
 		if ($BE_USER->checkLockToIP() && $BE_USER->checkBackendAccessSettingsFromInitPhp())	{
 			$BE_USER->extInitFeAdmin();
@@ -247,10 +247,12 @@ $TT->push('Process ID','');
 	$TSFE->determineId();
 
 		// Now, if there is a backend user logged in and he has NO access to this page, then re-evaluate the id shown!
-	if (is_object($BE_USER) && !$BE_USER->extPageReadAccess($TSFE->page))	{
+	if ($TSFE->beUserLogin && !$BE_USER->extPageReadAccess($TSFE->page))	{
+
 			// Remove user
-		$BE_USER='';
-		$TSFE->beUserLogin=0; 
+		unset($BE_USER);
+		$TSFE->beUserLogin = 0;
+
 			// Re-evaluate the page-id.
 		$TSFE->checkAlternativeIdMethods();
 		$TSFE->clear_preview();
