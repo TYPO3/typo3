@@ -1,5 +1,9 @@
 2004-07-12  Ingmar Schlecht  <ingmars@web.de>
 
+	* Fixed bug #167 and #206: IE does not display the image in the showpic.php popups if extension RealURL is used. Thanks to martin@beryllium.net for the patch.
+
+2004-07-12  Ingmar Schlecht  <ingmars@web.de>
+
 	*  Fixed bug #194: wizard_table.php, missing parameter 'backPath'
 
 2004-07-12  Ingmar Schlecht  <ingmars@web.de>

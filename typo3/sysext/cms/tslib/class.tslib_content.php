@@ -2480,7 +2480,16 @@ class tslib_cObj {
 				$md5_value = md5($imageFile.'|'.$conf['width'].'|'.$conf['height'].'|'.$conf['effects'].'|'.$GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'].'|');
 
 				$params.= '&md5='.$md5_value;
-				$url = $GLOBALS['TSFE']->absRefPrefix.'showpic.php?file='.rawurlencode($imageFile).$params;
+
+					// Find prefix for showpic.php, might be necessary when using extension RealURL
+				if ($GLOBALS['TSFE']->config['config']['baseURL']) {
+					$urlPrefix = intval($GLOBALS['TSFE']->config['config']['baseURL']) ? t3lib_div::getIndpEnv('TYPO3_SITE_URL') : $GLOBALS['TSFE']->config['config']['baseURL'];
+				}
+				else {
+					$urlPrefix = $GLOBALS['TSFE']->absRefPrefix;
+				}
+				$url = $urlPrefix.'showpic.php?file='.rawurlencode($imageFile).$params;
+
 				if ($conf['JSwindow.']['altUrl'] || $conf['JSwindow.']['altUrl.'])	{
 					$altUrl = $this->stdWrap($conf['JSwindow.']['altUrl'], $conf['JSwindow.']['altUrl.']);
 					if ($altUrl)	{
