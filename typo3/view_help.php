@@ -708,7 +708,7 @@ class SC_view_help {
 	 */
 	function createGlossaryIndex()	{
 		global $TCA_DESCR,$TCA,$LANG;
-
+return;
 			// Initialize:
 		$CSHkeys = array_flip(array_keys($TCA_DESCR));
 
