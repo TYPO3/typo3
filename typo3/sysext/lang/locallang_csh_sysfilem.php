@@ -93,6 +93,34 @@ Your PHP-configuration may also impose other restrictions on you if safe-mode li
 	'ro' => Array (
 	),
 	'ch' => Array (
+		'.description' => 'Filemounts描述在服务器上的一个文件路径,相对路径或绝对路径.',
+		'.details' => '在后端用户组中创建一个file mount记录并对此记录放置一个参考时,
+您可以允许一个用户在文件>列表模块中访问file mount.
+您需要创建并设置至少一个其中带有文件夹\'_temp_\'的filemount,
+如果您想用户通过网页浏览器上传文件.
+Filemounts也可以在服务器上配置到一个路径的访问,用户有该服务
+的FTP访问.只要记住在服务器上正确设置文件权限,使网站服务器
+用户(运行RHP的)至少有到FTP目录的读权限.',
+		'title.description' => '为filemount输入一个标题',
+		'path.description' => '输入filemount的路径,相对路径或绝对路径取决于BASE的设置.',
+		'path.details' => '如果BASE设置为相对,已mount的路径在网站的子目录"fileadmin/" 中找到.
+然后您应该在"fileadmin/"中输入路径子目录作为路径.例如,如果您想mount
+到"fileadmin/user_uploads/all/"的访问,那么输入值"user_uploads/all"作
+为路径值.
+如果BASE设置为绝对,您应该在服务器上输入绝对路径,
+如"/home/ftp_upload"或"C:/home/ftp_upload".
+
+<strong>注意:</strong>在任何情况下,确保PHP正在运行的网站服务器
+用户<em>至少</em>有到路径的读权限.如果没有,mount将不显示并且
+没有任何警告.
+如果您有问题-尤其是对于绝对mounts - 试着在fileadmin中mount一些
+类似于相对路径的东西.如果顺利工作的话,试一下绝对路径.
+
+您的PHP配置可能会增强对您的限制如果象安全-模式的特性为激活.
+那么使用相对路径.',
+		'hidden.description' => '使用此选项来暂时禁止filemount.',
+		'hidden.details' => '所有使用mount的后端用户将不再有访问权限.这包括\'管理员\'用户.',
+		'base.description' => '确定路径域的值是否为被识别为服务器上的一个绝对路径还是对于网站fileadmin/子目录的一个相对路径.',
 	),
 	'sk' => Array (
 	),

@@ -33,10 +33,10 @@ $LOCAL_LANG = Array (
 		'userInfo' => 'Hai avuto accesso come utente:',
 	),
 	'fr' => Array (
-		'introtext' => 'Web Content Management System',
-		'introtext2' => 'Voil� une br�ve description des modules disponibles:',
-		'endText' => 'Les fonctions peuvent varier selon votre h�b�ergeur et vos permissions.',
-		'userInfo' => 'Vous �tes identifi� en temps que :',
+		'introtext' => 'Syst�me de gestion de contenu Web',
+		'introtext2' => 'Voici une br�ve description des modules disponibles:',
+		'endText' => 'Les fonctions peuvent varier selon votre site web et selon vos droits d\'acc�s.',
+		'userInfo' => 'Vous avez ouvert votre session en tant que:',
 	),
 	'es' => Array (
 		'introtext' => 'Web Content Management System<br />Sistema de Administraci�n de Contenido',
@@ -203,6 +203,10 @@ $LOCAL_LANG = Array (
 	'jp' => Array (
 	),
 	'vn' => Array (
+		'introtext' => 'Hệ Thống Quản Lý Tài Liệu Trên Mạng',
+		'introtext2' => 'Cái này là tóm tắc của những modules hiện có:',
+		'endText' => 'Chức năng tùy theo trang mạng và phép',
+		'userInfo' => 'Bạn đang logged in as a user',
 	),
 );
 ?>

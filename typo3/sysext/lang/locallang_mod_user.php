@@ -23,7 +23,7 @@ $LOCAL_LANG = Array (
 		'mlang_tabs_tab' => 'Utente',
 	),
 	'fr' => Array (
-		'mlang_labels_tablabel' => 'Vos tâches personnelles, résumé et configuration',
+		'mlang_labels_tablabel' => 'Vos tâches personnelles et votre configuration.',
 		'mlang_tabs_tab' => 'Utilisateur',
 	),
 	'es' => Array (

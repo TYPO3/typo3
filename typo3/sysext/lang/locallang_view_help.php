@@ -64,9 +64,10 @@ $LOCAL_LANG = Array (
 		'details' => 'Détails',
 		'syntax' => 'Syntaxe',
 		'seeAlso' => 'Voir aussi',
-		'goBack' => 'Retour',
+		'goBack' => 'Page précédente',
 		'fullDescription' => 'Voir la description complète de la table',
 		'close' => 'Fermer',
+		'title' => 'Aide en ligne TYPO3',
 	),
 	'es' => Array (
 		'details' => 'Detalles',
@@ -75,6 +76,7 @@ $LOCAL_LANG = Array (
 		'goBack' => 'Regresar',
 		'fullDescription' => 'Ver descripción completa de la tabla',
 		'close' => 'Cerrar',
+		'title' => 'Ayuda en línea de TYPO3',
 	),
 	'nl' => Array (
 		'details' => 'Details',
@@ -170,6 +172,7 @@ $LOCAL_LANG = Array (
 		'goBack' => '·µ»Ø',
 		'fullDescription' => '²é¿´±í¸ñÏêÏ¸ÃèÊö',
 		'close' => '¹Ø±Õ',
+		'title' => 'TYPO3ÔÚÏß°ïÖú',
 	),
 	'sk' => Array (
 		'details' => 'Detaily',
@@ -187,6 +190,7 @@ $LOCAL_LANG = Array (
 		'goBack' => 'Gráğti atgal',
 		'fullDescription' => 'Şiûrëkite pilna lentelës aprağymà',
 		'close' => 'Uşdaryti',
+		'title' => 'TYPO3 Pagalba',
 	),
 	'is' => Array (
 		'details' => 'SmÃ¡atriÃ°i',
@@ -223,6 +227,7 @@ $LOCAL_LANG = Array (
 		'goBack' => '¡ÅÑºä»',
 		'fullDescription' => '´Ù¤ÓÍ¸ÔºÒÂáººàµçÁ¢Í§µÒÃÒ§',
 		'close' => '»Ô´',
+		'title' => 'ÃĞººªèÇÂàËÅ×Í TYPO ÍÍ¹äÅ¹ì',
 	),
 	'gr' => Array (
 	),

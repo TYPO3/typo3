@@ -101,8 +101,65 @@ admin_guide.pdf|http://www.typo3.com/doclink.php?key=admin_guide.pdf
 	'it' => Array (
 	),
 	'fr' => Array (
+		'.description' => 'Ceci est la table des utilisateurs du back-office d\'administration.',
+		'username.description' => 'Entrez le login de l\'utilisateur du back-office.',
+		'username.details' => 'Un nom d\'utilisateur est nécessaire et doit être composé de minuscules sans espaces. De plus, celui-ci doit être unique. S\'il existe déjà dans la base, un chiffre sera ajouté en suffixe automatiquement.',
+		'password.description' => 'Entrez le mot de passe pour l\'utilisateur du back-office ci-dessus (notez que la valeur que vous entrez <i>sera</i> lisible dans le champ!).',
+		'usergroup.description' => 'Attribuez un groupe à l\'utilisateur du back-office.',
+		'lockToDomain.description' => 'Entrez le nom de machine à partir de laquelle l\'utilisateur doit s\'enregistrer.',
+		'email.description' => 'Entrez l\'adresse email de l\'utilisateur.',
+		'realName.description' => 'Entrez le nom de l\'utilisateur, par ex. Paul Dupont.',
+		'admin.description' => 'Les utilisateurs \'Admin\' ont un accès TOTAL au système.',
 	),
 	'es' => Array (
+		'.description' => 'Esta es la tabla de administración de operadores.',
+		'username.description' => 'Introduce el nombre de usuario del operador.',
+		'username.details' => 'Un nombre de usuario es necesario y debe estar en minúsculas y sin espacios intermedios. Además, debe ser único. Si no es único se le añadirá un número al principio automáticamente.',
+		'password.description' => 'Introduce la contraseña para el operador (¡el valor que introduzcas <i>será</i> visible en el campo!).',
+		'password.details' => 'La contraseña es requerida. Antes de ser enviada al servidor se le aplicará un hash md5, que hará que el propio valor de la contraseña no sea transferido a través de Internet. Esto es así cuando se edita la contraseña y cuando el usuario se autentifica en el sistema.
+Mientras que este principio no revela la contraseña en crudo <i>no</i> es lo mismo que una encriptación real. Si necesitas el máximo nivel de seguridad debes instalar el backend de TYPO3 en un servidor seguro. La contraseña es almacenada en el servidor como un hash md5, así que tampoco es posible extraer la contraseña original desde la base de datos. Esto significa que las contraseñas que se pierdan deben ser sustituidas por unas completamente nuevas.',
+		'usergroup.description' => 'Asigna grupos de operadores al usuario.',
+		'usergroup.details' => 'Los grupos de operadores definen los permisos que el usuario operador heredará. Así que a no ser que el operador sea un usuario “Administrador” es necesario que sea miembro de uno o más grupos para tener cualquier permiso asignado. Las propiedades establecidas en los grupos de operadores suelen sumarse.
+El primer grupo en la lista (superior) es el grupo que, por defecto, será el dueño de las páginas que cree el operador.',
+		'lockToDomain.description' => 'Introduce el nombre del equipo desde el cual el usuario está forzado a autentificarse.',
+		'lockToDomain.details' => 'Un sistema TYPO3 puede tener varios dominios que le apunten. Esta opción asegura que los operadores sólo puedan acceder desde un cierto dominio.',
+		'disableIPlock.description' => 'Deshabilita el bloqueo a los usuarios del backend para la dirección IP remota.',
+		'disableIPlock.details' => 'Debes deshabilitar este bloqueo si los usuarios del backend están accediendo a TYPO3 desde conexiones RDSI o módem que puedan desconectarse y volver a conectarse con una nueva dirección IP. Esto también aplica a asignaciones DHCP de direcciones IP donde hay gran rotación de asignaciones.',
+		'db_mountpoints.description' => 'Asigna puntos de entrada para el árbol de páginas de los usuarios',
+		'db_mountpoints.details' => 'El árbol de páginas usado por todos mis submódulos Web para navegar debe tener algunos puntos de entrada definidos. Aquí deberías insertar una o más referencias a una página que representará una nueva página raíz para el árbol de páginas. Esto es conocido como un “Punto de montaje de base de datos”.
+Los Puntos de Montaje de BBDD pueden ser heredados por los usuarios miembros de este grupo. Esto depende de si el usuario está configurado para incluir los puntos de montaje establecidos en los grupos de usuarios a los que pertenece. De cualquier manera, es recomendable utilizar grupos de usuarios para configurar dichos puntos de montaje, especialmente si deben ser compartidos por varios usuarios.',
+		'file_mountpoints.description' => 'Asigna puntos de entrada para el árbol de carpetas de ficheros.',
+		'file_mountpoints.details' => 'El árbol de carpetas de ficheros es utilizado por todos los submódulos de “Fichero” para navegar entre las carpetas de servidor web.
+Como ocurre con los puntos de montaje de BBDD, los puntos de montaje de ficheros pueden ser heredados por los usuarios que son miembros de este grupo.',
+		'email.description' => 'Introduce la dirección de correo electrónico del usuario.',
+		'email.details' => 'La dirección de correo es bastante importante ya que es donde se envían los mensajes del sistema.
+<strong>Nota:</strong> el usuario puede cambiar este valor por si mismo desde el módulo Usuario>Configuración.',
+		'realName.description' => 'Introduce el nombre de pila del usuario. Ejemplo: Pepe Pardo',
+		'realName.details' => '<strong>Nota:</strong> el usuario puede cambiar este valor por si mismo desde el módulo Usuario>Configuración.',
+		'disable.description' => 'Esta opción incapacitará temporalmente el usuario para entrar al sistema.',
+		'admin.description' => '¡Los usuarios \'Administradores\' tienen acceso TOTAL al sistema!',
+		'admin.details' => 'Los “Administradores” pueden hacer todo lo que TYPO3 permite, así que este tipo de usuario solamente debe estar activo para labores de administración. Todo el uso diario debe ser realizado por operadores normales.
+Los “Administradores” no necesitan ser miembros de ningún grupo de operadores. De todas formas debes saber que cualquier página creada por un “Administrador” sin un grupo de operadores asignado no tendrá ningún grupo dueño, con lo que probablemente quede invisible a otros operadores. Si esto es un problema puedes resolverlo de manera sencilla asignando un grupo de operadores al “Administrador”. Esto no afecta a los permisos ya que son ilimitados, pero el primer grupo listado es por defecto el grupo dueño de las nuevas páginas creadas.
+Los usuarios “Administradores” son fácilmente reconocibles ya que aparecen con un icono rojo en lugar del icono azul habitual.
+No deberías asignar un usuario “Administrador” a otros usuarios, solamente a tí en todo caso.',
+		'options.description' => 'Selecciona si el usuario debe heredar los puntos de montaje de páginas o carpetas desde los grupos miembros.',
+		'options.details' => 'Es una gran ventaja permitir a los usuarios heredar puntos de montaje desde los grupos miembros ya que hace que la administración de esos puntos de montaje sea extremadamente sencilla.
+Si no marcas estas opciones, debes asegurarte de que los puntos de montaje para el árbol de páginas y las carpetas de ficheros están establecidos específicamente para este usuario.',
+		'fileoper_perms.description' => 'Selecciona permisos de operaciones sobre ficheros para el operador.',
+		'fileoper_perms.details' => 'Estas opciones se refieren a las funciones que se encuentran el el módulo Fichero>Lista así como en la subida genérica de ficheros.',
+		'starttime.description' => 'Introduce la fecha desde la cual la cuenta está activa.',
+		'endtime.description' => 'Introduce la fecha desde la cual la cuenta está desactivada.',
+		'lang.description' => 'Selecciona el <i>idioma</i> por defecto.',
+		'lang.details' => 'Esto determina el idioma del interfaz de backend para el operador. Todas las partes disponibles para operadores estarán disponibles en el idioma elegido.
+Los usuarios “Administradores” notarán que sus partes exclusivas de TYPO3 están en Inglés. Esto incluye todos los submódulos dentro de “Herramientas” y en el módulo Web>Template.
+
+<b>Nota:</b> Este es solamente el idioma por defecto. El operador puede cambiar el idioma desde el módulo Usuario>Configuración.',
+		'userMods.description' => 'Selecciona los módulos del backend disponibles para el operador.',
+		'userMods.details' => 'Esto determina qué elementos del menú están disponibles para el usuario.
+
+Esta misma lisa puede estar configurada para los grupos de operadores y éstas serán heredadas por el usuario además de las que selecciones aquí. Es bastante problable que no tengas que establecer ningún módulo para el operador y seleccionarlos en los grupos de los que es miembro. De cualquier manera, esta lista ofrece una estupenda manera de añadir un único módulo para ciertos operadores.',
+		'TSconfig.description' => 'Introduce código TSconfig adicional para el usuario (avanzado).',
+		'TSconfig.details' => 'Este campo permite extender la configuración del usuario en varios detalles. Como ejemplos de estas opciones tenemos incluir una configuración más detallada de los módulos de backend, establecer valores por defecto de tablas para usuarios, establecer opciones del RTE, etc... La lista irá creciendo en el tiempo y está plenamente documentada en la documentación de administración, en particular “admin_guide.pdf” (ver enlace debajo).',
 	),
 	'nl' => Array (
 		'.description' => 'Dit is de tabel van het beheer van backendgebruikers',
@@ -273,6 +330,80 @@ Notice that the same list of modules may be configured for the backend user grou
 	'ro' => Array (
 	),
 	'ch' => Array (
+		'.description' => 'ÕâÊÇºó¶Ë¹ÜÀíÓÃ»§µÄ±í¸ñ.',
+		'username.description' => 'ÊäÈëºó¶ËÓÃ»§µÄµÇÂ¼Ãû×Ö.',
+		'username.details' => 'ĞèÒªÒ»¸öÓÃ»§Ãû³Æ²¢ÇÒ±ØĞëÒÔĞ¡Ğ´¸ñÊ½²»´ø¿Õ¸ñµÄ·½Ê½ÊäÈë.',
+		'password.description' => 'ÔÚÉÏÃæÎªºó¶ËÓÃ»§ÊäÈëÃÜÂë(×¢ÒâÄúÊäÈëµÄÖµ<i>½«</i>ÔÚÓòÖĞ¿É¶Á!).',
+		'password.details' => 'ĞèÒªÃÜÂë.ÔÚÃÜÂë±»·¢ËÍ´ó·şÎñÆ÷Ö®Ç°,Ëû±»md5-hashed,ËùÒÔÃÜÂëÖµ±¾Éí
+²»»á±»¾­ÓÉInternet´«ËÍ.ÕâÔÚ±à¼­ÃÜÂëÊ±ºÍÓÃ»§µÇÂ¼Ê±¶¼ÊÇÈç´Ë.
+ÓÉÓÚ´ËÔ­Ôò²»±©Â¶Ô­Ê¼ÃÜÂë,Ëü<i>²»</i>Í¬ÓÚ±àÃÜÂë.Èç¹ûÄúĞèÒª×î¸ß¼¶±ğ
+µÄ°²È«ĞÔ,ÄúÓ¦¸ÃÔÚ°²È«·şÎñÆ÷ÉÏ°²×°TYPO3ºó¶Ë.
+ÃÜÂëÔÚÊı¾İ¿âÖĞ±»´æ´¢Îªmd5-hash²¢ÇÒÒò´ËÒ²²»ÄÜ´ÓÊı¾İ¿âÖĞÌáÈ¡Ô­Ê¼
+ÃÜÂë.ÕâÒâÎ¶×Å\'¶ªÊ§µÄÃÜÂë\'±ØĞë±»ÓÃ»§µÄĞÂÃÜÂëËùÌæ»».',
+		'usergroup.description' => 'ÎªÓÃ»§·ÖÅäºó¶ËÓÃ»§×é.',
+		'usergroup.details' => 'ºó¶ËÓÃ»§×é¶¨Òåºó¶ËÓÃ»§½«¼Ì³ĞµÄÈ¨ÏŞ.³ı·Çºó¶ËÓÃ»§ÊÇÒ»¸ö\'¹ÜÀíÔ±\' ,Ëû
+ĞèÒª³ÉÎªÒ»¸ö»ò¶à¸ö×éµÄ³ÉÔ±À´·ÖÅäÈ¨ÏŞ.ÉèÖÃÔÚÓÃ»§×éÖĞµÄÊôĞÔÍ¨³£Ìí
+¼ÓÔÚÒ»Æğ.
+ÁĞ±íÖĞµÚÒ»¸ö(¶¥²¿)×éÔÚÈ±Ê¡Çé¿öÏÂÎªÓÃ»§´´½¨Ò³ÃæµÄÖ÷ÈË.',
+		'lockToDomain.description' => 'ÊäÈëÒªÇóÓÃ»§µÇÂ¼µÄÖ÷»úÃû³Æ.',
+		'lockToDomain.details' => 'Ò»¸öTYPO3ÏµÍ³¿ÉÄÜÓĞ¶à¸öÓòÖ¸ÏòËü.Òò´Ë¸ÃÑ¡Ïî±£Ö¤ÓÃ»§Ö»¿ÉÒÔ´ÓÄ³Ò»¸öÖ÷»úÃû³ÆµÇÂ¼.',
+		'db_mountpoints.description' => 'ÎªÓÃ»§Ò³ÃæÊ÷·ÖÅä¿ªÊ¼µã.',
+		'db_mountpoints.details' => 'Ò³ÃæÊ÷Ê¹ÓÃËùÓĞµÄÕ¾µã×ÓÄ£¿é½øĞĞ¶¨Î»,±ØĞëÒÑ¶¨ÒåÁËÒ»Ğ©½øÈëµã.
+´Ë´¦ÄúÓ¦¸ÃÎªÒ»¸öÒ³Ãæ²åÈëÒ»¸öºÍ¶à¸ö²Î¿¼,¸ÃÒ³Ãæ½«ÎªÒ³ÃæÊ÷ÏÔÊ¾Ò»¸ö
+ĞÂµÄ¸ùÒ³Ãæ.Õâ±»³ÆÎª\'Êı¾İ¿âmount\'.
+
+<strong>×¢Òâ</strong>ºó¶ËÓÃ»§×éÍ¬ÑùÓĞ¿ÉÒÔ±»ÓÃ»§¼Ì³ĞµÄDB mounts.
+Èç¹ûÄúÏëÒ»¸öÓÃ»§×é¹²ÏíÒ»¸öÒ³ÃæÊ÷,ÄúÓ¦¸ÃÒªÔÚ¹²ÏíµÄºó¶ËÓÃ»§×éÖĞ
+mountÒ³ÃæÊ÷.',
+		'file_mountpoints.description' => 'ÎªÎÄ¼şÄ¿Â¼Ê÷·ÖÅä¿ªÊ¼µã.',
+		'file_mountpoints.details' => 'ËùÓĞµÄÎÄ¼ş×ÓÄ£¿éÓÃÎÄ¼şÄ¿Â¼Ê÷ÔÚÕ¾µã·şÎñÆ÷ÉÏµÄÎÄ¼şÄ¿Â¼Ö®¼ä½øĞĞ¶¨Î».
+ÎªÁËÄÜ¹»ÉÏ´«<em>ÈÎºÎ</em>ÎÄ¼ş,ÓÃ»§<em>±ØĞë</em>ÓĞÒ»¸öÒÔ
+Ä¿Â¼Ãû³ÆÎª\'_temp_\'µÄmountedÎÄ¼şÄ¿Â¼.(È±Ê¡Çé¿öÏÂÎªÒªÉÏ´«µ½µÄµØ·½).
+×¢ÒâÎÄ¼şÄ¿Â¼mounts¿ÉÄÜ´ÓÓÃ»§µÄ³ÉÔ±×é¼Ì³ĞÁË\'DB mounts\'ÊôĞÔ.',
+		'email.description' => 'ÊäÈëÓÃ»§µÄµçÓÊµØÖ·.',
+		'email.details' => '´ËµØÖ·µÄÊäÈëÏàµ±ÖØÒª,ÒòÎªËüÖ¸³ö´ÓÏµÍ³·¢³öµÄÏûÏ¢ÒªËÍ´ïµÄµØµã.
+<strong>×¢Òâ</strong>ÓÃ»§¿ÉÒÔÔÚÓÃ»§ÉèÖÃÄ£¿éÄÚ×Ô¼º¸ü¸Ä¸ÃÖµ.',
+		'realName.description' => 'ÊäÈëÓÃ»§µÄÆÕÍ¨Ãû³Æ,ÀıÈç:John Doe.',
+		'realName.details' => '<strong>×¢Òâ</strong>ÓÃ»§¿ÉÒÔÔÚÓÃ»§>ÉèÖÃÄ£¿éÄÚ×Ô¼º¸ü¸Ä¸ÃÖµ.',
+		'disable.description' => '´ËÑ¡Ïî´ÓµÇÂ¼µÄÓÃ»§ÖĞÔİÊ±½ûÖ¹ÓÃ»§.',
+		'admin.description' => '\'¹ÜÀíÔ±\'ÓÃ»§¿ÉÍêÈ«·ÃÎÊÏµÍ³!',
+		'admin.details' => '\'¹ÜÀíÔ±\'¿ÉÒÔ×öTYPO3ÔÊĞíµÄËùÓĞÊÂ,²¢ÇÒÕâÀàÓÃ»§Ó¦¸ÃÖ»ÓÃÓÚ¹ÜÀíÄ¿µÄ.
+ËùÓĞÈÕ³£´¦ÀíÓ¦ÓÉ³£¹æÓÃ»§´¦Àí.
+\'¹ÜÀíÔ±\'²»ĞèÒªÊÇ³ÉÔ±»òÈÎºÎºó¶ËÓÃ»§×é.ÎŞÂÛÈçºÎÄúÓ¦µ±×¢Òâ,ÓÉ²»´ø×é
+ÊôĞÔµÄ¹ÜÀíÔ±ÓÃ»§´´½¨µÄÈÎºÎÒ³Ãæ½«²»±»·ÖÅäÈÎºÎËùÓĞ×é,Òò´ËËü½«²»±»
+ÆäËüÓÃ»§Ëù¼û.Èç¹ûÕâ³ÉÎªÒ»¸öÎÊÌâ,Äú¿ÉÒÔÍ¨¹ıÎª\'¹ÜÀíÔ±\'ÓÃ»§·ÖÅäÒ»¸ö
+ÓÃ»§×éÀ´·½±ãµÄ½â¾öËü.µ±È»Õâ²»»áÓ°Ïìµ½È¨ÏŞ,ÒòÎªËûÃÇÊÇÎŞÏŞÖÆµÄ.µ«
+ÊÇËùÁĞ³öµÄµÚÒ»¸ö×éÔÚÈ±Ê¡Çé¿öÏÂÊÇĞÂ½¨Ò³ÃæµÄËùÓĞ×é.
+\'¹ÜÀíÔ±\'ÓÃ»§·Ç³£ÈİÒ×Ê¶±ğ,ËûÃÇÏÔÊ¾ÎªºìÉ«Í¼±ê¶ø²»ÊÇ³£¹æÓÃ»§µÄÀ¶É«
+Í¼±ê.
+
+Äú²»Ó¦·ÖÅä¸øÆäËüÓÃ»§\'¹ÜÀíÔ±\'È¨ÏŞ,³ıÁËÄú×Ô¼º.',
+		'options.description' => 'Ñ¡ÔñÓÃ»§ÊÇ·ñ´Ó³ÉÔ±×é¼Ì³ĞÒ³ÃæÊ÷»òÒ³ÃæÊ÷mountµã.',
+		'options.details' => 'ÈÃÓÃ»§´Ó³ÉÔ±×é¼Ì³ĞmountµãÊÇÒ»¸öºÜ´óµÄÓÅÊÆ,ÒòÎªËü¶ÔÓÚ¹ÜÀíºÜ¶àÓÃ
+»§µÄÏàÍ¬mountµãÌá¹©ÁË¼«´óµÄ±ãÀû.
+Èç¹ûÄú²»¼ì²éÕâĞ©µã,Äú±ØĞëÈ·±£ÓÃÓÚÒ³ÃæÊ÷ºÍÎÄ¼şÄ¿Â¼Ê÷µÄmountµãÊÇ
+Ã÷È·ÎªÓÃ»§ÉèÖÃµÄ.',
+		'fileoper_perms.description' => 'ÎªÓÃ»§Ñ¡ÔñÎÄ¼ş²Ù×÷È¨ÏŞ.',
+		'fileoper_perms.details' => 'ÕâĞ©ÉèÖÃÉæ¼°ÔÚÎÄ¼ş>ÁĞ±íÄ£¿éÖĞÕÒµ½µÄ¹¦ÄÜÒÔ¼°ÎÄ¼şµÄ³£¹æÉÏ´«.',
+		'starttime.description' => 'ÊäÈëÕÊ»§¼¤»îµÄÈÕÆÚ.',
+		'endtime.description' => 'ÊäÈëÕÊ»§½ûÖ¹µÄÈÕÆÚ.',
+		'lang.description' => 'Ñ¡Ôñ<i>È±Ê¡</i>ÓïÑÔ.',
+		'lang.details' => 'ÕâÈ·¶¨ÓÃ»§ºó¶Ë½çÃæµÄÓïÑÔ.ËùÓĞ¶ÔÓÚ³£¹æÓÃ»§ÓĞĞ§µÄÖ÷Òª²¿·Ö¶¼¿ÉÒÑËù
+Ñ¡ÔñµÄÓïÑÔÏÔÊ¾.
+\'¹ÜÀíÔ±\'ÓÃ»§½«·¢ÏÖ\'¹ÜÀí\'²¿·ÖÎªÓ¢Óï,¸Ã²¿·ÖÒ²ÊÇTYPO3ÖĞÎ¨Ò»µÄÒ»¸öÒÔ
+Ó¢ÓïÏÔÊ¾µÄ²¿·Ö.Ëü°üÀ¨ÔÚ"¹¤¾ß"ÖĞµÄËùÓĞ×ÓÄ£¿éºÍÕ¾µã>Ä£°åÄ£¿é.
+
+<b>×¢Òâ</b>ÕâÖ»ÊÇÈ±Ê¡ÓïÑÔ.Ö»ÒªÓÃ»§Ò»µÇÂ¼,ÓïÑÔÒ»¶¨»áÍ¨¹ıÓÃ»§>
+ÉèÖÃÄ£¿é±»¸Ä±ä.',
+		'userMods.description' => 'ÎªÓÃ»§Ñ¡ÔñÓĞĞ§µÄºó¶ËÄ£¿é.',
+		'userMods.details' => 'ÕâÈ·¶¨ÄÄĞ©\'²Ëµ¥Ïî\'¶ÔÓÃ»§ÊÇÓĞĞ§µÄ.
+
+×¢ÒâÄ£¿éµÄÏàÍ¬ÁĞ±í¿ÉÄÜÊÇÎªºó¶ËÓÃ»§ÅäÖÃµÄ,²¢ÇÒ³ıÁËÄúÔÚ´ËÑ¡ÔñµÄÄ£¿é
+ÍâËüÃÇ½«±»ÓÃ»§¼Ì³Ğ.ÕâÑùºÜÓĞ¿ÉÄÜÄú²»Ó¦ÎªÓÃ»§±¾ÉíÉèÖÃÈÎºÎÄ£¿é,¶øÊÇÔÚ
+ËûÊÇ³ÉÔ±µÄ×éÖĞÑ¡ÔñÄ£¿é.
+ÎŞÂÛÈçºÎ´ËÁĞ±íÎªÖ¸¶¨ÓÃ»§Ìí¼ÓÒ»µ¥¸öÄ£¿éÌá¹©ÁËÒ»¸öºÜºÃµÄÍ¾¾¶.',
+		'TSconfig.description' => 'ÎªÓÃ»§ÊäÈë¸½¼ÓTSconfig(¸ß¼¶).',
+		'TSconfig.details' => '´ËÓòÔÊĞíÄúÀ©Õ¹ÓÃ»§ÅäÖÃµÄ¶à¸ö¾ßÌåÄÚÈİ.Ñ¡ÏîµÄ¼ò¶Ì¸ÅÒª°üÀ¨ÁËÒ»¸öºó¶ËÄ£¿éµÄ¸ü¾ßÌåµÄÅäÖÃ,ÓÃ»§Ö¸¶¨È±Ê¡±í¸ñÓòÖµµÄÉèÖÃ,Rich Text±à¼­Æ÷Ñ¡ÏîµÄÉèÖÃµÈ.¸ÃÁĞ±í»áËæ×ÅÊ±¼äÔö´ó²¢ÇÒ¹éµµÔÚ¹ÜÀíÎÄµµÖĞ,ÔÚÖ¸¶¨µÄ\'admin-guide.pdf\'ÎÄ¼şÖĞ(¼ûÒÔÏÂÁ´½Ó).',
 	),
 	'sk' => Array (
 	),
@@ -539,6 +670,8 @@ A senha é armazenada no banco de dados como um código md5 e sendo assim também n
 O primeiro grupo (do topo) da lista é o grupo que, por padrão, será proprietário das páginas criadas pelo usuário.',
 		'lockToDomain.description' => 'Insira o nome do servidor pelo qual o usuário é forçado a logar.',
 		'lockToDomain.details' => 'Um sistema TYPO3 pode ter múltiplos domínios apontando para ele. Logo, esta opção garante que usuários apenas possam logar a partir de um certo domínio.',
+		'disableIPlock.description' => 'Desabilitar o bloqueio da sessão do usuário de administração ao número de IP remoto.',
+		'disableIPlock.details' => 'Você terá de desabilitar este bloqueio se os usuários administradores estiverem acessando o TYPO3 a partir de conexões discadas ou ISDN que possam desligar e reconectar com um novo IP. O mesmo pode ser verdadeiro para serviços DHCP onde novos números IP são freqüentemente deliberados.',
 		'db_mountpoints.description' => 'Delegar pontos de partida para a árvore de páginas dos usuários.',
 		'db_mountpoints.details' => 'A árvore de páginas usada por todos os Submódulos-web para navegar deve ter alguns pontos-de-entrada definidos. Você deve inserir aqui uma ou mais referências para uma página que irá representar uma nova página raiz para a árvore de páginas. Isto se chama \'Montar banco de dados\'.
 

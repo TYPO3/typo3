@@ -39,15 +39,16 @@ $LOCAL_LANG = Array (
 	),
 	'fr' => Array (
 		'title' => 'Fonctions avancées',
-		'clickAPage_content' => 'S\'il vous plait, cliquez sur le titre de la page dans l\'arborescence.',
+		'clickAPage_content' => 'Veuillez cliquer sur le titre de la page dans l\'arborescence.',
 		'mlang_labels_tablabel' => 'Fonctions avancées',
-		'mlang_labels_tabdescr' => 'Vous trouverez ici les foncions générales d\'import/export. En plus ce module contient des fonctions spécialisées - assistants - utiles dans des situations spécifiques. Pour l\'instant, vous pouvez automatiser la création de pages et trier les pages.',
+		'mlang_labels_tabdescr' => 'Vous trouverez ici les fonctions générales d\'import/export. De plus, ce module contient des fonctions spécialisées - les assistants - utiles dans des situations spécifiques. Pour l\'instant, vous pouvez créer des pages multiples et trier les pages.',
 		'mlang_tabs_tab' => 'Fonctions',
 	),
 	'es' => Array (
 		'title' => 'Funciones avanzadas',
+		'clickAPage_content' => 'Por favor haga click sobre el título de una página en el arbol de páginas.',
 		'mlang_labels_tablabel' => 'Funciones avanzadas',
-		'mlang_labels_tabdescr' => 'Encontrará funciones generales de importación y exportación. Adicionalmente este módulo contiene funciones especializadas - expertos - útiles en situaciones específicas. Por ejemplo puede crear páginas por lotes y ejecutar su ordenamiento.',
+		'mlang_labels_tabdescr' => 'Encontrarás funciones generales de importación y exportación. Adicionalmente este módulo contiene funciones especializadas - expertos - útiles en situaciones específicas. Por ejemplo puedes crear páginas por lotes y ejecutar su ordenamiento.',
 		'mlang_tabs_tab' => 'Funciones',
 	),
 	'nl' => Array (
@@ -157,7 +158,7 @@ $LOCAL_LANG = Array (
 	),
 	'hu' => Array (
 		'title' => 'Egyéb mûveletek',
-		'clickAPage_content' => 'Kérlek kattints az oldal címére az oldalfában.',
+		'clickAPage_content' => 'Kattints az oldal címére az oldalfában.',
 		'mlang_labels_tablabel' => 'Egyéb mûveletek',
 		'mlang_labels_tabdescr' => 'Itt találod az általános export és import funkciókat, és az egyéb speciális varázslókat.',
 		'mlang_tabs_tab' => 'Mûveletek',

@@ -87,8 +87,53 @@ This feature provides a great way to create \'Supervisor\' user groups.',
 	'it' => Array (
 	),
 	'fr' => Array (
+		'.description' => 'Ceci est l\'interface BE d\'administration des groupes utilisateurs disponible pour les utilisateurs BE: ici sont déterminées les permissions pour les utilisateurs BE',
+		'title.description' => 'Nom du groupe utilisateur Backend',
+		'db_mountpoints.description' => 'Assigne le point de départ de l\'arborescence de pages de l\'utilisateur',
+		'db_mountpoints.details' => 'L\'arborescence de pages vue dans les sous-modules web en naviguant doit avoir des points d\'entrée définis. Ici vous devriez insérer une ou plusieurs références à des pages qui représenteront de nouvelles pages racine dans l\'arborescence. Ceci est appelé un \'point de montage de base de données\' (DB mounts, faisant référence à la notion de point de montage Unix)
+Les DB mounts peuvent hérités des utilisateurs qui sont membres de ce groupe. Ceci dépend de la façon dont l\'utilisateur est configuré, s\'il doit inclure les DB mounts spécifiés dans son (ses) groupes. Cependant il est recommandé d\'utiliser les groupes utilisateures comme ceci pour configurer les montages, surtout s\'ils doivent être partagés par un grand nombre d\'utilisateurs',
+		'file_mountpoints.description' => 'Assigne des points de départ pour l\'arborescence de fichiers',
 	),
 	'es' => Array (
+		'.description' => 'Este es el administrador de grupos de usuarios del backend disponible para los usuarios del Backend. Dichos grupos determinan los permisos para los usuarios del Backend.',
+		'title.description' => 'Nombre del grupo de usuarios del Backend',
+		'db_mountpoints.description' => 'Asigna puntos de entrada para el árbol de páginas de los usuarios',
+		'db_mountpoints.details' => 'El árbol de páginas usado por todos mis submódulos Web para navegar debe tener algunos puntos de entrada definidos. Aquí deberías insertar una o más referencias a una página que representará una nueva página raíz para el árbol de páginas. Esto es conocido como un “Punto de montaje de base de datos”.
+Los Puntos de Montaje de BBDD pueden ser heredados por los usuarios miembros de este grupo. Esto depende de si el usuario está configurado para incluir los puntos de montaje establecidos en los grupos de usuarios a los que pertenece. De cualquier manera, es recomendable utilizar grupos de usuarios para configurar dichos puntos de montaje, especialmente si deben ser compartidos por varios usuarios.',
+		'file_mountpoints.description' => 'Asigna puntos de entrada para el árbol de carpetas de ficheros.',
+		'file_mountpoints.details' => 'El árbol de carpetas de ficheros es utilizado por todos los submódulos de “Fichero” para navegar entre las carpetas de servidor web.
+Como ocurre con los puntos de montaje de BBDD, los puntos de montaje de ficheros pueden ser heredados por los usuarios que son miembros de este grupo.',
+		'pagetypes_select.description' => 'Selecciona qué "Tipos" de páginas pueden utilizar los miembros del grupo.',
+		'pagetypes_select.details' => 'Esta opción limita el número de opciones válidas para el usuario cuando éste va a seleccionar un tipo de página.',
+		'tables_modify.description' => 'Selecciona qué tablas pueden modificar los miembros.',
+		'tables_modify.details' => 'Un parte importante al establecer permisos es definir qué tablas de la base de datos puede modificar un usuario.
+Las tablas que se han seleccionado para modificación automáticamente son seleccionadas para visualización, por lo que no es necesario especificarlas también en el cuadro “Tablas (Visualización)”.
+
+<strong>Nota:</strong> Esta lista se acumula con las que existen en otros grupos de los que es miembro el usuario.',
+		'tables_select.description' => 'Seleciona qué tablas puede ver el usuario en las listas de registros (no es necesario especificar aquí las tablas para modificación).',
+		'tables_select.details' => 'Esto determina qué tablas – además de las seleccionadas en el cuadro “Tablas (modificar)” - deben ser visibles y listadas por el usuario. Por tanto él no puede <em>editar</em> la tabla, sino tan sólo seleccionar los registros y ver el contenido.
+Esta lista no es demasiado importante. Es una situación bastante extraña el que un usuario pueda ver unas tablas pero no modificarlas.',
+		'non_exclude_fields.description' => 'Algunos campos de las tablas no están disponibles por defecto. Dichos campor pueden ser activados explícitamente para los miembros del grupo aquí.',
+		'non_exclude_fields.details' => '“Campos permitidos” permite detallar los permisos asignados a las tablas. Por defecto todos esos campos no están disponibles a los usuarios y deben ser activados específicamente seleccionándolos aquí.
+Una aplicación de esto es que las páginas están normalmente ocultas por defecto y el campo “Ocultar” no está disponible para los usuarios a no ser que se active explícitamente en esta lista. Así, el usuario puede crear una página nueva pero no la puede dejar visible. A no ser por supuesto que tenga seleccionado el campo “Página: Ocultar” en uno de los grupos de los que es miembro.
+Por supuesto no tiene sentido añadir campos de tablas que no están en la lista de tablas con permiso para modificar.',
+		'hidden.description' => 'Desactiva un grupo de usuarios.',
+		'hidden.details' => 'Si desactivas un grupo de usuarios, todos los usuarios que sean miembros del grupo no heredarán ninguna de las propiedades que el grupo les ofecía.',
+		'lockToDomain.description' => 'Introduce el nombre del equipo desde el cual el usuario está forzado a autentificarse.',
+		'lockToDomain.details' => 'Un sistema TYPO3 puede tener múltiples dominios apuntando a él. Esta opción asegura que los usuarios sólo puedan entrar desde cierto equipo.',
+		'groupMods.description' => 'Selecciona los módulos de backend disponibles para los miembros del grupo.',
+		'groupMods.details' => 'Esto determina qué “elementos de menú” están disponibles para los miembros del grupo. 
+Esta lista de módulos se suma a las de los otros grupos a los que pertenece el usuario, así como a los seleccionados en el mismo campo del propio usuario.',
+		'inc_access_lists.description' => 'Selecciona que listas de acceso de tipo de página, tabla, módulo y campos permitidos están activados en este grupo.',
+		'description.description' => 'Introduce una pequeña descripción del grupo de usuarios, para qué se utiliza y quienes deben ser los miembros. Esto es sólo para uso interno.',
+		'TSconfig.description' => 'Configuración adicional mediante valores de estilo de TypoScript (Avanzado).',
+		'TSconfig.syntax' => 'Estilo de TypoScript sin condiciones ni constantes.',
+		'hide_in_lists.description' => 'Esta opcion previene al grupo de usuarios de aparecer en las listas donde son seleccionados los grupos de usuarios.',
+		'hide_in_lists.details' => 'Esto afectará el listado de grupos de usuarios en en Centro de Tareas (partes de Tareas y Mensajes) y también en el módulo Web>Acceso.
+Esta opción es extremadamente útil si dispones de grupos de usuarios generales que definen algunas propiedades globales de los que son miembros tus usuarios. Seguramente no quieras que todos esos usuarios “vean” a los otros ya que son miembros del mismo grupo, para por ejemplo enviar mensajes o tareas entre ellos. Y esto es lo que previene esta opción.',
+		'subgroup.description' => 'Selecciona grupos de usuarios del backend que serán incluidos automáticamente para miembros de este grupo.',
+		'subgroup.details' => 'Las propiedades o subgrupos son añadidos a las propiedades de estos grupos y básicamente serán añadidos a la lista de grupos miembros de cualquier usuario que sea miembro de este grupo.
+Esta carácterística ofrece una buena manera de crear grupos de usuarios de “Supervisores”.',
 	),
 	'nl' => Array (
 		'.description' => 'Dit zijn de backendbeheer-gebruikersgroepen die beschikbaar zijn voor de Backendgebruikers. Deze bepalen de permissies voor de Backendgebruikers.',
@@ -231,6 +276,65 @@ This feature provides a great way to create \'Supervisor\' user groups.',
 	'ro' => Array (
 	),
 	'ch' => Array (
+		'.description' => 'ÕâÊÇºó¶Ë¹ÜÀíÓÃ»§×é,¶Ôºó¶ËÓÃ»§ÓĞĞ§.ËüÃÇÎªºó¶ËÓÃ»§È·¶¨È¨ÏŞ.',
+		'title.description' => 'ºó¶ËÓÃ»§×éµÄÃû³Æ',
+		'db_mountpoints.description' => 'Î´ÓÃ»§Ò³ÃæÊ÷·ÖÅä¿ªÊ¼µã.',
+		'db_mountpoints.details' => 'Ò³ÃæÊ÷Ê¹ÓÃËùÓĞµÄÕ¾µã×ÓÄ£¿é½øĞĞ¶¨Î»,
+±ØĞëÒÑ¶¨ÒåÁËÒ»Ğ©½øÈëµã.
+´Ë´¦ÄúÓ¦¸ÃÎªÒ»¸öÒ³Ãæ²åÈëÒ»¸öºÍ¶à¸ö²Î¿¼,
+¸ÃÒ³Ãæ½«ÎªÒ³ÃæÊ÷ÏÔÊ¾Ò»¸öĞÂµÄ¸ùÒ³Ãæ.Õâ±»
+³ÆÎª\'Êı¾İ¿âmount\'.
+DB mountsÊôĞÔ¿ÉÒÔ´Ó×÷Îª×é³ÉÔ±µÄÓÃ»§´¦±»¼Ì³Ğ.
+ÕâÈ¡¾öÓÚÔÚ³ÉÔ±×éÖĞÓÃ»§ÊÇ·ñ±»ÅäÖÃÎª°üÀ¨mounts set.
+ÎŞÂÛÈçºÎ½¨ÒéÊ¹ÓÃºó¶ËÓÃ»§×éÀ´ÅäÖÃmounts.ÌØ±ğÊÇÔÚĞí¶à
+ÓÃ»§Ö®¼äÓĞ¹²ÏíĞèÇóÊ±.',
+		'file_mountpoints.description' => 'ÎªÎÄ¼şÄ¿Â¼Ê÷·ÖÅä¿ªÊ¼µã.',
+		'file_mountpoints.details' => 'ËùÓĞµÄÎÄ¼ş×ÓÄ£¿éÓÃÎÄ¼şÄ¿Â¼Ê÷ÔÚÕ¾µã·şÎñÆ÷ÉÏµÄÎÄ¼şÄ¿Â¼Ö®¼ä½øĞĞ¶¨Î».
+´øÓĞ\'DB mounts\'µÄÎÄ¼şÄ¿Â¼mounts¿ÉÄÜÊÇ´Ó×÷Îª×é³ÉÔ±µÄÓÃ»§ÄÇÀï¼Ì³Ğ
+ÁË¸ÃÊôĞÔ.',
+		'pagetypes_select.description' => 'Ñ¡Ôñ³ÉÔ±¿ÉÄÜÉèÖÃµÄÒ³ÃæÊôĞÔ.',
+		'pagetypes_select.details' => '¶Ô½«Ñ¡ÔñÒ³ÃæÀàĞÍµÄÓÃ»§´ËÑ¡ÏîÏŞÖÆÆäÓĞĞ§Ñ¡ÔñµÄÊıÁ¿.',
+		'tables_modify.description' => 'Ñ¡Ôñ³ÉÔ±¿ÉÄÜĞŞ¸ÄµÄ±í¸ñ.',
+		'tables_modify.details' => 'ÉèÖÃÈ¨ÏŞµÄÒ»¸öÖØÒª²¿·ÖÊÇ¶¨ÒåÄÄĞ©Êı¾İ¿â±í¸ñÔÊĞíÓÃ»§ĞŞ¸Ä.
+ÔÊĞíĞŞ¸ÄµÄ±í¸ñÒ²Í¬Ñù×Ô¶¯ÔÊĞíÑ¡Ôñ,Òò´ËÄú²»ĞèÒªÔÚ´Ë´¦"±í¸ñ(ÁĞ±í)"
+¿òÖĞÊäÈë±í¸ñ.
+
+<strong>×¢Òâ</strong>¸ÃÁĞ±íÌí¼Óµ½ÔÚÓÃ»§µÄÁíÒ»¸ö³ÉÔ±×éÖĞËùÑ¡Ôñ
+µÄÓòÄÚ.',
+		'tables_select.description' => 'Ñ¡Ôñ³ÉÔ±ÔÚ¼ÇÂ¼ÁĞ±íÖĞ¿ÉÄÜÒª²é¿´µÄ±í¸ñ(\'ĞŞ¸Ä\'±í¸ñ²»ĞèÒªÔÚ´Ë´¦ÖØĞÂÊäÈë!)',
+		'tables_select.details' => '´ËÏî¾ö¶¨ÄÄĞ©±í¸ñ - ³ıÁËÔÚ"±í¸ñ(ĞŞ¸Ä)"¿òÖĞËùÑ¡ÔñµÄ±í¸ñÖ®Íâ - ¿ÉÄÜ±»
+ÓÃ»§²é¿´ºÍÁĞ³öµÄ±í¸ñ. ÕâÑùËû²»ÄÜ<em>±à¼­</em>±í¸ñ - Ö»ÄÜÑ¡Ôñ
+¼ÇÂ¼ºÍ²é¿´ÄÚÈİ.
+´ËÁĞ±í²»ÊÇ·Ç³£ÖØÒª.Ò»°ã²»Ì«»á³öÏÖÓÃ»§Ñ¡Ôñ±í¸ñµ«²»ĞŞ¸ÄËüÃÇµÄÇé¿ö.',
+		'non_exclude_fields.description' => 'Ä³Ğ©±í¸ñÓòÔÚÈ±Ê¡Çé¿öÏÂÊÇÎŞĞ§µÄ.ÄÇĞ©ÓòÔÚ´Ë¶ÔÓÚ×é³ÉÔ±¿ÉÓÃ.',
+		'non_exclude_fields.details' => '"ÔÊĞíexcludefields"ÔÊĞíÄúÎª±í¸ñÏêÏ¸Ö¸Ã÷×¼ĞíµÄÈ¨ÏŞ.È±Ê¡Çé¿öÏÂËùÓĞµÄÕâĞ©
+Óò¶ÔÓÚÓÃ»§ÊÇ²»¿ÉÓÃµÄ,µ«¿ÉÒÔÍ¨¹ıÔÚ´Ë´¦Ñ¡ÔñÀ´Ö¸¶¨Îª¿ÉÓÃ.
+Ò»¸öÓ¦ÓÃÊµÀıÎªÍ¨³£Ò³ÃæÔÚÈ±Ê¡ÏÂÊÇ±»Òş²ØµÄ,²¢ÇÒ±»Òş²ØµÄÒ³Ãæ¶ÔÓÚÓÃ»§
+ÊÇ²»¿ÉÓÃµÄ,³ı·ÇËû±»´ËÁĞ±í"ÔÊĞíexcludefields"×¼Ğí·ÃÎÊ. Òò´ËÓÃ»§¿ÉÒÔ´´½¨Ò»¸ö
+ĞÂµÄÒ³Ãæ,µ«²»ÄÜ²»Òş²ØÒ³Ãæ.µ±È»³ı·ÇËûÒÑ¾­Í¨¹ıËûµÄ³ÉÔ±×éÖĞµÄÒ»¸ö×é±»
+·ÖÅäÁË"Ò³Ãæ:Òş²Ø"²»°üÀ¨ÓòÊôĞÔ.
+µ±È»,´ÓÄÇĞ©²»°üÀ¨ÔÚÔÊĞí±»ĞŞ¸ÄµÄ±í¸ñÁĞ±íÖĞµÄ±í¸ñÌí¼ÓÓòÒ²Ã»ÓĞÈÎºÎÒâÒå.',
+		'hidden.description' => '½ûÖ¹Ò»¸öÓÃ»§×é.',
+		'hidden.details' => 'Èç¹ûÄú½ûÖ¹ÁËÒ»¸öÓÃ»§×é,ÄÇÃ´¸Ã×éµÄËùÓĞÓÃ»§½«²»ÄÜ¼Ì³Ğ¸Ã×éÊÚÓèËûÃÇµÄÈÎºÎÊôĞÔ.',
+		'lockToDomain.description' => 'ÊäÈëÓÃ»§±»ÒªÇóµÇÂ¼µÄÖ÷»úÃû³Æ.',
+		'lockToDomain.details' => 'Ò»¸öTYPO3ÏµÍ³¿ÉÄÜÓĞ¶à¸öÓòÖ¸ÏòËü.Òò´Ë¸ÃÑ¡Ïî±£Ö¤ÓÃ»§Ö»¿ÉÒÔ´ÓÄ³Ò»¸öÖ÷»úÃû³ÆµÇÂ¼.',
+		'groupMods.description' => 'Îª×é³ÉÔ±Ñ¡ÔñÓĞĞ§µÄºó¶ËÄ£¿é.',
+		'groupMods.details' => '´ËÏî¾ö¶¨ÄÄĞ©\'²Ëµ¥Ïî\'¶ÔÓÚ×é³ÉÔ±¿ÉÓÃ.
+´ËÄ£¿éÁĞ±í±»Ìí¼Óµ½ÈÎºÎÒ»¸öÓÃ»§µÄÆäËü³ÉÔ±×éÖĞËùÑ¡µÄÄ£¿éÒÔ¼°ÓÃ»§×Ô¼º
+Ïà¹ØµÄÓò.',
+		'inc_access_lists.description' => 'Ñ¡ÔñÒ³ÃæÀàĞÍ,±í¸ñ,Ä£¿éºÍÔÊĞíexcludefields·ÃÎÊÁĞ±í¶ÔÓÚ´Ë×éÊÇ·ñ¿ÉÓÃ.',
+		'description.description' => 'ÊäÈëÒ»¸öÓÃ»§×éµÄ¼ò¶ÌÃèÊö,´´½¨Ä¿µÄºÍ×é³ÉÔ±. ÕâÖ»¹©ÄÚ²¿Ê¹ÓÃ.',
+		'TSconfig.description' => 'Í¨¹ıTypoScriptÑùÊ½Öµ(¸ß¼¶)µÄ¸½¼ÓÅäÖÃ.',
+		'TSconfig.syntax' => 'TypoScriptÑùÊ½²»´øÌõ¼şºÍ³£Á¿.',
+		'hide_in_lists.description' => '´ËÑ¡Ïî½«·ÀÖ¹ÓÃ»§×éÏÔÊ¾ÔÚ±»Ñ¡ÖĞµÄÓÃ»§×éÁĞ±íÖĞ.',
+		'hide_in_lists.details' => 'Õâ½«Ó°Ïìµ½To-DoÈÎÎñÖĞĞÄÄÚµÄÓÃ»§×éÁĞ±íºÍÏûÏ¢²¿·ÖÒÔ¼°Õ¾µã>·ÃÎÊÄ£¿é.
+Èç¹ûÄúÓĞ¶¨ÒåÁËÒ»Ğ©È«¾ÖÊôĞÔµÄÒ»°ãÓÃ»§×é, ËùÓĞÄúµÄÓÃ»§¶¼ÊÇ³ÉÔ±, ¸ÃÑ¡
+Ïî·Ç³£ÓĞÓÃ.È»ºóÄú²»Ï£ÍûËùÓĞµÄÄÇĞ©ÓÃ»§Í¨¹ı¸Ã×éµÄ³ÉÔ±¹ØÏµ\'¿´µ½\'ÆäËü
+³ÉÔ±,ÀıÈç·¢ËÍÏûÏ¢»òÈÎÎñ¸øÆäËüÈË.Õâ¾ÍÊÇ´ËÑ¡ÏîËùÒª·ÀÖ¹µÄ.',
+		'subgroup.description' => 'Ñ¡Ôñ±»×Ô¶¯°üÀ¨ÔÚ¸Ã×é³ÉÔ±ÖĞµÄºó¶ËÓÃ»§×é.',
+		'subgroup.details' => 'ÊôĞÔºÍ×Ó×é±»Ìí¼Óµ½¸Ã×éµÄÊôĞÔÖĞ,²¢ÇÒ»ù±¾ÉÏËûÃÇ½«±»ÍêÈ«µÄÌí¼Óµ½×÷Îª
+¸Ã×é³ÉÔ±µÄÈÎºÎÓÃ»§µÄ³ÉÔ±×éÁĞ±íÖĞ.
+´ËÌØĞÔÌá¹©ÁËÒ»¸öºÜºÃµÄ·½·¨À´´´½¨\'¹ÜÀíÔ±\'ÓÃ»§×é.',
 	),
 	'sk' => Array (
 	),
@@ -463,9 +567,9 @@ Esta característica é uma ótima forma de criar grupos de usuários \'Supervisores
 		'.description' => '××œ×• ×§×‘×•×¦×•×ª ××©×ª××©×™× ×©×œ ×”×××©×§ ×”××—×•×¨×™ ×”×–××™× ×•×ª ×¢×‘×•×¨ ××©×ª××©×™ ×××©×§ ×”××—×•×¨×™. ×”× ××’×“×™×¨×™× ×”×¨×©××•×ª ×œ××©×ª××©×™ ×××©×§ ×”××—×•×¨×™.',
 		'title.description' => '×©× ×©×œ ×§×‘×•×¦×ª ××©×ª××©×™× ×©×œ ×××©×§ ×”××—×•×¨×™.',
 		'db_mountpoints.description' => '×”×§×¦×” × ×™×§×•×“×•×ª ×”×ª×—×œ×” ×©×œ ×¢×¥ ×“×¤×™× ×©×œ ××©×ª××©.',
-		'db_mountpoints.details' => '×¢×¥ ×“×¤×™×, ×©××©×ª××©×™× ×‘×• ×›×œ ×ª×ª-××•×“×•×œ×™× ×‘××™× ×˜×¨× ×˜ ×›×“×™ ×œ× ×•×•×˜, ×—×•×‘×” ×©×™×”×™×• ×œ×• × ×§×•×“×•×ª ×›× ×™×¡×” ××•×’×“×¨×•×ª. ×›××Ÿ ×¢×œ×™×š ×œ×”×›× ×™×¡ ×¡×™××•×›×™×Ÿ ×œ×“×£ ×©×ª×™×™×¦×’ ×“×£ ×©×•×¨×© ×—×“×©×” ×‘×¢×¥ ×“×¤×™×. ×–×” × ×§×¨× "××•×¦×‘ ×××’×¨ ××™×“×¢". ××©×ª××©×™× ×‘×§×‘×•×¦×” ×–×• ×™×›×•×œ×™× ×œ×¨×©×ª ××•×¦×‘×™ ×××’×¨ ××™×“×¢. ×–×” ××™× ×• ×ª×œ×•×™ ×‘×”×’×“×¨×” ×× ×¢×œ ×”××©×ª××© ×œ×”×›×™×œ ××•×¦×‘×™× ×”××•×’×“×¨×™× ×‘×§×‘×•×¦×•×ª ××©×ª××©×™×. ×‘×›×œ ×–××ª, ××•××œ×¥ ×œ×”×©×ª××© ×‘×§×‘×•×¦×•×ª ××©×ª××©×™ ×××©×§ ××—×•×¨×™ ×‘×¦×•×¨×” ×”×–×• ×›×“×™ ×œ×”×’×“×™×¨ ××•×¦×‘×™×. ×‘××™×•×—×“ ×× ×™×© ×¦×•×¨×š ×œ×©×ª×£ ××•×ª×• ×‘×™×Ÿ ××©×ª××©×™× ×¨×‘×™×.',
-		'file_mountpoints.description' => '×”×§×¦×” × ×™×§×•×“×•×ª ×”×ª×—×œ×” ×©×œ ×¢×¥ ×ª×™×§×™×•×ª ×¢× ×§×‘×¦×™×.',
-		'file_mountpoints.details' => '×›×œ ×”×ª×ª-××•×“×•×œ×™× ×©×œ ×§×•×‘×¥ ××©×ª××©×™× ×‘×¢×¥ ×§×‘×¦×™× ×›×“×™ ×œ× ×•×•×˜ ×‘×™×Ÿ ×ª×™×§×™×•×ª ×¢×œ ×”×©×¨×ª. × × ×œ×¦×™×™×Ÿ, ×©×›××• ×¢× ××•×¦×‘×™ ×××’×¨ ××™×“×¢, ×’× ×‘××•×¦×‘×™ ×§×‘×¦×™×, ××©×ª××©×™× ×‘×§×‘×•×¦×” ×–×• ×™×›×•×œ×™× ×œ×¨×©×ª ××•×ª×.',
+		'db_mountpoints.details' => '×¢×¥ ×“×¤×™×, ×©××©×ª××©×™× ×‘×• ×›×œ ×ª×ª-××•×“×•×œ×™× ×‘××™× ×˜×¨× ×˜ ×›×“×™ ×œ× ×•×•×˜, ×—×•×‘×” ×©×™×”×™×• ×œ×• × ×§×•×“×•×ª ×›× ×™×¡×” ××•×’×“×¨×•×ª. ×›××Ÿ ×¢×œ×™×š ×œ×”×›× ×™×¡ ×¡×™××•×›×™×Ÿ ×œ×“×£ ×©×ª×™×™×¦×’ ×“×£ ×©×•×¨×© ×—×“×©×” ×‘×¢×¥ ×“×¤×™×. ×–×” × ×§×¨× "××•×¦×‘ ×××’×¨ ××™×“×¢". ××©×ª××©×™× ×‘×§×‘×•×¦×” ×–×• ×™×›×•×œ×™× ×œ×¨×©×ª ××•×¦×‘×™ ×××’×¨ ××™×“×¢. ×–×” ×ª×œ×•×™ ×‘×”×’×“×¨×” ××¦×œ ×”××©×ª××© ×× ×¢×œ×™×• ×œ×¨×©×ª ××•×¦×‘×™× ×”××•×’×“×¨×™× ×‘×§×‘×•×¦×•×ª ××©×ª××©×™× ××œ×™×”× ×”×•× ××©×ª×™×™×š. ×‘×›×œ ×–××ª, ××•××œ×¥ ×œ×”×©×ª××© ×‘×§×‘×•×¦×•×ª ××©×ª××©×™ ×××©×§ ××—×•×¨×™ ×‘×¦×•×¨×” ×”×–×• ×›×“×™ ×œ×”×’×“×™×¨ ××•×¦×‘×™×. ×‘××™×•×—×“ ×× ×™×© ×¦×•×¨×š ×œ×©×ª×£ ××•×ª×• ×‘×™×Ÿ ××©×ª××©×™× ×¨×‘×™×.',
+		'file_mountpoints.description' => '×”×§×¦×” × ×™×§×•×“×•×ª ×”×ª×—×œ×” ×©×œ ×¢×¥ ×ª×™×§×™×•×ª ×§×‘×¦×™×.',
+		'file_mountpoints.details' => '×›×œ ×”×ª×ª-××•×“×•×œ×™× ×©×œ "×§×•×‘×¥" ××©×ª××©×™× ×‘×¢×¥ ×§×‘×¦×™× ×›×“×™ ×œ× ×•×•×˜ ×‘×™×Ÿ ×ª×™×§×™×•×ª ×¢×œ ×”×©×¨×ª. × × ×œ×¦×™×™×Ÿ, ×©××©×ª××©×™× ×‘×§×‘×•×¦×” ×™×›×•×œ×™× ×œ×¨×©×ª ××•×¦×‘×™ ×§×‘×¦×™×, ×›××• ××•×¦×‘×™ ×××’×¨ ××™×“×¢.',
 		'pagetypes_select.description' => '×‘×—×¨ ××™×–×” "×¡×•×’×™×" ×©×œ ×“×¤×™× ×™×›×•×œ×™× ×œ×§×‘×•×¢ ×”××©×ª××©×™×.',
 		'pagetypes_select.details' => '××¤×©×¨×•×ª ×–×• ××’×‘×™×œ×” ××¡×¤×¨ ×‘×—×™×¨×•×ª ×œ××©×ª××© ×›××©×¨ ×”×•× ×¢×•××“ ×œ×‘×—×•×¨ ×¡×•×’ ×“×£.',
 		'tables_modify.description' => '×‘×—×¨ ××™×–×” ×˜×‘×œ××•×ª ×™×›×•×œ×™× ×”××©×ª××©×™× ×œ×¢×¨×•×š.',
@@ -475,17 +579,21 @@ Esta característica é uma ótima forma de criar grupos de usuários \'Supervisores
 		'tables_select.details' => '×–×” ××’×“×™×¨ ××™×–×• ×˜×‘×œ××•×ª, ×‘× ×•×¡×£ ×œ××œ× ×©× ×‘×—×¨×• ×‘-"×˜×‘×œ××•×ª(×¢×¨×•×š)", ××©×ª××© ×™×›×•×œ ×œ×¨××•×ª. ×œ×›×Ÿ ×”×•× ×œ× ×™×›×•×œ <em>×œ×¢×¨×•×š</em>××ª ×”×˜×‘×œ×” - ×¨×§ ×œ×‘×—×•×¨ ×¨×©×•××•×ª ×•×œ×¨××•×ª ××ª ×”×ª×•×›×Ÿ.
 ×”×¨×©×™××” ×œ× ×—×©×•×‘×” ×›×œ ×›×š. ×“×™ × ×“×™×¨ ×©××©×ª××© ×™×›×•×œ ×œ×‘×—×•×¨ ×˜×‘×œ××•×ª ××‘×œ ×œ× ×œ×¢×¨×•×š ××•×ª×.',
 		'non_exclude_fields.description' => '×©×“×•×ª ×˜×‘×œ×” ××¡×•×™××•×ª ×œ× ×–××™× ×•×ª ×›×‘×¨×™×¨×ª ××—×“×œ. ×›××Ÿ × ×™×ª×Ÿ ×œ×”×¤×•×š ××•×ª× ×œ×–××™× ×•×ª ×œ××©×ª××©×™× ×‘×§×‘×•×¦×”.',
+		'non_exclude_fields.details' => '×›××Ÿ × ×™×ª×Ÿ ×œ×¤×¨×˜ ×”×¨×©××•×ª ×©× ×ª×ª ×œ×˜×‘×œ××•×ª. ×›×‘×¨×™×¨×ª ××—×“×œ, ×›×œ ×”×©×“×•×ª ×”××œ× ×œ× ×–××™× ×•×ª ×œ××©×ª××©×™× ×•×¦×¨×™×š ×œ×”×’×“×™×¨ ×’×™×©×” ××œ×™×”× ×›××Ÿ. ×œ×“×•×’××”, ××—×“ ×”×©×™××•×©×™× ×‘×¨×¢×™×•×Ÿ ×©×××—×•×¨×™ ×–×” - ×“×¤×™× ×—×“×©×™× × ×•×¦×¨×™× ×—×‘×•×™×™× ×•×× ×œ××©×ª××© ×œ× ××•×’×“×¨×ª ×’×™×©×” ×œ×©×“×” "×—×‘×•×™" - ×”×•× ××™× ×• ×™×›×•×œ ×œ×©×—×¨×¨ ××ª ×”×“×£. ×œ××©×ª××© ××—×¨ (××‘×§×¨) ××•×¤×™×¢ ×”×©×“×”, ×•××– ×”×•× ×™×›×•×œ ×œ×©×—×¨×¨ ××ª ×”×“×£ ××—×¨×™ ×‘×“×™×§×ª ×ª×•×›×Ÿ.',
 		'hidden.description' => '×”×•×¤×š ×§×‘×•×¦×ª ××©×ª××©×™× ×œ×œ× ×–××™× ×”.',
 		'hidden.details' => '×× ××ª×” ×”×•×¤×š ×§×‘×•×¦×ª ××©×ª××©×™× ×œ×œ× ×–××™× ×” - ×›×œ ×”××©×ª××©×™× ×‘×§×‘×•×¦×” ×œ× ×™×¨×©×• ×›×œ ×”×’×“×¨×” ××§×‘×•×¦×” ×–×• ×›×ª×•×¦××”.',
 		'lockToDomain.description' => '×”×›× ×¡ ×©× ×“×•××™×™×Ÿ ×©×¨×§ ××× ×• ××©×ª××© ×™×›×•×œ ×œ×”×›× ×¡ ×œ××¢×¨×›×ª.',
 		'lockToDomain.details' => '××¢×¨×›×ª TYPO3 ×™×›×•×œ×” ×œ××¤×©×¨ ×œ×“×•××™×™× ×™× ×¨×‘×™× ×œ×”×¦×‘×™×¢ ××œ×™×”. ×œ×›×Ÿ, ××¤×©×¨×•×ª ×–×• ××‘×˜×™×—×” ×©××©×ª××©×™× ×™×›×•×œ×™× ×œ×”×›× ×¡ ×¨×§ ××©× ×“×•××™×™×Ÿ ××¡×•×™×.',
 		'groupMods.description' => '×‘×—×¨ ××•×“×•×œ×™× ×‘×××©×§ ××—×•×¨×™ ×©×–××™× ×™× ×œ××©×ª××©×™× ×‘×§×‘×•×¦×”.',
 		'groupMods.details' => '×–×” ×§×•×‘×¢ ××™×–×” "×¤×¨×™×˜×™ ×ª×¤×¨×™×˜" ×–××™× ×™× ×œ××©×ª××©×™ ×”×§×‘×•×¦×”. ×¨×©×™××” ×–×• ×©×œ ××•×“×•×œ×™× ××ª×•×•×¡×¤×ª ×œ×›×œ ×”××•×“×•×œ×™× ×©× ×‘×—×¨×• ×‘×§×‘×•×¦×•×ª ××©×ª××©×™× ××—×¨×•×ª ×©×œ ×”××©×ª××©, ×›××• ×’× ×©×“×” ×©×” ×‘×”×’×“×¨×•×ª ×©×œ ×”××©×ª××© ×¢×¦××•.',
+		'inc_access_lists.description' => '×‘×—×¨ ×× ×’×™×©×” ×œ×¡×•×’ ×“×£, ×˜×‘×œ×”, ××•×“×•×œ ×•×©×“×•×ª ××™×•×—×“×•×ª ××•×ª×¨×•×ª ×œ×§×‘×•×¦×” ×–×•.',
 		'description.description' => '×”×›× ×¡ ×ª×™××•×¨ ×§×¦×¨ ×©×œ ×”×§×‘×•×¦×”, ××” ×”×™× ×•××™ ×”× ×”××©×ª××©×™×. ×–×” ×œ×©×™××•×© ×¤× ×™××™ ×‘×œ×‘×“.',
 		'TSconfig.description' => '×”×’×“×¨×•×ª × ×•×¡×¤×•×ª ×“×¨×š ×¢×¨×›×™× TypoScript (××ª×§×“×).',
 		'TSconfig.syntax' => '×‘×¡×’× ×•×Ÿ TypoScript ×œ×œ× conditions ×•-constants.',
 		'hide_in_lists.description' => '××¤×©×¨×•×ª ×–×• ×ª×× ×¢ ××”×§×‘×•×¦×” ×œ×”×•×¤×™×¢ ×‘×¨×©×™××•×ª ×©×œ ×§×‘×•×¦×•×ª ××©×ª××©×™×.',
+		'hide_in_lists.details' => '×–×” ×™×©×¤×™×¢ ×¢×œ ×¨×©×™××ª ×§×‘×•×¦×•×ª ××©×ª××©×™× ×‘××¨×›×– ××©×™××•×ª ×•××•×“×•×œ ××™× ×˜×¨× ×˜>×’×™×©×”. ×”×‘×—×™×¨×” ×”×™× ×” ×××•×“ ×©×™××•×©×™×ª ×× ×™×© ×œ×›× ×§×‘×•×¦×•×ª ××©×ª××©×™× ×›×œ×œ×™×•×ª, ×©××’×“×™×¨×•×ª ××¤×©×¨×•×™×•×ª ×›×œ×œ×™×•×ª ×•×›×œ ×”××©×ª××©×™× ×©×™×™×›×™× ××œ×™×”×. ××–, ××ª× ×‘×˜×— ×œ× ×ª×¨×¦×• ×©×›×œ ×”××©×ª××©×™× ×”×œ×œ×• ×™×¨××• ×–×” ××ª ×–×”.',
 		'subgroup.description' => '×‘×—×¨ ×§×‘×•×¦×•×ª ××©×ª××©×™× ×©×œ ×××©×§ ××—×•×¨×™ ×©× ×›×œ×œ×™× ××•×˜×•××˜×™×ª ×¢×‘×•×¨ ××©×ª××©×™× ×‘×§×‘×•×¦×” ×–×•.',
+		'subgroup.details' => '×”×’×“×¨×•×ª ×©×œ ×ª×ª-×§×‘×•×¦×•×ª ××ª×•×•×¡×¤×•×ª ×œ×”×’×“×¨×•×ª ×©×œ ×§×‘×•×¦×•×ª ××œ×• ×•×¤×©×•×˜ ×™×ª×•×•×¡×¤×• ×œ×¨×©×™××ª ×§×‘×•×¦×•×ª ××©×ª××©×™× ×©×œ ××©×ª××© ×©×©×™×™×š ××œ×™×”×. ×”×’×“×¨×” ×–×• × ×•×ª× ×ª ×“×¨×š ×˜×•×‘×” ×œ×™×¦×•×¨ "×§×‘×•×¦×•×ª ×× ×”×œ×™×".',
 	),
 	'ua' => Array (
 	),

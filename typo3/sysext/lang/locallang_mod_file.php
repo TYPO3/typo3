@@ -91,7 +91,7 @@ $LOCAL_LANG = Array (
 		'mlang_tabs_tab' => 'Datoteke',
 	),
 	'hu' => Array (
-		'mlang_labels_tablabel' => 'File adminisztáció a szerveren',
+		'mlang_labels_tablabel' => 'File adminisztráció a szerveren',
 		'mlang_tabs_tab' => 'File',
 	),
 	'gl' => Array (

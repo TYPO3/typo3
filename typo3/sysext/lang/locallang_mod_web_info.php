@@ -58,8 +58,8 @@ $LOCAL_LANG = Array (
 		'depth_1' => '1 niveau',
 		'depth_2' => '2 niveaux',
 		'depth_3' => '3 niveaux',
-		'mlang_labels_tablabel' => 'Informations en relation avec la page, ex. statistiques, logs, ...',
-		'mlang_labels_tabdescr' => 'Le module Web>Info est ciblé sur la présentation des statistiques d\'accès à la page.',
+		'mlang_labels_tablabel' => 'Information sur les pages, ex.: statistiques, historique de changements, nombre d\'éléments.',
+		'mlang_labels_tabdescr' => 'Le module Web>Info présente des informations statistiques sur les pages. Ceci inclut des statistiques d\'accès aux pages et le journal des changements apportés aux pages. Vous pouvez aussi consulter un sommaire du nombre d\'éléments et des options de chaque page dans une présentation arborescente classique.',
 		'mlang_tabs_tab' => 'Info',
 	),
 	'es' => Array (
@@ -199,6 +199,7 @@ $LOCAL_LANG = Array (
 		'depth_2' => '2 lygis',
 		'depth_3' => '3 lygis',
 		'mlang_labels_tablabel' => 'Su Puslapiu susijusi informacija, pvz. statistika, pakeitimai, áraðu skaièius',
+		'mlang_labels_tabdescr' => 'Svetainë>Informacinis modulis atspindi puslapiø statistika. Ðis modulis parodo puslapiø paspaudimo statistika ir pakeitimus darytus juose ir leidzhia perþiûrëti juos. Tai pat galite gauti áraðø skaièiø puslapyje ir jo nustatymus.',
 		'mlang_tabs_tab' => 'Informacija',
 	),
 	'is' => Array (
@@ -227,7 +228,7 @@ $LOCAL_LANG = Array (
 		'depth_1' => '1. szint',
 		'depth_2' => '2. szint',
 		'depth_3' => '3. szint',
-		'mlang_labels_tablabel' => 'Általános oldalinformációk, úgy mint statisztika, változtatások naplója stb..',
+		'mlang_labels_tablabel' => 'Általános oldalinformációk, például statisztika, változtatások naplója stb..',
 		'mlang_labels_tabdescr' => 'A Web>Info az általános, statikus oldalinformációkat jeleníti meg.',
 		'mlang_tabs_tab' => 'Info',
 	),

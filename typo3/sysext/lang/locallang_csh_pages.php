@@ -12,17 +12,14 @@ The pages table is the very backbone in TYPO3. All records editable by the mains
 The pages are organized in a tree structure which is not only a very handy way of organizing in general but also a optimal reflection of how you should organize the pages on your website. And thus you\'ll normally find that the page tree is a reflection of the website navigation itself.
 
 Technically all database elements has a field \'uid\' which is a unique identification number. Further they must have a field \'pid\' which holds the uid-number of the page (page id) to which they belong. If the \'pid\' field is zero the record is found in the so called \'root\'. Only administrators are allowed access to the root and furthermore table records must be configured to either belonging to a page or being found in the root.',
-
 		'title.description' => 'Enter the title of the page or folder.',
 		'title.syntax' => 'You must enter a page title. The field is required.',
-
 		'doktype.description' => 'Select the page type. This affects whether the page represents a visible webpage or is used for other purposes.',
 		'doktype.details' => 'The \'Standard\' type represents a webpage.
 \'SysFolder\' represents a non-webpage - a folder acting as a storage for records of your choice.
 \'Recycler\' is a garbage bin.
 
 <B>Notice:</B> Each type usually has a specific icon attached. Also certain types may not be available for a user (so you may experience that some of the options is not available for you!). And finally each type is configured to allow only certain table records in the page (SysFolder will allow any record if you have any problems).',
-
 		'TSconfig.description' => 'Page TypoScript configuration.',
 		'TSconfig.details' => 'Basically \'TypoScript\' is a concept for entering values in a tree-structure. This is known especially in relation to creating templates for TYPO3 websites.
 However the same principle for entering the hierarchy of values is used here to configure various features in relation to the backend, functions in modules, the Rich Text Editor etc.
@@ -31,20 +28,19 @@ The resulting \'TSconfig\' for a page is actually an accumulation of all \'TScon
 		'TSconfig.syntax' => 'Basic TypoScript syntax <em>without</em> \'Conditions\' and \'Constants\'.
 
 It\'s recommended that only admin-users are allowed access to this field!',
-
-		'php_tree_stop.description' => "[FILL IN]",
-		'storage_pid.description' => "[FILL IN]",
-		'is_siteroot.description' => "[FILL IN]",
+		'php_tree_stop.description' => '[FILL IN]',
+		'storage_pid.description' => '[FILL IN]',
+		'is_siteroot.description' => '[FILL IN]',
 	),
 	'dk' => Array (
-		'title.description' => 'Indtast titlen på siden eller mappen.',
-		'title.syntax' => 'Du skal indtaste en sidetitel. Dette felt er påkrævet.',
 		'.description' => 'Et "Side" element repræsenterer normalt en webside i TYPO3. Alle sider har et ID nummer med hvilket man kan referere eller linke til siderne. Side-elementet indeholder ikke selv sidens indhold - til dette formål bør du oprette "Indholdselementer".',
 		'.details' => 'Afhængigt af sidens "Type" så kan en side også repræsentere en indholdsfolder for database elementer i TYPO3. I sådan et tilfælde er siden ikke nødvendigvis tilgængelig som en webside men kun internt i sidetræet som et sted, hvor elementer så som brugere, tilmeldinger etc. kan gemmes.
 Side-tabellen er selve TYPO3s rygrad. Alle elementer (records) som kan redigeres med TYPO3 skal "tilhøre" en side. Det er præcis som med filer og mapper på din computers harddisk.
 Siderne er organiseret i en træstruktur som ikke blot er en vældig praktisk metode til strukturering i almindelighed men som også er en optimal reflektion af, hvordan du bør organisere siderne på dit website. Og således vil du erfare at side-træet normalt er en reflektion af websitets navigationsstruktur.
 
 Teknisk set har alle database elementer et felt, "uid", som er et unikt identifikationsnummer. Derudover skal alle elementer have et "pid" felt, som indeholder uid-nummeret på den side (page id) som de tilhører. Hvis pid-feltet er nul, så tilhører elementet "roden" af sidetræet. Det er kun administratorer, som har adgang til roden af sidetræet og desuden skal en tabel konfigureres til at tilhøre enten roden eller et sted i sidetræets grene.',
+		'title.description' => 'Indtast titlen på siden eller mappen.',
+		'title.syntax' => 'Du skal indtaste en sidetitel. Dette felt er påkrævet.',
 		'doktype.description' => 'Vælg sidens type. Dette påvirker hvorvidt siden repræsenterer en synlig webside eller bruges til andre formål.',
 		'doktype.details' => '"Standard" typen repræsenterer en webside.
 "SysFolder" repræsenterer en ikke-webside - en mappe som fungerer som opbevaringsplads for elementer efter dit valg.
@@ -56,14 +52,14 @@ Teknisk set har alle database elementer et felt, "uid", som er et unikt identifi
 	'de' => Array (
 	),
 	'no' => Array (
-		'title.description' => 'Skriv inn tittelen på siden eller mappen.',
-		'title.syntax' => 'Du må skrive inn en sidetittel. Dette feltet er påkrevd.',
 		'.description' => 'Et "Side" element representerer normalt en webside i TYPO3. Alle sider har et ID nummer som kan benyttes for å referere eller linke til sidene. Side-elementet inneholder ikke sidens innhold selv – til dette formålet bør du opprette "Innholdselementer".',
 		'.details' => 'Avhengig av sidens "Type" kan siden også være en innholdsmappe for database elementer i TYPO3. I slike tilfeller er ikke siden nødvendigvis tilgjengelig som en webside, men kun internt i sidetreet som et sted hvor elementer som brukere, innmeldinger etc. kan lagres.
 Side-tabellen er selve TYPO3s ryggrad. Alle element (records) som kan redigeres med TYPO3 skal "tilhøre" en side. Det er akkurat som med filer og mapper på din datamaskins harddisk.
 Sidene er organisert i en trestruktur som ikke bare er veldig praktisk metode for strukturering i alminnelighet, men som også er en optimal gjengivelse av hvordan du bør organisere sidene på webområdet ditt. På den måten vil du se at sidetreet normalt er en refleksjon av webområdets navigasjonstruktur.
 
 Teknisk sett har alle database elementer et felt, "uid", som er et unikt identifikasjonsnummer. Utover dette må alle elementer ha et "pid" felt som inneholder uid-nummeret for den siden (page id) som de tilhører. Hvis pid-feltet er null tihører elementet "roten" av sidetreet. Det er kun administratorer som har tilgang til roten av sidetreet og videre må en tabell konfigureres til å tilhøre enten roten eller et sted i sidetreets grener.',
+		'title.description' => 'Skriv inn tittelen på siden eller mappen.',
+		'title.syntax' => 'Du må skrive inn en sidetittel. Dette feltet er påkrevd.',
 		'doktype.description' => 'Velg sidetype. Dette påvirker hvorvidt siden er en synlig webside eller brukes til andre formål.',
 		'doktype.details' => '"Standard" typen er en webside.
 "SysFolder" er en ikke-webside – en mappe som fungerer som oppbevaringsplass for valgfrie elementer.
@@ -75,8 +71,37 @@ Teknisk sett har alle database elementer et felt, "uid", som er et unikt identif
 	'it' => Array (
 	),
 	'fr' => Array (
+		'.description' => 'Une enregistrement \'Page\' représente normalement une page sur votre site web. Toutes les pages ont un ID qui leur permet d\'être référencées et d\'en faire des liens. Une \'Page\' ne contient pas directement le contenu (texte, image, ...). Pour cela vous devez créer des enregistrements que nous appelleront \'Contenu de page\'.',
+		'title.description' => 'Entrez le titre de la page ou du dossier.',
+		'title.syntax' => 'Vous devez préciser un titre. Ce champs en obligatoire.',
+		'doktype.description' => 'Choisissez le type de page. Cette option va définir si votre page est un simple page visible sur votre site ou si elle va avoir une autre utilisation.',
+		'doktype.details' => 'le type \'Standard\'  représente une page normal de votre site.
+\'SysFolder\' réprente une page qui n\'apparaitra pas sur votre site. Elle sera a ranger d\'autres pages.
+\'Recycler\' vous servira de corbeille.
+
+<b>Attention:</b> Normalement, chaque page à une icône spécifique. De plus certains types ne sont pas disponible pour tous les utilisateurs. Et finalement certains types de page vont automatiquement limiter le contenu qu\'elle supportent.',
+		'TSconfig.description' => 'Configuration de la page TypoScript',
 	),
 	'es' => Array (
+		'.description' => 'Un registro “Página” normalmente representa una página web en TYPO3. Todas las páginas contienen un número de identificación (id) por el cual pueden ser enlazadas y referenciadas. El registro “Página” no contiene por si mismo el contenido de la página – para este fin debes crear registros “Contenido de página”.',
+		'.details' => 'Dependiendo del “Tipo”, la página también puede representar un almacen general para elementos de base de datos en TYPO3. En ese caso no necesariamente está disponible como una página web, existirá internamente como un lugar para almacenar elementos como usuarios, subscripciones, etc...
+La tabla de páginas es la espina dorsal de TYPO3. Todos los registros editables por los módulos principales de TYPO3 deben “pertenecer” a una página. Es exáctamente como las carpetas y ficheros de tu ordenador. Las páginas están organizadas en una estructura de árbol que no es tán solo una manera muy útil de organización en general sino también un reflejo óptimo de como debes organizar las páginas dentro del sitio web. Por tanto normalmente encontrarás que el árbol de páginas es un reflejo fiel de la propia navegación del sitio web.
+
+Técnicamente todos los elementos de la base de datos poseen un campo “uid” el cual es un número único de identificación. Además, deben tener un campo “pid” que contiene el número de identificación de la página (uid) a la que pertenecen. Si el campo “pid” es cero el registro se encuentra en la llamada “raíz”. Sólo los administradores pueden acceder a la raíz y por lo tanto todos los registros de las tablas deben estar configurados para pertenecer a una página o encontrarse en la raíz.',
+		'title.description' => 'Introduce el título de la página o carpeta.',
+		'title.syntax' => 'Debes introducir un título de página. El campo es obligatorio.',
+		'doktype.description' => 'Selecciona el tipo de página. Esto afecta a si la página representa una página visible en la web o si es utilizada para otros propósitos.',
+		'doktype.details' => 'El tipo “Estándar” representa una página web.
+“Carpeta de sistema” representa una página interna, una carpeta que actúa de almacén de elementos. “Papelera” es una papelera de reciclaje.
+
+<b>Nota:</b> Cada tipo posee normalmente un icono distinto. Además, ciertos tipos pueden no estar disponibles para un operador (por lo que puede ser que no dispongas de todas estas opciones). Y finalmente cada tipo está configurado para permitir sólo ciertos registros en la página (“Carpeta del sistema” permitirá cualquier tipo de registro si tuvieras un problema).',
+		'TSconfig.description' => 'Configuración TypoScript de la página.',
+		'TSconfig.details' => 'Básicamente “TypoScript” es un concepto para introducir valores en una estructura de árbol. Esto es así especialmente en relación con la creación de plantillas para sitios web de TYPO3.
+De cualquier manera el mismo principio para introducir la jerarquía de valores es usada aquí para configurar varias características en relación con el backend, funciones en módulos, el RTE, etc...
+El “TSConfig” que resulta para una página es actualmente una acumulación de todos los valores “TSConfig” desde la raíz del árbol de páginas hasta la página actual. Y también las subpáginas serán afectadas igualmente. Una vista del “TSConfig” de la página está disponible desde el menú “TSConfig de página” en el módulo “Web>Info” (requiere que la extensión “info_pagetsconfig” esté instalada).',
+		'TSconfig.syntax' => 'Síntaxis de TypoScript básica <em>sin</em> “Condiciones” ni “Constantes”.
+
+Es recomentado que sólo los usuarios “Administradores” tengan acceso a este campo.',
 	),
 	'nl' => Array (
 	),
@@ -87,14 +112,14 @@ Teknisk sett har alle database elementer et felt, "uid", som er et unikt identif
 	'si' => Array (
 	),
 	'fi' => Array (
-		'title.description' => 'Anna sivun tai hakemiston nimi.',
-		'title.syntax' => 'Sinun tulee antaa nimi sivulle. Tämä on pakollinen tieto.',
 		'.description' => '\'Sivu\'-tietue esittää useimmiten kokonaista www-sivua Typo3ssa. Kaikilla sivuilla on ID-numero, jonka perusteella niihin voidaan linkittää ja viitata. \'Sivu\'-tietueessa ei itsessään ole sisältöä, vaan tähän tarkoitukseen sinun on luotava \'Sivun sisältö\' -tietueita.',
 		'.details' => '\'Tyyppi\' (\'\'Type\') valinnasta riippuen sivu voi toimia myös yleisenä Typo3 tietokannan elementtien varastona. Tässä tapauksessa sivut eivät ole välttämättä varsinaisia www-sivuston sivuja vaan sisäisiä sivuja puurakenteessa jonne on talletettu tietoja, kuten käyttäjät, linkit, linkkiluokat tms.
 Sivutaulu on TYPO3n selkäranka. Kaikkien keskeisillä aliohjelmilla muokattavien tietojen TYPO3ssa on \'kuuluttavat\' sivulle. Tilanne on saman kaltainen kuin tiedostot ja hakemistot oman tietokoneesi kovalevyllä.
 Sivut on järjestetty puurakenteeseen joka ei ole ainoastaan käytännöllinen menetelmä mutta  vastaa kuinka Sinun tulisi järjestää sivut  optimaalisesti www-sivustollesi. Näin huomaat normaalisti myös että puurakenne vastaa myös siirtymisiä www-sivustolla.
 
 Teknisesti kaikissa tietokannan elementeissä on \'uid\' joka on yksilöllinen tunnus. Edelleen elementeillä tulee olla tieto \'pid\' joka sisältää kunkin sivun \'uid\'-tunnuksen jolle kukin elementti kuuluu. Jos \'pid\' tieto on nolla, tietoa kutsutaan silloin ns. juureksi (root). Vain pääkäyttäjillä on oikeus juuren käsittelyyn. Lisäksi kaikkien taulun tietojen tulee olla asetettuja kuulumaan joko johonkin sivuun tai juureen.',
+		'title.description' => 'Anna sivun tai hakemiston nimi.',
+		'title.syntax' => 'Sinun tulee antaa nimi sivulle. Tämä on pakollinen tieto.',
 		'doktype.description' => 'Valitse sivun tyyppi. Tämän tarkoituksena on määrittää näkyykö sivu tavallisena web-sivuna vai käytetäänkö sitä johonkin muuhun tarkoitukseen.',
 		'doktype.details' => '\'Normaali\'-tyyppi on tavallinen esitettävä www-sivu.
 \'SysFolder\' tarkoittaa ei-esitettävää sivua - se esittää hakemistoa jonne on tallennettu haluamiasi tietoja.
@@ -112,14 +137,14 @@ Suositellaan vain admin-käyttäjille pääsyä tähän tietoon!',
 	'tr' => Array (
 	),
 	'se' => Array (
-		'title.description' => 'Fyll i sidans eller katalogens namn.',
-		'title.syntax' => 'Sidan måste ha ett namn!',
 		'.description' => 'A \'Page\' record usually represents a webpage in TYPO3. All pages has an id-number by which they can be linked and referenced. The \'Page\' record does not itself contain the content of the page - for this purpose you should create \'Page content\' records.',
 		'.details' => 'Depending on the \'Type\' of the page, it may also represent a general storage for database elements in TYPO3. In that case it is not necessarily available as a webpage but only internally in the page tree as a place to store items such as users, subscriptions etc.
 The pages table is the very backbone in TYPO3. All records editable by the mainstream modules in TYPO3 must \'belong\' to a page. It\'s exactly like files and folders on your computers harddrive.
 The pages are organized in a tree structure which is not only a very handy way of organizing in general but also a optimal reflection of how you should organize the pages on your website. And thus you\'ll normally find that the page tree is a reflection of the website navigation itself.
 
 Technically all database elements has a field \'uid\' which is a unique identification number. Further they must have a field \'pid\' which holds the uid-number of the page (page id) to which they belong. If the \'pid\' field is zero the record is found in the so called \'root\'. Only administrators are allowed access to the root and furthermore table records must be configured to either belonging to a page or being found in the root.',
+		'title.description' => 'Fyll i sidans eller katalogens namn.',
+		'title.syntax' => 'Sidan måste ha ett namn!',
 		'doktype.description' => 'Välj sidtyp. Detta påverkar huruvida sidan är en synlig websida eller om den används för annat bruk.',
 		'doktype.details' => 'The \'Standard\' type represents a webpage.
 \'SysFolder\' represents a non-webpage - a folder acting as a storage for records of your choice.
@@ -141,6 +166,41 @@ It\'s recommended that only admin-users are allowed access to this field!',
 	'ro' => Array (
 	),
 	'ch' => Array (
+		'.description' => 'Ò»¸ö\'Ò³Ãæ\'¼ÇÂ¼Í¨³£ÔÚTYPO3ÖĞÏÔÊ¾Ò»¸öÍøÒ³.ËùÓĞÒ³Ãæ¶¼ÓĞÒ»¸ö±êÊ¶ºÅÍ¨¹ıËüÀ´Á¬½ÓºÍ²Î¿¼Ò³Ãæ.\'Ò³Ãæ\'¼ÇÂ¼±¾Éí²»°üº¬Ò³ÃæµÄÄÚÈİ-Îª´ËÄúÓ¦¸Ã´´½¨\'Ò³ÃæÄÚÈİ\'¼ÇÂ¼.',
+		'.details' => '¸ù¾İÍøÒ³µÄ\'ÀàĞÍ\',ËüÒ²¿ÉÄÜÔÚTYPO3ÖĞÎªÊı¾İ¿âÔªËØÏÔÊ¾Ò»¸ö³£¹æ´æ
+´¢. ÔÚÕâÖÖÇé¿öÏÂËü²»±Ø×÷ÎªÒ»¸öÍøÒ³ÓĞĞ§,¶ø½öÔÚÍøÒ³Ê÷ÄÚ²¿×÷Îª´æ
+´¢ÏîµÄ¿Õ¼ä,ÀıÈçÓÃ»§, Ç©ÃûµÈ.
+Ò³Ãæ±í¸ñÔÚTYPO3ÖĞ·Ç³£ÖØÒª. ËùÓĞÔÚTYPO3ÖĞ±»Ö÷Á÷Ä£¿é¿É±à¼­µÄ¼Ç
+Â¼¶¼±ØĞë\'ÊôÓÚ\'Ò»¸öÒ³Ãæ.ÕâÓëÄú¼ÆËã»úÓ²ÅÌÖĞµÄÎÄ¼şºÍÄ¿Â¼·Ç³£ÏàÏó.
+Ò³Ãæ±»×éÖ¯³ÉÊ÷ĞÍ½á¹¹,ÕâÑù²»µ«Î´³£¹æ×éÖ¯Ìá¹©·Ç³£±ãÀûµÄ·½·¨¶øÇÒ
+Ò³×î¼ÑµÄ·´Ó³³öÔÚÄúµÄÍøÕ¾ÉÏÄúÓ¦¸ÃÈçºÎ×éÖ¯Ò³Ãæ.Òò¶øÄú½«·¢ÏÖÒ³Ãæ
+Ê÷ÊÇÍøÒ³×ÔÉí¶¨Î»µÄÒ»¸ö·´Ó³.
+¼¼ÊõÉÏËùÓĞµÄÊı¾İ¿âÔªËØ¶¼ÓĞÒ»¸ö\'uid\'Óò(Î¨Ò»±êÊ¶ºÅ).ÁíÍâËüÃÇ±ØĞë
+ÓĞÒ»¸ö \'pid\'Óò,\'pid\'±£´æÊôÓÚËüµÄÒ³ÃæµÄuidºÅ(Ò³Ãæid).Èç¹ûÔÚ¼ÇÂ¼
+ÖĞ·¢ÏÖµÄ\'pid\'ÓòÎªÁã,ÄÇÃ´Ëü¾Í½Ğ×÷\'¸ù\'.Ö»ÓĞ¹ÜÀíÔ±ÔÊĞí·ÃÎÊ¸ù²¢ÇÒ
+±í¸ñ¼ÇÂ¼±ØĞëÉèÖÃÎªÊôÓÚÒ³Ãæ»òÕßÔÚ¸ùÖĞÄÜ±»·¢ÏÖµÄÎ»ÖÃ.',
+		'title.description' => 'ÊäÈëÒ³Ãæ»òÄ¿Â¼µÄ±êÌâ.',
+		'title.syntax' => 'Äú±ØĞëÊäÈëÒ»¸öÒ³Ãæ±êÌâ. ´ËÓòÊÇ±ØĞëµÄ.',
+		'doktype.description' => 'Ñ¡ÔñÒ³ÃæÀàĞÍ.ÕâÓ°Ïìµ½Ò³ÃæÊÇ·ñÏÔÊ¾Ò»¸ö¿ÉÊÓÍøÒ³»òÊÇÓÃÓÚÆäËûÄ¿µÄ.',
+		'doktype.details' => '\'±ê×¼\'ÀàĞÍ±íÊ¾Ò»ÍøÒ³.
+\'SysFolder\'±íÊ¾ÎªÒ»·ÇÍøÒ³- Ò»¸öÎÄ¼ş¼Ğ×÷ÎªÄúÑ¡ÔñµÄ¼ÇÂ¼µÄ´æ´¢Æ÷.
+\'ÔÙÑ­»·\'ÊÇÒ»À¬»øÏä.
+<B>×¢Òâ:</B>Ã¿¸öÀàĞÍÍ¨³£»á¸½ÉÏÒ»¸öÖ¸¶¨µÄÍ¼±ê.²¢ÇÒÄ³Ğ©ÀàĞÍ¿ÉÄÜ
+¶ÔÓÃ»§²»¿ÉÓÃ (Òò´ËÄú¿ÉÄÜ»á¾­ÀúÒ»Ğ©Ñ¡Ïî¶ÔÄúÊÇ²»¿ÉÓÃµÄ!). 
+²¢ÇÒ×îºóÃ¿ÖÖÀàĞÍ±»ÅäÖÃ½öÔÊĞíÒ³ÃæÖĞµÄÄ³Ğ©±í¸ñ¼ÇÂ¼(Èç¹ûÄúÓĞÈÎºÎÎÊÌâ
+SysFolder½«ÔÊĞíÈÎºÎ¼ÇÂ¼).',
+		'TSconfig.description' => 'Ò³ÃæTypoScript ÅäÖÃ.',
+		'TSconfig.details' => '»ù±¾ÉÏ\'TypoScript\'ÊÇÒ»¸ö³ÊÏÖÎªÊ÷ĞÍ½á¹¹,ÓÃÓÚÊäÈëÊıÖµµÄ¸ÅÄî.
+ÓÈÆäÊÇÎªTYPO3ÍøÕ¾´´½¨Ä£°å¶øÖøÃû.
+È»¶øÓÃÀ´ÊäÈëÊıÖµ²ã´ÎµÄÏàÍ¬Ô­ÀíÔÚ´ËÓÃÀ´ÅäÖÃÓëºó¶Ë,Ä£¿éÖĞµÄ
+¹¦ÄÜ,Rich Text ±à¼­Æ÷µÈÏà¹ØµÄ²»Í¬ÌØĞÔ. 
+Ò»¸öÒ³ÃæµÄ\'TSconfig\'½á¹ûÊÂÊµÉÏÊÇ´ÓÒ³ÃæÊ÷µÄ¸ùºÍÖÁµ±Ç°Ò³Ãæ
+·ÖÖ§µÄËùÓĞ\'TSconfig\'ÖµµÄÀÛ¼Æ.Òò¶øËùÓĞ×ÓÒ³ÃæÒ²Í¬ÑùÊÜµ½Ó°Ïì.
+´òÓ¡Ò³ÃæTSconfig¿ÉÔÚ\'ÍøÒ³>ĞÅÏ¢\'Ä£¿ìÖĞ´Ó\'ÍøÒ³TSconfig\'²Ëµ¥ÄÚ
+Ö´ĞĞ(ËùĞèµÄ"info_pagetsconfig±»°²×°).',
+		'TSconfig.syntax' => '»ù±¾TypoScript¾ä·¨<em>ÎŞ</em> \'Ìõ¼ş\'ºÍ\'³£Á¿\'.
+
+½¨ÒéÖ»ÓĞ¹ÜÀíÔ±ÓÃ»§ÔÊĞí·ÃÎÊ´ËÓò!',
 	),
 	'sk' => Array (
 	),
@@ -149,14 +209,14 @@ It\'s recommended that only admin-users are allowed access to this field!',
 	'is' => Array (
 	),
 	'hr' => Array (
-		'title.description' => 'Unesite naslov stranice ili pretinca',
-		'title.syntax' => 'Obavezno je unjeti naslov stranice.',
 		'.description' => 'Zapis \'stranica\' obièno predstavlja web stranicu u TYPO3 sustavu. Sve stranice imaju id broj pomoæu kojega mogu biti povezane i referencirane. Zapis \'Stranica\' ne obuhvaæa sam sadraj veæ je za to potrebno kreirati zapis \'Sadraj stranice\'.',
 		'.details' => 'U zavisnosti od tipa stranice ona moe predstavljati repozitorij raznih podatakovnih elemenata u TYPO3 sustavu. U tom sluèaju nije nuno da predstavlja web stranicu veæ interno unutar stabla stranica moe predstavljati mjesto za pohranu raznih podataka kao što su korisnici, pretplate i slièno.
 Stranice su duboko ukorijenjene u TYPO3. Svi zapisi koji se mogu editirati iz glavnih TYPO3 modula moraju pripadati nekoj stranici. To je vrlo slièno datotekama koje moraju pripadati pretincima.
 Stranice su organizirane u stablo što nije samo prikladan naèin organiziranja podataka veæ i uobièajen naèin organiziranja stanica unutar web sjedišta. Takoğer, uobièajeno je da stablo stranica predstavlja i sam naèin organizacije navigacije.
 
 Tehnièki gledano svi elementi baze imaju polje \'uid\' koje predstavlja jedinstveni identifikacioni broj. Takoğer moraju imati i polje \'pid\' koji sadri uid oznaku stranice kojoj odreğenmi element pripada. Ukoliko je \'pid\' oznaka nula zapis senalazi u poèetnoj (root) stranici. Samo administraotri imaju dozvolu pristupa poèetnoj stranici i osim toga zapisi moraju biti konfigurirani tako da pripadaju nekoj od stranica ili biti u poèetnoj stranici.',
+		'title.description' => 'Unesite naslov stranice ili pretinca',
+		'title.syntax' => 'Obavezno je unjeti naslov stranice.',
 		'doktype.description' => 'Selektirajte tip stranice. Ovo ima utjecaj na sadraj stranice, da li æe biti web stranica ili iskorištena za neku drugu svrhu.',
 		'doktype.details' => 'Standardni tip predstavlja web stranicu.
 \'SysFolder\' (sistemski pretinac) predstavlja repozitorij - pretinac u koji moete spremiti razne zapise prema vlastitom izboru.
@@ -172,8 +232,6 @@ Konaèni \'TSconfig\' stranice je rezultat akumuliranja svih \'TSconfig\' vrijedn
 Preporuèljivo je da samo korisnici s administratorskim dozvolama imaju pristup do ovog polja!',
 	),
 	'hu' => Array (
-		'title.description' => 'Add meg az oldal vagy könyvtár címét.',
-		'title.syntax' => 'Meg kell adnod egy oldalcímet. Ez a mezõ kötelezõ.',
 		'.description' => 'A \'Page\' rekord általában egy weboldalt jelent a TYPO3-ban. Minden oldalnak van egy id-száma, amivel hivatkozni lehet rá. A \'Page\' rekord nem tartalmazza az oldal tartalmát - ezért létre kell hozni \'Oldal tartalom\' rekordokat.',
 		'.details' => 'Az oldal típusától függõen ez is az adatbázis elemek tárolását
 képviseli a TYPO3-ban. Abban az esetben , ha nem szükséges
@@ -199,6 +257,8 @@ Ha egy \'pid\' mezõ zérus, akkor a rekord az ún. \'gyökérben\'
 található. A gyökérhez csak az adminisztrátorok férnek hozzá
 illetve a táblarekordokat úgy kell konfigurálni, hogy vagy egy
 oldalhoz vagy a gyökérhez tartozzanak.',
+		'title.description' => 'Add meg az oldal vagy könyvtár címét.',
+		'title.syntax' => 'Meg kell adnod egy oldalcímet. Ez a mezõ kötelezõ.',
 		'doktype.description' => 'Válaszd ki az oldal típusát. Ettõl függ, hogy az oldal látható vagy egyéb célokra szolgál.',
 		'doktype.details' => 'A \'Standard\' típus egy weboldalt képvisel, a \'SysFolder\'
 - amely nem weboldal - egy olyan könyvtár, amely az általad
@@ -235,13 +295,13 @@ Javaslat: csak admin-felhasználóknak legyen engedélyezve a mezõ elérése!',
 	'gr' => Array (
 	),
 	'hk' => Array (
-		'title.description' => '¿é¤Jºô­¶©Î¸ê®Æ§¨ªº¦WºÙ',
-		'title.syntax' => '§A¥²¶·­n¿é¤J¤@­Óºô­¶¦WºÙ¡C³oÄæ¬O¥²¶·ªº¡C',
 		'.description' => '¦b TYPO3 ¤¤¤@­Ó¡uºô­¶¡v°O¿ı³q±`¥Nªí¤@­Óºô­¶¡C©Ò¦³ºô­¶³£¦³¤@­Ó½s¸¹¡A³z¹L³o­Ó½s¸¹ºô­¶¥i¥H³Q³sµ²©M°Ñ·Ó¡C¡uºô­¶¡v°O¿ı¥»¨­¤£§t¦³ºô­¶ªº¤º®e - ­n¹F¦¨³o¥Øªº§AÀ³¸Ó«Ø¥ß¡uºô­¶¤º®e¡v°O¿ı¡C',
 		'.details' => 'µø¥Gºô­¶ªº¡uºØÃş¡v, ¥¦¤]¥i¥H¥Nªí¦b TYPO3 ¤¤¤@­Ó´¶³qªº¸ê®Æ®w¤¸¥óÀx¦s¡C¦b³o­Ó±¡ªp¤U¡A¥¦¤£¶·¬O¤@­Ó¥iÆ[¬İªººô­¶¡A¦Ó¥u¬Oºô­¶¾ğ¹Ï¤¤¤º¦b§@¬°Àx¦sª«¥ó¡]¨Ï¥ÎªÌ©M­q¾\\µ¥¡^ªº¦a¤è¡C
 ºô­¶¸ê®Æªí¬O TYPO3 ªº¤¤¼Ï¡C©Ò¦³¥i¥H¸g TYPO3 ¥D¼Ò²Õ­×§ïªºªº°O¿ı¤@©w¡uÄİ©ó¡v¤@­Óºô­¶¡C´N¦n¹³§Aªº¹q¸£µwºĞ¤¤ªº¸ê®Æ§¨©MÀÉ®×¤@¼Ë¡C
 ºô­¶³Q²ÕÂ´¦¨¤@­Ó¡u¾ğ¹Ï¡v¡A¥¦¤£³æ¬O¤@­Ó«D±`¤è«Kªº²ÕÂ´¡A¤]³Ì¦³®Ä¤Ï¬M§AÀ³¸Ó¦p¦ó²ÕÂ´§Aºô¯¸ªººô­¶¡C¦]¦¹¡A³q±`§A·|µo²{ºô­¶¾ğ¹Ï¤Ï¬Mºô¯¸¨­ªº¿ï³æ¾É¦V¡C
 §Ş³N¤W¡A©Ò¦³ªº¸ê®Æ®w¤¸¥ó³£¦³¤@­Ó¡uUID¡vÄæ¡A¥¦¬O¿W¤@ªº¡u»{ÃÒ¡v½s¸¹¡C°£¦¹¤§¥~¡A¥¦­Ì¤@©w¦³¤@­Ó¡uPID¡vÄæ¡A¥¦§t¦³¥L­Ì©ÒÄİªººô­¶ªº½s¸¹¡C°²¦p¡uPID¡vÄæ¬O¹s¡A°O¿ı´N¬O¦b³QºÙ¬°¡u®Ú¡v¤¤¡C¥u¦³ºŞ²z­û³Q³\\¥i¦s¨ú®Ú¡A¦Ó¥B¸ê®Æªí°O¿ı¤@©w­n³]©w¬°Äİ©ó¤@­Óºô­¶©Î¦ì©ó®Ú¤¤¡C',
+		'title.description' => '¿é¤Jºô­¶©Î¸ê®Æ§¨ªº¦WºÙ',
+		'title.syntax' => '§A¥²¶·­n¿é¤J¤@­Óºô­¶¦WºÙ¡C³oÄæ¬O¥²¶·ªº¡C',
 		'doktype.description' => '¿ï¾Üºô­¶ºØÃş¡C³o¼vÅTºô­¶¬O¤@­Ó¥iÆ[¬İªººô­¶©Î¬O§@¬°¨ä¥L¥Î³~¡C',
 		'doktype.details' => '¡u¼Ğ·Ç¡vÃş«¬¥Nªí¤@­Óºô­¶¡C
 ¡u¨t²Î¸ê®Æ§¨¡v¥Nªí¤@­Ó«Dºô­¶ - ¤@­Ó¸ê®Æ§¨§@¬°§A¿ï¾Üªº°O¿ıªºÀx¦s¡C
@@ -259,9 +319,9 @@ Javaslat: csak admin-felhasználóknak legyen engedélyezve a mezõ elérése!',
 	'eu' => Array (
 	),
 	'bg' => Array (
+		'.description' => 'Çàïèñ \'Ñòğàíèöà\' îáèêíîâåííî ïğåäñòàâëÿâà óåá ñòğàíèöà â TYPO3. Âñè÷êè ñòğàíèöè èìàò id-íîìåğ ïî êîéòî ìîãàò äà áúäàò ñâúğçâàíè èëè ğåôåğåíöèğàíè. Çàïèñà \'Ñòğàíèöà\' íå ñúäúğæà â ñåáå ñè ñúäúğæàíèåòî íà ñòğàíèöàòà - çà òàçè öåë òğÿáâà äà ñúçäàäåòå çàïèñ \'Ñúäúğæàíèå íà ñòğàíèöàòà\'.',
 		'title.description' => 'Âúâåäåòå çàãëàâèå íà ñòğàíèöàòà èëè ïàïêàòà.',
 		'title.syntax' => 'Òğÿáâà äà âúâåäåòå çàãëàâèå íà ñòğàíèöàòà. Ïîëåòî å èçèñêâàíå.',
-		'.description' => 'Çàïèñ \'Ñòğàíèöà\' îáèêíîâåííî ïğåäñòàâëÿâà óåá ñòğàíèöà â TYPO3. Âñè÷êè ñòğàíèöè èìàò id-íîìåğ ïî êîéòî ìîãàò äà áúäàò ñâúğçâàíè èëè ğåôåğåíöèğàíè. Çàïèñà \'Ñòğàíèöà\' íå ñúäúğæà â ñåáå ñè ñúäúğæàíèåòî íà ñòğàíèöàòà - çà òàçè öåë òğÿáâà äà ñúçäàäåòå çàïèñ \'Ñúäúğæàíèå íà ñòğàíèöàòà\'.',
 		'doktype.description' => 'Èçáåğåòå òèï íà ñòğàíèöàòà. Òîâà çàñÿãà äàëè ñòğàíèöàòà ùå ïğåäñòàâëÿâà âèäèìà óåá ñòğàíèöà èëè å ñå èçïîëçâà çà äğóãè íóæäè.',
 		'TSconfig.description' => 'Êîíôèãóğàöèÿ íà TypoScript ñòğàíèöàòà.',
 		'TSconfig.syntax' => 'Îñíîâíèÿ TypoScript ñèíòàêñèñ <em>áåç</em> \'Óñëîâèÿ\' and \'Êîíñòàíòè\'.
@@ -269,13 +329,13 @@ Javaslat: csak admin-felhasználóknak legyen engedélyezve a mezõ elérése!',
 Ïğåïîğú÷èòåëíî å ñàìî Àäìèí ïîòğåáèòåëè äà èìàò ğàçğåøåí äîñòúï äî òîâà ïîëå!',
 	),
 	'br' => Array (
-		'title.description' => 'Digite o título da página ou pasta.',
-		'title.syntax' => 'Você precisa digitar um título para a página. Este campo é obrigatório.',
 		'.description' => 'Um registro do tipo \'Página\' normalmente representa uma página web no TYPO3. Todas as páginas possuem um número de identificação através do qual elas podem ser acessadas e referenciadas. O registro \'página\' não armazena em si o conteúdo da página - para essa finalidade você deve criar registros do tipo \'Conteúdo de página\'.',
 		'.details' => 'Dependendo do \'Tipo\' da página, ela pode representar um armazém de elementos da base de dados do TYPO3. Neste caso, não estará necessariamente disponível como uma página web, mas apenas internamente na árvore de páginas, como um local para armazenar ítens como usuários, assinaturas, etc. A tabela de páginas é a estrutura básica no TYPO3. Todos os registros editáveis pelos módulos principais do TYPO3 precisam \'pertencer\' a uma página. É exatamente como os arquivos e pastas do disco rígido de seu computador.
 As páginas são organizadas dentro de uma estrutura de árvore, a qual é não apenas uma forma bastante prática de organização de modo geral, mas também uma representação apropriada de como você deve organizar as páginas dentro do seu site. Desta forma, você perceberá que a árvore de páginas é uma representação da própria estrutura de navegação do site.
 
 Tecnicamente, todos os elementos do banco de dados possuem um campo \'uid\', que contém um número de identificação único. Além disso, possuem também um campo \'pid\', que contém o número de identificação da página à qual eles pertencem. Se o campo \'pid\' é zero, o registro se encontra na chamada \'raiz\'. Apenas usuários-administradores possuem acesso à raiz e portanto os registros precisam ser configurados, ou para pertencer a uma página, ou para serem encontrados na raiz.',
+		'title.description' => 'Digite o título da página ou pasta.',
+		'title.syntax' => 'Você precisa digitar um título para a página. Este campo é obrigatório.',
 		'doktype.description' => 'Selecione o tipo da página. Esta opção define se a página representa uma página web visível ou se é usada para outras finalidades.',
 		'doktype.details' => 'O tipo \'Padrão\' representa uma página web. \'Pasta de Sistema\' representa uma página não-web - uma pasta atuando como armazém de registros à sua escolha. \'Lixeira\' representa um local para exclusão de registros.
 
@@ -293,11 +353,11 @@ Uma visualização do TSconfig da página está disponível no menu \'TSconfig da pág
 	'ar' => Array (
 	),
 	'he' => Array (
-		'title.description' => '×”×›× ×¡ ×©× ×”×“×£ ××• ×”×ª×™×§×™×™×”',
-		'title.syntax' => '×¢×œ×™×š ×œ×”×–×™×Ÿ ×©× ×”×“×£. ×”×©×“×” × ×“×¨×©.',
 		'.description' => '×¨×©×•××” ××¡×•×’ "×“×£" ×‘×“×¨×š ×›×œ×œ ××™×™×¦×’ ×“×£ ××™× ×˜×¨× ×˜ ×‘-TYPO3. ×œ×›×œ ×”×“×¤×™× ×™×© ××¡×¤×¨ ×–×”×•×ª ×œ×¤×™×• × ×™×ª×Ÿ ×œ×¦×•×¨ ×§×™×©×•×¨×™× ××œ×™×”×. ×¨×©×•××” ××¡×•×’ "×“×£" ×œ× ××›×™×œ×” ×ª×•×›×Ÿ ×“×£ ×‘×ª×•×›×”. ×‘×©×‘×™×œ ×–×” ×¢×œ×™×š ×œ×¦×•×¨ ×¨×©×•××•×ª ××¡×•×’ "×ª×•×›×Ÿ ×“×£".',
 		'.details' => '×ª×œ×•×™ ×‘×¡×•×’ ×©×œ ×“×£, ×–×” ×™×›×•×œ ×œ×”×•×•×ª ××§×•× ××™×—×¡×•×Ÿ ×›×œ×œ×™ ×œ×¤×¨×˜×™ ×××’×¨ ××™×“×¢ ×‘-TYPO3. ×‘××§×¨×” ×›×–×”, ×–×” ×œ× ×‘×”×›×¨×— ×–××™×Ÿ ×‘×ª×•×¨ ×“×£ ××™× ×˜×¨× ×˜, ××œ× ×¤× ×™××™×ª, ×‘×ª×•×¨ ××§×•× ×œ××—×¡×Ÿ ×¤×¨×™×˜×™× ×›××•: ××©×ª××©×™×, ×›×ª×•×‘×•×ª ×•×›×•\'. ×˜×‘×œ×ª ×“×¤×™× ×”×™× "×¢××•×“ ×”×©×“×¨×”" ×‘-TYPO3. ×›×œ ×¨×©×•××•×ª ×©× ×™×ª× ×™× ×œ×¢×¨×™×›×” ×¦×¨×™×›×™× "×œ×”×©×ª×™×™×š" ×œ×“×£. ×–×” ×‘×“×™×•×§ ×›××• ×§×‘×¦×™× ×•×ª×™×§×™×•×ª ×¢×œ ×”×“×™×¡×§ ×”×§×©×™×—. ×“×¤×™× ××¡×•×“×¨×™× ×‘×¦×•×¨×ª ×¢×¥, ×©×”×™× ×œ× ×¨×§ ×¦×•×¨×” × ×•×—×”, ××œ× ×’× ××¨××” ××™×š ×¢×œ×™×š ×œ×¡×“×¨ ×“×¤×™× ×‘××ª×¨.
 ×˜×›× ×™×ª, ×œ×›×œ ×”×¨×›×™×‘×™× ×‘×××’×¨ ××™×“×¢ ×™×© ×©×“×” "uid" ×©×”×•× ××¡×¤×¨ ×–×™×”×•×™ ×™×™×—×•×“×™. ×‘× ×•×¡×£ ×™×© ×’× ×©×“×” "pid" ×©××›×™×œ ××¡×¤×¨ uid ×©×œ ×“×£, ××œ×™×• ×”×•× ×©×™×™×š. ×× pid ×”×•× 0 - ×”×¨×©×•××” × ××¦××ª ×‘×©×•×¨×©. ×¨×§ ×× ×”×œ×™× ×¨×©××™× ×œ×’×©×ª ×œ×©×•×¨×© ×•×¢×œ ×›×œ ×¨×©×•××•×ª ×œ×”×©×ª×™×™×š ××• ×œ×©×•×¨×© ××• ×œ×“×£.',
+		'title.description' => '×”×›× ×¡ ×©× ×”×“×£ ××• ×”×ª×™×§×™×™×”',
+		'title.syntax' => '×¢×œ×™×š ×œ×”×–×™×Ÿ ×©× ×”×“×£. ×”×©×“×” × ×“×¨×©.',
 		'doktype.description' => '×‘×—×¨ ×¡×•×’ ×”×“×£. ×–×” ××’×“×™×¨ ×× ×”×“×£ ××™×™×¦×’ ×“×£ ××™× ×˜×¨× ×˜ ××• ×‘×©×™××•×© ×œ×¦×¨×›×™× ××—×¨×™×.',
 		'doktype.details' => '×¡×•×’ "×¨×’×™×œ" ××™×™×¦×’ ×“×£ ××™× ×˜×¨× ×˜. "SysFolder" ××™× ×• ××™×™×¦×’ ×“×£ ××™× ×˜×¨× ×˜, ××œ× ×ª×™×§×™×™×” ×‘×” × ×™×ª×Ÿ ×œ××—×¡×Ÿ ×¨×©×•××•×ª ×©×ª×‘×—×¨. "×¡×œ ××™×—×–×•×¨" - ×”×•× ×¤×— ××©×¤×”.
 <b>×”×¢×¨×”:</b>×œ×›×œ ×¡×•×’ ×‘×“×¨×š ×›×œ×œ ×™×© ×¡××œ ××•×¦××“. ×™×›×•×œ ×œ×”×™×•×ª ×©×¡×•×’×™× ××¡×•×™××™× ×œ× × ×’×™×©×™× ×œ××©×ª××©. ×•×œ×‘×¡×•×£, ×›×œ ×¡×•×’ ××•×’×“×¨ ×›×š, ×©×”×•× ×××¤×©×¨ ×¨×§ ×¨×©×•××•×ª ××¡×•×™××•×ª ×‘×“×£ (SysFolder ×™××¤×©×¨ ×›×œ ×¨×©×•××”, ×× ×™×© ×œ×›× ×‘×¢×™×” ×¢× ×–×”).',
@@ -309,9 +369,9 @@ Uma visualização do TSconfig da página está disponível no menu \'TSconfig da pág
 	'ua' => Array (
 	),
 	'lv' => Array (
+		'.description' => '\'Lapas\' ieraksts iekÅ¡ TYPO3 parasti reprezentÄ“ web lapu. Katrai lapai ir id numurs, kas viennozÄ«mÄ«gi identificÄ“ to. \'Lapas\' ieraksts pats par sevi nesatur lapas saturu - Å¡im mÄ“rÄ·im jÅ«s veidosiet \'Lapas satura\' ierakstus.',
 		'title.description' => 'Ievadiet lapas vai foldera nosaukumu.',
 		'title.syntax' => 'Ievadiet lapas virsrakstu. Å is lauks ir obligÄts.',
-		'.description' => '\'Lapas\' ieraksts iekÅ¡ TYPO3 parasti reprezentÄ“ web lapu. Katrai lapai ir id numurs, kas viennozÄ«mÄ«gi identificÄ“ to. \'Lapas\' ieraksts pats par sevi nesatur lapas saturu - Å¡im mÄ“rÄ·im jÅ«s veidosiet \'Lapas satura\' ierakstus.',
 		'doktype.description' => 'IzvÄ“lieties lapas tipu. Tas nosaka to, vai lapa reprezentÄ“ redzamo weblapu, vai arÄ« tiek lietota citiem mÄ“rÄ·iem.',
 		'TSconfig.description' => 'Lapas TypoScript konfigurÄcija.',
 	),

@@ -516,6 +516,154 @@ In effect you can therefore have - say - a “stable” version of an extension inst
 	'ro' => Array (
 	),
 	'ch' => Array (
+		'emconf_shy.alttitle' => 'Shy',
+		'emconf_shy.description' => 'Èç¹ûÉèÖÃ,À©Õ¹Í¨³£ÊÇÔÚEMÖĞ±»Òş²Ø,ÒòÎªËüÒ²ĞíÊÇÒ»¸öÄ¬ÈÏµÄÀ©Õ¹»òÕßÊÇÒ»Ğ©²»ÖØÒªµÄ¶«Î÷.',
+		'emconf_shy.details' => 'Èç¹ûÀ©Õ¹ÊÇ¡°ÉÙÓĞĞËÈ¤¡°(Ëü²»µÈÍ¬ÓÚ²»ÖØÒª - Ö»ÊÇÀ©Õ¹²»¾­³£±»ËÑÑ°...)ÔòÊ¹ÓÃ´Ë±ê¼Ç
+²¢²»Ó°ÏìËüÊÇ·ñ¿ÉÓÃ.Ö»ÊÇÔÚEMÖĞÏÔÊ¾.
+Í¨³£¸ù¾İTYPO3_CONF_VARSÎªËùÓĞÈ±Ê¡Çé¿öÏÂ×°ÔØµÄÀ©Õ¹ÉèÖÃ¡°shy¡°.',
+		'emconf_category.alttitle' => 'ÖÖÀà',
+		'emconf_category.description' => 'À©Õ¹ÊôÓÚÊ²Ã´ÖÖÀà.',
+		'emconf_category.details' => '<b>ºó¶Ë:</b> ºó¶Ë (Í¨³£ÃæÏòºó¶Ë,µ«²»ÊÇÒ»¸öÄ£¿é) 
+
+<b>Ä£¿é:</b> ºó¶ËÄ£¿é (Èç¹ûÊÇÒ»¸öÄ£¿éºÍÓëÒ»¿éÁ¬½Ó)
+
+<b>Ç°¶Ë:</b> Ç°¶Ë (Í¨³£ÃæÏòÇ°¶Ë,µ«²»ÊÇÒ»¸ö ¡°Õæ¡±²å¼ş)
+
+<b>²å¼ş:</b> Ç°¶Ë²å¼ş(²å¼ş×÷ÎªÒ»¸ö¡°²åÈë²å¼ş¡±ÄÚÈİÔªËØ±»²åÈë ) 
+
+<b>ÔÓÏî:</b> ÔÓÏîÔªËØ (²»ÄÜÇáÒ×±»·ÅÔÚÆäËüÊ²Ã´µØ·½)
+
+<b>¾ÙÀı:</b> ¾ÙÀıÀ©Õ¹ (×÷ÎªÀı×ÓµÈ)',
+		'emconf_dependencies.alttitle' => 'ÒÀ¸½ÓÚÆäËûÀ©Õ¹?',
+		'emconf_dependencies.description' => 'ÕâÊÇÒ»¸öÆäËûÀ©Õ¹¼üµÄÁĞ±í,Õâ¸öÀ©Õ¹ÔÚÈ¡¾öÓÚÔÚËü±¾ÉíÖ®Ç°±»×°ÔØ.',
+		'emconf_dependencies.details' => 'ÔÚ½«À©Õ¹ÁĞ±íĞ´Èëlocalconf.phpÊ±EM½«¹ÜÀí´ÓÊô¹ØÏµ',
+		'emconf_conflicts.alttitle' => 'ÓëÆäËüÀ©Õ¹³åÍ»?',
+		'emconf_conflicts.description' => '´øÓĞ´ËÀ©Õ¹µÄÀ©Õ¹µÄÀ©Õ¹¼ü²»¹¤×÷(²¢ÇÒÔÚÆäËüÀ©Õ¹Ğ¶ÔØÇ°²»ÄÜ³ÉÎª¿ÉÓÃ)',
+		'emconf_priority.alttitle' => 'ÇëÇóµÄ×°ÔØÓÅÏÈÈ¨',
+		'emconf_priority.description' => 'Õâ¸æËßEMÊÔ×Å°ÑÀ©Õ¹·Åµ½ÁĞ±íµÄ×îÇ°.È±Ê¡Çé¿öÏÂÊÇÔÚ×îºó.',
+		'emconf_module.alttitle' => '°üº¬ºó¶ËÄ£¿é',
+		'emconf_module.description' => 'Èç¹ûÖÁÀ©Õ¹µÄÈÎºÎ×ÓÄ¿Â¼°üº¬ºó¶ËÄ£¿é,ÄÇĞ©ÎÄ¼ş¼ĞÃû³ÆÓ¦ÔÚ´Ë±»ÁĞ³ö.',
+		'emconf_module.details' => 'ÕâÔÊĞíEM»ñÖªÄ£¿éµÄ´æÔÚ,ÕâºÜÖØÒª.ÒòÎªEM±ØĞë¸üĞÂÄ£¿éµÄconf.phpÎÄ¼şÀ´ÉèÖÃÕıÈ·µÄTYPO3-MOD_PATH³£Êı.',
+		'emconf_state.alttitle' => '¿ª·¢×´Ì¬',
+		'emconf_state.description' => 'À©Õ¹ÔÚÄÄ¸ö¿ª·¢×´Ì¬ÏÂ.',
+		'emconf_state.details' => '<b>alpha</b>
+×î³õµÄ¿ª·¢.¸ù±¾ÎŞĞè×öÊ²Ã´. 
+
+<b>beta</b>
+ÕıÔÚ¿ª·¢. ²¿·Ö¿ÉÒÔ¹¤×÷µ«»¹Î´Íê³É.
+
+<b>ÎÈ¶¨µÄ</b>
+ÎÈ¶¨µÄ²¢ÇÒÊ¹ÓÃÔÚ²úÆ·ÖĞ.
+
+<b>ÊµÑé</b>
+Ã»ÓĞÈËÖ¸µ¼½«»áÔõÑù...¿ÉÄÜÖ»ÊÇÒ»¸öÏë·¨.
+
+<b>²âÊÔ</b>
+²âÊÔÀ©Õ¹,Ö¤Ã÷¸ÅÄîµÈ.',
+		'emconf_internal.alttitle' => 'ºËĞÄÖĞÄÚ²¿Ö§³Ö',
+		'emconf_internal.description' => '´Ë±ê¼Ç±êÊ¾³öÀ©Õ¹µÄÖĞĞÄÔ´´úÂë.',
+		'emconf_internal.details' => 'ÁíÍâËµÀ´´Ë±ê¼ÇÓ¦¸Ã´«´ï´ËĞÅÏ¢¡°´ËÀ©Õ¹Ã»ÓĞÒ»Ğ©ºËĞÄÔ´´úÂëµÄĞŞ¸Ä²»
+ÄÜ±»Ğ´³öÀ´¡±.
+Ò»À©Õ¹²»ÊÇÄÚ²¿µÄ¾ÍÒòÎªËüÊ¹ÓÃÁË´Ót3lib/À´µÄTYPO3ÆÕÍ¨Àà.
+ÕæÕı²»ÔÚÄÚ²¿µÄÀ©Õ¹±íÏÖÁËÈç´ËÌØµãËüÄÜ²»¸ü¸ÄÔ´´úÂë±»ÊéĞ´, µ«½ö
+½öÒÀÀµÓÚTYPO3ÖĞµÄÀàºÍ/»òÆäËüÀ©Õ¹, ¼ÓÉÏËü×Ô¼ºÔÚÀ©Õ¹ÎÄ¼ş¼ĞÖĞµÄ
+Ô­±¾.',
+		'emconf_clearCacheOnLoad.alttitle' => 'µ±°²×°Ê±Çå³ı´æ´¢',
+		'emconf_clearCacheOnLoad.description' => 'Èç¹ûÉèÖÃ,À©Õ¹¹ÜÀíÆ÷½«ĞèÒªÇå³ı´æ´¢Æ÷µ±À©Õ¹°²×°Ê±.',
+		'emconf_modify_tables.alttitle' => 'ÏÖÓĞµÄ±í¸ñĞŞ¸Ä',
+		'emconf_modify_tables.description' => '±í¸ñÃüÃûÁĞ±íËü½ö½ö±»ĞŞ¸Ä¶ø·Ç±»ÍêÈ«´´½¨-ÔÚ´ËÀ©Õ¹ÖĞ',
+		'emconf_modify_tables.details' => '´ËÁĞ±íµÄ±í¸ñ½¨Á¢ÔÚext_tables.sqlÎÄ¼şµÄÀ©Õ¹ÖĞ',
+		'.alttitle' => 'À©Õ¹¹ÜÀíÆ÷',
+		'.description' => 'À©Õ¹¹ÜÀíÆ÷(EM)',
+		'.details' => 'TYPO3ÄÜÔÚ¼¸ºõÈÎºÎ·½Ïò¶ø²»Ğè²»ÎÈ¶¨µÄÏòºóµÄ¼æÈİĞÔÏÂ±»À©Õ¹.À©Õ¹
+API¶Ô¼òµ¥µØÌí¼Ó, Ïû³ıºÍ¿ª·¢ÕâÑùµÄÀ©Õ¹µ½TYPO3ÖĞÌá¹©Ò»¸öÇ¿´óµÄ
+¿ò¼Ü. ÕâÊÇÍ¨¹ıÀ©Õ¹¹ÜÀíÆ÷ÔÚTYPO3ÄÚÌØ±ğµÄÍÆ¶¯Á¦.
+"À©Õ¹"ÊÇTYPO3µÄÌõÄ¿Ëü°üº¬Á½¸öÆäËüµÄÌõÄ¿, ²å¼şºÍÄ£¿é.
+²å¼şÊÇÔÚÍøÒ³ÉÏÖ´ĞĞËüµÄÈÎÎñµÄÒ»¼ş¶«Î÷. ÀıÈçÒ»¸öµ×°å, ¿Í»§±¾, ÉÌµê
+µÈ. ËüÍ¨³£Çé¿ö¸½ÊôÓÚÒ»¸öPHPÀà²¢ÇÒand Í¨¹ıÒ»¸öUSER»òUSER_INT
+cObject ´ÓTypoScriptÖĞµ÷ÓÃ. Ò»¸ö²å¼şÊÇÔÚÇ°¶ËÖĞµÄÒ»¸öÀ©Õ¹.
+Ò»¸öÄ£¿éÊÇÒ»¸öºó¶ËÓ¦ÓÃ³ÌĞòËüÓĞËü×Ô¼ºÔÚ¹ÜÀíÆ÷²Ëµ¥ÖĞµÄÎ»ÖÃµÄ. Ëü
+ĞèÒªºó¶ËµÇÂ½²¢ÇÒÔÚºó¶Ë¿ò¼ÜÖĞ¹¤×÷.ÎÒÃÇ¿ÉÄÜÒ²½ĞÒ»Ğ©¶«Î÷Ä£¿éÈç¹û
+Ëü¿ª·¢ÈÎºÎ´æÔÚÄ£¿éµÄÁ¬Í¨ĞÔ, ÄÇ¾ÍÊÇÈç¹ûËü¼òµ¥µØÌí¼ÓËü×Ô¼ºµ½´æÔÚ
+Ä£¿éµÄ¹¦ÄÜ²Ëµ¥. Ò»¸öÄ£¿éÊÇÔÚºó¶ËÖĞµÄÒ»¸öÀ©Õ¹.',
+		'emconf_private.alttitle' => 'Ë½ÈËµÄ',
+		'emconf_private.description' => 'Èç¹ûÉèÖÃ,´Ë°æ±¾Ã»ÓĞÔÚÔÚÏß´æ´¢Æ÷¹«¹²ÁĞ±íÖĞÏÔÊ¾.',
+		'emconf_private.details' => '"Ë½ÈË"ÉÏ´«ĞèÒªÄúÊÖ¶¯ÊäÈëÒ»¸öÌØ±ğÔ¿³×(µ±Ò»¸öÉÏ´«Íê³ÉºóËü½«ÎªÄú
+ÏÔÊ¾)²ÅÄÜÊäÈëºÍ¹Û¿´ÉÏ´«À©Õ¹µÄÏ¸½Ú.
+µ±ÄúÔÚÄÚ²¿¹¤×÷µÄÊ±ºòÄú²»ÏëÊ¹ÆäËûÈË¿´µ½ÄúµÄ¹¤×÷ÕâÊÇ·Ç³£ºÃµÄ.
+ÄúÄÜÔÚÈÎºÎÊ±¼äÉèÖÃ²¢Çå³ıË½ÈË±ê¼Çµ±ÄúÉÏ´«ÄúµÄÀ©Õ¹Ê±.',
+		'emconf_download_password.alttitle' => 'ÏÂÔØÃÜÂë',
+		'emconf_download_password.description' => 'Ë½ÈËÀ©Õ¹ÏÂÔØĞèÒªÁíÍâµÄÃÜÂë.',
+		'emconf_download_password.details' => 'ÈÎºÎÃ÷°×"ÌØ±ğÔ¿³×"·ÖÅäµÄË½ÈËÉÏ´«µÄÈË½«ÄÜ¹»ÊäÈëËü.ÔÚÖ¸¶¨ÊäÈëÃÜÂë allows you to give away the download key for private uploads and also require a password given in addition.            ´ËÃÜÂëÄÜÔÚ²»¾Ã±»¸Ä±ä.The password can be changed later on.',
+		'emconf_type.alttitle' => '°²×°ÀàĞÍ',
+		'emconf_type.description' => '°²×°µÄÀàĞÍ',
+		'emconf_type.details' => '´Ë¶ÔÀ©Õ¹µÄÎÄ¼şÊÇ¶¨Î»ÔÚÒ»¸öÓÉÀ©Õ¹Ô¿³×ÃüÃûµÄÎÄ¼ş¼ĞÖĞ. ÎÄ¼ş¼ĞÖĞµÄ
+¶¨Î»¿ÉÈÎÒâÔÚtypo3/sysext/, typo3/ext/»ò typo3conf/ext/ÖĞ. À©Õ¹±Ø
+Ğë±»¹æ»®ÒÔÖÁËüÄÜ×Ô¶¯·¢¾õ¶¨Î»Î»ÖÃ²¢ÇÒÄÜÔÚËùÓĞ3¸ö¶¨Î»µÄÎ»ÖÃ¹¤×÷.
+<b>¾Ö²¿¶¨Î»¡°typo3conf/ext/¡±:</b> ÕâÊÇ°ÑÀ©Õ¹·ÅÖÃµ½ÄÇÀï£¬Ëü¶Ô
+TYPO3ÌØ±ğ°²×°ÊÇ¾Ö²¿µÄ.typo3conf/ dir×ÜÊÇ¾Ö ²¿µÄ,°üº¬¾Ö²¿ÅäÖÃ(Àı
+Èçlocalconf.php), ¾Ö²¿Ä£¿éµÈ. Èç¹ûÄúÔÚ´Ë·ÅÖÃÒ»¸öÀ©Õ¹Ëü½ö½ö¶Ô´Ë
+TYPO3°²×°ÓĞÓÃ.ÕâÊÇÒ»¸ö"µ¥Ò»-Êı¾İ¿â"·½·¨À´°²×°Ò»¸öÀ©Õ¹.
+<b>È«¾Ö¶¨Î»¡°typo3/ext/¡±:</b>ÕâÊÇ°ÑÀ©Õ¹·ÅÖÃµ½ÄÇÀï£¬Ëü¶ÔTYPO3
+ÍøÒ³·şÎñÆ÷ÉÏÔ´´úÂëÈ«¾ÖµÄ. ´Ë©Õ¹¶ÔË??TYPO3°²×°·ÖÏí´úëÊÇÓĞÓ?
+µÄ.µ±ÄúÉı¼¶ÄúµÄTYPO3Ô´´úÂëÒ²ĞíÄúÏë¸´ÖÆtypo3/ext/Ä¿Â¼´ÓÒÔÇ°µÄ
+Ô´´úÂëµ½ĞÂµÄÔ´. ÔÚ´ËÒÔºóÄúÄÜ¹»×ÜÊÇÊäÈëTYPO3²¢°´ĞèÒªÉı¼¶°æ±¾.
+ÕâÊÇÒ»¸ö¡°µ¥Ò»-·şÎñÆ÷¡± ·½·¨À´°²×°Ò»¸öÀ©Õ¹.
+<b>ÏµÍ³¶¨Î» ¡°typo3/sysext/¡±:</b>ÕâÊÇÏµÍ³Ä¬ÈÏµÄÀ©Õ¹Ëü²»ÄÜ²¢
+²»Ó¦¸Ã±»À©Õ¹¹ÜÀíÆ÷¸üÕı.
+<b>ÓÅÏÈ°²×°</b>
+¾Ö²¿À©Õ¹ÓµÓĞÈÈ?ÇÒâÎ¶×ÅÈç¹?»¸öÀ©Õ¹´æÔÚÓÚtypo3conf/ext/ºÍ
+typo3/ext/Á½ÕßÖĞÄÇÃ´°²×°ÄÇ¸öÔÚtypo3conf/ext/ÀïµÄÄÇ¸öÀ©Õ¹. Í¬ÑùÈ«
+¾ÖÀ©Õ¹±ÈÏµÍ³À©Õ¹ÓµÓĞÓÅÏÈÈ«. ÕâÒâÎ¶×ÅÀ©Õ¹ÔÚ¾Ö²¿-È«¾Ö-ÏµÍ³ÖĞ±»ÓÅÏÈ
+°²×°. ½á¹ûÄúÒò´ËÄÜÓĞ-±È·½Ëµ- Ò»¸ö"ÎÈ¶¨" µÄ°²×°ÔÚÈ«¾ÖÏÔÊ¾ÎÄ¼şÁĞ±í
+ÀïµÄÒ»¸öÀ©Õ¹°æ±¾(typo3/ext/) ËüÊÇÔÚÄú·şÎñÆ÷ÉÏËùÓĞµÄÏîÄ¿ÖĞ±»Ê¹ÓÃ
+µÄÔ´´úÂë, µ«ÔÚµ¥Ò»ÊµÑéÏîÄ¿ÄúÄÜÊäÈëÏàÍ¬µÄÀ©Õ¹ÔÚĞÂµÄ"ÊµÑé" °æ±¾ÏÂ
+²¢ÇÒ¶ÔÄÇ¸öÏêÏ¸µÄÏîÄ¿¾Ö²¿µØÓĞĞ§À©Õ¹½«±»À´´úÌæÊ¹ÓÃ.',
+		'emconf_doubleInstall.alttitle' => 'Á½´Î°²×°»ò¸ü¶à?',
+		'emconf_doubleInstall.description' => '¸æËßÄúÊÇ·ñÀ©Õ¹°²×°ÔÚ¶à¸öÏµÍ³ÖĞ,ÕûÌåµÄ»ò¾Ö²¿µÄÎ»ÖÃ.',
+		'emconf_doubleInstall.details' => 'ÒòÎªÒ»¸öÀ©Õ¹ÄÜÎ»ÓÚÈı¸öÎ»ÖÃ,ÏµÍ³,È«¾ÖºÍ¾Ö²¿, Ëü±íÃ÷ÊÇ·ñÀ©Õ¹Ïà±Èµ±Ç°ÔÚÆäËüÎ»ÖÃ±»½¨Á¢. ÔÚ´ËÇé¿öÏÂÄúÓ¦¸Ã',
+		'emconf_rootfiles.alttitle' => '¸ùÎÄ¼ş',
+		'emconf_rootfiles.description' => 'ÎÄ¼şÁĞ±íÀ©Õ¹ÎÄ¼ş¼Ğ.Ã»ÓĞÁĞ³ö×ÓÄ¿Â¼µÄÎÄ¼ş.',
+		'emconf_dbReq.alttitle' => 'Êı¾İ¿âÒªÇó',
+		'emconf_dbReq.description' => '¸øÄúÕ¹Ê¾Êı¾İ¿â±í¸ñºÍÎÄ¼şµÄÒªÇó,Èç¹ûÈÎºÎ.',
+		'emconf_dbReq.details' => 'Õâ½«´Óext_tables.sqlºÍext_tables_static+adt.sqlÎÄ¼şÖĞ¶ÁÈ¡²¢ÇÒ¸øÄúÕ¹Ê¾ÄÇ¸ö±í¸ñ, ÎÄ¼şºÍ¾²Ì¬±í¸ñ',
+		'emconf_dbStatus.alttitle' => 'Êı¾İ¿âĞèÇó×´¿ö',
+		'emconf_dbStatus.description' => 'ÏÔÊ¾Êı¾İ¿âµ±Ç°×´Ì¬¶ÔÀ©Õ¹ĞèÇó½øĞĞ±È½Ï.',
+		'emconf_dbStatus.details' => 'Èç¹ûÀ©Õ¹±»¼ÓÔØÇÒÈç¹ûÒ»Ğ©±í¸ñ»òÓò²»³öÏÖËüÃÇÓ¦¸ÃÎ»ÓÚµÄÊı¾İ¿âÖĞÀ©Õ¹½«±»ÏÔÊ¾²¢ÇÒÊÇ´íÎóĞÅÏ¢!',
+		'emconf_flags.alttitle' => '±ê¼Ç',
+		'emconf_flags.description' => 'ÌØ±ğ´úÂëµÄÒ»¸öÁĞ±íËü¸æËßÄúTYPO3µÄÒ»Ğ©À©Õ¹Éæ¼°µã.',
+		'emconf_flags.details' => 'ÕâÊÇÒ»¸ö±ê¼ÇµÄÁĞ±í:
+<b>Ä£¿é:</b>Ò»¸öÕæÕıµÄÖ÷/´ÓÄ£¿é±»½¨Á¢²¢±»Ìí¼Ó.
+<b>Ä£¿é+:</b>´ËÀ©Õ¹Ìí¼ÓËü×Ô¼ºµ½Ò»¸ö´æÔÚµÄºó¶ËÄ£¿éµÄ¹¦ÄÜ²Ëµ¥ÖĞ.
+<b>°²×°TCA:</b>´ËÀ©Õ¹°üÀ¨Ò»¸ö¹¦ÄÜ½Ğ×öt3lib_div::loadTCAÎª°²
+×°±í¸ñ×÷ÓÃµÄ. ÕâÇ±ÔÚµÄÒâÎ¶×Å ÏµÍ³ÂıÏÂÀ´ÁË, ÒòÎªÒ»Ğ©±í¸ñµÄÍêÈ«Ãè
+Êö×ÜÊÇ°üÀ¨µÄ. ÎŞÂÛÈçºÎËüÒ²ĞíÊÇ¶Ô´ËËù·¢ÉúµÄÒ»¸öºÃµÄÀíÓÉ. À©Õ¹Ò²Ğí
+³¢ÊÔÈ¥À©³äÏÖÓĞµÄ±í¸ñÀ´²Ù×÷TCA-ÅäÖÃ.
+<b>TCA:</b>´ËÀ©Õ¹°üº¬ÔÚ$TCAÀïµÄÒ»¸ö±í¸ñµÄÅäÖÃ.
+<b>²å¼ş:</b>´ËÀ©Õ¹Ìí¼ÓÒ»¸öÇ°ÒÆµÄ²å¼şµ½ÄÚÈİÔªËØÀàĞÍ"Ç¶Èë²Á¼ş"
+µÄ²å¼şÁĞ±íÖĞ.
+<b>²å¼ş/ST43:</b> TypoScript²å¼şµÄ·­Òë´úÂë±»Ìí¼Óµ½¾²Ì¬Ä£°å"
+ÄÚÈİ(Ä¬ÈÏ)"ÖĞ. "²å¼ş"ºÍ "²å¼ş/ST43
+"Í¨³£±»Ò»ÆğÊ¹ÓÃ.
+<b>Ò³Ãæ-TSconfig:</b>Ä¬ÈÏÒ³Ãæ-TSconfigÒÑÌí¼Ó.
+<b>ÓÃ»§-TSconfig:</b>Ä¬ÈÏÓÃ»§-TSconfigÒÑÌí¼Ó.
+<b>TS/ÉèÖÃ:</b>Ä¬ÈÏTypoScriptÉèÖÃÒÑÌí¼Ó.
+<b>TS/³£Á¿:</b>Ä¬ÈÏTypoScript³£Á¿ÒÑÌí¼Ó.',
+		'emconf_conf.description' => 'ÏÔÊ¾ÊÇ·ñ´ËÀ©Õ¹ÓĞÒ»¸ö¶Ô¸ü¶àµÍË®×¼µÄÅäÖÃ¸½ºÍµÄÄ£°å',
+		'emconf_TSfiles.alttitle' => '¾²Ì¬TypoScriptÎÄ¼ş',
+		'emconf_TSfiles.description' => 'ÏÔÊ¾ÄÄ¸öTypoScript¾²Ì¬ÎÄ¼ş¿ÉÒÔ³ÊÏÖ',
+		'emconf_TSfiles.details' => 'Èç¹ûÎÄ¼şext_typoscript_constants.txtºÍ/»òext_typoscript_setup.txt ÔÚÀ©Õ¹ÎÄ¼ş¼ĞÖĞÒÑ½¨Á¢,ËüÃÇÊÇÔÚ°üº¬ÆäËü¾²Ì¬Ä£°åºó°üº¬ÔÚTYPO3ÀïËùÓĞTypoScriptÄ£°åµÄ²ã´ÎÉÏ.',
+		'emconf_locallang.alttitle' => 'locallangÎÄ¼ş',
+		'emconf_locallang.description' => 'ÏÔÊ¾ÄÄĞ©ÒÔ"locallang.php" ÃüÃûµÄÎÄ¼şÏÔÊ¾ÔÚÀ©Õ¹ÎÄ¼ş¼ĞÖĞ(·µ»Ø²éÑ°).´ËÀàÎÄ¼şÍ¨³£ÒÔÏµÍ³ÓïÑÔÎªÓ¦ÓÃ³ÌĞòÏÔÊ¾Ò»¸ö´ø±êÇ©µÄÊı×é$LOCAL_LANG.',
+		'emconf_moduleNames.alttitle' => 'ºó¶ËÄ£¿éÃû³Æ',
+		'emconf_moduleNames.description' => 'ÏÔÊ¾ÄÄĞ©Ä£¿éÃû³ÆÔÚÀ©Õ¹ÖĞ±»·¢ÏÖ.',
+		'emconf_classNames.alttitle' => 'PHPÀàÃû³Æ',
+		'emconf_classNames.description' => 'ÏÔÊ¾ÄÄĞ©PHP-ÀàÔÚ.phpºÍ.incÎÄ¼şÖĞ±»·¢ÏÖ.',
+		'emconf_errors.alttitle' => '´íÎó',
+		'emconf_errors.description' => 'ÏÔÊ¾ÊÇ·ñ·¢ÏÖÁËÈÎºÎÀ©Õ¹µÄÑÏÖØ´íÎó.',
+		'emconf_NSerrors.alttitle' => 'Ãû³Æ¿Õ¼ä´íÎó',
+		'emconf_NSerrors.description' => 'Ä³Ğ©ÃüÃûĞ­¶¨Ó¦ÓÃÓÚÀ©Õ¹. ÕâÏÔÊ¾ÈÎºÎ·¢ÏÖÁËµÄ·Ç·¨ÃüÃû.',
+		'emconf_NSerrors.details' => 'ÃüÃûĞ­¶¨ÔÚ"Inside TYPO3" ÎÄµµÖĞ¶¨Òå.ÎªÁËÊ¹ÃüÃû¾¡¿ÉÄÜµÄ¼òµ¥,ÊÔ×ÅÔÚÄúµÄÀ©Õ¹¼üÖĞ±ÜÃâÏÂ»®Ïß.',
 	),
 	'sk' => Array (
 	),
@@ -724,7 +872,7 @@ megfelelõ alapértelmezetten betöltõdõ kiterjesztéshalmaz.',
 
 <b>fe:</b> Frontend (általánosan backend orientált, de nem “valódi” beépülõ)
 
-<b>beépülõ:</b> Frontend beépülõk (“Beszúrt beépülõ”tartalmi elemként beszúrt beépülõ) 
+<b>bõvítmény:</b> Frontend beépülõk (“Beszúrt beépülõ”tartalmi elemként beszúrt beépülõ) 
 
 <b>vegyes:</b> Vegyes dolog (máshova nem besorolt)
 
@@ -910,7 +1058,7 @@ konstansok hozzáadva.',
 		'emconf_TSfiles.alttitle' => 'Statikus TypoScript fájlok',
 		'emconf_TSfiles.description' => 'Kijelzi. hogy mely statikus TypoScript fájlok vannak jelen.',
 		'emconf_TSfiles.details' => 'Ha a ext_typoscript_constants.txt és/vagy ext_typoscript_setup.txt fájlok megtalálhatóak a kiterjesztés könyvtárában, akkor ezek beépülnek a TYPO3 összes TypoScript sablon hierarhiájába közvetlenül a más statikus sablonokba való beépülés után.',
-		'emconf_locallang.alttitle' => 'locallang fájlok',
+		'emconf_locallang.alttitle' => 'locallang file-ok',
 		'emconf_locallang.description' => 'Kijelzi, hogy a helyi nyelvi fájlnak nevezett fájlok vannak jelen a kiterjesztés könyvtárában (rekurzív kereséssel). Az ilyen fájlok rendszerint a $LOCAL_LANG tömb címkéit jelenítik meg a rendszer nyelvének megfelelõen.',
 		'emconf_moduleNames.alttitle' => 'Backend modul nevek',
 		'emconf_moduleNames.description' => 'Kijelzi, melyik modulnév található a kiterjesztésen belül.',
@@ -1101,6 +1249,17 @@ Esta opção não determina se a extensão está ou não ativada, apenas determina a v
 Normalmente a opção "oculta" é usada em todas as extensões carregadas por padrão, conforme TYPO3_CONF_VARS.',
 		'emconf_category.alttitle' => 'Categoria',
 		'emconf_category.description' => 'Categoria à qual a extensão pertence.',
+		'emconf_category.details' => '<b>be:</b> Administração do Site (Geralmente orientada pela administração do site, mas não é um módulo)
+
+<b>módulo:</b> Módulos de administração do site (Quando algo é um módulo ou se conecta a algum)
+
+<b>fe:</b> Site (Geralmente orientado pelo site, mas não um plugin "real")
+
+<b>plugin</b> Plugins do site (Plugins inseridos como um elemento de conteúdo "Inserir Plugin")
+
+<b>misc:</b> Artigos de Miscelânea (Não podem ser facilmente colocados em outro lugar)
+
+<b>exemplo:</b> Extensão de exemplo (Que serve como um exemplo, etc.)',
 		'emconf_dependencies.alttitle' => 'Depende de outras extensões?',
 		'emconf_dependencies.description' => 'Esta é uma lista das extensões das quais esta extensão depende que sejam carregadas ANTES dela.',
 		'emconf_dependencies.details' => 'O AE estabelecerá tal dependência ao gravar a lista de extensões em localconf.php',
@@ -1127,6 +1286,11 @@ Não se sabe se vai chegar a algum lugar... Talvez seja ainda apenas uma idéia.
 
 <b>teste</b>
 Extensão para teste, para demonstrar conceitos, etc.',
+		'emconf_internal.alttitle' => 'Internamente suportado pelo núcleo',
+		'emconf_internal.description' => 'Esta nota indica que o código fonte do núcleo está especificamente ciente desta extensão.',
+		'emconf_internal.details' => 'Em outras palavras, esta marca nota deveria tratar sobre a mensagem "esta extensão não pode ser escrita sem algumas modificações do código fonte do núcleo".
+
+Uma extensão não é interna só porque usa as classes gerais do TYPO3, por exemplo, aquelas da pasta t3lib/. É claro que extensões não-internas são caracterizadas pelo fato de que elas poderiam ser escritas sem fazer mudanças no código fonte do núcleo, mas depende apenas de classes existentes no TYPO3 e/ou outras extensões, além de seus próprios scripts na pasta de extensões.',
 		'emconf_clearCacheOnLoad.alttitle' => 'Limpar o cache quando instalada',
 		'emconf_clearCacheOnLoad.description' => 'Quando selecionada, o AE solicitará a limpeza do cache quando esta extensão for instalada.',
 		'emconf_modify_tables.alttitle' => 'Tabelas existentes modificadas',
@@ -1135,10 +1299,27 @@ Extensão para teste, para demonstrar conceitos, etc.',
 		'.alttitle' => 'AE',
 		'.description' => 'O Administrador de Extensões (AE)',
 		'emconf_private.alttitle' => 'Particular',
+		'emconf_private.description' => 'Se marcado, esta versão não é mostrada na lista pública do repositório online.',
+		'emconf_private.details' => 'Uploads "Particulares" requerem que você manualmente digite uma chave especial (que será mostrada para você depois que o upload terminar) para ser possível importar e ver os detalhes da extensão enviada. Isso é bom para quando trabalha-se com algo internamente e não quer que outros vejam. Você pode marcar e desmarcar a caixa cada vez que enviar uma extensão.',
 		'emconf_download_password.alttitle' => 'Senha para download',
 		'emconf_download_password.description' => 'Senha adicional necessária para baixar extensões particulares.',
+		'emconf_download_password.details' => 'Qualquer um que conhece a "chave especial", atribuída ao upload particular, poderá importá-lo. Especificar uma senha para upload permite que você tire a chave de download para uploads particulares dados. A senha pode ser mudada mais tarde.',
 		'emconf_type.alttitle' => 'Tipo de instalação',
 		'emconf_type.description' => 'O tipo da instalação',
+		'emconf_doubleInstall.alttitle' => 'Instalado duas vezes ou mais?',
+		'emconf_doubleInstall.description' => 'Diz se a extensão está instalada em mais de uma localidade: Sistema, Global ou Localmente.',
+		'emconf_doubleInstall.details' => 'Devido a uma extensão residir em três localidades, Sistema, Global e Local, isso indica se a extensão é achada em outros lugares, além do atual. Nesse caso, você deve estar ciente de qual delas está carregada!',
+		'emconf_rootfiles.alttitle' => 'Arquivos da raiz',
+		'emconf_rootfiles.description' => 'Lista dos arquivos no diretório da extensão. Não lista arquivos em subdiretórios.',
+		'emconf_dbReq.alttitle' => 'Necessidades do Banco de Dados',
+		'emconf_dbReq.description' => 'Mostra as necessidades para as tabelas e campos do banco de dados, se tiver algum.',
+		'emconf_dbReq.details' => 'Isso irá ler o arquivo ext_tables.sql e ext_tables_static+adt.sql e mostrar a você quais tabelas, campos e tabelas estáticas são requeridas com esta extensão.',
+		'emconf_dbStatus.alttitle' => 'Situação de necessidades do banco de dados',
+		'emconf_dbStatus.description' => 'Mostra a estatística atual do banco de dados, comparado às necessidades da extensão.',
+		'emconf_dbStatus.details' => 'Se a extensão está carregada, qual irá mostrar uma mensagem de erro, se alguma das tabelas ou campos não se apresentarem no banco de dados como eles deveriam ser!',
+		'emconf_flags.alttitle' => 'Marcas',
+		'emconf_flags.description' => 'Uma lista de códigos especiais que dizem a você algo sobre quais partes de TYPO3 a extensão toca.',
+		'emconf_errors.alttitle' => 'Erros',
 	),
 	'et' => Array (
 	),

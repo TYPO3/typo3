@@ -23,7 +23,7 @@ $LOCAL_LANG = Array (
 		'mlang_tabs_tab' => 'Doc',
 	),
 	'fr' => Array (
-		'mlang_labels_tablabel' => 'Edition enregistrements et documents',
+		'mlang_labels_tablabel' => 'Edition d\'enregistrements et de documents',
 		'mlang_tabs_tab' => 'Doc',
 	),
 	'es' => Array (
@@ -59,7 +59,7 @@ $LOCAL_LANG = Array (
 		'mlang_tabs_tab' => 'Dokument',
 	),
 	'pt' => Array (
-		'mlang_labels_tablabel' => 'Edição de registos e documentos',
+		'mlang_labels_tablabel' => 'Edição de registros e documentos',
 		'mlang_tabs_tab' => 'Doc',
 	),
 	'ru' => Array (

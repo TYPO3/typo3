@@ -28,11 +28,14 @@ $LOCAL_LANG = Array (
 		'mlang_tabs_tab' => 'Ext Manager',
 	),
 	'fr' => Array (
-		'mlang_labels_tablabel' => 'Gestionnaire d\'extensions TYPO3',
-		'mlang_labels_tabdescr' => 'Gère les extensions TYPO3, ce qui inclue les plugins, les modules, les extensions de classe, les codes de configuration, ... depuis le serveur central.',
-		'mlang_tabs_tab' => 'Ext Gestion',
+		'mlang_labels_tablabel' => 'Gestion des extensions TYPO3',
+		'mlang_labels_tabdescr' => 'Cet outil permet de gérer dans un référentiel central les extensions TYPO3, y inclus les plugins, les modules, les extensions de classe, les codes de configuration, etc.',
+		'mlang_tabs_tab' => 'Gestion des extensions',
 	),
 	'es' => Array (
+		'mlang_labels_tablabel' => 'Administrador de extensiones TYPO3',
+		'mlang_labels_tabdescr' => 'Gestiona extensiones de TYPO3, que incluyen plug-ins, módulos, extensiones de clases, código de configuraciones, etc... desde un repositorio central.',
+		'mlang_tabs_tab' => 'Adm. Extensiones',
 	),
 	'nl' => Array (
 		'mlang_labels_tablabel' => 'TYPO3 Extensie Manager',
@@ -50,6 +53,9 @@ $LOCAL_LANG = Array (
 		'mlang_tabs_tab' => 'Menad¿er Ext',
 	),
 	'si' => Array (
+		'mlang_labels_tablabel' => 'Upravitelj razširitev za sistem Typo3',
+		'mlang_labels_tabdescr' => 'Upravlja razširitve za sistem Typo3, kar vkljuèuje vtiènike, module, razredne razširitve, konfiguracijsko kodo, idr. iz osrednjega hranilnika.',
+		'mlang_tabs_tab' => 'Upravitelj razš.',
 	),
 	'fi' => Array (
 		'mlang_labels_tablabel' => 'TYPO3 Lisäpalvelujen Hallinta',

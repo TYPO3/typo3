@@ -23,7 +23,7 @@ $LOCAL_LANG = Array (
 		'mlang_tabs_tab' => 'Web',
 	),
 	'fr' => Array (
-		'mlang_labels_tablabel' => 'Pages web et contenu base de données',
+		'mlang_labels_tablabel' => 'Pages web et éléments de contenu',
 		'mlang_tabs_tab' => 'Web',
 	),
 	'es' => Array (

@@ -38,11 +38,11 @@ $LOCAL_LANG = Array (
 		'mlang_tabs_tab' => 'Notizie',
 	),
 	'fr' => Array (
-		'welcome' => 'TYPO3 CMS Solution professionnel pour la gestion de contenu d\'un site web.',
-		'minor' => 'TYPO3 est un web-CMS Opensource flexible et professionnel basé sur PHP4 et mySQL.',
+		'welcome' => 'TYPO3 Système de gestion de contenu Web.',
+		'minor' => 'TYPO3 est un "logiciel libre" flexible et professionnel de gestion de contenu web basé sur PHP4 et mySQL. TYPO3 est <b>librement disponible</b> selon les termes de la <A HREF="http://typo3.com/1244.0.html" target="_blank">licence TYPO3 (GNU/GPL)</a>.<br /><br />%s %s<br />',
 		'mlang_labels_tablabel' => 'A propos de TYPO3',
-		'mlang_labels_tabdescr' => 'Affiche des informations basiques sur TYPO3, version, licence, ...',
-		'mlang_tabs_tab' => 'A propos',
+		'mlang_labels_tabdescr' => 'Affiche les informations de base à propos de TYPO3, sa version, et les termes de sa licence.',
+		'mlang_tabs_tab' => 'A propos de ...',
 	),
 	'es' => Array (
 		'welcome' => 'TYPO3 Professional Web Content Management System',
@@ -102,7 +102,7 @@ $LOCAL_LANG = Array (
 	),
 	'pt' => Array (
 		'welcome' => 'TYPO3 Gestor de Conteúdos Web Profissional',
-		'minor' => 'TYPO3 é um Web-CMS Open Source flexível e profissional basedo no PHP4 e MySQL.<br /><br />TYPO3 é <b>gratuitamente disponível</b> sob a licença <a href="http://www.typo3.com/?price_uk" target="_blank">TYPO3-license (GNU/GPL)</a>.<br /><br />%s %s<br />',
+		'minor' => 'Typo3 é um Web-CMS Open Source flexível e profissional baseado no PHP4 e MySQL.<br><br>Typo3 é <B>gratuitamente disponível</b> sob a licença <A HREF="http://www.typo3.com/?price_uk" target="_blank">Typo3-license (GNU/GPL)</a>.<br><br>%s %s<br>',
 		'mlang_labels_tablabel' => 'Acerca do TYPO3',
 		'mlang_labels_tabdescr' => 'Mostra os factos básicos acerca da aplicação TYPO3, versão e termos de licenciamento.',
 		'mlang_tabs_tab' => 'Acerca',
@@ -158,9 +158,9 @@ $LOCAL_LANG = Array (
 	),
 	'hu' => Array (
 		'welcome' => 'Typo3 Professzionális Web Tartalomkezelõ Rendszer',
-		'minor' => 'TYPO3 egy rugalmas és professzionális szabad forráskódú Web-CMS rendszer, ami a PHP4-re és a MySQL-re épül. <br /><br />A TYPO3 <b>szabadon elérhetõ a</b> <a href="http://typo3.com/1244.0.html" target="_blank">TYPO3-license (GNU/GPL)</a> alatt.<br /><br />%s %s<br />',
+		'minor' => 'TYPO3 egy nyílt forráskódú Web-CMS rendszer, ami a PHP4-re és a MySQL-re épül. <br><br>A TYPO3 <b>szabadon elérhetõ a </b> <A HREF="http://typo3.com/1244.0.html" target="_blank">TYPO3-license (GNU/GPL)</a> alatt.<br><br>%s %s<br>',
 		'mlang_labels_tablabel' => 'A TYPO3-ról',
-		'mlang_labels_tabdescr' => 'A TYPO3 verziójának és license-ének bemutatása.',
+		'mlang_labels_tabdescr' => 'A TYPO3 bemutatása.',
 		'mlang_tabs_tab' => 'Névjegy',
 	),
 	'gl' => Array (
