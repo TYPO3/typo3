@@ -61,7 +61,21 @@
 			<label index="goBack">Zurück</label>
 			<label index="fullDescription">Komplette Beschreibung der Tabelle ansehen</label>
 			<label index="close">Schliessen</label>
-			<label index="title">TYPO3 Inline Hilfe</label>
+			<label index="title">Lokale TYPO3 Hilfe</label>
+			<label index="fullDescription_module">Komplette Beschreibung des Moduls ansehen</label>
+			<label index="goToToc">Zum Inhaltsverzeichnis</label>
+			<label index="to_top">Nach oben</label>
+			<label index="TOC">Inhaltsverzeichnis</label>
+			<label index="TOC_core">TYPO3 Kern Funktionen</label>
+			<label index="TOC_modules">Backend Module</label>
+			<label index="TOC_tables">Datenbank Tabellen</label>
+			<label index="TOC_extensions">Erweiterungen</label>
+			<label index="TOC_other">Sonstiges</label>
+			<label index="manual_title">Lokales TYPO3 Handbuch</label>
+			<label index="introduction">Einleitung</label>
+			<label index="description">Das lokale TYPO3 Handbuch wird dynamisch aus den Hilfetexten dieser TYPO3 Installation erzeugt (Kontext-sensitive Hilfe). Sie enthält eine generelle Beschreibung der Kernmodule von TYPO3, Beschreibungen zur Installation bestimmter Backend Module und Datenbank Tabellen, die abhängig von Ihren Zugriffsrechten zur Verfügung stehen.</label>
+			<label index="full_manual">Vollständiges Handbuch (auf einer Seite)</label>
+			<label index="full_manual_chapters">Kapitel des Handbuches</label>
 		</languageKey>
 		<languageKey index="no" type="array">
 			<label index="details">Detaljer</label>
@@ -378,6 +392,20 @@
 			<label index="fullDescription" type="integer">233674735</label>
 			<label index="close" type="integer">222113377</label>
 			<label index="title" type="integer">184225760</label>
+			<label index="fullDescription_module" type="integer">201003905</label>
+			<label index="goToToc" type="integer">21517239</label>
+			<label index="to_top" type="integer">256968027</label>
+			<label index="TOC" type="integer">5416024</label>
+			<label index="TOC_core" type="integer">164327555</label>
+			<label index="TOC_modules" type="integer">39991288</label>
+			<label index="TOC_tables" type="integer">247039840</label>
+			<label index="TOC_extensions" type="integer">98760179</label>
+			<label index="TOC_other" type="integer">103881441</label>
+			<label index="manual_title" type="integer">89488469</label>
+			<label index="introduction" type="integer">12031893</label>
+			<label index="description" type="integer">54171837</label>
+			<label index="full_manual" type="integer">68472336</label>
+			<label index="full_manual_chapters" type="integer">161891675</label>
 		</languageKey>
 		<languageKey index="no" type="array">
 			<label index="details" type="integer">65812061</label>

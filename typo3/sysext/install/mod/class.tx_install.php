@@ -1041,18 +1041,20 @@ th { font-family: verdana,arial, helvetica, sans-serif; font-size: 10pt; font-we
 		}
 
 			// Run through files
-		$fileCounter=0;
-		$deleteCounter=0;
-		$criteriaMatch=0;
-		$tmap=array("day"=>1,"week"=>7,"month"=>30);
-		$tt=$this->INSTALL["typo3temp_delete"];
-		$action=$this->INSTALL["typo3temp_action"];
-		$d = @dir($this->typo3temp_path);
+		$fileCounter = 0;
+		$deleteCounter = 0;
+		$criteriaMatch = 0;
+		$tmap=array("day"=>1, "week"=>7, "month"=>30);
+		$tt = $this->INSTALL["typo3temp_delete"];
+		$subdir = $this->INSTALL["typo3temp_subdir"];
+		if (strlen($subdir) && !ereg('^[[:alnum:]_]+/$',$subdir))	die('subdir "'.$subdir.'" was not allowed!');
+		$action = $this->INSTALL["typo3temp_action"];
+		$d = @dir($this->typo3temp_path.$subdir);
 		if (is_object($d))	{
 			while($entry=$d->read()) {
-				$theFile = $this->typo3temp_path.$entry;
+				$theFile = $this->typo3temp_path.$subdir.$entry;
 				if (@is_file($theFile))	{
-					$ok=0;
+					$ok = 0;
 					$fileCounter++;
 					if ($tt)	{
 						if (t3lib_div::testInt($tt))	{
@@ -1061,7 +1063,7 @@ th { font-family: verdana,arial, helvetica, sans-serif; font-size: 10pt; font-we
 							if (fileatime($theFile) < time()-(intval($tmap[$tt])*60*60*24))	$ok=1;
 						}
 					} else {
-						$ok=1;
+						$ok = 1;
 					}
 					if ($ok)	{
 						$hashPart=substr(basename($theFile),-14,10);
@@ -1079,6 +1081,17 @@ th { font-family: verdana,arial, helvetica, sans-serif; font-size: 10pt; font-we
 			$d->close();
 		}
 
+			// Find sub-dirs:
+		$subdirRegistry = array(''=>'');
+		$d = @dir($this->typo3temp_path);
+		if (is_object($d))	{
+			while($entry=$d->read()) {
+				$theFile = $entry;
+				if (@is_dir($this->typo3temp_path.$theFile) && $theFile!='..' && $theFile!='.')	{
+					$subdirRegistry[$theFile.'/'] = $theFile.'/ (Files: '.count(t3lib_div::getFilesInDir($this->typo3temp_path.$theFile)).')';
+				}
+			}
+		}
 
 		$deleteType=array(
 			"0" => "All",
@@ -1089,16 +1102,22 @@ th { font-family: verdana,arial, helvetica, sans-serif; font-size: 10pt; font-we
 			"50" => "Filesize greater than 50 kb",
 			"100" => "Filesize greater than 100 kb"
 		);
+
 		$actionType=array(
 			"0" => "Don't delete, just display statistics",
 			"100" => "Delete 100",
 			"500" => "Delete 500",
 			"1000" => "Delete 1000"
 		);
+
 		$content='<select name="TYPO3_INSTALL[typo3temp_delete]">'.$this->getSelectorOptions($deleteType,$tt).'</select>
 		<br>
 Number of files at a time:
-		<select name="TYPO3_INSTALL[typo3temp_action]">'.$this->getSelectorOptions($actionType).'</select>';
+		<select name="TYPO3_INSTALL[typo3temp_action]">'.$this->getSelectorOptions($actionType).'</select>
+
+From sub-directory:
+		<select name="TYPO3_INSTALL[typo3temp_subdir]">'.$this->getSelectorOptions($subdirRegistry, $this->INSTALL["typo3temp_subdir"]).'</select>
+		';
 
 		$form = '<form action="'.$this->action.'" method="POST">'.$content.'
 

@@ -187,34 +187,54 @@
 			<label index="simulate">Simuliere Backend Benutzer</label>
 			<label index="opening">Beim Start</label>
 			<label index="showThumbs">Zeige Thumbnails als Standard</label>
-			<label index="noMenuMode_def">Menü im linken Frame (default)</label>
+			<label index="noMenuMode_def">Menü im linken Frame (Standard)</label>
 			<label index="noMenuMode_sel">Auswahlbox im oberen Frame</label>
 			<label index="noMenuMode_icons">Symbole im oberen Frame</label>
 			<label index="startInTaskCenter">Beim Starten das Modul 'Aufgaben' aufrufen</label>
-			<label index="emailMeAtLogin">Unterrichte mich per email wenn jemand sich &lt;br /&gt;mit meinem Account einlogt</label>
+			<label index="emailMeAtLogin">Unterrichte mich per email wenn jemand sich &lt;br /&gt;mit meinem Account anmeldet</label>
 			<label index="helpText">Zeige Hilfetexte wenn möglich</label>
 			<label index="maxTitleLen">Max. Titel Länge</label>
-			<label index="edit_showFieldHelp">Hilfemodus für Eingabefelder</label>
+			<label index="edit_showFieldHelp">Kontext-sensitive Hilfe</label>
 			<label index="edit_showFieldHelp_icon">Nur Hilfesymbol anzeigen</label>
 			<label index="edit_showFieldHelp_message">Kompletten Text anzeigen</label>
 			<label index="edit_wideDocument">Breiten Hintergrund anzeigen</label>
-			<label index="edit_RTE">Rich Text Editor aktivieren</label>
+			<label index="edit_RTE">Rich Text Editor aktivieren (falls verfügbar)</label>
 			<label index="edit_docModuleUpload">Datei Upload direkt im Dok. Modul</label>
 			<label index="edit_functions">Bearbeiten</label>
 			<label index="disableCMlayers">Deaktiviere Inhalt-Kontextmenüs</label>
-			<label index="setToStandard">Setze auf Standard zurück</label>
+			<label index="setToStandard">Alle Werte auf Standard zurücksetzen</label>
 			<label index="functions">Erweiterte Funktionen</label>
 			<label index="copyLevels">&lt;b&gt;Rekursives Kopieren:&lt;/b&gt; Gebe die Anzahl der&lt;br /&gt;zu Kopierenden Sublevel an</label>
 			<label index="recursiveDelete">&lt;b&gt;Rekursives Löschen(!):&lt;/b&gt; Erlaube das Löschen ALLER&lt;br /&gt;Unterseiten, einer zu löschenden Seite</label>
 			<label index="activateChanges">Achtung! Die meisten Optionen werden erst beim nächsten Start aktiv. Bitte aus- und einloggen.</label>
-			<label index="levels">Level</label>
+			<label index="levels">Tiefe</label>
 			<label index="beUser_realName">Ihr Name</label>
 			<label index="beUser_email">Ihre Email Adresse</label>
 			<label index="save">Konfiguration sichern</label>
 			<label index="newPassword">Neues Passwort</label>
 			<label index="newPasswordAgain">Neues Passwort, Wdhl.</label>
-			<label index="newPassword_ok">Passwort aktualisiert</label>
+			<label index="newPassword_ok">Ihr Passwort wurde aktualisiert.</label>
 			<label index="newPassword_failed">Passwort wurde nicht aktualisiert, da die Bestätigung falsch eingegeben wurde.</label>
+			<label index="lang_is">Isländisch</label>
+			<label index="lang_hr">Kroatisch</label>
+			<label index="lang_hu">Ungarisch</label>
+			<label index="lang_gl">Grönländisch</label>
+			<label index="lang_th">Thailändisch</label>
+			<label index="lang_gr">Griechisch</label>
+			<label index="lang_hk">Chinesisch (Trad.)</label>
+			<label index="lang_eu">Baskisch</label>
+			<label index="lang_bg">Bulgarisch</label>
+			<label index="lang_br">Braz. Portugiesisch</label>
+			<label index="lang_et">Estländisch</label>
+			<label index="lang_ar">Arabisch</label>
+			<label index="lang_he">Hebräisch</label>
+			<label index="lang_ua">Ukrainisch</label>
+			<label index="lang_lv">Lättisch</label>
+			<label index="lang_jp">Japanisch</label>
+			<label index="lang_vn">Vietnamesisch</label>
+			<label index="personal_data">Persönliche Daten</label>
+			<label index="condensedMode">Schmale Ansicht im Backen verwenden</label>
+			<label index="noMenuMode">Art der Navigation auswählen</label>
 		</languageKey>
 		<languageKey index="no" type="array">
 			<label index="UserSettings">Personlige oppsett</label>
@@ -1707,11 +1727,11 @@
 			<label index="emailMeAtLogin" type="integer">242513283</label>
 			<label index="helpText" type="integer">40561585</label>
 			<label index="maxTitleLen" type="integer">197742795</label>
-			<label index="edit_showFieldHelp" type="integer">208596502</label>
+			<label index="edit_showFieldHelp" type="integer">156260410</label>
 			<label index="edit_showFieldHelp_icon" type="integer">174937206</label>
 			<label index="edit_showFieldHelp_message" type="integer">92057802</label>
 			<label index="edit_wideDocument" type="integer">47472072</label>
-			<label index="edit_RTE" type="integer">175965839</label>
+			<label index="edit_RTE" type="integer">16864569</label>
 			<label index="edit_docModuleUpload" type="integer">172878204</label>
 			<label index="edit_functions" type="integer">131916066</label>
 			<label index="disableCMlayers" type="integer">256285755</label>
@@ -1728,6 +1748,26 @@
 			<label index="newPasswordAgain" type="integer">985181</label>
 			<label index="newPassword_ok" type="integer">249160755</label>
 			<label index="newPassword_failed" type="integer">202693756</label>
+			<label index="lang_is" type="integer">80037322</label>
+			<label index="lang_hr" type="integer">12697097</label>
+			<label index="lang_hu" type="integer">129523986</label>
+			<label index="lang_gl" type="integer">24211126</label>
+			<label index="lang_th" type="integer">71163000</label>
+			<label index="lang_gr" type="integer">11205193</label>
+			<label index="lang_hk" type="integer">31063215</label>
+			<label index="lang_eu" type="integer">176851207</label>
+			<label index="lang_bg" type="integer">101430204</label>
+			<label index="lang_br" type="integer">102669697</label>
+			<label index="lang_et" type="integer">42538748</label>
+			<label index="lang_ar" type="integer">41077944</label>
+			<label index="lang_he" type="integer">208412545</label>
+			<label index="lang_ua" type="integer">242788092</label>
+			<label index="lang_lv" type="integer">124440629</label>
+			<label index="lang_jp" type="integer">254987990</label>
+			<label index="lang_vn" type="integer">129503150</label>
+			<label index="personal_data" type="integer">104270938</label>
+			<label index="condensedMode" type="integer">240508039</label>
+			<label index="noMenuMode" type="integer">20667488</label>
 		</languageKey>
 		<languageKey index="no" type="array">
 			<label index="UserSettings" type="integer">46681867</label>

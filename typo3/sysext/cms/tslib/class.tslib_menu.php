@@ -1235,7 +1235,7 @@ class tslib_menu {
 	 * @access private
 	 */
 	function setATagParts()	{
-		$this->I['A1'] = '<a '.t3lib_div::implodeParams($this->I['linkHREF'],1).$this->I['val']['ATagParams'].$this->I['addATagParams'].$this->I['accessKey']['code'].'>';
+		$this->I['A1'] = '<a '.t3lib_div::implodeAttributes($this->I['linkHREF'],1).$this->I['val']['ATagParams'].$this->I['addATagParams'].$this->I['accessKey']['code'].'>';
 		$this->I['A2'] = '</a>';
 	}
 
@@ -1821,11 +1821,13 @@ class tslib_gmenu extends tslib_menu {
 				$gifFileName=$altImgInfo[3];
 			}
 
-				// If an alternative names was NOT given, find the GIFBUILDER name.
+				// If an alternative name was NOT given, find the GIFBUILDER name.
 			if (!$gifFileName && $isGD)	{
-				$gifFileName = $gifCreator->fileName('m_');
+				$gifCreator->createTempSubDir('menu/');
+				$gifFileName = $gifCreator->fileName('menu/');
 			}
-			// generation
+
+				// Generation of image file:
 			if (@file_exists($gifFileName))	{		// File exists
 				$info = @getimagesize($gifFileName);
 				$this->result[$resKey][$key]['output_w']=intval($info[0]);
@@ -2335,7 +2337,9 @@ class tslib_imgmenu extends tslib_menu {
 
 				if ($this->mconf['debugRenumberedObject'])	{echo '<h3>Renumbered GIFBUILDER object:</h3>';	debug($gifCreator->setup);}
 
-				$gifFileName = $gifCreator->fileName('m_');
+				$gifCreator->createTempSubDir('menu/');
+				$gifFileName = $gifCreator->fileName('menu/');
+
 					// Gets the ImageMap from the cache...
 				$imgHash = md5($gifFileName);
 				$imgMap = $this->sys_page->getHash($imgHash, 0);

@@ -1989,9 +1989,10 @@ class t3lib_BEfunc	{
 	 * @param	array		If root line is supplied the function will look for the first found domain record and use that URL instead (if found)
 	 * @param	string		$anchor is optional anchor to the URL
 	 * @param	string		$altUrl is an alternative URL which - if set - will make all other parameters ignored: The function will just return the window.open command wrapped around this URL!
+	 * @param	string		Additional GET variables.
 	 * @return	string
 	 */
-	function viewOnClick($id,$backPath='',$rootLine='',$anchor='',$altUrl='')	{
+	function viewOnClick($id,$backPath='',$rootLine='',$anchor='',$altUrl='',$addGetVars='')	{
 		if ($altUrl)	{
 			$url = $altUrl;
 		} else {
@@ -2002,7 +2003,7 @@ class t3lib_BEfunc	{
 				}
 			}
 			$preUrl = $preUrl_temp ? 'http://'.$preUrl_temp : $backPath.'..';
-			$url = $preUrl.'/index.php?id='.$id.$anchor;
+			$url = $preUrl.'/index.php?id='.$id.$addGetVars.$anchor;
 		}
 
 		return "previewWin=window.open('".$url."','newTypo3FrontendWindow','status=1,menubar=1,resizable=1,location=1,scrollbars=1,toolbar=1');previewWin.focus();";
@@ -2030,7 +2031,7 @@ class t3lib_BEfunc	{
 	 * See Inside TYPO3 for details about how to use / make Function menus
 	 * Usage: 50
 	 *
-	 * @param	string		$id is the "&id=" parameter value to be sent to the module, but it can be also a parameter array which will be passed instead of the &id=...
+	 * @param	mixed		$id is the "&id=" parameter value to be sent to the module, but it can be also a parameter array which will be passed instead of the &id=...
 	 * @param	string		$elementName it the form elements name, probably something like "SET[...]"
 	 * @param	string		$currentValue is the value to be selected currently.
 	 * @param	array		$menuItems is an array with the menu items for the selector box
@@ -2044,7 +2045,7 @@ class t3lib_BEfunc	{
 				$mainParams = array('id' => $mainParams);
 			}
 			$mainParams = t3lib_div::implodeArrayForUrl('',$mainParams);
-		
+
 			if (!$script) { $script=basename(PATH_thisScript); }
 
 			$options = array();
@@ -2072,7 +2073,7 @@ class t3lib_BEfunc	{
 	 * Works like ->getFuncMenu() but takes no $menuItem array since this is a simple checkbox.
 	 * Usage: 34
 	 *
-	 * @param	string		$mainParams $id is the "&id=" parameter value to be sent to the module, but it can be also a parameter array which will be passed instead of the &id=...
+	 * @param	mixed		$mainParams $id is the "&id=" parameter value to be sent to the module, but it can be also a parameter array which will be passed instead of the &id=...
 	 * @param	string		$elementName it the form elements name, probably something like "SET[...]"
 	 * @param	string		$currentValue is the value to be selected currently.
 	 * @param	string		$script is the script to send the &id to, if empty it's automatically found
@@ -2086,7 +2087,7 @@ class t3lib_BEfunc	{
 			$mainParams = array('id' => $mainParams);
 		}
 		$mainParams = t3lib_div::implodeArrayForUrl('',$mainParams);
-		
+
 		if (!$script) {basename(PATH_thisScript);}
 		$onClick = 'jumpToUrl(\''.$script.'?'.$mainParams.$addparams.'&'.$elementName.'=\'+(this.checked?1:0),this);';
 		return '<input type="checkbox" name="'.$elementName.'"'.($currentValue?' checked="checked"':'').' onclick="'.htmlspecialchars($onClick).'"'.($tagParams?' '.$tagParams:'').' />';
@@ -2097,7 +2098,7 @@ class t3lib_BEfunc	{
 	 * Works like ->getFuncMenu() / ->getFuncCheck() but displays a input field instead which updates the script "onchange"
 	 * Usage: 1
 	 *
-	 * @param	string		$id is the "&id=" parameter value to be sent to the module, but it can be also a parameter array which will be passed instead of the &id=...
+	 * @param	mixed		$id is the "&id=" parameter value to be sent to the module, but it can be also a parameter array which will be passed instead of the &id=...
 	 * @param	string		$elementName it the form elements name, probably something like "SET[...]"
 	 * @param	string		$currentValue is the value to be selected currently.
 	 * @param	integer		Relative size of input field, max is 48
@@ -2111,7 +2112,7 @@ class t3lib_BEfunc	{
 			$mainParams = array('id' => $mainParams);
 		}
 		$mainParams = t3lib_div::implodeArrayForUrl('',$mainParams);
-		
+
 		if (!$script) {basename(PATH_thisScript);}
 		$onChange = 'jumpToUrl(\''.$script.'?'.$mainParams.$addparams.'&'.$elementName.'=\'+escape(this.value),this);';
 		return '<input type="text"'.$GLOBALS['TBE_TEMPLATE']->formWidth($size).' name="'.$elementName.'" value="'.htmlspecialchars($currentValue).'" onchange="'.htmlspecialchars($onChange).'" />';

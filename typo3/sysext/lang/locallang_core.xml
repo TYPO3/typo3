@@ -392,7 +392,7 @@ Vil du forny det nu?</label>
 			<label index="file_newfolder.php.newfile_submit">Datei erzeugen</label>
 			<label index="file_newfolder.php.newfile">Textdatei erzeugen</label>
 			<label index="file_clipupload.php.warning_head">Upload Pfad Fehler</label>
-			<label index="file_clipupload.php.warning">Kein Upload-Ordner gefunden. Sie sollten einen TEMP-Ordner in einem Ihrer Hauptverzeichnissen anlegen (&quot;_temp_&quot;)!</label>
+			<label index="file_clipupload.php.warning">Kein Upload-Ordner gefunden. Sie sollten einen TEMP-Ordner in einem Ihrer Hauptverzeichnisse anlegen (&quot;_temp_&quot;)!</label>
 			<label index="mess.redraw">Durch das Neuzeichnen der Seite gehen die aktuellen Daten verloren. Wollen Sie den Vorgang fortführen?</label>
 			<label index="mess.delete">Soll &quot;%s&quot; wirklich gelöscht werden?</label>
 			<label index="mess.deleteClip">Sollen alle markierten Elemente (%s) vom Klemmbrett entfernt werden?</label>
@@ -449,6 +449,13 @@ Wollen Sie gemachten Änderungen sichern und die Anzeige aktualisieren?</label>
 			<label index="cm.unzip">Entzippen</label>
 			<label index="cm.info">Info</label>
 			<label index="cm.createnew">Neu anlegen</label>
+			<label index="labels.table">Tabelle</label>
+			<label index="labels.noRTEfound">Hinweis: Sie können dieses Feld nicht bearbeiten, weil es nur mit einem Rich Text Editor (RTE) bearbeitet werden kann. Ein solcher Editor ist jedoch nicht verfügbar oder der RTE wurde deaktiviert.</label>
+			<label index="labels.temporaryDBmount">Temporären Einstiegspunkt aufheben</label>
+			<label index="labels.refreshList">Liste neu laden</label>
+			<label index="labels.clipInsert_file">%s Datei(en) aus dem Klemmbrett einfügen</label>
+			<label index="labels.clipInsert_db">%s Datensätze aus dem Klemmbrett einfügen</label>
+			<label index="cm.tempMountPoint">Als Startpunkt für den Seitenbaum festlegen</label>
 		</languageKey>
 		<languageKey index="no" type="array">
 			<label index="labels.openInNewWindow">Åpne i nytt vindu</label>
@@ -4403,6 +4410,13 @@ Kas soovite praegu salvestada, et uuendada kuvand?</label>
 			<label index="cm.unzip" type="integer">31401173</label>
 			<label index="cm.info" type="integer">67476226</label>
 			<label index="cm.createnew" type="integer">260012217</label>
+			<label index="labels.table" type="integer">85738935</label>
+			<label index="labels.noRTEfound" type="integer">160772255</label>
+			<label index="labels.temporaryDBmount" type="integer">54643159</label>
+			<label index="labels.refreshList" type="integer">267625353</label>
+			<label index="labels.clipInsert_file" type="integer">72963835</label>
+			<label index="labels.clipInsert_db" type="integer">123875466</label>
+			<label index="cm.tempMountPoint" type="integer">10294929</label>
 		</languageKey>
 		<languageKey index="no" type="array">
 			<label index="labels.openInNewWindow" type="integer">43359464</label>

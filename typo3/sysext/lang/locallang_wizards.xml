@@ -210,6 +210,16 @@
 			<label index="forms_eform_html_enabled">HTML-Modus aktiviert</label>
 			<label index="forms_eform_formtype_mail">Beschriftung des Absende-Buttons</label>
 			<label index="forms_special_eform">Spezielle Konfiguration für Mail-Formulare</label>
+			<label index="forms_type_property">Eigenschaft</label>
+			<label index="forms_type_label">Beschriftung</label>
+			<label index="colorpicker_title">Farbauswahl</label>
+			<label index="colorpicker_setClose">Speichern und Schließen</label>
+			<label index="colorpicker_colorValue">Gewählte Farbe:</label>
+			<label index="colorpicker_fromImage">Farbe aus dem Bild übernehmen (Klick auf das Bild):</label>
+			<label index="colorpicker_fromMatrix">Farbe aus der Matrix auswählen (Web-sichere Farben):</label>
+			<label index="colorpicker_fromList">HTML Farbbezeichnung auswählen:</label>
+			<label index="colorpicker_black">SCHWARZ</label>
+			<label index="colorpicker_white">WEISS</label>
 		</languageKey>
 		<languageKey index="no" type="array">
 			<label index="rte_undoLastChange">Angre/ Gjør om siste endring (%s siden)</label>
@@ -2072,6 +2082,16 @@
 			<label index="forms_eform_html_enabled" type="integer">15828015</label>
 			<label index="forms_eform_formtype_mail" type="integer">113492555</label>
 			<label index="forms_special_eform" type="integer">236376464</label>
+			<label index="forms_type_property" type="integer">95232844</label>
+			<label index="forms_type_label" type="integer">184688118</label>
+			<label index="colorpicker_title" type="integer">90157489</label>
+			<label index="colorpicker_setClose" type="integer">253538544</label>
+			<label index="colorpicker_colorValue" type="integer">54418585</label>
+			<label index="colorpicker_fromImage" type="integer">45057637</label>
+			<label index="colorpicker_fromMatrix" type="integer">40876189</label>
+			<label index="colorpicker_fromList" type="integer">120567904</label>
+			<label index="colorpicker_black" type="integer">9240594</label>
+			<label index="colorpicker_white" type="integer">190576167</label>
 		</languageKey>
 		<languageKey index="no" type="array">
 			<label index="rte_undoLastChange" type="integer">109787245</label>
@@ -3731,80 +3751,4 @@
 		<languageKey index="vn" type="array">
 		</languageKey>
 	</orig_hash>
-	<orig_text type="array">
-		<languageKey index="default" type="array">
-		</languageKey>
-		<languageKey index="dk" type="array">
-		</languageKey>
-		<languageKey index="de" type="array">
-		</languageKey>
-		<languageKey index="no" type="array">
-		</languageKey>
-		<languageKey index="it" type="array">
-		</languageKey>
-		<languageKey index="fr" type="array">
-		</languageKey>
-		<languageKey index="es" type="array">
-		</languageKey>
-		<languageKey index="nl" type="array">
-		</languageKey>
-		<languageKey index="cz" type="array">
-		</languageKey>
-		<languageKey index="pl" type="array">
-		</languageKey>
-		<languageKey index="si" type="array">
-		</languageKey>
-		<languageKey index="fi" type="array">
-		</languageKey>
-		<languageKey index="tr" type="array">
-		</languageKey>
-		<languageKey index="se" type="array">
-		</languageKey>
-		<languageKey index="pt" type="array">
-		</languageKey>
-		<languageKey index="ru" type="array">
-		</languageKey>
-		<languageKey index="ro" type="array">
-		</languageKey>
-		<languageKey index="ch" type="array">
-		</languageKey>
-		<languageKey index="sk" type="array">
-		</languageKey>
-		<languageKey index="lt" type="array">
-		</languageKey>
-		<languageKey index="is" type="array">
-		</languageKey>
-		<languageKey index="hr" type="array">
-		</languageKey>
-		<languageKey index="hu" type="array">
-		</languageKey>
-		<languageKey index="gl" type="array">
-		</languageKey>
-		<languageKey index="th" type="array">
-		</languageKey>
-		<languageKey index="gr" type="array">
-		</languageKey>
-		<languageKey index="hk" type="array">
-		</languageKey>
-		<languageKey index="eu" type="array">
-		</languageKey>
-		<languageKey index="bg" type="array">
-		</languageKey>
-		<languageKey index="br" type="array">
-		</languageKey>
-		<languageKey index="et" type="array">
-		</languageKey>
-		<languageKey index="ar" type="array">
-		</languageKey>
-		<languageKey index="he" type="array">
-		</languageKey>
-		<languageKey index="ua" type="array">
-		</languageKey>
-		<languageKey index="lv" type="array">
-		</languageKey>
-		<languageKey index="jp" type="array">
-		</languageKey>
-		<languageKey index="vn" type="array">
-		</languageKey>
-	</orig_text>
 </T3locallang>

@@ -13,6 +13,12 @@ if (TYPO3_MODE=='BE')	{
 		t3lib_extMgm::extPath($_EXTKEY).'web_info/class.tx_cms_webinfo.php',
 		'LLL:EXT:cms/locallang_tca.php:mod_tx_cms_webinfo_page'
 	);
+	t3lib_extMgm::insertModuleFunction(
+		'web_info',
+		'tx_cms_webinfo_lang',
+		t3lib_extMgm::extPath($_EXTKEY).'web_info/class.tx_cms_webinfo_lang.php',
+		'LLL:EXT:cms/locallang_tca.php:mod_tx_cms_webinfo_lang'
+	);
 }
 
 
@@ -432,7 +438,18 @@ if (TYPO3_MODE=='BE')	{
 				),
 				'default' => ''
 			)
-		)
+		),
+		'l18n_cfg' => Array (
+			'exclude' => 1,
+			'label' => 'LLL:EXT:cms/locallang_tca.php:pages.l18n_cfg',
+			'config' => Array (
+				'type' => 'check',
+				'items' => Array (
+					Array('LLL:EXT:cms/locallang_tca.php:pages.l18n_cfg.I.1', ''),
+					Array('LLL:EXT:cms/locallang_tca.php:pages.l18n_cfg.I.2', ''),
+				),
+			)
+		),
 	));
 
 		// Add columns to info-display list.
@@ -443,12 +460,12 @@ if (TYPO3_MODE=='BE')	{
 
 		// Totally overriding all type-settings:
 	$TCA['pages']['types'] = Array (
-		'1' => Array('showitem' => 'hidden;;;;1-1-1, doktype;;2;button, title;;3;;2-2-2, subtitle, nav_hide, TSconfig;;6;nowrap;5-5-5, storage_pid;;7'),
-		'2' => Array('showitem' => 'hidden;;;;1-1-1, doktype;;2;button, title;;3;;2-2-2, subtitle, nav_hide, nav_title, --div--, abstract;;5;;3-3-3, keywords, description, media;;;;4-4-4, --div--, TSconfig;;6;nowrap;5-5-5, storage_pid;;7, module, content_from_pid'),
-		'3' => Array('showitem' => 'hidden;;;;1-1-1, doktype, title;;3;;2-2-2, nav_hide, url;;;;3-3-3, urltype, TSconfig;;6;nowrap;5-5-5, storage_pid;;7'),
-		'4' => Array('showitem' => 'hidden;;;;1-1-1, doktype, title;;3;;2-2-2, nav_hide, shortcut;;;;3-3-3, shortcut_mode, TSconfig;;6;nowrap;5-5-5, storage_pid;;7'),
-		'5' => Array('showitem' => 'hidden;;;;1-1-1, doktype;;2;button, title;;3;;2-2-2, subtitle, nav_hide, nav_title, --div--, media;;;;4-4-4, --div--, TSconfig;;6;nowrap;5-5-5, storage_pid;;7, module, content_from_pid'),
-		'7' => Array('showitem' => 'hidden;;;;1-1-1, doktype;;2;button, title;;3;;2-2-2, subtitle, nav_hide, nav_title, --div--, mount_pid;;;;3-3-3, mount_pid_ol, media;;;;4-4-4, --div--, TSconfig;;6;nowrap;5-5-5, storage_pid;;7, module, content_from_pid'),
+		'1' => Array('showitem' => 'hidden;;;;1-1-1, doktype;;2;button, title;;3;;2-2-2, subtitle, nav_hide, TSconfig;;6;nowrap;5-5-5, storage_pid;;7, l18n_cfg'),
+		'2' => Array('showitem' => 'hidden;;;;1-1-1, doktype;;2;button, title;;3;;2-2-2, subtitle, nav_hide, nav_title, --div--, abstract;;5;;3-3-3, keywords, description, media;;;;4-4-4, --div--, TSconfig;;6;nowrap;5-5-5, storage_pid;;7, l18n_cfg, module, content_from_pid'),
+		'3' => Array('showitem' => 'hidden;;;;1-1-1, doktype, title;;3;;2-2-2, nav_hide, url;;;;3-3-3, urltype, TSconfig;;6;nowrap;5-5-5, storage_pid;;7, l18n_cfg'),
+		'4' => Array('showitem' => 'hidden;;;;1-1-1, doktype, title;;3;;2-2-2, nav_hide, shortcut;;;;3-3-3, shortcut_mode, TSconfig;;6;nowrap;5-5-5, storage_pid;;7, l18n_cfg'),
+		'5' => Array('showitem' => 'hidden;;;;1-1-1, doktype;;2;button, title;;3;;2-2-2, subtitle, nav_hide, nav_title, --div--, media;;;;4-4-4, --div--, TSconfig;;6;nowrap;5-5-5, storage_pid;;7, l18n_cfg, module, content_from_pid'),
+		'7' => Array('showitem' => 'hidden;;;;1-1-1, doktype;;2;button, title;;3;;2-2-2, subtitle, nav_hide, nav_title, --div--, mount_pid;;;;3-3-3, mount_pid_ol, media;;;;4-4-4, --div--, TSconfig;;6;nowrap;5-5-5, storage_pid;;7, l18n_cfg, module, content_from_pid'),
 		'199' => Array('showitem' => 'hidden;;;;1-1-1, doktype, title;;;;2-2-2, TSconfig;;6;nowrap;5-5-5, storage_pid;;7'),
 		'254' => Array('showitem' => 'hidden;;;;1-1-1, doktype, title;LLL:EXT:lang/locallang_general.php:LGL.title;;;2-2-2, --div--, TSconfig;;6;nowrap;5-5-5, storage_pid;;7, module'),
 		'255' => Array('showitem' => 'hidden;;;;1-1-1, doktype, title;;;;2-2-2')
@@ -482,6 +499,8 @@ $TCA['tt_content'] = Array (
 		'prependAtCopy' => 'LLL:EXT:lang/locallang_general.php:LGL.prependAtCopy',
 		'copyAfterDuplFields' => 'colPos,sys_language_uid',
 		'useColumnsForDefaultValues' => 'colPos,sys_language_uid',
+		'transOrigPointerField' => 'l18n_parent',
+		'languageField' => 'sys_language_uid',
 		'enablecolumns' => Array (
 			'disabled' => 'hidden',
 			'starttime' => 'starttime',
@@ -590,6 +609,7 @@ $TCA['pages_language_overlay'] = Array (
 			'starttime' => 'starttime',
 			'endtime' => 'endtime'
 		),
+		'languageField' => 'sys_language_uid',
 		'mainpalette' => 1,
 		'dynamicConfigFile' => t3lib_extMgm::extPath($_EXTKEY).'tbl_cms.php'
 	)

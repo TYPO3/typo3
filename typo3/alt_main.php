@@ -111,7 +111,7 @@ class SC_alt_main {
 	function generateJScode()	{
 		global $BE_USER,$LANG;
 
-		$pt3=t3lib_div::dirname(t3lib_div::getIndpEnv('SCRIPT_NAME')).'/';
+		$pt3 = t3lib_div::dirname(t3lib_div::getIndpEnv('SCRIPT_NAME')).'/';
 		$goToModule_switch = $this->alt_menuObj->topMenu($this->loadModules->modules,0,"",4);
 		$fsMod = implode(chr(10),$this->alt_menuObj->fsMod);
 
@@ -236,7 +236,7 @@ class SC_alt_main {
 	/**
 	 * Loads a page id for editing in the page edit module:
 	 */
-	function loadEditId(id)	{	//
+	function loadEditId(id,addGetVars)	{	//
 		top.fsMod.recentIds["web"]=id;
 		top.fsMod.navFrameHighlightedID["web"]="pages"+id+"_0";		// For highlighting
 
@@ -244,7 +244,7 @@ class SC_alt_main {
 			top.content.nav_frame.refresh_nav();
 		}
 
-		top.goToModule("'.$pageModule.'");
+		top.goToModule("'.$pageModule.'", 0, addGetVars?addGetVars:"");
 	}
 
 	/**
@@ -318,7 +318,10 @@ class SC_alt_main {
 	 * Function used to switch switch module.
 	 */
 	var currentModuleLoaded = "";
-	function goToModule(modName,cMR_flag)	{	//
+	function goToModule(modName,cMR_flag,addGetVars)	{	//
+		var additionalGetVariables = "";
+		if (addGetVars)	additionalGetVariables = addGetVars;
+
 		var cMR = 0;
 		if (cMR_flag)	cMR = 1;
 

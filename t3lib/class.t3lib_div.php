@@ -1442,7 +1442,7 @@ class t3lib_div {
 				} else {
 					if ($includeEmtpyValues OR $val) {
 						$arr0[$key] = $val;
-					} 
+					}
 				}
 			}
 		}
@@ -1574,17 +1574,7 @@ class t3lib_div {
 		if (is_array($value))	reset($value);
 		return $value;
 	}
-	
-	/**
-	 * Implodes attributes in the array $arr for an attribute list in eg. and HTML tag (with quotes)
-	 *
-	 * @deprecated	Name was changed into implodeAttributes
-	 * @see implodeAttributes()
-	 */
-	function implodeParams($arr,$xhtmlSafe=FALSE,$dontOmitBlankAttribs=FALSE)	{
-		return t3lib_div::implodeAttributes($arr,$xhtmlSafe,$dontOmitBlankAttribs);
-	}
-	
+
 	/**
 	 * Implodes attributes in the array $arr for an attribute list in eg. and HTML tag (with quotes)
 	 * Usage: 14
@@ -1609,6 +1599,20 @@ class t3lib_div {
 			}
 			return implode(' ',$list);
 		}
+	}
+
+	/**
+	 * Implodes attributes in the array $arr for an attribute list in eg. and HTML tag (with quotes)
+	 *
+	 * @param	array		See implodeAttributes()
+	 * @param	boolean		See implodeAttributes()
+	 * @param	boolean		See implodeAttributes()
+	 * @return	string		See implodeAttributes()
+	 * @deprecated	Name was changed into implodeAttributes
+	 * @see implodeAttributes()
+	 */
+	function implodeParams($arr,$xhtmlSafe=FALSE,$dontOmitBlankAttribs=FALSE)	{
+		return t3lib_div::implodeAttributes($arr,$xhtmlSafe,$dontOmitBlankAttribs);
 	}
 
 	/**

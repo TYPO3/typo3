@@ -126,6 +126,7 @@
 			<label index="CM_newWizard">'Neuerstellungs'-Assistent</label>
 			<label index="CM_editPageHeader">Bearbeite Seiten-Header</label>
 			<label index="CM_db_list">Web&gt;Listenmodul</label>
+			<label index="noEditPage">Sie möchten die Seite &quot;%s&quot; bearbeiten, dies ist jedoch nicht möglich. Lade das Backend wie gewöhnlich.</label>
 		</languageKey>
 		<languageKey index="no" type="array">
 			<label index="shortcut_edit">Rediger</label>
@@ -1309,46 +1310,6 @@
 		</languageKey>
 	</data>
 	<orig_hash type="array">
-		<languageKey index="default" type="array">
-			<label index="shortcut_edit" type="integer">131916066</label>
-			<label index="shortcut_editID" type="integer">7554086</label>
-			<label index="shortcut_save" type="integer">182178946</label>
-			<label index="shortcut_saveClose" type="integer">148652521</label>
-			<label index="shortcut_close" type="integer">260242109</label>
-			<label index="shortcut_delete" type="integer">11634947</label>
-			<label index="shortcut_loadEdit" type="integer">252728275</label>
-			<label index="shortcut_notEditable" type="integer">219401</label>
-			<label index="shortcut_group" type="integer">3749651</label>
-			<label index="shortcut_GLOBAL" type="integer">116314042</label>
-			<label index="shortcut_ALL" type="integer">100343701</label>
-			<label index="shortcut_onlyAdmin" type="integer">94674803</label>
-			<label index="shortcut_selSC" type="integer">100691421</label>
-			<label index="shortcut_delAllInCat" type="integer">259045376</label>
-			<label index="overwriteExistingFiles" type="integer">187655043</label>
-			<label index="selectPosition" type="integer">230626123</label>
-			<label index="goBack" type="integer">36398395</label>
-			<label index="createNewPage" type="integer">63624835</label>
-			<label index="clickForWizard" type="integer">55242266</label>
-			<label index="insertNewPageHere" type="integer">52089750</label>
-			<label index="insertNewRecordHere" type="integer">119001632</label>
-			<label index="movePageToHere" type="integer">190132261</label>
-			<label index="moveElement" type="integer">134083817</label>
-			<label index="selectPositionOfElement" type="integer">78349044</label>
-			<label index="movingElement" type="integer">134083817</label>
-			<label index="makeCopy" type="integer">238822983</label>
-			<label index="newContentElement" type="integer">44759206</label>
-			<label index="1_selectType" type="integer">99181978</label>
-			<label index="2_selectPosition" type="integer">246921887</label>
-			<label index="CM_editAccess" type="integer">104965876</label>
-			<label index="CM_history" type="integer">40380000</label>
-			<label index="CM_perms" type="integer">200750040</label>
-			<label index="CM_moveWizard" type="integer">134083817</label>
-			<label index="CM_moveWizard_page" type="integer">32081372</label>
-			<label index="CM_newWizard" type="integer">181792680</label>
-			<label index="CM_editPageHeader" type="integer">60384081</label>
-			<label index="CM_db_list" type="integer">182815575</label>
-			<label index="noEditPage" type="integer">249172510</label>
-		</languageKey>
 		<languageKey index="dk" type="array">
 			<label index="shortcut_edit" type="integer">131916066</label>
 			<label index="shortcut_editID" type="integer">7554086</label>
@@ -1427,6 +1388,7 @@
 			<label index="CM_newWizard" type="integer">181792680</label>
 			<label index="CM_editPageHeader" type="integer">60384081</label>
 			<label index="CM_db_list" type="integer">182815575</label>
+			<label index="noEditPage" type="integer">249172510</label>
 		</languageKey>
 		<languageKey index="no" type="array">
 			<label index="shortcut_edit" type="integer">131916066</label>
@@ -2609,80 +2571,4 @@
 		<languageKey index="vn" type="array">
 		</languageKey>
 	</orig_hash>
-	<orig_text type="array">
-		<languageKey index="default" type="array">
-		</languageKey>
-		<languageKey index="dk" type="array">
-		</languageKey>
-		<languageKey index="de" type="array">
-		</languageKey>
-		<languageKey index="no" type="array">
-		</languageKey>
-		<languageKey index="it" type="array">
-		</languageKey>
-		<languageKey index="fr" type="array">
-		</languageKey>
-		<languageKey index="es" type="array">
-		</languageKey>
-		<languageKey index="nl" type="array">
-		</languageKey>
-		<languageKey index="cz" type="array">
-		</languageKey>
-		<languageKey index="pl" type="array">
-		</languageKey>
-		<languageKey index="si" type="array">
-		</languageKey>
-		<languageKey index="fi" type="array">
-		</languageKey>
-		<languageKey index="tr" type="array">
-		</languageKey>
-		<languageKey index="se" type="array">
-		</languageKey>
-		<languageKey index="pt" type="array">
-		</languageKey>
-		<languageKey index="ru" type="array">
-		</languageKey>
-		<languageKey index="ro" type="array">
-		</languageKey>
-		<languageKey index="ch" type="array">
-		</languageKey>
-		<languageKey index="sk" type="array">
-		</languageKey>
-		<languageKey index="lt" type="array">
-		</languageKey>
-		<languageKey index="is" type="array">
-		</languageKey>
-		<languageKey index="hr" type="array">
-		</languageKey>
-		<languageKey index="hu" type="array">
-		</languageKey>
-		<languageKey index="gl" type="array">
-		</languageKey>
-		<languageKey index="th" type="array">
-		</languageKey>
-		<languageKey index="gr" type="array">
-		</languageKey>
-		<languageKey index="hk" type="array">
-		</languageKey>
-		<languageKey index="eu" type="array">
-		</languageKey>
-		<languageKey index="bg" type="array">
-		</languageKey>
-		<languageKey index="br" type="array">
-		</languageKey>
-		<languageKey index="et" type="array">
-		</languageKey>
-		<languageKey index="ar" type="array">
-		</languageKey>
-		<languageKey index="he" type="array">
-		</languageKey>
-		<languageKey index="ua" type="array">
-		</languageKey>
-		<languageKey index="lv" type="array">
-		</languageKey>
-		<languageKey index="jp" type="array">
-		</languageKey>
-		<languageKey index="vn" type="array">
-		</languageKey>
-	</orig_text>
 </T3locallang>

@@ -126,8 +126,22 @@ $TCA['tt_content'] = Array (
 				'foreign_table' => 'sys_language',
 				'foreign_table_where' => 'ORDER BY sys_language.title',
 				'items' => Array(
+					Array('LLL:EXT:lang/locallang_general.php:LGL.allLanguages',-1),
 					Array('LLL:EXT:lang/locallang_general.php:LGL.default_value',0)
 				)
+			)
+		),
+		'l18n_parent' => Array (
+			'displayCond' => 'FIELD:sys_language_uid:>:0',
+			'exclude' => 1,
+			'label' => 'LLL:EXT:lang/locallang_general.php:LGL.l18n_parent',
+			'config' => Array (
+				'type' => 'select',
+				'items' => Array (
+					Array('', 0),
+				),
+				'foreign_table' => 'tt_content',
+				'foreign_table_where' => 'AND tt_content.pid=###CURRENT_PID### AND tt_content.sys_language_uid=0',
 			)
 		),
 		'layout' => Array (
@@ -955,7 +969,7 @@ $TCA['tt_content'] = Array (
 		'1' => Array('showitem' => 'hidden, starttime, endtime, fe_group'),
 		'2' => Array('showitem' => 'imagecols, image_noRows, imageborder'),
 		'3' => Array('showitem' => 'header_position, header_layout, header_link, date'),
-		'4' => Array('showitem' => 'sys_language_uid, colPos, spaceBefore, spaceAfter, section_frame, sectionIndex, linkToTop'),
+		'4' => Array('showitem' => 'sys_language_uid, l18n_parent, colPos, spaceBefore, spaceAfter, section_frame, sectionIndex, linkToTop'),
 		'5' => Array('showitem' => 'imagecaption_position'),
 		'6' => Array('showitem' => 'imagewidth,image_link'),
 		'7' => Array('showitem' => 'image_link, image_zoom'),
@@ -965,7 +979,7 @@ $TCA['tt_content'] = Array (
 		'11' => Array('showitem' => 'image_compression, image_effects, image_frames'),
 		'12' => Array('showitem' => 'recursive'),
 		'13' => Array('showitem' => 'imageheight'),
-		'14' => Array('showitem' => 'sys_language_uid, colPos')
+		'14' => Array('showitem' => 'sys_language_uid, l18n_parent, colPos')
 	)
 );
 

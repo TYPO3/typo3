@@ -424,7 +424,7 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 							$absRef = $siteUrl.$this->rteImageStorageDir().'RTEmagicC_'.$filename.'.'.$pI['extension'];
 
 							$attribArray['src']=$absRef;
-							$params = t3lib_div::implodeParams($attribArray,1);
+							$params = t3lib_div::implodeAttributes($attribArray,1);
 							$imgSplit[$k] = '<img '.$params.' />';
 						}
 					}
@@ -466,7 +466,7 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 										$attribArray['width']=$imgI[0];
 										$attribArray['height']=$imgI[1];
 										if (!$attribArray['border'])	$attribArray['border']=0;
-										$params = t3lib_div::implodeParams($attribArray,1);
+										$params = t3lib_div::implodeAttributes($attribArray,1);
 										$imgSplit[$k]='<img '.$params.' />';
 									}
 								}
@@ -502,7 +502,7 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 							}
 
 								// Compile the image tag again:
-							$params = t3lib_div::implodeParams($attribArray,1);
+							$params = t3lib_div::implodeAttributes($attribArray,1);
 							$imgSplit[$k]='<img '.$params.' />';
 						}
 					} else {	// Remove image if it was not found in a proper position on the server!
@@ -519,7 +519,7 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 					if (t3lib_div::isFirstPartOfStr($absRef,$siteUrl))	{
 						$attribArray['src'] = $this->relBackPath.substr($absRef,strlen($siteUrl));
 						if (!isset($attribArray['alt']))	$attribArray['alt']='';		// Must have alt-attribute for XHTML compliance.
-						$imgSplit[$k]='<img '.t3lib_div::implodeParams($attribArray,1,1).' />';
+						$imgSplit[$k]='<img '.t3lib_div::implodeAttributes($attribArray,1,1).' />';
 					}
 				}
 			}
@@ -551,7 +551,7 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 				if (strtolower(substr($absRef,0,4))!='http')	{
 					$attribArray['src'] = $siteUrl.substr($attribArray['src'],strlen($this->relBackPath));
 					if (!isset($attribArray['alt']))	$attribArray['alt']='';
-					$params = t3lib_div::implodeParams($attribArray);
+					$params = t3lib_div::implodeAttributes($attribArray);
 					$imgSplit[$k]='<img '.$params.' />';
 				}
 			}
@@ -585,7 +585,7 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 						if ($siteURL && substr($attribArray['href'],0,strlen($siteURL))==$siteURL)	{
 							$attribArray['href']=$this->relBackPath.substr($attribArray['href'],strlen($siteURL));
 						}
-						$bTag='<a '.t3lib_div::implodeParams($attribArray,1).'>';
+						$bTag='<a '.t3lib_div::implodeAttributes($attribArray,1).'>';
 						$eTag='</a>';
 						$blockSplit[$k] = $bTag.$this->TS_reglinks($this->removeFirstAndLastTag($blockSplit[$k]),$direction).$eTag;
 					}
@@ -634,7 +634,7 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 					if ($siteURL && substr($attribArray['href'],0,strlen($siteURL))==$siteURL)	{
 						$attribArray['href']=$this->relBackPath.substr($attribArray['href'],strlen($siteURL));
 					}
-					$bTag='<a '.t3lib_div::implodeParams($attribArray,1).'>';
+					$bTag='<a '.t3lib_div::implodeAttributes($attribArray,1).'>';
 					$eTag='</a>';
 					$blockSplit[$k] = $bTag.$this->TS_links_db($this->removeFirstAndLastTag($blockSplit[$k])).$eTag;
 				}
@@ -1499,7 +1499,7 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 				}
 				if (!$dontSetRTEKEEP)	$attribArray['rtekeep'] = 1;
 
-				$bTag='<a '.t3lib_div::implodeParams($attribArray,1).'>';
+				$bTag='<a '.t3lib_div::implodeAttributes($attribArray,1).'>';
 				$eTag='</a>';
 				$blockSplit[$k] = $bTag.$this->TS_AtagToAbs($this->removeFirstAndLastTag($blockSplit[$k])).$eTag;
 			}

@@ -52,6 +52,8 @@
 			<label index="LGL.disableRTE">Disable Rich Text Editor:</label>
 			<label index="LGL.external">External URL</label>
 			<label index="LGL.recursive">Recursive:</label>
+			<label index="LGL.l18n_parent">Transl.Orig:</label>
+			<label index="LGL.allLanguages">[All]</label>
 		</languageKey>
 		<languageKey index="dk" type="array">
 			<label index="LGL.endtime">Stop:</label>
@@ -108,7 +110,7 @@
 			<label index="LGL.usergroups">__Benutzergruppen:__</label>
 			<label index="LGL.type">Typ:</label>
 			<label index="LGL.description">Beschreibung:</label>
-			<label index="LGL.prependAtCopy"> (kopiere %s)</label>
+			<label index="LGL.prependAtCopy">(Kopie %s)</label>
 			<label index="LGL.layout">Layout:</label>
 			<label index="LGL.default_value">Standard</label>
 			<label index="LGL.normal">Normal</label>
@@ -1603,7 +1605,7 @@
 			<label index="LGL.usergroups" type="integer">157574305</label>
 			<label index="LGL.type" type="integer">241539922</label>
 			<label index="LGL.description" type="integer">218120871</label>
-			<label index="LGL.prependAtCopy" type="integer">150009848</label>
+			<label index="LGL.prependAtCopy" type="integer">255966033</label>
 			<label index="LGL.layout" type="integer">229574886</label>
 			<label index="LGL.default_value" type="integer">128029197</label>
 			<label index="LGL.normal" type="integer">157332556</label>

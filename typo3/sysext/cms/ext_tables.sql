@@ -235,6 +235,7 @@ CREATE TABLE sys_language (
   tstamp int(11) unsigned DEFAULT '0' NOT NULL,
   hidden tinyint(4) unsigned DEFAULT '0' NOT NULL,
   title varchar(80) DEFAULT '' NOT NULL,
+  flag varchar(20) DEFAULT '' NOT NULL,
   static_lang_isocode int(11) unsigned DEFAULT '0' NOT NULL,
   PRIMARY KEY (uid),
   KEY parent (pid)
@@ -343,6 +344,7 @@ CREATE TABLE tt_content (
   sys_language_uid int(11) DEFAULT '0' NOT NULL,
   tx_impexp_origuid int(11) DEFAULT '0' NOT NULL,
   pi_flexform mediumtext NOT NULL,
+  l18n_parent int(11) DEFAULT '0' NOT NULL,
 
   PRIMARY KEY (uid),
   KEY parent (pid)
@@ -384,5 +386,6 @@ CREATE TABLE pages (
   mount_pid int(10) unsigned DEFAULT '0' NOT NULL,
   mount_pid_ol tinyint(4) DEFAULT '0' NOT NULL,
   alias varchar(20) DEFAULT '' NOT NULL,
+  l18n_cfg tinyint(4) DEFAULT '0' NOT NULL,
   KEY alias (alias)
 );

@@ -10,6 +10,7 @@
 	<data type="array">
 		<languageKey index="default" type="array">
 			<label index="mod_tx_cms_webinfo_page">Pagetree overview</label>
+			<label index="mod_tx_cms_webinfo_lang">Localization overview</label>
 			<label index="pages.doktype.I.0">Advanced</label>
 			<label index="pages.doktype.I.2">Shortcut</label>
 			<label index="pages.doktype.I.3">Not in menu</label>
@@ -58,6 +59,10 @@
 			<label index="pages.module.I.4">Website users</label>
 			<label index="pages.module.I.5">Direct Mail</label>
 			<label index="pages.module.I.6">Approvals</label>
+			<label index="pages.l18n_cfg">Localization settings:</label>
+			<label index="pages.l18n_cfg.I.1">Hide default translation of page</label>
+			<label index="pages.l18n_cfg.I.2">Hide page if no translation for current language exists</label>
+
 			<label index="tt_content">Pagecontent</label>
 			<label index="fe_users">Website user</label>
 			<label index="fe_users.username">Username:</label>
@@ -76,6 +81,7 @@
 			<label index="sys_template">Template</label>
 			<label index="static_template">Static templates</label>
 			<label index="sys_language.isocode">Select Official Language (ISO code):</label>
+			<label index="sys_language.flag">Select flag icon:</label>
 		</languageKey>
 		<languageKey index="dk" type="array">
 			<label index="mod_tx_cms_webinfo_page">Overblik over sidetræ</label>

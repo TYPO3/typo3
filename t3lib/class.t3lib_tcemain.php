@@ -3091,7 +3091,7 @@ class t3lib_TCEmain	{
 
 			// Set title value to check for:
 		if ($count)	{
-			$checkTitle = $value.sprintf($this->prependLabel($table),$count);
+			$checkTitle = $value.rtrim(' '.sprintf($this->prependLabel($table),$count));
 		}	else {
 			$checkTitle = $value;
 		}

@@ -124,6 +124,7 @@ class TSpagegen {
 			// Base url:
 		if ($GLOBALS['TSFE']->config['config']['baseURL']) {
 			$GLOBALS['TSFE']->baseUrl = (intval($GLOBALS['TSFE']->config['config']['baseURL']) ? t3lib_div::getIndpEnv('TYPO3_SITE_URL') : $GLOBALS['TSFE']->config['config']['baseURL']);
+			$GLOBALS['TSFE']->anchorPrefix = substr(t3lib_div::getIndpEnv('TYPO3_REQUEST_URL'),strlen(t3lib_div::getIndpEnv('TYPO3_SITE_URL')));
 		}
 
 			// Internal and External target defaults
@@ -404,7 +405,7 @@ function linkTo_UnCryptMailto(s)	{	//
 
 			// Begin header section:
 		if (strcmp($GLOBALS['TSFE']->config['config']['htmlTag_setParams'],'none'))	{
-			$_attr = $GLOBALS['TSFE']->config['config']['htmlTag_setParams'] ? $GLOBALS['TSFE']->config['config']['htmlTag_setParams'] : t3lib_div::implodeParams($htmlTagAttributes);
+			$_attr = $GLOBALS['TSFE']->config['config']['htmlTag_setParams'] ? $GLOBALS['TSFE']->config['config']['htmlTag_setParams'] : t3lib_div::implodeAttributes($htmlTagAttributes);
 		} else {
 			$_attr = '';
 		}

@@ -3326,7 +3326,7 @@ EXTENSION KEYS:
 					if (!isset($instExtInfo[$depK]))	{
 						$msg = 'Extension "'.$depK.'" was not available in the system. Please import it from the TYPO3 Extension Repository.';
 					} else {
-						$msg = 'Extension "'.$depK.'" ('.$instExtInfo[$depK]['EM_CONF']['title'].') was not installed. Please installed it first.';
+						$msg = 'Extension "'.$depK.'" ('.$instExtInfo[$depK]['EM_CONF']['title'].') was not installed. Please install it first.';
 					}
 					$this->content.= $this->doc->section('Dependency Error',$msg,0,1,2);
 					return -1;

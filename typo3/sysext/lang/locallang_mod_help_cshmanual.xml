@@ -5,7 +5,7 @@
 		<type>module</type>
 		<fileId>EXT:lang/locallang_mod_help_cshmanual.xml</fileId>
 		<labelContext type="array">
-			<languageKey index="mlang_labels_tablabel">Module title (for alt-text in module menu)</languageKey>
+			<label index="mlang_labels_tablabel">Module title (for alt-text in module menu)</label>
 		</labelContext>
 	</meta>
 	<data type="array">
@@ -20,6 +20,9 @@
 			<label index="mlang_tabs_tab">Manual</label>
 		</languageKey>
 		<languageKey index="de" type="array">
+			<label index="mlang_labels_tablabel">Lokales TYPO3 Handbuch</label>
+			<label index="mlang_labels_tabdescr">Lokales Handbuch, basierend auf der Kontext-sensitiven Hilfe des Systems.</label>
+			<label index="mlang_tabs_tab">Handbuch</label>
 		</languageKey>
 		<languageKey index="no" type="array">
 		</languageKey>
@@ -102,6 +105,9 @@
 			<label index="mlang_tabs_tab" type="integer">236691797</label>
 		</languageKey>
 		<languageKey index="de" type="array">
+			<label index="mlang_labels_tablabel" type="integer">182726937</label>
+			<label index="mlang_labels_tabdescr" type="integer">207607230</label>
+			<label index="mlang_tabs_tab" type="integer">236691797</label>
 		</languageKey>
 		<languageKey index="no" type="array">
 		</languageKey>
@@ -172,80 +178,4 @@
 		<languageKey index="vn" type="array">
 		</languageKey>
 	</orig_hash>
-	<orig_text type="array">
-		<languageKey index="default" type="array">
-		</languageKey>
-		<languageKey index="dk" type="array">
-		</languageKey>
-		<languageKey index="de" type="array">
-		</languageKey>
-		<languageKey index="no" type="array">
-		</languageKey>
-		<languageKey index="it" type="array">
-		</languageKey>
-		<languageKey index="fr" type="array">
-		</languageKey>
-		<languageKey index="es" type="array">
-		</languageKey>
-		<languageKey index="nl" type="array">
-		</languageKey>
-		<languageKey index="cz" type="array">
-		</languageKey>
-		<languageKey index="pl" type="array">
-		</languageKey>
-		<languageKey index="si" type="array">
-		</languageKey>
-		<languageKey index="fi" type="array">
-		</languageKey>
-		<languageKey index="tr" type="array">
-		</languageKey>
-		<languageKey index="se" type="array">
-		</languageKey>
-		<languageKey index="pt" type="array">
-		</languageKey>
-		<languageKey index="ru" type="array">
-		</languageKey>
-		<languageKey index="ro" type="array">
-		</languageKey>
-		<languageKey index="ch" type="array">
-		</languageKey>
-		<languageKey index="sk" type="array">
-		</languageKey>
-		<languageKey index="lt" type="array">
-		</languageKey>
-		<languageKey index="is" type="array">
-		</languageKey>
-		<languageKey index="hr" type="array">
-		</languageKey>
-		<languageKey index="hu" type="array">
-		</languageKey>
-		<languageKey index="gl" type="array">
-		</languageKey>
-		<languageKey index="th" type="array">
-		</languageKey>
-		<languageKey index="gr" type="array">
-		</languageKey>
-		<languageKey index="hk" type="array">
-		</languageKey>
-		<languageKey index="eu" type="array">
-		</languageKey>
-		<languageKey index="bg" type="array">
-		</languageKey>
-		<languageKey index="br" type="array">
-		</languageKey>
-		<languageKey index="et" type="array">
-		</languageKey>
-		<languageKey index="ar" type="array">
-		</languageKey>
-		<languageKey index="he" type="array">
-		</languageKey>
-		<languageKey index="ua" type="array">
-		</languageKey>
-		<languageKey index="lv" type="array">
-		</languageKey>
-		<languageKey index="jp" type="array">
-		</languageKey>
-		<languageKey index="vn" type="array">
-		</languageKey>
-	</orig_text>
 </T3locallang>

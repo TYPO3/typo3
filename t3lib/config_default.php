@@ -70,6 +70,7 @@ $TYPO3_CONF_VARS = Array(
 		'binPath' => '', 						// String, comma seperated list: list of absolute paths where external programs should be searched for
 		't3lib_cs_convMethod' => '',			// String (values: "iconv", "recode", "mbstring", default is homemade PHP-code). Defines which of these PHP-features to use for various Charset conversing functions in t3lib_cs. Will speed up charset conversion radically.
 		't3lib_cs_utils' => '',					// String (values: "iconv", "recode", "mbstring", default is homemade PHP-code). Defines which of these PHP-features to use for various Charset processing functions in t3lib_cs. Will speed up charset functions radically.
+		'no_pconnect' => 0,						// Boolean: If true, "connect" is used instead of "pconnect" when connecting to the database!
 	),
 	'EXT' => Array (	// Options related to the Extension Management
 		'noEdit' => 1,							// Boolean: If set, the Extension Manager does NOT allow extension files to be edited! (Otherwise both local and global extensions can be edited.)

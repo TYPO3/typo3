@@ -271,6 +271,29 @@ class t3lib_DB {
 				);
 	}
 
+	/**
+	 * Creates and executes a SELECT SQL-statement AND traverse result set and returns array with records in.
+	 *
+	 * @param	string		See exec_SELECTquery()
+	 * @param	string		See exec_SELECTquery()
+	 * @param	string		See exec_SELECTquery()
+	 * @param	string		See exec_SELECTquery()
+	 * @param	string		See exec_SELECTquery()
+	 * @param	string		See exec_SELECTquery()
+	 * @return	array		Array of rows.
+	 */
+	function exec_SELECTgetRows($select_fields,$from_table,$where_clause,$groupBy='',$orderBy='',$limit='')	{
+		$res = mysql_query($this->SELECTquery($select_fields,$from_table,$where_clause,$groupBy,$orderBy,$limit), $this->link);
+		if ($this->debugOutput)	$this->debug('exec_SELECTquery');
+
+		unset($output);
+		if (!$this->sql_error())	{
+			$output = array();
+			while($output[] = $this->sql_fetch_assoc($res));
+			array_pop($output);
+		}
+		return $output;
+	}
 
 
 
@@ -775,7 +798,11 @@ class t3lib_DB {
 	 * @return	pointer		Returns a positive MySQL persistent link identifier on success, or FALSE on error.
 	 */
 	function sql_pconnect($TYPO3_db_host, $TYPO3_db_username, $TYPO3_db_password)	{
-		$this->link = mysql_pconnect($TYPO3_db_host, $TYPO3_db_username, $TYPO3_db_password);
+		if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['no_pconnect'])	{
+			$this->link = mysql_connect($TYPO3_db_host, $TYPO3_db_username, $TYPO3_db_password);
+		} else {
+			$this->link = mysql_pconnect($TYPO3_db_host, $TYPO3_db_username, $TYPO3_db_password);
+		}
 		return $this->link;
 	}
 

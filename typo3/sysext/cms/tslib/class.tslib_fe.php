@@ -289,6 +289,7 @@
 	var $altPageTitle='';				// Alternative page title (normally the title of the page record). Can be set from applications you make.
 	var $pEncAllowedParamNames=array();	// An array that holds parameter names (keys) of GET parameters which MAY be MD5/base64 encoded with simulate_static_documents method.
 	var $baseUrl='';					// The Base url set for the page header.
+	var $anchorPrefix='';				// The proper anchor prefix needed when using speaking urls. (only set if baseUrl is set)
 
 		// Page content render object
 	var $cObj ='';						// is instantiated object of tslib_cObj
@@ -475,12 +476,12 @@
 			$GLOBALS['TYPO3_DB']->exec_UPDATEquery('fe_users', 'uid='.intval($this->fe_user->user['uid']), array('is_online' => $GLOBALS['EXEC_TIME']));
 		}
 	}
-	
+
 	/**
 	 * Initializes the front-end user groups.
 	 *
 	 * @return	void
-	 */		
+	 */
 	function initUserGroups() {
 			// Sets ->loginUser and ->gr_list based on front-end user status.
 		$this->fe_user->showHiddenRecords = $this->showHiddenRecords;		// This affects the hidden-flag selecting the fe_groups for the user!
@@ -503,12 +504,12 @@
 		sort($gr_array);	// sort
 		if (count($gr_array))	{
 			$this->gr_list.=','.implode(',',$gr_array);
-		}	
-		
+		}
+
 		if ($this->fe_user->writeDevLog) 	t3lib_div::devLog('Valid usergroups for TSFE: '.$this->gr_list, 'tslib_fe');
 	}
-	
-	
+
+
 	/**
 	 * Provides ways to bypass the '?id=[xxx]&type=[xx]' format, using either PATH_INFO or virtual HTML-documents (using Apache mod_rewrite)
 	 *
@@ -686,7 +687,7 @@
 
 			// Sets sys_page where-clause
 		$this->setSysPageWhereClause();
-		
+
 			// Splitting $this->id by a period (.). First part is 'id' and second part - if exists - will overrule the &type param if given
 		$pParts = explode('.',$this->id);
 		$this->id = $pParts[0];	// Set it.
@@ -1002,7 +1003,7 @@
 	}
 
 	/**
-	 * Return where-clause for group access 
+	 * Return where-clause for group access
 	 *
 	 * @return	string 	Group where clause part
 	 * @access private
@@ -1010,7 +1011,7 @@
 	 function getPagesGroupClause() {
 		return ' AND fe_group IN ('.$this->gr_list.')';
 	}
-	
+
 	/**
 	 * Looking up a domain record based on HTTP_HOST
 	 *

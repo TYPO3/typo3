@@ -34,7 +34,6 @@ TCEmain:
 		- Could be solved by PRE-processing of content in user functions!
 	- Implement "last_edited_by" field saving the BE-user UID just like tstamps are... (JH asked)
 	- Transformation API: Implement the possibility of custom to/from transformations for the "user" type (or any field?)
-		- Custom transformations for RTE fields/API?
 	- Selector box type:
 		- MM support for strings
 	- Support for MM-records which does NOT get deleted, but is kept... and then support for having data in those!!
@@ -101,7 +100,6 @@ TCEforms:
 		- API for adding JS-functions to the onchange-event.
 		- Make STORAGE_FOLDERs a LIST of pages - not just one page (still the first page could be the default while other pages will be where stuff is selected from).
 	- SELECT type:
-		- select a filepath as a source of the items you can add to the box (single/multiple) without copying the files of course.
 		- Ability to see icon/image from record of selected value in the selector box.
 		- IFRAME alternative for the selectorboxes where a HTML view can be shown. Possibly having an external script show the content which would be useful for display of tree-tables.
 		- Reflect possible tree-structure for records in Select/Items list
@@ -124,13 +122,11 @@ TCEforms:
 		  - See JH mail: Message-ID: <C018FF617C61AB4588D15494126A5C0F23E410@Soulman.hanno-kirchhoff.de>
 		- IFRAME alternative for Element Browser.
 		- set the width of the selector field(s)
-	- INPUT type:
-		- having a selectorbox from which a default value can be selected (which is just transferred to the input field). Of course the selectorbox can have its content added by a PHP script.
 	- ? type:
 		- "Inverse relations"/"Foreign relations": A "Pseudo field", which lists records REFERING TO this record (foreign relations, eg. many small price-records belonging to ONE shop-article). Possibly this could also EDIT those references (attaching/adding new, removing old, no manual ordering though! - This is what RENE is doing (Message-Id: <E17LO4D-0002hj-00@cube.colorcube>)
 	- TRANSLATION:
 		- Concept for translation of other language versions simultaneously? (Showing the default/any language side-by-side?)
-		- Would require UTF-8 display in backend.
+		- Would require UTF-8 display in backend! (or at least using forceCharset being set!)
 		- Support for "original/translation" relationships:
 		  - The idea is that a) one field from a record is configured in [ctrl] to hold the sys_language (0=default, x=translation of default) value AND b) another field is configured to keep a reference back to the original element (for the translated records)
 		    - If the record is "default" then ALL fields are shown.
@@ -148,14 +144,6 @@ TCEforms:
 Charset:
 - checking (for XML) if there is "character data" in a string?
 
-TCEforms/RTE API:
-[Dominic Brander and Martin Schmidt has shown interest in the ekit Java RTE and may work on that.]
-- API for RTE's (plus converting current RTE to using that!)
-  - review of class.t3lib_parsehtml_proc.php
-- Make TYPO3 ready to accept alternative RTE made in Java. Needs data exchange to (config+data)/from (data) applet.
-- Implement Ekit as Proof-of-concept: http://www.hexidec.com/ekit.php
-- Implement another ActiveX editor as Proof-of-concept.
-
 Element Browser:
 - Support for DAM
 - Support for browsing custom category-trees (passed by some PHP script)
@@ -168,7 +156,7 @@ Element Browser:
 
 Wizards:
 - Add wizard icon to TSconfig and Setup/Constants fields for immediate syntax highlighting (in popup window)
-- Add wizard icon to see/clean up FlexForm data?
+- Add wizard icon to see/clean up FlexForm data? Convert language mode?
 
 Interface:
 - Showing in "frameset-modules" which submodule you are currently inside. And ability to change submodule in the rightmost frame anyways - maybe as a panel in top of the pages (must be cached so all submodules must not be loaded each time...)? (Message-ID: <3ADE655892793D499E2FBF623045AF4B54E9A4@dbwdfx2f.wdf.sap-ag.de>)
@@ -182,7 +170,6 @@ Context Sensitive Help (CSH):
 - Add multimedia?
 
 WEB main module/page tree:
-- The "Page Stop" flag, clicking the red "+" simply makes that point the NEW root in the tree frame (temporarily of course...), see JHs mail: Message-ID: <C018FF617C61AB4588D15494126A5C0F1F660B@Soulman.hanno-kirchhoff.de>
 - Option: For a frameset module, register the ID per sub-module, not just globally (see JH mail: Message-ID: <C018FF617C61AB4588D15494126A5C0F1F67AB@Soulman.hanno-kirchhoff.de>)
 
 Web>List:
@@ -238,6 +225,7 @@ EM:
 
 The REGEX-{} problem:
 - BUG: Regexs; "Warning: Unmatched \{ in /home/sites/site14/typo3_src-3.5b3/typo3/mod/tools/em/index.php on line 1983" which is a ereg with { WITHOUT preceeding slash! (Message-ID: <003c01c275aa$c0c60c10$e3a1a33e@pentiumriv4v9a>, Message-ID: <20030729082437.79900.qmail@web11305.mail.yahoo.com>)
+	- Should be fixed by "[{]..." instead!
 
 Install/Servers:
 - FIX: To get PHP to handle PATH_INFO and PATH_TRANSLATED information correctly with this setup, the php parser should be compiled with the --enable-discard-path configure option.
@@ -953,33 +941,3 @@ Innovation, brainstorming for future
 - Backend for PDAs/Lynx
 
 
-************************************
-Translation of Extensions
-************************************
-
-These [global] extensions has priority when translating extensions:
-
-lang
-cms
-extra_page_cm_options
-rte
-imagelist
-aboutmodules
-lowlevel
-beuser
-setup
-taskcenter
-sys_action
-sys_messages
-sys_notepad
-taskcenter_recent
-taskcenter_rootlist
-sys_todos
-sys_workflows
-func_wizards
-wizard_crpages
-wizard_sortpages
-info_pagetsconfig
-indexed_search
-tt_guest
-mininews

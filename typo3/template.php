@@ -1392,7 +1392,7 @@ $str.=$this->docBodyTagBegin().
 	 * Returns a tab menu for a module
 	 * Requires the JS function jumpToUrl() to be available
 	 *
-	 * @param	string		$id is the "&id=" parameter value to be sent to the module, but it can be also a parameter array which will be passed instead of the &id=...
+	 * @param	mixed		$id is the "&id=" parameter value to be sent to the module, but it can be also a parameter array which will be passed instead of the &id=...
 	 * @param	string		$elementName it the form elements name, probably something like "SET[...]"
 	 * @param	string		$currentValue is the value to be selected currently.
 	 * @param	array		$menuItems is an array with the menu items for the selector box
@@ -1409,7 +1409,7 @@ $str.=$this->docBodyTagBegin().
 				$mainParams = array('id' => $mainParams);
 			}
 			$mainParams = t3lib_div::implodeArrayForUrl('',$mainParams);
-		
+
 			if (!$script) {$script=basename(PATH_thisScript);}
 
 			$menuDef = array();

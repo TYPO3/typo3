@@ -896,7 +896,7 @@ class t3lib_cs {
 	 *
 	 * PLEASE SEE: http://www.unicode.org/Public/UNIDATA/
 	 *
-	 * @param	string		???
+	 * @param	string		Mode ("case", "ascii", ...)
 	 * @return	integer		Returns FALSE on error, a TRUE value on success: 1 table already loaded, 2, cached version, 3 table parsed (and cached).
 	 * @access private
 	 */
@@ -912,7 +912,7 @@ class t3lib_cs {
 
 					// Use cached version if possible
 				if ($cacheFileCase && @is_file($cacheFileCase))	{
-					$this->caseFolding['utf-8'] = unserialize(t3lib_div::getUrl($cacheFile));
+					$this->caseFolding['utf-8'] = unserialize(t3lib_div::getUrl($cacheFileCase));
 					return 2;
 				}
 				break;
@@ -1396,7 +1396,7 @@ class t3lib_cs {
 	 * Translates all characters of a string into their respective case values.
 	 * Unlike strtolower() and strtoupper() this method is locale independent.
 	 * Note that the string length may change!
-	 * eg. lower case German ß (sharp S) becomes upper case "SS"
+	 * eg. lower case German ï¿½(sharp S) becomes upper case "SS"
 	 * Unit-tested by Kasper
 	 * Real case folding is language dependent, this method ignores this fact.
 	 *
@@ -1428,7 +1428,7 @@ class t3lib_cs {
 	}
 
 	/**
-	 * Converts special chars (like æøåÆØÅ, umlauts etc) to ascii equivalents (usually double-bytes, like æ => ae etc.)
+	 * Converts special chars (like ï¿½ï¿½ï¿½, umlauts etc) to ascii equivalents (usually double-bytes, like ï¿½=> ae etc.)
 	 *
 	 * @param	string		Character set of string
 	 * @param	string		Input string to convert

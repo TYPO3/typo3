@@ -1032,7 +1032,7 @@ class t3lib_stdGraphic	{
 			} else {
 					// Blurring of the mask
 				$times = ceil($blurRate/10);	// How many blur-commands that is executed. Min = 1;
-				$newBlurRate = $blurRate*4;		// Her booster vi blur-rate, så at den allerede ved 25 er på 100. Resten op til 99 går på iterationer af blur-kommandoen
+				$newBlurRate = $blurRate*4;		// Her booster vi blur-rate, sï¿½at den allerede ved 25 er pï¿½100. Resten op til 99 gï¿½ pï¿½iterationer af blur-kommandoen
 				$newBlurRate = t3lib_div::intInRange($newBlurRate,1,99);
 				for ($a=0;$a<$times;$a++)	{		// Building blur-command
 					$command.=' -blur '.$blurRate;
@@ -1556,7 +1556,8 @@ class t3lib_stdGraphic	{
 	 * @return	string
 	 */
 	function randomName()	{
-		return $this->tempPath.'temp_'.md5(uniqid(''));
+		$this->createTempSubDir('temp/');
+		return $this->tempPath.'temp/'.md5(uniqid(''));
 	}
 
 	/**
@@ -1808,8 +1809,13 @@ class t3lib_stdGraphic	{
 					$theOutputName = $this->imageMagickConvert_forceFileNameBody;
 					$this->imageMagickConvert_forceFileNameBody='';
 				}
-				$output = $this->tempPath.$this->filenamePrefix.$theOutputName.'.'.$newExt;
-				$GLOBALS['TEMP_IMAGES_ON_PAGE'][]=$output;
+
+					// Making the temporary filename:
+				$this->createTempSubDir('pics/');
+				$output = $this->tempPath.'pics/'.$this->filenamePrefix.$theOutputName.'.'.$newExt;
+
+					// Register temporary filename:
+				$GLOBALS['TEMP_IMAGES_ON_PAGE'][] = $output;
 
 				if (!$this->file_exists_typo3temp_file($output,$imagefile) || $this->dontCheckForExistingTempFile)	{
 					$this->imageMagickExec($imagefile.$frame,$output,$command);
@@ -2192,6 +2198,16 @@ class t3lib_stdGraphic	{
 			return $file;
 		} else {
 			return '';
+		}
+	}
+
+	/**
+	 * Creates subdirectory in typo3temp/ if not already found.
+	 */
+	function createTempSubDir($dirName)	{
+			// Making the temporary filename:
+		if (!@is_dir(PATH_site.$this->tempPath.$dirName))	 {
+			return t3lib_div::mkdir(PATH_site.$this->tempPath.$dirName);
 		}
 	}
 

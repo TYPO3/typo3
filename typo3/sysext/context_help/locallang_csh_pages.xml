@@ -153,6 +153,7 @@ If you enter this string in the 'TSconfig' field, the 'Web&gt;Page' module will 
 &lt;em&gt;mod.web_layout.tt_content.colPos_list = 0,3&lt;/em&gt;
 
 (Must be entered in a single line!)</label>
+			<label index="l18n_cfg.description">...</label>
 		</languageKey>
 		<languageKey index="dk">EXT:csh_dk/context_help/dk.locallang_csh_pages.xml</languageKey>
 		<languageKey index="nl">EXT:csh_nl/context_help/nl.locallang_csh_pages.xml</languageKey>

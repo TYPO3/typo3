@@ -2786,6 +2786,33 @@ class t3lib_TCEforms	{
 			}
 		}
 
+			// Values from a file folder:
+		if ($fieldValue['config']['fileFolder'])	{
+			$fileFolder = t3lib_div::getFileAbsFileName($fieldValue['config']['fileFolder']);
+			if (@is_dir($fileFolder))	{
+
+					// Configurations:
+				$extList = $fieldValue['config']['fileFolder_extList'];
+				$recursivityLevels = isset($fieldValue['config']['fileFolder_recursions']) ? t3lib_div::intInRange($fieldValue['config']['fileFolder_recursions'],0,99) : 99;
+
+					// Get files:
+				$fileFolder = ereg_replace('\/$','',$fileFolder).'/';
+				$fileArr = t3lib_div::getAllFilesAndFoldersInPath(array(),$fileFolder,$extList,0,$recursivityLevels);
+				$fileArr = t3lib_div::removePrefixPathFromList($fileArr, $fileFolder);
+
+				foreach($fileArr as $fileRef)	{
+					$fI = pathinfo($fileRef);
+					$icon = t3lib_div::inList('gif,png,jpeg,jpg', strtolower($fI['extension'])) ? '../'.substr($fileFolder,strlen(PATH_site)).$fileRef : '';
+					$items[] = array(
+						$fileRef,
+						$fileRef,
+						$icon
+					);
+				}
+			}
+		}
+
+
 			// If 'special' is configured:
 		if ($fieldValue['config']['special'])	{
 			switch ($fieldValue['config']['special'])	{
@@ -3981,6 +4008,34 @@ class t3lib_TCEforms	{
 						} elseif (strtolower($parts[3])=='false') {
 							$output = !$row[$parts[1]] ? TRUE : FALSE;
 						}
+					break;
+					case '>':
+						$output = $row[$parts[1]] > $parts[3];
+					break;
+					case '<':
+						$output = $row[$parts[1]] < $parts[3];
+					break;
+					case '>=':
+						$output = $row[$parts[1]] >= $parts[3];
+					break;
+					case '<=':
+						$output = $row[$parts[1]] <= $parts[3];
+					break;
+					case '-':
+					case '!-':
+						$cmpParts = explode('-',$parts[3]);
+						$output = $row[$parts[1]] >= $cmpParts[0] && $row[$parts[1]] <= $cmpParts[1];
+						if ($parts[2]{0}=='!')	$output = !$output;
+					break;
+					case 'IN':
+					case '!IN':
+						$output = t3lib_div::inList($parts[3],$row[$parts[1]]);
+						if ($parts[2]{0}=='!')	$output = !$output;
+					break;
+					case '=':
+					case '!=':
+						$output = t3lib_div::inList($parts[3],$row[$parts[1]]);
+						if ($parts[2]{0}=='!')	$output = !$output;
 					break;
 				}
 			break;

@@ -131,7 +131,7 @@ class SC_mod_web_info_index extends t3lib_SCbase {
 				'<span title="'.htmlspecialchars($this->pageinfo['_thePathFull']).'">'.htmlspecialchars(t3lib_div::fixed_lgd_cs($this->pageinfo['_thePath'],-50)).'</span>';
 
 				// Draw the header.
-			$this->doc->form='<form action="" method="post">';
+			$this->doc->form = '<form action="index.php" method="post" name="webinfoForm">';
 			$this->content.=$this->doc->startPage($LANG->getLL('title'));
 			$this->content.=$this->doc->header($LANG->getLL('title'));
 			$this->content.=$this->doc->spacer(5);

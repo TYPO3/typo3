@@ -273,8 +273,13 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 	 */
 	function gifBuild()	{
 		if ($this->setup)	{
-			$gifFileName = $this->fileName('GB_');
+			$gifFileName = $this->fileName('GB/');	// Relative to PATH_site
 			if (!@file_exists($gifFileName))	{		// File exists
+
+					// Create temporary directory if not done:
+				$this->createTempSubDir('GB/');
+
+					// Create file:
 				$this->make();
 				$this->output($gifFileName);
 				$this->destroy();
@@ -553,7 +558,7 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 	 * Calculates the GIFBUILDER output filename/path based on a serialized, hashed value of this->setup
 	 *
 	 * @param	string		Filename prefix, eg. "GB_"
-	 * @return	string		The relative filepath
+	 * @return	string		The relative filepath (relative to PATH_site)
 	 * @access private
 	 */
 	function fileName($pre)	{

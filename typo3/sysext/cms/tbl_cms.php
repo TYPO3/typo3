@@ -619,9 +619,25 @@ $TCA['sys_language'] = Array (
 				'maxitems' => 1,
 	        )
 	    ),
+		'flag' => array(
+	        'label' => 'LLL:EXT:cms/locallang_tca.php:sys_language.flag',
+	        'config' => Array (
+				'type' => 'select',
+				'items' => Array (
+					Array('',0),
+				),
+				'fileFolder' => 'EXT:cms/tslib/media/flags/',
+				'fileFolder_extList' => 'png,jpg,jpeg,gif',
+				'fileFolder_recursions' => 0,
+				'selicon_cols' => 8,
+				'size' => 1,
+				'minitems' => 0,
+				'maxitems' => 1,
+	        )
+		)
 	),
 	'types' => Array (
-		'1' => Array('showitem' => 'hidden;;;;1-1-1,title;;;;2-2-2,static_lang_isocode')
+		'1' => Array('showitem' => 'hidden;;;;1-1-1,title;;;;2-2-2,static_lang_isocode,flag')
 	)
 );
 

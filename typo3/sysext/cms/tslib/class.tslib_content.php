@@ -3610,7 +3610,7 @@ class tslib_cObj {
 			}
 
 				// Re-assembles the tag and content
-			$subparts[0]=trim($tagName.' '.t3lib_div::implodeParams($attribs));
+			$subparts[0]=trim($tagName.' '.t3lib_div::implodeAttributes($attribs));
 			$parts[$key] = implode('>',$subparts);
 			$content = implode('<',$parts);
 		}
@@ -4201,7 +4201,7 @@ class tslib_cObj {
 					// Default align
 				if (!$attrib['align'] && $defaultAlign)	$attrib['align']=$defaultAlign;
 
-				$params = t3lib_div::implodeParams($attrib,1);
+				$params = t3lib_div::implodeAttributes($attrib,1);
 				if ($conf['removeWrapping'])	{
 					$str_content=$str_content;
 				} else {
