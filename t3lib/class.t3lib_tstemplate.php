@@ -121,6 +121,7 @@ class t3lib_TStemplate	{
 	var $ext_constants_BRP=0;
 	var $ext_config_BRP=0;
 	var $ext_editorcfg_BRP=0;
+	var $ext_regLinenumbers=FALSE;
 
 		// Constants:
 	var $uplPath = 'uploads/tf/';
@@ -171,6 +172,7 @@ class t3lib_TStemplate	{
 	var $editorcfg = array();			// Backend Editor Configuration field
 
 	var $hierarchyInfo = array();		// For Template Analyser in backend
+	var $hierarchyInfoToRoot = array();		// For Template Analyser in backend (setup content only)
 	var $nextLevel=0;					// Next-level flag (see runThroughTemplates())
 	var $rootId;						// The Page UID of the root page
 	var $rootLine;						// The rootline from current page to the root page
@@ -403,6 +405,7 @@ class t3lib_TStemplate	{
 		$this->config = Array();
 		$this->editorcfg = Array();
 		$this->rowSum = Array();
+		$this->hierarchyInfoToRoot = Array();
 		$this->absoluteRootLine=$theRootLine;	// Is the TOTAL rootline
 
 		reset ($this->absoluteRootLine);
@@ -458,6 +461,7 @@ class t3lib_TStemplate	{
 			}
 			if ($clConf)	{
 				$this->config = Array();
+				$this->hierarchyInfoToRoot = Array();
 				$this->clearList_setup=array();
 
 				$this->editorcfg = Array();
@@ -505,7 +509,7 @@ class t3lib_TStemplate	{
 		}
 
 			// Creating hierarchy information; Used by backend analysis tools
-		$this->hierarchyInfo[] = array(
+		$this->hierarchyInfo[] = $this->hierarchyInfoToRoot[] = array(
 			'root'=>trim($row['root']),
 			'next'=>$row['nextLevel'],
 			'clConst'=>$clConst,
@@ -514,7 +518,8 @@ class t3lib_TStemplate	{
 			'templateParent'=>$templateParent,
 			'title'=>$row['title'],
 			'uid'=>$row['uid'],
-			'pid'=>$row['pid']
+			'pid'=>$row['pid'],
+			'configLines' => substr_count($row['config'], chr(10))+1
 		);
 
 			// Adding the content of the fields constants (Constants), config (Setup) and editorcfg (Backend Editor Configuration) to the internal arrays.
@@ -734,7 +739,8 @@ class t3lib_TStemplate	{
 		// ***********************************************
 			// Initialize parser and match-condition classes:
 		$config = t3lib_div::makeInstance('t3lib_TSparser');
-		$config->breakPointLN=intval($this->ext_config_BRP);
+		$config->breakPointLN = intval($this->ext_config_BRP);
+		$config->regLinenumbers = $this->ext_regLinenumbers;
 		$config->setup = $this->setup;
 
 			// Transfer information about conditions found in "Constants" and which of them returned true.

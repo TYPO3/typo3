@@ -99,6 +99,7 @@ class t3lib_TSparser {
 
 		// Debugging, analysis:
 	var $regComments = 0;			// DO NOT register the comments. This is default for the ordinary sitetemplate!
+	var $regLinenumbers = 0;		// DO NOT register the linenumbers. This is default for the ordinary sitetemplate!
 	var $errors=array();			// Error accumulation array.
 	var $lineNumberOffset=0;		// Used for the error messages line number reporting. Set externally.
 	var $breakPointLN=0;			// Line for break point.
@@ -132,7 +133,6 @@ class t3lib_TSparser {
 	function parse($string,$matchObj='')	{
 		$this->raw = explode(chr(10),$string);
 		$this->rawP = 0;
-
 		$pre = '[GLOBAL]';
 		while($pre)	{
 			if ($this->breakPointLN && $pre=='[_BREAK]')	{
@@ -212,6 +212,9 @@ class t3lib_TSparser {
 							if ($this->lastComment && $this->regComments)	{
 								$setup[$this->multiLineObject.'..'].=$this->lastComment;
 							}
+							if ($this->regLinenumbers)	{
+								$setup[$this->multiLineObject.'.ln..'][]=($this->lineNumberOffset+$this->rawP-1);
+							}
 						}
 					} else{
 						if ($this->syntaxHighLight)	$this->regHighLight("value",$lineP);
@@ -253,6 +256,9 @@ class t3lib_TSparser {
 											$setup[$objStrName] = trim(substr($line,1));
 											if ($this->lastComment && $this->regComments)	{	// Setting comment..
 												$setup[$objStrName.'..'].=$this->lastComment;
+											}
+											if ($this->regLinenumbers)	{
+												$setup[$objStrName.'.ln..'][]=($this->lineNumberOffset+$this->rawP-1);
 											}
 										}
 									break;
@@ -385,16 +391,27 @@ class t3lib_TSparser {
 				if ($value=='UNSET')	{
 					unset($setup[$string]);
 					unset($setup[$string.'.']);
+					if ($this->regLinenumbers)	{
+						$setup[$string.'.ln..'][]=($this->lineNumberOffset+$this->rawP-1).'>';
+					}
 				} else {
+					$lnRegisDone=0;
 					if ($wipeOut && $this->strict)	{
 						if ((isset($setup[$string]) && !isset($value[0])) || (isset($setup[$string.'.']) && !isset($value[1]))) {$this->error('Line '.($this->lineNumberOffset+$this->rawP-1).': Object copied in this line "'.trim($this->raw[($this->rawP-1)]).'" would leave either the value or properties untouched in TypoScript Version 1. Please check that this is not a problem for you.',1);}
 						unset($setup[$string]);
 						unset($setup[$string.'.']);
+						if ($this->regLinenumbers)	{
+							$setup[$string.'.ln..'][]=($this->lineNumberOffset+$this->rawP-1).'<';
+							$lnRegisDone=1;
+						}
 					}
 					if (isset($value[0])) {$setup[$string] = $value[0];}
 					if (isset($value[1])) {$setup[$string.'.'] = $value[1];}
 					if ($this->lastComment && $this->regComments)	{
 						$setup[$string.'..'].=$this->lastComment;
+					}
+					if ($this->regLinenumbers && !$lnRegisDone)	{
+						$setup[$string.'.ln..'][]=($this->lineNumberOffset+$this->rawP-1);
 					}
 				}
 			} else {

@@ -1,3 +1,7 @@
+2004-04-24  Kasper Skårhøj,,,  <kasper@typo3.com>
+
+	* Added to TypoScript object browser that the title text of the object links contains information about in which lines in the TypoScript body code that a certain object path is set, cleared, copied.
+
 2004-04-23  Kasper Skårhøj,,,  <kasper@typo3.com>
 
 	* Added "removeBadHTML" option to stdWrap - this can help to avoid XSS dangerous HTML.

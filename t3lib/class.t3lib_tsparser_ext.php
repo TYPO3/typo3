@@ -354,12 +354,14 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 		$keyArr_num=array();
 		$keyArr_alpha=array();
 		while (list($key,)=each($arr))	{
-			$key=ereg_replace("\.$","",$key);
-			if (substr($key,-1)!=".")	{
-				if (t3lib_div::testInt($key))	{
-					$keyArr_num[$key]=$arr[$key];
-				} else {
-					$keyArr_alpha[$key]=$arr[$key];
+			if (substr($key,-2)!="..")	{	// Don't do anything with comments / linenumber registrations...
+				$key=ereg_replace("\.$","",$key);
+				if (substr($key,-1)!=".")	{
+					if (t3lib_div::testInt($key))	{
+						$keyArr_num[$key]=$arr[$key];
+					} else {
+						$keyArr_alpha[$key]=$arr[$key];
+					}
 				}
 			}
 		}
@@ -399,7 +401,12 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 				} else {
 					if ($this->linkObjects)	{
 						$aHref = 'index.php?id='.$GLOBALS["SOBE"]->id.'&sObj='.$depth;
-						$label = '<a href="'.htmlspecialchars($aHref).'">'.$label.'</a>';
+						if ($this->bType!="const")	{
+							$ln = is_array($arr[$key.'.ln..']) ? 'Defined in: '.$this->lineNumberToScript($arr[$key.'.ln..']) : 'N/A';
+						} else {
+							$ln = '';
+						}
+						$label = '<a href="'.htmlspecialchars($aHref).'" title="'.htmlspecialchars($ln).'">'.$label.'</a>';
 					}
 				}
 
@@ -426,6 +433,32 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 			}
 		}
 		return $HTML;
+	}
+
+
+	function lineNumberToScript($lnArr)	{
+		if (!is_array($this->lnToScript))	{
+			$this->lnToScript = array();
+			$c=1;
+			$c+=substr_count($GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_setup'],chr(10))+2;
+			$this->lnToScript[$c] = '[Default]';
+
+			foreach($this->hierarchyInfoToRoot as $info)	{
+				$c+=$info['configLines']+1;
+				$this->lnToScript[$c] = $info['title'];
+			}
+		}
+
+		foreach($lnArr as $k => $ln)	{
+			foreach($this->lnToScript as $endLn => $title)	{
+				if ($endLn >= intval($ln))	{
+					$lnArr[$k] = '"'.$title.'", '.$ln;
+					break;
+				}
+			}
+		}
+
+		return implode('; ',$lnArr);
 	}
 
 	/**
