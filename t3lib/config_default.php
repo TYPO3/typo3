@@ -56,7 +56,7 @@ $TYPO3_CONF_VARS = Array(
 		'encryptionKey' => '',					// Insert some unique string here! Used in eg. direct mail module to generate a md5 hash in combination with uid. This string should be kept secret although it's not as critical as a password.
 		'doNotCheckReferer' => 0,				// Boolean. If set, it's NOT checked numerous places that the refering host is the same as the current. This is an option you should set if you have problems with proxies not passing the HTTP_REFERER variable.
 		'recursiveDomainSearch' => 0,			// Boolean. If set, the search for domain records will be done recursively by stripping parts of the host name off until a matching domain record is found.
-		'report_error_html' => chr(10).'Please report this error to the <a href="mailto:kasper@typo3.com">TYPO3 Development Team</a>',
+		'report_error_html' => chr(10).'Please report this error to the <a href="mailto:dev@typo3.com">TYPO3 Development Team</a>',
 		'T3instID' => 'N/A',					// A unique installation ID - not used yet. The idea is that a TYPO3 installation can identify itself by this ID string to the Extension Repository on TYPO3.org so that we can keep a realistic count of serious TYPO3 installations.
 		'devIPmask' => '192.168.*,127.0.0.1',	// Defines a list of IP addresses which will allow development-output to display. The debug() function will use this as a filter. See the function t3lib_div::cmpIP() for details on syntax. Setting this to blank value will deny all. Setting to '*' will allow all.
 		'curlUse' => 0,							// Boolean: If set, try to use Curl to fetch external URLs (implemented by Arco <arco@appeltaart.mine.nu>)
@@ -70,6 +70,7 @@ $TYPO3_CONF_VARS = Array(
 		'binPath' => '', 						// String, comma seperated list: list of absolute paths where external programs should be searched for
 		't3lib_cs_convMethod' => '',			// String (values: "iconv", "recode", "mbstring", default is homemade PHP-code). Defines which of these PHP-features to use for various Charset conversing functions in t3lib_cs. Will speed up charset conversion radically.
 		't3lib_cs_utils' => '',					// String (values: "iconv", "recode", "mbstring", default is homemade PHP-code). Defines which of these PHP-features to use for various Charset processing functions in t3lib_cs. Will speed up charset functions radically.
+		'enable_DLOG' => FALSE,					// Whether the developer log is enabled. See constant "TYPO3_DLOG"
 	),
 	'EXT' => Array (	// Options related to the Extension Management
 		'noEdit' => 1,							// Boolean: If set, the Extension Manager does NOT allow extension files to be edited! (Otherwise both local and global extensions can be edited.)
@@ -91,14 +92,14 @@ $TYPO3_CONF_VARS = Array(
 		'unzip_path' => '',						// Path to "unzip".
 		'diff_path' => 'diff',					// Path to "diff". For Windows this program can be downloaded here: http://unxutils.sourceforge.net/
 		'fileadminDir' => 'fileadmin/',			// Path to the fileadmin dir. This is relative to PATH_site. (Automatically mounted for admin-users if set)
-		'RTE_imageStorageDir' => 'uploads/',	// Storage directory for Rich Text Editor files
+		'RTE_imageStorageDir' => 'uploads/',	// Default storage directory for Rich Text Editor files
 		'staticFileEditPath' => 'fileadmin/static/',	// Path to directory with static files for editing (see table sys_staticfiles_edit). Relative to PATH_site.
 		'lockRootPath' => '',					// First part of the userHomePath/groupHomePath. Observe that the first part of 'userHomePath' and 'groupHomePath' must be the value of 'lockRootPath'. Eg. '/home/typo3/'. This path is also used to evaluate if paths outside the PATH_site should be allowed. Ending slash required!
 		'userHomePath' => '',					// Path to the directory where TYPO3 backend-users have their home-dirs.  Eg. '/home/typo3/users/'. A home for backend user 2 would be: '/home/typo3/users/2/'. Ending slash required!
 		'groupHomePath' => '',					// Path to the directory where TYPO3 backend-groups have their home-dirs. Remember that the first part of this path must be 'lockRootPath'. Eg. '/home/typo3/groups/'. A home for backend group 1 would be: '/home/typo3/groups/1/'. Ending slash required!
 		'userUploadDir' => '',					// Suffix to the user home dir which is what gets mounted in TYPO3. Eg. if the user dir is "../123_user/" and this value is "/upload" then "../123_user/upload" gets mounted.
-		'fileCreateMask' => '0644',				// File mode mask for unix file systems (when files are uploaded/created)
-		'folderCreateMask' => '0755',			// As above, but for folders.
+		'fileCreateMask' => '0664',				// File mode mask for unix file systems (when files are uploaded/created)
+		'folderCreateMask' => '0775',			// As above, but for folders.
 		'warning_email_addr' => '',				// Email-address that will receive a warning if there has been failed logins 4 times within an hour (all users).
 		'warning_mode' => '',					// Bit 1: If set, warning_email_addr gets a mail everytime a user logs in. Bit 2: If set, a mail is sent if an ADMIN user logs in! Other bits reserved for future options.
 		'IPmaskList' => '',						// String. Lets you define a list of IP-numbers (with *-wildcards) that are the ONLY ones allowed access to ANY backend activity. On error an error header is sent and the script exits. Works like IP masking for users configurable through TSconfig. See syntax for that (or look up syntax for the function t3lib_div::cmpIP())
@@ -161,6 +162,7 @@ $TYPO3_CONF_VARS = Array(
 		'userFuncClassPrefix' => 'user_',		// This prefix must be the first part of any function or class name called from TypoScript, for instance in the stdWrap function.
 		'addRootLineFields' => '',				// Comma-list of fields from the 'pages'-table. These fields are added to the select query for fields in the rootline.
 		'checkFeUserPid' => 1,					// Boolean. If set, the pid of fe_user logins must be sent in the form as the field 'pid' and then the user must be located in the pid. Default is 1 from Typo32+. If you unset this, you should change the fe_users.username eval-flag 'uniqueInPid' to 'unique' in $TCA. This will do: $TCA['fe_users']['columns']['username']['config']['eval']= 'nospace,lower,required,unique';
+		'lockIP' => 0,							// Boolean. If set, fe_users are locked to their REMOTE_ADDR IP for their session. Enhances security but may throw of users that may change IP during their session.
 		'defaultUserTSconfig' => '',			// Enter lines of default frontend user/group TSconfig.
 		'defaultTypoScript_constants' => '',	// Enter lines of default TypoScript, constants-field.
 		'defaultTypoScript_constants.' => Array(),	// Lines of TS to include after a static template with the uid = the index in the array (Constants)
@@ -186,6 +188,7 @@ $TYPO3_CONF_VARS = Array(
 //		'--key--' => array()
 	)
 );
+$T3_VAR = array();	// Initialize.
 
 // Database-variables are cleared!
 $typo_db = '';					// The database name
@@ -291,7 +294,8 @@ if ($TYPO3_LOADED_EXT['_CACHEFILE'])	{
 }
 if (TYPO3_MODE=='FE' && is_object($TT)) $TT->pull();
 
-
+	// Define "TYPO3_DLOG" constant
+define('TYPO3_DLOG', $GLOBALS['TYPO3_CONF_VARS']['SYS']['enable_DLOG']);
 
 	// Unsetting other reserved global variables:
 	// Those which are/can be set in "stddb/tables.php" files:
@@ -318,5 +322,5 @@ unset($LOCAL_LANG);
 	// Setting some global vars:
 $EXEC_TIME = time();					// $EXEC_TIME is set so that the rest of the script has a common value for the script execution time
 $SIM_EXEC_TIME = $EXEC_TIME;			// $SIM_EXEC_TIME is set to $EXEC_TIME but can be altered later in the script if we want to simulate another execution-time when selecting from eg. a database 
-$TYPO_VERSION = '3.6.0RC1';				// TYPO3 version
+$TYPO_VERSION = '3.6.0RC2';				// TYPO3 version
 ?>

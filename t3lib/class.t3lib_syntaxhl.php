@@ -36,13 +36,21 @@
  *
  *
  *
- *   76: class t3lib_syntaxhl 
- *  109:     function highLight_DS($str)	
- *  133:     function getAllTags($str)	
- *  164:     function splitXMLbyTags($tagList,$str)	
- *  192:     function markUpRecursively($struct,$parent='',$app='')	
+ *   84: class t3lib_syntaxhl 
  *
- * TOTAL FUNCTIONS: 4
+ *              SECTION: Markup of Data Structure, <T3DataStructure>
+ *  152:     function highLight_DS($str)	
+ *  179:     function highLight_DS_markUpRecursively($struct,$parent='',$app='')	
+ *
+ *              SECTION: Markup of Data Structure, <T3FlexForms>
+ *  264:     function highLight_FF($str)	
+ *  291:     function highLight_FF_markUpRecursively($struct,$parent='',$app='')	
+ *
+ *              SECTION: Various
+ *  362:     function getAllTags($str)	
+ *  393:     function splitXMLbyTags($tagList,$str)	
+ *
+ * TOTAL FUNCTIONS: 6
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -68,7 +76,7 @@ require_once(PATH_t3lib.'class.t3lib_parsehtml.php');
 
 /**
  * Syntax Highlighting class.
- * 
+ *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage t3lib
@@ -137,7 +145,7 @@ class t3lib_syntaxhl {
 
 	/**
 	 * Makes syntax highlighting of a Data Structure, <T3DataStructure>
-	 * 
+	 *
 	 * @param	string		Data Structure XML, must be valid since it's parsed.
 	 * @return	string		HTML code with highlighted content. Must be wrapped in <PRE> tags
 	 */
@@ -162,7 +170,7 @@ class t3lib_syntaxhl {
 	/**
 	 * Making syntax highlighting of the parsed Data Structure XML.
 	 * Called recursively.
-	 * 
+	 *
 	 * @param	array		The structure, see splitXMLbyTags()
 	 * @param	string		Parent tag.
 	 * @param	string		"Application" - used to denote if we are 'inside' a section
@@ -249,7 +257,7 @@ class t3lib_syntaxhl {
 
 	/**
 	 * Makes syntax highlighting of a FlexForm Data, <T3FlexForms>
-	 * 
+	 *
 	 * @param	string		Data Structure XML, must be valid since it's parsed.
 	 * @return	string		HTML code with highlighted content. Must be wrapped in <PRE> tags
 	 */
@@ -274,7 +282,7 @@ class t3lib_syntaxhl {
 	/**
 	 * Making syntax highlighting of the parsed FlexForm XML.
 	 * Called recursively.
-	 * 
+	 *
 	 * @param	array		The structure, see splitXMLbyTags()
 	 * @param	string		Parent tag.
 	 * @param	string		"Application" - used to denote if we are 'inside' a section
@@ -347,7 +355,7 @@ class t3lib_syntaxhl {
 	
 	/**
 	 * Returning all tag names found in XML/HTML input string
-	 * 
+	 *
 	 * @param	string		HTML/XML input
 	 * @return	array		Array with all found tags (starttags only)
 	 */
@@ -377,7 +385,7 @@ class t3lib_syntaxhl {
 	/**
 	 * Splitting the input source by the tags listing in $tagList.
 	 * Called recursively.
-	 * 
+	 *
 	 * @param	string		Commalist of tags to split source by (into blocks, ALL being block-tags!)
 	 * @param	string		Input string.
 	 * @return	array		Array with the content arranged hierarchically.

@@ -37,15 +37,16 @@
  *
  *
  *
- *  110: class SC_t3lib_thumbs 
- *  131:     function init()	
- *  161:     function main()	
+ *  114: class SC_t3lib_thumbs 
+ *  135:     function init()	
+ *  165:     function main()	
  *
  *              SECTION: OTHER FUNCTIONS:
- *  264:     function errorGif($l1,$l2,$l3)	
- *  316:     function fontGif($font)	
+ *  268:     function errorGif($l1,$l2,$l3)	
+ *  320:     function fontGif($font)	
+ *  367:     function wrapFileName($inputName)	
  *
- * TOTAL FUNCTIONS: 4
+ * TOTAL FUNCTIONS: 5
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -75,10 +76,13 @@ define('TYPO3_mainDir', 'typo3/');		// This is the directory of the backend admi
 // ******************
 require(PATH_t3lib.'class.t3lib_div.php');
 require(PATH_t3lib.'class.t3lib_extmgm.php');
+
 require(PATH_t3lib.'config_default.php');
 if (!defined ('TYPO3_db')) 	die ('The configuration file was not included.');
 if (!$TYPO3_CONF_VARS['GFX']['image_processing'])	die ('ImageProcessing was disabled!');
 
+require(PATH_t3lib.'class.t3lib_db.php');		// The database library
+$TYPO3_DB = t3lib_div::makeInstance('t3lib_DB');
 
 
 
@@ -97,12 +101,12 @@ if (!$TYPO3_CONF_VARS['GFX']['image_processing'])	die ('ImageProcessing was disa
 
 /**
  * Class for generating a thumbnail from the input parameters given to the script
- * 
+ *
  * Input GET var, &file: 		relative or absolute reference to an imagefile. WILL be validated against PATH_site / lockRootPath
  * Input GET var, &size: 		integer-values defining size of thumbnail, format '[int]' or '[int]x[int]'
- * 
+ *
  * Relative paths MUST BE the first two characters ONLY: eg: '../dir/file.gif', otherwise it is expect to be absolute
- * 
+ *
  * @author		Kasper Skaarhoj	<kasper@typo3.com>
  * @package TYPO3
  * @subpackage t3lib
@@ -125,8 +129,8 @@ class SC_t3lib_thumbs {
 	/**
 	 * Initialize; reading parameters with GPvar and checking file path
 	 * Results in internal var, $this->input, being set to the absolute path of the file for which to make the thumbnail.
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function init()	{
 		global $TYPO3_CONF_VARS;
@@ -155,8 +159,8 @@ class SC_t3lib_thumbs {
 	/**
 	 * Create the thumbnail
 	 * Will exit before return if all is well.
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function main()	{
 		global $TYPO3_CONF_VARS;
@@ -255,11 +259,11 @@ class SC_t3lib_thumbs {
 	 * Creates error image based on gfx/notfound_thumb.png
 	 * Requires GD lib enabled, otherwise it will exit with the three textstrings outputted as text.
 	 * Outputs the image stream to browser and exits!
-	 * 
+	 *
 	 * @param	string		Text line 1
 	 * @param	string		Text line 2
 	 * @param	string		Text line 3
-	 * @return	void		
+	 * @return	void
 	 */
 	function errorGif($l1,$l2,$l3)	{	
 		global $TYPO3_CONF_VARS;
@@ -309,9 +313,9 @@ class SC_t3lib_thumbs {
 	 * This means a PNG/GIF file with the text "AaBbCc...." set with the font-file given as input and in various sizes to show how the font looks
 	 * Requires GD lib enabled.
 	 * Outputs the image stream to browser and exits!
-	 * 
+	 *
 	 * @param	string		The filepath to the font file (absolute, probably)
-	 * @return	void		
+	 * @return	void
 	 */
 	function fontGif($font)	{	
 		global $TYPO3_CONF_VARS;
@@ -355,7 +359,7 @@ class SC_t3lib_thumbs {
 
 	/**
 	 * Wrapping the input filename in double-quotes
-	 * 
+	 *
 	 * @param	string		Input filename
 	 * @return	string		The output wrapped in "" (if there are spaces in the filepath)
 	 * @access private

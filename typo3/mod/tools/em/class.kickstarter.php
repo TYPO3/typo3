@@ -39,7 +39,7 @@ require_once(t3lib_extMgm::extPath('extrep_wizard').'pi/class.tx_extrepwizard.ph
 /**
  * Wrapped for Kickstarter extension used with extension repository...
  * (Originally the Kickstarter was designed to run from the frontend of the typo3.org website rather than from the backend of TYPO3! This is why we have to wrap the frontend plugin class in this way to fit it into the backend!)
- * 
+ *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage core
@@ -48,8 +48,8 @@ class em_kickstarter extends tx_extrepwizard {
 	
 	/**
 	 * Setting internal PI input data.
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function getPIdata() {
 		$this->piData = t3lib_div::_GP($this->varPrefix);
@@ -57,7 +57,7 @@ class em_kickstarter extends tx_extrepwizard {
 
 	/**
 	 * Getting link to this page + extra parameters, we have specified
-	 * 
+	 *
 	 * @param	array		Additional parameters specified.
 	 * @return	string		The URL
 	 */
@@ -68,7 +68,7 @@ class em_kickstarter extends tx_extrepwizard {
 
 	/**
 	 * Font wrap function; Wrapping input string in a <span> tag with font family and font size set
-	 * 
+	 *
 	 * @param	string		Input value
 	 * @return	string		Wrapped input value.
 	 */
@@ -78,8 +78,8 @@ class em_kickstarter extends tx_extrepwizard {
 
 	/**
 	 * [Not active... - do not use]
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function makeRepositoryUpdateArray()	{
 		debug('not active in EM');
@@ -87,7 +87,7 @@ class em_kickstarter extends tx_extrepwizard {
 
 	/**
 	 * Returns value from the fe_users field (faking that data...)
-	 * 
+	 *
 	 * @param	string		Field name
 	 * @return	string		The faked field value
 	 */

@@ -40,19 +40,19 @@
  *
  *   89: class SC_mod_web_perm_index 
  *  123:     function init()	
- *  177:     function menuConfig()	
- *  208:     function main()	
- *  279:     function printContent()	
+ *  183:     function menuConfig()	
+ *  214:     function main()	
+ *  280:     function printContent()	
  *
  *              SECTION: Listing and Form rendering
- *  305:     function doEdit()	
- *  439:     function notEdit()	
+ *  306:     function doEdit()	
+ *  440:     function notEdit()	
  *
  *              SECTION: Helper functions
- *  618:     function printCheckBox($checkName,$num)	
- *  629:     function printPerms($int)	
- *  647:     function groupPerms($row,$firstGroup)	
- *  664:     function getRecursiveSelect($id,$perms_clause)	
+ *  619:     function printCheckBox($checkName,$num)	
+ *  630:     function printPerms($int)	
+ *  648:     function groupPerms($row,$firstGroup)	
+ *  665:     function getRecursiveSelect($id,$perms_clause)	
  *
  * TOTAL FUNCTIONS: 10
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -77,11 +77,11 @@ $BE_USER->modAccess($MCONF,1);
 /**
  * Script Class for the Web > Access module
  * This module lets you view and change permissions for pages.
- * 
+ *
  * variables:
  * $this->depth 	: 	intval 1-3: decides the depth of the list
  * $this->mode		:	'perms' / '': decides if we view a user-overview or the permissions.
- * 
+ *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage core
@@ -117,8 +117,8 @@ class SC_mod_web_perm_index {
 
 	/**
 	 * Initialization of the class
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function init()	{
 		global $BE_USER,$BACK_PATH;
@@ -177,8 +177,8 @@ class SC_mod_web_perm_index {
 
 	/**
 	 * Configuration of the menu and initialization of ->MOD_SETTINGS
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function menuConfig()	{
 		global $LANG;
@@ -208,8 +208,8 @@ class SC_mod_web_perm_index {
 
 	/**
 	 * Main function, creating the content for the access editing forms/listings
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function main()	{
 		global $BE_USER,$LANG;
@@ -274,8 +274,8 @@ class SC_mod_web_perm_index {
 
 	/**
 	 * Outputting the accumulated content to screen
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function printContent()	{
 
@@ -300,8 +300,8 @@ class SC_mod_web_perm_index {
 	/**
 	 * Creating form for editing the permissions	($this->edit = true)
 	 * (Adding content to internal content variable)
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function doEdit()	{
 		global $BE_USER,$LANG;
@@ -434,8 +434,8 @@ class SC_mod_web_perm_index {
 	/**
 	 * Showing the permissions in a tree ($this->edit = false)
 	 * (Adding content to internal content variable)
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function notEdit()	{
 		global $BE_USER,$LANG,$BACK_PATH;
@@ -611,7 +611,7 @@ class SC_mod_web_perm_index {
 
 	/**
 	 * Print a checkbox for the edit-permission form
-	 * 
+	 *
 	 * @param	string		Checkbox name key
 	 * @param	integer		Checkbox number index
 	 * @return	string		HTML checkbox
@@ -623,7 +623,7 @@ class SC_mod_web_perm_index {
 
 	/**
 	 * Print a set of permissions
-	 * 
+	 *
 	 * @param	integer		Permission integer (bits)
 	 * @return	string		HTML marked up x/* indications.
 	 */
@@ -640,7 +640,7 @@ class SC_mod_web_perm_index {
 
 	/**
 	 * Returns the permissions for a group based of the perms_groupid of $row. If the $row[perms_groupid] equals the $firstGroup[uid] then the function returns perms_everybody OR'ed with perms_group, else just perms_everybody
-	 * 
+	 *
 	 * @param	array		Row array (from pages table)
 	 * @param	array		First group data
 	 * @return	integer		Integer: Combined permissions.
@@ -657,7 +657,7 @@ class SC_mod_web_perm_index {
 
 	/**
 	 * Finding tree and offer setting of values recursively.
-	 * 
+	 *
 	 * @param	integer		Page id.
 	 * @param	string		Select clause
 	 * @return	string		Select form element for recursive levels (if any levels are found)

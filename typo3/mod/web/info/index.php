@@ -41,7 +41,7 @@
  *
  *   70: class SC_mod_web_info_index extends t3lib_SCbase 
  *   82:     function main()	
- *  163:     function printContent()	
+ *  169:     function printContent()	
  *
  * TOTAL FUNCTIONS: 2
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -62,7 +62,7 @@ $BE_USER->modAccess($MCONF,1);
 /**
  * Script Class for the Web > Info module
  * This class creates the framework to which other extensions can connect their sub-modules
- * 
+ *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage core
@@ -76,8 +76,8 @@ class SC_mod_web_info_index extends t3lib_SCbase {
 
 	/**
 	 * Initialize module header etc and call extObjContent function
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function main()	{
 		global $BE_USER,$LANG,$BACK_PATH;
@@ -163,8 +163,8 @@ class SC_mod_web_info_index extends t3lib_SCbase {
 
 	/**
 	 * Print module content (from $this->content)
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function printContent()	{
 

@@ -29,18 +29,18 @@
  *
  *
  *   79: class language 
- *  158:     function init($lang,$altPath='')	
- *  201:     function addModuleLabels($arr,$prefix)	
- *  227:     function hscAndCharConv($lStr,$hsc)	
- *  242:     function makeEntities($str)	
- *  259:     function JScharCode($str)	
- *  278:     function getLL($index,$hsc=0)	
- *  295:     function getLLL($index,$LOCAL_LANG,$hsc=0)	
- *  315:     function sL($input,$hsc=0)	
- *  359:     function loadSingleTableDescription($table)	
- *  410:     function includeLLFile($fileRef,$setGlobal=1,$mergeLocalOntoDefault=0)	
- *  457:     function readLLfile($fileRef)	
- *  471:     function localizedFileRef($fileRef)	
+ *  127:     function init($lang,$altPath='')	
+ *  172:     function addModuleLabels($arr,$prefix)	
+ *  198:     function hscAndCharConv($lStr,$hsc)	
+ *  213:     function makeEntities($str)	
+ *  230:     function JScharCode($str)	
+ *  249:     function getLL($index,$hsc=0)	
+ *  266:     function getLLL($index,$LOCAL_LANG,$hsc=0)	
+ *  286:     function sL($input,$hsc=0)	
+ *  330:     function loadSingleTableDescription($table)	
+ *  382:     function includeLLFile($fileRef,$setGlobal=1,$mergeLocalOntoDefault=0)	
+ *  427:     function readLLfile($fileRef)	
+ *  441:     function localizedFileRef($fileRef)	
  *
  * TOTAL FUNCTIONS: 12
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -64,13 +64,13 @@
 
 /**
  * Contains the TYPO3 Backend Language class
- * 
+ *
  * For detailed information about how localization is handled,
  * please refer to the 'Inside TYPO3' document which descibes this.
- * 
+ *
  * This class is normally instantiated as the global variable $LANG in typo3/template.php
  * It's only available in the backend and under certain circumstances in the frontend
- * 
+ *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage core
@@ -115,14 +115,14 @@ class language {
 	/**
 	 * Initializes the backend language.
 	 * This is for example done in typo3/template.php with lines like these:
-	 * 
+	 *
 	 * require (PATH_typo3.'sysext/lang/lang.php');
 	 * $LANG = t3lib_div::makeInstance('language');
 	 * $LANG->init($BE_USER->uc['lang']);
-	 * 
+	 *
 	 * @param	string		The language key (two character string from backend users profile)
 	 * @param	string		IGNORE. Not used.
-	 * @return	void		
+	 * @return	void
 	 */
 	function init($lang,$altPath='')	{	
 
@@ -163,10 +163,10 @@ class language {
 
 	/**
 	 * Adds labels and image references from the backend modules to the internal moduleLabels array
-	 * 
+	 *
 	 * @param	array		Array with references to module labels, keys: ['labels']['tablabel'], ['labels']['tabdescr'], ['tabs']['tab']
 	 * @param	string		Module name prefix
-	 * @return	void		
+	 * @return	void
 	 * @see t3lib_loadModules
 	 */
 	function addModuleLabels($arr,$prefix)	{
@@ -189,7 +189,7 @@ class language {
 	/**
 	 * Will htmlspecialchar() the input string and before that any charset conversion will also have taken place if needed (see init())
 	 * Used to pipe language labels through just before they are returned.
-	 * 
+	 *
 	 * @param	string		The string to process
 	 * @param	boolean		If set, then the string is htmlspecialchars()'ed
 	 * @return	string		The processed string
@@ -206,7 +206,7 @@ class language {
 	/**
 	 * Will convert the input strings special chars (all above 127) to entities. The string is expected to be encoded in the charset, $this->charSet
 	 * This function is used to create strings that can be used in the Click Menu (Context Sensitive Menus). The reason is that the values that are dynamically written into the <div> layer is decoded as iso-8859-1 no matter what charset is used in the document otherwise (only MSIE, Mozilla is OK). So by converting we by-pass this problem.
-	 * 
+	 *
 	 * @param	string		Input string
 	 * @return	string		Output string
 	 */
@@ -223,7 +223,7 @@ class language {
 	 * Converts the input string to a JavaScript function returning the same string, but charset-safe.
 	 * Used for confirm and alert boxes where we must make sure that any string content does not break the script AND want to make sure the charset is preserved.
 	 * Originally I used the JS function unescape() in combination with PHP function rawurlencode() in order to pass strings in a safe way. This could still be done for iso-8859-1 charsets but now I have applied the same method here for all charsets.
-	 * 
+	 *
 	 * @param	string		Input string, encoded with $this->charSet
 	 * @return	string		Output string, a JavaScript function: "String.fromCharCode(......)"
 	 */
@@ -241,10 +241,10 @@ class language {
 	/**
 	 * Returns the label with key $index form the globally loaded $LOCAL_LANG array.
 	 * Mostly used from modules with only one LOCAL_LANG file loaded into the global space.
-	 * 
+	 *
 	 * @param	string		Label key
 	 * @param	boolean		If set, the return value is htmlspecialchar'ed
-	 * @return	string		
+	 * @return	string
 	 */
 	function getLL($index,$hsc=0)	{
 		// Get Local Language
@@ -257,11 +257,11 @@ class language {
 	
 	/**
 	 * Works like ->getLL() but takes the $LOCAL_LANG array used as the second argument instead of using the global array.
-	 * 
+	 *
 	 * @param	string		Label key
 	 * @param	array		$LOCAL_LANG array to get label key from
 	 * @param	boolean		If set, the return value is htmlspecialchar'ed
-	 * @return	string		
+	 * @return	string
 	 */
 	function getLLL($index,$LOCAL_LANG,$hsc=0)	{
 		// Get Local Language
@@ -278,10 +278,10 @@ class language {
 	 * Today all translations are based on $LOCAL_LANG variables. 'language-splitted' labels can therefore refer to a local-lang file + index instead!
 	 * It's highly recommended to use the 'local_lang' method (and thereby it's highly depreciated to use 'language-splitted' label strings)
 	 * Refer to 'Inside TYPO3' for more details
-	 * 
+	 *
 	 * @param	string		Label key/reference
 	 * @param	boolean		If set, the return value is htmlspecialchar'ed
-	 * @return	string		
+	 * @return	string
 	 */
 	function sL($input,$hsc=0)	{
 		if (strcmp(substr($input,0,4),'LLL:'))	{	// Using obsolete 'language-splitted' labels:
@@ -323,9 +323,9 @@ class language {
 	/**
 	 * Loading $TCA_DESCR[$table]['columns'] with content from locallang files as defined in $TCA_DESCR[$table]['refs']
 	 * $TCA_DESCR is a global var
-	 * 
+	 *
 	 * @param	string		Table name found as key in global array $TCA_DESCR
-	 * @return	void		
+	 * @return	void
 	 */
 	function loadSingleTableDescription($table)	{
 		global $TCA_DESCR;
@@ -373,7 +373,7 @@ class language {
 	/**
 	 * Includes locallang file (and possibly additional localized version if configured for)
 	 * Read language labels will be merged with $LOCAL_LANG (if $setGlobal=1).
-	 * 
+	 *
 	 * @param	string		$fileRef is a file-reference (see t3lib_div::getFileAbsFileName)
 	 * @param	boolean		Setting in global variable $LOCAL_LANG (or returning the variable)
 	 * @param	boolean		If $mergeLocalOntoDefault is set the local part of the $LOCAL_LANG array is merged onto the default part (if the local part exists) and the local part is unset.
@@ -420,7 +420,7 @@ class language {
 	
 	/**
 	 * Includes a locallang file and returns the $LOCAL_LANG array found inside.
-	 * 
+	 *
 	 * @param	string		Input is a file-reference (see t3lib_div::getFileAbsFileName) which, if exists, is included. That file is expected to be a 'local_lang' file containing a $LOCAL_LANG array.
 	 * @return	array		Value of $LOCAL_LANG found in the included file. If that array is found it's returned. Otherwise an empty array
 	 */
@@ -434,7 +434,7 @@ class language {
 	
 	/**
 	 * Returns localized fileRef (.[langkey].php)
-	 * 
+	 *
 	 * @param	string		Filename/path of a 'locallang.php' file
 	 * @return	string		Input filename with a '.[lang-key].php' ending added if $this->lang is not 'default'
 	 */

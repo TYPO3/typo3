@@ -41,7 +41,7 @@
  *
  *   71: class SC_mod_web_func_index extends t3lib_SCbase 
  *   84:     function main()	
- *  158:     function printContent()	
+ *  164:     function printContent()	
  *
  * TOTAL FUNCTIONS: 2
  * (This index is automatically created/updated by the extension "extdeveval")

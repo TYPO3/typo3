@@ -71,7 +71,7 @@ require_once(PATH_t3lib.'class.t3lib_tsparser_ext.php');
 
 /**
  * Provides a simplified layer for making Constant Editor style configuration forms
- * 
+ *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage t3lib
@@ -110,7 +110,7 @@ class t3lib_tsStyleConfig extends t3lib_tsparser_ext	{
 
 	/**
 	 * [Describe function...]
-	 * 
+	 *
 	 * @param	[type]		$theConstants: ...
 	 * @param	[type]		$valueArray: ...
 	 * @return	[type]		...
@@ -139,7 +139,7 @@ class t3lib_tsStyleConfig extends t3lib_tsparser_ext	{
 
 	/**
 	 * [Describe function...]
-	 * 
+	 *
 	 * @return	[type]		...
 	 */
 	function ext_getCategoriesForModMenu()	{
@@ -148,7 +148,7 @@ class t3lib_tsStyleConfig extends t3lib_tsparser_ext	{
 
 	/**
 	 * [Describe function...]
-	 * 
+	 *
 	 * @param	[type]		$cat: ...
 	 * @return	[type]		...
 	 */
@@ -158,7 +158,7 @@ class t3lib_tsStyleConfig extends t3lib_tsparser_ext	{
 
 	/**
 	 * [Describe function...]
-	 * 
+	 *
 	 * @param	[type]		$cat: ...
 	 * @param	[type]		$theConstants: ...
 	 * @param	[type]		$script: ...
@@ -191,7 +191,7 @@ class t3lib_tsStyleConfig extends t3lib_tsparser_ext	{
 
 	/**
 	 * [Describe function...]
-	 * 
+	 *
 	 * @return	[type]		...
 	 */
 	function ext_displayExample()	{
@@ -206,7 +206,7 @@ class t3lib_tsStyleConfig extends t3lib_tsparser_ext	{
 
 	/**
 	 * [Describe function...]
-	 * 
+	 *
 	 * @param	[type]		$arr: ...
 	 * @return	[type]		...
 	 */
@@ -224,7 +224,7 @@ class t3lib_tsStyleConfig extends t3lib_tsparser_ext	{
 
 	/**
 	 * [Describe function...]
-	 * 
+	 *
 	 * @param	[type]		$imgConf: ...
 	 * @return	[type]		...
 	 */
@@ -237,7 +237,7 @@ class t3lib_tsStyleConfig extends t3lib_tsparser_ext	{
 
 	/**
 	 * [Describe function...]
-	 * 
+	 *
 	 * @param	[type]		$params: ...
 	 * @return	[type]		...
 	 */
@@ -254,7 +254,7 @@ class t3lib_tsStyleConfig extends t3lib_tsparser_ext	{
 
 	/**
 	 * [Describe function...]
-	 * 
+	 *
 	 * @param	[type]		$absPath: ...
 	 * @return	[type]		...
 	 */
@@ -269,7 +269,7 @@ class t3lib_tsStyleConfig extends t3lib_tsparser_ext	{
 
 	/**
 	 * [Describe function...]
-	 * 
+	 *
 	 * @param	[type]		$key: ...
 	 * @param	[type]		$var: ...
 	 * @return	[type]		...
@@ -280,7 +280,7 @@ class t3lib_tsStyleConfig extends t3lib_tsparser_ext	{
 
 	/**
 	 * [Describe function...]
-	 * 
+	 *
 	 * @param	[type]		$key: ...
 	 * @return	[type]		...
 	 */

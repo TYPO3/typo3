@@ -71,7 +71,7 @@
  
 /**
  * The TypoScript parser
- * 
+ *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage t3lib
@@ -124,10 +124,10 @@ class t3lib_TSparser {
 	
 	/**
 	 * Start parsing the input TypoScript text piece. The result is stored in $this->setup
-	 * 
+	 *
 	 * @param	string		The TypoScript text
 	 * @param	object		If is object (instance of t3lib_matchcondition), then this is used to match conditions found in the TypoScript code. If matchObj not specified, then no conditions will work! (Except [GLOBAL])
-	 * @return	void		
+	 * @return	void
 	 */
 	function parse($string,$matchObj='')	{
 		$this->raw = explode(chr(10),$string);
@@ -162,7 +162,7 @@ class t3lib_TSparser {
 
 	/**
 	 * Will search for the next condition. When found it will return the line content (the condition value) and have advanced the internal $this->rawP pointer to point to the next line after the condition.
-	 * 
+	 *
 	 * @return	string		The condition value
 	 * @see parse()
 	 */
@@ -178,7 +178,7 @@ class t3lib_TSparser {
 
 	/**
 	 * Parsing the $this->raw TypoScript lines from pointer, $this->rawP
-	 * 
+	 *
 	 * @param	array		Reference to the setup array in which to accumulate the values.
 	 * @return	string		Returns the string of the condition found, the exit signal or possible nothing (if it completed parsing with no interruptions)
 	 */
@@ -322,7 +322,7 @@ class t3lib_TSparser {
 
 	/**
 	 * Parsing of TypoScript keys inside a curly brace where the key is composite of at least two keys, thus having to recursively call itself to get the value
-	 * 
+	 *
 	 * @param	string		The object sub-path, eg "thisprop.another_prot"
 	 * @param	array		The local setup array from the function calling this function
 	 * @return	string		Returns the exitSignal
@@ -347,7 +347,7 @@ class t3lib_TSparser {
 
 	/**
 	 * Get a value/property pair for an object path in TypoScript, eg. "myobject.myvalue.mysubproperty". Here: Used by the "copy" operator, <
-	 * 
+	 *
 	 * @param	string		Object path for which to get the value
 	 * @param	array		Global setup code if $string points to a global object path. But if string is prefixed with "." then its the local setup array.
 	 * @return	array		An array with keys 0/1 being value/property respectively
@@ -371,12 +371,12 @@ class t3lib_TSparser {
 
 	/**
 	 * Setting a value/property of an object string in the setup array.
-	 * 
+	 *
 	 * @param	string		The object sub-path, eg "thisprop.another_prot"
 	 * @param	array		The local setup array from the function calling this function.
 	 * @param	array		The value/property pair array to set. If only one of them is set, then the other is not touched (unless $wipeOut is set, which it is when copies are made which must include both value and property)
 	 * @param	boolean		If set, then both value and property is wiped out when a copy is made of another value.
-	 * @return	void		
+	 * @return	void
 	 */
 	function setVal($string,&$setup,$value,$wipeOut=0)	{
 		if ((string)$string!='')	{
@@ -408,10 +408,10 @@ class t3lib_TSparser {
 	/**
 	 * Stacks errors/messages from the TypoScript parser into an internal array, $this->error
 	 * If "TT" is a global object (as it is in the frontend when backend users are logged in) the message will be registered here as well.
-	 * 
+	 *
 	 * @param	string		The error message string
 	 * @param	integer		The error severity (in the scale of $GLOBALS['TT']->setTSlogMessage: Approx: 2=warning, 1=info, 0=nothing, 3=fatal.)
-	 * @return	void		
+	 * @return	void
 	 */
 	function error($err,$num=2)	{
 		if (is_object($GLOBALS['TT']))	$GLOBALS['TT']->setTSlogMessage($err,$num);
@@ -421,7 +421,7 @@ class t3lib_TSparser {
 	/**
 	 * Checks the input string (un-parsed TypoScript) for include-commands ("<INCLUDE_TYPOSCRIPT: ....")
 	 * Use: t3lib_TSparser::checkIncludeLines()
-	 * 
+	 *
 	 * @param	string		Unparsed TypoScript
 	 * @return	string		Complete TypoScript with includes added.
 	 */
@@ -465,7 +465,7 @@ class t3lib_TSparser {
 
 	/**
 	 * Parses the string in each value of the input array for include-commands
-	 * 
+	 *
 	 * @param	array		Array with TypoScript in each value
 	 * @return	array		Same array but where the values has been parsed for include-commands
 	 */
@@ -506,7 +506,7 @@ class t3lib_TSparser {
 	/**
 	 * Syntax highlight a TypoScript text
 	 * Will parse the content. Remember, the internal setup array may contain INvalid parsed content since conditions are ignored!
-	 * 
+	 *
 	 * @param	string		The TypoScript text
 	 * @param	mixed		If blank, linenumbers are NOT printed. If array then the first key is the linenumber offset to add to the internal counter.
 	 * @param	boolean		If set, then the highlighted output will be formatted in blocks based on the brace levels. prespace will be ignored and empty lines represented with a single no-break-space.
@@ -525,11 +525,11 @@ class t3lib_TSparser {
 
 	/**
 	 * Registers a part of a TypoScript line for syntax highlighting.
-	 * 
+	 *
 	 * @param	string		Key from the internal array $this->highLightStyles
 	 * @param	integer		Pointer to the line in $this->raw which this is about
 	 * @param	integer		The number of chars LEFT on this line before the end is reached.
-	 * @return	void		
+	 * @return	void
 	 * @access private
 	 * @see	parse()
 	 */
@@ -544,7 +544,7 @@ class t3lib_TSparser {
 
 	/**
 	 * Formatting the TypoScript code in $this->raw based on the data collected by $this->regHighLight in $this->highLightData
-	 * 
+	 *
 	 * @param	mixed		If blank, linenumbers are NOT printed. If array then the first key is the linenumber offset to add to the internal counter.
 	 * @param	boolean		If set, then the highlighted output will be formatted in blocks based on the brace levels. prespace will be ignored and empty lines represented with a single no-break-space.
 	 * @return	string		HTML content

@@ -65,7 +65,7 @@ $BE_USER->modAccess($MCONF,1);
 
 /**
  * Script Class for the Help > About module
- * 
+ *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage core
@@ -85,8 +85,8 @@ class SC_mod_help_about_index {
 	 * Main function, producing the module output.
 	 * In this case, the module output is a very simple screen telling the version of TYPO3 and that's basically it...
 	 * The content is set in the internal variable $this->content
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function main()	{
 		global $TBE_TEMPLATE,$TYPO_VERSION,$LANG,$BACK_PATH;
@@ -135,8 +135,8 @@ class SC_mod_help_about_index {
 
 	/**
 	 * Outputting the accumulated content to screen
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function printContent()	{
 		echo $this->content;
