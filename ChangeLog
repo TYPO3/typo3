@@ -1,3 +1,7 @@
+2005-01-14  Kasper Skårhøj,,,  <kasper@typo3.com>
+
+	* import/export: CSH for the whole module, localization of all labels
+
 2005-01-02  Kasper Skårhøj,,,  <kasper@typo3.com>
 
 	* Added Karsten D.s patches for DBAL.

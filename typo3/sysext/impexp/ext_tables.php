@@ -13,5 +13,7 @@ if (TYPO3_MODE=='BE')	{
 		t3lib_extMgm::extPath($_EXTKEY).'modfunc1/class.tx_impexp_modfunc1.php',
 		'LLL:EXT:impexp/app/locallang.xml:moduleFunction.tx_impexp_modfunc1'
 	);
+
+	t3lib_extMgm::addLLrefForTCAdescr('xMOD_tx_impexp','EXT:impexp/locallang_csh.xml');
 }
 ?>

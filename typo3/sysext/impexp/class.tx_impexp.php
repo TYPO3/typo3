@@ -2609,6 +2609,7 @@ class tx_impexp {
 	 * @return	string		HTML content
 	 */
 	function displayContentOverview()	{
+		global $LANG;
 
 			// Check extension dependencies:
 		if (is_array($this->dat['header']['extensionDependencies']))	{
@@ -2635,13 +2636,13 @@ class tx_impexp {
 				$rows = array();
 				$rows[] = '
 				<tr class="bgColor5 tableheader">
-					<td>Controls:</td>
-					<td>Title:</td>
-					<td>Size:</td>
-					<td>Message:</td>
-					'.($this->update ? '<td>Update Mode:</td>' : '').'
-					'.($this->update ? '<td>Current Path:</td>' : '').'
-					'.($this->showDiff ? '<td>Result:</td>' : '').'
+					<td>'.$LANG->getLL('impexpcore_displaycon_controls',1).'</td>
+					<td>'.$LANG->getLL('impexpcore_displaycon_title',1).'</td>
+					<td>'.$LANG->getLL('impexpcore_displaycon_size',1).'</td>
+					<td>'.$LANG->getLL('impexpcore_displaycon_message',1).'</td>
+					'.($this->update ? '<td>'.$LANG->getLL('impexpcore_displaycon_updateMode',1).'</td>' : '').'
+					'.($this->update ? '<td>'.$LANG->getLL('impexpcore_displaycon_currentPath',1).'</td>' : '').'
+					'.($this->showDiff ? '<td>'.$LANG->getLL('impexpcore_displaycon_result',1).'</td>' : '').'
 				</tr>';
 
 				foreach($lines as $r)	{
@@ -2658,7 +2659,7 @@ class tx_impexp {
 				}
 
 				$out = '
-					<strong>Inside pagetree:</strong>
+					<strong>'.$LANG->getLL('impexpcore_displaycon_insidePagetree',1).'</strong>
 					<br /><br />
 					<table border="0" cellpadding="0" cellspacing="1">'.implode('',$rows).'</table>
 					<br /><br />';
@@ -2676,13 +2677,13 @@ class tx_impexp {
 					$rows = array();
 					$rows[] = '
 					<tr class="bgColor5 tableheader">
-						<td>Controls:</td>
-						<td>Title:</td>
-						<td>Size:</td>
-						<td>Message:</td>
-						'.($this->update ? '<td>Update Mode:</td>' : '').'
-						'.($this->update ? '<td>Current Path:</td>' : '').'
-						'.($this->showDiff ? '<td>Result:</td>' : '').'
+						<td>'.$LANG->getLL('impexpcore_displaycon_controls',1).'</td>
+						<td>'.$LANG->getLL('impexpcore_displaycon_title',1).'</td>
+						<td>'.$LANG->getLL('impexpcore_displaycon_size',1).'</td>
+						<td>'.$LANG->getLL('impexpcore_displaycon_message',1).'</td>
+						'.($this->update ? '<td>'.$LANG->getLL('impexpcore_displaycon_updateMode',1).'</td>' : '').'
+						'.($this->update ? '<td>'.$LANG->getLL('impexpcore_displaycon_currentPath',1).'</td>' : '').'
+						'.($this->showDiff ? '<td>'.$LANG->getLL('impexpcore_displaycon_result',1).'</td>' : '').'
 					</tr>';
 
 					foreach($lines as $r)	{
@@ -2698,7 +2699,7 @@ class tx_impexp {
 					}
 
 					$out.= '
-						<strong>Outside pagetree:</strong>
+						<strong>'.$LANG->getLL('impexpcore_singlereco_outsidePagetree',1).'</strong>
 						<br /><br />
 						<table border="0" cellpadding="0" cellspacing="1">'.implode('',$rows).'</table>';
 				}
@@ -2800,7 +2801,7 @@ class tx_impexp {
 	 * @return	void
 	 */
 	function singleRecordLines($table,$uid,&$lines,$preCode,$checkImportInPidRecord=0)	{
-		global $TCA,$BE_USER;
+		global $TCA,$BE_USER,$LANG;
 
 			// Get record:
 		$record = $this->dat['header']['records'][$table][$uid];
@@ -2812,7 +2813,7 @@ class tx_impexp {
 		$pInfo['ref'] = $table.':'.$uid;
 		if ($table==='_SOFTREF_')	{	// Unknown table name:
 			$pInfo['preCode'] = $preCode;
-			$pInfo['title'] = '<em>'.htmlspecialchars('Soft References Files:').'</em>';
+			$pInfo['title'] = '<em>'.$LANG->getLL('impexpcore_singlereco_softReferencesFiles',1).'</em>';
 		} elseif (!isset($TCA[$table]))	{	// Unknown table name:
 			$pInfo['preCode'] = $preCode;
 			$pInfo['msg'] = "UNKNOWN TABLE '".$pInfo['ref']."'";
@@ -2842,17 +2843,17 @@ class tx_impexp {
 
 						// Mode selector:
 					$optValues = array();
-					$optValues[] = $recInf ? 'Update' : 'Insert';
-					if ($recInf) $optValues['as_new'] = 'Import as new';
+					$optValues[] = $recInf ? $LANG->getLL('impexpcore_singlereco_update') : $LANG->getLL('impexpcore_singlereco_insert');
+					if ($recInf) $optValues['as_new'] = $LANG->getLL('impexpcore_singlereco_importAsNew');
 					if ($recInf) {
 						if (!$this->global_ignore_pid)	{
-							$optValues['ignore_pid'] = 'Ignore PID';
+							$optValues['ignore_pid'] = $LANG->getLL('impexpcore_singlereco_ignorePid');
 						} else {
-							$optValues['respect_pid'] = 'Respect PID';
+							$optValues['respect_pid'] = $LANG->getLL('impexpcore_singlereco_respectPid');
 						}
 					}
-					if (!$recInf && $GLOBALS['BE_USER']->isAdmin()) $optValues['force_uid'] = 'Force UID ['.$uid.'] (Admin)';
-					$optValues['exclude'] = 'Exclude';
+					if (!$recInf && $GLOBALS['BE_USER']->isAdmin()) $optValues['force_uid'] = sprintf($LANG->getLL('impexpcore_singlereco_forceUidSAdmin'),$uid);
+					$optValues['exclude'] = $LANG->getLL('impexpcore_singlereco_exclude');
 
 					$pInfo['updateMode'] = $this->renderSelectBox('tx_impexp[import_mode]['.$table.':'.$uid.']',$this->import_mode[$table.':'.$uid],$optValues);
 				}
@@ -2905,15 +2906,15 @@ class tx_impexp {
 				$pInfo['title'] = '<em>'.$info['field'].', "'.$info['spKey'].'" </em>: <span title="'.htmlspecialchars($info['matchString']).'">'.htmlspecialchars(t3lib_div::fixed_lgd_cs($info['matchString'],60)).'</span>';
 				if ($info['subst']['type'])	{
 					if (strlen($info['subst']['title']))	{
-						$pInfo['title'].= '<br/>'.$preCode_B.'<b>Title:</b> '.htmlspecialchars(t3lib_div::fixed_lgd_cs($info['subst']['title'],60));
+						$pInfo['title'].= '<br/>'.$preCode_B.'<b>'.$LANG->getLL('impexpcore_singlereco_title',1).'</b> '.htmlspecialchars(t3lib_div::fixed_lgd_cs($info['subst']['title'],60));
 					}
 					if (strlen($info['subst']['description']))	{
-						$pInfo['title'].= '<br/>'.$preCode_B.'<b>Descr:</b> '.htmlspecialchars(t3lib_div::fixed_lgd_cs($info['subst']['description'],60));
+						$pInfo['title'].= '<br/>'.$preCode_B.'<b>'.$LANG->getLL('impexpcore_singlereco_descr',1).'</b> '.htmlspecialchars(t3lib_div::fixed_lgd_cs($info['subst']['description'],60));
 					}
 					$pInfo['title'].= '<br/>'.$preCode_B.
-											($info['subst']['type'] == 'file' ? 'Filename: <b>'.$info['subst']['relFileName'].'</b>' : '').
-											($info['subst']['type'] == 'string' ? 'Value: <b>'.$info['subst']['tokenValue'].'</b>' : '').
-											($info['subst']['type'] == 'db' ? 'Record: <b>'.$info['subst']['recordRef'].'</b>' : '');
+											($info['subst']['type'] == 'file' ? $LANG->getLL('impexpcore_singlereco_filename',1).' <b>'.$info['subst']['relFileName'].'</b>' : '').
+											($info['subst']['type'] == 'string' ? $LANG->getLL('impexpcore_singlereco_value',1).' <b>'.$info['subst']['tokenValue'].'</b>' : '').
+											($info['subst']['type'] == 'db' ? $LANG->getLL('impexpcore_softrefsel_record',1).' <b>'.$info['subst']['recordRef'].'</b>' : '');
 				}
 				$pInfo['ref'] = 'SOFTREF';
 				$pInfo['size'] = '';
@@ -3153,8 +3154,10 @@ class tx_impexp {
 	 * @return	string		HTML
 	 */
 	function renderControls($r)	{
+		global $LANG;
+
 		if ($this->mode==='export')	{
-			return ($r['type']=='record' ? '<input type="checkbox" name="tx_impexp[exclude]['.$r['ref'].']" value="1" /> Exclude' :
+			return ($r['type']=='record' ? '<input type="checkbox" name="tx_impexp[exclude]['.$r['ref'].']" value="1" /> '.$LANG->getLL('impexpcore_singlereco_exclude',1) :
 								($r['type']=='softref' ? $this->softrefSelector($r['_softRefInfo']) : ''));
 		} else {	// During import
 
@@ -3179,6 +3182,8 @@ class tx_impexp {
 	 * @return	string		Selector box HTML
 	 */
 	function softrefSelector($cfg) {
+		global $LANG;
+
 			// Looking for file ID if any:
 		$fI = $cfg['file_ID'] ? $this->dat['header']['files'][$cfg['file_ID']] : array();
 
@@ -3188,8 +3193,8 @@ class tx_impexp {
 				// Create options:
 			$optValues = array();
 			$optValues[''] = '';
-			$optValues['editable'] = 'Editable';
-			$optValues['exclude'] = 'Exclude';
+			$optValues['editable'] = $LANG->getLL('impexpcore_softrefsel_editable');
+			$optValues['exclude'] = $LANG->getLL('impexpcore_softrefsel_exclude');
 
 				// Get current value:
 			$value = $this->softrefCfg[$cfg['subst']['tokenID']]['mode'];
@@ -3211,7 +3216,7 @@ class tx_impexp {
 					// Description:
 				if (!strlen($cfg['subst']['description']))	{
 					$descriptionField.= '
-					Description:<br/>
+					'.$LANG->getLL('impexpcore_printerror_description',1).'<br/>
 					<input type="text" name="tx_impexp[softrefCfg]['.$cfg['subst']['tokenID'].'][description]" value="'.htmlspecialchars($this->softrefCfg[$cfg['subst']['tokenID']]['description']).'" />';
 				} else {
 					$descriptionField.= '

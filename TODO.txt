@@ -418,7 +418,7 @@ XQCR: t3lib/class.t3lib_positionmap.php
 -QCR: t3lib/class.t3lib_readmail.php
 XQCR: t3lib/class.t3lib_recordlist.php
 -QCR: t3lib/class.t3lib_scbase.php
-		t3lib/class.t3lib_sqlengine.php			[Kasper]
+		t3lib/class.t3lib_sqlengine.php			[Kasper/Karsten?]
 -QCR: t3lib/class.t3lib_stdgraphic.php
 XQCR: t3lib/class.t3lib_superadmin.php
 		t3lib/class.t3lib_svbase.php			[Rene]
@@ -495,8 +495,7 @@ OK		context_help/
 			- Manual written?
 XQCR:	extra_page_cm_options/
 XQCR:	func_wizards/
-		impexp				(2/2000)
-			- Extend support and finish it with the efforts soon to be done for "DBint" (lowlevel) and TCEmain
+XQC-:	impexp
 		indexed_search		(4/3500)
 			- Templates?
 			- Speedoptimizations?
@@ -525,9 +524,9 @@ XQRC:	wizard_sortpages/
 
 For all extensions (even those approved):
 - Remember to add package tags to all classes!
-- Write documentation for each
+- Write documentation for each (CSH is fine enough).
 - Check HTML source / CSS usage / XHTML compliancy / That icons are skinnable (add to "skin360")
-- $LANG->getLL() are htmlspecialchars()'ed
+- $LANG->getLL() are htmlspecialchars()'ed / second argument is "1"
 
 
 

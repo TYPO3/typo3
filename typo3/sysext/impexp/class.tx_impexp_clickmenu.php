@@ -95,7 +95,7 @@ class tx_impexp_clickmenu {
 			}
 			$localItems[] = $backRef->linkItem(
 				$GLOBALS['LANG']->makeEntities($GLOBALS['LANG']->getLLL('export',$LL)),
-				$backRef->excludeIcon('<img src="'.$backRef->backPath.t3lib_extMgm::extRelPath('impexp').'export.gif" width="18" height="16" alt="" />'),
+				$backRef->excludeIcon('<img'.t3lib_iconWorks::skinImg($backRef->backPath,t3lib_extMgm::extRelPath('impexp').'export.gif','width="18" height="16"').' alt="" />'),
 				$backRef->urlRefForCM($url),
 				1	// Disables the item in the top-bar
 			);
@@ -104,7 +104,7 @@ class tx_impexp_clickmenu {
 				$url = t3lib_extMgm::extRelPath('impexp').'app/index.php?id='.$uid.'&table='.$table.'&tx_impexp[action]=import';
 				$localItems[] = $backRef->linkItem(
 					$GLOBALS['LANG']->makeEntities($GLOBALS['LANG']->getLLL('import',$LL)),
-					$backRef->excludeIcon('<img src="'.t3lib_extMgm::extRelPath('impexp').'import.gif" width="18" height="16" alt="" />'),
+					$backRef->excludeIcon('<img'.t3lib_iconWorks::skinImg($backRef->backPath,t3lib_extMgm::extRelPath('impexp').'import.gif','width="18" height="16"').' alt="" />'),
 					$backRef->urlRefForCM($url),
 					1	// Disables the item in the top-bar
 				);
