@@ -1693,7 +1693,7 @@ class tslib_cObj {
 						if($image)	{
 							$fieldCode = str_replace('<img','<input type="image"'.$addParams.' name="'.$confData['fieldname'].'"' ,$image);
 						} else {
-							$fieldCode=sprintf('<input type="submit" name="%s" value="%s"'.$addParams.'>',
+							$fieldCode=sprintf('<input type="submit" name="%s" value="%s"'.$addParams.' />',
 								$confData['fieldname'], htmlspecialchars($value));
 						}
 					break;
@@ -1805,9 +1805,17 @@ class tslib_cObj {
 			$GLOBALS['TSFE']->additionalHeaderData['JSFormValidate'] = '<script type="text/javascript" src="'.$GLOBALS['TSFE']->absRefPrefix.'t3lib/jsfunc.validateform.js"></script>';
 		} else $validateForm='';
 		
-
+			// Create form tag:
+		$theTarget = ($theRedirect?$LD['target']:$LD_A['target']);
 		$content = Array(
-			'<form action="'.htmlspecialchars($action).'" name="'.$formname.'" enctype="'.$GLOBALS['TYPO3_CONF_VARS']['SYS']['form_enctype'].'" method="'.($conf['method']?$conf['method']:'post').'" target="'.($theRedirect?$LD['target']:$LD_A['target']).'"'.$validateForm.'>',
+			'<form'.
+				' action="'.htmlspecialchars($action).'"'.
+				' name="'.$formname.'"'.
+				' enctype="'.$GLOBALS['TYPO3_CONF_VARS']['SYS']['form_enctype'].'"'.
+				' method="'.($conf['method']?$conf['method']:'post').'"'.
+				($theTarget ? ' target="'.$theTarget.'"' : '').
+				$validateForm.
+				'>',
 			$hiddenfields.$content,
 			'</form>'
 		);
@@ -2386,7 +2394,7 @@ class tslib_cObj {
 				} else {
 					$target = ' target="thePicture"';
 					if (isset($conf['target'])) {
-						$target= ($conf['target']) ? ' target="'.$conf['target'].'"' : '';
+						$target= $conf['target'] ? ' target="'.$conf['target'].'"' : '';
 					}
 					$a1='<a href="'.htmlspecialchars($url).'"'.$target.$GLOBALS['TSFE']->ATagParams.'>';
 					$a2='</a>';
@@ -2842,6 +2850,10 @@ class tslib_cObj {
 				if ($conf['crop']){$content=$this->crop($content, $conf['crop']);}
 				if ($conf['stripHtml']){$content=strip_tags($content);}
 				if ($conf['htmlSpecialChars']){$content=htmlSpecialChars($content);}
+				if ($conf['htmlSpecialChars']){
+					$content=htmlSpecialChars($content);
+					if ($conf['htmlSpecialChars.']['preserveEntities'])	$content = t3lib_div::deHSCentities($content);
+				}
 	
 				if ($conf['doubleBrTag']) {
 					$content=ereg_replace("\r?\n[\t ]*\r?\n",$conf['doubleBrTag'],$content);
@@ -3126,7 +3138,7 @@ class tslib_cObj {
 	function HTMLparser_TSbridge($theValue, $conf)	{
 		$htmlParser = t3lib_div::makeInstance('t3lib_parsehtml');
 		$htmlParserCfg =  $htmlParser->HTMLparserConfig($conf);
-		return $htmlParser->HTMLcleaner($theValue,$htmlParserCfg[0],$htmlParserCfg[1],$htmlParserCfg[2]);
+		return $htmlParser->HTMLcleaner($theValue,$htmlParserCfg[0],$htmlParserCfg[1],$htmlParserCfg[2],$htmlParserCfg[3]);
 	}
 
 	/**
@@ -3925,7 +3937,7 @@ class tslib_cObj {
 					// Default align
 				if (!$attrib['align'] && $defaultAlign)	$attrib['align']=$defaultAlign;
 
-				$params = t3lib_div::implodeParams($attrib);
+				$params = t3lib_div::implodeParams($attrib,1);
 				if ($conf['removeWrapping'])	{
 					$str_content=$str_content;
 				} else {
@@ -3983,9 +3995,17 @@ class tslib_cObj {
 				}
   				$target = isset($conf['extTarget']) ? $conf['extTarget'] : $GLOBALS['TSFE']->extTarget;
 				if ($GLOBALS['TSFE']->config['config']['jumpurl_enable'])	{
-					$res = '<a href="'.htmlspecialchars($GLOBALS['TSFE']->absRefPrefix.$GLOBALS['TSFE']->config['mainScript'].$initP.'&jumpurl='.rawurlencode('http://'.$parts[0]).$GLOBALS['TSFE']->getMethodUrlIdToken).'" target="'.$target.'"'.$aTagParams.'>';
+					$res = '<a'.
+							' href="'.htmlspecialchars($GLOBALS['TSFE']->absRefPrefix.$GLOBALS['TSFE']->config['mainScript'].$initP.'&jumpurl='.rawurlencode('http://'.$parts[0]).$GLOBALS['TSFE']->getMethodUrlIdToken).'"'.
+							($target ? ' target="'.$target.'"' : '').
+							$aTagParams.
+							'>';
 				} else {
-					$res = '<a href="http://'.htmlspecialchars($parts[0]).'" target="'.$target.'"'.$aTagParams.'>';
+					$res = '<a'.
+							' href="http://'.htmlspecialchars($parts[0]).'"'.
+							($target ? ' target="'.$target.'"' : '').
+							$aTagParams.
+							'>';
 				}
 				if ($conf['ATagBeforeWrap'])	{
 					$res= $res.$this->wrap($linktxt, $conf['wrap']).'</a>';
@@ -4513,7 +4533,7 @@ class tslib_cObj {
 					}
 					$this->lastTypoLinkTarget = $target;
 					$finalTagParts['url']=$this->lastTypoLinkUrl;
-					$finalTagParts['targetParams']=' target="'.$target.'"';
+					$finalTagParts['targetParams'] = $target ? ' target="'.$target.'"' : '';
 					$finalTagParts['TYPE']='url';
 				} elseif ($fileChar || $isLocalFile)	{	// file (internal)
 					$splitLinkParam = explode('?',$link_param);
@@ -4528,7 +4548,7 @@ class tslib_cObj {
 						$this->lastTypoLinkTarget = $target;
 
 						$finalTagParts['url']=$this->lastTypoLinkUrl;
-						$finalTagParts['targetParams']=' target="'.$target.'"';
+						$finalTagParts['targetParams'] = $target ? ' target="'.$target.'"' : '';
 						$finalTagParts['TYPE']='file';
 					} else {
 						$GLOBALS['TT']->setTSlogMessage("typolink(): File '".$splitLinkParam[0]."' did not exist, so '".$linktxt."' was not linked.",1);

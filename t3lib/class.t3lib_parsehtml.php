@@ -440,7 +440,7 @@ class t3lib_parsehtml {
 	 * @param	string		$content; is the HTML-content being processed. This is also the result being returned.
 	 * @param	array		$tags; is an array where each key is a tagname in lowercase. Only tags present as keys in this array are preserved. The value of the key can be an array with a vast number of options to configure.
 	 * @param	string		$keepAll; boolean/'protect', if set, then all tags are kept regardless of tags present as keys in $tags-array. If 'protect' then the preserved tags have their <> converted to &lt; and &gt;
-	 * @param	integer		$hSC; Values -1,0,1: Set to zero= disabled, set to 1 then the content BETWEEN tags is htmlspecialchar()'ed.
+	 * @param	integer		$hSC; Values -1,0,1,2: Set to zero= disabled, set to 1 then the content BETWEEN tags is htmlspecialchar()'ed, set to -1 its the opposite and set to 2 the content will be HSC'ed BUT with preservation for real entities (eg. "&amp;" or "&#234;")
 	 * @param	array		Configuration array send along as $conf to the internal functions ->processContent() and ->processTag()
 	 * @return	string		Processed HTML content
 	 */
@@ -688,16 +688,18 @@ class t3lib_parsehtml {
 	}
 	
 	/**
-	 * Converts htmlspecialchars forth ($dir=1) AND back ($dir=0)
+	 * Converts htmlspecialchars forth ($dir=1) AND back ($dir=-1)
 	 * 
 	 * @param	string		Input value
-	 * @param	integer		Direction: forth ($dir=1) AND back ($dir=0)
+	 * @param	integer		Direction: forth ($dir=1, dir=2 for preserving entities) AND back ($dir=-1)
 	 * @return	string		Output value
 	 */
 	function bidir_htmlspecialchars($value,$dir)	{
-		if ($dir>0)	{
+		if ($dir==1)	{
 			$value = htmlspecialchars($value);
-		} elseif ($dir<0) {
+		} elseif ($dir==2)	{
+			$value = t3lib_div::deHSCentities(htmlspecialchars($value));
+		} elseif ($dir==-1) {
 			$value = str_replace('&gt;','>',$value);
 			$value = str_replace('&lt;','<',$value);
 			$value = str_replace('&quot;','"',$value);
@@ -832,8 +834,8 @@ class t3lib_parsehtml {
 	 * @return	string		Processed HTML content
 	 */
 	function mapTags($value,$tags=array(),$ltChar='<',$ltChar2='<')	{
-		reset($tags);
-		while(list($from,$to)=each($tags))	{
+	
+		foreach($tags as $from => $to)	{
 			$value = eregi_replace($ltChar.$from.'>',$ltChar2.$to.'>',$value);
 			$value = eregi_replace($ltChar.$from.'[[:space:]]([^>]*)>',$ltChar2.$to.' \\1>',$value);
 			$value = eregi_replace($ltChar.'\/'.$from.'[^>]*>',$ltChar2.'/'.$to.'>',$value);
@@ -1055,7 +1057,18 @@ class t3lib_parsehtml {
 			}
 		}
 		
-		return array($keepTags, ''.$TSconfig['keepNonMatchedTags'], intval($TSconfig['htmlSpecialChars']));
+			// Create additional configuration:
+		$addConfig=array();
+		if ($TSconfig['xhtml_cleaning'])	{
+			$addConfig['xhtml']=1;
+		}		
+		
+		return array(
+			$keepTags, 
+			''.$TSconfig['keepNonMatchedTags'], 
+			intval($TSconfig['htmlSpecialChars']),
+			$addConfig
+		);
 	}
 	
 	/**

@@ -406,7 +406,7 @@ class SC_db_layout {
 						}
 					} else document.location = URL;
 				}
-			'.($this->popView ? t3lib_BEfunc::viewOnClick($this->id,'',t3lib_BEfunc::BEgetRootLine($this->id)) : '').'
+			'.($this->popView ? t3lib_BEfunc::viewOnClick($this->id,$BACK_PATH,t3lib_BEfunc::BEgetRootLine($this->id)) : '').'
 			
 				function deleteRecord(table,id,url)	{	//
 					if (confirm('.$LANG->JScharCode($LANG->getLL('deleteWarning')).'))	{	

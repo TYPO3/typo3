@@ -1838,6 +1838,7 @@ class t3lib_div {
 
 	/**
 	 * Reads the file or url $url and returns the content
+	 * If you are having trouble with proxys when reading URLs you can configure your way out of that with settings like $TYPO3_CONF_VARS['SYS']['curlUse'] etc.
 	 * 
 	 * Usage: 79
 	 * 

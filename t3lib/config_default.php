@@ -55,7 +55,7 @@ $TYPO3_CONF_VARS = Array(
 		'encryptionKey' => '',					// Insert some unique string here! Used in eg. direct mail module to generate a md5 hash in combination with uid. This string should be kept secret although it's not as critical as a password.
 		'doNotCheckReferer' => 0,				// Boolean. If set, it's NOT checked numerous places that the refering host is the same as the current. This is an option you should set if you have problems with proxies not passing the HTTP_REFERER variable.
 		'recursiveDomainSearch' => 0,			// Boolean. If set, the search for domain records will be done recursively by stripping parts of the host name off until a matching domain record is found.
-		'report_error_html' => chr(10).'Please report this error to the <a href="mailto:kasper@typo3.com">Typo Development Team</a>',
+		'report_error_html' => chr(10).'Please report this error to the <a href="mailto:kasper@typo3.com">TYPO3 Development Team</a>',
 		'T3instID' => 'N/A',
 		'devIPmask' => '192.168.*,127.0.0.1',	// Defines a list of IP addresses which will allow development-output to display. The debug() function will use this as a filter. See the function t3lib_div::cmpIP() for details on syntax. Setting this to blank value will deny all. Setting to '*' will allow all.
 		'curlUse' => 0,							// Boolean: If set, try to use Curl to fetch external URLs (implemented by Arco <arco@appeltaart.mine.nu>)
