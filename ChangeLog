@@ -21,7 +21,7 @@ Sorry for writing these changelog entries with a delay of two days. I write them
 	* !!! Removed obsolete function "t3lib_div::setGPvars()"
 	* Added $MCONF['shy'] feature (requested by Rene Fritz)
 	* Added longblob in sqlparser
-	* Added configurable JPG quality setting to stdGraphic class. Use $TYPO4_CONF_VARS[GFX][im_jpg_quality]
+	* Added configurable JPG quality setting to stdGraphic class. Use $TYPO3_CONF_VARS[GFX][im_jpg_quality]
 	* Added stdgraphic::ImageTTFTextWrapper() and stdgraphic::ImageTTFBBoxWrapper functions. Behind these changes a new feature has been implemented which makes it possible to render a single GIFBUILDER TEXT object with more than one font file for various criteria. The most important criteria is that a certain range of unicode chars can be rendered using another truetype font supporting eg. japanese glyphs while you still use another specific font for the design of latin chracters. This feature is known as "splitRendering" in GIFBUILDER TEXT objects.
 	* Added new swapping mode setting for versioning: swapContent = ALL which is what you use if you want to swap the SUBTREE of a page as well!
 	* Fixed a bug in transferdata class where too many field values were returned in wrong situations.

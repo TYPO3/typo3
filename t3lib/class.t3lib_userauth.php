@@ -142,7 +142,7 @@ class t3lib_userAuth {
 	var $get_URL_ID = '';				// Internal: Will will be set to the url--ready (eg. '&login=ab7ef8d...') GET-auth-var if getFallBack is true. Should be inserted in links!
 
 	var $forceSetCookie=0;				// Will force the session cookie to be set everytime (liftime must be 0)
-	var $dontSetCookie=0;				// Will prevent the setting of the session cookie (takes precedence over forceSetCookie.
+	var $dontSetCookie=0;				// Will prevent the setting of the session cookie (takes precedence over forceSetCookie)
 
 
 	/**
