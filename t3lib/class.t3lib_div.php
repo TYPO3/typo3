@@ -563,18 +563,34 @@ class t3lib_div {
 			$values = t3lib_div::trimExplode(',',$list,1);
 			reset($values);
 			while(list(,$test)=each($values))	{
-				$IPparts = explode('.',$test);
-				$yes = 1;
-				reset($IPparts);
-				while(list($index,$val)=each($IPparts))	{
-					$val = trim($val);
-					if (strcmp($val,'*') && strcmp($IPpartsReq[$index],$val))	{
-						$yes=0;
+				list($test,$mask) = explode('/',$test);
+				
+				if(intval($mask)) {
+						// "192.168.3.0/24"
+					$lnet=ip2long($test);
+					$lip=ip2long($baseIP);
+					$binnet=str_pad( decbin($lnet),32,"0","STR_PAD_LEFT" );
+					$firstpart=substr($binnet,0,$mask);
+					$binip=str_pad( decbin($lip),32,"0","STR_PAD_LEFT" );
+					$firstip=substr($binip,0,$mask);
+					$yes=(strcmp($firstpart,$firstip)==0);
+					
+				} else {
+						// "192.168.*.*"
+					$IPparts = explode('.',$test);
+					$yes = 1;
+					reset($IPparts);
+					while(list($index,$val)=each($IPparts))	{
+						$val = trim($val);
+						if (strcmp($val,'*') && strcmp($IPpartsReq[$index],$val))	{
+							$yes=0;
+						}
 					}
 				}
 				if ($yes) return true;
 			}
 		}
+		return false;
 	}
 
 	/**
@@ -2797,6 +2813,10 @@ class t3lib_div {
 				require_once ($info['classFile']);
 				$obj = t3lib_div::makeInstance($info['className']);
 				if (is_object($obj)) {
+					if(!@is_callable(array($obj,'init')))	{
+// use silent logging???
+						die ('Broken service:'.t3lib_div::view_array($info));
+					}
 					if ($obj->init()) { // service available?
 	
 						$obj->info = $info;
