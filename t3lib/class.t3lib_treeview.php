@@ -281,6 +281,10 @@ class t3lib_treeView {
 		if($this->table) {
 			t3lib_div::loadTCA($this->table);
 		}
+
+			// setting this to false disables the use of array-trees by default
+		$this->data = false;
+		$this->dataLookup = false;
 	}
 
 
@@ -324,10 +328,6 @@ class t3lib_treeView {
 		$this->recs = array();
 		$this->ids = array();
 		$this->ids_hierarchy = array();
-
-			// setting this to false disables the use of array-trees by default
-		$this->data = false;
-		$this->dataLookup = false;
 	}
 
 
@@ -995,11 +995,7 @@ class t3lib_treeView {
 
 			if (is_array($val[$this->subLevelID])) {
 				$this->setDataFromArray($dataArr[$uid][$this->subLevelID],TRUE,$uid);
-				unset($dataArr[$uid][$this->subLevelID]);
 			}
-		}
-		if (!$traverse) {
-			$this->data = &$dataArr;
 		}
 	}
 
