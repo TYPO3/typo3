@@ -128,6 +128,7 @@ class clickMenu {
 
 		// Internal, static:
 	var $backPath='';			// Backpath for scripts/images.
+	var $PH_backPath='###BACK_PATH###';		// BackPath place holder: We need different backPath set whether the clickmenu is written back to a frame which is not in typo3/ dir or if the clickmenu is shown in the top frame (no backpath)
 	var $listFrame=0;			// If set, the calling document should be in the listframe of a frameset.
 	var $isDBmenu=0;			// If set, the menu is about database records, not files. (set if part 2 [1] of the item-var is NOT blank)
 	var $alwaysContentFrame=0;	// If true, the "content" frame is always used for reference (when condensed mode is enabled)
@@ -174,16 +175,19 @@ class clickMenu {
 		if (!$this->cmLevel)	{
 				// Make 1st level clickmenu:
 			if ($this->isDBmenu)	{
-				return $this->printDBClickMenu($this->iParts[0],$this->iParts[1]);
+				$CMcontent = $this->printDBClickMenu($this->iParts[0],$this->iParts[1]);
 			} else {
-				return $this->printFileClickMenu($this->iParts[0]);
+				$CMcontent = $this->printFileClickMenu($this->iParts[0]);
 			}
 		} else {
 				// Make 2nd level clickmenu (only for DBmenus)
 			if ($this->isDBmenu)	{
-				return $this->printNewDBLevel($this->iParts[0],$this->iParts[1]);
+				$CMcontent = $this->printNewDBLevel($this->iParts[0],$this->iParts[1]);
 			}
 		}
+		
+			// Return clickmenu conten:
+		return $CMcontent;
 	}
 
 	/**
@@ -294,8 +298,8 @@ class clickMenu {
 			// Return the printed elements:
 		return $this->printItems($menuItems,
 			$root?
-			'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/i/_icon_website.gif','width="18" height="16"').' class="absmiddle" alt="" />'.htmlspecialchars($GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']):
-			t3lib_iconWorks::getIconImage($table,$this->rec,$this->backPath,' class="absmiddle" title="'.htmlspecialchars(t3lib_BEfunc::getRecordIconAltText($this->rec,$table)).'"').t3lib_BEfunc::getRecordTitle($table,$this->rec,1)
+			'<img'.t3lib_iconWorks::skinImg($this->PH_backPath,'gfx/i/_icon_website.gif','width="18" height="16"').' class="absmiddle" alt="" />'.htmlspecialchars($GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']):
+			t3lib_iconWorks::getIconImage($table,$this->rec,$this->PH_backPath,' class="absmiddle" title="'.htmlspecialchars(t3lib_BEfunc::getRecordIconAltText($this->rec,$table)).'"').t3lib_BEfunc::getRecordTitle($table,$this->rec,1)
 		);
 	}
 
@@ -332,8 +336,8 @@ class clickMenu {
 		if (!is_array($menuItems))	$menuItems=array();
 		return $this->printItems($menuItems,
 			$root?
-			'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/i/_icon_website.gif','width="18" height="16"').' class="absmiddle" alt="" />'.htmlspecialchars($GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']):
-			t3lib_iconWorks::getIconImage($table,$this->rec,$this->backPath,' class="absmiddle" title="'.htmlspecialchars(t3lib_BEfunc::getRecordIconAltText($this->rec,$table)).'"').t3lib_BEfunc::getRecordTitle($table,$this->rec,1)
+			'<img'.t3lib_iconWorks::skinImg($this->PH_backPath,'gfx/i/_icon_website.gif','width="18" height="16"').' class="absmiddle" alt="" />'.htmlspecialchars($GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']):
+			t3lib_iconWorks::getIconImage($table,$this->rec,$this->PH_backPath,' class="absmiddle" title="'.htmlspecialchars(t3lib_BEfunc::getRecordIconAltText($this->rec,$table)).'"').t3lib_BEfunc::getRecordTitle($table,$this->rec,1)
 		);
 	}
 
@@ -397,7 +401,7 @@ class clickMenu {
 		}	
 		return $this->linkItem(
 			$this->label($type),
-			$this->excludeIcon('<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/clip_'.$type.($isSel==$type?'_h':'').'.gif','width="12" height="12"').' alt="" />'),
+			$this->excludeIcon('<img'.t3lib_iconWorks::skinImg($this->PH_backPath,'gfx/clip_'.$type.($isSel==$type?'_h':'').'.gif','width="12" height="12"').' alt="" />'),
 			"top.loadTopMenu('".$this->clipObj->selUrlDB($table,$uid,($type=='copy'?1:0),($isSel==$type))."');return false;"
 		);
 	}
@@ -422,7 +426,7 @@ class clickMenu {
 		
 		return $this->linkItem(
 			$this->label('paste'.$type),
-			$this->excludeIcon('<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/clip_paste'.$type.'.gif','width="12" height="12"').' alt="" />'),
+			$this->excludeIcon('<img'.t3lib_iconWorks::skinImg($this->PH_backPath,'gfx/clip_paste'.$type.'.gif','width="12" height="12"').' alt="" />'),
 			$editOnClick.'return false;'
 		);
 	}
@@ -438,7 +442,7 @@ class clickMenu {
 	function DB_info($table,$uid)	{
 		return $this->linkItem(
 			$this->label('info'),
-			$this->excludeIcon('<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/zoom2.gif','width="12" height="12"').' alt="" />'),
+			$this->excludeIcon('<img'.t3lib_iconWorks::skinImg($this->PH_backPath,'gfx/zoom2.gif','width="12" height="12"').' alt="" />'),
 			"top.launchView('".$table."', '".$uid."'); return hideCM();"			
 		);
 	}
@@ -455,7 +459,7 @@ class clickMenu {
 		$url = 'show_rechis.php?element='.rawurlencode($table.':'.$uid);
 		return $this->linkItem(
 			$GLOBALS['LANG']->makeEntities($GLOBALS['LANG']->getLL('CM_history')),
-			$this->excludeIcon('<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/history2.gif','width="13" height="12"').' alt="" />'),
+			$this->excludeIcon('<img'.t3lib_iconWorks::skinImg($this->PH_backPath,'gfx/history2.gif','width="13" height="12"').' alt="" />'),
 			$this->urlRefForCM($url,'returnUrl'),
 			0
 		);
@@ -474,7 +478,7 @@ class clickMenu {
 		$url = 'mod/web/perm/index.php?id='.$uid.($rec['perms_userid']==$GLOBALS['BE_USER']->user['uid']||$GLOBALS['BE_USER']->isAdmin()?'&return_id='.$uid.'&edit=1':'');
 		return $this->linkItem(
 			$GLOBALS['LANG']->makeEntities($GLOBALS['LANG']->getLL('CM_perms')),
-			$this->excludeIcon('<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/perm.gif','width="7" height="12"').' alt="" />'),
+			$this->excludeIcon('<img'.t3lib_iconWorks::skinImg($this->PH_backPath,'gfx/perm.gif','width="7" height="12"').' alt="" />'),
 			$this->urlRefForCM($url),
 			0
 		);
@@ -493,7 +497,7 @@ class clickMenu {
 		$url = t3lib_div::getIndpEnv('TYPO3_REQUEST_DIR').'db_list.php?table='.($table=='pages'?'':$table).'&id='.($table=='pages'?$uid:$rec['pid']);
 		return $this->linkItem(
 			$GLOBALS['LANG']->makeEntities($GLOBALS['LANG']->getLL('CM_db_list')),
-			$this->excludeIcon('<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/list.gif','width="11" height="11"').' alt="" />'),
+			$this->excludeIcon('<img'.t3lib_iconWorks::skinImg($this->PH_backPath,'gfx/list.gif','width="11" height="11"').' alt="" />'),
 			"top.nextLoadModuleUrl='".$url."';top.goToModule('web_list',1);",
 			0
 		);
@@ -514,7 +518,7 @@ class clickMenu {
 				
 		return $this->linkItem(
 			$GLOBALS['LANG']->makeEntities($GLOBALS['LANG']->getLL('CM_moveWizard'.($table=='pages'?'_page':''))),
-			$this->excludeIcon('<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/move_'.($table=='pages'?'page':'record').'.gif','width="11" height="12"').' alt="" />'),
+			$this->excludeIcon('<img'.t3lib_iconWorks::skinImg($this->PH_backPath,'gfx/move_'.($table=='pages'?'page':'record').'.gif','width="11" height="12"').' alt="" />'),
 			$this->urlRefForCM($url,'returnUrl'),
 			0
 		);
@@ -533,7 +537,7 @@ class clickMenu {
 		$url = ($table=='pages' || !t3lib_extMgm::isLoaded('cms')) ? 'db_new.php?id='.$uid.'&pagesOnly=1' : 'sysext/cms/layout/db_new_content_el.php?id='.$rec['pid'].'&sys_language_uid='.intval($rec['sys_language_uid']);
 		return $this->linkItem(
 			$GLOBALS['LANG']->makeEntities($GLOBALS['LANG']->getLL('CM_newWizard')),
-			$this->excludeIcon('<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/new_'.($table=='pages'?'page':'record').'.gif','width="'.($table=='pages'?'13':'16').'" height="12"').' alt="" />'),
+			$this->excludeIcon('<img'.t3lib_iconWorks::skinImg($this->PH_backPath,'gfx/new_'.($table=='pages'?'page':'record').'.gif','width="'.($table=='pages'?'13':'16').'" height="12"').' alt="" />'),
 			$this->urlRefForCM($url,'returnUrl'),
 			0
 		);
@@ -552,7 +556,7 @@ class clickMenu {
 		$url = 'alt_doc.php?edit['.$table.']['.$uid.']=edit'.$addParam;
 		return $this->linkItem(
 			$GLOBALS['LANG']->makeEntities($GLOBALS['LANG']->getLL('CM_editAccess')),
-			$this->excludeIcon('<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/editaccess.gif','width="12" height="12"').' alt="" />'),
+			$this->excludeIcon('<img'.t3lib_iconWorks::skinImg($this->PH_backPath,'gfx/editaccess.gif','width="12" height="12"').' alt="" />'),
 			$this->urlRefForCM($url,'returnUrl'),
 			1	// no top frame CM!
 		);
@@ -569,7 +573,7 @@ class clickMenu {
 		$url = 'alt_doc.php?edit[pages]['.$uid.']=edit';
 		return $this->linkItem(
 			$GLOBALS['LANG']->makeEntities($GLOBALS['LANG']->getLL('CM_editPageHeader')),
-			$this->excludeIcon('<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/edit2.gif','width="11" height="12"').' alt="" />'),
+			$this->excludeIcon('<img'.t3lib_iconWorks::skinImg($this->PH_backPath,'gfx/edit2.gif','width="11" height="12"').' alt="" />'),
 			$this->urlRefForCM($url,'returnUrl'),
 			1	// no top frame CM!
 		);
@@ -592,13 +596,13 @@ class clickMenu {
 		$editOnClick='';
 		$loc='top.content'.($this->listFrame && !$this->alwaysContentFrame ?'.list_frame':'');
 		$addParam='';
-		$theIcon = t3lib_iconWorks::skinImg($this->backPath,'gfx/edit2.gif','width="11" height="12"');
+		$theIcon = t3lib_iconWorks::skinImg($this->PH_backPath,'gfx/edit2.gif','width="11" height="12"');
 		if (
 				$this->iParts[0]=='pages' && 
 				$this->iParts[1] && 
 				$BE_USER->check('modules', $pageModule)
 			)	{
-			$theIcon = t3lib_iconWorks::skinImg($this->backPath,'gfx/edit_page.gif','width="12" height="12"');
+			$theIcon = t3lib_iconWorks::skinImg($this->PH_backPath,'gfx/edit_page.gif','width="12" height="12"');
 			$this->editPageIconSet=1;
 			if ($BE_USER->uc['classicPageEditMode'] || !t3lib_extMgm::isLoaded('cms'))	{
 				$addParam='&editRegularContentFromId='.intval($this->iParts[1]);
@@ -630,13 +634,13 @@ class clickMenu {
 		$loc='top.content'.(!$this->alwaysContentFrame?'.list_frame':'');
 		$editOnClick='if('.$loc.'){'.$loc.".document.location=top.TS.PATH_typo3+'".
 			($this->listFrame?
-				$this->backPath."alt_doc.php?returnUrl='+top.rawurlencode(".$this->frameLocation($loc.'.document').")+'&edit[".$table."][-".$uid."]=new'":
-				$this->backPath.'db_new.php?id='.intval($uid)."'").
+				"alt_doc.php?returnUrl='+top.rawurlencode(".$this->frameLocation($loc.'.document').")+'&edit[".$table."][-".$uid."]=new'":
+				'db_new.php?id='.intval($uid)."'").
 			';}';
 			
 		return $this->linkItem(
 			$this->label('new'),
-			$this->excludeIcon('<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/new_'.($table=='pages'&&$this->listFrame?'page':'el').'.gif','width="'.($table=='pages'?'13':'11').'" height="12"').' alt="" />'),
+			$this->excludeIcon('<img'.t3lib_iconWorks::skinImg($this->PH_backPath,'gfx/new_'.($table=='pages'&&$this->listFrame?'page':'el').'.gif','width="'.($table=='pages'?'13':'11').'" height="12"').' alt="" />'),
 			$editOnClick.'return hideCM();'
 		);
 	}
@@ -659,7 +663,7 @@ class clickMenu {
 
 		return $this->linkItem(
 			$this->label(($rec[$hideField]?'un':'').'hide'),
-			$this->excludeIcon('<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/button_'.($rec[$hideField]?'un':'').'hide.gif','width="11" height="10"').' alt="" />'),
+			$this->excludeIcon('<img'.t3lib_iconWorks::skinImg($this->PH_backPath,'gfx/button_'.($rec[$hideField]?'un':'').'hide.gif','width="11" height="10"').' alt="" />'),
 			$editOnClick.'return false;',
 			1
 		);
@@ -682,7 +686,7 @@ class clickMenu {
 
 		return $this->linkItem(
 			$this->label('delete'),
-			$this->excludeIcon('<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/garbage.gif','width="11" height="12"').' alt="" />'),
+			$this->excludeIcon('<img'.t3lib_iconWorks::skinImg($this->PH_backPath,'gfx/garbage.gif','width="11" height="12"').' alt="" />'),
 			$editOnClick.'return false;'
 		);
 	}
@@ -698,8 +702,8 @@ class clickMenu {
 	function DB_view($id,$anchor='')	{
 		return $this->linkItem(
 			$this->label('view'),
-			$this->excludeIcon('<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/zoom.gif','width="12" height="12"').' alt="" />'),
-			t3lib_BEfunc::viewOnClick($id,$this->backPath,t3lib_BEfunc::BEgetRootLine($id),$anchor).'return hideCM();'
+			$this->excludeIcon('<img'.t3lib_iconWorks::skinImg($this->PH_backPath,'gfx/zoom.gif','width="12" height="12"').' alt="" />'),
+			t3lib_BEfunc::viewOnClick($id,$this->PH_backPath,t3lib_BEfunc::BEgetRootLine($id),$anchor).'return hideCM();'
 		);
 	}
 
@@ -731,7 +735,7 @@ class clickMenu {
 			$fI = pathinfo($path);
 			$icon = is_dir($path) ? 'folder.gif' : t3lib_BEfunc::getFileIcon(strtolower($fI['extension']));
 			$size=' ('.t3lib_div::formatSize(filesize($path)).'bytes)';
-			$icon = '<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/fileicons/'.$icon,'width="18" height="16"').' class="absmiddle" title="'.htmlspecialchars($fI['basename'].$size).'" alt="" />';
+			$icon = '<img'.t3lib_iconWorks::skinImg($this->PH_backPath,'gfx/fileicons/'.$icon,'width="18" height="16"').' class="absmiddle" title="'.htmlspecialchars($fI['basename'].$size).'" alt="" />';
 
 				// edit
 			if (!in_array('edit',$this->disabledItems) && is_file($path) && t3lib_div::inList($GLOBALS['TYPO3_CONF_VARS']['SYS']['textfile_ext'],$fI['extension'])) $menuItems['edit']=$this->FILE_launch($path,'file_edit.php','edit','edit_file.gif');
@@ -808,7 +812,7 @@ class clickMenu {
 		
 		return $this->linkItem(
 			$this->label($type),
-			$this->excludeIcon('<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/'.$image,'width="12" height="12"').' alt="" />'),
+			$this->excludeIcon('<img'.t3lib_iconWorks::skinImg($this->PH_backPath,'gfx/'.$image,'width="12" height="12"').' alt="" />'),
 			$editOnClick.'return hideCM();'
 		);
 	}
@@ -829,7 +833,7 @@ class clickMenu {
 		}	
 		return $this->linkItem(
 			$this->label($type),
-			$this->excludeIcon('<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/clip_'.$type.($isSel==$type?'_h':'').'.gif','width="12" height="12"').' alt="" />'),
+			$this->excludeIcon('<img'.t3lib_iconWorks::skinImg($this->PH_backPath,'gfx/clip_'.$type.($isSel==$type?'_h':'').'.gif','width="12" height="12"').' alt="" />'),
 			"top.loadTopMenu('".$this->clipObj->selUrlFile($path,($type=='copy'?1:0),($isSel==$type))."');return false;"
 		);
 	}
@@ -849,7 +853,7 @@ class clickMenu {
 		
 		return $this->linkItem(
 			$this->label('delete'),
-			$this->excludeIcon('<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/garbage.gif','width="11" height="12"').' alt="" />'),
+			$this->excludeIcon('<img'.t3lib_iconWorks::skinImg($this->PH_backPath,'gfx/garbage.gif','width="11" height="12"').' alt="" />'),
 			$editOnClick.'return false;'
 		);
 	}
@@ -872,7 +876,7 @@ class clickMenu {
 		
 		return $this->linkItem(
 			$this->label('pasteinto'),
-			$this->excludeIcon('<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/clip_pasteinto.gif','width="12" height="12"').' alt="" />'),
+			$this->excludeIcon('<img'.t3lib_iconWorks::skinImg($this->PH_backPath,'gfx/clip_pasteinto.gif','width="12" height="12"').' alt="" />'),
 			$editOnClick.'return false;'
 		);
 	}
@@ -919,18 +923,21 @@ class clickMenu {
 							<!-- Items: -->
 						<td class="c-item">'.
 							implode('</td>
-						<td><img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/acm_spacer2.gif','width="8" height="12"').' alt="" /></td>
+						<td><img'.t3lib_iconWorks::skinImg($this->PH_backPath,'gfx/acm_spacer2.gif','width="8" height="12"').' alt="" /></td>
 						<td class="c-item">',$this->menuItemsForTopFrame($menuItems)).
 						'</td>
 						
 							<!-- Close button: -->
-						<td class="c-closebutton"><a href="#" onclick="hideCM();return false;"><img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/close_12h.gif','width="11" height="12"').' title="'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.close',1).'" alt="" /></a></td>
+						<td class="c-closebutton"><a href="#" onclick="hideCM();return false;"><img'.t3lib_iconWorks::skinImg($this->PH_backPath,'gfx/close_12h.gif','width="11" height="12"').' title="'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.close',1).'" alt="" /></a></td>
 						
 							<!-- The item of the clickmenu: -->
 						<td class="c-itemicon">'.$item.'</td>
 					</tr>
 				</table>
 			';
+		
+				// Set remaining BACK_PATH to blank (if any)
+			$out = str_replace($this->PH_backPath,'',$out);
 		}
 			// Adding JS part:
 		$out.=$this->printLayerJScode($menuItems);
@@ -960,6 +967,9 @@ class clickMenu {
 				// Wrap the inner table in another table to create outer border:
 			$CMtable = $this->wrapColorTableCM($CMtable);
 				
+				// Set back path place holder to real back path
+			$CMtable = str_replace($this->PH_backPath,$this->backPath,$CMtable);
+
 				// Create JavaScript section:
 			$script=$GLOBALS['TBE_TEMPLATE']->wrapScriptTags('
 			
@@ -1168,7 +1178,7 @@ class SC_alt_clickmenu {
 		} else {
 			$this->backPath = $BACK_PATH;
 		}
-
+		
 			// Setting internal array of classes for extending the clickmenu:
 		$this->extClassArray = $GLOBALS['TBE_MODULES_EXT']['xMOD_alt_clickmenu']['extendCMclasses'];
 
@@ -1264,12 +1274,6 @@ class SC_alt_clickmenu {
 		$clickMenu->extClassArray = $this->extClassArray;
 		$clickMenu->dontDisplayTopFrameCM = $this->dontDisplayTopFrameCM;
 		$clickMenu->backPath = $this->backPath;
-		
-			// Takes the backPath as a parameter BUT since we are worried about someone forging a backPath (XSS security hole) we will check with sent md5 hash:
-		$inputBP = explode('|',$this->backPath);
-		if (count($inputBP)==2 && $inputBP[1]==md5($inputBP[0].'|'.$GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'])) {
-			$clickMenu->backPath = $inputBP[0];
-		}
 
 			// Start page 
 		$this->content.=$this->doc->startPage('Context Sensitive Menu');

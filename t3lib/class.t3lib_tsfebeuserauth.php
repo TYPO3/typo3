@@ -145,6 +145,7 @@ class t3lib_tsfeBeUserAuth extends t3lib_beUserAuth {
 	 * @see index_ts.php
 	 */
 	function extPrintFeAdminDialog()	{
+
 		if ($this->uc['TSFE_adminConfig']['display_top'])	{
 			if ($this->extAdmModuleEnabled('preview'))	$out.= $this->extGetCategory_preview();
 			if ($this->extAdmModuleEnabled('cache'))	$out.= $this->extGetCategory_cache();
@@ -331,6 +332,7 @@ class t3lib_tsfeBeUserAuth extends t3lib_beUserAuth {
 	function extGetCategory_edit($out='')	{
 		$out.=$this->extGetHead('edit');
 		if ($this->uc['TSFE_adminConfig']['display_edit'])	{
+
 				// If another page module was specified, replace the default Page module with the new one
 			$newPageModule = trim($GLOBALS['BE_USER']->getTSConfigVal('options.overridePageModule'));
 			$pageModule = t3lib_BEfunc::isModuleSetInTBE_MODULES($newPageModule) ? $newPageModule : 'web_layout';
@@ -667,10 +669,20 @@ class t3lib_tsfeBeUserAuth extends t3lib_beUserAuth {
 			}
 			
 				// regular check:
-			if ($this->uc['TSFE_adminConfig']['display_top'] && $this->uc['TSFE_adminConfig']['display_'.$pre])	{	// See if the menu is expanded!
+			if ($this->extIsAdmMenuOpen($pre))	{	// See if the menu is expanded!
 				return $retVal;
 			}
 		}
+	}
+
+	/**
+	 * Returns true if admin panel module is open
+	 * 
+	 * @param	string		Module key
+	 * @return	boolean		True, if the admin panel is open for the specified admin panel module key.
+	 */
+	function extIsAdmMenuOpen($pre)	{
+		return $this->uc['TSFE_adminConfig']['display_top'] && $this->uc['TSFE_adminConfig']['display_'.$pre];
 	}
 
 

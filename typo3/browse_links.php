@@ -1593,7 +1593,7 @@ class SC_browse_links {
 			$titleLen=intval($GLOBALS['BE_USER']->uc['titleLen']);	
 			$picon='<img'.t3lib_iconWorks::skinImg('','gfx/i/_icon_webfolders.gif','width="18" height="16"').' alt="" />';
 			$picon.=htmlspecialchars(t3lib_div::fixed_lgd(basename($expandFolder),$titleLen));
-			$picon='<a href="#" onclick="return link_folder(\''.substr($expandFolder,strlen(PATH_site)).'\');">'.$picon.'</a>';
+			$picon='<a href="#" onclick="return link_folder(\''.t3lib_div::rawUrlEncodeFP(substr($expandFolder,strlen(PATH_site))).'\');">'.$picon.'</a>';
 			$out.=$picon.'<br />';
 			
 				// Get files from the folder:
@@ -1601,26 +1601,33 @@ class SC_browse_links {
 			$c=0;
 			$cc=count($files);
 
-			foreach($files as $filepath)	{
-				$c++;
-				$fI=pathinfo($filepath);
-
-					// File icon:
-				$icon = t3lib_BEfunc::getFileIcon(strtolower($fI['extension']));
-				
-					// If the listed file turns out to be the CURRENT file, then show blinking arrow:
-				if ($this->curUrlInfo['act']=="file" && $cmpPath==$filepath)	{
-					$arrCol='<img'.t3lib_iconWorks::skinImg('','gfx/blinkarrow_left.gif','width="5" height="9"').' class="c-blinkArrowL" alt="" />';
-				} else {
-					$arrCol='';
+			if (is_array($files))	{
+				foreach($files as $filepath)	{
+					$c++;
+					$fI=pathinfo($filepath);
+	
+						// File icon:
+					$icon = t3lib_BEfunc::getFileIcon(strtolower($fI['extension']));
+					
+						// If the listed file turns out to be the CURRENT file, then show blinking arrow:
+					if ($this->curUrlInfo['act']=="file" && $cmpPath==$filepath)	{
+						$arrCol='<img'.t3lib_iconWorks::skinImg('','gfx/blinkarrow_left.gif','width="5" height="9"').' class="c-blinkArrowL" alt="" />';
+					} else {
+						$arrCol='';
+					}
+					
+						// Get size and icon:
+					$size=' ('.t3lib_div::formatSize(filesize($filepath)).'bytes)';
+					$icon = '<img'.t3lib_iconWorks::skinImg('','gfx/fileicons/'.$icon.'','width="18" height="16"').' title="'.htmlspecialchars($fI['basename'].$size).'" alt="" />';
+					
+						// Put it all together for the file element:
+					$out.='<img'.t3lib_iconWorks::skinImg('','gfx/ol/join'.($c==$cc?'bottom':'').'.gif','width="18" height="16"').' alt="" />'.
+							$arrCol.
+							'<a href="#" onclick="return link_folder(\''.t3lib_div::rawUrlEncodeFP(substr($filepath,strlen(PATH_site))).'\');">'.
+							$icon.
+							htmlspecialchars(t3lib_div::fixed_lgd(basename($filepath),$titleLen)).
+							'</a><br />';
 				}
-				
-					// Get size and icon:
-				$size=' ('.t3lib_div::formatSize(filesize($filepath)).'bytes)';
-				$icon = '<img'.t3lib_iconWorks::skinImg('','gfx/fileicons/'.$icon.'','width="18" height="16"').' title="'.htmlspecialchars($fI['basename'].$size).'" alt="" />';
-				
-					// Put it all together for the file element:
-				$out.='<img'.t3lib_iconWorks::skinImg('','gfx/ol/join'.($c==$cc?'bottom':'').'.gif','width="18" height="16"').' alt="" />'.$arrCol.'<a href="#" onclick="return link_folder(\''.substr($filepath,strlen(PATH_site)).'\');">'.$icon.htmlspecialchars(t3lib_div::fixed_lgd(basename($filepath),$titleLen)).'</a><br />';
 			}
 		}
 		return $out;
@@ -1667,9 +1674,6 @@ class SC_browse_links {
 				foreach($files as $filepath)	{
 					$fI=pathinfo($filepath);
 					
-						// URL of image:
-					$iurl = $this->siteURL.substr($filepath,strlen(PATH_site));
-					
 						// Thumbnail/size generation:
 					if (t3lib_div::inList($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'],$fI['extension']) && !$noThumbs)	{
 						$imgInfo = $imgObj->getImageDimensions($filepath);
@@ -1686,8 +1690,13 @@ class SC_browse_links {
 					$icon = '<img'.t3lib_iconWorks::skinImg('','gfx/fileicons/'.$ficon,'width="18" height="16"').' title="'.htmlspecialchars($fI['basename'].$size).'" class="absmiddle" alt="" />';
 		
 						// Create links for adding the file:
-					$ATag = "<a href=\"#\" onclick=\"return insertElement('','".t3lib_div::shortMD5($filepath)."', 'file', '".rawurlencode($fI['basename'])."', unescape('".rawurlencode($filepath)."'), '".$fI['extension']."', '".$ficon."');\">";
-					$ATag_alt = substr($ATag,0,-4).",'',1);\">";
+					if (strstr($filepath,',') || strstr($filepath,'|'))	{	// In case an invalid character is in the filepath, display error message:
+						$eMsg = $LANG->JScharCode(sprintf($LANG->getLL('invalidChar'),', |'));
+						$ATag = $ATag_alt = "<a href=\"#\" onclick=\"alert(".$eMsg.");return false;\">";
+					} else {	// If filename is OK, just add it:
+						$ATag = "<a href=\"#\" onclick=\"return insertElement('','".t3lib_div::shortMD5($filepath)."', 'file', '".rawurlencode($fI['basename'])."', unescape('".rawurlencode($filepath)."'), '".$fI['extension']."', '".$ficon."');\">";
+						$ATag_alt = substr($ATag,0,-4).",'',1);\">";
+					}
 					$ATag_e='</a>';
 		
 						// Create link to showing details about the file in a window:
@@ -1783,8 +1792,8 @@ class SC_browse_links {
 						$fI=pathinfo($filepath);
 						
 							// URL of image:
-						$iurl = $this->siteURL.substr($filepath,strlen(PATH_site));
-						
+						$iurl = $this->siteURL.t3lib_div::rawurlencodeFP(substr($filepath,strlen(PATH_site)));
+
 							// Show only web-images
 						if (t3lib_div::inList('gif,jpeg,jpg,png',$fI['extension']))	{
 							$imgInfo = @getimagesize($filepath);
@@ -1818,7 +1827,9 @@ class SC_browse_links {
 								<tr class="bgColor4">
 									<td nowrap="nowrap">'.$filenameAndIcon.'&nbsp;</td>
 									<td nowrap="nowrap">'.
-									($imgInfo[0]!=$IW ? '<a href="'.htmlspecialchars(t3lib_div::linkThisScript(array('noLimit'=>'1'))).'"><img'.t3lib_iconWorks::skinImg('','gfx/icon_warning2.gif','width="18" height="16"').' title="'.$GLOBALS['LANG']->getLL('clickToRedrawFullSize',1).'" alt="" /></a>':'').
+									($imgInfo[0]!=$IW ? '<a href="'.htmlspecialchars(t3lib_div::linkThisScript(array('noLimit'=>'1'))).'">'.
+														'<img'.t3lib_iconWorks::skinImg('','gfx/icon_warning2.gif','width="18" height="16"').' title="'.$GLOBALS['LANG']->getLL('clickToRedrawFullSize',1).'" alt="" />'.
+														'</a>':'').
 									$pDim.'&nbsp;</td>
 								</tr>';
 							
@@ -1910,7 +1921,7 @@ class SC_browse_links {
 			<h3 class="bgColor5">'.htmlspecialchars($str).'</h3>
 			';
 	}
-
+	 
 	/**
 	 * Displays a message box with the input message
 	 * 
@@ -1948,7 +1959,7 @@ class SC_browse_links {
 			-->
 			<table border="0" cellpadding="0" cellspacing="0" class="bgColor5" id="typo3-curUrl">
 				<tr>
-					<td>'.$GLOBALS['LANG']->getLL('currentLink',1).': '.htmlspecialchars($str).'</td>
+					<td>'.$GLOBALS['LANG']->getLL('currentLink',1).': '.htmlspecialchars(rawurldecode($str)).'</td>
 				</tr>
 			</table>';
 	}
@@ -1975,8 +1986,8 @@ class SC_browse_links {
 				$info['act']='spec';
 			} elseif (t3lib_div::isFirstPartOfStr($href,$siteUrl))	{	// If URL is on the current frontend website:
 				$rel = substr($href,strlen($siteUrl));
-				if (@file_exists(PATH_site.$rel))	{	// URL is a file, which exists:
-					$info['value']=$rel;
+				if (@file_exists(PATH_site.rawurldecode($rel)))	{	// URL is a file, which exists:
+					$info['value']=rawurldecode($rel);
 					$info['act']='file';
 				} else {	// URL is a page (id parameter)
 					$uP=parse_url($rel);

@@ -1060,7 +1060,18 @@ class t3lib_div {
 	function rawUrlEncodeJS($str)	{
 		return str_replace('%20',' ',rawurlencode($str));
 	}
-
+	
+	/**
+	 * rawurlencode which preserves "/" chars
+	 * Usefull when filepaths should keep the "/" chars, but have all other special chars encoded.
+	 * 
+	 * @param	string		Input string
+	 * @return	string		Output string
+	 */
+	function rawUrlEncodeFP($str)	{
+		return str_replace('%2F','/',rawurlencode($str));
+	}
+	
 	/**
 	 * Checking syntax of input email address
 	 * 

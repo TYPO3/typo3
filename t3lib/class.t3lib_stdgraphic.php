@@ -2060,7 +2060,7 @@ class t3lib_stdGraphic	{
 	 * Wrapping the input filename in double-quotes
 	 * 
 	 * @param	string		Input filename
-	 * @return	string		The outpute wrapped in ""
+	 * @return	string		The output wrapped in "" (if there are spaces in the filepath)
 	 * @access private
 	 */
 	function wrapFileName($inputName)	{

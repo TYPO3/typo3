@@ -113,7 +113,7 @@ IMG {
 
  /* Set default values for bodytags: */
 BODY { 
-	margin: 2px 0px 0px 2px; 
+	margin: 2px 0px 0px 4px; 
 	background-color: #F7F3EF;
 }
 
@@ -215,7 +215,9 @@ TABLE#typo3-msgBox TR TD { padding: 10px 50px 10px 50px; }
 
 /* Palette display for TCEforms (top frame, alt_palette.php) */
 BODY#typo3-alt-palette-php { background-image: url(gfx/alt_topmenu_back_full.gif); margin-top: 8px; margin-left: 6px; }
-TABLE#typo3-TCEforms-palette TD {white-space: nowrap; vertical-align: middle;}
+TABLE#typo3-TCEforms-palette TD {white-space: nowrap; vertical-align: top;}
+TABLE#typo3-TCEforms-palette TR TD.c-label { padding-top: 3px; }
+TABLE#typo3-TCEforms-palette TR TD.c-close { padding-top: 3px; }
 
 /* Context Sensitive Help window (view_help.php) */
 DIV.typo3-view-help { margin-top: 6px; margin-left: 3px; width:95%; }
@@ -295,12 +297,11 @@ BODY#typo3-file-edit-php DIV#c-submit, BODY#typo3-file-edit-php DIV#c-edit {
 }
 
 /* Web > Page */
-TABLE.typo3-page-columnsMode TABLE.typo3-page-ceHeader { width: 100%; }
-TABLE.typo3-page-columnsMode TABLE.typo3-page-ceHeader IMG { vertical-align: middle; }
+TABLE.typo3-page-ceHeader { width: 100%; }
+TABLE.typo3-page-ceHeader IMG { vertical-align: middle; }
 TABLE.typo3-page-columnsMode IMG.c-divider { margin: 10px 0px 5px 0px;}
 
 /* Web > List */
-BODY#typo3-db-list-php { margin-left: 4px; }
 TABLE.typo3-dblist IMG { vertical-align: middle; }
 TABLE.typo3-dblist TR TD { padding-left: 1px; padding-right: 6px; }
 TABLE.typo3-dblist TR TD.c-headLineTable { background-color: #cccccc; height: 16px; }
@@ -317,7 +318,6 @@ INPUT.smallCheckboxes { vertical-align: middle; margin: 0 0 0 0; padding: 0 0 0 
 DIV#typo3-listOptions { margin: 10px 0px 10px 0px; }
 
 /* File > List */
-BODY#typo3-file-list-php { margin-left: 4px; }
 TABLE#typo3-filelist IMG { vertical-align: middle; }
 TABLE#typo3-filelist TR TD { padding-left: 1px; padding-right: 6px; }
 TABLE#typo3-filelist TR TD.c-headLine  { background-color: #cccccc; font-weight: bold; height: 16px; }

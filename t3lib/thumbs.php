@@ -201,17 +201,17 @@ class SC_t3lib_thumbs {
 			if ($TYPO3_CONF_VARS['GFX']['im'])	{
 					// If thumbnail does not exist, we generate it
 				if (!@file_exists($this->output))	{
-					if (strstr($this->input,' ') || strstr($this->output,' '))	{
+/*					if (strstr($this->input,' ') || strstr($this->output,' '))	{
 						$this->errorGif('Spaces in','filepath',$this->input);
 					}
-						// 16 colors for small (56) thumbs, 64 for bigger and all for jpegs
+*/						// 16 colors for small (56) thumbs, 64 for bigger and all for jpegs
 					if ($outext=='jpg')	{
 						$colors = '';
 					} else {
 						$colors = ($sizeMax>56)?'-colors 64':'-colors 16';
 					}
 					$cmd = ($TYPO3_CONF_VARS['GFX']['im_path_lzw'] ? $TYPO3_CONF_VARS['GFX']['im_path_lzw'] : $TYPO3_CONF_VARS['GFX']['im_path']).
-								'convert -sample '.$this->size.' '.$colors.' '.$this->input.'[0] '.$this->output;
+								'convert -sample '.$this->size.' '.$colors.' '.$this->wrapFileName($this->input.'[0]').' '.$this->wrapFileName($this->output);
 
 		//			echo $cmd;
 					exec($cmd);
@@ -351,6 +351,20 @@ class SC_t3lib_thumbs {
 		}
 		imagedestroy($im);
 		exit;
+	}
+
+	/**
+	 * Wrapping the input filename in double-quotes
+	 * 
+	 * @param	string		Input filename
+	 * @return	string		The output wrapped in "" (if there are spaces in the filepath)
+	 * @access private
+	 */
+	function wrapFileName($inputName)	{
+		if (strstr($inputName,' '))	{
+			$inputName='"'.$inputName.'"';
+		}
+		return $inputName;
 	}
 }
 

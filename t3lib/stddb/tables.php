@@ -124,7 +124,7 @@ $LANG_GENERAL_LABELS = array(
  * NOTE: The (default) icon for a table is defined 1) as a giffile named 'gfx/i/[tablename].gif' or 2) as the value of [table][ctrl][iconfile]
  * NOTE: [table][ctrl][rootLevel] goes NOT for pages. Apart from that if rootLevel is true, records can ONLY be created on rootLevel. If it's false records can ONLY be created OUTSIDE rootLevel
  */ 
- $TCA = array();
+$TCA = array();
 
 /**
  * Table "pages": 

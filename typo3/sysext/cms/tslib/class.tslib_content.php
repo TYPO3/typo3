@@ -2329,7 +2329,7 @@ class tslib_cObj {
 			$info[3] = t3lib_div::png_to_gif_by_imagemagick($info[3]);
 			$GLOBALS['TSFE']->imagesOnPage[]=$info[3];		// This array is used to collect the image-refs on the page...
 			$alttext = strip_tags($this->stdWrap($conf['alttext'],$conf['alttext.']));
-			$theValue = '<img src="'.htmlspecialchars($GLOBALS['TSFE']->absRefPrefix.$info[3]).'" width="'.$info[0].'" height="'.$info[1].'"  border="'.intval($conf['border']).'"'.($conf['params']?' '.$conf['params']:'').($alttext?' alt="'.htmlspecialchars($alttext).'"':' alt=""').' />';
+			$theValue = '<img src="'.htmlspecialchars($GLOBALS['TSFE']->absRefPrefix.t3lib_div::rawUrlEncodeFP($info[3])).'" width="'.$info[0].'" height="'.$info[1].'"  border="'.intval($conf['border']).'"'.($conf['params']?' '.$conf['params']:'').($alttext?' alt="'.htmlspecialchars($alttext).'"':' alt=""').' />';
 			if ($conf['linkWrap'])	{
 				$theValue = $this->linkWrap($theValue,$conf['linkWrap']);
 			} elseif ($conf['imageLinkWrap']) {
@@ -4497,7 +4497,9 @@ class tslib_cObj {
 				// Internal target:
 			$target = isset($conf['target']) ? $conf['target'] : $GLOBALS['TSFE']->intTarget;
 			if ($conf['target.'])	{$target=$this->stdWrap($target, $conf['target.']);}
-			if(strstr($link_param,'@'))	{		// mailadr
+			
+				// Detecting kind of link:
+			if(strstr($link_param,'@'))	{		// If it's a mail address:
 				$link_param = eregi_replace('^mailto:','',$link_param);
 				if ($linktxt=='') $linktxt = $link_param;
 				if (!$GLOBALS['TSFE']->config['config']['jumpurl_enable'] || $GLOBALS['TSFE']->config['config']['jumpurl_mailto_disable'])	{
@@ -4518,7 +4520,7 @@ class tslib_cObj {
 				$urlChar=intval(strpos($link_param, '.'));
 
 					// Detects if a file is found in site-root (or is a 'virtual' simulateStaticDocument file!) and if so it will be treated like a normal file.
-				list($rootFileDat) = explode('?',$link_param);
+				list($rootFileDat) = explode('?',rawurldecode($link_param));
 				$rFD_fI = pathinfo($rootFileDat);
 				if (trim($rootFileDat) && !strstr($link_param,'/') && (@is_file(PATH_site.$rootFileDat) || t3lib_div::inList('php,html,htm',strtolower($rFD_fI['extension']))))	{	
 					$isLocalFile=1;
@@ -4541,8 +4543,8 @@ class tslib_cObj {
 					$finalTagParts['TYPE']='url';
 				} elseif ($fileChar || $isLocalFile)	{	// file (internal)
 					$splitLinkParam = explode('?',$link_param);
-					if (@file_exists($splitLinkParam[0]) || $isLocalFile)	{
-						if ($linktxt=='') $linktxt = $link_param;
+					if (@file_exists(rawurldecode($splitLinkParam[0])) || $isLocalFile)	{
+						if ($linktxt=='') $linktxt = rawurldecode($link_param);
 						if ($GLOBALS['TSFE']->config['config']['jumpurl_enable'])	{
 							$this->lastTypoLinkUrl = $GLOBALS['TSFE']->absRefPrefix.$GLOBALS['TSFE']->config['mainScript'].$initP.'&jumpurl='.rawurlencode($link_param).$GLOBALS['TSFE']->getMethodUrlIdToken;
 						} else {

@@ -3,15 +3,6 @@ TODO LIST
 *****************
 
 General:
-- BUG: (Not) using "rawurlencode" in links (breaks when spaces/special chars are in either dirname or filename):
-  - cImage... (see Rene Fritz report)
-  - RTE images break
-  - RTE drag'n'drop WORKS!
-  - RTE links break.
-  - thumbnails display break.
-  - attachment of records break.
-  - CHECK: header links in content elements?
-
 - CHECK: What is the number of supported page levels? 20 or 100?
 - CHECK: possible XSS problem with alt_mod_frameset.php taking parameters for scripts to display in frames.
 - Option: Turn of "onBlur" in backend (Message-ID: <001801c2a28c$bb020c70$963afea9@bla8kdvxpl8glk>)

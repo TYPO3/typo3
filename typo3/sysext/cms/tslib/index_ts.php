@@ -203,14 +203,14 @@ if ($HTTP_COOKIE_VARS['be_typo_user']) {		// If the backend cookie is set, we pr
 					$BE_USER->ext_forcePreview=1;
 				}
 	
-				if ($BE_USER->extAdmModuleEnabled('edit'))	{
+					// Include classes for editing IF editing module in Admin Panel is open (it is assumed that $TSFE->displayEditIcons is set only if the Edit module is open in the Admin Panel)
+				if ($BE_USER->extAdmModuleEnabled('edit') && $BE_USER->extIsAdmMenuOpen('edit'))	{
+					$TSFE->includeTCA();
 					if ($BE_USER->extIsEditAction())	{
-						$TSFE->includeTCA();
 						require_once (PATH_t3lib.'class.t3lib_tcemain.php');
 						$BE_USER->extEditAction();
 					}
 					if ($BE_USER->extIsFormShown())	{
-						$TSFE->includeTCA();
 						require_once(PATH_t3lib.'class.t3lib_tceforms.php');
 						require_once(PATH_t3lib.'class.t3lib_iconworks.php');
 						require_once(PATH_t3lib.'class.t3lib_loaddbgroup.php');

@@ -29,6 +29,7 @@ $LOCAL_LANG = Array (
 		'findDragDrop' => 'Find your image, then click on the image and drag it into the editor in the main window!',
 		'noWebFolder' => 'You cannot drag images from this folder (yellow) because it is internal on the server.',
 		'currentLink' => 'Current Link',
+		'invalidChar' => 'ERROR: Invalid character found in file path (%s). Cannot add the file!',
 	),
 	'dk' => Array (
 		'removeLink' => 'Fjern link',

@@ -165,6 +165,12 @@ class SC_mod_web_perm_index {
 			}
 		');
 
+			// Setting up the context sensitive menu:
+		$CMparts=$this->doc->getContextMenuCode();
+		$this->doc->bodyTagAdditions = $CMparts[1];
+		$this->doc->JScode.=$CMparts[0];
+		$this->doc->postCode.= $CMparts[2];
+
 			// Set up menus:		
 		$this->menuConfig();
 	}
