@@ -1,5 +1,5 @@
 2004-09-09  Jan-Erik Revsbech <revsbech@fys.ku.dk>
-	* Fixed bug #292 concerning Return path in class.t3lib_mailer.php. The fix has a seperate solution for windows and Unix. Have not testeded the Windows solution with safe mode. Suspect that it might not work since ini_set is used.
+	* Fixed bug #292 concerning Return path in class.t3lib_mailer.php. The fix has a seperate solution for windows and Unix. The unix fix does however not work with safe_mode enabled. Do not know how to overcome this. Perhaps an environment variable for sendmail can be specified? The fix for windows works OK with safe_mode on since, it does not rely on passing parameter directly to the mailer tranport agent (Sendmail or postfix), but instead sets the php variable sendmail_from, which has no effect on Unix systemt.
 
 2004-07-20  Jan-Erik Revsbech <revsbech@fys.ku.dk>
 	* Fixed bug related to messageID Bug 174/102: Incorrect messageid contains double tagt <<THEMESSAGEID>> instead of <THEMESSAGEID>.
