@@ -598,6 +598,7 @@ class t3lib_TStemplate	{
 								'config'=>		@is_file($ISF_filePath.'setup.txt')		?t3lib_div::getUrl($ISF_filePath.'setup.txt'):'',
 								'editorcfg'=>	@is_file($ISF_filePath.'editorcfg.txt')	?t3lib_div::getUrl($ISF_filePath.'editorcfg.txt'):'',
 								'include_static'=>	@is_file($ISF_filePath.'include_static.txt')?implode(',',array_unique(t3lib_div::intExplode(',',t3lib_div::getUrl($ISF_filePath.'include_static.txt')))):'',
+								'include_static_file'=>	@is_file($ISF_filePath.'include_static_file.txt')?implode(',',array_unique(explode(',',t3lib_div::getUrl($ISF_filePath.'include_static_file.txt')))):'',
 								'title' => 		$ISF_file,
 								'uid' => 		$mExtKey
 							);
