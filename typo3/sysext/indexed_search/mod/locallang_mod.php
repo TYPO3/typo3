@@ -22,7 +22,7 @@ $LOCAL_LANG = Array (
 		'mlang_tabs_tab' => 'Indeksering',
 	),
 	'it' => Array (
-		'mlang_labels_tablabel' => 'Statistiche dell\'Indexing Engine',
+		'mlang_labels_tablabel' => 'Statistiche Indexing Engine',
 		'mlang_labels_tabdescr' => 'In questo modulo potete configurare il motore di indicizzazione del sito web e vedere le statistiche sulle pagine indicizzate. L\'indicizzazione deve essere attivata nel template Typoscript.<br><em>Accesso riservato ai soli utenti \'admin\'!</em>',
 		'mlang_tabs_tab' => 'Indicizzazione',
 	),
@@ -37,8 +37,8 @@ $LOCAL_LANG = Array (
 		'mlang_tabs_tab' => 'Indexando',
 	),
 	'nl' => Array (
-		'mlang_labels_tablabel' => 'Bekijk statistieken van de Indexeermachine',
-		'mlang_labels_tabdescr' => 'Hier kan je de instellingen bepalen voor de Indexeer Machine die geboden wordt in de website zelf. Je kan statistieken bekijken van geindexeerde pagina\'s. Indexeren moet geactiveerd zijn in de TypoScript template.<br /><em>Alleen toegang voor \'admin\' gebruikers!</em>',
+		'mlang_labels_tablabel' => 'Bekijk statistieken van het indexeren.',
+		'mlang_labels_tabdescr' => 'Hier kunt u de instellingen bepalen voor het indexeren zelf zoals die geboden wordt in de website. Er zijn ook statistieken te bekijken van de geïndexeerde pagina\'s. Indexeren moet geactiveerd zijn in de TypoScript template.<br /><em>Alleen toegang voor \'admin\' gebruikers!</em>',
 		'mlang_tabs_tab' => 'Indexeren',
 	),
 	'cz' => Array (
@@ -53,8 +53,8 @@ $LOCAL_LANG = Array (
 	),
 	'si' => Array (
 		'mlang_labels_tablabel' => 'Ogled statistike orodja za indeksiranje',
-		'mlang_labels_tabdescr' => 'Tukaj lahko urejate nastavitve orodja za indeksiranja, ki je del \'frontenda\'. Indeksiranje mora biti vklopljeno v TypoScript templatu.<br /><em>Uporaba je dovoljena le \'admin\' uporabnikom!</em>',
-		'mlang_tabs_tab' => 'Indeksiranje',
+		'mlang_labels_tabdescr' => 'Tukaj lahko urejate nastavitve orodja za indeksiranje, ki je del spletnih strani, kjer lahko vidite statistiko strani v kazalu. Indeksiranje mora biti omogoèeno v TypoScript predlogi.<BR><em>Uporaba je dovoljena le \'admin\' uporabnikom!</em>',
+		'mlang_tabs_tab' => 'Kazalo strani',
 	),
 	'fi' => Array (
 		'mlang_labels_tablabel' => 'Katsele Indexing Engine tilastoja',
@@ -77,6 +77,9 @@ $LOCAL_LANG = Array (
 		'mlang_tabs_tab' => 'Indexando',
 	),
 	'ru' => Array (
+		'mlang_labels_tablabel' => 'Ñòàòèñòèêà äâèãàòåëÿ èíäåêñàöèè',
+		'mlang_labels_tabdescr' => 'Ïğîñìîòğ ñàòèñòè÷åñêèõ ğåçóëüòàòîâ èíäåêñàöèè ñàéòà. Èíäåêñàöèÿ äîëæíà áûòü âêëş÷åíà â TypoScript-øàáëîíå. <br /><em>Äîñòóï òîëüêî äëÿ àäìèíèñòğàòîğîâ!</em>',
+		'mlang_tabs_tab' => 'Èíäåêñàöèÿ',
 	),
 	'ro' => Array (
 	),
@@ -97,6 +100,9 @@ $LOCAL_LANG = Array (
 		'mlang_tabs_tab' => 'Indeksiranje',
 	),
 	'hu' => Array (
+		'mlang_labels_tablabel' => 'Statisztika az Indexelt kereséshez',
+		'mlang_labels_tabdescr' => 'Itt tudod beállítani az indexelt keresést a frontend oldalon. Statisztikát láthatsz az indexelt oldalakról. Az indexelés engedélyezni kell a TypoScript template-ben..<br /><em>Csak \'admin\' felhasználóknak!</em>',
+		'mlang_tabs_tab' => 'Indexelés',
 	),
 	'gl' => Array (
 	),
@@ -125,6 +131,20 @@ $LOCAL_LANG = Array (
 	'he' => Array (
 	),
 	'ua' => Array (
+	),
+	'lv' => Array (
+		'mlang_labels_tablabel' => 'ApskatÄ«t indeksÄ“Å¡anas dzinÄ“ja statistiku',
+		'mlang_tabs_tab' => 'IndeksÄ“Å¡ana',
+	),
+	'jp' => Array (
+	),
+	'vn' => Array (
+	),
+	'ca' => Array (
+	),
+	'ba' => Array (
+	),
+	'kr' => Array (
 	),
 );
 ?>

@@ -52,8 +52,8 @@ $LOCAL_LANG = Array (
 		'mlang_tabs_tab' => 'Konfiguracja',
 	),
 	'si' => Array (
-		'mlang_labels_tablabel' => 'Nastavitve localconf.php in tables.php',
-		'mlang_labels_tabdescr' => 'Omogoиa pregled vrste spremenljivk $TCA (table configuration) in $TYPO3_CONF_VARS. Vrednosti si lahko le ogledate, spremeniti jih tukaj ne morete.<br /><em>Uporaba je dovoljena le \'admin\' uporabnikom!</em>',
+		'mlang_labels_tablabel' => 'Preglej nastavitve v datotekah localconf.php in tables.php',
+		'mlang_labels_tabdescr' => 'Omogoиa pregled vrste spremenljivk $TCA (konfiguracija tabel) in $TYPO3_CONF_VARS. Vrednosti spremenljivk ne morete spreminjati, lahko jih le preglejujete.<BR><em>Uporaba je dovoljena le \'admin\' uporabnikom!</em>',
 		'mlang_tabs_tab' => 'Nastavitve',
 	),
 	'fi' => Array (
@@ -77,8 +77,8 @@ $LOCAL_LANG = Array (
 		'mlang_tabs_tab' => 'Configuraзгo',
 	),
 	'ru' => Array (
-		'mlang_labels_tablabel' => 'Просмотр конфигурации из файлов localconf.php и tables.php',
-		'mlang_labels_tabdescr' => 'Позволяет просмотр значений массивов $TCA (конфигурация таблиц) и $TYPO3_CONF_VARS. Изменение значений здесь невозможно, только просмотр.<BR><em>Доступ только для пользователей "Admin"!</em>',
+		'mlang_labels_tablabel' => 'Просмотр конфигурации файлов localconf.php и tables.php',
+		'mlang_labels_tabdescr' => 'Позволяет просмотр значений массивов $TCA (конфигурация таблиц) и $TYPO3_CONF_VARS. Изменение значений здесь невозможно, только просмотр.<BR><em>Доступ только для администраторов!</em>',
 		'mlang_tabs_tab' => 'Конфигурация',
 	),
 	'ro' => Array (
@@ -103,6 +103,9 @@ $LOCAL_LANG = Array (
 		'mlang_tabs_tab' => 'Konfiguracija',
 	),
 	'hu' => Array (
+		'mlang_labels_tablabel' => 'Beбllнtбsok megjelenнtйse a localconf.php йs a tables.php alapjбn',
+		'mlang_labels_tabdescr' => 'Lehetхvй teszi a $TCA tцmb (tбbla beбllнtбsok) йs a $TYPO3_CONF_VARS bцngйszйsйt. Az йrtйkeken nem tudsz vбltoztatni, csak megnйzni azokat.<br /><em>Csak \'admin\' felhasznбlуknak!</em>',
+		'mlang_tabs_tab' => 'Beбllнtбsok',
 	),
 	'gl' => Array (
 	),
@@ -117,6 +120,9 @@ $LOCAL_LANG = Array (
 	'bg' => Array (
 	),
 	'br' => Array (
+		'mlang_labels_tablabel' => 'Ver configuraзгo a partir de localconf.php e tables.php',
+		'mlang_labels_tabdescr' => 'Permite-lhe navegar pelos valores do array $TCA (configuraзгo de tabela) e $TYPO3_CONF_VARS. Vocк nгo pode definir nenhum valor, somente visualizб-los.<br /><em>Acesso sу para usuбrios \'admin\'!</em>',
+		'mlang_tabs_tab' => 'Configuraзгo',
 	),
 	'et' => Array (
 	),
@@ -125,6 +131,18 @@ $LOCAL_LANG = Array (
 	'he' => Array (
 	),
 	'ua' => Array (
+	),
+	'lv' => Array (
+	),
+	'jp' => Array (
+	),
+	'vn' => Array (
+	),
+	'ca' => Array (
+	),
+	'ba' => Array (
+	),
+	'kr' => Array (
 	),
 );
 ?>

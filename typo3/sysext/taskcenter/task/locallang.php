@@ -66,7 +66,7 @@ $LOCAL_LANG = Array (
 		'lReplyAddress' => 'L\'indirizzo di risposta è la tua e-mail',
 		'lSelf' => 'Self',
 		'lSendNew' => 'Invia messaggio',
-		'lSendReply' => 'Rispondi al  messaggio',
+		'lSendReply' => 'Rispondi al messaggio',
 		'listSeparator_Groups' => '__Gruppi:__',
 		'lHomedir' => 'Home dir',
 		'lNone' => '[none]',
@@ -108,7 +108,7 @@ $LOCAL_LANG = Array (
 	),
 	'nl' => Array (
 		'title' => 'Taakoverzicht',
-		'lReplyAddress' => 'De afzender is jouw emailadres',
+		'lReplyAddress' => 'De afzender is uw emailadres',
 		'lSelf' => 'Zelf',
 		'lSendNew' => 'Verstuur bericht',
 		'lSendReply' => 'Bericht beantwoorden',
@@ -153,17 +153,17 @@ $LOCAL_LANG = Array (
 	),
 	'si' => Array (
 		'title' => 'Pregled nalog',
-		'lReplyAddress' => 'Povratni naslov je vaš email',
+		'lReplyAddress' => 'Povratni naslov je vaš e-naslov',
 		'lSelf' => 'Jaz',
 		'lSendNew' => 'Pošlji novo sporoèilo',
 		'lSendReply' => 'Pošlji odgovor',
 		'listSeparator_Groups' => '__Skupine:__',
 		'lHomedir' => 'Domaèa mapa',
-		'lNone' => '[niè]',
-		'lCreate' => 'Dodaj',
+		'lNone' => '[brez]',
+		'lCreate' => 'Ustvari',
 		'lCancel' => 'Preklièi',
 		'lDelete_warning' => 'Ste preprièani, da želite odstraniti tega uporabnika?',
-		'lDelete' => 'Briši',
+		'lDelete' => 'Izbriši',
 		'lUpdate' => 'Osveži',
 	),
 	'fi' => Array (
@@ -228,7 +228,7 @@ $LOCAL_LANG = Array (
 	),
 	'ru' => Array (
 		'title' => 'Îáçîð çàäàíèé',
-		'lReplyAddress' => 'Âàø email êàê îòâåòíûé àäðåñ',
+		'lReplyAddress' => 'Âàø îòâåòíûé àäðåñ ýë. ïî÷òû',
 		'lSelf' => 'Ñàì',
 		'lSendNew' => 'Ïîñëàòü ñîîáùåíèå',
 		'lSendReply' => 'Îòâåòèòü íà ñîîáùåíèå',
@@ -237,7 +237,7 @@ $LOCAL_LANG = Array (
 		'lNone' => '[áåç]',
 		'lCreate' => 'Ñîçäàòü',
 		'lCancel' => 'Îòìåíèòü',
-		'lDelete_warning' => 'Âû óâåðåíû, õîòèòå ñòåðåòü ýòîãî ïîëüçîâàòåëÿ?',
+		'lDelete_warning' => 'Âû óâåðåíû, ÷òî õîòèòå óäàëèòü ýòîãî ïîëüçîâàòåëÿ?',
 		'lDelete' => 'Óäàëèòü',
 		'lUpdate' => 'Îáíîâèòü',
 	),
@@ -293,6 +293,19 @@ $LOCAL_LANG = Array (
 		'lUpdate' => 'Obnovi',
 	),
 	'hu' => Array (
+		'title' => 'Feladat áttekintés',
+		'lReplyAddress' => 'Cím továbbítása a email címedre',
+		'lSelf' => 'Önmaga',
+		'lSendNew' => 'Üzenet küldése',
+		'lSendReply' => 'Üzenetre válaszolás',
+		'listSeparator_Groups' => '__Csoportok:__',
+		'lHomedir' => 'Home könyvtár',
+		'lNone' => '[üres]',
+		'lCreate' => 'Létrehozás',
+		'lCancel' => 'Mégsem',
+		'lDelete_warning' => 'Biztos törölni akarod ezt a felhasználót?',
+		'lDelete' => 'Törlés',
+		'lUpdate' => 'Módosítás',
 	),
 	'gl' => Array (
 	),
@@ -307,6 +320,19 @@ $LOCAL_LANG = Array (
 	'bg' => Array (
 	),
 	'br' => Array (
+		'title' => 'Histórico de Tarefas',
+		'lReplyAddress' => 'Endereço de resposta é o seu e-mail',
+		'lSelf' => 'Próprio',
+		'lSendNew' => 'Enviar mensagem',
+		'lSendReply' => 'Responder à mensagem',
+		'listSeparator_Groups' => '__Grupos:__',
+		'lHomedir' => 'Diretório raiz',
+		'lNone' => '[nenhum]',
+		'lCreate' => 'Criar',
+		'lCancel' => 'Cancelar',
+		'lDelete_warning' => 'Tem certeza que quer apagar este usuário?',
+		'lDelete' => 'Remover',
+		'lUpdate' => 'Atualizar',
 	),
 	'et' => Array (
 		'title' => 'Ülesande ülevaade',
@@ -328,6 +354,18 @@ $LOCAL_LANG = Array (
 	'he' => Array (
 	),
 	'ua' => Array (
+	),
+	'lv' => Array (
+	),
+	'jp' => Array (
+	),
+	'vn' => Array (
+	),
+	'ca' => Array (
+	),
+	'ba' => Array (
+	),
+	'kr' => Array (
 	),
 );
 ?>

@@ -28,6 +28,7 @@ $LOCAL_LANG = Array (
 		'title' => 'Búsqueda indexada',
 	),
 	'nl' => Array (
+		'title' => 'Geïndexeerde zoekopdracht',
 	),
 	'cz' => Array (
 		'title' => 'Fulltextové vyhledávání',
@@ -36,6 +37,7 @@ $LOCAL_LANG = Array (
 		'title' => 'Wyszukiwarka indeksuj±ca',
 	),
 	'si' => Array (
+		'title' => 'Iskanje po kazalu',
 	),
 	'fi' => Array (
 		'title' => 'Indeksoitu haku',
@@ -50,6 +52,7 @@ $LOCAL_LANG = Array (
 		'title' => 'Pesquisa indexada',
 	),
 	'ru' => Array (
+		'title' => 'Èíäåêñíûé ïîèñê',
 	),
 	'ro' => Array (
 	),
@@ -66,6 +69,7 @@ $LOCAL_LANG = Array (
 		'title' => 'Indeksirano pretraživanje',
 	),
 	'hu' => Array (
+		'title' => 'Indexelt keresés',
 	),
 	'gl' => Array (
 	),
@@ -90,6 +94,19 @@ $LOCAL_LANG = Array (
 	'he' => Array (
 	),
 	'ua' => Array (
+	),
+	'lv' => Array (
+		'title' => 'IndeksÄ“tÄ meklÄ“Å¡ana',
+	),
+	'jp' => Array (
+	),
+	'vn' => Array (
+	),
+	'ca' => Array (
+	),
+	'ba' => Array (
+	),
+	'kr' => Array (
 	),
 );
 ?>

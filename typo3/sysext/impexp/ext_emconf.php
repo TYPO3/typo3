@@ -1,9 +1,9 @@
 <?php
 
 ########################################################################
-# Extension Manager/Repository config file for ext: 'impexp'
+# Extension Manager/Repository config file for ext: "impexp"
 # 
-# Auto generated 12-02-2003 18:01
+# Auto generated 16-11-2004 17:49
 # 
 # Manual updates:
 # Only the data in the array - anything else is removed by next write
@@ -17,6 +17,9 @@ $EM_CONF[$_EXTKEY] = Array (
 	'dependencies' => '',
 	'conflicts' => '',
 	'priority' => '',
+	'loadOrder' => '',
+	'TYPO3_version' => '0.0.1-0.0.1',
+	'PHP_version' => '0.0.1-0.0.1',
 	'module' => 'app',
 	'state' => 'beta',
 	'internal' => 0,
@@ -28,10 +31,12 @@ $EM_CONF[$_EXTKEY] = Array (
 	'author' => 'Kasper Skårhøj',
 	'author_email' => 'kasperYYYY@typo3.com',
 	'author_company' => 'Curby Soft Multimedia',
+	'CGLcompliance' => '',
+	'CGLcompliance_note' => '',
 	'private' => 0,
 	'download_password' => '',
-	'version' => '0.1.3',	// Don't modify this! Managed automatically during upload to repository.
-	'_md5_values_when_last_written' => 'a:9:{s:19:"class.tx_impexp.php";s:4:"efdb";s:29:"class.tx_impexp_clickmenu.php";s:4:"b262";s:10:"export.gif";s:4:"3b59";s:14:"ext_tables.php";s:4:"5c17";s:10:"import.gif";s:4:"374c";s:13:"app/clear.gif";s:4:"cc11";s:12:"app/conf.php";s:4:"949a";s:13:"app/index.php";s:4:"9c44";s:17:"app/locallang.php";s:4:"ad76";}',
+	'version' => '0.2.1',	// Don't modify this! Managed automatically during upload to repository.
+	'_md5_values_when_last_written' => 'a:19:{s:19:"class.tx_impexp.php";s:4:"7b4c";s:29:"class.tx_impexp_clickmenu.php";s:4:"fbb9";s:10:"export.gif";s:4:"3b59";s:14:"ext_tables.php";s:4:"c3bb";s:10:"import.gif";s:4:"374c";s:13:"app/clear.gif";s:4:"cc11";s:12:"app/conf.php";s:4:"720f";s:13:"app/index.php";s:4:"62a5";s:17:"app/locallang.php";s:4:"0f01";s:15:"app/CVS/Entries";s:4:"3ab6";s:18:"app/CVS/Repository";s:4:"d4a7";s:12:"app/CVS/Root";s:4:"0ea2";s:12:"doc/TODO.txt";s:4:"34da";s:15:"doc/CVS/Entries";s:4:"33b2";s:18:"doc/CVS/Repository";s:4:"1730";s:12:"doc/CVS/Root";s:4:"0ea2";s:11:"CVS/Entries";s:4:"d5e5";s:14:"CVS/Repository";s:4:"b5d0";s:8:"CVS/Root";s:4:"0ea2";}',
 );
 
 ?>

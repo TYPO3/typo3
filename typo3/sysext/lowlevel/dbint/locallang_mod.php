@@ -22,7 +22,7 @@ $LOCAL_LANG = Array (
 		'mlang_tabs_tab' => 'DB check',
 	),
 	'it' => Array (
-		'mlang_labels_tablabel' => 'Controllo di integritа database',
+		'mlang_labels_tablabel' => 'Controllo integritа database',
 		'mlang_labels_tabdescr' => 'In questo modulo potete controllare l\'integritа delle tabelle del database configurate da $TCA. Per esempio, viene controllato che ogni record appartenga ad una pagina, e che tutti i file inviati sul server siano effettivamente presenti (di solito nelle sottocartelle di uploads/*. E\' inoltre presente l\'intero albero delle pagine (comprese quelle cancellate). Potete anche ricercare un termine all\'interno di tutto il database.<br /><em>Accesso riservato ai soli utenti \'admin\'!</em>',
 		'mlang_tabs_tab' => 'Controllo Database',
 	),
@@ -78,8 +78,8 @@ $LOCAL_LANG = Array (
 	),
 	'ru' => Array (
 		'mlang_labels_tablabel' => 'Проверка целостности базы данных',
-		'mlang_labels_tabdescr' => 'Здесь вы можете проверить таблицы базы данных, конфигурированные в $TCA, на их целостность. Кроме того возможна проверка связей между записями и загруженными файлами (обычно помещенными в папку uploads/*). Также вы можете просмотреть здесь полное дерево страниц, включая удаленные страницы. В заключение возможен доступ к глобальных средствах поиска в базе данных.<BR><em>Доступ только для пользователей \'admin\'!</em>',
-		'mlang_tabs_tab' => 'DB проверка',
+		'mlang_labels_tabdescr' => 'Здесь вы можете проверить таблицы базы данных, настроенные массивом $TCA, на их целостность. Кроме того возможна проверка связей между записями и загруженными файлами (обычно помещенными в папку uploads/*). Также вы можете просмотреть здесь полное дерево страниц, включая удаленные страницы. В заключение возможен доступ к глобальным средствам поиска в базе данных.<BR><em>Доступ только для администраторов!</em>',
+		'mlang_tabs_tab' => 'Проверка БД',
 	),
 	'ro' => Array (
 		'mlang_labels_tablabel' => 'Verificarea integritгюii bazei de date',
@@ -103,6 +103,9 @@ $LOCAL_LANG = Array (
 		'mlang_tabs_tab' => 'DB provjera',
 	),
 	'hu' => Array (
+		'mlang_labels_tablabel' => 'Adatbбzis sйrtetlensйg ellenхrzйse',
+		'mlang_labels_tabdescr' => 'Itt ellenхrizhetх a $TCA-ban beбllнtott adatbбzis tбblбk sйrtetlensйge. Pйldбul az цsszes rekordnak egy oldal rekordhoz kell tartoznia. Ezenkнvьl a rekordokhoz tartozу feltцltцtt file-ok meglйtйt is ellenхrzi (alapбllapotban a uploads/* kцnyvtбrakban). valamint a teljes oldalfa megtekinthetх a tцrцlt oldalakkal egyьtt. Йs vйgьl globбlis adatbбzis keresйsre is van lehetхsйg. <br /><em>Csak \'admin\' felhasznбlуknak!</em>',
+		'mlang_tabs_tab' => 'AB ellenхrzйs',
 	),
 	'gl' => Array (
 	),
@@ -117,6 +120,9 @@ $LOCAL_LANG = Array (
 	'bg' => Array (
 	),
 	'br' => Array (
+		'mlang_labels_tablabel' => 'Teste de integridade do banco de dados',
+		'mlang_labels_tabdescr' => 'Aqui pode verificar a integridade das tabelas do banco de dados configuradas atravйs de $TCA. Por exemplo, todos os registros devem pertencer a um registro de pбgina. Alйm disso, a existкncia de arquivos anexados a registros (normalmente residindo em diretуrios \'uploads/*\') sгo verificados tambйm. Vocк pode tambйm obter uma visualizaзгo de toda a бrvore de pбginas incluнndo as removidas. Finalmente, vocк tem acesso а facilidade de pesquisa global do banco de dados.<br /><em> Acesso sу para usuбrios \'admin\'!</em>',
+		'mlang_tabs_tab' => 'BD teste',
 	),
 	'et' => Array (
 	),
@@ -125,6 +131,18 @@ $LOCAL_LANG = Array (
 	'he' => Array (
 	),
 	'ua' => Array (
+	),
+	'lv' => Array (
+	),
+	'jp' => Array (
+	),
+	'vn' => Array (
+	),
+	'ca' => Array (
+	),
+	'ba' => Array (
+	),
+	'kr' => Array (
 	),
 );
 ?>

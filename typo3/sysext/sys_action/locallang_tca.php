@@ -42,8 +42,8 @@ $LOCAL_LANG = Array (
 		'tx_sys_action' => 'Akcje',
 	),
 	'si' => Array (
-		'sys_action' => 'Akcija',
-		'tx_sys_action' => 'Akcije',
+		'sys_action' => 'Operacija',
+		'tx_sys_action' => 'Operacije',
 	),
 	'fi' => Array (
 		'sys_action' => 'Toiminto',
@@ -82,6 +82,8 @@ $LOCAL_LANG = Array (
 		'tx_sys_action' => 'Postupci',
 	),
 	'hu' => Array (
+		'sys_action' => 'Mûvelet',
+		'tx_sys_action' => 'Mûveletek',
 	),
 	'gl' => Array (
 	),
@@ -96,6 +98,8 @@ $LOCAL_LANG = Array (
 	'bg' => Array (
 	),
 	'br' => Array (
+		'sys_action' => 'Ação',
+		'tx_sys_action' => 'Ações',
 	),
 	'et' => Array (
 	),
@@ -104,6 +108,18 @@ $LOCAL_LANG = Array (
 	'he' => Array (
 	),
 	'ua' => Array (
+	),
+	'lv' => Array (
+	),
+	'jp' => Array (
+	),
+	'vn' => Array (
+	),
+	'ca' => Array (
+	),
+	'ba' => Array (
+	),
+	'kr' => Array (
 	),
 );
 ?>

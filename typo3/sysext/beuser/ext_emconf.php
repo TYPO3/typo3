@@ -1,9 +1,9 @@
 <?php
 
 ########################################################################
-# Extension Manager/Repository config file for ext: 'beuser'
+# Extension Manager/Repository config file for ext: "beuser"
 # 
-# Auto generated 22-10-2003 23:13
+# Auto generated 16-11-2004 17:47
 # 
 # Manual updates:
 # Only the data in the array - anything else is removed by next write
@@ -17,6 +17,9 @@ $EM_CONF[$_EXTKEY] = Array (
 	'dependencies' => '',
 	'conflicts' => '',
 	'priority' => '',
+	'loadOrder' => '',
+	'TYPO3_version' => '0.0.1-0.0.1',
+	'PHP_version' => '0.0.1-0.0.1',
 	'module' => 'mod',
 	'state' => 'stable',
 	'internal' => 0,
@@ -28,10 +31,12 @@ $EM_CONF[$_EXTKEY] = Array (
 	'author' => 'Kasper Skårhøj',
 	'author_email' => 'kasperYYYY@typo3.com',
 	'author_company' => 'Curby Soft Multimedia',
+	'CGLcompliance' => '',
+	'CGLcompliance_note' => '',
 	'private' => 0,
 	'download_password' => '',
-	'version' => '0.0.9',	// Don't modify this! Managed automatically during upload to repository.
-	'_md5_values_when_last_written' => 'a:8:{s:12:"ext_icon.gif";s:4:"2804";s:14:"ext_tables.php";s:4:"c05c";s:14:"mod/beuser.gif";s:4:"2804";s:13:"mod/clear.gif";s:4:"cc11";s:12:"mod/conf.php";s:4:"a6cc";s:13:"mod/index.php";s:4:"736a";s:21:"mod/locallang_mod.php";s:4:"ba4c";s:12:"doc/TODO.txt";s:4:"93f7";}',
+	'version' => '0.1.1',	// Don't modify this! Managed automatically during upload to repository.
+	'_md5_values_when_last_written' => 'a:17:{s:12:"ext_icon.gif";s:4:"2804";s:14:"ext_tables.php";s:4:"c05c";s:14:"mod/beuser.gif";s:4:"2804";s:13:"mod/clear.gif";s:4:"cc11";s:12:"mod/conf.php";s:4:"8ab5";s:13:"mod/index.php";s:4:"4f6a";s:21:"mod/locallang_mod.php";s:4:"c4db";s:15:"mod/CVS/Entries";s:4:"02b9";s:18:"mod/CVS/Repository";s:4:"fdea";s:12:"mod/CVS/Root";s:4:"0ea2";s:12:"doc/TODO.txt";s:4:"93f7";s:15:"doc/CVS/Entries";s:4:"33b2";s:18:"doc/CVS/Repository";s:4:"7ada";s:12:"doc/CVS/Root";s:4:"0ea2";s:11:"CVS/Entries";s:4:"983f";s:14:"CVS/Repository";s:4:"bfc3";s:8:"CVS/Root";s:4:"0ea2";}',
 );
 
 ?>

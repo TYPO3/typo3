@@ -85,8 +85,8 @@ $LOCAL_LANG = Array (
 		'action_BEu_email' => 'Email',
 		'action_BEu_usergroups' => 'Membro dei gruppi',
 		'action_t2_result' => 'Risultato della query',
-		'action_Create' => 'Crea un utente backend',
-		'action_Update' => 'Aggiorna un utente backend',
+		'action_Create' => 'Crea utente backend',
+		'action_Update' => 'Aggiorna utente backend',
 		'action_t1_listOfUsers' => 'Elenco utenti backend',
 		'action_BEu_db_mount' => 'Punto di partenza dell\'albero delle pagine',
 		'action_t4_edit' => 'Seleziona record da modificare:',
@@ -138,8 +138,8 @@ $LOCAL_LANG = Array (
 		'action_BEu_email' => 'Email',
 		'action_BEu_usergroups' => 'Lid van de volgende groepen',
 		'action_t2_result' => 'Resultaat van zoekopdracht',
-		'action_Create' => 'BeheerSite gebruiker aanmaken',
-		'action_Update' => 'BeheerSite gebruiker actualiseren',
+		'action_Create' => 'Backendgebruiker aanmaken',
+		'action_Update' => 'Backendgebruiker actualiseren',
 		'action_t1_listOfUsers' => 'Lijst van BeheerSite gebruikers',
 		'action_BEu_db_mount' => 'Paginastructuur startpunten',
 		'action_t4_edit' => 'Selecteer te bewerken record',
@@ -181,21 +181,22 @@ $LOCAL_LANG = Array (
 		'action_t4_edit' => 'Wybierz rekord do edycji:',
 	),
 	'si' => Array (
-		'action_noType' => 'Napaka: ta akcija ni imela nastavljenega tipa.',
-		'action_notReady' => 'Napaka: konfiguriranje akcije še ni konèano.',
+		'action_noType' => 'Napaka: to dejanje ni imelo nastavljene vrste.',
+		'action_notReady' => 'Napaka: konfiguracija dejanja še ni konèana.',
 		'action_download_file' => 'Kliknite tukaj za prenos izvoženih podatkov v datoteki',
-		'action_error' => 'Napaka akcije!',
+		'action_error' => 'Napaka pri operaciji!',
 		'action_BEu_hidden' => 'Onemogoèi uporabnika',
 		'action_BEu_username' => 'Prijavno ime',
 		'action_BEu_password' => 'Geslo',
 		'action_BEu_realName' => 'Pravo ime',
-		'action_BEu_email' => 'Email',
+		'action_BEu_email' => 'E-pošta',
 		'action_BEu_usergroups' => 'Èlan skupin',
-		'action_t2_result' => 'Razultati poizvedbe',
-		'action_Create' => 'Ustvari uporabnika',
-		'action_Update' => 'Osveži uporabnika',
-		'action_t1_listOfUsers' => 'Seznam uporabnikov',
-		'action_BEu_db_mount' => 'Zaèetna mesta v drevesu strani',
+		'action_t2_result' => 'Razultat poizvedbe',
+		'action_Create' => 'Ustvari sistemskega uporabnika',
+		'action_Update' => 'Posodobi sistemskega uporabnika',
+		'action_t1_listOfUsers' => 'Seznam sistemskih uporabnikov',
+		'action_BEu_db_mount' => 'Zaèetna toèka drevesne strukture',
+		'action_t4_edit' => 'Izberi zapis za urejanje:',
 	),
 	'fi' => Array (
 		'action_noType' => 'Virhe: Toiminnolle ei ole määritelty tyyppiä.',
@@ -332,6 +333,22 @@ $LOCAL_LANG = Array (
 		'action_t4_edit' => 'Odaberi zapis za pregled:',
 	),
 	'hu' => Array (
+		'action_noType' => 'Hiba: A mûveletnek nincs definiálva típusa.',
+		'action_notReady' => 'Hiba: A mûvelet beállítása nincs befejezve.',
+		'action_download_file' => 'Kattints ide az exportált adat letöltéséhez',
+		'action_error' => 'Mûvelet hiba!',
+		'action_BEu_hidden' => 'Felhasználó tiltása',
+		'action_BEu_username' => 'Belépési név',
+		'action_BEu_password' => 'Jelszó',
+		'action_BEu_realName' => 'Valódi név',
+		'action_BEu_email' => 'Email',
+		'action_BEu_usergroups' => 'Csoportok tagja',
+		'action_t2_result' => 'Lekérdezés eredménye',
+		'action_Create' => 'Backend felhasználó létrehozása',
+		'action_Update' => 'Backend felhasználó módosítása',
+		'action_t1_listOfUsers' => 'Backend felhasználók listája',
+		'action_BEu_db_mount' => 'Oldalfa kezdõpontok',
+		'action_t4_edit' => 'Válaszd ki a szerkesztendõ rekordot:',
 	),
 	'gl' => Array (
 	),
@@ -346,6 +363,22 @@ $LOCAL_LANG = Array (
 	'bg' => Array (
 	),
 	'br' => Array (
+		'action_noType' => 'Erro: A ação não tem tipo definido.',
+		'action_notReady' => 'Erro: A configuração da ação não está concluída.',
+		'action_download_file' => 'Clique aqui para salvar os dados exportados em um arquivo',
+		'action_error' => 'Erro durante a Ação!',
+		'action_BEu_hidden' => 'Desativar usuário',
+		'action_BEu_username' => 'Nome de Usuário',
+		'action_BEu_password' => 'Senha',
+		'action_BEu_realName' => 'Nome real',
+		'action_BEu_email' => 'E-mail',
+		'action_BEu_usergroups' => 'Membro dos grupos',
+		'action_t2_result' => 'Resultado da pesquisa',
+		'action_Create' => 'Criar Usuário-administrador',
+		'action_Update' => 'Atualizar Usuário-administrador',
+		'action_t1_listOfUsers' => 'Listar Usuários-administradores',
+		'action_BEu_db_mount' => 'Pontos de ínicio da Árvore de páginas',
+		'action_t4_edit' => 'Selecione o registro a editar:',
 	),
 	'et' => Array (
 	),
@@ -354,6 +387,18 @@ $LOCAL_LANG = Array (
 	'he' => Array (
 	),
 	'ua' => Array (
+	),
+	'lv' => Array (
+	),
+	'jp' => Array (
+	),
+	'vn' => Array (
+	),
+	'ca' => Array (
+	),
+	'ba' => Array (
+	),
+	'kr' => Array (
 	),
 );
 ?>

@@ -23,7 +23,7 @@ $LOCAL_LANG = Array (
 	),
 	'it' => Array (
 		'mlang_labels_tablabel' => 'Mostra log',
-		'mlang_labels_tabdescr' => 'Accesso a tutto il log dei cambiamenti dell\'amministrazione di TYPO3. <br /><em>Accesso riservato solo agli utenti di tipo \'admin\'!</em>',
+		'mlang_labels_tabdescr' => 'Accesso a tutto il log dei cambiamenti. <br><em>Accesso riservato solo agli utenti di tipo \'admin\'!</em>',
 		'mlang_tabs_tab' => 'Log',
 	),
 	'fr' => Array (
@@ -52,8 +52,8 @@ $LOCAL_LANG = Array (
 		'mlang_tabs_tab' => 'Log',
 	),
 	'si' => Array (
-		'mlang_labels_tablabel' => 'Ogled dnevnika',
-		'mlang_labels_tabdescr' => 'Dnevnik sprememb v TYPO3 \'backendu\'.<br /><em>Uporaba dovoljena le \'admin\' uporabnikom!</em>',
+		'mlang_labels_tablabel' => 'Dnevnik ogledov',
+		'mlang_labels_tabdescr' => 'Dnevnik sprememb v Typo3 sistemu.<BR><em>Uporaba dovoljena le \'admin\' uporabnikom!</em>',
 		'mlang_tabs_tab' => 'Dnevnik',
 	),
 	'fi' => Array (
@@ -85,6 +85,55 @@ $LOCAL_LANG = Array (
 	'sk' => Array (
 	),
 	'lt' => Array (
+	),
+	'is' => Array (
+	),
+	'hr' => Array (
+		'mlang_labels_tablabel' => 'Pregledavanje logova',
+		'mlang_labels_tabdescr' => 'Omoguæava pristup backend logovima u Typo3 sustavu.<BR /><em> Pristup samo za admin korisnike!</em>',
+		'mlang_tabs_tab' => 'Log',
+	),
+	'hu' => Array (
+		'mlang_labels_tablabel' => 'Napló megjelenítése',
+		'mlang_labels_tabdescr' => 'A Typo3 teljes backend változási naplójának elérése.<BR><em>Csak \'admin\' felhasználóknak!</em>',
+		'mlang_tabs_tab' => 'Napló',
+	),
+	'gl' => Array (
+	),
+	'th' => Array (
+	),
+	'gr' => Array (
+	),
+	'hk' => Array (
+	),
+	'eu' => Array (
+	),
+	'bg' => Array (
+	),
+	'br' => Array (
+		'mlang_labels_tablabel' => 'Visualizar log',
+		'mlang_labels_tabdescr' => 'Permite acesso a todo o log de modificações do Typo3.<br>Acesso só para usuários \'admin\'!</em>',
+		'mlang_tabs_tab' => 'Log',
+	),
+	'et' => Array (
+	),
+	'ar' => Array (
+	),
+	'he' => Array (
+	),
+	'ua' => Array (
+	),
+	'lv' => Array (
+	),
+	'jp' => Array (
+	),
+	'vn' => Array (
+	),
+	'ca' => Array (
+	),
+	'ba' => Array (
+	),
+	'kr' => Array (
 	),
 );
 ?>

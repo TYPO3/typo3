@@ -23,7 +23,7 @@ $LOCAL_LANG = Array (
 	),
 	'it' => Array (
 		'mlang_labels_tablabel' => 'Mostra pagina',
-		'mlang_labels_tabdescr' => 'Mostra l\'aspetto della pagina corrente e consente di modificarne il contenuto',
+		'mlang_labels_tabdescr' => 'Mostra l\'aspetto della pagina corrente e consente di modificarne il contenuto.',
 		'mlang_tabs_tab' => 'Mostra',
 	),
 	'fr' => Array (
@@ -52,6 +52,9 @@ $LOCAL_LANG = Array (
 		'mlang_tabs_tab' => 'Zobacz',
 	),
 	'si' => Array (
+		'mlang_labels_tablabel' => 'Ogled strani',
+		'mlang_labels_tabdescr' => 'Pokaže izgled trenutne strani in omogoèa neposredno urejanje le-te.',
+		'mlang_tabs_tab' => 'Prikaz',
 	),
 	'fi' => Array (
 		'mlang_labels_tablabel' => 'Näytä sivu',
@@ -83,8 +86,63 @@ $LOCAL_LANG = Array (
 	'ch' => Array (
 	),
 	'sk' => Array (
+		'mlang_labels_tablabel' => 'Ukáza stránku',
+		'mlang_labels_tabdescr' => 'Ukáže vzh¾ad stránky a umožní priamo editova obsah',
+		'mlang_tabs_tab' => 'Ukáza',
 	),
 	'lt' => Array (
+	),
+	'is' => Array (
+	),
+	'hr' => Array (
+		'mlang_labels_tablabel' => 'Pregled stranica',
+		'mlang_labels_tabdescr' => 'Prikazuje izgled trenutne stranice i dozvoljava direktnu izmjenu sadržaja.',
+		'mlang_tabs_tab' => 'Pregled',
+	),
+	'hu' => Array (
+		'mlang_labels_tablabel' => 'Oldal megjelenítése',
+		'mlang_labels_tabdescr' => 'Megjeleníti az aktuális oldal kinézetét és a tartalmat közvetlenül lehet változtatni.',
+		'mlang_tabs_tab' => 'Nézet',
+	),
+	'gl' => Array (
+	),
+	'th' => Array (
+	),
+	'gr' => Array (
+	),
+	'hk' => Array (
+	),
+	'eu' => Array (
+	),
+	'bg' => Array (
+	),
+	'br' => Array (
+		'mlang_labels_tablabel' => 'Visualizar página',
+		'mlang_labels_tabdescr' => 'Mostra o aspecto da página atual e permite editar o conteúdo diretamente.',
+		'mlang_tabs_tab' => 'Ver',
+	),
+	'et' => Array (
+		'mlang_labels_tablabel' => 'Vaata lehekülge',
+		'mlang_labels_tabdescr' => 'Näitab käesoleva lehekülje välimust ja lubab redigeerida lehekülje sisu.',
+		'mlang_tabs_tab' => 'Vaata',
+	),
+	'ar' => Array (
+	),
+	'he' => Array (
+	),
+	'ua' => Array (
+	),
+	'lv' => Array (
+	),
+	'jp' => Array (
+	),
+	'vn' => Array (
+	),
+	'ca' => Array (
+	),
+	'ba' => Array (
+	),
+	'kr' => Array (
 	),
 );
 ?>

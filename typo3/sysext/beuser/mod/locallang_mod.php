@@ -52,9 +52,9 @@ $LOCAL_LANG = Array (
 		'mlang_tabs_tab' => 'Administracja u¿ytkownikami',
 	),
 	'si' => Array (
-		'mlang_labels_tablabel' => 'Administracija uporabnikov \'backend\'a',
-		'mlang_labels_tabdescr' => 'Modul za administracijo uporabnikov vam ponuja nadzor nad uporabniki programa. Lahko jih sortirate po znaèilnostih. Spreminjate jim lahko privilegije, dostop do datotek, TSconfig, èlanstvo v skupinah itd. Ta modul je nepogrešljivo orodje za administracijo.<br /><em>Uporaba dovoljena le \'admin\' uporabnikom!</em>',
-		'mlang_tabs_tab' => 'User Admin',
+		'mlang_labels_tablabel' => 'Administracija sistemskih uporabnikov',
+		'mlang_labels_tabdescr' => 'Modul za administracijo sistemskih uporabnikov vam omogoèa nadzor nad uporabniki sistema. Lahko jih razvrstite po znaèilnostih in jim glede na to spremljati dostopne pravice, konfiguracijo TS, èlanstvo v skupinah, itd. Ta modul je nepogrešljivo orodje za administracijo.<BR><em>Uporaba dovoljena le \'admin\' uporabnikom!</em>',
+		'mlang_tabs_tab' => 'Administracija uporabnikov',
 	),
 	'fi' => Array (
 		'mlang_labels_tablabel' => 'Backend käyttäjien hallinta',
@@ -103,6 +103,9 @@ $LOCAL_LANG = Array (
 		'mlang_tabs_tab' => 'Administracija korisnika',
 	),
 	'hu' => Array (
+		'mlang_labels_tablabel' => 'Backend felhasználók adminisztrációja',
+		'mlang_labels_tabdescr' => 'A Felhasználó Admin modulban megtekinthetõ az összes backend felhasználó. Csoportokba rendezheted õket a jellemzõik alapján,  figyelheted a jogaikat, a filemount-jaikat, TSconfig-ot, csoporttagságaikat, stb. Ez a modul nélkülözhetetlen, hogy biztosak lehessünk benne, minden felhasználó megfelelõen van beállítva. <br /><em>Csak \'admin\' felhasználóknak!</em>',
+		'mlang_tabs_tab' => 'Felhasználó Admin',
 	),
 	'gl' => Array (
 	),
@@ -134,6 +137,18 @@ $LOCAL_LANG = Array (
 	'he' => Array (
 	),
 	'ua' => Array (
+	),
+	'lv' => Array (
+	),
+	'jp' => Array (
+	),
+	'vn' => Array (
+	),
+	'ca' => Array (
+	),
+	'ba' => Array (
+	),
+	'kr' => Array (
 	),
 );
 ?>

@@ -86,7 +86,7 @@ $LOCAL_LANG = Array (
 		'chLog_menuTime' => 'Tid',
 	),
 	'it' => Array (
-		'chLog_title' => 'Changelog dell\'amministratore',
+		'chLog_title' => 'Changelog',
 		'chLog_users_0' => 'Tutti gli utenti',
 		'chLog_users_-1' => 'Self',
 		'chLog_time_0' => 'Questa settimana',
@@ -100,10 +100,10 @@ $LOCAL_LANG = Array (
 		'chLog_l_user' => 'Utente',
 		'chLog_l_error' => 'E',
 		'chLog_l_action' => 'Azione',
-		'chLog_l_table' => 'Tavola',
+		'chLog_l_table' => 'Tabella',
 		'chLog_l_details' => 'Dettagli',
 		'chLog_menuUsers' => 'Utenti',
-		'chLog_menuDepth' => 'Profondita',
+		'chLog_menuDepth' => 'Profondità',
 		'chLog_menuTime' => 'Ora',
 	),
 	'fr' => Array (
@@ -225,7 +225,7 @@ $LOCAL_LANG = Array (
 		'chLog_l_time' => 'Èas',
 		'chLog_l_user' => 'Uporabnik',
 		'chLog_l_error' => 'N',
-		'chLog_l_action' => 'Akcija',
+		'chLog_l_action' => 'Dejanje',
 		'chLog_l_table' => 'Tabela',
 		'chLog_l_details' => 'Podrobnosti',
 		'chLog_menuUsers' => 'Uporabniki',
@@ -344,6 +344,103 @@ $LOCAL_LANG = Array (
 	'sk' => Array (
 	),
 	'lt' => Array (
+	),
+	'is' => Array (
+	),
+	'hr' => Array (
+		'chLog_title' => 'Adminestratorski changelog',
+		'chLog_users_0' => 'Svi korisnici',
+		'chLog_users_-1' => 'Sam',
+		'chLog_time_0' => 'Ovaj tjedan',
+		'chLog_time_1' => 'Prošli tjedan',
+		'chLog_time_2' => 'Proteklih 7 dana',
+		'chLog_time_10' => 'Ovaj mjesec',
+		'chLog_time_11' => 'Protekli mjesec',
+		'chLog_time_12' => 'Zadnjih 31 dana',
+		'chLog_time_20' => 'Bez ogranièenja',
+		'chLog_l_time' => 'Vrijeme',
+		'chLog_l_user' => 'Korisnik',
+		'chLog_l_error' => 'E',
+		'chLog_l_action' => 'Akcija',
+		'chLog_l_table' => 'Tablica',
+		'chLog_l_details' => 'Datalji',
+		'chLog_menuUsers' => 'Korisnici',
+		'chLog_menuDepth' => 'Dubina',
+		'chLog_menuTime' => 'Vrijeme',
+	),
+	'hu' => Array (
+		'chLog_title' => 'Admin Változtatási napló',
+		'chLog_users_0' => 'Összes felhasználó',
+		'chLog_users_-1' => 'Önmaga',
+		'chLog_time_0' => 'Ezen a héten',
+		'chLog_time_1' => 'Elõzõ héten',
+		'chLog_time_2' => 'Utolsó 7 napban',
+		'chLog_time_10' => 'Ebben a hónapban',
+		'chLog_time_11' => 'Utolsó hónapban',
+		'chLog_time_12' => 'Utolsó 31 napban',
+		'chLog_time_20' => 'Nincs korlát',
+		'chLog_l_time' => 'Idõ',
+		'chLog_l_user' => 'Felhasználó',
+		'chLog_l_error' => 'E',
+		'chLog_l_action' => 'Mûvelet',
+		'chLog_l_table' => 'Tábla',
+		'chLog_l_details' => 'Részletek',
+		'chLog_menuUsers' => 'Felhasználók',
+		'chLog_menuDepth' => 'Mélység',
+		'chLog_menuTime' => 'Idõ',
+	),
+	'gl' => Array (
+	),
+	'th' => Array (
+	),
+	'gr' => Array (
+	),
+	'hk' => Array (
+	),
+	'eu' => Array (
+	),
+	'bg' => Array (
+	),
+	'br' => Array (
+		'chLog_title' => 'Diário de Administração',
+		'chLog_users_0' => 'Todos os usuários',
+		'chLog_users_-1' => 'Próprio',
+		'chLog_time_0' => 'Esta semana',
+		'chLog_time_1' => 'Última semana',
+		'chLog_time_2' => 'Últimos 7 dias',
+		'chLog_time_10' => 'Este mês',
+		'chLog_time_11' => 'Último mês',
+		'chLog_time_12' => 'Últimos 31 dias',
+		'chLog_time_20' => 'Sem limite',
+		'chLog_l_time' => 'Hora',
+		'chLog_l_user' => 'Usuário',
+		'chLog_l_error' => 'Erro',
+		'chLog_l_action' => 'Ação',
+		'chLog_l_table' => 'Tabela',
+		'chLog_l_details' => 'Detalhes',
+		'chLog_menuUsers' => 'Usuários',
+		'chLog_menuDepth' => 'Profundidade',
+		'chLog_menuTime' => 'Horas',
+	),
+	'et' => Array (
+	),
+	'ar' => Array (
+	),
+	'he' => Array (
+	),
+	'ua' => Array (
+	),
+	'lv' => Array (
+	),
+	'jp' => Array (
+	),
+	'vn' => Array (
+	),
+	'ca' => Array (
+	),
+	'ba' => Array (
+	),
+	'kr' => Array (
 	),
 );
 ?>

@@ -16,5 +16,149 @@ $LOCAL_LANG = Array (
 		'email.description' => 'Enter your email address.',
 		'personal.description' => 'Check this, if you don\'t want other users to see this note.',
 	),
+	'dk' => Array (
+	),
+	'de' => Array (
+		'.description' => 'Interne Erinnerungsnotiz auf einer Seite.',
+		'.details' => 'Bietet eine einfache Möglichkeit, um interne Informationen und Anweisungen mit einer Seite zu verknüpfen.',
+		'category.description' => 'Wähle eine die Notiz beschreibende Kategorie aus.',
+		'subject.description' => 'Gib einen Titel für die Notiz ein.',
+		'message.description' => 'Dies ist die eigentliche Notiz.',
+		'author.description' => 'Gibt Deinen Namen ein.',
+		'email.description' => 'Gib Deine EMail-Adresse ein.',
+		'personal.description' => 'Notiz auch anderen Benutzern anzeigen.',
+	),
+	'no' => Array (
+	),
+	'it' => Array (
+	),
+	'fr' => Array (
+	),
+	'es' => Array (
+	),
+	'nl' => Array (
+	),
+	'cz' => Array (
+	),
+	'pl' => Array (
+	),
+	'si' => Array (
+	),
+	'fi' => Array (
+		'.description' => 'Sisäinen huomautus muistuttamaan lisätty sivulle.',
+		'.details' => 'Tämä mahdollistaa yksinkertaisen tavan lisätä ohjeellisia huomautuksia sivulle jotka koskevat taustatoimintoja. Käytä kuten haluat muistioihin, ohjeisiin jne.',
+		'_.seeAlso' => 'sivuja',
+		'category.description' => 'Valitse luokka joka kuvastaa huomautuksen luonnetta.',
+		'subject.description' => 'Anna otsikko huomautukselle.',
+		'message.description' => 'Tässä on itse huomautus.',
+		'author.description' => 'Anna nimesi.',
+		'email.description' => 'Anna email osoitteesi.',
+		'personal.description' => 'Merkkaa tämä, jos et halua muiden käyttäjien näkevän tätä huomautusta.',
+	),
+	'tr' => Array (
+		'.description' => 'Sayfaya hatýrlatýcý not eklendi.',
+		'.details' => 'Bu özellik arkaplan yayýnlarýyla iliþkili olarak sayfaya açýklayýcý notlar eklemenizi saðlar. Hatýrlatma mesajý, açýklayýcý gibi kullanabilirsiniz.',
+		'category.description' => 'Tanýmlanan not karakterinin kategorisini seçiniz.',
+		'subject.description' => 'Not için baþlýk yazýnýz.',
+		'message.description' => 'Not kýsmý',
+		'author.description' => 'Adýnýzý Giriniz.',
+		'email.description' => 'E-mail adresininizi giriniz',
+		'personal.description' => 'Bunu týklayýnýz, Eðer týklamazsanýz diðer kullanýcýlar notlarýnýzý görebilir.',
+	),
+	'se' => Array (
+		'.description' => 'En intern påminnelse/notering för hemsidan.',
+		'.details' => 'Med detta verktyg gan du lätt lägga en förklarande notering angående Backend-saker till din sida. Använd den hur du vill: som påminnelse, förklaring osv.',
+		'category.description' => 'Välj till vilken kategori noteringen hör.',
+		'subject.description' => 'Ge noteringen en rubrik.',
+		'message.description' => 'Noteringens innehåll.',
+		'author.description' => 'Ge ditt namn.',
+		'email.description' => 'Ge din epostadress.',
+		'personal.description' => 'Välj denna, om du inte vill att andra användare skall se noteringen',
+	),
+	'pt' => Array (
+	),
+	'ru' => Array (
+	),
+	'ro' => Array (
+	),
+	'ch' => Array (
+	),
+	'sk' => Array (
+	),
+	'lt' => Array (
+	),
+	'is' => Array (
+	),
+	'hr' => Array (
+		'.description' => 'Interni podsjetnik postavljen na stranicu.',
+		'.details' => 'Ovo je jednostavan naèin za prilaganje instrukcijskih bilješki na stranicu vezanih uz backend. Koristite ga kako želite za podsjetnike, instrukcije itd.',
+		'category.description' => 'Izaberite kategoriju koja opisuje karakter bilješke.',
+		'subject.description' => 'Unesite naslov bilješke.',
+		'message.description' => 'Ovo je sama bilješka.',
+		'author.description' => 'Unesite vaše ime.',
+		'email.description' => 'Unesite vašu email adresu.',
+		'personal.description' => 'Oznaèite ovo, ako ne želite da ostali korisnici vide ovu bilješku.',
+	),
+	'hu' => Array (
+		'.description' => 'Belsõ emlékeztetõ üzenetek elhelyezése az oldalakra.',
+		'.details' => 'Ez egy egyszerû módja feljegyzések, utasítások elhelyezésére.',
+		'category.description' => 'Válassz egy kategóriát, ami kifejezi a feljegyzés típusát.',
+		'subject.description' => 'Add meg a feljegyzés címét.',
+		'message.description' => 'Ez a jegyzet maga.',
+		'author.description' => 'Add meg a neved.',
+		'email.description' => 'Add meg az email címed.',
+		'personal.description' => 'Akkor jelöld be, ha más felhasználó nem láthatja ezt a jegyzetet.',
+	),
+	'gl' => Array (
+	),
+	'th' => Array (
+	),
+	'gr' => Array (
+	),
+	'hk' => Array (
+	),
+	'eu' => Array (
+	),
+	'bg' => Array (
+		'.description' => 'Âúòðåøíà íàïîìíÿùà áåëåæêà íà ñòðàíèöàòà',
+		'.details' => 'Òîâà ïîçâîëÿâà ëåñåí íà÷èí äà ñå îñòàâÿò áåëåæêè ñ ó÷åáíà öåë íà ñòðàíèöà, îòíàñÿùè ñå çà backend ñâúðçàíè ïóáëèêàöèè.',
+		'_.seeAlso' => 'ñòðàíèöè',
+		'category.description' => 'Èçáåðåòå êàòåãîðèÿ êîÿòî îïèñâà õàðàêòåðà íà áåëåæêàòà.',
+		'subject.description' => 'Âúâåäåòå çàãëàâèå çà âàøàòà áåëåæêà.',
+		'message.description' => 'Òîâà å ñàìàòà áåëåæêà.',
+		'author.description' => 'Âúâåäåòå âàøåòî èìå.',
+		'email.description' => 'Âúâåäåòå âàøèÿ email àäðåñ.',
+		'personal.description' => 'Ìàðêèðàéòå òîâà, àêî íå èñêàòå äðóãè ïîòðåáèòåëè äà âèäÿò òàçè áåëåæêà.',
+	),
+	'br' => Array (
+		'.description' => 'Nota interna de lembrete adicionada a uma página.',
+		'.details' => 'Possibilita um modo simples de anexar notas instrucionais a uma página, sobre assuntos relativos à administração. Use-a como quiser para lembretes, instruções, etc.',
+		'category.description' => 'Selecione uma categoria para descrever a característica da nota.',
+		'subject.description' => 'Digite um título para a nota.',
+		'message.description' => 'Este é o conteúdo da nota.',
+		'author.description' => 'Digite seu nome.',
+		'email.description' => 'Digite seu endereço de e-mail.',
+		'personal.description' => 'Marque esta opção, se não quiser que outros usuários vejam esta nota.',
+	),
+	'et' => Array (
+	),
+	'ar' => Array (
+	),
+	'he' => Array (
+	),
+	'ua' => Array (
+	),
+	'lv' => Array (
+	),
+	'jp' => Array (
+	),
+	'vn' => Array (
+	),
+	'ca' => Array (
+	),
+	'ba' => Array (
+	),
+	'kr' => Array (
+	),
 );
 ?>

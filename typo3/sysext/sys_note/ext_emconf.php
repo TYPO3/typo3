@@ -1,9 +1,9 @@
 <?php
 
 ########################################################################
-# Extension Manager/Repository config file for ext: 'sys_note'
+# Extension Manager/Repository config file for ext: "sys_note"
 # 
-# Auto generated 22-10-2003 21:24
+# Auto generated 16-11-2004 17:52
 # 
 # Manual updates:
 # Only the data in the array - anything else is removed by next write
@@ -17,6 +17,9 @@ $EM_CONF[$_EXTKEY] = Array (
 	'dependencies' => '',
 	'conflicts' => '',
 	'priority' => '',
+	'loadOrder' => '',
+	'TYPO3_version' => '0.0.1-0.0.1',
+	'PHP_version' => '0.0.1-0.0.1',
 	'module' => '',
 	'state' => 'stable',
 	'internal' => 1,
@@ -28,10 +31,12 @@ $EM_CONF[$_EXTKEY] = Array (
 	'author' => 'Kasper Skårhøj',
 	'author_email' => 'kasperYYYY@typo3.com',
 	'author_company' => 'Curby Soft Multimedia',
+	'CGLcompliance' => '',
+	'CGLcompliance_note' => '',
 	'private' => 0,
 	'download_password' => '',
-	'version' => '1.0.6',	// Don't modify this! Managed automatically during upload to repository.
-	'_md5_values_when_last_written' => 'a:5:{s:12:"ext_icon.gif";s:4:"bf22";s:14:"ext_tables.php";s:4:"7679";s:14:"ext_tables.sql";s:4:"6d66";s:25:"locallang_csh_sysnote.php";s:4:"4f40";s:17:"locallang_tca.php";s:4:"de73";}',
+	'version' => '1.1.1',	// Don't modify this! Managed automatically during upload to repository.
+	'_md5_values_when_last_written' => 'a:8:{s:12:"ext_icon.gif";s:4:"bf22";s:14:"ext_tables.php";s:4:"7679";s:14:"ext_tables.sql";s:4:"6d66";s:25:"locallang_csh_sysnote.php";s:4:"730e";s:17:"locallang_tca.php";s:4:"5f7e";s:11:"CVS/Entries";s:4:"0a4f";s:14:"CVS/Repository";s:4:"dee3";s:8:"CVS/Root";s:4:"0ea2";}',
 );
 
 ?>

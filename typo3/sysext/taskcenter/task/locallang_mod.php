@@ -38,7 +38,7 @@ $LOCAL_LANG = Array (
 	),
 	'nl' => Array (
 		'mlang_labels_tablabel' => 'Taak Centrum met overzichten, berichten, TeDoen lijsten',
-		'mlang_labels_tabdescr' => 'Het Taak Centrum geeft toegang tot je interne TeDoen lijst, berichten, NotitieBlok, Akties enz. Het bevat ook snelkoppelingen naar de voor jou beschikbare modules en onlangs aangepaste pagina\'s. In het Taak Centrum volg je je dagelijkse taken en werkschema\'s.',
+		'mlang_labels_tabdescr' => 'Het Taak Centrum geeft toegang tot de interne TeDoen lijst, berichten, NotitieBlok, Akties enz. Het bevat ook snelkoppelingen naar de beschikbare modules en onlangs aangepaste pagina\'s. In het Taak Centrum zijn de dagelijkse taken en werkschema\'s te volgen.',
 		'mlang_tabs_tab' => 'Taakcentrum',
 	),
 	'cz' => Array (
@@ -52,9 +52,9 @@ $LOCAL_LANG = Array (
 		'mlang_tabs_tab' => 'Twoje zadania',
 	),
 	'si' => Array (
-		'mlang_labels_tablabel' => 'Vaša beležka v TYPO3',
-		'mlang_labels_tabdescr' => 'Modul \'naloge\' vam omogoèa uporabo beležke vaših opravkov v TYPO3, pa tudi pošiljanje sporoèil, urejanje zaznamkov, itd. Ponuja tudi dostop do vaših \'frontend\' modulov in bližnjice do nedavno urejanih strani.',
-		'mlang_tabs_tab' => 'Naloge',
+		'mlang_labels_tablabel' => 'Center opravil s pregledi nalog, sporoèilo in seznamom opravil',
+		'mlang_labels_tabdescr' => 'Center opravil vam omogoèa dostop do lastnega seznama opravil, sporoèil, opomb, dejanj, idr. Vsebuje tudi bližnjice na razpoložljive module in zadnje urejene strani. S pomoèjo centra opravil boste lahko sledili dnevnim opravilom in poteku dela.',
+		'mlang_tabs_tab' => 'Center opravil',
 	),
 	'fi' => Array (
 		'mlang_labels_tablabel' => 'Task Center ',
@@ -77,8 +77,8 @@ $LOCAL_LANG = Array (
 		'mlang_tabs_tab' => 'Centro de Tarefas',
 	),
 	'ru' => Array (
-		'mlang_labels_tablabel' => 'Öåíòð çàäàíèé ñ îáçîðîì, ñîîáùåíèÿìè è èíñòðóêöèÿìè',
-		'mlang_labels_tabdescr' => 'Öåíòð çàäàíèé ïðåäîñòàâëÿåò äîñòóï ê âàøèì ëè÷íûì ïëàíàì, çàìåòêàì, äåéñòâèÿì è ò.ä. Òàêæå âû íàéäåòå çäåñü ññûëêè ê äîñòóïíûì âàì ìîäóëÿì è ñïèñîê ñòðàíèö, íàä êîòîðûìè âû ðàáîòàëè ïîñëåäíåå âðåìÿ. Öåíòð çàäàíèé - ýòî ìåñòî ïîâñåäíåâíîé ðàáîòû.',
+		'mlang_labels_tablabel' => 'Öåíòð çàäàíèé ñîäåðæèò îáçîð çàäàíèé, ñîîáùåíèÿ è èíñòðóêöèè',
+		'mlang_labels_tabdescr' => 'Öåíòð çàäàíèé ïðåäîñòàâëÿåò äîñòóï ê âàøèì ëè÷íûì ïëàíàì, çàìåòêàì, äåéñòâèÿì è ò.ä. Òàêæå âû íàéäåòå çäåñü ññûëêè ê äîñòóïíûì âàì ìîäóëÿì è ñïèñîê ñòðàíèö, íàä êîòîðûìè âû ðàáîòàëè ïîñëåäíåå âðåìÿ. Öåíòð çàäàíèé - ýòî âàø ðàáî÷èé ñòîë.',
 		'mlang_tabs_tab' => 'Öåíòð çàäàíèé',
 	),
 	'ro' => Array (
@@ -103,6 +103,9 @@ $LOCAL_LANG = Array (
 		'mlang_tabs_tab' => 'Task centar',
 	),
 	'hu' => Array (
+		'mlang_labels_tablabel' => 'Feladatközpont áttekintéssel, üzenetekkel, tennivaló listákkal',
+		'mlang_labels_tabdescr' => 'A Feladatközpont elérést biztosít a belsõ tennivaló listához, üzenetekhez, gyors jegyzetekhez, mûveletekhez, stb. Parancsikonokat biztosít a frontend modulokhoz és a leggyakrabban szerkesztett oldalakhoz. A Feladatközpontban követheted nyomon a napi teendõket és a munkamenetet.',
+		'mlang_tabs_tab' => 'Feladatközpont',
 	),
 	'gl' => Array (
 	),
@@ -117,6 +120,9 @@ $LOCAL_LANG = Array (
 	'bg' => Array (
 	),
 	'br' => Array (
+		'mlang_labels_tablabel' => 'Centro de Tarefas com listas de históricos, mensagens e a-fazer',
+		'mlang_labels_tabdescr' => 'O centro de tarefas providencia acesso à sua lista de A-fazer, mensagens, Notas-rápidas, ações, etc. Também providencia atalhos para os módulos-clientes disponíveis e as páginas editadas mais recentemente. O Centro de Tarefas é onde você mantém o controle das suas tarefas e trabalhos diários.',
+		'mlang_tabs_tab' => 'Centro de Tarefas',
 	),
 	'et' => Array (
 		'mlang_labels_tablabel' => 'Ülesanded, teated, tegemata tööd',
@@ -128,6 +134,18 @@ $LOCAL_LANG = Array (
 	'he' => Array (
 	),
 	'ua' => Array (
+	),
+	'lv' => Array (
+	),
+	'jp' => Array (
+	),
+	'vn' => Array (
+	),
+	'ca' => Array (
+	),
+	'ba' => Array (
+	),
+	'kr' => Array (
 	),
 );
 ?>
