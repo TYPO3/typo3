@@ -71,7 +71,7 @@
  */
 
 
-
+require_once (PATH_t3lib.'class.t3lib_loaddbgroup.php');
 require_once (PATH_t3lib.'class.t3lib_loadmodules.php');
 require_once (PATH_t3lib.'class.t3lib_parsehtml_proc.php');
 
