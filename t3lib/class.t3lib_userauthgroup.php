@@ -903,7 +903,7 @@ This is a dump of the failures:
 ';
 				while($testRows=mysql_fetch_assoc($res))	{
 					$theData = unserialize($testRows['log_data']);
-					$email_body.=date($GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'].' H:i',$testRows['tstamp']).':  '.sprintf($testRows['details'],''.$theData[0],''.$theData[1],''.$theData[2]);
+					$email_body.=date($GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'].' H:i',$testRows['tstamp']).':  '.@sprintf($testRows['details'],''.$theData[0],''.$theData[1],''.$theData[2]);
 					$email_body.=chr(10);
 				}
 				mail(	$email,

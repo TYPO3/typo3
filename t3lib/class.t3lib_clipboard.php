@@ -701,8 +701,8 @@ class t3lib_clipboard {
 			// Message:		
 		$conf='confirm('.$GLOBALS['LANG']->JScharCode(sprintf(
 			$msg,
-			$selRecTitle,
-			$thisRecTitle
+			t3lib_div::fixed_lgd($selRecTitle,30),
+			t3lib_div::fixed_lgd($thisRecTitle,30)
 			)).')';
 		return $conf;
 	}

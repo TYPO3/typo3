@@ -169,7 +169,7 @@ class SC_db_list {
 		$this->modTSconfig = t3lib_BEfunc::getModTSconfig($this->id,'mod.'.$this->MCONF['name']);
 		
 			// Clean up settings:
-		$this->MOD_SETTINGS = t3lib_BEfunc::getModuleData($this->MOD_MENU, t3lib_div::GPvar('SET'), $this->MCONF['name']);
+		$this->MOD_SETTINGS = t3lib_BEfunc::getModuleData($this->MOD_MENU, t3lib_div::GPvar('SET',1), $this->MCONF['name']);
 	}
 
 	/**
@@ -351,12 +351,20 @@ class SC_db_list {
 			}
 
 				// Adding checkbox options for extended listing and clipboard display:
-			$this->content.='<form action="" method="post">';
-			$this->content.=t3lib_BEfunc::getFuncCheck($this->id,'SET[bigControlPanel]',$this->MOD_SETTINGS['bigControlPanel'],'db_list.php','').' '.$LANG->getLL('largeControl',1).'<br />';
-			if ($dblist->showClipboard)	{
-				$this->content.=t3lib_BEfunc::getFuncCheck($this->id,'SET[clipBoard]',$this->MOD_SETTINGS['clipBoard'],'db_list.php','').' '.$LANG->getLL('showClipBoard',1);
-			}
-			$this->content.='</form>';
+			$this->content.='
+					
+					<!--
+						Listing options for clipboard and thumbnails
+					-->
+					<div id="typo3-listOptions">
+						<form action="" method="post">';
+				$this->content.=t3lib_BEfunc::getFuncCheck($this->id,'SET[bigControlPanel]',$this->MOD_SETTINGS['bigControlPanel'],'db_list.php','').' '.$LANG->getLL('largeControl',1).'<br />';
+				if ($dblist->showClipboard)	{
+					$this->content.=t3lib_BEfunc::getFuncCheck($this->id,'SET[clipBoard]',$this->MOD_SETTINGS['clipBoard'],'db_list.php','').' '.$LANG->getLL('showClipBoard',1);
+				}
+				$this->content.='
+						</form>
+					</div>';
 		
 				// Printing clipboard if enabled:
 			if ($this->MOD_SETTINGS['clipBoard'] && $dblist->showClipboard)	{

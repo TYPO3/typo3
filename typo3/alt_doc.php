@@ -374,7 +374,7 @@ class SC_alt_doc {
 		$this->MCONF['name']='xMOD_alt_doc.php';
 
 			// CLEANSE SETTINGS
-		$this->MOD_SETTINGS = t3lib_BEfunc::getModuleData($this->MOD_MENU, t3lib_div::GPvar('SET'), $this->MCONF['name']);
+		$this->MOD_SETTINGS = t3lib_BEfunc::getModuleData($this->MOD_MENU, t3lib_div::GPvar('SET',1), $this->MCONF['name']);
 
 			// Create an instance of the document template object
 		$this->doc = t3lib_div::makeInstance('bigDoc');

@@ -140,7 +140,7 @@ class SC_file_list {
 		);
 			
 			// CLEANSE SETTINGS
-		$this->MOD_SETTINGS = t3lib_BEfunc::getModuleData($this->MOD_MENU, t3lib_div::GPvar('SET'), $this->MCONF['name']);
+		$this->MOD_SETTINGS = t3lib_BEfunc::getModuleData($this->MOD_MENU, t3lib_div::GPvar('SET',1), $this->MCONF['name']);
 	}
 
 	/**
@@ -241,13 +241,27 @@ class SC_file_list {
 			$this->content.= $filelist->HTMLcode;
 			$this->content.= '<input type="hidden" name="cmd" /></form>';
 			
-			if ($filelist->HTMLcode)	{	// Making search form:
+			if ($filelist->HTMLcode)	{	// Making listing options:
+
+				$this->content.='
+				
+					<!--
+						Listing options for clipboard and thumbnails
+					-->
+					<div id="typo3-listOptions">
+				';
+
 					// Add "display thumbnails" checkbox:
 				$this->content.=t3lib_BEfunc::getFuncCheck($this->id,'SET[displayThumbs]',$this->MOD_SETTINGS['displayThumbs'],'file_list.php','').' '.$LANG->getLL('displayThumbs',1).'<br />';
 	
 					// Add clipboard button
 				$this->content.=t3lib_BEfunc::getFuncCheck($this->id,'SET[clipBoard]',$this->MOD_SETTINGS['clipBoard'],'file_list.php','').' '.$LANG->getLL('clipBoard',1);
 					
+				$this->content.='
+					</div>
+				';
+
+
 					// Set clipboard:
 				if ($this->MOD_SETTINGS['clipBoard'])	$this->content.=$filelist->clipObj->printClipboard();
 			}

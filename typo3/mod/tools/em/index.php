@@ -390,7 +390,7 @@ class SC_mod_tools_em_index {
 		}
 		
 			// CLEANSE SETTINGS
-		$this->MOD_SETTINGS = t3lib_BEfunc::getModuleData($this->MOD_MENU, t3lib_div::GPvar("SET"), $this->MCONF["name"]);
+		$this->MOD_SETTINGS = t3lib_BEfunc::getModuleData($this->MOD_MENU, t3lib_div::GPvar("SET",1), $this->MCONF["name"]);
 		if ($this->MOD_SETTINGS["function"]==2)	{
 				// If listing from online repository, certain items are removed though:
 			unset($this->MOD_MENU["listOrder"]["type"]);
@@ -398,7 +398,7 @@ class SC_mod_tools_em_index {
 			unset($this->MOD_MENU["display_details"][3]);
 			unset($this->MOD_MENU["display_details"][4]);
 			unset($this->MOD_MENU["display_details"][5]);
-			$this->MOD_SETTINGS = t3lib_BEfunc::getModuleData($this->MOD_MENU, t3lib_div::GPvar("SET"), $this->MCONF["name"]);
+			$this->MOD_SETTINGS = t3lib_BEfunc::getModuleData($this->MOD_MENU, t3lib_div::GPvar("SET",1), $this->MCONF["name"]);
 		}
 	}
 
@@ -1087,7 +1087,7 @@ EXTENSION KEYS:
 							$updates=$this->updatesForm($extKey,$list[$extKey],1,"",'<input type="hidden" name="_do_install" value="1"><input type="hidden" name="_clrCmd" value="'.$this->CMD["clrCmd"].'">');
 							if ($updates)	{
 								$updates = 'Before the extension can be installed the database needs to be updated with new tables or fields. Please select which operations to perform:'.$updates;
-								$this->content.=$this->doc->section("Installing ".$this->extensionTitleIconHeader($extKey,$list[$extKey]).strtoupper(": Database needs to be updated"),$updates,1,1,1);
+								$this->content.=$this->doc->section("Installing ".$this->extensionTitleIconHeader($extKey,$list[$extKey]).strtoupper(": Database needs to be updated"),$updates,1,1,1,1);
 							}
 #							$updates.=$this->checkDBupdates($extKey,$list[$extKey]);
 #							$updates.= $this->checkClearCache($extKey,$list[$extKey]); 
@@ -1110,7 +1110,7 @@ EXTENSION KEYS:
 								<input type="hidden" name="_do_install" value="1">
 								<input type="hidden" name="_clrCmd" value="'.$this->CMD["clrCmd"].'">
 								';
-								$this->content.=$this->doc->section("Installing ".$this->extensionTitleIconHeader($extKey,$list[$extKey]).strtoupper(": Database needs to be updated"),$updates,1,1,1);
+								$this->content.=$this->doc->section("Installing ".$this->extensionTitleIconHeader($extKey,$list[$extKey]).strtoupper(": Database needs to be updated"),$updates,1,1,1,1);
 							}
 						}
 						if (!$updates || t3lib_div::GPvar("_do_install")) {
@@ -2560,7 +2560,7 @@ EXTENSION KEYS:
 			
 			$MOD_MENU=array();
 			$MOD_MENU["constant_editor_cat"] = $tsStyleConfig->ext_getCategoriesForModMenu();
-			$MOD_SETTINGS = t3lib_BEfunc::getModuleData($MOD_MENU, t3lib_div::GPvar("SET"), "xMod_test");
+			$MOD_SETTINGS = t3lib_BEfunc::getModuleData($MOD_MENU, t3lib_div::GPvar("SET",1), "xMod_test");
 			
 				// Resetting the menu (stop)
 			if (count($MOD_MENU)>1)	{

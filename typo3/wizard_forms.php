@@ -739,7 +739,7 @@ class SC_wizard_forms {
 					if ($vv['type']=='select' || $vv['type']=='radio')	{
 						$thisLine[2]=str_replace(chr(10),', ',str_replace(',','',$vv['options']));
 					} elseif ($vv['type']=='check')	{
-						if ($vv['checked'])	$thisLine[2]=1;
+						if ($vv['default'])	$thisLine[2]=1;
 					} elseif (strcmp(trim($vv['default']),'')) {
 						$thisLine[2]=$vv['default'];
 					}

@@ -845,7 +845,9 @@ top.goToModule("file_list");
 	 */
 	function writeLog($action,$error,$details_nr,$details,$data)	{
 		$type=2;	// Type value for tce_file.php
-		$GLOBALS['BE_USER']->writelog($type,$action,$error,$details_nr,$details,$data);
+		if (is_object($GLOBALS['BE_USER']))	{
+			$GLOBALS['BE_USER']->writelog($type,$action,$error,$details_nr,$details,$data);
+		}
 	}
 }
 

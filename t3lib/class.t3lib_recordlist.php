@@ -129,14 +129,15 @@ class t3lib_recordList {
 			<td nowrap="nowrap"'.$tdParams.'>';
 			
 			if (!$h)	{
-				$out.='<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/ol/halfline.gif','width="18" height="8"').' alt="" />';
+#				$out.='<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/ol/halfline.gif','width="18" height="8"').' alt="" />';
+				$out.='<img src="clear.gif" width="1" height="8" alt="" />';
 			} else {
 				for ($a=0;$a<$h;$a++)	{
 					if (!$a)	{
-						$out.= $altLine ? $altLine : '<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/ol/line.gif','width="18" height="16"').' alt="" />';
+#						$out.= $altLine ? $altLine : '<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/ol/line.gif','width="18" height="16"').' alt="" />';
 						if ($icon)	$out.= $icon;
 					} else {
-						$out.= $altLine ? $altLine :'<br /><img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/ol/line.gif','width="18" height="16"').' alt="" />';
+#						$out.= $altLine ? $altLine :'<br /><img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/ol/line.gif','width="18" height="16"').' alt="" />';
 					}
 				}
 			}

@@ -1,3 +1,15 @@
+Fixed all:
+- Click menu does not work in task-center/weblist
+- admin-only flag in TYPO3_CONF_VARS so only administrators can log in/be authenticated.
+- Click menu does not work in Opera.
+- BUG: Row-highlighting for both Page and Folder trees are not stable enough.
+- BUG: when editing records from Web>View the palette will not show properly in the topframe!
+- BUG: Email forms wizard: "Checked: " for checkboxes does not work!
+- BUG: File>List , list-frame: Click menu does NOT work in Mozilla! cannot find the bug!
+- Convert selecting of filemounts from GROUP selector to a selectorbox.
+- Option: Frameset modules without the "border" frame and therefore adjustable freely.
+Changed all usage of t3lib_div::GPvar('SET') to t3lib_div::GPvar('SET',1) (stripping slashes) where its used to set MOD_SETTINGS for backend modules.
+
 2003-12-16  Robert Lemke  <rl@robertlemke.de>
 
 	* Added and changed some features related to the replacement of default page module by a custom one (templavoila). See t3lib_positionmap, t3lib_tsfebeuserauth, alt_shortcut, alt_clickmenu

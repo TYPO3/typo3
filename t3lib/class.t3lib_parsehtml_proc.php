@@ -271,7 +271,7 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 		if (is_array($entry_HTMLparser))	{
 			$value = $this->HTMLcleaner($value,$entry_HTMLparser[0],$entry_HTMLparser[1],$entry_HTMLparser[2],$entry_HTMLparser[3]);
 		}
-		
+
 			// Traverse modes:
 		foreach($modes as $cmd)	{
 				// ->DB
@@ -405,7 +405,6 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 							$absRef = $siteUrl.$this->rteImageStorageDir().'RTEmagicC_'.$filename.'.'.$pI['extension'];
 						
 							$attribArray['src']=$absRef;
-							if (!isset($attribArray['alt']))	$attribArray['alt']='';
 							$params = t3lib_div::implodeParams($attribArray,1);
 							$imgSplit[$k]='<img '.$params.' />';
 						}
@@ -445,7 +444,6 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 										$attribArray['width']=$imgI[0];
 										$attribArray['height']=$imgI[1];
 										if (!$attribArray['border'])	$attribArray['border']=0;
-										if (!isset($attribArray['alt']))	$attribArray['alt']='';
 										$params = t3lib_div::implodeParams($attribArray,1);
 										$imgSplit[$k]='<img '.$params.' />';
 									}
@@ -460,8 +458,8 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 				$absRef = trim($attribArray['src']);
 				if (t3lib_div::isFirstPartOfStr($absRef,$siteUrl))	{
 					$attribArray['src'] = $this->relBackPath.substr($absRef,strlen($siteUrl));
-					if (!isset($attribArray['alt']))	$attribArray['alt']='image';		// Must have value, otherwise the attribute is stripped by implodeParams()
-					$imgSplit[$k]='<img '.t3lib_div::implodeParams($attribArray,1).' />';
+					if (!isset($attribArray['alt']))	$attribArray['alt']='';		// Must have alt-attribute for XHTML compliance.
+					$imgSplit[$k]='<img '.t3lib_div::implodeParams($attribArray,1,1).' />';
 				}
 			}
 		}		
@@ -1054,7 +1052,7 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 	}
 		 
 	/**
-	 * This resolves the $value into parts based on <div></div>-sections and <P>-sections and <BR>-tags. These are returned as lines separated by chr(10).
+	 * This resolves the $value into parts based on <div></div>-sections and <p>-sections and <br />-tags. These are returned as lines separated by chr(10).
 	 * This point is to resolve the HTML-code returned from RTE into ordinary lines so it's 'human-readable'
 	 * The function ->setDivTags does the opposite.
 	 * This function processes content to go into the database.
@@ -1110,7 +1108,7 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 						
 							// Get first tag, attributes etc:
 						$fTag = $this->getFirstTag($divSplit[$k]);
-						$tagName=$this->getFirstTagName($divSplit[$k]);
+						$tagName=strtolower($this->getFirstTagName($divSplit[$k]));
 						$attribs=$this->get_tag_attributes($fTag);
 						
 							// Keep attributes (lowercase)

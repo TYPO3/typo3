@@ -29,7 +29,7 @@
  *
  * $Id$
  * Revised for TYPO3 3.6 2/2003 by Kasper Skaarhoj
- * XHTML compliant (almost)
+ * XHTML compliant
  *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  */
@@ -166,8 +166,6 @@ class SC_alt_db_navframe {
 
 			// Create template object:
 		$this->doc = t3lib_div::makeInstance('template');
-
-			// Hmmm, setting "xhtml_trans" for the page will unfortunately break the Context Sensitive menu in Mozilla! But apart from that - and duplicate ID's for same page in different mounts - the document checks out well as XHTML
 		$this->doc->docType='xhtml_trans';
 
 			// Setting backPath

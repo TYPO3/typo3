@@ -447,7 +447,7 @@ class localRecordList extends recordList {
 				
 				
 			<!--
-				DB listing of elements:			
+				DB listing of elements:	"'.htmlspecialchars($table).'"
 			-->	
 				<table border="0" cellpadding="0" cellspacing="0" class="typo3-dblist">
 					'.$out.'
@@ -479,7 +479,7 @@ class localRecordList extends recordList {
 			// Background color, if any:
 		$row_bgColor=
 			$this->alternateBgColors ? 
-			(($cc%2)?'' :' bgColor="'.t3lib_div::modifyHTMLColor($GLOBALS['SOBE']->doc->bgColor4,+10,+10,+10).'"') :
+			(($cc%2)?'' :' bgcolor="'.t3lib_div::modifyHTMLColor($GLOBALS['SOBE']->doc->bgColor4,+10,+10,+10).'"') :
 			'';
 
 			// Initialization

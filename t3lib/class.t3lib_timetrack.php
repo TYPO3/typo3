@@ -201,7 +201,7 @@ class t3lib_timeTrack {
 		end($this->currentHashPointer);
 		$k = current($this->currentHashPointer);
 
-		$this->tsStackLog[$k]['message'][] = $this->wrapIcon[$num].$this->wrapError[$num][0].$content.$this->wrapError[$num][1];
+		$this->tsStackLog[$k]['message'][] = $this->wrapIcon[$num].$this->wrapError[$num][0].htmlspecialchars($content).$this->wrapError[$num][1];
 	}
 
 	/**
@@ -393,7 +393,7 @@ class t3lib_timeTrack {
 			if ($flag_messages && is_array($data['message']))	{
 				reset($data['message']);
 				while(list(,$v)=each($data['message']))	{
-					$msgArr[]=nl2br(htmlspecialchars($v));
+					$msgArr[]=nl2br($v);
 				}
 			}
 			if ($flag_queries && is_array($data['selectQuery']))	{

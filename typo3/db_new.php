@@ -137,7 +137,6 @@ class SC_db_new {
 	var $allowedNewTables_pid;
 	var $code;
 	var $R_URI;
-	var $code;	
 	
 		// Internal, static: GPvar
 	var $id;			// see init()
@@ -299,9 +298,9 @@ class SC_db_new {
 				// Create link to new page inside:
 			$t='pages';
 			$v=$TCA[$t];
-			$this->code.=$this->linkWrap(
-						'<img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/ol/join.gif','width="18" height="16"').' alt="" />'.
-							'<img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/i/'.($v['ctrl']['iconfile'] ? $v['ctrl']['iconfile'] : $t.'.gif'),'width="18" height="16"').' alt="" /> '.
+			$this->code.='<img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/ol/join.gif','width="18" height="16"').' alt="" />'.
+							$this->linkWrap(
+							'<img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/i/'.($v['ctrl']['iconfile'] ? $v['ctrl']['iconfile'] : $t.'.gif'),'width="18" height="16"').' alt="" />'.
 							$LANG->sL($v['ctrl']['title'],1).' ('.$LANG->sL('LLL:EXT:lang/locallang_core.php:db_new.php.inside',1).')',
 						$t,
 						$this->id);
@@ -310,7 +309,7 @@ class SC_db_new {
 			if (isset($TCA_DESCR[$t]['columns']['']))	{
 				$onClick = 'vHWin=window.open(\'view_help.php?tfID='.$t.'.\',\'viewFieldHelp\',\'height=300,width=250,status=0,menubar=0,scrollbars=1\');vHWin.focus();return false;';
 				$this->code.='<a href="#" onclick="'.htmlspecialchars($onClick).'">'.
-							'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/helpbubble.gif','width="14" height="14"').' align="right"'.$this->doc->helpStyle().' alt="" />'.
+							'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/helpbubble.gif','width="14" height="14"').' class="c-helpImg" align="right"'.$this->doc->helpStyle().' alt="" />'.
 							'</a>';
 			}
 			$this->code.='<br />
@@ -339,8 +338,8 @@ class SC_db_new {
 							)	{
 
 							// Create new link for record:
-						$this->code.=$this->linkWrap(
-							'<img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/ol/join.gif','width="18" height="16"').' alt="" />'.
+						$this->code.='<img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/ol/join.gif','width="18" height="16"').' alt="" />'.
+								$this->linkWrap(
 								t3lib_iconWorks::getIconImage($t,array(),$BACK_PATH,'').
 								$LANG->sL($v['ctrl']['title'],1)
 							,$t
@@ -352,7 +351,7 @@ class SC_db_new {
 							if (isset($TCA_DESCR[$t]['columns']['']))	{
 								$onClick = 'vHWin=window.open(\'view_help.php?tfID='.$t.'.\',\'viewFieldHelp\',\'height=300,width=250,status=0,menubar=0,scrollbars=1\');vHWin.focus();return false;';
 								$this->code.='<a href="#" onclick="'.htmlspecialchars($onClick).'">'.
-									'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/helpbubble.gif','width="14" height="14"').' align="right"'.$this->doc->helpStyle().' alt="" />'.
+									'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/helpbubble.gif','width="14" height="14"').' class="c-helpImg" align="right"'.$this->doc->helpStyle().' alt="" />'.
 									'</a>';
 							}
 						}
@@ -368,8 +367,8 @@ class SC_db_new {
 										htmlspecialchars($LANG->getLL('clickForWizard')).
 										'</a><br />
 										';
-							$this->code.='<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/ol/halfline.gif','width="18" height="8"').' align="top" alt="" /><br />
-							';
+							$this->code.='<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/ol/halfline.gif','width="18" height="8"').' alt="" /><br />
+										';
 						}
 					}
 				}
@@ -393,7 +392,7 @@ class SC_db_new {
 			if (isset($TCA_DESCR[$t]['columns']['']))	{
 				$onClick = 'vHWin=window.open(\'view_help.php?tfID='.$t.'.\',\'viewFieldHelp\',\'height=300,width=250,status=0,menubar=0,scrollbars=1\');vHWin.focus();return false;';
 				$this->code.='<a href="#" onclick="'.htmlspecialchars($onCLick).'">'.
-							'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/helpbubble.gif','width="14" height="14"').' align="right"'.$this->doc->helpStyle().' alt="" />'.
+							'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/helpbubble.gif','width="14" height="14"').' class="c-helpImg" align="right"'.$this->doc->helpStyle().' alt="" />'.
 							'</a>';
 			}
 			$this->code.='<br />

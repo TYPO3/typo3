@@ -3,13 +3,6 @@ TODO LIST
 *****************
 
 General:
-- BUG: Row-highlighting for both Page and Folder trees are not stable enough.
-- BUG: when editing records from Web>View the palette will not show properly in the topframe!
-- BUG: Email forms wizard: "Checked: " for checkboxes does not work!
-- BUG: CSM disappears too fast in MSIE4 (does not register the width of layer?)
-- BUG: is_executable on windows does not exist/work/make sense.
-- BUG: "if (count($fieldArr)) -> t3lib_page.php, ln. 270"
-- BUG: File>List , list-frame: Click menu does NOT work in Mozilla! cannot find the bug!
 - BUG: (Not) using "rawurlencode" in links (breaks when spaces/special chars are in either dirname or filename):
   - cImage... (see Rene Fritz report)
   - RTE images break
@@ -18,11 +11,10 @@ General:
   - thumbnails display break.
   - attachment of records break.
   - CHECK: header links in content elements?
+
 - CHECK: What is the number of supported page levels? 20 or 100?
 - CHECK: possible XSS problem with alt_mod_frameset.php taking parameters for scripts to display in frames.
-- Convert selecting of filemounts from GROUP selector to a selectorbox.
 - Option: Turn of "onBlur" in backend (Message-ID: <001801c2a28c$bb020c70$963afea9@bla8kdvxpl8glk>)
-- Option: Frameset modules without the "border" frame and therefore adjustable freely.
 - Feature: "admin" can click a button which wipes out all record-lockings. (Message-Id: <200301281752.23246.mundaun@gmx.ch>)
 - Feature: Controlling access to function menu modules as well (thus we could have a user-module inside ?Template? which could edit the constants field)
 - Feature: Web >plugins -> to be a main module where people can place cmodules for their extension.
@@ -158,7 +150,6 @@ TCEforms:
 - DONE?: Support for label for main palette: (Rene: Message-Id: <200210011646.10346.r.fritz@colorcube.de>)
 
 Charset:
-
 - checking (for XML) if there is "character data" in a string?
 
 TCEforms/RTE API:
@@ -188,21 +179,11 @@ Wizards:
 Interface:
 - Icons (see Bugs/Additions folder)
 - Showing in "frameset-modules" which submodule you are currently inside. And ability to change submodule in the rightmost frame anyways - maybe as a panel in top of the pages (must be cached so all submodules must not be loaded each time...)? (Message-ID: <3ADE655892793D499E2FBF623045AF4B54E9A4@dbwdfx2f.wdf.sap-ag.de>)
-- Make a "NavFrame adjustment bar" which allows people to click on an images under the navigation bar of "Frameset modules" and set the width of it (permanently). (Message-ID: <3ADE655892793D499E2FBF623045AF4B54EA0D@dbwdfx2f.wdf.sap-ag.de>)
-- Review the template/stylesheet interface. Document it -> Skinning API. (also how to substitute icons from gfx/ etc.)
 - Ability to create another Main/sub module structure in the backend (Daniel H: Message-ID: <BAB9A920.E95D%daniel@typo3.com>)
 	- Change order, level, title, icon.
 	- Use User TSconfig... and allow someone to create an extension to visually create a TSconfig output
 	- See DHs mail: Message-ID: <mailman.1060763871.6396.typo3-metadev@lists.netfielders.de>
 	- Links could be going directly to the function menus inside modules as well!
-
-Login:
-- admin-only flag in TYPO3_CONF_VARS so only administrators can log in/be authenticated.
-- New login form. (see mailbox)
-	
-Context Sensitive Menus (CSM):
-- Click menu does not work in task-center/weblist
-- Click menu does not work in Opera.
 
 Context Sensitive Help (CSH):
 - Add multimedia?

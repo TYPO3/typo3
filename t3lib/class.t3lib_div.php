@@ -1510,9 +1510,10 @@ class t3lib_div {
 	 * 
 	 * @param	array		Array with attribute key/value pairs, eg. "bgcolor"=>"red", "border"=>0
 	 * @param	boolean		If set the resulting attribute list will have a) all attributes in lowercase (and duplicates weeded out, first entry taking precedence) and b) all values htmlspecialchar()'ed. It is recommended to use this switch!
+	 * @param	boolean		If true, don't check if values are blank. Default is to omit attributes with blank values.
 	 * @return	string		Imploded attributes, eg. 'bgcolor="red" border="0"'
 	 */
-	function implodeParams($arr,$xhtmlSafe=0)	{
+	function implodeParams($arr,$xhtmlSafe=FALSE,$dontOmitBlankAttribs=FALSE)	{
 		if (is_array($arr))	{
 			if ($xhtmlSafe)	{
 				$newArr=array();
@@ -1523,7 +1524,7 @@ class t3lib_div {
 			}
 			$list = array();
 			foreach($arr as $p => $v)	{
-				if (strcmp($v,''))	{$list[]=$p.'="'.$v.'"';}
+				if (strcmp($v,'') || $dontOmitBlankAttribs)	{$list[]=$p.'="'.$v.'"';}
 			}
 			return implode(' ',$list);
 		}

@@ -259,6 +259,7 @@
 	var $sWordRegEx='';					// Search word regex, calculated if there has been search-words send. This is used to mark up the found search words on a page when jumped to from a link in a search-result.
 	var $sWordList='';					// Is set to the incoming array sword_list in case of a page-view jumped to from a search-result.
 	var $linkVars='';					// A string prepared for insertion in all links on the page as url-parameters. Based on configuration in TypoScript where you defined which GET_VARS you would like to pass on.
+	var $excludeCHashVars='';			// A string set with a comma list of additional GET vars which should NOT be included in the cHash calculation. These vars should otherwise be detected and involved in caching, eg. through a condition in TypoScript.
 	var $displayEditIcons='';			// If set, edit icons are rendered aside content records. Must be set only if the ->beUserLogin flag is set and set_no_cache() must be called as well.
 	var $displayFieldEditIcons='';		// If set, edit icons are rendered aside individual fields of content. Must be set only if the ->beUserLogin flag is set and set_no_cache() must be called as well.
 	var $sys_language_uid=0;			// Site language, 0 (zero) is default, int+ is uid pointing to a sys_language record.
@@ -1062,6 +1063,8 @@
 	 */
 	function cHashParams($addQueryParams) {
 		$params = explode('&',substr($addQueryParams,1));	// Splitting parameters up
+		
+			// Make array:
 		$pA=array();
 		while(list(,$theP)=each($params))	{
 			$pKV = explode('=',$theP);	// SPlitting single param by '=' sign

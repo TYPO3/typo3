@@ -197,7 +197,7 @@ class SC_mod_web_perm_index {
 		);
 		
 			// Clean up settings:
-		$this->MOD_SETTINGS = t3lib_BEfunc::getModuleData($this->MOD_MENU, t3lib_div::GPvar('SET'), $this->MCONF['name']);
+		$this->MOD_SETTINGS = t3lib_BEfunc::getModuleData($this->MOD_MENU, t3lib_div::GPvar('SET',1), $this->MCONF['name']);
 	}
 
 	/**
@@ -574,7 +574,7 @@ class SC_mod_web_perm_index {
 		$legendText.= '<br /><b>'.$LANG->getLL('4',1).'</b>: '.$LANG->getLL('4_t',1);
 		$legendText.= '<br /><b>'.$LANG->getLL('8',1).'</b>: '.$LANG->getLL('8_t',1);
 		
-		$code='<table border="0" id="typo3-permissionList">
+		$code='<table border="0" id="typo3-legendTable">
 			<tr>
 				<td valign="top"><img src="legend.gif" width="86" height="75" alt="" /></td>
 				<td valign="top" nowrap="nowrap">'.$legendText.'</td>

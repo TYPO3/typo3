@@ -1401,16 +1401,20 @@ Number of files at a time:
 			".$this->check_mail("get_form"),1);
 		} else {
 			list($prg) = explode(" ",ini_get("sendmail_path"));
-			if (!@is_executable($prg))	{
-				$this->message($ext, "Sendmail program not found or not executable?","
-					<i>sendmail_path=".ini_get("sendmail_path")."</i>
-					This may be critical to TYPO3's use of the mail() function. Please be sure that the mail() function in your php-installation works!
-				".$this->check_mail("get_form"),1);
+			if (TYPO3_OS=='WIN')	{
+				$this->message($ext, "Sendmail program not searched for on Windows","",1);
 			} else {
-				$this->message($ext, "Sendmail OK","
-					<i>sendmail_path=".ini_get("sendmail_path")."</i>
-					You may check the mail() function by entering your emailaddress here:
-				".$this->check_mail("get_form"),-1);
+				if (!@is_executable($prg))	{
+					$this->message($ext, "Sendmail program not found or not executable?","
+						<i>sendmail_path=".ini_get("sendmail_path")."</i>
+						This may be critical to TYPO3's use of the mail() function. Please be sure that the mail() function in your php-installation works!
+					".$this->check_mail("get_form"),1);
+				} else {
+					$this->message($ext, "Sendmail OK","
+						<i>sendmail_path=".ini_get("sendmail_path")."</i>
+						You may check the mail() function by entering your emailaddress here:
+					".$this->check_mail("get_form"),-1);
+				}
 			}
 		}
 		

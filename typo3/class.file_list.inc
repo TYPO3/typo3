@@ -130,7 +130,7 @@ class fileList extends t3lib_recordList {
 	 * @return	void		
 	 */
 	function generateList()	{
-		$this->dirs = $this->readDirectory($this->path,'dir');
+		$this->dirs = $this->readDirectory($this->path,'dir,link');
 		$this->files = $this->readDirectory($this->path,'file');
 		$this->totalItems=count($this->dirs['sorting'])+count($this->files['sorting']);
 		$this->HTMLcode.=$this->getTable($this->files, $this->dirs, 'fileext,tstamp,size,rw');
@@ -542,7 +542,7 @@ class fileList extends t3lib_recordList {
 				while($entry=$d->read()) {
 					if ($entry!='.' && $entry!='..')	{
 						$wholePath = $path.'/'.$entry;		// Because of odd PHP-error where  <br />-tag is sometimes placed after a filename!!
-						if (@file_exists($wholePath) && (!$type || filetype($wholePath)==$type))	{
+						if (@file_exists($wholePath) && (!$type || t3lib_div::inList($type,filetype($wholePath))))	{
 							if ($extList)	{
 								$fI = t3lib_div::split_fileref($entry);
 								if (t3lib_div::inList($extList,$fI['fileext']))	{

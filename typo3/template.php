@@ -384,7 +384,7 @@ class template {
 
 		return '<span class="typo3-moduleHeader">'.$this->wrapClickMenuOnIcon($iconImgTag,$table,$row['uid']).
 				$viewPage.
-				$tWrap[0].htmlspecialchars(t3lib_div::fixed_lgd($title,45)).$tWrap[1].'';
+				$tWrap[0].htmlspecialchars(t3lib_div::fixed_lgd($title,45)).$tWrap[1].'</span>';
 	}
 
 	/**
@@ -1211,6 +1211,8 @@ $str.=$this->docBodyTagBegin().
 				var GLV_isVisible=new Array(0,0);
 				var GLV_x=0;
 				var GLV_y=0;
+				var GLV_xRel=0;
+				var GLV_yRel=0;
 				var layerObj=new Array();
 				var layerObjCss=new Array();
 				
@@ -1249,9 +1251,15 @@ $str.=$this->docBodyTagBegin().
 					// GL_getMouse(event)
 				function GL_getMouse(event) {	//
 					if (layerObj)	{
-						GLV_x= (bw.ns4||bw.ns5)?event.pageX:(bw.ie4||bw.op)?event.clientX:(event.clientX-2)+document.body.scrollLeft;
-						GLV_y= (bw.ns4||bw.ns5)?event.pageY:(bw.ie4||bw.op)?event.clientY:(event.clientY-2)+document.body.scrollTop;
-		
+//						GLV_x= (bw.ns4||bw.ns5)?event.pageX:(bw.ie4||bw.op)?event.clientX:(event.clientX-2)+document.body.scrollLeft;
+//						GLV_y= (bw.ns4||bw.ns5)?event.pageY:(bw.ie4||bw.op)?event.clientY:(event.clientY-2)+document.body.scrollTop;
+							// 17/12 2003: When documents run in XHTML standard compliance mode, the old scrollLeft/Top properties of document.body is gone - and for Opera/MSIE we have to use document.documentElement:
+						
+						GLV_xRel = event.clientX-2;
+						GLV_yRel = event.clientY-2;
+						GLV_x = GLV_xRel + (document.documentElement.scrollLeft ? document.documentElement.scrollLeft : document.body.scrollLeft);
+						GLV_y = GLV_yRel + (document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop);
+
 					//	status = (GLV_x+GLV_gap-GLV_curLayerX[0]) + " | " + (GLV_y+GLV_gap-GLV_curLayerY[0]);
 						if (GLV_isVisible[1])	{
 							if (outsideLayer(1))	hideSpecific(1);
@@ -1274,9 +1282,19 @@ $str.=$this->docBodyTagBegin().
 	
 					if (tempLayerObj && (level==0 || GLV_isVisible[level-1]))	{
 						tempLayerObj.el.innerHTML = html;
-						tempLayerObj.height= (bw.ie4||bw.ie5||bw.ns6||bw.konq||bw.op7)?this.el.offsetHeight:bw.ns4?this.ref.height:bw.op?this.css.pixelHeight:0;
 						tempLayerObj.width= (bw.ie4||bw.ie5||bw.ns6||bw.konq||bw.op7)?this.el.offsetWidth:bw.ns4?this.ref.width:bw.op?this.css.pixelWidth:0;
-
+						tempLayerObj.height= (bw.ie4||bw.ie5||bw.ns6||bw.konq||bw.op7)?this.el.offsetHeight:bw.ns4?this.ref.height:bw.op?this.css.pixelHeight:0;
+						
+							// Adjusting the Y-height of the layer to fit it into the window frame if it goes under the window frame in the bottom:
+						tempLayerObj.winHeight = document.documentElement.clientHeight && !bw.op7 ? document.documentElement.clientHeight : document.body.clientHeight;
+						if (tempLayerObj.winHeight-tempLayerObj.height < GLV_yRel)	{ 
+							if (GLV_yRel < tempLayerObj.height) {
+								GLV_y+= (tempLayerObj.winHeight-tempLayerObj.height-GLV_yRel); 		// Setting it so bottom is just above window height.
+							} else {
+								GLV_y-= tempLayerObj.height-8; 		// Showing the menu upwards
+							}
+						}
+						
 						GLV_curLayerX[level] = GLV_x;
 						GLV_curLayerY[level] = GLV_y;
 						tempLayerObjCss.left = GLV_x+"px";

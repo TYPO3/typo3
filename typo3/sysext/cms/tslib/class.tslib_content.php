@@ -2849,7 +2849,6 @@ class tslib_cObj {
 				if ($conf['substring']){$content=$this->substring($content,$conf['substring']);}
 				if ($conf['crop']){$content=$this->crop($content, $conf['crop']);}
 				if ($conf['stripHtml']){$content=strip_tags($content);}
-				if ($conf['htmlSpecialChars']){$content=htmlSpecialChars($content);}
 				if ($conf['htmlSpecialChars']){
 					$content=htmlSpecialChars($content);
 					if ($conf['htmlSpecialChars.']['preserveEntities'])	$content = t3lib_div::deHSCentities($content);
@@ -3344,7 +3343,10 @@ class tslib_cObj {
 	 * @link http://typo3.org/doc.0.html?&tx_extrepmgm_pi1[extUid]=270&tx_extrepmgm_pi1[tocEl]=325&cHash=ae4272e694
 	 */
 	function addParams($content,$conf) {
-		if (!is_array($conf))	{return $content;}
+		$lowerCaseAttributes = TRUE;	// For XHTML compliance.
+		
+		if (!is_array($conf))	{ return $content; }
+		
 		$key = 1;
 		$parts = explode('<',$content);
 		if (intval($conf['_offset']))	$key = intval($conf['_offset'])<0 ? count($parts)+intval($conf['_offset']) : intval($conf['_offset']);
@@ -3359,9 +3361,11 @@ class tslib_cObj {
 			while(list($pkey,$val)=each($conf))	{
 				if (substr($pkey,-1)!='.' && substr($pkey,0,1)!='_')	{
 					$tmpVal=$this->stdWrap($conf[$pkey],$conf[$pkey.'.']);
+					if ($lowerCaseAttributes)	{ $pkey = strtolower($pkey); }
 					if (strcmp($tmpVal,''))	{$attribs[$pkey]=$tmpVal;}
 				}
 			}
+
 				// Re-assembles the tag and content
 			$subparts[0]=trim($tagName.' '.t3lib_div::implodeParams($attribs));
 			$parts[$key] = implode('>',$subparts);
@@ -4606,7 +4610,7 @@ class tslib_cObj {
 						if (substr($addQueryParams,0,1)!='&')		{
 							$addQueryParams='';
 						} elseif ($conf['useCacheHash']) {	// cache hashing:
-							$pA=$GLOBALS['TSFE']->cHashParams($addQueryParams);
+							$pA=$GLOBALS['TSFE']->cHashParams($addQueryParams.$GLOBALS['TSFE']->linkVars);	// Added '.$this->linkVars' dec 2003: The need for adding the linkVars is that they will be included in the link, but not the cHash. Thus the linkVars will always be the problem that prevents the cHash from working. I cannot see what negative implications in terms of incompatibilities this could bring, but for now I hope there are none. So here we go... (- kasper)
 							$addQueryParams.='&cHash='.t3lib_div::shortMD5(serialize($pA));
 						}
 							// MointPoints:
@@ -6347,7 +6351,7 @@ class tslib_tableOffset	{
 			}
 				// Middle row:
 			$rows[2].= '<tr>';
-			if ($valPairs[0])	{$rows[2].= $valPairs[1] ? '<td></td>' : '<td><img src="'.$GLOBALS['TSFE']->absRefPrefix.'clear.gif" width="'.$valPairs[0].'" height="1"></td>';}
+			if ($valPairs[0])	{$rows[2].= $valPairs[1] ? '<td></td>' : '<td><img src="'.$GLOBALS['TSFE']->absRefPrefix.'clear.gif" width="'.$valPairs[0].'" height="1" alt="" /></td>';}
 			$rows[2].= '<td'.$this->tdParams.'>'.$content.'</td>';
 			if ($valPairs[2])	{$rows[2].= $valPairs[3] ? '<td>'.$heightImg.'</td>' : '<td><img src="'.$GLOBALS['TSFE']->absRefPrefix.'clear.gif" width="'.$valPairs[2].'" height="'.($valPairs[5]?$valPairs[5]:1).'" alt="" /></td>';}
 			$rows[2].= '</tr>';
@@ -6474,7 +6478,7 @@ class tslib_controlTable	{
 			if (isset($middle[0]))	{$res.=$middle[0];}
 
 				// venstre for content
-			if ($cMargArr[2])	{	$res.='<td'.$rowspan.'><img src="'.$GLOBALS['TSFE']->absRefPrefix.'clear.gif" height="1" width="'.$cMargArr[2].'"></td>';		}
+			if ($cMargArr[2])	{	$res.='<td'.$rowspan.'><img src="'.$GLOBALS['TSFE']->absRefPrefix.'clear.gif" height="1" width="'.$cMargArr[2].'" alt="" /></td>';		}
 			if ($this->rm)	{	$res.='<td'.$rowspan.' '.$this->rmTDparams.'>'.$this->rm.'</td>';		}
 			$res.= '</tr>';
 

@@ -110,7 +110,7 @@ function user_IProcFuncTest($I,$conf)	{
 	$conf['parentObj']->I = $I;
 	$conf['parentObj']->setATagParts();
 	$I = $conf['parentObj']->I;
-	$I['parts']['ATag_begin']=$I['A1'];
+	if ($I['parts']['ATag_begin'])	$I['parts']['ATag_begin']=$I['A1'];
 
 	if ($conf['debug'])	{
 			// Outputting for debug example:

@@ -266,7 +266,7 @@ class clickMenu {
 				$selItem = $this->clipObj->getSelectedRecord();
 				$elInfo=array(
 					$selItem['_RECORD_TITLE'],
-					($root?$GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']:t3lib_div::fixed_lgd(t3lib_BEfunc::getRecordTitle($table,$this->rec),$GLOBALS['BE_USER']->uc['titleLen'])),
+					($root?$GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']:t3lib_div::fixed_lgd(t3lib_BEfunc::getRecordTitle($table,$this->rec),$BE_USER->uc['titleLen'])),
 					$this->clipObj->currentMode()
 				);
 				if ($table=='pages' && ($lCP & 8))	{
@@ -278,7 +278,7 @@ class clickMenu {
 			}
 
 				// Delete:
-			$elInfo=array(t3lib_div::fixed_lgd(t3lib_BEfunc::getRecordTitle($table,$this->rec),$GLOBALS['BE_USER']->uc['titleLen']));
+			$elInfo=array(t3lib_div::fixed_lgd(t3lib_BEfunc::getRecordTitle($table,$this->rec),$BE_USER->uc['titleLen']));
 			if(!in_array('delete',$this->disabledItems) && !$root && $BE_USER->isPSet($lCP,$table,'delete'))	{
 				$menuItems[]='spacer';
 				$menuItems['delete']=$this->DB_delete($table,$uid,$elInfo);
@@ -586,7 +586,7 @@ class clickMenu {
 	function DB_edit($table,$uid)	{
 		global $BE_USER;
 			// If another module was specified, replace the default Page module with the new one
-		$newPageModule = trim($GLOBALS['BE_USER']->getTSConfigVal('options.overridePageModule'));
+		$newPageModule = trim($BE_USER->getTSConfigVal('options.overridePageModule'));
 		$pageModule = t3lib_BEfunc::isModuleSetInTBE_MODULES($newPageModule) ? $newPageModule : 'web_layout';
 
 		$editOnClick='';
@@ -596,7 +596,7 @@ class clickMenu {
 		if (
 				$this->iParts[0]=='pages' && 
 				$this->iParts[1] && 
-				$GLOBALS['BE_USER']->check('modules', $pageModule)
+				$BE_USER->check('modules', $pageModule)
 			)	{
 			$theIcon = t3lib_iconWorks::skinImg($this->backPath,'gfx/edit_page.gif','width="12" height="12"');
 			$this->editPageIconSet=1;
@@ -981,9 +981,17 @@ if (top.content && top.content'.$frameName.' && top.content'.$frameName.'.setLay
 	 * @return	string		
 	 */
 	function wrapColorTableCM($str)	{
+	
+			// Clear-gifs needed if opera is to set the table row height correctly in skins.
 		$str = '<table border="0" cellspacing="0" class="typo3-CSM-wrapperCM">
-				<tr><td class="c-aa">'.$str.'</td><td class="c-ab"></td></tr>
-				<tr><td class="c-ba"></td><td class="c-bb"></td></tr>
+				<tr class="c-rowA">
+					<td class="c-aa">'.$str.'</td>
+					<td class="c-ab"></td>
+				</tr>
+				<tr class="c-rowB">
+					<td class="c-ba"><img src="clear.gif" width="1" height="1" alt="" /></td>
+					<td class="c-bb"><img src="clear.gif" width="1" height="1" alt="" /></td>
+				</tr>
 			</table>';
 		return $str;
 	}
@@ -1177,7 +1185,7 @@ class SC_alt_clickmenu {
 		$this->doc->backPath = $BACK_PATH;
 		
 			// Setting mode for display and background image in the top frame
-		$this->dontDisplayTopFrameCM= $this->doc->isCMlayers() && !$GLOBALS['BE_USER']->getTSConfigVal('options.contextMenu.options.alwaysShowClickMenuInTopFrame');
+		$this->dontDisplayTopFrameCM= $this->doc->isCMlayers() && !$BE_USER->getTSConfigVal('options.contextMenu.options.alwaysShowClickMenuInTopFrame');
 		if ($this->dontDisplayTopFrameCM)	{
 			$this->doc->bodyTagId.= '-notop';
 		}

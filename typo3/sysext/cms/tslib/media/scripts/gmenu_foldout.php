@@ -135,7 +135,7 @@ class tslib_gmenu_foldout extends tslib_gmenu {
 		$this->WMtableWrap = $this->mconf['dontWrapInTable'] ? '' : '<table cellspacing="0" cellpadding="0" width="100%" border="0"><tr><td>|</td></tr></table>';
 
 		if ($this->WMimagesFlag)	{
-			$this->WMimageHTML='<img src="'.$GLOBALS['TSFE']->absRefPrefix.$this->WMarrowNO[3].'" width="'.$this->WMarrowNO[0].'" height="'.$this->WMarrowNO[1].'" border="0" name="imgA'.$key.'"'.($this->mconf['arrowImgParams']?' '.$this->mconf['arrowImgParams']:'').' />';		
+			$this->WMimageHTML='<img src="'.$GLOBALS['TSFE']->absRefPrefix.$this->WMarrowNO[3].'" width="'.$this->WMarrowNO[0].'" height="'.$this->WMarrowNO[1].'" border="0" name="imgA'.$key.'"'.($this->mconf['arrowImgParams']?' '.$this->mconf['arrowImgParams']:'').' alt="" />';		
 		} else {$this->WMimageHTML="";}
 
 		if (strstr($this->I['theItem'], '###ARROW_IMAGE###'))	{

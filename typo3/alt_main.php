@@ -151,6 +151,7 @@ class SC_alt_main {
 		this.PATH_typo3 = "'.$pt3.'";
 		this.username = "'.$BE_USER->user['username'].'";
 		this.uniqueID = "'.t3lib_div::shortMD5(uniqid('')).'";
+		this.navFrameWidth = 0;
 	}
 	var TS = new typoSetup();
 
@@ -182,12 +183,18 @@ class SC_alt_main {
 		this.openRefreshW=1;
 	}
 	function busy_checkLoginTimeout_timer()	{	//
+
 		if (busy.checkLoginTimeout())	{
 			if (!busy.openRefreshW && confirm('.$GLOBALS['LANG']->JScharCode($LANG->sL('LLL:EXT:lang/locallang_core.php:mess.refresh_login')).'))	{
 				busy.openRefreshWindow();
 			}
 		}
-		window.setTimeout("busy_checkLoginTimeout_timer();",5*1000);	// Each 5th second is enough for checking. The popup will be triggered 10 seconds before the login expires (see above, busy_checkLoginTimeout())
+		window.setTimeout("busy_checkLoginTimeout_timer();",2*1000);	// Each 2nd second is enough for checking. The popup will be triggered 10 seconds before the login expires (see above, busy_checkLoginTimeout())
+
+			// Detecting the frameset module navigation frame widths (do this AFTER setting new timeout so that any errors in the code below does not prevent another time to be set!)
+		if (top && top.content && top.content.nav_frame && top.content.nav_frame.document)	{
+			TS.navFrameWidth = top.content.nav_frame.document.documentElement.clientWidth ? top.content.nav_frame.document.documentElement.clientWidth : top.content.nav_frame.document.body.clientWidth;
+		}
 	}
 	
 	/**

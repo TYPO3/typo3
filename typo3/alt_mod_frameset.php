@@ -64,9 +64,15 @@ class SC_alt_mod_frameset {
 
 		// Internal, static:
 	var $defaultWidth = 245;		// Default width of the navigation frame. Can be overridden from $TBE_STYLES['dims']['navFrameWidth'] (alternative default value) AND from User TSconfig
+	var $resizable = TRUE;			// If true, the frame can be resized.
 	
 		// Internal, dynamic:
 	var $content;					// Content accumulation.
+	
+		// GPvars:
+	var $exScript='';				// Script to load in list frame.
+	var $id='';						// ID of page
+	var $fW='';						// Framewidth
 	
 
 
@@ -81,10 +87,22 @@ class SC_alt_mod_frameset {
 	 */
 	function main()	{
 		global $BE_USER,$TBE_TEMPLATE,$TBE_STYLES;
+
+			// GPvars:
+		$this->exScript = t3lib_div::GPvar('exScript');
+		$this->id = t3lib_div::GPvar('id');
+		$this->fW = t3lib_div::GPvar('fW');
 		
-			// Processing vars:
-		$width = $BE_USER->uc['navFrameWidth'];
-		$width = intval($width)?intval($width):($TBE_STYLES['dims']['navFrameWidth'] ? intval($TBE_STYLES['dims']['navFrameWidth']) : $this->defaultWidth);
+			// Setting resizing flag:
+		$this->resizable = $BE_USER->uc['navFrameResizable'] ? TRUE : FALSE;
+
+			// Setting frame width:
+		if (intval($this->fW) && $this->resizable)	{	// Framewidth from stored value, last one.
+			$width = t3lib_div::intInRange($this->fW,100,1000)+10;	// +10 to compensate for width of scrollbar. However, width is always INSIDE scrollbars, so potentially it will jump a little forth/back...
+		} else {	//	Framewidth from configuration;
+			$width = $BE_USER->uc['navFrameWidth'];
+			$width = intval($width)?intval($width):($TBE_STYLES['dims']['navFrameWidth'] ? intval($TBE_STYLES['dims']['navFrameWidth']) : $this->defaultWidth);
+		}
 		
 			// Navigation frame URL:
 		$script = t3lib_div::GPvar('script');
@@ -92,14 +110,23 @@ class SC_alt_mod_frameset {
 		$URL_nav = htmlspecialchars($nav.'?currentSubScript='.rawurlencode($script));
 		
 			// List frame URL:
-		$exScript = t3lib_div::GPvar('exScript');
-		$id = t3lib_div::GPvar('id');
-		$URL_list = htmlspecialchars($exScript?$exScript:($script.($id?'?id='.rawurlencode($id):'')));
+		$URL_list = htmlspecialchars($this->exScript?$this->exScript:($script.($this->id?'?id='.rawurlencode($this->id):'')));
 		
 			// Start page output
 		$TBE_TEMPLATE->docType='xhtml_frames';
 		$this->content = $TBE_TEMPLATE->startPage('Frameset');
-		$this->content.= '
+		
+		if ($this->resizable)	{
+			$this->content.= '
+	<frameset cols="'.$width.',*">
+		<frame name="nav_frame" src="'.$URL_nav.'" marginwidth="0" marginheight="0" scrolling="auto" />
+		<frame name="list_frame" src="'.$URL_list.'" marginwidth="0" marginheight="0" scrolling="auto" />
+	</frameset>
+
+</html>
+';
+		} else {
+			$this->content.= '
 
 	<frameset cols="'.$width.',8,*" framespacing="0" frameborder="0" border="0">
 		<frame name="nav_frame" src="'.$URL_nav.'" marginwidth="0" marginheight="0" frameborder="0" scrolling="auto" noresize="noresize" />
@@ -109,6 +136,7 @@ class SC_alt_mod_frameset {
 
 </html>
 ';
+		}
 	}
 
 	/**

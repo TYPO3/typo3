@@ -190,8 +190,8 @@ function linkTo_UnCryptMailto(s)	{	//
 		$GLOBALS['TSFE']->linkVars = ''.$GLOBALS['TSFE']->config['config']['linkVars'];
 		if ($GLOBALS['TSFE']->linkVars)	{
 			$linkVarArr = explode(',',$GLOBALS['TSFE']->linkVars);
-			reset($linkVarArr);
 			$GLOBALS['TSFE']->linkVars='';
+			reset($linkVarArr);
 			while(list(,$val)=each($linkVarArr))	{
 				$val=trim($val);
 				if ($val && isset($GLOBALS['HTTP_GET_VARS'][$val]))	{
@@ -327,6 +327,13 @@ function linkTo_UnCryptMailto(s)	{	//
 <?xml version="1.0" encoding="'.$theCharset.'"?>
 ';
 			break;
+			case 'xhtml_frames':
+				$GLOBALS['TSFE']->content.='<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Frameset//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd">
+<?xml version="1.0" encoding="'.$theCharset.'"?>
+';
+			break;
 			default:
 				$GLOBALS['TSFE']->content.='<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">';
 			break;
@@ -428,6 +435,13 @@ function linkTo_UnCryptMailto(s)	{	//
 			}
 		}
 		
+			// Setting body tag margins in CSS:
+		if (isset($GLOBALS['TSFE']->pSetup['bodyTagMargins']) && $GLOBALS['TSFE']->pSetup['bodyTagMargins.']['useCSS'])	{
+			$margins = intval($GLOBALS['TSFE']->pSetup['bodyTagMargins']);
+			$style.='
+BODY {margin: '.$margins.'px '.$margins.'px '.$margins.'px '.$margins.'px;}';
+		}
+
 		if ($GLOBALS['TSFE']->pSetup['noLinkUnderline'])	{
 			$style.='
 A:link {text-decoration: none}
@@ -524,7 +538,8 @@ INPUT   {  font-family: Verdana, Arial, Helvetica; font-size: 10px }';
 		}
 		$JSef = TSpagegen::JSeventFunctions();
 
-		$GLOBALS['TSFE']->content.='
+		if (!$GLOBALS['TSFE']->config['config']['removeDefaultJS']) {
+			$GLOBALS['TSFE']->content.='
 <script type="text/javascript">
 	/*<![CDATA[*/
 <!--
@@ -538,8 +553,10 @@ INPUT   {  font-family: Verdana, Arial, Helvetica; font-size: 10px }';
 	}
 // -->
 	/*]]>*/
-</script>
-'.implode($GLOBALS['TSFE']->additionalHeaderData,chr(10)).'
+</script>';
+		}
+
+		$GLOBALS['TSFE']->content.=implode($GLOBALS['TSFE']->additionalHeaderData,chr(10)).'
 '.$JSef[0].'
 </head>';
 		if ($GLOBALS['TSFE']->pSetup['frameSet.'])	{
@@ -548,20 +565,27 @@ INPUT   {  font-family: Verdana, Arial, Helvetica; font-size: 10px }';
 			$GLOBALS['TSFE']->content.= chr(10).'<noframes>'.chr(10);
 		}
 		
-		// Bodytag:
+			// Bodytag:
 		$defBT = $GLOBALS['TSFE']->pSetup['bodyTagCObject'] ? $GLOBALS['TSFE']->cObj->cObjGetSingle($GLOBALS['TSFE']->pSetup['bodyTagCObject'],$GLOBALS['TSFE']->pSetup['bodyTagCObject.'],'bodyTagCObject') : '';
 		if (!$defBT)	$defBT = '<body bgcolor="#FFFFFF">';
 		$bodyTag = $GLOBALS['TSFE']->pSetup['bodyTag'] ? $GLOBALS['TSFE']->pSetup['bodyTag'] : $defBT;
 		if ($bgImg=$GLOBALS['TSFE']->cObj->getImgResource($GLOBALS['TSFE']->pSetup['bgImg'],$GLOBALS['TSFE']->pSetup['bgImg.']))	{
 			$bodyTag = ereg_replace('>$','',trim($bodyTag)).' background="'.$GLOBALS["TSFE"]->absRefPrefix.$bgImg[3].'">';
 		}
+		
 		if (isset($GLOBALS['TSFE']->pSetup['bodyTagMargins']))	{
-			$margins = $GLOBALS['TSFE']->pSetup['bodyTagMargins'];
-			$bodyTag = ereg_replace('>$','',trim($bodyTag)).' leftmargin="'.$margins.'" topmargin="'.$margins.'" marginwidth="'.$margins.'" marginheight="'.$margins.'">';
+			$margins = intval($GLOBALS['TSFE']->pSetup['bodyTagMargins']);
+			if ($GLOBALS['TSFE']->pSetup['bodyTagMargins.']['useCSS'])	{
+				// Setting margins in CSS, see above
+			} else {
+				$bodyTag = ereg_replace('>$','',trim($bodyTag)).' leftmargin="'.$margins.'" topmargin="'.$margins.'" marginwidth="'.$margins.'" marginheight="'.$margins.'">';
+			}
 		}
+		
 		if (trim($GLOBALS['TSFE']->pSetup['bodyTagAdd']))	{
 			$bodyTag = ereg_replace('>$','',trim($bodyTag)).' '.trim($GLOBALS['TSFE']->pSetup['bodyTagAdd']).'>';
 		}
+		
 		if (count($JSef[1]))	{	// Event functions:
 			$bodyTag = ereg_replace('>$','',trim($bodyTag)).' '.trim(implode(' ',$JSef[1])).'>';
 		}

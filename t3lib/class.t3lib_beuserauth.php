@@ -136,6 +136,7 @@ class t3lib_beUserAuth extends t3lib_userAuthGroup {
 		'edit_docModuleUpload' => '1',
 		'disableCMlayers' => 0,
 		'navFrameWidth' => '',	// Default is 245 pixels
+		'navFrameResizable' => 0,
 	);
 
 	
@@ -189,8 +190,13 @@ class t3lib_beUserAuth extends t3lib_userAuthGroup {
 		} else {	// ...and if that's the case, call these functions
 			$this->fetchGroupData();	//	The groups are fetched and ready for permission checking in this initialization.	Tables.php must be read before this because stuff like the modules has impact in this 
 			if ($this->checkLockToIP())	{
-				$this->backendSetUC();		// Setting the UC array. It's needed with fetchGroupData first, due to default/overriding of values.
-				$this->emailAtLogin();		// email at login - if option set.
+				if (!$GLOBALS['TYPO3_CONF_VARS']['BE']['adminOnly'] || $this->isAdmin())	{
+					$this->backendSetUC();		// Setting the UC array. It's needed with fetchGroupData first, due to default/overriding of values.
+					$this->emailAtLogin();		// email at login - if option set.
+				} else {
+					t3lib_BEfunc::typo3PrintError ('Login-error','TYPO3 is in maintenance mode at the moment. Only administrators are allowed access.',0);
+					exit;
+				}
 			} else {
 				t3lib_BEfunc::typo3PrintError ('Login-error','IP locking prevented you from being authorized. Can\'t proceed, sorry.',0);
 				exit;

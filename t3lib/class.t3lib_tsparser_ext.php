@@ -935,12 +935,12 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 			$iFile = t3lib_div::getFileAbsFileName($imgConf);
 			if ($iFile)	{
 				$f = substr($iFile,strlen(PATH_site));	
-				$tFile="../".$GLOBALS["BACK_PATH"].$f;
+				$tFile=$GLOBALS["BACK_PATH"]."../".$f;
 			}
 		} else {
 			$f = "uploads/tf/".$this->extractFromResources($this->setup["resources"],$imgConf);
 			$iFile=PATH_site.$f;
-			$tFile="../".$GLOBALS["BACK_PATH"].$f;
+			$tFile=$GLOBALS["BACK_PATH"]."../".$f;
 		}
 		$imageInfo=@getImagesize($iFile);
 		return '<img src="'.$tFile.'" '.$imageInfo[3].'>';

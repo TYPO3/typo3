@@ -257,7 +257,7 @@ $BE_USER = t3lib_div::makeInstance('t3lib_beUserAuth');	// New backend user obje
 $BE_USER->warningEmail = $TYPO3_CONF_VARS['BE']['warning_email_addr'];
 $BE_USER->OS = TYPO3_OS;
 $BE_USER->start();			// Object is initialized
-$BE_USER->backendCheckLogin();	// Checking if there's a user logged in and if so, call the 
+$BE_USER->backendCheckLogin();	// Checking if there's a user logged in
 $BE_USER->trackBeUser($TYPO3_CONF_VARS['BE']['trackBeUser']);	// Tracking backend user script hits
 
 	// Setting the web- and filemount global vars:

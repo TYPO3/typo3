@@ -220,7 +220,7 @@ class t3lib_extobjbase {
 	 */
 	function handleExternalFunctionValue()	{
 			// Must clean first to make sure the correct key is set...
-		$this->pObj->MOD_SETTINGS = t3lib_BEfunc::getModuleData($this->pObj->MOD_MENU, t3lib_div::GPvar('SET'), $this->pObj->MCONF['name']);
+		$this->pObj->MOD_SETTINGS = t3lib_BEfunc::getModuleData($this->pObj->MOD_MENU, t3lib_div::GPvar('SET',1), $this->pObj->MCONF['name']);
 		if ($this->function_key)	{
 			$this->extClassConf = $this->pObj->getExternalItemConfig($this->pObj->MCONF['name'],$this->function_key,$this->pObj->MOD_SETTINGS[$this->function_key]);
 			if (is_array($this->extClassConf) && $this->extClassConf['path'])	{
@@ -253,7 +253,7 @@ class t3lib_extobjbase {
 			$this->extObj->init($this->pObj,$this->extClassConf);
 
 				// Re-write:
-			$this->pObj->MOD_SETTINGS = t3lib_BEfunc::getModuleData($this->pObj->MOD_MENU, t3lib_div::GPvar('SET'), $this->pObj->MCONF['name']);
+			$this->pObj->MOD_SETTINGS = t3lib_BEfunc::getModuleData($this->pObj->MOD_MENU, t3lib_div::GPvar('SET',1), $this->pObj->MCONF['name']);
 		}
 	}
 

@@ -530,7 +530,7 @@ class t3lib_TCEforms	{
 			$palFields = trim($palFields);
 			if ($TCA[$table]['columns'][$theField])	{
 				$parts = t3lib_div::trimExplode(';',$types_fieldConfig[$theField]['origString']);
-				$sField= $this->getSingleField($table,$theField,$row,$parts[1],0,$parts[3],$parts[2]);
+				$sField= $this->getSingleField($table,$theField,$row,$parts[1],0,$parts[3],0);	// Don't sent palette pointer - there are no options anyways for a field-list.
 				$out.= $sField;
 			} elseif($theField=='--div--')	{
 				$out.=$this->getDivider();
@@ -847,7 +847,7 @@ class t3lib_TCEforms	{
 				// Setting default "click-checkbox" values for eval types "date" and "datetime":
 			$nextMidNight = mktime(0,0,0)+1*3600*24;
 			$checkSetValue = in_array('date',$evalList) ? $nextMidNight : '';
-			$checkSetValue = in_array('datetime',$evalList) ? $nextMidNight+12*3600 : $checkSetValue;
+			$checkSetValue = in_array('datetime',$evalList) ? time() : $checkSetValue;
 
 			$cOnClick = 'typo3FormFieldGet('.$paramsList.',1,\''.$checkSetValue.'\');'.implode('',$PA['fieldChangeFunc']);
 			$item.='<input type="checkbox" name="'.$PA['itemFormElName'].'_cb" onclick="'.htmlspecialchars($cOnClick).'" />';

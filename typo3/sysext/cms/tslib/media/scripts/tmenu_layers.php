@@ -236,7 +236,7 @@ GLV_restoreMenu["'.$this->WMid.'"] = "'.$this->WMactiveKey.'";
 	 */
 	function extProc_beforeAllWrap($item,$key)	{
 		if ($this->mconf['relativeToTriggerItem'])	{
-			$item = '<div id="anchorID'.t3lib_div::shortmd5($this->I['uid'].'-'.$this->WMid).'" style="position:absolute;visibility:hidden;"></div><div id="itemID'.t3lib_div::shortmd5($this->I['uid'].'-'.$this->WMid).'" width="100%" height="100%">'.$item.'</div>';
+			$item = '<div id="anchorID'.t3lib_div::shortmd5($this->I['uid'].'-'.$this->WMid).'" style="position:absolute;visibility:hidden;"></div><div id="itemID'.t3lib_div::shortmd5($this->I['uid'].'-'.$this->WMid).'" style="width:100%; height:100%;">'.$item.'</div>';
 		}
 		return $item;
 	}
@@ -289,31 +289,31 @@ GLV_restoreMenu["'.$this->WMid.'"] = "'.$this->WMactiveKey.'";
 			$relFlag=1;
 		}
 		if ($relFlag)	{
-			$DoTop[]='GLV_menuOn["'.$this->WMid.'"].left = '.$relCode['X'].intval($this->mconf['leftOffset']).$dirL.';';
-			$DoTop[]='GLV_menuOn["'.$this->WMid.'"].top =  '.$relCode['Y'].intval($this->mconf['topOffset']).$dirU.';';
+			$DoTop[]='GLV_menuOn["'.$this->WMid.'"].left = ('.$relCode['X'].intval($this->mconf['leftOffset']).$dirL.')+"px";';
+			$DoTop[]='GLV_menuOn["'.$this->WMid.'"].top =  ('.$relCode['Y'].intval($this->mconf['topOffset']).$dirU.')+"px";';
 		} else {
 				// X position (y is fixed)
 			if (!strcmp($this->mconf['lockPosition'],'x'))	{
-				$DoTop[]='GLV_menuOn["'.$this->WMid.'"].left = '.$relCode['X'].'GLV_menuXY["'.$this->WMid.'"][id][0]-('.intval($this->mconf['xPosOffset']).')'.$dirL.';';
+				$DoTop[]='GLV_menuOn["'.$this->WMid.'"].left = ('.$relCode['X'].'GLV_menuXY["'.$this->WMid.'"][id][0]-('.intval($this->mconf['xPosOffset']).')'.$dirL.')+"px";';
 				if ($this->isSetIntval($this->mconf['topOffset']))	{
-					$DoTop[]='GLV_menuOn["'.$this->WMid.'"].top = '.$relCode['Y'].intval($this->mconf['topOffset']).$dirU.';';
+					$DoTop[]='GLV_menuOn["'.$this->WMid.'"].top = ('.$relCode['Y'].intval($this->mconf['topOffset']).$dirU.')+"px";';
 				}
 			} elseif ($this->isSetIntval($this->mconf['xPosOffset'])) {
-				$GLV_menuOn[]=$DoTop[]='GLV_menuOn["'.$this->WMid.'"].left = GLV_x-('.intval($this->mconf['xPosOffset']).')'.$dirL.';';
+				$GLV_menuOn[]=$DoTop[]='GLV_menuOn["'.$this->WMid.'"].left = (GLV_x-('.intval($this->mconf['xPosOffset']).')'.$dirL.')+"px";';
 				if ($this->isSetIntval($this->mconf['topOffset']))	{
-					$DoTop[]='GLV_menuOn["'.$this->WMid.'"].top = '.$relCode['Y'].intval($this->mconf['topOffset']).$dirU.';';
+					$DoTop[]='GLV_menuOn["'.$this->WMid.'"].top = ('.$relCode['Y'].intval($this->mconf['topOffset']).$dirU.')+"px";';
 				}
 			}
 				// Y position	(x is fixed)
 			if (!strcmp($this->mconf['lockPosition'],'y'))	{
-				$DoTop[]='GLV_menuOn["'.$this->WMid.'"].top = '.$relCode['Y'].'GLV_menuXY["'.$this->WMid.'"][id][1]-('.intval($this->mconf['yPosOffset']).')'.$dirU.';';
+				$DoTop[]='GLV_menuOn["'.$this->WMid.'"].top = ('.$relCode['Y'].'GLV_menuXY["'.$this->WMid.'"][id][1]-('.intval($this->mconf['yPosOffset']).')'.$dirU.')+"px";';
 				if ($this->isSetIntval($this->mconf['leftOffset']))	{
-					$DoTop[]='GLV_menuOn["'.$this->WMid.'"].left = '.$relCode['X'].intval($this->mconf['leftOffset']).$dirL.';';
+					$DoTop[]='GLV_menuOn["'.$this->WMid.'"].left = ('.$relCode['X'].intval($this->mconf['leftOffset']).$dirL.')+"px";';
 				}
 			} elseif ($this->isSetIntval($this->mconf['yPosOffset']))	{
-				$GLV_menuOn[]=$DoTop[]='GLV_menuOn["'.$this->WMid.'"].top = GLV_y-('.intval($this->mconf['yPosOffset']).')'.$dirU.';';
+				$GLV_menuOn[]=$DoTop[]='GLV_menuOn["'.$this->WMid.'"].top = (GLV_y-('.intval($this->mconf['yPosOffset']).')'.$dirU.')+"px";';
 				if ($this->isSetIntval($this->mconf['leftOffset']))	{
-					$DoTop[]='GLV_menuOn["'.$this->WMid.'"].left = '.$relCode['X'].intval($this->mconf['leftOffset']).$dirL.';';
+					$DoTop[]='GLV_menuOn["'.$this->WMid.'"].left = ('.$relCode['X'].intval($this->mconf['leftOffset']).$dirL.')+"px";';
 				}
 			}
 		}

@@ -155,7 +155,6 @@ class tslib_menu {
 	var $sys_page;	// sys_page-object
 	var $id;			// the base-id of the menu. 
 	var $nextActive;
-	var $menuNumber;
 	var $menuArr;	// The array of menuItems which is built
 	var $hash;
 	var $result = Array();
@@ -2146,7 +2145,7 @@ class tslib_imgmenu extends tslib_menu {
 			$menuName = 'menu_'.t3lib_div::shortMD5($res['imgMap']);	// shortMD5 260900  
 			$result = '<img src="'.$GLOBALS['TSFE']->absRefPrefix.$res['output_file'].'" width="'.$res['output_w'].'" height="'.$res['output_h'].'" usemap="#'.$menuName.'" border="0" '.$this->mconf['params'];
 			if (!strstr($result,'alt="'))	$result.=' alt="Menu Image Map"';	// Adding alt attribute if not set.
-			$result.= ' /><map name="'.$menuName.'">'.$res['imgMap'].'</map>';
+			$result.= ' /><map name="'.$menuName.'" id="'.$menuName.'">'.$res['imgMap'].'</map>';
 
 			$GLOBALS['TSFE']->imagesOnPage[]=$res['output_file'];
 
@@ -2241,7 +2240,7 @@ class tslib_jsmenu extends tslib_menu {
 			}
 			$formCode = $this->tmpl->wrap($allFormCode,$this->mconf['wrap']);
 	
-			$formCode= '<form action="" method="post" name="'.$this->JSMenuName.'Form">'.$formCode.'</form>';
+			$formCode= '<form action="" method="post" style="margin: 0 0 0 0;" name="'.$this->JSMenuName.'Form">'.$formCode.'</form>';
 			$formCode.='<script type="text/javascript"> /*<![CDATA[*/ '.$this->JSMenuName.'.writeOut(1,'.$this->JSMenuName.'.openID,1); /*]]>*/ </script>';
 			return $this->tmpl->wrap($formCode,$this->mconf['wrapAfterTags']);	
 		}

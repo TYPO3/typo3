@@ -161,7 +161,7 @@ TABLE#typo3-CSM-top IMG.c-roimg { margin-right: 2px; }
 TABLE.typo3-CSM { border: #9BA1A8 1px solid; }
 TABLE.typo3-CSM TD.typo3-CSM-item { white-space: nowrap; }
 TABLE.typo3-CSM TR.typo3-CSM-itemRow TD { padding: 1px 5px 1px 5px; }
-TABLE.typo3-CSM TR.typo3-CSM-itemRow { height: 13px; cursor: hand; }
+TABLE.typo3-CSM TR.typo3-CSM-itemRow { height: 13px; cursor: pointer; }
 
 /* Top menu (alt_topmenu_dummy.php) */
 BODY#typo3-alt-topmenu-dummy-php {	background-image: url(gfx/alt_topmenu_back_dummy.gif); }
@@ -268,6 +268,8 @@ INPUT.c-inputButton, IMG.c-inputButton { margin-right: 2px;  vertical-align: mid
 DIV#c-saveButtonPanel, DIV#c-inputMode { margin-top: 10px; }
 TABLE#typo3-formwizard TR#typo3-formWizardHeader TD { font-weight: bold; text-align: center; }
 TABLE#typo3-formwizard TR TD { padding: 0px 2px 0px 2px; }
+BODY#typo3-wizard-rte-php, BODY#typo3-wizard-rte-php TABLE#typo3-rtewizard { height: 98%; }
+BODY#typo3-wizard-rte-php TABLE#typo3-rtewizard TR TD#c-formContent { height: 100%; vertical-align: top; }
 
 /* History / Undo */
 TABLE#typo3-history TR TD, TABLE#typo3-history-item TR TD { vertical-align: top; }
@@ -298,25 +300,33 @@ TABLE.typo3-page-columnsMode TABLE.typo3-page-ceHeader IMG { vertical-align: mid
 TABLE.typo3-page-columnsMode IMG.c-divider { margin: 10px 0px 5px 0px;}
 
 /* Web > List */
+BODY#typo3-db-list-php { margin-left: 4px; }
 TABLE.typo3-dblist IMG { vertical-align: middle; }
 TABLE.typo3-dblist TR TD { padding-left: 1px; padding-right: 6px; }
-TABLE.typo3-dblist TR TD.c-headLineTable { background-color: #cccccc; }
+TABLE.typo3-dblist TR TD.c-headLineTable { background-color: #cccccc; height: 16px; }
 TABLE.typo3-dblist TR TD.c-headLine { background-color: #eeeeee; }
-TABLE.typo3-dblist TR TD.c-headLineTable A SPAN.c-table { font-weight: bold; }
+TABLE.typo3-dblist TR TD.c-headLineTable A { text-decoration: none;font-weight: bold; }
 TABLE.typo3-dblist TR TD DIV.typo3-DBctrl { background-color: #C5C1B5; }
 TABLE.typo3-dblist TR TD DIV.typo3-clipCtrl {background-color: #ABBBB4; text-align: center; }
 TABLE.typo3-dblist TR TD DIV.typo3-clipCtrl IMG, TABLE.typo3-dblist TR TD DIV.typo3-DBctrl IMG { margin-left: 1px; margin-right: 1px; }
+
 DIV#typo3-newRecordLink { margin: 5px 0px 5px 0px; font-weight: bold;}
 DIV#typo3-newRecordLink IMG { margin-right: 5px; vertical-align: middle; }
- 
+
+INPUT.smallCheckboxes { vertical-align: middle; margin: 0 0 0 0; padding: 0 0 0 0; width: 12px; height: 12px; }
+DIV#typo3-listOptions { margin: 10px 0px 10px 0px; }
+
 /* File > List */
+BODY#typo3-file-list-php { margin-left: 4px; }
 TABLE#typo3-filelist IMG { vertical-align: middle; }
 TABLE#typo3-filelist TR TD { padding-left: 1px; padding-right: 6px; }
-TABLE#typo3-filelist TR TD.c-headLine  { background-color: #cccccc; font-weight: bold; }
+TABLE#typo3-filelist TR TD.c-headLine  { background-color: #cccccc; font-weight: bold; height: 16px; }
 TABLE#typo3-filelist TR TD DIV.typo3-clipCtrl {background-color: #ABBBB4; text-align: center; }
 
 /* Clipboard */
 TABLE#typo3-clipboard, DIV#typo3-newRecordLink, TABLE#typo3-dblist-search { margin-top: 10px; }
+TABLE#typo3-clipboard TR.bgColor5 TD A { text-decoration: none; }
+TABLE#typo3-clipboard TR.bgColor5 TD IMG { vertical-align: middle; }
 
 /* Page info */
 TABLE.typo3-page-pages TR TD.c-headLine { background-color: #ABBBB4; }
@@ -326,11 +336,15 @@ TABLE.typo3-page-sysnote TR TD.c-headLine { background-color: #c5c1b5 }
 
 /* Web > Access */
 TABLE#typo3-permissionList IMG { vertical-align: middle; }
+TABLE#typo3-permissionMatrix TD { text-align: center; width: 16%; }
+TABLE#typo3-permissionMatrix TD.bgColor2 { font-weight: bold; padding-left: 10px; padding-right: 10px; }
 
-
-
-
-
+/* New element */
+BODY#typo3-db-new-php IMG { vertical-align: middle; }
+BODY#typo3-db-new-php A IMG { margin-right: 5px; }
+BODY#typo3-db-new-php A { text-decoration: none; }
+BODY#typo3-db-new-php IMG.c-helpImg { margin-left: 20px; text-align: right; }
+BODY#typo3-db-new-php DIV#typo3-newPageLink { margin-top: 20px; }
 
 /*********************************************
  * VARIOUS STAND-ALONE classes:

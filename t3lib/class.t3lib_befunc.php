@@ -547,19 +547,21 @@ class t3lib_BEfunc	{
 	function getExcludeFields()	{
 		global $TCA;
 			// All TCA keys:
-		$tc_keys = array_keys($TCA);
 		$theExcludeArray = Array();
-		while (list(,$table)=each($tc_keys))	{
+		$tc_keys = array_keys($TCA);
+		foreach($tc_keys as $table)	{
 				// Load table
 			t3lib_div::loadTCA($table);
 				// All field names configured:
-			$f_keys = array_keys($TCA[$table]['columns']);
-			while (list(,$field)=each($f_keys))	{
-				if ($TCA[$table]['columns'][$field]['exclude'])	{
-						// Get Human Readable names of fields and table:
-					$Fname=$GLOBALS['LANG']->sl($TCA[$table]['ctrl']['title']).': '.$GLOBALS['LANG']->sl($TCA[$table]['columns'][$field]['label']);
-						// add entry:
-					$theExcludeArray[] = Array($Fname , $table.':'.$field);
+			if (is_array($TCA[$table]['columns']))	{
+				$f_keys = array_keys($TCA[$table]['columns']);
+				foreach($f_keys as $field)	{
+					if ($TCA[$table]['columns'][$field]['exclude'])	{
+							// Get Human Readable names of fields and table:
+						$Fname=$GLOBALS['LANG']->sl($TCA[$table]['ctrl']['title']).': '.$GLOBALS['LANG']->sl($TCA[$table]['columns'][$field]['label']);
+							// add entry:
+						$theExcludeArray[] = Array($Fname , $table.':'.$field);
+					}
 				}
 			}
 		}

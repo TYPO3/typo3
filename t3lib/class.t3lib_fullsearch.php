@@ -98,7 +98,7 @@ class t3lib_fullsearch {
 	function form()	{
 		$out='
 		Search Word:<BR>
-		<input type="text" name="SET[sword]" value="'.$GLOBALS["SOBE"]->MOD_SETTINGS["sword"].'"'.$GLOBALS["TBE_TEMPLATE"]->formWidth(20).'><input type="submit" name="submit" value="Search All Records">
+		<input type="text" name="SET[sword]" value="'.htmlspecialchars($GLOBALS["SOBE"]->MOD_SETTINGS["sword"]).'"'.$GLOBALS["TBE_TEMPLATE"]->formWidth(20).'><input type="submit" name="submit" value="Search All Records">
 		';
 		
 		return $out;
@@ -532,7 +532,7 @@ class t3lib_fullsearch {
 	 */
 	function search()	{
 		global $TCA;
-		$SET = t3lib_div::GPvar("SET");
+		$SET = t3lib_div::GPvar("SET",1);
 		$swords = $SET["sword"];
 		// $GLOBALS["HTTP_POST_VARS"]["SET"]["sword"]
 		$limit=200;

@@ -120,6 +120,7 @@ class alt_menu_functions {
 					$prefix=$moduleInfo['navFrameScript'].'?currentSubScript=';
 				} else {
 					$prefix='alt_mod_frameset.php?'.
+						'fW="+top.TS.navFrameWidth+"'.
 						'&nav='.rawurlencode($moduleInfo['navFrameScript']).
 						'&script=';
 				}

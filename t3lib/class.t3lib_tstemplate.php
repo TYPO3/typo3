@@ -1218,7 +1218,7 @@ class t3lib_TStemplate	{
 			// Setting ID/alias:
 		if (!$script)	{$script = $GLOBALS['TSFE']->config['mainScript'];}
 		if ($page['alias'])	{
-			$LD['url']=$script.'?'.$page['alias'];
+			$LD['url']=$script.'?id='.$page['alias'];
 		} else {
 			$LD['url']=$script.'?id='.$page['uid'];
 		}

@@ -464,58 +464,63 @@ class t3lib_parsehtml {
 					$tagName = strtolower($tagParts[0]);
 					if (isset($tags[$tagName]))	{
 						if (is_array($tags[$tagName]))	{	// If there is processing to do for the tag:
-								// Override attributes
-							if (strcmp($tags[$tagName]['overrideAttribs'],''))	{
-								$tagParts[1]=$tags[$tagName]['overrideAttribs'];
-							}
 						
-								// Allowed tags
-							if (strcmp($tags[$tagName]['allowedAttribs'],''))	{
-								if (!strcmp($tags[$tagName]['allowedAttribs'],'0'))	{	// No attribs allowed
-									$tagParts[1]='';
-								} elseif (trim($tagParts[1])) {
+							if (!$endTag)	{	// If NOT an endtag, do attribute processing (added dec. 2003)
+									// Override attributes
+								if (strcmp($tags[$tagName]['overrideAttribs'],''))	{
+									$tagParts[1]=$tags[$tagName]['overrideAttribs'];
+								}
+							
+									// Allowed tags
+								if (strcmp($tags[$tagName]['allowedAttribs'],''))	{
+									if (!strcmp($tags[$tagName]['allowedAttribs'],'0'))	{	// No attribs allowed
+										$tagParts[1]='';
+									} elseif (trim($tagParts[1])) {
+										$tagAttrib = $this->get_tag_attributes($tagParts[1]);
+										$tagParts[1]='';
+										$newTagAttrib = array();
+										$tList = t3lib_div::trimExplode(',',strtolower($tags[$tagName]['allowedAttribs']),1);
+										while(list(,$allowTag)=each($tList))	{
+											if (isset($tagAttrib[0][$allowTag]))	$newTagAttrib[$allowTag]=$tagAttrib[0][$allowTag];
+										}
+										$tagParts[1]=$this->compileTagAttribs($newTagAttrib,$tagAttrib[1]);
+									}
+								}
+									
+									// Fixed attrib values
+								if (is_array($tags[$tagName]['fixAttrib']))	{
 									$tagAttrib = $this->get_tag_attributes($tagParts[1]);
 									$tagParts[1]='';
-									$newTagAttrib = array();
-									$tList = t3lib_div::trimExplode(',',strtolower($tags[$tagName]['allowedAttribs']),1);
-									while(list(,$allowTag)=each($tList))	{
-										if (isset($tagAttrib[0][$allowTag]))	$newTagAttrib[$allowTag]=$tagAttrib[0][$allowTag];
-									}
-									$tagParts[1]=$this->compileTagAttribs($newTagAttrib,$tagAttrib[1]);
-								}
-							}
-								
-								// Fixed attrib values
-							if (is_array($tags[$tagName]['fixAttrib']))	{
-								$tagAttrib = $this->get_tag_attributes($tagParts[1]);
-								$tagParts[1]='';
-								reset($tags[$tagName]['fixAttrib']);
-								while(list($attr,$params)=each($tags[$tagName]['fixAttrib']))	{
-									if (strcmp($params['default'],'') && !isset($tagAttrib[0][$attr]))	$tagAttrib[0][$attr]=$params['default'];
-									if ($params['always'] || isset($tagAttrib[0][$attr]))	{
-										if ($params['trim'])	{$tagAttrib[0][$attr]=trim($tagAttrib[0][$attr]);}
-										if ($params['intval'])	{$tagAttrib[0][$attr]=intval($tagAttrib[0][$attr]);}
-										if ($params['lower'])	{$tagAttrib[0][$attr]=strtolower($tagAttrib[0][$attr]);}
-										if ($params['upper'])	{$tagAttrib[0][$attr]=strtoupper($tagAttrib[0][$attr]);}
-										if ($params['range'])	{
-											if (isset($params['range'][1]))	{
-												$tagAttrib[0][$attr]=t3lib_div::intInRange($tagAttrib[0][$attr],intval($params['range'][0]),intval($params['range'][1]));
-											} else {
-												$tagAttrib[0][$attr]=t3lib_div::intInRange($tagAttrib[0][$attr],intval($params['range'][0]));
+									reset($tags[$tagName]['fixAttrib']);
+									while(list($attr,$params)=each($tags[$tagName]['fixAttrib']))	{
+										if (strcmp($params['default'],'') && !isset($tagAttrib[0][$attr]))	$tagAttrib[0][$attr]=$params['default'];
+										if ($params['always'] || isset($tagAttrib[0][$attr]))	{
+											if ($params['trim'])	{$tagAttrib[0][$attr]=trim($tagAttrib[0][$attr]);}
+											if ($params['intval'])	{$tagAttrib[0][$attr]=intval($tagAttrib[0][$attr]);}
+											if ($params['lower'])	{$tagAttrib[0][$attr]=strtolower($tagAttrib[0][$attr]);}
+											if ($params['upper'])	{$tagAttrib[0][$attr]=strtoupper($tagAttrib[0][$attr]);}
+											if ($params['range'])	{
+												if (isset($params['range'][1]))	{
+													$tagAttrib[0][$attr]=t3lib_div::intInRange($tagAttrib[0][$attr],intval($params['range'][0]),intval($params['range'][1]));
+												} else {
+													$tagAttrib[0][$attr]=t3lib_div::intInRange($tagAttrib[0][$attr],intval($params['range'][0]));
+												}
+											}
+											if (is_array($params['list']))	{
+												if (!in_array($this->caseShift($tagAttrib[0][$attr],$params['casesensitiveComp']),$this->caseShift($params['list'],$params['casesensitiveComp'],$tagName)))	$tagAttrib[0][$attr]=$params['list'][0];
+											}
+											if (($params['removeIfFalse'] && $params['removeIfFalse']!='blank' && !$tagAttrib[0][$attr]) || ($params['removeIfFalse']=='blank' && !strcmp($tagAttrib[0][$attr],'')))	{
+												unset($tagAttrib[0][$attr]);
+											}
+											if (strcmp($params['removeIfEquals'],'') && !strcmp($this->caseShift($tagAttrib[0][$attr],$params['casesensitiveComp']),$this->caseShift($params['removeIfEquals'],$params['casesensitiveComp'])))	{
+												unset($tagAttrib[0][$attr]);
 											}
 										}
-										if (is_array($params['list']))	{
-											if (!in_array($this->caseShift($tagAttrib[0][$attr],$params['casesensitiveComp']),$this->caseShift($params['list'],$params['casesensitiveComp'],$tagName)))	$tagAttrib[0][$attr]=$params['list'][0];
-										}
-										if (($params['removeIfFalse'] && $params['removeIfFalse']!='blank' && !$tagAttrib[0][$attr]) || ($params['removeIfFalse']=='blank' && !strcmp($tagAttrib[0][$attr],'')))	{
-											unset($tagAttrib[0][$attr]);
-										}
-										if (strcmp($params['removeIfEquals'],'') && !strcmp($this->caseShift($tagAttrib[0][$attr],$params['casesensitiveComp']),$this->caseShift($params['removeIfEquals'],$params['casesensitiveComp'])))	{
-											unset($tagAttrib[0][$attr]);
-										}
 									}
+									$tagParts[1]=$this->compileTagAttribs($tagAttrib[0],$tagAttrib[1]);
 								}
-								$tagParts[1]=$this->compileTagAttribs($tagAttrib[0],$tagAttrib[1]);
+							} else {	// If endTag, remove any possible attributes:
+								$tagParts[1]='';
 							}
 
 								// Protecting the tag by converting < and > to &lt; and &gt; ??
@@ -1153,8 +1158,8 @@ class t3lib_parsehtml {
 				$value = $newTag;
 			}
 		}
-		return $value;
 		
+		return $value;
 	}
 	
 	/**
