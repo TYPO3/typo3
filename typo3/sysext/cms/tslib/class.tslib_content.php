@@ -594,7 +594,7 @@ class tslib_cObj {
 		$w = $w ? $w : 1;
 		$h = $h ? $h : 1;
 		$wrap = $conf['wrap'] ? $conf['wrap'] : '|<br />';
-		$theValue = $this->wrap('<img src="'.$GLOBALS['TSFE']->absRefPrefix.'clear.gif" width="'.$w.'" height="'.$h.'" border="0" alt="" title="" k/>', $wrap);
+		$theValue = $this->wrap('<img src="'.$GLOBALS['TSFE']->absRefPrefix.'clear.gif" width="'.$w.'" height="'.$h.'" border="0" alt="" title="" />', $wrap);
 		
 		return $this->stdWrap($theValue,$conf['stdWrap.']);
 	}
