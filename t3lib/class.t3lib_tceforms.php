@@ -765,7 +765,7 @@ class t3lib_TCEforms	{
 	 */
 	function getSingleField_SW($table,$field,$row,&$PA)	{
 		$PA['fieldConf']['config']['form_type'] = $PA['fieldConf']['config']['form_type'] ? $PA['fieldConf']['config']['form_type'] : $PA['fieldConf']['config']['type'];
-		
+
 		switch($PA['fieldConf']['config']['form_type'])	{
 			case 'input':
 				$item = $this->getSingleField_typeInput($table,$field,$row,$PA);
@@ -1457,7 +1457,7 @@ class t3lib_TCEforms	{
 			$cols = $config['cols']?$config['cols']:($config['size']?$config['size']:$this->maxInputWidth);
 			if ($this->docLarge)	$cols = round($cols*$this->form_largeComp);
 			$width = ceil($cols*$this->form_rowsToStylewidth);
-			
+
 				// overflow:auto crashes mozilla here. Title tag is usefull when text is longer than the div box (overflow:hidden).
 			$item = '
 				<div style="'.htmlspecialchars($divStyle.' overflow:hidden; width:'.$width.'px;').'" class="'.htmlspecialchars($this->formElClass('none')).'" title="'.$itemValue.'">'.
@@ -3099,10 +3099,25 @@ class t3lib_TCEforms	{
 		global $TCA;
 		reset($arr);
 		while(list($k,$v)=each($arr))	{
-			$arr[$k]=str_replace('###ID_NEW_INDICATOR###',(strstr($rec['uid'],'NEW')?' <span class="typo3-TCEforms-newToken">'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.new',1).'</span>':' <span class="typo3-TCEforms-recUid">['.$rec['uid'].']</span>'),$arr[$k]);
-			$rLabel = trim(t3lib_div::fixed_lgd_cs(t3lib_BEfunc::getRecordTitle($table,$rec),40));
-			$arr[$k]=str_replace('###RECORD_LABEL###',htmlspecialchars($rLabel),$arr[$k]);
-			$arr[$k]=str_replace('###TABLE_TITLE###',htmlspecialchars($this->sL($TCA[$table]['ctrl']['title'])),$arr[$k]);
+
+				// Make "new"-label
+			if (strstr($rec['uid'],'NEW'))	{
+				$newLabel = ' <span class="typo3-TCEforms-newToken">'.
+							$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.new',1).
+							'</span>';
+
+				$truePid = t3lib_BEfunc::getTSconfig_pidValue($table,$rec['uid'],$rec['pid']);
+				$prec = t3lib_BEfunc::getRecord('pages',$truePid,'title');
+				$rLabel = '<em>[PID: '.$truePid.'] '.htmlspecialchars(trim(t3lib_div::fixed_lgd_cs(t3lib_BEfunc::getRecordTitle('pages',$prec),40))).'</em>';
+			} else {
+				$newLabel = ' <span class="typo3-TCEforms-recUid">['.$rec['uid'].']</span>';
+				$rLabel  = htmlspecialchars(trim(t3lib_div::fixed_lgd_cs(t3lib_BEfunc::getRecordTitle($table,$rec),40)));
+			}
+
+				// Make substitutions:
+			$arr[$k] = str_replace('###ID_NEW_INDICATOR###', $newLabel, $arr[$k]);
+			$arr[$k] = str_replace('###RECORD_LABEL###',$rLabel,$arr[$k]);
+			$arr[$k] = str_replace('###TABLE_TITLE###',htmlspecialchars($this->sL($TCA[$table]['ctrl']['title'])),$arr[$k]);
 
 			$titleA=t3lib_BEfunc::titleAltAttrib($this->getRecordPath($table,$rec));
 			$arr[$k]=str_replace('###RECORD_ICON###',t3lib_iconWorks::getIconImage($table,$rec,$this->backPath,'class="absmiddle"'.$titleA),$arr[$k]);

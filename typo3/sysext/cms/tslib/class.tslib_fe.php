@@ -270,7 +270,9 @@
 	var $excludeCHashVars='';			// A string set with a comma list of additional GET vars which should NOT be included in the cHash calculation. These vars should otherwise be detected and involved in caching, eg. through a condition in TypoScript.
 	var $displayEditIcons='';			// If set, edit icons are rendered aside content records. Must be set only if the ->beUserLogin flag is set and set_no_cache() must be called as well.
 	var $displayFieldEditIcons='';		// If set, edit icons are rendered aside individual fields of content. Must be set only if the ->beUserLogin flag is set and set_no_cache() must be called as well.
-	var $sys_language_uid=0;			// Site language, 0 (zero) is default, int+ is uid pointing to a sys_language record.
+	var $sys_language_uid=0;			// Site language, 0 (zero) is default, int+ is uid pointing to a sys_language record. Should reflect which language it DOES actually display!
+	var $sys_language_mode='';			// Site language mode
+	var $sys_language_content=0;		// Site language selection uid
 	var $sys_language_isocode = '';		// Is set to the iso code of the sys_language if that is properly defined by the sys_language record representing the sys_language_uid. (Requires the extension "static_info_tables")
 
 		// RENDERING data
@@ -1494,15 +1496,53 @@
 	 * @access private
 	 */
 	function settingLanguage()	{
-		$this->sys_language_uid = intval($this->config['config']['sys_language_uid']);
-		$olRec = $this->sys_page->getPageOverlay($this->id,$this->sys_language_uid);
 
+			// Get values from TypoScript:
+		$this->sys_language_uid = $this->sys_language_content = intval($this->config['config']['sys_language_uid']);
+		list($this->sys_language_mode,$sys_language_content) = t3lib_div::trimExplode(';', $this->config['config']['sys_language_mode']);
+
+			// Request the overlay record for the sys_language_uid:
+		$olRec = $this->sys_page->getPageOverlay($this->id, $this->sys_language_uid);
+
+			// Setting sys_language if an overlay record was found (which it is only if a language is used)
 		if (!count($olRec))	{
-			$this->sys_language_uid=0;
+
+				// If no OL record exists and a foreign language is asked for...
+			if ($this->sys_language_uid)	{
+
+					// If requested translation is not available:
+				if ($this->page['l18n_cfg']&2)	{
+					$this->pageNotFoundAndExit('Page is not available in the requested language.');
+				} else {
+					switch((string)$this->sys_language_mode)	{
+						case 'strict':
+							$this->pageNotFoundAndExit('Page is not available in the requested language (strict).');
+						break;
+						case 'content_fallback':
+							$fallBackOrder = t3lib_div::trimExplode(',', $sys_language_content,1);
+							foreach($fallBackOrder as $orderValue)	{
+								if (!strcmp($orderValue,'0') || count($this->sys_page->getPageOverlay($this->id, $orderValue)))	{
+									$this->sys_language_content = $orderValue;	// Setting content uid (but leaving the sys_language_uid)
+									break;
+								}
+							}
+						break;
+						default:
+								// Default is that everything defaults to the default language...
+							$this->sys_language_uid = $this->sys_language_content = 0;
+						break;
+					}
+				}
+			}
 		} else {
-			$this->page = $this->sys_page->getPageOverlay($this->page,$this->sys_language_uid);
+			$this->page = $this->sys_page->getPageOverlay($this->page, $this->sys_language_uid);
 		}
 		$this->sys_page->sys_language_uid = $this->sys_language_uid;
+
+			// If default translation is not available:
+		if (!$this->sys_language_uid && $this->page['l18n_cfg']&1)	{
+			$this->pageNotFoundAndExit('Page is not available in default language.');
+		}
 
 			// Updating content of the two rootLines IF the language key is set!
 		if ($this->sys_language_uid && is_array($this->tmpl->rootLine))	{

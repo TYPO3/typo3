@@ -424,6 +424,11 @@ class tx_cms_layout extends recordList {
 						$onClick = "document.location='db_new_content_el.php?id=".$id.'&colPos='.intval($key).'&sys_language_uid='.$lP.'&uid_pid='.$id.'&returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))."';";
 						$theNewButton = $GLOBALS['SOBE']->doc->t3Button($onClick,$GLOBALS['LANG']->getLL('newPageContent'));
 						$content[$key].= '<img src="clear.gif" width="1" height="5" alt="" /><br />'.$theNewButton;
+
+							// Copy for language:
+					#	$onClick = "alert(123);";
+					#	$theNewButton = $GLOBALS['SOBE']->doc->t3Button($onClick,$GLOBALS['LANG']->getLL('newPageContent_copyForLang'));
+					#	$content[$key].= '<img src="clear.gif" width="1" height="5" alt="" /><br />'.$theNewButton;
 					}
 
 						// Traverse any selected elements and render their display code:
@@ -641,7 +646,11 @@ class tx_cms_layout extends recordList {
 			// Add the big buttons to page:
 		if ($this->option_showBigButtons)	{
 			$bArray=array();
-			$bArray[0]=$GLOBALS['SOBE']->doc->t3Button(t3lib_BEfunc::editOnClick('&edit[pages]['.$id."]=edit",$this->backPath,''),$GLOBALS['LANG']->getLL('editPageTitle'));
+			if (!$GLOBALS['SOBE']->current_sys_language)	{
+				$bArray[0]=$GLOBALS['SOBE']->doc->t3Button(t3lib_BEfunc::editOnClick('&edit[pages]['.$id."]=edit",$this->backPath,''),$GLOBALS['LANG']->getLL('editPageTitle'));
+			} else {
+				$bArray[0]=$GLOBALS['SOBE']->doc->t3Button(t3lib_BEfunc::editOnClick('&edit[pages_language_overlay]['.$GLOBALS['SOBE']->current_sys_language."]=edit",$this->backPath,''),$GLOBALS['LANG']->getLL('editPageTitle_curLang'));
+			}
 			$bArray[1]=$GLOBALS['SOBE']->doc->t3Button("document.location='".$this->backPath."move_el.php?table=pages&uid=".$id.'&returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))."';",$GLOBALS['LANG']->getLL('move_page'));
 			$bArray[2]=$GLOBALS['SOBE']->doc->t3Button("document.location='".$this->backPath."db_new.php?id=".$id.'&pagesOnly=1&returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))."';",$GLOBALS['LANG']->getLL('newPage2'));
 			if ($this->ext_function==1) $bArray[3]=$GLOBALS['SOBE']->doc->t3Button("document.location='db_new_content_el.php?id=".$id.'&sys_language_uid='.$GLOBALS['SOBE']->current_sys_language.'&returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))."';",$GLOBALS['LANG']->getLL('newPageContent2'));

@@ -1,3 +1,7 @@
+2004-08-03  Kasper Skårhøj,,,  <kasper@typo3.com>
+
+	* Added and Changed features around page languages. More to come including a document guiding people about charsets and localization.
+
 2004-07-24  Jan-Erik Revsbech <jer@moccompany.com>
 	* Added support for other transfer encodings in the dmailer class. Will start to move the t3lib_directmailer class out of the core and into the direct_mail extension.
 

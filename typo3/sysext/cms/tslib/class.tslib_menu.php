@@ -724,18 +724,15 @@ class tslib_menu {
 				// Fill in the menuArr with elements that should go into the menu:
 			$this->menuArr = Array();
 			foreach($temp as $data)	{
-				$uid=$data['uid'];
-				$spacer = (t3lib_div::inList($this->spacerIDList,$data['doktype'])?1:0);		// if item is a spacer, $spacer is set
-				if ($this->mconf['SPC'] || !$spacer)	{	// If the spacer-function is not enabled, spacers will not enter the $menuArr
-					if (!t3lib_div::inList($this->doktypeExcludeList,$data['doktype']) && !$data['nav_hide'] && !t3lib_div::inArray($banUidArray,$uid))	{		// Page may not be 'not_in_menu' or 'Backend User Section' + not in banned uid's
-						$c_b++;
-						if ($begin<=$c_b)	{		// If the beginning item has been reached.
-							$this->menuArr[$c]=$data;
-							$this->menuArr[$c]['isSpacer']=$spacer;
-							$c++;
-							if ($maxItems && $c>=$maxItems)	{
-								break;
-							}
+				$spacer = t3lib_div::inList($this->spacerIDList,$data['doktype']) ? 1 : 0;		// if item is a spacer, $spacer is set
+				if ($this->filterMenuPages($data, $banUidArray, $spacer))	{
+					$c_b++;
+					if ($begin<=$c_b)	{		// If the beginning item has been reached.
+						$this->menuArr[$c] = $data;
+						$this->menuArr[$c]['isSpacer'] = $spacer;
+						$c++;
+						if ($maxItems && $c>=$maxItems)	{
+							break;
 						}
 					}
 				}
@@ -786,6 +783,42 @@ class tslib_menu {
 			include($incFile);
 		}
 		return is_array($menuItemsArray) ? $menuItemsArray : array();
+	}
+
+	/**
+	 * Checks if a page is OK to include in the final menu item array. Pages can be excluded if the doktype is wrong, if they are hidden in navigation, have a uid in the list of banned uids etc.
+	 *
+	 * @param	array	Array of menu items
+	 * @param	array	Array of page uids which are to be excluded
+	 * @param	boolean	If set, then the page is a spacer.
+	 * @return	boolean	Returns true if the page can be safely included.
+	 */
+	function filterMenuPages($data,$banUidArray,$spacer)	{
+		$uid = $data['uid'];
+		if ($this->mconf['SPC'] || !$spacer)	{	// If the spacer-function is not enabled, spacers will not enter the $menuArr
+			if (!t3lib_div::inList($this->doktypeExcludeList,$data['doktype']))	{		// Page may not be 'not_in_menu' or 'Backend User Section'
+				if (!$data['nav_hide'])	{	// Not hidden in navigation
+					if (!t3lib_div::inArray($banUidArray,$uid))	{	// not in banned uid's
+						if (!(!$GLOBALS['TSFE']->sys_language_uid && $data['l18n_cfg']&1))	{	// Checks if the default language version can be shown:
+
+								// Checking if a page should be shown in the menu depending on whether a translation exists:
+							$tok = TRUE;
+							if ($GLOBALS['TSFE']->sys_language_uid && $data['l18n_cfg']&2)	{	// There is an alternative language active AND the current page requires a translation:
+								$olRec = $GLOBALS['TSFE']->sys_page->getPageOverlay($data['uid'], $GLOBALS['TSFE']->sys_language_uid);
+								if (!count($olRec))	{
+									$tok = FALSE;
+								}
+							}
+
+								// Continue if token is true:
+							if ($tok)	{
+								return TRUE;
+							}
+						}
+					}
+				}
+			}
+		}
 	}
 
 	/**

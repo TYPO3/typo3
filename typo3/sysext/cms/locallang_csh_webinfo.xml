@@ -75,6 +75,8 @@ This will show statistics only for pages that has a Template Record (with Root-f
 &lt;b&gt;Hits in main sections&lt;/b&gt;
 Will show the total number of page hits/sessions within main sections of a website. A &quot;main section&quot; is all subpages to a page on the first level of a website (defined by a Template Record with the Root flag set).</label>
 			<label index="_func_hits.image">EXT:cms/cshimages/pagetree_overview_2.png</label>
+			<label index="lang.alttitle">Localization overview</label>
+			<label index="lang.description">Gives an overview of which pages in the page tree are translated to the system languages installed.</label>
 		</languageKey>
 		<languageKey index="dk">EXT:csh_dk/cms/dk.locallang_csh_webinfo.xml</languageKey>
 		<languageKey index="de" type="array">

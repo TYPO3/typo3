@@ -348,6 +348,11 @@ class SC_db_layout {
 			unset($this->MOD_MENU['function'][0]);
 		}
 
+			// Setting alternative default label:
+		if ($this->modTSconfig['properties']['defaultLanguageLabel'] && isset($this->MOD_MENU['language'][0]))	{
+			$this->MOD_MENU['language'][0] = $this->modTSconfig['properties']['defaultLanguageLabel'];
+		}
+
 			// Clean up settings
 		$this->MOD_SETTINGS = t3lib_BEfunc::getModuleData($this->MOD_MENU, t3lib_div::_GP('SET'), $this->MCONF['name']);
 	}

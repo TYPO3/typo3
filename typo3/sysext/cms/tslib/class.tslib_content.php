@@ -1987,7 +1987,7 @@ class tslib_cObj {
 				$this->enableFields('pages');
 
 			if ($conf['languageField.'][$search->fTable])	{
-				$endClause.= ' AND '.$search->fTable.'.'.	$conf['languageField.'][$search->fTable].' = '.intval($GLOBALS['TSFE']->sys_language_uid);
+				$endClause.= ' AND '.$search->fTable.'.'.	$conf['languageField.'][$search->fTable].' = '.intval($GLOBALS['TSFE']->sys_language_content);
 			}
 
 				// build query
@@ -6242,7 +6242,7 @@ class tslib_cObj {
 			$query.=' AND '.$where;
 		}
 		if ($conf['languageField'])	{
-			$query.=' AND '.$conf['languageField'].'='.intval($GLOBALS['TSFE']->sys_language_uid);
+			$query.=' AND '.$conf['languageField'].'='.intval($GLOBALS['TSFE']->sys_language_content);
 		}
 
 		$andWhere = trim($this->stdWrap($conf['andWhere'],$conf['andWhere.']));

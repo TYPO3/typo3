@@ -1032,7 +1032,7 @@ class t3lib_stdGraphic	{
 			} else {
 					// Blurring of the mask
 				$times = ceil($blurRate/10);	// How many blur-commands that is executed. Min = 1;
-				$newBlurRate = $blurRate*4;		// Her booster vi blur-rate, s�at den allerede ved 25 er p�100. Resten op til 99 g� p�iterationer af blur-kommandoen
+				$newBlurRate = $blurRate*4;		// Here I boost the blur-rate so that it is 100 already at 25. The rest is done by up to 99 iterations of the blur-command.
 				$newBlurRate = t3lib_div::intInRange($newBlurRate,1,99);
 				for ($a=0;$a<$times;$a++)	{		// Building blur-command
 					$command.=' -blur '.$blurRate;
