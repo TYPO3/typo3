@@ -91,6 +91,7 @@ TCEmain/TCEforms for FlexForms:
 	- Displaying partial branch of the data structure (and to a certain level)
 	- FlexForms cannot be possible if the record is not saved? No, should be ok, BUT a data source can of course not be referenced from another field since that fields value is NOT actually there! So only for fixed references to flex form definitions can this be done.
 	- If you have a multiple selector field (or checkbox array) an array of objects could be forced to reflect exactly the fieldnames there 1-1 thus giving us configuration option possibilities per field! For newloginbox extension: You set up a selector box with multiple choice where you can select fields from the fe_users table to display. In an array of elements in the DS you configure that the VALUE of that field is dictating that the same number of objects should be shown for configuration of each field. A "hidden" value would point each object to which value from the field it was for! The same would be very useful for M-M lists of records.
+	- Implement "<displayCond>EXT:templavoila:LOADED:true</displayCond>" for flexforms. (needed for mininews!!)
 		
 		
 TCEforms:

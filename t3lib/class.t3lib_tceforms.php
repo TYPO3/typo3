@@ -1712,6 +1712,8 @@ class t3lib_TCEforms	{
 		$PA['table']=$table;
 		$PA['field']=$field;
 		$PA['row']=$row;
+		
+		$PA['pObj']=&$this;
 
 		return t3lib_div::callUserFunction($PA['fieldConf']['config']['userFunc'],$PA,$this);
 	}

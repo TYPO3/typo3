@@ -1085,8 +1085,8 @@ class t3lib_div {
 	 * @return	boolean		Returns true if the $email address (input string) is valid; Has a "@", domain name with at least one period and only allowed a-z characters.
 	 */
 	function validEmail($email)	{
-		if (strstr($email,' '))	 return 0;
-		return ereg('^[A-Za-z0-9\._-]*[@][A-Za-z0-9\._-]*[\.].[A-Za-z0-9]*$',$email) ? 1 : 0;
+		if (strstr($email,' '))	 return FALSE;
+		return ereg('^[A-Za-z0-9\._-]+[@][A-Za-z0-9\._-]*[\.].[A-Za-z0-9]*$',$email) ? TRUE : FALSE;
 	}
 
 	/**

@@ -798,7 +798,7 @@ top.goToModule("file_list");
 	function func_edit($cmds)	{
 		if (!$this->isInit) return false;
 		$theTarget = $cmds['target'];
-		$content = stripslashes($cmds['data']);
+		$content = $cmds['data'];	// Slashes ARE stripped earlier in this function; t3lib_div::stripSlashesOnArray($this->datamap);
 		$extList = $GLOBALS['TYPO3_CONF_VARS']['SYS']['textfile_ext'];
 		$type = filetype($theTarget);
 		if ($type=='file')	{		// $type MUST BE file

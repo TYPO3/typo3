@@ -88,8 +88,8 @@ $TYPO3_CONF_VARS = Array(
 		)
 	),
 	'BE' => Array(		// Backend Configuration.
-		'unzip_path' => '',						// Path to unzip.
-		'diff_path' => 'diff',					// Path to diff. For Windows this program can be downloaded here: http://www.e-missions.de/tools/diff.exe (or from www.typo3.com/?software)
+		'unzip_path' => '',						// Path to "unzip".
+		'diff_path' => 'diff',					// Path to "diff". For Windows this program can be downloaded here: http://unxutils.sourceforge.net/
 		'fileadminDir' => 'fileadmin/',			// Path to the fileadmin dir. This is relative to PATH_site. (Automatically mounted for admin-users if set)
 		'RTE_imageStorageDir' => 'uploads/',	// Storage directory for Rich Text Editor files
 		'staticFileEditPath' => 'fileadmin/static/',	// Path to directory with static files for editing (see table sys_staticfiles_edit). Relative to PATH_site.

@@ -174,6 +174,9 @@ class SC_index {
 			// Checking, if we should make a redirect.
 			// Might set JavaScript in the header to close window.
 		$this->checkRedirect();
+
+			// Initialize interface selectors:			
+		$this->makeInterfaceSelectorBox();
 		
 			// Creating form based on whether there is a login or not:		
 		if (!$BE_USER->user['uid'])	{
@@ -196,9 +199,6 @@ class SC_index {
 			
 			// Add login form:
 		$this->content.=$this->wrapLoginForm($loginForm);
-
-			// Initialize interface selectors:			
-		$this->makeInterfaceSelectorBox();
 
 			// Ending form:
 		$this->content.= '
@@ -453,7 +453,7 @@ class SC_index {
 		$this->interfaceSelector = '';
 		$this->interfaceSelector_hidden='';
 		$this->interfaceSelector_jump = '';
-		
+#debug($this->redirect_url);		
 			// If interfaces are defined AND no input redirect URL in GET vars:
 		if ($TYPO3_CONF_VARS['BE']['interfaces'] && !$this->redirect_url)	{
 			$parts = t3lib_div::trimExplode(',',$TYPO3_CONF_VARS['BE']['interfaces']);

@@ -1650,6 +1650,7 @@ Number of files at a time:
 		reset($paths);
 		while(list($k,$v)=each($paths))	{
 			reset($programs);
+			if (!ereg('\/$',$v)) $v.='/';
 			while(list(,$filename)=each($programs))	{
 #				if (@file_exists($v) && @is_file($v.$filename.$isExt))    {       // file_exists was necessary on windows, because is_file issued a warning if the path was not correct.
 				if($this->_checkImageMagick_getVersion($v.$filename.$isExt) > 0 ) {
@@ -1657,9 +1658,13 @@ Number of files at a time:
 				}
 			}
 			if (count($index[$v])>=3)	{$this->config_array["im"]=1;}
-			if ($index[$v]["composite"] && !$index[$v]["combine"])	{
+			
+			if ($index[$v]["composite"] && !$index[$v]["combine"])  {
 				$this->config_array["im_combine_filename"]="composite";
-			}
+			} elseif (!$index[$v]["composite"] && $index[$v]["combine"]) {
+				$this->config_array["im_combine_filename"]="combine";
+			}	
+					
 			if (isset($index[$v]["convert"]) && $this->checkIMlzw)	{
 				$index[$v]["gif_capability"] = "".$this->_checkImageMagickGifCapability($v);
 			}
@@ -2395,8 +2400,8 @@ Number of files at a time:
 	 */
 	function getGDSoftwareInfo()	{
 		return trim("
-		You can get GDLib in the PNG version from ".$this->linkIt("http://www.boutell.com/gd/")." or you can get the patched GIF version from ".$this->linkIt("http://www.typo3.com/?software").".<BR>FreeType is for download at ".$this->linkIt("http://www.freetype.org/")."</a>.
-		If you're using a Windows server, you'll be happy to know that all this is compiled into a PHP4-distribution for download at ".$this->linkIt("http://www.php4win.de/")."</a>.
+		You can get GDLib in the PNG version from ".$this->linkIt("http://www.boutell.com/gd/").".<BR>FreeType is for download at ".$this->linkIt("http://www.freetype.org/")."</a>.
+		Generally, software for TYPO3 is found at ".$this->linkIt("http://typo3.sunsite.dk/software/")." and packages listed at ".$this->linkIt("http://typo3.org/1274.0.html").".
 		");
 	}
 

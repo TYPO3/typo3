@@ -214,6 +214,10 @@ class template {
 
 			// Setting default scriptID:
 		$this->scriptID = ereg_replace('^.*\/(sysext|ext)\/','ext/',substr(PATH_thisScript,strlen(PATH_site)));
+		if (TYPO3_mainDir!='typo3/' && substr($this->scriptID,0,strlen(TYPO3_mainDir)) == TYPO3_mainDir)	{
+			$this->scriptID = 'typo3/'.substr($this->scriptID,strlen(TYPO3_mainDir));	// This fixes if TYPO3_mainDir has been changed so the script ids are STILL "typo3/..."
+		}
+		
 		$this->bodyTagId = ereg_replace('[^[:alnum:]-]','-',$this->scriptID);
 
 			// Individual configuration per script? If so, make a recursive merge of the arrays:
