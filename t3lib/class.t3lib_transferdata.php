@@ -236,42 +236,71 @@ class t3lib_transferData {
 				// If the table is pages, set the previous page id internally.
 			if ($table == 'pages')	{$this->prevPageID = $id;}
 
-				// Create blank accumulation array:
-			$totalRecordContent=array();
-
-				// Traverse the configured columns for the table (TCA):
-				// For each column configured, we will perform processing if needed based on the type (eg. for "group" and "select" types this is needed)
-			$copyOfColumns = $TCA[$table]['columns'];
-			foreach($copyOfColumns as $field => $fieldConfig)	{
-					// Set $data variable for the field, either inputted value from $row - or if not found, the default value as defined in the "config" array
-				if (isset($row[$field]))	{
-					$data = $row[$field];
-				} else {
-					$data = $fieldConfig['config']['default'];
-				}
-
-				$data = $this->renderRecord_SW($data,$fieldConfig,$TSconfig,$table,$row,$field);
-
-					// Set the field in the accumulation array IF the $data variabel is set:
-				$totalRecordContent[$field]=isset($data)?$data:'';
-			}
-
-				// Further processing may apply for each field in the record depending on the settings in the "types" configuration (the list of fields to currently display for a record in TCEforms).
-				// For instance this could be processing instructions for the Rich Text Editor.
-			$types_fieldConfig = t3lib_BEfunc::getTCAtypes($table,$totalRecordContent);
-			if (is_array($types_fieldConfig))	{
-				$totalRecordContent = $this->renderRecord_typesProc($totalRecordContent,$types_fieldConfig,$tscPID,$table,$pid);
-			}
-
-				// Register items, mostly for external use (overriding the regItem() function)
-			foreach($totalRecordContent as $field => $data)	{
-				$this->regItem($table,$id,$field,$data);
-			}
-
-				// Finally, store the result:
-			reset($totalRecordContent);
-			$this->regTableItems_data[$uniqueItemRef]=$totalRecordContent;
+			$this->regTableItems_data[$uniqueItemRef] = $this->renderRecordRaw($table, $id, $pid, $row, $TSconfig, $tscPID);
 		}
+	}
+
+
+
+	/**
+	 * This function performs processing on the input $row array and stores internally a corresponding array which contains processed values, ready to pass on to the TCEforms rendering in the frontend!
+	 * The objective with this function is to prepare the content for handling in TCEforms. 
+	 * In opposite to renderRecord() this function do not prepare things like fetching TSconfig and others. 
+	 * The resulting, processed row will be returned.
+	 * 
+	 * @param	string		The table name
+	 * @param	string		The uid value of the record (integer). Can also be a string (NEW-something) if the record is a NEW record.
+	 * @param	integer		The pid integer. For existing records this is of course the row's "pid" field. For new records it can be either a page id (positive) or a pointer to another record from the SAME table (negative) after which the record should be inserted (or on same page)
+	 * @param	array		The row of the current record. If NEW record, then it may be loaded with default values (by eg. fetchRecord()).
+	 * @param	array		Tsconfig array
+	 * @param	integer		PAGE TSconfig pid
+	 * @return	array		Processed record data
+	 * @see renderRecord()
+	 */
+	function renderRecordRaw($table, $id, $pid, $row, $TSconfig='', $tscPID=0)	{
+		global $TCA;
+
+		if(!is_array($TSconfig)) {
+			$TSconfig = array();
+		}
+
+			// Create blank accumulation array:
+		$totalRecordContent=array();
+
+			// Traverse the configured columns for the table (TCA):
+			// For each column configured, we will perform processing if needed based on the type (eg. for "group" and "select" types this is needed)
+		$copyOfColumns = $TCA[$table]['columns'];
+		foreach($copyOfColumns as $field => $fieldConfig)	{
+				// Set $data variable for the field, either inputted value from $row - or if not found, the default value as defined in the "config" array
+			if (isset($row[$field]))	{
+				$data = $row[$field];
+			} else {
+				$data = $fieldConfig['config']['default'];
+			}
+
+			$data = $this->renderRecord_SW($data,$fieldConfig,$TSconfig,$table,$row,$field);
+
+				// Set the field in the accumulation array IF the $data variabel is set:
+			$totalRecordContent[$field]=isset($data)?$data:'';
+		}
+
+			// Further processing may apply for each field in the record depending on the settings in the "types" configuration (the list of fields to currently display for a record in TCEforms).
+			// For instance this could be processing instructions for the Rich Text Editor.
+		$types_fieldConfig = t3lib_BEfunc::getTCAtypes($table,$totalRecordContent);
+		if (is_array($types_fieldConfig))	{
+			$totalRecordContent = $this->renderRecord_typesProc($totalRecordContent,$types_fieldConfig,$tscPID,$table,$pid);
+		}
+
+			// Register items, mostly for external use (overriding the regItem() function)
+		foreach($totalRecordContent as $field => $data)	{
+			$this->regItem($table,$id,$field,$data);
+		}
+
+			// Finally, store the result:
+		reset($totalRecordContent);
+		
+		return $totalRecordContent;
+		
 	}
 
 	/**
