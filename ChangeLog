@@ -1,3 +1,7 @@
+2004-09-17  Ingmar Schlecht  <ingmars@web.de>
+
+	* Fixed bug #0000181: Added the word "JavaScript" to the note on the BE login page. It's now: "(Note: Cookies and JavaScript must be enabled!)"
+
 2004-09-15  Ingmar Schlecht  <ingmars@web.de>
 
 	* Fixed bug #0000353: In typo3\wizard_add.php removed call to non-existing printContent() method. It doesn't need to print anything.

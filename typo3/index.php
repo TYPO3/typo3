@@ -291,8 +291,7 @@ class SC_index {
 										<td><input type="submit" name="commandLI" value="'.htmlspecialchars($this->L_vars[3]).'" class="c-submit" /></td>
 									</tr>
 									<tr class="c-info">
-										<td></td>
-										<td><p class="c-info">'.htmlspecialchars($this->L_vars[7]).'</p></td>
+										<td colspan="2"><p class="c-info">'.htmlspecialchars($this->L_vars[7]).'</p></td>
 									</tr>
 								</table>';
 
