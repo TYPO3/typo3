@@ -1,6 +1,9 @@
 2004-09-19  Ingmar Schlecht  <ingmars@web.de>
 
 	* Added option to set the PHP memory_limit with the install tool.
+	* Fixed bug #0000248: Highlighting color of BE module is now the same as highlighting color in the page tree
+	* Changed <meta name="generator" content="TYPO3 3.6 CMS" /> tag in class.tslib_pagegen.php to reflect version 3.7. Should be changed to something dynamic in the future! (see bug #0000318)
+	* Fixed bug #0000365: Made comparing md5 hashes of t3x files in mod/tools/em/index.php ignore leading whitespaces. Patch by Martin T. Kutschker <Martin-no5pam-Kutschker@blackbox.n0spam.net>
 
 2004-09-19  Michael Stucki  <mundaun@gmx.ch>
 
@@ -10,18 +13,6 @@
 	* Fixed bug #0000261: fileDenyPattern default does not include ".php4"
 	* Fixed bug #0000298: Browser client Konqueror not recognized
 	* Fixed bug #0000362: Changed field length of sys_log[IP] to 39 (IPv6 related, patch by Sven Wilhelm)
-
-2004-09-19  Ingmar Schlecht  <ingmars@web.de>
-
-	* Fixed bug #0000248: Highlighting color of BE module is now the same as highlighting color in the page tree
-
-2004-09-19  Ingmar Schlecht  <ingmars@web.de>
-
-	* Changed <meta name="generator" content="TYPO3 3.6 CMS" /> tag in class.tslib_pagegen.php to reflect version 3.7. Should be changed to something dynamic in the future! (see bug #0000318)
-
-2004-09-19  Ingmar Schlecht  <ingmars@web.de>
-
-	* Fixed bug #0000365: Made comparing md5 hashes of t3x files in mod/tools/em/index.php ignore leading whitespaces. Patch by Martin T. Kutschker <Martin-no5pam-Kutschker@blackbox.n0spam.net>
 
 2004-09-17  Ingmar Schlecht  <ingmars@web.de>
 
