@@ -264,7 +264,7 @@ class t3lib_dmailer extends t3lib_htmlmail {
 		$tKey = substr($table,0,1);
 		$begin=intval($this->dmailer_howManySendMails($mid,$tKey));
 		if ($query_info[$table])	{
-			$query='SELECT '.$table.'.* FROM $table WHERE '.$enableFields[$table].' AND ('.$query_info[$table].') ORDER BY tstamp DESC LIMIT '.intval($begin).','.$this->sendPerCycle; // This way, we select newest edited records first. So if any record is added or changed in between, it'll end on top and do no harm
+			$query='SELECT '.$table.'.* FROM '.$table.' WHERE '.$enableFields[$table].' AND ('.$query_info[$table].') ORDER BY tstamp DESC LIMIT '.intval($begin).','.$this->sendPerCycle; // This way, we select newest edited records first. So if any record is added or changed in between, it'll end on top and do no harm
 			$res=mysql(TYPO3_db,$query);
 			if (mysql_error())	{
 				die (mysql_error());
