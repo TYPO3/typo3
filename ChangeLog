@@ -4,6 +4,7 @@
 	* Fixed bug #0000890: fe_adminLib.inc procesSetFixed does not support userFunc_afterSave
 	* Fixed bug #0000316: Backend typo3/template.php output spurious </body> tag for doctype xhtml_frames
 	* Added two hooks to t3lib_userauthgroup for Sebastian Kurfuerst's ACL implementation
+	* New Feature #0000341: New option "ascii" for spamProtectEmailAddresses (very cool, because it doesn't need JavaScript! Thanks to user "Karsten" on bugs.typo3.org)
 
 2005-03-25  Michael Stucki  <michael@typo3.org>
 

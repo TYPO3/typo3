@@ -4356,11 +4356,22 @@ class tslib_cObj {
 				$parts[0] = substr($textpieces[$i],0,$len);
 				$parts[1] = substr($textpieces[$i],$len);
 				$linktxt = ereg_replace('\?.*','',$parts[0]);
-				if (!$GLOBALS['TSFE']->config['config']['jumpurl_enable'] || $GLOBALS['TSFE']->config['config']['jumpurl_mailto_disable'])	{
-					if ($GLOBALS['TSFE']->spamProtectEmailAddresses)	{
-						$mailToUrl = "javascript:linkTo_UnCryptMailto('".$GLOBALS['TSFE']->encryptEmail('mailto:'.$parts[0])."');";
-						$atLabel = trim($GLOBALS['TSFE']->config['config']['spamProtectEmailAddresses_atSubst']);
-						$linktxt = str_replace('@',$atLabel ? $atLabel : '(at)', $linktxt);
+				if (!$GLOBALS['TSFE']->config['config']['jumpurl_enable'] || $GLOBALS['TSFE']->config['config']['jumpurl_mailto_disable']) {
+					if ($GLOBALS['TSFE']->spamProtectEmailAddresses) {
+						if ($GLOBALS['TSFE']->spamProtectEmailAddresses == 'ascii')	{
+							$mailToUrl = $GLOBALS['TSFE']->encryptEmail('mailto:'.$parts[0]);
+						} else {
+							$mailToUrl = "javascript:linkTo_UnCryptMailto('".$GLOBALS['TSFE']->encryptEmail('mailto:'.$parts[0])."');";
+						}
+						if ($GLOBALS['TSFE']->config['config']['spamProtectEmailAddresses_atSubst']) {
+							$atLabel = trim($GLOBALS['TSFE']->config['config']['spamProtectEmailAddresses_atSubst']);
+							$linktxt = str_replace('@',$atLabel?$atLabel:'(at)',$linktxt);
+						}
+						if ($GLOBALS['TSFE']->config['config']['spamProtectEmailAddresses_lastDotSubst']) {
+							$lastDotLabel = trim($GLOBALS['TSFE']->config['config']['spamProtectEmailAddresses_lastDotSubst']);
+							$lastDotLabel = $lastDotLabel ? $lastDotLabel : '(dot)';
+							$linktxt = preg_replace('/\.([^\.]+)$/', $lastDotLabel.'$1', $linktxt);
+						}
 					} else {
 						$mailToUrl = 'mailto:'.$parts[0];
 					}
@@ -4864,10 +4875,21 @@ class tslib_cObj {
 				if ($linktxt=='') $linktxt = $link_param;
 				if (!$GLOBALS['TSFE']->config['config']['jumpurl_enable'] || $GLOBALS['TSFE']->config['config']['jumpurl_mailto_disable'])	{
 					$this->lastTypoLinkUrl = 'mailto:'.$link_param;
-					if ($GLOBALS['TSFE']->spamProtectEmailAddresses)	{
-						$this->lastTypoLinkUrl = "javascript:linkTo_UnCryptMailto('".$GLOBALS['TSFE']->encryptEmail($this->lastTypoLinkUrl)."');";
-						$atLabel = trim($GLOBALS['TSFE']->config['config']['spamProtectEmailAddresses_atSubst']);
-						$linktxt=str_replace('@',$atLabel?$atLabel:'(at)',$linktxt);
+					if ($GLOBALS['TSFE']->spamProtectEmailAddresses) {
+						if ($GLOBALS['TSFE']->spamProtectEmailAddresses == 'ascii')	{
+							$this->lastTypoLinkUrl = $GLOBALS['TSFE']->encryptEmail($this->lastTypoLinkUrl);
+						} else {
+							$this->lastTypoLinkUrl = "javascript:linkTo_UnCryptMailto('".$GLOBALS['TSFE']->encryptEmail($this->lastTypoLinkUrl)."');";
+						}
+						if ($GLOBALS['TSFE']->config['config']['spamProtectEmailAddresses_atSubst']) {
+							$atLabel = trim($GLOBALS['TSFE']->config['config']['spamProtectEmailAddresses_atSubst']);
+							$linktxt = str_replace('@',$atLabel?$atLabel:'(at)',$linktxt);
+						}
+						if ($GLOBALS['TSFE']->config['config']['spamProtectEmailAddresses_lastDotSubst']) {
+							$lastDotLabel = trim($GLOBALS['TSFE']->config['config']['spamProtectEmailAddresses_lastDotSubst']);
+							$lastDotLabel = $lastDotLabel ? $lastDotLabel : '(dot)';
+							$linktxt = preg_replace('/\.([^\.]+)$/', $lastDotLabel.'$1', $linktxt);
+						}
 					}
 				} else {
 					$this->lastTypoLinkUrl = $GLOBALS['TSFE']->absRefPrefix.$GLOBALS['TSFE']->config['mainScript'].$initP.'&jumpurl='.rawurlencode('mailto:'.$link_param).$GLOBALS['TSFE']->getMethodUrlIdToken;
@@ -5043,7 +5065,11 @@ class tslib_cObj {
 				$onClick="vHWin=window.open('".$GLOBALS['TSFE']->baseUrlWrap($finalTagParts['url'])."','FEopenLink','".$JSwindowParams."');vHWin.focus();return false;";
 				$res = '<a href="#" onclick="'.htmlspecialchars($onClick).'"'.($linkClass?' class="'.$linkClass.'"':'').$finalTagParts['aTagParams'].'>';
 			} else {
-				$res = '<a href="'.htmlspecialchars($finalTagParts['url']).'"'.$finalTagParts['targetParams'].($linkClass?' class="'.$linkClass.'"':'').$finalTagParts['aTagParams'].'>';
+				if ($GLOBALS['TSFE']->spamProtectEmailAddresses == 'ascii') {
+					$res = '<a href="'.$finalTagParts['url'].'"'.$finalTagParts['targetParams'].($linkClass?' class="'.$linkClass.'"':'').$finalTagParts['aTagParams'].'>';
+				} else {
+					$res = '<a href="'.htmlspecialchars($finalTagParts['url']).'"'.$finalTagParts['targetParams'].($linkClass?' class="'.$linkClass.'"':'').$finalTagParts['aTagParams'].'>';
+				}
 			}
 
 				// Call user function:

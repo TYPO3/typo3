@@ -133,9 +133,12 @@ class TSpagegen {
 			// Internal and External target defaults
 		$GLOBALS['TSFE']->intTarget = ''.$GLOBALS['TSFE']->config['config']['intTarget'];
 		$GLOBALS['TSFE']->extTarget = ''.$GLOBALS['TSFE']->config['config']['extTarget'];
-		$GLOBALS['TSFE']->spamProtectEmailAddresses = t3lib_div::intInRange($GLOBALS['TSFE']->config['config']['spamProtectEmailAddresses'],-5,5,0);
-		if ($GLOBALS['TSFE']->spamProtectEmailAddresses)	{
-			$GLOBALS['TSFE']->additionalJavaScript['UnCryptMailto()']='
+		if ($GLOBALS['TSFE']->config['config']['spamProtectEmailAddresses'] == 'ascii') {
+			$GLOBALS['TSFE']->spamProtectEmailAddresses = 'ascii';
+		} else {
+			$GLOBALS['TSFE']->spamProtectEmailAddresses = t3lib_div::intInRange($GLOBALS['TSFE']->config['config']['spamProtectEmailAddresses'],-5,5,0);
+			if ($GLOBALS['TSFE']->spamProtectEmailAddresses)	{
+				$GLOBALS['TSFE']->additionalJavaScript['UnCryptMailto()']='
   // JS function for uncrypting spam-protected emails:
 function UnCryptMailto(s) {	//
 	var n=0;
@@ -152,6 +155,7 @@ function linkTo_UnCryptMailto(s)	{	//
 	location.href=UnCryptMailto(s);
 }
 		';
+			}
 		}
 
 
