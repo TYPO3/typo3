@@ -242,7 +242,7 @@ class tx_indexed_search_extparse {
 			case 'xml':		// Generic XML
 			case 'jpg':		// Jpeg images (EXIF comment)
 			case 'jpeg':	// Jpeg images (EXIF comment)
-			case 'tif':		// TIf images (EXIT comment)
+			case 'tif':		// TIF images (EXIF comment)
 				return TRUE;
 			break;
 		}

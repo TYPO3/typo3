@@ -387,7 +387,7 @@ class SC_wizard_colorpicker {
 		if (!$this->imageError)	{
 			if ($this->pickerImage)	{
 				if(t3lib_div::_POST('coords_x')) {
-					$this->colorValue = '#'.$this->getIndex(t3lib_stdgraphic::imageCreateFromGif($this->pickerImage),t3lib_div::_POST('coords_x'),t3lib_div::_POST('coords_y'));
+					$this->colorValue = '#'.$this->getIndex(t3lib_stdgraphic::imageCreateFromFile($this->pickerImage),t3lib_div::_POST('coords_x'),t3lib_div::_POST('coords_y'));
 				}
 				$pickerFormImage = '
 				<p class="c-head">'.$LANG->getLL('colorpicker_fromImage',1).'</p>
@@ -407,7 +407,7 @@ class SC_wizard_colorpicker {
 	 * Gets the HTML (Hex) Color Code for the selected pixel of an image
 	 * This method handles the correct imageResource no matter what format
 	 *
-	 * @param	pointer		Valid ImageResource returned by t3lib_stdgraphic::imageCreateFromGif
+	 * @param	pointer		Valid ImageResource returned by t3lib_stdgraphic::imageCreateFromFile
 	 * @param	integer		X-Coordinate of the pixel that should be checked
 	 * @param	integer		Y-Coordinate of the pixel that should be checked
 	 * @return	string		HEX RGB value for color

@@ -1,3 +1,8 @@
+2005-02-20  Michael Stucki  <michael@typo3.org>
+
+	* Fixed a typo in the User TSconfig reference in ext_tables_static+adt.sql
+	* !!! Renamed t3lib_stdGraphic->imageCreateFromGif into imageCreateFromFile. The old function will remain for providing backwards compatibility.
+
 2005-02-17  Kasper Skårhøj,,,  <kasper@typo3.com>
 
 	* Added 3 hooks for each hardcoded function in css_styled_content so extensions can be written which provides alternative renderings without XCLASSING.
@@ -318,9 +323,9 @@ Sorry for writing these changelog entries with a delay of two days. I write them
 
 	* Implemented versioning API in tcemain plus other places. Still not functional for the broad public (will be in 3.8.0). Missing conceptual testing, implementation in the backend interface (still to be discussed how that is best done and fitting workflow) and not at all in the frontend.
 	* Tables configured for versioning by default is pages, tt_content, pages_language_overlay and sys_template
-	* !!!Notice that the type of integer for uid/pid fields of the above mentioned tables changed from "unsigned" to "signed". This should only mean something if you have uid/pid values over 2 billion - but then PHP will fail you anyways. So the impact should be nothing.
+	* !!! Notice that the type of integer for uid/pid fields of the above mentioned tables changed from "unsigned" to "signed". This should only mean something if you have uid/pid values over 2 billion - but then PHP will fail you anyways. So the impact should be nothing.
 	* For testers: Ask me (kasper) for the "version" extension which is my test bench and future management tool for the final implementation.
-	* !!!Fieldnames 't3ver_oid', 't3ver_id' and 't3ver_label' has been reserved for versioning adminstration
+	* !!! Fieldnames 't3ver_oid', 't3ver_id' and 't3ver_label' has been reserved for versioning adminstration
 
 2004-08-22  Ingmar Schlecht  <ingmar@typo3.org>
 
@@ -731,7 +736,7 @@ Fixed bugs in Mount Points / Status:
 2004-04-01  Kasper Skårhøj,,,  <kasper@typo3.com>
 
 	* Added full safety for the internal TYPO3 formmail; email addresses in the fields "recipient" and "recipient_copy" are encrypted in the transfer and the "formmail" interface is safe for spam-misuse (since a proper recipient address cannot be forged automatically).
-!!!If someone are using the "formmail" API from other renderers than the FORM cObject in TypoScript you will have to set the recipient address to the encrypted value by default OR alternatively disabled the check by TYPO3_CONF_VARS[FE][strictFormmail] = FALSE
+	  !!! If someone is using the "formmail" API from other renderers than the FORM cObject in TypoScript you will have to set the recipient address to the encrypted value by default OR alternatively disabled the check by TYPO3_CONF_VARS[FE][strictFormmail] = FALSE
 
 2004-04-01  Kasper Skårhøj,,,  <kasper@typo3.com>
 

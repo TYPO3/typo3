@@ -337,7 +337,7 @@ class t3lib_stdGraphic	{
 				$theMask = $tmpStr.'_mask.'.$this->gifExtension;
 				$theMask2 = $tmpStr.'_mask2.'.trim($GLOBALS['TYPO3_CONF_VARS']['GFX']['im_mask_temp_ext_noloss']);
 						// prepare overlay image
-				$cpImg = $this->imageCreateFromGif($BBimage[3]);
+				$cpImg = $this->imageCreateFromFile($BBimage[3]);
 				$destImg = imagecreate($w,$h);
 				ImageColorAllocate($destImg, 0,0,0);
 				$this->copyGifOntoGif($destImg,$cpImg,$conf,$workArea);
@@ -345,7 +345,7 @@ class t3lib_stdGraphic	{
 				imageDestroy($cpImg);
 				imageDestroy($destImg);
 						// prepare mask image
-				$cpImg = $this->imageCreateFromGif($BBmask[3]);
+				$cpImg = $this->imageCreateFromFile($BBmask[3]);
 				$destImg = imagecreate($w,$h);
 				ImageColorAllocate($destImg, 0,0,0);
 				$this->copyGifOntoGif($destImg,$cpImg,$conf,$workArea);
@@ -359,7 +359,7 @@ class t3lib_stdGraphic	{
 
 				$this->combineExec($theDest,$theImage,$theMask2,$theDest);
 
-				$backIm = $this->imageCreateFromGif($theDest);	// The main image is loaded again...
+				$backIm = $this->imageCreateFromFile($theDest);	// The main image is loaded again...
 				if ($backIm)	{	// ... and if nothing went wrong we load it onto the old one.
 					ImageColorTransparent($backIm,-1);
 					$im = $backIm;
@@ -390,7 +390,7 @@ class t3lib_stdGraphic	{
 				$conf['BBOX']=$this->imageMagickConvert($conf['BBOX'][3],$this->gifExtension,'','','','','');
 				$conf['file']=$conf['BBOX'][3];
 			}
-			$cpImg = $this->imageCreateFromGif($conf['file']);
+			$cpImg = $this->imageCreateFromFile($conf['file']);
 			$this->copyGifOntoGif($im,$cpImg,$conf,$workArea);
 			imageDestroy($cpImg);
 		}
@@ -624,7 +624,7 @@ class t3lib_stdGraphic	{
 
 				$this->combineExec($fileMenu,$fileColor,$fileMask,$fileMenu);
 
-				$backIm = $this->imageCreateFromGif($fileMenu);	// The main image is loaded again...
+				$backIm = $this->imageCreateFromFile($fileMenu);	// The main image is loaded again...
 				if ($backIm)	{	// ... and if nothing went wrong we load it onto the old one.
 					ImageColorTransparent($backIm,-1);
 					$im = $backIm;
@@ -1292,7 +1292,7 @@ class t3lib_stdGraphic	{
 
 			$this->imageMagickExec($fileMask,$fileMask,$command);
 
-			$blurTextImg_tmp = $this->imageCreateFromGif($fileMask);	// the mask is loaded again
+			$blurTextImg_tmp = $this->imageCreateFromFile($fileMask);	// the mask is loaded again
 			if ($blurTextImg_tmp)	{	// if nothing went wrong we continue with the blurred mask
 
 					// cropping the border from the mask
@@ -1322,7 +1322,7 @@ class t3lib_stdGraphic	{
 
 				$this->combineExec($fileMenu,$fileColor,$fileMask,$fileMenu);
 
-				$backIm = $this->imageCreateFromGif($fileMenu);	// The main image is loaded again...
+				$backIm = $this->imageCreateFromFile($fileMenu);	// The main image is loaded again...
 				if ($backIm)	{	// ... and if nothing went wrong we load it onto the old one.
 					ImageColorTransparent($backIm,-1);
 					$im = $backIm;
@@ -1557,7 +1557,7 @@ class t3lib_stdGraphic	{
 			$theFile = $tmpStr.'.'.$this->gifExtension;
 			$this->ImageGif($im, $theFile);
 			$theNewFile = $this->imageMagickConvert($theFile,$this->gifExtension,$conf['width'],$conf['height'],$conf['params'],'','');
-			$tmpImg = $this->imageCreateFromGif($theNewFile[3]);
+			$tmpImg = $this->imageCreateFromFile($theNewFile[3]);
 			if ($tmpImg)	{
 				ImageDestroy($im);
 				$im = $tmpImg;
@@ -2494,7 +2494,7 @@ class t3lib_stdGraphic	{
 		$theFile = $tmpStr.'.'.$this->gifExtension;
 		$this->ImageGif($im, $theFile);
 		$this->imageMagickExec($theFile,$theFile,$command);
-		$tmpImg = $this->imageCreateFromGif($theFile);
+		$tmpImg = $this->imageCreateFromFile($theFile);
 		if ($tmpImg)	{
 			ImageDestroy($im);
 			$im = $tmpImg;
@@ -2609,26 +2609,33 @@ class t3lib_stdGraphic	{
 	}
 
 	/**
+	 * This function has been renamed and only exists for providing backwards compatibility.
+	 * Please use $this->imageCreateFromFile() instead.
+	 *
+	 * @param	string		Image filename
+	 * @return	pointer		Image Resource pointer
+	 * @depreciated
+	 */
+	function imageCreateFromGif($sourceImg)	{
+		return $this->imageCreateFromFile($sourceImg);
+	}
+
+	/**
 	 * Creates a new GDlib image resource based on the input image filename.
 	 * If it fails creating a image from the input file a blank gray image with the dimensions of the input image will be created instead.
 	 *
 	 * @param	string		Image filename
 	 * @return	pointer		Image Resource pointer
 	 */
-	function imageCreateFromGif($sourceImg)	{
+	function imageCreateFromFile($sourceImg)	{
 		$imgInf = pathinfo($sourceImg);
 		$ext = strtolower($imgInf['extension']);
 
-//		if ($ext=='gif' && (ImageTypes() & IMG_GIF))	{
 		if ($ext=='gif' && function_exists('imagecreatefromgif'))	{
 			return imageCreateFromGif($sourceImg);
-		}
-//		if ($ext=='png' && (ImageTypes() & IMG_PNG))	{
-		if ($ext=='png' && function_exists('imagecreatefrompng'))	{
+		} elseif ($ext=='png' && function_exists('imagecreatefrompng'))	{
 			return imageCreateFromPng($sourceImg);
-		}
-//		if (($ext=='jpg' || $ext=='jpeg') && (ImageTypes() & IMG_JPG))	{
-		if (($ext=='jpg' || $ext=='jpeg') && function_exists('imagecreatefromjpeg'))	{
+		} elseif (($ext=='jpg' || $ext=='jpeg') && function_exists('imagecreatefromjpeg'))	{
 			return imageCreateFromJpeg($sourceImg);
 		}
 

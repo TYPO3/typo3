@@ -2803,7 +2803,7 @@ From sub-directory:
 					$imageProc->IM_commands=array();
 					$input = t3lib_extMgm::extPath("install")."imgs/jesus.".$imageProc->gifExtension;
 						if (!@is_file($input))	die("Error: ".$input." was not a file");
-					$im = $imageProc->imageCreateFromGif($input);
+					$im = $imageProc->imageCreateFromFile($input);
 					$workArea=array(0,0,170,136);
 					$conf=array();
 					$conf["dimensions"]="10,50,150,36";

@@ -88,7 +88,7 @@ class t3lib_formmail extends t3lib_htmlmail {
 	 * [html_enabled]:		If mail is sent as html
 	 * [quoted_printable]:	if set, quoted-printable will be used instead of base 64
 	 *
-	 * @param	array		Contains values for the field names listed above (with slashes removed if from POSt input)
+	 * @param	array		Contains values for the field names listed above (with slashes removed if from POST input)
 	 * @param	boolean		Whether to base64 encode the mail content
 	 * @return	void
 	 */
