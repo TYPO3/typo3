@@ -71,9 +71,9 @@
  */
 
 
-require ('init.php');
-require ('template.php');
-include ('sysext/lang/locallang_alt_doc.php');
+require('init.php');
+require('template.php');
+$LANG->includeLLFile('EXT:lang/locallang_alt_doc.php');
 require_once (PATH_t3lib.'class.t3lib_tceforms.php');
 require_once (PATH_t3lib.'class.t3lib_clipboard.php');
 

@@ -426,10 +426,70 @@ class language {
 	 */
 	function readLLfile($fileRef)	{
 		$file = t3lib_div::getFileAbsFileName($fileRef);
-		if (@is_file($file))	{
-			include($file);
+		if ($file)	{
+			$baseFile = ereg_replace('\.(php|xml)$', '', $file);
+
+			if (@is_file($baseFile.'.xml'))	{
+				$LOCAL_LANG = $this->readLLXMLfile($baseFile.'.xml', $this->lang);
+			} elseif (@is_file($baseFile.'.php'))	{
+				include($baseFile.'.php');
+			}
 		}
 		return is_array($LOCAL_LANG)?$LOCAL_LANG:array();
+	}
+
+	/**
+	 * Includes a locallang-xml file and returns the $LOCAL_LANG array
+	 *
+	 * @param	string
+	 * @param	string
+	 * @return	array
+	 */
+	function readLLXMLfile($fileRef,$langKey)	{
+
+		if (@is_file($fileRef))	{
+				// Set charset:
+			$origCharset = $this->csConvObj->parse_charset($this->csConvObj->charSetArray[$langKey] ? $this->csConvObj->charSetArray[$langKey] : 'iso-8859-1');
+
+				// Cache file name:
+			$hashSource = substr($fileRef,strlen(PATH_site)).'|'.date('d-m-Y H:i:s',filemtime($fileRef));
+			$cacheFileName = 'cache_llxml_'.t3lib_div::md5int($hashSource).'.'.$langKey.'.'.$origCharset.'.ser';
+			$cacheFileName_dirPrefix = PATH_site.'typo3temp/llxml/';
+
+#$pt = t3lib_div::milliseconds();
+				// Check if cache file exists...
+			if (!@is_file($cacheFileName_dirPrefix.$cacheFileName))	{	// ... if it doesn't, create content and write it:
+
+					// Read XML, parse it and set default LOCAL_LANG array content:
+				$xmlString = t3lib_div::getUrl($fileRef);
+				$xmlContent = t3lib_div::xml2array($xmlString);
+				$LOCAL_LANG = array();
+				$LOCAL_LANG['default'] = $xmlContent['data']['default'];
+
+					// Specific language, convert from utf-8 to backend language charset:
+					// NOTICE: Converting from utf-8 back to "native" language may be a temporary solution until we can totally discard "locallang.php" files altogether (and use utf-8 for everything). But doing this conversion is the quickest way to migrate now and the source is in utf-8 anyway which is the main point.
+				if ($langKey && $langKey!='default')	{
+					$LOCAL_LANG[$langKey] = $xmlContent['data'][$langKey];
+
+					if (is_array($LOCAL_LANG[$langKey]) && $origCharset!='utf-8')	{
+						foreach($LOCAL_LANG[$langKey] as $labelKey => $labelValue)	{
+							$LOCAL_LANG[$langKey][$labelKey] = $this->csConvObj->utf8_decode($labelValue,$origCharset);
+						}
+					}
+				}
+
+				$serContent = array('origFile'=>$hashSource, 'LOCAL_LANG'=>$LOCAL_LANG);
+				t3lib_div::writeFileToTypo3tempDir($cacheFileName, serialize($serContent), 'llxml');
+#debug('Saving cache...', basename($fileRef).' - '.$cacheFileName_dirPrefix.$cacheFileName);
+#debug(t3lib_div::milliseconds()-$pt);
+			} else {
+				$serContent = unserialize(t3lib_div::getUrl($cacheFileName_dirPrefix.$cacheFileName));
+				$LOCAL_LANG = $serContent['LOCAL_LANG'];
+#debug('Getting cache...', basename($fileRef).' - '.$cacheFileName_dirPrefix.$cacheFileName);
+#debug(t3lib_div::milliseconds()-$pt);
+			}
+			return $LOCAL_LANG;
+		}
 	}
 
 	/**

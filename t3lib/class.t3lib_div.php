@@ -2021,6 +2021,39 @@ class t3lib_div {
 	}
 
 	/**
+	 * Writes $content to a filename in the typo3temp/ folder (and possibly a subfolder...)
+	 *
+	 * @param	string		FileNAME to write to inside "typo3temp/". No directory prefixed, just filename with extension.
+	 * @param	string		Content string to write
+	 * @param	string		Optional sub-directory in typo3temp/ to store the files in. (eg. "123" if the subdir should be "typo3temp/123/"). No trailing slash, only ONE level!
+	 * @return	string		Returns false on success, otherwise an error string telling about the problem.
+	 */
+	function writeFileToTypo3tempDir($filename,$content,$subdir='')	{
+		if ($filename && strlen($filename)<60 && t3lib_div::validPathStr($filename) && !strstr('/',$filename))	{
+			if (defined('PATH_site'))	{
+				$dirName = PATH_site.'typo3temp/';	// Setting main temporary directory name (standard)
+				if (@is_dir($dirName))	{
+						// Checking if the "subdir" string is set and if so, create directory if not present:
+					if ($subdir)	{
+						$dirName.= $subdir.'/';
+						if (!@is_dir($dirName))	{
+							t3lib_div::mkdir($dirName);
+						}
+					}
+						// Checking dir-name again (sub-dir might have been created):
+					if (@is_dir($dirName))	{
+						$tempFile = t3lib_div::getFileAbsFileName($dirName.$filename);
+						if ($tempFile)	{
+							t3lib_div::writeFile($tempFile,$content);
+							if (!@is_file($tempFile))	return 'File not written to disk! Write permission error in filesystem?';
+						} else return 'For some reason, the temporary file was not valid!';
+					} else return '"'.$dirName.'" is not a directory!';
+				} else return 'PATH_site + "typo3temp/" was not a directory!';
+			} else return 'PATH_site constant was NOT defined!';
+		} else return 'Input filename was invalid!';
+	}
+
+	/**
 	 * Wrapper function for mkdir, setting folder permissions according to $GLOBALS['TYPO3_CONF_VARS']['BE']['folderCreateMask']
 	 * Usage: 6
 	 *

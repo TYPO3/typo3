@@ -58,12 +58,12 @@
 
 
 
-require ('init.php');
-require ('template.php');
-require_once (PATH_t3lib.'class.t3lib_tceforms.php');
-require_once (PATH_t3lib.'class.t3lib_transferdata.php');
-require_once (PATH_t3lib.'class.t3lib_loaddbgroup.php');
-include ('sysext/lang/locallang_alt_doc.php');
+require('init.php');
+require('template.php');
+require_once(PATH_t3lib.'class.t3lib_tceforms.php');
+require_once(PATH_t3lib.'class.t3lib_transferdata.php');
+require_once(PATH_t3lib.'class.t3lib_loaddbgroup.php');
+$LANG->includeLLFile('EXT:lang/locallang_alt_doc.php');
 
 
 
