@@ -179,6 +179,7 @@ class t3lib_cs {
 		'l9' => 'iso-8859-15',
 		'cyrillic' => 'iso-8859-5',
 		'arabic' => 'iso-8859-6',
+		'tis-620' => 'iso-8859-11',
 		'win874' => 'windows-874',
 		'win1250' => 'windows-1250',
 		'win1251' => 'windows-1251',
@@ -190,6 +191,7 @@ class t3lib_cs {
 		'win1257' => 'windows-1257',
 		'win1258' => 'windows-1258',
 		'cp1250' => 'windows-1250',
+		'cp1251' => 'windows-1251',
 		'cp1252' => 'windows-1252',
 		'ms-ee' => 'windows-1250',
 		'ms-ansi' => 'windows-1252',
@@ -199,13 +201,15 @@ class t3lib_cs {
 		'koi-8ru' => 'koi-8r',
 		'koi8r' => 'koi-8r',
 		'cp878' => 'koi-8r',
-		'mac' => 'macRoman',
-		'macintosh' => 'macRoman',
+		'mac' => 'macroman',
+		'macintosh' => 'macroman',
 		'euc-cn' => 'gb2312',
 		'x-euc-cn' => 'gb2312',
+		'euccn' => 'gb2312',
 		'cp936' => 'gb2312',
 		'big-5' => 'big5',
 		'cp950' => 'big5',
+		'eucjp' => 'euc-jp',
 		'sjis' => 'shift_jis',
 		'shift-jis' => 'shift_jis',
 		'cp932' => 'shift_jis',
@@ -216,6 +220,166 @@ class t3lib_cs {
 		'utf8' => 'utf-8',
 		'ucs2' => 'ucs-2',
 		'ucs4' => 'ucs-4',
+	);
+
+		// mapping of iso-639:2 language codes to language (family) names
+	var $lang_to_langfamily=array(
+			// iso-639:2 language codes, see:
+			//  http://www.w3.org/WAI/ER/IG/ert/iso639.htm
+			//  http://www.unicode.org/onlinedat/languages.html
+		'ar' => 'arabic',
+		'bg' => 'cyrillic',
+		'cs' => 'east_european',
+		'da' => 'west_european',
+		'de' => 'west_european',
+		'es' => 'west_european',
+		'et' => 'estonian',
+		'eu' => 'west_european',
+		'fi' => 'west_european',
+		'fr' => 'west_european',
+		'gr' => 'greek',
+		'hr' => 'east_european',
+		'hu' => 'east_european',
+		'iw' => 'hebrew',
+		'is' => 'west_european',
+		'it' => 'west_european',
+		'ja' => 'japanese',
+		'kl' => 'west_european',
+		'ko' => 'korean',
+		'lt' => 'lithuanian',
+		'lv' => 'west_european', // Latvian/Lettish
+		'nl' => 'west_european',
+		'no' => 'west_european',
+		'pl' => 'east_european',
+		'pt' => 'west_european',
+		'ro' => 'east_european',
+		'ru' => 'cyrillic',
+		'sk' => 'east_european',
+		'sl' => 'east_european',
+		'sv' => 'west_european',
+		'th' => 'thai',
+		'uk' => 'cyrillic',
+		'vi' => 'vietnamese',
+		'zh' => 'chinese',
+			// MS language codes, see http://msdn.microsoft.com/library/default.asp?url=/library/en-us/vclib/html/_crt_language_strings.asp
+		'chs' => 'simpl_chinese',
+		'cht' => 'trad_chinese',
+		'csy' => 'east_european',
+		'dan' => 'west_european',
+		'deu' => 'west_european',
+		'dea' => 'west_european',
+		'des' => 'west_european',
+		'ena' => 'west_european',
+		'enc' => 'west_european',
+		'eng' => 'west_european',
+		'enz' => 'west_european',
+		'enu' => 'west_european',
+		'nld' => 'west_european',
+		'nlb' => 'west_european',
+		'fin' => 'west_european',
+		'fra' => 'west_european',
+		'frb' => 'west_european',
+		'frc' => 'west_european',
+		'frs' => 'west_european',
+		'ell' => 'greek',
+		'hun' => 'east_european',
+		'isl' => 'west_euorpean',
+		'ita' => 'west_european',
+		'its' => 'west_european',
+		'jpn' => 'japanese',
+		'kor' => 'korean',
+		'nor' => 'west_european',
+		'non' => 'west_european',
+		'plk' => 'east_european',
+		'ptg' => 'west_european',
+		'ptb' => 'west_european',
+		'rus' => 'east_european',
+		'sky' => 'east_european',
+		'esp' => 'west_european',
+		'esm' => 'west_european',
+		'esn' => 'west_european',
+		'sve' => 'west_european',
+		'trk' => 'turkish',
+			// English language names
+		'bulgarian' => 'east_european',
+		'catalan' => 'west_european',
+		'croatian' => 'east_european',
+		'czech' => 'east_european',
+		'danish' => 'west_european',
+		'dutch' => 'west_european',
+		'english' => 'west_european',
+		'finnish' => 'west_european',
+		'french' => 'west_european',
+		'galician' => 'west_european',
+		'german' => 'west_european',
+		'hungarian' => 'east_european',
+		'icelandic' => 'west_european',
+		'italian' => 'west_european',
+		'latvian' => 'west_european',
+		'lettish' => 'west_european',
+		'norwegian' => 'west_european',
+		'polish' => 'east_european',
+		'portuguese' => 'west_european',
+		'russian' => 'cyrillic',
+		'romanian' => 'east_european',
+		'slovak' => 'east_european',
+		'slovenian' => 'east_european',
+		'spanish' => 'west_european',
+		'svedish' => 'west_european',
+		'turkish' => 'east_european',
+		'ukrainian' => 'cyrillic',
+	);
+
+		// mapping of language (family) names to charsets on Unix
+	var $lang_to_charset_unix=array(
+		'west_european' => 'iso-8859-1',
+		'estonian' => 'iso-8859-1',
+		'east_european' => 'iso-8859-2',
+		'baltic' => 'iso-8859-4',
+		'cyrillic' => 'iso-8859-5',
+		'arabic' => 'iso-8859-6',
+		'greek' => 'iso-8859-7',
+		'hebrew' => 'iso-8859-8',
+		'turkish' => 'iso-8859-9',
+		'thai' => 'iso-8859-11', // = TIS-620
+		'lithuanian' => 'iso-8859-13',
+		'chinese' => 'gb2312', // = euc-cn
+		'japanese' => 'euc-jp',
+		'korean' => 'euc-kr',
+		'simpl_chinese' => 'gb2312',
+		'trad_chinese' => 'big5',
+		'vietnamese' => '',
+	);
+
+		// mapping of language (family) names to charsets on Windows
+	var $lang_to_charset_windows=array(
+		'east_european' => 'windows-1250',
+		'cyrillic' => 'windows-1251',
+		'west_european' => 'windows-1252',
+		'greek' => 'windows-1253',
+		'turkish' => 'windows-1254',
+		'hebrew' => 'windows-1255',
+		'arabic' => 'windows-1256',
+		'baltic' => 'windows-1257',
+		'estonian' => 'windows-1257',
+		'lithuanian' => 'windows-1257',
+		'vietnamese' => 'windows-1258',
+		'thai' => 'cp874',
+		'korean' => 'cp950',
+		'chinese' => 'gb2312',
+		'japanese' => 'shift_jis',
+		'simpl_chinese' => 'gb2312',
+		'trad_chinese' => 'big5',
+	);
+
+		// mapping of locale names to charsets
+	var $locale_to_charset=array(
+		'japanese.euc' => 'euc-jp',
+		'ja_JP.ujis' => 'euc-jp',
+		'korean.euc' => 'euc-kr',
+		'zh_cn' => 'gb2312',
+		'zh_hk' => 'big5',
+		'zh_tw' => 'big5',
 	);
 
 		// TYPO3 specific: Array with the system charsets used for each system language in TYPO3:
@@ -254,8 +418,8 @@ class t3lib_cs {
 		'ar' => 'iso-8859-6',
 		'he' => 'utf-8',
 		'ua' => 'windows-1251',
+		'jp' => 'shift_jis',
 		'lv' => 'utf-8',
-		'jp' => 'shift-jis',
 		'vn' => 'utf-8',
 	);
 
@@ -273,6 +437,39 @@ class t3lib_cs {
 		return $charset;
 	}
 
+	/**
+	 * Get the charset of a locale.
+	 *
+	 * ln        language
+	 * ln_CN     language / country
+	 * ln_CN.cs  language / country / charset
+	 *
+	 * @param	string		Locale
+	 * @return	string		Charset
+	 * @author	Martin Kutschker <martin.t.kutschker@blackbox.net>
+	 */
+	function get_locale_charset($locale)	{
+		$locale = strtolower($locale);
+
+			// exact locale specific charset?
+		if (isset($this->locale_to_charset[$locale]))	return $this->locale_to_charset[$locale];
+
+			// locale contains charset: use it
+		list($locale,$charset) = explode('.',$locale);
+		if ($charset)	return $this->parse_charset($charset);
+
+			// get language
+		list($language,$country) = explode('_',$locale);
+		if (isset($this->lang_to_langfamily[$language]))	$language = $this->lang_to_langfamily[$language];
+
+		if (TYPO3_OS == 'WIN')	{
+			$cs = $this->lang_to_charset_windows[$language];
+		} else {
+			$cs = $this->lang_to_charset_unix[$language];
+		}
+
+		return $cs ? $cs : 'iso-8859-1';
+	}
 
 	/**
 	 * Convert from one charset to another charset.
@@ -284,28 +481,31 @@ class t3lib_cs {
 	 * @return	string		Converted string
 	 */
 	function conv($str,$fromCS,$toCS,$useEntityForNoChar=0)	{
-		global $TYPO3_CONF_VARS;
-
 		if ($fromCS==$toCS)	return $str;
 
-		if (!$useEntityForNoChar)	{ // iconv and recode don't support fallback to SGML entities
-			if ($TYPO3_CONF_VARS['SYS']['t3lib_cs_convMethod'] == 'iconv')	{
-				$conv_str = iconv($str,$fromCS,$toCS.'//TRANSLIT');
-				if (false !== $conv_str)	return $conv_str;
-			}
-			elseif ($TYPO3_CONF_VARS['SYS']['t3lib_cs_convMethod'] == 'recode')	{
-				$conv_str = recode_string($toCS.'..'.$fromCS,$str);
-				if (false !== $conv_str)	return $conv_str;
-			}
-			elseif ($TYPO3_CONF_VARS['SYS']['t3lib_cs_convMethod'] == 'mbstring')	{
+			// PHP-libs don't support fallback to SGML entities, but UTF-8 handles everything
+		if ($toCS=='utf-8' || !$useEntityForNoChar)	{
+			switch($GLOBALS['TYPO3_CONF_VARS']['SYS']['t3lib_cs_convMethod'])	{
+			case 'mbstring':
 				$conv_str = mb_convert_encoding($str,$toCS,$fromCS);
 				if (false !== $conv_str)	return $conv_str; // returns false for unsupported charsets
+				break;
+
+			case 'iconv':
+				$conv_str = iconv($str,$fromCS,$toCS.'//TRANSLIT');
+				if (false !== $conv_str)	return $conv_str;
+				break;
+
+			case 'recode':
+				$conv_str = recode_string($toCS.'..'.$fromCS,$str);
+				if (false !== $conv_str)	return $conv_str;
+				break;
 			}
 			// fallback to TYPO3 conversion
 		}
 
 		if ($fromCS!='utf-8')	$str=$this->utf8_encode($str,$fromCS);
-		if ($toCS!='utf-8')		$str=$this->utf8_decode($str,$toCS,$useEntityForNoChar);
+		if ($toCS!='utf-8')	$str=$this->utf8_decode($str,$toCS,$useEntityForNoChar);
 		return $str;
 	}
 
