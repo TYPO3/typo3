@@ -99,6 +99,8 @@
 			<label index="LGL.disableRTE">Slå formatteret redigering fra:</label>
 			<label index="LGL.external">Extern URL</label>
 			<label index="LGL.recursive">Rekursivt:</label>
+			<label index="LGL.l18n_parent">Overs.Orig:</label>
+			<label index="LGL.allLanguages">[Alle]</label>
 		</languageKey>
 		<languageKey index="de" type="array">
 			<label index="LGL.endtime">Stop:</label>
@@ -1594,6 +1596,8 @@
 			<label index="LGL.disableRTE" type="integer">146298503</label>
 			<label index="LGL.external" type="integer">76246465</label>
 			<label index="LGL.recursive" type="integer">152463034</label>
+			<label index="LGL.l18n_parent" type="integer">166415577</label>
+			<label index="LGL.allLanguages" type="integer">24137953</label>
 		</languageKey>
 		<languageKey index="de" type="array">
 			<label index="LGL.endtime" type="integer">167679436</label>

@@ -102,8 +102,10 @@
 			<label index="deleteWarning">Er du sikker på, at du ønsker at slette dette element?</label>
 			<label index="editColumn">Rediger denne kolonne</label>
 			<label index="editPageTitle">Rediger sidehoved</label>
+			<label index="editPageTitle_curLang">Rediger oversættelseshoved</label>
 			<label index="editInRTE">Rediger i tekstbehandler</label>
 			<label index="newPageContent">Opret sideindhold</label>
+			<label index="newPageContent_copyForLang">Kopier standard indholdselementer</label>
 			<label index="newPageContent2">Nyt sideindhold</label>
 			<label index="newInColumn">Opret nyt element i toppen af denne kolonne</label>
 			<label index="records">elementer</label>
@@ -2249,6 +2251,8 @@
 			<label index="pI_hitsPeriod" type="integer">248983029</label>
 			<label index="pI_hits24hours" type="integer">104044646</label>
 			<label index="pI_hits10days" type="integer">192341173</label>
+			<label index="editPageTitle_curLang" type="integer">5915630</label>
+			<label index="newPageContent_copyForLang" type="integer">166684005</label>
 		</languageKey>
 		<languageKey index="de" type="array">
 			<label index="title" type="integer">73079758</label>
@@ -4193,80 +4197,4 @@
 		<languageKey index="vn" type="array">
 		</languageKey>
 	</orig_hash>
-	<orig_text type="array">
-		<languageKey index="default" type="array">
-		</languageKey>
-		<languageKey index="dk" type="array">
-		</languageKey>
-		<languageKey index="de" type="array">
-		</languageKey>
-		<languageKey index="no" type="array">
-		</languageKey>
-		<languageKey index="it" type="array">
-		</languageKey>
-		<languageKey index="fr" type="array">
-		</languageKey>
-		<languageKey index="es" type="array">
-		</languageKey>
-		<languageKey index="nl" type="array">
-		</languageKey>
-		<languageKey index="cz" type="array">
-		</languageKey>
-		<languageKey index="pl" type="array">
-		</languageKey>
-		<languageKey index="si" type="array">
-		</languageKey>
-		<languageKey index="fi" type="array">
-		</languageKey>
-		<languageKey index="tr" type="array">
-		</languageKey>
-		<languageKey index="se" type="array">
-		</languageKey>
-		<languageKey index="pt" type="array">
-		</languageKey>
-		<languageKey index="ru" type="array">
-		</languageKey>
-		<languageKey index="ro" type="array">
-		</languageKey>
-		<languageKey index="ch" type="array">
-		</languageKey>
-		<languageKey index="sk" type="array">
-		</languageKey>
-		<languageKey index="lt" type="array">
-		</languageKey>
-		<languageKey index="is" type="array">
-		</languageKey>
-		<languageKey index="hr" type="array">
-		</languageKey>
-		<languageKey index="hu" type="array">
-		</languageKey>
-		<languageKey index="gl" type="array">
-		</languageKey>
-		<languageKey index="th" type="array">
-		</languageKey>
-		<languageKey index="gr" type="array">
-		</languageKey>
-		<languageKey index="hk" type="array">
-		</languageKey>
-		<languageKey index="eu" type="array">
-		</languageKey>
-		<languageKey index="bg" type="array">
-		</languageKey>
-		<languageKey index="br" type="array">
-		</languageKey>
-		<languageKey index="et" type="array">
-		</languageKey>
-		<languageKey index="ar" type="array">
-		</languageKey>
-		<languageKey index="he" type="array">
-		</languageKey>
-		<languageKey index="ua" type="array">
-		</languageKey>
-		<languageKey index="lv" type="array">
-		</languageKey>
-		<languageKey index="jp" type="array">
-		</languageKey>
-		<languageKey index="vn" type="array">
-		</languageKey>
-	</orig_text>
 </T3locallang>

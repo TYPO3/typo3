@@ -30,9 +30,7 @@
 			<label index="lang_renderl10n_editPageHeaders">Edit all page headers</label>
 			<label index="lang_renderl10n_editPage">Edit page</label>
 			<label index="lang_renderl10n_editPageLang">Edit page translation</label>
-			<label index="lang_renderl10n_hideDefaultTranslationOf">Hide default translation of page</label>
-			<label index="lang_renderl10n_hidePageIfNo">Hide page if no translation for current language exists</label>
-			<label index="lang_renderl10n_badThingThereAre">BAD THING, there are TWO or more records for this language!!!</label>
+			<label index="lang_renderl10n_badThingThereAre">ERROR: there are two or more page overlay records for this language! Only one is allowed!</label>
 			<label index="lang_renderl10n_editLanguageOverlayRecord">Edit language overlay record</label>
 			<label index="lang_renderl10n_page">Page</label>
 			<label index="lang_renderl10n_default">Default</label>
@@ -54,6 +52,17 @@
 			<label index="pI_lastChange">Seneste ændring</label>
 			<label index="pI_lastChangeContent">Seneste indholdsændring</label>
 			<label index="hits_title">Sidevisnings-statestik</label>
+			<label index="lang_renderl10n_viewPage">Vis side</label>
+			<label index="lang_renderl10n_editDefaultLanguagePage">Rediger sidehoved for standard sprog</label>
+			<label index="lang_renderl10n_editLangOverlays">Rediger alle sproghoveder</label>
+			<label index="lang_renderl10n_editPageHeaders">Rediger alle sidehoveder</label>
+			<label index="lang_renderl10n_editPage">Rediger side</label>
+			<label index="lang_renderl10n_editPageLang">Rediger side oversættelse</label>
+			<label index="lang_renderl10n_badThingThereAre">FEJL: der er to eller flere sproghoveder for dette sprog! Kun et er tilladt!</label>
+			<label index="lang_renderl10n_editLanguageOverlayRecord">Rediger sproghoved</label>
+			<label index="lang_renderl10n_page">Side</label>
+			<label index="lang_renderl10n_default">Standard</label>
+			<label index="lang_getlangsta_createNewTranslationHeaders">Opret nye sproghoveder</label>
 		</languageKey>
 		<languageKey index="de" type="array">
 			<label index="page_title">Seitenbaum-Übersicht</label>
@@ -71,6 +80,16 @@
 			<label index="pI_lastChange">Letzte Änderung</label>
 			<label index="pI_lastChangeContent">Letzte Änderung, Inhalt</label>
 			<label index="hits_title">Zugriffsstatistik</label>
+			<label index="lang_renderl10n_viewPage">Seite anzeigen</label>
+			<label index="lang_renderl10n_editDefaultLanguagePage">Bearbeite Seiteninformationen der Standardsprache</label>
+			<label index="lang_renderl10n_editLangOverlays">Bearbeite Seiteninformationen für Übersetzungen aller Seiten</label>
+			<label index="lang_renderl10n_editPageHeaders">Bearbeite Seiteninformationen aller Seiten</label>
+			<label index="lang_renderl10n_editPage">Bearbeite Seite</label>
+			<label index="lang_renderl10n_editPageLang">Bearbeite Übersetzung</label>
+			<label index="lang_renderl10n_editLanguageOverlayRecord">Bearbeite Seiteinformationen der Übersetzung</label>
+			<label index="lang_renderl10n_page">Seite</label>
+			<label index="lang_renderl10n_default">Standard</label>
+			<label index="lang_getlangsta_createNewTranslationHeaders">Erstelle neue Übersetzungen</label>
 		</languageKey>
 		<languageKey index="no" type="array">
 			<label index="page_title">Oversikt over sidetre</label>
@@ -550,6 +569,17 @@
 			<label index="pI_lastChange" type="integer">48593502</label>
 			<label index="pI_lastChangeContent" type="integer">239918564</label>
 			<label index="hits_title" type="integer">55072016</label>
+			<label index="lang_renderl10n_viewPage" type="integer">258274582</label>
+			<label index="lang_renderl10n_editDefaultLanguagePage" type="integer">171833861</label>
+			<label index="lang_renderl10n_editLangOverlays" type="integer">193717971</label>
+			<label index="lang_renderl10n_editPageHeaders" type="integer">237110134</label>
+			<label index="lang_renderl10n_editPage" type="integer">66732081</label>
+			<label index="lang_renderl10n_editPageLang" type="integer">110674105</label>
+			<label index="lang_renderl10n_editLanguageOverlayRecord" type="integer">80463324</label>
+			<label index="lang_renderl10n_page" type="integer">26464201</label>
+			<label index="lang_renderl10n_default" type="integer">128029197</label>
+			<label index="lang_getlangsta_createNewTranslationHeaders" type="integer">193499435</label>
+			<label index="lang_renderl10n_badThingThereAre" type="integer">258445119</label>
 		</languageKey>
 		<languageKey index="de" type="array">
 			<label index="page_title" type="integer">46867233</label>
@@ -567,6 +597,16 @@
 			<label index="pI_lastChange" type="integer">48593502</label>
 			<label index="pI_lastChangeContent" type="integer">239918564</label>
 			<label index="hits_title" type="integer">55072016</label>
+			<label index="lang_renderl10n_viewPage" type="integer">258274582</label>
+			<label index="lang_renderl10n_editDefaultLanguagePage" type="integer">171833861</label>
+			<label index="lang_renderl10n_editLangOverlays" type="integer">193717971</label>
+			<label index="lang_renderl10n_editPageHeaders" type="integer">237110134</label>
+			<label index="lang_renderl10n_editPage" type="integer">66732081</label>
+			<label index="lang_renderl10n_editPageLang" type="integer">110674105</label>
+			<label index="lang_renderl10n_editLanguageOverlayRecord" type="integer">80463324</label>
+			<label index="lang_renderl10n_page" type="integer">26464201</label>
+			<label index="lang_renderl10n_default" type="integer">128029197</label>
+			<label index="lang_getlangsta_createNewTranslationHeaders" type="integer">193499435</label>
 		</languageKey>
 		<languageKey index="no" type="array">
 			<label index="page_title" type="integer">46867233</label>
@@ -1012,80 +1052,4 @@
 		<languageKey index="vn" type="array">
 		</languageKey>
 	</orig_hash>
-	<orig_text type="array">
-		<languageKey index="default" type="array">
-		</languageKey>
-		<languageKey index="dk" type="array">
-		</languageKey>
-		<languageKey index="de" type="array">
-		</languageKey>
-		<languageKey index="no" type="array">
-		</languageKey>
-		<languageKey index="it" type="array">
-		</languageKey>
-		<languageKey index="fr" type="array">
-		</languageKey>
-		<languageKey index="es" type="array">
-		</languageKey>
-		<languageKey index="nl" type="array">
-		</languageKey>
-		<languageKey index="cz" type="array">
-		</languageKey>
-		<languageKey index="pl" type="array">
-		</languageKey>
-		<languageKey index="si" type="array">
-		</languageKey>
-		<languageKey index="fi" type="array">
-		</languageKey>
-		<languageKey index="tr" type="array">
-		</languageKey>
-		<languageKey index="se" type="array">
-		</languageKey>
-		<languageKey index="pt" type="array">
-		</languageKey>
-		<languageKey index="ru" type="array">
-		</languageKey>
-		<languageKey index="ro" type="array">
-		</languageKey>
-		<languageKey index="ch" type="array">
-		</languageKey>
-		<languageKey index="sk" type="array">
-		</languageKey>
-		<languageKey index="lt" type="array">
-		</languageKey>
-		<languageKey index="is" type="array">
-		</languageKey>
-		<languageKey index="hr" type="array">
-		</languageKey>
-		<languageKey index="hu" type="array">
-		</languageKey>
-		<languageKey index="gl" type="array">
-		</languageKey>
-		<languageKey index="th" type="array">
-		</languageKey>
-		<languageKey index="gr" type="array">
-		</languageKey>
-		<languageKey index="hk" type="array">
-		</languageKey>
-		<languageKey index="eu" type="array">
-		</languageKey>
-		<languageKey index="bg" type="array">
-		</languageKey>
-		<languageKey index="br" type="array">
-		</languageKey>
-		<languageKey index="et" type="array">
-		</languageKey>
-		<languageKey index="ar" type="array">
-		</languageKey>
-		<languageKey index="he" type="array">
-		</languageKey>
-		<languageKey index="ua" type="array">
-		</languageKey>
-		<languageKey index="lv" type="array">
-		</languageKey>
-		<languageKey index="jp" type="array">
-		</languageKey>
-		<languageKey index="vn" type="array">
-		</languageKey>
-	</orig_text>
 </T3locallang>

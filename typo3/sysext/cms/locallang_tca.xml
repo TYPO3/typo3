@@ -62,7 +62,6 @@
 			<label index="pages.l18n_cfg">Localization settings:</label>
 			<label index="pages.l18n_cfg.I.1">Hide default translation of page</label>
 			<label index="pages.l18n_cfg.I.2">Hide page if no translation for current language exists</label>
-
 			<label index="tt_content">Pagecontent</label>
 			<label index="fe_users">Website user</label>
 			<label index="fe_users.username">Username:</label>
@@ -85,6 +84,7 @@
 		</languageKey>
 		<languageKey index="dk" type="array">
 			<label index="mod_tx_cms_webinfo_page">Overblik over sidetræ</label>
+			<label index="mod_tx_cms_webinfo_lang">Oversættelsesoverblik</label>
 			<label index="pages.doktype.I.0">Avanceret</label>
 			<label index="pages.doktype.I.2">Genvej</label>
 			<label index="pages.doktype.I.3">Ikke i menu</label>
@@ -133,6 +133,9 @@
 			<label index="pages.module.I.4">Website brugere</label>
 			<label index="pages.module.I.5">Direct-mail</label>
 			<label index="pages.module.I.6">Godkendelser</label>
+			<label index="pages.l18n_cfg">Oversættelsesindstillinger:</label>
+			<label index="pages.l18n_cfg.I.1">Skjul standard sprog for siden</label>
+			<label index="pages.l18n_cfg.I.2">Skjul siden hvis den ikke er oversat til aktuelt sprog</label>
 			<label index="tt_content">Sideindhold</label>
 			<label index="fe_users">Website bruger</label>
 			<label index="fe_users.username">Brugernavn:</label>
@@ -151,6 +154,7 @@
 			<label index="sys_template">Skabelon</label>
 			<label index="static_template">Faste skabeloner</label>
 			<label index="sys_language.isocode">Vælg officielt sprog (ISO code):</label>
+			<label index="sys_language.flag">Vælg flag-icon:</label>
 		</languageKey>
 		<languageKey index="de" type="array">
 			<label index="mod_tx_cms_webinfo_page">Seitenbaum-Übersicht</label>
@@ -2154,6 +2158,11 @@
 			<label index="sys_template" type="integer">41469073</label>
 			<label index="static_template" type="integer">141130377</label>
 			<label index="sys_language.isocode" type="integer">49440593</label>
+			<label index="mod_tx_cms_webinfo_lang" type="integer">255687278</label>
+			<label index="pages.l18n_cfg" type="integer">4046046</label>
+			<label index="pages.l18n_cfg.I.1" type="integer">248921960</label>
+			<label index="pages.l18n_cfg.I.2" type="integer">219008572</label>
+			<label index="sys_language.flag" type="integer">145114393</label>
 		</languageKey>
 		<languageKey index="de" type="array">
 			<label index="mod_tx_cms_webinfo_page" type="integer">46867233</label>
