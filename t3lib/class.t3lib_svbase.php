@@ -101,7 +101,7 @@ define ('T3_ERR_SV_FILE_WRITE', -22); // File not writeable
 define ('T3_ERR_SV_PROG_NOT_FOUND', -40); // passed subtype is not possible with this service
 define ('T3_ERR_SV_PROG_FAILED', -41); // passed subtype is not possible with this service
 
-// define ('T3_ERR_SV_serviceType_myerr, 100); // All errors with prefix T3SV_ERR_serviceType_ and beginning with number 100 are service type dependent error
+// define ('T3_ERR_SV_serviceType_myerr, -100); // All errors with prefix T3SV_ERR_[serviceType]_ and lower than -99 are service type dependent error
 
 
 require_once(PATH_t3lib.'class.t3lib_exec.php');
@@ -623,4 +623,3 @@ if (defined("TYPO3_MODE") && $TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["t3lib/class
 */
 
 ?>
-
