@@ -341,6 +341,8 @@ function linkTo_UnCryptMailto(s)	{	//
      PUBLIC "-//W3C//DTD XHTML 1.0 Frameset//EN"
      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd">';
 				break;
+				case 'none':
+				break;
 				default:
 			$docTypeParts[]=$GLOBALS['TSFE']->config['config']['doctype'];
 				break;
@@ -356,10 +358,9 @@ function linkTo_UnCryptMailto(s)	{	//
 		}
 		
 			// Adding doctype parts:
-		$GLOBALS['TSFE']->content.=implode(chr(10),$docTypeParts).chr(10);
-		
-		$GLOBALS['TSFE']->content.='
-<html>
+		$GLOBALS['TSFE']->content.= count($docTypeParts) ? implode(chr(10),$docTypeParts).chr(10) : '';
+
+		$GLOBALS['TSFE']->content.='<html>
 <head>
 <!-- '.($customContent?$customContent.chr(10):'').'
 	This website is brought to you by TYPO3 - get.content.right

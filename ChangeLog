@@ -1,5 +1,9 @@
 2004-03-31  Kasper Skårhøj,,,  <kasper@typo3.com>
 
+	* Added "config.doctype = none" support - omits any doctype in the frontend.
+
+2004-03-31  Kasper Skårhøj,,,  <kasper@typo3.com>
+
 	* Fixed an error for form wizard (and others...) where the return URL would be wrong if the wizard was activated right after having saved a new record (would like back to a new record again). 
 	* Further, I added the option of xmlOutput from the table and form wizards. This option is configured in the wizard setup. There is NO frontend rendering supporting the XML format yet. But it might be very handy (and recommended) for other applications wanting to use the table and formwizards.
 
