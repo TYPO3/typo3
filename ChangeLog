@@ -1,3 +1,8 @@
+2004-03-19  Robert Lemke  <rl@robertlemke.de>
+
+- Fixed SQL statement (missing quotes) in t3lib_dmailer, reported by Martin Erichsen.
+  See: http://typo3.org/1422+M55c87d9b3b8.0.html'
+
 2004-02-12  Robert Lemke  <rl@robertlemke.de>
 
 	* 
