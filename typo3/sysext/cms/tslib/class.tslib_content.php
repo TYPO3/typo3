@@ -1650,6 +1650,7 @@ class tslib_cObj {
 						$compWidth = $compWidth ? $compWidth : 1;
 						$size = t3lib_div::intInRange($size*$compWidth, 1, 120);
 						$default = $this->getFieldDefaultValue($conf['noValueInsert'], $confData['fieldname'], trim($parts[2]));
+
 						if ($confData['type']=='password')	{
 							$default='';
 						}
@@ -1659,6 +1660,7 @@ class tslib_cObj {
 
 						$fieldCode=sprintf('<input type="'.$theType.'" name="%s"'.$elementIdAttribute.' size="%s"%s value="%s"'.$addParams.' />',
 							$confData['fieldname'], $size, $max, htmlspecialchars($default));
+
 					break;
 					case 'file':
 						$size=trim($fParts[1]) ? t3lib_div::intInRange($fParts[1],1,60) : 20;
@@ -2009,7 +2011,7 @@ class tslib_cObj {
 				$this->enableFields('pages');
 
 			if ($conf['languageField.'][$search->fTable])	{
-				$endClause.= ' AND '.$search->fTable.'.'.	$conf['languageField.'][$search->fTable].' = '.intval($GLOBALS['TSFE']->sys_language_content);
+				$endClause.= ' AND '.$search->fTable.'.'.	$conf['languageField.'][$search->fTable].' = '.intval($GLOBALS['TSFE']->sys_language_uid);	// (using sys_language_uid which is the ACTUAL language of the page. sys_language_content is only for selecting DISPLAY content!)
 			}
 
 				// build query

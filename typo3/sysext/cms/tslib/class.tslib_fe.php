@@ -3247,6 +3247,7 @@ if (version == "n3") {
 	function convPOSTCharset()	{
 		if ($this->renderCharset != $this->metaCharset && is_array($_POST) && count($_POST))	{
 			$this->csConvObj->convArray($_POST,$this->metaCharset,$this->renderCharset);
+			$GLOBALS['HTTP_POST_VARS'] = $_POST;
 		}
 	}
 }
