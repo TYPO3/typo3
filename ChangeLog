@@ -1,3 +1,8 @@
+2004-11-16  Kasper Skårhøj,,,  <kasper@typo3.com>
+
+	* Added configuration option in TYPO3_CONF_VARS[FE][lifetime] so the frontend users cookies can be set to a lifetime in seconds. Currently the cookie lasts only for the browser session and not more.
+
+
 2004-11-15  Kasper Skårhøj,,,  <kasper@typo3.com>
 
 	* Fixed view_help.php so translators of llXML can see all tables listed.
