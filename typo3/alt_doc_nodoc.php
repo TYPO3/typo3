@@ -112,10 +112,14 @@ class SC_alt_doc_nodoc {
 		
 			// Add a message, telling that no documents were open...
 		$msg[]='<p>'.$LANG->getLL('noDocuments_msg',1).'</p><br />';
+
+			// If another page module was specified, replace the default Page module with the new one
+		$newPageModule = trim($BE_USER->getTSConfigVal('options.overridePageModule'));
+		$pageModule = t3lib_BEfunc::isModuleSetInTBE_MODULES($newPageModule) ? $newPageModule : 'web_layout';
 		
 			// Perform some acccess checks:
 		$a_wl = $BE_USER->check('modules','web_list');
-		$a_wp = t3lib_extMgm::isLoaded('cms') && $BE_USER->check('modules','web_layout');
+		$a_wp = t3lib_extMgm::isLoaded('cms') && $BE_USER->check('modules',$pageModule);
 		
 
 			// Finding module images: PAGE
@@ -133,7 +137,7 @@ class SC_alt_doc_nodoc {
 		if ($a_wl || $a_wp)	{
 			$msg_2 = array();
 			if ($a_wp)	{	// Web>Page:
-				$msg_2[]='<strong><a href="#" onclick="top.goToModule(\'web_layout\'); return false;">'.$LANG->getLL('noDocuments_pagemodule',1).$img_web_layout.'</a></strong>';
+				$msg_2[]='<strong><a href="#" onclick="top.goToModule(\''.$pageModule.'\'); return false;">'.$LANG->getLL('noDocuments_pagemodule',1).$img_web_layout.'</a></strong>';
 				if ($a_wl)	$msg_2[]=$LANG->getLL('noDocuments_OR');
 			}
 			if ($a_wl)	{	// Web>List

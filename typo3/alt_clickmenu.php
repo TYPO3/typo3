@@ -585,6 +585,9 @@ class clickMenu {
 	 */
 	function DB_edit($table,$uid)	{
 		global $BE_USER;
+			// If another module was specified, replace the default Page module with the new one
+		$newPageModule = trim($GLOBALS['BE_USER']->getTSConfigVal('options.overridePageModule'));
+		$pageModule = t3lib_BEfunc::isModuleSetInTBE_MODULES($newPageModule) ? $newPageModule : 'web_layout';
 
 		$editOnClick='';
 		$loc='top.content'.($this->listFrame && !$this->alwaysContentFrame ?'.list_frame':'');
@@ -593,14 +596,14 @@ class clickMenu {
 		if (
 				$this->iParts[0]=='pages' && 
 				$this->iParts[1] && 
-				$GLOBALS['BE_USER']->check('modules','web_layout')
+				$GLOBALS['BE_USER']->check('modules', $pageModule)
 			)	{
 			$theIcon = t3lib_iconWorks::skinImg($this->backPath,'gfx/edit_page.gif','width="12" height="12"');
 			$this->editPageIconSet=1;
 			if ($BE_USER->uc['classicPageEditMode'] || !t3lib_extMgm::isLoaded('cms'))	{
 				$addParam='&editRegularContentFromId='.intval($this->iParts[1]);
 			} else {
-				$editOnClick="top.fsMod.recentIds['web']=".intval($this->iParts[1]).";top.goToModule('web_layout',1);";
+				$editOnClick="top.fsMod.recentIds['web']=".intval($this->iParts[1]).";top.goToModule('".$pageModule."',1);";
 			}
 		}
 		if (!$editOnClick)	{

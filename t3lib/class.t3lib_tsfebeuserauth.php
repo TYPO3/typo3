@@ -331,6 +331,10 @@ class t3lib_tsfeBeUserAuth extends t3lib_beUserAuth {
 	function extGetCategory_edit($out='')	{
 		$out.=$this->extGetHead('edit');
 		if ($this->uc['TSFE_adminConfig']['display_edit'])	{
+				// If another page module was specified, replace the default Page module with the new one
+			$newPageModule = trim($GLOBALS['BE_USER']->getTSConfigVal('options.overridePageModule'));
+			$pageModule = t3lib_BEfunc::isModuleSetInTBE_MODULES($newPageModule) ? $newPageModule : 'web_layout';
+			
 			$this->extNeedUpdate=1;
 			$out.=$this->extGetItem('edit_displayFieldIcons', '<input type="hidden" name="TSFE_ADMIN_PANEL[edit_displayFieldIcons]" value="0" /><input type="checkbox" name="TSFE_ADMIN_PANEL[edit_displayFieldIcons]" value="1"'.($this->uc['TSFE_adminConfig']['edit_displayFieldIcons']?' checked="checked"':'').' />');
 			$out.=$this->extGetItem('edit_displayIcons', '<input type="hidden" name="TSFE_ADMIN_PANEL[edit_displayIcons]" value="0" /><input type="checkbox" name="TSFE_ADMIN_PANEL[edit_displayIcons]" value="1"'.($this->uc['TSFE_adminConfig']['edit_displayIcons']?' checked="checked"':'').' />');
@@ -346,7 +350,7 @@ class t3lib_tsfeBeUserAuth extends t3lib_beUserAuth {
 							if (parent.opener.top.content && parent.opener.top.content.nav_frame && parent.opener.top.content.nav_frame.refresh_nav)	{
 								parent.opener.top.content.nav_frame.refresh_nav();
 							}
-							parent.opener.top.goToModule("web_layout");
+							parent.opener.top.goToModule("'.$pageModule.'");
 							parent.opener.top.focus();
 						} else {
 							vHWin=window.open(\''.TYPO3_mainDir.'alt_main.php\',\''.md5('Typo3Backend-'.$GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']).'\',\'status=1,menubar=1,scrollbars=1,resizable=1\');

@@ -202,6 +202,10 @@ class SC_alt_shortcut {
 	function init()	{
 		global $BACK_PATH;
 
+			// If another page module was specified, replace the default Page module with the new one
+		$newPageModule = trim($GLOBALS['BE_USER']->getTSConfigVal('options.overridePageModule'));
+		$pageModule = t3lib_BEfunc::isModuleSetInTBE_MODULES($newPageModule) ? $newPageModule : 'web_layout';
+
 		$this->doc = t3lib_div::makeInstance('template');
 		$this->doc->backPath = $BACK_PATH;
 		$this->doc->form='<form action="alt_shortcut.php" name="shForm" method="post">';
@@ -232,7 +236,7 @@ class SC_alt_shortcut {
 					top.content.nav_frame.refresh_nav();
 				}
 
-				top.goToModule("web_layout");
+				top.goToModule("'.$pageModule.'");
 			}
 			');
 		$this->content.=$this->doc->startPage('Shortcut frame');
