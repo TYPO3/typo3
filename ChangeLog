@@ -1,5 +1,9 @@
 2004-08-04  Kasper Skårhøj,,,  <kasper@typo3.com>
 
+	* Added new rendering modes for the "select" type in TCA: You can now render multiple-select lists as either a SINGLE selector box with multiple value selection OR as a list of checkboxes. For mozilla even the icons are rendered nicely in the option tags. Check out the backend user group configurations. Work is still in progress.
+
+2004-08-04  Kasper Skårhøj,,,  <kasper@typo3.com>
+
 	* Added TYPo3_CONF_VARS[FE][lockHashKeyWords] so it is optional to lock FE user sessions to HTTP_USER_AGENT
 
 2004-08-03  Kasper Skårhøj,,,  <kasper@typo3.com>

@@ -75,6 +75,8 @@ Do you want to continue WITHOUT saving?</label>
 			<label index="labels.clipNoEl">No elements</label>
 			<label index="labels.cliptabs">Clipboard #</label>
 			<label index="labels.removeItem">Remove item</label>
+			<label index="labels.holdDownCTRL">Important: Hold down the CTRL key while toggling elements in this list!</label>
+			<label index="labels.revertSelection">Revert selection</label>
 			<label index="TYPO3_Element_Browser">TYPO3 Element Browser</label>
 			<label index="show_item.php.viewItem">View Item</label>
 			<label index="show_item.php.file">File</label>

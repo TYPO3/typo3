@@ -141,7 +141,8 @@ $TYPO3_CONF_VARS = Array(
 		'loginNews' => array(),						// In this array you can define news-items for the login screen. To this array, add arrays with assoc keys 'date', 'header', 'content' (HTML content) and for those appropriate value pairs
 		'XCLASS' => Array(),					// See 'Inside TYPO3' document for more information.
 		'XLLfile' => Array(),					// For extension/overriding of the arrays in 'locallang' files in the backend. See 'Inside TYPO3' for more information.
-		'notificationPrefix' => '[TYPO3 Note]'
+		'notificationPrefix' => '[TYPO3 Note]',
+		'accessListRenderMode' => 'checkbox',
 	),
 	'FE' => Array(			// Configuration for the TypoScript frontend (FE). Nothing here relates to the administration backend!
 		'png_to_gif' => 0,						// Boolean. Enables conversion back to gif of all png-files generated in the frontend libraries. Notice that this leaves an increased number of temporary files in typo3temp/

@@ -439,7 +439,8 @@ $TCA['tt_content'] = Array (
 					Array('LLL:EXT:cms/locallang_ttc.php:imageorient.I.10', 26, 'selicons/intext_left_nowrap.gif')
 				),
 				'selicon_cols' => 6,
-				'default' => '8'
+				'default' => '8',
+				'iconsInOptionTags' => 1,
 			)
 		),
 		'imageborder' => Array (

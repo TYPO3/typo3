@@ -315,7 +315,9 @@ $TCA['be_users'] = Array (
 				'special' => 'modListUser',
 				'size' => '5',
 				'autoSizeMax' => 50,
-				'maxitems' => '15'
+				'maxitems' => '15',
+				'renderMode' => $GLOBALS['TYPO3_CONF_VARS']['BE']['accessListRenderMode'],
+				'iconsInOptionTags' => 1,
 			)
 		),
 		'TSconfig' => Array (
@@ -388,6 +390,8 @@ $TCA['be_groups'] = Array (
 				'size' => '3',
 				'maxitems' => '10',
 				'autoSizeMax' => 10,
+				'renderMode' => $GLOBALS['TYPO3_CONF_VARS']['BE']['accessListRenderMode'],
+				'iconsInOptionTags' => 1,
 				'wizards' => Array(
 					'_PADDING' => 1,
 					'_VERTICAL' => 1,
@@ -430,7 +434,9 @@ $TCA['be_groups'] = Array (
 				'special' => 'pagetypes',
 				'size' => '5',
 				'autoSizeMax' => 50,
-				'maxitems' => '20'
+				'maxitems' => 20,
+				'renderMode' => $GLOBALS['TYPO3_CONF_VARS']['BE']['accessListRenderMode'],
+				'iconsInOptionTags' => 1,
 			)
 		),
 		'tables_modify' => Array (
@@ -440,7 +446,9 @@ $TCA['be_groups'] = Array (
 				'special' => 'tables',
 				'size' => '5',
 				'autoSizeMax' => 50,
-				'maxitems' => '20'
+				'maxitems' => 20,
+				'renderMode' => $GLOBALS['TYPO3_CONF_VARS']['BE']['accessListRenderMode'],
+				'iconsInOptionTags' => 1,
 			)
 		),
 		'tables_select' => Array (
@@ -450,7 +458,9 @@ $TCA['be_groups'] = Array (
 				'special' => 'tables',
 				'size' => '5',
 				'autoSizeMax' => 50,
-				'maxitems' => '20'
+				'maxitems' => 20,
+				'renderMode' => $GLOBALS['TYPO3_CONF_VARS']['BE']['accessListRenderMode'],
+				'iconsInOptionTags' => 1,
 			)
 		),
 		'non_exclude_fields' => Array (
@@ -461,6 +471,9 @@ $TCA['be_groups'] = Array (
 				'size' => '25',
 				'maxitems' => '300',
 				'autoSizeMax' => 50,
+
+				'renderMode' => 'checkbox',
+				'renderMode' => $GLOBALS['TYPO3_CONF_VARS']['BE']['accessListRenderMode'],
 			)
 		),
 		'hidden' => Array (
@@ -487,7 +500,9 @@ $TCA['be_groups'] = Array (
 				'special' => 'modListGroup',
 				'size' => '5',
 				'autoSizeMax' => 50,
-				'maxitems' => '15'
+				'maxitems' => '15',
+				'renderMode' => $GLOBALS['TYPO3_CONF_VARS']['BE']['accessListRenderMode'],
+				'iconsInOptionTags' => 1,
 			)
 		),
 		'inc_access_lists' => Array (
@@ -538,7 +553,9 @@ $TCA['be_groups'] = Array (
 				'foreign_table_where' => 'ORDER BY be_groups.title',
 				'size' => '5',
 				'autoSizeMax' => 50,
-				'maxitems' => '20'
+				'maxitems' => 20,
+				'renderMode' => $GLOBALS['TYPO3_CONF_VARS']['BE']['accessListRenderMode'],
+				'iconsInOptionTags' => 1,
 			)
 		)
 	),

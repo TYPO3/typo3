@@ -1404,6 +1404,11 @@ class t3lib_TCEmain	{
 	function checkValue_group_select($res,$value,$tcaFieldConf,$PP,$uploadedFiles)	{
 		list($table,$id,$curValue,$status,$realPid,$recFID) = $PP;
 
+			// Detecting if value send is an array and if so, implode it around a comma:
+		if (is_array($value))	{
+			$value = implode(',',$value);
+		}
+
 			// This converts all occurencies of '&#123;' to the byte 123 in the string - this is needed in very rare cases where filenames with special characters (like זרו, umlaud etc) gets sent to the server as HTML entities instead of bytes. The error is done only by MSIE, not Mozilla and Opera.
 			// Anyways, this should NOT disturb anything else:
 		$value = $this->convNumEntityToByteValue($value);

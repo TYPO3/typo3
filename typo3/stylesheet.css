@@ -228,6 +228,14 @@ BODY#typo3-alt-db-navframe-php DIV.c-notice { border: 1px solid black; padding: 
 TABLE.typo3-TCEforms SPAN.typo3-TCEforms-recHeader { font-weight: bold; color: #333366; }
 TABLE.typo3-TCEforms SPAN.typo3-TCEforms-newToken { font-weight: bold; color: #990000; }
 TABLE.typo3-TCEforms SPAN.typo3-TCEforms-helpText { color: #666666; }
+TABLE.typo3-TCEforms OPTION.c-divider { font-style: italic; color: #666666; background-color: #eeeeee; text-transform : uppercase; margin-top: 10px; border-bottom: 1px solid #666666; }
+TABLE.typo3-TCEforms TABLE.typo3-TCEforms-select-checkbox TR.c-selectedItem {background-color: #c5c1b5; }
+TABLE.typo3-TCEforms TABLE.typo3-TCEforms-select-checkbox TR TD {border-bottom: 1px #999999 dashed; padding: 1px 3px 1px 3px; }
+TABLE.typo3-TCEforms TABLE.typo3-TCEforms-select-checkbox TR TD.c-labelCell { padding-right: 30px; }
+TABLE.typo3-TCEforms TABLE.typo3-TCEforms-select-checkbox TR TD.c-labelCell P.c-descr {margin-left: 30px; font-style: italic;}
+TABLE.typo3-TCEforms TABLE.typo3-TCEforms-select-checkbox TR.c-header TD { font-weight: bold; padding-top: 10px; border-bottom: none; }
+TABLE.typo3-TCEforms TABLE.typo3-TCEforms-select-checkbox { margin-top: 4px; margin-bottom: 10px; }
+TABLE.typo3-TCEforms TABLE.typo3-TCEforms-select-singlebox { margin-top: 4px; margin-bottom: 10px; }
 
 /* Element Browser / RTE link selection: */
 TABLE#typo3-curUrl { font-weight: bold; width: 100%; margin-bottom: 2px;}
