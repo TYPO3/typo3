@@ -15,7 +15,7 @@ $LOCAL_LANG = Array (
 	'de' => Array (
 		'mlang_labels_tablabel' => 'TYPO3 Erweiterungs-Manager',
 		'mlang_labels_tabdescr' => 'Verwaltet TYPO3 Erweiterungen, wozu Plugins, Module, Konfiguationen und Übersetzngen zählen.',
-		'mlang_tabs_tab' => 'Erw.-Manager',
+		'mlang_tabs_tab' => 'Ext.-Manager',
 	),
 	'no' => Array (
 		'mlang_labels_tablabel' => 'TYPO3 Extension Manager',
@@ -40,9 +40,9 @@ $LOCAL_LANG = Array (
 		'mlang_tabs_tab' => 'Ext Manager',
 	),
 	'cz' => Array (
-		'mlang_labels_tablabel' => 'TYPO3 Extension Manager',
-		'mlang_labels_tabdescr' => 'Obsluhuje extenze TYPO3, které zahrnují pluginy, moduly, rozšíøení tøíd, configuraèní kódy apod. z centrálního zdroje',
-		'mlang_tabs_tab' => 'Ext Manager',
+		'mlang_labels_tablabel' => 'Správce extenzí TYPO3',
+		'mlang_labels_tabdescr' => 'Spravuje extenze TYPO3, které zahrnují doplòky, moduly, rozšíøení tøíd, konfiguraèní kódy apod. z centrálního depozitáøe',
+		'mlang_tabs_tab' => 'Správce ext.',
 	),
 	'pl' => Array (
 		'mlang_labels_tablabel' => 'Menad¿er rozszerzeñ',
@@ -101,8 +101,14 @@ $LOCAL_LANG = Array (
 		'mlang_tabs_tab' => 'ViÃ°bÃ¦tur Umhverfi',
 	),
 	'hr' => Array (
+		'mlang_labels_tablabel' => 'Manager TYPO3  ekstenzija',
+		'mlang_labels_tabdescr' => 'Upravlja TYPO3 ekstenzijama, što ukljuèuje plugine, module, class ekstenzije, konfiguracijski kod i sl. iz centralnog repoztorija.',
+		'mlang_tabs_tab' => 'Ext Manager',
 	),
 	'hu' => Array (
+		'mlang_labels_tablabel' => 'Typo3 Bõvítménykezelõ',
+		'mlang_labels_tabdescr' => 'A Typo3 bõvítményeit, plugin-jeit, moduljait kezelheted, telepítheted és konfigurálhatod.',
+		'mlang_tabs_tab' => 'Bõvítménykezelõ',
 	),
 	'gl' => Array (
 	),
@@ -149,6 +155,12 @@ $LOCAL_LANG = Array (
 		'mlang_tabs_tab' => '×ž× ×”×œ ×ª×•×¡×¤×•×ª',
 	),
 	'ua' => Array (
+	),
+	'lv' => Array (
+	),
+	'jp' => Array (
+	),
+	'vn' => Array (
 	),
 );
 ?>

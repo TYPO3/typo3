@@ -48,7 +48,7 @@ $LOCAL_LANG = Array (
 	),
 	'fi' => Array (
 		'mlang_labels_tablabel' => 'WWW-sivut ja tietokannan sisältö',
-		'mlang_tabs_tab' => 'WWW',
+		'mlang_tabs_tab' => 'Web',
 	),
 	'tr' => Array (
 		'mlang_labels_tablabel' => 'Websayfalarý ve veritabaný içeriði',
@@ -87,10 +87,16 @@ $LOCAL_LANG = Array (
 		'mlang_tabs_tab' => 'Vefur',
 	),
 	'hr' => Array (
+		'mlang_labels_tablabel' => 'Web stranice i sadržaj baze podataka',
+		'mlang_tabs_tab' => 'Web',
 	),
 	'hu' => Array (
+		'mlang_labels_tablabel' => 'Weboldalak és tartalmaik',
+		'mlang_tabs_tab' => 'Web',
 	),
 	'gl' => Array (
+		'mlang_labels_tablabel' => 'Nittartakkap qupperneri databasellu imai',
+		'mlang_tabs_tab' => 'Internet-i',
 	),
 	'th' => Array (
 		'mlang_labels_tablabel' => 'Ë¹éÒàÇç»áÅÐ°Ò¹¢éÍÁÙÅà¹×éÍËÒ',
@@ -127,6 +133,12 @@ $LOCAL_LANG = Array (
 		'mlang_tabs_tab' => '××™× ×˜×¨× ×˜',
 	),
 	'ua' => Array (
+	),
+	'lv' => Array (
+	),
+	'jp' => Array (
+	),
+	'vn' => Array (
 	),
 );
 ?>

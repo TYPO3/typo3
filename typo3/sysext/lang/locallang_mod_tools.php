@@ -87,10 +87,16 @@ $LOCAL_LANG = Array (
 		'mlang_tabs_tab' => 'VerkfÃ¦ri',
 	),
 	'hr' => Array (
+		'mlang_labels_tablabel' => 'Alati za administraciju i održavanje',
+		'mlang_tabs_tab' => 'Alati',
 	),
 	'hu' => Array (
+		'mlang_labels_tablabel' => 'Adminisztrációs és karbantartó eszközök',
+		'mlang_tabs_tab' => 'Eszközök',
 	),
 	'gl' => Array (
+		'mlang_labels_tablabel' => 'Aaqqissuinermut aserfallanneqarnermullu sakkussaq',
+		'mlang_tabs_tab' => 'Sakkussat',
 	),
 	'th' => Array (
 		'mlang_labels_tablabel' => 'àµÃ×èÍ§Á×ÍÊÓËÃÑººÃÔËÒÃáÅÐ»ÃÑº»ÃØ§',
@@ -127,6 +133,12 @@ $LOCAL_LANG = Array (
 		'mlang_tabs_tab' => '×›×œ×™×',
 	),
 	'ua' => Array (
+	),
+	'lv' => Array (
+	),
+	'jp' => Array (
+	),
+	'vn' => Array (
 	),
 );
 ?>

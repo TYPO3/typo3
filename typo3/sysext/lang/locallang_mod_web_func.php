@@ -59,9 +59,9 @@ $LOCAL_LANG = Array (
 	),
 	'cz' => Array (
 		'title' => 'Pokroèilé funkce',
-		'clickAPage_content' => 'Prosím kliknìte na název strany ve stromu stránek.',
+		'clickAPage_content' => 'Prosím kliknìte na název stránky ve stromu stránek.',
 		'mlang_labels_tablabel' => 'Pokroèilé funkce',
-		'mlang_labels_tabdescr' => 'Zde najdete obecné funkce pro import a export. Navíc obsahuje tento modul specializované funkce - pomocníky - užiteèné pøi specifických situacích',
+		'mlang_labels_tabdescr' => 'Zde najdete obecné funkce pro import a export. Navíc obsahuje tento modul specializované funkce - prùvodce - užiteèné pøi specifických situacích',
 		'mlang_tabs_tab' => 'Funkce',
 	),
 	'pl' => Array (
@@ -81,8 +81,8 @@ $LOCAL_LANG = Array (
 	'fi' => Array (
 		'title' => 'Laajennetut toiminnot',
 		'clickAPage_content' => 'Näpsäytä sivun otsikkoa sivujen rakennepuussa vasemmalla',
-		'mlang_labels_tablabel' => 'Laajennetut toiminnat',
-		'mlang_labels_tabdescr' => 'Täältä löydät yleisiä ulos ja sisäänvienti toimintoja. Lisäksi moduli sisältää erkoistoimintoja - ohjeistuksia - käyttökelpoisia tiettuihin tilanteisiin. Voit esimerkiksi kerralla luoda joukon sivuja tai lajitella sivujen järjestystä.',
+		'mlang_labels_tablabel' => 'Laajennetut toiminnot',
+		'mlang_labels_tabdescr' => 'Täältä löydät yleiset tuonti- ja vientitoiminnot. Lisäksi moduli sisältää erikoistoimintoja - ohjattuja toimintoja - käyttökelpoisia tiettyihin tilanteisiin. Voit esimerkiksi kerralla luoda joukon sivuja tai lajitella sivujen järjestystä.',
 		'mlang_tabs_tab' => 'Toiminnot',
 	),
 	'tr' => Array (
@@ -149,8 +149,18 @@ $LOCAL_LANG = Array (
 		'mlang_tabs_tab' => 'AÃ°gerÃ°ir',
 	),
 	'hr' => Array (
+		'title' => 'Napredne funkcije',
+		'clickAPage_content' => 'Molim kliknite na naslov stranice u stablu.',
+		'mlang_labels_tablabel' => 'Napredne funkcije',
+		'mlang_labels_tabdescr' => 'Ovdje æete naæi osnovne eksport i import funkcije. Stoviše, ovaj modul sadrži specijalizirane funkcije - èarobnjake korisne u specifiènim situacijama. Na primjer, možete napraviti stranice u "batch-u" ili sortirati stranice.',
+		'mlang_tabs_tab' => 'Funkcije',
 	),
 	'hu' => Array (
+		'title' => 'Egyéb mûveletek',
+		'clickAPage_content' => 'Kérlek kattints az oldal címére az oldalfában.',
+		'mlang_labels_tablabel' => 'Egyéb mûveletek',
+		'mlang_labels_tabdescr' => 'Itt találod az általános export és import funkciókat, és az egyéb speciális varázslókat.',
+		'mlang_tabs_tab' => 'Mûveletek',
 	),
 	'gl' => Array (
 	),
@@ -213,6 +223,12 @@ $LOCAL_LANG = Array (
 		'mlang_tabs_tab' => '×¤×¢×•×œ×•×ª',
 	),
 	'ua' => Array (
+	),
+	'lv' => Array (
+	),
+	'jp' => Array (
+	),
+	'vn' => Array (
 	),
 );
 ?>

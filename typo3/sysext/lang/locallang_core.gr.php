@@ -4,7 +4,8 @@
  * TYPO3 CVS ID: $Id$
  */
 
-$LOCAL_LANG['gr'] = Array (
-
+$LOCAL_LANG = Array (
+	'gr' => Array (
+	),
 );
 ?>

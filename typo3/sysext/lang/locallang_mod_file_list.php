@@ -79,7 +79,7 @@ $LOCAL_LANG = Array (
 		'mlang_tabs_tab' => 'Filliste',
 	),
 	'it' => Array (
-		'clipBoard' => 'Mostra la clipboard',
+		'clipBoard' => 'Mostra clipboard',
 		'clip_paste' => 'Incolla il contenuto della clipboard',
 		'clip_pasteInto' => 'Incolla dentro: il contenuto della clipboad viene inserito in questa cartella',
 		'clip_markRecords' => 'Seleziona tutti/nessuno',
@@ -94,7 +94,7 @@ $LOCAL_LANG = Array (
 		'c_rw' => 'RW',
 		'files' => 'File',
 		'mlang_labels_tablabel' => 'Lista dei file nella cartella',
-		'mlang_labels_tabdescr' => 'Sistema per la gestione dei file di Typo3. Consente di accedere alle cartelle per cui avete i permessi. Attraverso questo modulo potete copiare, spostare, rinominare, eliminare e uploadare i file sul server',
+		'mlang_labels_tabdescr' => 'Sistema per la gestione dei file di Typo3. Consente di accedere alle cartelle per cui avete i permessi. Attraverso questo modulo potete copiare, spostare, rinominare, eliminare e uploadare i file sul server.',
 		'mlang_tabs_tab' => 'Lista file',
 	),
 	'fr' => Array (
@@ -152,7 +152,7 @@ $LOCAL_LANG = Array (
 		'clip_markRecords' => 'Oznaèit vše/Odznaèit vše',
 		'clip_selectMarked' => 'Pøenést zvolené soubory do schránky',
 		'clip_deleteMarked' => 'Odstranit oznaèené',
-		'clip_deleteMarkedWarning' => 'Jste si jisti, že chcete odstranit všechny oznaèení soubory z této složky?',
+		'clip_deleteMarkedWarning' => 'Jste si jisti, že chcete odstranit všechny oznaèené soubory z této složky?',
 		'displayThumbs' => 'Zobrazovat náhledy',
 		'c_file' => 'Název',
 		'c_size' => 'Velikost',
@@ -161,7 +161,7 @@ $LOCAL_LANG = Array (
 		'c_rw' => 'RW',
 		'files' => 'soubory',
 		'mlang_labels_tablabel' => 'Seznam souborù ve složce',
-		'mlang_labels_tabdescr' => 'Toto je systém administrace souborù v TYPO3. Dovoluje vám pøistupovat k souborùm. Tímto modulem mùžete uploadovat, kopírovat, pøesunovat a odstraòovat soubory ze serveru.',
+		'mlang_labels_tabdescr' => 'Toto je systém administrace souborù v TYPO3. Dovoluje vám pøistupovat k souborùm. Tímto modulem mùžete nahrávat, kopírovat, pøesunovat a odstraòovat soubory ze serveru.',
 		'mlang_tabs_tab' => 'Seznam souborù',
 	),
 	'pl' => Array (
@@ -384,10 +384,49 @@ $LOCAL_LANG = Array (
 		'mlang_tabs_tab' => 'SkrÃ¡arlisti',
 	),
 	'hr' => Array (
+		'clipBoard' => 'Prikaži memoriju (clipboard)',
+		'clip_paste' => 'Zalijepi sadržaj memorije',
+		'clip_pasteInto' => 'Zalijepi u: sadržaj memorije je ubaèen u ovaj pretinac',
+		'clip_markRecords' => 'Oznaèi sve/Oznaèi ništa',
+		'clip_selectMarked' => 'Premjesti odabir datoteka u memoriju',
+		'clip_deleteMarked' => 'Obriši oznaèeno',
+		'clip_deleteMarkedWarning' => 'Sigurno želite obrisati oznaèene datoteke iz ovog pretinca?',
+		'displayThumbs' => 'Prikaži slièice',
+		'c_file' => 'Ime datoteke',
+		'c_size' => 'Velièina',
+		'c_fileext' => 'Tip',
+		'c_tstamp' => 'Datum',
+		'c_rw' => 'RW',
+		'files' => 'datoteke',
+		'mlang_labels_tablabel' => 'Popis datoteka u pretincu',
+		'mlang_labels_tabdescr' => 'Ovo je sustav za administriranje datoteka u TYPO3-u. Omoguæava vam da pristupite poveznicama na datoteke vašeg korisnièkog raèuna. Ovim modulom možete uploadati, kopirati, premještati i brisati datoteke na poslužitelju.',
+		'mlang_tabs_tab' => 'Popis datoteka',
 	),
 	'hu' => Array (
+		'clipBoard' => 'Vágólap megjelenítése',
+		'clip_paste' => 'Illeszd be a vágólap tartalmát',
+		'clip_pasteInto' => 'Illeszd  ide: A vágólap tartalmát ebbe a mappába',
+		'clip_markRecords' => 'Jelöld mindet/semmit',
+		'clip_selectMarked' => 'Mozgasd a kijelölt file-okat a vágólapra',
+		'clip_deleteMarked' => 'Töröld a kijelölteket',
+		'clip_deleteMarkedWarning' => 'Biztos vagy benne, hogy az összes kijelölt file-t törölni akarod a mappából?',
+		'displayThumbs' => 'Mutasd a miniatürizált képeket',
+		'c_file' => 'File név',
+		'c_size' => 'Méret',
+		'c_fileext' => 'Típus',
+		'c_tstamp' => 'Dátum',
+		'c_rw' => 'RW',
+		'files' => 'file-ok',
+		'mlang_labels_tablabel' => 'File-ok listája a mappában',
+		'mlang_labels_tabdescr' => 'Ez a file adminisztációs rendszer a Typo3-ban. Itt érheted el, töltheted fel, másolhatod, mozgathatod és törölheted a file-okat a szerveren.',
+		'mlang_tabs_tab' => 'File-lista',
 	),
 	'gl' => Array (
+		'c_file' => 'Fiilip aqqa',
+		'c_size' => 'Angissuseq',
+		'c_tstamp' => 'Ulloq',
+		'files' => 'Fiilit',
+		'mlang_tabs_tab' => 'Fiilit allattorsimaffii',
 	),
 	'th' => Array (
 		'clipBoard' => 'áÊ´§¤ÅÔê»ºÍÃì´',
@@ -544,6 +583,12 @@ $LOCAL_LANG = Array (
 		'mlang_tabs_tab' => '×¨×©×™×ž×ª ×§×‘×¦×™×',
 	),
 	'ua' => Array (
+	),
+	'lv' => Array (
+	),
+	'jp' => Array (
+	),
+	'vn' => Array (
 	),
 );
 ?>

@@ -46,8 +46,8 @@ $LOCAL_LANG = Array (
 		'title' => 'Informazioni sulla pagina',
 		'depth_0' => 'Questa pagina',
 		'depth_1' => '1 livello',
-		'depth_2' => '2 livello',
-		'depth_3' => '3 livello',
+		'depth_2' => '2 livelli',
+		'depth_3' => '3 livelli',
 		'mlang_labels_tablabel' => 'Informazioni correlate alla pagina, quali log dei cambiamenti e statistiche sulla pagina e sui record',
 		'mlang_labels_tabdescr' => 'Il modulo Web>Info si occupa di informazioni di tipo statistico sulle pagine. Fra queste informazioni troviamo il \'pagehit\' ed il log dei cambiamenti che permette di scorrere la storia delle modifiche alla pagina. C\'è anche una vista d\'insieme sul numero dei record, sul loro tipo e su altri parametri, presentati nella classica struttura ad albero.',
 		'mlang_tabs_tab' => 'Informazioni',
@@ -113,13 +113,13 @@ $LOCAL_LANG = Array (
 		'mlang_tabs_tab' => 'Info',
 	),
 	'fi' => Array (
-		'title' => 'Sivu tiedot',
+		'title' => 'Sivun tiedot',
 		'depth_0' => 'Tämä sivu',
 		'depth_1' => '1 taso',
 		'depth_2' => '2 tasoa',
 		'depth_3' => '3 tasoa',
-		'mlang_labels_tablabel' => 'Sivuihin liittyvää tietoa, esim. sattumien määrä, muutosloki. tietueiden määrä jne.',
-		'mlang_labels_tabdescr' => 'WebInfo modulin tarkoituksena on antaa tilastotietoa sivusta. Tietoja ovat tilastot sattumista sivuille, muutosloki josta selviää sivujen muutos historia. Näet myös lukumäärä tiedot tietueista kuten myös sivujen asetukset perinteisestä sivusto rakenteesta.',
+		'mlang_labels_tablabel' => 'Sivuihin liittyvää tietoa, esim. sattumien määrä, muutosloki, tietueiden määrä jne.',
+		'mlang_labels_tabdescr' => 'Web>Info modulin tarkoituksena on antaa tilastotietoa sivuista. Tietoja ovat tilastot sattumista sivuille, muutosloki josta selviää sivujen muutoshistoria. Näet myös lukumäärätiedot tietueista, kuten myös sivujen asetukset perinteisestä sivustorakenteesta.',
 		'mlang_tabs_tab' => 'Tiedot',
 	),
 	'tr' => Array (
@@ -212,8 +212,24 @@ $LOCAL_LANG = Array (
 		'mlang_tabs_tab' => 'UpplÃ½singar',
 	),
 	'hr' => Array (
+		'title' => 'Informacije o stranici',
+		'depth_0' => 'Ova stranica',
+		'depth_1' => '1 razina',
+		'depth_2' => '2 razine',
+		'depth_3' => '3 razine',
+		'mlang_labels_tablabel' => 'Informacije o stranicama, npr. statistika pregleda, evidencija promjena, broj zapisa',
+		'mlang_labels_tabdescr' => 'Web>Info modul pruža statistièke informacije o stranicama. To ukljuèuje statistiku pregleda stranica i evidenciju promjena koja vam omoguæava pregledavanje povijesti promjena na stranicama. Uz to možete dobiti pregled broja zapisa na svakoj stranici kao i postavke na stranicama prikazane u klasiènoj strukturi stabla.',
+		'mlang_tabs_tab' => 'Info',
 	),
 	'hu' => Array (
+		'title' => 'Oldal információ',
+		'depth_0' => 'Ez az oldal',
+		'depth_1' => '1. szint',
+		'depth_2' => '2. szint',
+		'depth_3' => '3. szint',
+		'mlang_labels_tablabel' => 'Általános oldalinformációk, úgy mint statisztika, változtatások naplója stb..',
+		'mlang_labels_tabdescr' => 'A Web>Info az általános, statikus oldalinformációkat jeleníti meg.',
+		'mlang_tabs_tab' => 'Info',
 	),
 	'gl' => Array (
 	),
@@ -300,6 +316,12 @@ $LOCAL_LANG = Array (
 		'mlang_tabs_tab' => '×ž×™×“×¢',
 	),
 	'ua' => Array (
+	),
+	'lv' => Array (
+	),
+	'jp' => Array (
+	),
+	'vn' => Array (
 	),
 );
 ?>

@@ -79,6 +79,7 @@ $LOCAL_LANG = Array (
 		'goBack' => 'Jít zpìt',
 		'fullDescription' => 'Zobrazit úplný popis tabulky',
 		'close' => 'Zavøít',
+		'title' => 'Online nápovìda TYPO3',
 	),
 	'pl' => Array (
 		'details' => 'Szczegó³y',
@@ -121,6 +122,7 @@ $LOCAL_LANG = Array (
 		'goBack' => 'Gå tillbaka',
 		'fullDescription' => 'Se full förklaring över tabellen',
 		'close' => 'Stäng',
+		'title' => 'Typo3 Online-hjälp',
 	),
 	'pt' => Array (
 		'details' => 'Detalhes',
@@ -135,8 +137,9 @@ $LOCAL_LANG = Array (
 		'syntax' => 'Ñèíòàêñèñ',
 		'seeAlso' => 'Ñì. òàêæå',
 		'goBack' => 'Âîçâðàò',
-		'fullDescription' => 'Ñì. ïîëíîå îïèñàíèå òàáëèöû',
+		'fullDescription' => 'Ñì. ïîëíîå îïèñàíèå',
 		'close' => 'Çàêðûòü',
+		'title' => 'Äèàëîãîâàÿ ïîìîùü TYPO3',
 	),
 	'ro' => Array (
 		'details' => 'Detalii',
@@ -161,6 +164,7 @@ $LOCAL_LANG = Array (
 		'goBack' => 'Choï naspä',
 		'fullDescription' => 'Pozri celý popis tabu¾ky',
 		'close' => 'Zavrie',
+		'title' => 'TYPO3 Online Pomoc',
 	),
 	'lt' => Array (
 		'details' => 'Detalës',
@@ -179,8 +183,22 @@ $LOCAL_LANG = Array (
 		'close' => 'Loka',
 	),
 	'hr' => Array (
+		'details' => 'Detaljnjije',
+		'syntax' => 'Sintaksa',
+		'seeAlso' => 'Pogledaj još',
+		'goBack' => 'Natrag',
+		'fullDescription' => 'Pogledaj pun opis tablice',
+		'close' => 'Zatvori',
+		'title' => 'TYPO3 online pomoæ',
 	),
 	'hu' => Array (
+		'details' => 'Részletek',
+		'syntax' => 'Szintaxis',
+		'seeAlso' => 'Lásd még',
+		'goBack' => 'Menj vissza',
+		'fullDescription' => 'A tábla teljes leírásának megtekintése',
+		'close' => 'Bezár',
+		'title' => 'TYPO3 Online Súgó',
 	),
 	'gl' => Array (
 	),
@@ -199,8 +217,9 @@ $LOCAL_LANG = Array (
 		'syntax' => '»yªk',
 		'seeAlso' => '°Ñ¬Ý',
 		'goBack' => 'ªð¦^',
-		'fullDescription' => 'ÀËµøªí®æªºº¡¾ã¤¶²Ð',
+		'fullDescription' => 'ÀËµøªí®æªº§¹¾ã¤¶²Ð',
 		'close' => 'Ãö³¬',
+		'title' => 'TYPO3 ½u¤W¤ä´©',
 	),
 	'eu' => Array (
 	),
@@ -220,6 +239,7 @@ $LOCAL_LANG = Array (
 		'goBack' => 'Voltar',
 		'fullDescription' => 'Ver descrição completa da tabela',
 		'close' => 'Fechar',
+		'title' => 'Ajuda Online TYPO3',
 	),
 	'et' => Array (
 		'details' => 'Detailid',
@@ -228,6 +248,7 @@ $LOCAL_LANG = Array (
 		'goBack' => 'Tagasi',
 		'fullDescription' => 'Tabeli täiskirjeldus',
 		'close' => 'Sulge',
+		'title' => 'TYPO3 Online Abi',
 	),
 	'ar' => Array (
 		'details' => 'ÊáÇÕêä',
@@ -236,6 +257,7 @@ $LOCAL_LANG = Array (
 		'goBack' => 'ÅÑÌÙ',
 		'fullDescription' => 'ÅæØÑ ÇäèÕá ÇäãÇåä ääÌÏèä',
 		'close' => 'Åâáä',
+		'title' => 'åÓÇÙÏÉ Ùäé ÇäçèÇÁ äàà ÊêÈè 3',
 	),
 	'he' => Array (
 		'details' => '×¤×¨×˜×™×',
@@ -244,8 +266,15 @@ $LOCAL_LANG = Array (
 		'goBack' => '×¢×‘×•×¨ ×—×–×¨×”',
 		'fullDescription' => '×¨××” ×ª×™××•×¨ ×ž×œ× ×©×œ ×˜×‘×œ×”',
 		'close' => '×¡×’×•×¨',
+		'title' => '×¢×–×¨×” ×‘××™× ×˜×¨× ×˜',
 	),
 	'ua' => Array (
+	),
+	'lv' => Array (
+	),
+	'jp' => Array (
+	),
+	'vn' => Array (
 	),
 );
 ?>

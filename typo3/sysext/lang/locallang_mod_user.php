@@ -35,7 +35,7 @@ $LOCAL_LANG = Array (
 		'mlang_tabs_tab' => 'Gebruiker',
 	),
 	'cz' => Array (
-		'mlang_labels_tablabel' => 'Vaše osbní úkoly, pøehled a nastavení',
+		'mlang_labels_tablabel' => 'Vaše osobní úkoly, pøehled a nastavení',
 		'mlang_tabs_tab' => 'Uživatel',
 	),
 	'pl' => Array (
@@ -47,7 +47,7 @@ $LOCAL_LANG = Array (
 		'mlang_tabs_tab' => 'Uporabnik',
 	),
 	'fi' => Array (
-		'mlang_labels_tablabel' => 'Sinun henkilökohtaiset toimet, yleis- ja perustiedot.',
+		'mlang_labels_tablabel' => 'Henkilökohtaiset tehtävät, yleistiedot ja asetukset.',
 		'mlang_tabs_tab' => 'Käyttäjä',
 	),
 	'tr' => Array (
@@ -87,10 +87,15 @@ $LOCAL_LANG = Array (
 		'mlang_tabs_tab' => 'Notenda',
 	),
 	'hr' => Array (
+		'mlang_labels_tablabel' => 'Vaši osobni zadaci, pregled i postavke',
+		'mlang_tabs_tab' => 'Korisnik',
 	),
 	'hu' => Array (
+		'mlang_labels_tablabel' => 'Személyes feladataid, áttekintés és beállítás.',
+		'mlang_tabs_tab' => 'Felhasználó',
 	),
 	'gl' => Array (
+		'mlang_tabs_tab' => 'Atuisoq',
 	),
 	'th' => Array (
 		'mlang_labels_tablabel' => '§Ò¹ÊèÇ¹µÑÇ¢Í§¤Ø³ ¡ÅèÒÇ¹ÓáÅÐµÔ´µÑé§',
@@ -127,6 +132,12 @@ $LOCAL_LANG = Array (
 		'mlang_tabs_tab' => '×ž×©×ª×ž×©',
 	),
 	'ua' => Array (
+	),
+	'lv' => Array (
+	),
+	'jp' => Array (
+	),
+	'vn' => Array (
 	),
 );
 ?>

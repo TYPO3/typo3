@@ -35,7 +35,7 @@ $LOCAL_LANG = Array (
 		'mlang_tabs_tab' => 'Doc',
 	),
 	'cz' => Array (
-		'mlang_labels_tablabel' => 'Editace záznamù a dokumentù',
+		'mlang_labels_tablabel' => 'Úprava záznamù a dokumentù',
 		'mlang_tabs_tab' => 'Doc',
 	),
 	'pl' => Array (
@@ -87,10 +87,16 @@ $LOCAL_LANG = Array (
 		'mlang_tabs_tab' => 'Skjal',
 	),
 	'hr' => Array (
+		'mlang_labels_tablabel' => 'Ureðivanje zapisa i dokumenata',
+		'mlang_tabs_tab' => 'Doc',
 	),
 	'hu' => Array (
+		'mlang_labels_tablabel' => 'Rekordok és dokumentumok szerkesztése',
+		'mlang_tabs_tab' => 'Doc',
 	),
 	'gl' => Array (
+		'mlang_labels_tablabel' => 'Allakkat recordsillu aaqqissuinerat',
+		'mlang_tabs_tab' => 'Allakkat',
 	),
 	'th' => Array (
 		'mlang_labels_tablabel' => '¡ÓÅÑ§á¡éä¢ºÑ¹·Ö¡¢éÍÁÙÅáÅÐàÍ¡ÊÒÃ',
@@ -127,6 +133,12 @@ $LOCAL_LANG = Array (
 		'mlang_tabs_tab' => '×ž×¡×ž×š',
 	),
 	'ua' => Array (
+	),
+	'lv' => Array (
+	),
+	'jp' => Array (
+	),
+	'vn' => Array (
 	),
 );
 ?>

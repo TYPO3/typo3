@@ -4,7 +4,8 @@
  * TYPO3 CVS ID: $Id$
  */
 
-$LOCAL_LANG['bg'] = Array (
+$LOCAL_LANG = Array (
+	'bg' => Array (
 		'labels.openInNewWindow' => 'Отвори в нов прозорец',
 		'labels.goBack' => 'Назад',
 		'labels.makeShortcut' => 'Препратка (shortcut) към тази страница?',
@@ -146,5 +147,6 @@ $LOCAL_LANG['bg'] = Array (
 		'cm.unzip' => 'Разтвори (Unzip)',
 		'cm.info' => 'Инфо',
 		'cm.createnew' => 'Създай Нов',
+	),
 );
 ?>

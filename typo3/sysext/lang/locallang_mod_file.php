@@ -87,10 +87,16 @@ $LOCAL_LANG = Array (
 		'mlang_tabs_tab' => 'SkrÃ¡',
 	),
 	'hr' => Array (
+		'mlang_labels_tablabel' => 'Administracija datoteka na poslužitelju',
+		'mlang_tabs_tab' => 'Datoteke',
 	),
 	'hu' => Array (
+		'mlang_labels_tablabel' => 'File adminisztáció a szerveren',
+		'mlang_tabs_tab' => 'File',
 	),
 	'gl' => Array (
+		'mlang_labels_tablabel' => 'Serverimi fiilimik aaqqissuivik',
+		'mlang_tabs_tab' => 'Fiili',
 	),
 	'th' => Array (
 		'mlang_labels_tablabel' => '¡ÒÃ¨Ñ´¡ÒÃá¿éÁ¢éÍÁÙÅº¹à¤Ã×èÍ§à«ÔÃì¿àÇèÍ',
@@ -127,6 +133,12 @@ $LOCAL_LANG = Array (
 		'mlang_tabs_tab' => '×§×•×‘×¥',
 	),
 	'ua' => Array (
+	),
+	'lv' => Array (
+	),
+	'jp' => Array (
+	),
+	'vn' => Array (
 	),
 );
 ?>

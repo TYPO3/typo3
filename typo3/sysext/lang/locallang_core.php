@@ -187,5 +187,11 @@ Would you like to save now in order to refresh the display?',
 	'ar' => 'EXT',
 	'he' => 'EXT',
 	'ua' => 'EXT',
+	'lv' => Array (
+	),
+	'jp' => Array (
+	),
+	'vn' => Array (
+	),
 );
 ?>

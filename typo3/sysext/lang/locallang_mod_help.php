@@ -35,8 +35,8 @@ $LOCAL_LANG = Array (
 		'mlang_tabs_tab' => 'Help',
 	),
 	'cz' => Array (
-		'mlang_labels_tablabel' => 'Help a podpora',
-		'mlang_tabs_tab' => 'Help',
+		'mlang_labels_tablabel' => 'Nápovìda a podpora',
+		'mlang_tabs_tab' => 'Nápovìda',
 	),
 	'pl' => Array (
 		'mlang_labels_tablabel' => 'Pomoc i wsparcie',
@@ -87,10 +87,16 @@ $LOCAL_LANG = Array (
 		'mlang_tabs_tab' => 'HjÃ¡lp',
 	),
 	'hr' => Array (
+		'mlang_labels_tablabel' => 'Pomoæ i podrška',
+		'mlang_tabs_tab' => 'Pomoæ',
 	),
 	'hu' => Array (
+		'mlang_labels_tablabel' => 'Súgó és tanácsadás',
+		'mlang_tabs_tab' => 'Súgó',
 	),
 	'gl' => Array (
+		'mlang_labels_tablabel' => 'Ikiuut tapersuullu',
+		'mlang_tabs_tab' => 'Ikiuut',
 	),
 	'th' => Array (
 		'mlang_labels_tablabel' => '¡ÒÃãªéáÅÐ¡ÒÃãËé¡ÒÃÊ¹ÑºÊ¹Ø¹',
@@ -127,6 +133,12 @@ $LOCAL_LANG = Array (
 		'mlang_tabs_tab' => '×¢×–×¨×”',
 	),
 	'ua' => Array (
+	),
+	'lv' => Array (
+	),
+	'jp' => Array (
+	),
+	'vn' => Array (
 	),
 );
 ?>

@@ -29,7 +29,7 @@ $LOCAL_LANG = Array (
 	'it' => Array (
 		'introtext' => 'Web Content Management System',
 		'introtext2' => 'Breve descrizione dei moduli disponibili:',
-		'endText' => 'Le caratteristiche possono variare a seconda del sito web e dei permessi',
+		'endText' => 'Le caratteristiche possono variare a seconda del sito web e dei permessi utente',
 		'userInfo' => 'Hai avuto accesso come utente:',
 	),
 	'fr' => Array (
@@ -53,7 +53,7 @@ $LOCAL_LANG = Array (
 	'cz' => Array (
 		'introtext' => 'systйm pro sprбvu obsahu webu',
 		'introtext2' => 'Toto jsou krбtkй popisy dostupnэch modulщ:',
-		'endText' => 'Vlastnosti se mohou mмnit podle vaљeho website a pшнstupovэch prбv',
+		'endText' => 'Vlastnosti se mohou mмnit podle vaљeho webu a pшнstupovэch prбv',
 		'userInfo' => 'Jste zalogovбn jako uћivatel:',
 	),
 	'pl' => Array (
@@ -69,10 +69,10 @@ $LOCAL_LANG = Array (
 		'userInfo' => 'Prijavljeni ste kot uporabnik:',
 	),
 	'fi' => Array (
-		'introtext' => 'Web Content Management System',
-		'introtext2' => 'Tдmд on lyhyt kuvaus kдyttдvistд moduleista',
+		'introtext' => 'Web-sisдllцnhallintajдrjestelmд',
+		'introtext2' => 'Tдssд lyhyt kuvaus kдytettдvistд moduleista:',
 		'endText' => 'Mahdollisuudet voivat olla riippuvaisia asennuksesta ja kдyttцympдristцstд',
-		'userInfo' => 'Olet sisддnkirjoittautunut kдyttдjдnд:',
+		'userInfo' => 'Olet kirjautunut sisддn kдyttдjдnд:',
 	),
 	'tr' => Array (
 		'introtext' => 'Web Эзeriрi Yцnetim Sistemi',
@@ -93,10 +93,10 @@ $LOCAL_LANG = Array (
 		'userInfo' => 'Vocк estб conectado como utilizador:',
 	),
 	'ru' => Array (
-		'introtext' => 'Система управления веб-сайтом',
+		'introtext' => 'Система управления веб-контентом',
 		'introtext2' => 'Краткое описание модулей:',
-		'endText' => 'Список модулей может меняться в зависимости от сайта и ваших прав доступа',
-		'userInfo' => 'Вы зарегистроровались как пользователь:',
+		'endText' => 'Список модулей может меняться в зависимости от ваших прав доступа',
+		'userInfo' => 'Вы зарегистрировались как пользователь:',
 	),
 	'ro' => Array (
 		'introtext' => 'Sistem de Management a Conюinutului Site-urilor',
@@ -129,8 +129,16 @@ $LOCAL_LANG = Array (
 		'userInfo' => '<font size=1>ГћГє er skrГЎГ°(ur) inn sem notandi: <strong>%s</strong> (%s)<br></font>',
 	),
 	'hr' => Array (
+		'introtext' => 'Sustav za upravljanje web sadrћajima',
+		'introtext2' => 'Ovo je kratki opis rapoloћivih modula',
+		'endText' => 'Moguжnosti se mogu ralikovati ovisno o vaљem web sjediљu i dozvolama',
+		'userInfo' => 'Prijavljeni ste kao korisnik:',
 	),
 	'hu' => Array (
+		'introtext' => 'Web Tartalomkezelх Rendszer',
+		'introtext2' => 'Rцvid leнrбs a modulokrуl',
+		'endText' => 'A tulajdonsбgok fьggenek a jogosultsбgoktуl',
+		'userInfo' => 'Bejelentkeztйl mint:',
 	),
 	'gl' => Array (
 	),
@@ -185,6 +193,12 @@ $LOCAL_LANG = Array (
 		'userInfo' => '<font size=1>ЧћЧ©ЧЄЧћЧ©: <strong>%s</strong> (%s)<br></font>',
 	),
 	'ua' => Array (
+	),
+	'lv' => Array (
+	),
+	'jp' => Array (
+	),
+	'vn' => Array (
 	),
 );
 ?>

@@ -150,8 +150,18 @@ $LOCAL_LANG = Array (
 		'mlang_tabs_tab' => 'Um',
 	),
 	'hr' => Array (
+		'welcome' => 'TYPO3 profesionalni sustav za upravljanje web sadržajima',
+		'minor' => 'TYPO3 je fleksibilan i profesionalan Open Source Web-CMS zasnovan na PHP4 i MySQL-u.<br /><br />TYPO3 je<br /> slobodno dostupan pod <A HREF="http://typo3.com/1244.0.html" target="_blank">TYPO3-licencom (GNU/GPL)</a>.<br /><br />%s %s<br />',
+		'mlang_labels_tablabel' => 'O TYPO3',
+		'mlang_labels_tabdescr' => 'Prikazuje osnovne èinjenice o TYPO3 aplikaciji, verziji i uvjetima licenciranja.',
+		'mlang_tabs_tab' => 'Deklaracija',
 	),
 	'hu' => Array (
+		'welcome' => 'Typo3 Professzionális Web Tartalomkezelõ Rendszer',
+		'minor' => 'TYPO3 egy rugalmas és professzionális szabad forráskódú Web-CMS rendszer, ami a PHP4-re és a MySQL-re épül. <br><br>A TYPO3 <b>szabadon elérhetõ a</b> <A HREF="http://typo3.com/1244.0.html" target="_blank">TYPO3-license (GNU/GPL)</a> alatt.<br><br>%s %s<br>',
+		'mlang_labels_tablabel' => 'A TYPO3-ról',
+		'mlang_labels_tabdescr' => 'A TYPO3 verziójának és license-ének bemutatása.',
+		'mlang_tabs_tab' => 'Névjegy',
 	),
 	'gl' => Array (
 	),
@@ -214,6 +224,12 @@ $LOCAL_LANG = Array (
 		'mlang_tabs_tab' => '××•×“×•×ª',
 	),
 	'ua' => Array (
+	),
+	'lv' => Array (
+	),
+	'jp' => Array (
+	),
+	'vn' => Array (
 	),
 );
 ?>
