@@ -129,8 +129,8 @@ if (!$temp_path || substr($temp_path,-strlen(TYPO3_mainDir))!=TYPO3_mainDir)	{	/
 // *************************************************
 // t3lib_div + extention management class included
 // *************************************************
-require(PATH_t3lib.'class.t3lib_div.php');		// The standard-library is included
-require(PATH_t3lib.'class.t3lib_extmgm.php');	// Extension API Management library included
+require_once(PATH_t3lib.'class.t3lib_div.php');		// The standard-library is included
+require_once(PATH_t3lib.'class.t3lib_extmgm.php');	// Extension API Management library included
 
 // ****************************************************
 // Include configuration (localconf + ext_localconf)
@@ -138,7 +138,7 @@ require(PATH_t3lib.'class.t3lib_extmgm.php');	// Extension API Management librar
 require(PATH_t3lib.'config_default.php');
 if (!defined ('TYPO3_db')) 	die ('The configuration file was not included.');
 
-require(PATH_t3lib.'class.t3lib_db.php');		// The database library
+require_once(PATH_t3lib.'class.t3lib_db.php');		// The database library
 $TYPO3_DB = t3lib_div::makeInstance('t3lib_DB');
 
 $CLIENT = t3lib_div::clientInfo();					// $CLIENT includes information about the browser/user-agent
@@ -148,12 +148,12 @@ $PARSETIME_START = t3lib_div::milliseconds();		// Is set to the system time in m
 // *********************
 // Libraries included
 // *********************
-require_once (PATH_t3lib.'class.t3lib_userauth.php');
-require_once (PATH_t3lib.'class.t3lib_userauthgroup.php');
-require_once (PATH_t3lib.'class.t3lib_beuserauth.php');
-require_once (PATH_t3lib.'class.t3lib_iconworks.php');
-require_once (PATH_t3lib.'class.t3lib_befunc.php');
-require_once (PATH_t3lib.'class.t3lib_cs.php');
+require_once(PATH_t3lib.'class.t3lib_userauth.php');
+require_once(PATH_t3lib.'class.t3lib_userauthgroup.php');
+require_once(PATH_t3lib.'class.t3lib_beuserauth.php');
+require_once(PATH_t3lib.'class.t3lib_iconworks.php');
+require_once(PATH_t3lib.'class.t3lib_befunc.php');
+require_once(PATH_t3lib.'class.t3lib_cs.php');
 
 // **********************
 // Check Hardcoded lock on BE:
