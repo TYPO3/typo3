@@ -1,3 +1,8 @@
+2004-07-05  Ingmar Schlecht  <ingmars@web.de>
+
+	* Backported Robert's fix to bug #70 to the 3.6 branch.
+	  File count of the file list module was too high (+1)
+
 2004-07-02  Michael Stucki  <mundaun@gmx.ch>
 
 	* Fixed bug #191: Small typo in German translation
@@ -23,7 +28,7 @@
 
 	* Fixed bug #88:  fe_adminLib.inc issue
 
-2004-05-11  Ingmar Schlecht  <ingmar@ingmar_lap>
+2004-05-11  Ingmar Schlecht  <ingmars@web.de>
 
 	* Changed version number to 3.6.1 in t3lib/config_default.php
 
