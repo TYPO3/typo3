@@ -1,3 +1,7 @@
+2005-03-16  Ingmar Schlecht  <ingmar@typo3.org>
+
+	* Fixed bug #0000335 in class.t3lib_extfilefunc.php: If $this->dont_use_exec_commands was set, it was impossible to delete any directories, which is now possible again. It's still impossible to delete direcories recursively though.
+
 2005-03-10  Kasper Skårhøj,,,  <kasper@typo3.com>
 
 	* Added feature that connects cache-control headers with whether user-logins are allowed in a branch or not. Makes mixing of cached and dynamic user-dependant content easier.
