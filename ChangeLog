@@ -1,3 +1,7 @@
+2004-04-27  Kasper Skårhøj,,,  <kasper@typo3.com>
+
+	* TAG: "TYPO3_3-6-0RC2", BRANCH "TYPO3_3-6-0"
+
 2004-04-26  Kasper Skårhøj,,,  <kasper@typo3.com>
 
 	* Added possibility to prefix references to wizard scripts with "EXT:" for reference to wizard scripts in extension.
