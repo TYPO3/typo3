@@ -580,9 +580,9 @@ class t3lib_div {
 						// "192.168.3.0/24"
 					$lnet = ip2long($test);
 					$lip = ip2long($baseIP);
-					$binnet = str_pad( decbin($lnet),32,"0","STR_PAD_LEFT" );
+					$binnet = str_pad( decbin($lnet),32,'0','STR_PAD_LEFT');
 					$firstpart = substr($binnet,0,$mask);
-					$binip = str_pad( decbin($lip),32,"0","STR_PAD_LEFT" );
+					$binip = str_pad( decbin($lip),32,'0','STR_PAD_LEFT');
 					$firstip = substr($binip,0,$mask);
 					$yes = (strcmp($firstpart,$firstip)==0);
 				} else {
@@ -723,16 +723,24 @@ class t3lib_div {
 	}
 
 	/**
-	 * Takes a comma-separated list and removes all duplicates
+	 * Takes comma-separated lists and arrays and removes all duplicates
 	 *
 	 * Usage: 16
 	 *
-	 * @param	string		$in_list is a comma-separated list of values.
+	 * @param	string		Accept multiple parameters wich can be comma-separated lists of values and arrays.
 	 * @return	string		Returns the list without any duplicates of values, space around values are trimmed
 	 */
-	function uniqueList($in_list)	{
-		$theTempArray = explode(',',$in_list);
-		return implode(t3lib_div::uniqueArray($theTempArray),',');
+	function uniqueList()	{
+		$listArray = array();
+		
+		$arg_list = func_get_args();
+		foreach ($arg_list as $in_list)	{
+			if (!is_array($in_list))	{
+				$in_list = explode(',',$in_list);
+			}
+			$listArray = array_merge($listArray,$in_list);
+		}
+		return implode(t3lib_div::uniqueArray($listArray),',');
 	}
 
 	/**
