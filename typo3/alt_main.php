@@ -438,7 +438,7 @@ class SC_alt_main {
 		$this->content.=$GLOBALS['TBE_TEMPLATE']->startPage($title);
 
 			// Creates frameset
-		$fr_content = '<frame name="content" src="'.($BE_USER->uc['startInTaskCenter']&&t3lib_extMgm::isLoaded('taskcenter')?t3lib_extMgm::extRelPath('taskcenter').'task/frameset.php':'alt_intro.php').'" marginwidth="0" marginheight="0" frameborder="0" scrolling="auto" noresize="noresize" />';
+		$fr_content = '<frame name="content" src="'.($BE_USER->uc['startInTaskCenter']&&t3lib_extMgm::isLoaded('taskcenter')?t3lib_extMgm::extRelPath('taskcenter').'task/index.php':'alt_intro.php').'" marginwidth="0" marginheight="0" frameborder="0" scrolling="auto" noresize="noresize" />';
 		$fr_toplogo = '<frame name="toplogo" src="alt_toplogo.php" marginwidth="0" marginheight="0" frameborder="0" scrolling="no" noresize="noresize" />';
 		$fr_topmenu = '<frame name="topmenuFrame" src="alt_topmenu_dummy.php" marginwidth="0" marginheight="0" frameborder="0" scrolling="no" noresize="noresize" />';
 

@@ -3,7 +3,7 @@
 ########################################################################
 # Extension Manager/Repository config file for ext: "taskcenter"
 # 
-# Auto generated 17-11-2004 17:49
+# Auto generated 14-12-2004 14:42
 # 
 # Manual updates:
 # Only the data in the array - anything else is removed by next write
@@ -36,7 +36,7 @@ $EM_CONF[$_EXTKEY] = Array (
 	'private' => 0,
 	'download_password' => '',
 	'version' => '0.1.2',	// Don't modify this! Managed automatically during upload to repository.
-	'_md5_values_when_last_written' => 'a:17:{s:12:"ext_icon.gif";s:4:"fc53";s:14:"ext_tables.php";s:4:"837d";s:28:"task/class.mod_user_task.php";s:4:"06ca";s:14:"task/clear.gif";s:4:"cc11";s:13:"task/conf.php";s:4:"aba9";s:17:"task/frameset.php";s:4:"7115";s:14:"task/index.php";s:4:"6ed0";s:18:"task/locallang.xml";s:4:"1831";s:22:"task/locallang_mod.xml";s:4:"5b3c";s:17:"task/overview.php";s:4:"5981";s:13:"task/task.gif";s:4:"fc53";s:16:"task/CVS/Entries";s:4:"51c8";s:19:"task/CVS/Repository";s:4:"752c";s:13:"task/CVS/Root";s:4:"0ea2";s:11:"CVS/Entries";s:4:"41c7";s:14:"CVS/Repository";s:4:"e70d";s:8:"CVS/Root";s:4:"0ea2";}',
+	'_md5_values_when_last_written' => 'a:13:{s:11:"CVS/Entries";s:4:"9c6f";s:14:"CVS/Repository";s:4:"e16f";s:8:"CVS/Root";s:4:"e21b";s:28:"task/class.mod_user_task.php";s:4:"3c2f";s:14:"task/clear.gif";s:4:"cc11";s:13:"task/conf.php";s:4:"c23d";s:14:"task/index.php";s:4:"b51d";s:18:"task/locallang.php";s:4:"97ec";s:22:"task/locallang_mod.php";s:4:"62be";s:13:"task/task.gif";s:4:"fc53";s:16:"task/CVS/Entries";s:4:"c7fb";s:19:"task/CVS/Repository";s:4:"6412";s:13:"task/CVS/Root";s:4:"e21b";}',
 );
 
 ?>
