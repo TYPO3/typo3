@@ -1,3 +1,7 @@
+2005-03-29  Michael Stucki  <michael@typo3.org>
+
+	* Added a Russian flag (thanks to Michael Shigorin)
+
 2005-03-29  Ingmar Schlecht  <ingmar@typo3.org>
 
 	* TYPO3 seems to prefer "mediumblob" instead of "MEDIUMBLOB", thus I changed that in typo3/sysext/cms/ext_tables.sql
