@@ -30,6 +30,7 @@
  * $Id$
  *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Ingmar Schlecht <ingmars@web.de>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
@@ -148,6 +149,7 @@ require_once (PATH_t3lib.'class.t3lib_stdgraphic.php');
  * Install Tool module
  *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Ingmar Schlecht <ingmars@web.de>
  * @package TYPO3
  * @subpackage tx_install
  */
@@ -1454,11 +1456,13 @@ From sub-directory:
 			// Memory and functions
 			// *****************
 		$memory_limit_value = $this->convertByteSize(ini_get("memory_limit"));
-		if ($memory_limit_value<16*1024*1024)	{
+		if ($memory_limit_value&&$memory_limit_value<16*1024*1024)	{
 			$this->message($ext, "Memory Limit below 16 MB","
 				<i>memory_limit=".ini_get("memory_limit")."</i>
 				Your system is configured to enforce a memory limit of PHP scripts lower than 16 MB. The Extension Manager needs to include more PHP-classes than will fit into this memory space. There is nothing else to do than raise the limit. To be safe, ask the system administrator of the webserver to raise the limit to over 25 MB.
 			",3);
+		} elseif(!$memory_limit_value) {
+			$this->message($ext, "Memory Limit","<i>No Memory Limit in effect.</i>",-1);
 		} else $this->message($ext, "Memory Limit","<i>memory_limit=".ini_get("memory_limit")."</i>",-1);
 		if (ini_get("max_execution_time")<30)	{
 			$this->message($ext, "Max Execution Time below default 30 seconds","
