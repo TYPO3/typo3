@@ -70,7 +70,7 @@ class tx_impexp_modfunc1 extends mod_user_task {
 	 * @return	string		HTML for the task center overview listing.
 	 */
 	function overview_main()	{
-
+		global $LANG;
 			// Create preset links:
 		$presets = $this->getPresets();
 		$opt = array();
@@ -79,7 +79,7 @@ class tx_impexp_modfunc1 extends mod_user_task {
 				$title = strlen($presetCfg['title']) ? $presetCfg['title'] : '['.$presetCfg['uid'].']';
 				$opt[] = '
 					<tr class="bgColor4">
-						<td nowrap="nowrap"><a href="'.$this->backPath.t3lib_extMgm::extRelPath('impexp').'app/index.php?tx_impexp[action]=export&preset[load]=1&preset[select]='.$presetCfg['uid'].'" target="list_frame">'.htmlspecialchars(t3lib_div::fixed_lgd_cs($title,30)).'</a>&nbsp;</td>
+						<td nowrap="nowrap"><a href="index.php?SET[function]=tx_impexp&display='.$presetCfg['uid'].'">'.htmlspecialchars(t3lib_div::fixed_lgd_cs($title,30)).'</a>&nbsp;</td>
 						<td>'.($presetCfg['item_uid'] ? $presetCfg['item_uid'] : '&nbsp;').'</td>
 						<td>'.($presetCfg['public'] ? '[Public]' : '&nbsp;').'</td>
 						<td>'.($presetCfg['user_uid']===$GLOBALS['BE_USER']->user['uid'] ? '[Own]' : '&nbsp;').'</td>
@@ -87,6 +87,7 @@ class tx_impexp_modfunc1 extends mod_user_task {
 			}
 			if(sizeof($opt)>0) {
 				$presets = '<table border="0" cellpadding="0" cellspacing="1" class="lrPadding">'.implode('',$opt).'</table>';
+				$presets .= '<a href="index.php?SET[function]=tx_impexp"><em>'.$LANG->getLL('link_allRecs').'</em></a>';
 			} else {
 				$presets = '';
 			}
@@ -98,26 +99,30 @@ class tx_impexp_modfunc1 extends mod_user_task {
 		return $config;
 	}
 
+
+
 	/**
 	 * Main Task center module
 	 *
 	 * @return	string		HTML content.
 	 */
     function main()    {
+			if($id = t3lib_div::_GP('display')) {
+				return $this->urlInIframe($this->backPath.t3lib_extMgm::extRelPath('impexp').'app/index.php?tx_impexp[action]=export&preset[load]=1&preset[select]='.$id,1);
+			} else {
+				// Thumbnail folder and files:
+				$tempDir = $this->userTempFolder();
+				if ($tempDir)	{
+					$thumbnails = t3lib_div::getFilesInDir($tempDir,'png,gif,jpg',1);
+				}
 
-			// Thumbnail folder and files:
-		$tempDir = $this->userTempFolder();
-		if ($tempDir)	{
-			$thumbnails = t3lib_div::getFilesInDir($tempDir,'png,gif,jpg',1);
-		}
+				$clause = $GLOBALS['BE_USER']->getPagePermsClause(1);
+				$usernames = t3lib_BEfunc::getUserNames();
 
-		$clause = $GLOBALS['BE_USER']->getPagePermsClause(1);
-		$usernames = t3lib_BEfunc::getUserNames();
-
-			// Create preset links:
-		$presets = $this->getPresets();
-		$opt = array();
-		$opt[] = '
+				// Create preset links:
+				$presets = $this->getPresets();
+				$opt = array();
+				$opt[] = '
 			<tr class="bgColor5 tableheader">
 				<td>Icon:</td>
 				<td>Preset Title:</td>
@@ -127,16 +132,16 @@ class tx_impexp_modfunc1 extends mod_user_task {
 				<td>Path:</td>
 				<td>Meta data:</td>
 			</tr>';
-		if (is_array($presets))	{
-			foreach($presets as $presetCfg)	{
-				$configuration = unserialize($presetCfg['preset_data']);
-				$thumbnailFile = $thumbnails[$configuration['meta']['thumbnail']];
-				$title = strlen($presetCfg['title']) ? $presetCfg['title'] : '['.$presetCfg['uid'].']';
+				if (is_array($presets))	{
+					foreach($presets as $presetCfg)	{
+						$configuration = unserialize($presetCfg['preset_data']);
+						$thumbnailFile = $thumbnails[$configuration['meta']['thumbnail']];
+						$title = strlen($presetCfg['title']) ? $presetCfg['title'] : '['.$presetCfg['uid'].']';
 
-				$opt[] = '
+						$opt[] = '
 					<tr class="bgColor4">
 						<td>'.($thumbnailFile ? '<img src="'.$this->backPath.'../'.substr($tempDir,strlen(PATH_site)).basename($thumbnailFile).'" hspace="2" width="70" style="border: solid black 1px;" alt="" /><br/>' : '&nbsp;').'</td>
-						<td nowrap="nowrap"><b><a href="'.$this->backPath.t3lib_extMgm::extRelPath('impexp').'app/index.php?tx_impexp[action]=export&preset[load]=1&preset[select]='.$presetCfg['uid'].'" target="list_frame">'.htmlspecialchars(t3lib_div::fixed_lgd_cs($title,30)).'</a></b></td>
+						<td nowrap="nowrap"><a href="index.php?SET[function]=tx_impexp&display='.$presetCfg['uid'].'">'.htmlspecialchars(t3lib_div::fixed_lgd_cs($title,30)).'</a>&nbsp;</td>
 						<td>'.($presetCfg['public'] ? 'Yes' : '&nbsp;').'</td>
 						<td>'.($presetCfg['user_uid']===$GLOBALS['BE_USER']->user['uid'] ? 'Own' : '['.$usernames[$presetCfg['user_uid']]['username'].']').'</td>
 						<td>'.($configuration['pagetree']['id'] ? $configuration['pagetree']['id'] : '&nbsp;').'</td>
@@ -148,13 +153,14 @@ class tx_impexp_modfunc1 extends mod_user_task {
 							'
 						</td>
 					</tr>';
+					}
+					$content = '<table border="0" cellpadding="0" cellspacing="1" class="lrPadding">'.implode('',$opt).'</table>';
+				}
 			}
-			$presets = '<table border="0" cellpadding="0" cellspacing="1" class="lrPadding">'.implode('',$opt).'</table>';
-		}
-
+		
 			// Output:
         $theOutput.= $this->pObj->doc->spacer(5);
-        $theOutput.= $this->pObj->doc->section('Export presets',$presets,0,1);
+        $theOutput.= $this->pObj->doc->section('Export presets',$content,0,1);
 
         return $theOutput;
     }
