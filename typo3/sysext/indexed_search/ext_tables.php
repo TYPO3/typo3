@@ -13,6 +13,15 @@ if (TYPO3_MODE=='BE')    {
     );
 }
 
+if (TYPO3_MODE=="BE")	{
+	t3lib_extMgm::insertModuleFunction(
+		"web_info",
+		"tx_indexedsearch_modfunc2",
+		t3lib_extMgm::extPath($_EXTKEY)."modfunc2/class.tx_indexedsearch_modfunc2.php",
+		"LLL:EXT:indexed_search/locallang.php:mod2_indexed_search"
+	);
+}
+
 t3lib_extMgm::allowTableOnStandardPages('index_config');
 
 $TCA['index_config'] = Array (

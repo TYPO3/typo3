@@ -1,3 +1,7 @@
+2005-04-07  Andreas Otto  <andreas.otto@dkd.de>
+
+	* Added modfunc2 which offers statistics of entered search words.
+
 2004-01-29  Ingmar Schlecht  <ingmar@typo3.org>
 
 	* Fixed spelling mistake "Interne pages" => "Internal pages"
@@ -10,5 +14,4 @@
 2004-04-22  Kasper Skårhøj,,,  <kasper@typo3.com>
 
 	* Added possibility of having more than the three fixed rootline columns.
-
 

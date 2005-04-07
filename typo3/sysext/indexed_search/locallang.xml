@@ -14,6 +14,7 @@
 	<data type="array">
 		<languageKey index="default" type="array">
 			<label index="mod_indexed_search">Indexed search</label>
+			<label index="mod2_indexed_search">Indexed Search Statistics</label>
 		</languageKey>
 		<languageKey index="dk">EXT:csh_dk/indexed_search/dk.locallang.xml</languageKey>
 		<languageKey index="de">EXT:csh_de/indexed_search/de.locallang.xml</languageKey>
