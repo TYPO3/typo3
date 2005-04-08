@@ -149,7 +149,7 @@ class t3lib_diff {
 	}
 
 	/**
-	 * Produce a diff (with the "diff" application on unix) between two strings
+	 * Produce a diff (using the "diff" application) between two strings
 	 * The function will write the two input strings to temporary files, then execute the diff program, delete the temp files and return the result.
 	 *
 	 * @param	string		String 1
@@ -158,22 +158,20 @@ class t3lib_diff {
 	 * @access private
 	 */
 	function getDiff($str1,$str2)	{
-		if (TYPO3_OS!='WIN')	{
-				// Create file 1 and write string
-			$file1 = t3lib_div::tempnam('diff1_');
-			t3lib_div::writeFile($file1,$str1);
-				// Create file 2 and write string
-			$file2 = t3lib_div::tempnam('diff2_');
-			t3lib_div::writeFile($file2,$str2);
-				// Perform diff.
-			$cmd = $GLOBALS['TYPO3_CONF_VARS']['BE']['diff_path'].' '.$this->diffOptions.' '.$file1.' '.$file2;
-			exec($cmd,$res);
+			// Create file 1 and write string
+		$file1 = t3lib_div::tempnam('diff1_');
+		t3lib_div::writeFile($file1,$str1);
+			// Create file 2 and write string
+		$file2 = t3lib_div::tempnam('diff2_');
+		t3lib_div::writeFile($file2,$str2);
+			// Perform diff.
+		$cmd = $GLOBALS['TYPO3_CONF_VARS']['BE']['diff_path'].' '.$this->diffOptions.' '.$file1.' '.$file2;
+		exec($cmd,$res);
 
-			unlink($file1);
-			unlink($file2);
+		unlink($file1);
+		unlink($file2);
 
-			return $res;
-		}
+		return $res;
 	}
 
 	/**
