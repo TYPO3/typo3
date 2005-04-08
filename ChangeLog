@@ -2,6 +2,10 @@
 
 	* Fixed bug #0000941: The diff feature was disabled on Windows but works fine if diff.exe is present and TYPO3_CONF_VARS[BE][diff_path] is correctly set
 
+2005-04-07  Andreas Otto  <andreas.otto@dkd.de>
+
+	* Added modfunc2 to sysext/indexed_search which offers statistics of entered search words.
+
 2005-04-06  Kasper Skårhøj,,,  <kasper@typo3.com>
 
 	* Removed all "unsigned" attributes from .sql files in the core and implemented a complete list of those fields for which it has been removed in the t3lib_install class. By default the install tool will NOT detect that these fields should be changed to signed integers since if the field is found in the list in the install class this difference will be ignored. The reason is that it will be 200+ ALTER TABLe changes and the significance is mostly cosmetic. However if somebody wants to actually do the conversion they can switch an internal variable in the t3lib_install class to TRUE and the install tool WILL convert...
