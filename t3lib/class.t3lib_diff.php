@@ -58,7 +58,6 @@
 
 /**
  * This class has functions which generates a difference output of a content string
- * Currently works only with LINUX/UNIX
  *
  * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  * @package TYPO3
