@@ -1147,6 +1147,7 @@ class tx_indexedsearch extends tslib_pibase {
 					'word' => $val['sword'],		// $GLOBALS['TSFE']->csConvObj->conv_case('utf-8', $val['sword'], 'toLower'),
 					'index_stat_search_id' => $newId,
 					'tstamp' => $GLOBALS['EXEC_TIME']		// Time stamp
+					'pageid' => $GLOBALS['TSFE']->id	//search page id for indexed search stats
 				);
 
 				$GLOBALS['TYPO3_DB']->exec_INSERTquery('index_stat_word', $insertFields);
