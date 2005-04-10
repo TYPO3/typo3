@@ -1572,13 +1572,26 @@ From sub-directory:
 		switch($cmd)	{
 			case "get_form":
 				$out='
-				You can check the mail() function by entering your email address here and press the button. You should then receive a testmail from test@test.test.
-				<form action="'.$this->action.'" method="POST"><input type="text" name="TYPO3_INSTALL[check_mail]">
+				You can check the mail() function by entering your email address here and press the button. You should then receive a testmail from test@test.test.<br /> Since most mails from TYPO3 is sent using the t3lib_htmlmail class, sending with this class can be tested by checking the box <strong>Test t3lib_htmlmail</strong> below. The return-path of the mail is set to '."null@".t3lib_div::getIndpEnv("HTTP_HOST").'. Some mail servers wont send the mail if the host of the return-path is not resolved correctly.
+				<form action="'.$this->action.'" method="POST"><input type="text" name="TYPO3_INSTALL[check_mail]"><br /><input type="checkbox" name="TYPO3_INSTALL[use_htmlmail]" >Test t3lib_htmlmail.
 					<input type="submit" value="Send test mail"></form>';
 			break;
 			default:
 				if (trim($this->INSTALL["check_mail"]))	{
-					mail(trim($this->INSTALL["check_mail"]), "TEST SUBJECT", "TEST CONTENT", "From: test@test.test");
+					if($this->INSTALL["use_htmlmail"]) {
+						require_once (PATH_t3lib.'class.t3lib_htmlmail.php');
+					  	$email = t3lib_div::makeInstance("t3lib_htmlmail");
+						$email->start();
+						$email->subject = "TEST SUBJECT";
+						$email->from_email = "Test@test.test";
+						$email->from_name = "Typo3 Install tool";
+						$email->returnPath = "null@".t3lib_div::getIndpEnv("HTTP_HOST");
+						$email->addPlain("TEST CONTENT");
+						$email->setHTML($email->encodeMsg("<html><body>HTML TEST CONTENT</body></html>"));
+						$email->send($this->INSTALL["check_mail"]);
+					} else {
+						mail(trim($this->INSTALL["check_mail"]), "TEST SUBJECT", "TEST CONTENT", "From: test@test.test");
+					}
 					$this->messages[]= "MAIL WAS SENT TO: ".$this->INSTALL["check_mail"];
 				}
 			break;

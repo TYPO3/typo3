@@ -1,3 +1,7 @@
+2005-04-10  Jan-Erik	<jer@moccompany.com>
+	* The earlier attempts to fix the problem of Return-Path with Postfix below version 2.0 seems not to work on all systems. The t3lib_htmlmail class now only forces the return-path if forceReturnPath is enabled in the install tool.
+	* Added an option to the install tool mail test form. Send the testmail via t3lib_htmlmail with the return-path set to null@<HTTP_HOST>.
+	
 2005-04-08  Michael Stucki  <michael@typo3.org>
 
 	* Fixed bug #0000941: The diff feature was disabled on Windows but works fine if diff.exe is present and TYPO3_CONF_VARS[BE][diff_path] is correctly set
