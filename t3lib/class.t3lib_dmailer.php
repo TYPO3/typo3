@@ -96,8 +96,8 @@ class t3lib_dmailer extends t3lib_htmlmail {
 	 */
 	function dmailer_prepare($row)	{
 		$sys_dmail_uid = $row['uid'];
-		if($row["encoding"] == "base64") {
-		  $this->useBase64();
+		if($row["encoding"] != "quoted-printable") {
+			$this->useBase64();
 		}
 		$this->theParts = unserialize($row['mailContent']);
 		$this->messageid = $this->theParts['messageid'];
