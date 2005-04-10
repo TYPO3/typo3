@@ -1012,9 +1012,10 @@ EXTENSION KEYS:
 	 * @param	string		"Direct input" of the extension stream. Debugging purpuses, it seems.
 	 * @param	boolean		If true, recent translations are included.
 	 * @param	boolean		If true, manual is included.
+	 * @param	boolean		If true, extension directory+files will not be deleted before writing the new ones. That way custom files stored in the extension folder will be kept.
 	 * @return	string		Return false on success, returns error message if error.
 	 */
-	function importExtFromRep($extRepUid,$loc,$uploadFlag=0,$directInput='',$recentTranslations=0,$incManual=0)	{
+	function importExtFromRep($extRepUid,$loc,$uploadFlag=0,$directInput='',$recentTranslations=0,$incManual=0,$dontDelete=0)	{
 
 		if (is_array($directInput))	{
 			$fetchData = array($directInput,'');
@@ -1086,7 +1087,7 @@ EXTENSION KEYS:
 					$extKey = $fetchData[0]['extKey'];
 					$EM_CONF = $fetchData[0]['EM_CONF'];
 					if (!$EM_CONF['lockType'] || !strcmp($EM_CONF['lockType'],$loc))	{
-						$res = $this->clearAndMakeExtensionDir($fetchData[0],$loc);
+						$res = $this->clearAndMakeExtensionDir($fetchData[0],$loc,$dontDelete);
 						if (is_array($res))	{
 							$extDirPath = trim($res[0]);
 							if ($extDirPath && @is_dir($extDirPath) && substr($extDirPath,-1)=='/')	{
@@ -2883,9 +2884,10 @@ EXTENSION KEYS:
 	 *
 	 * @param	array		Data for imported extension
 	 * @param	string		Extension installation scope (L,G,S)
+	 * @param	boolean		If set, nothing will be deleted (neither directory nor files)
 	 * @return	mixed		Returns array on success (with extension directory), otherwise an error string.
 	 */
-	function clearAndMakeExtensionDir($importedData,$type)	{
+	function clearAndMakeExtensionDir($importedData,$type,$dontDelete=0)	{
 		if (!$importedData['extKey'])	return 'FATAL ERROR: Extension key was not set for some VERY strange reason. Nothing done...';
 
 			// Setting install path (L, G, S or fileadmin/_temp_/)
@@ -2920,6 +2922,7 @@ EXTENSION KEYS:
 
 				// Install dir was found, remove it then:
 			if (@is_dir($extDirPath))	{
+				if($dontDelete) return array($extDirPath);
 				$res = $this->removeExtDirectory($extDirPath);
 				if ($res) {
 					return 'ERROR: Could not remove extension directory "'.$extDirPath.'". Reasons:<br /><br />'.nl2br($res);

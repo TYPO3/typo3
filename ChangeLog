@@ -1,6 +1,7 @@
 2005-04-10  Ingmar Schlecht  <ingmar@typo3.org>
 
 	* Added hook for TIMTAW extension in t3lib_userauth
+	* Changed typo3/mod/tools/em/index.php to support new "Overwrite" checkbox feature of Kickstarter
 
 2005-04-10  Jan-Erik	<jer@moccompany.com>
 	* The earlier attempts to fix the problem of Return-Path with Postfix below version 2.0 seems not to work on all systems. The t3lib_htmlmail class now only forces the return-path if forceReturnPath is enabled in the install tool.
