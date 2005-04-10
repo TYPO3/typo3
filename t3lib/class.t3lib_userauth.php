@@ -158,6 +158,7 @@ class t3lib_userAuth {
 	 * @return	void
 	 */
 	function start() {
+		global $TYPO3_CONF_VARS;
 
 			// Init vars.
 		$mode='';
@@ -211,7 +212,19 @@ class t3lib_userAuth {
 							'.$this->user_where_clause()
 					);
 
-		if ($this->user = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($dbres))	{
+		$this->user = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($dbres);
+
+		// Hook for alternative ways of filling the $this->user array (is used by TIMTAW extension)
+		if(is_array($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_userauth.php']['postUserLookUp']))	{
+			foreach($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_userauth.php']['postUserLookUp'] as $funcName)	{
+				$_params = array(
+					'pObj' => &$this,
+				);
+				t3lib_div::callUserFunction($funcName,$_params,$this);
+			}
+		}
+
+		if ($this->user)	{
 				// A user was found
 			if (is_string($this->auth_timeout_field))	{
 				$timeout = intval($this->user[$this->auth_timeout_field]);		// Get timeout-time from usertable

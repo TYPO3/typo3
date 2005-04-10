@@ -1,7 +1,11 @@
+2005-04-10  Ingmar Schlecht  <ingmar@typo3.org>
+
+	* Added hook for TIMTAW extension in t3lib_userauth
+
 2005-04-10  Jan-Erik	<jer@moccompany.com>
 	* The earlier attempts to fix the problem of Return-Path with Postfix below version 2.0 seems not to work on all systems. The t3lib_htmlmail class now only forces the return-path if forceReturnPath is enabled in the install tool.
 	* Added an option to the install tool mail test form. Send the testmail via t3lib_htmlmail with the return-path set to null@<HTTP_HOST>.
-	
+
 2005-04-08  Michael Stucki  <michael@typo3.org>
 
 	* Fixed bug #0000941: The diff feature was disabled on Windows but works fine if diff.exe is present and TYPO3_CONF_VARS[BE][diff_path] is correctly set
@@ -475,79 +479,79 @@ Sorry for writing these changelog entries with a delay of two days. I write them
 
 2004-08-20  Ingmar Schlecht  <ingmar@typo3.org>
 
- * Marginally changed the error message in t3lib_userauth appearing when the HTTP_REFERER mismatched.
+	* Marginally changed the error message in t3lib_userauth appearing when the HTTP_REFERER mismatched.
 
 2004-08-20  Ingmar Schlecht  <ingmar@typo3.org>
 
- * Fixed bugs #218 and #220: Install tool erroneously complained about low memory_limit
+	* Fixed bugs #218 and #220: Install tool erroneously complained about low memory_limit
 
 2004-08-20  Ingmar Schlecht  <ingmar@typo3.org>
 
- * Fixed bug #288: In t3lib_parsehtml prefixRelPath incorrectly prefixed absolute URLs
+	* Fixed bug #288: In t3lib_parsehtml prefixRelPath incorrectly prefixed absolute URLs
 
 2004-08-15  Michael Stucki  <mundaun@gmx.ch>
 
- * Corrected wrong parameter order for some implode function calls.
+	* Corrected wrong parameter order for some implode function calls.
 
 2004-08-07  Kasper Skårhøj,,,  <kasper@typo3.com>
 
- * Added three new permission modes for backend users: 1) Localization access control, 2) Access control on value level (for instance allow/deny individual selectorbox values), 3) API for custom permission options.
- * Implemented control of these modes in tcemain, tceforms and alt_doc.php + QuickEdit. Still need to implement it for edit icons around, but this is not critical, mostly a usability issue.
- * Moved table "sys_language" from extension "cms" back into the core
- * Updated CSH at various places.
- * Finished the accessListRenderMode(s) (see 4/8 below)
- * Still unsettled about various default settings related to these new options, but will discuss on dev-list.
+	* Added three new permission modes for backend users: 1) Localization access control, 2) Access control on value level (for instance allow/deny individual selectorbox values), 3) API for custom permission options.
+	* Implemented control of these modes in tcemain, tceforms and alt_doc.php + QuickEdit. Still need to implement it for edit icons around, but this is not critical, mostly a usability issue.
+	* Moved table "sys_language" from extension "cms" back into the core
+	* Updated CSH at various places.
+	* Finished the accessListRenderMode(s) (see 4/8 below)
+	* Still unsettled about various default settings related to these new options, but will discuss on dev-list.
 
 2004-08-04  Kasper Skårhøj,,,  <kasper@typo3.com>
 
- * Added new rendering modes for the "select" type in TCA: You can now render multiple-select lists as either a SINGLE selector box with multiple value selection OR as a list of checkboxes. For mozilla even the icons are rendered nicely in the option tags. Check out the backend user group configurations. Work is still in progress.
+	* Added new rendering modes for the "select" type in TCA: You can now render multiple-select lists as either a SINGLE selector box with multiple value selection OR as a list of checkboxes. For mozilla even the icons are rendered nicely in the option tags. Check out the backend user group configurations. Work is still in progress.
 
 2004-08-04  Kasper Skårhøj,,,  <kasper@typo3.com>
 
- * Added TYPo3_CONF_VARS[FE][lockHashKeyWords] so it is optional to lock FE user sessions to HTTP_USER_AGENT
+	* Added TYPo3_CONF_VARS[FE][lockHashKeyWords] so it is optional to lock FE user sessions to HTTP_USER_AGENT
 
 2004-08-03  Kasper Skårhøj,,,  <kasper@typo3.com>
 
- * Added and Changed features around page languages. More to come including a document guiding people about charsets and localization.
+	* Added and Changed features around page languages. More to come including a document guiding people about charsets and localization.
 
 2004-07-24  Jan-Erik Revsbech <jer@moccompany.com>
 
- * Added support for other transfer encodings in the dmailer class. Will start to move the t3lib_directmailer class out of the core and into the direct_mail extension.
+	* Added support for other transfer encodings in the dmailer class. Will start to move the t3lib_directmailer class out of the core and into the direct_mail extension.
 
 2004-07-23  Kasper Skårhøj,,,  <kasper@typo3.com>
 
- * Added the Core CVS rules to repository at "misc/core_cvs_rules.txt". ALL Contributers to the CORE CVS SHOULD READ AND FOLLOW THIS!
+	* Added the Core CVS rules to repository at "misc/core_cvs_rules.txt". ALL Contributers to the CORE CVS SHOULD READ AND FOLLOW THIS!
 
 2004-07-15  Robert Lemke  <rl@robertlemke.de>
 
- * Added new language flag icons (see t3lib/gfx/flags/). Will be used by templavoila and maybe sys_language
+	* Added new language flag icons (see t3lib/gfx/flags/). Will be used by templavoila and maybe sys_language
 
 2004-07-12  Ingmar Schlecht  <ingmar@typo3.org>
 
- * Fixed bug #194: wizard_table.php, missing parameter 'backPath'
+	* Fixed bug #194: wizard_table.php, missing parameter 'backPath'
 
 2004-07-12  Ingmar Schlecht  <ingmar@typo3.org>
 
- * Fixed bug #79: Extension manager: Removing extensions containing empty folders did not work
- * Fixed bug: When removing an extension, typo3 tried to remove the extension directory twice
+	* Fixed bug #79: Extension manager: Removing extensions containing empty folders did not work
+	* Fixed bug: When removing an extension, typo3 tried to remove the extension directory twice
 
 2004-07-02  Michael Stucki  <mundaun@gmx.ch>
 
- * Fixed bug #0000191: Small typo in German translation
+	* Fixed bug #0000191: Small typo in German translation
 
 2004-06-28  Kasper Skårhøj,,,  <kasper@typo3.com>
 
- * Moved creation of menu graphics, scaled images, gifbuilder images and temporary image files into subfolders of typo3temp/
- * Fixed case-folding-cache-file bug in t3lib_cs...
- * select a filepath as a source of the items you can add to the box (single/multiple) without copying the files of course.
+	* Moved creation of menu graphics, scaled images, gifbuilder images and temporary image files into subfolders of typo3temp/
+	* Fixed case-folding-cache-file bug in t3lib_cs...
+	* select a filepath as a source of the items you can add to the box (single/multiple) without copying the files of course.
 
 2004-06-21  Michael Stucki  <mundaun@gmx.ch>
 
- * Fixed bug #0000119: Another fe_adminLib htmlspecialchars() issue
+	* Fixed bug #0000119: Another fe_adminLib htmlspecialchars() issue
 
 2004-06-19  Kasper Skårhøj,,,  <kasper@typo3.com>
 
- * Moved CSH locallang-XML labels into extensions prefixed "csh_".
+	* Moved CSH locallang-XML labels into extensions prefixed "csh_".
 
 2004-06-18  Michael Stucki  <mundaun@gmx.ch>
 
