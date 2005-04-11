@@ -2039,9 +2039,9 @@ From sub-directory:
 								} else $this->messages[]= $errorMessages[] = "Password '".$value."' was longer than 50 chars (...not saved)";
 							break;
 							case "typo_db_host":
-								if (!ereg("[^[:alnum:]_\.-]",$value) && strlen($value)<50)	{
+								if (!ereg("[^[:alnum:]_\.-:]",$value) && strlen($value)<50)	{
 									if (strcmp(TYPO3_db_host,$value))		$this->setValueInLocalconfFile($lines, '$typo_db_host', $value);
-								} else $this->messages[]= $errorMessages[] = "Host '".$value."' was not alphanumeric, a-zA-Z0-9_-., or longer than 50 chars (...not saved)";
+								} else $this->messages[]= $errorMessages[] = "Host '".$value."' was not alphanumeric, a-zA-Z0-9_-:., or longer than 50 chars (...not saved)";
 							break;
 							case "typo_db":
 								if (strlen($value)<50)	{

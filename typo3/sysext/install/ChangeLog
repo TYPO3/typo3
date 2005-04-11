@@ -1,3 +1,7 @@
+2005-04-11  Ingmar Schlecht  <ingmar@typo3.org>
+
+	* Now database host names can contain colons ":" so you can also specify ports like "localhost:3306"
+
 2005-02-02  Ingmar Schlecht  <ingmar@typo3.org>
 
 	* Fixed bug #0000734: phpinfo() page results in "Call to undefined function: imagetypes() in class.tx_install.php on line 943"
