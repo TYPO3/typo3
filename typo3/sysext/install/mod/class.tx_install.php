@@ -1458,7 +1458,7 @@ From sub-directory:
 			// Memory and functions
 			// *****************
 		$memory_limit_value = $this->convertByteSize(ini_get("memory_limit"));
-		if ($memory_limit_value&&$memory_limit_value<16*1024*1024)	{
+		if ($memory_limit_value && $memory_limit_value < 16*1024*1024)	{
 			$this->message($ext, "Memory Limit below 16 MB","
 				<i>memory_limit=".ini_get("memory_limit")."</i>
 				Your system is configured to enforce a memory limit of PHP scripts lower than 16 MB. The Extension Manager needs to include more PHP-classes than will fit into this memory space. There is nothing else to do than raise the limit. To be safe, ask the system administrator of the webserver to raise the limit to over 25 MB.
@@ -1572,7 +1572,7 @@ From sub-directory:
 		switch($cmd)	{
 			case "get_form":
 				$out='
-				You can check the mail() function by entering your email address here and press the button. You should then receive a testmail from test@test.test.<br /> Since most mails from TYPO3 is sent using the t3lib_htmlmail class, sending with this class can be tested by checking the box <strong>Test t3lib_htmlmail</strong> below. The return-path of the mail is set to '."null@".t3lib_div::getIndpEnv("HTTP_HOST").'. Some mail servers wont send the mail if the host of the return-path is not resolved correctly.
+				You can check the mail() function by entering your email address here and press the button. You should then receive a testmail from test@test.test.<br /> Since almost all mails in TYPO3 are sent using the t3lib_htmlmail class, sending with this class can be tested by checking the box <strong>Test t3lib_htmlmail</strong> below. The return-path of the mail is set to null@'.t3lib_div::getIndpEnv('HTTP_HOST').'. Some mail servers won\'t send the mail if the host of the return-path is not resolved correctly.
 				<form action="'.$this->action.'" method="POST"><input type="text" name="TYPO3_INSTALL[check_mail]"><br /><input type="checkbox" name="TYPO3_INSTALL[use_htmlmail]" >Test t3lib_htmlmail.
 					<input type="submit" value="Send test mail"></form>';
 			break;
@@ -1584,7 +1584,7 @@ From sub-directory:
 						$email->start();
 						$email->subject = "TEST SUBJECT";
 						$email->from_email = "Test@test.test";
-						$email->from_name = "Typo3 Install tool";
+						$email->from_name = "TYPO3 Install tool";
 						$email->returnPath = "null@".t3lib_div::getIndpEnv("HTTP_HOST");
 						$email->addPlain("TEST CONTENT");
 						$email->setHTML($email->encodeMsg("<html><body>HTML TEST CONTENT</body></html>"));
