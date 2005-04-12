@@ -22,7 +22,10 @@
 			<label index="menu_modules.description">The Backend menu reflects the hierarchy of main- and sub-modules in TYPO3. Click a menu item to access the corresponding module.</label>
 			<label index="menu_modules.details">Backend Users might see different menu items depending on their access permissions. The &quot;Admin&quot; user on a system will always see all modules available.
 
-You can configure the backend to display the menu in two alternative versions (useful on smaller screens); As a selector box or list of icons in the top frame of the backend.</label>
+You can configure the backend to display the menu in two alternative versions (useful on smaller screens); As a selector box or list of icons in the top frame of the backend.
+
+When you click the little "+" or "-" icons next to the main modules, you can collapse (-) or expand (+) all the sub modules. By selecting the "Expand all" check box, all items are expanded. When the checkbox is unselected again, the menu changes back to the previous folding state. If you click "Expand all" and collapse a main module afterwards, the previous folding state is discarded and "Expand all" is unselected again.
+</label>
 			<label index="_menu_modules.seeAlso">be_groups:groupMods,
 be_users:userMods,
 _MOD_user_setup:option_noMenuMode,
