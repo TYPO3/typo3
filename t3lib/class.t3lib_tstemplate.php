@@ -1327,7 +1327,21 @@ class t3lib_TStemplate	{
 		$LD['no_cache'] = (trim($page['no_cache']) || $no_cache) ? '&no_cache=1' : '';
 
 			// linkVars
-		$LD['linkVars'] = $GLOBALS['TSFE']->linkVars.$addParams;
+		if ($GLOBALS['TSFE']->config['config']['uniqueLinkVars']) {
+			if ($addParams) {
+				$lV = array();
+				$addParamsArr = t3lib_div::trimExplode('&',$GLOBALS['TSFE']->linkVars.$addParams,1);
+				while(list($k,$e)=each($addParamsArr)) if ($e) {
+					list($k,$v) = explode('=',$e, 2);
+					$lV[$k] = $v;
+				}
+				$LD['linkVars'] = t3lib_div::implodeArrayForUrl('',$lV);
+			} else {
+				$LD['linkVars'] = $GLOBALS['TSFE']->linkVars;
+			}
+		} else {
+			$LD['linkVars'] = $GLOBALS['TSFE']->linkVars.$addParams;
+		}
 
 			// If simulateStaticDocuments is enabled:
 		if ($GLOBALS['TSFE']->config['config']['simulateStaticDocuments'])	{

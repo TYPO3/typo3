@@ -2648,7 +2648,14 @@ class t3lib_TCEmain	{
 	 * @return	void
 	 */
 	function process_cmdmap() {
-		global $TCA;
+		global $TCA, $TYPO3_CONF_VARS;
+
+		$hookObjectsArr = array();
+		if (is_array ($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processCmdmapClass'])) {
+			foreach ($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processCmdmapClass'] as $classRef) {
+				$hookObjectsArr[] = &t3lib_div::getUserObj($classRef);
+			}
+		}
 
 			// Traverse command map:
 		reset ($this->cmdmap);
@@ -2671,6 +2678,12 @@ class t3lib_TCEmain	{
 						reset($incomingCmdArray);
 						$command = key($incomingCmdArray);
  						$value = current($incomingCmdArray);
+
+						foreach($hookObjectsArr as $hookObj) {
+							if (method_exists($hookObj, 'processCmdmap_preProcess')) {
+								$hookObj->processCmdmap_preProcess($command, $table, $id, $value, $this);
+							}
+						}
 
 							// Init copyMapping array:
 						$this->copyMappingArray = Array();		// Must clear this array before call from here to those functions: Contains mapping information between new and old id numbers.
@@ -2713,6 +2726,13 @@ class t3lib_TCEmain	{
 								}
 							break;
 						}
+
+						foreach($hookObjectsArr as $hookObj) {
+							if (method_exists($hookObj, 'processCmdmap_postProcess')) {
+								$hookObj->processCmdmap_postProcess($command, $table, $id, $value, $this);
+							}
+						}
+
 							// Merging the copy-array info together for remapping purposes.
 						$this->copyMappingArray_merged= t3lib_div::array_merge_recursive_overrule($this->copyMappingArray_merged,$this->copyMappingArray);
 					}

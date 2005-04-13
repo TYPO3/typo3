@@ -2316,7 +2316,7 @@ From sub-directory:
 		$background_color = imagecolorallocate ($im, 255, 255, 55);
 		$text_color = imagecolorallocate ($im, 233, 14, 91);
 
-		$test = @imagettftext($im, t3lib_div::freetypeDpiComp(20), 0, 10, 20, $text_color, PATH_t3lib."/fonts/verdana.ttf", "Testing Truetype support");
+		$test = @imagettftext($im, t3lib_div::freetypeDpiComp(20), 0, 10, 20, $text_color, PATH_t3lib."/fonts/vera.ttf", "Testing Truetype support");
 		if (t3lib_div::_GP("testingTrueTypeSupport"))	{
 			if ($this->isGIF())	{
 				header ("Content-type: image/gif");
@@ -2842,7 +2842,7 @@ From sub-directory:
 						"text" => "HELLO WORLD",
 						"fontColor" => "#003366",
 						"fontSize" => 18,
-						"fontFile" => $this->backPath."t3lib/fonts/verdana.ttf",
+						"fontFile" => $this->backPath."t3lib/fonts/vera.ttf",
 						"offset" => "17,40"
 					);
 					$conf["BBOX"] = $imageProc->calcBBox($conf);

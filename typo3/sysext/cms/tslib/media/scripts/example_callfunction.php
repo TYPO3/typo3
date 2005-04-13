@@ -51,7 +51,6 @@
  *
  * includeLibs.something = media/scripts/example_callfunction.php
  * page = PAGE
- * page.typeNum=0
  * page.10 = TEXT
  * page.10 {
  *     value = Hello World
@@ -79,7 +78,6 @@ function user_reverseString($content,$conf)	{
  *
  * includeLibs.something = media/scripts/example_callfunction.php
  * page = PAGE
- * page.typeNum=0
  * page.10 = USER_INT
  * page.10 {
  *   userFunc = user_printTime
@@ -129,7 +127,6 @@ class user_various	{
 	 *
 	 * includeLibs.something = media/scripts/example_callfunction.php
 	 * page = PAGE
-	 * page.typeNum=0
 	 * page.30 = USER
 	 * page.30 {
 	 *   userFunc = user_various->listContentRecordsOnPage

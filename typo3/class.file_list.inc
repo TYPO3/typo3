@@ -340,7 +340,7 @@ class fileList extends t3lib_recordList {
 								$theData[$field]=Date($GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'], $theFile['tstamp']);
 							break;
 							case 'file':
-								$theData[$field]= $this->linkWrapDir(t3lib_div::fixed_lgd($title,$this->fixedL),$path);
+								$theData[$field]= $this->linkWrapDir($title,$path);
 							break;
 							case '_CLIPBOARD_':
 								$theData[$field]=$this->makeClip($theFile);
@@ -367,7 +367,7 @@ class fileList extends t3lib_recordList {
 	 */
 	function linkWrapDir($code,$path)	{
 		$href = $this->script.'?id='.rawurlencode($path);
-		return '<a href="'.htmlspecialchars($href).'">'.$code.'</a>';
+		return '<a href="'.htmlspecialchars($href).'" title="'.htmlspecialchars($code).'">'.t3lib_div::fixed_lgd($code,$this->fixedL).'</a>';
 	}
 
 	/**
@@ -378,10 +378,11 @@ class fileList extends t3lib_recordList {
 	 * @return	string		HTML
 	 */
 	function linkWrapFile($code,$path)	{
+
 		if (t3lib_div::isFirstPartOfStr($path,t3lib_div::getIndpEnv('TYPO3_DOCUMENT_ROOT')))	{
 			$href = substr($path,strlen(t3lib_div::getIndpEnv('TYPO3_DOCUMENT_ROOT')));
 			$aOnClick = "return top.openUrlInWindow('".$href."','WebFile');";
-			$code = '<a href="#" onclick="'.htmlspecialchars($aOnClick).'">'.$code.'</a>';
+			$code = '<a href="#" title="'.htmlspecialchars($code).'" onclick="'.htmlspecialchars($aOnClick).'">'.t3lib_div::fixed_lgd($code,$this->fixedL).'</a>';
 		}
 		return $code;
 	}
@@ -469,7 +470,7 @@ class fileList extends t3lib_recordList {
 								$theData[$field]=$this->makeClip($theFile);
 							break;
 							case 'file':
-								$theData[$field] = $this->linkWrapFile(t3lib_div::fixed_lgd($theFile[$field],$this->fixedL),$theFile['path'].$theFile['file']);
+								$theData[$field] = $this->linkWrapFile($theFile[$field],$theFile['path'].$theFile['file']);
 							break;
 							default:
 								$theData[$field]=t3lib_div::fixed_lgd($theFile[$field],$this->fixedL);

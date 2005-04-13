@@ -756,7 +756,7 @@ $str.=$this->docBodyTagBegin().
 	/**
 	 * Returns a blank <div>-section with a height
 	 *
-	 * @param	integer		Padding-top for the div-section (should be margin-top but konquorer (3.1) don't like it :-(
+	 * @param	integer		Padding-top for the div-section (should be margin-top but konqueror (3.1) doesn't like it :-(
 	 * @return	string		HTML content
 	 */
 	function spacer($dist)	{
@@ -1265,8 +1265,8 @@ $str.=$this->docBodyTagBegin().
 					this.ref= bw.ns4?this.el.document:document;
 					this.x= (bw.ns4||bw.op)?this.css.left:this.el.offsetLeft;
 					this.y= (bw.ns4||bw.op)?this.css.top:this.el.offsetTop;
-					this.height= (bw.ie4||bw.ie5||bw.ns6||this.konq||bw.op7)?this.el.offsetHeight:bw.ns4?this.ref.height:bw.op?this.css.pixelHeight:0;
-					this.width= (bw.ie4||bw.ie5||bw.ns6||this.konq||bw.op7)?this.el.offsetWidth:bw.ns4?this.ref.width:bw.op?this.css.pixelWidth:0;
+					this.height= (bw.ie4||bw.dom)?this.el.offsetHeight:bw.ns4?this.ref.height:0;
+					this.width= (bw.ie4||bw.dom)?this.el.offsetWidth:bw.ns4?this.ref.width:0;
 					return this;
 				}
 					// GL_getObjCss(obj)
@@ -1309,8 +1309,8 @@ $str.=$this->docBodyTagBegin().
 
 					if (tempLayerObj && (level==0 || GLV_isVisible[level-1]))	{
 						tempLayerObj.el.innerHTML = html;
-						tempLayerObj.width= (bw.ie4||bw.ie5||bw.ns6||bw.konq||bw.op7)?this.el.offsetWidth:bw.ns4?this.ref.width:bw.op?this.css.pixelWidth:0;
-						tempLayerObj.height= (bw.ie4||bw.ie5||bw.ns6||bw.konq||bw.op7)?this.el.offsetHeight:bw.ns4?this.ref.height:bw.op?this.css.pixelHeight:0;
+						tempLayerObj.width= (bw.ie4||bw.dom)?this.el.offsetWidth:bw.ns4?this.ref.width:0;
+						tempLayerObj.height= (bw.ie4||bw.dom)?this.el.offsetHeight:bw.ns4?this.ref.height:0;
 
 							// konqueror (3.2.2) workaround
 						winHeight = (bw.konq)?window.innerHeight:winHeight;

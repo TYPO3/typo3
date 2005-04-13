@@ -133,7 +133,7 @@ class t3lib_folderTree extends t3lib_treeView  {
 		if ($GLOBALS['TYPO3_CONF_VARS']['BE']['useOnContextMenuHandler'])	{
 			$CSM = ' oncontextmenu="'.htmlspecialchars($GLOBALS['TBE_TEMPLATE']->wrapClickMenuOnIcon('',$row['path'],'',0,'','',TRUE)).'"';
 		}
-		return '<a href="#" onclick="'.htmlspecialchars($aOnClick).'"'.$CSM.'>'.$title.'</a>';
+		return '<a href="#" title="'.htmlspecialchars($row['title']).'" onclick="'.htmlspecialchars($aOnClick).'"'.$CSM.'>'.$title.'</a>';
 	}
 
 	/**

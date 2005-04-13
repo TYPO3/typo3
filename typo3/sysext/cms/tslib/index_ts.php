@@ -167,7 +167,7 @@ $TT->pull();
 if (is_array($TYPO3_CONF_VARS['SC_OPTIONS']['tslib/index_ts.php']['preBeUser'])) {
 	foreach($TYPO3_CONF_VARS['SC_OPTIONS']['tslib/index_ts.php']['preBeUser'] as $_funcRef) {
 		$_params = array();
-		t3lib_div::callUserFunction($_funcRef, $_params ,$this);
+		t3lib_div::callUserFunction($_funcRef, $_params , $_params);
 	}
 }
 

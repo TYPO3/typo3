@@ -74,13 +74,13 @@ SUMMARY:
 
 [F] Version number scheme
 Versioning scheme:
- - major.minor.patch[A/B/RC][-dev]
+ - major.minor.patch[alpha/beta/RC][-dev]
 	- major and minor: Incremented based on the extend of new features (in HEAD branch)
 	- patch: incremented only for important bugfixes in a release branch.
 	- dev is always used for intermediate CVS stuff.
-	- [A/B/RC] is used only for major releases where this procedure is necessary.
+	- [alpha/beta/RC] is used only for major releases where this procedure is necessary. These releases have always a trailing number, counting from 1 to n.
  - HEAD branch is the continuous development of TYPO3. We use only this branch for new development of the Core.
- - Each time we have a Release Candidate which is so stable we believe it to be the final release we will make a "release branch" tagged "TYPO3_[major]-[minor]". The Quality Ensurance team / Package team represented by Ingmar Schlecht and Michael Stucki are in charge of managing the release branches and make new patch releases. Kasper is still in charge of a) tagging and b) merging bugfixes in the release branches.
+ - Each time we have a Release Candidate which is so stable we believe it to be the final release we will make a "release branch" tagged "TYPO3_[major]-[minor]". The Quality Ensurance team / Package team represented by Ingmar Schlecht and Michael Stucki are in charge of managing the release branches, make new patch releases, tag and merge bugfixes in the release branches.
  - In the release branches tagging is used for each release on the form "TYPO3_[major]-[minor]-[patch]"
 
 Examples of BRANCHES (major/minor releases):
@@ -100,4 +100,4 @@ Example:
 For the 3.7.0 launch the RC2 event will be a feature freeze. Therefore the branch "TYPO3_3-7" is created there meaning:
 - Final fixes (and future hotfixes) is done in that branch
 - Development for 3.8.0 could go on in HEAD
-At the same time the tag "TYPO3_3-7-0RC2" was applied basically because the branch-point coincided with the RC2. If an RC3 would come that would be tagged in the "TYPO3_3-7-0RC3" branch. Maybe the final release gets the tag "TYPO3_3-7-0" to indicate the point of release.
+At the same time the tag "TYPO3_3-7-0RC2" was applied basically because the branch-point coincided with the RC2. If an RC3 would come that would be tagged in the "TYPO3_3-7-0RC3" branch. The final release gets the tag "TYPO3_3-7-0" to indicate the point of release.

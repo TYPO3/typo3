@@ -3022,6 +3022,10 @@ class tslib_cObj {
 			}
 
 			if ($conf['trim']){$content=trim($content);}
+
+				// Call stdWrap recursively
+			if ($conf['stdWrap']){$content=$this->stdWrap($content,$conf['stdWrap.']);}
+
 			if (   ($conf['required'] && (string)$content=='') || ($conf['if.'] && !$this->checkIf($conf['if.'])) || ($conf['fieldRequired'] && !trim($this->data[$conf['fieldRequired']]))    ){
 				$content = '';
 			} else {
@@ -5203,12 +5207,14 @@ class tslib_cObj {
 	 * @return	string		Returns a numerical array with two elements: 1) $mailToUrl, string ready to be inserted into the href attribute of the <a> tag, b) $linktxt: The string between starting and ending <a> tag.
 	 */
 	function getMailTo($mailAddress,$linktxt,$initP='?') {
+		$mailToUrl = 'mailto:'.$mailAddress;
+
 		if (!$GLOBALS['TSFE']->config['config']['jumpurl_enable'] || $GLOBALS['TSFE']->config['config']['jumpurl_mailto_disable']) {
 			if ($GLOBALS['TSFE']->spamProtectEmailAddresses) {
 				if ($GLOBALS['TSFE']->spamProtectEmailAddresses === 'ascii')	{
-					$mailToUrl = $GLOBALS['TSFE']->encryptEmail('mailto:'.$mailAddress);
+					$mailToUrl = $GLOBALS['TSFE']->encryptEmail($mailToUrl);
 				} else {
-					$mailToUrl = "javascript:linkTo_UnCryptMailto('".$GLOBALS['TSFE']->encryptEmail('mailto:'.$mailAddress)."');";
+					$mailToUrl = "javascript:linkTo_UnCryptMailto('".$GLOBALS['TSFE']->encryptEmail($mailToUrl)."');";
 				}
 				if ($GLOBALS['TSFE']->config['config']['spamProtectEmailAddresses_atSubst']) {
 					$atLabel = trim($GLOBALS['TSFE']->config['config']['spamProtectEmailAddresses_atSubst']);
@@ -5219,11 +5225,9 @@ class tslib_cObj {
 					$lastDotLabel = $lastDotLabel ? $lastDotLabel : '(dot)';
 					$linktxt = preg_replace('/\.([^\.]+)$/', $lastDotLabel.'$1', $linktxt);
 				}
-			} else {
-				$mailToUrl = 'mailto:'.$mailAddress;
 			}
 		} else {
-			$mailToUrl = $GLOBALS['TSFE']->absRefPrefix.$GLOBALS['TSFE']->config['mainScript'].$initP.'&jumpurl='.rawurlencode('mailto:'.$mailAddress).$GLOBALS['TSFE']->getMethodUrlIdToken;
+			$mailToUrl = $GLOBALS['TSFE']->absRefPrefix.$GLOBALS['TSFE']->config['mainScript'].$initP.'&jumpurl='.rawurlencode($mailToUrl).$GLOBALS['TSFE']->getMethodUrlIdToken;
 		}
 		return array($mailToUrl,$linktxt);
 	}

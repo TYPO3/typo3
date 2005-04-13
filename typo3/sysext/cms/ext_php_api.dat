@@ -1642,7 +1642,6 @@ This TypoScript configuration will also demonstrate it:
  
 includeLibs.something = media/scripts/example_callfunction.php
 page = PAGE
-page.typeNum=0
 page.10 = TEXT
 page.10 {
     value = Hello World
@@ -1658,7 +1657,6 @@ This TypoScript configuration will also demonstrate it:
  
 includeLibs.something = media/scripts/example_callfunction.php
 page = PAGE
-page.typeNum=0
 page.10 = USER_INT
 page.10 {
   userFunc = user_printTime
@@ -1678,7 +1676,6 @@ This TypoScript configuration will also demonstrate it:
  
 includeLibs.something = media/scripts/example_callfunction.php
 page = PAGE
-page.typeNum=0
 page.30 = USER
 page.30 {
   userFunc = user_various->listContentRecordsOnPage
@@ -1705,7 +1702,6 @@ This TypoScript configuration will also demonstrate it ("fake menu items"):
  
 includeLibs.fakemenuitems = media/scripts/example_itemArrayProcFunc.php
 page = PAGE
-page.typeNum = 0
 page.10 = HMENU
 page.10.1 = TMENU
 page.10.1.expAll = 1
@@ -1752,7 +1748,6 @@ includeLibs.popup = media/scripts/example_typolinkpop.php
 config.setJS_openPic = 1
 
 page = PAGE
-page.typeNum = 0
 page.10 < styles.content.get
 
 (Plus the "content (default)" static template included as well)

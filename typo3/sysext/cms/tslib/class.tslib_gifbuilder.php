@@ -492,7 +492,7 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 	 */
 	function checkTextObj($conf)	{
 		$conf['fontFile']=$this->checkFile($conf['fontFile']);
-		if (!$conf['fontFile']){$conf['fontFile']='t3lib/fonts/arial.ttf';}
+		if (!$conf['fontFile']){$conf['fontFile']='t3lib/fonts/nimbus.ttf';}
 		if (!$conf['iterations']){$conf['iterations'] = 1;}
 		if (!$conf['fontSize']){$conf['fontSize']=12;}
 		if ($conf['spacing'] || $conf['wordSpacing'])	{		// If any kind of spacing applys, we cannot use angles!!

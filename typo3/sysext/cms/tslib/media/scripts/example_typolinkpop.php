@@ -58,7 +58,6 @@
  * config.setJS_openPic = 1
  *
  * page = PAGE
- * page.typeNum = 0
  * page.10 < styles.content.get
  *
  * (Plus the "content (default)" static template included as well)

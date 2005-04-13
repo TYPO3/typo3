@@ -1,3 +1,15 @@
+2005-04-14  Michael Stucki  <michael@typo3.org>
+
+	* Added new stdWrap property "stdWrap" for calling stdWrap recursively
+	* Added new hook in t3lib_tcemain::process_cmdmap (closes #0000823)
+	* Removed typeNum = 0 in some places (a previous change already sets them to 0 by default)
+	* !!! Use nimbus.ttf and vera.ttf as default truetype fonts for the GIFBUILDER. This is generally not a problem because they were always used (arial.ttf is a symlink to nimbus.ttf, verdana.ttf is pointing to vera.ttf). However it could change your page design if you just overwrote the symlinks with a different file and did not set the fontFile in the GIFBUILDER configuration.
+	* File- and foldernames in the fileadmin could be cut to some lenght. Therefore a tool tip is added to show the full name.
+	* Fixed bug #0000286: spamProtectEmailAddresses sometimes wrecked table content elements
+	* New feature #0000490: Optionally remove duplicate parameters in typolinks
+	* Fixed bug #0000675: Context menu did not work with Opera
+	* Corrected a hook in index_ts.php
+
 2005-04-13  Ingmar Schlecht  <ingmar@typo3.org>
 
 	* Corrected earlier bugfix by Karsten: Reverted require_once(PATH_t3lib.'config_default.php') to require() in index_ts.php
@@ -21,7 +33,8 @@
 	* Added hook for TIMTAW extension in t3lib_userauth
 	* Changed typo3/mod/tools/em/index.php to support new "Overwrite" checkbox feature of Kickstarter
 
-2005-04-10  Jan-Erik	<jer@moccompany.com>
+2005-04-10  Jan-Erik Revsbech  <jer@moccompany.com>
+
 	* The earlier attempts to fix the problem of Return-Path with Postfix below version 2.0 seems not to work on all systems. The t3lib_htmlmail class now only forces the return-path if forceReturnPath is enabled in the install tool.
 	* Added an option to the install tool mail test form. Send the testmail via t3lib_htmlmail with the return-path set to null@<HTTP_HOST>.
 

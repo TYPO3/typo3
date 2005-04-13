@@ -11,7 +11,6 @@ To use these stylesheets in a very simple TypoScript configuration you can use s
 
 
 	page = PAGE
-	page.typeNum = 0
 	page.stylesheet = EXT:css_styled_content/css/example.css
 	
 	page.10 < styles.content.get

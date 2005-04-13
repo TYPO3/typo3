@@ -53,7 +53,6 @@
  *
  * includeLibs.fakemenuitems = media/scripts/example_itemArrayProcFunc.php
  * page = PAGE
- * page.typeNum = 0
  * page.10 = HMENU
  * page.10.1 = TMENU
  * page.10.1.expAll = 1
