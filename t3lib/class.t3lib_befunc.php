@@ -3064,8 +3064,8 @@ class t3lib_BEfunc	{
 				$warnings[] = 'The password of your Install Tool is still using the default value "joh316"';
 			}
 
-				// Check if there is still a default user 'admin' with password 'password' (MD5sum = 5f4dcc3b5aa765d61d8327deb882cf99)
-			$where_clause = 'username="admin" AND password="5f4dcc3b5aa765d61d8327deb882cf99"'.t3lib_BEfunc::deleteClause('be_users');
+			// Check if there is still a default user 'admin' with password 'password' (MD5sum = 5f4dcc3b5aa765d61d8327deb882cf99)
+			$where_clause = 'username='.$GLOBALS['TYPO3_DB']->fullQuoteStr('admin','be_users').' AND password='.$GLOBALS['TYPO3_DB']->fullQuoteStr('5f4dcc3b5aa765d61d8327deb882cf99','be_users').t3lib_BEfunc::deleteClause('be_users');
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('username, password', 'be_users', $where_clause);
 			if ($GLOBALS['TYPO3_DB']->sql_num_rows($res))	{
 				$warnings[] = 'The backend user "admin" with password "password" is still existing';
