@@ -914,6 +914,19 @@ class t3lib_pageSelect {
 					if (!strcmp($gr_list,''))	$gr_list=0;
 					$query.=' AND '.$field.' IN ('.$gr_list.')';
 				}
+
+					// Call hook functions for additional enableColumns
+				if (is_array($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_page.php']['addEnableColumns']))    {
+					$_params = array(
+						'table' => $table,
+						'show_hidden' => $show_hidden,
+						'ignore_array' => $ignore_array,
+						'ctrl' => $ctrl
+					);
+					foreach($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_page.php']['addEnableColumns'] as $_funcRef)    {
+						$query .= t3lib_div::callUserFunction($_funcRef,$_params,$this);
+					}
+				}
 			}
 		} else {
 			die ('NO entry in the $TCA-array for the table "'.$table.'". This means that the function enableFields() is called with an invalid table name as argument.');

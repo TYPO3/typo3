@@ -2,6 +2,7 @@
 
 	* Cleaned up tslib_content by putting some lines of redundant code into new function getMailTo()
 	* Minor change to spamProtectEmailAddresses ASCII
+	* Added hook in t3lib_page for additional enableColumns
 
 2005-04-13  Karsten Dambekalns <karsten@typo3.org>
 
