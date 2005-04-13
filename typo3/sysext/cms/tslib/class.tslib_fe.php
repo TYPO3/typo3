@@ -3043,7 +3043,7 @@ if (version == "n3") {
 	function encryptEmail($string,$back=0)	{
 		$out = '';
 
-		if ($this->spamProtectEmailAddresses == 'ascii') {
+		if ($this->spamProtectEmailAddresses === 'ascii') {
 			for ($a=0; $a<strlen($string); $a++) {
 				$out .= '&#'.ord(substr($string, $a, 1)).';';
 			}

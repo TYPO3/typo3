@@ -133,7 +133,7 @@ class TSpagegen {
 			// Internal and External target defaults
 		$GLOBALS['TSFE']->intTarget = ''.$GLOBALS['TSFE']->config['config']['intTarget'];
 		$GLOBALS['TSFE']->extTarget = ''.$GLOBALS['TSFE']->config['config']['extTarget'];
-		if ($GLOBALS['TSFE']->config['config']['spamProtectEmailAddresses'] == 'ascii') {
+		if ($GLOBALS['TSFE']->config['config']['spamProtectEmailAddresses'] === 'ascii') {
 			$GLOBALS['TSFE']->spamProtectEmailAddresses = 'ascii';
 		} else {
 			$GLOBALS['TSFE']->spamProtectEmailAddresses = t3lib_div::intInRange($GLOBALS['TSFE']->config['config']['spamProtectEmailAddresses'],-5,5,0);
