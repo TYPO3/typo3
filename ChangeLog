@@ -6,6 +6,8 @@
 
 2005-04-13  Karsten Dambekalns <karsten@typo3.org>
 
+	* Applied some more DBAL patches for indexed search and fixed bug #961.
+	* Re-added images in install tool with binary flag (bug #972).
 	* Changed some uses of require to require_once to fix bug #958.
 
 2005-04-12  Kasper Skårhøj,,,  <kasper@typo3.com>
