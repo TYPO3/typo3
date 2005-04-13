@@ -1,3 +1,7 @@
+2005-04-13  Ingmar Schlecht  <ingmar@typo3.org>
+
+	* Cleaned up tslib_content by putting some lines of redundant code into new function getMailTo()
+
 2005-04-13  Karsten Dambekalns <karsten@typo3.org>
 
 	* Changed some uses of require to require_once to fix bug #958.

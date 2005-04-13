@@ -4356,29 +4356,9 @@ class tslib_cObj {
 				$parts[0] = substr($textpieces[$i],0,$len);
 				$parts[1] = substr($textpieces[$i],$len);
 				$linktxt = ereg_replace('\?.*','',$parts[0]);
-				if (!$GLOBALS['TSFE']->config['config']['jumpurl_enable'] || $GLOBALS['TSFE']->config['config']['jumpurl_mailto_disable']) {
-					if ($GLOBALS['TSFE']->spamProtectEmailAddresses) {
-						if ($GLOBALS['TSFE']->spamProtectEmailAddresses == 'ascii')	{
-							$mailToUrl = $GLOBALS['TSFE']->encryptEmail('mailto:'.$parts[0]);
-						} else {
-							$mailToUrl = "javascript:linkTo_UnCryptMailto('".$GLOBALS['TSFE']->encryptEmail('mailto:'.$parts[0])."');";
-						}
-						if ($GLOBALS['TSFE']->config['config']['spamProtectEmailAddresses_atSubst']) {
-							$atLabel = trim($GLOBALS['TSFE']->config['config']['spamProtectEmailAddresses_atSubst']);
-							$linktxt = str_replace('@',$atLabel?$atLabel:'(at)',$linktxt);
-						}
-						if ($GLOBALS['TSFE']->config['config']['spamProtectEmailAddresses_lastDotSubst']) {
-							$lastDotLabel = trim($GLOBALS['TSFE']->config['config']['spamProtectEmailAddresses_lastDotSubst']);
-							$lastDotLabel = $lastDotLabel ? $lastDotLabel : '(dot)';
-							$linktxt = preg_replace('/\.([^\.]+)$/', $lastDotLabel.'$1', $linktxt);
-						}
-					} else {
-						$mailToUrl = 'mailto:'.$parts[0];
-					}
-					$res = '<a href="'.htmlspecialchars($mailToUrl).'"'.$aTagParams.'>';
-				} else {
-					$res = '<a href="'.htmlspecialchars($GLOBALS['TSFE']->absRefPrefix.$GLOBALS['TSFE']->config['mainScript'].$initP.'&jumpurl='.rawurlencode('mailto:'.$parts[0]).$GLOBALS['TSFE']->getMethodUrlIdToken).'"'.$aTagParams.'>';
-				}
+				list($mailToUrl,$linktxt) = $this->getMailTo($parts[0],$linktxt,$initP);
+				$mailToUrl = $GLOBALS['TSFE']->spamProtectEmailAddresses === 'ascii'?$mailToUrl:htmlspecialchars($mailToUrl);
+				$res = '<a href="'.$mailToUrl.'"'.$aTagParams.'>';
 				if ($conf['ATagBeforeWrap'])	{
 					$res= $res.$this->wrap($linktxt, $conf['wrap']).'</a>';
 				} else {
@@ -4872,28 +4852,7 @@ class tslib_cObj {
 				// Detecting kind of link:
 			if(strstr($link_param,'@') && !$pU['scheme'])	{		// If it's a mail address:
 				$link_param = eregi_replace('^mailto:','',$link_param);
-				if ($linktxt=='') $linktxt = $link_param;
-				if (!$GLOBALS['TSFE']->config['config']['jumpurl_enable'] || $GLOBALS['TSFE']->config['config']['jumpurl_mailto_disable'])	{
-					$this->lastTypoLinkUrl = 'mailto:'.$link_param;
-					if ($GLOBALS['TSFE']->spamProtectEmailAddresses) {
-						if ($GLOBALS['TSFE']->spamProtectEmailAddresses == 'ascii')	{
-							$this->lastTypoLinkUrl = $GLOBALS['TSFE']->encryptEmail($this->lastTypoLinkUrl);
-						} else {
-							$this->lastTypoLinkUrl = "javascript:linkTo_UnCryptMailto('".$GLOBALS['TSFE']->encryptEmail($this->lastTypoLinkUrl)."');";
-						}
-						if ($GLOBALS['TSFE']->config['config']['spamProtectEmailAddresses_atSubst']) {
-							$atLabel = trim($GLOBALS['TSFE']->config['config']['spamProtectEmailAddresses_atSubst']);
-							$linktxt = str_replace('@',$atLabel?$atLabel:'(at)',$linktxt);
-						}
-						if ($GLOBALS['TSFE']->config['config']['spamProtectEmailAddresses_lastDotSubst']) {
-							$lastDotLabel = trim($GLOBALS['TSFE']->config['config']['spamProtectEmailAddresses_lastDotSubst']);
-							$lastDotLabel = $lastDotLabel ? $lastDotLabel : '(dot)';
-							$linktxt = preg_replace('/\.([^\.]+)$/', $lastDotLabel.'$1', $linktxt);
-						}
-					}
-				} else {
-					$this->lastTypoLinkUrl = $GLOBALS['TSFE']->absRefPrefix.$GLOBALS['TSFE']->config['mainScript'].$initP.'&jumpurl='.rawurlencode('mailto:'.$link_param).$GLOBALS['TSFE']->getMethodUrlIdToken;
-				}
+				list($this->lastTypoLinkUrl,$linktxt) = $this->getMailTo($link_param,$linktxt,$initP);
 				$finalTagParts['url']=$this->lastTypoLinkUrl;
 				$finalTagParts['TYPE']='mailto';
 			} else {
@@ -5065,7 +5024,7 @@ class tslib_cObj {
 				$onClick="vHWin=window.open('".$GLOBALS['TSFE']->baseUrlWrap($finalTagParts['url'])."','FEopenLink','".$JSwindowParams."');vHWin.focus();return false;";
 				$res = '<a href="#" onclick="'.htmlspecialchars($onClick).'"'.($linkClass?' class="'.$linkClass.'"':'').$finalTagParts['aTagParams'].'>';
 			} else {
-				if ($GLOBALS['TSFE']->spamProtectEmailAddresses == 'ascii') {
+				if ($GLOBALS['TSFE']->spamProtectEmailAddresses === 'ascii' && $finalTagParts['TYPE'] === 'mailto') {
 					$res = '<a href="'.$finalTagParts['url'].'"'.$finalTagParts['targetParams'].($linkClass?' class="'.$linkClass.'"':'').$finalTagParts['aTagParams'].'>';
 				} else {
 					$res = '<a href="'.htmlspecialchars($finalTagParts['url']).'"'.$finalTagParts['targetParams'].($linkClass?' class="'.$linkClass.'"':'').$finalTagParts['aTagParams'].'>';
@@ -5234,7 +5193,40 @@ class tslib_cObj {
 		return !$raw  ? ($MP ? '&MP='.rawurlencode($MP) : '') : $MP;
 	}
 
-
+	/**
+	 * Creates a href attibute for given $mailAddress.
+	 * The function uses spamProtectEmailAddresses and Jumpurl functionality for encoding the mailto statement.
+	 * If spamProtectEmailAddresses is disabled, it'll just return a string like "mailto:user@example.tld".
+	 *
+	 * @param	string		Email address
+	 * @param	string		$initP: Initial link parameters, only used if Jumpurl functionality is enabled. Example: ?id=5&type=0
+	 * @return	string		Returns a numerical array with two elements: 1) $mailToUrl, string ready to be inserted into the href attribute of the <a> tag, b) $linktxt: The string between starting and ending <a> tag.
+	 */
+	function getMailTo($mailAddress,$linktxt,$initP='?') {
+		if (!$GLOBALS['TSFE']->config['config']['jumpurl_enable'] || $GLOBALS['TSFE']->config['config']['jumpurl_mailto_disable']) {
+			if ($GLOBALS['TSFE']->spamProtectEmailAddresses) {
+				if ($GLOBALS['TSFE']->spamProtectEmailAddresses === 'ascii')	{
+					$mailToUrl = $GLOBALS['TSFE']->encryptEmail('mailto:'.$mailAddress);
+				} else {
+					$mailToUrl = "javascript:linkTo_UnCryptMailto('".$GLOBALS['TSFE']->encryptEmail('mailto:'.$mailAddress)."');";
+				}
+				if ($GLOBALS['TSFE']->config['config']['spamProtectEmailAddresses_atSubst']) {
+					$atLabel = trim($GLOBALS['TSFE']->config['config']['spamProtectEmailAddresses_atSubst']);
+					$linktxt = str_replace('@',$atLabel?$atLabel:'(at)',$linktxt);
+				}
+				if ($GLOBALS['TSFE']->config['config']['spamProtectEmailAddresses_lastDotSubst']) {
+					$lastDotLabel = trim($GLOBALS['TSFE']->config['config']['spamProtectEmailAddresses_lastDotSubst']);
+					$lastDotLabel = $lastDotLabel ? $lastDotLabel : '(dot)';
+					$linktxt = preg_replace('/\.([^\.]+)$/', $lastDotLabel.'$1', $linktxt);
+				}
+			} else {
+				$mailToUrl = 'mailto:'.$mailAddress;
+			}
+		} else {
+			$mailToUrl = $GLOBALS['TSFE']->absRefPrefix.$GLOBALS['TSFE']->config['mainScript'].$initP.'&jumpurl='.rawurlencode('mailto:'.$mailAddress).$GLOBALS['TSFE']->getMethodUrlIdToken;
+		}
+		return array($mailToUrl,$linktxt);
+	}
 
 
 
