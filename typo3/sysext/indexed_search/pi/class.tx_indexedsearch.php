@@ -1027,7 +1027,7 @@ class tx_indexedsearch extends tslib_pibase {
 							AND ISEC.phash = IR.phash
 							AND IP.phash = IR.phash
 							AND	'.$page_where,
-						'IP.phash,ISEC.phash,ISEC.phash_t3,ISEC.rl0,ISEC.rl1,ISEC.rl2 ,ISEC.page_id,ISEC.uniqid,IP.phash_grouping,IP.data_filename ,IP.data_page_id ,IP.data_page_reg1,IP.data_page_type,IP.data_page_mp,IP.gr_list,IP.item_type,IP.item_title,IP.item_description,IP.item_mtime,IP.tstamp,IP.item_size,IP.contentHash,IP.crdate,IP.parsetime,IP.sys_language_uid,IP.item_crdate',
+						'IP.phash,ISEC.phash,ISEC.phash_t3,ISEC.rl0,ISEC.rl1,ISEC.rl2 ,ISEC.page_id,ISEC.uniqid,IP.phash_grouping,IP.data_filename ,IP.data_page_id ,IP.data_page_reg1,IP.data_page_type,IP.data_page_mp,IP.gr_list,IP.item_type,IP.item_title,IP.item_description,IP.item_mtime,IP.tstamp,IP.item_size,IP.contentHash,IP.crdate,IP.parsetime,IP.sys_language_uid,IP.item_crdate,IP.cHashParams,IP.externalUrl,IP.recordUid,IP.freeIndexUid',
 						$orderBy
 					);
 		} else {	// Otherwise, if sorting are done with the pages table or other fields, there is no need for joining with the rel/word tables:
@@ -1053,7 +1053,7 @@ class tx_indexedsearch extends tslib_pibase {
 							$this->languageWhere().'
 							AND IP.phash = ISEC.phash
 							AND '.$page_where,
-						'IP.phash',
+						'IP.phash,ISEC.phash,ISEC.phash_t3,ISEC.rl0,ISEC.rl1,ISEC.rl2 ,ISEC.page_id,ISEC.uniqid,IP.phash_grouping,IP.data_filename ,IP.data_page_id ,IP.data_page_reg1,IP.data_page_type,IP.data_page_mp,IP.gr_list,IP.item_type,IP.item_title,IP.item_description,IP.item_mtime,IP.tstamp,IP.item_size,IP.contentHash,IP.crdate,IP.parsetime,IP.sys_language_uid,IP.item_crdate,IP.cHashParams,IP.externalUrl,IP.recordUid,IP.freeIndexUid',
 						$orderBy
 					);
 		}
@@ -1146,7 +1146,7 @@ class tx_indexedsearch extends tslib_pibase {
 				$insertFields = array(
 					'word' => $val['sword'],		// $GLOBALS['TSFE']->csConvObj->conv_case('utf-8', $val['sword'], 'toLower'),
 					'index_stat_search_id' => $newId,
-					'tstamp' => $GLOBALS['EXEC_TIME']		// Time stamp
+					'tstamp' => $GLOBALS['EXEC_TIME'],		// Time stamp
 					'pageid' => $GLOBALS['TSFE']->id	//search page id for indexed search stats
 				);
 

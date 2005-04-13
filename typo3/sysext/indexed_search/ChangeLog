@@ -1,3 +1,7 @@
+2005-04-13  Karsten Dambekalns <karsten@typo3.org>
+
+	* Fixed bug #961 and added some DBAL compliancy changes.
+
 2005-04-07  Andreas Otto  <andreas.otto@dkd.de>
 
 	* Added modfunc2 which offers statistics of entered search words.
