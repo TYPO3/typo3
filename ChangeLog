@@ -1,3 +1,7 @@
+2005-04-13  Karsten Dambekalns <karsten@typo3.org>
+
+	* Changed some uses of require to require_once to fix bug #958.
+
 2005-04-12  Kasper Skårhøj,,,  <kasper@typo3.com>
 
 	* changed install tool comparison images
