@@ -41,7 +41,7 @@ Secret #1: I *will* check everything!
 	- I require to be 100% in control of all commits to my parts of the core. This means you can easily step very hard on my toes if you break the rules below. So read them and commit with care!
 
 Rule #1: Ask me first!
-	- 1) Always contact me by email first and present a summary of what you want to do. If it sounds reasonable I will probably say "Yes, just commit" and then I will study the details. The point is that I get a chance to reject things which will just be a mess to clean up.
+	- 1) Always contact me by email first and present a summary of what you want to do. If it sounds reasonable I will probably say "Send me a unified diff-patch" and if that seems ok I will say "Yes, just commit". The point is that I get a chance to reject things which will just be a mess to clean up.
 	- 2) Exception: If you are justified in thinking it wouldn't be necessary (for instance doing a second commit to something we have already discussed).
 	- 3) If you ask first, we can prevent these past (bad) experiences:
 		- a) My code overview is typically larger and I may see implications that were not clear to you. This prevents bugs and bad implementations.
@@ -58,6 +58,14 @@ Rule #2: Reference Documentation instantly!
 
 Rule #3: No loose ends
 	- This is General Rules #4 emphasized! Before you begin core work, make sure you have allocated the time to finish it to an acceptable standard (by the measures given in this text)
+	- It needs to be said although it should be obvious: Any code committed to CVS must be tested properly. Parsing errors in particular are not acceptable!
+
+SUMMARY:
+- General request for my opinion
+- If OK, sending an actual Patch-diff to me for approval
+- If approval,
+	- send any necessary documentation to me
+	- commit code to CVS
 
 
 [E] Rules of CVS Commits for parts of the core NOT maintained by Kasper
@@ -72,7 +80,7 @@ Versioning scheme:
 	- dev is always used for intermediate CVS stuff.
 	- [A/B/RC] is used only for major releases where this procedure is necessary.
  - HEAD branch is the continuous development of TYPO3. We use only this branch for new development of the Core.
- - Each time we have a Release Candidate which is so stable we believe it to be the final release (typ. RC2) we will make a "release branch" tagged "TYPO3_[major]-[minor]". The Quality Ensurance team / Package team represented by Ingmar Schlecht and Michael Stucki are in charge of managing the release branches and make new patch releases. Kasper is still in charge of a) tagging and b) merging bugfixes in the release branches.
+ - Each time we have a Release Candidate which is so stable we believe it to be the final release we will make a "release branch" tagged "TYPO3_[major]-[minor]". The Quality Ensurance team / Package team represented by Ingmar Schlecht and Michael Stucki are in charge of managing the release branches and make new patch releases. Kasper is still in charge of a) tagging and b) merging bugfixes in the release branches.
  - In the release branches tagging is used for each release on the form "TYPO3_[major]-[minor]-[patch]"
 
 Examples of BRANCHES (major/minor releases):
