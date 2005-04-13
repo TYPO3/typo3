@@ -88,7 +88,7 @@ $TT->pull();
 // Include configuration
 // **********************
 $TT->push('Include config files','');
-require_once(PATH_t3lib.'config_default.php');
+require(PATH_t3lib.'config_default.php');
 if (!defined ('TYPO3_db')) 	die ('The configuration file was not included.');	// the name of the TYPO3 database is stored in this constant. Here the inclusion of the config-file is verified by checking if this var is set.
 if (!t3lib_extMgm::isLoaded('cms'))	die('<strong>Error:</strong> The main frontend extension "cms" was not loaded. Enable it in the extension manager in the backend.');
 
