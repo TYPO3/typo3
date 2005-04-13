@@ -78,8 +78,8 @@ $TT->push('','Script start');
 // Mandatory libraries included
 // *********************
 $TT->push('Include class t3lib_db, t3lib_div, t3lib_extmgm','');
-	require(PATH_t3lib.'class.t3lib_div.php');
-	require(PATH_t3lib.'class.t3lib_extmgm.php');
+	require_once(PATH_t3lib.'class.t3lib_div.php');
+	require_once(PATH_t3lib.'class.t3lib_extmgm.php');
 $TT->pull();
 
 
@@ -88,11 +88,11 @@ $TT->pull();
 // Include configuration
 // **********************
 $TT->push('Include config files','');
-require(PATH_t3lib.'config_default.php');
+require_once(PATH_t3lib.'config_default.php');
 if (!defined ('TYPO3_db')) 	die ('The configuration file was not included.');	// the name of the TYPO3 database is stored in this constant. Here the inclusion of the config-file is verified by checking if this var is set.
 if (!t3lib_extMgm::isLoaded('cms'))	die('<strong>Error:</strong> The main frontend extension "cms" was not loaded. Enable it in the extension manager in the backend.');
 
-require(PATH_t3lib.'class.t3lib_db.php');
+require_once(PATH_t3lib.'class.t3lib_db.php');
 $TYPO3_DB = t3lib_div::makeInstance('t3lib_DB');
 
 $CLIENT = t3lib_div::clientInfo();				// Set to the browser: net / msie if 4+ browsers

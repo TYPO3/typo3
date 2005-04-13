@@ -74,14 +74,14 @@ define('TYPO3_mainDir', 'typo3/');		// This is the directory of the backend admi
 // ******************
 // Including config
 // ******************
-require(PATH_t3lib.'class.t3lib_div.php');
-require(PATH_t3lib.'class.t3lib_extmgm.php');
+require_once(PATH_t3lib.'class.t3lib_div.php');
+require_once(PATH_t3lib.'class.t3lib_extmgm.php');
 
 require(PATH_t3lib.'config_default.php');
 if (!defined ('TYPO3_db')) 	die ('The configuration file was not included.');
 if (!$TYPO3_CONF_VARS['GFX']['image_processing'])	die ('ImageProcessing was disabled!');
 
-require(PATH_t3lib.'class.t3lib_db.php');		// The database library
+require_once(PATH_t3lib.'class.t3lib_db.php');		// The database library
 $TYPO3_DB = t3lib_div::makeInstance('t3lib_DB');
 
 
