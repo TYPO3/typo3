@@ -1063,7 +1063,7 @@ class localRecordList extends recordList {
 
 				if ($lNew)	$out[1].= $lNew;
 			} else {
-				$out[0] = '&nbsp;&nbsp;&nbsp;&nbsp;'.$out[1];
+				$out[0] = '&nbsp;&nbsp;&nbsp;&nbsp;'.$out[0];
 			}
 		}
 
