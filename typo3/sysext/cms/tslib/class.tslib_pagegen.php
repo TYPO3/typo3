@@ -136,7 +136,7 @@ class TSpagegen {
 		if ($GLOBALS['TSFE']->config['config']['spamProtectEmailAddresses'] === 'ascii') {
 			$GLOBALS['TSFE']->spamProtectEmailAddresses = 'ascii';
 		} else {
-			$GLOBALS['TSFE']->spamProtectEmailAddresses = t3lib_div::intInRange($GLOBALS['TSFE']->config['config']['spamProtectEmailAddresses'],-2,2,0);
+			$GLOBALS['TSFE']->spamProtectEmailAddresses = t3lib_div::intInRange($GLOBALS['TSFE']->config['config']['spamProtectEmailAddresses'],-5,5,0);
 			if ($GLOBALS['TSFE']->spamProtectEmailAddresses)	{
 				$GLOBALS['TSFE']->additionalJavaScript['UnCryptMailto()']='
   // JS function for uncrypting spam-protected emails:
