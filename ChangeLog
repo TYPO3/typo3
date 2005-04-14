@@ -1,3 +1,8 @@
+2005-04-15  Michael Stucki  <michael@typo3.org>
+
+	* Made fe_user passwords case sensitive and render them as password fields
+	* New feature #0000957: Added TypoScript option page.headTag
+
 2005-04-14  Michael Stucki  <michael@typo3.org>
 
 	* Added new stdWrap property "stdWrap" for calling stdWrap recursively

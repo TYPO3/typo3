@@ -416,8 +416,12 @@ function linkTo_UnCryptMailto(s)	{	//
 		} else {
 			$_attr = '';
 		}
-		$GLOBALS['TSFE']->content.='<html'.($_attr ? ' '.$_attr : '').'>
-<head>';
+		$GLOBALS['TSFE']->content.='<html'.($_attr ? ' '.$_attr : '').'>';
+
+			// Head tag:
+		$headTag = $GLOBALS['TSFE']->pSetup['headTag'] ? $GLOBALS['TSFE']->pSetup['headTag'] : '<head>';
+		$GLOBALS['TSFE']->content.= chr(10).$headTag;
+
 			// Setting charset meta tag:
 		$GLOBALS['TSFE']->content.='
 	<meta http-equiv="Content-Type" content="text/html; charset='.$theCharset.'" />';

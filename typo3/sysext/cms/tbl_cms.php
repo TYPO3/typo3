@@ -63,7 +63,7 @@ $TCA['fe_users'] = Array (
 				'type' => 'input',
 				'size' => '10',
 				'max' => '40',
-				'eval' => 'nospace,lower,required'
+				'eval' => 'nospace,required,password'
 			)
 		),
 		'usergroup' => Array (
