@@ -916,6 +916,7 @@ class t3lib_pageSelect {
 				}
 
 					// Call hook functions for additional enableColumns
+					// It is used by the extension ingmar_accessctrl which enables assigning more than one usergroup to content and page records
 				if (is_array($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_page.php']['addEnableColumns']))    {
 					$_params = array(
 						'table' => $table,
