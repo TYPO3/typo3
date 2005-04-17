@@ -1,3 +1,7 @@
+2005-04-17  Rupert Germann  <rupi@gmx.li>
+
+	* Changed the parsing of recordtitles in lists. Now 'label_alt' and 'label_alt_force' are honored too. (resolves bugs 935 and 920)
+
 2005-04-17  Michael Stucki  <michael@typo3.org>
 
 	* Changed the size of ses_iplock fields to 39 (needed for storing IPv6 addresses)
