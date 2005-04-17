@@ -568,7 +568,19 @@ class localRecordList extends recordList {
 		$theData = Array();
 		foreach($this->fieldArray as $fCol)	{
 			if ($fCol==$titleCol)	{
-				$recTitle = t3lib_BEfunc::getProcessedValueExtra($table,$fCol,$row[$fCol],$GLOBALS['BE_USER']->uc['titleLen'],$row['uid']);
+				if ($GLOBALS['TCA'][$table]['ctrl']['label_alt'] && ($GLOBALS['TCA'][$table]['ctrl']['label_alt_force'] || !strcmp($row[$fCol],'')))	{
+					$altFields=t3lib_div::trimExplode(',',$GLOBALS['TCA'][$table]['ctrl']['label_alt'],1);
+					$tA=array();
+					if ($row[$fCol])	{ $tA[]=$row[$fCol]; }
+					while(list(,$fN)=each($altFields))	{
+						$t = t3lib_BEfunc::getProcessedValueExtra($table,$fN,$row[$fN],$GLOBALS['BE_USER']->uc['titleLen'],$row['uid']);
+						if($t)	{ $tA[] = $t; }
+					}
+					if ($GLOBALS['TCA'][$table]['ctrl']['label_alt_force'])	{ $t=implode(', ',$tA); }
+					if ($t)	{ $recTitle = $t; }
+				} else {
+					$recTitle = t3lib_BEfunc::getProcessedValueExtra($table,$fCol,$row[$fCol],$GLOBALS['BE_USER']->uc['titleLen'],$row['uid']);
+				}
 				$theData[$fCol] = $this->linkWrapItems($table,$row['uid'],$recTitle,$row);
 			} elseif ($fCol=='pid') {
 				$theData[$fCol]=$row[$fCol];
