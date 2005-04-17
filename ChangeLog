@@ -1,12 +1,16 @@
+2005-04-17  Michael Stucki  <michael@typo3.org>
+
+	* Changed the size of ses_iplock fields to 39 (needed for storing IPv6 addresses)
+
 2005-04-15  Michael Stucki  <michael@typo3.org>
 
 	* Made fe_user passwords case sensitive and render them as password fields
 	* New feature #0000957: Added TypoScript option page.headTag
 
-2005-04-14  Rupert Germann <rupi@gmx.li>
+2005-04-14  Rupert Germann  <rupi@gmx.li>
 
-	* fix for bug 0000966. The BE-listview in "Localization Mode" does now show the labels and flags of translated records again.
-		
+	* Fixed bug #0000966: The BE-listview in "Localization Mode" does now show the labels and flags of translated records again.
+
 2005-04-14  Michael Stucki  <michael@typo3.org>
 
 	* Added new stdWrap property "stdWrap" for calling stdWrap recursively
