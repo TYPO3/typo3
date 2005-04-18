@@ -425,7 +425,10 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv("REMOTE_ADDR")."' (".t3lib_div::getIndp
 						When you change the settings for Image Processing you <i>must</i> take into account that <u>old images</u> may still be in typo3temp/ folder and prevent new files from being generated! This is especially important to know, if you're trying to set up image processing for the very first time.
 						The problem is solved by <a href=\"".$this->setScriptName("typo3temp")."\">clearing the typo3temp/ folder</a>. Also make sure to clear the cache_pages table.
 						",1,1);
-					$this->message($ext, "Update localconf.php", "
+					$this->message($ext, "Very Important: Changing Ecryption Key setting", "
+						When you change the setting for the Encryption Key you <i>must</i> take into account that a change to this value might invalidate temporary information, URLs etc.
+						The problem is solved by <a href=\"".$this->setScriptName("typo3temp")."\">clearing the typo3temp/ folder</a>. Also make sure to clear the cache_pages table.
+						",1,1);					$this->message($ext, "Update localconf.php", "
 						This form updates the localconf.php file with the suggested values you see below. The values are based on the analysis above.
 						You can change the values in case you have alternatives to the suggested defaults.
 						By this final step you will configure TYPO3 for immediate use provided that you have no fatal errors left above."
@@ -1879,7 +1882,7 @@ From sub-directory:
 		$ext="Check database";
 		$this->message($ext);
 
-		if (!extension_loaded("mysql"))	{
+		if (!extension_loaded("mysql") && !t3lib_extMgm::isLoaded('dbal'))	{
 			$this->message($ext, "MySQL not available","
 				PHP does not feature MySQL support (which is pretty unusual).
 			",2);
@@ -1971,6 +1974,8 @@ From sub-directory:
 				if ($this->mode!="123")	{
 					$out.=$this->wrapInCells("Site name:", '<input type="text" name="TYPO3_INSTALL[localconf.php][sitename]" value="'.htmlspecialchars($GLOBALS["TYPO3_CONF_VARS"]["SYS"]["sitename"]).'">');
 					$out.=$this->wrapInCells("", "<BR>");
+					$out.=$this->wrapInCells("Encryption Key:", '<input type="text" name="TYPO3_INSTALL[localconf.php][encryptionKey]" value="'.htmlspecialchars($GLOBALS["TYPO3_CONF_VARS"]["SYS"]["encryptionKey"]).'">');
+					$out.=$this->wrapInCells("", "<BR>");
 
 						// Other
 					$fA = $this->setupGeneralCalculate();
@@ -2053,6 +2058,9 @@ From sub-directory:
 							break;
 							case "sitename":
 								if (strcmp($GLOBALS["TYPO3_CONF_VARS"]["SYS"]["sitename"],$value))	$this->setValueInLocalconfFile($lines, '$TYPO3_CONF_VARS["SYS"]["sitename"]', $value);
+							break;
+							case "encryptionKey":
+								if (strcmp($GLOBALS["TYPO3_CONF_VARS"]["SYS"]["encryptionKey"],$value))	$this->setValueInLocalconfFile($lines, '$TYPO3_CONF_VARS["SYS"]["encryptionKey"]', $value);
 							break;
 							case "im_combine_filename":
 								if (strcmp($GLOBALS["TYPO3_CONF_VARS"]["GFX"]["im_combine_filename"],$value))	$this->setValueInLocalconfFile($lines, '$TYPO3_CONF_VARS["GFX"]["im_combine_filename"]', $value);
