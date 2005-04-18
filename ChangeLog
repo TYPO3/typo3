@@ -4,7 +4,7 @@
 	* t3lib/class.t3lib_befunc.php, sysext/viewpage/view/index.php: Fix to bug #983, preview when BE uses SSL.
 	* t3lib/class.t3lib_befunc.php: Show warning when encryption key is empty (bug #766).
 	* sysext/install/mod/class.tx_install.php: Make encryption key setting accessible in "Basic Configuration".
-	Missing PHP support for MySQL is only seen as error if DBAL extension is not loaded.
+	* sysext/install/mod/class.tx_install.php: Missing PHP support for MySQL is only seen as error if DBAL extension is not loaded.
 
 2005-04-18  Rupert Germann  <rupi@gmx.li>
 
