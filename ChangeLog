@@ -1,3 +1,9 @@
+2005-04-18  Karsten Dambekalns <karsten@typo3.org>
+
+	* typo3/file_upload.php: Small fix to fix bug #986, patch by Sebastian Kurfuerst.
+	* t3lib/class.t3lib_befunc.php, sysext/viewpage/view/index.php: Fix to bug #983, preview when BE uses SSL.
+	* t3lib/class.t3lib_befunc.php: Show warning when encryption key is empty (bug #766).
+
 2005-04-18  Rupert Germann  <rupi@gmx.li>
 
 	* added a condition that removes wrong default values from autoinc-lines when importing static data. (bug 416 related).
