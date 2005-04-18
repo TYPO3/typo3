@@ -1,6 +1,10 @@
+2005-04-18  Michael Stucki  <michael@typo3.org>
+
+	* Release of TYPO3 3.8.0beta2
+
 2005-04-17  Rupert Germann  <rupi@gmx.li>
 
-	* Changed the parsing of recordtitles in lists. Now 'label_alt' and 'label_alt_force' are honored too. (resolves bugs 935 and 920)
+	* Fixed bugs #0000920 and #0000935: Changed the parsing of recordtitles in lists. Now 'label_alt' and 'label_alt_force' are honored too.
 
 2005-04-17  Michael Stucki  <michael@typo3.org>
 
