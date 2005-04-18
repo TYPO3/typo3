@@ -143,7 +143,7 @@ class SC_file_upload {
 
 			function reload(a)	{	//
 				if (!changed || (changed && confirm('.$LANG->JScharCode($LANG->sL('LLL:EXT:lang/locallang_core.php:mess.redraw')).')))	{
-					var params = "&target="+escape(path)+"&number="+a;
+					var params = "&target="+escape(path)+"&number="+a+"&returnUrl='.htmlspecialchars($this->returnUrl).'";
 					document.location = "file_upload.php?"+params;
 				}
 			}
