@@ -647,6 +647,9 @@ if (!$this->changedUnsignedFields && isset($this->coreFieldsWithUnsignedKeywordR
 				$this->mysqlVersion = doubleval(substr(trim($linecontent),16));
 			}
 			$is_set = 0;
+			if(stristr($linecontent,'auto_increment')) {
+				$linecontent = eregi_replace(' default \'0\'','',$linecontent);
+			}
 
 			if (!$removeNonSQL || (strcmp(trim($linecontent),'') && substr(trim($linecontent),0,1)!='#' && substr(trim($linecontent),0,2)!='--'))	{		// '--' is seen as mysqldump comments from server version 3.23.49
 				$statementArray[$statementArrayPointer].= $linecontent;
