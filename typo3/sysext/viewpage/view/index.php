@@ -110,7 +110,7 @@ class SC_mod_web_view_index {
 						t3lib_BEfunc::firstDomainRecord(t3lib_BEfunc::BEgetRootLine($this->id)):
 						"";
 
-		$this->url.= ($dName?"http://".$dName:$BACK_PATH."..")."/index.php?id=".$this->id.($this->type?"&type=".$this->type:"").$addCmd;
+		$this->url.= ($dName?(t3lib_div::getIndpEnv('TYPO3_SSL') ? 'https://' : 'http://').$dName:$BACK_PATH."..")."/index.php?id=".$this->id.($this->type?"&type=".$this->type:"").$addCmd;
 		//debug($this->url);
 	}
 

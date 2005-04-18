@@ -2189,7 +2189,7 @@ class t3lib_BEfunc	{
 					$preUrl_temp = t3lib_BEfunc::firstDomainRecord($rootLine);
 				}
 			}
-			$preUrl = $preUrl_temp ? 'http://'.$preUrl_temp : $backPath.'..';
+			$preUrl = $preUrl_temp ? (t3lib_div::getIndpEnv('TYPO3_SSL') ? 'https://' : 'http://').$preUrl_temp : $backPath.'..';
 			$url = $preUrl.'/index.php?id='.$id.$addGetVars.$anchor;
 		}
 
