@@ -6,7 +6,7 @@
 
 2005-04-18  Rupert Germann  <rupi@gmx.li>
 
-	* added a condition that removes wrong default values from autoinc-lines when importing static data. (bug 416 related).
+	* Added a condition that removes wrong default values from autoinc-lines when importing static data. (bug #416 related).
 
 2005-04-18  Michael Stucki  <michael@typo3.org>
 

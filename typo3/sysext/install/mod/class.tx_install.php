@@ -4576,16 +4576,16 @@ A:hover {color: #000066}
 	}
 
 	/**
-	 * [Describe function...]
+	 * Convert a size from human-readable form into bytes
 	 *
-	 * @param	[type]		$bytes: ...
-	 * @return	[type]		...
+	 * @param	string		A string containing the size in bytes, kilobytes or megabytes. Example: 64M
+	 * @return	string		The string is returned in bytes and can also hold floating values
 	 */
 	function convertByteSize($bytes)	{
 		if (stristr($bytes,"m"))	{
-			$bytes=doubleval($bytes)*1024*1024;
+			$bytes=floatval($bytes)*1024*1024;
 		} elseif (stristr($bytes,"k"))	{
-			$bytes=doubleval($bytes)*1024;
+			$bytes=floatval($bytes)*1024;
 		}
 		return $bytes;
 	}

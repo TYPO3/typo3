@@ -3047,7 +3047,7 @@ if (version == "n3") {
 			for ($a=0; $a<strlen($string); $a++) {
 				$out .= '&#'.ord(substr($string, $a, 1)).';';
 			}
-		} else  {
+		} else	{
 			for ($a=0; $a<strlen($string); $a++)	{
 				$charValue = ord(substr($string,$a,1));
 				$charValue+= intval($this->spamProtectEmailAddresses)*($back?-1:1);
