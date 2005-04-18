@@ -1,4 +1,4 @@
-2005-04-18  Karsten Dambekalns <karsten@typo3.org>
+2005-04-18  Karsten Dambekalns  <karsten@typo3.org>
 
 	* typo3/file_upload.php: Small fix to fix bug #986, patch by Sebastian Kurfuerst.
 	* t3lib/class.t3lib_befunc.php, sysext/viewpage/view/index.php: Fix to bug #983, preview when BE uses SSL.
@@ -48,7 +48,7 @@
 	* Minor change to spamProtectEmailAddresses ASCII
 	* Added hook in t3lib_page for additional enableColumns
 
-2005-04-13  Karsten Dambekalns <karsten@typo3.org>
+2005-04-13  Karsten Dambekalns  <karsten@typo3.org>
 
 	* Small fix to fix bug #974.
 	* Applied some more DBAL patches for indexed search and fixed bug #961.

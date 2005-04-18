@@ -3059,19 +3059,19 @@ class t3lib_BEfunc	{
 		if($GLOBALS['BE_USER']->isAdmin())	{
 			$warnings = array();
 
-			// Check if the Install Tool Password is still default: joh316
+				// Check if the Install Tool Password is still default: joh316
 			if($GLOBALS['TYPO3_CONF_VARS']['BE']['installToolPassword']==md5('joh316'))	{
 				$warnings[] = 'The password of your Install Tool is still using the default value "joh316"';
 			}
 
-			// Check if there is still a default user 'admin' with password 'password' (MD5sum = 5f4dcc3b5aa765d61d8327deb882cf99)
+				// Check if there is still a default user 'admin' with password 'password' (MD5sum = 5f4dcc3b5aa765d61d8327deb882cf99)
 			$where_clause = 'username='.$GLOBALS['TYPO3_DB']->fullQuoteStr('admin','be_users').' AND password='.$GLOBALS['TYPO3_DB']->fullQuoteStr('5f4dcc3b5aa765d61d8327deb882cf99','be_users').t3lib_BEfunc::deleteClause('be_users');
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('username, password', 'be_users', $where_clause);
 			if ($GLOBALS['TYPO3_DB']->sql_num_rows($res))	{
 				$warnings[] = 'The backend user "admin" with password "password" is still existing';
 			}
 
-			// Check if the encryption key is empty
+				// Check if the encryption key is empty
 			if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] == '')	{
 				$warnings[] = 'The encryption key is not set! Set it in $TYPO3_CONF_VARS[SYS][encryptionKey]';
 			}
