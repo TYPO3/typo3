@@ -687,8 +687,9 @@ class t3lib_div {
 		while(list(,$item)=each($items))	{
 			$range = explode('-',$item);
 			if (isset($range[1]))	{
-				for ($n=$range[0]; $n<=$range[1]; $n++)
+				for ($n=$range[0]; $n<=$range[1]; $n++)	{
 					$list[] = $n;
+				}
 			} else {
 				$list[] = $item;
 			}
