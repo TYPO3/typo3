@@ -675,6 +675,29 @@ class t3lib_div {
 	}
 
 	/**
+	 * Expand a comma-separated list of integers with ranges (eg 1,3-5,7 becomes 1,3,4,5,7).
+	 *
+	 * @param	string		$list 	comma-separated list of integers with ranges (string)
+	 * @return	string		new comma-separated list of items
+	 * @author	Martin Kutschker <martin.kutschker@activesolution.at>
+	 */
+	function expandList($list)      {
+		$items = explode(',',$list);
+		$list = array();
+		while(list(,$item)=each($items))	{
+			$range = explode('-',$item);
+			if (isset($range[1]))	{
+				for ($n=$range[0]; $n<=$range[1]; $n++)
+					$list[] = $n;
+			} else {
+				$list[] = $item;
+			}
+		}
+
+		return implode(',',$list);
+	}
+
+	/**
 	 * Forces the integer $theInt into the boundaries of $min and $max. If the $theInt is 'false' then the $zeroValue is applied.
 	 * Usage: 224
 	 *
