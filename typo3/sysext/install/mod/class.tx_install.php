@@ -425,7 +425,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv("REMOTE_ADDR")."' (".t3lib_div::getIndp
 						When you change the settings for Image Processing you <i>must</i> take into account that <u>old images</u> may still be in typo3temp/ folder and prevent new files from being generated! This is especially important to know, if you're trying to set up image processing for the very first time.
 						The problem is solved by <a href=\"".$this->setScriptName("typo3temp")."\">clearing the typo3temp/ folder</a>. Also make sure to clear the cache_pages table.
 						",1,1);
-					$this->message($ext, "Very Important: Changing Ecryption Key setting", "
+					$this->message($ext, "Very Important: Changing Encryption Key setting", "
 						When you change the setting for the Encryption Key you <i>must</i> take into account that a change to this value might invalidate temporary information, URLs etc.
 						The problem is solved by <a href=\"".$this->setScriptName("typo3temp")."\">clearing the typo3temp/ folder</a>. Also make sure to clear the cache_pages table.
 						",1,1);
@@ -1975,7 +1975,7 @@ From sub-directory:
 				if ($this->mode!="123")	{
 					$out.=$this->wrapInCells("Site name:", '<input type="text" name="TYPO3_INSTALL[localconf.php][sitename]" value="'.htmlspecialchars($GLOBALS["TYPO3_CONF_VARS"]["SYS"]["sitename"]).'">');
 					$out.=$this->wrapInCells("", "<BR>");
-					$out.=$this->wrapInCells("Encryption Key:", '<input type="text" name="TYPO3_INSTALL[localconf.php][encryptionKey]" value="'.htmlspecialchars($GLOBALS["TYPO3_CONF_VARS"]["SYS"]["encryptionKey"]).'">');
+					$out.=$this->wrapInCells("Encryption key:", '<input type="text" name="TYPO3_INSTALL[localconf.php][encryptionKey]" value="'.htmlspecialchars($GLOBALS["TYPO3_CONF_VARS"]["SYS"]["encryptionKey"]).'">');
 					$out.=$this->wrapInCells("", "<BR>");
 
 						// Other
@@ -4592,9 +4592,9 @@ A:hover {color: #000066}
 	 */
 	function convertByteSize($bytes)	{
 		if (stristr($bytes,"m"))	{
-			$bytes=floatval($bytes)*1024*1024;
+			$bytes=doubleval($bytes)*1024*1024;
 		} elseif (stristr($bytes,"k"))	{
-			$bytes=floatval($bytes)*1024;
+			$bytes=doubleval($bytes)*1024;
 		}
 		return $bytes;
 	}
