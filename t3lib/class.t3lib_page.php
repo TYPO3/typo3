@@ -867,9 +867,9 @@ class t3lib_pageSelect {
 	function deleteClause($table)	{
 		global $TCA;
 		if (!strcmp($table,'pages'))	{	// Hardcode for pages...:
-			return ' AND deleted=0';
+			return ' AND pages.deleted=0';
 		} else {
-			return $TCA[$table]['ctrl']['delete'] ? ' AND '.$TCA[$table]['ctrl']['delete'].'=0' : '';
+			return $TCA[$table]['ctrl']['delete'] ? ' AND '.$table.'.'.$TCA[$table]['ctrl']['delete'].'=0' : '';
 		}
 	}
 
