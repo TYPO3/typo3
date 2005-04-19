@@ -1,3 +1,10 @@
+
+2005-04-19  Martin Kutschker <martin.t.kutschker@blackbox.net>
+
+	* Changed t3lib_page::deleteClause to make it JOIN-safe
+	* Added innerWrap and outerWrap properties to EDITPANEL and innerWrap, outerWrap and color properties to EDITPANEL.previewBorder
+	* Added t3lib_div::expandList (turns eg "1,3-5,7" into "1,3,4,5,7")
+
 2005-04-18  Karsten Dambekalns  <karsten@typo3.org>
 
 	* typo3/file_upload.php: Small fix to fix bug #986, patch by Sebastian Kurfuerst.
