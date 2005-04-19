@@ -6594,13 +6594,17 @@ class tslib_cObj {
 										</tr>
 									</table>
 								</form>';
+						// wrap the panel
+					if ($conf['innerWrap']) $panel = $this->wrap($panel,$conf['innerWrap']);
 						// add black line:
 					$panel.=$blackLine;
+						// wrap the complete panel
+					if ($conf['outerWrap']) $panel = $this->wrap($panel,$conf['outerWrap']);
 					$finalOut = $content.$panel;
 				break;
 			}
 
-			if ($conf['previewBorder']) $finalOut = $this->editPanelPreviewBorder($table,$dataArr,$finalOut,$conf['previewBorder']);
+			if ($conf['previewBorder']) $finalOut = $this->editPanelPreviewBorder($table,$dataArr,$finalOut,$conf['previewBorder'],$conf['previewBorder.']);
 			return $finalOut;
 		} else {
 			return $content;
@@ -6747,14 +6751,18 @@ class tslib_cObj {
 	 * @param	array		The data record from $table
 	 * @param	string		The content string to wrap
 	 * @param	integer		The thickness of the border
+	 * @param	array		The array with TypoScript properties for the content object
 	 * @return	string		The input string wrapped in a table with a border color of #cccccc and thickness = $thick
 	 * @access private
 	 * @see editPanel()
 	 */
-	function editPanelPreviewBorder($table,$row,$content,$thick)	{
-		$thick = t3lib_div::intInRange($thick,1,100);
+	function editPanelPreviewBorder($table,$row,$content,$thick,$conf=array())	{
 		if ($this->isDisabled($table,$row))	{
-			$content='<table border="'.$thick.'" cellpadding="0" cellspacing="0" bordercolor="#cccccc" width="100%"><tr><td>'.$content.'</td></tr></table>';
+			$thick = t3lib_div::intInRange($thick,1,100);
+			$color = $conf['color'] ? $conf['color'] : '#cccccc';
+			if ($conf['innerWrap'])	$content = $this->wrap($content,$conf['innerWrap']);
+			$content='<table class="typo3-editPanel-previewBorder" border="'.$thick.'" cellpadding="0" cellspacing="0" bordercolor="'.$color.'" width="100%"><tr><td>'.$content.'</td></tr></table>';
+			if ($conf['outerWrap'])	$content = $this->wrap($content,$conf['outerWrap']);
 		}
 		return $content;
 	}
