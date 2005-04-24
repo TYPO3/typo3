@@ -367,7 +367,12 @@ class fileList extends t3lib_recordList {
 	 */
 	function linkWrapDir($code,$path)	{
 		$href = $this->script.'?id='.rawurlencode($path);
-		return '<a href="'.htmlspecialchars($href).'" title="'.htmlspecialchars($code).'">'.t3lib_div::fixed_lgd($code,$this->fixedL).'</a>';
+
+		if(!strcmp($code,strip_tags($code)))	{
+			return '<a href="'.htmlspecialchars($href).'" title="'.htmlspecialchars($code).'">'.t3lib_div::fixed_lgd($code,$this->fixedL).'</a>';
+		} else	{
+			return '<a href="'.htmlspecialchars($href).'">'.$code.'</a>';
+		}
 	}
 
 	/**
