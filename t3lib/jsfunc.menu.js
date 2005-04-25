@@ -108,6 +108,9 @@ function JSactivate(level) {
 			this.entry[this.entry[entryID].parent].openID = entryID;
 		}
 		if (this.entry[entryID].url)	{
+			if (document.getElementsByTagName("base")[0].href != "") {
+				this.entry[entryID].url = document.getElementsByTagName("base")[0].href + this.entry[entryID].url;
+			}
 			if (!this.entry[entryID].target || this.entry[entryID].target=="_self")	{
 				document.location = this.entry[entryID].url;
 			} else if (this.entry[entryID].target=="_top") {
