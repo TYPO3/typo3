@@ -2177,9 +2177,10 @@ class t3lib_BEfunc	{
 	 * @param	string		$anchor is optional anchor to the URL
 	 * @param	string		$altUrl is an alternative URL which - if set - will make all other parameters ignored: The function will just return the window.open command wrapped around this URL!
 	 * @param	string		Additional GET variables.
+	 * @param	boolean		If true, then the preview window will gain the focus.
 	 * @return	string
 	 */
-	function viewOnClick($id,$backPath='',$rootLine='',$anchor='',$altUrl='',$addGetVars='')	{
+	function viewOnClick($id,$backPath='',$rootLine='',$anchor='',$altUrl='',$addGetVars='',$switchFocus=TRUE)	{
 		if ($altUrl)	{
 			$url = $altUrl;
 		} else {
@@ -2193,7 +2194,8 @@ class t3lib_BEfunc	{
 			$url = $preUrl.'/index.php?id='.$id.$addGetVars.$anchor;
 		}
 
-		return "previewWin=window.open('".$url."','newTypo3FrontendWindow','status=1,menubar=1,resizable=1,location=1,scrollbars=1,toolbar=1');previewWin.focus();";
+		return "previewWin=window.open('".$url."','newTypo3FrontendWindow','status=1,menubar=1,resizable=1,location=1,scrollbars=1,toolbar=1');".
+				($switchFocus ? 'previewWin.focus();' : '');
 	}
 
 	/**

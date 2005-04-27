@@ -414,7 +414,13 @@ class SC_alt_doc {
 				}
 				return false;
 			}
-		'.(isset($_POST['_savedokview_x']) && $this->popViewId ? t3lib_BEfunc::viewOnClick($this->popViewId,'',t3lib_BEfunc::BEgetRootLine($this->popViewId),'',$this->viewUrl,$this->popViewId_addParams) : '')
+		'.(isset($_POST['_savedokview_x']) && $this->popViewId ?
+			'if (window.opener) { '.
+				t3lib_BEfunc::viewOnClick($this->popViewId,'',t3lib_BEfunc::BEgetRootLine($this->popViewId),'',$this->viewUrl,$this->popViewId_addParams,FALSE).
+				' } else { '.
+				t3lib_BEfunc::viewOnClick($this->popViewId,'',t3lib_BEfunc::BEgetRootLine($this->popViewId),'',$this->viewUrl,$this->popViewId_addParams).
+				' } '
+			: '')
 		).$this->doc->getDynTabMenuJScode();
 
 			// Setting up the context sensitive menu:

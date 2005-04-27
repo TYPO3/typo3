@@ -1,3 +1,7 @@
+2005-04-27  Kasper Skårhøj,,,  <kasper@typo3.com>
+
+	* When using frontend editing with pop-up window the save-and-view button will not change focus of the windows but keep the editing window on top while reloading the page for preview behind. (Works in any case editing happens in a pop-up window)
+
 2005-04-21 => 04-26  Kasper Skårhøj,,,  <kasper@typo3.com>
 
 	* Added a runaway brake to t3lib_div::expandList(): Ranges are limited to 1000 values per range.
