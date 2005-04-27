@@ -1,3 +1,7 @@
+2005-04-27  Michael Scharkow  <mscharkow@gmx.net>
+
+	* Fixed bug #0000727: Changed some labels for editing Page Header in page and list view
+
 2005-04-27  Kasper Skårhøj,,,  <kasper@typo3.com>
 
 	* More implementation of locallang-xml support in frontend

@@ -428,7 +428,7 @@ class SC_db_layout {
 				// Creating the top edit page icon:
 			if ($this->CALC_PERMS&2)	{
 				$params='&edit[pages]['.$this->id.']=edit';
-				$this->editIcon='<a href="#" onclick="'.htmlspecialchars(t3lib_BEfunc::editOnClick($params,$BACK_PATH)).'"><img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/edit2.gif','width="11" height="12"').' vspace="2" align="top" title="'.$LANG->getLL('edit',1).'" alt="" /></a>';
+				$this->editIcon='<a href="#" onclick="'.htmlspecialchars(t3lib_BEfunc::editOnClick($params,$BACK_PATH)).'"><img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/edit2.gif','width="11" height="12"').' vspace="2" align="top" title="'.$LANG->getLL('editPageTitle',1).'" alt="" /></a>';
 			} else {
 				$this->editIcon='';
 			}

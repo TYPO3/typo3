@@ -25,7 +25,7 @@
 			<label index="clip_deleteMarkedWarning">Are you sure you want to delete all marked records from the table '%s'?</label>
 			<label index="showInfo">Display information</label>
 			<label index="edit">Edit record</label>
-			<label index="editPage">Edit page</label>
+			<label index="editPage">Edit page header</label>
 			<label index="new">New record</label>
 			<label index="newPage">Create new page after this page</label>
 			<label index="newRecord">Create new record after this record</label>
