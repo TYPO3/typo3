@@ -1,4 +1,4 @@
-2005-04-27  Kraft Bernhard <kraftb@kraftb.at>
+2005-04-27  Bernhard Kraft <kraftb@kraftb.at>
 
 	* Added post-process Hook in class.t3lib_befunc.php for method "getFlexFormDS"
 
