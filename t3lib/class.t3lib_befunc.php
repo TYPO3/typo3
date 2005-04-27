@@ -1068,7 +1068,7 @@ class t3lib_BEfunc	{
 	 * @param	integer		$expTime represents the expire time in seconds. For instance a value of 3600 would allow cached content within the last hour, otherwise nothing is returned.
 	 * @return	string
 	 */
-	function getHash($hash,$expTime)	{
+	function getHash($hash,$expTime=0)	{
 			// if expTime is not set, the hash will never expire
 		$expTime = intval($expTime);
 		if ($expTime)	{

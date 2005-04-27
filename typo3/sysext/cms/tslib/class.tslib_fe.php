@@ -3501,11 +3501,11 @@ if (version == "n3") {
 
 
 
-	/**************************
+	/*********************************************
 	 *
-	 * Localization
+	 * Localization and character set conversion
 	 *
-	 **************************/
+	 *********************************************/
 
 	/**
 	 * Split Label function for front-end applications.
@@ -3543,11 +3543,7 @@ if (version == "n3") {
 	 * @return	array		Returns the $LOCAL_LANG array found in the file. If no array found, returns empty array.
 	 */
 	function readLLfile($fileRef)	{
-		$file = t3lib_div::getFileAbsFileName($fileRef);
-		if (@is_file($file))	{
-			include($file);
-		}
-		return is_array($LOCAL_LANG)?$LOCAL_LANG:array();
+		return t3lib_div::readLLfile($fileRef,$this->lang);
 	}
 
 	/**

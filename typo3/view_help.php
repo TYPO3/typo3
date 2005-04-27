@@ -65,7 +65,7 @@
  *  683:     function getTableFieldLabel($table,$field='',$mergeToken=': ')
  *  702:     function createGlossaryIndex()
  *  738:     function substituteGlossaryWords($code)
- *  776:     function substituteGlossaryWords_nonHTML($code)
+ *  776:     function substituteGlossaryWords($code)
  *
  * TOTAL FUNCTIONS: 19
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -98,11 +98,10 @@ class local_t3lib_parsehtml extends t3lib_parsehtml {
 	 * @access private
 	 */
 	function processContent($value,$dir,$conf)	{
-		$value = $this->pObj->substituteGlossaryWords($value);
+		$value = $this->pObj->substituteGlossaryWords_htmlcleaner_callback($value);
 
 		return $value;
 	}
-
 }
 
 
@@ -441,7 +440,7 @@ class SC_view_help {
 		}
 
 			// Substitute glossary words:
-		$output = $this->substituteGlossaryWords_nonHTML($output);
+		$output = $this->substituteGlossaryWords($output);
 
 			// TOC link:
 		if (!$this->renderALL)	{
@@ -477,7 +476,7 @@ class SC_view_help {
 		$output.= $this->printItem($table,$field);
 
 			// Substitute glossary words:
-		$output = $this->substituteGlossaryWords_nonHTML($output);
+		$output = $this->substituteGlossaryWords($output);
 
 			// Link to Full table description and TOC:
 		$getLLKey = $this->limitAccess ? 'fullDescription' : 'fullDescription_module';
@@ -700,93 +699,125 @@ class SC_view_help {
 		return $labelStr;
 	}
 
+
+
+
+
+
+
+
+
+
+
+	/******************************
+	 *
+	 * Glossary related
+	 *
+	 ******************************/
+
 	/**
 	 * Creates glossary index in $this->glossaryWords
+	 * Glossary is cached in cache_hash table and so will be updated only when cache is cleared.
 	 *
 	 * @return	void
-	 * @todo: Implement some caching of this array - needed when the glossary grows to a large size!
 	 */
 	function createGlossaryIndex()	{
 		global $TCA_DESCR,$TCA,$LANG;
-return;
-			// Initialize:
-		$CSHkeys = array_flip(array_keys($TCA_DESCR));
 
-			// Glossary
-		foreach($CSHkeys as $cshKey => $value)	{
-			if (t3lib_div::isFirstPartOfStr($cshKey, 'xGLOSSARY_') && !isset($TCA[$cshKey]))	{
-				$LANG->loadSingleTableDescription($cshKey);
+			// Create hash string and try to retrieve glossary array:
+		$hash = md5('typo3/view_help.php:glossary');
+ 		list($this->glossaryWords,$this->substWords) = unserialize(t3lib_BEfunc::getHash($hash));
 
-				if (is_array($TCA_DESCR[$cshKey]['columns']))	{
+			// Generate glossary words if not found:
+		if (!is_array($this->glossaryWords)) {
 
-						// Traverse table columns as listed in TCA_DESCR
-					reset($TCA_DESCR[$cshKey]['columns']);
-					while(list($field,$data) = each($TCA_DESCR[$cshKey]['columns']))	{
-						if ($field)	{
-							$this->glossaryWords[$cshKey.'.'.$field] = array(
-								'title' => trim($data['alttitle'] ? $data['alttitle'] : $cshKey),
-								'description' => $data['description'],
-							);
+				// Initialize:
+			$this->glossaryWords = array();
+			$this->substWords = array();
+			$CSHkeys = array_flip(array_keys($TCA_DESCR));
+
+				// Glossary
+			foreach($CSHkeys as $cshKey => $value)	{
+				if (t3lib_div::isFirstPartOfStr($cshKey, 'xGLOSSARY_') && !isset($TCA[$cshKey]))	{
+					$LANG->loadSingleTableDescription($cshKey);
+
+					if (is_array($TCA_DESCR[$cshKey]['columns']))	{
+
+							// Traverse table columns as listed in TCA_DESCR
+						reset($TCA_DESCR[$cshKey]['columns']);
+						while(list($field,$data) = each($TCA_DESCR[$cshKey]['columns']))	{
+							if ($field)	{
+								$this->glossaryWords[$cshKey.'.'.$field] = array(
+									'title' => trim($data['alttitle'] ? $data['alttitle'] : $cshKey),
+									'description' =>  str_replace('%22','%23%23%23', rawurlencode($data['description'])),
+								);
+							}
 						}
 					}
 				}
 			}
-		}
-#debug($this->glossaryWords);
-	}
 
-	/**
-	 * Substituting glossary words in the CSH
-	 *
-	 * @param	string		Input HTML string
-	 * @return	string		HTML with substituted words in.
-	 * @todo	It is certain that the substitution of words could be improved. This is just a basic implementation. Suggestions are welcome!
-	 */
-	function substituteGlossaryWords($code)	{
-		if (is_array($this->glossaryWords) && strlen(trim($code)))	{
-#debug(array($code),1);
 				// First, create unique list of words:
-			$substWords = array();
 			foreach($this->glossaryWords as $key => $value)	{
 				$word = strtolower($value['title']);	// Making word lowercase in order to filter out same words in different cases.
 
 				if ($word!=='')	{
-					$substWords[$word] = $value;
-					$substWords[$word]['key'] = $key;
+					$this->substWords[$word] = $value;
+					$this->substWords[$word]['key'] = $key;
 				}
 			}
 
-				// Substitute words:
-			foreach($substWords as $wordSet)	{
-				$parts = preg_split("/([^[:alnum:]]+)(".$wordSet['title'].")([^[:alnum:]]+)/", ' '.$code.' ', 2, PREG_SPLIT_DELIM_CAPTURE);
-				if (count($parts) == 5)	{
-					$parts[2] = '<a style="background-color: yellow; " href="'.htmlspecialchars('view_help.php?tfID='.rawurlencode($wordSet['key']).'&back='.$this->tfID).'" title="'.htmlspecialchars($wordSet['description']).'">'.$parts[2].'</a>';
-#debug($parts,$word);
-#debug($wordSet['title']);
-					$code = substr(implode('',$parts),1,-1);
+			krsort($this->substWords);
 
-						// Disable entry so it doesn't get used next time:
-					unset($this->glossaryWords[$wordSet['key']]);
-				}
-			}
+			t3lib_BEfunc::storeHash($hash,serialize(array($this->glossaryWords,$this->substWords)),'Glossary');
 		}
-
-		return $code;
 	}
 
 	/**
-	 * [Describe function...]
+	 * Processing of all non-HTML content in the output
+	 * Will be done by a call-back to ->substituteGlossaryWords_htmlcleaner_callback()
 	 *
-	 * @param	[type]		$code: ...
-	 * @return	[type]		...
+	 * @param	string		Input HTML code
+	 * @return	string		Output HTML code
 	 */
-	function substituteGlossaryWords_nonHTML($code) {
+	function substituteGlossaryWords($code) {
 		$htmlParser = t3lib_div::makeInstance('local_t3lib_parsehtml');
 		$htmlParser->pObj = &$this;
 		$code = $htmlParser->HTMLcleaner($code, array(), 1);
 
 		return $code;
 	}
+
+	/**
+	 * Substituting glossary words in the CSH
+	 * (This is a call-back function from "class local_t3lib_parsehtml extends t3lib_parsehtml", see top of this script)
+	 *
+	 * @param	string		Input HTML string
+	 * @return	string		HTML with substituted words in.
+	 * @coauthor	alex widschwendter, media.res kommunikationsloesungen
+	 */
+	function substituteGlossaryWords_htmlcleaner_callback($code)	{
+		if (is_array($this->substWords) && count($this->substWords) && strlen(trim($code)))	{
+
+				// Substitute words:
+			foreach($this->substWords as $wordKey => $wordSet)	{
+				$parts = preg_split('/( |[\(])('.$wordSet['title'].')([\.\!\)\?\:\,]+| )/i', ' '.$code.' ', 2, PREG_SPLIT_DELIM_CAPTURE);
+				if (count($parts) == 5)	{
+					$parts[2] = '<a class="glossary-term" href="'.htmlspecialchars('view_help.php?tfID='.rawurlencode($wordSet['key']).'&back='.$this->tfID).'" title="'.rawurlencode(htmlspecialchars(t3lib_div::fixed_lgd_cs(rawurldecode($wordSet['description']),80))).'">'.
+								htmlspecialchars($parts[2]).
+								'</a>';
+					$code = substr(implode('',$parts),1,-1);
+
+						// Disable entry so it doesn't get used next time:
+					unset($this->substWords[$wordKey]);
+				}
+			}
+			$code = str_replace('###', '&quot;',rawurldecode($code));
+		}
+
+		return $code;
+	}
+
 }
 
 
