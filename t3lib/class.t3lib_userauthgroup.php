@@ -731,13 +731,6 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 					admPanel.enable.all = 1
 					options.shortcutFrame = 1
 				';
-				if (t3lib_extMgm::isLoaded('tt_news'))	{
-					$this->TSdataArray[]='
-						// Setting defaults for tt_news author / email...
-						TCAdefaults.tt_news.author = '.$this->user['realName'].'
-						TCAdefaults.tt_news.author_email = '.$this->user['email'].'
-					';
-				}
 				if (t3lib_extMgm::isLoaded('sys_note'))	{
 					$this->TSdataArray[]='
 						// Setting defaults for sys_note author / email...
