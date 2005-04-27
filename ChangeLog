@@ -1,3 +1,7 @@
+2005-04-27  Rupert Germann  <rupi@gmx.li>
+
+	* fix for bug 536: removed a hardcoded tt_news reference which inserted the admin name as news author.
+
 2005-04-27  Michael Scharkow  <mscharkow@gmx.net>
 
 	* Fixed bug #0000727: Changed some labels for editing Page Header in page and list view
