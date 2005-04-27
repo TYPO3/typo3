@@ -1,3 +1,7 @@
+2005-04-27  Kraft Bernhard <kraftb@kraftb.at>
+
+	* Added post-process Hook in class.t3lib_befunc.php for method "getFlexFormDS"
+
 2005-04-27  Rupert Germann  <rupi@gmx.li>
 
 	* fix for bug 536: removed a hardcoded tt_news reference which inserted the admin name as news author.

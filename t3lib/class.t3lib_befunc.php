@@ -942,7 +942,8 @@ class t3lib_BEfunc	{
 	 * @return	mixed		If array, the data structure was found and returned as an array. Otherwise (string) it is an error message.
 	 * @see t3lib_TCEforms::getSingleField_typeFlex()
 	 */
-	function getFlexFormDS($conf,$row,$table)	{
+	function getFlexFormDS($conf,$row,$table, $fieldName = '')	{
+		global $TYPO3_CONF_VARS;
 
 			// Get pointer field etc from TCA-config:
 		$ds_pointerField = 	$conf['ds_pointerField'];
@@ -1012,6 +1013,17 @@ class t3lib_BEfunc	{
 				}
 			} else $dataStructArray='No source value in fieldname "'.$ds_pointerField.'"';	// Error message.
 		} else $dataStructArray='No proper configuration!';
+
+			// Hook for post-processing the Flexform DS. Introduces the possibility to configure Flexforms via TSConfig
+		if (is_array ($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['getFlexFormDSClass'])) {
+			foreach ($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['getFlexFormDSClass'] as $classRef) {
+				$hookObj = &t3lib_div::getUserObj($classRef);
+				if (method_exists($hookObj, 'getFlexFormDS_postProcessDS')) {
+					$hookObj->getFlexFormDS_postProcessDS($dataStructArray, $conf, $row, $table, $fieldName);
+				}
+			}
+		}
+
 		return $dataStructArray;
 	}
 
