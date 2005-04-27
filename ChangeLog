@@ -4,6 +4,10 @@
 
 2005-04-27  Kasper Skårhøj,,,  <kasper@typo3.com>
 
+	* Updated install tool test images again after Stuckis suggestions. Now validates perfectly with this TYPO3 using his debian packages "graphicsmagick" and "graphicsmagick-im-compat"
+
+2005-04-27  Kasper Skårhøj,,,  <kasper@typo3.com>
+
 	* More implementation of locallang-xml support in frontend
 	* Implemented substitution of glossary terms in view_help.php. Glossary is available when the extension "t3glossary" is installed (yet to be released)
 
