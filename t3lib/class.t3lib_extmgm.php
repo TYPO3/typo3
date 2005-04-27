@@ -471,8 +471,8 @@ class t3lib_extMgm {
 	 * Adds a service to the global services array
 	 *
 	 * @param	string		Extension key
-	 * @param	string		Service type
-	 * @param	string		Service key
+	 * @param	string		Service type, cannot be prefixed "tx_"
+	 * @param	string		Service key, must be prefixed "tx_"
 	 * @param	array		Service description array
 	 * @return	void
 	 * @author	René Fritz <r.fritz@colorcube.de>
@@ -543,7 +543,7 @@ class t3lib_extMgm {
 	 * @author	René Fritz <r.fritz@colorcube.de>
 	 */
 	function findService($serviceType, $serviceSubType='', $excludeServiceKeys=array()) {
-		global $T3_SERVICES;
+		global $T3_SERVICES, $TYPO3_CONF_VARS;
 
 		$serviceKey = FALSE;
 		$serviceInfo = FALSE;

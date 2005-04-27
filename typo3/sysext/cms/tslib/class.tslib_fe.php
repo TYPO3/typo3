@@ -213,6 +213,7 @@
 	var $jumpurl='';
 	var $pageNotFound=0;				// Is set to 1 if a pageNotFound handler could have been called.
 	var $domainStartPage=0;				// Domain start page
+	var $pageAccessFailureHistory=array();	// Array containing a history of why a requested page was not accessible.
 	var $MP='';
 	var $RDCT='';
 	var $page_cache_reg1=0;				// This can be set from applications as a way to tag cached versions of a page and later perform some external cache management, like clearing only a part of the cache of a page...
@@ -249,7 +250,7 @@
 	var $newHash='';					// This hash is unique to the template, the $this->id and $this->type vars and the gr_list (list of groups). Used to get and later store the cached data
 	var $getMethodUrlIdToken='';		// If config.ftu (Frontend Track User) is set in TypoScript for the current page, the string value of this var is substituted in the rendered source-code with the string, '&ftu=[token...]' which enables GET-method usertracking as opposed to cookie based
 	var $noCacheBeforePageGen='';		// This flag is set before inclusion of pagegen.php IF no_cache is set. If this flag is set after the inclusion of pagegen.php, no_cache is forced to be set. This is done in order to make sure that php-code from pagegen does not falsely clear the no_cache flag.
-	var $tempContent='';				// This flag indicates if temporary content went into the cache during page-generation.
+	var $tempContent = FALSE;			// This flag indicates if temporary content went into the cache during page-generation.
 	var $forceTemplateParsing='';				// Boolean, passed to TypoScript template class and tells it to render the template forcibly
 	var $cHash_array=array();			// The array which cHash_calc is based on, see ->makeCacheHash().
 	var $hash_base='';					// Loaded with the serialized array that is used for generating a hashstring for the cache
@@ -553,9 +554,13 @@
 		} else {
 			$this->loginUser=0;
 			$this->gr_list = '0,-1';	// group -1 is not an existing group, but denotes a 'default' group when not logged in. This is used to let elements be hidden, when a user is logged in!
-			$gr_array = $this->fe_user->groupData['uid'];
+
+			if ($this->loginAllowedInBranch)	{
+				$gr_array = $this->fe_user->groupData['uid'];	// For cases where logins are not banned from a branch usergroups can be set based on IP masks so we should add the usergroups uids.
+			} else {
+				$gr_array = array();		// Set to blank since we will NOT risk any groups being set when no logins are allowed!
+			}
 		}
-		// TYPO3_CONF_VARS']['FE']['IPmaskMountGroups']	moved to sysext/sv/class.tx_sv_auth.php service
 
 			// Clean up.
 		$gr_array = array_unique($gr_array);	// Make unique...
@@ -565,6 +570,15 @@
 		}
 
 		if ($this->fe_user->writeDevLog) 	t3lib_div::devLog('Valid usergroups for TSFE: '.$this->gr_list, 'tslib_fe');
+	}
+
+	/**
+	 * Checking if a user is logged in or a group constellation different from "0,-1"
+	 *
+	 * @return	boolean		TRUE if either a login user is found (array fe_user->user) OR if the gr_list is set to something else than '0,-1' (could be done even without a user being logged in!)
+	 */
+	function isUserOrGroupSet()	{
+		return is_array($this->fe_user->user) || $this->gr_list!=='0,-1';
 	}
 
 	/**
@@ -742,8 +756,12 @@
 			// Checks if user logins are blocked for a certain branch and if so, will unset user login and re-fetch ID.
 		$this->loginAllowedInBranch = $this->checkIfLoginAllowedInBranch();
 		if (!$this->loginAllowedInBranch)	{	// Logins are not allowed:
-			if (is_array($this->fe_user->user))	{	// Only if there is a login will we run this...
+			if ($this->isUserOrGroupSet())	{	// Only if there is a login will we run this...
+
+					// Clear out user and group:
 				unset($this->fe_user->user);
+				$this->gr_list = '0,-1';
+
 					// Fetching the id again, now with the preview settings reset.
 				$this->fetch_the_id();
 			}
@@ -874,10 +892,15 @@
 			if (count($this->rootLine))	{
 				$c=count($this->rootLine)-1;
 				while($c>0)	{
+
+						// Add to page access failure history:
+					$this->pageAccessFailureHistory['direct_access'][] = $this->rootLine[$c];
+
+						// Decrease to next page in rootline and check the access to that, if OK, set as page record and ID value.
 					$c--;
-					$this->id=$this->rootLine[$c]['uid'];
+					$this->id = $this->rootLine[$c]['uid'];
 					$this->page = $this->sys_page->getPage($this->id);
-					if (count($this->page)){break;}
+					if (count($this->page)){ break; }
 				}
 			}
 				// If still no page...
@@ -984,8 +1007,11 @@
 	function checkRootlineForIncludeSection()	{
 		$c=count($this->rootLine);
 		$removeTheRestFlag=0;
+
 		for ($a=0;$a<$c;$a++)	{
 			if (!$this->checkPagerecordForIncludeSection($this->rootLine[$a]))	{
+					// Add to page access failure history:
+				$this->pageAccessFailureHistory['sub_section'][] = $this->rootLine[$a];
 				$removeTheRestFlag=1;
 			}
 			if ($this->rootLine[$a]['doktype']==6)	{
@@ -1011,17 +1037,16 @@
 	 * Takes notice of the ->showHiddenPage flag and uses SIM_EXEC_TIME for start/endtime evaluation
 	 *
 	 * @param	array		The page record to evaluate (needs fields: hidden, starttime, endtime, fe_group)
+	 * @param	boolean		Bypass group-check
 	 * @return	boolean		True, if record is viewable.
 	 * @see tslib_cObj::getTreeList(), checkPagerecordForIncludeSection()
 	 */
-	function checkEnableFields($row)	{
+	function checkEnableFields($row,$bypassGroupCheck=FALSE)	{
 		if ((!$row['hidden'] || $this->showHiddenPage)
 			&& $row['starttime']<=$GLOBALS['SIM_EXEC_TIME']
 			&& ($row['endtime']==0 || $row['endtime']>$GLOBALS['SIM_EXEC_TIME'])
-			&& $this->checkPageGroupAccess($row)
-		) {
-			return 1;
-		}
+			&& ($bypassGroupCheck || $this->checkPageGroupAccess($row))
+		) { return TRUE; }
 	}
 
 	/**
@@ -1081,6 +1106,35 @@
 	}
 
 	/**
+	 * Analysing $this->pageAccessFailureHistory into a summary array telling which features disabled display and on which pages and conditions. That data can be used inside a page-not-found handler
+	 *
+	 * @return	array	Summary of why page access was not allowed.
+	 */
+	function getPageAccessFailureReasons()	{
+		$output = array();
+
+		$combinedRecords = array_merge(
+			is_array($this->pageAccessFailureHistory['direct_access']) ? $this->pageAccessFailureHistory['direct_access'] : array(array('fe_group'=>0)),	// Adding fake first record for direct access if none, otherwise $k==0 below will be indicating a sub-section record to be first direct_access record which is of course false!
+			is_array($this->pageAccessFailureHistory['sub_section']) ? $this->pageAccessFailureHistory['sub_section'] : array()
+		);
+
+		if (count($combinedRecords))	{
+			foreach($combinedRecords as $k => $pagerec)	{
+				// If $k=0 then it is the very first page the original ID was pointing at and that will get a full check of course
+				// If $k>0 it is parent pages being tested. They are only significant for the access to the first page IF they had the extendToSubpages flag set, hence checked only then!
+				if (!$k || $pagerec['extendToSubpages'])	{
+					if ($pagerec['hidden'])	$output['hidden'][$pagerec['uid']] = TRUE;
+					if ($pagerec['starttime'] > $GLOBALS['SIM_EXEC_TIME'])	$output['starttime'][$pagerec['uid']] = $pagerec['starttime'];
+					if ($pagerec['endtime']!=0 && $pagerec['endtime'] <= $GLOBALS['SIM_EXEC_TIME'])	$output['endtime'][$pagerec['uid']] = $pagerec['endtime'];
+					if (!$this->checkPageGroupAccess($pagerec))	$output['fe_group'][$pagerec['uid']] = $pagerec['fe_group'];
+				}
+			}
+		}
+
+		return $output;
+	}
+
+	/**
 	 * This checks if there are ARGV-parameters in the QUERY_STRING and if so, those are used for the id
 	 * $this->id must be 'false' in order for any processing to happen in here
 	 * If an id/alias value is extracted from the QUERY_STRING it is set in $this->id
@@ -1131,8 +1185,9 @@
 	 * @return	void
 	 * @access private
 	 */
-	 function setSysPageWhereClause() {
-		$this->sys_page->where_hid_del.=' AND doktype<200'.$this->getPagesGroupClause();
+	function setSysPageWhereClause() {
+		$this->sys_page->where_hid_del.=' AND doktype<200';
+		$this->sys_page->where_groupAccess = $this->getPagesGroupClause();
 	}
 
 	/**
@@ -1141,7 +1196,7 @@
 	 * @return	string		Group where clause part
 	 * @access private
 	 */
-	 function getPagesGroupClause() {
+	function getPagesGroupClause() {
 		return ' AND fe_group IN ('.$this->gr_list.')';
 	}
 
@@ -1190,11 +1245,17 @@
 		if ($header)	{header($header);}
 
 			// Create response:
-		if (gettype($code)=='boolean' || !strcmp($code,1))	{
+		if (gettype($code)=='boolean' || !strcmp($code,1))	{	// Simply boolean; Just shows TYPO3 error page with reason:
 			$this->printError('The page did not exist or was inaccessible.'.($reason ? ' Reason: '.htmlspecialchars($reason) : ''));
 			exit;
-		} elseif (t3lib_div::testInt($code))	{
-			$this->printError('Error '.$code.($reason ? ' Reason: '.htmlspecialchars($reason) : ''));
+		} elseif (t3lib_div::isFirstPartOfStr($code,'USER_FUNCTION:')) {
+			$funcRef = trim(substr($code,14));
+			$params = array(
+				'currentUrl' => t3lib_div::getIndpEnv('REQUEST_URI'),
+				'reasonText' => $reason,
+				'pageAccessFailureReasons' => $this->getPageAccessFailureReasons()
+			);
+			echo t3lib_div::callUserFunction($funcRef,$params,$this);
 			exit;
 		} elseif (t3lib_div::isFirstPartOfStr($code,'READFILE:')) {
 			$readFile = t3lib_div::getFileAbsFileName(trim(substr($code,9)));
@@ -1681,7 +1742,7 @@
 				if ($this->sys_language_uid)	{
 
 						// If requested translation is not available:
-					if ($this->page['l18n_cfg']&2)	{
+					if (t3lib_div::hideIfNotTranslated($this->page['l18n_cfg']))	{
 						$this->pageNotFoundAndExit('Page is not available in the requested language.');
 					} else {
 						switch((string)$this->sys_language_mode)	{
@@ -2079,7 +2140,7 @@
 	 * @return	void
 	 */
 	function tempPageCacheContent()	{
-		$this->tempContent = 0;
+		$this->tempContent = FALSE;
 
 		if (!$this->no_cache)	{
 			$seconds = 30;
@@ -2090,18 +2151,16 @@
 					<meta http-equiv="refresh" content="3; URL='.htmlspecialchars(t3lib_div::getIndpEnv('REQUEST_URI')).'" />
 				</head>
 				<body bgcolor="white">
-					<span style="font-family:Verdana,Arial,Helvetica" color="#cccccc">
-					<div align="center">
+					<div align="center" style="font-family:Verdana,Arial,Helvetica" color="#cccccc">
 						<strong>Page is being generated.</strong><br />
 						If this message does not disappear within '.$seconds.' seconds, please reload.
 					</div>
-					</span>
 				</body>
 			</html>';
 			$temp_content = $this->config['config']['message_page_is_being_generated'] ? $this->config['config']['message_page_is_being_generated'] : $stdMsg;
 
 			$this->setPageCacheContent($temp_content, '', $GLOBALS['EXEC_TIME']+$seconds);
-			$this->tempContent = 1;		// This flag shows that temporary content is put in the cache
+			$this->tempContent = TRUE;		// This flag shows that temporary content is put in the cache
 		}
 	}
 
@@ -2321,6 +2380,9 @@
 			}
 		}
 
+			// Convert char-set for output: (should be BEFORE indexing of the content (changed 22/4 2005)), because otherwise indexed search might convert from the wrong charset! One thing is that the charset mentioned in the HTML header would be wrong since the output charset (metaCharset) has not been converted to from renderCharset. And indexed search will internally convert from metaCharset to renderCharset so the content MUST be in metaCharset already!
+		$this->content = $this->convOutputCharset($this->content,'mainpage');
+
 			// Hook for indexing pages
 		if (is_array($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['pageIndexing']))	{
 			foreach($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['pageIndexing'] as $_classRef)	{
@@ -2328,9 +2390,6 @@
 				$_procObj->hook_indexContent($this);
 			}
 		}
-
-			// Convert char-set for output:
-		$this->content = $this->convOutputCharset($this->content,'mainpage');
 
 			// Storing for cache:
 		if (!$this->no_cache)	{
@@ -2589,6 +2648,7 @@ if (version == "n3") {
 
 	/**
 	 * Send cache headers good for client/reverse proxy caching
+	 * This function should not be called if the page content is temporary (like for "Page is being generated..." message, but in that case it is ok because the config-variables are not yet available and so will not allow to send cache headers)
 	 *
 	 * @return	void
 	 * @co-author	Ole Tange, Forbrugernes Hus, Denmark
@@ -2661,12 +2721,10 @@ if (version == "n3") {
 	 * @return	boolean
 	 */
 	function isStaticCacheble()	{
-
 		$doCache = !$this->no_cache
 				&& !$this->isINTincScript()
 				&& !$this->isEXTincScript()
-				&& !is_array($this->fe_user->user);
-
+				&& !$this->isUserOrGroupSet();
 		return $doCache;
 	}
 
@@ -3565,7 +3623,7 @@ if (version == "n3") {
 	 * @param	string		Label (just for fun, no function)
 	 * @return	string		Converted content string.
 	 */
-	function convOutputCharset($content,$label)	{
+	function convOutputCharset($content,$label='')	{
 		if ($this->renderCharset != $this->metaCharset)	{
 			$content = $this->csConvObj->conv($content,$this->renderCharset,$this->metaCharset,TRUE);
 		}

@@ -1,3 +1,24 @@
+2005-04-21 => 04-26  Kasper Skårhøj,,,  <kasper@typo3.com>
+
+	* Added a runaway brake to t3lib_div::expandList(): Ranges are limited to 1000 values per range.
+	* Added authentication services (from sysext/sv/) to the core.
+	* Added a feature to menu objects that you can have them show pages in the menus which are normally access restricted. The pages shown will like to a fixed page ID as long as access is not allowed - that page could then show a login box for instance. If access to the elements is ok they will of course link to themselves.
+	* Added the same feature described for menu objects above to normal typolinks, configured with "config.typolinkLinkAccessRestrictedPages". See TSref for details. The feature will allow links pointing to access restricted page to be created but redirected to a central page which could for instnace contain a login form which is what will be shown if the page was not accessible.
+	* !!! Technical/API: Changed sys_page->where_hid_del so the fe_group check is not included in WHERE clause but found separately in sys_page->where_groupAccess. It is probably quite rare if this affects any extension but it could do so potentially. PHP code would have to be adapted then.
+	* Implemented configuration to inverse localization setting for pages, $GLOBALS['TYPO3_CONF_VARS']['FE']['hidePagesIfNotTranslatedByDefault']:  If TRUE, pages that has no translation will be hidden by default. Basically this will inverse the effect of the page localization setting "Hide page if no translation for current language exists" to "Show page even if no translation exists"
+	* Added new function; t3lib_div::explodeUrl2Array(): Explodes a string with GETvars (eg. "&id=1&type=2&ext[mykey]=3") into an array
+	* Added "config.language_alt" which enables localization from locallang-files of plugins to fallback to an alternative language if the main one (specified with config.language) was not found in hte locallang file. Thus a brazil portuguese ("br") website could specify portuguese (pt) as fallback language!
+	* Added hook for page-not-found handling enabling any handling to be done for really flexible use.
+	* Extended class t3lib_arraybrowser so it can show a PHP array without links. Used for "realurl" extension displaying its configuration in backend module.
+	* Introduced readLLfile() and readLLXMLfile() in t3lib_div in the section with TYPO3 specific functions. They were moved from lang/lang.php class (language class) where they served to load locallang.(php|xml) files. Since this functionality was needed in the frontend as well the functions had to exist in a common script, that being t3lib_div.
+	* fixed "bug" where the meta data from a flexform data structure was returned in t3lib_div::-function
+	* Completely reverted the removal of the "unsigned" attributes in *.sql files - DBAL has to handle this depending on DB.
+	* Added record-uid to the listing of reference in TCEform group fields.
+	* Added features in tslib_fe which records the reasons why a certain page was not accessible if it related to hidden/starttime/endtime/groups. This can be used in page-not-found handlers to produce a proper response to access attempts to eg. protected sections.
+	* Support for locallang-xml in frontend as well.
+	* Added unique name for TYPO3 re-login pop-up box
+	* Fixed a few smaller bugs/inconveniences
+
 2005-04-25  Andreas Otto  <andreas.otto@dkd.de>
 
 	* Fixed bug #0000649. Used the patch provided in the bug description.

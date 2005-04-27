@@ -101,45 +101,6 @@ class t3lib_install {
 	var $touchedLine = 0;				// updated with line in localconf.php file that was changed.
 
 
-
-
-	var $changedUnsignedFields = FALSE;		// Switch this to TRUE if you wish the install tool to convert all unsigned fields (for 3.8.0 core) to signed integers (unsigned is depricated due to DBAL but doesn't hurt - usually...). It might be a good idea to flush cache-tables first including the tables from indexed search (which has to be re-build thereafter)
-	var $coreFieldsWithUnsignedKeywordRemovedIn380 = array(
-		'be_groups' => 'uid,pid,tstamp,crdate,cruser_id,hidden,inc_access_lists,deleted',
-		'be_sessions' => 'ses_userid,ses_tstamp',
-		'be_users' => 'uid,pid,tstamp,admin,disable,starttime,endtime,options,crdate,cruser_id,disableIPlock,deleted,lastlogin',
-		'cache_hash' => 'tstamp',
-		'cache_imagesizes' => 'imagewidth,imageheight',
-		'pages' => 't3ver_oid,t3ver_id,tstamp,sorting,deleted,perms_userid,perms_groupid,perms_user,perms_group,perms_everybody,editlock,crdate,cruser_id,doktype,hidden,starttime,endtime,urltype,shortcut,shortcut_mode,no_cache,layout,lastUpdated,cache_timeout,newUntil,no_search,SYS_LASTCHANGED,extendToSubpages,content_from_pid,mount_pid',
-		'sys_be_shortcuts' => 'uid,userid',
-		'sys_filemounts' => 'uid,pid,tstamp,base,hidden,deleted',
-		'sys_history' => 'uid',
-		'sys_lockedrecords' => 'uid,userid,tstamp',
-		'sys_log' => 'uid,userid,action,recuid,error,tstamp,type,details_nr',
-		'sys_language' => 'uid,pid,tstamp,hidden,static_lang_isocode',
-		'cache_pages' => 'id,page_id,reg1,tstamp,expires',
-		'cache_pagesection' => 'page_id,mpvar_hash,tstamp',
-		'cache_imagesizes' => 'imagewidth,imageheight',
-		'fe_groups' => 'uid,pid,tstamp,hidden,deleted',
-		'fe_session_data' => 'tstamp',
-		'fe_sessions' => 'ses_userid,ses_tstamp',
-		'fe_users' => 'uid,pid,tstamp,disable,starttime,endtime,crdate,cruser_id,deleted,module_sys_dmail_category,module_sys_dmail_html,fe_cruser_id,lastlogin,is_online',
-		'pages_language_overlay' => 't3ver_oid,t3ver_id,tstamp,crdate,cruser_id,sys_language_uid,hidden,starttime,endtime',
-		'static_template' => 'uid,pid,tstamp,crdate',
-		'sys_domain' => 'uid,pid,tstamp,hidden,sorting',
-		'sys_template' => 't3ver_oid,t3ver_id,tstamp,sorting,crdate,cruser_id,hidden,starttime,endtime,root,clear,deleted,includeStaticAfterBasedOn,static_file_mode',
-		'tt_content' => 't3ver_oid,t3ver_id,tstamp,hidden,sorting,imagewidth,imageorient,imagecols,imageborder,layout,deleted,cols,starttime,endtime,colPos,spaceBefore,spaceAfter,image_zoom,image_noRows,image_effects,image_compression,text_face,text_size,text_color,text_properties,table_border,table_cellspacing,table_cellpadding,table_bgColor,select_key,sectionIndex,linkToTop,filelink_size,section_frame,date,image_frames,recursive,imageheight,module_sys_dmail_category',
-		'sys_note' => 'uid,pid,deleted,tstamp,crdate,cruser,personal,category',
-		'sys_action' => 'uid,pid,tstamp,crdate,cruser_id,type',
-		'sys_action_asgr_mm' => 'uid_local,uid_foreign,sorting',
-		'index_phash' => 'data_page_id,data_page_reg1,data_page_type,tstamp',
-		'index_rel' => 'count,first,freq,flags',
-		'index_section' => 'rl0,rl1,rl2',
-		'index_stat_search' => 'feuser_id',
-		'index_config' => 'tstamp,crdate,cruser_id,hidden,starttime,type,depth,chashcalc',
-	);
-
-
 	/**
 	 * Constructor function
 	 *
@@ -148,12 +109,6 @@ class t3lib_install {
 	function t3lib_install()	{
 		if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['multiplyDBfieldSize']>= 1 && $GLOBALS['TYPO3_CONF_VARS']['SYS']['multiplyDBfieldSize']<=5)	{
 			$this->multiplySize = (double)$GLOBALS['TYPO3_CONF_VARS']['SYS']['multiplyDBfieldSize'];
-		}
-
-
-			// Init this array:
-		foreach($this->coreFieldsWithUnsignedKeywordRemovedIn380 as $table => $fieldNameList)	{
-			$this->coreFieldsWithUnsignedKeywordRemovedIn380[$table] = array_flip(t3lib_div::trimExplode(',',$fieldNameList,1));
 		}
 	}
 
@@ -465,17 +420,9 @@ class t3lib_install {
 						foreach($keyTypes as $theKey)	{
 							if (is_array($info[$theKey]))	{
 								foreach($info[$theKey] as $fieldN => $fieldC) {
-
-if (!$this->changedUnsignedFields && isset($this->coreFieldsWithUnsignedKeywordRemovedIn380[$table][$fieldN]))	{
-	$FDcomp[$table][$theKey][$fieldN] = str_replace(' unsigned','',$FDcomp[$table][$theKey][$fieldN]);
-	unset($this->coreFieldsWithUnsignedKeywordRemovedIn380[$table][$fieldN]);	// Just to verify that all fields are actually found!
-}
-
-
-
 									if (!isset($FDcomp[$table][$theKey][$fieldN]))	{
 										$extraArr[$table][$theKey][$fieldN] = $fieldC;
-									} elseif (strcmp($FDcomp[$table][$theKey][$fieldN], $fieldC) && strcmp($FDcomp[$table][$theKey][$fieldN], str_replace(' unsigned','',$fieldC))){
+									} elseif (strcmp($FDcomp[$table][$theKey][$fieldN], $fieldC) && strcmp($FDcomp[$table][$theKey][$fieldN], $fieldC)){
 										$diffArr[$table][$theKey][$fieldN] = $fieldC;
 										$diffArr_cur[$table][$theKey][$fieldN] = $FDcomp[$table][$theKey][$fieldN];
 									}

@@ -453,7 +453,7 @@ if (TYPO3_MODE=='BE')	{
 				'type' => 'check',
 				'items' => Array (
 					Array('LLL:EXT:cms/locallang_tca.php:pages.l18n_cfg.I.1', ''),
-					Array('LLL:EXT:cms/locallang_tca.php:pages.l18n_cfg.I.2', ''),
+					Array($GLOBALS['TYPO3_CONF_VARS']['FE']['hidePagesIfNotTranslatedByDefault'] ? 'LLL:EXT:cms/locallang_tca.php:pages.l18n_cfg.I.2a' : 'LLL:EXT:cms/locallang_tca.php:pages.l18n_cfg.I.2', ''),
 				),
 			)
 		),

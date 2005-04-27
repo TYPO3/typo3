@@ -64,6 +64,7 @@
 			<label index="pages.l18n_cfg">Localization settings:</label>
 			<label index="pages.l18n_cfg.I.1">Hide default translation of page</label>
 			<label index="pages.l18n_cfg.I.2">Hide page if no translation for current language exists</label>
+			<label index="pages.l18n_cfg.I.2a">Show page even if no translation exists</label>
 			<label index="tt_content">Pagecontent</label>
 			<label index="fe_users">Website user</label>
 			<label index="fe_users.username">Username:</label>

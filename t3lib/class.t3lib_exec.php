@@ -81,7 +81,7 @@
 class t3lib_exec {
 
 	/**
-	 * checks if a command is valid or not
+	 * Checks if a command is valid or not
 	 * updates global vars
 	 *
 	 * @param	string		the command that should be executed. eg: "convert"
@@ -152,7 +152,7 @@ class t3lib_exec {
 	}
 
 	/**
-	 * returns a command string for exec(), system()
+	 * Returns a command string for exec(), system()
 	 *
 	 * @param	string		the command that should be executed. eg: "convert"
 	 * @param	string		handler (executor) for the command. eg: "perl"
@@ -183,20 +183,19 @@ class t3lib_exec {
 	}
 
 	/**
-	 * Extend the preset paths. This way an extension can install an axecutable and provide the path to t3lib_exec.
+	 * Extend the preset paths. This way an extension can install an executable and provide the path to t3lib_exec.
 	 *
 	 * @param	string		comma seperated list of extra paths where a command should be searched. Relative paths (without leading "/") are prepend with site root path (PATH_site).
-	 * @return	[type]		...
+	 * @return	void
 	 */
 	function addPaths($paths)	{
 		t3lib_exec::_initPaths($paths);
 	}
 
 	/**
-	 * set the search paths from different sources
+	 * Set the search paths from different sources
 	 *
-	 * @return	[type]		...
-	 * @internal
+	 * @return	array		Array of absolute paths (keys and values are equal)
 	 */
 	function _getPaths()	{
 		global $TYPO3_CONF_VARS;
@@ -222,11 +221,7 @@ class t3lib_exec {
 			}
 		}
 
-
-
-
 # ???? t3lib_div::getIndpEnv('REQUEST_URI');
-
 
 			// add path from environment
 #TODO: how does this work for WIN
@@ -261,9 +256,9 @@ class t3lib_exec {
 	}
 
 	/**
-	 * init
+	 * Initialization, internal
 	 *
-	 * @return	[type]		...
+	 * @return	void
 	 * @internal
 	 */
 	function _init()	{
@@ -276,10 +271,10 @@ class t3lib_exec {
 	}
 
 	/**
-	 * init and extend the preset paths with own
+	 * Init and extend the preset paths with own
 	 *
-	 * @param	string		comma seperated list of extra paths where a command should be searched. Relative paths (without leading "/") are prepend with site root path (PATH_site).
-	 * @return	[type]		...
+	 * @param	string		Comma seperated list of extra paths where a command should be searched. Relative paths (without leading "/") are prepend with site root path (PATH_site).
+	 * @return	void
 	 * @internal
 	 */
 	function _initPaths($paths='')	{
@@ -332,7 +327,7 @@ class t3lib_exec {
 	}
 
 	/**
-	 * returns on which OS we're runing
+	 * Returns on which OS we're runing
 	 *
 	 * @return	string		the OS type: "UNIX" or "WIN"
 	 * @internal
@@ -342,14 +337,14 @@ class t3lib_exec {
 	}
 
 	/**
-	 * set a path to the right format
+	 * Set a path to the right format
 	 *
-	 * @param	string		path
-	 * @return	string		path
+	 * @param	string		Input path
+	 * @return	string		Output path
 	 * @internal
 	 */
 	function _fixPath($path)	{
-		return str_replace ('//',"/",$path.'/');
+		return str_replace ('//','/',$path.'/');
 	}
 }
 

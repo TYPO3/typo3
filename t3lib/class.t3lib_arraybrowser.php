@@ -75,6 +75,8 @@
  * @see SC_mod_tools_config_index::main()
  */
 class t3lib_arrayBrowser	{
+	var $expAll = FALSE;			// If set, will expand all (depthKeys is obsolete then) (and no links are applied)
+	var $dontLinkVar = FALSE;		// If set, the variable keys are not linked.
 	var $depthKeys = array();		// Array defining which keys to expand. Typically set from outside from some session variable - otherwise the array will collapse.
 	var $searchKeys = array();		// After calling the getSearchKeys function this array is populated with the key-positions in the array which contains values matching the search.
 	var $fixedLgd=1;				// If set, the values are truncated with "..." appended if longer than a certain length.
@@ -104,7 +106,7 @@ class t3lib_arrayBrowser	{
 			$depth = $depth_in.$key;
 			$goto = substr(md5($depth),0,6);
 
-			$deeper = (is_array($arr[$key]) && $this->depthKeys[$depth]) ? 1 : 0;
+			$deeper = (is_array($arr[$key]) && ($this->depthKeys[$depth] || $this->expAll)) ? 1 : 0;
 			$PM = 'join';
 			$LN = ($a==$c)?'blank':'line';
 			$BTM = ($a==$c)?'bottom':'';
@@ -116,7 +118,10 @@ class t3lib_arrayBrowser	{
 			if ($PM=='join')	{
 				$HTML.=$theIcon;
 			} else {
-				$HTML.='<a name="'.$goto.'" href="'.htmlspecialchars('index.php?node['.$depth.']='.($deeper?0:1).'#'.$goto).'">'.$theIcon.'</a>';
+				$HTML.=
+					($this->expAll ? '' : '<a name="'.$goto.'" href="'.htmlspecialchars('index.php?node['.$depth.']='.($deeper?0:1).'#'.$goto).'">').
+					$theIcon.
+					($this->expAll ? '' : '</a>');
 			}
 
 			$label = $key;
@@ -170,7 +175,7 @@ class t3lib_arrayBrowser	{
 		$label = htmlspecialchars($label);
 
 			// If varname is set:
-		if ($this->varName) {
+		if ($this->varName && !$this->dontLinkVar) {
 			$variableName = $this->varName.'[\''.str_replace('.','\'][\'',$depth).'\'] = '.(!t3lib_div::testInt($theValue) ? '\''.addslashes($theValue).'\'' : $theValue).'; ';
 			$label = '<a href="'.htmlspecialchars('index.php?varname='.$variableName.'#varname').'">'.$label.'</a>';
 		}

@@ -274,7 +274,7 @@ class clickMenu {
 			if (!in_array('paste',$this->disabledItems) && $elFromAllTables)	{
 				$selItem = $this->clipObj->getSelectedRecord();
 				$elInfo=array(
-					$selItem['_RECORD_TITLE'],
+					t3lib_div::fixed_lgd_cs($selItem['_RECORD_TITLE'],$BE_USER->uc['titleLen']),
 					($root?$GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']:t3lib_div::fixed_lgd_cs(t3lib_BEfunc::getRecordTitle($table,$this->rec),$BE_USER->uc['titleLen'])),
 					$this->clipObj->currentMode()
 				);

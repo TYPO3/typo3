@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2005 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 2004-2005 René Fritz <r.fritz@colorcube.de>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -27,46 +27,52 @@
 /**
  * Service 'User authentication' for the 'sv' extension.
  *
- * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
- * @coauthor	René Fritz <r.fritz@colorcube.de>
+ * @author	René Fritz <r.fritz@colorcube.de>
+ */
+/**
+ * [CLASS/FUNCTION INDEX of SCRIPT]
+ *
+ *
+ *
+ *   56: class tx_sv_auth extends tx_sv_authbase
+ *   64:     function getUser()
+ *   89:     function authUser($user)
+ *  129:     function getGroups($user, $knownGroups)
+ *
+ * TOTAL FUNCTIONS: 3
+ * (This index is automatically created/updated by the extension "extdeveval")
+ *
  */
 
 
 
+/**
+ * Authentication services class
+ *
+ * @author	René Fritz <r.fritz@colorcube.de>
+ * @package TYPO3
+ * @subpackage tx_sv
+ */
 class tx_sv_auth extends tx_sv_authbase 	{
 
 
 	/**
-	 * find a user
+	 * Find a user (eg. look up the user record in database when a login is sent)
 	 *
-	 * @return	mixed	user array or false
+	 * @return	mixed		user array or false
 	 */
 	function getUser()	{
 		$user = false;
 
-		if ($this->login['uident'] && $this->login['uname'])	{
+		if ($this->login['status']=='login' AND $this->login['uident'])	{
 
-				// Look up the new user by the username:
-			$dbres = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-							'*',
-							$this->db_user['table'],
-								$this->db_user['username_column'].'='.$GLOBALS['TYPO3_DB']->fullQuoteStr($this->login['uname'], $this->db_user['table']).
-								$this->db_user['check_pid_clause'].
-								$this->db_user['enable_clause']
-					);
-
-			if ($dbres)	{
-				$user = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($dbres);
-				$GLOBALS['TYPO3_DB']->sql_free_result($dbres);
-			}
+			$user = $this->fetchUserRecord($this->login['uname']);
 
 			if(!is_array($user)) {
 					// Failed login attempt (no username found)
-				if ($this->pObj->writeAttemptLog) {
-					$this->writelog(255,3,3,2,
-						"Login-attempt from %s (%s), username '%s' not found!!",
-						Array($this->info['REMOTE_ADDR'], $this->info['REMOTE_HOST'], $this->login['uname']));	// Logout written to log
-				}
+				$this->writelog(255,3,3,2,
+					"Login-attempt from %s (%s), username '%s' not found!!",
+					Array($this->authInfo['REMOTE_ADDR'], $this->authInfo['REMOTE_HOST'], $this->login['uname']));	// Logout written to log
 			} else {
 				if ($this->writeDevLog) 	t3lib_div::devLog('User found: '.t3lib_div::arrayToLogString($user, array($this->db_user['userid_column'],$this->db_user['username_column'])), 'tx_sv_auth');
 			}
@@ -75,11 +81,9 @@ class tx_sv_auth extends tx_sv_authbase 	{
 	}
 
 	/**
-	 * authenticate a user
+	 * Authenticate a user (Check various conditions for the user that might invalidate its authentication, eg. password match, domain, IP, etc.)
 	 *
-	 * @param	array 	Data of user.
-	 * @param	array 	Information array. Holds submitted form data etc.
-	 * @param	string 	subtype of the service which is used to call this service.
+	 * @param	array		Data of user.
 	 * @return	boolean
 	 */
 	function authUser($user)	{
@@ -88,59 +92,42 @@ class tx_sv_auth extends tx_sv_authbase 	{
 		if ($this->login['uident'] && $this->login['uname'])	{
 			$OK = false;
 
-				// check the password
-			switch ($this->info['security_level'])	{
-				case 'superchallenged':		// If superchallenged the password in the database ($user[$this->db_user['userident_column']]) must be a md5-hash of the original password.
-				case 'challenged':
-					if ((string)$this->login['uident'] == (string)md5($user[$this->db_user['username_column']].':'.$user[$this->db_user['userident_column']].':'.$this->login['chalvalue']))	{
-						$OK = true;
-					};
-				break;
-				default:	// normal
-					if ((string)$this->login['uident'] == (string)$user[$this->db_user['userident_column']])	{
-						$OK = true;
-					};
-				break;
-			}
+			$OK = $this->compareUident($user, $this->login);
 
 			if(!$OK)     {
 					// Failed login attempt (wrong password) - write that to the log!
 				if ($this->writeAttemptLog) {
 					$this->writelog(255,3,3,1,
 						"Login-attempt from %s (%s), username '%s', password not accepted!",
-						Array($this->info['REMOTE_ADDR'], $this->info['REMOTE_HOST'], $this->login['uname']));
+						Array($this->authInfo['REMOTE_ADDR'], $this->authInfo['REMOTE_HOST'], $this->login['uname']));
 				}
 				if ($this->writeDevLog) 	t3lib_div::devLog('Password not accepted: '.$this->login['uident'], 'tx_sv_auth', 2);
 			}
 
 				// Checking the domain (lockToDomain)
-			if ($OK && $user['lockToDomain'] && $user['lockToDomain']!=$this->info['HTTP_HOST'])	{
+			if ($OK && $user['lockToDomain'] && $user['lockToDomain']!=$this->authInfo['HTTP_HOST'])	{
 					// Lock domain didn't match, so error:
 				if ($this->writeAttemptLog) {
 					$this->writelog(255,3,3,1,
 						"Login-attempt from %s (%s), username '%s', locked domain '%s' did not match '%s'!",
-						Array($this->info['REMOTE_ADDR'], $this->info['REMOTE_HOST'], $user[$this->db_user['username_column']], $user['lockToDomain'], $this->info['HTTP_HOST']));
+						Array($this->authInfo['REMOTE_ADDR'], $this->authInfo['REMOTE_HOST'], $user[$this->db_user['username_column']], $user['lockToDomain'], $this->authInfo['HTTP_HOST']));
 				}
 				$OK = false;
 			}
-		} elseif ($info['userSession'][$this->db_user['userid_column']]) {
-				// There's already a cookie session user. That's fine
-			$OK = true;
 		}
 
 		return $OK;
 	}
 
-
 	/**
-	 * find usergroups
+	 * Find usergroup records, currently only for frontend
 	 *
-	 * @param	array 	Data of user.
-	 * @param	array 	Group data array of already known groups. This is handy if you want select other related groups.
-	 * @param	string 	subtype of the service which is used to call this service.
-	 * @return	mixed 	groups array
+	 * @param	array		Data of user.
+	 * @param	array		Group data array of already known groups. This is handy if you want select other related groups. Keys in this array are unique IDs of those groups.
+	 * @return	mixed		Groups array, keys = uid which must be unique
 	 */
 	function getGroups($user, $knownGroups)	{
+		global $TYPO3_CONF_VARS;
 
 		$groupDataArr = array();
 
@@ -152,13 +139,13 @@ class tx_sv_auth extends tx_sv_authbase 	{
 				$groups = t3lib_div::intExplode(',',$user[$this->db_user['usergroup_column']]);
 			}
 
-
 				// ADD group-numbers if the IPmask matches.
-			if (is_array($this->pObj->TYPO3_CONF_VARS['FE']['IPmaskMountGroups']))	{
-				foreach($this->pObj->TYPO3_CONF_VARS['FE']['IPmaskMountGroups'] as $IPel)	{
-					if ($this->info['REMOTE_ADDR'] && $IPel[0] && t3lib_div::cmpIP($this->info['REMOTE_ADDR'],$IPel[0]))	{$groups[]=intval($IPel[1]);}
+			if (is_array($TYPO3_CONF_VARS['FE']['IPmaskMountGroups']))	{
+				foreach($TYPO3_CONF_VARS['FE']['IPmaskMountGroups'] as $IPel)	{
+					if ($this->authInfo['REMOTE_ADDR'] && $IPel[0] && t3lib_div::cmpIP($this->authInfo['REMOTE_ADDR'],$IPel[0]))	{$groups[]=intval($IPel[1]);}
 				}
 			}
+
 			$groups = array_unique($groups);
 
 			if (count($groups))	{
@@ -166,8 +153,8 @@ class tx_sv_auth extends tx_sv_authbase 	{
 
 				if ($this->writeDevLog) 	t3lib_div::devLog('Get usergroups with id: '.$list, 'tx_sv_auth');
 
-				$lockToDomain_SQL = ' AND (lockToDomain="" OR lockToDomain="'.$this->info['HTTP_HOST'].'")';
-				if (!$this->info['showHiddenRecords'])	$hiddenP = 'AND hidden=0 ';
+				$lockToDomain_SQL = ' AND (lockToDomain=\'\' OR lockToDomain=\''.$this->authInfo['HTTP_HOST'].'\')';
+				if (!$this->authInfo['showHiddenRecords'])	$hiddenP = 'AND hidden=0 ';
 				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $this->db_groups['table'], 'deleted=0 '.$hiddenP.' AND uid IN ('.$list.')'.$lockToDomain_SQL);
 				while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
 					$groupDataArr[$row['uid']] = $row;
@@ -177,8 +164,6 @@ class tx_sv_auth extends tx_sv_authbase 	{
 			} else {
 				if ($this->writeDevLog) 	t3lib_div::devLog('No usergroups found.', 'tx_sv_auth', 2);
 			}
-
-
 		} elseif ($this->mode=='getGroupsBE') {
 
 			# Get the BE groups here

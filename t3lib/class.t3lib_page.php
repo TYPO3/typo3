@@ -107,6 +107,7 @@
 class t3lib_pageSelect {
 	var $urltypes = Array('','http://','ftp://','mailto:');
 	var $where_hid_del = ' AND pages.deleted=0';	// This is not the final clauses. There will normally be conditions for the hidden,starttime and endtime fields as well. You MUST initialize the object by the init() function
+	var $where_groupAccess = '';	// Clause for fe_group access
 	var $sys_language_uid = 0;
 
 		// Versioning preview related:
@@ -130,6 +131,7 @@ class t3lib_pageSelect {
 	 * @see tslib_fe::fetch_the_id(), tx_tstemplateanalyzer::initialize_editor()
 	 */
 	function init($show_hidden)	{
+		$this->where_groupAccess = '';
 		$this->where_hid_del = ' AND pages.deleted=0 ';
 		if (!$show_hidden)	{
 			$this->where_hid_del.= 'AND pages.hidden=0 ';
@@ -165,11 +167,12 @@ class t3lib_pageSelect {
 	 * If no page is found an empty array is returned.
 	 *
 	 * @param	integer		The page id to look up.
+	 * @param	boolean		If set, the check for group access is disabled. VERY rarely used
 	 * @return	array		The page row with overlayed localized fields. Empty it no page.
 	 * @see getPage_noCheck()
 	 */
-	function getPage($uid)	{
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'pages', 'uid='.intval($uid).$this->where_hid_del);
+	function getPage($uid, $disableGroupAccessCheck=FALSE)	{
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'pages', 'uid='.intval($uid).$this->where_hid_del.($disableGroupAccessCheck ? '' : $this->where_groupAccess));
 		if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
 #??			$this->versionOL('pages',$row);
 			return $this->getPageOverlay($row);
@@ -202,7 +205,7 @@ class t3lib_pageSelect {
 	 */
 	function getFirstWebPage($uid)	{
 		$output = '';
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'pages', 'pid='.intval($uid).$this->where_hid_del, '', 'sorting', '1');
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'pages', 'pid='.intval($uid).$this->where_hid_del.$this->where_groupAccess, '', 'sorting', '1');
 		if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
 #??			$this->versionOL('pages',$row);
 			$output = $this->getPageOverlay($row);
@@ -395,7 +398,7 @@ class t3lib_pageSelect {
 	 */
 	function getMenu($uid,$fields='*',$sortField='sorting',$addWhere='')	{
 		$output = Array();
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($fields, 'pages', 'pid='.intval($uid).$this->where_hid_del.' '.$addWhere, '', $sortField);
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($fields, 'pages', 'pid='.intval($uid).$this->where_hid_del.$this->where_groupAccess.' '.$addWhere, '', $sortField);
 		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
 #??			$this->versionOL('pages',$row);
 
@@ -443,7 +446,7 @@ class t3lib_pageSelect {
 					'pages.uid=sys_domain.pid
 						AND sys_domain.hidden=0
 						AND (sys_domain.domainName='.$GLOBALS['TYPO3_DB']->fullQuoteStr($domain, 'sys_domain').' OR sys_domain.domainName='.$GLOBALS['TYPO3_DB']->fullQuoteStr($domain.'/', 'sys_domain').') '.
-						$this->where_hid_del,
+						$this->where_hid_del.$this->where_groupAccess,
 					'',
 					'',
 					1

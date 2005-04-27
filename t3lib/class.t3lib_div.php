@@ -676,6 +676,7 @@ class t3lib_div {
 
 	/**
 	 * Expand a comma-separated list of integers with ranges (eg 1,3-5,7 becomes 1,3,4,5,7).
+	 * Ranges are limited to 1000 values per range.
 	 *
 	 * @param	string		$list 	comma-separated list of integers with ranges (string)
 	 * @return	string		new comma-separated list of items
@@ -687,8 +688,12 @@ class t3lib_div {
 		while(list(,$item)=each($items))	{
 			$range = explode('-',$item);
 			if (isset($range[1]))	{
+				$runAwayBrake = 1000;
 				for ($n=$range[0]; $n<=$range[1]; $n++)	{
 					$list[] = $n;
+
+					$runAwayBrake--;
+					if ($runAwayBrake<=0)	break;
 				}
 			} else {
 				$list[] = $item;
@@ -1304,8 +1309,9 @@ class t3lib_div {
 	 * @param	array		The (multidim) array to implode
 	 * @param	string		(keep blank)
 	 * @param	boolean		If set, parameters which were blank strings would be removed.
-	 * @param	boolean		If set, the param name itselt (for example "param[key][key2]") would be rawurlencoded as well.
+	 * @param	boolean		If set, the param name itself (for example "param[key][key2]") would be rawurlencoded as well.
 	 * @return	string		Imploded result, fx. &param[key][key2]=value2&param[key][key3]=value3
+	 * @see explodeUrl2Array()
 	 */
 	function implodeArrayForUrl($name,$theArray,$str='',$skipBlank=0,$rawurlencodeParamName=0)	{
 		if (is_array($theArray))	{
@@ -1316,12 +1322,37 @@ class t3lib_div {
 				} else {
 					if (!$skipBlank || strcmp($AVal,''))	{
 						$str.='&'.($rawurlencodeParamName ? rawurlencode($thisKeyName) : $thisKeyName).
-							'='.rawurlencode($AVal);	// strips slashes because _POST / _GET input is with slashes...
+							'='.rawurlencode($AVal);
 					}
 				}
 			}
 		}
 		return $str;
+	}
+
+	/**
+	 * Explodes a string with GETvars (eg. "&id=1&type=2&ext[mykey]=3") into an array
+	 *
+	 * @param	string		GETvars string
+	 * @param	boolean		If set, the string will be parsed into a multidimensional array if square brackets are used in variable names (using PHP function parse_str())
+	 * @return	array		Array of values. All values AND keys are rawurldecoded() as they properly should be. But this means that any implosion of the array again must rawurlencode it!
+	 * @see implodeArrayForUrl()
+	 */
+	function explodeUrl2Array($string,$multidim=FALSE)	{
+		if ($multidim)	{
+			parse_str($string,$tempGetVars);
+			return $tempGetVars;
+		} else {
+			$output = array();
+			$p = explode('&',$string);
+			foreach($p as $v)	{
+				if (strlen($v))	{
+					list($pK,$pV) = explode('=',$v,2);
+					$output[rawurldecode($pK)] = rawurldecode($pV);
+				}
+			}
+			return $output;
+		}
 	}
 
 	/**
@@ -3069,6 +3100,151 @@ class t3lib_div {
 	}
 
 	/**
+	 * Responds on input localization setting value whether the page it comes from should be hidden if no translation exists or not.
+	 *
+	 * @param	integer		Value from "l18n_cfg" field of a page record
+	 * @return	boolean		True if the page should be hidden
+	 */
+	function hideIfNotTranslated($l18n_cfg_fieldValue)	{
+		if ($GLOBALS['TYPO3_CONF_VARS']['FE']['hidePagesIfNotTranslatedByDefault'])	{
+			return $l18n_cfg_fieldValue&2 ? FALSE : TRUE;
+		} else {
+			return $l18n_cfg_fieldValue&2 ? TRUE : FALSE;
+		}
+	}
+
+	/**
+	 * Includes a locallang file and returns the $LOCAL_LANG array found inside.
+	 *
+	 * @param	string		Input is a file-reference (see t3lib_div::getFileAbsFileName) which, if exists, is included. That file is expected to be a 'local_lang' file containing a $LOCAL_LANG array.
+	 * @param	string		Language key
+	 * @return	array		Value of $LOCAL_LANG found in the included file. If that array is found it's returned. Otherwise an empty array
+	 */
+	function readLLfile($fileRef,$langKey)	{
+		$file = t3lib_div::getFileAbsFileName($fileRef);
+		if ($file)	{
+			$baseFile = ereg_replace('\.(php|xml)$', '', $file);
+
+			if (@is_file($baseFile.'.xml'))	{
+				$LOCAL_LANG = t3lib_div::readLLXMLfile($baseFile.'.xml', $langKey);
+			} elseif (@is_file($baseFile.'.php'))	{
+				include($baseFile.'.php');
+			} else die('Filereference, "'.$file.'", not found!');
+		}
+
+		return is_array($LOCAL_LANG)?$LOCAL_LANG:array();
+	}
+
+	/**
+	 * Includes a locallang-xml file and returns the $LOCAL_LANG array
+	 * Works only when the frontend or backend has been initialized with a charset conversion object. See first code lines.
+	 *
+	 * @param	string		Absolute reference to locallang-XML file
+	 * @param	string		TYPO3 language key, eg. "dk" or "de" or "default"
+	 * @return	array		LOCAL_LANG array in return.
+	 */
+	function readLLXMLfile($fileRef,$langKey)	{
+
+		if (is_object($GLOBALS['LANG']))	{
+			$csConvObj = &$GLOBALS['LANG']->csConvObj;
+		} elseif (is_object($GLOBALS['TSFE']))	{
+			$csConvObj = &$GLOBALS['TSFE']->csConvObj;
+		} else $csConvObj = NULL;
+
+		if (@is_file($fileRef) && $langKey && is_object($csConvObj))	{
+
+				// Set charset:
+			$origCharset = $csConvObj->parse_charset($csConvObj->charSetArray[$langKey] ? $csConvObj->charSetArray[$langKey] : 'iso-8859-1');
+
+				// Cache file name:
+			$hashSource = substr($fileRef,strlen(PATH_site)).'|'.date('d-m-Y H:i:s',filemtime($fileRef));
+			$cacheFileName = PATH_site.'typo3temp/llxml/'.
+							#str_replace('_','',ereg_replace('^.*\/','',dirname($fileRef))).
+							#'_'.basename($fileRef).
+							substr(basename($fileRef),10,15).
+							'_'.t3lib_div::shortMD5($hashSource).'.'.$langKey.'.'.$origCharset.'.cache';
+
+				// Check if cache file exists...
+			if (!@is_file($cacheFileName))	{	// ... if it doesn't, create content and write it:
+
+					// Read XML, parse it.
+				$xmlString = t3lib_div::getUrl($fileRef);
+				$xmlContent = t3lib_div::xml2array($xmlString);
+
+					// Set default LOCAL_LANG array content:
+				$LOCAL_LANG = array();
+				$LOCAL_LANG['default'] = $xmlContent['data']['default'];
+
+					// Specific language, convert from utf-8 to backend language charset:
+					// NOTICE: Converting from utf-8 back to "native" language may be a temporary solution until we can totally discard "locallang.php" files altogether (and use utf-8 for everything). But doing this conversion is the quickest way to migrate now and the source is in utf-8 anyway which is the main point.
+				if ($langKey!='default')	{
+					$LOCAL_LANG[$langKey] = $xmlContent['data'][$langKey];
+
+						// Checking if charset should be converted.
+					if (is_array($LOCAL_LANG[$langKey]) && $origCharset!='utf-8')	{
+						foreach($LOCAL_LANG[$langKey] as $labelKey => $labelValue)	{
+							$LOCAL_LANG[$langKey][$labelKey] = $csConvObj->utf8_decode($labelValue,$origCharset);
+						}
+					}
+				}
+
+					// Cache the content now:
+				$serContent = array('origFile'=>$hashSource, 'LOCAL_LANG'=>$LOCAL_LANG);
+				$res = t3lib_div::writeFileToTypo3tempDir($cacheFileName, serialize($serContent));
+				if ($res)	die('ERROR: '.$res);
+			} else {
+					// Get content from cache:
+				$serContent = unserialize(t3lib_div::getUrl($cacheFileName));
+				$LOCAL_LANG = $serContent['LOCAL_LANG'];
+			}
+
+				// Checking for EXTERNAL file for non-default language:
+			if ($langKey!='default' && is_string($LOCAL_LANG[$langKey]) && strlen($LOCAL_LANG[$langKey]))	{
+
+					// Look for localized file:
+				$localized_file = t3lib_div::getFileAbsFileName($LOCAL_LANG[$langKey]);
+				if ($localized_file && @is_file($localized_file))	{
+
+						// Cache file name:
+					$hashSource = substr($localized_file,strlen(PATH_site)).'|'.date('d-m-Y H:i:s',filemtime($localized_file));
+					$cacheFileName = PATH_site.'typo3temp/llxml/ext_'.
+									substr(basename($localized_file),10,15).
+									'_'.t3lib_div::shortMD5($hashSource).'.'.$langKey.'.'.$origCharset.'.cache';
+
+						// Check if cache file exists...
+					if (!@is_file($cacheFileName))	{	// ... if it doesn't, create content and write it:
+
+							// Read and parse XML content:
+						$local_xmlString = t3lib_div::getUrl($localized_file);
+						$local_xmlContent = t3lib_div::xml2array($local_xmlString);
+						$LOCAL_LANG[$langKey] = is_array($local_xmlContent['data'][$langKey]) ? $local_xmlContent['data'][$langKey] : array();
+
+							// Checking if charset should be converted.
+						if (is_array($LOCAL_LANG[$langKey]) && $origCharset!='utf-8')	{
+							foreach($LOCAL_LANG[$langKey] as $labelKey => $labelValue)	{
+								$LOCAL_LANG[$langKey][$labelKey] = $csConvObj->utf8_decode($labelValue,$origCharset);
+							}
+						}
+
+							// Cache the content now:
+						$serContent = array('extlang'=>$langKey, 'origFile'=>$LOCAL_LANG[$langKey], 'EXT_DATA'=>$LOCAL_LANG[$langKey]);
+						$res = t3lib_div::writeFileToTypo3tempDir($cacheFileName, serialize($serContent));
+						if ($res)	die('ERROR: '.$res);
+					} else {
+							// Get content from cache:
+						$serContent = unserialize(t3lib_div::getUrl($cacheFileName));
+						$LOCAL_LANG[$langKey] = $serContent['EXT_DATA'];
+					}
+				} else {
+					$LOCAL_LANG[$langKey] = array();
+				}
+			}
+
+			return $LOCAL_LANG;
+		}
+	}
+
+	/**
 	 * Loads the $TCA (Table Configuration Array) for the $table
 	 *
 	 * Requirements:
@@ -3118,6 +3294,7 @@ class t3lib_div {
 		} else {
 			$singleSheet = TRUE;
 			$dataStruct = $dataStructArray;
+			unset($dataStruct['meta']);	// Meta data should not appear there.
 			$sheet = 'sDEF';	// Default sheet
 		}
 		return array($dataStruct,$sheet,$singleSheet);
@@ -3359,27 +3536,30 @@ class t3lib_div {
 				return $GLOBALS['T3_VAR']['makeInstanceService'][$info['className']];
 
 				// include file and create object
-			} elseif (@is_file($info['classFile'])) {
-				require_once ($info['classFile']);
-				$obj = t3lib_div::makeInstance($info['className']);
-				if (is_object($obj)) {
-					if(!@is_callable(array($obj,'init')))	{
-							// use silent logging??? I don't think so.
-						die ('Broken service:'.t3lib_div::view_array($info));
+			} else {
+				$requireFile = t3lib_div::getFileAbsFileName($info['classFile']);
+				if (@is_file($requireFile)) {
+					require_once ($requireFile);
+					$obj = t3lib_div::makeInstance($info['className']);
+					if (is_object($obj)) {
+						if(!@is_callable(array($obj,'init')))	{
+								// use silent logging??? I don't think so.
+							die ('Broken service:'.t3lib_div::view_array($info));
+						}
+						$obj->info = $info;
+						if ($obj->init()) { // service available?
+
+								// create persistent object
+							$T3_VAR['makeInstanceService'][$info['className']] = &$obj;
+
+								// needed to delete temp files
+							register_shutdown_function(array(&$obj, '__destruct'));
+
+							return $obj; // object is passed as reference by function definition
+						}
+						$error = $obj->getLastErrorArray();
+						unset($obj);
 					}
-					$obj->info = $info;
-					if ($obj->init()) { // service available?
-
-							// create persistent object
-						$T3_VAR['makeInstanceService'][$info['className']] = &$obj;
-
-							// needed to delete temp files
-						register_shutdown_function(array(&$obj, '__destruct'));
-
-						return $obj; // object is passed as reference by funtion definition
-					}
-					$error = $obj->getLastErrorArray();
-					unset($obj);
 				}
 			}
 				// deactivate the service

@@ -1,5 +1,5 @@
 <?php
-if (!defined ("TYPO3_MODE")) 	die ("Access denied.");
+if (!defined ('TYPO3_MODE')) 	die ('Access denied.');
 
 // auth services needs to be added here. ext_tables.php will be read after authentication.
 

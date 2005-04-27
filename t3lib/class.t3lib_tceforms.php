@@ -708,7 +708,7 @@ class t3lib_TCEforms	{
 
 			// Get the TCA configuration for the current field:
 		$PA['fieldConf'] = $TCA[$table]['columns'][$field];
-		$PA['fieldConf']['config']['form_type'] = $PA['fieldConf']['config']['form_type'] ? $PA['fieldConf']['config']['form_type'] : $PA['fieldConf']['config']['type'];
+		$PA['fieldConf']['config']['form_type'] = $PA['fieldConf']['config']['form_type'] ? $PA['fieldConf']['config']['form_type'] : $PA['fieldConf']['config']['type'];	// Using "form_type" locally in this script
 
 			// Now, check if this field is configured and editable (according to excludefields + other configuration)
 		if (	is_array($PA['fieldConf']) &&
@@ -828,7 +828,7 @@ class t3lib_TCEforms	{
 	 * @see getSingleField(), getSingleField_typeFlex_draw()
 	 */
 	function getSingleField_SW($table,$field,$row,&$PA)	{
-		$PA['fieldConf']['config']['form_type'] = $PA['fieldConf']['config']['form_type'] ? $PA['fieldConf']['config']['form_type'] : $PA['fieldConf']['config']['type'];
+		$PA['fieldConf']['config']['form_type'] = $PA['fieldConf']['config']['form_type'] ? $PA['fieldConf']['config']['form_type'] : $PA['fieldConf']['config']['type'];	// Using "form_type" locally in this script
 
 		switch($PA['fieldConf']['config']['form_type'])	{
 			case 'input':
@@ -1160,8 +1160,7 @@ class t3lib_TCEforms	{
 
 				// Checking languages and authMode:
 			$languageDeny = $TCA[$table]['ctrl']['languageField'] && !strcmp($TCA[$table]['ctrl']['languageField'], $field) && !$GLOBALS['BE_USER']->checkLanguageAccess($p[1]);
-			$authModeDeny = $config['type']=='select' && $config['authMode'] && !$GLOBALS['BE_USER']->checkAuthMode($table,$field,$p[1],$config['authMode']);
-
+			$authModeDeny = $config['form_type']=='select' && $config['authMode'] && !$GLOBALS['BE_USER']->checkAuthMode($table,$field,$p[1],$config['authMode']);
 			if (in_array($p[1],$removeItems) || $languageDeny || $authModeDeny)	{
 				unset($selItems[$tk]);
 			} elseif (isset($PA['fieldTSConfig']['altLabels.'][$p[1]])) {
@@ -1558,7 +1557,7 @@ class t3lib_TCEforms	{
 		foreach($itemArray as $tk => $tv) {
 			$tvP = explode('|',$tv,2);
 			$evalValue = rawurldecode($tvP[0]);
-			$isRemoved = in_array($evalValue,$removeItems)  || ($config['type']=='select' && $config['authMode'] && !$GLOBALS['BE_USER']->checkAuthMode($table,$field,$evalValue,$config['authMode']));
+			$isRemoved = in_array($evalValue,$removeItems)  || ($config['form_type']=='select' && $config['authMode'] && !$GLOBALS['BE_USER']->checkAuthMode($table,$field,$evalValue,$config['authMode']));
 			if ($isRemoved && !$PA['fieldTSConfig']['disableNoMatchingValueElement'] && !$config['disableNoMatchingValueElement'])	{
 				$tvP[1] = rawurlencode(@sprintf($nMV_label, $evalValue));
 			} elseif (isset($PA['fieldTSConfig']['altLabels.'][$evalValue])) {
@@ -1744,7 +1743,7 @@ class t3lib_TCEforms	{
 						$imgs[] = '<span class="nobr">'.
 								$this->getClickMenu(t3lib_iconWorks::getIconImage($this_table,$rr,$this->backPath,'align="top" title="'.htmlspecialchars(t3lib_BEfunc::getRecordPath($rr['pid'],$perms_clause,15)).' [UID: '.$rr['uid'].']"'),$this_table, $this_uid).
 								'&nbsp;'.
-								$this->noTitle($rr[$GLOBALS['TCA'][$this_table]['ctrl']['label']],array('<em>','</em>')).
+								$this->noTitle($rr[$GLOBALS['TCA'][$this_table]['ctrl']['label']],array('<em>','</em>')).' <span class="typo3-dimmed"><em>['.$rr['uid'].']</em></span>'.
 								'</span>';
 					}
 				}
@@ -2803,7 +2802,7 @@ class t3lib_TCEforms	{
 		$listFlag = '_list';
 
 			// Manipulate the field name (to be the true form field name) and remove a suffix-value if the item is a selector box with renderMode "singlebox":
-		if ($PA['fieldConf']['config']['type']=='select')	{
+		if ($PA['fieldConf']['config']['form_type']=='select')	{
 			if ($PA['fieldConf']['config']['maxitems']<=1)	{	// Single select situation:
 				$listFlag = '';
 			} elseif ($PA['fieldConf']['config']['renderMode']=='singlebox')	{

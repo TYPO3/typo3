@@ -32,6 +32,7 @@
  * Revised for TYPO3 3.6 June/2003 by Kasper Skaarhoj
  *
  * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
+ * @author	René Fritz <r.fritz@colorcube.de>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
@@ -71,6 +72,7 @@
  * Extension class for Front End User Authentication.
  *
  * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
+ * @author	René Fritz <r.fritz@colorcube.de>
  * @package TYPO3
  * @subpackage tslib
  */
@@ -151,38 +153,75 @@ class tslib_feUserAuth extends t3lib_userAuth {
 			// Setting default configuration:
 		$this->TSdataArray[]=$GLOBALS['TYPO3_CONF_VARS']['FE']['defaultUserTSconfig'];
 
-		if (is_array($this->user) && $this->user['usergroup'])	{
-			$groups = t3lib_div::intExplode(',',$this->user['usergroup']);
-			$list = implode(',',$groups);
-			$lockToDomain_SQL = ' AND (lockToDomain=\'\' OR lockToDomain=\''.t3lib_div::getIndpEnv('HTTP_HOST').'\')';
-			if (!$this->showHiddenRecords)	$hiddenP = 'AND hidden=0 ';
+			// get the info data for auth services
+		$authInfo = $this->getAuthInfoArray();
 
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $this->usergroup_table, 'deleted=0 '.$hiddenP.'AND uid IN ('.$list.')'.$lockToDomain_SQL);
-			while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
-				$this->groupData['title'][$row['uid']] = $row['title'];
-				$this->groupData['uid'][$row['uid']] = $row['uid'];
-				$this->groupData['pid'][$row['uid']] = $row['pid'];
-				$this->groupData['TSconfig'][$row['uid']] = $row['TSconfig'];
+		if ($this->writeDevLog) 	t3lib_div::devLog('Get usergroups for user: '.t3lib_div::arrayToLogString($this->user, array($this->userid_column,$this->username_column)), 'tslib_feUserAuth');
+
+		$groupDataArr = array();
+
+			// use 'auth' service to find the groups for the user
+		$serviceChain='';
+		$subType = 'getGroups'.$this->loginType;
+		while (is_object($serviceObj = t3lib_div::makeInstanceService('auth', $subType, $serviceChain))) {
+			$serviceChain.=','.$serviceObj->getServiceKey();
+			$serviceObj->initAuth($subType, array(), $authInfo, $this);
+
+			$groupData = $serviceObj->getGroups($this->user, $groupDataArr);
+			if(is_array($groupData) && count($groupData)) {
+				$groupDataArr = t3lib_div::array_merge($groupDataArr, $groupData);	// Keys in $groupData should be unique ids of the groups (like "uid") so this function will override groups.
 			}
+			unset($serviceObj);
+		}
+		if ($this->writeDevLog AND $serviceChain) 	t3lib_div::devLog($subType.' auth services called: '.$serviceChain, 'tslib_feUserAuth');
+		if ($this->writeDevLog AND !count($groupDataArr)) 	t3lib_div::devLog('No usergroups found by services', 'tslib_feUserAuth');
+		if ($this->writeDevLog AND count($groupDataArr)) 	t3lib_div::devLog(count($groupDataArr).' usergroup records found by services', 'tslib_feUserAuth');
 
-			if ($GLOBALS['TYPO3_DB']->sql_num_rows($res))	{
-				$GLOBALS['TYPO3_DB']->sql_free_result($res);
-				// TSconfig:
-				reset($groups);
-				while(list(,$TSuid)=each($groups))	{
-					$this->TSdataArray[]=$this->groupData['TSconfig'][$TSuid];
+
+			// use 'auth' service to check the usergroups if they are really valid
+		foreach($groupDataArr as $groupData) {
+				// by default a group is valid
+			$validGroup = TRUE;
+
+			$serviceChain='';
+			$subType = 'authGroups'.$this->loginType;
+			while (is_object($serviceObj = t3lib_div::makeInstanceService('auth', $subType, $serviceChain))) {
+				$serviceChain.=','.$serviceObj->getServiceKey();
+				$serviceObj->initAuth($subType, array(), $authInfo, $this);
+
+				if (!$serviceObj->authGroup($this->user, $groupData)) {
+					$validGroup = FALSE;
+					if ($this->writeDevLog) 	t3lib_div::devLog($subType.' auth service did not auth group: '.t3lib_div::arrayToLogString($groupData, 'uid,title'), 'tslib_feUserAuth', 2);
+
+					break;
 				}
-				$this->TSdataArray[]=$this->user['TSconfig'];
+				unset($serviceObj);
+			}
+			unset($serviceObj);
 
-				// Sort information
-				ksort($this->groupData['title']);
-				ksort($this->groupData['uid']);
-				ksort($this->groupData['pid']);
-				return count($this->groupData['uid']);
-			} else {
-				return 0;
+			if ($validGroup) {
+				$this->groupData['title'][$groupData['uid']]=$groupData['title'];
+				$this->groupData['uid'][$groupData['uid']]=$groupData['uid'];
+				$this->groupData['pid'][$groupData['uid']]=$groupData['pid'];
+				$this->groupData['TSconfig'][$groupData['uid']]=$groupData['TSconfig'];
 			}
 		}
+
+		if (count($this->groupData) && count($this->groupData['TSconfig']))	{
+				// TSconfig: collect it in the order it was collected
+			foreach($this->groupData['TSconfig'] as $TSdata)	{
+				$this->TSdataArray[]=$TSdata;
+			}
+
+			$this->TSdataArray[]=$this->user['TSconfig'];
+
+				// Sort information
+			ksort($this->groupData['title']);
+			ksort($this->groupData['uid']);
+			ksort($this->groupData['pid']);
+		}
+
+		return count($this->groupData['uid']) ? count($this->groupData['uid']) : 0;
 	}
 
 	/**

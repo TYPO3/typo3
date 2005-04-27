@@ -106,7 +106,8 @@ class SC_index {
 	var $interfaceSelector_jump;	// A selector box for selecting value for "interface" may be rendered into this variable - this will have an onchange action which will redirect the user to the selected interface right away
 	var $interfaceSelector_hidden;	// A hidden field, if the interface is not set.
 
-
+		// sets the level of security. *'normal' = clear-text. 'challenged' = hashed password/username from form in $formfield_uident. 'superchallenged' = hashed password hashed again with username.
+	var $loginSecurityLevel = 'superchallenged';
 
 
 
@@ -127,6 +128,11 @@ class SC_index {
 		$this->L = t3lib_div::_GP('L');							// If "L" is "OUT", then any logged in used is logged out. If redirect_url is given, we redirect to it
 		$this->loginRefresh = t3lib_div::_GP('loginRefresh');		// Login
 		$this->commandLI = t3lib_div::_GP('commandLI');			// Value of "Login" button. If set, the login button was pressed.
+
+			// sets the level of security from conf vars
+		if ($TYPO3_CONF_VARS['BE']['loginSecurityLevel']) {
+			$this->loginSecurityLevel = $TYPO3_CONF_VARS['BE']['loginSecurityLevel'];
+		}
 
 			// Getting login labels:
 		$this->L_vars = explode('|',$TYPO3_CONF_VARS['BE']['loginLabels']);
@@ -157,10 +163,12 @@ class SC_index {
 		$TBE_TEMPLATE->JScode.='
 			<script type="text/javascript" src="md5.js"></script>
 			'.$TBE_TEMPLATE->wrapScriptTags('
-				function doChallengeResponse() {	//
+				function doChallengeResponse(superchallenged) {	//
 					password = document.loginform.p_field.value;
 					if (password)	{
-						password = MD5(password);	// this makes it superchallenged!!
+						if (superchallenged)	{
+							password = MD5(password);	// this makes it superchallenged!!
+						}
 						str = document.loginform.username.value+":"+password+":"+document.loginform.challenge.value;
 						document.loginform.userident.value = MD5(str);
 						document.loginform.p_field.value = "";
@@ -182,9 +190,23 @@ class SC_index {
 
 			// Creating form based on whether there is a login or not:
 		if (!$BE_USER->user['uid'])	{
-			$TBE_TEMPLATE->form = '
-				<form action="index.php" method="post" name="loginform" onsubmit="doChallengeResponse();">
-				<input type="hidden" name="login_status" value="login" />
+
+			if ($this->loginSecurityLevel == 'challenged') {
+				$TBE_TEMPLATE->form = '
+					<form action="index.php" method="post" name="loginform" onsubmit="doChallengeResponse(0);">
+					';
+			} elseif ($this->loginSecurityLevel == 'normal') {
+				$TBE_TEMPLATE->form = '
+					<form action="index.php" method="post" name="loginform" onsubmit="document.loginform.userident.value=document.loginform.p_field.value;document.loginform.p_field.value=\'\';document.loginform.challenge.value=\'\';return true;">
+					';
+			} else { // if ($this->loginSecurityLevel == 'superchallenged') {
+				$TBE_TEMPLATE->form = '
+					<form action="index.php" method="post" name="loginform" onsubmit="doChallengeResponse(1);">
+					';
+			}
+
+			$TBE_TEMPLATE->form.= '
+					<input type="hidden" name="login_status" value="login" />
 				';
 			$loginForm = $this->makeLoginForm();
 		} else {
@@ -419,10 +441,22 @@ class SC_index {
 		if ($BE_USER->user['uid'] && ($this->commandLI || $this->loginRefresh || !$this->interfaceSelector))	{
 
 				// If no cookie has been set previously we tell people that this is a problem. This assumes that a cookie-setting script (like this one) has been hit at least once prior to this instance.
-			if (!$_COOKIE[$BE_USER->name])	{
-				t3lib_BEfunc::typo3PrintError ('Login-error',"Yeah, that's a classic. No cookies, no TYPO3.<br /><br />Please accept cookies from TYPO3 - otherwise you'll not be able to use the system.",0);
-				exit;
+ 			if (!$_COOKIE[$BE_USER->name])	{
+				if ($this->commandLI=='setCookie') {
+						// we tried it a second time but still no cookie
+						// 26/4 2005: This does not work anymore, because the saving of challenge values in $_SESSION means the system will act as if the password was wrong.
+					t3lib_BEfunc::typo3PrintError ('Login-error',"Yeah, that's a classic. No cookies, no TYPO3.<br /><br />Please accept cookies from TYPO3 - otherwise you'll not be able to use the system.",0);
+					exit;
+				} else {
+						// try it once again - that might be needed for auto login
+					$this->redirectToURL = 'index.php?commandLI=setCookie';
+				}
 			}
+
+			if($redirectToURL = (string)$BE_USER->getTSConfigVal('auth.BE.redirectToURL')) {
+				$this->redirectToURL = $redirectToURL;
+				$this->GPinterface = '';
+ 			}
 
 				// Based on specific setting of interface we set the redirect script:
 			switch ($this->GPinterface)	{

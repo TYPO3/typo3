@@ -40,50 +40,50 @@
  *  127: class t3lib_svbase
  *
  *              SECTION: Get service meta information
- *  191:     function getServiceInfo()
- *  199:     function getServiceKey()
- *  207:     function getServiceTitle()
- *  220:     function getServiceOption($optionName, $defaultValue='', $includeDefaultConfig=TRUE)
+ *  195:     function getServiceInfo()
+ *  203:     function getServiceKey()
+ *  211:     function getServiceTitle()
+ *  224:     function getServiceOption($optionName, $defaultValue='', $includeDefaultConfig=TRUE)
  *
  *              SECTION: Error handling
- *  255:     function devLog($msg, $severity=0, $dataVar=FALSE)
- *  269:     function errorPush($errNum=T3_ERR_SV_GENERAL, $errMsg='Unspecified error occured')
- *  284:     function errorPull()
- *  296:     function getLastError()
- *  311:     function getLastErrorMsg()
- *  326:     function getErrorMsgArray()
- *  344:     function getLastErrorArray()
- *  353:     function resetErrors()
+ *  259:     function devLog($msg, $severity=0, $dataVar=FALSE)
+ *  273:     function errorPush($errNum=T3_ERR_SV_GENERAL, $errMsg='Unspecified error occured')
+ *  288:     function errorPull()
+ *  300:     function getLastError()
+ *  315:     function getLastErrorMsg()
+ *  330:     function getErrorMsgArray()
+ *  348:     function getLastErrorArray()
+ *  357:     function resetErrors()
  *
  *              SECTION: General service functions
- *  373:     function checkExec($progList)
- *  395:     function deactivateService()
- *  401:     function available()
+ *  377:     function checkExec($progList)
+ *  401:     function deactivateService()
+ *  407:     function available()
  *
  *              SECTION: IO tools
- *  439:     function checkInputFile ($absFile)
- *  460:     function readFile ($absFile, $length=0)
- *  485:     function writeFile ($content, $absFile='')
- *  511:     function tempFile ($filePrefix)
- *  529:     function registerTempFile ($absFile)
- *  539:     function unlinkTempFiles ()
+ *  445:     function checkInputFile ($absFile)
+ *  466:     function readFile ($absFile, $length=0)
+ *  491:     function writeFile ($content, $absFile='')
+ *  517:     function tempFile ($filePrefix)
+ *  535:     function registerTempFile ($absFile)
+ *  545:     function unlinkTempFiles ()
  *
  *              SECTION: IO input
- *  561:     function setInput ($content, $type='')
- *  575:     function setInputFile ($absFile, $type='')
- *  588:     function getInput ()
- *  603:     function getInputFile ($createFile='')
+ *  567:     function setInput ($content, $type='')
+ *  581:     function setInputFile ($absFile, $type='')
+ *  594:     function getInput ()
+ *  609:     function getInputFile ($createFile='')
  *
  *              SECTION: IO output
- *  628:     function setOutputFile ($absFile)
- *  638:     function getOutput ()
- *  652:     function getOutputFile ($absFile='')
+ *  634:     function setOutputFile ($absFile)
+ *  644:     function getOutput ()
+ *  658:     function getOutputFile ($absFile='')
  *
  *              SECTION: Service implementation
- *  676:     function init()
- *  700:     function reset()
- *  715:     function __destruct()
- *  721:     function process($content='', $type='', $conf=array())
+ *  682:     function init()
+ *  706:     function reset()
+ *  721:     function __destruct()
+ *  727:     function process($content='', $type='', $conf=array())
  *
  * TOTAL FUNCTIONS: 32
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -178,43 +178,52 @@ class t3lib_svbase {
 
 
 
+
+
+
+
+
+
+
 	/***************************************
 	 *
 	 *	 Get service meta information
 	 *
 	 ***************************************/
 
-
 	/**
+	 * Returns internal information array for service
+	 *
 	 * @return	array		service description array
 	 */
 	function getServiceInfo() {
 		return $this->info;
 	}
 
-
 	/**
+	 * Returns the service key of the service
+	 *
 	 * @return	string		service key
 	 */
 	function getServiceKey() {
 		return $this->info['serviceKey'];
 	}
 
-
 	/**
+	 * Returns the title of the service
+	 *
 	 * @return	string		service title
 	 */
 	function getServiceTitle() {
 		return $this->info['title'];
 	}
 
-
 	/**
 	 * Returns service configuration values from the $TYPO3_CONF_VARS['SVCONF'] array
 	 *
 	 * @param	string		Name of the config option
 	 * @param	boolean		If set the 'default' config will be return if no special config for this service is available (default: true)
-	 * @param	[type]		$includeDefaultConfig: ...
+	 * @param	boolean		If set, the option value will be searched for in the "default" configuration (service key = "default") if not found for the service key of the service.
 	 * @return	mixed		configuration value for the service
 	 */
 	function getServiceOption($optionName, $defaultValue='', $includeDefaultConfig=TRUE) {
@@ -237,12 +246,19 @@ class t3lib_svbase {
 
 
 
+
+
+
+
+
+
+
+
 	/***************************************
 	 *
 	 *	 Error handling
 	 *
 	 ***************************************/
-
 
 	/**
 	 * Logs debug messages to t3lib_div::devLog()
@@ -258,7 +274,6 @@ class t3lib_svbase {
 		}
 	}
 
-
 	/**
 	 * Puts an error on the error stack. Calling without parameter adds a general error.
 	 *
@@ -269,12 +284,11 @@ class t3lib_svbase {
 	function errorPush($errNum=T3_ERR_SV_GENERAL, $errMsg='Unspecified error occured') {
 		array_push($this->error, array('nr'=>$errNum, 'msg'=>$errMsg));
 
-		if (is_object($GLOBALS["TT"])) {
+		if (is_object($GLOBALS['TT'])) {
 			$GLOBALS['TT']->setTSlogMessage($errMsg,2);
 		}
 
 	}
-
 
 	/**
 	 * Removes the last error from the error stack.
@@ -286,7 +300,6 @@ class t3lib_svbase {
 
 		// pop for $GLOBALS['TT']->setTSlogMessage is not supported
 	}
-
 
 	/**
 	 * Returns the last error number from the error stack.
@@ -302,7 +315,6 @@ class t3lib_svbase {
 		}
 	}
 
-
 	/**
 	 * Returns the last message from the error stack.
 	 *
@@ -316,7 +328,6 @@ class t3lib_svbase {
 			return '';
 		}
 	}
-
 
 	/**
 	 * Returns all error messages as array.
@@ -334,7 +345,6 @@ class t3lib_svbase {
 		}
 		return $errArr;
 	}
-
 
 	/**
 	 * Returns the last array from the error stack.
@@ -356,13 +366,20 @@ class t3lib_svbase {
 
 
 
+
+
+
+
+
+
+
+
+
 	/***************************************
 	 *
 	 *	 General service functions
 	 *
 	 ***************************************/
-
-
 
 	/**
 	 * check the availability of external programs
@@ -371,6 +388,8 @@ class t3lib_svbase {
 	 * @return	boolean		return FALSE if one program was not found
 	 */
 	function checkExec($progList) {
+		global $TYPO3_CONF_VARS;
+
 		$ret = TRUE;
 
 		require_once(PATH_t3lib.'class.t3lib_exec.php');
@@ -386,7 +405,6 @@ class t3lib_svbase {
 		return $ret;
 	}
 
-
 	/**
 	 * Deactivate the service. Use this if the service fails at runtime and will not be available.
 	 *
@@ -397,29 +415,15 @@ class t3lib_svbase {
 	}
 
 
-/**
-function available()	{
-	global $AB,$BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$CLIENT,$TYPO3_CONF_VARS;
 
-	// check if the service is available at runtime
-	// the sense of this method is that the service might need some more information to check the availablity
 
-	/ *
 
-	$excludeServiceKeys='';
-	while (is_object($serviceObj = t3lib_div::makeInstanceService('anyService','', $excludeServiceKeys))) {
-		if ($serviceObj->available('some special parm to check availablity')) {
-			break;
-		}
-		$excludeServiceKeys .= ','.$serviceObj->getServiceKey;
-		unset($serviceObj);
-	}
 
-	* /
 
-	return TRUE;
-}
-*/
+
+
+
+
 
 
 	/***************************************
@@ -428,8 +432,6 @@ function available()	{
 	 *
 	 ***************************************/
 
-
-
 	/**
 	 * Check if a file exists and is readable.
 	 *
@@ -437,7 +439,7 @@ function available()	{
 	 * @return	string		File name or FALSE.
 	 */
 	function checkInputFile ($absFile)	{
-		if(@is_file($absFile)) {
+		if(t3lib_div::isAllowedAbsPath($absFile) && @is_file($absFile)) {
 			if(@is_readable($absFile)) {
 				return $absFile;
 			} else {
@@ -448,7 +450,6 @@ function available()	{
 		}
 		return FALSE;
 	}
-
 
 	/**
 	 * Read content from a file a file.
@@ -474,7 +475,6 @@ function available()	{
 		return $out;
 	}
 
-
 	/**
 	 * Write content to a file.
 	 *
@@ -489,7 +489,7 @@ function available()	{
 			$absFile = $this->tempFile($this->prefixId);
 		}
 
-		if($absFile) {
+		if($absFile && t3lib_div::isAllowedAbsPath($absFile)) {
 			if ($fd = @fopen($absFile,'wb')) {
 				@fwrite($fd, $content);
 				@fclose($fd);
@@ -544,19 +544,29 @@ function available()	{
 	}
 
 
+
+
+
+
+
+
+
+
+
+
+
 	/***************************************
 	 *
 	 *	 IO input
 	 *
 	 ***************************************/
 
-
 	/**
 	 * Set the input content for service processing.
 	 *
-	 * @param	mixed
-	 * @param	[type]		$type: ...
-	 * @return	[type]		...
+	 * @param	mixed		Input content (going into ->inputContent)
+	 * @param	string		The type of the input content (or file). Might be the same as the service subtypes.
+	 * @return	void
 	 */
 	function setInput ($content, $type='') {
 		$this->inputContent = $content;
@@ -564,13 +574,12 @@ function available()	{
 		$this->inputType = $type;
 	}
 
-
 	/**
 	 * Set the input file name for service processing.
 	 *
 	 * @param	string		file name
-	 * @param	[type]		$type: ...
-	 * @return	[type]		...
+	 * @param	string		The type of the input content (or file). Might be the same as the service subtypes.
+	 * @return	void
 	 */
 	function setInputFile ($absFile, $type='') {
 		$this->inputContent = '';
@@ -578,10 +587,9 @@ function available()	{
 		$this->inputType = $type;
 	}
 
-
 	/**
 	 * Get the input content.
-	 * Will be read from input file if needed.
+	 * Will be read from input file if needed. (That is if ->inputContent is empty and ->inputFile is not)
 	 *
 	 * @return	mixed
 	 */
@@ -591,7 +599,6 @@ function available()	{
 		}
 		return $this->inputContent;
 	}
-
 
 	/**
 	 * Get the input file name.
@@ -612,23 +619,28 @@ function available()	{
 
 
 
+
+
+
+
+
+
+
 	/***************************************
 	 *
 	 *	 IO output
 	 *
 	 ***************************************/
 
-
 	/**
 	 * Set the output file name.
 	 *
 	 * @param	string		file name
-	 * @return	[type]		...
+	 * @return	void
 	 */
 	function setOutputFile ($absFile) {
 		$this->outputFile = $absFile;
 	}
-
 
 	/**
 	 * Get the output content.
@@ -642,11 +654,10 @@ function available()	{
 		return $this->out;
 	}
 
-
 	/**
-	 * Get the output file name.
+	 * Get the output file name. If no output file is set, the ->out buffer is written to the file given by input parameter filename
 	 *
-	 * @param	[type]		$absFile: ...
+	 * @param	string		Absolute filename to write to
 	 * @return	mixed
 	 */
 	function getOutputFile ($absFile='') {
@@ -655,6 +666,14 @@ function available()	{
 		}
 		return $this->outputFile;
 	}
+
+
+
+
+
+
+
+
 
 
 
@@ -690,7 +709,6 @@ function available()	{
 		return $this->getLastError();
 	}
 
-
 	/**
 	 * Resets the service.
 	 * Will be called by init(). Should be used before every use if a service instance is used multiple times.
@@ -716,12 +734,10 @@ function available()	{
 		$this->unlinkTempFiles();
 	}
 
-
 	/* every service type has it's own API
-	function process($content='', $type='', $conf=array())	{
+	function process($content='', $type='', $conf=array())	{	//
 	}
 	*/
-
 }
 
 /**

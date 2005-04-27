@@ -1055,6 +1055,7 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 	 * @access private
 	 */
 	function checkLogFailures($email, $secondsBack=3600, $max=3)	{
+
 		if ($email)	{
 
 				// get last flag set in the log for sending

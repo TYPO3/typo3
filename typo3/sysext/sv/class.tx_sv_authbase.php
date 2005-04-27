@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2005 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 2004-2005 René Fritz <r.fritz@colorcube.de>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -29,45 +29,86 @@
  *
  * @author	René Fritz <r.fritz@colorcube.de>
  */
+/**
+ * [CLASS/FUNCTION INDEX of SCRIPT]
+ *
+ *
+ *
+ *   62: class tx_sv_authbase extends t3lib_svbase
+ *   87:     function initAuth($mode, $loginData, $authInfo, &$pObj)
+ *  110:     function compareUident($user, $loginData, $security_level='')
+ *  129:     function writelog($type,$action,$error,$details_nr,$details,$data,$tablename='',$recuid='',$recpid='')
+ *
+ *              SECTION: create/update user - EXPERIMENTAL
+ *  158:     function fetchUserRecord($username, $extraWhere='', $dbUserSetup='')
+ *
+ * TOTAL FUNCTIONS: 4
+ * (This index is automatically created/updated by the extension "extdeveval")
+ *
+ */
 
 require_once(PATH_t3lib.'class.t3lib_svbase.php');
 
+
+
+
+/**
+ * Authentication services class
+ *
+ * @author	René Fritz <r.fritz@colorcube.de>
+ * @package TYPO3
+ * @subpackage tx_sv
+ */
 class tx_sv_authbase extends t3lib_svbase 	{
 
 	var $pObj; 						// Parent object
 
 	var $mode;						// Subtype of the service which is used to call the service.
 
-	var $login=array();				// Submitted login form data
-	var $info=array();				// Various data
+	var $login = array();				// Submitted login form data
+	var $authInfo = array();				// Various data
 
-	var $db_user=array();			// User db table definition
-	var $db_groups=array();			// Usergroups db table definition
+	var $db_user = array();			// User db table definition
+	var $db_groups = array();			// Usergroups db table definition
 
-	var $writeAttemptLog = 0;		// If the writelog() functions is called if a login-attempt has be tried without success
+	var $writeAttemptLog = false;	// If the writelog() functions is called if a login-attempt has be tried without success
+	var $writeDevLog = false;		// If the t3lib_div::devLog() function should be used
+
 
 	/**
-	 * init service
+	 * Initialize authentication service
 	 *
-	 * @param	string 		Subtype of the service which is used to call the service.
-	 * @param	array 		Submitted login form data
-	 * @param	array 		Information array. Holds submitted form data etc.
-	 * @param	object 		Parent object
+	 * @param	string		Subtype of the service which is used to call the service.
+	 * @param	array		Submitted login form data
+	 * @param	array		Information array. Holds submitted form data etc.
+	 * @param	object		Parent object
 	 * @return	void
 	 */
-	function initAuth($mode, $loginData, $info, &$pObj)	{
+	function initAuth($mode, $loginData, $authInfo, &$pObj)	{
 
 		$this->pObj = &$pObj;
 
-		$this->mode = $mode;
+		$this->mode = $mode;	// sub type
 		$this->login = $loginData;
-		$this->info = $info;
+		$this->authInfo = $authInfo;
 
-		$this->db_user = $this->getServiceOption('db_user', $info['db_user'], FALSE);
-		$this->db_groups = $this->getServiceOption('db_groups', $info['db_groups'], FALSE);
+		$this->db_user = $this->getServiceOption('db_user', $authInfo['db_user'], FALSE);
+		$this->db_groups = $this->getServiceOption('db_groups', $authInfo['db_groups'], FALSE);
 
 		$this->writeAttemptLog = $this->pObj->writeAttemptLog;
 		$this->writeDevLog	 = $this->pObj->writeDevLog;
+	}
+
+ 	/**
+ * Check the login data with the user record data for builtin login methods
+ *
+ * @param	array		user data array
+ * @param	array		login data array
+ * @param	string		security_level
+ * @return	boolean		true if login data matched
+ */
+	function compareUident($user, $loginData, $security_level='') {
+		return $this->pObj->compareUident($user, $loginData, $security_level);
 	}
 
 	/**
@@ -86,12 +127,41 @@ class tx_sv_authbase extends t3lib_svbase 	{
 	 * @see t3lib_userauthgroup::writelog()
 	 */
 	function writelog($type,$action,$error,$details_nr,$details,$data,$tablename='',$recuid='',$recpid='')	{
-		if($this->pObj->writeAttemptLog) {
+		if($this->writeAttemptLog) {
 			$this->pObj->writelog($type,$action,$error,$details_nr,$details,$data,$tablename,$recuid,$recpid);
 		}
 	}
 
-}
 
+
+
+
+
+
+
+
+
+	/*************************
+	 *
+	 * create/update user - EXPERIMENTAL
+	 *
+	 *************************/
+
+	/**
+	 * Get a user from DB by username
+	 *
+	 * @param	string		user name
+	 * @param	string		additional WHERE clause: " AND ...
+	 * @param	array		User db table definition: $this->db_user
+	 * @return	mixed		user array or false
+	 */
+	function fetchUserRecord($username, $extraWhere='', $dbUserSetup='')	{
+
+		$dbUser = is_array($dbUserSetup) ? $dbUserSetup : $this->db_user;
+		$user = $this->pObj->fetchUserRecord($dbUser, $username, $extraWhere);
+
+		return $user;
+	}
+}
 
 ?>

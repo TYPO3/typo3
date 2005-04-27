@@ -187,7 +187,7 @@ class SC_alt_main {
 		}
 	}
 	function busy_OpenRefreshWindow()	{	//
-		vHWin=window.open("login_frameset.php","relogin","height=350,width=700,status=0,menubar=0,location=1");
+		vHWin=window.open("login_frameset.php","relogin_"+TS.uniqueID,"height=350,width=700,status=0,menubar=0,location=1");
 		vHWin.focus();
 		this.openRefreshW=1;
 	}
@@ -320,13 +320,12 @@ class SC_alt_main {
 	/**
 	 * Function restoring previous selection in left menu after clearing cache
 	 */
-	
 	function restoreHighlightedModuleMenuItem() {
 		if (currentlyHighLightedId) {
 			highlightModuleMenuItem(currentlyHighLightedId,currentlyHighLightedMain);
 		}
 	}
-	
+
 	/**
 	 * Function used to switch switch module.
 	 */

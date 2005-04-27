@@ -312,6 +312,15 @@ class tslib_menu {
 	 */
 	function makeMenu()	{
 		if ($this->id)	{
+
+				// Initializing showAccessRestrictedPages
+			if ($this->mconf['showAccessRestrictedPages'])	{
+					// SAVING where_groupAccess
+				$SAVED_where_groupAccess = $this->sys_page->where_groupAccess;
+				$this->sys_page->where_groupAccess = '';	// Temporarily removing fe_group checking!
+			}
+
+				// Begin production of menu:
 			$temp = array();
 			$altSortFieldValue = trim($this->mconf['alternativeSortingField']);
 			$altSortField = $altSortFieldValue ? $altSortFieldValue : 'sorting';
@@ -345,7 +354,7 @@ class tslib_menu {
 							} else $lRecs=array();
 								// Checking if the "disabled" state should be set.
 							if (
-										($GLOBALS['TSFE']->page['l18n_cfg']&2 && $sUid && !count($lRecs)) // Blocking for all translations?
+										(t3lib_div::hideIfNotTranslated($GLOBALS['TSFE']->page['l18n_cfg']) && $sUid && !count($lRecs)) // Blocking for all translations?
 									|| ($GLOBALS['TSFE']->page['l18n_cfg']&1 && (!$sUid || !count($lRecs))) // Blocking default translation?
 									|| (!$this->conf['special.']['normalWhenNoLanguage'] && $sUid && !count($lRecs))
 								)	{
@@ -381,9 +390,9 @@ class tslib_menu {
 									$MP = $MP ? $MP : $mount_info['MPvar'];
 								} else {
 									$MP = ($MP ? $MP.',' : '').$mount_info['MPvar'];
-							}
+								}
 								$id = $mount_info['mount_pid'];
-						}
+							}
 
 								// Get sub-pages:
 							$res = $GLOBALS['TSFE']->cObj->exec_getQuery('pages',Array('pidInList'=>$id,'orderBy'=>$altSortField));
@@ -806,6 +815,12 @@ class tslib_menu {
 			} else {
 				$this->result=unserialize($serData);
 			}
+
+				// End showAccessRestrictedPages
+			if ($this->mconf['showAccessRestrictedPages'])	{
+					// RESTORING where_groupAccess
+				$this->sys_page->where_groupAccess = $SAVED_where_groupAccess;
+			}
 		}
 	}
 
@@ -852,7 +867,7 @@ class tslib_menu {
 
 								// Checking if a page should be shown in the menu depending on whether a translation exists:
 							$tok = TRUE;
-							if ($GLOBALS['TSFE']->sys_language_uid && $data['l18n_cfg']&2)	{	// There is an alternative language active AND the current page requires a translation:
+							if ($GLOBALS['TSFE']->sys_language_uid && t3lib_div::hideIfNotTranslated($data['l18n_cfg']))	{	// There is an alternative language active AND the current page requires a translation:
 								if (!$data['_PAGES_OVERLAY'])	{
 									$tok = FALSE;
 								}
@@ -864,7 +879,7 @@ class tslib_menu {
 									// Checking if "&L" should be modified so links to non-accessible pages will not happen.
 								if ($this->conf['protectLvar'])	{
 									$Lvar = intval(t3lib_div::_GP('L'));
-									if (($this->conf['protectLvar']=='all' || $data['l18n_cfg']&2) && $Lvar!=$GLOBALS['TSFE']->sys_language_uid)	{	// page cannot be access in locaization and Lvar is different than sys_language uid - this means we must check!
+									if (($this->conf['protectLvar']=='all' || t3lib_div::hideIfNotTranslated($data['l18n_cfg'])) && $Lvar!=$GLOBALS['TSFE']->sys_language_uid)	{	// page cannot be access in locaization and Lvar is different than sys_language uid - this means we must check!
 										$olRec = $GLOBALS['TSFE']->sys_page->getPageOverlay($data['uid'], $Lvar);
 										if (!count($olRec))	{
 												// If no pages_language_overlay record then page can NOT be accessed in the language pointed to by "&L" and therefore we protect the link by setting "&L=0"
@@ -1107,6 +1122,9 @@ class tslib_menu {
 			$LD = $this->tmpl->linkData($this->menuArr[$key],$mainTarget,'','',$overrideArray, $this->mconf['addParams'].$MP_params.$this->menuArr[$key]['_ADD_GETVARS'], $typeOverride);
 		}
 
+			// Manipulation in case of access restricted pages:
+		$this->changeLinksForAccessRestrictedPages($LD,$this->menuArr[$key],$mainTarget,$typeOverride);
+
 			// Overriding URL / Target if set to do so:
 		if ($this->menuArr[$key]['_OVERRIDE_HREF'])	{
 			$LD['totalURL'] = $this->menuArr[$key]['_OVERRIDE_HREF'];
@@ -1130,6 +1148,28 @@ class tslib_menu {
 		$list['onClick'] = $onClick;
 
 		return $list;
+	}
+
+	/**
+	 * Will change $LD (passed by reference) if the page is access restricted
+	 *
+	 * @param	array	$LD, the array from the linkData() function
+	 * @param	array	Page array
+	 * @param	string	Main target value
+	 * @param	string	Type number override if any
+	 * @return	void	($LD passed by reference might be changed.)
+	 */
+	function changeLinksForAccessRestrictedPages(&$LD, $page, $mainTarget, $typeOverride)	{
+
+			// If access restricted pages should be shown in menus, change the link of such pages to link to a redirection page:
+		if ($this->mconf['showAccessRestrictedPages'] && $this->mconf['showAccessRestrictedPages']!=='NONE' && !$GLOBALS['TSFE']->checkPageGroupAccess($page))		{
+			$thePage = $this->sys_page->getPage($this->mconf['showAccessRestrictedPages']);
+
+			$addParams = $this->mconf['showAccessRestrictedPages.']['addParams'];
+			$addParams = str_replace('###RETURN_URL###',rawurlencode($LD['totalURL']),$addParams);
+			$addParams = str_replace('###PAGE_ID###',$page['uid'],$addParams);
+			$LD = $this->tmpl->linkData($thePage,$mainTarget,'','','', $addParams, $typeOverride);
+		}
 	}
 
 	/**
@@ -2340,6 +2380,9 @@ class tslib_imgmenu extends tslib_menu {
 
 									$LD = $this->tmpl->linkData($this->menuArr[$key],$this->mconf['target'],'','',array(),'',$this->mconf['forceTypeValue']);
 
+										// If access restricted pages should be shown in menus, change the link of such pages to link to a redirection page:
+									$this->changeLinksForAccessRestrictedPages($LD, $this->menuArr[$key], $this->mconf['target'], $this->mconf['forceTypeValue']);
+
 										// Overriding URL / Target if set to do so:
 									if ($this->menuArr[$key]['_OVERRIDE_HREF'])	{
 										$LD['totalURL'] = $this->menuArr[$key]['_OVERRIDE_HREF'];
@@ -2638,6 +2681,10 @@ class tslib_jsmenu extends tslib_menu {
 					$target='';
 					if ((!$addLines && !$levelConf['noLink']) || $levelConf['alwaysLink']) {
 						$LD = $this->tmpl->linkData($data,$this->mconf['target'],'','',array(),$MP_params,$this->mconf['forceTypeValue']);
+
+							// If access restricted pages should be shown in menus, change the link of such pages to link to a redirection page:
+						$this->changeLinksForAccessRestrictedPages($LD, $data, $this->mconf['target'], $this->mconf['forceTypeValue']);
+
 						$url = rawurlencode($LD['totalURL']);
 						$target = rawurlencode($LD['target']);
 					}

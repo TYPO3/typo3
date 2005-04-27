@@ -4929,7 +4929,9 @@ class tslib_cObj {
 					}
 
 						// Looking up the page record to verify its existence:
-					$page = $GLOBALS['TSFE']->sys_page->getPage($link_param);
+					$disableGroupAccessCheck = $GLOBALS['TSFE']->config['config']['typolinkLinkAccessRestrictedPages'] ? TRUE : FALSE;
+					$page = $GLOBALS['TSFE']->sys_page->getPage($link_param,$disableGroupAccessCheck);
+
 					if (count($page))	{
 							// This checks if the linked id is in the rootline of this site and if not it will find the domain for that ID and prefix it:
 						$tCR_domain='';
@@ -4961,7 +4963,7 @@ class tslib_cObj {
 							// Look for overlay Mount Point:
 						$mount_info = $GLOBALS['TSFE']->sys_page->getMountPointInfo($page['uid'], $page);
 						if (is_array($mount_info) && $mount_info['overlay'])	{
-							$page = $GLOBALS['TSFE']->sys_page->getPage($mount_info['mount_pid']);
+							$page = $GLOBALS['TSFE']->sys_page->getPage($mount_info['mount_pid'],$disableGroupAccessCheck);
 							if (!count($page))	{
 								$GLOBALS['TT']->setTSlogMessage("typolink(): Mount point '".$mount_info['mount_pid']."' was not available, so '".$linktxt."' was not linked.",1);
 								return $linktxt;
@@ -5013,6 +5015,20 @@ class tslib_cObj {
 								}
 							}
 						}
+
+							// If link is to a access restricted page which should be redirected, then find new URL:
+						if ($GLOBALS['TSFE']->config['config']['typolinkLinkAccessRestrictedPages'] &&
+								$GLOBALS['TSFE']->config['config']['typolinkLinkAccessRestrictedPages']!=='NONE' &&
+								!$GLOBALS['TSFE']->checkPageGroupAccess($page))	{
+									$thePage = $GLOBALS['TSFE']->sys_page->getPage($GLOBALS['TSFE']->config['config']['typolinkLinkAccessRestrictedPages']);
+
+									$addParams = $GLOBALS['TSFE']->config['config']['typolinkLinkAccessRestrictedPages_addParams'];
+									$addParams = str_replace('###RETURN_URL###',rawurlencode($this->lastTypoLinkUrl),$addParams);
+									$addParams = str_replace('###PAGE_ID###',$page['uid'],$addParams);
+									$LD = $GLOBALS['TSFE']->tmpl->linkData($thePage,$target,'','','',$addParams,$theTypeP);
+									$this->lastTypoLinkUrl = $this->URLqMark($LD['totalURL'],'');
+						}
+
 							// Rendering the tag.
 						$finalTagParts['url']=$this->lastTypoLinkUrl;
 						$finalTagParts['targetParams']=$targetPart;
@@ -6340,7 +6356,8 @@ class tslib_cObj {
 
 			// enablefields
 		if ($table=='pages')	{
-			$query.=' '.$GLOBALS['TSFE']->sys_page->where_hid_del;
+			$query.=' '.$GLOBALS['TSFE']->sys_page->where_hid_del.
+						$GLOBALS['TSFE']->sys_page->where_groupAccess;
 		} else {
 			$query.=$this->enableFields($table);
 		}

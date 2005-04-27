@@ -509,7 +509,6 @@ Contact me: | tv=check | 1
 				'icon'=>'gfx/c_wiz/searchform.gif',
 				'title'=>$LANG->getLL('forms_2_title'),
 				'description'=>$LANG->getLL('forms_2_description'),
-				'params'=>'&defVals[tt_content][CType]=search',
 				'tt_content_defValues' => array(
 					'CType' => 'search',
 				)
@@ -564,10 +563,24 @@ Contact me: | tv=check | 1
 
 			// Traverse wizard items:
 		foreach($wizardItems as $key => $cfg)	{
-			if (is_array($cfg['tt_content_defValues']))	{
+
+				// Exploding parameter string, if any (old style)
+			if ($wizardItems[$key]['params'])	{
+					// Explode GET vars recursively
+				$tempGetVars = t3lib_div::explodeUrl2Array($wizardItems[$key]['params'],TRUE);
+					// If tt_content values are set, merge them into the tt_content_defValues array, unset them from $tempGetVars and re-implode $tempGetVars into the param string (in case remaining parameters are around).
+				if (is_array($tempGetVars['defVals']['tt_content']))	{
+					$wizardItems[$key]['tt_content_defValues'] = array_merge(is_array($wizardItems[$key]['tt_content_defValues']) ? $wizardItems[$key]['tt_content_defValues'] : array(), $tempGetVars['defVals']['tt_content']);
+					unset($tempGetVars['defVals']['tt_content']);
+					$wizardItems[$key]['params'] = t3lib_div::implodeArrayForUrl('',$tempGetVars);
+				}
+			}
+
+				// If tt_content_defValues are defined...:
+			if (is_array($wizardItems[$key]['tt_content_defValues']))	{
 
 					// Traverse field values:
-				foreach($cfg['tt_content_defValues'] as $fN => $fV)	{
+				foreach($wizardItems[$key]['tt_content_defValues'] as $fN => $fV)	{
 					if (is_array($TCA['tt_content']['columns'][$fN]))	{
 							// Get information about if the field value is OK:
 						$config = &$TCA['tt_content']['columns'][$fN]['config'];

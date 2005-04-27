@@ -252,7 +252,7 @@ class tx_indexedsearch_indexer {
 
 							// Content of page:
 						$this->conf['content'] = $pObj->content;					// Content string (HTML of TYPO3 page)
-						$this->conf['indexedDocTitle'] = $pObj->indexedDocTitle;	// Alternative title for indexing
+						$this->conf['indexedDocTitle'] = $pObj->convOutputCharset($pObj->indexedDocTitle);	// Alternative title for indexing
 						$this->conf['metaCharset'] = $pObj->metaCharset;			// Character set of content (will be converted to utf-8 during indexing)
 						$this->conf['mtime'] = $pObj->register['SYS_LASTCHANGED'];	// Most recent modification time (seconds) of the content on the page. Used to evaluate whether it should be re-indexed.
 
@@ -1099,7 +1099,7 @@ class tx_indexedsearch_indexer {
 					$contentArr[$key] = $this->csObj->utf8_encode($contentArr[$key], $charset);
 				}
 
-					// decode all numeric / html-entitiesin in the string to real characters:
+					// decode all numeric / html-entities in the string to real characters:
 				$contentArr[$key] = $this->csObj->entities_to_utf8($contentArr[$key],TRUE);
 			}
 		}

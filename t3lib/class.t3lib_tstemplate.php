@@ -1329,13 +1329,7 @@ class t3lib_TStemplate	{
 			// linkVars
 		if ($GLOBALS['TSFE']->config['config']['uniqueLinkVars']) {
 			if ($addParams) {
-				$lV = array();
-				$addParamsArr = t3lib_div::trimExplode('&',$GLOBALS['TSFE']->linkVars.$addParams,1);
-				while(list($k,$e)=each($addParamsArr)) if ($e) {
-					list($k,$v) = explode('=',$e, 2);
-					$lV[$k] = $v;
-				}
-				$LD['linkVars'] = t3lib_div::implodeArrayForUrl('',$lV);
+				$LD['linkVars'] = t3lib_div::implodeArrayForUrl('',t3lib_div::explodeUrl2Array($GLOBALS['TSFE']->linkVars.$addParams));
 			} else {
 				$LD['linkVars'] = $GLOBALS['TSFE']->linkVars;
 			}

@@ -96,7 +96,7 @@ class t3lib_beUserAuth extends t3lib_userAuthGroup {
 	var $formfield_uident = 'userident'; 		// formfield with password
 	var $formfield_chalvalue = 'challenge';		// formfield with a unique value which is used to encrypt the password and username
 	var $formfield_status = 'login_status'; 	// formfield with status: *'login', 'logout'
-	var $security_level = 'challenged';				// sets the level of security. *'normal' = clear-text. 'challenged' = hashed password/username from form in $formfield_uident. 'superchallenged' = hashed password hashed again with username.
+	var $security_level = 'superchallenged';	// sets the level of security. *'normal' = clear-text. 'challenged' = hashed password/username from form in $formfield_uident. 'superchallenged' = hashed password hashed again with username.
 
 	var $writeStdLog = 1;					// Decides if the writelog() function is called at login and logout
 	var $writeAttemptLog = 1;				// If the writelog() functions is called if a login-attempt has be tried without success
@@ -225,7 +225,7 @@ class t3lib_beUserAuth extends t3lib_userAuthGroup {
 						if (!$this->isAdmin())	{
 							return TRUE;
 						} else die('ERROR: CLI backend user "'.$userName.'" was ADMIN which is not allowed!'.chr(10).chr(10));
-					} else die('ERROR: No backend user named "'.$userName.'" was found!'.chr(10).chr(10));
+					} else die('ERROR: No backend user named "'.$userName.'" was found! [Database: '.TYPO3_db.']'.chr(10).chr(10));
 				} else die('ERROR: Module name, "'.$GLOBALS['MCONF']['name'].'", was not prefixed with "_CLI_"'.chr(10).chr(10));
 			} else die('ERROR: Another user was already loaded which is impossible in CLI mode!'.chr(10).chr(10));
 		}

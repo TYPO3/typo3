@@ -199,7 +199,7 @@ class tx_cms_webinfo_lang extends t3lib_extobjbase {
 
 			$info.= '&nbsp;';
 			$info.= $data['row']['l18n_cfg']&1 ? '<span title="'.$LANG->sL('LLL:EXT:cms/locallang_tca.php:pages.l18n_cfg.I.1','1').'">D</span>' : '&nbsp;';
-			$info.= $data['row']['l18n_cfg']&2 ? '<span title="'.$LANG->sL('LLL:EXT:cms/locallang_tca.php:pages.l18n_cfg.I.2','1').'">N</span>' : '&nbsp;';
+			$info.= t3lib_div::hideIfNotTranslated($data['row']['l18n_cfg']) ? '<span title="'.$LANG->sL('LLL:EXT:cms/locallang_tca.php:pages.l18n_cfg.I.2','1').'">N</span>' : '&nbsp;';
 
 				// Put into cell:
 			$tCells[] = '<td class="'.$status.' c-leftLine">'.$info.'</td>';
@@ -212,7 +212,7 @@ class tx_cms_webinfo_lang extends t3lib_extobjbase {
 
 				if (is_array($row))	{
 					$langRecUids[$langRow['uid']][] = $row['uid'];
-					$status = $row['_HIDDEN'] ? ($data['row']['l18n_cfg']&2 || $data['row']['l18n_cfg']&1 ? 'c-blocked' : 'c-fallback') : 'c-ok';
+					$status = $row['_HIDDEN'] ? (t3lib_div::hideIfNotTranslated($data['row']['l18n_cfg']) || $data['row']['l18n_cfg']&1 ? 'c-blocked' : 'c-fallback') : 'c-ok';
 					$icon = t3lib_iconWorks::getIconImage(
 						'pages_language_overlay',
 						$row,
@@ -242,7 +242,7 @@ class tx_cms_webinfo_lang extends t3lib_extobjbase {
 					$tCells[] = '<td class="'.$status.'">'.$info.'</td>';
 					$tCells[] = '<td class="'.$status.'" title="'.$LANG->getLL('lang_renderl10n_CEcount','1').'" align="center">'.$this->getContentElementCount($data['row']['uid'],$langRow['uid']).'</td>';
 				} else {
-					$status = $data['row']['l18n_cfg']&2 || $data['row']['l18n_cfg']&1 ? 'c-blocked' : 'c-fallback';
+					$status = t3lib_div::hideIfNotTranslated($data['row']['l18n_cfg']) || $data['row']['l18n_cfg']&1 ? 'c-blocked' : 'c-fallback';
 					$tCells[] = '<td class="'.$status.' c-leftLine">&nbsp;</td>';
 					$tCells[] = '<td class="'.$status.'">&nbsp;</td>';
 

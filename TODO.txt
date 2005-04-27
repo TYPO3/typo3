@@ -396,7 +396,7 @@ XQCR: t3lib/class.t3lib_clipboard.php
 XQCR: t3lib/class.t3lib_diff.php
 XQCR: t3lib/class.t3lib_div.php
 		t3lib/class.t3lib_dmailer.php			[Jan-Erik!]
-		t3lib/class.t3lib_exec.php				[Rene]
+-QC-: t3lib/class.t3lib_exec.php
 -QCR: t3lib/class.t3lib_extfilefunc.php
 -QCR: t3lib/class.t3lib_extmgm.php
 -QCR: t3lib/class.t3lib_extobjbase.php
@@ -419,10 +419,10 @@ XQCR: t3lib/class.t3lib_positionmap.php
 -QCR: t3lib/class.t3lib_readmail.php
 XQCR: t3lib/class.t3lib_recordlist.php
 -QCR: t3lib/class.t3lib_scbase.php
-		t3lib/class.t3lib_sqlengine.php			[Kasper/Karsten?]
+		t3lib/class.t3lib_sqlengine.php			[Karsten?]
 -QCR: t3lib/class.t3lib_stdgraphic.php
 XQCR: t3lib/class.t3lib_superadmin.php
-		t3lib/class.t3lib_svbase.php			[Rene]
+-QC-: t3lib/class.t3lib_svbase.php
 -QCR: t3lib/class.t3lib_tceforms.php			[Kasper]
 		t3lib/class.t3lib_tcemain.php			[Kasper]
 XQCR: t3lib/class.t3lib_timetrack.php
@@ -508,7 +508,7 @@ OK		lang/
 		lowlevel			(2/800)
 			- Extend support and finish it with the efforts soon to be done for TCEmain.
 OK		setup/
-?		sv/							[Rene]
+OK		sv/
 		sys_action			(1/400)
 			- Extend with API for adding custom action scripts
 			- flexforms for configuration!

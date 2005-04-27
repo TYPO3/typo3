@@ -10,7 +10,7 @@ define('TYPO3_cliMode', TRUE);
 
 	// Defining PATH_thisScript here: Must be the ABSOLUTE path of this script in the right context:
 	// This will work as long as the script is called by it's absolute path!
-define(PATH_thisScript,$HTTP_ENV_VARS['_']);
+define('PATH_thisScript',$_ENV['_']?$_ENV['_']:$_SERVER['_']);
 
 	// Include configuration file:
 require(dirname(PATH_thisScript).'/conf.php');

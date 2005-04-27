@@ -151,8 +151,10 @@ class tslib_pibase {
 	);
 
 	var $LOCAL_LANG = Array();	// Local Language content
+	var $LOCAL_LANG_charset = Array();	// Local Language content charset for individual labels (overriding)
 	var $LOCAL_LANG_loaded = 0;	// Flag that tells if the locallang file has been fetch (or tried to be fetched) already.
 	var $LLkey='default';		// Pointer to the language to use.
+	var $altLLkey='';				// Pointer to alternative fall-back language to use.
 	var $LLtestPrefix='';		// You can set this during development to some value that makes it easy for you to spot all labels that ARe delivered by the getLL function.
 	var $LLtestPrefixAlt='';	// Save as LLtestPrefix, but additional prefix for the alternative value in getLL() function calls
 
@@ -214,6 +216,9 @@ class tslib_pibase {
 		}
 		if ($GLOBALS['TSFE']->config['config']['language'])	{
 			$this->LLkey = $GLOBALS['TSFE']->config['config']['language'];
+			if ($GLOBALS['TSFE']->config['config']['language_alt'])	{
+				$this->altLLkey = $GLOBALS['TSFE']->config['config']['language_alt'];
+			}
 		}
 	}
 
@@ -821,7 +826,9 @@ class tslib_pibase {
 	 */
 	function pi_getLL($key,$alt='',$hsc=FALSE)	{
 		if (isset($this->LOCAL_LANG[$this->LLkey][$key]))	{
-			$word = $GLOBALS['TSFE']->csConv($this->LOCAL_LANG[$this->LLkey][$key]);
+			$word = $GLOBALS['TSFE']->csConv($this->LOCAL_LANG[$this->LLkey][$key], $this->LOCAL_LANG_charset[$this->LLkey][$key]);	// The "from" charset is normally empty and thus it will convert from the charset of the system language, but if it is set (see ->pi_loadLL()) it will be used.
+		} elseif ($this->altLLkey && isset($this->LOCAL_LANG[$this->altLLkey][$key]))	{
+			$word = $GLOBALS['TSFE']->csConv($this->LOCAL_LANG[$this->altLLkey][$key], $this->LOCAL_LANG_charset[$this->altLLkey][$key]);	// The "from" charset is normally empty and thus it will convert from the charset of the system language, but if it is set (see ->pi_loadLL()) it will be used.
 		} elseif (isset($this->LOCAL_LANG['default'][$key]))	{
 			$word = $this->LOCAL_LANG['default'][$key];	// No charset conversion because default is english and thereby ASCII
 		} else {
@@ -842,16 +849,29 @@ class tslib_pibase {
 	 */
 	function pi_loadLL()	{
 		if (!$this->LOCAL_LANG_loaded && $this->scriptRelPath)	{
-			$basePath = t3lib_extMgm::siteRelPath($this->extKey).dirname($this->scriptRelPath).'/locallang.php';
-			if (@is_file($basePath))	{
-				include('./'.$basePath);
-				$this->LOCAL_LANG = $LOCAL_LANG;
-				if (is_array($this->conf['_LOCAL_LANG.']))	{
-					reset($this->conf['_LOCAL_LANG.']);
-					while(list($k,$lA)=each($this->conf['_LOCAL_LANG.']))	{
-						if (is_array($lA))	{
-							$k = substr($k,0,-1);
-							$this->LOCAL_LANG[$k] = t3lib_div::array_merge_recursive_overrule(is_array($this->LOCAL_LANG[$k])?$this->LOCAL_LANG[$k]:array(), $lA);
+			$basePath = t3lib_extMgm::extPath($this->extKey).dirname($this->scriptRelPath).'/locallang.php';
+
+				// php or xml as source: In any case the charset will be that of the system language.
+				// However, this function guarantees only return output for default language plus the specified language (which is different from how 3.7.0 dealt with it)
+			$this->LOCAL_LANG = t3lib_div::readLLfile($basePath,$this->LLkey);
+			if ($this->altLLkey)	{
+				$tempLOCAL_LANG = t3lib_div::readLLfile($basePath,$this->altLLkey);
+				$this->LOCAL_LANG = array_merge(is_array($this->LOCAL_LANG) ? $this->LOCAL_LANG : array(),$tempLOCAL_LANG);
+			}
+
+				// Overlaying labels from TypoScript (including fictitious language keys for non-system languages!):
+			if (is_array($this->conf['_LOCAL_LANG.']))	{
+				reset($this->conf['_LOCAL_LANG.']);
+				while(list($k,$lA)=each($this->conf['_LOCAL_LANG.']))	{
+					if (is_array($lA))	{
+						$k = substr($k,0,-1);
+						foreach($lA as $llK => $llV)	{
+							if (!is_array($llV))	{
+								$this->LOCAL_LANG[$k][$llK] = $llV;
+								if ($k != 'default')	{
+									$this->LOCAL_LANG_charset[$k][$llK] = $GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset'];	// For labels coming from the TypoScript (database) the charset is assumed to be "forceCharset" and if that is not set, assumed to be that of the individual system languages (thus no conversion)
+								}
+							}
 						}
 					}
 				}
