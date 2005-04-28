@@ -1,3 +1,7 @@
+2005-04-28  Christian Jul Jensen  <julle(at)typo3(dot)org>
+
+	* Added parameter to function in t3lib_install that enables you to write to other localconf's than the canonical.
+
 2005-04-28  Kasper Skårhøj,,,  <kasper@typo3.com>
 
 	* Added search in Extension Manager for extensions locally.
