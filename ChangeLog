@@ -1,12 +1,13 @@
 2005-04-28  Rupert Germann  <rupi@gmx.li>
 
+	* fix for bug 416: now the wrong default values in autoincrement lines will be removed from .sql files before they are written to the database.
+	This fixes the problem where tables were not created under MySQL 4.1.x
+	* removed a double strcmp in class.t3lib_install (resolves bug 955)
+	* removed the mysql-version ckeck from the install tool and from class.tx_install. With current MySQL versions this is not needed anymore.
 	* New features for the pi_base pagebrowser: first and last links, "floating" of the displayed pages, all wraps are now configurable, all hardcoded HTML can be substituted with own wraps, and many more.
 	The behaviour of the pagebrowser doesn't change if the additional "internal"-array-elements don't exist.
 	This array has to be set from an extension which passes its TS-config to the pagebrowser function. See comments in function for details.
 	Thank goes to Michael H.E. Roth for developing most of the changes.
-
-2005-04-28  Rupert Germann  <rupi@gmx.li>
-
 	* fixed bug 911: setting ['BE']['lockIP'] to a value < 4 does not log out the BEuser anymore.
 	* fixed bug 570: now it is prevented that umlauts or other special characters are inserted as "accessKey".
 
