@@ -87,7 +87,6 @@ class t3lib_install {
 	var $updateIdentity = '';					// Set to string which identifies the script using this class.
 	var $deletedPrefixKey = 'zzz_deleted_';		// Prefix used for tables/fields when deleted/renamed.
 	var $dbUpdateCheckboxPrefix = 'TYPO3_INSTALL[database_update]';	// Prefix for checkbox fields when updating database.
-	var $mysqlVersion = '3.22';					// 3.22 or 3.23. If set to 3.23, then the expected format of the incoming sql-dump files are changed. 'DEFAULT' and 'NOT NULL' are reversed in order and 'DEFAULT' is lowercase. Also auto_incremented fields are without default definitions.
 	var $localconf_addLinesOnly = 0;			// If this is set, modifications to localconf.php is done by adding new lines to the array only. If unset, existing values are recognized and changed.
 	var $localconf_editPointToken = 'INSTALL SCRIPT EDIT POINT TOKEN - all lines after this points may be changed by the install script!';		// If set and addLinesOnly is disabled, lines will be change only if they are after this token (on a single line!) in the file
 	var $allowUpdateLocalConf = 0;		// If true, this class will allow the user to update the localconf.php file. Is set true in the init.php file.
@@ -291,6 +290,19 @@ class t3lib_install {
 					} else {
 						$lineV = ereg_replace(',$','',$value);
 						$parts = explode(' ',$lineV,2);
+
+							// Make sure there is no default value when auto_increment is set
+						if(stristr($parts[1],'auto_increment'))	{
+							$parts[1] = eregi_replace(' default \'0\'','',$parts[1]);
+						}
+							// "default" is always lower-case
+						if(strstr($parts[1], ' DEFAULT '))	{
+							$parts[1] = str_replace(' DEFAULT ', ' default ', $parts[1]);
+						}
+							// Change order of "default" and "null" statements
+						$parts[1] = preg_replace('/(.*) (default .*) (NOT NULL)/', '$1 $3 $2', $parts[1]);
+						$parts[1] = preg_replace('/(.*) (default .*) (NULL)/', '$1 $3 $2', $parts[1]);
+
 						if ($parts[0]!='PRIMARY' && $parts[0]!='KEY' && $parts[0]!='UNIQUE')	{
 							$total[$isTable]['fields'][$parts[0]] = $parts[1];
 						} else {
@@ -423,7 +435,7 @@ class t3lib_install {
 								foreach($info[$theKey] as $fieldN => $fieldC) {
 									if (!isset($FDcomp[$table][$theKey][$fieldN]))	{
 										$extraArr[$table][$theKey][$fieldN] = $fieldC;
-									} elseif (strcmp($FDcomp[$table][$theKey][$fieldN], $fieldC) && strcmp($FDcomp[$table][$theKey][$fieldN], $fieldC)){
+									} elseif (strcmp($FDcomp[$table][$theKey][$fieldN], $fieldC)){
 										$diffArr[$table][$theKey][$fieldN] = $fieldC;
 										$diffArr_cur[$table][$theKey][$fieldN] = $FDcomp[$table][$theKey][$fieldN];
 									}
@@ -467,11 +479,6 @@ class t3lib_install {
 					if (is_array($info['fields']))	{
 						foreach($info['fields'] as $fN => $fV) {
 							if ($info['whole_table'])	{
-								if(!strcmp($fN,'uid')) {
-									if(strstr($fV,'auto_increment')) {
-										$fV = eregi_replace('default \'0\'','',$fV);
-									}
-								}
 								$whole_table[]=$fN.' '.$fV;
 							} else {
 								if ($theKey=='extra')	{
@@ -554,22 +561,15 @@ class t3lib_install {
 	 */
 	function assembleFieldDefinition($row)	{
 		$field[] = $row['Type'];
-		if ($this->mysqlVersion=='3.23' && !$row['Null'])	{
-			$field[] = 'NOT NULL';
-		}
+		if (!$row['Null'])	{ $field[] = 'NOT NULL'; }
 		if (!strstr($row['Type'],'blob') && !strstr($row['Type'],'text'))	{
-			// This code will return a default value if the sql-file version is not 3.23 and the field is not auto-incremented. In 3.23 files, the auto-incremented fields do not have a default definition.
-			// Furthermore if the file is 3.22 the default value of auto-incremented fields are expected to always be zero which is why the default value is passed through intval(). Thus it should work on 3.23 MySQL servers.
-			if ($this->mysqlVersion!='3.23' || !stristr($row['Extra'],'auto_increment'))	{
-				$field[] = ($this->mysqlVersion=='3.23'?'default':'DEFAULT')." '".(stristr($row['Extra'],'auto_increment')?intval($row['Default']):addslashes($row['Default']))."'";
+				// Add a default value if the field is not auto-incremented (these fields never have a default definition).
+			if (!stristr($row['Extra'],'auto_increment'))	{
+				$field[] = 'default '."'".(addslashes($row['Default']))."'";
 			}
 		}
-		if ($this->mysqlVersion!='3.23' && !$row['Null'])	{
-			$field[] = 'NOT NULL';
-		}
-		if ($row['Extra'])	{
-			$field[] = $row['Extra'];
-		}
+		if ($row['Extra'])	{ $field[] = $row['Extra']; }
+
 		return implode(' ',$field);
 	}
 
@@ -589,11 +589,6 @@ class t3lib_install {
 		$statementArrayPointer = 0;
 
 		foreach($sqlcodeArr as $line => $linecontent)	{
-
-				// Setting MySQL Version if necessary.
-			if (substr(trim($linecontent),0,16)=='# Server version')	{
-				$this->mysqlVersion = doubleval(substr(trim($linecontent),16));
-			}
 			$is_set = 0;
 			if(stristr($linecontent,'auto_increment')) {
 				$linecontent = eregi_replace(' default \'0\'','',$linecontent);
@@ -630,7 +625,14 @@ class t3lib_install {
 			if (eregi('^create[[:space:]]*table[[:space:]]*([[:alnum:]_]*)',substr($linecontent,0,100),$reg))	{
 				$table = trim($reg[1]);
 				if ($table)	{
-					if (TYPO3_OS=='WIN')	{$table=strtolower($table);}	// tablenames are always lowercase on windows!
+					if (TYPO3_OS=='WIN')	{ $table=strtolower($table); }	// table names are always lowercase on Windows!
+					$sqlLines = explode(chr(10), $linecontent);
+					foreach($sqlLines as $k=>$v)	{
+						if(stristr($v,'auto_increment')) {
+							$sqlLines[$k] = eregi_replace(' default \'0\'','',$v);
+						}
+					}
+					$linecontent = implode(chr(10), $sqlLines);
 					$crTables[$table] = $linecontent;
 				}
 			} elseif ($insertCountFlag && eregi('^insert[[:space:]]*into[[:space:]]*([[:alnum:]_]*)',substr($linecontent,0,100),$reg))	{
