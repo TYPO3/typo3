@@ -1347,7 +1347,7 @@ class tslib_menu {
 		$titleLen = strlen($title);
 		for ($a=0;$a<$titleLen;$a++)	{
 			$key = strtoupper(trim(substr($title,$a,1)));
-			if ($key && !isset($GLOBALS['TSFE']->accessKey[$key]))	{
+			if (preg_match('/[a-zA-Z]/', $key) && !isset($GLOBALS['TSFE']->accessKey[$key]))	{
 				$GLOBALS['TSFE']->accessKey[$key]=1;
 				$result['code'] = ' accesskey="'.$key.'"';
 				$result['alt'] = ' (ALT+'.$key.')';
