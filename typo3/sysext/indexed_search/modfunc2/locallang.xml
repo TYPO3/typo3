@@ -4,7 +4,7 @@
 		<description></description>
 		<type>module</type>
 		<csh_table></csh_table>
-		<fileId>EXT:dkd_isearch_stats/modfunc1/locallang.xml</fileId>
+		<fileId>EXT:indexed_search/modfunc2/locallang.xml</fileId>
 		<labelContext type="array">
 			<label index="title"></label>
 			<label index="title2"></label>

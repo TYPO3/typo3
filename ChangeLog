@@ -1,3 +1,7 @@
+2005-04-28  Kasper Skårhøj,,,  <kasper@typo3.com>
+
+	* Added API in tslib_pibase for checking availability of the cHash value when plugins are running as USER cObjects. This is a VERY IMPORTANT thing for plugin writers to acquaint themselves with. I suggest reading the article "The Mysteries of &cHash" which was written about this tricky issue.
+
 2005-04-28  Rupert Germann  <rupi@gmx.li>
 
 	* fix for bug 416: now the wrong default values in autoincrement lines will be removed from .sql files before they are written to the database.

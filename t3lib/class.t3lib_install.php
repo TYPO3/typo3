@@ -180,8 +180,8 @@ class t3lib_install {
 	 * @return	mixed		If $inlines is not an array it will return an array with the lines from localconf.php. Otherwise it will return a status string, either "continue" (updated) or "nochange" (not updated)
 	 * @see setValueInLocalconfFile()
 	 */
-	function writeToLocalconf_control($inlines='',$AbsFullPath='')	{
-		$writeToLocalconf_dat['file'] = $fileFullPath?$fileFullPath:PATH_typo3conf.'localconf.php';
+	function writeToLocalconf_control($inlines='',$absFullPath='')	{
+		$writeToLocalconf_dat['file'] = $absFullPath ? $absFullPath : PATH_typo3conf.'localconf.php';
 
 			// Checking write state of localconf.php:
 		if (!$this->allowUpdateLocalConf)	{

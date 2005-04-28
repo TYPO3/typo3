@@ -1292,7 +1292,7 @@
 	}
 
 	/**
-	 * Analyzes the second part of a id-string (after the "+"), looking for B6 or M5 encoding and if found it will resolve it and restore the variables in global $_GET (but NOT $_GET - yet)
+	 * Analyzes the second part of a id-string (after the "+"), looking for B6 or M5 encoding and if found it will resolve it and restore the variables in global $_GET
 	 * If values for ->cHash, ->no_cache, ->jumpurl and ->MP is found, they are also loaded into the internal vars of this class.
 	 *
 	 * @param	string		String to analyze
@@ -1371,6 +1371,7 @@
 	 * Calculates a hash string based on additional parameters in the url. This is used to cache pages with more parameters than just id and type
 	 *
 	 * @return	void
+	 * @see reqCHash()
 	 */
 	function makeCacheHash()	{
 		$GET = t3lib_div::_GET();
@@ -1382,6 +1383,20 @@
 				$this->set_no_cache();
 				$GLOBALS['TT']->setTSlogMessage('The incoming cHash "'.$this->cHash.'" and calculated cHash "'.$cHash_calc.'" did not match, so caching was disabled. The fieldlist used was "'.implode(',',array_keys($this->cHash_array)).'"',2);
 			}
+		}
+	}
+
+	/**
+	 * Will disable caching if the cHash value was not set.
+	 * This function should be called to check the _existence_ of "&cHash" whenever a plugin generating cachable output is using extra GET variables. If there _is_ a cHash value the validation of it automatically takes place in makeCacheHash() (see above)
+	 *
+	 * @return void
+	 * @see makeCacheHash(), tslib_pibase::pi_cHashCheck()
+	 */
+	function reqCHash()	{
+		if (!$this->cHash)	{
+			$this->set_no_cache();
+			$GLOBALS['TT']->setTSlogMessage('TSFE->reqCHash(): No &cHash parameter was sent for GET vars though required so caching is disabled ',2);
 		}
 	}
 

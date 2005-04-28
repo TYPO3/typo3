@@ -167,7 +167,8 @@ class tslib_pibase {
 	var $pi_autoCacheFields=array();
 	var $pi_autoCacheEn=0;
 
-	var $pi_USER_INT_obj = 0;	// If set, then links are 1) not using cHash and 2) allowing pages to be cached.
+	var $pi_USER_INT_obj = FALSE;	// If set, then links are 1) not using cHash and 2) allowing pages to be cached. (Set this for all USER_INT plugins!)
+	var $pi_checkCHash = FALSE;		// If set, then caching is disabled if piVars are incoming while no cHash was set (Set this for all USER plugins!)
 
 	/**
 	 * Should normally be set in the main function with the TypoScript content passed to the method.
@@ -211,8 +212,17 @@ class tslib_pibase {
 	 * @return	void
 	 */
 	function tslib_pibase()	{
+
+			// Setting piVars:
 		if ($this->prefixId)	{
 			$this->piVars = t3lib_div::GParrayMerged($this->prefixId);
+
+				// cHash mode check
+				// IMPORTANT FOR CACHED PLUGINS (USER cObject): As soon as you generate cached plugin output which depends on parameters (eg. seeing the details of a news item) you MUST check if a cHash value is set.
+				// Background: The function call will check if a cHash parameter was sent with the URL because only if it was the page may be cached. If no cHash was found the function will simply disable caching to avoid unpredictable caching behaviour. In any case your plugin can generate the expected output and the only risk is that the content may not be cached. A missing cHash value is considered a mistake in the URL resulting from either URL manipulation, "realurl" "grayzones" etc. The problem is rare (more frequent with "realurl") but when it occurs it is very puzzling!
+			if ($this->pi_checkCHash && count($this->piVars))	{
+				$GLOBALS['TSFE']->reqCHash();
+			}
 		}
 		if ($GLOBALS['TSFE']->config['config']['language'])	{
 			$this->LLkey = $GLOBALS['TSFE']->config['config']['language'];
@@ -232,8 +242,6 @@ class tslib_pibase {
 			$this->piVars = t3lib_div::array_merge_recursive_overrule($this->conf['_DEFAULT_PI_VARS.'],is_array($this->piVars)?$this->piVars:array());
 		}
 	}
-
-
 
 
 
@@ -414,7 +422,6 @@ class tslib_pibase {
 
 
 
-
 	/***************************
 	 *
 	 * Functions for listing, browsing, searching etc.
@@ -464,7 +471,7 @@ class tslib_pibase {
 		$results_at_a_time = t3lib_div::intInRange($this->internal['results_at_a_time'],1,1000);
 		$totalPages = ceil($count/$results_at_a_time);
 		$maxPages = t3lib_div::intInRange($this->internal['maxPages'],1,100);
-		$pi_isOnlyFields = $this->pi_isOnlyFields($this->pi_isOnlyFields); 
+		$pi_isOnlyFields = $this->pi_isOnlyFields($this->pi_isOnlyFields);
 
 			// $showResultCount determines how the results of the pagerowser will be shown.
 			// If set to 0: only the result-browser will be shown
@@ -482,7 +489,7 @@ class tslib_pibase {
 			if (strtoupper($this->internal['pagefloat']) == 'CENTER') {
 				$pagefloat = ceil(($maxPages - 1)/2);
 			} else {
-				// pagefloat set as integer. 0 = left, value >= $this->internal['maxPages'] = right 
+				// pagefloat set as integer. 0 = left, value >= $this->internal['maxPages'] = right
 				$pagefloat = t3lib_div::intInRange($this->internal['pagefloat'],-1,$maxPages-1);
 			}
 		} else {
@@ -505,7 +512,7 @@ class tslib_pibase {
 
 			// now overwrite all entries in $wrapper which are also in $wrapArr
 		$wrapper = array_merge($wrapper,$wrapArr);
-		
+
 		if ($showResultCount != 2) { //show pagebrowser
 			if ($pagefloat > -1) {
 				$lastPage = min($totalPages,max($pointer+1 + $pagefloat,$maxPages));
@@ -515,7 +522,7 @@ class tslib_pibase {
 				$lastPage = t3lib_div::intInRange($totalPages,1,$maxPages);
 			}
 			$links=array();
-	
+
 				// Make browse-table/links:
 			if ($showFirstLast) { // Link to first page
 				if ($pointer>0)	{
@@ -573,7 +580,7 @@ class tslib_pibase {
 			if ($wrapper['showResultsNumbersWrap']) {
 				// this will render the resultcount in a more flexible way using markers (new in TYPO3 3.8.0).
 				// the formatting string is expected to hold template markers (see function header). Example: 'Displaying results ###FROM### to ###TO### out of ###OUT_OF###'
-				
+
 				$markerArray['###FROM###'] = $this->cObj->wrap($this->internal['res_count'] > 0 ? $pR1 : 0,$wrapper['showResultsNumbersWrap']);
 				$markerArray['###TO###'] = $this->cObj->wrap(min($this->internal['res_count'],$pR2),$wrapper['showResultsNumbersWrap']);
 				$markerArray['###OUT_OF###'] = $this->cObj->wrap($this->internal['res_count'],$wrapper['showResultsNumbersWrap']);
