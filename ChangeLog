@@ -1,3 +1,8 @@
+2005-04-28  Rupert Germann  <rupi@gmx.li>
+
+	* fixed bug 911: setting ['BE']['lockIP'] to a value < 4 does not log out the BEuser anymore.
+	* fixed bug 570: now it is prevented that umlauts or other special characters are inserted as "accessKey".
+
 2005-04-28  Christian Jul Jensen  <julle(at)typo3(dot)org>
 
 	* Added parameter to function in t3lib_install that enables you to write to other localconf's than the canonical.
