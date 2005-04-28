@@ -423,74 +423,179 @@ class tslib_pibase {
 
 	/**
 	 * Returns a results browser. This means a bar of page numbers plus a "previous" and "next" link. For each entry in the bar the piVars "pointer" will be pointing to the "result page" to show.
-	 * Using $this->piVars['pointer'] as pointer to the page to display
+	 * Using $this->piVars['pointer'] as pointer to the page to display. Can be overwritten with another string ($pointerName) to make it possible to have more than one pagebrowser on a page)
 	 * Using $this->internal['res_count'], $this->internal['results_at_a_time'] and $this->internal['maxPages'] for count number, how many results to show and the max number of pages to include in the browse bar.
+	 * Using $this->internal['dontLinkActivePage'] as switch if the active (current) page should be displayed as pure text or as a link to itself
+	 * Using $this->internal['showFirstLast'] as switch if the two links named "<< First" and "LAST >>" will be shown and point to the first or last page.
+	 * Using $this->internal['pagefloat']: this defines were the current page is shown in the list of pages in the Pagebrowser. If this var is an integer it will be interpreted as position in the list of pages. If its value is the keyword "center" the current page will be shown in the middle of the pagelist.
+	 * Using $this->internal['showRange']: this var switches the display of the pagelinks from pagenumbers to ranges f.e.: 1-5 6-10 11-15... instead of 1 2 3...
+	 * Using $this->pi_isOnlyFields: this holds a comma-separated list of fieldnames which - if they are among the GETvars - will not disable caching for the page with pagebrowser.
 	 *
-	 * @param	boolean		If set (default) the text "Displaying results..." will be show, otherwise not.
+	 * The third parameter is an array with several wraps for the parts of the pagebrowser. The following elements will be recognized:
+	 * disabledLinkWrap, inactiveLinkWrap, activeLinkWrap, browseLinksWrap, showResultsWrap, showResultsNumbersWrap, browseBoxWrap.
+	 *
+	 * If $wrapArr['showResultsNumbersWrap'] is set, the formatting string is expected to hold template markers (###FROM###, ###TO###, ###OUT_OF###, ###FROM_TO###, ###CURRENT_PAGE###, ###TOTAL_PAGES###)
+	 * otherwise the formatting sting is expected to hold sprintf-markers (%s) for from, to, outof (in that sequence)
+	 *
+	 * @param	integer		determines how the results of the pagerowser will be shown. See description below
 	 * @param	string		Attributes for the table tag which is wrapped around the table cells containing the browse links
-	 * @return	string		Output HTML, wrapped in <div>-tags with a class attribute
+	 * @param	array		Array with elements to overwrite the default $wrapper-array.
+	 * @param	string		varname for the pointer.
+	 * @param	boolean		enable htmlspecialchars() for the pi_getLL function (set this to FALSE if you want f.e use images instead of text for links like 'previous' and 'next').
+	 * @return	string		Output HTML-Table, wrapped in <div>-tags with a class attribute (if $wrapArr is not passed,
+	 *										otherwise wrapping is totally controlled/modified by this array
 	 */
-	function pi_list_browseresults($showResultCount=1,$tableParams='')	{
+	function pi_list_browseresults($showResultCount=1,$tableParams='',$wrapArr=array(), $pointerName = 'pointer', $hscText = TRUE)	{
+
+		// example $wrapArr-array how it could be traversed from an extension
+		/* $wrapArr = array(
+			'browseBoxWrap' => '<div class="browseBoxWrap">|</div>',
+			'showResultsWrap' => '<div class="showResultsWrap">|</div>',
+			'browseLinksWrap' => '<div class="browseLinksWrap">|</div>',
+			'showResultsNumbersWrap' => '<span class="showResultsNumbersWrap">|</span>',
+			'disabledLinkWrap' => '<span class="disabledLinkWrap">|</span>',
+			'inactiveLinkWrap' => '<span class="inactiveLinkWrap">|</span>',
+			'activeLinkWrap' => '<span class="activeLinkWrap">|</span>'
+		); */
 
 			// Initializing variables:
-		$pointer=$this->piVars['pointer'];
-		$count=$this->internal['res_count'];
+		$pointer = intval($this->piVars[$pointerName]);
+		$count = intval($this->internal['res_count']);
 		$results_at_a_time = t3lib_div::intInRange($this->internal['results_at_a_time'],1,1000);
+		$totalPages = ceil($count/$results_at_a_time);
 		$maxPages = t3lib_div::intInRange($this->internal['maxPages'],1,100);
-		$max = t3lib_div::intInRange(ceil($count/$results_at_a_time),1,$maxPages);
-		$pointer=intval($pointer);
-		$links=array();
+		$pi_isOnlyFields = $this->pi_isOnlyFields($this->pi_isOnlyFields); 
 
-			// Make browse-table/links:
-		if ($this->pi_alwaysPrev>=0)	{
-			if ($pointer>0)	{
-				$links[]='
-					<td nowrap="nowrap"><p>'.$this->pi_linkTP_keepPIvars($this->pi_getLL('pi_list_browseresults_prev','< Previous',TRUE),array('pointer'=>($pointer-1?$pointer-1:'')),0).'</p></td>';
-			} elseif ($this->pi_alwaysPrev)	{
-				$links[]='
-					<td nowrap="nowrap"><p>'.$this->pi_getLL('pi_list_browseresults_prev','< Previous',TRUE).'</p></td>';
+			// $showResultCount determines how the results of the pagerowser will be shown.
+			// If set to 0: only the result-browser will be shown
+			//	 		 1: (default) the text "Displaying results..." and the result-browser will be shown.
+			//	 		 2: only the text "Displaying results..." will be shown
+		$showResultCount = intval($showResultCount);
+
+			// if this is set, two links named "<< First" and "LAST >>" will be shown and point to the very first or last page.
+		$showFirstLast = $this->internal['showFirstLast'];
+
+			// if this has a value the "previous" button is always visible (will be forced if "showFirstLast" is set)
+		$alwaysPrev = $showFirstLast?1:$this->pi_alwaysPrev;
+
+		if (isset($this->internal['pagefloat'])) {
+			if (strtoupper($this->internal['pagefloat']) == 'CENTER') {
+				$pagefloat = ceil(($maxPages - 1)/2);
+			} else {
+				// pagefloat set as integer. 0 = left, value >= $this->internal['maxPages'] = right 
+				$pagefloat = t3lib_div::intInRange($this->internal['pagefloat'],-1,$maxPages-1);
 			}
+		} else {
+			$pagefloat = -1; // pagefloat disabled
 		}
-		for($a=0;$a<$max;$a++)	{
-			$links[]='
-					<td'.($pointer==$a?$this->pi_classParam('browsebox-SCell'):'').' nowrap="nowrap"><p>'.
-				$this->pi_linkTP_keepPIvars(trim($this->pi_getLL('pi_list_browseresults_page','Page',TRUE).' '.($a+1)),array('pointer'=>($a?$a:'')),$this->pi_isOnlyFields($this->pi_isOnlyFields)).
-				'</p></td>';
-		}
-		if ($pointer<ceil($count/$results_at_a_time)-1)	{
-			$links[]='
-					<td nowrap="nowrap"><p>'.
-				$this->pi_linkTP_keepPIvars($this->pi_getLL('pi_list_browseresults_next','Next >',TRUE),array('pointer'=>$pointer+1)).
-				'</p></td>';
+
+			// default values for "traditional" wrapping with a table. Can be overwritten by vars from $wrapArr
+		$wrapper['disabledLinkWrap'] = '<td nowrap="nowrap"><p>|</p></td>';
+		$wrapper['inactiveLinkWrap'] = '<td nowrap="nowrap"><p>|</p></td>';
+		$wrapper['activeLinkWrap'] = '<td'.$this->pi_classParam('browsebox-SCell').' nowrap="nowrap"><p>|</p></td>';
+		$wrapper['browseLinksWrap'] = trim('<table '.$tableParams).'><tr>|</tr></table>';
+		$wrapper['showResultsWrap'] = '<p>|</p>';
+		$wrapper['browseBoxWrap'] = '
+		<!--
+			List browsing box:
+		-->
+		<div '.$this->pi_classParam('browsebox').'>
+			|
+		</div>';
+
+			// now overwrite all entries in $wrapper which are also in $wrapArr
+		$wrapper = array_merge($wrapper,$wrapArr);
+		
+		if ($showResultCount != 2) { //show pagebrowser
+			if ($pagefloat > -1) {
+				$lastPage = min($totalPages,max($pointer+1 + $pagefloat,$maxPages));
+				$firstPage = max(0,$lastPage-$maxPages);
+			} else {
+				$firstPage = 0;
+				$lastPage = t3lib_div::intInRange($totalPages,1,$maxPages);
+			}
+			$links=array();
+	
+				// Make browse-table/links:
+			if ($showFirstLast) { // Link to first page
+				if ($pointer>0)	{
+					$links[]=$this->cObj->wrap($this->pi_linkTP_keepPIvars($this->pi_getLL('pi_list_browseresults_first','<< First',$hscText),array($pointerName => null),$pi_isOnlyFields),$wrapper['inactiveLinkWrap']);
+				} else {
+					$links[]=$this->cObj->wrap($this->pi_getLL('pi_list_browseresults_first','<< First',$hscText),$wrapper['disabledLinkWrap']);
+				}
+			}
+			if ($alwaysPrev>=0)	{ // Link to previous page
+				if ($pointer>0)	{
+					$links[]=$this->cObj->wrap($this->pi_linkTP_keepPIvars($this->pi_getLL('pi_list_browseresults_prev','< Previous',$hscText),array($pointerName => ($pointer-1?$pointer-1:'')),$pi_isOnlyFields),$wrapper['inactiveLinkWrap']);
+				} elseif ($alwaysPrev)	{
+					$links[]=$this->cObj->wrap($this->pi_getLL('pi_list_browseresults_prev','< Previous',$hscText),$wrapper['disabledLinkWrap']);
+				}
+			}
+			for($a=$firstPage;$a<$lastPage;$a++)	{ // Links to pages
+				if ($this->internal['showRange']) {
+					$pageText = (($a*$results_at_a_time)+1).'-'.min($count,(($a+1)*$results_at_a_time));
+				} else {
+					$pageText = trim($this->pi_getLL('pi_list_browseresults_page','Page',$hscText).' '.($a+1));
+				}
+				if ($pointer == $a) { // current page
+					if ($this->internal['dontLinkActivePage']) {
+						$links[] = $this->cObj->wrap($pageText,$wrapper['activeLinkWrap']);
+					} else {
+						$links[] = $this->cObj->wrap($this->pi_linkTP_keepPIvars($pageText,array($pointerName  => ($a?$a:'')),$pi_isOnlyFields),$wrapper['activeLinkWrap']);
+					}
+				} else {
+					$links[] = $this->cObj->wrap($this->pi_linkTP_keepPIvars($pageText,array($pointerName => ($a?$a:'')),$pi_isOnlyFields),$wrapper['inactiveLinkWrap']);
+				}
+			}
+			if ($pointer<$totalPages-1 || $showFirstLast)	{
+				if ($pointer==$totalPages-1) { // Link to next page
+					$links[]=$this->cObj->wrap($this->pi_getLL('pi_list_browseresults_next','Next >',$hscText),$wrapper['disabledLinkWrap']);
+				} else {
+					$links[]=$this->cObj->wrap($this->pi_linkTP_keepPIvars($this->pi_getLL('pi_list_browseresults_next','Next >',$hscText),array($pointerName => $pointer+1),$pi_isOnlyFields),$wrapper['inactiveLinkWrap']);
+				}
+			}
+			if ($showFirstLast) { // Link to last page
+				if ($pointer<$totalPages-1) {
+					$links[]=$this->cObj->wrap($this->pi_linkTP_keepPIvars($this->pi_getLL('pi_list_browseresults_last','Last >>',$hscText),array($pointerName => $totalPages-1),$pi_isOnlyFields),$wrapper['inactiveLinkWrap']);
+				} else {
+					$links[]=$this->cObj->wrap($this->pi_getLL('pi_list_browseresults_last','Last >>',$hscText),$wrapper['disabledLinkWrap']);
+				}
+			}
+			$theLinks = $this->cObj->wrap(implode(chr(10),$links),$wrapper['browseLinksWrap']);
+		} else {
+			$theLinks = '';
 		}
 
 		$pR1 = $pointer*$results_at_a_time+1;
 		$pR2 = $pointer*$results_at_a_time+$results_at_a_time;
-		$sTables = '
 
-		<!--
-			List browsing box:
-		-->
-		<div'.$this->pi_classParam('browsebox').'>'.
-			($showResultCount ? '
-			<p>'.
-				($this->internal['res_count'] ?
-    			sprintf(
+		if ($showResultCount) {
+			if ($wrapper['showResultsNumbersWrap']) {
+				// this will render the resultcount in a more flexible way using markers (new in TYPO3 3.8.0).
+				// the formatting string is expected to hold template markers (see function header). Example: 'Displaying results ###FROM### to ###TO### out of ###OUT_OF###'
+				
+				$markerArray['###FROM###'] = $this->cObj->wrap($this->internal['res_count'] > 0 ? $pR1 : 0,$wrapper['showResultsNumbersWrap']);
+				$markerArray['###TO###'] = $this->cObj->wrap(min($this->internal['res_count'],$pR2),$wrapper['showResultsNumbersWrap']);
+				$markerArray['###OUT_OF###'] = $this->cObj->wrap($this->internal['res_count'],$wrapper['showResultsNumbersWrap']);
+				$markerArray['###FROM_TO###'] = $this->cObj->wrap(($this->internal['res_count'] > 0 ? $pR1 : 0).' '.$this->pi_getLL('pi_list_browseresults_to','to').' '.min($this->internal['res_count'],$pR2),$wrapper['showResultsNumbersWrap']);
+				$markerArray['###CURRENT_PAGE###'] = $this->cObj->wrap($pointer+1,$wrapper['showResultsNumbersWrap']);
+				$markerArray['###TOTAL_PAGES###'] = $this->cObj->wrap($totalPages,$wrapper['showResultsNumbersWrap']);
+				// substitute markers
+				$resultCountMsg = $this->cObj->substituteMarkerArray($this->pi_getLL('pi_list_browseresults_displays','Displaying results ###FROM### to ###TO### out of ###OUT_OF###'),$markerArray);
+			} else {
+				// render the resultcount in the "traditional" way using sprintf
+				$resultCountMsg = sprintf(
 					str_replace('###SPAN_BEGIN###','<span'.$this->pi_classParam('browsebox-strong').'>',$this->pi_getLL('pi_list_browseresults_displays','Displaying results ###SPAN_BEGIN###%s to %s</span> out of ###SPAN_BEGIN###%s</span>')),
-					$this->internal['res_count'] > 0 ? $pR1 : 0,
-					min(array($this->internal['res_count'],$pR2)),
-					$this->internal['res_count']
-				) :
-				$this->pi_getLL('pi_list_browseresults_noResults','Sorry, no items were found.')).'</p>':''
-			).
-		'
+					$count > 0 ? $pR1 : 0,
+					min($count,$pR2),
+					$count);
+			}
+			$resultCountMsg = $this->cObj->wrap($resultCountMsg,$wrapper['showResultsWrap']);
+		} else {
+			$resultCountMsg = '';
+		}
 
-			<'.trim('table '.$tableParams).'>
-				<tr>
-					'.implode('',$links).'
-				</tr>
-			</table>
-		</div>';
+		$sTables = $this->cObj->wrap($resultCountMsg.$theLinks,$wrapper['browseBoxWrap']);
 
 		return $sTables;
 	}
