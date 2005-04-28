@@ -186,6 +186,7 @@ if ($_COOKIE['be_typo_user']) {		// If the backend cookie is set, we proceed and
 			// the value this->formfield_status is set to empty in order to disable login-attempts to the backend account through this script
 		$BE_USER = t3lib_div::makeInstance('t3lib_tsfeBeUserAuth');	// New backend user object
 		$BE_USER->OS = TYPO3_OS;
+		$BE_USER->lockIP = $TYPO3_CONF_VARS['BE']['lockIP'];
 		$BE_USER->start();			// Object is initialized
 		$BE_USER->unpack_uc('');
 		if ($BE_USER->user['uid'])	{
