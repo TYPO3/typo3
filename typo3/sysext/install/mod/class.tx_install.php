@@ -3298,7 +3298,6 @@ From sub-directory:
 								$tblFileContent.= chr(10).chr(10).chr(10).chr(10).t3lib_div::getUrl($loadedExtConf["ext_tables.sql"]);
 							}
 						}
-#debug(array($tblFileContent));
 					} elseif (@is_file($actionParts[1]))	{
 						$tblFileContent = t3lib_div::getUrl($actionParts[1]);
 					}
@@ -3355,7 +3354,6 @@ From sub-directory:
 				break;
 				case "cmpTCA":
 					$this->includeTCA();
-					$this->mysqlVersion = "3.23";	// Set this previously to calling the function below in order to make the rendering right for the comparison.
 					$FDdb = $this->getFieldDefinitions_database();
 
 						// Displaying configured fields which are not in the database
