@@ -964,6 +964,7 @@ class t3lib_userAuth {
 				if ($this->challengeStoredInCookie)	{
 					session_start();
 					if ($_SESSION['login_challenge'] !== $loginData['chalvalue']) {
+						if ($this->writeDevLog) 	t3lib_div::devLog('PHP Session stored challenge "'.$_SESSION['login_challenge'].'" and submitted challenge "'.$loginData['chalvalue'].'" did not match, so authentication failed!', 't3lib_userAuth', 2);
 						$this->logoff();
 						return FALSE;
 					}

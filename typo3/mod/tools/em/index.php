@@ -313,7 +313,7 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 		// GPvars:
 	var $CMD = array();					// CMD array
 	var $listRemote;					// If set, connects to remote repository
-
+	var $lookUpStr;						// Search string when listing local extensions
 
 
 
@@ -358,6 +358,7 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 
 			// Setting GPvars:
 		$this->CMD = t3lib_div::_GP('CMD');
+		$this->lookUpStr = t3lib_div::_GP('_lookUp');
 		$this->listRemote = t3lib_div::_GP('ter_connect');
 		$this->listRemote_search = t3lib_div::_GP('ter_search');
 
@@ -384,7 +385,7 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 				document.location = URL;
 			}
 		');
-		$this->doc->form = '<form action="" method="post" name="pageform">';
+		$this->doc->form = '<form action="index.php" method="post" name="pageform">';
 
 			// Descriptions:
 		$this->descrTable = '_MOD_'.$this->MCONF['name'];
@@ -608,7 +609,7 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 
 		foreach($TYPO3_LOADED_EXT as $extKey => $eConf)	{
 			if (strcmp($extKey, '_CACHEFILE'))	{
-				if ($this->MOD_SETTINGS['display_shy'] || !$list[$extKey]['EM_CONF']['shy'])	{
+				if (($this->MOD_SETTINGS['display_shy'] || !$list[$extKey]['EM_CONF']['shy']) && $this->searchExtension($extKey,$list[$extKey]))	{
 					if (in_array($extKey, $this->requiredExt))	{
 						$loadUnloadLink = '<strong>'.$GLOBALS['TBE_TEMPLATE']->rfw('Rq').'</strong>';
 					} else {
@@ -621,6 +622,10 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 		}
 
 		$content.= t3lib_BEfunc::cshItem('_MOD_tools_em', 'loaded', $GLOBALS['BACK_PATH'],'');
+
+
+		$content.= 'Look up: <input type="text" name="_lookUp" value="'.htmlspecialchars($this->lookUpStr).'" /><input type="submit" value="Search"/><br/><br/>';
+
 		$content.= '
 
 			<!-- Loaded Extensions List -->
@@ -657,7 +662,7 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 				reset($extEkeys);
 				while(list($extKey)=each($extEkeys))	{
 					$allKeys[]=$extKey;
-					if ($this->MOD_SETTINGS['display_shy'] || !$list[$extKey]['EM_CONF']['shy'])	{
+					if (($this->MOD_SETTINGS['display_shy'] || !$list[$extKey]['EM_CONF']['shy']) && $this->searchExtension($extKey,$list[$extKey]))	{
 						$loadUnloadLink = t3lib_extMgm::isLoaded($extKey)?
 							'<a href="'.htmlspecialchars('index.php?CMD[showExt]='.$extKey.'&CMD[remove]=1&CMD[clrCmd]=1&SET[singleDetails]=info').'">'.$this->removeButton().'</a>':
 							'<a href="'.htmlspecialchars('index.php?CMD[showExt]='.$extKey.'&CMD[load]=1&CMD[clrCmd]=1&SET[singleDetails]=info').'">'.$this->installButton().'</a>';
@@ -693,6 +698,9 @@ EXTENSION KEYS:
 			$content.= t3lib_BEfunc::cshItem('_MOD_tools_em', 'avail', $GLOBALS['BACK_PATH'],'|<br/>');
 			$content.= 'If you want to use an extension in TYPO3, you should simply click the "plus" button '.$this->installButton().' . <br />
 						Installed extensions can also be removed again - just click the remove button '.$this->removeButton().' .<br /><br />';
+
+			$content.= 'Look up: <input type="text" name="_lookUp" value="'.htmlspecialchars($this->lookUpStr).'" /><input type="submit" value="Search"/><br/><br/>';
+
 			$content.= '<table border="0" cellpadding="2" cellspacing="1">'.implode('',$lines).'</table>';
 
 			$this->content.=$this->doc->section('Available Extensions - Order by: '.$this->MOD_MENU['listOrder'][$this->MOD_SETTINGS['listOrder']],$content,0,1);
@@ -4322,6 +4330,25 @@ EXTENSION KEYS:
 		include($path);
 
 		return $EM_CONF[$_EXTKEY];
+	}
+
+	/**
+	 * Searches for ->lookUpStr in extension and returns true if found (or if no search string is set)
+	 *
+	 * @param	string		Extension key
+	 * @param	array		Extension content
+	 * @return	boolean		If true, display extension in list
+	 */
+	function searchExtension($extKey,$row) {
+		if ($this->lookUpStr)	{
+			if (
+				stristr($extKey,$this->lookUpStr) ||
+				stristr($row['EM_CONF']['title'],$this->lookUpStr) ||
+				stristr($row['EM_CONF']['description'],$this->lookUpStr) ||
+				stristr($row['EM_CONF']['author'],$this->lookUpStr) ||
+				stristr($row['EM_CONF']['author_company'],$this->lookUpStr)
+				) return TRUE;
+		} else return TRUE;
 	}
 }
 

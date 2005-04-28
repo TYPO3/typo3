@@ -1,3 +1,7 @@
+2005-04-28  Kasper Skårhøj,,,  <kasper@typo3.com>
+
+	* Added search in Extension Manager for extensions locally.
+
 2005-04-27  Bernhard Kraft  <kraftb@kraftb.at>
 
 	* Added post-process Hook in class.t3lib_befunc.php for method "getFlexFormDS"
