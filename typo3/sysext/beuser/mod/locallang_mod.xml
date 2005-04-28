@@ -58,6 +58,8 @@
 		<languageKey index="ca">EXT:csh_ca/beuser/mod/ca.locallang_mod.xml</languageKey>
 		<languageKey index="ba">EXT:csh_ba/beuser/mod/ba.locallang_mod.xml</languageKey>
 		<languageKey index="kr">EXT:csh_kr/beuser/mod/kr.locallang_mod.xml</languageKey>
+		<languageKey index="eo">EXT:csh_eo/beuser/mod/eo.locallang_mod.xml</languageKey>
+		<languageKey index="my">EXT:csh_my/beuser/mod/my.locallang_mod.xml</languageKey>
 	</data>
 	<orig_hash type="array">
 		<languageKey index="default" type="array">

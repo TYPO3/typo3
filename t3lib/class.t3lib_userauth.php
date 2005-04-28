@@ -882,7 +882,7 @@ class t3lib_userAuth {
 	 * security_level
 	 *
 	 * @param	array		login data array
-	 * @param	string		security_level
+	 * @param	string		Alternative security_level. Used when authentication services wants to override the default.
 	 * @return	array		processed login data array
 	 * @internal
 	 */
@@ -890,6 +890,9 @@ class t3lib_userAuth {
 		global $TYPO3_CONF_VARS;
 
 		$loginSecurityLevel = $security_level ? $security_level : ($TYPO3_CONF_VARS[$this->loginType]['loginSecurityLevel'] ? $TYPO3_CONF_VARS[$this->loginType]['loginSecurityLevel'] : $this->security_level);
+
+			// Processing data according to the state it was submitted in.
+			// ($loginSecurityLevel should reflect the security level used on the data being submitted in the login form)
 		if ($loginSecurityLevel=='normal') {
 			$loginData['uident_text'] = $loginData['uident'];
 			$loginData['uident_challenged'] = (string)md5($loginData['uname'].':'.$loginData['uident'].':'.$loginData['chalvalue']);
@@ -904,6 +907,10 @@ class t3lib_userAuth {
 			$loginData['uident_superchallenged'] = $loginData['uident'];
 		}
 
+			// The password "uident" is set based on the internal security setting of TYPO3
+			// Example:
+			// $this->security_level for the backend must be "superchallenged" because passwords are stored as md5-hashes in the be_users table
+			// $this->security_level for the frontend must be "normal" or "challenged" because passwords are stored as clear-text in the fe_users tables
 		if ($this->security_level=='normal') {
 			$loginData['uident'] = $loginData['uident_text'];
 		} elseif ($this->security_level=='challenged') {
@@ -948,7 +955,7 @@ class t3lib_userAuth {
 	 *
 	 * @param	array		user data array
 	 * @param	array		login data array
-	 * @param	string		security_level
+	 * @param	string		Alternative security_level. Used when authentication services wants to override the default.
 	 * @return	boolean		true if login data matched
 	 */
 	function compareUident($user, $loginData, $security_level='') {

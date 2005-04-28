@@ -1,297 +1,90 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <T3locallang>
-    <meta type="array">
-        <description></description>
-        <type>module</type>
-        <csh_table></csh_table>
-        <fileId>EXT:dkd_isearch_stats/modfunc1/locallang.xml</fileId>
-        <labelContext type="array">
-            <label index="title"></label>
-            <label index="title2"></label>
-            <label index="noresults"></label>
-            <label index="all"></label>
-            <label index="last30days"></label>
-            <label index="last24hours"></label>
-            <label index="justthispage"></label>
-            <label index="allpages"></label>
-        </labelContext>
-    </meta>
-    <data type="array">
-        <languageKey index="default" type="array">
-            <label index="title">Indexed search statistics</label>
-            <label index="title2">List of most searched words</label>
-            <label index="noresults">No results</label>
-            <label index="all">All</label>
-            <label index="last30days">Last 30 days</label>
-            <label index="last24hours">Last 24 hours</label>
-            <label index="justthispage">Statistics for this page only</label>
-            <label index="allpages">Statistics for all pages. Select a page with indexed search form to see several statistics</label>
-        </languageKey>
-        <languageKey index="dk" type="array">
-        </languageKey>
-        <languageKey index="de" type="array">
-            <label index="title">Indexed Search Statistik</label>
-            <label index="title2">Liste der meistgesuchten W&amp;ouml;rter</label>
-            <label index="noresults">Kein Ergebnis</label>
-            <label index="all">Alle</label>
-            <label index="last30days">Letzte 30 Tage</label>
-            <label index="last24hours">Letzte 24 Stunden</label>
-            <label index="justthispage">Statistik f&amp;uuml;r diese Seite</label>
-            <label index="allpages">Statistik f&amp;uuml;r alle Seiten. Einzelstatistiken sind auf der Seiten mit Suchformularen von Indexed Search verf&amp;uuml;gbar</label>
-        </languageKey>
-        <languageKey index="no" type="array">
-        </languageKey>
-        <languageKey index="it" type="array">
-        </languageKey>
-        <languageKey index="fr" type="array">
-        </languageKey>
-        <languageKey index="es" type="array">
-        </languageKey>
-        <languageKey index="nl" type="array">
-        </languageKey>
-        <languageKey index="cz" type="array">
-        </languageKey>
-        <languageKey index="pl" type="array">
-        </languageKey>
-        <languageKey index="si" type="array">
-        </languageKey>
-        <languageKey index="fi" type="array">
-        </languageKey>
-        <languageKey index="tr" type="array">
-        </languageKey>
-        <languageKey index="se" type="array">
-        </languageKey>
-        <languageKey index="pt" type="array">
-        </languageKey>
-        <languageKey index="ru" type="array">
-        </languageKey>
-        <languageKey index="ro" type="array">
-        </languageKey>
-        <languageKey index="ch" type="array">
-        </languageKey>
-        <languageKey index="sk" type="array">
-        </languageKey>
-        <languageKey index="lt" type="array">
-        </languageKey>
-        <languageKey index="is" type="array">
-        </languageKey>
-        <languageKey index="hr" type="array">
-        </languageKey>
-        <languageKey index="hu" type="array">
-        </languageKey>
-        <languageKey index="gl" type="array">
-        </languageKey>
-        <languageKey index="th" type="array">
-        </languageKey>
-        <languageKey index="gr" type="array">
-        </languageKey>
-        <languageKey index="hk" type="array">
-        </languageKey>
-        <languageKey index="eu" type="array">
-        </languageKey>
-        <languageKey index="bg" type="array">
-        </languageKey>
-        <languageKey index="br" type="array">
-        </languageKey>
-        <languageKey index="et" type="array">
-        </languageKey>
-        <languageKey index="ar" type="array">
-        </languageKey>
-        <languageKey index="he" type="array">
-        </languageKey>
-        <languageKey index="ua" type="array">
-        </languageKey>
-        <languageKey index="lv" type="array">
-        </languageKey>
-        <languageKey index="jp" type="array">
-        </languageKey>
-        <languageKey index="vn" type="array">
-        </languageKey>
-        <languageKey index="ca" type="array">
-        </languageKey>
-        <languageKey index="ba" type="array">
-        </languageKey>
-        <languageKey index="kr" type="array">
-        </languageKey>
-    </data>
-    <orig_hash type="array">
-        <languageKey index="default" type="array">
-            <label index="title" type="integer">252429738</label>
-            <label index="title2" type="integer">18274704</label>
-            <label index="noresults" type="integer">260674928</label>
-            <label index="all" type="integer">169351776</label>
-            <label index="last30days" type="integer">2709049</label>
-            <label index="last24hours" type="integer">76613117</label>
-            <label index="justthispage" type="integer">127420273</label>
-            <label index="allpages" type="integer">139406157</label>
-        </languageKey>
-        <languageKey index="dk" type="array">
-        </languageKey>
-        <languageKey index="de" type="array">
-            <label index="title" type="integer">252429738</label>
-            <label index="title2" type="integer">18274704</label>
-            <label index="noresults" type="integer">260674928</label>
-            <label index="all" type="integer">169351776</label>
-            <label index="last30days" type="integer">2709049</label>
-            <label index="last24hours" type="integer">76613117</label>
-            <label index="justthispage" type="integer">127420273</label>
-            <label index="allpages" type="integer">139406157</label>
-        </languageKey>
-        <languageKey index="no" type="array">
-        </languageKey>
-        <languageKey index="it" type="array">
-        </languageKey>
-        <languageKey index="fr" type="array">
-        </languageKey>
-        <languageKey index="es" type="array">
-        </languageKey>
-        <languageKey index="nl" type="array">
-        </languageKey>
-        <languageKey index="cz" type="array">
-        </languageKey>
-        <languageKey index="pl" type="array">
-        </languageKey>
-        <languageKey index="si" type="array">
-        </languageKey>
-        <languageKey index="fi" type="array">
-        </languageKey>
-        <languageKey index="tr" type="array">
-        </languageKey>
-        <languageKey index="se" type="array">
-        </languageKey>
-        <languageKey index="pt" type="array">
-        </languageKey>
-        <languageKey index="ru" type="array">
-        </languageKey>
-        <languageKey index="ro" type="array">
-        </languageKey>
-        <languageKey index="ch" type="array">
-        </languageKey>
-        <languageKey index="sk" type="array">
-        </languageKey>
-        <languageKey index="lt" type="array">
-        </languageKey>
-        <languageKey index="is" type="array">
-        </languageKey>
-        <languageKey index="hr" type="array">
-        </languageKey>
-        <languageKey index="hu" type="array">
-        </languageKey>
-        <languageKey index="gl" type="array">
-        </languageKey>
-        <languageKey index="th" type="array">
-        </languageKey>
-        <languageKey index="gr" type="array">
-        </languageKey>
-        <languageKey index="hk" type="array">
-        </languageKey>
-        <languageKey index="eu" type="array">
-        </languageKey>
-        <languageKey index="bg" type="array">
-        </languageKey>
-        <languageKey index="br" type="array">
-        </languageKey>
-        <languageKey index="et" type="array">
-        </languageKey>
-        <languageKey index="ar" type="array">
-        </languageKey>
-        <languageKey index="he" type="array">
-        </languageKey>
-        <languageKey index="ua" type="array">
-        </languageKey>
-        <languageKey index="lv" type="array">
-        </languageKey>
-        <languageKey index="jp" type="array">
-        </languageKey>
-        <languageKey index="vn" type="array">
-        </languageKey>
-        <languageKey index="ca" type="array">
-        </languageKey>
-        <languageKey index="ba" type="array">
-        </languageKey>
-        <languageKey index="kr" type="array">
-        </languageKey>
-    </orig_hash>
-    <orig_text type="array">
-        <languageKey index="default" type="array">
-        </languageKey>
-        <languageKey index="dk" type="array">
-        </languageKey>
-        <languageKey index="de" type="array">
-        </languageKey>
-        <languageKey index="no" type="array">
-        </languageKey>
-        <languageKey index="it" type="array">
-        </languageKey>
-        <languageKey index="fr" type="array">
-        </languageKey>
-        <languageKey index="es" type="array">
-        </languageKey>
-        <languageKey index="nl" type="array">
-        </languageKey>
-        <languageKey index="cz" type="array">
-        </languageKey>
-        <languageKey index="pl" type="array">
-        </languageKey>
-        <languageKey index="si" type="array">
-        </languageKey>
-        <languageKey index="fi" type="array">
-        </languageKey>
-        <languageKey index="tr" type="array">
-        </languageKey>
-        <languageKey index="se" type="array">
-        </languageKey>
-        <languageKey index="pt" type="array">
-        </languageKey>
-        <languageKey index="ru" type="array">
-        </languageKey>
-        <languageKey index="ro" type="array">
-        </languageKey>
-        <languageKey index="ch" type="array">
-        </languageKey>
-        <languageKey index="sk" type="array">
-        </languageKey>
-        <languageKey index="lt" type="array">
-        </languageKey>
-        <languageKey index="is" type="array">
-        </languageKey>
-        <languageKey index="hr" type="array">
-        </languageKey>
-        <languageKey index="hu" type="array">
-        </languageKey>
-        <languageKey index="gl" type="array">
-        </languageKey>
-        <languageKey index="th" type="array">
-        </languageKey>
-        <languageKey index="gr" type="array">
-        </languageKey>
-        <languageKey index="hk" type="array">
-        </languageKey>
-        <languageKey index="eu" type="array">
-        </languageKey>
-        <languageKey index="bg" type="array">
-        </languageKey>
-        <languageKey index="br" type="array">
-        </languageKey>
-        <languageKey index="et" type="array">
-        </languageKey>
-        <languageKey index="ar" type="array">
-        </languageKey>
-        <languageKey index="he" type="array">
-        </languageKey>
-        <languageKey index="ua" type="array">
-        </languageKey>
-        <languageKey index="lv" type="array">
-        </languageKey>
-        <languageKey index="jp" type="array">
-        </languageKey>
-        <languageKey index="vn" type="array">
-        </languageKey>
-        <languageKey index="ca" type="array">
-        </languageKey>
-        <languageKey index="ba" type="array">
-        </languageKey>
-        <languageKey index="kr" type="array">
-        </languageKey>
-    </orig_text>
+	<meta type="array">
+		<description></description>
+		<type>module</type>
+		<csh_table></csh_table>
+		<fileId>EXT:dkd_isearch_stats/modfunc1/locallang.xml</fileId>
+		<labelContext type="array">
+			<label index="title"></label>
+			<label index="title2"></label>
+			<label index="noresults"></label>
+			<label index="all"></label>
+			<label index="last30days"></label>
+			<label index="last24hours"></label>
+			<label index="justthispage"></label>
+			<label index="allpages"></label>
+		</labelContext>
+		<ext_filename_template>EXT:csh_###LANGKEY###/indexed_search/modfunc2/###LANGKEY###.locallang.xml</ext_filename_template>
+		<keep_original_text type="integer">1</keep_original_text>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index="title">Indexed search statistics</label>
+			<label index="title2">List of most searched words</label>
+			<label index="noresults">No results</label>
+			<label index="all">All</label>
+			<label index="last30days">Last 30 days</label>
+			<label index="last24hours">Last 24 hours</label>
+			<label index="justthispage">Statistics for this page only</label>
+			<label index="allpages">Statistics for all pages. Select a page with indexed search form to see several statistics</label>
+		</languageKey>
+		<languageKey index="dk">EXT:csh_dk/indexed_search/modfunc2/dk.locallang.xml</languageKey>
+		<languageKey index="de">EXT:csh_de/indexed_search/modfunc2/de.locallang.xml</languageKey>
+		<languageKey index="no">EXT:csh_no/indexed_search/modfunc2/no.locallang.xml</languageKey>
+		<languageKey index="it">EXT:csh_it/indexed_search/modfunc2/it.locallang.xml</languageKey>
+		<languageKey index="fr">EXT:csh_fr/indexed_search/modfunc2/fr.locallang.xml</languageKey>
+		<languageKey index="es">EXT:csh_es/indexed_search/modfunc2/es.locallang.xml</languageKey>
+		<languageKey index="nl">EXT:csh_nl/indexed_search/modfunc2/nl.locallang.xml</languageKey>
+		<languageKey index="cz">EXT:csh_cz/indexed_search/modfunc2/cz.locallang.xml</languageKey>
+		<languageKey index="pl">EXT:csh_pl/indexed_search/modfunc2/pl.locallang.xml</languageKey>
+		<languageKey index="si">EXT:csh_si/indexed_search/modfunc2/si.locallang.xml</languageKey>
+		<languageKey index="fi">EXT:csh_fi/indexed_search/modfunc2/fi.locallang.xml</languageKey>
+		<languageKey index="tr">EXT:csh_tr/indexed_search/modfunc2/tr.locallang.xml</languageKey>
+		<languageKey index="se">EXT:csh_se/indexed_search/modfunc2/se.locallang.xml</languageKey>
+		<languageKey index="pt">EXT:csh_pt/indexed_search/modfunc2/pt.locallang.xml</languageKey>
+		<languageKey index="ru">EXT:csh_ru/indexed_search/modfunc2/ru.locallang.xml</languageKey>
+		<languageKey index="ro">EXT:csh_ro/indexed_search/modfunc2/ro.locallang.xml</languageKey>
+		<languageKey index="ch">EXT:csh_ch/indexed_search/modfunc2/ch.locallang.xml</languageKey>
+		<languageKey index="sk">EXT:csh_sk/indexed_search/modfunc2/sk.locallang.xml</languageKey>
+		<languageKey index="lt">EXT:csh_lt/indexed_search/modfunc2/lt.locallang.xml</languageKey>
+		<languageKey index="is">EXT:csh_is/indexed_search/modfunc2/is.locallang.xml</languageKey>
+		<languageKey index="hr">EXT:csh_hr/indexed_search/modfunc2/hr.locallang.xml</languageKey>
+		<languageKey index="hu">EXT:csh_hu/indexed_search/modfunc2/hu.locallang.xml</languageKey>
+		<languageKey index="gl">EXT:csh_gl/indexed_search/modfunc2/gl.locallang.xml</languageKey>
+		<languageKey index="th">EXT:csh_th/indexed_search/modfunc2/th.locallang.xml</languageKey>
+		<languageKey index="gr">EXT:csh_gr/indexed_search/modfunc2/gr.locallang.xml</languageKey>
+		<languageKey index="hk">EXT:csh_hk/indexed_search/modfunc2/hk.locallang.xml</languageKey>
+		<languageKey index="eu">EXT:csh_eu/indexed_search/modfunc2/eu.locallang.xml</languageKey>
+		<languageKey index="bg">EXT:csh_bg/indexed_search/modfunc2/bg.locallang.xml</languageKey>
+		<languageKey index="br">EXT:csh_br/indexed_search/modfunc2/br.locallang.xml</languageKey>
+		<languageKey index="et">EXT:csh_et/indexed_search/modfunc2/et.locallang.xml</languageKey>
+		<languageKey index="ar">EXT:csh_ar/indexed_search/modfunc2/ar.locallang.xml</languageKey>
+		<languageKey index="he">EXT:csh_he/indexed_search/modfunc2/he.locallang.xml</languageKey>
+		<languageKey index="ua">EXT:csh_ua/indexed_search/modfunc2/ua.locallang.xml</languageKey>
+		<languageKey index="lv">EXT:csh_lv/indexed_search/modfunc2/lv.locallang.xml</languageKey>
+		<languageKey index="jp">EXT:csh_jp/indexed_search/modfunc2/jp.locallang.xml</languageKey>
+		<languageKey index="vn">EXT:csh_vn/indexed_search/modfunc2/vn.locallang.xml</languageKey>
+		<languageKey index="ca">EXT:csh_ca/indexed_search/modfunc2/ca.locallang.xml</languageKey>
+		<languageKey index="ba">EXT:csh_ba/indexed_search/modfunc2/ba.locallang.xml</languageKey>
+		<languageKey index="kr">EXT:csh_kr/indexed_search/modfunc2/kr.locallang.xml</languageKey>
+		<languageKey index="eo">EXT:csh_eo/indexed_search/modfunc2/eo.locallang.xml</languageKey>
+		<languageKey index="my">EXT:csh_my/indexed_search/modfunc2/my.locallang.xml</languageKey>
+	</data>
+	<orig_hash type="array">
+		<languageKey index="default" type="array">
+			<label index="title" type="integer">252429738</label>
+			<label index="title2" type="integer">18274704</label>
+			<label index="noresults" type="integer">260674928</label>
+			<label index="all" type="integer">169351776</label>
+			<label index="last30days" type="integer">2709049</label>
+			<label index="last24hours" type="integer">76613117</label>
+			<label index="justthispage" type="integer">127420273</label>
+			<label index="allpages" type="integer">139406157</label>
+		</languageKey>
+	</orig_hash>
+	<orig_text type="array">
+		<languageKey index="default" type="array">
+		</languageKey>
+	</orig_text>
 </T3locallang>

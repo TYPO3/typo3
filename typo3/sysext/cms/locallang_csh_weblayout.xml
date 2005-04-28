@@ -147,5 +147,7 @@ xMOD_csh_corebe:new_ce,</label>
 		<languageKey index="ba">EXT:csh_ba/cms/ba.locallang_csh_weblayout.xml</languageKey>
 		<languageKey index="kr">EXT:csh_kr/cms/kr.locallang_csh_weblayout.xml</languageKey>
 		<languageKey index="de">EXT:csh_de/cms/de.locallang_csh_weblayout.xml</languageKey>
+		<languageKey index="eo">EXT:csh_eo/cms/eo.locallang_csh_weblayout.xml</languageKey>
+		<languageKey index="my">EXT:csh_my/cms/my.locallang_csh_weblayout.xml</languageKey>
 	</data>
 </T3locallang>

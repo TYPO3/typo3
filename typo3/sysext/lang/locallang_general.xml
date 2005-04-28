@@ -5,8 +5,8 @@
 		<type>module</type>
 		<fileId>EXT:lang/locallang_general.xml</fileId>
 		<labelContext type="array">
-			<label index="LGL.title">Title of a "thing", like the name of a category, web page, mail group etc.</label>
-			<label index="LGL.title_person">Honorable title of a person, like "Dr. Phil"</label>
+			<label index="LGL.title">Title of a &quot;thing&quot;, like the name of a category, web page, mail group etc.</label>
+			<label index="LGL.title_person">Honorable title of a person, like &quot;Dr. Phil&quot;</label>
 		</labelContext>
 		<ext_filename_template>EXT:csh_###LANGKEY###/lang/###LANGKEY###.locallang_general.xml</ext_filename_template>
 		<keep_original_text type="integer">1</keep_original_text>
@@ -100,5 +100,7 @@
 		<languageKey index="ca">EXT:csh_ca/lang/ca.locallang_general.xml</languageKey>
 		<languageKey index="ba">EXT:csh_ba/lang/ba.locallang_general.xml</languageKey>
 		<languageKey index="kr">EXT:csh_kr/lang/kr.locallang_general.xml</languageKey>
+		<languageKey index="eo">EXT:csh_eo/lang/eo.locallang_general.xml</languageKey>
+		<languageKey index="my">EXT:csh_my/lang/my.locallang_general.xml</languageKey>
 	</data>
 </T3locallang>

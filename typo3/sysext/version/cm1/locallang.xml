@@ -60,6 +60,8 @@
 		<languageKey index="ca">EXT:csh_ca/version/cm1/ca.locallang.xml</languageKey>
 		<languageKey index="ba">EXT:csh_ba/version/cm1/ba.locallang.xml</languageKey>
 		<languageKey index="kr">EXT:csh_kr/version/cm1/kr.locallang.xml</languageKey>
+		<languageKey index="eo">EXT:csh_eo/version/cm1/eo.locallang.xml</languageKey>
+		<languageKey index="my">EXT:csh_my/version/cm1/my.locallang.xml</languageKey>
 	</data>
 	<orig_hash type="array">
 		<languageKey index="default" type="array">

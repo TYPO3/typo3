@@ -71,5 +71,7 @@ After pressing the &quot;Create pages&quot; button the page tree to the left wil
 		<languageKey index="no">EXT:csh_no/wizard_crpages/no.locallang_csh.xml</languageKey>
 		<languageKey index="nl">EXT:csh_nl/wizard_crpages/nl.locallang_csh.xml</languageKey>
 		<languageKey index="hu">EXT:csh_hu/wizard_crpages/hu.locallang_csh.xml</languageKey>
+		<languageKey index="eo">EXT:csh_eo/wizard_crpages/eo.locallang_csh.xml</languageKey>
+		<languageKey index="my">EXT:csh_my/wizard_crpages/my.locallang_csh.xml</languageKey>
 	</data>
 </T3locallang>

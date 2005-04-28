@@ -142,5 +142,7 @@ When &quot;Display full text message&quot; is selected you will see a short desc
 		<languageKey index="fr">EXT:csh_fr/setup/fr.locallang_csh_mod.xml</languageKey>
 		<languageKey index="fi">EXT:csh_fi/setup/fi.locallang_csh_mod.xml</languageKey>
 		<languageKey index="hu">EXT:csh_hu/setup/hu.locallang_csh_mod.xml</languageKey>
+		<languageKey index="eo">EXT:csh_eo/setup/eo.locallang_csh_mod.xml</languageKey>
+		<languageKey index="my">EXT:csh_my/setup/my.locallang_csh_mod.xml</languageKey>
 	</data>
 </T3locallang>

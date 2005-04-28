@@ -100,13 +100,13 @@ class tx_sv_authbase extends t3lib_svbase 	{
 	}
 
  	/**
- * Check the login data with the user record data for builtin login methods
- *
- * @param	array		user data array
- * @param	array		login data array
- * @param	string		security_level
- * @return	boolean		true if login data matched
- */
+	 * Check the login data with the user record data for builtin login methods
+	 *
+	 * @param	array		user data array
+	 * @param	array		login data array
+	 * @param	string		security_level
+	 * @return	boolean		true if login data matched
+	 */
 	function compareUident($user, $loginData, $security_level='') {
 		return $this->pObj->compareUident($user, $loginData, $security_level);
 	}

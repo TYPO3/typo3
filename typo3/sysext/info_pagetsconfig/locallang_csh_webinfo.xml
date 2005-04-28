@@ -76,5 +76,7 @@ Here you see specifically the TSconfig fields of the first and second page in th
 		<languageKey index="ca">EXT:csh_ca/info_pagetsconfig/ca.locallang_csh_webinfo.xml</languageKey>
 		<languageKey index="ba">EXT:csh_ba/info_pagetsconfig/ba.locallang_csh_webinfo.xml</languageKey>
 		<languageKey index="kr">EXT:csh_kr/info_pagetsconfig/kr.locallang_csh_webinfo.xml</languageKey>
+		<languageKey index="eo">EXT:csh_eo/info_pagetsconfig/eo.locallang_csh_webinfo.xml</languageKey>
+		<languageKey index="my">EXT:csh_my/info_pagetsconfig/my.locallang_csh_webinfo.xml</languageKey>
 	</data>
 </T3locallang>

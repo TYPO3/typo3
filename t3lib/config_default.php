@@ -117,7 +117,7 @@ $TYPO3_CONF_VARS = Array(
 		'lockBeUserToDBmounts' => 1,			// Boolean. If set, the backend user is allowed to work only within his page-mount. It's advisable to leave this on because it makes security easy to manage.
 		'lockSSL' => 0,							// Int. 0,1,2: If set (1+2), the backend can only be operated from an ssl-encrypted connection (https). Set to 2 you will be redirected to the https admin-url supposed to be the http-url, but with https scheme instead.
 		'enabledBeUserIPLock' => 1,				// Boolean. If set, the User/Group TSconfig option 'option.lockToIP' is enabled.
-		'loginSecurityLevel' => '',				//
+		'loginSecurityLevel' => '',				// String. Keywords that determines the security level of login to the backend. "normal" means the password from the login form is sent in clear-text, "challenged" means the password is not sent but hashed with some other values, "superchallenged" (default) means the password is first hashed before being hashed with the challenge values again (means the password is stored as a hashed string in the database also). DO NOT CHANGE this value manually; without an alternative authentication service it will only prevent logins in TYPO3 since the "superchallenged" method is hardcoded in the default authentication system.
 		'adminOnly' => 0,						// Int. If set (>=1), the only "admin" users can log in to the backend. If "<=-1" then the backend is totally shut down! For maintenance purposes.
 		'disable_exec_function' => 0,			// Boolean. Don't use exec() function (except for ImageMagick which is disabled by [GFX][im]=0). If set, all fileoperations are done by the default PHP-functions. This is nescessary under windows! On UNIX the system commands by exec() can be used, unless this is disabled.
 		'usePHPFileFunctions' => 1,				// Boolean. If set, all fileoperations are done by the default PHP-functions. Default on UNIX is using the system commands by exec(). You need to set this flag under safe_mode.
@@ -179,7 +179,7 @@ $TYPO3_CONF_VARS = Array(
 		'addRootLineFields' => '',				// Comma-list of fields from the 'pages'-table. These fields are added to the select query for fields in the rootline.
 		'checkFeUserPid' => 1,					// Boolean. If set, the pid of fe_user logins must be sent in the form as the field 'pid' and then the user must be located in the pid. If you unset this, you should change the fe_users.username eval-flag 'uniqueInPid' to 'unique' in $TCA. This will do: $TCA['fe_users']['columns']['username']['config']['eval']= 'nospace,lower,required,unique';
 		'lockIP' => 2,							// Integer (0-4). If >0, fe_users are locked to (a part of) their REMOTE_ADDR IP for their session. Enhances security but may throw off users that may change IP during their session (in which case you can lower it to 2 or 3). The integer indicates how many parts of the IP address to include in the check. Reducing to 1-3 means that only first, second or third part of the IP address is used. 4 is the FULL IP address and recommended. 0 (zero) disables checking of course.
-		'loginSecurityLevel' => '',				//
+		'loginSecurityLevel' => '',				// See description for TYPO3_CONF_VARS[BE][loginSecurityLevel]. Default state for frontend is "normal". Alternative authentication services can implement higher levels if preferred.
 		'lifetime' => 0,						// Integer, positive. If >0, the cookie of FE users will NOT be a session cookie (deleted when browser is shut down) but rather a cookie with a lifetime of the number of seconds this value indicates. Setting this value to 3600*24*7 will result in automatic login of FE users during a whole week.
 		'lockHashKeyWords' => 'useragent',		// Keyword list (Strings commaseparated). Currently only "useragent"; If set, then the FE user session is locked to the value of HTTP_USER_AGENT. This lowers the risk of session hi-jacking. However some cases (like payment gateways) might have to use the session cookie and in this case you will have to disable that feature (eg. with a blank string).
 		'defaultUserTSconfig' => '',			// Enter lines of default frontend user/group TSconfig.
@@ -261,10 +261,10 @@ define('TYPO3_extTableDef_script', $typo_db_extTableDef_script);
 	// Remember to
 	//		- update 'setup' extension labels (sysext/setup/mod/locallang.xml)
 	//		- pages.lang item array (t3lib/stddb/tbl_be.php)
-	// 		- Kickstarter wizard (ext/kickstarter/modfunc1/class.tx_kickstarter_wizard.php)
+	// 		- Kickstarter wizard (ext/kickstarter/class.tx_kickstarter_wizard.php)
 	//		- Add character encoding for lang key in t3lib/class.t3lib_cs.php
-	// 		- Add "csh_[key]" language pack and setup all core ll-XML scripts to point to XML files inside of that.
-define('TYPO3_languages', 'default|dk|de|no|it|fr|es|nl|cz|pl|si|fi|tr|se|pt|ru|ro|ch|sk|lt|is|hr|hu|gl|th|gr|hk|eu|bg|br|et|ar|he|ua|lv|jp|vn|ca|ba|kr|eo');
+	// 		- Add "csh_[key]" language pack and setup all core ll-XML scripts to point to XML files inside of that. (Kasper: see typo3_l10n/README.prepare_languages.txt)
+define('TYPO3_languages', 'default|dk|de|no|it|fr|es|nl|cz|pl|si|fi|tr|se|pt|ru|ro|ch|sk|lt|is|hr|hu|gl|th|gr|hk|eu|bg|br|et|ar|he|ua|lv|jp|vn|ca|ba|kr|eo|my');
 
 	// Unsetting the configured values. Use of these are depreciated.
 unset($typo_db);

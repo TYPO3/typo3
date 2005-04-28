@@ -79,5 +79,7 @@ Pages, Content Elements and other records for frontend display often have a sele
 		<languageKey index="ba">EXT:csh_ba/context_help/ba.locallang_csh_fe_groups.xml</languageKey>
 		<languageKey index="kr">EXT:csh_kr/context_help/kr.locallang_csh_fe_groups.xml</languageKey>
 		<languageKey index="no">EXT:csh_no/context_help/no.locallang_csh_fe_groups.xml</languageKey>
+		<languageKey index="eo">EXT:csh_eo/context_help/eo.locallang_csh_fe_groups.xml</languageKey>
+		<languageKey index="my">EXT:csh_my/context_help/my.locallang_csh_fe_groups.xml</languageKey>
 	</data>
 </T3locallang>

@@ -24,7 +24,7 @@
 
 You can configure the backend to display the menu in two alternative versions (useful on smaller screens); As a selector box or list of icons in the top frame of the backend.
 
-When you click the little "+" or "-" icons next to the main modules, you can collapse (-) or expand (+) all the sub modules. By selecting the "Expand all" check box, all items are expanded. When the checkbox is unselected again, the menu changes back to the previous folding state. If you click "Expand all" and collapse a main module afterwards, the previous folding state is discarded and "Expand all" is unselected again.
+When you click the little &quot;+&quot; or &quot;-&quot; icons next to the main modules, you can collapse (-) or expand (+) all the sub modules. By selecting the &quot;Expand all&quot; check box, all items are expanded. When the checkbox is unselected again, the menu changes back to the previous folding state. If you click &quot;Expand all&quot; and collapse a main module afterwards, the previous folding state is discarded and &quot;Expand all&quot; is unselected again.
 </label>
 			<label index="_menu_modules.seeAlso">be_groups:groupMods,
 be_users:userMods,
@@ -483,5 +483,7 @@ You can name shortcuts, you can even group them and share them. If you want to e
 		<languageKey index="fr">EXT:csh_fr/lang/fr.locallang_csh_corebe.xml</languageKey>
 		<languageKey index="fi">EXT:csh_fi/lang/fi.locallang_csh_corebe.xml</languageKey>
 		<languageKey index="hu">EXT:csh_hu/lang/hu.locallang_csh_corebe.xml</languageKey>
+		<languageKey index="eo">EXT:csh_eo/lang/eo.locallang_csh_corebe.xml</languageKey>
+		<languageKey index="my">EXT:csh_my/lang/my.locallang_csh_corebe.xml</languageKey>
 	</data>
 </T3locallang>

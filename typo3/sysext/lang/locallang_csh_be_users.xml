@@ -122,7 +122,7 @@ pages:starttime</label>
 			<label index="lang.details">This determines the language of the backend interface for the user. All mainstream parts available for regular users are available in the system language selected.
 'Admin'-users however will experience that the 'Admin'-only parts of TYPO3 is in english. This includes all submodules in &quot;Tools&quot; and the Web&gt;Template module.
 
-&lt;b&gt;Notice&lt;/b&gt; this is only the default language. As soon as the user has logged in the language must be changed through the User&gt;Setup module.</label>
+&lt;b&gt;Notice&lt;/b&gt; this is only setting the default language. As soon as the user has logged in the language must be changed through the User&gt;Setup module. Also you will have to install the corresponding language pack which can be found as an extension on TYPO3.org with the prefix &quot;csh_XX&quot; where XX is the TYPO3 language key.</label>
 			<label index="_lang.seeAlso">_MOD_user_setup:language</label>
 			<label index="userMods.description">Select available backend modules for the user.</label>
 			<label index="userMods.details">This determines which 'menu items' are available for the user in the backend.
@@ -179,5 +179,7 @@ User TSconfig | http://typo3.org/documentation/document-library/doc_core_tsconfi
 		<languageKey index="ca">EXT:csh_ca/lang/ca.locallang_csh_be_users.xml</languageKey>
 		<languageKey index="ba">EXT:csh_ba/lang/ba.locallang_csh_be_users.xml</languageKey>
 		<languageKey index="kr">EXT:csh_kr/lang/kr.locallang_csh_be_users.xml</languageKey>
+		<languageKey index="eo">EXT:csh_eo/lang/eo.locallang_csh_be_users.xml</languageKey>
+		<languageKey index="my">EXT:csh_my/lang/my.locallang_csh_be_users.xml</languageKey>
 	</data>
 </T3locallang>

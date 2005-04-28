@@ -801,7 +801,8 @@ class SC_view_help {
 
 				// Substitute words:
 			foreach($this->substWords as $wordKey => $wordSet)	{
-				$parts = preg_split('/( |[\(])('.$wordSet['title'].')([\.\!\)\?\:\,]+| )/i', ' '.$code.' ', 2, PREG_SPLIT_DELIM_CAPTURE);
+					// quoteMeta used so special chars (which should not occur though) in words will not break the regex. Seemed to work (- kasper)
+				$parts = preg_split('/( |[\(])('.quoteMeta($wordSet['title']).')([\.\!\)\?\:\,]+| )/i', ' '.$code.' ', 2, PREG_SPLIT_DELIM_CAPTURE);
 				if (count($parts) == 5)	{
 					$parts[2] = '<a class="glossary-term" href="'.htmlspecialchars('view_help.php?tfID='.rawurlencode($wordSet['key']).'&back='.$this->tfID).'" title="'.rawurlencode(htmlspecialchars(t3lib_div::fixed_lgd_cs(rawurldecode($wordSet['description']),80))).'">'.
 								htmlspecialchars($parts[2]).

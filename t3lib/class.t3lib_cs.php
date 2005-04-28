@@ -447,6 +447,7 @@ class t3lib_cs {
 		'ba' => 'iso-8859-2',
 		'kr' => 'euc-kr',
 		'eo' => 'utf-8',
+		'my' => ''
 	);
 
 		// TYPO3 specific: Array with the iso names used for each system language in TYPO3:

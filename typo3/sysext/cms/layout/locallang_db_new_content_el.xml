@@ -85,5 +85,7 @@
 		<languageKey index="ca">EXT:csh_ca/cms/layout/ca.locallang_db_new_content_el.xml</languageKey>
 		<languageKey index="ba">EXT:csh_ba/cms/layout/ba.locallang_db_new_content_el.xml</languageKey>
 		<languageKey index="kr">EXT:csh_kr/cms/layout/kr.locallang_db_new_content_el.xml</languageKey>
+		<languageKey index="eo">EXT:csh_eo/cms/layout/eo.locallang_db_new_content_el.xml</languageKey>
+		<languageKey index="my">EXT:csh_my/cms/layout/my.locallang_db_new_content_el.xml</languageKey>
 	</data>
 </T3locallang>

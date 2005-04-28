@@ -54,5 +54,7 @@
 		<languageKey index="ca">EXT:csh_ca/extra_page_cm_options/ca.locallang.xml</languageKey>
 		<languageKey index="ba">EXT:csh_ba/extra_page_cm_options/ba.locallang.xml</languageKey>
 		<languageKey index="kr">EXT:csh_kr/extra_page_cm_options/kr.locallang.xml</languageKey>
+		<languageKey index="eo">EXT:csh_eo/extra_page_cm_options/eo.locallang.xml</languageKey>
+		<languageKey index="my">EXT:csh_my/extra_page_cm_options/my.locallang.xml</languageKey>
 	</data>
 </T3locallang>

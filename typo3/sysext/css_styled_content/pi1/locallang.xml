@@ -1,815 +1,128 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <T3locallang>
-    <meta type="array">
-        <description>Labels for TypoScript</description>
-        <type>module</type>
-        <csh_table></csh_table>
-        <fileId>EXT:css_styled_content/pi1/locallang.xml</fileId>
-        <labelContext type="array">
-        </labelContext>
-    </meta>
-    <data type="array">
-        <languageKey index="default" type="array">
-            <label index="label.toTop">To top</label>
-            <label index="login.username">Username:</label>
-            <label index="login.password">Password:</label>
-            <label index="login.login">Login</label>
-            <label index="login.logout">Logout</label>
-            <label index="search.emptySearch">Sorry, your search was empty!</label>
-            <label index="search.resultRange">Searchresult: ###RANGELOW###-###RANGEHIGH### of ###TOTAL###</label>
-            <label index="search.searchResultNext">Next</label>
-            <label index="search.searchResultPrev">Prev</label>
-            <label index="search.searchWord">Searchword:</label>
-            <label index="search.searchIn">Search in:</label>
-            <label index="search.headersKeywords">Headers and keywords</label>
-            <label index="search.pageContent">Page content</label>
-            <label index="search.searchButton">Search now!</label>
-            <label index="eIcon.html">Edit pure HTML content</label>
-            <label index="eIcon.header">Edit header</label>
-            <label index="eIcon.subheader">Edit subheader</label>
-            <label index="eIcon.bodytext">Edit bodytext</label>
-            <label index="eIcon.images">Edit images</label>
-            <label index="eIcon.caption">Edit image caption</label>
-            <label index="eIcon.bullets">Edit bullet list</label>
-            <label index="eIcon.table">Edit table</label>
-            <label index="eIcon.filelist">Edit file list</label>
-            <label index="eIcon.menuSitemap">Edit menu / sitemap</label>
-            <label index="eIcon.recordList">Edit recordlist</label>
-            <label index="eIcon.plugin">Change/configure plugin</label>
-            <label index="eIcon.multimedia">Edit multimedia element</label>
-            <label index="eIcon.form">Edit email form</label>
-            <label index="eIcon.search">Edit search element</label>
-            <label index="eIcon.login">Edit login element</label>
-            <label index="eIcon.page">Page:</label>
-        </languageKey>
-        <languageKey index="dk" type="array">
-            <label index="label.toTop">Til toppen</label>
-            <label index="login.username">Brugernavn:</label>
-            <label index="login.password">Kodeord:</label>
-            <label index="login.login">Login</label>
-            <label index="login.logout">Logout</label>
-            <label index="search.emptySearch">Beklager, men din søgning var tom!</label>
-            <label index="search.resultRange">Søgeresultat: ###RANGELOW###-###RANGEHIGH### ud af ###TOTAL###</label>
-            <label index="search.searchResultNext">Næste</label>
-            <label index="search.searchResultPrev">Forrige</label>
-            <label index="search.searchWord">Søgeord:</label>
-            <label index="search.searchIn">Søg i:</label>
-            <label index="search.headersKeywords">Overskrifter og nøgleord</label>
-            <label index="search.pageContent">Sideindhold</label>
-            <label index="search.searchButton">Søg nu!</label>
-            <label index="eIcon.html">Rediger ren HTML</label>
-            <label index="eIcon.header">Rediger overskrift</label>
-            <label index="eIcon.subheader">Rediger manchet tekst</label>
-            <label index="eIcon.bodytext">Rediger brødtekst</label>
-            <label index="eIcon.images">Rediger billeder</label>
-            <label index="eIcon.caption">Rediger billedtekst</label>
-            <label index="eIcon.bullets">Rediger punktliste</label>
-            <label index="eIcon.table">Rediger tabel</label>
-            <label index="eIcon.filelist">Rediger filliste</label>
-            <label index="eIcon.menuSitemap">Rediger menu/oversigtskort</label>
-            <label index="eIcon.recordList">Rediger elementliste</label>
-            <label index="eIcon.plugin">Ændre/Konfigurer plugin</label>
-            <label index="eIcon.multimedia">Rediger multimedie element</label>
-            <label index="eIcon.form">Rediger email formular</label>
-            <label index="eIcon.search">Rediger søge formular</label>
-            <label index="eIcon.login">Rediger login formular</label>
-            <label index="eIcon.page">Side:</label>
-        </languageKey>
-        <languageKey index="de" type="array">
-            <label index="label.toTop">Nach oben</label>
-            <label index="login.username">Benutzername:</label>
-            <label index="login.password">Password:</label>
-            <label index="login.login">Login</label>
-            <label index="login.logout">Logout</label>
-            <label index="search.emptySearch">Ihre Suche lieferte leider keine Ergebnisse.</label>
-            <label index="search.resultRange">Suchergebnis: ###RANGELOW###-###RANGEHIGH### von ###TOTAL###</label>
-            <label index="search.searchResultNext">Nächste</label>
-            <label index="search.searchResultPrev">Vorherige</label>
-            <label index="search.searchWord">Suchwort:</label>
-            <label index="search.searchIn">Suchen in:</label>
-            <label index="search.headersKeywords">Überschriften und Schlagwörter</label>
-            <label index="search.pageContent">Seiteninhalt</label>
-            <label index="search.searchButton">Suchen!</label>
-            <label index="eIcon.html">Reinen HTML Inhalt bearbeiten</label>
-            <label index="eIcon.header">Überschrift bearbeiten</label>
-            <label index="eIcon.subheader">Unterüberschrift bearbeiten</label>
-            <label index="eIcon.bodytext">Textkörper bearbeiten</label>
-            <label index="eIcon.images">Bilder bearbeiten</label>
-            <label index="eIcon.caption">Bildunterschrift bearbeiten</label>
-            <label index="eIcon.bullets">Aufzählungsliste bearbeiten</label>
-            <label index="eIcon.table">Tabelle bearbeiten</label>
-            <label index="eIcon.filelist">Dateiliste bearbeiten</label>
-            <label index="eIcon.menuSitemap">Menü/Sitemap bearbeiten</label>
-            <label index="eIcon.recordList">Datensatz bearbeiten</label>
-            <label index="eIcon.plugin">Plugin ändern/konfigurieren</label>
-            <label index="eIcon.multimedia">Multimedia Element bearbeiten</label>
-            <label index="eIcon.form">Email Formular bearbeiten</label>
-            <label index="eIcon.search">Suchbox bearbeiten</label>
-            <label index="eIcon.login">Login bearbeiten</label>
-            <label index="eIcon.page">Seite:</label>
-        </languageKey>
-        <languageKey index="no" type="array">
-            <label index="label.toTop">Til toppen</label>
-            <label index="login.username">Brukernavn:</label>
-            <label index="login.password">Passord:</label>
-            <label index="login.login">Logg inn</label>
-            <label index="login.logout">Logg ut</label>
-            <label index="search.emptySearch">Beklager, søket ga ingen resultater</label>
-            <label index="search.resultRange">Søkeresultat: ###RANGELOW###-###RANGEHIGH### av ###TOTAL###</label>
-            <label index="search.searchResultNext">Neste</label>
-            <label index="search.searchResultPrev">Forrige</label>
-            <label index="search.searchWord">Søkeord:</label>
-            <label index="search.searchIn">Søk i:</label>
-            <label index="search.headersKeywords">Overskrifter og nøkkelord</label>
-            <label index="search.pageContent">Sideinnhold</label>
-            <label index="search.searchButton">Søk</label>
-            <label index="eIcon.html">Redigér ren HTML</label>
-            <label index="eIcon.header">Redigér overskrift</label>
-            <label index="eIcon.subheader">Redigér undertittel</label>
-            <label index="eIcon.bodytext">Redigér brødtekst</label>
-            <label index="eIcon.images">Redigér bilder</label>
-            <label index="eIcon.caption">Redigér bildetekst</label>
-            <label index="eIcon.bullets">Redigér punktliste</label>
-            <label index="eIcon.table">Redigér tabell</label>
-            <label index="eIcon.filelist">Redigér filliste</label>
-            <label index="eIcon.menuSitemap">Redigér meny/sidekart</label>
-            <label index="eIcon.recordList">Redigér elementliste</label>
-            <label index="eIcon.plugin">Endre/konfigurer plugin</label>
-            <label index="eIcon.multimedia">Redigér multimedia-element</label>
-            <label index="eIcon.form">Redigér epost-skjema</label>
-            <label index="eIcon.search">Redigér søkeskjema</label>
-            <label index="eIcon.login">Redigér innloggingsskjema</label>
-            <label index="eIcon.page">Side:</label>
-        </languageKey>
-        <languageKey index="it" type="array">
-        </languageKey>
-        <languageKey index="fr" type="array">
-        </languageKey>
-        <languageKey index="es" type="array">
-        </languageKey>
-        <languageKey index="nl" type="array">
-            <label index="label.toTop">Naar boven</label>
-            <label index="login.username">Naam:</label>
-            <label index="login.password">Wachtwoord:</label>
-            <label index="login.login">Inloggen</label>
-            <label index="login.logout">Uitloggen</label>
-            <label index="search.emptySearch">Sorry, er is niets gevonden</label>
-            <label index="search.resultRange">Zoekresultaat: ###RANGELOW###-###RANGEHIGH### van ###TOTAL###</label>
-            <label index="search.searchResultNext">Volgende</label>
-            <label index="search.searchResultPrev">Vorige</label>
-            <label index="search.searchWord">Zoekwoord:</label>
-            <label index="search.searchIn">Zoek in:</label>
-            <label index="search.headersKeywords">Koppen en trefwoorden</label>
-            <label index="search.pageContent">Pagina inhoud</label>
-            <label index="search.searchButton">Zoek nu!</label>
-            <label index="eIcon.html">Bewerk HTML inhoud</label>
-            <label index="eIcon.header">Bewerk kop</label>
-            <label index="eIcon.subheader">Bewerk subkop</label>
-            <label index="eIcon.bodytext">Bewerk body tekst</label>
-            <label index="eIcon.images">Bewerk plaatjes</label>
-            <label index="eIcon.caption">Bewerk beschrijving plaatje</label>
-            <label index="eIcon.bullets">Bewerk bullet list</label>
-            <label index="eIcon.table">Bewerk tabel</label>
-            <label index="eIcon.filelist">Bewerk bestanden lijst</label>
-            <label index="eIcon.menuSitemap">Bewerk menu / sitemap</label>
-            <label index="eIcon.recordList">Bewerk record lijst</label>
-            <label index="eIcon.plugin">Wijzig/configureer plugin</label>
-            <label index="eIcon.multimedia">Bewerk multimedia element</label>
-            <label index="eIcon.form">Bewerk email formulier</label>
-            <label index="eIcon.search">Bewerk zoek element</label>
-            <label index="eIcon.login">Bewerk login element</label>
-            <label index="eIcon.page">Pagina:</label>
-        </languageKey>
-        <languageKey index="cz" type="array">
-        </languageKey>
-        <languageKey index="pl" type="array">
-        </languageKey>
-        <languageKey index="si" type="array">
-        </languageKey>
-        <languageKey index="fi" type="array">
-            <label index="label.toTop">Alkuun</label>
-            <label index="login.username">Käyttjänimi:</label>
-            <label index="login.password">Salasana:</label>
-            <label index="login.login">Sisäänkirjoitus</label>
-            <label index="login.logout">Poistuminen</label>
-            <label index="search.emptySearch">Valitan, hakusi tulos oli tyhjä!</label>
-            <label index="search.resultRange">Hakutulokset alkaen ###RANGELOW###-###RANGEHIGH### kaikkiaan ###TOTAL###  löydetystä.</label>
-            <label index="search.searchResultNext">Seuraava</label>
-            <label index="search.searchResultPrev">Edellinen</label>
-            <label index="search.searchWord">Hakusana:</label>
-            <label index="search.searchIn">Etsi joukosta:</label>
-            <label index="search.headersKeywords">Otsikot ja avainsanat</label>
-            <label index="search.pageContent">Sivun sisältö</label>
-            <label index="search.searchButton">Etsi nyt !</label>
-            <label index="eIcon.html">Muotoile pelkkää HTML sisältöä</label>
-            <label index="eIcon.header">Muotoile otsikkoa</label>
-            <label index="eIcon.subheader">Muotoile alaotsikkoa</label>
-            <label index="eIcon.bodytext">Muotile tekstirunkoa</label>
-            <label index="eIcon.images">Muotoile kuvia</label>
-            <label index="eIcon.caption">Muotoile kuvatekstiä</label>
-            <label index="eIcon.bullets">Muotoile listaa</label>
-            <label index="eIcon.table">Muotoile taulukkoa</label>
-            <label index="eIcon.filelist">Muotoile tiedostolistaa</label>
-            <label index="eIcon.menuSitemap">Muotoile valikkoa / sivustokarttaa</label>
-            <label index="eIcon.recordList">Muotoile tietuelistaa</label>
-            <label index="eIcon.plugin">Muuta/asenna aliohjelmaa</label>
-            <label index="eIcon.multimedia">Muotoile multimedia elementtiä</label>
-            <label index="eIcon.form">Muotoile sähköpostilomaketta</label>
-            <label index="eIcon.search">Muotoile hakuelementtiä</label>
-            <label index="eIcon.login">Muotoile sisäänkirjoituselementtiä</label>
-            <label index="eIcon.page">Sivu:</label>
-        </languageKey>
-        <languageKey index="tr" type="array">
-            <label index="label.toTop">Üste</label>
-            <label index="login.username">Kullanıcı adı:</label>
-            <label index="login.password">Şifre:</label>
-            <label index="login.login">Giriş</label>
-            <label index="login.logout">Çıkış</label>
-            <label index="search.emptySearch">Üzgünüm, aramanız bulunamadı!</label>
-            <label index="search.resultRange">Aramasonuc: ###RANGELOW###-###RANF-GEHIGH### of ###TOTAL###</label>
-            <label index="search.searchResultNext">Sonraki</label>
-            <label index="search.searchResultPrev">Önceki</label>
-            <label index="search.searchWord">Aranacak kelime:</label>
-            <label index="search.searchIn">Arama yap:</label>
-            <label index="search.headersKeywords">Başlıklar ve Anahtar kelimeler</label>
-            <label index="search.pageContent">Sayfa içeriği</label>
-            <label index="search.searchButton">Şimdi ara!</label>
-            <label index="eIcon.html">Düz HTML içeriğini düzelt</label>
-            <label index="eIcon.header">Başlığı düzelt</label>
-            <label index="eIcon.subheader">Altbaşlığı düzelt</label>
-            <label index="eIcon.bodytext">ana metini düzelt</label>
-            <label index="eIcon.images">Resimleri düzelt</label>
-            <label index="eIcon.caption">Ana resimleri düzelt</label>
-            <label index="eIcon.bullets">Bülten listesini düzelt</label>
-            <label index="eIcon.table">Tabloyu düzelt</label>
-            <label index="eIcon.filelist">Dosya listesini düzelt</label>
-            <label index="eIcon.menuSitemap">menu/site haritasını düzelt</label>
-            <label index="eIcon.recordList">Kayıt listesini düzelt</label>
-            <label index="eIcon.plugin">eklentileri değiştir/Konfigüre et</label>
-            <label index="eIcon.multimedia">Multimedia elementini düzelt</label>
-            <label index="eIcon.form">email formunu düzelt</label>
-            <label index="eIcon.search">arama elementini düzelt</label>
-            <label index="eIcon.login">giriş elementini düzelt</label>
-            <label index="eIcon.page">Sayfa:</label>
-        </languageKey>
-        <languageKey index="se" type="array">
-        </languageKey>
-        <languageKey index="pt" type="array">
-        </languageKey>
-        <languageKey index="ru" type="array">
-        </languageKey>
-        <languageKey index="ro" type="array">
-        </languageKey>
-        <languageKey index="ch" type="array">
-        </languageKey>
-        <languageKey index="sk" type="array">
-        </languageKey>
-        <languageKey index="lt" type="array">
-        </languageKey>
-        <languageKey index="is" type="array">
-        </languageKey>
-        <languageKey index="hr" type="array">
-        </languageKey>
-        <languageKey index="hu" type="array">
-            <label index="label.toTop">Tetejére</label>
-            <label index="login.username">Felhasználónév:</label>
-            <label index="login.password">Jelszó:</label>
-            <label index="login.login">Belépés</label>
-            <label index="login.logout">Kilépés</label>
-            <label index="search.emptySearch">Sajnálom, a keresés üres!</label>
-            <label index="search.resultRange">Keresés eredménye: ###RANGELOW###-###RANGEHIGH### of ###TOTAL###</label>
-            <label index="search.searchResultNext">Következő</label>
-            <label index="search.searchResultPrev">Előző</label>
-            <label index="search.searchWord">Keresett szó:</label>
-            <label index="search.searchIn">Keresés ebben:</label>
-            <label index="search.headersKeywords">Fejlécek és kulcsszavak</label>
-            <label index="search.pageContent">Oldal tartalom</label>
-            <label index="search.searchButton">Keresés most!</label>
-            <label index="eIcon.html">Sima HTML tartalom szerkesztése</label>
-            <label index="eIcon.header">Fejléc szerkesztése</label>
-            <label index="eIcon.subheader">Alfejléc szerkesztése</label>
-            <label index="eIcon.bodytext">Szövegtörzs szerkesztése</label>
-            <label index="eIcon.images">Képek szerkesztése</label>
-            <label index="eIcon.caption">Kép feliratok szerkesztése</label>
-            <label index="eIcon.bullets">Felsorolás szerkesztése</label>
-            <label index="eIcon.table">Táblázaat szerkesztése</label>
-            <label index="eIcon.filelist">File lista szerkesztése</label>
-            <label index="eIcon.menuSitemap">Menü / oldaltérkép szerkesztése</label>
-            <label index="eIcon.recordList">Rekordlista szerkesztése</label>
-            <label index="eIcon.plugin">Bővítmény megváltoztatása/beállítása</label>
-            <label index="eIcon.multimedia">Multimédia elem szerkesztése</label>
-            <label index="eIcon.form">Email űrlap szerkesztése</label>
-            <label index="eIcon.search">Keresési elem szerkesztése</label>
-            <label index="eIcon.login">Belépési elem szerkesztése</label>
-            <label index="eIcon.page">Oldal:</label>
-        </languageKey>
-        <languageKey index="gl" type="array">
-        </languageKey>
-        <languageKey index="th" type="array">
-        </languageKey>
-        <languageKey index="gr" type="array">
-        </languageKey>
-        <languageKey index="hk" type="array">
-        </languageKey>
-        <languageKey index="eu" type="array">
-        </languageKey>
-        <languageKey index="bg" type="array">
-        </languageKey>
-        <languageKey index="br" type="array">
-            <label index="label.toTop">Topo</label>
-            <label index="login.username">Usuário:</label>
-            <label index="login.password">Senha:</label>
-            <label index="login.login">Entrar</label>
-            <label index="login.logout">Sair</label>
-            <label index="search.emptySearch">Desculpe, mas sua busca estava vazia!</label>
-            <label index="search.resultRange">Resultado: ###RANGELOW###-###RANGEHIGH### de ###TOTAL###</label>
-            <label index="search.searchResultNext">Próxima</label>
-            <label index="search.searchResultPrev">Anterior</label>
-            <label index="search.searchWord">Busca:</label>
-            <label index="search.searchIn">Buscar em:</label>
-            <label index="search.headersKeywords">Cabeçalhos e palavras-chave</label>
-            <label index="search.pageContent">Conteúdo da página</label>
-            <label index="search.searchButton">Buscar agora!</label>
-            <label index="eIcon.html">Editar conteúdo em HTML</label>
-            <label index="eIcon.header">Editar cabeçalho</label>
-            <label index="eIcon.subheader">Editar sub-cabeçalho</label>
-            <label index="eIcon.bodytext">Editar corpo do texto</label>
-            <label index="eIcon.images">Editar imagens</label>
-            <label index="eIcon.caption">Editar legenda da imagem</label>
-            <label index="eIcon.bullets">Editar lista marcada</label>
-            <label index="eIcon.table">Editar tabela</label>
-            <label index="eIcon.filelist">Editar lista de arquivos</label>
-            <label index="eIcon.menuSitemap">Editar menu / mapa do site</label>
-            <label index="eIcon.recordList">Editar lista de registros</label>
-            <label index="eIcon.plugin">Alterar/configurar plugin</label>
-            <label index="eIcon.multimedia">Editar elemento multimídia</label>
-            <label index="eIcon.form">Editar formulário de e-mail</label>
-            <label index="eIcon.search">Editar elemento de busca</label>
-            <label index="eIcon.login">Editar elemento de entrada</label>
-            <label index="eIcon.page">Página:</label>
-        </languageKey>
-        <languageKey index="et" type="array">
-        </languageKey>
-        <languageKey index="ar" type="array">
-        </languageKey>
-        <languageKey index="he" type="array">
-        </languageKey>
-        <languageKey index="ua" type="array">
-        </languageKey>
-        <languageKey index="lv" type="array">
-        </languageKey>
-        <languageKey index="jp" type="array">
-        </languageKey>
-        <languageKey index="vn" type="array">
-        </languageKey>
-        <languageKey index="ca" type="array">
-        </languageKey>
-        <languageKey index="ba" type="array">
-        </languageKey>
-        <languageKey index="kr" type="array">
-        </languageKey>
-    </data>
-    <orig_hash type="array">
-        <languageKey index="default" type="array">
-            <label index="label.toTop" type="integer">256968027</label>
-            <label index="login.username" type="integer">212632006</label>
-            <label index="login.password" type="integer">187963993</label>
-            <label index="login.login" type="integer">161344120</label>
-            <label index="login.logout" type="integer">3292644</label>
-            <label index="search.emptySearch" type="integer">118666163</label>
-            <label index="search.resultRange" type="integer">182339452</label>
-            <label index="search.searchResultNext" type="integer">17482704</label>
-            <label index="search.searchResultPrev" type="integer">21115089</label>
-            <label index="search.searchWord" type="integer">150454913</label>
-            <label index="search.searchIn" type="integer">248140624</label>
-            <label index="search.headersKeywords" type="integer">5479653</label>
-            <label index="search.pageContent" type="integer">73079758</label>
-            <label index="search.searchButton" type="integer">3457966</label>
-            <label index="eIcon.html" type="integer">219732781</label>
-            <label index="eIcon.header" type="integer">263342564</label>
-            <label index="eIcon.subheader" type="integer">106009992</label>
-            <label index="eIcon.bodytext" type="integer">25202894</label>
-            <label index="eIcon.images" type="integer">53347967</label>
-            <label index="eIcon.caption" type="integer">202261956</label>
-            <label index="eIcon.bullets" type="integer">17099413</label>
-            <label index="eIcon.table" type="integer">194091224</label>
-            <label index="eIcon.filelist" type="integer">200322698</label>
-            <label index="eIcon.menuSitemap" type="integer">258217158</label>
-            <label index="eIcon.recordList" type="integer">199959556</label>
-            <label index="eIcon.plugin" type="integer">206199137</label>
-            <label index="eIcon.multimedia" type="integer">66403706</label>
-            <label index="eIcon.form" type="integer">268386904</label>
-            <label index="eIcon.search" type="integer">260269479</label>
-            <label index="eIcon.login" type="integer">135433115</label>
-            <label index="eIcon.page" type="integer">230383377</label>
-        </languageKey>
-        <languageKey index="dk" type="array">
-            <label index="label.toTop" type="integer">256968027</label>
-            <label index="login.username" type="integer">212632006</label>
-            <label index="login.password" type="integer">187963993</label>
-            <label index="login.login" type="integer">161344120</label>
-            <label index="login.logout" type="integer">3292644</label>
-            <label index="search.emptySearch" type="integer">118666163</label>
-            <label index="search.resultRange" type="integer">182339452</label>
-            <label index="search.searchResultNext" type="integer">17482704</label>
-            <label index="search.searchResultPrev" type="integer">21115089</label>
-            <label index="search.searchWord" type="integer">150454913</label>
-            <label index="search.searchIn" type="integer">248140624</label>
-            <label index="search.headersKeywords" type="integer">5479653</label>
-            <label index="search.pageContent" type="integer">73079758</label>
-            <label index="search.searchButton" type="integer">3457966</label>
-            <label index="eIcon.html" type="integer">219732781</label>
-            <label index="eIcon.header" type="integer">263342564</label>
-            <label index="eIcon.subheader" type="integer">106009992</label>
-            <label index="eIcon.bodytext" type="integer">25202894</label>
-            <label index="eIcon.images" type="integer">53347967</label>
-            <label index="eIcon.caption" type="integer">202261956</label>
-            <label index="eIcon.bullets" type="integer">17099413</label>
-            <label index="eIcon.table" type="integer">194091224</label>
-            <label index="eIcon.filelist" type="integer">200322698</label>
-            <label index="eIcon.menuSitemap" type="integer">258217158</label>
-            <label index="eIcon.recordList" type="integer">199959556</label>
-            <label index="eIcon.plugin" type="integer">206199137</label>
-            <label index="eIcon.multimedia" type="integer">66403706</label>
-            <label index="eIcon.form" type="integer">268386904</label>
-            <label index="eIcon.search" type="integer">260269479</label>
-            <label index="eIcon.login" type="integer">135433115</label>
-            <label index="eIcon.page" type="integer">230383377</label>
-        </languageKey>
-        <languageKey index="de" type="array">
-            <label index="label.toTop" type="integer">256968027</label>
-            <label index="login.username" type="integer">212632006</label>
-            <label index="login.password" type="integer">187963993</label>
-            <label index="login.login" type="integer">161344120</label>
-            <label index="login.logout" type="integer">3292644</label>
-            <label index="search.emptySearch" type="integer">118666163</label>
-            <label index="search.resultRange" type="integer">182339452</label>
-            <label index="search.searchResultNext" type="integer">17482704</label>
-            <label index="search.searchResultPrev" type="integer">21115089</label>
-            <label index="search.searchWord" type="integer">150454913</label>
-            <label index="search.searchIn" type="integer">248140624</label>
-            <label index="search.headersKeywords" type="integer">5479653</label>
-            <label index="search.pageContent" type="integer">73079758</label>
-            <label index="search.searchButton" type="integer">3457966</label>
-            <label index="eIcon.html" type="integer">219732781</label>
-            <label index="eIcon.header" type="integer">263342564</label>
-            <label index="eIcon.subheader" type="integer">106009992</label>
-            <label index="eIcon.bodytext" type="integer">25202894</label>
-            <label index="eIcon.images" type="integer">53347967</label>
-            <label index="eIcon.caption" type="integer">202261956</label>
-            <label index="eIcon.bullets" type="integer">17099413</label>
-            <label index="eIcon.table" type="integer">194091224</label>
-            <label index="eIcon.filelist" type="integer">200322698</label>
-            <label index="eIcon.menuSitemap" type="integer">258217158</label>
-            <label index="eIcon.recordList" type="integer">199959556</label>
-            <label index="eIcon.plugin" type="integer">206199137</label>
-            <label index="eIcon.multimedia" type="integer">66403706</label>
-            <label index="eIcon.form" type="integer">268386904</label>
-            <label index="eIcon.search" type="integer">260269479</label>
-            <label index="eIcon.login" type="integer">135433115</label>
-            <label index="eIcon.page" type="integer">230383377</label>
-        </languageKey>
-        <languageKey index="no" type="array">
-            <label index="label.toTop" type="integer">256968027</label>
-            <label index="login.username" type="integer">212632006</label>
-            <label index="login.password" type="integer">187963993</label>
-            <label index="login.login" type="integer">161344120</label>
-            <label index="login.logout" type="integer">3292644</label>
-            <label index="search.emptySearch" type="integer">118666163</label>
-            <label index="search.resultRange" type="integer">182339452</label>
-            <label index="search.searchResultNext" type="integer">17482704</label>
-            <label index="search.searchResultPrev" type="integer">21115089</label>
-            <label index="search.searchWord" type="integer">150454913</label>
-            <label index="search.searchIn" type="integer">248140624</label>
-            <label index="search.headersKeywords" type="integer">5479653</label>
-            <label index="search.pageContent" type="integer">73079758</label>
-            <label index="search.searchButton" type="integer">3457966</label>
-            <label index="eIcon.html" type="integer">219732781</label>
-            <label index="eIcon.header" type="integer">263342564</label>
-            <label index="eIcon.subheader" type="integer">106009992</label>
-            <label index="eIcon.bodytext" type="integer">25202894</label>
-            <label index="eIcon.images" type="integer">53347967</label>
-            <label index="eIcon.caption" type="integer">202261956</label>
-            <label index="eIcon.bullets" type="integer">17099413</label>
-            <label index="eIcon.table" type="integer">194091224</label>
-            <label index="eIcon.filelist" type="integer">200322698</label>
-            <label index="eIcon.menuSitemap" type="integer">258217158</label>
-            <label index="eIcon.recordList" type="integer">199959556</label>
-            <label index="eIcon.plugin" type="integer">206199137</label>
-            <label index="eIcon.multimedia" type="integer">66403706</label>
-            <label index="eIcon.form" type="integer">268386904</label>
-            <label index="eIcon.search" type="integer">260269479</label>
-            <label index="eIcon.login" type="integer">135433115</label>
-            <label index="eIcon.page" type="integer">230383377</label>
-        </languageKey>
-        <languageKey index="it" type="array">
-        </languageKey>
-        <languageKey index="fr" type="array">
-        </languageKey>
-        <languageKey index="es" type="array">
-        </languageKey>
-        <languageKey index="nl" type="array">
-            <label index="label.toTop" type="integer">256968027</label>
-            <label index="login.username" type="integer">212632006</label>
-            <label index="login.password" type="integer">187963993</label>
-            <label index="login.login" type="integer">161344120</label>
-            <label index="login.logout" type="integer">3292644</label>
-            <label index="search.emptySearch" type="integer">118666163</label>
-            <label index="search.resultRange" type="integer">182339452</label>
-            <label index="search.searchResultNext" type="integer">17482704</label>
-            <label index="search.searchResultPrev" type="integer">21115089</label>
-            <label index="search.searchWord" type="integer">150454913</label>
-            <label index="search.searchIn" type="integer">248140624</label>
-            <label index="search.headersKeywords" type="integer">5479653</label>
-            <label index="search.pageContent" type="integer">73079758</label>
-            <label index="search.searchButton" type="integer">3457966</label>
-            <label index="eIcon.html" type="integer">219732781</label>
-            <label index="eIcon.header" type="integer">263342564</label>
-            <label index="eIcon.subheader" type="integer">106009992</label>
-            <label index="eIcon.bodytext" type="integer">25202894</label>
-            <label index="eIcon.images" type="integer">53347967</label>
-            <label index="eIcon.caption" type="integer">202261956</label>
-            <label index="eIcon.bullets" type="integer">17099413</label>
-            <label index="eIcon.table" type="integer">194091224</label>
-            <label index="eIcon.filelist" type="integer">200322698</label>
-            <label index="eIcon.menuSitemap" type="integer">258217158</label>
-            <label index="eIcon.recordList" type="integer">199959556</label>
-            <label index="eIcon.plugin" type="integer">206199137</label>
-            <label index="eIcon.multimedia" type="integer">66403706</label>
-            <label index="eIcon.form" type="integer">268386904</label>
-            <label index="eIcon.search" type="integer">260269479</label>
-            <label index="eIcon.login" type="integer">135433115</label>
-            <label index="eIcon.page" type="integer">230383377</label>
-        </languageKey>
-        <languageKey index="cz" type="array">
-        </languageKey>
-        <languageKey index="pl" type="array">
-        </languageKey>
-        <languageKey index="si" type="array">
-        </languageKey>
-        <languageKey index="fi" type="array">
-            <label index="label.toTop" type="integer">256968027</label>
-            <label index="login.username" type="integer">212632006</label>
-            <label index="login.password" type="integer">187963993</label>
-            <label index="login.login" type="integer">161344120</label>
-            <label index="login.logout" type="integer">3292644</label>
-            <label index="search.emptySearch" type="integer">118666163</label>
-            <label index="search.resultRange" type="integer">182339452</label>
-            <label index="search.searchResultNext" type="integer">17482704</label>
-            <label index="search.searchResultPrev" type="integer">21115089</label>
-            <label index="search.searchWord" type="integer">150454913</label>
-            <label index="search.searchIn" type="integer">248140624</label>
-            <label index="search.headersKeywords" type="integer">5479653</label>
-            <label index="search.pageContent" type="integer">73079758</label>
-            <label index="search.searchButton" type="integer">3457966</label>
-            <label index="eIcon.html" type="integer">219732781</label>
-            <label index="eIcon.header" type="integer">263342564</label>
-            <label index="eIcon.subheader" type="integer">106009992</label>
-            <label index="eIcon.bodytext" type="integer">25202894</label>
-            <label index="eIcon.images" type="integer">53347967</label>
-            <label index="eIcon.caption" type="integer">202261956</label>
-            <label index="eIcon.bullets" type="integer">17099413</label>
-            <label index="eIcon.table" type="integer">194091224</label>
-            <label index="eIcon.filelist" type="integer">200322698</label>
-            <label index="eIcon.menuSitemap" type="integer">258217158</label>
-            <label index="eIcon.recordList" type="integer">199959556</label>
-            <label index="eIcon.plugin" type="integer">206199137</label>
-            <label index="eIcon.multimedia" type="integer">66403706</label>
-            <label index="eIcon.form" type="integer">268386904</label>
-            <label index="eIcon.search" type="integer">260269479</label>
-            <label index="eIcon.login" type="integer">135433115</label>
-            <label index="eIcon.page" type="integer">230383377</label>
-        </languageKey>
-        <languageKey index="tr" type="array">
-            <label index="label.toTop" type="integer">256968027</label>
-            <label index="login.username" type="integer">212632006</label>
-            <label index="login.password" type="integer">187963993</label>
-            <label index="login.login" type="integer">161344120</label>
-            <label index="login.logout" type="integer">3292644</label>
-            <label index="search.emptySearch" type="integer">118666163</label>
-            <label index="search.resultRange" type="integer">182339452</label>
-            <label index="search.searchResultNext" type="integer">17482704</label>
-            <label index="search.searchResultPrev" type="integer">21115089</label>
-            <label index="search.searchWord" type="integer">150454913</label>
-            <label index="search.searchIn" type="integer">248140624</label>
-            <label index="search.headersKeywords" type="integer">5479653</label>
-            <label index="search.pageContent" type="integer">73079758</label>
-            <label index="search.searchButton" type="integer">3457966</label>
-            <label index="eIcon.html" type="integer">219732781</label>
-            <label index="eIcon.header" type="integer">263342564</label>
-            <label index="eIcon.subheader" type="integer">106009992</label>
-            <label index="eIcon.bodytext" type="integer">25202894</label>
-            <label index="eIcon.images" type="integer">53347967</label>
-            <label index="eIcon.caption" type="integer">202261956</label>
-            <label index="eIcon.bullets" type="integer">17099413</label>
-            <label index="eIcon.table" type="integer">194091224</label>
-            <label index="eIcon.filelist" type="integer">200322698</label>
-            <label index="eIcon.menuSitemap" type="integer">258217158</label>
-            <label index="eIcon.recordList" type="integer">199959556</label>
-            <label index="eIcon.plugin" type="integer">206199137</label>
-            <label index="eIcon.multimedia" type="integer">66403706</label>
-            <label index="eIcon.form" type="integer">268386904</label>
-            <label index="eIcon.search" type="integer">260269479</label>
-            <label index="eIcon.login" type="integer">135433115</label>
-            <label index="eIcon.page" type="integer">230383377</label>
-        </languageKey>
-        <languageKey index="se" type="array">
-        </languageKey>
-        <languageKey index="pt" type="array">
-        </languageKey>
-        <languageKey index="ru" type="array">
-        </languageKey>
-        <languageKey index="ro" type="array">
-        </languageKey>
-        <languageKey index="ch" type="array">
-        </languageKey>
-        <languageKey index="sk" type="array">
-        </languageKey>
-        <languageKey index="lt" type="array">
-        </languageKey>
-        <languageKey index="is" type="array">
-        </languageKey>
-        <languageKey index="hr" type="array">
-        </languageKey>
-        <languageKey index="hu" type="array">
-            <label index="label.toTop" type="integer">256968027</label>
-            <label index="login.username" type="integer">212632006</label>
-            <label index="login.password" type="integer">187963993</label>
-            <label index="login.login" type="integer">161344120</label>
-            <label index="login.logout" type="integer">3292644</label>
-            <label index="search.emptySearch" type="integer">118666163</label>
-            <label index="search.resultRange" type="integer">182339452</label>
-            <label index="search.searchResultNext" type="integer">17482704</label>
-            <label index="search.searchResultPrev" type="integer">21115089</label>
-            <label index="search.searchWord" type="integer">150454913</label>
-            <label index="search.searchIn" type="integer">248140624</label>
-            <label index="search.headersKeywords" type="integer">5479653</label>
-            <label index="search.pageContent" type="integer">73079758</label>
-            <label index="search.searchButton" type="integer">3457966</label>
-            <label index="eIcon.html" type="integer">219732781</label>
-            <label index="eIcon.header" type="integer">263342564</label>
-            <label index="eIcon.subheader" type="integer">106009992</label>
-            <label index="eIcon.bodytext" type="integer">25202894</label>
-            <label index="eIcon.images" type="integer">53347967</label>
-            <label index="eIcon.caption" type="integer">202261956</label>
-            <label index="eIcon.bullets" type="integer">17099413</label>
-            <label index="eIcon.table" type="integer">194091224</label>
-            <label index="eIcon.filelist" type="integer">200322698</label>
-            <label index="eIcon.menuSitemap" type="integer">258217158</label>
-            <label index="eIcon.recordList" type="integer">199959556</label>
-            <label index="eIcon.plugin" type="integer">206199137</label>
-            <label index="eIcon.multimedia" type="integer">66403706</label>
-            <label index="eIcon.form" type="integer">268386904</label>
-            <label index="eIcon.search" type="integer">260269479</label>
-            <label index="eIcon.login" type="integer">135433115</label>
-            <label index="eIcon.page" type="integer">230383377</label>
-        </languageKey>
-        <languageKey index="gl" type="array">
-        </languageKey>
-        <languageKey index="th" type="array">
-        </languageKey>
-        <languageKey index="gr" type="array">
-        </languageKey>
-        <languageKey index="hk" type="array">
-        </languageKey>
-        <languageKey index="eu" type="array">
-        </languageKey>
-        <languageKey index="bg" type="array">
-        </languageKey>
-        <languageKey index="br" type="array">
-            <label index="label.toTop" type="integer">256968027</label>
-            <label index="login.username" type="integer">212632006</label>
-            <label index="login.password" type="integer">187963993</label>
-            <label index="login.login" type="integer">161344120</label>
-            <label index="login.logout" type="integer">3292644</label>
-            <label index="search.emptySearch" type="integer">118666163</label>
-            <label index="search.resultRange" type="integer">182339452</label>
-            <label index="search.searchResultNext" type="integer">17482704</label>
-            <label index="search.searchResultPrev" type="integer">21115089</label>
-            <label index="search.searchWord" type="integer">150454913</label>
-            <label index="search.searchIn" type="integer">248140624</label>
-            <label index="search.headersKeywords" type="integer">5479653</label>
-            <label index="search.pageContent" type="integer">73079758</label>
-            <label index="search.searchButton" type="integer">3457966</label>
-            <label index="eIcon.html" type="integer">219732781</label>
-            <label index="eIcon.header" type="integer">263342564</label>
-            <label index="eIcon.subheader" type="integer">106009992</label>
-            <label index="eIcon.bodytext" type="integer">25202894</label>
-            <label index="eIcon.images" type="integer">53347967</label>
-            <label index="eIcon.caption" type="integer">202261956</label>
-            <label index="eIcon.bullets" type="integer">17099413</label>
-            <label index="eIcon.table" type="integer">194091224</label>
-            <label index="eIcon.filelist" type="integer">200322698</label>
-            <label index="eIcon.menuSitemap" type="integer">258217158</label>
-            <label index="eIcon.recordList" type="integer">199959556</label>
-            <label index="eIcon.plugin" type="integer">206199137</label>
-            <label index="eIcon.multimedia" type="integer">66403706</label>
-            <label index="eIcon.form" type="integer">268386904</label>
-            <label index="eIcon.search" type="integer">260269479</label>
-            <label index="eIcon.login" type="integer">135433115</label>
-            <label index="eIcon.page" type="integer">230383377</label>
-        </languageKey>
-        <languageKey index="et" type="array">
-        </languageKey>
-        <languageKey index="ar" type="array">
-        </languageKey>
-        <languageKey index="he" type="array">
-        </languageKey>
-        <languageKey index="ua" type="array">
-        </languageKey>
-        <languageKey index="lv" type="array">
-        </languageKey>
-        <languageKey index="jp" type="array">
-        </languageKey>
-        <languageKey index="vn" type="array">
-        </languageKey>
-        <languageKey index="ca" type="array">
-        </languageKey>
-        <languageKey index="ba" type="array">
-        </languageKey>
-        <languageKey index="kr" type="array">
-        </languageKey>
-    </orig_hash>
-    <orig_text type="array">
-        <languageKey index="default" type="array">
-        </languageKey>
-        <languageKey index="dk" type="array">
-        </languageKey>
-        <languageKey index="de" type="array">
-        </languageKey>
-        <languageKey index="no" type="array">
-        </languageKey>
-        <languageKey index="it" type="array">
-        </languageKey>
-        <languageKey index="fr" type="array">
-        </languageKey>
-        <languageKey index="es" type="array">
-        </languageKey>
-        <languageKey index="nl" type="array">
-        </languageKey>
-        <languageKey index="cz" type="array">
-        </languageKey>
-        <languageKey index="pl" type="array">
-        </languageKey>
-        <languageKey index="si" type="array">
-        </languageKey>
-        <languageKey index="fi" type="array">
-        </languageKey>
-        <languageKey index="tr" type="array">
-        </languageKey>
-        <languageKey index="se" type="array">
-        </languageKey>
-        <languageKey index="pt" type="array">
-        </languageKey>
-        <languageKey index="ru" type="array">
-        </languageKey>
-        <languageKey index="ro" type="array">
-        </languageKey>
-        <languageKey index="ch" type="array">
-        </languageKey>
-        <languageKey index="sk" type="array">
-        </languageKey>
-        <languageKey index="lt" type="array">
-        </languageKey>
-        <languageKey index="is" type="array">
-        </languageKey>
-        <languageKey index="hr" type="array">
-        </languageKey>
-        <languageKey index="hu" type="array">
-        </languageKey>
-        <languageKey index="gl" type="array">
-        </languageKey>
-        <languageKey index="th" type="array">
-        </languageKey>
-        <languageKey index="gr" type="array">
-        </languageKey>
-        <languageKey index="hk" type="array">
-        </languageKey>
-        <languageKey index="eu" type="array">
-        </languageKey>
-        <languageKey index="bg" type="array">
-        </languageKey>
-        <languageKey index="br" type="array">
-        </languageKey>
-        <languageKey index="et" type="array">
-        </languageKey>
-        <languageKey index="ar" type="array">
-        </languageKey>
-        <languageKey index="he" type="array">
-        </languageKey>
-        <languageKey index="ua" type="array">
-        </languageKey>
-        <languageKey index="lv" type="array">
-        </languageKey>
-        <languageKey index="jp" type="array">
-        </languageKey>
-        <languageKey index="vn" type="array">
-        </languageKey>
-        <languageKey index="ca" type="array">
-        </languageKey>
-        <languageKey index="ba" type="array">
-        </languageKey>
-        <languageKey index="kr" type="array">
-        </languageKey>
-    </orig_text>
+	<meta type="array">
+		<description>Labels for TypoScript</description>
+		<type>module</type>
+		<csh_table></csh_table>
+		<fileId>EXT:css_styled_content/pi1/locallang.xml</fileId>
+		<keep_original_text>1</keep_original_text>
+		<ext_filename_template>EXT:csh_###LANGKEY###/css_styled_content/pi1/###LANGKEY###.locallang.xml</ext_filename_template>
+		<labelContext type="array">
+		</labelContext>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index="label.toTop">To top</label>
+			<label index="login.username">Username:</label>
+			<label index="login.password">Password:</label>
+			<label index="login.login">Login</label>
+			<label index="login.logout">Logout</label>
+			<label index="search.emptySearch">Sorry, your search was empty!</label>
+			<label index="search.resultRange">Searchresult: ###RANGELOW###-###RANGEHIGH### of ###TOTAL###</label>
+			<label index="search.searchResultNext">Next</label>
+			<label index="search.searchResultPrev">Prev</label>
+			<label index="search.searchWord">Searchword:</label>
+			<label index="search.searchIn">Search in:</label>
+			<label index="search.headersKeywords">Headers and keywords</label>
+			<label index="search.pageContent">Page content</label>
+			<label index="search.searchButton">Search now!</label>
+			<label index="eIcon.html">Edit pure HTML content</label>
+			<label index="eIcon.header">Edit header</label>
+			<label index="eIcon.subheader">Edit subheader</label>
+			<label index="eIcon.bodytext">Edit bodytext</label>
+			<label index="eIcon.images">Edit images</label>
+			<label index="eIcon.caption">Edit image caption</label>
+			<label index="eIcon.bullets">Edit bullet list</label>
+			<label index="eIcon.table">Edit table</label>
+			<label index="eIcon.filelist">Edit file list</label>
+			<label index="eIcon.menuSitemap">Edit menu / sitemap</label>
+			<label index="eIcon.recordList">Edit recordlist</label>
+			<label index="eIcon.plugin">Change/configure plugin</label>
+			<label index="eIcon.multimedia">Edit multimedia element</label>
+			<label index="eIcon.form">Edit email form</label>
+			<label index="eIcon.search">Edit search element</label>
+			<label index="eIcon.login">Edit login element</label>
+			<label index="eIcon.page">Page:</label>
+		</languageKey>
+		<languageKey index="dk">EXT:csh_dk/css_styled_content/pi1/dk.locallang.xml</languageKey>
+		<languageKey index="de">EXT:csh_de/css_styled_content/pi1/de.locallang.xml</languageKey>
+		<languageKey index="no">EXT:csh_no/css_styled_content/pi1/no.locallang.xml</languageKey>
+		<languageKey index="it">EXT:csh_it/css_styled_content/pi1/it.locallang.xml</languageKey>
+		<languageKey index="fr">EXT:csh_fr/css_styled_content/pi1/fr.locallang.xml</languageKey>
+		<languageKey index="es">EXT:csh_es/css_styled_content/pi1/es.locallang.xml</languageKey>
+		<languageKey index="nl">EXT:csh_nl/css_styled_content/pi1/nl.locallang.xml</languageKey>
+		<languageKey index="cz">EXT:csh_cz/css_styled_content/pi1/cz.locallang.xml</languageKey>
+		<languageKey index="pl">EXT:csh_pl/css_styled_content/pi1/pl.locallang.xml</languageKey>
+		<languageKey index="si">EXT:csh_si/css_styled_content/pi1/si.locallang.xml</languageKey>
+		<languageKey index="fi">EXT:csh_fi/css_styled_content/pi1/fi.locallang.xml</languageKey>
+		<languageKey index="tr">EXT:csh_tr/css_styled_content/pi1/tr.locallang.xml</languageKey>
+		<languageKey index="se">EXT:csh_se/css_styled_content/pi1/se.locallang.xml</languageKey>
+		<languageKey index="pt">EXT:csh_pt/css_styled_content/pi1/pt.locallang.xml</languageKey>
+		<languageKey index="ru">EXT:csh_ru/css_styled_content/pi1/ru.locallang.xml</languageKey>
+		<languageKey index="ro">EXT:csh_ro/css_styled_content/pi1/ro.locallang.xml</languageKey>
+		<languageKey index="ch">EXT:csh_ch/css_styled_content/pi1/ch.locallang.xml</languageKey>
+		<languageKey index="sk">EXT:csh_sk/css_styled_content/pi1/sk.locallang.xml</languageKey>
+		<languageKey index="lt">EXT:csh_lt/css_styled_content/pi1/lt.locallang.xml</languageKey>
+		<languageKey index="is">EXT:csh_is/css_styled_content/pi1/is.locallang.xml</languageKey>
+		<languageKey index="hr">EXT:csh_hr/css_styled_content/pi1/hr.locallang.xml</languageKey>
+		<languageKey index="hu">EXT:csh_hu/css_styled_content/pi1/hu.locallang.xml</languageKey>
+		<languageKey index="gl">EXT:csh_gl/css_styled_content/pi1/gl.locallang.xml</languageKey>
+		<languageKey index="th">EXT:csh_th/css_styled_content/pi1/th.locallang.xml</languageKey>
+		<languageKey index="gr">EXT:csh_gr/css_styled_content/pi1/gr.locallang.xml</languageKey>
+		<languageKey index="hk">EXT:csh_hk/css_styled_content/pi1/hk.locallang.xml</languageKey>
+		<languageKey index="eu">EXT:csh_eu/css_styled_content/pi1/eu.locallang.xml</languageKey>
+		<languageKey index="bg">EXT:csh_bg/css_styled_content/pi1/bg.locallang.xml</languageKey>
+		<languageKey index="br">EXT:csh_br/css_styled_content/pi1/br.locallang.xml</languageKey>
+		<languageKey index="et">EXT:csh_et/css_styled_content/pi1/et.locallang.xml</languageKey>
+		<languageKey index="ar">EXT:csh_ar/css_styled_content/pi1/ar.locallang.xml</languageKey>
+		<languageKey index="he">EXT:csh_he/css_styled_content/pi1/he.locallang.xml</languageKey>
+		<languageKey index="ua">EXT:csh_ua/css_styled_content/pi1/ua.locallang.xml</languageKey>
+		<languageKey index="lv">EXT:csh_lv/css_styled_content/pi1/lv.locallang.xml</languageKey>
+		<languageKey index="jp">EXT:csh_jp/css_styled_content/pi1/jp.locallang.xml</languageKey>
+		<languageKey index="vn">EXT:csh_vn/css_styled_content/pi1/vn.locallang.xml</languageKey>
+		<languageKey index="ca">EXT:csh_ca/css_styled_content/pi1/ca.locallang.xml</languageKey>
+		<languageKey index="ba">EXT:csh_ba/css_styled_content/pi1/ba.locallang.xml</languageKey>
+		<languageKey index="kr">EXT:csh_kr/css_styled_content/pi1/kr.locallang.xml</languageKey>
+		<languageKey index="eo">EXT:csh_eo/css_styled_content/pi1/eo.locallang.xml</languageKey>
+		<languageKey index="my">EXT:csh_my/css_styled_content/pi1/my.locallang.xml</languageKey>
+	</data>
+	<orig_hash type="array">
+		<languageKey index="default" type="array">
+			<label index="label.toTop" type="integer">256968027</label>
+			<label index="login.username" type="integer">212632006</label>
+			<label index="login.password" type="integer">187963993</label>
+			<label index="login.login" type="integer">161344120</label>
+			<label index="login.logout" type="integer">3292644</label>
+			<label index="search.emptySearch" type="integer">118666163</label>
+			<label index="search.resultRange" type="integer">182339452</label>
+			<label index="search.searchResultNext" type="integer">17482704</label>
+			<label index="search.searchResultPrev" type="integer">21115089</label>
+			<label index="search.searchWord" type="integer">150454913</label>
+			<label index="search.searchIn" type="integer">248140624</label>
+			<label index="search.headersKeywords" type="integer">5479653</label>
+			<label index="search.pageContent" type="integer">73079758</label>
+			<label index="search.searchButton" type="integer">3457966</label>
+			<label index="eIcon.html" type="integer">219732781</label>
+			<label index="eIcon.header" type="integer">263342564</label>
+			<label index="eIcon.subheader" type="integer">106009992</label>
+			<label index="eIcon.bodytext" type="integer">25202894</label>
+			<label index="eIcon.images" type="integer">53347967</label>
+			<label index="eIcon.caption" type="integer">202261956</label>
+			<label index="eIcon.bullets" type="integer">17099413</label>
+			<label index="eIcon.table" type="integer">194091224</label>
+			<label index="eIcon.filelist" type="integer">200322698</label>
+			<label index="eIcon.menuSitemap" type="integer">258217158</label>
+			<label index="eIcon.recordList" type="integer">199959556</label>
+			<label index="eIcon.plugin" type="integer">206199137</label>
+			<label index="eIcon.multimedia" type="integer">66403706</label>
+			<label index="eIcon.form" type="integer">268386904</label>
+			<label index="eIcon.search" type="integer">260269479</label>
+			<label index="eIcon.login" type="integer">135433115</label>
+			<label index="eIcon.page" type="integer">230383377</label>
+		</languageKey>
+	</orig_hash>
+	<orig_text type="array">
+		<languageKey index="default" type="array">
+		</languageKey>
+	</orig_text>
 </T3locallang>

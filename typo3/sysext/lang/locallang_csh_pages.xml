@@ -119,5 +119,7 @@ A General Record Storage Page is typically a page of the &quot;SysFolder&quot; t
 		<languageKey index="ba">EXT:csh_ba/lang/ba.locallang_csh_pages.xml</languageKey>
 		<languageKey index="kr">EXT:csh_kr/lang/kr.locallang_csh_pages.xml</languageKey>
 		<languageKey index="it">EXT:csh_it/lang/it.locallang_csh_pages.xml</languageKey>
+		<languageKey index="eo">EXT:csh_eo/lang/eo.locallang_csh_pages.xml</languageKey>
+		<languageKey index="my">EXT:csh_my/lang/my.locallang_csh_pages.xml</languageKey>
 	</data>
 </T3locallang>

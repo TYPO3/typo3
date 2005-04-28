@@ -239,5 +239,7 @@
 		<languageKey index="ba">EXT:csh_ba/cms/ba.locallang_ttc.xml</languageKey>
 		<languageKey index="ca">EXT:csh_ca/cms/ca.locallang_ttc.xml</languageKey>
 		<languageKey index="kr">EXT:csh_kr/cms/kr.locallang_ttc.xml</languageKey>
+		<languageKey index="eo">EXT:csh_eo/cms/eo.locallang_ttc.xml</languageKey>
+		<languageKey index="my">EXT:csh_my/cms/my.locallang_ttc.xml</languageKey>
 	</data>
 </T3locallang>

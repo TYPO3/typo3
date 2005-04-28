@@ -497,7 +497,7 @@ class SC_index {
 		$this->interfaceSelector = '';
 		$this->interfaceSelector_hidden='';
 		$this->interfaceSelector_jump = '';
-#debug($this->redirect_url);
+
 			// If interfaces are defined AND no input redirect URL in GET vars:
 		if ($TYPO3_CONF_VARS['BE']['interfaces'] && !$this->redirect_url)	{
 			$parts = t3lib_div::trimExplode(',',$TYPO3_CONF_VARS['BE']['interfaces']);

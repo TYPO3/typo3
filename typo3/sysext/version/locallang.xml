@@ -54,6 +54,8 @@
 		<languageKey index="ca">EXT:csh_ca/version/ca.locallang.xml</languageKey>
 		<languageKey index="ba">EXT:csh_ba/version/ba.locallang.xml</languageKey>
 		<languageKey index="kr">EXT:csh_kr/version/kr.locallang.xml</languageKey>
+		<languageKey index="eo">EXT:csh_eo/version/eo.locallang.xml</languageKey>
+		<languageKey index="my">EXT:csh_my/version/my.locallang.xml</languageKey>
 	</data>
 	<orig_hash type="array">
 		<languageKey index="default" type="array">

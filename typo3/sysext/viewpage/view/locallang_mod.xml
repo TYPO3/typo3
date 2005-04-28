@@ -53,6 +53,8 @@
 		<languageKey index="ca">EXT:csh_ca/viewpage/view/ca.locallang_mod.xml</languageKey>
 		<languageKey index="ba">EXT:csh_ba/viewpage/view/ba.locallang_mod.xml</languageKey>
 		<languageKey index="kr">EXT:csh_kr/viewpage/view/kr.locallang_mod.xml</languageKey>
+		<languageKey index="eo">EXT:csh_eo/viewpage/view/eo.locallang_mod.xml</languageKey>
+		<languageKey index="my">EXT:csh_my/viewpage/view/my.locallang_mod.xml</languageKey>
 	</data>
 	<orig_hash type="array">
 		<languageKey index="default" type="array">

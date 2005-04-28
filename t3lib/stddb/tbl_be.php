@@ -275,6 +275,7 @@ $TCA['be_users'] = Array (
 				'items' => Array (
 					Array('English', ''),
 					Array('Arabic', 'ar'),
+					Array('Bahasa Malaysia', 'my'),
 					Array('Basque', 'eu'),
 					Array('Bosnian', 'ba'),
 					Array('Brazilian Portuguese', 'br'),
