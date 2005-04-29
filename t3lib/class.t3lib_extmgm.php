@@ -937,53 +937,50 @@ tt_content.'.$key.$prefix.' {
 			if ($TYPO3_CONF_VARS['EXT']['extCache'] && t3lib_extMgm::isCacheFilesAvailable($cacheFilePrefix))	{
 					// Return cache file prefix:
 				$extensions['_CACHEFILE'] = $cacheFilePrefix;
-			} else {
-				// ... but if not, configure...
+			} else {	// ... but if not, configure...
+					// Prepare reserved filenames:
+				$files = t3lib_div::trimExplode(',','ext_localconf.php,ext_tables.php,ext_tables.sql,ext_tables_static+adt.sql,ext_typoscript_constants.txt,ext_typoscript_editorcfg.txt,ext_typoscript_setup.txt',1);
+
+					// Traverse extensions and check their existence:
+				clearstatcache();	// Clear file state cache to make sure we get good results from is_dir()
 				$temp_extensions = array_unique(t3lib_div::trimExplode(',',$rawExtList,1));
-				while(list(,$temp_extKey)=each($temp_extensions))	{
+				foreach($temp_extensions as $temp_extKey)	{
+						// Check local, global and system locations:
 					if (@is_dir(PATH_site.'typo3conf/ext/'.$temp_extKey))	{
-						$extensions[$temp_extKey]=array('type'=>'L','siteRelPath'=>'typo3conf/ext/'.$temp_extKey.'/','typo3RelPath'=>'../typo3conf/ext/'.$temp_extKey.'/');
+						$extensions[$temp_extKey] = array('type'=>'L', 'siteRelPath'=>'typo3conf/ext/'.$temp_extKey.'/', 'typo3RelPath'=>'../typo3conf/ext/'.$temp_extKey.'/');
 					} elseif (@is_dir(PATH_site.TYPO3_mainDir.'ext/'.$temp_extKey))	{
-						$extensions[$temp_extKey]=array('type'=>'G','siteRelPath'=>TYPO3_mainDir.'ext/'.$temp_extKey.'/','typo3RelPath'=>'ext/'.$temp_extKey.'/');
+						$extensions[$temp_extKey] = array('type'=>'G', 'siteRelPath'=>TYPO3_mainDir.'ext/'.$temp_extKey.'/', 'typo3RelPath'=>'ext/'.$temp_extKey.'/');
 					} elseif (@is_dir(PATH_site.TYPO3_mainDir.'sysext/'.$temp_extKey))	{
-						$extensions[$temp_extKey]=array('type'=>'S','siteRelPath'=>TYPO3_mainDir.'sysext/'.$temp_extKey.'/','typo3RelPath'=>'sysext/'.$temp_extKey.'/');
+						$extensions[$temp_extKey] = array('type'=>'S', 'siteRelPath'=>TYPO3_mainDir.'sysext/'.$temp_extKey.'/', 'typo3RelPath'=>'sysext/'.$temp_extKey.'/');
 					}
 
-					$files = t3lib_div::trimExplode(',','
-						ext_localconf.php,
-						ext_tables.php,
-						ext_tables.sql,
-						ext_tables_static+adt.sql,
-						ext_typoscript_constants.txt,
-						ext_typoscript_editorcfg.txt,
-						ext_typoscript_setup.txt
-					',1);
-					reset($files);
-					while(list(,$fName)=each($files))	{
-						$temp_filename = PATH_site.$extensions[$temp_extKey]['siteRelPath'].trim($fName);
-						if (is_array($extensions[$temp_extKey]) && @is_file($temp_filename))	{
-							$extensions[$temp_extKey][$fName]=$temp_filename;
+						// If extension was found, check for reserved filenames:
+					if (isset($extensions[$temp_extKey]))	{
+						foreach($files as $fName) 	{
+							$temp_filename = PATH_site.$extensions[$temp_extKey]['siteRelPath'].trim($fName);
+							if (is_array($extensions[$temp_extKey]) && @is_file($temp_filename))	{
+								$extensions[$temp_extKey][$fName] = $temp_filename;
+							}
 						}
 					}
 				}
 				unset($extensions['_CACHEFILE']);
 
-
-				// write cache?
-				if ($TYPO3_CONF_VARS['EXT']['extCache'])	{
+					// write cache?
+				if ($TYPO3_CONF_VARS['EXT']['extCache'] &&
+						@is_dir(PATH_site.TYPO3_mainDir.'sysext/') &&
+						@is_dir(PATH_site.TYPO3_mainDir.'ext/'))	{	// Must also find global and system extension directories to exist, otherwise caching cannot be allowed (since it is most likely a temporary server problem). This might fix a rare, unrepeatable bug where global/system extensions are not loaded resulting in fatal errors if that is cached!
 					$wrError = t3lib_extMgm::cannotCacheFilesWritable($cacheFilePrefix);
 					if ($wrError)	{
-//debug('Cannot write cache files: '.$wrError.'. Disabling the cache...');
 						$TYPO3_CONF_VARS['EXT']['extCache']=0;
 					} else {
-						// Write cache files:
+							// Write cache files:
 						$extensions = t3lib_extMgm::writeCacheFiles($extensions,$cacheFilePrefix);
 					}
 				}
 			}
 		}
 
-#debug($extensions);
 		return $extensions;
 	}
 

@@ -1,3 +1,7 @@
+2005-04-29  Kasper Skårhøj,,,  <kasper@typo3.com>
+
+	* Applied fixes to t3lib_extMgm in order to prevent possible fatal errors where only local extensions would be loaded, resulting in a complete failure of the system (aka "...the cms extension is not loaded" bug). It is unknown if it fixes such problems since the bug is not repeatable.
+
 2005-04-28  Kasper Skårhøj,,,  <kasper@typo3.com>
 
 	* Added API in tslib_pibase for checking availability of the cHash value when plugins are running as USER cObjects. This is a VERY IMPORTANT thing for plugin writers to acquaint themselves with. I suggest reading the article "The Mysteries of &cHash" which was written about this tricky issue.
