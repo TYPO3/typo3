@@ -371,28 +371,33 @@ class tslib_feUserAuth extends t3lib_userAuth {
 	 * If a change in the recs storage happens (which it probably does) the function setKey() is called in order to store the array again.
 	 *
 	 * @param	array		The data array to merge into/override the current recs values. The $recs array is constructed as [table]][uid] = scalar-value (eg. string/integer).
+	 * @param	integer		The maximum size of stored session data. If zero, no limit is applied and even confirmation of cookie session is discarded.
 	 * @return	void
 	 */
-	function record_registration($recs)	{
-		if ($recs['clear_all'])	{
-			$this->setKey('ses','recs','');
-		}
-		$change=0;
-		$recs_array=$this->getKey('ses','recs');
-		reset($recs);
-		while(list($table,$data)=each($recs))	{
-			if (is_array($data))	{
-				reset($data);
-				while(list($rec_id,$value)=each($data))	{
-					if ($value != $recs_array[$table][$rec_id])	{
-						$recs_array[$table][$rec_id] = $value;
-						$change=1;
+	function record_registration($recs,$maxSizeOfSessionData=0)	{
+
+			// Storing value ONLY if there is a confirmed cookie set (->cookieID), otherwise a shellscript could easily be spamming the fe_sessions table with bogus content and thus bloat the database
+		if (!$maxSizeOfSessionData || $this->cookieId===$this->id)	{
+			if ($recs['clear_all'])	{
+				$this->setKey('ses','recs','');
+			}
+			$change=0;
+			$recs_array=$this->getKey('ses','recs');
+			reset($recs);
+			while(list($table,$data)=each($recs))	{
+				if (is_array($data))	{
+					reset($data);
+					while(list($rec_id,$value)=each($data))	{
+						if ($value != $recs_array[$table][$rec_id])	{
+							$recs_array[$table][$rec_id] = $value;
+							$change=1;
+						}
 					}
 				}
 			}
-		}
-		if ($change)	{
-			$this->setKey('ses','recs',$recs_array);
+			if ($change && (!$maxSizeOfSessionData || strlen(serialize($recs_array))<$maxSizeOfSessionData))	{
+				$this->setKey('ses','recs',$recs_array);
+			}
 		}
 	}
 }

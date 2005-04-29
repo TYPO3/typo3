@@ -419,7 +419,7 @@ XQCR: t3lib/class.t3lib_positionmap.php
 -QCR: t3lib/class.t3lib_readmail.php
 XQCR: t3lib/class.t3lib_recordlist.php
 -QCR: t3lib/class.t3lib_scbase.php
-		t3lib/class.t3lib_sqlengine.php			[Karsten?]
+-QC-: t3lib/class.t3lib_sqlengine.php
 -QCR: t3lib/class.t3lib_stdgraphic.php
 XQCR: t3lib/class.t3lib_superadmin.php
 -QC-: t3lib/class.t3lib_svbase.php

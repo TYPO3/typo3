@@ -519,7 +519,7 @@
 		$this->fe_user->fetchSessionData();	// Gets session data
 		$recs = t3lib_div::_GP('recs');
 		if (is_array($recs))	{	// If any record registration is submitted, register the record.
-			$this->fe_user->record_registration($recs);
+			$this->fe_user->record_registration($recs, $this->TYPO3_CONF_VARS['FE']['maxSessionDataSize']);
 		}
 
 			// Call hook for possible manipulation of frontend user object
@@ -1380,8 +1380,12 @@
 			$cHash_calc = t3lib_div::shortMD5(serialize($this->cHash_array));
 
 			if ($cHash_calc!=$this->cHash)	{
-				$this->set_no_cache();
-				$GLOBALS['TT']->setTSlogMessage('The incoming cHash "'.$this->cHash.'" and calculated cHash "'.$cHash_calc.'" did not match, so caching was disabled. The fieldlist used was "'.implode(',',array_keys($this->cHash_array)).'"',2);
+				if ($this->TYPO3_CONF_VARS['FE']['pageNotFoundOnCHashError']) {
+					$this->pageNotFoundAndExit('Request parameters could not be validated (&cHash comparison failed)');
+				} else {
+					$this->set_no_cache();
+					$GLOBALS['TT']->setTSlogMessage('The incoming cHash "'.$this->cHash.'" and calculated cHash "'.$cHash_calc.'" did not match, so caching was disabled. The fieldlist used was "'.implode(',',array_keys($this->cHash_array)).'"',2);
+				}
 			}
 		}
 	}
@@ -1395,8 +1399,13 @@
 	 */
 	function reqCHash()	{
 		if (!$this->cHash)	{
-			$this->set_no_cache();
-			$GLOBALS['TT']->setTSlogMessage('TSFE->reqCHash(): No &cHash parameter was sent for GET vars though required so caching is disabled ',2);
+			if ($this->TYPO3_CONF_VARS['FE']['pageNotFoundOnCHashError']) {
+				if ($this->tempContent)	{ $this->clearPageCacheContent(); }
+				$this->pageNotFoundAndExit('Request parameters could not be validated (&cHash empty)');
+			} else {
+				$this->set_no_cache();
+				$GLOBALS['TT']->setTSlogMessage('TSFE->reqCHash(): No &cHash parameter was sent for GET vars though required so caching is disabled ',2);
+			}
 		}
 	}
 
