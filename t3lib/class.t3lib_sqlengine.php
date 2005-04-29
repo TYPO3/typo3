@@ -26,6 +26,7 @@
 ***************************************************************/
 /**
  * PHP SQL engine
+ * EXPERIMENTAL!
  *
  * $Id$
  *
@@ -94,7 +95,7 @@ require_once(PATH_t3lib.'class.t3lib_sqlparser.php');
 /**
  * PHP SQL engine / server
  * Basically this is trying to emulation SQL record selection by PHP, thus allowing SQL queries into alternative data storages managed by PHP.
- * Consider this library experimental for now.
+ * EXPERIMENTAL!
  *
  * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  * @package TYPO3
