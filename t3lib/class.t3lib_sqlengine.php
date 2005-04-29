@@ -36,47 +36,47 @@
  *
  *
  *
- *  102: class t3lib_sqlengine extends t3lib_sqlparser
- *  124:     function init($config, &$pObj)
- *  132:     function resetStatusVars()
- *  145:     function processAccordingToConfig(&$value,$fInfo)
+ *  103: class t3lib_sqlengine extends t3lib_sqlparser
+ *  125:     function init($config, &$pObj)
+ *  133:     function resetStatusVars()
+ *  149:     function processAccordingToConfig(&$value,$fInfo)
  *
  *              SECTION: SQL queries
- *  200:     function exec_INSERTquery($table,$fields_values)
- *  267:     function exec_UPDATEquery($table,$where,$fields_values)
- *  326:     function exec_DELETEquery($table,$where)
- *  377:     function exec_SELECTquery($select_fields,$from_table,$where_clause,$groupBy,$orderBy,$limit)
- *  420:     function sql_query($query)
- *  431:     function sql_error()
- *  440:     function sql_insert_id()
- *  449:     function sql_affected_rows()
- *  459:     function quoteStr($str)
+ *  204:     function exec_INSERTquery($table,$fields_values)
+ *  271:     function exec_UPDATEquery($table,$where,$fields_values)
+ *  330:     function exec_DELETEquery($table,$where)
+ *  381:     function exec_SELECTquery($select_fields,$from_table,$where_clause,$groupBy,$orderBy,$limit)
+ *  424:     function sql_query($query)
+ *  435:     function sql_error()
+ *  444:     function sql_insert_id()
+ *  453:     function sql_affected_rows()
+ *  463:     function quoteStr($str)
  *
  *              SECTION: SQL admin functions
- *  484:     function admin_get_tables()
- *  495:     function admin_get_fields($tableName)
- *  506:     function admin_get_keys($tableName)
- *  517:     function admin_query($query)
+ *  488:     function admin_get_tables()
+ *  499:     function admin_get_fields($tableName)
+ *  510:     function admin_get_keys($tableName)
+ *  521:     function admin_query($query)
  *
  *              SECTION: Data Source I/O
- *  542:     function readDataSource($table)
- *  554:     function saveDataSource($table)
+ *  546:     function readDataSource($table)
+ *  558:     function saveDataSource($table)
  *
- *              SECTION: SQL engine functions
- *  583:     function selectFromData($table,$where)
- *  619:     function select_evalSingle($table,$config,&$itemKeys)
- *  740:     function getResultSet($keys, $table, $fieldList)
+ *              SECTION: SQL engine functions (PHP simulation of SQL) - still experimental
+ *  588:     function selectFromData($table,$where)
+ *  626:     function select_evalSingle($table,$config,&$itemKeys)
+ *  747:     function getResultSet($keys, $table, $fieldList)
  *
  *              SECTION: Debugging
- *  773:     function debug_printResultSet($array)
+ *  790:     function debug_printResultSet($array)
  *
  *
- *  812: class t3lib_sqlengine_resultobj
- *  826:     function sql_num_rows()
- *  835:     function sql_fetch_assoc()
- *  846:     function sql_fetch_row()
- *  864:     function sql_data_seek($pointer)
- *  877:     function sql_field_type()
+ *  829: class t3lib_sqlengine_resultobj
+ *  843:     function sql_num_rows()
+ *  852:     function sql_fetch_assoc()
+ *  863:     function sql_fetch_row()
+ *  881:     function sql_data_seek($pointer)
+ *  894:     function sql_field_type()
  *
  * TOTAL FUNCTIONS: 27
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -93,7 +93,8 @@ require_once(PATH_t3lib.'class.t3lib_sqlparser.php');
 
 /**
  * PHP SQL engine / server
- * Some parts are experimental for now.
+ * Basically this is trying to emulation SQL record selection by PHP, thus allowing SQL queries into alternative data storages managed by PHP.
+ * Consider this library experimental for now.
  *
  * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  * @package TYPO3
@@ -138,9 +139,12 @@ class t3lib_sqlengine extends t3lib_sqlparser {
 	/**
 	 * Processing of update/insert values based on field type.
 	 *
-	 * @param	[type]		$$value: ...
-	 * @param	[type]		$fInfo: ...
-	 * @return	[type]		...
+	 * The input value is typecast and trimmed/shortened according to the field
+	 * type and the configuration options from the $fInfo parameter.
+	 *
+	 * @param	mixed		$value The input value to process
+	 * @param	array		$fInfo Field configuration data
+	 * @return	mixed		The processed input value
 	 */
 	function processAccordingToConfig(&$value,$fInfo)	{
 		$options = $this->parseFieldDef($fInfo['Type']);
@@ -218,7 +222,7 @@ class t3lib_sqlengine extends t3lib_sqlparser {
 				$fN = $fInfo['Field'];
 
 					// Set value:
-				$saveArray[$fN] = isset($fields_values[$fN]) ? $fields_values[$fN] : $options['Default'];
+				$saveArray[$fN] = isset($fields_values[$fN]) ? $fields_values[$fN] : $options['Default'];	// $options not defined, kasper!
 
 					// Process value:
 				$this->processAccordingToConfig($saveArray[$fN], $fInfo);
@@ -569,16 +573,17 @@ class t3lib_sqlengine extends t3lib_sqlparser {
 
 	/********************************
 	 *
-	 * SQL engine functions
+	 * SQL engine functions (PHP simulation of SQL) - still experimental
 	 *
 	 ********************************/
 
 	/**
-	 * [Describe function...]
+	 * PHP simulation of SQL "SELECT"
+	 * Yet EXPERIMENTAL!
 	 *
-	 * @param	[type]		$table: ...
-	 * @param	[type]		$where: ...
-	 * @return	[type]		...
+	 * @param	string		Table name
+	 * @param	array		Where clause parsed into array
+	 * @return	array		Array of keys pointing to result rows in $this->data[$table]
 	 */
 	function selectFromData($table,$where)	{
 
@@ -609,12 +614,14 @@ class t3lib_sqlengine extends t3lib_sqlparser {
 	}
 
 	/**
-	 * [Describe function...]
+	 * Evalutaion of a WHERE-clause-array.
+	 * Yet EXPERIMENTAL
 	 *
-	 * @param	[type]		$table: ...
-	 * @param	[type]		$config: ...
-	 * @param	[type]		$itemKeys: ...
-	 * @return	[type]		...
+	 * @param	string		Tablename
+	 * @param	array		WHERE-configuration array
+	 * @param	array		Data array to work on.
+	 * @return	void		Data array passed by reference
+	 * @see selectFromData()
 	 */
 	function select_evalSingle($table,$config,&$itemKeys)	{
 		$neg = preg_match('/^AND[[:space:]]+NOT$/',trim($config['operator']));
@@ -730,12 +737,12 @@ class t3lib_sqlengine extends t3lib_sqlparser {
 	}
 
 	/**
-	 * [Describe function...]
+	 * Returning result set based on result keys, table and field list
 	 *
-	 * @param	[type]		$keys: ...
-	 * @param	[type]		$table: ...
-	 * @param	[type]		$fields: ...
-	 * @return	[type]		...
+	 * @param	array		Result keys
+	 * @param	string		Tablename
+	 * @param	string		Fieldlist (commaseparated)
+	 * @return	array		Result array with "rows"
 	 */
 	function getResultSet($keys, $table, $fieldList)	{
 		$fields = t3lib_div::trimExplode(',',$fieldList);
@@ -753,6 +760,16 @@ class t3lib_sqlengine extends t3lib_sqlparser {
 
 		return $output;
 	}
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -870,9 +887,9 @@ class t3lib_sqlengine_resultobj {
 	}
 
 	/**
-	 * [Describe function...]
+	 * Returning SQL field type
 	 *
-	 * @return	[type]		...
+	 * @return	string		Blank string, not supported (it seems)
 	 */
 	function sql_field_type()	{
 		return '';
