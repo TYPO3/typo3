@@ -4674,6 +4674,9 @@ class tslib_cObj {
 					case 'lll':
 						$retVal = $GLOBALS['TSFE']->sL('LLL:'.$key);
 					break;
+					case 'path':
+						$retVal = $GLOBALS['TSFE']->tmpl->getFileName($key);
+					break;
 					case 'cobj':
 						switch((string)$key)	{
 							case 'parentRecordNumber':
