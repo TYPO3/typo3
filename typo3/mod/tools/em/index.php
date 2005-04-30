@@ -293,7 +293,7 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 		);
 
 	var $privacyNotice = 'When ever you interact with the online repository, server information is sent and stored in the repository for statistics. No personal information is sent, only identification of this TYPO3 install. If you want know exactly what is sent, look in typo3/mod/tools/em/index.php, function repTransferParams()';
-	var $editTextExtensions = 'html,htm,txt,css,tmpl,inc,php,sql,conf,cnf,pl,pm,sh';
+	var $editTextExtensions = 'html,htm,txt,css,tmpl,inc,php,sql,conf,cnf,pl,pm,sh,ChangeLog';
 	var $nameSpaceExceptions = 'beuser_tracking,design_components,impexp,static_file_edit,cms,freesite,quickhelp,classic_welcome,indexed_search,sys_action,sys_workflows,sys_todos,sys_messages,direct_mail,sys_stat,tt_address,tt_board,tt_calender,tt_guest,tt_links,tt_news,tt_poll,tt_rating,tt_products,setup,taskcenter,tsconfig_help,context_help,sys_note,tstemplate,lowlevel,install,belog,beuser,phpmyadmin,aboutmodules,imagelist,setup,taskcenter,sys_notepad,viewpage';
 
 
@@ -1310,7 +1310,7 @@ EXTENSION KEYS:
 				if (t3lib_div::isFirstPartOfStr($editFile,PATH_site) && t3lib_div::isFirstPartOfStr($editFile,$absPath))	{	// Paranoia...
 
 					$fI = t3lib_div::split_fileref($editFile);
-					if (@is_file($editFile) && t3lib_div::inList($this->editTextExtensions,$fI['fileext']))	{
+					if (@is_file($editFile) && t3lib_div::inList($this->editTextExtensions,($fI['fileext']?$fI['fileext']:$fI['filebody'])))	{
 						if (filesize($editFile)<($this->kbMax*1024))	{
 							$outCode = '';
 							$info = '';
@@ -1608,7 +1608,7 @@ EXTENSION KEYS:
 				<tr class="bgColor4">
 					<td><a href="'.htmlspecialchars('index.php?CMD[showExt]='.$extKey.'&CMD[downloadFile]='.rawurlencode($file)).'" title="Download...">'.substr($file,strlen($extPath)).'</a></td>
 					<td>'.t3lib_div::formatSize(filesize($file)).'</td>
-					<td>'.(!in_array($extKey,$this->requiredExt)&&t3lib_div::inList($this->editTextExtensions,$fI['fileext'])?'<a href="'.htmlspecialchars('index.php?CMD[showExt]='.$extKey.'&CMD[editFile]='.rawurlencode($file)).'">Edit file</a>':'').'</td>
+					<td>'.(!in_array($extKey,$this->requiredExt)&&t3lib_div::inList($this->editTextExtensions,($fI['fileext']?$fI['fileext']:$fI['filebody']))?'<a href="'.htmlspecialchars('index.php?CMD[showExt]='.$extKey.'&CMD[editFile]='.rawurlencode($file)).'">Edit file</a>':'').'</td>
 				</tr>';
 				$totalSize+=filesize($file);
 			}
@@ -2701,7 +2701,7 @@ EXTENSION KEYS:
 								if ($reg[1]) {
 									$cmpF = 'ext/'.$extKey.'/'.$fileName;
 									if (!strcmp($reg[1],$cmpF))	{
-										if (ereg('_once\(\$TYPO3_CONF_VARS\[TYPO3_MODE\]\[[\'"]XCLASS[\'"]\]\[[\'"]'.$cmpF.'[\'"]\]\);', $XclassParts[1]))	{
+										if (ereg('_once[[:space:]]*\(\$TYPO3_CONF_VARS\[TYPO3_MODE\]\[[\'"]XCLASS[\'"]\]\[[\'"]'.$cmpF.'[\'"]\]\);', $XclassParts[1]))	{
 											 $out['msg'][] = 'XCLASS OK in '.$fileName;
 										} else $out['errors'][] = 'Couldn\'t find the include_once statement for XCLASS!';
 									} else $out['errors'][] = 'The XCLASS filename-key "'.$reg[1].'" was different from "'.$cmpF.'" which it should have been!';

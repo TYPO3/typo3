@@ -1,3 +1,11 @@
+2005-04-30  Michael Stucki  <michael@typo3.org>
+
+	* Changed the layout of the security warning box which is displayed in alt_intro.php
+	* Added a hook for extending the device recognition capabilities in class.t3lib_matchcondition.php (requested by Michael Perkhofer for his "wurfl" extension)
+	* Fixed bug #0000762: If the word "include_once" is followed by a whitespace, the extension manager issued an error
+	* New feature #0000634: Add the CURIFSUB state to menu objects (thanks to Wolfgang Klinger)
+	* Changed the spamProtectEmailAddresses range again. Allowed values are between -5 and 1 (higher values could break the output, thus the range needed to be changed)
+
 2005-04-29  Kasper Skårhøj,,,  <kasper@typo3.com>
 
 	* Added default limit (10kb) on frontend user session data (set by TYPO3_CONF_VARS[FE][maxSessionDataSize]) and added a check that session data is saved only if a cookie is actually set. This closes a quite obvious hole for DoS attacks where requesting a TYPO3 URL something like "...index.php?id=1&recs[foo][bar]=[up to 2000 chars]" would fill 2kb of data into fe_session_data no questions asked. It is not a security problem but thousand such request (with eg. "ab") would mean 2 megabyte of junk in the database... Spamming that table is now considerably more complicated. However this setting might break applications storing large amounts of user session data, but for the average shopping plugin it should be unaffected.
@@ -12,16 +20,15 @@
 
 2005-04-28  Rupert Germann  <rupi@gmx.li>
 
-	* fix for bug 416: now the wrong default values in autoincrement lines will be removed from .sql files before they are written to the database.
-	This fixes the problem where tables were not created under MySQL 4.1.x
-	* removed a double strcmp in class.t3lib_install (resolves bug 955)
-	* removed the mysql-version ckeck from the install tool and from class.tx_install. With current MySQL versions this is not needed anymore.
+	* Fixed bug #0000416: now the wrong default values in autoincrement lines will be removed from .sql files before they are written to the database. This fixes the problem that tables were not created under MySQL 4.1.x
+	* Fixed bug #0000955: Removed a double strcmp in class.t3lib_install
+	* Removed the mysql-version ckeck from class.tx_install.php. With current MySQL versions this is not needed anymore.
 	* New features for the pi_base pagebrowser: first and last links, "floating" of the displayed pages, all wraps are now configurable, all hardcoded HTML can be substituted with own wraps, and many more.
-	The behaviour of the pagebrowser doesn't change if the additional "internal"-array-elements don't exist.
-	This array has to be set from an extension which passes its TS-config to the pagebrowser function. See comments in function for details.
-	Thank goes to Michael H.E. Roth for developing most of the changes.
-	* fixed bug 911: setting ['BE']['lockIP'] to a value < 4 does not log out the BEuser anymore.
-	* fixed bug 570: now it is prevented that umlauts or other special characters are inserted as "accessKey".
+	  The behaviour of the pagebrowser doesn't change if the additional "internal"-array-elements don't exist.
+	  This array has to be set from an extension which passes its TS-config to the pagebrowser function. See comments in function for details.
+	  Thank goes to Michael H.E. Roth for developing most of the changes.
+	* Fixed bug #0000911: setting ['BE']['lockIP'] to a value < 4 does not log out the BEuser anymore.
+	* Fixed bug #0000570: now it is prevented that umlauts or other special characters are inserted as "accessKey".
 
 2005-04-28  Christian Jul Jensen  <julle(at)typo3(dot)org>
 
@@ -37,7 +44,7 @@
 
 2005-04-27  Rupert Germann  <rupi@gmx.li>
 
-	* fix for bug 536: removed a hardcoded tt_news reference which inserted the admin name as news author.
+	* Fixed bug #0000536: removed a hardcoded tt_news reference which inserted the admin name as news author.
 
 2005-04-27  Michael Scharkow  <mscharkow@gmx.net>
 

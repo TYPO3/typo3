@@ -1749,7 +1749,7 @@ class tslib_cObj {
 					case 'hidden':
 						$value = trim($parts[2]);
 						if(strlen($value) && t3lib_div::inList('recipient_copy,recipient',$confData['fieldname']) && $GLOBALS['TYPO3_CONF_VARS']['FE']['secureFormmail']) {
-						  break;
+							break;
 						}
 						if (strlen($value) && t3lib_div::inList('recipient_copy,recipient',$confData['fieldname']))	{
 							$value = $GLOBALS['TSFE']->codeString($value);
@@ -1920,9 +1920,9 @@ class tslib_cObj {
 				if (substr($hF_key,-1)!='.')	{
 					$hF_value = $this->cObjGetSingle($hF_conf,$conf['hiddenFields.'][$hF_key.'.'],'hiddenfields');
 					if (strlen($hF_value) && t3lib_div::inList('recipient_copy,recipient',$hF_key))	{
-					  if($GLOBALS['TYPO3_CONF_VARS']['FE']['secureFormmail']) {
-					    continue;
-					  }
+						if($GLOBALS['TYPO3_CONF_VARS']['FE']['secureFormmail'])	{
+							continue;
+						}
 						$hF_value = $GLOBALS['TSFE']->codeString($hF_value);
 					}
 					$hiddenfields.='<input type="hidden" name="'.$hF_key.'" value="'.htmlspecialchars($hF_value).'" />';
@@ -4731,7 +4731,7 @@ class tslib_cObj {
 	 * Example: $var = "HTTP_SERVER_VARS | something" will return the value $GLOBALS['HTTP_SERVER_VARS']['something'] value
 	 *
 	 * @param	string		Key, see description of functon
-	 * @param	array		If you want another array that $GLOBALS used, then just put it in here!
+	 * @param	array		If you want another array than $GLOBALS used, then just put it in here!
 	 * @return	mixed		Value from $GLOBALS
 	 * @access private
 	 * @see getData()

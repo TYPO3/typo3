@@ -22,7 +22,7 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 /**
- * t3lib_exec find executables (programs) on unix and windows without knowing where they are
+ * t3lib_exec finds executables (programs) on Unix and Windows without knowing where they are
  *
  * $Id$
  *

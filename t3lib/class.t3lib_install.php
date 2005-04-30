@@ -435,7 +435,7 @@ class t3lib_install {
 								foreach($info[$theKey] as $fieldN => $fieldC) {
 									if (!isset($FDcomp[$table][$theKey][$fieldN]))	{
 										$extraArr[$table][$theKey][$fieldN] = $fieldC;
-									} elseif (strcmp($FDcomp[$table][$theKey][$fieldN], $fieldC)){
+									} elseif (strcmp($FDcomp[$table][$theKey][$fieldN], $fieldC))	{
 										$diffArr[$table][$theKey][$fieldN] = $fieldC;
 										$diffArr_cur[$table][$theKey][$fieldN] = $FDcomp[$table][$theKey][$fieldN];
 									}

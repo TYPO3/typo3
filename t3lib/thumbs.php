@@ -227,7 +227,7 @@ class SC_t3lib_thumbs {
 				if($fd = @fopen($this->output,'rb'))	{
 					Header('Content-type: image/'.$outext);
 					while (!feof($fd))	{
-						echo fread( $fd, 10000 );
+						echo fread($fd, 10000);
 					}
 					fclose( $fd );
 				} else {

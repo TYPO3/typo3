@@ -368,6 +368,7 @@ class fileList extends t3lib_recordList {
 	function linkWrapDir($code,$path)	{
 		$href = $this->script.'?id='.rawurlencode($path);
 
+			// Sometimes $code contains plain HTML tags. In such a case the string should not be modified!
 		if(!strcmp($code,strip_tags($code)))	{
 			return '<a href="'.htmlspecialchars($href).'" title="'.htmlspecialchars($code).'">'.t3lib_div::fixed_lgd($code,$this->fixedL).'</a>';
 		} else	{

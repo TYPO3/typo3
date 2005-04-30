@@ -399,6 +399,15 @@ class t3lib_matchCondition {
 			strstr($agent, 'diibot'))	{
 			return 'robot';
 		}
+
+			// Hook for extending device recognition capabilities:
+		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_matchcondition.php']['devices_class']))	{
+			foreach($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_matchcondition.php']['devices_class'] as $_classRef)	{
+				$_procObj = &t3lib_div::getUserObj($_classRef);
+				return $_procObj->whichDevice_ext($useragent);
+			}
+		}
+
 	}
 
 	/**

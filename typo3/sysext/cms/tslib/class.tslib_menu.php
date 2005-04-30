@@ -945,7 +945,7 @@ class tslib_menu {
 			reset($NOconf);
 			while (list($key,$val)=each($NOconf))	{	// Find active
 				if ($this->isItemState('ACT',$key))	{
-					if (!$ACTinit)	{	// if this is the first active, we must generate ACT.
+					if (!$ACTinit)	{	// if this is the first 'active', we must generate ACT.
 						$ACTconf = $this->tmpl->splitConfArray($this->mconf['ACT.'],$splitCount);
 							// Prepare active rollOver settings, overriding normal active settings
 						if ($this->mconf['ACTRO'])	{
@@ -960,14 +960,14 @@ class tslib_menu {
 				}
 			}
 		}
-			// Prepare active/IFSUB settings, overriding normal settings
+			// Prepare ACT (active)/IFSUB settings, overriding normal settings
 			// ACTIFSUB is true if there exist submenu items to the current item and the current item is active
 		if ($this->mconf['ACTIFSUB'])	{
 			$ACTIFSUBinit = 0;	// Flag: If $ACTIFSUB is generated
 			reset($NOconf);
 			while (list($key,$val)=each($NOconf))	{	// Find active
 				if ($this->isItemState('ACTIFSUB',$key))	{
-					if (!$ACTIFSUBinit)	{	// if this is the first active, we must generate ACTIFSUB.
+					if (!$ACTIFSUBinit)	{	// if this is the first 'active', we must generate ACTIFSUB.
 						$ACTIFSUBconf = $this->tmpl->splitConfArray($this->mconf['ACTIFSUB.'],$splitCount);
 							// Prepare active rollOver settings, overriding normal active settings
 						if ($this->mconf['ACTIFSUBRO'])	{
@@ -999,6 +999,28 @@ class tslib_menu {
 					$NOconf[$key] = $CURconf[$key];		// Substitute normal with current
 					if ($ROconf)	{	// If rollOver on normal, we must apply a state for rollOver on the active
 						$ROconf[$key] = $CURROconf[$key] ? $CURROconf[$key] : $CURconf[$key];		// If RollOver on active then apply this
+					}
+				}
+			}
+		}
+			// Prepare CUR (current)/IFSUB settings, overriding normal settings
+			// CURIFSUB is true if there exist submenu items to the current item and the current page equals the item here!
+		if ($this->mconf['CURIFSUB'])	{
+			$CURIFSUBinit = 0;	// Flag: If $CURIFSUB is generated
+			reset($NOconf);
+			while (list($key,$val)=each($NOconf))	{
+				if ($this->isItemState('CURIFSUB',$key))	{
+					if (!$CURIFSUBinit)	{	// if this is the first 'current', we must generate CURIFSUB.
+						$CURIFSUBconf = $this->tmpl->splitConfArray($this->mconf['CURIFSUB.'],$splitCount);
+							// Prepare current rollOver settings, overriding normal current settings
+						if ($this->mconf['CURIFSUBRO'])	{
+							$CURIFSUBROconf = $this->tmpl->splitConfArray($this->mconf['CURIFSUBRO.'],$splitCount);
+						}
+						$CURIFSUBinit = 1;
+					}
+					$NOconf[$key] = $CURIFSUBconf[$key];		// Substitute normal with active
+					if ($ROconf)	{	// If rollOver on normal, we must apply a state for rollOver on the current
+						$ROconf[$key] = $CURIFSUBROconf[$key] ? $CURIFSUBROconf[$key] : $CURIFSUBconf[$key];		// If RollOver on current then apply this
 					}
 				}
 			}
@@ -1272,7 +1294,7 @@ class tslib_menu {
 
 	/**
 	 * Returns true if there is a submenu with items for the page id, $uid
-	 * Used by the item states "IFSUB" and "ACTIFSUB" to check if there is a submenu
+	 * Used by the item states "IFSUB", "ACTIFSUB" and "CURIFSUB" to check if there is a submenu
 	 *
 	 * @param	integer		Page uid for which to search for a submenu
 	 * @return	boolean		Returns true if there was a submenu with items found
@@ -1323,6 +1345,9 @@ class tslib_menu {
 				break;
 				case 'CUR':
 					$natVal = $this->isCurrent($this->menuArr[$key]['uid'], $this->getMPvar($key));
+				break;
+				case 'CURIFSUB':
+					$natVal = $this->isCurrent($this->menuArr[$key]['uid'], $this->getMPvar($key)) && $this->isSubMenu($this->menuArr[$key]['uid']);
 				break;
 				case 'USR':
 					$natVal = $this->menuArr[$key]['fe_group'];
@@ -2711,10 +2736,10 @@ class tslib_jsmenu extends tslib_menu {
 		}
 		if ($this->mconf['firstLabelGeneral'] && !$levelConf['firstLabel'])	{
 			$levelConf['firstLabel'] = $this->mconf['firstLabelGeneral'];
-	}
+		}
 		if ($levelConf['firstLabel'] && $codeLines)	{
 			$codeLines.="\n".$menuName.".defTopTitle[".$count."] = unescape('".rawurlencode($levelConf['firstLabel'])."');";
-}
+		}
 		return $codeLines;
 	}
 }

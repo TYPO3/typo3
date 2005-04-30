@@ -1930,7 +1930,7 @@
 		$integrityCheck = $this->TYPO3_CONF_VARS['FE']['strictFormmail'];
 
 		if(!$this->TYPO3_CONF_VARS['FE']['secureFormmail']) {
-			// Check recipient field:
+				// Check recipient field:
 			$encodedFields = explode(',','recipient,recipient_copy');	// These two fields are the ones which contain recipient addresses that can be misused to send mail from foreign servers.
 			foreach($encodedFields as $fieldKey)	{
 				if (strlen($EMAIL_VARS[$fieldKey]))	{
@@ -1944,11 +1944,11 @@
 					}
 				}
 			}
-		} else {
-		  $locData = explode(':',$locationData);
-		  $record = $this->sys_page->checkRecord($locData[1],$locData[2],1);
-		  $EMAIL_VARS['recipient'] = $record['subheader'];
-		  $EMAIL_VARS['recipient_copy'] = $this->extractRecipientCopy($record['bodytext']);
+		} else	{
+			$locData = explode(':',$locationData);
+			$record = $this->sys_page->checkRecord($locData[1],$locData[2],1);
+			$EMAIL_VARS['recipient'] = $record['subheader'];
+			$EMAIL_VARS['recipient_copy'] = $this->extractRecipientCopy($record['bodytext']);
 		}
 
 			// Hook for preprocessing of the content for formmails:

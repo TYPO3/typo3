@@ -3091,10 +3091,11 @@ class t3lib_BEfunc	{
 			}
 
 			if(count($warnings))	{
-				$content = '<br />'.
-					'<p class="typo3-red" style="font-weight: bold;">Security warning:<br />'.
+				$content = '<table border="0" cellpadding="0" cellspacing="0" class="warningbox"><tr><td>'.
+					$GLOBALS['TBE_TEMPLATE']->icons(3).'Security warning!<br />'.
 					'- '.implode('<br />- ', $warnings).'<br /><br />'.
-					'It is highly recommended that you change this immediately.<br />&nbsp;</p>';
+					'It is highly recommended that you change this immediately.'.
+					'</td></tr></table>';
 
 				unset($warnings);
 				return $content;
