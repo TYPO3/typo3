@@ -85,7 +85,7 @@
  */
 
 
-require_once(t3lib_extMgm::extPath('sv').'class.tx_sv_authbase.php');
+require_once(PATH_t3lib.'class.t3lib_svbase.php');
 
 
 
