@@ -3,7 +3,6 @@
 	* Implemented a wrapper for executing ImageMagick
 	* New feature #0001034: GraphicsMagick finally works with TYPO3! This can be enabled by setting TYPO3_CONF_VARS[GFX][im_version_5] to 'gm'.
 	* The Install Tool is now more tolerant when comparing image file sizes. Warnings are only displayed if the created image is more than 10K larger than its reference. In this case you should consider to change your IM/GD version...
-	* Fixed an obvious bug in class.t3lib_userauth.php which caused TYPO3 to stop working.
 
 2005-04-30  Michael Stucki  <michael@typo3.org>
 
