@@ -946,11 +946,11 @@ tt_content.'.$key.$prefix.' {
 				$temp_extensions = array_unique(t3lib_div::trimExplode(',',$rawExtList,1));
 				foreach($temp_extensions as $temp_extKey)	{
 						// Check local, global and system locations:
-					if (@is_dir(PATH_site.'typo3conf/ext/'.$temp_extKey))	{
+					if (@is_dir(PATH_site.'typo3conf/ext/'.$temp_extKey.'/'))	{
 						$extensions[$temp_extKey] = array('type'=>'L', 'siteRelPath'=>'typo3conf/ext/'.$temp_extKey.'/', 'typo3RelPath'=>'../typo3conf/ext/'.$temp_extKey.'/');
-					} elseif (@is_dir(PATH_site.TYPO3_mainDir.'ext/'.$temp_extKey))	{
+					} elseif (@is_dir(PATH_site.TYPO3_mainDir.'ext/'.$temp_extKey.'/'))	{
 						$extensions[$temp_extKey] = array('type'=>'G', 'siteRelPath'=>TYPO3_mainDir.'ext/'.$temp_extKey.'/', 'typo3RelPath'=>'ext/'.$temp_extKey.'/');
-					} elseif (@is_dir(PATH_site.TYPO3_mainDir.'sysext/'.$temp_extKey))	{
+					} elseif (@is_dir(PATH_site.TYPO3_mainDir.'sysext/'.$temp_extKey.'/'))	{
 						$extensions[$temp_extKey] = array('type'=>'S', 'siteRelPath'=>TYPO3_mainDir.'sysext/'.$temp_extKey.'/', 'typo3RelPath'=>'sysext/'.$temp_extKey.'/');
 					}
 

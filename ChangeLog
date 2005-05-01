@@ -1,3 +1,9 @@
+2005-05-01  Michael Stucki  <michael@typo3.org>
+
+	* Implemented a wrapper for executing ImageMagick
+	* New feature #0001034: GraphicsMagick finally works with TYPO3! This can be enabled by setting TYPO3_CONF_VARS[GFX][im_version_5] to 'gm'.
+	* The Install Tool is now more tolerant when comparing image file sizes. Warnings are only displayed if the created image is more than 10K larger than its reference. In this case you should consider to change your IM/GD version...
+
 2005-04-30  Michael Stucki  <michael@typo3.org>
 
 	* Changed the layout of the security warning box which is displayed in alt_intro.php

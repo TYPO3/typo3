@@ -403,9 +403,9 @@ class t3lib_htmlmail {
 		if ($this->from_email)	{
 			if ($this->from_name)	{
 				$name = $this->convertName($this->from_name);
-				$this->add_header("From: $name <$this->from_email>");
+				$this->add_header('From: '.$name.' <'.$this->from_email.'>');
 			} else {
-				$this->add_header("From: $this->from_email");
+				$this->add_header('From: '.$this->from_email);
 			}
 		}
 			// Reply

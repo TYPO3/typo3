@@ -214,10 +214,9 @@ class SC_t3lib_thumbs {
 					} else {
 						$colors = ($sizeMax>56)?'-colors 64':'-colors 16';
 					}
-					$cmd = ($TYPO3_CONF_VARS['GFX']['im_path_lzw'] ? $TYPO3_CONF_VARS['GFX']['im_path_lzw'] : $TYPO3_CONF_VARS['GFX']['im_path']).
-								'convert -sample '.$this->size.' '.$colors.' '.$this->wrapFileName($this->input.'[0]').' '.$this->wrapFileName($this->output);
-
-		//			echo $cmd;
+					$path = $TYPO3_CONF_VARS['GFX']['im_path_lzw'] ? $TYPO3_CONF_VARS['GFX']['im_path_lzw'] : $TYPO3_CONF_VARS['GFX']['im_path'];
+					$parameters = '-sample '.$this->size.' '.$colors.' '.$this->wrapFileName($this->input.'[0]').' '.$this->wrapFileName($this->output);
+					$cmd = t3lib_div::imageMagickCommand('convert', $parameters);
 					exec($cmd);
 					if (!@file_exists($this->output))	{
 						$this->errorGif('No thumb','generated!',basename($this->input));

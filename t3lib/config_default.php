@@ -33,7 +33,7 @@ $TYPO3_CONF_VARS = Array(
 		'im_path' => '/usr/X11R6/bin/',			// Path to the IM tools 'convert', 'combine', 'identify'. Version 4.2.9 of ImageMagick is highly recommended due to features and speed!
 		'im_path_lzw' => '/usr/bin/',			// Path to the IM tool 'convert' with LZW enabled! See 'gif_compress'. If your version 4.2.9 of ImageMagick is compiled with LZW you may leave this field blank AND disable the flag 'gif_compress'! Tip: You can call LZW 'convert' with a prefix like 'myver_convert' by setting this path with it, eg. '/usr/bin/myver_' instead of just '/usr/bin/'.
 
-		'im_version_5' => 0,					// Boolean. Set this if you're using IM 5+. If this is set, 'im_negate_mask', 'im_no_effects' and 'im_mask_temp_ext_gif' are automatically configured for use with ImageMagick version 5 +
+		'im_version_5' => 0,					// String/Boolean. Set this if you're using ImageMagick but not IM 4.x. Setting this value will automatically configure some settings for use with the specified ImageMagick. Allowed values are: 0 (v4), 1 (v5), im5, im6. Additionally, "gm" can be set which activates the use of GraphicsMagick instead of ImageMagick.
 		'im_negate_mask' => 0,					// Boolean. Indicates if the mask images should be inverted first. This depends of the ImageMagick version. Below ver. 5.1 this should be false. Above ImageMagick version 5.2+ it should be true. Just set the flag if the masks works opposite the intension!
 		'im_imvMaskState' => 0,					// Boolean. If set, the 'im_negate_mask' state is inverted. This is very useful with newer versions of IM5 (at least 5.4.3+) where the 'im_version_5' setting will set 'im_negate_mask' which will eventually be wrong... Halleluja for ImageMagick - have I ever regreted using that package...
 		'im_no_effects' => 0,					// Boolean. This is necessary if using ImageMagick 5+. Approved version for using effects is version 4.2.9. Effects in Imagemagick 5+ tends to render very slowly! Therefore this must be disabled in order not to perform sharpen, blurring and such. (However lately IM5 is allowed for effects again, but syntax has changed!)
@@ -291,6 +291,11 @@ if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['im_version_5'])	{
 	$GLOBALS['TYPO3_CONF_VARS']['GFX']['im_negate_mask'] = 1;
 	$GLOBALS['TYPO3_CONF_VARS']['GFX']['im_no_effects'] = 1;
 	$GLOBALS['TYPO3_CONF_VARS']['GFX']['im_mask_temp_ext_gif'] = 1;
+}
+if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['im_version_5']==='gm')	{
+	$GLOBALS['TYPO3_CONF_VARS']['GFX']['im_imvMaskState'] = 1;
+	$GLOBALS['TYPO3_CONF_VARS']['GFX']['im_no_effects'] = 1;
+	$GLOBALS['TYPO3_CONF_VARS']['GFX']['im_v5effects'] = -1;
 }
 if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['im_imvMaskState'])	{
 	$GLOBALS['TYPO3_CONF_VARS']['GFX']['im_negate_mask']=$GLOBALS['TYPO3_CONF_VARS']['GFX']['im_negate_mask']?0:1;

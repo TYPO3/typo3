@@ -1762,7 +1762,7 @@ From sub-directory:
 
 		$paths = array_unique($paths);
 
-		$programs = explode(",","convert,combine,composite,identify");	// Added composite (substitution for combine in newer versions?)
+		$programs = explode(',','gm,convert,combine,composite,identify');
 		$isExt = TYPO3_OS=="WIN" ? ".exe" : "";
 		$this->config_array["im_combine_filename"]="combine";
 		reset($paths);
@@ -1770,18 +1770,24 @@ From sub-directory:
 			reset($programs);
 			if (!ereg('[\\\/]$',$v)) $v.='/';
 			while(list(,$filename)=each($programs))	{
-				if (ini_get("open_basedir")||(@file_exists($v)&& @is_file($v.$filename.$isExt))) {
-					if($this->_checkImageMagick_getVersion($v.$filename.$isExt) > 0 ) {
-						$index[$v][$filename]=$this->_checkImageMagick_getVersion($v.$filename.$isExt);
+				if (ini_get('open_basedir') || (@file_exists($v)&&@is_file($v.$filename.$isExt))) {
+					$version = $this->_checkImageMagick_getVersion($filename,$v);
+					if($version > 0)	{
+						if($filename=='gm')	{	// Assume GraphicsMagick
+							$index[$v]['gm']=$version;
+							continue;	// No need to check for "identify" etc.
+						} else	{	// Assume ImageMagick
+							$index[$v][$filename]=$version;
+						}
 					}
 				}
 			}
-			if (count($index[$v])>=3)	{$this->config_array["im"]=1;}
+			if (count($index[$v])>=3 || $index[$v]['gm'])	{ $this->config_array['im']=1; }
 
-			if ($index[$v]["composite"] && !$index[$v]["combine"])  {
-				$this->config_array["im_combine_filename"]="composite";
-			} elseif (!$index[$v]["composite"] && $index[$v]["combine"]) {
-				$this->config_array["im_combine_filename"]="combine";
+			if ($index[$v]['gm'] || (!$index[$v]['composite'] && $index[$v]['combine'])) {
+				$this->config_array['im_combine_filename']='combine';
+			} elseif ($index[$v]['composite'] && !$index[$v]['combine'])  {
+				$this->config_array['im_combine_filename']='composite';
 			}
 
 			if (isset($index[$v]["convert"]) && $this->checkIMlzw)	{
@@ -1803,7 +1809,7 @@ From sub-directory:
 				while(list($ka[])=each($v)){}
 				$theCode.='<tr><td>'.$this->fw($p).'</td><td>'.$this->fw(implode($ka,"<BR>")).'</td><td>'.$this->fw(implode($v,"<BR>")).'</td></tr>';
 			}
-			$this->message($ext, "Available ImageMagick installations:",'<table border=1 cellpadding=2 cellspacing=2>'.$theCode.'</table>',-1);
+			$this->message($ext, 'Available ImageMagick/GraphicsMagick installations:','<table border="1" cellpadding="2" cellspacing="2">'.$theCode.'</table>',-1);
 		}
 		$this->message($ext, "Search for ImageMagick:",'
 			<form action="'.$this->action.'" method="POST">'.$content.'<input type="checkbox" name="TYPO3_INSTALL[checkIM][lzw]" value="1"'.($this->INSTALL["checkIM"]["lzw"]?" checked":"").'> Check LZW capabilities.
@@ -1824,14 +1830,14 @@ From sub-directory:
 	 * @param	[type]		$file: ...
 	 * @return	[type]		...
 	 */
-	function _checkImageMagickGifCapability($file)	{
+	function _checkImageMagickGifCapability($path)	{
 		if ($this->config_array["dir_typo3temp"])	{		//  && !$this->config_array["safemode"]
-			$path = $this->typo3temp_path;
+			$tempPath = $this->typo3temp_path;
 			$uniqueName = md5(uniqid(microtime()));
-			$dest = $path.$uniqueName.".gif";
+			$dest = $tempPath.$uniqueName.'.gif';
 			$src = PATH_t3lib."gfx/typo3logo.gif";
 			if (@is_file($src) && !strstr($src," ") && !strstr($dest," "))	{
-				$cmd = $file.'convert '.$src.' '.$dest;
+				$cmd = t3lib_div::imageMagickCommand('convert', $src.' '.$dest, $path);
 				exec($cmd);
 			} else die("No t3lib/gfx/typo3logo.gif file!");
 			$out="";
@@ -1863,14 +1869,35 @@ From sub-directory:
 	/**
 	 * Extracts the version number for imagemagick
 	 *
-	 * @param	string		$file	This is the path to the convert-program to execute in order to find the version number
-	 * @return	[type]		...
+	 * @param	string		The program name to execute in order to find out the version number
+	 * @param	string		Path for the above program
+	 * @return	string		Version number of the found ImageMagick instance
 	 */
-	function _checkImageMagick_getVersion($file)	{
-		exec($file, $retVal);
+	function _checkImageMagick_getVersion($file, $path)	{
+			// Temporarily override some settings
+		$im_version = $GLOBALS['TYPO3_CONF_VARS']['GFX']['im_version_5'];
+		$combine_filename = $GLOBALS['TYPO3_CONF_VARS']['GFX']['im_combine_filename'];
+
+		if($file=='gm') {
+			$GLOBALS['TYPO3_CONF_VARS']['GFX']['im_version_5'] = 'gm';
+			$file = 'identify';	// Work-around, preventing execution of "gm gm"
+		} else	{
+			$GLOBALS['TYPO3_CONF_VARS']['GFX']['im_version_5'] = '1';
+
+			if($file=='combine' || $file=='composite')	{	// Override the combine_filename setting
+				$GLOBALS['TYPO3_CONF_VARS']['GFX']['im_combine_filename'] = $file;
+			}
+		}
+
+		$cmd = t3lib_div::imageMagickCommand($file, '', $path);
+		exec($cmd, $retVal);
 		$string = $retVal[0];
-		list(,$ver) = explode("ImageMagick", $string);
+		list(,$ver) = explode('Magick', $string);
 		list($ver) = explode(" ",trim($ver));
+
+			// Restore the values
+		$GLOBALS['TYPO3_CONF_VARS']['GFX']['im_version_5'] = $im_version;
+		$GLOBALS['TYPO3_CONF_VARS']['GFX']['im_combine_filename'] = $combine_filename;
 		return trim($ver);
 	}
 
@@ -1993,6 +2020,7 @@ From sub-directory:
 					if (is_array($fA["im"]))	{
 						$out.=$this->wrapInCells("[GFX][im]=", $this->getFormElement($fA["im"], $fA["im"], 'TYPO3_INSTALL[localconf.php][im]', $GLOBALS["TYPO3_CONF_VARS"]["GFX"]["im"]));
 						$out.=$this->wrapInCells("[GFX][im_combine_filename]=", $this->getFormElement($fA["im_combine_filename"], ($fA["im_combine_filename"]?$fA["im_combine_filename"]:"combine"), 'TYPO3_INSTALL[localconf.php][im_combine_filename]', $GLOBALS["TYPO3_CONF_VARS"]["GFX"]["im_combine_filename"]));
+						$out.=$this->wrapInCells('[GFX][im_version_5]=', $this->getFormElement($fA['im_version_5'], ($fA['im_version_5']?$fA['im_version_5']:''), 'TYPO3_INSTALL[localconf.php][im_version_5]', $GLOBALS['TYPO3_CONF_VARS']['GFX']['im_version_5']));
 						if ($GLOBALS["TYPO3_CONF_VARS"]["GFX"]["im"])	{
 							if (is_array($fA["im_path"]))	{
 								$out.=$this->wrapInCells("[GFX][im_path]=", $this->getFormElement($this->setLabelValueArray($fA["im_path"],1), $this->setLabelValueArray($fA["im_path"],0), 'TYPO3_INSTALL[localconf.php][im_path]', $GLOBALS["TYPO3_CONF_VARS"]["GFX"]["im_path"]));
@@ -2077,10 +2105,17 @@ From sub-directory:
 									if (strcmp($GLOBALS["TYPO3_CONF_VARS"]["GFX"][$key],$value))	{
 										$this->setValueInLocalconfFile($lines, '$TYPO3_CONF_VARS["GFX"]["'.$key.'"]', $value);
 									}
-									$value_ext = (doubleval($version)<5)?0:1;
-									if (strcmp($GLOBALS["TYPO3_CONF_VARS"]["GFX"]["im_version_5"],$value_ext))	{
+									if(doubleval($version)>0 && doubleval($version)<4)	{	// Assume GraphicsMagick
+										$value_ext = 'gm';
+									} elseif(doubleval($version)<5)	{	// Assume ImageMagick 4.x
+										$value_ext = 0;
+									} else	{	// Assume ImageMagick 5+
+										$value_ext = 1;
+									}
+									if (strcmp(strtolower($GLOBALS['TYPO3_CONF_VARS']['GFX']['im_version_5']),$value_ext))	{
 										$this->setValueInLocalconfFile($lines, '$TYPO3_CONF_VARS["GFX"]["im_version_5"]', $value_ext);
 									}
+	// 								if (strcmp(strtolower($GLOBALS['TYPO3_CONF_VARS']['GFX']['im_version_5']),$value))	$this->setValueInLocalconfFile($lines, '$TYPO3_CONF_VARS["GFX"]["im_version_5"]', $value);
 								} else $this->messages[]= $errorMessages[] = "Path '".$value."' contains spaces or is longer than 100 chars (...not saved)";
 							break;
 							case "im_path_lzw":
@@ -2155,12 +2190,24 @@ From sub-directory:
 	function setLabelValueArray($arr,$type)	{
 		reset($arr);
 		while(list($k,$v)=each($arr))	{
+			if($this->config_array['im_versions'][$v]['gm'])	{
+				$program = 'gm';
+			} else	{
+				$program = 'convert';
+			}
+
 			switch($type)	{
 				case 0:	// value, im
-					$arr[$k].="|".$this->config_array["im_versions"][$v]["convert"];
+					$arr[$k].='|'.$this->config_array['im_versions'][$v][$program];
 				break;
 				case 1:	// labels, im
-					$arr[$k].=$this->config_array["im_versions"][$v]["convert"] ? " (".$this->config_array["im_versions"][$v]["convert"].($this->config_array["im_versions"][$v]["gif_capability"]?", ".$this->config_array["im_versions"][$v]["gif_capability"]:"").")" : "";
+					if($this->config_array['im_versions'][$v][$program])	{
+						$arr[$k].= ' ('.$this->config_array['im_versions'][$v][$program];
+						$arr[$k].= ($this->config_array['im_versions'][$v]['gif_capability'] ? ', '.$this->config_array['im_versions'][$v]['gif_capability'] : '');
+						$arr[$k].= ')';
+					} else	{
+						$arr[$k].= '';
+					}
 				break;
 				case 2: // labels, gd
 					$arr[$k].=" (".($v==1?"PNG":"GIF").")";
@@ -2229,6 +2276,7 @@ From sub-directory:
 		$formArray["im_path"]=array("");
 		$formArray["im_path_lzw"]=array("");
 		$formArray["im_combine_filename"]=array("");
+		$formArray['im_version_5']=array('');
 		$formArray["im"]=array(1);
 		$formArray["gdlib"]=array(1);
 		if ($this->config_array["gd"] && ($this->config_array["gd_gif"] || $this->config_array["gd_png"]))	{
@@ -2254,6 +2302,7 @@ From sub-directory:
 			while(list($path,$dat)=each($this->config_array["im_versions"]))	{
 				if (count($dat)>=3)	{
 					if (doubleval($dat["convert"])<5)	{
+						$formArray['im_version_5']=array(0);
 						if ($dat["gif_capability"]=="LZW")	{
 							$formArray["im_path"]=array($path);
 							$found=2;
@@ -2262,15 +2311,22 @@ From sub-directory:
 							$found=1;
 						}
 					} elseif (!$found)	{
+						$formArray['im_version_5']=array(1);
+						$formArray["im_path"]=array($path);
+						$found=1;
+					}
+				} elseif($dat['gm'])	{
+					$formArray['im_version_5']=array('gm');
+					if ($dat['gif_capability']=='LZW')	{
+						$formArray['im_path']=array($path);
+						$found=2;
+					} elseif ($found<2)	{
 						$formArray["im_path"]=array($path);
 						$found=1;
 					}
 				}
 				if ($dat["gif_capability"]=="LZW")	{
-					if (doubleval($dat["convert"])<5)	{
-						$formArray["im_path_lzw"]=array($path);
-						$LZW_found=1;
-					} elseif (!$LZW_found) {
+					if (doubleval($dat['convert'])<5 || !$LZW_found)	{
 						$formArray["im_path_lzw"]=array($path);
 						$LZW_found=1;
 					}
@@ -3021,15 +3077,9 @@ From sub-directory:
 			$ex_rows.=$this->getTwinImageMessage('', 'Your server:', 'Reference:');
 			$ex_rows.=$this->getTwinImageMessage('', t3lib_div::formatSize($destImg['filesize']).', '.$destImg[0].'x'.$destImg[1].' pixels', t3lib_div::formatSize($verifyImg['filesize']).', '.$verifyImg[0].'x'.$verifyImg[1].' pixels');
 
-			if ($destImg["filesize"]!=$verifyImg["filesize"])	{
-				if (intval($destImg["filesize"]) && abs(($verifyImg["filesize"]/$destImg["filesize"])-1) < 0.05)	{
-//					debug(abs(($verifyImg["filesize"]/$destImg["filesize"])-1));
-					$ex_rows.=$this->getTwinImageMessage("File size is a bit different from reference", $destImg["filesize"], $verifyImg["filesize"]);
-					$errorLevels[]=1;
-				} else {
-					$ex_rows.=$this->getTwinImageMessage("File size is very different from reference", $destImg["filesize"], $verifyImg["filesize"]);
-					$errorLevels[]=2;
-				}
+			if (($destImg['filesize']!=$verifyImg['filesize']) && (intval($destImg['filesize']) && ($destImg['filesize']-$verifyImg['filesize']) > 10240))	{	// Display a warning if the generated image is more than 10KB larger than its reference...
+				$ex_rows.=$this->getTwinImageMessage('File size is very different from reference', $destImg['filesize'], $verifyImg['filesize']);
+				$errorLevels[]=2;
 			}
 			if ($destImg[0]!=$verifyImg[0] || $destImg[1]!=$verifyImg[1])	{
 				$ex_rows.=$this->getTwinImageMessage("Pixel dimension are not equal!");

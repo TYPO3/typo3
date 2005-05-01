@@ -444,18 +444,15 @@ class t3lib_iconWorks	{
 	function imagecopyresized(&$im, $cpImg, $Xstart, $Ystart, $cpImgCutX, $cpImgCutY, $w, $h, $w, $h)	{
 		if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib_2'] && $GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib_png'])	{	// Maybe I'll have to change this if GD2/gif does not work either...
 			if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['im_path'])	{
-				$cmd=$GLOBALS['TYPO3_CONF_VARS']['GFX']['im_path'].
-						($GLOBALS['TYPO3_CONF_VARS']['GFX']['im_combine_filename']?$GLOBALS['TYPO3_CONF_VARS']['GFX']['im_combine_filename']:'combine').
-						' -compose over ';
+
 				$tempBaseName = PATH_site.'typo3temp/ICRZ_'.md5(uniqid('.'));
 
 				ImagePng($im, $tempBaseName.'_im.png');
 				ImagePng($cpImg, $tempBaseName.'_cpImg.png');
-				exec($cmd.
-					$tempBaseName.'_cpImg.png '.
-					$tempBaseName.'_im.png '.
-					$tempBaseName.'_out.png '
-				);
+
+				$cmd = t3lib_exec::imageMagickCommand('combine', '-compose over '.$tempBaseName.'_cpImg.png '.$tempBaseName.'_im.png '.$tempBaseName.'_out.png ');
+				exec($cmd);
+
 				$im = imagecreatefrompng($tempBaseName.'_out.png');
 				unlink($tempBaseName.'_im.png');
 				unlink($tempBaseName.'_cpImg.png');

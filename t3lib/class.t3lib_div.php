@@ -377,8 +377,10 @@ class t3lib_div {
 		$gfxConf = $GLOBALS['TYPO3_CONF_VARS']['GFX'];
 		$returnCode='';
 		if ($gfxConf['gif_compress'] && strtolower(substr($theFile,-4,4))=='.gif')	{	// GIF...
-			if (($type=='IM' || !$type) && $GLOBALS['TYPO3_CONF_VARS']['GFX']['im'] && $GLOBALS['TYPO3_CONF_VARS']['GFX']['im_path_lzw'])	{	// IM
-				exec($GLOBALS['TYPO3_CONF_VARS']['GFX']['im_path_lzw'].'convert "'.$theFile.'" "'.$theFile.'"');
+			if (($type=='IM' || !$type) && $gfxConf['im'] && $gfxConf['im_path_lzw'])	{	// IM
+				$cmd = t3lib_div::imageMagickCommand('convert', '"'.$theFile.'" "'.$theFile.'"', $gfxConf['im_path_lzw']);
+				exec($cmd);
+
 				$returnCode='IM';
 			} elseif (($type=='GD' || !$type) && $gfxConf['gdlib'] && !$gfxConf['gdlib_png'])	{	// GD
 				$tempImage = imageCreateFromGif($theFile);
@@ -406,7 +408,8 @@ class t3lib_div {
 			&& strtolower(substr($theFile,-4,4))=='.png'
 			&& @is_file($theFile))	{	// IM
 				$newFile = substr($theFile,0,-4).'.gif';
-				exec($GLOBALS['TYPO3_CONF_VARS']['GFX']['im_path_lzw'].'convert "'.$theFile.'" "'.$newFile.'"');
+				$cmd = t3lib_div::imageMagickCommand('convert', '"'.$theFile.'" "'.$newFile.'"', $gfxConf['im_path_lzw']);
+				exec($cmd);
 				$theFile = $newFile;
 					// unlink old file?? May be bad idea bacause TYPO3 would then recreate the file every time as TYPO3 thinks the file is not generated because it's missing!! So do not unlink $theFile here!!
 		}
@@ -3786,6 +3789,81 @@ class t3lib_div {
 			}
 		}
 		return $str;
+	}
+
+	/**
+	 * Compile the command for running ImageMagick/GraphicsMagick.
+	 *
+	 * @param	string		Command to be run
+	 * @param	string		The parameters string
+	 * @param	string		Override the default path
+	 * @return	string		Compiled command that deals with IM6 & GraphicsMagick
+	 */
+	function imageMagickCommand($command, $parameters, $path='')	{
+		$gfxConf = $GLOBALS['TYPO3_CONF_VARS']['GFX'];
+		$isExt = (TYPO3_OS=='WIN' ? '.exe' : '');
+		$switchCompositeParameters=false;
+
+		if(!$path)	{ $path = $gfxConf['im_path']; }
+
+		$im_version = strtolower($gfxConf['im_version_5']);
+		$combineScript = $gfxConf['im_combine_filename'] ? trim($gfxConf['im_combine_filename']) : 'combine';
+
+		if($command==='combine')	{	// This is only used internally, has no effect outside
+			$command = 'composite';
+		}
+
+			// Compile the path & command
+		if($im_version==='gm')	{
+			$switchCompositeParameters=true;
+			$path .= 'gm'.$isExt.' '.$command;
+		} else	{
+			if($im_version==='im6')	{ $switchCompositeParameters=true; }
+			$path .= (($command=='composite') ? $combineScript : $command).$isExt;
+		}
+
+		$cmdLine = $path.' '.$parameters;
+
+		if($command=='composite' && $switchCompositeParameters)	{	// Because of some weird incompatibilities between ImageMagick 4 and 6 (plus GraphicsMagick), it is needed to change the parameters order under some preconditions
+			$paramsArr = t3lib_div::unQuoteFilenames($parameters);
+
+			if(count($paramsArr)==6)	{	// The mask image has been specified => swap the parameters
+				$tmp = $paramsArr[3];
+				$paramsArr[3] = $paramsArr[2];
+				$paramsArr[2] = $tmp;
+			}
+
+			$cmdLine = $path.' '.implode(' ', $paramsArr);
+		}
+
+		return $cmdLine;
+	}
+
+	/**
+	 * Explode a string (normally a list of filenames) with whitespaces by considering quotes in that string. This is mostly needed by the imageMagickCommand function above.
+	 *
+	 * @param	string		The whole parameters string
+	 * @return	array		Exploded parameters
+	 */
+	function unQuoteFilenames($parameters)	{
+		$paramsArr = explode(' ', trim($parameters));
+
+		$quoteActive = -1;	// Whenever a quote character (") is found, $quoteActive is set to the element number inside of $params. A value of -1 means that there are not open quotes at the current position.
+		foreach($paramsArr as $k=>$v)	{
+			if($quoteActive > -1)	{
+				$paramsArr[$quoteActive] .= ' '.$v;
+				unset($paramsArr[$k]);
+				if(ereg('"$', $v))	{ $quoteActive = -1; }
+
+			} elseif(!trim($v))	{
+				unset($paramsArr[$k]);	// Remove empty elements
+
+			} elseif(ereg('^"', $v))	{
+				$quoteActive = $k;
+			}
+		}
+
+		return $paramsArr;
 	}
 }
 

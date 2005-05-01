@@ -155,7 +155,6 @@ class t3lib_stdGraphic	{
 	var $gifExtension = 'gif';					// This should be changed to 'png' if you want this class to read/make PNG-files instead!
 	var $TTFLocaleConv = '';					// Used to recode input to TTF-functions for other charsets.
 	var $enable_typo3temp_db_tracking = 0;		// If set, then all files in typo3temp will be logged in a database table. In addition to being a log of the files with original filenames, it also serves to secure that the same image is not rendered simultaneously by two different processes.
-	var $imageMagickPath = '';					// path to imageMagick, eg: /usr/lib/
 	var $imageFileExt = 'gif,jpg,jpeg,png,tif,bmp,tga,pcx,ai,pdf';	// Commalist of file extensions perceived as images by TYPO3. List should be set to 'gif,png,jpeg,jpg' if IM is not available. Lowercase and no spaces between!
 	var $webImageExt = 'gif,jpg,jpeg,png';		// Commalist of web image extensions (can be shown by a webbrowser)
 	var $maskNegate = '';						// Will be ' -negate' if ImageMagick ver 5.2+. See init();
@@ -245,7 +244,6 @@ class t3lib_stdGraphic	{
 			$this->enable_typo3temp_db_tracking = $gfxConf['enable_typo3temp_db_tracking'];
 		}
 
-		$this->imageMagickPath = $gfxConf['im_path'];
 		$this->imageFileExt = $gfxConf['imagefile_ext'];
 
 			// This should be set if ImageMagick ver. 5+ is used.
@@ -2341,7 +2339,7 @@ class t3lib_stdGraphic	{
 	function imageMagickIdentify($imagefile)	{
 		if (!$this->NO_IMAGE_MAGICK)	{
 			$frame = $this->noFramePrepended?'':'[0]';
-			$cmd = $this->imageMagickPath.'identify '.$this->wrapFileName($imagefile).$frame;
+			$cmd = t3lib_div::imageMagickCommand('identify', $this->wrapFileName($imagefile).$frame);
 			exec($cmd, $returnVal);
 			$splitstring=$returnVal[0];
 			$this->IM_commands[] = Array ('identify',$cmd,$returnVal[0]);
@@ -2374,7 +2372,7 @@ class t3lib_stdGraphic	{
 	 */
 	function imageMagickExec($input,$output,$params)	{
 		if (!$this->NO_IMAGE_MAGICK)	{
-			$cmd = $this->imageMagickPath.'convert '.$params.' '.$this->wrapFileName($input).' '.$this->wrapFileName($output);
+			$cmd = t3lib_div::imageMagickCommand('convert', $params.' '.$this->wrapFileName($input).' '.$this->wrapFileName($output));
 			$this->IM_commands[] = Array ($output,$cmd);
 
 			$ret = exec($cmd);
@@ -2396,7 +2394,7 @@ class t3lib_stdGraphic	{
 	 */
 	function combineExec($input,$overlay,$mask,$output)	{
 		if (!$this->NO_IMAGE_MAGICK)	{
-			$cmd = $this->imageMagickPath.$this->combineScript.' -compose over '.$this->wrapFileName($input).' '.$this->wrapFileName($overlay).' '.$this->wrapFileName($mask).' '.$this->wrapFileName($output);
+			$cmd = t3lib_div::imageMagickCommand('combine', '-compose over '.$this->wrapFileName($input).' '.$this->wrapFileName($overlay).' '.$this->wrapFileName($mask).' '.$this->wrapFileName($output));
 			$this->IM_commands[] = Array ($output,$cmd);
 
 			$ret = exec($cmd);
