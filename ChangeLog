@@ -12,6 +12,10 @@
 	* New feature #0000634: Add the CURIFSUB state to menu objects (thanks to Wolfgang Klinger)
 	* Changed the spamProtectEmailAddresses range again. Allowed values are between -5 and 1 (higher values could break the output, thus the range needed to be changed)
 
+2005-04-29  Christian Jul Jensen  <julle(at)typo3(dot)org>
+
+	* Added type path to getText function
+
 2005-04-29  Kasper Skårhøj,,,  <kasper@typo3.com>
 
 	* Added default limit (10kb) on frontend user session data (set by TYPO3_CONF_VARS[FE][maxSessionDataSize]) and added a check that session data is saved only if a cookie is actually set. This closes a quite obvious hole for DoS attacks where requesting a TYPO3 URL something like "...index.php?id=1&recs[foo][bar]=[up to 2000 chars]" would fill 2kb of data into fe_session_data no questions asked. It is not a security problem but thousand such request (with eg. "ab") would mean 2 megabyte of junk in the database... Spamming that table is now considerably more complicated. However this setting might break applications storing large amounts of user session data, but for the average shopping plugin it should be unaffected.
