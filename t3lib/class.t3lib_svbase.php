@@ -178,18 +178,12 @@ class t3lib_svbase {
 
 
 
-
-
-
-
-
-
-
 	/***************************************
 	 *
 	 *	 Get service meta information
 	 *
 	 ***************************************/
+
 
 	/**
 	 * Returns internal information array for service
@@ -200,6 +194,7 @@ class t3lib_svbase {
 		return $this->info;
 	}
 
+
 	/**
 	 * Returns the service key of the service
 	 *
@@ -208,6 +203,7 @@ class t3lib_svbase {
 	function getServiceKey() {
 		return $this->info['serviceKey'];
 	}
+
 
 	/**
 	 * Returns the title of the service
@@ -218,12 +214,13 @@ class t3lib_svbase {
 		return $this->info['title'];
 	}
 
+
 	/**
 	 * Returns service configuration values from the $TYPO3_CONF_VARS['SVCONF'] array
 	 *
 	 * @param	string		Name of the config option
+	 * @return	mixed		Default configuration value for the service. Will be returned if no value found.
 	 * @param	boolean		If set the 'default' config will be return if no special config for this service is available (default: true)
-	 * @param	boolean		If set, the option value will be searched for in the "default" configuration (service key = "default") if not found for the service key of the service.
 	 * @return	mixed		configuration value for the service
 	 */
 	function getServiceOption($optionName, $defaultValue='', $includeDefaultConfig=TRUE) {
@@ -246,19 +243,12 @@ class t3lib_svbase {
 
 
 
-
-
-
-
-
-
-
-
 	/***************************************
 	 *
 	 *	 Error handling
 	 *
 	 ***************************************/
+
 
 	/**
 	 * Logs debug messages to t3lib_div::devLog()
@@ -273,6 +263,7 @@ class t3lib_svbase {
 			t3lib_div::devLog($msg, $this->info['serviceKey'], $severity, $dataVar);
 		}
 	}
+
 
 	/**
 	 * Puts an error on the error stack. Calling without parameter adds a general error.
@@ -290,6 +281,7 @@ class t3lib_svbase {
 
 	}
 
+
 	/**
 	 * Removes the last error from the error stack.
 	 *
@@ -300,6 +292,7 @@ class t3lib_svbase {
 
 		// pop for $GLOBALS['TT']->setTSlogMessage is not supported
 	}
+
 
 	/**
 	 * Returns the last error number from the error stack.
@@ -315,6 +308,7 @@ class t3lib_svbase {
 		}
 	}
 
+
 	/**
 	 * Returns the last message from the error stack.
 	 *
@@ -328,6 +322,7 @@ class t3lib_svbase {
 			return '';
 		}
 	}
+
 
 	/**
 	 * Returns all error messages as array.
@@ -345,6 +340,7 @@ class t3lib_svbase {
 		}
 		return $errArr;
 	}
+
 
 	/**
 	 * Returns the last array from the error stack.
@@ -366,20 +362,13 @@ class t3lib_svbase {
 
 
 
-
-
-
-
-
-
-
-
-
 	/***************************************
 	 *
 	 *	 General service functions
 	 *
 	 ***************************************/
+
+
 
 	/**
 	 * check the availability of external programs
@@ -388,7 +377,7 @@ class t3lib_svbase {
 	 * @return	boolean		return FALSE if one program was not found
 	 */
 	function checkExec($progList) {
-		global $TYPO3_CONF_VARS;
+		global $T3_VAR, $TYPO3_CONF_VARS;
 
 		$ret = TRUE;
 
@@ -404,6 +393,7 @@ class t3lib_svbase {
 		}
 		return $ret;
 	}
+
 
 	/**
 	 * Deactivate the service. Use this if the service fails at runtime and will not be available.
@@ -422,15 +412,13 @@ class t3lib_svbase {
 
 
 
-
-
-
-
 	/***************************************
 	 *
 	 *	 IO tools
 	 *
 	 ***************************************/
+
+
 
 	/**
 	 * Check if a file exists and is readable.
@@ -450,6 +438,7 @@ class t3lib_svbase {
 		}
 		return FALSE;
 	}
+
 
 	/**
 	 * Read content from a file a file.
@@ -474,6 +463,7 @@ class t3lib_svbase {
 		}
 		return $out;
 	}
+
 
 	/**
 	 * Write content to a file.
@@ -544,22 +534,12 @@ class t3lib_svbase {
 	}
 
 
-
-
-
-
-
-
-
-
-
-
-
 	/***************************************
 	 *
 	 *	 IO input
 	 *
 	 ***************************************/
+
 
 	/**
 	 * Set the input content for service processing.
@@ -574,6 +554,7 @@ class t3lib_svbase {
 		$this->inputType = $type;
 	}
 
+
 	/**
 	 * Set the input file name for service processing.
 	 *
@@ -587,6 +568,7 @@ class t3lib_svbase {
 		$this->inputType = $type;
 	}
 
+
 	/**
 	 * Get the input content.
 	 * Will be read from input file if needed. (That is if ->inputContent is empty and ->inputFile is not)
@@ -599,6 +581,7 @@ class t3lib_svbase {
 		}
 		return $this->inputContent;
 	}
+
 
 	/**
 	 * Get the input file name.
@@ -619,18 +602,12 @@ class t3lib_svbase {
 
 
 
-
-
-
-
-
-
-
 	/***************************************
 	 *
 	 *	 IO output
 	 *
 	 ***************************************/
+
 
 	/**
 	 * Set the output file name.
@@ -641,6 +618,7 @@ class t3lib_svbase {
 	function setOutputFile ($absFile) {
 		$this->outputFile = $absFile;
 	}
+
 
 	/**
 	 * Get the output content.
@@ -654,6 +632,7 @@ class t3lib_svbase {
 		return $this->out;
 	}
 
+
 	/**
 	 * Get the output file name. If no output file is set, the ->out buffer is written to the file given by input parameter filename
 	 *
@@ -666,14 +645,6 @@ class t3lib_svbase {
 		}
 		return $this->outputFile;
 	}
-
-
-
-
-
-
-
-
 
 
 
@@ -709,6 +680,7 @@ class t3lib_svbase {
 		return $this->getLastError();
 	}
 
+
 	/**
 	 * Resets the service.
 	 * Will be called by init(). Should be used before every use if a service instance is used multiple times.
@@ -734,10 +706,12 @@ class t3lib_svbase {
 		$this->unlinkTempFiles();
 	}
 
+
 	/* every service type has it's own API
 	function process($content='', $type='', $conf=array())	{	//
 	}
 	*/
+
 }
 
 /**
