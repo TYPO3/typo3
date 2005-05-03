@@ -472,7 +472,7 @@ class t3lib_extMgm {
 	 *
 	 * @param	string		Extension key
 	 * @param	string		Service type, cannot be prefixed "tx_"
-	 * @param	string		Service key, must be prefixed "tx_"
+	 * @param	string		Service key, must be prefixed "tx_" or "user_"
 	 * @param	array		Service description array
 	 * @return	void
 	 * @author	René Fritz <r.fritz@colorcube.de>
@@ -483,7 +483,10 @@ class t3lib_extMgm {
 		// even not available services will be included to make it possible to give the admin a feedback of non-available services.
 		// but maybe it's better to move non-available services to a different array??
 
-		if ($serviceType AND substr($serviceType,0,3)!='tx_' AND substr($serviceKey,0,3)=='tx_' AND is_array($info))	{
+		if ($serviceType AND 
+			!t3lib_div::isFirstPartOfStr($serviceType, 'tx_') AND 
+			(t3lib_div::isFirstPartOfStr($serviceKey, 'tx_') OR t3lib_div::isFirstPartOfStr($serviceKey, 'user_')) AND
+			is_array($info))	{
 
 			$info['priority'] = max(0,min(100,$info['priority']));
 
@@ -543,7 +546,7 @@ class t3lib_extMgm {
 	 * @author	René Fritz <r.fritz@colorcube.de>
 	 */
 	function findService($serviceType, $serviceSubType='', $excludeServiceKeys=array()) {
-		global $T3_SERVICES, $TYPO3_CONF_VARS;
+		global $T3_SERVICES, $T3_VAR, $TYPO3_CONF_VARS;
 
 		$serviceKey = FALSE;
 		$serviceInfo = FALSE;
@@ -947,26 +950,27 @@ tt_content.'.$key.$prefix.' {
 				foreach($temp_extensions as $temp_extKey)	{
 						// Check local, global and system locations:
 					if (@is_dir(PATH_site.'typo3conf/ext/'.$temp_extKey.'/'))	{
-						$extensions[$temp_extKey] = array('type'=>'L', 'siteRelPath'=>'typo3conf/ext/'.$temp_extKey.'/', 'typo3RelPath'=>'../typo3conf/ext/'.$temp_extKey.'/');
+						$extensions[$temp_extKey]=array('type'=>'L','siteRelPath'=>'typo3conf/ext/'.$temp_extKey.'/','typo3RelPath'=>'../typo3conf/ext/'.$temp_extKey.'/');
 					} elseif (@is_dir(PATH_site.TYPO3_mainDir.'ext/'.$temp_extKey.'/'))	{
-						$extensions[$temp_extKey] = array('type'=>'G', 'siteRelPath'=>TYPO3_mainDir.'ext/'.$temp_extKey.'/', 'typo3RelPath'=>'ext/'.$temp_extKey.'/');
+						$extensions[$temp_extKey]=array('type'=>'G','siteRelPath'=>TYPO3_mainDir.'ext/'.$temp_extKey.'/','typo3RelPath'=>'ext/'.$temp_extKey.'/');
 					} elseif (@is_dir(PATH_site.TYPO3_mainDir.'sysext/'.$temp_extKey.'/'))	{
-						$extensions[$temp_extKey] = array('type'=>'S', 'siteRelPath'=>TYPO3_mainDir.'sysext/'.$temp_extKey.'/', 'typo3RelPath'=>'sysext/'.$temp_extKey.'/');
+						$extensions[$temp_extKey]=array('type'=>'S','siteRelPath'=>TYPO3_mainDir.'sysext/'.$temp_extKey.'/','typo3RelPath'=>'sysext/'.$temp_extKey.'/');
 					}
 
 						// If extension was found, check for reserved filenames:
 					if (isset($extensions[$temp_extKey]))	{
 						foreach($files as $fName) 	{
-							$temp_filename = PATH_site.$extensions[$temp_extKey]['siteRelPath'].trim($fName);
-							if (is_array($extensions[$temp_extKey]) && @is_file($temp_filename))	{
-								$extensions[$temp_extKey][$fName] = $temp_filename;
-							}
+						$temp_filename = PATH_site.$extensions[$temp_extKey]['siteRelPath'].trim($fName);
+						if (is_array($extensions[$temp_extKey]) && @is_file($temp_filename))	{
+							$extensions[$temp_extKey][$fName]=$temp_filename;
 						}
 					}
 				}
+				}
 				unset($extensions['_CACHEFILE']);
 
-					// write cache?
+
+				// write cache?
 				if ($TYPO3_CONF_VARS['EXT']['extCache'] &&
 						@is_dir(PATH_site.TYPO3_mainDir.'sysext/') &&
 						@is_dir(PATH_site.TYPO3_mainDir.'ext/'))	{	// Must also find global and system extension directories to exist, otherwise caching cannot be allowed (since it is most likely a temporary server problem). This might fix a rare, unrepeatable bug where global/system extensions are not loaded resulting in fatal errors if that is cached!
@@ -974,7 +978,7 @@ tt_content.'.$key.$prefix.' {
 					if ($wrError)	{
 						$TYPO3_CONF_VARS['EXT']['extCache']=0;
 					} else {
-							// Write cache files:
+						// Write cache files:
 						$extensions = t3lib_extMgm::writeCacheFiles($extensions,$cacheFilePrefix);
 					}
 				}
