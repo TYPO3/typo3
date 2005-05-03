@@ -2546,7 +2546,7 @@ class t3lib_div {
 	/**
 	 * Returns the link-url to the current script.
 	 * In $getParams you can set associative keys corresponding to the GET-vars you wish to add to the URL. If you set them empty, they will remove existing GET-vars from the current URL.
-	 * REMEMBER to always htmlspecialchar() content in href-properties to ampersands get converted to entities (XHTML requirement and XSS precaution)
+	 * REMEMBER to always htmlspecialchars() content in href-properties to ampersands get converted to entities (XHTML requirement and XSS precaution)
 	 * Usage: 52
 	 *
 	 * @param	array		Array of GET parameters to include
@@ -3543,27 +3543,27 @@ class t3lib_div {
 				$requireFile = t3lib_div::getFileAbsFileName($info['classFile']);
 				if (@is_file($requireFile)) {
 					require_once ($requireFile);
-					$obj = t3lib_div::makeInstance($info['className']);
-					if (is_object($obj)) {
-						if(!@is_callable(array($obj,'init')))	{
-								// use silent logging??? I don't think so.
-							die ('Broken service:'.t3lib_div::view_array($info));
-						}
-						$obj->info = $info;
-						if ($obj->init()) { // service available?
+				$obj = t3lib_div::makeInstance($info['className']);
+				if (is_object($obj)) {
+					if(!@is_callable(array($obj,'init')))	{
+							// use silent logging??? I don't think so.
+						die ('Broken service:'.t3lib_div::view_array($info));
+					}
+					$obj->info = $info;
+					if ($obj->init()) { // service available?
 
-								// create persistent object
-							$T3_VAR['makeInstanceService'][$info['className']] = &$obj;
+							// create persistent object
+						$T3_VAR['makeInstanceService'][$info['className']] = &$obj;
 
-								// needed to delete temp files
-							register_shutdown_function(array(&$obj, '__destruct'));
+							// needed to delete temp files
+						register_shutdown_function(array(&$obj, '__destruct'));
 
 							return $obj; // object is passed as reference by function definition
-						}
-						$error = $obj->getLastErrorArray();
-						unset($obj);
 					}
+					$error = $obj->getLastErrorArray();
+					unset($obj);
 				}
+			}
 			}
 				// deactivate the service
 			t3lib_extMgm::deactivateService($info['serviceType'],$info['serviceKey']);
@@ -3811,7 +3811,7 @@ class t3lib_div {
 
 		if($command==='combine')	{	// This is only used internally, has no effect outside
 			$command = 'composite';
-		}
+}
 
 			// Compile the path & command
 		if($im_version==='gm')	{
