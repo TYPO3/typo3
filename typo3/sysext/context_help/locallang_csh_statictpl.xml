@@ -72,5 +72,6 @@ sys_template:include_static</label>
 		<languageKey index="kr">EXT:csh_kr/context_help/kr.locallang_csh_statictpl.xml</languageKey>
 		<languageKey index="eo">EXT:csh_eo/context_help/eo.locallang_csh_statictpl.xml</languageKey>
 		<languageKey index="my">EXT:csh_my/context_help/my.locallang_csh_statictpl.xml</languageKey>
+		<languageKey index="hi">EXT:csh_hi/context_help/hi.locallang_csh_statictpl.xml</languageKey>
 	</data>
 </T3locallang>

@@ -58,5 +58,6 @@
 		<languageKey index="kr">EXT:csh_kr/func_wizards/kr.locallang.xml</languageKey>
 		<languageKey index="eo">EXT:csh_eo/func_wizards/eo.locallang.xml</languageKey>
 		<languageKey index="my">EXT:csh_my/func_wizards/my.locallang.xml</languageKey>
+		<languageKey index="hi">EXT:csh_hi/func_wizards/hi.locallang.xml</languageKey>
 	</data>
 </T3locallang>

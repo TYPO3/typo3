@@ -85,6 +85,7 @@
 		<languageKey index="kr">EXT:csh_kr/css_styled_content/pi1/kr.locallang.xml</languageKey>
 		<languageKey index="eo">EXT:csh_eo/css_styled_content/pi1/eo.locallang.xml</languageKey>
 		<languageKey index="my">EXT:csh_my/css_styled_content/pi1/my.locallang.xml</languageKey>
+		<languageKey index="hi">EXT:csh_hi/css_styled_content/pi1/hi.locallang.xml</languageKey>
 	</data>
 	<orig_hash type="array">
 		<languageKey index="default" type="array">

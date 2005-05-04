@@ -116,7 +116,7 @@ class tslib_gmenu_foldout extends tslib_gmenu {
 	 */
 	function extProc_beforeLinking($key)	{
 		$this->I['addATagParams']='';
-		$this->WMsubmenu = $this->subMenu($this->I['uid']);
+		$this->WMsubmenu = $this->subMenu($this->I['uid'], $this->WMsubmenuObjSuffixes[$key]['sOSuffix']);
 		if (trim($this->WMsubmenu))	{
 			$this->I['addATagParams']=' onclick="GF_menu('.$key.');'.($this->mconf['dontLinkIfSubmenu'] ? ' return false;' : '').'"';
 			if ($this->isActive($this->I['uid'], $this->getMPvar($key)) && $this->mconf['displayActiveOnLoad'])	{	// orig: && $this->WMisSub, changed 210901

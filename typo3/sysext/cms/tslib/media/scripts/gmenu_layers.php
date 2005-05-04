@@ -151,7 +151,7 @@ class tslib_gmenu_layers extends tslib_gmenu {
 		if ($this->I['uid'])	{
 
 			array_push($GLOBALS['TSFE']->applicationData['GMENU_LAYERS']['WMparentId'],$this->WMid);
-			$this->WMtheSubMenu = $this->subMenu($this->I['uid']);
+			$this->WMtheSubMenu = $this->subMenu($this->I['uid'], $this->WMsubmenuObjSuffixes[$key]['sOSuffix']);
 			array_pop($GLOBALS['TSFE']->applicationData['GMENU_LAYERS']['WMparentId']);
 			$this->WMisSub = trim($this->WMtheSubMenu) ? 1 : 0;
 

@@ -3543,27 +3543,27 @@ class t3lib_div {
 				$requireFile = t3lib_div::getFileAbsFileName($info['classFile']);
 				if (@is_file($requireFile)) {
 					require_once ($requireFile);
-				$obj = t3lib_div::makeInstance($info['className']);
-				if (is_object($obj)) {
-					if(!@is_callable(array($obj,'init')))	{
-							// use silent logging??? I don't think so.
-						die ('Broken service:'.t3lib_div::view_array($info));
-					}
-					$obj->info = $info;
-					if ($obj->init()) { // service available?
+					$obj = t3lib_div::makeInstance($info['className']);
+					if (is_object($obj)) {
+						if(!@is_callable(array($obj,'init')))	{
+								// use silent logging??? I don't think so.
+							die ('Broken service:'.t3lib_div::view_array($info));
+						}
+						$obj->info = $info;
+						if ($obj->init()) { // service available?
 
-							// create persistent object
-						$T3_VAR['makeInstanceService'][$info['className']] = &$obj;
+								// create persistent object
+							$T3_VAR['makeInstanceService'][$info['className']] = &$obj;
 
-							// needed to delete temp files
-						register_shutdown_function(array(&$obj, '__destruct'));
+								// needed to delete temp files
+							register_shutdown_function(array(&$obj, '__destruct'));
 
 							return $obj; // object is passed as reference by function definition
+						}
+						$error = $obj->getLastErrorArray();
+						unset($obj);
 					}
-					$error = $obj->getLastErrorArray();
-					unset($obj);
 				}
-			}
 			}
 				// deactivate the service
 			t3lib_extMgm::deactivateService($info['serviceType'],$info['serviceKey']);

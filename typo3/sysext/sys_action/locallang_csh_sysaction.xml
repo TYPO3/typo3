@@ -96,6 +96,7 @@ If the template user is a member of a group which is not defined among the &quot
 		<languageKey index="kr">EXT:csh_kr/sys_action/kr.locallang_csh_sysaction.xml</languageKey>
 		<languageKey index="eo">EXT:csh_eo/sys_action/eo.locallang_csh_sysaction.xml</languageKey>
 		<languageKey index="my">EXT:csh_my/sys_action/my.locallang_csh_sysaction.xml</languageKey>
+		<languageKey index="hi">EXT:csh_hi/sys_action/hi.locallang_csh_sysaction.xml</languageKey>
 	</data>
 	<orig_hash type="array">
 		<languageKey index="default" type="array">

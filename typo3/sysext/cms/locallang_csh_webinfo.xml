@@ -138,5 +138,6 @@ Will show the total number of page hits/sessions within main sections of a websi
 		<languageKey index="he">EXT:csh_he/cms/he.locallang_csh_webinfo.xml</languageKey>
 		<languageKey index="eo">EXT:csh_eo/cms/eo.locallang_csh_webinfo.xml</languageKey>
 		<languageKey index="my">EXT:csh_my/cms/my.locallang_csh_webinfo.xml</languageKey>
+		<languageKey index="hi">EXT:csh_hi/cms/hi.locallang_csh_webinfo.xml</languageKey>
 	</data>
 </T3locallang>

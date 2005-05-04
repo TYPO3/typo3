@@ -120,5 +120,6 @@ A typical login box (standard) on the website where frontend users can login.</l
 		<languageKey index="es">EXT:csh_es/context_help/es.locallang_csh_fe_users.xml</languageKey>
 		<languageKey index="eo">EXT:csh_eo/context_help/eo.locallang_csh_fe_users.xml</languageKey>
 		<languageKey index="my">EXT:csh_my/context_help/my.locallang_csh_fe_users.xml</languageKey>
+		<languageKey index="hi">EXT:csh_hi/context_help/hi.locallang_csh_fe_users.xml</languageKey>
 	</data>
 </T3locallang>

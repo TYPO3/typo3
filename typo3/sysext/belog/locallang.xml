@@ -71,6 +71,7 @@
 		<languageKey index="kr">EXT:csh_kr/belog/kr.locallang.xml</languageKey>
 		<languageKey index="eo">EXT:csh_eo/belog/eo.locallang.xml</languageKey>
 		<languageKey index="my">EXT:csh_my/belog/my.locallang.xml</languageKey>
+		<languageKey index="hi">EXT:csh_hi/belog/hi.locallang.xml</languageKey>
 	</data>
 	<orig_hash type="array">
 		<languageKey index="default" type="array">

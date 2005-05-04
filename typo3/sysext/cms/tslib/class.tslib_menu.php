@@ -143,7 +143,6 @@
 class tslib_menu {
 	var $menuNumber = 1;				// tells you which menu-number this is. This is important when getting data from the setup
 	var $entryLevel = 0;				// 0 = rootFolder
-	var $subLevelClass = '';			// Points to the menu-class, that should be used for the next level
 	var $spacerIDList = '199';			// The doktype-number that defines a spacer
 	var $doktypeExcludeList = '5,6';			// doktypes that define which should not be included in a menu
 	var $alwaysActivePIDlist=array();
@@ -170,6 +169,7 @@ class tslib_menu {
 	var $WMresult;
 	var $WMfreezePrefix;
 	var $WMmenuItems;
+	var $WMsubmenuObjSuffixes;
 	var $WMextraScript;
 	var $alternativeMenuTempArray='';		// Can be set to contain menu item arrays for sub-levels.
 
@@ -181,19 +181,20 @@ class tslib_menu {
 	 * @param	integer		A starting point page id. This should probably be blank since the 'entryLevel' value will be used then.
 	 * @param	array		The TypoScript configuration for the HMENU cObject
 	 * @param	integer		Menu number; 1,2,3. Should probably be '1'
+	 * @param	string		Submenu Object suffix. This offers submenus a way to use alternative configuration for specific positions in the menu; By default "1 = TMENU" would use "1." for the TMENU configuration, but if this string is set to eg. "a" then "1a." would be used for configuration instead (while "1 = " is still used for the overall object definition of "TMENU")
 	 * @return	boolean		Returns true on success
 	 * @see tslib_cObj::HMENU()
 	 */
-	function start(&$tmpl,&$sys_page,$id,$conf,$menuNumber)	{
+	function start(&$tmpl,&$sys_page,$id,$conf,$menuNumber,$objSuffix='')	{
 
 			// Init:
 		$this->conf = $conf;
 		$this->menuNumber = $menuNumber;
-		$this->mconf = $conf[$this->menuNumber.'.'];
+		$this->mconf = $conf[$this->menuNumber.$objSuffix.'.'];
 		$this->debug=$GLOBALS['TSFE']->debug;
 
 			// Sets the internal vars. $tmpl MUST be the template-object. $sys_page MUST be the sys_page object
-		if ($this->conf[$this->menuNumber] && is_object($tmpl) && is_object($sys_page))	{
+		if ($this->conf[$this->menuNumber.$objSuffix] && is_object($tmpl) && is_object($sys_page))	{
 			$this->tmpl = &$tmpl;
 			$this->sys_page = &$sys_page;
 
@@ -290,11 +291,6 @@ class tslib_menu {
 			}
 			$this->imgNameNotRandom = $this->mconf['imgNameNotRandom'];
 
-				// subLevelClass
-			$cls = strtolower($this->conf[$this->menuNumber+1]);
-			if ($cls && t3lib_div::inList($this->tmpl->menuclasses,$cls))	{
-				$this->subLevelClass = $cls;
-			}
 			$retVal = TRUE;
 		} else {
 			$GLOBALS['TT']->setTSlogMessage('ERROR in menu',3);
@@ -1198,10 +1194,11 @@ class tslib_menu {
 	 * Creates a submenu level to the current level - if configured for.
 	 *
 	 * @param	integer		Page id of the current page for which a submenu MAY be produced (if conditions are met)
+	 * @param	string		Object prefix, see ->start()
 	 * @return	string		HTML content of the submenu
 	 * @access private
 	 */
-	function subMenu($uid)	{
+	function subMenu($uid, $objSuffix='')	{
 
 			// Setting alternative menu item array if _SUB_MENU has been defined in the current ->menuArr
 		$altArray = '';
@@ -1210,8 +1207,11 @@ class tslib_menu {
 		}
 
 			// Make submenu if the page is the next active
-		if ($this->subLevelClass && ($this->mconf['expAll'] || $this->isNext($uid, $this->getMPvar($this->I['key'])) || is_array($altArray)) && !$this->mconf['sectionIndex'])	{
-			$submenu = t3lib_div::makeInstance('tslib_'.$this->subLevelClass);
+		$cls = strtolower($this->conf[($this->menuNumber+1).$objSuffix]);
+		$subLevelClass = ($cls && t3lib_div::inList($this->tmpl->menuclasses,$cls)) ? $cls : '';
+
+		if ($subLevelClass && ($this->mconf['expAll'] || $this->isNext($uid, $this->getMPvar($this->I['key'])) || is_array($altArray)) && !$this->mconf['sectionIndex'])	{
+			$submenu = t3lib_div::makeInstance('tslib_'.$subLevelClass);
 			$submenu->entryLevel = $this->entryLevel+1;
 			$submenu->rL_uidRegister = $this->rL_uidRegister;
 			$submenu->MP_array = $this->MP_array;
@@ -1227,7 +1227,7 @@ class tslib_menu {
 				$submenu->alternativeMenuTempArray = $altArray;
 			}
 
-			if ($submenu->start($this->tmpl, $this->sys_page, $uid, $this->conf, $this->menuNumber+1))	{
+			if ($submenu->start($this->tmpl, $this->sys_page, $uid, $this->conf, $this->menuNumber+1, $objSuffix))	{
 				$submenu->makeMenu();
 				return $submenu->writeMenu();
 			}
@@ -1509,6 +1509,9 @@ class tslib_tmenu extends tslib_menu {
 			$this->WMresult='';
 			$this->INPfixMD5 = substr(md5(microtime().'tmenu'),0,4);
 			$this->WMmenuItems = count($this->result);
+
+			$this->WMsubmenuObjSuffixes = $this->tmpl->splitConfArray(array('sOSuffix'=>$this->mconf['submenuObjSuffixes']),$this->WMmenuItems);
+
 			$this->extProc_init();
 			reset($this->result);
 			while (list($key,$val)=each($this->result))	{
@@ -1733,7 +1736,7 @@ class tslib_tmenu extends tslib_menu {
 	function extProc_afterLinking($key)	{
 			// Add part to the accumulated result + fetch submenus
 		if (!$this->I['spacer'])	{
-			$this->I['theItem'].= $this->subMenu($this->I['uid']);
+			$this->I['theItem'].= $this->subMenu($this->I['uid'], $this->WMsubmenuObjSuffixes[$key]['sOSuffix']);
 		}
 		$this->WMresult.= $this->I['val']['wrapItemAndSub'] ? $this->tmpl->wrap($this->I['theItem'],$this->I['val']['wrapItemAndSub']) : $this->I['theItem'];
 	}
@@ -2124,6 +2127,9 @@ class tslib_gmenu extends tslib_menu {
 			$this->WMresult='';
 			$this->INPfixMD5 = substr(md5(microtime().$this->GMENU_fixKey),0,4);
 			$this->WMmenuItems = count($this->result['NO']);
+
+			$this->WMsubmenuObjSuffixes = $this->tmpl->splitConfArray(array('sOSuffix'=>$this->mconf['submenuObjSuffixes']),$this->WMmenuItems);
+
 			$this->extProc_init();
 			for ($key=0;$key<$this->WMmenuItems;$key++)	{
 				if ($this->result['NO'][$key]['output_file'])	{
@@ -2273,7 +2279,7 @@ class tslib_gmenu extends tslib_menu {
 	function extProc_afterLinking($key)	{
 		$this->WMresult.=$this->I['theItem'];
 		if (!$this->I['spacer'])	{
-			$this->WMresult.= $this->subMenu($this->I['uid']);
+			$this->WMresult.= $this->subMenu($this->I['uid'], $this->WMsubmenuObjSuffixes[$key]['sOSuffix']);
 		}
 	}
 

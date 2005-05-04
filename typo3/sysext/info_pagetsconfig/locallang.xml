@@ -86,5 +86,6 @@
 		<languageKey index="kr">EXT:csh_kr/info_pagetsconfig/kr.locallang.xml</languageKey>
 		<languageKey index="eo">EXT:csh_eo/info_pagetsconfig/eo.locallang.xml</languageKey>
 		<languageKey index="my">EXT:csh_my/info_pagetsconfig/my.locallang.xml</languageKey>
+		<languageKey index="hi">EXT:csh_hi/info_pagetsconfig/hi.locallang.xml</languageKey>
 	</data>
 </T3locallang>

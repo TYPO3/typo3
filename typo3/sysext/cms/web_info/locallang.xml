@@ -80,5 +80,6 @@
 		<languageKey index="kr">EXT:csh_kr/cms/web_info/kr.locallang.xml</languageKey>
 		<languageKey index="eo">EXT:csh_eo/cms/web_info/eo.locallang.xml</languageKey>
 		<languageKey index="my">EXT:csh_my/cms/web_info/my.locallang.xml</languageKey>
+		<languageKey index="hi">EXT:csh_hi/cms/web_info/hi.locallang.xml</languageKey>
 	</data>
 </T3locallang>

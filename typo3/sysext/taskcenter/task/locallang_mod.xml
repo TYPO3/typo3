@@ -60,6 +60,7 @@
 		<languageKey index="kr">EXT:csh_kr/taskcenter/task/kr.locallang_mod.xml</languageKey>
 		<languageKey index="eo">EXT:csh_eo/taskcenter/task/eo.locallang_mod.xml</languageKey>
 		<languageKey index="my">EXT:csh_my/taskcenter/task/my.locallang_mod.xml</languageKey>
+		<languageKey index="hi">EXT:csh_hi/taskcenter/task/hi.locallang_mod.xml</languageKey>
 	</data>
 	<orig_hash type="array">
 		<languageKey index="default" type="array">

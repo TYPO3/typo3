@@ -198,5 +198,6 @@ If a user has no languages listed all together it simply means that he can edit 
 		<languageKey index="no">EXT:csh_no/lang/no.locallang_csh_be_groups.xml</languageKey>
 		<languageKey index="eo">EXT:csh_eo/lang/eo.locallang_csh_be_groups.xml</languageKey>
 		<languageKey index="my">EXT:csh_my/lang/my.locallang_csh_be_groups.xml</languageKey>
+		<languageKey index="hi">EXT:csh_hi/lang/hi.locallang_csh_be_groups.xml</languageKey>
 	</data>
 </T3locallang>

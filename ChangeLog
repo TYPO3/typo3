@@ -1,3 +1,10 @@
+2005-05-04  Kasper Skårhøj,,,  <kasper@typo3.com>
+
+	* Added Hindi language
+	* Added feature to table-wizard: Will create 5 new rows when adding rows in the bottom of table (configurable)
+	* Added download links in extension listing in EM
+	* Added new feature, "submenuObjSuffixes" to TypoScript Menu objects to define alternative submenus depending on position of parent menu object in menu. (TSref documented)
+
 2005-05-01  Michael Stucki  <michael@typo3.org>
 
 	* Implemented a wrapper for executing ImageMagick

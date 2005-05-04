@@ -55,6 +55,7 @@
 			<label index="lang_kr">Korean</label>
 			<label index="lang_eo">Esperanto</label>
 			<label index="lang_my">Bahasa Malaysia</label>
+			<label index="lang_hi">Hindi</label>
 			<label index="default">Default</label>
 			<label index="simulate">Simulate backend user</label>
 			<label index="opening">Startup</label>
@@ -132,5 +133,6 @@
 		<languageKey index="kr">EXT:csh_kr/setup/mod/kr.locallang.xml</languageKey>
 		<languageKey index="eo">EXT:csh_eo/setup/mod/eo.locallang.xml</languageKey>
 		<languageKey index="my">EXT:csh_my/setup/mod/my.locallang.xml</languageKey>
+		<languageKey index="hi">EXT:csh_hi/setup/mod/hi.locallang.xml</languageKey>
 	</data>
 </T3locallang>

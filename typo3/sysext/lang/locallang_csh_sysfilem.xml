@@ -83,5 +83,6 @@ The directory structure of &quot;fileadmin/&quot; where you can see the &quot;us
 		<languageKey index="it">EXT:csh_it/lang/it.locallang_csh_sysfilem.xml</languageKey>
 		<languageKey index="eo">EXT:csh_eo/lang/eo.locallang_csh_sysfilem.xml</languageKey>
 		<languageKey index="my">EXT:csh_my/lang/my.locallang_csh_sysfilem.xml</languageKey>
+		<languageKey index="hi">EXT:csh_hi/lang/hi.locallang_csh_sysfilem.xml</languageKey>
 	</data>
 </T3locallang>

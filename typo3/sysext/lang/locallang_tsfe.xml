@@ -104,5 +104,6 @@ Continue?</label>
 		<languageKey index="kr">EXT:csh_kr/lang/kr.locallang_tsfe.xml</languageKey>
 		<languageKey index="eo">EXT:csh_eo/lang/eo.locallang_tsfe.xml</languageKey>
 		<languageKey index="my">EXT:csh_my/lang/my.locallang_tsfe.xml</languageKey>
+		<languageKey index="hi">EXT:csh_hi/lang/hi.locallang_tsfe.xml</languageKey>
 	</data>
 </T3locallang>

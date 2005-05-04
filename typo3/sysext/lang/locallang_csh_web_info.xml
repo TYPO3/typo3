@@ -61,5 +61,6 @@ More about Web&gt;Info module framework | http://typo3.org/documentation/documen
 		<languageKey index="hu">EXT:csh_hu/lang/hu.locallang_csh_web_info.xml</languageKey>
 		<languageKey index="eo">EXT:csh_eo/lang/eo.locallang_csh_web_info.xml</languageKey>
 		<languageKey index="my">EXT:csh_my/lang/my.locallang_csh_web_info.xml</languageKey>
+		<languageKey index="hi">EXT:csh_hi/lang/hi.locallang_csh_web_info.xml</languageKey>
 	</data>
 </T3locallang>

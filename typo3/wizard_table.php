@@ -92,6 +92,7 @@ class SC_wizard_table {
 
 		// Internal, static:
 	var $xmlStorage=0;			// If set, the string version of the content is interpreted/written as XML instead of the original linebased kind. This variable still needs binding to the wizard parameters - but support is ready!
+	var $numNewRows=1;			// Number of new rows to add in bottom of wizard
 	var $colsFieldName='cols';	// Name of field in parent record which MAY contain the number of columns for the table - here hardcoded to the value of tt_content. Should be set by TCEform parameters (from P)
 
 
@@ -118,6 +119,7 @@ class SC_wizard_table {
 
 			// Setting options:
 		$this->xmlStorage = $this->P['params']['xmlOutput'];
+		$this->numNewRows = t3lib_div::intInRange($this->P['params']['numNewRows'],1,50,5);
 
 			// Textareas or input fields:
 		$this->inputStyle=isset($this->TABLECFG['textFields']) ? $this->TABLECFG['textFields'] : 1;
@@ -481,7 +483,13 @@ class SC_wizard_table {
 						unset($this->TABLECFG['c'][$kk]);
 					break;
 					case 'row_add':
-						$this->TABLECFG['c'][$kk+1]=array();
+						for($a=1;$a<=$this->numNewRows;$a++)	{
+							if (!isset($this->TABLECFG['c'][$kk+$a]))	{	// Checking if set: The point is that any new row inbetween existing rows will be true after one row is added while if rows are added in the bottom of the table there will be no existing rows to stop the addition of new rows which means it will add up to $this->numNewRows rows then.
+								$this->TABLECFG['c'][$kk+$a] = array();
+							} else {
+								break;
+							}
+						}
 					break;
 					case 'row_top':
 						$this->TABLECFG['c'][1]=$this->TABLECFG['c'][$kk];

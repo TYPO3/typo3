@@ -70,6 +70,7 @@
 		<languageKey index="kr">EXT:csh_kr/indexed_search/modfunc2/kr.locallang.xml</languageKey>
 		<languageKey index="eo">EXT:csh_eo/indexed_search/modfunc2/eo.locallang.xml</languageKey>
 		<languageKey index="my">EXT:csh_my/indexed_search/modfunc2/my.locallang.xml</languageKey>
+		<languageKey index="hi">EXT:csh_hi/indexed_search/modfunc2/hi.locallang.xml</languageKey>
 	</data>
 	<orig_hash type="array">
 		<languageKey index="default" type="array">

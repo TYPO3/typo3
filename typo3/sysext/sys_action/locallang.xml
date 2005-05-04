@@ -86,6 +86,7 @@
 		<languageKey index="kr">EXT:csh_kr/sys_action/kr.locallang.xml</languageKey>
 		<languageKey index="eo">EXT:csh_eo/sys_action/eo.locallang.xml</languageKey>
 		<languageKey index="my">EXT:csh_my/sys_action/my.locallang.xml</languageKey>
+		<languageKey index="hi">EXT:csh_hi/sys_action/hi.locallang.xml</languageKey>
 	</data>
 	<orig_hash type="array">
 		<languageKey index="default" type="array">

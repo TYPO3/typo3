@@ -60,6 +60,7 @@
 		<languageKey index="kr">EXT:csh_kr/lowlevel/config/kr.locallang_mod.xml</languageKey>
 		<languageKey index="eo">EXT:csh_eo/lowlevel/config/eo.locallang_mod.xml</languageKey>
 		<languageKey index="my">EXT:csh_my/lowlevel/config/my.locallang_mod.xml</languageKey>
+		<languageKey index="hi">EXT:csh_hi/lowlevel/config/hi.locallang_mod.xml</languageKey>
 	</data>
 	<orig_hash type="array">
 		<languageKey index="default" type="array">

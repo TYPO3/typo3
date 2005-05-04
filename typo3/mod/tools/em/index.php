@@ -2039,6 +2039,7 @@ EXTENSION KEYS:
 			$cells[] = '<td>Extension key:</td>';
 			$cells[] = '<td>Version:</td>';
 			if (!$import) {
+				$cells[] = '<td>DL:</td>';
 				$cells[] = '<td>Doc:</td>';
 				$cells[] = '<td>Type:</td>';
 			} else {
@@ -2144,10 +2145,13 @@ EXTENSION KEYS:
 			$cells[] = '<td nowrap="nowrap"><em>'.$extKey.'</em></td>';
 			$cells[] = '<td nowrap="nowrap">'.($verDiff ? '<strong>'.$GLOBALS['TBE_TEMPLATE']->rfw(htmlspecialchars($extInfo['EM_CONF']['version'])).'</strong>' : $extInfo['EM_CONF']['version']).'</td>';
 			if (!$import) {		// Listing extenson on LOCAL server:
-				$fileP = PATH_site.$this->typePaths[$extInfo['type']].$extKey.'/doc/manual.sxw';
+					// Extension Download:
+				$cells[] = '<td nowrap="nowrap"><a href="'.htmlspecialchars('index.php?CMD[doBackup]=1&CMD[showExt]='.$extKey).'"><img src="download.png" width="13" height="12" title="Download" alt="" /></a></td>';
 
+					// Manual download
+				$fileP = PATH_site.$this->typePaths[$extInfo['type']].$extKey.'/doc/manual.sxw';
 				$cells[] = '<td nowrap="nowrap">'.
-						($this->typePaths[$extInfo['type']] && @is_file($fileP)?'<img src="oodoc.gif" width="13" height="16" title="Local Open Office Manual" alt="" />':'').
+						($this->typePaths[$extInfo['type']] && @is_file($fileP)?'<a href="'.htmlspecialchars(t3lib_div::resolveBackPath($this->doc->backPath.'../'.$this->typePaths[$extInfo['type']].$extKey.'/doc/manual.sxw')).'" target="_blank"><img src="oodoc.gif" width="13" height="16" title="Local Open Office Manual" alt="" /></a>':'').
 						'</td>';
 				$cells[] = '<td nowrap="nowrap">'.$this->typeLabels[$extInfo['type']].(strlen($extInfo['doubleInstall'])>1?'<strong> '.$GLOBALS['TBE_TEMPLATE']->rfw($extInfo['doubleInstall']).'</strong>':'').'</td>';
 			} else {	// Listing extensions from REMOTE repository:

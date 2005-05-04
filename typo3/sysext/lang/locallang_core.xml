@@ -221,5 +221,6 @@ Would you like to save now in order to refresh the display?</label>
 		<languageKey index="kr">EXT:csh_kr/lang/kr.locallang_core.xml</languageKey>
 		<languageKey index="eo">EXT:csh_eo/lang/eo.locallang_core.xml</languageKey>
 		<languageKey index="my">EXT:csh_my/lang/my.locallang_core.xml</languageKey>
+		<languageKey index="hi">EXT:csh_hi/lang/hi.locallang_core.xml</languageKey>
 	</data>
 </T3locallang>

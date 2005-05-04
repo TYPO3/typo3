@@ -58,6 +58,7 @@
 		<languageKey index="kr">EXT:csh_kr/version/modfunc1/kr.locallang.xml</languageKey>
 		<languageKey index="eo">EXT:csh_eo/version/modfunc1/eo.locallang.xml</languageKey>
 		<languageKey index="my">EXT:csh_my/version/modfunc1/my.locallang.xml</languageKey>
+		<languageKey index="hi">EXT:csh_hi/version/modfunc1/hi.locallang.xml</languageKey>
 	</data>
 	<orig_hash type="array">
 		<languageKey index="default" type="array">

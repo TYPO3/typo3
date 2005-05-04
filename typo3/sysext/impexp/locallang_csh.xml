@@ -217,5 +217,6 @@ Before importing make sure you change any editable soft references that are show
 		<languageKey index="ca">EXT:csh_ca/impexp/ca.locallang_csh.xml</languageKey>
 		<languageKey index="ba">EXT:csh_ba/impexp/ba.locallang_csh.xml</languageKey>
 		<languageKey index="kr">EXT:csh_kr/impexp/kr.locallang_csh.xml</languageKey>
+		<languageKey index="hi">EXT:csh_hi/impexp/hi.locallang_csh.xml</languageKey>
 	</data>
 </T3locallang>

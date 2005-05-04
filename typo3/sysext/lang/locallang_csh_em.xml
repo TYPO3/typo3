@@ -294,5 +294,6 @@ In effect you can therefore have, say, a &quot;stable&quot; version of an extens
 		<languageKey index="fr">EXT:csh_fr/lang/fr.locallang_csh_em.xml</languageKey>
 		<languageKey index="eo">EXT:csh_eo/lang/eo.locallang_csh_em.xml</languageKey>
 		<languageKey index="my">EXT:csh_my/lang/my.locallang_csh_em.xml</languageKey>
+		<languageKey index="hi">EXT:csh_hi/lang/hi.locallang_csh_em.xml</languageKey>
 	</data>
 </T3locallang>

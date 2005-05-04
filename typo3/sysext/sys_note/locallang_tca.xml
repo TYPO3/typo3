@@ -70,6 +70,7 @@
 		<languageKey index="kr">EXT:csh_kr/sys_note/kr.locallang_tca.xml</languageKey>
 		<languageKey index="eo">EXT:csh_eo/sys_note/eo.locallang_tca.xml</languageKey>
 		<languageKey index="my">EXT:csh_my/sys_note/my.locallang_tca.xml</languageKey>
+		<languageKey index="hi">EXT:csh_hi/sys_note/hi.locallang_tca.xml</languageKey>
 	</data>
 	<orig_hash type="array">
 		<languageKey index="default" type="array">

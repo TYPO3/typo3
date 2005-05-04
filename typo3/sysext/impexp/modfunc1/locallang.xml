@@ -56,6 +56,7 @@
 		<languageKey index="kr">EXT:csh_kr/impexp/modfunc1/kr.locallang.xml</languageKey>
 		<languageKey index="eo">EXT:csh_eo/impexp/modfunc1/eo.locallang.xml</languageKey>
 		<languageKey index="my">EXT:csh_my/impexp/modfunc1/my.locallang.xml</languageKey>
+		<languageKey index="hi">EXT:csh_hi/impexp/modfunc1/hi.locallang.xml</languageKey>
 	</data>
 	<orig_hash type="array">
 		<languageKey index="default" type="array">

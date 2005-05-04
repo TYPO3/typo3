@@ -56,5 +56,6 @@
 		<languageKey index="kr">EXT:csh_kr/install/mod/kr.locallang_mod.xml</languageKey>
 		<languageKey index="eo">EXT:csh_eo/install/mod/eo.locallang_mod.xml</languageKey>
 		<languageKey index="my">EXT:csh_my/install/mod/my.locallang_mod.xml</languageKey>
+		<languageKey index="hi">EXT:csh_hi/install/mod/hi.locallang_mod.xml</languageKey>
 	</data>
 </T3locallang>

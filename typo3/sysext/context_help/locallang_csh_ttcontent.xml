@@ -441,5 +441,6 @@ tt_content:spaceBefore</label>
 		<languageKey index="fr">EXT:csh_fr/context_help/fr.locallang_csh_ttcontent.xml</languageKey>
 		<languageKey index="eo">EXT:csh_eo/context_help/eo.locallang_csh_ttcontent.xml</languageKey>
 		<languageKey index="my">EXT:csh_my/context_help/my.locallang_csh_ttcontent.xml</languageKey>
+		<languageKey index="hi">EXT:csh_hi/context_help/hi.locallang_csh_ttcontent.xml</languageKey>
 	</data>
 </T3locallang>

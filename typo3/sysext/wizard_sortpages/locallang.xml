@@ -62,5 +62,6 @@
 		<languageKey index="kr">EXT:csh_kr/wizard_sortpages/kr.locallang.xml</languageKey>
 		<languageKey index="eo">EXT:csh_eo/wizard_sortpages/eo.locallang.xml</languageKey>
 		<languageKey index="my">EXT:csh_my/wizard_sortpages/my.locallang.xml</languageKey>
+		<languageKey index="hi">EXT:csh_hi/wizard_sortpages/hi.locallang.xml</languageKey>
 	</data>
 </T3locallang>

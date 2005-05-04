@@ -1798,7 +1798,7 @@ class t3lib_TCEmain	{
 	 * Deletes a flex form element
 	 *
 	 * @param	array		&$valueArrayToRemoveFrom: by reference
-	 * @param	[type]		$deleteCMDS: ...	 * 
+	 * @param	[type]		$deleteCMDS: ...	 *
 	 * @return	void
 	 */
 	function _DELETE_FLEX_FORMdata(&$valueArrayToRemoveFrom,$deleteCMDS)	{
@@ -1818,7 +1818,7 @@ class t3lib_TCEmain	{
 	 *
 	 * @param	array		&$valueArrayToMoveIn: by reference
 	 * @param	[type]		$moveCMDS: ...	 *
-	 * @param	string		$direction: 'up' or 'down' 
+	 * @param	string		$direction: 'up' or 'down'
 	 * @return	void
 	 * TODO: Like _DELETE_FLEX_FORMdata, this is only a temporary solution!
 	 */
@@ -1827,7 +1827,7 @@ class t3lib_TCEmain	{
 
 				// Only execute the first move command:
 			list ($key, $value) = each ($moveCMDS);
-			
+
 			if (is_array($moveCMDS[$key]))	{
 				$this->_MOVE_FLEX_FORMdata($valueArrayToMoveIn[$key],$moveCMDS[$key], $direction);
 			} else {
@@ -1836,16 +1836,16 @@ class t3lib_TCEmain	{
 						if ($key > 1) {
 							$tmpArr = $valueArrayToMoveIn[$key];
 							$valueArrayToMoveIn[$key] = $valueArrayToMoveIn[$key-1];
-							$valueArrayToMoveIn[$key-1] = $tmpArr; 
+							$valueArrayToMoveIn[$key-1] = $tmpArr;
 						}
 					break;
 					case 'down':
 						if ($key < count($valueArrayToMoveIn)) {
 							$tmpArr = $valueArrayToMoveIn[$key];
 							$valueArrayToMoveIn[$key] = $valueArrayToMoveIn[$key+1];
-							$valueArrayToMoveIn[$key+1] = $tmpArr; 
+							$valueArrayToMoveIn[$key+1] = $tmpArr;
 						}
-					break;				
+					break;
 				}
 			}
 		}

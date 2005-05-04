@@ -79,5 +79,6 @@
 		<languageKey index="kr">EXT:csh_kr/wizard_crpages/kr.locallang.xml</languageKey>
 		<languageKey index="eo">EXT:csh_eo/wizard_crpages/eo.locallang.xml</languageKey>
 		<languageKey index="my">EXT:csh_my/wizard_crpages/my.locallang.xml</languageKey>
+		<languageKey index="hi">EXT:csh_hi/wizard_crpages/hi.locallang.xml</languageKey>
 	</data>
 </T3locallang>
