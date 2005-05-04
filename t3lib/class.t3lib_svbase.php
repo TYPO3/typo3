@@ -231,7 +231,7 @@ class t3lib_svbase {
 		$svOptions = $TYPO3_CONF_VARS['SVCONF'][$this->info['serviceType']];
 
 		if(isset($svOptions[$this->info['serviceKey']][$optionName])) {
-			$config = $svOptions['default'][$optionName];
+			$config = $svOptions[$this->info['serviceKey']][$optionName];
 		} elseif($includeDefaultConfig AND isset($svOptions['default'][$optionName])) {
 			$config = $svOptions['default'][$optionName];
 		}
