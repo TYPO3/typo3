@@ -2546,7 +2546,7 @@ class t3lib_div {
 	/**
 	 * Returns the link-url to the current script.
 	 * In $getParams you can set associative keys corresponding to the GET-vars you wish to add to the URL. If you set them empty, they will remove existing GET-vars from the current URL.
-	 * REMEMBER to always htmlspecialchars() content in href-properties to ampersands get converted to entities (XHTML requirement and XSS precaution)
+	 * REMEMBER to always use htmlspecialchars() for content in href-properties to get ampersands converted to entities (XHTML requirement and XSS precaution)
 	 * Usage: 52
 	 *
 	 * @param	array		Array of GET parameters to include
