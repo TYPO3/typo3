@@ -3077,7 +3077,7 @@ From sub-directory:
 			$ex_rows.=$this->getTwinImageMessage('', 'Your server:', 'Reference:');
 			$ex_rows.=$this->getTwinImageMessage('', t3lib_div::formatSize($destImg['filesize']).', '.$destImg[0].'x'.$destImg[1].' pixels', t3lib_div::formatSize($verifyImg['filesize']).', '.$verifyImg[0].'x'.$verifyImg[1].' pixels');
 
-			if (($destImg['filesize']!=$verifyImg['filesize']) && (intval($destImg['filesize']) && ($destImg['filesize']-$verifyImg['filesize']) > 10240))	{	// Display a warning if the generated image is more than 10KB larger than its reference...
+			if (($destImg['filesize']!=$verifyImg['filesize']) && (intval($destImg['filesize']) && ($destImg['filesize']-$verifyImg['filesize']) > 2048))	{	// Display a warning if the generated image is more than 2KB larger than its reference...
 				$ex_rows.=$this->getTwinImageMessage('File size is very different from reference', $destImg['filesize'], $verifyImg['filesize']);
 				$errorLevels[]=2;
 			}
