@@ -153,10 +153,10 @@
 	* Added new stdWrap property "stdWrap" for calling stdWrap recursively
 	* Added new hook in t3lib_tcemain::process_cmdmap (closes #0000823)
 	* Removed typeNum = 0 in some places (a previous change already sets them to 0 by default)
-	* !!! Use nimbus.ttf and vera.ttf as default truetype fonts for the GIFBUILDER. This is generally not a problem because they were always used (arial.ttf is a symlink to nimbus.ttf, verdana.ttf is pointing to vera.ttf). However it could change your page design if you just overwrote the symlinks with a different file and did not set the fontFile in the GIFBUILDER configuration.
+	* !!! Use nimbus.ttf and vera.ttf as default truetype fonts for the GIFBUILDER. This is generally not a problem because they were always used (arial.ttf is a symlink to nimbus.ttf, verdana.ttf is pointing to vera.ttf). However it could change your page design if you have just overwritten the symlinks with a different file and did not set the fontFile in the GIFBUILDER configuration.
 	* File- and foldernames in the fileadmin could be cut to some lenght. Therefore a tool tip is added to show the full name.
 	* Fixed bug #0000286: spamProtectEmailAddresses sometimes wrecked table content elements
-	* New feature #0000490: Optionally remove duplicate parameters in typolinks
+	* New feature #0000490: Optionally remove duplicate parameters in typolinks (config.uniqueLinkVars=1). Thanks to Rupert Germann.
 	* Fixed bug #0000675: Context menu did not work with Opera
 	* Corrected a hook in index_ts.php
 
