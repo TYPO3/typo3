@@ -24,6 +24,7 @@ if (TYPO3_MODE=="BE")	{
 
 t3lib_extMgm::allowTableOnStandardPages('index_config');
 
+/*
 $TCA['index_config'] = Array (
     'ctrl' => Array (
         'title' => 'LLL:EXT:indexed_search/locallang_db.php:index_config',
@@ -44,5 +45,5 @@ $TCA['index_config'] = Array (
         'fe_admin_fieldList' => 'hidden, starttime, title, description, type, depth, table2index, alternative_source_pid, get_params, chashcalc, filepath, extensions',
     )
 );
-
+*/
 ?>

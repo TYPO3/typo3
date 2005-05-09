@@ -1,51 +1,37 @@
-Visning af indhold i backend module skal konverteres fra utf-8 til lokalt charset.
+***************
+TODO / projects:
+*****************
 
+Bugs / Issues:
+- The checkbox "No Search" in the page header is only respected by indexed_search during indexing! (A page will not be indexed when "No Search" is set). However when searching results are not filtered based on this flag - so if a page is indexed before the no search flag is set it will be found in search results. To change this is hard because the getTreeList() function that fetches all page ids cannot take a where-clause to filter it out but must have hardcoded support. Alternatively the pages table must be joined into the search result so we can select on the field. A solution is still not agreed upon.
+- For tt_news with access restricted records: don't show the title of page since it can reveal information
+	- SOLUTIONS: Maybe just hide search results where "resume" is normally just not shown?
+- When there is a page where *content* is access restricted (eg. from a plugin) while the page itself is not, TYPO3 will still display it as a search result (not the description of course, but the title will be revealed); there should be a flag that the plugin can set so the indexer knows that the page as a whole should be indexed as if it was completely access restricted. Or maybe _all_ search results which are NOT indexed under "0,-1" should be hidden? (Reported by Lars Houmark <lars@houmark.com>)
+- Seems that external media / languages are implemented buggy. See mail from Gert Thiel <GertThiel@gmx.net>, 24/2 2005
 
+Errors encountered after spidering, maybe check:
+- testsite: "message appears" - viste external media som IKKE var indekseret!?
+- typo3site_live: Warning: phash-row "114682730" didn't have a representation in the index_section table! on references page!
 
-
-<diverse>
 Search test:
-- "message appears" - viste external media som IKKE var indekseret!?
 - external media respect privacy of pages?
 - external media on multiple pages with DIFFERENT languages?
-- checkResume: Should it also check for gr_list "0,-1"?
-- case-sensitivity?
-- Warning: phash-row "114682730" didn't have a representation in the index_section table! on references page! (typo3site_live)
-Example på alternativ søgnings SQL
-XHTML i frontend?
 
-Backend modules:
-- Proper skinning? / getLL? / XHTML
+Templating / Display in plugin:
+- Templating
+	- with new Template API?
+	- Still need to put a group together.
+- Support for FE visning af resultater i extra niveaer (ud over niv. 1,2 som er hardcoded)?
+- Configurable language parameter (hardcoded to "L" now)
 
-Implement stop-word setting in: ""Top-20 words by count:" and a list seperate from that (in main module?)
-- Display filters:
-	- The checkbox "No Search" in the page header is only respected by indexed_search during indexing! (A page will not be indexed when "No Search" is set). However when searching results are not filtered based on this flag - so if a page is indexed before the no search flag is set it will be found in search results. To change this is hard because the getTreeList() function that fetches all page ids cannot take a where-clause to filter it out but must have hardcoded support. Alternatively the pages table must be joined into the search result so we can select on the field. A solution is still not agreed upon.
-	- For tt_news with access restricted records: don't show the title of page since it can reveal information
-		SOLUTIONS: Maybe just hide search results where "resume" is normally just not shown?
-</diverse>
-
-Unittest for t3lib_cs converting Euc/shift_jis
-
-- Søgning i tabeller (reg. tabeller!)
+Indexing configurations (temporarily disabled):
 	- Alternative presentationer af når records er indexerede.
 	- incl. meta-data?
-	- Tabelvælger som en del af sektionsvælgeren
-- Support for visning i extra niveaer?
-
-
-
-
-Test kaniner (indexed search / caching?):
-	- 3DS
-	- TYPO3.org copy
-	- Metropol
-	- FI
-	- Link Factory
-	- Brunata
-
-**************
-getLL with XML-support?
-
+	- Tabelvælger som en del af sektionsvælgeren i frontend
+	- Record-indexing: support languageField in records
+	Config i backend through flexforms:
+		- baseUrl for external files?
+		- language setting for files and external URLs?
 
 CLI:
 - Removal of old indexes
@@ -57,12 +43,27 @@ CLI:
 		- For files: read files from directories, compare mtime with records;
 		- For URLs: Forced
 		- For records: read records
-			- All new files are indexed, all old are removed, all changed are re-indexed
+			- All new entries are indexed, all old are removed, all changed are re-indexed
 
+Backend modules:
+- Much nicer detail display
+- Proper skinning? / getLL? / XHTML
+- The Tools>Indexing module could need some shining up and more useful features (Someone else does this?)
 
-***************
-TODO / projects:
-*****************
+Ideas:
+- (Jan Slusarczyk <janslu@grupaiis.pl>, 26/11 2004): Searchterms matching exact keywords on pages shows a special result/shortcut on top of result page?
+- Implement that extended chars are translated: ü => u, ç => c, etc. Thus "Français" will be found when "Francais" is searched for.
+
+Hook development:
+- Example of search-SQL hook
+
+Testing indexing crawler for:
+	- 3DS
+	- TYPO3.org copy
+	- Metropol
+	- FI
+	- Link Factory
+	- Brunata
 
 Documentation:
 - Configuration possibilities (piVars, TypoScript, Hooks etc)
@@ -70,16 +71,4 @@ Documentation:
 - Technical:
 	- utf-8 internally.
 	- Updates on tables structure
-
-Statistics module:
-- Someone write a statistics display module for the search operation! (Displaying content from index_stat_search and index_stat_word)
-	Olivier Dobberkau / dkd is on this.
-
-Various:
-- The Tools>Indexing module could need some shining up and more useful features (Someone else does this?)
-
-Templating / Display in plugin:
-- Templating
-	- with new Template API?
-	- Still need to put a group together.
 

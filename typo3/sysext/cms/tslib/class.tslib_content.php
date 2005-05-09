@@ -5117,10 +5117,7 @@ class tslib_cObj {
 		}
 		if (is_array($urlParameters))	{
 			if (count($urlParameters))	{
-				reset($urlParameters);
-				while(list($k,$v)=each($urlParameters))	{
-					$conf['additionalParams'].='&'.$k.'='.rawurlencode($v);
-				}
+				$conf['additionalParams'].= t3lib_div::implodeArrayForUrl('',$urlParameters);
 			}
 		} else {
 			$conf['additionalParams'].=$urlParameters;

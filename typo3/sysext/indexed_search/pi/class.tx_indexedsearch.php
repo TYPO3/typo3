@@ -1459,7 +1459,17 @@ class tx_indexedsearch extends tslib_pibase {
 				$title = $this->linkPage($row['page_id'],htmlspecialchars($this->makeTitle($row)),$copy_row);
 			}
 		} else {	// Else the page:
-			$title = $this->linkPage($row['data_page_id'],htmlspecialchars($this->makeTitle($row)),$row);
+
+				// Prepare search words for markup in content:
+			if ($this->conf['forwardSearchWordsInResultLink'])	{
+				$markUpSwParams = array('no_cache' => 1);
+				foreach($this->sWArr as $d)	{
+					$markUpSwParams['sword_list'][] = $d['sword'];
+				}
+			} else {
+				$markUpSwParams = array();
+			}
+			$title = $this->linkPage($row['data_page_id'],htmlspecialchars($this->makeTitle($row)),$row,$markUpSwParams);
 		}
 
 		$tmplContent = array();
@@ -1802,7 +1812,11 @@ class tx_indexedsearch extends tslib_pibase {
 			$tmplArray['path'] = '<a href="'.htmlspecialchars($row['data_filename']).'">'.htmlspecialchars($row['data_filename']).'</a>';
 		} else {
 			$pathStr = htmlspecialchars($this->getPathFromPageId($pathId,$pathMP));
-			$tmplArray['path'] = $this->linkPage($pathId,htmlspecialchars($pathStr),array('data_page_mp'=>$pathMP));
+			$tmplArray['path'] = $this->linkPage($pathId,htmlspecialchars($pathStr),array(
+				'data_page_type' => $row['data_page_type'],
+				'data_page_mp' => $pathMP,
+				'sys_language_uid' => $row['sys_language_uid'],
+			));
 		}
 
 		return $tmplArray;
@@ -1889,14 +1903,18 @@ class tx_indexedsearch extends tslib_pibase {
 	 * @param	array		Result row
 	 * @return	string		<A> tag wrapped title string.
 	 */
-	function linkPage($id,$str,$row=array())	{
+	function linkPage($id,$str,$row=array(),$markUpSwParams=array())	{
 
 			// Parameters for link:
-		$urlParameters = unserialize($row['cHashParams']);
+		$urlParameters = (array)unserialize($row['cHashParams']);
 
 			// Add &type and &MP variable:
 		if ($row['data_page_type']) $urlParameters['type'] = $row['data_page_type'];
 		if ($row['data_page_mp']) $urlParameters['MP'] = $row['data_page_mp'];
+		if ($row['sys_language_uid']) $urlParameters['L'] = $row['sys_language_uid'];
+
+			// markup-GET vars:
+		$urlParameters = array_merge($urlParameters, $markUpSwParams);
 
 			// This will make sure that the path is retrieved if it hasn't been already. Used only for the sake of the domain_record thing...
 		if (!is_array($this->domain_records[$id]))	{
@@ -1912,10 +1930,7 @@ class tx_indexedsearch extends tslib_pibase {
 			$addParams = '';
 			if (is_array($urlParameters))	{
 				if (count($urlParameters))	{
-					reset($urlParameters);
-					while(list($k,$v)=each($urlParameters))	{
-						$addParams.= '&'.$k.'='.rawurlencode($v);
-					}
+					$addParams.= t3lib_div::implodeArrayForUrl('',$urlParameters);
 				}
 			}
 

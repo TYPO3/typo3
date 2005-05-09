@@ -135,7 +135,7 @@ class tx_indexedsearch_modfunc1 extends t3lib_extobjbase {
 				0 => 'Overview',
 				1 => 'Technical Details',
 				2 => 'Words and content',
-				3 => 'Indexing'
+//				3 => 'Indexing'
 			)
 		);
     }
@@ -405,7 +405,7 @@ class tx_indexedsearch_modfunc1 extends t3lib_extobjbase {
 			$arr = unserialize($row['cHashParams']);
 			$page = $arr['key'] ? ' ['.$arr['key'].']' : '';
 		} else $page = '';
-		$elTitle = $this->linkDetails($row['item_title'] ? htmlspecialchars(t3lib_div::fixed_lgd($row['item_title'], 20).$page) : '<em>[No Title]</em>',$row['phash']);
+		$elTitle = $this->linkDetails($row['item_title'] ? htmlspecialchars(t3lib_div::fixed_lgd_cs($this->utf8_to_currentCharset($row['item_title']), 20).$page) : '<em>[No Title]</em>',$row['phash']);
 		$cmdLinks = $this->printRemoveIndexed($row['phash'],'Clear phash-row').$this->printReindex($row,'Re-index element');
 
 		switch($this->pObj->MOD_SETTINGS['type'])	{
@@ -482,7 +482,7 @@ class tx_indexedsearch_modfunc1 extends t3lib_extobjbase {
 							'phash = '.intval($row['phash'])
 						);
 				$lines[] = '<td style="white-space: normal;">'.
-							t3lib_div::fixed_lgd($this->utf8_to_currentCharset(htmlspecialchars($ftrows[0]['fulltextdata'])),3000).
+							htmlspecialchars(t3lib_div::fixed_lgd_cs($this->utf8_to_currentCharset($ftrows[0]['fulltextdata']),3000)).
 							'<hr/><em>Size: '.strlen($ftrows[0]['fulltextdata']).'</em>'.
 							'</td>';
 
@@ -502,7 +502,7 @@ class tx_indexedsearch_modfunc1 extends t3lib_extobjbase {
 				if (is_array($ftrows))	{
 					$indexed_words = array_keys($ftrows);
 					sort($indexed_words);
-					$wordList = $this->utf8_to_currentCharset(htmlspecialchars(implode(' ',$indexed_words)));
+					$wordList = htmlspecialchars($this->utf8_to_currentCharset(implode(' ',$indexed_words)));
 					$wordList.='<hr/><em>Count: '.count($indexed_words).'</em>';
 				}
 
@@ -522,7 +522,7 @@ class tx_indexedsearch_modfunc1 extends t3lib_extobjbase {
 					// Remove-indexing-link:
 				$lines[] = '<td>'.$cmdLinks.'</td>';
 
-				$lines[] = '<td style="white-space: normal;">'.$this->utf8_to_currentCharset(htmlspecialchars($row['item_description'])).'...</td>';
+				$lines[] = '<td style="white-space: normal;">'.htmlspecialchars($this->utf8_to_currentCharset($row['item_description'])).'...</td>';
 				$lines[] = '<td>'.t3lib_div::formatSize($row['item_size']).'</td>';
 				$lines[] = '<td>'.t3lib_BEfunc::dateTimeAge($row['tstamp']).'</td>';
 			break;
@@ -694,24 +694,26 @@ class tx_indexedsearch_modfunc1 extends t3lib_extobjbase {
 						'index_words.baseword, index_words.metaphone, index_rel.*',
 						'index_rel, index_words',
 						'index_rel.phash = '.intval($phash).
-							' AND index_words.wid = index_rel.wid',
+							' AND index_words.wid = index_rel.wid
+							 AND index_words.is_stopword=0',
 						'',
 						'index_rel.freq DESC',
 						'20'
 					);
-			$content.= $this->listWords($ftrows, 'Top-20 words by frequency:');
+			$content.= $this->listWords($ftrows, 'Top-20 words by frequency:', 2);
 
 				// Finding top-20 on count for this phash:
 			$ftrows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
 						'index_words.baseword, index_words.metaphone, index_rel.*',
 						'index_rel, index_words',
 						'index_rel.phash = '.intval($phash).
-							' AND index_words.wid = index_rel.wid',
+							' AND index_words.wid = index_rel.wid
+							 AND index_words.is_stopword=0',
 						'',
 						'index_rel.count DESC',
 						'20'
 					);
-			$content.= $this->listWords($ftrows, 'Top-20 words by count:');
+			$content.= $this->listWords($ftrows, 'Top-20 words by count:', 2);
 
 
 			$content.='<h3>Section records for this phash</h3>';
@@ -763,10 +765,11 @@ class tx_indexedsearch_modfunc1 extends t3lib_extobjbase {
 			</tr>
 		';
 		foreach($ftrows as $row)	{
+			$hiddenField = $stopWordBoxes!=2 ? '<input type="hidden" name="stopWord['.$row['wid'].']" value="0" />' : '';
 			$trows.= '
 				<tr class="'.($row['is_stopword'] ? 'bgColor' : 'bgColor4').'">
-					'.($stopWordBoxes ? '<td align="center"'.($row['is_stopword'] ? ' style="background-color:red;"' : '').'><input type="hidden" name="stopWord['.$row['wid'].']" value="0" /><input type="checkbox" name="stopWord['.$row['wid'].']" value="1"'.($row['is_stopword']?'checked="checked"':'').' /></td>' : '').'
-					<td>'.$this->linkWordDetails($this->utf8_to_currentCharset(htmlspecialchars($row['baseword'])), $row['wid']).'</td>
+					'.($stopWordBoxes ? '<td align="center"'.($row['is_stopword'] ? ' style="background-color:red;"' : '').'>'.$hiddenField.'<input type="checkbox" name="stopWord['.$row['wid'].']" value="1"'.($row['is_stopword']?'checked="checked"':'').' /></td>' : '').'
+					<td>'.$this->linkWordDetails(htmlspecialchars($this->utf8_to_currentCharset($row['baseword'])), $row['wid']).'</td>
 					<td>'.htmlspecialchars($row['count']).'</td>
 					<td>'.htmlspecialchars($row['first']).'</td>
 					<td>'.htmlspecialchars($row['freq']).'</td>
@@ -811,7 +814,7 @@ class tx_indexedsearch_modfunc1 extends t3lib_extobjbase {
 						<td>'.$this->linkMetaPhoneDetails($this->indexerObj->metaphone($words[0],1),$metaphone).'</td>
 						<td>'.htmlspecialchars($metaphone).'</td>
 						<td>'.htmlspecialchars(count($words)).'</td>
-						<td style="white-space: normal;">'.$this->utf8_to_currentCharset(htmlspecialchars(implode(', ',$words))).'</td>
+						<td style="white-space: normal;">'.htmlspecialchars($this->utf8_to_currentCharset(implode(', ',$words))).'</td>
 					</tr>
 				';
 			}
@@ -1149,7 +1152,6 @@ class tx_indexedsearch_modfunc1 extends t3lib_extobjbase {
 	 */
 	function utf8_to_currentCharset($string)	{
 		global $LANG;
-
 		if ($LANG->charSet != 'utf-8')	{
 			$string = $LANG->csConvObj->utf8_decode($string, $LANG->charSet, TRUE);
 		}

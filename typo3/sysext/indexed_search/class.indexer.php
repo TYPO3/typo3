@@ -443,6 +443,7 @@ class tx_indexedsearch_indexer {
 			// Example configuration (localconf.php) for this hook: $TYPO3_CONF_VARS['EXTCONF']['indexed_search']['metaphone'] = 'EXT:indexed_search/class.doublemetaphone.php:&user_DoubleMetaPhone';
 		if ($TYPO3_CONF_VARS['EXTCONF']['indexed_search']['metaphone'])	{
 			$this->metaphoneObj = &t3lib_div::getUserObj($TYPO3_CONF_VARS['EXTCONF']['indexed_search']['metaphone']);
+			$this->metaphoneObj->pObj = &$this;
 		}
 
 			// Init charset class:
@@ -1219,7 +1220,7 @@ class tx_indexedsearch_indexer {
 	function metaphone($word,$retRaw=FALSE) {
 
 		if (is_object($this->metaphoneObj))	{
-			$tmp = $this->metaphoneObj->metaphone($word);
+			$tmp = $this->metaphoneObj->metaphone($word, $this->conf['sys_language_uid']);
 		} else {
 			$tmp = metaphone($word);
 		}

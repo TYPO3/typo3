@@ -54,7 +54,7 @@ class user_DoubleMetaPhone
 //  methods
 
 		// TYPO3 specific API to this class. BEGIN
-	function metaphone($string)	{
+	function metaphone($string,$sys_language_uid=0)	{
 		$res = $this->DoubleMetaPhone($string);
 		#debug(array($string,$res['primary']));
 		return $res['primary'];
