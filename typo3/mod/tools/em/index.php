@@ -2146,7 +2146,7 @@ EXTENSION KEYS:
 			$cells[] = '<td nowrap="nowrap">'.($verDiff ? '<strong>'.$GLOBALS['TBE_TEMPLATE']->rfw(htmlspecialchars($extInfo['EM_CONF']['version'])).'</strong>' : $extInfo['EM_CONF']['version']).'</td>';
 			if (!$import) {		// Listing extenson on LOCAL server:
 					// Extension Download:
-				$cells[] = '<td nowrap="nowrap"><a href="'.htmlspecialchars('index.php?CMD[doBackup]=1&CMD[showExt]='.$extKey).'"><img src="download.png" width="13" height="12" title="Download" alt="" /></a></td>';
+				$cells[] = '<td nowrap="nowrap"><a href="'.htmlspecialchars('index.php?CMD[doBackup]=1&SET[singleDetails]=backup&CMD[showExt]='.$extKey).'"><img src="download.png" width="13" height="12" title="Download" alt="" /></a></td>';
 
 					// Manual download
 				$fileP = PATH_site.$this->typePaths[$extInfo['type']].$extKey.'/doc/manual.sxw';

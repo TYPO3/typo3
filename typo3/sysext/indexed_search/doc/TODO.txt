@@ -1,4 +1,4 @@
-
+Visning af indhold i backend module skal konverteres fra utf-8 til lokalt charset.
 
 
 
