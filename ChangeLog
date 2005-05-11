@@ -1,3 +1,6 @@
+2005-05-11  Michael Scharkow  <mscharkow@gmx.net>
+	* Fixed bug #0000930: The delete button in QuickEdit mode lead to a 404 message. Thanks to Sebastian Kurfürst.
+
 2005-05-09  Kasper Skårhøj,,,  <kasper@typo3.com>
 
 	* Closed Indexed Search before 3.8.0 launch: Despite my hopes I had to significantly lower my ambitions for this release; I couldn't find time to complete the overhaul but had to just patch up any immediate problems and make it work for the 3.8.0 release. The TODO list inside is updated with the remaining tasks which is due for 4.0.0 late summer. If "Indexing Configurations" supporting indexing of external files, URLs and individual records have been mentioned earlier in this changelog or on the featurelist I can inform that the incomplete implementation has been disabled and postponed for 4.0.

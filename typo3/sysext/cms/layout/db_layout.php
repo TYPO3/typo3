@@ -638,7 +638,7 @@ class SC_db_layout {
 				'<img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/closedok.gif','width="21" height="16"').' class="c-inputButton" title="'.$LANG->sL('LLL:EXT:lang/locallang_core.php:rm.closeDoc',1).'" alt="" />'.
 				'</a>'.
 
-			($deleteButton ? '<a href="#" onclick="'.htmlspecialchars('return deleteRecord(\''.$eRParts[0].'\',\''.$eRParts[1].'\',\'db_layout.php?id='.$this->id.'\');').'">'.
+			($deleteButton ? '<a href="#" onclick="'.htmlspecialchars('return deleteRecord(\''.$eRParts[0].'\',\''.$eRParts[1].'\',\''.t3lib_div::getIndpEnv('SCRIPT_NAME').'?id='.$this->id.'\');').'">'.
 							'<img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/deletedok.gif','width="21" height="16"').' class="c-inputButton" title="'.$LANG->getLL('deleteItem',1).'" alt="" />'.
 							'</a>' : '').
 
