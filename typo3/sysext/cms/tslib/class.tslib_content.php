@@ -4978,7 +4978,8 @@ class tslib_cObj {
 						if ($linktxt=='') $linktxt = $page['title'];
 
 							// Query Params:
-						$addQueryParams = trim($this->stdWrap($conf['additionalParams'],$conf['additionalParams.']));
+						$addQueryParams = $conf['addQueryString'] ? t3lib_div::getIndpEnv('QUERY_STRING') : '';
+						$addQueryParams .= trim($this->stdWrap($conf['additionalParams'],$conf['additionalParams.']));
 						if (substr($addQueryParams,0,1)!='&')		{
 							$addQueryParams = '';
 						} elseif ($conf['useCacheHash']) {	// cache hashing:

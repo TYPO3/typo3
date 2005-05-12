@@ -134,13 +134,13 @@ class t3lib_userAuth {
 	var $formfield_status = ''; 		// formfield with status: *'login', 'logout'. If empty login is not verified.
 	var $security_level = 'normal';		// sets the level of security. *'normal' = clear-text. 'challenged' = hashed password/username from form in $formfield_uident. 'superchallenged' = hashed password hashed again with username.
 
-	var $auth_include = '';				// this is the name of the include-file containing the login form. If not set, login CAN be anonymous. If set login IS needed.
+	var $auth_include = '';			// this is the name of the include-file containing the login form. If not set, login CAN be anonymous. If set login IS needed.
 
 	var $auth_timeout_field = 0;		// if > 0 : session-timeout in seconds. if string: The string is fieldname from the usertable where the timeout can be found.
-	var $lifetime = 0;                  // 0 = Session-cookies. If session-cookies, the browser will stop session when the browser is closed. Else it keeps the session for $lifetime seconds.
-	var $gc_time  = 24;               	// GarbageCollection. Purge all session data older than $gc_time hours.
-	var $gc_probability = 1;			// Possibility (in percent) for GarbageCollection to be run.
-	var $writeStdLog = FALSE;			// Decides if the writelog() function is called at login and logout
+	var $lifetime = 0;			// 0 = Session-cookies. If session-cookies, the browser will stop session when the browser is closed. Else it keeps the session for $lifetime seconds.
+	var $gc_time = 24;			// GarbageCollection. Purge all session data older than $gc_time hours.
+	var $gc_probability = 1;		// Possibility (in percent) for GarbageCollection to be run.
+	var $writeStdLog = FALSE;		// Decides if the writelog() function is called at login and logout
 	var $writeAttemptLog = FALSE;		// If the writelog() functions is called if a login-attempt has be tried without success
 	var $sendNoCacheHeaders = TRUE;		// If this is set, headers is sent to assure, caching is NOT done
 	var $getFallBack = FALSE;			// If this is set, authentication is also accepted by the $_GET. Notice that the identification is NOT 128bit MD5 hash but reduced. This is done in order to minimize the size for mobile-devices, such as WAP-phones
@@ -287,9 +287,8 @@ class t3lib_userAuth {
 
 			// Set all posible headers that could ensure that the script is not cached on the client-side
 		if ($this->sendNoCacheHeaders)	{
-			header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
-			header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT');
 			header('Expires: 0');
+			header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT');
 			header('Cache-Control: no-cache, must-revalidate');
 			header('Pragma: no-cache');
 		}

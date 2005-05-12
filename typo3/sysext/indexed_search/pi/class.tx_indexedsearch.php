@@ -1316,11 +1316,11 @@ class tx_indexedsearch extends tslib_pibase {
 
 				// Make the header row with title, icon and rating bar.:
 			$out.='<tr '.$this->pi_classParam('title'.$tmplContent['CSSsuffix']).'>
-				<td width="16">'.$tmplContent['icon'].'</td>
+				<td width="16" '.$this->pi_classParam('title-icon'.$tmplContent['CSSsuffix']).'>'.$tmplContent['icon'].'</td>
 				<td width="95%" nowrap="nowrap"><p>'.
 					#$row['phash'].' // '.
-					$tmplContent['result_number'].': '.
-					$tmplContent['title'].
+					'<span '.$this->pi_classParam('title-number'.$tmplContent['CSSsuffix']).'>'.$tmplContent['result_number'].': </span>'.
+					'<span '.$this->pi_classParam('title-caption'.$tmplContent['CSSsuffix']).'>'.$tmplContent['title'].'</span>'.
 					'</p></td>
 				<td nowrap="nowrap"><p'.$this->pi_classParam('percent'.$tmplContent['CSSsuffix']).'>'.$tmplContent['rating'].'</p></td>
 			</tr>';

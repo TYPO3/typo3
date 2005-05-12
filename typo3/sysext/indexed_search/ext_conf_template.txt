@@ -10,7 +10,7 @@ nativeOOMethod = 0
   # cat=basic; type=string; label=Path to OOo parser: The indexer uses the application 'ooo_extract' for extracting content from OpenOffice files (unless "[nativeOOMethod]" above is set). You must install ooo_extract in this path. Otherwise leave the field empty.
 OOoExtract = /usr/local/bin/
 
-  # cat=basic; type=string; label=Path to RUBY: The indexer uses the application 'ruby' for extracting content from OpenOffice files (unless "[nativeOOMethod]" above is set). You must install this application in this path. Otherwise leave the field empty.
+  # cat=basic; type=string; label=Path to RUBY: The indexer uses the application 'ruby' for extracting content from OpenOffice files (unless "[nativeOOMethod]" above is set). You must install this application in this path. Otherwise (if ooo_extract is directly executable) leave the field empty.
 ruby = /usr/local/bin/
 
   # cat=basic; type=string; label=Path to WORD parser: The indexer uses the application 'catdoc' for extracting content from WORD files. You must install this application in this path. Otherwise leave the field empty.

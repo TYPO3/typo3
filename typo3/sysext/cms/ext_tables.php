@@ -539,6 +539,7 @@ $TCA['tt_content'] = Array (
 		),
 		'mainpalette' => '1',
 		'thumbnail' => 'image',
+		'requestUpdate' => 'list_type',
 		'dynamicConfigFile' => t3lib_extMgm::extPath($_EXTKEY).'tbl_tt_content.php'
 	)
 );

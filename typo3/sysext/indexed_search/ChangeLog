@@ -1,3 +1,8 @@
+2005-05-12  Michael Stucki  <michael@typo3.org>
+
+	* Added class tags to three elements for optionally styling/hiding them with CSS
+	* Path to ruby is not required if ooo_extract is directly executable
+
 2005-04-13  Karsten Dambekalns <karsten@typo3.org>
 
 	* Fixed bug #961 and added some DBAL compliancy changes.

@@ -62,7 +62,7 @@
  *  550:     function breakLinesForEmail($str,$implChar="\n",$charWidth=76)
  *  585:     function cmpIP($baseIP, $list)
  *  627:     function cmpFQDN($baseIP, $list)
- *  657:     function inList($in_list,$item)
+ *  657:     function inList($list,$item)
  *  669:     function rmFromList($element,$list)
  *  687:     function intInRange($theInt,$min,$max=2000000000,$zeroValue=0)
  *  703:     function intval_positive($theInt)
@@ -653,12 +653,12 @@ class t3lib_div {
 	 * Check if an item exists in a comma-separated list of items.
 	 * Usage: 163
 	 *
-	 * @param	string		$in_list 	comma-separated list of items (string)
-	 * @param	string		$item 	item to check for
-	 * @return	boolean		true if $item is in $in_list
+	 * @param	string		comma-separated list of items (string)
+	 * @param	string		item to check for
+	 * @return	boolean		true if $item is in $list
 	 */
-	function inList($in_list,$item)	{
-		return strstr(','.$in_list.',', ','.$item.',');
+	function inList($list,$item)	{
+		return strstr(','.$list.',', ','.$item.',') ? true : false;
 	}
 
 	/**

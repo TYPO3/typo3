@@ -170,14 +170,15 @@ class tx_indexed_search_extparse {
 						$this->pObj->log_setTSlogMessage('Using "libunzipped" for extraction of Open Office files, "'.$extension.'".',1);
 					} else $this->pObj->log_setTSlogMessage('The extension "libunzipped" was not loaded (for extraction of Open Office files, "'.$extension.'")',2);
 				} else {
-					if ($indexerConfig['ruby'])	{
-						$rubyPath = ereg_replace('\/$','',$indexerConfig['ruby']).'/';
+					if ($indexerConfig['OOoExtract'])	{
+						if($indexerConfig['ruby'])	{ $rubyPath = ereg_replace('\/$','',$indexerConfig['ruby']).'/'; }
+
 						$oooExPath = ereg_replace('\/$','',$indexerConfig['OOoExtract']).'/';
-						if (ini_get('safe_mode') || (@is_file($rubyPath.'ruby'.$exe) && @is_file($oooExPath.'ooo_extract.rb'))){
+						if (ini_get('safe_mode') || (($rubyPath ? @is_file($rubyPath.'ruby'.$exe) : true) && @is_file($oooExPath.'ooo_extract.rb')))	{
 							$this->app['ruby'] = $rubyPath.'ruby'.$exe;
 							$this->app['OOo'] = $oooExPath.'ooo_extract.rb';
 							$extOK = TRUE;
-						} else $this->pObj->log_setTSlogMessage("'Ruby and OOo_extract' tools for reading OOo documents were not found in paths '".$rubyPath."ruby' OR '".$oooExPath."ooo_extract.rb'",3);
+						} else $this->pObj->log_setTSlogMessage("'Ruby and OOo_extract' tools for reading OpenOffice.org documents were not found in paths '".$rubyPath."ruby".$exe."' OR '".$oooExPath."ooo_extract.rb'",3);
 					} else $this->pObj->log_setTSlogMessage('Ruby & OOo_extract tools (OpenOffice-files) disabled',1);
 				}
 			break;

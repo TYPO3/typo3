@@ -1,4 +1,12 @@
+2005-05-12  Michael Stucki  <michael@typo3.org>
+
+	* Force TCEform reload if the plugin is changed
+	* Added new typolink option "addQueryString" for adding all parameters of the current URL to the link. Notice that this does not check for any duplicate parameters! This is not a problem (only the last parameter of the same name will be applied), but enable "config.uniqueLinkVars" if you still don't like it.
+	* Removed duplicate "Expires" header in class.t3lib_userauth.php
+	* Changed return value type of t3lib_div::inList which was not really boolean (as documented) but string. Thanks to Bernhard Kraft.
+
 2005-05-11  Michael Scharkow  <mscharkow@gmx.net>
+
 	* Fixed bug #0000930: The delete button in QuickEdit mode lead to a 404 message. Thanks to Sebastian Kurfürst.
 
 2005-05-09  Kasper Skårhøj,,,  <kasper@typo3.com>
