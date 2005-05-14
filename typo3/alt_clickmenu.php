@@ -1105,8 +1105,12 @@ if (top.content && top.content'.$frameName.' && top.content'.$frameName.'.setLay
 				$onClick=eregi_replace('hideCM\(\);','',$onClick);
 				if (!$i[5])	$onClick.='hideEmpty();';
 
+				if ($GLOBALS['TYPO3_CONF_VARS']['BE']['useOnContextMenuHandler'])   {
+					$CSM = ' oncontextmenu="'.htmlspecialchars($onClick).';return false;"';
+				}
+
 				$out[]='
-					<tr class="typo3-CSM-itemRow" onclick="'.htmlspecialchars($onClick).'" onmouseover="this.bgColor=\''.$GLOBALS['TBE_TEMPLATE']->bgColor5.'\';" onmouseout="this.bgColor=\'\';">
+					<tr class="typo3-CSM-itemRow" onclick="'.htmlspecialchars($onClick).'" onmouseover="this.bgColor=\''.$GLOBALS['TBE_TEMPLATE']->bgColor5.'\';" onmouseout="this.bgColor=\'\';"'.$CSM.'>
 						'.(!$this->leftIcons?'<td class="typo3-CSM-item">'.$i[1].'</td><td align="center">'.$i[2].'</td>' : '<td align="center">'.$i[2].'</td><td class="typo3-CSM-item">'.$i[1].'</td>').'
 					</tr>';
 			}

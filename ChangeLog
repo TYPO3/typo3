@@ -1,6 +1,10 @@
+2005-05-14  Michael Stucki  <michael@typo3.org>
+
+	* Fixed a bug in the context-sensitive menu (right-click on 2nd level like "more options..." didn't work). Thanks to Wolfgang Klinger.
+
 2005-05-14  Rupert Germann  <rupi@gmx.li>
 
-	* fix for bug 797: added a new function to class.tslib_content.php (getBorderAttr()) which returns only a border attribute for images if the doctype is not xhtml_strict,  xhtml_11 or xhtml_2 or if the config parameter 'disableImgBorderAttr' is not set. Setting 'disableImgBorderAttr' to '1' will disable border attributes in img tags even if the doctype is not in the list of doctypes above.
+	* Fixed bug #0000797: added a new function to class.tslib_content.php (getBorderAttr()) which returns only a border attribute for images if the doctype is not xhtml_strict,  xhtml_11 or xhtml_2 or if the config parameter 'disableImgBorderAttr' is not set. Setting 'disableImgBorderAttr' to '1' will disable border attributes in img tags even if the doctype is not in the list of doctypes above.
 
 2005-05-12  Michael Stucki  <michael@typo3.org>
 
