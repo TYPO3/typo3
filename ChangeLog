@@ -1,5 +1,6 @@
 2005-05-14  Michael Stucki  <michael@typo3.org>
 
+	* Release of TYPO3 3.8.0rc1
 	* Fixed a bug in the context-sensitive menu (right-click on 2nd level like "more options..." didn't work). Thanks to Wolfgang Klinger.
 
 2005-05-14  Rupert Germann  <rupi@gmx.li>
