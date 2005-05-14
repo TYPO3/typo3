@@ -1,3 +1,7 @@
+2005-05-14  Rupert Germann  <rupi@gmx.li>
+
+	* fix for bug 797: added a new function to class.tslib_content.php (getBorderAttr()) which returns only a border attribute for images if the doctype is not xhtml_strict,  xhtml_11 or xhtml_2 or if the config parameter 'disableImgBorderAttr' is not set. Setting 'disableImgBorderAttr' to '1' will disable border attributes in img tags even if the doctype is not in the list of doctypes above.
+
 2005-05-12  Michael Stucki  <michael@typo3.org>
 
 	* Force TCEform reload if the plugin is changed
