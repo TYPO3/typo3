@@ -1323,7 +1323,7 @@ class tx_indexedsearch_modfunc1 extends t3lib_extobjbase {
 									$theContent.= $r[$v].' ';
 								}
 							}
-debug($theContent,$theTitle);
+#debug($theContent,$theTitle);
 							$indexerObj->backend_indexAsTYPO3Page(
 									$theTitle,
 									'',
@@ -1336,7 +1336,7 @@ debug($theContent,$theTitle);
 								);
 
 						}
-debug($recs);
+#debug($recs);
 					}
 				break;
 				case 2:
@@ -1344,14 +1344,14 @@ debug($recs);
 					if (!t3lib_div::isAbsPath($readPath))	{
 						$readpath = t3lib_div::getFileAbsFileName($readpath);
 					}
-debug($readpath,'$readpath');
+#debug($readpath,'$readpath');
 
 					if (t3lib_div::isAllowedAbsPath($readpath))	{
 						$extList = implode(',',t3lib_div::trimExplode(',',$cfgRow['extensions'],1));
 						$fileArr = array();
 						$files = t3lib_div::getAllFilesAndFoldersInPath($fileArr,$readpath,$extList,0,$cfgRow['depth']);
 						$files = t3lib_div::removePrefixPathFromList($files,PATH_site);
-debug($files);
+#debug($files);
 						foreach($files as $path)	{
 								// (Re)-Indexing file on page.
 							$indexerObj = &t3lib_div::makeInstance('tx_indexedsearch_indexer');
@@ -1361,9 +1361,9 @@ debug($files);
 
 							$indexerObj->indexRegularDocument($path, TRUE);
 
-debug($indexerObj->internal_log,$resultRow['data_filename']);
-debug($indexerObj->file_phash_arr,'file_phash_arr');
-debug($indexerObj->hash,'hash');
+#debug($indexerObj->internal_log,$resultRow['data_filename']);
+#debug($indexerObj->file_phash_arr,'file_phash_arr');
+#debug($indexerObj->hash,'hash');
 
 						}
 					}
