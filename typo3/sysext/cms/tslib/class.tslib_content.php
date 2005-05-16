@@ -5235,6 +5235,8 @@ class tslib_cObj {
 	 * @return	string		Returns a numerical array with two elements: 1) $mailToUrl, string ready to be inserted into the href attribute of the <a> tag, b) $linktxt: The string between starting and ending <a> tag.
 	 */
 	function getMailTo($mailAddress,$linktxt,$initP='?') {
+		if(!strcmp($linktxt,''))	{ $linktxt = $mailAddress; }
+
 		$mailToUrl = 'mailto:'.$mailAddress;
 
 		if (!$GLOBALS['TSFE']->config['config']['jumpurl_enable'] || $GLOBALS['TSFE']->config['config']['jumpurl_mailto_disable']) {
@@ -5246,8 +5248,9 @@ class tslib_cObj {
 				}
 				if ($GLOBALS['TSFE']->config['config']['spamProtectEmailAddresses_atSubst']) {
 					$atLabel = trim($GLOBALS['TSFE']->config['config']['spamProtectEmailAddresses_atSubst']);
-					$linktxt = str_replace('@',$atLabel?$atLabel:'(at)',$linktxt);
 				}
+				$linktxt = str_replace('@',$atLabel?$atLabel:'(at)',$linktxt);
+
 				if ($GLOBALS['TSFE']->config['config']['spamProtectEmailAddresses_lastDotSubst']) {
 					$lastDotLabel = trim($GLOBALS['TSFE']->config['config']['spamProtectEmailAddresses_lastDotSubst']);
 					$lastDotLabel = $lastDotLabel ? $lastDotLabel : '(dot)';

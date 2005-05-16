@@ -1,3 +1,9 @@
+2005-05-16  Michael Stucki  <michael@typo3.org>
+
+	* Fixed wrong display of empty tags in class.tx_cms_layout.php
+	* Fixed missing email address label if none specified in class.tslib_content.php
+	* Fixed missing replacement of "@" in spamProtectEmailAddresses mode in class.tslib_content.php
+
 2005-05-14  Michael Stucki  <michael@typo3.org>
 
 	* Release of TYPO3 3.8.0rc1
