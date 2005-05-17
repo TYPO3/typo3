@@ -3032,14 +3032,14 @@ class tslib_cObj {
 				$content=$this->listNum($content,$listNumber,$conf['listNum.']['splitChar']);
 			}
 
-			if ($conf['trim']){$content=trim($content);}
+			if ($conf['trim'])	{ $content=trim($content); }
 
 				// Call stdWrap recursively
-			if ($conf['stdWrap']){$content=$this->stdWrap($content,$conf['stdWrap.']);}
+			if ($conf['stdWrap'])	{ $content=$this->stdWrap($content,$conf['stdWrap.']); }
 
 			if (   ($conf['required'] && (string)$content=='') || ($conf['if.'] && !$this->checkIf($conf['if.'])) || ($conf['fieldRequired'] && !trim($this->data[$conf['fieldRequired']]))    ){
 				$content = '';
-			} else {
+			} else	{
 					// Perform data processing:
 				if ($conf['csConv'])	{ $content=$GLOBALS['TSFE']->csConv($content,$conf['csConv']); }
 				if ($conf['parseFunc.'] || $conf['parseFunc']) {$content=$this->parseFunc($content,$conf['parseFunc.'],$conf['parseFunc']);}
