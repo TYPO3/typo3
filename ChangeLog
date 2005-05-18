@@ -1,3 +1,7 @@
+2005-05-19  Michael Stucki  <michael@typo3.org>
+
+	* Small fix in typo3/sysext/install/mod/class.tx_install.php: GraphicsMagick executed without any parameters caused a server error (used in the Install Tool for guessing the product version)
+
 2005-05-17  Michael Stucki  <michael@typo3.org>
 
 	* Minor fix in t3lib/config_default.php: pageNotFoundOnCHashError used "false" instead of "0" as the default value

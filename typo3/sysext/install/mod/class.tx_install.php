@@ -1880,7 +1880,8 @@ From sub-directory:
 
 		if($file=='gm') {
 			$GLOBALS['TYPO3_CONF_VARS']['GFX']['im_version_5'] = 'gm';
-			$file = 'identify';	// Work-around, preventing execution of "gm gm"
+			$file = 'identify';		// Work-around, preventing execution of "gm gm"
+			$parameters = '-version';	// Work-around - GM doesn't like to be executed without any arguments
 		} else	{
 			$GLOBALS['TYPO3_CONF_VARS']['GFX']['im_version_5'] = '1';
 
@@ -1889,7 +1890,7 @@ From sub-directory:
 			}
 		}
 
-		$cmd = t3lib_div::imageMagickCommand($file, '', $path);
+		$cmd = t3lib_div::imageMagickCommand($file, $parameters, $path);
 		exec($cmd, $retVal);
 		$string = $retVal[0];
 		list(,$ver) = explode('Magick', $string);
