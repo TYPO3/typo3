@@ -283,7 +283,6 @@ class t3lib_htmlmail {
 	function start ()	{
 			// Sets the message id
 		$this->messageid = md5(microtime()).'@domain.tld';
-
 	}
 
 	/**

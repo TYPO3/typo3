@@ -25,7 +25,7 @@
 
 2004-10-25  Jan-Erik Revsbech <jer@moccompany.com>
 
-	* Fixed problem in htmlmail when running ith safe mode enabled.
+	* Fixed problem in htmlmail when running with safe mode enabled.
 
 2004-09-24  Michael Stucki  <mundaun@gmx.ch>
 
