@@ -1,6 +1,7 @@
 2005-05-19  Karsten Dambekalns <karsten@typo3.org>
 
 	* typo3/sysext/cms/layout/db_layout.php: Fix for bug #1042. Thanks to Sebastian Kurfuerst and Michael Stucki.
+	Additionally removed some unused variables/globalisations
 	* typo3/mod/tools/em/index.php: Applied patch for bug #1043 (ereg calls without escaped curly braces)
 	* t3lib/class.t3lib_install.php: Fix for bug #987 (hardcoded MyISAM table type)
 
