@@ -62,7 +62,6 @@ class tx_dbal_module1 extends t3lib_SCbase {
 			'function' => Array (
 				0 => $GLOBALS['LANG']->getLL('Debug_log'),
 				'info' => $GLOBALS['LANG']->getLL('Cached_info'),
-				'config' => $GLOBALS['LANG']->getLL('Configuration'),
 			)
 		);
 		parent::menuConfig();
@@ -104,9 +103,6 @@ class tx_dbal_module1 extends t3lib_SCbase {
 		    case 'info':
 			$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('Cached_info'), $this->printCachedInfo());
 			break;
-		    case 'config':
-			$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('Configuration'), $this->printConfig());
-			break;
 		    case 0:
 			$this->content.= $this->doc->section($GLOBALS['LANG']->getLL('Debug_log'), $this->printLogMgm());
 			break;
@@ -133,15 +129,6 @@ class tx_dbal_module1 extends t3lib_SCbase {
 		echo $this->content;
 	}
 
-	function printConfig()	{
-	    ob_start();
-	    var_dump($GLOBALS['TYPO3_DB']->conf);
-	    $out = '<pre>'.ob_get_contents().'</pre>';
-	    ob_end_clean();
-
-	    return $out;
-	}
-
 	function printCachedInfo()	{
 	    // Get cmd:
 	    if((string)t3lib_div::_GP('cmd') == 'clear') {
@@ -149,7 +136,7 @@ class tx_dbal_module1 extends t3lib_SCbase {
 		$GLOBALS['TYPO3_DB']->cacheFieldInfo();
 	    }
 
-	    $out = '<table border="1"><caption>auto_increment</caption><tbody><tr><th>Table</th><th>Field</th></tr>';
+	    $out = '<table border="1" cellspacing="0"><caption>auto_increment</caption><tbody><tr><th>Table</th><th>Field</th></tr>';
 	    foreach($GLOBALS['TYPO3_DB']->cache_autoIncFields as $table => $field) {
 		$out .= '<tr>';
 		$out .= '<td>'.$table.'</td>';
@@ -158,7 +145,7 @@ class tx_dbal_module1 extends t3lib_SCbase {
 	    }
 	    $out .= '</tbody></table>';
 	    $out .= $this->doc->spacer(5);
-	    $out .= '<table border="1"><caption>Primary keys</caption><tbody><tr><th>Table</th><th>Field(s)</th></tr>';
+	    $out .= '<table border="1" cellspacing="0"><caption>Primary keys</caption><tbody><tr><th>Table</th><th>Field(s)</th></tr>';
 	    foreach($GLOBALS['TYPO3_DB']->cache_primaryKeys as $table => $field) {
 		$out .= '<tr>';
 		$out .= '<td>'.$table.'</td>';
@@ -167,7 +154,7 @@ class tx_dbal_module1 extends t3lib_SCbase {
 	    }
 	    $out .= '</tbody></table>';
 	    $out .= $this->doc->spacer(5);
-	    $out .= '<table border="1"><caption>Field types</caption><tbody><tr><th colspan="3">Table</th></tr><tr><th>Field</th><th>Type</th><th>Metatype</th><th>NOT NULL</th></th></tr>';
+	    $out .= '<table border="1" cellspacing="0"><caption>Field types</caption><tbody><tr><th colspan="3">Table</th></tr><tr><th>Field</th><th>Type</th><th>Metatype</th><th>NOT NULL</th></th></tr>';
 	    foreach($GLOBALS['TYPO3_DB']->cache_fieldType as $table => $fields) {
 		$out .= '<th colspan="3">'.$table.'</th>';
 		foreach($fields as $field => $data) {
@@ -215,9 +202,9 @@ class tx_dbal_module1 extends t3lib_SCbase {
 				$tRows = array();
 				$tRows[] = '
 					<tr>
-						<td>Exec. time:</td>
-						<td>Table joins:</td>
-						<td>Script:</td>
+						<td>Execution time</td>
+						<td>Table joins</td>
+						<td>Script</td>
 						<td>Query</td>
 					</tr>';
 
@@ -261,7 +248,7 @@ class tx_dbal_module1 extends t3lib_SCbase {
 				
 					// Printing data rows:
 				$outStr.= '
-					<table border="1">'.implode('',$tRows).'
+					<table border="1" cellspacing="0">'.implode('',$tRows).'
 					</table>';
 			break;
 			case 'errors':
@@ -273,9 +260,9 @@ class tx_dbal_module1 extends t3lib_SCbase {
 				$tRows = array();
 				$tRows[] = '
 					<tr>
-						<td>Exec. time:</td>
-						<td>Error data:</td>
-						<td>Script:</td>
+						<td>Execution time</td>
+						<td>Error data</td>
+						<td>Script</td>
 						<td>Query</td>
 					</tr>';
 
@@ -292,7 +279,7 @@ class tx_dbal_module1 extends t3lib_SCbase {
 
 					// Printing data rows:
 				$outStr.= '
-					<table border="1">'.implode('',$tRows).'
+					<table border="1" cellspacing="0">'.implode('',$tRows).'
 					</table>';
 			break;
 			case 'parsing':
@@ -308,7 +295,7 @@ class tx_dbal_module1 extends t3lib_SCbase {
 				
 					// Printing data rows:
 				$outStr.= '
-					<table border="1">'.implode('',$tRows).'
+					<table border="1" cellspacing="0">'.implode('',$tRows).'
 					</table>';
 			break;
 			case 'where':
@@ -316,10 +303,10 @@ class tx_dbal_module1 extends t3lib_SCbase {
 				$tRows = array();
 				$tRows[] = '
 					<tr>
-						<td>Time:</td>
-						<td>Script:</td>
-						<td>Table:</td>
-						<td>WHERE:</td>
+						<td>Time</td>
+						<td>Script</td>
+						<td>Table</td>
+						<td>WHERE clause</td>
 					</tr>';
 				while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
 					$tRows[] = '
@@ -332,7 +319,7 @@ class tx_dbal_module1 extends t3lib_SCbase {
 				}
 
 				$outStr = '
-					<table border="1">'.implode('',$tRows).'
+					<table border="1" cellspacing="0">'.implode('',$tRows).'
 					</table>';
 			break;
 			default:
@@ -345,9 +332,9 @@ class tx_dbal_module1 extends t3lib_SCbase {
 					$tRows = array();
 					$tRows[] = '
 						<tr>
-							<td>Exec. time:</td>
+							<td>Execution time</td>
 							<td>Error</td>
-							<td>Table joins:</td>
+							<td>Table joins</td>
 							<td>Data</td>
 							<td>Query</td>
 						</tr>';
@@ -366,11 +353,11 @@ class tx_dbal_module1 extends t3lib_SCbase {
 					$tRows = array();
 					$tRows[] = '
 						<tr>
-							<td>Time:</td>
-							<td># queries:</td>
-							<td>Error:</td>
-							<td>T.ms:</td>
-							<td>Script:</td>
+							<td>Time</td>
+							<td># of queries</td>
+							<td>Error</td>
+							<td>Time (ms)</td>
+							<td>Script</td>
 						</tr>';
 					while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
 						$tRows[] = '
@@ -384,7 +371,7 @@ class tx_dbal_module1 extends t3lib_SCbase {
 					}
 				}
 				$outStr = '
-					<table border="1">'.implode('',$tRows).'
+					<table border="1" cellspacing="0">'.implode('',$tRows).'
 					</table>';
 				
 			break;
@@ -398,7 +385,7 @@ class tx_dbal_module1 extends t3lib_SCbase {
 					<a href="index.php">LOG</a> - 
 					<a href="index.php?cmd=where">WHERE</a> - 
 
-					<a href="'.htmlspecialchars(t3lib_div::linkThisScript()).'" target="blablabla">[New window]</a>
+					<a href="'.htmlspecialchars(t3lib_div::linkThisScript()).'" target="tx_debuglog">[New window]</a>
 					<hr />
 		';		
 		return $menu.$outStr;
