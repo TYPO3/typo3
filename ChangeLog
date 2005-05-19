@@ -1,13 +1,13 @@
-2005-05-19  Karsten Dambekalns <karsten@typo3.org>
-
-	* typo3/sysext/cms/layout/db_layout.php: Fix for bug #1042. Thanks to Sebastian Kurfuerst and Michael Stucki.
-	Additionally removed some unused variables/globalisations
-	* typo3/mod/tools/em/index.php: Applied patch for bug #1043 (ereg calls without escaped curly braces)
-	* t3lib/class.t3lib_install.php: Fix for bug #987 (hardcoded MyISAM table type)
-
 2005-05-19  Michael Stucki  <michael@typo3.org>
 
 	* Small fix in typo3/sysext/install/mod/class.tx_install.php: GraphicsMagick executed without any parameters caused a server error (used in the Install Tool for guessing the product version)
+	* Fixed bug #00001065: Labels of radio buttons in listview were not shown (Thanks to Sebastian Kurfuerst)
+
+2005-05-19  Karsten Dambekalns <karsten@typo3.org>
+
+	* typo3/sysext/cms/layout/db_layout.php: Fix for bug #1042. Thanks to Sebastian Kurfuerst and Michael Stucki. Additionally removed some unused variables/globalisations
+	* typo3/mod/tools/em/index.php: Applied patch for bug #1043 (ereg calls without escaped curly braces)
+	* t3lib/class.t3lib_install.php: Fix for bug #987 (hardcoded MyISAM table type)
 
 2005-05-17  Michael Stucki  <michael@typo3.org>
 
@@ -37,7 +37,7 @@
 
 2005-05-11  Michael Scharkow  <mscharkow@gmx.net>
 
-	* Fixed bug #0000930: The delete button in QuickEdit mode lead to a 404 message. Thanks to Sebastian Kurfürst.
+	* Fixed bug #0000930: The delete button in QuickEdit mode lead to a 404 message. Thanks to Sebastian Kurfuerst.
 
 2005-05-09  Kasper Skårhøj,,,  <kasper@typo3.com>
 
@@ -264,7 +264,7 @@
 2005-04-04  Robert Lemke  <robert@typo3.org>
 
 	* Added a preliminary way for moving containers in a flexform section in TCEforms + TCEmain. Before you could only delete containers.
-	* Added Sebastian Kurfürst's collapsable modules feature for the backend's module bar
+	* Added Sebastian Kurfuerst's collapsable modules feature for the backend's module bar
 
 2005-04-04  Kasper Skårhøj,,,  <kasper@typo3.com>
 
