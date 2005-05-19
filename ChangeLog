@@ -1,12 +1,9 @@
-2005-05-19 Peter Niederlag <pn@kreativwert.de>
-	* backported fix for Bug #849: TSConfig forceDisplayFieldIcons will
-	work regardless of settings for adminPanel
-	* backported fix for db_new_content_el.php: Consider allow/deny
-	for CE's 
-	* backported fix from HEAD for Bug #416 in class.t3lib_install.php: Problems with
-	auto_increment and default values
-	* backported fix from HEAD for Bug #422 in class.t3lib_stdgraphic.php:
-	potential problems with Charset Conversion
+2005-05-19  Peter Niederlag  <pn@kreativwert.de>
+
+	* backported fix for Bug #849: TSConfig forceDisplayFieldIcons will work regardless of settings for adminPanel
+	* backported fix for db_new_content_el.php: Consider allow/deny for CE's
+	* backported fix from HEAD for Bug #416 in class.t3lib_install.php: Problems with auto_increment and default values
+	* backported fix from HEAD for Bug #422 in class.t3lib_stdgraphic.php: potential problems with Charset Conversion
 	* backported fix for Bug #958: require_once() instead of require()
 
 2005-02-24  Michael Stucki  <michael@typo3.org>
