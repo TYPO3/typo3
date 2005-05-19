@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2004 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2005 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -75,11 +75,11 @@ $TT->push('','Script start');
 
 
 // *********************
-// DIV Library included
+// Mandatory libraries included
 // *********************
 $TT->push('Include class t3lib_db, t3lib_div, t3lib_extmgm','');
-	require(PATH_t3lib.'class.t3lib_div.php');
-	require(PATH_t3lib.'class.t3lib_extmgm.php');
+	require_once(PATH_t3lib.'class.t3lib_div.php');
+	require_once(PATH_t3lib.'class.t3lib_extmgm.php');
 $TT->pull();
 
 
@@ -92,10 +92,10 @@ require(PATH_t3lib.'config_default.php');
 if (!defined ('TYPO3_db')) 	die ('The configuration file was not included.');	// the name of the TYPO3 database is stored in this constant. Here the inclusion of the config-file is verified by checking if this var is set.
 if (!t3lib_extMgm::isLoaded('cms'))	die('<strong>Error:</strong> The main frontend extension "cms" was not loaded. Enable it in the extension manager in the backend.');
 
-require(PATH_t3lib.'class.t3lib_db.php');
+require_once(PATH_t3lib.'class.t3lib_db.php');
 $TYPO3_DB = t3lib_div::makeInstance('t3lib_DB');
 
-$CLIENT=t3lib_div::clientInfo();				// Set to the browser: net / msie if 4+ browsers
+$CLIENT = t3lib_div::clientInfo();				// Set to the browser: net / msie if 4+ browsers
 $TT->pull();
 
 
@@ -131,7 +131,7 @@ if (!get_magic_quotes_gpc())	{
 // Create $TSFE object (TSFE = TypoScript Front End)
 // Connecting to database
 // ***********************************
-$temp_TSFEclassName=t3lib_div::makeInstanceClassName('tslib_fe');
+$temp_TSFEclassName = t3lib_div::makeInstanceClassName('tslib_fe');
 $TSFE = new $temp_TSFEclassName(
 		$TYPO3_CONF_VARS,
 		t3lib_div::_GP('id'),
@@ -208,8 +208,8 @@ if ($_COOKIE['be_typo_user']) {		// If the backend cookie is set, we proceed and
 					$BE_USER->ext_forcePreview=1;
 				}
 
-					// Include classes for editing IF editing module in Admin Panel is open (it is assumed that $TSFE->displayEditIcons is set only if the Edit module is open in the Admin Panel)
-				if ($BE_USER->extAdmModuleEnabled('edit') && $BE_USER->extIsAdmMenuOpen('edit'))	{
+					// Include classes for editing IF editing module in Admin Panel is open
+				if (($BE_USER->extAdmModuleEnabled('edit') && $BE_USER->extIsAdmMenuOpen('edit')) || $TSFE->displayEditIcons == 1)	{
 					$TSFE->includeTCA();
 					if ($BE_USER->extIsEditAction())	{
 						require_once (PATH_t3lib.'class.t3lib_tcemain.php');
