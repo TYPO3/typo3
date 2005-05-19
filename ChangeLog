@@ -1,7 +1,11 @@
 2005-05-19  Michael Stucki  <michael@typo3.org>
 
 	* Small fix in typo3/sysext/install/mod/class.tx_install.php: GraphicsMagick executed without any parameters caused a server error (used in the Install Tool for guessing the product version)
-	* Fixed bug #00001065: Labels of radio buttons in listview were not shown (Thanks to Sebastian Kurfuerst)
+	* Fixed bug #0001065: Labels of radio buttons in listview were not shown. (Thanks to Sebastian Kurfuerst)
+	* Changed innerWrap and outerWrap in editPanels to be stdWrap'able. (Thanks to Martin Kutschker)
+	* Fixed bug #0000098: Forms elements should not contain a wrap-attribute for textareas, so this is now optional. (Thanks to Martin Kutschker)
+	* Fixed bug #0001075: XHTML compliance of FORM elements. (Thanks to Martin Kutschker)
+	* Fixed bug #0001061: XHTML cleaning did not support the <param /> tag. (Thanks to Martin Kutschker)
 
 2005-05-19  Karsten Dambekalns <karsten@typo3.org>
 

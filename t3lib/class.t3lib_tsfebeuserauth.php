@@ -567,20 +567,31 @@ class t3lib_tsfeBeUserAuth extends t3lib_beUserAuth {
 		$tmpTSc = $tmpTSc ['properties']['newContentWiz.']['overrideWithExtension'];
 		$newContentWizScriptPath = t3lib_extMgm::isLoaded($tmpTSc) ? (t3lib_extMgm::extRelPath($tmpTSc).'mod1/db_new_content_el.php') : (TYPO3_mainDir.'sysext/cms/layout/db_new_content_el.php');
 
+
+		$perms = $GLOBALS['BE_USER']->calcPerms($GLOBALS['TSFE']->page);
+
 		$toolBar='';
 		$id = $GLOBALS['TSFE']->id;
 		$toolBar.='<a href="'.htmlspecialchars(TYPO3_mainDir.'show_rechis.php?element='.rawurlencode('pages:'.$id).'&returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))).'#latest">'.
 					'<img src="t3lib/gfx/history2.gif" width="13" height="12" hspace="2" border="0" align="top" title="'.$this->extGetLL('edit_recordHistory').'" alt="" /></a>';
-		$toolBar.='<a href="'.htmlspecialchars($newContentWizScriptPath.'?id='.$id.'&returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))).'">'.
-					'<img src="t3lib/gfx/new_record.gif" width="16" height="12" hspace="1" border="0" align="top" title="'.$this->extGetLL('edit_newContentElement').'" alt="" /></a>';
-		$toolBar.='<a href="'.htmlspecialchars(TYPO3_mainDir.'move_el.php?table=pages&uid='.$id.'&returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))).'">'.
-					'<img src="t3lib/gfx/move_page.gif" width="11" height="12" hspace="2" border="0" align="top" title="'.$this->extGetLL('edit_move_page').'" alt="" /></a>';
-		$toolBar.='<a href="'.htmlspecialchars(TYPO3_mainDir.'db_new.php?id='.$id.'&pagesOnly=1&returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))).'">'.
-					'<img src="t3lib/gfx/new_page.gif" width="13" height="12" hspace="0" border="0" align="top" title="'.$this->extGetLL('edit_newPage').'" alt="" /></a>';
 
-		$params='&edit[pages]['.$id.']=edit';
-		$toolBar.='<a href="'.htmlspecialchars(TYPO3_mainDir.'alt_doc.php?'.$params.'&noView=1&returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))).'">'.
+		if ($perms&16)	{
+			$toolBar.='<a href="'.htmlspecialchars($newContentWizScriptPath.'?id='.$id.'&returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))).'">'.
+						'<img src="t3lib/gfx/new_record.gif" width="16" height="12" hspace="1" border="0" align="top" title="'.$this->extGetLL('edit_newContentElement').'" alt="" /></a>';
+		}
+		if ($perms&2)	{
+			$toolBar.='<a href="'.htmlspecialchars(TYPO3_mainDir.'move_el.php?table=pages&uid='.$id.'&returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))).'">'.
+					'<img src="t3lib/gfx/move_page.gif" width="11" height="12" hspace="2" border="0" align="top" title="'.$this->extGetLL('edit_move_page').'" alt="" /></a>';
+		}
+		if ($perms&8)	{
+			$toolBar.='<a href="'.htmlspecialchars(TYPO3_mainDir.'db_new.php?id='.$id.'&pagesOnly=1&returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))).'">'.
+					'<img src="t3lib/gfx/new_page.gif" width="13" height="12" hspace="0" border="0" align="top" title="'.$this->extGetLL('edit_newPage').'" alt="" /></a>';
+		}
+		if ($perms&2)	{
+			$params='&edit[pages]['.$id.']=edit';
+			$toolBar.='<a href="'.htmlspecialchars(TYPO3_mainDir.'alt_doc.php?'.$params.'&noView=1&returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))).'">'.
 					'<img src="t3lib/gfx/edit2.gif" width="11" height="12" hspace="2" border="0" align="top" title="'.$this->extGetLL('edit_editPageHeader').'" alt="" /></a>';
+		}
 		if ($this->check('modules','web_list'))	{
 			$toolBar.='<a href="'.htmlspecialchars(TYPO3_mainDir.'db_list.php?id='.$id.'&returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))).'">'.
 					'<img src="t3lib/gfx/list.gif" width="11" height="11" hspace="2" border="0" align="top" title="'.$this->extGetLL('edit_db_list').'" alt="" /></a>';

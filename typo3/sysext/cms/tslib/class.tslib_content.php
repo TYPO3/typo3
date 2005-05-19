@@ -1572,6 +1572,12 @@ class tslib_cObj {
 		$fieldname_hashArray = Array();
 		$cc = 0;
 
+			// Formname;
+		$formname = $GLOBALS['TSFE']->uniqueHash();
+		if (ctype_digit($formname{0}))	{	// form name must start with a letter
+			$formname = 'a'.$formname;
+		}
+
 		foreach($dataArr as $val)	{
 
 			$cc++;
@@ -1631,7 +1637,7 @@ class tslib_cObj {
 
 					// Accessibility: Set id = fieldname attribute:
 				if ($conf['accessibility'])	{
-					$elementIdAttribute = ' id="'.$confData['fieldname'].'"';
+					$elementIdAttribute = ' id="'.$formname.'_'.md5($confData['fieldname']).'"';
 				} else {
 					$elementIdAttribute = '';
 				}
@@ -1645,7 +1651,12 @@ class tslib_cObj {
 						$cols = t3lib_div::intInRange($cols*$compWidth, 1, 120);
 
 						$rows=trim($fParts[2]) ? t3lib_div::intInRange($fParts[2],1,30) : 5;
-						$wrap=trim($fParts[3]) ? ' wrap="'.trim($fParts[3]).'"' : ' wrap="virtual"';
+						$wrap=trim($fParts[3]);
+						if ($conf['noWrapAttr'] || $wrap === 'disabled')	{
+							$wrap='';
+						} else {
+							$wrap=$wrap ? ' wrap="'.trim($fParts[3]).'"' : ' wrap="virtual"';
+						}
 						$default = $this->getFieldDefaultValue($conf['noValueInsert'], $confData['fieldname'], str_replace('\n',chr(10),trim($parts[2])));
 						$fieldCode=sprintf('<textarea name="%s"'.$elementIdAttribute.' cols="%s" rows="%s"%s'.$addParams.'>%s</textarea>',
 							$confData['fieldname'], $cols, $rows, $wrap, t3lib_div::formatForTextarea($default));
@@ -1826,7 +1837,7 @@ class tslib_cObj {
 						// Field:
 					$fieldLabel = $confData['label'];
 					if ($conf['accessibility'])	{
-						$fieldLabel = '<label for="'.htmlspecialchars($confData['fieldname']).'">'.$fieldLabel.'</label>';
+						$fieldLabel = '<label for="'.$formname.'_'.md5($confData['fieldname']).'">'.$fieldLabel.'</label>';
 					}
 
 						// Getting template code:
@@ -1929,9 +1940,8 @@ class tslib_cObj {
 				}
 			}
 		}
+		if($conf['accessibility'])	{ $hiddenfields = '<div style="display:none;">'.$hiddenfields.'</div>'; }
 
-			// Formname;
-		$formname = $GLOBALS['TSFE']->uniqueHash();
 		if ($conf['REQ'])	{
 			$validateForm=' onsubmit="return validateForm(\''.$formname.'\',\''.implode(',',$fieldlist).'\',\''.rawurlencode($conf['goodMess']).'\',\''.rawurlencode($conf['badMess']).'\',\''.rawurlencode($conf['emailMess']).'\')"';
 			$GLOBALS['TSFE']->additionalHeaderData['JSFormValidate'] = '<script type="text/javascript" src="'.$GLOBALS['TSFE']->absRefPrefix.'t3lib/jsfunc.validateform.js"></script>';
@@ -6628,10 +6638,12 @@ class tslib_cObj {
 								</form>';
 						// wrap the panel
 					if ($conf['innerWrap']) $panel = $this->wrap($panel,$conf['innerWrap']);
+					if ($conf['innerWrap.']) $panel = $this->stdWrap($panel,$conf['innerWrap.']);
 						// add black line:
 					$panel.=$blackLine;
 						// wrap the complete panel
 					if ($conf['outerWrap']) $panel = $this->wrap($panel,$conf['outerWrap']);
+					if ($conf['outerWrap.']) $panel = $this->stdWrap($panel,$conf['outerWrap.']);
 					$finalOut = $content.$panel;
 				break;
 			}
@@ -6793,8 +6805,10 @@ class tslib_cObj {
 			$thick = t3lib_div::intInRange($thick,1,100);
 			$color = $conf['color'] ? $conf['color'] : '#cccccc';
 			if ($conf['innerWrap'])	$content = $this->wrap($content,$conf['innerWrap']);
+			if ($conf['innerWrap.'])	$content = $this->stdWrap($content,$conf['innerWrap.']);
 			$content='<table class="typo3-editPanel-previewBorder" border="'.$thick.'" cellpadding="0" cellspacing="0" bordercolor="'.$color.'" width="100%"><tr><td>'.$content.'</td></tr></table>';
 			if ($conf['outerWrap'])	$content = $this->wrap($content,$conf['outerWrap']);
+			if ($conf['outerWrap.'])	$content = $this->stdWrap($panel,$conf['outerWrap.']);
 		}
 		return $content;
 	}
