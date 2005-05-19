@@ -142,7 +142,6 @@ class ext_posMap extends t3lib_positionMap {
 	 * @return	string
 	 */
 	function onClickInsertRecord($row,$vv,$moveUid,$pid) {
-		$table='tt_content';
 		if (is_array($row))	{
 			$location=$GLOBALS['SOBE']->local_linkThisScript(array('edit_record'=>'tt_content:new/-'.$row['uid'].'/'.$row['colPos']));
 		} else {
@@ -229,7 +228,7 @@ class SC_db_layout {
 	 * @return	void
 	 */
 	function init()	{
-		global $BE_USER,$LANG;
+		global $BE_USER;
 
 			// Setting module configuration / page select clause
 		$this->MCONF = $GLOBALS['MCONF'];
@@ -615,7 +614,6 @@ class SC_db_layout {
 		$closeUrl = $this->local_linkThisScript(array('SET'=>array('function'=>1)));	// Goes to 'Columns' view if close is pressed (default)
 
 		if ($BE_USER->uc['condensedMode'])	{
-			$uParts = parse_url(t3lib_div::getIndpEnv('REQUEST_URI'));
 			$closeUrl=$BACK_PATH.'alt_db_navframe.php';
 		}
 		if ($this->returnUrl)	{
@@ -898,7 +896,6 @@ class SC_db_layout {
 
 			// Initialize other variables:
 		$h_func='';
-		$optionArr=array();
 		$tableOutput=array();
 		$tableJSOutput=array();
 		$CMcounter = 0;
@@ -977,6 +974,7 @@ class SC_db_layout {
 			}
 
 				// Start the dblist object:
+      $dblist->itemsLimitSingleTable = 500;
 			$dblist->start($this->id,$table,$this->pointer,$this->search_field,$this->search_levels,$this->showLimit);
 			$dblist->counter = $CMcounter;
 			$dblist->ext_function = $this->MOD_SETTINGS['function'];
