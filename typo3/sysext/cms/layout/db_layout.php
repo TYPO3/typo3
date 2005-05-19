@@ -974,7 +974,7 @@ class SC_db_layout {
 			}
 
 				// Start the dblist object:
-      $dblist->itemsLimitSingleTable = 500;
+			$dblist->itemsLimitSingleTable = 1000;
 			$dblist->start($this->id,$table,$this->pointer,$this->search_field,$this->search_levels,$this->showLimit);
 			$dblist->counter = $CMcounter;
 			$dblist->ext_function = $this->MOD_SETTINGS['function'];
