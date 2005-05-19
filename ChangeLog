@@ -1,3 +1,7 @@
+2005-05-19  Karsten Dambekalns <karsten@typo3.org>
+
+	* t3lib/class.t3lib_install.php: Fix for bug #987 (hardcoded MyISAM table type)
+
 2005-05-19  Michael Stucki  <michael@typo3.org>
 
 	* Small fix in typo3/sysext/install/mod/class.tx_install.php: GraphicsMagick executed without any parameters caused a server error (used in the Install Tool for guessing the product version)
