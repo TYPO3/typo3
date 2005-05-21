@@ -34,7 +34,7 @@
 			<label index="mlang_tabs_tab">Setup</label>
 		</languageKey>
 		<languageKey index="fr" type="array">
-			<label index="mlang_labels_tablabel">Personnalisation</label>
+			<label index="mlang_labels_tablabel">Configuration utilisateur personnelle</label>
 			<label index="mlang_labels_tabdescr">Ce module vous permet de personnaliser votre profil. Vous pouvez changer ici, votre langue d'interface par défaut, votre nom, votre adresse e-mail. Vous pouvez aussi modifier quelques options générales du système.</label>
 			<label index="mlang_tabs_tab">Configuration</label>
 		</languageKey>
@@ -148,6 +148,9 @@
 		<languageKey index="ar" type="array">
 		</languageKey>
 		<languageKey index="he" type="array">
+			<label index="mlang_labels_tablabel">הגדרת תצורה אישית של משתמש</label>
+			<label index="mlang_labels_tabdescr">מודול זה מאפשר לך לבצע התאמה אישית של פרופיל המשתמש. כאן ניתן לשנות שפת ממשק, שם ודוא''ל שלך. ניתן לשנות גם הגדרות מערכת שונות.</label>
+			<label index="mlang_tabs_tab">הגדרת תצורה</label>
 		</languageKey>
 		<languageKey index="ua" type="array">
 		</languageKey>
@@ -301,6 +304,9 @@
 		<languageKey index="ar" type="array">
 		</languageKey>
 		<languageKey index="he" type="array">
+			<label index="mlang_labels_tablabel" type="integer">39109629</label>
+			<label index="mlang_labels_tabdescr" type="integer">237774117</label>
+			<label index="mlang_tabs_tab" type="integer">181548907</label>
 		</languageKey>
 		<languageKey index="ua" type="array">
 		</languageKey>

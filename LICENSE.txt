@@ -7,4 +7,4 @@
 The TYPO3 project is free software under the terms of the GNU General Public License.
 The GNU/GPL license is found in the file GPL.txt
 
-For information about what this license means and how copyright law applies to a product like TYPO3, please refer to http://typo3.org/1310.0.html
+For information about what this license means and how copyright law applies to a product like TYPO3, please refer to http://typo3.com/License.1316.0.html

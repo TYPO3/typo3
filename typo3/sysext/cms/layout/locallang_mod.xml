@@ -25,12 +25,12 @@
 		</languageKey>
 		<languageKey index="no" type="array">
 			<label index="mlang_labels_tablabel">Side-info og innhold</label>
-			<label index="mlang_labels_tabdescr">Hurtigredigeringsfunksjonen gir deg rask tilgang til det primære innholdet på sidene. Du kan også velge forskjellige språk og kolonner per side. Utover dette har du tilgang til spesielt sideinnhold som gjestebok-, forum- og produktelementer. Modulen viser også sidevisningsstatistikk for de enkelte sidene.</label>
+			<label index="mlang_labels_tabdescr">Denne modulen gir deg muligheten til å opprette og endre websider, se sidestatistikker, styre forskjellige språk og antall kolonner per side, i tillegg til spesielt sideinnhold som gjestebøker og butikkvarer</label>
 			<label index="mlang_tabs_tab">Side</label>
 		</languageKey>
 		<languageKey index="it" type="array">
 			<label index="mlang_labels_tablabel">Contenuto della pagina</label>
-			<label index="mlang_labels_tabdescr">Questo modulo permette di creare e modificare le pagine. Fornisce un Quick-Editor per modificare velocemente il contenuto. Potete gestire i paragrafi in multilingua, su differenti colonne, e potete accedere a pagine di tipo speciale, come guestbook, forum di discussione, shopping. Attraverso questo modulo potete, infine, vedere alcune statistiche sulla pagina.</label>
+			<label index="mlang_labels_tabdescr">Questo modulo permette di creare e modificare le pagine, visualizzare le statistiche di accesso, gestire il multilingua, le colonne di contenuti standard e i contenuti speciali, come il guestbook o i prodotti.</label>
 			<label index="mlang_tabs_tab">Pagina</label>
 		</languageKey>
 		<languageKey index="fr" type="array">
@@ -40,12 +40,12 @@
 		</languageKey>
 		<languageKey index="es" type="array">
 			<label index="mlang_labels_tablabel">Contenido de la página</label>
-			<label index="mlang_labels_tabdescr">Este módulo le permite crear y editar páginas web. Posee un Editor Rápido que facilita acceso instantáneo al contenido primario de la página. También puede administrar los diferentes lenguajes y columnas de contenido por página. Finalmente puede acceder a contenido especial como la lista de visitantes, el tablero de mensajes y los artículos de la tienda. El módulo también muestra una estadística de consulta de cada página individualmente.</label>
+			<label index="mlang_labels_tabdescr">Este módulo le permite crear y editar páginas web, ver estadísticas de acceso, administrar diferentes idiomas y columnas de contenido por página así como contenidos de acceso especial tal como Libros de Visitas y Productos.</label>
 			<label index="mlang_tabs_tab">Página</label>
 		</languageKey>
 		<languageKey index="nl" type="array">
 			<label index="mlang_labels_tablabel">Pagina-inhoud</label>
-			<label index="mlang_labels_tabdescr">Via deze module kunt U webpagina's aanmaken en bewerken. U vindt hier een Quick-Editor die direct toegang geeft tot de primaire pagina-inhoud. Bovendien kunt u de diverse talen en kolommen met inhoud per pagina manipuleren. Tenslotte heeft U toegang tot speciale pagina-inhoud zoals gastenboek, forum en winkelartikelen. Deze module introduceert ook statistieken van de pagina-treffers voor individuele pagina's.</label>
+			<label index="mlang_labels_tabdescr">Via deze module kunt U webpagina's aanmaken en bewerken, paginastatistieken bekijken, verschillende talen en kolommen met inhoud beheren en heeft U toegang tot speciale pagina-inhoud zoals gastenboek, forum en winkelartikelen.</label>
 			<label index="mlang_tabs_tab">Pagina</label>
 		</languageKey>
 		<languageKey index="cz" type="array">
@@ -55,7 +55,7 @@
 		</languageKey>
 		<languageKey index="pl" type="array">
 			<label index="mlang_labels_tablabel">Zawartość strony</label>
-			<label index="mlang_labels_tabdescr">Ten moduł pozwala tworzyć i edytować strony. Do dyspozycji masz Szybki-Edytor do błyskawicznej edycji treści zawartej na stronie. Możesz również zarządzać treścią w kolumnach oraz różnymi wersjami językowymi dla strony. Masz dostęp również do specjalnej zawartości typu wpisy w forum dyskusyjnym, księdze gości czy asortyment sklepu. Moduł wyświetla też statystyki odsłon dla poszczególnych stron.</label>
+			<label index="mlang_labels_tabdescr">Ten moduł pozwala tworzyć i edytować strony, oglądać statystyki, zarządzać wersjami językowymi, kolumnami z zawartością oraz specjalną zawartością jak książki gości lub asortyment sklepu.</label>
 			<label index="mlang_tabs_tab">Układ</label>
 		</languageKey>
 		<languageKey index="si" type="array">
@@ -70,7 +70,7 @@
 		</languageKey>
 		<languageKey index="tr" type="array">
 			<label index="mlang_labels_tablabel">Sayfa içeriği</label>
-			<label index="mlang_labels_tabdescr">Bu modül websayfaları yaratmanıza ve düzenlemenize izin verir. Hızlı Düzenleyici birincil sayfa içeriğine acil erişim imkanı sağlar. Buna ek olarak değişik dilleri ve her sayfa içeriğinin sütünlarını yönetebilirsiniz. Son olarak özel sayfa içeriğine erişebilirsiniz ziyaretçi defteri, ilan tahtası ve alışveriş nesneleri gibi. Birde modül küşüsel sayfalar için sayfa erişim istatistikleri sunuyor.</label>
+			<label index="mlang_labels_tabdescr">Bu modül websayfaları yaratmanıza ve düzenlemenize izin verir ve sayfayı hit istatistiklerini gösterir,değişik dilleri ve her sayfa içeriğinin sütünlarını yönetebilirsiniz. Son olarak özel sayfa içeriğine erişebilirsiniz ziyaretçi defteri, ilan tahtası ve alışveriş nesneleri gibi.</label>
 			<label index="mlang_tabs_tab">Sayfa</label>
 		</languageKey>
 		<languageKey index="se" type="array">
@@ -120,7 +120,7 @@
 		</languageKey>
 		<languageKey index="hu" type="array">
 			<label index="mlang_labels_tablabel">Oldaltartalom</label>
-			<label index="mlang_labels_tabdescr">Ez a modul segít létrehozni és szerkeszteni a weboldalakat.</label>
+			<label index="mlang_labels_tabdescr">Ez a modul segít létrehozni és szerkeszteni a weboldalakat, itt kezelheted a különböző nyelveket, stb.</label>
 			<label index="mlang_tabs_tab">Oldal</label>
 		</languageKey>
 		<languageKey index="gl" type="array">
@@ -136,7 +136,7 @@
 		</languageKey>
 		<languageKey index="hk" type="array">
 			<label index="mlang_labels_tablabel">網頁內容</label>
-			<label index="mlang_labels_tabdescr">這個模組容許你建立和修改網頁。它提供一個快速的編輯器可以即係存取基本的網頁內容。此外，你可以處理每一個網頁不同的語言和內容。最後，你可以存取特別的網頁內容，例如：訪客留言板﹑討論區和購物項目等。這個模組同時列出每個網頁網頁的溜覽次數。</label>
+			<label index="mlang_labels_tabdescr">這個模組容許你建立和修改網頁。檢視每個網頁網頁的溜覽統計資料。此外，你可以處理每一個網頁不同的語言和內容，存取特別的網頁內容，例如：訪客留言板﹑討論區和購物項目等。</label>
 			<label index="mlang_tabs_tab">網頁</label>
 		</languageKey>
 		<languageKey index="eu" type="array">
@@ -184,22 +184,22 @@
 	<orig_hash type="array">
 		<languageKey index="dk" type="array">
 			<label index="mlang_labels_tablabel" type="integer">73079758</label>
-			<label index="mlang_labels_tabdescr" type="integer">229943848</label>
+			<label index="mlang_labels_tabdescr" type="integer">259361662</label>
 			<label index="mlang_tabs_tab" type="integer">26464201</label>
 		</languageKey>
 		<languageKey index="de" type="array">
 			<label index="mlang_labels_tablabel" type="integer">73079758</label>
-			<label index="mlang_labels_tabdescr" type="integer">229943848</label>
+			<label index="mlang_labels_tabdescr" type="integer">259361662</label>
 			<label index="mlang_tabs_tab" type="integer">26464201</label>
 		</languageKey>
 		<languageKey index="no" type="array">
 			<label index="mlang_labels_tablabel" type="integer">73079758</label>
-			<label index="mlang_labels_tabdescr" type="integer">229943848</label>
+			<label index="mlang_labels_tabdescr" type="integer">259361662</label>
 			<label index="mlang_tabs_tab" type="integer">26464201</label>
 		</languageKey>
 		<languageKey index="it" type="array">
 			<label index="mlang_labels_tablabel" type="integer">73079758</label>
-			<label index="mlang_labels_tabdescr" type="integer">229943848</label>
+			<label index="mlang_labels_tabdescr" type="integer">259361662</label>
 			<label index="mlang_tabs_tab" type="integer">26464201</label>
 		</languageKey>
 		<languageKey index="fr" type="array">
@@ -209,12 +209,12 @@
 		</languageKey>
 		<languageKey index="es" type="array">
 			<label index="mlang_labels_tablabel" type="integer">73079758</label>
-			<label index="mlang_labels_tabdescr" type="integer">229943848</label>
+			<label index="mlang_labels_tabdescr" type="integer">259361662</label>
 			<label index="mlang_tabs_tab" type="integer">26464201</label>
 		</languageKey>
 		<languageKey index="nl" type="array">
 			<label index="mlang_labels_tablabel" type="integer">73079758</label>
-			<label index="mlang_labels_tabdescr" type="integer">229943848</label>
+			<label index="mlang_labels_tabdescr" type="integer">259361662</label>
 			<label index="mlang_tabs_tab" type="integer">26464201</label>
 		</languageKey>
 		<languageKey index="cz" type="array">
@@ -224,7 +224,7 @@
 		</languageKey>
 		<languageKey index="pl" type="array">
 			<label index="mlang_labels_tablabel" type="integer">73079758</label>
-			<label index="mlang_labels_tabdescr" type="integer">229943848</label>
+			<label index="mlang_labels_tabdescr" type="integer">259361662</label>
 			<label index="mlang_tabs_tab" type="integer">26464201</label>
 		</languageKey>
 		<languageKey index="si" type="array">
@@ -234,17 +234,17 @@
 		</languageKey>
 		<languageKey index="fi" type="array">
 			<label index="mlang_labels_tablabel" type="integer">73079758</label>
-			<label index="mlang_labels_tabdescr" type="integer">229943848</label>
+			<label index="mlang_labels_tabdescr" type="integer">259361662</label>
 			<label index="mlang_tabs_tab" type="integer">26464201</label>
 		</languageKey>
 		<languageKey index="tr" type="array">
 			<label index="mlang_labels_tablabel" type="integer">73079758</label>
-			<label index="mlang_labels_tabdescr" type="integer">229943848</label>
+			<label index="mlang_labels_tabdescr" type="integer">259361662</label>
 			<label index="mlang_tabs_tab" type="integer">26464201</label>
 		</languageKey>
 		<languageKey index="se" type="array">
 			<label index="mlang_labels_tablabel" type="integer">73079758</label>
-			<label index="mlang_labels_tabdescr" type="integer">229943848</label>
+			<label index="mlang_labels_tabdescr" type="integer">259361662</label>
 			<label index="mlang_tabs_tab" type="integer">26464201</label>
 		</languageKey>
 		<languageKey index="pt" type="array">
@@ -254,7 +254,7 @@
 		</languageKey>
 		<languageKey index="ru" type="array">
 			<label index="mlang_labels_tablabel" type="integer">73079758</label>
-			<label index="mlang_labels_tabdescr" type="integer">229943848</label>
+			<label index="mlang_labels_tabdescr" type="integer">259361662</label>
 			<label index="mlang_tabs_tab" type="integer">26464201</label>
 		</languageKey>
 		<languageKey index="ro" type="array">
@@ -289,7 +289,7 @@
 		</languageKey>
 		<languageKey index="hu" type="array">
 			<label index="mlang_labels_tablabel" type="integer">73079758</label>
-			<label index="mlang_labels_tabdescr" type="integer">229943848</label>
+			<label index="mlang_labels_tabdescr" type="integer">259361662</label>
 			<label index="mlang_tabs_tab" type="integer">26464201</label>
 		</languageKey>
 		<languageKey index="gl" type="array">
@@ -305,7 +305,7 @@
 		</languageKey>
 		<languageKey index="hk" type="array">
 			<label index="mlang_labels_tablabel" type="integer">73079758</label>
-			<label index="mlang_labels_tabdescr" type="integer">229943848</label>
+			<label index="mlang_labels_tabdescr" type="integer">259361662</label>
 			<label index="mlang_tabs_tab" type="integer">26464201</label>
 		</languageKey>
 		<languageKey index="eu" type="array">
@@ -317,7 +317,7 @@
 		</languageKey>
 		<languageKey index="br" type="array">
 			<label index="mlang_labels_tablabel" type="integer">73079758</label>
-			<label index="mlang_labels_tabdescr" type="integer">229943848</label>
+			<label index="mlang_labels_tabdescr" type="integer">259361662</label>
 			<label index="mlang_tabs_tab" type="integer">26464201</label>
 		</languageKey>
 		<languageKey index="et" type="array">
@@ -332,7 +332,7 @@
 		</languageKey>
 		<languageKey index="he" type="array">
 			<label index="mlang_labels_tablabel" type="integer">73079758</label>
-			<label index="mlang_labels_tabdescr" type="integer">229943848</label>
+			<label index="mlang_labels_tabdescr" type="integer">259361662</label>
 			<label index="mlang_tabs_tab" type="integer">26464201</label>
 		</languageKey>
 		<languageKey index="ua" type="array">

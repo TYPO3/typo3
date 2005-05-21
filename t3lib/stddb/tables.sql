@@ -225,7 +225,7 @@ CREATE TABLE sys_log (
   tstamp int(11) unsigned DEFAULT '0' NOT NULL,
   type tinyint(3) unsigned DEFAULT '0' NOT NULL,
   details_nr tinyint(3) unsigned DEFAULT '0' NOT NULL,
-  IP varchar(15) DEFAULT '' NOT NULL,
+  IP varchar(39) DEFAULT '' NOT NULL,
   log_data tinyblob NOT NULL,
   event_pid int(11) DEFAULT '-1' NOT NULL,
   NEWid varchar(20) DEFAULT '' NOT NULL,

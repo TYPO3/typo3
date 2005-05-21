@@ -425,6 +425,10 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv("REMOTE_ADDR")."' (".t3lib_div::getIndp
 						When you change the settings for Image Processing you <i>must</i> take into account that <u>old images</u> may still be in typo3temp/ folder and prevent new files from being generated! This is especially important to know, if you're trying to set up image processing for the very first time.
 						The problem is solved by <a href=\"".$this->setScriptName("typo3temp")."\">clearing the typo3temp/ folder</a>. Also make sure to clear the cache_pages table.
 						",1,1);
+					$this->message($ext, "Very Important: Changing Encryption Key setting", "
+						When you change the setting for the Encryption Key you <i>must</i> take into account that a change to this value might invalidate temporary information, URLs etc.
+						The problem is solved by <a href=\"".$this->setScriptName("typo3temp")."\">clearing the typo3temp/ folder</a>. Also make sure to clear the cache_pages table.
+						",1,1);
 					$this->message($ext, "Update localconf.php", "
 						This form updates the localconf.php file with the suggested values you see below. The values are based on the analysis above.
 						You can change the values in case you have alternatives to the suggested defaults.
@@ -1037,7 +1041,7 @@ th { font-family: verdana,arial, helvetica, sans-serif; font-size: 10pt; font-we
 		");
 
 		if (!$this->config_array["dir_typo3temp"])	{
-			$this->message("typo3temp/ directory","typo3temp/ not writeable!","
+			$this->message("typo3temp/ directory","typo3temp/ not writable!","
 				You must make typo3temp/ write enabled before you can proceed with this test.
 			",2);
 			echo $this->outputWrapper($this->printAll());
@@ -1572,13 +1576,26 @@ From sub-directory:
 		switch($cmd)	{
 			case "get_form":
 				$out='
-				You can check the mail() function by entering your email address here and press the button. You should then receive a testmail from test@test.test.
-				<form action="'.$this->action.'" method="POST"><input type="text" name="TYPO3_INSTALL[check_mail]">
+				You can check the mail() function by entering your email address here and press the button. You should then receive a testmail from test@test.test.<br /> Since almost all mails in TYPO3 are sent using the t3lib_htmlmail class, sending with this class can be tested by checking the box <strong>Test t3lib_htmlmail</strong> below. The return-path of the mail is set to null@'.t3lib_div::getIndpEnv('HTTP_HOST').'. Some mail servers won\'t send the mail if the host of the return-path is not resolved correctly.
+				<form action="'.$this->action.'" method="POST"><input type="text" name="TYPO3_INSTALL[check_mail]"><br /><input type="checkbox" name="TYPO3_INSTALL[use_htmlmail]" >Test t3lib_htmlmail.
 					<input type="submit" value="Send test mail"></form>';
 			break;
 			default:
 				if (trim($this->INSTALL["check_mail"]))	{
-					mail(trim($this->INSTALL["check_mail"]), "TEST SUBJECT", "TEST CONTENT", "From: test@test.test");
+					if($this->INSTALL["use_htmlmail"]) {
+						require_once (PATH_t3lib.'class.t3lib_htmlmail.php');
+					  	$email = t3lib_div::makeInstance("t3lib_htmlmail");
+						$email->start();
+						$email->subject = "TEST SUBJECT";
+						$email->from_email = "Test@test.test";
+						$email->from_name = "TYPO3 Install tool";
+						$email->returnPath = "null@".t3lib_div::getIndpEnv("HTTP_HOST");
+						$email->addPlain("TEST CONTENT");
+						$email->setHTML($email->encodeMsg("<html><body>HTML TEST CONTENT</body></html>"));
+						$email->send($this->INSTALL["check_mail"]);
+					} else {
+						mail(trim($this->INSTALL["check_mail"]), "TEST SUBJECT", "TEST CONTENT", "From: test@test.test");
+					}
 					$this->messages[]= "MAIL WAS SENT TO: ".$this->INSTALL["check_mail"];
 				}
 			break;
@@ -1661,10 +1678,10 @@ From sub-directory:
 		$uniqueName = md5(uniqid(microtime()));
 
 			// The requirement level (the integer value, ie. the second value of the value array) has the following meanings:
-			// -1 = not required, but if it exists may be writeable or not
-			//  0 = not required, if it exists the dir should be writeable
-			//  1 = required, don't has to be writeable
-			//  2 = required, has to be writeable
+			// -1 = not required, but if it exists may be writable or not
+			//  0 = not required, if it exists the dir should be writable
+			//  1 = required, don't has to be writable
+			//  2 = required, has to be writable
 
 		$checkWrite=array(
 			"typo3temp/" => array("The folder is used by both the frontend (FE) and backend interface (TBE) for image manipulated files.",2,"dir_typo3temp"),
@@ -1711,7 +1728,7 @@ From sub-directory:
 				if (@is_file($file))	{
 					unlink($file);
 					if ($descr[2])	{ $this->config_array[$descr[2]]=1; }
-					$this->message($ext, $relpath." writeable","",-1);
+					$this->message($ext, $relpath." writable","",-1);
 				} else {
 					$severity = ($descr[1]==2 || $descr[1]==0) ? 3 : 2;
 					if ($descr[1] == 0 || $descr[1] == 2) {
@@ -1719,7 +1736,7 @@ From sub-directory:
 					} elseif ($descr[1] == -1 || $descr[1] == 1) {
 						$msg = "The directory ".$relpath." does not neccesarily have to be writable.";
 					}
-					$this->message($ext, $relpath." directory not writeable","
+					$this->message($ext, $relpath." directory not writable","
 					<em>Full path: ".$file."</em>
 					".$general_message."
 
@@ -1930,7 +1947,7 @@ From sub-directory:
 					// Database:
 				$out='
 				<table border=0 cellpadding=0 cellspacing=0>
-				<form action="'.$this->action.'" method="POST">';
+				<form name="setupGeneral" action="'.$this->action.'" method="POST">';
 
 				$out.=$this->wrapInCells("Username:", '<input type="text" name="TYPO3_INSTALL[localconf.php][typo_db_username]" value="'.htmlspecialchars(TYPO3_db_username?TYPO3_db_username:($this->config_array["sql.safe_mode_user"]?$this->config_array["sql.safe_mode_user"]:"")).'">'.($this->config_array["sql.safe_mode_user"]?"<BR>sql.safe_mode_user: <strong>".$this->config_array["sql.safe_mode_user"]."</strong>":""));
 				$out.=$this->wrapInCells("Password:", '<input type="text" name="TYPO3_INSTALL[localconf.php][typo_db_password]" value="'.htmlspecialchars(TYPO3_db_password).'">');
@@ -1957,6 +1974,9 @@ From sub-directory:
 
 				if ($this->mode!="123")	{
 					$out.=$this->wrapInCells("Site name:", '<input type="text" name="TYPO3_INSTALL[localconf.php][sitename]" value="'.htmlspecialchars($GLOBALS["TYPO3_CONF_VARS"]["SYS"]["sitename"]).'">');
+					$out.=$this->wrapInCells("", "<BR>");
+					$out.='<script type="text/javascript" src="../md5.js"></script><script type="text/javascript">function generateEncryptionKey(key) {time=new Date(); key=MD5(key)+MD5(time.getMilliseconds().toString());while(key.length<66){key=key+MD5(key)};return key;}</script>';
+					$out.=$this->wrapInCells("Encryption key:", '<input type="text" name="TYPO3_INSTALL[localconf.php][encryptionKey]" value="'.htmlspecialchars($GLOBALS["TYPO3_CONF_VARS"]["SYS"]["encryptionKey"]).'"><br /><input type="button" onclick="document.forms[\'setupGeneral\'].elements[\'TYPO3_INSTALL[localconf.php][encryptionKey]\'].value=generateEncryptionKey(document.forms[\'setupGeneral\'].elements[\'TYPO3_INSTALL[localconf.php][encryptionKey]\'].value);" value="Generate random key">');
 					$out.=$this->wrapInCells("", "<BR>");
 
 						// Other
@@ -2040,6 +2060,9 @@ From sub-directory:
 							break;
 							case "sitename":
 								if (strcmp($GLOBALS["TYPO3_CONF_VARS"]["SYS"]["sitename"],$value))	$this->setValueInLocalconfFile($lines, '$TYPO3_CONF_VARS["SYS"]["sitename"]', $value);
+							break;
+							case "encryptionKey":
+								if (strcmp($GLOBALS["TYPO3_CONF_VARS"]["SYS"]["encryptionKey"],$value))	$this->setValueInLocalconfFile($lines, '$TYPO3_CONF_VARS["SYS"]["encryptionKey"]', $value);
 							break;
 							case "im_combine_filename":
 								if (strcmp($GLOBALS["TYPO3_CONF_VARS"]["GFX"]["im_combine_filename"],$value))	$this->setValueInLocalconfFile($lines, '$TYPO3_CONF_VARS["GFX"]["im_combine_filename"]', $value);
@@ -2540,7 +2563,7 @@ From sub-directory:
 			return;
 		}
 		if (!$this->config_array["dir_typo3temp"])	{
-			$this->message("Image Processing","typo3temp/ not writeable!","
+			$this->message("Image Processing","typo3temp/ not writable!","
 				You must make typo3temp/ write enabled before you can proceed with this test.
 			",2);
 			echo $this->outputWrapper($this->printAll());
@@ -3332,23 +3355,22 @@ From sub-directory:
 				break;
 				case "cmpTCA":
 					$this->includeTCA();
-					$this->mysqlVersion = "3.23";	// Set this previously to calling the function below in order to make the rendering right for the comparison.
 					$FDdb = $this->getFieldDefinitions_database();
 
 						// Displaying configured fields which are not in the database
-					$tLabel="Tables and fields in \$TCA, but not in database";
-					$cmpTCA_DB = $this->compareTCAandDatabase($GLOBALS["TCA"],$FDdb);
-					if (!count($cmpTCA_DB["extra"]))	{
-						$this->message($tLabel,"Table and field definitions OK","
+					$tLabel='Tables and fields in $TCA, but not in database';
+					$cmpTCA_DB = $this->compareTCAandDatabase($GLOBALS['TCA'],$FDdb);
+					if (!count($cmpTCA_DB['extra']))	{
+						$this->message($tLabel,'Table and field definitions OK','
 						All fields and tables configured in $TCA appeared to exist in the database as well
-						",-1);
+						',-1);
 					} else {
-						$this->message($tLabel,"Invalid table and field definitions in \$TCA!","
+						$this->message($tLabel,'Invalid table and field definitions in $TCA!','
 						There are some tables and/or fields configured in the \$TCA array which does not exist in the database!
 						This will most likely cause you trouble with the TYPO3 backend interface!
-						",3);
-						while(list($tableName, $conf)=each($cmpTCA_DB["extra"]))	{
-							$this->message($tLabel, $tableName,$this->displayFields($conf["fields"],0,"Suggested database field:"),2);
+						',3);
+						while(list($tableName, $conf)=each($cmpTCA_DB['extra']))	{
+							$this->message($tLabel, $tableName,$this->displayFields($conf['fields'],0,'Suggested database field:'),2);
 						}
 					}
 
@@ -4000,8 +4022,7 @@ From sub-directory:
 		switch($fieldInfo["config"]["type"])	{
 			case "input":
 				if (ereg("date|time|int|year",$fieldInfo["config"]["eval"]))	{
-					$us=ereg("date|time",$fieldInfo["config"]["eval"]) ? " unsigned" : "";
-					$out = "int(11)".$us." NOT NULL default '0'";
+					$out = "int(11) NOT NULL default '0'";
 				} else {
 					$max = intval($fieldInfo["config"]["max"]);
 					if ($max>0 && $max<200)	{
@@ -4016,9 +4037,9 @@ From sub-directory:
 			break;
 			case "check":
 				if (is_array($fieldInfo["config"]["items"]) && count($fieldInfo["config"]["items"])>8)	{
-					$out = "int(11) unsigned NOT NULL default '0'";
+					$out = "int(11) NOT NULL default '0'";
 				} else {
-					$out = "tinyint(3) unsigned NOT NULL default '0'";
+					$out = "tinyint(3) NOT NULL default '0'";
 				}
 			break;
 			case "radio":
@@ -4035,7 +4056,7 @@ From sub-directory:
 						$len = $max*(10+1+5+1);		// Tablenames are 10, "_" 1, uid's 5, comma 1
 						$out=$this->getItemBlobSize($len);
 					} elseif ($max<=1) {
-						$out = "int(11) unsigned NOT NULL default '0'";
+						$out = "int(11) NOT NULL default '0'";
 					} else {
 						$len = $max*(5+1);		// uid's 5, comma 1
 						$out=$this->getItemBlobSize($len);
@@ -4051,7 +4072,7 @@ From sub-directory:
 				$max = t3lib_div::intInRange($fieldInfo["config"]["maxitems"],1,10000);
 				if ($max<=1)	{
 					if ($fieldInfo["config"]["foreign_table"])	{
-						$out = "int(11) unsigned NOT NULL default '0'";
+						$out = "int(11) NOT NULL default '0'";
 					} else {
 						$out = $this->getItemArrayType($fieldInfo["config"]["items"]);
 					}
@@ -4088,10 +4109,8 @@ From sub-directory:
 			$us = min($intSize)>=0 ? " unsigned" : "";
 			if (max($type)>0)	{
 				$out = "varchar(".max($type).") NOT NULL default ''";
-			} elseif (max($intSize)>(!$us?127:255))	{
-				$out = "int(11)".$us." NOT NULL default '0'";
 			} else {
-				$out = "tinyint(3)".$us." NOT NULL default '0'";
+				$out = "int(11) NOT NULL default '0'";
 			}
 		}
 		return $out;
@@ -4565,10 +4584,10 @@ A:hover {color: #000066}
 	}
 
 	/**
-	 * [Describe function...]
+	 * Convert a size from human-readable form into bytes
 	 *
-	 * @param	[type]		$bytes: ...
-	 * @return	[type]		...
+	 * @param	string		A string containing the size in bytes, kilobytes or megabytes. Example: 64M
+	 * @return	string		The string is returned in bytes and can also hold floating values
 	 */
 	function convertByteSize($bytes)	{
 		if (stristr($bytes,"m"))	{

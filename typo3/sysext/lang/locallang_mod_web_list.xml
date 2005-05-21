@@ -93,10 +93,14 @@
 			<label index="editShownColumns">Redigér alle viste felter i de oplistede elementer</label>
 			<label index="editThisColumn">Redigér feltet '%s' i de oplistede elementer</label>
 			<label index="deleteWarning">Er du sikker på, at du ønsker at slette dette element?</label>
+			<label index="localization">Oversættelsesvisning</label>
+			<label index="defaultLanguage">Standard</label>
+			<label index="multipleLanguages">Alle sprog</label>
+			<label index="Localize">Oversæt</label>
 		</languageKey>
 		<languageKey index="de" type="array">
 			<label index="mlang_labels_tablabel">Liste der Datensätze</label>
-			<label index="mlang_labels_tabdescr">Das Web-Listen Modul bietet den grundlegensten Zugriff auf die Datensätze einer Seite. Während die anderen Module hauptsächlich mit bestimmten Operationen auf bestimmte Datensätze spezialisiert sind, bietet dieses Modul den entscheidenen Zugriff auf die Datensätze, die für den jeweiligen Benutzer zugänglich sind.</label>
+			<label index="mlang_labels_tabdescr">Das Web-Listen Modul bietet den grundlegensten Zugriff auf die Datensätze einer Seite.</label>
 			<label index="mlang_tabs_tab">Liste</label>
 			<label index="clip_pasteAfter">Einfügen nach: der Inhalt des Klemmbretts wurde nach diesem Datensatz eingefügt</label>
 			<label index="clip_pasteInto">Einfügen in: der Inhalt des Klemmbretts wurde in diese Seite eingefügt</label>
@@ -134,10 +138,14 @@
 			<label index="editShownColumns">Bearbeite alle angezeigten Felder der angelisteten Datensätze</label>
 			<label index="editThisColumn">Bearbeite das Feld '%s' des angelisteten Datensätze</label>
 			<label index="deleteWarning">Soll dieser Datensatz wirklich gelöscht werden?</label>
+			<label index="localization">Lokalisierungsansicht</label>
+			<label index="defaultLanguage">Standard</label>
+			<label index="multipleLanguages">Alle Sprachen</label>
+			<label index="Localize">Lokalisieren</label>
 		</languageKey>
 		<languageKey index="no" type="array">
 			<label index="mlang_labels_tablabel">Liste over database-records</label>
-			<label index="mlang_labels_tabdescr">Modulen Web&gt;Liste gir den mest grunnleggende tilgangen til databaseelementene på en side. Mens andre moduler hovedsakelig er spesialiserte for enkelte operasjoner på enkelte databasetabeller, gir denne modulen ultimat  tilgang til de egentlige databaseelementene som er tilgjengelige for brukeren.</label>
+			<label index="mlang_labels_tabdescr">Modulen Web&gt;Liste gir den mest grunnleggende tilgangen til databaseelementene på en side. Mens andre moduler hovedsakelig er spesialiserte for enkelte operasjoner på enkelte databasetabeller, gir denne modulen tilgang til de egentlige databaseelementene som er tilgjengelige for brukeren.</label>
 			<label index="mlang_tabs_tab">Liste</label>
 			<label index="clip_pasteAfter">Lim inn etter: Innholdet på klippebordet settes inn etter dette elementet</label>
 			<label index="clip_pasteInto">Lim inn i: Innholdet på klippebordet settes inn på denne siden</label>
@@ -175,10 +183,14 @@
 			<label index="editShownColumns">Rediger alle viste felt i de opplistede elementene</label>
 			<label index="editThisColumn">Rediger feltet '%s' i de opplistede elementene</label>
 			<label index="deleteWarning">Er du sikker på at du ønsker å slette dette elementet?</label>
+			<label index="localization">Vis oversettelser</label>
+			<label index="defaultLanguage">Standard</label>
+			<label index="multipleLanguages">Alle språk</label>
+			<label index="Localize">Oversett</label>
 		</languageKey>
 		<languageKey index="it" type="array">
 			<label index="mlang_labels_tablabel">Lista dei record del database</label>
-			<label index="mlang_labels_tabdescr">Il modulo Web&gt;Lista fornisce l'accesso più 'a basso livello' ai record di una pagina. Mentre gli altri moduli sono specializzati in determinate funzioni su certe tabelle del database, questo modulo fornisce l'accesso a tutti i record della pagina che l'utente può visualizzare.</label>
+			<label index="mlang_labels_tabdescr">Il modulo Web&gt;Lista fornisce l'accesso 'a basso livello' ai record di una pagina.</label>
 			<label index="mlang_tabs_tab">Lista</label>
 			<label index="clip_pasteAfter">Incolla dopo: il contenuto della clipboard viene inserito dopo questo record</label>
 			<label index="clip_pasteInto">Incolla in: il contenuto della clipboard viene inserito in questa pagina</label>
@@ -216,9 +228,13 @@
 			<label index="editShownColumns">Modifica tutti i campi dei record visualizzati</label>
 			<label index="editThisColumn">Modifica il campo '%s' dei record visualizzati</label>
 			<label index="deleteWarning">Sei sicuro di voler eliminare questo record?</label>
+			<label index="localization">Vista localizzazione</label>
+			<label index="defaultLanguage">Default</label>
+			<label index="multipleLanguages">Tutte le lingue</label>
+			<label index="Localize">Localizza</label>
 		</languageKey>
 		<languageKey index="fr" type="array">
-			<label index="mlang_labels_tablabel">Liste des pages et des enregistrements</label>
+			<label index="mlang_labels_tablabel">Liste des enregistrements</label>
 			<label index="mlang_labels_tabdescr">Le module Web&gt;Liste vous offre l'entier contrôle sur tous les enregistrements d'une page. Contrairement aux autres modules plus spécialisés, celui-ci vous donne accès à toutes les informations disponibles.</label>
 			<label index="mlang_tabs_tab">Liste</label>
 			<label index="clip_pasteAfter">Coller après: Le contenu du presse-papiers est inséré après cet enregistrement</label>
@@ -257,6 +273,10 @@
 			<label index="editShownColumns">Editer tous les champs de l'enregistrement</label>
 			<label index="editThisColumn">Editer le champs '%s' de l'enregistrement</label>
 			<label index="deleteWarning">Etes-vous sûr de vouloir supprimer cet enregistrement?</label>
+			<label index="localization">Vue de localisation</label>
+			<label index="defaultLanguage">Défaut</label>
+			<label index="multipleLanguages">Toutes les langues</label>
+			<label index="Localize">Localise</label>
 		</languageKey>
 		<languageKey index="es" type="array">
 			<label index="mlang_labels_tablabel">Lista de registros</label>
@@ -298,10 +318,13 @@
 			<label index="editShownColumns">Editar los campos mostrados en los registros listados</label>
 			<label index="editThisColumn">Editar el campo '%s' en los registros listados</label>
 			<label index="deleteWarning">¿Seguro que desea eliminar este registro?</label>
+			<label index="defaultLanguage">Por defecto</label>
+			<label index="multipleLanguages">Todos los idiomas</label>
+			<label index="Localize">Localizar</label>
 		</languageKey>
 		<languageKey index="nl" type="array">
 			<label index="mlang_labels_tablabel">Lijst van databaserecords</label>
-			<label index="mlang_labels_tabdescr">De Web&gt;Lijstmodule biedt de meest basale toegang tot de records in een pagina. Terwijl de andere modules voornamelijk gespecialiseerd zijn in bepaalde bewerkingen van databasetabellen, geeft deze module fundamentele toegang tot de records die beschikbaar zijn voor de gebruiker.</label>
+			<label index="mlang_labels_tabdescr">De Web&gt;Lijst module biedt basale toegang tot de records in een pagina.</label>
 			<label index="mlang_tabs_tab">Lijst</label>
 			<label index="clip_pasteAfter">Plaats na: Klembordinhoud wordt ingevoegd na dit element</label>
 			<label index="clip_pasteInto">Plaats in: Klembordinhoud wordt ingevoegd op deze pagina</label>
@@ -339,6 +362,10 @@
 			<label index="editShownColumns">Bewerk alle zichtbare velden van de getoonde records</label>
 			<label index="editThisColumn">Bewerk het '%s' veld van de getoonde records</label>
 			<label index="deleteWarning">Dit record verwijderen?</label>
+			<label index="localization">Localisatie</label>
+			<label index="defaultLanguage">Standaard</label>
+			<label index="multipleLanguages">Alle talen</label>
+			<label index="Localize">Localiseer</label>
 		</languageKey>
 		<languageKey index="cz" type="array">
 			<label index="mlang_labels_tablabel">Seznam databázových záznamů</label>
@@ -383,7 +410,7 @@
 		</languageKey>
 		<languageKey index="pl" type="array">
 			<label index="mlang_labels_tablabel">Lista zawartości bazy</label>
-			<label index="mlang_labels_tabdescr">Moduł Web&gt;Lista zapewnia dostęp niskiego poziomu do rekordów zawartych na stronie. O ile inne moduły pełnią wyspecjalizowane funkcje dotyczące konkretnych tablic, ten moduł umożliwia dostep do większości rekordów dostępnych dla użytkownika.</label>
+			<label index="mlang_labels_tabdescr">Moduł Web&gt;Lista zapewnia dostęp niskiego poziomu do rekordów zawartych na stronie.</label>
 			<label index="mlang_tabs_tab">Lista</label>
 			<label index="clip_pasteAfter">Wstaw za: Zawartość schowka jest wstawiana za tym rekordem</label>
 			<label index="clip_pasteInto">Wstaw w: Zawartość schowka jest wstawiana na tej stronie</label>
@@ -421,6 +448,10 @@
 			<label index="editShownColumns">Edytuj wszystkie pokazane pola w rekordach</label>
 			<label index="editThisColumn">Edytuj '%s' pole w rekordach</label>
 			<label index="deleteWarning">Czy na pewno chcesz usunąć ten rekord?</label>
+			<label index="localization">Widok tłumaczeń</label>
+			<label index="defaultLanguage">Domyślnie</label>
+			<label index="multipleLanguages">Wszystkie języki</label>
+			<label index="Localize">Lokalizuj</label>
 		</languageKey>
 		<languageKey index="si" type="array">
 			<label index="mlang_labels_tablabel">Seznam zapisov v bazi podatkov</label>
@@ -503,6 +534,10 @@
 			<label index="editShownColumns">Muokkaa kaikkia näytettyjä kenttiä listatuista tietueista</label>
 			<label index="editThisColumn">Muotoile '%s' tietoa listatuista tietueista</label>
 			<label index="deleteWarning">Oletko varma, että haluat poistaa tämän tietueen?</label>
+			<label index="localization">Lokalisointi näyttö</label>
+			<label index="defaultLanguage">Oletus</label>
+			<label index="multipleLanguages">Kaikki kielet</label>
+			<label index="Localize">Lokalisointi</label>
 		</languageKey>
 		<languageKey index="tr" type="array">
 			<label index="mlang_labels_tablabel">Veritabanı kayıtlarının listelenmesi</label>
@@ -544,6 +579,10 @@
 			<label index="editShownColumns">Listelenen kayıtların tüm alanlarının gösterilmesinin düzeltilmesi</label>
 			<label index="editThisColumn">Listelenen kayıtların alanının '%s' düzeltilmesi</label>
 			<label index="deleteWarning">Bu kayıtı silmek istediğinizden emin misiniz?</label>
+			<label index="localization">Sınırlama/yerelleştirme görünümü</label>
+			<label index="defaultLanguage">Default</label>
+			<label index="multipleLanguages">Tüm diller</label>
+			<label index="Localize">Sınırlama</label>
 		</languageKey>
 		<languageKey index="se" type="array">
 			<label index="mlang_labels_tablabel">Lista över databasregistren</label>
@@ -585,6 +624,10 @@
 			<label index="editShownColumns">Ändra alla visade fält i det listade elementet</label>
 			<label index="editThisColumn">Ändra '%s' -fältet i det listade elementet</label>
 			<label index="deleteWarning">Är du säker på att du vill radera detta element?</label>
+			<label index="localization">Lokalisationsvisning</label>
+			<label index="defaultLanguage">Standard</label>
+			<label index="multipleLanguages">Alla språk</label>
+			<label index="Localize">Lokalisera</label>
 		</languageKey>
 		<languageKey index="pt" type="array">
 			<label index="mlang_labels_tablabel">Lista de registros no banco de dados</label>
@@ -629,7 +672,7 @@
 		</languageKey>
 		<languageKey index="ru" type="array">
 			<label index="mlang_labels_tablabel">Список записей базы данных</label>
-			<label index="mlang_labels_tabdescr">Модуль Веб&amp;gt;Список обеспечивает наиболее широкий доступ к записям страницы. В то время, как другие модули главным образом специализированы на некоторых операциях над таблицами базы данных, этот модуль обеспечивает максимально возможный для данного пользователя доступ</label>
+			<label index="mlang_labels_tabdescr">Модуль Веб&amp;gt;Список обеспечивает наиболее широкий доступ к записям страницы.</label>
 			<label index="mlang_tabs_tab">Список</label>
 			<label index="clip_pasteAfter">Вставка после: вставить содержимое Буфера обмена после этой записи</label>
 			<label index="clip_pasteInto">Вставка внутрь: вставить содержимое Буфера обмена в эту страницу</label>
@@ -667,6 +710,10 @@
 			<label index="editShownColumns">Редактировать все поля перечисленных записей</label>
 			<label index="editThisColumn">Редактировать поле '%s' перечисленных записей</label>
 			<label index="deleteWarning">Вы уверены, что хотите удалить эту запись?</label>
+			<label index="localization">Просмотр переводов</label>
+			<label index="defaultLanguage">Стандартный</label>
+			<label index="multipleLanguages">Все языки</label>
+			<label index="Localize">Перевести</label>
 		</languageKey>
 		<languageKey index="ro" type="array">
 			<label index="mlang_labels_tablabel">Lista inregistrarilor din baza de date</label>
@@ -893,7 +940,7 @@
 		</languageKey>
 		<languageKey index="hu" type="array">
 			<label index="mlang_labels_tablabel">Adatbázis rekordok listája</label>
-			<label index="mlang_labels_tabdescr">Web&gt;Lista modul rendezve jeleníti meg az oldal adatbázis rekordjait</label>
+			<label index="mlang_labels_tabdescr">Web&gt;Lista modul az oldal adatbázis rekordjaihoz nyújt alacsonyszintű hozzáférést.</label>
 			<label index="mlang_tabs_tab">Lista</label>
 			<label index="clip_pasteAfter">Oldal után: A vágólap tartalmát ezután a rekord uán illeszti be</label>
 			<label index="clip_pasteInto">Beillesztés ide: A Vágólap tartalma erre lapra kerül</label>
@@ -931,6 +978,10 @@
 			<label index="editShownColumns">A listázott rekordok összes látható mezőjének módosítása</label>
 			<label index="editThisColumn">A listázott rekord '%s' mezőjének szerkesztése</label>
 			<label index="deleteWarning">Biztosan törölni ezt a rekordot?</label>
+			<label index="localization">Nyelv nézet</label>
+			<label index="defaultLanguage">Alapértelmezett</label>
+			<label index="multipleLanguages">Összes nyelv</label>
+			<label index="Localize">Nyelvet megad</label>
 		</languageKey>
 		<languageKey index="gl" type="array">
 		</languageKey>
@@ -979,7 +1030,7 @@
 		</languageKey>
 		<languageKey index="hk" type="array">
 			<label index="mlang_labels_tablabel">表列資料庫記錄</label>
-			<label index="mlang_labels_tabdescr">網站＞表列模組提供對網頁的記錄作最低層的存取。其他模組主要特定對固定的資料表進行特定的工作時，這個模組向使用者可以使用的記錄提供最終的存取。</label>
+			<label index="mlang_labels_tabdescr">網站＞表列模組提供對網頁的記錄作最低層的存取。</label>
 			<label index="mlang_tabs_tab">表列</label>
 			<label index="clip_pasteAfter">在後面貼上：剪貼薄內容插入這個記錄之後</label>
 			<label index="clip_pasteInto">貼上：剪貼薄內容插入這網頁</label>
@@ -1017,6 +1068,10 @@
 			<label index="editShownColumns">修改所有列出的記錄中所顯示的欄位</label>
 			<label index="editThisColumn">修改列出的記錄'%s'欄位</label>
 			<label index="deleteWarning">你是否肯定要刪除這個記錄？</label>
+			<label index="localization">本地化檢視</label>
+			<label index="defaultLanguage">預設</label>
+			<label index="multipleLanguages">所有語言</label>
+			<label index="Localize">本地化</label>
 		</languageKey>
 		<languageKey index="eu" type="array">
 			<label index="mlang_labels_tablabel">Datubase erregistroen zerrenda</label>
@@ -1140,6 +1195,10 @@
 			<label index="editShownColumns">Editar todos os campos mostrados dos registros listados</label>
 			<label index="editThisColumn">Editar o campo '%s' dos registros listados</label>
 			<label index="deleteWarning">Tem certeza de que deseja apagar este registro?</label>
+			<label index="localization">Visualização de localização</label>
+			<label index="defaultLanguage">Padrão</label>
+			<label index="multipleLanguages">Todos os idiomas</label>
+			<label index="Localize">Localizar</label>
 		</languageKey>
 		<languageKey index="et" type="array">
 			<label index="mlang_labels_tablabel">Andmebaasi kirjete loetelu</label>
@@ -1225,10 +1284,10 @@
 		</languageKey>
 		<languageKey index="he" type="array">
 			<label index="mlang_labels_tablabel">רשימת רשומות במאגר מידע</label>
-			<label index="mlang_labels_tabdescr">מודול רשת&gt;רשימה מאפשר גישה ברמה בסיסית ביותר לרשומות בתוך דף. כאשר מודולים אחרים בעיקר מתמצאים בפעולות מסוימות בטבלאות מסוימות במאגר מידע, מודול זה מאפשר גישה מוחלטת לרשומות הזמינות למשתמש.</label>
+			<label index="mlang_labels_tabdescr">מודול אינטרנט&gt;רשימה מאפשר גישה ברמה בסיסית ביותר לרשומות בתוך דף.</label>
 			<label index="mlang_tabs_tab">רשימה</label>
-			<label index="clip_pasteAfter">הדבק אחרי: תוכן לוח גזירות מושתל אחרי רשומה זו</label>
-			<label index="clip_pasteInto">הדבק לתוך: תוכן לוח גזירות מושתל בתוך דף זה</label>
+			<label index="clip_pasteAfter">הדבק אחרי: תוכן לוח גזירות יושתל אחרי רשומה זו</label>
+			<label index="clip_pasteInto">הדבק לתוך: תוכן לוח גזירות יושתל בתוך דף זה</label>
 			<label index="clip_paste">הדבק בתוך תוכן לוח גזירות</label>
 			<label index="clip_markRecords">בחר הכל/בטל בחירה</label>
 			<label index="clip_selectMarked">העבר רשומות נבחרות ללוח גזירות</label>
@@ -1263,6 +1322,10 @@
 			<label index="editShownColumns">ערוך כל שדות המוצגים של רשומות המוצגות</label>
 			<label index="editThisColumn">ערוך שדה  &quot;%s&quot; של רשומות המוצגות</label>
 			<label index="deleteWarning">האם הנך בטוח כי ברצונך למחוק רשומה זו?</label>
+			<label index="localization">תצוגת לוקליזציה</label>
+			<label index="defaultLanguage">ברירת מחדל</label>
+			<label index="multipleLanguages">כל השפות</label>
+			<label index="Localize">לוקליזציה</label>
 		</languageKey>
 		<languageKey index="ua" type="array">
 		</languageKey>
@@ -1314,7 +1377,7 @@
 	<orig_hash type="array">
 		<languageKey index="dk" type="array">
 			<label index="mlang_labels_tablabel" type="integer">234857507</label>
-			<label index="mlang_labels_tabdescr" type="integer">174619281</label>
+			<label index="mlang_labels_tabdescr" type="double">2001556</label>
 			<label index="mlang_tabs_tab" type="integer">82717130</label>
 			<label index="clip_pasteAfter" type="integer">12147320</label>
 			<label index="clip_pasteInto" type="integer">179341666</label>
@@ -1352,10 +1415,14 @@
 			<label index="editShownColumns" type="integer">18795941</label>
 			<label index="editThisColumn" type="integer">118469315</label>
 			<label index="deleteWarning" type="integer">75838368</label>
+			<label index="localization" type="integer">248902375</label>
+			<label index="defaultLanguage" type="integer">128029197</label>
+			<label index="multipleLanguages" type="integer">180223936</label>
+			<label index="Localize" type="integer">237672049</label>
 		</languageKey>
 		<languageKey index="de" type="array">
 			<label index="mlang_labels_tablabel" type="integer">234857507</label>
-			<label index="mlang_labels_tabdescr" type="integer">174619281</label>
+			<label index="mlang_labels_tabdescr" type="double">2001556</label>
 			<label index="mlang_tabs_tab" type="integer">82717130</label>
 			<label index="clip_pasteAfter" type="integer">12147320</label>
 			<label index="clip_pasteInto" type="integer">179341666</label>
@@ -1393,10 +1460,14 @@
 			<label index="editShownColumns" type="integer">18795941</label>
 			<label index="editThisColumn" type="integer">118469315</label>
 			<label index="deleteWarning" type="integer">75838368</label>
+			<label index="localization" type="integer">248902375</label>
+			<label index="defaultLanguage" type="integer">128029197</label>
+			<label index="multipleLanguages" type="integer">180223936</label>
+			<label index="Localize" type="integer">237672049</label>
 		</languageKey>
 		<languageKey index="no" type="array">
 			<label index="mlang_labels_tablabel" type="integer">234857507</label>
-			<label index="mlang_labels_tabdescr" type="integer">174619281</label>
+			<label index="mlang_labels_tabdescr" type="double">2001556</label>
 			<label index="mlang_tabs_tab" type="integer">82717130</label>
 			<label index="clip_pasteAfter" type="integer">12147320</label>
 			<label index="clip_pasteInto" type="integer">179341666</label>
@@ -1434,10 +1505,14 @@
 			<label index="editShownColumns" type="integer">18795941</label>
 			<label index="editThisColumn" type="integer">118469315</label>
 			<label index="deleteWarning" type="integer">75838368</label>
+			<label index="localization" type="integer">248902375</label>
+			<label index="defaultLanguage" type="integer">128029197</label>
+			<label index="multipleLanguages" type="integer">180223936</label>
+			<label index="Localize" type="integer">237672049</label>
 		</languageKey>
 		<languageKey index="it" type="array">
 			<label index="mlang_labels_tablabel" type="integer">234857507</label>
-			<label index="mlang_labels_tabdescr" type="integer">174619281</label>
+			<label index="mlang_labels_tabdescr" type="double">2001556</label>
 			<label index="mlang_tabs_tab" type="integer">82717130</label>
 			<label index="clip_pasteAfter" type="integer">12147320</label>
 			<label index="clip_pasteInto" type="integer">179341666</label>
@@ -1475,6 +1550,10 @@
 			<label index="editShownColumns" type="integer">18795941</label>
 			<label index="editThisColumn" type="integer">118469315</label>
 			<label index="deleteWarning" type="integer">75838368</label>
+			<label index="localization" type="integer">248902375</label>
+			<label index="defaultLanguage" type="integer">128029197</label>
+			<label index="multipleLanguages" type="integer">180223936</label>
+			<label index="Localize" type="integer">237672049</label>
 		</languageKey>
 		<languageKey index="fr" type="array">
 			<label index="mlang_labels_tablabel" type="integer">234857507</label>
@@ -1516,10 +1595,14 @@
 			<label index="editShownColumns" type="integer">18795941</label>
 			<label index="editThisColumn" type="integer">118469315</label>
 			<label index="deleteWarning" type="integer">75838368</label>
+			<label index="localization" type="integer">248902375</label>
+			<label index="defaultLanguage" type="integer">128029197</label>
+			<label index="multipleLanguages" type="integer">180223936</label>
+			<label index="Localize" type="integer">237672049</label>
 		</languageKey>
 		<languageKey index="es" type="array">
 			<label index="mlang_labels_tablabel" type="integer">234857507</label>
-			<label index="mlang_labels_tabdescr" type="integer">174619281</label>
+			<label index="mlang_labels_tabdescr" type="double">2001556</label>
 			<label index="mlang_tabs_tab" type="integer">82717130</label>
 			<label index="clip_pasteAfter" type="integer">12147320</label>
 			<label index="clip_pasteInto" type="integer">179341666</label>
@@ -1557,10 +1640,13 @@
 			<label index="editShownColumns" type="integer">18795941</label>
 			<label index="editThisColumn" type="integer">118469315</label>
 			<label index="deleteWarning" type="integer">75838368</label>
+			<label index="defaultLanguage" type="integer">128029197</label>
+			<label index="multipleLanguages" type="integer">180223936</label>
+			<label index="Localize" type="integer">237672049</label>
 		</languageKey>
 		<languageKey index="nl" type="array">
 			<label index="mlang_labels_tablabel" type="integer">234857507</label>
-			<label index="mlang_labels_tabdescr" type="integer">174619281</label>
+			<label index="mlang_labels_tabdescr" type="double">2001556</label>
 			<label index="mlang_tabs_tab" type="integer">82717130</label>
 			<label index="clip_pasteAfter" type="integer">12147320</label>
 			<label index="clip_pasteInto" type="integer">179341666</label>
@@ -1598,6 +1684,10 @@
 			<label index="editShownColumns" type="integer">18795941</label>
 			<label index="editThisColumn" type="integer">118469315</label>
 			<label index="deleteWarning" type="integer">75838368</label>
+			<label index="localization" type="integer">248902375</label>
+			<label index="defaultLanguage" type="integer">128029197</label>
+			<label index="multipleLanguages" type="integer">180223936</label>
+			<label index="Localize" type="integer">237672049</label>
 		</languageKey>
 		<languageKey index="cz" type="array">
 			<label index="mlang_labels_tablabel" type="integer">234857507</label>
@@ -1642,7 +1732,7 @@
 		</languageKey>
 		<languageKey index="pl" type="array">
 			<label index="mlang_labels_tablabel" type="integer">234857507</label>
-			<label index="mlang_labels_tabdescr" type="integer">174619281</label>
+			<label index="mlang_labels_tabdescr" type="double">2001556</label>
 			<label index="mlang_tabs_tab" type="integer">82717130</label>
 			<label index="clip_pasteAfter" type="integer">12147320</label>
 			<label index="clip_pasteInto" type="integer">179341666</label>
@@ -1680,6 +1770,10 @@
 			<label index="editShownColumns" type="integer">18795941</label>
 			<label index="editThisColumn" type="integer">118469315</label>
 			<label index="deleteWarning" type="integer">75838368</label>
+			<label index="localization" type="integer">248902375</label>
+			<label index="defaultLanguage" type="integer">128029197</label>
+			<label index="multipleLanguages" type="integer">180223936</label>
+			<label index="Localize" type="integer">237672049</label>
 		</languageKey>
 		<languageKey index="si" type="array">
 			<label index="mlang_labels_tablabel" type="integer">234857507</label>
@@ -1724,7 +1818,7 @@
 		</languageKey>
 		<languageKey index="fi" type="array">
 			<label index="mlang_labels_tablabel" type="integer">234857507</label>
-			<label index="mlang_labels_tabdescr" type="integer">174619281</label>
+			<label index="mlang_labels_tabdescr" type="double">2001556</label>
 			<label index="mlang_tabs_tab" type="integer">82717130</label>
 			<label index="clip_pasteAfter" type="integer">12147320</label>
 			<label index="clip_pasteInto" type="integer">179341666</label>
@@ -1762,10 +1856,14 @@
 			<label index="editShownColumns" type="integer">18795941</label>
 			<label index="editThisColumn" type="integer">118469315</label>
 			<label index="deleteWarning" type="integer">75838368</label>
+			<label index="localization" type="integer">248902375</label>
+			<label index="defaultLanguage" type="integer">128029197</label>
+			<label index="multipleLanguages" type="integer">180223936</label>
+			<label index="Localize" type="integer">237672049</label>
 		</languageKey>
 		<languageKey index="tr" type="array">
 			<label index="mlang_labels_tablabel" type="integer">234857507</label>
-			<label index="mlang_labels_tabdescr" type="integer">174619281</label>
+			<label index="mlang_labels_tabdescr" type="double">2001556</label>
 			<label index="mlang_tabs_tab" type="integer">82717130</label>
 			<label index="clip_pasteAfter" type="integer">12147320</label>
 			<label index="clip_pasteInto" type="integer">179341666</label>
@@ -1803,10 +1901,14 @@
 			<label index="editShownColumns" type="integer">18795941</label>
 			<label index="editThisColumn" type="integer">118469315</label>
 			<label index="deleteWarning" type="integer">75838368</label>
+			<label index="localization" type="integer">248902375</label>
+			<label index="defaultLanguage" type="integer">128029197</label>
+			<label index="multipleLanguages" type="integer">180223936</label>
+			<label index="Localize" type="integer">237672049</label>
 		</languageKey>
 		<languageKey index="se" type="array">
 			<label index="mlang_labels_tablabel" type="integer">234857507</label>
-			<label index="mlang_labels_tabdescr" type="integer">174619281</label>
+			<label index="mlang_labels_tabdescr" type="double">2001556</label>
 			<label index="mlang_tabs_tab" type="integer">82717130</label>
 			<label index="clip_pasteAfter" type="integer">12147320</label>
 			<label index="clip_pasteInto" type="integer">179341666</label>
@@ -1844,6 +1946,10 @@
 			<label index="editShownColumns" type="integer">18795941</label>
 			<label index="editThisColumn" type="integer">118469315</label>
 			<label index="deleteWarning" type="integer">75838368</label>
+			<label index="localization" type="integer">248902375</label>
+			<label index="defaultLanguage" type="integer">128029197</label>
+			<label index="multipleLanguages" type="integer">180223936</label>
+			<label index="Localize" type="integer">237672049</label>
 		</languageKey>
 		<languageKey index="pt" type="array">
 			<label index="mlang_labels_tablabel" type="integer">234857507</label>
@@ -1888,7 +1994,7 @@
 		</languageKey>
 		<languageKey index="ru" type="array">
 			<label index="mlang_labels_tablabel" type="integer">234857507</label>
-			<label index="mlang_labels_tabdescr" type="integer">174619281</label>
+			<label index="mlang_labels_tabdescr" type="double">2001556</label>
 			<label index="mlang_tabs_tab" type="integer">82717130</label>
 			<label index="clip_pasteAfter" type="integer">12147320</label>
 			<label index="clip_pasteInto" type="integer">179341666</label>
@@ -1926,6 +2032,10 @@
 			<label index="editShownColumns" type="integer">18795941</label>
 			<label index="editThisColumn" type="integer">118469315</label>
 			<label index="deleteWarning" type="integer">75838368</label>
+			<label index="localization" type="integer">248902375</label>
+			<label index="defaultLanguage" type="integer">128029197</label>
+			<label index="multipleLanguages" type="integer">180223936</label>
+			<label index="Localize" type="integer">237672049</label>
 		</languageKey>
 		<languageKey index="ro" type="array">
 			<label index="mlang_labels_tablabel" type="integer">234857507</label>
@@ -2152,7 +2262,7 @@
 		</languageKey>
 		<languageKey index="hu" type="array">
 			<label index="mlang_labels_tablabel" type="integer">234857507</label>
-			<label index="mlang_labels_tabdescr" type="integer">174619281</label>
+			<label index="mlang_labels_tabdescr" type="double">2001556</label>
 			<label index="mlang_tabs_tab" type="integer">82717130</label>
 			<label index="clip_pasteAfter" type="integer">12147320</label>
 			<label index="clip_pasteInto" type="integer">179341666</label>
@@ -2190,6 +2300,10 @@
 			<label index="editShownColumns" type="integer">18795941</label>
 			<label index="editThisColumn" type="integer">118469315</label>
 			<label index="deleteWarning" type="integer">75838368</label>
+			<label index="localization" type="integer">248902375</label>
+			<label index="defaultLanguage" type="integer">128029197</label>
+			<label index="multipleLanguages" type="integer">180223936</label>
+			<label index="Localize" type="integer">237672049</label>
 		</languageKey>
 		<languageKey index="gl" type="array">
 		</languageKey>
@@ -2238,7 +2352,7 @@
 		</languageKey>
 		<languageKey index="hk" type="array">
 			<label index="mlang_labels_tablabel" type="integer">234857507</label>
-			<label index="mlang_labels_tabdescr" type="integer">174619281</label>
+			<label index="mlang_labels_tabdescr" type="double">2001556</label>
 			<label index="mlang_tabs_tab" type="integer">82717130</label>
 			<label index="clip_pasteAfter" type="integer">12147320</label>
 			<label index="clip_pasteInto" type="integer">179341666</label>
@@ -2276,6 +2390,10 @@
 			<label index="editShownColumns" type="integer">18795941</label>
 			<label index="editThisColumn" type="integer">118469315</label>
 			<label index="deleteWarning" type="integer">75838368</label>
+			<label index="localization" type="integer">248902375</label>
+			<label index="defaultLanguage" type="integer">128029197</label>
+			<label index="multipleLanguages" type="integer">180223936</label>
+			<label index="Localize" type="integer">237672049</label>
 		</languageKey>
 		<languageKey index="eu" type="array">
 			<label index="mlang_labels_tablabel" type="integer">234857507</label>
@@ -2361,7 +2479,7 @@
 		</languageKey>
 		<languageKey index="br" type="array">
 			<label index="mlang_labels_tablabel" type="integer">234857507</label>
-			<label index="mlang_labels_tabdescr" type="integer">174619281</label>
+			<label index="mlang_labels_tabdescr" type="double">2001556</label>
 			<label index="mlang_tabs_tab" type="integer">82717130</label>
 			<label index="clip_pasteAfter" type="integer">12147320</label>
 			<label index="clip_pasteInto" type="integer">179341666</label>
@@ -2399,6 +2517,10 @@
 			<label index="editShownColumns" type="integer">18795941</label>
 			<label index="editThisColumn" type="integer">118469315</label>
 			<label index="deleteWarning" type="integer">75838368</label>
+			<label index="localization" type="integer">248902375</label>
+			<label index="defaultLanguage" type="integer">128029197</label>
+			<label index="multipleLanguages" type="integer">180223936</label>
+			<label index="Localize" type="integer">237672049</label>
 		</languageKey>
 		<languageKey index="et" type="array">
 			<label index="mlang_labels_tablabel" type="integer">234857507</label>
@@ -2484,7 +2606,7 @@
 		</languageKey>
 		<languageKey index="he" type="array">
 			<label index="mlang_labels_tablabel" type="integer">234857507</label>
-			<label index="mlang_labels_tabdescr" type="integer">174619281</label>
+			<label index="mlang_labels_tabdescr" type="double">2001556</label>
 			<label index="mlang_tabs_tab" type="integer">82717130</label>
 			<label index="clip_pasteAfter" type="integer">12147320</label>
 			<label index="clip_pasteInto" type="integer">179341666</label>
@@ -2522,6 +2644,10 @@
 			<label index="editShownColumns" type="integer">18795941</label>
 			<label index="editThisColumn" type="integer">118469315</label>
 			<label index="deleteWarning" type="integer">75838368</label>
+			<label index="localization" type="integer">248902375</label>
+			<label index="defaultLanguage" type="integer">128029197</label>
+			<label index="multipleLanguages" type="integer">180223936</label>
+			<label index="Localize" type="integer">237672049</label>
 		</languageKey>
 		<languageKey index="ua" type="array">
 		</languageKey>

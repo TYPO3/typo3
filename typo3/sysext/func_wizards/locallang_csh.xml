@@ -21,5 +21,9 @@ _MOD_web_func:tx_wizardsortpages</label>
 		<languageKey index="nl">EXT:csh_nl/func_wizards/nl.locallang_csh.xml</languageKey>
 		<languageKey index="fr">EXT:csh_fr/func_wizards/fr.locallang_csh.xml</languageKey>
 		<languageKey index="hu">EXT:csh_hu/func_wizards/hu.locallang_csh.xml</languageKey>
+		<languageKey index="it">EXT:csh_it/func_wizards/it.locallang_csh.xml</languageKey>
+		<languageKey index="fi">EXT:csh_fi/func_wizards/fi.locallang_csh.xml</languageKey>
+		<languageKey index="de">EXT:csh_de/func_wizards/de.locallang_csh.xml</languageKey>
+		<languageKey index="no">EXT:csh_no/func_wizards/no.locallang_csh.xml</languageKey>
 	</data>
 </T3locallang>

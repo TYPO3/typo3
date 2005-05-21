@@ -184,18 +184,19 @@
 			<label index="LGL.country">Land:</label>
 			<label index="LGL.www">www:</label>
 			<label index="LGL.note">Kommentar:</label>
-			<label index="LGL.parameters">Parameter:</label>
+			<label index="LGL.parameters">Parametre:</label>
 			<label index="LGL.code">KODE:</label>
 			<label index="LGL.links">Linker</label>
 			<label index="LGL.language">Språk:</label>
 			<label index="LGL.category">Kategori:</label>
 			<label index="LGL.shortcut_page">Snarvei til side:</label>
 			<label index="LGL.keywords">Nøkkelord (,):</label>
-			<label index="LGL.disable">Deaktiv:</label>
+			<label index="LGL.disable">Deaktivér:</label>
 			<label index="LGL.startingpoint">Utgangspunkt:</label>
-			<label index="LGL.disableRTE">Ikke benytt 'Rik tekst editor':</label>
+			<label index="LGL.disableRTE">Ikke benytt 'Rik tekst-redigering':</label>
 			<label index="LGL.external">Ekstern URL</label>
 			<label index="LGL.recursive">Rekursivt:</label>
+			<label index="LGL.l18n_parent">Oversatt fra:</label>
 			<label index="LGL.allLanguages">[Alle]</label>
 			<label index="LGL.versionLabel">Versjons etikett:</label>
 		</languageKey>
@@ -252,8 +253,8 @@
 			<label index="LGL.hidden">Cacher:</label>
 			<label index="LGL.starttime">Lancement:</label>
 			<label index="LGL.fe_group">Accès:</label>
-			<label index="LGL.hide_at_login">Cacher à l'ouverture d'une session</label>
-			<label index="LGL.any_login">Afficher à toute ouverture de session</label>
+			<label index="LGL.hide_at_login">Cacher à la connexion</label>
+			<label index="LGL.any_login">Afficher à toutes les connexions</label>
 			<label index="LGL.usergroups">__Groupes utilisateurs:__</label>
 			<label index="LGL.type">Type:</label>
 			<label index="LGL.description">Description:</label>
@@ -272,10 +273,10 @@
 			<label index="LGL.phone">Téléphone:</label>
 			<label index="LGL.fax">Fax:</label>
 			<label index="LGL.author">Auteur:</label>
-			<label index="LGL.email">Adresse électronique:</label>
+			<label index="LGL.email">Email:</label>
 			<label index="LGL.company">Société:</label>
-			<label index="LGL.city">Localité:</label>
-			<label index="LGL.zip">NPA:</label>
+			<label index="LGL.city">Ville:</label>
+			<label index="LGL.zip">Code postal:</label>
 			<label index="LGL.country">Pays:</label>
 			<label index="LGL.www">www:</label>
 			<label index="LGL.note">Note:</label>
@@ -284,16 +285,16 @@
 			<label index="LGL.links">Liens:</label>
 			<label index="LGL.language">Langues:</label>
 			<label index="LGL.category">Catégorie:</label>
-			<label index="LGL.shortcut_page">Raccourci vers la page:</label>
-			<label index="LGL.keywords">Mots-clé (,):</label>
+			<label index="LGL.shortcut_page">Raccourci vers page:</label>
+			<label index="LGL.keywords">Mots-clés (,):</label>
 			<label index="LGL.disable">Désactiver:</label>
-			<label index="LGL.startingpoint">Point de départ:</label>
+			<label index="LGL.startingpoint">Point d'entrée:</label>
 			<label index="LGL.disableRTE">Désactiver l'éditeur de texte enrichi (RTE):</label>
 			<label index="LGL.external">URL externe</label>
-			<label index="LGL.recursive">Niveaux d'aborescence:</label>
+			<label index="LGL.recursive">Récursion:</label>
 			<label index="LGL.l18n_parent">Traduc.Origin:</label>
 			<label index="LGL.allLanguages">[Tout]</label>
-			<label index="LGL.versionLabel">Etiquette de version:</label>
+			<label index="LGL.versionLabel">Etiquette de Version:</label>
 		</languageKey>
 		<languageKey index="es" type="array">
 			<label index="LGL.endtime">Final:</label>
@@ -381,7 +382,7 @@
 			<label index="LGL.language">Taal:</label>
 			<label index="LGL.category">Categorie:</label>
 			<label index="LGL.shortcut_page">Snelkoppeling naar pagina:</label>
-			<label index="LGL.keywords">Kernwoorden (,):</label>
+			<label index="LGL.keywords">Trefwoorden (,):</label>
 			<label index="LGL.disable">Uitschakelen:</label>
 			<label index="LGL.startingpoint">Startpunt:</label>
 			<label index="LGL.disableRTE">Deactiveer Rich Text Editor:</label>
@@ -669,6 +670,9 @@
 			<label index="LGL.disableRTE">Stäng Rich Text Editorn:</label>
 			<label index="LGL.external">Yttre URL</label>
 			<label index="LGL.recursive">Rekursiv:</label>
+			<label index="LGL.l18n_parent">Övers.orig.:</label>
+			<label index="LGL.allLanguages">[Allt]</label>
+			<label index="LGL.versionLabel">Versionsetikett:</label>
 		</languageKey>
 		<languageKey index="pt" type="array">
 			<label index="LGL.endtime">Pare:</label>
@@ -759,6 +763,9 @@
 			<label index="LGL.disableRTE">Выключить комфортный редактор текста (RTE):</label>
 			<label index="LGL.external">Внешний адрес</label>
 			<label index="LGL.recursive">Рекурсивно:</label>
+			<label index="LGL.l18n_parent">Оригинал перевода:</label>
+			<label index="LGL.allLanguages">[все]</label>
+			<label index="LGL.versionLabel">Версионный ярлык:</label>
 		</languageKey>
 		<languageKey index="ro" type="array">
 			<label index="LGL.endtime">Stop:</label>
@@ -1189,7 +1196,7 @@
 			<label index="LGL.usergroups">__使用者群組：__</label>
 			<label index="LGL.type">種類：</label>
 			<label index="LGL.description">簡介：</label>
-			<label index="LGL.prependAtCopy">(複製 %)</label>
+			<label index="LGL.prependAtCopy">(複製 %s)</label>
 			<label index="LGL.layout">版面編排：</label>
 			<label index="LGL.default_value">預設</label>
 			<label index="LGL.normal">正常</label>
@@ -1223,6 +1230,9 @@
 			<label index="LGL.disableRTE">關閉多功能文字編輯器：</label>
 			<label index="LGL.external">外部URL</label>
 			<label index="LGL.recursive">重複發生：</label>
+			<label index="LGL.l18n_parent">Transl.Orig：</label>
+			<label index="LGL.allLanguages">〔所有〕</label>
+			<label index="LGL.versionLabel">版本標記：</label>
 		</languageKey>
 		<languageKey index="eu" type="array">
 			<label index="LGL.endtime">Gelditu:</label>
@@ -1361,6 +1371,9 @@
 			<label index="LGL.disableRTE">Desabilitar RTF:</label>
 			<label index="LGL.external">Endereço (URL) externo:</label>
 			<label index="LGL.recursive">Endereço (URL) externo:</label>
+			<label index="LGL.l18n_parent">Trad. Orig:</label>
+			<label index="LGL.allLanguages">[Todos]</label>
+			<label index="LGL.versionLabel">Etiqueta de Versão:</label>
 		</languageKey>
 		<languageKey index="et" type="array">
 			<label index="LGL.endtime">Stop:</label>
@@ -1496,6 +1509,9 @@
 			<label index="LGL.disableRTE">נטרל עורך Rich Text</label>
 			<label index="LGL.external">כתובת אינטרנט חיצונית:</label>
 			<label index="LGL.recursive">רקורסיבי (חוזר על עצמו)</label>
+			<label index="LGL.l18n_parent">תרגום מקור:</label>
+			<label index="LGL.allLanguages">[הכל]</label>
+			<label index="LGL.versionLabel">תווית גרסה:</label>
 		</languageKey>
 		<languageKey index="ua" type="array">
 		</languageKey>
@@ -1737,6 +1753,7 @@
 			<label index="LGL.recursive" type="integer">152463034</label>
 			<label index="LGL.allLanguages" type="integer">24137953</label>
 			<label index="LGL.versionLabel" type="integer">210163440</label>
+			<label index="LGL.l18n_parent" type="integer">166415577</label>
 		</languageKey>
 		<languageKey index="it" type="array">
 			<label index="LGL.endtime" type="integer">167679436</label>
@@ -2174,7 +2191,7 @@
 			<label index="LGL.usergroups" type="integer">157574305</label>
 			<label index="LGL.type" type="integer">241539922</label>
 			<label index="LGL.description" type="integer">218120871</label>
-			<label index="LGL.prependAtCopy" type="integer">150009848</label>
+			<label index="LGL.prependAtCopy" type="integer">255966033</label>
 			<label index="LGL.layout" type="integer">229574886</label>
 			<label index="LGL.default_value" type="integer">128029197</label>
 			<label index="LGL.normal" type="integer">157332556</label>
@@ -2208,6 +2225,9 @@
 			<label index="LGL.disableRTE" type="integer">146298503</label>
 			<label index="LGL.external" type="integer">76246465</label>
 			<label index="LGL.recursive" type="integer">152463034</label>
+			<label index="LGL.l18n_parent" type="integer">166415577</label>
+			<label index="LGL.allLanguages" type="integer">24137953</label>
+			<label index="LGL.versionLabel" type="integer">210163440</label>
 		</languageKey>
 		<languageKey index="pt" type="array">
 			<label index="LGL.endtime" type="integer">167679436</label>
@@ -2264,7 +2284,7 @@
 			<label index="LGL.usergroups" type="integer">157574305</label>
 			<label index="LGL.type" type="integer">241539922</label>
 			<label index="LGL.description" type="integer">218120871</label>
-			<label index="LGL.prependAtCopy" type="integer">150009848</label>
+			<label index="LGL.prependAtCopy" type="integer">255966033</label>
 			<label index="LGL.layout" type="integer">229574886</label>
 			<label index="LGL.default_value" type="integer">128029197</label>
 			<label index="LGL.normal" type="integer">157332556</label>
@@ -2298,6 +2318,9 @@
 			<label index="LGL.disableRTE" type="integer">146298503</label>
 			<label index="LGL.external" type="integer">76246465</label>
 			<label index="LGL.recursive" type="integer">152463034</label>
+			<label index="LGL.l18n_parent" type="integer">166415577</label>
+			<label index="LGL.allLanguages" type="integer">24137953</label>
+			<label index="LGL.versionLabel" type="integer">210163440</label>
 		</languageKey>
 		<languageKey index="ro" type="array">
 			<label index="LGL.endtime" type="integer">167679436</label>
@@ -2728,7 +2751,7 @@
 			<label index="LGL.usergroups" type="integer">157574305</label>
 			<label index="LGL.type" type="integer">241539922</label>
 			<label index="LGL.description" type="integer">218120871</label>
-			<label index="LGL.prependAtCopy" type="integer">150009848</label>
+			<label index="LGL.prependAtCopy" type="integer">255966033</label>
 			<label index="LGL.layout" type="integer">229574886</label>
 			<label index="LGL.default_value" type="integer">128029197</label>
 			<label index="LGL.normal" type="integer">157332556</label>
@@ -2762,6 +2785,9 @@
 			<label index="LGL.disableRTE" type="integer">146298503</label>
 			<label index="LGL.external" type="integer">76246465</label>
 			<label index="LGL.recursive" type="integer">152463034</label>
+			<label index="LGL.l18n_parent" type="integer">166415577</label>
+			<label index="LGL.allLanguages" type="integer">24137953</label>
+			<label index="LGL.versionLabel" type="integer">210163440</label>
 		</languageKey>
 		<languageKey index="eu" type="array">
 			<label index="LGL.endtime" type="integer">167679436</label>
@@ -2866,7 +2892,7 @@
 			<label index="LGL.usergroups" type="integer">157574305</label>
 			<label index="LGL.type" type="integer">241539922</label>
 			<label index="LGL.description" type="integer">218120871</label>
-			<label index="LGL.prependAtCopy" type="integer">150009848</label>
+			<label index="LGL.prependAtCopy" type="integer">255966033</label>
 			<label index="LGL.layout" type="integer">229574886</label>
 			<label index="LGL.default_value" type="integer">128029197</label>
 			<label index="LGL.normal" type="integer">157332556</label>
@@ -2900,6 +2926,9 @@
 			<label index="LGL.disableRTE" type="integer">146298503</label>
 			<label index="LGL.external" type="integer">76246465</label>
 			<label index="LGL.recursive" type="integer">152463034</label>
+			<label index="LGL.l18n_parent" type="integer">166415577</label>
+			<label index="LGL.allLanguages" type="integer">24137953</label>
+			<label index="LGL.versionLabel" type="integer">210163440</label>
 		</languageKey>
 		<languageKey index="et" type="array">
 			<label index="LGL.endtime" type="integer">167679436</label>
@@ -3001,7 +3030,7 @@
 			<label index="LGL.usergroups" type="integer">157574305</label>
 			<label index="LGL.type" type="integer">241539922</label>
 			<label index="LGL.description" type="integer">218120871</label>
-			<label index="LGL.prependAtCopy" type="integer">150009848</label>
+			<label index="LGL.prependAtCopy" type="integer">255966033</label>
 			<label index="LGL.layout" type="integer">229574886</label>
 			<label index="LGL.default_value" type="integer">128029197</label>
 			<label index="LGL.normal" type="integer">157332556</label>
@@ -3035,6 +3064,9 @@
 			<label index="LGL.disableRTE" type="integer">146298503</label>
 			<label index="LGL.external" type="integer">76246465</label>
 			<label index="LGL.recursive" type="integer">152463034</label>
+			<label index="LGL.l18n_parent" type="integer">166415577</label>
+			<label index="LGL.allLanguages" type="integer">24137953</label>
+			<label index="LGL.versionLabel" type="integer">210163440</label>
 		</languageKey>
 		<languageKey index="ua" type="array">
 		</languageKey>

@@ -21,7 +21,7 @@
 			<label index="mlang_tabs_tab">Dok.</label>
 		</languageKey>
 		<languageKey index="no" type="array">
-			<label index="mlang_labels_tablabel">Redigering av records og dokumenter</label>
+			<label index="mlang_labels_tablabel">Redigering av elementer og dokumenter</label>
 			<label index="mlang_tabs_tab">Dok.</label>
 		</languageKey>
 		<languageKey index="it" type="array">
@@ -29,7 +29,7 @@
 			<label index="mlang_tabs_tab">Doc</label>
 		</languageKey>
 		<languageKey index="fr" type="array">
-			<label index="mlang_labels_tablabel">Edition d'enregistrements et de documents</label>
+			<label index="mlang_labels_tablabel">Edition d'enregistrements et documents</label>
 			<label index="mlang_tabs_tab">Doc</label>
 		</languageKey>
 		<languageKey index="es" type="array">
@@ -70,7 +70,7 @@
 		</languageKey>
 		<languageKey index="ru" type="array">
 			<label index="mlang_labels_tablabel">Редактирование записей и документов</label>
-			<label index="mlang_tabs_tab">Док</label>
+			<label index="mlang_tabs_tab">Документ</label>
 		</languageKey>
 		<languageKey index="ro" type="array">
 			<label index="mlang_labels_tablabel">Editarea inregistrarilor si documentelor</label>

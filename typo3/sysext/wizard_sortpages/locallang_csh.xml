@@ -39,5 +39,7 @@ Click this to reverse the current order. For example, if you want to sort pages 
 		<languageKey index="nl">EXT:csh_nl/wizard_sortpages/nl.locallang_csh.xml</languageKey>
 		<languageKey index="fr">EXT:csh_fr/wizard_sortpages/fr.locallang_csh.xml</languageKey>
 		<languageKey index="de">EXT:csh_de/wizard_sortpages/de.locallang_csh.xml</languageKey>
+		<languageKey index="hu">EXT:csh_hu/wizard_sortpages/hu.locallang_csh.xml</languageKey>
+		<languageKey index="no">EXT:csh_no/wizard_sortpages/no.locallang_csh.xml</languageKey>
 	</data>
 </T3locallang>

@@ -1030,7 +1030,7 @@ $_EXTCONF = $TYPO3_CONF_VARS[\'EXT\'][\'extConf\'][$_EXTKEY];
 	 * @internal
 	 */
 	function isLocalconfWritable()	{
-		return is_writeable(PATH_typo3conf) && is_writeable(PATH_typo3conf.'localconf.php');
+		return @is_writable(PATH_typo3conf) && @is_writable(PATH_typo3conf.'localconf.php');
 	}
 
 	/**
@@ -1044,15 +1044,15 @@ $_EXTCONF = $TYPO3_CONF_VARS[\'EXT\'][\'extConf\'][$_EXTKEY];
 	 */
 	function cannotCacheFilesWritable($cacheFilePrefix)	{
 		$error=array();
-		if (!@is_writeable(PATH_typo3conf))	{
+		if (!@is_writable(PATH_typo3conf))	{
 			$error[]=PATH_typo3conf;
 		}
 		if (@is_file(PATH_typo3conf.$cacheFilePrefix.'_ext_localconf.php') &&
-			!@is_writeable(PATH_typo3conf.$cacheFilePrefix.'_ext_localconf.php'))	{
+			!@is_writable(PATH_typo3conf.$cacheFilePrefix.'_ext_localconf.php'))	{
 				$error[]=PATH_typo3conf.$cacheFilePrefix.'_ext_localconf.php';
 		}
 		if (@is_file(PATH_typo3conf.$cacheFilePrefix.'_ext_tables.php') &&
-			!@is_writeable(PATH_typo3conf.$cacheFilePrefix.'_ext_tables.php'))	{
+			!@is_writable(PATH_typo3conf.$cacheFilePrefix.'_ext_tables.php'))	{
 				$error[]=PATH_typo3conf.$cacheFilePrefix.'_ext_tables.php';
 		}
 		return implode(', ',$error);

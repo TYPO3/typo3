@@ -34,8 +34,8 @@
 			<label index="mlang_tabs_tab">Installazione</label>
 		</languageKey>
 		<languageKey index="fr" type="array">
-			<label index="mlang_labels_tablabel">Assistant d'installation</label>
-			<label index="mlang_labels_tabdescr">Liaison simple avec l'assistant d'installation. Notez que cette assistant doit être activé manuellement.</label>
+			<label index="mlang_labels_tablabel">Outil d'Installation</label>
+			<label index="mlang_labels_tabdescr">Fournit une liaison simple avec l'Outil d'Installation. Notez que l'Outil d'Installation (dans typo3/install/) doit être activé.&lt;br /&gt;&lt;em&gt;Accès autorisé aux utilisateurs 'admin' uniquement!&lt;/em&gt;</label>
 			<label index="mlang_tabs_tab">Installation</label>
 		</languageKey>
 		<languageKey index="es" type="array">
@@ -84,6 +84,9 @@
 			<label index="mlang_tabs_tab">Instalar</label>
 		</languageKey>
 		<languageKey index="ru" type="array">
+			<label index="mlang_labels_tablabel">Установщик</label>
+			<label index="mlang_labels_tabdescr">Ссылка на установочную панель. Обратите внимание, что установочная панель должна быть включена в файле typo3/install/index.php.&lt;br /&gt;&lt;em&gt;Доступ только для Администраторов!&lt;/em&gt;</label>
+			<label index="mlang_tabs_tab">Установка</label>
 		</languageKey>
 		<languageKey index="ro" type="array">
 			<label index="mlang_labels_tablabel">Unealtă de instalare</label>
@@ -124,6 +127,9 @@
 		<languageKey index="gr" type="array">
 		</languageKey>
 		<languageKey index="hk" type="array">
+			<label index="mlang_labels_tablabel">安裝工具</label>
+			<label index="mlang_labels_tabdescr">提供捷徑到安裝工具。留意安裝工具（在typo3/install中）一定要被啟動，&lt;br /&gt;&lt;em&gt;只供「系統管理員」使用者存取！&lt;/em&gt;</label>
+			<label index="mlang_tabs_tab">安裝</label>
 		</languageKey>
 		<languageKey index="eu" type="array">
 		</languageKey>
@@ -139,6 +145,8 @@
 		<languageKey index="ar" type="array">
 		</languageKey>
 		<languageKey index="he" type="array">
+			<label index="mlang_labels_tablabel">כלי התקנה</label>
+			<label index="mlang_tabs_tab">התקנה</label>
 		</languageKey>
 		<languageKey index="ua" type="array">
 		</languageKey>
@@ -226,6 +234,9 @@
 			<label index="mlang_tabs_tab" type="integer">55149455</label>
 		</languageKey>
 		<languageKey index="ru" type="array">
+			<label index="mlang_labels_tablabel" type="integer">91233822</label>
+			<label index="mlang_labels_tabdescr" type="integer">184150281</label>
+			<label index="mlang_tabs_tab" type="integer">55149455</label>
 		</languageKey>
 		<languageKey index="ro" type="array">
 			<label index="mlang_labels_tablabel" type="integer">91233822</label>
@@ -266,6 +277,9 @@
 		<languageKey index="gr" type="array">
 		</languageKey>
 		<languageKey index="hk" type="array">
+			<label index="mlang_labels_tablabel" type="integer">91233822</label>
+			<label index="mlang_labels_tabdescr" type="integer">184150281</label>
+			<label index="mlang_tabs_tab" type="integer">55149455</label>
 		</languageKey>
 		<languageKey index="eu" type="array">
 		</languageKey>
@@ -281,6 +295,8 @@
 		<languageKey index="ar" type="array">
 		</languageKey>
 		<languageKey index="he" type="array">
+			<label index="mlang_labels_tablabel" type="integer">91233822</label>
+			<label index="mlang_tabs_tab" type="integer">55149455</label>
 		</languageKey>
 		<languageKey index="ua" type="array">
 		</languageKey>
