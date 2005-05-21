@@ -1,8 +1,9 @@
-2005-05-20  Michael Stucki  <michael@typo3.org>
+2005-05-21  Michael Stucki  <michael@typo3.org>
 
 	* Backported secureFormmail patch which adds a new option TYPO3_CONF_VARS[FE][secureFormmail] which is enabled by default. For details, see http://typo3.org/teams/security/security-bulletins/typo3-20050307-1/
-	* A new button to automatically create a random encryptionKey has been added to class.tx_install.php
-	* Backported fix for bugs #0000292 and #0000464: ReturnPath is disabled in t3lib_htmlmail unless TYPO3_CONF_VARS[SYS][enableReturnPath] is set (disabled by default)
+	* A new button to automatically create a random encryptionKey has been added to class.tx_install.php. Thanks to Karsten Dambekalns.
+	* Backported bugfix #0000464: TYPO3 does not send mails when using Postfix versions < 2.0. The problem is that for setting the return-path correctly, the -f flag is used when PHP is calling sendmail. This is not supported in the sendmail wrapper for Postfix. See the function sendTheMail in class.t3lib_htmlmail.php for further information. Thanks to Jan-Erik Revsbech.
+	* Added a new option TYPO3_CONF_VARS[SYS][enableReturnPath] which is disabled by default. Until this is enabled, the ReturnPath is not sent by t3lib_htmlmail. Thanks to Jan-Erik Revsbech.
 	* Changed some small MySQL related things in class.tx_install.php
 
 2005-05-19  Peter Niederlag  <pn@kreativwert.de>
@@ -12,15 +13,6 @@
 	* Backported bugfix #0000416 in class.t3lib_install.php: Problems with auto_increment and default values
 	* Backported bugfix #0000422 in class.t3lib_stdgraphic.php: potential problems with Charset Conversion
 	* Backported bugfix #0000958: require_once() instead of require()
-
-2005-02-24  Michael Stucki  <michael@typo3.org>
-
-	* Mailer problem: Postfix < 2.0 is now automatically detected (see below)
-	* The install option (see below) has been removed again
-
-2004-11-25  Jan-Erik Revsbech <jer@moccompany.com>
-
-	* Fixed bug #0000464: TYPO3 not sending mail when using Postfix version < 2.0. The problem is when trying to set the return-path correctly, the -f flag is used. This is not supported in the sendmail wrapper for Postfix. See the function sendTheMail in class.t3lib_htmlmail.php for further informaion. A new install option to disable the -f flag is inserted.
 
 2004-11-15  Michael Stucki  <michael@typo3.org>
 
