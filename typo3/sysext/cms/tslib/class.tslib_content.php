@@ -3725,7 +3725,9 @@ class tslib_cObj {
 						$icon = $this->cObjGetSingle($conf['iconCObject'],$conf['iconCObject.'],'iconCObject');
 					} else {
 						if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['thumbnails'])	{
-							$icon = 't3lib/thumbs.php?&dummy='.$GLOBALS['EXEC_TIME'].'&file='.rawurlencode('../'.$theFile);
+							$thumbSize = '';
+							if ($conf['icon_thumbSize'] || $conf['icon_thumbSize.'])	{ $thumbSize = '&size='.$this->stdWrap($conf['icon_thumbSize'], $conf['icon_thumbSize.']); }
+							$icon = 't3lib/thumbs.php?&dummy='.$GLOBALS['EXEC_TIME'].'&file='.rawurlencode('../'.$theFile).$thumbSize;
 						} else {
 							$icon = 't3lib/gfx/notfound_thumb.gif';
 						}
