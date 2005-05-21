@@ -74,6 +74,7 @@ $TYPO3_CONF_VARS = Array(
 		'no_pconnect' => 0,						// Boolean: If true, "connect" is used instead of "pconnect" when connecting to the database!
 		'multiplyDBfieldSize' => 1,				// Double: 1-5: Amount used to multiply the DB field size when the install tool is evaluating the database size (eg. "2.5"). This is useful if you want to expand the size of fields for utf-8 etc. For western european sites using utf-8 the need should not be for more than twice the normal single-byte size (2) and for chinese / asian languages 3 should suffice.
 		'setMemoryLimit' => 0,					// Integer, memory_limit in MB: If more than 16, TYPO3 will try to use ini_set() to set the memory limit of PHP to the value. This works only if the function ini_set() is not disabled by your sysadmin.
+		'forceReturnPath' => 0,					// Boolean: Force return path in mail() calls. If this is set, all calls to mail() done by t3lib_htmlmail will be called with '-f<return_path> as the 5th parameter. This will make the return-path correct on almost all unix systems. There is a known problem with postfix below version 2: Mails are not sent if this option is set and postfix is used. On windows platforms, the Return-Path is set via a call to ini_set. This has no effect if php safe_mode is on.
 	),
 	'EXT' => Array (	// Options related to the Extension Management
 		'noEdit' => 1,							// Boolean: If set, the Extension Manager does NOT allow extension files to be edited! (Otherwise both local and global extensions can be edited.)
@@ -165,6 +166,7 @@ $TYPO3_CONF_VARS = Array(
 		'simulateStaticDocuments' => 0,			// Boolean. This is the default value for simulateStaticDocuments (configurable with TypoScript which overrides this, if the TypoScript value is present)
 		'noPHPscriptInclude' => 0,				// Boolean. If set, PHP-scripts are not included by TypoScript configurations, unless they reside in 'media/scripts/'-folder. This is a security option to ensure that users with template-access do not terrorize
 		'strictFormmail' => TRUE,				// Boolean. If set, the internal "formmail" feature in TYPO3 will send mail ONLY to recipients which has been encoded by the system itself. This protects against spammers misusing the formmailer.
+		'secureFormmail' => TRUE,				// Boolean. If set, the internal "formmail" feature in TYPO3 will send mail ONLY to the recipients that are defined in the form CE record. This protects against spammers misusing the formmailer.
 		'compressionLevel' => 0,				// Determines output compression. Requires zlib in your php4 install. Range 1-9, where 1 is least compression (approx. 50%) and 9 is greatest compression (approx 33%). 'true' as value will set the compression based on system load (works with Linux, freebsd). Good default value is 3. For more info, see class in t3lib/class.gzip_encode.php written by Sandy McArthur, Jr. <Leknor@Leknor.com>
 		'compressionDebugInfo' => 0,			// Boolean. If set, then in the end of the pages, the sizes of the compressed and non-compressed document is output. This should be used ONLY as a test, because the content is compressed twice in order to output this statistics!
 		'pageNotFound_handling' => '',			// How TYPO3 should handle requests for non-existing/accessible pages. false (default): The 'nearest' page is shown. TRUE or '1': An TYPO3 error box is displayed. Integer > 1: Not used yet (outputs "ERROR: ###"). Strings: redirect URL, eg. 'notfound.html' or 'http://www.domain.org/errors/notfound.html'. If prefixed with "READFILE:" then it will expect the remaining string to be a HTML file which will be read and outputted directly after having the marker "###CURRENT_URL###" substituted with REQUEST_URI and ###REASON### with reason text, for example: "READFILE:fileadmin/notfound.html"
@@ -207,7 +209,7 @@ $TYPO3_CONF_VARS = Array(
 $T3_VAR = array();	// Initialize.
 
 	// TYPO3 version
-$TYPO_VERSION = '3.7.0';
+$TYPO_VERSION = '3.7-dev';
 define('TYPO3_version', $TYPO_VERSION);
 
 // Database-variables are cleared!

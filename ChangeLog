@@ -1,10 +1,17 @@
+2005-05-20  Michael Stucki  <michael@typo3.org>
+
+	* Backported secureFormmail patch which adds a new option TYPO3_CONF_VARS[FE][secureFormmail] which is enabled by default. For details, see http://typo3.org/teams/security/security-bulletins/typo3-20050307-1/
+	* A new button to automatically create a random encryptionKey has been added to class.tx_install.php
+	* Backported fix for bugs #0000292 and #0000464: ReturnPath is disabled in t3lib_htmlmail unless TYPO3_CONF_VARS[SYS][enableReturnPath] is set (disabled by default)
+	* Changed some small MySQL related things in class.tx_install.php
+
 2005-05-19  Peter Niederlag  <pn@kreativwert.de>
 
-	* backported fix for Bug #849: TSConfig forceDisplayFieldIcons will work regardless of settings for adminPanel
-	* backported fix for db_new_content_el.php: Consider allow/deny for CE's
-	* backported fix from HEAD for Bug #416 in class.t3lib_install.php: Problems with auto_increment and default values
-	* backported fix from HEAD for Bug #422 in class.t3lib_stdgraphic.php: potential problems with Charset Conversion
-	* backported fix for Bug #958: require_once() instead of require()
+	* Backported bugfix #0000849: TSConfig forceDisplayFieldIcons will work regardless of settings for adminPanel
+	* Backported bugfix for db_new_content_el.php: Consider allow/deny for CE's
+	* Backported bugfix #0000416 in class.t3lib_install.php: Problems with auto_increment and default values
+	* Backported bugfix #0000422 in class.t3lib_stdgraphic.php: potential problems with Charset Conversion
+	* Backported bugfix #0000958: require_once() instead of require()
 
 2005-02-24  Michael Stucki  <michael@typo3.org>
 

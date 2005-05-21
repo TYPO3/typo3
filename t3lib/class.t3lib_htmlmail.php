@@ -207,7 +207,6 @@ class t3lib_htmlmail {
 	var $http_username="";
 	var $postfix_version1=false;
 
-
 	// Internal
 
 /*		This is how the $theParts-array is normally looking
@@ -247,34 +246,13 @@ class t3lib_htmlmail {
 
 
 	/**
-	 * Constructor for the class. Make a check to see if Postfix version below 2.0 is used.
-	 * If this is the case all calls to mail() must not be called with the -f parameter to correctly set
-	 * the Return-Path header.
+	 * Constructor. If the configuration variable forceReturnPath is set, calls to mail will be called with a 5th parameter.
+	 * See function sendTheMail for more info
+	 *
 	 * @return	[type]		...
 	 */
 	function t3lib_htmlmail () {
-		if(!ini_get('safe_mode')) {
-			$res = Array();
-
-			$postconfPathList = '/usr/sbin,/sbin,/usr/local/sbin,'. $TYPO3_CONF_VARS['SYS']['binPath'];
-			foreach(t3lib_div::trimExplode(',',$postconfPathList,1) as $path)	{
-				if(@is_file($path.'/postconf'))	{
-					$postconfPath = $path;
-					break;
-				}
-			}
-
-			if(strlen($postconfPath))	{
-				@exec('/usr/sbin/postconf mail_version',$res);
-				if(!empty($res[0]))	{
-					$temp = explode("=",$res[0]);
-					list($major,$minor,$micro) = explode(".",trim($temp[1]));
-					if($major == 1)	{
-						$this->postfix_version1 = true;
-					}
-				}
-			}
-		}
+		$this->forceReturnPath = $GLOBALS['TYPO3_CONF_VARS']['SYS']['enableReturnPath'];
 	}
 
 	/**
@@ -283,6 +261,7 @@ class t3lib_htmlmail {
 	function start ()	{
 			// Sets the message id
 		$this->messageid = md5(microtime()).'@domain.tld';
+
 	}
 
 	/**
@@ -423,9 +402,9 @@ class t3lib_htmlmail {
 		if ($this->from_email)	{
 			if ($this->from_name)	{
 				$name = $this->convertName($this->from_name);
-				$this->add_header("From: $name <$this->from_email>");
+				$this->add_header('From: '.$name.' <'.$this->from_email.'>');
 			} else {
-				$this->add_header("From: $this->from_email");
+				$this->add_header('From: '.$this->from_email);
 			}
 		}
 			// Reply
@@ -631,7 +610,7 @@ class t3lib_htmlmail {
 	 * For setting the return-path correctly, the parameter -f has to be added to the system call to sendmail.
 	 * This obviously does not have any effect on Windows, but on Sendmail compliant systems this works. If safe mode
 	 * is enabled, then extra parameters is not allowed, so a safe mode check is made before the mail() command is
-	 * invoked. When using the -f parameter, some MTA's will put an X-AUTHENTICATION-WARING saying that
+	 * invoked. When using the -f parameter, some MTA's will put an X-AUTHENTICATION-WARNING saying that
 	 * the return path was modified manually with the -f flag. To disable this warning make sure that the user running
 	 * Apache is in the /etc/mail/trusted-users table.
 	 *
@@ -640,14 +619,12 @@ class t3lib_htmlmail {
 	 *
 	 *  cannot handle command-line recipients with -t
 	 *
-	 * This problem is solved by making a call to /usr/sbin/postconf mail_version and checking if the postfix is version
-	 * 1.XX.YY If this is the case, the -f parameter is not used in the call to mail().
+	 * The -f parameter is only enabled if the parameter forceReturnPath is enabled in the install tool.
 	 *
 	 * This whole problem of return-path turns out to be quite tricky. If you have a solution that works better, on all
 	 * standard MTA's then we are very open for suggestions.
 	 *
 	 * With time this function should be made such that several ways of sending the mail is possible (local MTA, smtp other).
-	 *
 	 *
 	 * @return	[type]		...
 	 */
@@ -656,12 +633,12 @@ class t3lib_htmlmail {
 			// Sends the mail, requires the recipient, message and headers to be set.
 		if (trim($this->recipient) && trim($this->message))	{	//  && trim($this->headers)
 			$returnPath = (strlen($this->returnPath)>0)?"-f".$this->returnPath:'';
-				//On windows the -f flag is not used (specific for Sendmail and Postfix), but instead the php.ini parameter sendmail_from is used.
+				// On Windows the -f flag is not used (specific for Sendmail and Postfix), but instead the php.ini parameter sendmail_from is used.
 			if($this->returnPath) {
 				ini_set(sendmail_from, $this->returnPath);
 			}
-				//If safe mode is on, the fifth parameter to mail is not allowed, so the fix wont work on unix with safe_mode=On
-			if(!ini_get('safe_mode') && !$this->postfix_version1) {
+				// If safe_mode is on, the fifth parameter to mail is not allowed, so the fix wont work on unix with safe_mode=On
+			if(!ini_get('safe_mode') && $this->forceReturnPath) {
 				mail($this->recipient,
 					  $this->subject,
 					  $this->message,
@@ -675,7 +652,7 @@ class t3lib_htmlmail {
 			}
 				// Sending copy:
 			if ($this->recipient_copy)	{
-				if(!ini_get('safe_mode') && !$this->postfix_version1) {
+				if(!ini_get('safe_mode') && $this->forceReturnPath) {
 					mail( 	$this->recipient_copy,
 								$this->subject,
 								$this->message,
@@ -692,7 +669,7 @@ class t3lib_htmlmail {
 			if ($this->auto_respond_msg)	{
 				$theParts = explode('/',$this->auto_respond_msg,2);
 				$theParts[1] = str_replace("/",chr(10),$theParts[1]);
-				if(!ini_get('safe_mode') && !$this->postfix_version1) {
+				if(!ini_get('safe_mode') && $this->forceReturnPath) {
 					mail( 	$this->from_email,
 								$theParts[0],
 								$theParts[1],

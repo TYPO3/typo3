@@ -1741,24 +1741,32 @@
 		$formmail = t3lib_div::makeInstance('t3lib_formmail');
 
 		$EMAIL_VARS = t3lib_div::_POST();
+		$locationData = $EMAIL_VARS['locationData'];
 		unset($EMAIL_VARS['locationData']);
 		unset($EMAIL_VARS['formtype_mail']);
 
 		$integrityCheck = $this->TYPO3_CONF_VARS['FE']['strictFormmail'];
 
-			// Check recipient field:
-		$encodedFields = explode(',','recipient,recipient_copy');	// These two fields are the ones which contain recipient addresses that can be misused to send mail from foreign servers.
-		foreach($encodedFields as $fieldKey)	{
-			if (strlen($EMAIL_VARS[$fieldKey]))	{
-				if ($res = $this->codeString($EMAIL_VARS[$fieldKey], TRUE))	{	// Decode...
-					$EMAIL_VARS[$fieldKey] = $res;	// Set value if OK
-				} elseif ($integrityCheck)	{	// Otherwise abort:
-					$GLOBALS['TT']->setTSlogMessage('"Formmail" discovered a field ('.$fieldKey.') which could not be decoded to a valid string. Sending formmail aborted due to security reasons!',3);
-					return FALSE;
-				} else {
-					$GLOBALS['TT']->setTSlogMessage('"Formmail" discovered a field ('.$fieldKey.') which could not be decoded to a valid string. The security level accepts this, but you should consider a correct coding though!',2);
+		if(!$this->TYPO3_CONF_VARS['FE']['secureFormmail']) {
+				// Check recipient field:
+			$encodedFields = explode(',','recipient,recipient_copy');	// These two fields are the ones which contain recipient addresses that can be misused to send mail from foreign servers.
+			foreach($encodedFields as $fieldKey)	{
+				if (strlen($EMAIL_VARS[$fieldKey]))	{
+					if ($res = $this->codeString($EMAIL_VARS[$fieldKey], TRUE))	{	// Decode...
+						$EMAIL_VARS[$fieldKey] = $res;	// Set value if OK
+					} elseif ($integrityCheck)	{	// Otherwise abort:
+						$GLOBALS['TT']->setTSlogMessage('"Formmail" discovered a field ('.$fieldKey.') which could not be decoded to a valid string. Sending formmail aborted due to security reasons!',3);
+						return false;
+					} else {
+						$GLOBALS['TT']->setTSlogMessage('"Formmail" discovered a field ('.$fieldKey.') which could not be decoded to a valid string. The security level accepts this, but you should consider a correct coding though!',2);
+					}
 				}
 			}
+		} else	{
+			$locData = explode(':',$locationData);
+			$record = $this->sys_page->checkRecord($locData[1],$locData[2],1);
+			$EMAIL_VARS['recipient'] = $record['subheader'];
+			$EMAIL_VARS['recipient_copy'] = $this->extractRecipientCopy($record['bodytext']);
 		}
 
 			// Hook for preprocessing of the content for formmails:
@@ -1772,6 +1780,20 @@
 		$formmail->start($EMAIL_VARS);
 		$formmail->sendtheMail();
 		$GLOBALS['TT']->setTSlogMessage('"Formmail" invoked, sending mail to '.$EMAIL_VARS['recipient'],0);
+	}
+
+	/**
+	 * Extracts the value of recipient copy field from a formmail CE bodytext
+	 *
+	 * @param string $bodytext The content of the related bodytext field
+	 * @return string The value of the recipient_copy field, or an empty string
+	 */
+	function extractRecipientCopy($bodytext) {
+		$recipient_copy = '';
+		$fdef = array();
+		preg_match('/^[\s]*\|[\s]*recipient_copy[\s]*=[\s]*hidden[\s]*\|(.*)$/m', $bodytext, $fdef);
+		$recipient_copy = (!empty($fdef[1])) ? $fdef[1] : '';
+		return $recipient_copy;
 	}
 
 	/**
