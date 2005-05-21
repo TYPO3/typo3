@@ -286,7 +286,7 @@ class t3lib_install {
 					}
 				} else {
 					if (substr($value,0,1)==')' && substr($value,-1)==';')	{
-					  preg_match('/(ENGINE|TYPE)=([a-zA-Z]*)/',$value,$ttype);
+						preg_match('/(ENGINE|TYPE)=([a-zA-Z]*)/',$value,$ttype);
 						$total[$isTable]['extra']['ttype'] = $ttype[2];
 						$isTable = '';
 					} else {
