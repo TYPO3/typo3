@@ -1,5 +1,6 @@
 2005-05-21  Michael Stucki  <michael@typo3.org>
 
+	* Added TYPO3_branch constant in t3lib/config_default.php
 	* Backported secureFormmail patch which adds a new option TYPO3_CONF_VARS[FE][secureFormmail] which is enabled by default. For details, see http://typo3.org/teams/security/security-bulletins/typo3-20050307-1/
 	* A new button to automatically create a random encryptionKey has been added to class.tx_install.php. Thanks to Karsten Dambekalns.
 	* Backported bugfix #0000464: TYPO3 does not send mails when using Postfix versions < 2.0. The problem is that for setting the return-path correctly, the -f flag is used when PHP is calling sendmail. This is not supported in the sendmail wrapper for Postfix. See the function sendTheMail in class.t3lib_htmlmail.php for further information. Thanks to Jan-Erik Revsbech.

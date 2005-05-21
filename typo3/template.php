@@ -942,7 +942,7 @@ $str.=$this->docBodyTagBegin().
 	 * @return	string		<meta> tag with name "GENERATOR"
 	 */
 	function generator()	{
-		$str = 'TYPO3 '.$GLOBALS['TYPO_VERSION'].', http://typo3.com, &#169; Kasper Sk&#229;rh&#248;j 1998-2004, extensions are copyright of their respective owners.';
+		$str = 'TYPO3 '.TYPO3_branch.', http://typo3.com, &#169; Kasper Sk&#229;rh&#248;j 1998-2004, extensions are copyright of their respective owners.';
 		return '<meta name="GENERATOR" content="'.$str .'" />';
 	}
 
