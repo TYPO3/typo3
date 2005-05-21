@@ -637,7 +637,7 @@ class t3lib_htmlmail {
 			if($this->returnPath) {
 				ini_set(sendmail_from, $this->returnPath);
 			}
-				// If safe_mode is on, the fifth parameter to mail is not allowed, so the fix wont work on unix with safe_mode=On
+				// If safe_mode is on, the fifth parameter to mail is not allowed, so the fix wont work on Unix with safe_mode=On
 			if(!ini_get('safe_mode') && $this->forceReturnPath) {
 				mail($this->recipient,
 					  $this->subject,
