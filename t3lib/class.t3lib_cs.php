@@ -1499,7 +1499,7 @@ class t3lib_cs {
 	 * @see strtolower(), strtoupper()
 	 */
 	function conv_case($charset,$string,$case)	{
-		if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['t3lib_cs_utils'] == 'mbstring' && float(phpversion()) >= 4.3)	{
+		if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['t3lib_cs_utils'] == 'mbstring' && (float)phpversion() >= 4.3)	{
 			if ($case == 'toLower')	{
 				return mb_strtolower($string,'utf-8');
 			} else {

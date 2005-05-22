@@ -286,6 +286,8 @@ class t3lib_install {
 					}
 				} else {
 					if (substr($value,0,1)==')' && substr($value,-1)==';')	{
+						preg_match('/(ENGINE|TYPE)=([a-zA-Z]*)/',$value,$ttype);
+						$total[$isTable]['extra']['ttype'] = $ttype[2];
 						$isTable = '';
 					} else {
 						$lineV = ereg_replace(',$','',$value);
@@ -293,7 +295,7 @@ class t3lib_install {
 
 							// Make sure there is no default value when auto_increment is set
 						if(stristr($parts[1],'auto_increment'))	{
-							$parts[1] = eregi_replace(' default \'0\'','',$parts[1]);
+							$parts[1] = preg_replace('/ default \'0\'/i','',$parts[1]);
 						}
 							// "default" is always lower-case
 						if(strstr($parts[1], ' DEFAULT '))	{
@@ -542,7 +544,8 @@ class t3lib_install {
 							list($count) = $GLOBALS['TYPO3_DB']->sql_fetch_row($res);
 							$statements['tables_count'][md5($statement)] = $count?'Records in table: '.$count:'';
 						} else {
-							$statement = 'CREATE TABLE '.$table." (\n".implode(",\n",$whole_table)."\n) TYPE=MyISAM;";
+							$statement = 'CREATE TABLE '.$table." (\n".implode(",\n",$whole_table)."\n)";
+							$statement .= ($info['extra']['ttype']) ? ' TYPE='.$info['extra']['ttype'].';' : ';';
 							$statements['create_table'][md5($statement)]=$statement;
 						}
 					}

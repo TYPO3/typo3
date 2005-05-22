@@ -89,9 +89,9 @@ class SC_index {
 		// Internal, GPvars:
 	var $redirect_url;			// GPvar: redirect_url; The URL to redirect to after login.
 	var $GPinterface;			// GPvar: Defines which interface to load (from interface selector)
-	var $u;						// GPvar: preset username
-	var $p;						// GPvar: preset password
-	var $L;						// GPvar: If "L" is "OUT", then any logged in used is logged out. If redirect_url is given, we redirect to it
+	var $u;					// GPvar: preset username
+	var $p;					// GPvar: preset password
+	var $L;					// GPvar: If "L" is "OUT", then any logged in used is logged out. If redirect_url is given, we redirect to it
 	var $loginRefresh;			// Login-refresh boolean; The backend will call this script with this value set when the login is close to being expired and the form needs to be redrawn.
 	var $commandLI;				// Value of forms submit button for login.
 
@@ -123,11 +123,14 @@ class SC_index {
 			// GPvars:
 		$this->redirect_url = t3lib_div::_GP('redirect_url');
 		$this->GPinterface = t3lib_div::_GP('interface');
-		$this->u = t3lib_div::_GP('u');							// preset username
-		$this->p = t3lib_div::_GP('p');							// preset password
-		$this->L = t3lib_div::_GP('L');							// If "L" is "OUT", then any logged in used is logged out. If redirect_url is given, we redirect to it
-		$this->loginRefresh = t3lib_div::_GP('loginRefresh');		// Login
-		$this->commandLI = t3lib_div::_GP('commandLI');			// Value of "Login" button. If set, the login button was pressed.
+
+		if(t3lib_div::getIndpEnv('TYPO3_SSL'))	{	// For security reasons this feature only works if SSL is used
+			$this->u = t3lib_div::_GP('u');		// preset username
+			$this->p = t3lib_div::_GP('p');		// preset password
+		}
+		$this->L = t3lib_div::_GP('L');				// If "L" is "OUT", then any logged in used is logged out. If redirect_url is given, we redirect to it
+		$this->loginRefresh = t3lib_div::_GP('loginRefresh');	// Login
+		$this->commandLI = t3lib_div::_GP('commandLI');		// Value of "Login" button. If set, the login button was pressed.
 
 			// sets the level of security from conf vars
 		if ($TYPO3_CONF_VARS['BE']['loginSecurityLevel']) {
@@ -602,8 +605,8 @@ class SC_index {
 				}
 			}
 		} else {	// If no rotation folder configured, print default image:
-			$loginImage = 'loginbox_image_dev.png';
-			$imagecopy = $loginImage=='loginbox_image_dev.png' ? 'You are running the CVS version of TYPO3 '.$GLOBALS['TYPO_VERSION'] : 'Photo: &copy; 2004-2005 Kasper Sk&#229;rh&#248;j';	// Directly outputted in image attributes...
+			$loginImage = 'loginimage-3.8.0.jpg';
+			$imagecopy = $loginImage=='loginbox_image_dev.png' ? 'You are running the CVS version of TYPO3 '.$GLOBALS['TYPO_VERSION'] : 'Photo: &copy; 2005 Kasper Sk&#229;rh&#248;j';	// Directly outputted in image attributes...
 			$loginboxImage = '<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/'.$loginImage,'width="200" height="133"').' id="loginbox-image" alt="'.$imagecopy.'" title="'.$imagecopy.'" />';
 		}
 

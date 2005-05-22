@@ -127,14 +127,14 @@ class t3lib_queryGenerator	{
 		"0" => "#FIELD# LIKE '%#VALUE#%'",
 		"1" => "#FIELD# NOT LIKE '%#VALUE#%'",
 		"2" => "#FIELD# LIKE '#VALUE#%'",
-		"3" => "#FIELD# NOT LIKE #VALUE#%",
+		"3" => "#FIELD# NOT LIKE '#VALUE#%'",
 		"4" => "#FIELD# LIKE '%#VALUE#'",
 		"5" => "#FIELD# NOT LIKE '%#VALUE#'",
-		"6" => "#FIELD# = #VALUE#",
-		"7" => "#FIELD# != #VALUE#",
+		"6" => "#FIELD# = '#VALUE#'",
+		"7" => "#FIELD# != '#VALUE#'",
 			// Type = date,number ,	offset = 32
-		"32" => "#FIELD# = #VALUE#",
-		"33" => "#FIELD# != #VALUE#",
+		"32" => "#FIELD# = '#VALUE#'",
+		"33" => "#FIELD# != '#VALUE#'",
 		"34" => "#FIELD# > #VALUE#",
 		"35" => "#FIELD# < #VALUE#",
 		"36" => "#FIELD# >= #VALUE# AND #FIELD# <= #VALUE1#",
@@ -772,16 +772,16 @@ class t3lib_queryGenerator	{
 	 */
 	function getQuery ($queryConfig,$pad="") {
 		$qs = "";
-		//since wo dont traverse the array using numeric keys in the upcoming whileloop make sure it's fresh and clean
+			// Since we don't traverse the array using numeric keys in the upcoming whileloop make sure it's fresh and clean
 		ksort($queryConfig);
 		reset($queryConfig);
 		$first=1;
 		while(list($key,$conf) = each($queryConfig)) {
-			switch($conf["type"]) {
-				case "newlevel":
-					$qs.=chr(10).$pad.trim($conf["operator"])." (".$this->getQuery($queryConfig[$key]["nl"],$pad."   ").chr(10).$pad.")";
+			switch($conf['type']) {
+				case 'newlevel':
+					$qs.=chr(10).$pad.trim($conf['operator']).' ('.$this->getQuery($queryConfig[$key]['nl'],$pad.'   ').chr(10).$pad.')';
 				break;
-				case "userdef":
+				case 'userdef':
 					$qs.=chr(10).$pad.getUserDefQuery($conf,$first);
 				break;
 				default:
@@ -801,14 +801,17 @@ class t3lib_queryGenerator	{
 	 * @return	[type]		...
 	 */
 	function getQuerySingle($conf,$first)	{
-		$prefix = $this->enablePrefix ? $this->table."." : "";
-		if (!$first)	{$qs.= trim(($conf["operator"]?$conf["operator"]:"AND"))." ";}		// Is it OK to insert the AND operator if none is set?
-		$qsTmp = str_replace("#FIELD#",$prefix.trim(substr($conf["type"],6)),$this->compSQL[$conf["comparison"]]);
+		$prefix = $this->enablePrefix ? $this->table.'.' : '';
+		if (!$first)	{
+				// Is it OK to insert the AND operator if none is set?
+			$qs .= trim(($conf['operator'] ? $conf['operator'] : 'AND')).' ';
+		}
+		$qsTmp = str_replace('#FIELD#', $prefix.trim(substr($conf['type'],6)), $this->compSQL[$conf['comparison']]);
 		$inputVal = $this->cleanInputVal($conf);
-		$qsTmp = str_replace("#VALUE#", $GLOBALS['TYPO3_DB']->quoteStr($inputVal, $this->table),$qsTmp);
-		if ($conf["comparison"]==37 || $conf["comparison"]==36)	{	// between:
-			$inputVal = $this->cleanInputVal($conf,"1");
-			$qsTmp = str_replace("#VALUE1#", $GLOBALS['TYPO3_DB']->quoteStr($inputVal, $this->table),$qsTmp);
+		$qsTmp = str_replace('#VALUE#', $GLOBALS['TYPO3_DB']->quoteStr($inputVal,$this->table), $qsTmp);
+		if ($conf['comparison']==37 || $conf['comparison']==36)	{	// between:
+			$inputVal = $this->cleanInputVal($conf,'1');
+			$qsTmp = str_replace('#VALUE1#', $GLOBALS['TYPO3_DB']->quoteStr($inputVal,$this->table), $qsTmp);
 		}
 		$qs .= trim($qsTmp);
 		return $qs;
