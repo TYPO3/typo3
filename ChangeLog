@@ -1,3 +1,7 @@
+2005-05-22  Kasper Skårhøj,,,  <kasper@typo3.com>
+
+	* Added loginscreen image and colorscheme, upgraded version number. 
+
 2005-05-21  Bernhard Kraft  <kraftb@kraftb.at>
 
 	* Fixed bug #0000975: Make the thumbnail-size of filelinks chooseable
