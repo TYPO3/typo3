@@ -235,7 +235,7 @@ $TYPO3_CONF_VARS = Array(
 $T3_VAR = array();	// Initialize.
 
 	// TYPO3 version
-$TYPO_VERSION = '3.8.0';
+$TYPO_VERSION = '3.8-dev';
 define('TYPO3_version', $TYPO_VERSION);
 define('TYPO3_branch', '3.8');
 
