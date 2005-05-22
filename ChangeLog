@@ -1,3 +1,7 @@
+2005-05-22  Michael Stucki  <michael@typo3.org>
+
+	* Release of TYPO3 3.7.1
+
 2005-05-21  Michael Stucki  <michael@typo3.org>
 
 	* Added TYPO3_branch constant in t3lib/config_default.php
