@@ -1940,7 +1940,9 @@ class tslib_cObj {
 				}
 			}
 		}
-		if($conf['accessibility'])	{ $hiddenfields = '<div style="display:none;">'.$hiddenfields.'</div>'; }
+
+			// Wrap all hidden fields in a div tag (see http://bugs.typo3.org/view.php?id=678)
+		$hiddenfields = '<div style="display:none;">'.$hiddenfields.'</div>';
 
 		if ($conf['REQ'])	{
 			$validateForm=' onsubmit="return validateForm(\''.$formname.'\',\''.implode(',',$fieldlist).'\',\''.rawurlencode($conf['goodMess']).'\',\''.rawurlencode($conf['badMess']).'\',\''.rawurlencode($conf['emailMess']).'\')"';
