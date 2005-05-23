@@ -1,3 +1,7 @@
+2005-05-23  Rupert Germann  <rupi@gmx.li>
+
+	* Fix: Reversed the effect of the new parameter "config.disableImgBorderAttr". Now it does what the name says.
+
 2005-05-23  Michael Stucki  <michael@typo3.org>
 
 	* Release of TYPO3 3.8.0
