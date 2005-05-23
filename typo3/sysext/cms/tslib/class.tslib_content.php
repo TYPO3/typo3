@@ -2515,7 +2515,7 @@ class tslib_cObj {
 	 * @return	string		the border attribute
 	 */
 	function getBorderAttr($borderAttr) {
-		if (!t3lib_div::inList('xhtml_strict,xhtml_11,xhtml_2',$GLOBALS['TSFE']->config['config']['doctype']) || $GLOBALS['TSFE']->config['config']['disableImgBorderAttr']) {
+		if (!t3lib_div::inList('xhtml_strict,xhtml_11,xhtml_2',$GLOBALS['TSFE']->config['config']['doctype']) || !$GLOBALS['TSFE']->config['config']['disableImgBorderAttr']) {
 			return $borderAttr;
 		}
 	}
