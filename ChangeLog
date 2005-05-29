@@ -1,3 +1,8 @@
+2005-05-29  Michael Stucki  <michael@typo3.org>
+
+	* typo3/sysext/cms/tslib/class.tslib_content.php: Fixed a bug with the "addQueryString" property in typolinks
+	* typo3/mod/tools/em/index.php: Extension manager didn't allow to edit *.xml files
+
 2005-05-23  Rupert Germann  <rupi@gmx.li>
 
 	* Fix: Reversed the effect of the new parameter "config.disableImgBorderAttr". Now it does what the name says.
