@@ -1280,6 +1280,7 @@ class t3lib_div {
 	 * @param	boolean		If set, parameters which were blank strings would be removed.
 	 * @param	boolean		If set, the param name itselt (for example "param[key][key2]") would be rawurlencoded as well.
 	 * @return	string		Imploded result, fx. &param[key][key2]=value2&param[key][key3]=value3
+	 * @see explodeUrl2Array()
 	 */
 	function implodeArrayForUrl($name,$theArray,$str='',$skipBlank=0,$rawurlencodeParamName=0)	{
 		if (is_array($theArray))	{
@@ -1296,6 +1297,31 @@ class t3lib_div {
 			}
 		}
 		return $str;
+	}
+
+	/**
+	 * Explodes a string with GETvars (eg. "&id=1&type=2&ext[mykey]=3") into an array
+	 *
+	 * @param	string		GETvars string
+	 * @param	boolean		If set, the string will be parsed into a multidimensional array if square brackets are used in variable names (using PHP function parse_str())
+	 * @return	array		Array of values. All values AND keys are rawurldecoded() as they properly should be. But this means that any implosion of the array again must rawurlencode it!
+	 * @see implodeArrayForUrl()
+	 */
+	function explodeUrl2Array($string,$multidim=FALSE)	{
+		if ($multidim)	{
+			parse_str($string,$tempGetVars);
+			return $tempGetVars;
+		} else {
+			$output = array();
+			$p = explode('&',$string);
+			foreach($p as $v)	{
+				if (strlen($v))	{
+					list($pK,$pV) = explode('=',$v,2);
+					$output[rawurldecode($pK)] = rawurldecode($pV);
+				}
+			}
+			return $output;
+		}
 	}
 
 	/**

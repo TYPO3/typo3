@@ -1,3 +1,7 @@
+2005-05-29  Michael Stucki  <michael@typo3.org>
+
+	* Fixed a bug cause by a backport - a function was missing. However the 3.7.1 release archives have been fixed yet before the announcement, so it should be fine for everybody.
+
 2005-05-22  Michael Stucki  <michael@typo3.org>
 
 	* Release of TYPO3 3.7.1
