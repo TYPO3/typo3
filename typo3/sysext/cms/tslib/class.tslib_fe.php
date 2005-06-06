@@ -3449,8 +3449,8 @@ if (version == "n3") {
 	 * @return	void
 	 */
 	function make_seed() {
-	    list($usec, $sec) = explode(' ', microtime());
-	    $seedV = (float)$sec + ((float)$usec * 100000);
+		list($usec, $sec) = explode(' ', microtime());
+		$seedV = (float)$sec + ((float)$usec * 100000);
 		srand($seedV);
 	}
 
