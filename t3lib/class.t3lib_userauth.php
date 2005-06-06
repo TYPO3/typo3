@@ -626,6 +626,16 @@ class t3lib_userAuth {
 	function logoff() {
 		if ($this->writeDevLog) 	t3lib_div::devLog('logoff: ses_id = '.$this->id, 't3lib_userAuth');
 
+			// Hook for pre-processing the logoff() method requested and implemented by andreas.otto@dkd.de:
+		if ( is_array( $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_feuserauth.php']['logoff_pre_processing'] ) ) {
+			$_params = array();
+			foreach( $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_feuserauth.php']['logoff_pre_processing'] as $_funcRef ) {
+				if ($_funcRef) {
+					t3lib_div::callUserFunction($_funcRef,$_params,$this);
+				}
+			}
+		}
+
 		$GLOBALS['TYPO3_DB']->exec_DELETEquery(
 					$this->session_table,
 					'ses_id = '.$GLOBALS['TYPO3_DB']->fullQuoteStr($this->id, $this->session_table).'
@@ -633,6 +643,16 @@ class t3lib_userAuth {
 				);
 
 		$this->user = '';
+
+			// Hook for post-processing the logoff() method, requested and implemented by andreas.otto@dkd.de:
+		if ( is_array( $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_feuserauth.php']['logoff_post_processing'] ) ) {
+			$_params = array();
+			foreach( $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_feuserauth.php']['logoff_post_processing'] as $_funcRef ) {
+				if ($_funcRef) {
+					t3lib_div::callUserFunction($_funcRef,$_params,$this);
+				}
+			}
+		}
 	}
 
 
