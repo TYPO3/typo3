@@ -1,3 +1,7 @@
+2005-06-06 Andreas Otto <andreas.otto@dkd.de>
+
+	* t3lib/class.t3lib_userauth.php: Implemented two hooks in the logoff() method. One hook for doing operations __before__ logoff() destroys the current session and one hook for doing operations __after__ the session was destroyed.
+
 2005-05-29  Michael Stucki  <michael@typo3.org>
 
 	* typo3/sysext/cms/tslib/class.tslib_content.php: Fixed a bug with the "addQueryString" property in typolinks
