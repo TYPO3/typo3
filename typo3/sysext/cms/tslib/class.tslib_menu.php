@@ -1415,7 +1415,7 @@ class tslib_menu {
 	 * Returns the title for the navigation
 	 *
 	 * @param	string		The current page title
-	 * @param	string		The current value of the naviation title
+	 * @param	string		The current value of the navigation title
 	 * @return	string		Returns the navigation title if it is NOT blank, otherwise the page title.
 	 * @access private
 	 */

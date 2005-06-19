@@ -293,7 +293,7 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 		);
 
 	var $privacyNotice = 'When ever you interact with the online repository, server information is sent and stored in the repository for statistics. No personal information is sent, only identification of this TYPO3 install. If you want know exactly what is sent, look in typo3/mod/tools/em/index.php, function repTransferParams()';
-	var $editTextExtensions = 'html,htm,txt,css,tmpl,inc,php,sql,conf,cnf,pl,pm,sh,ChangeLog';
+	var $editTextExtensions = 'html,htm,txt,css,tmpl,inc,php,sql,conf,cnf,pl,pm,sh,xml,ChangeLog';
 	var $nameSpaceExceptions = 'beuser_tracking,design_components,impexp,static_file_edit,cms,freesite,quickhelp,classic_welcome,indexed_search,sys_action,sys_workflows,sys_todos,sys_messages,direct_mail,sys_stat,tt_address,tt_board,tt_calender,tt_guest,tt_links,tt_news,tt_poll,tt_rating,tt_products,setup,taskcenter,tsconfig_help,context_help,sys_note,tstemplate,lowlevel,install,belog,beuser,phpmyadmin,aboutmodules,imagelist,setup,taskcenter,sys_notepad,viewpage';
 
 
@@ -2586,21 +2586,21 @@ EXTENSION KEYS:
 			// ext_tables.php:
 		if (@is_file($absPath.'ext_tables.php'))	{
 			$content = t3lib_div::getUrl($absPath.'ext_tables.php');
-			if (eregi('t3lib_extMgm::addModule',$content))	$infoArray['flags'][] = 'Module';
-			if (eregi('t3lib_extMgm::insertModuleFunction',$content))	$infoArray['flags'][] = 'Module+';
+			if (stristr($content,'t3lib_extMgm::addModule'))	$infoArray['flags'][] = 'Module';
+			if (stristr($content,'t3lib_extMgm::insertModuleFunction'))	$infoArray['flags'][] = 'Module+';
 			if (stristr($content,'t3lib_div::loadTCA'))	$infoArray['flags'][] = 'loadTCA';
 			if (stristr($content,'$TCA['))	$infoArray['flags'][] = 'TCA';
-			if (eregi('t3lib_extMgm::addPlugin',$content))	$infoArray['flags'][] = 'Plugin';
+			if (stristr($content,'t3lib_extMgm::addPlugin'))	$infoArray['flags'][] = 'Plugin';
 		}
 
 			// ext_localconf.php:
 		if (@is_file($absPath.'ext_localconf.php'))	{
 			$content = t3lib_div::getUrl($absPath.'ext_localconf.php');
-			if (eregi('t3lib_extMgm::addPItoST43',$content))	$infoArray['flags'][]='Plugin/ST43';
-			if (eregi('t3lib_extMgm::addPageTSConfig',$content))	$infoArray['flags'][]='Page-TSconfig';
-			if (eregi('t3lib_extMgm::addUserTSConfig',$content))	$infoArray['flags'][]='User-TSconfig';
-			if (eregi('t3lib_extMgm::addTypoScriptSetup',$content))	$infoArray['flags'][]='TS/Setup';
-			if (eregi('t3lib_extMgm::addTypoScriptConstants',$content))	$infoArray['flags'][]='TS/Constants';
+			if (stristr($content,'t3lib_extMgm::addPItoST43'))	$infoArray['flags'][]='Plugin/ST43';
+			if (stristr($content,'t3lib_extMgm::addPageTSConfig'))	$infoArray['flags'][]='Page-TSconfig';
+			if (stristr($content,'t3lib_extMgm::addUserTSConfig'))	$infoArray['flags'][]='User-TSconfig';
+			if (stristr($content,'t3lib_extMgm::addTypoScriptSetup'))	$infoArray['flags'][]='TS/Setup';
+			if (stristr($content,'t3lib_extMgm::addTypoScriptConstants'))	$infoArray['flags'][]='TS/Constants';
 		}
 
 		if (@is_file($absPath.'ext_typoscript_constants.txt'))	{
@@ -2668,7 +2668,7 @@ EXTENSION KEYS:
 					if (filesize($absPath.$fileName)<500*1024)	{
 						$fContent = t3lib_div::getUrl($absPath.$fileName);
 						unset($reg);
-						if (ereg("\n[[:space:]]*class[[:space:]]*([[:alnum:]_]+)([[:alnum:][:space:]_]*){",$fContent,$reg))	{
+						if (preg_match('/\n[[:space:]]*class[[:space:]]*([[:alnum:]_]+)([[:alnum:][:space:]_]*)\{/',$fContent,$reg))	{
 
 								// Find classes:
 							$classesInFile=array();
@@ -2676,7 +2676,7 @@ EXTENSION KEYS:
 							foreach($lines as $k => $l)	{
 								$line = trim($l);
 								unset($reg);
-								if (ereg('^class[[:space:]]*([[:alnum:]_]+)([[:alnum:][:space:]_]*){',$line,$reg))	{
+								if (preg_match('/^class[[:space:]]*([[:alnum:]_]+)([[:alnum:][:space:]_]*)\{/',$line,$reg))	{
 									$out['classes'][] = $reg[1];
 									$out['files'][$fileName]['classes'][] = $reg[1];
 									if (substr($reg[1],0,3)!='ux_' && !t3lib_div::isFirstPartOfStr($reg[1],$table_class_prefix) && strcmp(substr($table_class_prefix,0,-1),$reg[1]))	{
@@ -2701,11 +2701,11 @@ EXTENSION KEYS:
 							$XclassParts = split('if \(defined\([\'"]TYPO3_MODE[\'"]\) && \$TYPO3_CONF_VARS\[TYPO3_MODE\]\[[\'"]XCLASS[\'"]\]',$fContent,2);
 							if (count($XclassParts)==2)	{
 								unset($reg);
-								ereg('^\[[\'"]([[:alnum:]_\/\.]*)[\'"]\]',$XclassParts[1],$reg);
+								preg_match('/^\[[\'"]([[:alnum:]_\/\.]*)[\'"]\]/',$XclassParts[1],$reg);
 								if ($reg[1]) {
 									$cmpF = 'ext/'.$extKey.'/'.$fileName;
 									if (!strcmp($reg[1],$cmpF))	{
-										if (ereg('_once[[:space:]]*\(\$TYPO3_CONF_VARS\[TYPO3_MODE\]\[[\'"]XCLASS[\'"]\]\[[\'"]'.$cmpF.'[\'"]\]\);', $XclassParts[1]))	{
+										if (preg_match('§_once[[:space:]]*\(\$TYPO3_CONF_VARS\[TYPO3_MODE\]\[[\'"]XCLASS[\'"]\]\[[\'"]'.$cmpF.'[\'"]\]\);§', $XclassParts[1]))	{
 											 $out['msg'][] = 'XCLASS OK in '.$fileName;
 										} else $out['errors'][] = 'Couldn\'t find the include_once statement for XCLASS!';
 									} else $out['errors'][] = 'The XCLASS filename-key "'.$reg[1].'" was different from "'.$cmpF.'" which it should have been!';
@@ -2735,12 +2735,12 @@ EXTENSION KEYS:
 			$line = trim($l);
 
 			unset($reg);
-			if (ereg('^define[[:space:]]*\([[:space:]]*["\']TYPO3_MOD_PATH["\'][[:space:]]*,[[:space:]]*["\']([[:alnum:]_\/\.]+)["\'][[:space:]]*\)[[:space:]]*;',$line,$reg))	{
+			if (preg_match('/^define[[:space:]]*\([[:space:]]*["\']TYPO3_MOD_PATH["\'][[:space:]]*,[[:space:]]*["\']([[:alnum:]_\/\.]+)["\'][[:space:]]*\)[[:space:]]*;/',$line,$reg))	{
 				$confFileInfo['TYPO3_MOD_PATH'] = array($k,$reg);
 			}
 
 			unset($reg);
-			if (ereg('^\$MCONF\[["\']?name["\']?\][[:space:]]*=[[:space:]]*["\']([[:alnum:]_]+)["\'];',$line,$reg))	{
+			if (preg_match('/^\$MCONF\[["\']?name["\']?\][[:space:]]*=[[:space:]]*["\']([[:alnum:]_]+)["\'];/',$line,$reg))	{
 				$confFileInfo['MCONF_name'] = array($k,$reg);
 			}
 		}
@@ -3043,13 +3043,13 @@ EXTENSION KEYS:
 			$line = trim($l);
 
 			unset($reg);
-			if (ereg('^define[[:space:]]*\([[:space:]]*["\']TYPO3_MOD_PATH["\'][[:space:]]*,[[:space:]]*["\']([[:alnum:]_\/\.]+)["\'][[:space:]]*\)[[:space:]]*;',$line,$reg))	{
+			if (preg_match('/^define[[:space:]]*\([[:space:]]*["\']TYPO3_MOD_PATH["\'][[:space:]]*,[[:space:]]*["\']([[:alnum:]_\/\.]+)["\'][[:space:]]*\)[[:space:]]*;/',$line,$reg))	{
 				$lines[$k] = str_replace($reg[0], 'define(\'TYPO3_MOD_PATH\', \''.$this->typeRelPaths[$type].$mP.'\');', $lines[$k]);
 				$flag_M = $k+1;
 			}
 
 			unset($reg);
-			if (ereg('^\$BACK_PATH[[:space:]]*=[[:space:]]*["\']([[:alnum:]_\/\.]+)["\'][[:space:]]*;',$line,$reg))	{
+			if (preg_match('/^\$BACK_PATH[[:space:]]*=[[:space:]]*["\']([[:alnum:]_\/\.]+)["\'][[:space:]]*;/',$line,$reg))	{
 				$lines[$k] = str_replace($reg[0], '$BACK_PATH=\''.$this->typeBackPaths[$type].'\';', $lines[$k]);
 				$flag_B = $k+1;
 			}
@@ -3525,7 +3525,7 @@ EXTENSION KEYS:
 
 							// Initialize:
 						$crDirStart = '';
-						$dirs_in_path = explode('/',ereg_replace('/$','',$crDir));
+						$dirs_in_path = explode('/',preg_replace('/\/$/','',$crDir));
 
 							// Traverse each part of the dir path and create it one-by-one:
 						foreach($dirs_in_path as $dirP)	{
@@ -3583,7 +3583,7 @@ EXTENSION KEYS:
 		$dbStatus = array();
 
 			// Updating tables and fields?
-		if (in_array('ext_tables.sql',$extInfo['files']))	{
+		if (is_array($extInfo['files']) && in_array('ext_tables.sql',$extInfo['files']))	{
 			$fileContent = t3lib_div::getUrl($this->getExtPath($extKey,$extInfo['type']).'ext_tables.sql');
 
 			$FDfile = $instObj->getFieldDefinitions_sqlContent($fileContent);
@@ -3609,7 +3609,7 @@ EXTENSION KEYS:
 		}
 
 			// Importing static tables?
-		if (in_array('ext_tables_static+adt.sql',$extInfo['files']))	{
+		if (is_array($extInfo['files']) && in_array('ext_tables_static+adt.sql',$extInfo['files']))	{
 			$fileContent = t3lib_div::getUrl($this->getExtPath($extKey,$extInfo['type']).'ext_tables_static+adt.sql');
 
 			$statements = $instObj->getStatementArray($fileContent,1);
@@ -3996,7 +3996,7 @@ EXTENSION KEYS:
 		$parts = explode(':',$externalData,4);
 		$dat = base64_decode($parts[2]);
 			// compare hashes ignoring any leading whitespace (This makes it work for some broken .t3x files that have leading white space. See bug #0000365. Thanks to Martin T. Kutschker <Martin-no5pam-Kutschker@blackbox.n0spam.net>)
-		if (ereg_replace("^[\n\r\t ]+",'',$parts[0])==md5($dat))	{
+		if (preg_replace('/^[\n\r\t ]+/','',$parts[0])==md5($dat))	{
 			if ($parts[1]=='gzcompress')	{
 				if ($this->gzcompress)	{
 					$dat = gzuncompress($dat);

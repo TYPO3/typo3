@@ -1802,6 +1802,7 @@ class t3lib_BEfunc	{
 			switch((string)$theColConf['type'])	{
 				case 'radio':
 					$l=t3lib_BEfunc::getLabelFromItemlist($table,$col,$value);
+					$l=$GLOBALS['LANG']->sL($l);
 				break;
 				case 'select':
 					if ($theColConf['MM'])	{

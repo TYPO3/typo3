@@ -134,8 +134,9 @@ class t3lib_DB {
 
 
 		// Debug:
-	var $debugOutput = FALSE;			// Set "TRUE" if you want database errors outputted.
+	var $debugOutput = FALSE;		// Set "TRUE" if you want database errors outputted.
 	var $debug_lastBuiltQuery = '';		// Internally: Set to last built query (not necessarily executed...)
+	var $store_lastBuiltQuery = FALSE;	// Set "TRUE" if you want the last built query to be stored in $debug_lastBuiltQuery independent of $this->debugOutput
 
 		// Default link identifier:
 	var $link;
@@ -351,7 +352,7 @@ class t3lib_DB {
 				)';
 
 				// Return query:
-			if ($this->debugOutput) $this->debug_lastBuiltQuery = $query;
+			if ($this->debugOutput || $this->store_lastBuiltQuery) $this->debug_lastBuiltQuery = $query;
 			return $query;
 		}
 	}
@@ -388,7 +389,7 @@ class t3lib_DB {
 						'.$where : '');
 
 					// Return query:
-				if ($this->debugOutput) $this->debug_lastBuiltQuery = $query;
+				if ($this->debugOutput || $this->store_lastBuiltQuery) $this->debug_lastBuiltQuery = $query;
 				return $query;
 			}
 		} else {
@@ -414,7 +415,7 @@ class t3lib_DB {
 				WHERE
 					'.$where : '');
 
-			if ($this->debugOutput) $this->debug_lastBuiltQuery = $query;
+			if ($this->debugOutput || $this->store_lastBuiltQuery) $this->debug_lastBuiltQuery = $query;
 			return $query;
 		} else {
 			die('<strong>TYPO3 Fatal Error:</strong> "Where" clause argument for DELETE query was not a string in $this->DELETEquery() !');
@@ -461,7 +462,7 @@ class t3lib_DB {
 		}
 
 			// Return query:
-		if ($this->debugOutput) $this->debug_lastBuiltQuery = $query;
+		if ($this->debugOutput || $this->store_lastBuiltQuery) $this->debug_lastBuiltQuery = $query;
 		return $query;
 	}
 

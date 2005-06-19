@@ -2545,18 +2545,11 @@ class tx_cms_layout extends recordList {
 	 * @return	string		Input string with all HTML and PHP tags stripped
 	 */
 	function strip_tags($content, $fillEmptyContent=false)	{
-		if($fillEmptyContent && ereg('><', $content))	{
-			$matches = explode('</', $content);
-			foreach($matches as $key=>$val)	{
-				if($key==count($matches)-1)	{ continue; }	// skip the last match
-
-				if(ereg('>$', $val))	{
-					$tagContent = ereg_replace('.*<[^ ]* ([^ ]*).*>', '\1', $val);	// Returns the first attribut of a given tag
-					$matches[$key] .= $tagContent;
-				}
-			}
-			$content = implode('</', $matches);
+		if($fillEmptyContent && strstr($content, '><'))	{
+			$content = preg_replace('/(<[^ >]* )([^ >]*)([^>]*>)(<\/[^>]*>)/', '$1$2$3$2$4', $content);
 		}
+		$content = preg_replace('/<br.?\/?>/', chr(10), $content);
+
 		return strip_tags($content);
 	}
 }

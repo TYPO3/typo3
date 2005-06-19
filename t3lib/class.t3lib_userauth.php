@@ -626,7 +626,7 @@ class t3lib_userAuth {
 	function logoff() {
 		if ($this->writeDevLog) 	t3lib_div::devLog('logoff: ses_id = '.$this->id, 't3lib_userAuth');
 
-			// Hook for pre-processing the logoff() method requested and implemented by andreas.otto@dkd.de:
+			// Hook for pre-processing the logoff() method, requested and implemented by andreas.otto@dkd.de:
 		if ( is_array( $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_feuserauth.php']['logoff_pre_processing'] ) ) {
 			$_params = array();
 			foreach( $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_feuserauth.php']['logoff_pre_processing'] as $_funcRef ) {

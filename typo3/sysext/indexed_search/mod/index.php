@@ -121,8 +121,8 @@ class SC_mod_tools_isearch_index {
 
 		$indexer = t3lib_div::makeInstance('tx_indexedsearch_indexer');
 		$indexer->initializeExternalParsers();
-		debug(array_keys($indexer->external_parsers));
-		debug($indexer->internal_log);
+		#debug(array_keys($indexer->external_parsers));
+		#debug($indexer->internal_log);
 	}
 
 	/**

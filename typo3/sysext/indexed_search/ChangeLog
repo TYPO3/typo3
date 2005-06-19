@@ -1,3 +1,7 @@
+2005-05-15  Michael Stucki  <michael@typo3.org>
+
+	* Removed some debug output in backend module
+
 2005-05-12  Michael Stucki  <michael@typo3.org>
 
 	* Added class tags to three elements for optionally styling/hiding them with CSS

@@ -2709,7 +2709,7 @@ class t3lib_div {
 					} else break;
 				}
 				$commonEnd=strrev(implode('/',$acc));
-				if (strcmp($commonEnd,''))		$DR = substr($SFN,0,-(strlen($commonEnd)+1));
+				if (strcmp($commonEnd,''))	{ $DR = substr($SFN,0,-(strlen($commonEnd)+1)); }
 				return $DR;
 			break;
 			case 'TYPO3_HOST_ONLY':

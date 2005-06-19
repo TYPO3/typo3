@@ -1275,7 +1275,7 @@ class t3lib_parsehtml {
 				}
 				$newTag='<'.trim($tagName.' '.implode(' ',$outA));
 					// All tags that are standalone (not wrapping, not having endtags) should be ended with '/>'
-				if (t3lib_div::inList('img,br,hr,meta,link,base,area,input',$tagName) || substr($value,-2)=='/>')	{
+				if (t3lib_div::inList('img,br,hr,meta,link,base,area,input,param,col',$tagName) || substr($value,-2)=='/>')	{
 					$newTag.=' />';
 				} else {
 					$newTag.='>';

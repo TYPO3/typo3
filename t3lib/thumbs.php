@@ -184,7 +184,7 @@ class SC_t3lib_thumbs {
 				// ... so we passed the extension test meaning that we are going to make a thumbnail here:
 			$this->size = $this->size ? $this->size : $this->sizeDefault;	// default
 
-				//I added extra check, so that the size input option could not be fooled to pass other values. That means the value is exploded, evaluated to an integer and the imploded to [value]x[value]. Furthermore you can specify: size=340 and it'll be translated to 340x340.
+				// I added extra check, so that the size input option could not be fooled to pass other values. That means the value is exploded, evaluated to an integer and the imploded to [value]x[value]. Furthermore you can specify: size=340 and it'll be translated to 340x340.
 			$sizeParts = explode('x', $this->size.'x'.$this->size);	// explodes the input size (and if no "x" is found this will add size again so it is the same for both dimensions)
 			$sizeParts = array(t3lib_div::intInRange($sizeParts[0],1,1000),t3lib_div::intInRange($sizeParts[1],1,1000));	// Cleaning it up, only two parameters now.
 			$this->size = implode('x',$sizeParts);		// Imploding the cleaned size-value back to the internal variable
