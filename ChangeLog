@@ -1,3 +1,7 @@
+2005-06-25  Michael Stucki  <michael@typo3.org>
+
+	* Improved description of [TYPO3_CONF_VARS][BE/FE][compressionLevel]
+
 2005-06-20  Michael Stucki  <michael@typo3.org>
 
 	* Merged changes from TYPO3_3-8 branch back
