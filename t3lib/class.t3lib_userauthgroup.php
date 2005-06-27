@@ -832,7 +832,19 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 
 			// Fetching records of the groups in $grList (which are not blocked by lockedToDomain either):
 		$lockToDomain_SQL = ' AND (lockToDomain=\'\' OR lockToDomain=\''.t3lib_div::getIndpEnv('HTTP_HOST').'\')';
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $this->usergroup_table, 'deleted=0 AND hidden=0 AND pid=0 AND uid IN ('.$grList.')'.$lockToDomain_SQL);
+		$whereSQL = 'deleted=0 AND hidden=0 AND pid=0 AND uid IN ('.$grList.')'.$lockToDomain_SQL;
+
+			// Hook for manipulation of the WHERE sql sentence which controls which BE-groups are included
+		if (is_array ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauthgroup.php']['fetchGroupQuery'])) {
+		    foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauthgroup.php']['fetchGroupQuery'] as $classRef) {
+			$hookObj = &t3lib_div::getUserObj($classRef);
+			if(method_exists($hookObj,'fetchGroupQuery_processQuery')){
+			    $whereSQL = $hookObj->fetchGroupQuery_processQuery($this, $grList, $idList, $whereSQL);
+			}
+		    }
+		}
+
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $this->usergroup_table, $whereSQL);
 
 			// The userGroups array is filled
 		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
