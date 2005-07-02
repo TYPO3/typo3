@@ -132,31 +132,31 @@
 class tslib_pibase {
 
 		// Reserved variables:
-	var $cObj;			// The backReference to the mother cObj object set at call time
+	var $cObj;		// The backReference to the mother cObj object set at call time
 	var $prefixId;		// Should be same as classname of the plugin, used for CSS classes, variables
 	var $scriptRelPath;	// Path to the plugin class script relative to extension directory, eg. 'pi1/class.tx_newfaq_pi1.php'
 	var $extKey;		// Extension key.
 	var $piVars = Array (	// This is the incomming array by name $this->prefixId merged between POST and GET, POST taking precedence. Eg. if the class name is 'tx_myext' then the content of this array will be whatever comes into &tx_myext[...]=...
-		'pointer' => '',			// Used as a pointer for lists
-		'mode' => '',				// List mode
-		'sword' => '',				// Search word
-		'sort' => '',				// [Sorting column]:[ASC=0/DESC=1]
+		'pointer' => '',		// Used as a pointer for lists
+		'mode' => '',			// List mode
+		'sword' => '',			// Search word
+		'sort' => '',			// [Sorting column]:[ASC=0/DESC=1]
 	);
 	var $internal = Array(	// Used internally for general storage of values between methods
-		'res_count' => 0,			// Total query count
+		'res_count' => 0,		// Total query count
 		'results_at_a_time' => 20,	// pi_list_browseresults(): Show number of results at a time
-		'maxPages' => 10,			// pi_list_browseresults(): Max number of 'Page 1 - Page 2 - ...' in the list browser
+		'maxPages' => 10,		// pi_list_browseresults(): Max number of 'Page 1 - Page 2 - ...' in the list browser
 		'currentRow' => Array(),	// Current result row
 		'currentTable' => '',		// Current table
 	);
 
-	var $LOCAL_LANG = Array();	// Local Language content
+	var $LOCAL_LANG = Array();		// Local Language content
 	var $LOCAL_LANG_charset = Array();	// Local Language content charset for individual labels (overriding)
-	var $LOCAL_LANG_loaded = 0;	// Flag that tells if the locallang file has been fetch (or tried to be fetched) already.
-	var $LLkey='default';		// Pointer to the language to use.
-	var $altLLkey='';				// Pointer to alternative fall-back language to use.
-	var $LLtestPrefix='';		// You can set this during development to some value that makes it easy for you to spot all labels that ARe delivered by the getLL function.
-	var $LLtestPrefixAlt='';	// Save as LLtestPrefix, but additional prefix for the alternative value in getLL() function calls
+	var $LOCAL_LANG_loaded = 0;		// Flag that tells if the locallang file has been fetch (or tried to be fetched) already.
+	var $LLkey='default';			// Pointer to the language to use.
+	var $altLLkey='';			// Pointer to alternative fall-back language to use.
+	var $LLtestPrefix='';			// You can set this during development to some value that makes it easy for you to spot all labels that ARe delivered by the getLL function.
+	var $LLtestPrefixAlt='';		// Save as LLtestPrefix, but additional prefix for the alternative value in getLL() function calls
 
 	var $pi_isOnlyFields = 'mode,pointer';
 	var $pi_alwaysPrev = 0;
@@ -167,7 +167,7 @@ class tslib_pibase {
 	var $pi_autoCacheFields=array();
 	var $pi_autoCacheEn=0;
 
-	var $pi_USER_INT_obj = FALSE;	// If set, then links are 1) not using cHash and 2) allowing pages to be cached. (Set this for all USER_INT plugins!)
+	var $pi_USER_INT_obj = FALSE;		// If set, then links are 1) not using cHash and 2) not allowing pages to be cached. (Set this for all USER_INT plugins!)
 	var $pi_checkCHash = FALSE;		// If set, then caching is disabled if piVars are incoming while no cHash was set (Set this for all USER plugins!)
 
 	/**
@@ -799,7 +799,13 @@ class tslib_pibase {
 	 * @return	string		HTML content wrapped, ready to return to the parent object.
 	 */
 	function pi_wrapInBaseClass($str)	{
-		return '
+		$content = '<div class="'.str_replace('_','-',$this->prefixId).'">
+		'.$str.'
+	</div>
+	';
+
+		if(!$GLOBALS['TSFE']->config['config']['disablePrefixComment'])	{
+			$content = '
 
 
 	<!--
@@ -807,12 +813,13 @@ class tslib_pibase {
 		BEGIN: Content of extension "'.$this->extKey.'", plugin "'.$this->prefixId.'"
 
 	-->
-	<div class="'.str_replace('_','-',$this->prefixId).'">
-		'.$str.'
-	</div>
+	'.$content.'
 	<!-- END: Content of extension "'.$this->extKey.'", plugin "'.$this->prefixId.'" -->
 
 	';
+		}
+
+		return $content;
 	}
 
 

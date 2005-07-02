@@ -901,7 +901,7 @@ class t3lib_DB {
 	/**
 	 * Returns information about each field in the $table (quering the DBMS)
 	 * In a DBAL this should look up the right handler for the table and return compatible information
-	 * This function is important not only for the Install Tool but probably for DBALs as well since they might need to look up table specific information in order to construct correct queries. In such cases this information should probably be cached for quick delivery
+	 * This function is important not only for the Install Tool but probably for DBALs as well since they might need to look up table specific information in order to construct correct queries. In such cases this information should probably be cached for quick delivery.
 	 *
 	 * @param	string		Table name
 	 * @return	array		Field information in an associative array with fieldname => field row
@@ -911,7 +911,7 @@ class t3lib_DB {
 
 		$columns_res = mysql_query('SHOW columns FROM '.$tableName, $this->link);
 		while($fieldRow = mysql_fetch_assoc($columns_res))	{
-			$output[$fieldRow["Field"]] = $fieldRow;
+			$output[$fieldRow['Field']] = $fieldRow;
 		}
 
 		return $output;

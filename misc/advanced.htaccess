@@ -1,0 +1,126 @@
+#####
+#
+# Example .htaccess file
+#
+# This file contains a collection of almost everything you will need
+# for optimising TYPO3:
+#
+# - mod_rewrite (used for SimulateStaticDocuments, RealUrl, etc.)
+# - PHP optimisation
+#
+# If you want to use it, you'll need to rename this file to '.htaccess'.
+# (To make this work you will need to adjust the 'AllowOverride'
+# directive in your Apache configuration file.)
+#
+# IMPORTANT: You may need to change this file depending on your TYPO3
+# installation!
+#
+# You should change every occurance of TYPO3root/ to the location where you
+# have your website in. For example:
+# If you have your website located at http://mysite.com/
+# then your TYPO3root/ is just empty (remove 'TYPO3root/')
+# If you have your website located at http://mysite.com/some/path/
+# then your TYPO3root/ is some/path/ (search and replace)
+#
+# If you have problems with this file, try using the minimal
+# mod_rewrite.htaccess which is located in the typo3_src/misc/
+# directory of this installation.
+#
+# You can also use this configuration in your httpd.conf, but you'll have
+# to modify some lines, see the comments (search for 'httpd.conf')
+#
+# Using rewriting in your httpd.conf is much faster, btw.
+#
+# Questions about this file go to the matching Install mailing list,
+# see http://typo3.org/documentation/mailing-lists/
+#
+####
+
+### Begin: Rewrite stuff ###
+
+# Enable URL rewriting
+RewriteEngine On
+
+# To assist in debugging rewriting, you could use these lines
+# DON'T enable it for production!
+# This will only work in httpd.conf, not in .htaccess files
+#RewriteLog /var/log/apache/rewrite.log
+#RewriteLogLevel 9
+
+# If you use the RealUrl extension, then you'll have to enable the next line.
+# You will have to change this path if your TYPO3 installation is located
+# in a subdirectory of the website root.
+#
+# If you place this in httpd.conf, you cannot use this directive in any case!
+#RewriteBase /
+
+# Stop rewrite processing if we are in the typo3/ directory
+# For httpd.conf, use this line instead of the next one:
+# RewriteRule ^/TYPO3root/(typo3|typo3temp|typo3conf|t3lib|tslib|fileadmin|uploads|showpic\.php)/ - [L]
+RewriteRule ^(typo3|typo3temp|typo3conf|t3lib|tslib|fileadmin|uploads|showpic\.php)/ - [L]
+
+# Redirect http://mysite/typo3 to http://mysite/typo3/index_re.php
+# and stop the rewrite processing
+# For httpd.conf, use this line instead of the next one:
+# RewriteRule ^/TYPO3root/typo3$ /TYPO3root/typo3/index.php [L]
+RewriteRule ^typo3$ typo3/index_re.php [L]
+
+# If the file/symlink/directory does not exist => Redirect to index.php
+# Important note: If you copy/paste this into httpd.conf instead
+# of .htaccess you will need to add '%{DOCUMENT_ROOT}' left to each
+# '%{REQUEST_FILENAME}' part.
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-l
+
+# Main URL rewriting.
+
+# If you use Windows and SimulateStaticDocuments do not work, try adding a
+# slash (/) right before 'index.php' below.
+
+# The example shows how to rewrite only *.html and *.pdf files to index.php
+# This may be helpful when using an extension that can generate PDF files
+# on the fly.
+# Example: RewriteRule .*\.(html|pdf)$ index.php [L]
+
+# For httpd.conf, use this line instead of the next one that has no '#':
+# RewriteRule .* /TYPO3root/index.php [L]
+
+# For use with the RealUrl extension, you might need to remove the
+# RewriteBase directive somewhere above and use this line instead of the
+# next one:
+# RewriteRule .* /index.php [L]
+
+RewriteRule .* index.php [L]
+
+### End: Rewrite stuff ###
+
+### Begin: PHP optimisation ###
+
+# All features below are left to the default if you don't change this.
+# Simply remove the comment marks if you want to use some/all of these
+# settings
+
+# The PHP developers recommend disabling this feature. Do that.
+# It's deprecated and is likely to be unsupported in future versions of PHP.
+#php_flag allow_call_time_pass_reference off
+
+# TYPO3 works fine with register_globals turned off.
+# This is highly recommended!
+#php_flag register_globals off
+
+# PHP may not declare the argv & argc variables (that would contain the GET
+# information).
+# TYPO3 doesn't need this, so just turn it off.
+#php_flag register_argc_argv off
+
+# Magic quotes for runtime-generated data (data from SQL, exec(), etc.)
+#php_flag magic_quotes_gpc off
+
+# Order in which PHP registers GET, POST, Cookie and Built-in variables
+#php_value variables_order GPCS
+
+### End: PHP optimisation ###
+
+# Add your own rules here
+# ...

@@ -469,8 +469,8 @@ class t3lib_div {
 	 * DEPRECIATED. Works ONLY for single-byte charsets! USE t3lib_div::fixed_lgd_cs() instead
 	 * Usage: 39
 	 *
-	 * @param	string		$string 	string to truncate
-	 * @param	integer		$chars 	must be an integer with an absolute value of at least 4. if negative the string is cropped from the right end.
+	 * @param	string		string to truncate
+	 * @param	integer		must be an integer with an absolute value of at least 4. if negative the string is cropped from the right end.
 	 * @param	string		String to append to the output if it is truncated, default is '...'
 	 * @return	string		new string
 	 * @see fixed_lgd_pre()
@@ -495,8 +495,8 @@ class t3lib_div {
 	 * DEPRECIATED. Use either fixed_lgd() or fixed_lgd_cs() (with negative input value for $chars)
 	 * Usage: 6
 	 *
-	 * @param	string		$string 	string to truncate
-	 * @param	integer		$chars 	must be an integer of at least 4
+	 * @param	string		string to truncate
+	 * @param	integer		must be an integer of at least 4
 	 * @return	string		new string
 	 * @see fixed_lgd()
 	 */

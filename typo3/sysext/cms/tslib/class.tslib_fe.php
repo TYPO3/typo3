@@ -2313,7 +2313,6 @@
 			// Here we put some temporary stuff in the cache in order to let the first hit generate the page. The temporary cache will expire after a few seconds (typ. 30) or will be cleared by the rendered page, which will also clear and rewrite the cache.
 		$this->tempPageCacheContent();
 
-
 			// Setting cache_timeout_default. May be overridden by PHP include scritps.
 		$this->cacheTimeOutDefault = intval($this->config['config']['cache_period']);
 

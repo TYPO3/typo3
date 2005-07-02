@@ -1,13 +1,20 @@
+2005-07-02  Michael Stucki  <michael@typo3.org>
+
+	* Removed misc/mod_rewrite.htaccess and misc/php_optimized.htaccess and replaced them by misc/simple.htaccess and misc/advanced.htaccess
+	* Added a die() call to protect the display of phpinfo() in misc/phpcheck/incfile.php
+	* config.disablePrefixComment was ignored by plugins
+	* $TT->pull() was called without $TT->push() before in typo3/sysext/indexed_search/class.indexer.php
+	* Fixed bug #0001239: Install tool does not accept hyphen in database host name
+
 2005-06-27  Andreas Otto  <andreas@php4win.de>
 
 	* Method fetchGroups() in t3lib/class.t3lib_userauthgroup.php:
-	* Added hook as requested and provided by Stig N. Faerch.
-	*
-	* This hook is used by the extension 'roles'. With this hook it's possible to
-	* control the backend usergroup access, through manipulating a sql-sentence.
-	* In the case of 'roles', the hook is used to limit access to the selected
-	* backend usergroup (which is marked as a role). This is very powerful when
-	* you need to have a better overview in the backend.
+		Added hook as requested and provided by Stig N. Faerch.
+		This hook is used by the extension 'roles'. With this hook it's possible to
+		control the backend usergroup access, through manipulating a sql-sentence.
+		In the case of 'roles', the hook is used to limit access to the selected
+		backend usergroup (which is marked as a role). This is very powerful when
+		you need to have a better overview in the backend.
 
 2005-06-25  Michael Stucki  <michael@typo3.org>
 

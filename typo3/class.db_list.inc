@@ -84,35 +84,35 @@
 class recordList extends t3lib_recordList {
 
 		// External, static:
-	var $tableList='';						// Specify a list of tables which are the only ones allowed to be displayed.
-	var $returnUrl='';						// Return URL
-	var $thumbs = 0;						// Boolean. Thumbnails on records containing files (pictures)
+	var $tableList='';				// Specify a list of tables which are the only ones allowed to be displayed.
+	var $returnUrl='';				// Return URL
+	var $thumbs = 0;				// Boolean. Thumbnails on records containing files (pictures)
 	var $itemsLimitPerTable = 20;			// default Max items shown per table in "multi-table mode", may be overridden by tables.php
 	var $itemsLimitSingleTable = 100;		// default Max items shown per table in "single-table mode", may be overridden by tables.php
 	var $widthGif = '<img src="clear.gif" width="1" height="4" hspace="160" alt="" />';
 	var $script = 'db_list.php';			// Current script name
-	var $allFields=0;						// Indicates if all available fields for a user should be selected or not.
+	var $allFields=0;				// Indicates if all available fields for a user should be selected or not.
 	var $localizationView=FALSE;			// Whether to show localization view or not.
 
 		// Internal, static: GPvar:
-	var $csvOutput=FALSE;			// If set, csvList is outputted.
+	var $csvOutput=FALSE;				// If set, csvList is outputted.
 	var $sortField;					// Field, to sort list by
 	var $sortRev;					// Field, indicating to sort in reverse order.
 	var $displayFields;				// Array, containing which fields to display in extended mode
-	var $duplicateField;			// String, can contain the field name from a table which must have duplicate values marked.
+	var $duplicateField;				// String, can contain the field name from a table which must have duplicate values marked.
 
 		// Internal, static:
-	var $id;						// Page id
+	var $id;					// Page id
 	var $table='';					// Tablename if single-table mode
-	var $listOnlyInSingleTableMode=FALSE;	// If true, records are listed only if a specific table is selected.
-	var $firstElementNumber=0;		// Pointer for browsing list
-	var $searchString='';			// Search string
-	var $searchLevels='';			// Levels to search down.
+	var $listOnlyInSingleTableMode=FALSE;		// If true, records are listed only if a specific table is selected.
+	var $firstElementNumber=0;			// Pointer for browsing list
+	var $searchString='';				// Search string
+	var $searchLevels='';				// Levels to search down.
 	var $showLimit=0;				// Number of records to show
 	var $pidSelect='';				// List of ids from which to select/search etc. (when search-levels are set high). See start()
-	var $perms_clause='';			// Page select permissions
+	var $perms_clause='';				// Page select permissions
 	var $calcPerms=0;				// Some permissions...
-	var $clickTitleMode = '';		// Mode for what happens when a user clicks the title of a record.
+	var $clickTitleMode = '';			// Mode for what happens when a user clicks the title of a record.
 	var $modSharedTSconfig = array();		// Shared module configuration, used by localization features
 
 		// Internal, dynamic:
@@ -121,10 +121,10 @@ class recordList extends t3lib_recordList {
 	var $iLimit=0;					// "LIMIT " in SQL...
 	var $eCounter=0;				// Counting the elements no matter what...
 	var $totalItems='';				// Set to the total number of items for a table when selecting.
-	var $recPath_cache=array();		// Cache for record path
-	var $setFields=array();			// Fields to display for the current table
-	var $currentTable = array();	// Used for tracking next/prev uids
-	var $duplicateStack=array();	// Used for tracking duplicate values of fields
+	var $recPath_cache=array();			// Cache for record path
+	var $setFields=array();				// Fields to display for the current table
+	var $currentTable = array();			// Used for tracking next/prev uids
+	var $duplicateStack=array();			// Used for tracking duplicate values of fields
 
 
 

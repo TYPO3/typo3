@@ -271,8 +271,8 @@ class tx_indexedsearch_indexer {
 					} else $this->log_setTSlogMessage('Index page? No, page was set to "no_cache" and so cannot be indexed.');
 				} else $this->log_setTSlogMessage('Index page? No, The "No Search" flag has been set in the page header!');
 			} else $this->log_setTSlogMessage('Index page? No, Ordinary Frontend indexing during rendering is disabled.');
+			$this->log_pull();
 		}
-		$this->log_pull();
 	}
 
 
