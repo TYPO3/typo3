@@ -1192,8 +1192,8 @@ class t3lib_div {
 	 * Please note that the order of parameters is reverse compared to the php4-function in_array()!!!
 	 * Usage: 3
 	 *
-	 * @param	array		$in_array		one-dimensional array of items
-	 * @param	string		$item 	item to check for
+	 * @param	array		one-dimensional array of items
+	 * @param	string		item to check for
 	 * @return	boolean		true if $item is in the one-dimensional array $in_array
 	 * @internal
 	 */

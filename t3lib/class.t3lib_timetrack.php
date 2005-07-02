@@ -290,13 +290,12 @@ class t3lib_timeTrack {
 	 */
 	function printTSlog()   {
 			// Calculate times and keys for the tsStackLog
-		reset($this->tsStackLog);
 		$preEndtime=0;
-		while(list($uniqueId,$data)=each($this->tsStackLog))    {
+		foreach($this->tsStackLog as $uniqueId=>$data)	{
 			$this->tsStackLog[$uniqueId]['endtime'] = $this->convertMicrotime($this->tsStackLog[$uniqueId]['endtime'])-$this->starttime;
 			$this->tsStackLog[$uniqueId]['starttime'] = $this->convertMicrotime($this->tsStackLog[$uniqueId]['starttime'])-$this->starttime;
 			$this->tsStackLog[$uniqueId]['deltatime'] = $this->tsStackLog[$uniqueId]['endtime']-$this->tsStackLog[$uniqueId]['starttime'];
-			$this->tsStackLog[$uniqueId]['key'] = implode(end($data['tsStack']),$this->tsStackLog[$uniqueId]['stackPointer']?'.':'/');
+			$this->tsStackLog[$uniqueId]['key'] = implode($this->tsStackLog[$uniqueId]['stackPointer']?'.':'/', end($data['tsStack']));
 			$preEndtime = $this->tsStackLog[$uniqueId]['endtime'];
 		}
 

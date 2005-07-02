@@ -2074,7 +2074,7 @@ class t3lib_stdGraphic	{
 				if (@file_exists($output))	{
 					$info[3] = $output;
 					$info[2] = $newExt;
-					if ($params)	{	// params could realisticly change som imagedata!
+					if ($params)	{	// params could realisticly change some imagedata!
 						$info=$this->getImageDimensions($info[3]);
 					}
 					if ($info[2]==$this->gifExtension && !$this->dontCompress)	{
@@ -2373,7 +2373,7 @@ class t3lib_stdGraphic	{
 	function imageMagickExec($input,$output,$params)	{
 		if (!$this->NO_IMAGE_MAGICK)	{
 			$cmd = t3lib_div::imageMagickCommand('convert', $params.' '.$this->wrapFileName($input).' '.$this->wrapFileName($output));
-			$this->IM_commands[] = Array ($output,$cmd);
+			$this->IM_commands[] = array($output,$cmd);
 
 			$ret = exec($cmd);
 			t3lib_div::fixPermissions($this->wrapFileName($output));	// Change the permissions of the file
