@@ -1,5 +1,6 @@
 2005-07-06  Jan-Erik Revsbech  <jer@moccompany.com>
-	* Fixed bug #1197. t3lib_htmlmail looked for config variable enableReturnPath, but the variable was named forceReturnPath.
+
+	* Fixed bug #0001197: t3lib_htmlmail looked for config variable enableReturnPath, but the variable was named forceReturnPath.
 	* Added a new header Errors-To which is used by Postfix.
 
 2005-07-02  Michael Stucki  <michael@typo3.org>
