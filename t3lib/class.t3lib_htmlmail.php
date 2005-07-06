@@ -253,7 +253,7 @@ class t3lib_htmlmail {
 	 * @return	[type]		...
 	 */
 	function t3lib_htmlmail () {
-		$this->forceReturnPath = $GLOBALS['TYPO3_CONF_VARS']['SYS']['enableReturnPath'];
+		$this->forceReturnPath = $GLOBALS['TYPO3_CONF_VARS']['SYS']['forceReturnPath'];
 	}
 
 	/**
