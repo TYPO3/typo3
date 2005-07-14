@@ -1139,7 +1139,7 @@ class tslib_cObj {
 			$res = $this->exec_getQuery($conf['table'],$conf['select.']);
 			if ($error = $GLOBALS['TYPO3_DB']->sql_error())	{
 				$GLOBALS['TT']->setTSlogMessage($error,3);
-			} else {
+			} else	{
 				$this->currentRecordTotal = $GLOBALS['TYPO3_DB']->sql_num_rows($res);
 				$GLOBALS['TT']->setTSlogMessage('NUMROWS: '.$GLOBALS['TYPO3_DB']->sql_num_rows($res));
 				$cObj =t3lib_div::makeInstance('tslib_cObj');
@@ -6355,7 +6355,7 @@ class tslib_cObj {
 				// removes all pages which are not visible for the user!
 			$listArr = $this->checkPidArray($listArr);
 			if (count($listArr))	{
-			    $query.=' AND '.$table.'.pid IN ('.implode(',',$GLOBALS['TYPO3_DB']->cleanIntArray($listArr)).')';
+				$query.=' AND '.$table.'.pid IN ('.implode(',',$GLOBALS['TYPO3_DB']->cleanIntArray($listArr)).')';
 				$pid_uid_flag++;
 			} else {
 				$pid_uid_flag=0;		// If not uid and not pid then uid is set to 0 - which results in nothing!!
