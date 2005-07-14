@@ -136,7 +136,7 @@ class tslib_pibase {
 	var $prefixId;		// Should be same as classname of the plugin, used for CSS classes, variables
 	var $scriptRelPath;	// Path to the plugin class script relative to extension directory, eg. 'pi1/class.tx_newfaq_pi1.php'
 	var $extKey;		// Extension key.
-	var $piVars = Array (	// This is the incomming array by name $this->prefixId merged between POST and GET, POST taking precedence. Eg. if the class name is 'tx_myext' then the content of this array will be whatever comes into &tx_myext[...]=...
+	var $piVars = Array (	// This is the incoming array by name $this->prefixId merged between POST and GET, POST taking precedence. Eg. if the class name is 'tx_myext' then the content of this array will be whatever comes into &tx_myext[...]=...
 		'pointer' => '',		// Used as a pointer for lists
 		'mode' => '',			// List mode
 		'sword' => '',			// Search word
