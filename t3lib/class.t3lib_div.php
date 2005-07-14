@@ -509,8 +509,8 @@ class t3lib_div {
 	 * Use only from backend!
 	 * Usage: 75
 	 *
-	 * @param	string		$string 	string to truncate
-	 * @param	integer		$chars 	must be an integer with an absolute value of at least 4. if negative the string is cropped from the right end.
+	 * @param	string		string to truncate
+	 * @param	integer		must be an integer with an absolute value of at least 4. if negative the string is cropped from the right end.
 	 * @return	string		New string
 	 * @see fixed_lgd()
 	 */
@@ -623,8 +623,8 @@ class t3lib_div {
 	/**
 	 * Match fully qualified domain name with list of strings with wildcard
 	 *
-	 * @param	string		$baseIP is the current remote IP address for instance, typ. REMOTE_ADDR
-	 * @param	string		$list is a comma-list of domain names to match with. *-wildcard allowed but cannot be part of a string, so it must match the full host name (eg. myhost.*.com => correct, myhost.*domain.com => wrong)
+	 * @param	string		The current remote IP address for instance, typ. REMOTE_ADDR
+	 * @param	string		A comma-list of domain names to match with. *-wildcard allowed but cannot be part of a string, so it must match the full host name (eg. myhost.*.com => correct, myhost.*domain.com => wrong)
 	 * @return	boolean		True if a domain name mask from $list matches $baseIP
 	 */
 	function cmpFQDN($baseIP, $list)        {
@@ -665,8 +665,8 @@ class t3lib_div {
 	 * Removes an item from a comma-separated list of items.
 	 * Usage: 1
 	 *
-	 * @param	string		$element  	element to remove
-	 * @param	string		$list 	comma-separated list of items (string)
+	 * @param	string		element to remove
+	 * @param	string		comma-separated list of items (string)
 	 * @return	string		new comma-separated list of items
 	 */
 	function rmFromList($element,$list)	{
@@ -681,7 +681,7 @@ class t3lib_div {
 	 * Expand a comma-separated list of integers with ranges (eg 1,3-5,7 becomes 1,3,4,5,7).
 	 * Ranges are limited to 1000 values per range.
 	 *
-	 * @param	string		$list 	comma-separated list of integers with ranges (string)
+	 * @param	string		comma-separated list of integers with ranges (string)
 	 * @return	string		new comma-separated list of items
 	 * @author	Martin Kutschker <martin.kutschker@activesolution.at>
 	 */
