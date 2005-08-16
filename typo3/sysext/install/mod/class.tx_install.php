@@ -278,7 +278,7 @@ Better yet you can add a die() function call to typo3/install/index.php after us
 
 IF THE INSTALL TOOL CRASHES...
 The Install Tool is checking PHPs support for image formats. However certain versions of PHP (fx. 4.3.0 with bundled GD) will crash when trying to read the PNG test file. If this happens you will see a blank screen or error message.
-Workaround: Open the file typo3/t3lib/class.t3lib_install.php, go to the line where the function "isPNG()" is defined and make it return "0" hardcoded. PNG is not checked anymore and the rest of the Install Tool will work as expected. The same has been known with the other image formats as well. You can use a similar method to bypass the testing if that is also a problem.
+Workaround: Open the file typo3/sysext/install/mod/class.tx_install.php, go to the line where the function "isPNG()" is defined and make it return "0" hardcoded. PNG is not checked anymore and the rest of the Install Tool will work as expected. The same has been known with the other image formats as well. You can use a similar method to bypass the testing if that is also a problem.
 On behalf of PHP we regret this inconvenience.
 
 BTW: This Install Tool will only work if cookies are accepted by your web browser. If this dialog pops up over and over again you didn\'t enable cookies.
