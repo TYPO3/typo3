@@ -1,3 +1,7 @@
+2005-08-16  Michael Stucki  <michael@typo3.org>
+
+	* Fixed a wrong path in Install Tool welcome message
+
 2005-07-06  Jan-Erik Revsbech  <jer@moccompany.com>
 
 	* Fixed bug #0001197: t3lib_htmlmail looked for config variable enableReturnPath, but the variable was named forceReturnPath.
