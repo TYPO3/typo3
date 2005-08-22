@@ -3,11 +3,11 @@
 *  JavaScript DHTML layer menu
 *
 * $Id$
-* 
+*
 *
 *
 *  Copyright notice
-* 
+*
 *  (c) 1998-2003 Kasper Skårhøj
 *  All rights reserved
 *
@@ -15,11 +15,11 @@
 *  Kasper Skårhøj <kasper@typo3.com> together with TYPO3
 *
 *  Released under GNU/GPL (see license file in tslib/)
-* 
+*
 *  This script is distributed in the hope that it will be useful,
 *  but WITHOUT ANY WARRANTY; without even the implied warranty of
 *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-* 
+*
 *  This copyright notice MUST APPEAR in all copies of this script
 ***************************************************************/
 
@@ -51,14 +51,31 @@ var GLV_dontFollowMouse = new Array();
 	//browsercheck...
 function GL_checkBrowser(){
 	this.dom= (document.getElementById);
-	this.op=this.opera= (navigator.userAgent.indexOf("Opera")>-1);
+
+		// detect version (even if Opera disguises as Mozilla or IE)
+	if (op = (navigator.userAgent.indexOf("Opera")>-1))	{
+		switch (parseInt(navigator.userAgent.substr(navigator.userAgent.indexOf("Opera")+6)))	{
+			case 5:
+			case 6:
+				this.op5= true;
+				break;
+			case 7:
+			case 8:
+				this.op7= true;
+				break;
+			default:
+				this.op4= true;
+		}
+	}
 	this.konq=  (navigator.userAgent.indexOf("Konq")>-1);
-	this.ie4= (document.all && !this.dom && !this.op && !this.konq);
-	this.ie5= (document.all && this.dom && !this.op && !this.konq);
+	this.ie4= (document.all && !this.dom && !op && !this.konq);
+	this.ie5= (document.all && this.dom && !op && !this.konq);
+	this.ie6= (this.ie5);
 	this.ns4= (document.layers && !this.dom && !this.konq);
-	this.ns5= (!document.all && this.dom && !this.op && !this.konq);
+	this.ns5= (!document.all && this.dom && !op && !this.konq);
 	this.ns6= (this.ns5);
-	this.bw=  (this.ie4 || this.ie5 || this.ns4 || this.ns6 || this.op || this.konq);
+	this.bw=  (this.ie4 || this.ie5 || this.ns4 || this.ns6 || this.konq || op);
+
 	return this;
 }
 bw= new GL_checkBrowser();
@@ -69,23 +86,23 @@ if(document.layers){
     onresize= function()	{if(scrX!= innerWidth || scrY!= innerHeight)	{history.go(0);}};
 }
 	//Returns css
-function GL_getObjCss(obj){								
+function GL_getObjCss(obj){
 	return bw.dom? document.getElementById(obj).style:bw.ie4?document.all[obj].style:bw.ns4?document.layers[obj]:0;
 };
-function GL_isObjCss(obj){								
+function GL_isObjCss(obj){
 	flag = bw.dom? document.getElementById(obj):bw.ie4?document.all[obj]:bw.ns4?document.layers[obj]:0;
 	if (flag)	return true;
 };
 function GL_getObj(obj){
-//	nest= (!nest)?"":"document."+nest+".";
 	nest="";
-	this.el= bw.ie4?document.all[obj]:bw.ns4?eval(nest+"document."+obj):document.getElementById(obj);	
-   	this.css= bw.ns4?this.el:this.el.style;
-	this.ref= bw.ns4?this.el.document:document;		
-	this.x= (bw.ns4||bw.op)?this.css.left:this.el.offsetLeft;
-	this.y= (bw.ns4||bw.op)?this.css.top:this.el.offsetTop;
-	this.height= (bw.ie4||bw.ie5||bw.ns6)?this.el.offsetHeight:bw.ns4?this.ref.height:bw.op?this.css.pixelHeight:0;
-	this.width= (bw.ie4||bw.ie5||bw.ns6)?this.el.offsetWidth:bw.ns4?this.ref.width:bw.op?this.css.pixelWidth:0;
+	this.el= bw.ie4?document.all[obj]:bw.ns4?eval(nest+"document."+obj):document.getElementById(obj);
+	this.css= bw.ns4?this.el:this.el.style;
+	this.ref= bw.ns4?this.el.document:document;
+	this.x= (bw.ns4||bw.op5)?this.css.left:this.el.offsetLeft;
+	this.y= (bw.ns4||bw.op5)?this.css.top:this.el.offsetTop;
+	this.height= (bw.ie4||bw.ie5||bw.ns6||bw.op7)?this.el.offsetHeight:bw.ns4?this.ref.height:bw.op4?this.css.pixelHeight:0;
+	this.width= (bw.ie4||bw.ie5||bw.ns6||bw.op7)?this.el.offsetWidth:bw.ns4?this.ref.width:bw.op4?this.css.pixelWidth:0;
+
 	return this;
 }
 function GL_initLayers() {
@@ -130,13 +147,13 @@ function GL_mouseUp(WMid,e) {
 		if (GLV_onlyOnLoad[WMid])	GL_restoreMenu(WMid);
 	}
 }
-function GL_stopMove(WMid) { 
-	GLV_menuOn[WMid] = null;	
+function GL_stopMove(WMid) {
+	GLV_menuOn[WMid] = null;
 }
 function GL_restoreMenu(WMid)	{
 	eval('GL'+WMid+'_restoreMenu()');
 }
-function GL_doTop(WMid,id) { 
+function GL_doTop(WMid,id) {
 	GL_hideAll(WMid);
 	if (GL_isObjCss(id))	{
 		GLV_menuOn[WMid] = GL_getObjCss(id);
@@ -155,8 +172,8 @@ function GL_doTop(WMid,id) {
 }
 	//Capturing mousemove
 function GL_getMouse(e) {
-	GLV_x= (bw.ns4||bw.ns5)?e.pageX:(bw.ie4||bw.op)?event.x:(event.x-2)+document.body.scrollLeft;
-	GLV_y= (bw.ns4||bw.ns5)?e.pageY:(bw.ie4||bw.op)?event.y:(event.y-2)+document.body.scrollTop;
+	GLV_x= (bw.ns4||bw.ns5)?e.pageX:(bw.ie4||bw.op4)?event.x:(event.x-2)+document.body.scrollLeft;
+	GLV_y= (bw.ns4||bw.ns5)?e.pageY:(bw.ie4||bw.op4)?event.y:(event.y-2)+document.body.scrollTop;
 }
 function GL_mouseMoveEvaluate(WMid)	{
 	if (GLV_gap[WMid] && GLV_currentLayer[WMid]!=null)	{
@@ -167,7 +184,7 @@ function GL_mouseMoveEvaluate(WMid)	{
 		} else {
 			GL_updateTime(WMid);
 			GLV_hasBeenOver[WMid]=1;
-			GLV_doReset[WMid]=false;	// Added 120902: When on the layer we do not want the layer to be reset... 
+			GLV_doReset[WMid]=false;	// Added 120902: When on the layer we do not want the layer to be reset...
 		}
 	}
 }
