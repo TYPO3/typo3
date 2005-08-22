@@ -1,3 +1,7 @@
+2005-08-22 Martin Kutschker <martin.t.kutschker@blackbox.net>
+
+	* Fixed bug #24: Modified the JS layer code so that GMENU_LAYERS work with Opera (3.8 patch port by Michael Stucki)
+
 2005-08-16  Michael Stucki  <michael@typo3.org>
 
 	* Fixed a wrong path in Install Tool welcome message
