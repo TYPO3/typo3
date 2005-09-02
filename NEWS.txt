@@ -1,0 +1,22 @@
+************************************************************************
+CHANGES & IMPROVEMENTS in TYPO3
+
+Intended to provide an overview of new features, it's a less technical
+changelog of things that have been changed/added to TYPO3.
+************************************************************************
+
+(add more news here...)
+
+2005-08-22 Martin Kutschker <martin.t.kutschker@blackbox.net>
+
+	* GMENU_LAYERS now works with Opera browsers
+
+2005-07-02  Michael Stucki  <michael@typo3.org>
+
+	* Security fix: A debug script exposed system information provided by phpinfo(). For details, see http://typo3.org/teams/security/security-bulletins/typo3-20050725-1/
+
+************************************************************************
+
+2005-05-23  Michael Stucki  <michael@typo3.org>
+
+	* Release of TYPO3 3.8.0
