@@ -2705,7 +2705,7 @@ EXTENSION KEYS:
 								if ($reg[1]) {
 									$cmpF = 'ext/'.$extKey.'/'.$fileName;
 									if (!strcmp($reg[1],$cmpF))	{
-										if (preg_match('§_once[[:space:]]*\(\$TYPO3_CONF_VARS\[TYPO3_MODE\]\[[\'"]XCLASS[\'"]\]\[[\'"]'.$cmpF.'[\'"]\]\);§', $XclassParts[1]))	{
+										if (preg_match('/_once[[:space:]]*\(\$TYPO3_CONF_VARS\[TYPO3_MODE\]\[[\'"]XCLASS[\'"]\]\[[\'"]'.$cmpF.'[\'"]\]\);/', $XclassParts[1]))	{
 											 $out['msg'][] = 'XCLASS OK in '.$fileName;
 										} else $out['errors'][] = 'Couldn\'t find the include_once statement for XCLASS!';
 									} else $out['errors'][] = 'The XCLASS filename-key "'.$reg[1].'" was different from "'.$cmpF.'" which it should have been!';
