@@ -1,3 +1,7 @@
+2005-09-13 Ingmar Schlecht <ingmar@typo3.org>
+
+	* Fixed bug #1375: Made typo3/mod/tools/em/index.php use preg_quote() on filename before passing it to preg_match()
+
 2005-09-13 Karsten Dambekalns <karsten@typo3.org>
 
 	* Fixed the page is being generated page refreshing to the wrong page when query parameters are used.
