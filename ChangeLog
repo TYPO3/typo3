@@ -5,6 +5,7 @@
 2005-09-13 Karsten Dambekalns <karsten@typo3.org>
 
 	* Fixed the page is being generated page refreshing to the wrong page when query parameters are used.
+	* Fixed (part of) bug 1312 (showpic.php).
 
 2005-08-22 Martin Kutschker <martin.t.kutschker@blackbox.net>
 
