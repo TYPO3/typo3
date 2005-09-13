@@ -2169,18 +2169,21 @@
 		if (!$this->no_cache)	{
 			$seconds = 30;
 			$stdMsg = '
-			<html>
-				<head>
-					<title>'.htmlspecialchars($this->tmpl->printTitle($this->page['title'])).'</title>
-					<meta http-equiv="refresh" content="3; URL='.htmlspecialchars(t3lib_div::getIndpEnv('REQUEST_URI')).'" />
-				</head>
-				<body bgcolor="white">
-					<div align="center" style="font-family:Verdana,Arial,Helvetica" color="#cccccc">
-						<strong>Page is being generated.</strong><br />
-						If this message does not disappear within '.$seconds.' seconds, please reload.
-					</div>
-				</body>
-			</html>';
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+	<head>
+		<title>'.htmlspecialchars($this->tmpl->printTitle($this->page['title'])).'</title>
+		<script type="text/javascript">
+			window.setTimeout("location.reload()", 3000);
+		</script>
+	</head>
+	<body style="background-color:white; font-family:Verdana,Arial,Helvetica; color:#cccccc; text-align:center;">
+		<strong>Page is being generated.</strong><br />
+		If this message does not disappear within '.$seconds.' seconds, please reload.
+	</body>
+</html>';
 			$temp_content = $this->config['config']['message_page_is_being_generated'] ? $this->config['config']['message_page_is_being_generated'] : $stdMsg;
 
 			$this->setPageCacheContent($temp_content, '', $GLOBALS['EXEC_TIME']+$seconds);
