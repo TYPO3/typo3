@@ -2158,7 +2158,12 @@ class t3lib_TCEforms	{
 
 							$fakePA['itemFormElName']=$PA['itemFormElName'].$formPrefix.'['.$key.']['.$vDEFkey.']';
 							$fakePA['itemFormElName_file']=$PA['itemFormElName_file'].$formPrefix.'['.$key.']['.$vDEFkey.']';
-							$fakePA['itemFormElValue']=$editData[$key][$vDEFkey];
+							if(isset($editData[$key][$vDEFkey])) {
+							  $fakePA['itemFormElValue']=$editData[$key][$vDEFkey];
+							}
+							else {
+							  $fakePA['itemFormElValue']=$fakePA['fieldConf']['config']['default'];
+							}
 
 							$rowCells['formEl']= $this->getSingleField_SW($table,$field,$row,$fakePA);
 							$rowCells['title']= htmlspecialchars($fakePA['fieldConf']['label']);
