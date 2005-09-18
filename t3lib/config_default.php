@@ -75,7 +75,7 @@ $TYPO3_CONF_VARS = Array(
 		'multiplyDBfieldSize' => 1,				// Double: 1-5: Amount used to multiply the DB field size when the install tool is evaluating the database size (eg. "2.5"). This is useful if you want to expand the size of fields for utf-8 etc. For western european sites using utf-8 the need should not be for more than twice the normal single-byte size (2) and for chinese / asian languages 3 should suffice.
 		'setMemoryLimit' => 0,					// Integer, memory_limit in MB: If more than 16, TYPO3 will try to use ini_set() to set the memory limit of PHP to the value. This works only if the function ini_set() is not disabled by your sysadmin.
 		'forceReturnPath' => 0,					// Boolean: Force return path to be applied in mail() calls. If this is set, all calls to mail() done by t3lib_htmlmail will be called with '-f<return_path> as the 5th parameter. This will make the return path correct on almost all Unix systems. There is a known problem with Postfix below version 2: Mails are not sent if this option is set and Postfix is used. On Windows platforms, the return path is set via a call to ini_set. This has no effect if safe_mode in PHP is on.
-		'displayErrors' => -1,					// Integer, -1,0,1. 0=Do not display any PHP error messages. 1=Display error messages. -1=Default setting. With this option, you can override the PHP setting "display_errors". It is suggested that you set this to "0" and enable the "error_log" option in php.ini instead.
+		'displayErrors' => -1,					// Integer, -1,0,1,2. 0=Do not display any PHP error messages. 1=Display error messages. 2=Display only if client matches TYPO3_CONF_VARS[SYS][devIPmask]. -1=Default setting. With this option, you can override the PHP setting "display_errors". It is suggested that you set this to "0" and enable the "error_log" option in php.ini instead.
 		'serverTimeZone' => 1					// Integer, GMT offset of servers time (from time()). Default is "1" which is "GMT+1" (central european time). This value can be used in extensions that are GMT aware and wants to convert times to/from other timezones.
 	),
 	'EXT' => Array (	// Options related to the Extension Management
@@ -335,9 +335,16 @@ function debugEnd() {
 $T3_SERVICES = array();
 
 
-	// Turn error logging on/off
-if(intval($TYPO3_CONF_VARS['SYS']['displayErrors']!='-1')) {
-	@ini_set('display_errors', intval($TYPO3_CONF_VARS['SYS']['displayErrors']));
+	// Turn error logging on/off.
+if($displayErrors=intval($TYPO3_CONF_VARS['SYS']['displayErrors']!='-1'))	{
+	if($displayErrors==2)	{	// Special value "2" enables this feature only if $TYPO3_CONF_VARS[SYS][devIPmask] matches
+		if (t3lib_div::cmpIP(t3lib_div::getIndpEnv('REMOTE_ADDR'), $GLOBALS['TYPO3_CONF_VARS']['SYS']['devIPmask']))	{
+			$displayErrors=1;
+		} else {
+			$displayErrors=0;
+		}
+	}
+	@ini_set('display_errors', $displayErrors);
 }
 
 

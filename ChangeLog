@@ -1,3 +1,7 @@
+2005-09-18 Michael Stucki <michael@typo3.org>
+
+	* New property for TYPO3_CONF_VARS[SYS][displayErrors]: If set to 2, display_errors will only be enabled if the devIPmask matches the current clients IP address.
+
 2005-08-22 Martin Kutschker <martin.t.kutschker@blackbox.net>
 
 	* Fixed bug #24: Modified the JS layer code so that GMENU_LAYERS work with Opera (3.8 patch port by Michael Stucki)
