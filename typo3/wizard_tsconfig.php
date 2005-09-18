@@ -56,7 +56,7 @@
  *  452:     function removePointerObjects($objArray)
  *  471:     function linkToObj($str,$uid,$objString='')
  *  484:     function printTable($table,$objString,$objTree)
- *  565:     function linkProperty($str,$propertyVal,$prefix,$datatype)
+ *  565:     function linkProperty($str,$propertyName,$prefix,$datatype)
  *
  * TOTAL FUNCTIONS: 13
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -154,13 +154,11 @@ class SC_wizard_tsconfig {
 		$this->show = t3lib_div::_GP('show');
 		$this->objString = t3lib_div::_GP('objString');
 		$this->onlyProperty = t3lib_div::_GP('onlyProperty');
-
 			// Preparing some JavaScript code:
 		if (!is_array($this->P['fieldChangeFunc']))	$this->P['fieldChangeFunc']=array();
 		unset($this->P['fieldChangeFunc']['alert']);
-		reset($this->P['fieldChangeFunc']);
 		$update='';
-		while(list($k,$v)=each($this->P['fieldChangeFunc']))	{
+		foreach($this->P['fieldChangeFunc'] as $k=>$v)	{
 			$update.= '
 			window.opener.'.$v;
 		}
@@ -180,27 +178,40 @@ class SC_wizard_tsconfig {
 		';
 
 		$this->doc->JScode.=$this->doc->wrapScriptTags('
-			function checkReference()	{	//
+			function checkReference_name()	{	// Checks if the input field containing the name exists in the document
 				if (window.opener && window.opener.document && window.opener.document.'.$this->P['formName'].' && window.opener.document.'.$this->P['formName'].'["'.$this->P['itemName'].'"] )	{
 					return window.opener.document.'.$this->P['formName'].'["'.$this->P['itemName'].'"];
-				} else {
-					close();
 				}
 			}
-			function setValue(input)	{	//
-				var field = checkReference();
-				if (field)	{
-					field.value=input+"\n"+field.value;
+			function checkReference_value()	{	// Checks if the input field containing the value exists in the document
+				if (window.opener && window.opener.document && window.opener.document.'.$this->P['formName'].' && window.opener.document.'.$this->P['formName'].'["'.$this->P['itemValue'].'"] )	{
+					return window.opener.document.'.$this->P['formName'].'["'.$this->P['itemValue'].'"];
+				}
+			}
+			function setValue(field,value)	{
+				var nameField = checkReference_name();
+				var valueField = checkReference_value();
+				if (nameField)	{
+					if (valueField)	{	// This applies to the TS Object Browser module
+						nameField.value=field;
+						valueField.value=value;
+					} else {		// This applies to the Info/Modify module
+						nameField.value=field+"="+value+"\n"+nameField.value;
+					}
 					'.$update.'
 					window.opener.focus();
 				}
 				close();
 			}
-			function getValue()	{	//
-				var field = checkReference();
-				if (field)	return field.value;
+			function getValue()	{	// This is never used. Remove it?
+				var field = checkReference_name();
+				if (field)	{
+					return field.value;
+				} else {
+					close();
+				}
 			}
-			function mixerField(cmd,objString)	{	//
+			function mixerField(cmd,objString)	{
 				var temp;
 				switch(cmd)	{
 					case "Indent":
@@ -219,7 +230,7 @@ class SC_wizard_tsconfig {
 					break;
 				}
 			}
-			function str_replace(match,replace,string)	{	//
+			function str_replace(match,replace,string)	{
 				var input = ""+string;
 				var matchStr = ""+match;
 				if (!matchStr)	{return string;}
@@ -234,7 +245,7 @@ class SC_wizard_tsconfig {
 				output+=""+input.substr(pointer);
 				return output;
 			}
-			function jump(show,objString)	{	//
+			function jump(show,objString)	{
 				document.location = "'.t3lib_div::linkThisScript(array('show'=>'','objString'=>'')).'&show="+show+"&objString="+objString;
 			}
 		');
@@ -562,27 +573,25 @@ class SC_wizard_tsconfig {
 	 * @param	string		Data type
 	 * @return	string		Linked $str
 	 */
-	function linkProperty($str,$propertyVal,$prefix,$datatype)	{
+	function linkProperty($str,$propertyName,$prefix,$datatype)	{
 		$out='';
 
 			// Setting preset value:
 		if (strstr($datatype,'boolean'))	{
-			$propertyVal.='=1';	// add preset "=1" to boolean values.
-		} else {
-			$propertyVal.='=';	// add preset "="
+			$propertyVal='1';	// preset "1" to boolean values.
 		}
 
 			// Adding mixer features; The plus icon:
 		if(!$this->onlyProperty)	{
-			$aOnClick = 'document.editform.mixer.value=unescape(\'  '.rawurlencode($propertyVal).'\')+\'\n\'+document.editform.mixer.value; return false;';
+			$aOnClick = 'document.editform.mixer.value=unescape(\'  '.rawurlencode($propertyName.'='.$propertyVal).'\')+\'\n\'+document.editform.mixer.value; return false;';
 			$out.= '<a href="#" onclick="'.htmlspecialchars($aOnClick).'">'.
 					'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/plusbullet2.gif','width="18" height="16"').' title="'.$GLOBALS['LANG']->getLL('tsprop_addToList',1).'" align="top" alt="" />'.
 					'</a>';
-			$propertyVal = $prefix.'.'.$propertyVal;
+			$propertyName = $prefix.'.'.$propertyName;
 		}
 
 			// Wrap string:
-		$aOnClick = 'setValue(unescape(\''.rawurlencode($propertyVal).'\')); return false;';
+		$aOnClick = 'setValue(unescape(\''.rawurlencode($propertyName).'\'),unescape(\''.rawurlencode($propertyVal).'\')); return false;';
 		$out.= '<a href="#" onclick="'.htmlspecialchars($aOnClick).'">'.$str.'</a>';
 
 			// Return link:

@@ -74,6 +74,7 @@
 			<label index="fe_groups">Website usergroup</label>
 			<label index="fe_groups.title">Grouptitle:</label>
 			<label index="fe_groups.lockToDomain">Lock to domain:</label>
+			<label index="fe_groups.subgroup">Subgroups:</label>
 			<label index="sys_domain">Domain</label>
 			<label index="sys_domain.domainName">Domain:</label>
 			<label index="sys_domain.redirectTo">Redirect to:</label>

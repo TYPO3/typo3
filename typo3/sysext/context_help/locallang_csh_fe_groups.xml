@@ -23,6 +23,8 @@ For instance if a page or content element was assigned access only by this group
 
 &lt;b&gt;Notice:&lt;/b&gt; The use for this option is not critical if you have multiple Website user storages, namely one for each site.</label>
 			<label index="_lockToDomain.seeAlso">fe_users:lockToDomain</label>
+			<label index="subgroup.description">Member of other groups.</label>
+			<label index="subgroup.details">List of other groups that this group is a member of.</label>
 			<label index="description.description">Enter a description of the group.</label>
 			<label index="description.details">This is for internal use and is just a way to put a note on what the group is for, why you created it and who should be members.
 Use it as you like.</label>

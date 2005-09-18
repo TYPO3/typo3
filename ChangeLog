@@ -1,3 +1,13 @@
+2005-09-18 Michael Stucki <michael@typo3.org>
+
+	* If the encryption key is not set, the warning in the backend now contains a link to the according section.
+	* be_group can no longer be selected as a subgroup of itself
+	* Merged fenestgrp extension into Core. This makes it possible to select subgroups for fe_groups. Thanks to Glen Gibb.
+	* Merged ingmar_accessctrl extension into Core. Content elements and pages can now have access for more than only one group. Thanks to Ingmar Schlecht for his nice extension.
+	* Fixed a bug in the object browser: Adding properties copied key + value into the key field. Notice: This requires an additional patch in the tstemplate_objbrowser extension!
+	* Some typo fixes
+	* New property for TYPO3_CONF_VARS[SYS][displayErrors]: If set to 2, display_errors will only be enabled if the devIPmask matches the current clients IP address.
+
 2005-09-14 Karsten Dambekalns <karsten@typo3.org>
 
 	* Fixed bug #214 (flexform default values), as it has been reported to work with the existing patch.

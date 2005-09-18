@@ -416,7 +416,7 @@ class SC_index {
 					</table>
 
 					<!--
-						Copy right notice:
+						Copyright notice:
 					-->
 					<div id="copyrightnotice">
 						'.$this->makeCopyrightNotice().'

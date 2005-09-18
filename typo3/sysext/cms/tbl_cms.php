@@ -288,7 +288,7 @@ $TCA['fe_users'] = Array (
 $TCA['fe_groups'] = Array (
 	'ctrl' => $TCA['fe_groups']['ctrl'],
 	'interface' => Array (
-		'showRecordFieldList' => 'title,hidden,lockToDomain,description'
+		'showRecordFieldList' => 'title,hidden,subgroup,lockToDomain,description'
 	),
 	'columns' => Array (
 		'hidden' => Array (
@@ -306,6 +306,19 @@ $TCA['fe_groups'] = Array (
 				'size' => '20',
 				'max' => '20',
 				'eval' => 'trim,required'
+			)
+		),
+		'subgroup' => Array (
+			'exclude' => 1,
+			'label' => 'LLL:EXT:cms/locallang_tca.php:fe_groups.subgroup',
+			'config' => Array (
+				'type' => 'select',
+				'foreign_table' => 'fe_groups',
+				'foreign_table_where' => 'AND fe_groups.uid != ###THIS_UID### AND NOT fe_groups.hidden ORDER BY fe_groups.title',
+				'size' => 4,
+				'autoSizeMax' => 10,
+				'minitems' => 0,
+				'maxitems' => 20
 			)
 		),
 		'lockToDomain' => Array (
@@ -349,7 +362,7 @@ $TCA['fe_groups'] = Array (
 		)
 	),
 	'types' => Array (
-		'0' => Array('showitem' => 'hidden;;;;1-1-1,title;;;;2-2-2,lockToDomain,description;;;;3-3-3, --div--, TSconfig;;;;5-5-5')
+		'0' => Array('showitem' => 'hidden;;;;1-1-1,title;;;;2-2-2,lockToDomain,description;;;;3-3-3, --div--, TSconfig;;;;5-5-5, subgroup;;;;6-6-6')
 	)
 );
 

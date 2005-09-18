@@ -61,18 +61,18 @@ require_once(PATH_t3lib.'class.t3lib_svbase.php');
  */
 class tx_sv_authbase extends t3lib_svbase 	{
 
-	var $pObj; 						// Parent object
+	var $pObj; 			// Parent object
 
-	var $mode;						// Subtype of the service which is used to call the service.
+	var $mode;			// Subtype of the service which is used to call the service.
 
-	var $login = array();				// Submitted login form data
-	var $authInfo = array();				// Various data
+	var $login = array();		// Submitted login form data
+	var $authInfo = array();	// Various data
 
-	var $db_user = array();			// User db table definition
-	var $db_groups = array();			// Usergroups db table definition
+	var $db_user = array();		// User db table definition
+	var $db_groups = array();	// Usergroups db table definition
 
 	var $writeAttemptLog = false;	// If the writelog() functions is called if a login-attempt has be tried without success
-	var $writeDevLog = false;		// If the t3lib_div::devLog() function should be used
+	var $writeDevLog = false;	// If the t3lib_div::devLog() function should be used
 
 
 	/**

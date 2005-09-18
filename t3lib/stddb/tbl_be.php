@@ -598,7 +598,7 @@ $TCA['be_groups'] = Array (
 			'config' => Array (
 				'type' => 'select',
 				'foreign_table' => 'be_groups',
-				'foreign_table_where' => 'ORDER BY be_groups.title',
+				'foreign_table_where' => 'AND be_groups.uid != ###THIS_UID### AND NOT be_groups.hidden ORDER BY be_groups.title',
 				'size' => '5',
 				'autoSizeMax' => 50,
 				'maxitems' => 20,

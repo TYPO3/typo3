@@ -780,7 +780,7 @@ class t3lib_div {
 	 * Usage: 16
 	 *
 	 * @param	string		Accept multiple parameters wich can be comma-separated lists of values and arrays.
-	 * @param	mixed		$secondParameter: Dummy field, which is set will show a warning!
+	 * @param	mixed		$secondParameter: Dummy field, which if set will show a warning!
 	 * @return	string		Returns the list without any duplicates of values, space around values are trimmed
 	 */
 	function uniqueList($in_list, $secondParameter=NULL)	{

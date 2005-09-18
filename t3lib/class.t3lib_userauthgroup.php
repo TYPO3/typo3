@@ -901,7 +901,6 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 				}
 			}
 		}
-
 	}
 
 	/**

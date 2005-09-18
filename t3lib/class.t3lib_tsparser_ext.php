@@ -408,6 +408,8 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 						} else {
 							$ln = '';
 						}
+
+						if ($this->tsbrowser_searchKeys[$depth] & 4)	{ $label = '<b><font color="red">'.$label.'</font></b>'; }	// The key has matched the search string
 						$label = '<a href="'.htmlspecialchars($aHref).'" title="'.htmlspecialchars($ln).'">'.$label.'</a>';
 					}
 				}
@@ -421,7 +423,7 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 						$lgdChars = 68-ceil(strlen("[".$key."]")*0.8)-$imgBlocks*3;
 						$theValue = $this->ext_fixed_lgd($theValue,$lgdChars);
 					}
-					if ($this->tsbrowser_searchKeys[$depth])	{
+					if ($this->tsbrowser_searchKeys[$depth] & 2)	{	// The value has matched the search string
 						$HTML.='=<b><font color="red">'.$this->makeHtmlspecialchars($theValue).'</font></b>';
 					} else {
 						$HTML.="=<b>".$this->makeHtmlspecialchars($theValue)."</b>";
@@ -491,28 +493,44 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 		reset($arr);
 		$keyArr=array();
 		while (list($key,)=each($arr))	{
-			$key=ereg_replace("\.$","",$key);
-			if (substr($key,-1)!=".")	{
+			$key=ereg_replace('\.$','',$key);
+			if (substr($key,-1)!='.')	{
 				$keyArr[$key]=1;
 			}
 		}
 		reset($keyArr);
 //		asort($keyArr);
 		$c=count($keyArr);
-		if ($depth_in)	{$depth_in = $depth_in.".";}
+		if ($depth_in)	{ $depth_in = $depth_in.'.'; }
 		while (list($key,)=each($keyArr))	{
 			$depth=$depth_in.$key;
 			$deeper = is_array($arr[$key."."]);
 
 			if ($this->regexMode)	{
-				if (ereg($searchString,$arr[$key]))	{	$this->tsbrowser_searchKeys[$depth]=1;	}
+				if (ereg($searchString,$arr[$key]))	{	// The value has matched
+					$this->tsbrowser_searchKeys[$depth]+=2;
+				}
+				if (ereg($searchString,$key))	{		// The key has matched
+					$this->tsbrowser_searchKeys[$depth]+=4;
+				}
+				if (ereg($searchString,$depth_in))	{	// Just open this subtree if the parent key has matched the search
+					$this->tsbrowser_searchKeys[$depth]=1;
+				}
 			} else {
-				if (stristr($arr[$key],$searchString))	{	$this->tsbrowser_searchKeys[$depth]=1;	}
+				if (stristr($arr[$key],$searchString))	{	// The value has matched
+					$this->tsbrowser_searchKeys[$depth]+=2;
+				}
+				if (stristr($key,$searchString))	{	// The key has matches
+					$this->tsbrowser_searchKeys[$depth]+=4;
+				}
+				if (stristr($depth_in,$searchString))	{	// Just open this subtree if the parent key has matched the search
+					$this->tsbrowser_searchKeys[$depth]=1;
+				}
 			}
 
 			if ($deeper)	{
 				$cS = count($this->tsbrowser_searchKeys);
-				$keyArray = $this->ext_getSearchKeys($arr[$key."."], $depth, $searchString, $keyArray);
+				$keyArray = $this->ext_getSearchKeys($arr[$key.'.'], $depth, $searchString, $keyArray);
 				if ($cS != count($this->tsbrowser_searchKeys))	{
 					$keyArray[$depth]=1;
 				}

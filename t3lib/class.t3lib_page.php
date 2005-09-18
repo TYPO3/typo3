@@ -913,9 +913,7 @@ class t3lib_pageSelect {
 				}
 				if ($ctrl['enablecolumns']['fe_group'] && !$ignore_array['fe_group'])	{
 					$field = $table.'.'.$ctrl['enablecolumns']['fe_group'];
-					$gr_list = $GLOBALS['TSFE']->gr_list;
-					if (!strcmp($gr_list,''))	$gr_list=0;
-					$query.=' AND '.$field.' IN ('.$gr_list.')';
+					$query.= $this->getMultipleGroupsWhereClause($field, $table);
 				}
 
 					// Call hook functions for additional enableColumns
@@ -937,6 +935,21 @@ class t3lib_pageSelect {
 		}
 
 		return $query;
+	}
+
+	function getMultipleGroupsWhereClause($field, $table)	{
+		$memberGroups = t3lib_div::intExplode(',',$GLOBALS['TSFE']->gr_list);
+		$orChecks=array();
+		$orChecks[]=$field.'=""';	// If the field is empty, then OK
+		$orChecks[]=$field.'="0"';	// If the field contsains zero, then OK
+
+		foreach($memberGroups as $value)	{
+			// if ($value > 0)	{	// outcommented by Ingmar Schlecht because we want those pseudo groups like "hide at login" etc. to work. Original comment from Kasper was: "If user is member of a real group, not zero or negative pseudo group"
+				$orChecks[] = $GLOBALS['TYPO3_DB']->listQuery($field, $value, $table);
+			// }
+		}
+
+		return ' AND ('.implode(' OR ',$orChecks).')';
 	}
 
 

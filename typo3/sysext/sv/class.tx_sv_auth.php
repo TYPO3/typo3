@@ -131,12 +131,13 @@ class tx_sv_auth extends tx_sv_authbase 	{
 
 		$groupDataArr = array();
 
-		if($this->mode=='getGroupsFE') 	{
+		if($this->mode=='getGroupsFE')	{
 
 			$groups = array();
-
 			if (is_array($user) && $user[$this->db_user['usergroup_column']])	{
-				$groups = t3lib_div::intExplode(',',$user[$this->db_user['usergroup_column']]);
+				$groupList = $user[$this->db_user['usergroup_column']];
+				$groups = array();
+				$this->getSubGroups($groupList,'',$groups);
 			}
 
 				// ADD group-numbers if the IPmask matches.
@@ -171,6 +172,47 @@ class tx_sv_auth extends tx_sv_authbase 	{
 		}
 
 		return $groupDataArr;
+	}
+
+	/**
+	 * Fetches subgroups of groups. Function is called recursively for each subgroup.
+	 * Function was previously copied from t3lib_userAuthGroup->fetchGroups and has been slightly modified.
+	 *
+	 * @param	string		Commalist of fe_groups uid numbers
+	 * @param	string		List of already processed fe_groups-uids so the function will not fall into a eternal recursion.
+	 * @return	array
+	 * @access private
+	 */
+	function getSubGroups($grList, $idList='', &$groups)	{
+
+			// Fetching records of the groups in $grList (which are not blocked by lockedToDomain either):
+		$lockToDomain_SQL = ' AND (lockToDomain=\'\' OR lockToDomain=\''.$this->authInfo['HTTP_HOST'].'\')';
+		if (!$this->authInfo['showHiddenRecords'])	$hiddenP = 'AND hidden=0 ';
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,subgroup', 'fe_groups', 'deleted=0 '.$hiddenP.' AND uid IN ('.$grList.')'.$lockToDomain_SQL);
+
+		$groupRows = array();	// Internal group record storage
+
+			// The groups array is filled
+		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
+			if(!in_array($row['uid'], $groups))	{ $groups[] = $row['uid']; }
+			$groupRows[$row['uid']] = $row;
+		}
+
+			// Traversing records in the correct order
+		$include_staticArr = t3lib_div::intExplode(',', $grList);
+		foreach($include_staticArr as $uid)	{	// traversing list
+
+				// Get row:
+			$row=$groupRows[$uid];
+			if (is_array($row) && !t3lib_div::inList($idList,$uid))	{	// Must be an array and $uid should not be in the idList, because then it is somewhere previously in the grouplist
+
+					// Include sub groups
+				if (trim($row['subgroup']))	{
+					$theList = implode(',',t3lib_div::intExplode(',',$row['subgroup']));	// Make integer list
+					$this->getSubGroups($theList, $idList.','.$uid, $groups);		// Call recursively, pass along list of already processed groups so they are not recursed again.
+				}
+			}
+		}
 	}
 }
 

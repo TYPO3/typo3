@@ -240,13 +240,17 @@ class tx_install extends t3lib_install {
 			// ****************************
 			// Initializing incoming vars.
 			// ****************************
-		$this->INSTALL = t3lib_div::_GP("TYPO3_INSTALL");
-		$this->mode = t3lib_div::_GP("mode");
-		$this->step = t3lib_div::_GP("step");
-		if ($_GET["TYPO3_INSTALL"]["type"])	$this->INSTALL["type"] = $_GET["TYPO3_INSTALL"]["type"];
+		$this->INSTALL = t3lib_div::_GP('TYPO3_INSTALL');
+		$this->mode = t3lib_div::_GP('mode');
+		$this->step = t3lib_div::_GP('step');
+		$this->redirect_url = t3lib_div::_GP('redirect_url');
+
+		if ($_GET['TYPO3_INSTALL']['type'])	{
+			$this->INSTALL['type'] = $_GET['TYPO3_INSTALL']['type'];
+		}
 
 		if ($this->step==3)	{
-			$this->INSTALL["type"]="database";
+			$this->INSTALL['type']='database';
 		}
 
 		if ($this->mode=="123")	{
@@ -259,8 +263,8 @@ class tx_install extends t3lib_install {
 			if (!$this->INSTALL["type"] || !isset($this->menuitems[$this->INSTALL["type"]]))	$this->INSTALL["type"] = "about";
 		}
 
-		$this->action = $this->scriptSelf."?TYPO3_INSTALL[type]=".$this->INSTALL["type"].($this->mode?"&mode=".rawurlencode($this->mode):"").($this->step?"&step=".rawurlencode($this->step):"");
-		$this->typo3temp_path = PATH_site."typo3temp/";
+		$this->action = $this->scriptSelf.'?TYPO3_INSTALL[type]='.$this->INSTALL['type'].($this->mode?'&mode='.rawurlencode($this->mode):'').($this->step?'&step='.rawurlencode($this->step):'');
+		$this->typo3temp_path = PATH_site.'typo3temp/';
 
 
 			// ****************
@@ -288,8 +292,13 @@ BTW: This Install Tool will only work if cookies are accepted by your web browse
 			// Check if the password from TYPO3_CONF_VARS combined with uKey matches the sKey cookie. If not, ask for password.
 		$sKey = $_COOKIE[$this->cookie_name];
 
-		if (md5($GLOBALS["TYPO3_CONF_VARS"]["BE"]["installToolPassword"]."|".$uKey) == $sKey || $this->checkPassword($uKey))	{
+		if (md5($GLOBALS['TYPO3_CONF_VARS']['BE']['installToolPassword'].'|'.$uKey) == $sKey || $this->checkPassword($uKey))	{
 			$this->passwordOK=1;
+			if($this->redirect_url)	{
+				header('Location: '.$this->redirect_url);
+			}
+		} else {
+			$this->loginForm();
 		}
 
 		if ($GLOBALS["CLIENT"]["SYSTEM"]=="unix" && $GLOBALS["CLIENT"]["BROWSER"]=="konqu")	{
@@ -305,7 +314,7 @@ BTW: This Install Tool will only work if cookies are accepted by your web browse
 	 * @return	[type]		...
 	 */
 	function checkPassword($uKey)	{
-		$p = t3lib_div::_GP("password");
+		$p = t3lib_div::_GP('password');
 
 		if ($p && md5($p)==$GLOBALS["TYPO3_CONF_VARS"]["BE"]["installToolPassword"])	{
 			$sKey = md5($GLOBALS["TYPO3_CONF_VARS"]["BE"]["installToolPassword"]."|".$uKey);
@@ -324,21 +333,6 @@ BTW: This Install Tool will only work if cookies are accepted by your web browse
 			}
 			return true;
 		} else {
-			$this->messageFunc_nl2br=0;
-			$this->silent=0;
-			$content = '<form action="'.$this->action.'" method="POST">
-			<input type="password" name="password"><BR>
-			<input type="submit" value="Log in"><br>
-			<br>
-
-			'.$this->fw('The Install Tool Password is <i>not</i> the admin password of TYPO3.<BR>
-				If you don\'t know the current password, you can set a new one by setting the value of $TYPO3_CONF_VARS["BE"]["installToolPassword"] in typo3conf/localconf.php to the md5() hash value of the password you desire.'.
-				($p?"<BR><BR>The password you just tried has this md5-value: <BR><BR>".md5($p):"")
-				).'
-			</form>';
-
-			$this->message("Password", "Enter the Install Tool Password", $content,3);
-			echo $this->outputWrapper($this->printAll());
 				// Bad password, send warning:
 			if ($p)	{
 				$wEmail = $GLOBALS["TYPO3_CONF_VARS"]["BE"]["warning_email_addr"];
@@ -354,9 +348,31 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv("REMOTE_ADDR")."' (".t3lib_div::getIndp
 					);
 				}
 			}
-
 			return false;
 		}
+	}
+
+	function loginForm()	{
+		$p = t3lib_div::_GP('password');
+		$redirect_url = $this->redirect_url ? $this->redirect_url : $this->action;
+
+		$this->messageFunc_nl2br=0;
+		$this->silent=0;
+
+		$content = '<form action="index.php" method="POST">
+			<input type="password" name="password"><BR>
+			<input type="hidden" name="redirect_url" value="'.$redirect_url.'">
+			<input type="submit" value="Log in"><br>
+			<br>
+
+			'.$this->fw('The Install Tool Password is <i>not</i> the admin password of TYPO3.<BR>
+				If you don\'t know the current password, you can set a new one by setting the value of $TYPO3_CONF_VARS["BE"]["installToolPassword"] in typo3conf/localconf.php to the md5() hash value of the password you desire.'.
+				($p ? '<BR><BR>The password you just tried has this md5-value: <BR><BR>'.md5($p) : '')
+				).'
+			</form>';
+
+		$this->message('Password', 'Enter the Install Tool Password', $content,3);
+		echo $this->outputWrapper($this->printAll());
 	}
 
 	/**
@@ -1684,43 +1700,46 @@ From sub-directory:
 			//  2 = required, has to be writable
 
 		$checkWrite=array(
-			"typo3temp/" => array("The folder is used by both the frontend (FE) and backend interface (TBE) for image manipulated files.",2,"dir_typo3temp"),
-#			TYPO3_mainDir."temp/" => array("The folder is used by the backend interface only (TBE) for icons, pane tabs and click-menu items. The directory is usually not empty in the distribution, but you should be able to clear it out and TYPO3 should generate new files automatically.",1,"dir_temp"),
-			"typo3conf/" => array("This directory contains the local configuration files of your website. TYPO3 must be able to write to these configuration files during setup and when the Extension Manager (EM) installs extensions.",2),
-			"typo3conf/ext/" => array("Location for local extensions. Must be writable if the Extension Manager is supposed to install extensions for this website.",0),
-			TYPO3_mainDir."ext/" => array("Location for global extensions. Must be writable if the Extension Manager is supposed to install extensions globally in the source.",-1),
-			"uploads/" => array("Location for uploaded files from RTE + in the subdirs for tables.",2),
-			"uploads/pics/" => array("Typical location for uploaded files (images especially).",0),
-			"uploads/media/" => array("Typical location for uploaded files (non-images especially).",0),
-			"uploads/tf/" => array("Typical location for uploaded files (TS template resources).",0),
-			"fileadmin/" => array("Location for local files such as templates, independent uploads etc.",-1),
-			"fileadmin/_temp_/" => array("Typical temporary location for default upload of files by administrators.",0),
+			'typo3temp/' => array('This folder is used by both the frontend (FE) and backend (BE) interface for image manipulated files.',2,'dir_typo3temp'),
+			'typo3temp/pics/' => array('This folder is part of the typo3temp/ section. It needs to be writable, too.',2,'dir_typo3temp'),
+			'typo3temp/temp/' => array('This folder is part of the typo3temp/ section. It needs to be writable, too.',2,'dir_typo3temp'),
+			'typo3temp/llxml/' => array('This folder is part of the typo3temp/ section. It needs to be writable, too.',2,'dir_typo3temp'),
+			'typo3temp/cs/' => array('This folder is part of the typo3temp/ section. It needs to be writable, too.',2,'dir_typo3temp'),
+			'typo3temp/GB/' => array('This folder is part of the typo3temp/ section. It needs to be writable, too.',2,'dir_typo3temp'),
+			'typo3conf/' => array('This directory contains the local configuration files of your website. TYPO3 must be able to write to these configuration files during setup and when the Extension Manager (EM) installs extensions.',2),
+			'typo3conf/ext/' => array('Location for local extensions. Must be writable if the Extension Manager is supposed to install extensions for this website.',0),
+			TYPO3_mainDir.'ext/' => array('Location for global extensions. Must be writable if the Extension Manager is supposed to install extensions globally in the source.',-1),
+			'uploads/' => array('Location for uploaded files from RTE + in the subdirs for tables.',2),
+			'uploads/pics/' => array('Typical location for uploaded files (images especially).',0),
+			'uploads/media/' => array('Typical location for uploaded files (non-images especially).',0),
+			'uploads/tf/' => array('Typical location for uploaded files (TS template resources).',0),
+			'fileadmin/' => array('Location for local files such as templates, independent uploads etc.',-1),
+			'fileadmin/_temp_/' => array('Typical temporary location for default upload of files by administrators.',0),
 		);
 
-		reset($checkWrite);
-		while(list($relpath,$descr)=each($checkWrite))	{
+		foreach($checkWrite as $relpath => $descr)	{
 			// Check typo3temp/
 			$general_message = $descr[0];
 			if (!@is_dir(PATH_site.$relpath))	{
 				if ($descr[1])	{	// required...
-					$this->message($ext, $relpath." directory does not exist","
-					<em>Full path: ".PATH_site.$relpath."</em>
-					".$general_message."
+					$this->message($ext, $relpath.' directory does not exist','
+					<em>Full path: '.PATH_site.$relpath.'</em>
+					'.$general_message.'
 
-					This error should not occur as ".$relpath." must always be accessible in the root of a TYPO3 website.
-					",3);
+					This error should not occur as '.$relpath.' must always be accessible in the root of a TYPO3 website.
+					',3);
 				} else {
-					if ($descr[1] == 0) {
+					if ($descr[1] == 0)	{
 						$msg = 'This directory does not necessarily have to exist but if it does it must be writable.';
 					} else {
 						$msg = 'This directory does not necessarily have to exist and if it does it can be writable or not.';
 					}
-					$this->message($ext, $relpath." directory does not exist","
-					<em>Full path: ".PATH_site.$relpath."</em>
-					".$general_message."
+					$this->message($ext, $relpath.' directory does not exist','
+					<em>Full path: '.PATH_site.$relpath.'</em>
+					'.$general_message.'
 
-					".$msg."
-					",2);
+					'.$msg.'
+					',2);
 				}
 			} else {
 				$file = PATH_site.$relpath.$uniqueName;
@@ -1728,21 +1747,21 @@ From sub-directory:
 				if (@is_file($file))	{
 					unlink($file);
 					if ($descr[2])	{ $this->config_array[$descr[2]]=1; }
-					$this->message($ext, $relpath." writable","",-1);
+					$this->message($ext, $relpath.' writable','',-1);
 				} else {
 					$severity = ($descr[1]==2 || $descr[1]==0) ? 3 : 2;
 					if ($descr[1] == 0 || $descr[1] == 2) {
-						$msg = "The directory ".$relpath." must be writable!";
+						$msg = 'The directory '.$relpath.' must be writable!';
 					} elseif ($descr[1] == -1 || $descr[1] == 1) {
-						$msg = "The directory ".$relpath." does not neccesarily have to be writable.";
+						$msg = 'The directory '.$relpath.' does not neccesarily have to be writable.';
 					}
-					$this->message($ext, $relpath." directory not writable","
-					<em>Full path: ".$file."</em>
-					".$general_message."
+					$this->message($ext, $relpath.' directory not writable','
+					<em>Full path: '.$file.'</em>
+					'.$general_message.'
 
-					Tried to write this file (with touch()) but didn't succeed.
-					".$msg."
-					",$severity);
+					Tried to write this file (with touch()) but didn\'t succeed.
+					'.$msg.'
+					',$severity);
 				}
 			}
 		}
@@ -2004,7 +2023,7 @@ From sub-directory:
 					$out.=$this->wrapInCells("Site name:", '<input type="text" name="TYPO3_INSTALL[localconf.php][sitename]" value="'.htmlspecialchars($GLOBALS["TYPO3_CONF_VARS"]["SYS"]["sitename"]).'">');
 					$out.=$this->wrapInCells("", "<BR>");
 					$out.='<script type="text/javascript" src="../md5.js"></script><script type="text/javascript">function generateEncryptionKey(key) {time=new Date(); key=MD5(key)+MD5(time.getMilliseconds().toString());while(key.length<66){key=key+MD5(key)};return key;}</script>';
-					$out.=$this->wrapInCells("Encryption key:", '<input type="text" name="TYPO3_INSTALL[localconf.php][encryptionKey]" value="'.htmlspecialchars($GLOBALS["TYPO3_CONF_VARS"]["SYS"]["encryptionKey"]).'"><br /><input type="button" onclick="document.forms[\'setupGeneral\'].elements[\'TYPO3_INSTALL[localconf.php][encryptionKey]\'].value=generateEncryptionKey(document.forms[\'setupGeneral\'].elements[\'TYPO3_INSTALL[localconf.php][encryptionKey]\'].value);" value="Generate random key">');
+					$out.=$this->wrapInCells("Encryption key:", '<a name="set_encryptionKey" /><input type="text" name="TYPO3_INSTALL[localconf.php][encryptionKey]" value="'.htmlspecialchars($GLOBALS["TYPO3_CONF_VARS"]["SYS"]["encryptionKey"]).'"><br /><input type="button" onclick="document.forms[\'setupGeneral\'].elements[\'TYPO3_INSTALL[localconf.php][encryptionKey]\'].value=generateEncryptionKey(document.forms[\'setupGeneral\'].elements[\'TYPO3_INSTALL[localconf.php][encryptionKey]\'].value);" value="Generate random key">');
 					$out.=$this->wrapInCells("", "<BR>");
 
 						// Other
@@ -4375,11 +4394,18 @@ $out='
 
 	/**
 	 * Setting a message in the message-log and sets the fatalError flag if error type is 3.
+	 *
+	 * @param	string		Section header
+	 * @param	string		A short description
+	 * @param	string		A long (more detailed) description
+	 * @param	integer		-1=OK sign, 0=message, 1=notification, 2=warning , 3=error
+	 * @param	boolean		Print message also in "Advanced" mode (not only in 1-2-3 mode)
+	 * @return	void
 	 */
-	function message($head, $short_string="", $long_string="", $type=0, $force=0)	{		// type: -1=OK sign, 0=message, 1=notification, 2=warning , 3=error
-		if (!$force && $this->mode=="123" && $type<2)	{return;}	// Return directly if mode-123 is enabled.
+	function message($head, $short_string='', $long_string='', $type=0, $force=0)	{
+		if (!$force && $this->mode=='123' && $type<2)	{ return; }	// Return directly if mode-123 is enabled.
 
-		if ($type==3)	{$this->fatalError=1;}
+		if ($type==3)	{ $this->fatalError=1; }
 		if ($this->messageFunc_nl2br)	{
 			$long_string = nl2br(trim($long_string));
 		} else {
@@ -4391,43 +4417,43 @@ $out='
 	/**
 	 * This "prints" a section with a message to the ->sections array
 	 *
-	 * @param	[type]		$head: ...
-	 * @param	[type]		$short_string: ...
-	 * @param	[type]		$long_string: ...
-	 * @param	[type]		$type: ...
-	 * @return	[type]		...
+	 * @param	string		Section header
+	 * @param	string		A short description
+	 * @param	string		A long (more detailed) description
+	 * @param	integer		-1=OK sign, 0=message, 1=notification, 2=warning , 3=error
+	 * @return	void
 	 */
 	function printSection($head, $short_string, $long_string, $type)	{
-		$icon="";
+		$icon='';
 
-		$bgCol =' bgcolor=#D9D5C9';
+		$bgCol =' bgcolor="#D9D5C9"';	// The default color
 		switch($type)	{
-			case "3":
-				$bgCol =' bgcolor=red';
+			case '3':
+				$bgCol =' bgcolor="red"';
 				$icon = 't3lib/gfx/icon_fatalerror.gif';
 			break;
-			case "2":
-//				$bgCol =' bgcolor=#9BA1A8';
+			case '2':
+				$bgCol =' bgcolor="#9BA1A8"';
 				$icon = 't3lib/gfx/icon_warning.gif';
 			break;
-			case "1":
-//				$bgCol =' bgcolor=#ABBBB4';
+			case '1':
+				// $bgCol =' bgcolor="#ABBBB4"';
 				$icon = 't3lib/gfx/icon_note.gif';
 			break;
-			case "-1":
-//				$bgCol =' bgcolor=yellow';
+			case '-1':
+				// $bgCol =' bgcolor="yellow"';
 				$icon = 't3lib/gfx/icon_ok.gif';
 			break;
 			default:
-				$bgCol =' bgcolor='.t3lib_div::modifyHTMLcolor("#ABBBB4",+40,+30,+40);
+				$bgCol =' bgcolor="#D3D9DC"';
 			break;
 		}
 		if (!trim($short_string))	{
-			$this->sections[$head][]="";
+			$this->sections[$head][]='';
 		} else {
 			$this->sections[$head][]='
-			<tr><td'.$bgCol.' nowrap>'.($icon?'<img src="'.$this->backPath.$icon.'" width=18 height=16 align=top>':'').'<strong>'.$this->fw($short_string).'</strong></td></tr>'.(trim($long_string)?'
-			<tr><td>'.$this->fw($long_string).'<BR><BR></td></tr>' : '');
+			<tr><td'.$bgCol.' nowrap>'.($icon?'<img src="'.$this->backPath.$icon.'" width="18" height="16" align="top">':'').'<strong>'.$this->fw($short_string).'</strong></td></tr>'.(trim($long_string)?'
+			<tr><td>'.$this->fw($long_string).'<br><br></td></tr>' : '');
 		}
 	}
 

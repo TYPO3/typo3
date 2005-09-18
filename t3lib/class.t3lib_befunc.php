@@ -3088,7 +3088,8 @@ class t3lib_BEfunc	{
 
 				// Check if the encryption key is empty
 			if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] == '')	{
-				$warnings[] = 'The encryption key is not set! Set it in $TYPO3_CONF_VARS[SYS][encryptionKey]';
+				$url = 'install/index.php?redirect_url=index.php'.urlencode('?TYPO3_INSTALL[type]=config#set_encryptionKey');
+				$warnings[] = 'The encryption key is not set! Set it in <a href="'.$url.'">$TYPO3_CONF_VARS[SYS][encryptionKey]</a>';
 			}
 
 			if(count($warnings))	{

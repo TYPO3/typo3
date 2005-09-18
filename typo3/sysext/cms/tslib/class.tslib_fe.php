@@ -65,7 +65,6 @@
  * 1091:     function setIDfromArgV()
  * 1107:     function getPageAndRootlineWithDomain($domainStartPage)
  * 1134:     function setSysPageWhereClause()
- * 1144:     function getPagesGroupClause()
  * 1155:     function findDomainRecord($recursive=0)
  * 1174:     function pageNotFoundAndExit($reason='')
  * 1188:     function pageNotFoundHandler($code, $header='', $reason='')
@@ -1064,7 +1063,7 @@
 		if(!is_array($groupList)) {
 			$groupList = explode(',', $groupList);
 		}
-		$pageGroupList = explode(',', $row['fe_group']);
+		$pageGroupList = explode(',', $row['fe_group'] ? $row['fe_group'] : 0);
 		return count(array_intersect($groupList, $pageGroupList)) > 0;
 	}
 
@@ -1185,19 +1184,9 @@
 	 * @return	void
 	 * @access private
 	 */
-	function setSysPageWhereClause() {
-		$this->sys_page->where_hid_del.=' AND doktype<200';
-		$this->sys_page->where_groupAccess = $this->getPagesGroupClause();
-	}
-
-	/**
-	 * Return where-clause for group access
-	 *
-	 * @return	string		Group where clause part
-	 * @access private
-	 */
-	function getPagesGroupClause() {
-		return ' AND fe_group IN ('.$this->gr_list.')';
+	function setSysPageWhereClause()	{
+		$this->sys_page->where_hid_del.=' AND pages.doktype<200';
+		$this->sys_page->where_groupAccess = $this->sys_page->getMultipleGroupsWhereClause('pages.fe_group', 'pages');
 	}
 
 	/**
@@ -2912,7 +2901,7 @@ if (version == "n3") {
 
 						$GLOBALS['TT']->setTSlogMessage('Writing to logfile: OK',0);
 					} else {
-						$GLOBALS['TT']->setTSlogMessage('Writing to logfile: Error - logFile did not exist or OS is Windows!',3);
+						$GLOBALS['TT']->setTSlogMessage('Writing to logfile: Error - logFile did not exist!',3);
 					}
 				}
 			$GLOBALS['TT']->pull();
@@ -3282,7 +3271,7 @@ if (version == "n3") {
 	function tidyHTML($content)		{
 		if ($this->TYPO3_CONF_VARS['FE']['tidy'] && $this->TYPO3_CONF_VARS['FE']['tidy_path'])	{
 			$oldContent = $content;
-			$fname = t3lib_div::tempnam('Typo3_Tidydoc_');		// Create temporary name
+			$fname = t3lib_div::tempnam('typo3_tidydoc_');		// Create temporary name
 			@unlink ($fname);	// Delete if exists, just to be safe.
 			$fp = fopen ($fname,'wb');	// Open for writing
 			fputs ($fp, $content);	// Put $content
@@ -3511,7 +3500,7 @@ if (version == "n3") {
 			$message,
 			$headers,
 			$this->config['config']['notification_email_encoding'],
-			$this->config['config']['notification_email_charset']?$this->config['config']['notification_email_charset']:'ISO-8859-1'
+			$this->config['config']['notification_email_charset'] ? $this->config['config']['notification_email_charset'] : 'ISO-8859-1'
 		);
 	}
 
@@ -3604,7 +3593,7 @@ if (version == "n3") {
 		}
 
 			// Setting charsets:
-		$this->renderCharset = $this->csConvObj->parse_charset($this->config['config']['renderCharset'] ? $this->config['config']['renderCharset'] : ($this->TYPO3_CONF_VARS['BE']['forceCharset'] ? $this->TYPO3_CONF_VARS['BE']['forceCharset'] : $this->defaultCharSet));	// REndering charset of HTML page.
+		$this->renderCharset = $this->csConvObj->parse_charset($this->config['config']['renderCharset'] ? $this->config['config']['renderCharset'] : ($this->TYPO3_CONF_VARS['BE']['forceCharset'] ? $this->TYPO3_CONF_VARS['BE']['forceCharset'] : $this->defaultCharSet));	// Rendering charset of HTML page.
 		$this->metaCharset = $this->csConvObj->parse_charset($this->config['config']['metaCharset'] ? $this->config['config']['metaCharset'] : $this->renderCharset);	// Output charset of HTML page.
 		$this->labelsCharset = $this->csConvObj->parse_charset($this->csConvObj->charSetArray[$this->lang] ? $this->csConvObj->charSetArray[$this->lang] : 'iso-8859-1');
 		if ($this->renderCharset != $this->labelsCharset)	{
