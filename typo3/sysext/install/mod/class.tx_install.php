@@ -240,13 +240,17 @@ class tx_install extends t3lib_install {
 			// ****************************
 			// Initializing incoming vars.
 			// ****************************
-		$this->INSTALL = t3lib_div::_GP("TYPO3_INSTALL");
-		$this->mode = t3lib_div::_GP("mode");
-		$this->step = t3lib_div::_GP("step");
-		if ($_GET["TYPO3_INSTALL"]["type"])	$this->INSTALL["type"] = $_GET["TYPO3_INSTALL"]["type"];
+		$this->INSTALL = t3lib_div::_GP('TYPO3_INSTALL');
+		$this->mode = t3lib_div::_GP('mode');
+		$this->step = t3lib_div::_GP('step');
+		$this->redirect_url = t3lib_div::_GP('redirect_url');
+
+		if ($_GET['TYPO3_INSTALL']['type'])	{
+			$this->INSTALL['type'] = $_GET['TYPO3_INSTALL']['type'];
+		}
 
 		if ($this->step==3)	{
-			$this->INSTALL["type"]="database";
+			$this->INSTALL['type']='database';
 		}
 
 		if ($this->mode=="123")	{
@@ -288,8 +292,13 @@ BTW: This Install Tool will only work if cookies are accepted by your web browse
 			// Check if the password from TYPO3_CONF_VARS combined with uKey matches the sKey cookie. If not, ask for password.
 		$sKey = $_COOKIE[$this->cookie_name];
 
-		if (md5($GLOBALS["TYPO3_CONF_VARS"]["BE"]["installToolPassword"]."|".$uKey) == $sKey || $this->checkPassword($uKey))	{
+		if (md5($GLOBALS['TYPO3_CONF_VARS']['BE']['installToolPassword'].'|'.$uKey) == $sKey || $this->checkPassword($uKey))	{
 			$this->passwordOK=1;
+			if($this->redirect_url)	{
+				header('Location: '.$this->redirect_url);
+			}
+		} else {
+			$this->loginForm();
 		}
 
 		if ($GLOBALS["CLIENT"]["SYSTEM"]=="unix" && $GLOBALS["CLIENT"]["BROWSER"]=="konqu")	{
@@ -324,21 +333,6 @@ BTW: This Install Tool will only work if cookies are accepted by your web browse
 			}
 			return true;
 		} else {
-			$this->messageFunc_nl2br=0;
-			$this->silent=0;
-			$content = '<form action="'.$this->action.'" method="POST">
-			<input type="password" name="password"><BR>
-			<input type="submit" value="Log in"><br>
-			<br>
-
-			'.$this->fw('The Install Tool Password is <i>not</i> the admin password of TYPO3.<BR>
-				If you don\'t know the current password, you can set a new one by setting the value of $TYPO3_CONF_VARS["BE"]["installToolPassword"] in typo3conf/localconf.php to the md5() hash value of the password you desire.'.
-				($p?"<BR><BR>The password you just tried has this md5-value: <BR><BR>".md5($p):"")
-				).'
-			</form>';
-
-			$this->message("Password", "Enter the Install Tool Password", $content,3);
-			echo $this->outputWrapper($this->printAll());
 				// Bad password, send warning:
 			if ($p)	{
 				$wEmail = $GLOBALS["TYPO3_CONF_VARS"]["BE"]["warning_email_addr"];
@@ -354,9 +348,31 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv("REMOTE_ADDR")."' (".t3lib_div::getIndp
 					);
 				}
 			}
-
 			return false;
 		}
+	}
+
+	function loginForm()	{
+		$p = t3lib_div::_GP('password');
+		$redirect_url = $this->redirect_url ? $this->redirect_url : $this->action;
+
+		$this->messageFunc_nl2br=0;
+		$this->silent=0;
+
+		$content = '<form action="index.php" method="POST">
+			<input type="password" name="password"><BR>
+			<input type="hidden" name="redirect_url" value="'.$redirect_url.'">
+			<input type="submit" value="Log in"><br>
+			<br>
+
+			'.$this->fw('The Install Tool Password is <i>not</i> the admin password of TYPO3.<BR>
+				If you don\'t know the current password, you can set a new one by setting the value of $TYPO3_CONF_VARS["BE"]["installToolPassword"] in typo3conf/localconf.php to the md5() hash value of the password you desire.'.
+				($p ? '<BR><BR>The password you just tried has this md5-value: <BR><BR>'.md5($p) : '')
+				).'
+			</form>';
+
+		$this->message('Password', 'Enter the Install Tool Password', $content,3);
+		echo $this->outputWrapper($this->printAll());
 	}
 
 	/**
@@ -2004,7 +2020,7 @@ From sub-directory:
 					$out.=$this->wrapInCells("Site name:", '<input type="text" name="TYPO3_INSTALL[localconf.php][sitename]" value="'.htmlspecialchars($GLOBALS["TYPO3_CONF_VARS"]["SYS"]["sitename"]).'">');
 					$out.=$this->wrapInCells("", "<BR>");
 					$out.='<script type="text/javascript" src="../md5.js"></script><script type="text/javascript">function generateEncryptionKey(key) {time=new Date(); key=MD5(key)+MD5(time.getMilliseconds().toString());while(key.length<66){key=key+MD5(key)};return key;}</script>';
-					$out.=$this->wrapInCells("Encryption key:", '<input type="text" name="TYPO3_INSTALL[localconf.php][encryptionKey]" value="'.htmlspecialchars($GLOBALS["TYPO3_CONF_VARS"]["SYS"]["encryptionKey"]).'"><br /><input type="button" onclick="document.forms[\'setupGeneral\'].elements[\'TYPO3_INSTALL[localconf.php][encryptionKey]\'].value=generateEncryptionKey(document.forms[\'setupGeneral\'].elements[\'TYPO3_INSTALL[localconf.php][encryptionKey]\'].value);" value="Generate random key">');
+					$out.=$this->wrapInCells("Encryption key:", '<a name="set_encryptionKey" /><input type="text" name="TYPO3_INSTALL[localconf.php][encryptionKey]" value="'.htmlspecialchars($GLOBALS["TYPO3_CONF_VARS"]["SYS"]["encryptionKey"]).'"><br /><input type="button" onclick="document.forms[\'setupGeneral\'].elements[\'TYPO3_INSTALL[localconf.php][encryptionKey]\'].value=generateEncryptionKey(document.forms[\'setupGeneral\'].elements[\'TYPO3_INSTALL[localconf.php][encryptionKey]\'].value);" value="Generate random key">');
 					$out.=$this->wrapInCells("", "<BR>");
 
 						// Other

@@ -1,5 +1,6 @@
 2005-09-18 Michael Stucki <michael@typo3.org>
 
+	* If the encryption key is not set, the warning in the backend now contains a link to the according section.
 	* New property for TYPO3_CONF_VARS[SYS][displayErrors]: If set to 2, display_errors will only be enabled if the devIPmask matches the current clients IP address.
 
 2005-08-22 Martin Kutschker <martin.t.kutschker@blackbox.net>
