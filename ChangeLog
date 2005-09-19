@@ -1,3 +1,7 @@
+2005-09-19 Martin Kutschker <martin.t.kutschker@blackbox.net>
+
+	*  Fixed bug #1287: Detect Opera as Netscape3
+
 2005-09-18 Michael Stucki <michael@typo3.org>
 
 	* If the encryption key is not set, the warning in the backend now contains a link to the according section.
