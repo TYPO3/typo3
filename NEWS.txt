@@ -7,6 +7,11 @@ changelog of things that have been changed/added to TYPO3.
 
 (add more news here...)
 
+2005-09-18 Michael Stucki <michael@typo3.org>
+
+	* Merged fenestgrp extension into Core. This makes it possible to select subgroups for fe_groups. Thanks to Glen Gibb.
+	* Merged ingmar_accessctrl extension into Core. Content elements and pages can now have access for more than only one group. Thanks to Ingmar Schlecht for his nice extension.
+
 2005-08-22 Martin Kutschker <martin.t.kutschker@blackbox.net>
 
 	* GMENU_LAYERS now works with Opera browsers
