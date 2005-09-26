@@ -220,7 +220,7 @@
 
 		// USER
 	var $fe_user='';					// The user (object)
-	var $loginUser='';					// Global falg indicating that a front-end user is logged in. This is set only if a user really IS logged in. The group-list may show other groups (like added by IP filter or so) even though there is no user.
+	var $loginUser='';					// Global flag indicating that a front-end user is logged in. This is set only if a user really IS logged in. The group-list may show other groups (like added by IP filter or so) even though there is no user.
 	var $gr_list='';					// (RO=readonly) The group list, sorted numerically. Group '0,-1' is the default group, but other groups may be added by other means than a user being logged in though...
 	var $beUserLogin='';				// Flag that indicates if a Backend user is logged in!
 	var $loginAllowedInBranch = TRUE;	// Shows whether logins are allowed in branch
