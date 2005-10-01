@@ -1136,39 +1136,64 @@ class tslib_cObj {
 			$renderObjKey = $conf['renderObj'] ? 'renderObj' : '';
 			$renderObjConf = $conf['renderObj.'];
 
-			$res = $this->exec_getQuery($conf['table'],$conf['select.']);
-			if ($error = $GLOBALS['TYPO3_DB']->sql_error())	{
-				$GLOBALS['TT']->setTSlogMessage($error,3);
-			} else {
-				$this->currentRecordTotal = $GLOBALS['TYPO3_DB']->sql_num_rows($res);
-				$GLOBALS['TT']->setTSlogMessage('NUMROWS: '.$GLOBALS['TYPO3_DB']->sql_num_rows($res));
-				$cObj =t3lib_div::makeInstance('tslib_cObj');
-				$cObj->setParent($this->data,$this->currentRecord);
-				$this->currentRecordNumber=0;
-				while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
+			$slide = intval($conf['slide'])?intval($conf['slide']):0;
+			$slideCollect = intval($conf['slide.']['collect'])?intval($conf['slide.']['collect']):0;
+			$slideCollectReverse = intval($conf['slide.']['collectReverse'])?true:false;
+			$slideCollectFuzzy = $slideCollect?(intval($conf['slide.']['collectFuzzy'])?true:false):true;
+			$again = false;
 
-						// Versioning preview:
-					$GLOBALS['TSFE']->sys_page->versionOL($conf['table'],$row);
+			do	{
+				$res = $this->exec_getQuery($conf['table'],$conf['select.']);
+				if ($error = $GLOBALS['TYPO3_DB']->sql_error())	{
+					$GLOBALS['TT']->setTSlogMessage($error,3);
+				} else {
+					$this->currentRecordTotal = $GLOBALS['TYPO3_DB']->sql_num_rows($res);
+					$GLOBALS['TT']->setTSlogMessage('NUMROWS: '.$GLOBALS['TYPO3_DB']->sql_num_rows($res));
+					$cObj =t3lib_div::makeInstance('tslib_cObj');
+					$cObj->setParent($this->data,$this->currentRecord);
+					$this->currentRecordNumber=0;
+					$cobjValue = '';
+					while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
 
-						// Language Overlay:
-					if ($GLOBALS['TSFE']->sys_language_contentOL)	{
-						$row = $GLOBALS['TSFE']->sys_page->getRecordOverlay($conf['table'],$row,$GLOBALS['TSFE']->sys_language_content,$GLOBALS['TSFE']->sys_language_contentOL);
+							// Versioning preview:
+						$GLOBALS['TSFE']->sys_page->versionOL($conf['table'],$row);
+
+							// Language Overlay:
+						if ($GLOBALS['TSFE']->sys_language_contentOL)	{
+							$row = $GLOBALS['TSFE']->sys_page->getRecordOverlay($conf['table'],$row,$GLOBALS['TSFE']->sys_language_content,$GLOBALS['TSFE']->sys_language_contentOL);
+						}
+
+						if (is_array($row))	{	// Might be unset in the sys_language_contentOL
+							if (!$GLOBALS['TSFE']->recordRegister[$conf['table'].':'.$row['uid']])	{
+								$this->currentRecordNumber++;
+								$cObj->parentRecordNumber = $this->currentRecordNumber;
+								$GLOBALS['TSFE']->currentRecord = $conf['table'].':'.$row['uid'];
+								$this->lastChanged($row['tstamp']);
+								$cObj->start($row,$conf['table']);
+								if ($GLOBALS['TSFE']->config['config']['insertDmailerBoundaries'])	{ $cobjValue.='<!--DMAILER_SECTION_BOUNDARY_'.intval($row['module_sys_dmail_category']).'-->'; }
+								$tmpValue = $cObj->cObjGetSingle($renderObjName, $renderObjConf, $renderObjKey);
+								$cobjValue .= $tmpValue;
+							}# else debug($GLOBALS['TSFE']->recordRegister,'CONTENT');
+						}
 					}
-
-					if (is_array($row))	{	// Might be unset in the sys_language_contentOL
-						if (!$GLOBALS['TSFE']->recordRegister[$conf['table'].':'.$row['uid']])	{
-							$this->currentRecordNumber++;
-							$cObj->parentRecordNumber = $this->currentRecordNumber;
-							$GLOBALS['TSFE']->currentRecord = $conf['table'].':'.$row['uid'];
-							$this->lastChanged($row['tstamp']);
-							$cObj->start($row,$conf['table']);
-							if ($GLOBALS['TSFE']->config['config']['insertDmailerBoundaries'])	{ $theValue.='<!--DMAILER_SECTION_BOUNDARY_'.intval($row['module_sys_dmail_category']).'-->'; }
-							$theValue.= $cObj->cObjGetSingle($renderObjName, $renderObjConf, $renderObjKey);
-						}# else debug($GLOBALS['TSFE']->recordRegister,'CONTENT');
-					}
+					if ($GLOBALS['TSFE']->config['config']['insertDmailerBoundaries'])	{ $cobjValue.='<!--DMAILER_SECTION_BOUNDARY_END-->'; }
 				}
-				if ($GLOBALS['TSFE']->config['config']['insertDmailerBoundaries'])	{ $theValue.='<!--DMAILER_SECTION_BOUNDARY_END-->'; }
-			}
+				if ($slideCollectReverse)	{
+					$theValue = $cobjValue.$theValue;
+				} else	{
+					$theValue .= $cobjValue;
+				}
+				if ($slideCollect>0)	{
+					$slideCollect--;
+				}
+				if ($slide)	{
+					if ($slide>0)	{
+						$slide--;
+					}
+					$conf['select.']['pidInList'] = $this->getSlidePids($conf['select.']['pidInList'], $conf['select.']['pidInList.']);
+					$again = strlen($conf['select.']['pidInList'])?true:false;
+				}
+			} while ($again&&(($slide&&!strlen($tmpValue)&&$slideCollectFuzzy)||($slide&&$slideCollect)));
 		}
 
 		$theValue = $this->wrap($theValue,$conf['wrap']);
@@ -2416,6 +2441,36 @@ class tslib_cObj {
 	 * Various helper functions for content objects:
 	 *
 	 ************************************/
+
+	/**
+	 * Returns all parents of the given PID (Page UID) list
+	 *
+	 * @param	string		A list of page Content-Element PIDs (Page UIDs) / stdWrap
+	 * @param	array		stdWrap array for the list
+	 * @return	string		A list of PIDs
+	 * @access private
+	 */
+	function getSlidePids($pidList, $pidConf)	{
+		$pidList = trim($this->stdWrap($pidList,$pidConf));
+		if (!strcmp($pidList,''))	{
+			$pidList = 'this';
+		}
+		if (trim($pidList))	{
+			$listArr = t3lib_div::intExplode(',',str_replace('this',$GLOBALS['TSFE']->contentPid,$pidList));
+			$listArr = $this->checkPidArray($listArr);
+		}
+		$pidList = array();
+		if (is_array($listArr)&&count($listArr))	{
+			foreach ($listArr as $uid)	{
+				$page = $GLOBALS['TSFE']->sys_page->getPage($uid);
+				if (!$page['is_siteroot'])	{
+					$pidList[] = $page['pid'];
+				}
+			}
+		}
+		return implode(',', $pidList);
+	}
+
 
 	/**
 	 * Creates a link to a netprint application on another website (where the "netprint" extension is running")

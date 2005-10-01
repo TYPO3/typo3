@@ -2152,7 +2152,16 @@ class t3lib_TCEforms	{
 								'defaultExtras' => $value['TCEforms']['defaultExtras'],
 								'displayCond' => $value['TCEforms']['displayCond'],	// Haven't tested this...
 							);
+							if (
+									(($GLOBALS['TCA'][$table]['ctrl']['type'] && !strcmp($key,$GLOBALS['TCA'][$table]['ctrl']['type'])) ||
+									($GLOBALS['TCA'][$table]['ctrl']['requestUpdate'] && t3lib_div::inList($GLOBALS['TCA'][$table]['ctrl']['requestUpdate'],$key)))
+									&& !$GLOBALS['BE_USER']->uc['noOnChangeAlertInTypeFields'])	{
+								$alertMsgOnChange = 'if (confirm('.$GLOBALS['LANG']->JScharCode($this->getLL('m_onChangeAlert')).') && TBE_EDITOR_checkSubmit(-1)){ TBE_EDITOR_submitForm() };';
+							} else {$alertMsgOnChange='';}
 							$fakePA['fieldChangeFunc']=$PA['fieldChangeFunc'];
+							if (strlen($alertMsgOnChange))	{
+								$fakePA['fieldChangeFunc']['alert']=$alertMsgOnChange;
+							}
 							$fakePA['onFocus']=$PA['onFocus'];
 							$fakePA['label']==$PA['label'];
 

@@ -1,3 +1,9 @@
+2005-10-02 Bernhard Kraft  <kraftb@kraftb.at>
+
+	* Integrated content-slide extension into core
+	(http://wiki.typo3.org/index.php/Extensions_for_the_core)
+	* Implemented "requestUpdate" feature of TCEforms for Flexform fields
+
 2005-09-19 Martin Kutschker <martin.t.kutschker@blackbox.net>
 
 	*  Fixed bug #1287: Detect Opera as Netscape3 (making image roll-overs work)
