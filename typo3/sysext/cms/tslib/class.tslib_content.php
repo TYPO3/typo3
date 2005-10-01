@@ -1139,7 +1139,7 @@ class tslib_cObj {
 			$res = $this->exec_getQuery($conf['table'],$conf['select.']);
 			if ($error = $GLOBALS['TYPO3_DB']->sql_error())	{
 				$GLOBALS['TT']->setTSlogMessage($error,3);
-			} else	{
+			} else {
 				$this->currentRecordTotal = $GLOBALS['TYPO3_DB']->sql_num_rows($res);
 				$GLOBALS['TT']->setTSlogMessage('NUMROWS: '.$GLOBALS['TYPO3_DB']->sql_num_rows($res));
 				$cObj =t3lib_div::makeInstance('tslib_cObj');
