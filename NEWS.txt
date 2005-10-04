@@ -1,27 +1,23 @@
-************************************************************************
-CHANGES & IMPROVEMENTS in TYPO3
-
-Intended to provide an overview of new features, it's a less technical
-changelog of things that have been changed/added to TYPO3.
-************************************************************************
-
-(add more news here...)
-
-2005-09-18 Michael Stucki <michael@typo3.org>
-
-	* Merged fenestgrp extension into Core. This makes it possible to select subgroups for fe_groups. Thanks to Glen Gibb.
-	* Merged ingmar_accessctrl extension into Core. Content elements and pages can now have access for more than only one group. Thanks to Ingmar Schlecht for his nice extension.
-
-2005-08-22 Martin Kutschker <martin.t.kutschker@blackbox.net>
-
-	* GMENU_LAYERS now works with Opera browsers
-
-2005-07-02  Michael Stucki  <michael@typo3.org>
-
-	* Security fix: A debug script exposed system information provided by phpinfo(). For details, see http://typo3.org/teams/security/security-bulletins/typo3-20050725-1/
 
 ************************************************************************
+CHANGES & IMPROVEMENTS in TYPO3 4.0
+(for technical details see ChangeLog)
+************************************************************************
 
-2005-05-23  Michael Stucki  <michael@typo3.org>
+Access Control:
+---------------
 
-	* Release of TYPO3 3.8.0
+	* FE-groups are now nested and content elements and pages can have more than one group (Michael Stucki <michael@typo3.org> integrating extension "fenestgrp" by Glen Gibb and extension "ingmar_accessctrl" by Ingmar Schlecht)
+
+Compatibility
+------------
+
+	* GMENU_LAYERS and TMENU_LAYERS and image rollovers now work with Opera browsers (Martin Kutschker <martin.t.kutschker@blackbox.net>)
+
+2005-07-02  
+
+Security:
+---------
+
+	* A debug script exposed system information provided by phpinfo(). For details, see http://typo3.org /teams/security/security-bulletins/typo3-20050725-1/ (Michael Stucki <michael@typo3.org>)
+
