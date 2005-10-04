@@ -1697,7 +1697,7 @@ class t3lib_cs {
 	 */
 	function utf8_strpos($haystack,$needle,$offset=0)	{
 		if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['t3lib_cs_utils'] == 'mbstring')	{
-			return mb_strpos($haystack,$needle,'utf-8');
+			return mb_strpos($haystack,$needle,$offset,'utf-8');
 		}
 
 		$byte_offset = $this->utf8_char2byte_pos($haystack,$offset);
