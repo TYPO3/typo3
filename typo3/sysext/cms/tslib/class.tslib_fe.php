@@ -1536,6 +1536,8 @@
 	 * @return	void
 	 */
 	function getConfigArray()	{
+		$setStatPageName = false;
+
 		if (!is_array($this->config) || is_array($this->config['INTincScript']) || $this->forceTemplateParsing)	{	// If config is not set by the cache (which would be a major mistake somewhere) OR if INTincScripts-include-scripts have been registered, then we must parse the template in order to get it
 				$GLOBALS['TT']->push('Parse template','');
 
@@ -1585,17 +1587,9 @@
 					if ($this->config['config']['stat_apache'] && $this->config['config']['stat_apache_logfile'] && !strstr($this->config['config']['stat_apache_logfile'],'/'))	{
 						if(t3lib_div::isAllowedAbsPath($theLogFile) && @is_file($theLogFile) && @is_writable($theLogFile))	{
 							$this->config['stat_vars']['logFile'] = $theLogFile;
-							$shortTitle = substr(ereg_replace('[^\.[:alnum:]_-]','_',$this->page['title']),0,30);
-							$pageName = $this->config['config']['stat_apache_pagenames'] ? $this->config['config']['stat_apache_pagenames'] : '[path][title]--[uid].html';
-							$pageName = str_replace('[title]', $shortTitle ,$pageName);
-							$pageName = str_replace('[uid]',$this->page['uid'],$pageName);
-							$pageName = str_replace('[alias]',$this->page['alias'],$pageName);
-							$pageName = str_replace('[type]',$this->page['type'],$pageName);
-							$temp = $this->config['rootLine'];
-							array_pop($temp);
-							$len = t3lib_div::intInRange($this->config['config']['stat_titleLen'],1,100,20);
-							$pageName = str_replace('[path]', ereg_replace('[^\.[:alnum:]\/_-]','_',$this->sys_page->getPathFromRootline($temp,$len)).'/' ,$pageName);
-							$this->config['stat_vars']['pageName'] = $pageName;
+
+								// set page name later on
+							$setStatPageName = true;
 						} else {
 							$GLOBALS['TT']->setTSlogMessage('Could not set logfile path. Check filepath and permissions.',3);
 						}
@@ -1612,6 +1606,29 @@
 
 			// Initialize charset settings etc.
 		$this->initLLvars();
+
+			// We want nice names, so we need to know the charset
+		if ($setStatPageName)	{
+			if ($this->config['config']['stat_apache_niceTitle'])   {
+				$shortTitle = $this->csConvObj->specCharsToASCII($this->renderCharset,$this->page['title']);
+			} else {
+				$shortTitle = $this->page['title'];
+			}
+			$shortTitle = substr(preg_replace('/[^.[:alnum:]_-]/','_',$shortTitle),0,30);
+			$pageName = $this->config['config']['stat_apache_pagenames'] ? $this->config['config']['stat_apache_pagenames'] : '[path][title]--[uid].html';
+			$pageName = str_replace('[title]', $shortTitle ,$pageName);
+			$pageName = str_replace('[uid]',$this->page['uid'],$pageName);
+			$pageName = str_replace('[alias]',$this->page['alias'],$pageName);
+			$pageName = str_replace('[type]',$this->page['type'],$pageName);
+			$temp = $this->config['rootLine'];
+			array_pop($temp);
+			if ($this->config['config']['stat_apache_noRoot'])	{
+				array_shift($temp);
+			}
+			$len = t3lib_div::intInRange($this->config['config']['stat_titleLen'],1,100,20);
+			$pageName = str_replace('[path]', preg_replace('/[^.[:alnum:]\/_-]/','_',$this->sys_page->getPathFromRootline($temp,$len)).'/' ,$pageName);
+			$this->config['stat_vars']['pageName'] = $pageName;
+		}
 
 			// No cache
 		if ($this->config['config']['no_cache'])	{ $this->set_no_cache(); }		// Set $this->no_cache true if the config.no_cache value is set!

@@ -1,3 +1,9 @@
+
+2005-10-04 Martin Kutschker <martin.t.kutschker@blackbox.net>
+
+	* Fixed bug #1152: allow for nice filenames in Apache stat file (config.stat_apache_niceTitle)
+	* optionally remove the site root from the Apache stat file path (config.stat_apache_noRoot)
+
 2005-10-02 Bernhard Kraft  <kraftb@kraftb.at>
 
 	* Integrated content-slide extension into core
@@ -6,7 +12,7 @@
 
 2005-09-19 Martin Kutschker <martin.t.kutschker@blackbox.net>
 
-	*  Fixed bug #1287: Detect Opera as Netscape3 (making image roll-overs work)
+	* Fixed bug #1287: Detect Opera as Netscape3 (making image roll-overs work)
 
 2005-09-18 Michael Stucki <michael@typo3.org>
 
