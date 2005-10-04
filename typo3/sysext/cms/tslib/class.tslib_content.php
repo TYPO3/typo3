@@ -1142,53 +1142,53 @@ class tslib_cObj {
 			$slideCollectFuzzy = $slideCollect?(intval($conf['slide.']['collectFuzzy'])?true:false):true;
 			$again = false;
 
-			do	{
-				$res = $this->exec_getQuery($conf['table'],$conf['select.']);
-				if ($error = $GLOBALS['TYPO3_DB']->sql_error())	{
-					$GLOBALS['TT']->setTSlogMessage($error,3);
-				} else {
-					$this->currentRecordTotal = $GLOBALS['TYPO3_DB']->sql_num_rows($res);
-					$GLOBALS['TT']->setTSlogMessage('NUMROWS: '.$GLOBALS['TYPO3_DB']->sql_num_rows($res));
-					$cObj =t3lib_div::makeInstance('tslib_cObj');
-					$cObj->setParent($this->data,$this->currentRecord);
-					$this->currentRecordNumber=0;
-					$cobjValue = '';
-					while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
+   do {
+    $res = $this->exec_getQuery($conf['table'],$conf['select.']);
+    if ($error = $GLOBALS['TYPO3_DB']->sql_error()) {
+     $GLOBALS['TT']->setTSlogMessage($error,3);
+    } else {
+     $this->currentRecordTotal = $GLOBALS['TYPO3_DB']->sql_num_rows($res);
+     $GLOBALS['TT']->setTSlogMessage('NUMROWS: '.$GLOBALS['TYPO3_DB']->sql_num_rows($res));
+     $cObj =t3lib_div::makeInstance('tslib_cObj');
+     $cObj->setParent($this->data,$this->currentRecord);
+     $this->currentRecordNumber=0;
+     $cobjValue = '';
+     while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 
-							// Versioning preview:
-						$GLOBALS['TSFE']->sys_page->versionOL($conf['table'],$row);
+       // Versioning preview:
+      $GLOBALS['TSFE']->sys_page->versionOL($conf['table'],$row);
 
-							// Language Overlay:
-						if ($GLOBALS['TSFE']->sys_language_contentOL)	{
-							$row = $GLOBALS['TSFE']->sys_page->getRecordOverlay($conf['table'],$row,$GLOBALS['TSFE']->sys_language_content,$GLOBALS['TSFE']->sys_language_contentOL);
-						}
+       // Language Overlay:
+      if (is_array($row) && $GLOBALS['TSFE']->sys_language_contentOL) {
+       $row = $GLOBALS['TSFE']->sys_page->getRecordOverlay($conf['table'],$row,$GLOBALS['TSFE']->sys_language_content,$GLOBALS['TSFE']->sys_language_contentOL);
+      }
 
-						if (is_array($row))	{	// Might be unset in the sys_language_contentOL
-							if (!$GLOBALS['TSFE']->recordRegister[$conf['table'].':'.$row['uid']])	{
-								$this->currentRecordNumber++;
-								$cObj->parentRecordNumber = $this->currentRecordNumber;
-								$GLOBALS['TSFE']->currentRecord = $conf['table'].':'.$row['uid'];
-								$this->lastChanged($row['tstamp']);
-								$cObj->start($row,$conf['table']);
-								if ($GLOBALS['TSFE']->config['config']['insertDmailerBoundaries'])	{ $cobjValue.='<!--DMAILER_SECTION_BOUNDARY_'.intval($row['module_sys_dmail_category']).'-->'; }
-								$tmpValue = $cObj->cObjGetSingle($renderObjName, $renderObjConf, $renderObjKey);
-								$cobjValue .= $tmpValue;
-							}# else debug($GLOBALS['TSFE']->recordRegister,'CONTENT');
-						}
-					}
-					if ($GLOBALS['TSFE']->config['config']['insertDmailerBoundaries'])	{ $cobjValue.='<!--DMAILER_SECTION_BOUNDARY_END-->'; }
-				}
-				if ($slideCollectReverse)	{
-					$theValue = $cobjValue.$theValue;
-				} else	{
-					$theValue .= $cobjValue;
-				}
-				if ($slideCollect>0)	{
-					$slideCollect--;
-				}
-				if ($slide)	{
-					if ($slide>0)	{
-						$slide--;
+      if (is_array($row)) { // Might be unset in the sys_language_contentOL
+       if (!$GLOBALS['TSFE']->recordRegister[$conf['table'].':'.$row['uid']]) {
+        $this->currentRecordNumber++;
+        $cObj->parentRecordNumber = $this->currentRecordNumber;
+        $GLOBALS['TSFE']->currentRecord = $conf['table'].':'.$row['uid'];
+        $this->lastChanged($row['tstamp']);
+        $cObj->start($row,$conf['table']);
+        if ($GLOBALS['TSFE']->config['config']['insertDmailerBoundaries']) { $cobjValue.='<!--DMAILER_SECTION_BOUNDARY_'.intval($row['module_sys_dmail_category']).'-->'; }
+        $tmpValue = $cObj->cObjGetSingle($renderObjName, $renderObjConf, $renderObjKey);
+        $cobjValue .= $tmpValue;
+       }# else debug($GLOBALS['TSFE']->recordRegister,'CONTENT');
+      }
+     }
+     if ($GLOBALS['TSFE']->config['config']['insertDmailerBoundaries']) { $cobjValue.='<!--DMAILER_SECTION_BOUNDARY_END-->'; }
+    }
+    if ($slideCollectReverse) {
+     $theValue = $cobjValue.$theValue;
+    } else {
+     $theValue .= $cobjValue;
+    }
+    if ($slideCollect>0) {
+     $slideCollect--;
+    }
+    if ($slide) {
+     if ($slide>0) {
+      $slide--;
 					}
 					$conf['select.']['pidInList'] = $this->getSlidePids($conf['select.']['pidInList'], $conf['select.']['pidInList.']);
 					$again = strlen($conf['select.']['pidInList'])?true:false;
@@ -1253,7 +1253,7 @@ class tslib_cObj {
 				$GLOBALS['TSFE']->sys_page->versionOL($val['table'],$row);
 
 					// Language Overlay:
-				if ($GLOBALS['TSFE']->sys_language_contentOL)	{
+				if (is_array($row) && $GLOBALS['TSFE']->sys_language_contentOL)	{
 					$row = $GLOBALS['TSFE']->sys_page->getRecordOverlay($val['table'],$row,$GLOBALS['TSFE']->sys_language_content,$GLOBALS['TSFE']->sys_language_contentOL);
 				}
 
@@ -2134,6 +2134,7 @@ class tslib_cObj {
 				$cObj->setParent($this->data,$this->currentRecord);
 				$renderCode='';
 				while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($search->result))	{
+						// versionOL() here? This is search result displays, is that possible to preview anyway? Or are records selected here already future versions?
 					$cObj->start($row);
 					$renderCode.=$cObj->cObjGetSingle($conf['renderObj'], $conf['renderObj.'],'renderObj');
 				}
@@ -6088,7 +6089,7 @@ class tslib_cObj {
 	function getTreeList($id,$depth,$begin=0,$dontCheckEnableFields=FALSE,$addSelectFields='',$moreWhereClauses='', $prevId_array=array(), $recursionLevel=0)	{
 
 			// Init vars:
-		$allFields = 'uid,hidden,starttime,endtime,fe_group,extendToSubpages,doktype,php_tree_stop,mount_pid,mount_pid_ol'.$addSelectFields;
+		$allFields = 'uid,hidden,starttime,endtime,fe_group,extendToSubpages,doktype,php_tree_stop,mount_pid,mount_pid_ol,t3ver_state'.$addSelectFields;
 		$depth = intval($depth);
 		$begin = intval($begin);
 		$id = intval($id);
@@ -6125,37 +6126,43 @@ class tslib_cObj {
 
 				// Select sublevel:
 			if ($depth>0)	{
-				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($allFields, 'pages', 'pid='.intval($id).' AND deleted=0 AND doktype!=255 AND doktype!=6'.$moreWhereClauses, '' ,'sorting');
+				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($allFields, 'pages', 'pid='.intval($id).' AND deleted=0'.$moreWhereClauses, '' ,'sorting');
 				while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
-#??				$GLOBALS['TSFE']->sys_page->versionOL('pages',$row);
+					$GLOBALS['TSFE']->sys_page->versionOL('pages',$row);
 
-						// Find mount point if any:
-					$next_id = $row['uid'];
-					$mount_info = $GLOBALS['TSFE']->sys_page->getMountPointInfo($next_id, $row);
-						// Overlay mode:
-					if (is_array($mount_info) && $mount_info['overlay'])	{
-						$next_id = $mount_info['mount_pid'];
-						$res2 = $GLOBALS['TYPO3_DB']->exec_SELECTquery($allFields, 'pages', 'uid='.intval($next_id).' AND deleted=0 AND doktype!=255 AND doktype!=6'.$moreWhereClauses, '' ,'sorting');
-						$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res2);
-#??						$GLOBALS['TSFE']->sys_page->versionOL('pages',$row);
-					}
-						// Add record:
-					if (is_array($row) && ($dontCheckEnableFields || $GLOBALS['TSFE']->checkPagerecordForIncludeSection($row)))	{
-							// Add ID to list:
-						if ($begin<=0)	{
-							if ($dontCheckEnableFields || $GLOBALS['TSFE']->checkEnableFields($row))	{
-								$theList.= $next_id.',';
-							}
+					if ($row['doktype']==255 || $row['doktype']==6 || $row['t3ver_state']==1)	{ unset($row); }	// Doing this after the overlay to make sure changes in the overlay are respected.
+
+					if (is_array($row))	{
+							// Find mount point if any:
+						$next_id = $row['uid'];
+						$mount_info = $GLOBALS['TSFE']->sys_page->getMountPointInfo($next_id, $row);
+							// Overlay mode:
+						if (is_array($mount_info) && $mount_info['overlay'])	{
+							$next_id = $mount_info['mount_pid'];
+							$res2 = $GLOBALS['TYPO3_DB']->exec_SELECTquery($allFields, 'pages', 'uid='.intval($next_id).' AND deleted=0'.$moreWhereClauses, '' ,'sorting');
+							$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res2);
+							$GLOBALS['TSFE']->sys_page->versionOL('pages',$row);
+
+							if ($row['doktype']==255 || $row['doktype']==6 || $row['t3ver_state']==1)	{ unset($row); }	// Doing this after the overlay to make sure changes in the overlay are respected.
 						}
-							// Next level:
-						if ($depth>1 && !$row['php_tree_stop'])	{
-								// Normal mode:
-							if (is_array($mount_info) && !$mount_info['overlay'])	{
-								$next_id = $mount_info['mount_pid'];
+							// Add record:
+						if (is_array($row) && ($dontCheckEnableFields || $GLOBALS['TSFE']->checkPagerecordForIncludeSection($row)))	{
+								// Add ID to list:
+							if ($begin<=0)	{
+								if ($dontCheckEnableFields || $GLOBALS['TSFE']->checkEnableFields($row))	{
+									$theList.= $next_id.',';
+								}
 							}
-								// Call recursively, if the id is not in prevID_array:
-							if (!in_array($next_id,$prevId_array))	{
-								$theList.= tslib_cObj::getTreeList($next_id, $depth-1, $begin-1, $dontCheckEnableFields, $addSelectFields, $moreWhereClauses, $prevId_array, $recursionLevel+1);
+								// Next level:
+							if ($depth>1 && !$row['php_tree_stop'])	{
+									// Normal mode:
+								if (is_array($mount_info) && !$mount_info['overlay'])	{
+									$next_id = $mount_info['mount_pid'];
+								}
+									// Call recursively, if the id is not in prevID_array:
+								if (!in_array($next_id,$prevId_array))	{
+									$theList.= tslib_cObj::getTreeList($next_id, $depth-1, $begin-1, $dontCheckEnableFields, $addSelectFields, $moreWhereClauses, $prevId_array, $recursionLevel+1);
+								}
 							}
 						}
 					}

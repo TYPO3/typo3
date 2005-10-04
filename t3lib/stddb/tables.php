@@ -140,7 +140,8 @@ $TCA['pages'] = Array (
 		'sortby' => 'sorting',
 		'title' => 'LLL:EXT:lang/locallang_tca.php:pages',
 		'type' => 'doktype',
-		'versioning' => TRUE,
+		'versioningWS' => TRUE,
+		'origUid' => 't3_origuid',
 		'delete' => 'deleted',
 		'crdate' => 'crdate',
 		'hideAtCopy' => 1,
@@ -339,6 +340,24 @@ $TCA['sys_filemounts'] = Array (
 );
 
 /**
+ * Table "sys_filemounts":
+ * Defines filepaths on the server which can be mounted for users so they can upload and manage files online by eg. the Filelist module
+ * This is only the 'header' part (ctrl). The full configuration is found in t3lib/stddb/tbl_be.php
+ */
+$TCA['sys_workspace'] = Array (
+	'ctrl' => Array (
+		'label' => 'title',
+		'tstamp' => 'tstamp',
+		'title' => 'LLL:EXT:lang/locallang_tca.php:sys_workspace',
+		'adminOnly' => 1,
+		'rootLevel' => 1,
+		'delete' => 'deleted',
+		'iconfile' => 'sys_workspace.png',
+		'dynamicConfigFile' => 'T3LIB:tbl_be.php'
+	)
+);
+
+/**
  * Table "sys_languages":
  * Defines possible languages used for translation of records in the system
  * This is only the 'header' part (ctrl). The full configuration is found in t3lib/stddb/tbl_be.php
@@ -378,7 +397,7 @@ $TBE_MODULES = Array (
 	'web' => 'list,info,perm,func',
 	'file' => 'list',
 	'doc' => '',	// This should always be empty!
-	'user' => '',
+	'user' => 'ws',
 	'tools' => 'em',
 	'help' => 'about,cshmanual'
 );
@@ -407,6 +426,7 @@ t3lib_extMgm::addLLrefForTCAdescr('be_users','EXT:lang/locallang_csh_be_users.xm
 t3lib_extMgm::addLLrefForTCAdescr('be_groups','EXT:lang/locallang_csh_be_groups.xml');
 t3lib_extMgm::addLLrefForTCAdescr('sys_filemounts','EXT:lang/locallang_csh_sysfilem.xml');
 t3lib_extMgm::addLLrefForTCAdescr('sys_language','EXT:lang/locallang_csh_syslang.xml');
+t3lib_extMgm::addLLrefForTCAdescr('sys_workspace','EXT:lang/locallang_csh_sysws.xml');
 t3lib_extMgm::addLLrefForTCAdescr('xMOD_csh_corebe','EXT:lang/locallang_csh_corebe.xml');	// General Core
 t3lib_extMgm::addLLrefForTCAdescr('_MOD_tools_em','EXT:lang/locallang_csh_em.xml');		// Extension manager
 t3lib_extMgm::addLLrefForTCAdescr('_MOD_web_info','EXT:lang/locallang_csh_web_info.xml');		// Web > Info

@@ -71,7 +71,7 @@ class t3lib_diff {
 
 		// Internal, dynamic:
 	var $clearBufferIdx=0;		// This indicates the number of times the function addClearBuffer has been called - and used to detect the very first call...
-
+	var $differenceLgd=0;
 
 
 
@@ -80,9 +80,10 @@ class t3lib_diff {
 	 *
 	 * @param	string		String 1
 	 * @param	string		String 2
+	 * @param	string		Setting the wrapping tag name
 	 * @return	string		Formatted output.
 	 */
-	function makeDiffDisplay($str1,$str2)	{
+	function makeDiffDisplay($str1,$str2,$wrapTag='span')	{
 		if ($this->stripTags)	{
 			$str1 = strip_tags($str1);
 			$str2 = strip_tags($str2);
@@ -99,18 +100,21 @@ class t3lib_diff {
 			reset($diffRes);
 			$c=0;
 			$diffResArray=array();
+			$differenceStr = '';
 			while(list(,$lValue)=each($diffRes))	{
 				if (intval($lValue))	{
 					$c=intval($lValue);
 					$diffResArray[$c]['changeInfo']=$lValue;
 				}
 				if (substr($lValue,0,1)=='<')	{
-					$diffResArray[$c]['old'][]=substr($lValue,2);
+					$differenceStr.= $diffResArray[$c]['old'][] = substr($lValue,2);
 				}
 				if (substr($lValue,0,1)=='>')	{
-					$diffResArray[$c]['new'][]=substr($lValue,2);
+					$differenceStr.= $diffResArray[$c]['new'][] = substr($lValue,2);
 				}
 			}
+
+			$this->differenceLgd = strlen($differenceStr);
 
 			$outString='';
 			$clearBuffer='';
@@ -123,10 +127,10 @@ class t3lib_diff {
 					$outString.=$this->addClearBuffer($clearBuffer);
 					$clearBuffer='';
 					if (is_array($diffResArray[$a+1]['old']))	{
-						$outString.='<span class="diff-r">'.htmlspecialchars(implode(' ',$diffResArray[$a+1]['old'])).'</span> ';
+						$outString.='<'.$wrapTag.' class="diff-r">'.htmlspecialchars(implode(' ',$diffResArray[$a+1]['old'])).'</'.$wrapTag.'> ';
 					}
 					if (is_array($diffResArray[$a+1]['new']))	{
-						$outString.='<span class="diff-g">'.htmlspecialchars(implode(' ',$diffResArray[$a+1]['new'])).'</span> ';
+						$outString.='<'.$wrapTag.' class="diff-g">'.htmlspecialchars(implode(' ',$diffResArray[$a+1]['new'])).'</'.$wrapTag.'> ';
 					}
 					$chInfParts = explode(',',$diffResArray[$a+1]['changeInfo']);
 					if (!strcmp($chInfParts[0],$a+1))	{

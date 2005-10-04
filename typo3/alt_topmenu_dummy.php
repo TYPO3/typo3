@@ -87,6 +87,7 @@ class SC_alt_topmenu_dummy {
 
 				// Loading the modules for this backend user:
 			$loadModules = t3lib_div::makeInstance('t3lib_loadModules');
+			$loadModules->observeWorkspaces = TRUE;
 			$loadModules->load($TBE_MODULES);
 
 				// Creating menu object:

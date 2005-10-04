@@ -137,7 +137,7 @@ class clickMenu {
 	var $listFrame=0;			// If set, the calling document should be in the listframe of a frameset.
 	var $isDBmenu=0;			// If set, the menu is about database records, not files. (set if part 2 [1] of the item-var is NOT blank)
 	var $alwaysContentFrame=0;	// If true, the "content" frame is always used for reference (when condensed mode is enabled)
-	var $iParts=array();		// Stores the parts of the input $item string, splitted by "|": [0] = table/file, [1] = uid/blank, [2] = flag: If set, listFrame, [3] = ("+" prefix = disable all by default, enable these. Default is to disable) Items key list
+	var $iParts=array();		// Stores the parts of the input $item string, splitted by "|": [0] = table/file, [1] = uid/blank, [2] = flag: If set, listFrame, If "2" then "content frame" is forced  [3] = ("+" prefix = disable all by default, enable these. Default is to disable) Items key list
 	var $disabledItems=array();	// Contains list of keywords of items to disable in the menu
 	var $dontDisplayTopFrameCM=0;	// If true, the context sensitive menu will not appear in the top frame, only as a layer.
 	var $leftIcons=0;			// If true, Show icons on the left.
@@ -169,7 +169,7 @@ class clickMenu {
 
 			// Setting flags:
 		if ($this->iParts[2])	$this->listFrame=1;
-		if ($GLOBALS['BE_USER']->uc['condensedMode']) $this->alwaysContentFrame=1;
+		if ($GLOBALS['BE_USER']->uc['condensedMode'] || $this->iParts[2]==2) $this->alwaysContentFrame=1;
 		if (strcmp($this->iParts[1],''))	$this->isDBmenu=1;
 
 		$TSkey =($this->isDBmenu?'page':'folder').($this->listFrame?'List':'Tree');

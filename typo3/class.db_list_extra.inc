@@ -359,8 +359,10 @@ class localRecordList extends recordList {
 		if ($TCA[$table]['ctrl']['typeicon_column'])	{
 			$selectFields[] = $TCA[$table]['ctrl']['typeicon_column'];
 		}
-		if ($TCA[$table]['ctrl']['versioning'])	{
+		if ($TCA[$table]['ctrl']['versioningWS'])	{
 			$selectFields[] = 't3ver_id';
+			$selectFields[] = 't3ver_state';
+			$selectFields[] = 't3ver_swapmode';		// Filtered out when pages in makeFieldList()
 		}
 		if ($l10nEnabled)	{
 			$selectFields[] = $TCA[$table]['ctrl']['languageField'];
@@ -478,7 +480,7 @@ class localRecordList extends recordList {
 						// If render item, increment counter and call function
 					if ($flag)	{
 						$cc++;
-						$iOut.=$this->renderListRow($table,$row,$cc,$titleCol,$thumbsCol);
+						$iOut.= $this->renderListRow($table,$row,$cc,$titleCol,$thumbsCol);
 
 							// If localization view is enabled it means that the selected records are either default or All language and here we will not select translations which point to the main record:
 						if ($this->localizationView && $l10nEnabled)	{
@@ -495,7 +497,9 @@ class localRecordList extends recordList {
 
 								// For each available translation, render the record:
 							foreach($translations as $lRow)	{
-								$iOut.=$this->renderListRow($table,$lRow,$cc,$titleCol,$thumbsCol,18);
+								if ($GLOBALS['BE_USER']->checkLanguageAccess($lRow[$TCA[$table]['ctrl']['languageField']]))	{
+									$iOut.=$this->renderListRow($table,$lRow,$cc,$titleCol,$thumbsCol,18);
+								}
 							}
 						}
 					}
@@ -547,11 +551,17 @@ class localRecordList extends recordList {
 	function renderListRow($table,$row,$cc,$titleCol,$thumbsCol,$indent=0)	{
 		$iOut = '';
 
+			// In offline workspace, look for alternative record:
+		t3lib_BEfunc::workspaceOL($table, $row, $GLOBALS['BE_USER']->workspace);
+
 			// Background color, if any:
 		$row_bgColor=
 			$this->alternateBgColors ?
 			(($cc%2)?'' :' bgcolor="'.t3lib_div::modifyHTMLColor($GLOBALS['SOBE']->doc->bgColor4,+10,+10,+10).'"') :
 			'';
+
+			// Overriding with versions background color if any:
+		$row_bgColor = $row['_CSSCLASS'] ? ' class="'.$row['_CSSCLASS'].'"' : $row_bgColor;
 
 			// Initialization
 		$alttext = t3lib_BEfunc::getRecordIconAltText($row,$table);
@@ -829,7 +839,7 @@ class localRecordList extends recordList {
 
 					// Versioning:
 				if (t3lib_extMgm::isLoaded('version'))	{
-					$vers = t3lib_BEfunc::selectVersionsOfRecord($table, $row['uid'], $fields='uid');
+					$vers = t3lib_BEfunc::selectVersionsOfRecord($table, $row['uid'], 'uid', $GLOBALS['BE_USER']->workspace);
 					if (is_array($vers))	{	// If table can be versionized.
 						if (count($vers)>1)	{
 							$st = 'background-color: #FFFF00; font-weight: bold;';
@@ -1063,8 +1073,11 @@ class localRecordList extends recordList {
 					// Traverse page translations and add icon for each language that does NOT yet exist:
 				$lNew = '';
 				foreach($this->pageOverlays as $lUid_OnPage => $lsysRec)	{
-					if (!isset($translations[$lUid_OnPage]))	{
-						$href = $GLOBALS['TBE_TEMPLATE']->issueCommand('&cmd['.$table.']['.$row['uid'].'][localize]='.$lUid_OnPage,$rUrl='');
+					if (!isset($translations[$lUid_OnPage]) && $GLOBALS['BE_USER']->checkLanguageAccess($lUid_OnPage))	{
+						$href = $GLOBALS['TBE_TEMPLATE']->issueCommand(
+							'&cmd['.$table.']['.$row['uid'].'][localize]='.$lUid_OnPage,
+							$this->listURL().'&justLocalized='.rawurlencode($table.':'.$row['uid'].':'.$lUid_OnPage)
+						);
 
 						$lC = ($this->languageIconTitles[$lUid_OnPage]['flagIcon'] ? '<img src="'.$this->languageIconTitles[$lUid_OnPage]['flagIcon'].'" class="absmiddle" alt="" />' : $this->languageIconTitles[$lUid_OnPage]['title']);
 						$lC = '<a href="'.htmlspecialchars($href).'">'.$lC.'</a> ';

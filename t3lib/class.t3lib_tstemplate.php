@@ -207,7 +207,7 @@ class t3lib_TStemplate	{
 	 * @see tslib_fe::initTemplate()
 	 */
 	function init()	{
-	 		// $this->whereClause is used only to select templates from sys_template.
+			// $this->whereClause is used only to select templates from sys_template.
 			// $GLOBALS['SIM_EXEC_TIME'] is used so that we're able to simulate a later time as a test...
 		$this->whereClause='AND deleted=0 ';
 		if (!$GLOBALS['TSFE']->showHiddenRecords)	{
@@ -416,8 +416,11 @@ class t3lib_TStemplate	{
 				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'sys_template', 'uid='.intval($this->nextLevel).' '.$this->whereClause);
 				$this->nextLevel = 0;
 				if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
-					$this->processTemplate($row,'sys_'.$row['uid'],$this->absoluteRootLine[$a]['uid'],'sys_'.$row['uid']);
-					$this->outermostRootlineIndexWithTemplate=$a;
+					$this->versionOL($row);
+					if (is_array($row))	{
+						$this->processTemplate($row,'sys_'.$row['uid'],$this->absoluteRootLine[$a]['uid'],'sys_'.$row['uid']);
+						$this->outermostRootlineIndexWithTemplate=$a;
+					}
 				}
 				$GLOBALS['TYPO3_DB']->sql_free_result($res);
 			}
@@ -428,8 +431,11 @@ class t3lib_TStemplate	{
 
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'sys_template', 'pid='.intval($this->absoluteRootLine[$a]['uid']).$addC.' '.$this->whereClause,'','sorting',1);
 			if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
-				$this->processTemplate($row,'sys_'.$row['uid'],$this->absoluteRootLine[$a]['uid'],'sys_'.$row['uid']);
-				$this->outermostRootlineIndexWithTemplate=$a;
+				$this->versionOL($row);
+				if (is_array($row))	{
+					$this->processTemplate($row,'sys_'.$row['uid'],$this->absoluteRootLine[$a]['uid'],'sys_'.$row['uid']);
+					$this->outermostRootlineIndexWithTemplate=$a;
+				}
 			}
 			$GLOBALS['TYPO3_DB']->sql_free_result($res);
 			$this->rootLine[] = $this->absoluteRootLine[$a];
@@ -486,7 +492,10 @@ class t3lib_TStemplate	{
 				if ($id && !t3lib_div::inList($idList,'sys_'.$id))	{	// if $id is not allready included ...
 					$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'sys_template', 'uid='.$id.' '.$this->whereClause);
 					if ($subrow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{	// there was a template, then we fetch that
-						$this->processTemplate($subrow,$idList.',sys_'.$id,$pid, 'sys_'.$id,$templateID);
+						$this->versionOL($subrow);
+						if (is_array($subrow))	{
+							$this->processTemplate($subrow,$idList.',sys_'.$id,$pid, 'sys_'.$id,$templateID);
+						}
 					}
 					$GLOBALS['TYPO3_DB']->sql_free_result($res);
 				}
@@ -496,7 +505,10 @@ class t3lib_TStemplate	{
 					if (!t3lib_div::inList($idList,'sys_'.$id))	{	// if $id is not allready included ...
 						$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'sys_template', 'uid='.intval($id).' '.$this->whereClause);
 						if ($subrow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{	// there was a template, then we fetch that
-							$this->processTemplate($subrow,$idList.',sys_'.$id,$pid, 'sys_'.$id,$templateID);
+							$this->versionOL($subrow);
+							if (is_array($subrow))	{
+								$this->processTemplate($subrow,$idList.',sys_'.$id,$pid, 'sys_'.$id,$templateID);
+							}
 						}
 						$GLOBALS['TYPO3_DB']->sql_free_result($res);
 					}
@@ -663,6 +675,14 @@ class t3lib_TStemplate	{
 		$subrow['editorcfg'].=$GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_editorcfg.'][$subrow['uid']];
 		$subrow['constants'].=$GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_constants.'][$subrow['uid']];
 		return $subrow;
+	}
+
+	function versionOL(&$row)	{
+		if (is_object($GLOBALS['TSFE']))	{	// Frontend:
+			$GLOBALS['TSFE']->sys_page->versionOL('sys_template',$row);
+		} else {	// Backend:
+			t3lib_BEfunc::workspaceOL('sys_template',$row);
+		}
 	}
 
 

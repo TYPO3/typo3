@@ -76,7 +76,7 @@ require_once (PATH_t3lib.'class.t3lib_treeview.php');
  * @subpackage t3lib
  */
 class t3lib_pageTree extends t3lib_treeView	{
-	var $fieldArray = Array('uid','title','doktype','php_tree_stop');
+	var $fieldArray = Array('uid','title','doktype','php_tree_stop','t3ver_id','t3ver_state','t3ver_swapmode');
 	var $defaultList = 'uid,pid,tstamp,sorting,deleted,perms_userid,perms_groupid,perms_user,perms_group,perms_everybody,crdate,cruser_id';
 	var $setRecs = 0;
 

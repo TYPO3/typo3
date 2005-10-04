@@ -1298,6 +1298,7 @@ class tx_cms_layout extends recordList {
 			$c=0;
 			$rc = $GLOBALS['TYPO3_DB']->sql_num_rows($res);
 			while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
+				t3lib_BEfunc::workspaceOL('pages', $row);
 				$c++;
 				$row['treeIcons'] = $treeIcons.'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/ol/join'.($rc==$c?'bottom':'').'.gif','width="18" height="16"').' alt="" />';
 				$theRows[]=$row;
@@ -1405,6 +1406,7 @@ class tx_cms_layout extends recordList {
 				break;
 			}
 		}
+		$this->addElement_tdParams['title'] = ($row['_CSSCLASS'] ? ' class="'.$row['_CSSCLASS'].'"' : '');
 		return $this->addelement(1,'',$theData);
 	}
 

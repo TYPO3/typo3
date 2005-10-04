@@ -25,6 +25,7 @@
 			<label index="sys_language">Website Language</label>
 			<label index="sys_language.isocode">Select Official Language (ISO code):</label>
 			<label index="sys_language.flag">Select flag icon:</label>
+			<label index="sys_workspace">Workspace</label>
 			<label index="editlock">Restrict editing by non-Admins:</label>
 		</languageKey>
 		<languageKey index="dk">EXT:csh_dk/lang/dk.locallang_tca.xml</languageKey>

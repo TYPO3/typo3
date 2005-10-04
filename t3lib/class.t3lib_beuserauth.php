@@ -119,7 +119,6 @@ class t3lib_beUserAuth extends t3lib_userAuthGroup {
 			moduleSessionID
 		*/
 	var $uc_default = Array (
-//		'lang' => 'dk',		// this value will be transferred from $BE_USER->user[lang] if not set...
 		'interfaceSetup' => '',	// serialized content that is used to store interface pane and menu positions. Set by the logout.php-script
 		'moduleData' => Array(),	// user-data for the modules
 		'thumbnailsByDefault' => 0,
@@ -261,6 +260,7 @@ class t3lib_beUserAuth extends t3lib_userAuthGroup {
 			$this->uc['lang']=$this->user['lang'];
 			$U=1;
 		}
+
 			// Saving if updated.
 		if ($U)	{
 			$this->writeUC();	// Method from the t3lib_userauth class.

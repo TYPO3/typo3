@@ -1,18 +1,23 @@
+2005-10-04  Kasper Skårhøj  <kasper2005@typo3.com>
+
+ * Added initial support for workspaces in core. 
+ * !!! Notice that all versioning features for tables are now enabled by the [ctrl] directive "versioningWS" and not "versioning". You will have to change this for all custom usages. At the same time you will have to add additional fields that are now mandatory for versioning to work. This is documented in the yet not published TYPO3 Core API for next version. Until the versioning API is final it is recommended to be very careful to apply versioning to custom tables.
+
 
 2005-10-04 Martin Kutschker <martin.t.kutschker@blackbox.net>
 
-	* Fixed bug #1152: allow for nice filenames in Apache stat file (config.stat_apache_niceTitle)
-	* optionally remove the site root from the Apache stat file path (config.stat_apache_noRoot)
+ * Fixed bug #1152: allow for nice filenames in Apache stat file (config.stat_apache_niceTitle)
+ * optionally remove the site root from the Apache stat file path (config.stat_apache_noRoot)
 
 2005-10-02 Bernhard Kraft  <kraftb@kraftb.at>
 
-	* Integrated content-slide extension into core
-	(http://wiki.typo3.org/index.php/Extensions_for_the_core)
-	* Implemented "requestUpdate" feature of TCEforms for Flexform fields
+ * Integrated content-slide extension into core
+ (http://wiki.typo3.org/index.php/Extensions_for_the_core)
+ * Implemented "requestUpdate" feature of TCEforms for Flexform fields
 
 2005-09-19 Martin Kutschker <martin.t.kutschker@blackbox.net>
 
-	* Fixed bug #1287: Detect Opera as Netscape3 (making image roll-overs work)
+ * Fixed bug #1287: Detect Opera as Netscape3 (making image roll-overs work)
 
 2005-09-18 Michael Stucki <michael@typo3.org>
 

@@ -977,7 +977,7 @@ class t3lib_DB {
 				'caller' => 't3lib_DB::'.$func,
 				'ERROR' => $error,
 				'lastBuiltQuery' => $this->debug_lastBuiltQuery,
-				'debug_backtrace' => function_exists('debug_backtrace') ? next(debug_backtrace()) : 'N/A'
+				'debug_backtrace' => t3lib_div::debug_trail()
 			));
 		}
 	}

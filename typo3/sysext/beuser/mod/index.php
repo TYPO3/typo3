@@ -786,6 +786,9 @@ class local_beUserAuth extends t3lib_beUserAuth {
 							// Implode for display:
 						$out[$k] = implode('<br />',$pout);
 					break;
+					case 'workspace_perms':
+						$out[$k] = implode('<br/>',explode(', ',t3lib_BEfunc::getProcessedValue('be_users','workspace_perms',$v)));
+					break;
 					case 'custom_options':
 
 							// Explode and flip values:
@@ -934,6 +937,9 @@ class local_beUserAuth extends t3lib_beUserAuth {
 
 			// Limit to languages:
 		$uInfo['allowed_languages']=$this->ext_uniqueAndSortList($this->groupData['allowed_languages']);
+
+			// Workspace permissions
+		$uInfo['workspace_perms']=$this->ext_uniqueAndSortList($this->groupData['workspace_perms']);
 
 			// Custom options:
 		$uInfo['custom_options']=$this->ext_uniqueAndSortList($this->groupData['custom_options']);
@@ -1131,6 +1137,7 @@ class SC_mod_tools_be_user_index {
 			'non_exclude_fields' => 'Non-exclude fields',
 			'explicit_allowdeny' => 'Explicit Allow/Deny',
 			'allowed_languages' => 'Limit to languages',
+			'workspace_perms' => 'Workspace permissions',
 			'custom_options' => 'Custom options',
 			'modules' => 'Modules',
 			'userTS' => 'TSconfig',

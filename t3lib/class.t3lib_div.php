@@ -2493,7 +2493,23 @@ class t3lib_div {
 		}
 	}
 
+	/**
+	 *
+	 */
+	function debug_trail()	{
+		if (function_exists('debug_backtrace'))	{
+			$trail = debug_backtrace();
+			$trail = array_reverse($trail);
+			array_pop($trail);
 
+			$path = array();
+			foreach($trail as $dat)	{
+				$path[] = $dat['class'].$dat['type'].$dat['function'];
+			}
+
+			return implode(' // ',$path);
+		} else return 'N/A';
+	}
 
 
 

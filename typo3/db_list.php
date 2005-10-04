@@ -283,7 +283,7 @@ class SC_db_list {
 			$dblist->HTMLcode.= $this->doc->getVersionSelector($this->id);
 
 				// Render the list of tables:
-			$dblist->generateList($this->id,$this->table);
+			$dblist->generateList();
 
 				// Write the bottom of the page:
 			$dblist->writeBottom();

@@ -96,6 +96,7 @@ class SC_alt_menu {
 
 			// Loads the backend modules available for the logged in user.
 		$this->loadModules = t3lib_div::makeInstance('t3lib_loadModules');
+		$this->loadModules->observeWorkspaces = TRUE;
 		$this->loadModules->load($TBE_MODULES);
 	}
 

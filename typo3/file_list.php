@@ -211,7 +211,7 @@ class SC_file_list {
 			$filelist->writeTop($this->id);
 
 				// Generate the list
-			$filelist->generateList($this->id,$this->table);
+			$filelist->generateList();
 
 				// Write the footer
 			$filelist->writeBottom();

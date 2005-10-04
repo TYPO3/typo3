@@ -47,6 +47,7 @@ function evalFunc()	{
  	this.lastDate = this.getSecs(today);
  	this.lastTime = this.getTimeSecs(today);
 	this.isInString = '';
+	this.USmode = 0;
 }
 function evalFunc_pol(fortegn, value)	{
 	return eval (((fortegn=="-")?'-':'')+value);
@@ -344,10 +345,10 @@ function evalFunc_input(type,inVal)	{
 								year = (year<38) ? year+=2000 : year+=1900;
 							}
 						} else {year = this.getYear(today);}
-					var month = (values.values[2])?this.parseInt(values.values[2]):today.getMonth()+1;
+					var month = (values.values[this.USmode?1:2])?this.parseInt(values.values[this.USmode?1:2]):today.getMonth()+1;
 						if (month > 12)	{month=12;}
 						if (month < 1)	{month=1;}
-					var day = (values.values[1])?this.parseInt(values.values[1]):today.getDate();
+					var day = (values.values[this.USmode?2:1])?this.parseInt(values.values[this.USmode?2:1]):today.getDate();
 						if (day > 31)	{day=31;}
 						if (day < 1)	{day=1;}
 					if (''+day+'-'+month+'-'+year == "1-1-1970")	{
@@ -415,7 +416,11 @@ function evalFunc_output(type,value,FObj)	{
 			if (!parseInt(value))	{return '';}
 			var theTime = new Date();
 			theTime.setTime(value*1000);
-			theString = theTime.getDate()+'-'+(theTime.getMonth()+1)+'-'+this.getYear(theTime);
+			if (this.USmode)	{
+				theString = (theTime.getMonth()+1)+'-'+theTime.getDate()+'-'+this.getYear(theTime);
+			} else {
+				theString = theTime.getDate()+'-'+(theTime.getMonth()+1)+'-'+this.getYear(theTime);
+			}
 		break;
 		case "datetime":
 			if (!parseInt(value))	{return '';}

@@ -537,8 +537,9 @@ class SC_mod_web_perm_index {
 			$editPermsAllowed=($data['row']['perms_userid']==$BE_USER->user['uid'] || $BE_USER->isAdmin());
 
 				// First column:
+			$cellAttrib = ($data['row']['_CSSCLASS'] ? ' class="'.$data['row']['_CSSCLASS'].'"' : '');
 			$cells[]='
-					<td align="left" nowrap="nowrap"'.$bgCol.'>'.$data['HTML'].htmlspecialchars(t3lib_div::fixed_lgd($data['row']['title'],$tLen)).'&nbsp;</td>';
+					<td align="left" nowrap="nowrap"'.($cellAttrib ? $cellAttrib : $bgCol).'>'.$data['HTML'].htmlspecialchars(t3lib_div::fixed_lgd($data['row']['title'],$tLen)).'&nbsp;</td>';
 
 				// "Edit permissions" -icon
 			if ($editPermsAllowed && $data['row']['uid'])	{

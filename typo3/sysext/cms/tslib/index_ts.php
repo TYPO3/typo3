@@ -94,6 +94,7 @@ if (!t3lib_extMgm::isLoaded('cms'))	die('<strong>Error:</strong> The main fronte
 
 require_once(PATH_t3lib.'class.t3lib_db.php');
 $TYPO3_DB = t3lib_div::makeInstance('t3lib_DB');
+$TYPO3_DB->debugOutput = $TYPO3_CONF_VARS['SYS']['sqlDebug'];
 
 $CLIENT = t3lib_div::clientInfo();				// Set to the browser: net / msie if 4+ browsers
 $TT->pull();

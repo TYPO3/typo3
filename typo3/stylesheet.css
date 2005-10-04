@@ -453,6 +453,26 @@ BODY#typo3-mod-tools-em-index-php .em-listbg3 {background-color: #efefef;}
 BODY#typo3-mod-tools-em-index-php TR.bgColor5 TD {font-weight: bold;}
 
 
+/* Workspace */
+DIV.workspace-info {padding: 0px 2px 0px 2px; margin: 0px 0px 4px 0px; border: 1px solid #999999;}
+TD.ver-element { background-color: #ccddcc; }
+TD.ver-page { background-color: #ccccff; }
+TD.ver-branch { background-color: #ffcccc; }
+TD.ver-branchpoint { background-color: #ff9999; }
+TABLE.workspace-overview TD { vertical-align : top; }
+TABLE.ver-subtree A { text-decoration: none; }
+TABLE.ver-subtree TR TD.iconTitle { white-space: nowrap; }
+TABLE.ver-subtree TR TD.diffCell { white-space: normal; }
+TABLE.ver-subtree TABLE.diffTable {background-color: white; border: 1px solid black; }
+TABLE.ver-subtree DIV.diffLayer { background-color: white; width:400px; border: 1px solid black;}
+TABLE.ver-subtree TR TD IMG { vertical-align: middle; }
+TABLE.ver-subtree, TABLE.ver-verElement TD.c-diffCell { border: 1px solid #666666; }
+TABLE.ver-verElement { width: 100%;}
+TABLE.ver-subtree TR.typo3-ver TD.iconTitle, TABLE.ver-subtree TR.typo3-ver TD.diffCell {background-color: #c5c1b5; }
+TABLE.ver-subtree TR.typo3-ver-hl TD.iconTitle, TABLE.ver-subtree TR.typo3-ver-hl TD.diffCell { background-color: #999999; }
+TABLE.ver-subtree TR.typo3-ver-new TD { color: #666666; background-color: #eeeeee; }
+TABLE.ver-subtree TR.typo3-ver-noComp TD { font-style : italic; }
+
 
 
 /*********************************************
@@ -472,6 +492,8 @@ TABLE.warningbox TD { padding: 20px 20px 20px 20px; font-weight: bold; }
 .nobr {white-space: nowrap;}
 .diff-r {color: red;}
 .diff-g {color: green;}
+DIV.diff-r {background-color: red; color:black; padding: 3 3 3 3;}
+DIV.diff-g {background-color: green; color:black; padding: 3 3 3 3;}
 IMG.absmiddle { vertical-align: middle; }
 .smallCheckboxes { width:12px; height:12px; margin:0 0 0 0; }
 .uppercase { text-transform : uppercase; }

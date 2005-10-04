@@ -243,6 +243,18 @@ $TCA['be_users'] = Array (
 				'default' => '7'
 			)
 		),
+		'workspace_perms' => Array (
+			'label' => 'Workspace permissions:',
+			'config' => Array (
+				'type' => 'check',
+				'items' => Array (
+					Array('Edit Live (Online)', 0),
+					Array('Edit Draft (Offline)', 0),
+					Array('Create new workspace projects', 0),
+				),
+				'default' => 1
+			)
+		),
 		'starttime' => Array (
 			'label' => 'Start:',
 			'config' => Array (
@@ -362,7 +374,7 @@ $TCA['be_users'] = Array (
 		'createdByAction' => Array('config'=>array('type'=>'passthrough'))
 	),
 	'types' => Array (
-		'0' => Array('showitem' => 'username;;;;2-2-2, password, usergroup, lockToDomain, disableIPlock, admin;;;;5-5-5, realName;;;;3-3-3, email, lang, userMods;;;;4-4-4, allowed_languages, options, db_mountpoints, file_mountpoints, fileoper_perms, --div--, TSconfig;;;;5-5-5'),
+		'0' => Array('showitem' => 'username;;;;2-2-2, password, usergroup, lockToDomain, disableIPlock, admin;;;;5-5-5, realName;;;;3-3-3, email, lang, userMods;;;;4-4-4, allowed_languages, workspace_perms, options, db_mountpoints, file_mountpoints, fileoper_perms, --div--, TSconfig;;;;5-5-5'),
 		'1' => Array('showitem' => 'username;;;;2-2-2, password, usergroup, disableIPlock, admin;;;;5-5-5, realName;;;;3-3-3, email, lang, options;;;;4-4-4, db_mountpoints, file_mountpoints, fileoper_perms, --div--, TSconfig;;;;5-5-5')
 	),
 	'palettes' => Array (
@@ -446,6 +458,18 @@ $TCA['be_groups'] = Array (
 						'script' => 'wizard_list.php',
 					)
 				)
+			)
+		),
+		'workspace_perms' => Array (
+			'label' => 'Workspace permissions:',
+			'config' => Array (
+				'type' => 'check',
+				'items' => Array (
+					Array('Edit Live (Online)', 0),
+					Array('Edit Draft (Offline)', 0),
+					Array('Create new workspace projects', 0),
+				),
+				'default' => 0
 			)
 		),
 		'pagetypes_select' => Array (
@@ -608,8 +632,8 @@ $TCA['be_groups'] = Array (
 		)
 	),
 	'types' => Array (
-		'0' => Array('showitem' => 'hidden;;;;1-1-1,title;;;;2-2-2, lockToDomain, --div--, inc_access_lists;;;;3-3-3, db_mountpoints;;;;4-4-4,file_mountpoints,hide_in_lists,subgroup,description, --div--, TSconfig;;;;5-5-5'),
-		'1' => Array('showitem' => 'hidden;;;;1-1-1,title;;;;2-2-2, lockToDomain, --div--, inc_access_lists;;;;3-3-3, groupMods, tables_select, tables_modify, pagetypes_select, non_exclude_fields, explicit_allowdeny, allowed_languages, custom_options, --div--, db_mountpoints;;;;4-4-4,file_mountpoints,hide_in_lists,subgroup,description, --div--, TSconfig;;;;5-5-5')
+		'0' => Array('showitem' => 'hidden;;;;1-1-1,title;;;;2-2-2, lockToDomain, --div--, inc_access_lists;;;;3-3-3, db_mountpoints;;;;4-4-4,file_mountpoints,workspace_perms,hide_in_lists,subgroup,description, --div--, TSconfig;;;;5-5-5'),
+		'1' => Array('showitem' => 'hidden;;;;1-1-1,title;;;;2-2-2, lockToDomain, --div--, inc_access_lists;;;;3-3-3, groupMods, tables_select, tables_modify, pagetypes_select, non_exclude_fields, explicit_allowdeny, allowed_languages, custom_options, --div--, db_mountpoints;;;;4-4-4,file_mountpoints,workspace_perms,hide_in_lists,subgroup,description, --div--, TSconfig;;;;5-5-5')
 	)
 );
 
@@ -663,6 +687,157 @@ $TCA['sys_filemounts'] = Array (
 	),
 	'types' => Array (
 		'0' => Array('showitem' => 'hidden;;;;1-1-1,title;;;;3-3-3,path,base')
+	)
+);
+
+
+
+/**
+ * System workspaces - Defines the offline workspaces available to users in TYPO3.
+ */
+$TCA['sys_workspace'] = Array (
+	'ctrl' => $TCA['sys_workspace']['ctrl'],
+	'columns' => Array (
+		'title' => Array (
+			'label' => 'Title:',
+			'config' => Array (
+				'type' => 'input',
+				'size' => '20',
+				'max' => '30',
+				'eval' => 'required,trim'
+			)
+		),
+		'description' => Array (
+			'label' => 'Description:',
+			'config' => Array (
+				'type' => 'text',
+				'rows' => 5,
+				'cols' => 30
+			)
+		),
+		'adminusers' => Array (
+			'label' => 'Admin users / Creator:',
+			'config' => Array (
+				'type' => 'group',
+				'internal_type' => 'db',
+				'allowed' => 'be_users',
+				'size' => '3',
+				'maxitems' => '10',
+				'autoSizeMax' => 10,
+				'show_thumbs' => '1'
+			)
+		),
+		'members' => Array (
+			'label' => 'Members:',
+			'config' => Array (
+				'type' => 'group',
+				'internal_type' => 'db',
+				'allowed' => 'be_users,be_groups',
+				'prepend_tname' => 1,
+				'size' => '3',
+				'maxitems' => '100',
+				'autoSizeMax' => 10,
+				'show_thumbs' => '1'
+			)
+		),
+		'reviewers' => Array (
+			'label' => 'Reviewers:',
+			'config' => Array (
+				'type' => 'group',
+				'internal_type' => 'db',
+				'allowed' => 'be_users,be_groups',
+				'prepend_tname' => 1,
+				'size' => '3',
+				'maxitems' => '100',
+				'autoSizeMax' => 10,
+				'show_thumbs' => '1'
+			)
+		),
+		'db_mountpoints' => Array (
+			'label' => 'DB Mounts:',
+			'config' => Array (
+				'type' => 'group',
+				'internal_type' => 'db',
+					'allowed' => 'pages',
+				'size' => '3',
+				'maxitems' => '10',
+				'autoSizeMax' => 10,
+				'show_thumbs' => '1'
+			)
+		),
+		'file_mountpoints' => Array (
+			'label' => 'File Mounts:',
+			'config' => Array (
+				'type' => 'select',
+				'foreign_table' => 'sys_filemounts',
+				'foreign_table_where' => ' AND sys_filemounts.pid=0 ORDER BY sys_filemounts.title',
+				'size' => '3',
+				'maxitems' => '10',
+				'autoSizeMax' => 10,
+				'renderMode' => $GLOBALS['TYPO3_CONF_VARS']['BE']['accessListRenderMode'],
+				'iconsInOptionTags' => 1,
+			)
+		),
+		'publish_time' => Array (
+			'label' => 'Publish:',
+			'config' => Array (
+				'type' => 'input',
+				'size' => '8',
+				'max' => '20',
+				'eval' => 'datetime',
+				'default' => '0',
+				'checkbox' => '0'
+			)
+		),
+		'unpublish_time' => Array (
+			'label' => 'Un-publish:',
+			'config' => Array (
+				'type' => 'input',
+				'size' => '8',
+				'max' => '20',
+				'eval' => 'datetime',
+				'checkbox' => '0',
+				'default' => '0',
+				'range' => Array (
+					'upper' => mktime(0,0,0,12,31,2020),
+				)
+			)
+		),
+		'freeze' => Array (
+			'label' => 'Freeze Editing',
+			'config' => Array (
+				'type' => 'check',
+				'default' => '0'
+			)
+		),
+		'live_edit' => Array (
+			'label' => 'Allow "live" editing of records from tables without versioning',
+			'config' => Array (
+				'type' => 'check',
+				'default' => '0'
+			)
+		),
+		'disable_autocreate' => Array (
+			'label' => 'Disable auto-versioning when editing',
+			'config' => Array (
+				'type' => 'check',
+				'default' => '0'
+			)
+		),
+		'swap_modes' => Array (
+			'label' => 'Swap modes',
+			'config' => Array (
+				'type' => 'select',
+				'items' => Array (
+					Array('',0),
+					Array('Swap-Into-Workspace on Auto-publish',1),
+					Array('Disable Swap-Into-Workspace',2)
+				),
+			)
+		),
+	),
+	'types' => Array (
+		'0' => Array('showitem' => 'title,description,adminusers,members,reviewers,db_mountpoints,file_mountpoints,publish_time,unpublish_time,freeze,live_edit,disable_autocreate,swap_modes')
 	)
 );
 

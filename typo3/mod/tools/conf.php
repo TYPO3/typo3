@@ -4,4 +4,5 @@ $MLANG['default']['ll_ref']='LLL:EXT:lang/locallang_mod_tools.php';
 
 $MCONF['name']='tools';
 $MCONF['access']='admin';
+#$MCONF['workspaces']='online';
 ?>

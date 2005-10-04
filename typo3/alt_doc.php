@@ -77,6 +77,10 @@ $LANG->includeLLFile('EXT:lang/locallang_alt_doc.xml');
 require_once (PATH_t3lib.'class.t3lib_tceforms.php');
 require_once (PATH_t3lib.'class.t3lib_clipboard.php');
 
+require_once (PATH_t3lib.'class.t3lib_tcemain.php');
+require_once (PATH_t3lib.'class.t3lib_loaddbgroup.php');
+require_once (PATH_t3lib.'class.t3lib_transferdata.php');
+
 
 t3lib_BEfunc::lockRecords();
 
@@ -94,7 +98,7 @@ t3lib_BEfunc::lockRecords();
 class SC_alt_doc {
 
 		// Internal, static: GPvars:
-	var $editconf;			// GPvar "edit": Is an array looking approx like [tablename][list-of-ids]=command, eg. "&edit[pages][123]=edit". See t3lib_BEfunc::editOnClick(). Value can be seen modified internally.
+	var $editconf;			// GPvar "edit": Is an array looking approx like [tablename][list-of-ids]=command, eg. "&edit[pages][123]=edit". See t3lib_BEfunc::editOnClick(). Value can be seen modified internally (converting NEW keyword to id, workspace/versioning etc).
 	var $columnsOnly;		// Commalist of fieldnames to edit. The point is IF you specify this list, only those fields will be rendered in the form. Otherwise all (available) fields in the record is shown according to the types configuration in $TCA
 	var $defVals;			// Default values for fields (array with tablenames, fields etc. as keys). Can be seen modified internally.
 	var $overrideVals;		// Array of values to force being set (as hidden fields). Will be set as $this->defVals IF defVals does not exist.
@@ -118,6 +122,7 @@ class SC_alt_doc {
 	var $disHelp;				// Disable help... ?
 	var $noView;				// If set, then no SAVE/VIEW button is printed
 	var $returnEditConf;		// If set, the $this->editconf array is returned to the calling script (used by wizard_add.php for instance)
+	var $localizationMode;		// GP var, localization mode for TCEforms (eg. "text")
 
 
 		// Internal, static:
@@ -176,6 +181,8 @@ class SC_alt_doc {
 		$this->closeDoc = t3lib_div::_GP('closeDoc');
 		$this->doSave = t3lib_div::_GP('doSave');
 		$this->returnEditConf = t3lib_div::_GP('returnEditConf');
+		$this->localizationMode = t3lib_div::_GP('localizationMode');
+
 
 			// Setting override values as default if defVals does not exist.
 		if (!is_array($this->defVals) && is_array($this->overrideVals))	{
@@ -185,9 +192,13 @@ class SC_alt_doc {
 			// Setting return URL
 		$this->retUrl = $this->returnUrl ? $this->returnUrl : 'dummy.php';
 
+			// Fix $this->editconf if versioning applies to any of the records
+		$this->fixWSversioningInEditConf();
+
 			// Make R_URL (request url) based on input GETvars:
 		$this->R_URL_parts = parse_url(t3lib_div::getIndpEnv('REQUEST_URI'));
 		$this->R_URL_getvars = t3lib_div::_GET();
+		$this->R_URL_getvars['edit'] = $this->editconf;
 
 			// MAKE url for storing
 		$this->compileStoreDat();
@@ -284,7 +295,13 @@ class SC_alt_doc {
 
 					// Traverse all new records and forge the content of ->editconf so we can continue to EDIT these records!
 				foreach($tce->substNEWwithIDs_table as $nKey => $nTable)	{
-					$this->editconf[$nTable][$tce->substNEWwithIDs[$nKey]]='edit';
+					$editId = $tce->substNEWwithIDs[$nKey];
+						// translate new id to the workspace version:
+					if ($versionRec = t3lib_BEfunc::getWorkspaceVersionOfRecord($GLOBALS['BE_USER']->workspace, $nTable, $editId,'uid'))	{
+						$editId = $versionRec['uid'];
+					}
+
+					$this->editconf[$nTable][$editId]='edit';
 					if ($nTable=='pages' && $this->retUrl!='dummy.php' && $this->returnNewPageId)	{
 						$this->retUrl.='&id='.$tce->substNEWwithIDs[$nKey];
 					}
@@ -298,6 +315,11 @@ class SC_alt_doc {
 
 					// Re-compile the store* values since editconf changed...
 				$this->compileStoreDat();
+			}
+
+				// See if any records was auto-created as new versions?
+			if (count($tce->autoVersionIdMap))	{
+				$this->fixWSversioningInEditConf($tce->autoVersionIdMap);
 			}
 
 				// If a document is saved and a new one is created right after.
@@ -449,6 +471,7 @@ class SC_alt_doc {
 			$this->tceforms = t3lib_div::makeInstance('t3lib_TCEforms');
 			$this->tceforms->initDefaultBEMode();
 			$this->tceforms->doSaveFieldName = 'doSave';
+			$this->tceforms->localizationMode = t3lib_div::inList('text,media',$this->localizationMode) ? $this->localizationMode : '';	// text,media is keywords defined in TYPO3 Core API..., see "l10n_cat"
 			$this->tceforms->returnUrl = $this->R_URI;
 			$this->tceforms->palettesCollapsed = !$this->MOD_SETTINGS['showPalettes'];
 			$this->tceforms->disableRTE = $this->MOD_SETTINGS['disableRTE'];
@@ -636,7 +659,7 @@ class SC_alt_doc {
 								$trData->fetchRecord($table,$theUid,$cmd=='new'?'new':'');	// 'new'
 								reset($trData->regTableItems_data);
 								$rec = current($trData->regTableItems_data);
-								$rec['uid'] = $cmd=='new'?uniqid('NEW'):$theUid;
+								$rec['uid'] = $cmd=='new' ? uniqid('NEW') : $theUid;
 								$this->elementsData[]=array(
 									'table' => $table,
 									'uid' => $rec['uid'],
@@ -712,6 +735,7 @@ class SC_alt_doc {
 				}
 			}
 		}
+
 		return $editForm;
 	}
 
@@ -1020,6 +1044,88 @@ class SC_alt_doc {
 	 ***************************/
 
 	/**
+	 * Get record for editing.
+	 *
+	 *
+	 */
+	function fixWSversioningInEditConf($mapArray=FALSE)	{
+		global $TCA,$BE_USER;
+
+			// Traverse the editConf array
+		if (is_array($this->editconf))	{
+			foreach($this->editconf as $table => $conf)	{	// Tables:
+				if (is_array($conf) && $TCA[$table])	{
+
+						// Traverse the keys/comments of each table (keys can be a commalist of uids)
+					$newConf = array();
+					foreach($conf as $cKey => $cmd)	{
+						if ($cmd=='edit')	{
+								// Traverse the ids:
+							$ids = t3lib_div::trimExplode(',', $cKey, 1);
+							foreach($ids as $idKey => $theUid)	{
+								if (is_array($mapArray))	{
+									if ($mapArray[$table][$theUid])	{
+										$ids[$idKey] = $mapArray[$table][$theUid];
+									}
+								} else {	// Default, look for versions in workspace for record:
+									$calcPRec = $this->getRecordForEdit($table,$theUid);
+									if (is_array($calcPRec))	{
+											// Setting UID again if it had changed, eg. due to workspace versioning.
+										$ids[$idKey] = $calcPRec['uid'];
+									}
+								}
+	#else unset($ids[$idKey]);
+							}
+
+								// Add the possibly manipulated IDs to the new-build newConf array:
+							$newConf[implode(',',$ids)] = $cmd;
+						} else {
+							$newConf[$cKey] = $cmd;
+						}
+					}
+						// Store the new conf array:
+					$this->editconf[$table] = $newConf;
+				}
+			}
+		}
+	}
+
+	/**
+	 * Get record for editing.
+	 *
+	 *
+	 */
+	function getRecordForEdit($table,$theUid)	{
+		global $TCA;
+
+			// Fetch requested record:
+		$reqRecord = t3lib_BEfunc::getRecord($table,$theUid,'uid,pid');
+#return $reqRecord;
+
+		if (is_array($reqRecord))	{
+				// If workspace is OFFLINE:
+			if ($GLOBALS['BE_USER']->workspace!=0)	{
+
+					// Check for versioning support of the table:
+				if ($TCA[$table] && $TCA[$table]['ctrl']['versioningWS'])	{
+
+						// If the record is already a version of "something" pass it by.
+					if ($reqRecord['pid']==-1)	{
+
+							// (If it turns out not to be a version of the current workspace there will be trouble, but that is handled inside TCEmain then and in the interface it would clearly be an error of links if the user accesses such a scenario)
+						return $reqRecord;
+					} else {	// The input record was online and an offline version must be found or made:
+
+							// Look for version of this workspace:
+						$versionRec = t3lib_BEfunc::getWorkspaceVersionOfRecord($GLOBALS['BE_USER']->workspace, $table, $reqRecord['uid'],'uid,pid,t3ver_oid');
+						return is_array($versionRec) ? $versionRec : $reqRecord;
+					}
+				} else return FALSE;		// This means that editing cannot occur on this record because it was not supporting versioning which is required inside an offline workspace.
+			} else return $reqRecord; 	// In ONLINE workspace, just return the originally requested record:
+		} else return FALSE;	// Return false because the table/uid was not found anyway.
+	}
+
+	/**
 	 * Function, which populates the internal editconf array with editing commands for all tt_content elements from the normal column in normal language from the page pointed to by $this->editRegularContentFromId
 	 *
 	 * @return	void
@@ -1155,12 +1261,8 @@ $SOBE = t3lib_div::makeInstance('SC_alt_doc');
 // Preprocessing, storing data if submitted to
 $SOBE->preInit();
 if ($SOBE->doProcessData())	{		// Checks, if a save button has been clicked (or the doSave variable is sent)
-	require_once (PATH_t3lib.'class.t3lib_tcemain.php');
 	$SOBE->processData();
 }
-
-require_once (PATH_t3lib.'class.t3lib_loaddbgroup.php');
-require_once (PATH_t3lib.'class.t3lib_transferdata.php');
 
 
 // Main:

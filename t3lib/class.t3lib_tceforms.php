@@ -218,6 +218,7 @@ class t3lib_TCEforms	{
 	var $palettesCollapsed=0;			// Can be set true/false to whether palettes (secondary options) are in the topframe or in form. True means they are NOT IN-form. So a collapsed palette is one, which is shown in the top frame, not in the page.
 	var $disableRTE=0;					// If set, the RTE is disabled (from form display, eg. by checkbox in the bottom of the page!)
 	var $globalShowHelp=1;				// If false, then all CSH will be disabled, regardless of settings in $this->edit_showFieldHelp
+	var $localizationMode='';		// If true, the forms are rendering only localization relevant fields of the records.
 	var $fieldOrder='';					// Overrule the field order set in TCA[types][showitem], eg for tt_content this value, 'bodytext,image', would make first the 'bodytext' field, then the 'image' field (if set for display)... and then the rest in the old order.
 	var $doPrintPalette=1;				// If set to false, palettes will NEVER be rendered.
 	var $clipObj=FALSE;					// Set to initialized clipboard object; Then the element browser will offer a link to paste in records from clipboard.
@@ -716,7 +717,8 @@ class t3lib_TCEforms	{
 				$PA['fieldConf']['config']['form_type']!='passthrough' &&
 				($this->RTEenabled || !$PA['fieldConf']['config']['showIfRTE']) &&
 				(!$PA['fieldConf']['displayCond'] || $this->isDisplayCondition($PA['fieldConf']['displayCond'],$row)) &&
-				(!$TCA[$table]['ctrl']['languageField'] || strcmp($PA['fieldConf']['l10n_mode'],'exclude') || $row[$TCA[$table]['ctrl']['languageField']]<=0)
+				(!$TCA[$table]['ctrl']['languageField'] || strcmp($PA['fieldConf']['l10n_mode'],'exclude') || $row[$TCA[$table]['ctrl']['languageField']]<=0) &&
+				(!$TCA[$table]['ctrl']['languageField'] || !$this->localizationMode || $this->localizationMode===$PA['fieldConf']['l10n_cat'])
 			)	{
 
 				// Fetching the TSconfig for the current table/field. This includes the $row which means that
@@ -1896,20 +1898,33 @@ class t3lib_TCEforms	{
 			$langChildren = $dataStructArray['meta']['langChildren'] ? 1 : 0;
 			$langDisabled = $dataStructArray['meta']['langDisable'] ? 1 : 0;
 
+			$editData['meta']['currentLangId']=array();
 			$languages = $this->getAvailableLanguages();
 
+			foreach($languages as $lInfo)	{
+				if ($GLOBALS['BE_USER']->checkLanguageAccess($lInfo['uid']))	{
+					$editData['meta']['currentLangId'][] = 	$lInfo['ISOcode'];
+				}
+			}
 			if (!is_array($editData['meta']['currentLangId']) || !count($editData['meta']['currentLangId']))	{
 				$editData['meta']['currentLangId']=array('DEF');
 			}
+
 			$editData['meta']['currentLangId'] = array_unique($editData['meta']['currentLangId']);
 
-			if (!$langDisabled && count($languages) > 1)	{
-				$item.=$this->getSingleField_typeFlex_langMenu($languages, $PA['itemFormElName'].'[meta][currentLangId]', $editData['meta']['currentLangId']).'<br />';
-			}
 
+//			if (!$langDisabled && count($languages) > 1)	{
+//				$item.=$this->getSingleField_typeFlex_langMenu($languages, $PA['itemFormElName'].'[meta][currentLangId]', $editData['meta']['currentLangId']).'<br />';
+//			}
+
+			$PA['_noEditDEF'] = FALSE;
 			if ($langChildren || $langDisabled)	{
 				$rotateLang = array('DEF');
 			} else {
+				if (!in_array('DEF',$editData['meta']['currentLangId']))	{
+					array_unshift($editData['meta']['currentLangId'],'DEF');
+					$PA['_noEditDEF'] = TRUE;
+				}
 				$rotateLang = $editData['meta']['currentLangId'];
 			}
 
@@ -1935,6 +1950,7 @@ class t3lib_TCEforms	{
 						$cmdData = t3lib_div::_GP('flexFormsCmdData');
 						$lang = 'l'.$lKey;	// Default language, other options are "lUK" or whatever country code (independant of system!!!)
 						$PA['_valLang'] = $langChildren && !$langDisabled ? $editData['meta']['currentLangId'] : 'DEF';	// Default language, other options are "lUK" or whatever country code (independant of system!!!)
+						$PA['_lang'] = $lang;
 
 							// Render flexform:
 						$tRows = $this->getSingleField_typeFlex_draw(
@@ -2145,43 +2161,52 @@ class t3lib_TCEforms	{
 						foreach($rotateLang as $vDEFkey)	{
 							$vDEFkey = 'v'.$vDEFkey;
 
-							$fakePA=array();
-							$fakePA['fieldConf']=array(
-								'label' => $this->sL($value['TCEforms']['label']),
-								'config' => $value['TCEforms']['config'],
-								'defaultExtras' => $value['TCEforms']['defaultExtras'],
-								'displayCond' => $value['TCEforms']['displayCond'],	// Haven't tested this...
-							);
-							if (
+							if (!$value['TCEforms']['displayCond'] || $this->isDisplayCondition($value['TCEforms']['displayCond'],$editData,$vDEFkey)) {
+								$fakePA=array();
+								$fakePA['fieldConf']=array(
+									'label' => $this->sL($value['TCEforms']['label']),
+									'config' => $value['TCEforms']['config'],
+									'defaultExtras' => $value['TCEforms']['defaultExtras']
+								);
+								if ($PA['_noEditDEF'] && $PA['_lang']==='lDEF') {
+									$fakePA['fieldConf']['config'] = array(
+										'type' => 'none',
+										'rows' => 2
+									);
+								}
+								if (
 									(($GLOBALS['TCA'][$table]['ctrl']['type'] && !strcmp($key,$GLOBALS['TCA'][$table]['ctrl']['type'])) ||
 									($GLOBALS['TCA'][$table]['ctrl']['requestUpdate'] && t3lib_div::inList($GLOBALS['TCA'][$table]['ctrl']['requestUpdate'],$key)))
-									&& !$GLOBALS['BE_USER']->uc['noOnChangeAlertInTypeFields'])	{
-								$alertMsgOnChange = 'if (confirm('.$GLOBALS['LANG']->JScharCode($this->getLL('m_onChangeAlert')).') && TBE_EDITOR_checkSubmit(-1)){ TBE_EDITOR_submitForm() };';
-							} else {$alertMsgOnChange='';}
-							$fakePA['fieldChangeFunc']=$PA['fieldChangeFunc'];
-							if (strlen($alertMsgOnChange))	{
-								$fakePA['fieldChangeFunc']['alert']=$alertMsgOnChange;
-							}
-							$fakePA['onFocus']=$PA['onFocus'];
-							$fakePA['label']==$PA['label'];
+									&& !$GLOBALS['BE_USER']->uc['noOnChangeAlertInTypeFields']) {
+									$alertMsgOnChange = 'if (confirm('.$GLOBALS['LANG']->JScharCode($this->getLL('m_onChangeAlert')).') && TBE_EDITOR_checkSubmit(-1)){ TBE_EDITOR_submitForm() };';
+								} else {$alertMsgOnChange='';}
+								$fakePA['fieldChangeFunc']=$PA['fieldChangeFunc'];
+								if (strlen($alertMsgOnChange)) {
+									$fakePA['fieldChangeFunc']['alert']=$alertMsgOnChange;
+								}
+								$fakePA['onFocus']=$PA['onFocus'];
+								$fakePA['label']==$PA['label'];
 
-							$fakePA['itemFormElName']=$PA['itemFormElName'].$formPrefix.'['.$key.']['.$vDEFkey.']';
-							$fakePA['itemFormElName_file']=$PA['itemFormElName_file'].$formPrefix.'['.$key.']['.$vDEFkey.']';
-							if(isset($editData[$key][$vDEFkey])) {
-							  $fakePA['itemFormElValue']=$editData[$key][$vDEFkey];
-							}
-							else {
-							  $fakePA['itemFormElValue']=$fakePA['fieldConf']['config']['default'];
-							}
+								$fakePA['itemFormElName']=$PA['itemFormElName'].$formPrefix.'['.$key.']['.$vDEFkey.']';
+								$fakePA['itemFormElName_file']=$PA['itemFormElName_file'].$formPrefix.'['.$key.']['.$vDEFkey.']';
+								if(isset($editData[$key][$vDEFkey])) {
+									$fakePA['itemFormElValue']=$editData[$key][$vDEFkey];
+								} else {
+									$fakePA['itemFormElValue']=$fakePA['fieldConf']['config']['default'];
+								}
 
-							$rowCells['formEl']= $this->getSingleField_SW($table,$field,$row,$fakePA);
-							$rowCells['title']= htmlspecialchars($fakePA['fieldConf']['label']);
+								if (!in_array('DEF',$rotateLang))	{
+									$defInfo = '<div class="typo3-TCEforms-originalLanguageValue">'.nl2br(htmlspecialchars($editData[$key]['vDEF'])).'&nbsp;</div>';
+								} else {
+									$defInfo = '';
+								}
 
-								// Put row together
-							$tRows[]='<tr>
-								<td nowrap="nowrap" valign="top" class="bgColor5">'.$rowCells['title'].($vDEFkey=='vDEF' ? '' : ' ('.$vDEFkey.')').'</td>
-								<td class="bgColor4">'.$rowCells['formEl'].'</td>
-							</tr>';
+									// Put row together
+								$tRows[]='<tr>
+									<td nowrap="nowrap" valign="top" class="bgColor5">'.$rowCells['title'].($vDEFkey=='vDEF' ? '' : ' ('.$vDEFkey.')').'</td>
+									<td class="bgColor4">'.$rowCells['formEl'].$defInfo.'</td>
+								</tr>';
+							}
 						}
 					}
 				}
@@ -4328,6 +4353,7 @@ class t3lib_TCEforms	{
 				}
 				var TS = new typoSetup();
 				var evalFunc = new evalFunc();
+				evalFunc.USmode = '.($GLOBALS['TYPO3_CONF_VARS']['SYS']['USdateFormat']?'1':'0').';
 
 				function typo3FormFieldSet(theField, evallist, is_in, checkbox, checkboxValue)	{	//
 					if (document.'.$formname.'[theField])	{
@@ -4836,46 +4862,48 @@ class t3lib_TCEforms	{
 	 * @param	array		The record to evaluate
 	 * @return	boolean
 	 */
-	function isDisplayCondition($displayCond,$row)	{
+	function isDisplayCondition($displayCond,$row,$ffValueKey='')	{
 		$output = FALSE;
 
 		$parts = explode(':',$displayCond);
 		switch((string)$parts[0])	{	// Type of condition:
 			case 'FIELD':
+				$theFieldValue = $ffValueKey ? $row[$parts[1]][$ffValueKey] : $row[$parts[1]];
+
 				switch((string)$parts[2])	{
 					case 'REQ':
 						if (strtolower($parts[3])=='true')	{
-							$output = $row[$parts[1]] ? TRUE : FALSE;
+							$output = $theFieldValue ? TRUE : FALSE;
 						} elseif (strtolower($parts[3])=='false') {
-							$output = !$row[$parts[1]] ? TRUE : FALSE;
+							$output = !$theFieldValue ? TRUE : FALSE;
 						}
 					break;
 					case '>':
-						$output = $row[$parts[1]] > $parts[3];
+						$output = $theFieldValue > $parts[3];
 					break;
 					case '<':
-						$output = $row[$parts[1]] < $parts[3];
+						$output = $theFieldValue < $parts[3];
 					break;
 					case '>=':
-						$output = $row[$parts[1]] >= $parts[3];
+						$output = $theFieldValue >= $parts[3];
 					break;
 					case '<=':
-						$output = $row[$parts[1]] <= $parts[3];
+						$output = $theFieldValue <= $parts[3];
 					break;
 					case '-':
 					case '!-':
 						$cmpParts = explode('-',$parts[3]);
-						$output = $row[$parts[1]] >= $cmpParts[0] && $row[$parts[1]] <= $cmpParts[1];
+						$output = $theFieldValue >= $cmpParts[0] && $theFieldValue <= $cmpParts[1];
 						if ($parts[2]{0}=='!')	$output = !$output;
 					break;
 					case 'IN':
 					case '!IN':
-						$output = t3lib_div::inList($parts[3],$row[$parts[1]]);
+						$output = t3lib_div::inList($parts[3],$theFieldValue);
 						if ($parts[2]{0}=='!')	$output = !$output;
 					break;
 					case '=':
 					case '!=':
-						$output = t3lib_div::inList($parts[3],$row[$parts[1]]);
+						$output = t3lib_div::inList($parts[3],$theFieldValue);
 						if ($parts[2]{0}=='!')	$output = !$output;
 					break;
 				}
@@ -4900,6 +4928,13 @@ class t3lib_TCEforms	{
 							$output = (intval($row['uid']) > 0) ? TRUE : FALSE;
 						}
 					break;
+				}
+			break;
+			case 'HIDE_L10N_SIBLINGS':
+				if ($ffValueKey==='vDEF')	{
+					$output = TRUE;
+				} elseif ($parts[1]==='except_admin' && $GLOBALS['BE_USER']->isAdmin())	{
+					$output = TRUE;
 				}
 			break;
 		}

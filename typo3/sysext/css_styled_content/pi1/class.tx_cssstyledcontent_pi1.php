@@ -217,7 +217,7 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 			$type = intval($this->cObj->data['layout']);
 
 				// Get the list of files (using stdWrap function since that is easiest)
-			$lConf=array();
+			$lConf = array();
 			$lConf['override.']['filelist.']['field'] = 'select_key';
 			$fileList = $this->cObj->stdWrap($this->cObj->data['media'],$lConf);
 

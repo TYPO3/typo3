@@ -188,6 +188,7 @@ $TCA['tt_content'] = Array (
 		),
 		'header' => Array (
 			'l10n_mode' => 'prefixLangTitle',
+			'l10n_cat' => 'text',
 			'label' => 'LLL:EXT:cms/locallang_ttc.php:header',
 			'config' => Array (
 				'type' => 'input',
@@ -257,6 +258,7 @@ $TCA['tt_content'] = Array (
 		),
 		'bodytext' => Array (
 			'l10n_mode' => 'prefixLangTitle',
+			'l10n_cat' => 'text',
 			'label' => 'LLL:EXT:lang/locallang_general.php:LGL.text',
 			'config' => Array (
 				'type' => 'text',

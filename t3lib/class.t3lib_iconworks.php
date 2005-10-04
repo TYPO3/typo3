@@ -122,6 +122,14 @@ class t3lib_iconWorks	{
 		$doNotGenerateIcon = $GLOBALS['TYPO3_CONF_VARS']['GFX']['noIconProc'];				// If set, the icon will NOT be generated with GDlib. Rather the icon will be looked for as [iconfilename]_X.[extension]
 		$doNotRenderUserGroupNumber = TRUE;		// If set, then the usergroup number will NOT be printed unto the icon. NOTICE. the icon is generated only if a default icon for groups is not found... So effectively this is ineffective...
 
+			// Shadow:
+		if ($TCA[$table]['ctrl']['versioningWS'] && (int)$row['t3ver_state']===1)	{
+			return 'gfx/i/shadow_hide.png';
+		}
+		if ($TCA[$table]['ctrl']['versioningWS'] && (int)$row['t3ver_state']===2)	{
+			return 'gfx/i/shadow_delete.png';
+		}
+
 			// First, find the icon file name. This can depend on configuration in TCA, field values and more:
 		if ($table=='pages')	{
 			if (!$iconfile = $PAGES_TYPES[$row['doktype']]['icon'])	{

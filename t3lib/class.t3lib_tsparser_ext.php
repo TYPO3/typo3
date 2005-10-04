@@ -756,6 +756,7 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 			}
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'sys_template', 'pid='.intval($id).$addC.' '.$this->whereClause, '', 'sorting', '1');
 			$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
+			t3lib_BEfunc::workspaceOL('sys_template',$row);
 			$GLOBALS['TYPO3_DB']->sql_free_result($res);
 			return $row;	// Returns the template row if found.
 		}
@@ -773,7 +774,8 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 			$outRes=array();
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'sys_template', 'pid='.intval($id).' '.$this->whereClause, '', 'sorting');
 			while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
-				$outRes[] = $row;
+				t3lib_BEfunc::workspaceOL('sys_template',$row);
+				if (is_array($row))		$outRes[] = $row;
 			}
 			$GLOBALS['TYPO3_DB']->sql_free_result($res);
 			return $outRes;	// Returns the template rows in an array.
@@ -1632,8 +1634,10 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 			$resList = $tmp_upload_name.",".$resList;
 			$resList=implode(t3lib_div::trimExplode(",",$resList,1),",");
 				// Making data-array
+			$saveId = $tplRow['_ORIG_uid'] ? $tplRow['_ORIG_uid'] : $tplRow['uid'];
+debug($saveId);
 			$recData=array();
-			$recData["sys_template"][$tplRow["uid"]]["resources"] = $resList;
+			$recData["sys_template"][$saveId]["resources"] = $resList;
 				// Saving
 			$tce = t3lib_div::makeInstance("t3lib_TCEmain");
 			$tce->stripslashes_values=0;
@@ -1643,7 +1647,8 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 
 			t3lib_div::unlink_tempfile($tmp_upload_name);
 
-			$tmpRow = t3lib_BEfunc::getRecord("sys_template",$tplRow["uid"],"resources");
+			$tmpRow = t3lib_BEfunc::getRecord("sys_template",$saveId,"resources");
+
 			$tplRow["resources"] = $tmpRow["resources"];
 
 				// Setting the value

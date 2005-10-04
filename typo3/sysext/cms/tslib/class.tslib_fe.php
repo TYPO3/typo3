@@ -230,7 +230,6 @@
 	var $showHiddenPage='';				// Flag indicating that hidden pages should be shown, selected and so on. This goes for almost all selection of pages!
 	var $showHiddenRecords='';			// Flag indicating that hidden records should be shown. This includes sys_template, pages_language_overlay and even fe_groups in addition to all other regular content. So in effect, this includes everything except pages.
 	var $simUserGroup='0';				// Value that contains the simulated usergroup if any
-	var $versionPreviewMap=array();		// Versioning Preview record map (temporary, for sys_page)
 
 		// CONFIGURATION
 	var $TYPO3_CONF_VARS=array();		// The configuration array as set up in t3lib/config_default.php. Should be an EXACT copy of the global array.
@@ -694,17 +693,20 @@
 				}
 			}
 
-				// Now it's investigated if the raw page-id points to a hidden page and if so, the flag is set.
-				// This does not require the preview flag to be set in the admin panel
 			if ($this->id)	{
+
+					// Now it's investigated if the raw page-id points to a hidden page and if so, the flag is set.
+					// This does not require the preview flag to be set in the admin panel
 				$idQ = t3lib_div::testInt($this->id) ? 'uid='.intval($this->id) : 'alias='.$GLOBALS['TYPO3_DB']->fullQuoteStr($this->id, 'pages').' AND pid>=0';	// pid>=0 added for the sake of versioning...
-				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('hidden', 'pages', $idQ.' AND hidden!=0 AND deleted=0');
+				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('hidden', 'pages', $idQ.' AND hidden!=0 AND deleted=0');	// versionOL()? - decided to leave it be for now...
 				if ($GLOBALS['TYPO3_DB']->sql_num_rows($res))	{
 					$this->fePreview = 1;	// The preview flag is set only if the current page turns out to actually be hidden!
 					$this->showHiddenPage = 1;
 				}
 
-					// Check root line for proper connection to tree root (done because of possible preview of page / branch versions)
+					// Check root line for proper connection to tree root (done because of possible preview of page / branch versions) [This will be done when in online workspace...]
+/*
+TEMPORARILY disabled version previews in online workspace (while testing offline workspaces)
 				if (!$this->fePreview)	{
 
 						// Initialize the page-select functions to check rootline:
@@ -723,15 +725,16 @@
 						}
 					}
 				}
+*/
 			}
 
-				// Checking for specific version preview of records:
-			if (is_array(t3lib_div::_GP('ADMCMD_vPrev')))	{
-				$this->fePreview = 1;
-				$this->versionPreviewMap = t3lib_div::_GP('ADMCMD_vPrev');
+				// The preview flag will be set if a backend user is in an offline workspace
+			if ($GLOBALS['BE_USER']->user['workspace_preview'] && ($GLOBALS['BE_USER']->workspace==-1 || $GLOBALS['BE_USER']->workspace>0))	{
+				$this->fePreview = 2;	// Will show special preview message.
 			}
 
-			if ($this->fePreview)	{	// If the front-end is showing a preview, caching MUST be disabled.
+				// If the front-end is showing a preview, caching MUST be disabled.
+			if ($this->fePreview)	{
 				$this->set_no_cache();
 			}
 		}
@@ -743,6 +746,7 @@
 			// Check if backend user has read access to this page. If not, recalculate the id.
 		if ($this->beUserLogin && $this->fePreview)	{
 			if (!$GLOBALS['BE_USER']->doesUserHaveAccess($this->page,1))	{
+
 					// Resetting
 				$this->clear_preview();
 				$this->fe_user->user['usergroup'] = $fe_user_OLD_USERGROUP;
@@ -770,6 +774,14 @@
 		$this->id = $this->contentPid = intval($this->id);	// Make sure it's an integer
 		$this->type = intval($this->type);	// Make sure it's an integer
 
+			// Look for alternative content PID if page is under version preview:
+		if ($this->fePreview)	{
+			if ($this->page['_ORIG_pid']==-1 && $this->page['t3ver_swapmode']==0)	{	// Current page must have been an offline version and have swapmode set to 0:
+					// Setting contentPid here for preview might not be completely correct to do. Strictly the "_ORIG_uid" value should be used for tables where "versioning_followPages" is set and for others not. However this is a working quick-fix to display content elements at least!
+				$this->contentPid = $this->page['_ORIG_uid'];
+			}
+		}
+
 			// Call post processing function for id determination:
 		if (is_array($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['determineId-PostProc']))	{
 			$_params = array('pObj' => &$this);
@@ -792,11 +804,9 @@
 
 			// Initialize the page-select functions.
 		$this->sys_page = t3lib_div::makeInstance('t3lib_pageSelect');
-		$this->sys_page->init($this->showHiddenPage);
 		$this->sys_page->versioningPreview = $this->fePreview ? TRUE : FALSE;
-		if ($this->sys_page->versioningPreview)	{
-			$this->sys_page->versionPreviewMap = $this->versionPreviewMap;
-		}
+		$this->sys_page->versioningWorkspaceId = $GLOBALS['BE_USER']->workspace;
+		$this->sys_page->init($this->showHiddenPage);
 
 			// Set the valid usergroups for FE
 		$this->initUserGroups();
@@ -1015,7 +1025,7 @@
 			}
 			if ($this->rootLine[$a]['doktype']==6)	{
 				if ($this->beUserLogin)	{	// If there is a backend user logged in, check if he has read access to the page:
-					$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', 'pages', 'uid='.intval($this->id).' AND '.$GLOBALS['BE_USER']->getPagePermsClause(1));
+					$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', 'pages', 'uid='.intval($this->id).' AND '.$GLOBALS['BE_USER']->getPagePermsClause(1));	// versionOL()?
 					list($isPage) = $GLOBALS['TYPO3_DB']->sql_fetch_row($res);
 					if (!$isPage)	$removeTheRestFlag=1;	// If there was no page selected, the user apparently did not have read access to the current PAGE (not position in rootline) and we set the remove-flag...
 				} else {	// Dont go here, if there is no backend user logged in.
@@ -1276,7 +1286,7 @@
 	function checkAndSetAlias()	{
 		if ($this->id && !t3lib_div::testInt($this->id))	{
 			$aid = $this->sys_page->getPageIdFromAlias($this->id);
-			if ($aid)	{$this->id=$aid;}
+			if ($aid)	{$this->id = $aid;}
 		}
 	}
 
@@ -1452,21 +1462,9 @@
 
 			$this->newHash = $this->getHash();
 
-			$GLOBALS['TT']->push('Cache Query','');
-				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-							'S.*',
-							'cache_pages S,pages P',
-							'S.hash='.$GLOBALS['TYPO3_DB']->fullQuoteStr($this->newHash, 'cache_pages').'
-								AND S.page_id=P.uid
-								AND S.expires > '.intval($GLOBALS['EXEC_TIME']).'
-								AND P.deleted=0
-								AND P.hidden=0
-								AND P.starttime<='.intval($GLOBALS['EXEC_TIME']).'
-								AND (P.endtime=0 OR P.endtime>'.intval($GLOBALS['EXEC_TIME']).')'
-						);
-			$GLOBALS['TT']->pull();
 			$GLOBALS['TT']->push('Cache Row','');
-				if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
+				if ($row = $this->getFromCache_queryRow())	{
+
 					$this->config = (array)unserialize($row['cache_data']);		// Fetches the lowlevel config stored with the cached data
 					$this->content = $row['HTML'];	// Getting the content
 					$this->cacheContentFlag = 1;	// Setting flag, so we know, that some cached content is gotten.
@@ -1475,24 +1473,52 @@
 					if ($this->TYPO3_CONF_VARS['FE']['debug'] || $this->config['config']['debug'])	{
 						$this->content.=chr(10).'<!-- Cached page generated '.Date('d/m Y H:i', $row['tstamp']).'. Expires '.Date('d/m Y H:i', $row['expires']).' -->';
 					}
+
 				}
 			$GLOBALS['TT']->pull();
-
-			$GLOBALS['TYPO3_DB']->sql_free_result($res);
 		}
+	}
+
+	/**
+	 * Returning the cached version of page with hash ->newHash
+	 *
+	 * @return array	Cached row, if any. Otherwise void.
+	 */
+	function getFromCache_queryRow()	{
+
+		$GLOBALS['TT']->push('Cache Query','');
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+				'S.*',
+				'cache_pages S,pages P',
+				'S.hash='.$GLOBALS['TYPO3_DB']->fullQuoteStr($this->newHash, 'cache_pages').'
+					AND S.page_id=P.uid
+					AND S.expires > '.intval($GLOBALS['EXEC_TIME']).'
+					AND P.deleted=0
+					AND P.hidden=0
+					AND P.starttime<='.intval($GLOBALS['EXEC_TIME']).'
+					AND (P.endtime=0 OR P.endtime>'.intval($GLOBALS['EXEC_TIME']).')'
+			);
+		$GLOBALS['TT']->pull();
+
+		$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
+		$GLOBALS['TYPO3_DB']->sql_free_result($res);
+		return $row;
 	}
 
 	/**
 	 * Detecting if shift-reload has been clicked
 	 * Will not be called if re-generation of page happens by other reasons (for instance that the page is not in cache yet!)
+	 * Also, a backend user MUST be logged in for the shift-reload to be detected due to DoS-attack-security reasons.
 	 *
 	 * @return	boolean		If shift-reload in client browser has been clicked, disable getting cached page (and regenerate it).
 	 */
 	function headerNoCache()	{
 		$disableAcquireCacheData = FALSE;
 
-		if (strtolower($_SERVER['HTTP_CACHE_CONTROL'])==='no-cache' || strtolower($_SERVER['HTTP_PRAGMA'])==='no-cache')	{
-			$disableAcquireCacheData = TRUE;
+		if ($this->beUserLogin)	{
+			if (strtolower($_SERVER['HTTP_CACHE_CONTROL'])==='no-cache' || strtolower($_SERVER['HTTP_PRAGMA'])==='no-cache')	{
+				$disableAcquireCacheData = TRUE;
+			}
 		}
 
 			// Call hook for possible by-pass of requiring of page cache (for recaching purpose)
@@ -2192,8 +2218,16 @@
 </html>';
 			$temp_content = $this->config['config']['message_page_is_being_generated'] ? $this->config['config']['message_page_is_being_generated'] : $stdMsg;
 
-			$this->setPageCacheContent($temp_content, '', $GLOBALS['EXEC_TIME']+$seconds);
-			$this->tempContent = TRUE;		// This flag shows that temporary content is put in the cache
+			if (!$this->headerNoCache() && $cachedRow = $this->getFromCache_queryRow())	{
+					// We are here because between checking for cached content earlier and now some other HTTP-process managed to store something in cache AND it was not due to a shift-reload by-pass.
+					// This is either the "Page is being generated" screen or it can be the final result.
+					// In any case we should not begin another rendering process also, so we silently disable caching and render the page ourselves and thats it.
+					// Actually $cachedRow contains content that we could show instead of rendering. Maybe we should do that to gain more performance but then we should set all the stuff done in $this->getFromCache()... For now we stick to this...
+				$this->set_no_cache();
+			} else {
+				$this->setPageCacheContent($temp_content, $this->config, $GLOBALS['EXEC_TIME']+$seconds);
+				$this->tempContent = TRUE;		// This flag shows that temporary content is put in the cache
+			}
 		}
 	}
 
@@ -2211,7 +2245,6 @@
 				$timeOutTime = $midnightTime;
 			}
 		}
-		$this->config['hash_base'] = $this->hash_base;
 		$this->setPageCacheContent($this->content, $this->config, $timeOutTime);
 
 			// Hook for cache post processing (eg. writing static files!)
@@ -2248,7 +2281,6 @@
 		if ($this->page_cache_reg1)	{
 			$insertFields['reg1'] = intval($this->page_cache_reg1);
 		}
-
 		$GLOBALS['TYPO3_DB']->exec_INSERTquery('cache_pages', $insertFields);
 	}
 
@@ -2318,6 +2350,7 @@
 		ksort($this->all);
 			// Same codeline as in getFromCache(). BUT $this->all has been set in the meantime, so we can't just skip this line and let it be set above! Keep this line!
 		$this->newHash = $this->getHash();
+		$this->config['hash_base'] = $this->hash_base;	// For cache management informational purposes.
 
 			// Here we put some temporary stuff in the cache in order to let the first hit generate the page. The temporary cache will expire after a few seconds (typ. 30) or will be cleared by the rendered page, which will also clear and rewrite the cache.
 		$this->tempPageCacheContent();
@@ -2932,12 +2965,19 @@ if (version == "n3") {
 	 */
 	function previewInfo()	{
 		if ($this->fePreview)	{
+
+				if ($this->fePreview==2)	{
+					$text = $GLOBALS['BE_USER']->workspaceRec['title'] ? 'Preview of workspace "'.$GLOBALS['BE_USER']->workspaceRec['title'].'" ('.$GLOBALS['BE_USER']->workspace.')' : 'Offline Workspace (-1)';
+				} else {
+					$text = 'PREVIEW!';
+				}
+
 				$stdMsg = '
 				<br />
 				<div align="center">
 					<table border="3" bordercolor="black" cellpadding="2" bgcolor="red">
 						<tr>
-							<td>&nbsp;&nbsp;<font face="Verdana" size="1"><b>PREVIEW!</b></font>&nbsp;&nbsp;</td>
+							<td>&nbsp;&nbsp;<font face="Verdana" size="1"><b>'.htmlspecialchars($text).'</b></font>&nbsp;&nbsp;</td>
 						</tr>
 					</table>
 				</div>';

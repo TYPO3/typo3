@@ -310,7 +310,7 @@ class localPageTree extends t3lib_browseTree {
 						'';
 			$out.='
 				<tr class="'.$bgColorClass.'">
-					<td nowrap="nowrap">'.
+					<td nowrap="nowrap"'.($v['row']['_CSSCLASS'] ? ' class="'.$v['row']['_CSSCLASS'].'"' : '').'>'.
 					$v['HTML'].
 					$this->wrapTitle($this->getTitleStr($v['row'],$titleLen),$v['row'],$this->ext_pArrPages).
 					'</td>'.
@@ -1623,7 +1623,7 @@ class SC_browse_links {
 				t3lib_div::_GP('showLimit')
 			);
 			$dblist->setDispFields();
-			$dblist->generateList($id,$table);
+			$dblist->generateList();
 			$dblist->writeBottom();
 
 				//	Add the HTML for the record list to output variable:

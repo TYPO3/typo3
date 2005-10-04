@@ -83,6 +83,7 @@ class SC_alt_menu_sel {
 
 			// Initialize modules
 		$loadModules = t3lib_div::makeInstance('t3lib_loadModules');
+		$loadModules->observeWorkspaces = TRUE;
 		$loadModules->load($TBE_MODULES);
 
 			// Start page

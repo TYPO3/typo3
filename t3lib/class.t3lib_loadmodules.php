@@ -83,6 +83,7 @@ class t3lib_loadModules {
 	var $modListUser = Array();		// this array will hold the elements that should go into the select-list of modules for users...
 
 	var $BE_USER = '';	// The backend user for use internally
+	var $observeWorkspaces = FALSE;		// If set true, workspace "permissions" will be observed so non-allowed modules will not be included in the array of modules.
 
 
 	/**
@@ -387,7 +388,7 @@ class t3lib_loadModules {
 		$path = ereg_replace ('/[^/.]+/\.\./', '/', $fullpath); // because 'path/../path' does not work
 		if (@is_dir($path) && @file_exists($path.'/conf.php')) 	{
 			include($path.'/conf.php');	// The conf-file is included. This must be valid PHP.
-			if (!$MCONF['shy'] && $this->checkModAccess($name,$MCONF))	{
+			if (!$MCONF['shy'] && $this->checkModAccess($name,$MCONF) && $this->checkModWorkspace($name,$MCONF))	{
 				$modconf['name']=$name;
 					// language processing. This will add module labels and image reference to the internal ->moduleLabels array of the LANG object.
 				if (is_object($GLOBALS['LANG']))	{
@@ -476,6 +477,31 @@ class t3lib_loadModules {
 			if ($this->BE_USER->isAdmin() || $this->BE_USER->check('modules',$name))	{return true;}	// If admin you can always access a module
 
 		} else return true;	// If conf[access] is not set, then permission IS granted!
+	}
+
+	/**
+	 * Check if a module is allowed inside the current workspace for be user
+	 * Processing happens only if $this->observeWorkspaces is TRUE
+	 *
+	 * @param	string		Module name
+	 * @param	array		MCONF array (module configuration array) from the modules conf.php file (contains settings about workspace restrictions)
+	 * @return	boolean		True if access is granted for $this->BE_USER
+	 */
+	function checkModWorkspace($name,$MCONF)	{
+		if ($this->observeWorkspaces)	{
+			$status = TRUE;
+			if ($MCONF['workspaces'])	{
+				$status = FALSE;
+				if (($this->BE_USER->workspace===0 && t3lib_div::inList($MCONF['workspaces'],'online')) ||
+					($this->BE_USER->workspace===-1 && t3lib_div::inList($MCONF['workspaces'],'offline')) ||
+					($this->BE_USER->workspace>0 && t3lib_div::inList($MCONF['workspaces'],'custom')))	{
+						$status = TRUE;
+				}
+			} elseif ($this->BE_USER->workspace===-99)	{
+				$status = FALSE;
+			}
+			return $status;
+		} else return TRUE;
 	}
 
 	/**

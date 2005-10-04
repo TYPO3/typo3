@@ -64,7 +64,7 @@ class tx_version_cm1 {
 		if (!$backRef->cmLevel)	{
 
 				// Returns directly, because the clicked item was not from the pages table
-			if (!$TCA[$table] && $TCA[$table]['ctrl']['versioning'])	return $menuItems;
+			if (!$TCA[$table] && $TCA[$table]['ctrl']['versioningWS'])	return $menuItems;
 
 				// Adds the regular item:
 			$LL = $this->includeLL();

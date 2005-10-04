@@ -5,29 +5,90 @@ Maintained by Kasper
 Do not modify without permission!
 *******************************************
 
+[@KASPER: ALSO SEE MY MAIL FOLDERS about Core development!]
 
-General:
+
+General Backend:
 - CHECK: What is the number of supported page levels? 20 or 100?
-- CHECK: possible XSS problem with alt_mod_frameset.php taking parameters for scripts to display in frames.
-- Option: Turn of "onBlur" in backend (Message-ID: <001801c2a28c$bb020c70$963afea9@bla8kdvxpl8glk>)
 - Feature: "admin" can click a button which wipes out all record-lockings. (Message-Id: <200301281752.23246.mundaun@gmx.ch>)
-- Feature: Controlling access to function menu modules as well (thus we could have a user-module inside ?Template? which could edit the constants field)
-- Feature: Web >plugins -> to be a main module where people can place modules for their extension.
+- Feature: Controlling access to function menu modules as well (thus we could have a user-module inside ?Template? which could edit the constants field) (including workspace access)
+- Feature: Web >plugins removed
 - Substitute "->include_once[] = ...." with "require_once()" directly in classes - BUT the problem is that class files accesses $TYPO3_CONF_VARS (for XCLASS inclusion) and that is not accessible from the function including the script unless "global $TYPO3_CONF_VARS" is set before inclusion. THEN all XCLASSes of that class will break!!!
+	- Check the source for "require_once()" calls inside of methods and make sure "global $TYPO3_CONF_VARS" are set before (also update CGL document).
 - Backend Interface: Dont show edit icons if editing cannot be performed due to recordEditAccessInternals() / editlock for pages (pid)
+- class.t3lib_dmailer.php into direct_mail module?
+- Avoiding the symlinks in core?
+- GETll can be configured to show the label key so wrong labels can quickly be changed (using the key to find label in translator interface)
+- lock cHash to id as well (otherwise spamming cache-table can be done with a series of cHash values/parameters and traversing known page ids)
 
-TCEmain:
-- Commenting of the class.
-- Charset:
-	- Currently the upper/lower case conversion converts danish/german letters as if they were iso-8859-1. This will be a problem if other charsets are used. What to do?
+TCEmain
+(Related: DBint, User Admin module, logging-display, TCEforms, Web>List)
+- Clean-up and commenting of the class.
+- CHARSET:
 	- Note: No charset conversion is done in TCEmain. It is expected that the content enters TCEmain in the charset of the backend in general.
-- FEATURES:
+- LOGGING:
+	- Finally define the API to the "sys_log" table!
+		- Add detection of workspace
+	- Rewrite log-display, support writing to text-files, syslog on unix (API?)
+		- Reports/Monitoring: Show/send-by-email daily reports over accumulated activity (grouped by workspace/user/pagetree section/modules etc) [Richard at Dassault wanted this]
+			- Activity of individual users in a summary form
+			- Activity in branches of a page tree
+			- Activity in a workspace
+	- Finish the logging of TCEmain actions (delete/copy)
+	- Versioning: sys history/sys_log track the "uid" of a record and version swapping will invalidate the integrity of this! How to deal with?
+	- Centralized logging:
+		- Create a core API for logging data from all kinds of places in the system. (substituting the current sys_log?)
+		- Create an extension which shows how the log data can be stored in a) database, b) files
+		- extension "logit" / PEAR::log package?
+- INTEGRITY / CLEAN_UP / REFERENCE TRACKING:
+	- Implement kill/restore of "deleted" records.
+	- Record Reference tracking in a table in TCEmain
+		- Tracks DB-references, Files and softrefs (including in FlexForms)
+		- Index is generated per record with an API call (both fe/be), making it easy to maintain it and possible to completely regenerate it
+		- Used for:
+			- Check before deletion that a record is not used?
+			- Used by applications (like TemplaVoila) where it is hard to track references in FlexForms
+			- Used for import/export module and anywhere else where we are looking up references!
+			- Basis for integrity checks
+			- clearing caching more effectively
+	- Record clean-up functionality
+		- Remove references to deleted records (also deleted-to-recycler records? Maybe "deleted-to-recycler" references are important to remove in order to make sure "recycler" records are not selected!) (refs to MM for both tables/files)
+		- Remove references to lost files etc.
+		- Cleaning FlexForm XML according to the current DS (old XML garbage might be left if DS changed)
+	- Versioning:
+		- Flush old versions (requires general clean-up features to be complete!)
+		- Check for "lost" versions during swap?
+- PERMISSIONS:
+	- Permission API: Used for any DB-element in system (See Sune Vestergaards suggestion)
+		- More flexible setting of permissions
+		- Additional checks apart from read/edit/new/delete etc.
+		- Permissions for any record
+		- Can work in conjunction with current page permissions or simply work instead of them.
+		- Access Lists?
+	- CHECK: That permissions are properly evaluated, especially:
+		- Languages (there was a bug proved)
+		- Workspaces / Versioning
+		- Moving of records (source/destination PIDs)
+	- Security in tcemain: Uploaded/Attached files are allowed to be in ONLY a relative path OR in the "lockDir"!
+	- Roles (ideas about adding roles to the permission concept of TYPO3):
+		- There could be, say, 4 default roles:  author, editor, administrator, developer
+		- Users can be assigned "membership" of a role (basically a "role" is like a hardcoded "user-group")
+		- Like you can configure database fields in TCA to be an "excludeField" you could also configure which ROLES can edit the field.
+		- Possibly each role could assign membership of some groups.
+	- Tools > User Admin:
+		- Features helping to configure roles/users?
+	- Versioning:
+		- Versioning must work for non-admins!
+		- Backend user access to elements is based on the access restrictions for the official element (except pages?). This must be implemented on core level.
+- TCEforms/TCEmain available for frontend
+	- Makes portal features easier to create
+	- A rewrite of TCEmain might help very much!
+- VARIOUS FEATURES:
 	- Support for submitting dates in non-UNIX-time format (eg. DD-MM-YYYY) (is there a PHP function to which you can directly pass something like "DD-MM-YYYY" and then it will clean it all up? Or convert?
 	- Recyclebin: If an item is deleted and is NOT in the recyclebin, then move it (all pages to the root of) the closest recyclebin (in a rootline pid AND with write permissions) in the pagetree. If that is not present, then delete normally. If you delete anything in a recycle bin, it's totally deleted.
 	- Implement field evaluation in TCEmain: Evaluate min/max? Checking references exists?
 	- Implement a feature, "max_number_of_records_in_pid" which means the TCEmain will check if a number of records of a kind has been exceeded for the page.
 	- "Pattern-control" for relation fields? (See "APPENDIX: PATTERN-control") Probably create an API by which you can do your own evaluating, return true/false, return an error message.
-	- pre and post processing by user functions of the data? (Message-ID: <C018FF617C61AB4588D15494126A5C0F23E431@Soulman.hanno-kirchhoff.de>)
 	- "Tree-tables": Adding TCA-feature which can describe a field being a internal_pid for the table so tables can be listed as a tree in Web>List (and for TCEmain this means that copying an element). "parent" items. Rene needs this for "categories". See (Message-Id: <200212201257.24705.r.fritz@colorcube.de>)
 	- Support for "grouping": - eg. tt_content elements are grouped by "column" + "language". But copy/cut operations must understand this. And Web>List should reflect this as categorizing.
 	- "child records" - records which MUST be related to another table - and will be moved along with the main record if moved.
@@ -44,49 +105,27 @@ TCEmain:
 	- Support for MM-records which does NOT get deleted, but is kept... and then support for having data in those!! NOTE 3/12 04: This will cause severe problems in the import/export interface and probably many other places where the MM relations are stored only as the uid of another table and nothing more. That makes it impossible to track the record in the middle....
 	- Support that the content of a single field can be stored in an external file instead.
 	- Support that a list of fields can be stored in an external XML file instead.
-	- Record Reference tracking in a table in TCEmain; Used to:
-		- Check before deletion that a record is not used.
-		- Used by TemplaVoila where it is hard to track references in FlexForms
-		- A backend module can regenerate the "index-table" if it becomes invalid over time for some reason...
-		- Used for import/export module and anywhere else where we are looking up references!
 	- "uniquePerField"
 		- used for pages_overlay_records "pid"
 		- used for "tt_content"/"sys_language_uid", field "l18n_parent"
-- VERSIONING:
-	- See description in appendix.
-- LOGGING:
-	- Finish the logging of TCEmain actions (delete/copy) + finally define the API to the "sys_log" table!
-- CLEAN_UP:
-	- Implement kill/restore of "deleted" records.
-	- Remove references to records when deleting totally (or also deleted-to-recycler records? Maybe "deleted-to-recycler" references are important to remove in order to make sure "recycler" records are not selected!) (refs to MM for both tables/files)
-- PERMISSIONS:
-	- Permission management on selector box/radio button values
-		- so certain "CType" / "Insert plugin" / "FlexForm datatypes" values could be blocked
-		- Could it be considered to implement some "access pool" where elements on any level (like here selectorboxes or for FlexForms elements/types there) could add their element by an API and then it would A) automatically be listed for groups access lists and B) automatically enforced.
-	- Permission management for translations? Users are allowed to edit certain languages? (Setup with general access list API?)
-	- Permissions on record-level
-	- CHECK: That permissions are properly evaluated (especially for moving content?)
-	- Security in tcemain: Uploaded/Attached files are allowed to be in ONLY a relative path OR in the "lockDir"!
+	- Having references on the form [uid : filereference/] for fall-back abilities.
 - BUG:
 	- if a file is uploaded (directly in the form) and there is an upper limit to the number of files which is then exceeded, the uploaded file is STILL copied to the upload folder and will thus be listed as "Files with no references at all (delete them!):"
 	- TCEmain: If there is a comma in the filename supplied as an uploaded file it will confuse the handling of files because the comma is also used to split the filename from each other. (29/04/2003). This is a problem with Inter-Photo Netprint where files uploaded by FTP with comma in the name will not be attached as they should. I think the solution should be found in TCEmain so any filename can be supplied as uploaded.
-- RELATED: DBint/admin, logging-display, TCEforms, Web>List
 - IDEA: check for potential dangerous php-extension
-- TCEforms/TCEmain available for frontend?
 
 
 TCEmain/TCEforms for FlexForms:
-- Affects: "lowlevel" ext/DBint , "impexp" extension. Must/Should be extended.
 - Permissions handled per-field in FlexForms?
 - What to do if data structure was not found? (Both TCEmain, TCEforms, templavoila_pi1, t3lib_transferdata)
 - block the creation of FlexForm in FlexForm inside TCEforms.
 - ['pi_flexform']['config']['ds'] must be set to some default message making sense!
-- CSH for flexforms
+- Other XML formats for DS: - API / services?
+	- xml2array - supporting looking for <>&" and if found wrapping in CDATA instead! (or maybe for multiline values?)
 - TCEmain features:
-	- caching of references/files in meta data (for analysis tools)? --> NO, rather use the "new" planned reference index table, see above.
 	- mapping values to a plain-text search field(s)
-	- Offering API functions for add/delete/move/copy
-	- Cleaning the original data in field since this may have an invalid structure if the data structure has changed in the meantime.
+	- Offering API functions for add/delete/move/copy/paste of FlexForm elements/sections
+	- Copy/Paste API for references? (see TemplaVoila page-module pioneer work)
 	- Possibility to write the XML data values into a table instead (see Marc Schlingers idea, stored on paper in my red organizer).
 - TCEforms:
 	- Support for checkboxes which can expand/collapse sections/containers? fold-in, fold-out, passing a list of fields to show (with sub-levels for horizontal display).
@@ -97,25 +136,31 @@ TCEmain/TCEforms for FlexForms:
 		- visual: Table with condition in top header, condition value column + block column. Not user supplied. -> OR just a selector box deciding what is shown below!? (possibly "ALL")
 	- Displaying partial branch of the data structure (and to a certain level)
 	- FlexForms cannot be possible if the record is not saved? No, should be ok, BUT a data source can of course not be referenced from another field since that fields value is NOT actually there! So only for fixed references to flex form definitions can this be done.
-	- If you have a multiple selector field (or checkbox array) an array of objects could be forced to reflect exactly the fieldnames there 1-1 thus giving us configuration option possibilities per field! For newloginbox extension: You set up a selector box with multiple choice where you can select fields from the fe_users table to display. In an array of elements in the DS you configure that the VALUE of that field is dictating that the same number of objects should be shown for configuration of each field. A "hidden" value would point each object to which value from the field it was for! The same would be very useful for M-M lists of records.
+	- If you have a multiple selector field (or checkbox array) an array of objects could be forced to reflect exactly the fieldnames there 1-1 thus giving us configuration option possibilites per field! For newloginbox extension: You set up a selector box with multiple choice where you can select fields from the fe_users table to display. In an array of elements in the DS you configure that the VALUE of that field is dictating that the same number of objects should be shown for configuration of each field. A "hidden" value would point each object to which value from the field it was for! The same would be very useful for M-M lists of records.
 	- Implement "<displayCond>EXT:templavoila:LOADED:true</displayCond>" for flexforms. (needed for mininews!!)
 	- Implement CSH for FF fields.
-
+	- Localization of FlexForms:
+		- Permissions for specific language as well!
+		- Using DHTML tabs for langChildren = 0, making something else for langChildren = 1
 
 TCEforms:
-- Support for other backend charsets / right-aligned charsets!?
+- Support for right-aligned charsets?
 - FEATURES:
 	- GENERAL:
-		- Customized display of a field, possibly passing an array with code that should be displayed and then people can themselves put it together from PHP?
-		- Ability to set up user functions for pre and post processing of the data?
-		- API for adding JS-functions to the onchange-event.
+		- Customized display of a field, possibly passing an array with code that should be displayed and then people can themselves put it together from PHP? (possible already?)
+		- Ability to set up user functions for pre and post processing of the data? (possible already?)
+		- API for adding JS-functions to the onchange-event. (possible already?)
 		- Make STORAGE_FOLDERs a LIST of pages - not just one page (still the first page could be the default while other pages will be where stuff is selected from).
+		- Workspace-ReadOnly flag for fields
+			Should be set for all fields which are used in where clauses in frontend. (Enables fields would candidate for example, but they must be handled otherwise since we WANT to be able to change those in new versions)
+			- Generally for fields: $TCA[$table]['ctrl']['languageField'] and $TCA[$table]['ctrl']['transOrigPointerField']
+			- field: pages_language_overlay:sys_language_uid
+			- field: pages:doktype (used for selection many places!) - but then we cannot make mounts points etc! (?)
 	- SELECT type:
 		- Ability to see icon/image from record of selected value in the selector box.
 		- IFRAME alternative for the selectorboxes where a HTML view can be shown. Possibly having an external script show the content which would be useful for display of tree-tables.
-		- Reflect possible tree-structure for records in Select/Items list
+		- Reflect possible tree-structure for records in Select/Items list.
 		- a way to grant read for the selectors without displaying the storagefolder in the treeview?
-		- move one up / one down buttons for the list (also for GROUP element)
 		- CHECK: "multiple" feature, single, sorted and non-sorted selections.
 		- making copies of select fields etc - check that remapped records are OK treated (with foreign/neg_foreign + free string values)
 		- Letting one selectorbox set another hidden fields value apart from its own? [USE: When selecting a template, that also sets the DS value! (Thus a template is always selected!)]
@@ -123,12 +168,14 @@ TCEforms:
 		- BUG: itemsArrayProcFunc only active IF there is an array! Shouldn't it be in any case?
 		- set the width of the selector field(s)
 	- GROUP type:
-		- [file] allow the selection of files from the system to be added as REFERENCES, not copied! (Message-ID: <003f01c23503$8cdd69d0$55333bd4@comtech>, + notify "illuminatus")
+		- [file] FILE-REFERENCES: allow the selection of files from the system to be added as REFERENCES, not copies!
+			- upload option to the folder specified in TCA
+		- Subfolders for uploads/ as well, detecting the first (#) a-z0-9 letters) (For large amounts of files!)
+			- Storing files with "a3#FILENAME.jpg" which indicates a subdirectory.
 		- In the thumbnail list add the Edit and view icons as in the good old days.
 		- BUG: By the way, isn't there a bug in the listing of the thumbnails of records?
 		- Nested records:
-		  - Group-fields of DB-type could be made to actually SHOW the records it contains in the very same form! Possibly with Add/Delete facilities.
-		  - See JH mail: Message-ID: <C018FF617C61AB4588D15494126A5C0F23E410@Soulman.hanno-kirchhoff.de>
+		  - Group-fields of DB-type could be made to actually SHOW the records it contains in the very same form! Possibly with Add/Delete facilities. (JH asked)
 		- IFRAME alternative for Element Browser.
 		- set the width of the selector field(s)
 	- DISPLAY_CONDITIONS:
@@ -141,54 +188,64 @@ TCEforms:
 	- CHECK: ###STORAGE_PID### incorrectly calculated?
 - DONE?: Support for label for main palette: (Rene: Message-Id: <200210011646.10346.r.fritz@colorcube.de>)
 
-Charset:
-- checking (for XML) if there is "character data" in a string?
-
 Element Browser:
 - Support for DAM
+- RTE API integration (rte_images + browselinks)
 - Support for browsing custom category-trees (passed by some PHP script)
 - Support for deleting files in the listing there.
-- Disable thumbnail option for faster display.
+- Disable thumbnail option for faster display. (Already done?)
 - Element Browser configurable a) without the page tree but hardcoded to specific PID, b) just default PID (possibly able to override from TSconfig)
 - Selecting files from other resource-fields of records (which the user can actually read) - maybe with the Element Browser, browsing for record, clicking it, seeing a list of files inside the record?)
 - Ability to insert images when their info page (larger thumbnail) is displayed. Maybe a small + (plus) icon would do. (Notify Patrick Roeder)
 - Some quick-lookup feature (like we have on TER)
 - Showing more than the title column for records listing and making it possible to sort by the columns.
+- BUG: fix bug when used as "wizard" for link fields!
+- Support realurl paths translation to IDs?
+	- Implementing a hook so "realurl" can intercept the "Edit page ID" field in the shortcut frame and allow people to paste in a URL from the website which will be analysed to find the page id from the URL
+	- Implementing a hook similar to this, but used in the RTE link selector box (browse_links.php) so a link to a page can be made in the same way. Such an interface will just link to the page if an ID could be found, otherwise tell that the URL din't have a page id associated with it.
+- Link selector: Disabling target box for selectors directly to HREf fields (DS case with templates...)
 
 Wizards:
 - Add wizard icon to TSconfig and Setup/Constants fields for immediate syntax highlighting (in popup window)
 - Add wizard icon to see/clean up FlexForm data? Convert language mode?
+- Wizard for editing FlexForm DS XML!
 
-Interface:
-- Showing in "frameset-modules" which submodule you are currently inside. And ability to change submodule in the rightmost frame anyways - maybe as a panel in top of the pages (must be cached so all submodules must not be loaded each time...)? (Message-ID: <3ADE655892793D499E2FBF623045AF4B54E9A4@dbwdfx2f.wdf.sap-ag.de>)
+Kickstarter:
+- Update kickstarter so new great options are not wastefully never known.
+
+Usability / Interface:
+- Review general backend logic
+- TCEform presentation
+	- How tables fields are currently organized for eg. pages, tt-content etc. and if Tabs should be used more for some of those (example "Standard" / "Advanced" pages)
+- Skin (WinXP skin, what difference would that heretic idea make?)
+- Showing in "frameset-modules" which submodule you are currently inside. And ability to change submodule in the rightmost frame anyways - maybe as a panel in top of the pages (must be cached so all submodules must not be loaded each time...)?
 - Ability to create another Main/sub module structure in the backend (Daniel H: Message-ID: <BAB9A920.E95D%daniel@typo3.com>)
 	- Change order, level, title, icon.
 	- Use User TSconfig... and allow someone to create an extension to visually create a TSconfig output
-	- See DHs mail: Message-ID: <mailman.1060763871.6396.typo3-metadev@lists.netfielders.de>
 	- Links could be going directly to the function menus inside modules as well!
+- Review Skinning API:
+	- Better backend HTML?
+	- More consistent re-use of classes / icons?
 
 Localization:
-- Export/Import of "translation XML file" or spreadsheet:
-	- Will allow all translation of new and changed content to be done in ONE place, probably outside of TYPO3
-	- In TYPO3 tool for such a file format: Can also show diff-view like with ll-XML format.
-	- SOAP services(?)
-	- Contains fields similar to orig_hash and orig_text with values of translated content so diff can be shown
+[See "Localization workflow" below]
+
+Versioning/Workspaces:
+[See "Versioning/Workspaces" below]
 
 Context Sensitive Help (CSH):
 - Add multimedia?
-- Special Glossary Support?
 
 WEB main module/page tree:
-- Option: For a frameset module, register the ID per sub-module, not just globally (see JH mail: Message-ID: <C018FF617C61AB4588D15494126A5C0F1F67AB@Soulman.hanno-kirchhoff.de>)
+- Option: For a frameset module, register the ID per sub-module, not just globally (JH asked)
 
 Web>List:
 - Add "New" to the clickmenu of eg. "be_users" (non-sorted items) when you want to copy a user into the list.
 - Add email function where you can 0) send email to single records email field, 1) all records on the clipboard, 2) all emails in a list of shown records, 3) all records in the PID. By emailing you can select to receive a copy yourself. Backend user must have name/email configured as from/reply-to/return-path information. Mails can be sent Bcc,CC or seperately. Can be used for lightweight newsletter feature! Maybe implement through some API to the Web>List module.
 - Page-tree-stop: Click on red "+" brings forth some kind of browser (list of pages, browseable, Web>List module feature?)
-- Add flag to TCA/[interface] which keeps a table from being listed in the list module. Probably an option which allows the display for admin-users.
-- Check that permissions are respected for the buttons in the control-panel of the List module
+- Add flag to TCA/[interface] which keeps a table from being listed in the list module. Probably an option which allows the display for admin-users. (Already made?)
+- Check that permissions are respected for the buttons in the control-panel of the List module (including for workspaces)
 - Why is web>list slow on new typo3.org?
-- Page TSconfig option: Only to select the table-headers for display (with record count), and only the extended view will show the records inside.
 - Support for "grouping": - eg. tt_content elements are grouped by "column" + "language". This should be reflected in the LISTING order (before ordered by the "sorting" column) OR maybe in a hierarchical display?
 - Support for tree-tables (that can be browsed).
 - Support for a "tree-group" -> a chain of tables which are displayed in a tree since each table has a config for a parent field in a former table. (Eg. DS: brand -> domain -> product).
@@ -196,21 +253,16 @@ Web>List:
 - FlexForm tree view / editing:
 	- When a record contains a FlexForm the web>List module could display the fields inside in a nice tree structure which one could expand/collapse! Then by clicking "edit" for a brand you get an interface where you can edit *that branch* of the flexform! Brilliant way to manage large structures inside of flexforms!
 		- Can you picture it? That would be like expanding an XML document by a node-tree and add/edit/delete/rearrange any of the internal informational pieces!
-- Fikse copy/paste s�at list-module reloader (lser ogs�problemet med paste fra sidetr�t/foldertr�t?)
 
 File>List:
-- BUG: UNIX: "RW" flag looks only on the permissions for the USER - not the group. So even if PHP via the group of a file can delete it, it is reported that it cannot.
+- BUG: UNIX: "RW" flag looks only on the permissions for the USER - not the group. So even if PHP via the group of a file can delete it, it is reported that it cannot. (Already made?)
 - Adding possibility to show files recursively (more levels), filter on a file name, search file content
+- From click-menu: Access to index files with indexed-search / create a "Indexing configuration" record for that folder / Initiate indexing of the "Indexing Configuration" for folder
 
 History/Undo:
-- Must present a page/content element view, so a page with content elements can be restored as a whole
 - Undo must be able to restore attached files as well
 - Should be possible to disable for certain tables (can it be done already with TSconfig?)
 - Delete saved states (and save whole record content).
-- Need to implement the diff-feature for windows as well (that is; set configuration)
-
-LDAP support:
-- See "APPENDIX: LDAP"
 
 EM:
 - Display: review-flag + link to review - cannot be overridden?
@@ -218,7 +270,6 @@ EM:
 - Display: Better filtering, quicker listing
 - Feature: [suggested by robert] resolving of dependencies like in apt-get (Debian package manager). Necessary extensions can be downloaded and installed automatically (idea: create dummy extension which depends on several extensions and acts like a package of extensions)
 - Feature: EM suggest clear-cache af scripts?
-- Install: Select other repository URLS in selector box?
 - Install: Extensions which can point the import/export to a directory with import-files.
 - Install: Getting from TER only already installed extensions.
 - Install: Flag: "Import ext"; "Show non-secure extensions" (show ALL ext., not only reviewed ones)
@@ -228,25 +279,288 @@ EM:
 - BUG: EM-extMgm: caching af localconf + extTables configuration in ARRAY? Plus ?ndringer til API specs. (problem when those files includes classes etc... probably not possible)
 - BUG: Clear cache files should remove ALL "temp_CACHED_*" files in typo3conf/ (not just the current two)
 - BUG: Download of extensions (compressed...) will sometimes NOT get the same MD5 key after being saved (with any browser it seems) as shown at the download link. Origin of error not know. Please help if you encounter the problem.
-- DOC: "Extension API" manual.sxw!
-- Check mailbox for more... ?
-- Related: The KickStarter Wizard, in particular a) cleaner code output, b) merging updates.
 
 The REGEX-{} problem:
 - BUG: Regexs; "Warning: Unmatched \{ in /home/sites/site14/typo3_src-3.5b3/typo3/mod/tools/em/index.php on line 1983" which is a ereg with { WITHOUT preceeding slash! (Message-ID: <003c01c275aa$c0c60c10$e3a1a33e@pentiumriv4v9a>, Message-ID: <20030729082437.79900.qmail@web11305.mail.yahoo.com>)
 	- Should be fixed by "[{]..." instead!
-
-Install/Servers:
-- FIX: To get PHP to handle PATH_INFO and PATH_TRANSLATED information correctly with this setup, the php parser should be compiled with the --enable-discard-path configure option.
-- FIX: The "php_sapi_name()=="cgi"||php_sapi_name()=="isapi"" problems (Message-ID: <ADEEJCHPNMOFKAAOJJKKCEKMCAAA.martin.kokes@sitewell.cz>, Message-ID: <200304071146520757.0097D495@smtp.worldonline.dk>, Message-ID: <BACDA028.F428%daniel@typo3.com>)
-- CHECK: Security: Can HTTP_SERVER_VARS be overridden from URL if global vars are enabled???
-- TYPO3_PORT bug (Message-ID: <005f01c2df3f$4006db00$0100a8c0@knoell>)
 
 Filepermissions of source:
 - Test that these permissions work OK:
   - chmod 555 typo3_src/ -R
   - cd typo3_src/typo3/
   - chmod 755 ext/
+
+SQLengine (t3lib_sqlengine):
+- Finish t3lib_sqlengine
+  - Test and compare against MySQL lookups
+  - XMLdb: Lave table locks
+  - Open Office / CSV tests (proof-of-concept)
+
+
+*******************************
+Versioning/Workspaces:
+*******************************
+
+- "They are also the only ones who can eventually publish the workspace content (except "admin" users)."
+- "If set, records from tables where versioning is not enabled can still be edited "live" inside the workspace."
+- "Admin user is the only one who can publish": Add that field, add flag in workspace table that "publish workspace gradually"
+	- "t3ver_stage" (only draft content in custom workspace): 0 = being edited (editing possible for members), 1 = pending for review (edit possible for reviewer), 2 = ready for publish (editing possible for admin), -1 = rejected, ready for editing (using sys-log for notice)
+
+Next steps for workspaces:
+- Overlays implemented in backend
+- Permissions / UIDs reflected in buttons and clickmenus.
+- Frontend previews done
+
+- Clean-up of TCEmain/logging/permissions [in particular for versioning/workspaces!]
+	- Perform as much logic and re-mapping in tcemain as possible so applications doesn't have to (for instance re-mapping of source and target uids in paste operations.)
+
+
+Testing:
+	t3lib_BEfunc::getFlexFormDS(), workspaceOL/fixVersioningPid ??
+	Page and (User) TSconfig?
+	Mounts points and versionized branches?
+	TemplateRecord previews?
+	- Apply versioning to other tables than the current.
+	- check page trees around for display of color backgrounds...
+	- check editing icons, overlays in various modules.
+	- Workspace access to Filelist module ?? (Should be OK)
+	- copy/cut/paste between versionized branches and other places (new pages).
+	- delete something twice?
+	template::getVersionSelector()
+	- overview of permissions handling?
+	- samspil med version module?
+
+Dassault:
+	- Change "class.user_3dsplm_fakepage.php"
+
+Manual:
+- Overview
+	- Concept:
+		- Workspace is Container for draft versions => Solves all issues of previewing, managing versions, overviews, comparisons etc.
+		- All is draft, consequence; a) works only with versionizable records, b) no files can be managed in fileadmin (unless exception accepted for custom workspaces)! => Safe playground
+		- Must work transparently for user => No training needed.
+		- THE implementation of versioning!
+	- state, not process!
+	- Define:
+		- lifecycle
+		- workspace
+		- publish/swap  workspace
+		- versioning modes: element, page, branch
+	- Modes:
+		- Live mode (online):
+			- Editing live content
+			- Like TYPO3 always was, however users can be excluded from online mode now.
+		- Draft mode (offline):
+			- Editing draft versions of content
+			- All editors can publish individual content or whole workspace at any time
+			- Usage: AdHoc needs for trusted editors etc.
+		- Custom mode:
+			- Editing draft versions of content
+			- Workspace owner is only person to publish (highest review authority) and edit workspace properties
+			- Workspace options: filemounts, reviewers, publishing time, Db mount
+			- Usage: For specific projects on a sitebranch, for simple review-cycle needs etc.
+- Using Workspaces
+	- Transparency in action
+	- Colors for feedback
+	- What is "[#VEP#]" in the path (visually)
+	- Workspace manager
+	- Setting up users (draft/live etc)
+		- "options.pageTree.onlineWorkspaceInfo"
+	- Preview in frontend by workspace ID
+- API
+	Intro:
+		- "versioningWS" instead of "versioning" in TCA
+			workspace 0 = online (live)
+			workspace -1 = offline (draft)
+			workspace > 0 = custom (projects)
+			workspace -99 = none selected at all.
+			[-99 is ERROR (none available), -1 is offline, 0 is online, >0 is custom workspaces.]
+	API:
+		Frontend:
+			Preview issues:
+				- Challenge: Previewing elements which are disabled by enableFields in the online version but not necessarily in offline versions! Also, new records with "t3ver_state" set to 1 (placeholder" must be filtered out as well - but not when previewed!
+				- Solution:
+					- Disable enableFields()/->where_del_hidden and check for them in versionOL on input record!
+				- Implementation:
+					- Any place where enableFields() are not used for selecting in frontend, the t3ver_state==1 flag must be checked in online display - otherwise placeholder records might be selected!
+					->versionOL(): Check if record has enable-fields that prevents display and if so, unset!
+					->fixVersioningPid(): For tracing back (getRootLine())
+					->getWorkspaceVersionOfRecord()
+				- Scenarios for preview that is not planned to be implemented:
+					- Searching will probably never work in offline mode: All SQL selection happens on online records and the overlay is applied only after.
+					- It is impossible to preview "count(*)" selections since we would have to traverse all records and pass them through versionOL() before we could count on the result!
+					- In tslib_fe::getPageShortcut() sys_page->getMenu() is called with an additional WHERE clause which will not respect if those fields are changed for a future version. This could be the case other places where getmenu() is used (but a search shows it is not a big problem). In this case we will for now accept that a wrong shortcut destination can be experienced during previews.
+					- Whenever a SQL query is made which also selects on other fields than enableFields, THEN it is out of control to preview. See the example described above (tslib_fe::getPageShortcut)
+		Backend modules:
+			$MCONF['workspaces'] = online,offline,custom
+		Backend, overlay/checking:
+			t3lib_BEfunc::workspaceOL()
+			t3lib_BEfunc::fixVersioningPid()
+			t3lib_BEfunc::isPidInVersionizedBranch
+			t3lib_BEfunc::getWorkspaceVersionOfRecord
+			t3lib_BEfunc::selectVersionsOfRecord()
+
+			BE_USER:
+			->workspaceEditState
+			->workspaceTestPID
+			->workspaceInit()
+			->checkWorkspace()
+			->setWorkspace()
+			->setWorkspacePreview()
+			->getDefaultWorkspace()
+
+View/Preview:
+- Frontend:
+	- ONLINE PREVIEW: Versionized pages should be previewed just by their UID (which will select the offline version!) - only in "Live" space, disabled at the moment inside tslib_fe!
+	OK - Workspace is used to set frontend in preview mode and display versions
+	?!	- TEST: Mounts points and versionized branches?
+	?	- tslib_content::getPidList(); TEST Mount points / Use offline UID values for "page" swapmodes; This is probably more natural for preview cases.
+	?	- versionOL() implementations missing:
+			- tslib_pibase::pi_getCategoryTableContents()
+			- tslib_content::checkPidArray()
+			- tslib_content::checkPid()
+			- tslib_content::exec_mm_query()/-_uidList() [These seems NOT to be used anymore!]
+	- Difficult frontend previews:
+		- All fields selected upon in frontend:
+			- $TCA[$table]['ctrl']['languageField'] and $TCA[$table]['ctrl']['transOrigPointerField']
+			- field: pages_language_overlay:sys_language_uid
+			- field: pages:doktype (used for selection many places!) - but then we cannot make mounts points etc! (?)
+		- Suggested solution:
+			- Setting a workspace-readonly flag for such values!
+			- However,
+				- menu previews are bypassing the problem already,
+				- page shortcut has trouble but is known,
+				- mount points will not be possible to preview (?)
+				- For new translations we might have the problem, for existing translations probably not since it is unlikely that the fields $TCA[$table]['ctrl']['languageField'] and $TCA[$table]['ctrl']['transOrigPointerField'] at changed later!
+			- For new records, maybe the placeholder record is updated along with offline version? (At least for non-file fields). This would solve the problem of build translations in a workspace and also offer the preview as working!
+
+	- In tslib_fe, this->contentPid is set to "_ORIG_UID" when a versionized page have swapmode set to "0". However this is not completely correct to do: Strictly the "_ORIG_UID" value should be used for tables where "versioning_followPages" is set and for others not. However this is a working quick-fix to display content elements at least!
+		t3lib_page::getPageOverlay() - because pages_language_overlay records have "versioning_followPages" set this should be observed when selecting language overlay records. But should it be hardcoded or something better?
+- Backend:
+	- Page TSconfig, Access evaluation, TCEmain/ TCEforms, Flexforms etc: When to fixVersioningPid() / versionOL()?
+	- Quick Edit?
+
+Workspace Manager TODO:
+- Details view for versions
+	- versions inside branch?
+	- display change log for specific element
+	- warning if page is worked on in other workspace
+	- preview links on items
+	- Difference view in online mode as well.
+	- Publishing must be possible ONLY if Online mode is available for a user?
+- Workspace list
+	- Admin features
+	- Implement the disabling of swap-mode on publish links when that is supported in the core (which I think it should be first...?)
+- TEMPORARY? Disabled backend reloading when changing workspace.
+- Click menu implementation of: Diff-view, raise level / publish. => Guess this is what the versioning element should hold!
+
+Workflows:
+- Workflows can regard a whole workspace!
+- Special permission required for:
+	- Publishing workspace / Setting publishing time
+	- Freezing/unfreezing workspace
+
+Swapping:
+	- (Support for) swapping using temporary file (instead of using negative ID)
+	- When swapping; Check "unique" fields (like pages.alias) etc.
+	- permissions?
+	- Problem: When a page+content or branch is versionized, the records that the user is NOT allowed to create/edit are NOT versionized. That mean that records are swapped out that should not be! Imagine if a user has no access to page language overlay but creates a new page+content. Then only page and tt_content is versionized but when swapped the page_language_overlay records are lost since none exist in the versionized page!
+
+Various Notes:
+- Pages-versioning and the impact of NOT swapping tt_content element uids:
+	- Loose anchor-points, manually made (could be hack-fixed by some intelligent copying tracking)
+	- TemplaVoila references to elements from other pages (will break, however bad practice to reference elements not in some sort of central library which will NEVER be page-versioned anyways)
+	- Insert-records could potentially do the same
+	- Impact assesment: Low.
+	- Clean-up module (in templavoila?) could also track such things
+	- Problems for non-templavoila sites would be low.
+    - What about a page alias?
+
+- Trunk/Branch:
+	- Requirement: Intelligent swapping of "sub-element" ids that CAN be traced back to the original!
+
+- MySQL:
+	- 4.0.14 fails with -1 uid! (4.0.18 is ok eg.)
+	- Correction possible:
+		-> ALTER TABLE jlajlajla AUTO_INCREMENT = 123
+	- Problems with other RDBMS because ID values cannot be changed at all!
+
+Preview modes with no BE login; For single pages, for whole workspace?
+- Can bypass hidden pages, fe_groups, set workspace
+- Works for certain timespan
+- Sets cookie
+- Respects permissions of backend users issuing that permission!?
+
+
+
+
+
+*************************
+Localization workflow:
+*************************
+- Export Flow:
+	- Select language
+	- Select tree levels / exclude individual pages/branches from translation / Way to exclude specific elements from localization
+		- We can imagine having translation configuration records in branches defining some presets that export files are related to: Thus we can ensure the same settings are used for both import and export. Also they could contains diff-info for flexforms!
+	- Export mode:
+		- Export needs only (updates/new)
+			- Options (depending on file format):
+				- Include other data for view of context
+				- Include any diff-source data? (alternatively based on previously written file in XML/ser. array format!)
+				- Include current translation or not (if not, if would be because of TRADOS based situations where a previous file exists to compare a new file with and a file with only the translation is returned.)
+		- each page in single file OR all pages in one file
+	- Export Formats:
+		- Generic XML/ser.array (for TYPO3 translation module which will be made for this purpose: Contains data, existing translation, diff-source, timestamps and hashes, like locallang-XML...)
+			- Can contain meta data so their starting point and configuration can be re-loaded from a location on the filesystem to where they can also be re-written!!!
+		- HTML (for TRADOS etc.)
+		- XLS/SXC (for excel translation)
+		- SXW / HTML (for OO Writer translation: Put into a table with columns: id/data/translation/colored-diff-view/OK-sign-off
+		- Create workflow items to work from!
+- Import Flow:
+	- Select file / upload
+		- Formats:
+			- ANY format is converted into internal standard array
+		- Create new elements via localization API in tcemain (to have l10n_mode per. field respected!)
+		- Generate $data array for tcemain from file IDs
+			- Options:
+				- Can deselect certain parts manually
+				- If original has changed, automatically warn/hide/deselect?
+				- If translation matches current already (if a previous import was done), automatically hidden/deselect/notify? (preference can depend on type of file format)
+- Analyse a page:
+	- Pages:
+		- If no Page Translation Overlay: New
+		- If Page Translation Overlay: Update
+		(Maybe use hidden page translation overlays to identify pages picked for localization? This would work pretty fine I think.)
+	- Records in general:
+		- if [ctrl][languageField] AND [ctrl][transOrigPointerField] is set, select all records with 'default' language (ignoring 'ALL'/-1) and for each:
+			- if no translation found: new
+			- if translation found: update
+			- NOTICE: translations can be found in external tables (like pages_language_overlay)
+		- selected by sorting order according to [ctrl]
+		- TemplaVoila: Here a special selection could apply for tt_content elements based on references in the DS. That would leave out all non-placed content elements. But in fact I rather say that we should NOT do it this way and instead clear out such elements so a general selection of the elements from the page is enough. Anyway, it should be possible though.
+	- Field selection:
+		- Option: Work only on fields where "l10n_cat" is "text" or "image" (selected!). Alternatively, use "l10n_mode" to filter as default (do not show "exclude" fields for instance!)
+	- ERROR reporting:
+		- If two or more records are claiming to be translations of another (for pages_language_overlay, tt_content etc.)
+- Limitations:
+	- Cannot work with content which has no parent/child relationship. This is the case for:
+		- Old style column based localization
+		- FlexForm fields with <langChildren> = 0
+- Translation module:
+	- Based on concepts from llxmltranslate and supporting the generic XML fileformat translations can be exported in.
+
+
+- Localization document!!!
+- Needs:
+	- Clean-up for Unused TemplaVoila elements on a page!
+		-> Would need a reference index available.
+
+
+
+
+
+
+
 
 
 
@@ -256,31 +570,46 @@ DOCUMENTATION TODO list
 Extensions:
 - Document how to make "static_template_files" in an extension (Example: How to make a standard templates in extensions to TYPO3) => Rene Fritz doing that?
 
+About Versioning ("Inside TYPO3")
+- Versions can be done on element, page or branch level
+	- In any case a pure copy of the element/branch is produced
+	- "element": Copy of element (pages, tt_content, pages_lang_overlay, sys_template)
+	- "page": Copy of element + tables configured "versioning_followPages" (tt_content, pages_lang_overlay)
+	- "branch": COMPLETE copy of the branch to predefined level.
+- About unique fields:
+	- They are NOT enforced in versionizing - this may be a problem when BRANCHES are exchanged because currently there is no check done if a value inside a versionized branch collides with values in the main branch!
+	- 'AND pid>=0' should be used to avoid problems!
+	- In tcemain::getUnique() there already is a check if "pid>=0"
+- Backend user access to elements is based on the access restrictions (editing) for the official element. For pages; they carry their own access permissions with them. Notice that page permissions are NOT changed to the user making the new version!!!
+
+About Charsets ("Inside TYPO3")
+	In TYPO3s backend charsets used have traditionally been the charset of the backend user language. This is of course a big problem (when other than western european languages are involved) since the encoding of content is thus depending on the charset of the user and not of the system
+	From TYPO3 3.6.0 you can define a global charset for the whole database. This can be any local charset like iso-8859-1 or windows-1250. But for multilingual sites it is recommended to use utf-8 since that can represent all languages.
+	You set the global charset in a localconf file like this: $TYPO3_CONF_VARS["BE"]["forceCharset"] = "utf-8";
+
+	Here are a few notes:
+	- JavaScript functions to convert cases to upper/lower seemed to work with all letters from any charset. In the old days this was not the case and thus functions in eg. "jsfunc.evalfield.js" compensated. This is now disabled since it is apparently not needed anymore.
+	- When one enters eg. danish letters in a form when the russian charset is used, these letters are converted to HTML entities, eg. "&#248;" - this is NOT changed. The philosophy is that IF anyone needs to use characters outside the range of the used backend character set he should use UTF-8 instead. Theoretically we COULD allow the entities to be shown correctly but we dont for now. Better use the right charset.
 
 
+About System Extension:
+- Explain that they are the only ones distributed with TYPO3 core.
 
+Write:
+- "css_styled_content" documentation
+- Extension Programming Tutorials: What is status??
 
-*****************
-PHP issues
-*****************
-Generally: TYPO3 works with PHP5. But...:
-- UTF-8 strings to freetype doesn't work! Renders box instead.
-- array_merge must always have arrays as arguments. When this problem is found in TYPO3 it is regarded a TYPO3 bug and we fix it.
-- Errors regarding treating strings as arrays: Normally, just check if the variable is an array first.
-	- Details: Non-existing indexes is not a problem if the variable is unset - only if it is another type (eg. string). This means we can normally just check if the first index is an array and it will work: is (is_array($a) && $a[key1][key2][key3]) ...
+Review:
+- doc_core_tstemplates (badly needs it!), doc_core_tsbyex, doc_tut_frontend, doc_tut_n1/n2/n3
+- TSref overhaul
+- "doc_tut_backend" revised/updated.
 
-
-
-*****************
-NOTES
-*****************
-- Undo/Redo behaviour strange?  => This bug report turned out to be about frontend caching: If you saved a value and quickly after (probably within a second) pressed "Undo" button, then the (browser)cached content would be shown. It was obvious because the sys_history table WAS updated, only the form wasnt.
-
-
+Remove:
+- doc_core_usermgm : DELETE THIS!
 
 
 ******************************************
-APPENDIX 1: CLEANING UP FOR TYPO3 3.6.0
+APPENDIX: CLEANING UP FOR TYPO3 3.6.0
 ******************************************
 Cleaning for 3.6 involves:
 - XHTML transitional compliance
@@ -423,8 +752,8 @@ XQCR: t3lib/class.t3lib_recordlist.php
 -QCR: t3lib/class.t3lib_stdgraphic.php
 XQCR: t3lib/class.t3lib_superadmin.php
 -QC-: t3lib/class.t3lib_svbase.php
--QCR: t3lib/class.t3lib_tceforms.php			[Kasper]
-		t3lib/class.t3lib_tcemain.php			[Kasper]
+-QCR: t3lib/class.t3lib_tceforms.php			[Kasper - 4.0]
+		t3lib/class.t3lib_tcemain.php			[Kasper - 4.0]
 XQCR: t3lib/class.t3lib_timetrack.php
 -QCR: t3lib/class.t3lib_transferdata.php
 XQCR: t3lib/class.t3lib_treeview.php
@@ -486,9 +815,9 @@ XQCR: layout/db_new_content_el.php
 
 typo3/sysext/___________________________________________:
 OK		aboutmodules/
-		belog			(2 / 500)
+		belog			(2 / 500) [Kasper - 4.0]
 			- Needs a vision! Couldn't the Log be more useful?
-		beuser			(1 / 1300)
+		beuser			(1 / 1300) [Kasper - 4.0]
 			- Add option to Create backend users there! (backend users, groups, filemounts)
 OK		cms/
 OK		context_help/
@@ -497,15 +826,12 @@ OK		context_help/
 XQCR:	extra_page_cm_options/
 XQCR:	func_wizards/
 XQC-:	impexp
-		indexed_search		(4/3500)
-			- Templates?
-			- Speedoptimizations?
-			- Kasper has some objections regarding complex code parts.
+XQC-:	indexed_search
 XQCR	info_pagetsconfig/
 		install/					[ingmar]
 			- Clean-up of the Install Tool in general!
 OK		lang/
-		lowlevel			(2/800)
+		lowlevel			(2/800) [Kasper - 4.0]
 			- Extend support and finish it with the efforts soon to be done for TCEmain.
 OK		setup/
 OK		sv/
@@ -516,7 +842,7 @@ OK		sys_note
 		taskcenter			(4/400)	[Julle]
 OK		tsconfig_help
 			- Needs maintenance plan
-		version				[Kasper]
+		version				[Kasper - 4.0]
 			- (See Kaspers personal todo and Appendix about versioning in this document)
 		viewpage			(2/200)
 XQRC:	wizard_crpages/
@@ -534,7 +860,7 @@ For all extensions (even those approved):
 
 
 *******************
-APPENDIX 2: XHTML
+APPENDIX: XHTML / XSS
 *******************
 Overview of implications before implementation:
 - UTF-8 encoding is in fact expected by XML! So the real charset must be set
@@ -564,146 +890,14 @@ Practical steps for creating XHTML compliance:
 ([[:space:]]+)(class|face|hspace|vspace|rowspan|bgcolor|src|colspan|align|color|valign|border|width|height|cellpadding|cellspacing)=([^[:space:]>"']+)
 ... and replace with: \1\2="\3"
 
-
-
-
-
-*******************
-APPENDIX 2: Debugging / varoius
-*******************
-
+-----------
 Teststring for XSS bugs and SQL injection:
 	>><b><i>asdf</i></b>-\-\\-\"-\'-"-'-
 
-debug_backtrace() - nice function for debug-output.
 
-
-*****************
-APPENDIX: Versioning thoughts:
-Authors: Julle and Kasper.
-*****************
-
-- Versioning (for single elements including single "pages" record) is based on
-	OK - ONE element having an official position in the TYPO3 page tree, thus holding the official "uid" of the element! (If this element was deleted from the system, so are all versions of that element!)
-	OK - All versions of this one element being a) at pid "-1" and b) a field "real_id" pointing to the official UID
-	OK - Pages-versioning: For all elements belonging to a version of a page; They are just copied and has no official new version or binding back to whatever element they came from. They just came along. And in fact, they could even have their own version history for them selves!
-	? - Backend user access to elements is based on the access restrictions for the official element. THis must be implemented on core level.
-
-- Preview in frontend:
-  OK - Pages can be previewed just by their UID (which will select the offline version!)
-  OK - For other elements, sending ADMCMD_vPrev array
-  - Selector in the AdminPanel selects:
-  	- Version of page for current ID?
-	- TAG (across many records)
-
-- Tagging:
-	- Setting tags across records for mass-swapping:
-		- A tag can only be set for ONE version of a record
-		- There is a default tag used when new versions are created called "draft". Users can create own tags and select one of those instead.
-		- Implicitly the published version is tagged "published"
-		- When a tag is swapped into published, the records swapped into archive will get a new tag to remind us that they were swapped out instead of that TAG. Something like "TAG-archive". Only done when TAG-swapping is used, not for spontaneous swapping.
-		- We might set states like "draft (never published, many), published (online, only 1), archive	(has been published, many) - but what significance does that carry?
-
-- Permission setting:
-	- That NO record with PID!=-1 OR PID!=-1 in rootline can be edited or otherwise! This will effectively LOCK every single record capable of versioning in the live tree!
-		Enabled for tables with:
-		- versioning enabled
-		- a certain extra flag set in [ctrl] (eg. "versioning_freezeOnline"
-		- Globally set with a flag in TYPO3_CONF_VARS (so we can build the first version of the site)
-		- "admin" users can circumvent it.
-
-- Swapping versions:
-  OK - clear-cache actions when swapping?
-  OK - Swapping might need to exclude fields like "sorting" etc. Others could be imagined.
-  OK - copies:
-  OK - Swapping should consider if a PAGE record should be swapped record-only OR including its content!!
-  - Swapping pages (pids) should consider that some records might be left inside a versionized branch. Question is; Should ALL records swap pids, not only the versioning_followPages ones?
-  - TODO: When swapping; Check "unique" fields (like pages.alias) etc.
-  - Swap by TAG (across many records)
-
-- Trunk/Branch:
-    OK - Create version of single page (as above)
-	OK - Create version of page branch (1-... levels)
-		OK (API) - Either create version of EACH page individually (like tagging in CVS)
-		OK (API) - Or create single-point-of-reference so that pages INSIDE can be swapped, deleted and created (just like content elements can)
-			- Requirement: Intelligent swapping of "sub-element" ids that CAN be traced back to the original!
-
-- Backend:
-  OK - In list-module we might display a) an icon to a version selector (where diff-ing could be done, swapping performed etc.), b) show archive versions as children in the listing.
-  OK - In Page module + TemplaVoila page module: There will be a version selector implemented so users can switch around between versions.
-
-
-- Pages-versioning and the impact of NOT swapping tt_content element uids:
-	- Loose anchor-points, manually made (could be hack-fixed by some intelligent copying tracking)
-	- TemplaVoila references to elements from other pages (will break, however bad practice to reference elements not in some sort of central library which will NEVER be page-versioned anyways)
-	- Insert-records could potentially do the same
-	- Impact assesment: Low.
-	- Clean-up module (in templavoila?) could also track such things
-	- Problems for non-templavoila sites would be low.
-    - What about a page alias?
-
-
-
-
-
-
-
-
-******************
-APPENDIX: Charsets
-******************
-In TYPO3s backend charsets used have traditionally been the charset of the backend user language. This is of course a big problem (when other than western european languages are involved) since the encoding of content is thus depending on the charset of the user and not of the system
-From TYPO3 3.6.0 you can define a global charset for the whole database. This can be any local charset like iso-8859-1 or windows-1250. But for multilingual sites it is recommended to use utf-8 since that can represent all languages.
-You set the global charset in a localconf file like this: $TYPO3_CONF_VARS["BE"]["forceCharset"] = "utf-8";
-
-Here are a few notes:
-- JavaScript functions to convert cases to upper/lower seemed to work with all letters from any charset. In the old days this was not the case and thus functions in eg. "jsfunc.evalfield.js" compensated. This is now disabled since it is apparently not needed anymore.
-- PHP Upper/Lowercase - not tested.
-- When one enters eg. danish letters in a form when the russian charset is used, these letters are converted to HTML entities, eg. "&#248;" - this is NOT changed. The philosophy is that IF anyone needs to use characters outside the range of the used backend character set he should use UTF-8 instead. Theoretically we COULD allow the entities to be shown correctly but we dont for now. Better use the right charset.
-
-
-
-******************
-APPENDIX: LDAP
-******************
-- hash of base-dn skal v?re cleaned op. M?ske prefixe usernames med 10-char hash af base-dn.
-- Moduler som "User Admin" og andre steder, hvor "usergroups" feltet benyttes skal sl? det op i LDAP uden authentication. -> Faktisk er det IKKE kun usergroups men ALLE felter, som kan mappes!!!
-- Ved record creation: LDAP default group.
-
-? Getting info like usergroups, email, name?
-? Case-sensitivity of the DN in general?
-? DN entering..
-! MD5-hashed passwords
-
-1) AUTO -DN : Array of DN's, searched in order.
-2) Select dn: User selects the DN he is from.
---------------------------
-So we are looking at two scenarios:
-1) fe_/be_user records are automatically created when a LDAP authenticated user loggs in. Configurable is: Where it applies (fe/be) and if any additional LDAP info we can get should be mapped to MySQL records (like name, email, address or user-groups uid's)
-2) fe_/be_user records basically is the same as before (they hold a reference to LDAP user) and authentication is the same, BUT in this case fe_/be_ users are created manually, maybe using a tool of some sort which can look up the whole list of users in LDAP and allow the T3 admin to check off which users to make references to (this would be "Batch create").
-3) Mapping of ONE typo3 user to MANY LDAP users...
-
-- Also have the possibility of local users: Thus 1) FIRST a lookup is done in LDAP, 2) THEN if this fails we look in the local mysql table. (Well, this solution is straight forward since a user must ALWAYS have a record in the local MySQL table...)
-
-- Make API so that other authentication solutions than LDAP can be used (eg. another MySQL table!)  [See Rene Fritz's prototype work with services...]
-
-
-Also see:
-- [Kasper] "LDAP" folder in Mailbox
-
-
-********************
-APPENDIX: DBAL (moved to TODO.txt of extension "dbal")
-********************
-
-
-
-**********************
+****************
 APPENDIX: LPE
-*********************
-Also see:
-- [Kasper] "LPE" folder in Mailbox
-
+****************
 Syncronization (JH thoughts, general LPE):
 DB -> DB (1):
 - Production environment, which can dump configured set of tables to live server database and back. This is controlled from Production env.
@@ -737,23 +931,10 @@ Create an extension which syncronizes a set of tables to/from another TYPO3 inst
 _____________________________________
 Static publishing ("staticpub" extension)
 [2/2005: Today, a reverse proxy (using cache control) is a better solution than static publishing if you want to speed up a TYPO3 site. Therefore static publishing is a concept mostly interesting if you want to export a TYPO3 site as static files to an ordinary webhoster.]
-- Writes static file (automatically) IF simulateStaticDocument uses HTML / Speaking URLs and allows caching of page
-	- root of the publishing dir MUST be hardcoded in TYPO3_CONF_VARS etc.; The extension has full power inside of this dir!
-	- Support for both speaking URLs (hierarchy of directories) and regular simulate static document types (flat dir)
-	- Using mod_rewrite to access static versions of documents.
-		- Checks existence of files
-		- Can bypass GET/QUERY string and POST requests!
-	- File location is tracked in a table tied to page-cache table uids - thus making a flush very easy
-	- File write should probably happen together with inserting cached version in database (system hook)
-		- Resource files on the page can optionally be written to a sub-dir of the publishing dir.
-- setting a "config.disableStaticCreation = 1" flag (in TS template) can disable it (for conditions situations)
-- Also registeres: a) resources on the page (images/stylesheets), b) GET parameters from M5/B6 encryption. (not used yet!)
-- Publishing can be done by remote-client requests (default) or using the general crawler (for re-caching pages)
-- Web>Info module "Static publishing": overview showing all files and which pages they are related to, possible "lost files" (those not registered in database) and "missing files" (in the database but not there).
-- To create new versions doesn't have to REMOVE the existing! Just overwrite!
+- The extension "staticpub" has now been made for this purpose.
 
 
-******************************
+*****************************
 APPENDIX: Image Processing
 *****************************
 Generally we want:
@@ -790,19 +971,21 @@ Also see:
 - [Kasper] "ImageManipulation" folder in Mailbox
 
 
-******************************
-APPENDIX: Idea about "Roles"
-******************************
-This is a few ideas about adding roles to the permission concept of TYPO3:
-- There could be, say, 4 default roles:  author, editor, administrator, developer
-- Users can be assigned "membership" of a role (basically a "role" is like a hardcoded "user-group"?)
-- Like you can configure database fields in TCA to be an "excludeField" you could also configure which ROLES can edit the field.
-- Possibly each role could assign membership of some groups.
+
+*****************
+APPENDIX: PHP5 issues
+*****************
+Generally: TYPO3 works with PHP5. But...:
+- UTF-8 strings to freetype doesn't work! Renders box instead.
+- array_merge must always have arrays as arguments. When this problem is found in TYPO3 it is regarded a TYPO3 bug and we fix it.
+- Errors regarding treating strings as arrays: Normally, just check if the variable is an array first.
+	- Details: Non-existing indexes is not a problem if the variable is unset - only if it is another type (eg. string). This means we can normally just check if the first index is an array and it will work: is (is_array($a) && $a[key1][key2][key3]) ...
 
 
-*************************************
+
+***************************************
 APPENDIX: Various ideas for extensions
-*************************************
+***************************************
 EMAIL publication:
 - People can publish stuff by sending email to certain adresse piping the content into database.
 - This could also be upload of files, eg. a word document to a place in fileadmin/ (such a document could contain information inside which was displayed on the website).
@@ -811,15 +994,8 @@ EMAIL publication:
 IMPORT WEBSITE:
 - Import external website! (Rene's extension). Includes some crawler feature (locally og external url)
 
-SITE-CRAWLER:
-- A crawler which crawls either local or external site, invoked from a) backend or b) cron-script.
-- Used for 1) Indexed Search, 2) External website import, 3) Just walking through a site for indexing/caching all pages.
-- Trying to define a sitemap/menu structure + find "content" on page
-  - maybe with some kind of "hint" facility to tell what html-elements wraps content or maybe for each page visually pick out the content area: OR this could be done by the TemplaVoila tool?
-
 BACKEND TOOLS:
 - Global search and replace of records (Rene F?)
-- Export the complete typo3 site/database, in a big file like mycompletesite.t3d
 
 Repeated intervals extension:
 - Cron-job which alters the start/end times according to some schedule.
@@ -876,58 +1052,55 @@ Bugs, considerations, notes
 - many files in typo3temp/ slows down processing. Eg. a image resize with 33.000 files in typo3temp/ took 3 seconds where it would take 40 ms when the folder is clean. (on linux)
 
 
-**************************************
-Innovation, brainstorming for future
-**************************************
-- TSconfig defined through FlexForms?
-- Drop tt_content for content rendering and let extensions be the sole source of new content element types?
-- Check sitecore ideas for adding new fields etc.
-- Backend for PDAs/Lynx
-
 
 *********************************
 Translation of Backend
 *********************************
-Overview of missing translations. (UPDATED 18/11 after major change to ll-XML and csh_* language packs)
+Overview of missing translations. (1547 normal core labels, updated 22/5 2005 before release of TYPO3 3.8.0)
 Numbers are new labels needing translation (changed labels are not measured)
 
-- dk [Danish]		55
-- de [German]		9
-- no [Norwegian]	57
-- it [Italian]		9
-- fr [French]		36
-- es [Spanish]		63
-- nl [Dutch]		9
-- cz [Czech]		9
-- pl [Polish]		9
-- si [Slovenian]	90
-- fi [Finnish]		9
-- tr [Turkish]		9
-- se [Swedish]		9
-- pt [Portuguese]	136
-- ru [Russian]		79
-- ro [Romanian]		74
-- ch [Chinese (Simpl)]	282
-- sk [Slovak]		188
-- lt [Lithuanian]	142
-- is [Icelandic]	624
-- hr [Croatian]		121
-- hu [Hungarian]	9
-- gl [Greenlandic]	1031
-- th [Thai]			141
-- gr [Greek]		1262
-- hk [Chinese (Trad)]	168
-- eu [Basque]		938
-- bg [Bulgarian]	319
-- br [Brazilian Portuguese]	15
-- et [Estonian]		243
-- ar [Arabic]		691
-- he [Hebrew]		153
-- ua [Ukrainian]	662
-- lv [Latvian]		307
-- jp [Japanese]		1261
-- vn [Vietnamese]	1245
-- ca [Catalan]		1262
-- ba [Bosnian]		141
-- kr [Korean]		1262
+- dk [Danish]		0
+- de [German]		1
+- no [Norwegian]	0
+- it [Italian]		0
+- fr [French]		134
+- es [Spanish]		0
+- nl [Dutch]		1
+- cz [Czech]		202
+- pl [Polish]		4
+- si [Slovenian]	304
+- fi [Finnish]		0
+- tr [Turkish]		254
+- se [Swedish]		0
+- pt [Portuguese]	421
+- ru [Russian]		235
+- ro [Romanian]		358
+- ch [Chinese (Simpl)]	0
+- sk [Slovak]		113
+- lt [Lithuanian]	332
+- is [Icelandic]	904
+- hr [Croatian]		0
+- hu [Hungarian]	1
+- gl [Greenlandic]	1316
+- th [Thai]			426
+- gr [Greek]		1547
+- hk [Chinese (Trad)]	3
+- eu [Basque]		1223
+- bg [Bulgarian]	302
+- br [Brazilian Portuguese]	0
+- et [Estonian]		457
+- ar [Arabic]		149
+- he [Hebrew]		438
+- ua [Ukrainian]	292
+- lv [Latvian]		35
+- jp [Japanese]		123
+- vn [Vietnamese]	1530
+- ca [Catalan]		1547
+- ba [Bosnian]		1
+- kr [Korean]		1547
+- eo [Esperanto]	1536
+- my [Bahasa Malaysia]	1545
+- hi [Hindi]		1547
+
+
 

@@ -25,6 +25,9 @@
 			<label index="shortcut_onlyAdmin">You cannot edit a shared shortcut!</label>
 			<label index="shortcut_selSC">Select shortcut</label>
 			<label index="shortcut_delAllInCat">Delete all shortcuts in this group?</label>
+			<label index="shortcut_onlineWS">LIVE workspace</label>
+			<label index="shortcut_offlineWS">Draft workspace</label>
+			<label index="shortcut_noWSfound">ERROR: No workspaces found!</label>
 			<label index="overwriteExistingFiles">Overwrite existing files</label>
 			<label index="selectPosition">Select a position for the new page</label>
 			<label index="goBack">Go back</label>

@@ -120,6 +120,8 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 	var $groupData = Array(				// This array holds lists of eg. tables, fields and other values related to the permission-system. See fetchGroupData
 		'filemounts' => Array()			// Filemounts are loaded here
 	);
+	var $workspace = -99;				// User workspace. -99 is ERROR (none available), -1 is offline, 0 is online, >0 is custom workspaces.
+	var $workspaceRec = array();		// Custom workspace record if any
 
 	var $userGroups = Array();			// This array will hold the groups that the user is a member of
 	var $userGroupsUID = Array();		// This array holds the uid's of the groups in the listed order
@@ -134,6 +136,7 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 		'non_exclude_fields'=>'',
 		'explicit_allowdeny'=>'',
 		'allowed_languages' => '',
+		'workspace_perms' => '',
 		'custom_options' => '',
 	);
 	var $includeHierarchy=array();		// For debugging/display of order in which subgroups are included.
@@ -231,7 +234,6 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 		if ($id>0)	{
 			$wM = $this->returnWebmounts();
 			$rL = t3lib_BEfunc::BEgetRootLine($id,' AND '.$readPerms);
-
 			foreach($rL as $v)	{
 				if ($v['uid'] && in_array($v['uid'],$wM))	{
 					return $v['uid'];
@@ -257,11 +259,26 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 				t3lib_BEfunc::typo3PrintError ('Fatal Error','This module "'.$conf['name'].'" is not enabled in TBE_MODULES',0);
 				exit;
 			}
-			return false;
+			return FALSE;
+		}
+
+			// Workspaces check:
+		if ($conf['workspaces'])	{
+			if (($this->workspace===0 && t3lib_div::inList($conf['workspaces'],'online')) ||
+				($this->workspace===-1 && t3lib_div::inList($conf['workspaces'],'offline')) ||
+				($this->workspace>0 && t3lib_div::inList($conf['workspaces'],'custom')))	{
+					// ok, go on...
+			} else {
+				if ($exitOnError)	{
+					t3lib_BEfunc::typo3PrintError ('Workspace Error','This module "'.$conf['name'].'" is not available under the current workspace',0);
+					exit;
+				}
+				return FALSE;
+			}
 		}
 
 			// Returns true if conf[access] is not set at all or if the user is admin
-		if (!$conf['access']  ||  $this->isAdmin()) return true;
+		if (!$conf['access']  ||  $this->isAdmin()) return TRUE;
 
 			// If $conf['access'] is set but not with 'admin' then we return true, if the module is found in the modList
 		if (!strstr($conf['access'],'admin') && $conf['name'])	{
@@ -492,9 +509,44 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 	}
 
 	/**
+	 * Checking if editing of an existing record is allowed in current workspace if that is offline.
+	 * Rules for editing in offline mode:
+	 * 		- record supports versioning and is an offline version from workspace
+	 *		- or record (any) is in a branch where there is a page which is a version from the workspace
+	 *
+	 * @param	string		Table of record
+	 * @param	string		PID of record to test (real record PID for both pages and other records)
+	 * @param	string		Workspace ID from record (t3ver_wsid field value, if available)
+	 * @return	string		String error code, telling the failure state. FALSE=All ok
+	 */
+	function workspaceEditState($table,$pid,$wsid)	{
+		if ($this->workspace!==0)	{	// Only test offline spaces:
+			if ((int)$pid===-1)	{	// Record is offline, so it can be edited provided that workspace matches and versioning is enabled:
+				if (!$GLOBALS['TCA'][$table]['ctrl']['versioningWS'])	return 'Versioning disabled for table';
+				if ((int)$wsid!==$this->workspace)	return 'Workspace ID of record didn\'t match current workspace';
+			 	return FALSE; 	// OK
+			} elseif ($this->workspaceTestPID($pid, $table)) { 	// For "online" records, check that PID for table allows editing
+				return FALSE;	// OK
+			} else {	// If not offline and not in versionized branch, output error:
+				return 'Online record was not in versionized branch!';
+			}
+		} else {
+			return FALSE; 	// OK because workspace is 0
+		}
+	}
+
+	/**
+	 * Returns true if PID value is OK for creating/editing etc records in workspace.
+	 */
+	function workspaceTestPID($pid, $table)	{
+		return $this->workspace===0 || t3lib_BEfunc::isPidInVersionizedBranch($pid, $table) || ($this->workspaceRec['live_edit'] && !$GLOBALS['TCA'][$table]['ctrl']['versioningWS']);
+	}
+
+	/**
 	 * Checking if a user has editing access to a record from a $TCA table.
 	 * The checks does not take page permissions and other "environmental" things into account. It only deal with record internals; If any values in the record fields disallows it.
 	 * For instance languages settings, authMode selector boxes are evaluated (and maybe more in the future).
+	 * It will check for workspace dependent access.
 	 * The function takes an ID (integer) or row (array) as second argument.
 	 *
 	 * @param	string		Table name
@@ -707,6 +759,7 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 	/**
 	 * Initializes a lot of stuff like the access-lists, database-mountpoints and filemountpoints
 	 * This method is called by ->backendCheckLogin() (from extending class t3lib_beuserauth) if the backend user login has verified OK.
+	 * Generally this is required initialization of a backend user.
 	 *
 	 * @return	void
 	 * @access private
@@ -718,6 +771,7 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 				// Get lists for the be_user record and set them as default/primary values.
 			$this->dataLists['modList'] = $this->user['userMods'];					// Enabled Backend Modules
 			$this->dataLists['allowed_languages'] = $this->user['allowed_languages'];					// Add Allowed Languages
+			$this->dataLists['workspace_perms'] = $this->user['workspace_perms'];					// Set user value for workspace permissions.
 			$this->dataLists['webmount_list'] = $this->user['db_mountpoints'];		// Database mountpoints
 			$this->dataLists['filemount_list'] = $this->user['file_mountpoints'];	// File mountpoints
 
@@ -810,6 +864,11 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 			$this->groupData['custom_options'] = t3lib_div::uniqueList($this->dataLists['custom_options']);
 			$this->groupData['modules'] = t3lib_div::uniqueList($this->dataLists['modList']);
 
+			$this->groupData['workspace_perms'] = $this->dataLists['workspace_perms'];
+
+				// Setting up workspace situation (after webmounts are processed!):
+			$this->workspaceInit();
+
 				// populating the $this->userGroupsUID -array with the groups in the order in which they were LAST included.!!
 			$this->userGroupsUID = array_reverse(array_unique(array_reverse($this->includeGroupArray)));
 
@@ -895,6 +954,10 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 					$this->dataLists['allowed_languages'].= ','.$row['allowed_languages'];
 					$this->dataLists['custom_options'].= ','.$row['custom_options'];
 				}
+
+					// Setting workspace permissions:
+				$this->dataLists['workspace_perms'] |= $row['workspace_perms'];
+
 					// If this function is processing the users OWN group-list (not subgroups) AND if the ->firstMainGroup is not set, then the ->firstMainGroup will be set.
 				if (!strcmp($idList,'') && !$this->firstMainGroup)	{
 					$this->firstMainGroup=$uid;
@@ -1003,10 +1066,197 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 
 	/************************************
 	 *
-	 * Logging
+	 * Workspaces
 	 *
 	 ************************************/
 
+	/**
+	 * Initializing workspace
+	 *
+	 * @return	void
+	 */
+	function workspaceInit()	{
+
+			// Initializing workspace by evaluating and setting the workspace, possibly updating it in the user record!
+		$this->setWorkspace($this->user['workspace_id']);
+
+			// Setting up the db mount points of the (custom) workspace, if any:
+		if ($this->workspace>0 && $this->workspaceRec['db_mountpoints']!=='')	{
+
+				// Initialize:
+			$newMounts = array();
+			$readPerms = '1=1'; // Notice: We cannot call $this->getPagePermsClause(1); as usual because the group-list is not available at this point. But bypassing is fine because all we want here is check if the workspace mounts are inside the current webmounts rootline. The actual permission checking on page level is done elsewhere as usual anyway before the page tree is rendered.
+
+				// Traverse mount points of the
+			$mountPoints = t3lib_div::intExplode(',',$this->workspaceRec['db_mountpoints']);
+			foreach($mountPoints as $mpId)	{
+				if ($this->isInWebMount($mpId,$readPerms))	{
+					$newMounts[] = $mpId;
+				}
+			}
+
+				// Re-insert webmounts:
+			$this->groupData['webmounts'] = implode(',',array_unique($newMounts));
+		}
+
+			// Setting up the file mount points of the (custom) workspace, if any:
+		if ($this->workspace!==0)	$this->groupData['filemounts'] = array();
+		if ($this->workspace>0 && $this->workspaceRec['file_mountpoints']!=='')	{
+
+				// Processing filemounts
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'sys_filemounts', 'deleted=0 AND hidden=0 AND pid=0 AND uid IN ('.$GLOBALS['TYPO3_DB']->cleanIntList($this->workspaceRec['file_mountpoints']).')');
+			while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
+				$this->addFileMount($row['title'], $row['path'], $row['path'], $row['base']?1:0, '');
+			}
+		}
+	}
+
+	/**
+	 * Checking if a workspace is allowed for backend user
+	 *
+	 * @param	mixed		If integer, workspace record is looked up, if array it is seen as a Workspace record with at least uid, title, members and adminusers columns. Can be faked for workspaces uid 0 and -1 (online and offline)
+	 * @return	string		TRUE if access. Output will also show how access was granted. Admin users will have a true output regardless of input.
+	 */
+	function checkWorkspace($wsRec,$fields='uid,title,adminusers,members,reviewers')	{
+
+			// If not array, look up workspace record:
+		if (!is_array($wsRec))	{
+			switch((string)$wsRec)	{
+				case '0':
+				case '-1':
+					$wsRec = array('uid' => $wsRec);
+				break;
+				default:
+					list($wsRec) = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+						$fields,
+						'sys_workspace',
+						'pid=0 AND uid='.intval($wsRec).
+							t3lib_BEfunc::deleteClause('sys_workspace'),
+						'',
+						'title'
+					);
+				break;
+			}
+		}
+
+			// If wsRec is set to an array, evaluate it:
+		if (is_array($wsRec))	{
+			if ($this->isAdmin())	{
+				return array_merge($wsRec,array('_ACCESS' => 'admin'));
+			} else {
+
+				switch((string)$wsRec['uid'])	{
+					case '0':
+						return ($this->groupData['workspace_perms']&1) ? array_merge($wsRec,array('_ACCESS' => 'online')) : FALSE;
+					break;
+					case '-1':
+						return ($this->groupData['workspace_perms']&2) ? array_merge($wsRec,array('_ACCESS' => 'offline')) : FALSE;
+					break;
+					default:
+							// Checking if the guy is admin:
+						if (t3lib_div::inList($wsRec['adminusers'],$this->user['uid']))	{
+							return array_merge($wsRec, array('_ACCESS' => 'adminuser'));
+						}
+							// Checking if he is reviewer user:
+						if (t3lib_div::inList($wsRec['reviewers'],'be_users_'.$this->user['uid']))	{
+							return array_merge($wsRec, array('_ACCESS' => 'revieweruser'));
+						}
+							// Checking if he is reviewer through a user group of his:
+						foreach($this->userGroupsUID as $groupUid)	{
+							if (t3lib_div::inList($wsRec['reviewers'],'be_groups_'.$groupUid))	{
+								return array_merge($wsRec, array('_ACCESS' => 'reviewergroup:'.$groupUid));
+							}
+						}
+							// Checking if he is member as user:
+						if (t3lib_div::inList($wsRec['members'],'be_users_'.$this->user['uid']))	{
+							return array_merge($wsRec, array('_ACCESS' => 'memberuser'));
+						}
+							// Checking if he is member through a user group of his:
+						foreach($this->userGroupsUID as $groupUid)	{
+							if (t3lib_div::inList($wsRec['members'],'be_groups_'.$groupUid))	{
+								return array_merge($wsRec, array('_ACCESS' => 'membergroup:'.$groupUid));
+							}
+						}
+					break;
+				}
+			}
+		}
+
+		return FALSE;
+	}
+
+	/**
+	 * Setting workspace ID
+	 *
+	 * @param	integer		ID of workspace to set for backend user. If not valid the default workspace for BE user is found and set.
+	 * @return	void
+	 */
+	function setWorkspace($workspaceId)	{
+
+			// Check workspace validity and if not found, revert to default workspace.
+		if ($this->workspaceRec = $this->checkWorkspace($workspaceId,'*'))	{
+				// Set workspace ID internally
+			$this->workspace = (int)$workspaceId;
+		} else {
+			$this->workspace = (int)$this->getDefaultWorkspace();
+			$this->workspaceRec = $this->checkWorkspace($this->workspace,'*');
+		}
+
+			// If ID is different from the stored one, change it:
+		if (strcmp($this->workspace, $this->user['workspace_id']))	{
+			$this->user['workspace_id'] = $this->workspace;
+			$GLOBALS['TYPO3_DB']->exec_UPDATEquery('be_users','uid='.intval($this->user['uid']),array('workspace_id' => $this->user['workspace_id']));
+		}
+	}
+
+	/**
+	 * Setting workspace preview state for user:
+	 *
+	 * @param	boolean		State
+	 * @return	void
+	 */
+	function setWorkspacePreview($previewState)	{
+		$this->user['workspace_preview'] = $previewState;
+		$GLOBALS['TYPO3_DB']->exec_UPDATEquery('be_users','uid='.intval($this->user['uid']),array('workspace_preview' => $this->user['workspace_preview']));
+	}
+
+	/**
+	 * Return default workspace ID for user
+	 *
+	 * @return	integer		Default workspace id. If no workspace is available it will be "-99"
+	 */
+	function getDefaultWorkspace()	{
+
+		if ($this->checkWorkspace(0))	{	// Check online
+			return 0;
+		} elseif ($this->checkWorkspace(-1))	{	// Check offline
+			return -1;
+		} else {	// Traverse custom workspaces:
+			$workspaces = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid,title,adminusers,members,reviewers','sys_workspace','pid=0'.t3lib_BEfunc::deleteClause('sys_workspace'),'','title');
+			foreach($workspaces as $rec)	{
+				if ($this->checkWorkspace($rec))	{
+					return $rec['uid'];
+				}
+			}
+		}
+		return -99;
+	}
+
+
+
+
+
+
+
+
+
+
+
+	/************************************
+	 *
+	 * Logging
+	 *
+	 ************************************/
 
 	/**
 	 * Writes an entry in the logfile

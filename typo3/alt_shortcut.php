@@ -129,6 +129,8 @@ class SC_alt_shortcut {
 
 		$this->deleteCategory = t3lib_div::_GP('deleteCategory');
 		$this->editPage = t3lib_div::_GP('editPage');
+		$this->changeWorkspace = t3lib_div::_GP('changeWorkspace');
+		$this->changeWorkspacePreview = t3lib_div::_GP('changeWorkspacePreview');
 		$this->editName = t3lib_div::_GP('editName');
 		$this->editGroup = t3lib_div::_GP('editGroup');
 		$this->whichItem = t3lib_div::_GP('whichItem');
@@ -225,6 +227,13 @@ class SC_alt_shortcut {
 			function submitEditPage(id)	{	//
 				document.location="alt_shortcut.php?editPage="+top.rawurlencode(id);
 			}
+			function changeWorkspace(workspaceId)	{	//
+				document.location="alt_shortcut.php?changeWorkspace="+top.rawurlencode(workspaceId);
+			}
+			function changeWorkspacePreview(newstate)	{	//
+				document.location="alt_shortcut.php?changeWorkspacePreview="+newstate;
+			}
+
 			');
 		$this->content.=$this->doc->startPage('Shortcut frame');
 	}
@@ -310,19 +319,28 @@ class SC_alt_shortcut {
 			// Adding CSH:
 		$editIdCode.= '<td>&nbsp;'.t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'shortcuts', $GLOBALS['BACK_PATH'],'',TRUE).'</td>';
 
+			// Compile it all:
 		$this->content.='
 
-
-			<!--
-				Shortcut Display Table:
-			-->
-			<table border="0" cellpadding="0" cellspacing="2" id="typo3-shortcuts">
+			<table border="0" cellpadding="0" cellspacing="0" width="99%">
 				<tr>
-				'.implode('
-				',$this->lines).$editIdCode.'
+					<td>
+						<!--
+							Shortcut Display Table:
+						-->
+						<table border="0" cellpadding="0" cellspacing="2" id="typo3-shortcuts">
+							<tr>
+							'.implode('
+							',$this->lines).$editIdCode.'
+							</tr>
+						</table>
+					</td>
+					<td align="right">
+						'.$this->workspaceSelector().
+							t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'workspaceSelector', $GLOBALS['BACK_PATH'],'',TRUE).'
+					</td>
 				</tr>
 			</table>
-
 			';
 
 			// Launch Edit page:
@@ -459,6 +477,74 @@ class SC_alt_shortcut {
 
 
 
+
+
+
+
+
+	/***************************
+	 *
+	 * WORKSPACE FUNCTIONS:
+	 *
+	 ***************************/
+
+	/**
+	 * Create selector for workspaces and change workspace if command is given to do that.
+	 *
+	 * @return	string		HTML
+	 */
+	function workspaceSelector()	{
+		global $TYPO3_DB,$BE_USER,$LANG;
+
+			// Changing workspace and if so, reloading entire backend:
+		if (strlen($this->changeWorkspace))	{
+			$BE_USER->setWorkspace($this->changeWorkspace);
+#			return $this->doc->wrapScriptTags('top.document.location="alt_main.php";');
+		}
+			// Changing workspace and if so, reloading entire backend:
+		if (strlen($this->changeWorkspacePreview))	{
+			$BE_USER->setWorkspacePreview($this->changeWorkspacePreview);
+		}
+
+			// Create options array:
+		$options = array();
+		if ($BE_USER->checkWorkspace(array('uid' => 0)))	{
+			$options[0] = '['.$LANG->getLL('shortcut_onlineWS').']';
+		}
+		if ($BE_USER->checkWorkspace(array('uid' => -1)))	{
+			$options[-1] = '['.$LANG->getLL('shortcut_offlineWS').']';
+		}
+
+			// Add custom workspaces (selecting all, filtering by BE_USER check):
+		$workspaces = $TYPO3_DB->exec_SELECTgetRows('uid,title,adminusers,members,reviewers','sys_workspace','pid=0'.t3lib_BEfunc::deleteClause('sys_workspace'),'','title');
+		foreach($workspaces as $rec)	{
+			if ($BE_USER->checkWorkspace($rec))	{
+				$options[$rec['uid']] = $rec['uid'].': '.$rec['title'];
+			}
+		}
+
+			// Build selector box:
+		if (count($options))	{
+			foreach($options as $value => $label)	{
+				$selected = ((int)$BE_USER->workspace===$value ? ' selected="selected"' : '');
+				$options[$value] = '<option value="'.htmlspecialchars($value).'"'.$selected.'>'.htmlspecialchars($label).'</option>';
+			}
+		} else {
+			$options[] = '<option value="-99">'.$LANG->getLL('shortcut_noWSfound',1).'</option>';
+		}
+
+		$selector = '<a href="mod/user/ws/index.php" target="content">'.
+					t3lib_iconWorks::getIconImage('sys_workspace',array(),$this->doc->backPath,'align="top"').
+					'</a>'.
+					'<select name="_workspaceSelector" onchange="changeWorkspace(this.options[this.selectedIndex].value);">'.implode('',$options).'</select>';
+
+			// Preview:
+		if ($BE_USER->workspace!==0)	{
+			$selector.= '&nbsp;FE Preview: <input type="checkbox" onclick="changeWorkspacePreview('.($BE_USER->user['workspace_preview'] ? 0 : 1).')"; '.($BE_USER->user['workspace_preview'] ? 'checked="checked"' : '').'/>';
+		}
+
+		return $selector;
+	}
 
 
 

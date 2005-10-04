@@ -475,6 +475,7 @@ $TCA['pages_language_overlay'] = Array (
 		),
 		'title' => Array (
 			'label' => $TCA['pages']['columns']['title']['label'],
+			'l10n_cat' => 'text',
 			'config' => Array (
 				'type' => 'input',
 				'size' => '30',
@@ -484,6 +485,7 @@ $TCA['pages_language_overlay'] = Array (
 		),
 		'subtitle' => Array (
 			'exclude' => 1,
+			'l10n_cat' => 'text',
 			'label' => $TCA['pages']['columns']['subtitle']['label'],
 			'config' => Array (
 				'type' => 'input',
@@ -494,6 +496,7 @@ $TCA['pages_language_overlay'] = Array (
 		),
 		'nav_title' => Array (
 			'exclude' => 1,
+			'l10n_cat' => 'text',
 			'label' => $TCA['pages']['columns']['nav_title']['label'],
 			'config' => Array (
 				'type' => 'input',

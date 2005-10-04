@@ -54,9 +54,11 @@ $TYPO3_CONF_VARS = Array(
 		'doNotCheckReferer' => 0,				// Boolean. If set, it's NOT checked numerous places that the refering host is the same as the current. This is an option you should set if you have problems with proxies not passing the HTTP_REFERER variable.
 		'recursiveDomainSearch' => 0,			// Boolean. If set, the search for domain records will be done recursively by stripping parts of the host name off until a matching domain record is found.
 		'devIPmask' => '192.168.*,127.0.0.1',	// Defines a list of IP addresses which will allow development-output to display. The debug() function will use this as a filter. See the function t3lib_div::cmpIP() for details on syntax. Setting this to blank value will deny all. Setting to '*' will allow all.
+		'sqlDebug' => FALSE,					// Boolean. If set, then database queries that fails are outputted in browser. For development.
 		'enable_DLOG' => FALSE,					// Whether the developer log is enabled. See constant "TYPO3_DLOG"
 		'ddmmyy' => 'd-m-y',					// Format of Date-Month-Year - see php-function date()
 		'hhmm' => 'H:i',						// Format of Hours-minutes - see php-function date()
+		'USdateFormat' => FALSE,				// Boolean. If true, dates entered in the TCEforms of the backend will be formatted mm-dd-yyyy
 		'loginCopyrightWarrantyProvider' => '',		// String: If you provide warranty for TYPO3 to your customers insert you (company) name here. It will appear in the login-dialog as the warranty provider. (You must also set URL below).
 		'loginCopyrightWarrantyURL' => '',		// String: Add the URL where you explain the extend of the warranty you provide. This URL is displayed in the login dialog as the place where people can learn more about the conditions of your warranty. Must be set (more than 10 chars) in addition with the 'loginCopyrightWarrantyProvider' message.
 		'loginCopyrightShowVersion' => 0,		// Boolean: If set, the current TYPO3 version is shown.
@@ -237,7 +239,7 @@ $T3_VAR = array();	// Initialize.
 	// TYPO3 version
 $TYPO_VERSION = '3.9-dev';
 define('TYPO3_version', $TYPO_VERSION);
-define('TYPO3_branch', '3.8');
+define('TYPO3_branch', '3.9');
 
 // Database-variables are cleared!
 $typo_db = '';					// The database name

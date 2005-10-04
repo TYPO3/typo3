@@ -34,6 +34,7 @@ CREATE TABLE be_groups (
   TSconfig blob NOT NULL,
   subgroup tinyblob NOT NULL,
   hide_in_lists tinyint(4) DEFAULT '0' NOT NULL,
+  workspace_perms tinyint(3) DEFAULT '1' NOT NULL,
   PRIMARY KEY (uid),
   KEY parent (pid)
 );
@@ -78,6 +79,7 @@ CREATE TABLE be_users (
   uc blob NOT NULL,
   file_mountpoints varchar(40) DEFAULT '' NOT NULL,
   fileoper_perms tinyint(4) DEFAULT '0' NOT NULL,
+  workspace_perms tinyint(3) DEFAULT '1' NOT NULL,
   lockToDomain varchar(50) DEFAULT '' NOT NULL,
   disableIPlock tinyint(3) unsigned DEFAULT '0' NOT NULL,
   deleted tinyint(3) unsigned DEFAULT '0' NOT NULL,
@@ -85,6 +87,8 @@ CREATE TABLE be_users (
   lastlogin int(10) unsigned DEFAULT '0' NOT NULL,
   createdByAction int(11) DEFAULT '0' NOT NULL,
   usergroup_cached_list tinytext NOT NULL,
+  workspace_id int(11) DEFAULT '0' NOT NULL,
+  workspace_preview tinyint(3) DEFAULT '1' NOT NULL,
   PRIMARY KEY (uid),
   KEY parent (pid),
   KEY username (username)
@@ -120,9 +124,15 @@ CREATE TABLE cache_imagesizes (
 CREATE TABLE pages (
   uid int(11) DEFAULT '0' NOT NULL auto_increment,
   pid int(11) DEFAULT '0' NOT NULL,
-  t3ver_oid int(11) unsigned DEFAULT '0' NOT NULL,
-  t3ver_id int(11) unsigned DEFAULT '0' NOT NULL,
+  t3ver_oid int(11) DEFAULT '0' NOT NULL,
+  t3ver_id int(11) DEFAULT '0' NOT NULL,
+  t3ver_wsid int(11) DEFAULT '0' NOT NULL,
   t3ver_label varchar(30) DEFAULT '' NOT NULL,
+  t3ver_state tinyint(4) DEFAULT '0' NOT NULL,
+  t3ver_count int(11) DEFAULT '0' NOT NULL,
+  t3ver_tstamp int(11) DEFAULT '0' NOT NULL,
+  t3ver_swapmode tinyint(4) DEFAULT '0' NOT NULL,
+  t3_origuid int(11) DEFAULT '0' NOT NULL,
   tstamp int(11) unsigned DEFAULT '0' NOT NULL,
   sorting int(11) unsigned DEFAULT '0' NOT NULL,
   deleted tinyint(4) unsigned DEFAULT '0' NOT NULL,
@@ -142,7 +152,7 @@ CREATE TABLE pages (
   php_tree_stop tinyint(4) DEFAULT '0' NOT NULL,
   tx_impexp_origuid int(11) DEFAULT '0' NOT NULL,
   PRIMARY KEY (uid),
-  KEY t3ver_oid (t3ver_oid),
+  KEY t3ver_oid (t3ver_oid,t3ver_wsid),
   KEY parent (pid)
 );
 
@@ -173,6 +183,32 @@ CREATE TABLE sys_filemounts (
   base tinyint(4) unsigned DEFAULT '0' NOT NULL,
   hidden tinyint(3) unsigned DEFAULT '0' NOT NULL,
   deleted tinyint(3) unsigned DEFAULT '0' NOT NULL,
+  PRIMARY KEY (uid),
+  KEY parent (pid)
+);
+
+#
+# Table structure for table 'sys_workspace'
+#
+CREATE TABLE sys_workspace (
+  uid int(11) NOT NULL auto_increment,
+  pid int(11) DEFAULT '0' NOT NULL,
+  tstamp int(11) DEFAULT '0' NOT NULL,
+  deleted tinyint(3) DEFAULT '0' NOT NULL,
+  title varchar(30) DEFAULT '' NOT NULL,
+  description tinytext NOT NULL,
+  adminusers tinytext NOT NULL,
+  members text NOT NULL,
+  reviewers text NOT NULL,
+  db_mountpoints tinytext NOT NULL,
+  file_mountpoints tinytext NOT NULL,
+  publish_time int(11) DEFAULT '0' NOT NULL,
+  unpublish_time int(11) DEFAULT '0' NOT NULL,
+  freeze tinyint(3) DEFAULT '0' NOT NULL,
+  live_edit tinyint(3) DEFAULT '0' NOT NULL,
+  disable_autocreate tinyint(3) DEFAULT '0' NOT NULL,
+  swap_modes tinyint(3) DEFAULT '0' NOT NULL,
+
   PRIMARY KEY (uid),
   KEY parent (pid)
 );

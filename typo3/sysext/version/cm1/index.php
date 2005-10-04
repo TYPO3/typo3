@@ -90,7 +90,7 @@ class tx_version_cm1 extends t3lib_SCbase {
 		$this->table = t3lib_div::_GP('table');
 		$record = t3lib_BEfunc::getRecord($this->table,$this->uid);
 
-		if (is_array($record) && $TCA[$this->table]['ctrl']['versioning'])	{
+		if (is_array($record) && $TCA[$this->table]['ctrl']['versioningWS'])	{
 				// Access check!
 				// The page will show only if there is a valid page and if this page may be viewed by the user
 			$this->pageinfo = t3lib_BEfunc::readPageAccess($record['pid'],$this->perms_clause);
@@ -219,12 +219,13 @@ class tx_version_cm1 extends t3lib_SCbase {
 					<td>UID</td>
 					<td>t3ver_oid</td>
 					<td>t3ver_id</td>
+					<td>t3ver_wsid</td>
 					<td>pid</td>
 					<td>t3ver_label</td>
 					<td colspan="2"><input type="submit" name="do_diff" value="Diff" /></td>
 				</tr>';
 
-		$versions = t3lib_BEfunc::selectVersionsOfRecord($this->table, $this->uid);
+		$versions = t3lib_BEfunc::selectVersionsOfRecord($this->table, $this->uid, '*', $GLOBALS['BE_USER']->workspace);
 		foreach($versions as $row)	{
 			$adminLinks = $this->adminLinks($this->table,$row);
 
@@ -232,19 +233,20 @@ class tx_version_cm1 extends t3lib_SCbase {
 				<tr class="'.($row['uid']!=$this->uid ? 'bgColor4' : 'bgColor2 tableheader').'">
 					<td>'.($row['uid']!=$this->uid ? '<a href="'.$this->doc->issueCommand('&cmd['.$this->table.']['.$this->uid.'][version][swapWith]='.$row['uid'].'&cmd['.$this->table.']['.$this->uid.'][version][action]=swap').'">'.
 						'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/insert1.gif','width="14" height="14"').' alt="" title="SWAP with current" />'.
-						'</a>'.(
+						'</a>' /* (
 							$this->table == 'pages' ?
 							'<a href="'.$this->doc->issueCommand('&cmd['.$this->table.']['.$this->uid.'][version][action]=swap&cmd['.$this->table.']['.$this->uid.'][version][swapWith]='.$row['uid'].'&cmd['.$this->table.']['.$this->uid.'][version][swapContent]=1').'">'.
 						'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/insert2.gif','width="14" height="14"').' alt="" title="Publish page AND content!" />'.
 						'</a>'.
 							'<a href="'.$this->doc->issueCommand('&cmd['.$this->table.']['.$this->uid.'][version][action]=swap&cmd['.$this->table.']['.$this->uid.'][version][swapWith]='.$row['uid'].'&cmd['.$this->table.']['.$this->uid.'][version][swapContent]=ALL').'">'.
 						'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/insert4.gif','width="14" height="14"').' alt="" title="Publish page AND content! - AND ALL SUBPAGES!" />'.
-						'</a>' : '') : '<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/blinkarrow_left.gif','width="5" height="9"').' alt="" title="CURRENT ONLINE VERSION!"/>').'</td>
+						'</a>' : '') */ : '<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/blinkarrow_left.gif','width="5" height="9"').' alt="" title="CURRENT ONLINE VERSION!"/>').'</td>
 					<td>'.$adminLinks.'</td>
 					<td nowrap="nowrap">'.t3lib_BEfunc::getRecordTitle($this->table,$row,1).'</td>
 					<td>'.$row['uid'].'</td>
 					<td>'.$row['t3ver_oid'].'</td>
 					<td>'.$row['t3ver_id'].'</td>
+					<td>'.$row['t3ver_wsid'].'</td>
 					<td>'.$row['pid'].'</td>
 					<td nowrap="nowrap"><a href="#" onclick="'.htmlspecialchars(t3lib_BEfunc::editOnClick('&edit['.$this->table.']['.$row['uid'].']=edit&columnsOnly=t3ver_label',$this->doc->backPath)).'"><img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/edit2.gif','width="11" height="12"').' alt="" title="Edit"/></a>'.htmlspecialchars($row['t3ver_label']).'</td>
 					<td bgcolor="green"><input type="radio" name="diff_1" value="'.$row['uid'].'"'.($diff_1==$row['uid'] ? ' checked="checked"':'').'/></td>
@@ -259,7 +261,7 @@ class tx_version_cm1 extends t3lib_SCbase {
 						<tr>
 							<td></td>
 							<td></td>
-							<td colspan="6">'.$sub.'</td>
+							<td colspan="7">'.$sub.'</td>
 							<td colspan="2"></td>
 						</tr>';
 				}
@@ -307,7 +309,9 @@ class tx_version_cm1 extends t3lib_SCbase {
 	function pageSubContent($pid,$c=0)	{
 		global $TCA;
 
-		$tableNames = array_keys($TCA);
+		$tableNames = t3lib_div::removeArrayEntryByValue(array_keys($TCA),'pages');
+		$tableNames[] = 'pages';
+
 		foreach($tableNames as $tN)	{
 				// Basically list ALL tables - not only those being copied might be found!
 			#if ($TCA[$tN]['ctrl']['versioning_followPages'] || $tN=='pages')	{

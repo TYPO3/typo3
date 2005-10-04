@@ -393,21 +393,24 @@ class tslib_menu {
 								// Get sub-pages:
 							$res = $GLOBALS['TSFE']->cObj->exec_getQuery('pages',Array('pidInList'=>$id,'orderBy'=>$altSortField));
 							while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
+								$GLOBALS['TSFE']->sys_page->versionOL('pages',$row);
 
-									// Keep mount point?
-								$mount_info = $this->sys_page->getMountPointInfo($row['uid'], $row);
-								if (is_array($mount_info) && $mount_info['overlay'])	{	// There is a valid mount point.
-									$mp_row = $this->sys_page->getPage($mount_info['mount_pid']);		// Using "getPage" is OK since we need the check for enableFields AND for type 2 of mount pids we DO require a doktype < 200!
-									if (count($mp_row))	{
-										$row = $mp_row;
-										$row['_MP_PARAM'] = $mount_info['MPvar'];
-									} else unset($row);	// If the mount point could not be fetched with respect to enableFields, unset the row so it does not become a part of the menu!
-								}
-
-									// Add external MP params, then the row:
 								if (is_array($row))	{
-									if ($MP)	$row['_MP_PARAM'] = $MP.($row['_MP_PARAM'] ? ','.$row['_MP_PARAM'] : '');
-									$temp[$row['uid']] = $this->sys_page->getPageOverlay($row);
+										// Keep mount point?
+									$mount_info = $this->sys_page->getMountPointInfo($row['uid'], $row);
+									if (is_array($mount_info) && $mount_info['overlay'])	{	// There is a valid mount point.
+										$mp_row = $this->sys_page->getPage($mount_info['mount_pid']);		// Using "getPage" is OK since we need the check for enableFields AND for type 2 of mount pids we DO require a doktype < 200!
+										if (count($mp_row))	{
+											$row = $mp_row;
+											$row['_MP_PARAM'] = $mount_info['MPvar'];
+										} else unset($row);	// If the mount point could not be fetched with respect to enableFields, unset the row so it does not become a part of the menu!
+									}
+
+										// Add external MP params, then the row:
+									if (is_array($row))	{
+										if ($MP)	$row['_MP_PARAM'] = $MP.($row['_MP_PARAM'] ? ','.$row['_MP_PARAM'] : '');
+										$temp[$row['uid']] = $this->sys_page->getPageOverlay($row);
+									}
 								}
 							}
 						}
@@ -435,12 +438,11 @@ class tslib_menu {
 									if ($mount_info['overlay'])	{	// Overlays should already have their full MPvars calculated:
 										$MP = $this->tmpl->getFromMPmap($mount_info['mount_pid']);
 										if ($MP) unset($row['_MP_PARAM']);
-							}
-
+									}
 								} else unset($row);	// If the mount point could not be fetched with respect to enableFields, unset the row so it does not become a part of the menu!
 							} else {
 								$row = $loadDB->results['pages'][$val['id']];
-						}
+							}
 
 								// Add external MP params, then the row:
 							if (is_array($row))	{
@@ -502,7 +504,10 @@ class tslib_menu {
 
 						$res = $GLOBALS['TSFE']->cObj->exec_getQuery('pages',Array('pidInList'=>'0', 'uidInList'=>$id_list, 'where'=>$sortField.'>=0'.$extraWhere, 'orderBy'=>($altSortFieldValue ? $altSortFieldValue : $sortField.' desc'),'max'=>$limit));
 						while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
-							$temp[$row['uid']]=$this->sys_page->getPageOverlay($row);
+							$GLOBALS['TSFE']->sys_page->versionOL('pages',$row);
+							if (is_array($row))	{
+								$temp[$row['uid']]=$this->sys_page->getPageOverlay($row);
+							}
 						}
 					break;
 					case 'keywords':
@@ -574,7 +579,10 @@ class tslib_menu {
 							}
 							$res = $GLOBALS['TSFE']->cObj->exec_getQuery('pages',Array('pidInList'=>'0', 'uidInList'=>$id_list, 'where'=>'('.implode(' OR ',$keyWordsWhereArr).')'.$extraWhere, 'orderBy'=>($altSortFieldValue ? $altSortFieldValue : $sortField.' desc'),'max'=>$limit));
 							while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
-								$temp[$row['uid']]=$this->sys_page->getPageOverlay($row);
+								$GLOBALS['TSFE']->sys_page->versionOL('pages',$row);
+								if (is_array($row))	{
+									$temp[$row['uid']]=$this->sys_page->getPageOverlay($row);
+								}
 							}
 						}
 					break;
@@ -738,19 +746,23 @@ class tslib_menu {
 				if (is_array($basePageRow))	{
 					$res = $GLOBALS['TSFE']->cObj->exec_getQuery('tt_content',	$selectSetup);
 					while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
-						$temp[$row['uid']]=$basePageRow;
-						$temp[$row['uid']]['title']=$row['header'];
-						$temp[$row['uid']]['subtitle']=$row['subheader'];
-						$temp[$row['uid']]['starttime']=$row['starttime'];
-						$temp[$row['uid']]['endtime']=$row['endtime'];
-						$temp[$row['uid']]['fe_group']=$row['fe_group'];
-						$temp[$row['uid']]['media']=$row['media'];
+						$GLOBALS['TSFE']->sys_page->versionOL('tt_content',$row);
 
-						$temp[$row['uid']]['header_layout']=$row['header_layout'];
-						$temp[$row['uid']]['bodytext']=$row['bodytext'];
-						$temp[$row['uid']]['image']=$row['image'];
+						if (is_array($row))	{
+							$temp[$row['uid']]=$basePageRow;
+							$temp[$row['uid']]['title']=$row['header'];
+							$temp[$row['uid']]['subtitle']=$row['subheader'];
+							$temp[$row['uid']]['starttime']=$row['starttime'];
+							$temp[$row['uid']]['endtime']=$row['endtime'];
+							$temp[$row['uid']]['fe_group']=$row['fe_group'];
+							$temp[$row['uid']]['media']=$row['media'];
 
-						$temp[$row['uid']]['sectionIndex_uid']=$row['uid'];
+							$temp[$row['uid']]['header_layout']=$row['header_layout'];
+							$temp[$row['uid']]['bodytext']=$row['bodytext'];
+							$temp[$row['uid']]['image']=$row['image'];
+
+							$temp[$row['uid']]['sectionIndex_uid']=$row['uid'];
+						}
 					}
 				}
 			} else {	// Default:
@@ -1289,7 +1301,7 @@ class tslib_menu {
 		$testUid = $uid.($MPvar?':'.$MPvar:'');
 		if ($uid && !strcmp(end($this->rL_uidRegister),'ITEM:'.$testUid))	{
 			return TRUE;
-	}
+		}
 	}
 
 	/**

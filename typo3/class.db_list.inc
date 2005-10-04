@@ -114,6 +114,7 @@ class recordList extends t3lib_recordList {
 	var $calcPerms=0;				// Some permissions...
 	var $clickTitleMode = '';			// Mode for what happens when a user clicks the title of a record.
 	var $modSharedTSconfig = array();		// Shared module configuration, used by localization features
+	var $pageRecord = array();		// Loaded with page record with version overlay if any.
 
 		// Internal, dynamic:
 	var $JScode = '';				// JavaScript code accumulation
@@ -159,6 +160,10 @@ class recordList extends t3lib_recordList {
 		$this->displayFields = t3lib_div::_GP('displayFields');
 		$this->duplicateField = t3lib_div::_GP('duplicateField');
 
+		if (t3lib_div::_GP('justLocalized'))	{
+			$this->localizationRedirect(t3lib_div::_GP('justLocalized'));
+		}
+
 			// If thumbnails are disabled, set the "notfound" icon as default:
 		if (!$GLOBALS['TYPO3_CONF_VARS']['GFX']['thumbnails'])	{
 			$this->thumbScript='gfx/notfound_thumb.gif';
@@ -195,6 +200,10 @@ class recordList extends t3lib_recordList {
 	function generateList()	{
 		global $TCA;
 
+			// Set page record in header
+		$this->pageRecord = t3lib_BEfunc::getRecord('pages',$this->id);
+		t3lib_BEfunc::workspaceOL('pages',$this->pageRecord);
+
 			// Traverse the TCA table array:
 		reset($TCA);
 		while (list($tableName)=each($TCA))	{
@@ -227,8 +236,17 @@ class recordList extends t3lib_recordList {
 					$fields = array();
 				}
 
+					// Find ID to use (might be different for "versioning_followPages" tables)
+				if (intval($this->searchLevels)==0)	{
+					if ($TCA[$tableName]['ctrl']['versioning_followPages'] && $this->pageRecord['_ORIG_pid']==-1 && $this->pageRecord['t3ver_swapmode']==0)	{
+						$this->pidSelect = 'pid='.intval($this->pageRecord['_ORIG_uid']);
+					} else {
+						$this->pidSelect = 'pid='.intval($this->id);
+					}
+				}
+#debug($this->pidSelect,$tableName);
 					// Finally, render the list:
-				$this->HTMLcode.=$this->getTable($tableName, $this->id,implode(',',$fields));
+				$this->HTMLcode.=$this->getTable($tableName, $this->id, implode(',',$fields));
 			}
 		}
 	}
@@ -631,7 +649,13 @@ class recordList extends t3lib_recordList {
 				if ($TCA[$table]['ctrl']['crdate'])	$fieldListArr[]=$TCA[$table]['ctrl']['crdate'];
 				if ($TCA[$table]['ctrl']['cruser_id'])	$fieldListArr[]=$TCA[$table]['ctrl']['cruser_id'];
 				if ($TCA[$table]['ctrl']['sortby'])	$fieldListArr[]=$TCA[$table]['ctrl']['sortby'];
-				if ($TCA[$table]['ctrl']['versioning'])	$fieldListArr[]='t3ver_id';
+				if ($TCA[$table]['ctrl']['versioningWS'])	{
+					$fieldListArr[]='t3ver_id';
+					$fieldListArr[]='t3ver_state';
+					if ($table==='pages')	{
+						$fieldListArr[]='t3ver_swapmode';
+					}
+				}
 			}
 		}
 		return $fieldListArr;
@@ -655,6 +679,32 @@ class recordList extends t3lib_recordList {
 		}
 		$tree->ids[]=$id;
 		return $tree;
+	}
+
+	function localizationRedirect($justLocalized)	{
+		global $TCA;
+
+		list($table,$orig_uid,$language) = explode(':',$justLocalized);
+
+		if ($TCA[$table] && $TCA[$table]['ctrl']['languageField'] && $TCA[$table]['ctrl']['transOrigPointerField'])	{
+			list($localizedRecord) = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+					'uid',
+					$table,
+					$TCA[$table]['ctrl']['languageField'].'='.intval($language).' AND '.
+						$TCA[$table]['ctrl']['transOrigPointerField'].'='.intval($orig_uid).
+						t3lib_BEfunc::deleteClause($table)
+				);
+
+			if (is_array($localizedRecord))	{
+					// Create parameters and finally run the classic page module for creating a new page translation
+				$params = '&edit['.$table.']['.$localizedRecord['uid'].']=edit';
+				$returnUrl = '&returnUrl='.rawurlencode($this->listURL());
+				$location = $GLOBALS['BACK_PATH'].'alt_doc.php?'.$params.$returnUrl;
+
+				header('Location: '.t3lib_div::locationHeaderUrl($location));
+				exit;
+			}
+		}
 	}
 }
 

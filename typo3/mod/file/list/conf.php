@@ -8,4 +8,5 @@ $MLANG['default']['ll_ref']='LLL:EXT:lang/locallang_mod_file_list.php';
 $MCONF['script']='../../../file_list.php';
 $MCONF['access']='user,group';
 $MCONF['name']='file_list';
+$MCONF['workspaces']='online,custom';
 ?>

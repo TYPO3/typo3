@@ -86,6 +86,7 @@ class SC_alt_intro {
 
 			// Loads the available backend modules so we can create the description overview.
 		$this->loadModules = t3lib_div::makeInstance('t3lib_loadModules');
+		$this->loadModules->observeWorkspaces = TRUE;
 		$this->loadModules->load($TBE_MODULES);
 	}
 

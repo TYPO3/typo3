@@ -212,6 +212,7 @@ class t3lib_treeView {
 
 	/**
 	 * If true, HTML code is also accumulated in ->tree array during rendering of the tree.
+	 * If 2, then also the icon prefix code (depthData) is stored
 	 */
 	var $makeHTML=1;
 
@@ -380,15 +381,17 @@ class t3lib_treeView {
 			}
 
 			if (is_array($rootRec))	{
+				$uid = $rootRec['uid'];		// In case it was swapped inside getRecord due to workspaces.
+
 					// Add the root of the mount to ->tree
-				$this->tree[]=array('HTML'=>$firstHtml,'row'=>$rootRec,'bank'=>$this->bank);
+				$this->tree[]=array('HTML'=>$firstHtml, 'row'=>$rootRec, 'bank'=>$this->bank);
 
 					// If the mount is expanded, go down:
 				if ($isOpen)	{
 						// Set depth:
 					$depthD='<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/ol/blank.gif','width="18" height="16"').' alt="" />';
 					if ($this->addSelfId)	$this->ids[] = $uid;
-					$this->getTree($uid,999,$depthD);
+					$this->getTree($uid,999,$depthD,'',$rootRec['_SUBCSSCLASS']);
 				}
 
 					// Add tree:
@@ -421,9 +424,11 @@ class t3lib_treeView {
 
 		foreach($treeArr as $k => $v)	{
 			$idAttr = htmlspecialchars($this->domIdPrefix.$this->getId($v['row']).'_'.$v['bank']);
+
 			$out.='
 				<tr>
-					<td id="'.$idAttr.'">'.
+					<td id="'.$idAttr.'"'.
+						($v['row']['_CSSCLASS'] ? ' class="'.$v['row']['_CSSCLASS'].'"' : '').'>'.
 						$v['HTML'].
 						$this->wrapTitle($this->getTitleStr($v['row'],$titleLen),$v['row'],$v['bank']).
 					'</td>
@@ -646,9 +651,9 @@ class t3lib_treeView {
 	 */
 	function getIcon($row) {
 		if ($this->iconPath && $this->iconName) {
-			$icon = '<img'.t3lib_iconWorks::skinImg('',$this->iconPath.$this->iconName,'width="18" height="16"').' alt="" />';
+			$icon = '<img'.t3lib_iconWorks::skinImg('',$this->iconPath.$this->iconName,'width="18" height="16"').' alt="" title="UID: '.$row['uid'].'" />';
 		} else {
-			$icon = t3lib_iconWorks::getIconImage($this->table,$row,$this->backPath,'align="top" class="c-recIcon"');
+			$icon = t3lib_iconWorks::getIconImage($this->table,$row,$this->backPath,'align="top" class="c-recIcon" title="UID: '.$row['uid'].'"');
 		}
 
 		return $this->wrapIcon($icon,$row);
@@ -726,9 +731,10 @@ class t3lib_treeView {
 	 * @param	integer		Max depth (recursivity limit)
 	 * @param	string		HTML-code prefix for recursive calls.
 	 * @param	string		? (internal)
+	 * @param	string		CSS class to use for <td> sub-elements
 	 * @return	integer		The count of items on the level
 	 */
-	function getTree($uid, $depth=999, $depthData='',$blankLineCode='')	{
+	function getTree($uid, $depth=999, $depthData='',$blankLineCode='',$subCSSclass='')	{
 
 			// Buffer for id hierarchy is reset:
 		$this->buffer_idH=array();
@@ -739,12 +745,12 @@ class t3lib_treeView {
 		$HTML='';
 		$a=0;
 
-		$res = $this->getDataInit($uid);
+		$res = $this->getDataInit($uid,$subCSSclass);
 		$c = $this->getDataCount($res);
 		$crazyRecursionLimiter = 999;
 
 			// Traverse the records:
-		while ($crazyRecursionLimiter>0 && $row = $this->getDataNext($res))	{
+		while ($crazyRecursionLimiter>0 && $row = $this->getDataNext($res,$subCSSclass))	{
 			$a++;
 			$crazyRecursionLimiter--;
 
@@ -760,16 +766,18 @@ class t3lib_treeView {
 			}
 
 				// Accumulate the id of the element in the internal arrays
-			$this->ids[]=$idH[$row['uid']]['uid']=$row['uid'];
-			$this->ids_hierarchy[$depth][]=$row['uid'];
+			$this->ids[]=$idH[$row['uid']]['uid'] = $row['uid'];
+			$this->ids_hierarchy[$depth][] = $row['uid'];
 
 				// Make a recursive call to the next level
+			$HTML_depthData = $depthData.'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/ol/'.$LN.'.gif','width="18" height="16"').' alt="" />';
 			if ($depth>1 && $this->expandNext($newID) && !$row['php_tree_stop'])	{
 				$nextCount=$this->getTree(
 						$newID,
 						$depth-1,
-						$this->makeHTML?$depthData.'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/ol/'.$LN.'.gif','width="18" height="16"').' alt="" />':'',
-						$blankLineCode.','.$LN
+						$this->makeHTML ? $HTML_depthData : '',
+						$blankLineCode.','.$LN,
+						$row['_SUBCSSCLASS']
 					);
 				if (count($this->buffer_idH))	$idH[$row['uid']]['subrow']=$this->buffer_idH;
 				$exp=1;	// Set "did expand" flag
@@ -789,6 +797,7 @@ class t3lib_treeView {
 			$this->tree[$treeKey] = Array(
 				'row'=>$row,
 				'HTML'=>$HTML,
+				'HTML_depthData' => $this->makeHTML==2 ? $HTML_depthData : '',
 				'invertedDepth'=>$depth,
 				'blankLineCode'=>$blankLineCode,
 				'bank' => $this->bank
@@ -869,7 +878,10 @@ class t3lib_treeView {
 		if (is_array($this->data)) {
 			return $this->dataLookup[$uid];
 		} else {
-			return t3lib_befunc::getRecord($this->table,$uid);
+			$row = t3lib_befunc::getRecord($this->table,$uid);
+			t3lib_BEfunc::workspaceOL($this->table, $row, $this->BE_USER->workspace);
+
+			return $row;
 		}
 	}
 
@@ -882,7 +894,7 @@ class t3lib_treeView {
 	 * @return	mixed		data handle (Tables: An sql-resource, arrays: A parentId integer. -1 is returned if there were NO subLevel.)
 	 * @access private
 	 */
-	function getDataInit($parentId) {
+	function getDataInit($parentId,$subCSSclass='') {
 		if (is_array($this->data)) {
 			if (!is_array($this->dataLookup[$parentId][$this->subLevelID])) {
 				$parentId = -1;
@@ -929,24 +941,30 @@ class t3lib_treeView {
 	 * @access private
 	 * @see getDataInit()
 	 */
-	function getDataNext(&$res){
+	function getDataNext(&$res,$subCSSclass=''){
 		if (is_array($this->data)) {
 			if ($res<0) {
 				$row=FALSE;
 			} else {
 				list(,$row) = each($this->dataLookup[$res][$this->subLevelID]);
 
-				/*
-				if (!is_array($row))	{
-					$row=FALSE;
-				} else {
-					unset($row['subLevel']);
+					// Passing on default <td> class for subelements:
+				if (is_array($row) && $subCSSclass!=='')	{
+					$row['_CSSCLASS'] = $row['_SUBCSSCLASS'] = $subCSSclass;
 				}
-				*/
 			}
 			return $row;
 		} else {
-			return @$GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
+			$row = @$GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
+			t3lib_BEfunc::workspaceOL($this->table, $row, $this->BE_USER->workspace);
+
+				// Passing on default <td> class for subelements:
+			if (is_array($row) && $subCSSclass!=='')	{
+				if (!isset($row['_CSSCLASS']))	$row['_CSSCLASS'] = $subCSSclass;
+				if (!isset($row['_SUBCSSCLASS']))	$row['_SUBCSSCLASS'] = $subCSSclass;
+			}
+
+			return $row;
 		}
 	}
 

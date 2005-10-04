@@ -347,8 +347,9 @@ class tx_indexedsearch_modfunc1 extends t3lib_extobjbase {
 
 			// Compile rows into the table:
 		$out = '';
+		$cellAttrib = ($data['_CSSCLASS'] ? ' class="'.$data['_CSSCLASS'].'"' : '');
 		if (count($lines))	{
-			$firstColContent = '<td rowspan="'.$rowCount.'">'.$firstColContent.'</td>';
+			$firstColContent = '<td rowspan="'.$rowCount.'"'.$cellAttrib.'>'.$firstColContent.'</td>';
 			foreach($lines as $rowSet)	{
 				foreach($rowSet as $rows)	{
 					$out.='
@@ -368,7 +369,7 @@ class tx_indexedsearch_modfunc1 extends t3lib_extobjbase {
 		} else {
 			$out.='
 				<tr class="bgColor-20">
-					<td>'.$firstColContent.'</td>
+					<td'.$cellAttrib.'>'.$firstColContent.'</td>
 					<td colspan="'.($this->returnNumberOfColumns()-1).'"><em>Not indexed</em></td>
 				</tr>';
 		}

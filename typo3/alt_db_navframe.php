@@ -222,7 +222,7 @@ class SC_alt_db_navframe {
 		$this->initializeTemporaryDBmount();
 
 			// Setting highlight mode:
-		$this->doHighlight = !$BE_USER->getTSConfigVal('options.pageTree.disableTitleHighlight');
+		$this->doHighlight = !$BE_USER->getTSConfigVal('options.pageTree.disableTitleHighlight') && $BE_USER->workspace===0;
 
 			// Create template object:
 		$this->doc = t3lib_div::makeInstance('template');
@@ -301,6 +301,29 @@ class SC_alt_db_navframe {
 			// Start page:
 		$this->content = '';
 		$this->content.= $this->doc->startPage('Page tree');
+
+			// Outputting workspace info
+		if ($GLOBALS['BE_USER']->workspace!==0 || $GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.onlineWorkspaceInfo'))	{
+			switch($GLOBALS['BE_USER']->workspace)	{
+				case 0:
+					$wsTitle = '&nbsp;'.$this->doc->icons(2).'['.$LANG->sL('LLL:EXT:lang/locallang_misc.xml:shortcut_onlineWS',1).']';
+				break;
+				case -1:
+					$wsTitle = '['.$LANG->sL('LLL:EXT:lang/locallang_misc.xml:shortcut_offlineWS',1).']';
+				break;
+				default:
+					$wsTitle = '['.$GLOBALS['BE_USER']->workspace.'] '.htmlspecialchars($GLOBALS['BE_USER']->workspaceRec['title']);
+				break;
+			}
+
+			$this->content.= '
+				<div class="bgColor4 workspace-info">'.
+					'<a href="'.htmlspecialchars('mod/user/ws/index.php').'" target="content">'.
+					'<img'.t3lib_iconWorks::skinImg('','gfx/i/sys_workspace.png','width="18" height="16"').' align="top" alt="" />'.
+					'</a>'.$wsTitle.'
+				</div>
+			';
+		}
 
 			// Outputting Temporary DB mount notice:
 		if ($this->active_tempMountPoint)	{

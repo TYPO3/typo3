@@ -566,7 +566,10 @@ class tx_indexedsearch extends tslib_pibase {
 			// Perform SQL Search / collection of result rows array:
 		if ($list)	{
 				// Do the search:
-			return $this->execFinalQuery($list);
+			$GLOBALS['TT']->push('execFinalQuery');
+			$res = $this->execFinalQuery($list);
+			$GLOBALS['TT']->pull();
+			return $res;
 		} else {
 			return FALSE;
 		}
@@ -732,13 +735,13 @@ class tx_indexedsearch extends tslib_pibase {
 
 			// Traverse searchwords; for each, select all phash integers and merge/diff/intersect them with previous word (based on operator)
 		foreach($sWArr as $k => $v)	{
-			$GLOBALS['TT']->push('SearchWord '.$sWord);
-
 				// Making the query for a single search word based on the search-type
 			$sWord = $v['sword'];	// $GLOBALS['TSFE']->csConvObj->conv_case('utf-8',$v['sword'],'toLower');	// lower-case all of them...
-
 			$theType = (string)$this->piVars['type'];
 			if (strstr($sWord,' '))	$theType = 20;	// If there are spaces in the search-word, make a full text search instead.
+
+			$GLOBALS['TT']->push('SearchWord "'.$sWord.'" - $theType='.$theType);
+
 			$res = '';
 			$wSel='';
 
