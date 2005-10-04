@@ -1,0 +1,18 @@
+
+************************************************************************
+CHANGES & IMPROVEMENTS in TYPO3 3.8.1
+(for technical details see ChangeLog)
+************************************************************************
+
+Compatibility
+------------
+
+	* GMENU_LAYERS and TMENU_LAYERS and image rollovers now work with Opera browsers (Martin Kutschker <martin.t.kutschker@blackbox.net>)
+
+2005-07-02  
+
+Security:
+---------
+
+	* A debug script exposed system information provided by phpinfo(). For details, see http://typo3.org /teams/security/security-bulletins/typo3-20050725-1/ (Michael Stucki <michael@typo3.org>)
+
