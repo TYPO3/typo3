@@ -1,9 +1,9 @@
-2005-10-04  Kasper SkÃ¥rhÃ¸j  <kasper2005@typo3.com>
+2005-10-04  Kasper Skårhøj  <kasper2005@typo3.com>
 
-	* Added initial support for workspaces in core. 
+	* Added initial support for workspaces in core.
 	* !!! Notice that all versioning features for tables are now enabled by the [ctrl] directive "versioningWS" and not "versioning". You will have to change this for all custom usages. At the same time you will have to add additional fields that are now mandatory for versioning to work. This is documented in the yet not published TYPO3 Core API for next version. Until the versioning API is final it is recommended to be very careful to apply versioning to custom tables.
 
-2005-10-04 Martin Kutschker <martin.t.kutschker@blackbox.net>
+2005-10-04 Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
 	* Fixed bug #1152: allow for nice filenames in Apache stat file (config.stat_apache_niceTitle)
 	* optionally remove the site root from the Apache stat file path (config.stat_apache_noRoot)
@@ -12,10 +12,10 @@
 2005-10-02 Bernhard Kraft  <kraftb@kraftb.at>
 
 	* Integrated content-slide extension into core
-	 (http://wiki.typo3.org/index.php/Extensions_for_the_core)
+	  (http://wiki.typo3.org/index.php/Extensions_for_the_core)
 	* Implemented "requestUpdate" feature of TCEforms for Flexform fields
 
-2005-09-19 Martin Kutschker <martin.t.kutschker@blackbox.net>
+2005-09-19 Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
 	* Fixed bug #1287: Detect Opera as Netscape3 (making image roll-overs work)
 
@@ -103,7 +103,7 @@
 
 	* t3lib/class.t3lib_querygenerator.php: Fixed broken database search, originally caused by DBAL changes.
 
-2005-05-22  Kasper Skï¿½hj,,,  <kasper@typo3.com>
+2005-05-22  Kasper Skårhøj  <kasper@typo3.com>
 
 	* Added loginscreen image and colorscheme, upgraded version number.
 
@@ -143,7 +143,7 @@
 	* Fixed missing email address label if none specified in class.tslib_content.php
 	* Fixed missing replacement of "@" in spamProtectEmailAddresses mode in class.tslib_content.php
 
-2005-06-08  Kasper Skï¿½hj,,,  <kasper@typo3.com>
+2005-06-08  Kasper Skårhøj  <kasper@typo3.com>
 
 	* Added TYPO3_CONF_VARS[SYS][USdateFormat] configuration option to turn date-entering into MM-DD-YYYY in backend. Go US!
 
@@ -167,11 +167,11 @@
 
 	* Fixed bug #0000930: The delete button in QuickEdit mode lead to a 404 message. Thanks to Sebastian Kurfuerst.
 
-2005-05-09  Kasper Skï¿½hj,,,  <kasper@typo3.com>
+2005-05-09  Kasper Skårhøj  <kasper@typo3.com>
 
 	* Closed Indexed Search before 3.8.0 launch: Despite my hopes I had to significantly lower my ambitions for this release; I couldn't find time to complete the overhaul but had to just patch up any immediate problems and make it work for the 3.8.0 release. The TODO list inside is updated with the remaining tasks which is due for 4.0.0 late summer. If "Indexing Configurations" supporting indexing of external files, URLs and individual records have been mentioned earlier in this changelog or on the featurelist I can inform that the incomplete implementation has been disabled and postponed for 4.0.
 
-2005-05-04  Kasper Skï¿½hj,,,  <kasper@typo3.com>
+2005-05-04  Kasper Skårhøj  <kasper@typo3.com>
 
 	* Added Hindi language
 	* Added feature to table-wizard: Will create 5 new rows when adding rows in the bottom of table (configurable)
@@ -196,15 +196,15 @@
 
 	* Added type path to getText function
 
-2005-04-29  Kasper Skï¿½hj,,,  <kasper@typo3.com>
+2005-04-29  Kasper Skårhøj  <kasper@typo3.com>
 
 	* Added default limit (10kb) on frontend user session data (set by TYPO3_CONF_VARS[FE][maxSessionDataSize]) and added a check that session data is saved only if a cookie is actually set. This closes a quite obvious hole for DoS attacks where requesting a TYPO3 URL something like "...index.php?id=1&recs[foo][bar]=[up to 2000 chars]" would fill 2kb of data into fe_session_data no questions asked. It is not a security problem but thousand such request (with eg. "ab") would mean 2 megabyte of junk in the database... Spamming that table is now considerably more complicated. However this setting might break applications storing large amounts of user session data, but for the average shopping plugin it should be unaffected.
 
-2005-04-29  Kasper Skï¿½hj,,,  <kasper@typo3.com>
+2005-04-29  Kasper Skårhøj  <kasper@typo3.com>
 
 	* Applied fixes to t3lib_extMgm in order to prevent possible fatal errors where only local extensions would be loaded, resulting in a complete failure of the system (aka "...the cms extension is not loaded" bug). It is unknown if it fixes such problems since the bug is not repeatable.
 
-2005-04-28  Kasper Skï¿½hj,,,  <kasper@typo3.com>
+2005-04-28  Kasper Skårhøj  <kasper@typo3.com>
 
 	* Added API in tslib_pibase for checking availability of the cHash value when plugins are running as USER cObjects. This is a VERY IMPORTANT thing for plugin writers to acquaint themselves with. I suggest reading the article "The Mysteries of &cHash" which was written about this tricky issue.
 
@@ -224,7 +224,7 @@
 
 	* Added parameter to function in t3lib_install that enables you to write to other localconf's than the canonical.
 
-2005-04-28  Kasper Skï¿½hj,,,  <kasper@typo3.com>
+2005-04-28  Kasper Skårhøj  <kasper@typo3.com>
 
 	* Added search in Extension Manager for extensions locally.
 
@@ -240,20 +240,20 @@
 
 	* Fixed bug #0000727: Changed some labels for editing Page Header in page and list view
 
-2005-04-27  Kasper Skï¿½hj,,,  <kasper@typo3.com>
+2005-04-27  Kasper Skårhøj  <kasper@typo3.com>
 
 	* Updated install tool test images again after Stuckis suggestions. Now validates perfectly with this TYPO3 using his debian packages "graphicsmagick" and "graphicsmagick-im-compat"
 
-2005-04-27  Kasper Skï¿½hj,,,  <kasper@typo3.com>
+2005-04-27  Kasper Skårhøj  <kasper@typo3.com>
 
 	* More implementation of locallang-xml support in frontend
 	* Implemented substitution of glossary terms in view_help.php. Glossary is available when the extension "t3glossary" is installed (yet to be released)
 
-2005-04-27  Kasper Skï¿½hj,,,  <kasper@typo3.com>
+2005-04-27  Kasper Skårhøj  <kasper@typo3.com>
 
 	* When using frontend editing with pop-up window the save-and-view button will not change focus of the windows but keep the editing window on top while reloading the page for preview behind. (Works in any case editing happens in a pop-up window)
 
-2005-04-21 => 04-26  Kasper Skï¿½hj,,,  <kasper@typo3.com>
+2005-04-21 => 04-26  Kasper Skårhøj  <kasper@typo3.com>
 
 	* Added a runaway brake to t3lib_div::expandList(): Ranges are limited to 1000 values per range.
 	* Added authentication services (from sysext/sv/) to the core.
@@ -347,7 +347,7 @@
 	* Re-added images in install tool with binary flag (bug #972).
 	* Changed some uses of require to require_once to fix bug #958.
 
-2005-04-12  Kasper Skï¿½hj,,,  <kasper@typo3.com>
+2005-04-12  Kasper Skårhøj  <kasper@typo3.com>
 
 	* changed install tool comparison images
 
@@ -369,11 +369,11 @@
 
 	* Added modfunc2 to sysext/indexed_search which offers statistics of entered search words.
 
-2005-04-06  Kasper Skï¿½hj,,,  <kasper@typo3.com>
+2005-04-06  Kasper Skårhøj  <kasper@typo3.com>
 
 	* Removed all "unsigned" attributes from .sql files in the core and implemented a complete list of those fields for which it has been removed in the t3lib_install class. By default the install tool will NOT detect that these fields should be changed to signed integers since if the field is found in the list in the install class this difference will be ignored. The reason is that it will be 200+ ALTER TABLe changes and the significance is mostly cosmetic. However if somebody wants to actually do the conversion they can switch an internal variable in the t3lib_install class to TRUE and the install tool WILL convert...
 
-2005-04-06  Kasper Skï¿½hj,,,  <kasper@typo3.com>
+2005-04-06  Kasper Skårhøj  <kasper@typo3.com>
 
 	* Extended a comment of a function in t3lib_extMgm
 
@@ -394,7 +394,7 @@
 	* Added a preliminary way for moving containers in a flexform section in TCEforms + TCEmain. Before you could only delete containers.
 	* Added Sebastian Kurfuerst's collapsable modules feature for the backend's module bar
 
-2005-04-04  Kasper Skï¿½hj,,,  <kasper@typo3.com>
+2005-04-04  Kasper Skårhøj  <kasper@typo3.com>
 
 	* Added to-top/up/down/to_bottom bottoms for the select/group element. up/down will show up by default, to-top and to-bottom will appear automatically when the SIZE of the selector is >= 5.
 
@@ -402,12 +402,12 @@
 
 	* Fixed a stupid error in the display-empty-tags function
 
-2005-04-01  Kasper Skï¿½hj,,,  <kasper@typo3.com>
+2005-04-01  Kasper Skårhøj  <kasper@typo3.com>
 
 	* Updated all years from 2004 to 2005
 	* Updated all function indexeds in top of scripts (no actual code changes done!)
 
-2005-04-01  Kasper Skï¿½hj,,,  <kasper@typo3.com>
+2005-04-01  Kasper Skårhøj  <kasper@typo3.com>
 
 	* Added Bernhard Krafts security improvement for server validated challenge value.
 	* Added "Esperanto" as language - now we are at 41 backend languages.
@@ -459,11 +459,11 @@
 	* Fixed bug #0000335: in class.t3lib_extfilefunc.php: If $this->dont_use_exec_commands was set, it was impossible to delete any directories, which is now possible again. It's still impossible to delete direcories recursively though.
 	* Fixed bug #0000280: pi_list_query() produced wrong query when $orderBy paramater was not given.
 
-2005-03-10  Kasper Skï¿½hj,,,  <kasper@typo3.com>
+2005-03-10  Kasper Skårhøj  <kasper@typo3.com>
 
 	* Added feature that connects cache-control headers with whether user-logins are allowed in a branch or not. Makes mixing of cached and dynamic user-dependant content easier.
 
-2005-03-08  Kasper Skï¿½hj,,,  <kasper@typo3.com>
+2005-03-08  Kasper Skårhøj  <kasper@typo3.com>
 
 	* New feature for page records: Frontend Login Mode. Makes it possible to disable (and enable later) frontend logins for branches of the page tree. Disabling will make it look like no user is authenticated. This feature is very useful if you wish a highly performant website using cache control headers while specifying sections where user logins are accepted (for dynamic content)
 	* Implemented a bunch of hooks in tslib_fe
@@ -481,15 +481,15 @@
 	* Fixed a typo in the User TSconfig reference in ext_tables_static+adt.sql
 	* !!! Renamed t3lib_stdGraphic->imageCreateFromGif into imageCreateFromFile. The old function will remain for providing backwards compatibility.
 
-2005-02-17  Kasper Skï¿½hj,,,  <kasper@typo3.com>
+2005-02-17  Kasper Skårhøj  <kasper@typo3.com>
 
 	* Added 3 hooks for each hardcoded function in css_styled_content so extensions can be written which provides alternative renderings without XCLASSING.
 
-2005-02-15  Kasper Skï¿½hj,,,  <kasper@typo3.com>
+2005-02-15  Kasper Skårhøj  <kasper@typo3.com>
 
 	* The indexed-search lexer has been updated so it supports "printjoins" (characters like ' or - which are allowed inside of words) and there is also support for Chinese/Japanese/Korean (CJK) indexing/searching.
 
-2005-02-14  Kasper Skï¿½hj,,,  <kasper@typo3.com>
+2005-02-14  Kasper Skårhøj  <kasper@typo3.com>
 
 	* Large number of updates to system extension indexed_search, in particular to the frontend search plugin which is now ready for implementation of templating engine by workgroup. still missing work on the lexer to support CJK content.
 
@@ -536,19 +536,19 @@
 
 	* Added a check to class t3lib_htmlmail to check if postfix version 1.x is used. If this is the case the -f parameter is not used for call to mail(). This should fix the problem with mails not being sent when using Postfix as MTA...
 
-2005-01-21  Kasper Skï¿½hj,,,  <kasper@typo3.com>
+2005-01-21  Kasper Skårhøj  <kasper@typo3.com>
 
 	* Added a new feature to force all UIDs in the "impexp" extension.
 
-2005-01-14  Kasper Skï¿½hj,,,  <kasper@typo3.com>
+2005-01-14  Kasper Skårhøj  <kasper@typo3.com>
 
 	* import/export: CSH for the whole module, localization of all labels
 
-2005-01-02  Kasper Skï¿½hj,,,  <kasper@typo3.com>
+2005-01-02  Kasper Skårhøj  <kasper@typo3.com>
 
 	* Added Karsten D.s patches for DBAL.
 
-2004-12-20  Kasper Skï¿½hj,,,  <kasper@typo3.com>
+2004-12-20  Kasper Skårhøj  <kasper@typo3.com>
 
 	* Changed "config.disableContentLengthHeader" over to "enableContentLengthHeader" because a default content-length header might introduce some weird and hard-to-debug situation for people.
 	* Added possibility to enable cache-control headers on frontend output; This allows a site to be cached by client browsers and proxies. See TSref for configuration ("config.sendCacheHeaders")
@@ -557,7 +557,7 @@
 	* Fixed bug that gave inconsistent SYS_LASTCHANGED values whether a page was gotten from cache or generated.
 	* Added check for explicitAllow/Deny in the content element wizard (during a trainride from Allerd in S-Tog line A to Nrreport - thats all it took).
 
-2004-12-17  Kasper Skï¿½hj,,,  <kasper@typo3.com>
+2004-12-17  Kasper Skårhøj  <kasper@typo3.com>
 
 	* Mainly: Did tons of improvements on the import/export module (system extension "impexp").
 		Main features:
@@ -584,7 +584,7 @@
 	* Added support for having temporary files in typo3temp/ prefixed with a meaningful prefix, typically coming from the menu title, original image name etc.
 
 
-2004-11-28  Kasper Skï¿½hj,,,  <kasper@typo3.com>
+2004-11-28  Kasper Skårhøj  <kasper@typo3.com>
 
 	* Main feature: Lots of updates on Indexed Search extension. The changes are mainly in the indexer, not the search plugin. The work is NOT FINISHED yet and don't update a production site with this work! One main thing to be aware of is that all indexing is done internally as utf-8. You should flush your old index tables before running the new one.
 	* Fixed bug in t3lib_cs::utf8_strtrunc() (or so)... do'h Martin!
@@ -603,7 +603,7 @@
 	* TYPO3_CONF_VARS[BE][adminOnly] is now an integer value (was boolean by mistake)
 	* Added missing description of 3rd parameter for the crop function in class.tslib_content.php
 
-2004-11-18  Kasper Skï¿½hj,,,  <kasper@typo3.com>
+2004-11-18  Kasper Skårhøj  <kasper@typo3.com>
 
 	* !!! Moved ALL core localizations into language packs found in extensions prefixed "csh_[language key]". The consequence of this is that the backend will work in english until the proper language pack is installed for the language the user has selected. This step is taken to make backend localization more scalable and prevent the huge memory problems we have with ll-XML and 3.7.0. The "csh_*" extensions are NOT available in TER at the moment, but the whole bunch can be downloaded from http://130.228.0.33/t3dl/src/all_39_language_packs_as_local_extensions.tgz
 
@@ -611,7 +611,7 @@
 
 	* Implemented #0000508: Minor performance improvement in an if clause in t3lib_stdgraphic, thanks to Volker Graubaum.
 
-2004-11-17  Kasper Skï¿½hj,,,  <kasper@typo3.com>
+2004-11-17  Kasper Skårhøj  <kasper@typo3.com>
 
 	* Converted locallang*.php to locallang*.xml in new system extensions.
 
@@ -619,12 +619,12 @@
 
 	* Fixed bug #0000416: Removing spurious DEFAULT '0' in SQL create table statements of uid columns right before they're executed in t3lib_install.
 
-2004-11-16  Kasper Skï¿½hj,,,  <kasper@typo3.com>
+2004-11-16  Kasper Skårhøj  <kasper@typo3.com>
 
 	* Moved the remaining global extensions to sysext/ which were selected to be system extension.
 	* Added configuration option in TYPO3_CONF_VARS[FE][lifetime] so the frontend users cookies can be set to a lifetime in seconds. Currently the cookie lasts only for the browser session and not more.
 
-2004-11-15  Kasper Skï¿½hj,,,  <kasper@typo3.com>
+2004-11-15  Kasper Skårhøj  <kasper@typo3.com>
 
 	* Merged all changes from "TYPO3_3-7" branch
 	* Changed to version 3.8.0-dev
@@ -640,7 +640,7 @@
 	* Release of TYPO3 3.7.0
 	* Increased version number to 3.7.0
 
-2004-09-24  Kasper Skï¿½hj,,,  <kasper@typo3.com>
+2004-09-24  Kasper Skårhøj  <kasper@typo3.com>
 
 	* Updated backend localizations for 3.7.0 Release
 	* Tagging the release with "TYPO3_3-7-0"
@@ -689,16 +689,16 @@
 
 	* Fixed bug #0000111: Install tool now allows for database name, password and username to contain any kind of chars (not limited to alphanumerical any more).
 
-2004-09-14  Kasper Skï¿½hj,,,  <kasper@typo3.com>
+2004-09-14  Kasper Skårhøj  <kasper@typo3.com>
 
 	* Updated my email address from "kasper@typo3.com" (which is closed and will stay that way) to "kasperYYYY@typo3.com" which programmers should be able to figure out...
 	* Updated all JavaDoc comments and function/class indexes in files, preparing for 3.7.0RC
 
-2004-09-13  Kasper Skï¿½hj,,,  <kasper@typo3.com>
+2004-09-13  Kasper Skårhøj  <kasper@typo3.com>
 
 	* Added CSH for Web>Info/Localization Overview
 
-2004-09-13  Kasper Skï¿½hj,,,  <kasper@typo3.com>
+2004-09-13  Kasper Skårhøj  <kasper@typo3.com>
 
 	* Changed little more in uniqueList, among others that a fixed number of paramters are supported only now!
 
@@ -706,7 +706,7 @@
 
 	* Fixed bug in t3lib_div::uniqueList that was caused when t3lib_div::uniqueArray was replaced with array_unique. Obviously array_unique doesn't remove empty values from the array but t3lib_div::uniqueArray did! Please take care of this if you still use this deprecated function in your extension!
 
-2004-09-11  Kasper Skï¿½hj,,,  <kasper@typo3.com>
+2004-09-11  Kasper Skårhøj  <kasper@typo3.com>
 
 	* Updated changelog for 09/09
 	* Fixed bug in stdgraphic::fontResize that made it go into eternal loops if the size could not be obtained in the lower end, basically when fontsize reached zero...
@@ -722,7 +722,7 @@
 	* Fixed problem with empty URLs in menu generation. Empty URLs may occur when a realurl points to the frontpage (which is a blank suffix to the base url). In such cases the URL now becomes the baseUrl of the site (if that is configured!). This should fix it very specifically for all realurl cases.
 	* Fixed install tools incapability to delete files with certain prefixes in typo3temp/ folder.
 
-2004-09-09  Kasper Skï¿½hj,,,  <kasper@typo3.com>
+2004-09-09  Kasper Skårhøj  <kasper@typo3.com>
 Sorry for writing these changelog entries with a delay of two days. I write them based on a CVS patch and it took ages to make that from a parking lot in Suresnes, Paris, 4 am in the morning. Its becoming harder to find a stable hotspot in Paris I think... But here we go:
 	* Changed all HTTP_*_VARS to $_* superglobals. Also raised PHP requirement version to 4.1.0
 	* Added wrapping functions to array browser class. Also updated the Configuration module to use these features so you can now click a key and get a string served ready to implement in eg. localconf.php
@@ -756,34 +756,34 @@ Sorry for writing these changelog entries with a delay of two days. I write them
 
 	* Fixed bug #292 concerning Return path in class.t3lib_mailer.php. The fix has a seperate solution for windows and Unix. The unix fix does however not work with safe_mode enabled. Do not know how to overcome this. Perhaps an environment variable for sendmail can be specified? The fix for windows works OK with safe_mode on since, it does not rely on passing parameter directly to the mailer tranport agent (Sendmail or postfix), but instead sets the php variable sendmail_from, which has no effect on Unix systemt.
 
-2004-09-02  Kasper Skï¿½hj,,,  <kasper@typo3.com>
+2004-09-02  Kasper Skårhøj  <kasper@typo3.com>
 
 	* Fixed a few basic PHP5 problems (aiming at PHP5 support in 3.7.0)
 
-2004-09-02  Kasper Skï¿½hj,,,  <kasper@typo3.com>
+2004-09-02  Kasper Skårhøj  <kasper@typo3.com>
 
 	* BTW; Just created a hook for page indexing which "indexed_search" will also be using in near future - BUT at the time of this writing it will require a new version of indexed_search for you and that is NOT ready yet - so indexed_search will NOT work for you anymore before you get the new version of this extension!
 
-2004-09-02  Kasper Skï¿½hj,,,  <kasper@typo3.com>
+2004-09-02  Kasper Skårhøj  <kasper@typo3.com>
 
 	* Added Catalan, Bosnian and Korean languages.
 
-2004-08-29  Kasper Skï¿½hj,,,  <kasper@typo3.com>
+2004-08-29  Kasper Skårhøj  <kasper@typo3.com>
 
 	* Added a wildcard like option for values in the "language" condition in frontend (matchcondition class). Can now match any language found in the HTTP_ACCEPT_LANGUAGE value.
 
-2004-08-29  Kasper Skï¿½hj,,,  <kasper@typo3.com>
+2004-08-29  Kasper Skårhøj  <kasper@typo3.com>
 
 	* Added "lockIP" setting for backend users - this will solve the problem that some has reported about backend users not being able to login with 3.7.0...
 	* Added new HMENU special type, "language", which can generate a language selector using the "&L" variable directly.
 	* Added option for HMENU (protectLvar) so menu items linking to pages that are not translated will have their "&L" var set to zero, thus reverting to the default language.
 	* Corrected a bug in menu generation: Spacers for TMENU had a link around it - this was a bug, correct now. No links on spacer elements!
 
-2004-08-26  Kasper Skï¿½hj,,,  <kasper@typo3.com>
+2004-08-26  Kasper Skårhøj  <kasper@typo3.com>
 
 	* Adding editlock icon in Web>Access
 
-2004-08-26  Kasper Skï¿½hj,,,  <kasperYYYY@typo3.com>
+2004-08-26  Kasper Skårhøj  <kasperYYYY@typo3.com>
 
 	* Bugfix: in browse_links where the record listing contained links to clickmenus:
 	* Added "Save and View" support for records which has another language set; For instance content elements and page overlay records will now view the page with the "&L=xx" parameter set to the language they represent.
@@ -798,7 +798,7 @@ Sorry for writing these changelog entries with a delay of two days. I write them
 	* Changed calling order of TSFE->getCompressedTCarray() in "index_ts.php": Now it loads before ->getConfigArray(). Should be no difference to anyone except internal processing in tslib_fe which can now access the array a little before it usually could.
 	* Added t3lib_cs::convArray() for charset conversion of array contents.
 
-2004-08-23  Kasper Skï¿½hj,,,  <kasper@typo3.com>
+2004-08-23  Kasper Skårhøj  <kasper@typo3.com>
 
 	* Implemented versioning API in tcemain plus other places. Still not functional for the broad public (will be in 3.8.0). Missing conceptual testing, implementation in the backend interface (still to be discussed how that is best done and fitting workflow) and not at all in the frontend.
 	* Tables configured for versioning by default is pages, tt_content, pages_language_overlay and sys_template
@@ -814,7 +814,7 @@ Sorry for writing these changelog entries with a delay of two days. I write them
 		The new version of the Kickstarter that uses these new ways of interaction has the new extension key 'kickstarter' and is already available from typo3xdev CVS.
 		The old version of the Kickstarter having the key 'extrep_wizard' is not used anymore.
 
-2004-08-21  Kasper Skï¿½hj,,,  <kasper@typo3.com>
+2004-08-21  Kasper Skårhøj  <kasper@typo3.com>
 
 	* Added support for backend initialization in PHP shell scripts. Interesting for deamons, cronjobs etc where you want a PHP script to run from shell but with a full backend environment. Documented in next version of Inside TYPO3.
 	* Configurable multiplication of DB field size (useful for resizing database for UTf-8 support)
@@ -848,7 +848,7 @@ Sorry for writing these changelog entries with a delay of two days. I write them
 
 	* Corrected wrong parameter order for some implode function calls.
 
-2004-08-07  Kasper Skï¿½hj,,,  <kasper@typo3.com>
+2004-08-07  Kasper Skårhøj  <kasper@typo3.com>
 
 	* Added three new permission modes for backend users: 1) Localization access control, 2) Access control on value level (for instance allow/deny individual selectorbox values), 3) API for custom permission options.
 	* Implemented control of these modes in tcemain, tceforms and alt_doc.php + QuickEdit. Still need to implement it for edit icons around, but this is not critical, mostly a usability issue.
@@ -857,15 +857,15 @@ Sorry for writing these changelog entries with a delay of two days. I write them
 	* Finished the accessListRenderMode(s) (see 4/8 below)
 	* Still unsettled about various default settings related to these new options, but will discuss on dev-list.
 
-2004-08-04  Kasper Skï¿½hj,,,  <kasper@typo3.com>
+2004-08-04  Kasper Skårhøj  <kasper@typo3.com>
 
 	* Added new rendering modes for the "select" type in TCA: You can now render multiple-select lists as either a SINGLE selector box with multiple value selection OR as a list of checkboxes. For mozilla even the icons are rendered nicely in the option tags. Check out the backend user group configurations. Work is still in progress.
 
-2004-08-04  Kasper Skï¿½hj,,,  <kasper@typo3.com>
+2004-08-04  Kasper Skårhøj  <kasper@typo3.com>
 
 	* Added TYPo3_CONF_VARS[FE][lockHashKeyWords] so it is optional to lock FE user sessions to HTTP_USER_AGENT
 
-2004-08-03  Kasper Skï¿½hj,,,  <kasper@typo3.com>
+2004-08-03  Kasper Skårhøj  <kasper@typo3.com>
 
 	* Added and Changed features around page languages. More to come including a document guiding people about charsets and localization.
 
@@ -873,7 +873,7 @@ Sorry for writing these changelog entries with a delay of two days. I write them
 
 	* Added support for other transfer encodings in the dmailer class. Will start to move the t3lib_directmailer class out of the core and into the direct_mail extension.
 
-2004-07-23  Kasper Skï¿½hj,,,  <kasper@typo3.com>
+2004-07-23  Kasper Skårhøj  <kasper@typo3.com>
 
 	* Added the Core CVS rules to repository at "misc/core_cvs_rules.txt". ALL Contributers to the CORE CVS SHOULD READ AND FOLLOW THIS!
 
@@ -894,7 +894,7 @@ Sorry for writing these changelog entries with a delay of two days. I write them
 
 	* Fixed bug #0000191: Small typo in German translation
 
-2004-06-28  Kasper Skï¿½hj,,,  <kasper@typo3.com>
+2004-06-28  Kasper Skårhøj  <kasper@typo3.com>
 
 	* Moved creation of menu graphics, scaled images, gifbuilder images and temporary image files into subfolders of typo3temp/
 	* Fixed case-folding-cache-file bug in t3lib_cs...
@@ -904,7 +904,7 @@ Sorry for writing these changelog entries with a delay of two days. I write them
 
 	* Fixed bug #0000119: Another fe_adminLib htmlspecialchars() issue
 
-2004-06-19  Kasper Skï¿½hj,,,  <kasper@typo3.com>
+2004-06-19  Kasper Skårhøj  <kasper@typo3.com>
 
 	* Moved CSH locallang-XML labels into extensions prefixed "csh_".
 
@@ -929,51 +929,51 @@ Sorry for writing these changelog entries with a delay of two days. I write them
 	* Fixed bug #0000070: Number of files (file count) displayed in file list module was one number too high ("5 Files" although 4 only exist). Updated typo3/class.file_list.inc
 	* Changed one line in media/scripts/plaintextLib.inc which caused a "page not found" in some e-mail clients.
 
-2004-06-06  Kasper Skï¿½hj,,,  <kasper@typo3.com>
+2004-06-06  Kasper Skårhøj  <kasper@typo3.com>
 
 	* Changed all locallang files from "lang" system extension into the new locallang-XML format instead. Includes changes to a bunch of core scripts which had to include the new files with an API function from the $LANG object.
 
-2004-06-06  Kasper Skï¿½hj,,,  <kasper@typo3.com>
+2004-06-06  Kasper Skårhøj  <kasper@typo3.com>
 
 	* Added "groupChangeMask" option in TYPO3_CONF_VARS - makes it possible to set which group newly created files and folders will get. (Thanks to Stucki)
 
-2004-06-03  Kasper Skï¿½hj,,,  <kasper@typo3.com>
+2004-06-03  Kasper Skårhøj  <kasper@typo3.com>
 
 	* Added API for configuring tables (ending on "cache") that are flushed together with "Clear All Cache".
 	* Fixed that the Admin Panel is always on top (z-index : 0;
 
-2004-06-03  Kasper Skï¿½hj,,,  <kasper@typo3.com>
+2004-06-03  Kasper Skårhøj  <kasper@typo3.com>
 
 	* Added base url to typo3 error dialog in frontend. Means it shows logo when using realurls now.
 	* Added "READFILE:" prefix for pageNotFound handler in frontend; This will read the contents of an html file and output with substitution of a few marker strings.
 	* Added feature in page tree; Temporary mounting a point in the users page tree as root. (available in the "More options..." - needs upgrade of that extension as well...).
 	* Fixed frontend edit icons under real-url conditions. They didn't work in MSIE. Had to prefix them with base url.
 
-2004-05-29  Kasper Skï¿½hj,,,  <kasper@typo3.com>
+2004-05-29  Kasper Skårhøj  <kasper@typo3.com>
 
 	* Fixed bug; All page types (doktype) was shown to uses even if they were not all in their list of possible type values.
 
-2004-05-29  Kasper Skï¿½hj,,,  <kasper@typo3.com>
+2004-05-29  Kasper Skårhøj  <kasper@typo3.com>
 
 	* Created a new DEFAULT backend module called "manual". It shows a TOC of CSH items from the system. This will provide a "user sensitive" manual inside of TYPO3 with localized content to the extend that translators has translated CSH labels in the system. The vision is that the Documentation Team will develop CSH content so far that this will become a really good inline reference for users of TYPO3. Also, extension authors are encouraged to implement CSH for their tables and backend modules and let that be the user manual for their products!
 
-2004-05-28  Kasper Skï¿½hj,,,  <kasper@typo3.com>
+2004-05-28  Kasper Skårhøj  <kasper@typo3.com>
 
 	* Added new CSH entries at various places using a new method in t3lib_BEfunc. The CSH entries are still empty and needs to be completed.
 
-2004-05-28  Kasper Skï¿½hj,,,  <kasper@typo3.com>
+2004-05-28  Kasper Skårhøj  <kasper@typo3.com>
 
 	* Added visual response to backend module selection in the menus; The class attribute of the menu items is changed when a module is selected. The default stylesheet is modified so this results in the current module being highlighted in the menu.
 
-2004-05-27  Kasper Skï¿½hj,,,  <kasper@typo3.com>
+2004-05-27  Kasper Skårhøj  <kasper@typo3.com>
 
 	* Fixed various things in file processing, t3lib_extFileFunc et al.
 
-2004-05-24  Kasper Skï¿½hj,,,  <kasper@typo3.com>
+2004-05-24  Kasper Skårhøj  <kasper@typo3.com>
 
 	* Added API for custom RTE transformations. Documented in upcoming "TYPO3 Core API".
 
-2004-05-20  Kasper Skï¿½hj,,,  <kasper@typo3.com>
+2004-05-20  Kasper Skårhøj  <kasper@typo3.com>
 
 	* Fixed remaining issues with styles in the backend regarding the TCEforms. There has been added additional possibilities of styling forms, now with classes in stylesheets, using $TBE_STYLES to set them up. Documentation of $TBE_STYLES for TCeforms has been updated in TYPo3 Core Api as well.
 
@@ -983,196 +983,196 @@ Sorry for writing these changelog entries with a delay of two days. I write them
 		#83: On non open_basedir'ed systems check if IM executables exist before trying to execut them.
 		#95: Use ini_get() instead of get_cfg_var()
 
-2004-05-19  Kasper Skï¿½hj,,,  <kasper@typo3.com>
+2004-05-19  Kasper Skårhøj  <kasper@typo3.com>
 
 	* Fixed stylesheet issues in Extension Manager.
 
-2004-05-19  Kasper Skï¿½hj,,,  <kasper@typo3.com>
+2004-05-19  Kasper Skårhøj  <kasper@typo3.com>
 
 	* Finally fixed typo3/show_item.php and typo3/wizard_colorpicker.php scripts for TYPO3 3.6.0 compliance. Now only extensions and some t3lib/ are missing clean-up.
 
-2004-05-18  Kasper Skï¿½hj,,,  <kasper@typo3.com>
+2004-05-18  Kasper Skårhøj  <kasper@typo3.com>
 	* Added t3lib_cs::specCharsToASCII() for converting special chars (like umlauts) to their double-byte alternatives in ASCII (like au, oe etc...). Function is NOT finished at all, only added so I could use it for the conversion of filenames in simulateStaticDocuments.
 	* TypoScript charset compatibility extended: tslib_cObj::caseshift(), tslib_cObj::substring(), tslib_cObj::crop() uses functions in t3lib_cs now. Also stdWrap.strftime will automatically convert localized string from locale charset (guessed by t3lib_cs) to renderCharset.
 	* !!! website charset is now taken from "forceCharset" by default (if found) and in any case the http-header with text/html and charset is sent UNLESS you disable it with "config.disableCharsetHeader=1". You will probably have to disable this header if you are using TYPO3 for XML feeds or wap-pages.
 	* Added "config.renderCharset" option: This is the charset of the content while rendered in the frontend engine. If different from "metaCharset" a conversion must happen before output to browser. Both renderCharset and metaCharset takes their default values from TYPO3_CONF_VARS[BE][forceCharset] if found, otherwise they default to "iso-8859-1". Also "metaCharset" takes "renderCharset" as default - and if metaCharset is different from renderCharset a conversion will happen on output.
 
-2004-05-18  Kasper Skï¿½hj,,,  <kasper@typo3.com>
+2004-05-18  Kasper Skårhøj  <kasper@typo3.com>
 
 	* Created new function, t3lib_div::fixed_lgd_cs(), which should be used in the backend wherever a string is shortend for visual display. This function will truncate the string according to the backend charset (which should of course be set by forceCharset to a fixed value). This new function has also been substituted numerous places in the source of course (hence all the script updates).
 
-2004-05-17  Kasper Skï¿½hj,,,  <kasper@typo3.com>
+2004-05-17  Kasper Skårhøj  <kasper@typo3.com>
 
 	* Moved "install" extension to be a sys extension in sysext/
 
-2004-05-17  Kasper Skï¿½hj,,,  <kasper@typo3.com>
+2004-05-17  Kasper Skårhøj  <kasper@typo3.com>
 
 	* Corrected some bugs in t3lib_cs while writing a unit test for it.
 
-2004-05-15  Kasper Skï¿½hj,,,  <kasper@typo3.com>
+2004-05-15  Kasper Skårhøj  <kasper@typo3.com>
 
 	* Splitted the Install Tool interface parts out from t3lib_install into the class tx_install (in extension "install"). Only things left are logic to update localconf.php files and manage SQL / Database (for Extension Manager).
 
-2004-05-11  Kasper Skï¿½hj,,,  <kasper@typo3.com>
+2004-05-11  Kasper Skårhøj  <kasper@typo3.com>
 
 	* Changed version number to 3.7.0-dev according to newly adopted major.minor.patch version numbering model.
 
-2004-05-11  Kasper Skï¿½hj,,,  <kasper@typo3.com>
+2004-05-11  Kasper Skårhøj  <kasper@typo3.com>
 
 	* Merged branch changes from "TYPO3_3-6-0"; Mainly bugfixes by ingmar.
 
-2004-05-11  Kasper Skï¿½hj,,,  <kasper@typo3.com>
+2004-05-11  Kasper Skårhøj  <kasper@typo3.com>
 
 	* Rolled back browser detection in matchcondition class.
 
-2004-05-07  Kasper Skï¿½hj,,,  <kasper@typo3.com>
+2004-05-07  Kasper Skårhøj  <kasper@typo3.com>
 
 	* Added "relPathprefix" to TEMPLATE cObject and also added support for relative path substitution of references in url() wrappers in <style> tags. This will also fix THAT problem reported for automaketemplate.
 
-2004-04-30  Kasper Skï¿½hj,,,  <kasper@typo3.com>
+2004-04-30  Kasper Skårhøj  <kasper@typo3.com>
 
 	* Merged TYPO3_3-6-0 branch changes by robert into HEAD. See 3.6.0 branch change log if you want.
 
-2004-04-27  Kasper Skï¿½hj,,,  <kasper@typo3.com>
+2004-04-27  Kasper Skårhøj  <kasper@typo3.com>
 
 	* TAG: "TYPO3_3-6-0RC2", BRANCH "TYPO3_3-6-0"
 
-2004-04-26  Kasper Skï¿½hj,,,  <kasper@typo3.com>
+2004-04-26  Kasper Skårhøj  <kasper@typo3.com>
 
 	* Added possibility to prefix references to wizard scripts with "EXT:" for reference to wizard scripts in extension.
 
-2004-04-26  Kasper Skï¿½hj,,,  <kasper@typo3.com>
+2004-04-26  Kasper Skårhøj  <kasper@typo3.com>
 
 	* Added prefix to relative file reference in @import style sheet
 
-2004-04-26  Kasper Skï¿½hj,,,  <kasper@typo3.com>
+2004-04-26  Kasper Skårhøj  <kasper@typo3.com>
 
 	* Fixed bug where DB mounts for a user which has been deleted would still show up in the page tree.
 
-2004-04-26  Kasper Skï¿½hj,,,  <kasper@typo3.com>
+2004-04-26  Kasper Skårhøj  <kasper@typo3.com>
 
 	* Fixed bug with pageNotFound handling.
 
-2004-04-26  Kasper Skï¿½hj,,,  <kasper@typo3.com>
+2004-04-26  Kasper Skårhøj  <kasper@typo3.com>
 
 	* Added a PAGE Tsconfig option to disable the automatic clearing of page cache when records are edited.
 
-2004-04-26  Kasper Skï¿½hj,,,  <kasper@typo3.com>
+2004-04-26  Kasper Skårhøj  <kasper@typo3.com>
 
 	* Updated "cms" extension with most recent labels from TYPO3.org
 
-2004-04-26  Kasper Skï¿½hj,,,  <kasper@typo3.com>
+2004-04-26  Kasper Skårhøj  <kasper@typo3.com>
 
 	* Updated "lang" extension with most recent labels from TYPO3.org
 
-2004-04-26  Kasper Skï¿½hj,,,  <kasper@typo3.com>
+2004-04-26  Kasper Skårhøj  <kasper@typo3.com>
 
 	* Added Latvian, Japanese and Vietnamese languages
 
-2004-04-24  Kasper Skï¿½hj,,,  <kasper@typo3.com>
+2004-04-24  Kasper Skårhøj  <kasper@typo3.com>
 
 	* Added to TypoScript object browser that the title text of the object links contains information about in which lines in the TypoScript body code that a certain object path is set, cleared, copied.
 
-2004-04-23  Kasper Skï¿½hj,,,  <kasper@typo3.com>
+2004-04-23  Kasper Skårhøj  <kasper@typo3.com>
 
 	* Added "removeBadHTML" option to stdWrap - this can help to avoid XSS dangerous HTML.
 
-2004-04-23  Kasper Skï¿½hj,,,  <kasper@typo3.com>
+2004-04-23  Kasper Skårhøj  <kasper@typo3.com>
 
 	* Added feature in TYpoScript data type "getText" to get values from GET arrays via "GPvar" key word. Now you can specify ".date = GPvar : tx_myext|mode|index" to get value of &tx_myext[mode][index]
 
-2004-04-23  Kasper Skï¿½hj,,,  <kasper@typo3.com>
+2004-04-23  Kasper Skårhøj  <kasper@typo3.com>
 
 	* Added option "$TYPO3_CONF_VARS["GFX"]["gdlib_2"] = 'no_imagecopyresized_fix';" to avoid using the imagecopyresized workaround in stdgraphic class which has failed for some. Whether the workaround is needed anymore is not certain. Some people say it works fine without.
 
-2004-04-23  Kasper Skï¿½hj,,,  <kasper@typo3.com>
+2004-04-23  Kasper Skårhøj  <kasper@typo3.com>
 
 	* Added TypoScript condition "hostname" for matching hostnames for IP addresses.
 
-2004-04-23  Kasper Skï¿½hj,,,  <kasper@typo3.com>
+2004-04-23  Kasper Skårhøj  <kasper@typo3.com>
 
 	* Added API for configuring extra tables/fields for listing in Web > Page
 
-2004-04-23  Kasper Skï¿½hj,,,  <kasper@typo3.com>
+2004-04-23  Kasper Skårhøj  <kasper@typo3.com>
 
 	* Added option "mod.web_list.clickTitleMode = edit/info/show" to determine alternative behaviours of title links in the Web > List module.
 
-2004-04-23  Kasper Skï¿½hj,,,  <kasper@typo3.com>
+2004-04-23  Kasper Skårhøj  <kasper@typo3.com>
 
 	* Added Page TSconfig option "mod.web_list.listOnlyInSingleTableView = 1" which makes the List module list only the table names by default. You have to click the table name to get the single-table view before records show up. This is useful for pages containing many records from many tables.
 
-2004-04-23  Kasper Skï¿½hj,,,  <kasper@typo3.com>
+2004-04-23  Kasper Skårhøj  <kasper@typo3.com>
 
 	* Added refresh button to taskcenter (not in core CVS)
 
-2004-04-23  Kasper Skï¿½hj,,,  <kasper@typo3.com>
+2004-04-23  Kasper Skårhøj  <kasper@typo3.com>
 
 	* Added "Login failure" message in backend login box
 
-2004-04-23  Kasper Skï¿½hj,,,  <kasper@typo3.com>
+2004-04-23  Kasper Skårhøj  <kasper@typo3.com>
 
 	* Added to user authentication that the HTTP_USER_AGENT is hashed and a part of the session lookup (in other words, if the HTTP_USER_AGENT stays constant the session stays as well). Also added possibility of configuring that the IP adresse used to lock down sessions is only part 1,2,3 or 4 (all) used. Mainly this is easily configurable for frontend users (which has had the "security level" set to "2" now instead of disabled totally!). For backend users I didn't make configuration options in TYPO3_CONF_VARS - just wanted to know if people needed it there first (not to bloat options....)
 
-2004-04-23  Kasper Skï¿½hj,,,  <kasper@typo3.com>
+2004-04-23  Kasper Skårhøj  <kasper@typo3.com>
 
 	* Added possibility of jumping directly to editing a page in the backend. You specify "alt_main.php?edit=[page id]" and you will be brought directly to the page edit module.
 
-2004-04-22  Kasper Skï¿½hj,,,  <kasper@typo3.com>
+2004-04-22  Kasper Skårhøj  <kasper@typo3.com>
 
 	* Added in RTE link box: Searched *into* Content ELements of type Text and Text w/Image after anchors (<a name="...">) and lists them as well with content elements to which an anchor link can be made.
 
-2004-04-22  Kasper Skï¿½hj,,,  <kasper@typo3.com>
+2004-04-22  Kasper Skårhøj  <kasper@typo3.com>
 
 	* Added configuration options for what level of pages cache is cleared when you edit a page header. You can not get children and grand-parents cleared as well. (TCEMAIN.clear..... in Page TSconfig)
 
-2004-04-21  Kasper Skï¿½hj,,,  <kasper@typo3.com>
+2004-04-21  Kasper Skårhøj  <kasper@typo3.com>
 
 	* Added "altText" and "titleText" attributes to the IMGMAP object (used for IMGMENU: Now you can add values to the alt and title attributes of image maps).
 	* Added "ATagTitle" attribute for TMENU / GMENU so the menu links can have a title attribute for accessible websites.
 	* Added "allStdWrap" attributes for TMENUITEM/GMENU item states. + some other properties requested.
 
-2004-04-21  Kasper Skï¿½hj,,,  <kasper@typo3.com>
+2004-04-21  Kasper Skårhøj  <kasper@typo3.com>
 
 	* Added features around "includeCSS" TypoScript property for PAGE objects: "import" and "alternate" attributes (booleans) are now supported.
 
-2004-04-20  Kasper Skï¿½hj,,,  <kasper@typo3.com>
+2004-04-20  Kasper Skårhøj  <kasper@typo3.com>
 
 	* Changed a bunch of things, added a few new features to make TYPO3 accessible. One significant thing was the attributes "altText", "titleText" and "longdescURL" for IMAGE, IMGTEXT, FILE and ->filelink() in TypoScript.
 
-2004-04-20  Kasper Skï¿½hj,,,  <kasper@typo3.com>
+2004-04-20  Kasper Skårhøj  <kasper@typo3.com>
 
 	* Completed changes for XHTML compliance requests from the Accessibility group. Mainly adding support for more XHTML types, adding attributes like xml:lang to <html> tag, support for "dir" attributes in HTML tags, support for writing inline styles and JavaScript to a temporary file to keep a clean HTML <head> section...
 
-2004-04-19  Kasper Skï¿½hj,,,  <kasper@typo3.com>
+2004-04-19  Kasper Skårhøj  <kasper@typo3.com>
 
 	* "minItems", "maxItems" and "begin" has been added as properties to MENU objects (like TMENU, GMENU, IMGMENU etc) so you can set these values for the individual menus (as they probably should have been in the first place...).
 
-2004-04-19  Kasper Skï¿½hj,,,  <kasper@typo3.com>
+2004-04-19  Kasper Skårhøj  <kasper@typo3.com>
 
 	* Added a checkbox to the page header in the "cms" extension called "Hide in menu". With this checkbox the page is excluded from menus on the totally same terms as doktype=5 ("Not in menu") does. The implementation is believed to be complete (although there might be some places overlooked). The checkbox renders the doktype 5 "Not in menu" obsolete; the idea is that the checkbox should be used in the future. Finally - if anyone read this far - I prophecise, that within two weeks from this moment someone will approach me and want to have a visual response to the "Hide in menu" checkbox in the icon; currently the page icon does NOT change it looks (and it would be very doubtful if we could justify making it change...).
 
-2004-04-19  Kasper Skï¿½hj,,,  <kasper@typo3.com>
+2004-04-19  Kasper Skårhøj  <kasper@typo3.com>
 
 	* Added new FORM cObject type, "label", which inserts a label instead of a field. Also fixed ordering problem when the "dataArray" attribute of FORM is used (now renders the form in the numerical order of the elements instead of order of appearance).
 
-2004-04-19  Kasper Skï¿½hj,,,  <kasper@typo3.com>
+2004-04-19  Kasper Skårhøj  <kasper@typo3.com>
 
 	* Fixed incompatibility between Mount Points and property "overrideId" in menus.
 
-2004-04-19  Kasper Skï¿½hj,,,  <kasper@typo3.com>
+2004-04-19  Kasper Skårhøj  <kasper@typo3.com>
 
 	* Added support for JavaScript regular expression evaluation in FORM cObject. Means that fields in formmails can now be checked for a pattern and not only for "required".
 
-2004-04-19  Kasper Skï¿½hj,,,  <kasper@typo3.com>
+2004-04-19  Kasper Skårhøj  <kasper@typo3.com>
 
 	* Added possibility to copy database/file elements attached to records; You can now click the icon of these elements in the editing forms and get a (limited) context menu for these elements.
 	* Fixed some other bugs around.
 
-2004-04-16  Kasper Skï¿½hj,,,  <kasper@typo3.com>
+2004-04-16  Kasper Skårhøj  <kasper@typo3.com>
 
 	* fixed detection of schemes (http://, ftp:// etc) in "typolinks". Now email addresses are detected only if NOT prepended with a scheme. Also the presence of a scheme will make typolink function detect the input as a plain URL which should just be passed through untouched.
 
-2004-04-14  Kasper Skï¿½hj,,,  <kasper@typo3.com>
+2004-04-14  Kasper Skårhøj  <kasper@typo3.com>
 
 	* Mount Points (Mount pages) reworking:
 Changelog:
@@ -1205,90 +1205,90 @@ Fixed bugs in Mount Points / Status:
 		* Affected files: t3lib/class.t3lib_stdgraphic.php, typo3/sysext/cms/ext_tables.sql
 		* Tested by Ingmar, Michael and Robert
 
-2004-04-01  Kasper Skï¿½hj,,,  <kasper@typo3.com>
+2004-04-01  Kasper Skårhøj  <kasper@typo3.com>
 
 	* Fixed problem with domain look-up when an extra "/" was added to eg. "typo3.com//" -> showing "typo3.org" instead
 
-2004-04-01  Kasper Skï¿½hj,,,  <kasper@typo3.com>
+2004-04-01  Kasper Skårhøj  <kasper@typo3.com>
 
 	* Fixed some browser detection bugs in t3lib_matchcondition and t3lib_div. Not necessarily exhaustive! For instance a report on Netscape 7.2 being wrongly detected may not be resolved (need teh value of HTTP_USER_AGENT to solve it since I do not have netscape 7.2!)
 
-2004-04-01  Kasper Skï¿½hj,,,  <kasper@typo3.com>
+2004-04-01  Kasper Skårhøj  <kasper@typo3.com>
 
 	* Added full safety for the internal TYPO3 formmail; email addresses in the fields "recipient" and "recipient_copy" are encrypted in the transfer and the "formmail" interface is safe for spam-misuse (since a proper recipient address cannot be forged automatically).
 	  !!! If someone is using the "formmail" API from other renderers than the FORM cObject in TypoScript you will have to set the recipient address to the encrypted value by default OR alternatively disabled the check by TYPO3_CONF_VARS[FE][strictFormmail] = FALSE
 
-2004-04-01  Kasper Skï¿½hj,,,  <kasper@typo3.com>
+2004-04-01  Kasper Skårhøj  <kasper@typo3.com>
 
 	* Added Jens Ellerbrocks suggestion for "postUserFuncInt" in stdWrap.
 
-2004-04-01  Kasper Skï¿½hj,,,  <kasper@typo3.com>
+2004-04-01  Kasper Skårhøj  <kasper@typo3.com>
 
 	* Added some file icons from Ben and Emile
 
-2004-04-01  Kasper Skï¿½hj,,,  <kasper@typo3.com>
+2004-04-01  Kasper Skårhøj  <kasper@typo3.com>
 
 	* Added "General Plugin" to content elmeent wizard list.
 
-2004-04-01  Kasper Skï¿½hj,,,  <kasper@typo3.com>
+2004-04-01  Kasper Skårhøj  <kasper@typo3.com>
 
 	* Fixed SSL problem and many other minor things
 
-2004-03-31  Kasper Skï¿½hj,,,  <kasper@typo3.com>
+2004-03-31  Kasper Skårhøj  <kasper@typo3.com>
 
 	* Fixed spam-protection of email adresses inserted by "mailto:..." in text.
 
-2004-03-31  Kasper Skï¿½hj,,,  <kasper@typo3.com>
+2004-03-31  Kasper Skårhøj  <kasper@typo3.com>
 
 	* Fixed another small bug in detection of simulateStaticDocuments.
 
-2004-03-31  Kasper Skï¿½hj,,,  <kasper@typo3.com>
+2004-03-31  Kasper Skårhøj  <kasper@typo3.com>
 
 	* Fixed distinction between ' and " in EM.
 
-2004-03-31  Kasper Skï¿½hj,,,  <kasper@typo3.com>
+2004-03-31  Kasper Skårhøj  <kasper@typo3.com>
 
 	* Removed "onblur" handler in "browser.php" - had no great significance apparently and bugged people on Mac.
 
-2004-03-31  Kasper Skï¿½hj,,,  <kasper@typo3.com>
+2004-03-31  Kasper Skårhøj  <kasper@typo3.com>
 
 	* In t3lib_div::linkThisUrl(), remove "?" if no parameters were found.
 
-2004-03-31  Kasper Skï¿½hj,,,  <kasper@typo3.com>
+2004-03-31  Kasper Skårhøj  <kasper@typo3.com>
 
 	* Added "config.doctype = none" support - omits any doctype in the frontend.
 
-2004-03-31  Kasper Skï¿½hj,,,  <kasper@typo3.com>
+2004-03-31  Kasper Skårhøj  <kasper@typo3.com>
 
 	* Fixed an error for form wizard (and others...) where the return URL would be wrong if the wizard was activated right after having saved a new record (would like back to a new record again).
 	* Further, I added the option of xmlOutput from the table and form wizards. This option is configured in the wizard setup. There is NO frontend rendering supporting the XML format yet. But it might be very handy (and recommended) for other applications wanting to use the table and formwizards.
 
-2004-03-31  Kasper Skï¿½hj,,,  <kasper@typo3.com>
+2004-03-31  Kasper Skårhøj  <kasper@typo3.com>
 
 	* Changed the way simulateStaticDocuments are resolved
 
-2004-03-28  Kasper Skï¿½hj,,,  <kasper@typo3.com>
+2004-03-28  Kasper Skårhøj  <kasper@typo3.com>
 
 	* Changed "t3lib_div::calluserFunc" and t3lib_div::getUserObj to use "&" as token for persistent (global) objects rather than ">" - PLEASE UPDATE YOUR CODE if you happend to use these features already (less than a week old).
 
-2004-03-24  Kasper Skï¿½hj,,,  <kasper@typo3.com>
+2004-03-24  Kasper Skårhøj  <kasper@typo3.com>
 
 	* Added <span title=""> to path in backend modules in Web main module; you can now see the full path (non-truncated) as title text.
 
-2004-03-24  Kasper Skï¿½hj,,,  <kasper@typo3.com>
+2004-03-24  Kasper Skårhøj  <kasper@typo3.com>
 
 	* Added RTE API and changed the "rte" extension to use that.
 	* Added t3lib_div::getUserObj() which returns an OBJECT , instead of executing a method call like callUserFunc() does.
 
-2004-03-23  Kasper Skï¿½hj,,,  <kasper@typo3.com>
+2004-03-23  Kasper Skårhøj  <kasper@typo3.com>
 
 	* Fixed problem in Extension Manager where files and directories was not written with correct permissions. I also added t3lib_div::mkdir() general function for creating directories.
 
-2004-03-23  Kasper Skï¿½hj,,,  <kasper@typo3.com>
+2004-03-23  Kasper Skårhøj  <kasper@typo3.com>
 
 	* Fixed bug that page tree didn't unfold when entering page id in the shortcut frame.
 
-2004-03-23  Kasper Skï¿½hj,,,  <kasper@typo3.com>
+2004-03-23  Kasper Skårhøj  <kasper@typo3.com>
 
 	* Added a checkbox for be-users to disable IP locking. This is useful if you have backend users complaining about being thrown off sessions.
 
@@ -1334,7 +1334,7 @@ Made changes to class.tslib_content.php:
 - added title="" when neccessary, ie. all cleargifs havin an alt="" parameter now also have a title=""
 
 
-Kasper Skï¿½hj, 6/2:
+Kasper Skårhøj, 6/2:
  - Added processing option to RTE, "proc.plainImageMode"
  - Added options for select and group types in TCA to set the selector box style.
  - Added $altPageId parameter to function linkTP*() in tslib_pibase + pi_list_linkSingle()
@@ -1343,7 +1343,7 @@ Kasper Skï¿½hj, 6/2:
  - Implemented pop-up window size selector in link wizard
 
 
-Kasper Skï¿½hj
+Kasper Skårhøj
 	* Removed "mininews" from global extensions - that was an error in RC1
 	* Removed global extensions "beuser_tracking/ classic_welcome/ design_components/ tt_links/" from main distribtion. They are either obsolete or irrelevant and it has been considered responsible to remove them like this.
 
@@ -1369,13 +1369,13 @@ Changed all usage of t3lib_div::GPvar('SET') to t3lib_div::GPvar('SET',1) (strip
 
 	* Added and changed some features related to the replacement of default page module by a custom one (templavoila). See t3lib_positionmap, t3lib_tsfebeuserauth, alt_shortcut, alt_clickmenu
 
-2003-12-16  Kasper Skï¿½hj
+2003-12-16  Kasper Skårhøj
 
 	* Added new languages labels for cms and lang extensions // increased version number to 3.6.0RC1
 
-2003-12-16  Kasper Skï¿½hj
+2003-12-16  Kasper Skårhøj
 	* Changed order of DOCTYPE and XML declaration for XHTML support (for standards compliance mode detection in MSIE)
-2003-10-24  Kasper Skï¿½hj
+2003-10-24  Kasper Skårhøj
 	* Moved changelog.txt to ChangeLog ("cvs compliant")
 TYPO3 3.6.0-dev
 PHP:
