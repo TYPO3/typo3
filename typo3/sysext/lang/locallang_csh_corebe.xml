@@ -24,8 +24,7 @@
 
 You can configure the backend to display the menu in two alternative versions (useful on smaller screens); As a selector box or list of icons in the top frame of the backend.
 
-When you click the little &quot;+&quot; or &quot;-&quot; icons next to the main modules, you can collapse (-) or expand (+) all the sub modules. By selecting the &quot;Expand all&quot; check box, all items are expanded. When the checkbox is unselected again, the menu changes back to the previous folding state. If you click &quot;Expand all&quot; and collapse a main module afterwards, the previous folding state is discarded and &quot;Expand all&quot; is unselected again.
-</label>
+When you click the little &quot;+&quot; or &quot;-&quot; icons next to the main modules, you can collapse (-) or expand (+) all the sub modules. By selecting the &quot;Expand all&quot; check box, all items are expanded. When the checkbox is unselected again, the menu changes back to the previous folding state. If you click &quot;Expand all&quot; and collapse a main module afterwards, the previous folding state is discarded and &quot;Expand all&quot; is unselected again.</label>
 			<label index="_menu_modules.seeAlso">be_groups:groupMods,
 be_users:userMods,
 _MOD_user_setup:option_noMenuMode,
@@ -428,12 +427,14 @@ Table Wizard details [Technical]| http://typo3.org/documentation/document-librar
 			<label index="wizard_table_wiz_buttons.description">Use the refresh button to update the form without saving it. When you are done you should click one of the real save buttons to save and return to the form from which you entered the wizard. The information from this wizard should then be saved into the field the wizard was associated with.</label>
 			<label index="_wizard_table_wiz_buttons.image">EXT:lang/cshimages/core_62.png</label>
 			<label index="shortcuts.alttitle">Backend Shortcuts</label>
-			<label index="shortcuts.description">You can create shortcuts to modules in TYPO3 quite easily. The treat is that you can jump between screens in TYPO3 in &lt;em&gt;one&lt;/em&gt; click rather than multiple clicks through backend modules etc.</label>
+			<label index="shortcuts.description">You can create shortcuts to modules in TYPO3 quite easily. The treat is that you can jump between screens in TYPO3 in &lt;em&gt;one&lt;/em&gt; click rather than multiple clicks through backend modules etc. The frame also contains a field for entering a page or record id to edit or just search records.</label>
 			<label index="shortcuts.details">In order to create a shortcut it must be supported by the module you want to create the shortcut to. Whether shortcuts are supported can be seen in the bottom of a module. If there is a small &quot;shortcut&quot; icon you can click it to create the shortcut.
 
 In the shortcut frame you can also enter a page id to edit in the &quot;Edit Page ID&quot; box. This will load the current page module with the id provided in the box.
 
-Only &quot;Admin&quot;-users can access the shortcut frame in TYPO3 by default. Other users must have it enabled by the User TSconfig option, &quot;options.shortcutFrame = 1&quot;. See link below for details (Admins).</label>
+Only &quot;Admin&quot;-users can access the shortcut frame in TYPO3 by default. Other users must have it enabled by the User TSconfig option, &quot;options.shortcutFrame = 1&quot;. See link below for details (Admins).
+
+Editing pages from an id is easy with the shortcut frame. Simply enter an integer number and that page will be loaded for editing. If you enter &quot;[table]:[id]&quot; then it will try to edit a record from the [table] table, for example &quot;tt_content:123&quot; will look for content element 123 (for admins only). Finally, if you enter a string that doesn't match a page or other record the Web&gt;List module will be invoked doing a search in the first database mount you have.</label>
 			<label index="_shortcuts.seeAlso">User TSconfig -&gt;SETUP | http://typo3.org/documentation/document-library/doc_core_tsconfig/OPTIONS/</label>
 			<label index="_shortcuts.image">EXT:lang/cshimages/core_64.png,
 EXT:lang/cshimages/core_65.png,
@@ -443,16 +444,11 @@ EXT:lang/cshimages/core_68.png,</label>
 You will have to confirm the creation of the shortcut. It is nothing dangerous - only annoying to clean up if you happen to create shortcuts against your own will. Just answer &quot;OK&quot; here.
 When you answer &quot;OK&quot; you should immediately see the shortcut frame reload and a new icon (the module icon) appear. If you click this icon you will now jump to the page you created the shortcut from!
 You can name shortcuts, you can even group them and share them. If you want to edit or delete a shortcut you select the &quot;Edit&quot; checkbox and then click the shortcut icon. This will reload the shortcut frame so you get a field for entering a title. You can also delete all shortcuts in a &quot;group&quot; - here, just click the &quot;0&quot; (zero) to the left of the icons and you will remove all shortcuts in the group.</label>
-
 			<label index="workspaceSelector.alttitle">Workspace Selector</label>
 			<label index="workspaceSelector.description">By this selectorbox you can switch between the workspaces available to you. When you switch workspace the whole backend will reload.</label>
-			<label index="workspaceSelector.details">
-There are two basic workspace types in TYPO3: The "Live" workspace and a number of "Draft" workspaces.
+			<label index="workspaceSelector.details">There are two basic workspace types in TYPO3: The &quot;Live&quot; workspace and a number of &quot;Draft&quot; workspaces.
 When working in the Live workspace all changes you make will take immediate effect. This is the default and traditional state of operation in TYPO3.
-When working in the default Draft workspace or any customly created workspaces changes are not applied to the live website but rather made through new versions of any element editable. Since versioning doesn't apply to all elements in TYPO3 there are limitations to what can be done in draft workspaces; Only elements with versioning support can be edited and everything else is read-only. Draft workspaces allow preview in the frontend. When changes are final in a draft workspace they can be published into the live workspace.
-			</label>
-
-
+When working in the default Draft workspace or any customly created workspaces changes are not applied to the live website but rather made through new versions of any element editable. Since versioning doesn't apply to all elements in TYPO3 there are limitations to what can be done in draft workspaces; Only elements with versioning support can be edited and everything else is read-only. Draft workspaces allow preview in the frontend. When changes are final in a draft workspace they can be published into the live workspace.</label>
 		</languageKey>
 		<languageKey index="dk">EXT:csh_dk/lang/dk.locallang_csh_corebe.xml</languageKey>
 		<languageKey index="no">EXT:csh_no/lang/no.locallang_csh_corebe.xml</languageKey>

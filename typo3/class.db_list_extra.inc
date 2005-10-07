@@ -607,7 +607,7 @@ class localRecordList extends recordList {
 			} elseif ($fCol=='_LOCALIZATION_b') {
 				// Do nothing, has been done above.
 			} else {
-				$theData[$fCol]=htmlspecialchars(t3lib_BEfunc::getProcessedValueExtra($table,$fCol,$row[$fCol],100,$row['uid']));
+				$theData[$fCol] = $this->linkUrlMail(htmlspecialchars(t3lib_BEfunc::getProcessedValueExtra($table,$fCol,$row[$fCol],100,$row['uid'])),$row[$fCol]);
 			}
 		}
 

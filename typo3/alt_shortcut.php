@@ -108,6 +108,7 @@ class SC_alt_shortcut {
 	var $theEditRec;		// Page record to be edited
 	var $editPage;			// Page alias or id to be edited
 	var $selOpt;			// Select options.
+	var $searchFor;			// Text to search for...
 
 	var $alternativeTableUid = array();	// Array with key 0/1 being table/uid of record to edit. Internally set.
 
@@ -310,9 +311,10 @@ class SC_alt_shortcut {
 		$this->editPageIdFunc();
 
 		if (!$this->editLoaded && t3lib_extMgm::isLoaded('cms'))	{
-				$editIdCode = '<td nowrap="nowrap">'.$LANG->getLL('shortcut_editID',1).': <input type="text" value="'.($this->editError?htmlspecialchars($this->editPage):'').'" name="editPage"'.$this->doc->formWidth(5).' onchange="submitEditPage(this.value);" />'.
+				$editIdCode = '<td nowrap="nowrap">'.$LANG->getLL('shortcut_editID',1).': <input type="text" value="'.($this->editError?htmlspecialchars($this->editPage):'').'" name="editPage"'.$this->doc->formWidth(15).' onchange="submitEditPage(this.value);" />'.
 					($this->editError?'&nbsp;<strong><span class="typo3-red">'.htmlspecialchars($this->editError).'</span></strong>':'').
 					(is_array($this->theEditRec)?'&nbsp;<strong>'.$LANG->getLL('shortcut_loadEdit',1).' \''.t3lib_BEfunc::getRecordTitle('pages',$this->theEditRec,1).'\'</strong> ('.htmlspecialchars($this->editPath).')':'').
+					($this->searchFor?'&nbsp;'.$LANG->getLL('shortcut_searchFor',1).' <strong>\''.htmlspecialchars($this->searchFor).'\'</strong>':'').
 					'</td>';
 		} else $editIdCode = '';
 
@@ -352,6 +354,12 @@ class SC_alt_shortcut {
 		if (count($this->alternativeTableUid)==2 && isset($TCA[$this->alternativeTableUid[0]]) && t3lib_div::testInt($this->alternativeTableUid[1]))	{
 			$JSaction = t3lib_BEfunc::editOnClick('&edit['.$this->alternativeTableUid[0].']['.$this->alternativeTableUid[1].']=edit','','dummy.php');
 			$this->content.=$this->doc->wrapScriptTags('function editArbitraryElement() { top.content.'.$JSaction.'; } editArbitraryElement();');
+		}
+
+			// Load search for something.
+		if ($this->searchFor)	{
+			$firstMP = intval($GLOBALS['WEBMOUNTS'][0]);
+			$this->content.= $this->doc->wrapScriptTags('jump(unescape("'.rawurlencode('db_list.php?id='.$firstMP.'&search_field='.rawurlencode($this->searchFor).'&search_levels=4').'"),"web_list","web");');
 		}
 	}
 
@@ -430,6 +438,7 @@ class SC_alt_shortcut {
 		$this->editPage = trim(strtolower($this->editPage));
 		$this->editError = '';
 		$this->theEditRec = '';
+		$this->searchFor = '';
 		if ($this->editPage)	{
 
 				// First, test alternative value consisting of [table]:[uid] and if not found, proceed with traditional page ID resolve:
@@ -446,10 +455,14 @@ class SC_alt_shortcut {
 						$this->theEditRec = current($records);
 					}
 				}
-				if (!is_array($this->theEditRec) || !$BE_USER->isInWebMount($this->theEditRec['uid']))	{
+				if (!is_array($this->theEditRec))	{
+					unset($this->theEditRec);
+					$this->searchFor = $this->editPage;
+				} elseif (!$BE_USER->isInWebMount($this->theEditRec['uid'])) {
 					unset($this->theEditRec);
 					$this->editError=$LANG->getLL('shortcut_notEditable');
 				} else {
+
 						// Visual path set:
 					$perms_clause = $BE_USER->getPagePermsClause(1);
 					$this->editPath = t3lib_BEfunc::getRecordPath($this->theEditRec['pid'], $perms_clause, 30);

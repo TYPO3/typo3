@@ -6,4 +6,8 @@ System extensions cannot (by default at least) be updated like global and local 
 in ext/ are not) and to the user they will probably be understood more like a part of the core since they come along with the core. But technically they are extensions for various reasons.
 
 System Extensions are in the TYPO3core CVS module.
-System Extensions without a manual can be hidden in TER.
+System Extensions should be hidden in TER (last check of this was oct. 2005 by kasper)
+
+System extensions with manuals are currently (oct 2005):
+- css_styled_content
+- indexed_search

@@ -12,12 +12,13 @@
 	<data type="array">
 		<languageKey index="default" type="array">
 			<label index="shortcut_edit">Edit</label>
-			<label index="shortcut_editID">Edit Page ID</label>
+			<label index="shortcut_editID">Edit/Search</label>
 			<label index="shortcut_save">Update shortcut title</label>
 			<label index="shortcut_saveClose">Update and close editor</label>
 			<label index="shortcut_close">Close shortcut editor</label>
 			<label index="shortcut_delete">Remove shortcut</label>
 			<label index="shortcut_loadEdit">Loading page</label>
+			<label index="shortcut_searchFor">Search for:</label>
 			<label index="shortcut_notEditable">No editable page found!</label>
 			<label index="shortcut_group">Group</label>
 			<label index="shortcut_GLOBAL">GLOBAL</label>

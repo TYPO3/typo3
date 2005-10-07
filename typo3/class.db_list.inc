@@ -533,6 +533,8 @@ class recordList extends t3lib_recordList {
 	function linkWrapItems($table,$uid,$code,$row)	{
 		global $TCA, $LANG;
 
+		$origCode = $code;
+
 			// If the title is blank, make a "no title" label:
 		if (!strcmp($code,'')) {
 			$code = '<i>['.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.no_title',1).']</i> - '.htmlspecialchars(t3lib_div::fixed_lgd_cs(t3lib_BEfunc::getRecordTitle($table,$row),$GLOBALS['BE_USER']->uc['titleLen']));
@@ -576,11 +578,32 @@ class recordList extends t3lib_recordList {
 					// Output the label now:
 				if ($table=='pages')	{
 					$code = '<a href="'.htmlspecialchars($this->listURL($uid,'')).'">'.$code.'</a>';
+				} else {
+					$code = $this->linkUrlMail($code,$origCode);
 				}
 			break;
 		}
 
 		return $code;
+	}
+
+	/**
+	 * Wrapping input code in link to url or email if $testString is either.
+	 *
+	 * @return	string		Link-Wrapped $code value, if $testString was URL or email.
+	 */
+	function linkUrlMail($code,$testString)	{
+
+			// Check for URL:
+		$schema = parse_url($testString);
+		if ($schema['scheme'])	{
+			return '<a href="'.htmlspecialchars($testString).'" target="_blank">'.$code.'</a>';
+		}
+
+			// check for email:
+		if (t3lib_div::validEmail($testString))	{
+			return '<a href="mailto:'.htmlspecialchars($testString).'" target="_blank">'.$code.'</a>';
+		}
 	}
 
 	/**
