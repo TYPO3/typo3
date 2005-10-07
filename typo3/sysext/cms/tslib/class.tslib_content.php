@@ -1142,53 +1142,54 @@ class tslib_cObj {
 			$slideCollectFuzzy = $slideCollect?(intval($conf['slide.']['collectFuzzy'])?true:false):true;
 			$again = false;
 
-   do {
-    $res = $this->exec_getQuery($conf['table'],$conf['select.']);
-    if ($error = $GLOBALS['TYPO3_DB']->sql_error()) {
-     $GLOBALS['TT']->setTSlogMessage($error,3);
-    } else {
-     $this->currentRecordTotal = $GLOBALS['TYPO3_DB']->sql_num_rows($res);
-     $GLOBALS['TT']->setTSlogMessage('NUMROWS: '.$GLOBALS['TYPO3_DB']->sql_num_rows($res));
-     $cObj =t3lib_div::makeInstance('tslib_cObj');
-     $cObj->setParent($this->data,$this->currentRecord);
-     $this->currentRecordNumber=0;
-     $cobjValue = '';
-     while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+			do {
+				$res = $this->exec_getQuery($conf['table'],$conf['select.']);
+				if ($error = $GLOBALS['TYPO3_DB']->sql_error()) {
+					$GLOBALS['TT']->setTSlogMessage($error,3);
+				} else {
+					$this->currentRecordTotal = $GLOBALS['TYPO3_DB']->sql_num_rows($res);
+					$GLOBALS['TT']->setTSlogMessage('NUMROWS: '.$GLOBALS['TYPO3_DB']->sql_num_rows($res));
+					$cObj =t3lib_div::makeInstance('tslib_cObj');
+					$cObj->setParent($this->data,$this->currentRecord);
+					$this->currentRecordNumber=0;
+					$cobjValue = '';
+					while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 
-       // Versioning preview:
-      $GLOBALS['TSFE']->sys_page->versionOL($conf['table'],$row);
+						// Versioning preview:
+						$GLOBALS['TSFE']->sys_page->versionOL($conf['table'],$row);
 
-       // Language Overlay:
-      if (is_array($row) && $GLOBALS['TSFE']->sys_language_contentOL) {
-       $row = $GLOBALS['TSFE']->sys_page->getRecordOverlay($conf['table'],$row,$GLOBALS['TSFE']->sys_language_content,$GLOBALS['TSFE']->sys_language_contentOL);
-      }
+						// Language Overlay:
+						if (is_array($row) && $GLOBALS['TSFE']->sys_language_contentOL) {
+						$row = $GLOBALS['TSFE']->sys_page->getRecordOverlay($conf['table'],$row,$GLOBALS['TSFE']->sys_language_content,$GLOBALS['TSFE']->sys_language_contentOL);
+						}
 
-      if (is_array($row)) { // Might be unset in the sys_language_contentOL
-       if (!$GLOBALS['TSFE']->recordRegister[$conf['table'].':'.$row['uid']]) {
-        $this->currentRecordNumber++;
-        $cObj->parentRecordNumber = $this->currentRecordNumber;
-        $GLOBALS['TSFE']->currentRecord = $conf['table'].':'.$row['uid'];
-        $this->lastChanged($row['tstamp']);
-        $cObj->start($row,$conf['table']);
-        if ($GLOBALS['TSFE']->config['config']['insertDmailerBoundaries']) { $cobjValue.='<!--DMAILER_SECTION_BOUNDARY_'.intval($row['module_sys_dmail_category']).'-->'; }
-        $tmpValue = $cObj->cObjGetSingle($renderObjName, $renderObjConf, $renderObjKey);
-        $cobjValue .= $tmpValue;
-       }# else debug($GLOBALS['TSFE']->recordRegister,'CONTENT');
-      }
-     }
-     if ($GLOBALS['TSFE']->config['config']['insertDmailerBoundaries']) { $cobjValue.='<!--DMAILER_SECTION_BOUNDARY_END-->'; }
-    }
-    if ($slideCollectReverse) {
-     $theValue = $cobjValue.$theValue;
-    } else {
-     $theValue .= $cobjValue;
-    }
-    if ($slideCollect>0) {
-     $slideCollect--;
-    }
-    if ($slide) {
-     if ($slide>0) {
-      $slide--;
+						if (is_array($row)) { // Might be unset in the sys_language_contentOL
+							if (!$GLOBALS['TSFE']->recordRegister[$conf['table'].':'.$row['uid']]) {
+								$this->currentRecordNumber++;
+								$cObj->parentRecordNumber = $this->currentRecordNumber;
+								$GLOBALS['TSFE']->currentRecord = $conf['table'].':'.$row['uid'];
+								$this->lastChanged($row['tstamp']);
+								$cObj->start($row,$conf['table']);
+								if ($GLOBALS['TSFE']->config['config']['insertDmailerBoundaries']) { $cobjValue.='<!--DMAILER_SECTION_BOUNDARY_'.intval($row['module_sys_dmail_category']).'-->'; }
+								$tmpValue = $cObj->cObjGetSingle($renderObjName, $renderObjConf, $renderObjKey);
+								$cobjValue .= $tmpValue;
+							}# else debug($GLOBALS['TSFE']->recordRegister,'CONTENT');
+						}
+					}
+
+					if ($GLOBALS['TSFE']->config['config']['insertDmailerBoundaries']) { $cobjValue.='<!--DMAILER_SECTION_BOUNDARY_END-->'; }
+				}
+				if ($slideCollectReverse) {
+					$theValue = $cobjValue.$theValue;
+				} else {
+					$theValue .= $cobjValue;
+				}
+				if ($slideCollect>0) {
+					$slideCollect--;
+				}
+				if ($slide) {
+					if ($slide>0) {
+						$slide--;
 					}
 					$conf['select.']['pidInList'] = $this->getSlidePids($conf['select.']['pidInList'], $conf['select.']['pidInList.']);
 					$again = strlen($conf['select.']['pidInList'])?true:false;
@@ -1680,7 +1681,7 @@ class tslib_cObj {
 						if ($conf['noWrapAttr'] || $wrap === 'disabled')	{
 							$wrap='';
 						} else {
-							$wrap=$wrap ? ' wrap="'.trim($fParts[3]).'"' : ' wrap="virtual"';
+							$wrap = $wrap ? ' wrap="'.$wrap.'"' : ' wrap="virtual"';
 						}
 						$default = $this->getFieldDefaultValue($conf['noValueInsert'], $confData['fieldname'], str_replace('\n',chr(10),trim($parts[2])));
 						$fieldCode=sprintf('<textarea name="%s"'.$elementIdAttribute.' cols="%s" rows="%s"%s'.$addParams.'>%s</textarea>',

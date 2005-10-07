@@ -2116,6 +2116,7 @@ TEMPORARILY disabled version previews in online workspace (while testing offline
 						if (@is_file($this->jumpurl))	{
 							$mimeType = t3lib_div::_GP('mimeType');
 							$mimeType = $mimeType ? $mimeType : 'application/octet-stream';
+							Header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
 							Header('Content-Type: '.$mimeType);
 							Header('Content-Disposition: attachment; filename='.basename($this->jumpurl));
 							readfile($this->jumpurl);

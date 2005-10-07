@@ -927,36 +927,36 @@ class t3lib_pageSelect {
 
 				// Enable fields:
 			if (is_array($ctrl['enablecolumns']))	{
-    if (!$this->versioningPreview || !$ctrl['versioningWS'] || $noVersionPreview) { // In case of versioning-preview, enableFields are ignored (checked in versionOL())
-     if ($ctrl['enablecolumns']['disabled'] && !$show_hidden && !$ignore_array['disabled']) {
-      $field = $table.'.'.$ctrl['enablecolumns']['disabled'];
-      $query.=' AND '.$field.'=0';
-     }
-     if ($ctrl['enablecolumns']['starttime'] && !$ignore_array['starttime']) {
-      $field = $table.'.'.$ctrl['enablecolumns']['starttime'];
-      $query.=' AND ('.$field.'<='.$GLOBALS['SIM_EXEC_TIME'].')';
-     }
-     if ($ctrl['enablecolumns']['endtime'] && !$ignore_array['endtime']) {
-      $field = $table.'.'.$ctrl['enablecolumns']['endtime'];
-      $query.=' AND ('.$field.'=0 OR '.$field.'>'.$GLOBALS['SIM_EXEC_TIME'].')';
-     }
-     if ($ctrl['enablecolumns']['fe_group'] && !$ignore_array['fe_group']) {
-      $field = $table.'.'.$ctrl['enablecolumns']['fe_group'];
-      $query.= $this->getMultipleGroupsWhereClause($field, $table);
-     }
+				if (!$this->versioningPreview || !$ctrl['versioningWS'] || $noVersionPreview) { // In case of versioning-preview, enableFields are ignored (checked in versionOL())
+					if ($ctrl['enablecolumns']['disabled'] && !$show_hidden && !$ignore_array['disabled']) {
+						$field = $table.'.'.$ctrl['enablecolumns']['disabled'];
+						$query.=' AND '.$field.'=0';
+					}
+					if ($ctrl['enablecolumns']['starttime'] && !$ignore_array['starttime']) {
+						$field = $table.'.'.$ctrl['enablecolumns']['starttime'];
+						$query.=' AND ('.$field.'<='.$GLOBALS['SIM_EXEC_TIME'].')';
+					}
+					if ($ctrl['enablecolumns']['endtime'] && !$ignore_array['endtime']) {
+						$field = $table.'.'.$ctrl['enablecolumns']['endtime'];
+						$query.=' AND ('.$field.'=0 OR '.$field.'>'.$GLOBALS['SIM_EXEC_TIME'].')';
+					}
+					if ($ctrl['enablecolumns']['fe_group'] && !$ignore_array['fe_group']) {
+						$field = $table.'.'.$ctrl['enablecolumns']['fe_group'];
+						$query.= $this->getMultipleGroupsWhereClause($field, $table);
+					}
 
-      // Call hook functions for additional enableColumns
-      // It is used by the extension ingmar_accessctrl which enables assigning more than one usergroup to content and page records
-     if (is_array($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_page.php']['addEnableColumns']))    {
-      $_params = array(
-       'table' => $table,
-       'show_hidden' => $show_hidden,
-       'ignore_array' => $ignore_array,
-       'ctrl' => $ctrl
-      );
-      foreach($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_page.php']['addEnableColumns'] as $_funcRef)    {
-       $query .= t3lib_div::callUserFunction($_funcRef,$_params,$this);
-      }
+					// Call hook functions for additional enableColumns
+					// It is used by the extension ingmar_accessctrl which enables assigning more than one usergroup to content and page records
+					if (is_array($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_page.php']['addEnableColumns']))    {
+						$_params = array(
+							'table' => $table,
+							'show_hidden' => $show_hidden,
+							'ignore_array' => $ignore_array,
+							'ctrl' => $ctrl
+						);
+						foreach($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_page.php']['addEnableColumns'] as $_funcRef)    {
+							$query .= t3lib_div::callUserFunction($_funcRef,$_params,$this);
+						}
 					}
 				}
 			}

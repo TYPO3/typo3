@@ -2179,21 +2179,28 @@ class t3lib_TCEforms	{
 									($GLOBALS['TCA'][$table]['ctrl']['requestUpdate'] && t3lib_div::inList($GLOBALS['TCA'][$table]['ctrl']['requestUpdate'],$key)))
 									&& !$GLOBALS['BE_USER']->uc['noOnChangeAlertInTypeFields']) {
 									$alertMsgOnChange = 'if (confirm('.$GLOBALS['LANG']->JScharCode($this->getLL('m_onChangeAlert')).') && TBE_EDITOR_checkSubmit(-1)){ TBE_EDITOR_submitForm() };';
-								} else {$alertMsgOnChange='';}
+								} else {
+									$alertMsgOnChange='';
+								}
+
 								$fakePA['fieldChangeFunc']=$PA['fieldChangeFunc'];
 								if (strlen($alertMsgOnChange)) {
 									$fakePA['fieldChangeFunc']['alert']=$alertMsgOnChange;
 								}
-								$fakePA['onFocus']=$PA['onFocus'];
+								$fakePA['onFocus']==$PA['onFocus'];
 								$fakePA['label']==$PA['label'];
 
 								$fakePA['itemFormElName']=$PA['itemFormElName'].$formPrefix.'['.$key.']['.$vDEFkey.']';
 								$fakePA['itemFormElName_file']=$PA['itemFormElName_file'].$formPrefix.'['.$key.']['.$vDEFkey.']';
+
 								if(isset($editData[$key][$vDEFkey])) {
 									$fakePA['itemFormElValue']=$editData[$key][$vDEFkey];
 								} else {
 									$fakePA['itemFormElValue']=$fakePA['fieldConf']['config']['default'];
 								}
+
+								$rowCells['formEl']= $this->getSingleField_SW($table,$field,$row,$fakePA);
+								$rowCells['title']= htmlspecialchars($fakePA['fieldConf']['label']);
 
 								if (!in_array('DEF',$rotateLang))	{
 									$defInfo = '<div class="typo3-TCEforms-originalLanguageValue">'.nl2br(htmlspecialchars($editData[$key]['vDEF'])).'&nbsp;</div>';
