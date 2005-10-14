@@ -1,3 +1,6 @@
+2005-10-14	Andreas Otto	<andreas.otto@dkd.de>
+	* Fixed bug #1594: In t3lib_matchCondition->match() it could be the case that $this->altRootline was not allways an array, but it is supposed to be an array. Therefore at the beginning of t3lib_matchCondition->match() the variable type is checked and an empty array is created if needed.
+
 2005-10-07  Kasper Skårhøj  <kasper2005@typo3.com>
 
 	* Two small friday-afternoon-party changes that I wanted to have fun with a few times: a) In the shortcut frame the "Edit Page ID" field will now let you search the whole database using the list module, b) the list module will wrap any value that is a URL or email address with a link.
