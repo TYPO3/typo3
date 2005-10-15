@@ -629,6 +629,12 @@ class template {
 			break;
 		}
 
+		$tabJScode = '';
+		if (!$BE_USER->uc['disableTabInTextarea'])	{
+				// This loads the tabulator-in-textarea feature. It automatically modifies every textarea which is found.
+			$tabJScode = '<script src="'.$this->backPath.'typo3/tab.js" type="text/javascript"></script>';
+		}
+
 			// Construct page header.
 		$str = $headerStart.'
 <html>
@@ -639,6 +645,7 @@ class template {
 	<title>'.htmlspecialchars($title).'</title>
 	'.$this->docStyle().'
 	'.$this->JScode.'
+	'.$tabJScode.'
 	'.$this->wrapScriptTags(implode("\n", $this->JScodeArray)).'
 	<!--###POSTJSMARKER###-->
 </head>

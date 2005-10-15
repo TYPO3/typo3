@@ -82,8 +82,31 @@ class SC_alt_topmenu_dummy {
 	function main()	{
 		global $BE_USER,$LANG,$BACK_PATH,$TBE_MODULES,$TBE_TEMPLATE;
 
-			// IF noMenuMode is set to 'icons', then display menu instead of nothingness
-		if (!strcmp($BE_USER->uc['noMenuMode'],'icons'))	{
+			// Remember if noMenuMode is set to 'icons' or not because the hook will be ignored in this case.
+		if (!strcmp($BE_USER->uc['noMenuMode'],'icons'))	{ $iconMenuMode = true; }
+
+			// Hook for adding content to the topmenu. Only works if noMenuMode is not set to "icons" in the users setup!
+		if (!$iconMenuMode && is_array ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/alt_topmenu_dummy.php']['fetchContentTopmenu']))	{
+			$contentArray=array();
+			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/alt_topmenu_dummy.php']['fetchContentTopmenu'] as $classRef)	{
+				$hookObj = &t3lib_div::getUserObj($classRef);
+				if (method_exists($hookObj,'fetchContentTopmenu_processContent'))	{
+					$tempContent = $hookObj->fetchContentTopmenu_processContent($this);
+
+						// Placement priority handling.
+					if(is_int($hookObj->priority) and ($hookObj->priority>=1 and $hookObj->priority<=9))	{
+						$priority = $hookObj->priority;
+					} else $priority = 5;
+
+					$overrulestyle = isset($hookObj->overrulestyle) ? $hookObj->overrulestyle : 'padding-top: 4px;';
+					$contentArray[$priority][] = '<td class="c-menu" style="'.$overrulestyle.'">'.$tempContent.'</td>';
+				}
+			}
+			ksort($contentArray);
+		}
+
+			// If noMenuMode is set to 'icons' or if a hook was found, display menu instead of nothingness
+		if ($iconMenuMode || count($contentArray))	{
 
 				// Loading the modules for this backend user:
 			$loadModules = t3lib_div::makeInstance('t3lib_loadModules');
@@ -98,6 +121,14 @@ class SC_alt_topmenu_dummy {
 			$TBE_TEMPLATE->bodyTagId.= '-iconmenu';
 			$this->content.=$TBE_TEMPLATE->startPage('Top frame icon menu');
 
+			if ($iconMenuMode)	{
+				$contentArray[0][] = $alt_menuObj->topMenu($loadModules->modules,0,'',3);
+				if ($BE_USER->isAdmin())	{
+					$contentArray[1][] = $alt_menuObj->adminButtons();
+				}
+				$contentArray[2][] = $alt_menuObj->topButtons();
+			}
+
 				// Make menu and add it:
 			$this->content.='
 
@@ -105,10 +136,13 @@ class SC_alt_topmenu_dummy {
 				  Alternative module menu made of icons, displayed in top frame:
 				-->
 				<table border="0" cellpadding="0" cellspacing="0" id="typo3-topMenu">
-					<tr>
-						<td class="c-menu">'.$alt_menuObj->topMenu($loadModules->modules,0,'',3).'</td>
-						'.($BE_USER->isAdmin() ? '<td class="c-admin">'.$alt_menuObj->adminButtons().'</td>' : '').'
-						<td class="c-logout">'.$alt_menuObj->topButtons().'</td>
+					<tr>';
+
+			foreach ($contentArray as $key=>$menucontent)	{
+				$this->content .= implode(chr(10), $menucontent);
+			}
+
+			$this->content.='
 					</tr>
 				</table>';
 

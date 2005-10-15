@@ -1,4 +1,10 @@
-2005-10-14	Andreas Otto	<andreas.otto@dkd.de>
+2005-10-15  Michael Stucki  <michael@typo3.org>
+
+	* Added a hook for adding new items in alt_topmenu_dummy.php (requested by Stig N. Færch for his "roles" extension)
+	* Added a JavaScript to the backend which makes it possible to use tabulator keys in textareas. Can be disabled by setting $BE_USER->uc['disableTabInTextarea'].
+
+2005-10-14  Andreas Otto  <andreas.otto@dkd.de>
+
 	* Fixed bug #1594: In t3lib_matchCondition->match() it could be the case that $this->altRootline was not allways an array, but it is supposed to be an array. Therefore at the beginning of t3lib_matchCondition->match() the variable type is checked and an empty array is created if needed.
 
 2005-10-07  Kasper Skårhøj  <kasper2005@typo3.com>
@@ -10,22 +16,22 @@
 	* Added initial support for workspaces in core.
 	* !!! Notice that all versioning features for tables are now enabled by the [ctrl] directive "versioningWS" and not "versioning". You will have to change this for all custom usages. At the same time you will have to add additional fields that are now mandatory for versioning to work. This is documented in the yet not published TYPO3 Core API for next version. Until the versioning API is final it is recommended to be very careful to apply versioning to custom tables.
 
-2005-10-04 Martin Kutschker  <martin.t.kutschker@blackbox.net>
+2005-10-04  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
 	* Fixed bug #1152: allow for nice filenames in Apache stat file (config.stat_apache_niceTitle)
 	* optionally remove the site root from the Apache stat file path (config.stat_apache_noRoot)
 	* Fix bug #1516: improper user of mb_strpos()
 
-2005-10-02 Bernhard Kraft  <kraftb@kraftb.at>
+2005-10-02  Bernhard Kraft  <kraftb@kraftb.at>
 
 	* Integrated content-slide extension into core
 	* Implemented "requestUpdate" feature of TCEforms for Flexform fields
 
-2005-09-19 Martin Kutschker  <martin.t.kutschker@blackbox.net>
+2005-09-19  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
 	* Fixed bug #1287: Detect Opera as Netscape3 (making image roll-overs work)
 
-2005-09-18 Michael Stucki <michael@typo3.org>
+2005-09-18  Michael Stucki <michael@typo3.org>
 
 	* If the encryption key is not set, the warning in the backend now contains a link to the according section.
 	* be_group can no longer be selected as a subgroup of itself
@@ -35,20 +41,20 @@
 	* Some typo fixes
 	* New property for TYPO3_CONF_VARS[SYS][displayErrors]: If set to 2, display_errors will only be enabled if the devIPmask matches the current clients IP address.
 
-2005-09-14 Karsten Dambekalns <karsten@typo3.org>
+2005-09-14  Karsten Dambekalns <karsten@typo3.org>
 
 	* Fixed bug #214 (flexform default values), as it has been reported to work with the existing patch.
 
-2005-09-13 Ingmar Schlecht <ingmar@typo3.org>
+2005-09-13  Ingmar Schlecht <ingmar@typo3.org>
 
 	* Fixed bug #1375: Made typo3/mod/tools/em/index.php use preg_quote() on filename before passing it to preg_match()
 
-2005-09-13 Karsten Dambekalns <karsten@typo3.org>
+2005-09-13  Karsten Dambekalns <karsten@typo3.org>
 
 	* Fixed the page is being generated page refreshing to the wrong page when query parameters are used.
 	* Fixed (part of) bug 1312 (showpic.php).
 
-2005-08-22 Martin Kutschker <martin.t.kutschker@blackbox.net>
+2005-08-22  Martin Kutschker <martin.t.kutschker@blackbox.net>
 
 	* Fixed bug #24: Modified the JS layer code so that GMENU_LAYERS work with Opera (3.8 patch port by Michael Stucki)
 
