@@ -119,12 +119,12 @@ require_once(t3lib_extMgm::extPath('indexed_search').'class.indexer.php');
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 class tx_indexedsearch extends tslib_pibase {
-    var $prefixId = 'tx_indexedsearch';        // Same as class name
-    var $scriptRelPath = 'pi/class.tx_indexedsearch.php';    // Path to this script relative to the extension dir.
-    var $extKey = 'indexed_search';    // The extension key.
+	var $prefixId = 'tx_indexedsearch';        // Same as class name
+	var $scriptRelPath = 'pi/class.tx_indexedsearch.php';    // Path to this script relative to the extension dir.
+	var $extKey = 'indexed_search';    // The extension key.
 
 	var $join_pages = 0;	// See document for info about this flag...
-	var $defaultResultNumber = 20;
+	var $defaultResultNumber = 10;
 
 	var $operator_translate_table = Array (		// case-sensitive. Defines the words, which will be operators between words
 		Array ('+' , 'AND'),
@@ -144,15 +144,16 @@ class tx_indexedsearch extends tslib_pibase {
 	var $optValues = array();		// Selector box values for search configuration form
 	var $firstRow = Array();		// Will hold the first row in result - used to calculate relative hit-ratings.
 
-	var $cache_path = array();			// Caching of page path
-	var $cache_rl = array();			// Caching of root line data
-	var $fe_groups_required = array();		// Required fe_groups memberships for display of a result.
-	var $domain_records = array();			// Domain records (?)
-	var $wSelClauses = array();				// Select clauses for individual words
-	var $resultSections = array();			// Page tree sections for search result.
-	var $external_parsers = array();		// External parser objects
-	var $iconFileNameCache = array();		// Storage of icons....
-	var $lexerObj;							// Lexer object
+	var $cache_path = array();		// Caching of page path
+	var $cache_rl = array();		// Caching of root line data
+	var $fe_groups_required = array();	// Required fe_groups memberships for display of a result.
+	var $domain_records = array();		// Domain records (?)
+	var $wSelClauses = array();		// Select clauses for individual words
+	var $resultSections = array();		// Page tree sections for search result.
+	var $external_parsers = array();	// External parser objects
+	var $iconFileNameCache = array();	// Storage of icons....
+	var $lexerObj;				// Lexer object
+	var $templateCode;			// Will hold the content of $conf['templateFile']
 
 
 	/**
@@ -165,8 +166,8 @@ class tx_indexedsearch extends tslib_pibase {
 	function main($content, $conf)    {
 
 			// Initialize:
-        $this->conf = $conf;
-        $this->pi_loadLL();
+		$this->conf = $conf;
+		$this->pi_loadLL();
 		$this->pi_setPiVarDefaults();
 
 			// Initialize the indexer-class - just to use a few function (for making hashes)
@@ -182,10 +183,9 @@ class tx_indexedsearch extends tslib_pibase {
 		}
 
 			// Finally compile all the content, form, messages and results:
-        $content=
-			$this->makeSearchForm($this->optValues).
+		$content = $this->makeSearchForm($this->optValues).
 			$this->printRules().
-    	    $content;
+			$content;
 
         return $this->pi_wrapInBaseClass($content);
     }
@@ -282,7 +282,13 @@ class tx_indexedsearch extends tslib_pibase {
 		);
 
 			// Add media to search in:
+		if (strlen(trim($this->conf['search.']['mediaList'])))	{
+			$mediaList = implode(',', t3lib_div::trimExplode(',', $this->conf['search.']['mediaList'], 1));
+		}
 		foreach($this->external_parsers as $extension => $obj)	{
+				// Skip unwanted extensions
+			if ($mediaList && !t3lib_div::inList($mediaList, $extension))	{ continue; }
+
 			if ($name = $obj->searchTypeMediaTitle($extension))	{
 				$this->optValues['media'][$extension] = $this->pi_getLL('opt_sections_'.$extension,$name);
 			}
@@ -323,6 +329,9 @@ class tx_indexedsearch extends tslib_pibase {
 		if ($this->conf['search.']['rootPidList'])	{
 			$this->wholeSiteIdList = implode(',',t3lib_div::intExplode(',',$this->conf['search.']['rootPidList']));
 		}
+
+			// Load the template
+		$this->templateCode = $this->cObj->fileResource($this->conf['templateFile']);
 
 			// Add search languages:
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'sys_language', '1=1'.$this->cObj->enableFields('sys_language'));
@@ -499,20 +508,18 @@ class tx_indexedsearch extends tslib_pibase {
 			// Organize and process result:
 		if ($res)	{
 
-				// Get some variables:
-			$count = $GLOBALS['TYPO3_DB']->sql_num_rows($res);
-			$pointer = t3lib_div::intInRange($this->piVars['pointer'],0,floor($count/$this->piVars['results']));
+			$count = $GLOBALS['TYPO3_DB']->sql_num_rows($res);	// Total search-result count
+			$pointer = t3lib_div::intInRange($this->piVars['pointer'], 0, floor($count/$this->piVars['results']));	// The pointer is set to the result page that is currently being viewed
 
 				// Initialize result accumulation variables:
-			$c = 0;
-			$lines = Array();
+			$c = 0;	// Result pointer: Counts up the position in the current search-result
 			$grouping_phashes = array();	// Used to filter out duplicates.
 			$grouping_chashes = array();	// Used to filter out duplicates BASED ON cHash.
-			$firstRow = Array();		// Will hold the first row in result - used to calculate relative hit-ratings.
+			$firstRow = Array();	// Will hold the first row in result - used to calculate relative hit-ratings.
 			$resultRows = Array();	// Will hold the results rows for display.
 
 				// Now, traverse result and put the rows to be displayed into an array
-				// Each row should be a the fields from 'ISEC.*, IP.*' combined + artificial fields "show_resume" (boolean) and "result_number" (counter)
+				// Each row should contain the fields from 'ISEC.*, IP.*' combined + artificial fields "show_resume" (boolean) and "result_number" (counter)
 			while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
 
 					// Set first row:
@@ -521,22 +528,27 @@ class tx_indexedsearch extends tslib_pibase {
 				}
 
 				$row['show_resume'] = $this->checkResume($row);	// Tells whether we can link directly to a document or not (depends on possible right problems)
+
 				$phashGr = !in_array($row['phash_grouping'], $grouping_phashes);
 				$chashGr = !in_array($row['contentHash'].'.'.$row['data_page_id'], $grouping_chashes);
 				if ($phashGr && $chashGr)	{
-					if ($row['show_resume'])	{	// Only if the resume may be shown are we going to filter out duplicates...
+					if ($row['show_resume'] || $this->conf['show.']['forbiddenRecords'])	{	// Only if the resume may be shown are we going to filter out duplicates...
 						if (!$this->multiplePagesType($row['item_type']))	{	// Only on documents which are not multiple pages documents
 							$grouping_phashes[] = $row['phash_grouping'];
 						}
 						$grouping_chashes[] = $row['contentHash'].'.'.$row['data_page_id'];
-					}
-					$c++;
 
-						// All rows for display is put into resultRows[]
-					if ($c > $pointer * $this->piVars['results'])	{
-						$row['result_number'] = $c;
-						$resultRows[] = $row;
-						if ($c+1 > ($pointer+1)*$this->piVars['results'])	break;
+						$c++;	// Increase the result pointer
+
+							// All rows for display is put into resultRows[]
+						if ($c > $pointer * $this->piVars['results'])	{
+							$row['result_number'] = $c;
+							$resultRows[] = $row;
+								// This may lead to a problem: If the result check is not stopped here, the search will take longer. However the result counter will not filter out grouped cHashes/pHashes that were not processed yet.
+							if (($c+1) > ($pointer+1)*$this->piVars['results'])	break;
+						}
+					} else {
+						$count--;	// Skip this row if the user cannot view it (missing permission)
 					}
 				} else {
 					$count--;	// For each time a phash_grouping document is found (which is thus not displayed) the search-result count is reduced, so that it matches the number of rows displayed.
@@ -1183,70 +1195,135 @@ class tx_indexedsearch extends tslib_pibase {
 	 * @return	string		Search form HTML
 	 */
 	function makeSearchForm($optValues)	{
+		$html = $this->cObj->getSubpart($this->templateCode, '###SEARCH_FORM###');
 
-			// Accumulate table rows here:
-		$rows = array();
+			// Multilangual text
+		$substituteArray = array('searchFor', 'extResume', 'atATime', 'orderBy', 'fromSection', 'searchIn', 'match', 'style');
+		foreach ($substituteArray as $marker)	{
+			$markerArray['###FORM_'.strtoupper($marker).'###'] = $this->pi_getLL('form_'.$marker);
+		}
 
-			// Adding search field and button:
-		$rows[]='<tr>
-				<td nowrap="nowrap"><p>'.$this->pi_getLL('form_searchFor','',1).'&nbsp;</p></td>
-				<td><input type="text" name="'.$this->prefixId.'[sword]" value="'.htmlspecialchars($this->conf['show.']['clearSearchBox']?'':$this->piVars['sword']).'"'.$this->pi_classParam('searchbox-sword').' />&nbsp;&nbsp;<input type="submit" name="'.$this->prefixId.'[submit_button]" value="'.$this->pi_getLL('submit_button_label','',1).'"'.$this->pi_classParam('searchbox-button').' /></td>
-			</tr>';
+		$markerArray['###FORM_SUBMIT###'] = $this->pi_getLL('submit_button_label');
 
+			// Adding search field value
+		$markerArray['###SWORD_VALUE###'] = htmlspecialchars($this->piVars['sword']);
+
+			// Additonal keyword => "Add to current search words"
 		if ($this->conf['show.']['clearSearchBox'] && $this->conf['show.']['clearSearchBox.']['enableSubSearchCheckBox'])	{
-			$rows[]='<tr>
-				<td></td>
-				<td><input type="hidden" name="'.$this->prefixId.'[sword_prev]" value="'.htmlspecialchars($this->piVars['sword']).'" /><input type="checkbox" name="'.$this->prefixId.'[sword_prev_include]" value="1"'.($this->piVars['sword_prev_include']?' checked="checked"':'').' /> '.$this->pi_getLL('makerating_addToCurrentSearch').'</td>
-			</tr>';
+			$markerArray['###SWORD_PREV_VALUE###'] = htmlspecialchars($this->conf['show.']['clearSearchBox'] ? '' : $this->piVars['sword']);
+			$markerArray['###SWORD_PREV_INCLUDE_CHECKED###'] = $this->piVars['sword_prev_include'] ? ' checked="checked"':'';
+			$markerArray['###ADD_TO_CURRENT_SEARCH###'] = $this->pi_getLL('makerating_addToCurrentSearch');
+		} else {
+			$html = $this->cObj->substituteSubpart($html, '###ADDITONAL_KEYWORD###', '');
 		}
 
-			// Extended search options:
+		$markerArray['###ACTION_URL###'] = $this->pi_getPageLink($GLOBALS['TSFE']->id, $GLOBALS['TSFE']->sPre);
+		$markerArray['###HIDDEN_VALUE_TYPE###'] = $this->piVars['type'] ? 1 : 0;
+		$markerArray['###HIDDEN_VALUE_EXT###'] = $this->piVars['ext'] ? 1 : 0;
+
+			// Extended search
 		if ($this->piVars['ext'])	{
-			if (is_array($optValues['type']) || is_array($optValues['defOp']))	$rows[]='<tr>
-					<td nowrap="nowrap"><p>'.$this->pi_getLL('form_match','',1).'&nbsp;</p></td>
-					<td>'.$this->renderSelectBox($this->prefixId.'[type]',$this->piVars['type'],$optValues['type']).
-					$this->renderSelectBox($this->prefixId.'[defOp]',$this->piVars['defOp'],$optValues['defOp']).'</td>
-				</tr>';
-			if (is_array($optValues['media']) || is_array($optValues['lang']))	$rows[]='<tr>
-					<td nowrap="nowrap"><p>'.$this->pi_getLL('form_searchIn','',1).'&nbsp;</p></td>
-					<td>'.$this->renderSelectBox($this->prefixId.'[media]',$this->piVars['media'],$optValues['media']).
-					$this->renderSelectBox($this->prefixId.'[lang]',$this->piVars['lang'],$optValues['lang']).'</td>
-				</tr>';
-			if (is_array($optValues['sections']))	$rows[]='<tr>
-					<td nowrap="nowrap"><p>'.$this->pi_getLL('form_fromSection','',1).'&nbsp;</p></td>
-					<td>'.$this->renderSelectBox($this->prefixId.'[sections]',$this->piVars['sections'],$optValues['sections']).'</td>
-				</tr>';
-			if (is_array($optValues['order']) || is_array($optValues['desc']) || is_array($optValues['results']))	$rows[]='<tr>
-					<td nowrap="nowrap"><p>'.$this->pi_getLL('form_orderBy','',1).'&nbsp;</p></td>
-					<td><p>'.$this->renderSelectBox($this->prefixId.'[order]',$this->piVars['order'],$optValues['order']).
-						$this->renderSelectBox($this->prefixId.'[desc]',$this->piVars['desc'],$optValues['desc']).
-						$this->renderSelectBox($this->prefixId.'[results]',$this->piVars['results'],$optValues['results']).'&nbsp;'.$this->pi_getLL('form_atATime','',1).'</p></td>
-				</tr>';
-			if (is_array($optValues['group']) || !$this->conf['blind.']['extResume'])	$rows[]='<tr>
-					<td nowrap="nowrap"><p>'.$this->pi_getLL('form_style','',1).'&nbsp;</p></td>
-					<td><p>'.$this->renderSelectBox($this->prefixId.'[group]',$this->piVars['group'],$optValues['group']).
-					(!$this->conf['blind.']['extResume'] ? '&nbsp; &nbsp;
-					<input type="hidden" name="'.$this->prefixId.'[extResume]" value="0" /><input type="checkbox" value="1" name="'.$this->prefixId.'[extResume]"'.($this->piVars['extResume']?' checked="checked"':'').' />'.$this->pi_getLL('form_extResume','',1):'').'</p></td>
-				</tr>';
+
+				// Search for
+			if ((!is_array($optValues['type']) && !is_array($optValues['defOp'])) || ($this->conf['blind.']['type'] && $this->conf['blind.']['defOp']))	{
+				$html = $this->cObj->substituteSubpart($html, '###SELECT_SEARCH_FOR###', '');
+			} else {
+				if (is_array($optValues['type']) && !$this->conf['blind.']['type'])	{
+					$markerArray['###SELECTBOX_TYPE_VALUES###'] = $this->renderSelectBoxValues($this->piVars['type'],$optValues['type']);
+				} else {
+					$html = $this->cObj->substituteSubpart($html, '###SELECT_SEARCH_TYPE###', '');
+				}
+
+				if (is_array($optValues['defOp']) || !$this->conf['blind.']['defOp'])	{
+					$markerArray['###SELECTBOX_DEFOP_VALUES###'] = $this->renderSelectBoxValues($this->piVars['defOp'],$optValues['defOp']);
+				} else {
+					$html = $this->cObj->substituteSubpart($html, '###SELECT_SEARCH_DEFOP###', '');
+				}
+			}
+
+				// Search in
+			if ((!is_array($optValues['media']) && !is_array($optValues['lang'])) || ($this->conf['blind.']['media'] && $this->conf['blind.']['lang']))	{
+				$html = $this->cObj->substituteSubpart($html, '###SELECT_SEARCH_IN###', '');
+			} else {
+				if (is_array($optValues['media']) && !$this->conf['blind.']['media'])	{
+					$markerArray['###SELECTBOX_MEDIA_VALUES###'] = $this->renderSelectBoxValues($this->piVars['media'],$optValues['media']);
+				} else {
+					$html = $this->cObj->substituteSubpart($html, '###SELECT_SEARCH_MEDIA###', '');
+				}
+
+				if (is_array($optValues['lang']) || !$this->conf['blind.']['lang'])	{
+					$markerArray['###SELECTBOX_LANG_VALUES###'] = $this->renderSelectBoxValues($this->piVars['lang'],$optValues['lang']);
+				} else {
+					$html = $this->cObj->substituteSubpart($html, '###SELECT_SEARCH_LANG###', '');
+				}
+			}
+
+				// Sections
+			if (!is_array($optValues['sections']) || $this->conf['blind.']['sections'])	{
+				$html = $this->cObj->substituteSubpart($html, '###SELECT_SECTION###', '');
+			} else {
+				$markerArray['###SELECTBOX_SECTIONS_VALUES###'] = $this->renderSelectBoxValues($this->piVars['sections'],$optValues['sections']);
+			}
+
+				// Sorting
+			if (!is_array($optValues['order']) || !is_array($optValues['desc']) || $this->conf['blind.']['order'])	{
+				$html = $this->cObj->substituteSubpart($html, '###SELECT_ORDER###', '');
+			} else {
+				$markerArray['###SELECTBOX_ORDER_VALUES###'] = $this->renderSelectBoxValues($this->piVars['order'],$optValues['order']);
+				$markerArray['###SELECTBOX_DESC_VALUES###'] = $this->renderSelectBoxValues($this->piVars['desc'],$optValues['desc']);
+				$markerArray['###SELECTBOX_RESULTS_VALUES###'] = $this->renderSelectBoxValues($this->piVars['results'],$optValues['results']);
+			}
+
+				// Limits
+			if (!is_array($optValues['results']) || !is_array($optValues['results']) || $this->conf['blind.']['results'])	{
+				$html = $this->cObj->substituteSubpart($html, '###SELECT_RESULTS###', '');
+			} else {
+				$markerArray['###SELECTBOX_RESULTS_VALUES###'] = $this->renderSelectBoxValues($this->piVars['results'],$optValues['results']);
+			}
+
+				// Grouping
+			if (!is_array($optValues['group']) || $this->conf['blind.']['group'])	{
+				$html = $this->cObj->substituteSubpart($html, '###SELECT_GROUP###', '');
+			} else {
+				$markerArray['###SELECTBOX_GROUP_VALUES###'] = $this->renderSelectBoxValues($this->piVars['group'],$optValues['group']);
+			}
+
+			if ($this->conf['blind.']['extResume'])	{
+				$html = $this->cObj->substituteSubpart($html, '###SELECT_EXTRESUME###', '');
+			} else {
+				$markerArray['###EXT_RESUME_CHECKED###'] = $this->piVars['extResume'] ? ' CHECKED' : '';
+			}
+
+		} else {	// Extended search
+			$html = $this->cObj->substituteSubpart($html, '###SEARCH_FORM_EXTENDED###', '');
 		}
 
-			// Compile rows into a table, wrapped in form-tags:
-		$out='
-			<form action="'.htmlspecialchars($this->pi_getPageLink($GLOBALS['TSFE']->id,$GLOBALS['TSFE']->sPre)).'" method="post" name="'.$this->prefixId.'" style="margin: 0 0 0 0;">
-				<table '.$this->conf['tableParams.']['searchBox'].'>
-				'.implode(chr(10),$rows).'
-				</table>
-				<input type="hidden" name="'.$this->prefixId.'[_sections]" value="0" />
-				<input type="hidden" name="'.$this->prefixId.'[pointer]" value="0" />
-				<input type="hidden" name="'.$this->prefixId.'[ext]" value="'.($this->piVars['ext']?1:0).'" />
-			</form>';
-		$out.='<p>'.
-				($this->piVars['ext'] ?
-					'<a href="'.htmlspecialchars($this->pi_getPageLink($GLOBALS['TSFE']->id,$GLOBALS['TSFE']->sPre,array($this->prefixId.'[ext]'=>0))).'">'.$this->pi_getLL('link_regularSearch','',1).'</a>' :
-					'<a href="'.htmlspecialchars($this->pi_getPageLink($GLOBALS['TSFE']->id,$GLOBALS['TSFE']->sPre,array($this->prefixId.'[ext]'=>1))).'">'.$this->pi_getLL('link_advancedSearch','',1).'</a>'
-				).'</p>';
+		if($this->conf['show.']['advancedSearchLink'])	{
+			$markerArray['###LINKTOOTHERMODE###'] = ($this->piVars['ext'] ?
+				'<a href="'.$this->pi_getPageLink($GLOBALS['TSFE']->id,$GLOBALS['TSFE']->sPre,array($this->prefixId.'[ext]'=>0)).'">'.$this->pi_getLL('link_regularSearch').'</a>' :
+				'<a href="'.$this->pi_getPageLink($GLOBALS['TSFE']->id,$GLOBALS['TSFE']->sPre,array($this->prefixId.'[ext]'=>1)).'">'.$this->pi_getLL('link_advancedSearch').'</a>'
+			);
+		} else {
+			$markerArray['###LINKTOOTHERMODE###'] = '';
+		}
 
-		return '<div'.$this->pi_classParam('searchbox').'>'.$out.'</div>';
+		$substitutedContent = $this->cObj->substituteMarkerArrayCached($html, $markerArray, array(), array());
+
+		return $substitutedContent;
+	}
+
+	function renderSelectBoxValues($value,$optValues)	{
+		if (is_array($optValues))	{
+			$opt=array();
+			$isSelFlag=0;
+			foreach($optValues as $k=>$v)	{
+				$sel = (!strcmp($k,$value) ? ' selected' : '');
+				if ($sel)	{ $isSelFlag++; }
+				$opt[]='<option value="'.htmlspecialchars($k).'"'.$sel.'>'.htmlspecialchars($v).'</option>';
+			}
+
+			return implode('',$opt);
+		}
 	}
 
 	/**
@@ -1255,14 +1332,17 @@ class tx_indexedsearch extends tslib_pibase {
 	 * @return	string		Rules for the search
 	 */
 	function printRules()	{
-		$out = '';
 		if ($this->conf['show.']['rules'])	{
-			$out = '<h2>'.$this->pi_getLL('rules_header','',1).'</h2>
-					<p>'.nl2br(trim($this->pi_getLL('rules_text','',1))).'</p>';
-			$out = '
-					<div'.$this->pi_classParam('rules').'>'.$this->cObj->stdWrap($out, $this->conf['rules_stdWrap.']).'</div>';
+
+			$html = $this->cObj->getSubpart($this->templateCode, '###RULES###');
+
+			$markerArray['###RULES_HEADER###'] = $this->pi_getLL('rules_header','',1);
+			$markerArray['###RULES_TEXT###'] = nl2br(trim($this->pi_getLL('rules_text','',1)));
+
+			$substitutedContent = $this->cObj->substituteMarkerArrayCached($html, $markerArray, array(), array());
+
+			return '<div'.$this->pi_classParam('rules').'>'.$this->cObj->stdWrap($substitutedContent, $this->conf['rules_stdWrap.']).'</div>';
 		}
-		return $out;
 	}
 
 	/**
@@ -1274,13 +1354,25 @@ class tx_indexedsearch extends tslib_pibase {
 		if (count($this->resultSections))	{
 			$lines = array();
 
+			$html = $this->cObj->getSubpart($this->templateCode, '###RESULT_SECTION_LINKS###');
+			$item = $this->cObj->getSubpart($this->templateCode, '###RESULT_SECTION_LINKS_LINK###');
+
 			foreach($this->resultSections as $id => $dat)	{
-				$lines[] = '<li><a href="'.htmlspecialchars($GLOBALS['TSFE']->anchorPrefix.'#'.md5($id)).'">'.
-							htmlspecialchars(trim($dat[0])?trim($dat[0]):$this->pi_getLL('unnamedSection')).' ('.$dat[1].' '.$this->pi_getLL($dat[1]>1?'word_pages':'word_page','',1).')'.
-							'</a></li>';
+				$markerArray = array();
+
+				$aBegin = '<a href="'.htmlspecialchars($GLOBALS['TSFE']->anchorPrefix.'#'.md5($id)).'">';
+				$aContent = htmlspecialchars(trim($dat[0]) ? trim($dat[0]) : $this->pi_getLL('unnamedSection')).
+						' ('.$dat[1].' '.$this->pi_getLL($dat[1]>1 ? 'word_pages' : 'word_page','',1).')';
+				$aEnd = '</a>';
+
+				$markerArray['###LINK###'] = $aBegin . $aContent . $aEnd;
+
+				$links[] = $this->cObj->substituteMarkerArrayCached($item, $markerArray, array(), array());
 			}
-			$out = '<ul>'.implode(chr(10),$lines).'</ul>';
-			return '<div'.$this->pi_classParam('sectionlinks').'>'.$this->cObj->stdWrap($out, $this->conf['sectionlinks_stdWrap.']).'</div>';
+
+			$html = $this->cObj->substituteMarkerArrayCached($html, array('###LINKS###' => implode(chr(10),$links)), array(), array());
+
+			return '<div'.$this->pi_classParam('sectionlinks').'>'.$this->cObj->stdWrap($html, $this->conf['sectionlinks_stdWrap.']).'</div>';
 		}
 	}
 
@@ -1292,13 +1384,18 @@ class tx_indexedsearch extends tslib_pibase {
 	 * @param	integer		Number of results in section
 	 * @return	string		HTML output
 	 */
-	function makeSectionHeader($id,$sectionTitleLinked,$countResultRows)	{
-		return '<div'.$this->pi_classParam('secHead').'><a name="'.md5($id).'"></a><table '.$this->conf['tableParams.']['secHead'].'>
-						<tr>
-						<td width="95%"><h2>'.$sectionTitleLinked.'</h2></td>
-						<td align="right" nowrap="nowrap"><p>'.$countResultRows.' '.$this->pi_getLL($countResultRows>1?'word_pages':'word_page','',1).'</p></td>
-						</tr>
-					</table></div>';
+	function makeSectionHeader($id, $sectionTitleLinked, $countResultRows)	{
+
+		$html = $this->cObj->getSubpart($this->templateCode, '###SECTION_HEADER###');
+
+		$markerArray['###ANCHOR_URL###'] = md5($id);
+		$markerArray['###SECTION_TITLE###'] = $sectionTitleLinked;
+		$markerArray['###RESULT_COUNT###'] = $countResultRows;
+		$markerArray['###RESULT_NAME###'] = $this->pi_getLL('word_page'.($countResultRows>1 ? 's' : ''));
+
+		$substitutedContent = $this->cObj->substituteMarkerArrayCached($html, $markerArray, array(), array());
+
+		return $substitutedContent;
 	}
 
 	/**
@@ -1317,61 +1414,54 @@ class tx_indexedsearch extends tslib_pibase {
 			return $hookObj->printResultRow($row, $headerOnly, $tmplContent);
 		} else {
 
-				// Make the header row with title, icon and rating bar.:
-			$out.='<tr '.$this->pi_classParam('title'.$tmplContent['CSSsuffix']).'>
-				<td width="16" '.$this->pi_classParam('title-icon'.$tmplContent['CSSsuffix']).'>'.$tmplContent['icon'].'</td>
-				<td width="95%" nowrap="nowrap"><p>'.
-					#$row['phash'].' // '.
-					'<span '.$this->pi_classParam('title-number'.$tmplContent['CSSsuffix']).'>'.$tmplContent['result_number'].': </span>'.
-					'<span '.$this->pi_classParam('title-caption'.$tmplContent['CSSsuffix']).'>'.$tmplContent['title'].'</span>'.
-					'</p></td>
-				<td nowrap="nowrap"><p'.$this->pi_classParam('percent'.$tmplContent['CSSsuffix']).'>'.$tmplContent['rating'].'</p></td>
-			</tr>';
+			$html = $this->cObj->getSubpart($this->templateCode, '###RESULT_OUTPUT###');
 
-				// Print the resume-section. If headerOnly is 1, then  only the short resume is printed
-			if (!$headerOnly)	{
-				$out.='<tr>
-					<td></td>
-					<td colspan="2"'.$this->pi_classParam('descr'.$tmplContent['CSSsuffix']).'><p>'.$tmplContent['description'].'</p></td>
-				</tr>';
-				$out.='<tr>
-					<td></td>
-					<td '.$this->pi_classParam('info'.$tmplContent['CSSsuffix']).' nowrap="nowrap"><p>'.
-						$tmplContent['size'].' - '.$tmplContent['created'].' - '.$tmplContent['modified'].
-						($tmplContent['path'] ? '<br/>'.$this->pi_getLL('res_path','',1).' '.$tmplContent['path'] : '').
-						'</p></td>
-					<td '.$this->pi_classParam('info'.$tmplContent['CSSsuffix']).' align="right"><p>'.$tmplContent['access'].$tmplContent['language'].'</p></td>
-				</tr>';
-			} elseif ($headerOnly==1) {
-				$out.='<tr>
-					<td></td>
-					<td colspan="2"'.$this->pi_classParam('descr'.$tmplContent['CSSsuffix']).'><p>'.$tmplContent['description'].'</p></td>
-				</tr>';
+			if (!is_array($row['_sub']))	{
+				$html = $this->cObj->substituteSubpart($html, '###ROW_SUB###', '');
 			}
+
+			if (!$headerOnly)	{
+				$html = $this->cObj->substituteSubpart($html, '###ROW_SHORT###', '');
+
+			} elseif ($headerOnly==1) {
+				$html = $this->cObj->substituteSubpart($html, '###ROW_LONG###', '');
+			} elseif ($headerOnly==2) {
+				$html = $this->cObj->substituteSubpart($html, '###ROW_SHORT###', '');
+				$html = $this->cObj->substituteSubpart($html, '###ROW_LONG###', '');
+			}
+
+			if (is_array($tmplContent))	{
+				foreach ($tmplContent AS $k => $v)	{
+					$markerArray['###'.strtoupper($k).'###'] = $v;
+				}
+			}
+
+				// Description text
+			$markerArray['###TEXT_ITEM_SIZE###'] = $this->pi_getLL('res_size');
+			$markerArray['###TEXT_ITEM_CRDATE###'] = $this->pi_getLL('res_created');
+			$markerArray['###TEXT_ITEM_MTIME###'] = $this->pi_getLL('res_modified');
+			$markerArray['###TEXT_ITEM_PATH###'] = $this->pi_getLL('res_path');
+
+			$html = $this->cObj->substituteMarkerArrayCached($html, $markerArray, array(), array());
 
 				// If there are subrows (eg. subpages in a PDF-file or if a duplicate page is selected due to user-login (phash_grouping))
 			if (is_array($row['_sub']))	{
 				if ($this->multiplePagesType($row['item_type']))	{
-					$out.='<tr>
-						<td></td>
-						<td colspan="2"><p><br/>'.$this->pi_getLL('res_otherMatching','',1).'<br/><br/></p></td>
-					</tr>';
+
+					$html = str_replace('###TEXT_ROW_SUB###', $this->pi_getLL('res_otherMatching'), $html);
 
 					foreach($row['_sub'] as $subRow)	{
-						$out.='<tr>
-							<td></td>
-							<td colspan="2"><p>'.$this->printResultRow($subRow,1).'</p></td>
-						</tr>';
+						$html .= $this->printResultRow($subRow,1);
 					}
 				} else {
-					$out.='<tr>
-						<td></td>
-						<td colspan="2"><p>'.$this->pi_getLL('res_otherPageAsWell','',1).'</p></td>
-					</tr>';
+
+					$markerArray['###TEXT_ROW_SUB###'] = $this->pi_getLL('res_otherMatching');
+
+					$html = str_replace('###TEXT_ROW_SUB###', $this->pi_getLL('res_otherPageAsWell'), $html);
 				}
 			}
 
-			return '<table '.$this->conf['tableParams.']['searchRes'].'>'.$out.'</table><br/>';
+			return $html;
 		}
 	}
 
@@ -1390,23 +1480,47 @@ class tx_indexedsearch extends tslib_pibase {
 		$count=$this->internal['res_count'];
 		$results_at_a_time = t3lib_div::intInRange($this->internal['results_at_a_time'],1,1000);
 		$maxPages = t3lib_div::intInRange($this->internal['maxPages'],1,100);
-		$max = t3lib_div::intInRange(ceil($count/$results_at_a_time),1,$maxPages);
-		$pointer=intval($pointer);
-		$links=array();
+		$pageCount = ceil($count/$results_at_a_time);
+		$sTables = '';
 
-			// Make browse-table/links:
-		if ($pointer>0)	{
-			$links[]='<td><p>'.$this->makePointerSelector_link($this->pi_getLL('pi_list_browseresults_prev','< Previous',1),$pointer-1).'</p></td>';
-		}
-		for($a=0;$a<$max;$a++)	{
-			$links[]='<td'.($pointer==$a?$this->pi_classParam('browsebox-SCell'):'').'><p>'.$this->makePointerSelector_link(trim($this->pi_getLL('pi_list_browseresults_page','Page',1).' '.($a+1)),$a).'</p></td>';
-		}
-		if ($pointer<ceil($count/$results_at_a_time)-1)	{
-			$links[]='<td><p>'.$this->makePointerSelector_link($this->pi_getLL('pi_list_browseresults_next','Next >',1),$pointer+1).'</p></td>';
+		if ($pageCount > 1)	{	// only show the result browser if more than one page is needed
+			$pointer=intval($pointer);
+			$links=array();
+
+				// Make browse-table/links:
+			if ($pointer>0)	{	// all pages after the 1st one
+				$links[]='<td><p>'.$this->makePointerSelector_link($this->pi_getLL('pi_list_browseresults_prev','< Previous',1),$pointer-1).'</p></td>';
+			}
+
+			for($a=0;$a<$pageCount;$a++)	{
+				$min = max(0, $pointer+1-ceil($maxPages/2));
+				$max = $min+$maxPages;
+				if($max>$pageCount)	{
+					$min = $min - ($max-$pageCount);
+				}
+
+				if($a >= $min && $a < $max)	{
+					if($a==$pointer)	{
+						$links[]='<td'.($pointer==$a?$this->pi_classParam('browsebox-SCell'):'').'><p><strong>'.$this->makePointerSelector_link(trim($this->pi_getLL('pi_list_browseresults_page','Page',1).' '.($a+1)),$a).'</strong></p></td>';
+					} else {
+						$links[]='<td'.($pointer==$a?$this->pi_classParam('browsebox-SCell'):'').'><p>'.$this->makePointerSelector_link(trim($this->pi_getLL('pi_list_browseresults_page','Page',1).' '.($a+1)),$a).'</p></td>';
+					}
+				}
+			}
+			if ($pointer+1 < $pageCount)	{
+				$links[]='<td><p>'.$this->makePointerSelector_link($this->pi_getLL('pi_list_browseresults_next','Next >',1),$pointer+1).'</p></td>';
+			}
 		}
 
 		$pR1 = $pointer*$results_at_a_time+1;
 		$pR2 = $pointer*$results_at_a_time+$results_at_a_time;
+		if(is_array($links))	{
+			$addPart .= '
+		<table>
+			<tr>'.implode('',$links).'</tr>
+		</table>';
+		}
+
 		$sTables = '<div'.$this->pi_classParam('browsebox').'>'.
 			($showResultCount ? '<p>'.sprintf(
 				str_replace('###SPAN_BEGIN###','<span'.$this->pi_classParam('browsebox-strong').'>',$this->pi_getLL('pi_list_browseresults_displays','Displaying results ###SPAN_BEGIN###%s to %s</span> out of ###SPAN_BEGIN###%s</span>')),
@@ -1414,10 +1528,7 @@ class tx_indexedsearch extends tslib_pibase {
 				min(array($this->internal['res_count'],$pR2)),
 				$this->internal['res_count']
 				).$addString.'</p>':''
-			).$addPart.
-		'<table>
-			<tr>'.implode('',$links).'</tr>
-		</table></div>';
+			).$addPart.'</div>';
 
 		return $sTables;
 	}
@@ -1477,7 +1588,7 @@ class tx_indexedsearch extends tslib_pibase {
 
 		$tmplContent = array();
 		$tmplContent['title'] = $title;
-		$tmplContent['result_number'] = $row['result_number'];
+		$tmplContent['result_number'] = $this->conf['show.']['resultNumber'] ? $row['result_number'].': ' : '&nbsp;';
 		$tmplContent['icon'] = $this->makeItemTypeIcon($row['item_type'],'',$specRowConf);
 		$tmplContent['rating'] = $this->makeRating($row);
 		$tmplContent['description'] = $this->makeDescription($row,$this->piVars['extResume'] && !$headerOnly?0:1);
@@ -1674,22 +1785,23 @@ class tx_indexedsearch extends tslib_pibase {
 				$markedSW = '';
 				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'index_fulltext', 'phash='.intval($row['phash']));
 				if ($ftdrow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
-					$markedSW = $this->markupSWpartsOfString($ftdrow['fulltextdata']);
+						// Cut HTTP references after some length
+					$content = preg_replace('/(http:\/\/[^\?]+)\?[^[:blank:]]*/i', '$1?...', $ftdrow['fulltextdata']);
+					$markedSW = $this->markupSWpartsOfString($content);
 				}
 				$GLOBALS['TYPO3_DB']->sql_free_result($res);
 			}
 
-			if (trim($markedSW))	{
-				return $this->utf8_to_currentCharset($markedSW);
-			} else {
+			if (!trim($markedSW))	{
 				$outputStr = $GLOBALS['TSFE']->csConvObj->crop('utf-8',$row['item_description'],$lgd);
 				$outputStr = htmlspecialchars($outputStr);
-
-				return $this->utf8_to_currentCharset($outputStr);
 			}
+			$output = $this->utf8_to_currentCharset($outputStr ? $outputStr : $markedSW);
 		} else {
-			return '<span class="noResume">'.$this->pi_getLL('res_noResume','',1).'</span>';
+			$output = '<span class="noResume">'.$this->pi_getLL('res_noResume','',1).'</span>';
 		}
+
+		return $output;
 	}
 
 	/**
@@ -1702,7 +1814,7 @@ class tx_indexedsearch extends tslib_pibase {
 
 			// Init:
 		$str = str_replace('&nbsp;',' ',t3lib_parsehtml::bidir_htmlspecialchars($str,-1));
-		$str = ereg_replace('[[:space:]]+',' ',$str);
+		$str = preg_replace('/\s\s+/',' ',$str);
 		$swForReg = array();
 
 			// Prepare search words for regex:

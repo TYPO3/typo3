@@ -130,6 +130,7 @@ class tx_indexedsearch_modfunc1 extends t3lib_extobjbase {
 				1 => $LANG->sL('LLL:EXT:lang/locallang_core.php:labels.depth_1'),
 				2 => $LANG->sL('LLL:EXT:lang/locallang_core.php:labels.depth_2'),
 				3 => $LANG->sL('LLL:EXT:lang/locallang_core.php:labels.depth_3'),
+				999 => $LANG->sL('LLL:EXT:lang/locallang_core.php:labels.depth_infi'),
 			),
 			'type' => array(
 				0 => 'Overview',

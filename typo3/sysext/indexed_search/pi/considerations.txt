@@ -39,7 +39,7 @@ IW.wid=IR.wid AND
 
 
 
-This is not a problem. Actually it works very well apparently. However performing and AND search is much harder. Because you cannot just switch OR with AND (because "baseword" cannot be two things at the same time... :-)
+This is not a problem. Actually it works very well apparently. However performing an AND search is much harder. Because you cannot just switch OR with AND (because "baseword" cannot be two things at the same time... :-)
 
 
 
@@ -289,7 +289,7 @@ Suggestion: try first:
 AND ....
 AND ....
 
-The first line of the criteria shall pürovide as small as possible amount
+The first line of the criteria shall provide as small as possible amount
 of rows matching.
 (this looks then strange somehow, but is effective).
 
@@ -300,7 +300,7 @@ But there is no guarantee. What the guaranteed is to don't rely on
 something else.
 A good query works good without any artificial help.
 
-BTW. If You like to see IN ADVANCE hov the query will behave: call the
+BTW. If You like to see IN ADVANCE how the query will behave: call the
 EXPLAIN for this query.
 You will get then more information about how mySQL will go to process the
 query.

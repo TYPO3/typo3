@@ -1,3 +1,7 @@
+2005-10-15  Michael Stucki  <michael@typo3.org>
+
+	* Added template support to indexed_search. Many thanks to Udo von Eynern for his great work!
+
 2005-05-15  Michael Stucki  <michael@typo3.org>
 
 	* Removed some debug output in backend module

@@ -1,0 +1,203 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>indexed_search</title>
+</head>
+
+<body>
+
+<h3>SEARCH FORM</h3>
+
+<!-- ###SEARCH_FORM### begin -->
+<div class="tx-indexedsearch-searchbox">
+	<form action="###ACTION_URL###" method="POST" name="tx_indexedsearch">
+		<input type="hidden" name="tx_indexedsearch[_sections]" value="0">
+		<input type="hidden" name="tx_indexedsearch[pointer]" value="0">
+		<input type="hidden" name="tx_indexedsearch[type]" value="###HIDDEN_VALUE_TYPE###">
+		<input type="hidden" name="tx_indexedsearch[ext]" value="###HIDDEN_VALUE_EXT###">
+
+		<table cellpadding="0" cellspacing="0" border="0">
+			<tr>
+				<td nowrap>###FORM_SEARCHFOR###&nbsp;</td>
+				<td><input type="text" name="tx_indexedsearch[sword]" value="###SWORD_VALUE###" class="tx-indexedsearch-searchbox-sword">&nbsp;&nbsp;<input type="submit" name="tx_indexedsearch[submit_button]" value="###FORM_SUBMIT###" class="tx-indexedsearch-searchbox-button"></td>
+			</tr>
+
+			<!-- ###ADDITONAL_KEYWORD### begin -->
+			<tr>
+				<td>&nbsp;</td>
+				<td><input type="hidden" name="tx_indexedsearch[sword_prev]" value="###SWORD_PREV_VALUE###"><input type="checkbox" name="tx_indexedsearch[sword_prev_include]" value="1" ###SWORD_PREV_INCLUDE_CHECKED###> ###ADD_TO_CURRENT_SEARCH###</td>
+			</tr>
+			<!-- ###ADDITONAL_KEYWORD### end -->
+
+			<!-- ###SEARCH_FORM_EXTENDED### begin -->
+
+			<!-- ###SELECT_SEARCH_FOR### begin -->
+			<tr>
+				<td nowrap>###FORM_MATCH###</td>
+				<td>
+					<!-- ###SELECT_SEARCH_TYPE### begin -->
+					<select name="tx_indexedsearch[type]" class="tx-indexedsearch-selectbox-type">
+						###SELECTBOX_TYPE_VALUES###
+					</select>
+					<!-- ###SELECT_SEARCH_TYPE### end -->
+
+					<!-- ###SELECT_SEARCH_DEFOP### begin -->
+					<select name="tx_indexedsearch[defOp]" class="tx-indexedsearch-selectbox-defop">
+						###SELECTBOX_DEFOP_VALUES###
+					</select>
+					<!-- ###SELECT_SEARCH_DEFOP### end -->
+				</td>
+			</tr>
+			<!-- ###SELECT_SEARCH_FOR### end -->
+
+			<!-- ###SELECT_SEARCH_IN### begin -->
+			<tr>
+				<td nowrap>###FORM_SEARCHIN###</td>
+				<td>
+					<!-- ###SELECT_SEARCH_MEDIA### begin -->
+					<select name="tx_indexedsearch[media]" class="tx-indexedsearch-selectbox-media">
+						###SELECTBOX_MEDIA_VALUES###
+					</select>
+					<!-- ###SELECT_SEARCH_MEDIA### end -->
+
+					<!-- ###SELECT_SEARCH_LANG### begin -->
+					<select name="tx_indexedsearch[lang]" class="tx-indexedsearch-selectbox-lang">
+						###SELECTBOX_LANG_VALUES###
+					</select>
+					<!-- ###SELECT_SEARCH_LANG### end -->
+				</td>
+			</tr>
+			<!-- ###SELECT_SEARCH_IN### end -->
+
+			<!-- ###SELECT_SECTION### begin -->
+			<tr>
+				<td nowrap>###FORM_FROMSECTION###</td>
+				<td>
+					<select name="tx_indexedsearch[sections]" class="tx-indexedsearch-selectbox-sections">
+						###SELECTBOX_SECTIONS_VALUES###
+					</select>
+				</td>
+			</tr>
+			<!-- ###SELECT_SECTION### end -->
+
+			<!-- ###SELECT_ORDER### begin -->
+			<tr>
+				<td nowrap>###FORM_ORDERBY###</td>
+				<td>
+					<select name="tx_indexedsearch[order]" class="tx-indexedsearch-selectbox-order">
+						###SELECTBOX_ORDER_VALUES###
+					</select>
+					<select name="tx_indexedsearch[desc]" class="tx-indexedsearch-selectbox-desc">
+						###SELECTBOX_DESC_VALUES###
+					</select>
+					<!-- ###SELECT_RESULTS### begin -->
+					<select name="tx_indexedsearch[results]" class="tx-indexedsearch-selectbox-results">
+						###SELECTBOX_RESULTS_VALUES###
+					</select>###FORM_ATATIME###
+					<!-- ###SELECT_RESULTS### end -->
+				</td>
+			</tr>
+			<!-- ###SELECT_ORDER### end -->
+
+			<!-- ###SELECT_GROUP### begin -->
+			<tr>
+				<td nowrap>###FORM_STYLE###</td>
+				<td>
+					<select name="tx_indexedsearch[group]" class="tx-indexedsearch-selectbox-group">
+						###SELECTBOX_GROUP_VALUES###
+					</select>&nbsp;&nbsp;
+
+					<!-- ###SELECT_EXTRESUME### begin -->
+					<input type="hidden" name="tx_indexedsearch[extResume]" value="0"><input type="checkbox" value="1" name="tx_indexedsearch[extResume]" ###EXT_RESUME_CHECKED###>&nbsp;###FORM_EXTRESUME###
+					<!-- ###SELECT_EXTRESUME### end -->
+				</td>
+			</tr>
+			<!-- ###SELECT_GROUP### end -->
+
+			<!-- ###SEARCH_FORM_EXTENDED### end -->
+		</table>
+	</form>
+	<p>###LINKTOOTHERMODE###</p>
+</div>
+<!-- ###SEARCH_FORM### end -->
+
+
+
+
+<!-- ###RULES### begin -->
+	<h2>###RULES_HEADER###</h2>
+	<p>###RULES_TEXT###</p>
+<!-- ###RULES### end -->
+
+
+<!-- ###RESULT_SECTION_LINKS### begin -->
+<ul>
+###LINKS###
+</ul>
+<!-- ###RESULT_SECTION_LINKS### end -->
+
+<!-- ###RESULT_SECTION_LINKS_LINK### begin -->
+		<li>###LINK###</li>
+<!-- ###RESULT_SECTION_LINKS_LINK### end -->
+
+
+
+
+<!-- ###SECTION_HEADER### begin -->
+<div class="tx-indexedsearch-secHead"><a name="###ANCHOR_URL###"></a>
+<table cellpadding="0" cellspacing="0" border="0" width="100%">
+<tr>
+	<td class="tx-indexedsearch-section-header" width="95%"><h2>###SECTION_TITLE###</h2></td>
+	<td class="tx-indexedsearch-section-header" align="right" nowrap>###RESULT_COUNT### ###RESULT_NAME###</td>
+</tr>
+</table></div>
+
+<!-- ###SECTION_HEADER### end -->
+
+
+
+
+<!-- ###RESULT_OUTPUT### begin -->
+<table cellpadding="0" cellspacing="0" border="0">
+
+	<!-- ###HEADER_ROW### begin -->
+	<tr class="tx-indexedsearch-title">
+		<td nowrap>###ICON###</td>
+		<td width="100%">###RESULT_NUMBER######TITLE###</td>
+		<td class="tx-indexedsearch-percent" nowrap>###RATING###</td>
+	</tr>
+	<!-- ###HEADER_ROW### end -->
+
+	<!-- ###ROW_LONG### begin -->
+	<tr>
+		<td nowrap>&nbsp;</td>
+		<td class="tx-indexedsearch-descr" width="100%" colspan="2"><p>###DESCRIPTION###</p></td>
+	</tr>
+	<tr>
+		<td nowrap>&nbsp;</td>
+		<td class="tx-indexedsearch-info" width="100%" colspan="2"><p>###TEXT_ITEM_SIZE### ###SIZE### - ###TEXT_ITEM_CRDATE### ###CREATED### - ###TEXT_ITEM_MTIME### ###MODIFIED###<br>
+		###TEXT_ITEM_PATH### ###PATH###</p></td>
+	</tr>
+	<!-- ###ROW_LONG### end -->
+
+	<!-- ###ROW_SHORT### begin -->
+	<tr>
+		<td nowrap>&nbsp;</td>
+		<td class="tx-indexedsearch-descr" width="100%" colspan="2">###DESCRIPTION###</td>
+	</tr>
+	<!-- ###ROW_SHORT### end -->
+
+	<!-- ###ROW_SUB### begin -->
+	<tr>
+		<td class="tx-indexedsearch-list" nowrap>&nbsp;</td>
+		<td class="tx-indexedsearch-list" width="100%" colspan="2"><br/>###TEXT_ROW_SUB###<br/><br/></td>
+	</tr>
+	<!-- ###ROW_SUB### end -->
+
+
+</table>
+<br>
+<!-- ###RESULT_OUTPUT### end -->
+
+</body>
+</html>
