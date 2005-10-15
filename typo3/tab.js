@@ -7,8 +7,6 @@
  *  - Possibility to place tabs in <textarea> elements using a simply <TAB> key
  *  - Auto-indenting of new lines
  *
- * Ported to TYPO3 by Michael Stucki <michael@typo3.org>
- *
  * License: GNU General Public License
  *
  * TYPO3 CVS ID: $Id$
