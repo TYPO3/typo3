@@ -1,6 +1,18 @@
 2005-10-15  Michael Stucki  <michael@typo3.org>
 
+	* !!! In the past, pages were marked as search hits even if a user had no access to it. This default has been changed, but the setting can be reverted by setting "show.forbiddenRecords"
+	* !!! New option "show.resultNumber" for displaying the numbers of the search results. The old behavior was to display the numbers, but the default value has been changed to the opposite (0).
+	* !!! The default search type has been changed to "part of word" instead of "distinct word". Please note that this will be slower than before, however it is more Google-like (=logical?) that searching for "mistak" will match "mistake", too.
+	* !!! The default result layout has been changed from "sections" to "flat"
+	* !!! Because of the template support, some options have been removed. You will need to adjust the layout in the template file for these settings: "tableParams.secHead", "tableParams.searchRes"
 	* Added template support to indexed_search. Many thanks to Udo von Eynern for his great work!
+	* Added an additional CSS based template, written by Udo van Eynern
+	* Changed number of default search results from 20 to 10
+	* New option "search.mediaList" for restricting the file type list when searching for files
+	* Changed (fixed?) the behavior of the result counter
+	* New option "show.advancedSearchLink" to hide the link to the advanced search page (default is to display the link)
+	* Changed the result browser to make it more logical (=Google-like)
+	* HTTP references are cut if they are too long (this could destroy the layout of the result page)
 
 2005-05-15  Michael Stucki  <michael@typo3.org>
 

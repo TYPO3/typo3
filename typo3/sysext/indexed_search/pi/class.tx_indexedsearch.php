@@ -1200,10 +1200,10 @@ class tx_indexedsearch extends tslib_pibase {
 			// Multilangual text
 		$substituteArray = array('searchFor', 'extResume', 'atATime', 'orderBy', 'fromSection', 'searchIn', 'match', 'style');
 		foreach ($substituteArray as $marker)	{
-			$markerArray['###FORM_'.strtoupper($marker).'###'] = $this->pi_getLL('form_'.$marker);
+			$markerArray['###FORM_'.strtoupper($marker).'###'] = $this->pi_getLL('form_'.$marker,'',1);
 		}
 
-		$markerArray['###FORM_SUBMIT###'] = $this->pi_getLL('submit_button_label');
+		$markerArray['###FORM_SUBMIT###'] = $this->pi_getLL('submit_button_label','',1);
 
 			// Adding search field value
 		$markerArray['###SWORD_VALUE###'] = htmlspecialchars($this->piVars['sword']);
@@ -1212,7 +1212,7 @@ class tx_indexedsearch extends tslib_pibase {
 		if ($this->conf['show.']['clearSearchBox'] && $this->conf['show.']['clearSearchBox.']['enableSubSearchCheckBox'])	{
 			$markerArray['###SWORD_PREV_VALUE###'] = htmlspecialchars($this->conf['show.']['clearSearchBox'] ? '' : $this->piVars['sword']);
 			$markerArray['###SWORD_PREV_INCLUDE_CHECKED###'] = $this->piVars['sword_prev_include'] ? ' checked="checked"':'';
-			$markerArray['###ADD_TO_CURRENT_SEARCH###'] = $this->pi_getLL('makerating_addToCurrentSearch');
+			$markerArray['###ADD_TO_CURRENT_SEARCH###'] = $this->pi_getLL('makerating_addToCurrentSearch','',1);
 		} else {
 			$html = $this->cObj->substituteSubpart($html, '###ADDITONAL_KEYWORD###', '');
 		}
@@ -1300,8 +1300,8 @@ class tx_indexedsearch extends tslib_pibase {
 
 		if($this->conf['show.']['advancedSearchLink'])	{
 			$markerArray['###LINKTOOTHERMODE###'] = ($this->piVars['ext'] ?
-				'<a href="'.$this->pi_getPageLink($GLOBALS['TSFE']->id,$GLOBALS['TSFE']->sPre,array($this->prefixId.'[ext]'=>0)).'">'.$this->pi_getLL('link_regularSearch').'</a>' :
-				'<a href="'.$this->pi_getPageLink($GLOBALS['TSFE']->id,$GLOBALS['TSFE']->sPre,array($this->prefixId.'[ext]'=>1)).'">'.$this->pi_getLL('link_advancedSearch').'</a>'
+				'<a href="'.$this->pi_getPageLink($GLOBALS['TSFE']->id,$GLOBALS['TSFE']->sPre,array($this->prefixId.'[ext]'=>0)).'">'.$this->pi_getLL('link_regularSearch','',1).'</a>' :
+				'<a href="'.$this->pi_getPageLink($GLOBALS['TSFE']->id,$GLOBALS['TSFE']->sPre,array($this->prefixId.'[ext]'=>1)).'">'.$this->pi_getLL('link_advancedSearch','',1).'</a>'
 			);
 		} else {
 			$markerArray['###LINKTOOTHERMODE###'] = '';
@@ -1437,10 +1437,10 @@ class tx_indexedsearch extends tslib_pibase {
 			}
 
 				// Description text
-			$markerArray['###TEXT_ITEM_SIZE###'] = $this->pi_getLL('res_size');
-			$markerArray['###TEXT_ITEM_CRDATE###'] = $this->pi_getLL('res_created');
-			$markerArray['###TEXT_ITEM_MTIME###'] = $this->pi_getLL('res_modified');
-			$markerArray['###TEXT_ITEM_PATH###'] = $this->pi_getLL('res_path');
+			$markerArray['###TEXT_ITEM_SIZE###'] = $this->pi_getLL('res_size','',1);
+			$markerArray['###TEXT_ITEM_CRDATE###'] = $this->pi_getLL('res_created','',1);
+			$markerArray['###TEXT_ITEM_MTIME###'] = $this->pi_getLL('res_modified','',1);
+			$markerArray['###TEXT_ITEM_PATH###'] = $this->pi_getLL('res_path','',1);
 
 			$html = $this->cObj->substituteMarkerArrayCached($html, $markerArray, array(), array());
 
@@ -1448,16 +1448,16 @@ class tx_indexedsearch extends tslib_pibase {
 			if (is_array($row['_sub']))	{
 				if ($this->multiplePagesType($row['item_type']))	{
 
-					$html = str_replace('###TEXT_ROW_SUB###', $this->pi_getLL('res_otherMatching'), $html);
+					$html = str_replace('###TEXT_ROW_SUB###', $this->pi_getLL('res_otherMatching','',1), $html);
 
 					foreach($row['_sub'] as $subRow)	{
 						$html .= $this->printResultRow($subRow,1);
 					}
 				} else {
 
-					$markerArray['###TEXT_ROW_SUB###'] = $this->pi_getLL('res_otherMatching');
+					$markerArray['###TEXT_ROW_SUB###'] = $this->pi_getLL('res_otherMatching','',1);
 
-					$html = str_replace('###TEXT_ROW_SUB###', $this->pi_getLL('res_otherPageAsWell'), $html);
+					$html = str_replace('###TEXT_ROW_SUB###', $this->pi_getLL('res_otherPageAsWell','',1), $html);
 				}
 			}
 
