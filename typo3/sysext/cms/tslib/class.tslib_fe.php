@@ -247,7 +247,7 @@
 	var $pSetup='';						// TypoScript configuration of the page-object pointed to by sPre. $this->tmpl->setup[$this->sPre.'.']
 	var $newHash='';					// This hash is unique to the template, the $this->id and $this->type vars and the gr_list (list of groups). Used to get and later store the cached data
 	var $getMethodUrlIdToken='';		// If config.ftu (Frontend Track User) is set in TypoScript for the current page, the string value of this var is substituted in the rendered source-code with the string, '&ftu=[token...]' which enables GET-method usertracking as opposed to cookie based
-	var $noCacheBeforePageGen='';		// This flag is set before inclusion of pagegen.php IF no_cache is set. If this flag is set after the inclusion of pagegen.php, no_cache is forced to be set. This is done in order to make sure that php-code from pagegen does not falsely clear the no_cache flag.
+	var $no_CacheBeforePageGen='';		// This flag is set before inclusion of pagegen.php IF no_cache is set. If this flag is set after the inclusion of pagegen.php, no_cache is forced to be set. This is done in order to make sure that php-code from pagegen does not falsely clear the no_cache flag.
 	var $tempContent = FALSE;			// This flag indicates if temporary content went into the cache during page-generation.
 	var $forceTemplateParsing='';				// Boolean, passed to TypoScript template class and tells it to render the template forcibly
 	var $cHash_array=array();			// The array which cHash_calc is based on, see ->makeCacheHash().
