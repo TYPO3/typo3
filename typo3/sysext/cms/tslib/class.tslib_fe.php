@@ -1225,8 +1225,9 @@ TEMPORARILY disabled version previews in online workspace (while testing offline
 	 * @param	string		Reason text
 	 * @return	void		Function exits.
 	 */
-	function pageNotFoundAndExit($reason='')	{
-		$this->pageNotFoundHandler($this->TYPO3_CONF_VARS['FE']['pageNotFound_handling'], $this->TYPO3_CONF_VARS['FE']['pageNotFound_handling_statheader'], $reason);
+	function pageNotFoundAndExit($reason='', $header='')	{
+		$header = $header ? $header : $this->TYPO3_CONF_VARS['FE']['pageNotFound_handling_statheader'];
+		$this->pageNotFoundHandler($this->TYPO3_CONF_VARS['FE']['pageNotFound_handling'], $header, $reason);
 		exit;
 	}
 

@@ -596,7 +596,7 @@ class recordList extends t3lib_recordList {
 
 			// Check for URL:
 		$schema = parse_url($testString);
-		if ($schema['scheme'])	{
+		if ($schema['scheme'] && t3lib_div::inList('http,https,ftp',$schema['scheme']))	{
 			return '<a href="'.htmlspecialchars($testString).'" target="_blank">'.$code.'</a>';
 		}
 
@@ -604,6 +604,9 @@ class recordList extends t3lib_recordList {
 		if (t3lib_div::validEmail($testString))	{
 			return '<a href="mailto:'.htmlspecialchars($testString).'" target="_blank">'.$code.'</a>';
 		}
+
+			// Return if nothing else...
+		return $testString;
 	}
 
 	/**
