@@ -194,8 +194,8 @@ class user_feAdmin	{
 		$this->authCode = t3lib_div::_GP('aC');
 			// get table
 		$this->theTable = $this->conf['table'];
-
-		$this->nc = $this->conf['no_cache'] ? '&no_cache=1' : $this->nc;
+			// link configuration
+		$linkConf = is_array($this->conf['formurl.']) ? $this->conf['formurl.'] : array();
 			// pid
 		$this->thePid = intval($this->conf['pid']) ? intval($this->conf['pid']) : $GLOBALS['TSFE']->id;
 			//
@@ -212,8 +212,18 @@ class user_feAdmin	{
 		$this->markerArray['###GC2###'] = $this->cObj->stdWrap($this->conf['color2'],$this->conf['color2.']);
 		$this->markerArray['###GC3###'] = $this->cObj->stdWrap($this->conf['color3'],$this->conf['color3.']);
 
+		if (intval($this->conf['no_cache']) && !isset($linkConf['no_cache']))	{	// needed for backwards compatibility
+			$linkConf['no_cache'] = 1;
+		}
+		if(!$linkConf['parameter'])	{
+			$linkConf['parameter'] = $GLOBALS['TSFE']->id;
+		}
+		if(!$linkConf['additionalParams'])	{	// needed for backwards compatibility
+			$linkConf['additionalParams'] = $this->conf['addParams'];
+		}
+
 			// Initialize markerArray, setting FORM_URL and HIDDENFIELDS
-		$this->markerArray['###FORM_URL###'] = 'index.php?id='.$GLOBALS['TSFE']->id.'&type='.$GLOBALS['TSFE']->type.$this->nc.$this->conf['addParams'];
+		$this->markerArray['###FORM_URL###'] = $this->cObj->typoLink_URL($linkConf);
 		$this->markerArray['###FORM_URL_ENC###'] = rawurlencode($this->markerArray['###FORM_URL###']);
 		$this->markerArray['###FORM_URL_HSC###'] = htmlspecialchars($this->markerArray['###FORM_URL###']);
 
