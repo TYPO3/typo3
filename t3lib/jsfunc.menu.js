@@ -109,7 +109,9 @@ function JSactivate(level) {
 		}
 		if (this.entry[entryID].url)	{
 			if (document.getElementsByTagName("base")[0].href != "") {
-				this.entry[entryID].url = document.getElementsByTagName("base")[0].href + this.entry[entryID].url;
+				if (this.entry[entryID].url.substr(0,7)!="http://")	{
+					this.entry[entryID].url = document.getElementsByTagName("base")[0].href + this.entry[entryID].url;
+				}
 			}
 			if (!this.entry[entryID].target || this.entry[entryID].target=="_self")	{
 				document.location = this.entry[entryID].url;
