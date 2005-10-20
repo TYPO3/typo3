@@ -108,8 +108,8 @@ function JSactivate(level) {
 			this.entry[this.entry[entryID].parent].openID = entryID;
 		}
 		if (this.entry[entryID].url)	{
-			if (document.getElementsByTagName("base")[0].href != "") {
-				if (this.entry[entryID].url.substr(0,7)!="http://")	{
+			if (document.getElementsByTagName("base").size && document.getElementsByTagName("base")[0].href != "") {
+				if (this.entry[entryID].url.substr(0,7) != "http://")	{
 					this.entry[entryID].url = document.getElementsByTagName("base")[0].href + this.entry[entryID].url;
 				}
 			}

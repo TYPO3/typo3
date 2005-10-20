@@ -1,10 +1,6 @@
 2005-10-19  Bernhard Kraft  <kraftb@kraftb.at>
 
- * Fixed a bug in t3lib/jsfunc.menu.js (base URL was also prepended when link
- is already absolute)
-
-2005-10-19  Bernhard Kraft  <kraftb@kraftb.at>
-
+ * Fixed a bug in t3lib/jsfunc.menu.js (base URL was also prepended when link is already absolute)
  * Fixed bug #200: fe_adminLib: hard-coded Form URL, should be typolink
 
 2005-10-17  Kasper Skårhøj  <kasper2005@typo3.com>
