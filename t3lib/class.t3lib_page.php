@@ -942,7 +942,7 @@ class t3lib_pageSelect {
 					}
 					if ($ctrl['enablecolumns']['fe_group'] && !$ignore_array['fe_group']) {
 						$field = $table.'.'.$ctrl['enablecolumns']['fe_group'];
-						$query.= $this->getMultipleGroupsWhereClause($field, $table);
+						$query.= t3lib_pageSelect::getMultipleGroupsWhereClause($field, $table);
 					}
 
 					// Call hook functions for additional enableColumns

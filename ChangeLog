@@ -1,3 +1,7 @@
+2005-10-21  Bernhard Kraft  <kraftb@kraftb.at>
+
+ * Fixed a bug in t3lib/class.t3lib_page.php which broke the Direct Mailer
+
 2005-10-19  Bernhard Kraft  <kraftb@kraftb.at>
 
  * Fixed a bug in t3lib/jsfunc.menu.js (base URL was also prepended when link is already absolute)
