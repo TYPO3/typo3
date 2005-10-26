@@ -84,12 +84,16 @@ class t3lib_BEDisplayLog {
 	var $lastTypeLabel = '';
 	var $lastActionLabel = '';
 
-	var $detailsOn = 1;	// If detailsOn, %s is substituted with values from the data-array (see getDetails())
-	var $stripPath = 1;	// This strips the path from any value in the data-array when the data-array is parsed through stripPath()
+	var $detailsOn = 1;			// If detailsOn, %s is substituted with values from the data-array (see getDetails())
+	var $stripPath = 1;			// This strips the path from any value in the data-array when the data-array is parsed through stripPath()
 	var $errorSign = Array(
 		1 => '!',
 		2 => 'Sys!',
 		3 => 'Secur!'
+	);
+	var $wsArray = array(
+		0 => 'LIVE',
+		-1 => 'Draft',
 	);
 
 	var $be_user_Array = array();		// Username array (set externally)
@@ -129,13 +133,15 @@ class t3lib_BEDisplayLog {
 	 * Get user name label for log listing
 	 *
 	 * @param	integer		be_user uid
+	 * @param	integer		Workspace ID
 	 * @return	string		If username is different from last username then the username, otherwise "."
 	 */
-	function getUserLabel($code)	{
-		if ($this->lastUserLabel!=$code)	{
-			$this->lastUserLabel=$code;
+	function getUserLabel($code,$workspace=0)	{
+		if ($this->lastUserLabel!=$code.'_'.$workspace)	{
+			$this->lastUserLabel=$code.'_'.$workspace;
 			$label = $this->be_user_Array[$code]['username'];
-			return $label ? $label : '['.$code.']';
+			$ws = $this->wsArray[$workspace];
+			return ($label ? $label : '['.$code.']').'@'.($ws?$ws:$workspace);
 		} else return '.';
 	}
 
@@ -198,7 +204,9 @@ class t3lib_BEDisplayLog {
 		$newRow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
 		if (is_array($newRow))	{
 			$text.=' Changes in fields: <em>'.$newRow['fieldlist'].'</em>.';
-			$text.=' <a href="'.htmlspecialchars($GLOBALS['BACK_PATH'].'show_rechis.php?sh_uid='.$newRow['uid'].'&returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))).'"><b>->His</b></a>';
+			$text.=' <a href="'.htmlspecialchars($GLOBALS['BACK_PATH'].'show_rechis.php?sh_uid='.$newRow['uid'].'&returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))).'">'.
+					'<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/history2.gif','width="13" height="12"').' title="Show History" alt="" />'.
+					'</a>';
 		}
 
 		return $text;
@@ -220,11 +228,11 @@ class t3lib_BEDisplayLog {
 	 * Formats input string in red-colored font tags
 	 *
 	 * @param	string		Input value
+	 * @param	integer		Error value
 	 * @return	string		Input wrapped in red font-tag and bold
-	 * @obsolete
 	 */
-	function getErrorFormatting($sign)	{
-		return '<font color="red"><b>'.$sign.'</b></font>';
+	function getErrorFormatting($sign, $error=0)	{
+		return $GLOBALS['SOBE']->doc->icons($error>=2 ? 3:2).$sign;
 	}
 
 	/**
@@ -239,7 +247,7 @@ class t3lib_BEDisplayLog {
 			$data=$this->stripPath($data);
 		}
 
-		return $this->getDetails($row['type'].'_'.$row['action'].'_'.$row['details_nr'],$row['details'],$data,$row['uid']).' ('.$row['details_nr'].')';
+		return $this->getDetails($row['type'].'_'.$row['action'].'_'.$row['details_nr'],$row['details'],$data,$row['uid']).($row['details_nr']>0?' (msg#'.$row['type'].'.'.$row['action'].'.'.$row['details_nr'].')':'');
 	}
 
 	/**

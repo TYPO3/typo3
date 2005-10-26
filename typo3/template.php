@@ -1785,8 +1785,20 @@ $str.=$this->docBodyTagBegin().
 			}
 		} elseif ($GLOBALS['BE_USER']->workspace!==0) {
 
+				// Write out HTML code:
+			switch($GLOBALS['BE_USER']->workspace)	{
+				case 0:
+					$wsTitle = 'LIVE';
+				break;
+				case -1:
+					$wsTitle = 'Draft';
+				break;
+				default:
+					$wsTitle = $GLOBALS['BE_USER']->workspaceRec['title'];
+				break;
+			}
+
 			if (t3lib_BEfunc::isPidInVersionizedBranch($id)=='branchpoint')	{
-					// Write out HTML code:
 				return '
 
 					<!--
@@ -1794,7 +1806,7 @@ $str.=$this->docBodyTagBegin().
 					-->
 					<table border="0" cellpadding="0" cellspacing="0" id="typo3-versionSelector">
 						<tr>
-							<td>Workspace: "'.$GLOBALS['BE_USER']->workspaceRec['title'].'"</td>
+							<td>Workspace: "'.htmlspecialchars($wsTitle).'"</td>
 							<td><em>Inside branch, no further versioning possible</em></td>
 						</tr>
 					</table>
@@ -1808,7 +1820,7 @@ $str.=$this->docBodyTagBegin().
 				$verPage = t3lib_BEfunc::getWorkspaceVersionOfRecord($GLOBALS['BE_USER']->workspace, 'pages', $onlineId);
 
 				if (!$verPage)	{
-					$onClick = $this->issueCommand('&cmd[pages]['.$onlineId.'][version][action]=new&cmd[pages]['.$onlineId.'][version][treeLevel]=0',t3lib_div::linkThisScript(array('id'=>$onlineId)));
+					$onClick = $this->issueCommand('&cmd[pages]['.$onlineId.'][version][action]=new&cmd[pages]['.$onlineId.'][version][treeLevels]=0',t3lib_div::linkThisScript(array('id'=>$onlineId)));
 					$onClick = 'document.location=\''.$onClick.'\'; return false;';
 						// Write out HTML code:
 					return '
@@ -1818,13 +1830,13 @@ $str.=$this->docBodyTagBegin().
 						-->
 						<table border="0" cellpadding="0" cellspacing="0" id="typo3-versionSelector">
 							<tr>
-								<td>Workspace: "'.$GLOBALS['BE_USER']->workspaceRec['title'].'"</td>
+								<td>Workspace: "'.htmlspecialchars($wsTitle).'"</td>
 								<td>
 									<input type="submit" value="New version of page" name="_" onclick="'.htmlspecialchars($onClick).'" /></td>
 							</tr>
 						</table>
 					';
-				} else {
+				} elseif ($verPage['t3ver_swapmode']==0 && $GLOBALS['BE_USER']->workspace===0) {
 					$onClick = $this->issueCommand('&cmd[pages]['.$onlineId.'][version][action]=swap&cmd[pages]['.$onlineId.'][version][swapWith]='.$verPage['uid'],t3lib_div::linkThisScript(array('id'=>$onlineId)));
 					$onClick = 'document.location=\''.$onClick.'\'; return false;';
 
@@ -1836,7 +1848,7 @@ $str.=$this->docBodyTagBegin().
 						-->
 						<table border="0" cellpadding="0" cellspacing="0" id="typo3-versionSelector">
 							<tr>
-								<td>Workspace: "'.$GLOBALS['BE_USER']->workspaceRec['title'].'"</td>
+								<td>Workspace: "'.htmlspecialchars($wsTitle).'"</td>
 								<td>
 									<input type="submit" value="Publish page" name="_" onclick="'.htmlspecialchars($onClick).'" /></td>
 							</tr>

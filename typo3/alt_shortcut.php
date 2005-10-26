@@ -512,7 +512,7 @@ class SC_alt_shortcut {
 			// Changing workspace and if so, reloading entire backend:
 		if (strlen($this->changeWorkspace))	{
 			$BE_USER->setWorkspace($this->changeWorkspace);
-#			return $this->doc->wrapScriptTags('top.document.location="alt_main.php";');
+			return $this->doc->wrapScriptTags('top.document.location="alt_main.php";');
 		}
 			// Changing workspace and if so, reloading entire backend:
 		if (strlen($this->changeWorkspacePreview))	{
@@ -546,15 +546,16 @@ class SC_alt_shortcut {
 			$options[] = '<option value="-99">'.$LANG->getLL('shortcut_noWSfound',1).'</option>';
 		}
 
-		$selector = '<a href="mod/user/ws/index.php" target="content">'.
+		$selector = '';
+			// Preview:
+		if ($BE_USER->workspace!==0)	{
+			$selector.= 'Frontend Preview: <input type="checkbox" onclick="changeWorkspacePreview('.($BE_USER->user['workspace_preview'] ? 0 : 1).')"; '.($BE_USER->user['workspace_preview'] ? 'checked="checked"' : '').'/>&nbsp;';
+		}
+
+		$selector.= '<a href="mod/user/ws/index.php" target="content">'.
 					t3lib_iconWorks::getIconImage('sys_workspace',array(),$this->doc->backPath,'align="top"').
 					'</a>'.
 					'<select name="_workspaceSelector" onchange="changeWorkspace(this.options[this.selectedIndex].value);">'.implode('',$options).'</select>';
-
-			// Preview:
-		if ($BE_USER->workspace!==0)	{
-			$selector.= '&nbsp;FE Preview: <input type="checkbox" onclick="changeWorkspacePreview('.($BE_USER->user['workspace_preview'] ? 0 : 1).')"; '.($BE_USER->user['workspace_preview'] ? 'checked="checked"' : '').'/>';
-		}
 
 		return $selector;
 	}

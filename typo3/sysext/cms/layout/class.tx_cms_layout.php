@@ -250,6 +250,7 @@ class tx_cms_layout extends recordList {
 		} else {
 			$result = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'pages', 'uid='.intval($id).$delClause);
 			$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($result);
+			t3lib_BEfunc::workspaceOL('pages', $row);
 		}
 
 			// If there was found a page:
@@ -439,6 +440,8 @@ class tx_cms_layout extends recordList {
 					$rowArr = $this->getResult($result);
 
 					foreach($rowArr as $row)	{
+						t3lib_BEfunc::workspaceOL('tt_content', $row);
+
 						$singleElementHTML = '';
 						if (!$lP) $defLanguageCount[$key][] = $row['uid'];
 
@@ -802,6 +805,8 @@ class tx_cms_layout extends recordList {
 					// Items
 				$this->eCounter=$this->firstElementNumber;
 				while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($result))	{
+					t3lib_BEfunc::workspaceOL('sys_note', $row);
+
 					list($flag,$code) = $this->fwd_rwd_nav();
 					$out.=$code;
 					if ($flag)	{
@@ -895,6 +900,8 @@ class tx_cms_layout extends recordList {
 				// Items
 			$this->eCounter=$this->firstElementNumber;
 			while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($result))	{
+				t3lib_BEfunc::workspaceOL('tt_board', $row);
+
 				list($flag,$code) = $this->fwd_rwd_nav();
 				$out.=$code;
 
@@ -1149,6 +1156,8 @@ class tx_cms_layout extends recordList {
 				// Render Items
 			$this->eCounter = $this->firstElementNumber;
 			while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($result))	{
+				t3lib_BEfunc::workspaceOL($table, $row);
+
 				list($flag,$code) = $this->fwd_rwd_nav();
 				$out.= $code;
 				if ($flag)	{

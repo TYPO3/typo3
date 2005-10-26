@@ -27,8 +27,6 @@ TCEmain
 - CHARSET:
 	- Note: No charset conversion is done in TCEmain. It is expected that the content enters TCEmain in the charset of the backend in general.
 - LOGGING:
-	- Finally define the API to the "sys_log" table!
-		- Add detection of workspace
 	- Rewrite log-display, support writing to text-files, syslog on unix (API?)
 		- Reports/Monitoring: Show/send-by-email daily reports over accumulated activity (grouped by workspace/user/pagetree section/modules etc) [Richard at Dassault wanted this]
 			- Activity of individual users in a summary form
@@ -37,7 +35,6 @@ TCEmain
 	- Finish the logging of TCEmain actions (delete/copy)
 	- Versioning: sys history/sys_log track the "uid" of a record and version swapping will invalidate the integrity of this! How to deal with?
 	- Centralized logging:
-		- Create a core API for logging data from all kinds of places in the system. (substituting the current sys_log?)
 		- Create an extension which shows how the log data can be stored in a) database, b) files
 		- extension "logit" / PEAR::log package?
 - INTEGRITY / CLEAN_UP / REFERENCE TRACKING:
@@ -51,6 +48,10 @@ TCEmain
 			- Used for import/export module and anywhere else where we are looking up references!
 			- Basis for integrity checks
 			- clearing caching more effectively
+			- Could be used for MM look-ups on those "unfortunate" comma-list fields?
+		- Offers API to "fix references" if a record carries lost references
+		- Offers way to map a reference to another one ("search/replace")
+		- Offers way to compare actual references in record and those indexed so we can see if there was inconsistency
 	- Record clean-up functionality
 		- Remove references to deleted records (also deleted-to-recycler records? Maybe "deleted-to-recycler" references are important to remove in order to make sure "recycler" records are not selected!) (refs to MM for both tables/files)
 		- Remove references to lost files etc.
@@ -78,7 +79,6 @@ TCEmain
 	- Tools > User Admin:
 		- Features helping to configure roles/users?
 	- Versioning:
-		- Versioning must work for non-admins!
 		- Backend user access to elements is based on the access restrictions for the official element (except pages?). This must be implemented on core level.
 - TCEforms/TCEmain available for frontend
 	- Makes portal features easier to create
@@ -112,6 +112,7 @@ TCEmain
 - BUG:
 	- if a file is uploaded (directly in the form) and there is an upper limit to the number of files which is then exceeded, the uploaded file is STILL copied to the upload folder and will thus be listed as "Files with no references at all (delete them!):"
 	- TCEmain: If there is a comma in the filename supplied as an uploaded file it will confuse the handling of files because the comma is also used to split the filename from each other. (29/04/2003). This is a problem with Inter-Photo Netprint where files uploaded by FTP with comma in the name will not be attached as they should. I think the solution should be found in TCEmain so any filename can be supplied as uploaded.
+	- "editlock" is only implemented for pages at the moment which it should be so for records according to TYPO3 Core API.
 - IDEA: check for potential dangerous php-extension
 
 
@@ -137,7 +138,6 @@ TCEmain/TCEforms for FlexForms:
 	- Displaying partial branch of the data structure (and to a certain level)
 	- FlexForms cannot be possible if the record is not saved? No, should be ok, BUT a data source can of course not be referenced from another field since that fields value is NOT actually there! So only for fixed references to flex form definitions can this be done.
 	- If you have a multiple selector field (or checkbox array) an array of objects could be forced to reflect exactly the fieldnames there 1-1 thus giving us configuration option possibilites per field! For newloginbox extension: You set up a selector box with multiple choice where you can select fields from the fe_users table to display. In an array of elements in the DS you configure that the VALUE of that field is dictating that the same number of objects should be shown for configuration of each field. A "hidden" value would point each object to which value from the field it was for! The same would be very useful for M-M lists of records.
-	- Implement "<displayCond>EXT:templavoila:LOADED:true</displayCond>" for flexforms. (needed for mininews!!)
 	- Implement CSH for FF fields.
 	- Localization of FlexForms:
 		- Permissions for specific language as well!
@@ -301,158 +301,101 @@ SQLengine (t3lib_sqlengine):
 Versioning/Workspaces:
 *******************************
 
-- "They are also the only ones who can eventually publish the workspace content (except "admin" users)."
-- "If set, records from tables where versioning is not enabled can still be edited "live" inside the workspace."
-- "Admin user is the only one who can publish": Add that field, add flag in workspace table that "publish workspace gradually"
-	- "t3ver_stage" (only draft content in custom workspace): 0 = being edited (editing possible for members), 1 = pending for review (edit possible for reviewer), 2 = ready for publish (editing possible for admin), -1 = rejected, ready for editing (using sys-log for notice)
+- check edit and new permissions....
+- Implement flag in Workspace: Publish only content marked "Publish" stage.
 
-Next steps for workspaces:
-- Overlays implemented in backend
-- Permissions / UIDs reflected in buttons and clickmenus.
-- Frontend previews done
+- Complete implementation in TCEmain:
+	COMMANDS:
+	- copy/cut/paste:
+		- between versionized branches and other places (permissions)
+		- check stage of branches and records (permissions)
+		- new records (stage)
+		- Copy a page in workspace will not copy the contents?
+	- localize command
+		- ?
+	- delete:
+		- something twice?
+		- delete a page with a branch, possible?
+		- delete a version, not just unlink it?
+		- Check recursive deletion when setting the delete version and force it when swapping!
+	- versioning:
+		- "branch" (and "page") versioning:(Document this)
+			- Copy all tables regardless of user "modify" permissions and excludeFields
+			- Check all subpages for "read" permission (down to specified level) and decline (unless special flag set?)
 
-- Clean-up of TCEmain/logging/permissions [in particular for versioning/workspaces!]
-	- Perform as much logic and re-mapping in tcemain as possible so applications doesn't have to (for instance re-mapping of source and target uids in paste operations.)
+	- usual permissions, how do they apply? For swapping? For creating new versions? What are the rules? (Document this)
 
+- Documentation "Backend challenges"
+----------------------------
+- Backend challenges yet to solve:
+	- Access evaluation? How does it work, how should it work?
+	- FlexForms: t3lib_BEfunc::getFlexFormDS(), workspaceOL/fixVersioningPid ??
+	- Page and (User) TSconfig?
+	- Mount points and versionized branches?
+	- What about template::getVersionSelector()
 
-Testing:
-	t3lib_BEfunc::getFlexFormDS(), workspaceOL/fixVersioningPid ??
-	Page and (User) TSconfig?
-	Mounts points and versionized branches?
-	TemplateRecord previews?
-	- Apply versioning to other tables than the current.
+Backend preview:
+- Check overlay implementation across core backend:
+	- Modules, click-menu
+	- Permissions / UIDs reflected in buttons and clickmenus.
 	- check page trees around for display of color backgrounds...
 	- check editing icons, overlays in various modules.
-	- Workspace access to Filelist module ?? (Should be OK)
-	- copy/cut/paste between versionized branches and other places (new pages).
-	- delete something twice?
-	template::getVersionSelector()
-	- overview of permissions handling?
-	- samspil med version module?
+- Page module:
+	- Colored backgrounds in Page module
+	- Quick Edit in page module should work
+- TemplaVoila:
+	- Check up on it (should work)
+- Web > List:
+	- For "page" versions, use different ID for records part of the version.
+- Logging: Filter on workspace
+- Describe best-practice/constaints in "Inside TYPO3"
 
-Dassault:
-	- Change "class.user_3dsplm_fakepage.php"
+Frontend Preview:
+- ONLINE PREVIEW: Versionized pages should be previewed just by their UID (which will select the offline version!) - only in "Live" space, disabled at the moment inside tslib_fe!
+?!	- TEST: Mounts points and versionized branches?
+?	- tslib_content::getPidList(); TEST Mount points / Use offline UID values for "page" swapmodes; This is probably more natural for preview cases.
+?	- versionOL() implementations missing:
+		- tslib_pibase::pi_getCategoryTableContents()
+		- tslib_content::checkPidArray()
+		- tslib_content::checkPid()
+		- tslib_content::exec_mm_query()/-_uidList() [These seems NOT to be used anymore!]
+- Difficult frontend previews:
+	- All fields selected upon in frontend:
+		- $TCA[$table]['ctrl']['languageField'] and $TCA[$table]['ctrl']['transOrigPointerField']
+		- field: pages_language_overlay:sys_language_uid
+		- field: pages:doktype (used for selection many places!) - but then we cannot make mounts points etc! (?)
+	- Suggested solution:
+		- Setting a workspace-readonly flag for such values!
+		- However,
+			- menu previews are bypassing the problem already,
+			- page shortcut has trouble but is known,
+			- mount points will not be possible to preview (?)
+			- For new translations we might have the problem, for existing translations probably not since it is unlikely that the fields $TCA[$table]['ctrl']['languageField'] and $TCA[$table]['ctrl']['transOrigPointerField'] are changed later!
+		- For new records, maybe the placeholder record is updated along with offline version? (At least for non-file fields). This would solve the problem of build translations in a workspace and also offer the preview as working!
+- In tslib_fe, this->contentPid is set to "_ORIG_UID" when a versionized page have swapmode set to "0". However this is not completely correct to do: Strictly the "_ORIG_UID" value should be used for tables where "versioning_followPages" is set and for others not. However this is a working quick-fix to display content elements at least!
+	t3lib_page::getPageOverlay() - because pages_language_overlay records have "versioning_followPages" set this should be observed when selecting language overlay records. But should it be hardcoded or something better?
+- Documentation. As frontend preview implementation is dealt with, describe any persisting incompatibilities in "TYPO3 Core API"
 
-Manual:
-- Overview
-	- Concept:
-		- Workspace is Container for draft versions => Solves all issues of previewing, managing versions, overviews, comparisons etc.
-		- All is draft, consequence; a) works only with versionizable records, b) no files can be managed in fileadmin (unless exception accepted for custom workspaces)! => Safe playground
-		- Must work transparently for user => No training needed.
-		- THE implementation of versioning!
-	- state, not process!
-	- Define:
-		- lifecycle
-		- workspace
-		- publish/swap  workspace
-		- versioning modes: element, page, branch
-	- Modes:
-		- Live mode (online):
-			- Editing live content
-			- Like TYPO3 always was, however users can be excluded from online mode now.
-		- Draft mode (offline):
-			- Editing draft versions of content
-			- All editors can publish individual content or whole workspace at any time
-			- Usage: AdHoc needs for trusted editors etc.
-		- Custom mode:
-			- Editing draft versions of content
-			- Workspace owner is only person to publish (highest review authority) and edit workspace properties
-			- Workspace options: filemounts, reviewers, publishing time, Db mount
-			- Usage: For specific projects on a sitebranch, for simple review-cycle needs etc.
-- Using Workspaces
-	- Transparency in action
-	- Colors for feedback
-	- What is "[#VEP#]" in the path (visually)
-	- Workspace manager
-	- Setting up users (draft/live etc)
-		- "options.pageTree.onlineWorkspaceInfo"
-	- Preview in frontend by workspace ID
-- API
-	Intro:
-		- "versioningWS" instead of "versioning" in TCA
-			workspace 0 = online (live)
-			workspace -1 = offline (draft)
-			workspace > 0 = custom (projects)
-			workspace -99 = none selected at all.
-			[-99 is ERROR (none available), -1 is offline, 0 is online, >0 is custom workspaces.]
-	API:
-		Frontend:
-			Preview issues:
-				- Challenge: Previewing elements which are disabled by enableFields in the online version but not necessarily in offline versions! Also, new records with "t3ver_state" set to 1 (placeholder" must be filtered out as well - but not when previewed!
-				- Solution:
-					- Disable enableFields()/->where_del_hidden and check for them in versionOL on input record!
-				- Implementation:
-					- Any place where enableFields() are not used for selecting in frontend, the t3ver_state==1 flag must be checked in online display - otherwise placeholder records might be selected!
-					->versionOL(): Check if record has enable-fields that prevents display and if so, unset!
-					->fixVersioningPid(): For tracing back (getRootLine())
-					->getWorkspaceVersionOfRecord()
-				- Scenarios for preview that is not planned to be implemented:
-					- Searching will probably never work in offline mode: All SQL selection happens on online records and the overlay is applied only after.
-					- It is impossible to preview "count(*)" selections since we would have to traverse all records and pass them through versionOL() before we could count on the result!
-					- In tslib_fe::getPageShortcut() sys_page->getMenu() is called with an additional WHERE clause which will not respect if those fields are changed for a future version. This could be the case other places where getmenu() is used (but a search shows it is not a big problem). In this case we will for now accept that a wrong shortcut destination can be experienced during previews.
-					- Whenever a SQL query is made which also selects on other fields than enableFields, THEN it is out of control to preview. See the example described above (tslib_fe::getPageShortcut)
-		Backend modules:
-			$MCONF['workspaces'] = online,offline,custom
-		Backend, overlay/checking:
-			t3lib_BEfunc::workspaceOL()
-			t3lib_BEfunc::fixVersioningPid()
-			t3lib_BEfunc::isPidInVersionizedBranch
-			t3lib_BEfunc::getWorkspaceVersionOfRecord
-			t3lib_BEfunc::selectVersionsOfRecord()
-
-			BE_USER:
-			->workspaceEditState
-			->workspaceTestPID
-			->workspaceInit()
-			->checkWorkspace()
-			->setWorkspace()
-			->setWorkspacePreview()
-			->getDefaultWorkspace()
-
-View/Preview:
-- Frontend:
-	- ONLINE PREVIEW: Versionized pages should be previewed just by their UID (which will select the offline version!) - only in "Live" space, disabled at the moment inside tslib_fe!
-	OK - Workspace is used to set frontend in preview mode and display versions
-	?!	- TEST: Mounts points and versionized branches?
-	?	- tslib_content::getPidList(); TEST Mount points / Use offline UID values for "page" swapmodes; This is probably more natural for preview cases.
-	?	- versionOL() implementations missing:
-			- tslib_pibase::pi_getCategoryTableContents()
-			- tslib_content::checkPidArray()
-			- tslib_content::checkPid()
-			- tslib_content::exec_mm_query()/-_uidList() [These seems NOT to be used anymore!]
-	- Difficult frontend previews:
-		- All fields selected upon in frontend:
-			- $TCA[$table]['ctrl']['languageField'] and $TCA[$table]['ctrl']['transOrigPointerField']
-			- field: pages_language_overlay:sys_language_uid
-			- field: pages:doktype (used for selection many places!) - but then we cannot make mounts points etc! (?)
-		- Suggested solution:
-			- Setting a workspace-readonly flag for such values!
-			- However,
-				- menu previews are bypassing the problem already,
-				- page shortcut has trouble but is known,
-				- mount points will not be possible to preview (?)
-				- For new translations we might have the problem, for existing translations probably not since it is unlikely that the fields $TCA[$table]['ctrl']['languageField'] and $TCA[$table]['ctrl']['transOrigPointerField'] at changed later!
-			- For new records, maybe the placeholder record is updated along with offline version? (At least for non-file fields). This would solve the problem of build translations in a workspace and also offer the preview as working!
-
-	- In tslib_fe, this->contentPid is set to "_ORIG_UID" when a versionized page have swapmode set to "0". However this is not completely correct to do: Strictly the "_ORIG_UID" value should be used for tables where "versioning_followPages" is set and for others not. However this is a working quick-fix to display content elements at least!
-		t3lib_page::getPageOverlay() - because pages_language_overlay records have "versioning_followPages" set this should be observed when selecting language overlay records. But should it be hardcoded or something better?
-- Backend:
-	- Page TSconfig, Access evaluation, TCEmain/ TCEforms, Flexforms etc: When to fixVersioningPid() / versionOL()?
-	- Quick Edit?
+Versioning management TODO:
+- Implement more of recent "t3ver_*" fields in display.
+- By default, don't display branch of online version.
 
 Workspace Manager TODO:
-- Details view for versions
-	- versions inside branch?
-	- display change log for specific element
-	- warning if page is worked on in other workspace
-	- preview links on items
-	- Difference view in online mode as well.
-	- Publishing must be possible ONLY if Online mode is available for a user?
-- Workspace list
+- TODO: Workspace list
 	- Admin features
-	- Implement the disabling of swap-mode on publish links when that is supported in the core (which I think it should be first...?)
-- TEMPORARY? Disabled backend reloading when changing workspace.
-- Click menu implementation of: Diff-view, raise level / publish. => Guess this is what the versioning element should hold!
+- Implement the disabling of swap-mode on publish links when that is supported in the core (which I think it should be first...?)
+- Details view for versions (when clicked)
+	- display change log for specific element?
+	- Also available as a Web >* module / click menu item (another way to browse stuff in need of preview, raise level, log checking etc.)
+
+Swapping versions:
+	- (Support for) swapping using temporary file (instead of using negative ID)
+
+Preview modes with no BE login; For single pages, for whole workspace?
+	- Can bypass hidden pages, fe_groups, set workspace
+	- Works for certain timespan
+	- Sets cookie
+	- Respects permissions of backend users issuing that permission!?
 
 Workflows:
 - Workflows can regard a whole workspace!
@@ -460,39 +403,20 @@ Workflows:
 	- Publishing workspace / Setting publishing time
 	- Freezing/unfreezing workspace
 
-Swapping:
-	- (Support for) swapping using temporary file (instead of using negative ID)
-	- When swapping; Check "unique" fields (like pages.alias) etc.
-	- permissions?
-	- Problem: When a page+content or branch is versionized, the records that the user is NOT allowed to create/edit are NOT versionized. That mean that records are swapped out that should not be! Imagine if a user has no access to page language overlay but creates a new page+content. Then only page and tt_content is versionized but when swapped the page_language_overlay records are lost since none exist in the versionized page!
+Documentation:
+- Finish chapter "Using versioning and workspaces" in "Inside TYPO3" with screenshots etc.
 
-Various Notes:
-- Pages-versioning and the impact of NOT swapping tt_content element uids:
-	- Loose anchor-points, manually made (could be hack-fixed by some intelligent copying tracking)
-	- TemplaVoila references to elements from other pages (will break, however bad practice to reference elements not in some sort of central library which will NEVER be page-versioned anyways)
-	- Insert-records could potentially do the same
-	- Impact assesment: Low.
-	- Clean-up module (in templavoila?) could also track such things
-	- Problems for non-templavoila sites would be low.
-    - What about a page alias?
+-----LATER:
 
-- Trunk/Branch:
-	- Requirement: Intelligent swapping of "sub-element" ids that CAN be traced back to the original!
-
-- MySQL:
+- Branch versioning:
+	- Intelligent swapping of "sub-element" ids that CAN be traced back to the original? (solution to loosing anchor point and inter-version references?)
+- MySQL/DBAL:
 	- 4.0.14 fails with -1 uid! (4.0.18 is ok eg.)
 	- Correction possible:
 		-> ALTER TABLE jlajlajla AUTO_INCREMENT = 123
 	- Problems with other RDBMS because ID values cannot be changed at all!
-
-Preview modes with no BE login; For single pages, for whole workspace?
-- Can bypass hidden pages, fe_groups, set workspace
-- Works for certain timespan
-- Sets cookie
-- Respects permissions of backend users issuing that permission!?
-
-
-
+- Swapping consequences:
+	- UID references for such as the sys_history and sys_log table are misleading.
 
 
 *************************

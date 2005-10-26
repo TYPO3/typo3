@@ -135,6 +135,7 @@ $TYPO3_CONF_VARS = Array(
 //			'group' => '',							// default in tce_main is 'show,edit,new,editcontent'. If this is set (uncomment), this value is used instead.
 //			'everybody' => ''						// default in tce_main is ''. If this is set (uncomment), this value is used instead.
 		),
+		'newPagesVersioningType' => -1,			// Integer. Default versioning type for new pages create as versions. -1 means "element", 0 means "page", 1 means "branch"
 		'defaultUC' => array (					// Override default settings for BE-users. See class.t3lib_beuserauth.php, array $uc_default
 		),
 			// The control of fileextensions goes in two catagories. Webspace and Ftpspace. Webspace is folders accessible from a webbrowser (below TYPO3_DOCUMENT_ROOT) and ftpspace is everything else.

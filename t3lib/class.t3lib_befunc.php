@@ -515,7 +515,7 @@ class t3lib_BEfunc	{
 		while ($uid!=0 && $loopCheck>0)	{
 			$loopCheck--;
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-				'pid,uid,title,TSconfig,is_siteroot,storage_pid,t3ver_oid,t3ver_wsid,t3ver_state,t3ver_swapmode',
+				'pid,uid,title,TSconfig,is_siteroot,storage_pid,t3ver_oid,t3ver_wsid,t3ver_state,t3ver_swapmode,t3ver_stage',
 				'pages',
 				'uid='.intval($uid).' '.
 					t3lib_BEfunc::deleteClause('pages').' '.
@@ -550,6 +550,7 @@ class t3lib_BEfunc	{
 				$output[$c]['t3ver_wsid'] = $val['t3ver_wsid'];
 				$output[$c]['t3ver_state'] = $val['t3ver_state'];
 				$output[$c]['t3ver_swapmode'] = $val['t3ver_swapmode'];
+				$output[$c]['t3ver_stage'] = $val['t3ver_stage'];
 			}
 		}
 
@@ -789,6 +790,7 @@ class t3lib_BEfunc	{
 			} else {
 				$pageinfo = t3lib_BEfunc::getRecord('pages',$id,'*',($perms_clause ? ' AND '.$perms_clause : ''));
 				if ($pageinfo['uid'] && $GLOBALS['BE_USER']->isInWebMount($id,$perms_clause))	{
+					t3lib_BEfunc::workspaceOL('pages', $pageinfo);
 					list($pageinfo['_thePath'],$pageinfo['_thePathFull']) = t3lib_BEfunc::getRecordPath(intval($pageinfo['uid']), $perms_clause, 15, 1000);
 					return $pageinfo;
 				}
@@ -3039,7 +3041,7 @@ class t3lib_BEfunc	{
 	 * Principle; Record online! => Find offline?
 	 *
 	 * @param	string		Table name
-	 * @param	array		Record array passed by reference. As minimum, the "uid", "pid" and "t3ver_swapmode" (pages) fields must exist!
+	 * @param	array		Record array passed by reference. As minimum, the "uid", "pid" and "t3ver_swapmode" (pages) fields must exist! Fake fields cannot exist since the fields in the array is used as field names in the SQL look up.
 	 * @param	integer		Workspace ID, if not specified will use $GLOBALS['BE_USER']->workspace
 	 * @return	void		(Passed by ref).
 	 * @see fixVersioningPid()
@@ -3118,9 +3120,11 @@ class t3lib_BEfunc	{
 	 * Alternatively; if the page of the PID itself is a version and swapmode is zero (page+content) then tables from versioning_followPages are allowed as well.
 	 *
 	 * @param	integer		Page id inside of which you want to edit/create/delete something.
-	 * @return	boolean		Returns true if PID was in versionized branch.
+	 * @param	string		Table name you are checking for. If you don't give the table name ONLY "branch" types are found and returned true. Specifying table you might also get a positive response if the pid is a "page" versioning type AND the table has "versioning_followPages" set.
+	 * @param	boolean		If set, the keyword "branchpoint" or "first" is not returned by rather the "t3ver_stage" value of the branch-point.
+	 * @return	mixed		Returns either "branchpoint" (if branch) or "first" (if page) or false if nothing. Alternatively, it returns the value of "t3ver_stage" for the branchpoint (if any)
 	 */
-	function isPidInVersionizedBranch($pid, $table='')	{
+	function isPidInVersionizedBranch($pid, $table='',$returnStage=FALSE)	{
 		$rl = t3lib_BEfunc::BEgetRootLine($pid);
 		$c = 0;
 
@@ -3128,9 +3132,9 @@ class t3lib_BEfunc	{
 			if ($rec['_ORIG_pid']==-1)	{
 					// In any case: is it a branchpoint, then OK...
 				if ($rec['t3ver_swapmode']>0)	{
-					return 'branchpoint';	// OK, we are in a versionized branch
-				} elseif ($c==0 && $rec['t3ver_swapmode']==0 && $table && $GLOBALS['TCA'][$table]['ctrl']['versioning_followPages'])	{	// First level: So either $table must be versioning_followPages
-					return 'first';	// OK, we are in a versionized branch
+					return $returnStage ? (int)$rec['t3ver_stage'] : 'branchpoint';	// OK, we are in a versionized branch
+				} elseif ($c==0 && $rec['t3ver_swapmode']==0 && $table && $GLOBALS['TCA'][$table]['ctrl']['versioning_followPages'])	{	// First level: So $table must be versioning_followPages
+					return $returnStage ? (int)$rec['t3ver_stage'] : 'first';	// OK, we are in a versionized branch
 				}
 			}
 			$c++;

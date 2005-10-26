@@ -716,7 +716,7 @@ $TCA['sys_workspace'] = Array (
 			)
 		),
 		'adminusers' => Array (
-			'label' => 'Admin users / Creator:',
+			'label' => 'Owners:',
 			'config' => Array (
 				'type' => 'group',
 				'internal_type' => 'db',
@@ -835,9 +835,20 @@ $TCA['sys_workspace'] = Array (
 				),
 			)
 		),
+		'vtypes' => Array (
+			'label' => 'Disable Versioning Types',
+			'config' => Array (
+				'type' => 'check',
+				'items' => Array (
+					Array('Element',0),
+					Array('Page',0),
+					Array('Branch',0)
+				),
+			)
+		),
 	),
 	'types' => Array (
-		'0' => Array('showitem' => 'title,description,adminusers,members,reviewers,db_mountpoints,file_mountpoints,publish_time,unpublish_time,freeze,live_edit,disable_autocreate,swap_modes')
+		'0' => Array('showitem' => 'title,description,--div--,adminusers,members,reviewers,--div--,db_mountpoints,file_mountpoints,--div--,publish_time,unpublish_time,--div--,freeze,live_edit,disable_autocreate,swap_modes,vtypes')
 	)
 );
 

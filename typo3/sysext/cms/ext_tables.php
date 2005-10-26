@@ -201,6 +201,7 @@ if (TYPO3_MODE=='BE')	{
 			)
 		),
 		'alias' => Array (
+			'displayCond' => 'VERSION:IS:false',
 			'label' => 'LLL:EXT:cms/locallang_tca.php:pages.alias',
 			'config' => Array (
 				'type' => 'input',

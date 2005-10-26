@@ -543,7 +543,7 @@ class SC_mod_web_perm_index {
 
 				// "Edit permissions" -icon
 			if ($editPermsAllowed && $data['row']['uid'])	{
-				$aHref = 'index.php?mode='.$this->MOD_SETTINGS['mode'].'&depth='.$this->MOD_SETTINGS['depth'].'&id='.$data['row']['uid'].'&return_id='.$this->id.'&edit=1';
+				$aHref = 'index.php?mode='.$this->MOD_SETTINGS['mode'].'&depth='.$this->MOD_SETTINGS['depth'].'&id='.($data['row']['_ORIG_uid'] ? $data['row']['_ORIG_uid'] : $data['row']['uid']).'&return_id='.$this->id.'&edit=1';
 				$cells[]='
 					<td'.$bgCol.'><a href="'.htmlspecialchars($aHref).'"><img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/edit2.gif','width="11" height="12"').' border="0" title="'.$LANG->getLL('ch_permissions',1).'" align="top" alt="" /></a></td>';
 			} else {

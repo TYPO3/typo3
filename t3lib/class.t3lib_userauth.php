@@ -488,7 +488,9 @@ class t3lib_userAuth {
 			if ($this->writeStdLog && $activeLogin) {
 				$this->writelog(255,1,0,1,
 					'User %s logged in from %s (%s)',
-					Array($tempuser[$this->username_column], t3lib_div::getIndpEnv('REMOTE_ADDR'), t3lib_div::getIndpEnv('REMOTE_HOST')));
+					Array($tempuser[$this->username_column], t3lib_div::getIndpEnv('REMOTE_ADDR'), t3lib_div::getIndpEnv('REMOTE_HOST')),
+					'','','',-1,'',$tempuser['uid']
+				);
 			}
 
 			if ($this->writeDevLog && $activeLogin) 	t3lib_div::devLog('User '.$tempuser[$this->username_column].' logged in from '.t3lib_div::getIndpEnv('REMOTE_ADDR').' ('.t3lib_div::getIndpEnv('REMOTE_HOST').')', 't3lib_userAuth', -1);

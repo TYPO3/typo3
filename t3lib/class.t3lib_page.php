@@ -38,42 +38,43 @@
  *
  *
  *
- *  108: class t3lib_pageSelect
- *  133:     function init($show_hidden)
+ *  109: class t3lib_pageSelect
+ *  134:     function init($show_hidden)
  *
  *              SECTION: Selecting page records
- *  179:     function getPage($uid, $disableGroupAccessCheck=FALSE)
- *  195:     function getPage_noCheck($uid)
- *  211:     function getFirstWebPage($uid)
- *  229:     function getPageIdFromAlias($alias)
- *  245:     function getPageOverlay($pageInput,$lUid=-1)
- *  309:     function getRecordOverlay($table,$row,$sys_language_content,$OLmode='')
+ *  184:     function getPage($uid, $disableGroupAccessCheck=FALSE)
+ *  200:     function getPage_noCheck($uid)
+ *  216:     function getFirstWebPage($uid)
+ *  234:     function getPageIdFromAlias($alias)
+ *  250:     function getPageOverlay($pageInput,$lUid=-1)
+ *  314:     function getRecordOverlay($table,$row,$sys_language_content,$OLmode='')
  *
  *              SECTION: Page related: Menu, Domain record, Root line
- *  405:     function getMenu($uid,$fields='*',$sortField='sorting',$addWhere='')
- *  443:     function getDomainStartPage($domain, $path='',$request_uri='')
- *  491:     function getRootLine($uid, $MP='', $ignoreMPerrors=FALSE)
- *  612:     function getPathFromRootline($rl,$len=20)
- *  633:     function getExtURL($pagerow,$disable=0)
- *  657:     function getMountPointInfo($pageId, $pageRec=FALSE, $prevMountPids=array(), $firstPageUid=0)
+ *  410:     function getMenu($uid,$fields='*',$sortField='sorting',$addWhere='')
+ *  448:     function getDomainStartPage($domain, $path='',$request_uri='')
+ *  496:     function getRootLine($uid, $MP='', $ignoreMPerrors=FALSE)
+ *  617:     function getPathFromRootline($rl,$len=20)
+ *  638:     function getExtURL($pagerow,$disable=0)
+ *  662:     function getMountPointInfo($pageId, $pageRec=FALSE, $prevMountPids=array(), $firstPageUid=0)
  *
  *              SECTION: Selecting records in general
- *  734:     function checkRecord($table,$uid,$checkPage=0)
- *  768:     function getRawRecord($table,$uid,$fields='*')
- *  792:     function getRecordsByField($theTable,$theField,$theValue,$whereClause='',$groupBy='',$orderBy='',$limit='')
+ *  739:     function checkRecord($table,$uid,$checkPage=0)
+ *  773:     function getRawRecord($table,$uid,$fields='*')
+ *  797:     function getRecordsByField($theTable,$theField,$theValue,$whereClause='',$groupBy='',$orderBy='',$limit='')
  *
  *              SECTION: Caching and standard clauses
- *  844:     function getHash($hash,$expTime=0)
- *  867:     function storeHash($hash,$data,$ident)
- *  885:     function deleteClause($table)
- *  904:     function enableFields($table,$show_hidden=-1,$ignore_array=array())
+ *  849:     function getHash($hash,$expTime=0)
+ *  872:     function storeHash($hash,$data,$ident)
+ *  890:     function deleteClause($table)
+ *  910:     function enableFields($table,$show_hidden=-1,$ignore_array=array(),$noVersionPreview=FALSE)
+ *  979:     function getMultipleGroupsWhereClause($field, $table)
  *
  *              SECTION: Versioning Preview
- *  998:     function fixVersioningPid($table,&$rr)
- * 1039:     function versionOL($table,&$row,$TEMPCHECK=0)
- * 1093:     function getWorkspaceVersionOfRecord($workspace, $table, $uid, $fields='*')
+ * 1026:     function fixVersioningPid($table,&$rr)
+ * 1066:     function versionOL($table,&$row)
+ * 1121:     function getWorkspaceVersionOfRecord($workspace, $table, $uid, $fields='*')
  *
- * TOTAL FUNCTIONS: 23
+ * TOTAL FUNCTIONS: 24
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -902,6 +903,7 @@ class t3lib_pageSelect {
 	 * @param	string		Table name found in the $TCA array
 	 * @param	integer		If $show_hidden is set (0/1), any hidden-fields in records are ignored. NOTICE: If you call this function, consider what to do with the show_hidden parameter. Maybe it should be set? See tslib_cObj->enableFields where it's implemented correctly.
 	 * @param	array		Array you can pass where keys can be "disabled", "starttime", "endtime", "fe_group" (keys from "enablefields" in TCA) and if set they will make sure that part of the clause is not added. Thus disables the specific part of the clause. For previewing etc.
+	 * @param	boolean		If set, enableFields will be applied regardless of any versioning preview settings which might otherwise disable enableFields
 	 * @return	string		The clause starting like " AND ...=... AND ...=..."
 	 * @see tslib_cObj::enableFields(), deleteClause()
 	 */
@@ -967,6 +969,14 @@ class t3lib_pageSelect {
 		return $query;
 	}
 
+	/**
+	 * Creating where-clause for checking group access to elements in enableFields function
+	 *
+	 * @param	string		Field with group list
+	 * @param	string		Table name
+	 * @return	string		AND sql-clause
+	 * @see enableFields()
+	 */
 	function getMultipleGroupsWhereClause($field, $table)	{
 		$memberGroups = t3lib_div::intExplode(',',$GLOBALS['TSFE']->gr_list);
 		$orChecks=array();
@@ -1065,8 +1075,9 @@ class t3lib_pageSelect {
 					$wsAlt['_ORIG_pid'] = $wsAlt['pid'];	// Keep the old (-1) - indicates it was a version...
 					$wsAlt['pid'] = $row['pid'];		// Set in the online versions PID.
 
+						// "element" and "page" type versions:
 						// For versions of single elements or page+content, preserve online UID and PID (this will produce true "overlay" of element _content_, not any references)
-						// For page+content the "_ORIG_uid" should strictly speaking be used as PID for selection of tables with "versioning_followPages" enabled.
+						// For page+content the "_ORIG_uid" should actually be used as PID for selection of tables with "versioning_followPages" enabled.
 					if ($table!=='pages' || $wsAlt['t3ver_swapmode']<=0)	{
 						$wsAlt['_ORIG_uid'] = $wsAlt['uid'];
 						$wsAlt['uid'] = $row['uid'];
@@ -1075,7 +1086,9 @@ class t3lib_pageSelect {
 						if ($table==='pages')	{
 							$wsAlt['alias'] = $row['alias'];
 						}
-					} else {	// Keeping overlay uid and pid so references are changed. This is only for page-versions with BRANCH below!
+					} else {
+							// "branch" versions:
+							// Keeping overlay uid and pid so references are changed. This is only for page-versions with BRANCH below!
 						$wsAlt['_ONLINE_uid'] = $row['uid'];	// The UID of the versionized record is kept and the uid of the online version is stored
 					}
 
@@ -1111,13 +1124,12 @@ class t3lib_pageSelect {
 
 		if ($workspace!==0 && ($table=='pages' || $TCA[$table]['ctrl']['versioningWS']))	{	// Have to hardcode it for "pages" table since TCA is not loaded at this moment!
 
-				// Setting up enableFields for record:
+				// Setting up enableFields for version record:
 			if ($table=='pages')	{
 				$enFields = $this->versioningPreview_where_hid_del;
 			} else {
 				$enFields = $this->enableFields($table,-1,array(),TRUE);
 			}
-#debug($enFields,$table);
 
 				// Select workspace version of record, only testing for deleted.
 			list($newrow) = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
@@ -1131,7 +1143,6 @@ class t3lib_pageSelect {
 
 				// If version found, check if it could have been selected with enableFields on as well:
 			if (is_array($newrow))	{
-#debug(array($newrow,$enFields));
 				if ($GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
 					'uid',
 					$table,
@@ -1140,20 +1151,20 @@ class t3lib_pageSelect {
 						t3ver_wsid='.intval($workspace).
 						$enFields
 				)) {
-					return $newrow;	// Return row
+					return $newrow;	// Return offline version, tested for its enableFields.
 				} else {
-					return -1;	// Unset row!
+					return -1;	// Return -1 because version was de-selected due to its enableFields.
 				}
 			} else {
-					// Otherwise, check if online version can be selected with full enable fields and if so, return 1:
+					// OK, so no workspace version was found. Then check if online version can be selected with full enable fields and if so, return 1:
 				if ($GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
 					'uid',
 					$table,
 					'uid='.intval($uid).$enFields
 				))	{
-					return 1;	// Means search was done.
+					return 1;	// Means search was done, but no version found.
 				} else {
-					return -1;	// Unset row!
+					return -1;	// Return -1 because the current record was de-selected due to its enableFields.
 				}
 			}
 		}

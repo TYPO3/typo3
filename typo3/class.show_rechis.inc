@@ -314,7 +314,7 @@ class recordHistory {
 		}
 
 			// Update log:
-		$updateID = $GLOBALS['BE_USER']->writelog(3,1,0,1,'Saved state','');
+		$updateID = $GLOBALS['BE_USER']->writelog(3,0,0,0,'Saved state in sys_history','');
 
 			// Create query for inserting into sys_history table:
 		$fields_values = array(

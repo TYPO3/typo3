@@ -129,6 +129,7 @@ CREATE TABLE pages (
   t3ver_wsid int(11) DEFAULT '0' NOT NULL,
   t3ver_label varchar(30) DEFAULT '' NOT NULL,
   t3ver_state tinyint(4) DEFAULT '0' NOT NULL,
+  t3ver_stage tinyint(4) DEFAULT '0' NOT NULL,
   t3ver_count int(11) DEFAULT '0' NOT NULL,
   t3ver_tstamp int(11) DEFAULT '0' NOT NULL,
   t3ver_swapmode tinyint(4) DEFAULT '0' NOT NULL,
@@ -206,6 +207,7 @@ CREATE TABLE sys_workspace (
   unpublish_time int(11) DEFAULT '0' NOT NULL,
   freeze tinyint(3) DEFAULT '0' NOT NULL,
   live_edit tinyint(3) DEFAULT '0' NOT NULL,
+  vtypes tinyint(3) DEFAULT '0' NOT NULL,
   disable_autocreate tinyint(3) DEFAULT '0' NOT NULL,
   swap_modes tinyint(3) DEFAULT '0' NOT NULL,
 
@@ -264,6 +266,7 @@ CREATE TABLE sys_log (
   IP varchar(39) DEFAULT '' NOT NULL,
   log_data tinyblob NOT NULL,
   event_pid int(11) DEFAULT '-1' NOT NULL,
+  workspace int(11) DEFAULT '0' NOT NULL,
   NEWid varchar(20) DEFAULT '' NOT NULL,
   PRIMARY KEY (uid),
   KEY event (userid,event_pid)

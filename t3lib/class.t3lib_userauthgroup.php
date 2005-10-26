@@ -37,44 +37,62 @@
  *
  *
  *
- *  115: class t3lib_userAuthGroup extends t3lib_userAuth
+ *  133: class t3lib_userAuthGroup extends t3lib_userAuth
  *
  *              SECTION: Permission checking functions:
- *  176:     function isAdmin()
- *  188:     function isMemberOfGroup($groupId)
- *  210:     function doesUserHaveAccess($row,$perms)
- *  227:     function isInWebMount($id,$readPerms='',$exitOnError=0)
- *  254:     function modAccess($conf,$exitOnError)
- *  290:     function getPagePermsClause($perms)
- *  329:     function calcPerms($row)
- *  367:     function isRTE()
- *  401:     function check($type,$value)
- *  418:     function checkAuthMode($table,$field,$value,$authMode)
- *  484:     function checkLanguageAccess($langValue)
- *  504:     function recordEditAccessInternals($table,$idOrRow)
- *  569:     function isPSet($lCP,$table,$type='')
- *  586:     function mayMakeShortcut()
+ *  197:     function isAdmin()
+ *  209:     function isMemberOfGroup($groupId)
+ *  231:     function doesUserHaveAccess($row,$perms)
+ *  248:     function isInWebMount($id,$readPerms='',$exitOnError=0)
+ *  275:     function modAccess($conf,$exitOnError)
+ *  326:     function getPagePermsClause($perms)
+ *  365:     function calcPerms($row)
+ *  403:     function isRTE()
+ *  437:     function check($type,$value)
+ *  454:     function checkAuthMode($table,$field,$value,$authMode)
+ *  520:     function checkLanguageAccess($langValue)
+ *  541:     function recordEditAccessInternals($table,$idOrRow)
+ *  606:     function isPSet($lCP,$table,$type='')
+ *  623:     function mayMakeShortcut()
+ *  637:     function workspaceCannotEditRecord($table,$rec)
+ *  670:     function workspaceAllowLiveRecordsInPID($pid, $table)
+ *  691:     function workspaceCreateNewRecord($pid, $table)
+ *  710:     function workspaceAllowAutoCreation($table,$id,$recpid)
+ *  730:     function workspaceCheckStageForCurrent($stage)
+ *  753:     function workspacePublishAccess($wsid)
+ *  777:     function workspaceSwapAccess()
+ *  789:     function workspaceVersioningTypeAccess($type)
+ *  816:     function workspaceVersioningTypeGetClosest($type)
  *
  *              SECTION: Miscellaneous functions
- *  614:     function getTSConfig($objectString,$config='')
- *  640:     function getTSConfigVal($objectString)
- *  652:     function getTSConfigProp($objectString)
- *  664:     function inList($in_list,$item)
- *  675:     function returnWebmounts()
- *  685:     function returnFilemounts()
+ *  857:     function getTSConfig($objectString,$config='')
+ *  883:     function getTSConfigVal($objectString)
+ *  895:     function getTSConfigProp($objectString)
+ *  907:     function inList($in_list,$item)
+ *  918:     function returnWebmounts()
+ *  928:     function returnFilemounts()
  *
  *              SECTION: Authentication methods
- *  715:     function fetchGroupData()
- *  838:     function fetchGroups($grList,$idList='')
- *  910:     function setCachedList($cList)
- *  930:     function addFileMount($title, $altTitle, $path, $webspace, $type)
- *  977:     function addTScomment($str)
+ *  959:     function fetchGroupData()
+ * 1092:     function fetchGroups($grList,$idList='')
+ * 1179:     function setCachedList($cList)
+ * 1199:     function addFileMount($title, $altTitle, $path, $webspace, $type)
+ * 1246:     function addTScomment($str)
+ *
+ *              SECTION: Workspaces
+ * 1282:     function workspaceInit()
+ * 1325:     function checkWorkspace($wsRec,$fields='uid,title,adminusers,members,reviewers')
+ * 1399:     function checkWorkspaceCurrent()
+ * 1412:     function setWorkspace($workspaceId)
+ * 1440:     function setWorkspacePreview($previewState)
+ * 1450:     function getDefaultWorkspace()
  *
  *              SECTION: Logging
- * 1024:     function writelog($type,$action,$error,$details_nr,$details,$data,$tablename='',$recuid='',$recpid='',$event_pid=-1,$NEWid='')
- * 1057:     function checkLogFailures($email, $secondsBack=3600, $max=3)
+ * 1501:     function writelog($type,$action,$error,$details_nr,$details,$data,$tablename='',$recuid='',$recpid='',$event_pid=-1,$NEWid='',$userId=0)
+ * 1533:     function simplelog($message, $extKey='', $error=0)
+ * 1554:     function checkLogFailures($email, $secondsBack=3600, $max=3)
  *
- * TOTAL FUNCTIONS: 27
+ * TOTAL FUNCTIONS: 43
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -152,7 +170,7 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 	var $RTE_errors = array();			// RTE availability errors collected.
 	var $errorMsg = '';					// Contains last error message
 
-
+	var $checkWorkspaceCurrent_cache=NULL;	// Cache for checkWorkspaceCurrent()
 
 
 
@@ -234,6 +252,7 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 		if ($id>0)	{
 			$wM = $this->returnWebmounts();
 			$rL = t3lib_BEfunc::BEgetRootLine($id,' AND '.$readPerms);
+
 			foreach($rL as $v)	{
 				if ($v['uid'] && in_array($v['uid'],$wM))	{
 					return $v['uid'];
@@ -509,40 +528,6 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 	}
 
 	/**
-	 * Checking if editing of an existing record is allowed in current workspace if that is offline.
-	 * Rules for editing in offline mode:
-	 * 		- record supports versioning and is an offline version from workspace
-	 *		- or record (any) is in a branch where there is a page which is a version from the workspace
-	 *
-	 * @param	string		Table of record
-	 * @param	string		PID of record to test (real record PID for both pages and other records)
-	 * @param	string		Workspace ID from record (t3ver_wsid field value, if available)
-	 * @return	string		String error code, telling the failure state. FALSE=All ok
-	 */
-	function workspaceEditState($table,$pid,$wsid)	{
-		if ($this->workspace!==0)	{	// Only test offline spaces:
-			if ((int)$pid===-1)	{	// Record is offline, so it can be edited provided that workspace matches and versioning is enabled:
-				if (!$GLOBALS['TCA'][$table]['ctrl']['versioningWS'])	return 'Versioning disabled for table';
-				if ((int)$wsid!==$this->workspace)	return 'Workspace ID of record didn\'t match current workspace';
-			 	return FALSE; 	// OK
-			} elseif ($this->workspaceTestPID($pid, $table)) { 	// For "online" records, check that PID for table allows editing
-				return FALSE;	// OK
-			} else {	// If not offline and not in versionized branch, output error:
-				return 'Online record was not in versionized branch!';
-			}
-		} else {
-			return FALSE; 	// OK because workspace is 0
-		}
-	}
-
-	/**
-	 * Returns true if PID value is OK for creating/editing etc records in workspace.
-	 */
-	function workspaceTestPID($pid, $table)	{
-		return $this->workspace===0 || t3lib_BEfunc::isPidInVersionizedBranch($pid, $table) || ($this->workspaceRec['live_edit'] && !$GLOBALS['TCA'][$table]['ctrl']['versioningWS']);
-	}
-
-	/**
 	 * Checking if a user has editing access to a record from a $TCA table.
 	 * The checks does not take page permissions and other "environmental" things into account. It only deal with record internals; If any values in the record fields disallows it.
 	 * For instance languages settings, authMode selector boxes are evaluated (and maybe more in the future).
@@ -637,6 +622,226 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 	 */
 	function mayMakeShortcut()	{
 		return $this->getTSConfigVal('options.shortcutFrame') && !$this->getTSConfigVal('options.mayNotCreateEditShortcuts');
+	}
+
+	/**
+	 * Checking if editing of an existing record is allowed in current workspace if that is offline.
+	 * Rules for editing in offline mode:
+	 * 		- record supports versioning and is an offline version from workspace and has the corrent stage
+	 * 		- or record (any) is in a branch where there is a page which is a version from the workspace and where the stage is not preventing records
+	 *
+	 * @param	string		Table of record
+	 * @param	array		Record, fields are at least: pid, t3ver_wsid, t3ver_stage (if versioningWS is set)
+	 * @return	string		String error code, telling the failure state. FALSE=All ok
+	 */
+	function workspaceCannotEditRecord($table,$rec)	{
+
+		if ($this->workspace!==0)	{	// Only test offline spaces:
+			if ((int)$rec['pid']===-1)	{	// We are testing a "version" (identified by a pid of -1): it can be edited provided that workspace matches and versioning is enabled for the table.
+				if (!$GLOBALS['TCA'][$table]['ctrl']['versioningWS'])	{	// No versioning, basic error, inconsistency even! Such records should not have a pid of -1!
+					return 'Versioning disabled for table';
+				} elseif ((int)$rec['t3ver_wsid']!==$this->workspace)	{	// So does workspace match?
+					return 'Workspace ID of record didn\'t match current workspace';
+				} else {	// So what about the stage of the version, does that allow editing for this user?
+					return $this->workspaceCheckStageForCurrent($rec['t3ver_stage']) ? FALSE : 'Record stage "'.$rec['t3ver_stage'].'" and users access level did not allow for editing';
+				}
+			} else {	// We are testing a "live" record:
+				if ($res = $this->workspaceAllowLiveRecordsInPID($rec['pid'], $table)) { 	// For "Live" records, check that PID for table allows editing
+						// Live records are OK in this branch, but what about the stage of branch point, if any:
+					return $res>0 ? FALSE : 'Stage for versioning root point and users access level did not allow for editing';	// OK
+				} else {	// If not offline and not in versionized branch, output error:
+					return 'Online record was not in versionized branch!';
+				}
+			}
+		} else {
+			return FALSE; 	// OK because workspace is 0
+		}
+	}
+
+	function workspaceCannotEditOfflineVersion($table,$recData)	{
+		if ($GLOBALS['TCA'][$table]['ctrl']['versioningWS'])	{
+
+			if (!is_array($recData))	{
+				$recData = t3lib_BEfunc::getRecord($table,$recData,'uid,pid,t3ver_wsid,t3ver_stage');
+			}
+			if (is_array($recData))	{
+				if ((int)$recData['pid']===-1)	{
+					return $this->workspaceCannotEditRecord($table,$recData);
+				} else return "Not an offline version";
+			} else return "No record";
+		} else return 'Table does not support versioning.';
+	}
+
+	/**
+	 * Check if "live" records from $table may be created or edited in this PID.
+	 * If the answer is FALSE it means the only valid way to create or edit records in the PID is by versioning
+	 * If the answer is 1 or 2 it means it is OK to create a record, if -1 it means that it is OK in terms of versioning because the element was within a versionized branch but NOT ok in terms of the state the root point had!
+	 *
+	 * @param	integer		PID value to check for.
+	 * @param	string		Table name
+	 * @return	mixed		Returns FALSE if a live record cannot be created and must be versionized in order to do so. 2 means a) Workspace is "Live" or workspace allows "live edit" of records from non-versionized tables (and the $table is not versionizable). 1 and -1 means the pid is inside a versionized branch where -1 means that the branch-point did NOT allow a new record according to its state.
+	 */
+	function workspaceAllowLiveRecordsInPID($pid, $table)	{
+
+			// Always for Live workspace AND if live-edit is enabled and tables are completely without versioning it is ok as well.
+		if ($this->workspace===0 || ($this->workspaceRec['live_edit'] && !$GLOBALS['TCA'][$table]['ctrl']['versioningWS']))	{
+			return 2;	// OK to create for this table.
+		} elseif (t3lib_BEfunc::isPidInVersionizedBranch($pid, $table)) {	// Check if records from $table can be created with this PID: Either if inside "branch" versioning type or a "versioning_followPages" table on a "page" versioning type.
+				// Now, check what the stage of that "page" or "branch" version type is:
+			$stage = t3lib_BEfunc::isPidInVersionizedBranch($pid, $table, TRUE);
+			return $this->workspaceCheckStageForCurrent($stage) ? 1 : -1;
+		} else {
+			return FALSE;	// If the answer is FALSE it means the only valid way to create or edit records in the PID is by versioning
+		}
+	}
+
+	/**
+	 * Evaluates if a record from $table can be created in $pid
+	 *
+	 * @param	integer		Page id. This value must be the _ORIG_uid if available: So when you have pages versionized as "page" or "element" you must supply the id of the page version in the workspace!
+	 * @param	string		Table name
+	 * @return	boolean		TRUE if OK.
+	 */
+	function workspaceCreateNewRecord($pid, $table)	{
+		if ($res = $this->workspaceAllowLiveRecordsInPID($pid,$table))	{	// If LIVE records cannot be created in the current PID due to workspace restrictions, prepare creation of placeholder-record
+			if ($res<0)	{
+				return FALSE;	// Stage for versioning root point and users access level did not allow for editing
+			}
+		} elseif (!$GLOBALS['TCA'][$table]['ctrl']['versioningWS'])	{	// So, if no live records were allowed, we have to create a new version of this record:
+			return FALSE;
+		}
+		return TRUE;
+	}
+
+	/**
+	 * Evaluates if auto creation of a version of a record is allowed.
+	 *
+	 * @param	string		Table of the record
+	 * @param	integer		UID of record
+	 * @param	integer		PID of record
+	 * @return	boolean		TRUE if ok.
+	 */
+	function workspaceAllowAutoCreation($table,$id,$recpid)	{
+			// Auto-creation of version: In offline workspace, test if versioning is enabled and look for workspace version of input record. If there is no versionized record found we will create one and save to that.
+		if ($this->workspace!==0	// Only in draft workspaces
+			&& !$this->workspaceRec['disable_autocreate']	// Auto-creation must not be disabled.
+			&& $GLOBALS['TCA'][$table]['ctrl']['versioningWS']	// Table must be versionizable
+			&& $recpid >= 0	// The PID of the record must NOT be -1 or less (would indicate that it already was a version!)
+			&& !t3lib_BEfunc::getWorkspaceVersionOfRecord($this->workspace, $table, $id, 'uid')	// There must be no existing version of this record in workspace.
+			&& !t3lib_BEfunc::isPidInVersionizedBranch($recpid, $table))	{	// PID must NOT be in a versionized branch either
+				return TRUE;
+		}
+	}
+
+	/**
+	 * Checks if an element stage allows access for the user in the current workspace
+	 * In workspaces 0 (Live) and -1 (Default draft) access is always granted for any stage.
+	 * Admins are always allowed.
+	 *
+	 * @param	integer		Stage id from an element: -1,0 = editing, 1 = reviewer, >1 = owner
+	 * @return	boolean		TRUE if user is allowed access
+	 */
+	function workspaceCheckStageForCurrent($stage)	{
+		if ($this->isAdmin())	return TRUE;
+
+		if ($this->workspace>0)	{
+			$stat = $this->checkWorkspaceCurrent();
+			if (($stage<=0 && $stat['_ACCESS']==='member') ||
+				($stage<=1 && $stat['_ACCESS']==='reviewer') ||
+				($stat['_ACCESS']==='owner')) {
+					return TRUE;	// OK for these criteria
+			}
+		} else return TRUE;	// Always OK for live and draft workspaces.
+	}
+
+	/**
+	 * Returns TRUE if the user has access to publish content from the workspace ID given.
+	 * Admin-users are always granted access to do this
+	 * If the workspace ID is 0 (live) all users have access also
+	 * If -1 (draft workspace) TRUE is returned if the user has access to the Live workspace
+	 * For custom workspaces it depends on whether the user is owner OR like with draft workspace if the user has access to Live workspace.
+	 *
+	 * @param	integer		Workspace UID; -1,0,1+
+	 * @return	boolean		Returns TRUE if the user has access to publish content from the workspace ID given.
+	 */
+	function workspacePublishAccess($wsid)	{
+		if ($this->isAdmin())	return TRUE;
+
+		$wsAccess = $this->checkWorkspace($wsid);
+		if ($wsAccess)	{
+			switch($wsAccess['uid'])	{
+				case 0:		// Live workspace
+					return TRUE;	// If access to Live workspace, no problem.
+				break;
+				case -1:	// Default draft workspace
+					return $this->checkWorkspace(0) ? TRUE : FALSE;	// If access to Live workspace, no problem.
+				break;
+				default:	// Custom workspace
+					return $wsAccess['_ACCESS'] === 'owner' || $this->checkWorkspace(0);	// Either be an adminuser OR have access to online workspace which is OK as well.
+				break;
+			}
+		} else return FALSE;	// If no access to workspace, of course you cannot publish!
+	}
+
+	/**
+	 * Workspace swap-mode access?
+	 *
+	 * @return	boolean		Returns TRUE if records can be swapped in the current workspace, otherwise false
+	 */
+	function workspaceSwapAccess()	{
+		if ($this->workspace>0 && (int)$this->workspaceRec['swap_modes']===2)	{
+			return FALSE;
+		} else return TRUE;
+	}
+
+	/**
+	 * Workspace Versioning type access?
+	 *
+	 * @param	integer		Versioning type to evaluation: -1, 0, >1
+	 * @return	boolean		TRUE if OK
+	 */
+	function workspaceVersioningTypeAccess($type)	{
+		if ($this->workspace>0 && !$this->isAdmin())	{
+			$stat = $this->checkWorkspaceCurrent();
+			if ($stat['_ACCESS']!=='owner')	{
+
+				$type = t3lib_div::intInRange($type,-1);
+				switch((int)$type)	{
+					case -1:
+						return $this->workspaceRec['vtypes']&1 ? FALSE : TRUE;
+					break;
+					case 0:
+						return $this->workspaceRec['vtypes']&2 ? FALSE : TRUE;
+					break;
+					default:
+						return $this->workspaceRec['vtypes']&4 ? FALSE : TRUE;
+					break;
+				}
+			} else return TRUE;
+		} else return TRUE;
+	}
+
+	/**
+	 * Finding "closest" versioning type, used for creation of new records.
+	 *
+	 * @param	integer		Versioning type to evaluation: -1, 0, >1
+	 * @return	integer		Returning versioning type
+	 */
+	function workspaceVersioningTypeGetClosest($type)	{
+		if ($this->workspace>0)	{
+			$type = t3lib_div::intInRange($type,-1);
+			switch((int)$type)	{
+				case -1:
+					return -1;
+				break;
+				case 0:
+					return $this->workspaceVersioningTypeAccess($type) ? $type : -1;
+				break;
+				default:
+					return $this->workspaceVersioningTypeAccess($type) ? $type : ($this->workspaceVersioningTypeAccess(0) ? 0 : -1);
+				break;
+			}
+		} else return $type;
 	}
 
 
@@ -863,11 +1068,7 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 			$this->groupData['allowed_languages'] = t3lib_div::uniqueList($this->dataLists['allowed_languages']);
 			$this->groupData['custom_options'] = t3lib_div::uniqueList($this->dataLists['custom_options']);
 			$this->groupData['modules'] = t3lib_div::uniqueList($this->dataLists['modList']);
-
 			$this->groupData['workspace_perms'] = $this->dataLists['workspace_perms'];
-
-				// Setting up workspace situation (after webmounts are processed!):
-			$this->workspaceInit();
 
 				// populating the $this->userGroupsUID -array with the groups in the order in which they were LAST included.!!
 			$this->userGroupsUID = array_reverse(array_unique(array_reverse($this->includeGroupArray)));
@@ -875,6 +1076,21 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 				// Finally this is the list of group_uid's in the order they are parsed (including subgroups!) and without duplicates (duplicates are presented with their last entrance in the list, which thus reflects the order of the TypoScript in TSconfig)
 			$this->groupList = implode(',',$this->userGroupsUID);
 			$this->setCachedList($this->groupList);
+
+				// Checking read access to webmounts:
+			if (trim($this->groupData['webmounts'])!=='')	{
+				$webmounts = explode(',',$this->groupData['webmounts']);	// Explode mounts
+				$MProws = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid', 'pages', 'deleted=0 AND uid IN ('.$this->groupData['webmounts'].') AND '.$this->getPagePermsClause(1),'','','','uid');	// Selecting all webmounts with permission clause for reading
+				foreach($webmounts as $idx => $mountPointUid)	{
+					if ($mountPointUid>0 && !isset($MProws[$mountPointUid]))	{	// If the mount ID is NOT found among selected pages, unset it:
+						unset($webmounts[$idx]);
+					}
+				}
+				$this->groupData['webmounts'] = implode(',',$webmounts);	// Implode mounts in the end.
+			}
+
+				// Setting up workspace situation (after webmounts are processed!):
+			$this->workspaceInit();
 		}
 	}
 
@@ -1071,9 +1287,11 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 	 ************************************/
 
 	/**
-	 * Initializing workspace
+	 * Initializing workspace.
+	 * Called from within this function, see fetchGroupData()
 	 *
 	 * @return	void
+	 * @see fetchGroupData()
 	 */
 	function workspaceInit()	{
 
@@ -1115,7 +1333,8 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 	 * Checking if a workspace is allowed for backend user
 	 *
 	 * @param	mixed		If integer, workspace record is looked up, if array it is seen as a Workspace record with at least uid, title, members and adminusers columns. Can be faked for workspaces uid 0 and -1 (online and offline)
-	 * @return	string		TRUE if access. Output will also show how access was granted. Admin users will have a true output regardless of input.
+	 * @param	string		List of fields to select. Default fields are: uid,title,adminusers,members,reviewers
+	 * @return	array		TRUE if access. Output will also show how access was granted. Admin users will have a true output regardless of input.
 	 */
 	function checkWorkspace($wsRec,$fields='uid,title,adminusers,members,reviewers')	{
 
@@ -1155,26 +1374,26 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 					default:
 							// Checking if the guy is admin:
 						if (t3lib_div::inList($wsRec['adminusers'],$this->user['uid']))	{
-							return array_merge($wsRec, array('_ACCESS' => 'adminuser'));
+							return array_merge($wsRec, array('_ACCESS' => 'owner'));
 						}
 							// Checking if he is reviewer user:
 						if (t3lib_div::inList($wsRec['reviewers'],'be_users_'.$this->user['uid']))	{
-							return array_merge($wsRec, array('_ACCESS' => 'revieweruser'));
+							return array_merge($wsRec, array('_ACCESS' => 'reviewer'));
 						}
 							// Checking if he is reviewer through a user group of his:
 						foreach($this->userGroupsUID as $groupUid)	{
 							if (t3lib_div::inList($wsRec['reviewers'],'be_groups_'.$groupUid))	{
-								return array_merge($wsRec, array('_ACCESS' => 'reviewergroup:'.$groupUid));
+								return array_merge($wsRec, array('_ACCESS' => 'reviewer'));
 							}
 						}
 							// Checking if he is member as user:
 						if (t3lib_div::inList($wsRec['members'],'be_users_'.$this->user['uid']))	{
-							return array_merge($wsRec, array('_ACCESS' => 'memberuser'));
+							return array_merge($wsRec, array('_ACCESS' => 'member'));
 						}
 							// Checking if he is member through a user group of his:
 						foreach($this->userGroupsUID as $groupUid)	{
 							if (t3lib_div::inList($wsRec['members'],'be_groups_'.$groupUid))	{
-								return array_merge($wsRec, array('_ACCESS' => 'membergroup:'.$groupUid));
+								return array_merge($wsRec, array('_ACCESS' => 'member'));
 							}
 						}
 					break;
@@ -1183,6 +1402,19 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 		}
 
 		return FALSE;
+	}
+
+	/**
+	 * Uses checkWorkspace() to check if current workspace is available for user. This function caches the result and so can be called many times with no performance loss.
+	 *
+	 * @return	array		See checkWorkspace()
+	 * @see checkWorkspace()
+	 */
+	function checkWorkspaceCurrent()	{
+		if (!isset($this->checkWorkspaceCurrent_cache))	{
+			$this->checkWorkspaceCurrent_cache = $this->checkWorkspace($this->workspace);
+		}
+		return $this->checkWorkspaceCurrent_cache;
 	}
 
 	/**
@@ -1202,10 +1434,14 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 			$this->workspaceRec = $this->checkWorkspace($this->workspace,'*');
 		}
 
+			// Unset access cache:
+		unset($this->checkWorkspaceCurrent_cache);
+
 			// If ID is different from the stored one, change it:
 		if (strcmp($this->workspace, $this->user['workspace_id']))	{
 			$this->user['workspace_id'] = $this->workspace;
 			$GLOBALS['TYPO3_DB']->exec_UPDATEquery('be_users','uid='.intval($this->user['uid']),array('workspace_id' => $this->user['workspace_id']));
+			$this->simplelog('User changed workspace to "'.$this->workspace.'"');
 		}
 	}
 
@@ -1259,26 +1495,27 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 	 ************************************/
 
 	/**
-	 * Writes an entry in the logfile
-	 * ... Still missing documentation for syntax etc...
+	 * Writes an entry in the logfile/table
+	 * Documentation in "TYPO3 Core API"
 	 *
-	 * @param	integer		$type: denotes which module that has submitted the entry. This is the current list:  1=tce_db; 2=tce_file; 3=system (eg. sys_history save); 4=modules; 254=Personal settings changed; 255=login / out action: 1=login, 2=logout, 3=failed login (+ errorcode 3), 4=failure_warning_email sent
-	 * @param	integer		$action: denotes which specific operation that wrote the entry (eg. 'delete', 'upload', 'update' and so on...). Specific for each $type. Also used to trigger update of the interface. (see the log-module for the meaning of each number !!)
-	 * @param	integer		$error: flag. 0 = message, 1 = error (user problem), 2 = System Error (which should not happen), 3 = security notice (admin)
-	 * @param	integer		$details_nr: The message number. Specific for each $type and $action. in the future this will make it possible to translate errormessages to other languages
-	 * @param	string		$details: Default text that follows the message
-	 * @param	array		$data: Data that follows the log. Might be used to carry special information. If an array the first 5 entries (0-4) will be sprintf'ed the details-text...
-	 * @param	string		$tablename: Special field used by tce_main.php. These ($tablename, $recuid, $recpid) holds the reference to the record which the log-entry is about. (Was used in attic status.php to update the interface.)
-	 * @param	integer		$recuid: Special field used by tce_main.php. These ($tablename, $recuid, $recpid) holds the reference to the record which the log-entry is about. (Was used in attic status.php to update the interface.)
-	 * @param	integer		$recpid: Special field used by tce_main.php. These ($tablename, $recuid, $recpid) holds the reference to the record which the log-entry is about. (Was used in attic status.php to update the interface.)
-	 * @param	integer		$event_pid: The page_uid (pid) where the event occurred. Used to select log-content for specific pages.
-	 * @param	string		$NEWid: NEWid string
-	 * @return	void
+	 * @param	integer		Denotes which module that has submitted the entry. See "TYPO3 Core API". Use "4" for extensions.
+	 * @param	integer		Denotes which specific operation that wrote the entry. Use "0" when no sub-categorizing applies
+	 * @param	integer		Flag. 0 = message, 1 = error (user problem), 2 = System Error (which should not happen), 3 = security notice (admin)
+	 * @param	integer		The message number. Specific for each $type and $action. This will make it possible to translate errormessages to other languages
+	 * @param	string		Default text that follows the message (in english!). Possibly translated by identification through type/action/details_nr
+	 * @param	array		Data that follows the log. Might be used to carry special information. If an array the first 5 entries (0-4) will be sprintf'ed with the details-text
+	 * @param	string		Table name. Special field used by tce_main.php.
+	 * @param	integer		Record UID. Special field used by tce_main.php.
+	 * @param	integer		Record PID. Special field used by tce_main.php. OBSOLETE
+	 * @param	integer		The page_uid (pid) where the event occurred. Used to select log-content for specific pages.
+	 * @param	string		Special field used by tce_main.php. NEWid string of newly created records.
+	 * @param	integer		Alternative Backend User ID (used for logging login actions where this is not yet known).
+	 * @return	integer		Log entry ID.
 	 */
-	function writelog($type,$action,$error,$details_nr,$details,$data,$tablename='',$recuid='',$recpid='',$event_pid=-1,$NEWid='') {
+	function writelog($type,$action,$error,$details_nr,$details,$data,$tablename='',$recuid='',$recpid='',$event_pid=-1,$NEWid='',$userId=0) {
 
 		$fields_values = Array (
-			'userid' => intval($this->user['uid']),
+			'userid' => $userId ? $userId : intval($this->user['uid']),
 			'type' => intval($type),
 			'action' => intval($action),
 			'error' => intval($error),
@@ -1287,15 +1524,35 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 			'log_data' => serialize($data),
 			'tablename' => $tablename,
 			'recuid' => intval($recuid),
-			'recpid' => intval($recpid),
+#			'recpid' => intval($recpid),
 			'IP' => t3lib_div::getIndpEnv('REMOTE_ADDR'),
 			'tstamp' => $GLOBALS['EXEC_TIME'],
 			'event_pid' => intval($event_pid),
-			'NEWid' => $NEWid
+			'NEWid' => $NEWid,
+			'workspace' => $this->workspace
 		);
 
 		$GLOBALS['TYPO3_DB']->exec_INSERTquery('sys_log', $fields_values);
 		return $GLOBALS['TYPO3_DB']->sql_insert_id();
+	}
+
+	/**
+	 * Simple logging function
+	 *
+	 * @param	string		Log message
+	 * @param	string		Option extension key / module name
+	 * @param	integer		Error level. 0 = message, 1 = error (user problem), 2 = System Error (which should not happen), 3 = security notice (admin)
+	 * @return	integer		Log entry UID
+	 */
+	function simplelog($message, $extKey='', $error=0)	{
+		return $this->writelog(
+			4,
+			0,
+			$error,
+			0,
+			($extKey?'['.$extKey.'] ':'').$message,
+			array()
+		);
 	}
 
 	/**

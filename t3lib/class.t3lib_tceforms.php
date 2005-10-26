@@ -4944,6 +4944,17 @@ class t3lib_TCEforms	{
 					$output = TRUE;
 				}
 			break;
+			case 'VERSION':
+				switch((string)$parts[1])	{
+					case 'IS':
+						if (strtolower($parts[2])=='true')	{
+							$output = intval($row['pid'])==-1 ? TRUE : FALSE;
+						} elseif (strtolower($parts[2])=='false') {
+							$output = !(intval($row['pid'])==-1) ? TRUE : FALSE;
+						}
+					break;
+				}
+			break;
 		}
 
 		return $output;

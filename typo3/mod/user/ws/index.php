@@ -88,7 +88,7 @@ require_once(PATH_t3lib.'class.t3lib_scbase.php');
 require_once(PATH_typo3.'mod/user/ws/class.wslib.php');
 require_once(PATH_t3lib.'class.t3lib_diff.php');
 require_once(PATH_t3lib.'class.t3lib_pagetree.php');
-require_once (PATH_t3lib.'class.t3lib_tcemain.php');
+require_once(PATH_t3lib.'class.t3lib_tcemain.php');
 
 
 
@@ -119,6 +119,8 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 	var $formatWorkspace_cache = array();
 	var $formatCount_cache = array();
 	var $targets = array();		// Accumulation of online targets.
+	var $pageModule = '';
+	var $publishAccess = FALSE;
 
 
 
@@ -180,7 +182,7 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 	 * @return	void
 	 */
 	function init()	{
-		global $BACK_PATH;
+		global $BACK_PATH, $BE_USER;
 
 			// Setting module configuration:
 		$this->MCONF = $GLOBALS['MCONF'];
@@ -225,6 +227,13 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 			// Add JS for dynamic tabs:
 		$this->doc->JScode.= $this->doc->getDynTabMenuJScode();
 
+			// If another page module was specified, replace the default Page module with the new one
+		$newPageModule = trim($BE_USER->getTSConfigVal('options.overridePageModule'));
+		$this->pageModule = t3lib_BEfunc::isModuleSetInTBE_MODULES($newPageModule) ? $newPageModule : 'web_layout';
+
+			// Setting publish access permission for workspace:
+		$this->publishAccess = $BE_USER->workspacePublishAccess($BE_USER->workspace);
+
 			// Parent initialization:
 		parent::init();
 	}
@@ -238,7 +247,7 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 		global $LANG;
 
 			// Perform workspace publishing action if buttons are pressed:
-		$this->publishAction();
+		$errors = $this->publishAction();
 
 			// Starting page:
 		$this->content.=$this->doc->startPage($LANG->getLL('title'));
@@ -249,7 +258,7 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 		$menuItems = array();
 		$menuItems[] = array(
 			'label' => $LANG->getLL('menuitem_review'),
-			'content' => $this->moduleContent_publish()
+			'content' => (count($errors) ? '<h3>Errors:</h3><br/>'.implode('<br/>',$errors).'<hr/>' : '').$this->moduleContent_publish()
 		);
 		$menuItems[] = array(
 			'label' => $LANG->getLL('menuitem_workspaces'),
@@ -307,8 +316,9 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 		if ($GLOBALS['BE_USER']->workspace===0)	{
 			$menu.= t3lib_BEfunc::getFuncMenu(0,'SET[filter]',$this->MOD_SETTINGS['filter'],$this->MOD_MENU['filter']);
 			$menu.= t3lib_BEfunc::getFuncMenu(0,'SET[display]',$this->MOD_SETTINGS['display'],$this->MOD_MENU['display']);
-		} else {
-			$menu.= t3lib_BEfunc::getFuncMenu(0,'SET[diff]',$this->MOD_SETTINGS['diff'],$this->MOD_MENU['diff']);
+		}
+		$menu.= t3lib_BEfunc::getFuncMenu(0,'SET[diff]',$this->MOD_SETTINGS['diff'],$this->MOD_MENU['diff']);
+		if ($GLOBALS['BE_USER']->workspace!==0)	{
 			$menu.= t3lib_BEfunc::getFuncCheck(0,'SET[expandSubElements]',$this->MOD_SETTINGS['expandSubElements']).' Show sub-elements - ';
 		}
 
@@ -317,12 +327,12 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 		$description = '';
 		switch($GLOBALS['BE_USER']->workspace)	{
 			case 0:
-				$title = t3lib_iconWorks::getIconImage('sys_workspace', array(), $this->doc->backPath, ' align="top"').'[ONLINE workspace]';
-				$description = 'The ONLINE workspace allows changes to take effect immediately on the website. However versioning can be applied inside the online workspace and this overview shows you draft and archive versions from the various workspaces, including the ONLINE workspace.';
+				$title = t3lib_iconWorks::getIconImage('sys_workspace', array(), $this->doc->backPath, ' align="top"').'[LIVE workspace]';
+				$description = 'The LIVE workspace allows changes to take effect immediately on the website. However versioning can be applied inside the live workspace and this overview shows you draft and archive versions from the various workspaces, including the LIVE workspace.';
 			break;
 			case -1:
-				$title = t3lib_iconWorks::getIconImage('sys_workspace', array(), $this->doc->backPath, ' align="top"').'[Offline workspace]';
-				$description = 'In the Offline workspace all changes will be made as new versions of the online content. Changes can be previewed, reviewed and eventually published online.';
+				$title = t3lib_iconWorks::getIconImage('sys_workspace', array(), $this->doc->backPath, ' align="top"').'[Draft workspace]';
+				$description = 'In the Draft workspace all changes will be made as new versions of the live content. Changes can be previewed, reviewed and eventually published live.';
 			break;
 			case -99:
 				$title = $this->doc->icons(3).'[NONE]';
@@ -338,9 +348,17 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 			// Buttons for publish / swap:
 		$actionLinks = '';
 		if ($GLOBALS['BE_USER']->workspace!==0)	{
-			$actionLinks.= '<input type="submit" name="_publish" value="Publish workspace" onclick="return confirm(\'Are you sure you want to publish all content of the workspace?\');"/>';
-			$actionLinks.= '<input type="submit" name="_swap" value="Swap workspace" onclick="return confirm(\'Are you sure you want to publish (swap) all content of the workspace?\');" />';
+			if ($this->publishAccess)	{
+				$actionLinks.= '<input type="submit" name="_publish" value="Publish workspace" onclick="return confirm(\'Are you sure you want to publish all content of the workspace?\');"/>';
+				if ($GLOBALS['BE_USER']->workspaceSwapAccess())	{
+					$actionLinks.= '<input type="submit" name="_swap" value="Swap workspace" onclick="return confirm(\'Are you sure you want to publish (swap) all content of the workspace?\');" />';
+				}
+			} else {
+				$actionLinks.= $this->doc->icons(1).'You are not permitted to publish from this workspace';
+			}
 		}
+
+		$wsAccess = $GLOBALS['BE_USER']->checkWorkspace($GLOBALS['BE_USER']->workspaceRec);
 
 			// Add header to content variable:
 		$content = '
@@ -356,6 +374,10 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 			<tr>
 				<td class="bgColor2" nowrap="nowrap"><b>Options:</b>&nbsp;</td>
 				<td class="bgColor4">'.$menu.$actionLinks.'</td>
+			</tr>
+			<tr>
+				<td class="bgColor2" nowrap="nowrap"><b>Status:</b>&nbsp;</td>
+				<td class="bgColor4">Access level: '.$wsAccess['_ACCESS'].'</td>
 			</tr>' : '').'
 		</table>
 		<br/>
@@ -431,6 +453,7 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 				<td nowrap="nowrap" width="100">Pagetree:</td>
 				<td nowrap="nowrap" colspan="2">Online Version:</td>
 				<td nowrap="nowrap" colspan="2">Offline Versions:</td>
+				<td nowrap="nowrap">Stage:</td>
 				<td nowrap="nowrap">Publish:</td>
 				<td>Lifecycle:</td>
 				'.($this->showWorkspaceCol ? '<td>Workspace:</td>' : '').'
@@ -458,7 +481,7 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 		global $TCA;
 
 			// Initialize:
-		$fullColSpan = ($this->showWorkspaceCol?8:7);
+		$fullColSpan = ($this->showWorkspaceCol?9:8);
 
 			// Traverse $pArray
 		if (is_array($pArray))	{
@@ -542,18 +565,30 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 										// Prepare swap-mode values:
 									if ($table==='pages' && $rec_off['t3ver_swapmode']!=-1)	{
 										if ($rec_off['t3ver_swapmode']>0)	{
-											$swapLabel = ' [Branch]';
-											$swapClass = 'ver-branch';
-											$warnAboutVersions_next = !$this->showWorkspaceCol;		// This value is true only if multiple workspaces are shown and we need the opposite here.
+											$vType = 'branch';
 										} else {
+											$vType = 'page';
+										}
+									} else {
+										$vType = 'element';
+									}
+
+									switch($vType) {
+										case 'element':
+											$swapLabel = ' [Element]';
+											$swapClass = 'ver-element';
+											$warnAboutVersions_nonPages = $warnAboutVersions_page;	// Setting this if sub elements are found with a page+content (must be rendered prior to this of course!)
+										break;
+										case 'page':
 											$swapLabel = ' [Page]';
 											$swapClass = 'ver-page';
 											$warnAboutVersions_page = !$this->showWorkspaceCol;		// This value is true only if multiple workspaces are shown and we need the opposite here.
-										}
-									} else {
-										$swapLabel = ' [Element]';
-										$swapClass = 'ver-element';
-										$warnAboutVersions_nonPages = $warnAboutVersions_page;	// Setting this if sub elements are found with a page+content (must be rendered prior to this of course!)
+										break;
+										case 'branch':
+											$swapLabel = ' [Branch]';
+											$swapClass = 'ver-branch';
+											$warnAboutVersions_next = !$this->showWorkspaceCol;		// This value is true only if multiple workspaces are shown and we need the opposite here.
+										break;
 									}
 
 										// Modify main cell based on first version shown:
@@ -565,12 +600,15 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 									$mainCell = str_replace('###SUB_ELEMENTS###', $subElements['on'], $mainCell);
 
 										// Create version element:
+									$versionsInOtherWS = $this->versionsInOtherWS($table, $rec_on['uid']);
+									$versionsInOtherWSWarning = $versionsInOtherWS && $GLOBALS['BE_USER']->workspace!==0 ? '<br/>'.$this->doc->icons(2).'Other version(s) in workspace '.$versionsInOtherWS : '';
 									$multipleWarning = (!$mainCell && $GLOBALS['BE_USER']->workspace!==0? '<br/>'.$this->doc->icons(3).'<b>Multiple versions in same workspace!</b>' : '');
 									$verWarning = $warnAboutVersions || $warnAboutVersions_nonPages ? '<br/>'.$this->doc->icons(3).'<b>Version inside version!</b>' : '';
 									$verElement = $icon.
 										'<a href="'.htmlspecialchars('index.php?details='.rawurlencode($table.':'.$rec_off['uid'])).'">'.
 										t3lib_BEfunc::getRecordTitle($table,$rec_off,TRUE).
 										'</a>'.
+										$versionsInOtherWSWarning.
 										$multipleWarning.
 										$verWarning;
 									if ($diffCode)	{
@@ -595,8 +633,9 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 									$tableRows[] = '
 										<tr class="bgColor4">
 											'.$mainCell.$verCell.'
+											<td nowrap="nowrap">'.$this->displayWorkspaceOverview_stageCmd($table,$rec_off).'</td>
 											<td nowrap="nowrap" class="'.$swapClass.'">'.
-												$this->displayWorkspaceOverview_commandLinks($table,$rec_on,$rec_off).
+												$this->displayWorkspaceOverview_commandLinks($table,$rec_on,$rec_off,$vType).
 												htmlspecialchars($swapLabel).
 												'</td>
 											<td nowrap="nowrap">'.htmlspecialchars($this->formatCount($rec_off['t3ver_count'])).'</td>'.		// Lifecycle
@@ -635,36 +674,186 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 	}
 
 	/**
+	 * Links to stage change of a version
+	 *
+	 * @param	string		Table name
+	 * @param	array		Offline record (version)
+	 * @return	string		HTML content, mainly link tags and images.
+	 */
+	function displayWorkspaceOverview_stageCmd($table,&$rec_off)	{
+#debug($rec_off['t3ver_stage']);
+		switch((int)$rec_off['t3ver_stage'])	{
+			case 0:
+				$sId = 1;
+				$sLabel = 'Editing';
+				$color = '#666666';
+			break;
+			case 1:
+				$sId = 10;
+				$sLabel = 'Review';
+				$color = '#6666cc';
+			break;
+			case 10:
+				$sLabel = 'Publish';
+				$color = '#66cc66';
+			break;
+			case -1:
+				$sLabel = $this->doc->icons(2).'Rejected';
+				$sId = 0;
+				$color = '#ff0000';
+			break;
+			default:
+				$sLabel = 'Undefined';
+				$sId = 0;
+				$color = '';
+			break;
+		}
+#debug($sId);
+
+		$raiseOk = !$GLOBALS['BE_USER']->workspaceCannotEditOfflineVersion($table,$rec_off);
+
+		if ($raiseOk)	{
+				// Reject:
+			$actionLinks.=
+				'<a href="'.htmlspecialchars($this->doc->issueCommand(
+						'&cmd['.$table.']['.$rec_off['uid'].'][version][action]=setStage'.
+						'&cmd['.$table.']['.$rec_off['uid'].'][version][stageId]=-1'
+						)).'">'.
+				'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/down.gif','width="14" height="14"').' alt="" align="top" title="Reject" />'.
+				'</a>';
+		} else {
+				// Reject:
+			$actionLinks.=
+				'<img src="'.$this->doc->backPath.'gfx/clear.gif" width="14" height="14" alt="" align="top" title="" />';
+		}
+
+		$actionLinks.= '<span style="background-color: '.$color.'; color: white;">'.$sLabel.'</span>';
+
+			// Raise
+		if ($raiseOk)	{
+			if ($rec_off['t3ver_stage']!=10)	{
+				$actionLinks.=
+					'<a href="'.htmlspecialchars($this->doc->issueCommand(
+							'&cmd['.$table.']['.$rec_off['uid'].'][version][action]=setStage'.
+							'&cmd['.$table.']['.$rec_off['uid'].'][version][stageId]='.$sId
+							)).'">'.
+					'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/up.gif','width="14" height="14"').' alt="" align="top" title="Raise" />'.
+					'</a>';
+			}
+		}
+		return $actionLinks;
+	}
+
+	/**
 	 * Links to publishing etc of a version
 	 *
 	 * @param	string		Table name
 	 * @param	array		Online record
 	 * @param	array		Offline record (version)
-	 * @param	string		Swap-mode for the CMD array (based on t3ver_swapmode for pages, otherwise it should be empty)
+	 * @param	string		Swap type, "branch", "page" or "element"
 	 * @return	string		HTML content, mainly link tags and images.
 	 */
-	function displayWorkspaceOverview_commandLinks($table,&$rec_on,&$rec_off)	{
-		$actionLinks =
-			'<a href="'.htmlspecialchars($this->doc->issueCommand(
-					'&cmd['.$table.']['.$rec_on['uid'].'][version][action]=swap'.
-					'&cmd['.$table.']['.$rec_on['uid'].'][version][swapWith]='.$rec_off['uid']
-					)).'">'.
-			'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/insert1.gif','width="14" height="14"').' alt="" align="top" title="Publish" />'.
-			'</a>';
+	function displayWorkspaceOverview_commandLinks($table,&$rec_on,&$rec_off,$vType)	{
+		if ($this->publishAccess)	{
+			$actionLinks =
+				'<a href="'.htmlspecialchars($this->doc->issueCommand(
+						'&cmd['.$table.']['.$rec_on['uid'].'][version][action]=swap'.
+						'&cmd['.$table.']['.$rec_on['uid'].'][version][swapWith]='.$rec_off['uid']
+						)).'">'.
+				'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/insert1.gif','width="14" height="14"').' alt="" align="top" title="Publish" />'.
+				'</a>';
+			if ($GLOBALS['BE_USER']->workspaceSwapAccess())	{
+				$actionLinks.=
+					'<a href="'.htmlspecialchars($this->doc->issueCommand(
+							'&cmd['.$table.']['.$rec_on['uid'].'][version][action]=swap'.
+							'&cmd['.$table.']['.$rec_on['uid'].'][version][swapWith]='.$rec_off['uid'].
+							'&cmd['.$table.']['.$rec_on['uid'].'][version][swapIntoWS]=1'
+							)).'">'.
+					'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/swap.png','width="14" height="14"').' alt="" align="top" title="Swap" />'.
+					'</a>';
+			}
+		}
+
+		if (!$GLOBALS['BE_USER']->workspaceCannotEditOfflineVersion($table,$rec_off))	{
+				// Release
+			$actionLinks.=
+				'<a href="'.htmlspecialchars($this->doc->issueCommand('&cmd['.$table.']['.$rec_off['uid'].'][version][action]=clearWSID')).'" onclick="return confirm(\'Remove from workspace?\');">'.
+				'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/group_clear.gif','width="14" height="14"').' alt="" align="top" title="Remove from workspace" />'.
+				'</a>';
+
+				// Edit
+			if ($table==='pages' && $vType!=='element')	{
+				$tempUid = ($vType==='branch' || $GLOBALS['BE_USER']->workspace===0 ? $rec_off['uid'] : $rec_on['uid']);
+				$actionLinks.=
+					'<a href="#" onclick="top.loadEditId('.$tempUid.');top.goToModule(\''.$this->pageModule.'\'); return false;">'.
+					'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,t3lib_extMgm::extRelPath('cms').'layout/layout.gif','width="14" height="12"').' title="Edit page" alt="" />'.
+					'</a>';
+			} else {
+				$params = '&edit['.$table.']['.$rec_off['uid'].']=edit';
+				$actionLinks.=
+					'<a href="#" onclick="'.htmlspecialchars(t3lib_BEfunc::editOnClick($params,$this->doc->backPath)).'">'.
+					'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/edit2.gif','width="12" height="12"').' title="Edit element" alt="" />'.
+					'</a>';
+			}
+		}
+
+			// History/Log
 		$actionLinks.=
-			'<a href="'.htmlspecialchars($this->doc->issueCommand(
-					'&cmd['.$table.']['.$rec_on['uid'].'][version][action]=swap'.
-					'&cmd['.$table.']['.$rec_on['uid'].'][version][swapWith]='.$rec_off['uid'].
-					'&cmd['.$table.']['.$rec_on['uid'].'][version][swapIntoWS]=1'
-					)).'">'.
-			'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/swap.png','width="14" height="14"').' alt="" align="top" title="Swap" />'.
+			'<a href="'.htmlspecialchars($this->doc->backPath.'show_rechis.php?element='.rawurlencode($table.':'.$rec_off['uid']).'&returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))).'">'.
+			'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/history2.gif','width="13" height="12"').' title="Show Log" alt="" />'.
 			'</a>';
 
-			// Release
-		$actionLinks.=
-			'<a href="'.htmlspecialchars($this->doc->issueCommand('&cmd['.$table.']['.$rec_off['uid'].'][version][action]=clearWSID')).'">'.
-			'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/group_clear.gif','width="14" height="14"').' alt="" align="top" title="Remove from workspace" />'.
-			'</a>';
+			// View
+		if ($table==='pages')	{
+			$tempUid = ($vType==='branch' || $GLOBALS['BE_USER']->workspace===0 ? $rec_off['uid'] : $rec_on['uid']);
+			$actionLinks.=
+				'<a href="#" onclick="'.htmlspecialchars(t3lib_BEfunc::viewOnClick($tempUid,$this->doc->backPath,t3lib_BEfunc::BEgetRootLine($tempUid))).'">'.
+				'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/zoom.gif','width="12" height="12"').' title="" alt="" />'.
+				'</a>';
+		}
+
+		return $actionLinks;
+	}
+
+	/**
+	 * Links to publishing etc of a version
+	 *
+	 * @param	string		Table name
+	 * @return	string		HTML content, mainly link tags and images.
+	 */
+	function displayWorkspaceOverview_commandLinksSub($table,$rec,$origId)	{
+		$uid = $rec['uid'];
+		if ($origId || $GLOBALS['BE_USER']->workspace===0)	{
+			if (!$GLOBALS['BE_USER']->workspaceCannotEditRecord($table,$rec))	{
+					// Edit
+				if ($table==='pages')	{
+					$actionLinks.=
+						'<a href="#" onclick="top.loadEditId('.$uid.');top.goToModule(\''.$this->pageModule.'\'); return false;">'.
+						'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,t3lib_extMgm::extRelPath('cms').'layout/layout.gif','width="14" height="12"').' title="Edit page" alt="" />'.
+						'</a>';
+				} else {
+					$params = '&edit['.$table.']['.$uid.']=edit';
+					$actionLinks.=
+						'<a href="#" onclick="'.htmlspecialchars(t3lib_BEfunc::editOnClick($params,$this->doc->backPath)).'">'.
+						'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/edit2.gif','width="12" height="12"').' title="Edit element" alt="" />'.
+						'</a>';
+				}
+			}
+
+				// History/Log
+			$actionLinks.=
+				'<a href="'.htmlspecialchars($this->doc->backPath.'show_rechis.php?element='.rawurlencode($table.':'.$uid).'&returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))).'">'.
+				'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/history2.gif','width="13" height="12"').' title="Show Log" alt="" />'.
+				'</a>';
+		}
+
+			// View
+		if ($table==='pages')	{
+			$actionLinks.=
+				'<a href="#" onclick="'.htmlspecialchars(t3lib_BEfunc::viewOnClick($uid,$this->doc->backPath,t3lib_BEfunc::BEgetRootLine($uid))).'">'.
+				'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/zoom.gif','width="12" height="12"').' title="" alt="" />'.
+				'</a>';
+		}
 
 		return $actionLinks;
 	}
@@ -898,6 +1087,9 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 									'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/ol/join'.($iconMode ? 'bottom' : '').'.gif','width="18" height="16"').' alt="" />'.
 									t3lib_iconWorks::getIconImage($tN, $rec, $this->doc->backPath,'') : '').
 								t3lib_BEfunc::getRecordTitle($tN, $rec, TRUE).
+							'</td>
+							<td>'.
+								$this->displayWorkspaceOverview_commandLinksSub($tN,$rec,$origId).
 							'</td>'.($origId ? '<td class="diffCell">'.
 								$diffCode.
 							'</td>':'').'
@@ -963,7 +1155,7 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 
 						// Check if it is files:
 					$isFiles = FALSE;
-					if (strcmp($diff_1_record[$fN],$diff_2_record[$fN]) &&
+					if (strcmp(trim($diff_1_record[$fN]),trim($diff_2_record[$fN])) &&
 							$TCA[$table]['columns'][$fN]['config']['type']=='group' &&
 							$TCA[$table]['columns'][$fN]['config']['internal_type']=='file')	{
 
@@ -987,7 +1179,7 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 					}
 
 						// If there is a change of value:
-					if (strcmp($diff_1_record[$fN],$diff_2_record[$fN]))	{
+					if (strcmp(trim($diff_1_record[$fN]),trim($diff_2_record[$fN])))	{
 
 
 							// Get the best visual presentation of the value and present that:
@@ -1168,7 +1360,30 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 		return $this->formatCount_cache[$count];
 	}
 
+	/**
+	 * Looking for versions of a record in other workspaces than the current
+	 */
+	function versionsInOtherWS($table,$uid)	{
 
+			// Check for duplicates:
+			// Select all versions of record NOT in this workspace:
+		$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+			't3ver_wsid',
+			$table,
+			'pid=-1
+				AND t3ver_oid='.intval($uid).'
+				AND t3ver_wsid!='.intval($GLOBALS['BE_USER']->workspace).'
+				AND (t3ver_wsid=-1 OR t3ver_wsid>0)'.
+				t3lib_BEfunc::deleteClause($table),
+			'',
+			't3ver_wsid',
+			'',
+			't3ver_wsid'
+		);
+		if (count($rows))	{
+			return implode(',',array_keys($rows));
+		}
+	}
 
 
 
@@ -1203,6 +1418,8 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 			$tce->stripslashes_values = 0;
 			$tce->start(array(), $cmd);
 			$tce->process_cmdmap();
+
+			return $tce->errorLog;
 		}
 	}
 }

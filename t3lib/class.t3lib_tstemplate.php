@@ -37,43 +37,44 @@
  *
  *
  *
- *  107: class t3lib_TStemplate
- *  209:     function init()
- *  247:     function getCurrentPageData()
- *  264:     function matching($cc)
- *  288:     function start($theRootLine)
+ *  108: class t3lib_TStemplate
+ *  210:     function init()
+ *  248:     function getCurrentPageData()
+ *  265:     function matching($cc)
+ *  289:     function start($theRootLine)
  *
  *              SECTION: Fetching TypoScript code text for the Template Hierarchy
- *  404:     function runThroughTemplates($theRootLine,$start_template_uid=0)
- *  451:     function processTemplate($row, $idList,$pid,$templateID='',$templateParent='')
- *  566:     function includeStaticTypoScriptSources($idList,$templateID,$pid,$row)
- *  627:     function addExtensionStatics($idList,$templateID,$pid,$row)
- *  660:     function prependStaticExtra($subrow)
+ *  405:     function runThroughTemplates($theRootLine,$start_template_uid=0)
+ *  458:     function processTemplate($row, $idList,$pid,$templateID='',$templateParent='')
+ *  579:     function includeStaticTypoScriptSources($idList,$templateID,$pid,$row)
+ *  641:     function addExtensionStatics($idList,$templateID,$pid,$row)
+ *  674:     function prependStaticExtra($subrow)
+ *  687:     function versionOL(&$row)
  *
  *              SECTION: Parsing TypoScript code text from Template Records into PHP array
- *  696:     function generateConfig()
- *  862:     function procesIncludes()
- *  886:     function mergeConstantsFromPageTSconfig($constArray)
- *  915:     function flattenSetup($setupArray, $prefix, $resourceFlag)
- *  939:     function substituteConstants($all)
+ *  724:     function generateConfig()
+ *  890:     function procesIncludes()
+ *  914:     function mergeConstantsFromPageTSconfig($constArray)
+ *  943:     function flattenSetup($setupArray, $prefix, $resourceFlag)
+ *  967:     function substituteConstants($all)
  *
  *              SECTION: Various API functions, used from elsewhere in the frontend classes
- *  977:     function splitConfArray($conf,$splitCount)
- * 1054:     function getFileName($fileFromSetup)
- * 1111:     function extractFromResources($res,$file)
- * 1139:     function checkFile($name,$menuArr)
- * 1156:     function printTitle($title,$no_title=0,$titleFirst=0)
- * 1179:     function fileContent($fName)
- * 1199:     function wrap($content,$wrap)
- * 1213:     function removeQueryString($url)
- * 1230:     function sortedKeyList($setupArr, $acceptOnlyProperties=FALSE)
+ * 1005:     function splitConfArray($conf,$splitCount)
+ * 1082:     function getFileName($fileFromSetup)
+ * 1139:     function extractFromResources($res,$file)
+ * 1167:     function checkFile($name,$menuArr)
+ * 1184:     function printTitle($title,$no_title=0,$titleFirst=0)
+ * 1207:     function fileContent($fName)
+ * 1227:     function wrap($content,$wrap)
+ * 1241:     function removeQueryString($url)
+ * 1258:     function sortedKeyList($setupArr, $acceptOnlyProperties=FALSE)
  *
  *              SECTION: Functions for creating links
- * 1277:     function linkData($page,$oTarget,$no_cache,$script,$overrideArray='',$addParams='',$typeOverride='')
- * 1396:     function getFromMPmap($pageId=0)
- * 1432:     function initMPmap_create($id,$MP_array=array(),$level=0)
+ * 1305:     function linkData($page,$oTarget,$no_cache,$script,$overrideArray='',$addParams='',$typeOverride='')
+ * 1432:     function getFromMPmap($pageId=0)
+ * 1468:     function initMPmap_create($id,$MP_array=array(),$level=0)
  *
- * TOTAL FUNCTIONS: 26
+ * TOTAL FUNCTIONS: 27
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -677,6 +678,12 @@ class t3lib_TStemplate	{
 		return $subrow;
 	}
 
+	/**
+	 * Creating versioning overlay of a sys_template record. This will use either frontend or backend overlay functionality depending on environment.
+	 *
+	 * @param	array		Row to overlay.
+	 * @return	void		Row is passed by reference.
+	 */
 	function versionOL(&$row)	{
 		if (is_object($GLOBALS['TSFE']))	{	// Frontend:
 			$GLOBALS['TSFE']->sys_page->versionOL('sys_template',$row);

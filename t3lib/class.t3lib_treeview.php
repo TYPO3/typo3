@@ -122,6 +122,7 @@ class t3lib_treeView {
 	var $ext_IconMode = false;		// If true, no context menu is rendered on icons. If set to "titlelink" the icon is linked as the title is.
 	var $addSelfId = 0;				// If set, the id of the mounts will be added to the internal ids array
 	var $title='no title';			// Used if the tree is made of records (not folders for ex.)
+	var $showDefaultTitleAttribute = FALSE;		// If true, a default title attribute showing the UID of the record is shown. This cannot be enabled by default because it will destroy many applications where another title attribute is in fact applied later.
 
 	/**
 	 * Needs to be initialized with $GLOBALS['BE_USER']
@@ -651,9 +652,9 @@ class t3lib_treeView {
 	 */
 	function getIcon($row) {
 		if ($this->iconPath && $this->iconName) {
-			$icon = '<img'.t3lib_iconWorks::skinImg('',$this->iconPath.$this->iconName,'width="18" height="16"').' alt="" title="UID: '.$row['uid'].'" />';
+			$icon = '<img'.t3lib_iconWorks::skinImg('',$this->iconPath.$this->iconName,'width="18" height="16"').' alt=""'.($this->showDefaultTitleAttribute ? ' title="UID: '.$row['uid'].'"':'').' />';
 		} else {
-			$icon = t3lib_iconWorks::getIconImage($this->table,$row,$this->backPath,'align="top" class="c-recIcon" title="UID: '.$row['uid'].'"');
+			$icon = t3lib_iconWorks::getIconImage($this->table,$row,$this->backPath,'align="top" class="c-recIcon"'.($this->showDefaultTitleAttribute ? ' title="UID: '.$row['uid'].'"':''));
 		}
 
 		return $this->wrapIcon($icon,$row);

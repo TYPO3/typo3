@@ -278,12 +278,12 @@ class tx_version_cm1 extends t3lib_SCbase {
 			<form action="'.$this->doc->backPath.'tce_db.php" method="post">
 			Label: <input type="text" name="cmd['.$this->table.']['.$this->uid.'][version][label]" /><br/>
 			'.($this->table == 'pages' ? '<select name="cmd['.$this->table.']['.$this->uid.'][version][treeLevels]">
-				<option value="0">Page + content</option>
-				<option value="1">1 level</option>
-				<option value="2">2 levels</option>
-				<option value="3">3 levels</option>
-				<option value="4">4 levels</option>
-				<option value="-1">Just page record</option>
+				<option value="0">Page: Page + content</option>
+				<option value="1">Branch: 1 level</option>
+				<option value="2">Branch: 2 levels</option>
+				<option value="3">Branch: 3 levels</option>
+				<option value="4">Branch: 4 levels</option>
+				<option value="-1">Element: Just record</option>
 			</select>' : '').'
 			<br/><input type="hidden" name="cmd['.$this->table.']['.$this->uid.'][version][action]" value="new" />
 			<input type="hidden" name="prErr" value="1" />

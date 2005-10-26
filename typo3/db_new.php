@@ -335,6 +335,7 @@ class SC_db_new {
 							&& $this->isTableAllowedForThisPage($this->pageinfo, $t)
 							&& $BE_USER->check('tables_modify',$t)
 							&& (($v['ctrl']['rootLevel'] xor $this->id) || $v['ctrl']['rootLevel']==-1)
+							&& $BE_USER->workspaceCreateNewRecord($this->pageinfo['_ORIG_uid']?$this->pageinfo['_ORIG_uid']:$this->id, $t)
 							)	{
 
 							// Create new link for record:
