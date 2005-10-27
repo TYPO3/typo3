@@ -606,7 +606,6 @@ class t3lib_TCEmain	{
 								if ($recordAccess)	{
 
 									if ($res = $this->BE_USER->workspaceAllowLiveRecordsInPID($theRealPid,$table))	{	// If LIVE records cannot be created in the current PID due to workspace restrictions, prepare creation of placeholder-record
-#debug($res,'NEW');
 										if ($res<0)	{
 											$recordAccess = FALSE;
 											$this->newlog('Stage for versioning root point and users access level did not allow for editing',1);
@@ -614,7 +613,6 @@ class t3lib_TCEmain	{
 									} else {	// So, if no live records were allowed, we have to create a new version of this record:
 										if ($TCA[$table]['ctrl']['versioningWS'])	{
 											$createNewVersion = TRUE;
-#debug('new version');
 										} else {
 											$recordAccess = FALSE;
 											$this->newlog('Record could not be created in this workspace in this branch',1);
@@ -738,6 +736,7 @@ class t3lib_TCEmain	{
 										if ($this->BE_USER->workspaceVersioningTypeAccess($versioningType))	{
 											$newVersion_placeholderFieldArray['t3ver_label'] = 'INITIAL PLACEHOLDER';
 											$newVersion_placeholderFieldArray['t3ver_state'] = 1;	// Setting placeholder state value for temporary record
+											$newVersion_placeholderFieldArray['t3ver_wsid'] = $this->BE_USER->workspace;	// Setting workspace - only so display of place holders can filter out those from other workspaces.
 											$newVersion_placeholderFieldArray[$TCA[$table]['ctrl']['label']] = '[PLACEHOLDER, WS#'.$this->BE_USER->workspace.']';
 											$this->insertDB($table,$id,$newVersion_placeholderFieldArray,FALSE);	// Saving placeholder as 'original'
 
@@ -2081,14 +2080,21 @@ class t3lib_TCEmain	{
 							break;
 							case 'delete':
 								$delRec = t3lib_BEfunc::getRecord($table, $id);
-								if (is_array($delRec))	{
-									if ($this->BE_USER->workspaceAllowLiveRecordsInPID($delRec['pid'], $table))	{	// Directly delete:
-										if ($table === 'pages')	{
-											$this->deletePages($id);
+								if (is_array($delRec))	{	// Record asked to be deleted was found:
+
+										// Look, if record is "online" or in a versionized branch, then delete directly.
+									if ($res = $this->BE_USER->workspaceAllowLiveRecordsInPID($delRec['pid'], $table))	{	// Directly delete:
+										if ($res>0)	{
+											if ($table === 'pages')	{
+												$this->deletePages($id);
+											} else {
+												$this->deleteRecord($table,$id);
+											}
 										} else {
-											$this->deleteRecord($table,$id, 0);
+											$this->newlog('Stage of root point did not allow for deletion',1);
 										}
 									} else {
+										// Otherwise, try to delete by versionization:
 										$this->versionizeRecord($table,$id,'DELETED!',TRUE);
 									}
 								}
@@ -2137,14 +2143,25 @@ class t3lib_TCEmain	{
 	 * @param	boolean		$first is a flag set, if the record copied is NOT a 'slave' to another record copied. That is, if this record was asked to be copied in the cmd-array
 	 * @param	array		Associative array with field/value pairs to override directly. Notice; Fields must exist in the table record and NOT be among excluded fields!
 	 * @param	string		Commalist of fields to exclude from the copy process (might get default values)
-	 * @return	void
+	 * @return	integer		ID of new record, if any
 	 */
 	function copyRecord($table,$uid,$destPid,$first=0,$overrideValues=array(),$excludeFields='')	{
 		global $TCA;
 
-		$uid = intval($uid);
+		$uid = $origUid = intval($uid);
 		if ($TCA[$table] && $uid)	{
 			t3lib_div::loadTCA($table);
+/*
+				// In case the record to be moved turns out to be an offline version, we have to find the live version and work on that one (this case happens for pages with "branch" versioning type)
+			if ($lookForLiveVersion = t3lib_BEfunc::getLiveVersionOfRecord($table,$uid,'uid'))	{
+				$uid = $lookForLiveVersion['uid'];
+			}
+				// Get workspace version of the source record, if any: Then we will copy workspace version instead:
+			if ($WSversion = t3lib_BEfunc::getWorkspaceVersionOfRecord($this->BE_USER->workspace, $table, $uid, 'uid,t3ver_oid'))	{
+				$uid = $WSversion['uid'];
+			}
+				// Now, the $uid is the actual record we will copy while $origUid is the record we asked to get copied - but that could be a live version.
+*/
 			if ($this->doesRecordExist($table,$uid,'show'))	{		// This checks if the record can be selected which is all that a copy action requires.
 				$data = Array();
 
@@ -2227,13 +2244,15 @@ class t3lib_TCEmain	{
 						// Getting the new UID:
 					$theNewSQLID = $copyTCE->substNEWwithIDs[$theNewID];
 					if ($theNewSQLID)	{
-						$this->copyMappingArray[$table][$uid] = $theNewSQLID;
+						$this->copyMappingArray[$table][$origUid] = $theNewSQLID;
 					}
 
 						// Copy back the cached TSconfig
 					$this->cachedTSconfig = $copyTCE->cachedTSconfig;
 					$this->errorLog = array_merge($this->errorLog,$copyTCE->errorLog);
 					unset($copyTCE);
+
+					return $theNewSQLID;
 				} else $this->log($table,$uid,3,0,1,'Attempt to copy record that did not exist!');
 			} else $this->log($table,$uid,3,0,1,'Attempt to copy record without permission');
 		}
@@ -2268,8 +2287,7 @@ class t3lib_TCEmain	{
 		if ($this->admin || in_array('pages',$copyTablesArray))	{
 
 				// Copy this page we're on. And set first-flag (this will trigger that the record is hidden if that is configured)!
-			$this->copySpecificPage($uid,$destPid,$copyTablesArray,1);
-			$theNewRootID = $this->copyMappingArray['pages'][$uid];		// This is the new ID of the rootpage of the copy-action. This ID is excluded when the list is gathered lateron
+			$theNewRootID = $this->copySpecificPage($uid,$destPid,$copyTablesArray,1);
 
 				// If we're going to copy recursively...:
 			if ($theNewRootID && $this->copyTree)	{
@@ -2300,14 +2318,13 @@ class t3lib_TCEmain	{
 	 * @param	integer		Destination PID: >=0 then it points to a page-id on which to insert the record (as the first element). <0 then it points to a uid from its own table after which to insert it (works if
 	 * @param	array		Table on pages to copy along with the page.
 	 * @param	boolean		$first is a flag set, if the record copied is NOT a 'slave' to another record copied. That is, if this record was asked to be copied in the cmd-array
-	 * @return	void
+	 * @return	integer		The id of the new page, if applicable.
 	 */
 	function copySpecificPage($uid,$destPid,$copyTablesArray,$first=0)	{
 		global $TCA;
 
 			// Copy the page itself:
-		$this->copyRecord('pages',$uid,$destPid,$first);
-		$theNewRootID = $this->copyMappingArray['pages'][$uid];	// The new uid
+		$theNewRootID = $this->copyRecord('pages',$uid,$destPid,$first);
 
 			// If a new page was created upon the copy operation we will proceed with all the tables ON that page:
 		if ($theNewRootID)	{
@@ -2319,6 +2336,7 @@ class t3lib_TCEmain	{
 					}
 				}
 			}
+			return $theNewRootID;
 		}
 	}
 
@@ -2629,14 +2647,23 @@ class t3lib_TCEmain	{
 	function moveRecord($table,$uid,$destPid)	{
 		global $TCA;
 
-			// Initialize:
-		$sortRow = $TCA[$table]['ctrl']['sortby'];
-		$destPid = intval($destPid);
-		$origDestPid = $destPid;
-
 		if ($TCA[$table])	{
+
+				// In case the record to be moved turns out to be an offline version, we have to find the live version and work on that one (this case happens for pages with "branch" versioning type)
+			if ($lookForLiveVersion = t3lib_BEfunc::getLiveVersionOfRecord($table,$uid,'uid'))	{
+				$uid = $lookForLiveVersion['uid'];
+			}
+
+				// Get workspace version of the source record, if any:
+			$WSversion = t3lib_BEfunc::getWorkspaceVersionOfRecord($this->BE_USER->workspace, $table, $uid, 'uid,t3ver_oid');
+
+				// Initialize:
+			$sortRow = $TCA[$table]['ctrl']['sortby'];
+			$destPid = intval($destPid);
+			$origDestPid = $destPid;
+
 			$propArr = $this->getRecordProperties($table,$uid);	// Get this before we change the pid (for logging)
-			$resolvedPid = $this->resolvePid($table,$destPid);	// This is the actual pid of the moving.
+			$resolvedPid = $this->resolvePid($table,$destPid);	// This is the actual pid of the moving to destination
 
 				// Finding out, if the record may be moved from where it is. If the record is a non-page, then it depends on edit-permissions.
 				// If the record is a page, then there are two options: If the page is moved within itself, (same pid) it's edit-perms of the pid. If moved to another place then its both delete-perms of the pid and new-page perms on the destination.
@@ -2646,28 +2673,34 @@ class t3lib_TCEmain	{
 				$mayMoveAccess = $this->doesRecordExist($table,$uid,'delete');
 			}
 
-				// Finding out, if the record may be moved TO another place. Here we check insert-rights (non-pages = edit, pages = new), unless the pages is moved on the same pid, then edit-rights are checked
+				// Finding out, if the record may be moved TO another place. Here we check insert-rights (non-pages = edit, pages = new), unless the pages are moved on the same pid, then edit-rights are checked
 			if ($table!='pages' || $resolvedPid!=$propArr['pid'])	{
-				$mayInsertAccess = $this->checkRecordInsertAccess($table,$resolvedPid,4);	// Edit rights for the record...
+				$mayInsertAccess = $this->checkRecordInsertAccess($table,$resolvedPid,4);	// Insert rights for the record...
 			} else {
 				$mayInsertAccess = $this->checkRecordUpdateAccess($table,$uid);
 			}
 
 				// Check workspace permissions:
-			if (!strcmp($propArr['_ORIG_pid'],'') && (int)$propArr['t3ver_state']==1)	{		// Element was an online version AND it was in "New state" so it can be moved...
-				// Nothing.
+			$workspaceAccessBlocked = array();
+			$recIsNewVersion = !strcmp($propArr['_ORIG_pid'],'') && (int)$propArr['t3ver_state']==1;	// Element was an online version AND it was in "New state" so it can be moved...
+			$destRes = $this->BE_USER->workspaceAllowLiveRecordsInPID($resolvedPid,$table);
+				// Workspace source check:
+			if ($errorCode = $this->BE_USER->workspaceCannotEditRecord($table, $WSversion['uid'] ? $WSversion['uid'] : $uid))	{
+				$workspaceAccessBlocked['src1']='Record could not be edited in workspace: '.$errorCode.' ';
 			} else {
-				$workspaceAccessBlocked = '';
-				if ($this->BE_USER->workspaceAllowLiveRecordsInPID($resolvedPid,$table)<=0)	{
-					$workspaceAccessBlocked.='Could not insert record from table "'.$table.'" in destination PID "'.$resolvedPid.'" ';
+				if (!$recIsNewVersion && $this->BE_USER->workspaceAllowLiveRecordsInPID($propArr['pid'],$table)<=0)	{
+					$workspaceAccessBlocked['src2']='Could not remove record from table "'.$table.'" from its page "'.$propArr['pid'].'" ';
 				}
-				if ($this->BE_USER->workspaceAllowLiveRecordsInPID($propArr['pid'],$table)<=0)	{
-					$workspaceAccessBlocked.='Could not remove record from table "'.$table.'" from its page "'.$propArr['pid'].'" ';
-				}
+			}
+				// Workspace destination check:
+			if (!($destRes>0 || ($recIsNewVersion && !$destRes)))	{	// All records can be inserted if $destRes is greater than zero. Only new versions can be inserted if $destRes is false. NO RECORDS can be inserted if $destRes is negative which indicates a stage not allowed for use.
+				$workspaceAccessBlocked['dest1']='Could not insert record from table "'.$table.'" in destination PID "'.$resolvedPid.'" ';
+			} elseif ($destRes==1 && $WSversion['uid'])	{
+				$workspaceAccessBlocked['dest2']='Could not insert other versions in destination PID ';
 			}
 
 				// Checking if the pid is negative, but no sorting row is defined. In that case, find the correct pid. Basically this check make the error message 4-13 meaning less... But you can always remove this check if you prefer the error instead of a no-good action (which is to move the record to its own page...)
-			if ($destPid<0 && !$sortRow)	{
+			if (($destPid<0 && !$sortRow) || $destPid>=0)	{	// $destPid>=0 because we must correct pid in case of versioning "page" types.
 				$destPid = $resolvedPid;
 			}
 
@@ -2678,7 +2711,7 @@ class t3lib_TCEmain	{
 			}
 
 					// If moving is allowed, begin the processing:
-			if (!$workspaceAccessBlocked)	{
+			if (!count($workspaceAccessBlocked))	{
 				if ($mayMoveAccess)	{
 					if ($destPid>=0)	{	// insert as first element on page (where uid = $destPid)
 						if ($mayInsertAccess)	{
@@ -2692,7 +2725,6 @@ class t3lib_TCEmain	{
 									$sortNumber = $this->getSortNumber($table,$uid,$destPid);
 									$updateFields[$sortRow] = $sortNumber;
 								}
-
 									// Create query for update:
 								$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table, 'uid='.intval($uid), $updateFields);
 
@@ -2763,7 +2795,7 @@ class t3lib_TCEmain	{
 					$this->log($table,$uid,4,0,1,"Attempt to move record '%s' (%s) without having permissions to do so",14,array($propArr['header'],$table.':'.$uid),$propArr['event_pid']);
 				}
 			} else {
-				$this->newlog("Move attempt failed due to workspace restrictions: ".$workspaceAccessBlocked);
+				$this->newlog("Move attempt failed due to workspace restrictions: ".implode(' ',$workspaceAccessBlocked),1);
 			}
 		}
 	}
@@ -2792,7 +2824,7 @@ class t3lib_TCEmain	{
 						if (is_array($row))	{
 							if ($row[$TCA[$table]['ctrl']['languageField']] <= 0)	{
 								if ($row[$TCA[$table]['ctrl']['transOrigPointerField']] == 0)	{
-									if (!t3lib_BEfunc::getRecordsByField($table,$TCA[$table]['ctrl']['transOrigPointerField'],$uid,'AND pid='.intval($row['pid']).' AND '.$TCA[$table]['ctrl']['languageField'].'='.$langRec['uid']))	{
+									if (!t3lib_BEfunc::getRecordsByField($table,$TCA[$table]['ctrl']['transOrigPointerField'],$uid,'AND pid='.intval($row['pid']).' AND '.$TCA[$table]['ctrl']['languageField'].'='.intval($langRec['uid'])))	{
 
 											// Initialize:
 										$overrideValues = array();
@@ -2857,64 +2889,66 @@ class t3lib_TCEmain	{
 		$id = intval($id);
 
 		if ($TCA[$table] && $TCA[$table]['ctrl']['versioningWS'] && $id>0)	{
-			if ($this->doesRecordExist($table,$id,'show') && $this->doesRecordExist($table,$id,'edit'))	{
+			if ($this->doesRecordExist($table,$id,'show'))	{
 				if ($this->BE_USER->workspaceVersioningTypeAccess($versionizeTree))	{
 
 						// Select main record:
 					$row = $this->recordInfo($table,$id,'pid,t3ver_id');
 					if (is_array($row))	{
-						if ($row['pid']>=0)	{	// record must be online record.
+						if ($row['pid']>=0)	{	// record must be online record
+							if (!$delete || !$this->cannotDeleteRecord($table,$id)) {
 
-								// Checking if the record already has a version in the current workspace of the backend user
-							$workspaceCheck = TRUE;
-							if ($this->BE_USER->workspace!==0)	{
-									// Look for version already in workspace:
-								$workspaceCheck = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
-									'uid',
-									$table,
-									'(t3ver_oid='.$id.' || uid='.$id.')
-										AND t3ver_wsid='.intval($this->BE_USER->workspace).
-										$this->deleteClause($table)
-								) ? FALSE : TRUE;
-							}
-
-							if ($workspaceCheck)	{
-									// Look for next version number:
-								$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-									't3ver_id',
-									$table,
-									'(t3ver_oid='.$id.' || uid='.$id.')'.$this->deleteClause($table),
-									'',
-									't3ver_id DESC',
-									'1'
-								);
-								list($highestVerNumber) = $GLOBALS['TYPO3_DB']->sql_fetch_row($res);
-
-									// Look for version number of the current:
-								$subVer = $row['t3ver_id'].'.'.($highestVerNumber+1);
-
-									// Set up the values to override when making a raw-copy:
-								$overrideArray = array(
-									't3ver_id' => $highestVerNumber+1,
-									't3ver_oid' => $id,
-									't3ver_label' => ($label ? $label : $subVer.' / '.date('d-m-Y H:m:s')),
-									't3ver_wsid' => $this->BE_USER->workspace,
-									't3ver_state' => $delete ? 2 : 0,
-									't3ver_count' => 0,
-									't3ver_stage' => 0,
-									't3ver_tstamp' => 0
-								);
-								if ($TCA[$table]['ctrl']['editlock'])	{
-									$overrideArray[$TCA[$table]['ctrl']['editlock']] = 0;
-								}
-								if ($table==='pages')	{
-									$overrideArray['t3ver_swapmode'] = $versionizeTree;
+									// Checking if the record already has a version in the current workspace of the backend user
+								$workspaceCheck = TRUE;
+								if ($this->BE_USER->workspace!==0)	{
+										// Look for version already in workspace:
+									$workspaceCheck = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+										'uid',
+										$table,
+										'(t3ver_oid='.$id.' || uid='.$id.')
+											AND t3ver_wsid='.intval($this->BE_USER->workspace).
+											$this->deleteClause($table)
+									) ? FALSE : TRUE;
 								}
 
-									// Create raw-copy and return result:
-								return $this->copyRecord_raw($table,$id,-1,$overrideArray);
+								if ($workspaceCheck)	{
+										// Look for next version number:
+									$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+										't3ver_id',
+										$table,
+										'(t3ver_oid='.$id.' || uid='.$id.')'.$this->deleteClause($table),
+										'',
+										't3ver_id DESC',
+										'1'
+									);
+									list($highestVerNumber) = $GLOBALS['TYPO3_DB']->sql_fetch_row($res);
 
-							} else $this->newlog('Record you wanted to versionize was already a version in the workspace (wsid='.$this->BE_USER->workspace.')!',1);
+										// Look for version number of the current:
+									$subVer = $row['t3ver_id'].'.'.($highestVerNumber+1);
+
+										// Set up the values to override when making a raw-copy:
+									$overrideArray = array(
+										't3ver_id' => $highestVerNumber+1,
+										't3ver_oid' => $id,
+										't3ver_label' => ($label ? $label : $subVer.' / '.date('d-m-Y H:m:s')),
+										't3ver_wsid' => $this->BE_USER->workspace,
+										't3ver_state' => $delete ? 2 : 0,
+										't3ver_count' => 0,
+										't3ver_stage' => 0,
+										't3ver_tstamp' => 0
+									);
+									if ($TCA[$table]['ctrl']['editlock'])	{
+										$overrideArray[$TCA[$table]['ctrl']['editlock']] = 0;
+									}
+									if ($table==='pages')	{
+										$overrideArray['t3ver_swapmode'] = $versionizeTree;
+									}
+
+										// Create raw-copy and return result:
+									return $this->copyRecord_raw($table,$id,-1,$overrideArray);
+
+								} else $this->newlog('Record you wanted to versionize was already a version in the workspace (wsid='.$this->BE_USER->workspace.')!',1);
+							} else $this->newlog('Record cannot be deleted: '.$this->cannotDeleteRecord($table,$id),1);
 						} else $this->newlog('Record you wanted to versionize was already a version in archive (pid=-1)!',1);
 					} else $this->newlog('Record you wanted to versionize did not exist!',1);
 				} else $this->newlog('The versioning type '.$versionizeTree.' mode you requested was not allowed',1);
@@ -2935,46 +2969,53 @@ class t3lib_TCEmain	{
 		global $TCA;
 
 		$uid = intval($uid);
+		$brExist = $this->doesBranchExist('',$uid,$this->pMap['show'],1);	// returns the branch
 
-			// Finding list of tables ALLOWED to be copied
-		$allowedTablesArray = $this->admin ? $this->compileAdminTables() : explode(',',$this->BE_USER->groupData['tables_modify']);	// These are the tables, the user may modify
+		if ($brExist != -1)	{	// Checks if we had permissions
 
-			// Make list of tables that should come along with a new version of the page:
-		$verTablesArray = array();
-		$allTables = array_keys($TCA);
-		foreach($allTables as $tN)	{
-			if ($tN!='pages' && ($versionizeTree>0 || $TCA[$tN]['ctrl']['versioning_followPages']) && ($this->admin || in_array($tN, $allowedTablesArray)))	{
-				$verTablesArray[] = $tN;
+				// Finding list of tables ALLOWED to be copied
+			$allowedTablesArray = $this->admin ? $this->compileAdminTables() : explode(',',$this->BE_USER->groupData['tables_modify']);	// These are the tables, the user may modify
+			$allowedTablesArray = $this->compileAdminTables();	// These are ALL tables because a new version should be ALL of them regardless of permission of the user executing the request.
+
+				// Make list of tables that should come along with a new version of the page:
+			$verTablesArray = array();
+			$allTables = array_keys($TCA);
+			foreach($allTables as $tN)	{
+				if ($tN!='pages' && ($versionizeTree>0 || $TCA[$tN]['ctrl']['versioning_followPages']) && ($this->admin || in_array($tN, $allowedTablesArray)))	{
+					$verTablesArray[] = $tN;
+				}
 			}
-		}
 
-			// Begin to copy pages if we're allowed to:
-		if ($this->admin || in_array('pages',$allowedTablesArray))	{
-			if ($this->BE_USER->workspaceVersioningTypeAccess($versionizeTree))	{
-					// Versionize this page:
-				$theNewRootID = $this->versionizeRecord('pages',$uid,$label,FALSE,$versionizeTree);
-				$this->rawCopyPageContent($uid,$theNewRootID,$verTablesArray);
+				// Begin to copy pages if we're allowed to:
+			if ($this->admin || in_array('pages',$allowedTablesArray))	{
+				if ($this->BE_USER->workspaceVersioningTypeAccess($versionizeTree))	{
+						// Versionize this page:
+					$theNewRootID = $this->versionizeRecord('pages',$uid,$label,FALSE,$versionizeTree);
+					if ($theNewRootID)	{
+						$this->rawCopyPageContent($uid,$theNewRootID,$verTablesArray);
 
-					// If we're going to copy recursively...:
-				if ($theNewRootID && $versionizeTree>0)	{
+							// If we're going to copy recursively...:
+						if ($versionizeTree>0)	{
 
-						// Get ALL subpages to copy (read permissions respected - they should NOT be...):
-					$CPtable = $this->int_pageTreeInfo(Array(), $uid, intval($versionizeTree), $theNewRootID);
+								// Get ALL subpages to copy (read permissions respected - they should NOT be...):
+							$CPtable = $this->int_pageTreeInfo(Array(), $uid, intval($versionizeTree), $theNewRootID);
 
-						// Now copying the subpages:
-					foreach($CPtable as $thePageUid => $thePagePid)	{
-						$newPid = $this->copyMappingArray['pages'][$thePagePid];
-						if (isset($newPid))	{
-							$theNewRootID = $this->copyRecord_raw('pages',$thePageUid,$newPid);
-							$this->rawCopyPageContent($thePageUid,$theNewRootID,$verTablesArray);
-						} else {
-							$this->newlog('Something went wrong during copying branch (for versioning)',1);
-							break;
-						}
-					}
-				}	// else the page was not copied. Too bad...
-			} else $this->newlog('Versioning type "'.$versionizeTree.'" was not allowed in workspace',1);
-		} else $this->newlog('Attempt to versionize page without permission to this table',1);
+								// Now copying the subpages:
+							foreach($CPtable as $thePageUid => $thePagePid)	{
+								$newPid = $this->copyMappingArray['pages'][$thePagePid];
+								if (isset($newPid))	{
+									$theNewRootID = $this->copyRecord_raw('pages',$thePageUid,$newPid);
+									$this->rawCopyPageContent($thePageUid,$theNewRootID,$verTablesArray);
+								} else {
+									$this->newlog('Something went wrong during copying branch (for versioning)',1);
+									break;
+								}
+							}
+						}	// else the page was not copied. Too bad...
+					} else $this->newlog('The root version could not be created!',1);
+				} else $this->newlog('Versioning type "'.$versionizeTree.'" was not allowed in workspace',1);
+			} else $this->newlog('Attempt to versionize page without permission to this table',1);
+		} else $this->newlog('Could not read all subpages to versionize.',1);
 	}
 
 	/**
@@ -3034,99 +3075,109 @@ class t3lib_TCEmain	{
 			if (is_array($curVersion) && is_array($swapVersion))	{
 
 				if ($this->BE_USER->workspacePublishAccess($swapVersion['t3ver_wsid']))	{
-					if (!$swapIntoWS || $this->BE_USER->workspaceSwapAccess())	{
-						if (!is_array(t3lib_BEfunc::getRecord($table,-$id,'uid')))	{
+					if ($this->doesRecordExist($table,$swapWith,'show') && $this->checkRecordUpdateAccess($table,$swapWith)) {
+						if (!$swapIntoWS || $this->BE_USER->workspaceSwapAccess())	{
+							if (!is_array(t3lib_BEfunc::getRecord($table,-$id,'uid')))	{
 
-								// Add "keepfields"
-							$swapVerBaseArray = array();
-							$curVerBaseArray = array();
-							foreach($keepFields as $fN)	{
-								$swapVerBaseArray[$fN] = $curVersion[$fN];
-								$curVerBaseArray[$fN] = $swapVersion[$fN];
-							}
-
-								// Check if the swapWith record really IS a version of the original!
-							if ((int)$swapVersion['pid']==-1 && (int)$curVersion['pid']>=0 && !strcmp($swapVersion['t3ver_oid'],$id))	{
-
-								$sqlErrors=array();
-
-									// Step 1: Negate ID of online version:
-								$sArray = $curVerBaseArray;
-								$sArray['uid'] = -intval($id);
-								$sArray['t3ver_oid'] = intval($swapWith);
-								$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table,'uid='.intval($id),$sArray);
-								if ($GLOBALS['TYPO3_DB']->sql_error())	$sqlErrors[]=$GLOBALS['TYPO3_DB']->sql_error();
-
-									// Step 2: Set online ID for offline version:
-								$sArray = $swapVerBaseArray;
-								$sArray['uid'] = intval($id);
-								$sArray['pid'] = intval($curVersion['pid']);	// Set pid for ONLINE
-								$sArray['t3ver_oid'] = intval($id);
-								$sArray['t3ver_wsid'] = $swapIntoWS ? intval($curVersion['t3ver_wsid']) : 0;
-								$sArray['t3ver_tstamp'] = time();
-								$sArray['t3ver_stage'] = 0;
-								$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table,'uid='.intval($swapWith),$sArray);
-								if ($GLOBALS['TYPO3_DB']->sql_error())	$sqlErrors[]=$GLOBALS['TYPO3_DB']->sql_error();
-
-									// Step 3: Set offline id for the previously online version:
-								$sArray = array();
-								$sArray['uid'] = intval($swapWith);
-								$sArray['pid'] = -1;	// Set pid for OFFLINE
-								$sArray['t3ver_oid'] = intval($id);
-								$sArray['t3ver_wsid'] = $swapIntoWS ? intval($swapVersion['t3ver_wsid']) : 0;
-								$sArray['t3ver_tstamp'] = time();
-								$sArray['t3ver_count'] = $curVersion['t3ver_count']+1;	// Increment lifecycle counter
-								$sArray['t3ver_stage'] = 0;
-
-								if ($table==='pages') {		// Keeping the swapmode state
-									$sArray['t3ver_swapmode'] = $swapVersion['t3ver_swapmode'];
+									// Add "keepfields"
+								$swapVerBaseArray = array();
+								$curVerBaseArray = array();
+								foreach($keepFields as $fN)	{
+									$swapVerBaseArray[$fN] = $curVersion[$fN];
+									$curVerBaseArray[$fN] = $swapVersion[$fN];
 								}
-								$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table,'uid=-'.intval($id),$sArray);
-								if ($GLOBALS['TYPO3_DB']->sql_error())	$sqlErrors[]=$GLOBALS['TYPO3_DB']->sql_error();
 
-									// Checking for delete:
-								if ($swapVersion['t3ver_state']==2)	{
-									if ($table == 'pages')	{
-										$this->deletePages($id);
-									} else {
-										$this->deleteRecord($table,$id, 1);
+									// Check if the swapWith record really IS a version of the original!
+								if ((int)$swapVersion['pid']==-1 && (int)$curVersion['pid']>=0 && !strcmp($swapVersion['t3ver_oid'],$id))	{
+
+									$sqlErrors=array();
+
+										// Step 1: Negate ID of online version:
+									$sArray = $curVerBaseArray;
+									$sArray['uid'] = -intval($id);
+									$sArray['t3ver_oid'] = intval($swapWith);
+									$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table,'uid='.intval($id),$sArray);
+									if ($GLOBALS['TYPO3_DB']->sql_error())	$sqlErrors[]=$GLOBALS['TYPO3_DB']->sql_error();
+
+										// Step 2: Set online ID for offline version:
+									$sArray = $swapVerBaseArray;
+									$sArray['uid'] = intval($id);
+									$sArray['pid'] = intval($curVersion['pid']);	// Set pid for ONLINE
+									$sArray['t3ver_oid'] = intval($id);
+									$sArray['t3ver_wsid'] = $swapIntoWS ? intval($curVersion['t3ver_wsid']) : 0;
+									$sArray['t3ver_tstamp'] = time();
+									$sArray['t3ver_stage'] = 0;
+									$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table,'uid='.intval($swapWith),$sArray);
+									if ($GLOBALS['TYPO3_DB']->sql_error())	$sqlErrors[]=$GLOBALS['TYPO3_DB']->sql_error();
+
+										// Step 3: Set offline id for the previously online version:
+									$sArray = array();
+									$sArray['uid'] = intval($swapWith);
+									$sArray['pid'] = -1;	// Set pid for OFFLINE
+									$sArray['t3ver_oid'] = intval($id);
+									$sArray['t3ver_wsid'] = $swapIntoWS ? intval($swapVersion['t3ver_wsid']) : 0;
+									$sArray['t3ver_tstamp'] = time();
+									$sArray['t3ver_count'] = $curVersion['t3ver_count']+1;	// Increment lifecycle counter
+									$sArray['t3ver_stage'] = 0;
+
+									if ($table==='pages') {		// Keeping the swapmode state
+										$sArray['t3ver_swapmode'] = $swapVersion['t3ver_swapmode'];
 									}
-								}
+									$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table,'uid=-'.intval($id),$sArray);
+									if ($GLOBALS['TYPO3_DB']->sql_error())	$sqlErrors[]=$GLOBALS['TYPO3_DB']->sql_error();
 
-								if (!count($sqlErrors))	{
-									$this->newlog('Swapping successful for table "'.$table.'" uid '.$id.'=>'.$swapWith);
+										// Checking for delete:
+									if ($swapVersion['t3ver_state']==2)	{
+										if ($table == 'pages')	{
+											$this->deletePages($id, TRUE);	// Force delete
+										} else {
+											$this->deleteRecord($table,$id,TRUE);	// Force delete
+										}
+									}
+										// Checking for "new-placeholder" and if found, delete it:
+									if ($curVersion['t3ver_state']==1)	{
+										if ($table == 'pages')	{
+											$this->deletePages($swapWith, TRUE, TRUE);	// Force HARD delete!
+										} else {
+											$this->deleteRecord($table, $swapWith, TRUE, TRUE);	// Force HARD delete!
+										}
+									}
 
-										// SWAPPING pids for subrecords:
-									if ($table=='pages' && $swapVersion['t3ver_swapmode']>=0)	{
+									if (!count($sqlErrors))	{
+										$this->newlog('Swapping successful for table "'.$table.'" uid '.$id.'=>'.$swapWith);
 
-											// Collect table names that should be copied along with the tables:
-										foreach($TCA as $tN => $tCfg)	{
-											if ($swapVersion['t3ver_swapmode']>0 || $TCA[$tN]['ctrl']['versioning_followPages'])	{	// For "Branch" publishing swap ALL, otherwise for "page" publishing, swap only "versioning_followPages" tables
-		#debug($tN,'SWAPPING pids for subrecords:');
-												$temporaryPid = -($id+1000000);
+											// SWAPPING pids for subrecords:
+										if ($table=='pages' && $swapVersion['t3ver_swapmode']>=0)	{
 
-												$GLOBALS['TYPO3_DB']->exec_UPDATEquery($tN,'pid='.intval($id),array('pid'=>$temporaryPid));
-												if ($GLOBALS['TYPO3_DB']->sql_error())	$sqlErrors[]=$GLOBALS['TYPO3_DB']->sql_error();
+												// Collect table names that should be copied along with the tables:
+											foreach($TCA as $tN => $tCfg)	{
+												if ($swapVersion['t3ver_swapmode']>0 || $TCA[$tN]['ctrl']['versioning_followPages'])	{	// For "Branch" publishing swap ALL, otherwise for "page" publishing, swap only "versioning_followPages" tables
+			#debug($tN,'SWAPPING pids for subrecords:');
+													$temporaryPid = -($id+1000000);
 
-												$GLOBALS['TYPO3_DB']->exec_UPDATEquery($tN,'pid='.intval($swapWith),array('pid'=>$id));
-												if ($GLOBALS['TYPO3_DB']->sql_error())	$sqlErrors[]=$GLOBALS['TYPO3_DB']->sql_error();
+													$GLOBALS['TYPO3_DB']->exec_UPDATEquery($tN,'pid='.intval($id),array('pid'=>$temporaryPid));
+													if ($GLOBALS['TYPO3_DB']->sql_error())	$sqlErrors[]=$GLOBALS['TYPO3_DB']->sql_error();
 
-												$GLOBALS['TYPO3_DB']->exec_UPDATEquery($tN,'pid='.intval($temporaryPid),array('pid'=>$swapWith));
-												if ($GLOBALS['TYPO3_DB']->sql_error())	$sqlErrors[]=$GLOBALS['TYPO3_DB']->sql_error();
+													$GLOBALS['TYPO3_DB']->exec_UPDATEquery($tN,'pid='.intval($swapWith),array('pid'=>$id));
+													if ($GLOBALS['TYPO3_DB']->sql_error())	$sqlErrors[]=$GLOBALS['TYPO3_DB']->sql_error();
 
-												if (count($sqlErrors))	{
-													$this->newlog('During Swapping: SQL errors happend: '.implode('; ',$sqlErrors),2);
+													$GLOBALS['TYPO3_DB']->exec_UPDATEquery($tN,'pid='.intval($temporaryPid),array('pid'=>$swapWith));
+													if ($GLOBALS['TYPO3_DB']->sql_error())	$sqlErrors[]=$GLOBALS['TYPO3_DB']->sql_error();
+
+													if (count($sqlErrors))	{
+														$this->newlog('During Swapping: SQL errors happend: '.implode('; ',$sqlErrors),2);
+													}
 												}
 											}
 										}
-									}
-										// Clear cache:
-									$this->clear_cache($table,$id);
+											// Clear cache:
+										$this->clear_cache($table,$id);
 
-								} else $this->newlog('During Swapping: SQL errors happend: '.implode('; ',$sqlErrors),2);
-							} else $this->newlog('In swap version, either pid was not -1 or the t3ver_oid didn\'t match the id of the online version as it must!',2);
-						} else $this->newlog('Error: A record with a negative UID existed - that indicates some inconsistency in the database from prior versioning actions!',2);
-					} else $this->newlog('Workspace #'.$swapVersion['t3ver_wsid'].' does not support swapping.',1);
+									} else $this->newlog('During Swapping: SQL errors happend: '.implode('; ',$sqlErrors),2);
+								} else $this->newlog('In swap version, either pid was not -1 or the t3ver_oid didn\'t match the id of the online version as it must!',2);
+							} else $this->newlog('Error: A record with a negative UID existed - that indicates some inconsistency in the database from prior versioning actions!',2);
+						} else $this->newlog('Workspace #'.$swapVersion['t3ver_wsid'].' does not support swapping.',1);
+					} else $this->newlog('You cannot publish a record you do not have edit and show permissions for',1);
 				} else $this->newlog('User could not publish records from workspace #'.$swapVersion['t3ver_wsid'],1);
 			} else $this->newlog('Error: Either online or swap version could not be selected!',2);
 		} else $this->newlog('Error: You cannot swap versions for a record you do not have access to edit!',1);
@@ -3142,12 +3193,19 @@ class t3lib_TCEmain	{
 	function version_clearWSID($table,$id)	{
 		if ($errorCode = $this->BE_USER->workspaceCannotEditOfflineVersion($table, $id))	{
 			$this->newlog('Attempt to reset workspace for record failed: '.$errorCode,1);
-		} else {
-				// Clear workspace ID:
-			$sArray = array();
-			$sArray['t3ver_wsid'] = 0;
-			$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table,'uid='.intval($id),$sArray);
-		}
+		} elseif ($this->checkRecordUpdateAccess($table,$id)) {
+			if ($liveRec = t3lib_BEfunc::getLiveVersionOfRecord($table,$id,'uid,t3ver_state'))	{
+					// Clear workspace ID:
+				$sArray = array();
+				$sArray['t3ver_wsid'] = 0;
+				$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table,'uid='.intval($id),$sArray);
+
+					// Clear workspace ID for live version as well because it is a new record!
+				if ((int)$liveRec['t3ver_state']===1)	{
+					$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table,'uid='.intval($liveRec['uid']),$sArray);
+				}
+			}
+		} else $this->newlog('Attempt to reset workspace for record failed because you do not have edit access',1);
 	}
 
 	/**
@@ -3161,7 +3219,7 @@ class t3lib_TCEmain	{
 	function version_setStage($table,$id,$stageId)	{
 		if ($errorCode = $this->BE_USER->workspaceCannotEditOfflineVersion($table, $id))	{
 			$this->newlog('Attempt to set stage for record failed: '.$errorCode,1);
-		} else {
+		} elseif ($this->checkRecordUpdateAccess($table,$id)) {
 			$stat = $this->BE_USER->checkWorkspaceCurrent();
 			if (t3lib_div::inList('admin,online,offline,reviewer,owner', $stat['_ACCESS']) || ($stageId<=1 && $stat['_ACCESS']==='member'))	{
 
@@ -3171,7 +3229,7 @@ class t3lib_TCEmain	{
 				$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table, 'uid='.intval($id), $sArray);
 				$this->newlog('Stage for record was changed to '.$stageId);
 			} else $this->newlog('The member user tried to set a stage value "'.$stageId.'" that was not allowed',1);
-		}
+		} else $this->newlog('Attempt to set stage for record failed because you do not have edit access',1);
 	}
 
 
@@ -3196,19 +3254,23 @@ class t3lib_TCEmain	{
 	/**
 	 * Deleting a record
 	 * This function may not be used to delete pages-records unless the underlying records are already deleted
+	 * Deletes a record regardless of versioning state (live of offline, doesn't matter, the uid decides)
+	 * If both $noRecordCheck and $forceHardDelete are set it could even delete a "deleted"-flagged record!
 	 *
 	 * @param	string		Table name
 	 * @param	integer		Record UID
-	 * @param	boolean		Flag: If $noRecordCheck is set, then the function does not check permissions
+	 * @param	boolean		Flag: If $noRecordCheck is set, then the function does not check permission to delete record
+	 * @param	boolean		If TRUE, the "deleted" flag is ignored if applicable for record and the record is deleted COMPLETELY!
 	 * @return	void
 	 */
-	function deleteRecord($table,$uid, $noRecordCheck)	{
+	function deleteRecord($table,$uid, $noRecordCheck=FALSE, $forceHardDelete=FALSE)	{
 		global $TCA;
+
 		$uid = intval($uid);
 		if ($TCA[$table] && $uid)	{
-			$deleteRow = $TCA[$table]['ctrl']['delete'];
 			if ($noRecordCheck || $this->doesRecordExist($table,$uid,'delete'))	{
-				if ($deleteRow)	{
+				$deleteRow = $TCA[$table]['ctrl']['delete'];
+				if ($deleteRow && !$forceHardDelete)	{
 					$updateFields = array(
 						$deleteRow => 1
 					);
@@ -3227,7 +3289,6 @@ class t3lib_TCEmain	{
 						$mres = $GLOBALS['TYPO3_DB']->exec_SELECTquery(implode(',',$fileFieldArr), $table, 'uid='.intval($uid));
 						if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($mres))	{
 							$fArray = $fileFieldArr;
-
 							foreach($fArray as $theField)	{	// MISSING: Support for MM file relations!
 								$this->extFileFunctions($table,$theField,$row[$theField],'deleteAll');		// This deletes files that belonged to this record.
 							}
@@ -3254,43 +3315,39 @@ class t3lib_TCEmain	{
 	 * Used to delete page because it will check for branch below pages and unallowed tables on the page as well.
 	 *
 	 * @param	integer		Page id
+	 * @param	boolean		If TRUE, pages are not checked for permission.
+	 * @param	boolean		If TRUE, the "deleted" flag is ignored if applicable for record and the record is deleted COMPLETELY!
 	 * @return	void
 	 */
-	function deletePages($uid)	{
-		if ($this->doesRecordExist('pages',$uid,'delete'))	{	// If we may at all delete this page
-			if ($this->deleteTree)	{
-				$brExist = $this->doesBranchExist('',$uid,$this->pMap['delete'],1);	// returns the branch
-				if ($brExist != -1)	{	// Checks if we had permissions
-					if ($this->noRecordsFromUnallowedTables($brExist.$uid))	{
-						$uidArray = explode(',',$brExist);
-						while (list(,$listUid)=each($uidArray))	{
-							if (trim($listUid))	{
-								$this->deleteSpecificPage($listUid);
-							}
-						}
-						$this->deleteSpecificPage($uid);
-					} else $this->log('pages',$uid,3,0,1,'Attempt to delete records from disallowed tables');
-				} else $this->log('pages',$uid,3,0,1,'Attempt to delete pages in branch without permissions');
-			} else {
-				$brExist = $this->doesBranchExist('',$uid,$this->pMap['delete'],1);	// returns the branch
-				if ($brExist == '')	{	// Checks if branch exists
-					if ($this->noRecordsFromUnallowedTables($uid))	{
-						$this->deleteSpecificPage($uid);
-					} else $this->log('pages',$uid,3,0,1,'Attempt to delete records from disallowed tables');
-				} else $this->log('pages',$uid,3,0,1,'Attempt to delete page which has subpages');
+	function deletePages($uid,$force=FALSE,$forceHardDelete=FALSE)	{
+			// Getting list of pages to delete:
+		if ($force)	{
+			$brExist = $this->doesBranchExist('',$uid,0,1);		// returns the branch WITHOUT permission checks (0 secures that)
+			$res = t3lib_div::trimExplode(',',$brExist.$uid,1);
+		} else {
+			$res = $this->canDeletePage($uid);
+		}
+
+			// Perform deletion if not error:
+		if (is_array($res))	{
+			foreach($res as $deleteId)	{
+				$this->deleteSpecificPage($deleteId,$forceHardDelete);
 			}
-		} else $this->log('pages',$uid,3,0,1,'Attempt to delete page without permissions');
+		} else {
+			$this->newlog($res,1);
+		}
 	}
 
 	/**
 	 * Delete a page and all records on it.
 	 *
 	 * @param	integer		Page id
+	 * @param	boolean		If TRUE, the "deleted" flag is ignored if applicable for record and the record is deleted COMPLETELY!
 	 * @return	void
 	 * @access private
 	 * @see deletePages()
 	 */
-	function deleteSpecificPage($uid)	{
+	function deleteSpecificPage($uid,$forceHardDelete=FALSE)	{
 		global $TCA;
 		reset ($TCA);
 		$uid = intval($uid);
@@ -3299,15 +3356,55 @@ class t3lib_TCEmain	{
 				if ($table!='pages')	{
 					$mres = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', $table, 'pid='.intval($uid).$this->deleteClause($table));
 					while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($mres))	{
-						$this->deleteRecord($table,$row['uid'], 1);
+						$this->deleteRecord($table,$row['uid'], TRUE, $forceHardDelete);
 					}
 				}
 			}
-			$this->deleteRecord('pages',$uid, 1);
+			$this->deleteRecord('pages',$uid, TRUE, $forceHardDelete);
 		}
 	}
 
+	/**
+	 * Used to evaluate if a page can be deleted
+	 *
+	 * @param	integer		Page id
+	 * @return	mixed		If array: List of page uids to traverse and delete (means OK), if string: error code.
+	 */
+	function canDeletePage($uid)	{
+		if ($this->doesRecordExist('pages',$uid,'delete'))	{	// If we may at all delete this page
+			if ($this->deleteTree)	{
+				$brExist = $this->doesBranchExist('',$uid,$this->pMap['delete'],1);	// returns the branch
+				if ($brExist != -1)	{	// Checks if we had permissions
+					if ($this->noRecordsFromUnallowedTables($brExist.$uid))	{
+						return t3lib_div::trimExplode(',',$brExist.$uid,1);
+					} else return 'Attempt to delete records from disallowed tables';
+				} else return 'Attempt to delete pages in branch without permissions';
+			} else {
+				$brExist = $this->doesBranchExist('',$uid,$this->pMap['delete'],1);	// returns the branch
+				if ($brExist == '')	{	// Checks if branch exists
+					if ($this->noRecordsFromUnallowedTables($uid))	{
+						return array($uid);
+					} else return 'Attempt to delete records from disallowed tables';
+				} else return 'Attempt to delete page which has subpages';
+			}
+		} else return 'Attempt to delete page without permissions';
+	}
 
+	/**
+	 * Returns true if record CANNOT be deleted, otherwise false. Used to check before the versioning API allows a record to be marked for deletion.
+	 *
+	 * @param	string		Record Table
+	 * @param	integer		Record UID
+	 * @return	string		Returns a string IF there is an error (error string explaining). FALSE means record can be deleted
+	 */
+	function cannotDeleteRecord($table,$id)	{
+		if ($table==='pages')	{
+			$res = $this->canDeletePage($id);
+			return is_array($res) ? FALSE : $res;
+		} else {
+			return $this->doesRecordExist($table,$id,'delete') ? FALSE : 'No permission to delete record';
+		}
+	}
 
 
 
@@ -3788,8 +3885,9 @@ class t3lib_TCEmain	{
 
 		while ($dest!=0 && $loopCheck>0)	{
 			$loopCheck--;
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('pid, uid', 'pages', 'uid='.intval($dest).$this->deleteClause('pages'));
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('pid, uid, t3ver_oid,t3ver_wsid', 'pages', 'uid='.intval($dest).$this->deleteClause('pages'));
 			if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
+				t3lib_BEfunc::fixVersioningPid('pages',$row);
 				if ($row['pid']==$id)	{
 					return FALSE;
 				} else {
@@ -4238,7 +4336,14 @@ class t3lib_TCEmain	{
 			} else {	// Sorting number is inside the list
 				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($sortRow.',pid,uid', $table, 'uid='.abs($pid).$this->deleteClause($table));		// Fetches the record which is supposed to be the prev record
 				if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{	// There was a record
-					if ($row['uid']==$uid)	{	// If the record happends to be it self
+
+						// Look, if the record UID happens to be an offline record. If so, find its live version. Offline uids will be used when a page is versionized as "branch" so this is when we must correct - otherwise a pid of "-1" and a wrong sort-row number is returned which we don't want.
+					if ($lookForLiveVersion = t3lib_BEfunc::getLiveVersionOfRecord($table,$row['uid'],$sortRow.',pid,uid'))	{
+						$row = 	$lookForLiveVersion;
+					}
+
+						// If the record happends to be it self
+					if ($row['uid']==$uid)	{
 						$sortNumber = $row[$sortRow];
 					} else {
 						$subres = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
@@ -4801,11 +4906,23 @@ class t3lib_TCEmain	{
 	 */
 	function resolvePid($table,$pid)	{
 		global $TCA;
-		$pid=intval($pid);
+		$pid = intval($pid);
 		if ($pid < 0)	{
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('pid', $table, 'uid='.abs($pid));
 			$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
+
+				// Look, if the record UID happens to be an offline record. If so, find its live version. Offline uids will be used when a page is versionized as "branch" so this is when we must correct - otherwise a pid of "-1" and a wrong sort-row number is returned which we don't want.
+			if ($lookForLiveVersion = t3lib_BEfunc::getLiveVersionOfRecord($table,abs($pid),'pid'))	{
+				$row = $lookForLiveVersion;
+			}
+
 			$pid = intval($row['pid']);
+		} elseif ($this->BE_USER->workspace!==0 && $TCA[$table]['ctrl']['versioning_followPages']) { // PID points to page, the workspace is an offline space and the table follows page during versioning: This means we must check if the PID page has a version in the workspace with swapmode set to 0 (zero = page+content) and if so, change the pid to the uid of that version.
+			if ($WSdestPage = t3lib_BEfunc::getWorkspaceVersionOfRecord($this->BE_USER->workspace, 'pages', $pid, 'uid,t3ver_swapmode'))	{	// Looks for workspace version of page.
+				if ($WSdestPage['t3ver_swapmode']==0)	{	// if swapmode is zero, then change pid value.
+					$pid = $WSdestPage['uid'];
+				}
+			}
 		}
 		return $pid;
 	}
@@ -4868,7 +4985,7 @@ class t3lib_TCEmain	{
 		$inList = trim($this->rmComma(trim($inList)));
 		if ($inList && !$this->admin)	{
 			while (list($table) = each($TCA))	{
-				$mres = $GLOBALS['TYPO3_DB']->exec_SELECTquery('count(*)', $table, 'pid IN ('.$inList.')');
+				$mres = $GLOBALS['TYPO3_DB']->exec_SELECTquery('count(*)', $table, 'pid IN ('.$inList.')'.t3lib_BEfunc::deleteClause($table));
 				$count = $GLOBALS['TYPO3_DB']->sql_fetch_row($mres);
 				if ($count[0] && ($this->tableReadOnly($table) || !$this->checkModifyAccessList($table)))	{
 					return FALSE;
@@ -5147,6 +5264,7 @@ class t3lib_TCEmain	{
 	 * @return	void		(Will exit on error)
 	 */
 	function printLogErrorMessages($redirect)	{
+
 		$res_log = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 					'*',
 					'sys_log',
@@ -5155,7 +5273,7 @@ class t3lib_TCEmain	{
 		$errorJS = array();
 		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res_log)) {
 			$log_data = unserialize($row['log_data']);
-			$errorJS[] = $row[error].': '.sprintf($row['details'], $log_data[0],$log_data[1],$log_data[2],$log_data[3],$log_data[4]);
+			$errorJS[] = $row['error'].': '.sprintf($row['details'], $log_data[0],$log_data[1],$log_data[2],$log_data[3],$log_data[4]);
 		}
 
 		if (count($errorJS))	{

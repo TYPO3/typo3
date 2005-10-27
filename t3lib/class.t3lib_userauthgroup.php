@@ -631,28 +631,35 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 	 * 		- or record (any) is in a branch where there is a page which is a version from the workspace and where the stage is not preventing records
 	 *
 	 * @param	string		Table of record
-	 * @param	array		Record, fields are at least: pid, t3ver_wsid, t3ver_stage (if versioningWS is set)
+	 * @param	array		Integer (record uid) or array where fields are at least: pid, t3ver_wsid, t3ver_stage (if versioningWS is set)
 	 * @return	string		String error code, telling the failure state. FALSE=All ok
 	 */
-	function workspaceCannotEditRecord($table,$rec)	{
+	function workspaceCannotEditRecord($table,$recData)	{
 
 		if ($this->workspace!==0)	{	// Only test offline spaces:
-			if ((int)$rec['pid']===-1)	{	// We are testing a "version" (identified by a pid of -1): it can be edited provided that workspace matches and versioning is enabled for the table.
-				if (!$GLOBALS['TCA'][$table]['ctrl']['versioningWS'])	{	// No versioning, basic error, inconsistency even! Such records should not have a pid of -1!
-					return 'Versioning disabled for table';
-				} elseif ((int)$rec['t3ver_wsid']!==$this->workspace)	{	// So does workspace match?
-					return 'Workspace ID of record didn\'t match current workspace';
-				} else {	// So what about the stage of the version, does that allow editing for this user?
-					return $this->workspaceCheckStageForCurrent($rec['t3ver_stage']) ? FALSE : 'Record stage "'.$rec['t3ver_stage'].'" and users access level did not allow for editing';
-				}
-			} else {	// We are testing a "live" record:
-				if ($res = $this->workspaceAllowLiveRecordsInPID($rec['pid'], $table)) { 	// For "Live" records, check that PID for table allows editing
-						// Live records are OK in this branch, but what about the stage of branch point, if any:
-					return $res>0 ? FALSE : 'Stage for versioning root point and users access level did not allow for editing';	// OK
-				} else {	// If not offline and not in versionized branch, output error:
-					return 'Online record was not in versionized branch!';
-				}
+
+			if (!is_array($recData))	{
+				$recData = t3lib_BEfunc::getRecord($table,$recData,'pid'.($GLOBALS['TCA'][$table]['ctrl']['versioningWS']?',t3ver_wsid,t3ver_stage':''));
 			}
+
+			if (is_array($recData))	{
+				if ((int)$recData['pid']===-1)	{	// We are testing a "version" (identified by a pid of -1): it can be edited provided that workspace matches and versioning is enabled for the table.
+					if (!$GLOBALS['TCA'][$table]['ctrl']['versioningWS'])	{	// No versioning, basic error, inconsistency even! Such records should not have a pid of -1!
+						return 'Versioning disabled for table';
+					} elseif ((int)$recData['t3ver_wsid']!==$this->workspace)	{	// So does workspace match?
+						return 'Workspace ID of record didn\'t match current workspace';
+					} else {	// So what about the stage of the version, does that allow editing for this user?
+						return $this->workspaceCheckStageForCurrent($recData['t3ver_stage']) ? FALSE : 'Record stage "'.$recData['t3ver_stage'].'" and users access level did not allow for editing';
+					}
+				} else {	// We are testing a "live" record:
+					if ($res = $this->workspaceAllowLiveRecordsInPID($recData['pid'], $table)) { 	// For "Live" records, check that PID for table allows editing
+							// Live records are OK in this branch, but what about the stage of branch point, if any:
+						return $res>0 ? FALSE : 'Stage for versioning root point and users access level did not allow for editing';	// OK
+					} else {	// If not offline and not in versionized branch, output error:
+						return 'Online record was not in versionized branch!';
+					}
+				}
+			} else return 'No record';
 		} else {
 			return FALSE; 	// OK because workspace is 0
 		}
@@ -667,8 +674,8 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 			if (is_array($recData))	{
 				if ((int)$recData['pid']===-1)	{
 					return $this->workspaceCannotEditRecord($table,$recData);
-				} else return "Not an offline version";
-			} else return "No record";
+				} else return 'Not an offline version';
+			} else return 'No record';
 		} else return 'Table does not support versioning.';
 	}
 

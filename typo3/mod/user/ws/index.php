@@ -603,7 +603,7 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 									$versionsInOtherWS = $this->versionsInOtherWS($table, $rec_on['uid']);
 									$versionsInOtherWSWarning = $versionsInOtherWS && $GLOBALS['BE_USER']->workspace!==0 ? '<br/>'.$this->doc->icons(2).'Other version(s) in workspace '.$versionsInOtherWS : '';
 									$multipleWarning = (!$mainCell && $GLOBALS['BE_USER']->workspace!==0? '<br/>'.$this->doc->icons(3).'<b>Multiple versions in same workspace!</b>' : '');
-									$verWarning = $warnAboutVersions || $warnAboutVersions_nonPages ? '<br/>'.$this->doc->icons(3).'<b>Version inside version!</b>' : '';
+									$verWarning = $warnAboutVersions || ($warnAboutVersions_nonPages && $GLOBALS['TCA'][$table]['ctrl']['versioning_followPages'])? '<br/>'.$this->doc->icons(3).'<b>Version inside version!</b>' : '';
 									$verElement = $icon.
 										'<a href="'.htmlspecialchars('index.php?details='.rawurlencode($table.':'.$rec_off['uid'])).'">'.
 										t3lib_BEfunc::getRecordTitle($table,$rec_off,TRUE).
@@ -762,7 +762,7 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 						)).'">'.
 				'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/insert1.gif','width="14" height="14"').' alt="" align="top" title="Publish" />'.
 				'</a>';
-			if ($GLOBALS['BE_USER']->workspaceSwapAccess())	{
+			if ($GLOBALS['BE_USER']->workspaceSwapAccess() && (int)$rec_on['t3ver_state']!==1 && (int)$rec_off['t3ver_state']!==2)	{
 				$actionLinks.=
 					'<a href="'.htmlspecialchars($this->doc->issueCommand(
 							'&cmd['.$table.']['.$rec_on['uid'].'][version][action]=swap'.

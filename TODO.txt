@@ -300,35 +300,50 @@ SQLengine (t3lib_sqlengine):
 *******************************
 Versioning/Workspaces:
 *******************************
+- delete:
+	- something twice? / delete a version, not just unlink it?
+	- unlink a version which has deleted flag must remove that version completely!
 
-- check edit and new permissions....
-- Implement flag in Workspace: Publish only content marked "Publish" stage.
 
-- Complete implementation in TCEmain:
-	COMMANDS:
-	- copy/cut/paste:
-		- between versionized branches and other places (permissions)
-		- check stage of branches and records (permissions)
-		- new records (stage)
-		- Copy a page in workspace will not copy the contents?
-	- localize command
-		- ?
-	- delete:
-		- something twice?
-		- delete a page with a branch, possible?
-		- delete a version, not just unlink it?
-		- Check recursive deletion when setting the delete version and force it when swapping!
-	- versioning:
-		- "branch" (and "page") versioning:(Document this)
-			- Copy all tables regardless of user "modify" permissions and excludeFields
-			- Check all subpages for "read" permission (down to specified level) and decline (unless special flag set?)
+- Implement flag in Workspace:
+	- Publish only content in "Publish" stage
+	- Only workspace owner can publish
+	- Stage change notification ->review (reviewers) ->publish (owner) ->rejection (reviewers and members) + message (goes into log as well)
 
-	- usual permissions, how do they apply? For swapping? For creating new versions? What are the rules? (Document this)
+- Set branch-versioning to 100 by default in versioning API.
+- Way to change versioning type from element to page to branch for new records?
 
-- Documentation "Backend challenges"
+---------------------------------------
+
+Versioning management TODO:
+- Implement more of recent "t3ver_*" fields in display.
+- By default, don't display branch of online version.
+
+Workspace Manager TODO:
+- TODO: Workspace list
+	- Admin features
+- Details view for versions (when clicked)
+	- display change log for specific element?
+	- Also available as a Web >* module / click menu item (another way to browse stuff in need of preview, raise level, log checking etc.)
+- Show log of who raised content levels.
+
+
+----------------------------------------------
+- copy/move:
+	- copying versions:
+		- with references in workspace?
+		- "Page" types?
+		- "Element" types?
+	- Copying depends on "new" versioning type: Element, page, branch!
+	- Check destination if versionized branch / stage
+	- Copy a page in workspace will not copy the contents?
+	- Copy branch in workspace which already has versions - what does it take?
+
+- localize command
+	- ?
+
 ----------------------------
 - Backend challenges yet to solve:
-	- Access evaluation? How does it work, how should it work?
 	- FlexForms: t3lib_BEfunc::getFlexFormDS(), workspaceOL/fixVersioningPid ??
 	- Page and (User) TSconfig?
 	- Mount points and versionized branches?
@@ -345,10 +360,10 @@ Backend preview:
 	- Quick Edit in page module should work
 - TemplaVoila:
 	- Check up on it (should work)
-- Web > List:
-	- For "page" versions, use different ID for records part of the version.
 - Logging: Filter on workspace
-- Describe best-practice/constaints in "Inside TYPO3"
+
+- Documentation "Backend challenges"
+
 
 Frontend Preview:
 - ONLINE PREVIEW: Versionized pages should be previewed just by their UID (which will select the offline version!) - only in "Live" space, disabled at the moment inside tslib_fe!
@@ -376,17 +391,6 @@ Frontend Preview:
 	t3lib_page::getPageOverlay() - because pages_language_overlay records have "versioning_followPages" set this should be observed when selecting language overlay records. But should it be hardcoded or something better?
 - Documentation. As frontend preview implementation is dealt with, describe any persisting incompatibilities in "TYPO3 Core API"
 
-Versioning management TODO:
-- Implement more of recent "t3ver_*" fields in display.
-- By default, don't display branch of online version.
-
-Workspace Manager TODO:
-- TODO: Workspace list
-	- Admin features
-- Implement the disabling of swap-mode on publish links when that is supported in the core (which I think it should be first...?)
-- Details view for versions (when clicked)
-	- display change log for specific element?
-	- Also available as a Web >* module / click menu item (another way to browse stuff in need of preview, raise level, log checking etc.)
 
 Swapping versions:
 	- (Support for) swapping using temporary file (instead of using negative ID)
@@ -405,6 +409,7 @@ Workflows:
 
 Documentation:
 - Finish chapter "Using versioning and workspaces" in "Inside TYPO3" with screenshots etc.
+- Documentation "Backend challenges"
 
 -----LATER:
 

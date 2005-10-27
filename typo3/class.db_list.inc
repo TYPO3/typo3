@@ -441,7 +441,12 @@ class recordList extends t3lib_recordList {
 		$queryParts = array(
 			'SELECT' => $fieldList,
 			'FROM' => $table,
-			'WHERE' => $this->pidSelect.' '.$pC.t3lib_BEfunc::deleteClause($table).' '.$addWhere.' '.$search,
+			'WHERE' => $this->pidSelect.
+						' '.$pC.
+						t3lib_BEfunc::deleteClause($table).
+						t3lib_BEfunc::versioningPlaceholderClause($table).
+						' '.$addWhere.
+						' '.$search,
 			'GROUPBY' => '',
 			'ORDERBY' => $GLOBALS['TYPO3_DB']->stripOrderBy($orderBy),
 			'LIMIT' => $limit

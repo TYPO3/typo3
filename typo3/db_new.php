@@ -184,6 +184,7 @@ class SC_db_new {
 			// If a page-record was returned, the user had read-access to the page.
 		if ($this->pageinfo['uid'])	{
 				// Get record of parent page
+
 			$this->pidInfo=t3lib_BEfunc::getRecord('pages',$this->pageinfo['pid']);
 				// Checking the permissions for the user with regard to the parent page: Can he create new pages, new content record, new page after?
 			if ($BE_USER->doesUserHaveAccess($this->pageinfo,8))	{
@@ -296,7 +297,11 @@ class SC_db_new {
 		$tRows = array();
 
 			// New pages INSIDE this pages
-		if ($this->newPagesInto && $this->isTableAllowedForThisPage($this->pageinfo, 'pages') && $BE_USER->check('tables_modify','pages'))	{
+		if ($this->newPagesInto
+			&& $this->isTableAllowedForThisPage($this->pageinfo, 'pages')
+			&& $BE_USER->check('tables_modify','pages')
+			&& $BE_USER->workspaceCreateNewRecord($this->pageinfo['_ORIG_uid']?$this->pageinfo['_ORIG_uid']:$this->id, 'pages')
+			)	{
 
 				// Create link to new page inside:
 			$t = 'pages';
@@ -379,7 +384,11 @@ class SC_db_new {
 		}
 
 			// New pages AFTER this pages
-		if ($this->newPagesAfter && $this->isTableAllowedForThisPage($this->pidInfo,'pages') && $BE_USER->check('tables_modify','pages'))	{
+		if ($this->newPagesAfter
+			&& $this->isTableAllowedForThisPage($this->pidInfo,'pages')
+			&& $BE_USER->check('tables_modify','pages')
+			&& $BE_USER->workspaceCreateNewRecord($this->pidInfo['uid'], 'pages')
+			)	{
 
 				// Create link to new page after
 			$t = 'pages';

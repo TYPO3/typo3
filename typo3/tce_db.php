@@ -65,7 +65,6 @@ require_once (PATH_t3lib.'class.t3lib_tcemain.php');
 
 
 
-
 /**
  * Script Class, creating object of t3lib_TCEmain and sending the posted data to the object.
  * Used by many smaller forms/links in TYPO3, including the QuickEdit module.

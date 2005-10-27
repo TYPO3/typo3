@@ -298,7 +298,7 @@ class tx_cms_layout extends recordList {
 
 					// Getting children:
 				$theRows = Array();
-				$theRows = $this->pages_getTree($theRows,$row['uid'],$delClause,'',$depth);
+				$theRows = $this->pages_getTree($theRows,$row['uid'],$delClause.t3lib_BEfunc::versioningPlaceholderClause('pages'),'',$depth);
 				if ($GLOBALS['BE_USER']->doesUserHaveAccess($row,2))	$editUids[]=$row['uid'];
 				$out.=$this->pages_drawItem($row,$this->fieldArray);
 
@@ -780,7 +780,7 @@ class tx_cms_layout extends recordList {
 			// If page ids were found, select all sys_notes from the page ids:
 		$out='';
 		if (count($tree->ids))		{
-			$delClause = t3lib_BEfunc::deleteClause('sys_note');
+			$delClause = t3lib_BEfunc::deleteClause('sys_note').t3lib_BEfunc::versioningPlaceholderClause('sys_note');
 			$result = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'sys_note', 'pid IN ('.implode(',',$tree->ids).') AND (personal=0 OR cruser='.intval($GLOBALS['BE_USER']->user['uid']).')'.$delClause);
 			$dbCount = $GLOBALS['TYPO3_DB']->sql_num_rows($result);
 
@@ -859,7 +859,7 @@ class tx_cms_layout extends recordList {
 	function getTable_tt_board($id)	{
 
 			// Initialize:
-		$delClause = t3lib_BEfunc::deleteClause('tt_board');
+		$delClause = t3lib_BEfunc::deleteClause('tt_board').t3lib_BEfunc::versioningPlaceholderClause('tt_board');
 		$queryParts = $this->makeQueryArray('tt_board', $id, 'AND parent=0');
 		$this->setTotalItems($queryParts);
 		$dbCount = 0;

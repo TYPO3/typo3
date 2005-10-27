@@ -845,6 +845,7 @@ class t3lib_treeView {
 						$this->table,
 						$this->parentField.'='.$GLOBALS['TYPO3_DB']->fullQuoteStr($uid, $this->table).
 							t3lib_BEfunc::deleteClause($this->table).
+							t3lib_BEfunc::versioningPlaceholderClause($this->table).
 							$this->clause,	// whereClauseMightContainGroupOrderBy
 						'',
 						'' //$this->orderByFields // sorting is senseless for count(*) !?!
@@ -909,6 +910,7 @@ class t3lib_treeView {
 						$this->table,
 						$this->parentField.'='.$GLOBALS['TYPO3_DB']->fullQuoteStr($parentId, $this->table).
 							t3lib_BEfunc::deleteClause($this->table).
+							t3lib_BEfunc::versioningPlaceholderClause($this->table).
 							$this->clause,	// whereClauseMightContainGroupOrderBy
 						'',
 						$this->orderByFields

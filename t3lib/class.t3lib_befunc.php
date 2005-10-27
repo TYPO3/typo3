@@ -791,6 +791,7 @@ class t3lib_BEfunc	{
 				$pageinfo = t3lib_BEfunc::getRecord('pages',$id,'*',($perms_clause ? ' AND '.$perms_clause : ''));
 				if ($pageinfo['uid'] && $GLOBALS['BE_USER']->isInWebMount($id,$perms_clause))	{
 					t3lib_BEfunc::workspaceOL('pages', $pageinfo);
+					t3lib_BEfunc::fixVersioningPid('pages', $pageinfo);
 					list($pageinfo['_thePath'],$pageinfo['_thePathFull']) = t3lib_BEfunc::getRecordPath(intval($pageinfo['uid']), $perms_clause, 15, 1000);
 					return $pageinfo;
 				}
@@ -3116,6 +3117,24 @@ class t3lib_BEfunc	{
 	}
 
 	/**
+	 *
+	 * @param	string		Table name
+	 * @return
+	 */
+	function getLiveVersionOfRecord($table,$uid,$fields='*')	{
+		global $TCA;
+
+			// Check that table supports versioning:
+		if ($TCA[$table] && $TCA[$table]['ctrl']['versioningWS'])	{
+			$rec = t3lib_BEfunc::getRecord($table,$uid,'pid,t3ver_oid');
+
+			if ($rec['pid']==-1)	{
+				return t3lib_BEfunc::getRecord($table,$rec['t3ver_oid'],$fields);
+			}
+		}
+	}
+
+	/**
 	 * Will fetch the rootline for the pid, then check if anywhere in the rootline there is a branch point and if so everything is allowed of course.
 	 * Alternatively; if the page of the PID itself is a version and swapmode is zero (page+content) then tables from versioning_followPages are allowed as well.
 	 *
@@ -3138,6 +3157,18 @@ class t3lib_BEfunc	{
 				}
 			}
 			$c++;
+		}
+	}
+
+	/**
+	 * Will return where clause de-selecting new-versions from other workspaces.
+	 *
+	 * @param	string		Table name
+	 * @return	string		Where clause if applicable.
+	 */
+	function versioningPlaceholderClause($table)	{
+		if ($GLOBALS['BE_USER']->workspace!==0 && $GLOBALS['TCA'][$table] && $GLOBALS['TCA'][$table]['ctrl']['versioningWS'])	{
+			return ' AND ('.$table.'.t3ver_state!=1 OR '.$table.'.t3ver_wsid='.intval($GLOBALS['BE_USER']->workspace).')';
 		}
 	}
 
