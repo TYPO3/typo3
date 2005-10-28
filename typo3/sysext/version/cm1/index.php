@@ -279,10 +279,11 @@ class tx_version_cm1 extends t3lib_SCbase {
 			Label: <input type="text" name="cmd['.$this->table.']['.$this->uid.'][version][label]" /><br/>
 			'.($this->table == 'pages' ? '<select name="cmd['.$this->table.']['.$this->uid.'][version][treeLevels]">
 				<option value="0">Page: Page + content</option>
-				<option value="1">Branch: 1 level</option>
+<!--				<option value="1">Branch: 1 level</option>
 				<option value="2">Branch: 2 levels</option>
 				<option value="3">Branch: 3 levels</option>
-				<option value="4">Branch: 4 levels</option>
+				<option value="4">Branch: 4 levels</option> -->
+				<option value="100">Branch: All subpages</option>
 				<option value="-1">Element: Just record</option>
 			</select>' : '').'
 			<br/><input type="hidden" name="cmd['.$this->table.']['.$this->uid.'][version][action]" value="new" />

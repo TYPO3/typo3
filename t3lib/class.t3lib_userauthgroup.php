@@ -37,62 +37,63 @@
  *
  *
  *
- *  133: class t3lib_userAuthGroup extends t3lib_userAuth
+ *  134: class t3lib_userAuthGroup extends t3lib_userAuth
  *
  *              SECTION: Permission checking functions:
- *  197:     function isAdmin()
- *  209:     function isMemberOfGroup($groupId)
- *  231:     function doesUserHaveAccess($row,$perms)
- *  248:     function isInWebMount($id,$readPerms='',$exitOnError=0)
- *  275:     function modAccess($conf,$exitOnError)
- *  326:     function getPagePermsClause($perms)
- *  365:     function calcPerms($row)
- *  403:     function isRTE()
- *  437:     function check($type,$value)
- *  454:     function checkAuthMode($table,$field,$value,$authMode)
- *  520:     function checkLanguageAccess($langValue)
- *  541:     function recordEditAccessInternals($table,$idOrRow)
- *  606:     function isPSet($lCP,$table,$type='')
- *  623:     function mayMakeShortcut()
- *  637:     function workspaceCannotEditRecord($table,$rec)
- *  670:     function workspaceAllowLiveRecordsInPID($pid, $table)
- *  691:     function workspaceCreateNewRecord($pid, $table)
- *  710:     function workspaceAllowAutoCreation($table,$id,$recpid)
- *  730:     function workspaceCheckStageForCurrent($stage)
- *  753:     function workspacePublishAccess($wsid)
- *  777:     function workspaceSwapAccess()
- *  789:     function workspaceVersioningTypeAccess($type)
- *  816:     function workspaceVersioningTypeGetClosest($type)
+ *  198:     function isAdmin()
+ *  210:     function isMemberOfGroup($groupId)
+ *  232:     function doesUserHaveAccess($row,$perms)
+ *  249:     function isInWebMount($id,$readPerms='',$exitOnError=0)
+ *  276:     function modAccess($conf,$exitOnError)
+ *  327:     function getPagePermsClause($perms)
+ *  366:     function calcPerms($row)
+ *  404:     function isRTE()
+ *  438:     function check($type,$value)
+ *  455:     function checkAuthMode($table,$field,$value,$authMode)
+ *  521:     function checkLanguageAccess($langValue)
+ *  542:     function recordEditAccessInternals($table,$idOrRow)
+ *  607:     function isPSet($lCP,$table,$type='')
+ *  624:     function mayMakeShortcut()
+ *  638:     function workspaceCannotEditRecord($table,$recData)
+ *  676:     function workspaceCannotEditOfflineVersion($table,$recData)
+ *  699:     function workspaceAllowLiveRecordsInPID($pid, $table)
+ *  720:     function workspaceCreateNewRecord($pid, $table)
+ *  739:     function workspaceAllowAutoCreation($table,$id,$recpid)
+ *  759:     function workspaceCheckStageForCurrent($stage)
+ *  782:     function workspacePublishAccess($wsid)
+ *  806:     function workspaceSwapAccess()
+ *  818:     function workspaceVersioningTypeAccess($type)
+ *  845:     function workspaceVersioningTypeGetClosest($type)
  *
  *              SECTION: Miscellaneous functions
- *  857:     function getTSConfig($objectString,$config='')
- *  883:     function getTSConfigVal($objectString)
- *  895:     function getTSConfigProp($objectString)
- *  907:     function inList($in_list,$item)
- *  918:     function returnWebmounts()
- *  928:     function returnFilemounts()
+ *  886:     function getTSConfig($objectString,$config='')
+ *  912:     function getTSConfigVal($objectString)
+ *  924:     function getTSConfigProp($objectString)
+ *  936:     function inList($in_list,$item)
+ *  947:     function returnWebmounts()
+ *  957:     function returnFilemounts()
  *
  *              SECTION: Authentication methods
- *  959:     function fetchGroupData()
- * 1092:     function fetchGroups($grList,$idList='')
- * 1179:     function setCachedList($cList)
- * 1199:     function addFileMount($title, $altTitle, $path, $webspace, $type)
- * 1246:     function addTScomment($str)
+ *  988:     function fetchGroupData()
+ * 1121:     function fetchGroups($grList,$idList='')
+ * 1208:     function setCachedList($cList)
+ * 1228:     function addFileMount($title, $altTitle, $path, $webspace, $type)
+ * 1275:     function addTScomment($str)
  *
  *              SECTION: Workspaces
- * 1282:     function workspaceInit()
- * 1325:     function checkWorkspace($wsRec,$fields='uid,title,adminusers,members,reviewers')
- * 1399:     function checkWorkspaceCurrent()
- * 1412:     function setWorkspace($workspaceId)
- * 1440:     function setWorkspacePreview($previewState)
- * 1450:     function getDefaultWorkspace()
+ * 1311:     function workspaceInit()
+ * 1354:     function checkWorkspace($wsRec,$fields='uid,title,adminusers,members,reviewers,publish_access,stagechg_notification')
+ * 1428:     function checkWorkspaceCurrent()
+ * 1441:     function setWorkspace($workspaceId)
+ * 1469:     function setWorkspacePreview($previewState)
+ * 1479:     function getDefaultWorkspace()
  *
  *              SECTION: Logging
- * 1501:     function writelog($type,$action,$error,$details_nr,$details,$data,$tablename='',$recuid='',$recpid='',$event_pid=-1,$NEWid='',$userId=0)
- * 1533:     function simplelog($message, $extKey='', $error=0)
- * 1554:     function checkLogFailures($email, $secondsBack=3600, $max=3)
+ * 1530:     function writelog($type,$action,$error,$details_nr,$details,$data,$tablename='',$recuid='',$recpid='',$event_pid=-1,$NEWid='',$userId=0)
+ * 1562:     function simplelog($message, $extKey='', $error=0)
+ * 1583:     function checkLogFailures($email, $secondsBack=3600, $max=3)
  *
- * TOTAL FUNCTIONS: 43
+ * TOTAL FUNCTIONS: 44
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -665,6 +666,14 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 		}
 	}
 
+	/**
+	 * Evaluates if a user is allowed to edit the offline version
+	 *
+	 * @param	string		Table of record
+	 * @param	array		Integer (record uid) or array where fields are at least: pid, t3ver_wsid, t3ver_stage (if versioningWS is set)
+	 * @return	string		String error code, telling the failure state. FALSE=All ok
+	 * @see workspaceCannotEditRecord()
+	 */
 	function workspaceCannotEditOfflineVersion($table,$recData)	{
 		if ($GLOBALS['TCA'][$table]['ctrl']['versioningWS'])	{
 
@@ -784,7 +793,7 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 					return $this->checkWorkspace(0) ? TRUE : FALSE;	// If access to Live workspace, no problem.
 				break;
 				default:	// Custom workspace
-					return $wsAccess['_ACCESS'] === 'owner' || $this->checkWorkspace(0);	// Either be an adminuser OR have access to online workspace which is OK as well.
+					return $wsAccess['_ACCESS'] === 'owner' || ($this->checkWorkspace(0) && !($wsAccess['publish_access']&2));	// Either be an adminuser OR have access to online workspace which is OK as well as long as publishing access is not limited by workspace option.
 				break;
 			}
 		} else return FALSE;	// If no access to workspace, of course you cannot publish!
@@ -1340,10 +1349,10 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 	 * Checking if a workspace is allowed for backend user
 	 *
 	 * @param	mixed		If integer, workspace record is looked up, if array it is seen as a Workspace record with at least uid, title, members and adminusers columns. Can be faked for workspaces uid 0 and -1 (online and offline)
-	 * @param	string		List of fields to select. Default fields are: uid,title,adminusers,members,reviewers
+	 * @param	string		List of fields to select. Default fields are: uid,title,adminusers,members,reviewers,publish_access,stagechg_notification
 	 * @return	array		TRUE if access. Output will also show how access was granted. Admin users will have a true output regardless of input.
 	 */
-	function checkWorkspace($wsRec,$fields='uid,title,adminusers,members,reviewers')	{
+	function checkWorkspace($wsRec,$fields='uid,title,adminusers,members,reviewers,publish_access,stagechg_notification')	{
 
 			// If not array, look up workspace record:
 		if (!is_array($wsRec))	{

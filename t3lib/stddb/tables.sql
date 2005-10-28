@@ -210,6 +210,8 @@ CREATE TABLE sys_workspace (
   vtypes tinyint(3) DEFAULT '0' NOT NULL,
   disable_autocreate tinyint(3) DEFAULT '0' NOT NULL,
   swap_modes tinyint(3) DEFAULT '0' NOT NULL,
+  publish_access tinyint(3) DEFAULT '0' NOT NULL,
+  stagechg_notification tinyint(3) DEFAULT '0' NOT NULL,
 
   PRIMARY KEY (uid),
   KEY parent (pid)

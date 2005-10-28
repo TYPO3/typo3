@@ -84,8 +84,17 @@ class wslib {
 
 		if ($wsid>=-1 && $wsid!==0)	{
 
+				// Define stage to select:
+			$stage = -99;
+			if ($wsid>0)	{
+				$workspaceRec = t3lib_BEfunc::getRecord('sys_workspace',$wsid);
+				if ($workspaceRec['publish_access']&1)	{
+					$stage = 10;
+				}
+			}
+
 				// Select all versions to swap:
-			$versions = $this->selectVersionsInWorkspace($wsid);
+			$versions = $this->selectVersionsInWorkspace($wsid,0,$stage);
 
 				// Traverse the selection to build CMD array:
 			foreach($versions as $table => $records)	{
@@ -112,7 +121,7 @@ class wslib {
 	 * @param	integer		Lifecycle filter: 1 = select all drafts (never-published), 2 = select all published one or more times (archive/multiple), anything else selects all.
 	 * @return	array		Array of all records uids etc. First key is table name, second key incremental integer. Records are associative arrays with uid, t3ver_oid and t3ver_swapmode fields. The REAL pid of the online record is found as "realpid"
 	 */
-	function selectVersionsInWorkspace($wsid,$filter=0)	{
+	function selectVersionsInWorkspace($wsid,$filter=0,$stage=-99)	{
 		global $TCA;
 
 		$wsid = intval($wsid);
@@ -131,6 +140,7 @@ class wslib {
 					'A.pid=-1'.	// Table A is the offline version and pid=-1 defines offline
 						($wsid>-98 ? ' AND A.t3ver_wsid='.$wsid : ($wsid===-98 ? ' AND A.t3ver_wsid!=0' : '')).	// For "real" workspace numbers, select by that. If = -98, select all that are NOT online (zero). Anything else below -1 will not select on the wsid and therefore select all!
 						($filter===1 ? ' AND A.t3ver_count=0' : ($filter===2 ? ' AND A.t3ver_count>0' : '')).	// lifecycle filter: 1 = select all drafts (never-published), 2 = select all published one or more times (archive/multiple)
+						($stage!=-99 ? ' AND A.t3ver_stage='.intval($stage) : '').
 						' AND B.pid>=0'.	// Table B (online) must have PID >= 0 to signify being online.
 						' AND A.t3ver_oid=B.uid'.	// ... and finally the join between the two tables.
 						t3lib_BEfunc::deleteClause($table,'A').

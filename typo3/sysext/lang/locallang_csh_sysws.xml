@@ -22,6 +22,10 @@
 			<label index="reviewers.description">Content have to pass through reviewers approval before it can finally be published by a workspace owner. Reviewers can be backend users or groups and will have access to the workspace just as members have, but can in addition approve content for final publication.</label>
 			<label index="reviewers.details">In case you need no review layer between editors (normally workspace &quot;members&quot;) and the workspace owners what you simply do is to add all editors as reviewers. This give them access to raise content all the way to the workspace owners. Since content is by default raised from editing to review to publish state it even gives the possibility of informal &quot;four-eye&quot; review where workspace owners can require that content has  been raised by action from two different reviewers.</label>
 			<label index="_reviewers.seeAlso">sys_workspace:members</label>
+			<label index="stagechg_notification.description">When the stage of content changes, users in the workspace can receive a notification by email. Only members/reviewers who are attached to the workspace as users and not through their groups will be notified.</label>
+			<label index="stagechg_notification.details">&quot;Notify users on next stage only&quot;: When content is raised from &quot;Editing&quot; to &quot;Review&quot;, reviewers are notified. When content is raised to &quot;Publish&quot;, owners are notified. When content is rejected, members and reviewers are notified. When content is raised from rejected state, members are notified.
+
+&quot;Notify all users on any change&quot; : All users in workspace are notified regardless of change.</label>
 			<label index="db_mountpoints.description">If one or more DB mounts are specified the page tree of the backend will be locked into these root points during work in the workspace.</label>
 			<label index="db_mountpoints.details">Any DB mount specified here must be inside the DB mount set for the backend user who logs in. If that is not the case the workspace DB mount will simply not be mounted for the user. If no DB mounts are specified for the workspace the users will access the DB mounts of their user profile.</label>
 			<label index="file_mountpoints.description">Filemounts available for workspace users. Please see details for security information!</label>
@@ -46,6 +50,9 @@ Another mode &quot;Swap-Into-Workspace on Auto-publish&quot; will force the auto
 &quot;Branch&quot; versioning is where a page is versionized and all subpages and content is copied along. This can have quite heavy implications on data duplication and is recommended only in special circumstances.
 
 More information about versioning types can be read in &quot;Inside TYPO3&quot;</label>
+			<label index="publish_access.description">Refines the rules of publishing</label>
+			<label index="publish_access.details">&quot;Publish only content in publish stage&quot; : Only when content is in publish stage can it be published. 
+&quot;Only workspace owner can publish&quot; : Only the workspace owner can publish the content in the workspace, even if members or reviewers have access to the Live workspace.</label>
 		</languageKey>
 		<languageKey index="dk">EXT:csh_dk/lang/dk.locallang_csh_sysws.xml</languageKey>
 		<languageKey index="nl">EXT:csh_nl/lang/nl.locallang_csh_sysws.xml</languageKey>

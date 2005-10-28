@@ -464,7 +464,7 @@ TABLE.ver-subtree A { text-decoration: none; }
 TABLE.ver-subtree TR TD.iconTitle { white-space: nowrap; }
 TABLE.ver-subtree TR TD.diffCell { white-space: normal; }
 TABLE.ver-subtree TABLE.diffTable {background-color: white; border: 1px solid black; }
-TABLE.ver-subtree DIV.diffLayer { background-color: white; width:400px; border: 1px solid black;}
+TABLE.ver-subtree DIV.diffLayer, DIV.logLayer { background-color: white; width:400px; border: 1px solid black;}
 TABLE.ver-subtree TR TD IMG { vertical-align: middle; }
 TABLE.ver-subtree, TABLE.ver-verElement TD.c-diffCell { border: 1px solid #666666; }
 TABLE.ver-verElement { width: 100%;}

@@ -846,9 +846,30 @@ $TCA['sys_workspace'] = Array (
 				),
 			)
 		),
+		'publish_access' => Array (
+			'label' => 'Publish access:',
+			'config' => Array (
+				'type' => 'check',
+				'items' => Array (
+					Array('Publish only content in publish stage',0),
+					Array('Only workspace owner can publish',0),
+				),
+			)
+		),
+		'stagechg_notification' => Array (
+			'label' => 'Stage change notification by email:',
+			'config' => Array (
+				'type' => 'select',
+				'items' => Array (
+					Array('',0),
+					Array('Notify users on next stage only',1),
+					Array('Notify all users on any change',10)
+				),
+			)
+		),
 	),
 	'types' => Array (
-		'0' => Array('showitem' => 'title,description,--div--,adminusers,members,reviewers,--div--,db_mountpoints,file_mountpoints,--div--,publish_time,unpublish_time,--div--,freeze,live_edit,disable_autocreate,swap_modes,vtypes')
+		'0' => Array('showitem' => 'title,description,--div--,adminusers,members,reviewers,stagechg_notification,--div--,db_mountpoints,file_mountpoints,--div--,publish_time,unpublish_time,--div--,freeze,live_edit,disable_autocreate,swap_modes,vtypes,publish_access')
 	)
 );
 

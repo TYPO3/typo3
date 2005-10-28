@@ -37,143 +37,148 @@
  *
  *
  *
- *  218: class t3lib_TCEmain
- *  335:     function start($data,$cmd,$altUserObject='')
- *  370:     function setMirror($mirror)
- *  395:     function setDefaultsFromUserTS($userTS)
- *  418:     function process_uploads($postFiles)
- *  456:     function process_uploads_traverseArray(&$outputArr,$inputArr,$keyToSet)
+ *  223: class t3lib_TCEmain
+ *  340:     function start($data,$cmd,$altUserObject='')
+ *  375:     function setMirror($mirror)
+ *  400:     function setDefaultsFromUserTS($userTS)
+ *  423:     function process_uploads($postFiles)
+ *  461:     function process_uploads_traverseArray(&$outputArr,$inputArr,$keyToSet)
  *
  *              SECTION: PROCESSING DATA
- *  492:     function process_datamap()
- *  789:     function fillInFieldArray($table,$id,$fieldArray,$incomingFieldArray,$realPid,$status,$tscPID)
+ *  497:     function process_datamap()
+ *  795:     function fillInFieldArray($table,$id,$fieldArray,$incomingFieldArray,$realPid,$status,$tscPID)
  *
  *              SECTION: Evaluation of input values
- * 1009:     function checkValue($table,$field,$value,$id,$status,$realPid,$tscPID)
- * 1069:     function checkValue_SW($res,$value,$tcaFieldConf,$table,$id,$curValue,$status,$realPid,$recFID,$field,$uploadedFiles,$tscPID)
- * 1115:     function checkValue_input($res,$value,$tcaFieldConf,$PP,$field='')
- * 1153:     function checkValue_check($res,$value,$tcaFieldConf,$PP)
- * 1176:     function checkValue_radio($res,$value,$tcaFieldConf,$PP)
- * 1202:     function checkValue_group_select($res,$value,$tcaFieldConf,$PP,$uploadedFiles,$field)
- * 1302:     function checkValue_group_select_file($valueArray,$tcaFieldConf,$curValue,$uploadedFileArray,$status,$table,$id,$recFID)
- * 1455:     function checkValue_flex($res,$value,$tcaFieldConf,$PP,$uploadedFiles,$field)
- * 1528:     function checkValue_flexArray2Xml($array)
- * 1545:     function _DELETE_FLEX_FORMdata(&$valueArrayToRemoveFrom,$deleteCMDS)
- * 1567:     function _MOVE_FLEX_FORMdata(&$valueArrayToMoveIn, $moveCMDS, $direction)
+ * 1015:     function checkValue($table,$field,$value,$id,$status,$realPid,$tscPID)
+ * 1075:     function checkValue_SW($res,$value,$tcaFieldConf,$table,$id,$curValue,$status,$realPid,$recFID,$field,$uploadedFiles,$tscPID)
+ * 1121:     function checkValue_input($res,$value,$tcaFieldConf,$PP,$field='')
+ * 1159:     function checkValue_check($res,$value,$tcaFieldConf,$PP)
+ * 1182:     function checkValue_radio($res,$value,$tcaFieldConf,$PP)
+ * 1208:     function checkValue_group_select($res,$value,$tcaFieldConf,$PP,$uploadedFiles,$field)
+ * 1308:     function checkValue_group_select_file($valueArray,$tcaFieldConf,$curValue,$uploadedFileArray,$status,$table,$id,$recFID)
+ * 1461:     function checkValue_flex($res,$value,$tcaFieldConf,$PP,$uploadedFiles,$field)
+ * 1534:     function checkValue_flexArray2Xml($array)
+ * 1551:     function _DELETE_FLEX_FORMdata(&$valueArrayToRemoveFrom,$deleteCMDS)
+ * 1573:     function _MOVE_FLEX_FORMdata(&$valueArrayToMoveIn, $moveCMDS, $direction)
  *
  *              SECTION: Helper functions for evaluation functions.
- * 1629:     function getUnique($table,$field,$value,$id,$newPid=0)
- * 1667:     function checkValue_input_Eval($value,$evalArray,$is_in)
- * 1755:     function checkValue_group_select_processDBdata($valueArray,$tcaFieldConf,$id,$status,$type)
- * 1788:     function checkValue_group_select_explodeSelectGroupValue($value)
- * 1811:     function checkValue_flex_procInData($dataPart,$dataPart_current,$uploadedFiles,$dataStructArray,$pParams,$callBackFunc='')
- * 1850:     function checkValue_flex_procInData_travDS(&$dataValues,$dataValues_current,$uploadedFiles,$DSelements,$pParams,$callBackFunc,$structurePath)
+ * 1635:     function getUnique($table,$field,$value,$id,$newPid=0)
+ * 1673:     function checkValue_input_Eval($value,$evalArray,$is_in)
+ * 1761:     function checkValue_group_select_processDBdata($valueArray,$tcaFieldConf,$id,$status,$type)
+ * 1794:     function checkValue_group_select_explodeSelectGroupValue($value)
+ * 1817:     function checkValue_flex_procInData($dataPart,$dataPart_current,$uploadedFiles,$dataStructArray,$pParams,$callBackFunc='')
+ * 1856:     function checkValue_flex_procInData_travDS(&$dataValues,$dataValues_current,$uploadedFiles,$DSelements,$pParams,$callBackFunc,$structurePath)
  *
  *              SECTION: PROCESSING COMMANDS
- * 1996:     function process_cmdmap()
+ * 2002:     function process_cmdmap()
  *
  *              SECTION: Cmd: Copying
- * 2140:     function copyRecord($table,$uid,$destPid,$first=0,$overrideValues=array(),$excludeFields='')
- * 2248:     function copyPages($uid,$destPid)
- * 2303:     function copySpecificPage($uid,$destPid,$copyTablesArray,$first=0)
- * 2337:     function copyRecord_raw($table,$uid,$pid,$overrideArray=array())
- * 2399:     function rawCopyPageContent($old_pid,$new_pid,$copyTablesArray)
- * 2423:     function insertNewCopyVersion($table,$fieldArray,$realPid)
- * 2474:     function copyRecord_procBasedOnFieldType($table,$uid,$field,$value,$row,$conf)
- * 2530:     function copyRecord_flexFormCallBack($pParams, $dsConf, $dataValue, $dataValue_ext1, $dataValue_ext2)
- * 2558:     function copyRecord_procFilesRefs($conf, $uid, $value)
+ * 2153:     function copyRecord($table,$uid,$destPid,$first=0,$overrideValues=array(),$excludeFields='')
+ * 2274:     function copyPages($uid,$destPid)
+ * 2328:     function copySpecificPage($uid,$destPid,$copyTablesArray,$first=0)
+ * 2362:     function copyRecord_raw($table,$uid,$pid,$overrideArray=array())
+ * 2424:     function rawCopyPageContent($old_pid,$new_pid,$copyTablesArray)
+ * 2448:     function insertNewCopyVersion($table,$fieldArray,$realPid)
+ * 2499:     function copyRecord_procBasedOnFieldType($table,$uid,$field,$value,$row,$conf)
+ * 2555:     function copyRecord_flexFormCallBack($pParams, $dsConf, $dataValue, $dataValue_ext1, $dataValue_ext2)
+ * 2583:     function copyRecord_procFilesRefs($conf, $uid, $value)
  *
  *              SECTION: Cmd: Moving, Localizing
- * 2627:     function moveRecord($table,$uid,$destPid)
- * 2777:     function localize($table,$uid,$language)
+ * 2652:     function moveRecord($table,$uid,$destPid)
+ * 2816:     function localize($table,$uid,$language)
  *
  *              SECTION: Cmd: Versioning
- * 2852:     function versionizeRecord($table,$id,$label,$delete=FALSE,$versionizeTree=-1)
- * 2929:     function versionizePages($uid,$label,$versionizeTree)
- * 2986:     function version_swap($table,$id,$swapWith,$swapIntoWS=0)
- * 3134:     function version_clearWSID($table,$id)
- * 3154:     function version_setStage($table,$id,$stageId)
+ * 2891:     function versionizeRecord($table,$id,$label,$delete=FALSE,$versionizeTree=-1)
+ * 2967:     function versionizePages($uid,$label,$versionizeTree)
+ * 3030:     function version_swap($table,$id,$swapWith,$swapIntoWS=0)
+ * 3195:     function version_clearWSID($table,$id)
+ * 3222:     function version_setStage($table,$id,$stageId,$comment='')
  *
  *              SECTION: Cmd: Deleting
- * 3195:     function deleteRecord($table,$uid, $noRecordCheck)
- * 3249:     function deletePages($uid)
- * 3283:     function deleteSpecificPage($uid)
+ * 3273:     function deleteRecord($table,$uid, $noRecordCheck=FALSE, $forceHardDelete=FALSE)
+ * 3329:     function deletePages($uid,$force=FALSE,$forceHardDelete=FALSE)
+ * 3357:     function deleteSpecificPage($uid,$forceHardDelete=FALSE)
+ * 3380:     function canDeletePage($uid)
+ * 3407:     function cannotDeleteRecord($table,$id)
  *
  *              SECTION: Cmd: Helper functions
- * 3324:     function remapListedDBRecords()
- * 3401:     function remapListedDBRecords_flexFormCallBack($pParams, $dsConf, $dataValue, $dataValue_ext1, $dataValue_ext2)
- * 3427:     function remapListedDBRecords_procDBRefs($conf, $value, $MM_localUid)
+ * 3438:     function remapListedDBRecords()
+ * 3515:     function remapListedDBRecords_flexFormCallBack($pParams, $dsConf, $dataValue, $dataValue_ext1, $dataValue_ext2)
+ * 3541:     function remapListedDBRecords_procDBRefs($conf, $value, $MM_localUid)
  *
  *              SECTION: Access control / Checking functions
- * 3491:     function checkModifyAccessList($table)
- * 3503:     function isRecordInWebMount($table,$id)
- * 3517:     function isInWebMount($pid)
- * 3531:     function checkRecordUpdateAccess($table,$id)
- * 3555:     function checkRecordInsertAccess($insertTable,$pid,$action=1)
- * 3589:     function isTableAllowedForThisPage($page_uid, $checkTable)
- * 3622:     function doesRecordExist($table,$id,$perms)
- * 3684:     function doesRecordExist_pageLookUp($id, $perms)
- * 3710:     function doesBranchExist($inList,$pid,$perms,$recurse)
- * 3744:     function tableReadOnly($table)
- * 3756:     function tableAdminOnly($table)
- * 3768:     function isReferenceField($conf)
- * 3780:     function destNotInsideSelf($dest,$id)
- * 3811:     function getExcludeListArray()
- * 3834:     function doesPageHaveUnallowedTables($page_uid,$doktype)
+ * 3605:     function checkModifyAccessList($table)
+ * 3617:     function isRecordInWebMount($table,$id)
+ * 3631:     function isInWebMount($pid)
+ * 3645:     function checkRecordUpdateAccess($table,$id)
+ * 3669:     function checkRecordInsertAccess($insertTable,$pid,$action=1)
+ * 3703:     function isTableAllowedForThisPage($page_uid, $checkTable)
+ * 3736:     function doesRecordExist($table,$id,$perms)
+ * 3798:     function doesRecordExist_pageLookUp($id, $perms)
+ * 3824:     function doesBranchExist($inList,$pid,$perms,$recurse)
+ * 3858:     function tableReadOnly($table)
+ * 3870:     function tableAdminOnly($table)
+ * 3884:     function destNotInsideSelf($dest,$id)
+ * 3916:     function getExcludeListArray()
+ * 3939:     function doesPageHaveUnallowedTables($page_uid,$doktype)
  *
  *              SECTION: Information lookup
- * 3883:     function pageInfo($id,$field)
- * 3903:     function recordInfo($table,$id,$fieldList)
- * 3922:     function getRecordProperties($table,$id)
- * 3935:     function getRecordPropertiesFromRow($table,$row)
+ * 3988:     function pageInfo($id,$field)
+ * 4008:     function recordInfo($table,$id,$fieldList)
+ * 4027:     function getRecordProperties($table,$id)
+ * 4040:     function getRecordPropertiesFromRow($table,$row)
  *
  *              SECTION: Storing data to Database Layer
- * 3978:     function updateDB($table,$id,$fieldArray)
- * 4026:     function insertDB($table,$id,$fieldArray,$newVersion=FALSE,$suggestedUid=0,$dontSetNewIdIndex=FALSE)
- * 4094:     function checkStoredRecord($table,$id,$fieldArray,$action)
- * 4131:     function setHistory($table,$id,$logId)
- * 4170:     function clearHistory($table,$id,$keepEntries=10,$maxAgeSeconds=604800)
+ * 4083:     function updateDB($table,$id,$fieldArray)
+ * 4131:     function insertDB($table,$id,$fieldArray,$newVersion=FALSE,$suggestedUid=0,$dontSetNewIdIndex=FALSE)
+ * 4199:     function checkStoredRecord($table,$id,$fieldArray,$action)
+ * 4236:     function setHistory($table,$id,$logId)
+ * 4275:     function clearHistory($table,$id,$keepEntries=10,$maxAgeSeconds=604800)
  *
  *              SECTION: Misc functions
- * 4219:     function getSortNumber($table,$uid,$pid)
- * 4285:     function resorting($table,$pid,$sortRow, $return_SortNumber_After_This_Uid)
- * 4316:     function setTSconfigPermissions($fieldArray,$TSConfig_p)
- * 4333:     function newFieldArray($table)
- * 4365:     function overrideFieldArray($table,$data)
- * 4381:     function compareFieldArrayWithCurrentAndUnset($table,$id,$fieldArray)
- * 4427:     function assemblePermissions($string)
- * 4444:     function rmComma($input)
- * 4454:     function convNumEntityToByteValue($input)
- * 4476:     function destPathFromUploadFolder($folder)
- * 4486:     function deleteClause($table)
- * 4502:     function getTCEMAIN_TSconfig($tscPID)
- * 4517:     function getTableEntries($table,$TSconfig)
- * 4530:     function getPID($table,$uid)
- * 4543:     function dbAnalysisStoreExec()
- * 4559:     function removeRegisteredFiles()
- * 4571:     function removeCacheFiles()
- * 4596:     function int_pageTreeInfo($CPtable,$pid,$counter, $rootID)
- * 4617:     function compileAdminTables()
- * 4634:     function fixUniqueInPid($table,$uid)
- * 4670:     function fixCopyAfterDuplFields($table,$uid,$prevUid,$update, $newData=array())
- * 4695:     function extFileFields($table)
- * 4721:     function getCopyHeader($table,$pid,$field,$value,$count,$prevTitle='')
- * 4750:     function prependLabel($table)
- * 4767:     function resolvePid($table,$pid)
- * 4785:     function clearPrefixFromValue($table,$value)
- * 4800:     function extFileFunctions($table,$field,$filelist,$func)
- * 4830:     function noRecordsFromUnallowedTables($inList)
+ * 4324:     function getSortNumber($table,$uid,$pid)
+ * 4397:     function resorting($table,$pid,$sortRow, $return_SortNumber_After_This_Uid)
+ * 4428:     function setTSconfigPermissions($fieldArray,$TSConfig_p)
+ * 4445:     function newFieldArray($table)
+ * 4477:     function overrideFieldArray($table,$data)
+ * 4493:     function compareFieldArrayWithCurrentAndUnset($table,$id,$fieldArray)
+ * 4539:     function assemblePermissions($string)
+ * 4556:     function rmComma($input)
+ * 4566:     function convNumEntityToByteValue($input)
+ * 4588:     function destPathFromUploadFolder($folder)
+ * 4598:     function deleteClause($table)
+ * 4614:     function getTCEMAIN_TSconfig($tscPID)
+ * 4629:     function getTableEntries($table,$TSconfig)
+ * 4642:     function getPID($table,$uid)
+ * 4655:     function dbAnalysisStoreExec()
+ * 4671:     function removeRegisteredFiles()
+ * 4683:     function removeCacheFiles()
+ * 4708:     function int_pageTreeInfo($CPtable,$pid,$counter, $rootID)
+ * 4729:     function compileAdminTables()
+ * 4746:     function fixUniqueInPid($table,$uid)
+ * 4782:     function fixCopyAfterDuplFields($table,$uid,$prevUid,$update, $newData=array())
+ * 4807:     function extFileFields($table)
+ * 4828:     function getUniqueFields($table)
+ * 4853:     function isReferenceField($conf)
+ * 4868:     function getCopyHeader($table,$pid,$field,$value,$count,$prevTitle='')
+ * 4897:     function prependLabel($table)
+ * 4914:     function resolvePid($table,$pid)
+ * 4944:     function clearPrefixFromValue($table,$value)
+ * 4959:     function extFileFunctions($table,$field,$filelist,$func)
+ * 4989:     function noRecordsFromUnallowedTables($inList)
+ * 5015:     function notifyStageChange($stat,$stageId,$table,$id,$comment)
+ * 5109:     function notifyStageChange_getEmails($listOfUsers,$noTablePrefix=FALSE)
  *
  *              SECTION: Clearing cache
- * 4872:     function clear_cache($table,$uid)
- * 4981:     function clear_cacheCmd($cacheCmd)
+ * 5155:     function clear_cache($table,$uid)
+ * 5264:     function clear_cacheCmd($cacheCmd)
  *
  *              SECTION: Logging
- * 5087:     function log($table,$recuid,$action,$recpid,$error,$details,$details_nr=-1,$data=array(),$event_pid=-1,$NEWid='')
- * 5104:     function newlog($message, $error=0)
- * 5114:     function printLogErrorMessages($redirect)
+ * 5370:     function log($table,$recuid,$action,$recpid,$error,$details,$details_nr=-1,$data=array(),$event_pid=-1,$NEWid='')
+ * 5387:     function newlog($message, $error=0)
+ * 5397:     function printLogErrorMessages($redirect)
  *
- * TOTAL FUNCTIONS: 104
+ * TOTAL FUNCTIONS: 109
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -2074,7 +2079,7 @@ class t3lib_TCEmain	{
 										$this->version_clearWSID($table,$id);
 									break;
 									case 'setStage':
-										$this->version_setStage($table,$id,$value['stageId']);
+										$this->version_setStage($table,$id,$value['stageId'],$value['comment']);
 									break;
 								}
 							break;
@@ -2085,11 +2090,7 @@ class t3lib_TCEmain	{
 										// Look, if record is "online" or in a versionized branch, then delete directly.
 									if ($res = $this->BE_USER->workspaceAllowLiveRecordsInPID($delRec['pid'], $table))	{	// Directly delete:
 										if ($res>0)	{
-											if ($table === 'pages')	{
-												$this->deletePages($id);
-											} else {
-												$this->deleteRecord($table,$id);
-											}
+											$this->deleteEl($table, $id);
 										} else {
 											$this->newlog('Stage of root point did not allow for deletion',1);
 										}
@@ -2902,13 +2903,7 @@ class t3lib_TCEmain	{
 								$workspaceCheck = TRUE;
 								if ($this->BE_USER->workspace!==0)	{
 										// Look for version already in workspace:
-									$workspaceCheck = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
-										'uid',
-										$table,
-										'(t3ver_oid='.$id.' || uid='.$id.')
-											AND t3ver_wsid='.intval($this->BE_USER->workspace).
-											$this->deleteClause($table)
-									) ? FALSE : TRUE;
+									$workspaceCheck = t3lib_BEfunc::getWorkspaceVersionOfRecord($this->BE_USER->workspace,$table,$id,'uid') ? FALSE : TRUE;
 								}
 
 								if ($workspaceCheck)	{
@@ -3059,7 +3054,7 @@ class t3lib_TCEmain	{
 
 				// Find fields to select:
 			$keepFields = $this->getUniqueFields($table);
-			$selectFields = array_unique(array_merge(array('uid','pid','t3ver_oid','t3ver_wsid','t3ver_state','t3ver_count'),$keepFields));
+			$selectFields = array_unique(array_merge(array('uid','pid','t3ver_oid','t3ver_wsid','t3ver_state','t3ver_stage','t3ver_count'),$keepFields));
 			if ($TCA[$table]['ctrl']['sortby'])	{
 				$selectFields[] = $keepFields[] = $TCA[$table]['ctrl']['sortby'];
 			}
@@ -3073,111 +3068,106 @@ class t3lib_TCEmain	{
 			$swapVersion = t3lib_BEfunc::getRecord($table,$swapWith,implode(',',$selectFields));
 
 			if (is_array($curVersion) && is_array($swapVersion))	{
-
 				if ($this->BE_USER->workspacePublishAccess($swapVersion['t3ver_wsid']))	{
-					if ($this->doesRecordExist($table,$swapWith,'show') && $this->checkRecordUpdateAccess($table,$swapWith)) {
-						if (!$swapIntoWS || $this->BE_USER->workspaceSwapAccess())	{
-							if (!is_array(t3lib_BEfunc::getRecord($table,-$id,'uid')))	{
+					$wsAccess = $this->BE_USER->checkWorkspace($swapVersion['t3ver_wsid']);
+					if ($swapVersion['t3ver_wsid']<=0 || !($wsAccess['publish_access']&1) || (int)$swapVersion['t3ver_stage']===10)	{
 
-									// Add "keepfields"
-								$swapVerBaseArray = array();
-								$curVerBaseArray = array();
-								foreach($keepFields as $fN)	{
-									$swapVerBaseArray[$fN] = $curVersion[$fN];
-									$curVerBaseArray[$fN] = $swapVersion[$fN];
-								}
+						if ($this->doesRecordExist($table,$swapWith,'show') && $this->checkRecordUpdateAccess($table,$swapWith)) {
+							if (!$swapIntoWS || $this->BE_USER->workspaceSwapAccess())	{
+								if (!is_array(t3lib_BEfunc::getRecord($table,-$id,'uid')))	{
 
-									// Check if the swapWith record really IS a version of the original!
-								if ((int)$swapVersion['pid']==-1 && (int)$curVersion['pid']>=0 && !strcmp($swapVersion['t3ver_oid'],$id))	{
-
-									$sqlErrors=array();
-
-										// Step 1: Negate ID of online version:
-									$sArray = $curVerBaseArray;
-									$sArray['uid'] = -intval($id);
-									$sArray['t3ver_oid'] = intval($swapWith);
-									$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table,'uid='.intval($id),$sArray);
-									if ($GLOBALS['TYPO3_DB']->sql_error())	$sqlErrors[]=$GLOBALS['TYPO3_DB']->sql_error();
-
-										// Step 2: Set online ID for offline version:
-									$sArray = $swapVerBaseArray;
-									$sArray['uid'] = intval($id);
-									$sArray['pid'] = intval($curVersion['pid']);	// Set pid for ONLINE
-									$sArray['t3ver_oid'] = intval($id);
-									$sArray['t3ver_wsid'] = $swapIntoWS ? intval($curVersion['t3ver_wsid']) : 0;
-									$sArray['t3ver_tstamp'] = time();
-									$sArray['t3ver_stage'] = 0;
-									$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table,'uid='.intval($swapWith),$sArray);
-									if ($GLOBALS['TYPO3_DB']->sql_error())	$sqlErrors[]=$GLOBALS['TYPO3_DB']->sql_error();
-
-										// Step 3: Set offline id for the previously online version:
-									$sArray = array();
-									$sArray['uid'] = intval($swapWith);
-									$sArray['pid'] = -1;	// Set pid for OFFLINE
-									$sArray['t3ver_oid'] = intval($id);
-									$sArray['t3ver_wsid'] = $swapIntoWS ? intval($swapVersion['t3ver_wsid']) : 0;
-									$sArray['t3ver_tstamp'] = time();
-									$sArray['t3ver_count'] = $curVersion['t3ver_count']+1;	// Increment lifecycle counter
-									$sArray['t3ver_stage'] = 0;
-
-									if ($table==='pages') {		// Keeping the swapmode state
-										$sArray['t3ver_swapmode'] = $swapVersion['t3ver_swapmode'];
+										// Add "keepfields"
+									$swapVerBaseArray = array();
+									$curVerBaseArray = array();
+									foreach($keepFields as $fN)	{
+										$swapVerBaseArray[$fN] = $curVersion[$fN];
+										$curVerBaseArray[$fN] = $swapVersion[$fN];
 									}
-									$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table,'uid=-'.intval($id),$sArray);
-									if ($GLOBALS['TYPO3_DB']->sql_error())	$sqlErrors[]=$GLOBALS['TYPO3_DB']->sql_error();
 
-										// Checking for delete:
-									if ($swapVersion['t3ver_state']==2)	{
-										if ($table == 'pages')	{
-											$this->deletePages($id, TRUE);	// Force delete
-										} else {
-											$this->deleteRecord($table,$id,TRUE);	// Force delete
+										// Check if the swapWith record really IS a version of the original!
+									if ((int)$swapVersion['pid']==-1 && (int)$curVersion['pid']>=0 && !strcmp($swapVersion['t3ver_oid'],$id))	{
+
+										$sqlErrors=array();
+
+											// Step 1: Negate ID of online version:
+										$sArray = $curVerBaseArray;
+										$sArray['uid'] = -intval($id);
+										$sArray['t3ver_oid'] = intval($swapWith);
+										$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table,'uid='.intval($id),$sArray);
+										if ($GLOBALS['TYPO3_DB']->sql_error())	$sqlErrors[]=$GLOBALS['TYPO3_DB']->sql_error();
+
+											// Step 2: Set online ID for offline version:
+										$sArray = $swapVerBaseArray;
+										$sArray['uid'] = intval($id);
+										$sArray['pid'] = intval($curVersion['pid']);	// Set pid for ONLINE
+										$sArray['t3ver_oid'] = intval($id);
+										$sArray['t3ver_wsid'] = $swapIntoWS ? intval($curVersion['t3ver_wsid']) : 0;
+										$sArray['t3ver_tstamp'] = time();
+										$sArray['t3ver_stage'] = 0;
+										$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table,'uid='.intval($swapWith),$sArray);
+										if ($GLOBALS['TYPO3_DB']->sql_error())	$sqlErrors[]=$GLOBALS['TYPO3_DB']->sql_error();
+
+											// Step 3: Set offline id for the previously online version:
+										$sArray = array();
+										$sArray['uid'] = intval($swapWith);
+										$sArray['pid'] = -1;	// Set pid for OFFLINE
+										$sArray['t3ver_oid'] = intval($id);
+										$sArray['t3ver_wsid'] = $swapIntoWS ? intval($swapVersion['t3ver_wsid']) : 0;
+										$sArray['t3ver_tstamp'] = time();
+										$sArray['t3ver_count'] = $curVersion['t3ver_count']+1;	// Increment lifecycle counter
+										$sArray['t3ver_stage'] = 0;
+
+										if ($table==='pages') {		// Keeping the swapmode state
+											$sArray['t3ver_swapmode'] = $swapVersion['t3ver_swapmode'];
 										}
-									}
-										// Checking for "new-placeholder" and if found, delete it:
-									if ($curVersion['t3ver_state']==1)	{
-										if ($table == 'pages')	{
-											$this->deletePages($swapWith, TRUE, TRUE);	// Force HARD delete!
-										} else {
-											$this->deleteRecord($table, $swapWith, TRUE, TRUE);	// Force HARD delete!
+										$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table,'uid=-'.intval($id),$sArray);
+										if ($GLOBALS['TYPO3_DB']->sql_error())	$sqlErrors[]=$GLOBALS['TYPO3_DB']->sql_error();
+
+											// Checking for delete:
+										if ($swapVersion['t3ver_state']==2)	{
+											$this->deleteEl($table,$id,TRUE);	// Force delete
 										}
-									}
+											// Checking for "new-placeholder" and if found, delete it:
+										if ($curVersion['t3ver_state']==1)	{
+											$this->deleteEl($table, $swapWith, TRUE, TRUE); 	// For delete + completely delete!
+										}
 
-									if (!count($sqlErrors))	{
-										$this->newlog('Swapping successful for table "'.$table.'" uid '.$id.'=>'.$swapWith);
+										if (!count($sqlErrors))	{
+											$this->newlog('Swapping successful for table "'.$table.'" uid '.$id.'=>'.$swapWith);
 
-											// SWAPPING pids for subrecords:
-										if ($table=='pages' && $swapVersion['t3ver_swapmode']>=0)	{
+												// SWAPPING pids for subrecords:
+											if ($table=='pages' && $swapVersion['t3ver_swapmode']>=0)	{
 
-												// Collect table names that should be copied along with the tables:
-											foreach($TCA as $tN => $tCfg)	{
-												if ($swapVersion['t3ver_swapmode']>0 || $TCA[$tN]['ctrl']['versioning_followPages'])	{	// For "Branch" publishing swap ALL, otherwise for "page" publishing, swap only "versioning_followPages" tables
-			#debug($tN,'SWAPPING pids for subrecords:');
-													$temporaryPid = -($id+1000000);
+													// Collect table names that should be copied along with the tables:
+												foreach($TCA as $tN => $tCfg)	{
+													if ($swapVersion['t3ver_swapmode']>0 || $TCA[$tN]['ctrl']['versioning_followPages'])	{	// For "Branch" publishing swap ALL, otherwise for "page" publishing, swap only "versioning_followPages" tables
+				#debug($tN,'SWAPPING pids for subrecords:');
+														$temporaryPid = -($id+1000000);
 
-													$GLOBALS['TYPO3_DB']->exec_UPDATEquery($tN,'pid='.intval($id),array('pid'=>$temporaryPid));
-													if ($GLOBALS['TYPO3_DB']->sql_error())	$sqlErrors[]=$GLOBALS['TYPO3_DB']->sql_error();
+														$GLOBALS['TYPO3_DB']->exec_UPDATEquery($tN,'pid='.intval($id),array('pid'=>$temporaryPid));
+														if ($GLOBALS['TYPO3_DB']->sql_error())	$sqlErrors[]=$GLOBALS['TYPO3_DB']->sql_error();
 
-													$GLOBALS['TYPO3_DB']->exec_UPDATEquery($tN,'pid='.intval($swapWith),array('pid'=>$id));
-													if ($GLOBALS['TYPO3_DB']->sql_error())	$sqlErrors[]=$GLOBALS['TYPO3_DB']->sql_error();
+														$GLOBALS['TYPO3_DB']->exec_UPDATEquery($tN,'pid='.intval($swapWith),array('pid'=>$id));
+														if ($GLOBALS['TYPO3_DB']->sql_error())	$sqlErrors[]=$GLOBALS['TYPO3_DB']->sql_error();
 
-													$GLOBALS['TYPO3_DB']->exec_UPDATEquery($tN,'pid='.intval($temporaryPid),array('pid'=>$swapWith));
-													if ($GLOBALS['TYPO3_DB']->sql_error())	$sqlErrors[]=$GLOBALS['TYPO3_DB']->sql_error();
+														$GLOBALS['TYPO3_DB']->exec_UPDATEquery($tN,'pid='.intval($temporaryPid),array('pid'=>$swapWith));
+														if ($GLOBALS['TYPO3_DB']->sql_error())	$sqlErrors[]=$GLOBALS['TYPO3_DB']->sql_error();
 
-													if (count($sqlErrors))	{
-														$this->newlog('During Swapping: SQL errors happend: '.implode('; ',$sqlErrors),2);
+														if (count($sqlErrors))	{
+															$this->newlog('During Swapping: SQL errors happend: '.implode('; ',$sqlErrors),2);
+														}
 													}
 												}
 											}
-										}
-											// Clear cache:
-										$this->clear_cache($table,$id);
+												// Clear cache:
+											$this->clear_cache($table,$id);
 
-									} else $this->newlog('During Swapping: SQL errors happend: '.implode('; ',$sqlErrors),2);
-								} else $this->newlog('In swap version, either pid was not -1 or the t3ver_oid didn\'t match the id of the online version as it must!',2);
-							} else $this->newlog('Error: A record with a negative UID existed - that indicates some inconsistency in the database from prior versioning actions!',2);
-						} else $this->newlog('Workspace #'.$swapVersion['t3ver_wsid'].' does not support swapping.',1);
-					} else $this->newlog('You cannot publish a record you do not have edit and show permissions for',1);
+										} else $this->newlog('During Swapping: SQL errors happend: '.implode('; ',$sqlErrors),2);
+									} else $this->newlog('In swap version, either pid was not -1 or the t3ver_oid didn\'t match the id of the online version as it must!',2);
+								} else $this->newlog('Error: A record with a negative UID existed - that indicates some inconsistency in the database from prior versioning actions!',2);
+							} else $this->newlog('Workspace #'.$swapVersion['t3ver_wsid'].' does not support swapping.',1);
+						} else $this->newlog('You cannot publish a record you do not have edit and show permissions for',1);
+					} else $this->newlog('Records in workspace #'.$swapVersion['t3ver_wsid'].' can only be published when in "Publish" stage.',1);
 				} else $this->newlog('User could not publish records from workspace #'.$swapVersion['t3ver_wsid'],1);
 			} else $this->newlog('Error: Either online or swap version could not be selected!',2);
 		} else $this->newlog('Error: You cannot swap versions for a record you do not have access to edit!',1);
@@ -3204,6 +3194,12 @@ class t3lib_TCEmain	{
 				if ((int)$liveRec['t3ver_state']===1)	{
 					$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table,'uid='.intval($liveRec['uid']),$sArray);
 				}
+
+					// If "deleted" flag is set for the version that got released it doesn't make sense to keep that "placeholder" anymore and we delete it completly.
+				$wsRec = t3lib_BEfunc::getRecord($table,$id);
+				if ((int)$wsRec['t3ver_state']===2)	{
+					$this->deleteEl($table, $id, TRUE, TRUE);
+				}
 			}
 		} else $this->newlog('Attempt to reset workspace for record failed because you do not have edit access',1);
 	}
@@ -3214,9 +3210,10 @@ class t3lib_TCEmain	{
 	 * @param	string		Table name
 	 * @param	integer		Record UID
 	 * @param	integer		Stage ID to set
+	 * @param	string		Comment that goes into log
 	 * @return	void
 	 */
-	function version_setStage($table,$id,$stageId)	{
+	function version_setStage($table,$id,$stageId,$comment='')	{
 		if ($errorCode = $this->BE_USER->workspaceCannotEditOfflineVersion($table, $id))	{
 			$this->newlog('Attempt to set stage for record failed: '.$errorCode,1);
 		} elseif ($this->checkRecordUpdateAccess($table,$id)) {
@@ -3227,7 +3224,13 @@ class t3lib_TCEmain	{
 				$sArray = array();
 				$sArray['t3ver_stage'] = $stageId;
 				$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table, 'uid='.intval($id), $sArray);
-				$this->newlog('Stage for record was changed to '.$stageId);
+				$this->newlog('Stage for record was changed to '.$stageId.'. Comment was: "'.substr($comment,0,100).'"');
+// TEMPORARY:
+$this->log($table,$id,6,0,0,'Stage raised...',-1,array('comment'=>$comment,'stage'=>$stageId));
+
+				if ((int)$stat['stagechg_notification']>0)	{
+					$this->notifyStageChange($stat,$stageId,$table,$id,$comment);
+				}
 			} else $this->newlog('The member user tried to set a stage value "'.$stageId.'" that was not allowed',1);
 		} else $this->newlog('Attempt to set stage for record failed because you do not have edit access',1);
 	}
@@ -3250,6 +3253,23 @@ class t3lib_TCEmain	{
 	 * Cmd: Deleting
 	 *
 	 ********************************************/
+
+	/**
+	 * Delete element from any table
+	 *
+	 * @param	string		Table name
+	 * @param	integer		Record UID
+	 * @param	boolean		Flag: If $noRecordCheck is set, then the function does not check permission to delete record
+	 * @param	boolean		If TRUE, the "deleted" flag is ignored if applicable for record and the record is deleted COMPLETELY!
+	 * @return	void
+	 */
+	function deleteEl($table, $uid, $noRecordCheck=FALSE, $forceHardDelete=FALSE)	{
+		if ($table == 'pages')	{
+			$this->deletePages($uid, $noRecordCheck, $forceHardDelete);
+		} else {
+			$this->deleteRecord($table, $uid, $noRecordCheck, $forceHardDelete);
+		}
+	}
 
 	/**
 	 * Deleting a record
@@ -4993,6 +5013,131 @@ class t3lib_TCEmain	{
 			}
 		}
 		return TRUE;
+	}
+
+	/**
+	 * Send an email notification to users in workspace
+	 *
+	 * @param	array		Workspace access array (from t3lib_userauthgroup::checkWorkspace())
+	 * @param	integer		New Stage number: 0 = editing, 1= just ready for review, 10 = ready for publication, -1 = rejected!
+	 * @param	string		Table name of element
+	 * @param	integer		Record uid of element
+	 * @param	string		User comment sent along with action
+	 * @return	void
+	 */
+	function notifyStageChange($stat,$stageId,$table,$id,$comment)	{
+		$workspaceRec = t3lib_BEfunc::getRecord('sys_workspace', $stat['uid']);
+
+		if (is_array($workspaceRec))	{
+
+				// Compile label:
+			switch((int)$stageId)	{
+				case 1:
+					$newStage = 'Ready for review';
+				break;
+				case 10:
+					$newStage = 'Ready for publishing';
+				break;
+				case -1:
+					$newStage = 'Element was rejected!';
+				break;
+				case 0:
+					$newStage = 'Rejected element was noticed and edited';
+				break;
+				default:
+					$newStage = 'Unknown state change!?';
+				break;
+			}
+
+				// Compile list of recipients:
+			$emails = array();
+			switch((int)$stat['stagechg_notification'])	{
+				case 1:
+					switch((int)$stageId)	{
+						case 1:
+							$emails = $this->notifyStageChange_getEmails($workspaceRec['reviewers']);
+						break;
+						case 10:
+							$emails = $this->notifyStageChange_getEmails($workspaceRec['adminusers'], TRUE);
+						break;
+						case -1:
+							$emails = $this->notifyStageChange_getEmails($workspaceRec['reviewers']);
+							$emails = array_merge($emails,$this->notifyStageChange_getEmails($workspaceRec['members']));
+						break;
+						case 0:
+							$emails = $this->notifyStageChange_getEmails($workspaceRec['members']);
+						break;
+ 						default:
+							$emails = $this->notifyStageChange_getEmails($workspaceRec['adminusers'], TRUE);
+						break;
+					}
+				break;
+				case 10:
+					$emails = $this->notifyStageChange_getEmails($workspaceRec['adminusers'], TRUE);
+					$emails = array_merge($emails,$this->notifyStageChange_getEmails($workspaceRec['reviewers']));
+					$emails = array_merge($emails,$this->notifyStageChange_getEmails($workspaceRec['members']));
+				break;
+			}
+			$emails = array_unique($emails);
+
+				// Send email:
+			if (count($emails))	{
+				$message = sprintf('
+At the TYPO3 site "%s" (%s)
+in workspace "%s" (#%s)
+the stage has changed for the element "%s":
+
+==> %s
+
+User Comment:
+"%s"
+
+State was change by %s (username: %s)
+				',
+				$GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'],
+				t3lib_div::getIndpEnv('TYPO3_SITE_URL').TYPO3_mainDir,
+				$workspaceRec['title'],
+				$workspaceRec['uid'],
+				$table.':'.$id,
+				$newStage,
+				$comment,
+				$this->BE_USER->user['realName'],
+				$this->BE_USER->user['username']);
+
+				t3lib_div::plainMailEncoded(
+					implode(',',$emails),
+					'TYPO3 Workspace Note: Stage Change for '.$table.':'.$id,
+					trim($message)
+				);
+			}
+		}
+	}
+
+	/**
+	 * Return emails addresses of be_users from input list.
+	 *
+	 * @param	string		List of backend users, on the form "be_users_10,be_users_2" or "10,2" in case noTablePrefix is set.
+	 * @param	boolean		If set, the input list are integers and not strings.
+	 * @return	array		Array of emails
+	 */
+	function notifyStageChange_getEmails($listOfUsers,$noTablePrefix=FALSE)	{
+		$users = t3lib_div::trimExplode(',',$listOfUsers,1);
+		$emails = array();
+		foreach($users as $userIdent)	{
+			if ($noTablePrefix)	{
+				$id = intval($userIdent);
+			} else {
+				list($table,$id) = t3lib_div::revExplode('_',$userIdent,2);
+			}
+			if ($table==='be_users' || $noTablePrefix)	{
+				if ($userRecord = t3lib_BEfunc::getRecord('be_users', $id, 'email'))	{
+					if (strlen(trim($userRecord['email'])))	{
+						$emails[$id] = $userRecord['email'];
+					}
+				}
+			}
+		}
+		return $emails;
 	}
 
 

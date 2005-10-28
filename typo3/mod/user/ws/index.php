@@ -121,7 +121,7 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 	var $targets = array();		// Accumulation of online targets.
 	var $pageModule = '';
 	var $publishAccess = FALSE;
-
+	var $be_user_Array = array();
 
 
 	/*********************************
@@ -349,9 +349,9 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 		$actionLinks = '';
 		if ($GLOBALS['BE_USER']->workspace!==0)	{
 			if ($this->publishAccess)	{
-				$actionLinks.= '<input type="submit" name="_publish" value="Publish workspace" onclick="return confirm(\'Are you sure you want to publish all content of the workspace?\');"/>';
+				$actionLinks.= '<input type="submit" name="_publish" value="Publish workspace" onclick="return confirm(\'Are you sure you want to publish all content '.($GLOBALS['BE_USER']->workspaceRec['publish_access']&1 ? 'in &quot;Publish&quot; stage ':'').'from the workspace?\');"/>';
 				if ($GLOBALS['BE_USER']->workspaceSwapAccess())	{
-					$actionLinks.= '<input type="submit" name="_swap" value="Swap workspace" onclick="return confirm(\'Are you sure you want to publish (swap) all content of the workspace?\');" />';
+					$actionLinks.= '<input type="submit" name="_swap" value="Swap workspace" onclick="return confirm(\'Are you sure you want to publish (swap) all content '.($GLOBALS['BE_USER']->workspaceRec['publish_access']&1 ? 'in &quot;Publish&quot; stage ':'').'from the workspace?\');" />';
 				}
 			} else {
 				$actionLinks.= $this->doc->icons(1).'You are not permitted to publish from this workspace';
@@ -416,6 +416,12 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 
 			// Initialize variables:
 		$this->showWorkspaceCol = $GLOBALS['BE_USER']->workspace===0 && $this->MOD_SETTINGS['display']<=-98;
+
+			// Get usernames and groupnames
+		$be_group_Array = t3lib_BEfunc::getListGroupNames('title,uid');
+		$groupArray = array_keys($be_group_Array);
+		$this->be_user_Array = t3lib_BEfunc::getUserNames();
+		if (!$GLOBALS['BE_USER']->isAdmin())		$this->be_user_Array = t3lib_BEfunc::blindUserNames($this->be_user_Array,$groupArray,1);
 
 			// Initialize Workspace ID and filter-value:
 		if ($GLOBALS['BE_USER']->workspace===0)	{
@@ -633,7 +639,7 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 									$tableRows[] = '
 										<tr class="bgColor4">
 											'.$mainCell.$verCell.'
-											<td nowrap="nowrap">'.$this->displayWorkspaceOverview_stageCmd($table,$rec_off).'</td>
+											<td nowrap="nowrap">'.$this->showStageChangeLog($table,$rec_off['uid'],$this->displayWorkspaceOverview_stageCmd($table,$rec_off)).'</td>
 											<td nowrap="nowrap" class="'.$swapClass.'">'.
 												$this->displayWorkspaceOverview_commandLinks($table,$rec_on,$rec_off,$vType).
 												htmlspecialchars($swapLabel).
@@ -687,11 +693,15 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 				$sId = 1;
 				$sLabel = 'Editing';
 				$color = '#666666';
+ 				$label = 'Comment for Reviewer:';
+				$titleAttrib = 'Send to Review';
 			break;
 			case 1:
 				$sId = 10;
 				$sLabel = 'Review';
 				$color = '#6666cc';
+				$label = 'Comment for Publisher:';
+				$titleAttrib = 'Approve for Publishing';
 			break;
 			case 10:
 				$sLabel = 'Publish';
@@ -701,6 +711,8 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 				$sLabel = $this->doc->icons(2).'Rejected';
 				$sId = 0;
 				$color = '#ff0000';
+				$label = 'Comment:';
+				$titleAttrib = 'Reset stage';
 			break;
 			default:
 				$sLabel = 'Undefined';
@@ -712,13 +724,16 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 
 		$raiseOk = !$GLOBALS['BE_USER']->workspaceCannotEditOfflineVersion($table,$rec_off);
 
-		if ($raiseOk)	{
+		if ($raiseOk && $rec_off['t3ver_stage']!=-1)	{
+			$onClick = 'var commentTxt=window.prompt("Please explain why you reject:","");
+							if (commentTxt!=null) {document.location="'.$this->doc->issueCommand(
+							'&cmd['.$table.']['.$rec_off['uid'].'][version][action]=setStage'.
+							'&cmd['.$table.']['.$rec_off['uid'].'][version][stageId]=-1'
+							).'&cmd['.$table.']['.$rec_off['uid'].'][version][comment]="+escape(commentTxt);}'.
+							' return false;';
 				// Reject:
 			$actionLinks.=
-				'<a href="'.htmlspecialchars($this->doc->issueCommand(
-						'&cmd['.$table.']['.$rec_off['uid'].'][version][action]=setStage'.
-						'&cmd['.$table.']['.$rec_off['uid'].'][version][stageId]=-1'
-						)).'">'.
+				'<a href="#" onclick="'.htmlspecialchars($onClick).'">'.
 				'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/down.gif','width="14" height="14"').' alt="" align="top" title="Reject" />'.
 				'</a>';
 		} else {
@@ -731,13 +746,16 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 
 			// Raise
 		if ($raiseOk)	{
-			if ($rec_off['t3ver_stage']!=10)	{
-				$actionLinks.=
-					'<a href="'.htmlspecialchars($this->doc->issueCommand(
+			$onClick = 'var commentTxt=window.prompt("'.$label.'","");
+							if (commentTxt!=null) {document.location="'.$this->doc->issueCommand(
 							'&cmd['.$table.']['.$rec_off['uid'].'][version][action]=setStage'.
 							'&cmd['.$table.']['.$rec_off['uid'].'][version][stageId]='.$sId
-							)).'">'.
-					'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/up.gif','width="14" height="14"').' alt="" align="top" title="Raise" />'.
+							).'&cmd['.$table.']['.$rec_off['uid'].'][version][comment]="+escape(commentTxt);}'.
+							' return false;';
+			if ($rec_off['t3ver_stage']!=10)	{
+				$actionLinks.=
+					'<a href="#" onclick="'.htmlspecialchars($onClick).'">'.
+					'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/up.gif','width="14" height="14"').' alt="" align="top" title="'.htmlspecialchars($titleAttrib).'" />'.
 					'</a>';
 			}
 		}
@@ -754,7 +772,7 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 	 * @return	string		HTML content, mainly link tags and images.
 	 */
 	function displayWorkspaceOverview_commandLinks($table,&$rec_on,&$rec_off,$vType)	{
-		if ($this->publishAccess)	{
+		if ($this->publishAccess && (!($GLOBALS['BE_USER']->workspaceRec['publish_access']&1) || (int)$rec_off['t3ver_stage']===10))	{
 			$actionLinks =
 				'<a href="'.htmlspecialchars($this->doc->issueCommand(
 						'&cmd['.$table.']['.$rec_on['uid'].'][version][action]=swap'.
@@ -1385,6 +1403,46 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 		}
 	}
 
+	function showStageChangeLog($table,$id,$stageCommands)	{
+		$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+			'log_data,tstamp,userid',
+			'sys_log',
+			'action=6
+				AND tablename='.$GLOBALS['TYPO3_DB']->fullQuoteStr($table,'sys_log').'
+				AND recuid='.intval($id)
+		);
+
+		$entry = array();
+		foreach($rows as $dat)	{
+			$data = unserialize($dat['log_data']);
+			$username = $this->be_user_Array[$dat['userid']] ? $this->be_user_Array[$dat['userid']]['username'] : '['.$dat['userid'].']';
+
+			switch($data['stage'])	{
+				case 1:
+					$text = 'sent element to "Review"';
+				break;
+				case 10:
+					$text = 'approved for "Publish"';
+				break;
+				case -1:
+					$text = 'rejected element!';
+				break;
+				case 0:
+					$text = 'reset to "Editing"';
+				break;
+				default:
+					$text = '[undefined]';
+				break;
+			}
+			$text = t3lib_BEfunc::dateTime($dat['tstamp']).': "'.$username.'" '.$text;
+			$text.= ($data['comment']?'<br/>User Comment: <em>'.$data['comment'].'</em>':'');
+
+			$entry[] = $text;
+		}
+
+		return count($entry) ? '<span onmouseover="document.getElementById(\'log_'.$table.$id.'\').style.visibility = \'visible\';" onmouseout="document.getElementById(\'log_'.$table.$id.'\').style.visibility = \'hidden\';">'.$stageCommands.' ('.count($entry).')</span>'.
+				'<div class="logLayer" style="visibility: hidden; position: absolute;" id="log_'.$table.$id.'">'.implode('<hr/>',$entry).'</div>' : $stageCommands;
+	}
 
 
 

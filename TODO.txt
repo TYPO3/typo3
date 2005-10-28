@@ -302,16 +302,7 @@ Versioning/Workspaces:
 *******************************
 - delete:
 	- something twice? / delete a version, not just unlink it?
-	- unlink a version which has deleted flag must remove that version completely!
-
-
-- Implement flag in Workspace:
-	- Publish only content in "Publish" stage
-	- Only workspace owner can publish
-	- Stage change notification ->review (reviewers) ->publish (owner) ->rejection (reviewers and members) + message (goes into log as well)
-
-- Set branch-versioning to 100 by default in versioning API.
-- Way to change versioning type from element to page to branch for new records?
+	- "Delete versions" link in versioning module.
 
 ---------------------------------------
 
@@ -325,8 +316,8 @@ Workspace Manager TODO:
 - Details view for versions (when clicked)
 	- display change log for specific element?
 	- Also available as a Web >* module / click menu item (another way to browse stuff in need of preview, raise level, log checking etc.)
-- Show log of who raised content levels.
 
+Set up TemplaVoila package for testing.
 
 ----------------------------------------------
 - copy/move:
@@ -392,8 +383,9 @@ Frontend Preview:
 - Documentation. As frontend preview implementation is dealt with, describe any persisting incompatibilities in "TYPO3 Core API"
 
 
-Swapping versions:
+Versioning API:
 	- (Support for) swapping using temporary file (instead of using negative ID)
+	- Way to change versioning type from element to page to branch for new records?
 
 Preview modes with no BE login; For single pages, for whole workspace?
 	- Can bypass hidden pages, fe_groups, set workspace
