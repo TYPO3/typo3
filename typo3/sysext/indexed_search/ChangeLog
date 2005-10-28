@@ -1,3 +1,7 @@
+2005-10-28  Michael Stucki  <michael@typo3.org>
+
+	* Manual update
+
 2005-10-15  Michael Stucki  <michael@typo3.org>
 
 	* !!! In the past, pages were marked as search hits even if a user had no access to it. This default has been changed, but the setting can be reverted by setting "show.forbiddenRecords"

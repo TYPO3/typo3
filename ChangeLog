@@ -1,4 +1,4 @@
-2005-10-26  Kasper Skårhøj  <kasper2005@typo3.com>
+2005-10-26  Kasper Skaarhoj  <kasper2005@typo3.com>
 
 	* Implemented additional, simple API for logging to sys_log plus extended the sys-log with workspace awareness.
 	* Implemented more workspace related features. In particular scripts like t3lib_tcemain and t3lib_userauthgroup have been heavily modified!
@@ -18,7 +18,7 @@
 
 2005-10-15  Michael Stucki  <michael@typo3.org>
 
-	* Added a hook for adding new items in alt_topmenu_dummy.php (requested by Stig N. F�ch for his "roles" extension)
+	* Added a hook for adding new items in alt_topmenu_dummy.php (requested by Stig N. Faerch for his "roles" extension)
 	* Added a JavaScript to the backend which makes it possible to use tabulator keys in textareas. Can be disabled by setting $BE_USER->uc['disableTabInTextarea'].
 	* Added template support to indexed_search. Many thanks to Udo von Eynern for his great work!
 	* Many other changes to indexed_search. For details, see typo3/sysext/indexed_search/ChangeLog.
