@@ -51,14 +51,14 @@ unset($MCONF);
 require ("conf.php");
 require ($BACK_PATH."init.php");
 require ($BACK_PATH."template.php");
-$LANG->includeLLFile("EXT:version/cm1/locallang.php");
+$LANG->includeLLFile("EXT:version/cm1/locallang.xml");
 require_once (PATH_t3lib."class.t3lib_scbase.php");
 	// ....(But no access check here...)
 	// DEFAULT initialization of a module [END]
 
 
 
-
+debug(t3lib_div::_GET());
 
 require_once(PATH_t3lib.'class.t3lib_diff.php');
 

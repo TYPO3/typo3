@@ -3,5 +3,11 @@
 	// DO NOT REMOVE OR CHANGE THESE 3 LINES:
 define('TYPO3_MOD_PATH', 'sysext/version/cm1/');
 $BACK_PATH='../../../';
-$MCONF["name"]="xMOD_tx_version_cm1";
+$MCONF["name"]="web_txversionM1";
+
+$MLANG['default']['tabs_images']['tab'] = 'cm1/cm_icon.gif';
+$MLANG['default']['ll_ref']='LLL:EXT:versioning/cm/locallang.xml';
+
+$MCONF['script']='index.php';
+$MCONF['access']='user,group';
 ?>
