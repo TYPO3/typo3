@@ -3140,6 +3140,7 @@ class t3lib_div {
 	 * @return	array		Value of $LOCAL_LANG found in the included file. If that array is found it's returned. Otherwise an empty array
 	 */
 	function readLLfile($fileRef,$langKey)	{
+
 		$file = t3lib_div::getFileAbsFileName($fileRef);
 		if ($file)	{
 			$baseFile = ereg_replace('\.(php|xml)$', '', $file);

@@ -36,40 +36,44 @@
  *
  *
  *
- *  103: class SC_mod_user_ws_index extends t3lib_SCbase
+ *  107: class SC_mod_user_ws_index extends t3lib_SCbase
  *
  *              SECTION: Standard module initialization
- *  136:     function menuConfig()
- *  181:     function init()
- *  236:     function main()
- *  268:     function printContent()
+ *  142:     function menuConfig()
+ *  188:     function init()
+ *  250:     function main()
+ *  282:     function printContent()
  *
  *              SECTION: Module content: Publish
- *  298:     function moduleContent_publish()
- *  381:     function displayVersionDetails($details)
- *  390:     function displayWorkspaceOverview()
- *  454:     function displayWorkspaceOverview_list($pArray, $tableRows=array(), $c=0)
- *  604:     function displayWorkspaceOverview_pageTreeIconTitle($pageUid, $title, $indentCount)
- *  621:     function displayWorkspaceOverview_commandLinks($table,&$rec_on,&$rec_off)
- *  654:     function displayWorkspaceOverview_setInPageArray(&$pArray,$rlArr,$table,$row)
- *  683:     function subElements($uid,$treeLevel,$origId=0)
- *  785:     function subElements_getNonPageRecords($tN, $uid, &$recList)
- *  814:     function subElements_renderItem(&$tCell,$tN,$uid,$rec,$origId,$iconMode,$HTMLdata)
- *  880:     function markupNewOriginals()
- *  902:     function createDiffView($table, $diff_1_record, $diff_2_record)
+ *  312:     function moduleContent_publish()
+ *  410:     function displayVersionDetails($details)
+ *  419:     function displayWorkspaceOverview()
+ *  491:     function displayWorkspaceOverview_list($pArray, $tableRows=array(), $c=0, $warnAboutVersions=FALSE)
+ *  679:     function displayWorkspaceOverview_pageTreeIconTitle($pageUid, $title, $indentCount)
+ *  694:     function displayWorkspaceOverview_stageCmd($table,&$rec_off)
+ *  779:     function displayWorkspaceOverview_commandLinks($table,&$rec_on,&$rec_off,$vType)
+ *  849:     function displayWorkspaceOverview_commandLinksSub($table,$rec,$origId)
+ *  897:     function displayWorkspaceOverview_setInPageArray(&$pArray,$rlArr,$table,$row)
+ *  928:     function subElements($uid,$treeLevel,$origId=0)
+ * 1030:     function subElements_getNonPageRecords($tN, $uid, &$recList)
+ * 1060:     function subElements_renderItem(&$tCell,$tN,$uid,$rec,$origId,$iconMode,$HTMLdata)
+ * 1129:     function markupNewOriginals()
+ * 1151:     function createDiffView($table, $diff_1_record, $diff_2_record)
  *
  *              SECTION: Module content: Workspace list
- *  995:     function moduleContent_workspaceList()
+ * 1283:     function moduleContent_workspaceList()
  *
  *              SECTION: Helper functions
- * 1043:     function formatVerId($verId)
- * 1053:     function formatWorkspace($wsid)
- * 1080:     function formatCount($count)
+ * 1331:     function formatVerId($verId)
+ * 1341:     function formatWorkspace($wsid)
+ * 1368:     function formatCount($count)
+ * 1395:     function versionsInOtherWS($table,$uid)
+ * 1425:     function showStageChangeLog($table,$id,$stageCommands)
  *
  *              SECTION: Processing
- * 1121:     function publishAction()
+ * 1484:     function publishAction()
  *
- * TOTAL FUNCTIONS: 21
+ * TOTAL FUNCTIONS: 25
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -481,6 +485,7 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 	 * @param	array		Hierarchical storage of the elements to display (see displayWorkspaceOverview() / displayWorkspaceOverview_setInPageArray())
 	 * @param	array		Existing array of table rows to add to
 	 * @param	array		Depth counter
+	 * @param	boolean		If set, a warning is shown if versions are found (internal flag)
 	 * @return	array		Table rows, see displayWorkspaceOverview()
 	 */
 	function displayWorkspaceOverview_list($pArray, $tableRows=array(), $c=0, $warnAboutVersions=FALSE)	{
@@ -837,6 +842,8 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 	 * Links to publishing etc of a version
 	 *
 	 * @param	string		Table name
+	 * @param	array		Record
+	 * @param	integer		The uid of the online version of $uid. If zero it means we are drawing a row for the online version itself while a value means we are drawing display for an offline version.
 	 * @return	string		HTML content, mainly link tags and images.
 	 */
 	function displayWorkspaceOverview_commandLinksSub($table,$rec,$origId)	{
@@ -1380,6 +1387,10 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 
 	/**
 	 * Looking for versions of a record in other workspaces than the current
+	 *
+	 * @param	string		Table name
+	 * @param	integer		Record uid
+	 * @return	string		List of other workspace IDs
 	 */
 	function versionsInOtherWS($table,$uid)	{
 
@@ -1403,6 +1414,14 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 		}
 	}
 
+	/**
+	 * Looks up stage changes for version and displays a formatted view on mouseover.
+	 *
+	 * @param	string		Table name
+	 * @param	integer		Record ID
+	 * @param	string		HTML string to wrap the mouseover around (should be stage change links)
+	 * @return	string		HTML code.
+	 */
 	function showStageChangeLog($table,$id,$stageCommands)	{
 		$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
 			'log_data,tstamp,userid',

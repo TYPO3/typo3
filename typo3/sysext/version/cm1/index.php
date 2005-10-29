@@ -22,7 +22,7 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 /**
- * version module cm1
+ * Versioning module
  *
  * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  */
@@ -36,9 +36,9 @@
  *  105:     function jumpToUrl(URL)
  *  139:     function printContent()
  *  150:     function moduleContent()
- *  307:     function pageSubContent($pid,$c=0)
- *  359:     function lookForOwnVersions($table,$uid)
- *  376:     function adminLinks($table,$row)
+ *  310:     function pageSubContent($pid,$c=0)
+ *  364:     function lookForOwnVersions($table,$uid)
+ *  381:     function adminLinks($table,$row)
  *
  * TOTAL FUNCTIONS: 7
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -48,23 +48,19 @@
 
 	// DEFAULT initialization of a module [BEGIN]
 unset($MCONF);
-require ("conf.php");
-require ($BACK_PATH."init.php");
-require ($BACK_PATH."template.php");
-$LANG->includeLLFile("EXT:version/cm1/locallang.xml");
-require_once (PATH_t3lib."class.t3lib_scbase.php");
-	// ....(But no access check here...)
+require ('conf.php');
+require ($BACK_PATH.'init.php');
+require ($BACK_PATH.'template.php');
+$LANG->includeLLFile('EXT:version/locallang.xml');
+require_once (PATH_t3lib.'class.t3lib_scbase.php');
 	// DEFAULT initialization of a module [END]
-
-
-
-debug(t3lib_div::_GET());
 
 require_once(PATH_t3lib.'class.t3lib_diff.php');
 
 
+
 /**
- * Context Menu module for versioning. NOT READY FOR RELEASE YET
+ * Versioning module, including workspace management
  *
  * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  * @package TYPO3
@@ -72,31 +68,46 @@ require_once(PATH_t3lib.'class.t3lib_diff.php');
  */
 class tx_version_cm1 extends t3lib_SCbase {
 
+
 	/**
 	 * Main function of the module. Write the content to $this->content
 	 *
-	 * @return	[type]		...
+	 * @return	void
 	 */
 	function main()	{
 		global $BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$CLIENT,$TYPO3_CONF_VARS;
 
 			// Draw the header.
-		$this->doc = t3lib_div::makeInstance("mediumDoc");
+		$this->doc = t3lib_div::makeInstance('mediumDoc');
 		$this->doc->backPath = $BACK_PATH;
 		$this->doc->form='<form action="" method="post">';
 
+			// Getting input data:
+		$this->id = intval(t3lib_div::_GP('id'));		// Page id. If set, indicates activation from Web>Versioning module
+		if (!$this->id)	{
+			$this->uid = intval(t3lib_div::_GP('uid'));		// Record uid. Goes with table name to indicate specific record
+			$this->table = t3lib_div::_GP('table');			// Record table. Goes with uid to indicate specific record
+		} else {
+			$this->uid = $this->id;
+			$this->table = 'pages';
+		}
 
-		$this->uid = intval(t3lib_div::_GP('uid'));
-		$this->table = t3lib_div::_GP('table');
+			// Reading the record:
 		$record = t3lib_BEfunc::getRecord($this->table,$this->uid);
+		if ($record['pid']==-1)	{
+			$record = t3lib_BEfunc::getRecord($this->table,$record['t3ver_oid']);
+		}
 
+			// Checking access etc.
 		if (is_array($record) && $TCA[$this->table]['ctrl']['versioningWS'])	{
+			$this->uid = $record['uid']; 	// Might have changed if new live record was found!
+
 				// Access check!
 				// The page will show only if there is a valid page and if this page may be viewed by the user
 			$this->pageinfo = t3lib_BEfunc::readPageAccess($record['pid'],$this->perms_clause);
 			$access = is_array($this->pageinfo) ? 1 : 0;
 
-			if (($record['pid'] && $access) || ($BE_USER->user["admin"] && !$record['pid']))	{
+			if (($record['pid'] && $access) || ($BE_USER->user['admin'] && !$record['pid']))	{
 
 					// JavaScript
 				$this->doc->JScode = '
@@ -108,22 +119,24 @@ class tx_version_cm1 extends t3lib_SCbase {
 					</script>
 				';
 
-#				$headerSection = $this->doc->getHeader("pages",$this->pageinfo,$this->pageinfo["_thePath"])."<br/>".$LANG->sL("LLL:EXT:lang/locallang_core.php:labels.path").": ".t3lib_div::fixed_lgd_pre($this->pageinfo["_thePath"],50);
+				$headerSection = $this->doc->getHeader('pages',$this->pageinfo,$this->pageinfo['_thePath']).'<br/>'.$LANG->sL('LLL:EXT:lang/locallang_core.php:labels.path').': '.t3lib_div::fixed_lgd_pre($this->pageinfo['_thePath'],50);
 
-				$this->content.=$this->doc->startPage($LANG->getLL("title"));
-				$this->content.=$this->doc->header($LANG->getLL("title"));
-#				$this->content.=$this->doc->spacer(5);
-#				$this->content.=$this->doc->section('',$headerSection);
-#				$this->content.=$this->doc->divider(5);
-
-
+				$this->content.=$this->doc->startPage($LANG->getLL('title'));
+				$this->content.=$this->doc->header($LANG->getLL('title'));
+				$this->content.=$this->doc->spacer(5);
+				$this->content.=$this->doc->section('',$headerSection);
+				$this->content.=$this->doc->divider(5);
 
 				// Render content:
-				$this->moduleContent();
+				if ($this->id)	{
+					$this->workspaceMgm();
+				} else {
+					$this->versioningMgm();
+				}
 
 				// ShortCut
 				if ($BE_USER->mayMakeShortcut())	{
-					$this->content.=$this->doc->spacer(20).$this->doc->section("",$this->doc->makeShortcutIcon("id",implode(",",array_keys($this->MOD_MENU)),$this->MCONF["name"]));
+					$this->content.=$this->doc->spacer(20).$this->doc->section('',$this->doc->makeShortcutIcon('id',implode(',',array_keys($this->MOD_MENU)),$this->MCONF['name']));
 				}
 			}
 
@@ -132,9 +145,9 @@ class tx_version_cm1 extends t3lib_SCbase {
 	}
 
 	/**
-	 * [Describe function...]
+	 * Outputs accumulated module content to browser.
 	 *
-	 * @return	[type]		...
+	 * @return	void
 	 */
 	function printContent()	{
 
@@ -142,12 +155,27 @@ class tx_version_cm1 extends t3lib_SCbase {
 		echo $this->content;
 	}
 
-	/**
-	 * [Describe function...]
+
+
+
+
+
+
+
+
+
+	/******************************
 	 *
-	 * @return	[type]		...
+	 * Versioning management
+	 *
+	 ******************************/
+
+	/**
+	 * Management of versions for record
+	 *
+	 * @return	void
 	 */
-	function moduleContent()	{
+	function versioningMgm()	{
 		global $TCA;
 
 			// Diffing:
@@ -253,7 +281,8 @@ class tx_version_cm1 extends t3lib_SCbase {
 					<td bgcolor="red"><input type="radio" name="diff_2" value="'.$row['uid'].'"'.($diff_2==$row['uid'] ? ' checked="checked"':'').'/></td>
 				</tr>';
 
-			if ($this->table == 'pages')	{	//  && $row['uid']!=$this->uid
+				// Show sub-content if the table is pages AND it is not the online branch (because that will mostly render the WHOLE tree below - not smart;)
+			if ($this->table == 'pages' && $row['uid']!=$this->uid)	{
 				$sub = $this->pageSubContent($row['uid']);
 
 				if ($sub)	{
@@ -279,10 +308,6 @@ class tx_version_cm1 extends t3lib_SCbase {
 			Label: <input type="text" name="cmd['.$this->table.']['.$this->uid.'][version][label]" /><br/>
 			'.($this->table == 'pages' ? '<select name="cmd['.$this->table.']['.$this->uid.'][version][treeLevels]">
 				<option value="0">Page: Page + content</option>
-<!--				<option value="1">Branch: 1 level</option>
-				<option value="2">Branch: 2 levels</option>
-				<option value="3">Branch: 3 levels</option>
-				<option value="4">Branch: 4 levels</option> -->
 				<option value="100">Branch: All subpages</option>
 				<option value="-1">Element: Just record</option>
 			</select>' : '').'
@@ -296,16 +321,16 @@ class tx_version_cm1 extends t3lib_SCbase {
 		';
 
 		$this->content.=$this->doc->spacer(15);
-		$this->content.=$this->doc->section("Create new version",$content,0,1);
+		$this->content.=$this->doc->section('Create new version',$content,0,1);
 
 	}
 
 	/**
-	 * [Describe function...]
+	 * Recursively look for children for page version with $pid
 	 *
-	 * @param	[type]		$pid: ...
-	 * @param	[type]		$c: ...
-	 * @return	[type]		...
+	 * @param	integer		UID of page record for which to look up sub-elements following that version
+	 * @param	integer		Counter, do not set (limits to 100 levels)
+	 * @return	string		Table with content if any
 	 */
 	function pageSubContent($pid,$c=0)	{
 		global $TCA;
@@ -333,7 +358,7 @@ class tx_version_cm1 extends t3lib_SCbase {
 								<td width="98%">'.t3lib_BEfunc::getRecordTitle($tN,$subrow,1).'</td>
 							</tr>';
 
-						if ($tN == 'pages' && $c<10)	{
+						if ($tN == 'pages' && $c<100)	{
 							$sub = $this->pageSubContent($subrow['uid'],$c+1);
 
 							if ($sub)	{
@@ -355,11 +380,11 @@ class tx_version_cm1 extends t3lib_SCbase {
 	}
 
 	/**
-	 * [Describe function...]
+	 * Look for number of versions of a record
 	 *
-	 * @param	[type]		$table: ...
-	 * @param	[type]		$uid: ...
-	 * @return	[type]		...
+	 * @param	string		Table name
+	 * @param	integer		Record uid
+	 * @return	integer		Number of versions for record, false if none.
 	 */
 	function lookForOwnVersions($table,$uid)	{
 		global $TCA;
@@ -372,11 +397,11 @@ class tx_version_cm1 extends t3lib_SCbase {
 	}
 
 	/**
-	 * [Describe function...]
+	 * Administrative links for a table / record
 	 *
-	 * @param	[type]		$table: ...
-	 * @param	[type]		$row: ...
-	 * @return	[type]		...
+	 * @param	string		Table name
+	 * @param	array		Record for which administrative links are generated.
+	 * @return	string		HTML link tags.
 	 */
 	function adminLinks($table,$row)	{
 		global $BE_USER;
@@ -419,19 +444,46 @@ class tx_version_cm1 extends t3lib_SCbase {
 
 		return $adminLink;
 	}
+
+
+
+
+
+
+
+
+
+
+
+	/******************************
+	 *
+	 * Workspace management
+	 *
+	 ******************************/
+
+	/**
+	 * Management of workspace for page ID
+	 * Called when $this->id is set.
+	 *
+	 * @return	void
+	 */
+	function workspaceMgm()	{
+		$this->content.=$this->doc->spacer(15);
+		$this->content.=$this->doc->section('Workspace management','... - ...',0,1);
+	}
 }
 
 
 
-if (defined("TYPO3_MODE") && $TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["ext/version/cm1/index.php"])	{
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["ext/version/cm1/index.php"]);
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/version/cm1/index.php'])	{
+	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/version/cm1/index.php']);
 }
 
 
 
 
 // Make instance:
-$SOBE = t3lib_div::makeInstance("tx_version_cm1");
+$SOBE = t3lib_div::makeInstance('tx_version_cm1');
 $SOBE->init();
 
 

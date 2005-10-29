@@ -36,7 +36,7 @@
  *
  *   68: class wslib
  *   80:     function getCmdArrayForPublishWS($wsid, $doSwap)
- *  127:     function selectVersionsInWorkspace($wsid,$filter=0)
+ *  125:     function selectVersionsInWorkspace($wsid,$filter=0,$stage=-99)
  *
  *              SECTION: CLI functions
  *  180:     function CLI_main()
@@ -119,6 +119,7 @@ class wslib {
 	 *
 	 * @param	integer		Workspace ID. If -99, will select ALL versions from ANY workspace. If -98 will select all but ONLINE. >=-1 will select from the actual workspace
 	 * @param	integer		Lifecycle filter: 1 = select all drafts (never-published), 2 = select all published one or more times (archive/multiple), anything else selects all.
+	 * @param	integer		Stage filter: -99 means no filtering, otherwise it will be used to select only elements with that stage. For publishing, that would be "10"
 	 * @return	array		Array of all records uids etc. First key is table name, second key incremental integer. Records are associative arrays with uid, t3ver_oid and t3ver_swapmode fields. The REAL pid of the online record is found as "realpid"
 	 */
 	function selectVersionsInWorkspace($wsid,$filter=0,$stage=-99)	{

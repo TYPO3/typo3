@@ -16,7 +16,6 @@
 	</meta>
 	<data type="array">
 		<languageKey index="default" type="array">
-			<label index="cm1_title">Versioning</label>
 			<label index="title">Versioning</label>
 			<label index="mlang_labels_tablabel">Page and content versioning and workspace management for pages.</label>
 			<label index="mlang_labels_tabdescr">The Web&gt;Versioning module provides access to versioning features for the page tree.</label>

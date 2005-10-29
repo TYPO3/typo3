@@ -22,7 +22,7 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 /**
- * Addition of an item to the clickmenu
+ * Addition of the versioning item to the clickmenu
  *
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
@@ -41,8 +41,11 @@
  */
 
 
+
+
+
 /**
- * Addition of an item to the clickmenu
+ * "Versioning" item added to click menu of elements.
  *
  * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  * @package TYPO3
@@ -51,11 +54,13 @@
 class tx_version_cm1 {
 
 	/**
-	 * @param	[type]		$$backRef: ...
-	 * @param	[type]		$menuItems: ...
-	 * @param	[type]		$table: ...
-	 * @param	[type]		$uid: ...
-	 * @return	[type]		...
+	 * Main function, adding the item to input menuItems array
+	 *
+	 * @param	object		References to parent clickmenu objects.
+	 * @param	array		Array of existing menu items accumulated. New element added to this.
+	 * @param	string		Table name of the element
+	 * @param	integer		Record UID of the element
+	 * @return	array		Modified menuItems array
 	 */
 	function main(&$backRef,$menuItems,$table,$uid)	{
 		global $BE_USER,$TCA,$LANG;
@@ -64,29 +69,26 @@ class tx_version_cm1 {
 		if (!$backRef->cmLevel)	{
 
 				// Returns directly, because the clicked item was not from the pages table
-			if (!$TCA[$table] && $TCA[$table]['ctrl']['versioningWS'])	return $menuItems;
+			if (!$TCA[$table] || !$TCA[$table]['ctrl']['versioningWS'])	return $menuItems;
 
-				// Adds the regular item:
+				// Adds the regular item
 			$LL = $this->includeLL();
 
-				// Repeat this (below) for as many items you want to add!
-				// Remember to add entries in the localconf.php file for additional titles.
-			$url = t3lib_extMgm::extRelPath("version")."cm1/index.php?table=".rawurlencode($table)."&uid=".$uid;
+				// "Versioning" element added:
+			$url = t3lib_extMgm::extRelPath('version').'cm1/index.php?table='.rawurlencode($table).'&uid='.$uid;
 			$localItems[] = $backRef->linkItem(
-				$GLOBALS["LANG"]->getLLL("cm1_title",$LL),
-				$backRef->excludeIcon('<img src="'.$backRef->backPath.t3lib_extMgm::extRelPath("version").'cm1/cm_icon.gif" width="15" height="12" border=0 align=top>'),
+				$GLOBALS['LANG']->getLLL('title',$LL),
+				$backRef->excludeIcon('<img src="'.$backRef->backPath.t3lib_extMgm::extRelPath('version').'cm1/cm_icon.gif" width="15" height="12" border="0" align="top" alt="" />'),
 				$backRef->urlRefForCM($url),
-				1	// Disables the item in the top-bar. Set this to zero if you with the item to appear in the top bar!
+				1
 			);
-
-
 
 				// Find position of "delete" element:
 			reset($menuItems);
 			$c=0;
 			while(list($k)=each($menuItems))	{
 				$c++;
-				if (!strcmp($k,"delete"))	break;
+				if (!strcmp($k,'delete'))	break;
 			}
 				// .. subtract two (delete item + divider line)
 			$c-=2;
@@ -104,18 +106,18 @@ class tx_version_cm1 {
 	/**
 	 * Includes the [extDir]/locallang.php and returns the $LOCAL_LANG array found in that file.
 	 *
-	 * @return	[type]		...
+	 * @return	array		Local lang array
 	 */
 	function includeLL()	{
 		global $LANG;
 
-		return $LANG->includeLLFile('EXT:version/locallang.php',FALSE);
+		return $LANG->includeLLFile('EXT:version/locallang.xml',FALSE);
 	}
 }
 
 
 
-if (defined("TYPO3_MODE") && $TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["ext/version/class.tx_version_cm1.php"])	{
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["ext/version/class.tx_version_cm1.php"]);
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/version/class.tx_version_cm1.php'])	{
+	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/version/class.tx_version_cm1.php']);
 }
 ?>
