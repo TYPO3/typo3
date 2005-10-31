@@ -616,7 +616,7 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 									$multipleWarning = (!$mainCell && $GLOBALS['BE_USER']->workspace!==0? '<br/>'.$this->doc->icons(3).'<b>Multiple versions in same workspace!</b>' : '');
 									$verWarning = $warnAboutVersions || ($warnAboutVersions_nonPages && $GLOBALS['TCA'][$table]['ctrl']['versioning_followPages'])? '<br/>'.$this->doc->icons(3).'<b>Version inside version!</b>' : '';
 									$verElement = $icon.
-										'<a href="'.htmlspecialchars('index.php?details='.rawurlencode($table.':'.$rec_off['uid'])).'">'.
+										'<a href="'.htmlspecialchars($this->doc->backPath.t3lib_extMgm::extRelPath('version').'cm1/index.php?id='.($table==='pages'?$rec_on['uid']:$rec_on['pid']).'&details='.rawurlencode($table.':'.$rec_off['uid']).'&returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))).'">'.
 										t3lib_BEfunc::getRecordTitle($table,$rec_off,TRUE).
 										'</a>'.
 										$versionsInOtherWSWarning.
@@ -932,7 +932,8 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 			return '<br/>
 					<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/ol/joinbottom.gif','width="18" height="16"').' align="top" alt="" title="" />'.
 					($origId ?
-						'<a href="index.php?details='.$uid.'"><span class="typo3-dimmed"><em>[Sub elements, click for details]</em><span></a>' :
+						'<a href="'.htmlspecialchars($this->doc->backPath.t3lib_extMgm::extRelPath('version').'cm1/index.php?id='.$uid.'&details='.rawurlencode('pages:'.$uid).'&returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))).'">'.
+						'<span class="typo3-dimmed"><em>[Sub elements, click for details]</em><span></a>' :
 						'<span class="typo3-dimmed"><em>[Sub elements]</em><span>');
 		} else {	// For an offline workspace, show sub elements:
 
@@ -1113,7 +1114,7 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 									t3lib_iconWorks::getIconImage($tN, $rec, $this->doc->backPath,'') : '').
 								t3lib_BEfunc::getRecordTitle($tN, $rec, TRUE).
 							'</td>
-							<td>'.
+							<td class="cmdCell">'.
 								$this->displayWorkspaceOverview_commandLinksSub($tN,$rec,$origId).
 							'</td>'.($origId ? '<td class="diffCell">'.
 								$diffCode.

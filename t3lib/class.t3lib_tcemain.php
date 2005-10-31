@@ -717,7 +717,7 @@ class t3lib_TCEmain	{
 							} elseif ($this->checkSimilar) {	// Removing fields which are equal to the current value:
 								$fieldArray = $this->compareFieldArrayWithCurrentAndUnset($table,$id,$fieldArray);
 							}
-							if ($TCA[$table]['ctrl']['tstamp'])	{
+							if ($TCA[$table]['ctrl']['tstamp'] && count($fieldArray))	{
 								$fieldArray[$TCA[$table]['ctrl']['tstamp']]=time();
 								if ($createNewVersion)	$newVersion_placeholderFieldArray[$TCA[$table]['ctrl']['tstamp']]=time();
 							}
@@ -754,13 +754,17 @@ class t3lib_TCEmain	{
 											if ($table==='pages') {		// Swap mode set to "branch" so we can build branches for pages.
 												$fieldArray['t3ver_swapmode'] = $versioningType;
 											}
-											$this->insertDB($table,$id,$fieldArray,TRUE,0,TRUE);	// When inserted, $this->substNEWwithIDs[$id] will be changed to the uid of THIS version and so the interface will pick it up just nice!
+											$phShadowId = $this->insertDB($table,$id,$fieldArray,TRUE,0,TRUE);	// When inserted, $this->substNEWwithIDs[$id] will be changed to the uid of THIS version and so the interface will pick it up just nice!
+											if ($phShadowId)	{
+												$this->placeholderShadowing($table,$phShadowId);
+											}
 										} else $this->newlog('Versioning type "'.$versioningType.'" was not allowed, so could not create new record.',1);
 									} else {
 										$this->insertDB($table,$id,$fieldArray,FALSE,$incomingFieldArray['uid']);
 									}
 								} else {
 									$this->updateDB($table,$id,$fieldArray);
+									$this->placeholderShadowing($table,$id);
 								}
 							}
 
@@ -777,6 +781,36 @@ class t3lib_TCEmain	{
 		}
 		$this->dbAnalysisStoreExec();
 		$this->removeRegisteredFiles();
+	}
+
+	/**
+	 * Fix shadowing of data in case we are editing a offline version of a live "New" placeholder record:
+	 *
+	 * @param	string		Table name
+	 * @param	integer		Record uid
+	 * @return	void
+	 */
+	function placeholderShadowing($table,$id)	{
+		global $TCA;
+
+		if ($liveRec = t3lib_BEfunc::getLiveVersionOfRecord($table,$id,'*'))	{
+			if ((int)$liveRec['t3ver_state']===1)	{
+				$justStoredRecord = t3lib_BEfunc::getRecord($table,$id);
+				$newRecord = array();
+
+				$shadowColumns = t3lib_div::trimExplode(',', $TCA[$table]['ctrl']['shadowColumnsForNewPlaceholders'],1);
+				foreach($shadowColumns as $fieldName)	{
+					if (strcmp($justStoredRecord[$fieldName],$liveRec[$fieldName]))	{
+						$newRecord[$fieldName] = $justStoredRecord[$fieldName];
+					}
+				}
+
+				if (count($newRecord))	{
+					$this->newlog('Shadowing done on fields '.implode(',',array_keys($newRecord)).' in Placeholder record '.$table.':'.$liveRec['uid'].' (offline version UID='.$id.')');
+					$this->updateDB($table,$liveRec['uid'],$newRecord);
+				}
+			}
+		}
 	}
 
 	/**
@@ -2084,21 +2118,7 @@ class t3lib_TCEmain	{
 								}
 							break;
 							case 'delete':
-								$delRec = t3lib_BEfunc::getRecord($table, $id);
-								if (is_array($delRec))	{	// Record asked to be deleted was found:
-
-										// Look, if record is "online" or in a versionized branch, then delete directly.
-									if ($res = $this->BE_USER->workspaceAllowLiveRecordsInPID($delRec['pid'], $table))	{	// Directly delete:
-										if ($res>0)	{
-											$this->deleteEl($table, $id);
-										} else {
-											$this->newlog('Stage of root point did not allow for deletion',1);
-										}
-									} else {
-										// Otherwise, try to delete by versionization:
-										$this->versionizeRecord($table,$id,'DELETED!',TRUE);
-									}
-								}
+								$this->deleteAction($table, $id);
 							break;
 						}
 
@@ -2866,6 +2886,244 @@ class t3lib_TCEmain	{
 
 
 
+
+
+
+
+	/*********************************************
+	 *
+	 * Cmd: Deleting
+	 *
+	 ********************************************/
+
+	/**
+	 * Delete CMD action
+	 *
+	 * @param	string		Table name
+	 * @param	integer		Record UID
+	 * @return	void
+	 */
+	function deleteAction($table, $id)	{
+		global $TCA;
+
+		$delRec = t3lib_BEfunc::getRecord($table, $id);
+
+		if (is_array($delRec))	{	// Record asked to be deleted was found:
+
+				// For Live version, try if there is a workspace version because if so, rather "delete" that instead
+			if ($delRec['pid']!=-1)	{	// Look, if record is an offline version, then delete directly:
+				if ($wsVersion = t3lib_BEfunc::getWorkspaceVersionOfRecord($this->BE_USER->workspace, $table, $id))	{
+					$delRec = $wsVersion;
+					$id = $delRec['uid'];
+				}
+			}
+
+			if ($delRec['pid']==-1)	{	// Look, if record is an offline version, then delete directly:
+				if ($TCA[$table]['ctrl']['versioningWS'])	{
+					if ($this->BE_USER->workspace==0 || (int)$delRec['t3ver_wsid']==$this->BE_USER->workspace)	{	// In Live workspace, delete any. In other workspaces there must be match.
+						$liveRec = t3lib_BEfunc::getLiveVersionOfRecord($table,$id,'uid,t3ver_state');
+
+						if ($delRec['t3ver_wsid']==0 || (int)$liveRec['t3ver_state']!==1)	{	// Delete those in WS 0 + if their live records state was not "Placeholder".
+							$this->deleteEl($table, $id);
+						} else {	// If live record was placeholder, rather clear it from workspace (because it clears both version and placeholder). Yes, of course we would most like to just delete them, BUT what if placeholder has other versions in other workspaces...
+							$this->version_clearWSID($table,$id);
+						}
+					} else $this->newlog('Tried to delete record from another workspace',1);
+				} else $this->newlog('Versioning not enabled for record with PID = -1!',2);
+			} elseif ($res = $this->BE_USER->workspaceAllowLiveRecordsInPID($delRec['pid'], $table))	{	// Look, if record is "online" or in a versionized branch, then delete directly.
+				if ($res>0)	{
+					$this->deleteEl($table, $id);
+				} else $this->newlog('Stage of root point did not allow for deletion',1);
+			} else {
+				// Otherwise, try to delete by versionization:
+				$this->versionizeRecord($table,$id,'DELETED!',TRUE);
+			}
+		}
+	}
+
+	/**
+	 * Delete element from any table
+	 *
+	 * @param	string		Table name
+	 * @param	integer		Record UID
+	 * @param	boolean		Flag: If $noRecordCheck is set, then the function does not check permission to delete record
+	 * @param	boolean		If TRUE, the "deleted" flag is ignored if applicable for record and the record is deleted COMPLETELY!
+	 * @return	void
+	 */
+	function deleteEl($table, $uid, $noRecordCheck=FALSE, $forceHardDelete=FALSE)	{
+		if ($table == 'pages')	{
+			$this->deletePages($uid, $noRecordCheck, $forceHardDelete);
+		} else {
+			$this->deleteRecord($table, $uid, $noRecordCheck, $forceHardDelete);
+		}
+	}
+
+	/**
+	 * Deleting a record
+	 * This function may not be used to delete pages-records unless the underlying records are already deleted
+	 * Deletes a record regardless of versioning state (live of offline, doesn't matter, the uid decides)
+	 * If both $noRecordCheck and $forceHardDelete are set it could even delete a "deleted"-flagged record!
+	 *
+	 * @param	string		Table name
+	 * @param	integer		Record UID
+	 * @param	boolean		Flag: If $noRecordCheck is set, then the function does not check permission to delete record
+	 * @param	boolean		If TRUE, the "deleted" flag is ignored if applicable for record and the record is deleted COMPLETELY!
+	 * @return	void
+	 */
+	function deleteRecord($table,$uid, $noRecordCheck=FALSE, $forceHardDelete=FALSE)	{
+		global $TCA;
+
+		$uid = intval($uid);
+		if ($TCA[$table] && $uid)	{
+			if ($noRecordCheck || $this->doesRecordExist($table,$uid,'delete'))	{
+				$deleteRow = $TCA[$table]['ctrl']['delete'];
+				if ($deleteRow && !$forceHardDelete)	{
+					$updateFields = array(
+						$deleteRow => 1
+					);
+
+						// If the table is sorted, then the sorting number is set very high
+					if ($TCA[$table]['ctrl']['sortby'])	{
+						$updateFields[$TCA[$table]['ctrl']['sortby']] = 1000000000;
+					}
+
+					$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table, 'uid='.intval($uid), $updateFields);
+				} else {
+
+						// Fetches all fields that holds references to files
+					$fileFieldArr = $this->extFileFields($table);
+					if (count($fileFieldArr))	{
+						$mres = $GLOBALS['TYPO3_DB']->exec_SELECTquery(implode(',',$fileFieldArr), $table, 'uid='.intval($uid));
+						if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($mres))	{
+							$fArray = $fileFieldArr;
+							foreach($fArray as $theField)	{	// MISSING: Support for MM file relations!
+								$this->extFileFunctions($table,$theField,$row[$theField],'deleteAll');		// This deletes files that belonged to this record.
+							}
+						} else {
+							$this->log($table,$uid,3,0,100,'Delete: Zero rows in result when trying to read filenames from record which should be deleted');
+						}
+					}
+
+					$GLOBALS['TYPO3_DB']->exec_DELETEquery($table, 'uid='.intval($uid));
+				}
+
+				if (!$GLOBALS['TYPO3_DB']->sql_error())	{
+					$this->log($table,$uid,3,0,0,'');
+				} else {
+					$this->log($table,$uid,3,0,100,$GLOBALS['TYPO3_DB']->sql_error());
+				}
+
+				$this->clear_cache($table,$uid);	// clear cache
+			} else $this->log($table,$uid,3,0,1,'Attempt to delete record without delete-permissions');
+		}
+	}
+
+	/**
+	 * Used to delete page because it will check for branch below pages and unallowed tables on the page as well.
+	 *
+	 * @param	integer		Page id
+	 * @param	boolean		If TRUE, pages are not checked for permission.
+	 * @param	boolean		If TRUE, the "deleted" flag is ignored if applicable for record and the record is deleted COMPLETELY!
+	 * @return	void
+	 */
+	function deletePages($uid,$force=FALSE,$forceHardDelete=FALSE)	{
+			// Getting list of pages to delete:
+		if ($force)	{
+			$brExist = $this->doesBranchExist('',$uid,0,1);		// returns the branch WITHOUT permission checks (0 secures that)
+			$res = t3lib_div::trimExplode(',',$brExist.$uid,1);
+		} else {
+			$res = $this->canDeletePage($uid);
+		}
+
+			// Perform deletion if not error:
+		if (is_array($res))	{
+			foreach($res as $deleteId)	{
+				$this->deleteSpecificPage($deleteId,$forceHardDelete);
+			}
+		} else {
+			$this->newlog($res,1);
+		}
+	}
+
+	/**
+	 * Delete a page and all records on it.
+	 *
+	 * @param	integer		Page id
+	 * @param	boolean		If TRUE, the "deleted" flag is ignored if applicable for record and the record is deleted COMPLETELY!
+	 * @return	void
+	 * @access private
+	 * @see deletePages()
+	 */
+	function deleteSpecificPage($uid,$forceHardDelete=FALSE)	{
+		global $TCA;
+		reset ($TCA);
+		$uid = intval($uid);
+		if ($uid)	{
+			while (list($table)=each($TCA))	{
+				if ($table!='pages')	{
+					$mres = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', $table, 'pid='.intval($uid).$this->deleteClause($table));
+					while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($mres))	{
+						$this->deleteRecord($table,$row['uid'], TRUE, $forceHardDelete);
+					}
+				}
+			}
+			$this->deleteRecord('pages',$uid, TRUE, $forceHardDelete);
+		}
+	}
+
+	/**
+	 * Used to evaluate if a page can be deleted
+	 *
+	 * @param	integer		Page id
+	 * @return	mixed		If array: List of page uids to traverse and delete (means OK), if string: error code.
+	 */
+	function canDeletePage($uid)	{
+		if ($this->doesRecordExist('pages',$uid,'delete'))	{	// If we may at all delete this page
+			if ($this->deleteTree)	{
+				$brExist = $this->doesBranchExist('',$uid,$this->pMap['delete'],1);	// returns the branch
+				if ($brExist != -1)	{	// Checks if we had permissions
+					if ($this->noRecordsFromUnallowedTables($brExist.$uid))	{
+						return t3lib_div::trimExplode(',',$brExist.$uid,1);
+					} else return 'Attempt to delete records from disallowed tables';
+				} else return 'Attempt to delete pages in branch without permissions';
+			} else {
+				$brExist = $this->doesBranchExist('',$uid,$this->pMap['delete'],1);	// returns the branch
+				if ($brExist == '')	{	// Checks if branch exists
+					if ($this->noRecordsFromUnallowedTables($uid))	{
+						return array($uid);
+					} else return 'Attempt to delete records from disallowed tables';
+				} else return 'Attempt to delete page which has subpages';
+			}
+		} else return 'Attempt to delete page without permissions';
+	}
+
+	/**
+	 * Returns true if record CANNOT be deleted, otherwise false. Used to check before the versioning API allows a record to be marked for deletion.
+	 *
+	 * @param	string		Record Table
+	 * @param	integer		Record UID
+	 * @return	string		Returns a string IF there is an error (error string explaining). FALSE means record can be deleted
+	 */
+	function cannotDeleteRecord($table,$id)	{
+		if ($table==='pages')	{
+			$res = $this->canDeletePage($id);
+			return is_array($res) ? FALSE : $res;
+		} else {
+			return $this->doesRecordExist($table,$id,'delete') ? FALSE : 'No permission to delete record';
+		}
+	}
+
+
+
+
+
+
+
+
+
+
+
+
 	/*********************************************
 	 *
 	 * Cmd: Versioning
@@ -3235,196 +3493,6 @@ $this->log($table,$id,6,0,0,'Stage raised...',-1,array('comment'=>$comment,'stag
 		} else $this->newlog('Attempt to set stage for record failed because you do not have edit access',1);
 	}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-	/*********************************************
-	 *
-	 * Cmd: Deleting
-	 *
-	 ********************************************/
-
-	/**
-	 * Delete element from any table
-	 *
-	 * @param	string		Table name
-	 * @param	integer		Record UID
-	 * @param	boolean		Flag: If $noRecordCheck is set, then the function does not check permission to delete record
-	 * @param	boolean		If TRUE, the "deleted" flag is ignored if applicable for record and the record is deleted COMPLETELY!
-	 * @return	void
-	 */
-	function deleteEl($table, $uid, $noRecordCheck=FALSE, $forceHardDelete=FALSE)	{
-		if ($table == 'pages')	{
-			$this->deletePages($uid, $noRecordCheck, $forceHardDelete);
-		} else {
-			$this->deleteRecord($table, $uid, $noRecordCheck, $forceHardDelete);
-		}
-	}
-
-	/**
-	 * Deleting a record
-	 * This function may not be used to delete pages-records unless the underlying records are already deleted
-	 * Deletes a record regardless of versioning state (live of offline, doesn't matter, the uid decides)
-	 * If both $noRecordCheck and $forceHardDelete are set it could even delete a "deleted"-flagged record!
-	 *
-	 * @param	string		Table name
-	 * @param	integer		Record UID
-	 * @param	boolean		Flag: If $noRecordCheck is set, then the function does not check permission to delete record
-	 * @param	boolean		If TRUE, the "deleted" flag is ignored if applicable for record and the record is deleted COMPLETELY!
-	 * @return	void
-	 */
-	function deleteRecord($table,$uid, $noRecordCheck=FALSE, $forceHardDelete=FALSE)	{
-		global $TCA;
-
-		$uid = intval($uid);
-		if ($TCA[$table] && $uid)	{
-			if ($noRecordCheck || $this->doesRecordExist($table,$uid,'delete'))	{
-				$deleteRow = $TCA[$table]['ctrl']['delete'];
-				if ($deleteRow && !$forceHardDelete)	{
-					$updateFields = array(
-						$deleteRow => 1
-					);
-
-						// If the table is sorted, then the sorting number is set very high
-					if ($TCA[$table]['ctrl']['sortby'])	{
-						$updateFields[$TCA[$table]['ctrl']['sortby']] = 1000000000;
-					}
-
-					$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table, 'uid='.intval($uid), $updateFields);
-				} else {
-
-						// Fetches all fields that holds references to files
-					$fileFieldArr = $this->extFileFields($table);
-					if (count($fileFieldArr))	{
-						$mres = $GLOBALS['TYPO3_DB']->exec_SELECTquery(implode(',',$fileFieldArr), $table, 'uid='.intval($uid));
-						if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($mres))	{
-							$fArray = $fileFieldArr;
-							foreach($fArray as $theField)	{	// MISSING: Support for MM file relations!
-								$this->extFileFunctions($table,$theField,$row[$theField],'deleteAll');		// This deletes files that belonged to this record.
-							}
-						} else {
-							$this->log($table,$uid,3,0,100,'Delete: Zero rows in result when trying to read filenames from record which should be deleted');
-						}
-					}
-
-					$GLOBALS['TYPO3_DB']->exec_DELETEquery($table, 'uid='.intval($uid));
-				}
-
-				if (!$GLOBALS['TYPO3_DB']->sql_error())	{
-					$this->log($table,$uid,3,0,0,'');
-				} else {
-					$this->log($table,$uid,3,0,100,$GLOBALS['TYPO3_DB']->sql_error());
-				}
-
-				$this->clear_cache($table,$uid);	// clear cache
-			} else $this->log($table,$uid,3,0,1,'Attempt to delete record without delete-permissions');
-		}
-	}
-
-	/**
-	 * Used to delete page because it will check for branch below pages and unallowed tables on the page as well.
-	 *
-	 * @param	integer		Page id
-	 * @param	boolean		If TRUE, pages are not checked for permission.
-	 * @param	boolean		If TRUE, the "deleted" flag is ignored if applicable for record and the record is deleted COMPLETELY!
-	 * @return	void
-	 */
-	function deletePages($uid,$force=FALSE,$forceHardDelete=FALSE)	{
-			// Getting list of pages to delete:
-		if ($force)	{
-			$brExist = $this->doesBranchExist('',$uid,0,1);		// returns the branch WITHOUT permission checks (0 secures that)
-			$res = t3lib_div::trimExplode(',',$brExist.$uid,1);
-		} else {
-			$res = $this->canDeletePage($uid);
-		}
-
-			// Perform deletion if not error:
-		if (is_array($res))	{
-			foreach($res as $deleteId)	{
-				$this->deleteSpecificPage($deleteId,$forceHardDelete);
-			}
-		} else {
-			$this->newlog($res,1);
-		}
-	}
-
-	/**
-	 * Delete a page and all records on it.
-	 *
-	 * @param	integer		Page id
-	 * @param	boolean		If TRUE, the "deleted" flag is ignored if applicable for record and the record is deleted COMPLETELY!
-	 * @return	void
-	 * @access private
-	 * @see deletePages()
-	 */
-	function deleteSpecificPage($uid,$forceHardDelete=FALSE)	{
-		global $TCA;
-		reset ($TCA);
-		$uid = intval($uid);
-		if ($uid)	{
-			while (list($table)=each($TCA))	{
-				if ($table!='pages')	{
-					$mres = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', $table, 'pid='.intval($uid).$this->deleteClause($table));
-					while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($mres))	{
-						$this->deleteRecord($table,$row['uid'], TRUE, $forceHardDelete);
-					}
-				}
-			}
-			$this->deleteRecord('pages',$uid, TRUE, $forceHardDelete);
-		}
-	}
-
-	/**
-	 * Used to evaluate if a page can be deleted
-	 *
-	 * @param	integer		Page id
-	 * @return	mixed		If array: List of page uids to traverse and delete (means OK), if string: error code.
-	 */
-	function canDeletePage($uid)	{
-		if ($this->doesRecordExist('pages',$uid,'delete'))	{	// If we may at all delete this page
-			if ($this->deleteTree)	{
-				$brExist = $this->doesBranchExist('',$uid,$this->pMap['delete'],1);	// returns the branch
-				if ($brExist != -1)	{	// Checks if we had permissions
-					if ($this->noRecordsFromUnallowedTables($brExist.$uid))	{
-						return t3lib_div::trimExplode(',',$brExist.$uid,1);
-					} else return 'Attempt to delete records from disallowed tables';
-				} else return 'Attempt to delete pages in branch without permissions';
-			} else {
-				$brExist = $this->doesBranchExist('',$uid,$this->pMap['delete'],1);	// returns the branch
-				if ($brExist == '')	{	// Checks if branch exists
-					if ($this->noRecordsFromUnallowedTables($uid))	{
-						return array($uid);
-					} else return 'Attempt to delete records from disallowed tables';
-				} else return 'Attempt to delete page which has subpages';
-			}
-		} else return 'Attempt to delete page without permissions';
-	}
-
-	/**
-	 * Returns true if record CANNOT be deleted, otherwise false. Used to check before the versioning API allows a record to be marked for deletion.
-	 *
-	 * @param	string		Record Table
-	 * @param	integer		Record UID
-	 * @return	string		Returns a string IF there is an error (error string explaining). FALSE means record can be deleted
-	 */
-	function cannotDeleteRecord($table,$id)	{
-		if ($table==='pages')	{
-			$res = $this->canDeletePage($id);
-			return is_array($res) ? FALSE : $res;
-		} else {
-			return $this->doesRecordExist($table,$id,'delete') ? FALSE : 'No permission to delete record';
-		}
-	}
 
 
 
@@ -4139,7 +4207,7 @@ $this->log($table,$id,6,0,0,'Stage raised...',-1,array('comment'=>$comment,'stag
 	 * @param	boolean		Set to true if new version is created.
 	 * @param	integer		Suggested UID value for the inserted record. See the array $this->suggestedInsertUids; Admin-only feature
 	 * @param	boolean		If true, the ->substNEWwithIDs array is not updated. Only useful in very rare circumstances!
-	 * @return	void
+	 * @return	integer		Returns ID on success.
 	 */
 	function insertDB($table,$id,$fieldArray,$newVersion=FALSE,$suggestedUid=0,$dontSetNewIdIndex=FALSE)	{
 		global $TCA;
@@ -4192,6 +4260,8 @@ $this->log($table,$id,6,0,0,'Stage raised...',-1,array('comment'=>$comment,'stag
 							// Clear cache for relavant pages:
 						$this->clear_cache($table,$id);
 					}
+
+					return $id;
 				} else {
 					$this->log($table,$id,1,0,2,"SQL error: '%s' (%s)",12,array($GLOBALS['TYPO3_DB']->sql_error(),$table.':'.$id));
 				}

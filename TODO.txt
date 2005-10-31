@@ -297,35 +297,16 @@ SQLengine (t3lib_sqlengine):
   - Open Office / CSV tests (proof-of-concept)
 
 
+
+
+
 *******************************
 Versioning/Workspaces:
 *******************************
-- delete:
-	- something twice? / delete a version, not just unlink it?
-	- "Delete versions" link in versioning module.
-
----------------------------------------
-Monday:
-
-Versioning management TODO:
-	- Versioning Mgm:
-		- Implement more of recent "t3ver_*" fields in display.
-		- Select on workspace also
-	- Workspace Mgm:
-		- Diff view by default
-		- display change log
-		- Show admin links, stage etc. incl. log for stage.
-
-Workspace Manager TODO:
-- TODO:
-	- Workspace list and change
-	- Workspace Admin
-
-----------------------------------------------
-Tuesday:
+Wednesday:
 
 Set up TemplaVoila package for testing.
-
+--------------------------------------
 - Backend challenges yet to solve:
 	- FlexForms: t3lib_BEfunc::getFlexFormDS(), workspaceOL/fixVersioningPid ??
 	- Page and (User) TSconfig?
@@ -349,7 +330,9 @@ Backend preview:
 
 - Documentation "Backend challenges"
 
+
 ----------------------------------
+Friday:
 - copy/move:
 	- copying versions:
 		- with references in workspace?
@@ -364,6 +347,7 @@ Backend preview:
 	- ?
 
 ----------------------------
+Thursday:
 
 Frontend Preview:
 - ONLINE PREVIEW: Versionized pages should be previewed just by their UID (which will select the offline version!) - only in "Live" space, disabled at the moment inside tslib_fe!
@@ -391,6 +375,7 @@ Frontend Preview:
 	t3lib_page::getPageOverlay() - because pages_language_overlay records have "versioning_followPages" set this should be observed when selecting language overlay records. But should it be hardcoded or something better?
 - Documentation. As frontend preview implementation is dealt with, describe any persisting incompatibilities in "TYPO3 Core API"
 
+---------------------------
 
 Versioning API:
 	- (Support for) swapping using temporary file (instead of using negative ID)
@@ -414,6 +399,9 @@ Documentation:
 
 Check Various:
 - Auto publishing: Might not work with "Publish only "Publish" stage" because swapped elements will be in editing stage or so!
+
+Workspace Manager TODO:
+- Workspace list
 
 -----LATER:
 

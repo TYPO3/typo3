@@ -468,8 +468,8 @@ TABLE.ver-subtree DIV.diffLayer, DIV.logLayer { background-color: white; width:4
 TABLE.ver-subtree TR TD IMG { vertical-align: middle; }
 TABLE.ver-subtree, TABLE.ver-verElement TD.c-diffCell { border: 1px solid #666666; }
 TABLE.ver-verElement { width: 100%;}
-TABLE.ver-subtree TR.typo3-ver TD.iconTitle, TABLE.ver-subtree TR.typo3-ver TD.diffCell {background-color: #c5c1b5; }
-TABLE.ver-subtree TR.typo3-ver-hl TD.iconTitle, TABLE.ver-subtree TR.typo3-ver-hl TD.diffCell { background-color: #999999; }
+TABLE.ver-subtree TR.typo3-ver TD.iconTitle, TABLE.ver-subtree TR.typo3-ver TD.diffCell, TABLE.ver-subtree TR.typo3-ver TD.cmdCell {background-color: #c5c1b5; }
+TABLE.ver-subtree TR.typo3-ver-hl TD.iconTitle, TABLE.ver-subtree TR.typo3-ver-hl TD.diffCell, TABLE.ver-subtree TR.typo3-ver-hl TD.cmdCell { background-color: #999999; }
 TABLE.ver-subtree TR.typo3-ver-new TD { color: #666666; background-color: #eeeeee; }
 TABLE.ver-subtree TR.typo3-ver-noComp TD { font-style : italic; }
 
