@@ -1,3 +1,7 @@
+2005-11-01	Robert Lemke	<robert@typo3.org>
+
+	* Added an is_array() check in t3lib_div::resolveSheetDefInDS() to prevent a fatal error in certain circumstances
+
 2005-10-26  Kasper Skaarhoj  <kasper2005@typo3.com>
 
 	* Implemented additional, simple API for logging to sys_log plus extended the sys-log with workspace awareness.
