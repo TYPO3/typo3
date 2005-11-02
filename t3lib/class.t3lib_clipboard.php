@@ -838,7 +838,7 @@ class t3lib_clipboard {
 			list($table,$uid) = explode('|',key($elArr));
 		}
 		if ($this->isSelected($table,$uid))	{
-			$selRec = t3lib_BEfunc::getRecord($table,$uid);
+			$selRec = t3lib_BEfunc::getRecordWSOL($table,$uid);
 			$selRec['_RECORD_TITLE'] = t3lib_BEfunc::getRecordTitle($table,$selRec);
 			return $selRec;
 		}

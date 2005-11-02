@@ -1820,22 +1820,40 @@ $str.=$this->docBodyTagBegin().
 				$verPage = t3lib_BEfunc::getWorkspaceVersionOfRecord($GLOBALS['BE_USER']->workspace, 'pages', $onlineId);
 
 				if (!$verPage)	{
-					$onClick = $this->issueCommand('&cmd[pages]['.$onlineId.'][version][action]=new&cmd[pages]['.$onlineId.'][version][treeLevels]=0',t3lib_div::linkThisScript(array('id'=>$onlineId)));
-					$onClick = 'document.location=\''.$onClick.'\'; return false;';
-						// Write out HTML code:
-					return '
 
-						<!--
-							No version yet, create one?
-						-->
-						<table border="0" cellpadding="0" cellspacing="0" id="typo3-versionSelector">
-							<tr>
-								<td>Workspace: "'.htmlspecialchars($wsTitle).'"</td>
-								<td>
-									<input type="submit" value="New version of page" name="_" onclick="'.htmlspecialchars($onClick).'" /></td>
-							</tr>
-						</table>
-					';
+					if (!count(t3lib_BEfunc::countVersionsOfRecordsOnPage($GLOBALS['BE_USER']->workspace, $onlineId)))	{
+
+
+						$onClick = $this->issueCommand('&cmd[pages]['.$onlineId.'][version][action]=new&cmd[pages]['.$onlineId.'][version][treeLevels]=0',t3lib_div::linkThisScript(array('id'=>$onlineId)));
+						$onClick = 'document.location=\''.$onClick.'\'; return false;';
+							// Write out HTML code:
+						return '
+
+							<!--
+								No version yet, create one?
+							-->
+							<table border="0" cellpadding="0" cellspacing="0" id="typo3-versionSelector">
+								<tr>
+									<td>Workspace: "'.htmlspecialchars($wsTitle).'"</td>
+									<td>
+										<input type="submit" value="New version of page" name="_" onclick="'.htmlspecialchars($onClick).'" /></td>
+								</tr>
+							</table>
+						';
+					} else {
+						return '
+
+							<!--
+								Version selector:
+							-->
+							<table border="0" cellpadding="0" cellspacing="0" id="typo3-versionSelector">
+								<tr>
+									<td>Workspace: "'.htmlspecialchars($wsTitle).'"</td>
+									<td><em>Versions found on page, no "Page" versioning possible</em></td>
+								</tr>
+							</table>
+						';
+					}
 				} elseif ($verPage['t3ver_swapmode']==0 && $GLOBALS['BE_USER']->workspace===0) {
 					$onClick = $this->issueCommand('&cmd[pages]['.$onlineId.'][version][action]=swap&cmd[pages]['.$onlineId.'][version][swapWith]='.$verPage['uid'],t3lib_div::linkThisScript(array('id'=>$onlineId)));
 					$onClick = 'document.location=\''.$onClick.'\'; return false;';

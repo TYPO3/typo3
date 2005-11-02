@@ -183,7 +183,8 @@ class SC_mod_user_setup_index {
 				$tce = t3lib_div::makeInstance('t3lib_TCEmain');
 				$tce->stripslashes_values=0;
 				$tce->start($storeRec,Array(),$BE_USER);
-				$tce->admin = 1;
+				$tce->admin = 1;	// This is so the user can actually update his user record.
+				$tce->bypassWorkspaceRestrictions = TRUE;	// This is to make sure that the users record can be updated even if in another workspace. This is tolerated.
 				$tce->process_datamap();
 				unset($tce);
 			}

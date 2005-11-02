@@ -294,7 +294,12 @@ class t3lib_SCbase {
 		if (is_array($mergeArray))	{
 			reset($mergeArray);
 			while(list($k,$v)=each($mergeArray))	{
-				$menuArr[$k]=$GLOBALS['LANG']->sL($v['title']);
+				if ((string)$v['ws']==='' ||
+					($GLOBALS['BE_USER']->workspace===0 && t3lib_div::inList($v['ws'],'online')) ||
+					($GLOBALS['BE_USER']->workspace===-1 && t3lib_div::inList($v['ws'],'offline')) ||
+					($GLOBALS['BE_USER']->workspace>0 && t3lib_div::inList($v['ws'],'custom')))	{
+						$menuArr[$k]=$GLOBALS['LANG']->sL($v['title']);
+				}
 			}
 		}
 		return $menuArr;

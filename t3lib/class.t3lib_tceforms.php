@@ -2521,7 +2521,7 @@ class t3lib_TCEforms	{
 			$lookUpTable = $TCA[$table]['ctrl']['transOrigPointerTable'] ? $TCA[$table]['ctrl']['transOrigPointerTable'] : $table;
 
 				// Get data formatted:
-			$this->defaultLanguageData[$table.':'.$rec['uid']] = t3lib_BEfunc::getRecord($lookUpTable, intval($rec[$TCA[$table]['ctrl']['transOrigPointerField']]));
+			$this->defaultLanguageData[$table.':'.$rec['uid']] = t3lib_BEfunc::getRecordWSOL($lookUpTable, intval($rec[$TCA[$table]['ctrl']['transOrigPointerField']]));
 
 				// Get data for diff:
 			if ($TCA[$table]['ctrl']['transOrigDiffSourceField'])	{

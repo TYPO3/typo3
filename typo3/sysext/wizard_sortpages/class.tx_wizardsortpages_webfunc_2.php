@@ -76,10 +76,6 @@ class tx_wizardsortpages_webfunc_2 extends t3lib_extobjbase {
 		global $LANG;
 
 		$modMenuAdd = array(
-			'sort_blablabla' => array(
-				'2' => 'TO',
-				'1' => 'et'
-			)
 		);
 		return $modMenuAdd;
 	}
@@ -92,75 +88,80 @@ class tx_wizardsortpages_webfunc_2 extends t3lib_extobjbase {
 	function main()	{
 		global $SOBE,$LANG;
 
-		$theCode='';
+		if ($GLOBALS['BE_USER']->workspace===0)	{
 
-			// check if user has modify permissions to
-		$sys_pages = t3lib_div::makeInstance('t3lib_pageSelect');
-		$sortByField = t3lib_div::_GP('sortByField');
-		if ($sortByField)	{
-			$menuItems=array();
-			if (t3lib_div::inList('title,subtitle,crdate,tstamp',$sortByField))	{
-				$menuItems = $sys_pages->getMenu($this->pObj->id,'uid,pid,title',$sortByField);
-			} elseif ($sortByField=='REV') {
-				$menuItems = $sys_pages->getMenu($this->pObj->id,'uid,pid,title');
-				$menuItems = array_reverse($menuItems);
-			}
-			if (count($menuItems))	{
-				$tce = t3lib_div::makeInstance('t3lib_TCEmain');
-				$tce->stripslashes_values=0;
-				$menuItems = array_reverse($menuItems);
-				$cmd=array();
-				reset($menuItems);
-				while(list(,$r)=each($menuItems))	{
-					$cmd['pages'][$r['uid']]['move']=$this->pObj->id;
+			$theCode='';
+
+				// check if user has modify permissions to
+			$sys_pages = t3lib_div::makeInstance('t3lib_pageSelect');
+			$sortByField = t3lib_div::_GP('sortByField');
+			if ($sortByField)	{
+				$menuItems=array();
+				if (t3lib_div::inList('title,subtitle,crdate,tstamp',$sortByField))	{
+					$menuItems = $sys_pages->getMenu($this->pObj->id,'uid,pid,title',$sortByField);
+				} elseif ($sortByField=='REV') {
+					$menuItems = $sys_pages->getMenu($this->pObj->id,'uid,pid,title');
+					$menuItems = array_reverse($menuItems);
 				}
-				$tce->start(array(),$cmd);
-				$tce->process_cmdmap();
-				t3lib_BEfunc::getSetUpdateSignal('updatePageTree');
+				if (count($menuItems))	{
+					$tce = t3lib_div::makeInstance('t3lib_TCEmain');
+					$tce->stripslashes_values=0;
+					$menuItems = array_reverse($menuItems);
+					$cmd=array();
+					reset($menuItems);
+					while(list(,$r)=each($menuItems))	{
+						$cmd['pages'][$r['uid']]['move']=$this->pObj->id;
+					}
+					$tce->start(array(),$cmd);
+					$tce->process_cmdmap();
+					t3lib_BEfunc::getSetUpdateSignal('updatePageTree');
+				}
 			}
-		}
 
-			//
-		$menuItems = $sys_pages->getMenu($this->pObj->id);
-		reset($menuItems);
-		$lines=array();
-			$lines[]= '<tr>
-				<td class="bgColor5"><b>'.$this->wiz_linkOrder($LANG->getLL('wiz_changeOrder_title'),'title').'</b></td>
-				'.(t3lib_extMgm::isLoaded('cms')?'<td class="bgColor5"><b>'.$this->wiz_linkOrder($LANG->getLL('wiz_changeOrder_subtitle'),'subtitle').'</b></td>':'').'
-				<td class="bgColor5"><b>'.$this->wiz_linkOrder($LANG->getLL('wiz_changeOrder_tChange'),'tstamp').'</b></td>
-				<td class="bgColor5"><b>'.$this->wiz_linkOrder($LANG->getLL('wiz_changeOrder_tCreate'),'crdate').'</b></td>
-				</tr>';
-		while(list(,$rec)=each($menuItems))	{
-			$m_perms_clause = $GLOBALS['BE_USER']->getPagePermsClause(2);	// edit permissions for that page!
-			$pRec = t3lib_BEfunc::getRecord ('pages',$rec['uid'],'uid',' AND '.$m_perms_clause);
-			$lines[]= '<tr><td nowrap="nowrap">'.t3lib_iconWorks::getIconImage('pages',$rec,$GLOBALS['BACK_PATH'],'align="top" '.t3lib_BEfunc::titleAttribForPages($rec)).
-				(!is_array($pRec)?$GLOBALS['TBE_TEMPLATE']->rfw('<b>'.$LANG->getLL('wiz_W',1).'</b> '):'').
-				htmlspecialchars(t3lib_div::fixed_lgd_cs($rec['title'],$GLOBALS['BE_USER']->uc['titleLen'])).'&nbsp;</td>
-				'.(t3lib_extMgm::isLoaded('cms')?'<td nowrap="nowrap">'.htmlspecialchars(t3lib_div::fixed_lgd_cs($rec['subtitle'],$GLOBALS['BE_USER']->uc['titleLen'])).'&nbsp;</td>':'').'
-				<td nowrap="nowrap">'.t3lib_Befunc::datetime($rec['tstamp']).'&nbsp;&nbsp;</td>
-				<td nowrap="nowrap">'.t3lib_Befunc::datetime($rec['crdate']).'&nbsp;&nbsp;</td>
-				</tr>';
-		}
-
-		$theCode.= '<b>'.$LANG->getLL('wiz_currentPageOrder',1).':</b><br /><br />
-		<table border="0" cellpadding="0" cellspacing="0">'.implode('',$lines).'</table><br />';
-
-		if (count($menuItems))	{
-				// Menu:
+				//
+			$menuItems = $sys_pages->getMenu($this->pObj->id);
+			reset($menuItems);
 			$lines=array();
-			$lines[] = $this->wiz_linkOrder($LANG->getLL('wiz_changeOrder_title'),'title');
-			if (t3lib_extMgm::isLoaded('cms')) $lines[] = $this->wiz_linkOrder($LANG->getLL('wiz_changeOrder_subtitle'),'subtitle');
-			$lines[] = $this->wiz_linkOrder($LANG->getLL('wiz_changeOrder_tChange'),'tstamp');
-			$lines[] = $this->wiz_linkOrder($LANG->getLL('wiz_changeOrder_tCreate'),'crdate');
-			$lines[] = '';
-			$lines[] = $this->wiz_linkOrder($LANG->getLL('wiz_changeOrder_REVERSE'),'REV');
-			$theCode.= '<b>'.$LANG->getLL('wiz_changeOrder').':</b><br /><br />'.implode('<br />',$lines);
+				$lines[]= '<tr>
+					<td class="bgColor5"><b>'.$this->wiz_linkOrder($LANG->getLL('wiz_changeOrder_title'),'title').'</b></td>
+					'.(t3lib_extMgm::isLoaded('cms')?'<td class="bgColor5"><b>'.$this->wiz_linkOrder($LANG->getLL('wiz_changeOrder_subtitle'),'subtitle').'</b></td>':'').'
+					<td class="bgColor5"><b>'.$this->wiz_linkOrder($LANG->getLL('wiz_changeOrder_tChange'),'tstamp').'</b></td>
+					<td class="bgColor5"><b>'.$this->wiz_linkOrder($LANG->getLL('wiz_changeOrder_tCreate'),'crdate').'</b></td>
+					</tr>';
+			while(list(,$rec)=each($menuItems))	{
+				$m_perms_clause = $GLOBALS['BE_USER']->getPagePermsClause(2);	// edit permissions for that page!
+				$pRec = t3lib_BEfunc::getRecord ('pages',$rec['uid'],'uid',' AND '.$m_perms_clause);
+				$lines[]= '<tr><td nowrap="nowrap">'.t3lib_iconWorks::getIconImage('pages',$rec,$GLOBALS['BACK_PATH'],'align="top" '.t3lib_BEfunc::titleAttribForPages($rec)).
+					(!is_array($pRec)?$GLOBALS['TBE_TEMPLATE']->rfw('<b>'.$LANG->getLL('wiz_W',1).'</b> '):'').
+					htmlspecialchars(t3lib_div::fixed_lgd_cs($rec['title'],$GLOBALS['BE_USER']->uc['titleLen'])).'&nbsp;</td>
+					'.(t3lib_extMgm::isLoaded('cms')?'<td nowrap="nowrap">'.htmlspecialchars(t3lib_div::fixed_lgd_cs($rec['subtitle'],$GLOBALS['BE_USER']->uc['titleLen'])).'&nbsp;</td>':'').'
+					<td nowrap="nowrap">'.t3lib_Befunc::datetime($rec['tstamp']).'&nbsp;&nbsp;</td>
+					<td nowrap="nowrap">'.t3lib_Befunc::datetime($rec['crdate']).'&nbsp;&nbsp;</td>
+					</tr>';
+			}
+
+			$theCode.= '<b>'.$LANG->getLL('wiz_currentPageOrder',1).':</b><br /><br />
+			<table border="0" cellpadding="0" cellspacing="0">'.implode('',$lines).'</table><br />';
+
+			if (count($menuItems))	{
+					// Menu:
+				$lines=array();
+				$lines[] = $this->wiz_linkOrder($LANG->getLL('wiz_changeOrder_title'),'title');
+				if (t3lib_extMgm::isLoaded('cms')) $lines[] = $this->wiz_linkOrder($LANG->getLL('wiz_changeOrder_subtitle'),'subtitle');
+				$lines[] = $this->wiz_linkOrder($LANG->getLL('wiz_changeOrder_tChange'),'tstamp');
+				$lines[] = $this->wiz_linkOrder($LANG->getLL('wiz_changeOrder_tCreate'),'crdate');
+				$lines[] = '';
+				$lines[] = $this->wiz_linkOrder($LANG->getLL('wiz_changeOrder_REVERSE'),'REV');
+				$theCode.= '<b>'.$LANG->getLL('wiz_changeOrder').':</b><br /><br />'.implode('<br />',$lines);
+			}
+
+				// CSH:
+			$theCode.= t3lib_BEfunc::cshItem('_MOD_web_func', 'tx_wizardsortpages', $GLOBALS['BACK_PATH'],'<br/>|');
+
+			$out=$this->pObj->doc->section($LANG->getLL('wiz_sort'),$theCode,0,1);
+		} else {
+			$out=$this->pObj->doc->section($LANG->getLL('wiz_sort'),'Sorry, this function is not available in the current draft workspace!',0,1,1);
 		}
-
-			// CSH:
-		$theCode.= t3lib_BEfunc::cshItem('_MOD_web_func', 'tx_wizardsortpages', $GLOBALS['BACK_PATH'],'<br/>|');
-
-		$out=$this->pObj->doc->section($LANG->getLL('wiz_sort'),$theCode,0,1);
 		return $out;
 	}
 

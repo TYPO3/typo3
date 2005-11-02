@@ -133,6 +133,7 @@ class recordHistory {
 
 			// If link to element:
 		if ($this->element)	{
+			$this->resolveElement();
 			if ($this->revert && $this->sumUp)	{
 				$content.=$this->revertToPreviousValues($this->element,$this->revert);
 			}
@@ -879,6 +880,22 @@ class recordHistory {
 			}
 		}
 		return $sumChangesArray;
+	}
+
+	/**
+	 * Convert input element reference to workspace version if any.
+	 *
+	 * @return	void
+	 */
+	function resolveElement()	{
+		$parts = explode(':',$this->element);
+
+		if (isset($GLOBALS['TCA'][$parts[0]]))	{
+			if ($workspaceVersion = t3lib_BEfunc::getWorkspaceVersionOfRecord($GLOBALS['BE_USER']->workspace, $parts[0], $parts[1], 'uid'))	{
+				$parts[1] = $workspaceVersion['uid'];
+				$this->element = implode(':', $parts);
+			}
+		}
 	}
 }
 

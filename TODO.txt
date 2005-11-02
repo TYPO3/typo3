@@ -303,55 +303,27 @@ SQLengine (t3lib_sqlengine):
 *******************************
 Versioning/Workspaces:
 *******************************
-Wednesday:
 
-Set up TemplaVoila package for testing.
---------------------------------------
-- Backend challenges yet to solve:
-	- FlexForms: t3lib_BEfunc::getFlexFormDS(), workspaceOL/fixVersioningPid ??
-	- Page and (User) TSconfig?
-	- Mount points and versionized branches?
-	- What about template::getVersionSelector()
 
-Backend preview:
-- Check overlay implementation across core backend:
-	- Modules, click-menu
-	- Permissions / UIDs reflected in buttons and clickmenus.
-	- check page trees around for display of color backgrounds...
-	- check editing icons, overlays in various modules.
+
 - Page module:
+	- Reflection in panels / Localization
 	- Colored backgrounds in Page module
 	- Quick Edit in page module should work
 - TemplaVoila:
-	- Check up on it (should work)
-- Logging:
-	- Filter on workspace
-	- Finally define logging in tcemain!
-
-- Documentation "Backend challenges"
+	- Page module
+	- FlexForms: t3lib_BEfunc::getFlexFormDS()
 
 
-----------------------------------
-Friday:
-- copy/move:
-	- copying versions:
-		- with references in workspace?
-		- "Page" types?
-		- "Element" types?
-	- Copying depends on "new" versioning type: Element, page, branch!
-	- Check destination if versionized branch / stage
-	- Copy a page in workspace will not copy the contents?
-	- Copy branch in workspace which already has versions - what does it take?
 
-- localize command
-	- ?
+TESTING by building up sites.
 
-----------------------------
-Thursday:
+--------------------------
+Thursday/Friday:
 
 Frontend Preview:
 - ONLINE PREVIEW: Versionized pages should be previewed just by their UID (which will select the offline version!) - only in "Live" space, disabled at the moment inside tslib_fe!
-?!	- TEST: Mounts points and versionized branches?
+?!	- TEST: Mounts points and versionized branches? Localization previews?
 ?	- tslib_content::getPidList(); TEST Mount points / Use offline UID values for "page" swapmodes; This is probably more natural for preview cases.
 ?	- versionOL() implementations missing:
 		- tslib_pibase::pi_getCategoryTableContents()
@@ -375,17 +347,44 @@ Frontend Preview:
 	t3lib_page::getPageOverlay() - because pages_language_overlay records have "versioning_followPages" set this should be observed when selecting language overlay records. But should it be hardcoded or something better?
 - Documentation. As frontend preview implementation is dealt with, describe any persisting incompatibilities in "TYPO3 Core API"
 
----------------------------
+
+
+- Documentation "Backend challenges"
+	- insertModuleFunction() limiting function menu entries
+	->bypassWorkspaceRestrictions
+	->Page TSconfig overlays done!
+
+----------------------------------
+Backend preview:
+- Check overlay implementation across core backend:
+	- Permissions / UIDs reflected in buttons and clickmenus.
+- Logging:
+	- Finally define logging in tcemain!
+	- Filter on workspace
+
+
+TCEmain commands:
+- copy:
+	- copying versions:
+		- with references in workspace?
+		- "Page" types?
+		- "Element" types?
+	- Copying depends on "new" versioning type: Element, page, branch!
+	- Check destination if versionized branch / stage
+	- Copy a page in workspace will not copy the contents?
+	- Copy branch in workspace which already has versions - what does it take?
+- localize command
+	- ?
 
 Versioning API:
-	- (Support for) swapping using temporary file (instead of using negative ID)
-	- Way to change versioning type from element to page to branch for new records?
+- (Support for) swapping using temporary file (instead of using negative ID)
+- Way to change versioning type from element to page to branch for new records?
 
 Preview modes with no BE login; For single pages, for whole workspace?
-	- Can bypass hidden pages, fe_groups, set workspace
-	- Works for certain timespan
-	- Sets cookie
-	- Respects permissions of backend users issuing that permission!?
+- Can bypass hidden pages, fe_groups, set workspace
+- Works for certain timespan
+- Sets cookie
+- Respects permissions of backend users issuing that permission!?
 
 Workflows:
 - Workflows can regard a whole workspace!

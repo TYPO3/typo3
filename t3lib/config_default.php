@@ -128,7 +128,7 @@ $TYPO3_CONF_VARS = Array(
 		'forceCharset' => '',					// String. Normally the charset of the backend users language selection is used. If you set this value to a charset found in t3lib/csconvtbl/ (or "utf-8") the backend (and database) will ALWAYS use this charset. Always use a lowercase value.
 		'installToolPassword' => '',			// String. This is the md5-hashed password for the Install Tool. Set this to '' and access will be totally denied. PLEASE consider to externally password protect the typo3/install/ folder, eg. with a .htaccess file.
 		'trackBeUser' => 0,						// Boolean. If set, every invokation of a backend script is logged in sys_trackbeuser. This is used to get a view of the backend users behaviour. Mostly for debugging, support and user interaction analysis. Requires 'beuser_tracking' extension.
-		'defaultUserTSconfig' => '',			// Enter lines of default backend user/group TSconfig.
+ 		'defaultUserTSconfig' => 'options.shortcutFrame=1',			// Enter lines of default backend user/group TSconfig.
 		'defaultPageTSconfig' => '',			// Enter lines of default Page TSconfig.
 		'defaultPermissions' => array (			// Default permissions set for new pages in t3lib/tce_main.php. Keys are 'show,edit,delete,new,editcontent'. Enter as comma-list
 //			'user' => '',				READFILE:			// default in tce_main is 'show,edit,delete,new,editcontent'. If this is set (uncomment), this value is used instead.

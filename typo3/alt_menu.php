@@ -119,7 +119,7 @@ class SC_alt_menu {
 		$this->content.= $alt_menuObj->topMenu($this->loadModules->modules);
 
 			// clear cache commands for Admins
-		if($BE_USER->isAdmin()) {
+		if($BE_USER->isAdmin() && $BE_USER->workspace===0) {
 			$functionsArray = $alt_menuObj->adminFunctions($backPath);
 
 			$this->content.='

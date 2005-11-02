@@ -8,4 +8,5 @@ $MLANG['default']['ll_ref']='LLL:EXT:lang/locallang_mod_tools_em.php';
 $MCONF['script']='index.php';
 $MCONF['access']='admin';
 $MCONF['name']='tools_em';
+$MCONF['workspaces']='online';
 ?>

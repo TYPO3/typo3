@@ -459,6 +459,7 @@ TD.ver-element { background-color: #ccddcc; }
 TD.ver-page { background-color: #ccccff; }
 TD.ver-branch { background-color: #ffcccc; }
 TD.ver-branchpoint { background-color: #ff9999; }
+TD.ver-versions { background-color: #ffffaa; }
 TABLE.workspace-overview TD { vertical-align : top; }
 TABLE.ver-subtree A { text-decoration: none; }
 TABLE.ver-subtree TR TD.iconTitle { white-space: nowrap; }

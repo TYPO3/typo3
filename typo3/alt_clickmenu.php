@@ -241,6 +241,8 @@ class clickMenu {
 
 			// If record found (or root), go ahead and fill the $menuItems array which will contain data for the elements to render.
 		if (is_array($this->rec) || $root)	{
+			t3lib_BEfunc::workspaceOL($table,$this->rec);
+
 				// Get permissions
 			$lCP = $BE_USER->calcPerms(t3lib_BEfunc::getRecord('pages',($table=='pages'?$this->rec['uid']:$this->rec['pid'])));
 
@@ -709,7 +711,7 @@ class clickMenu {
 	function DB_tempMountPoint($page_id)	{
 		return $this->linkItem(
 			$this->label('tempMountPoint'),
-			#$this->excludeIcon('<img'.t3lib_iconWorks::skinImg($this->PH_backPath,'gfx/___.gif','width="12" height="12"').' alt="" />'),
+			$this->excludeIcon('<img'.t3lib_iconWorks::skinImg($this->PH_backPath,'gfx/placeasroot.gif','width="14" height="12"').' alt="" />'),
 			'',
 			"if (top.content.nav_frame) { top.content.nav_frame.document.location = 'alt_db_navframe.php?setTempDBmount=".intval($page_id)."'; } return hideCM();"
 		);
@@ -740,7 +742,7 @@ class clickMenu {
 	 * @return	array		Item array, element in $menuItems
 	 */
 	function DB_changeFlag($table, $rec, $flagField, $title, $name, $iconRelPath='gfx/')    {
-	    $uid=$rec['uid'];
+	    $uid = $rec['_ORIG_uid'] ? $rec['_ORIG_uid'] : $rec['uid'];
 	    $editOnClick='';
 	    $loc='top.content'.($this->listFrame && !$this->alwaysContentFrame ?'.list_frame':'');
 	    $editOnClick='if('.$loc.'){'.$loc.".document.location=top.TS.PATH_typo3+'tce_db.php?redirect='+top.rawurlencode(".$this->frameLocation($loc.'.document').")+'".

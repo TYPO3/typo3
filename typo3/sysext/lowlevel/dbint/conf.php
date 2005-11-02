@@ -8,4 +8,5 @@ $MLANG['default']['ll_ref']='LLL:EXT:lowlevel/dbint/locallang_mod.php';
 $MCONF['script']='index.php';
 $MCONF['access']='admin';
 $MCONF['name']='tools_dbint';
+$MCONF['workspaces']='online';
 ?>

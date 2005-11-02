@@ -236,7 +236,8 @@ class t3lib_TCEmain	{
 	var $checkStoredRecords_loose = TRUE;	// Boolean: If set, values '' and 0 will equal each other when the stored records are checked.
 	var $deleteTree = FALSE;				// Boolean. If this is set, then a page is deleted by deleting the whole branch under it (user must have deletepermissions to it all). If not set, then the page is deleted ONLY if it has no branch
 	var $neverHideAtCopy = FALSE;			// Boolean. If set, then the 'hideAtCopy' flag for tables will be ignored.
-	var $dontProcessTransformations=FALSE;	// Boolean: If set, then transformations are NOT performed on the input.
+	var $dontProcessTransformations = FALSE;	// Boolean: If set, then transformations are NOT performed on the input.
+	var $bypassWorkspaceRestrictions = FALSE;	// Boolean: If true, workspace restrictions are bypassed on edit an create actions (process_datamap()). YOU MUST KNOW what you do if you use this feature!
 
 	var $copyWhichTables = '*';				// String. Comma-list. This list of tables decides which tables will be copied. If empty then none will. If '*' then all will (that the user has permission to of course)
 
@@ -608,8 +609,8 @@ class t3lib_TCEmain	{
 								// Now, check if we may insert records on this pid.
 							if ($theRealPid>=0)	{
 								$recordAccess = $this->checkRecordInsertAccess($table,$theRealPid);		// Checks if records can be inserted on this $pid.
-								if ($recordAccess)	{
-
+								if ($recordAccess && !$this->bypassWorkspaceRestrictions)	{
+										// Workspace related processing:
 									if ($res = $this->BE_USER->workspaceAllowLiveRecordsInPID($theRealPid,$table))	{	// If LIVE records cannot be created in the current PID due to workspace restrictions, prepare creation of placeholder-record
 										if ($res<0)	{
 											$recordAccess = FALSE;
@@ -649,7 +650,7 @@ class t3lib_TCEmain	{
 									}
 
 										// Checking access in case of offline workspace:
-									if ($errorCode = $this->BE_USER->workspaceCannotEditRecord($table,$tempdata))	{
+									if (!$this->bypassWorkspaceRestrictions && $errorCode = $this->BE_USER->workspaceCannotEditRecord($table,$tempdata))	{
 										$recordAccess = FALSE;		// Versioning is required and it must be offline version!
 
 											// Auto-creation of version: In offline workspace, test if versioning is enabled and look for workspace version of input record. If there is no versionized record found we will create one and save to that.

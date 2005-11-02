@@ -1121,9 +1121,9 @@ class t3lib_BEfunc	{
 	function getPagesTSconfig($id,$rootLine='',$returnPartArray=0)	{
 		$id=intval($id);
 		if (!is_array($rootLine))	{
-			$rootLine = t3lib_BEfunc::BEgetRootLine($id,'');
+			$rootLine = t3lib_BEfunc::BEgetRootLine($id,'',TRUE);
 		}
-		ksort($rootLine);	// Order correctly, changed 030102
+		ksort($rootLine);	// Order correctly
 		reset($rootLine);
 		$TSdataArray = array();
 		$TSdataArray['defaultPageTSconfig']=$GLOBALS['TYPO3_CONF_VARS']['BE']['defaultPageTSconfig'];	// Setting default configuration:
@@ -2642,7 +2642,7 @@ class t3lib_BEfunc	{
 			// Get main config for the table
 		list($TScID,$cPid) = t3lib_BEfunc::getTSCpid($table,$row['uid'],$row['pid']);
 
-		$rootLine = t3lib_BEfunc::BEgetRootLine($TScID,'');
+		$rootLine = t3lib_BEfunc::BEgetRootLine($TScID,'',TRUE);
 		if ($TScID>=0)	{
 			$tempConf = $GLOBALS['BE_USER']->getTSConfig('TCEFORM.'.$table,t3lib_BEfunc::getPagesTSconfig($TScID,$rootLine));
 			if (is_array($tempConf['properties']))	{
@@ -3172,7 +3172,41 @@ class t3lib_BEfunc	{
 		}
 	}
 
+	/**
+	 * Count number of versions on a page
+	 *
+	 * @param	integer		Workspace ID
+	 * @param	integer		Page ID
+	 * @param	boolean		If set, then all tables and not only "versioning_followPages" are found (except other pages)
+	 * @return	array	Overview of records
+	 */
+	function countVersionsOfRecordsOnPage($workspace,$pageId, $allTables=FALSE)	{
+		$output = array();
+		if ($workspace!=0)	{
+			foreach($GLOBALS['TCA'] as $tableName => $cfg)	{
+				if ($tableName!='pages' && $cfg['ctrl']['versioningWS'] && ($cfg['ctrl']['versioning_followPages'] || $allTables))	{
 
+						// Select all records from this table in the database from the workspace
+						// This joins the online version with the offline version as tables A and B
+					$output[$tableName] = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows (
+						'B.uid as live_uid, A.uid as offline_uid',
+						$tableName.' A,'.$tableName.' B',
+						'A.pid=-1'.	// Table A is the offline version and pid=-1 defines offline
+							' AND B.pid='.intval($pageId).
+							' AND A.t3ver_wsid='.intval($workspace).
+							' AND A.t3ver_oid=B.uid'.	// ... and finally the join between the two tables.
+							t3lib_BEfunc::deleteClause($table,'A').
+							t3lib_BEfunc::deleteClause($table,'B')
+					);
+
+					if (!is_array($output[$tableName]) || !count($output[$tableName]))	{
+						unset($output[$tableName]);
+					}
+				}
+			}
+		}
+		return $output;
+	}
 
 
 

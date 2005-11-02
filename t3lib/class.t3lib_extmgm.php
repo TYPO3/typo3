@@ -385,15 +385,17 @@ class t3lib_extMgm {
 	 * @param	string		Class path
 	 * @param	string		Title of module
 	 * @param	string		Menu array key - default is "function"
+	 * @param	string		Workspace conditions. Blank means all workspaces, any other string can be a comma list of "online", "offline" and "custom"
 	 * @return	void
 	 * @see t3lib_SCbase::mergeExternalItems()
 	 */
-	function insertModuleFunction($modname,$className,$classPath,$title,$MM_key='function')	{
+	function insertModuleFunction($modname,$className,$classPath,$title,$MM_key='function',$WS='')	{
 		global $TBE_MODULES_EXT;
 		$TBE_MODULES_EXT[$modname]['MOD_MENU'][$MM_key][$className]=array(
 			'name' => $className,
 			'path' => $classPath,
 			'title' => $title,
+			'ws' => $WS
 		);
 	}
 

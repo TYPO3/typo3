@@ -123,6 +123,7 @@ class t3lib_treeView {
 	var $addSelfId = 0;				// If set, the id of the mounts will be added to the internal ids array
 	var $title='no title';			// Used if the tree is made of records (not folders for ex.)
 	var $showDefaultTitleAttribute = FALSE;		// If true, a default title attribute showing the UID of the record is shown. This cannot be enabled by default because it will destroy many applications where another title attribute is in fact applied later.
+	var $highlightPagesWithVersions = TRUE;		// If true, pages containing child records which has versions will be highlighted in yellow. This might be too expensive in terms of processing power.
 
 	/**
 	 * Needs to be initialized with $GLOBALS['BE_USER']
@@ -963,6 +964,11 @@ class t3lib_treeView {
 
 				// Passing on default <td> class for subelements:
 			if (is_array($row) && $subCSSclass!=='')	{
+
+				if ($this->table==='pages' && $this->highlightPagesWithVersions && !isset($row['_CSSCLASS']) && count(t3lib_BEfunc::countVersionsOfRecordsOnPage($this->BE_USER->workspace, $row['uid'], TRUE)))	{
+					$row['_CSSCLASS'] = 'ver-versions';
+				}
+
 				if (!isset($row['_CSSCLASS']))	$row['_CSSCLASS'] = $subCSSclass;
 				if (!isset($row['_SUBCSSCLASS']))	$row['_SUBCSSCLASS'] = $subCSSclass;
 			}
