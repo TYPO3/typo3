@@ -496,7 +496,7 @@ class t3lib_pageSelect {
 	function getRootLine($uid, $MP='', $ignoreMPerrors=FALSE)	{
 
 			// Initialize:
-		$selFields = t3lib_div::uniqueList('pid,uid,t3ver_oid,t3ver_wsid,t3ver_state,title,alias,nav_title,media,layout,hidden,starttime,endtime,fe_group,extendToSubpages,doktype,TSconfig,storage_pid,is_siteroot,mount_pid,mount_pid_ol,fe_login_mode,'.$GLOBALS['TYPO3_CONF_VARS']['FE']['addRootLineFields']);
+		$selFields = t3lib_div::uniqueList('pid,uid,t3ver_oid,t3ver_wsid,t3ver_state,t3ver_swapmode,title,alias,nav_title,media,layout,hidden,starttime,endtime,fe_group,extendToSubpages,doktype,TSconfig,storage_pid,is_siteroot,mount_pid,mount_pid_ol,fe_login_mode,'.$GLOBALS['TYPO3_CONF_VARS']['FE']['addRootLineFields']);
 		$this->error_getRootLine = '';
 		$this->error_getRootLine_failPid = 0;
 
@@ -518,7 +518,7 @@ class t3lib_pageSelect {
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($selFields, 'pages', 'uid='.intval($uid).' AND pages.deleted=0 AND pages.doktype!=255');
 			if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
 				$this->versionOL('pages',$row);
-				$this->fixVersioningPid('pages',$row,1);
+				$this->fixVersioningPid('pages',$row);
 
 				if (is_array($row))	{
 						// Mount Point page types are allowed ONLY a) if they are the outermost record in rootline and b) if the overlay flag is not set:
@@ -541,7 +541,7 @@ class t3lib_pageSelect {
 							$mp_row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
 
 							$this->versionOL('pages',$mp_row);
-							$this->fixVersioningPid('pages',$mp_row,2);
+							$this->fixVersioningPid('pages',$mp_row);
 
 							if (is_array($mp_row))	{
 								$mount_info = $this->getMountPointInfo($mp_row['uid'], $mp_row);
@@ -767,16 +767,19 @@ class t3lib_pageSelect {
 	 * @param	string		The table name to search
 	 * @param	integer		The uid to look up in $table
 	 * @param	string		The fields to select, default is "*"
+	 * @param	boolean		If set, no version overlay is applied
 	 * @return	mixed		Returns array (the record) if found, otherwise blank/0 (zero)
 	 * @see getPage_noCheck()
 	 */
-	function getRawRecord($table,$uid,$fields='*')	{
+	function getRawRecord($table,$uid,$fields='*',$noWSOL=FALSE)	{
 		global $TCA;
 		$uid = intval($uid);
 		if (is_array($TCA[$table]) || $table=='pages') {	// Excluding pages here so we can ask the function BEFORE TCA gets initialized. Support for this is followed up in deleteClause()...
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($fields, $table, 'uid='.intval($uid).$this->deleteClause($table));
 			if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
-				$this->versionOL($table,$row);
+				if (!$noWSOL)	{
+					$this->versionOL($table,$row);
+				}
 				if (is_array($row))	return $row;
 			}
 		}
@@ -1034,7 +1037,7 @@ class t3lib_pageSelect {
 				$oid = $rr['t3ver_oid'];
 				$wsid = $rr['t3ver_wsid'];
 			} else {	// Otherwise we have to expect "uid" to be in the record and look up based on this:
-				$newPidRec = $this->getRawRecord($table,$rr['uid'],'t3ver_oid,t3ver_wsid');
+				$newPidRec = $this->getRawRecord($table,$rr['uid'],'t3ver_oid,t3ver_wsid',TRUE);
 				if (is_array($newPidRec))	{
 					$oid = $newPidRec['t3ver_oid'];
 					$wsid = $newPidRec['t3ver_wsid'];
@@ -1043,7 +1046,8 @@ class t3lib_pageSelect {
 
 				// If workspace ids matches and ID of current online version is found, look up the PID value of that:
 			if ($oid && !strcmp((int)$wsid,$this->versioningWorkspaceId))	{
-				$oidRec = $this->getRawRecord($table,$oid,'pid');
+				$oidRec = $this->getRawRecord($table,$oid,'pid',TRUE);
+
 				if (is_array($oidRec))	{
 					# SWAP uid as well? Well no, because when fixing a versioning PID happens it is assumed that this is a "branch" type page and therefore the uid should be kept (like in versionOL()). However if the page is NOT a branch version it should not happen - but then again, direct access to that uid should not happen!
 					$rr['_ORIG_pid'] = $rr['pid'];

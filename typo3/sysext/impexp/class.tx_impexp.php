@@ -488,6 +488,9 @@ class tx_impexp {
 	 * @return	void
 	 */
 	function export_addRecord($table,$row,$relationLevel=0)	{
+
+		t3lib_BEfunc::workspaceOL($table,$row);
+
 		if (strcmp($table,'') && is_array($row) && $row['uid']>0 && !$this->excludeMap[$table.':'.$row['uid']])	{
 			if ($this->checkPID($table==='pages' ? $row['uid'] : $row['pid']))	{
 				if (!isset($this->dat['records'][$table.':'.$row['uid']]))	{
@@ -1775,6 +1778,12 @@ class tx_impexp {
 				// If the record has been written and received a new id, then proceed:
 			if (is_array($this->import_mapId[$table]) && isset($this->import_mapId[$table][$uid]))	{
 				$thisNewUid = $this->import_mapId[$table][$uid];
+
+					// If the new versions are made in a workspace we must further remap the uids:
+				if ($newVersionRec = t3lib_BEfunc::getWorkspaceVersionOfRecord($GLOBALS['BE_USER']->workspace, $table, $thisNewUid, 'uid'))	{
+					$thisNewUid = $newVersionRec['uid'];
+				}
+
 				if (is_array($this->dat['records'][$table.':'.$uid]['rels']))	{
 					reset($this->dat['records'][$table.':'.$uid]['rels']);
 
@@ -2886,6 +2895,7 @@ class tx_impexp {
 					if ($newUid = $this->import_mapId[$table][$uid])	{
 						$diffInverse = FALSE;
 						$recInf = $this->doesRecordExist($table, $newUid, '*');
+						t3lib_BEfunc::workspaceOL($table,$recInf);
 					}
 					if (is_array($recInf))	{
 						$pInfo['showDiffContent'] = $this->compareRecords($recInf, $this->dat['records'][$table.':'.$uid]['data'], $table, $diffInverse);

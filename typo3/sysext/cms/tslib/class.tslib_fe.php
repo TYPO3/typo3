@@ -708,10 +708,8 @@
 					$this->showHiddenPage = 1;
 				}
 
-					// Check root line for proper connection to tree root (done because of possible preview of page / branch versions) [This will be done when in online workspace...]
-/*
-TEMPORARILY disabled version previews in online workspace (while testing offline workspaces)
-				if (!$this->fePreview)	{
+					// For Live workspace: Check root line for proper connection to tree root (done because of possible preview of page / branch versions)
+				if (!$this->fePreview && $GLOBALS['BE_USER']->workspace==0)	{
 
 						// Initialize the page-select functions to check rootline:
 					$temp_sys_page = t3lib_div::makeInstance('t3lib_pageSelect');
@@ -725,11 +723,9 @@ TEMPORARILY disabled version previews in online workspace (while testing offline
 						if (count($temp_sys_page->getRootLine($this->id,$this->MP)))	{
 								// Finally, we got a root line (meaning that it WAS due to versioning preview of a page somewhere) and we set the fePreview flag which in itself will allow sys_page class to display previews of versionized records.
 							$this->fePreview = 1;
-#debug('version in rootline...');
 						}
 					}
 				}
-*/
 			}
 
 				// The preview flag will be set if a backend user is in an offline workspace

@@ -303,46 +303,47 @@ SQLengine (t3lib_sqlengine):
 *******************************
 Versioning/Workspaces:
 *******************************
-TESTING by building up sites in multiple workspaces! Running the TemplaVoila wizard in workspace? (or disable it...)
-Finish screenshows for "Inside TYPO3"
-
-Frontend Preview:
+- Running the TemplaVoila wizard in workspace?
 - Dual-view preview?
-- ONLINE PREVIEW: Versionized pages should be previewed just by their UID (which will select the offline version!) - only in "Live" space, disabled at the moment inside tslib_fe!
-?!	- TEST: Mounts points and versionized branches? Localization previews?
+- Web > Versioning:
+	- Raising state for all records on a page and using same comment for all + send only one notification email per instance.
+	- "Publish / Swap all" - link
+
+- Documentation:
+	- Finish screenshots for "Inside TYPO3"
+		- Web > View module always showing preview?
+	- TYPO3 Core API:
+		- As frontend preview implementation is dealt with, describe any persisting incompatibilities in "TYPO3 Core API"
+			- Difficult frontend previews (except for new records which can shadow values)
+				- All fields selected upon in frontend:
+					- $TCA[$table]['ctrl']['languageField'] and $TCA[$table]['ctrl']['transOrigPointerField']
+					- field: pages_language_overlay:sys_language_uid
+					- field: pages:doktype (used for selection many places!) - but then we cannot make mounts points etc! (?)
+				- Suggested solution:
+					- Setting a workspace-readonly flag for such values!
+					- However,
+						- menu previews are bypassing the problem already,
+						- page shortcut has trouble but is known,
+						- mount points will not be possible to preview (?)
+						- For new translations we might have the problem, for existing translations probably not since it is unlikely that the fields $TCA[$table]['ctrl']['languageField'] and $TCA[$table]['ctrl']['transOrigPointerField'] are changed later!
+
+----------------------------------
+Frontend Preview:
+- BUG: New pages, setting to hidden are still displayable and shown in menu!
 ?	- tslib_content::getPidList(); TEST Mount points / Use offline UID values for "page" swapmodes; This is probably more natural for preview cases.
 ?	- versionOL() implementations missing:
 		- tslib_pibase::pi_getCategoryTableContents()
 		- tslib_content::checkPidArray()
 		- tslib_content::checkPid()
 		- tslib_content::exec_mm_query()/-_uidList() [These seems NOT to be used anymore!]
-- Difficult frontend previews:
-	- All fields selected upon in frontend:
-		- $TCA[$table]['ctrl']['languageField'] and $TCA[$table]['ctrl']['transOrigPointerField']
-		- field: pages_language_overlay:sys_language_uid
-		- field: pages:doktype (used for selection many places!) - but then we cannot make mounts points etc! (?)
-	- Suggested solution:
-		- Setting a workspace-readonly flag for such values!
-		- However,
-			- menu previews are bypassing the problem already,
-			- page shortcut has trouble but is known,
-			- mount points will not be possible to preview (?)
-			- For new translations we might have the problem, for existing translations probably not since it is unlikely that the fields $TCA[$table]['ctrl']['languageField'] and $TCA[$table]['ctrl']['transOrigPointerField'] are changed later!
-		- For new records, maybe the placeholder record is updated along with offline version? (At least for non-file fields). This would solve the problem of build translations in a workspace and also offer the preview as working!
 - In tslib_fe, this->contentPid is set to "_ORIG_UID" when a versionized page have swapmode set to "0". However this is not completely correct to do: Strictly the "_ORIG_UID" value should be used for tables where "versioning_followPages" is set and for others not. However this is a working quick-fix to display content elements at least!
-	t3lib_page::getPageOverlay() - because pages_language_overlay records have "versioning_followPages" set this should be observed when selecting language overlay records. But should it be hardcoded or something better?
-- Documentation.
-	- As frontend preview implementation is dealt with, describe any persisting incompatibilities in "TYPO3 Core API"
-	- Web > View module always showing preview?
+	- t3lib_page::getPageOverlay() - because pages_language_overlay records have "versioning_followPages" set this should be observed when selecting language overlay records. But should it be hardcoded or something better?
 
-----------------------------------
 Backend preview:
-- Check overlay implementation across core backend:
-	- Permissions / UIDs reflected in buttons and clickmenus.
+- Permissions reflected in buttons and clickmenus.
 - Logging:
 	- Finally define logging in tcemain!
 	- Filter on workspace
-
 
 TCEmain commands:
 - copy:
@@ -355,6 +356,7 @@ TCEmain commands:
 	- Copy a page in workspace will not copy the contents?
 	- Copy branch in workspace which already has versions - what does it take?
 	- Import/Export function?
+	- Web>Page modules copy function for localization
 - localize command
 	- ?
 
@@ -369,21 +371,15 @@ Preview modes with no BE login; For single pages, for whole workspace?
 - Respects permissions of backend users issuing that permission!?
 - Dual-view preview?
 
-Workflows:
-- Workflows can regard a whole workspace!
-- Special permission required for:
-	- Publishing workspace / Setting publishing time
-	- Freezing/unfreezing workspace
-
-Documentation:
-- Finish chapter "Using versioning and workspaces" in "Inside TYPO3" with screenshots etc.
-- Documentation "Backend challenges"
-
 Check Various:
 - Auto publishing: Might not work with "Publish only "Publish" stage" because swapped elements will be in editing stage or so!
 
 Workspace Manager TODO:
 - Workspace list
+
+BUGS:
+- In draft workspace: importing a treestructure when "newPagesVersioningType" is set to "1" (new pages as "branch" versions) will only create root point and no subsequent records.
+
 
 -----LATER:
 
@@ -397,6 +393,7 @@ Workspace Manager TODO:
 - Swapping consequences:
 	- UID references for such as the sys_history and sys_log table are misleading.
 	- Branchpoints being swapped will swap their UIDs just like "page" and "element" versions - but in the backend the offline UID of "branch" versions are used heavily. This means references to the branchpoint will be invalid when published.
+
 
 *************************
 Localization workflow:

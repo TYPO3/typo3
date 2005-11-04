@@ -227,7 +227,7 @@ class localPageTree extends t3lib_browseTree {
 		$firstHtml = $this->PM_ATagWrap($icon,$cmd);
 
 		if ($pid>0)	{
-			$rootRec = t3lib_befunc::getRecord('pages',$pid);
+			$rootRec = t3lib_befunc::getRecordWSOL('pages',$pid);
 			$firstHtml.= $this->wrapIcon(t3lib_iconWorks::getIconImage('pages',$rootRec,$this->backPath,'align="top"'),$rootRec);
 		} else {
 			$rootRec = array(
@@ -494,7 +494,7 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 						'title' => 'ROOT'
 					);
 				} else {
-					$sPage = t3lib_BEfunc::getRecord('pages',$inData['pagetree']['id'],'*',' AND '.$this->perms_clause);
+					$sPage = t3lib_BEfunc::getRecordWSOL('pages',$inData['pagetree']['id'],'*',' AND '.$this->perms_clause);
 				}
 				if (is_array($sPage))	{
 					$pid = $inData['pagetree']['id'];
@@ -779,7 +779,7 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 				$tName = $rParts[0];
 				$rUid = $rParts[1];
 				$nameSuggestion.= $tName.'_'.$rUid;
-				$rec = t3lib_BEfunc::getRecord($tName,$rUid);
+				$rec = t3lib_BEfunc::getRecordWSOL($tName,$rUid);
 
 				$row[] = '
 				<tr class="bgColor4">
@@ -804,7 +804,7 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 				$tName = $rParts[0];
 
 				if ($GLOBALS['BE_USER']->check('tables_select',$tName))	{
-					$rec = t3lib_BEfunc::getRecord('pages', $rParts[1]);
+					$rec = t3lib_BEfunc::getRecordWSOL('pages', $rParts[1]);
 					$tblList.='Table "'.$tName.'" from '.t3lib_iconworks::getIconImage('pages',$rec,$GLOBALS['BACK_PATH'],' align="top"').
 					t3lib_BEfunc::getRecordTitle('pages',$rec,1).
 					'<input type="hidden" name="tx_impexp[list][]" value="'.htmlspecialchars($ref).'" /><br/>';

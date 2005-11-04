@@ -861,6 +861,7 @@ class t3lib_TCEmain	{
 
 				$lookUpTable = $TCA[$table]['ctrl']['transOrigPointerTable'] ? $TCA[$table]['ctrl']['transOrigPointerTable'] : $table;
 				$originalLanguageRecord = $this->recordInfo($lookUpTable,$currentRecord[$TCA[$table]['ctrl']['transOrigPointerField']],'*');
+				t3lib_BEfunc::workspaceOL($lookUpTable,$originalLanguageRecord);
 				$originalLanguage_diffStorage = unserialize($currentRecord[$TCA[$table]['ctrl']['transOrigDiffSourceField']]);
 			}
 		}
@@ -2192,7 +2193,8 @@ class t3lib_TCEmain	{
 
 				$nonFields = array_unique(t3lib_div::trimExplode(',','uid,perms_userid,perms_groupid,perms_user,perms_group,perms_everybody,t3ver_oid,t3ver_wsid,t3ver_id,t3ver_label,t3ver_state,t3ver_swapmode,t3ver_count,t3ver_stage,t3ver_tstamp,'.$excludeFields,1));
 
-				$row = $this->recordInfo($table,$uid,'*');
+				#$row = $this->recordInfo($table,$uid,'*');
+				$row = t3lib_BEfunc::getRecordWSOL($table,$uid);	// So it copies (and localized) content from workspace...
 				if (is_array($row))	{
 
 						// Initializing:
@@ -2688,18 +2690,19 @@ class t3lib_TCEmain	{
 			$origDestPid = $destPid;
 
 			$propArr = $this->getRecordProperties($table,$uid);	// Get this before we change the pid (for logging)
+			$moveRec = $this->getRecordProperties($table,$uid,TRUE);
 			$resolvedPid = $this->resolvePid($table,$destPid);	// This is the actual pid of the moving to destination
 
 				// Finding out, if the record may be moved from where it is. If the record is a non-page, then it depends on edit-permissions.
 				// If the record is a page, then there are two options: If the page is moved within itself, (same pid) it's edit-perms of the pid. If moved to another place then its both delete-perms of the pid and new-page perms on the destination.
-			if ($table!='pages' || $resolvedPid==$propArr['pid'])	{
+			if ($table!='pages' || $resolvedPid==$moveRec['pid'])	{
 				$mayMoveAccess = $this->checkRecordUpdateAccess($table,$uid);	// Edit rights for the record...
 			} else {
 				$mayMoveAccess = $this->doesRecordExist($table,$uid,'delete');
 			}
 
 				// Finding out, if the record may be moved TO another place. Here we check insert-rights (non-pages = edit, pages = new), unless the pages are moved on the same pid, then edit-rights are checked
-			if ($table!='pages' || $resolvedPid!=$propArr['pid'])	{
+			if ($table!='pages' || $resolvedPid!=$moveRec['pid'])	{
 				$mayInsertAccess = $this->checkRecordInsertAccess($table,$resolvedPid,4);	// Insert rights for the record...
 			} else {
 				$mayInsertAccess = $this->checkRecordUpdateAccess($table,$uid);
@@ -2707,14 +2710,14 @@ class t3lib_TCEmain	{
 
 				// Check workspace permissions:
 			$workspaceAccessBlocked = array();
-			$recIsNewVersion = !strcmp($propArr['_ORIG_pid'],'') && (int)$propArr['t3ver_state']==1;	// Element was an online version AND it was in "New state" so it can be moved...
+			$recIsNewVersion = !strcmp($moveRec['_ORIG_pid'],'') && (int)$moveRec['t3ver_state']==1;	// Element was an online version AND it was in "New state" so it can be moved...
 			$destRes = $this->BE_USER->workspaceAllowLiveRecordsInPID($resolvedPid,$table);
 				// Workspace source check:
 			if ($errorCode = $this->BE_USER->workspaceCannotEditRecord($table, $WSversion['uid'] ? $WSversion['uid'] : $uid))	{
 				$workspaceAccessBlocked['src1']='Record could not be edited in workspace: '.$errorCode.' ';
 			} else {
-				if (!$recIsNewVersion && $this->BE_USER->workspaceAllowLiveRecordsInPID($propArr['pid'],$table)<=0)	{
-					$workspaceAccessBlocked['src2']='Could not remove record from table "'.$table.'" from its page "'.$propArr['pid'].'" ';
+				if (!$recIsNewVersion && $this->BE_USER->workspaceAllowLiveRecordsInPID($moveRec['pid'],$table)<=0)	{
+					$workspaceAccessBlocked['src2']='Could not remove record from table "'.$table.'" from its page "'.$moveRec['pid'].'" ';
 				}
 			}
 				// Workspace destination check:
@@ -2845,7 +2848,7 @@ class t3lib_TCEmain	{
 				if ($langRec = t3lib_BEfunc::getRecord('sys_language',intval($language),'uid,title'))	{
 					if ($this->doesRecordExist($table,$uid,'show'))	{
 
-						$row = $this->recordInfo($table,$uid,'*');
+						$row = t3lib_BEfunc::getRecordWSOL($table,$uid);	// Getting workspace overlay if possible - this will localize versions in workspace if any
 						if (is_array($row))	{
 							if ($row[$TCA[$table]['ctrl']['languageField']] <= 0)	{
 								if ($row[$TCA[$table]['ctrl']['transOrigPointerField']] == 0)	{
@@ -3389,10 +3392,6 @@ class t3lib_TCEmain	{
 										if ($swapVersion['t3ver_state']==2)	{
 											$this->deleteEl($table,$id,TRUE);	// Force delete
 										}
-											// Checking for "new-placeholder" and if found, delete it:
-										if ($curVersion['t3ver_state']==1)	{
-											$this->deleteEl($table, $swapWith, TRUE, TRUE); 	// For delete + completely delete!
-										}
 
 										if (!count($sqlErrors))	{
 											$this->newlog('Swapping successful for table "'.$table.'" uid '.$id.'=>'.$swapWith);
@@ -3403,7 +3402,6 @@ class t3lib_TCEmain	{
 													// Collect table names that should be copied along with the tables:
 												foreach($TCA as $tN => $tCfg)	{
 													if ($swapVersion['t3ver_swapmode']>0 || $TCA[$tN]['ctrl']['versioning_followPages'])	{	// For "Branch" publishing swap ALL, otherwise for "page" publishing, swap only "versioning_followPages" tables
-				#debug($tN,'SWAPPING pids for subrecords:');
 														$temporaryPid = -($id+1000000);
 
 														$GLOBALS['TYPO3_DB']->exec_UPDATEquery($tN,'pid='.intval($id),array('pid'=>$temporaryPid));
@@ -3425,6 +3423,12 @@ class t3lib_TCEmain	{
 											$this->clear_cache($table,$id);
 
 										} else $this->newlog('During Swapping: SQL errors happend: '.implode('; ',$sqlErrors),2);
+
+											// Checking for "new-placeholder" and if found, delete it (BUT FIRST after swapping!):
+										if ($curVersion['t3ver_state']==1)	{
+											$this->deleteEl($table, $swapWith, TRUE, TRUE); 	// For delete + completely delete!
+										}
+
 									} else $this->newlog('In swap version, either pid was not -1 or the t3ver_oid didn\'t match the id of the online version as it must!',2);
 								} else $this->newlog('Error: A record with a negative UID existed - that indicates some inconsistency in the database from prior versioning actions!',2);
 							} else $this->newlog('Workspace #'.$swapVersion['t3ver_wsid'].' does not support swapping.',1);
@@ -4104,14 +4108,18 @@ $this->log($table,$id,6,0,0,'Stage raised...',-1,array('comment'=>$comment,'stag
 	 * Returns an array with record properties, like header and pid
 	 * No check for deleted or access is done!
 	 * For versionized records, pid is resolved to its live versions pid.
+	 * Used for loggin
 	 *
 	 * @param	string		Table name
 	 * @param	integer		Uid
+	 * @param	boolean		If set, no workspace overlay is performed
 	 * @return	array		Properties of record
 	 */
-	function getRecordProperties($table,$id)	{
+	function getRecordProperties($table,$id,$noWSOL=FALSE)	{
 		$row = ($table=='pages' && !$id) ? array('title'=>'[root-level]', 'uid' => 0, 'pid' => 0) :$this->recordInfo($table,$id,'*');
-		t3lib_BEfunc::workspaceOL($table,$row);
+		if (!$noWSOL)	{
+			t3lib_BEfunc::workspaceOL($table,$row);
+		}
 		t3lib_BEfunc::fixVersioningPid($table,$row);
 		return $this->getRecordPropertiesFromRow($table,$row);
 	}
