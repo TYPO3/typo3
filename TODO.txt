@@ -304,10 +304,14 @@ SQLengine (t3lib_sqlengine):
 Versioning/Workspaces:
 *******************************
 - Running the TemplaVoila wizard in workspace?
-- Dual-view preview?
+
+
+- Dual-view preview? + publishing, raise state? + diff-view inline?
 - Web > Versioning:
 	- Raising state for all records on a page and using same comment for all + send only one notification email per instance.
 	- "Publish / Swap all" - link
+- Show workspace in icon-title-text
+
 
 - Documentation:
 	- Finish screenshots for "Inside TYPO3"

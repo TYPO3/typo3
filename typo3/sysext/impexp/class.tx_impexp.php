@@ -1777,12 +1777,7 @@ class tx_impexp {
 
 				// If the record has been written and received a new id, then proceed:
 			if (is_array($this->import_mapId[$table]) && isset($this->import_mapId[$table][$uid]))	{
-				$thisNewUid = $this->import_mapId[$table][$uid];
-
-					// If the new versions are made in a workspace we must further remap the uids:
-				if ($newVersionRec = t3lib_BEfunc::getWorkspaceVersionOfRecord($GLOBALS['BE_USER']->workspace, $table, $thisNewUid, 'uid'))	{
-					$thisNewUid = $newVersionRec['uid'];
-				}
+				$thisNewUid = $this->wsMapId($table,$this->import_mapId[$table][$uid]);
 
 				if (is_array($this->dat['records'][$table.':'.$uid]['rels']))	{
 					reset($this->dat['records'][$table.':'.$uid]['rels']);
@@ -1887,7 +1882,8 @@ class tx_impexp {
 
 				// If the record has been written and received a new id, then proceed:
 			if (is_array($this->import_mapId[$table]) && isset($this->import_mapId[$table][$uid]))	{
-				$thisNewUid = $this->import_mapId[$table][$uid];
+				$thisNewUid = $this->wsMapId($table,$this->import_mapId[$table][$uid]);
+
 				if (is_array($this->dat['records'][$table.':'.$uid]['rels']))	{
 					reset($this->dat['records'][$table.':'.$uid]['rels']);
 					t3lib_div::loadTCA($table);
@@ -2025,7 +2021,7 @@ class tx_impexp {
 						}
 
 							// The new id:
-						$thisNewUid = $this->import_mapId[$table][$uid];
+						$thisNewUid = $this->wsMapId($table,$this->import_mapId[$table][$uid]);
 
 							// Now, if there are any fields that require substitution to be done, lets go for that:
 						foreach($fieldsIndex as $field => $softRefCfgs)	{
@@ -2157,7 +2153,7 @@ class tx_impexp {
 									// Trying to map database element if found in the mapID array:
 								list($tempTable,$tempUid) = explode(':',$cfg['subst']['recordRef']);
 								if (isset($this->import_mapId[$tempTable][$tempUid]))	{
-									$insertValue = $this->import_mapId[$tempTable][$tempUid];
+									$insertValue = $this->wsMapId($tempTable,$this->import_mapId[$tempTable][$tempUid]);
 
 										// Look if reference is to a page and the original token value was NOT an integer - then we assume is was an alias and try to look up the new one!
 									if ($tempTable==='pages' && !t3lib_div::testInt($cfg['subst']['tokenValue']))	{
@@ -3528,7 +3524,20 @@ class tx_impexp {
 		return $this->fileProcObj;
 	}
 
-
+	/**
+	 * Performs mapping of new uids to new versions UID in case of import inside a workspace.
+	 *
+	 * @param	string		Table name
+	 * @param	integer		Record uid (of live record placeholder)
+	 * @return	integer		Uid of offline version if any, otherwise live uid.
+	 */
+	function wsMapId($table,$uid)	{
+		if ($wsRec = t3lib_BEfunc::getWorkspaceVersionOfRecord($GLOBALS['BE_USER']->workspace,$table,$uid,'uid'))	{
+			return $wsRec['uid'];
+		} else {
+			return $uid;
+		}
+	}
 
 
 
