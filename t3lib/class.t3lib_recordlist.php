@@ -347,7 +347,8 @@ class t3lib_recordList {
 			'*',
 			'pages_language_overlay',
 			'pid='.intval($this->id).
-				t3lib_BEfunc::deleteClause('pages_language_overlay'),
+				t3lib_BEfunc::deleteClause('pages_language_overlay').
+				t3lib_BEfunc::versioningPlaceholderClause('pages_language_overlay'),
 			'',
 			'',
 			'',

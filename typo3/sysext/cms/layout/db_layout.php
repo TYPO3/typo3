@@ -355,6 +355,11 @@ class SC_db_layout {
 
 			// Clean up settings
 		$this->MOD_SETTINGS = t3lib_BEfunc::getModuleData($this->MOD_MENU, t3lib_div::_GP('SET'), $this->MCONF['name']);
+
+			// For all elements to be shown in draft workspaces:
+		if ($GLOBALS['BE_USER']->workspace!=0)	{
+			$this->MOD_SETTINGS['tt_content_showHidden'] = 1;
+		}
 	}
 
 	/**
@@ -500,7 +505,8 @@ class SC_db_layout {
 						'tt_content',
 						'pid='.intval($this->id).' AND colPos='.intval(substr($edit_record,10)).' AND sys_language_uid='.intval($this->current_sys_language).
 								($this->MOD_SETTINGS['tt_content_showHidden'] ? '' : t3lib_BEfunc::BEenableFields('tt_content')).
-								t3lib_BEfunc::deleteClause('tt_content'),
+								t3lib_BEfunc::deleteClause('tt_content').
+								t3lib_BEfunc::versioningPlaceholderClause('tt_content'),
 						'',
 						'sorting'
 					);
@@ -547,7 +553,8 @@ class SC_db_layout {
 					'tt_content',
 					'pid='.intval($this->id).' AND sys_language_uid='.intval($this->current_sys_language).
 							($this->MOD_SETTINGS['tt_content_showHidden'] ? '' : t3lib_BEfunc::BEenableFields('tt_content')).
-							t3lib_Befunc::deleteClause('tt_content'),
+							t3lib_Befunc::deleteClause('tt_content').
+							t3lib_BEfunc::versioningPlaceholderClause('tt_content'),
 					'',
 					'colPos,sorting'
 				);
@@ -555,6 +562,7 @@ class SC_db_layout {
 		$first=1;
 		$prev=$this->id;	// Page is the pid if no record to put this after.
 		while($cRow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
+			t3lib_BEfunc::workspaceOL('tt_content', $cRow);
 			if ($first)	{
 				if (!$edit_record)	{
 					$edit_record='tt_content:'.$cRow['uid'];
@@ -590,6 +598,8 @@ class SC_db_layout {
 
 			// Splitting the edit-record cmd value into table/uid:
 		$eRParts = explode(':',$edit_record);
+
+
 
 			// Delete-button flag?
 		$deleteButton = (t3lib_div::testInt($eRParts[1]) && $edit_record && (($eRParts[0]!='pages'&&$this->EDIT_CONTENT) || ($eRParts[0]=='pages'&&($this->CALC_PERMS&4))));
@@ -695,6 +705,13 @@ class SC_db_layout {
 
 				// Splitting uid parts for special features, if new:
 			list($uidVal,$ex_pid,$ex_colPos) = explode('/',$eRParts[1]);
+
+				// Convert $uidVal to workspace version if any:
+			if ($uidVal!='new')	{
+				if ($draftRecord = t3lib_BEfunc::getWorkspaceVersionOfRecord($GLOBALS['BE_USER']->workspace, $eRParts[0], $uidVal, 'uid'))	{
+					$uidVal = $draftRecord['uid'];
+				}
+			}
 
 				// Initializing transfer-data object:
 			$trData = t3lib_div::makeInstance('t3lib_transferData');
@@ -1170,7 +1187,7 @@ class SC_db_layout {
 	 * @return	void
 	 */
 	function getNumberOfHiddenElements()	{
-		$q_res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('count(*)', 'tt_content', 'pid='.intval($this->id).' AND sys_language_uid='.intval($this->current_sys_language).t3lib_BEfunc::BEenableFields('tt_content',1).t3lib_BEfunc::deleteClause('tt_content'));
+		$q_res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('count(*)', 'tt_content', 'pid='.intval($this->id).' AND sys_language_uid='.intval($this->current_sys_language).t3lib_BEfunc::BEenableFields('tt_content',1).t3lib_BEfunc::deleteClause('tt_content').t3lib_BEfunc::versioningPlaceholderClause('tt_content'));
 		list($q_count) = $GLOBALS['TYPO3_DB']->sql_fetch_row($q_res);
 		return $q_count;
 	}

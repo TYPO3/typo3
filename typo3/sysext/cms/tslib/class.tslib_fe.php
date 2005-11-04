@@ -733,7 +733,7 @@ TEMPORARILY disabled version previews in online workspace (while testing offline
 			}
 
 				// The preview flag will be set if a backend user is in an offline workspace
-			if ($GLOBALS['BE_USER']->user['workspace_preview'] && ($GLOBALS['BE_USER']->workspace==-1 || $GLOBALS['BE_USER']->workspace>0))	{
+			if (($GLOBALS['BE_USER']->user['workspace_preview'] || t3lib_div::_GP('ADMCMD_view')) && ($GLOBALS['BE_USER']->workspace==-1 || $GLOBALS['BE_USER']->workspace>0))	{
 				$this->fePreview = 2;	// Will show special preview message.
 			}
 

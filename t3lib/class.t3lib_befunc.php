@@ -43,123 +43,127 @@
  *
  *
  *
- *  176: class t3lib_BEfunc
+ *  180: class t3lib_BEfunc
  *
  *              SECTION: SQL-related, selecting records, searching
- *  197:     function deleteClause($table,$tableAlias='')
- *  220:     function getRecord($table,$uid,$fields='*',$where='')
- *  242:     function getRecordRaw($table,$where='',$fields='*')
- *  264:     function getRecordsByField($theTable,$theField,$theValue,$whereClause='',$groupBy='',$orderBy='',$limit='')
- *  296:     function searchQuery($searchWords,$fields,$table='')
- *  311:     function listQuery($field,$value)
- *  323:     function splitTable_Uid($str)
- *  338:     function getSQLselectableList($in_list,$tablename,$default_tablename)
- *  366:     function BEenableFields($table,$inv=0)
+ *  201:     function deleteClause($table,$tableAlias='')
+ *  224:     function getRecord($table,$uid,$fields='*',$where='')
+ *  242:     function getRecordWSOL($table,$uid,$fields='*',$where='')
+ *  261:     function getRecordRaw($table,$where='',$fields='*')
+ *  283:     function getRecordsByField($theTable,$theField,$theValue,$whereClause='',$groupBy='',$orderBy='',$limit='')
+ *  315:     function searchQuery($searchWords,$fields,$table='')
+ *  330:     function listQuery($field,$value)
+ *  342:     function splitTable_Uid($str)
+ *  357:     function getSQLselectableList($in_list,$tablename,$default_tablename)
+ *  385:     function BEenableFields($table,$inv=0)
  *
  *              SECTION: SQL-related, DEPRECIATED functions
- *  430:     function mm_query($select,$local_table,$mm_table,$foreign_table,$whereClause='',$groupBy='',$orderBy='',$limit='')
- *  452:     function DBcompileInsert($table,$fields_values)
- *  466:     function DBcompileUpdate($table,$where,$fields_values)
+ *  449:     function mm_query($select,$local_table,$mm_table,$foreign_table,$whereClause='',$groupBy='',$orderBy='',$limit='')
+ *  471:     function DBcompileInsert($table,$fields_values)
+ *  485:     function DBcompileUpdate($table,$where,$fields_values)
  *
  *              SECTION: Page tree, TCA related
- *  495:     function BEgetRootLine($uid,$clause='')
- *  547:     function openPageTree($pid,$clearExpansion)
- *  592:     function getRecordPath($uid, $clause, $titleLimit, $fullTitleLimit=0)
- *  635:     function getExcludeFields()
- *  665:     function getExplicitAuthFieldValues()
- *  736:     function getSystemLanguages()
- *  761:     function readPageAccess($id,$perms_clause)
- *  790:     function getTCAtypes($table,$rec,$useFieldNameAsKey=0)
- *  843:     function getTCAtypeValue($table,$rec)
- *  866:     function getSpecConfParts($str, $defaultExtras)
- *  896:     function getSpecConfParametersFromArray($pArr)
- *  923:     function getFlexFormDS($conf,$row,$table, $fieldName = '')
+ *  515:     function BEgetRootLine($uid,$clause='',$workspaceOL=FALSE)
+ *  571:     function openPageTree($pid,$clearExpansion)
+ *  616:     function getRecordPath($uid, $clause, $titleLimit, $fullTitleLimit=0)
+ *  659:     function getExcludeFields()
+ *  689:     function getExplicitAuthFieldValues()
+ *  760:     function getSystemLanguages()
+ *  785:     function readPageAccess($id,$perms_clause)
+ *  816:     function getTCAtypes($table,$rec,$useFieldNameAsKey=0)
+ *  869:     function getTCAtypeValue($table,$rec)
+ *  892:     function getSpecConfParts($str, $defaultExtras)
+ *  922:     function getSpecConfParametersFromArray($pArr)
+ *  949:     function getFlexFormDS($conf,$row,$table, $fieldName = '')
  *
  *              SECTION: Caching related
- * 1043:     function storeHash($hash,$data,$ident)
- * 1063:     function getHash($hash,$expTime=0)
+ * 1069:     function storeHash($hash,$data,$ident)
+ * 1089:     function getHash($hash,$expTime=0)
  *
  *              SECTION: TypoScript related
- * 1099:     function getPagesTSconfig($id,$rootLine='',$returnPartArray=0)
- * 1150:     function updatePagesTSconfig($id,$pageTS,$TSconfPrefix,$impParams='')
- * 1205:     function implodeTSParams($p,$k='')
+ * 1125:     function getPagesTSconfig($id,$rootLine='',$returnPartArray=0)
+ * 1176:     function updatePagesTSconfig($id,$pageTS,$TSconfPrefix,$impParams='')
+ * 1231:     function implodeTSParams($p,$k='')
  *
  *              SECTION: Users / Groups related
- * 1242:     function getUserNames($fields='username,usergroup,usergroup_cached_list,uid',$where='')
- * 1260:     function getGroupNames($fields='title,uid', $where='')
- * 1277:     function getListGroupNames($fields='title,uid')
- * 1296:     function blindUserNames($usernames,$groupArray,$excludeBlindedFlag=0)
- * 1329:     function blindGroupNames($groups,$groupArray,$excludeBlindedFlag=0)
+ * 1268:     function getUserNames($fields='username,usergroup,usergroup_cached_list,uid',$where='')
+ * 1286:     function getGroupNames($fields='title,uid', $where='')
+ * 1303:     function getListGroupNames($fields='title,uid')
+ * 1322:     function blindUserNames($usernames,$groupArray,$excludeBlindedFlag=0)
+ * 1355:     function blindGroupNames($groups,$groupArray,$excludeBlindedFlag=0)
  *
  *              SECTION: Output related
- * 1370:     function daysUntil($tstamp)
- * 1382:     function date($tstamp)
- * 1393:     function datetime($value)
- * 1405:     function time($value)
- * 1421:     function calcAge($seconds,$labels = 'min|hrs|days|yrs')
- * 1447:     function dateTimeAge($tstamp,$prefix=1,$date='')
- * 1465:     function titleAttrib($content='',$hsc=0)
- * 1478:     function titleAltAttrib($content)
- * 1502:     function thumbCode($row,$table,$field,$backPath,$thumbScript='',$uploaddir=NULL,$abs=0,$tparams='',$size='')
- * 1571:     function getThumbNail($thumbScript,$theFile,$tparams='',$size='')
- * 1588:     function titleAttribForPages($row,$perms_clause='',$includeAttrib=1)
- * 1647:     function getRecordIconAltText($row,$table='pages')
- * 1684:     function getLabelFromItemlist($table,$col,$key)
- * 1710:     function getItemLabel($table,$col,$printAllWrap='')
- * 1735:     function getRecordTitle($table,$row,$prep=0)
- * 1773:     function getProcessedValue($table,$col,$value,$fixed_lgd_chars=0,$defaultPassthrough=0,$noRecordLookup=FALSE,$uid=0)
- * 1894:     function getProcessedValueExtra($table,$fN,$fV,$fixed_lgd_chars=0,$uid=0)
- * 1918:     function getFileIcon($ext)
- * 1932:     function getCommonSelectFields($table,$prefix)
- * 1974:     function makeConfigForm($configArray,$defaults,$dataPrefix)
+ * 1396:     function daysUntil($tstamp)
+ * 1408:     function date($tstamp)
+ * 1419:     function datetime($value)
+ * 1431:     function time($value)
+ * 1447:     function calcAge($seconds,$labels = 'min|hrs|days|yrs')
+ * 1473:     function dateTimeAge($tstamp,$prefix=1,$date='')
+ * 1491:     function titleAttrib($content='',$hsc=0)
+ * 1504:     function titleAltAttrib($content)
+ * 1528:     function thumbCode($row,$table,$field,$backPath,$thumbScript='',$uploaddir=NULL,$abs=0,$tparams='',$size='')
+ * 1597:     function getThumbNail($thumbScript,$theFile,$tparams='',$size='')
+ * 1614:     function titleAttribForPages($row,$perms_clause='',$includeAttrib=1)
+ * 1673:     function getRecordIconAltText($row,$table='pages')
+ * 1710:     function getLabelFromItemlist($table,$col,$key)
+ * 1736:     function getItemLabel($table,$col,$printAllWrap='')
+ * 1761:     function getRecordTitle($table,$row,$prep=0)
+ * 1799:     function getProcessedValue($table,$col,$value,$fixed_lgd_chars=0,$defaultPassthrough=0,$noRecordLookup=FALSE,$uid=0)
+ * 1921:     function getProcessedValueExtra($table,$fN,$fV,$fixed_lgd_chars=0,$uid=0)
+ * 1945:     function getFileIcon($ext)
+ * 1959:     function getCommonSelectFields($table,$prefix)
+ * 2000:     function makeConfigForm($configArray,$defaults,$dataPrefix)
  *
  *              SECTION: Backend Modules API functions
- * 2049:     function helpTextIcon($table,$field,$BACK_PATH,$force=0)
- * 2071:     function helpText($table,$field,$BACK_PATH,$styleAttrib='')
- * 2123:     function cshItem($table,$field,$BACK_PATH,$wrap='',$onlyIconMode=FALSE, $styleAttrib='')
- * 2161:     function editOnClick($params,$backPath='',$requestUri='')
- * 2180:     function viewOnClick($id,$backPath='',$rootLine='',$anchor='',$altUrl='',$addGetVars='',$switchFocus=TRUE)
- * 2207:     function getModTSconfig($id,$TSref)
- * 2228:     function getFuncMenu($mainParams,$elementName,$currentValue,$menuItems,$script='',$addparams='')
- * 2271:     function getFuncCheck($mainParams,$elementName,$currentValue,$script='',$addparams='',$tagParams='')
- * 2296:     function getFuncInput($mainParams,$elementName,$currentValue,$size=10,$script="",$addparams="")
- * 2317:     function unsetMenuItems($modTSconfig,$itemArray,$TSref)
- * 2340:     function getSetUpdateSignal($set='')
- * 2391:     function getModuleData($MOD_MENU, $CHANGED_SETTINGS, $modName, $type='', $dontValidateList='', $setDefaultList='')
+ * 2075:     function helpTextIcon($table,$field,$BACK_PATH,$force=0)
+ * 2097:     function helpText($table,$field,$BACK_PATH,$styleAttrib='')
+ * 2149:     function cshItem($table,$field,$BACK_PATH,$wrap='',$onlyIconMode=FALSE, $styleAttrib='')
+ * 2187:     function editOnClick($params,$backPath='',$requestUri='')
+ * 2206:     function viewOnClick($id,$backPath='',$rootLine='',$anchor='',$altUrl='',$addGetVars='',$switchFocus=TRUE)
+ * 2233:     function getModTSconfig($id,$TSref)
+ * 2254:     function getFuncMenu($mainParams,$elementName,$currentValue,$menuItems,$script='',$addparams='')
+ * 2297:     function getFuncCheck($mainParams,$elementName,$currentValue,$script='',$addparams='',$tagParams='')
+ * 2322:     function getFuncInput($mainParams,$elementName,$currentValue,$size=10,$script="",$addparams="")
+ * 2343:     function unsetMenuItems($modTSconfig,$itemArray,$TSref)
+ * 2366:     function getSetUpdateSignal($set='')
+ * 2417:     function getModuleData($MOD_MENU, $CHANGED_SETTINGS, $modName, $type='', $dontValidateList='', $setDefaultList='')
  *
  *              SECTION: Core
- * 2464:     function lockRecords($table='',$uid=0,$pid=0)
- * 2493:     function isRecordLocked($table,$uid)
- * 2533:     function exec_foreign_table_where_query($fieldValue,$field='',$TSconfig=array(),$prefix='')
- * 2614:     function getTCEFORM_TSconfig($table,$row)
- * 2664:     function getTSconfig_pidValue($table,$uid,$pid)
- * 2692:     function getPidForModTSconfig($table,$uid,$pid)
- * 2708:     function getTSCpid($table,$uid,$pid)
- * 2724:     function firstDomainRecord($rootLine)
- * 2746:     function getDomainStartPage($domain, $path='')
- * 2776:     function RTEsetup($RTEprop,$table,$field,$type='')
- * 2795:     function &RTEgetObj()
- * 2834:     function &softRefParserObj($spKey)
- * 2866:     function explodeSoftRefParserList($parserList, $table, $field)
- * 2898:     function isModuleSetInTBE_MODULES($modName)
+ * 2490:     function lockRecords($table='',$uid=0,$pid=0)
+ * 2519:     function isRecordLocked($table,$uid)
+ * 2559:     function exec_foreign_table_where_query($fieldValue,$field='',$TSconfig=array(),$prefix='')
+ * 2640:     function getTCEFORM_TSconfig($table,$row)
+ * 2690:     function getTSconfig_pidValue($table,$uid,$pid)
+ * 2718:     function getPidForModTSconfig($table,$uid,$pid)
+ * 2734:     function getTSCpid($table,$uid,$pid)
+ * 2750:     function firstDomainRecord($rootLine)
+ * 2772:     function getDomainStartPage($domain, $path='')
+ * 2802:     function RTEsetup($RTEprop,$table,$field,$type='')
+ * 2821:     function &RTEgetObj()
+ * 2860:     function &softRefParserObj($spKey)
+ * 2892:     function explodeSoftRefParserList($parserList, $table, $field)
+ * 2924:     function isModuleSetInTBE_MODULES($modName)
  *
  *              SECTION: Workspaces / Versioning
- * 2942:     function selectVersionsOfRecord($table, $uid, $fields='*', $workspace=0)
- * 2986:     function fixVersioningPid($table,&$rr)
- * 3018:     function workspaceOL($table,&$row,$wsid=-99)
- * 3062:     function getWorkspaceVersionOfRecord($workspace, $table, $uid, $fields='*')
- * 3087:     function isPidInVersionizedBranch($pid)
+ * 2968:     function selectVersionsOfRecord($table, $uid, $fields='*', $workspace=0)
+ * 3014:     function fixVersioningPid($table,&$rr)
+ * 3054:     function workspaceOL($table,&$row,$wsid=-99)
+ * 3102:     function getWorkspaceVersionOfRecord($workspace, $table, $uid, $fields='*')
+ * 3129:     function getLiveVersionOfRecord($table,$uid,$fields='*')
+ * 3151:     function isPidInVersionizedBranch($pid, $table='',$returnStage=FALSE)
+ * 3174:     function versioningPlaceholderClause($table)
+ * 3188:     function countVersionsOfRecordsOnPage($workspace,$pageId, $allTables=FALSE)
  *
  *              SECTION: Miscellaneous
- * 3120:     function typo3PrintError($header,$text,$js='',$head=1)
- * 3164:     function TYPO3_copyRightNotice()
- * 3188:     function displayWarningMessages()
- * 3230:     function getPathType_web_nonweb($path)
- * 3242:     function ADMCMD_previewCmds($pageinfo)
- * 3264:     function processParams($params)
- * 3290:     function getListOfBackendModules($name,$perms_clause,$backPath='',$script='index.php')
+ * 3240:     function typo3PrintError($header,$text,$js='',$head=1)
+ * 3284:     function TYPO3_copyRightNotice()
+ * 3308:     function displayWarningMessages()
+ * 3351:     function getPathType_web_nonweb($path)
+ * 3363:     function ADMCMD_previewCmds($pageinfo)
+ * 3385:     function processParams($params)
+ * 3411:     function getListOfBackendModules($name,$perms_clause,$backPath='',$script='index.php')
  *
- * TOTAL FUNCTIONS: 92
+ * TOTAL FUNCTIONS: 96
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -284,6 +288,7 @@ class t3lib_BEfunc	{
 						$theTable,
 						$theField.'='.$GLOBALS['TYPO3_DB']->fullQuoteStr($theValue, $theTable).
 							t3lib_BEfunc::deleteClause($theTable).' '.
+							t3lib_BEfunc::versioningPlaceholderClause($theTable).' '.
 							$whereClause,	// whereClauseMightContainGroupOrderBy
 						$groupBy,
 						$orderBy,
@@ -938,11 +943,11 @@ class t3lib_BEfunc	{
 	 * @param	array		Field config array
 	 * @param	array		Record data
 	 * @param	string		The table name
-	 * @param	[type]		$fieldName: ...
+	 * @param	string		Optional fieldname passed to hook object
 	 * @return	mixed		If array, the data structure was found and returned as an array. Otherwise (string) it is an error message.
 	 * @see t3lib_TCEforms::getSingleField_typeFlex()
 	 */
-	function getFlexFormDS($conf,$row,$table, $fieldName = '')	{
+	function getFlexFormDS($conf,$row,$table,$fieldName='')	{
 		global $TYPO3_CONF_VARS;
 
 			// Get pointer field etc from TCA-config:
@@ -977,7 +982,7 @@ class t3lib_BEfunc	{
 				// Searching recursively back if 'ds_pointerField_searchParent' is defined (typ. a page rootline, or maybe a tree-table):
 			if ($ds_searchParentField && !$srcPointer)	{
 				$rr = t3lib_BEfunc::getRecord($table,$row['uid'],'uid,'.$ds_searchParentField);	// Get the "pid" field - we cannot know that it is in the input record!
-				#t3lib_BEfunc::workspaceOL($table,$rr);	// KASPER: Not tested, but assumed correct
+				t3lib_BEfunc::workspaceOL($table,$rr);	// KASPER: Not tested, but assumed correct
 				t3lib_BEfunc::fixVersioningPid($table,$rr);
 				$uidAcc=array();	// Used to avoid looping, if any should happen.
 				$subFieldPointer = $conf['ds_pointerField_searchParent_subField'];
@@ -993,7 +998,7 @@ class t3lib_BEfunc	{
 					if (!is_array($rr) || isset($uidAcc[$rr['uid']]))	break;
 					$uidAcc[$rr['uid']]=1;
 
-					#t3lib_BEfunc::workspaceOL($table,$rr);	// KASPER: Not tested, but assumed correct
+					t3lib_BEfunc::workspaceOL($table,$rr);	// KASPER: Not tested, but assumed correct
 					t3lib_BEfunc::fixVersioningPid($table,$rr);
 					$srcPointer = ($subFieldPointer && $rr[$subFieldPointer]) ? $rr[$subFieldPointer] : $rr[$ds_pointerField];
 				}
@@ -1004,7 +1009,7 @@ class t3lib_BEfunc	{
 				if (t3lib_div::testInt($srcPointer))	{	// If integer, then its a record we will look up:
 					list($tName,$fName) = explode(':',$ds_tableField,2);
 					if ($tName && $fName && is_array($GLOBALS['TCA'][$tName]))	{
-						$dataStructRec = t3lib_BEfunc::getRecord($tName, $srcPointer);
+						$dataStructRec = t3lib_BEfunc::getRecordWSOL($tName, $srcPointer);
 						$dataStructArray = t3lib_div::xml2array($dataStructRec[$fName]);
 					} else $dataStructArray = 'No tablename ('.$tName.') or fieldname ('.$fName.') was found an valid!';
 				} else {	// Otherwise expect it to be a file:
@@ -1619,7 +1624,7 @@ class t3lib_BEfunc	{
 			if ($perms_clause)	{
 				$label = t3lib_BEfunc::getRecordPath(intval($row['shortcut']),$perms_clause,20);
 			} else {
-				$lRec = t3lib_BEfunc::getRecord('pages',intval($row['shortcut']),'title');
+				$lRec = t3lib_BEfunc::getRecordWSOL('pages',intval($row['shortcut']),'title');
 				$label = $lRec['title'];
 			}
 			if ($row['shortcut_mode']>0)	{
@@ -1631,7 +1636,7 @@ class t3lib_BEfunc	{
 			if ($perms_clause)	{
 				$label = t3lib_BEfunc::getRecordPath(intval($row['mount_pid']),$perms_clause,20);
 			} else {
-				$lRec = t3lib_BEfunc::getRecord('pages',intval($row['mount_pid']),'title');
+				$lRec = t3lib_BEfunc::getRecordWSOL('pages',intval($row['mount_pid']),'title');
 				$label = $lRec['title'];
 			}
 			$parts[]=$LANG->sL($TCA['pages']['columns']['mount_pid']['label']).' '.$label;
@@ -1647,7 +1652,7 @@ class t3lib_BEfunc	{
 			if ($row['fe_group']<0)	{
 				$label = $LANG->sL(t3lib_BEfunc::getLabelFromItemlist('pages','fe_group',$row['fe_group']));
 			} else {
-				$lRec = t3lib_BEfunc::getRecord('fe_groups',$row['fe_group'],'title');
+				$lRec = t3lib_BEfunc::getRecordWSOL('fe_groups',$row['fe_group'],'title');
 				$label = $lRec['title'];
 			}
 			$parts[] = $LANG->sL($TCA['pages']['columns']['fe_group']['label']).' '.$label;
@@ -1841,9 +1846,9 @@ class t3lib_BEfunc	{
 								while(list(,$rVal)=each($rParts))	{
 									$rVal = intval($rVal);
 									if ($rVal>0) {
-										$r=t3lib_BEfunc::getRecord($theColConf['foreign_table'],$rVal);
+										$r=t3lib_BEfunc::getRecordWSOL($theColConf['foreign_table'],$rVal);
 									} else {
-										$r=t3lib_BEfunc::getRecord($theColConf['neg_foreign_table'],-$rVal);
+										$r=t3lib_BEfunc::getRecordWSOL($theColConf['neg_foreign_table'],-$rVal);
 									}
 									if (is_array($r))	{
 										$lA[]=$GLOBALS['LANG']->sL($rVal>0?$theColConf['foreign_table_prefix']:$theColConf['neg_foreign_table_prefix']).t3lib_BEfunc::getRecordTitle($rVal>0?$theColConf['foreign_table']:$theColConf['neg_foreign_table'],$r);
@@ -3117,9 +3122,12 @@ class t3lib_BEfunc	{
 	}
 
 	/**
+	 * Returns live version of record
 	 *
 	 * @param	string		Table name
-	 * @return
+	 * @param	integer		Record UID of draft, offline version
+	 * @param	string		Field list, default is *
+	 * @return	array		If found, the record, otherwise nothing.
 	 */
 	function getLiveVersionOfRecord($table,$uid,$fields='*')	{
 		global $TCA;
@@ -3178,7 +3186,7 @@ class t3lib_BEfunc	{
 	 * @param	integer		Workspace ID
 	 * @param	integer		Page ID
 	 * @param	boolean		If set, then all tables and not only "versioning_followPages" are found (except other pages)
-	 * @return	array	Overview of records
+	 * @return	array		Overview of records
 	 */
 	function countVersionsOfRecordsOnPage($workspace,$pageId, $allTables=FALSE)	{
 		$output = array();

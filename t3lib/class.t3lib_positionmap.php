@@ -415,13 +415,15 @@ class t3lib_positionMap {
 								($showHidden ? '' : t3lib_BEfunc::BEenableFields('tt_content')).
 								' AND colPos='.intval($vv).
 								(strcmp($this->cur_sys_language,'') ? ' AND sys_language_uid='.intval($this->cur_sys_language) : '').
-								t3lib_BEfunc::deleteClause('tt_content'),
+								t3lib_BEfunc::deleteClause('tt_content').
+								t3lib_BEfunc::versioningPlaceholderClause('tt_content'),
 							'',
 							'sorting'
 						);
 			$lines[$kk]=array();
 			$lines[$kk][]=$this->insertPositionIcon('',$vv,$kk,$moveUid,$pid);
 			while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))		{
+				t3lib_BEfunc::workspaceOL('tt_content',$row);
 				$lines[$kk][]=$this->wrapRecordHeader($this->getRecordHeader($row),$row);
 				$lines[$kk][]=$this->insertPositionIcon($row,$vv,$kk,$moveUid,$pid);
 			}

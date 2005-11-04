@@ -440,7 +440,7 @@ class t3lib_clipboard {
 							$this->changed=1;
 						}
 					} else {	// Rendering records:
-						$rec=t3lib_BEfunc::getRecord($table,$uid);
+						$rec=t3lib_BEfunc::getRecordWSOL($table,$uid);
 						if (is_array($rec))	{
 							$lines[]='
 								<tr>

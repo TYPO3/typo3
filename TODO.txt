@@ -303,25 +303,11 @@ SQLengine (t3lib_sqlengine):
 *******************************
 Versioning/Workspaces:
 *******************************
-
-
-
-- Page module:
-	- Reflection in panels / Localization
-	- Colored backgrounds in Page module
-	- Quick Edit in page module should work
-- TemplaVoila:
-	- Page module
-	- FlexForms: t3lib_BEfunc::getFlexFormDS()
-
-
-
-TESTING by building up sites.
-
---------------------------
-Thursday/Friday:
+TESTING by building up sites in multiple workspaces! Running the TemplaVoila wizard in workspace? (or disable it...)
+Finish screenshows for "Inside TYPO3"
 
 Frontend Preview:
+- Dual-view preview?
 - ONLINE PREVIEW: Versionized pages should be previewed just by their UID (which will select the offline version!) - only in "Live" space, disabled at the moment inside tslib_fe!
 ?!	- TEST: Mounts points and versionized branches? Localization previews?
 ?	- tslib_content::getPidList(); TEST Mount points / Use offline UID values for "page" swapmodes; This is probably more natural for preview cases.
@@ -345,14 +331,9 @@ Frontend Preview:
 		- For new records, maybe the placeholder record is updated along with offline version? (At least for non-file fields). This would solve the problem of build translations in a workspace and also offer the preview as working!
 - In tslib_fe, this->contentPid is set to "_ORIG_UID" when a versionized page have swapmode set to "0". However this is not completely correct to do: Strictly the "_ORIG_UID" value should be used for tables where "versioning_followPages" is set and for others not. However this is a working quick-fix to display content elements at least!
 	t3lib_page::getPageOverlay() - because pages_language_overlay records have "versioning_followPages" set this should be observed when selecting language overlay records. But should it be hardcoded or something better?
-- Documentation. As frontend preview implementation is dealt with, describe any persisting incompatibilities in "TYPO3 Core API"
-
-
-
-- Documentation "Backend challenges"
-	- insertModuleFunction() limiting function menu entries
-	->bypassWorkspaceRestrictions
-	->Page TSconfig overlays done!
+- Documentation.
+	- As frontend preview implementation is dealt with, describe any persisting incompatibilities in "TYPO3 Core API"
+	- Web > View module always showing preview?
 
 ----------------------------------
 Backend preview:
@@ -373,6 +354,7 @@ TCEmain commands:
 	- Check destination if versionized branch / stage
 	- Copy a page in workspace will not copy the contents?
 	- Copy branch in workspace which already has versions - what does it take?
+	- Import/Export function?
 - localize command
 	- ?
 
@@ -385,6 +367,7 @@ Preview modes with no BE login; For single pages, for whole workspace?
 - Works for certain timespan
 - Sets cookie
 - Respects permissions of backend users issuing that permission!?
+- Dual-view preview?
 
 Workflows:
 - Workflows can regard a whole workspace!
@@ -413,7 +396,7 @@ Workspace Manager TODO:
 	- Problems with other RDBMS because ID values cannot be changed at all!
 - Swapping consequences:
 	- UID references for such as the sys_history and sys_log table are misleading.
-
+	- Branchpoints being swapped will swap their UIDs just like "page" and "element" versions - but in the backend the offline UID of "branch" versions are used heavily. This means references to the branchpoint will be invalid when published.
 
 *************************
 Localization workflow:

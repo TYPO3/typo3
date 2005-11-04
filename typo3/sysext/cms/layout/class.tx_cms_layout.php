@@ -384,7 +384,7 @@ class tx_cms_layout extends recordList {
 		$RTE = $GLOBALS['BE_USER']->isRTE();
 		$lMarg=1;
 		$showHidden = $this->tt_contentConfig['showHidden']?'':t3lib_BEfunc::BEenableFields('tt_content');
-		$pageTitleParamForAltDoc='&recTitle='.rawurlencode(t3lib_BEfunc::getRecordTitle('pages',t3lib_BEfunc::getRecord('pages',$id),1));
+		$pageTitleParamForAltDoc='&recTitle='.rawurlencode(t3lib_BEfunc::getRecordTitle('pages',t3lib_BEfunc::getRecordWSOL('pages',$id),1));
 
 			// Get labels for CTypes and tt_content element fields in general:
 		$this->CType_labels =array();
@@ -439,23 +439,25 @@ class tx_cms_layout extends recordList {
 						// Traverse any selected elements and render their display code:
 					$rowArr = $this->getResult($result);
 
-					foreach($rowArr as $row)	{
+					foreach($rowArr as $rKey => $row)	{
 						t3lib_BEfunc::workspaceOL('tt_content', $row);
 
-						$singleElementHTML = '';
-						if (!$lP) $defLanguageCount[$key][] = $row['uid'];
+						if ((int)$row['t3ver_state']!=2)	{
+							$singleElementHTML = '';
+							if (!$lP) $defLanguageCount[$key][] = $row['uid'];
 
-						$editUidList.= $row['uid'].',';
-						$singleElementHTML.= $this->tt_content_drawHeader($row,$this->tt_contentConfig['showInfo']?15:5, $this->defLangBinding && $lP>0, TRUE);
+							$editUidList.= $row['uid'].',';
+							$singleElementHTML.= $this->tt_content_drawHeader($row,$this->tt_contentConfig['showInfo']?15:5, $this->defLangBinding && $lP>0, TRUE);
 
-						$isRTE = $RTE && $this->isRTEforField('tt_content',$row,'bodytext');
-						$singleElementHTML.= $this->tt_content_drawItem($row,$isRTE);
+							$isRTE = $RTE && $this->isRTEforField('tt_content',$row,'bodytext');
+							$singleElementHTML.= '<div '.($row['_ORIG_uid'] ? ' class="ver-element"' :'').'>'.$this->tt_content_drawItem($row,$isRTE).'</div>';
 
-						if ($this->defLangBinding && $this->tt_contentConfig['languageMode'])	{
-							$defLangBinding[$key][$lP][$row[($lP ? 'l18n_parent' : 'uid')]] = $singleElementHTML;
-						} else {
-							$content[$key].= $singleElementHTML;
-						}
+							if ($this->defLangBinding && $this->tt_contentConfig['languageMode'])	{
+								$defLangBinding[$key][$lP][$row[($lP ? 'l18n_parent' : 'uid')]] = $singleElementHTML;
+							} else {
+								$content[$key].= $singleElementHTML;
+							}
+						} else { unset($rowArr[$rKey]); }
 					}
 
 						// Add new-icon link, header:
@@ -532,6 +534,7 @@ class tx_cms_layout extends recordList {
 					if ($lP)	{
 
 						list($lpRecord) = t3lib_BEfunc::getRecordsByField('pages_language_overlay','pid',$id,'AND sys_language_uid='.intval($lP));
+						t3lib_BEfunc::workspaceOL('pages_language_overlay',$lpRecord);
 						$params='&edit[pages_language_overlay]['.$lpRecord['uid'].']=edit&overrideVals[pages_language_overlay][sys_language_uid]='.$lP;
 						$lPLabel = $GLOBALS['SOBE']->doc->wrapClickMenuOnIcon(t3lib_iconWorks::getIconImage('pages_language_overlay',$lpRecord,$this->backPath,'  class="absmiddle"'),'pages_language_overlay',$lpRecord['uid']).
 							$viewLink.
@@ -603,7 +606,13 @@ class tx_cms_layout extends recordList {
 			if ($this->tt_contentConfig['sys_language_uid']==0 || !$this->defLangBinding)	{
 
 					// Initialize:
-				$showLanguage = $this->defLangBinding && $this->tt_contentConfig['sys_language_uid']==0 ? ' AND sys_language_uid IN (0,-1)' : ' AND sys_language_uid='.$this->tt_contentConfig['sys_language_uid'];
+				if ($this->defLangBinding && $this->tt_contentConfig['sys_language_uid']==0)	{
+					$showLanguage = ' AND sys_language_uid IN (0,-1)';
+					$lP = 0;
+				} else {
+					$showLanguage = ' AND sys_language_uid='.$this->tt_contentConfig['sys_language_uid'];
+					$lP = $this->tt_contentConfig['sys_language_uid'];
+				}
 
 				$cList = explode(',',$this->tt_contentConfig['showSingleCol']);
 				$content=array();
@@ -636,28 +645,33 @@ class tx_cms_layout extends recordList {
 					} else $theNewButton='';
 
 						// Traverse any selected elements:
-					foreach($rowArr as $row)	{
-						$c++;
-						$editUidList.=$row['uid'].',';
-						$isRTE=$RTE && $this->isRTEforField('tt_content',$row,'bodytext');
+					foreach($rowArr as $rKey => $row)	{
+						t3lib_BEfunc::workspaceOL('tt_content', $row);
 
-							// Create row output:
-						$rowOut.='
-							<tr>
-								<td></td>
-								<td valign="top">'.$this->tt_content_drawHeader($row).'</td>
-								<td></td>
-								<td valign="top">'.$this->tt_content_drawItem($row,$isRTE).'</td>
-							</tr>';
+						if ((int)$row['t3ver_state']!=2)	{
 
-							// If the element was not the last element, add a divider line:
-						if ($c != $GLOBALS['TYPO3_DB']->sql_num_rows($result))	{
+							$c++;
+							$editUidList.=$row['uid'].',';
+							$isRTE=$RTE && $this->isRTEforField('tt_content',$row,'bodytext');
+
+								// Create row output:
 							$rowOut.='
-							<tr>
-								<td></td>
-								<td colspan="3"><img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/stiblet_medium2.gif','width="468" height="1"').' class="c-divider" alt="" /></td>
-							</tr>';
-						}
+								<tr>
+									<td></td>
+									<td valign="top">'.$this->tt_content_drawHeader($row).'</td>
+									<td>&nbsp;</td>
+									<td'.($row['_ORIG_uid'] ? ' class="ver-element"' :'').' valign="top">'.$this->tt_content_drawItem($row,$isRTE).'</td>
+								</tr>';
+
+								// If the element was not the last element, add a divider line:
+							if ($c != $GLOBALS['TYPO3_DB']->sql_num_rows($result))	{
+								$rowOut.='
+								<tr>
+									<td></td>
+									<td colspan="3"><img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/stiblet_medium2.gif','width="468" height="1"').' class="c-divider" alt="" /></td>
+								</tr>';
+							}
+						} else { unset($rowArr[$rKey]); }
 					}
 
 						// Add spacer between sections in the vertical list
@@ -1577,12 +1591,12 @@ class tx_cms_layout extends recordList {
 				$hiddenField = $TCA['tt_content']['ctrl']['enablecolumns']['disabled'];
 				if ($hiddenField && $TCA['tt_content']['columns'][$hiddenField] && (!$TCA['tt_content']['columns'][$hiddenField]['exclude'] || $GLOBALS['BE_USER']->check('non_exclude_fields','tt_content:'.$hiddenField)))	{
 					if ($row[$hiddenField])	{
-						$params='&data[tt_content]['.$row['uid'].']['.$hiddenField.']=0';
+						$params='&data[tt_content]['.($row['_ORIG_uid'] ? $row['_ORIG_uid'] : $row['uid']).']['.$hiddenField.']=0';
 						$out.='<a href="'.htmlspecialchars($GLOBALS['SOBE']->doc->issueCommand($params)).'">'.
 								'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/button_unhide.gif','width="11" height="10"').' title="'.$GLOBALS['LANG']->getLL('unHide',1).'" alt="" />'.
 								'</a>';
 					} else {
-						$params='&data[tt_content]['.$row['uid'].']['.$hiddenField.']=1';
+						$params='&data[tt_content]['.($row['_ORIG_uid'] ? $row['_ORIG_uid'] : $row['uid']).']['.$hiddenField.']=1';
 						$out.='<a href="'.htmlspecialchars($GLOBALS['SOBE']->doc->issueCommand($params)).'">'.
 								'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/button_hide.gif','width="11" height="10"').' title="'.$GLOBALS['LANG']->getLL('hide',1).'" alt="" />'.
 								'</a>';
@@ -2104,7 +2118,7 @@ class tx_cms_layout extends recordList {
 
 		$c=0;
 		if ($TCA[$table])	{
-			$result = $GLOBALS['TYPO3_DB']->exec_SELECTquery('count(*)', $table, 'pid='.intval($pid).t3lib_BEfunc::deleteClause($table));
+			$result = $GLOBALS['TYPO3_DB']->exec_SELECTquery('count(*)', $table, 'pid='.intval($pid).t3lib_BEfunc::deleteClause($table).t3lib_BEfunc::versioningPlaceholderClause($table));
 			if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_row($result))	{
 				$c=$row[0];
 			}
@@ -2509,7 +2523,7 @@ class tx_cms_layout extends recordList {
 			if ($GLOBALS['BE_USER']->check('tables_select',$tName) && (t3lib_extMgm::isLoaded($tName)||t3lib_div::inList('fe_users,tt_content',$tName) || isset($this->externalTables[$tName])))	{
 
 					// Make query to count records from page:
-				$result = $GLOBALS['TYPO3_DB']->exec_SELECTquery('count(*)', $tName, 'pid='.intval($id).t3lib_BEfunc::deleteClause($tName));
+				$result = $GLOBALS['TYPO3_DB']->exec_SELECTquery('count(*)', $tName, 'pid='.intval($id).t3lib_BEfunc::deleteClause($tName).t3lib_BEfunc::versioningPlaceholderClause($tName));
 				list($c) = $GLOBALS['TYPO3_DB']->sql_fetch_row($result);
 
 					// If records were found (or if "tt_content" is the table...):

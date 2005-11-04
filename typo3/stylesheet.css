@@ -455,11 +455,11 @@ BODY#typo3-mod-tools-em-index-php TR.bgColor5 TD {font-weight: bold;}
 
 /* Workspace */
 DIV.workspace-info {padding: 0px 2px 0px 2px; margin: 0px 0px 4px 0px; border: 1px solid #999999;}
-TD.ver-element { background-color: #ccddcc; }
-TD.ver-page { background-color: #ccccff; }
-TD.ver-branch { background-color: #ffcccc; }
-TD.ver-branchpoint { background-color: #ff9999; }
-TD.ver-versions { background-color: #ffffaa; }
+.ver-element { background-color: #ccddcc; }
+.ver-page { background-color: #ccccff; }
+.ver-branch { background-color: #ffcccc; }
+.ver-branchpoint { background-color: #ff9999; }
+.ver-versions { background-color: #ffffaa; }
 TABLE.workspace-overview TD { vertical-align : top; }
 TABLE.ver-subtree A { text-decoration: none; }
 TABLE.ver-subtree TR TD.iconTitle { white-space: nowrap; }

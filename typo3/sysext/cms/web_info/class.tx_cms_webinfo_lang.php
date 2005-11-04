@@ -116,8 +116,7 @@ class tx_cms_webinfo_lang extends t3lib_extobjbase {
 				// Showing the tree:
 				// Initialize starting point of page tree:
 			$treeStartingPoint = intval($this->pObj->id);
-			$treeStartingRecord = t3lib_BEfunc::getRecord('pages', $treeStartingPoint);
-			t3lib_BEfunc::workspaceOL('pages',$treeStartingRecord);
+			$treeStartingRecord = t3lib_BEfunc::getRecordWSOL('pages', $treeStartingPoint);
 			$depth = $this->pObj->MOD_SETTINGS['depth'];
 
 				// Initialize tree object:
@@ -367,7 +366,8 @@ class tx_cms_webinfo_lang extends t3lib_extobjbase {
 			'pages_language_overlay',
 			'pid='.intval($pageId).
 				' AND sys_language_uid='.intval($langId).
-				t3lib_BEfunc::deleteClause('pages_language_overlay')
+				t3lib_BEfunc::deleteClause('pages_language_overlay').
+				t3lib_BEfunc::versioningPlaceholderClause('pages_language_overlay')
 		);
 
 		$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
@@ -406,7 +406,8 @@ class tx_cms_webinfo_lang extends t3lib_extobjbase {
 						$table,
 						'pid='.intval($pageId).
 							' AND '.$TCA[$table]['ctrl']['languageField'].'<=0'.
-							t3lib_BEfunc::deleteClause($table)
+							t3lib_BEfunc::deleteClause($table).
+							t3lib_BEfunc::versioningPlaceholderClause($table)
 					);
 					if (count($allRows))	{
 			$info.='<h3>'.$table.'</h3>';
@@ -425,7 +426,8 @@ $info.='[<b>'.$TCA[$table]['ctrl']['transOrigDiffSourceField'].'</b>]';
 								'pid='.intval($pageId).
 									' AND '.$TCA[$table]['ctrl']['languageField'].'='.intval($sysLang).
 									' AND '.$TCA[$table]['ctrl']['transOrigPointerField'].'='.intval($row['uid']).
-									t3lib_BEfunc::deleteClause($table)
+									t3lib_BEfunc::deleteClause($table).
+									t3lib_BEfunc::versioningPlaceholderClause($table)
 							);
 
 							foreach($translations as $c => $tr)	{
@@ -445,7 +447,8 @@ $info.='[<b>'.$TCA[$table]['ctrl']['transOrigDiffSourceField'].'</b>]';
 							'pid='.intval($pageId).
 								' AND '.$TCA[$table]['ctrl']['languageField'].'='.intval($sysLang).
 								' AND uid NOT IN ('.implode(',',$translationsUids).')'.
-								t3lib_BEfunc::deleteClause($table)
+								t3lib_BEfunc::deleteClause($table).
+								t3lib_BEfunc::versioningPlaceholderClause($table)
 						);
 						if (count($lostTranslations))	{
 							$info.=t3lib_div::view_array($lostTranslations);
@@ -470,7 +473,8 @@ $info.='[<b>'.$TCA[$table]['ctrl']['transOrigDiffSourceField'].'</b>]';
 			'tt_content',
 			'pid='.intval($pageId).
 				' AND sys_language_uid='.intval($sysLang).
-				t3lib_BEfunc::deleteClause('tt_content')
+				t3lib_BEfunc::deleteClause('tt_content').
+				t3lib_BEfunc::versioningPlaceholderClause('tt_content')
 		);
 
 		list($count) = $GLOBALS['TYPO3_DB']->sql_fetch_row($res);

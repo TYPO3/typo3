@@ -232,7 +232,7 @@ class clickMenu {
 		global $TCA, $BE_USER;
 
 			// Get record:
-		$this->rec = t3lib_BEfunc::getRecord($table,$uid);
+		$this->rec = t3lib_BEfunc::getRecordWSOL($table,$uid);
 		$menuItems=array();
 		$root=0;
 		if ($table=='pages' && !strcmp($uid,'0'))	{	// Rootlevel
@@ -241,7 +241,6 @@ class clickMenu {
 
 			// If record found (or root), go ahead and fill the $menuItems array which will contain data for the elements to render.
 		if (is_array($this->rec) || $root)	{
-			t3lib_BEfunc::workspaceOL($table,$this->rec);
 
 				// Get permissions
 			$lCP = $BE_USER->calcPerms(t3lib_BEfunc::getRecord('pages',($table=='pages'?$this->rec['uid']:$this->rec['pid'])));
@@ -321,7 +320,7 @@ class clickMenu {
 		global $TCA, $BE_USER;
 
 			// Setting internal record to the table/uid :
-		$this->rec = t3lib_BEfunc::getRecord($table,$uid);
+		$this->rec = t3lib_BEfunc::getRecordWSOL($table,$uid);
 		$menuItems=array();
 		$root=0;
 		if ($table=='pages' && !strcmp($uid,'0'))	{	// Rootlevel

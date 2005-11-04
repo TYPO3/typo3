@@ -447,12 +447,13 @@ class SC_alt_shortcut {
 
 				$where = ' AND ('.$BE_USER->getPagePermsClause(2).' OR '.$BE_USER->getPagePermsClause(16).')';
 				if (t3lib_div::testInt($this->editPage))	{
-					$this->theEditRec = t3lib_BEfunc::getRecord ('pages',$this->editPage,'*',$where);
+					$this->theEditRec = t3lib_BEfunc::getRecordWSOL('pages',$this->editPage,'*',$where);
 				} else {
 					$records = t3lib_BEfunc::getRecordsByField('pages','alias',$this->editPage,$where);
 					if (is_array($records))	{
 						reset($records);
 						$this->theEditRec = current($records);
+						t3lib_BEfunc::workspaceOL('pages',$this->theEditRec);
 					}
 				}
 				if (!is_array($this->theEditRec))	{

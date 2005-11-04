@@ -847,9 +847,7 @@ class t3lib_treeView {
 						$this->parentField.'='.$GLOBALS['TYPO3_DB']->fullQuoteStr($uid, $this->table).
 							t3lib_BEfunc::deleteClause($this->table).
 							t3lib_BEfunc::versioningPlaceholderClause($this->table).
-							$this->clause,	// whereClauseMightContainGroupOrderBy
-						'',
-						'' //$this->orderByFields // sorting is senseless for count(*) !?!
+							$this->clause	// whereClauseMightContainGroupOrderBy
 					);
 			$row = $GLOBALS['TYPO3_DB']->sql_fetch_row($res);
 			return $row[0];
@@ -881,8 +879,7 @@ class t3lib_treeView {
 		if (is_array($this->data)) {
 			return $this->dataLookup[$uid];
 		} else {
-			$row = t3lib_befunc::getRecord($this->table,$uid);
-			t3lib_BEfunc::workspaceOL($this->table, $row, $this->BE_USER->workspace);
+			$row = t3lib_befunc::getRecordWSOL($this->table,$uid);
 
 			return $row;
 		}

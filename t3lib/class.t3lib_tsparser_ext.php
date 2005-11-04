@@ -1647,7 +1647,7 @@ debug($saveId);
 
 			t3lib_div::unlink_tempfile($tmp_upload_name);
 
-			$tmpRow = t3lib_BEfunc::getRecord("sys_template",$saveId,"resources");
+			$tmpRow = t3lib_BEfunc::getRecordWSOL("sys_template",$saveId,"resources");
 
 			$tplRow["resources"] = $tmpRow["resources"];
 

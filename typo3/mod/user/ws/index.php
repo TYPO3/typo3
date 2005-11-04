@@ -55,23 +55,23 @@
  *  849:     function displayWorkspaceOverview_commandLinksSub($table,$rec,$origId)
  *  897:     function displayWorkspaceOverview_setInPageArray(&$pArray,$rlArr,$table,$row)
  *  928:     function subElements($uid,$treeLevel,$origId=0)
- * 1030:     function subElements_getNonPageRecords($tN, $uid, &$recList)
- * 1060:     function subElements_renderItem(&$tCell,$tN,$uid,$rec,$origId,$iconMode,$HTMLdata)
- * 1129:     function markupNewOriginals()
- * 1151:     function createDiffView($table, $diff_1_record, $diff_2_record)
+ * 1031:     function subElements_getNonPageRecords($tN, $uid, &$recList)
+ * 1061:     function subElements_renderItem(&$tCell,$tN,$uid,$rec,$origId,$iconMode,$HTMLdata)
+ * 1130:     function markupNewOriginals()
+ * 1152:     function createDiffView($table, $diff_1_record, $diff_2_record)
  *
  *              SECTION: Module content: Workspace list
- * 1283:     function moduleContent_workspaceList()
+ * 1284:     function moduleContent_workspaceList()
  *
  *              SECTION: Helper functions
- * 1331:     function formatVerId($verId)
- * 1341:     function formatWorkspace($wsid)
- * 1368:     function formatCount($count)
- * 1395:     function versionsInOtherWS($table,$uid)
- * 1425:     function showStageChangeLog($table,$id,$stageCommands)
+ * 1332:     function formatVerId($verId)
+ * 1342:     function formatWorkspace($wsid)
+ * 1369:     function formatCount($count)
+ * 1396:     function versionsInOtherWS($table,$uid)
+ * 1426:     function showStageChangeLog($table,$id,$stageCommands)
  *
  *              SECTION: Processing
- * 1484:     function publishAction()
+ * 1485:     function publishAction()
  *
  * TOTAL FUNCTIONS: 25
  * (This index is automatically created/updated by the extension "extdeveval")

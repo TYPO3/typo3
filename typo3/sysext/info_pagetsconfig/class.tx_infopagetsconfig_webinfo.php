@@ -128,7 +128,7 @@ class tx_infopagetsconfig_webinfo extends t3lib_extobjbase {
 						$editIcon = '';
 					} else {
 						$pUids[] = substr($k,4);
-						$row = t3lib_BEfunc::getRecord('pages',substr($k,4));
+						$row = t3lib_BEfunc::getRecordWSOL('pages',substr($k,4));
 						$pTitle = $this->pObj->doc->getHeader('pages',$row,'',0);
 
 						$editIdList = substr($k,4);

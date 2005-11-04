@@ -31,16 +31,42 @@
  *
  *
  *
- *   73: class tx_version_cm1 extends t3lib_SCbase
- *   80:     function main()
- *  105:     function jumpToUrl(URL)
- *  139:     function printContent()
- *  150:     function moduleContent()
- *  310:     function pageSubContent($pid,$c=0)
- *  364:     function lookForOwnVersions($table,$uid)
- *  381:     function adminLinks($table,$row)
+ *   97: class tx_version_cm1 extends t3lib_SCbase
  *
- * TOTAL FUNCTIONS: 7
+ *              SECTION: Standard module initialization
+ *  132:     function menuConfig()
+ *  169:     function main()
+ *  222:     function jumpToUrl(URL)
+ *  282:     function printContent()
+ *
+ *              SECTION: Versioning management
+ *  308:     function versioningMgm()
+ *  471:     function pageSubContent($pid,$c=0)
+ *  525:     function lookForOwnVersions($table,$uid)
+ *  542:     function adminLinks($table,$row)
+ *
+ *              SECTION: Workspace management
+ *  614:     function workspaceMgm()
+ *  639:     function displayWorkspaceOverview()
+ *  708:     function displayWorkspaceOverview_list($pArray)
+ *  865:     function displayWorkspaceOverview_setInPageArray(&$pArray,$table,$row)
+ *
+ *              SECTION: Helper functions (REDUNDANT FROM user/ws/index.php - someone could refactor this...)
+ *  892:     function formatVerId($verId)
+ *  902:     function formatWorkspace($wsid)
+ *  929:     function formatCount($count)
+ *  956:     function versionsInOtherWS($table,$uid)
+ *  986:     function showStageChangeLog($table,$id,$stageCommands)
+ * 1035:     function subElements($uid,$treeLevel,$origId=0)
+ * 1138:     function subElements_getNonPageRecords($tN, $uid, &$recList)
+ * 1168:     function subElements_renderItem(&$tCell,$tN,$uid,$rec,$origId,$iconMode,$HTMLdata)
+ * 1237:     function markupNewOriginals()
+ * 1259:     function createDiffView($table, $diff_1_record, $diff_2_record)
+ * 1376:     function displayWorkspaceOverview_stageCmd($table,&$rec_off)
+ * 1461:     function displayWorkspaceOverview_commandLinks($table,&$rec_on,&$rec_off,$vType)
+ * 1531:     function displayWorkspaceOverview_commandLinksSub($table,$rec,$origId)
+ *
+ * TOTAL FUNCTIONS: 25
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */

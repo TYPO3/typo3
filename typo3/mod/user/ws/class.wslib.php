@@ -36,11 +36,11 @@
  *
  *   68: class wslib
  *   80:     function getCmdArrayForPublishWS($wsid, $doSwap)
- *  125:     function selectVersionsInWorkspace($wsid,$filter=0,$stage=-99)
+ *  126:     function selectVersionsInWorkspace($wsid,$filter=0,$stage=-99,$pageId=-1)
  *
  *              SECTION: CLI functions
- *  180:     function CLI_main()
- *  190:     function autoPublishWorkspaces()
+ *  182:     function CLI_main()
+ *  192:     function autoPublishWorkspaces()
  *
  * TOTAL FUNCTIONS: 4
  * (This index is automatically created/updated by the extension "extdeveval")

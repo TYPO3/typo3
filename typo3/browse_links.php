@@ -1505,7 +1505,7 @@ class SC_browse_links {
 
 				// Create header for listing, showing the page title/icon:
 			$titleLen=intval($GLOBALS['BE_USER']->uc['titleLen']);
-			$mainPageRec = t3lib_BEfunc::getRecord('pages',$expPageId);
+			$mainPageRec = t3lib_BEfunc::getRecordWSOL('pages',$expPageId);
 			$picon=t3lib_iconWorks::getIconImage('pages',$mainPageRec,'','');
 			$picon.= htmlspecialchars(t3lib_div::fixed_lgd_cs($mainPageRec['title'],$titleLen));
 			$out.=$picon.'<br />';
@@ -1514,7 +1514,9 @@ class SC_browse_links {
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 							'uid,header,hidden,starttime,endtime,fe_group,CType,colpos,bodytext',
 							'tt_content',
-							'pid='.intval($expPageId).t3lib_BEfunc::deleteClause('tt_content'),
+							'pid='.intval($expPageId).
+								t3lib_BEfunc::deleteClause('tt_content').
+								t3lib_BEfunc::versioningPlaceholderClause('tt_content'),
 							'',
 							'colpos,sorting'
 						);
@@ -1584,7 +1586,7 @@ class SC_browse_links {
 
 				// Create the header, showing the current page for which the listing is. Includes link to the page itself, if pages are amount allowed tables.
 			$titleLen=intval($GLOBALS['BE_USER']->uc['titleLen']);
-			$mainPageRec = t3lib_BEfunc::getRecord('pages',$this->expandPage);
+			$mainPageRec = t3lib_BEfunc::getRecordWSOL('pages',$this->expandPage);
 			$ATag='';
 			$ATag_e='';
 			$ATag2='';
@@ -2107,7 +2109,7 @@ class SC_browse_links {
 								$id=intval($idPartR['uid']);
 							}
 
-							$pageRow = t3lib_BEfunc::getRecord('pages',$id);
+							$pageRow = t3lib_BEfunc::getRecordWSOL('pages',$id);
 							$titleLen=intval($GLOBALS['BE_USER']->uc['titleLen']);
 							$info['value']=$GLOBALS['LANG']->getLL('page',1)." '".htmlspecialchars(t3lib_div::fixed_lgd_cs($pageRow['title'],$titleLen))."' (ID:".$id.($uP['fragment']?', #'.$uP['fragment']:'').')';
 							$info['pageid']=$id;

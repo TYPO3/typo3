@@ -287,7 +287,7 @@ class SC_move_el {
 		if ($this->page_id)	{
 
 				// Get record for element:
-			$elRow = t3lib_BEfunc::getRecord($this->table,$this->moveUid);
+			$elRow = t3lib_BEfunc::getRecordWSOL($this->table,$this->moveUid);
 
 				// Headerline: Icon, record title:
 			$hline = t3lib_iconWorks::getIconImage($this->table,$elRow,$BACK_PATH,' id="c-recIcon" title="'.htmlspecialchars(t3lib_BEfunc::getRecordIconAltText($elRow,$this->table)).'"');

@@ -180,7 +180,7 @@ class SC_wizard_table {
 	function tableWizard()	{
 
 			// First, check the references by selecting the record:
-		$row=t3lib_BEfunc::getRecord($this->P['table'],$this->P['uid']);
+		$row = t3lib_BEfunc::getRecord($this->P['table'],$this->P['uid']);
 		if (!is_array($row))	{
 			t3lib_BEfunc::typo3PrintError ('Wizard Error','No reference to record',0);
 			exit;

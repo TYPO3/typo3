@@ -98,7 +98,7 @@ class tx_wizardcrpages_webfunc_2 extends t3lib_extobjbase {
 		$theCode='';
 
 		$m_perms_clause = $GLOBALS['BE_USER']->getPagePermsClause(8);	// create new pages here?
-		$pRec = t3lib_BEfunc::getRecord ('pages',$this->pObj->id,'uid',' AND '.$m_perms_clause);
+		$pRec = t3lib_BEfunc::getRecord('pages',$this->pObj->id,'uid',' AND '.$m_perms_clause);
 		$sys_pages = t3lib_div::makeInstance('t3lib_pageSelect');
 		$menuItems = $sys_pages->getMenu($this->pObj->id);
 		if (is_array($pRec))	{

@@ -201,8 +201,7 @@ class recordList extends t3lib_recordList {
 		global $TCA;
 
 			// Set page record in header
-		$this->pageRecord = t3lib_BEfunc::getRecord('pages',$this->id);
-		t3lib_BEfunc::workspaceOL('pages',$this->pageRecord);
+		$this->pageRecord = t3lib_BEfunc::getRecordWSOL('pages',$this->id);
 
 			// Traverse the TCA table array:
 		reset($TCA);
@@ -310,7 +309,7 @@ class recordList extends t3lib_recordList {
 		if (!t3lib_extMgm::isLoaded('sys_note'))	return '';
 
 			// Create query for selecting the notes:
-		$result = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*','sys_note','pid IN ('.$this->id.') AND (personal=0 OR cruser='.intval($GLOBALS['BE_USER']->user['uid']).')'.t3lib_BEfunc::deleteClause('sys_note'));
+		$result = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*','sys_note','pid IN ('.$this->id.') AND (personal=0 OR cruser='.intval($GLOBALS['BE_USER']->user['uid']).')'.t3lib_BEfunc::deleteClause('sys_note').t3lib_BEfunc::versioningPlaceholderClause('sys_note'));
 
 			// Executing query:
 		$dbCount = $GLOBALS['TYPO3_DB']->sql_num_rows($result);
@@ -723,7 +722,8 @@ class recordList extends t3lib_recordList {
 					$table,
 					$TCA[$table]['ctrl']['languageField'].'='.intval($language).' AND '.
 						$TCA[$table]['ctrl']['transOrigPointerField'].'='.intval($orig_uid).
-						t3lib_BEfunc::deleteClause($table)
+						t3lib_BEfunc::deleteClause($table).
+						t3lib_BEfunc::versioningPlaceholderClause($table)
 				);
 
 			if (is_array($localizedRecord))	{

@@ -246,7 +246,7 @@ class SC_db_new_content_el {
 			$this->content.=$this->doc->header($LANG->getLL('newContentElement'));
 			$this->content.=$this->doc->spacer(5);
 
-			$elRow = t3lib_BEfunc::getRecord('pages',$this->id);
+			$elRow = t3lib_BEfunc::getRecordWSOL('pages',$this->id);
 			$hline = t3lib_iconWorks::getIconImage('pages',$elRow,$BACK_PATH,' title="'.htmlspecialchars(t3lib_BEfunc::getRecordIconAltText($elRow,'pages')).'" align="top"');
 			$hline.= t3lib_BEfunc::getRecordTitle('pages',$elRow,1);
 			$this->content.=$this->doc->section('',$hline,0,1);

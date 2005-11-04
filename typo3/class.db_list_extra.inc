@@ -492,7 +492,8 @@ class localRecordList extends recordList {
 								'pid='.$row['pid'].
 									' AND '.$TCA[$table]['ctrl']['languageField'].'>0'.
 									' AND '.$TCA[$table]['ctrl']['transOrigPointerField'].'='.intval($row['uid']).
-									t3lib_BEfunc::deleteClause($table)
+									t3lib_BEfunc::deleteClause($table).
+									t3lib_BEfunc::versioningPlaceholderClause($table)
 							);
 
 								// For each available translation, render the record:
@@ -1063,7 +1064,8 @@ class localRecordList extends recordList {
 					'pid='.intval($this->id).
 						' AND '.$TCA[$table]['ctrl']['languageField'].'>0'.
 						' AND '.$TCA[$table]['ctrl']['transOrigPointerField'].'='.intval($row['uid']).
-						t3lib_BEfunc::deleteClause($table),
+						t3lib_BEfunc::deleteClause($table).
+						t3lib_BEfunc::versioningPlaceholderClause($table),
 					'',
 					'',
 					'',

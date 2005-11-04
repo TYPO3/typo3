@@ -692,7 +692,8 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 				'*',
 				$table,
 				'pid='.intval($pid).
-					t3lib_BEfunc::deleteClause($table),
+					t3lib_BEfunc::deleteClause($table).
+					t3lib_BEfunc::versioningPlaceholderClause($table),
 				'',
 				$GLOBALS['TYPO3_DB']->stripOrderBy($orderBy),
 				$limit

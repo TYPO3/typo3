@@ -392,12 +392,13 @@ class SC_alt_main {
 				// Looking up the page to edit, checking permissions:
 			$where = ' AND ('.$BE_USER->getPagePermsClause(2).' OR '.$BE_USER->getPagePermsClause(16).')';
 			if (t3lib_div::testInt($editId))	{
-				$theEditRec = t3lib_BEfunc::getRecord('pages',$editId,'*',$where);
+				$theEditRec = t3lib_BEfunc::getRecordWSOL('pages',$editId,'*',$where);
 			} else {
 				$records = t3lib_BEfunc::getRecordsByField('pages','alias',$editId,$where);
 				if (is_array($records))	{
 					reset($records);
 					$theEditRec = current($records);
+					t3lib_BEfunc::workspaceOL('pages', $theEditRec);
 				}
 			}
 

@@ -40,32 +40,34 @@
  *
  *
  *
- *   94: class SC_alt_doc
- *  167:     function preInit()
- *  219:     function doProcessData()
- *  229:     function processData()
- *  346:     function init()
- *  432:     function main()
- *  500:     function printContent()
+ *  100: class SC_alt_doc
+ *  174:     function preInit()
+ *  232:     function doProcessData()
+ *  242:     function processData()
+ *  370:     function init()
+ *  462:     function main()
+ *  531:     function printContent()
  *
  *              SECTION: Sub-content functions, rendering specific parts of the module content.
- *  535:     function makeEditForm()
- *  717:     function makeButtonPanel()
- *  796:     function makeDocSel()
- *  838:     function makeCmenu()
- *  859:     function compileForm($panel,$docSel,$cMenu,$editForm)
- *  921:     function functionMenus()
- *  952:     function shortCutLink()
- *  983:     function tceformMessages()
+ *  566:     function makeEditForm()
+ *  749:     function makeButtonPanel()
+ *  828:     function makeDocSel()
+ *  870:     function makeCmenu()
+ *  891:     function compileForm($panel,$docSel,$cMenu,$editForm)
+ *  953:     function functionMenus()
+ *  984:     function shortCutLink()
+ * 1015:     function tceformMessages()
  *
  *              SECTION: Other functions
- * 1021:     function editRegularContentFromId()
- * 1048:     function compileStoreDat()
- * 1061:     function getNewIconMode($table,$key='saveDocNew')
- * 1074:     function closeDocument($code=0)
- * 1106:     function setDocument($currentDocFromHandlerMD5='',$retUrl='alt_doc_nodoc.php')
+ * 1054:     function fixWSversioningInEditConf($mapArray=FALSE)
+ * 1103:     function getRecordForEdit($table,$theUid)
+ * 1138:     function editRegularContentFromId()
+ * 1165:     function compileStoreDat()
+ * 1178:     function getNewIconMode($table,$key='saveDocNew')
+ * 1191:     function closeDocument($code=0)
+ * 1223:     function setDocument($currentDocFromHandlerMD5='',$retUrl='alt_doc_nodoc.php')
  *
- * TOTAL FUNCTIONS: 19
+ * TOTAL FUNCTIONS: 21
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -1044,9 +1046,10 @@ class SC_alt_doc {
 	 ***************************/
 
 	/**
-	 * Get record for editing.
+	 * Fix $this->editconf if versioning applies to any of the records
 	 *
-	 *
+	 * @param	array		Mapping between old and new ids if auto-versioning has been performed.
+	 * @return	void
 	 */
 	function fixWSversioningInEditConf($mapArray=FALSE)	{
 		global $TCA,$BE_USER;
@@ -1093,14 +1096,15 @@ class SC_alt_doc {
 	/**
 	 * Get record for editing.
 	 *
-	 *
+	 * @param	string		Table name
+	 * @param	integer		Record UID
+	 * @return	array		Returns record to edit, false if none
 	 */
 	function getRecordForEdit($table,$theUid)	{
 		global $TCA;
 
 			// Fetch requested record:
 		$reqRecord = t3lib_BEfunc::getRecord($table,$theUid,'uid,pid');
-#return $reqRecord;
 
 		if (is_array($reqRecord))	{
 				// If workspace is OFFLINE:
@@ -1137,6 +1141,7 @@ class SC_alt_doc {
 						'tt_content',
 						'pid='.intval($this->editRegularContentFromId).
 							t3lib_BEfunc::deleteClause('tt_content').
+							t3lib_BEfunc::versioningPlaceholderClause('tt_content').
 							' AND colPos=0 AND sys_language_uid=0',
 						'',
 						'sorting'

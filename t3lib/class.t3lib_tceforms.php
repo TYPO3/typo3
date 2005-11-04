@@ -1741,7 +1741,7 @@ class t3lib_TCEforms	{
 					list($this_table,$this_uid) = t3lib_BEfunc::splitTable_Uid($recordParts[0]);
 					$itemArray[] = array('table'=>$this_table, 'id'=>$this_uid);
 					if ($show_thumbs)	{
-						$rr = t3lib_BEfunc::getRecord($this_table,$this_uid);
+						$rr = t3lib_BEfunc::getRecordWSOL($this_table,$this_uid);
 						$imgs[] = '<span class="nobr">'.
 								$this->getClickMenu(t3lib_iconWorks::getIconImage($this_table,$rr,$this->backPath,'align="top" title="'.htmlspecialchars(t3lib_BEfunc::getRecordPath($rr['pid'],$perms_clause,15)).' [UID: '.$rr['uid'].']"'),$this_table, $this_uid).
 								'&nbsp;'.
@@ -2637,7 +2637,7 @@ class t3lib_TCEforms	{
 			switch($mode)	{
 				case 'db':
 					while(list(,$pp)=each($itemArray))	{
-						$pRec = t3lib_BEfunc::getRecord($pp['table'],$pp['id']);
+						$pRec = t3lib_BEfunc::getRecordWSOL($pp['table'],$pp['id']);
 						if (is_array($pRec))	{
 							$pTitle = t3lib_div::fixed_lgd_cs($this->noTitle($pRec[$GLOBALS['TCA'][$pp['table']]['ctrl']['label']]),$this->titleLen);
 							$pUid = $pp['table'].'_'.$pp['id'];
@@ -2709,7 +2709,7 @@ class t3lib_TCEforms	{
 					$itemTitle = 'unescape(\''.rawurlencode(basename($elValue)).'\')';
 				} else {	// 'db' mode assumed
 					list($itemTable,$itemUid) = explode('|', $elValue);
-					$itemTitle = $GLOBALS['LANG']->JScharCode(t3lib_BEfunc::getRecordTitle($itemTable, t3lib_BEfunc::getRecord($itemTable,$itemUid)));
+					$itemTitle = $GLOBALS['LANG']->JScharCode(t3lib_BEfunc::getRecordTitle($itemTable, t3lib_BEfunc::getRecordWSOL($itemTable,$itemUid)));
 					$elValue = $itemTable.'_'.$itemUid;
 				}
 				$aOnClick.= 'setFormValueFromBrowseWin(\''.$fName.'\',unescape(\''.rawurlencode(str_replace('%20',' ',$elValue)).'\'),'.$itemTitle.');';
@@ -3868,7 +3868,7 @@ class t3lib_TCEforms	{
 							'</span>';
 
 				$truePid = t3lib_BEfunc::getTSconfig_pidValue($table,$rec['uid'],$rec['pid']);
-				$prec = t3lib_BEfunc::getRecord('pages',$truePid,'title');
+				$prec = t3lib_BEfunc::getRecordWSOL('pages',$truePid,'title');
 				$rLabel = '<em>[PID: '.$truePid.'] '.htmlspecialchars(trim(t3lib_div::fixed_lgd_cs(t3lib_BEfunc::getRecordTitle('pages',$prec),40))).'</em>';
 			} else {
 				$newLabel = ' <span class="typo3-TCEforms-recUid">['.$rec['uid'].']</span>';
