@@ -304,25 +304,6 @@ SQLengine (t3lib_sqlengine):
 Versioning/Workspaces:
 *******************************
 
-- TemplaVoila and workspaces:
-	- Test TemplaVoila with building site
-	- Mapping of IDs / soft-references?
-
-- CVS:
-- Notice:
-	Jason: Compare with his mail.
-	Benoit, Ingo, Dev-list:
-		- Document for download
-		- Tar ball + CVS
-		- TODO for remaining problems
-		(Invoice for ingo)
-		- TemplaVoila  is updated to support as well.
-	Dimitri: Info about how to proceed.
-
-*************
-- Preparation for next week.
-
-----------------------------------
 Frontend Preview:
 - BUG: New pages, setting to hidden are still displayable and shown in menu!
 ?	- tslib_content::getPidList(); TEST Mount points / Use offline UID values for "page" swapmodes; This is probably more natural for preview cases.
