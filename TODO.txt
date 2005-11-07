@@ -303,33 +303,24 @@ SQLengine (t3lib_sqlengine):
 *******************************
 Versioning/Workspaces:
 *******************************
-- Running the TemplaVoila wizard in workspace?
 
+- TemplaVoila and workspaces:
+	- Test TemplaVoila with building site
+	- Mapping of IDs / soft-references?
 
-- Dual-view preview? + publishing, raise state? + diff-view inline?
-- Web > Versioning:
-	- Raising state for all records on a page and using same comment for all + send only one notification email per instance.
-	- "Publish / Swap all" - link
-- Show workspace in icon-title-text
+- CVS:
+- Notice:
+	Jason: Compare with his mail.
+	Benoit, Ingo, Dev-list:
+		- Document for download
+		- Tar ball + CVS
+		- TODO for remaining problems
+		(Invoice for ingo)
+		- TemplaVoila  is updated to support as well.
+	Dimitri: Info about how to proceed.
 
-
-- Documentation:
-	- Finish screenshots for "Inside TYPO3"
-		- Web > View module always showing preview?
-	- TYPO3 Core API:
-		- As frontend preview implementation is dealt with, describe any persisting incompatibilities in "TYPO3 Core API"
-			- Difficult frontend previews (except for new records which can shadow values)
-				- All fields selected upon in frontend:
-					- $TCA[$table]['ctrl']['languageField'] and $TCA[$table]['ctrl']['transOrigPointerField']
-					- field: pages_language_overlay:sys_language_uid
-					- field: pages:doktype (used for selection many places!) - but then we cannot make mounts points etc! (?)
-				- Suggested solution:
-					- Setting a workspace-readonly flag for such values!
-					- However,
-						- menu previews are bypassing the problem already,
-						- page shortcut has trouble but is known,
-						- mount points will not be possible to preview (?)
-						- For new translations we might have the problem, for existing translations probably not since it is unlikely that the fields $TCA[$table]['ctrl']['languageField'] and $TCA[$table]['ctrl']['transOrigPointerField'] are changed later!
+*************
+- Preparation for next week.
 
 ----------------------------------
 Frontend Preview:
@@ -347,7 +338,6 @@ Backend preview:
 - Permissions reflected in buttons and clickmenus.
 - Logging:
 	- Finally define logging in tcemain!
-	- Filter on workspace
 
 TCEmain commands:
 - copy:
@@ -368,21 +358,23 @@ Versioning API:
 - (Support for) swapping using temporary file (instead of using negative ID)
 - Way to change versioning type from element to page to branch for new records?
 
-Preview modes with no BE login; For single pages, for whole workspace?
-- Can bypass hidden pages, fe_groups, set workspace
-- Works for certain timespan
-- Sets cookie
-- Respects permissions of backend users issuing that permission!?
-- Dual-view preview?
-
 Check Various:
 - Auto publishing: Might not work with "Publish only "Publish" stage" because swapped elements will be in editing stage or so!
 
 Workspace Manager TODO:
-- Workspace list
+- Workspace admin list
+
+Preview:
+- Dualview:
+	- Implement links in notification email + only one notification per. "instance" of TCEmain
+	- Allow preview by non-be-logins through some token-facility (links from tcemain-mails)
+		- Works for certain timespan
+		- Sets cookie? (for workspace browsing)
 
 BUGS:
-- In draft workspace: importing a treestructure when "newPagesVersioningType" is set to "1" (new pages as "branch" versions) will only create root point and no subsequent records.
+- Import/Export module:
+	- In draft workspace: importing a treestructure when "newPagesVersioningType" is set to "1" (new pages as "branch" versions) will only create root point and no subsequent records.
+	- Correct references for softreferences on import.
 
 
 -----LATER:

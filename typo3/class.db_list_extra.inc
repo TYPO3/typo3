@@ -362,6 +362,7 @@ class localRecordList extends recordList {
 		if ($TCA[$table]['ctrl']['versioningWS'])	{
 			$selectFields[] = 't3ver_id';
 			$selectFields[] = 't3ver_state';
+			$selectFields[] = 't3ver_wsid';
 			$selectFields[] = 't3ver_swapmode';		// Filtered out when pages in makeFieldList()
 		}
 		if ($l10nEnabled)	{

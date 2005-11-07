@@ -625,7 +625,7 @@ class t3lib_install {
 	function getCreateTables($statements, $insertCountFlag=0)	{
 		$crTables = array();
 		foreach($statements as $line => $linecontent)	{
-			if (eregi('^create[[:space:]]*table[[:space:]]*([[:alnum:]_]*)',substr($linecontent,0,100),$reg))	{
+			if (eregi('^create[[:space:]]*table[[:space:]]*[`]?([[:alnum:]_]*)[`]?',substr($linecontent,0,100),$reg))	{
 				$table = trim($reg[1]);
 				if ($table)	{
 					if (TYPO3_OS=='WIN')	{ $table=strtolower($table); }	// table names are always lowercase on Windows!
@@ -638,11 +638,12 @@ class t3lib_install {
 					$linecontent = implode(chr(10), $sqlLines);
 					$crTables[$table] = $linecontent;
 				}
-			} elseif ($insertCountFlag && eregi('^insert[[:space:]]*into[[:space:]]*([[:alnum:]_]*)',substr($linecontent,0,100),$reg))	{
+			} elseif ($insertCountFlag && eregi('^insert[[:space:]]*into[[:space:]]*[`]?([[:alnum:]_]*)[`]?',substr($linecontent,0,100),$reg))	{
 				$nTable = trim($reg[1]);
 				$insertCount[$nTable]++;
 			}
 		}
+
 		return array($crTables,$insertCount);
 	}
 
@@ -656,7 +657,7 @@ class t3lib_install {
 	function getTableInsertStatements($statements, $table)	{
 		$outStatements=array();
 		foreach($statements as $line => $linecontent)	{
-			if (eregi('^insert[[:space:]]*into[[:space:]]*([[:alnum:]_]*)',substr($linecontent,0,100),$reg))	{
+			if (eregi('^insert[[:space:]]*into[[:space:]]*[`]?([[:alnum:]_]*)[`]?',substr($linecontent,0,100),$reg))	{
 				$nTable = trim($reg[1]);
 				if ($nTable && !strcmp($table,$nTable))	{
 					$outStatements[]=$linecontent;

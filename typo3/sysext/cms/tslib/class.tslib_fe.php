@@ -42,134 +42,137 @@
  *
  *
  *
- *  204: class tslib_fe
- *  371:     function tslib_fe($TYPO3_CONF_VARS, $id, $type, $no_cache='', $cHash='', $jumpurl='',$MP='',$RDCT='')
- *  404:     function connectToMySQL()
- *  414:     function connectToDB()
- *  459:     function sendRedirect()
+ *  207: class tslib_fe
+ *  375:     function tslib_fe($TYPO3_CONF_VARS, $id, $type, $no_cache='', $cHash='', $jumpurl='',$MP='',$RDCT='')
+ *  408:     function connectToMySQL()
+ *  418:     function connectToDB()
+ *  463:     function sendRedirect()
  *
  *              SECTION: Initializing, resolving page id
- *  497:     function initFEuser()
- *  547:     function initUserGroups()
- *  582:     function isUserOrGroupSet()
- *  607:     function checkAlternativeIdMethods()
- *  659:     function clear_preview()
- *  672:     function determineId()
- *  806:     function fetch_the_id()
- *  899:     function getPageAndRootline()
- *  970:     function getPageShortcut($SC,$mode,$thisUid,$itera=20,$pageLog=array())
- * 1020:     function checkRootlineForIncludeSection()
- * 1057:     function checkEnableFields($row,$bypassGroupCheck=FALSE)
- * 1073:     function checkPageGroupAccess($row, $groupList=NULL)
- * 1092:     function checkPagerecordForIncludeSection($row)
- * 1101:     function checkIfLoginAllowedInBranch()
- * 1126:     function getPageAccessFailureReasons()
- * 1158:     function setIDfromArgV()
- * 1174:     function getPageAndRootlineWithDomain($domainStartPage)
- * 1201:     function setSysPageWhereClause()
- * 1213:     function findDomainRecord($recursive=0)
- * 1233:     function pageNotFoundAndExit($reason='', $header='')
- * 1248:     function pageNotFoundHandler($code, $header='', $reason='')
- * 1292:     function checkAndSetAlias()
- * 1307:     function idPartsAnalyze($str)
- * 1332:     function mergingWithGetVars($GET_VARS)
+ *  501:     function initFEuser()
+ *  551:     function initUserGroups()
+ *  586:     function isUserOrGroupSet()
+ *  611:     function checkAlternativeIdMethods()
+ *  663:     function clear_preview()
+ *  676:     function determineId()
+ *  811:     function fetch_the_id()
+ *  904:     function getPageAndRootline()
+ *  975:     function getPageShortcut($SC,$mode,$thisUid,$itera=20,$pageLog=array())
+ * 1025:     function checkRootlineForIncludeSection()
+ * 1062:     function checkEnableFields($row,$bypassGroupCheck=FALSE)
+ * 1078:     function checkPageGroupAccess($row, $groupList=NULL)
+ * 1097:     function checkPagerecordForIncludeSection($row)
+ * 1106:     function checkIfLoginAllowedInBranch()
+ * 1131:     function getPageAccessFailureReasons()
+ * 1163:     function setIDfromArgV()
+ * 1179:     function getPageAndRootlineWithDomain($domainStartPage)
+ * 1206:     function setSysPageWhereClause()
+ * 1218:     function findDomainRecord($recursive=0)
+ * 1238:     function pageNotFoundAndExit($reason='', $header='')
+ * 1253:     function pageNotFoundHandler($code, $header='', $reason='')
+ * 1297:     function checkAndSetAlias()
+ * 1312:     function idPartsAnalyze($str)
+ * 1337:     function mergingWithGetVars($GET_VARS)
  *
  *              SECTION: Template and caching related functions.
- * 1381:     function makeCacheHash()
- * 1405:     function reqCHash()
- * 1427:     function cHashParams($addQueryParams)
- * 1436:     function initTemplate()
- * 1448:     function getFromCache()
- * 1493:     function getFromCache_queryRow()
- * 1521:     function headerNoCache()
- * 1550:     function getHash()
- * 1570:     function getConfigArray()
+ * 1386:     function makeCacheHash()
+ * 1410:     function reqCHash()
+ * 1432:     function cHashParams($addQueryParams)
+ * 1441:     function initTemplate()
+ * 1453:     function getFromCache()
+ * 1498:     function getFromCache_queryRow()
+ * 1526:     function headerNoCache()
+ * 1555:     function getHash()
+ * 1575:     function getConfigArray()
  *
  *              SECTION: Further initialization and data processing
- * 1709:     function getCompressedTCarray()
- * 1763:     function includeTCA($TCAloaded=1)
- * 1790:     function settingLanguage()
- * 1880:     function settingLocale()
- * 1905:     function checkDataSubmission()
- * 1930:     function fe_tce()
- * 1944:     function locDataCheck($locationData)
- * 1960:     function sendFormmail()
- * 2011:     function extractRecipientCopy($bodytext)
- * 2026:     function checkJumpUrl()
- * 2108:     function jumpUrl()
- * 2152:     function setUrlIdToken()
+ * 1714:     function getCompressedTCarray()
+ * 1768:     function includeTCA($TCAloaded=1)
+ * 1795:     function settingLanguage()
+ * 1885:     function settingLocale()
+ * 1910:     function checkDataSubmission()
+ * 1935:     function fe_tce()
+ * 1949:     function locDataCheck($locationData)
+ * 1965:     function sendFormmail()
+ * 2016:     function extractRecipientCopy($bodytext)
+ * 2031:     function checkJumpUrl()
+ * 2113:     function jumpUrl()
+ * 2157:     function setUrlIdToken()
  *
  *              SECTION: Page generation; cache handling
- * 2195:     function isGeneratePage()
- * 2205:     function tempPageCacheContent()
- * 2246:     function realPageCacheContent()
- * 2275:     function setPageCacheContent($c,$d,$t)
- * 2299:     function clearPageCacheContent()
- * 2309:     function clearPageCacheContent_pidList($pidList)
- * 2320:     function setSysLastChanged()
+ * 2200:     function isGeneratePage()
+ * 2210:     function tempPageCacheContent()
+ * 2251:     function realPageCacheContent()
+ * 2280:     function setPageCacheContent($c,$d,$t)
+ * 2304:     function clearPageCacheContent()
+ * 2314:     function clearPageCacheContent_pidList($pidList)
+ * 2325:     function setSysLastChanged()
  *
  *              SECTION: Page generation; rendering and inclusion
- * 2356:     function generatePage_preProcessing()
- * 2378:     function generatePage_whichScript()
- * 2390:     function generatePage_postProcessing()
- * 2482:     function INTincScript()
- * 2542:     function INTincScript_loadJSCode()
- * 2583:     function isINTincScript()
- * 2592:     function doXHTML_cleaning()
- * 2601:     function doLocalAnchorFix()
+ * 2361:     function generatePage_preProcessing()
+ * 2383:     function generatePage_whichScript()
+ * 2395:     function generatePage_postProcessing()
+ * 2487:     function INTincScript()
+ * 2547:     function INTincScript_loadJSCode()
+ * 2588:     function isINTincScript()
+ * 2597:     function doXHTML_cleaning()
+ * 2606:     function doLocalAnchorFix()
  *
  *              SECTION: Finished off; outputting, storing session data, statistics...
- * 2632:     function isOutputting()
- * 2655:     function processOutput()
+ * 2637:     function isOutputting()
+ * 2660:     function processOutput()
  * 2728:     function sendCacheHeaders()
- * 2795:     function isStaticCacheble()
- * 2808:     function contentStrReplace()
- * 2834:     function isEXTincScript()
- * 2843:     function storeSessionData()
- * 2853:     function setParseTime()
- * 2865:     function statistics()
- * 2973:     function previewInfo()
- * 3001:     function hook_eofe()
- * 3017:     function beLoginLinkIPList()
+ * 2796:     function isStaticCacheble()
+ * 2809:     function contentStrReplace()
+ * 2835:     function isEXTincScript()
+ * 2844:     function storeSessionData()
+ * 2854:     function setParseTime()
+ * 2866:     function statistics()
+ * 2974:     function previewInfo()
+ * 3002:     function hook_eofe()
+ * 3018:     function beLoginLinkIPList()
  *
  *              SECTION: Various internal API functions
- * 3072:     function makeSimulFileName($inTitle,$page,$type,$addParams='',$no_cache='')
- * 3119:     function simulateStaticDocuments_pEnc_onlyP_proc($linkVars)
- * 3148:     function getSimulFileName()
- * 3162:     function fileNameASCIIPrefix($inTitle,$titleChars,$mergeChar='.')
- * 3180:     function encryptEmail($string,$back=0)
- * 3206:     function codeString($string, $decode=FALSE)
- * 3232:     function roundTripCryptString($string)
- * 3252:     function checkFileInclude($incFile)
- * 3267:     function newCObj()
- * 3280:     function setAbsRefPrefix()
- * 3294:     function baseUrlWrap($url)
- * 3313:     function printError($label,$header='Error!')
- * 3324:     function updateMD5paramsRecord($hash)
- * 3335:     function tidyHTML($content)
- * 3361:     function prefixLocalAnchorsWithScript()
+ * 3073:     function makeSimulFileName($inTitle,$page,$type,$addParams='',$no_cache='')
+ * 3120:     function simulateStaticDocuments_pEnc_onlyP_proc($linkVars)
+ * 3149:     function getSimulFileName()
+ * 3163:     function fileNameASCIIPrefix($inTitle,$titleChars,$mergeChar='.')
+ * 3181:     function encryptEmail($string,$back=0)
+ * 3207:     function codeString($string, $decode=FALSE)
+ * 3233:     function roundTripCryptString($string)
+ * 3253:     function checkFileInclude($incFile)
+ * 3268:     function newCObj()
+ * 3281:     function setAbsRefPrefix()
+ * 3295:     function baseUrlWrap($url)
+ * 3314:     function printError($label,$header='Error!')
+ * 3325:     function updateMD5paramsRecord($hash)
+ * 3336:     function tidyHTML($content)
+ * 3362:     function prefixLocalAnchorsWithScript()
+ * 3373:     function workspacePreviewInit()
+ * 3382:     function doWorkspacePreview()
+ * 3392:     function whichWorkspace($returnTitle = FALSE)
  *
  *              SECTION: Various external API functions - for use in plugins etc.
- * 3405:     function getStorageSiterootPids()
- * 3420:     function getPagesTSconfig()
- * 3453:     function setJS($key,$content='')
- * 3491:     function setCSS($key,$content)
- * 3506:     function make_seed()
- * 3519:     function uniqueHash($str='')
- * 3528:     function set_no_cache()
- * 3538:     function set_cache_timeout_default($seconds)
- * 3554:     function plainMailEncoded($email,$subject,$message,$headers='')
+ * 3450:     function getStorageSiterootPids()
+ * 3465:     function getPagesTSconfig()
+ * 3498:     function setJS($key,$content='')
+ * 3536:     function setCSS($key,$content)
+ * 3551:     function make_seed()
+ * 3564:     function uniqueHash($str='')
+ * 3573:     function set_no_cache()
+ * 3583:     function set_cache_timeout_default($seconds)
+ * 3599:     function plainMailEncoded($email,$subject,$message,$headers='')
  *
  *              SECTION: Localization and character set conversion
- * 3595:     function sL($input)
- * 3624:     function readLLfile($fileRef)
- * 3635:     function getLLL($index,$LOCAL_LANG)
- * 3649:     function initLLvars()
- * 3683:     function csConv($str,$from='')
- * 3701:     function convOutputCharset($content,$label='')
- * 3714:     function convPOSTCharset()
+ * 3640:     function sL($input)
+ * 3669:     function readLLfile($fileRef)
+ * 3680:     function getLLL($index,$LOCAL_LANG)
+ * 3694:     function initLLvars()
+ * 3728:     function csConv($str,$from='')
+ * 3746:     function convOutputCharset($content,$label='')
+ * 3759:     function convPOSTCharset()
  *
- * TOTAL FUNCTIONS: 107
+ * TOTAL FUNCTIONS: 110
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -227,6 +230,7 @@
 	var $loginUser='';					// Global flag indicating that a front-end user is logged in. This is set only if a user really IS logged in. The group-list may show other groups (like added by IP filter or so) even though there is no user.
 	var $gr_list='';					// (RO=readonly) The group list, sorted numerically. Group '0,-1' is the default group, but other groups may be added by other means than a user being logged in though...
 	var $beUserLogin='';				// Flag that indicates if a Backend user is logged in!
+	var $workspacePreview='';			// Integer, that indicates which workspace is being previewed.
 	var $loginAllowedInBranch = TRUE;	// Shows whether logins are allowed in branch
 
 		// PREVIEW
@@ -676,24 +680,28 @@
 
 			// If there is a Backend login we are going to check for any preview settings:
 		$GLOBALS['TT']->push('beUserLogin','');
-		if ($this->beUserLogin)	{
-			$this->fePreview = $GLOBALS['BE_USER']->extGetFeAdminValue('preview') ? 1 : 0;
+		if ($this->beUserLogin || $this->doWorkspacePreview())	{
 
-				// If admin panel preview is enabled...
-			if ($this->fePreview)	{
-				$fe_user_OLD_USERGROUP = $this->fe_user->user['usergroup'];
+				// Backend user preview features:
+			if ($this->beUserLogin)	{
+				$this->fePreview = $GLOBALS['BE_USER']->extGetFeAdminValue('preview') ? 1 : 0;
 
-				$this->showHiddenPage = $GLOBALS['BE_USER']->extGetFeAdminValue('preview','showHiddenPages');
-				$this->showHiddenRecords = $GLOBALS['BE_USER']->extGetFeAdminValue('preview','showHiddenRecords');
-					// simulate date
-				$simTime = $GLOBALS['BE_USER']->extGetFeAdminValue('preview','simulateDate');
-				if ($simTime)	$GLOBALS['SIM_EXEC_TIME']=$simTime;
-					// simulate user
-				$simUserGroup = $GLOBALS['BE_USER']->extGetFeAdminValue('preview','simulateUserGroup');
-				$this->simUserGroup = $simUserGroup;
-				if ($simUserGroup)	$this->fe_user->user['usergroup']=$simUserGroup;
-				if (!$simUserGroup && !$simTime && !$this->showHiddenPage && !$this->showHiddenRecords)	{
-					$this->fePreview=0;
+					// If admin panel preview is enabled...
+				if ($this->fePreview)	{
+					$fe_user_OLD_USERGROUP = $this->fe_user->user['usergroup'];
+
+					$this->showHiddenPage = $GLOBALS['BE_USER']->extGetFeAdminValue('preview','showHiddenPages');
+					$this->showHiddenRecords = $GLOBALS['BE_USER']->extGetFeAdminValue('preview','showHiddenRecords');
+						// simulate date
+					$simTime = $GLOBALS['BE_USER']->extGetFeAdminValue('preview','simulateDate');
+					if ($simTime)	$GLOBALS['SIM_EXEC_TIME']=$simTime;
+						// simulate user
+					$simUserGroup = $GLOBALS['BE_USER']->extGetFeAdminValue('preview','simulateUserGroup');
+					$this->simUserGroup = $simUserGroup;
+					if ($simUserGroup)	$this->fe_user->user['usergroup']=$simUserGroup;
+					if (!$simUserGroup && !$simTime && !$this->showHiddenPage && !$this->showHiddenRecords)	{
+						$this->fePreview=0;
+					}
 				}
 			}
 
@@ -702,14 +710,14 @@
 					// Now it's investigated if the raw page-id points to a hidden page and if so, the flag is set.
 					// This does not require the preview flag to be set in the admin panel
 				$idQ = t3lib_div::testInt($this->id) ? 'uid='.intval($this->id) : 'alias='.$GLOBALS['TYPO3_DB']->fullQuoteStr($this->id, 'pages').' AND pid>=0';	// pid>=0 added for the sake of versioning...
-				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('hidden', 'pages', $idQ.' AND hidden!=0 AND deleted=0');	// versionOL()? - decided to leave it be for now...
+				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('hidden', 'pages', $idQ.' AND hidden!=0 AND deleted=0');
 				if ($GLOBALS['TYPO3_DB']->sql_num_rows($res))	{
 					$this->fePreview = 1;	// The preview flag is set only if the current page turns out to actually be hidden!
 					$this->showHiddenPage = 1;
 				}
 
 					// For Live workspace: Check root line for proper connection to tree root (done because of possible preview of page / branch versions)
-				if (!$this->fePreview && $GLOBALS['BE_USER']->workspace==0)	{
+				if (!$this->fePreview && $this->whichWorkspace()===0)	{
 
 						// Initialize the page-select functions to check rootline:
 					$temp_sys_page = t3lib_div::makeInstance('t3lib_pageSelect');
@@ -729,7 +737,7 @@
 			}
 
 				// The preview flag will be set if a backend user is in an offline workspace
-			if (($GLOBALS['BE_USER']->user['workspace_preview'] || t3lib_div::_GP('ADMCMD_view')) && ($GLOBALS['BE_USER']->workspace==-1 || $GLOBALS['BE_USER']->workspace>0))	{
+			if (($GLOBALS['BE_USER']->user['workspace_preview'] || t3lib_div::_GP('ADMCMD_view') || $this->doWorkspacePreview()) && ($this->whichWorkspace()===-1 || $this->whichWorkspace()>0))	{
 				$this->fePreview = 2;	// Will show special preview message.
 			}
 
@@ -805,7 +813,7 @@
 			// Initialize the page-select functions.
 		$this->sys_page = t3lib_div::makeInstance('t3lib_pageSelect');
 		$this->sys_page->versioningPreview = $this->fePreview ? TRUE : FALSE;
-		$this->sys_page->versioningWorkspaceId = $GLOBALS['BE_USER']->workspace;
+		$this->sys_page->versioningWorkspaceId = $this->whichWorkspace();
 		$this->sys_page->init($this->showHiddenPage);
 
 			// Set the valid usergroups for FE
@@ -2703,13 +2711,8 @@ if (version == "n3") {
 			}
 		}
 
-/*		if ($this->beUserLogin && t3lib_div::_GP('ADMCMD_view'))	{		// This is a try to change target=_top to target=_self if pages are shown in the Web>View module...
-			$this->content = str_replace('target="_top"','target="_self"',$this->content);
-			$this->content = str_replace('target=_top','target="_self"',$this->content);
-		}*/
-
 			// Send content-lenght header. Notice that all HTML content outside the length of the content-length header will be cut off! Therefore content of unknown length from included PHP-scripts and if admin users are logged in (admin panel might show...) we disable it!
-		if ($this->config['config']['enableContentLengthHeader'] && !$this->isEXTincScript() && !$this->beUserLogin)	{
+		if ($this->config['config']['enableContentLengthHeader'] && !$this->isEXTincScript() && !$this->beUserLogin && !$this->doWorkspacePreview())	{
 			header('Content-Length: '.strlen($this->content));
 		}
 	}
@@ -2732,6 +2735,7 @@ if (version == "n3") {
 			// Finally, when backend users are logged in, do not send cache headers at all (Admin Panel might be displayed for instance).
 		if ($doCache
 				&& !$this->beUserLogin
+				&& !$this->doWorkspacePreview()
 				&& $loginsDeniedCfg)	{
 
 				// Build headers:
@@ -2970,7 +2974,7 @@ if (version == "n3") {
 		if ($this->fePreview)	{
 
 				if ($this->fePreview==2)	{
-					$text = $GLOBALS['BE_USER']->workspaceRec['title'] ? 'Preview of workspace "'.$GLOBALS['BE_USER']->workspaceRec['title'].'" ('.$GLOBALS['BE_USER']->workspace.')' : 'Offline Workspace (-1)';
+					$text = 'Preview of workspace "'.$this->whichWorkspace(TRUE).'" ('.$this->whichWorkspace().')';
 				} else {
 					$text = 'PREVIEW!';
 				}
@@ -3359,7 +3363,53 @@ if (version == "n3") {
 		$this->content = eregi_replace('(<(a|area)[[:space:]]+href=")(#[^"]*")','\1'.htmlspecialchars($scriptPath).'\3',$this->content);
 	}
 
+	/**
+	 * Initialize workspace preview
+	 * STILL VERY TEMPORARY - MUST INCLUDE SECURITY of some sort.
+	 *
+	 * @return	void
+	 */
+	function workspacePreviewInit()	{
+		if ($this->beUserLogin && is_object($GLOBALS['BE_USER']) && t3lib_div::testInt(t3lib_div::_GP('ADMCMD_previewWS')))	{
+			$this->workspacePreview = intval(t3lib_div::_GP('ADMCMD_previewWS'));
+		}
+	}
 
+	/**
+	 * Returns true if workspace preview is enabled
+	 *
+	 * @return	boolean		Returns true if workspace preview is enabled
+	 */
+	function doWorkspacePreview()	{
+		return (string)$this->workspacePreview!=='';
+	}
+
+	/**
+	 * Returns the name of the workspace
+	 *
+	 * @param	boolean		If set, returns title of current workspace being previewed
+	 * @return	mixed		If $returnTitle is set, returns string (title), otherwise workspace integer for which workspace is being preview. False if none.
+	 */
+	function whichWorkspace($returnTitle = FALSE)	{
+		if ($this->doWorkspacePreview())	{
+			$ws = intval($this->workspacePreview);
+		} elseif ($this->beUserLogin) {
+			$ws = $GLOBALS['BE_USER']->workspace;
+		} else return FALSE;
+
+		if ($returnTitle)	{
+			if ($ws===-1)	{
+				return 'Default Draft Workspace';
+			} else {
+				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('title', 'sys_workspace', 'uid='.intval($ws));
+				if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
+					return $row['title'];
+				}
+			}
+		} else {
+			return $ws;
+		}
+	}
 
 
 

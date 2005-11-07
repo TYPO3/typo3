@@ -126,6 +126,7 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 	var $pageModule = '';
 	var $publishAccess = FALSE;
 	var $be_user_Array = array();
+	var $stageIndex = array();
 
 
 	/*********************************
@@ -153,10 +154,10 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 				0 => 'All',
 			),
 			'display' => array(
-				0 => '[ONLINE]',
-				-98 => 'Workspaces',
+				0 => '[Live workspace]',
+				-98 => 'Draft Workspaces',
 				-99 => 'All',
-				-1 => '[Offline]'
+				-1 => '[Default Draft]'
 			),
 			'diff' => array(
 				0 => 'No diff.',
@@ -461,8 +462,8 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 		$tableRows[] = '
 			<tr class="bgColor5 tableheader">
 				<td nowrap="nowrap" width="100">Pagetree:</td>
-				<td nowrap="nowrap" colspan="2">Online Version:</td>
-				<td nowrap="nowrap" colspan="2">Offline Versions:</td>
+				<td nowrap="nowrap" colspan="2">Live Version:</td>
+				<td nowrap="nowrap" colspan="2">Draft Versions:</td>
 				<td nowrap="nowrap">Stage:</td>
 				<td nowrap="nowrap">Publish:</td>
 				<td>Lifecycle:</td>
@@ -473,7 +474,6 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 		$tableRows = array_merge($tableRows, $this->displayWorkspaceOverview_list($pArray));
 
 		$table = '<table border="0" cellpadding="0" cellspacing="1" class="lrPadding workspace-overview">'.implode('',$tableRows).'</table>';
-
 
 		return $table.$this->markupNewOriginals();
 	}
@@ -762,8 +762,11 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 					'<a href="#" onclick="'.htmlspecialchars($onClick).'">'.
 					'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/up.gif','width="14" height="14"').' alt="" align="top" title="'.htmlspecialchars($titleAttrib).'" />'.
 					'</a>';
+
+				$this->stageIndex[$sId][$table][] = $rec_off['uid'];
 			}
 		}
+
 		return $actionLinks;
 	}
 
@@ -1345,7 +1348,7 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 		if (!isset($this->formatWorkspace_cache[$wsid]))	{
 			switch($wsid)	{
 				case -1:
-					$this->formatWorkspace_cache[$wsid] = '[Offline]';
+					$this->formatWorkspace_cache[$wsid] = '[Draft]';
 				break;
 				case 0:
 					$this->formatWorkspace_cache[$wsid] = '';	// Does not output anything for ONLINE because it might confuse people to think that the elemnet IS online which is not the case - only that it exists as an offline version in the online workspace...
@@ -1427,7 +1430,7 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 		$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
 			'log_data,tstamp,userid',
 			'sys_log',
-			'action=6
+			'action=6 and details_nr=30
 				AND tablename='.$GLOBALS['TYPO3_DB']->fullQuoteStr($table,'sys_log').'
 				AND recuid='.intval($id)
 		);

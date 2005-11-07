@@ -172,6 +172,7 @@ if (is_array($TYPO3_CONF_VARS['SC_OPTIONS']['tslib/index_ts.php']['preBeUser']))
 	}
 }
 
+
 // *********
 // BE_USER
 // *********
@@ -249,6 +250,12 @@ if ($_COOKIE['be_typo_user']) {		// If the backend cookie is set, we proceed and
 }
 
 
+// ********************
+// Workspace preview:
+// ********************
+$TSFE->workspacePreviewInit();
+
+
 // *****************************************
 // Proces the ID, type and other parameters
 // After this point we have an array, $page in TSFE, which is the page-record of the current page, $id
@@ -259,7 +266,7 @@ $TT->push('Process ID','');
 	$TSFE->determineId();
 
 		// Now, if there is a backend user logged in and he has NO access to this page, then re-evaluate the id shown!
-	if ($TSFE->beUserLogin && !$BE_USER->extPageReadAccess($TSFE->page))	{
+	if ($TSFE->beUserLogin && (!$BE_USER->extPageReadAccess($TSFE->page) || t3lib_div::_GP('ADMCMD_noBeUser')))	{	// t3lib_div::_GP('ADMCMD_noBeUser') is placed here because workspacePreviewInit() might need to know if a backend user is logged in!
 
 			// Remove user
 		unset($BE_USER);

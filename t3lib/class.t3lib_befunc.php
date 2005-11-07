@@ -1618,6 +1618,9 @@ class t3lib_BEfunc	{
 		$parts[] = 'id='.$row['uid'];
 		if ($row['alias'])	$parts[]=$LANG->sL($TCA['pages']['columns']['alias']['label']).' '.$row['alias'];
 		if ($row['pid']<0)	$parts[] = 'v#1.'.$row['t3ver_id'];
+		if ($row['t3ver_state']==1)	$parts[] = 'PLH WSID#'.$row['t3ver_wsid'];
+		if ($row['t3ver_state']==-1)	$parts[] = 'New element!';
+
 		if ($row['doktype']=='3')	{
 			$parts[]=$LANG->sL($TCA['pages']['columns']['url']['label']).' '.$row['url'];
 		} elseif ($row['doktype']=='4')	{
@@ -1684,6 +1687,11 @@ class t3lib_BEfunc	{
 			if ($GLOBALS['TCA'][$table]['ctrl']['versioningWS'] && $row['pid']<0)	{
 				$out.=' - v#1.'.$row['t3ver_id'];
 			}
+			if ($GLOBALS['TCA'][$table]['ctrl']['versioningWS'])	{
+				if ($row['t3ver_state']==1)	$out.= ' - PLH WSID#'.$row['t3ver_wsid'];
+				if ($row['t3ver_state']==-1)	$out.= ' - New element!';
+			}
+
 			if ($ctrl['disabled'])	{		// Hidden ...
 				$out.=($row[$ctrl['disabled']]?' - '.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.hidden'):'');
 			}
@@ -1972,6 +1980,7 @@ class t3lib_BEfunc	{
 		if ($TCA[$table]['ctrl']['versioningWS'])	{
 			$fields[] = $prefix.'t3ver_id';
 			$fields[] = $prefix.'t3ver_state';
+			$fields[] = $prefix.'t3ver_wsid';
 		}
 
 		if ($TCA[$table]['ctrl']['selicon_field'])	$fields[] = $prefix.$TCA[$table]['ctrl']['selicon_field'];
@@ -2208,14 +2217,19 @@ class t3lib_BEfunc	{
 		if ($altUrl)	{
 			$url = $altUrl;
 		} else {
-			if ($rootLine)	{
-				$parts = parse_url(t3lib_div::getIndpEnv('TYPO3_SITE_URL'));
-				if (t3lib_BEfunc::getDomainStartPage($parts['host'],$parts['path']))	{
-					$preUrl_temp = t3lib_BEfunc::firstDomainRecord($rootLine);
+
+			if ($GLOBALS['BE_USER']->workspace!=0 && t3lib_extMgm::isLoaded('viewpage'))	{
+				$url = t3lib_div::getIndpEnv('TYPO3_SITE_URL').TYPO3_mainDir.'mod/user/ws/wsol_preview.php?id='.$id.$addGetVars.$anchor;
+			} else {
+				if ($rootLine)	{
+					$parts = parse_url(t3lib_div::getIndpEnv('TYPO3_SITE_URL'));
+					if (t3lib_BEfunc::getDomainStartPage($parts['host'],$parts['path']))	{
+						$preUrl_temp = t3lib_BEfunc::firstDomainRecord($rootLine);
+					}
 				}
+				$preUrl = $preUrl_temp ? (t3lib_div::getIndpEnv('TYPO3_SSL') ? 'https://' : 'http://').$preUrl_temp : $backPath.'..';
+				$url = $preUrl.'/index.php?id='.$id.$addGetVars.$anchor;
 			}
-			$preUrl = $preUrl_temp ? (t3lib_div::getIndpEnv('TYPO3_SSL') ? 'https://' : 'http://').$preUrl_temp : $backPath.'..';
-			$url = $preUrl.'/index.php?id='.$id.$addGetVars.$anchor;
 		}
 
 		return "previewWin=window.open('".$url."','newTypo3FrontendWindow','status=1,menubar=1,resizable=1,location=1,scrollbars=1,toolbar=1');".
@@ -3216,7 +3230,20 @@ class t3lib_BEfunc	{
 		return $output;
 	}
 
-
+	/**
+	 * Performs mapping of new uids to new versions UID in case of import inside a workspace.
+	 *
+	 * @param	string		Table name
+	 * @param	integer		Record uid (of live record placeholder)
+	 * @return	integer		Uid of offline version if any, otherwise live uid.
+	 */
+	function wsMapId($table,$uid)	{
+		if ($wsRec = t3lib_BEfunc::getWorkspaceVersionOfRecord($GLOBALS['BE_USER']->workspace,$table,$uid,'uid'))	{
+			return $wsRec['uid'];
+		} else {
+			return $uid;
+		}
+	}
 
 
 

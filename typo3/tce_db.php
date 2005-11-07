@@ -89,6 +89,7 @@ class SC_tce_db {
 	var $CB;			// Clipboard command array. May trigger changes in "cmd"
 	var $vC;			// Verification code
 	var $uPT;			// Boolean. Update Page Tree Trigger. If set and the manipulated records are pages then the update page tree signal will be set.
+	var $generalComment;	// String, general comment (for raising stages of workspace versions)
 
 		// Internal, dynamic:
 	var $include_once=array();		// Files to include after init() function is called:
@@ -117,10 +118,12 @@ class SC_tce_db {
 		$this->CB = t3lib_div::_GP('CB');
 		$this->vC = t3lib_div::_GP('vC');
 		$this->uPT = t3lib_div::_GP('uPT');
+		$this->generalComment = t3lib_div::_GP('generalComment');
 
 			// Creating TCEmain object
 		$this->tce = t3lib_div::makeInstance('t3lib_TCEmain');
 		$this->tce->stripslashes_values=0;
+		$this->tce->generalComment = $this->generalComment;
 
 			// Configuring based on user prefs.
 		if ($BE_USER->uc['recursiveDelete'])	{

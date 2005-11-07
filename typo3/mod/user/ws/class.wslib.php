@@ -77,7 +77,7 @@ class wslib {
 	 * @param	boolean		If set, then the currently online versions are swapped into the workspace in exchange for the offline versions. Otherwise the workspace is emptied.
 	 * @return	array		Command array for tcemain
 	 */
-	function getCmdArrayForPublishWS($wsid, $doSwap)	{
+	function getCmdArrayForPublishWS($wsid, $doSwap,$pageId=0)	{
 
 		$wsid = intval($wsid);
 		$cmd = array();
@@ -94,7 +94,7 @@ class wslib {
 			}
 
 				// Select all versions to swap:
-			$versions = $this->selectVersionsInWorkspace($wsid,0,$stage);
+			$versions = $this->selectVersionsInWorkspace($wsid,0,$stage,($pageId?$pageId:-1));
 
 				// Traverse the selection to build CMD array:
 			foreach($versions as $table => $records)	{

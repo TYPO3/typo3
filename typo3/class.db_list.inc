@@ -682,6 +682,7 @@ class recordList extends t3lib_recordList {
 				if ($TCA[$table]['ctrl']['versioningWS'])	{
 					$fieldListArr[]='t3ver_id';
 					$fieldListArr[]='t3ver_state';
+					$fieldListArr[]='t3ver_wsid';
 					if ($table==='pages')	{
 						$fieldListArr[]='t3ver_swapmode';
 					}

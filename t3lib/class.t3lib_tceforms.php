@@ -3686,6 +3686,7 @@ class t3lib_TCEforms	{
 
 			// Traverse the selected rows to add them:
 		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
+			t3lib_BEfunc::workspaceOL($f_table, $row);
 				// Prepare the icon if available:
 			if ($iField && $iPath && $row[$iField])	{
 				$iParts = t3lib_div::trimExplode(',',$row[$iField],1);

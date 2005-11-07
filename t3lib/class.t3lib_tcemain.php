@@ -243,6 +243,7 @@ class t3lib_TCEmain	{
 	var $bypassWorkspaceRestrictions = FALSE;	// Boolean: If true, workspace restrictions are bypassed on edit an create actions (process_datamap()). YOU MUST KNOW what you do if you use this feature!
 
 	var $copyWhichTables = '*';				// String. Comma-list. This list of tables decides which tables will be copied. If empty then none will. If '*' then all will (that the user has permission to of course)
+	var $generalComment = '';				// General comment, eg. for staging in workspaces.
 
 	var $copyTree = 0;						// Integer. If 0 then branch is NOT copied. If 1 then pages on the 1st level is copied. If 2 then pages on the second level is copied ... and so on
 
@@ -753,6 +754,7 @@ class t3lib_TCEmain	{
 											$fieldArray['pid'] = -1;
 											$fieldArray['t3ver_oid'] = $this->substNEWwithIDs[$id];
 											$fieldArray['t3ver_id'] = 1;
+											$fieldArray['t3ver_state'] = -1;	// Setting placeholder state value for version (so it can know it is currently a new version...)
 											$fieldArray['t3ver_label'] = 'First draft version';
 											$fieldArray['t3ver_wsid'] = $this->BE_USER->workspace;
 											if ($table==='pages') {		// Swap mode set to "branch" so we can build branches for pages.
@@ -2118,7 +2120,10 @@ class t3lib_TCEmain	{
 										$this->version_clearWSID($table,$id);
 									break;
 									case 'setStage':
-										$this->version_setStage($table,$id,$value['stageId'],$value['comment']);
+										$idList = t3lib_div::trimExplode(',',$id,1);
+										foreach($idList as $id)	{
+											$this->version_setStage($table,$id,$value['stageId'],$value['comment']?$value['comment']:$this->generalComment);
+										}
 									break;
 								}
 							break;
@@ -3368,7 +3373,7 @@ class t3lib_TCEmain	{
 										$sArray['t3ver_oid'] = intval($id);
 										$sArray['t3ver_wsid'] = $swapIntoWS ? intval($curVersion['t3ver_wsid']) : 0;
 										$sArray['t3ver_tstamp'] = time();
-										$sArray['t3ver_stage'] = 0;
+										$sArray['t3ver_stage'] = $sArray['t3ver_state'] = 0;
 										$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table,'uid='.intval($swapWith),$sArray);
 										if ($GLOBALS['TYPO3_DB']->sql_error())	$sqlErrors[]=$GLOBALS['TYPO3_DB']->sql_error();
 
@@ -3380,7 +3385,7 @@ class t3lib_TCEmain	{
 										$sArray['t3ver_wsid'] = $swapIntoWS ? intval($swapVersion['t3ver_wsid']) : 0;
 										$sArray['t3ver_tstamp'] = time();
 										$sArray['t3ver_count'] = $curVersion['t3ver_count']+1;	// Increment lifecycle counter
-										$sArray['t3ver_stage'] = 0;
+										$sArray['t3ver_stage'] = $sArray['t3ver_state'] = 0;
 
 										if ($table==='pages') {		// Keeping the swapmode state
 											$sArray['t3ver_swapmode'] = $swapVersion['t3ver_swapmode'];
@@ -3491,8 +3496,8 @@ class t3lib_TCEmain	{
 				$sArray['t3ver_stage'] = $stageId;
 				$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table, 'uid='.intval($id), $sArray);
 				$this->newlog('Stage for record was changed to '.$stageId.'. Comment was: "'.substr($comment,0,100).'"');
-// TEMPORARY:
-$this->log($table,$id,6,0,0,'Stage raised...',-1,array('comment'=>$comment,'stage'=>$stageId));
+// TEMPORARY, except 6-30 as action/detail number which is observed elsewhere!
+$this->log($table,$id,6,0,0,'Stage raised...',30,array('comment'=>$comment,'stage'=>$stageId));
 
 				if ((int)$stat['stagechg_notification']>0)	{
 					$this->notifyStageChange($stat,$stageId,$table,$id,$comment);
