@@ -1,3 +1,7 @@
+2005-11-09	Ingmar Schlecht	<ingmar@typo3.org>
+
+	* Made TCEForms put <label> tags around icons for moving/deleting repetitive Flexform items
+
 2005-11-01	Robert Lemke	<robert@typo3.org>
 
 	* Added an is_array() check in t3lib_div::resolveSheetDefInDS() to prevent a fatal error in certain circumstances
