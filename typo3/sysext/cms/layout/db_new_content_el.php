@@ -561,6 +561,7 @@ Contact me: | tv=check | 1
 			// Load full table definition:
 		t3lib_div::loadTCA('tt_content');
 
+		$headersUsed = Array();
 			// Traverse wizard items:
 		foreach($wizardItems as $key => $cfg)	{
 
@@ -593,9 +594,18 @@ Contact me: | tv=check | 1
 						} else {
 								// Add the parameter:
 							$wizardItems[$key]['params'].= '&defVals[tt_content]['.$fN.']='.rawurlencode($fV);
+							$tmp = explode('_', $key);
+							$headersUsed[$tmp[0]] = $tmp[0];
 						}
 					}
 				}
+			}
+		}
+			// remove headers without elements
+		foreach ($wizardItems as $key => $cfg)	{
+			$tmp = explode('_',$key);
+			if (count($tmp) == 2 && !$tmp[1] && !in_array($tmp[0], $headersUsed))	{
+				unset($wizardItems[$key]);
 			}
 		}
 	}

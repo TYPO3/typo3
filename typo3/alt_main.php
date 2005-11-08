@@ -173,6 +173,7 @@ class SC_alt_main {
 		this.openRefreshWindow = busy_OpenRefreshWindow;
 		this.busyloadTime=0;
 		this.openRefreshW=0;
+		this.reloginCancelled=0;
 	}
 	function busy_loginRefreshed()	{	//
 		var date = new Date();
@@ -182,7 +183,7 @@ class SC_alt_main {
 	function busy_checkLoginTimeout()	{	//
 		var date = new Date();
 		var theTime = Math.floor(date.getTime()/1000);
-		if (theTime > this.busyloadTime+'.intval($BE_USER->auth_timeout_field).'-10)	{
+		if (theTime > this.busyloadTime+'.intval($BE_USER->auth_timeout_field).'-30)	{
 			return true;
 		}
 	}
@@ -192,10 +193,11 @@ class SC_alt_main {
 		this.openRefreshW=1;
 	}
 	function busy_checkLoginTimeout_timer()	{	//
-
-		if (busy.checkLoginTimeout())	{
-			if (!busy.openRefreshW && confirm('.$GLOBALS['LANG']->JScharCode($LANG->sL('LLL:EXT:lang/locallang_core.php:mess.refresh_login')).'))	{
+		if (busy.checkLoginTimeout() && !busy.reloginCancelled && !busy.openRefreshW)	{
+			if (confirm('.$GLOBALS['LANG']->JScharCode($LANG->sL('LLL:EXT:lang/locallang_core.php:mess.refresh_login')).'))	{
 				busy.openRefreshWindow();
+			} else	{
+				busy.reloginCancelled = 1;
 			}
 		}
 		window.setTimeout("busy_checkLoginTimeout_timer();",2*1000);	// Each 2nd second is enough for checking. The popup will be triggered 10 seconds before the login expires (see above, busy_checkLoginTimeout())

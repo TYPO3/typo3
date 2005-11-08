@@ -1035,7 +1035,7 @@ class SC_mod_tools_be_user_index {
 			function jumpToUrl(URL)	{	//
 				document.location = URL;
 			}
-		');
+		' . $this->doc->redirectUrls());
 	}
 
 	/**
@@ -1247,7 +1247,13 @@ class SC_mod_tools_be_user_index {
 				// Header:
 			$allCells = array();
 			reset($options);
-			$allCells['USERS'] = '<b>Usernames:</b>';
+			
+			$link_createNewUser='<a href="#" onclick="'.htmlspecialchars(t3lib_BEfunc::editOnClick('&edit[be_users][0]=new',$this->doc->backPath,-1)).'">'.
+				'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/new_el.gif','width="11" height="12"').' title="'.$GLOBALS['LANG']->getLL('new',1).'" alt="" />'.
+				'</a>';
+			
+			$allCells['USERS'] = '<table border="0" cellspacing="0" cellpadding="0" width="100%"><td><b>Usernames:</b></td><td width="12">'.$link_createNewUser.'</td></tr></table>';
+
 			while(list($kk,$vv)=each($options))	{
 				if ($compareFlags[$kk])	{
 					$allCells[$kk] = '<b>'.$vv.':</b>';

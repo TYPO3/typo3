@@ -125,6 +125,13 @@ class tx_wizardcrpages_webfunc_2 extends t3lib_extobjbase {
 					$tce = t3lib_div::makeInstance('t3lib_TCEmain');
 					$tce->stripslashes_values=0;
 					$tce->reverseOrder=1;
+
+						// set default TCA values specific for the user
+					$TCAdefaultOverride = $GLOBALS['BE_USER']->getTSConfigProp('TCAdefaults');
+					if (is_array($TCAdefaultOverride))	{
+						$tce->setDefaultsFromUserTS($TCAdefaultOverride);
+					}
+
 					$tce->start($data,array());
 					$tce->process_datamap();
 					t3lib_BEfunc::getSetUpdateSignal('updatePageTree');

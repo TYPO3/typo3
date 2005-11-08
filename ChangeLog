@@ -1,3 +1,11 @@
+2005-11-08	Sebastian Kurfuerst	<sebastian@garbage-group.de>
+
+	* Fixed bug #586: User Admin can't create new user
+	* Fixed bug #1293: TCAdefaults.pages.doktype is not recognized by the wizard "Create new pages"
+	* Fixed bug #1407: clearCache doesn't work when deleting records
+	* Fixed bug #1570: on timeout in BE, popup appears all the time when clicking no
+	* Fixed bug #1571: make new content element wizard easier to use
+
 2005-11-09	Ingmar Schlecht	<ingmar@typo3.org>
 
 	* Made TCEForms put <label> tags around icons for moving/deleting repetitive Flexform items

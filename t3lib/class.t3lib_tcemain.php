@@ -2988,6 +2988,8 @@ class t3lib_TCEmain	{
 		$uid = intval($uid);
 		if ($TCA[$table] && $uid)	{
 			if ($noRecordCheck || $this->doesRecordExist($table,$uid,'delete'))	{
+				$this->clear_cache($table,$uid);	// clear cache before deleting the record, else the correct page cannot be identified by clear_cache
+
 				$deleteRow = $TCA[$table]['ctrl']['delete'];
 				if ($deleteRow && !$forceHardDelete)	{
 					$updateFields = array(
@@ -3025,7 +3027,6 @@ class t3lib_TCEmain	{
 					$this->log($table,$uid,3,0,100,$GLOBALS['TYPO3_DB']->sql_error());
 				}
 
-				$this->clear_cache($table,$uid);	// clear cache
 			} else $this->log($table,$uid,3,0,1,'Attempt to delete record without delete-permissions');
 		}
 	}
