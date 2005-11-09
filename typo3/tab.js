@@ -36,7 +36,6 @@ function changeTextareaElements()	{
 		} else {
 			document.textAreas[i].textAreaID = i;
 			makeAdvancedTextArea(document.textAreas[i]);
-			document.textAreas[i].focus();
 		}
 	}
 }
