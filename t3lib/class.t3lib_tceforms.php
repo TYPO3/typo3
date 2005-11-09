@@ -2126,7 +2126,7 @@ class t3lib_TCEforms	{
 								}
 							}
 						} else {
-							$idTagPrefix = uniqid('id',true); // ID tags are used for the move and delete checkboxes for referencing to them in the label tag (<label for="the form field id">) that's rendered around the icons
+							$idTagPrefix = uniqid('id',true); // ID attributes are used for the move and delete checkboxes for referencing to them in the label tag (<label for="the form field id">) that's rendered around the icons
 
 								// Put row together
 							$tRows[]='<tr class="bgColor2">
