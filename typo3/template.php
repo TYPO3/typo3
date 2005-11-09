@@ -116,7 +116,7 @@
 
 if (!defined('TYPO3_MODE'))	die("Can't include this file directly.");
 
-
+require_once(PATH_t3lib.'class.t3lib_ajax.php');
 
 
 
@@ -288,8 +288,8 @@ class template {
 	 * @return	string		The link-wrapped input string.
 	 */
 	function wrapClickMenuOnIcon($str,$table,$uid='',$listFr=1,$addParams='',$enDisItems='', $returnOnClick=FALSE)	{
-		$backPath = '&backPath='.rawurlencode($this->backPath).'|'.t3lib_div::shortMD5($this->backPath.'|'.$GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']);
-		$onClick = 'top.loadTopMenu(\''.$this->backPath.'alt_clickmenu.php?item='.rawurlencode($table.'|'.$uid.'|'.$listFr.'|'.$enDisItems).$backPath.$addParams.'\');'.$this->thisBlur().'return false;';
+		$backPath = rawurlencode($this->backPath).'|'.t3lib_div::shortMD5($this->backPath.'|'.$GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']);
+		$onClick = 'showClickmenu("'.$table.'","'.$uid.'","'.$listFr.'","'.$enDisItems.'","'.str_replace('&','&amp;',addcslashes($backPath,'"')).'","'.str_replace('&','&amp;',addcslashes($addParams,'"')).'");return false;';
 		return $returnOnClick ? $onClick : '<a href="#" onclick="'.htmlspecialchars($onClick).'"'.($GLOBALS['TYPO3_CONF_VARS']['BE']['useOnContextMenuHandler'] ? ' oncontextmenu="'.htmlspecialchars($onClick).'"' : '').'>'.$str.'</a>';
 	}
 
@@ -1231,10 +1231,46 @@ $str.=$this->docBodyTagBegin().
 	 * @return	array		If values are present: [0] = A <script> section for the HTML page header, [1] = onmousemove/onload handler for HTML tag or alike, [2] = Two empty <div> layers for the context menu
 	 */
 	function getContextMenuCode()	{
-		if ($this->isCMlayers())	{
-			$content='
+		$content = '
 			<script type="text/javascript">
 			/*<![CDATA[*/
+					// is called from most clickmenu links
+				function showClickmenu(table, uid, listFr, enDisItems, backPath, addParams)	{
+					var url = "'.$this->backPath.'alt_clickmenu.php?table=" + table
+					          + "&uid=" + uid
+										+ "&listFr=" + listFr
+										+ "&enDisItems=" + enDisItems
+										+ "&backPath=" + backPath
+										+ "&addParams=" + addParams;
+
+					showClickmenu_raw(url);
+				}
+					// switch - either forwards call to ajax or does the request in the top frame
+				function showClickmenu_raw(url)	{';
+		if($this->isCMlayers()) { // ajax
+			$content .= '
+					url += "&ajax=1";
+					ajax_doRequest(url);';
+		} else { // no ajax
+			$content .= '
+					showClickmenu_noajax(url);';
+		}
+		$content .= '
+				}
+				function showClickmenu_noajax(url)	{
+					top.loadTopMenu(url);
+				}';
+		if ($this->isCMlayers())	{
+			$content .= t3lib_ajax::getJScode('showClickmenu_ajax', 'showClickmenu_noajax');
+			$content.='
+					// opens the clickmenu, is called from ajax_doRequest
+				function showClickmenu_ajax(t3ajax)	{
+					var clickmenu = t3ajax.getElementsByTagName("data")[0].getElementsByTagName("clickmenu")[0];
+					var tableData = clickmenu.getElementsByTagName("htmltable")[0].firstChild.data;
+					var cmlevel = clickmenu.getElementsByTagName("cmlevel")[0].firstChild.data;
+					setLayerObj(tableData,cmlevel);
+				}
+
 				var GLV_gap=10;
 				var GLV_curLayerX=new Array(0,0);
 				var GLV_curLayerY=new Array(0,0);
@@ -1390,16 +1426,19 @@ $str.=$this->docBodyTagBegin().
 							}
 						}
 					}
-				}
-			/*]]>*/
-			</script>
-			';
+				}';
+			$content.='	/*]]>*/
+				</script>';
 			return array(
 				$content,
 				' onmousemove="GL_getMouse(event);" onload="initLayer();"',
 				'<div id="contentMenu0" style="z-index:1; position:absolute;visibility:hidden"></div><div id="contentMenu1" style="z-index:2; position:absolute;visibility:hidden"></div>'
 			);
-		} else return array('','','');
+		} else {
+			$content.='	/*]]>*/
+				</script>';
+			return array($content,'','');
+		}
 	}
 
 	/**

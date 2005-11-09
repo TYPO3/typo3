@@ -426,6 +426,26 @@ class t3lib_pageSelect {
 					} else unset($row);	// If the mount point could not be fetched with respect to enableFields, unset the row so it does not become a part of the menu!
 				}
 
+					// if shortcut, look up if the target exists and is currently visible
+				if ($row['doktype'] == 4 && ($row['shortcut'] || $row['shortcut_mode']))	{
+					if ($row['shortcut_mode'] == 0)	{
+						$searchField = 'uid';
+						$searchUid = intval($row['shortcut']);
+					} else { // check subpages - first subpage or random subpage
+						$searchField = 'pid';
+							// If a shortcut mode is set and no valid page is given to select subpags from use the actual page.
+						$searchUid = intval($row['shortcut'])?intval($row['shortcut']):$row['uid'];
+					}
+					$res2 = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', 'pages', $searchField.'='.$searchUid.$this->where_hid_del.$this->where_groupAccess.' '.$addWhere, '', $sortField);
+					if (!$GLOBALS['TYPO3_DB']->sql_num_rows($res2))	{
+						unset($row);
+					}
+					$GLOBALS['TYPO3_DB']->sql_free_result($res2);
+				} elseif ($row['doktype'] == 4)	{
+						// Neither shortcut target nor mode is set. Remove the page from the menu.
+					unset($row);
+				}
+
 					// Add to output array after overlaying language:
 				if (is_array($row))	{
 					$output[$origUid] = $this->getPageOverlay($row);

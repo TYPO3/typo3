@@ -1,3 +1,8 @@
+2005-11-09	Sebastian Kurfuerst	<sebastian@garbage-group.de>
+
+	* New feature #1577: display clickmenus with XMLHTTP / ajax
+	* Fixed bug 1066: Shortcut to a invisible page leads to a frontend error
+
 2005-11-08	Sebastian Kurfuerst	<sebastian@garbage-group.de>
 
 	* Fixed bug #586: User Admin can't create new user

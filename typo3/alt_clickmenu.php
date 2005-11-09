@@ -112,6 +112,7 @@
 require ('init.php');
 require ('template.php');
 require_once (PATH_t3lib.'class.t3lib_clipboard.php');
+require_once(PATH_t3lib.'class.t3lib_ajax.php');
 $LANG->includeLLFile('EXT:lang/locallang_misc.xml');
 
 
@@ -142,6 +143,7 @@ class clickMenu {
 	var $dontDisplayTopFrameCM=0;	// If true, the context sensitive menu will not appear in the top frame, only as a layer.
 	var $leftIcons=0;			// If true, Show icons on the left.
 	var $extClassArray=array();		// Array of classes to be used for user processing of the menu content. This is for the API of adding items to the menu from outside.
+	var $ajax=0; // enable/disable ajax behavior
 
 		// Internal, dynamic:
 	var $elCount=0;				// Counter for elements in the menu. Used to number the name / id of the mouse-over icon.
@@ -154,18 +156,22 @@ class clickMenu {
 	/**
 	 * Initialize click menu
 	 *
-	 * @param	string		Input "item" GET var.
 	 * @return	string		The clickmenu HTML content
 	 */
-	function init($item)	{
-
+	function init()	{
 			// Setting GPvars:
 		$this->cmLevel = intval(t3lib_div::_GP('cmLevel'));
 		$this->CB = t3lib_div::_GP('CB');
+		if(t3lib_div::_GP('ajax'))	{
+			$this->ajax = 1;
+			ini_set('display_errors',0);	// XML has to be parsed, no parse errors allowed
+		}
 
-
-			// Explode the incoming command:
-		$this->iParts = explode('|',$item);
+			// can be set differently as well
+		$this->iParts[0] = t3lib_div::_GP('table');
+		$this->iParts[1] = t3lib_div::_GP('uid');
+		$this->iParts[2] = t3lib_div::_GP('listFr');
+		$this->iParts[3] = t3lib_div::_GP('enDisItems');
 
 			// Setting flags:
 		if ($this->iParts[2])	$this->listFrame=1;
@@ -191,7 +197,7 @@ class clickMenu {
 			}
 		}
 
-			// Return clickmenu conten:
+			// Return clickmenu content:
 		return $CMcontent;
 	}
 
@@ -201,7 +207,11 @@ class clickMenu {
 	 * @return	boolean
 	 */
 	function doDisplayTopFrameCM()	{
-		return !$GLOBALS['SOBE']->doc->isCMlayers() || !$this->dontDisplayTopFrameCM;
+		if($this->ajax)	{
+			return false;
+		} else {
+			return !$GLOBALS['SOBE']->doc->isCMlayers() || !$this->dontDisplayTopFrameCM;
+		}
 	}
 
 
@@ -1029,18 +1039,21 @@ class clickMenu {
 
 				// Set back path place holder to real back path
 			$CMtable = str_replace($this->PH_backPath,$this->backPath,$CMtable);
-
+			if($this->ajax)	{
+				$innerXML = '<data><clickmenu><htmltable><![CDATA['.$CMtable.']]></htmltable><cmlevel>'.$this->cmLevel.'</cmlevel></clickmenu></data>';
+				return $innerXML;
+			} else {
 				// Create JavaScript section:
 			$script=$GLOBALS['TBE_TEMPLATE']->wrapScriptTags('
 
-if (top.content && top.content'.$frameName.' && top.content'.$frameName.'.setLayerObj)	{
-	top.content'.$frameName.'.setLayerObj(unescape("'.t3lib_div::rawurlencodeJS($CMtable).'"),'.$this->cmLevel.');
-}
-'.(!$this->doDisplayTopFrameCM()?'hideCM();':'')
-);
+				if (top.content && top.content'.$frameName.' && top.content'.$frameName.'.setLayerObj)	{
+					top.content'.$frameName.'.setLayerObj(unescape("'.t3lib_div::rawurlencodeJS($CMtable).'"),'.$this->cmLevel.');
+				}
+				'.(!$this->doDisplayTopFrameCM()?'hideCM();':'')
+				);
+				return $script;
+			}
 		}
-
-		return $script;
 	}
 
 	/**
@@ -1206,6 +1219,9 @@ if (top.content && top.content'.$frameName.' && top.content'.$frameName.'.setLay
 	 */
 	function linkItem($str,$icon,$onClick,$onlyCM=0,$dontHide=0)	{
 		$this->elCount++;
+		if($this->ajax)	{
+			$onClick = str_replace('top.loadTopMenu', 'showClickmenu_raw', $onClick);
+		}
 
 		$WHattribs = t3lib_iconWorks::skinImg($BACK_PATH,'gfx/content_client.gif','width="7" height="10"',2);
 
@@ -1328,7 +1344,11 @@ if (top.content && top.content'.$frameName.' && top.content'.$frameName.'.setLay
 	 * @return	boolean
 	 */
 	function isCMlayers()	{
-		return $GLOBALS['SOBE']->doc->isCMlayers() && !$this->CB;
+		if($this->ajax)	{
+			return !$this->CB;
+		} else {
+			return $GLOBALS['SOBE']->doc->isCMlayers() && !$this->CB;
+		}
 	}
 
 	/**
@@ -1411,9 +1431,11 @@ class SC_alt_clickmenu {
 		}
 
 			// Initialize template object
-		$this->doc = t3lib_div::makeInstance('template');
-		$this->doc->docType='xhtml_trans';
-		$this->doc->backPath = $BACK_PATH;
+		if(!$this->ajax)	{
+			$this->doc = t3lib_div::makeInstance('template');
+			$this->doc->docType='xhtml_trans';
+			$this->doc->backPath = $BACK_PATH;
+		}
 
 			// Setting mode for display and background image in the top frame
 		$this->dontDisplayTopFrameCM= $this->doc->isCMlayers() && !$BE_USER->getTSConfigVal('options.contextMenu.options.alwaysShowClickMenuInTopFrame');
@@ -1481,6 +1503,8 @@ class SC_alt_clickmenu {
 	 */
 	function main()	{
 
+		$this->ajax = t3lib_div::_GP('ajax')?TRUE:FALSE;
+
 			// Initialize Clipboard object:
 		$clipObj = t3lib_div::makeInstance('t3lib_clipboard');
 		$clipObj->initializeClipboard();
@@ -1502,10 +1526,11 @@ class SC_alt_clickmenu {
 		$clickMenu->backPath = $this->backPath;
 
 			// Start page
-		$this->content.=$this->doc->startPage('Context Sensitive Menu');
-
+		if(!$this->ajax)	{
+			$this->content.=$this->doc->startPage('Context Sensitive Menu');
+		}
 			// Set content of the clickmenu with the incoming var, "item"
-		$this->content.= $clickMenu->init($this->item);
+		$this->content.= $clickMenu->init();
 	}
 
 	/**
@@ -1514,8 +1539,12 @@ class SC_alt_clickmenu {
 	 * @return	void
 	 */
 	function printContent()	{
-		$this->content.= $this->doc->endPage();
-		echo $this->content;
+		if(!$this->ajax)	{
+			$this->content.= $this->doc->endPage();
+			echo $this->content;
+		} else {
+			t3lib_ajax::outputXMLreply($this->content);
+		}
 	}
 }
 
