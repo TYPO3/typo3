@@ -1662,8 +1662,12 @@
 				array_shift($temp);
 			}
 			$len = t3lib_div::intInRange($this->config['config']['stat_titleLen'],1,100,20);
-			$pageName = str_replace('[path]', preg_replace('/[^.[:alnum:]\/_-]/','_',$this->sys_page->getPathFromRootline($temp,$len)).'/' ,$pageName);
-			$this->config['stat_vars']['pageName'] = $pageName;
+			if ($this->config['config']['stat_apache_niceTitle'])   {
+				$path = $this->csConvObj->specCharsToASCII($this->renderCharset,$this->sys_page->getPathFromRootline($temp,$len));
+			} else {
+				$path = $this->sys_page->getPathFromRootline($temp,$len);
+			}
+			$this->config['stat_vars']['pageName'] = str_replace('[path]', preg_replace('/[^.[:alnum:]\/_-]/','_',$path.'/',$pageName));
 		}
 
 			// No cache
