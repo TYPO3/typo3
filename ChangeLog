@@ -1,8 +1,14 @@
+2005-11-11  Sebastian Kurfuerst  <sebastian@garbage-group.de>
+
+	* New feature #1519: new option for lockSSL: get redirected to standard http after BE login with SSL
+	* Fixed bug #1624: Copying of a file in the same folder in the "Filelist" module dosen't work
+	* Feature request #1706: add "save + close" button in RTE wizard
+
 2005-11-09  Rupert Germann  <rupi@gmx.li>
 
 	* fix for function getBorderAttr: closes bugs 1360 and 1461
 
-2005-11-09	Sebastian Kurfuerst	<sebastian@garbage-group.de>
+2005-11-09  Sebastian Kurfuerst  <sebastian@garbage-group.de>
 
 	* New feature #1577: display clickmenus with XMLHTTP / ajax
 	* Fixed bug 1066: Shortcut to a invisible page leads to a frontend error
@@ -12,7 +18,7 @@
 	* Made TCEForms put <label> tags around icons for moving/deleting repetitive Flexform items
 	* Removed annoying feature of typo3/tab.js to focus the textarea
 
-2005-11-08	Sebastian Kurfuerst	<sebastian@garbage-group.de>
+2005-11-08  Sebastian Kurfuerst  <sebastian@garbage-group.de>
 
 	* Fixed bug #586: User Admin can't create new user
 	* Fixed bug #1293: TCAdefaults.pages.doktype is not recognized by the wizard "Create new pages"

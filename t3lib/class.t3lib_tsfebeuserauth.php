@@ -653,7 +653,7 @@ class t3lib_tsfeBeUserAuth extends t3lib_beUserAuth {
 		// **********************
 		// Check SSL (https)
 		// **********************
-		if (intval($TYPO3_CONF_VARS['BE']['lockSSL']))	{
+		if (intval($TYPO3_CONF_VARS['BE']['lockSSL']) && $TYPO3_CONF_VARS['BE']['lockSSL'] != 3)	{
 			if (!t3lib_div::getIndpEnv('TYPO3_SSL'))	{
 				return FALSE;
 			}

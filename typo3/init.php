@@ -181,8 +181,14 @@ if (trim($TYPO3_CONF_VARS['BE']['IPmaskList']))	{
 // Check SSL (https)
 // **********************
 if (intval($TYPO3_CONF_VARS['BE']['lockSSL']))	{
-	if (!t3lib_div::getIndpEnv('TYPO3_SSL'))	{
-		if ($TYPO3_CONF_VARS['BE']['lockSSL']==2)	{
+	if ($TYPO3_CONF_VARS['BE']['lockSSL'] == 3)	{
+		$requestStr = substr(t3lib_div::getIndpEnv('TYPO3_REQUEST_SCRIPT'), strlen(t3lib_div::getIndpEnv('TYPO3_SITE_URL').TYPO3_mainDir));
+		if($requestStr == 'index.php' && !t3lib_div::getIndpEnv('TYPO3_SSL'))	{
+			list(,$url) = explode('://',t3lib_div::getIndpEnv('TYPO3_REQUEST_URL'),2);
+			header('Location: https://'.$url);
+		}
+	} elseif (!t3lib_div::getIndpEnv('TYPO3_SSL') )	{
+		if ($TYPO3_CONF_VARS['BE']['lockSSL'] == 2)	{
 			list(,$url) = explode('://',t3lib_div::getIndpEnv('TYPO3_SITE_URL').TYPO3_mainDir,2);
 			header('Location: https://'.$url);	// Just point us away from here...
 		} else {

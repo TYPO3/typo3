@@ -970,7 +970,7 @@ class t3lib_clipboard {
 			// Traverse elements and make CMD array
 		reset($elements);
 		while(list($tP,$path)=each($elements))	{
-			$FILE[$mode][]=array('data'=>$path,'target'=>$pUid);
+			$FILE[$mode][]=array('data'=>$path,'target'=>$pUid,'altName'=>1);
 			if ($mode=='move')	$this->removeElement($tP);
 		}
 		$this->endClipboard();

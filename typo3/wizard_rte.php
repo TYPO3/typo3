@@ -206,6 +206,8 @@ class SC_wizard_rte {
 					'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/savedokshow.gif','width="21" height="16"').' class="c-inputButton" title="'.$LANG->sL('LLL:EXT:lang/locallang_core.php:rm.saveDocShow',1).'" alt="" />'.
 					'</a>';
 			}
+				// Save/Close:
+			$toolBarButtons[] = '<input type="image" class="c-inputButton" onclick="'.htmlspecialchars('document.editform.redirect.value=\''.$closeUrl.'\'; TBE_EDITOR_checkAndDoSubmit(1); return false;').'" name="_saveandclosedok"'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/saveandclosedok.gif','').' title="'.$LANG->sL('LLL:EXT:lang/locallang_core.php:rm.saveCloseDoc',1).'" />';
 				// Close:
 			$toolBarButtons[]=
 					'<a href="#" onclick="'.htmlspecialchars('jumpToUrl(unescape(\''.rawurlencode($closeUrl).'\')); return false;').'">'.
