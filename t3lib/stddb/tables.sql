@@ -50,6 +50,7 @@ CREATE TABLE be_sessions (
   ses_userid int(11) unsigned DEFAULT '0' NOT NULL,
   ses_tstamp int(11) unsigned DEFAULT '0' NOT NULL,
   ses_data mediumblob NOT NULL,
+  ses_backuserid int(11) NOT NULL default '0',
   PRIMARY KEY (ses_id,ses_name)
 );
 

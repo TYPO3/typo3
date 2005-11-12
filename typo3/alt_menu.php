@@ -162,6 +162,12 @@ class SC_alt_menu {
 ';
 		}
 
+			// superuser mode
+		if($BE_USER->user['ses_backuserid']) {
+			$username = '<p id="username" class="typo3-red-background">[SU: '.htmlspecialchars($BE_USER->user['username']).']</p>';
+		} else {
+			$username = '<p id="username">['.htmlspecialchars($BE_USER->user['username']).']</p>';
+		}
 			// Printing bottons (logout button)
 		$this->content.='
 
@@ -169,8 +175,7 @@ class SC_alt_menu {
 <!--
   Logout button / username
 -->
-<div id="typo3-alt-menu-php-logininfo">'.$alt_menuObj->topButtons().
-						'<p id="username">['.htmlspecialchars($BE_USER->user['username']).']</p>
+<div id="typo3-alt-menu-php-logininfo">'.$alt_menuObj->topButtons().$username.'				
 </div>';
 
 			// End page:

@@ -1,3 +1,7 @@
+2005-11-12  Sebastian Kurfuerst  <sebastian@garbage-group.de>
+
+	* New feature 1573: switch back to admin user after user switch (SU-mode)
+
 2005-11-11  Sebastian Kurfuerst  <sebastian@garbage-group.de>
 
 	* New feature #1519: new option for lockSSL: get redirected to standard http after BE login with SSL

@@ -486,6 +486,7 @@ TABLE.ver-subtree TR.typo3-ver-noComp TD { font-style : italic; }
 
 /* Red span tag color (warning, notice) */
 .typo3-red {color: red;}
+.typo3-red-background {background-color: red;}
 TABLE.warningbox { border: solid 2px black; background-color: yellow; margin: 20px 0px 20px 0px; }
 TABLE.warningbox TD { padding: 20px 20px 20px 20px; font-weight: bold; }
 

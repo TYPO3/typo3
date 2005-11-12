@@ -1247,11 +1247,11 @@ class SC_mod_tools_be_user_index {
 				// Header:
 			$allCells = array();
 			reset($options);
-			
+
 			$link_createNewUser='<a href="#" onclick="'.htmlspecialchars(t3lib_BEfunc::editOnClick('&edit[be_users][0]=new',$this->doc->backPath,-1)).'">'.
 				'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/new_el.gif','width="11" height="12"').' title="'.$GLOBALS['LANG']->getLL('new',1).'" alt="" />'.
 				'</a>';
-			
+
 			$allCells['USERS'] = '<table border="0" cellspacing="0" cellpadding="0" width="100%"><td><b>Usernames:</b></td><td width="12">'.$link_createNewUser.'</td></tr></table>';
 
 			while(list($kk,$vv)=each($options))	{
@@ -1270,6 +1270,7 @@ class SC_mod_tools_be_user_index {
 				while(list(,$uDat)=each($dat['users']))	{
 					$uListArr[] = '<tr><td width="130">'.t3lib_iconWorks::getIconImage('be_users',$uDat,$GLOBALS['BACK_PATH'],'align="top" title="'.$uDat['uid'].'"').$this->linkuser($uDat['username'],$uDat).'&nbsp;&nbsp;</td><td nowrap="nowrap">'.$this->elementLinks('be_users',$uDat).
 						'<a href="'.t3lib_div::linkThisScript(array('SwitchUser'=>$uDat['uid'])).'" target="_top"><img src="'.$GLOBALS['BACK_PATH'].'gfx/su.gif" width="18" height="11" border="0" align="top" title="'.htmlspecialchars('Switch User to: '.$uDat['username']).'" alt="" /></a>'.
+						'<a href="'.t3lib_div::linkThisScript(array('SwitchUser'=>$uDat['uid'], 'switchBackUser' => 1)).'" target="_top"><img src="'.$GLOBALS['BACK_PATH'].'gfx/su.gif" width="18" height="11" border="0" align="top" title="'.htmlspecialchars('Switch User to: '.$uDat['username']).' [SU-mode]" alt="" style="background-color:red;" /></a>'.
 						'</td></tr>';
 				}
 				$allCells['USERS'] = '<table border="0" cellspacing="0" cellpadding="0" width="100%">'.implode('',$uListArr).'</table>';
@@ -1384,7 +1385,12 @@ class SC_mod_tools_be_user_index {
 	function switchUser($switchUser)	{
 		$uRec=t3lib_BEfunc::getRecord('be_users',$switchUser);
 		if (is_array($uRec) && $GLOBALS['BE_USER']->isAdmin())	{
-			$GLOBALS['TYPO3_DB']->exec_UPDATEquery('be_sessions', 'ses_id='.$GLOBALS['TYPO3_DB']->fullQuoteStr($GLOBALS['BE_USER']->id, 'be_sessions').' AND ses_name=\'be_typo_user\' AND ses_userid='.intval($GLOBALS['BE_USER']->user['uid']), array('ses_userid' => $uRec['uid']));
+			$updateData['ses_userid'] = $uRec['uid'];
+				// user switchback
+			if (t3lib_div::_GP('switchBackUser'))	{
+				$updateData['ses_backuserid'] = intval($GLOBALS['BE_USER']->user['uid']);
+			}
+			$GLOBALS['TYPO3_DB']->exec_UPDATEquery('be_sessions', 'ses_id='.$GLOBALS['TYPO3_DB']->fullQuoteStr($GLOBALS['BE_USER']->id, 'be_sessions').' AND ses_name=\'be_typo_user\' AND ses_userid='.intval($GLOBALS['BE_USER']->user['uid']),$updateData);
 
 			header('Location: '.t3lib_div::locationHeaderUrl($GLOBALS['BACK_PATH'].'index.php'.($GLOBALS['TYPO3_CONF_VARS']['BE']['interfaces']?'':'?commandLI=1')));
 			exit;
