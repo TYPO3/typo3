@@ -429,10 +429,10 @@ function linkTo_UnCryptMailto(s)	{	//
 $GLOBALS['TSFE']->content.='
 
 <!-- '.($customContent?$customContent.chr(10):'').'
-	This website is brought to you by TYPO3 - get.content.right
-	TYPO3 is a free open source Content Management Framework created by Kasper Skaarhoj and licensed under GNU/GPL.
+	This website is powered by TYPO3 - inspiring people to share!
+	TYPO3 is a free open source Content Management Framework initially created by Kasper Skaarhoj and licensed under GNU/GPL.
 	TYPO3 is copyright 1998-2005 of Kasper Skaarhoj. Extensions are copyright of their respective owners.
-	Information and contribution at http://www.typo3.com
+	Information and contribution at http://typo3.com/ and http://typo3.org/
 -->
 ';
 

@@ -44,6 +44,12 @@ CLI:
 		- For URLs: Forced
 		- For records: read records
 			- All new entries are indexed, all old are removed, all changed are re-indexed
+	DKM:
+	- Exclude URLs (regex?), possibly with graphical interface selecting it from indexed content.
+	- Searching in certain external site
+	- Mac "spotlight" like searching? (Define which categories are bundled and which not)
+	- Crawling in the night (enter time for indexing configurations), but possible to force.
+	- Services: Way to hook in content as a forth "indexing configuration" type!
 
 Backend modules:
 - Much nicer detail display

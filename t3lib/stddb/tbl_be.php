@@ -252,7 +252,7 @@ $TCA['be_users'] = Array (
 					Array('Edit Draft (Offline)', 0),
 					Array('Create new workspace projects', 0),
 				),
-				'default' => 1
+				'default' => 3
 			)
 		),
 		'starttime' => Array (

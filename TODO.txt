@@ -338,12 +338,15 @@ TCEmain commands:
 Versioning API:
 - (Support for) swapping using temporary file (instead of using negative ID)
 - Way to change versioning type from element to page to branch for new records?
+- Lock down lifecycle=1 versions for editing (like when stages prevent editing)
+- New versions can be created from archived versions (way to bring back old content)
 
 Check Various:
 - Auto publishing: Might not work with "Publish only "Publish" stage" because swapped elements will be in editing stage or so!
 
 Workspace Manager TODO:
 - Workspace admin list
+- Disabling stages for a workspace (remove from interface)
 
 Preview:
 - Dualview:
