@@ -67,7 +67,7 @@
  *
  */
 
-
+require_once(PATH_t3lib.'class.t3lib_cs.php');
 
 
 /**
@@ -82,7 +82,7 @@ class t3lib_basicFileFunctions	{
 	var $getUniqueNamePrefix = '';	// Prefix which will be prepended the file when using the getUniqueName-function
 	var $maxNumber = 20;			// This number decides the highest allowed appended number used on a filename before we use naming with unique strings
 	var $uniquePrecision = 6;		// This number decides how many characters out of a unique MD5-hash that is appended to a filename if getUniqueName is asked to find an available filename.
-	var $maxInputNameLen = 30;		// This is the maximum length of names treated by cleanFileName()
+	var $maxInputNameLen = 60;		// This is the maximum length of names treated by cleanFileName()
 	var $tempFN = '_temp_';			// Temp-foldername. A folder in the root of one of the mounts with this name is regarded a TEMP-folder (used for upload from clipboard)
 
 		// internal
@@ -295,7 +295,7 @@ class t3lib_basicFileFunctions	{
 			}
 
 				// Well the filename in its pure form existed. Now we try to append numbers / unique-strings and see if we can find an available filename...
-			$theTempFileBody = ereg_replace('_[0-9][0-9]$','',$origFileInfo['filebody']);		// This removes _xx if appended to the file
+			$theTempFileBody = preg_replace('/_[0-9][0-9]$/','',$origFileInfo['filebody']);		// This removes _xx if appended to the file
 			$theOrigExt = $origFileInfo['realFileext'] ? '.'.$origFileInfo['realFileext'] : '';
 
 			for ($a=1; $a<=($this->maxNumber+1); $a++)	{
@@ -408,7 +408,7 @@ class t3lib_basicFileFunctions	{
 	 * @return	string		Output string
 	 */
 	function cleanDirectoryName($theDir)	{
-		return ereg_replace('[\/\. ]*$','',$this->rmDoubleSlash($theDir));
+		return preg_replace('/[\/\. ]*$/','',$this->rmDoubleSlash($theDir));
 	}
 
 	/**
@@ -438,11 +438,35 @@ class t3lib_basicFileFunctions	{
 	 * Returns a string where any character not matching [.a-zA-Z0-9_-] is substituted by '_'
 	 *
 	 * @param	string		Input string, typically the body of a filename
+	 * @param	string		Charset of the a filename (defaults to current charset; depending on context)
 	 * @return	string		Output string with any characters not matching [.a-zA-Z0-9_-] is substituted by '_'
 	 */
-	function cleanFileName($fileName)	{
-		$theNewName = ereg_replace('[^.[:alnum:]_-]','_',trim($fileName));
-		return $theNewName;
+	function cleanFileName($fileName,$charset='')	{
+		if (!is_object($this->csConvObj))	{
+			if (TYPO3_MODE=='FE')	{
+				$this->csConvObj = &$GLOBALS['TSFE']->csConvObj;
+			} elseif(is_object($GLOBALS['LANG']))	{	// BE assumed:
+				$this->csConvObj = &$GLOBALS['LANG']->csConvObj;
+			} else	{	// The object may not exist yet, so we need to create it now. Happens in the Install Tool for example.
+				$this->csConvObj = &t3lib_div::makeInstance('t3lib_cs');
+			}
+		}
+
+		if (!$charset)	{
+			if (TYPO3_MODE=='FE')	{
+				$charset = $GLOBALS['TSFE']->renderCharset;
+			} elseif(is_object($GLOBALS['LANG']))	{	// BE assumed:
+				$charset = $GLOBALS['LANG']->charSet;
+			} else	{	// best guess
+				$charset = $GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset'];
+			}
+		}
+
+		if ($charset)	{
+			$fileName = $this->csConvObj->specCharsToASCII($charset,$fileName);
+		}
+
+		return preg_replace('/[^.[:alnum:]_-]/','_',trim($fileName));
 	}
 
 	/**
