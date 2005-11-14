@@ -1667,7 +1667,7 @@
 			} else {
 				$path = $this->sys_page->getPathFromRootline($temp,$len);
 			}
-			$this->config['stat_vars']['pageName'] = str_replace('[path]', preg_replace('/[^.[:alnum:]\/_-]/','_',$path.'/',$pageName));
+			$this->config['stat_vars']['pageName'] = str_replace('[path]', preg_replace('/[^.[:alnum:]\/_-]/','_',$path.'/'),$pageName);
 		}
 
 			// No cache
