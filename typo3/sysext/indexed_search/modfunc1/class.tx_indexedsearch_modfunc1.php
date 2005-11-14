@@ -136,7 +136,7 @@ class tx_indexedsearch_modfunc1 extends t3lib_extobjbase {
 				0 => 'Overview',
 				1 => 'Technical Details',
 				2 => 'Words and content',
-//				3 => 'Indexing'
+				3 => 'Indexing'
 			)
 		);
     }
@@ -1381,7 +1381,7 @@ class tx_indexedsearch_modfunc1 extends t3lib_extobjbase {
 
 	/**
 	 * Indexing URL recursively
-	 * Still needs some work; eg. paramters to type, language, MP var is not passed yet...
+	 * Still needs some work; eg. parameters to type, language, MP var is not passed yet...
 	 *
 	 * @param	string		URL, http://....
 	 * @param	integer		Depth of recursion. 0 (zero) = only input URL
