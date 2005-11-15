@@ -180,7 +180,7 @@ if (trim($TYPO3_CONF_VARS['BE']['IPmaskList']))	{
 // **********************
 // Check SSL (https)
 // **********************
-if (intval($TYPO3_CONF_VARS['BE']['lockSSL']))	{
+if (intval($TYPO3_CONF_VARS['BE']['lockSSL']) && !(defined('TYPO3_cliMode') && TYPO3_cliMode))	{
 	if ($TYPO3_CONF_VARS['BE']['lockSSL'] == 3)	{
 		$requestStr = substr(t3lib_div::getIndpEnv('TYPO3_REQUEST_SCRIPT'), strlen(t3lib_div::getIndpEnv('TYPO3_SITE_URL').TYPO3_mainDir));
 		if($requestStr == 'index.php' && !t3lib_div::getIndpEnv('TYPO3_SSL'))	{

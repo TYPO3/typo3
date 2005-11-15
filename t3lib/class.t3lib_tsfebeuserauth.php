@@ -744,6 +744,14 @@ class t3lib_tsfeBeUserAuth extends t3lib_beUserAuth {
 				return true;
 			}
 
+				// override all settings with user TSconfig
+			if ($this->extAdminConfig['module.'][$pre.'.'][$val] && $val)	{
+				return $this->extAdminConfig['module.'][$pre.'.'][$val];
+			}
+			if ($this->extAdminConfig['module.'][$pre])	{
+				return $this->extAdminConfig['module.'][$pre];
+			}
+
 			$retVal = $val ? $this->uc['TSFE_adminConfig'][$pre.'_'.$val] : 1;
 
 			if ($pre=='preview' && $this->ext_forcePreview)	{

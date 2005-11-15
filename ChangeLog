@@ -1,6 +1,12 @@
+2006-11-15  Sebastian Kurfuerst  <sebastian@garbage-group.de>
+
+	* Fixed bug #569: The "Access Key" combination now added to the "title" attribute of images
+	* Fixed bug #815: CLI-mode doesn't work with lockSSL enabled
+	* New feature #1518: override all admin panel values from TSConfig
+
 2005-11-12  Sebastian Kurfuerst  <sebastian@garbage-group.de>
 
-	* New feature 1573: switch back to admin user after user switch (SU-mode)
+	* New feature #1573: switch back to admin user after user switch (SU-mode)
 
 2005-11-11  Sebastian Kurfuerst  <sebastian@garbage-group.de>
 

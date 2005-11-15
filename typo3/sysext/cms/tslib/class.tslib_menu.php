@@ -2160,10 +2160,17 @@ class tslib_gmenu extends tslib_menu {
 					$this->I['noLink'] = ($this->I['spacer'] || $this->I['val']['noLink'] || !count($this->menuArr[$key]));		// !count($this->menuArr[$key]) means that this item is a dummyItem
 					$this->I['name']='';
 
+						// Set access key
+					if ($this->mconf['accessKey'])	{
+						$this->I['accessKey'] = $this->accessKey($this->I['title']);
+					} else {
+						$this->I['accessKey']=Array();
+					}
+
 						// Get link.
 					$this->I['linkHREF'] = $this->link($key,$this->I['val']['altTarget'],$this->mconf['forceTypeValue']);
 						// Title attribute of links:
-					$titleAttrValue = $this->WMcObj->stdWrap($this->I['val']['ATagTitle'],$this->I['val']['ATagTitle.']);
+					$titleAttrValue = $this->WMcObj->stdWrap($this->I['val']['ATagTitle'],$this->I['val']['ATagTitle.']).$this->I['accessKey']['alt'];
 					if (strlen($titleAttrValue))	{
 						$this->I['linkHREF']['title'] = $titleAttrValue;
 					}
@@ -2183,12 +2190,6 @@ class tslib_gmenu extends tslib_menu {
 						$GLOBALS['TSFE']->imagesOnPage[]=$this->result['RO'][$key]['output_file'];
 						$GLOBALS['TSFE']->setJS('mouseOver');
 						$this->extProc_RO($key);
-					}
-						// Set access key
-					if ($this->mconf['accessKey'])	{
-						$this->I['accessKey'] = $this->accessKey($this->I['title']);
-					} else {
-						$this->I['accessKey']=Array();
 					}
 
 						// Set altText
