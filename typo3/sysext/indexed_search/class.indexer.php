@@ -263,6 +263,7 @@ class tx_indexedsearch_indexer {
 							// Set to zero:
 						$this->conf['recordUid'] = 0;
 						$this->conf['freeIndexUid'] = 0;
+						$this->conf['freeIndexSetId'] = 0;
 
 							// Init and start indexing:
 						$this->init();
@@ -318,6 +319,7 @@ class tx_indexedsearch_indexer {
 
 			// Set to defaults
 		$this->conf['freeIndexUid'] = 0;
+		$this->conf['freeIndexSetId'] = 0;
 		$this->conf['page_cache_reg1'] = '';
 
 			// Root line uids
@@ -337,8 +339,9 @@ class tx_indexedsearch_indexer {
 	 * @param	integer		Free index UID
 	 * @return	void
 	 */
-	function backend_setFreeIndexUid($freeIndexUid)	{
+	function backend_setFreeIndexUid($freeIndexUid, $freeIndexSetId=0)	{
 		$this->conf['freeIndexUid'] = $freeIndexUid;
+		$this->conf['freeIndexSetId'] = $freeIndexSetId;
 	}
 
 	/**
@@ -568,6 +571,7 @@ class tx_indexedsearch_indexer {
 				$this->log_pull();
 			} else {
 				$this->updateTstamp($this->hash['phash'],$this->conf['mtime']);	// Update the timestatmp
+				$this->updateSetId($this->hash['phash']);
 				$this->update_grlist($checkCHash['phash'],$this->hash['phash']);	// $checkCHash['phash'] is the phash of the result row that is similar to the current phash regarding the content hash.
 				$this->updateRootline();
 				$this->log_setTSlogMessage('Indexing not needed, the contentHash, '.$this->content_md5h.', has not changed. Timestamp, grlist and rootline updated if necessary.');
@@ -842,7 +846,7 @@ class tx_indexedsearch_indexer {
 				t3lib_div::writeFile($tmpFile, $content);
 
 					// Index that file:
-				$this->indexRegularDocument($externalUrl, FALSE, $tmpFile, 'html');
+				$this->indexRegularDocument($externalUrl, TRUE, $tmpFile, 'html');	// Using "TRUE" for second parameter to force indexing of external URLs (mtime doesn't make sense, does it?)
 				unlink($tmpFile);
 			}
 		}
@@ -1287,7 +1291,9 @@ class tx_indexedsearch_indexer {
  			'externalUrl' => 0,
  			'recordUid' => intval($this->conf['recordUid']),
  			'freeIndexUid' => intval($this->conf['freeIndexUid']),
+ 			'freeIndexSetId' => intval($this->conf['freeIndexSetId']),
 		);
+
 		$GLOBALS['TYPO3_DB']->exec_INSERTquery('index_phash', $fields);
 
 			// PROCESSING index_section
@@ -1440,6 +1446,7 @@ class tx_indexedsearch_indexer {
  			'externalUrl' => $fileParts['scheme'] ? 1 : 0,
  			'recordUid' => intval($this->conf['recordUid']),
  			'freeIndexUid' => intval($this->conf['freeIndexUid']),
+ 			'freeIndexSetId' => intval($this->conf['freeIndexSetId']),
 		);
 		$GLOBALS['TYPO3_DB']->exec_INSERTquery('index_phash', $fields);
 
@@ -1635,6 +1642,20 @@ class tx_indexedsearch_indexer {
 			'tstamp' => time()
 		);
 		if ($mtime)	{ $updateFields['item_mtime'] = intval($mtime); }
+
+		$GLOBALS['TYPO3_DB']->exec_UPDATEquery('index_phash', 'phash='.intval($phash), $updateFields);
+	}
+
+	/**
+	 * Update SetID
+	 *
+	 * @param	integer		phash value
+	 * @return	void
+	 */
+	function updateSetId($phash)	{
+		$updateFields = array(
+			'freeIndexSetId' => intval($this->conf['freeIndexSetId'])
+		);
 
 		$GLOBALS['TYPO3_DB']->exec_UPDATEquery('index_phash', 'phash='.intval($phash), $updateFields);
 	}

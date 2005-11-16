@@ -9,7 +9,7 @@ $TCA['index_config'] = Array (
     'feInterface' => $TCA['index_config']['feInterface'],
     'columns' => Array (
         'hidden' => Array (
-            'label' => 'LLL:EXT:lang/locallang_general.php:LGL.hidden',
+            'label' => 'Disable',
             'config' => Array (
                 'type' => 'check',
                 'default' => '0'
@@ -139,7 +139,7 @@ $TCA['index_config'] = Array (
         '0' => Array('showitem' => 'title;;1;;2-2-2, description, type'),
         '1' => Array('showitem' => 'title;;1;;2-2-2, description, type;;;;3-3-3, table2index;;;;3-3-3, alternative_source_pid, fieldlist, get_params, chashcalc'),
         '2' => Array('showitem' => 'title;;1;;2-2-2, description, type;;;;3-3-3, filepath;;;;3-3-3, extensions, depth'),
-        '3' => Array('showitem' => 'title;;1;;2-2-2, description, type;;;;3-3-3, externalUrl;;;;3-3-3, depth')
+        '3' => Array('showitem' => 'title;;1;;2-2-2, description, type;;;;3-3-3, externalUrl;;;;3-3-3, depth'),
     ),
     'palettes' => Array (
         '1' => Array('showitem' => 'starttime,hidden')

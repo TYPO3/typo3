@@ -136,7 +136,6 @@ class tx_indexedsearch_modfunc1 extends t3lib_extobjbase {
 				0 => 'Overview',
 				1 => 'Technical Details',
 				2 => 'Words and content',
-				3 => 'Indexing'
 			)
 		);
     }
@@ -217,22 +216,13 @@ class tx_indexedsearch_modfunc1 extends t3lib_extobjbase {
 		} else {	// Detail listings:
 				// Depth function menu:
 			$h_func = t3lib_BEfunc::getFuncMenu($this->pObj->id,'SET[type]',$this->pObj->MOD_SETTINGS['type'],$this->pObj->MOD_MENU['type'],'index.php');
-			if (t3lib_div::inList('0,1,2',$this->pObj->MOD_SETTINGS['type']))	{
-				$h_func.= t3lib_BEfunc::getFuncMenu($this->pObj->id,'SET[depth]',$this->pObj->MOD_SETTINGS['depth'],$this->pObj->MOD_MENU['depth'],'index.php');
+			$h_func.= t3lib_BEfunc::getFuncMenu($this->pObj->id,'SET[depth]',$this->pObj->MOD_SETTINGS['depth'],$this->pObj->MOD_MENU['depth'],'index.php');
 
-					// Show title / function menu:
-				$theOutput.=$this->pObj->doc->spacer(5);
-				$theOutput.=$this->pObj->doc->section($LANG->getLL('title'),$h_func,0,1);
+				// Show title / function menu:
+			$theOutput.=$this->pObj->doc->spacer(5);
+			$theOutput.=$this->pObj->doc->section($LANG->getLL('title'),$h_func,0,1);
 
-				$theOutput.=$this->drawTableOfIndexedPages();
-			} else {
-
-					// Show title / function menu:
-				$theOutput.= $this->pObj->doc->spacer(5);
-				$theOutput.= $this->pObj->doc->section($LANG->getLL('title'),$h_func,0,1);
-
-				$theOutput.= $this->extraIndexing();
-			}
+			$theOutput.=$this->drawTableOfIndexedPages();
 		}
 
         return $theOutput;
@@ -317,7 +307,7 @@ class tx_indexedsearch_modfunc1 extends t3lib_extobjbase {
 					'ISEC.*, IP.*, count(*) AS count_val',
 					'index_phash IP, index_section ISEC',
 					'IP.phash = ISEC.phash AND ISEC.page_id = '.intval($data['uid']),
-					'IP.phash,IP.phash_grouping,IP.cHashParams,IP.data_filename,IP.data_page_id,IP.data_page_reg1,IP.data_page_type,IP.data_page_mp,IP.gr_list,IP.item_type,IP.item_title,IP.item_description,IP.item_mtime,IP.tstamp,IP.item_size,IP.contentHash,IP.crdate,IP.parsetime,IP.sys_language_uid,IP.item_crdate,ISEC.phash,ISEC.phash_t3,ISEC.rl0,ISEC.rl1,ISEC.rl2,ISEC.page_id,ISEC.uniqid,IP.externalUrl,IP.recordUid,IP.freeIndexUid',
+					'IP.phash,IP.phash_grouping,IP.cHashParams,IP.data_filename,IP.data_page_id,IP.data_page_reg1,IP.data_page_type,IP.data_page_mp,IP.gr_list,IP.item_type,IP.item_title,IP.item_description,IP.item_mtime,IP.tstamp,IP.item_size,IP.contentHash,IP.crdate,IP.parsetime,IP.sys_language_uid,IP.item_crdate,ISEC.phash,ISEC.phash_t3,ISEC.rl0,ISEC.rl1,ISEC.rl2,ISEC.page_id,ISEC.uniqid,IP.externalUrl,IP.recordUid,IP.freeIndexUid,IP.freeIndexSetId',
 					'IP.item_type, IP.tstamp',
 					($this->maxListPerPage+1)
 				);
@@ -441,7 +431,7 @@ class tx_indexedsearch_modfunc1 extends t3lib_extobjbase {
 				$lines[] = '<td>'.$this->printRootlineInfo($row).'</td>';
 				$lines[] = '<td>'.($row['page_id'] ? $row['page_id'] : '&nbsp;').'</td>';
 				$lines[] = '<td>'.($row['phash_t3']!=$row['phash'] ? $row['phash_t3'] : '&nbsp;').'</td>';
-				$lines[] = '<td>'.($row['freeIndexUid'] ? $row['freeIndexUid'] : '&nbsp;').'</td>';
+				$lines[] = '<td>'.($row['freeIndexUid'] ? $row['freeIndexUid'].($row['freeIndexSetId']?'/'.$row['freeIndexSetId']:'') : '&nbsp;').'</td>';
 				$lines[] = '<td>'.($row['recordUid'] ? $row['recordUid'] : '&nbsp;').'</td>';
 
 
@@ -1255,172 +1245,6 @@ class tx_indexedsearch_modfunc1 extends t3lib_extobjbase {
 		}
 
 		return $rootline_uids;
-	}
-
-
-
-
-
-
-
-
-
-
-
-
-	/********************************
-	 *
-	 * Indexing of configurations
-	 *
-	 *******************************/
-
-	/**
-	 * [Describe function...]
-	 *
-	 * @return	[type]		...
-	 */
-	function extraIndexing()	{
-
-			// Select index configurations on this page
-		$ftrows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
-					'*',
-					'index_config',
-					'pid = '.intval($this->pObj->id).
-						' AND hidden=0'.
-						' AND starttime<'.time()
-				);
-
-
-		$rl = $this->getUidRootLineForClosestTemplate($this->pObj->id);
-
-		foreach($ftrows as $cfgRow)		{
-			switch($cfgRow['type'])	{
-				case 1:
-					if ($cfgRow['table2index'] && isset($GLOBALS['TCA'][$cfgRow['table2index']]))	{
-
-							// Init:
-						$pid = intval($cfgRow['alternative_source_pid']) ? intval($cfgRow['alternative_source_pid']) : $this->pObj->id;
-						$fieldList = t3lib_div::trimExplode(',',$cfgRow['fieldlist'],1);
-
-							// Select
-						$recs = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
-									'*',
-									$cfgRow['table2index'],
-									'pid = '.intval($pid)
-								);
-
-							// Traverse:
-						foreach($recs as $r)	{
-								// (Re)-Indexing a row from a table:
-							$indexerObj = &t3lib_div::makeInstance('tx_indexedsearch_indexer');
-							parse_str(str_replace('###UID###',$r['uid'],$cfgRow['get_params']),$GETparams);
-							$indexerObj->backend_initIndexer($this->pObj->id, 0, 0, '', $rl, $GETparams, $cfgRow['chashcalc'] ? TRUE : FALSE);
-							$indexerObj->backend_setFreeIndexUid($cfgRow['uid']);
-
-							$theContent = '';
-							foreach($fieldList as $k => $v)	{
-								if (!$k)	{
-									$theTitle = $r[$v];
-								} else {
-									$theContent.= $r[$v].' ';
-								}
-							}
-#debug($theContent,$theTitle);
-							$indexerObj->backend_indexAsTYPO3Page(
-									$theTitle,
-									'',
-									'',
-									$theContent,
-									$GLOBALS['LANG']->charSet,
-									$r[$GLOBALS['TCA'][$cfgRow['table2index']]['ctrl']['tstamp']],
-									$r[$GLOBALS['TCA'][$cfgRow['table2index']]['ctrl']['crdate']],
-									$r['uid']
-								);
-
-						}
-#debug($recs);
-					}
-				break;
-				case 2:
-					$readpath = $cfgRow['filepath'];
-					if (!t3lib_div::isAbsPath($readPath))	{
-						$readpath = t3lib_div::getFileAbsFileName($readpath);
-					}
-#debug($readpath,'$readpath');
-
-					if (t3lib_div::isAllowedAbsPath($readpath))	{
-						$extList = implode(',',t3lib_div::trimExplode(',',$cfgRow['extensions'],1));
-						$fileArr = array();
-						$files = t3lib_div::getAllFilesAndFoldersInPath($fileArr,$readpath,$extList,0,$cfgRow['depth']);
-						$files = t3lib_div::removePrefixPathFromList($files,PATH_site);
-#debug($files);
-						foreach($files as $path)	{
-								// (Re)-Indexing file on page.
-							$indexerObj = &t3lib_div::makeInstance('tx_indexedsearch_indexer');
-							$indexerObj->backend_initIndexer($this->pObj->id, 0, 0, '', $rl);
-							$indexerObj->backend_setFreeIndexUid($cfgRow['uid']);
-							$indexerObj->hash['phash'] = -1;	// EXPERIMENT - but to avoid phash_t3 being written to file sections (otherwise they are removed when page is reindexed!!!)
-
-							$indexerObj->indexRegularDocument($path, TRUE);
-
-#debug($indexerObj->internal_log,$resultRow['data_filename']);
-#debug($indexerObj->file_phash_arr,'file_phash_arr');
-#debug($indexerObj->hash,'hash');
-
-						}
-					}
-				break;
-				case 3:
-					if ($cfgRow['externalUrl'])	{
-						$this->indexExtUrlRecursively($cfgRow['externalUrl'], $cfgRow['depth'], $this->pObj->id, $rl, $cfgRow['uid']);
-					}
-				break;
-			}
-		}
-	}
-
-	/**
-	 * Indexing URL recursively
-	 * Still needs some work; eg. parameters to type, language, MP var is not passed yet...
-	 *
-	 * @param	string		URL, http://....
-	 * @param	integer		Depth of recursion. 0 (zero) = only input URL
-	 * @param	integer		Page id to relate indexing to.
-	 * @param	array		Rootline array to relate indexing to
-	 * @param	integer		Configuration UID
-	 * @return	void
-	 */
-	function indexExtUrlRecursively($url, $depth, $pageId, $rl, $cfgUid)	{
-
-			// Index external URL:
-		$indexerObj = &t3lib_div::makeInstance('tx_indexedsearch_indexer');
-		$indexerObj->backend_initIndexer($pageId, 0, 0, '', $rl);
-		$indexerObj->backend_setFreeIndexUid($cfgUid);
-
-		$indexerObj->indexExternalUrl($url);
-		$url_qParts = parse_url($url);
-
-			// Recursion:
-		if ($depth>0)	{
-			$list = $indexerObj->extractHyperLinks($indexerObj->indexExternalUrl_content);
-
-							// Traverse links:
-			foreach($list as $count => $linkInfo)	{
-
-					// Decode entities:
-				$linkSource = t3lib_div::htmlspecialchars_decode($linkInfo['href']);
-
-				$qParts = parse_url($linkSource);
-				if (!$qParts['scheme'])	{
-					$linkSource = $url_qParts['scheme'].'://'.$url_qParts['host'].'/'.$linkSource;
-				}
-
-				$this->indexExtUrlRecursively($linkSource, $depth-1, $pageId, $rl, $cfgUid);
-
-					// Temporary limit until we know how to handle hundreds of URLs with limited parsetime in PHP...
-				if ($count>3)	break;
-			}
-		}
 	}
 
 

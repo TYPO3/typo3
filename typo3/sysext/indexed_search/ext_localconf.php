@@ -13,6 +13,7 @@ $TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['headerNoCache']['tx_
 
 	// Register with "crawler" extension:
 $TYPO3_CONF_VARS['EXTCONF']['crawler']['procInstructions']['tx_indexedsearch_reindex'] = 'Re-indexing';
+$TYPO3_CONF_VARS['EXTCONF']['crawler']['cli_hooks']['tx_indexedsearch_crawl'] = 'EXT:indexed_search/class.crawler.php:&tx_indexedsearch_crawler';
 
 	// Configure default document parsers:
 $TYPO3_CONF_VARS['EXTCONF']['indexed_search']['external_parsers'] = array(

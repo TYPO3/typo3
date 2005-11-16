@@ -32,8 +32,10 @@ CREATE TABLE index_phash (
   externalUrl tinyint(3) DEFAULT '0' NOT NULL,
   recordUid int(11) DEFAULT '0' NOT NULL,
   freeIndexUid int(11) DEFAULT '0' NOT NULL,
+  freeIndexSetId int(11) DEFAULT '0' NOT NULL,
   PRIMARY KEY (phash),
-  KEY phash_grouping (phash_grouping)
+  KEY phash_grouping (phash_grouping),
+  KEY freeIndexUid (freeIndexUid)
 );
 
 #
@@ -153,6 +155,13 @@ CREATE TABLE index_config (
     cruser_id int(11) unsigned DEFAULT '0' NOT NULL,
     hidden tinyint(4) unsigned DEFAULT '0' NOT NULL,
     starttime int(11) unsigned DEFAULT '0' NOT NULL,
+
+    set_id int(11) DEFAULT '0' NOT NULL,
+    session_data mediumtext NOT NULL,
+    first_run_time int(11) unsigned DEFAULT '0' NOT NULL,
+    frequency int(11) unsigned DEFAULT '0' NOT NULL,
+    last_run int(11) unsigned DEFAULT '0' NOT NULL,
+
     title tinytext NOT NULL,
     description text NOT NULL,
     type int(11) unsigned DEFAULT '0' NOT NULL,
