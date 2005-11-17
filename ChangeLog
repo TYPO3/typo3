@@ -1,3 +1,6 @@
+2006-11-17	Robert Lemke	<robert@typo3.org>
+	* Added two post-processing hooks into t3lib_tcemain->moveRecord. They are required by TemplaVoila 1.0
+
 2006-11-15  Sebastian Kurfuerst  <sebastian@garbage-group.de>
 
 	* Fixed bug #569: The "Access Key" combination now added to the "title" attribute of images

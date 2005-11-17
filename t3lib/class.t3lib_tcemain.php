@@ -2677,9 +2677,17 @@ class t3lib_TCEmain	{
 	 * @return	void
 	 */
 	function moveRecord($table,$uid,$destPid)	{
-		global $TCA;
+		global $TCA, $TYPO3_CONF_VARS;
 
 		if ($TCA[$table])	{
+
+				// Prepare user defined objects (if any) for hooks which extend this function:
+			$hookObjectsArr = array();
+			if (is_array ($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['moveRecordClass'])) {
+				foreach ($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['moveRecordClass'] as $classRef) {
+					$hookObjectsArr[] = &t3lib_div::getUserObj($classRef);
+				}
+			}
 
 				// In case the record to be moved turns out to be an offline version, we have to find the live version and work on that one (this case happens for pages with "branch" versioning type)
 			if ($lookForLiveVersion = t3lib_BEfunc::getLiveVersionOfRecord($table,$uid,'uid'))	{
@@ -2761,6 +2769,13 @@ class t3lib_TCEmain	{
 									// Create query for update:
 								$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table, 'uid='.intval($uid), $updateFields);
 
+									// Call post processing hooks:
+								foreach($hookObjectsArr as $hookObj) {
+									if (method_exists($hookObj, 'moveRecord_firstElementPostProcess')) {
+										$hookObj->moveRecord_firstElementPostProcess($table, $uid, $destPid, $moveRec, $updateFields, $this);
+									}
+								}
+
 									// Logging...
 								$newPropArr = $this->getRecordProperties($table,$uid);
 								$oldpagePropArr = $this->getRecordProperties('pages',$propArr['pid']);
@@ -2794,6 +2809,13 @@ class t3lib_TCEmain	{
 										$updateFields['pid'] = $destPid;
 										$updateFields[$sortRow] = $sortInfo['sortNumber'];
 										$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table, 'uid='.intval($uid), $updateFields);
+
+											// Call post processing hooks:
+										foreach($hookObjectsArr as $hookObj) {
+											if (method_exists($hookObj, 'moveRecord_afterAnotherElementPostProcess')) {
+												$hookObj->moveRecord_afterAnotherElementPostProcess($table, $uid, $destPid, $origDestPid, $moveRec, $updateFields, $this);
+											}
+										}
 
 											// Logging...
 										$newPropArr = $this->getRecordProperties($table,$uid);
