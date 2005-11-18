@@ -1,3 +1,6 @@
+2006-11-18	Michael Scharkow	<mscharkow@gmx.net>
+	* Removed bgColor from default body tag
+
 2006-11-17	Robert Lemke	<robert@typo3.org>
 	* Added two post-processing hooks into t3lib_tcemain->moveRecord. They are required by TemplaVoila 1.0
 
