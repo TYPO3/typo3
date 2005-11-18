@@ -1066,9 +1066,29 @@ class tslib_cObj {
 				$tablecode.='</tr>';	// ending row
 			}
 			if ($c)	{
-				// Table-tag is inserted
-				$i=$contentPosition;
-				$table_align = (($i==16) ? 'align="'.$align.'"' : '');
+				switch ($contentPosition)	{
+					case '0':	// above
+					case '8':	// below
+						switch ($align)        {	// These settings are needed for Firefox
+							case 'center':
+								$table_align = 'margin-left: auto; margin-right: auto';
+							break;
+							case 'right':
+								$table_align = 'margin-left: auto; margin-right: 0px';
+							break;
+							default:	// Most of all: left
+								$table_align = 'margin-left: 0px; margin-right: auto';
+						}
+						$table_align = 'style="'.$table_align.'"';
+					break;
+					case '16':	// in text
+						$table_align = 'align="'.$align.'"';
+					break;
+					default:
+						$table_align = '';
+				}
+
+					// Table-tag is inserted
 				$tablecode = '<table'.($tableWidth?' width="'.$tableWidth.'"':'').' border="0" cellspacing="0" cellpadding="0" '.$table_align.' class="imgtext-table">'.$tablecode;
 				if ($editIconsHTML)	{	// IF this value is not long since reset.
 					$tablecode.='<tr><td colspan="'.$colspan.'">'.$editIconsHTML.'</td></tr>';
@@ -2549,7 +2569,15 @@ class tslib_cObj {
 				if ($conf['title']) {$params.='&title='.rawurlencode($conf['title']);}
 				if ($conf['wrap']) {$params.='&wrap='.rawurlencode($conf['wrap']);}
 
-				$md5_value = md5($imageFile.'|'.$conf['width'].'|'.$conf['height'].'|'.$conf['effects'].'|'.$GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'].'|');
+				$md5_value = md5(
+						$imageFile.'|'.
+						$conf['width'].'|'.
+						$conf['height'].'|'.
+						$conf['effects'].'|'.
+						$conf['bodyTag'].'|'.
+						$conf['title'].'|'.
+						$conf['wrap'].'|'.
+						$GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'].'|');
 
 				$params.= '&md5='.$md5_value;
 				$url = $GLOBALS['TSFE']->absRefPrefix.'showpic.php?file='.rawurlencode($imageFile).$params;
@@ -6355,7 +6383,7 @@ class tslib_cObj {
 				// removes all pages which are not visible for the user!
 			$listArr = $this->checkPidArray($listArr);
 			if (count($listArr))	{
-			    $query.=' AND '.$table.'.pid IN ('.implode(',',$GLOBALS['TYPO3_DB']->cleanIntArray($listArr)).')';
+				$query.=' AND '.$table.'.pid IN ('.implode(',',$GLOBALS['TYPO3_DB']->cleanIntArray($listArr)).')';
 				$pid_uid_flag++;
 			} else {
 				$pid_uid_flag=0;		// If not uid and not pid then uid is set to 0 - which results in nothing!!

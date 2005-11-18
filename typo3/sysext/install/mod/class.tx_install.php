@@ -853,22 +853,19 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv("REMOTE_ADDR")."' (".t3lib_div::getIndp
 			$save_to_file = $this->INSTALL["FILE"]["name"];
 			if (@is_file($save_to_file))	{
 				$save_to_file_md5 = md5($save_to_file);
-				if (isset($this->INSTALL["FILE"][$save_to_file_md5]) && t3lib_div::isFirstPartOfStr($save_to_file,$EDIT_path."") && substr($save_to_file,-1)!="~")	{
+				if (isset($this->INSTALL['FILE'][$save_to_file_md5]) && t3lib_div::isFirstPartOfStr($save_to_file,$EDIT_path.'') && substr($save_to_file,-1)!='~' && !strstr($save_file,'_bak'))	{
 					$this->INSTALL["typo3conf_files"] = $save_to_file;
 					$save_fileContent = $this->INSTALL["FILE"][$save_to_file_md5];
 
 					if ($this->INSTALL["FILE"]["win_to_unix_br"])	{
 						$save_fileContent = str_replace(chr(13).chr(10),chr(10),$save_fileContent);
 					}
+
+					$backupFile = $this->getBackupFilename($save_to_file);
 					if ($this->INSTALL["FILE"]["backup"])	{
-						if (@is_file($save_to_file."~"))	unlink($save_to_file."~");
-						rename($save_to_file,$save_to_file."~");
-						$this->contentBeforeTable.='Backup written to <strong>'.$save_to_file.'~</strong><BR>';
-					} else {
-						if (@is_file($save_to_file."~"))	{
-							unlink($save_to_file."~");
-							$this->contentBeforeTable.='Backup REMOVED! (<strong>'.$save_to_file.'~</strong>)<BR>';
-						}
+						if (@is_file($backupFile))	{ unlink($backupFile); }
+						rename($save_to_file,$backupFile);
+						$this->contentBeforeTable.='Backup written to <strong>'.$backupFile.'</strong><BR>';
 					}
 
 					t3lib_div::writeFile($save_to_file,$save_fileContent);
@@ -912,9 +909,11 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv("REMOTE_ADDR")."' (".t3lib_div::getIndp
 			//--></style>
 			';
 
+			$backupFile = $this->getBackupFilename($this->INSTALL['typo3conf_files']);
 			$fileContent = t3lib_div::getUrl($this->INSTALL["typo3conf_files"]);
-			$this->contentBeforeTable.= '<form action="'.$this->action.'" method="POST">
-				'.(substr($this->INSTALL["typo3conf_files"],-1)!="~"?'<input type="submit" name="TYPO3_INSTALL[SAVE_FILE]" value="Save file">&nbsp;':'').'<input type="submit" name="_close" value="Close">
+			$this->contentBeforeTable.= '<form action="'.$this->action.'" method="POST">'.(substr($this->INSTALL['typo3conf_files'],-1)!='~' && !strstr($this->INSTALL['typo3conf_files'],'_bak') ? '
+				<input type="submit" name="TYPO3_INSTALL[SAVE_FILE]" value="Save file">&nbsp;' : '').'
+				<input type="submit" name="_close" value="Close">
 				<BR>File: '.$this->INSTALL["typo3conf_files"].'
 				<BR>MD5-sum: '.md5($fileContent).'
 				<BR>
@@ -923,8 +922,8 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv("REMOTE_ADDR")."' (".t3lib_div::getIndp
 				'.($this->allowFileEditOutsite_typo3conf_dir?'<input type="hidden" name="TYPO3_INSTALL[FILE][EDIT_path]" value="'.$this->INSTALL["FILE"]["EDIT_path"].'">':'').'
 				<input type="hidden" name="TYPO3_INSTALL[FILE][prevMD5]" value="'.md5($fileContent).'">
 				<textarea rows="30" name="TYPO3_INSTALL[FILE]['.md5($this->INSTALL["typo3conf_files"]).']" wrap="off"'.$this->formWidthText(48,"width:98%;height:80%","off").'>'.t3lib_div::formatForTextarea($fileContent).'</textarea><BR>
-				<input type="checkbox" name="TYPO3_INSTALL[FILE][win_to_unix_br]" value="1"'.(TYPO3_OS=="WIN"?"":" CHECKED").'> Convert windows linebreaks (13-10) to unix (10)<BR>
-				<input type="checkbox" name="TYPO3_INSTALL[FILE][backup]" value="1"'.(@is_file($this->INSTALL["typo3conf_files"]."~") ? " CHECKED":"").'> Make backup copy (else remove any backup copy, prepended by "~")<BR>
+				<input type="checkbox" name="TYPO3_INSTALL[FILE][win_to_unix_br]" value="1"'.(TYPO3_OS=="WIN"?"":" checked").'> Convert Windows linebreaks (13-10) to Unix (10)<BR>
+				<input type="checkbox" name="TYPO3_INSTALL[FILE][backup]" value="1"'.(@is_file($backupFile) ? ' checked' : '').'> Make backup copy (rename to '.basename($backupFile).')<BR>
 				'.
 			'</form>';
 		}
@@ -2019,7 +2018,7 @@ From sub-directory:
 				if ($this->mode!="123")	{
 					$out.=$this->wrapInCells("Site name:", '<input type="text" name="TYPO3_INSTALL[localconf.php][sitename]" value="'.htmlspecialchars($GLOBALS["TYPO3_CONF_VARS"]["SYS"]["sitename"]).'">');
 					$out.=$this->wrapInCells("", "<BR>");
-					$out.='<script type="text/javascript" src="../md5.js"></script><script type="text/javascript">function generateEncryptionKey(key) {time=new Date(); key=MD5(key)+MD5(time.getMilliseconds().toString());while(key.length<66){key=key+MD5(key)};return key;}</script>';
+					$out.='<script type="text/javascript" src="../md5.js"></script><script type="text/javascript">function generateEncryptionKey(key) {time=new Date(); key=MD5(time.getMilliseconds().toString());while(key.length<66){key=key+MD5(key)};return key;}</script>';
 					$out.=$this->wrapInCells("Encryption key:", '<a name="set_encryptionKey" /><input type="text" name="TYPO3_INSTALL[localconf.php][encryptionKey]" value="'.htmlspecialchars($GLOBALS["TYPO3_CONF_VARS"]["SYS"]["encryptionKey"]).'"><br /><input type="button" onclick="document.forms[\'setupGeneral\'].elements[\'TYPO3_INSTALL[localconf.php][encryptionKey]\'].value=generateEncryptionKey(document.forms[\'setupGeneral\'].elements[\'TYPO3_INSTALL[localconf.php][encryptionKey]\'].value);" value="Generate random key">');
 					$out.=$this->wrapInCells("", "<BR>");
 
@@ -2840,6 +2839,12 @@ From sub-directory:
 						if (!@is_file($overlay))	die("Error: ".$overlay." was not a file");
 						if (!@is_file($mask))	die("Error: ".$mask." was not a file");
 
+					if ($imageProc->maskNegate)	{
+						$outmask = $imageProc->tempPath.$imageProc->filenamePrefix.t3lib_div::shortMD5($imageProc->alternativeOutputKey."mask").".gif";
+						$imageProc->imageMagickExec($mask, $outmask, '-negate');
+						$mask = $outmask;
+					}
+
 					$output = $imageProc->tempPath.$imageProc->filenamePrefix.t3lib_div::shortMD5($imageProc->alternativeOutputKey."combine1").".jpg";
 					$imageProc->combineExec($input,$overlay,$mask,$output);
 					$fileInfo = $imageProc->getImageDimensions($output);
@@ -2854,6 +2859,13 @@ From sub-directory:
 						if (!@is_file($input))	die("Error: ".$input." was not a file");
 						if (!@is_file($overlay))	die("Error: ".$overlay." was not a file");
 						if (!@is_file($mask))	die("Error: ".$mask." was not a file");
+
+					if ($imageProc->maskNegate)	{
+						$outmask = $imageProc->tempPath.$imageProc->filenamePrefix.t3lib_div::shortMD5($imageProc->alternativeOutputKey."mask2").".gif";
+						$imageProc->imageMagickExec($mask, $outmask, '-negate');
+						$mask = $outmask;
+					}
+
 					$output = $imageProc->tempPath.$imageProc->filenamePrefix.t3lib_div::shortMD5($imageProc->alternativeOutputKey."combine2").".jpg";
 					$imageProc->combineExec($input,$overlay,$mask,$output);
 					$fileInfo = $imageProc->getImageDimensions($output);
@@ -4767,6 +4779,23 @@ A:hover {color: #000066}
 			$wTags.=' cols="'.$size.'"';
 		}
 		return $wTags;
+	}
+
+	/**
+	 * Return the filename that will be used for the backup.
+	 * It is important that backups of PHP files still stay as a PHP file, otherwise they could be viewed un-parsed in clear-text.
+	 *
+	 * @param	string		Full path to a file
+	 * @return	string		The name of the backup file (again, including the full path)
+	 */
+	function getBackupFilename($filename)	{
+		if (preg_match('/\.php$/', $filename))	{
+			$backupFile = str_replace('.php', '_bak.php', $filename);
+		} else {
+			$backupFile = $filename.'~';
+		}
+
+		return $backupFile;
 	}
 }
 

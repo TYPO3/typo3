@@ -138,7 +138,16 @@ class SC_tslib_showpic {
 		}
 
 			// Chech md5-checksum: If this md5-value does not match the one submitted, then we fail... (this is a kind of security that somebody don't just hit the script with a lot of different parameters
-		$md5_value = md5($this->file.'|'.$this->width.'|'.$this->height.'|'.$this->effects.'|'.$GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'].'|');
+		$md5_value = md5(
+				$this->file.'|'.
+				$this->width.'|'.
+				$this->height.'|'.
+				$this->effects.'|'.
+				$this->bodyTag.'|'.
+				$this->title.'|'.
+				$this->wrap.'|'.
+				$GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'].'|');
+
 		if ($md5_value!=$this->md5) {
 			die('Parameter Error: Wrong parameters sent.');
 		}
@@ -174,8 +183,9 @@ class SC_tslib_showpic {
 			$img->tempPath = $this->alternativeTempPath;
 		}
 
-		// Need to connect to database, because this is used (typo3temp_db_tracking, cached image dimensions).
-			$GLOBALS['TYPO3_DB']->sql_pconnect(TYPO3_db_host, TYPO3_db_username, TYPO3_db_password);
+			// Need to connect to database, because this is used (typo3temp_db_tracking, cached image dimensions).
+		$GLOBALS['TYPO3_DB']->sql_pconnect(TYPO3_db_host, TYPO3_db_username, TYPO3_db_password);
+		$GLOBALS['TYPO3_DB']->sql_select_db(TYPO3_db);
 
 		if (strstr($this->width.$this->height, 'm')) {$max='m';} else {$max='';}
 

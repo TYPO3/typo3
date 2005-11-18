@@ -1502,8 +1502,10 @@
 	function headerNoCache()	{
 		$disableAcquireCacheData = FALSE;
 
-		if (strtolower($_SERVER['HTTP_CACHE_CONTROL'])==='no-cache' || strtolower($_SERVER['HTTP_PRAGMA'])==='no-cache')	{
-			$disableAcquireCacheData = TRUE;
+		if ($this->beUserLogin)	{
+			if (strtolower($_SERVER['HTTP_CACHE_CONTROL'])==='no-cache' || strtolower($_SERVER['HTTP_PRAGMA'])==='no-cache')	{
+				$disableAcquireCacheData = TRUE;
+			}
 		}
 
 			// Call hook for possible by-pass of requiring of page cache (for recaching purpose)

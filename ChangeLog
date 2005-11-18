@@ -1,10 +1,32 @@
+2005-11-14  Michael Stucki  <michael@typo3.org>
+
+	* Release of TYPO3 3.8.1
+
+2005-11-12  Michael Stucki  <michael@typo3.org>
+
+	* Added a helpful warning if config.baseURL=1 was found
+
+2005-11-09  Michael Stucki  <michael@typo3.org>
+
+	* Backported a fix for wrong image negation in Install Tool (patch written by Bernhard Kraft)
+
 2005-11-09  Rupert Germann  <rupi@gmx.li>
 
-	* fix for function getBorderAttr: closes bugs 1360 and 1461
+	* Fix for function getBorderAttr: closes bugs 1360 and 1461
+
+2005-11-08  Michael Stucki  <michael@typo3.org>
+
+	* Added a fix for broken image-alignment in Mozilla browsers (written by Martin Kutschker)
+	* Backported a fix for (part of) bug 1312 (DB problem in showpic.php, patch written by Bernhard Kraft)
+	* Made a change that disables the shift-reload feature if there is no be_user
+	* Fixed a cross-site scripting issue in showpic.php. Many thanks to Martin Klaus who provided a fix for this.
+	* !!! Disabled the config.baseURL=1 feature. baseURL needs to be a string value, otherwise it will not work (security reasons)!
+	* Fixed the encryptionKey auto-generation in the Install Tool: The 32 first characters were always the same. Thanks to Jochen Weiland.
+	* When editing a file in the Install Tool, the backup is no longer renamed to filename.php~ but filename_bak.php (could be viewed in clear-text otherwise). Thanks to Lars Houmark for reporting this.
 
 2005-09-19 Martin Kutschker <martin.t.kutschker@blackbox.net>
 
-	*  Fixed bug #1287: Detect Opera as Netscape3
+	* Fixed bug #1287: GEMNU Rollover doesn't work in Opera
 
 2005-09-18 Michael Stucki <michael@typo3.org>
 
