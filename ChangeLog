@@ -1,7 +1,13 @@
-2006-11-18	Michael Scharkow	<mscharkow@gmx.net>
+2005-11-19  Michael Stucki  <michael@typo3.org>
+
+	* Fixed bug #1861: Call of inexinsting t3lib_exec::imageMagickCommand() instead of t3lib_div::...
+
+2006-11-18  Michael Scharkow  <mscharkow@gmx.net>
+
 	* Removed bgColor from default body tag
 
-2006-11-17	Robert Lemke	<robert@typo3.org>
+2006-11-17  Robert Lemke  <robert@typo3.org>
+
 	* Added two post-processing hooks into t3lib_tcemain->moveRecord. They are required by TemplaVoila 1.0
 
 2006-11-15  Sebastian Kurfuerst  <sebastian@garbage-group.de>
@@ -22,14 +28,14 @@
 
 2005-11-09  Rupert Germann  <rupi@gmx.li>
 
-	* fix for function getBorderAttr: closes bugs 1360 and 1461
+	* Fix for function getBorderAttr: closes bugs 1360 and 1461
 
 2005-11-09  Sebastian Kurfuerst  <sebastian@garbage-group.de>
 
 	* New feature #1577: display clickmenus with XMLHTTP / ajax
 	* Fixed bug 1066: Shortcut to a invisible page leads to a frontend error
 
-2005-11-09	Ingmar Schlecht	<ingmar@typo3.org>
+2005-11-09  Ingmar Schlecht  <ingmar@typo3.org>
 
 	* Made TCEForms put <label> tags around icons for moving/deleting repetitive Flexform items
 	* Removed annoying feature of typo3/tab.js to focus the textarea
@@ -42,7 +48,7 @@
 	* Fixed bug #1570: on timeout in BE, popup appears all the time when clicking no
 	* Fixed bug #1571: make new content element wizard easier to use
 
-2005-11-01	Robert Lemke	<robert@typo3.org>
+2005-11-01  Robert Lemke  <robert@typo3.org>
 
 	* Added an is_array() check in t3lib_div::resolveSheetDefInDS() to prevent a fatal error in certain circumstances
 

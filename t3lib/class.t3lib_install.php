@@ -176,7 +176,7 @@ class t3lib_install {
 	 * Writes or returns lines from localconf.php
 	 *
 	 * @param	array		Array of lines to write back to localconf.php. Possibly
-	 * @param string	Absolute path of alternative file to use (Notice: this path is not validated in terms of being inside 'TYPO3 space')
+	 * @param	string		Absolute path of alternative file to use (Notice: this path is not validated in terms of being inside 'TYPO3 space')
 	 * @return	mixed		If $inlines is not an array it will return an array with the lines from localconf.php. Otherwise it will return a status string, either "continue" (updated) or "nochange" (not updated)
 	 * @see setValueInLocalconfFile()
 	 */

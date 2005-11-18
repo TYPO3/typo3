@@ -2075,7 +2075,7 @@ class t3lib_div {
 		$content = '';
 
 			// (Proxy support implemented by Arco <arco@appeltaart.mine.nu>)
-		if((substr($url,0,7)=='http://') && ($GLOBALS['TYPO3_CONF_VARS']['SYS']['curlUse']=='1'))	{
+		if ((substr($url,0,7)=='http://') && ($GLOBALS['TYPO3_CONF_VARS']['SYS']['curlUse']=='1'))	{
 			//external URL without error checking.
 			$ch = curl_init();
 			curl_setopt ($ch,CURLOPT_URL, $url);
@@ -2096,7 +2096,7 @@ class t3lib_div {
 			$content=curl_exec ($ch);
 			curl_close ($ch);
 			return $content;
-		} elseif($fd = fopen($url,'rb'))    {
+		} elseif ($fd = fopen($url,'rb'))    {
 			while (!feof($fd))	{
 				$content.=fread($fd, 5000);
 			}
@@ -2114,9 +2114,9 @@ class t3lib_div {
 	 * @return	boolean		True if the file was successfully opened and written to.
 	 */
 	function writeFile($file,$content)	{
-		if($fd = fopen($file,'wb'))	{
-			fwrite( $fd, $content);
-			fclose( $fd );
+		if ($fd = fopen($file,'wb'))	{
+			fwrite($fd,$content);
+			fclose($fd);
 
 			t3lib_div::fixPermissions($file);	// Change the permissions of the file
 

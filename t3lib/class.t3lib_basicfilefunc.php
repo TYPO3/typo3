@@ -445,9 +445,9 @@ class t3lib_basicFileFunctions	{
 		if (!is_object($this->csConvObj))	{
 			if (TYPO3_MODE=='FE')	{
 				$this->csConvObj = &$GLOBALS['TSFE']->csConvObj;
-			} elseif(is_object($GLOBALS['LANG']))	{	// BE assumed:
+			} elseif (is_object($GLOBALS['LANG']))	{	// BE assumed:
 				$this->csConvObj = &$GLOBALS['LANG']->csConvObj;
-			} else	{	// The object may not exist yet, so we need to create it now. Happens in the Install Tool for example.
+			} else {	// The object may not exist yet, so we need to create it now. Happens in the Install Tool for example.
 				$this->csConvObj = &t3lib_div::makeInstance('t3lib_cs');
 			}
 		}
@@ -455,9 +455,9 @@ class t3lib_basicFileFunctions	{
 		if (!$charset)	{
 			if (TYPO3_MODE=='FE')	{
 				$charset = $GLOBALS['TSFE']->renderCharset;
-			} elseif(is_object($GLOBALS['LANG']))	{	// BE assumed:
+			} elseif (is_object($GLOBALS['LANG']))	{	// BE assumed:
 				$charset = $GLOBALS['LANG']->charSet;
-			} else	{	// best guess
+			} else {	// best guess
 				$charset = $GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset'];
 			}
 		}

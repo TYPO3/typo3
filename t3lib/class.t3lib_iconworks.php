@@ -458,7 +458,7 @@ class t3lib_iconWorks	{
 				ImagePng($im, $tempBaseName.'_im.png');
 				ImagePng($cpImg, $tempBaseName.'_cpImg.png');
 
-				$cmd = t3lib_exec::imageMagickCommand('combine', '-compose over '.$tempBaseName.'_cpImg.png '.$tempBaseName.'_im.png '.$tempBaseName.'_out.png ');
+				$cmd = t3lib_div::imageMagickCommand('combine', '-compose over '.$tempBaseName.'_cpImg.png '.$tempBaseName.'_im.png '.$tempBaseName.'_out.png ');
 				exec($cmd);
 
 				$im = imagecreatefrompng($tempBaseName.'_out.png');
