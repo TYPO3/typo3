@@ -9,15 +9,15 @@
 	* Fixed wrong image negation in Install Tool (patch written by Bernhard Kraft)
 	* Fixed bug #1861: Call of inexinsting t3lib_exec::imageMagickCommand() instead of t3lib_div::...
 
-2006-11-18  Michael Scharkow  <mscharkow@gmx.net>
+2005-11-18  Michael Scharkow  <mscharkow@gmx.net>
 
 	* Removed bgColor from default body tag
 
-2006-11-17  Robert Lemke  <robert@typo3.org>
+2005-11-17  Robert Lemke  <robert@typo3.org>
 
 	* Added two post-processing hooks into t3lib_tcemain->moveRecord. They are required by TemplaVoila 1.0
 
-2006-11-15  Sebastian Kurfuerst  <sebastian@garbage-group.de>
+2005-11-15  Sebastian Kurfuerst  <sebastian@garbage-group.de>
 
 	* Fixed bug #569: The "Access Key" combination now added to the "title" attribute of images
 	* Fixed bug #815: CLI-mode doesn't work with lockSSL enabled
