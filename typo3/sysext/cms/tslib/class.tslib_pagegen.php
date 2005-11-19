@@ -125,8 +125,20 @@ class TSpagegen {
 		$GLOBALS['TSFE']->debug = ''.$GLOBALS['TSFE']->config['config']['debug'];
 
 			// Base url:
-		if ($GLOBALS['TSFE']->config['config']['baseURL']) {
-			$GLOBALS['TSFE']->baseUrl = (intval($GLOBALS['TSFE']->config['config']['baseURL']) ? t3lib_div::getIndpEnv('TYPO3_SITE_URL') : $GLOBALS['TSFE']->config['config']['baseURL']);
+		if ($GLOBALS['TSFE']->config['config']['baseURL'])	{
+			if ($GLOBALS['TSFE']->config['config']['baseURL']==='1')	{
+					// Depreciated property, going to be dropped.
+				$error = 'Depreciated Typoscript property was found in this template: "config.baseURL="1"
+
+You need to change this value to the URL of your website root, otherwise TYPO3 will not work!
+
+See <a href="http://wiki.typo3.org/index.php/TYPO3_3.8.1" target="_blank">wiki.typo3.org/index.php/TYPO3_3.8.1</a> for more information.';
+
+				$GLOBALS['TSFE']->printError(nl2br($error));
+				exit;
+			} else {
+				$GLOBALS['TSFE']->baseUrl = $GLOBALS['TSFE']->config['config']['baseURL'];
+			}
 			$GLOBALS['TSFE']->anchorPrefix = substr(t3lib_div::getIndpEnv('TYPO3_REQUEST_URL'),strlen(t3lib_div::getIndpEnv('TYPO3_SITE_URL')));
 		}
 
