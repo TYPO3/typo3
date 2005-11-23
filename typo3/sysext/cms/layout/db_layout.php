@@ -432,7 +432,7 @@ class SC_db_layout {
 				// Creating the top edit page icon:
 			if ($this->CALC_PERMS&2)	{
 				$params='&edit[pages]['.$this->id.']=edit';
-				$this->editIcon='<a href="#" onclick="'.htmlspecialchars(t3lib_BEfunc::editOnClick($params,$BACK_PATH)).'"><img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/edit2.gif','width="11" height="12"').' vspace="2" align="top" title="'.$LANG->getLL('editPageTitle',1).'" alt="" /></a>';
+				$this->editIcon='<a href="#" onclick="'.htmlspecialchars(t3lib_BEfunc::editOnClick($params,$BACK_PATH)).'"><img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/edit2.gif','width="11" height="12"').' vspace="2" align="top" title="'.$LANG->getLL('editPageProperties',1).'" alt="" /></a>';
 			} else {
 				$this->editIcon='';
 			}
@@ -544,7 +544,7 @@ class SC_db_layout {
 		} else {
 			$inValue = 'pages:'.$this->id;
 			$is_selected+=intval($edit_record==$inValue);
-			$opt[]='<option value="'.$inValue.'"'.($edit_record==$inValue?' selected="selected"':'').'>[ '.$LANG->getLL('editPageHeader',1).' ]</option>';
+			$opt[]='<option value="'.$inValue.'"'.($edit_record==$inValue?' selected="selected"':'').'>[ '.$LANG->getLL('editPageProperties',1).' ]</option>';
 		}
 
 			// Selecting all content elements from this language:
@@ -671,14 +671,14 @@ class SC_db_layout {
 				'</a>';
 
 		$toolBar.='<a href="'.htmlspecialchars($this->local_linkThisScript(array('edit_record'=>'pages:'.$this->id))).'">'.
-				'<img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/edit2.gif','width="11" height="12"').' class="c-inputButton" title="'.$LANG->getLL('editPageHeader',1).'" alt="" />'.
+				'<img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/edit2.gif','width="11" height="12"').' class="c-inputButton" title="'.$LANG->getLL('editPageProperties',1).'" alt="" />'.
 				'</a>';
 		$toolBar.='<img src="clear.gif" width="15" height="1" align="top" alt="" />';
 
 			// CSH:
 		$toolBar.= t3lib_BEfunc::cshItem($this->descrTable,'quickEdit',$BACK_PATH,'',FALSE,'margin-top: 0px; margin-bottom: 0px;');
 
-			// Setting page header:
+			// Setting page properties:
 		$hS2 = '
 			<table border="0" cellpadding="0" cellspacing="0" width="460">
 				<tr>
@@ -1029,7 +1029,7 @@ class SC_db_layout {
 		$this->doc->postCode.= $CMparts[2];
 
 
-			// Draw the page header.
+			// Draw the page properties.
 		$headerSection = $this->doc->getHeader('pages',$this->pageinfo,$this->pageinfo['_thePath']).'<br />'.
 						$LANG->sL('LLL:EXT:lang/locallang_core.php:labels.path',1).': '.
 						'<span title="'.htmlspecialchars($this->pageinfo['_thePathFull']).'">'.htmlspecialchars(t3lib_div::fixed_lgd_cs($this->pageinfo['_thePath'],-50)).'</span>';
@@ -1053,10 +1053,10 @@ class SC_db_layout {
 		$toolBar.='<a href="#" onclick="'.htmlspecialchars('jumpToUrl(\''.$BACK_PATH.'db_new.php?id='.$this->id.'&pagesOnly=1&returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI')).'\');return false;').'">'.
 					'<img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/new_page.gif','width="13" height="12"').' hspace="0" vspace="2" align="top" title="'.$LANG->getLL('newPage',1).'" alt="" />'.
 					'</a>';
-			// Edit page header:
+			// Edit page properties:
 		$params='&edit[pages]['.$this->id.']=edit';
 		$toolBar.='<a href="#" onclick="'.htmlspecialchars(t3lib_BEfunc::editOnClick($params,$BACK_PATH)).'">'.
-					'<img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/edit2.gif','width="11" height="12"').' hspace="2" vspace="2" align="top" title="'.$LANG->getLL('editPageHeader',1).'" alt="" />'.
+					'<img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/edit2.gif','width="11" height="12"').' hspace="2" vspace="2" align="top" title="'.$LANG->getLL('editPageProperties',1).'" alt="" />'.
 					'</a>';
 
 			// Add CSH (Context Sensitive Help) icon to tool bar:
@@ -1089,7 +1089,7 @@ class SC_db_layout {
 				</tr>
 			</table>';
 
-			// Create page header:
+			// Create page properties:
 		$this->content.=$this->doc->startPage($LANG->getLL('title'));
 		$this->content.=$this->doc->section('',$hS2);
 

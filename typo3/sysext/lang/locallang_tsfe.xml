@@ -36,7 +36,7 @@
 			<label index="edit_newContentElement">Create new content element</label>
 			<label index="edit_move_page">Move page</label>
 			<label index="edit_newPage">Create new page</label>
-			<label index="edit_editPageHeader">Edit page header</label>
+			<label index="edit_editPageProperties">Edit page properties</label>
 			<label index="edit_db_list">Web&gt;List module</label>
 			<label index="tsdebug">TypoScript</label>
 			<label index="tsdebug_tree">Tree display:</label>

@@ -590,7 +590,7 @@ class t3lib_tsfeBeUserAuth extends t3lib_beUserAuth {
 		if ($perms&2)	{
 			$params='&edit[pages]['.$id.']=edit';
 			$toolBar.='<a href="'.htmlspecialchars(TYPO3_mainDir.'alt_doc.php?'.$params.'&noView=1&returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))).'">'.
-					'<img src="t3lib/gfx/edit2.gif" width="11" height="12" hspace="2" border="0" align="top" title="'.$this->extGetLL('edit_editPageHeader').'" alt="" /></a>';
+					'<img src="t3lib/gfx/edit2.gif" width="11" height="12" hspace="2" border="0" align="top" title="'.$this->extGetLL('edit_editPageProperties').'" alt="" /></a>';
 		}
 		if ($this->check('modules','web_list'))	{
 			$toolBar.='<a href="'.htmlspecialchars(TYPO3_mainDir.'db_list.php?id='.$id.'&returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))).'">'.

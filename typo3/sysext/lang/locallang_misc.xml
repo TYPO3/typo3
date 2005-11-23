@@ -50,7 +50,7 @@
 			<label index="CM_moveWizard">Move element</label>
 			<label index="CM_moveWizard_page">Move page</label>
 			<label index="CM_newWizard">'Create New' wizard</label>
-			<label index="CM_editPageHeader">Edit page header</label>
+			<label index="CM_editPageProperties">Edit page properties</label>
 			<label index="CM_db_list">Web&gt;List module</label>
 			<label index="noEditPage">You asked to edit page &quot;%s&quot; but you cannot edit this page. Now loading backend as usual.</label>
 		</languageKey>

@@ -102,8 +102,8 @@ class tx_extrapagecmoptions {
 						$localItems['hide'] = $backRef->DB_hideUnhide($table,$backRef->rec,$TCA[$table]['ctrl']['enablecolumns']['disabled']);
 				if (!in_array('edit_access',$backRef->disabledItems) && is_array($TCA[$table]['ctrl']['enablecolumns']))
 						$localItems['edit_access'] = $backRef->DB_editAccess($table,$uid);
-				if (!in_array('edit_pageheader',$backRef->disabledItems) && $table=='pages' && $backRef->editPageIconSet)
-						$localItems['edit_pageheader'] = $backRef->DB_editPageHeader($uid);
+				if (!in_array('edit_pageproperties',$backRef->disabledItems) && $table=='pages' && $backRef->editPageIconSet)
+						$localItems['edit_pageproperties'] = $backRef->DB_editPageProperties($uid);
 			}
 
 				// Find delete element among the input menu items and insert the local items just before that:

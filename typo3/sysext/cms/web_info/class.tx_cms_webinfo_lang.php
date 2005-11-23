@@ -288,7 +288,7 @@ class tx_cms_webinfo_lang extends t3lib_extobjbase {
 		if (is_array($langRecUids[0]))	{
 			$params = '&edit[pages]['.implode(',',$langRecUids[0]).']=edit&columnsOnly=title,nav_title,l18n_cfg,hidden';
 			$editIco = '<a href="#" onclick="'.htmlspecialchars(t3lib_BEfunc::editOnClick($params,$GLOBALS['BACK_PATH'])).'">
-				<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/edit2.gif','width="11" height="12"').' title="'.$LANG->getLL('lang_renderl10n_editPageHeaders','1').'" border="0" alt="" />
+				<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/edit2.gif','width="11" height="12"').' title="'.$LANG->getLL('lang_renderl10n_editPageProperties','1').'" border="0" alt="" />
 				</a>';
 		} else $editIco = '';
 		$tCells[] = '<td class="c-leftLine" colspan="2">'.

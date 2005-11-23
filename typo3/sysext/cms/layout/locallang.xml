@@ -27,8 +27,7 @@
 			<label index="deleteItem">Delete</label>
 			<label index="deleteWarning">Are you sure you want to delete this record?</label>
 			<label index="editColumn">Edit this column</label>
-			<label index="editPageTitle">Edit page header</label>
-			<label index="editPageTitle_curLang">Edit translation header</label>
+			<label index="editPageProperties_curLang">Edit translation properties</label>
 			<label index="editInRTE">Edit in Rich Text Editor</label>
 			<label index="newPageContent">Create page content</label>
 			<label index="newPageContent_copyForLang">Copy default content elements</label>
@@ -44,7 +43,7 @@
 			<label index="newLabel">NEW</label>
 			<label index="defaultLanguage">Default</label>
 			<label index="editLanguageHeader">Edit language header</label>
-			<label index="editPageHeader">Edit page header</label>
+			<label index="editPageProperties">Edit page properties</label>
 			<label index="newRecordGeneral">Create new record</label>
 			<label index="newContentElement">Create new content element</label>
 			<label index="CEonThisPage">Content elements on this page:</label>

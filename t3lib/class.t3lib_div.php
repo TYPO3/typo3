@@ -2114,11 +2114,15 @@ class t3lib_div {
 	 * @return	boolean		True if the file was successfully opened and written to.
 	 */
 	function writeFile($file,$content)	{
+		if (!@is_file($file))	{ $changePermissions=true; }
+
 		if ($fd = fopen($file,'wb'))	{
 			fwrite($fd,$content);
-			fclose($fd);
+			fclose($fd );
 
-			t3lib_div::fixPermissions($file);	// Change the permissions of the file
+			if ($changePermissions)	{	// Change the permissions only if the file has just been created
+				t3lib_div::fixPermissions($file);
+			}
 
 			return true;
 		}
@@ -3297,8 +3301,8 @@ class t3lib_div {
 	 * @return	array		An array with two num. keys: key0: The data structure is returned in this key (array) UNLESS an error happend in which case an error string is returned (string). key1: The used sheet key value!
 	 */
 	function resolveSheetDefInDS($dataStructArray,$sheet='sDEF')	{
-		if (!is_array ($dataStructArray)) return 'Data structure must be an array'; 
-		
+		if (!is_array ($dataStructArray)) return 'Data structure must be an array';
+
 		if (is_array($dataStructArray['sheets']))	{
 			$singleSheet = FALSE;
 			if (!isset($dataStructArray['sheets'][$sheet]))	{

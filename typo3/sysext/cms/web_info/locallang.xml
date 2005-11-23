@@ -27,9 +27,9 @@
 			<label index="pI_lastChangeContent">Last change, content</label>
 			<label index="hits_title">Hit Statistics</label>
 			<label index="lang_renderl10n_viewPage">View page</label>
-			<label index="lang_renderl10n_editDefaultLanguagePage">Edit default language page header</label>
+			<label index="lang_renderl10n_editDefaultLanguagePage">Edit default language page properties</label>
 			<label index="lang_renderl10n_editLangOverlays">Edit all language overlay records</label>
-			<label index="lang_renderl10n_editPageHeaders">Edit all page headers</label>
+			<label index="lang_renderl10n_editPageProperties">Edit all page properties</label>
 			<label index="lang_renderl10n_editPage">Edit page</label>
 			<label index="lang_renderl10n_editPageLang">Edit page translation</label>
 			<label index="lang_renderl10n_badThingThereAre">ERROR: there are two or more page overlay records for this language! Only one is allowed!</label>

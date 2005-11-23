@@ -2232,7 +2232,7 @@ class t3lib_BEfunc	{
 			}
 		}
 
-		return "previewWin=window.open('".$url."','newTypo3FrontendWindow','status=1,menubar=1,resizable=1,location=1,scrollbars=1,toolbar=1');".
+		return "previewWin=window.open('".$url."','newTYPO3frontendWindow');".
 				($switchFocus ? 'previewWin.focus();' : '');
 	}
 

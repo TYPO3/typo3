@@ -1,15 +1,29 @@
-2005-11-23	Dmitry Dulepov	<typo3@fm-world.ru>
+2005-11-23  Michael Stucki  <michael@typo3.org>
+
+	* Always use fputs() for writing to logfiles. There is no case when it can't be used, so the alternative "echo" call was never needed.
+	* !!! Removed $TYPO3_CONF_VARS['FE']['logfile_write']. See above.
+	* If logfile does not exist, try to create it automatically
+	* Fixed bug #187: config.stat_apache_pagenames code [type] ends up empty
+	* Fixed bug #1161: Cannot give access to all modules to a backend user when there are many backend modules loaded. Thanks to Valentin Schmid.
+	* Fixed bug #1672: Change name of "Edit page header" to "Edit page properties". Many thanks to Valentin Schmid who made the patch for this.
+	* Fixed bug #1549: Improve description of imagecaption fields
+	* Fixed bug #1592: Show website (magnifying glass icon) opens a new browser without all the toolbars
+	* Fixed bug #76: t3lib_div::writeFile() changes permissions without need
+
+2005-11-23  Dmitry Dulepov  <typo3@fm-world.ru>
+
 	* Added workspace list display in User/Workspace module
 
-2005-11-23 Andreas Otto <andreas.otto@dkd.de>
+2005-11-23  Andreas Otto  <andreas.otto@dkd.de>
+
 	* Methods imageLinkWrap() and typolink() in class.tslib_content.php: Made the JS PopUps accessible if JS is not available in the user's web browser. Add the TARGET-attribute only if the used doctype allows this.
 
 2005-11-23  Sebastian Kurfuerst  <sebastian@garbage-group.de>
 
 	* XHTML Compliance: prefix local anchors with a string (bug #1243)
 	* Feature request #1453: stdWrap for fontColor attribute of GIFBUILDER?s TEXT-object
-	* Usability: Add Focus in install tool login form (bug #1584)
-	* Bug #1637: adjustment to collapsable menu
+	* Usability: Add focus in install tool login form (bug #1584)
+	* Bug #1637: Adjustment to collapsable menu
 
 2005-11-19  Michael Stucki  <michael@typo3.org>
 

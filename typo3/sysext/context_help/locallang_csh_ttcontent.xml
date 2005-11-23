@@ -300,7 +300,8 @@ tt_content:image</label>
 			<label index="_imagecols.seeAlso">tt_content:image_noRows,
 tt_content:image</label>
 			<label index="imagecaption.description">Enter a caption for the image block</label>
-			<label index="imagecaption.details">By default the caption is positioned below the whole image block. However your website template may be configured to allow individual image captions. In that case each line in this field will be the image caption of the corresponding image in the list.
+			<label index="imagecaption.details">By default the caption is positioned below the whole image block. However your website template may be configured to allow individual image captions by setting &quot;styles.content.imgtext.captionSplit=1&quot; in your template constants.
+			In that case each line in this field will be the image caption of the corresponding image in the list.
 
 The caption text field is also used by the content element type &quot;Filelinks&quot; where each line represents a description of a file in the list.</label>
 			<label index="_imagecaption.seeAlso">tt_content:imagecaption_position,

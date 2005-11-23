@@ -2810,7 +2810,7 @@ class t3lib_TCEforms	{
 
 	/**
 	 * Wraps the icon of a relation item (database record or file) in a link opening the context menu for the item.
-	 * Icons will be wrapped only if $this->enableClickMenu is set. This must be done only if a global SOBE object exists and if the necessary JavaScript for displaying the context menus has been added to the page header.
+	 * Icons will be wrapped only if $this->enableClickMenu is set. This must be done only if a global SOBE object exists and if the necessary JavaScript for displaying the context menus has been added to the page properties.
 	 *
 	 * @param	string		The icon HTML to wrap
 	 * @param	string		Table name (eg. "pages" or "tt_content") OR the absolute path to the file

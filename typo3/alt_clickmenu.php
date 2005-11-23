@@ -595,11 +595,23 @@ class clickMenu {
 	 * @param	integer		page uid to edit (PID)
 	 * @return	array		Item array, element in $menuItems
 	 * @internal
+	 * @deprecated		Use DB_editPageProperties instead
 	 */
 	function DB_editPageHeader($uid)	{
+		return $this->DB_editPageProperties($uid);
+	}
+
+	/**
+	 * Adding CM element for edit page properties
+	 *
+	 * @param	integer		page uid to edit (PID)
+	 * @return	array		Item array, element in $menuItems
+	 * @internal
+	 */
+	function DB_editPageProperties($uid)	{
 		$url = 'alt_doc.php?edit[pages]['.$uid.']=edit';
 		return $this->linkItem(
-			$GLOBALS['LANG']->makeEntities($GLOBALS['LANG']->getLL('CM_editPageHeader')),
+			$GLOBALS['LANG']->makeEntities($GLOBALS['LANG']->getLL('CM_editPageProperties')),
 			$this->excludeIcon('<img'.t3lib_iconWorks::skinImg($this->PH_backPath,'gfx/edit2.gif','width="11" height="12"').' alt="" />'),
 			$this->urlRefForCM($url,'returnUrl'),
 			1	// no top frame CM!

@@ -1618,18 +1618,24 @@
 						// STAT:
 					$theLogFile = $this->TYPO3_CONF_VARS['FE']['logfile_dir'].$this->config['config']['stat_apache_logfile'];
 						// Add PATH_site left to $theLogFile if the path is not absolute yet
-					if(!t3lib_div::isAbsPath($theLogFile)) $theLogFile = PATH_site.$theLogFile;
+					if (!t3lib_div::isAbsPath($theLogFile)) $theLogFile = PATH_site.$theLogFile;
 
 					if ($this->config['config']['stat_apache'] && $this->config['config']['stat_apache_logfile'] && !strstr($this->config['config']['stat_apache_logfile'],'/'))	{
-						if(t3lib_div::isAllowedAbsPath($theLogFile) && @is_file($theLogFile) && @is_writable($theLogFile))	{
-							$this->config['stat_vars']['logFile'] = $theLogFile;
+						if (t3lib_div::isAllowedAbsPath($theLogFile))	{
+							if (!@is_file($theLogFile))	{
+								touch($theLogFile);	// Try to create the logfile
+								t3lib_div::fixPermissions($theLogFile);
+							}
 
-								// set page name later on
-							$setStatPageName = true;
-						} else {
-							$GLOBALS['TT']->setTSlogMessage('Could not set logfile path. Check filepath and permissions.',3);
+							if (@is_file($theLogFile) && @is_writable($theLogFile))	{
+								$this->config['stat_vars']['logFile'] = $theLogFile;
+								$setStatPageName = true;	// Set page name later on
+							} else {
+								$GLOBALS['TT']->setTSlogMessage('Could not set logfile path. Check filepath and permissions.',3);
+							}
 						}
 					}
+
 					$this->config['FEData'] = $this->tmpl->setup['FEData'];
 					$this->config['FEData.'] = $this->tmpl->setup['FEData.'];
 				}
@@ -1655,7 +1661,7 @@
 			$pageName = str_replace('[title]', $shortTitle ,$pageName);
 			$pageName = str_replace('[uid]',$this->page['uid'],$pageName);
 			$pageName = str_replace('[alias]',$this->page['alias'],$pageName);
-			$pageName = str_replace('[type]',$this->page['type'],$pageName);
+			$pageName = str_replace('[type]',$this->type,$pageName);
 			$temp = $this->config['rootLine'];
 			array_pop($temp);
 			if ($this->config['config']['stat_apache_noRoot'])	{
@@ -2940,25 +2946,11 @@ if (version == "n3") {
 							$LogLine.= ' "'.t3lib_div::getIndpEnv('HTTP_REFERER').'" "'.t3lib_div::getIndpEnv('HTTP_USER_AGENT').'"';
 						}
 
-						switch($this->TYPO3_CONF_VARS['FE']['logfile_write'])	{
-							case 'fputs':
-								$GLOBALS['TT']->push('Write to log file (fputs)');
-									$logfilehandle = fopen($this->config['stat_vars']['logFile'], 'a');
-									fputs($logfilehandle, $LogLine."\n");
-									@fclose($logfilehandle);
-								$GLOBALS['TT']->pull();
-							break;
-							default:
-								$GLOBALS['TT']->push('Write to log file (echo)');
-									if (TYPO3_OS=="WIN") {
-										$execCmd = 'echo '.$LogLine.' >> '.$this->config['stat_vars']['logFile'];
-									} else {
-										$execCmd = 'echo "'.addslashes($LogLine).'" >> '.$this->config['stat_vars']['logFile'];
-									}
-									exec($execCmd);
-								$GLOBALS['TT']->pull();
-							break;
-						}
+						$GLOBALS['TT']->push('Write to log file (fputs)');
+							$logfilehandle = fopen($this->config['stat_vars']['logFile'], 'a');
+							fputs($logfilehandle, $LogLine.chr(10));
+							@fclose($logfilehandle);
+						$GLOBALS['TT']->pull();
 
 						$GLOBALS['TT']->setTSlogMessage('Writing to logfile: OK',0);
 					} else {

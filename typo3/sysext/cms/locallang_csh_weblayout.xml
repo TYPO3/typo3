@@ -32,7 +32,7 @@ The page information view shows some statistical data about a page. This include
 
 
 &lt;b&gt;General options&lt;/b&gt;
-In the top of the Page module you will find a row of icons that will bring you right to various features such as History/Undo (1), Create new content element (2), Move page (3), Create new page (4) and Edit page header (5). See image below.
+In the top of the Page module you will find a row of icons that will bring you right to various features such as History/Undo (1), Create new content element (2), Move page (3), Create new page (4) and Edit page properties (5). See image below.
 
 &lt;b&gt;Defining number of displayed columns [Admin]&lt;/b&gt;
 Administrators can configure the Page module to display only the content columns that the website uses. This is done by Page TSconfig (so it can be configured per branch in the page tree!) and this particular option has the object path &quot;mod.web_layout.tt_content.colPos_list&quot;.
@@ -52,7 +52,7 @@ EXT:cms/cshimages/pagemodule_14.png,
 EXT:cms/cshimages/pagemodule_15.png</label>
 			<label index=".image_descr">Click the Page module, then the title of a page in the page tree.
 The page module is now activated in the right frame, showing the content of the page you clicked in the page tree.
-These buttons are direct links to the History/Undo function (1), Create new content element wizard (2), Move page wizard (3), Create new page wizard (4) and Edit page header form (5). See the links for more details.</label>
+These buttons are direct links to the History/Undo function (1), Create new content element wizard (2), Move page wizard (3), Create new page wizard (4) and Edit page properties form (5). See the links for more details.</label>
 			<label index="quickEdit.alttitle">Quick Edit</label>
 			<label index="quickEdit.description">The Quick Editor gives you direct access to the form fields of the page content.</label>
 			<label index="quickEdit.details">The Quick Editor is designed to cut down the number of clicks involved in getting to edit the page content. Simply by clicking the page title in the page tree you've got the first content element in the normal column loaded in the list frame. In the toolbar in the top you can select the other content elements on the page in the selector box.</label>
@@ -101,7 +101,7 @@ Click the icon of a content element if you wish to access the context menu of th
 			<label index="_columns_multi.image">EXT:cms/cshimages/pagemodule_12.png</label>
 			<label index="columns_multi.image_descr">When your website supports multiple content element zones in the template you will be able to use another column than the &quot;Normal&quot; column. Here the &quot;Left&quot; column is enabled. TYPO3 offers four columns by default, &quot;Normal&quot;, &quot;Right&quot;, &quot;Left&quot; and &quot;Border&quot;. Their significance depends on individual implementations in the frontend templates.</label>
 			<label index="button_panel.alttitle">The &quot;Big Buttons&quot;</label>
-			<label index="button_panel.description">These buttons will bring you to four most used functions in relation to building pages. From here you can edit the page header (eg. the page title), you can move the current page to another position in the page tree, create a new page somewhere in the page tree or create new content elements on this page.</label>
+			<label index="button_panel.description">These buttons will bring you to four most used functions in relation to building pages. From here you can edit the page properties (eg. the page title), you can move the current page to another position in the page tree, create a new page somewhere in the page tree or create new content elements on this page.</label>
 			<label index="_button_panel.seeAlso">xMOD_csh_corebe:TCEforms,
 xMOD_csh_corebe:move_el_pages,
 xMOD_csh_corebe:new_pages,

@@ -338,7 +338,7 @@ $TCA['be_users'] = Array (
 				'special' => 'modListUser',
 				'size' => '5',
 				'autoSizeMax' => 50,
-				'maxitems' => '15',
+				'maxitems' => '100',
 				'renderMode' => $GLOBALS['TYPO3_CONF_VARS']['BE']['accessListRenderMode'],
 				'iconsInOptionTags' => 1,
 			)
@@ -409,7 +409,7 @@ $TCA['be_groups'] = Array (
 				'internal_type' => 'db',
 					'allowed' => 'pages',
 				'size' => '3',
-				'maxitems' => '10',
+				'maxitems' => '20',
 				'autoSizeMax' => 10,
 				'show_thumbs' => '1'
 			)
@@ -421,7 +421,7 @@ $TCA['be_groups'] = Array (
 				'foreign_table' => 'sys_filemounts',
 				'foreign_table_where' => ' AND sys_filemounts.pid=0 ORDER BY sys_filemounts.title',
 				'size' => '3',
-				'maxitems' => '10',
+				'maxitems' => '20',
 				'autoSizeMax' => 10,
 				'renderMode' => $GLOBALS['TYPO3_CONF_VARS']['BE']['accessListRenderMode'],
 				'iconsInOptionTags' => 1,
@@ -571,7 +571,7 @@ $TCA['be_groups'] = Array (
 				'special' => 'modListGroup',
 				'size' => '5',
 				'autoSizeMax' => 50,
-				'maxitems' => '15',
+				'maxitems' => '100',
 				'renderMode' => $GLOBALS['TYPO3_CONF_VARS']['BE']['accessListRenderMode'],
 				'iconsInOptionTags' => 1,
 			)

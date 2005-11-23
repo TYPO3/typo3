@@ -123,7 +123,7 @@ class tx_cms_layout extends recordList {
 	var $pI_showStat=1;						// If true, hit statistics are shown in the page info box.
 	var $nextThree = 3;						// The number of successive records to edit when showing content elements.
 	var $pages_noEditColumns=0;				// If true, disables the edit-column icon for tt_content elements
-	var $option_showBigButtons=1;			// If true, shows bit buttons for editing page header, moving, creating elements etc. in the columns view.
+	var $option_showBigButtons=1;			// If true, shows big buttons for editing page properties, moving, creating elements etc. in the columns view.
 	var $option_newWizard=1;				// If true, new-wizards are linked to rather than the regular new-element list.
 	var $ext_function=0;					// If set to "1", will link a big button to content element wizard.
 	var $doEdit=1;							// If true, elements will have edit icons (probably this is whethere the user has permission to edit the page content). Set externally.
@@ -719,11 +719,11 @@ class tx_cms_layout extends recordList {
 			$bArray=array();
 
 			if (!$GLOBALS['SOBE']->current_sys_language)	{
-				if ($this->ext_CALC_PERMS&2)	$bArray[0]=$GLOBALS['SOBE']->doc->t3Button(t3lib_BEfunc::editOnClick('&edit[pages]['.$id."]=edit",$this->backPath,''),$GLOBALS['LANG']->getLL('editPageTitle'));
+				if ($this->ext_CALC_PERMS&2)	$bArray[0]=$GLOBALS['SOBE']->doc->t3Button(t3lib_BEfunc::editOnClick('&edit[pages]['.$id."]=edit",$this->backPath,''),$GLOBALS['LANG']->getLL('editPageProperties'));
 			} else {
 				if ($this->doEdit && $GLOBALS['BE_USER']->check('tables_modify','pages_language_overlay'))	{
 					list($languageOverlayRecord) = t3lib_BEfunc::getRecordsByField('pages_language_overlay','pid',$id,'AND sys_language_uid='.intval($GLOBALS['SOBE']->current_sys_language));
-					$bArray[0]=$GLOBALS['SOBE']->doc->t3Button(t3lib_BEfunc::editOnClick('&edit[pages_language_overlay]['.$languageOverlayRecord['uid']."]=edit",$this->backPath,''),$GLOBALS['LANG']->getLL('editPageTitle_curLang'));
+					$bArray[0]=$GLOBALS['SOBE']->doc->t3Button(t3lib_BEfunc::editOnClick('&edit[pages_language_overlay]['.$languageOverlayRecord['uid']."]=edit",$this->backPath,''),$GLOBALS['LANG']->getLL('editPageProperties_curLang'));
 				}
 			}
 			if ($this->ext_CALC_PERMS&4 || $this->ext_CALC_PERMS&2)	$bArray[1]=$GLOBALS['SOBE']->doc->t3Button("document.location='".$this->backPath."move_el.php?table=pages&uid=".$id.'&returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))."';",$GLOBALS['LANG']->getLL('move_page'));
@@ -2332,13 +2332,13 @@ class tx_cms_layout extends recordList {
 	 * Creates an info-box for the current page (identified by input record).
 	 *
 	 * @param	array		Page record
-	 * @param	boolean		If set, there will be shown an edit icon, linking to editing of the page header.
+	 * @param	boolean		If set, there will be shown an edit icon, linking to editing of the page properties.
 	 * @return	string		HTML for the box.
 	 */
 	function getPageInfoBox($rec,$edit=0)	{
 		global $LANG;
 
-			// If editing of the page header is allowed:
+			// If editing of the page properties is allowed:
 		if ($edit)	{
 			$params='&edit[pages]['.$rec['uid'].']=edit';
 			$editIcon='<a href="#" onclick="'.htmlspecialchars(t3lib_BEfunc::editOnClick($params,$this->backPath)).'">'.

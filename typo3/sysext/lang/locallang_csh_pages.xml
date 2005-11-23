@@ -78,7 +78,7 @@ If you click the red &quot;+&quot; you will get the page mounted temporarily in 
 
 A General Record Storage Page is typically a page of the &quot;SysFolder&quot; type.</label>
 			<label index="_storage_pid.seeAlso">The Storage Folder | http://typo3.org/documentation/document-library/doc_tut_ftb1/The_Storage_Folder/</label>
-			<label index="editlock.description">If set, non-Admin users cannot edit the page header or any records on the page (except subpages). They cannot create new records or pages on the page either.</label>
+			<label index="editlock.description">If set, non-Admin users cannot edit the page properties or any records on the page (except subpages). They cannot create new records or pages on the page either.</label>
 		</languageKey>
 		<languageKey index="dk">EXT:csh_dk/lang/dk.locallang_csh_pages.xml</languageKey>
 		<languageKey index="lv">EXT:csh_lv/lang/lv.locallang_csh_pages.xml</languageKey>
