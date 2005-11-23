@@ -198,6 +198,8 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 		$this->doc->docType = 'xhtml_trans';
 
 				// JavaScript
+		$plusIcon = t3lib_iconWorks::skinImg($BACK_PATH, 'gfx/ol/plusbullet.gif', 'width="18" height="16"', 1);
+		$minusIcon = t3lib_iconWorks::skinImg($BACK_PATH, 'gfx/ol/minusbullet.gif', 'width="18" height="16"', 1);
 		$this->doc->JScode = $this->doc->wrapScriptTags('
 			script_ended = 0;
 			function jumpToUrl(URL)	{	//
@@ -220,6 +222,22 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 				}
 			}
 
+			function expandCollapse(rowNumber) {
+				elementId = \'wl_\' + rowNumber;
+				element = document.getElementById(elementId);
+				image = document.getElementById(elementId + \'i\');
+				if (element.style)
+				{
+					if (element.style.display == \'none\') {
+						element.style.display = \'\';
+						image.src = \'' . $minusIcon . '\';
+					}
+					else {
+						element.style.display = \'none\';
+						image.src = \'' . $plusIcon . '\';
+					}
+				}
+			}
 		');
 		$this->doc->form = '<form action="index.php" method="post" name="pageform">';
 
@@ -1285,17 +1303,364 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 	 * @return	string		HTML
 	 */
 	function moduleContent_workspaceList()	{
-		return nl2br('
+		return nl2br('<!--
 			TODO: Workspace listing
 
 			- LISTING: Shows list of available workspaces for user. Used can see title, description, publication time, freeze-state, db-mount, member users/groups etc. Current workspace is indicated.
 			- SWITCHING: Switching between available workspaces is done by a button shown for each in the list
 			- ADMIN: Administrator of a workspace can click an edit-button linking to a form where he can edit the workspace. Users and groups should be selected based on some filtering so he cannot select groups he is not a member off himself (or some other rule... like for permission display with blinded users/groups)
 			- CREATE: If allowed, the user can create a new workspace which brings up a form where he can enter basic data. This is saved by a local instance of tcemain with forced admin-rights (creation in pid=0!).
-		');
+		-->')
+		.
+		$this->workspaceList_displayUserWorkspaceList();
+		;
 	}
 
+	/**
+	 * Generates HTML to display a list of workspaces.
+	 * 
+	 * @return	string	Generated HTML code
+	 */
+	function workspaceList_displayUserWorkspaceList() {
+		global	$BACK_PATH, $TYPO3_CONF_VARS;
 
+		// table header
+		$content = $this->workspaceList_displayUserWorkspaceListHeader();
+
+		// get & walk workspace list generating content
+		$wkspList = $this->workspaceList_getUserWorkspaceList();
+		$rowNum = 1;  
+		foreach ($wkspList as $wksp) {
+			$currentWksp = ($GLOBALS['BE_USER']->workspace == $wksp['uid']);
+			
+			// Each workspace data occupies two rows:
+			// (1) Folding + Icons + Title + Description
+			// (2) Information about workspace (initially hidden)
+
+			$cssClass = ($currentWksp ? 'bgColor3-20' : 'bgColor4-20');
+			// Start first row
+			$content .= '<tr class="' . $cssClass . '">';
+			
+			// row #1, column #1: expand icon
+			$content .= '<td>' .
+						'<a href="javascript:expandCollapse(' . $rowNum . ')">' .
+						'<img ' . t3lib_iconWorks::skinImg($BACK_PATH, 'gfx/ol/plusbullet.gif', 'width="18" height="16"') . ' id="wl_' . $rowNum . 'i" border="0" hspace="1" alt="Show more" />' .
+						'</a></td>';
+
+			// row #1, column #2: icon panel
+			$content .= '<td nowrap="nowrap">';	// FireFox will attempt wrap due to `width="1"` on topmost column 
+			$content .= $this->workspaceList_displayIcons($currentWksp, $wksp);
+			$content .= '</td>';
+
+			// row #1, column #3: current workspace indicator
+			// TODO move style to system stylesheet
+			$content .= '<td nowrap="nowrap" style="text-align: center">';	// FireFox will attempt wrap due to `width="1"` on topmost column 
+			$content .= (!$currentWksp ? '&nbsp;' : '<img ' . t3lib_iconWorks::skinImg($BACK_PATH, 'gfx/icon_ok.gif', 'width="18" height="16"') . ' id="wl_' . $rowNum . 'i" border="0" hspace="1" alt="This is a current workspace!" />');
+			$content .= '</td>';
+
+			// row #1, column #4 and 5: title and description
+			$content .= '<td nowrap="nowrap">' . $wksp['title'] . '</td>' .
+						'<td>' . $wksp['description'] . '</td>';
+			$content .= '</tr>';
+
+			// row #2, column #1 and #2
+			// TODO move style to system stylesheet (2 lines below)
+			$content .= '<tr id="wl_' . $rowNum . '" class="bgColor" style="display: none">';
+			$content .= '<td colspan="2" style="border-right: none;">&nbsp;</td>';
+
+			// row #2, column #3, #4 and #4
+			// TODO move style to system stylesheet
+			$content .= '<td colspan="3" style="border-left: none;">' .
+						$this->workspaceList_formatWorkspaceData($cssClass, $wksp) .
+						'</td>';
+			
+			$content .= '</tr>';
+			$rowNum++;
+		}
+		$content .= '</table>';
+
+		$newWkspUrl = $BACK_PATH . 'alt_doc.php?returnUrl=' .
+					rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI')) .
+					'&edit[sys_workspace][0]=new';
+
+		// workspace creation link
+		if ($GLOBALS['BE_USER']->isAdmin() || 0 != ($GLOBALS['BE_USER']->groupData['workspace_perms'] & 4)) {
+			// TODO move style to system stylesheet
+			$content .= '<br /><a href="' . $newWkspUrl . '">' .
+						'<img ' .
+						t3lib_iconWorks::skinImg($BACK_PATH, 'gfx/new_el.gif', 'width="11" height="12"') .
+						' alt="Create new workspace" style="margin-right: 5px; border: none; float: left;" />' .
+						'Create new workspace</a>';
+		}
+		return $content;			
+	}
+
+	/**
+	 * Retrieves a list of workspaces where user has access.
+	 * 
+	 * @return	array	A list of workspaces available to the current BE user
+	 */
+	function workspaceList_getUserWorkspaceList() {
+		// Get BE users if necessary
+		if (!is_array($this->be_user_Array)) {
+			$this->be_user_Array = t3lib_BEfunc::getUserNames();
+		}
+		// Get list of all workspaces. Note: system workspaces will be always displayed before custom ones!
+		$workspaces = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*','sys_workspace','pid=0'.t3lib_BEfunc::deleteClause('sys_workspace'),'','title');
+		$availableWorkspaces = array();
+
+		// Live
+		$wksp = $this->workspaceList_createFakeWorkspaceRecord(0);
+		$wksp = $GLOBALS['BE_USER']->checkWorkspace($wksp);
+		$availableWorkspaces[] = $wksp;
+
+		// Draft 
+		$wksp = $this->workspaceList_createFakeWorkspaceRecord(-1);
+		$wksp = $GLOBALS['BE_USER']->checkWorkspace($wksp);
+		$availableWorkspaces[] = $wksp; 
+
+		// Custom
+		foreach($workspaces as $rec) {
+			// see if user can access this workspace in any way
+			if (false !== ($result = $GLOBALS['BE_USER']->checkWorkspace($rec))) {
+				// `$result` contains `$rec` plus access type through '_ACCESS' key
+				$availableWorkspaces[] = $result;
+			}
+		}
+		return $availableWorkspaces;
+	}
+	
+	/**
+	 * Create inner information panel for workspace list. This panel is
+	 * initially hidden and becomes visible when user click on the expand
+	 * icon on the very left of workspace list against the workspace he
+	 * wants to explore.
+	 * 
+	 * @param   string  $cssClass   CSS class to use for panel
+	 * @param   array   &$wksp   Workspace information
+	 * @return  string  Formatted workspace information
+	 */
+	function workspaceList_formatWorkspaceData($cssClass, &$wksp) {
+		global $TYPO3_CONF_VARS;
+
+		// TODO Remove substr below when new CSS classes are added to the system stylesheet!
+		$cssClass2 = substr($cssClass, 0, strlen($cssClass) - 3);
+		// use system date format!
+		$dateFormat = $TYPO3_CONF_VARS["SYS"]["ddmmyy"] . ' ' . $TYPO3_CONF_VARS["SYS"]["hhmm"];
+
+		// TODO how handle mount points for users in custom workspaces here??? Should all mountpoints be visible here or not?
+		// TODO move styles to system stylesheet (all lines below!)
+		$content = '<table cellspacing="1" cellpadding="1" width="100%">' .
+				'<tr><td style="width: 150px; white-space: nowrap; vertical-align: top;" class="' . $cssClass2 . '"><b>File mountpoints:</b></td>' .		// TODO Localize this!
+				'<td class="' . $cssClass2 . '">' . $this->workspaceList_getMountPoints('sys_filemounts', $wksp['file_mountpoints']) . '</td></tr>' .
+				'<tr><td style="width: 150px; white-space: nowrap; vertical-align: top;" class="' . $cssClass2 . '"><b>Database mountpoints:</b></td>' .	// TODO Localize this!
+				'<td class="' . $cssClass2 . '">' . $this->workspaceList_getMountPoints('pages', $wksp['db_mountpoints']) . '</td></tr>' .
+				'<tr><td style="width: 150px; white-space: nowrap; vertical-align: top;" class="' . $cssClass2 . '"><b>Frozen:</b></td>' .					// TODO Localize this!
+				'<td class="' . $cssClass2 . '">' . ($wksp['freeze'] ? 'Yes' : 'No') . '</td></tr>' .
+				'<tr><td style="width: 150px; white-space: nowrap; vertical-align: top;" class="' . $cssClass2 . '"><b>Publish date:</b></td>' .			// TODO Localize this!
+				'<td class="' . $cssClass2 . '">' . ($wksp['publish_time'] == 0 ? '-' : date($dateFormat, $wksp['publish_time'])) . '</td></tr>' .
+				'<tr><td style="width: 150px; white-space: nowrap; vertical-align: top;" class="' . $cssClass2 . '"><b>Unpublish date:</b></td>' .			// TODO Localize this!
+				'<td class="' . $cssClass2 . '">' . ($wksp['unpublish_time'] == 0 ? '-' : date($dateFormat, $wksp['unpublish_time'])) . '</td></tr>' .
+				'<tr><td style="width: 150px; white-space: nowrap; vertical-align: top;" class="' . $cssClass2 . '"><b>Your access:</b></td>' .				// TODO Localize this!
+				'<td class="' . $cssClass2 . '">' . $wksp['_ACCESS'] . '</td></tr>' .
+				'<tr><td style="width: 150px; white-space: nowrap; vertical-align: top;" class="' . $cssClass2 . '"><b>Workspace users:</b></td>' .			// TODO Localize this!
+				'<td class="' . $cssClass2 . '">' . $this->workspaceList_getUserList($cssClass, $wksp) . '</td></tr>' .
+				'</table>';
+		return $content;
+	}
+
+	/**
+	 * Retrieves and formats file and database mount points lists.
+	 * 
+	 * @param   string  $tableName  Table name for mount points
+	 * @param   string  $uidList    Comma-separated list of UIDs
+	 * @return  string  Generated HTML
+	 */
+	function workspaceList_getMountPoints($tableName, $uidList) {
+		$MPs = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid,title', $tableName, 'deleted=0 AND hidden=0 AND uid IN (' . $uidList . ')', '', 'title');
+		if (count($MPs) == 0) {
+			// No mount points!
+			return 'none';  // TODO Localize this
+		}
+		$content_array = array();
+		foreach ($MPs as $mp) {
+			// Will show UID on hover. Just convinient to user.
+			$content_array[] = '<span title="UID: ' . $mp['uid'] . '">' . $mp['title'] . '</span>';
+		}
+		return implode('<br />', $content_array);
+	}
+
+	/**
+	 * Creates a header for the workspace list table. This function only makes
+	 * <code>workspaceList_displayUserWorkspaceList()</code> smaller.
+	 * 
+	 * @return	string	Generated content 
+	 */
+	function workspaceList_displayUserWorkspaceListHeader() {
+		// TODO Localize all strings below
+		// TODO may need own style in system stylesheet
+		// TODO CSH lables?
+		return '<table border="0" cellpadding="0" cellspacing="1" class="lrPadding workspace-overview">
+			<tr class="bgColor5 tableheader">
+				<td width="1">&nbsp;</td>
+				<td width="1">&nbsp;</td>
+				<td nowrap="nowrap">Current:</td>
+				<td nowrap="nowrap">Title:</td>
+				<td nowrap="nowrap">Description:</td>
+			</tr>';
+	}
+
+	/**
+	 * Generates a list of <code>&lt;option&gt;</code> tags with user names.
+	 * 
+	 * @param	array	&$wksp	Workspace record
+	 * @return	Generated content
+	 */
+	function workspaceList_getUserList($cssClass, &$wksp) {
+		// TODO Localize strings on three lines below
+		$content = $this->workspaceList_getUserListWithAccess($cssClass, $wksp['adminusers'], 'Admins:'); // admins
+		$content .= $this->workspaceList_getUserListWithAccess($cssClass, $wksp['members'], 'Members:'); // members
+		$content .= $this->workspaceList_getUserListWithAccess($cssClass, $wksp['reviewers'], 'Reviewers:'); // reviewers
+		if ($content != '') {
+			// TODO may need own style in system stylesheet
+			$content = '<table cellpadding="0" cellspacing="1" width="100%" class="lrPadding workspace-overview">' . $content . '</table>';
+		}
+		else {
+			// TODO Localize this
+			$content = ($wksp['uid'] > 0 ? 'Admins only' : 'no restrictions');	// TODO Check with Kasper - is this correct?
+		}
+		return $content;
+	}
+
+	/**
+	 * Generates a list of user names that has access to the database.
+	 * 
+	 * @param	array	&$list	A list of user IDs separated by comma
+	 * @param	string	$access	Access string
+	 * @return	Generated content
+	 */
+	function workspaceList_getUserListWithAccess($cssClass, &$list, $access) {
+		if ($list == '') {
+			return '';	// no users, no need to go futher
+		}
+		$content_array = array();
+		$userIDs = explode(',', $list);
+
+		// get user names and sort
+		foreach ($userIDs as $userUID) {
+			$content_array[] = $this->be_user_Array[$userUID]['username']; 
+		}
+		sort($content_array);
+
+		// TODO move style to system stylesheet
+		$content = '<tr><td style="vertical-align: top; width: 100px" class="' . $cssClass . '">';
+		// TODO CSH lable explaining access here?
+		$content .= '<b>' . $access . '</b></td>';	// TODO Localize access string!
+		$content .= '<td class="' . $cssClass . '">' . implode('<br />', $content_array) . '</td></tr>';
+		return $content;
+	}
+
+	/**
+	 * Creates a list of icons for workspace.
+	 * 
+	 * @param	boolean	$currentWorkspace	<code>true</code> if current workspace
+	 * @param	array	&$wksp	Workspace record
+	 * @return	string	Generated content 
+	 */
+	function workspaceList_displayIcons($currentWorkspace, &$wksp) {
+		global	$BACK_PATH;
+
+		$content = '';
+		// `edit workspace` button
+		if ($this->workspaceList_hasEditAccess($wksp)) {
+			// User can modify workspace parameters, display corresponding link and icon
+			$editUrl = $BACK_PATH . 'alt_doc.php?returnUrl=' . rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI')) .
+						'&amp;edit[sys_workspace][' . $wksp['uid'] .']=edit';
+			$content .= '<a href="' . $editUrl . '" Xonclick="alert(\'Click!\')"/>' .
+					'<img ' . t3lib_iconWorks::skinImg($BACK_PATH, 'gfx/edit2.gif', 'width="11" height="12"') . ' border="0" alt="Edit workspace" align="middle" hspace="1" />' .	// TODO Localize this!
+					'</a>';
+		}
+		else {
+			// User can NOT modify workspace parameters, display space
+			// Get only withdth and height from skinning API
+			$content .= '<img src="clear.gif" ' .
+					t3lib_iconWorks::skinImg($BACK_PATH, 'gfx/edit2.gif', 'width="11" height="12"', 2) .
+					' border="0" alt="" hspace="1" align="middle" />';
+		}
+		// `switch workspace` button
+		if (!$currentWorkspace) {
+			// Workspace switching button
+			//
+			// Notice: `top.shortcutFrame.changeWorkspace(0)` does not work
+			// under MSIE in this script because alt_shortcut.php and this
+			// script are in different directories!
+			$content .= '<a href="" onclick="top.shortcutFrame.document.location.href=\'' .
+					$BACK_PATH . 'alt_shortcut.php?changeWorkspace=' . $wksp['uid'] . '\'"/>' .
+					'<img ' . t3lib_iconWorks::skinImg($BACK_PATH, 'gfx/switch.gif', 'width="11" height="10"') . ' border="0" alt="Switch workspace" align="middle" hspace="1" />' .	// TODO Localize this!
+					'</a>';
+		}
+		else {
+			// Current workspace: empty space instead of workspace switching button
+			//
+			// Here get only width and height from skinning API
+			$content .= '<img src="clear.gif" ' .
+					t3lib_iconWorks::skinImg($BACK_PATH, 'gfx/switch.png', 'width="18" height="16"', 2) .
+					' border="0" alt="" hspace="1" align="middle" />';
+		}
+		return $content;
+	}
+
+	/**
+	 * Checks if user has edit access to workspace. Access is granted if
+	 * workspace is custom and user is admin or the the owner of the workspace.
+	 * This function assumes that <code>$wksp</code> were passed through
+	 * <code>$GLOBALS['BE_USER']->checkWorkspace()</code> function to obtain
+	 * <code>_ACCESS</code> attribute of the workspace. 
+	 *
+	 * @param	array	&$wksp	Workspace record
+	 * @return	boolean	<code>true</code> if user can modify workspace parameters
+	 */
+	function workspaceList_hasEditAccess(&$wksp) {
+		$access = &$wksp['_ACCESS'];
+		return ($wksp['uid'] > 0 && ($access == 'admin' || $access == 'owner')); 
+	}
+
+	/**
+	 * Creates a fake workspace record for system workspaces. Record contains
+	 * all fields found in <code>sys_workspaces</code>.
+	 * 
+	 * @param	integer	$uid	System workspace ID. Currently <code>0</code> and <code>-1</code> are accepted.
+	 * @return	array	Generated record (see <code>sys_workspaces</code> for structure)
+	 */
+	function workspaceList_createFakeWorkspaceRecord($uid) {
+		global	$BE_USER;
+
+		$record = array(
+			'uid' => $uid,
+			'pid' => 0,				// always 0!
+			'tstamp' => 0,			// does not really matter
+			'deleted' => 0,
+			// TODO Localize all strings below
+			'title' => ($uid == 0 ? '[Live workspace]' : '[Draft workspace]'),		// TODO Localize this!
+			// TODO Localize all strings below
+			'description' => ($uid == 0 ? 'Live workspace' : 'Draft workspace'),	// TODO Localize this!
+			'adminusers' => '',
+			'members' => '',
+			'reviewers' => '',
+			'db_mountpoints' => '',		// TODO get mount points from user profile
+			'file_mountpoints' => '',	// TODO get mount points from user profile for live workspace only (uid == 0)
+			'publish_time' => 0,
+			'unpublish_time' => 0,
+			'freeze' => 0,
+			'live_edit' => ($uid == 0),
+			'vtypes' => 0,
+			'disable_autocreate' => 0,
+			'swap_modes' => 0,
+			'publish_access' => 0,
+			'stagechg_notification' => 0
+		);
+		return $record;
+	}
 
 
 
