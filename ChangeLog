@@ -1,3 +1,10 @@
+2005-11-23  Sebastian Kurfuerst  <sebastian@garbage-group.de>
+
+	* XHTML Compliance: prefix local anchors with a string (bug #1243)
+	* Feature request #1453: stdWrap for fontColor attribute of GIFBUILDER?s TEXT-object
+	* Usability: Add Focus in install tool login form (bug #1584)
+	* Bug #1637: adjustment to collapsable menu
+
 2005-11-19  Michael Stucki  <michael@typo3.org>
 
 	* Added a helpful warning if config.baseURL=1 was found

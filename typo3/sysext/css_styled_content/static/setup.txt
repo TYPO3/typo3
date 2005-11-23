@@ -271,7 +271,7 @@ tt_content.stdWrap {
 	innerWrap2.insertData = 1
 	innerWrap2.fieldRequired = linkToTop
 
-	dataWrap = <a name="{field:uid}"></a> |
+	dataWrap = <a id="c{field:uid}"></a> |
 
 	editPanel = 1
 	editPanel {

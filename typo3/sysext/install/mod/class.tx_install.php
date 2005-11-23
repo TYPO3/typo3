@@ -359,7 +359,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv("REMOTE_ADDR")."' (".t3lib_div::getIndp
 		$this->messageFunc_nl2br=0;
 		$this->silent=0;
 
-		$content = '<form action="index.php" method="POST">
+		$content = '<form action="index.php" method="POST" name="passwordForm">
 			<input type="password" name="password"><BR>
 			<input type="hidden" name="redirect_url" value="'.$redirect_url.'">
 			<input type="submit" value="Log in"><br>
@@ -369,7 +369,12 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv("REMOTE_ADDR")."' (".t3lib_div::getIndp
 				If you don\'t know the current password, you can set a new one by setting the value of $TYPO3_CONF_VARS["BE"]["installToolPassword"] in typo3conf/localconf.php to the md5() hash value of the password you desire.'.
 				($p ? '<BR><BR>The password you just tried has this md5-value: <BR><BR>'.md5($p) : '')
 				).'
-			</form>';
+			</form>
+			<script type="text/javascript">
+			<!--
+				document.passwordForm.password.focus();
+			//-->
+			</script>';
 
 		$this->message('Password', 'Enter the Install Tool Password', $content,3);
 		echo $this->outputWrapper($this->printAll());

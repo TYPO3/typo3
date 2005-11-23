@@ -502,6 +502,7 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 		$cObj =t3lib_div::makeInstance('tslib_cObj');
 		$cObj->start($this->data);
 
+		$conf['fontColor'] = trim($cObj->stdWrap($conf['fontColor'], $conf['fontColor.']));
 		$conf['text']=$cObj->stdWrap($conf['text'],$conf['text.']);
 			// Strip HTML
 		if (!$conf['doNotStripHTML'])	{
