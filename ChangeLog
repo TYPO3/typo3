@@ -1,3 +1,6 @@
+2005-11-23 Andreas Otto <andreas.otto@dkd.de>
+	* Methods imageLinkWrap() and typolink() in class.tslib_content.php: Made the JS PopUps accessible if JS is not available in the user's web browser. Add the TARGET-attribute only if the used doctype allows this.
+
 2005-11-23  Sebastian Kurfuerst  <sebastian@garbage-group.de>
 
 	* XHTML Compliance: prefix local anchors with a string (bug #1243)
