@@ -2648,6 +2648,17 @@ class tslib_cObj {
 					}
 				}
 
+					// Create TARGET-attribute only if the right doctype is used
+				if (!t3lib_div::inList('xhtml_strict,xhtml_11,xhtml_2', $GLOBALS['TSFE']->config['config']['doctype']))	{
+					if (isset($conf['target']))	{
+						$target = sprintf(' target="%s"', $conf['target']);
+					} else {
+						$target = ' target="thePicture"';
+					}
+				} else {
+					$target = '';
+				}
+
 				if ($conf['JSwindow'])	{
 					$gifCreator = t3lib_div::makeInstance('tslib_gifbuilder');
 					$gifCreator->init();
@@ -2655,16 +2666,12 @@ class tslib_cObj {
 					$dims = $gifCreator->getImageScale($gifCreator->getImageDimensions($imageFile),$conf['width'],$conf['height'],'');
 					$offset = t3lib_div::intExplode(',',$conf['JSwindow.']['expand'].',');
 
-					$a1='<a href="#" onclick="'.
+					$a1='<a href="'. htmlspecialchars($url) .'" onclick="'.
 						htmlspecialchars('openPic(\''.$GLOBALS['TSFE']->baseUrlWrap($url).'\',\''.($conf['JSwindow.']['newWindow']?md5($url):'thePicture').'\',\'width='.($dims[0]+$offset[0]).',height='.($dims[1]+$offset[1]).',status=0,menubar=0\'); return false;').
-						'"'.$GLOBALS['TSFE']->ATagParams.'>';
+						'"'.$target.$GLOBALS['TSFE']->ATagParams.'>';
 					$a2='</a>';
 					$GLOBALS['TSFE']->setJS('openPic');
 				} else {
-					$target = ' target="thePicture"';
-					if (isset($conf['target'])) {
-						$target= $conf['target'] ? ' target="'.$conf['target'].'"' : '';
-					}
 					$a1='<a href="'.htmlspecialchars($url).'"'.$target.$GLOBALS['TSFE']->ATagParams.'>';
 					$a2='</a>';
 				}
@@ -5158,8 +5165,16 @@ class tslib_cObj {
 			}
 
 			if ($JSwindowParams)	{
+
+					// Create TARGET-attribute only if the right doctype is used
+				if (!t3lib_div::inList('xhtml_strict,xhtml_11,xhtml_2', $GLOBALS['TSFE']->config['config']['doctype']))	{
+					$target = ' target="FEopenLink"';
+				} else {
+					$target = '';
+				}
+
 				$onClick="vHWin=window.open('".$GLOBALS['TSFE']->baseUrlWrap($finalTagParts['url'])."','FEopenLink','".$JSwindowParams."');vHWin.focus();return false;";
-				$res = '<a href="#" onclick="'.htmlspecialchars($onClick).'"'.($linkClass?' class="'.$linkClass.'"':'').$finalTagParts['aTagParams'].'>';
+				$res = '<a href="'.htmlspecialchars($finalTagParts['url']).'"'. $target .' onclick="'.htmlspecialchars($onClick).'"'.($linkClass?' class="'.$linkClass.'"':'').$finalTagParts['aTagParams'].'>';
 			} else {
 				if ($GLOBALS['TSFE']->spamProtectEmailAddresses === 'ascii' && $finalTagParts['TYPE'] === 'mailto') {
 					$res = '<a href="'.$finalTagParts['url'].'"'.$finalTagParts['targetParams'].($linkClass?' class="'.$linkClass.'"':'').$finalTagParts['aTagParams'].'>';
