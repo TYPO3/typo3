@@ -624,7 +624,7 @@ class SC_db_layout {
 		$closeUrl = $this->local_linkThisScript(array('SET'=>array('function'=>1)));	// Goes to 'Columns' view if close is pressed (default)
 
 		if ($BE_USER->uc['condensedMode'])	{
-			$closeUrl=$BACK_PATH.'alt_db_navframe.php';
+			$closeUrl = $BACK_PATH.'alt_db_navframe.php';
 		}
 		if ($this->returnUrl)	{
 			$closeUrl = $this->returnUrl;

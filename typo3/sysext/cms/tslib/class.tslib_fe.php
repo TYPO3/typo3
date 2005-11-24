@@ -406,7 +406,7 @@
 	 * @deprecated
 	 */
 	function connectToMySQL()	{
-	  $this->connectToDB();
+		$this->connectToDB();
 	}
 
 	/**
@@ -1896,7 +1896,7 @@
 			// Setting locale
 		if ($this->config['config']['locale_all'])	{
 			# Change by Rene Fritz, 22/10 2002
-			# there`s the problem that PHP parses float values in scripts wrong if the locale LC_NUMERIC is set to something with a komma as decimal point
+			# there's a problem that PHP parses float values in scripts wrong if the locale LC_NUMERIC is set to something with a comma as decimal point
 			# this does not work in php 4.2.3
 			#setlocale('LC_ALL',$this->config['config']['locale_all']);
 			#setlocale('LC_NUMERIC','en_US');

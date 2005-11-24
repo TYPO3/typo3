@@ -29,7 +29,7 @@
 
 	* Added a helpful warning if config.baseURL=1 was found
 	* !!! Disabled the config.baseURL=1 feature. baseURL needs to be a string value, otherwise it will not work (security reasons)!
-	* Added a fix for broken image-alignment in Mozilla browsers (written by Martin Kutschker)
+	* Fixed bug #1115: Broken image-alignment in Mozilla browsers (written by Martin Kutschker)
 	* Fixed a cross-site scripting issue in showpic.php. Many thanks to Martin Klaus who provided a fix for this.
 	* Fixed the encryptionKey auto-generation in the Install Tool: The 32 first characters were always the same. Thanks to Jochen Weiland.
 	* When editing a file in the Install Tool, the backup is no longer renamed to filename.php~ but filename_bak.php (could be viewed in clear-text otherwise). Thanks to Lars Houmark for reporting this.
