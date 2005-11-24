@@ -372,6 +372,7 @@ class SC_alt_main {
 
 			// Check editing of page:
 		$this->editPageHandling();
+		$this->startModule();
 	}
 
 	/**
@@ -386,7 +387,7 @@ class SC_alt_main {
 		if (!t3lib_extMgm::isLoaded('cms'))	return;
 
 			// EDIT page:
-		$editId = ereg_replace('[^[:alnum:]_]','',t3lib_div::_GET('edit'));
+		$editId = preg_replace('/[^[:alnum:]_]/','',t3lib_div::_GET('edit'));
 		$theEditRec = '';
 
 		if ($editId)	{
@@ -427,6 +428,28 @@ class SC_alt_main {
 	}
 
 	/**
+	 * Sets the startup module from either GETvars module and mpdParams or user configuration.
+	 *
+	 * @return	void
+	 */
+	function startModule() {
+		global $BE_USER;
+		$module = preg_replace('/[^[:alnum:]_]/','',t3lib_div::_GET('module'));
+		if (!$module && $BE_USER->uc['startInTaskCenter']) {
+			$module = 'user_task';
+		}
+
+		$params = t3lib_div::_GET('modParams');
+		if ($module) {
+			$this->mainJScode.='
+		// open in module:
+	window.setTimeout("top.goToModule(\''.$module.'\',false,\''.$params.'\');",500);
+			';
+		}
+	}
+	
+
+	/**
 	 * Creates the header and frameset of the backend interface
 	 *
 	 * @return	void
@@ -452,7 +475,7 @@ class SC_alt_main {
 		$this->content.=$GLOBALS['TBE_TEMPLATE']->startPage($title);
 
 			// Creates frameset
-		$fr_content = '<frame name="content" src="'.($BE_USER->uc['startInTaskCenter']&&t3lib_extMgm::isLoaded('taskcenter')?t3lib_extMgm::extRelPath('taskcenter').'task/index.php':'alt_intro.php').'" marginwidth="0" marginheight="0" frameborder="0" scrolling="auto" noresize="noresize" />';
+		$fr_content = '<frame name="content" src="alt_intro.php" marginwidth="0" marginheight="0" frameborder="0" scrolling="auto" noresize="noresize" />';
 		$fr_toplogo = '<frame name="toplogo" src="alt_toplogo.php" marginwidth="0" marginheight="0" frameborder="0" scrolling="no" noresize="noresize" />';
 		$fr_topmenu = '<frame name="topmenuFrame" src="alt_topmenu_dummy.php" marginwidth="0" marginheight="0" frameborder="0" scrolling="no" noresize="noresize" />';
 

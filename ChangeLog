@@ -1,3 +1,7 @@
+2005-11-24  Christian Jul Jensen  <christian@jul.net>
+
+	* Added GET-params "module" and "modParams" to alt_main.php to allow external urls to access specific points in modules
+
 2005-11-23  Michael Stucki  <michael@typo3.org>
 
 	* Always use fputs() for writing to logfiles. There is no case when it can't be used, so the alternative "echo" call was never needed.
