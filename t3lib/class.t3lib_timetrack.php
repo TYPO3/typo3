@@ -364,7 +364,12 @@ class t3lib_timeTrack {
 					$keyLabel='<br /><font color="#999999">'.implode($temp,'<br />').'</font>';
 				}
 			}
-			$theLabel = $flag_tree ? end(t3lib_div::trimExplode('.',$data['key'],1)) : $data['key'];
+			if ($flag_tree)	{
+				$tmp = t3lib_div::trimExplode('.',$data['key'],1);
+				$theLabel = end($tmp);
+			} else {
+				$theLabel = $data['key'];
+			}
 			$theLabel = t3lib_div::fixed_lgd_pre($theLabel, $keyLgd);
 			$theLabel = $data['stackPointer'] ? '<font color="maroon">'.$theLabel.'</font>' : $theLabel;
 			$keyLabel=$theLabel.$keyLabel;

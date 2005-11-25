@@ -1,3 +1,7 @@
+2005-11-25  Martin Kutschker   <martin.t.kutschker@blackbox.net>
+
+	* Fixed PHP 5.0.5 compability issue with end() in class.t3lib_timetrack.php
+
 2005-11-24  Christian Jul Jensen  <christian@jul.net>
 
 	* Added GET-params "module" and "modParams" to alt_main.php to allow external urls to access specific points in modules
