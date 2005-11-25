@@ -150,6 +150,7 @@
 	* Merged fenestgrp extension into Core. This makes it possible to select subgroups for fe_groups. Thanks to Glen Gibb.
 	* Merged ingmar_accessctrl extension into Core. Content elements and pages can now have access for more than only one group. Thanks to Ingmar Schlecht for his nice extension.
 	* Fixed a bug in the object browser: Adding properties copied key + value into the key field. Notice: This requires an additional patch in the tstemplate_objbrowser extension!
+	* Object browser: Added support to match for TS keys
 	* Some typo fixes
 	* New property for TYPO3_CONF_VARS[SYS][displayErrors]: If set to 2, display_errors will only be enabled if the devIPmask matches the current clients IP address.
 
