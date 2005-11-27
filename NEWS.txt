@@ -6,7 +6,7 @@ CHANGES & IMPROVEMENTS in TYPO3 4.0
 Access Control
 ===============
 
-	* FE-groups are now nested and content elements. Additionally, pages can have more than one group assigned. (Michael Stucki, integrating extension "fenestgrp" by Glen Gibb and extension "ingmar_accessctrl" by Ingmar Schlecht)
+	* FE-groups are now nested. Additionally, pages and content elements can have more than one group assigned. (Michael Stucki, integrating extension "fenestgrp" by Glen Gibb and extension "ingmar_accessctrl" by Ingmar Schlecht)
 
 Compatibility
 ==============
@@ -16,4 +16,4 @@ Compatibility
 Security
 =========
 
-	* A debug script exposed system information provided by phpinfo(). For details, see http://typo3.org /teams/security/security-bulletins/typo3-20050725-1/ (Michael Stucki)
+	* A debug script used to expose system information provided by phpinfo(). For details, see http://typo3.org /teams/security/security-bulletins/typo3-20050725-1/ (Michael Stucki)
