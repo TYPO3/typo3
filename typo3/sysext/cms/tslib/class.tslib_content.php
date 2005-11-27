@@ -4003,7 +4003,7 @@ class tslib_cObj {
 	 * @see _parseFunc()
 	 */
 	function parseFunc($theValue, $conf, $ref='') {
-
+		
 			// Fetch / merge reference, if any
 		if ($ref)	{
 			$temp_conf = array(
@@ -4938,16 +4938,19 @@ class tslib_cObj {
 		$finalTagParts['aTagParams'] = $GLOBALS['TSFE']->ATagParams.($conf['ATagParams']?' '.$conf['ATagParams']:'');
 
 		$link_param = trim($this->stdWrap($conf['parameter'],$conf['parameter.']));
+
 		$sectionMark = trim($this->stdWrap($conf['section'],$conf['section.']));
 		$sectionMark = $sectionMark ? '#c'.$sectionMark : '';
 		$initP = '?id='.$GLOBALS['TSFE']->id.'&type='.$GLOBALS['TSFE']->type;
 		$this->lastTypoLinkUrl = '';
 		$this->lastTypoLinkTarget = '';
 		if ($link_param)	{
-			$link_paramA = t3lib_div::trimExplode(' ',$link_param,1);
+			$link_paramA = t3lib_div::unQuoteFilenames($link_param,true);
 			$link_param = trim($link_paramA[0]);	// Link parameter value
 			$linkClass = trim($link_paramA[2]);		// Link class
+			if ($linkClass=='-')	$linkClass = '';	// The '-' character means 'no class'. Necessary in order to specify a title as fourth parameter without setting the target or class!
 			$forceTarget = trim($link_paramA[1]);	// Target value
+			$forceTitle = trim($link_paramA[3]);	// Title value
 			if ($forceTarget=='-')	$forceTarget = '';	// The '-' character means 'no target'. Necessary in order to specify a class as third parameter without setting the target!
 				// Check, if the target is coded as a JS open window link:
 			$JSwindowParts = array();
@@ -4972,6 +4975,10 @@ class tslib_cObj {
 				// Internal target:
 			$target = isset($conf['target']) ? $conf['target'] : $GLOBALS['TSFE']->intTarget;
 			if ($conf['target.'])	{$target=$this->stdWrap($target, $conf['target.']);}
+
+				// Title tag
+			$title = $conf['title'];
+			if ($conf['title.'])	{$title=$this->stdWrap($title, $conf['title.']);}
 
 				// Parse URL:
 			$pU = parse_url($link_param);
@@ -5164,6 +5171,8 @@ class tslib_cObj {
 				}
 			}
 
+			if ($forceTitle)	{$title=$forceTitle;}
+
 			if ($JSwindowParams)	{
 
 					// Create TARGET-attribute only if the right doctype is used
@@ -5174,12 +5183,12 @@ class tslib_cObj {
 				}
 
 				$onClick="vHWin=window.open('".$GLOBALS['TSFE']->baseUrlWrap($finalTagParts['url'])."','FEopenLink','".$JSwindowParams."');vHWin.focus();return false;";
-				$res = '<a href="'.htmlspecialchars($finalTagParts['url']).'"'. $target .' onclick="'.htmlspecialchars($onClick).'"'.($linkClass?' class="'.$linkClass.'"':'').$finalTagParts['aTagParams'].'>';
+				$res = '<a href="'.htmlspecialchars($finalTagParts['url']).'"'. $target .' onclick="'.htmlspecialchars($onClick).'"'.($title?' title="'.$title.'"':'').($linkClass?' class="'.$linkClass.'"':'').$finalTagParts['aTagParams'].'>';
 			} else {
 				if ($GLOBALS['TSFE']->spamProtectEmailAddresses === 'ascii' && $finalTagParts['TYPE'] === 'mailto') {
-					$res = '<a href="'.$finalTagParts['url'].'"'.$finalTagParts['targetParams'].($linkClass?' class="'.$linkClass.'"':'').$finalTagParts['aTagParams'].'>';
+					$res = '<a href="'.$finalTagParts['url'].'"'.($title?' title="'.$title.'"':'').$finalTagParts['targetParams'].($linkClass?' class="'.$linkClass.'"':'').$finalTagParts['aTagParams'].'>';
 				} else {
-					$res = '<a href="'.htmlspecialchars($finalTagParts['url']).'"'.$finalTagParts['targetParams'].($linkClass?' class="'.$linkClass.'"':'').$finalTagParts['aTagParams'].'>';
+					$res = '<a href="'.htmlspecialchars($finalTagParts['url']).'"'.($title?' title="'.$title.'"':'').$finalTagParts['targetParams'].($linkClass?' class="'.$linkClass.'"':'').$finalTagParts['aTagParams'].'>';
 				}
 			}
 

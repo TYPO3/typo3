@@ -617,13 +617,14 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 				unset($attribArray_copy['href']);
 				unset($attribArray_copy['target']);
 				unset($attribArray_copy['class']);
+				unset($attribArray_copy['title']);
 				if ($attribArray_copy['rteerror'])	{	// Unset "rteerror" and "style" attributes if "rteerror" is set!
 					unset($attribArray_copy['style']);
 					unset($attribArray_copy['rteerror']);
 				}
 				if (!count($attribArray_copy))	{	// Only if href, target and class are the only attributes, we can alter the link!
 						// Creating the TYPO3 pseudo-tag "<LINK>" for the link (includes href/url, target and class attributes):
-					$bTag='<LINK '.$info['url'].($attribArray['target']?' '.$attribArray['target']:($attribArray['class']?' -':'')).($attribArray['class']?' '.$attribArray['class']:'').'>';
+					$bTag='<LINK '.$info['url'].($attribArray['target']?' '.$attribArray['target']:(($attribArray['class'] || $attribArray['title'])?' -':'')).($attribArray['class']?' '.$attribArray['class']:($attribArray['title']?' -':'')).($attribArray['title']?' "'.$attribArray['title'].'"':'').'>';
 					$eTag='</LINK>';
 					$blockSplit[$k] = $bTag.$this->TS_links_db($this->removeFirstAndLastTag($blockSplit[$k])).$eTag;
 				} else {	// ... otherwise store the link as a-tag.
@@ -659,7 +660,7 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 		foreach($blockSplit as $k => $v)	{
 			$error = '';
 			if ($k%2)	{	// block:
-				$tagCode = t3lib_div::trimExplode(' ',trim(substr($this->getFirstTag($v),0,-1)),1);
+				$tagCode = t3lib_div::unQuoteFilenames(trim(substr($this->getFirstTag($v),0,-1)),true);
 				$link_param = $tagCode[1];
 				$href = '';
 				$siteUrl = $this->siteUrl();
@@ -714,7 +715,8 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 				// Setting the A-tag:
 				$bTag = '<a href="'.htmlspecialchars($href).'"'.
 							($tagCode[2]&&$tagCode[2]!='-' ? ' target="'.htmlspecialchars($tagCode[2]).'"' : '').
-							($tagCode[3] ? ' class="'.htmlspecialchars($tagCode[3]).'"' : '').
+							($tagCode[3]&&$tagCode[3]!='-' ? ' class="'.htmlspecialchars($tagCode[3]).'"' : '').
+							($tagCode[4] ? ' title="'.htmlspecialchars($tagCode[4]).'"' : '').
 							($error ? ' rteerror="'.htmlspecialchars($error).'" style="background-color: yellow; border:2px red solid; color: black;"' : '').	// Should be OK to add the style; the transformation back to databsae will remove it...
 							'>';
 				$eTag = '</a>';

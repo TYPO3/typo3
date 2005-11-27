@@ -3866,9 +3866,10 @@ class t3lib_div {
 	 * Explode a string (normally a list of filenames) with whitespaces by considering quotes in that string. This is mostly needed by the imageMagickCommand function above.
 	 *
 	 * @param	string		The whole parameters string
+	 * @param	boolean		If set, the elements of the resulting array are unquoted.
 	 * @return	array		Exploded parameters
 	 */
-	function unQuoteFilenames($parameters)	{
+	function unQuoteFilenames($parameters,$unQuote=FALSE)	{
 		$paramsArr = explode(' ', trim($parameters));
 
 		$quoteActive = -1;	// Whenever a quote character (") is found, $quoteActive is set to the element number inside of $params. A value of -1 means that there are not open quotes at the current position.
@@ -3886,6 +3887,11 @@ class t3lib_div {
 			}
 		}
 
+		if($unQuote) {
+			foreach($paramsArr as $key=>$val) {
+				$paramsArr[$key]=preg_replace('/(^"|"$)/','',$val);
+			}
+		}
 		return $paramsArr;
 	}
 }

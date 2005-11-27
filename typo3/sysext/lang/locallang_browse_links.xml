@@ -23,6 +23,7 @@
 			<label index="folderTree">Folder Tree</label>
 			<label index="files">Files</label>
 			<label index="target">Target</label>
+			<label index="title">Title</label>
 			<label index="target_popUpWindow">Open in window</label>
 			<label index="target_popUpWindow_width">Width</label>
 			<label index="target_popUpWindow_height">Height</label>

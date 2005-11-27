@@ -639,6 +639,7 @@ class SC_browse_links {
 	var $siteURL;			// Current site URL (Frontend)
 	var $thisConfig;		// RTE specific TSconfig
 	var $setTarget;			// Target (RTE specific)
+	var $setTitle;      		// title (RTE specific)
 	var $doc;				// Backend template object
 
 		// GPvars:	(Input variables from outside)
@@ -707,7 +708,7 @@ class SC_browse_links {
 
 
 	/**
-	 * Used with the link selector: Contains the GET input information about the CURRENT link in the RTE/TCEform field. This consists of "href" and "target" keys. This information is passed around in links.
+	 * Used with the link selector: Contains the GET input information about the CURRENT link in the RTE/TCEform field. This consists of "href", "target" and "title" keys. This information is passed around in links.
 	 */
 	var $curUrlArray;
 
@@ -783,6 +784,9 @@ class SC_browse_links {
 			$this->setTarget=$this->thisConfig['defaultLinkTarget'];
 		}
 
+			// Initializing the title value (RTE)
+		$this->setTitle = $this->curUrlArray['title'];
+
 
 
 			// Creating backend template object:
@@ -796,14 +800,20 @@ class SC_browse_links {
 				// This JavaScript is primarily for RTE/Link. jumpToUrl is used in the other cases as well...
 			var add_href="'.($this->curUrlArray['href']?'&curUrl[href]='.rawurlencode($this->curUrlArray['href']):'').'";
 			var add_target="'.($this->setTarget?'&curUrl[target]='.rawurlencode($this->setTarget):'').'";
+			var add_title="'.($this->setTitle?'&curUrl[title]='.rawurlencode($this->setTitle):'').'";
 			var add_params="'.($this->bparams?'&bparams='.rawurlencode($this->bparams):'').'";
 
 			var cur_href="'.($this->curUrlArray['href']?$this->curUrlArray['href']:'').'";
 			var cur_target="'.($this->setTarget?$this->setTarget:'').'";
+			var cur_title="'.($this->setTitle?$this->setTitle:'').'";
 
 			function setTarget(target)	{	//
 				cur_target=target;
 				add_target="&curUrl[target]="+escape(target);
+			}
+			function setTitle(title)	{	//
+				cur_title=title;
+				add_title="&curUrl[title]="+escape(title);
 			}
 			function setValue(value)	{	//
 				cur_href=value;
@@ -840,7 +850,7 @@ class SC_browse_links {
 				}
 				function link_current()	{	//
 					if (cur_href!="http://" && cur_href!="mailto:")	{
-						var setValue = cur_href+" "+cur_target;
+						var setValue = cur_href+" "+cur_target+" "+cur_title;
 						if (setValue.substr(0,7)=="http://")	setValue = setValue.substr(7);
 						if (setValue.substr(0,7)=="mailto:")	setValue = setValue.substr(7);
 						updateValueInMainForm(setValue);
@@ -867,21 +877,21 @@ class SC_browse_links {
 			$JScode.='
 				function link_typo3Page(id,anchor)	{	//
 					var theLink = \''.$this->siteURL.'?id=\'+id+(anchor?anchor:"");
-					self.parent.parent.renderPopup_addLink(theLink,cur_target);
+					self.parent.parent.renderPopup_addLink(theLink,cur_target,cur_title);
 					return false;
 				}
 				function link_folder(folder)	{	//
 					var theLink = \''.$this->siteURL.'\'+folder;
-					self.parent.parent.renderPopup_addLink(theLink,cur_target);
+					self.parent.parent.renderPopup_addLink(theLink,cur_target,cur_title);
 					return false;
 				}
 				function link_spec(theLink)	{	//
-					self.parent.parent.renderPopup_addLink(theLink,cur_target);
+					self.parent.parent.renderPopup_addLink(theLink,cur_target,cur_title);
 					return false;
 				}
 				function link_current()	{	//
 					if (cur_href!="http://" && cur_href!="mailto:")	{
-						self.parent.parent.renderPopup_addLink(cur_href,cur_target);
+						self.parent.parent.renderPopup_addLink(cur_href,cur_target,cur_title);
 					}
 					return false;
 				}
@@ -893,7 +903,7 @@ class SC_browse_links {
 			function jumpToUrl(URL,anchor)	{	//
 				var add_act = URL.indexOf("act=")==-1 ? "&act='.$this->act.'" : "";
 				var add_mode = URL.indexOf("mode=")==-1 ? "&mode='.$this->mode.'" : "";
-				var theLocation = URL+add_act+add_mode+add_href+add_target+add_params'.($addPassOnParams?'+"'.$addPassOnParams.'"':'').'+(anchor?anchor:"");
+				var theLocation = URL+add_act+add_mode+add_href+add_target+add_title+add_params'.($addPassOnParams?'+"'.$addPassOnParams.'"':'').'+(anchor?anchor:"");
 				document.location = theLocation;
 				return false;
 			}
@@ -1252,9 +1262,28 @@ class SC_browse_links {
 			break;
 		}
 
+		$content .= '
+
+
+
+			<!--
+				Selecting title for link:
+			-->
+				<form action="" name="ltitleform" id="ltargetform">
+					<table border="0" cellpadding="2" cellspacing="1" id="typo3-linkTarget">
+						<tr>
+							<td>'.$GLOBALS['LANG']->getLL('title',1).'</td>
+							<td><input type="text" name="ltitle" onchange="setTitle(this.value);" value="'.htmlspecialchars($this->setTitle).'"'.$this->doc->formWidth(10).' /></td>
+							<td><input type="submit" value="'.$GLOBALS['LANG']->getLL('update',1).'" onclick="return link_current();" /></td>
+						</tr>
+					</table>
+				</form>
+';
+
 			// Target:
 		if ($this->act!='mail')	{
 			$ltarget='
+
 
 
 			<!--
@@ -1283,6 +1312,7 @@ class SC_browse_links {
 				if (document.ltargetform.popup_width.options[document.ltargetform.popup_width.selectedIndex].value>0 && document.ltargetform.popup_height.options[document.ltargetform.popup_height.selectedIndex].value>0)	{
 					document.ltargetform.ltarget.value = document.ltargetform.popup_width.options[document.ltargetform.popup_width.selectedIndex].value+"x"+document.ltargetform.popup_height.options[document.ltargetform.popup_height.selectedIndex].value;
 					setTarget(document.ltargetform.ltarget.value);
+          setTitle(document.ltitleform.ltitle.value);
 					document.ltargetform.popup_width.selectedIndex=0;
 					document.ltargetform.popup_height.selectedIndex=0;
 				}
