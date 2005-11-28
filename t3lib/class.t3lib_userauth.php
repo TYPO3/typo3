@@ -501,6 +501,7 @@ class t3lib_userAuth {
 				if($requestStr == 'alt_main.php' && t3lib_div::getIndpEnv('TYPO3_SSL'))	{
 					list(,$url) = explode('://',t3lib_div::getIndpEnv('TYPO3_SITE_URL'),2);
 					header('Location: http://'.$url.TYPO3_mainDir.'alt_main.php');
+					exit;
 				}
 			}
 
