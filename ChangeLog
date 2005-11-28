@@ -1,7 +1,10 @@
-2005-11-27  Jan-Erik Revsbech	<jer@moccompany.com
+2005-11-28  Sebastian Kurfuerst  <sebastian@garbage-group.de>
+	* Fixed spelling error (Bug #1945)
+
+2005-11-27  Jan-Erik Revsbech  <jer@moccompany.com>
 	* Implemented Gremlin 1660: typolink now supports the title attribute (With stdWrap). Additionally the <link> tag used in conjunction with the rte now supports a fourth parameter. In addition to pageid target and class, the fourth parameter is the title of the resulting link.
 
-2005-11-25  Martin Kutschker   <martin.t.kutschker@blackbox.net>
+2005-11-25  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
 	* Fixed PHP 5.0.5 compability issue with end() in class.t3lib_timetrack.php
 

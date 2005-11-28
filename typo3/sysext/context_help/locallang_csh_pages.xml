@@ -133,7 +133,7 @@ In order to obtain an overview of the expiry dates of pages, use the 'Pagetree o
 The most common use which is found in the standard templates will automatically display the last update time and date &lt;em&gt;unless&lt;/em&gt; this field specifies a value in which case this value is inserted.</label>
 			<label index="lastUpdated.syntax">Format is HH:MM DD-MM-YYYY.
 If you insert eg. a 'd' the current time and date is inserted. You can also append any value in the field with eg. '+10' which will add 10 days to the current value.</label>
-			<label index="nav_hide.description">With this option the page will be hidden in navigation menus in the frontend. The page can still be viewed if linked by its ID directly</label>
+			<label index="nav_hide.description">With this option the page will be hidden in navigation menus in the frontend. The page can still be viewed if linked by its ID directly.</label>
 			<label index="_nav_hide.seeAlso">pages:nav_title</label>
 			<label index="nav_title.description">Alternative title for menu items in the frontend. This value takes precedence over the page title if this value is filled in.</label>
 			<label index="content_from_pid.description">If set, this is an alternative page id from where Content Elements will be selected instead of Content Elements from the current page.
