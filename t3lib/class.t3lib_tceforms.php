@@ -2189,8 +2189,8 @@ class t3lib_TCEforms	{
 								if (strlen($alertMsgOnChange)) {
 									$fakePA['fieldChangeFunc']['alert']=$alertMsgOnChange;
 								}
-								$fakePA['onFocus']==$PA['onFocus'];
-								$fakePA['label']==$PA['label'];
+								$fakePA['onFocus']=$PA['onFocus'];
+								$fakePA['label']=$PA['label'];
 
 								$fakePA['itemFormElName']=$PA['itemFormElName'].$formPrefix.'['.$key.']['.$vDEFkey.']';
 								$fakePA['itemFormElName_file']=$PA['itemFormElName_file'].$formPrefix.'['.$key.']['.$vDEFkey.']';
