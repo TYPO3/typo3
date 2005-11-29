@@ -356,7 +356,7 @@ class SC_mod_user_ws_workspaceForms extends t3lib_SCbase {
 		$trData->lockRecords=1;
 		$trData->disableRTE = $this->MOD_SETTINGS['disableRTE'];
 		$trData->prevPageID = $prevPageID;
-		$trData->fetchRecord($table, 0, 'new'/*1,''*/);	// 'new'
+		$trData->fetchRecord($table, 0, 'new');
 		reset($trData->regTableItems_data);
 		$rec = current($trData->regTableItems_data);
 		$rec['uid'] = uniqid('NEW');

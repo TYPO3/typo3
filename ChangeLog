@@ -1,3 +1,8 @@
+2005-11-29  Dmitry Dulepov  <typo3@fm-world.ru>
+
+	* Workspace module uses own classes for editing/creating workspaces (no permission check yet!)
+	* Better visual presentation for workspace list (added icons, ndashes, etc)
+
 2005-11-28  Sebastian Kurfuerst  <sebastian@garbage-group.de>
 
 	* Fixed spelling error (Bug #1945)

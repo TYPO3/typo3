@@ -30,50 +30,61 @@
  * $Id$
  *
  * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
+ * @author	Dmitry Dulepov <typo3@fm-world.ru>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
  *
  *
  *
- *  107: class SC_mod_user_ws_index extends t3lib_SCbase
+ *  118: class SC_mod_user_ws_index extends t3lib_SCbase
  *
  *              SECTION: Standard module initialization
- *  142:     function menuConfig()
- *  188:     function init()
- *  250:     function main()
- *  282:     function printContent()
+ *  154:     function menuConfig()
+ *  200:     function init()
+ *  278:     function main()
+ *  310:     function printContent()
  *
  *              SECTION: Module content: Publish
- *  312:     function moduleContent_publish()
- *  410:     function displayVersionDetails($details)
- *  419:     function displayWorkspaceOverview()
- *  491:     function displayWorkspaceOverview_list($pArray, $tableRows=array(), $c=0, $warnAboutVersions=FALSE)
- *  679:     function displayWorkspaceOverview_pageTreeIconTitle($pageUid, $title, $indentCount)
- *  694:     function displayWorkspaceOverview_stageCmd($table,&$rec_off)
- *  779:     function displayWorkspaceOverview_commandLinks($table,&$rec_on,&$rec_off,$vType)
- *  849:     function displayWorkspaceOverview_commandLinksSub($table,$rec,$origId)
- *  897:     function displayWorkspaceOverview_setInPageArray(&$pArray,$rlArr,$table,$row)
- *  928:     function subElements($uid,$treeLevel,$origId=0)
- * 1031:     function subElements_getNonPageRecords($tN, $uid, &$recList)
- * 1061:     function subElements_renderItem(&$tCell,$tN,$uid,$rec,$origId,$iconMode,$HTMLdata)
- * 1130:     function markupNewOriginals()
- * 1152:     function createDiffView($table, $diff_1_record, $diff_2_record)
+ *  340:     function moduleContent_publish()
+ *  438:     function displayVersionDetails($details)
+ *  447:     function displayWorkspaceOverview()
+ *  519:     function displayWorkspaceOverview_list($pArray, $tableRows=array(), $c=0, $warnAboutVersions=FALSE)
+ *  707:     function displayWorkspaceOverview_pageTreeIconTitle($pageUid, $title, $indentCount)
+ *  722:     function displayWorkspaceOverview_stageCmd($table,&$rec_off)
+ *  810:     function displayWorkspaceOverview_commandLinks($table,&$rec_on,&$rec_off,$vType)
+ *  880:     function displayWorkspaceOverview_commandLinksSub($table,$rec,$origId)
+ *  928:     function displayWorkspaceOverview_setInPageArray(&$pArray,$rlArr,$table,$row)
+ *  959:     function subElements($uid,$treeLevel,$origId=0)
+ * 1062:     function subElements_getNonPageRecords($tN, $uid, &$recList)
+ * 1092:     function subElements_renderItem(&$tCell,$tN,$uid,$rec,$origId,$iconMode,$HTMLdata)
+ * 1161:     function markupNewOriginals()
+ * 1183:     function createDiffView($table, $diff_1_record, $diff_2_record)
  *
  *              SECTION: Module content: Workspace list
- * 1284:     function moduleContent_workspaceList()
+ * 1315:     function moduleContent_workspaceList()
+ * 1334:     function workspaceList_displayUserWorkspaceList()
+ * 1411:     function workspaceList_getUserWorkspaceList()
+ * 1450:     function workspaceList_formatWorkspaceData($cssClass, &$wksp)
+ * 1485:     function workspaceList_getMountPoints($tableName, $uidList)
+ * 1508:     function workspaceList_displayUserWorkspaceListHeader()
+ * 1529:     function workspaceList_getUserList($cssClass, &$wksp)
+ * 1552:     function workspaceList_getUserListWithAccess($cssClass, &$list, $access)
+ * 1608:     function workspaceList_displayIcons($currentWorkspace, &$wksp)
+ * 1659:     function workspaceList_hasEditAccess(&$wksp)
+ * 1671:     function workspaceList_createFakeWorkspaceRecord($uid)
  *
  *              SECTION: Helper functions
- * 1332:     function formatVerId($verId)
- * 1342:     function formatWorkspace($wsid)
- * 1369:     function formatCount($count)
- * 1396:     function versionsInOtherWS($table,$uid)
- * 1426:     function showStageChangeLog($table,$id,$stageCommands)
+ * 1736:     function formatVerId($verId)
+ * 1746:     function formatWorkspace($wsid)
+ * 1773:     function formatCount($count)
+ * 1800:     function versionsInOtherWS($table,$uid)
+ * 1830:     function showStageChangeLog($table,$id,$stageCommands)
  *
  *              SECTION: Processing
- * 1485:     function publishAction()
+ * 1889:     function publishAction()
  *
- * TOTAL FUNCTIONS: 25
+ * TOTAL FUNCTIONS: 35
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -222,7 +233,7 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 				}
 			}
 
-			function expandCollapse(rowNumber)	{
+			function expandCollapse(rowNumber)	{	//
 				elementId = \'wl_\' + rowNumber;
 				element = document.getElementById(elementId);
 				image = document.getElementById(elementId + \'i\');
@@ -441,7 +452,8 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 			// Get usernames and groupnames
 		$be_group_Array = t3lib_BEfunc::getListGroupNames('title,uid');
 		$groupArray = array_keys($be_group_Array);
-		$this->be_user_Array = t3lib_BEfunc::getUserNames();
+			// Need 'admin' field for t3lib_iconWorks::getIconImage()
+		$this->be_user_Array = t3lib_BEfunc::getUserNames('username,usergroup,usergroup_cached_list,uid,admin');
 		if (!$GLOBALS['BE_USER']->isAdmin())		$this->be_user_Array = t3lib_BEfunc::blindUserNames($this->be_user_Array,$groupArray,1);
 
 			// Initialize Workspace ID and filter-value:
@@ -1377,9 +1389,7 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 		}
 		$content .= '</table>';
 
-		$newWkspUrl = $BACK_PATH . 'alt_doc.php?returnUrl='.
-					rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI')) .
-					'&edit[sys_workspace][0]=new';
+		$newWkspUrl = 'class.mod_user_ws_workspaceforms.php?action=new';
 
 			// workspace creation link
 		if ($GLOBALS['BE_USER']->isAdmin() || 0 != ($GLOBALS['BE_USER']->groupData['workspace_perms'] & 4))	{
@@ -1454,9 +1464,9 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 				'<tr><td style="width: 150px; white-space: nowrap; vertical-align: top;" class="' . $cssClass2 . '"><b>Frozen:</b></td>' .					// TODO Localize this!
 				'<td class="' . $cssClass2 . '">' . ($wksp['freeze'] ? 'Yes' : 'No') . '</td></tr>' .
 				'<tr><td style="width: 150px; white-space: nowrap; vertical-align: top;" class="' . $cssClass2 . '"><b>Publish date:</b></td>' .			// TODO Localize this!
-				'<td class="' . $cssClass2 . '">' . ($wksp['publish_time'] == 0 ? '-' : date($dateFormat, $wksp['publish_time'])) . '</td></tr>' .
+				'<td class="' . $cssClass2 . '">' . ($wksp['publish_time'] == 0 ? '&nbsp;&ndash;' : date($dateFormat, $wksp['publish_time'])) . '</td></tr>' .
 				'<tr><td style="width: 150px; white-space: nowrap; vertical-align: top;" class="' . $cssClass2 . '"><b>Unpublish date:</b></td>' .			// TODO Localize this!
-				'<td class="' . $cssClass2 . '">' . ($wksp['unpublish_time'] == 0 ? '-' : date($dateFormat, $wksp['unpublish_time'])) . '</td></tr>' .
+				'<td class="' . $cssClass2 . '">' . ($wksp['unpublish_time'] == 0 ? '&nbsp;&ndash;' : date($dateFormat, $wksp['unpublish_time'])) . '</td></tr>' .
 				'<tr><td style="width: 150px; white-space: nowrap; vertical-align: top;" class="' . $cssClass2 . '"><b>Your access:</b></td>' .				// TODO Localize this!
 				'<td class="' . $cssClass2 . '">' . $wksp['_ACCESS'] . '</td></tr>' .
 				'<tr><td style="width: 150px; white-space: nowrap; vertical-align: top;" class="' . $cssClass2 . '"><b>Workspace users:</b></td>' .			// TODO Localize this!
@@ -1473,16 +1483,18 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 	 * @return	string		Generated HTML
 	 */
 	function workspaceList_getMountPoints($tableName, $uidList)	{
-		$MPs = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid,title', $tableName, 'deleted=0 AND hidden=0 AND uid IN (' . $uidList . ')', '', 'title');
+		// Warning: all fields needed for t3lib_iconWorks::getIconImage()!
+		$MPs = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', $tableName, 'deleted=0 AND hidden=0 AND uid IN (' . $uidList . ')', '', 'title');
 		if (count($MPs) == 0)	{
 				// No mount points!
-			// TODO Localize this
-			return 'none';
+			return '&nbsp;&ndash;';
 		}
 		$content_array = array();
 		foreach ($MPs as $mp)	{
 				// Will show UID on hover. Just convinient to user.
-			$content_array[] = '<span title="UID: ' . $mp['uid'] . '">' . $mp['title'] . '</span>';
+			$content_array[] =
+				t3lib_iconWorks::getIconImage($tableName, $mp, $GLOBALS['BACK_PATH'], ' align="middle"') .
+				'<span title="UID: ' . $mp['uid'] . '">' . $mp['title'] . '</span>';
 		}
 		return implode('<br />', $content_array);
 	}
@@ -1510,12 +1522,13 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 	/**
 	 * Generates a list of <code>&lt;option&gt;</code> tags with user names.
 	 *
+	 * @param	string		CSS class name
 	 * @param	array		Workspace record
 	 * @return	string		Generated content
 	 */
 	function workspaceList_getUserList($cssClass, &$wksp) {
 		// TODO Localize strings on three lines below
-		$content = $this->workspaceList_getUserListWithAccess($cssClass, $wksp['adminusers'], 'Admins:'); // admins
+		$content = $this->workspaceList_getUserListWithAccess($cssClass, $wksp['adminusers'], 'Owners:'); // owners
 		$content .= $this->workspaceList_getUserListWithAccess($cssClass, $wksp['members'], 'Members:'); // members
 		$content .= $this->workspaceList_getUserListWithAccess($cssClass, $wksp['reviewers'], 'Reviewers:'); // reviewers
 		if ($content != '')	{
@@ -1531,22 +1544,51 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 	/**
 	 * Generates a list of user names that has access to the database.
 	 *
+	 * @param	string		CSS class name
 	 * @param	array		A list of user IDs separated by comma
 	 * @param	string		Access string
 	 * @return	string		Generated content
 	 */
 	function workspaceList_getUserListWithAccess($cssClass, &$list, $access)	{
-		if ($list=='')	{
-			return '';	// no users, no need to go futher
-		}
 		$content_array = array();
-		$userIDs = explode(',', $list);
+		if ($list != '')	{
+			$userIDs = explode(',', $list);
 
-			// get user names and sort
-		foreach ($userIDs as $userUID)	{
-			$content_array[] = $this->be_user_Array[$userUID]['username'];
+				// get user names and sort
+			$regExp = '/^(be_[^_]+)_(\d+)$/';
+			$groups = false;
+			foreach ($userIDs as $userUID)	{
+				$id = $userUID;
+
+				if (preg_match($regExp, $userUID)) {
+					$table = preg_replace($regExp, '\1', $userUID);
+					$id = intval(preg_replace($regExp, '\2', $userUID));
+					if ($table == 'be_users') {
+						// user
+						$icon = $GLOBALS['TCA']['be_users']['typeicons'][$this->be_user_Array[$id]['admin']];
+						$content_array[] = t3lib_iconWorks::getIconImage($table, $this->be_user_Array[$id], $GLOBALS['BACK_PATH'], ' align="middle"') .
+											$this->be_user_Array[$id]['username'];
+					}
+					else {
+						// group
+						if (false === $groups) {
+							$groups = t3lib_BEfunc::getGroupNames();
+						}
+						$content_array[] = t3lib_iconWorks::getIconImage($table, $groups[$id], $GLOBALS['BACK_PATH'], ' align="middle"') .
+											$groups[$id]['title'];
+					}
+				}
+				else {
+					// user id
+					$content_array[] = t3lib_iconWorks::getIconImage('be_users', $this->be_user_Array[$id], $GLOBALS['BACK_PATH'], ' align="middle"') .
+										$this->be_user_Array[$userUID]['username'];
+				}
+			}
+			sort($content_array);
 		}
-		sort($content_array);
+		else {
+			$content_array[] = '&nbsp;&ndash;';
+		}
 
 		// TODO move style to system stylesheet
 		$content = '<tr><td style="vertical-align: top; width: 100px" class="' . $cssClass . '">';
@@ -1570,8 +1612,8 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 			// `edit workspace` button
 		if ($this->workspaceList_hasEditAccess($wksp))	{
 				// User can modify workspace parameters, display corresponding link and icon
-			$editUrl = $BACK_PATH . 'alt_doc.php?returnUrl=' . rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI')) .
-						'&amp;edit[sys_workspace][' . $wksp['uid'] .']=edit';
+			$editUrl = 'class.mod_user_ws_workspaceforms.php?action=edit&amp;wkspId=' . $wksp['uid'];
+
 			$content .= '<a href="' . $editUrl . '" Xonclick="alert(\'Click!\')"/>' .
 					'<img ' . t3lib_iconWorks::skinImg($BACK_PATH, 'gfx/edit2.gif', 'width="11" height="12"') . ' border="0" alt="Edit workspace" align="middle" hspace="1" />' .	// TODO Localize this!
 					'</a>';
