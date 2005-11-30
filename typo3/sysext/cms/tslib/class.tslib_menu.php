@@ -172,6 +172,7 @@ class tslib_menu {
 	var $WMsubmenuObjSuffixes;
 	var $WMextraScript;
 	var $alternativeMenuTempArray='';		// Can be set to contain menu item arrays for sub-levels.
+	var $nameAttribute = 'name';			// Will be 'id' in XHTML-mode
 
 	/**
 	 * The initialization of the object. This just sets some internal variables.
@@ -192,6 +193,18 @@ class tslib_menu {
 		$this->menuNumber = $menuNumber;
 		$this->mconf = $conf[$this->menuNumber.$objSuffix.'.'];
 		$this->debug=$GLOBALS['TSFE']->debug;
+
+			// In XHTML there is no "name" attribute anymore
+		switch ($GLOBALS['TSFE']->config['config']['doctype'])	{
+			case 'xhtml_strict':
+			case 'xhtml_11':
+			case 'xhtml_2':
+				$this->nameAttribute = 'id';
+				break;
+			default:
+				$this->nameAttribute = 'name';
+				break;
+		}
 
 			// Sets the internal vars. $tmpl MUST be the template-object. $sys_page MUST be the sys_page object
 		if ($this->conf[$this->menuNumber.$objSuffix] && is_object($tmpl) && is_object($sys_page))	{
@@ -1668,7 +1681,7 @@ class tslib_tmenu extends tslib_menu {
 				$imgROInfo[3] = t3lib_div::png_to_gif_by_imagemagick($imgROInfo[3]);
 				if ($imgROInfo)	{
 					$theName = $this->imgNamePrefix.$this->I['uid'].$this->I['INPfix'].$pref;
-					$name = ' name="'.$theName.'"';
+					$name = ' '.$this->nameAttribute.'="'.$theName.'"';
 					$GLOBALS['TSFE']->JSImgCode.= chr(10).$theName.'_n=new Image(); '.$theName.'_n.src = "'.$GLOBALS['TSFE']->absRefPrefix.$imgInfo[3].'"; ';
 					$GLOBALS['TSFE']->JSImgCode.= chr(10).$theName.'_h=new Image(); '.$theName.'_h.src = "'.$GLOBALS['TSFE']->absRefPrefix.$imgROInfo[3].'"; ';
 				}
@@ -2182,7 +2195,7 @@ class tslib_gmenu extends tslib_menu {
 						// Set rollover
 					if ($this->result['RO'][$key] && !$this->I['noLink'])	{
 						$this->I['theName'] = $this->imgNamePrefix.$this->I['uid'].$this->I['INPfix'];
-						$this->I['name'] = ' name="'.$this->I["theName"].'"';
+						$this->I['name'] = ' '.$this->nameAttribute.'="'.$this->I["theName"].'"';
 						$this->I['linkHREF']['onMouseover']=$this->WMfreezePrefix.'over(\''.$this->I['theName'].'\');';
 						$this->I['linkHREF']['onMouseout']=$this->WMfreezePrefix.'out(\''.$this->I['theName'].'\');';
 						$GLOBALS['TSFE']->JSImgCode.= chr(10).$this->I['theName'].'_n=new Image(); '.$this->I['theName'].'_n.src = "'.$GLOBALS['TSFE']->absRefPrefix.$this->I['val']['output_file'].'"; ';

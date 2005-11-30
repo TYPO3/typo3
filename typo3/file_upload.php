@@ -108,6 +108,9 @@ class SC_file_upload {
 		$this->target = t3lib_div::_GP('target');
 		$this->returnUrl = t3lib_div::_GP('returnUrl');
 
+		if (empty($this->number) && $GLOBALS['BE_USER']->getTSConfig('options.defaultFileUploads'))	{
+			$this->number = t3lib_div::intInRange($GLOBALS['BE_USER']->getTSConfig('options.defaultFileUploads'),1,$this->uploadNumber);
+		}
 			// Init basic-file-functions object:
 		$this->basicff = t3lib_div::makeInstance('t3lib_basicFileFunctions');
 		$this->basicff->init($GLOBALS['FILEMOUNTS'],$TYPO3_CONF_VARS['BE']['fileExtensions']);

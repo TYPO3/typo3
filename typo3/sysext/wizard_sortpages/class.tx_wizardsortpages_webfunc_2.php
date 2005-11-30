@@ -98,9 +98,9 @@ class tx_wizardsortpages_webfunc_2 extends t3lib_extobjbase {
 			if ($sortByField)	{
 				$menuItems=array();
 				if (t3lib_div::inList('title,subtitle,crdate,tstamp',$sortByField))	{
-					$menuItems = $sys_pages->getMenu($this->pObj->id,'uid,pid,title',$sortByField);
+					$menuItems = $sys_pages->getMenu($this->pObj->id,'uid,pid,title',$sortByField,'',0);
 				} elseif ($sortByField=='REV') {
-					$menuItems = $sys_pages->getMenu($this->pObj->id,'uid,pid,title');
+					$menuItems = $sys_pages->getMenu($this->pObj->id,'uid,pid,title','sorting','',0);
 					$menuItems = array_reverse($menuItems);
 				}
 				if (count($menuItems))	{
@@ -119,7 +119,7 @@ class tx_wizardsortpages_webfunc_2 extends t3lib_extobjbase {
 			}
 
 				//
-			$menuItems = $sys_pages->getMenu($this->pObj->id);
+			$menuItems = $sys_pages->getMenu($this->pObj->id,'*','sorting','',0);
 			reset($menuItems);
 			$lines=array();
 				$lines[]= '<tr>

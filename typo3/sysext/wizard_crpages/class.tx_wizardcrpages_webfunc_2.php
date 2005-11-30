@@ -100,7 +100,7 @@ class tx_wizardcrpages_webfunc_2 extends t3lib_extobjbase {
 		$m_perms_clause = $GLOBALS['BE_USER']->getPagePermsClause(8);	// create new pages here?
 		$pRec = t3lib_BEfunc::getRecord('pages',$this->pObj->id,'uid',' AND '.$m_perms_clause);
 		$sys_pages = t3lib_div::makeInstance('t3lib_pageSelect');
-		$menuItems = $sys_pages->getMenu($this->pObj->id);
+		$menuItems = $sys_pages->getMenu($this->pObj->id,'*','sorting','',0);
 		if (is_array($pRec))	{
 			$data = t3lib_div::_GP('data');
 			if (is_array($data['pages']))	{
@@ -140,7 +140,7 @@ class tx_wizardcrpages_webfunc_2 extends t3lib_extobjbase {
 				}
 
 					// Display result:
-				$menuItems = $sys_pages->getMenu($this->pObj->id);
+				$menuItems = $sys_pages->getMenu($this->pObj->id,'*','sorting','',0);
 				reset($menuItems);
 				$lines=array();
 				while(list(,$rec)=each($menuItems))	{

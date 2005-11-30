@@ -1,3 +1,11 @@
+2005-11-30  Sebastian Kurfuerst  <sebastian@garbage-group.de>
+
+	* Fixed bug #0874: XHTML compliance of GMENU with onmouseover images
+	* Fixed bug #1657: make default number of file upload forms in the file upload tool configurable
+	* Fixed bug #1703: Date fields: default is tomorrow instead of today.
+	* Fixed bug #1889: EM appends trailing spaces when updating ext_emconf.php
+	* changed shortcut checking behavior in t3lib_page::getMenu (Related to #1066)
+
 2005-11-30  Michael Stucki  <michael@typo3.org>
 
 	* Fixed a little bug in t3lib_div::debug() (missing <tr> after first row)
@@ -93,7 +101,7 @@
 2005-11-09  Sebastian Kurfuerst  <sebastian@garbage-group.de>
 
 	* New feature #1577: display clickmenus with XMLHTTP / ajax
-	* Fixed bug 1066: Shortcut to a invisible page leads to a frontend error
+	* Fixed bug #1066: Shortcut to a invisible page leads to a frontend error
 
 2005-11-09  Ingmar Schlecht  <ingmar@typo3.org>
 

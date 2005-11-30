@@ -919,8 +919,8 @@ class t3lib_TCEforms	{
 		$paramsList = "'".$PA['itemFormElName']."','".implode(',',$evalList)."','".trim($config['is_in'])."',".(isset($config['checkbox'])?1:0).",'".$config['checkbox']."'";
 		if (isset($config['checkbox']))	{
 				// Setting default "click-checkbox" values for eval types "date" and "datetime":
-			$nextMidNight = mktime(0,0,0)+1*3600*24;
-			$checkSetValue = in_array('date',$evalList) ? $nextMidNight : '';
+			$thisMidnight = mktime(0,0,0);
+			$checkSetValue = in_array('date',$evalList) ? $thisMidnight : '';
 			$checkSetValue = in_array('datetime',$evalList) ? time() : $checkSetValue;
 
 			$cOnClick = 'typo3FormFieldGet('.$paramsList.',1,\''.$checkSetValue.'\');'.implode('',$PA['fieldChangeFunc']);

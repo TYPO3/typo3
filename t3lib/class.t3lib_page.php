@@ -404,10 +404,11 @@ class t3lib_pageSelect {
 	 * @param	string		List of fields to select. Default is "*" = all
 	 * @param	string		The field to sort by. Default is "sorting"
 	 * @param	string		Optional additional where clauses. Like "AND title like '%blabla%'" for instance.
+	 * @param	boolean		check if shortcuts exist, checks by default
 	 * @return	array		Array with key/value pairs; keys are page-uid numbers. values are the corresponding page records (with overlayed localized fields, if any)
 	 * @see tslib_fe::getPageShortcut(), tslib_menu::makeMenu(), tx_wizardcrpages_webfunc_2, tx_wizardsortpages_webfunc_2
 	 */
-	function getMenu($uid,$fields='*',$sortField='sorting',$addWhere='')	{
+	function getMenu($uid,$fields='*',$sortField='sorting',$addWhere='',$checkShortcuts=1)	{
 
 		$output = Array();
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($fields, 'pages', 'pid='.intval($uid).$this->where_hid_del.$this->where_groupAccess.' '.$addWhere, '', $sortField);
@@ -427,7 +428,7 @@ class t3lib_pageSelect {
 				}
 
 					// if shortcut, look up if the target exists and is currently visible
-				if ($row['doktype'] == 4 && ($row['shortcut'] || $row['shortcut_mode']))	{
+				if ($row['doktype'] == 4 && ($row['shortcut'] || $row['shortcut_mode']) && $checkShortcuts)	{
 					if ($row['shortcut_mode'] == 0)	{
 						$searchField = 'uid';
 						$searchUid = intval($row['shortcut']);
@@ -441,7 +442,7 @@ class t3lib_pageSelect {
 						unset($row);
 					}
 					$GLOBALS['TYPO3_DB']->sql_free_result($res2);
-				} elseif ($row['doktype'] == 4)	{
+				} elseif ($row['doktype'] == 4 && $checkShortcuts)	{
 						// Neither shortcut target nor mode is set. Remove the page from the menu.
 					unset($row);
 				}

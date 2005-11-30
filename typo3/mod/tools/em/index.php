@@ -3162,18 +3162,18 @@ EXTENSION KEYS:
 		$EM_CONF['version']=$vDat['version'];
 
 		$lines=array();
-		$lines[]='<?php';
-		$lines[]='';
-		$lines[]='########################################################################';
-		$lines[]='# Extension Manager/Repository config file for ext: "'.$extKey.'"';
-		$lines[]='# ';
-		$lines[]='# Auto generated '.date('d-m-Y H:i');
-		$lines[]='# ';
-		$lines[]='# Manual updates:';
-		$lines[]='# Only the data in the array - anything else is removed by next write';
-		$lines[]='########################################################################';
-		$lines[]='';
-		$lines[]='$EM_CONF[$_EXTKEY] = Array (';
+		$lines[]='<?php
+
+########################################################################
+# Extension Manager/Repository config file for ext: "'.$extKey.'"
+#
+# Auto generated '.date('d-m-Y H:i').'
+#
+# Manual updates:
+# Only the data in the array - anything else is removed by next write
+########################################################################
+
+$EM_CONF[$_EXTKEY] = Array (';
 
 		foreach($EM_CONF as $k => $v)	{
 			$lines[] = chr(9)."'".$k."' => ".(
@@ -3182,9 +3182,9 @@ EXTENSION KEYS:
 				"'".t3lib_div::slashJS(trim($v),1)."'"
 			).','.$fMsg[$k];
 		}
-		$lines[]=');';
-		$lines[]='';
-		$lines[]='?>';
+		$lines[]=');
+
+?>';
 
 		return implode(chr(10),$lines);
 	}
