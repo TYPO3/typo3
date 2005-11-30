@@ -1,3 +1,7 @@
+2005-11-30  Michael Stucki  <michael@typo3.org>
+
+	* Fixed a little bug in t3lib_div::debug() (missing <tr> after first row)
+
 2005-11-29  Dmitry Dulepov  <typo3@fm-world.ru>
 
 	* Workspace module uses own classes for editing/creating workspaces (no permission check yet!)
@@ -10,7 +14,7 @@
 
 2005-11-27  Jan-Erik Revsbech  <jer@moccompany.com>
 
-	* Implemented Gremlin 1660: typolink now supports the title attribute (With stdWrap). Additionally the <link> tag used in conjunction with the rte now supports a fourth parameter. In addition to pageid target and class, the fourth parameter is the title of the resulting link.
+	* Implemented Gremlin 1660: typolink now supports the title attribute (with stdWrap). Additionally the <link> tag used in conjunction with the RTE now supports a fourth parameter. In addition to pageid target and class, the fourth parameter is the title of the resulting link.
 
 2005-11-25  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 

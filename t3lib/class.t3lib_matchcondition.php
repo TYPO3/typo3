@@ -292,7 +292,7 @@ class t3lib_matchCondition {
 					if ($pre &&
 						!t3lib_div::isFirstPartOfStr(trim($funcName),$pre) &&
 						!t3lib_div::isFirstPartOfStr(trim($funcName),'tx_')
-						)	{
+					)	{
 						if (is_object($GLOBALS['TT']))	$GLOBALS['TT']->setTSlogMessage('Match condition: Function "'.$funcName.'" was not prepended with "'.$pre.'"',3);
 						return false;
 					}

@@ -2472,9 +2472,9 @@ class t3lib_div {
 	 * @return	void
 	 */
 	function debug($var="",$brOrHeader=0)	{
-		if ($brOrHeader && !t3lib_div::testInt($brOrHeader)) {
-			echo '<table border="0" cellpadding="0" cellspacing="0" bgcolor="white" style="border:0px; margin-top:3px; margin-bottom:3px;"><tr><td style="background-color:#bbbbbb; font-family: verdana,arial; font-weight: bold; font-size: 10px;">'.htmlspecialchars((string)$brOrHeader).'</td></tr><td>';
-		} elseif ($brOrHeader<0) {
+		if ($brOrHeader && !t3lib_div::testInt($brOrHeader))	{
+			echo '<table border="0" cellpadding="0" cellspacing="0" bgcolor="white" style="border:0px; margin-top:3px; margin-bottom:3px;"><tr><td style="background-color:#bbbbbb; font-family: verdana,arial; font-weight: bold; font-size: 10px;">'.htmlspecialchars((string)$brOrHeader).'</td></tr><tr><td>';
+		} elseif ($brOrHeader<0)	{
 			for($a=0;$a<abs(intval($brOrHeader));$a++){echo '<br />';}
 		}
 
@@ -2484,15 +2484,15 @@ class t3lib_div {
 			echo '<b>|Object:<pre>';
 			print_r($var);
 			echo '</pre>|</b>';
-		} elseif ((string)$var!='') {
+		} elseif ((string)$var!='')	{
 			echo '<b>|'.htmlspecialchars((string)$var).'|</b>';
 		} else {
 			echo '<b>| debug |</b>';
 		}
 
-		if ($brOrHeader && !t3lib_div::testInt($brOrHeader)) {
+		if ($brOrHeader && !t3lib_div::testInt($brOrHeader))	{
 			echo '</td></tr></table>';
-		} elseif ($brOrHeader>0) {
+		} elseif ($brOrHeader>0)	{
 			for($a=0;$a<intval($brOrHeader);$a++){echo '<br />';}
 		}
 	}
