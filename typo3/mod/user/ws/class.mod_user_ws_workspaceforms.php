@@ -127,8 +127,6 @@ class SC_mod_user_ws_workspaceForms extends t3lib_SCbase {
 		$this->doc->bodyTagAdditions = $CMparts[1];
 		$this->doc->postCode.= $CMparts[2];
 
-		$this->initTCEForms();
-
 		// Parent initialization:
 		t3lib_SCbase::init();
 	}
@@ -151,6 +149,22 @@ class SC_mod_user_ws_workspaceForms extends t3lib_SCbase {
 	function main()	{
 		// see what we have to do and get parameters (call before processing data!!!)
 		$this->getModuleParameters();
+		
+		if (!$this->checkWorkspaceAccess()) {
+			$title = $this->getTitle();
+			$this->content .= $this->doc->startPage($title);
+			$this->content .= $this->doc->header($title);
+			$this->content .= $this->doc->spacer(5);
+			$this->content .= 'You have no permission to edit this workspace. Only admin users or owners of the workspace can modify its parameters.';	// TODO Localize
+			$this->content .= $this->doc->spacer(5);
+			$goBack = 'Go back';	// TODO Localize
+			$this->content .= '<img ' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/goback.gif', 'width="14" height="14"') . ' alt="' . $goBack . '" align="middle" hspace="2" />' . 
+						'<a href="javascript:history.back()">' .
+						$goBack .	
+						'</a>';
+			$this->content .= $this->doc->endPage();
+			return;
+		}
 
 		// process submission (this may override action and workspace ID!)
 		if (t3lib_div::_GP('submit') != '') {
@@ -162,6 +176,8 @@ class SC_mod_user_ws_workspaceForms extends t3lib_SCbase {
 				exit();
 			}
 		}
+
+		$this->initTCEForms();
 
 		//
 		// start page
@@ -476,6 +492,19 @@ class SC_mod_user_ws_workspaceForms extends t3lib_SCbase {
 			$this->isEditAction = true;
 		}
 	}
+
+
+
+
+
+
+
+
+
+
+
+
+
 	
 	/**
 	 * "Fixes" <code>$TCA</code> to enable blinding for users/groups for non-admin users only.
@@ -500,6 +529,19 @@ class SC_mod_user_ws_workspaceForms extends t3lib_SCbase {
 			);
 			$field = $newField;
 		}
+	}
+	
+	/**
+	 * Checks if use has editing access to the workspace.
+	 * 
+	 * @return	<code>true</code> if user can edit workspace
+	 */
+	function checkWorkspaceAccess() {
+		$workspaces = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid,title,adminusers,members,reviewers','sys_workspace','uid=' . $this->workspaceId . ' AND pid=0'.t3lib_BEfunc::deleteClause('sys_workspace'));
+		if (is_array($workspaces) && count($workspaces) != 0 && false !== ($rec = $GLOBALS['BE_USER']->checkWorkspace($workspaces[0])))	{
+			return ($rec['_ACCESS'] == 'owner' || $rec['_ACCESS'] == 'admin');
+		}
+		return false;
 	}
 }
 
@@ -550,105 +592,12 @@ class user_SC_mod_user_ws_workspaceForms {
 			}
 		}
 	}
-
-	/**
-	 * Hook for processing users and groups in TCEmain. Note: do not change function name!
-	 * 
-	 * THIS METHOD IS NOT CURRENTLY IN USE!
-	 * 
-	 * @param	string	$status	<code>new</code> if record is new
-	 * @param	string	$table	Table name
-	 * @param	mixed	$id	Record uid
-	 * @param	array	&$fieldArray	Fields
-	 * @param	object	&$tcemain	An instance of <code>t3lib_div::TCEmain</code>
-	 * @return	void
-	 */
-	function processDatamap_postProcessFieldArray($status, $table, $id, &$fieldArray, &$tcemain) {
-		if ($table == 'sys_workspace' && !$GLOBALS['BE_USER']->isAdmin()) {
-			// Not admin user, remove any users/groups where this user does not belong
-			$be_group_Array = t3lib_BEfunc::getListGroupNames('title,uid');
-			$groupArray = array_keys($be_group_Array);
-			$be_user_Array = t3lib_BEfunc::getUserNames();
-			$be_user_Array = t3lib_BEfunc::blindUserNames($be_user_Array, $groupArray, 1);
-			$be_group_Array = t3lib_BEfunc::blindGroupNames(t3lib_BEfunc::getGroupNames(), $groupArray, 1);
-
-			$removed = array();
-			if (isset($fieldArray['adminusers'])) {
-				$this->removeUnwantedUsersAndGroups($fieldArray['adminusers'], $be_user_Array, $be_group_Array, $removed);
-			}
-			if (isset($fieldArray['members'])) {
-				$this->removeUnwantedUsersAndGroups($fieldArray['members'], $be_user_Array, $be_group_Array, $removed);
-			}
-			if (isset($fieldArray['reviewers'])) {
-				$this->removeUnwantedUsersAndGroups($fieldArray['reviewers'], $be_user_Array, $be_group_Array, $removed);
-			}
-			sort($removed);
-
-			// Print log message about removed item
-			foreach ($removed as $element) {
-				$message = sprintf("Account '%s' was removed from the list because it is not included in your user group", $element);
-				if ($status == 'new') {
-					$tcemain->log($table, $id, 5, 0, 1, $message, -1, array(), -1, $id);
-				}
-				else {
-					$tcemain->log($table, $id, 5, 0, 1, $message);
-				}
-			}
-		}
-	}
-	
-	/**
-	 * Removes users and groups that do not belong to the current BE_USER's groups.
-	 * 
-	 * THIS METHOD IS NOT CURRENTLY IN USE!
-	 *
-	 * @param	string	&$field	Field value
-	 * @param	array	&$users	Users from all groups of the current BE user
-	 * @param	array	&$groups	Groups from all groups of the current BE user
-	 * @param	array	&$removed	A list of removed elements
-	 * @return	void
-	 */
-	function removeUnwantedUsersAndGroups(&$field, &$users, &$groups, &$removed) {
-		$elements = explode(',', $field);
-		$elementsNew = array();
-		$beUserUid = $GLOBALS['BE_USER']->user['uid'];
-		// Go through each element
-		foreach ($elements as $el) {
-			$regExp = '/^(be_[^_]+)_(\d+)$/';
-			$arr = &$users;
-			if (preg_match($regExp, $el)) {
-				// Decode mixed table/id
-				if (preg_replace($regExp, '\1', $el) == 'be_groups') {
-					$arr = &$groups;
-				}
-				$id = preg_replace($regExp, '\2', $el);
-			}
-			else {
-				$id = $el;
-			}
-			// If not current user and not in the corresponding list, remove it
-			if ($id != $beUserUid && !isset($arr[$id])) {
-				// TODO normal title for element
-				if (!isset($removed[$el])) {
-					$removed[] = $el;
-				}
-			}
-			else {
-				$elementsNew[] = $el;
-			}
-		}
-		// Reconstruct field
-		$field = implode(',', $elementsNew);
-	}
 }
 
 // Include extension?
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['typo3/mod/user/ws/class.mod_user_ws_workspaceForms.php'])	{
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['typo3/mod/user/ws/class.mod_user_ws_workspaceForms.php']);
 }
-
-// Hook to TCEmain
-//$TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass'][] = 'user_SC_mod_user_ws_workspaceForms';
 
 // Make instance:
 $SOBE = t3lib_div::makeInstance('SC_mod_user_ws_workspaceForms');
