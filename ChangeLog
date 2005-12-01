@@ -1,3 +1,8 @@
+2005-12-01  Dmitry Dulepov  <typo3@fm-world.ru>
+
+	* Implemented access check for workspace editing
+	* Blinding for user and group names is implemented in workspace editing
+
 2005-11-30  Sebastian Kurfuerst  <sebastian@garbage-group.de>
 
 	* Fixed bug #0874: XHTML compliance of GMENU with onmouseover images
