@@ -1,3 +1,7 @@
+2005-12-03  Dmitry Dulepov  <typo3@fm-world.ru>
+
+	* Added $BACK_PATH to $error_doc in t3lib_div::TCEmain->printLogErrorMessages() to work properly if current script runs outisde of ./typo3 directory
+
 2005-12-01  Dmitry Dulepov  <typo3@fm-world.ru>
 
 	* Implemented access check for workspace editing
