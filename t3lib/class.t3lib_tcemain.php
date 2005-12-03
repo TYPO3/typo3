@@ -5534,7 +5534,7 @@ State was change by %s (username: %s)
 
 		if (count($errorJS))	{
 			$error_doc = t3lib_div::makeInstance('template');
-			$error_doc->backPath = '';
+			$error_doc->backPath = $GLOBALS['BACK_PATH'];
 
 			$content.= $error_doc->startPage('tce_db.php Error output');
 
@@ -5546,7 +5546,7 @@ State was change by %s (username: %s)
 			foreach($errorJS as $line)	{
 				$lines[] = '
 					<tr class="bgColor4">
-						<td valign="top"><img'.t3lib_iconWorks::skinImg('','gfx/icon_fatalerror.gif','width="18" height="16"').' alt="" /></td>
+						<td valign="top"><img'.t3lib_iconWorks::skinImg($error_doc->backPath,'gfx/icon_fatalerror.gif','width="18" height="16"').' alt="" /></td>
 						<td>'.htmlspecialchars($line).'</td>
 					</tr>';
 			}
