@@ -537,7 +537,7 @@ class t3lib_DB {
 	 * @see quoteStr()
 	 */
 	function fullQuoteStr($str, $table)	{
-		return '\''.addslashes($str).'\'';
+		return '\''.mysql_real_escape_string($str, $this->link).'\'';
 	}
 
 	/**
@@ -553,7 +553,7 @@ class t3lib_DB {
 	 * @see quoteStr()
 	 */
 	function quoteStr($str, $table)	{
-		return addslashes($str);
+		return mysql_real_escape_string($str, $this->link);
 	}
 
 	/**

@@ -1,3 +1,8 @@
+
+2005-12-09  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+
+	* Fixed bug #1354:: Use mysql_real_escape_string() instead of addslashes() in t3lib_db to fix a security problem in t3lib->quoteStr() when magic_quotes_sybase = on
+
 2005-12-03  Dmitry Dulepov  <typo3@fm-world.ru>
 
 	* Added $BACK_PATH to $error_doc in t3lib_div::TCEmain->printLogErrorMessages() to work properly if current script runs outisde of ./typo3 directory
