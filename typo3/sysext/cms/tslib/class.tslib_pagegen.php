@@ -353,8 +353,10 @@ function linkTo_UnCryptMailto(s)	{	//
 
 			// Setting document type:
 		$docTypeParts = array();
+		$docTypeKeyword = '';
 		$XMLprologue = $GLOBALS['TSFE']->config['config']['xmlprologue'] != 'none';
 		if ($GLOBALS['TSFE']->config['config']['doctype'])	{
+			$docTypeKeyword = $GLOBALS['TSFE']->config['config']['doctype'];
 
 				// Setting doctypes:
 			switch((string)$GLOBALS['TSFE']->config['config']['doctype'])	{
@@ -376,6 +378,12 @@ function linkTo_UnCryptMailto(s)	{	//
      PUBLIC "-//W3C//DTD XHTML 1.0 Frameset//EN"
      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd">';
 				break;
+				case 'xhtml_basic':
+		 			if ($XMLprologue) $docTypeParts[]='<?xml version="1.0" encoding="'.$theCharset.'"?>';
+					$docTypeParts[]='<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML Basic 1.0//EN"
+    "http://www.w3.org/TR/xhtml-basic/xhtml-basic10.dtd">';
+				break;
 				case 'xhtml_11':
 		 			if ($XMLprologue) $docTypeParts[]='<?xml version="1.1" encoding="'.$theCharset.'"?>';
 					$docTypeParts[]='<!DOCTYPE html
@@ -389,16 +397,31 @@ function linkTo_UnCryptMailto(s)	{	//
 	"http://www.w3.org/TR/xhtml2/DTD/xhtml2.dtd">';
 				break;
 				case 'none':
+					$docTypeKeyword = '';
 				break;
 				default:
 					$docTypeParts[] = $GLOBALS['TSFE']->config['config']['doctype'];
-				break;
+					$docTypeKeyword = '';
 			}
+		} else {
+			$docTypeParts[]='<!DOCTYPE html
+	PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">';
+		}
+
+			// Setting XHTML doctype from doctype
+		if (!$GLOBALS['TSFE']->config['config']['xhtmlDoctype'])	{
+			$GLOBALS['TSFE']->config['config']['xhtmlDoctype'] = $docTypeKeyword;
+		}
+
+		if ($GLOBALS['TSFE']->config['config']['xhtmlDoctype'])	{
+			$GLOBALS['TSFE']->xhtmlDoctype = $GLOBALS['TSFE']->config['config']['xhtmlDoctype'];
+
 				// Setting <html> tag attributes:
-			switch((string)$GLOBALS['TSFE']->config['config']['doctype'])	{
+			switch((string)$GLOBALS['TSFE']->config['config']['xhtmlDoctype'])	{
 				case 'xhtml_trans':
 				case 'xhtml_strict':
 				case 'xhtml_frames':
+				case 'xhtml_basic':
 	 				$htmlTagAttributes['xmlns'] = 'http://www.w3.org/1999/xhtml';
 					$htmlTagAttributes['xml:lang'] = $htmlLang;
 					$htmlTagAttributes['lang'] = $htmlLang;
@@ -408,10 +431,28 @@ function linkTo_UnCryptMailto(s)	{	//
 	 				$htmlTagAttributes['xmlns'] = 'http://www.w3.org/1999/xhtml';
 					$htmlTagAttributes['xml:lang'] = $htmlLang;
 				break;
+				default:
+					$GLOBALS['TSFE']->xhtmlDoctype = '';
 			}
-		} else {
-			$docTypeParts[]='<!DOCTYPE html
-	PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">';
+				// Setting xhtml version number:
+			switch((string)$GLOBALS['TSFE']->config['config']['xhtmlDoctype'])	{
+				case 'xhtml_trans':
+				case 'xhtml_strict':
+				case 'xhtml_frames':
+					$GLOBALS['TSFE']->xhtmlVersion = 100;
+				break;
+				case 'xhtml_basic':
+					$GLOBALS['TSFE']->xhtmlVersion = 105;
+				break;
+				case 'xhtml_11':
+					$GLOBALS['TSFE']->xhtmlVersion = 110;
+				break;
+				case 'xhtml_2':
+					$GLOBALS['TSFE']->xhtmlVersion = 200;
+				break;
+				default:
+					$GLOBALS['TSFE']->xhtmlVersion = 0;
+			}
 		}
 
 			// Swap XML and doctype order around (for MSIE / Opera standards compliance)
