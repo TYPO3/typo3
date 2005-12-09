@@ -20,6 +20,7 @@ class gzip_encode {
      * By Sandy McArthur, Jr. <Leknor@Leknor.com>
      *
      * Copyright 2001 (c) All Rights Reserved, All Responsibility Yours.
+     * One very slight modification 2005 for PHP5 compatibility reasons for TYPO3 port by Peter Niederlag
      *
      * This code is released under the GNU LGPL Go read it over here:
      * http://www.gnu.org/copyleft/lesser.html
@@ -86,6 +87,7 @@ class gzip_encode {
      *    to see how it should be done.
      *
      * Change Log:
+     *	typo3.0.70: Fix for PHP5 type-conversion of string 'true' and boolean
      *	0.66:	Big bug fix. It wouldn't compress when it should.
      *	0.65:	Fix for PHP-4.0.5 suddenly removing the connection_timeout() function.
      *	0.62:	Fixed a typo
@@ -165,7 +167,7 @@ class gzip_encode {
 	if (!$encoding) return;
 	$this->encoding = $encoding;
 
-	if ($level === true) {
+	if (strtolower($level) == 'true' || $level === true) {
 	    $level = $this->get_complevel();
 	}
 	$this->level = $level;
