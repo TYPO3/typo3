@@ -149,7 +149,7 @@ class SC_mod_user_ws_workspaceForms extends t3lib_SCbase {
 	function main()	{
 		// see what we have to do and get parameters (call before processing data!!!)
 		$this->getModuleParameters();
-		
+
 		if (!$this->checkWorkspaceAccess()) {
 			$title = $this->getTitle();
 			$this->content .= $this->doc->startPage($title);
@@ -158,9 +158,9 @@ class SC_mod_user_ws_workspaceForms extends t3lib_SCbase {
 			$this->content .= 'You have no permission to edit this workspace. Only admin users or owners of the workspace can modify its parameters.';	// TODO Localize
 			$this->content .= $this->doc->spacer(5);
 			$goBack = 'Go back';	// TODO Localize
-			$this->content .= '<img ' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/goback.gif', 'width="14" height="14"') . ' alt="' . $goBack . '" align="middle" hspace="2" />' . 
+			$this->content .= '<img ' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/goback.gif', 'width="14" height="14"') . ' alt="' . $goBack . '" align="middle" hspace="2" />' .
 						'<a href="javascript:history.back()">' .
-						$goBack .	
+						$goBack .
 						'</a>';
 			$this->content .= $this->doc->endPage();
 			return;
@@ -505,10 +505,10 @@ class SC_mod_user_ws_workspaceForms extends t3lib_SCbase {
 
 
 
-	
+
 	/**
 	 * "Fixes" <code>$TCA</code> to enable blinding for users/groups for non-admin users only.
-	 * 
+	 *
 	 * @param	string	$fieldName	Name of the field to change
 	 */
 	function fixTCAUserField($fieldName) {
@@ -530,11 +530,11 @@ class SC_mod_user_ws_workspaceForms extends t3lib_SCbase {
 			$field = $newField;
 		}
 	}
-	
+
 	/**
 	 * Checks if use has editing access to the workspace.
-	 * 
-	 * @return	<code>true</code> if user can edit workspace
+	 *
+	 * @return	boolean		Returns true if user can edit workspace
 	 */
 	function checkWorkspaceAccess() {
 		$workspaces = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid,title,adminusers,members,reviewers','sys_workspace','uid=' . $this->workspaceId . ' AND pid=0'.t3lib_BEfunc::deleteClause('sys_workspace'));
@@ -549,10 +549,10 @@ class SC_mod_user_ws_workspaceForms extends t3lib_SCbase {
  * This class contains Typo3 callback functions. Class name must start from <code>user_</code> thus we use a separate class.
  */
 class user_SC_mod_user_ws_workspaceForms {
-	
+
 	/**
 	 * Callback function to blind user and group accounts. Used as <code>itemsProcFunc</code> in <code>$TCA</code>.
-	 * 
+	 *
 	 * @param	array	$conf	Configuration array. The following elements are set:<ul><li>items - initial set of items (empty in our case)</li><li>config - field config from <code>$TCA</code></li><li>TSconfig - this function name</li><li>table - table name</li><li>row - record row (???)</li><li>field - field name</li></ul>
 	 * @param	object	$tceforms	<code>t3lib_div::TCEforms</code> object
 	 * @return	void
@@ -574,7 +574,7 @@ class user_SC_mod_user_ws_workspaceForms {
 				t3lib_iconWorks::getIcon('be_users', $user)
 			);
 		}
-		
+
 		// Process groups only if necessary -- save time!
 		if (strstr($conf['config']['mod_ws_allowed'], 'be_groups')) {
 			// groups

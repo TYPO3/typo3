@@ -1,7 +1,10 @@
+2005-12-10  Peter Niederlag  <peter@niederlag.de>
+
+	* Fixed bug #1976: PHP5 type-conversion of string 'true' and boolean
 
 2005-12-09  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
-	* Fixed bug #1354:: Use mysql_real_escape_string() instead of addslashes() in t3lib_db to fix a security problem in t3lib->quoteStr() when magic_quotes_sybase = on
+	* Fixed bug #1354: Use mysql_real_escape_string() instead of addslashes() in t3lib_db to fix a security problem in t3lib->quoteStr() when magic_quotes_sybase = on
 	* Added config.xhtmlDoctype ($GLOBALS['TSFE']->xhtmlDoctype and $GLOBALS['TSFE']->xhtmlVersion)
 
 2005-12-03  Dmitry Dulepov  <typo3@fm-world.ru>
@@ -19,7 +22,7 @@
 	* Fixed bug #1657: make default number of file upload forms in the file upload tool configurable
 	* Fixed bug #1703: Date fields: default is tomorrow instead of today.
 	* Fixed bug #1889: EM appends trailing spaces when updating ext_emconf.php
-	* changed shortcut checking behavior in t3lib_page::getMenu (Related to #1066)
+	* Changed shortcut checking behavior in t3lib_page::getMenu (Related to #1066)
 
 2005-11-30  Michael Stucki  <michael@typo3.org>
 

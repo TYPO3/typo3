@@ -1,18 +1,27 @@
 <?php
-
-// News: I had once said that when PHP4.0.5 comes out I will reccomend the built in
-// ob_gzhandler over my code unless you are generating flash or images on the fly.
-//
-// I was wrong. PHP4.0.5 is out and ob_gzhandler doesn't work for me.
-
-// Note: This is rather cool: http://Leknor.com/code/gziped.php
-// It will calculate the effects of this class on a page.
-// compression level, cpu time, download time, etc
-
-// Note: this may better for some sites:
-// http://www.remotecommunications.com/apache/mod_gzip/
-// I've read that the above doesn't work with php output.
-
+/**
+ * News: I had once said that when PHP 4.0.5 comes out I will reccomend the built in
+ * ob_gzhandler over my code unless you are generating flash or images on the fly.
+ *
+ * I was wrong. PHP 4.0.5 is out and ob_gzhandler doesn't work for me.
+ *
+ * Note: This is rather cool: http://leknor.com/code/gziped.php
+ * It will calculate the effects of this class on a page.
+ * compression level, cpu time, download time, etc
+ *
+ * Note: this may be better for some sites:
+ * http://www.remotecommunications.com/apache/mod_gzip/
+ * I've read that the above doesn't work with PHP output.
+ *
+ * Changes compared to the upstream version:
+ *
+ * 2005-12-09  Peter Niederlag  <peter@niederlag.de>
+ *	- Fixed bug #1976: PHP5 type-conversion of string 'true' and boolean
+ *
+ * $Id$
+ *
+ * @author	Sandy McArthur, Jr. <leknor@leknor.com>
+ */
 class gzip_encode {
     /*
      * gzip_encode - a class to gzip encode php output
@@ -87,7 +96,6 @@ class gzip_encode {
      *    to see how it should be done.
      *
      * Change Log:
-     *	typo3.0.70: Fix for PHP5 type-conversion of string 'true' and boolean
      *	0.66:	Big bug fix. It wouldn't compress when it should.
      *	0.65:	Fix for PHP-4.0.5 suddenly removing the connection_timeout() function.
      *	0.62:	Fixed a typo
