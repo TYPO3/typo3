@@ -160,7 +160,7 @@ class language {
 			$this->origCharSet = $this->charSet;
 			$this->charSet = $GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset'];
 
-			if ($this->charSet!='utf-8' && !$this->csConvObj->initCharset($this->charSet))		{
+			if ($this->charSet!='utf-8' && !$this->csConvObj->initCharset($this->charSet))	{
 				t3lib_BEfunc::typo3PrintError ('The forced character set "'.$this->charSet.'" was not found in t3lib/csconvtbl/','Forced charset not found');
 				exit;
 			}

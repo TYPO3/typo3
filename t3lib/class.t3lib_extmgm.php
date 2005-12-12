@@ -257,27 +257,23 @@ class t3lib_extMgm {
 		if (trim($str) && is_array($TCA[$table]) && is_array($TCA[$table]['types']))	{
 			foreach($TCA[$table]['types'] as $k => $v)	{
 				if (!$specificTypesList || t3lib_div::inList($specificTypesList,$k))	{
-
-
-
-					if ($insert) {
+					if ($insert)	{
 						$append=true;
 						$showItem = t3lib_div::trimExplode(',',$TCA[$table]['types'][$k]['showitem'],1);
-						foreach($showItem as $key => $fieldInfo) {
+						foreach($showItem as $key => $fieldInfo)	{
 
 							$parts = explode(';',$fieldInfo);
 							$theField = trim($parts[0]);
 							$palette = trim($parts[0]).';;'.trim($parts[2]);
 
 								// insert before: find exact field name or palette with number
-							if (in_array($theField, $positionArr) OR in_array($palette, $positionArr) OR
-								in_array('before:'.$theField, $positionArr) OR in_array('before:'.$palette, $positionArr))	{
+							if (in_array($theField, $positionArr) || in_array($palette, $positionArr) || in_array('before:'.$theField, $positionArr) || in_array('before:'.$palette, $positionArr))	{
 								$showItem[$key]=trim($str).', '.$fieldInfo;
 								$append=false;
 								break;
 							}
 								// insert after
-							if (in_array('after:'.$theField, $positionArr) OR in_array('after:'.$palette, $positionArr))	{
+							if (in_array('after:'.$theField, $positionArr) || in_array('after:'.$palette, $positionArr))	{
 								$showItem[$key]=$fieldInfo.', '.trim($str);
 								$append=false;
 								break;
