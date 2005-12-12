@@ -610,7 +610,7 @@ tt_content.mailform.20 {
 	layout = <tr><td class="csc-form-labelcell">###LABEL###</td><td class="csc-form-fieldcell">###FIELD###</td></tr>
 	labelWrap.wrap = <p class="csc-form-label">|</p>
 	commentWrap.wrap = <p class="csc-form-comment">|</p>
-	radioWrap.wrap = <span class="csc-form-radio">|</span>
+	radioWrap.wrap = <span class="csc-form-radio">|</span><br />
 	REQ = 1
 	REQ.labelWrap.wrap = <p class="csc-form-label-req">|</p>
 	COMMENT.layout = <tr><td colspan="2" class="csc-form-commentcell">###LABEL###</td></tr>

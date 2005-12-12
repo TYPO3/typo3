@@ -2286,18 +2286,18 @@
 	 * @return	void
 	 * @see realPageCacheContent(), tempPageCacheContent()
 	 */
-	function setPageCacheContent($c,$d,$t)	{
+	function setPageCacheContent($content,$data,$tstamp)	{
 		$this->clearPageCacheContent();
 		$insertFields = array(
 			'hash' => $this->newHash,
 			'page_id' => $this->id,
-			'HTML' => $c,
-			'cache_data' => serialize($d),
-			'expires' => $t,
+			'HTML' => $content,
+			'cache_data' => serialize($data),
+			'expires' => $tstamp,
 			'tstamp' => $GLOBALS['EXEC_TIME']
 		);
 
-		$this->cacheExpires = $t;
+		$this->cacheExpires = $tstamp;
 
 		if ($this->page_cache_reg1)	{
 			$insertFields['reg1'] = intval($this->page_cache_reg1);

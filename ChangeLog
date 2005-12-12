@@ -1,3 +1,8 @@
+2005-12-12  Michael Stucki  <michael@typo3.org>
+
+	* Fixed wrong/missing label tags around radio input elements
+	* Added new property "returnKey" to the split function - useful to get a specific element after a split operation
+
 2005-12-10  Peter Niederlag  <peter@niederlag.de>
 
 	* Fixed bug #1976: PHP5 type-conversion of string 'true' and boolean

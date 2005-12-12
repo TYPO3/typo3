@@ -1800,9 +1800,13 @@ class tslib_cObj {
 						$default = $this->getFieldDefaultValue($conf['noValueInsert'], $confData['fieldname'], $default);
 							// Create the select-box:
 						for($a=0;$a<count($items);$a++)	{
-							$option.= '<input type="radio" name="'.$confData['fieldname'].'"'.$elementIdAttribute.' value="'.$items[$a][1].'"'.(!strcmp($items[$a][1],$default)?' checked="checked"':'').''.$addParams.' />';
-							$option.= $this->stdWrap(trim($items[$a][0]), $conf['radioWrap.']);
-							$option.= '<br />';
+							$fieldId = $formname.'_'.md5($confData['fieldname']).'_'.($a+1);
+							$label = $this->stdWrap(trim($items[$a][0]), $conf['radioWrap.']);
+							if ($conf['accessibility'])	{
+								$label = '<label for="'.$fieldId.'">'.$label.'</label>';
+							}
+							$option.= '<input type="radio" name="'.$confData['fieldname'].'"'.($fieldId?' id="'.$fieldId.'"':'').' value="'.$items[$a][1].'"'.(!strcmp($items[$a][1],$default)?' checked="checked"':'').''.$addParams.' />';
+							$option.= $label;
 						}
 						$fieldCode = $option;
 					break;
@@ -1885,7 +1889,7 @@ class tslib_cObj {
 
 						// Field:
 					$fieldLabel = $confData['label'];
-					if ($conf['accessibility'])	{
+					if ($conf['accessibility'] && $confData['type']!='radio')	{
 						$fieldLabel = '<label for="'.$formname.'_'.md5($confData['fieldname']).'">'.$fieldLabel.'</label>';
 					}
 
@@ -3954,6 +3958,11 @@ class tslib_cObj {
 			$conf['min']=intval($this->stdWrap($conf['min'],$conf['min.']));
 
 			$valArr=explode($conf['token'],$value);
+
+			if (count($valArr) && ($conf['returnKey'] || $conf['returnKey.']))	{
+				$key = intval($this->stdWrap($conf['returnKey'],$conf['returnKey.']));
+				$content = isset($valArr[$key]) ? $valArr[$key] : '';
+			} else {
 				// calculate splitCount
 			$splitCount = count($valArr);
 			if ($conf['max'] && $splitCount>$conf['max']) {
@@ -3983,6 +3992,7 @@ class tslib_cObj {
 					$value=$this->wrap($value,$splitArr[$a]['wrap']);
 				}
 				$content.=$value;
+			}
 			}
 		}
 		return $content;
