@@ -1,4 +1,3 @@
-
 2005-12-09  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
 	* Fixed bug #2020: t3lib_cs->substr in mbstring-mode always used utf-8
@@ -8,6 +7,7 @@
 
 	* Fixed wrong/missing label tags around radio input elements
 	* Added new property "returnKey" to the split function - useful to get a specific element after a split operation
+	* Added a class="typo3-debug" parameter to t3lib_div::debug() tables
 
 2005-12-10  Peter Niederlag  <peter@niederlag.de>
 
