@@ -1,3 +1,9 @@
+
+2005-12-09  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+
+	* Fixed bug #2020: t3lib_cs->substr in mbstring-mode always used utf-8
+	* Added support for iconv -functions of PHP5 in t3lib_cs
+
 2005-12-12  Michael Stucki  <michael@typo3.org>
 
 	* Fixed wrong/missing label tags around radio input elements
