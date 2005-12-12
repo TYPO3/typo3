@@ -3963,36 +3963,36 @@ class tslib_cObj {
 				$key = intval($this->stdWrap($conf['returnKey'],$conf['returnKey.']));
 				$content = isset($valArr[$key]) ? $valArr[$key] : '';
 			} else {
-				// calculate splitCount
-			$splitCount = count($valArr);
-			if ($conf['max'] && $splitCount>$conf['max']) {
-				$splitCount=$conf['max'];
-			}
-			if ($conf['min'] && $splitCount<$conf['min']) {
-				$splitCount=$conf['min'];
-			}
-
-			if ($conf['wrap'] || $conf['cObjNum']) {
-				$splitArr=array();
-				$splitArr['wrap']=$conf['wrap'];
-				$splitArr['cObjNum']=$conf['cObjNum'];
-				$splitArr = $GLOBALS['TSFE']->tmpl->splitConfArray($splitArr,$splitCount);
-			}
-
-			$content='';
-			for($a=0;$a<$splitCount;$a++)	{
-				$GLOBALS['TSFE']->register['SPLIT_COUNT']=$a;
-				$value = ''.$valArr[$a];
-				$this->data[$this->currentValKey] = $value;
-				if ($splitArr[$a]['cObjNum']) {
-					$objName=intval($splitArr[$a]['cObjNum']);
-					$value = $this->stdWrap($this->cObjGet($conf[$objName.'.'],$objName.'.'),$conf[$objName.'.']);
+					// calculate splitCount
+				$splitCount = count($valArr);
+				if ($conf['max'] && $splitCount>$conf['max'])	{
+					$splitCount=$conf['max'];
 				}
-				if ($splitArr[$a]['wrap']) {
-					$value=$this->wrap($value,$splitArr[$a]['wrap']);
+				if ($conf['min'] && $splitCount<$conf['min'])	{
+					$splitCount=$conf['min'];
 				}
-				$content.=$value;
-			}
+
+				if ($conf['wrap'] || $conf['cObjNum'])	{
+					$splitArr=array();
+					$splitArr['wrap']=$conf['wrap'];
+					$splitArr['cObjNum']=$conf['cObjNum'];
+					$splitArr = $GLOBALS['TSFE']->tmpl->splitConfArray($splitArr,$splitCount);
+				}
+
+				$content='';
+				for($a=0;$a<$splitCount;$a++)	{
+					$GLOBALS['TSFE']->register['SPLIT_COUNT']=$a;
+					$value = ''.$valArr[$a];
+					$this->data[$this->currentValKey] = $value;
+					if ($splitArr[$a]['cObjNum'])	{
+						$objName=intval($splitArr[$a]['cObjNum']);
+						$value = $this->stdWrap($this->cObjGet($conf[$objName.'.'],$objName.'.'),$conf[$objName.'.']);
+					}
+					if ($splitArr[$a]['wrap'])	{
+						$value=$this->wrap($value,$splitArr[$a]['wrap']);
+					}
+					$content.=$value;
+				}
 			}
 		}
 		return $content;
@@ -4013,7 +4013,7 @@ class tslib_cObj {
 	 * @see _parseFunc()
 	 */
 	function parseFunc($theValue, $conf, $ref='') {
-		
+
 			// Fetch / merge reference, if any
 		if ($ref)	{
 			$temp_conf = array(
