@@ -5133,7 +5133,7 @@ class tslib_cObj {
 							if ($conf['extTarget.'])	{$target = $this->stdWrap($target, $conf['extTarget.']);}
 							if ($forceTarget)	{$target=$forceTarget;}
 							$LD['target'] = $target;
-							$this->lastTypoLinkUrl = $this->URLqMark('http://'.$tCR_domain.'/?id='.$page['uid'],$addQueryParams).$sectionMark;
+							$this->lastTypoLinkUrl = $this->URLqMark('http://'.$tCR_domain.'/index.php?id='.$page['uid'],$addQueryParams).$sectionMark;
 						} else {	// Internal link:
 							if ($forceTarget)	{$target=$forceTarget;}
 							$LD = $GLOBALS['TSFE']->tmpl->linkData($page,$target,$conf['no_cache'],'','',$addQueryParams,$theTypeP);
