@@ -3356,7 +3356,7 @@ if (version == "n3") {
 	 */
 	function prefixLocalAnchorsWithScript()	{
 		$scriptPath = substr(t3lib_div::getIndpEnv('TYPO3_REQUEST_URL'),strlen(t3lib_div::getIndpEnv('TYPO3_SITE_URL')));
-		$this->content = eregi_replace('(<(a|area)[[:space:]]+href=")(#[^"]*")','\1'.htmlspecialchars($scriptPath).'\3',$this->content);
+		$this->content = preg_replace('/(<(a|area).*?href=")(#[^"]*")/i','$1' . htmlspecialchars($scriptPath) . '$3',$this->content);
 	}
 
 	/**

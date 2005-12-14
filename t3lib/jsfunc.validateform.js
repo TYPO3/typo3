@@ -25,7 +25,11 @@
 
 
 function validateForm(theFormname,theFieldlist,goodMess,badMess,emailMess)	{
-	if (document[theFormname] && theFieldlist)	{
+	var formObject = document[theFormname];
+	if (!formObject)	{
+		formObject = document.getElementById(theFormname);
+	}
+	if (formObject && theFieldlist)	{
 		var index=1;
 		var theField = split(theFieldlist, ",", index);
 		var msg="";
@@ -58,8 +62,8 @@ function validateForm(theFormname,theFieldlist,goodMess,badMess,emailMess)	{
 			index++;
 			theLabel = unescape(split(theFieldlist, ",", index));
 			theField = unescape(theField);
-			if (document[theFormname][theField])	{
-				var fObj = document[theFormname][theField];
+			if (formObject[theField])	{
+				var fObj = formObject[theField];
 				var type=fObj.type;
 				if (!fObj.type)	{
 					type="radio";

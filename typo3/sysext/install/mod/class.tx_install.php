@@ -661,7 +661,8 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv("REMOTE_ADDR")."' (".t3lib_div::getIndp
 					   		<td valign="top">
 					   		   '.$this->fontTag1.'<BR>
 							   <input type="hidden" name="step" value="2">
-					   		   <input type="submit" value="Update localconf.php"><BR><br /><strong>NOTICE: </strong>By clicking this button, typo3conf/localconf.php is updated with new values for the parameters listed above!</font><BR>
+							   <input type="hidden" name="TYPO3_INSTALL[localconf.php][encryptionKey]" value="'.md5(uniqid(rand(),true)).'">
+					   		   <input type="submit" value="Continue"><BR><br /><strong>NOTICE: </strong>By clicking this button, typo3conf/localconf.php is updated with new values for the parameters listed above!</font><BR>
 					   		</td>
 					   	</tr>
 					   </form>
@@ -721,7 +722,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv("REMOTE_ADDR")."' (".t3lib_div::getIndp
 
 					   		   '.$this->fontTag1.'<BR>
 							   <input type="hidden" name="step" value="3">
-					   		   <input type="submit" value="Update localconf.php"><BR><br /><strong>NOTICE: </strong>By clicking this button, typo3conf/localconf.php is updated with new values for the parameters listed above!</font><BR>
+					   		   <input type="submit" value="Continue"><BR><br /><strong>NOTICE: </strong>By clicking this button, typo3conf/localconf.php is updated with new values for the parameters listed above!</font><BR>
 					   		</td>
 					   	</tr>
 					   </form>

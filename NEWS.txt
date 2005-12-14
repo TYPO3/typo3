@@ -3,17 +3,36 @@ CHANGES & IMPROVEMENTS in TYPO3 4.0
 (for technical details see ChangeLog)
 ************************************************************************
 
+New features / improvements
+===========================
+
+	* Workspaces
+	* indexed search (template support, speed improvements)
+	* Integrated kb_cont_slide extension into core
+	* tab indenting in textareas in the backend
+	* display of BE clickmenus with XMLHTTP / AJAX
+	* User admin module: switch back to admin user after user switch (SU-mode), "create new user" link
+	* Zapped lots of gremlins
+
 Access Control
-===============
-
-	* FE-groups are now nested. Additionally, pages and content elements can have more than one group assigned. (Michael Stucki, integrating extension "fenestgrp" by Glen Gibb and extension "ingmar_accessctrl" by Ingmar Schlecht)
-
-Compatibility
 ==============
 
-	* GMENU_LAYERS and TMENU_LAYERS and image rollovers now work with Opera browsers (Martin Kutschker)
+	* FE-groups are now nested. Additionally, pages and content elements can have more than one group assigned. (Michael Stucki, integrating extension "fenestgrp" by Glen Gibb and extension "ingmar_accessctrl" by Ingmar Schlecht)
 
 Security
 =========
 
-	* A debug script used to expose system information provided by phpinfo(). For details, see http://typo3.org /teams/security/security-bulletins/typo3-20050725-1/ (Michael Stucki)
+	* New option for lockSSL: get redirected to standard http after BE login with SSL
+
+Bugfixes
+========
+
+	* config.disablePrefixComment was ignored by plugins
+	* When copying a file into the same folder in the "Filelist" module, it is automatically renamed
+
+Usability
+=========
+
+	* on timeout in BE, popup won't appear again after clicking "No"
+	* made new content element wizard easier to use (removed empty categories)
+	* rte wizard has save and close buttons now

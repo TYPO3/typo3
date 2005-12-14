@@ -1621,10 +1621,23 @@ class tslib_cObj {
 		$fieldname_hashArray = Array();
 		$cc = 0;
 
-			// Formname;
-		$formname = $GLOBALS['TSFE']->uniqueHash();
-		if (ctype_digit($formname{0}))	{	// form name must start with a letter
-			$formname = 'a'.$formname;
+		$xhtmlStrict = t3lib_div::inList('xhtml_strict,xhtml_11,xhtml_2',$GLOBALS['TSFE']->config['config']['doctype']);
+			// Formname
+		if ($conf['formName'])	{
+			$formname = $this->cleanFormName($conf['formName']);
+		} else {
+			$formname = $GLOBALS['TSFE']->uniqueHash();
+			$formname = 'a'.$formname;	// form name has to start with a letter to reach XHTML compliance
+		}
+
+		if (isset($conf['fieldPrefix']))	{
+			if ($conf['fieldPrefix'])	{
+				$prefix = $this->cleanFormName($conf['fieldPrefix']);
+			} else {
+				$prefix = '';
+			}
+		} else {
+			$prefix = $formname;
 		}
 
 		foreach($dataArr as $val)	{
@@ -1651,7 +1664,7 @@ class tslib_cObj {
 				$typeParts = explode('=',$fParts[0]);
 				$confData['type'] = trim(strtolower(end($typeParts)));
 				if (count($typeParts)==1)	{
-					$confData['fieldname'] = substr(ereg_replace('[^a-zA-Z0-9_]','',str_replace(' ','_',trim($parts[0]))),0,30);
+					$confData['fieldname'] = $this->cleanFormName($parts[0]);
 					if (strtolower(ereg_replace('[^[:alnum:]]','',$confData['fieldname']))=='email')	{$confData['fieldname']='email';}
 						// Duplicate fieldnames resolved
 					if (isset($fieldname_hashArray[md5($confData['fieldname'])]))	{
@@ -1684,9 +1697,15 @@ class tslib_cObj {
 					if (strcmp('',$addParams))	$addParams=' '.$addParams;
 				} else $addParams='';
 
+				if ($conf['dontMd5FieldNames']) {
+					$fName = $confData['fieldname'];
+				} else {
+					$fName = md5($confData['fieldname']);
+				}
+
 					// Accessibility: Set id = fieldname attribute:
-				if ($conf['accessibility'])	{
-					$elementIdAttribute = ' id="'.$formname.'_'.md5($confData['fieldname']).'"';
+				if ($conf['accessibility'] || $xhtmlStrict)	{
+					$elementIdAttribute = ' id="'.$prefix.$fName.'"';
 				} else {
 					$elementIdAttribute = '';
 				}
@@ -1781,6 +1800,9 @@ class tslib_cObj {
 					break;
 					case 'radio':
 						$option='';
+						if ($conf['accessibility'])	{
+							$option.='<fieldset'.$elementIdAttribute.'><legend>'.$confData['label'].'</legend>';
+						}
 						$valueParts = explode(',',$parts[2]);
 						$items=array();		// Where the items will be
 						$default='';
@@ -1800,13 +1822,22 @@ class tslib_cObj {
 						$default = $this->getFieldDefaultValue($conf['noValueInsert'], $confData['fieldname'], $default);
 							// Create the select-box:
 						for($a=0;$a<count($items);$a++)	{
-							$fieldId = $formname.'_'.md5($confData['fieldname']).'_'.($a+1);
-							$label = $this->stdWrap(trim($items[$a][0]), $conf['radioWrap.']);
+							$radioId = $prefix.$fName.$this->cleanFormName($items[$a][0]);
 							if ($conf['accessibility'])	{
-								$label = '<label for="'.$fieldId.'">'.$label.'</label>';
+								$radioLabelIdAttribute = ' id="'.$radioId.'"';
+							} else {
+								$radioLabelIdAttribute = '';
 							}
-							$option.= '<input type="radio" name="'.$confData['fieldname'].'"'.($fieldId?' id="'.$fieldId.'"':'').' value="'.$items[$a][1].'"'.(!strcmp($items[$a][1],$default)?' checked="checked"':'').''.$addParams.' />';
-							$option.= $label;
+							$option .= '<input type="radio" name="'.$confData['fieldname'].'"'.$radioLabelIdAttribute.' value="'.$items[$a][1].'"'.(!strcmp($items[$a][1],$default)?' checked="checked"':'').''.$addParams.' />';
+							if ($conf['accessibility'])	{
+								$option .= '<label for="'.$radioId.'">' . $this->stdWrap(trim($items[$a][0]), $conf['radioWrap.']) . '</label>';
+							} else {
+								$option .= $this->stdWrap(trim($items[$a][0]), $conf['radioWrap.']);
+							}
+ 							$option .= '<br />';
+ 						}
+						if ($conf['accessibility'])	{
+							$option.='</fieldset>';
 						}
 						$fieldCode = $option;
 					break;
@@ -1889,8 +1920,8 @@ class tslib_cObj {
 
 						// Field:
 					$fieldLabel = $confData['label'];
-					if ($conf['accessibility'] && $confData['type']!='radio')	{
-						$fieldLabel = '<label for="'.$formname.'_'.md5($confData['fieldname']).'">'.$fieldLabel.'</label>';
+					if ($conf['accessibility'] && $confData['type']!='radio' && $confData['type'] != 'label')	{
+						$fieldLabel = '<label for="'.$prefix.$fName.'">'.$fieldLabel.'</label>';
 					}
 
 						// Getting template code:
@@ -2007,7 +2038,7 @@ class tslib_cObj {
 		$content = Array(
 			'<form'.
 				' action="'.htmlspecialchars($action).'"'.
-				' name="'.$formname.'"'.
+				' id="'.$formname.'"'.($xhtmlStrict ? '' : ' name="'.$formname.'"').
 				' enctype="'.$GLOBALS['TYPO3_CONF_VARS']['SYS']['form_enctype'].'"'.
 				' method="'.($conf['method']?$conf['method']:'post').'"'.
 				($theTarget ? ' target="'.$theTarget.'"' : '').
@@ -2773,6 +2804,20 @@ class tslib_cObj {
 		}
 
 		return $altParam;
+	}
+
+	/**
+	 * Removes forbidden characters and spaces from name/id attributes in the form tag and formfields
+	 *
+	 * @param	string		Input string
+	 * @return	string		the cleaned string
+	 * @see FORM()
+	 */
+	function cleanFormName($name) {
+			// turn data[x][y] into data:x:y:
+		$name = preg_replace('/\[|\]\[?/',':',trim($name));
+			// remove illegal chars like _
+		return preg_replace('#[^:a-zA-Z0-9]#','',$name);
 	}
 
 
@@ -5143,8 +5188,8 @@ class tslib_cObj {
 						$this->lastTypoLinkTarget = $LD['target'];
 						$targetPart = $LD['target'] ? ' target="'.$LD['target'].'"' : '';
 
-							// If sectionMark is set AND the current page is the page the link is to, check if there are any additional parameters and is not, drop the url.
-						if ($sectionMark && !trim($addQueryParams) && $page['uid']==$GLOBALS['TSFE']->id)	{
+							// If sectionMark is set, there is no baseURL AND the current page is the page the link is to, check if there are any additional parameters and is not, drop the url.
+						if ($sectionMark && !trim($addQueryParams) && $page['uid']==$GLOBALS['TSFE']->id && !$GLOBALS['TSFE']->config['config']['baseURL'])	{
 							list(,$URLparams) = explode('?',$this->lastTypoLinkUrl);
 							list($URLparams) = explode('#',$URLparams);
 							parse_str ($URLparams.$LD['orig_type'], $URLparamsArray);

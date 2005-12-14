@@ -1,9 +1,17 @@
+2005-12-14  Sebastian Kurfuerst  <sebastian@garbage-group.de>
 
-2005-12-09  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+	* updated NEWS.txt
+	* Fixed bug #1343: Minor problem with tslib_fe::prefixLocalAnchorsWithScript()
+	* New feature #1369: Accessible forms
+	* New feature #1631: configuration of user rights
+	* Fixed bug #1980: Relative links (anchors) in current page & baseURL
+	* Security #2024: Set random ["SYS"]["encryptionKey"] during 1-2-3 install, button captions
+
+2005-12-13  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
 	* Fixed bug #1172: broken typolinks to other domains
 
-2005-12-09  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+2005-12-13  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
 	* Fixed bug #2020: t3lib_cs->substr in mbstring-mode always used utf-8
 	* Added support for iconv-functions of PHP5 in t3lib_cs

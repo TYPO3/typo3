@@ -1030,46 +1030,46 @@ class SC_db_layout {
 
 
 			// Draw the page properties.
-		$headerSection = $this->doc->getHeader('pages',$this->pageinfo,$this->pageinfo['_thePath']).'<br />'.
+		$headerSection = $this->doc->getHeader('pages',$this->pageinfo,$this->pageinfo['_thePath'],$this->modTSconfig['properties']['disableIconToolbar']?1:0).'<br />'.
 						$LANG->sL('LLL:EXT:lang/locallang_core.php:labels.path',1).': '.
 						'<span title="'.htmlspecialchars($this->pageinfo['_thePathFull']).'">'.htmlspecialchars(t3lib_div::fixed_lgd_cs($this->pageinfo['_thePath'],-50)).'</span>';
 
+		if (!$this->modTSconfig['properties']['disableIconToolbar'])	{
+				// Create icon "toolbar" for common operations like creating/moving elements/pages etc.
+			$toolBar='';
+				// History:
+			$toolBar.='<a href="#" onclick="'.htmlspecialchars('jumpToUrl(\''.$BACK_PATH.'show_rechis.php?element='.rawurlencode('pages:'.$this->id).'&returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI')).'#latest\');return false;').'">'.
+						'<img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/history2.gif','width="13" height="12"').' vspace="2" hspace="2" align="top" title="'.$LANG->getLL('recordHistory',1).'" alt="" />'.
+						'</a>';
+				// New content element
+			$toolBar.='<a href="'.htmlspecialchars('db_new_content_el.php?id='.$this->id.'&sys_language_uid='.$this->current_sys_language.'&returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))).'">'.
+						'<img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/new_record.gif','width="16" height="12"').' vspace="2" hspace="1" align="top" title="'.$LANG->getLL('newContentElement',1).'" alt="" />'.
+						'</a>';
+				// Move page:
+			$toolBar.='<a href="'.htmlspecialchars($BACK_PATH.'move_el.php?table=pages&uid='.$this->id.'&returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))).'">'.
+						'<img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/move_page.gif','width="11" height="12"').' vspace="2" hspace="2" align="top" title="'.$LANG->getLL('move_page',1).'" alt="" />'.
+						'</a>';
+				// Create new page (wizard):
+			$toolBar.='<a href="#" onclick="'.htmlspecialchars('jumpToUrl(\''.$BACK_PATH.'db_new.php?id='.$this->id.'&pagesOnly=1&returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI')).'\');return false;').'">'.
+						'<img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/new_page.gif','width="13" height="12"').' hspace="0" vspace="2" align="top" title="'.$LANG->getLL('newPage',1).'" alt="" />'.
+						'</a>';
+				// Edit page properties:
+			$params='&edit[pages]['.$this->id.']=edit';
+			$toolBar.='<a href="#" onclick="'.htmlspecialchars(t3lib_BEfunc::editOnClick($params,$BACK_PATH)).'">'.
+						'<img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/edit2.gif','width="11" height="12"').' hspace="2" vspace="2" align="top" title="'.$LANG->getLL('editPageProperties',1).'" alt="" />'.
+						'</a>';
 
-			// Create icon "toolbar" for common operations like creating/moving elements/pages etc.
-		$toolBar='';
-			// History:
-		$toolBar.='<a href="#" onclick="'.htmlspecialchars('jumpToUrl(\''.$BACK_PATH.'show_rechis.php?element='.rawurlencode('pages:'.$this->id).'&returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI')).'#latest\');return false;').'">'.
-					'<img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/history2.gif','width="13" height="12"').' vspace="2" hspace="2" align="top" title="'.$LANG->getLL('recordHistory',1).'" alt="" />'.
-					'</a>';
-			// New content element
-		$toolBar.='<a href="'.htmlspecialchars('db_new_content_el.php?id='.$this->id.'&sys_language_uid='.$this->current_sys_language.'&returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))).'">'.
-					'<img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/new_record.gif','width="16" height="12"').' vspace="2" hspace="1" align="top" title="'.$LANG->getLL('newContentElement',1).'" alt="" />'.
-					'</a>';
-			// Move page:
-		$toolBar.='<a href="'.htmlspecialchars($BACK_PATH.'move_el.php?table=pages&uid='.$this->id.'&returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))).'">'.
-					'<img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/move_page.gif','width="11" height="12"').' vspace="2" hspace="2" align="top" title="'.$LANG->getLL('move_page',1).'" alt="" />'.
-					'</a>';
-			// Create new page (wizard):
-		$toolBar.='<a href="#" onclick="'.htmlspecialchars('jumpToUrl(\''.$BACK_PATH.'db_new.php?id='.$this->id.'&pagesOnly=1&returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI')).'\');return false;').'">'.
-					'<img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/new_page.gif','width="13" height="12"').' hspace="0" vspace="2" align="top" title="'.$LANG->getLL('newPage',1).'" alt="" />'.
-					'</a>';
-			// Edit page properties:
-		$params='&edit[pages]['.$this->id.']=edit';
-		$toolBar.='<a href="#" onclick="'.htmlspecialchars(t3lib_BEfunc::editOnClick($params,$BACK_PATH)).'">'.
-					'<img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/edit2.gif','width="11" height="12"').' hspace="2" vspace="2" align="top" title="'.$LANG->getLL('editPageProperties',1).'" alt="" />'.
-					'</a>';
+				// Add CSH (Context Sensitive Help) icon to tool bar:
+			$toolBar.= t3lib_BEfunc::cshItem($this->descrTable,'columns_'.$this->MOD_SETTINGS['function'],$BACK_PATH,'',FALSE,'margin-top: 0px; margin-bottom: 0px;');
 
-			// Add CSH (Context Sensitive Help) icon to tool bar:
-		$toolBar.= t3lib_BEfunc::cshItem($this->descrTable,'columns_'.$this->MOD_SETTINGS['function'],$BACK_PATH,'',FALSE,'margin-top: 0px; margin-bottom: 0px;');
-
-			// Wrap the toolbar into a table:
-		$headerSection.='
-			<table border="0" cellpadding="0" cellspacing="0" class="bgColor4">
-				<tr>
-					<td>'.$toolBar.'</td>
-				</tr>
-			</table>';
-
+				// Wrap the toolbar into a table:
+			$headerSection.='
+				<table border="0" cellpadding="0" cellspacing="0" class="bgColor4">
+					<tr>
+						<td>'.$toolBar.'</td>
+					</tr>
+				</table>';
+		}
 
 			// Create menu of table-icons for jumping to table-listing anchor points:
 		if ($this->MOD_SETTINGS['function']!=3 && count($tableOutput)>1)	{
