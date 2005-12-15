@@ -1,3 +1,7 @@
+2005-12-15  Kasper Skårhøj  <kasper2005@typo3.com>
+
+	* Fixed a small SQL-related bug in Dmitris workspace related implementations
+
 2005-12-14  Sebastian Kurfuerst  <sebastian@garbage-group.de>
 
 	* updated NEWS.txt

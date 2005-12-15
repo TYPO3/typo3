@@ -1484,7 +1484,7 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 	 */
 	function workspaceList_getMountPoints($tableName, $uidList)	{
 		// Warning: all fields needed for t3lib_iconWorks::getIconImage()!
-		$MPs = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', $tableName, 'deleted=0 AND hidden=0 AND uid IN (' . $uidList . ')', '', 'title');
+		$MPs = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', $tableName, 'deleted=0 AND hidden=0 AND uid IN (' . $GLOBALS['TYPO3_DB']->cleanIntList($uidList) . ')', '', 'title');
 		if (count($MPs) == 0)	{
 				// No mount points!
 			return '&nbsp;&ndash;';
