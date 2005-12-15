@@ -168,7 +168,7 @@ class tslib_feUserAuth extends t3lib_userAuth {
 			$serviceObj->initAuth($subType, array(), $authInfo, $this);
 
 			$groupData = $serviceObj->getGroups($this->user, $groupDataArr);
-			if(is_array($groupData) && count($groupData))	{
+			if (is_array($groupData) && count($groupData))	{
 				$groupDataArr = t3lib_div::array_merge($groupDataArr, $groupData);	// Keys in $groupData should be unique ids of the groups (like "uid") so this function will override groups.
 			}
 			unset($serviceObj);
@@ -179,7 +179,7 @@ class tslib_feUserAuth extends t3lib_userAuth {
 
 
 			// use 'auth' service to check the usergroups if they are really valid
-		foreach($groupDataArr as $groupData)	{
+		foreach ($groupDataArr as $groupData)	{
 				// by default a group is valid
 			$validGroup = TRUE;
 

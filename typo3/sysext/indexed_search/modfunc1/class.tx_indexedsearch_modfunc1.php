@@ -121,8 +121,8 @@ class tx_indexedsearch_modfunc1 extends t3lib_extobjbase {
 	 *
 	 * @return	void
 	 */
-    function modMenu()    {
-        global $LANG;
+	function modMenu()	{
+		global $LANG;
 
 		return array (
 			'depth' => array(
@@ -138,16 +138,16 @@ class tx_indexedsearch_modfunc1 extends t3lib_extobjbase {
 				2 => 'Words and content',
 			)
 		);
-    }
+	}
 
 	/**
 	 * Produces main content of the module
 	 *
 	 * @return	string		HTML output
 	 */
-    function main()    {
-            // Initializes the module. Done in this function because we may need to re-initialize if data is submitted!
-        global $SOBE,$BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$CLIENT,$TYPO3_CONF_VARS;
+	function main()	{
+			// Initializes the module. Done in this function because we may need to re-initialize if data is submitted!
+		global $SOBE,$BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$CLIENT,$TYPO3_CONF_VARS;
 
 			// Return if no page id:
 		if ($this->pObj->id<=0)		return;

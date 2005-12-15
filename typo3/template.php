@@ -432,7 +432,7 @@ class template {
 			$mMN="&motherModName='+top.currentModuleLoaded+'";
 		} elseif ($motherModName)	{
 			$mMN='&motherModName='.rawurlencode($motherModName);
-		} else $mMN="";
+		} else $mMN='';
 
 		$onClick = 'if (top.shortcutFrame && confirm('.
 					$GLOBALS['LANG']->JScharCode($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.makeShortcut')).

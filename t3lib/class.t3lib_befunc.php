@@ -2441,8 +2441,7 @@ class t3lib_BEfunc	{
 				$settings=array();
 			}
 			if (is_array($MOD_MENU))	{
-				reset($MOD_MENU);
-				while(list($key,$var)=each($MOD_MENU))	{
+				foreach ($MOD_MENU as $key=>$var)	{
 						// If a global var is set before entering here. eg if submitted, then it's substituting the current value the array.
 					if (is_array($CHANGED_SETTINGS) && isset($CHANGED_SETTINGS[$key]) && strcmp($settings[$key],$CHANGED_SETTINGS[$key]))	{
 						$settings[$key] = (string)$CHANGED_SETTINGS[$key];

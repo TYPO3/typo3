@@ -1722,8 +1722,8 @@ From sub-directory:
 			'fileadmin/_temp_/' => array('Typical temporary location for default upload of files by administrators.',0),
 		);
 
-		foreach($checkWrite as $relpath => $descr)	{
-			// Check typo3temp/
+		foreach ($checkWrite as $relpath => $descr)	{
+				// Check typo3temp/
 			$general_message = $descr[0];
 			if (!@is_dir(PATH_site.$relpath))	{
 				if ($descr[1])	{	// required...

@@ -185,6 +185,7 @@ CREATE TABLE pages_language_overlay (
   hidden tinyint(4) unsigned DEFAULT '0' NOT NULL,
   starttime int(11) unsigned DEFAULT '0' NOT NULL,
   endtime int(11) unsigned DEFAULT '0' NOT NULL,
+  deleted tinyint(3) unsigned DEFAULT '0' NOT NULL,
   subtitle tinytext NOT NULL,
   nav_title tinytext NOT NULL,
   media tinyblob NOT NULL,

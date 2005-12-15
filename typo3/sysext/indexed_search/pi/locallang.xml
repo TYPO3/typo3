@@ -141,7 +141,7 @@
 			<label index="searchFor_butNot">but not</label>
 			<label index="noResults">NO results found.</label>
 			<label index="inSection">in the section</label>
-			<label index="inNsection">i %s section:</label>
+			<label index="inNsection">in %s section:</label>
 			<label index="inNsections">in %s sections:</label>
 			<label index="word_page">page</label>
 			<label index="word_pages">pages</label>

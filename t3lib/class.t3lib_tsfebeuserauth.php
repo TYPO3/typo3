@@ -157,19 +157,18 @@ class t3lib_tsfeBeUserAuth extends t3lib_beUserAuth {
 			if ($this->extAdmModuleEnabled('preview'))	$out.= $this->extGetCategory_preview();
 			if ($this->extAdmModuleEnabled('cache'))	$out.= $this->extGetCategory_cache();
 			if ($this->extAdmModuleEnabled('publish'))	$out.= $this->extGetCategory_publish();
-			if ($this->extAdmModuleEnabled('edit'))	$out.= $this->extGetCategory_edit();
+			if ($this->extAdmModuleEnabled('edit'))		$out.= $this->extGetCategory_edit();
 			if ($this->extAdmModuleEnabled('tsdebug'))	$out.= $this->extGetCategory_tsdebug();
-			if ($this->extAdmModuleEnabled('info'))	$out.= $this->extGetCategory_info();
+			if ($this->extAdmModuleEnabled('info'))		$out.= $this->extGetCategory_info();
 		}
 
 		$header.='
 			<tr class="typo3-adminPanel-hRow" bgcolor="#9BA1A8">
-				<td colspan="2" nowrap="nowrap">'.
+				<td colspan="4" nowrap="nowrap">'.
 					$this->extItemLink('top','<img src="t3lib/gfx/ol/'.($this->uc['TSFE_adminConfig']['display_top']?'minus':'plus').'bullet.gif" width="18" height="16" align="absmiddle" border="0" alt="" /><strong>'.$this->extFw($this->extGetLL('adminOptions')).'</strong>').
-					$this->extFw(': '.$this->user['username']).
-					'</td>
-				<td><img src="clear.gif" width="10" height="1" alt="" /></td>
-				<td><input type="hidden" name="TSFE_ADMIN_PANEL[display_top]" value="'.$this->uc['TSFE_adminConfig']['display_top'].'" />'.($this->extNeedUpdate?'<input type="submit" value="'.$this->extGetLL('update').'" />':'').'</td>
+					$this->extFw(': '.$this->user['username']).'
+					<img src="clear.gif" width="40" height="1" alt="" />
+					<input type="hidden" name="TSFE_ADMIN_PANEL[display_top]" value="'.$this->uc['TSFE_adminConfig']['display_top'].'" />'.($this->extNeedUpdate?'<input type="submit" value="'.$this->extGetLL('update').'" />':'').'</td>
 			</tr>';
 
 		$out='
@@ -400,14 +399,17 @@ class t3lib_tsfeBeUserAuth extends t3lib_beUserAuth {
 		$out.=$this->extGetHead('tsdebug');
 		if ($this->uc['TSFE_adminConfig']['display_tsdebug'])	{
 			$this->extNeedUpdate=1;
-			$out.=$this->extGetItem('tsdebug_tree', '<input type="hidden" name="TSFE_ADMIN_PANEL[tsdebug_tree]" value="0" /><input type="checkbox" name="TSFE_ADMIN_PANEL[tsdebug_tree]" value="1"'.($this->uc['TSFE_adminConfig']['tsdebug_tree']?' checked="checked"':'').' />');
-			$out.=$this->extGetItem('tsdebug_displayTimes', '<input type="hidden" name="TSFE_ADMIN_PANEL[tsdebug_displayTimes]" value="0" /><input type="checkbox" name="TSFE_ADMIN_PANEL[tsdebug_displayTimes]" value="1"'.($this->uc['TSFE_adminConfig']['tsdebug_displayTimes']?' checked="checked"':'').' />');
-			$out.=$this->extGetItem('tsdebug_displayMessages', '<input type="hidden" name="TSFE_ADMIN_PANEL[tsdebug_displayMessages]" value="0" /><input type="checkbox" name="TSFE_ADMIN_PANEL[tsdebug_displayMessages]" value="1"'.($this->uc['TSFE_adminConfig']['tsdebug_displayMessages']?' checked="checked"':'').' />');
-			$out.=$this->extGetItem('tsdebug_LR', '<input type="hidden" name="TSFE_ADMIN_PANEL[tsdebug_LR]" value="0" /><input type="checkbox" name="TSFE_ADMIN_PANEL[tsdebug_LR]" value="1"'.($this->uc['TSFE_adminConfig']['tsdebug_LR']?' checked="checked"':'').' />');
-			$out.=$this->extGetItem('tsdebug_displayContent', '<input type="hidden" name="TSFE_ADMIN_PANEL[tsdebug_displayContent]" value="0" /><input type="checkbox" name="TSFE_ADMIN_PANEL[tsdebug_displayContent]" value="1"'.($this->uc['TSFE_adminConfig']['tsdebug_displayContent']?' checked="checked"':'').' />');
-			$out.=$this->extGetItem('tsdebug_displayQueries', '<input type="hidden" name="TSFE_ADMIN_PANEL[tsdebug_displayQueries]" value="0" /><input type="checkbox" name="TSFE_ADMIN_PANEL[tsdebug_displayQueries]" value="1"'.($this->uc['TSFE_adminConfig']['tsdebug_displayQueries']?' checked="checked"':'').' />');
 
-			$out.=$this->extGetItem('tsdebug_forceTemplateParsing', '<input type="hidden" name="TSFE_ADMIN_PANEL[tsdebug_forceTemplateParsing]" value="0" /><input type="checkbox" name="TSFE_ADMIN_PANEL[tsdebug_forceTemplateParsing]" value="1"'.($this->uc['TSFE_adminConfig']['tsdebug_forceTemplateParsing']?' checked="checked"':'').' />');
+			$content='';
+			$content.=$this->extGetItem('tsdebug_tree', '<input type="hidden" name="TSFE_ADMIN_PANEL[tsdebug_tree]" value="0" /><input type="checkbox" name="TSFE_ADMIN_PANEL[tsdebug_tree]" value="1"'.($this->uc['TSFE_adminConfig']['tsdebug_tree']?' checked="checked"':'').' />');
+			$content.=$this->extGetItem('tsdebug_displayTimes', '<input type="hidden" name="TSFE_ADMIN_PANEL[tsdebug_displayTimes]" value="0" /><input type="checkbox" name="TSFE_ADMIN_PANEL[tsdebug_displayTimes]" value="1"'.($this->uc['TSFE_adminConfig']['tsdebug_displayTimes']?' checked="checked"':'').' />');
+			$content.=$this->extGetItem('tsdebug_displayMessages', '<input type="hidden" name="TSFE_ADMIN_PANEL[tsdebug_displayMessages]" value="0" /><input type="checkbox" name="TSFE_ADMIN_PANEL[tsdebug_displayMessages]" value="1"'.($this->uc['TSFE_adminConfig']['tsdebug_displayMessages']?' checked="checked"':'').' />');
+			$content.=$this->extGetItem('tsdebug_LR', '<input type="hidden" name="TSFE_ADMIN_PANEL[tsdebug_LR]" value="0" /><input type="checkbox" name="TSFE_ADMIN_PANEL[tsdebug_LR]" value="1"'.($this->uc['TSFE_adminConfig']['tsdebug_LR']?' checked="checked"':'').' />');
+			$content.=$this->extGetItem('tsdebug_displayContent', '<input type="hidden" name="TSFE_ADMIN_PANEL[tsdebug_displayContent]" value="0" /><input type="checkbox" name="TSFE_ADMIN_PANEL[tsdebug_displayContent]" value="1"'.($this->uc['TSFE_adminConfig']['tsdebug_displayContent']?' checked="checked"':'').' />');
+			$content.=$this->extGetItem('tsdebug_displayQueries', '<input type="hidden" name="TSFE_ADMIN_PANEL[tsdebug_displayQueries]" value="0" /><input type="checkbox" name="TSFE_ADMIN_PANEL[tsdebug_displayQueries]" value="1"'.($this->uc['TSFE_adminConfig']['tsdebug_displayQueries']?' checked="checked"':'').' />');
+			$content.=$this->extGetItem('tsdebug_forceTemplateParsing', '<input type="hidden" name="TSFE_ADMIN_PANEL[tsdebug_forceTemplateParsing]" value="0" /><input type="checkbox" name="TSFE_ADMIN_PANEL[tsdebug_forceTemplateParsing]" value="1"'.($this->uc['TSFE_adminConfig']['tsdebug_forceTemplateParsing']?' checked="checked"':'').' />');
+
+			$out.='<tr><td colspan="4" nowrap="nowrap"><table border="0" cellpadding="0" cellspacing="0">'.$content.'</table></td></tr>';
 
 			$GLOBALS['TT']->printConf['flag_tree'] = $this->extGetFeAdminValue('tsdebug','tree');
 			$GLOBALS['TT']->printConf['allTime'] = $this->extGetFeAdminValue('tsdebug','displayTimes');
@@ -540,7 +542,7 @@ class t3lib_tsfeBeUserAuth extends t3lib_beUserAuth {
 					<tr class="typo3-adminPanel-itemRow">
 						<td><img src="clear.gif" width="50" height="1" alt="" /></td>
 						<td nowrap="nowrap">'.($pre ? $this->extFw($this->extGetLL($pre)) : '&nbsp;').'</td>
-						<td><img src="clear.gif" width="10" height="1" alt="" /></td>
+						<td><img src="clear.gif" width="40" height="1" alt="" /></td>
 						<td>'.$element.'</td>
 					</tr>';
 

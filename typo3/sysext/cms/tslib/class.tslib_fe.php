@@ -2217,27 +2217,39 @@
 	 * @return	void
 	 */
 	function tempPageCacheContent()	{
-		$this->tempContent = FALSE;
+		$this->tempContent = false;
 
 		if (!$this->no_cache)	{
 			$seconds = 30;
+			$title = htmlspecialchars($this->tmpl->printTitle($this->page['title']));
+			$request_uri = htmlspecialchars(t3lib_div::getIndpEnv('REQUEST_URI'));
+
 			$stdMsg = '
-<?xml version="1.0" encoding="UTF-8"?>
+		<strong>Page is being generated.</strong><br />
+		If this message does not disappear within '.$seconds.' seconds, please reload.';
+
+			$message = $this->config['config']['message_page_is_being_generated'];
+			if (strcmp('', $message))	{
+				$message = $this->csConvObj->utf8_encode($message,$this->renderCharset);	// This page is always encoded as UTF-8
+				$message = str_replace('###TITLE###', $title, $message);
+				$message = str_replace('###REQUEST_URI###', $request_uri, $message);
+			} else $message = $stdMsg;
+
+			$temp_content = '<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
-		<title>'.htmlspecialchars($this->tmpl->printTitle($this->page['title'])).'</title>
+		<title>'.$title.'</title>
+		<meta name="robots" content="noarchive" />
 		<script type="text/javascript">
 			window.setTimeout("location.reload()", 3000);
 		</script>
 	</head>
-	<body style="background-color:white; font-family:Verdana,Arial,Helvetica; color:#cccccc; text-align:center;">
-		<strong>Page is being generated.</strong><br />
-		If this message does not disappear within '.$seconds.' seconds, please reload.
+	<body style="background-color:white; font-family:Verdana,Arial,Helvetica,sans-serif; color:#cccccc; text-align:center;">'.
+		$message.'
 	</body>
 </html>';
-			$temp_content = $this->config['config']['message_page_is_being_generated'] ? $this->config['config']['message_page_is_being_generated'] : $stdMsg;
 
 			if (!$this->headerNoCache() && $cachedRow = $this->getFromCache_queryRow())	{
 					// We are here because between checking for cached content earlier and now some other HTTP-process managed to store something in cache AND it was not due to a shift-reload by-pass.

@@ -622,6 +622,7 @@ $TCA['pages_language_overlay'] = Array (
 		'origUid' => 't3_origuid',
 		'crdate' => 'crdate',
 		'cruser_id' => 'cruser_id',
+		'delete' => 'deleted',
 		'enablecolumns' => Array (
 			'disabled' => 'hidden',
 			'starttime' => 'starttime',

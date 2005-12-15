@@ -142,7 +142,7 @@ class t3lib_folderTree extends t3lib_treeView  {
 	 * @param	array		Record array
 	 * @return	integer		The "uid" field value.
 	 */
-	function getId($v) {
+	function getId($v)	{
 		return t3lib_div::md5Int($v['path']);
 	}
 
@@ -152,7 +152,7 @@ class t3lib_folderTree extends t3lib_treeView  {
 	 * @param	array		The record array.
 	 * @return	string		The jump-url parameter.
 	 */
-	function getJumpToParam($v) {
+	function getJumpToParam($v)	{
 		return rawurlencode($v['path']);
 	}
 

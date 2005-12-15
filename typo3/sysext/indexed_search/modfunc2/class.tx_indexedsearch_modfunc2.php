@@ -43,8 +43,8 @@
  *
  */
 
-require_once(PATH_t3lib."class.t3lib_extobjbase.php");
-require_once(PATH_t3lib."class.t3lib_tsfebeuserauth.php");
+require_once(PATH_t3lib.'class.t3lib_extobjbase.php');
+require_once(PATH_t3lib.'class.t3lib_tsfebeuserauth.php');
 
 
 class tx_indexedsearch_modfunc2 extends t3lib_extobjbase {
@@ -55,7 +55,6 @@ class tx_indexedsearch_modfunc2 extends t3lib_extobjbase {
 	 * @return	string	html table with results from showStats()
 	 */
 	function main()	{
-
 			// Initializes the module. Done in this function because we may need to re-initialize if data is submitted!
 		global $SOBE,$BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$CLIENT,$TYPO3_CONF_VARS;
 
@@ -63,7 +62,7 @@ class tx_indexedsearch_modfunc2 extends t3lib_extobjbase {
 		$theOutput.=$this->pObj->doc->section($LANG->getLL('title'),$this->showStats(),0,1);
 
 		$menu=array();
-		$menu[]=t3lib_BEfunc::getFuncCheck($this->pObj->id,"SET[tx_indexedsearch_modfunc2_check]",$this->pObj->MOD_SETTINGS["tx_indexedsearch_modfunc2_check"]).$LANG->getLL("checklabel");
+		$menu[]=t3lib_BEfunc::getFuncCheck($this->pObj->id,'SET[tx_indexedsearch_modfunc2_check]',$this->pObj->MOD_SETTINGS['tx_indexedsearch_modfunc2_check']).$LANG->getLL('checklabel');
 		$theOutput.=$this->pObj->doc->spacer(5);
 
 		return $theOutput;
@@ -76,21 +75,21 @@ class tx_indexedsearch_modfunc2 extends t3lib_extobjbase {
 	 *
 	 * @return	string	html table with results
 	 */
-	function showStats() {
+	function showStats()	{
 		global $LANG,$HTTP_GET_VARS,$TYPO3_CONF_VARS;
 
-		$conf['words']=50;  				//max words in result list
-		$conf['bid']=$HTTP_GET_VARS['id'];  //pageid for several statistics
+		$conf['words']=50;	// max words in result list
+		$conf['bid']=$HTTP_GET_VARS['id'];	// pageid for several statistics
 
-		$addwhere1='';										//for all
-		$addwhere2=" AND tstamp > ".(time()-30*24*60*60);	//for last 30 days
-		$addwhere3=" AND tstamp > ".(time()-24*60*60);		//for last 24 hours
+		$addwhere1='';	// all records
+		$addwhere2=' AND tstamp > '.(time()-30*24*60*60);	// last 30 days
+		$addwhere3=' AND tstamp > '.(time()-24*60*60);		// last 24 hours
 
 		$content.= $LANG->getLL('title2').'
-			<table cellpading="5" cellspacing="5" valign=top><tr><td valign=top>'
-			.$this->listSeveralStats($LANG->getLL("all"),$addwhere1,$conf).'</td><td valign=top>'
-			.$this->listSeveralStats($LANG->getLL("last30days"),$addwhere2,$conf).'</td><td valign=top>'
-			.$this->listSeveralStats($LANG->getLL("last24hours"),$addwhere3,$conf).'</td></tr></table>'
+			<table cellpading="5" cellspacing="5" valign="top"><tr><td valign="top">'
+			.$this->listSeveralStats($LANG->getLL('all'),$addwhere1,$conf).'</td><td valign="top">'
+			.$this->listSeveralStats($LANG->getLL('last30days'),$addwhere2,$conf).'</td><td valign="top">'
+			.$this->listSeveralStats($LANG->getLL('last24hours'),$addwhere3,$conf).'</td></tr></table>'
 			.$this->note;
 
 			// Ask hook to include more on the page:
@@ -109,14 +108,14 @@ class tx_indexedsearch_modfunc2 extends t3lib_extobjbase {
 	 * @param	array	configuration: words = max words for results, bid = pageid
 	 * @return	string	html table with results
 	 */
-	function listSeveralStats($title,$addwhere,$conf) {
+	function listSeveralStats($title,$addwhere,$conf)	{
 		global $LANG;
 
-		$queryParts['SELECT']= "* , count( * ) AS c";
-		$queryParts['FROM']="index_stat_word";
-		$queryParts['WHERE']=sprintf("pageid= %s ".$addwhere, $conf['bid']);
-		$queryParts['GROUPBY']="word";
-		$queryParts['ORDERBY']="c DESC,word";
+		$queryParts['SELECT']= '*, COUNT(*) AS c';
+		$queryParts['FROM']='index_stat_word';
+		$queryParts['WHERE']=sprintf('pageid= %s '.$addwhere, $conf['bid']);
+		$queryParts['GROUPBY']='word';
+		$queryParts['ORDERBY']='c DESC,word';
 		$queryParts['LIMIT']=$conf['words'];
 
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
@@ -128,24 +127,24 @@ class tx_indexedsearch_modfunc2 extends t3lib_extobjbase {
 				$queryParts['LIMIT']
 			);
 
-		if ( $res ) {
-			$count = $GLOBALS['TYPO3_DB']->sql_num_rows( $res );
-		}else{
+		if ($res)	{
+			$count = $GLOBALS['TYPO3_DB']->sql_num_rows($res);
+		} else {
 			$count = 0;
 		}
 
-		// exist several statistics for this page?
-		if( $count > 0 ){
-			$this->note = 	$LANG->getLL("justthispage");
-		}else{
-			// Limit access to pages of the current site
-			$secureaddwhere = " AND pageid IN (".($this->extGetTreeList($conf['bid'],100,0,'1')).$conf['bid'].") ";
-			$this->note = $LANG->getLL("allpages");
+			// exist several statistics for this page?
+		if ($count > 0)	{
+			$this->note = 	$LANG->getLL('justthispage');
+		} else {
+				// Limit access to pages of the current site
+			$secureaddwhere = ' AND pageid IN ('.($this->extGetTreeList($conf['bid'],100,0,'1')).$conf['bid'].') ';
+			$this->note = $LANG->getLL('allpages');
 
 	 		$queryParts['WHERE']= '1 '.$addwhere.$secureaddwhere;
 		}
 
-		//make real query
+			// make real query
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 				$queryParts['SELECT'],
 				$queryParts['FROM'],
@@ -157,19 +156,18 @@ class tx_indexedsearch_modfunc2 extends t3lib_extobjbase {
 
 		$table1='';
 		$i=0;
-		if( $res ){
-			while( $row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc( $res ) ) {
+		if ($res)	{
+			while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
 				$i++;
 				$table1.='<tr class="bgColor4"><td>'.$i.'.</td><td>'.$row['word'].'</td><td>&nbsp;&nbsp;'.$row['c'].'</td></tr>';
 			}
 		}
 
-		if( $i==0 ){
+		if ($i==0)	{
 			$table1='<tr class="bgColor4"><td callspan="3">'.$LANG->getLL("noresults").'</td></tr>';
 		}
 
 		$table1='<table class="bgColor5" cellpadding="2" cellspacing="1"><tr class="tableheader"><td colspan="3">'.$title.'</td></tr>'.$table1.'</table>';
-
 
 		return $note.$table1;
 	}
@@ -188,7 +186,7 @@ class tx_indexedsearch_modfunc2 extends t3lib_extobjbase {
 	 * @param	string	Perms clause
 	 * @return	string	Returns the list with a comma in the end (if any pages selected!)
 	*/
-	function extGetTreeList($id,$depth,$begin = 0,$perms_clause){
+	function extGetTreeList($id,$depth,$begin = 0,$perms_clause)	{
 		return t3lib_tsfeBeUserAuth::extGetTreeList($id,$depth,$begin,$perms_clause);
 	}
 
@@ -203,9 +201,9 @@ class tx_indexedsearch_modfunc2 extends t3lib_extobjbase {
 		global $TYPO3_CONF_VARS;
 
 			// Hook: menuConfig_preProcessModMenu
-		if ($TYPO3_CONF_VARS['EXTCONF']['indexed_search']['be_hooks'][$functionName]) {
+		if ($TYPO3_CONF_VARS['EXTCONF']['indexed_search']['be_hooks'][$functionName])	{
 			$hookObj = &t3lib_div::getUserObj($TYPO3_CONF_VARS['EXTCONF']['indexed_search']['be_hooks'][$functionName]);
-			if (method_exists ($hookObj, $functionName)) {
+			if (method_exists ($hookObj, $functionName))	{
 				$hookObj->pObj = &$this;
 				return $hookObj;
 			}
@@ -215,8 +213,8 @@ class tx_indexedsearch_modfunc2 extends t3lib_extobjbase {
 
 
 
-if (defined("TYPO3_MODE") && $TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["ext/indexed_search/modfunc2/class.tx_indexedsearch_modfunc2.php"])	{
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["ext/indexed_search/modfunc2/class.tx_indexedsearch_modfunc2.php"]);
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/indexed_search/modfunc2/class.tx_indexedsearch_modfunc2.php'])	{
+	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/indexed_search/modfunc2/class.tx_indexedsearch_modfunc2.php']);
 }
 
 ?>
