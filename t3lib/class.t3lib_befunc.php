@@ -239,9 +239,23 @@ class t3lib_BEfunc	{
 	 * @param	string		Additional WHERE clause, eg. " AND blablabla=0"
 	 * @return	array		Returns the row if found, otherwise nothing
 	 */
-	function getRecordWSOL($table,$uid,$fields='*',$where='')	{
-		$row = t3lib_BEfunc::getRecord($table,$uid,$fields,$where);
-		t3lib_BEfunc::workspaceOL($table,$row);
+	function getRecordWSOL($table,$uid,$fields='*',$where='') {
+		if ($fields !== '*') {
+			$internalFields = t3lib_div::uniqueList($fields.',uid,pid'.($table == 'pages' ? ',t3ver_swapmode' : ''));
+			$row = t3lib_BEfunc::getRecord($table,$uid,$internalFields,$where);
+			t3lib_BEfunc::workspaceOL($table,$row);
+	
+			if (is_array ($row)) {
+				foreach (array_keys($row) as $key) {
+					if (!t3lib_div::inList($fields, $key) && $key{0} !== '_') {
+						unset ($row[$key]);
+					}
+				}	
+			}
+		} else {
+			$row = t3lib_BEfunc::getRecord($table,$uid,$fields,$where);
+			t3lib_BEfunc::workspaceOL($table,$row);
+		}		
 		return $row;
 	}
 
