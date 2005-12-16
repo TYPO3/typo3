@@ -1,3 +1,9 @@
+
+2005-12-13  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+
+	* Support of file_get_contents() in t3lib_div::getURL()
+	* Check result of fwrite() in t3lib_div::writeFile()
+
 2005-12-15  Michael Stucki  <michael@typo3.org>
 
 	* Added a deleted field to pages_language_overlay
