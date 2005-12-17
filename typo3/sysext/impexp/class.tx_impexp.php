@@ -183,6 +183,7 @@ require_once (PATH_t3lib.'class.t3lib_parsehtml.php');
 
 require_once (PATH_t3lib.'class.t3lib_basicfilefunc.php');
 require_once (PATH_t3lib.'class.t3lib_extfilefunc.php');
+require_once (PATH_t3lib.'class.t3lib_refindex.php');
 
 
 
@@ -514,10 +515,15 @@ class tx_impexp {
 							// Create entry in the PID lookup:
 						$this->dat['header']['pid_lookup'][$row['pid']][$table][$row['uid']]=1;
 
+							// Initialize reference index object:
+						$refIndexObj = t3lib_div::makeInstance('t3lib_refindex');
+						$refIndexObj->WSOL = TRUE;	// Yes to workspace overlays for exporting....
+
 							// Data:
 						$this->dat['records'][$table.':'.$row['uid']] = array();
 						$this->dat['records'][$table.':'.$row['uid']]['data'] = $row;
-						$this->dat['records'][$table.':'.$row['uid']]['rels'] = $this->getRelations($table,$row);
+						$this->dat['records'][$table.':'.$row['uid']]['rels'] = $refIndexObj->getRelations($table,$row);
+						$this->errorLog = array_merge($this->errorLog,$refIndexObj->errorLog);	// Merge error logs.
 
 							// Add information about the relations in the record in the header:
 						$this->dat['header']['records'][$table][$row['uid']]['rels'] = $this->flatDBrels($this->dat['records'][$table.':'.$row['uid']]['rels']);
@@ -888,236 +894,6 @@ class tx_impexp {
 	}
 
 	/**
-	 * Returns relation information for a $table/$row-array
-	 * Traverses all fields in input row which are configured in TCA/columns
-	 * It looks for hard relations to files and records in the TCA types "select" and "group"
-	 *
-	 * @param	string		Table
-	 * @param	array		Row from table
-	 * @return	array		Array with information about relations
-	 * @see export_addRecord()
-	 */
-	function getRelations($table,$row)	{
-		global $TCA;
-
-			// Load full table description
-		t3lib_div::loadTCA($table);
-
-			// Initialize:
-		$uid = $row['uid'];
-		$nonFields = explode(',','uid,perms_userid,perms_groupid,perms_user,perms_group,perms_everybody,pid');
-
-		$outRow = array();
-		foreach($row as $field => $value)	{
-			if (!in_array($field,$nonFields) && is_array($TCA[$table]['columns'][$field]))	{
-				$conf = $TCA[$table]['columns'][$field]['config'];
-
-					// Add files
-				if ($result = $this->getRelations_procFiles($value, $conf, $uid))	{
-						// Creates an entry for the field with all the files:
-					$outRow[$field] = array(
-						'type' => 'file',
-						'newValueFiles' => $result,
-					);
-				}
-
-					// Add DB:
-				if ($result = $this->getRelations_procDB($value, $conf, $uid))	{
-						// Create an entry for the field with all DB relations:
-					$outRow[$field] = array(
-						'type' => 'db',
-						'itemArray' => $result,
-					);
-				}
-
-					// For "flex" fieldtypes we need to traverse the structure looking for file and db references of course!
-				if ($conf['type']=='flex')	{
-
-						// Get current value array:
-					$dataStructArray = t3lib_BEfunc::getFlexFormDS($conf, $row, $table);
-					$currentValueArray = t3lib_div::xml2array($value);
-
-						// Traversing the XML structure, processing files:
-					if (is_array($currentValueArray))	{
-						$this->temp_flexRelations = array(
-							'db' => array(),
-							'file' => array(),
-							'softrefs' => array()
-						);
-
-						$iteratorObj = t3lib_div::makeInstance('t3lib_TCEmain');
-						$iteratorObj->callBackObj = &$this;
-						$iteratorObj->checkValue_flex_procInData(
-									$currentValueArray['data'],
-									array(),	// Not used.
-									array(),	// Not used.
-									$dataStructArray,
-									array($table,$uid,$field),	// Parameters.
-									'getRelations_flexFormCallBack'
-								);
-
-							// Create an entry for the field:
-						$outRow[$field] = array(
-							'type' => 'flex',
-							'flexFormRels' => $this->temp_flexRelations,
-						);
-#debug($outRow[$field]);
-					}
-				}
-
-					// Soft References:
-				if (strlen($value) && $softRefs = t3lib_BEfunc::explodeSoftRefParserList($conf['softref'], $table, $field))	{
-					$softRefValue = $value;
-					foreach($softRefs as $spKey => $spParams)	{
-						$softRefObj = &t3lib_BEfunc::softRefParserObj($spKey);
-						if (is_object($softRefObj))	{
-							$resultArray = $softRefObj->findRef($table, $field, $uid, $softRefValue, $spKey, $spParams);
-							if (is_array($resultArray))	{
-								$outRow[$field]['softrefs']['keys'][$spKey] = $resultArray['elements'];
-								if (strlen($resultArray['content'])) {
-									$softRefValue = $resultArray['content'];
-								}
-							}
-						}
-					}
-
-					if (is_array($outRow[$field]['softrefs']) && count($outRow[$field]['softrefs']) && strcmp($value,$softRefValue) && strstr($softRefValue,'{softref:'))	{
-#debug($softRefValue,'tokenizedContent');
-						$outRow[$field]['softrefs']['tokenizedContent'] = $softRefValue;
-					}
-				}
-			}
-		}
-
-		return $outRow;
-	}
-
-	/**
-	 * Callback function for traversing the FlexForm structure in relation to finding file and DB references!
-	 *
-	 * @param	array		Array of parameters in num-indexes: table, uid, field
-	 * @param	array		TCA field configuration (from Data Structure XML)
-	 * @param	string		The value of the flexForm field
-	 * @param	string		Not used.
-	 * @param	string		Not used.
-	 * @param	string		Path of where in the data structure this element is.
-	 * @return	array		Result array with key "value" containing the value of the processing.
-	 * @see t3lib_TCEmain::checkValue_flex_procInData_travDS()
-	 */
-	function getRelations_flexFormCallBack($pParams, $dsConf, $dataValue, $dataValue_ext1, $dataValue_ext2, $structurePath)	{
-
-			// Implode parameter values:
-		list($table, $uid, $field) = $pParams;
-
-			// Add files
-		if ($result = $this->getRelations_procFiles($dataValue, $dsConf, $uid))	{
-
-				// Creates an entry for the field with all the files:
-			$this->temp_flexRelations['file'][$structurePath] = $result;
-		}
-
-			// Add DB:
-		if ($result = $this->getRelations_procDB($dataValue, $dsConf, $uid))	{
-
-				// Create an entry for the field with all DB relations:
-			$this->temp_flexRelations['db'][$structurePath] = $result;
-		}
-
-			// Soft References:
-		if (strlen($dataValue) && $softRefs = t3lib_BEfunc::explodeSoftRefParserList($dsConf['softref'], $table, $field))	{
-#debug($softRefs);
-			$softRefValue = $dataValue;
-			foreach($softRefs as $spKey => $spParams)	{
-				$softRefObj = &t3lib_BEfunc::softRefParserObj($spKey);
-				if (is_object($softRefObj))	{
-					$resultArray = $softRefObj->findRef($table, $field, $uid, $softRefValue, $spKey, $spParams, $structurePath);
-					if (is_array($resultArray) && is_array($resultArray['elements']))	{
-						$this->temp_flexRelations['softrefs'][$structurePath]['keys'][$spKey] = $resultArray['elements'];
-						if (strlen($resultArray['content'])) $softRefValue = $resultArray['content'];
-					}
-				}
-			}
-
-			if (count($this->temp_flexRelations['softrefs']) && strcmp($dataValue,$softRefValue))	{
-				$this->temp_flexRelations['softrefs'][$structurePath]['tokenizedContent'] = $softRefValue;
-#debug($this->temp_flexRelations['softrefs'][$structurePath], $structurePath);
-			}
-		}
-	}
-
-	/**
-	 * Check field configuration if it is a file relation field and extract file relations if any
-	 *
-	 * @param	string		Field value
-	 * @param	array		Field configuration array of type "TCA/columns"
-	 * @param	integer		Field uid
-	 * @return	array		If field type is OK it will return an array with the files inside. Else false
-	 */
-	function getRelations_procFiles($value, $conf, $uid)	{
-			// Take care of files...
-		if ($conf['type']=='group' && $conf['internal_type']=='file')	{
-
-				// Collect file values in array:
-			if ($conf['MM'])	{
-				$theFileValues = array();
-				$dbAnalysis = t3lib_div::makeInstance('t3lib_loadDBGroup');
-				$dbAnalysis->start('', 'files', $conf['MM'], $uid);
-
-				foreach($dbAnalysis->itemArray as $somekey => $someval)	{
-					if ($someval['id'])	{
-						$theFileValues[] = $someval['id'];
-					}
-				}
-			} else {
-				$theFileValues = explode(',',$value);
-			}
-
-				// Traverse the files and add them:
-			$uploadFolder = $conf['uploadfolder'];
-			$dest = $this->destPathFromUploadFolder($uploadFolder);
-			$newValue = array();
-			$newValueFiles = array();
-
-			foreach($theFileValues as $file)	{
-				if (trim($file))	{
-					$realFile = $dest.'/'.trim($file);
-					if (@is_file($realFile))	{
-						$newValueFiles[] = array(
-							'filename' => $file,
-							'ID' => md5($realFile),
-							'ID_absFile' => $realFile
-						);	// the order should be preserved here because.. (?)
-					} else $this->error('Missing file: '.$realFile);
-				}
-			}
-
-			return $newValueFiles;
-		}
-	}
-
-	/**
-	 * Check field configuration if it is a DB relation field and extract DB relations if any
-	 *
-	 * @param	string		Field value
-	 * @param	array		Field configuration array of type "TCA/columns"
-	 * @param	integer		Field uid
-	 * @return	array		If field type is OK it will return an array with the database relations. Else false
-	 */
-	function getRelations_procDB($value, $conf, $uid)	{
-
-			// DB record lists:
-		if ($this->isReferenceField($conf))	{
-			$allowedTables = $conf['type']=='group' ? $conf['allowed'] : $conf['foreign_table'].','.$conf['neg_foreign_table'];
-			$prependName = $conf['type']=='group' ? $conf['prepend_tname'] : $conf['neg_foreign_table'];
-
-			$dbAnalysis = t3lib_div::makeInstance('t3lib_loadDBGroup');
-			$dbAnalysis->start($value,$allowedTables,$conf['MM'],$uid);
-
-			return $dbAnalysis->itemArray;
-		}
-	}
-
-	/**
 	 * DB relations flattend to 1-dim array.
 	 * The list will be unique, no table/uid combination will appear twice.
 	 *
@@ -1192,15 +968,6 @@ class tx_impexp {
 		return $list;
 	}
 
-	/**
-	 * Returns destination path to an upload folder given by $folder
-	 *
-	 * @param	string		Folder relative to PATH_site
-	 * @return	string		Input folder prefixed with PATH_site. No checking for existence is done. Output must be a folder without trailing slash.
-	 */
-	function destPathFromUploadFolder($folder)	{
-		return PATH_site.$folder;
-	}
 
 
 
@@ -3329,16 +3096,6 @@ class tx_impexp {
 	 */
 	function includeSoftref($tokenID)	{
 		return $tokenID && !t3lib_div::inList('exclude,editable', $this->softrefCfg[$tokenID]['mode']);
-	}
-
-	/**
-	 * Returns true if the TCA/columns field type is a DB reference field
-	 *
-	 * @param	array		config array for TCA/columns field
-	 * @return	boolean		True if DB reference field (group/db or select with foreign-table)
-	 */
-	function isReferenceField($conf)	{
-		return ($conf['type']=='group' && $conf['internal_type']=='db') ||	($conf['type']=='select' && $conf['foreign_table']);
 	}
 
 	/**

@@ -252,6 +252,28 @@ CREATE TABLE sys_lockedrecords (
 );
 
 #
+# Table structure for table 'sys_refindex'
+#
+CREATE TABLE sys_refindex (
+  hash varchar(32) DEFAULT '' NOT NULL,
+  tablename varchar(40) DEFAULT '' NOT NULL,
+  recuid int(11) DEFAULT '0' NOT NULL,
+  field varchar(40) DEFAULT '' NOT NULL,
+  flexpointer tinytext NOT NULL,
+  softref_key varchar(30) DEFAULT '' NOT NULL,
+  softref_id varchar(40) DEFAULT '' NOT NULL,
+  sorting int(11) DEFAULT '0' NOT NULL,
+  ref_table varchar(40) DEFAULT '' NOT NULL,
+  ref_uid int(11) DEFAULT '0' NOT NULL,
+  ref_string varchar(40) DEFAULT '' NOT NULL,
+
+  PRIMARY KEY (hash),
+  KEY lookup_rec (tablename,recuid),
+  KEY lookup_uid (ref_table,ref_uid),
+  KEY lookup_string (ref_table,ref_string)
+);
+
+#
 # Table structure for table 'sys_log'
 #
 CREATE TABLE sys_log (

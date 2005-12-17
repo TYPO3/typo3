@@ -541,6 +541,21 @@ class t3lib_DB {
 	}
 
 	/**
+	 * Will fullquote all values in the one-dimentional array so they are ready to "implode" for an sql query.
+	 *
+	 * @param	array		Array with values
+	 * @param	string		Table name for which to quote.
+	 * @return	array		The input array with all values passed through intval()
+	 * @see cleanIntArray()
+	 */
+	function fullQuoteArray($arr, $table)	{
+		foreach($arr as $k => $v)	{
+			$arr[$k] = $this->fullQuoteStr($arr[$k], $table);
+		}
+		return $arr;
+	}
+
+	/**
 	 * Substitution for PHP function "addslashes()"
 	 * Use this function instead of the PHP addslashes() function when you build queries - this will prepare your code for DBAL.
 	 * NOTICE: You must wrap the output of this function in SINGLE QUOTES to be DBAL compatible. Unless you have to apply the single quotes yourself you should rather use ->fullQuoteStr()!

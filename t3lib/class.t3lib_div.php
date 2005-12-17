@@ -2524,7 +2524,44 @@ class t3lib_div {
 		} else return 'N/A';
 	}
 
+	function debugRows($rows,$header)	{
+		if (is_array($rows))	{
+			reset($rows);
+			$firstEl = current($rows);
+			if (is_array($firstEl))	{
+				$headerColumns = array_keys($firstEl);
+				$tRows = array();
 
+					// Header:
+				$tRows[] = '<tr><td colspan="'.count($headerColumns).'" style="background-color:#bbbbbb; font-family: verdana,arial; font-weight: bold; font-size: 10px;"><strong>'.htmlspecialchars($header).'</strong></td></tr>';
+				$tCells = array();
+				foreach($headerColumns as $key)	{
+					$tCells[] = '
+							<td><font face="Verdana,Arial" size="1"><strong>'.htmlspecialchars($key).'</strong></font></td>';
+				}
+				$tRows[] = '
+						<tr>'.implode('',$tCells).'
+						</tr>';
+
+					// Rows:
+				foreach($rows as $singleRow)	{
+					$tCells = array();
+					foreach($headerColumns as $key)	{
+						$tCells[] = '
+							<td><font face="Verdana,Arial" size="1">'.htmlspecialchars($singleRow[$key]).'</font></td>';
+					}
+					$tRows[] = '
+						<tr>'.implode('',$tCells).'
+						</tr>';
+				}
+
+				$table = '
+					<table border="1" cellpadding="1" cellspacing="0" bgcolor="white">'.implode('',$tRows).'
+					</table>';
+				echo $table;
+			} else debug('Empty array of rows',$header);
+		} else debug('No array of rows',$header);
+	}
 
 
 

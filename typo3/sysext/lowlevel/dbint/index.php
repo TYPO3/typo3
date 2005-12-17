@@ -42,6 +42,7 @@ require_once (PATH_t3lib."class.t3lib_loaddbgroup.php");
 require_once (PATH_t3lib."class.t3lib_querygenerator.php");
 require_once (PATH_t3lib."class.t3lib_xml.php");
 require_once (PATH_t3lib."class.t3lib_fullsearch.php");
+require_once (PATH_t3lib."class.t3lib_refindex.php");
 
 $BE_USER->modAccess($MCONF,1);
 
@@ -144,7 +145,8 @@ class SC_mod_tools_dbint_index {
 				"tree" => "Total Page Tree",
 				"relations" => "Database Relations",
 				"search" => "Full search",
-				"filesearch" => "Find filename"
+				"filesearch" => "Find filename",
+				'refindex' => 'Manage Reference Index',
 			),
 			"search" => array(
 				"raw" => "Raw search in all fields",
@@ -214,6 +216,9 @@ class SC_mod_tools_dbint_index {
 			case "filesearch":
 				$this->func_filesearch();
 			break;
+			case 'refindex':
+				$this->func_refindex();
+			break;
 			default:
 				$this->func_default();
 			break;
@@ -232,6 +237,67 @@ class SC_mod_tools_dbint_index {
 
 		$this->content.=$this->doc->endPage();
 		echo $this->content;
+	}
+
+	function func_refindex()	{
+		global $TCA,$TYPO3_DB;
+
+		$this->content.=$this->doc->section('',$this->menu);//$this->doc->divider(5);
+		$this->content.=$this->doc->section('',$menu2).$this->doc->spacer(10);
+
+		if (t3lib_div::_GP('_update') || t3lib_div::_GP('_check'))	{
+			$testOnly = t3lib_div::_GP('_check')?TRUE:FALSE;
+			$errors = array();
+			$tableNames = array();
+			$recCount=0;
+			$tableCount=0;
+
+				// Traverse all tables:
+			foreach($TCA as $tableName => $cfg)	{
+				$tableNames[] = $tableName;
+				$tableCount++;
+
+					// Traverse all non-deleted records in tables:
+				$allRecs = $TYPO3_DB->exec_SELECTgetRows('uid',$tableName,'1'.t3lib_BEfunc::deleteClause($tableName));
+				$uidList = array(0);
+				foreach($allRecs as $recdat)	{
+					$refIndexObj = t3lib_div::makeInstance('t3lib_refindex');
+					$result = $refIndexObj->updateRefIndexTable($tableName,$recdat['uid'],$testOnly);
+					$uidList[]= $recdat['uid'];
+					$recCount++;
+
+					if ($result['addedNodes'] || $result['deletedNodes'])	{
+						$errors[] = 'Record '.$tableName.':'.$recdat['uid'].' had '.$result['addedNodes'].' added indexes and '.$result['deletedNodes'].' deleted indexes';
+						#$errors[] = t3lib_div::view_array($result);
+					}
+				}
+
+					// Searching lost indexes for this table:
+				$where = 'tablename='.$TYPO3_DB->fullQuoteStr($tableName,'sys_refindex').' AND recuid NOT IN ('.implode(',',$uidList).')';
+				$lostIndexes = $TYPO3_DB->exec_SELECTgetRows('hash','sys_refindex',$where);
+				if (count($lostIndexes))	{
+					$errors[] = 'Table '.$tableName.' has '.count($lostIndexes).' lost indexes which are now deleted';
+					if (!$testOnly)	$TYPO3_DB->exec_DELETEquery('sys_refindex',$where);
+				}
+			}
+
+				// Searching lost indexes for non-existing tables:
+			$where = 'tablename NOT IN ('.implode(',',$TYPO3_DB->fullQuoteArray($tableNames,'sys_refindex')).')';
+			$lostTables = $TYPO3_DB->exec_SELECTgetRows('hash','sys_refindex',$where);
+			if (count($lostTables))	{
+				$errors[] = 'Index table hosted '.count($lostTables).' indexes for non-existing tables, now removed';
+				if (!$testOnly)	$TYPO3_DB->exec_DELETEquery('sys_refindex',$where);
+			}
+
+			$testedHowMuch = $recCount.' records from '.$tableCount.' tables were checked/updated.<br/>';
+				// Output content:
+			$this->content.=$this->doc->section($testOnly ? 'Reference Index TESTED (nothing written)' : 'Reference Index Updated',$testedHowMuch.(count($errors)?implode('<br/>',$errors):'Index Integrity was perfect!'),0,1);
+		}
+
+			// Output content:
+		$content = 'Click here to update reference index: <input type="submit" name="_update" value="Update now!" /><br/>';
+		$content.= 'Click here to test reference index: <input type="submit" name="_check" value="Check now!" />';
+		$this->content.=$this->doc->section('Update reference index',$content,0,1);
 	}
 
 	/**

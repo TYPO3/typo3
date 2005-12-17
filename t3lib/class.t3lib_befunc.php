@@ -958,10 +958,11 @@ class t3lib_BEfunc	{
 	 * @param	array		Record data
 	 * @param	string		The table name
 	 * @param	string		Optional fieldname passed to hook object
+	 * @param	boolean		Boolean; If set, workspace overlay is applied to records. This is correct behaviour for all presentation and export, but NOT if you want a true reflection of how things are in the live workspace.
 	 * @return	mixed		If array, the data structure was found and returned as an array. Otherwise (string) it is an error message.
 	 * @see t3lib_TCEforms::getSingleField_typeFlex()
 	 */
-	function getFlexFormDS($conf,$row,$table,$fieldName='')	{
+	function getFlexFormDS($conf,$row,$table,$fieldName='',$WSOL=TRUE)	{
 		global $TYPO3_CONF_VARS;
 
 			// Get pointer field etc from TCA-config:
@@ -996,8 +997,10 @@ class t3lib_BEfunc	{
 				// Searching recursively back if 'ds_pointerField_searchParent' is defined (typ. a page rootline, or maybe a tree-table):
 			if ($ds_searchParentField && !$srcPointer)	{
 				$rr = t3lib_BEfunc::getRecord($table,$row['uid'],'uid,'.$ds_searchParentField);	// Get the "pid" field - we cannot know that it is in the input record!
-				t3lib_BEfunc::workspaceOL($table,$rr);	// KASPER: Not tested, but assumed correct
-				t3lib_BEfunc::fixVersioningPid($table,$rr);
+				if ($WSOL)	{
+					t3lib_BEfunc::workspaceOL($table,$rr);
+					t3lib_BEfunc::fixVersioningPid($table,$rr);
+				}
 				$uidAcc=array();	// Used to avoid looping, if any should happen.
 				$subFieldPointer = $conf['ds_pointerField_searchParent_subField'];
 				while(!$srcPointer)		{
@@ -1012,8 +1015,10 @@ class t3lib_BEfunc	{
 					if (!is_array($rr) || isset($uidAcc[$rr['uid']]))	break;
 					$uidAcc[$rr['uid']]=1;
 
-					t3lib_BEfunc::workspaceOL($table,$rr);	// KASPER: Not tested, but assumed correct
-					t3lib_BEfunc::fixVersioningPid($table,$rr);
+					if ($WSOL)	{
+						t3lib_BEfunc::workspaceOL($table,$rr);
+						t3lib_BEfunc::fixVersioningPid($table,$rr);
+					}
 					$srcPointer = ($subFieldPointer && $rr[$subFieldPointer]) ? $rr[$subFieldPointer] : $rr[$ds_pointerField];
 				}
 			}
@@ -1023,7 +1028,10 @@ class t3lib_BEfunc	{
 				if (t3lib_div::testInt($srcPointer))	{	// If integer, then its a record we will look up:
 					list($tName,$fName) = explode(':',$ds_tableField,2);
 					if ($tName && $fName && is_array($GLOBALS['TCA'][$tName]))	{
-						$dataStructRec = t3lib_BEfunc::getRecordWSOL($tName, $srcPointer);
+						$dataStructRec = t3lib_BEfunc::getRecord($tName, $srcPointer);
+						if ($WSOL)	{
+							t3lib_BEfunc::workspaceOL($tName,$dataStructRec);
+						}
 						$dataStructArray = t3lib_div::xml2array($dataStructRec[$fName]);
 					} else $dataStructArray = 'No tablename ('.$tName.') or fieldname ('.$fName.') was found an valid!';
 				} else {	// Otherwise expect it to be a file:

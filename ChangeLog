@@ -1,3 +1,8 @@
+2005-12-17  Kasper Skårhøj  <kasper2005@typo3.com>
+
+	* Added reference index table and class. See mail sent to Dev-list 
+
+2005-12-15  Kasper Skårhøj  <kasper2005@typo3.com>
 2005-12-16	Robert Lemke	<robert@typo3.org>
 	* Fixed a bug in t3lib_beFunc::getRecordWSOL - it now makes sure that uid, pid and t3ver_swapmode are selected internally if they are not specified in $fields
 
