@@ -128,11 +128,11 @@ require_once(PATH_t3lib.'class.t3lib_ajax.php');
 
 
 /**
- * Depreciated fontwrap function. Is just transparent now.
+ * Deprecated fontwrap function. Is just transparent now.
  *
  * @param	string		Input string
  * @return	string		Output string (in the old days this was wrapped in <font> tags)
- * @depreciated
+ * @deprecated
  */
 function fw($str)	{
 	return $str;
@@ -472,7 +472,7 @@ class template {
 	 * For CSS compliant browsers (recommended) a ' style="width: ...px;"' is returned.
 	 *
 	 * @param	integer		A relative number which multiplied with approx. 10 will lead to the width in pixels
-	 * @param	boolean		A flag you can set for textareas - DEPRECIATED, use ->formWidthText() for textareas!!!
+	 * @param	boolean		A flag you can set for textareas - DEPRECATED, use ->formWidthText() for textareas!!!
 	 * @param	string		A string which will be returned as attribute-value for style="" instead of the calculated width (if CSS is enabled)
 	 * @return	string		Tag attributes for an <input> tag (regarding width)
 	 * @see formWidthText()
@@ -837,11 +837,11 @@ $str.=$this->docBodyTagBegin().
 
 	/**
 	 * Originally it printed a kind of divider.
-	 * Depreciated. Just remove function calls to it or call the divider() function instead.
+	 * Deprecated. Just remove function calls to it or call the divider() function instead.
 	 *
 	 * @return	void
 	 * @internal
-	 * @depreciated
+	 * @deprecated
 	 */
 	function middle()	{
 	}

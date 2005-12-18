@@ -505,7 +505,7 @@ Cleaning for 3.6 involves:
 5: $Id$ CVS keyword expansion
 6: @package tags
 7: Function Index in scripts
-8: Depreciated use of t3lib_BEfunc::titleAttrib
+8: Deprecated use of t3lib_BEfunc::titleAttrib
 9: Generally, try to read all GPvars in init() functions and set them as internal variables - gives a nice, natural overview of what is used from the outsite
 
 

@@ -1161,7 +1161,7 @@ class t3lib_TStemplate	{
 	 * @param	string		Property name in the menu array
 	 * @param	array		Menu array to traverse
 	 * @return	array		Modified menu array
-	 * @depreciated
+	 * @deprecated
 	 * @internal
 	 */
 	function checkFile($name,$menuArr)	{

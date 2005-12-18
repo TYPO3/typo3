@@ -795,12 +795,12 @@ tt_content.login.20 {
 # ******************
 # CType: splash
 # ******************
-# Depreciated element.
+# Deprecated element.
 # Still here for backwards compliance with plugins using the "text box" type.
 tt_content.splash = CASE
 tt_content.splash.key.field = splash_layout
 tt_content.splash.stdWrap {
-	prefixComment = 2 | Textbox inserted (Depreciated)
+	prefixComment = 2 | Textbox inserted (Deprecated)
 }
 tt_content.splash.default = COA
 tt_content.splash.default {
@@ -1077,7 +1077,7 @@ tt_content.script = TEXT
 tt_content.script {
 	value =
 
-	prefixComment = 2 | Script element (Depreciated)
+	prefixComment = 2 | Script element (Deprecated)
 }
 
 

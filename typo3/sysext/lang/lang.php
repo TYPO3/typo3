@@ -286,7 +286,7 @@ class language {
 	 * splitLabel function
 	 * Historically labels were exploded by '|' and each part would correspond to the translation of the language found at the same 'index' in the TYPO3_languages constant.
 	 * Today all translations are based on $LOCAL_LANG variables. 'language-splitted' labels can therefore refer to a local-lang file + index instead!
-	 * It's highly recommended to use the 'local_lang' method (and thereby it's highly depreciated to use 'language-splitted' label strings)
+	 * It's highly recommended to use the 'local_lang' method (and thereby it's highly deprecated to use 'language-splitted' label strings)
 	 * Refer to 'Inside TYPO3' for more details
 	 *
 	 * @param	string		Label key/reference

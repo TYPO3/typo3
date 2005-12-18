@@ -1,9 +1,13 @@
-2005-12-17  Kasper Skårhøj  <kasper2005@typo3.com>
+2005-12-18  Michael Stucki  <michael@typo3.org>
 
-	* Added reference index table and class. See mail sent to Dev-list 
+	* Cleanup: Changed all occurences of "depreciated" => "deprecated"
 
-2005-12-15  Kasper Skårhøj  <kasper2005@typo3.com>
-2005-12-16	Robert Lemke	<robert@typo3.org>
+2005-12-17  Kasper Skaarhoj  <kasper2005@typo3.com>
+
+	* Added reference index table and class. See mail sent to Dev-list
+
+2005-12-16  Robert Lemke  <robert@typo3.org>
+
 	* Fixed a bug in t3lib_beFunc::getRecordWSOL - it now makes sure that uid, pid and t3ver_swapmode are selected internally if they are not specified in $fields
 
 2005-12-13  Martin Kutschker  <martin.t.kutschker@blackbox.net>
@@ -1531,7 +1535,7 @@ Generally:
 !!! - tslib_content::getUpdateJS()		Is NEVER stripping off slashes now, please update your code in extensions if you rely on this (most unlikely)
 !!! - tslib_content::DBgetInsert() + tslib_content::DBgetUpdate() 	Will ALWAYS apply slashes to values in queries now (for security). If you use these functions in your extensions, please update your code to the new situation! (These two functions now use their counterparts in t3lib_DB class)
 !!! - IP locking has been added to user sessions: For backend this is DEFAULT (which means that users might experience to be logged out if their IP changes dynamically during a session!) and for frontend users it is disabled by default (but can be enabled from TYPO3_CONF_VARS)
-!!! - t3lib_BEfunc::DBcompileInsert() and t3lib_BEfunc::DBcompileUpdate() has been modified so they ALWAYS add slashes to values inserted in queries. (Further they are depreciated now since they just call their counterparts in t3lib_DB class.)
+!!! - t3lib_BEfunc::DBcompileInsert() and t3lib_BEfunc::DBcompileUpdate() has been modified so they ALWAYS add slashes to values inserted in queries. (Further they are deprecated now since they just call their counterparts in t3lib_DB class.)
 - Implemented t3lib_DB class as a first step towards database abstraction. For now it contains wrapper functions that ALL code should use in the future.
 !!! - tslib_cObj::DBcompileInsert has been removed since it was obsolete.
 
@@ -1605,9 +1609,9 @@ PHP:
 !!! Change db_list_frame and file_list_frame to just "list_frame".
 !!! Cleaned up a lot in the template-class.
 !!! dfw() and rfw() functions must be substituted with $GLOBALS["TBE_TEMPLATE"]->dfw() / ->rfw()
-!!! fw() is highly depreciated (and does NOT wrap strings anymore!)
+!!! fw() is highly deprecated (and does NOT wrap strings anymore!)
 !!! if (top.theMenu) top.theMenu.recentuid
-!!! Constant "PATH_temp" has been cancelled - no scripts seemed to use it and the dir is depreciated.
+!!! Constant "PATH_temp" has been cancelled - no scripts seemed to use it and the dir is deprecated.
 !!! typo3/temp/ has been cancelled. Changed to typo3/icons/ for STATIC icons and PATH_site.typo3temp/ is now used for the locally generated icons. So no more typo3/temp/ to be writable.
 !!! t3lib_BEfunc::loadTablesDescriptions() and t3lib_BEfunc::loadSingleTableDescription is removed. A function call like t3lib_BEfunc::loadSingleTableDescription("pages",$LANG->lang); is substituted with $LANG->loadSingleTableDescription("pages");
 !!! Function t3lib_BEfunc::pTypes() remove - nothing used it (apparently. prove me wrong... :-)

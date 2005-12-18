@@ -7,12 +7,12 @@ New features / improvements
 ===========================
 
 	* Workspaces
-	* indexed search (template support, speed improvements)
+	* indexed search (template support, speed improvements) - many thanks to Udo von Eynern for implementing the template support!
 	* Integrated kb_cont_slide extension into core
 	* tab indenting in textareas in the backend
 	* display of BE clickmenus with XMLHTTP / AJAX
 	* User admin module: switch back to admin user after user switch (SU-mode), "create new user" link
-	* Zapped lots of gremlins
+	* Zapped a lot of gremlins
 
 Access Control
 ==============
@@ -35,4 +35,4 @@ Usability
 
 	* on timeout in BE, popup won't appear again after clicking "No"
 	* made new content element wizard easier to use (removed empty categories)
-	* rte wizard has save and close buttons now
+	* RTE wizard has save and close buttons now

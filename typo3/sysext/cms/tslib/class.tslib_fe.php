@@ -280,7 +280,7 @@
 		'onmouseup' => array(),
 		'onload' => array(),
 	);
-	var $JSCode='';						// Depreciated, use additionalJavaScript instead.
+	var $JSCode='';						// Deprecated, use additionalJavaScript instead.
 	var $JSImgCode='';					// Used to accumulate JavaScript loaded images (by menus)
 	var $divSection='';					// Used to accumulate DHTML-layers.
 
@@ -2512,7 +2512,7 @@
 		$GLOBALS['TT']->setTSlogMessage('Parts: '.count($INTiS_splitC));
 		$GLOBALS['TT']->pull();
 
-			// Depreciated stuff:
+			// Deprecated stuff:
 		$this->additionalHeaderData = is_array($this->config['INTincScript_ext']['additionalHeaderData']) ? $this->config['INTincScript_ext']['additionalHeaderData'] : array();
 		$this->additionalJavaScript = $this->config['INTincScript_ext']['additionalJavaScript'];
 		$this->additionalCSS = $this->config['INTincScript_ext']['additionalCSS'];

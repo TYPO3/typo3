@@ -848,7 +848,7 @@ class tslib_menu {
 	/**
 	 * Includes the PHP script defined for the HMENU special type "userdefined".
 	 * This script is supposed to populate the array $menuItemsArray with a set of page records comprising the menu.
-	 * The "userdefined" type is depreciated since "userfunction" has arrived since and is a better choice for many reasons (like using classes/functions for rendering the menu)
+	 * The "userdefined" type is deprecated since "userfunction" has arrived since and is a better choice for many reasons (like using classes/functions for rendering the menu)
 	 *
 	 * @param	array		TypoScript parameters for "special.". In particular the property "file" is reserved and specifies the file to include. Seems like any other property can be used freely by the script.
 	 * @param	string		The sorting field. Can be used from the script in the $incFile.

@@ -57,7 +57,7 @@
  *  357:     function getSQLselectableList($in_list,$tablename,$default_tablename)
  *  385:     function BEenableFields($table,$inv=0)
  *
- *              SECTION: SQL-related, DEPRECIATED functions
+ *              SECTION: SQL-related, DEPRECATED functions
  *  449:     function mm_query($select,$local_table,$mm_table,$foreign_table,$whereClause='',$groupBy='',$orderBy='',$limit='')
  *  471:     function DBcompileInsert($table,$fields_values)
  *  485:     function DBcompileUpdate($table,$where,$fields_values)
@@ -325,7 +325,7 @@ class t3lib_BEfunc	{
 	 * @param	array		Array of fields
 	 * @param	string		Table in which we are searching (for DBAL detection of quoteStr() method)
 	 * @return	string		WHERE clause for search
-	 * @depreciated		Use $GLOBALS['TYPO3_DB']->searchQuery() directly!
+	 * @deprecated		Use $GLOBALS['TYPO3_DB']->searchQuery() directly!
 	 */
 	function searchQuery($searchWords,$fields,$table='')	{
 		return $GLOBALS['TYPO3_DB']->searchQuery($searchWords,$fields,$table);
@@ -340,7 +340,7 @@ class t3lib_BEfunc	{
 	 * @param	string		Table field name
 	 * @param	string		Value to find in list
 	 * @return	string		WHERE clause for a query
-	 * @depreciated		Use $GLOBALS['TYPO3_DB']->listQuery() directly!
+	 * @deprecated		Use $GLOBALS['TYPO3_DB']->listQuery() directly!
 	 */
 	function listQuery($field,$value)	{
 		return $GLOBALS['TYPO3_DB']->listQuery($field,$value,'');
@@ -436,7 +436,7 @@ class t3lib_BEfunc	{
 
 	/*******************************************
 	 *
-	 * SQL-related, DEPRECIATED functions
+	 * SQL-related, DEPRECATED functions
 	 * (use t3lib_DB functions instead)
 	 *
 	 *******************************************/
@@ -447,7 +447,7 @@ class t3lib_BEfunc	{
 	 * $local_table and $mm_table is mandatory. $foreign_table is optional.
 	 * The JOIN is done with [$local_table].uid <--> [$mm_table].uid_local  / [$mm_table].uid_foreign <--> [$foreign_table].uid
 	 * The function is very useful for selecting MM-relations between tables adhering to the MM-format used by TCE (TYPO3 Core Engine). See the section on $TCA in Inside TYPO3 for more details.
-	 * DEPRECIATED - Use $GLOBALS['TYPO3_DB']->exec_SELECT_mm_query() instead since that will return the result pointer while this returns the query. Using this function may make your application less fitted for DBAL later.
+	 * DEPRECATED - Use $GLOBALS['TYPO3_DB']->exec_SELECT_mm_query() instead since that will return the result pointer while this returns the query. Using this function may make your application less fitted for DBAL later.
 	 *
 	 * @param	string		Field list for SELECT
 	 * @param	string		Tablename, local table
@@ -458,7 +458,7 @@ class t3lib_BEfunc	{
 	 * @param	string		Optional ORDER BY field(s), if none, supply blank string.
 	 * @param	string		Optional LIMIT value ([begin,]max), if none, supply blank string.
 	 * @return	string		Full SQL query
-	 * @depreciated
+	 * @deprecated
 	 * @see t3lib_DB::exec_SELECT_mm_query()
 	 */
 	function mm_query($select,$local_table,$mm_table,$foreign_table,$whereClause='',$groupBy='',$orderBy='',$limit='')	{
@@ -476,12 +476,12 @@ class t3lib_BEfunc	{
 
 	/**
 	 * Creates an INSERT SQL-statement for $table from the array with field/value pairs $fields_values.
-	 * DEPRECIATED - $GLOBALS['TYPO3_DB']->INSERTquery() directly instead! But better yet, use $GLOBALS['TYPO3_DB']->exec_INSERTquery()
+	 * DEPRECATED - $GLOBALS['TYPO3_DB']->INSERTquery() directly instead! But better yet, use $GLOBALS['TYPO3_DB']->exec_INSERTquery()
 	 *
 	 * @param	string		Table name
 	 * @param	array		Field values as key=>value pairs.
 	 * @return	string		Full SQL query for INSERT
-	 * @depreciated
+	 * @deprecated
 	 */
 	function DBcompileInsert($table,$fields_values)	{
 		return $GLOBALS['TYPO3_DB']->INSERTquery($table, $fields_values);
@@ -489,13 +489,13 @@ class t3lib_BEfunc	{
 
 	/**
 	 * Creates an UPDATE SQL-statement for $table where $where-clause (typ. 'uid=...') from the array with field/value pairs $fields_values.
-	 * DEPRECIATED - $GLOBALS['TYPO3_DB']->UPDATEquery() directly instead! But better yet, use $GLOBALS['TYPO3_DB']->exec_UPDATEquery()
+	 * DEPRECATED - $GLOBALS['TYPO3_DB']->UPDATEquery() directly instead! But better yet, use $GLOBALS['TYPO3_DB']->exec_UPDATEquery()
 	 *
 	 * @param	string		Database tablename
 	 * @param	string		WHERE clause, eg. "uid=1"
 	 * @param	array		Field values as key=>value pairs.
 	 * @return	string		Full SQL query for UPDATE
-	 * @depreciated
+	 * @deprecated
 	 */
 	function DBcompileUpdate($table,$where,$fields_values)	{
 		return $GLOBALS['TYPO3_DB']->UPDATEquery($table, $where, $fields_values);
@@ -1509,7 +1509,7 @@ class t3lib_BEfunc	{
 	 * @param	string		String to set as title-attribute. If no $content is given only the attribute name is returned.
 	 * @param	boolean		If $hsc is set, then content of the attribute is htmlspecialchar()'ed (which is good for XHTML and other reasons...)
 	 * @return	string
-	 * @depreciated		The idea made sense with older browsers, but now all browsers should support the "title" attribute - so just hardcode the title attribute instead!
+	 * @deprecated		The idea made sense with older browsers, but now all browsers should support the "title" attribute - so just hardcode the title attribute instead!
 	 */
 	function titleAttrib($content='',$hsc=0)	{
 		global $CLIENT;
@@ -3456,7 +3456,7 @@ class t3lib_BEfunc	{
 	 * @param	string		The URL/script to jump to (used in A tag)
 	 * @return	array		Two keys, rows and list
 	 * @internal
-	 * @depreciated
+	 * @deprecated
 	 * @obsolete
 	 */
 	function getListOfBackendModules($name,$perms_clause,$backPath='',$script='index.php')	{

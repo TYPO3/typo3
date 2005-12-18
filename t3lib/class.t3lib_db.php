@@ -329,7 +329,7 @@ class t3lib_DB {
 	 * @param	string		See exec_INSERTquery()
 	 * @param	array		See exec_INSERTquery()
 	 * @return	string		Full SQL query for INSERT (unless $fields_values does not contain any elements in which case it will be false)
-	 * @depreciated			use exec_INSERTquery() instead if possible!
+	 * @deprecated			use exec_INSERTquery() instead if possible!
 	 */
 	function INSERTquery($table,$fields_values)	{
 
@@ -365,7 +365,7 @@ class t3lib_DB {
 	 * @param	string		See exec_UPDATEquery()
 	 * @param	array		See exec_UPDATEquery()
 	 * @return	string		Full SQL query for UPDATE (unless $fields_values does not contain any elements in which case it will be false)
-	 * @depreciated			use exec_UPDATEquery() instead if possible!
+	 * @deprecated			use exec_UPDATEquery() instead if possible!
 	 */
 	function UPDATEquery($table,$where,$fields_values)	{
 
@@ -404,7 +404,7 @@ class t3lib_DB {
 	 * @param	string		See exec_DELETEquery()
 	 * @param	string		See exec_DELETEquery()
 	 * @return	string		Full SQL query for DELETE
-	 * @depreciated			use exec_DELETEquery() instead if possible!
+	 * @deprecated			use exec_DELETEquery() instead if possible!
 	 */
 	function DELETEquery($table,$where)	{
 		if (is_string($where))	{
@@ -433,7 +433,7 @@ class t3lib_DB {
 	 * @param	string		See exec_SELECTquery()
 	 * @param	string		See exec_SELECTquery()
 	 * @return	string		Full SQL query for SELECT
-	 * @depreciated			use exec_SELECTquery() instead if possible!
+	 * @deprecated			use exec_SELECTquery() instead if possible!
 	 */
 	function SELECTquery($select_fields,$from_table,$where_clause,$groupBy='',$orderBy='',$limit='')	{
 
@@ -694,7 +694,7 @@ class t3lib_DB {
 	/**
 	 * Executes query
 	 * mysql() wrapper function
-	 * DEPRECIATED - use exec_* functions from this class instead!
+	 * DEPRECATED - use exec_* functions from this class instead!
 	 * Usage count/core: 9
 	 *
 	 * @param	string		Database name

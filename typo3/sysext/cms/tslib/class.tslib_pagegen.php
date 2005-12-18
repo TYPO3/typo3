@@ -127,8 +127,8 @@ class TSpagegen {
 			// Base url:
 		if ($GLOBALS['TSFE']->config['config']['baseURL'])	{
 			if ($GLOBALS['TSFE']->config['config']['baseURL']==='1')	{
-					// Depreciated property, going to be dropped.
-				$error = 'Depreciated Typoscript property was found in this template: "config.baseURL="1"
+					// Deprecated property, going to be dropped.
+				$error = 'Deprecated Typoscript property was found in this template: "config.baseURL="1"
 
 You need to change this value to the URL of your website root, otherwise TYPO3 will not work!
 

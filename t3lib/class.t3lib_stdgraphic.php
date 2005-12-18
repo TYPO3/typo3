@@ -1887,7 +1887,7 @@ class t3lib_stdGraphic	{
 			$string = $this->csConvObj->utf8_encode($string,$this->nativeCharset);	// Convert to UTF-8
 		}
 
-			// Recode string accoding to TTFLocaleConv. Depreciated.
+			// Recode string accoding to TTFLocaleConv. Deprecated.
 		if ($this->TTFLocaleConv)	{
 			$string = recode_string($this->TTFLocaleConv,$string);
 		}
@@ -2613,7 +2613,7 @@ class t3lib_stdGraphic	{
 	 *
 	 * @param	string		Image filename
 	 * @return	pointer		Image Resource pointer
-	 * @depreciated
+	 * @deprecated
 	 */
 	function imageCreateFromGif($sourceImg)	{
 		return $this->imageCreateFromFile($sourceImg);

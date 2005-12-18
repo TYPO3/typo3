@@ -1035,7 +1035,7 @@ class t3lib_userAuth {
 	}
 
 	/**
-	 * Redirect to somewhere. Obsolete, depreciated etc.
+	 * Redirect to somewhere. Obsolete, deprecated etc.
 	 *
 	 * @return	void
 	 * @ignore

@@ -45,7 +45,7 @@ $TYPO3_CONF_VARS = Array(
 		'im_noFramePrepended' => 0,				// Boolean. If set, the [x] frame indicator is NOT prepended to filenames in stdgraphic. Some IM5+ version didn't work at all with the typical [0]-prefix, which allow multipage pdf's and animated gif's to be scaled only for the first frame/page and that seriously cuts down rendering time. Set this flag only if your ImageMagick version cannot find the files. Notice that changing this flag causes temporary filenames to change, thus the server will begin scaling images again which were previously cached.
 		'im_jpg_quality' => 70,					// Integer. Default JPEG generation quality
 		'enable_typo3temp_db_tracking' => 0,	// Boolean. If set, then all files in typo3temp will be logged in a database table. In addition to being a log of the files with original filenames, it also serves to secure that the same image is not rendered simultaneously by two different processes.
-		'TTFLocaleConv' => '',					// String. Enter locale conversion string used to recode input to TrueType functions. Eg. 'cp1250..UTF-8'. Works ONLY if 'recode' is enabled in PHP. Depreciated from ver. 3.6.0 of TYPO3. Set up [BE][forceCharset] as strings are automatically converted from databsae charset to UTF-8.
+		'TTFLocaleConv' => '',					// String. Enter locale conversion string used to recode input to TrueType functions. Eg. 'cp1250..UTF-8'. Works ONLY if 'recode' is enabled in PHP. Deprecated from ver. 3.6.0 of TYPO3. Set up [BE][forceCharset] as strings are automatically converted from databsae charset to UTF-8.
 		'TTFdpi' => '72',						// Integer. Enter how many dpi the FreeType module uses. Freetype1 should be set to 72. Freetype2 should be set to 96 (otherwise fonts are rendered way bigger than FreeType1). This works as a global scaling factor for Freetype.
 	),
 	'SYS' => Array(			// System related concerning both frontend and backend.
@@ -270,7 +270,7 @@ define('TYPO3_extTableDef_script', $typo_db_extTableDef_script);
 	// 		- Add "csh_[key]" language pack and setup all core ll-XML scripts to point to XML files inside of that. (Kasper: see typo3_l10n/README.prepare_languages.txt)
 define('TYPO3_languages', 'default|dk|de|no|it|fr|es|nl|cz|pl|si|fi|tr|se|pt|ru|ro|ch|sk|lt|is|hr|hu|gl|th|gr|hk|eu|bg|br|et|ar|he|ua|lv|jp|vn|ca|ba|kr|eo|my|hi');
 
-	// Unsetting the configured values. Use of these are depreciated.
+	// Unsetting the configured values. Use of these are deprecated.
 unset($typo_db);
 unset($typo_db_username);
 unset($typo_db_password);
