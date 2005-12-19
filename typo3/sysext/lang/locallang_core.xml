@@ -154,6 +154,7 @@ Would you like to save now in order to refresh the display?</label>
 			<label index="rm.export">Export</label>
 			<label index="rm.delete">Delete</label>
 			<label index="buttons.logout">Logout</label>
+			<label index="buttons.exit">Exit</label>
 			<label index="buttons.selMenu_modules">MODULES</label>
 			<label index="buttons.clear">Clear</label>
 			<label index="buttons.clipboard">Clipboard</label>

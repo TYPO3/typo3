@@ -525,7 +525,8 @@ class alt_menu_functions {
 	function topButtons()	{
 		global $LANG;
 
-		$out.= '<form action="logout.php" target="_top"><input type="submit" value="'.$LANG->sL('LLL:EXT:lang/locallang_core.php:buttons.logout',1).'" /></form>';
+		$label = $GLOBALS['BE_USER']->user['ses_backuserid'] ? 'LLL:EXT:lang/locallang_core.php:buttons.exit' : 'LLL:EXT:lang/locallang_core.php:buttons.logout';
+		$out.= '<form action="logout.php" target="_top"><input type="submit" value="'.$LANG->sL($label,1).'" /></form>';
 		return $out;
 	}
 

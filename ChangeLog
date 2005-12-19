@@ -1,3 +1,9 @@
+2005-12-19  Kasper Skårhøj  <kasper2005@typo3.com>
+
+	* Change logout-button label to "Exit" when in SwitchBackUser mode.
+	* Fixed a htmlspecialchars() thing in TCEforms.
+
+2005-12-17  Kasper Skårhøj  <kasper2005@typo3.com>
 2005-12-18  Michael Stucki  <michael@typo3.org>
 
 	* Cleanup: Changed all occurences of "depreciated" => "deprecated"

@@ -38,27 +38,25 @@ TCEmain
 		- Create an extension which shows how the log data can be stored in a) database, b) files
 		- extension "logit" / PEAR::log package?
 - INTEGRITY / CLEAN_UP / REFERENCE TRACKING:
-	- Implement kill/restore of "deleted" records.
 	- Record Reference tracking in a table in TCEmain
-		- Tracks DB-references, Files and softrefs (including in FlexForms)
-		- Index is generated per record with an API call (both fe/be), making it easy to maintain it and possible to completely regenerate it
-		- Used for:
-			- Check before deletion that a record is not used?
-			- Used by applications (like TemplaVoila) where it is hard to track references in FlexForms
-			- Used for import/export module and anywhere else where we are looking up references!
-			- Basis for integrity checks
+		- Used for (also):
 			- clearing caching more effectively
-			- Could be used for MM look-ups on those "unfortunate" comma-list fields?
+			- Implement reflection of relations in Web>List and File>Filelist
+			- Warning at deletion
 		- Offers API to "fix references" if a record carries lost references
 		- Offers way to map a reference to another one ("search/replace")
-		- Offers way to compare actual references in record and those indexed so we can see if there was inconsistency
-	- Record clean-up functionality
+		- Implement flexform "index" as well (see marks
+		- In "Help > About Modules" screen we might want to look if the index is empty and if so, present a link to "Tools > DB check" tool so the index can be created initially for updated sites?
+		- (Make class.t3lib_refindex available in the frontend scope for integration in plugins that manipulate the database on their own and need to update the reference index. Actually, I'm inclined to think we should rather think about how to provide t3lib_tcemain for the frontend instead...!)
+		- CLI script for updating refindex with cron-job and reporting inconsistencies by email
+	- Record clean-up functionality (Tools > DB check module)
 		- Remove references to deleted records (also deleted-to-recycler records? Maybe "deleted-to-recycler" references are important to remove in order to make sure "recycler" records are not selected!) (refs to MM for both tables/files)
 		- Remove references to lost files etc.
 		- Cleaning FlexForm XML according to the current DS (old XML garbage might be left if DS changed)
 	- Versioning:
 		- Flush old versions (requires general clean-up features to be complete!)
 		- Check for "lost" versions during swap?
+	- Implement kill/restore of "deleted" records.
 - PERMISSIONS:
 	- Permission API: Used for any DB-element in system (See Sune Vestergaards suggestion)
 		- More flexible setting of permissions
