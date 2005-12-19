@@ -546,9 +546,18 @@ class t3lib_matchCondition {
 
 		for ($a=1;$a<$c;$a++) {
 			if (!isset($theVar))	{break;}
-			$theVar = $theVar[trim($vars[$a])];
+
+			$key = trim($vars[$a]);
+			if (is_object($theVar))	{
+				$theVar = $theVar->$key;
+			} elseif (is_array($theVar))	{
+				$theVar = $theVar[$key];
+			} else {
+				return '';
+			}
 		}
-		if (!is_array($theVar))	{
+
+		if (!is_array($theVar) && !is_object($theVar))	{
 			return $theVar;
 		} else {
 			return '';
@@ -576,7 +585,8 @@ class t3lib_matchCondition {
 						$val = t3lib_div::_GP($k);
 					break;
 					case 'TSFE':
-						$val = $GLOBALS['TSFE']->$k;
+						$val = $this->getGlobal('TSFE|'.$vars[1]);
+						$splitAgain=0;	// getGlobal resolves all parts of the key, so no further splitting is needed
 					break;
 					case 'ENV':
 						$val = getenv($k);
