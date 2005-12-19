@@ -6927,7 +6927,7 @@ class tslib_cObj {
 				$out=$this->editPanelLinkWrap_doWrap($string,$adminURL.'alt_doc.php?edit['.$rParts[0].']['.$nPid.']=new&noView='.$nV,$currentRecord);
 			}
 		} else {
-			if ($confirm)	{
+			if ($confirm && $GLOBALS['BE_USER']->jsConfirmation(8))	{
 				$cf1="if (confirm(unescape('".t3lib_div::rawurlencodeJS($confirm)."'))){";
 				$cf2='}';
 			} else {

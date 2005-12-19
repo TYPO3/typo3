@@ -88,10 +88,16 @@ function validateForm(theFormname,theFieldlist,goodMess,badMess,emailMess)	{
 						}
 					break;
 					case "radio":
-						var l=fObj.length;
-						for (a=0; a<l;a++)	{
-							if (fObj[a].checked)	{
-								value = fObj[a].value;
+						var len=fObj.length;
+						if (len)	{
+							for (a=0;a<len;a++)	{
+								if (fObj[a].checked)	{
+									value = fObj[a].value;
+								}
+							}
+						} else {
+							if (fObj.checked)	{
+								value = fObj.value;
 							}
 						}
 					break;

@@ -959,8 +959,32 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 		return $this->groupData['filemounts'];
 	}
 
+	/**
+	 * Returns true or false, depending if an alert popup (a javascript confirmation) should be shown
+	 * call like $GLOBALS['BE_USER']->jsConfirmation($BITMASK)
+	 *
+	 * @param $bitmask int   Bitmask
+	 *    1 - typeChange
+	 *    2 - copy/move/paste
+	 *    4 - delete
+	 *    8 - frontend editing
+	 *    128 - other (not used yet)
+	 * @return boolean true if the confirmation should be shown
+	 **/
+	 function jsConfirmation($bitmask)	{
+		 $alertPopup = $GLOBALS['BE_USER']->getTSConfig('options.alertPopups');
+		 $alertPopup = (int)$alertPopup['value'];
 
+		 if(!$alertPopup)	{
+			 $alertPopup = 255;	// default: show all warnings
+		 }
 
+		 if(($alertPopup&$bitmask) == $bitmask)	{ // show confirmation
+			 return 1;
+		 } else { // don't show confirmation
+			 return 0;
+		 }
+	 }
 
 
 

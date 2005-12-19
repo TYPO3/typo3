@@ -736,9 +736,11 @@ class t3lib_TCEforms	{
 				if (
 						(($TCA[$table]['ctrl']['type'] && !strcmp($field,$TCA[$table]['ctrl']['type'])) ||
 						($TCA[$table]['ctrl']['requestUpdate'] && t3lib_div::inList($TCA[$table]['ctrl']['requestUpdate'],$field)))
-						&& !$BE_USER->uc['noOnChangeAlertInTypeFields'])	{
+						&& $GLOBALS['BE_USER']->jsConfirmation(1))	{
 					$alertMsgOnChange = 'if (confirm('.$GLOBALS['LANG']->JScharCode($this->getLL('m_onChangeAlert')).') && TBE_EDITOR_checkSubmit(-1)){ TBE_EDITOR_submitForm() };';
-				} else {$alertMsgOnChange='';}
+				} else {
+					$alertMsgOnChange = 'if(TBE_EDITOR_checkSubmit(-1)){ TBE_EDITOR_submitForm();}';
+				}
 
 					// Render as a hidden field?
 				if (in_array($field,$this->hiddenFieldListArr))	{
@@ -2022,7 +2024,12 @@ class t3lib_TCEforms	{
 		$tCells =array();
 		$pct = round(100/count($sArr));
 		foreach($sArr as $sKey => $sheetCfg)	{
-			$onClick = 'if (confirm('.$GLOBALS['LANG']->JScharCode($this->getLL('m_onChangeAlert')).') && TBE_EDITOR_checkSubmit(-1)){'.$this->elName($elName).".value='".$sKey."'; TBE_EDITOR_submitForm()};";
+			if ($GLOBALS['BE_USER']->jsConfirmation(1))	{
+				$onClick = 'if (confirm('.$GLOBALS['LANG']->JScharCode($this->getLL('m_onChangeAlert')).') && TBE_EDITOR_checkSubmit(-1)){'.$this->elName($elName).".value='".$sKey."'; TBE_EDITOR_submitForm()};";
+			} else {
+				$onClick = 'if(TBE_EDITOR_checkSubmit(-1)){ '.$this->elName($elName).".value='".$sKey."'; TBE_EDITOR_submitForm();}";
+			}
+
 
 			$tCells[]='<td width="'.$pct.'%" style="'.($sKey==$sheetKey ? 'background-color: #9999cc; font-weight: bold;' : 'background-color: #aaaaaa;').' cursor: hand;" onclick="'.htmlspecialchars($onClick).'" align="center">'.
 					($sheetCfg['ROOT']['TCEforms']['sheetTitle'] ? $this->sL($sheetCfg['ROOT']['TCEforms']['sheetTitle']) : $sKey).
@@ -2176,13 +2183,14 @@ class t3lib_TCEforms	{
 										'rows' => 2
 									);
 								}
+
 								if (
 									(($GLOBALS['TCA'][$table]['ctrl']['type'] && !strcmp($key,$GLOBALS['TCA'][$table]['ctrl']['type'])) ||
 									($GLOBALS['TCA'][$table]['ctrl']['requestUpdate'] && t3lib_div::inList($GLOBALS['TCA'][$table]['ctrl']['requestUpdate'],$key)))
-									&& !$GLOBALS['BE_USER']->uc['noOnChangeAlertInTypeFields']) {
+									&& $GLOBALS['BE_USER']->jsConfirmation(1))	{
 									$alertMsgOnChange = 'if (confirm('.$GLOBALS['LANG']->JScharCode($this->getLL('m_onChangeAlert')).') && TBE_EDITOR_checkSubmit(-1)){ TBE_EDITOR_submitForm() };';
 								} else {
-									$alertMsgOnChange='';
+									$alertMsgOnChange = 'if(TBE_EDITOR_checkSubmit(-1)){ TBE_EDITOR_submitForm();}';
 								}
 
 								$fakePA['fieldChangeFunc']=$PA['fieldChangeFunc'];

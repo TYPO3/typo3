@@ -433,7 +433,9 @@ class SC_alt_doc {
 				}
 			}
 			function deleteRecord(table,id,url)	{	//
-				if (confirm('.$LANG->JScharCode($LANG->getLL('deleteWarning')).'))	{
+				if (
+					'.($GLOBALS['BE_USER']->jsConfirmation(4)?'confirm('.$LANG->JScharCode($LANG->getLL('deleteWarning')).')':'1==1').'
+				)	{
 					document.location = "tce_db.php?cmd["+table+"]["+id+"][delete]=1&redirect="+escape(url)+"&vC='.$BE_USER->veriCode().'&prErr=1&uPT=1";
 				}
 				return false;

@@ -1,6 +1,12 @@
+2005-12-19  Sebastian Kurfuerst  <sebastian@garbahe-group.de>
+
+	* New feature #1078: make javascript warning/confirmation popups configurable
+	* Fixed bug #1578: Radio button validation does not work if there is only one radio button
+	* Fixed bug #1906: first part only implements override.* for arbitary adminPanel options - relates to #1518
+
 2005-12-19  Michael Stucki  <michael@typo3.org>
 
-       * Added support for objects in conditions. Use it like this: [globalString = TSFE:fe_user|user|username = myname]
+	* Added support for objects in conditions. Use it like this: [globalString = TSFE:fe_user|user|username = myname]
 
 2005-12-19  Kasper Skaarhoj  <kasper2005@typo3.com>
 

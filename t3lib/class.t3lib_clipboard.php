@@ -333,11 +333,16 @@ class t3lib_clipboard {
 		}
 				// Delete:
 		if ($elCount)	{
-			$opt[]='<option value="'.htmlspecialchars("
+			if($GLOBALS['BE_USER']->jsConfirmation(4))	{
+				$js = "
 			if(confirm(".$GLOBALS['LANG']->JScharCode(sprintf($LANG->sL('LLL:EXT:lang/locallang_core.php:mess.deleteClip'),$elCount)).")){
 				document.location='".$this->deleteUrl(0,$this->fileMode?1:0)."&redirect='+top.rawurlencode(document.location);
 			}
-			").'">'.$this->clLabel('delete','rm').'</option>';
+					";
+			} else {
+				$js = " document.location='".$this->deleteUrl(0,$this->fileMode?1:0)."&redirect='+top.rawurlencode(document.location); ";
+			}
+			$opt[]='<option value="'.htmlspecialchars($js).'">'.$this->clLabel('delete','rm').'</option>';
 		}
 		$selector_menu = '<select name="_clipMenu" onchange="eval(this.options[this.selectedIndex].value);this.selectedIndex=0;">'.implode('',$opt).'</select>';
 
@@ -625,6 +630,7 @@ class t3lib_clipboard {
 	 * @return	string		JavaScript "confirm" message
 	 */
 	function confirmMsg($table,$rec,$type,$clElements)	{
+		if($GLOBALS['BE_USER']->jsConfirmation(2))	{
 		$labelKey = 'LLL:EXT:lang/locallang_core.php:mess.'.($this->currentMode()=='copy'?'copy':'move').($this->current=='normal'?'':'cb').'_'.$type;
 		$msg = $GLOBALS['LANG']->sL($labelKey);
 
@@ -658,6 +664,9 @@ class t3lib_clipboard {
 			t3lib_div::fixed_lgd_cs($selRecTitle,30),
 			t3lib_div::fixed_lgd_cs($thisRecTitle,30)
 			)).')';
+		} else {
+			$conf = '';
+		}
 		return $conf;
 	}
 

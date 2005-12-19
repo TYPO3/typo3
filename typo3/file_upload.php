@@ -141,11 +141,17 @@ class SC_file_upload {
 		$this->doc->docType = 'xhtml_trans';
 		$this->doc->backPath = $BACK_PATH;
 		$this->doc->form='<form action="tce_file.php" method="post" name="editform" enctype="'.$GLOBALS['TYPO3_CONF_VARS']['SYS']['form_enctype'].'">';
+
+		if($GLOBALS['BE_USER']->jsConfirmation(1))	{
+			$confirm = ' && confirm('.$LANG->JScharCode($LANG->sL('LLL:EXT:lang/locallang_core.php:mess.redraw')).')';
+		} else {
+			$confirm = '';
+		}
 		$this->doc->JScode=$this->doc->wrapScriptTags('
 			var path = "'.$this->target.'";
 
 			function reload(a)	{	//
-				if (!changed || (changed && confirm('.$LANG->JScharCode($LANG->sL('LLL:EXT:lang/locallang_core.php:mess.redraw')).')))	{
+				if (!changed || (changed '.$confirm.'))	{
 					var params = "&target="+escape(path)+"&number="+a+"&returnUrl='.htmlspecialchars($this->returnUrl).'";
 					document.location = "file_upload.php?"+params;
 				}

@@ -739,6 +739,7 @@ class t3lib_tsfeBeUserAuth extends t3lib_beUserAuth {
 	function extGetFeAdminValue($pre,$val='')	{
 		if ($this->extAdmModuleEnabled($pre))	{	// Check if module is enabled.
 				// Exceptions where the values can be overridden from backend:
+				// deprecated
 			if ($pre.'_'.$val == 'edit_displayIcons' && $this->extAdminConfig['module.']['edit.']['forceDisplayIcons'])	{
 				return true;
 			}
@@ -747,11 +748,11 @@ class t3lib_tsfeBeUserAuth extends t3lib_beUserAuth {
 			}
 
 				// override all settings with user TSconfig
-			if ($this->extAdminConfig['module.'][$pre.'.'][$val] && $val)	{
-				return $this->extAdminConfig['module.'][$pre.'.'][$val];
+			if ($this->extAdminConfig['override.'][$pre.'.'][$val] && $val)	{
+				return $this->extAdminConfig['override.'][$pre.'.'][$val];
 			}
-			if ($this->extAdminConfig['module.'][$pre])	{
-				return $this->extAdminConfig['module.'][$pre];
+			if ($this->extAdminConfig['override.'][$pre])	{
+				return $this->extAdminConfig['override.'][$pre];
 			}
 
 			$retVal = $val ? $this->uc['TSFE_adminConfig'][$pre.'_'.$val] : 1;
