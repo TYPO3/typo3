@@ -871,6 +871,7 @@
 				1 => 'ID was not an accessible page',
 				2 => 'Subsection was found and not accessible',
 				3 => 'ID was outside the domain',
+				4 => 'The requested page alias does not exist'
 			);
 			$this->pageNotFoundAndExit($pNotFoundMsg[$this->pageNotFound]);
 		}
@@ -1296,7 +1297,11 @@
 	function checkAndSetAlias()	{
 		if ($this->id && !t3lib_div::testInt($this->id))	{
 			$aid = $this->sys_page->getPageIdFromAlias($this->id);
-			if ($aid)	{$this->id = $aid;}
+			if ($aid)	{
+				$this->id = $aid;
+			} else {
+				$this->pageNotFound = 4;
+			}
 		}
 	}
 
