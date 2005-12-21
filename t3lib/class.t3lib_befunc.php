@@ -1844,16 +1844,17 @@ class t3lib_BEfunc	{
 				case 'select':
 					if ($theColConf['MM'])	{
 							// Display the title of MM related records in lists
-						$MMres = $GLOBALS['TYPO3_DB']->exec_SELECT_mm_query(
-								$theColConf['foreign_table'].'.'.$TCA[$theColConf['foreign_table']]['ctrl']['label'],
-								$table,
+							$MMfield = $noRecordLookup?'uid':$TCA[$theColConf['foreign_table']]['ctrl']['label'];
+							$MMres = $GLOBALS['TYPO3_DB']->exec_SELECT_mm_query(
+								$theColConf['foreign_table'].'.'.$MMfield,
+								($table!=$theColConf['foreign_table']?$table:''),
 								$theColConf['MM'],
 								$theColConf['foreign_table'],
-								'AND '.$table.'.uid ='.intval($uid).t3lib_BEfunc::deleteClause($theColConf['foreign_table'])
+								'AND '.$theColConf['MM'].'.uid_local ='.intval($uid).t3lib_BEfunc::deleteClause($theColConf['foreign_table'])
 							);
 						if ($MMres) {
 							while($MMrow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($MMres))	{
-								$mmlA[] = $MMrow[$TCA[$theColConf['foreign_table']]['ctrl']['label']];
+								$mmlA[] = $MMrow[$MMfield];
 							}
 							if (is_array($mmlA)) {
 								$l=implode(', ',$mmlA);

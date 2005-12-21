@@ -1,3 +1,7 @@
+2005-12-21  Christian Jul Jensen  <julle@typo3.org>
+
+	* Fixed bug regarding MM-relations to same table in befunc::getProcessedValues
+
 2005-12-19  Michael Scharkow <michael@underused.org>
 	* Fixed bug #1915: trigger 404 with bogus aliases
 
