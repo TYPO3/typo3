@@ -50,7 +50,9 @@ if (t3lib_extMgm::isLoaded('crawler'))	{
 
 
 	// Example of crawlerhook (see also ext_localconf.php!)
-t3lib_div::loadTCA('index_config');
-$TCA['index_config']['columns']['type']['config']['items'][] =  Array('My Crawler hook!', 'tx_myext_example1');
-$TCA['index_config']['types']['tx_myext_example1'] = $TCA['index_config']['types']['0'];
+/*
+	t3lib_div::loadTCA('index_config');
+	$TCA['index_config']['columns']['type']['config']['items'][] =  Array('My Crawler hook!', 'tx_myext_example1');
+	$TCA['index_config']['types']['tx_myext_example1'] = $TCA['index_config']['types']['0'];
+*/
 ?>

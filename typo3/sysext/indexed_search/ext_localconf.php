@@ -55,6 +55,7 @@ $TYPO3_CONF_VARS['EXTCONF']['indexed_search']['pi1_hooks'] = array (
 
 
 	// Example of crawlerhook (see also ext_tables.php!)
-$TYPO3_CONF_VARS['EXTCONF']['indexed_search']['crawler']['tx_myext_example1'] = 'EXT:indexed_search/example/class.crawlerhook.php:&tx_indexedsearch_crawlerhook';
-
+/*
+	$TYPO3_CONF_VARS['EXTCONF']['indexed_search']['crawler']['tx_myext_example1'] = 'EXT:indexed_search/example/class.crawlerhook.php:&tx_indexedsearch_crawlerhook';
+*/
 ?>
