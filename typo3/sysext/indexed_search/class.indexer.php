@@ -351,7 +351,7 @@ class tx_indexedsearch_indexer {
 	 * @param	string		Keywords equivalent
 	 * @param	string		Description equivalent
 	 * @param	string		The main content to index
-	 * @param	string		The charset of the title, keyword, description and body-content
+	 * @param	string		The charset of the title, keyword, description and body-content. MUST BE VALID, otherwise nothing is indexed!
 	 * @param	integer		Last modification time, in seconds
 	 * @param	integer		The creation date of the content, in seconds
 	 * @param	integer		The record UID that the content comes from (for registration with the indexed rows)

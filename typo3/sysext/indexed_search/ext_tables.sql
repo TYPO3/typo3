@@ -150,21 +150,18 @@ CREATE TABLE index_debug (
 CREATE TABLE index_config (
     uid int(11) DEFAULT '0' NOT NULL auto_increment,
     pid int(11) DEFAULT '0' NOT NULL,
-    tstamp int(11) unsigned DEFAULT '0' NOT NULL,
-    crdate int(11) unsigned DEFAULT '0' NOT NULL,
-    cruser_id int(11) unsigned DEFAULT '0' NOT NULL,
-    hidden tinyint(4) unsigned DEFAULT '0' NOT NULL,
-    starttime int(11) unsigned DEFAULT '0' NOT NULL,
+    tstamp int(11) DEFAULT '0' NOT NULL,
+    crdate int(11) DEFAULT '0' NOT NULL,
+    cruser_id int(11) DEFAULT '0' NOT NULL,
+    hidden tinyint(4) DEFAULT '0' NOT NULL,
+    starttime int(11) DEFAULT '0' NOT NULL,
 
     set_id int(11) DEFAULT '0' NOT NULL,
     session_data mediumtext NOT NULL,
-    first_run_time int(11) unsigned DEFAULT '0' NOT NULL,
-    frequency int(11) unsigned DEFAULT '0' NOT NULL,
-    last_run int(11) unsigned DEFAULT '0' NOT NULL,
 
     title tinytext NOT NULL,
     description text NOT NULL,
-    type int(11) unsigned DEFAULT '0' NOT NULL,
+    type varchar(30) DEFAULT '' NOT NULL,
     depth int(11) unsigned DEFAULT '0' NOT NULL,
     table2index tinytext NOT NULL,
     alternative_source_pid blob NOT NULL,
@@ -174,6 +171,13 @@ CREATE TABLE index_config (
     chashcalc tinyint(3) unsigned DEFAULT '0' NOT NULL,
     filepath tinytext NOT NULL,
     extensions tinytext NOT NULL,
+
+	timer_next_indexing int(11) DEFAULT '0' NOT NULL,
+	timer_frequency int(11) DEFAULT '0' NOT NULL,
+	timer_offset int(11) DEFAULT '0' NOT NULL,
+	url_deny text NOT NULL,
+	recordsbatch int(11) DEFAULT '0' NOT NULL,
+	records_indexonchange tinyint(4) DEFAULT '0' NOT NULL,
 
     PRIMARY KEY (uid),
     KEY parent (pid)

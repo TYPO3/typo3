@@ -23,27 +23,34 @@ if (TYPO3_MODE=="BE")	{
 }
 
 t3lib_extMgm::allowTableOnStandardPages('index_config');
+t3lib_extMgm::addLLrefForTCAdescr('index_config','EXT:indexed_search/locallang_csh_indexcfg.xml');
+
+if (t3lib_extMgm::isLoaded('crawler'))	{
+	$TCA['index_config'] = Array (
+		'ctrl' => Array (
+			'title' => 'LLL:EXT:indexed_search/locallang_db.php:index_config',
+			'label' => 'title',
+			'tstamp' => 'tstamp',
+			'crdate' => 'crdate',
+			'cruser_id' => 'cruser_id',
+			'type' => 'type',
+			'default_sortby' => 'ORDER BY crdate',
+			'enablecolumns' => Array (
+				'disabled' => 'hidden',
+				'starttime' => 'starttime',
+			),
+			'dynamicConfigFile' => t3lib_extMgm::extPath($_EXTKEY).'tca.php',
+			'iconfile' => 'default.gif',
+		),
+		'feInterface' => Array (
+			'fe_admin_fieldList' => 'hidden, starttime, title, description, type, depth, table2index, alternative_source_pid, get_params, chashcalc, filepath, extensions',
+		)
+	);
+}
 
 
-$TCA['index_config'] = Array (
-    'ctrl' => Array (
-        'title' => 'LLL:EXT:indexed_search/locallang_db.php:index_config',
-        'label' => 'title',
-        'tstamp' => 'tstamp',
-        'crdate' => 'crdate',
-        'cruser_id' => 'cruser_id',
-        'type' => 'type',
-        'default_sortby' => 'ORDER BY crdate',
-        'enablecolumns' => Array (
-            'disabled' => 'hidden',
-            'starttime' => 'starttime',
-        ),
-        'dynamicConfigFile' => t3lib_extMgm::extPath($_EXTKEY).'tca.php',
-        'iconfile' => 'default.gif',
-    ),
-    'feInterface' => Array (
-        'fe_admin_fieldList' => 'hidden, starttime, title, description, type, depth, table2index, alternative_source_pid, get_params, chashcalc, filepath, extensions',
-    )
-);
-
+	// Example of crawlerhook (see also ext_localconf.php!)
+t3lib_div::loadTCA('index_config');
+$TCA['index_config']['columns']['type']['config']['items'][] =  Array('My Crawler hook!', 'tx_myext_example1');
+$TCA['index_config']['types']['tx_myext_example1'] = $TCA['index_config']['types']['0'];
 ?>

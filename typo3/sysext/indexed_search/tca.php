@@ -134,12 +134,79 @@ $TCA['index_config'] = Array (
                 'size' => '30',
             )
         ),
+        'url_deny' => Array (
+            'label' => 'LLL:EXT:indexed_search/locallang_db.php:index_config.url_deny',
+            'config' => Array (
+                'type' => 'text',
+                'cols' => '30',
+                'rows' => '2',
+            )
+        ),
+        'records_indexonchange' => Array (
+            'label' => 'LLL:EXT:indexed_search/locallang_db.php:index_config.records_indexonchange',
+            'config' => Array (
+                'type' => 'check',
+                'default' => '0',
+            )
+        ),
+        'timer_next_indexing' => Array (
+            'label' => 'LLL:EXT:indexed_search/locallang_db.php:index_config.timer_next_indexing',
+            'config' => Array (
+                'type' => 'input',
+                'size' => '12',
+                'max' => '20',
+                'eval' => 'datetime',
+                'default' => '0',
+                'checkbox' => '0'
+            )
+        ),
+        'timer_offset' => Array (
+            'label' => 'LLL:EXT:indexed_search/locallang_db.php:index_config.timer_offset',
+            'config' => Array (
+                'type' => 'input',
+                'size' => '8',
+                'max' => '20',
+                'eval' => 'time',
+                'default' => 3600,
+            )
+        ),
+        'timer_frequency' => Array (
+            'label' => 'LLL:EXT:indexed_search/locallang_db.php:index_config.timer_frequency',
+            'config' => Array (
+                'type' => 'select',
+                'items' => Array (
+                    Array('LLL:EXT:indexed_search/locallang_db.php:index_config.timer_frequency.I.0', '3600'),
+                    Array('LLL:EXT:indexed_search/locallang_db.php:index_config.timer_frequency.I.1', '86400'),
+                    Array('LLL:EXT:indexed_search/locallang_db.php:index_config.timer_frequency.I.2', '604800'),
+                ),
+                'size' => 1,
+                'maxitems' => 1,
+                'default' => 86400,
+            )
+        ),
+        'recordsbatch' => Array (
+            'label' => 'LLL:EXT:indexed_search/locallang_db.php:index_config.recordsbatch',
+            'config' => Array (
+                'type' => 'input',
+                'size' => '8',
+                'max' => '20',
+                'eval' => 'int',
+                'default' => '0',
+                'checkbox' => '0'
+            )
+        ),
+        'set_id' => Array (
+            'label' => 'Session ID (if > zero, then indexing job is running):',
+            'config' => Array (
+                'type' => 'none',
+            )
+        ),
     ),
     'types' => Array (
-        '0' => Array('showitem' => 'title;;1;;2-2-2, description, type'),
-        '1' => Array('showitem' => 'title;;1;;2-2-2, description, type;;;;3-3-3, table2index;;;;3-3-3, alternative_source_pid, fieldlist, get_params, chashcalc'),
-        '2' => Array('showitem' => 'title;;1;;2-2-2, description, type;;;;3-3-3, filepath;;;;3-3-3, extensions, depth'),
-        '3' => Array('showitem' => 'title;;1;;2-2-2, description, type;;;;3-3-3, externalUrl;;;;3-3-3, depth'),
+        '0' => Array('showitem' => 'title;;1;;2-2-2, description, timer_next_indexing, timer_offset, timer_frequency, set_id, type;;;;3-3-3'),
+        '1' => Array('showitem' => 'title;;1;;2-2-2, description, timer_next_indexing, timer_offset, timer_frequency, set_id, type;;;;3-3-3, table2index;;;;3-3-3, alternative_source_pid, fieldlist, get_params, chashcalc,recordsbatch,records_indexonchange'),
+        '2' => Array('showitem' => 'title;;1;;2-2-2, description, timer_next_indexing, timer_offset, timer_frequency, set_id, type;;;;3-3-3, filepath;;;;3-3-3, extensions, depth'),
+        '3' => Array('showitem' => 'title;;1;;2-2-2, description, timer_next_indexing, timer_offset, timer_frequency, set_id, type;;;;3-3-3, externalUrl;;;;3-3-3, depth, url_deny'),
     ),
     'palettes' => Array (
         '1' => Array('showitem' => 'starttime,hidden')

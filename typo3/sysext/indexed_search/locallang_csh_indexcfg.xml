@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+	<meta type="array">
+		<description>CSH for Indexing Configurations</description>
+		<type>CSH</type>
+		<fileId>EXT:indexed_search/locallang_csh_indexcfg.xml</fileId>
+		<csh_table>index_config</csh_table>
+		<keep_original_text>1</keep_original_text>
+		<ext_filename_template>EXT:csh_###LANGKEY###/indexed_search/###LANGKEY###.locallang_csh_indexcfg.xml</ext_filename_template>
+		<labelContext type="array">
+		</labelContext>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index=".description">The Indexed Search configuration allows you to set up indexing of resources which are external to the TYPO3 page tree. This could be a library of records (like news), a directory structure of files (like PDFs) or an external URL to be crawled to some depth - or third-party content provided from other extensions via hooks.</label>
+			<label index=".details">The Indexing Configuration records are used to set up how the indexing occurs, at which time and related to which part of the page tree. An important requirement to keep in mind is that the &quot;crawler&quot; extension must be installed since the indexing engine uses the &quot;crawler&quot; extensions queue as a timing device - and using the &quot;crawler&quot; extension means using a cron-job to activate it from the shell.</label>
+			<label index="title.description">Provide a title for the configuration.</label>
+			<label index="description.description">If needed, give it a description or put other important notes in this field.</label>
+			<label index="hidden.description">Disable the configuration by this checkbox. If disabled, the configuration will be bypassed by the crawlers cron job.</label>
+			<label index="hidden.details">Notice; Disabling the indexing process will not hide already indexed content in search results!</label>
+			<label index="_hidden.seeAlso">index_config:starttime</label>
+			<label index="starttime.description">Set a start time for the configuration. If set, the configuration will be bypassed by the crawlers cron job until this time is reached.</label>
+			<label index="_starttime.seeAlso">index_config:hidden</label>
+			<label index="timer_frequency.description">Use this setting to adjust how often you would like a re-indexing process to run for the configuration.</label>
+			<label index="_timer_frequency.seeAlso">index_config:timer_next_indexing, 
+index_config:timer_offset</label>
+			<label index="timer_offset.description">The offset adjusts at what time of day you want the indexing process to run.</label>
+			<label index="_timer_offset.seeAlso">index_config:timer_frequency</label>
+			<label index="timer_next_indexing.description">This field contains the date and time of the next occuring indexing session. If left blank the next indexing will occur as soon as the cron-script is run again (typically within the next minute) and afterwards set to the next time according to frequency and offset.</label>
+			<label index="_timer_next_indexing.seeAlso">index_config:timer_offset, 
+index_config:timer_frequency</label>
+			<label index="type.description">Select the type of Indexing Configuration here.</label>
+			<label index="type.details">&lt;b&gt;Records&lt;/b&gt; - You will be able to index records on a specified page from a specified database table. You can determine which fields from that record you want to index and how additional GET parameters should look like when linking to the search result.
+&lt;b&gt;Files&lt;/b&gt; - Allows you to index a whole directory of files from the fileadmin/ folder. You can optionally specify how many levels of recursion you want.
+&lt;b&gt;External URL&lt;/b&gt; - Allows you to index an external site and search it from your TYPO3 installation! You can specify how deep the crawler should go on that external URL.
+&lt;b&gt;Custom&lt;/b&gt; - Other extensions might register custom types of configurations.</label>
+			<label index="table2index.description">Specify the database table to index records from.</label>
+			<label index="alternative_source_pid.description">By default the indexer will select records from the page id where the Indexing Configuration is stored. If you want an alternative page as the source of your records you can enter it here.</label>
+			<label index="_alternative_source_pid.seeAlso">index_config:table2index</label>
+			<label index="get_params.description">Enter the GET parameters necessary to display the search results. You can use ###UID### as a marker in the parameter template.</label>
+			<label index="get_params.details">Notice: The GET parameters are appended to the URL of the page where the Indexing Configuration is stored (which must be the page where a plugin exists that can display the records with the given parameters!).
+Example value: &quot;&amp;showUid=###UID###&quot;</label>
+			<label index="_get_params.seeAlso">index_config:table2index</label>
+			<label index="fieldlist.description">Enter a comma-list of fields to be indexed. The first field name will be used for the search result title.</label>
+			<label index="fieldlist.details">&lt;b&gt;Example:&lt;/b&gt; &quot;header,bodytext,image_caption&quot; would index the Header, Bodytext and Image Caption fields from &quot;tt_content&quot;. Notice that you must use the real database field names, don't spell them wrong!</label>
+			<label index="_fieldlist.seeAlso">index_config:table2index</label>
+			<label index="chashcalc.description">If checked, the URL in the search result for records will be encoded with a &quot;&amp;cHash&quot; parameter to make it cachable. Use only if supported by the plugin!</label>
+			<label index="_chashcalc.seeAlso">index_config:table2index</label>
+			<label index="recordsbatch.description">Enter how many records to index for each instance of the indexing process (how many per minute). Default is 100 records.</label>
+			<label index="_recordsbatch.seeAlso">index_config:table2index</label>
+			<label index="records_indexonchange.description">If set, new and changed records from this table will be indexed through a hook in the core (TCEmain) meaning that they will be searchable immediately after addition to the system.</label>
+			<label index="_records_indexonchange.seeAlso">index_config:table2index</label>
+			<label index="externalUrl.description">Enter the URL of the external website you want to index.</label>
+			<label index="url_deny.description">Enter a URL on each line inside of which the crawler should not decend.</label>
+			<label index="url_deny.details">Example: 
+If you wish to index &quot;http://typo3.org/&quot; but not &quot;http://typo3.org/extensions/&quot; and &quot;http://typo3.org/downloads/&quot; then you simply enter those two URLs into the box like this:
+
+http://typo3.org/downloads/
+http://typo3.org/extensions/</label>
+			<label index="_url_deny.seeAlso">index_config:externalUrl</label>
+			<label index="filepath.description">Enter a filepath inside fileadmin/ where you want the files to be indexed.</label>
+			<label index="filepath.details">Example: &quot;fileadmin/newsletters/&quot;</label>
+			<label index="extensions.description">If you want to index only specific files in the directory, enter a list of file extensions here. For example: &quot;html,pdf,doc&quot;</label>
+			<label index="_extensions.seeAlso">index_config:filepath</label>
+			<label index="depth.description">Levels of recursion.</label>
+			<label index="depth.details">For file indexing it is the level of directories to decend. For External URLs it's the depth to which the crawler will go with links.</label>
+			<label index="_depth.seeAlso">index_config:externalUrl, 
+index_config:filepath</label>
+		</languageKey>
+		<languageKey index="dk">EXT:csh_dk/indexed_search/dk.locallang_csh_indexcfg.xml</languageKey>
+		<languageKey index="de">EXT:csh_de/indexed_search/de.locallang_csh_indexcfg.xml</languageKey>
+		<languageKey index="no">EXT:csh_no/indexed_search/no.locallang_csh_indexcfg.xml</languageKey>
+		<languageKey index="it">EXT:csh_it/indexed_search/it.locallang_csh_indexcfg.xml</languageKey>
+		<languageKey index="fr">EXT:csh_fr/indexed_search/fr.locallang_csh_indexcfg.xml</languageKey>
+		<languageKey index="es">EXT:csh_es/indexed_search/es.locallang_csh_indexcfg.xml</languageKey>
+		<languageKey index="nl">EXT:csh_nl/indexed_search/nl.locallang_csh_indexcfg.xml</languageKey>
+		<languageKey index="cz">EXT:csh_cz/indexed_search/cz.locallang_csh_indexcfg.xml</languageKey>
+		<languageKey index="pl">EXT:csh_pl/indexed_search/pl.locallang_csh_indexcfg.xml</languageKey>
+		<languageKey index="si">EXT:csh_si/indexed_search/si.locallang_csh_indexcfg.xml</languageKey>
+		<languageKey index="fi">EXT:csh_fi/indexed_search/fi.locallang_csh_indexcfg.xml</languageKey>
+		<languageKey index="tr">EXT:csh_tr/indexed_search/tr.locallang_csh_indexcfg.xml</languageKey>
+		<languageKey index="se">EXT:csh_se/indexed_search/se.locallang_csh_indexcfg.xml</languageKey>
+		<languageKey index="pt">EXT:csh_pt/indexed_search/pt.locallang_csh_indexcfg.xml</languageKey>
+		<languageKey index="ru">EXT:csh_ru/indexed_search/ru.locallang_csh_indexcfg.xml</languageKey>
+		<languageKey index="ro">EXT:csh_ro/indexed_search/ro.locallang_csh_indexcfg.xml</languageKey>
+		<languageKey index="ch">EXT:csh_ch/indexed_search/ch.locallang_csh_indexcfg.xml</languageKey>
+		<languageKey index="sk">EXT:csh_sk/indexed_search/sk.locallang_csh_indexcfg.xml</languageKey>
+		<languageKey index="lt">EXT:csh_lt/indexed_search/lt.locallang_csh_indexcfg.xml</languageKey>
+		<languageKey index="is">EXT:csh_is/indexed_search/is.locallang_csh_indexcfg.xml</languageKey>
+		<languageKey index="hr">EXT:csh_hr/indexed_search/hr.locallang_csh_indexcfg.xml</languageKey>
+		<languageKey index="hu">EXT:csh_hu/indexed_search/hu.locallang_csh_indexcfg.xml</languageKey>
+		<languageKey index="gl">EXT:csh_gl/indexed_search/gl.locallang_csh_indexcfg.xml</languageKey>
+		<languageKey index="th">EXT:csh_th/indexed_search/th.locallang_csh_indexcfg.xml</languageKey>
+		<languageKey index="gr">EXT:csh_gr/indexed_search/gr.locallang_csh_indexcfg.xml</languageKey>
+		<languageKey index="hk">EXT:csh_hk/indexed_search/hk.locallang_csh_indexcfg.xml</languageKey>
+		<languageKey index="eu">EXT:csh_eu/indexed_search/eu.locallang_csh_indexcfg.xml</languageKey>
+		<languageKey index="bg">EXT:csh_bg/indexed_search/bg.locallang_csh_indexcfg.xml</languageKey>
+		<languageKey index="br">EXT:csh_br/indexed_search/br.locallang_csh_indexcfg.xml</languageKey>
+		<languageKey index="et">EXT:csh_et/indexed_search/et.locallang_csh_indexcfg.xml</languageKey>
+		<languageKey index="ar">EXT:csh_ar/indexed_search/ar.locallang_csh_indexcfg.xml</languageKey>
+		<languageKey index="he">EXT:csh_he/indexed_search/he.locallang_csh_indexcfg.xml</languageKey>
+		<languageKey index="ua">EXT:csh_ua/indexed_search/ua.locallang_csh_indexcfg.xml</languageKey>
+		<languageKey index="lv">EXT:csh_lv/indexed_search/lv.locallang_csh_indexcfg.xml</languageKey>
+		<languageKey index="jp">EXT:csh_jp/indexed_search/jp.locallang_csh_indexcfg.xml</languageKey>
+		<languageKey index="vn">EXT:csh_vn/indexed_search/vn.locallang_csh_indexcfg.xml</languageKey>
+		<languageKey index="ca">EXT:csh_ca/indexed_search/ca.locallang_csh_indexcfg.xml</languageKey>
+		<languageKey index="ba">EXT:csh_ba/indexed_search/ba.locallang_csh_indexcfg.xml</languageKey>
+		<languageKey index="kr">EXT:csh_kr/indexed_search/kr.locallang_csh_indexcfg.xml</languageKey>
+		<languageKey index="eo">EXT:csh_eo/indexed_search/eo.locallang_csh_indexcfg.xml</languageKey>
+		<languageKey index="my">EXT:csh_my/indexed_search/my.locallang_csh_indexcfg.xml</languageKey>
+		<languageKey index="hi">EXT:csh_hi/indexed_search/hi.locallang_csh_indexcfg.xml</languageKey>
+	</data>
+	<orig_text type="array">
+	</orig_text>
+</T3locallang>

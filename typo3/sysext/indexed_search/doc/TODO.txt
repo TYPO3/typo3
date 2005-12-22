@@ -1,35 +1,25 @@
+Version 3:
+
+BUGS to solve before 4.0:
+	- The "crawler" extension: what if crawler-script doesn't end and clear the process-script?
+	- Indexing of TYPO3.org resulted in: links to wiki pages were wrong!
+
+TODO:
+	Frontend:
+		- Searching in certain external site
+		- Mac "spotlight" like searching? (Define which categories are bundled and which not)
+		- Alternative presentationer af når records er indexerede.
+
 ***************
 TODO / projects:
 ***************
 
-Version 3:
-- Refactor "class.crawler.php"
-- Add timing controls
-- Hook + example for external clients
-- IndexCfg option:
-	- Exclude URLs (regex?), possibly with graphical interface selecting it from indexed content.
-	- Record-indexing: support languageField in records
-	- Crawling in the night (enter time for indexing configurations), but possible to force.
-	- New type: Page Tree (traversing a part at night like crawler allows us...)
-- Indexing configuration overview (including status and manual clearing possibility)
-- Set up test environment with CLI running
-
-Frontend:
-	- Searching in certain external site
-	- Mac "spotlight" like searching? (Define which categories are bundled and which not)
-	- Alternative presentationer af når records er indexerede.
-
-
-
-Testing indexing crawler for:
-	- 3DS
-	- TYPO3.org copy
-	- Metropol
-	- FI
-	- Link Factory
-	- Brunata
 
 **************
+- IndexCfg option:
+	- New type: Page Tree (traversing a part at night like crawler allows us...) [Basing this on the features of "crawler", simply adding log-entries]
+
+- Indexing configuration overview (including status and manual clearing possibility)
 
 Bugs / Issues:
 - The checkbox "No Search" in the page header is only respected by indexed_search during indexing! (A page will not be indexed when "No Search" is set). However when searching results are not filtered based on this flag - so if a page is indexed before the no search flag is set it will be found in search results. To change this is hard because the getTreeList() function that fetches all page ids cannot take a where-clause to filter it out but must have hardcoded support. Alternatively the pages table must be joined into the search result so we can select on the field. A solution is still not agreed upon.

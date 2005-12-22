@@ -46,10 +46,20 @@
 			<label index="index_config.alternative_source_pid">Alternative Source Page:</label>
 			<label index="index_config.get_params">GET parameter string (with ###UID### substitution):</label>
 			<label index="index_config.fields">Fields (first is title):</label>
-			<label index="index_config.externalUrl">External URL:</label>
+			<label index="index_config.externalUrl">External URL (eg. "http://www.domain.org/"):</label>
 			<label index="index_config.chashcalc">Calculate cHash (force caching)?</label>
 			<label index="index_config.filepath">Filepath:</label>
 			<label index="index_config.extensions">Limit to extensions (commalist):</label>
+
+			<label index="index_config.url_deny">Enter sub-URLs in which not to decend:</label>
+			<label index="index_config.records_indexonchange">Index Records immediately when saved?:</label>
+			<label index="index_config.timer_next_indexing">Next indexing is scheduled (if empty, then immediately):</label>
+			<label index="index_config.timer_offset">Timing offset from midnight:</label>
+			<label index="index_config.timer_frequency">How often would you like a re-index?:</label>
+			<label index="index_config.timer_frequency.I.0">Every hour</label>
+			<label index="index_config.timer_frequency.I.1">Every day (24 hours)</label>
+			<label index="index_config.timer_frequency.I.2">Every week</label>
+			<label index="index_config.recordsbatch">How many records to index a minute (default is 100):</label>
 		</languageKey>
 		<languageKey index="dk">EXT:csh_dk/indexed_search/dk.locallang_db.xml</languageKey>
 		<languageKey index="de">EXT:csh_de/indexed_search/de.locallang_db.xml</languageKey>
