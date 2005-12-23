@@ -1,19 +1,19 @@
 <?php
 /***************************************************************
 *  Copyright notice
-*  
+*
 *  (c) 2004 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
-*  This script is part of the TYPO3 project. The TYPO3 project is 
+*  This script is part of the TYPO3 project. The TYPO3 project is
 *  free software; you can redistribute it and/or modify
 *  it under the terms of the GNU General Public License as published by
 *  the Free Software Foundation; either version 2 of the License, or
 *  (at your option) any later version.
-* 
+*
 *  The GNU General Public License can be found at
 *  http://www.gnu.org/copyleft/gpl.html.
-* 
+*
 *  This script is distributed in the hope that it will be useful,
 *  but WITHOUT ANY WARRANTY; without even the implied warranty of
 *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -21,7 +21,7 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-/** 
+/**
  * Module 'DBAL Debug' for the 'dbal' extension.
  *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
@@ -30,7 +30,7 @@
 
 
 	// DEFAULT initialization of a module [BEGIN]
-unset($MCONF);	
+unset($MCONF);
 require ('conf.php');
 require ($BACK_PATH.'init.php');
 require ($BACK_PATH.'template.php');
@@ -45,7 +45,7 @@ $BE_USER->modAccess($MCONF,1);	// This checks permissions and exits if the users
 
 /**
  * Script class; Backend module for DBAL extension
- * 
+ *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage tx_dbal
@@ -54,14 +54,15 @@ class tx_dbal_module1 extends t3lib_SCbase {
 
 	/**
 	 * Adds items to the ->MOD_MENU array. Used for the function menu selector.
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function menuConfig()	{
 		$this->MOD_MENU = Array (
 			'function' => Array (
 				0 => $GLOBALS['LANG']->getLL('Debug_log'),
 				'info' => $GLOBALS['LANG']->getLL('Cached_info'),
+				'sqlcheck' => $GLOBALS['LANG']->getLL('SQL_check'),
 			)
 		);
 		parent::menuConfig();
@@ -69,8 +70,8 @@ class tx_dbal_module1 extends t3lib_SCbase {
 
 	/**
 	 * Main function of the module. Write the content to $this->content
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function main()	{
 		global $BACK_PATH,$BE_USER;
@@ -103,6 +104,9 @@ class tx_dbal_module1 extends t3lib_SCbase {
 		    case 'info':
 			$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('Cached_info'), $this->printCachedInfo());
 			break;
+		    case 'sqlcheck':
+			$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('SQL_check'), $this->printSqlCheck());
+			break;
 		    case 0:
 			$this->content.= $this->doc->section($GLOBALS['LANG']->getLL('Debug_log'), $this->printLogMgm());
 			break;
@@ -118,8 +122,8 @@ class tx_dbal_module1 extends t3lib_SCbase {
 
 	/**
 	 * Prints out the module HTML
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function printContent()	{
 		global $SOBE;
@@ -127,6 +131,146 @@ class tx_dbal_module1 extends t3lib_SCbase {
 		$this->content.=$this->doc->middle();
 		$this->content.=$this->doc->endPage();
 		echo $this->content;
+	}
+
+	function printSqlCheck()	{
+		$input = t3lib_div::_GP('tx_dbal');
+
+		$out = '
+			<form name="sql_check" action="index.php" method="post" enctype="'.$GLOBALS['TYPO3_CONF_VARS']['SYS']['form_enctype'].'">
+			<script type="text/javascript">
+/*<![CDATA[*/
+function updateQryForm(s) {
+	document.getElementById(\'tx-dbal-result\').style.display = \'none\';
+	switch(s) {
+	case \'SELECT\':
+		document.getElementById(\'tx-dbal-qryfields\').style.display = \'table-row\';
+		document.getElementById(\'tx-dbal-qryinsertvalues\').style.display = \'none\';
+		document.getElementById(\'tx-dbal-qryupdatevalues\').style.display = \'none\';
+		document.getElementById(\'tx-dbal-qryfrom\').style.display = \'table-row\';
+		document.getElementById(\'tx-dbal-qryinto\').style.display = \'none\';
+		document.getElementById(\'tx-dbal-qrywhere\').style.display = \'table-row\';
+		document.getElementById(\'tx-dbal-qrygroup\').style.display = \'table-row\';
+		document.getElementById(\'tx-dbal-qryorder\').style.display = \'table-row\';
+		document.getElementById(\'tx-dbal-qrylimit\').style.display = \'table-row\';
+	break;
+	case \'INSERT\':
+		document.getElementById(\'tx-dbal-qryfields\').style.display = \'none\';
+		document.getElementById(\'tx-dbal-qryinsertvalues\').style.display = \'table-row\';
+		document.getElementById(\'tx-dbal-qryupdatevalues\').style.display = \'none\';
+		document.getElementById(\'tx-dbal-qryfrom\').style.display = \'none\';
+		document.getElementById(\'tx-dbal-qryinto\').style.display = \'table-row\';
+		document.getElementById(\'tx-dbal-qrywhere\').style.display = \'table-row\';
+		document.getElementById(\'tx-dbal-qrygroup\').style.display = \'table-row\';
+		document.getElementById(\'tx-dbal-qryorder\').style.display = \'table-row\';
+		document.getElementById(\'tx-dbal-qrylimit\').style.display = \'table-row\';
+	break;
+	case \'UPDATE\':
+		document.getElementById(\'tx-dbal-qryfields\').style.display = \'none\';
+		document.getElementById(\'tx-dbal-qryinsertvalues\').style.display = \'none\';
+		document.getElementById(\'tx-dbal-qryupdatevalues\').style.display = \'table-row\';
+		document.getElementById(\'tx-dbal-qryfrom\').style.display = \'none\';
+		document.getElementById(\'tx-dbal-qryinto\').style.display = \'none\';
+		document.getElementById(\'tx-dbal-qryupdate\').style.display = \'table-row\';
+		document.getElementById(\'tx-dbal-qrywhere\').style.display = \'table-row\';
+		document.getElementById(\'tx-dbal-qrygroup\').style.display = \'none\';
+		document.getElementById(\'tx-dbal-qryorder\').style.display = \'none\';
+		document.getElementById(\'tx-dbal-qrylimit\').style.display = \'none\';
+	break;
+	case \'DELETE\':
+		document.getElementById(\'tx-dbal-qryfields\').style.display = \'none\';
+		document.getElementById(\'tx-dbal-qryinsertvalues\').style.display = \'none\';
+		document.getElementById(\'tx-dbal-qryupdatevalues\').style.display = \'none\';
+		document.getElementById(\'tx-dbal-qryfrom\').style.display = \'table-row\';
+		document.getElementById(\'tx-dbal-qryinto\').style.display = \'none\';
+		document.getElementById(\'tx-dbal-qrywhere\').style.display = \'table-row\';
+		document.getElementById(\'tx-dbal-qrygroup\').style.display = \'none\';
+		document.getElementById(\'tx-dbal-qryorder\').style.display = \'none\';
+		document.getElementById(\'tx-dbal-qrylimit\').style.display = \'none\';
+	break;
+	}
+}
+/*]]>*/
+				</script>
+	    <table>
+	    <tr class="tableheader bgColor5"><th colspan="2">Easy SQL check</th></tr>
+	    <tr><td colspan="2">
+	    <select name="tx_dbal[QUERY]"size="1" onchange="updateQryForm(this.options[this.selectedIndex].value)">
+	     <option value="SELECT" '.($input['QUERY']=='SELECT'? 'selected="selected"' : '').'>SELECT</option>
+	     <option value="INSERT" '.($input['QUERY']=='INSERT'? 'selected="selected"' : '').'>INSERT</option>
+	     <option value="UPDATE" '.($input['QUERY']=='UPDATE'? 'selected="selected"' : '').'>UPDATE</option>
+	     <option value="DELETE" '.($input['QUERY']=='DELETE' ? 'selected="selected"' : '').'">DELETE</option>
+	    </select>
+	    </td></tr>
+ 	    <tr id="tx-dbal-qryupdate" style="display:none;"><td></td><td><input name="tx_dbal[UPDATE]" value="'.$input['UPDATE'].'" type="text" size="30" maxsize="100" /></td></tr>
+	    <tr id="tx-dbal-qryfields"><td></td><td><input name="tx_dbal[FIELDS]" value="'.$input['FIELDS'].'" type="text" size="30" maxsize="100" /></td></tr>
+	    <tr id="tx-dbal-qryinsertvalues" style="display:none;"><td></td><td><textarea name="tx_dbal[INSERTVALUES]" cols="30" rows="4">'.$input['INSERTVALUES'].'</textarea></td></tr>
+	    <tr id="tx-dbal-qryupdatevalues" style="display:none;"><th>SET</th><td><textarea name="tx_dbal[UPDATEVALUES]" cols="30" rows="4">'.$input['UPDATEVALUES'].'</textarea></td></tr>
+ 	    <tr id="tx-dbal-qryfrom"><th>FROM</th><td><input name="tx_dbal[FROM]" value="'.$input['FROM'].'" type="text" size="30" maxsize="100" /></td></tr>
+ 	    <tr id="tx-dbal-qryinto" style="display:none;"><th>INTO</th><td><input name="tx_dbal[INTO]" value="'.$input['INTO'].'" type="text" size="30" maxsize="100" /></td></tr>
+	    <tr id="tx-dbal-qrywhere"><th>WHERE</th><td><input name="tx_dbal[WHERE]" value="'.$input['WHERE'].'" type="text" size="30" maxsize="100" /></td></tr>
+	    <tr id="tx-dbal-qrygroup"><th>GROUP BY</th><td><input name="tx_dbal[GROUP]" value="'.$input['GROUP'].'" type="text" size="30" maxsize="100" /></td></tr>
+	    <tr id="tx-dbal-qryorder"><th>ORDER BY</th><td><input name="tx_dbal[ORDER]" value="'.$input['ORDER'].'" type="text" size="30" maxsize="100" /></td></tr>
+	    <tr id="tx-dbal-qrylimit"><th>LIMIT</th><td><input name="tx_dbal[LIMIT]" value="'.$input['LIMIT'].'" type="text" size="30" maxsize="100" /></td></tr>
+			<tr><td></td><td style="text-align:right;"><input type="submit" value="CHECK" /></td></tr>
+			<script type="text/javascript">
+/*<![CDATA[*/
+updateQryForm(\''.$input['QUERY'].'\');
+/*]]>*/
+				</script>
+			';
+
+			$out .= '<tr id="tx-dbal-result" class="bgColor4"><th>Result:</th><td>';
+			switch($input['QUERY']) {
+				case 'SELECT';
+					$qry = $GLOBALS['TYPO3_DB']->SELECTquery($input['FIELDS'],$input['FROM'],$input['WHERE'],$input['GROUP'],$input['ORDER'],$input['LIMIT']);
+				break;
+				case 'INSERT';
+					$qry = $GLOBALS['TYPO3_DB']->INSERTquery($input['INTO'],$this->createFieldsValuesArray($input['INSERTVALUES']));
+				break;
+				case 'UPDATE';
+					$qry = $GLOBALS['TYPO3_DB']->UPDATEquery($input['UPDATE'],$input['WHERE'],$this->createFieldsValuesArray($input['UPDATEVALUES']));
+				break;
+				case 'DELETE';
+					$qry = $GLOBALS['TYPO3_DB']->DELETEquery($input['FROM'],$input['WHERE']);
+				break;
+			}
+			$out .= '<pre>'.htmlspecialchars($qry).'</pre></td></tr>';
+
+		$out .= '
+			<tr class="tableheader bgColor5"><th colspan="2">RAW SQL check</th></tr>
+			<tr><td colspan="2" style="text-align:right;"><textarea name="tx_dbal[RAWSQL]" cols="60" rows="5">'.$input['RAWSQL'].'</textarea><br /><input type="submit" value="CHECK" /></td></tr>';
+		if(!empty($input['RAWSQL'])) {
+			$out .= '<tr class="bgColor4">';
+			$parseResult = $GLOBALS['TYPO3_DB']->SQLparser->parseSQL($input['RAWSQL']);
+			if (is_array($parseResult))	{
+				$newQuery = $GLOBALS['TYPO3_DB']->SQLparser->compileSQL($parseResult);
+				$testResult = $GLOBALS['TYPO3_DB']->SQLparser->debug_parseSQLpartCompare($input['RAWSQL'], $newQuery);
+				if (!is_array($testResult))	{
+					$out .= '<td colspan="2">'.$newQuery;
+				} else {
+					$out .= '<td colspan="2">'.htmlspecialchars($newQuery).'</td></tr>
+					<tr><th>Error:</th><td style="border:2px solid #f00;">Input query did not match the parsed and recompiled query exactly (not observing whitespace):<br />'.$testResult;
+				}
+			} else {
+				$out .= '<th>Result:</th><td style="border:2px solid #f00;">'.$parseResult;
+			}
+			$out .='</td></tr>';
+		}
+
+		$out .='</table></form>';
+		return $out;
+	}
+
+	function createFieldsValuesArray($in) {
+		$ret = array();
+		$in = explode(chr(10),$in);
+		foreach ($in as $v) {
+			$fv = explode('=',$v);
+			$ret[$fv[0]] = $fv[1];
+		}
+
+		return $ret;
 	}
 
 	function printCachedInfo()	{
@@ -168,7 +312,7 @@ class tx_dbal_module1 extends t3lib_SCbase {
 	    }
 	    $out .= '</tbody></table>';
 
-	    $menu = '<a href="index.php?cmd=clear">CLEAR DATA</a><hr />';		
+	    $menu = '<a href="index.php?cmd=clear">CLEAR DATA</a><hr />';
 
 	    return $menu.$out;
 	}
@@ -176,7 +320,7 @@ class tx_dbal_module1 extends t3lib_SCbase {
 	/**
 	 * Printing the debug-log from the DBAL extension
 	 * To enabled debugging, you will have to enabled it in the configuration!
-	 * 
+	 *
 	 * @return	string		HTML content
 	 */
 	function printLogMgm()	{
@@ -193,7 +337,7 @@ class tx_dbal_module1 extends t3lib_SCbase {
 				$outStr = 'Log FLUSHED!';
 			break;
 			case 'joins':
-			
+
 					// Query:
 				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('table_join,exec_time,query,script','tx_dbal_debuglog','table_join!=\'\'', 'table_join,script,exec_time,query');
 
@@ -230,7 +374,7 @@ class tx_dbal_module1 extends t3lib_SCbase {
 						</tr>';
 				}
 
-					// Printing direct joins:				
+					// Printing direct joins:
 				$outStr.= '<h4>Direct joins:</h4>'.t3lib_div::view_array($tableIndex);
 
 
@@ -245,14 +389,14 @@ class tx_dbal_module1 extends t3lib_SCbase {
 					}
 				}
 				$outStr.= '<h4>Total dependencies:</h4>'.t3lib_div::view_array($tableIndex);
-				
+
 					// Printing data rows:
 				$outStr.= '
 					<table border="1" cellspacing="0">'.implode('',$tRows).'
 					</table>';
 			break;
 			case 'errors':
-			
+
 					// Query:
 				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('serdata,exec_time,query,script','tx_dbal_debuglog','errorFlag>0','','tstamp DESC');
 
@@ -292,7 +436,7 @@ class tx_dbal_module1 extends t3lib_SCbase {
 							<td>'.htmlspecialchars($row['query']).'</td>
 						</tr>';
 				}
-				
+
 					// Printing data rows:
 				$outStr.= '
 					<table border="1" cellspacing="0">'.implode('',$tRows).'
@@ -314,7 +458,7 @@ class tx_dbal_module1 extends t3lib_SCbase {
 							<td>'.t3lib_BEfunc::datetime($row['tstamp']).'</td>
 							<td>'.htmlspecialchars($row['script']).'</td>
 							<td>'.htmlspecialchars($row['tablename']).'</td>
-							<td>'.str_replace('\'\'', '<span style="background-color:#ff0000;color:#ffffff;padding:2px;font-weight:bold;">\'\'</span>', htmlspecialchars($row['whereclause'])).'</td>
+							<td>'.str_replace(array('\'\'','""'), array('<span style="background-color:#ff0000;color:#ffffff;padding:2px;font-weight:bold;">\'\'</span>','<span style="background-color:#ff0000;color:#ffffff;padding:2px;font-weight:bold;">""</span>'), htmlspecialchars($row['whereclause'])).'</td>
 						</tr>';
 				}
 
@@ -323,10 +467,10 @@ class tx_dbal_module1 extends t3lib_SCbase {
 					</table>';
 			break;
 			default:
-			
+
 					// Look for request to view specific script exec:
 				$specTime = t3lib_div::_GP('specTime');
-				
+
 				if ($specTime)	{
 					$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*','tx_dbal_debuglog','tstamp='.intval($specTime));
 					$tRows = array();
@@ -364,7 +508,7 @@ class tx_dbal_module1 extends t3lib_SCbase {
 							<tr>
 								<td>'.t3lib_BEfunc::datetime($row['tstamp']).'</td>
 								<td>'.htmlspecialchars($row['qrycount']).'</td>
-								<td>'.htmlspecialchars($row['error'] ? 'ERR' : '').'</td>
+								<td>'.($row['error'] ? '<strong style="color:#f00">ERR</strong>' : '').'</td>
 								<td>'.htmlspecialchars($row['calc_sum']).'</td>
 								<td><a href="index.php?specTime='.intval($row['tstamp']).'">'.htmlspecialchars($row['script']).'</a></td>
 							</tr>';
@@ -373,21 +517,21 @@ class tx_dbal_module1 extends t3lib_SCbase {
 				$outStr = '
 					<table border="1" cellspacing="0">'.implode('',$tRows).'
 					</table>';
-				
+
 			break;
 		}
 
 		$menu = '
-					<a href="index.php?cmd=flush">FLUSH LOG</a> - 
-					<a href="index.php?cmd=joins">JOINS</a> - 
-					<a href="index.php?cmd=errors">ERRORS</a> - 
-					<a href="index.php?cmd=parsing">PARSING</a> - 
-					<a href="index.php">LOG</a> - 
-					<a href="index.php?cmd=where">WHERE</a> - 
+					<a href="index.php?cmd=flush">FLUSH LOG</a> -
+					<a href="index.php?cmd=joins">JOINS</a> -
+					<a href="index.php?cmd=errors">ERRORS</a> -
+					<a href="index.php?cmd=parsing">PARSING</a> -
+					<a href="index.php">LOG</a> -
+					<a href="index.php?cmd=where">WHERE</a> -
 
 					<a href="'.htmlspecialchars(t3lib_div::linkThisScript()).'" target="tx_debuglog">[New window]</a>
 					<hr />
-		';		
+		';
 		return $menu.$outStr;
 	}
 }

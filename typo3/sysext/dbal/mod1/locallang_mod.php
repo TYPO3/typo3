@@ -1,79 +1,80 @@
 <?php
 /**
- * Language labels for module "tools_txdbalM1" - header, description
- * 
+ * Language labels for module 'tools_txdbalM1' - header, description
+ *
  * This file is detected by the translation tool.
  */
 
 $LOCAL_LANG = Array (
-	"default" => Array (
-		"mlang_tabs_tab" => "DBAL Debug",	
+	'default' => Array (
+		'mlang_tabs_tab' => 'DBAL Debug',
 	),
-	"dk" => Array (
+	'dk' => Array (
 	),
-	"de" => Array (
+	'de' => Array (
+		'mlang_tabs_tab' => 'DBAL Debug',
 	),
-	"no" => Array (
+	'no' => Array (
 	),
-	"it" => Array (
+	'it' => Array (
 	),
-	"fr" => Array (
+	'fr' => Array (
 	),
-	"es" => Array (
+	'es' => Array (
 	),
-	"nl" => Array (
+	'nl' => Array (
 	),
-	"cz" => Array (
+	'cz' => Array (
 	),
-	"pl" => Array (
+	'pl' => Array (
 	),
-	"si" => Array (
+	'si' => Array (
 	),
-	"fi" => Array (
+	'fi' => Array (
 	),
-	"tr" => Array (
+	'tr' => Array (
 	),
-	"se" => Array (
+	'se' => Array (
 	),
-	"pt" => Array (
+	'pt' => Array (
 	),
-	"ru" => Array (
+	'ru' => Array (
 	),
-	"ro" => Array (
+	'ro' => Array (
 	),
-	"ch" => Array (
+	'ch' => Array (
 	),
-	"sk" => Array (
+	'sk' => Array (
 	),
-	"lt" => Array (
+	'lt' => Array (
 	),
-	"is" => Array (
+	'is' => Array (
 	),
-	"hr" => Array (
+	'hr' => Array (
 	),
-	"hu" => Array (
+	'hu' => Array (
 	),
-	"gl" => Array (
+	'gl' => Array (
 	),
-	"th" => Array (
+	'th' => Array (
 	),
-	"gr" => Array (
+	'gr' => Array (
 	),
-	"hk" => Array (
+	'hk' => Array (
 	),
-	"eu" => Array (
+	'eu' => Array (
 	),
-	"bg" => Array (
+	'bg' => Array (
 	),
-	"br" => Array (
+	'br' => Array (
 	),
-	"et" => Array (
+	'et' => Array (
 	),
-	"ar" => Array (
+	'ar' => Array (
 	),
-	"he" => Array (
+	'he' => Array (
 	),
-	"ua" => Array (
+	'ua' => Array (
 	),
 );
 ?>

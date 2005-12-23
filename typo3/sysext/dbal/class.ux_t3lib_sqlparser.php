@@ -95,13 +95,13 @@ class ux_t3lib_sqlparser extends t3lib_sqlparser {
 			    parent::compileINSERT($components);
 			break;
 			case 'adodb':
-			    if(isset($components['VALUES_ONLY']) && is_array($components['VALUES_ONLY'])) {
-				$fields = $GLOBALS['TYPO3_DB']->cache_fieldType[$components['TABLE']];
-				$fc = 0;
-				foreach($fields as $fn => $fd) {
-				    $query[$fn] = $components['VALUES_ONLY'][$fc++][0];
-				}
-			    }
+					if(isset($components['VALUES_ONLY']) && is_array($components['VALUES_ONLY'])) {
+						$fields = $GLOBALS['TYPO3_DB']->cache_fieldType[$components['TABLE']];
+						$fc = 0;
+						foreach($fields as $fn => $fd) {
+							$query[$fn] = $components['VALUES_ONLY'][$fc++][0];
+						}
+					}
 			break;
 		}
 
@@ -117,7 +117,6 @@ class ux_t3lib_sqlparser extends t3lib_sqlparser {
 				$query = $GLOBALS['TYPO3_DB']->handlerInstance[$GLOBALS['TYPO3_DB']->handler_getFromTableList($components['TABLE'])]->DataDictionary->DropTableSQL('`'.$components['TABLE'].'`');
 			break;
 		}
-		echo '<!-- ';var_dump($query);echo ' -->'.chr(10);
 
 		return $query;
 	}
@@ -209,21 +208,21 @@ class ux_t3lib_sqlparser extends t3lib_sqlparser {
 			case 'adodb':
 			// Set type:
 			$cfg = $GLOBALS['TYPO3_DB']->MySQLMetaType($fieldCfg['fieldType']);
-			
+
 			// Add value, if any:
 			if (strlen($fieldCfg['value']) && (in_array($cfg, array('C','C2'))))	{
 				$cfg.=' '.$fieldCfg['value'];
 			}
-			
+
 			// Add additional features:
 			if (is_array($fieldCfg['featureIndex']))	{
-				
+
 				// MySQL assigns DEFAULT value automatically if NOT NULL, fake this here
 				//if(array_key_exists('NOTNULL',$fieldCfg['featureIndex']) && !array_key_exists('DEFAULT',$fieldCfg['featureIndex']) && !array_key_exists('AUTO_INCREMENT',$fieldCfg['featureIndex'])) {
 				if(isset($fieldCfg['featureIndex']['NOTNULL']) && !isset($fieldCfg['featureIndex']['DEFAULT']) && !isset($fieldCfg['featureIndex']['AUTO_INCREMENT'])) {
 					$fieldCfg['featureIndex']['DEFAULT'] = array('keyword' => 'DEFAULT', 'value' => array('','\''));
 				}
-				
+
 				// we handle unsigned, auto_increment and NOT NULL
 				foreach($fieldCfg['featureIndex'] as $featureDef)	{
 					if($featureDef['keyword'] == 'unsigned') {
@@ -239,9 +238,9 @@ class ux_t3lib_sqlparser extends t3lib_sqlparser {
 						else
 							$cfg.=' NOTNULL';
 					}
-					
+
 					$cfg.=' '.$featureDef['keyword'];
-					
+
 					// Add value if found:
 					if (is_array($featureDef['value']))	{
 						if(!is_numeric($featureDef['value'][0]) && empty($featureDef['value'][0])) {

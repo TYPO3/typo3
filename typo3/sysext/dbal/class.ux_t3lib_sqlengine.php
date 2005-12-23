@@ -208,39 +208,40 @@ class ux_t3lib_sqlengine extends t3lib_sqlengine {
 			case 'adodb':
 			// Set type:
 			$cfg = $GLOBALS['TYPO3_DB']->MySQLMetaType($fieldCfg['fieldType']);
-			
+
 			// Add value, if any:
 			if (strlen($fieldCfg['value']) && (in_array($cfg, array('C','C2'))))	{
 				$cfg.=' '.$fieldCfg['value'];
 			}
-			
+
 			// Add additional features:
 			if (is_array($fieldCfg['featureIndex']))	{
-				
+
 				// MySQL assigns DEFAULT value automatically if NOT NULL, fake this here
 				//if(array_key_exists('NOTNULL',$fieldCfg['featureIndex']) && !array_key_exists('DEFAULT',$fieldCfg['featureIndex']) && !array_key_exists('AUTO_INCREMENT',$fieldCfg['featureIndex'])) {
 				if(isset($fieldCfg['featureIndex']['NOTNULL']) && !isset($fieldCfg['featureIndex']['DEFAULT']) && !isset($fieldCfg['featureIndex']['AUTO_INCREMENT'])) {
 					$fieldCfg['featureIndex']['DEFAULT'] = array('keyword' => 'DEFAULT', 'value' => array('','\''));
 				}
-				
-				// we handle unsigned, auto_increment and NOT NULL
+
 				foreach($fieldCfg['featureIndex'] as $featureDef)	{
-					if($featureDef['keyword'] == 'unsigned') {
+						// unsigned only for mysql, as it is mysql specific
+					if($featureDef['keyword'] == 'unsigned' && !strstr($GLOBALS['TYPO3_DB']->handlerCfg[$GLOBALS['TYPO3_DB']->lastHandlerKey]['config']['driver'],'mysql')) {
 						continue;
 					}
+						// auto_increment is removed, it is handled by (emulated) sequences
 					if($featureDef['keyword'] == 'auto_increment') {
-						//$cfg.=' AUTO'; removed as we handle auto_increment different now
 						continue;
 					}
+						// NOT NULL only if there is no default value, as this conflicts
 					if($featureDef['keyword'] == 'NOT NULL') {
 						if($this->checkEmptyDefaultValue($fieldCfg['featureIndex'])) // we do not have a default value or it is an empty string
 							continue;
 						else
 							$cfg.=' NOTNULL';
 					}
-					
+
 					$cfg.=' '.$featureDef['keyword'];
-					
+
 					// Add value if found:
 					if (is_array($featureDef['value']))	{
 						if(!is_numeric($featureDef['value'][0]) && empty($featureDef['value'][0])) {
