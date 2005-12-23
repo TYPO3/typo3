@@ -1,0 +1,8 @@
+- The mode "UN-substituted constants" will show conditions like this:		[globalVar=LIT:0<##3f523e_B##{$content.RTE_compliant}##3f523e_E##] AND it will not work either according to Christian Jul (Message-ID: <Pine.LNX.4.44L0.0209261144060.12124-100000@ask.diku.dk>) (has been reported for "[globalVar=LIT:0<1]" as well!)
+- BUG: Object Browser cannot use other "OL"'s than the "ALL" (notify Ben when fixed)
+
+Johannes Reichardt:
+- objectlinks on by default.
+- highlighted value in the tree after update (so i know where i have been).
+- more intuitive search function - small hint that its case-sensitive, automatic fold out if found..
+- smart insertion of setup values - right now it just gets all added but never replaced --> big mess.

@@ -1,0 +1,11 @@
+2005-12-23  Michael Stucki  <michael@typo3.org>
+
+	* Moved tstemplate, tstemplate_analyzer, tstemplate_ceditor, tstemplate_info, tstemplate_objbrowser as system extensions to TYPO3core
+
+2005-12-15  Michael Stucki  <michael@typo3.org>
+
+	* Fixed the broken object-list feature
+
+2005-11-25  Michael Stucki  <michael@typo3.org>
+
+	* Added a ChangeLog
