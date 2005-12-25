@@ -739,7 +739,7 @@ class t3lib_TCEforms	{
 						&& $GLOBALS['BE_USER']->jsConfirmation(1))	{
 					$alertMsgOnChange = 'if (confirm('.$GLOBALS['LANG']->JScharCode($this->getLL('m_onChangeAlert')).') && TBE_EDITOR_checkSubmit(-1)){ TBE_EDITOR_submitForm() };';
 				} else {
-					$alertMsgOnChange = 'if(TBE_EDITOR_checkSubmit(-1)){ TBE_EDITOR_submitForm();}';
+					$alertMsgOnChange = '';
 				}
 
 					// Render as a hidden field?

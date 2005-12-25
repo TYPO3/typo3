@@ -28,6 +28,9 @@
  * Contains the class "t3lib_ajax" containing functions for doing XMLHTTP requests to the TYPO3 backend and as well for generating replys. This technology is also known as ajax.
  * Call ALL methods without making an object!
  *
+ * IMPORTANT NOTICE: The API the class provides is still NOT STABLE and SUBJECT TO CHANGE!
+ * It is planned to integrate an external AJAX library, so the API will most likely change again.
+ *
  * @author	Sebastian Kurfuerst <sebastian@garbage-group.de>
  */
 
