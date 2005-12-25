@@ -869,7 +869,7 @@ $TCA['sys_workspace'] = Array (
 		),
 	),
 	'types' => Array (
-		'0' => Array('showitem' => 'title,description,--div--,adminusers,members,reviewers,stagechg_notification,--div--,db_mountpoints,file_mountpoints,--div--,publish_time,unpublish_time,--div--,freeze,live_edit,disable_autocreate,swap_modes,vtypes,publish_access')
+		'0' => Array('showitem' => 'title,description,--div--;Users,adminusers,members,reviewers,stagechg_notification,--div--;Mountpoints,db_mountpoints,file_mountpoints,--div--;Publishing,publish_time,unpublish_time,--div--;Other,freeze,live_edit,disable_autocreate,swap_modes,vtypes,publish_access')
 	)
 );
 
