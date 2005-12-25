@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2005 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2005 Dmitry Dulepov (typo3@accio.lv)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -29,7 +29,7 @@
  *
  * $Id$
  *
- * @author	Dmitry Dulepov <typo3@fm-world.ru>
+ * @author	Dmitry Dulepov <typo3@accio.lv>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
