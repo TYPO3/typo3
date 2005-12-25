@@ -1,3 +1,16 @@
+2005-12-25  Dmitry Dulepov  <typo3@accio.lv>
+
+	* typo3/mod/user/ws/class.mod_user_ws_workspaceforms.php: renamed to workspaceforms.php
+	* typo3/mod/user/ws/index.php: Many labels moved to locallang_user_mod_ws.xml
+	* typo3/mod/user/ws/index.php: Changed file name for workspace editing to workspaceforms.php
+	* typo3/mod/user/ws/workspaceforms.php: Now using t3lib_BEfunc::datetime() instead of date()
+	* typo3/mod/user/ws/workspaceforms.php: Labels moved to locallang_user_mod_ws.xml
+	* typo3/mod/user/ws/workspaceforms.php: Fixed "Object doesn't support this property or method" under MSIE (due to field named "submit" in the form
+	* typo3/mod/user/ws/workspaceforms.php: Enabled tabbed form for workspaces
+	* typo3/mod/user/ws/workspaceforms.php: Changed author's e-mail
+	* t3lib/stddb/tbl_be.php: Added tab names to dividers in sys_workspace table
+	* typo3/sysext/lang/locallang_mod_user_ws.xml: Added new labels for Workspace module
+
 2005-12-23  Michael Stucki  <michael@typo3.org>
 
 	* Moved tstemplate, tstemplate_analyzer, tstemplate_ceditor, tstemplate_info, tstemplate_objbrowser as system extensions to TYPO3core
