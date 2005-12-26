@@ -222,7 +222,6 @@ class ux_t3lib_DB extends t3lib_DB {
     else {
       // handle stddb.sql
       $extSQL = t3lib_div::getUrl(PATH_site.'t3lib/stddb/tables.sql');
-      // parse it
       $parsedExtSQL = $this->Installer->getFieldDefinitions_sqlContent($extSQL);
 
       // extract auto_inc field (if any)
@@ -237,10 +236,7 @@ class ux_t3lib_DB extends t3lib_DB {
             $this->cache_autoIncFields[$table] = $field;
           }
           if(isset($tdef['keys']['PRIMARY'])) {
-            // store in array
-            $this->cache_primaryKeys[$table] = substr($tdef['keys']['PRIMARY'],
-            13,
-            -1);
+						$this->cache_primaryKeys[$table] = substr($tdef['keys']['PRIMARY'], 13, -1);
           }
         }
       }
@@ -265,27 +261,54 @@ class ux_t3lib_DB extends t3lib_DB {
               $this->cache_autoIncFields[$table] = $field;
             }
             if(isset($tdef['keys']['PRIMARY'])) {
-              $this->cache_primaryKeys[$table] = substr($tdef['keys']['PRIMARY'],
-              13,
-              -1);
+							$this->cache_primaryKeys[$table] = substr($tdef['keys']['PRIMARY'], 13, -1);
             }
           }
         }
       }
 
-      // write serialized content to file
-      t3lib_div::writeFile(PATH_typo3conf."temp_fieldInfo.php", serialize(array('incFields' => $this->cache_autoIncFields, 'fieldTypes' => $this->cache_fieldType, 'primaryKeys' => $this->cache_primaryKeys)));
+			$cachedFieldInfo = array('incFields' => $this->cache_autoIncFields, 'fieldTypes' => $this->cache_fieldType, 'primaryKeys' => $this->cache_primaryKeys);
+			$cachedFieldInfo = serialize($this->mapCachedFieldInfo($cachedFieldInfo));
 
-      if (strcmp(t3lib_div::getUrl(PATH_typo3conf."temp_fieldInfo.php"), serialize(array('incFields' => $this->cache_autoIncFields, 'fieldTypes' => $this->cache_fieldType, 'primaryKeys' => $this->cache_primaryKeys))))	{
+      // write serialized content to file
+			t3lib_div::writeFile(PATH_typo3conf."temp_fieldInfo.php", $cachedFieldInfo);
+
+			if (strcmp(t3lib_div::getUrl(PATH_typo3conf."temp_fieldInfo.php"), $cachedFieldInfo))	{
         die('typo3temp/temp_incfields.php was NOT updated properly (written content didn\'t match file content) - maybe write access problem?');
       }
     }
   }
 
+	/**
+	* This function builds all definitions for mapped tables and fields
+	* @see cacheFieldInfo()
+	*/
+	function mapCachedFieldInfo($fieldInfo){
+		global $TYPO3_CONF_VARS;
 
+		foreach($TYPO3_CONF_VARS['EXTCONF']['dbal']['mapping'] as $mappedTable => $mappedConf){
+			if(array_key_exists($mappedTable, $fieldInfo['incFields'])) {
+				$mappedTableAlias = $mappedConf['mapTableName'];
+				$fieldInfo['incFields'][$mappedTableAlias] = isset($mappedConf['mapFieldNames'][$fieldInfo['incFields'][$mappedTable]]) ? $mappedConf['mapFieldNames'][$fieldInfo['incFields'][$mappedTable]] : $fieldInfo['incFields'][$mappedTable];
+			}
 
+			if(array_key_exists($mappedTable, $fieldInfo['fieldTypes'])) {
+				foreach($fieldInfo['fieldTypes'][$mappedTable] as $field => $fieldConf){
+					$tempMappedFieldConf[$mappedConf['mapFieldNames'][$field]] = $fieldConf;
+				}
 
+				$fieldInfo['fieldTypes'][$mappedConf['mapTableName']] = $tempMappedFieldConf;
+			}
 
+			if(array_key_exists($mappedTable, $fieldInfo['primaryKeys'])) {
+				$mappedTableAlias = $mappedConf['mapTableName'];
+				$fieldInfo['primaryKeys'][$mappedTableAlias] = isset($mappedConf['mapFieldNames'][$fieldInfo['primaryKeys'][$mappedTable]]) ? $mappedConf['mapFieldNames'][$fieldInfo['primaryKeys'][$mappedTable]] : $fieldInfo['primaryKeys'][$mappedTable];
+			}
+
+		}
+
+		return $fieldInfo;
+	}
 
 
   /************************************
@@ -605,11 +628,7 @@ class ux_t3lib_DB extends t3lib_DB {
           $offset = 0;
         }
 
-        $sqlResult = $this->handlerInstance[$this->lastHandlerKey]->SelectLimit(
-        $this->SELECTquery($select_fields,$from_table,$where_clause,$groupBy,$orderBy),
-        $numrows,
-        $offset
-        );
+				$sqlResult = $this->handlerInstance[$this->lastHandlerKey]->SelectLimit($this->SELECTquery($select_fields,$from_table,$where_clause,$groupBy,$orderBy), $numrows, $offset);
         $this->lastQuery = $sqlResult->sql;
       } else {
         $this->lastQuery = $this->SELECTquery($select_fields,$from_table,$where_clause,$groupBy,$orderBy,$limit);
@@ -673,12 +692,12 @@ class ux_t3lib_DB extends t3lib_DB {
         if($this->sql_field_metatype($table,$k) == 'B') {
           /* // is this really needed for Oracle?
           if($this->handlerInstance[$this->lastHandlerKey]->databaseType == 'oci8')
-          $nArr[$this->quoteSelectFields($k)] = 'empty_blob()';
+					$nArr[$this->quoteFieldNames($k)] = 'empty_blob()';
           else
-          $nArr[$this->quoteSelectFields($k)] = 'null';
+					$nArr[$this->quoteFieldNames($k)] = 'null';
           */
-          $nArr[$this->quoteSelectFields($k)] = 'null';
-          $blobfields[$this->quoteSelectFields($k)] = $v;
+					$nArr[$this->quoteFieldNames($k)] = 'null';
+					$blobfields[$this->quoteFieldNames($k)] = $v;
         }
         else {
           // Add slashes old-school:
@@ -686,7 +705,7 @@ class ux_t3lib_DB extends t3lib_DB {
           $mt = $this->sql_field_metatype($table,$k);
           $v = (($mt{0}=='I')||($mt{0}=='F')) ? (int)$v : $v;
 
-          $nArr[$this->quoteSelectFields($k)] = $this->fullQuoteStr($v, $table);
+					$nArr[$this->quoteFieldNames($k)] = $this->fullQuoteStr($v, $table);
         }
       }
       if(((string)$this->handlerCfg[$this->lastHandlerKey]['type']!=='native') && count($blobfields)) {
@@ -737,15 +756,15 @@ class ux_t3lib_DB extends t3lib_DB {
         foreach($fields_values as $k => $v)	{
           if($this->sql_field_metatype($table,$k) == 'B') {
             // do we need empty_blob() for Oracle? see also INSERTquery()
-            $nArr[] = $this->quoteSelectFields($k).'=NULL';
-            $blobfields[$this->quoteSelectFields($k)] = $v;
+						$nArr[] = $this->quoteFieldNames($k).'=NULL';
+						$blobfields[$this->quoteFieldNames($k)] = $v;
           }
           else {
             // Add slashes old-school:
             // cast numeric values
             $mt = $this->sql_field_metatype($table,$k);
             $v = (($mt{0}=='I')||($mt{0}=='F')) ? (int)$v : $v;
-            $nArr[] = $this->quoteSelectFields($k).'='.$this->fullQuoteStr($v, $table);
+						$nArr[] = $this->quoteFieldNames($k).'='.$this->fullQuoteStr($v, $table);
           }
         }
       }
@@ -818,8 +837,7 @@ class ux_t3lib_DB extends t3lib_DB {
 	 */
   function SELECTquery($select_fields,$from_table,$where_clause,$groupBy='',$orderBy='',$limit='')	{
 
-    // quote names
-    $select_fields = $this->quoteSelectFields($select_fields);
+		$select_fields = $this->quoteFieldNames($select_fields);
     $from_table = $this->quoteFromTables($from_table);
     $where_clause = $this->quoteWhereClause($where_clause);
     $groupBy = $this->quoteGroupBy($groupBy);
@@ -828,8 +846,8 @@ class ux_t3lib_DB extends t3lib_DB {
     // call parent method to build actual query
     $query = parent::SELECTquery($select_fields,$from_table,$where_clause,$groupBy,$orderBy,$limit);
 
-    // Return query:
     if ($this->debugOutput) $this->debug_lastBuiltQuery = $query;
+
     return $query;
   }
 
@@ -842,11 +860,23 @@ class ux_t3lib_DB extends t3lib_DB {
 
   /**
 	 * Quotes field (and table) names with the quote character suitable for the DB being used
+	 * Use quoteFieldNames instead!
 	 *
 	 * @param	string		List of fields to be selected from DB
 	 * @return	string		Quoted list of fields to be selected from DB
+	 * @deprecated
 	 */
   function quoteSelectFields($select_fields) {
+		$this->quoteFieldNames($select_fields);
+	}
+
+	/**
+	 * Quotes field (and table) names with the quote character suitable for the DB being used
+	 *
+	 * @param	string		List of fields to be used in query to DB
+	 * @return	string		Quoted list of fields to be in query to DB
+	 */
+	function quoteFieldNames($select_fields) {
     if($select_fields == '') return '';
 
     $select_fields = $this->SQLparser->parseFieldList($select_fields);
@@ -862,8 +892,8 @@ class ux_t3lib_DB extends t3lib_DB {
       }
       if(isset($select_fields[$k]['func_content.']) && $select_fields[$k]['func_content.'][0]['func_content'] != '*'){
         if(strstr($select_fields[$k]['func_content.'][0]['func_content'],'.')) {
-          $select_fields[$k]['func_content.'][0]['func_content'] = $this->quoteSelectFields($select_fields[$k]['func_content.'][0]['func_content']);
-          $select_fields[$k]['func_content'] = $this->quoteSelectFields($select_fields[$k]['func_content']);
+					$select_fields[$k]['func_content.'][0]['func_content'] = $this->quoteFieldNames($select_fields[$k]['func_content.'][0]['func_content']);
+					$select_fields[$k]['func_content'] = $this->quoteFieldNames($select_fields[$k]['func_content']);
         }
         else {
           $select_fields[$k]['func_content.'][0]['func_content'] = $this->handlerInstance[$this->lastHandlerKey]->nameQuote.$select_fields[$k]['func_content.'][0]['func_content'].$this->handlerInstance[$this->lastHandlerKey]->nameQuote;
@@ -924,9 +954,6 @@ class ux_t3lib_DB extends t3lib_DB {
 	 * @return	[type]		...
 	 */
   function _quoteWhereClause($where_clause) {
-  	if(!is_array($where_clause)) {
-  		debug($where_clause);
-  	}
     foreach($where_clause as $k => $v)	{
       // Look for sublevel:
       if (is_array($where_clause[$k]['sub']))	{
@@ -942,10 +969,11 @@ class ux_t3lib_DB extends t3lib_DB {
       if ($where_clause[$k]['comparator'])	{
         // Detecting value type; list or plain:
         if ((!isset($where_clause[$k]['value'][1]) || $where_clause[$k]['value'][1] == '') && is_string($where_clause[$k]['value'][0]) && strstr($where_clause[$k]['value'][0], '.') && !t3lib_div::inList('NOTIN,IN',strtoupper(str_replace(array(" ","\n","\r","\t"),'',$where_clause[$k]['comparator']))))	{
-          $where_clause[$k]['value'][0] = $this->quoteSelectFields($where_clause[$k]['value'][0]);
+					$where_clause[$k]['value'][0] = $this->quoteFieldNames($where_clause[$k]['value'][0]);
         }
       }
     }
+
     return $where_clause;
   }
 
@@ -1196,11 +1224,7 @@ class ux_t3lib_DB extends t3lib_DB {
       $output = mysql_num_rows($res);
       break;
       case 'adodb':
-      //var_dump($res); // DEBUG REMOVE
-      if(method_exists($res, 'RecordCount')) // REMOVE
-      $output = $res->RecordCount();
-      else
-      $output = 0;
+			$output = method_exists($res, 'RecordCount') ? $res->RecordCount() : 0;
       break;
       case 'userdefined':
       $output = $res->sql_num_rows();
@@ -1224,7 +1248,10 @@ class ux_t3lib_DB extends t3lib_DB {
       $tableList = $this->resourceIdToTableNameMap[(string)$res];	// Reading list of tables from SELECT query:
       break;
       case 'adodb':
-      if(method_exists($res, 'FetchRow')) // REMOVE
+			// Check if method exists for the current $res object.
+			// If a table exists in TCA but not in the db, a error
+			// occured because $res is not a valid object.
+			if(method_exists($res, 'FetchRow')) {
       $output = $res->FetchRow();
       $tableList = $res->TYPO3_DBAL_tableList;	// Reading list of tables from SELECT query:
 
@@ -1235,6 +1262,7 @@ class ux_t3lib_DB extends t3lib_DB {
           if (is_integer($key))	unset($output[$key]);
         }
       }
+			}
       break;
       case 'userdefined':
       $output = $res->sql_fetch_assoc();
@@ -1267,6 +1295,10 @@ class ux_t3lib_DB extends t3lib_DB {
       $output = mysql_fetch_row($res);
       break;
       case 'adodb':
+			// Check if method exists for the current $res object.
+			// If a table exists in TCA but not in the db, a error
+			// occured because $res is not a valid object.
+			if(method_exists($res, 'FetchRow')) {
       $output = $res->FetchRow();
 
       // Removing all assoc. keys.
@@ -1276,6 +1308,7 @@ class ux_t3lib_DB extends t3lib_DB {
           if (!is_integer($key))	unset($output[$key]);
         }
       }
+			}
       break;
       case 'userdefined':
       $output = $res->sql_fetch_row();
@@ -1298,10 +1331,13 @@ class ux_t3lib_DB extends t3lib_DB {
       $output = mysql_free_result($res);
       break;
       case 'adodb':
-      if(method_exists($res, 'Close'))
+			if(method_exists($res, 'Close')) {
       $res->Close();
       unset($res);
       $output = true;
+			} else {
+				$output = false;
+			}
       break;
       case 'userdefined':
       unset($res);
@@ -1416,7 +1452,10 @@ class ux_t3lib_DB extends t3lib_DB {
       $output = mysql_field_type($res,$pointer);
       break;
       case 'adodb':
+			if(is_string($pointer)){
       $output = $this->cache_fieldType[$res][$pointer]['type'];
+			}
+
       break;
       case 'userdefined':
       $output = $res->sql_field_type($pointer);
@@ -2334,19 +2373,12 @@ class ux_t3lib_DB extends t3lib_DB {
 
       switch($function)	{
         case 'exec_INSERTquery':
-        $this->debug_log($query,$execTime,$data,$joinTable,$errorFlag, $script);
-        break;
-
         case 'exec_UPDATEquery':
-        $this->debug_log($query,$execTime,$data,$joinTable,$errorFlag, $script);
-        break;
-
         case 'exec_DELETEquery':
         $this->debug_log($query,$execTime,$data,$joinTable,$errorFlag, $script);
         break;
 
         case 'exec_SELECTquery':
-
         // Get explain data:
         if ($this->conf['debugOptions']['EXPLAIN'] && t3lib_div::inList('adodb,native',$inData['handlerType']))	{
           $data['EXPLAIN'] = $this->debug_explain($this->lastQuery);

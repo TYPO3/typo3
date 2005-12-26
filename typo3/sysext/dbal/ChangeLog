@@ -1,6 +1,10 @@
+2005-12-26  Karsten Dambekalns <karsten@typo3.org>
+
+	* Code cleanup and improvements to the mapping. Merged 3rd
+	party changes done by DIACC GmbH.
+
 2005-12-23  Karsten Dambekalns <karsten@typo3.org>
 
-	* Fixed bug #1205 about LEFT JOINS.
 	* Fixed a few issues that were left undiscovered yet.
 	* Added a new module to test query building and parsing
 	from the DBAL debug module.
