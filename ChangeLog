@@ -10,6 +10,7 @@
 	* changed length of page alias from 20 to 32 characters
 	* Fixed bug #2087, introduced by #1078
 	* Marked t3lib_ajax as subject to change
+	* Fixed clickmenu bug with ajax
 
 2005-12-25  Dmitry Dulepov  <typo3@accio.lv>
 

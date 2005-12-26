@@ -1265,10 +1265,12 @@ $str.=$this->docBodyTagBegin().
 			$content.='
 					// opens the clickmenu, is called from ajax_doRequest
 				function showClickmenu_ajax(t3ajax)	{
-					var clickmenu = t3ajax.getElementsByTagName("data")[0].getElementsByTagName("clickmenu")[0];
-					var tableData = clickmenu.getElementsByTagName("htmltable")[0].firstChild.data;
-					var cmlevel = clickmenu.getElementsByTagName("cmlevel")[0].firstChild.data;
-					setLayerObj(tableData,cmlevel);
+					if (t3ajax.getElementsByTagName("data")[0])	{
+						var clickmenu = t3ajax.getElementsByTagName("data")[0].getElementsByTagName("clickmenu")[0];
+						var tableData = clickmenu.getElementsByTagName("htmltable")[0].firstChild.data;
+						var cmlevel = clickmenu.getElementsByTagName("cmlevel")[0].firstChild.data;
+						setLayerObj(tableData,cmlevel);
+					}
 				}
 
 				var GLV_gap=10;
