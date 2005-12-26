@@ -50,6 +50,7 @@ $TYPO3_CONF_VARS = Array(
 	),
 	'SYS' => Array(			// System related concerning both frontend and backend.
 		'sitename' => 'TYPO3',					// Name of the base-site. This title shows up in the root of the tree structure if you're an 'admin' backend user.
+		'compat_version' => '3.8.1',					// Compatibility version. TYPO3 behavior will try to be compatible with the output from the TYPO3 version set here. It is recommended to change this setting with the Upgrade Wizard.
 		'encryptionKey' => '',					// This is a "salt" used for various kinds of encryption, CRC checksums and validations. You can enter any rubbish string here but try to keep it secret. You should notice that a change to this value might invalidate temporary information, URLs etc. At least, clear all cache if you change this so any such information can be rebuild with the new key.
 		'doNotCheckReferer' => 0,				// Boolean. If set, it's NOT checked numerous places that the refering host is the same as the current. This is an option you should set if you have problems with proxies not passing the HTTP_REFERER variable.
 		'recursiveDomainSearch' => 0,			// Boolean. If set, the search for domain records will be done recursively by stripping parts of the host name off until a matching domain record is found.
@@ -278,7 +279,7 @@ unset($typo_db_host);
 unset($typo_db_tables_script);
 unset($typo_db_extTableDef_script);
 
-// Based on the configuration of the image processing some options may be forced:
+	// Based on the configuration of the image processing some options may be forced:
 if (!$GLOBALS['TYPO3_CONF_VARS']['GFX']['image_processing'])	{
 	$GLOBALS['TYPO3_CONF_VARS']['GFX']['im']=0;
 	$GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib']=0;

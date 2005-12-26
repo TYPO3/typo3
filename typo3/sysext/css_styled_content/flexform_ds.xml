@@ -1,0 +1,151 @@
+<T3DataStructure>
+	<meta>
+		<langDisable>1</langDisable>
+	</meta>
+	<sheets>
+		<sDEF>
+			<ROOT>
+				<TCEforms>
+					<sheetTitle>LLL:EXT:css_styled_content/locallang_db.xml:tt_content.tx_cssstyledcontent_acctables</sheetTitle>
+				</TCEforms>
+				<type>array</type>
+				<el>
+					<acctables_caption>
+						<TCEforms>
+							<label>LLL:EXT:css_styled_content/locallang_db.xml:tt_content.tx_cssstyledcontent_acctables_caption</label>
+							<config>
+								<type>input</type>
+								<size>33</size>
+							</config>
+						</TCEforms>
+					</acctables_caption>
+
+					<acctables_summary>
+						<TCEforms>
+							<label>LLL:EXT:css_styled_content/locallang_db.xml:tt_content.tx_cssstyledcontent_acctables_summary</label>
+							<config>
+								<type>input</type>
+								<size>33</size>
+							</config>
+						</TCEforms>
+					</acctables_summary>
+
+					<acctables_tfoot>
+						<TCEforms>
+							<label>LLL:EXT:css_styled_content/locallang_db.xml:tt_content.tx_cssstyledcontent_acctables_tfoot</label>
+							<config>
+								<type>check</type>
+							</config>
+						</TCEforms>
+					</acctables_tfoot>
+
+					<acctables_headerpos>
+						<TCEforms>
+							<label>LLL:EXT:css_styled_content/locallang_db.xml:tt_content.tx_cssstyledcontent_acctables_headerpos</label>
+							<config>
+								<type>select</type>
+								<items type="array">
+									<numIndex index="0" type="array">
+										<numIndex index="0">LLL:EXT:css_styled_content/locallang_db.xml:tt_content.tx_cssstyledcontent_acctables_headerpos.I.0</numIndex>
+										<numIndex index="1"></numIndex>
+									</numIndex>
+									<numIndex index="1" type="array">
+										<numIndex index="0">LLL:EXT:css_styled_content/locallang_db.xml:tt_content.tx_cssstyledcontent_acctables_headerpos.I.1</numIndex>
+										<numIndex index="1">top</numIndex>
+									</numIndex>
+									<numIndex index="2" type="array">
+										<numIndex index="0">LLL:EXT:css_styled_content/locallang_db.xml:tt_content.tx_cssstyledcontent_acctables_headerpos.I.2</numIndex>
+										<numIndex index="1">left</numIndex>
+									</numIndex>
+								</items>
+								<minitems>0</minitems>
+								<maxitems>1</maxitems>
+								<size>1</size>
+							</config>
+						</TCEforms>
+					</acctables_headerpos>
+					<acctables_nostyles>
+						<TCEforms>
+							<label>LLL:EXT:css_styled_content/locallang_db.xml:tt_content.tx_cssstyledcontent_acctables_nostyles</label>
+							<config>
+								<type>check</type>
+							</config>
+						</TCEforms>
+					</acctables_nostyles>
+
+					<acctables_tableclass>
+						<TCEforms>
+							<label>LLL:EXT:css_styled_content/locallang_db.xml:tt_content.tx_cssstyledcontent_acctables_tableclass</label>
+							<config>
+								<type>input</type>
+								<size>33</size>
+								<eval>nospace,trim,alphanum_x</eval>
+							</config>
+						</TCEforms>
+					</acctables_tableclass>
+				</el>
+			</ROOT>
+		</sDEF>
+		<s_parsing>
+			<ROOT>
+				<TCEforms>
+					<sheetTitle>LLL:EXT:css_styled_content/locallang_db.xml:tt_content.tx_cssstyledcontent_tableparsing</sheetTitle>
+				</TCEforms>
+				<type>array</type>
+				<el>
+					<tableparsing_quote>
+						<TCEforms>
+							<label>LLL:EXT:css_styled_content/locallang_db.xml:tt_content.tx_cssstyledcontent_tableparsing_quote</label>
+							<config>
+								<type>select</type>
+								<items type="array">
+									<numIndex index="0" type="array">
+										<numIndex index="0">LLL:EXT:css_styled_content/locallang_db.xml:tt_content.tx_cssstyledcontent_tableparsing_quote_none</numIndex>
+										<numIndex index="1"></numIndex>
+									</numIndex>
+									<numIndex index="1" type="array">
+										<numIndex index="0">LLL:EXT:css_styled_content/locallang_db.xml:tt_content.tx_cssstyledcontent_tableparsing_quote_single</numIndex>
+										<numIndex index="1">39</numIndex>
+									</numIndex>
+									<numIndex index="2" type="array">
+										<numIndex index="0">LLL:EXT:css_styled_content/locallang_db.xml:tt_content.tx_cssstyledcontent_tableparsing_quote_double</numIndex>
+										<numIndex index="1">34</numIndex>
+									</numIndex>
+								</items>
+								<minitems>0</minitems>
+								<maxitems>1</maxitems>
+								<size>1</size>
+							</config>
+						</TCEforms>
+					</tableparsing_quote>
+
+					<tableparsing_delimiter>
+						<TCEforms>
+							<label>LLL:EXT:css_styled_content/locallang_db.xml:tt_content.tx_cssstyledcontent_tableparsing_delimiter</label>
+							<config>
+								<type>select</type>
+								<items type="array">
+									<numIndex index="0" type="array">
+										<numIndex index="0">LLL:EXT:css_styled_content/locallang_db.xml:tt_content.tx_cssstyledcontent_tableparsing_delimiter_pipe</numIndex>
+										<numIndex index="1">124</numIndex>
+									</numIndex>
+									<numIndex index="1" type="array">
+										<numIndex index="0">LLL:EXT:css_styled_content/locallang_db.xml:tt_content.tx_cssstyledcontent_tableparsing_delimiter_semicolon</numIndex>
+										<numIndex index="1">59</numIndex>
+									</numIndex>
+									<numIndex index="2" type="array">
+										<numIndex index="0">LLL:EXT:css_styled_content/locallang_db.xml:tt_content.tx_cssstyledcontent_tableparsing_delimiter_colon</numIndex>
+										<numIndex index="1">44</numIndex>
+									</numIndex>
+								</items>
+								<minitems>0</minitems>
+								<maxitems>1</maxitems>
+								<size>1</size>
+							</config>
+						</TCEforms>
+					</tableparsing_delimiter>
+				</el>
+			</ROOT>
+		</s_parsing>
+	</sheets>
+</T3DataStructure>

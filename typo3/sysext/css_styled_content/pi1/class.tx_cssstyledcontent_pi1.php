@@ -143,47 +143,116 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 		if ($hookObj = &$this->hookRequest('render_table'))	{
 			return $hookObj->render_table($content,$conf);
 		} else {
+				// Init FlexForm configuration
+			$this->pi_initPIflexForm();
 
 				// Get bodytext field content
 			$content = trim($this->cObj->data['bodytext']);
 			if (!strcmp($content,''))	return '';
 
+				// get flexform values
+			$caption = trim(htmlspecialchars($this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'acctables_caption')));
+			$summary = trim(htmlspecialchars($this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'acctables_summary')));
+			$useTfoot = trim($this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'acctables_tfoot'));
+			$headerPos = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'acctables_headerpos');
+			$noStyles = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'acctables_nostyles');
+			$tableClass = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'acctables_tableclass');
+
+			$delimiter = trim($this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'tableparsing_delimiter','s_parsing'));
+			if ($delimiter)	{
+				$delimiter = chr(intval($delimiter));
+			} else {
+				$delimiter = '|';
+			}
+			$quotedInput = trim($this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'tableparsing_quote','s_parsing'));
+			if ($quotedInput)	{
+				$quotedInput = chr(intval($quotedInput));
+			} else {
+				$quotedInput = '';
+			}
+
+				// add quotes to delimiter if needed, as a row is exploded by this char then
+			if ($quotedInput)	{
+				$delimiter = $quotedInput.$delimiter.$quotedInput;
+			}
+
 				// Split into single lines (will become table-rows):
 			$rows = t3lib_div::trimExplode(chr(10),$content);
 
 				// Find number of columns to render:
-			$cols = t3lib_div::intInRange($this->cObj->data['cols']?$this->cObj->data['cols']:count(explode('|',current($rows))),0,100);
+			$cols = t3lib_div::intInRange($this->cObj->data['cols']?$this->cObj->data['cols']:count(explode($delimiter,current($rows))),0,100);
 
 				// Traverse rows (rendering the table here)
 			$rCount = count($rows);
 			foreach($rows as $k => $v)	{
-				$cells = explode('|',$v);
+					// if input is quoted, remove first and last character of every row
+				if ($quotedInput)	{
+					$v = substr($v,1,-1);
+					//$v = str_replace('\\'.$quotedInput,$quotedInput,$v);	// change back escaped text delimiters - not sure if this is needed
+				}
+				$cells = explode($delimiter,$v);
 				$newCells=array();
 				for($a=0;$a<$cols;$a++)	{
 					if (!strcmp(trim($cells[$a]),''))	$cells[$a]='&nbsp;';
-					$cellAttribs =  ($a>0 && ($cols-1)==$a) ? ' class="td-last"' : ' class="td-'.$a.'"';
-					$newCells[$a] = '
-						<td'.$cellAttribs.'><p>'.$this->cObj->stdWrap($cells[$a],$conf['innerStdWrap.']).'</p></td>';
+					$cellAttribs = ($noStyles?'':($a>0 && ($cols-1)==$a) ? ' class="td-last"' : ' class="td-'.$a.'"');
+					if (($headerPos == 'top' && !$k) || (!$a && $headerPos == 'left'))	{
+						$scope = ' scope="'.($headerPos == 'top'?'col':'row').'"';
+						$newCells[$a] = '
+							<th'.$cellAttribs.$scope.'>'.$this->cObj->stdWrap($cells[$a],$conf['innerStdWrap.']).'</th>';
+					} else {
+						$newCells[$a] = '
+							<td'.$cellAttribs.'>'.$this->cObj->stdWrap($cells[$a],$conf['innerStdWrap.']).'</td>';
+					}
 				}
-
-				$oddEven = $k%2 ? 'tr-odd' : 'tr-even';
-				$rowAttribs =  ($k>0 && ($rCount-1)==$k) ? ' class="'.$oddEven.' tr-last"' : ' class="'.$oddEven.' tr-'.$k.'"';
+				if (!$noStyles)	{
+					$oddEven = $k%2 ? 'tr-odd' : 'tr-even';
+					$rowAttribs =  ($k>0 && ($rCount-1)==$k) ? ' class="'.$oddEven.' tr-last"' : ' class="'.$oddEven.' tr-'.$k.'"';
+				}
 				$rows[$k]='
 					<tr'.$rowAttribs.'>'.implode('',$newCells).'
 					</tr>';
 			}
+
+			$addTbody = 0;
+			$tableContents = '';
+			if ($caption)	{
+				$tableContents .= '
+					<caption>'.$caption.'</caption>';
+			}
+			if ($headerPos == 'top' && $rows[0])	{
+				$tableContents .= '<thead>'. $rows[0] .'
+					</thead>';
+				unset($rows[0]);
+				$addTbody = 1;
+			}
+			if ($useTfoot)	{
+				$tableContents .= '
+					<tfoot>'.$rows[$rCount-1].'</tfoot>';
+				unset($rows[$rCount-1]);
+				$addTbody = 1;
+			}
+			$tmpTable = implode('',$rows);
+			if ($addTbody)	{
+				$tmpTable = '<tbody>'.$tmpTable.'</tbody>';
+			}
+			$tableContents .= $tmpTable;
 
 				// Set header type:
 			$type = intval($this->cObj->data['layout']);
 
 				// Table tag params.
 			$tableTagParams = $this->getTableAttributes($conf,$type);
-			$tableTagParams['class'] = 'contenttable contenttable-'.$type;
+			if (!$noStyles)	{
+				$tableTagParams['class'] = 'contenttable contenttable-'.$type;
+			} elseif ($tableClass) {
+				$tableTagParams['class'] = $tableClass;
+			}
+
 
 				// Compile table output:
 			$out = '
-				<table '.t3lib_div::implodeAttributes($tableTagParams).'>'.	// Omitted xhtmlSafe argument TRUE - none of the values will be needed to be converted anyways, no need to spend processing time on that.
-					implode('',$rows).'
+				<table '.t3lib_div::implodeAttributes($tableTagParams).($summary?' summary="'.$summary.'"':'').'>'.	// Omitted xhtmlSafe argument TRUE - none of the values will be needed to be converted anyways, no need to spend processing time on that.
+				$tableContents.'
 				</table>';
 
 				// Calling stdWrap:

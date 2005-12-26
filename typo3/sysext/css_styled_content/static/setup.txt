@@ -507,7 +507,7 @@ tt_content.table {
 		cellpadding =
 		cellspacing =
 	}
-
+	20.innerStdWrap.wrap = <p>|</p>
 	20.innerStdWrap.parseFunc = < lib.parseFunc
 
 	20.stdWrap {
@@ -1109,10 +1109,95 @@ tt_content.default {
 }
 
 
+# *********************************************************************
+# ACCESSIBILTY MODE
+# *********************************************************************
 
+[compatVersion = 3.9.0]
 
+# switch off <p>-Tags in table cells
+tt_content.table.20.innerStdWrap.wrap = |
 
+# change mailform to accesssible mode
+tt_content.mailform.20 {
+  accessibility = 1
+  noWrapAttr=1
+  formName = mailform
+  dontMd5FieldNames = 1
+  REQ = 1
+  layout = <div class="csc-mailform-field">###LABEL### ###FIELD###</div>
+  COMMENT.layout = <div class="csc-mailform-label">###LABEL###</div>
+  RADIO.layout = <div class="csc-mailform-field">###LABEL### <fieldset class="csc-mailform-radio" id="testform_radio">###FIELD###</fieldset></div>
+  LABEL.layout = <div class="csc-mailform-field">###LABEL### <span class="csc-mailform-label">###FIELD###</span></div>
+  labelWrap.wrap = |
+  commentWrap.wrap = |
+  radioWrap.wrap = |
+  REQ.labelWrap.wrap = |
+  stdWrap.wrap = <fieldset class="csc-mailform"> | </fieldset>
+  params.radio = class="csc-mailform-radio"
+  params.check = class="csc-mailform-check"
+  params.submit = class="csc-mailform-submit"
+}
 
+# accessible menu
+tt_content.menu.20 {
+	# "Menu of these pages"
+	default.wrap = <ul class="csc-menu csc-menu-def">|</ul>
+	default.1.NO.allWrap = <li>|</li>
+	default.1.NO.ATagTitle.field = description // title
+
+	# "Menu of subpages to these pages"
+	1.wrap = <ul class="csc-menu csc-menu-1">|</ul>
+
+	# "Sitemap - liststyle"
+	2 >
+	2 = HMENU
+	2 {
+		wrap = <div class="csc-sitemap">|</div>
+		1 = TMENU
+		1 {
+			noBlur=1
+			expAll=1
+			wrap = <ul>|</ul>
+			NO {
+				wrapItemAndSub = <li>|</li>
+				ATagTitle.field = description // title
+			}
+		}
+		2<.1
+		3<.1
+		4<.1
+		5<.1
+		6<.1
+		7<.1
+	}
+
+	# "Section index (pagecontent w/Index checked - liststyle)"
+	3.wrap = <ul class="csc-menu csc-menu-3">|</ul>
+	3.renderObj.noBlur = 1
+	3.renderObj.wrap = <li class="csc-section">|</li>
+
+	# "Menu of subpages to these pages (with abstract)"
+	4.wrap = <dl class="csc-menu csc-menu-4">|</dl>
+	4.1.NO {
+		allWrap = <dt>|</dd>
+		after.wrap = </dt><dd>|
+		ATagTitle.field = description // title
+	}
+
+	# "Recently updated pages"
+	5.wrap = <ul class="csc-menu csc-menu-5">|</ul>
+
+	# "Related pages (based on keywords)"
+	6.wrap = <ul class="csc-menu csc-menu-6">|</ul>
+
+	# "Menu of subpages to these pages + sections - liststyle"
+	7.wrap = <ul class="csc-menu csc-menu-7">|</ul>
+	7.2.NO.allWrap = <li class="csc-section">|</li>
+	7.2.NO.ATagTitle.field = description // title
+}
+
+[END]
 
 
 # TYPO3 CVS ID: $Id$

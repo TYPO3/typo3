@@ -751,6 +751,23 @@ class t3lib_div {
 	}
 
 	/**
+	 * Returns true if the current TYPO3 version (or compatibility version) is compatible to the input version
+	 *
+	 * @param	string		Minimum version number required (format x.y.z)
+	 * @return	boolean		true or false
+	 */
+	function compat_version($verNumberStr)	{
+		global $TYPO3_CONF_VARS;
+		$currVersionStr = $TYPO3_CONF_VARS['SYS']['compat_version']?$TYPO3_CONF_VARS['SYS']['compat_version']:TYPO3_version;
+
+		if (t3lib_div::int_from_ver($currVersionStr) < t3lib_div::int_from_ver($verNumberStr))	{
+			return FALSE;
+		} else {
+			return TRUE;
+		}
+	}
+
+	/**
 	 * Makes a positive integer hash out of the first 7 chars from the md5 hash of the input
 	 * Usage: 5
 	 *

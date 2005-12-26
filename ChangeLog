@@ -11,6 +11,8 @@
 	* Fixed bug #2087, introduced by #1078
 	* Marked t3lib_ajax as subject to change
 	* Fixed clickmenu bug with ajax
+	* updated CSS styled content: integrated accessible mailforms, accessible menus, accessible tables
+	* inserted update wizard and compatibility version
 
 2005-12-25  Dmitry Dulepov  <typo3@accio.lv>
 

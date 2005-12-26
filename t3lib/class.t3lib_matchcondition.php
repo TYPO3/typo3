@@ -287,6 +287,9 @@ class t3lib_matchCondition {
 						}
 					}
 				break;
+				case 'compatVersion':
+					return t3lib_div::compat_version($pcs[1]);
+				break;
 				case 'userFunc':
 					$values = split('\(|\)',$pcs[1]);
 					$funcName=trim($values[0]);

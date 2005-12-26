@@ -244,18 +244,18 @@ class t3lib_BEfunc	{
 			$internalFields = t3lib_div::uniqueList($fields.',uid,pid'.($table == 'pages' ? ',t3ver_swapmode' : ''));
 			$row = t3lib_BEfunc::getRecord($table,$uid,$internalFields,$where);
 			t3lib_BEfunc::workspaceOL($table,$row);
-	
+
 			if (is_array ($row)) {
 				foreach (array_keys($row) as $key) {
 					if (!t3lib_div::inList($fields, $key) && $key{0} !== '_') {
 						unset ($row[$key]);
 					}
-				}	
+				}
 			}
 		} else {
 			$row = t3lib_BEfunc::getRecord($table,$uid,$fields,$where);
 			t3lib_BEfunc::workspaceOL($table,$row);
-		}		
+		}
 		return $row;
 	}
 
@@ -3379,9 +3379,15 @@ class t3lib_BEfunc	{
 				$warnings[] = 'The encryption key is not set! Set it in <a href="'.$url.'">$TYPO3_CONF_VARS[SYS][encryptionKey]</a>';
 			}
 
+				// check if there are still updates to perform
+			if (!t3lib_div::compat_version(TYPO3_version))	{
+				$url = 'install/index.php?redirect_url=index.php'.urlencode('?TYPO3_INSTALL[type]=update');
+				$warnings[] = 'This installation is not configured for the TYPO3 version it is running. Please visit the <a href="'.$url.'" target="_blank">Update Wizard</a> in the Install Tool.';
+			}
+
 			if(count($warnings))	{
 				$content = '<table border="0" cellpadding="0" cellspacing="0" class="warningbox"><tr><td>'.
-					$GLOBALS['TBE_TEMPLATE']->icons(3).'Security warning!<br />'.
+					$GLOBALS['TBE_TEMPLATE']->icons(3).'Important notice!<br />'.
 					'- '.implode('<br />- ', $warnings).'<br /><br />'.
 					'It is highly recommended that you change this immediately.'.
 					'</td></tr></table>';

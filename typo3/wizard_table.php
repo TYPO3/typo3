@@ -100,6 +100,9 @@ class SC_wizard_table {
 	var $P;						// Wizard parameters, coming from TCEforms linking to the wizard.
 	var $TABLECFG;				// The array which is constantly submitted by the multidimensional form of this wizard.
 
+		// table parsing
+	var $tableParsing_quote;			// quoting of table cells
+	var $tableParsing_delimiter;		// delimiter between table cells
 
 
 
@@ -218,6 +221,11 @@ class SC_wizard_table {
 	 */
 	function getConfigCode($row)	{
 
+			// get delimiter settings
+		$flexForm = t3lib_div::xml2array($row['pi_flexform']);
+
+		$this->tableParsing_quote = $flexForm['data']['s_parsing']['lDEF']['tableparsing_quote']['vDEF']?chr(intval($flexForm['data']['s_parsing']['lDEF']['tableparsing_quote']['vDEF'])):'';
+		$this->tableParsing_delimiter = $flexForm['data']['s_parsing']['lDEF']['tableparsing_delimiter']['vDEF']?chr(intval($flexForm['data']['s_parsing']['lDEF']['tableparsing_delimiter']['vDEF'])):'|';
 			// If some data has been submitted, then construct
 		if (isset($this->TABLECFG['c']))	{
 
@@ -570,9 +578,9 @@ class SC_wizard_table {
 			$thisLine=array();
 			reset($this->TABLECFG['c'][$a]);
 			while(list($b)=each($this->TABLECFG['c'][$a]))	{
-				$thisLine[]=str_replace('|','',$this->TABLECFG['c'][$a][$b]);
+				$thisLine[]=$this->tableParsing_quote.str_replace('|','',$this->TABLECFG['c'][$a][$b]).$this->tableParsing_quote;
 			}
-			$inLines[]=implode('|',$thisLine);
+			$inLines[]=implode($this->tableParsing_delimiter,$thisLine);
 		}
 
 			// Finally, implode the lines into a string:
@@ -597,7 +605,7 @@ class SC_wizard_table {
 
 			// Setting number of columns
 		if (!$cols && trim($tLines[0]))	{	// auto...
-			$cols = count(explode('|',$tLines[0]));
+			$cols = count(explode($this->tableParsing_delimiter,$tLines[0]));
 		}
 		$cols=$cols?$cols:4;
 
@@ -606,10 +614,13 @@ class SC_wizard_table {
 		foreach($tLines as $k => $v)	{
 
 				// Initialize:
-			$vParts = explode('|',$v);
+			$vParts = explode($this->tableParsing_delimiter,$v);
 
 				// Traverse columns:
 			for ($a=0;$a<$cols;$a++)	{
+				if ($this->tableParsing_quote)	{
+					$vParts[$a] = substr(trim($vParts[$a]),1,-1);
+				}
 				$cfgArr[$k][$a]=$vParts[$a];
 			}
 		}

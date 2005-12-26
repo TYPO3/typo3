@@ -203,6 +203,7 @@ class tx_install extends t3lib_install {
 	var $menuitems = array(
 		"config" => "Basic Configuration",
 		"database" => "Database Analyser",
+		"update" => "Update Wizard",
 		"images" => "Image Processing",
 		"extConfig" => "All Configuration",
 		"typo3temp" => "typo3temp/",
@@ -412,6 +413,11 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv("REMOTE_ADDR")."' (".t3lib_div::getIndp
 					$this->checkTheConfig();
 					$this->silent=0;
 					$this->checkTheDatabase();
+				break;
+				case 'update':
+					$this->checkDatabase();
+					$this->silent=0;
+					$this->updateWizard();
 				break;
 				case "config":
 					$this->silent=0;
@@ -662,6 +668,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv("REMOTE_ADDR")."' (".t3lib_div::getIndp
 					   		   '.$this->fontTag1.'<BR>
 							   <input type="hidden" name="step" value="2">
 							   <input type="hidden" name="TYPO3_INSTALL[localconf.php][encryptionKey]" value="'.md5(uniqid(rand(),true)).'">
+								 <input type="hidden" name="TYPO3_INSTALL[localconf.php][compat_version]" value="'.TYPO3_version.'">
 					   		   <input type="submit" value="Continue"><BR><br /><strong>NOTICE: </strong>By clicking this button, typo3conf/localconf.php is updated with new values for the parameters listed above!</font><BR>
 					   		</td>
 					   	</tr>
@@ -2056,6 +2063,7 @@ From sub-directory:
 							}
 						}
 					}
+					$out.=$this->wrapInCells('[GFX][TTFdpi]=', '<input type="text" name="TYPO3_INSTALL[localconf.php][TTFdpi]" value="'.htmlspecialchars($GLOBALS["TYPO3_CONF_VARS"]["GFX"]["TTFdpi"]).'">');
 				}
 
 
@@ -2116,6 +2124,8 @@ From sub-directory:
 							break;
 							case "encryptionKey":
 								if (strcmp($GLOBALS["TYPO3_CONF_VARS"]["SYS"]["encryptionKey"],$value))	$this->setValueInLocalconfFile($lines, '$TYPO3_CONF_VARS["SYS"]["encryptionKey"]', $value);
+							case "compat_version":
+								if (strcmp($GLOBALS["TYPO3_CONF_VARS"]["SYS"]["compat_version"],$value))	$this->setValueInLocalconfFile($lines, '$TYPO3_CONF_VARS["SYS"]["compat_version"]', $value);
 							break;
 							case "im_combine_filename":
 								if (strcmp($GLOBALS["TYPO3_CONF_VARS"]["GFX"]["im_combine_filename"],$value))	$this->setValueInLocalconfFile($lines, '$TYPO3_CONF_VARS["GFX"]["im_combine_filename"]', $value);
@@ -2150,6 +2160,9 @@ From sub-directory:
 									if (strcmp($GLOBALS["TYPO3_CONF_VARS"]["GFX"][$key],$value))	$this->setValueInLocalconfFile($lines, '$TYPO3_CONF_VARS["GFX"]["'.$key.'"]', $value);
 								} else $this->messages[]= $errorMessages[] = "Path '".$value."' contains spaces or is longer than 100 chars (...not saved)";
 							break;
+							case 'TTFdpi':
+								if (strcmp($GLOBALS['TYPO3_CONF_VARS']['GFX']['TTFdpi'],$value))	$this->setValueInLocalconfFile($lines, '$TYPO3_CONF_VARS["GFX"]["TTFdpi"]', $value);
+							break;
 						}
 
 
@@ -2174,20 +2187,21 @@ From sub-directory:
 	 * @param	[type]		$lines: ...
 	 * @return	[type]		...
 	 */
-	function writeToLocalconf_control($lines="")	{
+	function writeToLocalconf_control($lines="", $showOutput=1)	{
 		$returnVal = parent::writeToLocalconf_control($lines);
 
-		switch($returnVal)	{
-			case 'continue':
-				$content = "<BR><BR>".implode($this->messages,"<HR>").'<BR><BR><a href="'.$this->action.'">Click to continue...</a>';
-				$this->outputExitBasedOnStep($content);
-			break;
-			case 'nochange':
-				$content = '<strong>Writing to \'localconf.php\':</strong><BR><BR>No values were changed, so nothing is updated!<BR><BR><a href="'.$this->action.'">Click to continue...</a>';
-				$this->outputExitBasedOnStep("<BR>".$content);
-			break;
+		if ($showOutput)	{
+			switch($returnVal)	{
+				case 'continue':
+					$content = "<BR><BR>".implode($this->messages,"<HR>").'<BR><BR><a href="'.$this->action.'">Click to continue...</a>';
+					$this->outputExitBasedOnStep($content);
+				break;
+				case 'nochange':
+					$content = '<strong>Writing to \'localconf.php\':</strong><BR><BR>No values were changed, so nothing is updated!<BR><BR><a href="'.$this->action.'">Click to continue...</a>';
+					$this->outputExitBasedOnStep("<BR>".$content);
+				break;
+			}
 		}
-
 		return $returnVal;
 	}
 
@@ -3810,7 +3824,149 @@ From sub-directory:
 	 *
 	 * @return	[type]		...
 	 */
-	function isBackendAdminUser() {
+	function updateWizard()	{
+		global $TYPO3_CONF_VARS;
+
+			// clear cache files - adapted from t3lib_tcemain::removeCacheFiles
+		$cacheFiles=t3lib_extMgm::currentCacheFiles();
+		if (is_array($cacheFiles))	{
+			foreach ($cacheFiles as $cfile)	{
+				@unlink($cfile);
+				clearstatcache();
+			}
+		}
+
+			// generate new cache files and include them
+		$GLOBALS['TYPO3_CONF_VARS']['EXT']['extCache'] = 1;
+		$TYPO3_LOADED_EXT = t3lib_extMgm::typo3_loadExtensions();
+		if ($TYPO3_LOADED_EXT['_CACHEFILE'])	{
+			require(PATH_typo3conf.$TYPO3_LOADED_EXT['_CACHEFILE'].'_ext_localconf.php');
+		}
+
+			// call wizard
+		$action = ($this->INSTALL['database_type']?$this->INSTALL['database_type']:'checkForUpdate');
+		$this->updateWizard_parts($action);
+		echo $this->outputWrapper($this->printAll());
+	}
+	/**
+	 * [Describe function...]
+	 *
+	 * @return	[type]		...
+	 */
+	function updateWizard_parts($action)	{
+		$content = '';
+		switch ($action)	{
+			case 'checkForUpdate':	// first step - check for updates available
+				$title = '1 - select update-wizards to perform';
+				$tableContent = '';
+				if (!$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'])	{
+					$content = '<strong>No updates registered!</strong>';
+					break;
+				}
+
+					// step through list of updates, and check if update is needed and if yes, output an explanation
+				foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'] as $identifier => $className)	{
+					$tmpObj = $this->getUpgradeObjInstance($className, $identifier);
+					if (method_exists($tmpObj,'checkForUpdate'))	{
+						$explanation = '';
+						if ($tmpObj->checkForUpdate(&$explanation))	{
+							$tableContent .= '<tr><td valign="top"><input type="checkbox" name="TYPO3_INSTALL[update]['.$identifier.']" id="TYPO3_INSTALL[update]['.$identifier.']" value="1" /></td><td><strong><label for="TYPO3_INSTALL[update]['.$identifier.']">'.$identifier.'</label></strong><br />'.str_replace(chr(10),'<br />',$explanation).'</td></tr><tr><td colspan="2"><hr /></td></tr>';
+						}
+					}
+				}
+				if ($tableContent)	{
+					$tableContent = '<table>'.$tableContent.'</table>';
+					$content = $this->getUpdateDbFormWrap('getUserInput', $tableContent,'2 - Configure updates!');
+				} else {
+					$content = '<strong>No updates to perform!</strong>';
+				}
+			break;
+			case 'getUserInput':	// second step - get user input and ask for final confirmation
+				$title = '2 - configuration of updates';
+				$formContent = '<strong>The following updates will be performed:</strong>';
+				if (!$this->INSTALL['update'])	{
+					$content = '<strong>No updates selected!</strong>';
+					break;
+				}
+					// update methods might need to get custom data
+				foreach ($this->INSTALL['update'] as $identifier => $tmp)	{
+					$className = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'][$identifier];
+
+					$tmpObj = $this->getUpgradeObjInstance($className, $identifier);
+
+					$formContent .= '<p><strong>'.$identifier.'</strong><input type="hidden" name="TYPO3_INSTALL[update][extList][]" value="'.$identifier.'" /><br />';
+					if (method_exists($tmpObj,'getUserInput'))	{
+						$formContent .= $tmpObj->getUserInput('TYPO3_INSTALL[update]['.$identifier.']');
+					}
+					$formContent .= '</p><hr />';
+				}
+				$formContent .= '<p><input type="checkbox" name="TYPO3_INSTALL[update][showDatabaseQueries]" id="TYPO3_INSTALL[update][showDatabaseQueries]" value="1" /> <label  for="TYPO3_INSTALL[update][showDatabaseQueries]">Show database queries performed</label></p>';
+				$content = $this->getUpdateDbFormWrap('performUpdate', $formContent,'3 -Perform updates!');
+			break;
+			case 'performUpdate':	// third step - perform update
+				$title = '3 - perform updates';
+				if (!$this->INSTALL['update']['extList'])	{ break; }
+
+				$GLOBALS['TYPO3_DB']->store_lastBuiltQuery = TRUE;
+				foreach ($this->INSTALL['update']['extList'] as $identifier)	{
+					$className = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'][$identifier];
+
+					$tmpObj = &$this->getUpgradeObjInstance($className, $identifier);
+
+					$content = '<p><strong>'.$identifier.'</strong><br />';
+						// check user input if testing method is available
+					if (method_exists($tmpObj,'checkUserInput'))	{
+						$customOutput = '';
+						if (!$tmpObj->checkUserInput(&$customOutput))	{
+							$content .= '<strong>'.($customOutput?$customOutput:'Something went wrong').'</strong>';
+							$content .= '<br /><a href="javascript:history.back()">Go back to update configuration</a>';
+							break;
+						}
+					}
+
+					if (method_exists($tmpObj,'performUpdate'))	{
+						$customOutput = '';
+						$dbQueries = array();
+						if ($tmpObj->performUpdate(&$dbQueries, &$customOutput))	{
+							$content .= '<strong>Update successful!</strong>';
+						} else {
+							$content .= '<strong>FAILURE!</strong>';
+						}
+						if ($this->INSTALL['update']['showDatabaseQueries'])	{
+							$content .= '<br />' . implode('<br />',$dbQueries);
+						}
+						$content .= '<br />' . $customOutput;
+
+					} else {
+						$content .= '<strong>No update method available!</strong>';
+					}
+					$content .= '</p><hr />';
+				}
+				$GLOBALS['TYPO3_DB']->store_lastBuiltQuery = FALSE;
+			break;
+		}
+		$this->message('Update Wizard',$title,$content);
+	}
+
+	/**
+	 * [Describe function...]
+	 *
+	 * @return	[type]		...
+	 */
+	function getUpgradeObjInstance($className, $identifier)	{
+		$tmpObj = &t3lib_div::getUserObj($className);
+		$tmpObj->versionNumber = t3lib_div::int_from_ver(TYPO3_version);
+		$tmpObj->pObj = $this;
+		$tmpObj->userInput = $this->INSTALL['update'][$identifier];
+		return $tmpObj;
+	}
+
+	/**
+	 * [Describe function...]
+	 *
+	 * @return	[type]		...
+	 */
+	function isBackendAdminUser()	{
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('count(*)', 'be_users', 'admin=1');
 		$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
 		return current($row);
@@ -4537,7 +4693,7 @@ $out='
 	function outputWrapper($content)	{
 		$out='
 <html>
-
+	<head>
 
 <STYLE TYPE="text/css">
 <!--
@@ -4545,10 +4701,14 @@ A:link {text-decoration: none}
 A:visited {text-decoration: none}
 A:active {text-decoration: none}
 A:hover {color: #000066}
+p,td {
+	font-family:verdana,sans-serif;
+	font-size:10px;
+}
 -->
 </STYLE>
 '.$this->headerStyle.'
-	<head>
+
  		<title>TYPO3 Install Tool</title>
 		'.($this->JSmessage?'
 <script language="javascript" type="text/javascript">alert(unescape(\''.rawurlencode($this->JSmessage).'\'));</script>
