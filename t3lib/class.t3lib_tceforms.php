@@ -1032,9 +1032,18 @@ class t3lib_TCEforms	{
 				} else {
 					$wrap = ($config['wrap'] ? $config['wrap'] : 'virtual');
 				}
+
+				$classes = array();
+				if ($specConf['fixed-font'])	{ $classes[] = 'fixed-font'; }
+				if ($specConf['enable-tab'])	{ $classes[] = 'enable-tab'; }
+
+				if (count($classes))	{
+					$class = ' class="'.implode(' ',$classes).'"';
+				} else $class='';
+
 				$iOnChange = implode('',$PA['fieldChangeFunc']);
 				$item.= '
-							<textarea name="'.$PA['itemFormElName'].'"'.$this->formWidthText($cols,$wrap).' rows="'.$rows.'" wrap="'.$wrap.'" onchange="'.htmlspecialchars($iOnChange).'"'.$PA['onFocus'].'>'.
+							<textarea name="'.$PA['itemFormElName'].'"'.$this->formWidthText($cols,$wrap).$class.' rows="'.$rows.'" wrap="'.$wrap.'" onchange="'.htmlspecialchars($iOnChange).'"'.$PA['onFocus'].'>'.
 							t3lib_div::formatForTextarea($PA['itemFormElValue']).
 							'</textarea>';
 				$item = $this->renderWizards(array($item,$altItem),$config['wizards'],$table,$row,$field,$PA,$PA['itemFormElName'],$specConf,$RTEwouldHaveBeenLoaded);

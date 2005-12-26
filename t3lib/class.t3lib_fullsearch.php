@@ -433,7 +433,7 @@ class t3lib_fullsearch {
 					$rowArr[]=$this->csvValues($row);
 				}
 				if (count($rowArr))	{
-					$out.='<textarea name="whatever" rows="20" wrap="off"'.$GLOBALS["SOBE"]->doc->formWidthText($this->formW,"","off").'>'.t3lib_div::formatForTextarea(implode(chr(10),$rowArr)).'</textarea>';
+					$out.='<textarea name="whatever" rows="20" wrap="off"'.$GLOBALS["SOBE"]->doc->formWidthText($this->formW,"","off").' class="fixed-font">'.t3lib_div::formatForTextarea(implode(chr(10),$rowArr)).'</textarea>';
 					if (!$this->noDownloadB)	{
 						$out.='<BR><input type="submit" name="download_file" value="Click to download file" onClick="document.location=\''.$this->downloadScript.'\';">';		// document.forms[0].target=\'_blank\';
 					}
@@ -468,7 +468,7 @@ class t3lib_fullsearch {
 				$xmlObj->renderFooter();
 				if ($GLOBALS['TYPO3_DB']->sql_num_rows($res))	{
 					$xmlData=$xmlObj->getResult();
-					$out.='<textarea name="whatever" rows="20" wrap="off"'.$GLOBALS["SOBE"]->doc->formWidthText($this->formW,"","off").'>'.t3lib_div::formatForTextarea($xmlData).'</textarea>';
+					$out.='<textarea name="whatever" rows="20" wrap="off"'.$GLOBALS["SOBE"]->doc->formWidthText($this->formW,"","off").' class="fixed-font">'.t3lib_div::formatForTextarea($xmlData).'</textarea>';
 					if (!$this->noDownloadB)	{
 						$out.='<BR><input type="submit" name="download_file" value="Click to download file" onClick="document.location=\''.$this->downloadScript.'\';">';		// document.forms[0].target=\'_blank\';
 					}

@@ -332,7 +332,7 @@ class SC_wizard_tsconfig {
 				$links[]='<a href="#" onclick="mixerField(\'Outdent\');return false;">'.$LANG->getLL('tsprop_mixer_outdent',1).'</a>';
 				$links[]='<a href="#" onclick="mixerField(\'Wrap\',unescape(\''.rawurlencode($obj_string).'\'));return false;">'.$LANG->getLL('tsprop_mixer_wrap',1).'</a>';
 				$links[]='<a href="#" onclick="mixerField(\'Transfer\');return false;">'.$LANG->getLL('tsprop_mixer_transfer',1).'</a>';
-				$out.='<textarea rows="5" name="mixer" wrap="off"'.$this->doc->formWidthText(48,'','off').'></textarea>';
+				$out.='<textarea rows="5" name="mixer" wrap="off"'.$this->doc->formWidthText(48,'','off').' class="fixed-font enable-tab"></textarea>';
 				$out.='<br /><strong>'.implode('&nbsp; | &nbsp;',$links).'</strong>';
 				$out.='<hr />';
 			}

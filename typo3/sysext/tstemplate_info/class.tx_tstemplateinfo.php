@@ -341,7 +341,7 @@ class tx_tstemplateinfo extends t3lib_extobjbase {
 				}
 			}
 			if ($e["constants"])	{
-				$outCode='<textarea name="data[constants]" rows="'.$numberOfRows.'" wrap="off"'.$this->pObj->doc->formWidthText(48,"width:98%;height:70%","off").'>'.t3lib_div::formatForTextarea($tplRow["constants"]).'</textarea>';
+				$outCode='<textarea name="data[constants]" rows="'.$numberOfRows.'" wrap="off"'.$this->pObj->doc->formWidthText(48,"width:98%;height:70%","off").' class="fixed-font">'.t3lib_div::formatForTextarea($tplRow["constants"]).'</textarea>';
 				$outCode.='<input type="Hidden" name="e[constants]" value="1">';
 				$theOutput.=$this->pObj->doc->spacer(15);
 				$theOutput.=$this->pObj->doc->section("Constants:","");
@@ -355,7 +355,7 @@ class tx_tstemplateinfo extends t3lib_extobjbase {
 					if (filesize($path)<(30*1024))	{
 						$fileContent = t3lib_div::getUrl($path);
 						$outCode='File: <b>'.$e[file].'</b><BR>';
-						$outCode.='<textarea name="edit[file]" rows="'.$numberOfRows.'" wrap="off"'.$this->pObj->doc->formWidthText(48,"width:98%;height:70%","off").'>'.t3lib_div::formatForTextarea($fileContent).'</textarea>';
+						$outCode.='<textarea name="edit[file]" rows="'.$numberOfRows.'" wrap="off"'.$this->pObj->doc->formWidthText(48,"width:98%;height:70%","off").' class="fixed-font">'.t3lib_div::formatForTextarea($fileContent).'</textarea>';
 						$outCode.='<input type="Hidden" name="edit[filename]" value="'.$e[file].'">';
 						$outCode.='<input type="Hidden" name="e[file]" value="'.htmlspecialchars($e[file]).'">';
 						$theOutput.=$this->pObj->doc->spacer(15);
@@ -368,7 +368,7 @@ class tx_tstemplateinfo extends t3lib_extobjbase {
 				}
 			}
 			if ($e["config"])	{
-				$outCode='<textarea name="data[config]" rows="'.$numberOfRows.'" wrap="off"'.$this->pObj->doc->formWidthText(48,"width:98%;height:70%","off").'>'.t3lib_div::formatForTextarea($tplRow["config"]).'</textarea>';
+				$outCode='<textarea name="data[config]" rows="'.$numberOfRows.'" wrap="off"'.$this->pObj->doc->formWidthText(48,"width:98%;height:70%","off").' class="fixed-font">'.t3lib_div::formatForTextarea($tplRow["config"]).'</textarea>';
 
 				if (t3lib_extMgm::isLoaded("tsconfig_help"))	{
 					$url=$BACK_PATH."wizard_tsconfig.php?mode=tsref";

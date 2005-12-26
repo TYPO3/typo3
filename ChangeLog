@@ -1,3 +1,9 @@
+2005-12-26  Michael Stucki  <michael@typo3.org>
+
+	* Changed default font to for code textareas to "monospace"
+	* Changed the tab-in-textarea and the above fixed-font features to be changed by TCA. See Core API "defaultExtras" section for details.
+	* Changed module pointer of BE module titles (Web, File, Tools, etc.)
+
 2005-12-25  Sebastian Kurfuerst  <sebastian@garbage-group.de>
 
 	* Fixed error where deleted pages appear in the page tree when preview is activated. t3lib_pageselect->where_hid_del had to be changed.

@@ -30,10 +30,8 @@ function changeTextareaElements()	{
 	document.textAreas = document.getElementsByTagName("textarea");
 
 	for(i=0; i<document.textAreas.length; i++)	{
-			// Don't change if the class parameter contains "disable-tab"
-		if(document.textAreas[i].className && document.textAreas[i].className.search(/(^| )disable-tab( |$)/) != -1)	{
-			continue;
-		} else {
+			// Only change if the class parameter contains "enable-tab"
+		if(document.textAreas[i].className && document.textAreas[i].className.search(/(^| )enable-tab( |$)/) != -1)	{
 			document.textAreas[i].textAreaID = i;
 			makeAdvancedTextArea(document.textAreas[i]);
 		}

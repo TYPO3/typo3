@@ -927,7 +927,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv("REMOTE_ADDR")."' (".t3lib_div::getIndp
 				<input type="hidden" name="TYPO3_INSTALL[FILE][name]" value="'.$this->INSTALL["typo3conf_files"].'">
 				'.($this->allowFileEditOutsite_typo3conf_dir?'<input type="hidden" name="TYPO3_INSTALL[FILE][EDIT_path]" value="'.$this->INSTALL["FILE"]["EDIT_path"].'">':'').'
 				<input type="hidden" name="TYPO3_INSTALL[FILE][prevMD5]" value="'.md5($fileContent).'">
-				<textarea rows="30" name="TYPO3_INSTALL[FILE]['.md5($this->INSTALL["typo3conf_files"]).']" wrap="off"'.$this->formWidthText(48,"width:98%;height:80%","off").'>'.t3lib_div::formatForTextarea($fileContent).'</textarea><BR>
+				<textarea rows="30" name="TYPO3_INSTALL[FILE]['.md5($this->INSTALL["typo3conf_files"]).']" wrap="off"'.$this->formWidthText(48,"width:98%;height:80%","off").' class="fixed-font enable-tab">'.t3lib_div::formatForTextarea($fileContent).'</textarea><BR>
 				<input type="checkbox" name="TYPO3_INSTALL[FILE][win_to_unix_br]" value="1"'.(TYPO3_OS=="WIN"?"":" checked").'> Convert Windows linebreaks (13-10) to Unix (10)<BR>
 				<input type="checkbox" name="TYPO3_INSTALL[FILE][backup]" value="1"'.(@is_file($backupFile) ? ' checked' : '').'> Make backup copy (rename to '.basename($backupFile).')<BR>
 				'.
@@ -989,7 +989,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv("REMOTE_ADDR")."' (".t3lib_div::getIndp
 		$buf=$this->messageFunc_nl2br;
 		$this->messageFunc_nl2br=0;
 		$this->message($headCode,"DEBUG information",'Please copy/paste the information from this text field into an email or bug-report as "Debug System Information" whenever you wish to get support or report problems. This information helps others to check if your system has some obvious misconfiguration and you\'ll get your help faster!<BR>
-		<form action=""><textarea rows="10" '.$this->formWidthText(80,"","off").' wrap="OFF">'.t3lib_div::formatForTextarea(implode(chr(10),$debugInfo)).'</textarea></form>');
+		<form action=""><textarea rows="10" '.$this->formWidthText(80,"","off").' wrap="off" class="fixed-font">'.t3lib_div::formatForTextarea(implode(chr(10),$debugInfo)).'</textarea></form>');
 		$this->messageFunc_nl2br=$buf;
 
 		$getEnvArray = array();
@@ -3174,7 +3174,7 @@ From sub-directory:
 		}
 		if (count($out))	{
 			$col = t3lib_div::intInRange(count($out),2,10);
-			$outputStr = '<textarea cols=40 rows='.$col.' wrap="off">'.htmlspecialchars(implode($out,chr(10))).'</textarea>';
+			$outputStr = '<textarea cols=40 rows='.$col.' wrap="off" class="fixed-font">'.htmlspecialchars(implode($out,chr(10))).'</textarea>';
 			return '<form action="">'.$outputStr.'</form>';
 		};
 	}

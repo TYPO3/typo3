@@ -264,7 +264,8 @@ $TCA['fe_users'] = Array (
 					)
 				),
 				'softref' => 'TSconfig'
-			)
+			),
+			'defaultExtras' => 'fixed-font : enable-tab',
 		)
 	),
 	'types' => Array (
@@ -358,7 +359,8 @@ $TCA['fe_groups'] = Array (
 					)
 				),
 				'softref' => 'TSconfig'
-			)
+			),
+			'defaultExtras' => 'fixed-font : enable-tab',
 		)
 	),
 	'types' => Array (
@@ -688,6 +690,7 @@ $TCA['sys_template'] = Array (
 				'wrap' => 'OFF',
 				'softref' => 'TStemplate,email[subst],url[subst]'
 			),
+			'defaultExtras' => 'fixed-font : enable-tab',
 		),
 		'resources' => Array (
 			'label' => 'Resources:',
@@ -801,7 +804,8 @@ $TCA['sys_template'] = Array (
 				),
 				'wrap' => 'OFF',
 				'softref' => 'TStemplate,email[subst],url[subst]'
-			)
+			),
+			'defaultExtras' => 'fixed-font : enable-tab',
 		),
 		'editorcfg' => Array (
 			'label' => 'Backend Editor Configuration:',
@@ -810,7 +814,8 @@ $TCA['sys_template'] = Array (
 				'rows' => 4,
 				'cols' => 48,
 				'wrap' => 'OFF'
-			)
+			),
+			'defaultExtras' => 'fixed-font : enable-tab',
 		),
 		'description' => Array (
 			'label' => 'Description:',
@@ -880,7 +885,8 @@ $TCA['static_template'] = Array (
 				'cols' => '48',
 				'rows' => '10',
 				'wrap' => 'OFF'
-			)
+			),
+			'defaultExtras' => 'fixed-font : enable-tab',
 		),
 		'include_static' => Array (
 			'label' => 'Include static:',
@@ -900,7 +906,8 @@ $TCA['static_template'] = Array (
 				'rows' => 10,
 				'cols' => 48,
 				'wrap' => 'OFF'
-			)
+			),
+			'defaultExtras' => 'fixed-font : enable-tab',
 		),
 		'editorcfg' => Array (
 			'label' => 'Backend Editor Configuration:',
@@ -909,7 +916,8 @@ $TCA['static_template'] = Array (
 				'rows' => 4,
 				'cols' => 48,
 				'wrap' => 'OFF'
-			)
+			),
+			'defaultExtras' => 'fixed-font : enable-tab',
 		),
 		'description' => Array (
 			'label' => 'Description:',

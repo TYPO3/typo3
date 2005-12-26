@@ -1333,7 +1333,7 @@ EXTENSION KEYS:
 							$outCode.= 'File: <b>'.substr($editFile,strlen($absPath)).'</b> ('.t3lib_div::formatSize(filesize($editFile)).')<br />';
 							$info.= 'MD5: <b>'.md5(str_replace(chr(13),'',$fileContent)).'</b> (File)<br />';
 							if($saveFlag)	$info.= 'MD5: <b>'.md5(str_replace(chr(13),'',$submittedContent['file'])).'</b> (Saved)<br />';
-							$outCode.= '<textarea name="edit[file]" rows="'.$numberOfRows.'" wrap="off"'.$this->doc->formWidthText(48,'width:98%;height:70%','off').'>'.t3lib_div::formatForTextarea($fileContent).'</textarea>';
+							$outCode.= '<textarea name="edit[file]" rows="'.$numberOfRows.'" wrap="off"'.$this->doc->formWidthText(48,'width:98%;height:70%','off').' class="fixed-font enable-tab">'.t3lib_div::formatForTextarea($fileContent).'</textarea>';
 							$outCode.= '<input type="hidden" name="edit[filename]" value="'.$editFile.'" />';
 							$outCode.= '<input type="hidden" name="CMD[editFile]" value="'.htmlspecialchars($editFile).'" />';
 							$outCode.= '<input type="hidden" name="CMD[showExt]" value="'.$extKey.'" />';

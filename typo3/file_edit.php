@@ -172,7 +172,7 @@ class SC_file_edit {
 				// Edit textarea:
 			$code.='
 				<div id="c-edit">
-					<textarea rows="30" name="file[editfile][0][data]" wrap="off"'.$this->doc->formWidthText(48,'width:98%;height:80%','off').'>'.
+					<textarea rows="30" name="file[editfile][0][data]" wrap="off"'.$this->doc->formWidthText(48,'width:98%;height:80%','off').' class="fixed-font enable-tab">'.
 					t3lib_div::formatForTextarea($fileContent).
 					'</textarea>
 					<input type="hidden" name="file[editfile][0][target]" value="'.$this->target.'" />

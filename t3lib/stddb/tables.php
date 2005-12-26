@@ -197,7 +197,8 @@ $TCA['pages'] = Array (
 					)
 				),
 				'softref' => 'TSconfig'
-			)
+			),
+			'defaultExtras' => 'fixed-font : enable-tab',
 		),
 		'php_tree_stop' => Array (
 			'exclude' => 1,

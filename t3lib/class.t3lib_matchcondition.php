@@ -105,8 +105,7 @@ class t3lib_matchCondition {
 		$string = trim($string);
 		$string = substr($string,1,strlen($string)-2);
 		$parts = explode('][',$string);
-		reset($parts);
-		while(list(,$val)=each($parts))	{
+		foreach ($parts as $val)	{
 			$pcs = explode('=',$val,2);
 			$switchKey = trim($pcs[0]);
 			switch($switchKey)	{
@@ -244,7 +243,9 @@ class t3lib_matchCondition {
 							$point = strcspn($test,'=<>');
 							$theVarName = substr($test,0,$point);
 							$nv = $this->getGP_ENV_TSFE(trim($theVarName));
-							if ($this->testNumber(substr($test,$point) ,$nv)) {return true;}
+							$testValue = substr($test,$point);
+
+							if ($this->testNumber($testValue,$nv)) {return true;}
 						}
 					}
 				break;
@@ -256,7 +257,9 @@ class t3lib_matchCondition {
 							$point = strcspn($test,'=');
 							$theVarName = substr($test,0,$point);
 							$nv = $this->getGP_ENV_TSFE(trim($theVarName));
-							if ($this->matchWild($nv,trim(substr($test,$point+1)))) {return true;}
+							$testValue = substr($test,$point+1);
+
+							if ($this->matchWild($nv,trim($testValue))) {return true;}
 						}
 					}
 				break;
@@ -327,31 +330,19 @@ class t3lib_matchCondition {
 	}
 
 	/**
-	 * Matching two strings against each other, supporting a "*" wildcard in either end of the $needle
+	 * Matching two strings against each other, supporting a "*" wildcard
 	 *
 	 * @param	string		The string in which to find $needle.
 	 * @param	string		The string to find in $haystack
-	 * @return	boolean		Returns true if $needle matches or is found in (according to wildcards) in $haystack. Eg. if $haystack is "Netscape 6.5" and $needle is "Net*" or "Netscape*" then it returns true.
+	 * @return	boolean		Returns true if $needle matches or is found in (according to wildcards) in $haystack. Eg. if $haystack is "Netscape 6.5" and $needle is "Net*" or "Net*ape" then it returns true.
 	 */
 	function matchWild($haystack,$needle)	{
 		if ($needle && $haystack)	{
-			if (substr($needle,0,1)=='*')	{$mode.='before';}
-			if (substr($needle,-1,1)=='*')	{$mode.='after';}
-			switch($mode)	{
-				case 'before':
-					$matchStr = substr($needle,1);
-					if (substr($haystack,-strlen($matchStr))==$matchStr) return true;
-				break;
-				case 'after':
-					if (strpos(' '.$haystack,substr($needle,0,-1))==1)	return true;
-				break;
-				case 'beforeafter':
-					if (strstr($haystack,substr($needle,1,-1)))	return true;
-				break;
-				default:
-					if ($needle==$haystack)	return true;
-				break;
-			}
+			$regex = '/^'.preg_quote($needle,'/').'$/';
+			$regex = str_replace('\\*', '.*', $regex);	// 1st fix: Replace \* with .* because * is our wildcard
+			$regex = str_replace('\\\\.*', '\\*', $regex);	// 2nd fix: Match needle if the * was escaped
+
+			if (preg_match($regex, $haystack, $res)) return true;
 		}
 	}
 

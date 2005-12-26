@@ -369,7 +369,8 @@ $TCA['be_users'] = Array (
 					)
 				),
 				'softref' => 'TSconfig'
-			)
+			),
+			'defaultExtras' => 'fixed-font : enable-tab',
 		),
 		'createdByAction' => Array('config'=>array('type'=>'passthrough'))
 	),
@@ -608,7 +609,8 @@ $TCA['be_groups'] = Array (
 					)
 				),
 				'softref' => 'TSconfig'
-			)
+			),
+			'defaultExtras' => 'fixed-font : enable-tab',
 		),
 		'hide_in_lists' => Array (
 			'label' => 'Hide in lists:',

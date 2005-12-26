@@ -164,7 +164,7 @@ TABLE.typo3-CSM TR.typo3-CSM-itemRow TD { padding: 1px 5px 1px 5px; }
 TABLE.typo3-CSM TR.typo3-CSM-itemRow { height: 13px; cursor: pointer; }
 
 /* Top menu (alt_topmenu_dummy.php) */
-BODY#typo3-alt-topmenu-dummy-php {	background-image: url(gfx/alt_topmenu_back_dummy.gif); }
+BODY#typo3-alt-topmenu-dummy-php { background-image: url(gfx/alt_topmenu_back_dummy.gif); }
 BODY#typo3-alt-topmenu-dummy-php-iconmenu { background-image: url(gfx/alt_topmenu_back_full.gif); margin-top: 8px; margin-left: 6px; }
 TABLE#typo3-topMenu TR TD {white-space: nowrap; vertical-align: top; }
 TABLE#typo3-topMenu TR TD.c-logout, TABLE#typo3-topMenu TR TD.c-admin {padding-left: 20px;}
@@ -218,11 +218,11 @@ TABLE#typo3-about-modules TR.c-mainitem TD IMG { vertical-align: middle;  paddin
 /* Vertical Module Menu script, left frame (alt_menu.php): */
 BODY#typo3-alt-menu-php { margin: 2px 0px 0px 2px; }
 BODY#typo3-alt-menu-php A { text-decoration: none; }
-TABLE#typo3-vmenu TR.c-mainitem TD { background-color: #D9D9D8; padding: 1px 1px 1px 1px; border: #9BA1A8 1px solid; vertical-align: middle; width: 100px; }
+TABLE#typo3-vmenu TR.c-mainitem TD { background-color: #D9D9D8; padding: 1px 1px 1px 1px; border: #9BA1A8 1px solid; vertical-align: middle; width: 100px; cursor:pointer; }
 TABLE#typo3-vmenu TR.c-mainitem TD SPAN.c-label A { text-decoration : underline; }
 TABLE#typo3-vmenu TR.c-mainitem TD IMG { vertical-align: middle; margin-right: 2px;}
-TABLE#typo3-vmenu TR.c-mainitem TD SPAN.c-label { position: relative; top: 1px; cursor: default; }
-TABLE#typo3-vmenu TR.c-mainitem TD SPAN.c-iconCollapse { position:absolute; left:90px; cursor:pointer; }
+TABLE#typo3-vmenu TR.c-mainitem TD SPAN.c-label { position: relative; top: 1px; }
+TABLE#typo3-vmenu TR.c-mainitem TD SPAN.c-iconCollapse { position:absolute; left:90px; }
 TABLE#typo3-vmenu TR.c-mainitem-HL TD { background-color: #AAAAAA; padding: 1px 1px 1px 1px; border: #9BA1A8 1px solid; vertical-align: middle;}
 TABLE#typo3-vmenu TR.c-mainitem-HL TD SPAN.c-label A { text-decoration : underline; }
 TABLE#typo3-vmenu TR.c-mainitem-HL TD IMG { vertical-align: middle; margin-right: 2px;}
@@ -497,6 +497,8 @@ TABLE.warningbox TD { padding: 20px 20px 20px 20px; font-weight: bold; }
 DIV.diff-r {background-color: red; color:black; padding: 3 3 3 3;}
 DIV.diff-g {background-color: green; color:black; padding: 3 3 3 3;}
 IMG.absmiddle { vertical-align: middle; }
+TEXTAREA.fixed-font { font-family: monospace; font-size: 11px; }
+
 .smallCheckboxes { width:12px; height:12px; margin:0 0 0 0; }
 .uppercase { text-transform : uppercase; }
 .tableheader TD { font-weight: bold; padding-left: 2px; padding-right: 2px; }
