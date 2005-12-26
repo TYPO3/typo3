@@ -145,7 +145,7 @@ class t3lib_pageSelect {
 		} else {
 				// For version previewing, make sure that enable-fields are not de-selecting hidden pages - we need versionOL() to unset them only if the overlay record instructs us to.
 			$this->versioningPreview_where_hid_del = $this->where_hid_del;	// Copy where_hid_del to other variable (used in relation to versionOL())
-			$this->where_hid_del = '';	// Clear where_hid_del
+			$this->where_hid_del = ' AND pages.deleted=0 ';	// Clear where_hid_del
 		}
 	}
 

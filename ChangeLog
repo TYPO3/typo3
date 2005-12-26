@@ -1,5 +1,7 @@
 2005-12-25  Sebastian Kurfuerst  <sebastian@garbage-group.de>
 
+	* Fixed error where deleted pages appear in the page tree when preview is activated. t3lib_pageselect->where_hid_del had to be changed.
+	* changed length of page alias from 20 to 32 characters
 	* Fixed bug #2087, introduced by #1078
 	* Marked t3lib_ajax as subject to change
 

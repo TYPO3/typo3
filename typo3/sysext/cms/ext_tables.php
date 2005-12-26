@@ -206,7 +206,7 @@ if (TYPO3_MODE=='BE')	{
 			'config' => Array (
 				'type' => 'input',
 				'size' => '10',
-				'max' => '20',
+				'max' => '32',
 				'eval' => 'nospace,alphanum_x,lower,unique',
 				'softref' => 'notify'
 			)
