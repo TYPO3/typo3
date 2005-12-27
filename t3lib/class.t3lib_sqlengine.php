@@ -248,7 +248,7 @@ class t3lib_sqlengine extends t3lib_sqlparser {
 					$this->lastInsertedId = $saveArray[$fN];
 				}
 			}
-#debug(array($fields_values,$saveArray));
+
 				// Insert row in table:
 			$this->data[$table][] = $saveArray;
 
@@ -292,7 +292,7 @@ class t3lib_sqlengine extends t3lib_sqlparser {
 				foreach($fields_values as $fName => $fValue)	{
 					$this->processAccordingToConfig($fields_values[$fName],$fieldInformation[$fName]);
 				}
-#debug($fields_values);
+
 					// Do query, returns array with keys to the data array of the result:
 				$itemKeys = $this->selectFromData($table,$where);
 
@@ -732,8 +732,6 @@ class t3lib_sqlengine extends t3lib_sqlparser {
 					unset($itemKeys[$kk]);
 				}
 			}
-
-#			echo $this->debug_printResultSet($this->getResultSet($itemKeys,$table,'uid,tstamp'));
 		}
 	}
 

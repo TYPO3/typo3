@@ -141,7 +141,7 @@ class t3lib_pageSelect {
 
 			// Filter out new place-holder pages in case we are NOT in a versioning preview (that means we are online!)
 		if (!$this->versioningPreview)	{
-			$this->where_hid_del.= ' AND pages.t3ver_state!=1';
+			$this->where_hid_del.= ' AND NOT(pages.t3ver_state=1)';
 		} else {
 				// For version previewing, make sure that enable-fields are not de-selecting hidden pages - we need versionOL() to unset them only if the overlay record instructs us to.
 			$this->versioningPreview_where_hid_del = $this->where_hid_del;	// Copy where_hid_del to other variable (used in relation to versionOL())
@@ -1004,8 +1004,8 @@ class t3lib_pageSelect {
 	function getMultipleGroupsWhereClause($field, $table)	{
 		$memberGroups = t3lib_div::intExplode(',',$GLOBALS['TSFE']->gr_list);
 		$orChecks=array();
-		$orChecks[]=$field.'=""';	// If the field is empty, then OK
-		$orChecks[]=$field.'="0"';	// If the field contsains zero, then OK
+		$orChecks[]=$field.'=\'\'';	// If the field is empty, then OK
+		$orChecks[]=$field.'=\'0\'';	// If the field contsains zero, then OK
 
 		foreach($memberGroups as $value)	{
 			// if ($value > 0)	{	// outcommented by Ingmar Schlecht because we want those pseudo groups like "hide at login" etc. to work. Original comment from Kasper was: "If user is member of a real group, not zero or negative pseudo group"

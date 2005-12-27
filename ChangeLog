@@ -1,3 +1,7 @@
+2005-12-27  Karsten Dambekalns	<karsten@typo3.org>
+
+	* Applied DBAL-related changes. This fixes or helps to fix some issues, including bugs #1649, #1781, #2077 and others.
+
 2005-12-26  Sebastian Kurfuerst  <sebastian@garbage-group.de>
 
 	* Fixed bug #0752: scope of BE- and FE-Cookie: can't cope with multidomain-setup

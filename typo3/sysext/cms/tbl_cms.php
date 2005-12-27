@@ -315,7 +315,7 @@ $TCA['fe_groups'] = Array (
 			'config' => Array (
 				'type' => 'select',
 				'foreign_table' => 'fe_groups',
-				'foreign_table_where' => 'AND fe_groups.uid != ###THIS_UID### AND NOT fe_groups.hidden ORDER BY fe_groups.title',
+				'foreign_table_where' => 'AND NOT(fe_groups.uid = ###THIS_UID###) AND fe_groups.hidden=0 ORDER BY fe_groups.title',
 				'size' => 4,
 				'autoSizeMax' => 10,
 				'minitems' => 0,

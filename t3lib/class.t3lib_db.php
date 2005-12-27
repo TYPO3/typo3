@@ -241,12 +241,17 @@ class t3lib_DB {
 	 * @see exec_SELECTquery()
 	 */
 	function exec_SELECT_mm_query($select,$local_table,$mm_table,$foreign_table,$whereClause='',$groupBy='',$orderBy='',$limit='')	{
+		if($foreign_table == $local_table) {
+			$foreign_table_as = $foreign_table.uniqid('_join');
+		}
+
 		$mmWhere = $local_table ? $local_table.'.uid='.$mm_table.'.uid_local' : '';
 		$mmWhere.= ($local_table AND $foreign_table) ? ' AND ' : '';
-		$mmWhere.= $foreign_table ? $foreign_table.'.uid='.$mm_table.'.uid_foreign' : '';
+		$mmWhere.= $foreign_table ? ($foreign_table_as ? $foreign_table_as : $foreign_table).'.uid='.$mm_table.'.uid_foreign' : '';
+
 		return $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 					$select,
-					($local_table ? $local_table.',' : '').$mm_table.($foreign_table ? ','.$foreign_table : ''),
+					($local_table ? $local_table.',' : '').$mm_table.($foreign_table ? ','. $foreign_table.($foreign_table_as ? ' AS '.$foreign_table_as : '') : ''),
 					$mmWhere.' '.$whereClause,		// whereClauseMightContainGroupOrderBy
 					$groupBy,
 					$orderBy,
