@@ -13,6 +13,7 @@ New features / improvements
 	* display of BE clickmenus with XMLHTTP / AJAX
 	* User admin module: switch back to admin user after user switch (SU-mode), "create new user" link
 	* Zapped a lot of gremlins
+	* Update Wizard taking care of non-backwards compatible changes
 
 Access Control
 ==============
@@ -36,3 +37,9 @@ Usability
 	* on timeout in BE, popup won't appear again after clicking "No"
 	* made new content element wizard easier to use (removed empty categories)
 	* RTE wizard has save and close buttons now
+
+Accessibility
+=============
+
+	* output of CSS styled content is now accessible by default
+	* (mailforms, menus, sitemaps)
