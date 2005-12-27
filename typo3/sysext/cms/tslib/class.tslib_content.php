@@ -2848,6 +2848,7 @@ class tslib_cObj {
 	 * Returns a subpart from the input content stream.
 	 * A subpart is a part of the input stream which is encapsulated in a string matching the input string, $marker. If this string is found inside of HTML comment tags the start/end points of the content block returned will be that right outside that comment block.
 	 * Example: The contennt string is "Hello <!--###sub1### begin--> World. How are <!--###sub1### end--> you?" If $marker is "###sub1###" then the content returned is " World. How are ". The input content string could just as well have been "Hello ###sub1### World. How are ###sub1### you?" and the result would be the same
+	 * Wrapper for t3lib_parsehtml::getSubpart which behaves identical
 	 *
 	 * @param	string		The content stream, typically HTML template content.
 	 * @param	string		The marker string, typically on the form "###[the marker string]###"
@@ -2855,26 +2856,13 @@ class tslib_cObj {
 	 * @see substituteSubpart(), t3lib_parsehtml::getSubpart()
 	 */
 	function getSubpart($content, $marker)	{
-		if ($marker && strstr($content,$marker))	{
-			$start = strpos($content, $marker)+strlen($marker);
-			$stop = @strpos($content, $marker, $start+1);
-			$sub = substr($content, $start, $stop-$start);
-
-			$reg=Array();
-			ereg('^[^<]*-->',$sub,$reg);
-			$start+=strlen($reg[0]);
-
-			$reg=Array();
-			ereg('<!--[^>]*$',$sub,$reg);
-			$stop-=strlen($reg[0]);
-
-			return substr($content, $start, $stop-$start);
-		}
+		return t3lib_parsehtml::getSubpart($content, $marker);
 	}
 
 	/**
 	 * Substitute subpart in input template stream.
 	 * This function substitutes a subpart in $content with the content of $subpartContent.
+	 * Wrapper for t3lib_parsehtml::substituteSubpart which behaves identical
 	 *
 	 * @param	string		The content stream, typically HTML template content.
 	 * @param	string		The marker string, typically on the form "###[the marker string]###"
@@ -2884,36 +2872,7 @@ class tslib_cObj {
 	 * @see getSubpart(), t3lib_parsehtml::substituteSubpart()
 	 */
 	function substituteSubpart($content,$marker,$subpartContent,$recursive=1)	{
-		$start = strpos($content, $marker);
-		$stop = @strpos($content, $marker, $start+1)+strlen($marker);
-		if ($start && $stop>$start)	{
-				// code before
-			$before = substr($content, 0, $start);
-			$reg=Array();
-			ereg('<!--[^>]*$',$before,$reg);
-			$start-=strlen($reg[0]);
-			$before = substr($content, 0, $start);
-				// code after
-			$after = substr($content, $stop);
-			$reg=Array();
-			ereg('^[^<]*-->',$after,$reg);
-			$stop+=strlen($reg[0]);
-			$after = substr($content, $stop);
-				// replace?
-			if (is_array($subpartContent))	{
-				$substContent=$subpartContent[0].$this->getSubpart($content,$marker).$subpartContent[1];
-			} else {
-				$substContent=$subpartContent;
-			}
-
-			if ($recursive && strpos($after, $marker))	{
-				return $before.$substContent.$this->substituteSubpart($after,$marker,$subpartContent);
-			} else {
-				return $before.$substContent.$after;
-			}
-		} else {
-			return $content;
-		}
+		return t3lib_parsehtml::substituteSubpart($content, $marker, $subpartContent, $recursive);
 	}
 
 	/**

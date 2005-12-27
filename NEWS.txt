@@ -43,3 +43,8 @@ Accessibility
 
 	* output of CSS styled content is now accessible by default
 	* (mailforms, menus, sitemaps)
+
+Speed
+=====
+
+  * HTML Parsing class got a speed improvement (faster preg instead of ereg, report bugs with inproperly replaced markers or subparts with previously working setup or TV problems with HTML templates having no problems before at http://bugs.typo3.org/view.php?id=1685)

@@ -1,3 +1,6 @@
+2005-12-27  Bernhard Kraft  <kraftb@kraftb.at>
+	* Fixed bug #1685 partly: replaced ereg calls with preg pendants in t3lib_parsehtml.php and made some minor modifications to improve overall speed (report bugs with inproperly replaced markers or subparts with previously working setup or TV problems with HTML templates having no problems before at http://bugs.typo3.org/view.php?id=1685)
+
 2005-12-27  Dmitry Dulepov  <typo3@accio.lv>
 
 	* Workspace listing: CSS classes are added to system style sheet file
