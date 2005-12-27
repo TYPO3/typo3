@@ -1,0 +1,2 @@
+This extension has been moved to the TYPO3 core CVS when it became a sysext.
+Therefore it has been removed here, to not confuse people.
