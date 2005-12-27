@@ -513,14 +513,18 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv("REMOTE_ADDR")."' (".t3lib_div::getIndp
 					You can also get an overview of extra/missing fields/tables in the database compared to a raw sql-file.
 					The database is also verified agains your 'tables.php' configuration (\$TCA) and you can even see suggestions to entries in \$TCA or new fields in the database.
 
-					<strong>3: Image Processing</strong>
+					<strong>3: Update Wizard</strong>
+					Here you will find update methods taking care of changes of the TYPO3 core which are not backwards compatible.
+					It is recommended to run this wizard after every update to make sure everything will still work flawlessly.
+
+					<strong>4: Image Processing</strong>
 					This step is a visual guide to verify your configuration of the image processing software.
 					You'll be presented to a list of images that should all match in pairs. If some irregularity appears, you'll get a warning. Thus you're able to track an error before you'll discover it on your website.
 
-					<strong>4: All Configuration</strong>
+					<strong>5: All Configuration</strong>
 					This gives you access to any of the configuration options in the TYPO3_CONF_VARS array. Every option is also presented with a comment explaining what it does.
 
-					<strong>5: typo3temp/</strong>
+					<strong>6: typo3temp/</strong>
 					Here you can manage the files in typo3temp/ folder in a simple manner. typo3temp/ contains temporary files, which may still be used by the website, but some may not. By searching for files with old access-dates, you can possibly manage to delete unused files rather than files still used. However if you delete a temporary file still in use, it's just regenerated as long as you make sure to clear the cache tables afterwards.
 					");
 
