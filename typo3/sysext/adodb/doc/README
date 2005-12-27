@@ -1,0 +1,8 @@
+This folder contains the patch that has been applied to the vanilla 4.68
+release of ADOdb before it has been packaged in this extension.
+
+The changes aren't as clean as they should be, but are needed for the
+DBAL extension that relies on this extension to be present. Most
+other code using this ADOdb library won't notice the changes done.
+
+Karsten Dambekalns

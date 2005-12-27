@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+	<meta type="array">
+		<description>Labels for the ADODB connection check wizard</description>
+		<type>database</type>
+		<csh_table></csh_table>
+		<fileId>EXT:adodb/locallang_wizard.xml</fileId>
+		<labelContext type="array">
+		</labelContext>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index="dbtype">Database type</label>
+			<label index="host">Host or DSN</label>
+			<label index="dbname">Database name</label>
+			<label index="username">Username</label>
+			<label index="password">Password</label>
+			<label index="table">Table name</label>
+			<label index="checkconnectionwizard">Check connection to database with configuration entered below</label>
+		</languageKey>
+	</data>
+	<orig_hash type="array">
+	</orig_hash>
+</T3locallang>
