@@ -245,19 +245,21 @@ class t3lib_userAuth {
 
 			// Setting cookies
 			// If new session and the cookie is a sessioncookie, we need to set it only once!
-        if (($this->newSessionID || $this->forceSetCookie) && $this->lifetime==0 ) {
+		if (($this->newSessionID || $this->forceSetCookie) && $this->lifetime==0 )	{
 			if (!$this->dontSetCookie)	{
-				SetCookie($this->name, $id, 0, '/');
+				if ($TYPO3_CONF_VARS['SYS']['cookieDomain'])	SetCookie($this->name, $id, 0, '/', $TYPO3_CONF_VARS['SYS']['cookieDomain']);
+				else	SetCookie($this->name, $id, 0, '/');
 				if ($this->writeDevLog) 	t3lib_div::devLog('Set new Cookie: '.$id, 't3lib_userAuth');
 			}
 		}
 
 			// If it is NOT a session-cookie, we need to refresh it.
-        if ($this->lifetime > 0) {
+		if ($this->lifetime > 0)	{
 			if (!$this->dontSetCookie)	{
-				SetCookie($this->name, $id, time()+$this->lifetime, '/');
+				if ($TYPO3_CONF_VARS['SYS']['cookieDomain'])	SetCookie($this->name, $id, time()+$this->lifetime, '/', $TYPO3_CONF_VARS['SYS']['cookieDomain']);
+				else 	SetCookie($this->name, $id, time()+$this->lifetime, '/');
 				if ($this->writeDevLog) 	t3lib_div::devLog('Update Cookie: '.$id, 't3lib_userAuth');
-        	}
+			}
 		}
 
 			// Check to see if anyone has submitted login-information and if so register the user with the session. $this->user[uid] may be used to write log...
