@@ -1,6 +1,7 @@
 2005-12-27  Karsten Dambekalns	<karsten@typo3.org>
 
 	* Applied DBAL-related changes. This fixes or helps to fix some issues, including bugs #1649, #1781, #2077 and others.
+	* Added dbal and adodb as system extensions.
 
 2005-12-26  Sebastian Kurfuerst  <sebastian@garbage-group.de>
 
