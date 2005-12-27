@@ -80,7 +80,7 @@
 			<label index="workspace_list_label_your_access">Your access:</label>
 			<label index="workspace_list_label_workspace_users">Workspace users:</label>
 			<label index="workspace_list_label_frozen_yes">Yes</label>
-			<label index="workspace_list_label_frozen_no">Yes</label>
+			<label index="workspace_list_label_frozen_no">No</label>
 			<label index="workspace_list_icon_title_edit_workspace">Edit workspace</label>
 			<label index="workspace_list_icon_title_switch_workspace">Switch workspace</label>
 			<label index="workspace_list_access_admin">Admin</label>
@@ -98,6 +98,13 @@
 			<label index="stage_reset_to_editing">&quot;%s&quot; reset to &quot;Editing&quot;</label>
 			<label index="stage_undefined">[undefined]</label>
 			<label index="stage_label_user_comment">User Comment:</label>
+			<label index="workspace_list_mount_point_inaccessible">This mount point is defined for workspace but not accessible to you. If you need access to this mount point, ask your system administrator to give you access to it.</label>
+			<label index="workspace_list_file_mount_point_live">Mount points from user profile are used.</label>
+			<label index="workspace_list_file_mount_point_draft">File mount points are not available in draft workspace.</label>
+			<label index="workspace_list_file_mount_point_custom">File mount points are not defined for this workspace. Therefore no file mount points available in the workspace.</label>
+			<label index="workspace_list_db_mount_point_live">Mount points from user profile are used.</label>
+			<label index="workspace_list_db_mount_point_draft">Mount points from user profile are used.</label>
+			<label index="workspace_list_db_mount_point_custom">Mount points from user profile are used.</label>
 		</languageKey>
 		<languageKey index="dk">EXT:csh_dk/lang/dk.locallang_mod_tools_ws.xml</languageKey>
 		<languageKey index="de">EXT:csh_de/lang/de.locallang_mod_tools_ws.xml</languageKey>
