@@ -1,3 +1,7 @@
+2005-12-27  Michael Stucki  <michael@typo3.org>
+
+	* Added typo3/ext/ again. It must stay even if it's empty, otherwise TYPO3 will not create the temp_CACHED_* files in typo3conf/
+
 2005-12-27  Karsten Dambekalns	<karsten@typo3.org>
 
 	* Applied DBAL-related changes. This fixes or helps to fix some issues, including bugs #1649, #1781, #2077 and others.
