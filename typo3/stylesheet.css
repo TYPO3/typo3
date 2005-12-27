@@ -474,6 +474,14 @@ TABLE.ver-subtree TR.typo3-ver-hl TD.iconTitle, TABLE.ver-subtree TR.typo3-ver-h
 TABLE.ver-subtree TR.typo3-ver-new TD { color: #666666; background-color: #eeeeee; }
 TABLE.ver-subtree TR.typo3-ver-noComp TD { font-style : italic; }
 
+.ver-wl-table { border: 1px solid black; }
+.ver-wl-details-table { border: 1px solid #D9D5C9; }
+.ver-wl-details { background-color: #E6E2D5; vertical-align: top; }
+.ver-wl-details-label { background-color: #E6E2D5; width: 150px; white-space: nowrap; vertical-align: top; }
+.ver-wl-details-user-list-label { width: 100px; }
+#ver-wl-new-workspace-icon { margin-right: 5px; border: none; float: left; }
+.ver-wl-mp-inacessible { font-style: italic; color: #7C7C7C; }
+.ver-wl-current-user { font-weight: bold; }
 
 
 /*********************************************
