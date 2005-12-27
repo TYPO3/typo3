@@ -724,8 +724,8 @@ class t3lib_install {
 				}
 				$out[]='
 					<tr>
-						<td valign="top"><input type="checkbox" name="'.$this->dbUpdateCheckboxPrefix.'['.$key.']" value="1"'.($checked?' checked="checked"':'').' /></td>
-						<td nowrap="nowrap">'.nl2br($ico.htmlspecialchars($string)).'</td>
+						<td valign="top"><input type="checkbox" id="'.$this->dbUpdateCheckboxPrefix.'['.$key.']" name="'.$this->dbUpdateCheckboxPrefix.'['.$key.']" value="1"'.($checked?' checked="checked"':'').' /></td>
+						<td nowrap="nowrap"><label for="'.$this->dbUpdateCheckboxPrefix.'['.$key.']">'.nl2br($ico.htmlspecialchars($string)).'</label></td>
 					</tr>';
 				if (isset($currentValue[$key]))	{
 					$out[]='

@@ -3,6 +3,8 @@
 	* Changed default font to for code textareas to "monospace"
 	* Changed the tab-in-textarea and the above fixed-font features to be changed by TCA. See Core API "defaultExtras" section for details.
 	* Changed module pointer of BE module titles (Web, File, Tools, etc.)
+	* Fixed Gremlin #1643: alt_shortcut.php: Permissions for the target document are checked before a shortcut is displayed.
+	* alt_shortcut.php: The groups have been changed from numbers to practically usable category names. They can be changed with User TSconfig (just set the group to a string instead to "1")
 
 2005-12-25  Sebastian Kurfuerst  <sebastian@garbage-group.de>
 

@@ -21,8 +21,13 @@
 			<label index="shortcut_searchFor">Search for:</label>
 			<label index="shortcut_notEditable">No editable page found!</label>
 			<label index="shortcut_group">Group</label>
-			<label index="shortcut_GLOBAL">GLOBAL</label>
-			<label index="shortcut_ALL">ALL</label>
+			<label index="shortcut_group_1">Pages</label>
+			<label index="shortcut_group_2">Records</label>
+			<label index="shortcut_group_3">Files</label>
+			<label index="shortcut_group_4">Tools</label>
+			<label index="shortcut_group_5">Miscellaneous</label>
+			<label index="shortcut_global">Global</label>
+			<label index="shortcut_all">All</label>
 			<label index="shortcut_onlyAdmin">You cannot edit a shared shortcut!</label>
 			<label index="shortcut_selSC">Select shortcut</label>
 			<label index="shortcut_delAllInCat">Delete all shortcuts in this group?</label>
