@@ -34,7 +34,7 @@ unset($MCONF);
 require ('conf.php');
 require ($BACK_PATH.'init.php');
 require ($BACK_PATH.'template.php');
-$LANG->includeLLFile('EXT:dbal/mod1/locallang.php');
+$LANG->includeLLFile('EXT:dbal/mod1/locallang.xml');
 require_once (PATH_t3lib.'class.t3lib_scbase.php');
 $BE_USER->modAccess($MCONF,1);	// This checks permissions and exits if the users has no permission for entry.
 	// DEFAULT initialization of a module [END]
@@ -249,8 +249,8 @@ updateQryForm(\''.$input['QUERY'].'\');
 				if (!is_array($testResult))	{
 					$out .= '<td colspan="2">'.$newQuery;
 				} else {
-					$out .= '<td colspan="2">'.htmlspecialchars($newQuery).'</td></tr>
-					<tr><th>Error:</th><td style="border:2px solid #f00;">Input query did not match the parsed and recompiled query exactly (not observing whitespace):<br />'.$testResult;
+					$out .= '<td colspan="2">'.htmlspecialchars($testResult[0]).'</td></tr>
+					<tr><th>Error:</th><td style="border:2px solid #f00;">Input query did not match the parsed and recompiled query exactly (not observing whitespace):<br />'.htmlspecialchars($testResult[1]);
 				}
 			} else {
 				$out .= '<th>Result:</th><td style="border:2px solid #f00;">'.$parseResult;
