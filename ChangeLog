@@ -1,3 +1,16 @@
+2005-12-27  Dmitry Dulepov  <typo3@accio.lv>
+
+	* Workspace listing: CSS classes are added to system style sheet file
+	* Workspace listing: Direct styles changes to CSS classes
+	* Workspace listing: Mount points list now shows warning icon and explanation tooltip if workspace mount point is not accessible for current BE user
+	* Workspace listing: Mount points list will show explanation if no mount points available and why
+	* Workspace listing: User list is changed for live and draft workspace: now shows a simple list of users
+	* Workspace listing: alt_shortcut.php is no longer used to switch workspaces
+	* Workspace listing: Fix - user names sometimes were not displayed for non-admin user in the access lists
+	* Workspace listing: Fix - non-admin users could see empty row in workspace list
+	* Workspace listing: Fix - workspace_list_label_frozen_no label was wrong in locallang_mod_user_ws.xml
+	* Many new labels in locallang_mod_user_ws.xml
+
 2005-12-27  Michael Stucki  <michael@typo3.org>
 
 	* Added typo3/ext/ again. It must stay even if it's empty, otherwise TYPO3 will not create the temp_CACHED_* files in typo3conf/
