@@ -514,7 +514,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv("REMOTE_ADDR")."' (".t3lib_div::getIndp
 					The database is also verified agains your 'tables.php' configuration (\$TCA) and you can even see suggestions to entries in \$TCA or new fields in the database.
 
 					<strong>3: Update Wizard</strong>
-					Here you will find update methods taking care of changes of the TYPO3 core which are not backwards compatible.
+					Here you will find update methods taking care of changes to the TYPO3 core which are not backwards compatible.
 					It is recommended to run this wizard after every update to make sure everything will still work flawlessly.
 
 					<strong>4: Image Processing</strong>
