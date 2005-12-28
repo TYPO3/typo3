@@ -1,3 +1,6 @@
+2005-12-29  Michael Stucki  <michael@typo3.org>
+	* Solved problems with wrong backPath
+
 2005-12-24  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
 	* Extend t3lib_parsehtml_proc only if TYPO3_VERSION is smaller than 4.0
 	* Cleanup images folders.
