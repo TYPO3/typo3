@@ -2,6 +2,7 @@
 
 	* Release of TYPO3 4.0beta1
 	* Rised version number to 4.0beta1
+	* Fixed a bug in tstemplate (path still pointing to typo3/ext/)
 
 2005-12-28  Michael Stucki  <michael@typo3.org>
 
