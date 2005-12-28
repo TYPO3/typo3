@@ -1,5 +1,10 @@
 2005-12-28  Michael Stucki  <michael@typo3.org>
 
+	* Release of TYPO3 4.0beta1
+	* Rised version number to 4.0beta1
+
+2005-12-28  Michael Stucki  <michael@typo3.org>
+
 	* Changed TYPO3_CONF_VARS[SYS][fileCreateMask] from 775 to 755
 	* Rised version number to 4.0-dev
 	* Added "rtehtmlarea" as a system extension
