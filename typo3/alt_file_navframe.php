@@ -109,8 +109,9 @@ class SC_alt_file_navframe {
 	($this->currentSubScript?'top.currentSubScript=unescape("'.rawurlencode($this->currentSubScript).'");':'').'
 
 		// Function, loading the list frame from navigation tree:
-	function jumpTo(id,linkObj,highLightID)	{	//
+	function jumpTo(id,linkObj,highLightID,bank)	{	//
 		var theUrl = top.TS.PATH_typo3+top.currentSubScript+"?id="+id;
+		top.fsMod.currentBank = bank;
 
 		if (top.condensedMode)	{
 			top.content.document.location=theUrl;
@@ -118,7 +119,7 @@ class SC_alt_file_navframe {
 			parent.list_frame.document.location=theUrl;
 		}
 
-        '.($this->doHighlight?'hilight_row("file",highLightID);':'').'
+        '.($this->doHighlight?'hilight_row("file",highLightID+"_"+bank);':'').'
 		'.(!$CLIENT['FORMSTYLE'] ? '' : 'if (linkObj) {linkObj.blur();}').'
 		return false;
 	}

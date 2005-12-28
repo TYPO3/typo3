@@ -203,6 +203,12 @@ class SC_file_list {
 				}
 			}
 
+			if (!isset($this->MOD_SETTINGS['sort']))	{
+					// Set default sorting
+				$this->MOD_SETTINGS['sort'] = 'file';
+				$this->MOD_SETTINGS['reverse'] = 0;
+			}
+
 				// Start up filelisting object, include settings.
 			$this->pointer = t3lib_div::intInRange($this->pointer,0,100000);
 			$filelist->start($this->id,$this->pointer,$this->MOD_SETTINGS['sort'],$this->MOD_SETTINGS['reverse'],$this->MOD_SETTINGS['clipBoard']);

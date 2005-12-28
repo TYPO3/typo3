@@ -1,0 +1,82 @@
+<html class="popupwin">
+<head>
+	<title>Remove formatting</title>
+	<meta http-equiv="Content-Style-Type" content="text/css" />
+	<script type="text/javascript" src="../../../popups/popup.js"></script>
+	<script type="text/javascript">
+		HTMLArea = window.opener.HTMLArea;
+		_editor_CSS = window.opener._editor_CSS;
+		__dlg_loadStyle(_editor_CSS);
+		var RemoveFormat = window.opener.RemoveFormat;
+		var i18n = RemoveFormat.I18N;
+
+		function Init() {
+			__dlg_translate(i18n);
+			__dlg_init();
+			var editor = window.dialogArguments;
+			if (!editor._selectionEmpty(editor._getSelection())) document.getElementById('clean_selection').checked = true;
+		};
+
+		function onOK() {
+			var param = {};
+			if (document.getElementById('clean_selection').checked) {
+				param["cleaning_area"] = "selection";
+			} else {
+				param["cleaning_area"] = "all";
+			}
+
+			var fields = ["formatting", "ms_formatting", "images", "html_all"];
+			oneChecked = false;
+			for (var i=0; i<fields.length; i++) {
+				var id = fields[i];
+				var el = document.getElementById(id);
+				if (el.checked) {
+					param[id] = true;
+					oneChecked = true;
+				}
+			}
+			if(oneChecked) {
+				__dlg_close(param);
+			} else {
+				alert(i18n["Select the type of formatting you wish to remove."]);
+			}
+			return false;
+		};
+
+		function onCancel() {
+			__dlg_close(null);
+			return false;
+		};
+</script>
+</head>
+<body class="popupwin" onload="Init();">
+<div class="title">Remove formatting</div>
+<form action="" method="get">
+	<fieldset>
+		<legend><span>Cleaning Area</span></legend>
+			<span>Selection</span><input type="radio" name="cleaning_area" id="clean_selection" value="selection" />
+			<span>All</span><input type="radio" name="cleaning_area" id="clean_page" value="page" checked="checked" />
+	</fieldset>
+	<fieldset>
+		<legend><span>Cleaning options</span></legend>
+			<div class="space"></div>
+			<div class="fl">Formatting:</div>
+			<input type="checkbox" id="formatting" value="" />
+			<div class="space"></div>
+			<div class="fl">MS Word Formatting:</div>
+			<input type="checkbox" id="ms_formatting" value="" checked="checked" />
+			<div class="space"></div>
+			<div class="fl">Images:</div>
+			<input type="checkbox" id="images" value="" />
+			<div class="space"></div>
+			<div class="fl">All HTML:</div>
+			<input type="checkbox" id="html_all" value="" />
+			<div class="space"></div>
+	</fieldset>
+	<div class="buttons">
+		<button type="button" name="ok" onclick="return onOK();">OK</button>
+		<button type="button" name="cancel" onclick="return onCancel();">Cancel</button>
+	</div>
+</form>
+</body>
+</html>

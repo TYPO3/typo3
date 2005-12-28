@@ -509,7 +509,7 @@ class t3lib_treeView {
 	 * @access private
 	 */
 	function wrapTitle($title,$row,$bank=0)	{
-		$aOnClick = 'return jumpTo(\''.$this->getJumpToParam($row).'\',this,\''.$this->domIdPrefix.$this->getId($row).'_'.$bank.'\');';
+		$aOnClick = 'return jumpTo(\''.$this->getJumpToParam($row).'\',this,\''.$this->domIdPrefix.$this->getId($row).'\','.$bank.');';
 		return '<a href="#" onclick="'.htmlspecialchars($aOnClick).'">'.$title.'</a>';
 	}
 

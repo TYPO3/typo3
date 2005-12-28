@@ -1,4 +1,20 @@
+2005-12-28  Michael Stucki  <michael@typo3.org>
+
+	* Added "rtehtmlarea" as a system extension
+		- Important notice: Because of a known bug, the buttons "blockstylelabel", "blockstyle", "textstylelabel" and "textstyle" will not work with this version.
+	* Fixed bug #1155: Install tool want to recreate the tables, and drop the old ones
+	* Fixed Gremlin #1690: nav_frame is sometimes out of sync with the selected page
+	* Various changes in t3lib_parsehtml_proc (on behalf of Stanislas Rolland):
+		- Allow style and xml:lang attributes on span tags
+		- Include "hr", "address" and "dl" in headListTags
+		- Avoid insertion of superfluous linebreaks by transform_db
+		- Eliminate true linebreaks inside Hx tags
+		- Convert linebreaks to spaces instead of deleting them
+		- Wrap a-tags that contain a style attribute with a span-tag
+		- Honor setting RTE.default.proc.HTMLparser_db.xhtml_cleaning=1
+
 2005-12-27  Bernhard Kraft  <kraftb@kraftb.at>
+
 	* Fixed bug #1685 partly: replaced ereg calls with preg pendants in t3lib_parsehtml.php and made some minor modifications to improve overall speed (report bugs with inproperly replaced markers or subparts with previously working setup or TV problems with HTML templates having no problems before at http://bugs.typo3.org/view.php?id=1685)
 
 2005-12-27  Dmitry Dulepov  <typo3@accio.lv>

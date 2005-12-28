@@ -1,0 +1,459 @@
+/* Selectors for the htmlArea RTE editor */
+.htmlarea {
+	background-color:#fff;
+ 	margin:0;padding:0;
+}
+.pleasewait {
+ 	position:relative;top:0px;text-align:left;
+ 	font-size:8pt;
+ 	margin-top:30px;
+}
+.editorWrap {
+ 	margin:0;padding:0;
+}
+/* Selectors for the editor toolbar */
+.htmlarea div.toolbar {
+	background-color:#e4e0db;cursor:default;
+	width:100%;
+	border:1px solid #e4e0db;border-bottom:1px solid #000;margin:0;padding:0px 0px 2px 0px;
+}
+.htmlarea .toolbar ul {
+	background-color:transparent;
+	list-style-type:none;list-style-image:none;
+	border-style:none;margin:0;padding:0;
+}
+.htmlarea .toolbar ul.tb-line {
+	clear:both;
+}
+.htmlarea .toolbar ul.tb-group {
+	clear:none;float:left;
+}
+.htmlarea .toolbar ul li {
+	float:left;
+	background-color:transparent;
+	font:11px tahoma,verdana,sans-serif;
+	border-style:none;padding:0;
+}
+.htmlarea .toolbar ul.tb-line li {
+	margin:1px 0px 1px 0px;
+}
+.htmlarea .toolbar ul.free-float li, .htmlarea .toolbar ul.tb-group li {
+	height:22px;
+	margin:0;
+}
+.htmlarea .toolbar label {
+	float:left;
+	vertical-align:middle;
+	height:22px;
+	background-color:#e4e0db;
+	margin:0;padding:3px 3px 0px 3px;
+}
+.htmlarea .toolbar button {
+	vertical-align:top;
+	background-color:#e4e0db;background-position:1px 1px;background-repeat:no-repeat;color:ButtonText;
+	border:1px solid #e4e0db;margin:0;padding:1px;
+	width:22px;height:22px;
+}
+.htmlarea .toolbar button div.buttonImgContainer {
+	position:relative;top:0;left:0;
+	width:18px;height:18px;overflow:hidden;
+	margin:0;padding:0;
+}
+.htmlarea .toolbar .Bold  {background-image:url("images/ed_format_bold.gif");}
+.htmlarea .toolbar .Italic {background-image:url("images/ed_format_italic.gif");}
+.htmlarea .toolbar .Underline {background-image:url("images/ed_format_underline.gif");}
+.htmlarea .toolbar .StrikeThrough {background-image:url("images/ed_format_strike.gif");}
+.htmlarea .toolbar .Subscript {background-image:url("images/ed_format_sub.gif");}
+.htmlarea .toolbar .Superscript {background-image:url("images/ed_format_sup.gif");}
+.htmlarea .toolbar .LeftToRight {background-image:url("images/ed_left_to_right.gif");}
+.htmlarea .toolbar .RightToLeft {background-image:url("images/ed_right_to_left.gif");}
+.htmlarea .toolbar .JustifyLeft, .htmlarea-context-menu .JustifyLeft {background-image:url("images/ed_align_left.gif");}
+.htmlarea .toolbar .JustifyCenter, .htmlarea-context-menu .JustifyCenter {background-image:url("images/ed_align_center.gif");}
+.htmlarea .toolbar .JustifyRight, .htmlarea-context-menu .JustifyRight {background-image:url("images/ed_align_right.gif");}
+.htmlarea .toolbar .JustifyFull, .htmlarea-context-menu .JustifyFull {background-image:url("images/ed_align_justify.gif");}
+.htmlarea .toolbar .InsertOrderedList {background-image:url("images/ed_list_num.gif");}
+.htmlarea .toolbar .InsertUnorderedList {background-image:url("images/ed_list_bullet.gif");}
+.htmlarea .toolbar .Indent {background-image:url("images/ed_indent_more.gif");}
+.htmlarea .toolbar .Outdent {background-image:url("images/ed_indent_less.gif");}
+.htmlarea .toolbar .ForeColor {background-image:url("images/ed_color_fg.gif");}
+.htmlarea .toolbar .HiliteColor {background-image:url("images/ed_color_bg.gif");}
+.htmlarea .toolbar .CO-forecolor {background-image:url("images/SelectColor/CO-forecolor.gif");}
+.htmlarea .toolbar .CO-hilitecolor {background-image:url("images/SelectColor/CO-hilitecolor.gif");}
+.htmlarea .toolbar .InsertSmiley {background-image:url("images/InsertSmiley/ed_smiley.gif");}
+.htmlarea .toolbar .InsertCharacter {background-image:url("images/CharacterMap/ed_charmap.gif");}
+.htmlarea .toolbar .InsertHorizontalRule {background-image:url("images/ed_hr.gif");}
+.htmlarea .toolbar .CreateLink, .htmlarea-context-menu .CreateLink {background-image:url("images/ed_link.gif");}
+.htmlarea-context-menu .UnLink {background-image:url("images/ed_unlink.gif");}
+.htmlarea .toolbar .InsertImage, .htmlarea-context-menu .InsertImage {background-image:url("images/ed_image.gif");}
+.htmlarea .toolbar .CreateLink-TYPO3Browsers, .htmlarea-context-menu .CreateLink-TYPO3Browsers {background-image:url("images/TYPO3Browsers/ed_link.gif");}
+.htmlarea-context-menu .UnLink-TYPO3Browsers {background-image:url("images/TYPO3Browsers/ed_unlink.gif");}
+.htmlarea .toolbar .InsertImage-TYPO3Browsers, .htmlarea-context-menu .InsertImage-TYPO3Browsers {background-image:url("images/TYPO3Browsers/ed_image.gif");}
+.htmlarea .toolbar .InsertTable {background-image:url("images/insert_table.gif");}
+.htmlarea .toolbar .UserElements {background-image:url("images/UserElements/ed_user.gif");}
+.htmlarea .toolbar .FindReplace {background-image:url("images/FindReplace/ed_find.gif");}
+.htmlarea .toolbar .SpellCheck { background-image:url("images/SpellChecker/spell-check.gif"); }
+.htmlarea .toolbar .InsertTag { background-image:url("images/QuickTag/ed_quicktag.gif"); }
+.htmlarea .toolbar .Acronym { background-image:url("images/Acronym/ed_acronym.gif"); }
+.htmlarea .toolbar .RemoveFormat { background-image:url("images/RemoveFormat/ed_clean.gif"); }
+.htmlarea .toolbar .SplitBlock {background-image:url("images/ed_splitblock.gif"); }
+.htmlarea .toolbar .HtmlMode { background-image:url("images/ed_html.gif"); }
+.htmlarea .toolbar .Copy, .htmlarea-context-menu .Copy  { background-image:url("images/ed_copy.gif");}
+.htmlarea .toolbar .Cut, .htmlarea-context-menu .Cut  { background-image:url("images/ed_cut.gif");}
+.htmlarea .toolbar .Paste, .htmlarea-context-menu .Paste { background-image:url("images/ed_paste.gif");}
+.htmlarea .toolbar .Undo { background-image:url("images/ed_undo.gif");}
+.htmlarea .toolbar .Redo { background-image:url("images/ed_redo.gif");}
+.htmlarea .toolbar .About { background-image:url("images/ed_about.gif");}
+.htmlarea .toolbar .ShowHelp { background-image:url("images/ed_help.gif");}
+.htmlarea .toolbar .TO-toggle-borders, .htmlarea-context-menu .TO-toggle-borders {background-image:url("images/TableOperations/toggle-borders.gif");}
+.htmlarea .toolbar .TO-table-prop, .htmlarea-context-menu .TO-table-prop {background-image:url("images/TableOperations/table-prop.gif");}
+.htmlarea .toolbar .TO-row-prop, .htmlarea-context-menu .TO-row-prop {background-image:url("images/TableOperations/row-prop.gif");}
+.htmlarea .toolbar .TO-row-insert-above, .htmlarea-context-menu .TO-row-insert-above {background-image:url("images/TableOperations/row-insert-above.gif");}
+.htmlarea .toolbar .TO-row-insert-under, .htmlarea-context-menu .TO-row-insert-under {background-image:url("images/TableOperations/row-insert-under.gif");}
+.htmlarea .toolbar .TO-row-delete, .htmlarea-context-menu .TO-row-delete {background-image:url("images/TableOperations/row-delete.gif");}
+.htmlarea .toolbar .TO-row-split, .htmlarea-context-menu .TO-row-split {background-image:url("images/TableOperations/row-split.gif");}
+.htmlarea .toolbar .TO-col-insert-before, .htmlarea-context-menu .TO-col-insert-before {background-image:url("images/TableOperations/col-insert-before.gif");}
+.htmlarea .toolbar .TO-col-insert-after, .htmlarea-context-menu .TO-col-insert-after {background-image:url("images/TableOperations/col-insert-after.gif");}
+.htmlarea .toolbar .TO-col-delete, .htmlarea-context-menu .TO-col-delete {background-image:url("images/TableOperations/col-delete.gif");}
+.htmlarea .toolbar .TO-col-split, .htmlarea-context-menu .TO-col-split {background-image:url("images/TableOperations/col-split.gif");}
+.htmlarea .toolbar .TO-cell-prop, .htmlarea-context-menu .TO-cell-prop {background-image:url("images/TableOperations/cell-prop.gif");}
+.htmlarea .toolbar .TO-cell-insert-before, .htmlarea-context-menu .TO-cell-insert-before {background-image:url("images/TableOperations/cell-insert-before.gif");}
+.htmlarea .toolbar .TO-cell-insert-after, .htmlarea-context-menu .TO-cell-insert-after {background-image:url("images/TableOperations/cell-insert-after.gif");}
+.htmlarea .toolbar .TO-cell-delete, .htmlarea-context-menu .TO-cell-delete {background-image:url("images/TableOperations/cell-delete.gif");}
+.htmlarea .toolbar .TO-cell-split, .htmlarea-context-menu .TO-cell-split {background-image:url("images/TableOperations/cell-split.gif");}
+.htmlarea .toolbar .TO-cell-merge, .htmlarea-context-menu .TO-cell-merge {background-image:url("images/TableOperations/cell-merge.gif");}
+.htmlarea .toolbar button.buttonHover {
+	border:1px solid;border-color:#e4e0db #999999 #999999 #e4e0db;
+}
+.htmlarea .toolbar button.buttonActive {
+	border:1px solid;border-color:ButtonShadow ButtonHighlight ButtonHighlight ButtonShadow;padding:2px 0px 0px 2px;
+}
+.htmlarea .toolbar button.buttonPressed {
+	background-color:ButtonHighlight;
+	border:1px solid;border-color:#999999 #e4e0db #e4e0db #999999;	padding:2px 0px 0px 2px;
+	text-decoration:none;
+}
+.htmlarea .toolbar div.indicator {
+	margin:4px 0px 0px 0px;
+	padding:0px 3px;
+	overflow:hidden;
+	width:20px;
+	text-align:center;
+	cursor:default;
+	border:1px solid ButtonShadow;
+}
+.htmlarea .toolbar button.buttonDisabled {
+	filter: alpha(opacity = 25);
+	-moz-opacity: 0.25;
+	opacity: 0.25;
+}
+.htmlarea .toolbar div.separator {
+	position:relative;
+	border-left:1px solid #999;margin:0 3px;padding:0;
+	width:0px;height:20px;
+}
+.htmlarea .toolbar li.tb-first-cell .separator {
+	border-style:none;margin:0;padding:0;
+}
+.htmlarea .toolbar div.space {
+	float:left;
+	height:22px;
+	margin:0;padding:0px 1px 0px 0px;
+}
+.htmlarea .toolbar select {
+	font:11px Tahoma,Verdana,sans-serif; 
+	margin:2px 2px 0px 2px;
+}
+* html .htmlarea .toolbar select {
+	height:22px;
+}
+.htmlarea .toolbar select, .htmlarea .toolbar select:hover, .htmlarea .toolbar select:active {
+	background-color:#fff;color:ButtonText;
+}
+.htmlarea .toolbar select.buttonDisabled {
+	background-color:#e4e0db;
+}
+.htmlarea .editorIframe {
+	clear:both;
+	width:100%;
+	border:1px solid #000;border-top:0px;margin:0;padding:0;
+}
+.htmlarea .noStatusBar {
+	border-bottom:1px solid #000;
+}
+.htmlarea .statusBar {
+	clear:both;
+	background-color:#e4e0db;color:ButtonText;
+	font:11px Tahoma,Verdana,sans-serif;
+	width:100%;
+	border:1px solid;border-color:ButtonShadow ButtonHighlight ButtonHighlight ButtonShadow;margin:0;padding:0;
+}
+.htmlarea .statusBarTree {
+	padding:2px 5px;
+}
+.htmlarea .statusBar .statusBarTree a {
+	color:#00f;
+	padding:2px 5px;
+}
+.htmlarea .statusBar .statusBarTree a:visited {
+	color:#00f;
+}
+.htmlarea .statusBar .statusBarTree a:hover {
+	background-color:Highlight;color:HighlightText;
+	border:1px solid HighlightText;padding:1px 4px;
+}
+.htmlarea .statusBarTextMode {
+	padding:2px 5px;
+}
+/* Selectors for popup windows */
+.dialog .buttonColor {
+	cursor:default;
+	border-style:solid;border-width:1px;border-color:ButtonHighlight ButtonShadow ButtonShadow ButtonHighlight;padding:1px;
+}
+.dialog .buttonColor-hilite {
+	border-color:black black black black;
+}
+.dialog .buttonColor .chooser, .dialog .buttonColor .nocolor {
+	height:0.6em;
+	border-width:1px;border-style:solid;border-width:1px;border-color:ButtonShadow ButtonHighlight ButtonHighlight ButtonShadow;padding:0px 1em;
+}
+.dialog .buttonColor .nocolor {
+	padding:0;
+}
+.dialog .buttonColor .nocolor-hilite {
+	background-color:#fff;color:#f00;cursor:pointer;
+}
+.popupwin {
+	background-color:#e4e0db;color:ButtonText;
+	font:11px Tahoma,Verdana,sans-serif;
+}
+.popupwin body {
+	background-color:#e4e0db;color:ButtonText;
+	font:11px Tahoma,Verdana,sans-serif;
+	border-style:none;margin:5px;padding:0;
+}
+.popupwin .title {
+	clear:both;
+	background-color:#ddf;color:#000;
+	font-weight:bold;font-size:120%;letter-spacing:2px;
+	border-top:0px;border-bottom:1px solid black;margin-top:0px;margin-bottom:10px;padding:3px 10px;
+}
+.popupwin p {
+	margin: 0.5em 0;
+}
+.popupwin h1 {
+	font-weight: bold; font-size: 1.2em;
+	padding: .3em 0; border-bottom: 1px solid #999;
+}
+.popupwin a:link, .popupwin a:visited {
+	color: #00f;
+}
+.popupwin a:hover {
+	color: #f00;
+}
+.popupwin a:active { 
+	color: #f80;
+}
+.popupwin #tabbar { position: relative; left: 10px; }
+.popupwin .tab {
+	color: #454; background-color: #66f; cursor: pointer;
+	margin-left: -5px; float: left; position: relative; top: -3px; left: -2px; z-index: 0;
+	border: 1px solid black; border-top: none; padding: 2px 10px 3px 10px;
+	-moz-border-radius: 0px 0px 4px 4px;
+}
+.popupwin .tab-current {
+	color: #000; background-color: #ddf;
+	top: -4px; z-index: 10;
+	padding: 3px 10px 4px 10px;
+}
+.popupwin .content {
+	border-style:none;margin:0;padding:0;
+}
+.popupwin ul {
+	list-style-type:none;
+	border-style:none;margin:0;padding:0;
+}
+.popupwin li {
+	margin:4px 0;
+}
+.popupwin select {
+	display:inline;
+}
+.popupwin table {
+	border-collapse:collapse;border-style:none;margin:0;padding:0;
+}
+.popupwin thead {
+	font-weight: bold; background-color: #ddf;
+}
+.popupwin td {
+	padding: 0.2em;
+}
+.popupwin form {
+	background-color:#e4e0db;
+	border-style:none;margin:0;padding:0;
+}
+.popupwin form p {
+	margin-top:5px;margin-bottom:5px;
+}
+.popupwin fieldset {
+	display:inline;
+	margin:5px 5px 0 5px;padding:5px;
+}
+.popupwin .floating {
+	float:left;
+}
+/* fieldset is inline only for Opera */
+* html .popupwin fieldset, :root .popupwin fieldset {
+	display:block;
+}
+.popupwin legend {
+	font-weight:bold;padding:0 3px;
+}
+.popupwin .field {
+	float:left;text-align:left;
+	margin-left:5px;padding:2px 5px;
+}
+.popupwin label {
+	text-align:left;
+	margin-left:5px;padding:2px 5px;
+}
+.popupwin fieldset table {
+	font-size:11px;font-family:Tahoma,Verdana,sans-serif;
+	border-style:none;margin:2px 0;padding:0;
+}
+.popupwin .buttons {
+	clear:both;text-align:right;
+	border-top:1px solid #999;margin-top:10px;padding:5px;
+}
+.popupwin span.colorButton {
+	float:left;
+	padding:2px 0;
+}
+.popupwin span.colorButtonNoFloat {
+	padding:2px 0;
+}
+.popupwin select, .popupwin input, .popupwin button, .popupwin textarea, .popupwin table, .popupwin label {
+	font:11px Tahoma,Verdana,sans-serif;
+}
+.popupwin button {
+	background-color:#e4e0db;
+	width:8em;
+	padding:0;
+}
+.popupwin dl, .popupwin dt, .popupwin dd {
+	display: block;
+}
+.popupwin dt, .popupwin dd {
+	margin:3px 0;
+}
+.popupwin button.long-button {
+	width:10em;
+}
+.popupwin .fl {
+	float:left;text-align:right;
+	width:13em;
+	padding:2px 5px;
+}
+.popupwin .fl-borderCollapse {
+	float:left;text-align:right;
+	width:13em;
+	margin-left:10px;padding:2px 5px;
+}
+.popupwin .fr {
+	float:left;text-align:right;
+	width:9em;
+	padding:2px 5px;
+}
+.popupwin .space {
+	clear:left;
+	padding:2px;
+}
+.popupwin .label {
+	text-align:right;
+	width:8em;
+}
+.popupwin .checkbox {
+	text-align:left;
+	padding:2px 5px;
+}
+.popupwin .postlabel {
+	text-align:left;
+	padding:2px 5px;
+}
+.popupwin input.value {
+	width:30em;
+}
+.popupwin input.shorter-value {
+	width:17em;
+}
+.popupwin #HA-layout {
+	width:450px;
+}
+.colorTable {
+	border:black 1px solid;
+}
+.currentColor {
+	width:20px;height:20px;
+	border:black 1px solid;margin:0pt 15pt;
+}
+.colorTable tr {
+	height:6px;
+}
+.colorTable td {
+	width:6px;
+	cursor:pointer;
+}
+/* Selectors for the InsertImage popup */
+.popupwin div.imagepreview {
+	text-align:center;
+}
+.popupwin .imagepreview iframe {
+	width:300px;height:200px;
+	border:1px solid gray;
+}
+/* Selectors for the InsertSmiley plugin */
+.popupwin div.smileytable {
+	height:125px;overflow:auto;
+}
+.popupwin .smileytable td {
+	width:35px;height:25px;
+}
+/* Selectors for the FindReplace plugin */
+.popupwin .long-label {
+	text-align:left;
+	width:16em;
+}
+/* Selectors for the SpellChecker plugin */
+.popupwin #b_recheck {
+	vertical-align:middle;
+	width:12em;
+}
+/* Selectors for the ContextMenu plugin */
+.htmlarea-context-menu {
+	position:absolute;top:-1000px;left:-1000px;z-index:1000;
+	background-color:#cdf;cursor:default;
+	font:11px tahoma,verdana,sans-serif;
+	list-style:none;
+	border:1px solid #aca899;margin:0;padding:2px;
+}
+.htmlarea-context-menu li {
+	background-color:#cdf;
+	border:1px solid #cdf;margin:1px 0;padding:0;
+}
+.htmlarea-context-menu li .button {
+	text-align:left;vertical-align:middle;
+	background-color:transparent;background-repeat:no-repeat;background-position:3px 2px;
+	height:21px;
+	border-style:none;margin:0;padding:0 0 0 24px;
+}
+.htmlarea-context-menu li .button img {
+	width:18px;height:18px;
+}
+.htmlarea-context-menu li.separator {
+	border-top:1px solid #fff;
+}
+.htmlarea-context-menu li.hover {
+	background-color:#316ac5;
+}
+.htmlarea-context-menu li.hover .button {
+	color:#fff;
+}

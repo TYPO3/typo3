@@ -1,0 +1,178 @@
+<html class="popupwin">
+<head>
+	<title>Insert Table</title>
+	<meta http-equiv="Content-Style-Type" content="text/css" />
+	<script type="text/javascript" src="popup.js"></script>
+	<script type="text/javascript">
+		HTMLArea = window.opener.HTMLArea;
+		_editor_CSS = window.opener._editor_CSS;
+		__dlg_loadStyle(_editor_CSS);
+		var i18n = window.opener.HTMLArea.I18N.dialogs;
+		var editor = window.opener.Dialog._arguments;
+
+		function Init() {
+			var content = document.getElementById("content");
+			buildTitle(i18n, content, "Insert Table");
+			var form = document.createElement("form");
+			form.action = "";
+			form.method = "get";
+			buildDimensionFieldset(i18n,form);
+			if (!editor.config.disableBordersFieldsetInTableOperations) buildBordersFieldset(i18n, form);
+			if (!editor.config.disableSpacingFieldsetInTableOperations) buildSpacingFieldset(i18n, form);
+			addButtons(i18n, form, ["ok","cancel"], ["OK","Cancel"]);
+			content.appendChild(form);
+			__dlg_init();
+			document.getElementById("f_rows").focus();
+		};
+		function onOK() {
+			var required = { "f_rows": "", "f_cols": "" };
+			required["f_rows"] = i18n["You must enter a number of rows"];
+			required["f_cols"] =  i18n["You must enter a number of columns"];
+			for (var i in required) {
+				var el = document.getElementById(i);
+				if (!el.value) {
+					alert(required[i]);
+					el.focus();
+					return false;
+				}
+			}
+			var fields = ["f_rows", "f_cols", "f_width", "f_unit", "f_border", "f_spacing", "f_padding", "f_float"];
+			var param = new Object();
+			for (var i in fields) {
+				var id = fields[i];
+				var el = document.getElementById(id);
+				if(el) param[id] = el.value;
+			}
+			__dlg_close(param);
+			return false;
+		};
+		function onCancel() {
+			__dlg_close(null);
+			return false;
+		};
+		function buildTitle(i18n,content,title) {
+			var div = document.createElement("div");
+			div.className = "title";
+			div.innerHTML = i18n[title];
+			content.appendChild(div);
+			document.title = i18n[title];
+		};
+		function buildDimensionFieldset(i18n,content) {
+			var fieldset = document.createElement("fieldset");
+			insertLegend(i18n, fieldset, "Dimension");
+			buildInput(i18n, fieldset, "f_rows", ["Rows:"], ["Number of rows"], "5", "2");
+			buildInput(i18n, fieldset, "f_cols", ["Cols:"], ["Number of columns"], "5", "4");
+			if (!editor.config.disableLayoutFieldsetInTableOperations) {
+				buildInput(i18n, fieldset, "f_width", ["Width:"], ["Width of the table"], "5", "100");
+				buildUnitField(i18n, fieldset);
+			}
+			content.appendChild(fieldset);
+		};
+		function buildBordersFieldset(i18n,content) {
+			var fieldset = document.createElement("fieldset");
+			fieldset.className = "floating";
+			insertLegend(i18n, fieldset, "Border");
+			var ul = document.createElement("ul");
+			fieldset.appendChild(ul);
+			var li = document.createElement("li");
+			ul.appendChild(li);
+			buildInput(i18n, li, "f_border", ["Border thickness:"], ["Leave empty for no border"], "5", "1", "fl", "");
+			content.appendChild(fieldset);
+		};
+		function buildSpacingFieldset(i18n,content) {
+			var fieldset = document.createElement("fieldset");
+			insertLegend(i18n, fieldset, "Spacing and padding");
+			var ul = document.createElement("ul");
+			fieldset.appendChild(ul);
+			var li = document.createElement("li");
+			ul.appendChild(li);
+			buildInput(i18n, li, "f_spacing", ["Cell spacing:"], ["Space between adjacent cells"], "5", "1", "fr", "");
+			var li = document.createElement("li");
+			ul.appendChild(li);
+			buildInput(i18n, li, "f_padding", ["Cell padding:"], ["Space between content and border in cell"], "5", "1", "fr", "");
+			content.appendChild(fieldset);
+		};
+		function buildUnitField(i18n, fieldset) {
+				// Unit Select Box
+			var select = document.createElement("select");
+			select.id = "f_unit";
+			select.name =  "f_unit";
+			select.title= i18n["Width unit"];
+			buildSelect(i18n, select, ["Percent", "Pixels", "Em"], ["%", "px", "em"], new RegExp("%", "i"));
+			fieldset.appendChild(select);
+		};
+		function buildTableFloatField(i18n, fieldset) {
+				// Table Float Label
+			var label = document.createElement("label");
+			label.className = "fl";
+			label.innerHTML = i18n["Float:"];
+			label.htmlFor = "f_float";
+			fieldset.appendChild(label);
+				// Table Float Select Box
+			var select = document.createElement("select");
+			select.id = "f_float";
+			select.name =  "f_float";
+			select.title= i18n["Where the table should float"];
+			buildSelect(i18n, select, ["Not set", "Non-floating", "Left", "Right"], ["not set", "none", "left", "right"], new RegExp("not set", "i"));
+			fieldset.appendChild(select);
+		};
+		function insertLegend(i18n, fieldset,legend) {
+			var legendNode = document.createElement("legend");
+			legendNode.innerHTML = i18n[legend];
+			fieldset.appendChild(legendNode);
+		};
+		function buildInput(i18n, fieldset,fieldName,fieldLabel,fieldTitle, fieldSize, fieldValue, labelClass, inputClass) {
+				// Field label
+			var label = document.createElement("label");
+			if(labelClass) label.className = labelClass;
+			label.innerHTML = i18n[fieldLabel];
+			label.htmlFor = fieldName;
+			fieldset.appendChild(label);
+				// Input field
+			var input = document.createElement("input");
+			input.type = "text";
+			input.id = fieldName;
+			input.name =  fieldName;
+			if(inputClass) input.className = inputClass;
+			input.title = i18n[fieldTitle];
+			input.size = fieldSize;
+			input.value = fieldValue;
+			fieldset.appendChild(input);
+		};
+		function buildSelect(i18n, select,options,values,selected) {
+			var option;
+			for (var i = 0; i < options.length; ++i) {
+				option = document.createElement("option");
+				option.value = values[i];
+				option.innerHTML = i18n[options[i]];
+				option.selected = selected.test(option.value);
+				select.appendChild(option);
+			}
+		};
+		function addButtons(i18n,content,buttons,labels) {
+			var space = document.createElement("div");
+			space.className = "space";
+			content.appendChild(space);
+			var div = document.createElement("div");
+			content.appendChild(div);
+			div.className = "buttons";
+			for (var i = 0; i < buttons.length; ++i) {
+				var button = document.createElement("button");
+				button.innerHTML = i18n[labels[i]];
+				switch (buttons[i]) {
+					case "ok":
+						button.onclick = onOK;
+						break;
+					case "cancel":
+						button.onclick = onCancel;
+						break;
+				}
+				div.appendChild(button);
+			}
+		};
+</script>
+</head>
+<body class="popupwin" onload="Init();">
+<div id="content"></div>
+</body>
+</html>

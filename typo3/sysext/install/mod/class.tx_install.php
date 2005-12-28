@@ -3438,10 +3438,13 @@ From sub-directory:
 
 							// Init again / first time depending...
 						$FDdb = $this->getFieldDefinitions_database();
+
 						$diff = $this->getDatabaseExtra($FDfile, $FDdb);
 						$update_statements = $this->getUpdateSuggestions($diff);
+
 						$diff = $this->getDatabaseExtra($FDdb, $FDfile);
-						$remove_statements = $this->getUpdateSuggestions($diff,"remove");
+						$remove_statements = $this->getUpdateSuggestions($diff,'remove');
+
 						$tLabel = "Update database tables and fields";
 
 						if ($remove_statements || $update_statements)	{

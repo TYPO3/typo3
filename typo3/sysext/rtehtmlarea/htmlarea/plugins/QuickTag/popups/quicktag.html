@@ -1,0 +1,340 @@
+<html class="popupwin">
+<head>
+	<title>Quick Tag Editor</title>
+	<meta http-equiv="Content-Style-Type" content="text/css" />
+	<!--<link rel="stylesheet" href="../../../htmlarea.css" />-->
+	<script type="text/javascript" src="../tag-lib.js"></script>
+	<script type="text/javascript" src="../../../popups/popup.js"></script>
+	<script type="text/javascript">
+		HTMLArea = window.opener.HTMLArea;
+		_editor_CSS = window.opener._editor_CSS;
+		__dlg_loadStyle(_editor_CSS);
+		var QuickTag = window.opener.QuickTag;
+		var _quickTag_hideTags = window.opener._quickTag_hideTags;
+		var i18n = QuickTag.I18N;
+		var curTag = 'none';
+		var curTagOpt = false;
+		var CSSEdit = false;
+		var editor = null;
+
+			// simulation of Dialog._return - select_color.html needs it.
+		var Dialog = new Object();
+		Dialog._return = function (val) {
+			if(val && val != null) {
+				if(CSSEdit) {
+					val += '; ';
+				} else {
+					val += '"';
+				}
+				document.getElementById('tagopen').focus();
+				document.getElementById('tagopen').value += "#"+val;
+				document.getElementById('bt_colors').style.display = 'none';
+			}
+		};
+
+		var SelectColorDialog = new Object();
+		SelectColorDialog._return = function (val) {
+			if(val && val != null) {
+				if(CSSEdit) {
+					val += '; ';
+				} else {
+					val += '"';
+				}
+				document.getElementById('tagopen').value += val;
+				document.getElementById('bt_colors').style.display = 'none';
+				document.getElementById('tagopen').focus();
+			}
+		};
+
+		function Init() {
+			__dlg_translate(i18n);
+			__dlg_init(true,true);
+			var param = window.dialogArguments;
+			editor = param['editor'];
+			var selectext = param['selectedText']; // sem uso...
+
+			createDropdown("tags");
+  
+			var to = document.getElementById('tagopen');
+			HTMLArea._addEvent(to, "keypress", function(ev) { if(typeof choice_dropdown != "undefined") choice_dropdown(HTMLArea.is_ie ? window.event : ev); });
+
+			document.getElementById('bt_colors').style.display = 'none';
+			document.body.onkeypress = __dlg_key_press;
+			to.focus();
+		};
+
+		function onCancel() {
+			__dlg_close(null);
+			return false;
+		};
+
+		function quoteTest(val) {
+			var er = /^\w+\s*(\w+=\"[^\"]*\"\s*|\w+=\'[^\']*\'\s*)*$/;
+			return er.test(val);
+		};
+
+		function onOK() {
+			var el = document.getElementById('tagopen');
+			if(!el.value) {
+				alert(i18n["Enter the TAG you want to insert"]);
+				el.focus();
+				return false;
+			}
+			if(!quoteTest(el.value)) {
+				if(!quoteTest(el.value + '"')) {
+					alert(i18n["There are some unclosed quote"]);
+					el.focus();
+					el.select();
+					return false;
+				} else {
+					el.value += '"';
+				}
+			}
+
+			var param = {};
+			var cleanTO = document.getElementById('tagopen').value.replace(/(<|>)/g,"");
+			param.tagopen = "<"+cleanTO+">";
+			param.tagclose = param.tagopen.replace(/^<(\w+) ?.*>/,"</$1>"); 
+
+			var subtag = subTagLib[curTag];
+			if(typeof subtag == 'object') {
+				param.tagopen = param.tagopen+subtag.op;
+				param.tagclose = subtag.cl+param.tagclose;
+			}
+
+			__dlg_close(param);
+			return false;
+		};
+
+		function __dlg_key_press(ev) {
+			if(!ev) var ev = window.event;
+			switch(ev.keyCode) {
+				case 13: 
+					document.getElementById('bt_ok').click();
+					break;
+				case 27:
+					__dlg_close(null);
+					return false;
+			}
+			return true;
+		};
+
+function selchange() {
+var toadd = document.getElementById('selectag').value; 
+var oldval = document.getElementById('tagopen').value; 
+var text = (oldval+toadd).replace(/^\s*(.+)\s*$/,"$1");
+var atrib = /(\w+)=\"$/.test(toadd) ? toadd.replace(/(\w+)=\"$/, "$1") : null;
+var showcolors = (/color\: ?$/.test(toadd)) ? true : false;
+var noCSSclasses = false;
+var obj = null;
+curTag = text.replace(/(^\w+) ?.*$/, "$1");
+curTagOpt = (tagLib[curTag] == true);
+
+	if(atrib) {
+		var atrer = eval('/'+atrib+'=/ig');
+		if(atrer.test(oldval) && !(/[^=]\"$/.test(toadd))) {
+			alert(i18n['This attribute already exists in the TAG']);
+			return false;
+		}
+		switch(atrib) {
+			case 'style':
+				CSSEdit = true;
+				break;
+			case 'class':
+				if(captureClasses() == 0) noCSSclasses = true;
+				break;
+			case 'color':
+			case 'bgcolor':
+			case 'bordercolor':
+			case 'bordercolorlight':
+			case 'bordercolordark':
+				showcolors = true;
+				break;
+		}
+
+		if(curTagOpt == true) {
+			obj = eval('opAtt_'+curTag+'["'+atrib+'"]');
+		} else { 
+			obj = opAtt_all[atrib];
+		} 
+	} else if(!CSSEdit && (/(^\w+$|\"$)/.test(toadd))) {
+		obj = 'all';
+		if(curTagOpt == true) obj = curTag;
+		toadd += ' ';
+	}
+  
+	if(CSSEdit && quoteTest(text)) CSSEdit = false;
+
+	if(showcolors) document.getElementById('bt_colors').style.display = '';
+
+	if(obj) {
+		createDropdown(obj);
+	} else if(!CSSEdit) {
+		document.getElementById('showselect').style.visibility = 'hidden';
+	}
+
+	if(noCSSclasses) {
+		document.getElementById('showselect').innerHTML = i18n['No CSS class avaiable'];
+		document.getElementById('showselect').style.visibility = 'visible';
+	}
+  
+	addchanges();
+
+	function addchanges() {
+		document.getElementById('tagopen').focus();
+		document.getElementById('tagopen').value += toadd;
+	};
+};
+
+		function captureClasses() {
+			var cont = 0;
+				// If there is no '<HTML>' in the HTMLArea content, when using styleSheets[..].rule, IE generates an error.   
+				// In this case, we lost the classes in external CSS files.
+				// If FullPage is loaded, there is no problem.
+			if(!(/<\s*html\s*>/i.test(editor.getHTML())) && document.all) {
+				var styles = editor._doc.getElementsByTagName("style");
+				for(var i in styles) {
+					var cont = styles[i].innerHTML;
+					if(typeof cont != 'undefined') {
+						var cls = cont.match(/\.\w+/ig,"");
+						for(var j in cls) if(/^\.\w+$/.test(cls[j])) {
+							var classname = cls[j].replace(/\./,"")+'"';
+							opAtt_all['class'][cls[j]] = classname;
+							cont++;
+						}
+					}
+				}
+			return cont;
+			}
+
+			var styleSheet = null;
+			var styles = editor._doc.styleSheets;
+			for (var i = 0; i < styles.length; i++) {
+				styleSheet = styles[i];
+				if(document.all) {
+					var _rules = styleSheet.rules;
+				} else {
+					var _rules = styleSheet.cssRules;
+				}
+				for (var j = 0; j < _rules.length; j++) {
+					var rule = _rules[j];
+					if(/^\.\w+$/.test(rule.selectorText)) {
+						var classname = rule.selectorText.replace(/\./,"")+'"';
+						opAtt_all['class'][rule.selectorText] = classname;
+						cont++;
+					}
+				}
+			}
+			return cont;
+		};
+
+		function choice_dropdown(e) {
+			if (document.all) {
+				var Key = e.keyCode;
+			} else { 
+				var Key = e.charCode;
+			}
+			if(Key != 32) return;
+
+			var text = document.getElementById('tagopen').value.replace(/^\s*([^\s]+)\s*$/,"$1");
+			if(CSSEdit && quoteTest(text)) CSSEdit = false;
+			if(CSSEdit) return;
+
+			if(curTag == 'none') {
+				curTag = text.replace(/(^\w+) ?.*$/, "$1");
+				curTagOpt = tagLib[curTag];
+			}
+
+			if(!/\w/.test(text)) {
+				document.getElementById('tagopen').value = ''; 
+				createDropdown("tags");
+				return;
+			}
+
+			var att = 'all';
+			if(curTagOpt == true) att = curTag;
+			createDropdown(att);
+		};
+
+		function createDropdown(type) {
+			var _div = document.getElementById('showselect');
+			while(_div.hasChildNodes()) _div.removeChild(_div.firstChild);
+			_div.style.visibility = 'visible';
+    
+			var _sel = document.createElement("select");
+			_sel.id = "selectag";
+			_sel.onchange = function() { selchange(); };
+  
+			if(typeof type == 'object') {
+				var obj = type;
+				forObj(i18n["OPTIONS"],'options');
+				_div.appendChild(_sel);
+				return;
+			}
+
+			if(type == 'tags') {
+				var obj = allTags;
+				forObj(i18n["TAGs"],'tags');
+				_div.appendChild(_sel);
+				return;
+			}
+
+			type = type.replace(/^h[1-6]$/,"h");
+			var topt = eval('opTag_'+type);
+			if(typeof topt == 'object') {
+				var obj = topt;
+			} else {
+				return;
+			}
+			forObj(i18n["ATTRIBUTES"],'attributes');
+			_div.appendChild(_sel);
+
+			function forObj(first,type) {
+				if(first) {
+					var _op = document.createElement("option");
+					_op.appendChild(document.createTextNode(first));
+					_sel.appendChild(_op);
+				}
+				for(var i in obj) {
+					if( type != 'tags' || _quickTag_hideTags.indexOf(i) == -1 ) {
+						var opt = document.createElement("option");
+						opt.appendChild(document.createTextNode(i));
+						opt.value = obj[i];
+						_sel.appendChild(opt);
+					}
+				}
+			};
+		};
+
+		function colors() {
+			var selectColorPlugin = editor.plugins.SelectColor;
+			if (selectColorPlugin) selectColorPlugin = selectColorPlugin.instance;
+			if (selectColorPlugin) {
+				selectColorPlugin.dialogSelectColor("tag", "", SelectColorDialog, window);
+			} else { 
+				var colloc = window.location.toString().replace(/plugins.+$/,"") + 
+					"popups/select_color.html";
+				window.open(colloc, 'colors', "toolbar=no,location=no,directories=no," + 
+					"menubar=no,scrollbars=no,resizable=no,dependent=yes,width=200,height=182");
+			}
+		};
+</script>
+</head>
+<body class="popupwin" onload="Init();">
+<div class="title">Quick Tag Editor</div>
+<form action="" method="get">
+	<div style="text-align: center; padding: 3px; background-color: #e9e9e9;"> 
+		<strong style="font-size: 14px;">&lt;</strong>
+		<input id="tagopen" type="text" style="background-color: #e9e9e9; width: 370px; border-width: 0px;" />
+		<strong style="font-size: 14px;">&gt;</strong>
+	</div>
+	<div class="space"></div>
+	<div id="showselect" style="position: absolute; left: 7px; top: 81px; width: 150px; z-index: 100; visibility: visible; height: 13px; color: red;"></div>
+	<div class="buttons">
+		<button type="button" id="bt_colors" onclick="colors();">Colors</button> 
+		<button type="button" id="bt_ok" onclick="return onOK();">Ok</button>
+		<button type="button" onclick="return onCancel();">Cancel</button>
+	</div>
+</form>
+</body>
+</html>

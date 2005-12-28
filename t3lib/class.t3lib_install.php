@@ -279,7 +279,7 @@ class t3lib_install {
 				if (!$isTable)	{
 					$parts = explode(' ',$value);
 					if ($parts[0]=='CREATE' && $parts[1]=='TABLE')	{
-						$isTable = $parts[2];
+						$isTable = str_replace( '`', '', $parts[2]);
 						if (TYPO3_OS=='WIN') { 	// tablenames are always lowercase on windows!
 							$isTable = strtolower($isTable);
 						}
@@ -305,11 +305,16 @@ class t3lib_install {
 						$parts[1] = preg_replace('/(.*) (default .*) (NOT NULL)/', '$1 $3 $2', $parts[1]);
 						$parts[1] = preg_replace('/(.*) (default .*) (NULL)/', '$1 $3 $2', $parts[1]);
 
+							// Remove double blanks
+						$parts[1] = preg_replace('/([^ ]+)[ ]+([^ ]+)/', '$1 $2', $parts[1]);
+
 						if ($parts[0]!='PRIMARY' && $parts[0]!='KEY' && $parts[0]!='UNIQUE')	{
-							$total[$isTable]['fields'][$parts[0]] = $parts[1];
+							$key = str_replace('`', '', $parts[0]);
+							$total[$isTable]['fields'][$key] = $parts[1];
 						} else {
 							$newParts = explode(' ',$parts[1],2);
-							$total[$isTable]['keys'][($parts[0]=='PRIMARY'?$parts[0]:$newParts[0])] = $lineV;
+							$key = str_replace('`', '', ($parts[0]=='PRIMARY'?$parts[0]:$newParts[0]));
+							$total[$isTable]['keys'][$key] = str_replace('`', '', $lineV);
 						}
 					}
 				}
@@ -434,7 +439,8 @@ class t3lib_install {
 						$keyTypes = explode(',','fields,keys');
 						foreach($keyTypes as $theKey)	{
 							if (is_array($info[$theKey]))	{
-								foreach($info[$theKey] as $fieldN => $fieldC) {
+								foreach($info[$theKey] as $fieldN => $fieldC)	{
+									$fieldN = str_replace('`','',$fieldN);
 									if (!isset($FDcomp[$table][$theKey][$fieldN]))	{
 										$extraArr[$table][$theKey][$fieldN] = $fieldC;
 									} elseif (strcmp($FDcomp[$table][$theKey][$fieldN], $fieldC))	{
@@ -496,7 +502,7 @@ class t3lib_install {
 										$statement = 'ALTER TABLE '.$table.' ADD '.$fN.' '.$fV.';';
 										$statements['add'][md5($statement)] = $statement;
 									}
-								} elseif ($theKey=='diff') {
+								} elseif ($theKey=='diff')	{
 									$statement = 'ALTER TABLE '.$table.' CHANGE '.$fN.' '.$fN.' '.$fV.';';
 									$statements['change'][md5($statement)] = $statement;
 									$statements['change_currentValue'][md5($statement)] = $diffArr['diff_currentValues'][$table]['fields'][$fN];
@@ -507,11 +513,7 @@ class t3lib_install {
 					if (is_array($info['keys']))	{
 						foreach($info['keys'] as $fN => $fV) {
 							if ($info['whole_table'])	{
-								if ($fN=='PRIMARY')	{
-									$whole_table[] = $fV;
-								} else {
-									$whole_table[] = $fV;
-								}
+								$whole_table[] = $fV;
 							} else {
 								if ($theKey=='extra')	{
 									if ($remove)	{
@@ -724,8 +726,8 @@ class t3lib_install {
 				}
 				$out[]='
 					<tr>
-						<td valign="top"><input type="checkbox" id="'.$this->dbUpdateCheckboxPrefix.'['.$key.']" name="'.$this->dbUpdateCheckboxPrefix.'['.$key.']" value="1"'.($checked?' checked="checked"':'').' /></td>
-						<td nowrap="nowrap"><label for="'.$this->dbUpdateCheckboxPrefix.'['.$key.']">'.nl2br($ico.htmlspecialchars($string)).'</label></td>
+						<td valign="top"><input type="checkbox" id="db-'.$key.'" name="'.$this->dbUpdateCheckboxPrefix.'['.$key.']" value="1"'.($checked?' checked="checked"':'').' /></td>
+						<td nowrap="nowrap"><label for="db-'.$key.'">'.nl2br($ico.htmlspecialchars($string)).'</label></td>
 					</tr>';
 				if (isset($currentValue[$key]))	{
 					$out[]='

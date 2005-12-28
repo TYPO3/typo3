@@ -1,0 +1,135 @@
+<?php
+/**
+ * Language labels for plugin CharacterMap of htmlArea RTE (extension: rtehtmlarea)
+ * 
+ * This file is detected by the translation tool.
+ */
+
+$LOCAL_LANG = Array (
+	'default' => Array (
+		'CharacterMapTooltip' => 'Insert special character',
+		'Insert special character' => 'Insert special character',
+		'HTML value:' => 'HTML value:',
+		'Close' => 'Close',
+	),
+	'dk' => Array (
+		'CharacterMapTooltip' => 'Indsæt specialtegn',
+		'Insert special character' => 'Indsæt specialtegn',
+		'HTML value:' => 'HTML værdi:',
+	),
+	'de' => Array (
+		'CharacterMapTooltip' => 'Fügen Sie Sonderzeichen ein',
+		'Insert special character' => 'Fügen Sie Sonderzeichen ein',
+		'HTML value:' => 'HTML-Wert:',
+	),
+	'no' => Array (
+		'CharacterMapTooltip' => 'Sett inn spesialtegn',
+		'Insert special character' => 'Sett inn spesialtegn',
+		'HTML value:' => 'HTML-verdi:',
+	),
+	'it' => Array (
+		'CharacterMapTooltip' => 'Inserisci carattere speciale',
+		'Insert special character' => 'Inserisci carattere speciale',
+		'HTML value:' => 'Valore HTML:',
+	),
+	'fr' => Array (
+		'CharacterMapTooltip' => 'Insérer un caractère spécial',
+		'Insert special character' => 'Insérer un caractère spécial',
+		'HTML value:' => 'Valeur HTML:',
+		'Close' => 'Fermer',
+	),
+	'es' => Array (
+		'CharacterMapTooltip' => 'Insertar carácter especial',
+		'Insert special character' => 'Insertar carácter especial',
+		'HTML value:' => 'Valor HTML:',
+		'Close' => 'Cerrar',
+	),
+	'nl' => Array (
+		'CharacterMapTooltip' => 'Voeg speciaal karakter in',
+		'Insert special character' => 'Voeg speciaal karakter in',
+		'HTML value:' => 'HTML waarde:',
+	),
+	'cz' => Array (
+	),
+	'pl' => Array (
+	),
+	'si' => Array (
+	),
+	'fi' => Array (
+		'CharacterMapTooltip' => 'Lisää erikoismerkki',
+		'Insert special character' => 'Lisää erikoismerkki',
+		'HTML value:' => 'HTML arvo:',
+	),
+	'tr' => Array (
+	),
+	'se' => Array (
+	),
+	'pt' => Array (
+	),
+	'ru' => Array (
+		'CharacterMapTooltip' => 'Âñòàâèòü ñïåöèàëüíûé ñèìâîë',
+		'Insert special character' => 'Âñòàâèòü ñïåöèàëüíûé ñèìâîë',
+		'HTML value:' => 'Çíà÷åíèå HTML:',
+	),
+	'ro' => Array (
+	),
+	'ch' => Array (
+	),
+	'sk' => Array (
+		'CharacterMapTooltip' => 'Vloži špeciálny znak',
+		'Insert special character' => 'Vloži špeciálny znak',
+		'HTML value:' => 'HTML hodnota:',
+	),
+	'lt' => Array (
+	),
+	'is' => Array (
+	),
+	'hr' => Array (
+	),
+	'hu' => Array (
+	),
+	'gl' => Array (
+	),
+	'th' => Array (
+	),
+	'gr' => Array (
+	),
+	'hk' => Array (
+	),
+	'eu' => Array (
+	),
+	'bg' => Array (
+	),
+	'br' => Array (
+		'CharacterMapTooltip' => 'Inserir caractere especial',
+		'Insert special character' => 'Inserir caractere especial',
+		'HTML value:' => 'Valor HTML:',
+	),
+	'et' => Array (
+	),
+	'ar' => Array (
+	),
+	'he' => Array (
+	),
+	'ua' => Array (
+	),
+	'lv' => Array (
+	),
+	'jp' => Array (
+	),
+	'vn' => Array (
+	),
+	'ca' => Array (
+	),
+	'ba' => Array (
+	),
+	'kr' => Array (
+	),
+	'eo' => Array (
+	),
+	'my' => Array (
+	),
+	'hi' => Array (
+	),
+);
+?>

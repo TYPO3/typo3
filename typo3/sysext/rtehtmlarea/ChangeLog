@@ -1,0 +1,409 @@
+2005-12-24  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+	* Extend t3lib_parsehtml_proc only if TYPO3_VERSION is smaller than 4.0
+	* Cleanup images folders.
+
+2005-12-23  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+	* Update to language files.
+
+2005-12-22  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+	* Update to Proc, Demo and Typical Page TSConfig.
+	* Correction for No font and No size elements if font and size selectors.
+	* Add support for thead and tfoot in TableOperations plugin.
+	* Update to skins for th tags
+	* Correction to some cleaning regular expressions in RemoveFormat plugin. Thanks to Ernesto Baschny.
+	* Keep character map window open until explicitly closed.
+	* Feature for Mozilla/Firefox: apply style to multiple selected cells of a table.
+	* Correction to the extraction of class selectors from some css rules.
+
+2005-12-20  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+	* New FAQ about style selector boxes in IE.
+	* Numerous adjustments for eventual Opera support. Waiting for Opera Software to correct reported problems.
+	* Add non-breaking space to the palette of the insertcharacter palette. Add hotkety ctrl+space to insert a non-breaking space.
+	* Restructure the order of characters in the Insert special character popup window.
+	* Page TSConfig removeTags property would incorrectly remove too many tags.
+	* New Page TSConfig property keepToggleBordersInToolbar.
+	* Update of the link to the Mozilla/Firefox AllowClipboardHelper extension. The new version has new features, new translations and will work with Firefox 1.5.
+	* New TYPO3HtmlParser plugin and enableWordClean configurability.
+	* Add support for header cells (th tag) in table operations.
+	* Add support for all Page TSConfig properties supported by Classic RTE: RTE.classes, classesTable, classesTD, classesLinks, mainStyleOverride, mainStyleOverride_add, mainStyle_font, mainStyle_size, mainStyle_color, mainStyle_bgcolor, inlineStyle, disableRightClick and disablePCexamples.
+	* Make Page TSCongfig settings compatible when migrating from Classic RTE to htmlArea RTE.
+	* Restructure processing of Page TSConfig setup.
+	* New default configurations: Typical, Advanced, Demo. Extension configuration variable Enable all editor options is replaced by Default configuration settings.
+	* Correction for Mozilla/Firefox: when an email address is automatically recognized, the created link would be wrong if the local part of the email address contained parts with only one letter.
+	* Correction: some icons were missing in the element browser when adding or editing links.
+	* Correction for IE: the link button did not get activated when text was selected using keyboard arrows.
+	* Correction: The title and alt attributes produced by the link creation/editing button could undergo incorrect character sets conversions in some configurations of backend and/or frontend character sets.
+	* Add Page TSConfig properties to configure table operations dialogs: disableAlignmentFieldsetInTableOperations, disableSpacingFieldsetInTableOperations, disableColorFieldsetInTableOperations, disableLayoutFieldsetInTableOperations and disableBordersFieldsetInTableOperations
+	* New Page TSConfig property ignoreMainStyleOverride for ease of migration from Classic RTE to htmlArea RTE.
+	* Cleaning Mozilla folder.
+
+2005-11-20  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+	* Version 1.0.0
+	* Extension of system class t3lib_parsehtml_proc : move any style attribute of an a-tag to a wrapping span-tag, so that the link may be transformed into a typolink, if no other attribute prevents its transformation. Thanks to Dimitrij Denissenko for this idea and its implementation.
+	* Correction: updating the properties of an image was broken in version 0.7.6.
+	* Correction: in the Remove Format window, when some text is selected, the default cleaning area will be ?Selection? (rather than ?All?). Thanks to Bernhard Kraft for noting this usability issue.
+	* Method HTMLcleaner_db of class t3lib_parsehtml_proc is modified to honor Page TSConfig setting RTE.default.proc.HTMLparser_db.xhtml_cleaning = 1. See section Known problems.
+
+2005-11-10  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+	* Version 0.7.6:
+	* Two new extension configuration variables allow to specify the maximum resolution of plain images inserted with the TYPO3 image browser.
+	* Correction for TYPO3 3.8 on Windows server: the path to the locallang file of the spell checker was incorrectly set.
+	* Addition of Danish translation.
+	* Update to Russian translation.
+	* Correction: if multiple instances of the editor were loaded on the same page, with different plugins configuration for each, only the scripts of plugins enabled in the last instance were loaded on the page, resulting in JavaScript errors.
+	* New Page TSConfig and User TSConfig property enablePersonalDicts may be used to enable the use of personal dictionaries when using the spell checker.
+	* Correction: some links could not be edited. See http://bugs.typo3.org/view.php?id=1748
+	* Correction: possible incorrect character set conversion of default titleText (set in language file through anchor accessibility feature configuration) when backend is utf-8.
+
+2005-10-17  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+	* Version 0.7.4
+	* Correction for Mozilla/Firefox: when the editor was loaded in a hidden tab, the size of the editing area would be incorrect when the tab becomes visible.
+	* Update to Finnish and Italian translations.
+	* Addition of Czech translation.
+	* Correction to the documentation of the anchor accessibility feature.
+	* Correction: insufficiently qualified CSS selectors in the editor skins resulted in styling problems mainly when the editor is used in the front end. Thanks to Claudio Strizzolo.
+	* Correction: toggleborders button caused inconsistencies in the class selector of the table properties popup window.
+	* Correction to the character set used by the xml parser and Aspell when invoked by the spell checker with iso-8859-1 content.
+
+2005-10-05  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+	* Version 0.7.2
+	* Correction: incorrect display of the toolbar in some configurations.
+	* Correction: incorrect update of some table properties.
+	* Adjustments to the names of the css selectors of some toolbar buttons. Skins sr_rtehtmlarea_bluelook and sr_rtehtmlarea_xpblue need to be upgraded. Custom skins need to be updated.
+	* Correction: incorrect  behavior of the hot keys (ctrl+key) and of the context menu's access keys (alt+key).
+	* Remove generation of Mozilla/Firefox extension. Remove requirement for PHP zlib. Remove Archive_Zip package. Trigger install of AllowClipboard Helper  for all supported versions of Mozilla/Firefox. AllowClipboardHelper Firefox extension has been localized to French and Spanish.
+	* Correction: some labels of the non-TYPO3 link and image insertion popups were not localized.
+	* Revised About window. Skins need to be upgraded. Custom skins need to be updated.
+	* New anchor accessibility feature.
+	* Correction: erratic behaviors in Mozilla/Firefox when automatically detecting links and when backspacing.
+	* Correction: PHP Fatal error when SpellChecker is enabled under PHP5. See http://bugs.typo3.org/view.php?id=1470 
+	* Update to the Dutch and German translations.
+	* Correction for IE (and maybe other cases, see http://bugs.typo3.org/view.php?id=1425): When an unforgiving browser refuses to parse the content coming from the database, a popup window will inform the user that the HTML document is not well-formed, and the editor will be started in textmode so that the user can edit the error in the HTML source.
+	* Correction: nested lists were not compliant with XHTML.
+	* Correction: the path to skin file htmlarea-edited-content.css could be incorrect when typo3 is installed in a sub-directory.
+	* Correction for IE: the paragraph style selector box was disabled.
+
+2005-08-29  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+	* Version 0.7.0
+	* Correction: the  editor failed to initialize correctly when Page TSConfig property hideTableOperationsInToolbar was set to 1.
+	* Addition of Toggle borders in the context memu.
+	* Correction: updating a link did not work when the link was set on an image and on multiple elements.
+	* Problem with Firefox extension “All-in-One Gestures” documented as Known problem.
+	* Blue-look and xp-blue skins moved to separate extensions: sr_rtehtmlarea_bluelook and sr_rtehtmlarea_xpblue respectively.
+	* Update to Finnish and Norwegian translations.
+
+2005-08-16  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+	* Version 0.6.2
+	* Correction: the  image update popup dialog was broken in the previous version.
+	* Update to the recommended server configuration for png images.
+	* Addition of two example skins: blue-look and xp-blue, inspired by Xinha.
+	* New Page TSConfig property: keepButtonGroupTogether will keep buttons of a same group together on the same line of the editor tool bar. Not supported in IE, nor in Mozilla 1.3.
+	* Adjustments to the default skin. Custom skins may need to be adjusted.
+
+2005-08-09  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+	* Version 0.6.1
+	* Added documentation section on server configuration.
+	* Correction: the compressed version of plugin scripts were not used.
+	* Various changes for performance improvement.
+	* Added FAQ on hotkeys.
+	* Update to Finnish and Norwegian translations.
+
+2005-08-05  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+	* Version 0.5.9
+	* Correction: the MS Word Formatting option of the RemoveFormat button was broken in version 0.5.5.
+	* Url of AllowClipboard Helper is added as an extension configuration variable.
+	* The address and dl tags are added to the list $headListTags of TYPO3 system class t3lib_parsehtml_proc. See Known problems.
+	* Correction: since version 0.5.5, html attribute values could be html-encoded more than once.
+	* Correction: the editor will load correctly even if it is located in a hidden tab at te time of loading. See Known problems.
+	* Improved memory management for IE.
+	* Correction for IE: with some locales, the type of paragraph displayed in the toolbar may not correspond to the type of paragraph of the current selection.
+	* Address is added to the default list of types of paragraphs.
+	* Correction: since 0.5.5, html-encoding of single quotes was causing incompatibilities.
+	* Correction: the Acronym plugin was broken since version 0.5.5.
+	* Correction: if a title is added on a link, the link is not eligible as typolink, and TYPO3 will add a rtekeep attribute on the a tag; if the link is edited and the title removed, the editor should remove the rtekeep attribute so that the link becomes eligible as typolink again.
+	* Correction: since 0.5.2, the Insert/Modify Link dialog could be broken in TYPO3 3.6.
+	* New Page TSConfig property: removeTrailingBR. In Mozilla/Firefox/Netscape browsers, whenever some text is entered in an empty block, a trailing br tag is added by the browser. If this property is set, any trailing br tag in a block element will be removed on save and/or change mode. However, multiple trailing br tags will be preserved.
+	* For IE: an error message will be displayed if execution of ActiveX controls is not enabled.
+
+2005-07-23  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+	* Version 0.5.5
+	* The size of the back end editor area may be configured in User TSConfig. See the configuration section. Thanks to Peter Enzenberger.
+	* In Mozilla/Firefox, url's and email's are automatically transformed into links as soon as they are followed by a space; hitting escape or ctrl-z before any other key unlinks the text. Thanks to Xinha.
+	* Scripts compressed by about 25%. Use of compressed scripts is controlled by extension configuration.
+	* Improved memory management and reduced memory leakage.
+	* Correction: the cellinsertafter button was incorrectly configured in the default configuration.
+	* Correction: when multiple instances of the editor were loaded on the same page, the always-show buttons were added only on the tool bar of the first instance.
+	* Correction: the path to default skin component htmlarea-edited-content.css was incorrectly set.
+	* When the configuration variable Enable Mozilla/Firefox extension is enabled, if the client browser is Firefox 1+, the installation of the Firefox extension AllowClipboard Helper will triggered instead of the extension generated by this TYPO3 extension.
+	* In Mozilla/Firefox, an exception will be raised only when performing a paste with the tool bar button. Pasting with ctrl-v key will not raise any exception. Thanks to Guillaume Crico.
+
+2005-07-06  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+	* Version 0.5.4
+	* Correction: one label of plugin RemoveFormat was not localized.
+	* Correction: custom skins prevented correct loading of the RTE.
+	* Correction for IE: incorrect display of the current class in the paragraph style selector in some configurations.
+	* Correction for IE: the border handles of images and tables could not be selected for resizing.
+	* Correction for IE: table, img, ol and ul elements may be correctly selected through the editor status bar.
+	* Correction for IE: incorrect positioning of some popup window.
+	* Correction for IE: incorrect behavior of the InlineCSS text style selector when Arabic text was selected.
+
+2005-06-14  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+	* Version 0.5.3
+	* Correction for IE: when the collapsed borders attribute was set on a table, the table properties popup dialog did not reflect the set attribute: the checkbox was not checked.
+	* Correction: when TYPO3 is not installed in the web server's root path, the dynamiccss.css file was not properly included. Thanks to Johannes Bornhold for this correction.
+	* Correction for IE: on some Windows platforms, the display of the window status bar cannot be avoided unless the script is granted some privileges; in such cases, the height of the resized popup windows was insufficient; the resizing algorithm has been revised in order to correct this situation.
+	* Correction: Correction to misbehavior of mailto link popup when no anchor class is specified in Page TSConfig.
+	* Allow insertion of a file uploader on the File tab of the Insert/Modify link popup window (when TYPO3Browsers is used); the feature is enabled when property options.uploadFieldsInTopOfEB is set to 1 in User TSConfig. Thanks to Peter Niederlag for adding this feature.
+	* For TYPO3 3.7.0+: use the tab menu in TYPO3 Insert/Modify link popup window.
+	* Modify default Page TSConfig RTE configuration so as to remove Open Office <sdfield>-tags.
+	* New Page TSConfig properties: removeComments, removeTags, removeTagsAndContents.
+	* Correction for Mozilla/Firefox: when pasting in text by pressing the ctrl-v keys, the Mozilla extension installation was incorrectly triggered and/or failed.
+	* Correction: inserting a paragraph from the context menu when positioned in a table or a list produced incorrect result.
+	* New plugin/button allows to insert/edit acronyms and abbreviations. Not currently available in IE. Acronyms and abbreviations may be pre-defined with Acronym record type inserted on the TYPO3 site root.
+	* Transform abbr tags into acronym tags when IE is used.
+
+2005-05-23  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+	* Version 0.5.1
+	* Correction to the behavior of the style selection lists.
+
+2005-05-21  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+	* Version 0.5.0
+	* Using TYPO3 classes to access language files.
+	* Correcting character set conversion for the front end editor in some configurations.
+	* Update to Brazilian Portuguese and Finnish translations.
+	* Use doubleval in place of floatval in SpellChecker plugin.
+	* Use XMLHttpRequest to asynchronously download required scripts.
+	* Add troubleshooting log and extension configuration variable to enable logging.
+	* Multiple changes to support Safari 1.3. Although the editor loads in Safari 1.3, it does not currently execute correctly due to some bugs in Safari edit mode.
+	* Restructure the tool bar as an unordered list of label, select and button elements so that it can be walked through with the tab key. The list, including the button icons, is css-styled through the editor skin.
+	* Restructure the context menu as an unordered list of button elements. The context menu, including the button icons, is css-styled through the editor skin.
+	* Show in the context menu all table operations enabled in the given context.
+	* Each of the table operations becomes a configurable tool bar element like all other tool bar elements.
+	* New RTE Page TSConfig property: hideTableOperationsInToolbar. If set, the table operations buttons will not be displayed in the tool bar, but will appear in the context menu, when enabled in the given context.
+	* Method TS_transform_db of class t3lib_parsehtml_proc is modified in order to replace true line breaks with spaces, instead of eliminating them. Thanks to Johannes Bornhold.
+	* New htmlArea plugin UserElements to enable the "user" button.
+	* Add the title attribute on the TYPO3 link insertion/modification dialog.
+	* New toggleborders button to show table borders. Imported from Xinha.
+
+2005-04-18  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+	* Version 0.4.70
+	* Correction to problem in method TS_transfrom_db.
+	* Correction for Mozilla/Firefox and TCA feature dividers2Tabs.
+	* Tune and simplify RTE processing options.
+	* New FAQ on custom tags.
+	* Method TS_transform_db is modified in order to remove true line breaks from hx tag content.
+	* Correction to link removal.
+	* Correction to default Page TSConfig.
+	* Corrections to the front end editor plugin: allow all htmlArea plugins except TYPO3Browsers, remove call to t3lib_BEfunc.
+	* Using TYPO3 db manipulation class.
+	* Correcting the spell checker style sheet in IE for the front end editor.
+
+2005-04-01  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+	* Version 0.4.64
+	* Move minimal and full default Page TsConfig to external files.
+	* Generate Javascript localization files in typo3temp folder so that they can be cached by the browser.
+	* Generate the Mozilla/Firefox xpi extension file only when necessary.
+	* Method TS_transform_db of class t3lib_parsehtml_proc in order to avoid insertion of superfluous line breaks after tags PRE, UL, OL, H1, H2, H3, H4, H5, H6, HR, TABLE and BLOCKQUOTE. See section Known problems.
+	* Correction to problem with some popup windows in Mozilla 1.4.
+	* Produce xhtml-strict-compliant img tags when editing with Mozilla/Firefox. In editing mode, IE sets all names of style properties to upper case.
+
+2005-03-21  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+	* Version 0.4.60
+	* Further adjustments to width of editor components.
+	* Correction to incorrect behavior in IE when selecting an image or a table and when the textstyle toolbar element is shown.
+	* If extension Lorem Ipsum is installed, htmlArea RTE will extend it so that dummy content may be inserted when the editor is in wysiwyg mode. Lorem Ipsum must however be installed before htmlArea RTE itself is installed.
+	* Initial release of class tx_rtehtmlarea_pi2 allowing rich text editing in the front end. See Modern Guestbook Extended for an example.
+	* New FAQ's.
+	* Strip style attribute out of hr tags.
+	* Eliminate warning from some servers on insert link, insert image and spell check popup windows.
+	* Correction JavaScript error when selecting an image in Mozila/Firefox.
+	* Correction to image width and height setting.
+	* Allow setting only one dimension of the image for proportional display.
+	* Allow setting image alternate text independently of the title attribute.
+
+2005-03-13  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+	* Version 0.4.55
+	* Adjust default skin, width, height.
+	* Clean up some code.
+
+2005-03-12  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+	* Version 0.4.54
+	* Eliminate superfluous line break before and after edited content.
+	* Eliminate extension conflict with clasical RTE extension.
+	* Update to Dutch and Finnish translations.
+	* Correction for IE: a JavaScript error was raised when selecting an image and then clicking on inserttag, emoticon or insertcharacter button.
+	* Easier setting of extension configuration variables at the time of installation.
+	* Correction for IE5.5: working around missing ownerDocument property.
+	* New RTE Page TSConfig property: skin.
+	* Moving context menu styles to the editor default skin CSS file.
+	* Correcting editing area width in Firefox.
+	* Ensure a default value for the editor skin.
+	* Correcting path to default skin in some configurations.
+	* Correcting editing area width and height when in text mode and/or in full page mode.
+	* Adding class attribute to table, row and cell properties popup windows when blockstyle toolbar element is enabled.
+	* Correcting target and class setting on links.
+
+2005-02-26  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+	* Version 0.4.45
+	* Correcting path setting warning in insert link and insert image dialogs on some server configurations.
+	* Correction for Mozilla/Firefox: when "Save and preview" was clicked, the editor was grabbing the focus away from the preview popup window.
+	* Correction to the behavior of the status bar. See Known problems for remaining problem in IE.
+	* New default value for RTE Page TSConfig property classesCharacter.
+	* New  RTE Page TSConfig property: showTagFreeClasses.
+	* Further internal structure changes and event handlers release.
+
+2005-02-23  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+	* Version 0.4.44
+	* Internal structure changes for improved memory management, garbage collection, event handlers removal, etc.
+
+2005-02-21  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+	* Version 0.4.43
+	* Enable the context menu when right-clicking on items of the status bar.
+	* Setting class attribute in Insert/Modify link and Insert/Modify image dialogs. Add RTE configuration properties: classesAnchor and classesImage.
+	* Setting special toolbarOrder defaults, for narrow and wide document background, in order to workaround  wrapping  bug in float style property in Mozilla 1.3.1 (for Mac OS 9).
+
+2005-02-19  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+	* Version 0.4.41
+	* RTE was not loading in Mozilla 1.3.1 (wamcom release ) for Mac OS 9 (last Mozilla release for this platform).
+	* Improved undo/redo operations.
+
+2005-02-17  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+	* Version 0.4.39
+	* Added q, cite, abbr and acronym as allowed tags when "Enable all editor options" is checked.
+	* Added q, cite and tt tags to the tags supported by the QuickTag plugin (inserttag button).
+	* Work around bug in Mozilla 1.4 and Netscape 7.1 affecting DynamicCSS and InlineCSS plugins.
+	* Two know problems documented.
+	* Added tutorial by Jan Wulff on mod_gzip and IE caching problem.
+	* Correction for IE: if a table was selected by clicking on its border and the delete or backspace key was pressed, a Javascript error was produced, but the table was deleted anyway. The Javascript error is now gone.
+	* Correction: The TYPO3 back end form containing a text field edited with htmlArea RTE was submitted regardless of errors that should have been raised on the other fields of the form.
+
+2005-02-15  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+	* Version 0.4.37
+	* Correction to the generated Mozilla/Firefox extension.
+	* Correction to table operations: the current vertical alignment property of tables, rows and cell was incorrectly displayed.
+	* New FAQs.
+	* Replacing htmlArea plugin EnterParagrahs with corrected function from htmlArea 3 RC3 (modified for table cells). Corrects never ending header tag formatting.
+	* Improved installation dialog and platform-independence of Mozilla/Firefox/Netscape extension for access to clipboard.
+	* Eliminate warning when spell checking reverts to command mode with Aspell 0.5.
+	* Further extension to system class t3lib_parsehtml_proc to add hr tag to $headListTags.
+	* Added tt as allowed tags when "Enable all editor options" is checked.
+
+2005-02-09  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+	* Version 0.4.35
+	* Browser recognition.
+	* HTTPS in Mozilla/Firefox.
+	* Style on font tag.
+	* Vertical align display.
+
+2005-02-05  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+	* Version 0.4.33
+	* Generation of Mozilla/Firefox extension.
+	* Addition of Archive_Zip package (PEAR).
+	* Fixing the height of the editing area.
+	* Vertical align setting in table rows and cells.
+	* Fixing CGI detection.
+
+2005-02-01  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+	* Version 0.4.32
+	* The editor was not loading in Mozilla/Firefox in some configurations.
+	* Replacement of inline styles.
+	* Resizing of fullscreen editor.
+
+2005-01-28  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+	* Insert column after last corrected in IE.
+	* Italian translation.
+
+2005-01-18  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+	* Last row, column, cell deletion in tables.
+	* CGI detection corrected.
+	* Character conversion corrected.
+
+2005-01-14  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+	* Toolbar configuration.
+	* Fullpage plugin deletion.
+
+2005-01-12  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+	* Add float property on images
+	* Correct CharacterMap initialization
+	* Do not grab focus on generate
+
+2005-01-11  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+	* Revision of table operations popups
+	* Language files from typo3.org
+
+2004-12-22  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+	* Strip value="0" attribute reported by IE on all li tags
+	* Cleanup code in RemoveFormat and QuickTag plugins
+
+2004-12-20  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+	* Revision of initial dimensions setting of all popup windows
+
+2004-12-18  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+	* Correction to textarea width
+	* Addition of InlineCSS plugin
+
+2004-12-13  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+	* Correction to link update
+	* Correction to interface between SelectColor and QuickTag plugins
+	* New showStatusBar property
+	* New minimal/full options configuration check box
+	* Documentation of version 0.4.10
+
+2004-12-12  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+	* New QuickTag plugin and hideTags config property
+	* Documentation of version 0.4.9
+
+2004-12-10  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+	* Correcting color formatting in gecko browsers
+	* New useCSS RTE property
+
+2004-12-08  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+	* Correcting the default language labels
+	* Making initialization DOM only.
+
+2004-12-04  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+	* Cleaning up
+	* German translation
+
+2004-12-02  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+
+	* Removing dependency on sr_static_info when spell checker is not enabled
+	* Integrating EnterParagraphs plugin
+	* Streamlining CSS loading
+	* Correcting delete/backspace in Firefox on initial load
+	* Correcting toolbar in Firefox on return from textmode
+	* Correcting RemoveFormat for non-breaking spaces
+	* Correcting SpellChecker for non-breaking spaces
+
+2004-11-28  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+
+	* Changing extension from sr_htmlarea to rtehtmlarea
+
+2004-11-27  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+
+	* Correcting the behavior of the paragraph (formatblock) drop down list in IE
+	* Deleting Indite plugin
+	* Correcting color chooser styles for IE
+	* Adjusting popup windows
+
+2004-11-26  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+
+	* onload function moved from typo3_rte.js to htmlarea.js to correct loading with Firefox/WindowsXP
+	* Correcting popup window opening with Linux/Firefox (popup.js, CharacterMap, RemoveFormat)
+	* New default RTE processing options in ext_localconf.php
+
+2004-11-23  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+
+	* Standardizing popup window positioning (RemoveFormat and CharacterMap plugins)
+	* Enabling the CharacterMap plugin (ext_localconf.php and class.tx_rtepbhtmlarea_base.php)
+	* Update to documentation (doc/manual.sxw)
+	* Update to version 0.3.12 of sr_htmlarea (ext_emconf.php)
+
+2004-11-22  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+
+	* Initial synchronization with latest version
+
+2004-11-18  Michael Stucki  <michael@typo3.org>
+
+	* Adding a ChangeLog
+	* Initial CVS upload

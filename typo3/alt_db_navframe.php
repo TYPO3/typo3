@@ -151,7 +151,7 @@ class localPageTree extends t3lib_browseTree {
 	 * @access private
 	 */
 	function wrapTitle($title,$row,$bank=0)	{
-		$aOnClick = 'return jumpTo(\''.$this->getJumpToParam($row).'\',this,\''.$this->domIdPrefix.$this->getId($row).'_'.$bank.'\');';
+		$aOnClick = 'return jumpTo(\''.$this->getJumpToParam($row).'\',this,\''.$this->domIdPrefix.$this->getId($row).'\','.$bank.');';
 		$CSM = '';
 		if ($GLOBALS['TYPO3_CONF_VARS']['BE']['useOnContextMenuHandler'])	{
 			$CSM = ' oncontextmenu="'.htmlspecialchars($GLOBALS['TBE_TEMPLATE']->wrapClickMenuOnIcon('','pages',$row['uid'],0,'&bank='.$this->bank,'',TRUE)).'"';
@@ -236,8 +236,9 @@ class SC_alt_db_navframe {
 	($this->currentSubScript?'top.currentSubScript=unescape("'.rawurlencode($this->currentSubScript).'");':'').'
 
 		// Function, loading the list frame from navigation tree:
-	function jumpTo(id,linkObj,highLightID)	{	//
+	function jumpTo(id,linkObj,highLightID,bank)	{
 		var theUrl = top.TS.PATH_typo3+top.currentSubScript+"?id="+id;
+		top.fsMod.currentBank = bank;
 
 		if (top.condensedMode)	{
 			top.content.document.location=theUrl;
@@ -245,7 +246,7 @@ class SC_alt_db_navframe {
 			parent.list_frame.document.location=theUrl;
 		}
 
-		'.($this->doHighlight?'hilight_row("web",highLightID);':'').'
+		'.($this->doHighlight?'hilight_row("web",highLightID+"_"+bank);':'').'
 
 		'.(!$GLOBALS['CLIENT']['FORMSTYLE'] ? '' : 'if (linkObj) {linkObj.blur();}').'
 		return false;

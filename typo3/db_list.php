@@ -303,6 +303,14 @@ class SC_db_list {
 					document.location = URL+(T3_RETURN_URL?"&returnUrl="+T3_RETURN_URL:"");
 					return false;
 				}
+				function setHighlight(id)	{
+					top.fsMod.recentIds["web"]=id;
+					top.fsMod.navFrameHighlightedID["web"]="pages"+id+"_"+top.fsMod.currentBank;	// For highlighting
+
+					if (top.content && top.content.nav_frame && top.content.nav_frame.refresh_nav)	{
+						top.content.nav_frame.refresh_nav();
+					}
+				}
 				'.$this->doc->redirectUrls($dblist->listURL()).'
 				'.$dblist->CBfunctions().'
 				function editRecords(table,idList,addParams,CBflag)	{	//

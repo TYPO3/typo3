@@ -403,6 +403,7 @@ class SC_db_layout {
 			$this->doc->JScode = '<script type="text/javascript" src="'.$BACK_PATH.'t3lib/jsfunc.updateform.js"></script>';
 			$this->doc->JScode.= $this->doc->wrapScriptTags('
 				if (top.fsMod) top.fsMod.recentIds["web"] = '.intval($this->id).';
+				if (top.fsMod) top.fsMod.navFrameHighlightedID["web"] = "pages'.intval($this->id).'_"+top.fsMod.currentBank; '.intval($this->id).';
 				function jumpToUrl(URL,formEl)	{	//
 					if (document.editform && document.TBE_EDITOR_isFormChanged)	{	// Check if the function exists... (works in all browsers?)
 						if (!TBE_EDITOR_isFormChanged())	{	//

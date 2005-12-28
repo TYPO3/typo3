@@ -1,0 +1,155 @@
+<html class="popupwin" style="height: 100%">
+<!--
+/*
+ * About window for TYPO3 htmlArea RTE
+ *
+ * @author	Mihai Bazon (http://dynarch.com/mishoo)
+ * @author	Stanislas Rolland. Sponsored by Fructifor Inc.
+ * Copyright (c) 2003-2004 dynarch.com
+ * Copyright (c) 2005 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
+ * Distributed under the same terms as HTMLArea itself.
+ * This notice MUST stay intact for use.
+ *
+ * TYPO3 CVS ID: $Id$
+ */
+ -->
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>About HTMLArea</title>
+	<script type="text/javascript" src="popup.js"></script>
+	<script type="text/javascript">
+		var HTMLArea = window.opener.HTMLArea;
+		var _editor_CSS = window.opener._editor_CSS;
+		__dlg_loadStyle(_editor_CSS);
+		
+		function Init() {
+			__dlg_init();
+			initDocument();
+			__dlg_translate(HTMLArea.I18N.dialogs);
+		};
+		
+		var TABS = [];
+		var CURRENT_TAB = 0;
+		var CONTENT_HEIGHT_DIFF = 0;
+		var CONTENT_WIDTH_DIFF = 0;
+		
+		function selectTab(idx) {
+			var ct = TABS[CURRENT_TAB];
+			HTMLArea._removeClass(ct, "tab-current");
+			ct = TABS[CURRENT_TAB = idx];
+			HTMLArea._addClass(ct, "tab-current");
+			for (var i = TABS.length; --i >= 0;) {
+				var area = document.getElementById("tab-area-" + i);
+				if (CURRENT_TAB == i) area.style.display = "block";
+					else area.style.display = "none";
+			}
+			document.body.style.visibility = "hidden";
+			document.body.style.visibility = "visible";
+			document.cookie = "HTMLAREA-ABOUT-TAB=" + idx;
+		}
+		
+		function initDocument() {
+			var editor = window.dialogArguments;
+			var plugins = document.getElementById("plugins");
+			var j = 0, i, info;
+			var html = "<table width='99%' cellpadding='0' style='collapse-borders: collapse; border: 1px solid #8b8;'>" +
+				"<thead><tr>" +
+				"<td>Name</td>" +
+				"<td>Developer</td>" +
+				"<td>Sponsored by</td>" +
+				"</tr></thead><tbody>";
+			for (i in editor.plugins) {
+				info = editor.plugins[i];
+				html += "<tr><td>" + info.name + " v" + info.version + "</td>" + 
+					"<td><a href='" + info.developer_url + "' target='_blank' >" +
+					info.developer + "</a></td>" +
+					"<td><a href='" + info.sponsor_url + "' target='_blank' >" +
+					info.sponsor + "</a></td>" +
+					"</tr>";
+				++j;
+			}
+			
+			if (j) {
+				html += "</tbody></table>";
+				plugins.innerHTML = "<p><span>The following plugins have been loaded.</span></p>" + html;
+			} else {
+				plugins.innerHTML = "<p><span>No plugins have been loaded.</span></p>";
+			}
+			
+			plugins.innerHTML += "<p><span>User agent reports:</span><br/>" + navigator.userAgent + "</p>";
+			
+			var content = document.getElementById("tab-areas-content");
+			if (window.innerHeight) {
+				CONTENT_HEIGHT_DIFF = window.innerHeight - 250;
+				CONTENT_WIDTH_DIFF = window.innerWidth - content.offsetWidth;
+			} else {
+				CONTENT_HEIGHT_DIFF = document.body.offsetHeight - 250;
+				CONTENT_WIDTH_DIFF = document.body.offsetWidth - 400;
+			}
+			window.onresize();
+			
+			var bar = document.getElementById("tabbar");
+			j = 0;
+			for (i = bar.firstChild; i; i = i.nextSibling) {
+				if(i.nodeType == 1) {
+					TABS.push(i);
+					i.__msh_tab = j;
+					i.onmousedown = function(ev) { selectTab(this.__msh_tab); HTMLArea._stopEvent(ev || window.event); };
+					var area = document.getElementById("tab-area-" + j);
+					if (/tab-current/.test(i.className)) {
+						CURRENT_TAB = j;
+						area.style.display = "block";
+					} else {
+						area.style.display = "none";
+					}
+					++j;
+				}
+			}
+			if (document.cookie.match(/HTMLAREA-ABOUT-TAB=([0-1]+)/)) selectTab(RegExp.$1);
+		}
+		
+		window.onresize = function() {
+			var content = document.getElementById("tab-areas-content");
+			if (window.innerHeight) {
+				content.style.height = (window.innerHeight - CONTENT_HEIGHT_DIFF) + "px";
+				content.style.width = (window.innerWidth - CONTENT_WIDTH_DIFF) + "px";
+			} else {
+				content.style.height = (document.body.offsetHeight - CONTENT_HEIGHT_DIFF) + "px";
+				//content.style.width = (document.body.offsetWidth - CONTENT_WIDTH_DIFF) + "px";
+			}
+		}
+	</script>
+</head>
+<body class="popupwin" onload="Init();">
+<div id="content">
+	<div class="title" style="cursor: pointer;" onclick="window.open('http://typo3.org/extensions/repository/search/rtehtmlarea/');">About HTMLArea</div>
+	<div style="overflow: auto; height: 250px;" id="tab-areas-content">
+		<div id="tab-areas">
+			<div id="tab-area-0">
+				<h1>htmlArea RTE v 1.1.0</h1>
+				<p><span>free_editor</span></p>
+				<p><span>Mozilla_or_IE</span></p>
+				<p><span>product_documentation</span>&nbsp;<a href="http://typo3.org/extensions/repository/search/rtehtmlarea/" target="_blank">typo3.org</a></p>
+				<p style="text-align: center;">
+					<br />
+					&copy; 2002-2004 <a href="http://interactivetools.com" target="_blank">interactivetools.com, inc.</a><br />
+					&copy; 2003-2004 <a href="http://dynarch.com" target="_blank">dynarch.com LLC.</a><br />
+					&copy; 2004-2005 <a href="http://www.fructifor.ca" target="_blank">Stanislas Rolland</a><br />
+					<span>All rights reserved.</span>
+				</p>
+			</div>
+			<div id="tab-area-1">
+				<h1>Plugins</h1>
+				<div id="plugins"></div>
+			</div>
+		</div>
+	</div>
+	<div class="buttons">
+		<div id="tabbar">
+			<div class="tab tab-current">About</div>
+			<div class="tab">Plugins</div>
+		</div>
+		<button type="button" onclick="__dlg_close(null);">Close</button>
+	</div>
+</div>
+</body></html>

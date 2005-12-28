@@ -102,7 +102,7 @@ require_once (PATH_t3lib.'class.t3lib_parsehtml.php');
 class t3lib_parsehtml_proc extends t3lib_parsehtml {
 
 		// Static:
-	var $headListTags = 'PRE,UL,OL,H1,H2,H3,H4,H5,H6';		// List of tags for header, pre and list containers
+	var $headListTags = 'PRE,UL,OL,H1,H2,H3,H4,H5,H6,HR,ADDRESS,DL';	// List of tags for these elements
 
 		// Internal, static:
 	var $recPid = 0;				// Set this to the pid of the record manipulated by the class.
@@ -791,6 +791,12 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 		$cc=0;
 		$aC = count($blockSplit);
 
+			// Avoid superfluous linebreaks by transform_db after ending headListTag
+		while($aC && !strcmp(trim($blockSplit[$aC-1]),''))	{
+			unset($blockSplit[$aC-1]);
+			$aC = count($blockSplit);
+		}
+
 			// Traverse the blocks
 		foreach($blockSplit as $k => $v)	{
 			$cc++;
@@ -822,14 +828,14 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 								$blockSplit[$k]='<typolist'.$params.'>'.chr(10).implode(chr(10),$parts).chr(10).'</typolist>'.$lastBR;
 							}
 						} else {
-							$blockSplit[$k].=$lastBR;
+							$blockSplit[$k]=$this->transformStyledATags($blockSplit[$k]).$lastBR;
 						}
 					break;
 					case 'table':	// Tables are NOT allowed in any form (unless preserveTables is set or CSS is the mode)
 						if (!$this->procOptions['preserveTables'] && !$css)	{
 							$blockSplit[$k]=$this->TS_transform_db($this->removeTables($blockSplit[$k]));
 						} else {
-							$blockSplit[$k]=str_replace(chr(10),'',$blockSplit[$k]).$lastBR;
+							$blockSplit[$k]=str_replace(chr(10),' ',$this->transformStyledATags($blockSplit[$k])).$lastBR;
 						}
 					break;
 					case 'h1':
@@ -863,21 +869,46 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 												$lastBR;
 							}
 						} else {
-							$blockSplit[$k].=$lastBR;
+								// Eliminate true linebreaks inside Hx tags
+							$blockSplit[$k]=str_replace(chr(10),' ',$this->transformStyledATags($blockSplit[$k])).$lastBR;
 						}
 					break;
 					default:
-						$blockSplit[$k].=$lastBR;
+						$blockSplit[$k]=$this->transformStyledATags($blockSplit[$k]).$lastBR;
 					break;
 				}
 			} else {	// NON-block:
 				if (strcmp(trim($blockSplit[$k]),''))	{
-					$blockSplit[$k]=$this->divideIntoLines($blockSplit[$k]).$lastBR;
+					$blockSplit[$k]=$this->divideIntoLines(str_replace(chr(10),' ',$blockSplit[$k])).$lastBR;
+					$blockSplit[$k]=$this->transformStyledATags($blockSplit[$k]);
 				} else unset($blockSplit[$k]);
 			}
 		}
 		$this->TS_transform_db_safecounter++;
 
+		return implode('',$blockSplit);
+	}
+
+	/**
+	 * Wraps a-tags that contain a style attribute with a span-tag
+	 *
+	 * @param	string		Content input
+	 * @return	string		Content output
+	 */
+	function transformStyledATags($value)	{
+		$blockSplit = $this->splitIntoBlock('A',$value);
+		foreach($blockSplit as $k => $v)	{
+			if ($k%2)	{	// If an A-tag was found:
+				$attribArray = $this->get_tag_attributes_classic($this->getFirstTag($v),1);
+				if ($attribArray['style'])	{	// If "style" attribute is set!
+					$attribArray_copy['style'] = $attribArray['style'];
+					unset($attribArray['style']);
+					$bTag='<span '.t3lib_div::implodeAttributes($attribArray_copy,1).'><a '.t3lib_div::implodeAttributes($attribArray,1).'>';
+					$eTag='</a></span>';
+					$blockSplit[$k] = $bTag.$this->removeFirstAndLastTag($blockSplit[$k]).$eTag;
+				}
+			}
+		}
 		return implode('',$blockSplit);
 	}
 
@@ -1015,7 +1046,13 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 		$kUknown = $this->procOptions['dontRemoveUnknownTags_db'] ? 1 : 0;		// Default: remove unknown tags.
 		$hSC = $this->procOptions['dontUndoHSC_db'] ? 0 : -1;					// Default: re-convert literals to characters (that is &lt; to <)
 
-	 	return $this->HTMLcleaner($content,$keepTags,$kUknown,$hSC);
+			// Create additional configuration in order to honor the setting RTE.default.proc.HTMLparser_db.xhtml_cleaning=1
+		$addConfig=array();
+		if ((is_array($this->procOptions['HTMLparser_db.']) && $this->procOptions['HTMLparser_db.']['xhtml_cleaning']) || (is_array($this->procOptions['entryHTMLparser_db.']) && $this->procOptions['entryHTMLparser_db.']['xhtml_cleaning']) || (is_array($this->procOptions['exitHTMLparser_db.']) && $this->procOptions['exitHTMLparser_db.']['xhtml_cleaning']))	{
+			$addConfig['xhtml']=1;
+		}
+
+	 	return $this->HTMLcleaner($content,$keepTags,$kUknown,$hSC,$addConfig);
 	 }
 
 	/**
@@ -1068,7 +1105,7 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 					if (isset($keepTags['span']))		{
 						$classes=array_merge(array(''),$this->allowedClasses);
 						$keepTags['span']=array(
-							'allowedAttribs'=>'class',
+ 							'allowedAttribs' => 'class,style,xml:lang',
 							'fixAttrib' => Array(
 								'class' => Array (
 									'list' => $classes,

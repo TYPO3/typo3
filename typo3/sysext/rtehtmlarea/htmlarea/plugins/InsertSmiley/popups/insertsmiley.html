@@ -1,0 +1,87 @@
+<html class="popupwin">
+<head>
+	<title>Insert Smiley</title>
+	<meta http-equiv="Content-Style-Type" content="text/css" />
+	<!--<link rel="stylesheet" href="../../../htmlarea.css" />-->
+	<script type="text/javascript" src="../../../popups/popup.js"></script>
+	<script type="text/javascript">
+		HTMLArea = window.opener.HTMLArea;
+		_editor_CSS = window.opener._editor_CSS;
+		__dlg_loadStyle(_editor_CSS);
+		var InsertSmiley = window.opener.InsertSmiley;
+		var i18n = InsertSmiley.I18N;
+		var editor = null;
+		var param;
+
+		function Init() {
+			var totalsmileys = 20;
+			__dlg_translate(i18n);
+			__dlg_init();
+			param = window.dialogArguments;
+			editor = param['editor'];
+			var tbody = document.getElementById("smileytable");
+			var inum;
+			var trow;
+			for(var i = 1; i <= totalsmileys; i++) {
+				if((i - 1) % 4 == 0) {
+					trow = tbody.insertRow((i - 1) / 4);
+				}
+					// find new number to be found in smileys folder
+				inum = "";
+				if(i < 1000) {
+					if(i < 100) {
+						if(i < 10) {
+							inum = "000" + i;
+						} else {
+							inum = "00" + i;
+						}
+					} else {
+						inum = "0" + i;
+					}
+				} else {
+					inum = i;
+				}
+				trow.insertCell((i - 1) % 4).innerHTML = "<a href=\"javascript:onOK('" + inum + "')\"><img style=\"border: 0px;\" alt=\"Smiley " + + i + "\" src=\""+ param.editor_url +"plugins/InsertSmiley/smileys/" + inum + ".gif\" />";
+			}
+			document.body.onkeypress = __dlg_key_press;
+		};
+
+		function onCancel() {
+			__dlg_close(null);
+			return false;
+		};
+
+		function onOK(smileynum) {
+			var params = {};
+			params.imgURL = param.editor_url +"plugins/InsertSmiley/smileys/" + smileynum + ".gif";
+			__dlg_close(params);
+			return false;
+		};
+
+		function __dlg_key_press(ev) {
+			ev || (ev = window.event);
+			switch(ev.keyCode) {
+				case 13: 
+					document.getElementById('bt_ok').click();
+					break;
+				case 27:
+					__dlg_close(null);
+					return false;
+			}
+			return true;
+		};
+	</script>
+</head>
+<body class="popupwin" onload="Init();">
+<div class="title">Insert Smiley</div>
+<form action="" method="get">
+	<div class="smileytable" align="center">
+		<table id="smileytable" name="smileytable"></table>
+	</div>
+	<div class="space"></div>
+	<div class="buttons">
+		<button type="button" onclick="return onCancel();">Cancel</button>
+	</div>
+</form>
+</body>
+</html>

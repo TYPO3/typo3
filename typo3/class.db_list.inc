@@ -581,7 +581,7 @@ class recordList extends t3lib_recordList {
 			default:
 					// Output the label now:
 				if ($table=='pages')	{
-					$code = '<a href="'.htmlspecialchars($this->listURL($uid,'')).'">'.$code.'</a>';
+					$code = '<a href="'.htmlspecialchars($this->listURL($uid,'')).'" onclick="setHighlight('.$uid.')">'.$code.'</a>';
 				} else {
 					$code = $this->linkUrlMail($code,$origCode);
 				}

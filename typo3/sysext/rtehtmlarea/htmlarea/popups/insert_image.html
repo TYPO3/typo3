@@ -1,0 +1,142 @@
+<html class="popupwin">
+<head>
+	<title>Insert Image</title>
+	<meta http-equiv="Content-Style-Type" content="text/css" />
+	<script type="text/javascript" src="popup.js"></script>
+	<script type="text/javascript">
+		HTMLArea = window.opener.HTMLArea;
+		_editor_CSS = window.opener._editor_CSS;
+		__dlg_loadStyle(_editor_CSS);
+		var i18n = HTMLArea.I18N.dialogs;
+
+		function Init() {
+			__dlg_translate(i18n);
+			__dlg_init();
+			var param = window.dialogArguments;
+			if (param) {
+				document.getElementById("f_url").value = param["f_url"];
+				document.getElementById("f_alt").value = param["f_alt"];
+				document.getElementById("f_border").value = param["f_border"];
+				var select = document.getElementById("f_align");
+				for (var i = select.options.length; --i >= 0;) {
+					if (param["f_align"] == select.options[i].value) {
+						select.selectedIndex = i;
+						break;
+					}
+				}
+				document.getElementById("f_vert").value = param["f_vert"];
+				document.getElementById("f_horiz").value = param["f_horiz"];
+				var select = document.getElementById("f_float");
+				for (var i = select.options.length; --i >= 0;) {
+					if (param["f_float"] == select.options[i].value) {
+						select.selectedIndex = i;
+						break;
+					}
+				}
+				window.ipreview.location.replace(param.f_url);
+			}
+			document.getElementById("f_url").focus();
+		};
+
+		function onOK() {
+			var required = { "f_url": "image_url_required" };
+			for (var i in required) {
+				var el = document.getElementById(i);
+				if (!el.value) {
+					alert(i18n[required[i]]);
+					el.focus();
+					return false;
+				}
+			}
+				// pass data back to the calling window
+			var fields = ["f_url", "f_alt", "f_align", "f_border", "f_horiz", "f_vert", "f_float"];
+			var param = new Object();
+			for (var i in fields) {
+				var id = fields[i];
+				var el = document.getElementById(id);
+				param[id] = el.value;
+			}
+			__dlg_close(param);
+			return false;
+		};
+
+		function onCancel() {
+			__dlg_close(null);
+		return false;
+		};
+
+		function onPreview() {
+			var f_url = document.getElementById("f_url");
+			var url = f_url.value;
+			if (!url) {
+				alert(i18n["image_url_first"]);
+				f_url.focus();
+				return false;
+			}
+			window.ipreview.location.replace(url);
+			return false;
+		};
+</script>
+</head>
+<body class="popuwin" onload="Init();">
+<div class="title">Insert Image</div>
+<form action="" method="get">
+	<label for="f_url" class="field">Image URL:</label>
+	<input type="text" id="f_url" name="url" size="65" title="Enter the image URL here" />
+	<button name="preview" onclick="return onPreview();" title="Preview the image in a new window">Preview</button>
+	<div class="space"></div>
+	<label for="f_alt" class="field">Alternate text:</label>
+	<input type="text" name="alt" id="f_alt" size="80" title="For browsers that dont support images" />
+	<div class="space"></div>
+	<fieldset class="floating">
+		<legend>Layout</legend>
+		<ul>
+			<li>
+				<label for="f_align" class="fl">Image alignment:</label>
+				<select class="alignment" size="1" name="align" id="f_align" title="Positioning of this image">
+					<option value="bottom">Bottom</option>
+					<option value="middle" selected="selected">Middle</option>
+					<option value="top">Top</option>
+				</select>
+			</li>
+			<li>
+				<label for="f_border" class="fl">Border thickness:</label>
+				<input type="text" name="border" id="f_border" size="5" title="Leave empty for no border" />
+			</li>
+			<li>
+				<label for="f_float" class="fl">Float:</label>   
+				<select class="float" size="1" name="style" id="f_float" title="Where the image should float">   
+					<option value="none">Non-floating</option>
+					<option value="left">Left</option>
+					<option value="right">Right</option>
+				</select>
+			</li>
+		</ul>
+	</fieldset>
+	<fieldset>
+		<legend>Spacing and padding</legend>
+		<ul>
+			<li>
+				<label for="f_horiz" class="fl">Horizontal:</label>
+				<input type="text" name="horiz" id="f_horiz" size="5" title="Horizontal padding" />
+			</li>
+			<li>
+				<label for="f_vert" class="fl">Vertical:</label>
+				<input type="text" name="vert" id="f_vert" size="5" title="Vertical padding" />
+			</li>
+		</ul>
+	</fieldset>
+	<div class="space"></div>
+	<fieldset>
+		<legend>Image Preview</legend>
+			<div class="imagepreview">
+				<iframe name="ipreview" id="ipreview" frameborder="0" src="";></iframe>
+			</div>
+	</fieldset>
+	<div class="buttons">
+		<button type="button" name="ok" onclick="return onOK();">OK</button>
+		<button type="button" name="cancel" onclick="return onCancel();">Cancel</button>
+	</div>
+</form>
+</body>
+</html>
