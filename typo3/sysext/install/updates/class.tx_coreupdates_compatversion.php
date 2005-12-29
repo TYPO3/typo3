@@ -35,7 +35,7 @@ class tx_coreupdates_compatversion {
 	var $pObj;	// parent object (tx_install)
 	var $userInput;	// user input
 
-	function checkForUpdate($description)	{
+	function checkForUpdate(&$description)	{
 		global $TYPO3_CONF_VARS;
 		if ($this->compatVersionIsCurrent())	{
 			$description = '<b>If you do not use the wizard, your current TYPO3 installation is configured to use all the features included in the current release '.TYPO3_version.'.</b>
@@ -80,7 +80,7 @@ class tx_coreupdates_compatversion {
 		}
 		return $content;
 	}
-	function checkUserInput($customMessages)	{
+	function checkUserInput(&$customMessages)	{
 		global $TYPO3_CONF_VARS;
 		if ($this->compatVersionIsCurrent())	{
 			return 1;
@@ -104,7 +104,7 @@ class tx_coreupdates_compatversion {
 			}
 		}
 	}
-	function performUpdate($dbQueries, $customMessages)	{
+	function performUpdate(&$dbQueries, &$customMessages)	{
 		$customMessages = '';
 
 			// if we just set it to an older version

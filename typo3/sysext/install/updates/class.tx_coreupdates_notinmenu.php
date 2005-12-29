@@ -34,7 +34,7 @@ class tx_coreupdates_notinmenu {
 	var $versionNumber;	// version number coming from t3lib_div::int_from_ver()
 	var $pObj;	// parent object (tx_install)
 	var $userInput;	// user input
-	function checkForUpdate($description)	{
+	function checkForUpdate(&$description)	{
 		$description = 'Removes the doctype "not in menu" which is deprecated and sets instead the page flag "not in menu".';
 		if($this->versionNumber >= 3009000)	{
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid','pages','doktype=5');
@@ -45,7 +45,7 @@ class tx_coreupdates_notinmenu {
 		return 0;
 	}
 
-	function performUpdate($dbQueries, $customMessages)	{
+	function performUpdate(&$dbQueries, &$customMessages)	{
 		if($this->versionNumber >= 3009000)	{
 			$updateArray = array(
 				'doktype' => 1,

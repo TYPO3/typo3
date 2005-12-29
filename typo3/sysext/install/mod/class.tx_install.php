@@ -2128,6 +2128,7 @@ From sub-directory:
 							break;
 							case "encryptionKey":
 								if (strcmp($GLOBALS["TYPO3_CONF_VARS"]["SYS"]["encryptionKey"],$value))	$this->setValueInLocalconfFile($lines, '$TYPO3_CONF_VARS["SYS"]["encryptionKey"]', $value);
+							break;
 							case "compat_version":
 								if (strcmp($GLOBALS["TYPO3_CONF_VARS"]["SYS"]["compat_version"],$value))	$this->setValueInLocalconfFile($lines, '$TYPO3_CONF_VARS["SYS"]["compat_version"]', $value);
 							break;
@@ -3876,7 +3877,7 @@ From sub-directory:
 					$tmpObj = $this->getUpgradeObjInstance($className, $identifier);
 					if (method_exists($tmpObj,'checkForUpdate'))	{
 						$explanation = '';
-						if ($tmpObj->checkForUpdate(&$explanation))	{
+						if ($tmpObj->checkForUpdate($explanation))	{
 							$tableContent .= '<tr><td valign="top"><input type="checkbox" name="TYPO3_INSTALL[update]['.$identifier.']" id="TYPO3_INSTALL[update]['.$identifier.']" value="1" /></td><td><strong><label for="TYPO3_INSTALL[update]['.$identifier.']">'.$identifier.'</label></strong><br />'.str_replace(chr(10),'<br />',$explanation).'</td></tr><tr><td colspan="2"><hr /></td></tr>';
 						}
 					}
@@ -3924,7 +3925,7 @@ From sub-directory:
 						// check user input if testing method is available
 					if (method_exists($tmpObj,'checkUserInput'))	{
 						$customOutput = '';
-						if (!$tmpObj->checkUserInput(&$customOutput))	{
+						if (!$tmpObj->checkUserInput($customOutput))	{
 							$content .= '<strong>'.($customOutput?$customOutput:'Something went wrong').'</strong>';
 							$content .= '<br /><a href="javascript:history.back()">Go back to update configuration</a>';
 							break;
@@ -3934,7 +3935,7 @@ From sub-directory:
 					if (method_exists($tmpObj,'performUpdate'))	{
 						$customOutput = '';
 						$dbQueries = array();
-						if ($tmpObj->performUpdate(&$dbQueries, &$customOutput))	{
+						if ($tmpObj->performUpdate($dbQueries, $customOutput))	{
 							$content .= '<strong>Update successful!</strong>';
 						} else {
 							$content .= '<strong>FAILURE!</strong>';

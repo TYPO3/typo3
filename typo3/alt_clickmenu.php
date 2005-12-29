@@ -742,7 +742,6 @@ class clickMenu {
 		return $this->linkItem(
 			$this->label('tempMountPoint'),
 			$this->excludeIcon('<img'.t3lib_iconWorks::skinImg($this->PH_backPath,'gfx/placeasroot.gif','width="14" height="12"').' alt="" />'),
-			'',
 			"if (top.content.nav_frame) { top.content.nav_frame.document.location = 'alt_db_navframe.php?setTempDBmount=".intval($page_id)."'; } return hideCM();"
 		);
 	}

@@ -405,7 +405,7 @@ class SC_mod_tools_dbint_index {
 		$id_list = t3lib_div::rm_endcomma($id_list);
 		$admin->lostRecords($id_list);
 		if ($admin->fixLostRecord(t3lib_div::_GET('fixLostRecords_table'),t3lib_div::_GET('fixLostRecords_uid')))	{
-			$admin = t3lib_div::makeInstance('admin_int');
+			$admin = t3lib_div::makeInstance('t3lib_admin');
 			$admin->backPath = $BACK_PATH;
 			$admin->genTree(0,'');
 			$id_list='0,'.implode($admin->page_idArray,',');
