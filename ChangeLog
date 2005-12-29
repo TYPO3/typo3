@@ -4,6 +4,8 @@
 	* Fixed bug #2126: Updating encryption key sets compat version to same value
 	* Fixed bug #2132: Error on moving lost records
 	* Fixed bug #2134: "Place as root" does not function
+	* Changed version of indexed search to 2.9.0
+	* Fixed bug #2117: Install-Tool: "Write to localconf.php" sets "sqlDebug" and "USdateFormat" automaticaly
 
 2005-12-28  Michael Stucki  <michael@typo3.org>
 
