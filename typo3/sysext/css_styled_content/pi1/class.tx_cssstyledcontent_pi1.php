@@ -171,11 +171,6 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 				$quotedInput = '';
 			}
 
-				// add quotes to delimiter if needed, as a row is exploded by this char then
-			if ($quotedInput)	{
-				$delimiter = $quotedInput.$delimiter.$quotedInput;
-			}
-
 				// Split into single lines (will become table-rows):
 			$rows = t3lib_div::trimExplode(chr(10),$content);
 
@@ -185,14 +180,14 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 				// Traverse rows (rendering the table here)
 			$rCount = count($rows);
 			foreach($rows as $k => $v)	{
-					// if input is quoted, remove first and last character of every row
-				if ($quotedInput)	{
-					$v = substr($v,1,-1);
-					//$v = str_replace('\\'.$quotedInput,$quotedInput,$v);	// change back escaped text delimiters - not sure if this is needed
-				}
 				$cells = explode($delimiter,$v);
 				$newCells=array();
 				for($a=0;$a<$cols;$a++)	{
+						// remove quotes if needed
+					if ($quotedInput && substr($cells[$a],0,1) == $quotedInput && substr($cells[$a],-1,1) == $quotedInput)	{
+						$cells[$a] = substr($cells[$a],1,-1);
+					}
+
 					if (!strcmp(trim($cells[$a]),''))	$cells[$a]='&nbsp;';
 					$cellAttribs = ($noStyles?'':($a>0 && ($cols-1)==$a) ? ' class="td-last"' : ' class="td-'.$a.'"');
 					if (($headerPos == 'top' && !$k) || (!$a && $headerPos == 'left'))	{
