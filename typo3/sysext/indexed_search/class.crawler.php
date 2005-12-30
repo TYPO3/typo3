@@ -63,7 +63,7 @@
 
 
 # To make sure the backend charset is available:
-require_once(PATH_typo3.'sysext/lang/lang.php');
+require_once(PATH_site.TYPO3_mainDir.'sysext/lang/lang.php');
 if (!is_object($GLOBALS['LANG']))	{
 	$GLOBALS['LANG'] = t3lib_div::makeInstance('language');
 	$GLOBALS['LANG']->init($GLOBALS['BE_USER']->uc['lang']);

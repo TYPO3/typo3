@@ -1,3 +1,7 @@
+2005-12-30  Sebastian Kurfuerst  <sebastian@garbage-group.de>
+
+	* Fixed bug #2108: Error when using hide in Frontend Editing
+
 2005-12-29  Sebastian Kurfuerst  <sebastian@garbage-group.de>
 
 	* Fixed bug #2100: Warning: Call-time pass-by-reference has been deprecated
