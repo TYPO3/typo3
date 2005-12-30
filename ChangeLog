@@ -9,9 +9,8 @@
 	* Fixed bug #2132: Error on moving lost records
 	* Fixed bug #2134: "Place as root" does not function
 	* Changed version of indexed search to 2.9.0
-	* Fixed bug #2117: Install-Tool: "Write to localconf.php" sets "sqlDebug" and "USdateFormat" automaticaly
-	* Fixed a bug in quote settings in CSS styled content - table. Now it
-	is possible to copy/paste a CSV directly.
+	* Fixed bug #2117: Install-Tool: "Write to localconf.php" sets "sqlDebug" and "USdateFormat" automatically
+	* Fixed a bug in quote settings in CSS styled content - table. Now it is possible to copy/paste a CSV directly.
 
 2005-12-28  Michael Stucki  <michael@typo3.org>
 
