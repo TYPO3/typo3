@@ -1320,14 +1320,15 @@ class tslib_pibase {
 
 	/**
 	 * Converts $this->cObj->data['pi_flexform'] from XML string to flexForm array.
+	 * @param	string		Field name to convert
 	 *
 	 * @return	void
 	 */
-	function pi_initPIflexForm()	{
+	function pi_initPIflexForm($field='pi_flexform')	{
 			// Converting flexform data into array:
-		if (!is_array($this->cObj->data['pi_flexform']) && $this->cObj->data['pi_flexform'])	{
-			$this->cObj->data['pi_flexform'] = t3lib_div::xml2array($this->cObj->data['pi_flexform']);
-			if (!is_array($this->cObj->data['pi_flexform']))	$this->cObj->data['pi_flexform']=array();
+		if (!is_array($this->cObj->data[$field]) && $this->cObj->data[$field])	{
+			$this->cObj->data[$field] = t3lib_div::xml2array($this->cObj->data[$field]);
+			if (!is_array($this->cObj->data[$field]))	$this->cObj->data[$field]=array();
 		}
 	}
 
