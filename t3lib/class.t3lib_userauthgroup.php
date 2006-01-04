@@ -973,12 +973,11 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 	 **/
 	 function jsConfirmation($bitmask)	{
 		 $alertPopup = $GLOBALS['BE_USER']->getTSConfig('options.alertPopups');
-		 $alertPopup = (int)$alertPopup['value'];
-
-		 if(!$alertPopup)	{
+		 if (empty($alertPopup['value']))	{
 			 $alertPopup = 255;	// default: show all warnings
+		 } else {
+			 $alertPopup = (int)$alertPopup['value'];
 		 }
-
 		 if(($alertPopup&$bitmask) == $bitmask)	{ // show confirmation
 			 return 1;
 		 } else { // don't show confirmation
