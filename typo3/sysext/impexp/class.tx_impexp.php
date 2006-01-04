@@ -185,7 +185,8 @@ require_once (PATH_t3lib.'class.t3lib_basicfilefunc.php');
 require_once (PATH_t3lib.'class.t3lib_extfilefunc.php');
 require_once (PATH_t3lib.'class.t3lib_refindex.php');
 
-
+@ini_set('max_execution_time',600);
+@ini_set('memory_limit','256m');
 
 
 

@@ -1,5 +1,9 @@
+2006-01-04  Sebastian Kurfuerst  <sebastian@garbage-group.de>
 
-2005-12-13  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+	* Fixed bug #2169: Import of testsite from T3D exceeds PHP maximum_execution_time
+	* Fixed bug #2127: Fatal error in mod/user/ws/index.php
+
+2005-12-31  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
 	* Add alternative field name argument to tslib_pibase->pi_initPIflexForm()
 
