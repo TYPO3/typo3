@@ -945,7 +945,7 @@ class t3lib_sqlparser {
 					}
 				}
 
-					// Detecting the operator for the next level; support for AND, OR and &&):
+					// Detecting the operator for the next level:
 				$op = $this->nextPart($parseString,'^(AND[[:space:]]+NOT|OR[[:space:]]+NOT|AND|OR)(\(|[[:space:]]+)');
 				if ($op)	{
 					$stack[$level][$pnt[$level]]['operator'] = $op;
