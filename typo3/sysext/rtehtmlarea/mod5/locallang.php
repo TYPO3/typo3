@@ -1,0 +1,201 @@
+<?php
+
+$LOCAL_LANG = Array (
+	'default' => Array (
+		'noTitle' => 'No title',
+		'expand' => 'Expand category',
+		'noTextSelection' => 'Error: There was no selected text to wrap.',
+		'pixels' => 'Pixels',
+		'filesize' => 'Filesize',
+	),
+	'dk' => Array (
+		'noTitle' => 'Ingen titel',
+		'expand' => 'Fold kategorien ud',
+		'noTextSelection' => 'Fejl: Du har ikke valgt nogen del af tekst til bearbejdelse.',
+		'pixels' => 'Pixler',
+		'filesize' => 'Filstr.',
+	),
+	'de' => Array (
+		'noTitle' => 'Kein Titel',
+		'expand' => 'Kategorie erweitern',
+		'noTextSelection' => 'Fehler: Kein Text zum Umbrechen ausgewählt.',
+		'pixels' => 'Bildpunkte',
+		'filesize' => 'Dateigröße',
+	),
+	'no' => Array (
+		'noTitle' => 'Ingen tittel',
+		'expand' => 'Fold ut kategorien',
+		'noTextSelection' => 'Feil: Du har ikke valgt noen del av teksten til å bearbeide.',
+		'pixels' => 'Piksler',
+		'filesize' => 'Filstr.',
+	),
+	'it' => Array (
+		'noTitle' => 'Nessun titolo',
+		'expand' => 'Espandi categoria',
+		'noTextSelection' => 'Errore: nessun testo selezionato.',
+		'pixels' => 'Pixels',
+		'filesize' => 'Dimensioni file',
+	),
+	'fr' => Array (
+		'noTitle' => 'Pas de titre',
+		'expand' => 'Etendre la catégorie',
+		'noTextSelection' => 'Erreur: Il n\'y a pas de texte à traiter.',
+		'pixels' => 'Pixels',
+		'filesize' => 'Taille du fichier',
+	),
+	'es' => Array (
+		'noTitle' => 'Sin título',
+		'expand' => 'Expandir categoría',
+		'noTextSelection' => 'Error: No había texto seleccionado para rodear.',
+		'pixels' => 'Pixels',
+		'filesize' => 'Tamaño de fichero',
+	),
+	'nl' => Array (
+		'noTitle' => 'Geen titel',
+		'expand' => 'Uitvouwen categorie',
+		'noTextSelection' => 'FOUT: Er is geen tekst geselecteerd!',
+		'pixels' => 'Pixels',
+		'filesize' => 'Bestandsgrootte',
+	),
+	'cz' => Array (
+		'noTitle' => 'Bez názvu',
+		'expand' => 'Rozšíøit kategorii',
+		'noTextSelection' => 'Chyba: Nebyl zvolen žádný text pro \'wrap\'.',
+		'pixels' => 'Body',
+		'filesize' => 'Velikost souboru',
+	),
+	'pl' => Array (
+		'noTitle' => 'Brak tytu³u',
+		'expand' => 'Rozwiñ kategoriê',
+		'noTextSelection' => 'B³±d: nie wybrano tekstu',
+		'pixels' => 'Pikseli',
+		'filesize' => 'Rozmiar pliku',
+	),
+	'si' => Array (
+	),
+	'fi' => Array (
+		'noTitle' => 'Ei otsikkoa',
+		'expand' => 'Laajenna luokkaa',
+		'noTextSelection' => 'Virhe: ',
+		'pixels' => 'Pixelejä',
+		'filesize' => 'Tiedoston koko',
+	),
+	'tr' => Array (
+		'noTitle' => 'Baþlýk yok',
+		'expand' => 'Kategoriyi geniþlet',
+		'noTextSelection' => 'Hata: Metin paketlemesi için seçili metin bulunmamaktadýr.',
+		'pixels' => 'Pikseller',
+		'filesize' => 'Dosya ebatý',
+	),
+	'se' => Array (
+		'noTitle' => 'Ingen rubrik',
+		'expand' => 'Utöka kategori',
+		'noTextSelection' => 'Ett fel har uppstått:  Det fanns ingen text att bearbeta.',
+		'pixels' => 'Pixels',
+		'filesize' => 'Filstorlek',
+	),
+	'pt' => Array (
+		'noTitle' => 'Sem título',
+		'expand' => 'Expandir categoria',
+		'noTextSelection' => 'Erro: não há texto selecionado para justificar.',
+		'pixels' => 'Pontos',
+		'filesize' => 'Tamanho do Arquivo',
+	),
+	'ru' => Array (
+		'noTitle' => 'Áåç íàçâàíèÿ',
+		'expand' => 'Ðàñøèðèòü êàòåãîðèþ',
+		'noTextSelection' => 'Îøèáêà: òåêñò äëÿ îáðàáîòêè íå âûáðàí.',
+		'pixels' => 'Ïèêñåë.',
+		'filesize' => 'Ðàçìåð ôàéëà',
+	),
+	'ro' => Array (
+	),
+	'ch' => Array (
+		'noTitle' => 'Ã»ÓÐ±êÌâ',
+		'expand' => 'Õ¹¿ªÄ¿Â¼',
+		'noTextSelection' => '´íÎó: Ã»ÓÐÑ¡ÔñÎÄ×ÖÓÃÓÚ»»ÐÐ',
+		'pixels' => 'ÏñËØ',
+		'filesize' => 'ÎÄ¼þ´óÐ¡',
+	),
+	'sk' => Array (
+		'noTitle' => 'Bez nadpisu',
+		'expand' => 'Rozšíri kategóriu',
+		'noTextSelection' => 'Chyba: Nebol vybraný žiaden text pre \'wrap\'.',
+		'pixels' => 'Pixely',
+		'filesize' => 'Ve¾kos súboru',
+	),
+	'lt' => Array (
+		'noTitle' => 'Nëra antraðtës',
+		'expand' => 'Iðplësti kategorija',
+		'noTextSelection' => 'Klaida: Nëra paþymëta teksto lauþymui.',
+		'pixels' => 'Pikseliai',
+		'filesize' => 'Bylos dydis',
+	),
+	'is' => Array (
+	),
+	'hr' => Array (
+		'noTitle' => 'Bez naslova',
+		'expand' => 'Proširi kategoriju',
+		'noTextSelection' => 'Greška: Nema odabranog teksta za omatanje',
+		'pixels' => 'Pixeli',
+		'filesize' => 'Velièina datoteke',
+	),
+	'hu' => Array (
+		'noTitle' => 'Nincs cím',
+		'expand' => 'Kategória kiterjesztése',
+		'noTextSelection' => 'Hiba: Nincs kijelölt szöveg a tördeléshez.',
+		'pixels' => 'Pixelek',
+		'filesize' => 'Fileméret',
+	),
+	'gl' => Array (
+	),
+	'th' => Array (
+	),
+	'gr' => Array (
+	),
+	'hk' => Array (
+	),
+	'eu' => Array (
+	),
+	'bg' => Array (
+		'noTitle' => 'Áåç çàãëàâèå',
+		'expand' => 'Ðàçòâîðè êàòåãîðèÿòà',
+		'noTextSelection' => 'Ãðåøêà: Íÿìàøå èçáðàí òåêñò çà ñêðèâàíå.',
+		'pixels' => 'Ïèêñåëè',
+		'filesize' => 'Ãîëåìèíà íà ôàéëà',
+	),
+	'br' => Array (
+		'noTitle' => 'Sem título',
+		'expand' => 'Expandir categoria',
+		'noTextSelection' => 'Erro: não há texto selecionado para quebrar linhas.',
+		'pixels' => 'Pontos',
+		'filesize' => 'Tamanho do Arquivo',
+	),
+	'et' => Array (
+	),
+	'ar' => Array (
+	),
+	'he' => Array (
+	),
+	'ua' => Array (
+	),
+	'lv' => Array (
+	),
+	'jp' => Array (
+	),
+	'vn' => Array (
+	),
+	'ca' => Array (
+	),
+	'ba' => Array (
+	),
+	'kr' => Array (
+	),
+	'eo' => Array (
+	),
+	'my' => Array (
+	),
+	'hi' => Array (
+	),
+);
+?>
