@@ -1,6 +1,8 @@
-2006-01-04  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+2006-01-05  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
 	* Allow align attribute on p and div tags in Demo Page TSConfig settings.
 	* Restructure extension modules and resources folders.
+	* Make extension conflict with rte_conf.
+	* Reconfigure for new version of extension Lorem Ipsum.
 
 2006-01-03  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
 	* Modify conf and module scripts so that the extension may be run as system, global or local extension.
