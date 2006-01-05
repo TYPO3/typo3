@@ -2,6 +2,7 @@
 2005-01-05  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
 	* Add escapeStrForLike() to t3lib_db and use it in tslib_cObj->searchWhere()
+	* Update for bug #1354: Use mysql_escape_string() with PHP 4.1.x
 
 2006-01-04  Stanislas Rolland <stanislas.rolland@fructifor.ca>
 

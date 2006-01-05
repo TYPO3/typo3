@@ -139,7 +139,7 @@ class t3lib_DB {
 	var $store_lastBuiltQuery = FALSE;	// Set "TRUE" if you want the last built query to be stored in $debug_lastBuiltQuery independent of $this->debugOutput
 
 		// Default link identifier:
-	var $link;
+	var $link = FALSE;
 
 
 
@@ -542,7 +542,11 @@ class t3lib_DB {
 	 * @see quoteStr()
 	 */
 	function fullQuoteStr($str, $table)	{
-		return '\''.mysql_real_escape_string($str, $this->link).'\'';
+		if (function_exists('mysql_real_escape_string'))	{
+			return '\''.mysql_real_escape_string($str, $this->link).'\'';
+		} else {
+			return '\''.mysql_escape_string($str).'\'';
+		}
 	}
 
 	/**
@@ -573,7 +577,11 @@ class t3lib_DB {
 	 * @see quoteStr()
 	 */
 	function quoteStr($str, $table)	{
-		return mysql_real_escape_string($str, $this->link);
+		if (function_exists('mysql_real_escape_string'))	{
+			return mysql_real_escape_string($str, $this->link);
+		} else {
+			return mysql_escape_string($str);
+		}
 	}
 
 	/**
