@@ -187,13 +187,15 @@ TABLE#typo3-tabmenu TD A:hover { color:#000; background: #f6eab7; text-decoratio
 /* Dynamic Tab menu (template.php) */
 DIV.typo3-dyntabmenu-tabs { margin-top: 5px; padding-right: 20px; }
 DIV.typo3-dyntabmenu-divs P.c-descr { font-style : italic; padding: 3px 10px 5px 10px; background: #e7dba8;  }
+TABLE.typo3-dyntabmenu TR { height:1.5em; }
+TABLE.typo3-dyntabmenu TD { padding-left:5px; padding-right:5px; }
 TABLE.typo3-dyntabmenu TD.tabact { color: #000; border: solid black 1px; background: #e7dba8; }
 TABLE.typo3-dyntabmenu TD.tab { color:grey; border: solid #555 1px;  background: #c4d4cd; }
 TABLE.typo3-dyntabmenu TD.tab_over, TABLE.typo3-dyntabmenu TD.tabact_over, TABLE.typo3-dyntabmenu TD.disabled_over { color:#000; border: solid #555 1px;  background: #f6eab7; }
 TABLE.typo3-dyntabmenu TD.disabled { color:#999999; border: solid #555 1px;  background: #cccccc; }
 TABLE.typo3-dyntabmenu TD.tab_over, TABLE.typo3-dyntabmenu TD.tabact_over, TABLE.typo3-dyntabmenu TD.disabled_over { color:#000; border: solid #555 1px;  background: #f6eab7; }
 TABLE.typo3-dyntabmenu TD.tab, TABLE.typo3-dyntabmenu TD.tabact, TABLE.typo3-dyntabmenu TD.disabled, TABLE.typo3-dyntabmenu TD.tab_over, TABLE.typo3-dyntabmenu TD.tabact_over, TABLE.typo3-dyntabmenu TD.disabled_over  { border-radius: 3px; -moz-border-radius: 3px; border-bottom: 0px; }
-TABLE.typo3-dyntabmenu TD A { color:grey; text-decoration:none; display: block; width:100%; padding:2px; padding-left:5px; padding-right:5px; }
+TABLE.typo3-dyntabmenu TD A { color:grey; text-decoration:none; display: block; width:100%; }
 TABLE.typo3-dyntabmenu TD.tabact A, TABLE.typo3-dyntabmenu TD.tab_over A { color:#000;}
 
 DIV.typo3-dyntabmenu-divs-foldout DIV.c-tablayer {margin-left: 20px;}
