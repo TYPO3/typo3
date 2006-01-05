@@ -546,7 +546,7 @@ class t3lib_DB {
 	}
 
 	/**
-	 * Will fullquote all values in the one-dimentional array so they are ready to "implode" for an sql query.
+	 * Will fullquote all values in the one-dimensional array so they are ready to "implode" for an sql query.
 	 *
 	 * @param	array		Array with values
 	 * @param	string		Table name for which to quote.
@@ -577,7 +577,19 @@ class t3lib_DB {
 	}
 
 	/**
-	 * Will convert all values in the one-dimentional array to integers.
+	 * Escaping values for SQL LIKE statements.
+	 *
+	 * @param	string		Input string
+	 * @param	string		Table name for which to escape string. Just enter the table that the field-value is selected from (and any DBAL will look up which handler to use and then how to quote the string!).
+	 * @return	string		Output string; % and _ will be escaped with \ (or otherwise based on DBAL handler)
+	 * @see quoteStr()
+	 */
+	function escapeStrForLike($str, $table)	{
+		return preg_replace('/[_%]/','\\\$0',$str);
+	}
+
+	/**
+	 * Will convert all values in the one-dimensional array to integers.
 	 * Useful when you want to make sure an array contains only integers before imploding them in a select-list.
 	 * Usage count/core: 7
 	 *

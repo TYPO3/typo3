@@ -6330,6 +6330,8 @@ class tslib_cObj {
 	 * @return	string		The WHERE clause.
 	 */
 	function searchWhere($sw,$searchFieldList,$searchTable='')	{
+		global $TYPO3_DB;
+
 		$prefixTableName = $searchTable ? $searchTable.'.' : '';
 		$where = '';
 		if ($sw)	{
@@ -6340,9 +6342,10 @@ class tslib_cObj {
 				$val = trim($val);
 				$where_p = array();
 				if (strlen($val)>=2)	{
+					$val = $TYPO3_DB->escapeStrForLike($TYPO3_DB->quoteStr($val,$searchTable),$searchTable);
 					reset($searchFields);
 					while(list(,$field)=each($searchFields))	{
-						$where_p[] = $prefixTableName.$field.' LIKE \'%'.$GLOBALS['TYPO3_DB']->quoteStr($val, $searchTable).'%\'';
+						$where_p[] = $prefixTableName.$field.' LIKE \'%'.$val.'%\'';
 					}
 				}
 				if (count($where_p))	{
