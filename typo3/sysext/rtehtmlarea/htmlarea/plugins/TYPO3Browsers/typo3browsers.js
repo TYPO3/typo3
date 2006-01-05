@@ -2,7 +2,7 @@
  * TYPO3 Image & Link Browsers Plugin for TYPO3 htmlArea RTE
  *
  * @author	Stanislas Rolland. Sponsored by Fructifor Inc.
- * Copyright (c) 2005 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
+ * Copyright (c) 2005-2006 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
  * This notice MUST stay intact for use.
  *
  * TYPO3 CVS ID: $Id$
@@ -19,12 +19,12 @@ TYPO3Browsers.I18N = TYPO3Browsers_langArray;
 
 TYPO3Browsers._pluginInfo = {
 	name		: "TYPO3Browsers",
-	version		: "1.4",
+	version		: "1.5",
 	developer	: "Stanislas Rolland",
-	developer_url 	: "http://www.fructifor.ca",
+	developer_url 	: "http://www.fructifor.ca/",
 	c_owner		: "Stanislas Rolland",
 	sponsor		: "Fructifor Inc.",
-	sponsor_url 	: "http://www.fructifor.ca",
+	sponsor_url 	: "http://www.fructifor.ca/",
 	license		: "htmlArea"
 };
 
@@ -43,7 +43,7 @@ HTMLArea.prototype.renderPopup_image = function() {
 		this._selectedImage = image;
 	}
 
-	this._popupDialog("../../t3_popup.php" + addParams + "&editorNo=" + editorNumber + "&popupname=image&srcpath="+encodeURIComponent(rtePathImageFile), null, backreturn, 550, 350);	
+	this._popupDialog("../../mod1/popup.php" + addParams + "&editorNo=" + editorNumber + "&popupname=image&srcpath="+encodeURIComponent(rtePathImageFile), null, backreturn, 550, 350);	
 	return false;
 };
 
@@ -99,7 +99,7 @@ HTMLArea.prototype.renderPopup_link = function() {
 			}
 		}
 	}
-	this._popupDialog("../../t3_popup.php" + addUrlParams + "&editorNo=" + editorNumber + "&typo3ContentLanguage=" + RTEarea[editorNumber]["typo3ContentLanguage"] + "&typo3ContentCharset=" + encodeURIComponent(RTEarea[editorNumber]["typo3ContentCharset"]) + "&popupname=link&srcpath=" + encodeURIComponent(rtePathLinkFile), null, backreturn, 550, 350);
+	this._popupDialog("../../mod1/popup.php" + addUrlParams + "&editorNo=" + editorNumber + "&typo3ContentLanguage=" + RTEarea[editorNumber]["typo3ContentLanguage"] + "&typo3ContentCharset=" + encodeURIComponent(RTEarea[editorNumber]["typo3ContentCharset"]) + "&popupname=link&srcpath=" + encodeURIComponent(rtePathLinkFile), null, backreturn, 550, 350);
 	return false;
 };
 

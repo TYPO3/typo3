@@ -4,7 +4,7 @@
 *
 *  (c) 2004 Kasper Skaarhoj (kasper@typo3.com)
 *  (c) 2004 Philipp Borgmann <philipp.borgmann@gmx.de>
-*  (c) 2004-2005 Stanislas Rolland <stanislas.rolland@fructifor.ca>
+*  (c) 2004-2006 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -31,14 +31,13 @@
  * Internal page and image browsers for the htmlArea RTE
  *
  * @author	Philipp Borgmann <philipp.borgmann@gmx.de>
- * @author	Stanislas Rolland <stanislas.rolland@fructifor.ca>
+ * @author	Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
+ *
+ * $Id$  *
  */
 
 error_reporting (E_ALL ^ E_NOTICE);
 unset($MCONF);
-define('TYPO3_OS', (stristr(PHP_OS,'win') && !stristr(PHP_OS,'darwin')) ? 'WIN' : '');
-define('MY_PATH_thisScript',str_replace('//','/', str_replace('\\','/', (php_sapi_name()=='cgi'||php_sapi_name()=='xcgi'||php_sapi_name()=='isapi' ||php_sapi_name()=='cgi-fcgi')&&($_SERVER['ORIG_PATH_TRANSLATED']?$_SERVER['ORIG_PATH_TRANSLATED']:$_SERVER['PATH_TRANSLATED'])? ($_SERVER['ORIG_PATH_TRANSLATED']?$_SERVER['ORIG_PATH_TRANSLATED']:$_SERVER['PATH_TRANSLATED']):($_SERVER['ORIG_SCRIPT_FILENAME']?$_SERVER['ORIG_SCRIPT_FILENAME']:$_SERVER['SCRIPT_FILENAME']))));
-
 require ('conf.php');
 require ($BACK_PATH.'init.php');
 require ($BACK_PATH.'template.php');
@@ -59,7 +58,7 @@ switch( $popupname ) {
 <html >
 <head>
 <title><?php echo $title;?></title>
-<script type="text/javascript" src="htmlarea/popups/popup.js"></script>
+<script type="text/javascript" src="../htmlarea/popups/popup.js"></script>
 <script type="text/javascript">
 	/*<![CDATA[*/
 	var HTMLArea = window.opener.HTMLArea;

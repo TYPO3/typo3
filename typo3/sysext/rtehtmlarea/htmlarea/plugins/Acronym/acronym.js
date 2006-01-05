@@ -1,5 +1,5 @@
 // Acronym Plugin for TYPO3 htmlArea RTE
-// Copyright (c) 2005 Stanislas Rolland
+// Copyright (c) 2005-2006 Stanislas Rolland
 // Sponsored by http://www.fructifor.ca
 // This notice MUST stay intact for use (see license.txt).
 
@@ -18,7 +18,7 @@ Acronym.I18N = Acronym_langArray;
 
 Acronym._pluginInfo = {
 	name		: "Acronym",
-	version		: "1.0",
+	version		: "1.1",
 	developer	: "Stanislas Rolland",
 	developer_url	: "http://www.fructifor.ca",
 	c_owner		: "Stanislas Rolland",
@@ -37,6 +37,6 @@ Acronym.prototype.buttonPress = function(editor) {
 	var editorNo = editor._doc._editorNo;
 	var backreturn;
 	var addUrlParams = "?" + conf_RTEtsConfigParams;
-	editor._popupDialog("../../t3_popup.php" + addUrlParams + "&editorNo=" + editorNo + "&popupname=acronym&srcpath=" + encodeURI(rtePathAcronymFile), null, null, 570, 280);
+	editor._popupDialog("../../mod1/popup.php" + addUrlParams + "&editorNo=" + editorNo + "&popupname=acronym&srcpath=" + encodeURI(rtePathAcronymFile), null, null, 570, 280);
 	return false;
 };

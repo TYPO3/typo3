@@ -847,11 +847,11 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			var conf_RTEtsConfigParams = "&RTEtsConfigParams=' . rawurlencode($this->RTEtsConfigParams()) . '";
 			var RTEarea = new Array();
 			var extHttpPath = "'.$this->extHttpPath.'";
-			var rtePathImageFile = "'. $this->extHttpPath . $this->ID . '_select_image.php";
-			var rtePathLinkFile = "' . $this->extHttpPath . $this->ID . '_browse_links.php";
-			var rtePathUserFile = "' . $this->extHttpPath . $this->ID . '_user.php";
-			var rtePathAcronymFile = "' . $this->extHttpPath . $this->ID . '_acronym.php";
-			var rtePathParseHtmlFile = "' . $this->extHttpPath . $this->ID . '_parse_html.php";'
+			var rtePathImageFile = "'. $this->extHttpPath . 'mod4/select_image.php";
+			var rtePathLinkFile = "' . $this->extHttpPath . 'mod3/browse_links.php";
+			var rtePathUserFile = "' . $this->extHttpPath . 'mod5/user.php";
+			var rtePathAcronymFile = "' . $this->extHttpPath . 'mod2/acronym.php";
+			var rtePathParseHtmlFile = "' . $this->extHttpPath . 'mod6/parse_html.php";'
 			. $loadPluginCode .  '
 			HTMLArea.init();' . (!is_object($TSFE) ? '' : '
 		/*]]>*/

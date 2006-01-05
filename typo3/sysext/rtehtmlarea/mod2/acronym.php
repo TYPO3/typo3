@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2005 Stanislas Rolland (stanislas.rolland@fructifor.ca)
+*  (c) 2005-2006 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is 
@@ -27,19 +27,17 @@
 /** 
  * Acronym content for htmlArea RTE
  *
- * @author	Stanislas Rolland <stanislas.rolland@fructifor.ca>
+ * @author	Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
  *
+ * $Id$  *
  */
 
 error_reporting (E_ALL ^ E_NOTICE);
 unset($MCONF);
-define('MY_PATH_thisScript',str_replace('//','/', str_replace('\\','/', (php_sapi_name()=='cgi'||php_sapi_name()=='xcgi'||php_sapi_name()=='isapi' ||php_sapi_name()=='cgi-fcgi')&&($_SERVER['ORIG_PATH_TRANSLATED']?$_SERVER['ORIG_PATH_TRANSLATED']:$_SERVER['PATH_TRANSLATED'])? ($_SERVER['ORIG_PATH_TRANSLATED']?$_SERVER['ORIG_PATH_TRANSLATED']:$_SERVER['PATH_TRANSLATED']):($_SERVER['ORIG_SCRIPT_FILENAME']?$_SERVER['ORIG_SCRIPT_FILENAME']:$_SERVER['SCRIPT_FILENAME']))));
-
 require ('conf.php');
 require ($BACK_PATH.'init.php');
 require ($BACK_PATH.'template.php');
-$LANG->includeLLFile('EXT:rtehtmlarea/locallang_rtehtmlarea_acronym.php');
-
+$LANG->includeLLFile('EXT:rtehtmlarea/mod2/locallang.php');
 
 class tx_rtehtmlarea_acronym {
 	var $content;
@@ -270,8 +268,8 @@ class tx_rtehtmlarea_acronym {
 	}
 }
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rtehtmlarea/rtehtmlarea_acronym.php'])	{
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rtehtmlarea/rtehtmlarea_acronym.php']);
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rtehtmlarea/mod2/acronym.php'])	{
+	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rtehtmlarea/mod2/acronym.php']);
 }
 
 

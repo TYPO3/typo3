@@ -1,5 +1,15 @@
+2006-01-04  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+	* Allow align attribute on p and div tags in Demo Page TSConfig settings.
+	* Restructure extension modules and resources folders.
+
+2006-01-03  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+	* Modify conf and module scripts so that the extension may be run as system, global or local extension.
+	* Convert some files to UNIX linebreaks.
+	* Recompress some JS scripts.
+	* Restore Demo and Typical Page TSConfig default settings.
+
 2005-12-29  Michael Stucki  <michael@typo3.org>
-	* Solved problems with wrong backPath
+	* Solved problems with wrong backPath when installed as system extension in TYPO3 4.0 beta1.
 
 2005-12-24  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
 	* Extend t3lib_parsehtml_proc only if TYPO3_VERSION is smaller than 4.0

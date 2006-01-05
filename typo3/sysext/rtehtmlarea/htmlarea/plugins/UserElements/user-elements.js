@@ -1,9 +1,13 @@
-// User Elements Plugin for TYPO3 htmlArea RTE
-// Copyright (c) 2005 Stanislas Rolland
-// Sponsored by http://www.fructifor.com
-//
-// htmlArea v3.0 - Copyright (c) 2002 interactivetools.com, inc.
-// This notice MUST stay intact for use (see license.txt).
+/*
+ * User Elements Plugin for TYPO3 htmlArea RTE
+ *
+ * @author	Stanislas Rolland, sponsored by Fructifor Inc.
+ * (c) 2005-2006, Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
+ * Distributed under the terms of GPL.
+ * This notice MUST stay intact for use.
+ *
+ * TYPO3 CVS ID: $Id$
+ */
 
 UserElements = function(editor) {
 	this.editor = editor;
@@ -11,24 +15,24 @@ UserElements = function(editor) {
 	var self = this;
 	var actionHandlerFunctRef = UserElements.actionHandler(this);
 	cfg.registerButton("UserElements",
-				UserElements_langArray["Insert custom element"], 
-				editor.imgURL("ed_user.gif", "UserElements"), 
-				false,
-				actionHandlerFunctRef
+		UserElements_langArray["Insert custom element"], 
+		editor.imgURL("ed_user.gif", "UserElements"), 
+		false,
+		actionHandlerFunctRef
 	);
 };
 
 UserElements.I18N = UserElements_langArray;
 
 UserElements._pluginInfo = {
-	name			: "UserElements",
-	version		: "1.1",
-	developer		: "Stanislas Rolland",
-	developer_url	: "http://www.fructifor.com/",
+	name		: "UserElements",
+	version		: "1.2",
+	developer	: "Stanislas Rolland",
+	developer_url	: "http://www.fructifor.ca/",
 	c_owner		: "Stanislas Rolland",
 	sponsor		: "Fructifor Inc.",
-	sponsor_url		: "http://www.fructifor.com",
-	license		: "htmlArea"
+	sponsor_url	: "http://www.fructifor.ca/",
+	license		: "GPL"
 };
 
 UserElements.actionHandler = function(instance) {
@@ -41,6 +45,6 @@ UserElements.prototype.buttonPress = function(editor) {
 	var editorNo = editor._doc._editorNo;
 	var backreturn;
 	var addUrlParams = "?" + conf_RTEtsConfigParams;
-	editor._popupDialog("../../t3_popup.php" + addUrlParams + "&editorNo=" + editorNo + "&popupname=user&srcpath=" + encodeURI(rtePathUserFile), null, backreturn, 550, 350);
+	editor._popupDialog("../../mod1/popup.php" + addUrlParams + "&editorNo=" + editorNo + "&popupname=user&srcpath=" + encodeURI(rtePathUserFile), null, backreturn, 550, 350);
 	return false;
 };
