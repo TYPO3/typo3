@@ -1,6 +1,7 @@
 2006-01-06  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
-	* Converted locallang files of htmlArea RTE extension to xml format (details see local ChangeLog)
+	* Converted locallang files of htmlArea RTE extension to xml format.
+	* Revised all licence notices on all scripts of htmlArea RTE in order to publish under GPL.
 
 2005-01-06  Sebastian Kurfuerst  <sebastian@garbage-group.de>
 

@@ -1,5 +1,6 @@
 2006-01-06  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
 	* Convert all locallang files to xml.
+	* Revise all licence notices in order to publish under GPL.
 
 2006-01-05  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
 	* Allow align attribute on p and div tags in Demo Page TSConfig settings.

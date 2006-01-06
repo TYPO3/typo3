@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2003-2005 Stanislas Rolland (stanislas.rolland@fructifor.ca)
+*  (c) 2003, 2004, 2005 Stanislas Rolland (stanislas.rolland@fructifor.ca)
 *  All rights reserved
 *
 *  This script is part of the Typo3 project. The Typo3 project is
@@ -22,7 +22,7 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 /**
-* This is the script to invoke the spell checker for htmlArea RTE (rtehtmlarea)
+* This is the script to invoke the spell checker for TYPO3 htmlArea RTE (rtehtmlarea)
 *
 */
 	error_reporting (E_ALL ^ E_NOTICE);

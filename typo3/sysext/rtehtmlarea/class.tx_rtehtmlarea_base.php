@@ -4,7 +4,7 @@
 *
 *  (c) 2004 Kasper Skaarhoj (kasper@typo3.com)
 *  (c) 2004 Philipp Borgmann <philipp.borgmann@gmx.de>
-*  (c) 2004-2006 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
+*  (c) 2004, 2005, 2006 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
