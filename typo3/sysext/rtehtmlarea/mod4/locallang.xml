@@ -1,0 +1,1217 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+    <meta type="array">
+        <description>Labels for Select Image module of htmlArea RTE</description>
+        <type>module</type>
+        <csh_table></csh_table>
+        <fileId>EXT:rtehtmlarea/mod4/locallang.xml</fileId>
+        <labelContext type="array">
+            <label index="folderTree"></label>
+            <label index="uploadImage"></label>
+            <label index="path"></label>
+            <label index="images"></label>
+            <label index="magicImage_msg"></label>
+            <label index="plainImage_msg"></label>
+            <label index="class"></label>
+            <label index="width"></label>
+            <label index="height"></label>
+            <label index="border"></label>
+            <label index="margin_tb"></label>
+            <label index="margin_lr"></label>
+            <label index="float"></label>
+            <label index="notSet"></label>
+            <label index="nonFloating"></label>
+            <label index="left"></label>
+            <label index="right"></label>
+            <label index="title"></label>
+            <label index="alt"></label>
+            <label index="update"></label>
+            <label index="magicImage"></label>
+            <label index="plainImage"></label>
+            <label index="dragDropImage"></label>
+            <label index="currentImage"></label>
+        </labelContext>
+    </meta>
+    <data type="array">
+        <languageKey index="default" type="array">
+            <label index="folderTree">Folder tree</label>
+            <label index="uploadImage">Upload Image</label>
+            <label index="path">Path</label>
+            <label index="images">Images</label>
+            <label index="magicImage_msg">In &quot;Magic&quot; mode you can select any kind of image with any dimensions. The image is automatically converted to a web image format and any adjustments you make to the size of the image is post processed in order to optimize size and quality.</label>
+            <label index="plainImage_msg">In &quot;Plain&quot; mode you can insert only web image formats (jpg,jpeg,gif,png) up to %1$sx%2$s pixels. This method is designed for images which are optimized for web already.</label>
+            <label index="class">Style</label>
+            <label index="width">Width</label>
+            <label index="height">Height</label>
+            <label index="border">Border</label>
+            <label index="margin_tb">Margin top/bottom</label>
+            <label index="margin_lr">Margin left/right</label>
+            <label index="float">Float</label>
+            <label index="notSet">Not set</label>
+            <label index="nonFloating">Non-floating</label>
+            <label index="left">Left</label>
+            <label index="right">Right</label>
+            <label index="title">Title</label>
+            <label index="alt">Alternate text</label>
+            <label index="update">Update</label>
+            <label index="magicImage">New Magic Image</label>
+            <label index="plainImage">New Plain Image</label>
+            <label index="dragDropImage">Drag'n'Drop</label>
+            <label index="currentImage">Current Image</label>
+        </languageKey>
+        <languageKey index="dk" type="array">
+            <label index="folderTree">Mapper</label>
+            <label index="uploadImage">Send billede</label>
+            <label index="path">Sti</label>
+            <label index="images">Billeder</label>
+            <label index="magicImage_msg">I &quot;Magisk&quot; tilstand kan du vælge alle typer billeder med vilkårlige dimensioner. Billedet bliver automatisk konverteret til et web-format og enhver ændring af dimensioner du laver bliver processeret for at optimere kvalitet og størrelse.</label>
+            <label index="plainImage_msg">I &quot;Normal&quot; tilstand kan du kun indsætte web billedformater (JPG,GIF and PNG) op til 640x480 pixels. Denne metode er beregnet for billeder, som allerede er optimeret til web.</label>
+            <label index="class">Stil</label>
+            <label index="width">Bredde</label>
+            <label index="height">Højde</label>
+            <label index="border">Kant</label>
+            <label index="margin_tb">Margen top/bund</label>
+            <label index="margin_lr">Margen venstre/højre</label>
+            <label index="float">Justering</label>
+            <label index="notSet">Ikke angivet</label>
+            <label index="nonFloating">Ikke flydende</label>
+            <label index="left">Venstre</label>
+            <label index="right">Højre</label>
+            <label index="title">Titel</label>
+            <label index="alt">Alternativ tekst</label>
+            <label index="update">Opdatér</label>
+            <label index="magicImage">Nyt magisk billede</label>
+            <label index="plainImage">Nyt normalt billede</label>
+            <label index="dragDropImage">Træk og placér</label>
+            <label index="currentImage">Nuværende billede</label>
+        </languageKey>
+        <languageKey index="de" type="array">
+            <label index="folderTree">Verzeichnisbaum</label>
+            <label index="uploadImage">Bild hochladen</label>
+            <label index="path">Pfad</label>
+            <label index="images">Bilder</label>
+            <label index="magicImage_msg">Im &quot;Zauber&quot; Modus können Sie eine (in Grenzen) beliebige Grafik mit beliebiger Größe auswählen. Die Grafik wird automatisch in ein Web-Grafikformat umgewandelt. Grössenänderungen werden nachträglich vorgenommen, um die Grafikgröße und die Anzeigequalität zu optimieren.</label>
+            <label index="plainImage_msg">Im &quot;Normal&quot; Modus können Sie nur Web-Grafikformate (JPG, GIF und PNG), bis zu einer Auflösung von 640x480 Pixeln verwenden. Dieser Modus ist zur Verwendung bereits für das Web optimierter Grafiken vorgesehen.</label>
+            <label index="class">Stil</label>
+            <label index="width">Breite</label>
+            <label index="height">Höhe</label>
+            <label index="border">Rand</label>
+            <label index="margin_tb">Seitenrand oben/unten</label>
+            <label index="margin_lr">Seitenrand links/rechts</label>
+            <label index="float">Umfließen</label>
+            <label index="notSet">Nicht gesetzt</label>
+            <label index="nonFloating">Nicht umfließen</label>
+            <label index="left">Links</label>
+            <label index="right">Rechts</label>
+            <label index="title">Titel</label>
+            <label index="alt">Alternativ-Text</label>
+            <label index="update">Aktualisieren</label>
+            <label index="magicImage">Neues Zauber-Bild</label>
+            <label index="plainImage">Neues normales Bild</label>
+            <label index="dragDropImage">Drag'n'Drop</label>
+            <label index="currentImage">Aktuelles Bild</label>
+        </languageKey>
+        <languageKey index="no" type="array">
+            <label index="folderTree">Mappehierarki</label>
+            <label index="uploadImage">Last opp bilde</label>
+            <label index="path">Sti</label>
+            <label index="images">Bilder</label>
+            <label index="magicImage_msg">I 'magisk' modus kan du velge alle typer bilder med vilkårlige dimensjoner. Bildet blir automatisk konvertert til webformat og enhver endring av dimensjoner du gjør blir prosessert for å optimalisere kvalitet og størrelse.</label>
+            <label index="plainImage_msg">I 'normal' modus kan du kun sette inn web bildeformater (JPG, GIF og PNG) opp til 640x480 piksler. Denne metoden er beregnet for bilder som allerede er optimalisert for web.</label>
+            <label index="class">Stil</label>
+            <label index="width">Bredde</label>
+            <label index="height">Høyde</label>
+            <label index="border">Ramme</label>
+            <label index="margin_tb">Marg topp/bunn</label>
+            <label index="margin_lr">Marg venstre/høyre</label>
+            <label index="float">Flyt</label>
+            <label index="notSet">Ikke bestemt</label>
+            <label index="nonFloating">Ikkeflytende</label>
+            <label index="left">Venstre</label>
+            <label index="right">Høyre</label>
+            <label index="title">Tittel</label>
+            <label index="alt">Alternativ tekst</label>
+            <label index="update">Oppdater</label>
+            <label index="magicImage">Nytt magisk bilde</label>
+            <label index="plainImage">Nytt normalt bilde</label>
+            <label index="dragDropImage">Trekk og slipp</label>
+            <label index="currentImage">Gjeldende bilde</label>
+        </languageKey>
+        <languageKey index="it" type="array">
+            <label index="folderTree">Folder tree</label>
+            <label index="uploadImage">Upload immagine</label>
+            <label index="path">Percorso</label>
+            <label index="images">Immagini</label>
+            <label index="magicImage_msg">In 'Magic mode' potete selezionare immagini di qualunque tipo e dimensioni. L'immagine è automaticamente convertita nel formato pronto per il web e qualunque modifica farete alla sua dimensione verrà processata successivamente per ottimizzare grandezza e qualità.</label>
+            <label index="plainImage_msg">In 'Plain mode' potete inserire solo immagini in un formato adatto al web (JPG,GIF e PNG), fino ad una dimensione di 640x480 punti. Usate questo metodo per le immagini che sono già ottimizzate per il web.</label>
+            <label index="class">Stile</label>
+            <label index="width">Larghezza</label>
+            <label index="height">Altezza</label>
+            <label index="border">Bordo</label>
+            <label index="margin_tb">Margine superiore/inferiore</label>
+            <label index="margin_lr">Margine sinistra/destra</label>
+            <label index="float">Float</label>
+            <label index="notSet">Non configurato</label>
+            <label index="nonFloating">Non-float</label>
+            <label index="left">Sinistra</label>
+            <label index="right">Destra</label>
+            <label index="title">Titolo</label>
+            <label index="alt">Testo Alternativo</label>
+            <label index="update">Aggiornamento</label>
+            <label index="magicImage">Nuova Magic Image</label>
+            <label index="plainImage">Nuova Plain Image</label>
+            <label index="dragDropImage">Drag'n'Drop</label>
+            <label index="currentImage">Immagine corrente</label>
+        </languageKey>
+        <languageKey index="fr" type="array">
+            <label index="folderTree">Arborescence de dossiers</label>
+            <label index="uploadImage">Uploader une image</label>
+            <label index="path">Chemin</label>
+            <label index="images">Images</label>
+            <label index="magicImage_msg">Dans le mode &quot;Magic&quot;, vous pouvez sélectionner n'importe quel format d'image.</label>
+            <label index="plainImage_msg">Dans le mode &quot;Plain&quot;, vous ne pouvez sélectionner que les formats d'image web (jpg,jpeg,gif,png) jusqu'à une résolution maximale de %1$sx%2$s pixels.</label>
+            <label index="class">Style</label>
+            <label index="width">Largeur</label>
+            <label index="height">Hauteur</label>
+            <label index="border">Bordure</label>
+            <label index="margin_tb">Marge h/b</label>
+            <label index="margin_lr">Marge d/g</label>
+            <label index="float">Flottaison</label>
+            <label index="notSet">Non spécifié</label>
+            <label index="nonFloating">Sans flottaison</label>
+            <label index="left">À gauche</label>
+            <label index="right">À droite</label>
+            <label index="title">Titre</label>
+            <label index="alt">Texte de remplacement</label>
+            <label index="update">Mettre à jour</label>
+            <label index="magicImage">Nouvelle 'Magic' Image</label>
+            <label index="plainImage">Nouvelle 'Plain' Image</label>
+            <label index="dragDropImage">Glisser-Déposer</label>
+            <label index="currentImage">Image courante</label>
+        </languageKey>
+        <languageKey index="es" type="array">
+            <label index="folderTree">Árbol de carpertas</label>
+            <label index="uploadImage">Enviar imágen</label>
+            <label index="path">Ruta</label>
+            <label index="images">Imágenes</label>
+            <label index="magicImage_msg">En el modo &quot;Mágico&quot; puedes seleccionar cualquier tipo de imágen de cualquier tamaño. La imágen será convertida automáticamente a un formato adecuada para la web y cualquier ajuste que realice  al tamaño de la imágen, ésta será procesada con el fin de optimizar tamaño y calidad.</label>
+            <label index="plainImage_msg">En el modo &quot;Simple&quot; puedes insertar solamente formatos de imágen para la web (JPG, GIF y PNG) hasta de 640x480 pixeles. Este método está diseñado para imágenes que ya están optimizados para ser publicadas en la web.</label>
+            <label index="class">Estilo</label>
+            <label index="width">Anchura</label>
+            <label index="height">Altura</label>
+            <label index="border">Borde</label>
+            <label index="margin_tb">Margen superior/inferior</label>
+            <label index="margin_lr">Margen izquierdo/derecho</label>
+            <label index="title">Título</label>
+            <label index="alt">Texto alternativo</label>
+            <label index="update">Actualizar</label>
+            <label index="magicImage">Nueva imágen Mágica</label>
+            <label index="plainImage">Nueva imágen simple</label>
+            <label index="dragDropImage">Arrastrar y soltar</label>
+            <label index="currentImage">Imágen actual</label>
+        </languageKey>
+        <languageKey index="nl" type="array">
+            <label index="folderTree">Mappenboom</label>
+            <label index="uploadImage">Upload afbeelding</label>
+            <label index="path">Pad</label>
+            <label index="images">Afbeeldingen</label>
+            <label index="magicImage_msg">In 'Magische' modus kan elke soort afbeelding met elke maat geselcteerd worden. De afbeelding wordt automatisch omgezet naar een webformaat en alle wijzigingen in de grootte van de afbeelding worden eerst verwerkt teneinde grootte en kwaliteit te optimaliseren.</label>
+            <label index="plainImage_msg">In 'Standaard' modus kan kunnen alleen afbeeldingen in webformaat (JPG,GIF and PNG) ingevoerd worden met een maximale maat van 640x480 pixels. Deze methode is speciaal bedoeld voor afbeeldingen die al voor het web gereed gemaakt zijn.</label>
+            <label index="class">Stijl</label>
+            <label index="width">Breedte</label>
+            <label index="height">Hoogte</label>
+            <label index="border">Kader</label>
+            <label index="margin_tb">Marge boven/beneden</label>
+            <label index="margin_lr">Marge links/rechts</label>
+            <label index="float">Float</label>
+            <label index="notSet">Niet ingesteld</label>
+            <label index="nonFloating">Non-floating</label>
+            <label index="left">Links</label>
+            <label index="right">Rechts</label>
+            <label index="title">Titel</label>
+            <label index="alt">Alternatieve tekst</label>
+            <label index="update">Actualiseren</label>
+            <label index="magicImage">Nieuwe Magische Afbeelding</label>
+            <label index="plainImage">Nieuwe Standaard Afbeelding</label>
+            <label index="dragDropImage">Drag'n'Drop</label>
+            <label index="currentImage">Huidige Afbeelding</label>
+        </languageKey>
+        <languageKey index="cz" type="array">
+            <label index="folderTree">Strom složek</label>
+            <label index="uploadImage">Nahrát obrázek</label>
+            <label index="path">Cesta</label>
+            <label index="images">Obrázky</label>
+            <label index="magicImage_msg">V 'magickém' modu můžete volit jakýkoli obrázek s jakýmikoli rozměry. Obrázek je automaticky konvertován na webový formát a všechny úpravy jsou zpracovány tak, aby se optimalizovala velikost a kvalita.</label>
+            <label index="plainImage_msg">V 'prostém' modu můžete vkládat jen obrázky ve webovém formátu (JPG, GIF nebo PNG) do velikosti 640x480 bodů. Tato metoda je míněna pro obrázky, které byly pro web již optimalizovány.</label>
+            <label index="class">Styl</label>
+            <label index="width">Šířka</label>
+            <label index="height">Výška</label>
+            <label index="border">Okraj</label>
+            <label index="margin_tb">Vnější okraj nahoře/dole</label>
+            <label index="margin_lr">Vnější okraj vlevo/vpravo</label>
+            <label index="float">Obtékat</label>
+            <label index="notSet">Nenastaveno</label>
+            <label index="nonFloating">Neobtékat</label>
+            <label index="left">Vlevo</label>
+            <label index="right">Vpravo</label>
+            <label index="title">Nadpis</label>
+            <label index="alt">Zástupný text</label>
+            <label index="update">Aktualizovat</label>
+            <label index="magicImage">Nový 'magický' obrázek</label>
+            <label index="plainImage">Nový 'prostý' obrázek</label>
+            <label index="dragDropImage">Drag'n'Drop</label>
+            <label index="currentImage">Současný obrázek</label>
+        </languageKey>
+        <languageKey index="pl" type="array">
+            <label index="folderTree">Drzewko katalogów</label>
+            <label index="uploadImage">Uploaduj obrazek</label>
+            <label index="path">Ścieżka</label>
+            <label index="images">Obrazki</label>
+            <label index="magicImage_msg">W _magicznym_ trybie możesz wybrać dowolny typ obrazka o dowolnych wymiarach. Obrazek jest automatycznie konwertowany na typ o widoczny w przeglądarkach a także wymiarowany, tak aby miał optymalną jakość i wielkość.</label>
+            <label index="plainImage_msg">W trybie _prostym_ możesz umieszczać obrazki typu JPG,GIF,PNG do wielkości 640x480 pikseli. Ta metoda jest przeznaczona dla obrazków już zoptymalizowanych dla przeglądarek.</label>
+            <label index="width">Szerokość</label>
+            <label index="height">Wysokość</label>
+            <label index="border">Ramka</label>
+            <label index="margin_tb">Margines górny/dolny</label>
+            <label index="margin_lr">Margines prawy/lewy</label>
+            <label index="title">Tytuł</label>
+            <label index="update">Aktualizacja</label>
+            <label index="magicImage">Nowy _magiczny_ obrazek </label>
+            <label index="plainImage">Nowy _prosty_ obrazek </label>
+            <label index="dragDropImage">Przeciągnij i upuść</label>
+            <label index="currentImage">Bieżący obrazek</label>
+        </languageKey>
+        <languageKey index="si" type="array">
+            <label index="folderTree">Drevo map</label>
+            <label index="uploadImage">Dodaj sliko</label>
+            <label index="path">Pot</label>
+            <label index="images">Slike</label>
+            <label index="magicImage_msg">V &quot;čarobnem&quot; načinu lahko izberete sliko s kakrąnemkoli formatu ali velikosti. Program sliko avtomatično pretvori v spletni format in pravo velikost. Vse vaąe nastavitve velikosti se izvedejo naknadno, zaradi optimizacije velikosti in kvalitete.</label>
+            <label index="plainImage_msg">V &quot;običajnem&quot; načinu lahko dodajate samo slike v spletnem formatu (JPG,GIF in PNG) do velikosti 640x480 točk. Ta način uporabite pri slikah, ki so ľe optimizirane za splet.</label>
+            <label index="width">©irina</label>
+            <label index="height">Viąina</label>
+            <label index="border">Okvir</label>
+            <label index="margin_tb">Rob zgoraj/spodaj</label>
+            <label index="margin_lr">Rob levo/desno</label>
+            <label index="title">Naslov</label>
+            <label index="update">Osveľi</label>
+            <label index="magicImage">Nova 'čarobna' slika</label>
+            <label index="plainImage">Nova običajna slika</label>
+            <label index="currentImage">Trenutna slika</label>
+        </languageKey>
+        <languageKey index="fi" type="array">
+            <label index="folderTree">Hakemistorakenne</label>
+            <label index="uploadImage">Vie kuva</label>
+            <label index="path">Polku</label>
+            <label index="images">Kuvat</label>
+            <label index="magicImage_msg">Magic moodissa voit valita minkä kokoisen kuvan tahansa. Kuva muutetaan automaattisesti sivulle sopivaksi.</label>
+            <label index="plainImage_msg">Tavallisessa moodissa voit lisätä vain (JPG, GIF ja PNG) maksimissaan 640x480 pikseliä olevia kuvia. Näiden kuvien tulee olla etukäteen sovitettu www-käyttöön-</label>
+            <label index="class">Tyyli</label>
+            <label index="width">Leveys</label>
+            <label index="height">Korkeus</label>
+            <label index="border">Raja</label>
+            <label index="margin_tb">Ylä/alamarginaali</label>
+            <label index="margin_lr">Vasen/oikea marginaali</label>
+            <label index="float">Liukuva</label>
+            <label index="notSet">Ei asetettu</label>
+            <label index="nonFloating">Kiinteä</label>
+            <label index="left">Vasen</label>
+            <label index="right">Oikea</label>
+            <label index="title">Otsikko</label>
+            <label index="alt">Vaihtoehtoinen teksti</label>
+            <label index="update">Päivitä</label>
+            <label index="magicImage">Uusi Magic Kuva</label>
+            <label index="plainImage">Uusi tavallinen kuva</label>
+            <label index="dragDropImage">Drag'n'Drop</label>
+            <label index="currentImage">Nykyinen kuva</label>
+        </languageKey>
+        <languageKey index="tr" type="array">
+            <label index="folderTree">Klasör ağacı</label>
+            <label index="uploadImage">Resim yükle</label>
+            <label index="path">Yol</label>
+            <label index="images">Resimler</label>
+            <label index="magicImage_msg">&quot;Sihirli&quot; modta farklı boyutlarıyla resim türü seçebilirsiniz. Resim otomatik olarak web formatına veya bazı ayarlamalara dönüştürülür resmin ebatının belirlenmesi resmin ebatı ve kalitesini en iyi şekilde kullanılabilmesinden sonraki süreçtir.</label>
+            <label index="plainImage_msg">&quot;Basit&quot; modta sadece web resim formatları ekleyebilirsiniz (JPG,GIF ve PNG) 640x480 piksele kadar. Bu metod resimler için tasarlanmış olup web için en iyi şekilde kullanılmıştır.</label>
+            <label index="width">Genişlik</label>
+            <label index="height">Yükseklik</label>
+            <label index="border">Kenar</label>
+            <label index="margin_tb">Üst/alt marj</label>
+            <label index="margin_lr">Sol/Sağ marj</label>
+            <label index="title">Başlık</label>
+            <label index="update">Güncelle</label>
+            <label index="magicImage">Yeni Sihirli Resim</label>
+            <label index="plainImage">Yeni Basit Resim</label>
+            <label index="dragDropImage">Sürükle ve Bırak</label>
+            <label index="currentImage">Güncel Resim</label>
+        </languageKey>
+        <languageKey index="se" type="array">
+            <label index="folderTree">Katalogträd</label>
+            <label index="uploadImage">Ladda upp bild</label>
+            <label index="path">Sökväg</label>
+            <label index="images">Bilder</label>
+            <label index="magicImage_msg">Då du befinner dej i 'Magic'-form kan du välja bilder i vilket format och vilken storlek som helst. Bilden konverteras automatiskt till web-format och alla ändringar du gör i bildens storlek kommer att ändra bilden optimalt i fråga om både storlek och kvalitet.</label>
+            <label index="plainImage_msg">Då du befinner dej i 'Plain'-form kan du infoga endast sådana bilder, som är i web-format (JPG, GIF och PNG) upp till 640x480 pixel. Denna metod används för bilder som redan är optimerade för web-bruk.</label>
+            <label index="width">Bredd</label>
+            <label index="height">Höjd</label>
+            <label index="border">Ram</label>
+            <label index="margin_tb">Marginal uppe/nere</label>
+            <label index="margin_lr">Marginal vänster/höger</label>
+            <label index="title">Titel</label>
+            <label index="update">Uppdatera</label>
+            <label index="magicImage">Ny Magic -bild</label>
+            <label index="plainImage">Ny Plain -bild</label>
+            <label index="dragDropImage">Drag'n'Drop</label>
+            <label index="currentImage">Nuvarande bild</label>
+        </languageKey>
+        <languageKey index="pt" type="array">
+            <label index="folderTree">Árvore da pasta</label>
+            <label index="uploadImage">Enviar imagem (upload)</label>
+            <label index="path">Local</label>
+            <label index="images">Imagens</label>
+            <label index="magicImage_msg">No modo &quot;Mágico&quot; você pode selecionar qualquer tipo de imagem com quaisquer dimensões. A imagem é automaticamente convertida para um formato de imagem de internet and qualquer ajuste que você faça no tamanho da imagem é pós-processado para otimizar o tamanho e a qualidade.</label>
+            <label index="plainImage_msg">No modo &quot;Simples&quot; você pode apenas inserir imagens de formato comum na internet (JPG, GIF e PNG) até 640x480 pontos. Este método é destinado à imagens já otimizadas para a Internet.</label>
+            <label index="width">Largura</label>
+            <label index="height">Altura</label>
+            <label index="border">Borda</label>
+            <label index="margin_tb">Margem superior/inferior</label>
+            <label index="margin_lr">Margem esquerda/direita</label>
+            <label index="title">Título</label>
+            <label index="update">Atualização</label>
+            <label index="magicImage">Nova imagem (modo Mágico)</label>
+            <label index="plainImage">Nova imagem (modo Simples)</label>
+            <label index="dragDropImage">Arrastar e soltar</label>
+            <label index="currentImage">Imagem actual</label>
+        </languageKey>
+        <languageKey index="ru" type="array">
+            <label index="folderTree">Дерево папок</label>
+            <label index="uploadImage">Загрузить изображение на сервер</label>
+            <label index="path">Путь</label>
+            <label index="images">Изображения</label>
+            <label index="magicImage_msg">В &quot;волшебном&quot; режиме Вы можете выбрать любой формат картинки с любыми размерами. Картинка автоматически преобразуется в веб-формат и все ваши корректировки размера картинки обрабатываются впоследствии, чтобы оптимизировать размер и качество изображения</label>
+            <label index="plainImage_msg">В обычном режиме Вы можете вставлять только картинки в интернет-формате (JPG,GIF,PNG) размерами до 640х480 пикселей. Этот метод предназначен для картинок, которые уже оптимизированы для интернета.</label>
+            <label index="class">Стиль</label>
+            <label index="width">Ширина</label>
+            <label index="height">Высота</label>
+            <label index="border">Рамка</label>
+            <label index="margin_tb">Край сверху/снизу</label>
+            <label index="margin_lr">Край слева/справа</label>
+            <label index="float">Плавающий</label>
+            <label index="notSet">Не установлено</label>
+            <label index="nonFloating">Неплавающий</label>
+            <label index="left">Слева</label>
+            <label index="right">Справа</label>
+            <label index="title">Заголовок</label>
+            <label index="alt">Альтернативный текст</label>
+            <label index="update">Обновить</label>
+            <label index="magicImage">Новая волшебная картинка</label>
+            <label index="plainImage">Новая обычная картинка</label>
+            <label index="dragDropImage">Перетянуть мышью</label>
+            <label index="currentImage">Текущая картинка</label>
+        </languageKey>
+        <languageKey index="ro" type="array">
+        </languageKey>
+        <languageKey index="ch" type="array">
+            <label index="folderTree">目录树</label>
+            <label index="uploadImage">上传图片</label>
+            <label index="path">路径</label>
+            <label index="images">图片</label>
+            <label index="magicImage_msg">在&quot;Magic&quot;模式下您可以选择任何尺寸与种类的图片. 图片自动转为网页图片格式而且您对图片尺寸所做的调整被加速处理, 以优化文件大小和质量.</label>
+            <label index="plainImage_msg">在&quot;Plain&quot;模式下您仅可以插入最大尺寸640x480像素的网页图片(JPG,GIF,PNG). 该方法设计用于为网页做优化的应用.</label>
+            <label index="width">宽</label>
+            <label index="height">高</label>
+            <label index="border">边宽</label>
+            <label index="margin_tb">顶/底空白</label>
+            <label index="margin_lr">左/右空白</label>
+            <label index="title">标题</label>
+            <label index="update">更新</label>
+            <label index="magicImage">新建&quot;Magic&quot;图片</label>
+            <label index="plainImage">新建&quot;Plain&quot;图片</label>
+            <label index="dragDropImage">拖放</label>
+            <label index="currentImage">当前图片</label>
+        </languageKey>
+        <languageKey index="sk" type="array">
+            <label index="folderTree">Strom zložiek</label>
+            <label index="uploadImage">Uploadovať obrázok</label>
+            <label index="path">Cesta</label>
+            <label index="images">Obrázky</label>
+            <label index="magicImage_msg">V 'magickom' móde môžeš zvoliť akýkoľvek obrázok s akýmikoľvek rozmermi. Obrázok je automaticky skonvertovaný na webovský formát a všetky úpravy sú spracovavané tak, aby sa optimalizovala veľkosť a kvalita.</label>
+            <label index="plainImage_msg">V 'prostom' móde môžeš vkladať iba obrázky vo webovskom formáte (JPG, GIF alebo PNG) do veľkosti 640x480 bodov. Táto metóda je určená pre obrázky, ktoré boli pre web  optimalizované.</label>
+            <label index="class">Štýl</label>
+            <label index="width">Šírka</label>
+            <label index="height">Výška</label>
+            <label index="border">Okraj</label>
+            <label index="margin_tb">Okraj hore/dole</label>
+            <label index="margin_lr">Okraj vľavo/vpravo</label>
+            <label index="float">Float</label>
+            <label index="notSet">Nenastavené</label>
+            <label index="nonFloating">Non-floating</label>
+            <label index="left">Vľavo</label>
+            <label index="right">Vpravo</label>
+            <label index="title">Nadpis</label>
+            <label index="alt">Alternate text</label>
+            <label index="update">Aktualizovať</label>
+            <label index="magicImage">Nový 'magický' obrázok</label>
+            <label index="plainImage">Nový 'prostý' obrázok</label>
+            <label index="dragDropImage">Drag'n'Drop</label>
+            <label index="currentImage">Aktuálny obrázok</label>
+        </languageKey>
+        <languageKey index="lt" type="array">
+        </languageKey>
+        <languageKey index="is" type="array">
+        </languageKey>
+        <languageKey index="hr" type="array">
+            <label index="folderTree">Stablo direktorija</label>
+            <label index="uploadImage">Pošalji sliku</label>
+            <label index="path">Staza</label>
+            <label index="images">Slike</label>
+            <label index="magicImage_msg">U &quot;Magic&quot; modu možete odabrati bilo koju vrstu slika bilo kakvih dimenzija. Slike se automatski konvertiraju u format web slika, a sve promjene koje ste napravili na veličini slike se postprocesiraju kako bi se što bolje optimizirale.</label>
+            <label index="plainImage_msg">U &quot;običnom&quot; modu možete samo ubacivati formate slika (JPEG, GIF, PNG) do veličine 640x480 pixela. Ova je metoda napravljena za koje su već optimizirane za web.</label>
+            <label index="width">Širina</label>
+            <label index="height">Visina</label>
+            <label index="border">Okvir</label>
+            <label index="margin_tb">Margine vrh/dno</label>
+            <label index="margin_lr">Margine lijevo/desno</label>
+            <label index="title">Naslov</label>
+            <label index="update">Obnova</label>
+            <label index="magicImage">Nova &quot;Magic&quot; slika</label>
+            <label index="plainImage">Nova obična slika</label>
+            <label index="dragDropImage">Drag'n'Drop</label>
+            <label index="currentImage">Trenutna slika</label>
+        </languageKey>
+        <languageKey index="hu" type="array">
+            <label index="folderTree">Könyvtárfa</label>
+            <label index="uploadImage">Kép feltöltése</label>
+            <label index="path">Útvonal</label>
+            <label index="images">Képek</label>
+            <label index="magicImage_msg">&quot;Mágikus&quot; módban bármilyen típusú képet bármilyen méretben kiválaszthatunk. A kép automatikusan egy web formátumba konvertálódik, és a képet a későbbi méret és minőség eléréséhez előfeldolgozzuk.</label>
+            <label index="plainImage_msg">&quot;Sima&quot; módban csak web formátumú (JPG, GIF és PNG) képek és maximum 640x480-as felbontásban tölthetők fel. Ez az eleve webre optimalizált képek felvitelére alkalmas.</label>
+            <label index="width">Szélesség</label>
+            <label index="height">Magasság</label>
+            <label index="border">Keret</label>
+            <label index="margin_tb">Margó felső/alsó</label>
+            <label index="margin_lr">Margó bal/jobb</label>
+            <label index="title">Cím</label>
+            <label index="update">Frissítés</label>
+            <label index="magicImage">Új Mágikus Kép</label>
+            <label index="plainImage">Új Sima Kép</label>
+            <label index="dragDropImage">Drag'n'Drop</label>
+            <label index="currentImage">Jelenlegi Kép</label>
+        </languageKey>
+        <languageKey index="gl" type="array">
+        </languageKey>
+        <languageKey index="th" type="array">
+        </languageKey>
+        <languageKey index="gr" type="array">
+        </languageKey>
+        <languageKey index="hk" type="array">
+        </languageKey>
+        <languageKey index="eu" type="array">
+        </languageKey>
+        <languageKey index="bg" type="array">
+            <label index="folderTree">Дърво на директорийте</label>
+            <label index="uploadImage">Upload на изображение</label>
+            <label index="path">Път</label>
+            <label index="images">Изображение</label>
+            <label index="magicImage_msg">В &quot;Magic&quot; метод можете да изберете всякакъв вид изображения с всякакви размери. Изображението бива автоматично преработено в уеб формат и всякакво приспособяване към размерите на изображението са в действие за да се оптимизира размера и качеството.</label>
+            <label index="plainImage_msg">В &quot;чист&quot; метод можете да вмъкнете само уеб формат изображения (JPG,GIF и PNG) до 640x480 пиксела. Този метод е замислен за изображения вече оптимизирани за Web.</label>
+            <label index="width">Ширина</label>
+            <label index="height">Височина</label>
+            <label index="border">Граница</label>
+            <label index="margin_tb">Марж горе/долу</label>
+            <label index="margin_lr">Марж ляво/дясно</label>
+            <label index="title">Заглавие</label>
+            <label index="update">Обновяване</label>
+            <label index="magicImage">Ново &quot;магическо&quot; (Magic) изображение</label>
+            <label index="plainImage">Чисто ново изображение</label>
+            <label index="dragDropImage">Влачи'и'хвърли (Drag'n'Drop)</label>
+            <label index="currentImage">Текущо изображение</label>
+        </languageKey>
+        <languageKey index="br" type="array">
+            <label index="folderTree">Árvore da pasta</label>
+            <label index="uploadImage">Enviar imagem (upload)</label>
+            <label index="path">Caminho</label>
+            <label index="images">Imagens</label>
+            <label index="magicImage_msg">No modo &quot;Mágico&quot; você pode selecionar qualquer tipo de imagem com quaisquer dimensões. A imagem é automaticamente convertida para um formato de imagem de internet e qualquer ajuste que você faça no tamanho da imagem é pós-processado para otimizar o tamanho e a qualidade.</label>
+            <label index="plainImage_msg">No modo &quot;Simples&quot; você pode apenas inserir imagens de formato comum na internet (JPG, GIF e PNG) até 640x480 pontos. Este método é destinado a imagens já otimizadas para a Internet.</label>
+            <label index="class">Estilo</label>
+            <label index="width">Largura</label>
+            <label index="height">Altura</label>
+            <label index="border">Borda</label>
+            <label index="margin_tb">Margem superior/inferior</label>
+            <label index="margin_lr">Margem esquerda/direita</label>
+            <label index="float">Flutuar</label>
+            <label index="notSet">Não configurado</label>
+            <label index="nonFloating">Não-flutuante</label>
+            <label index="left">Esquerda</label>
+            <label index="right">Direita</label>
+            <label index="title">Título</label>
+            <label index="alt">Texto Alternativo</label>
+            <label index="update">Atualização</label>
+            <label index="magicImage">Nova imagem (modo Mágico)</label>
+            <label index="plainImage">Nova imagem (modo Simples)</label>
+            <label index="dragDropImage">Arrastar e soltar</label>
+            <label index="currentImage">Imagem Atual</label>
+        </languageKey>
+        <languageKey index="et" type="array">
+        </languageKey>
+        <languageKey index="ar" type="array">
+        </languageKey>
+        <languageKey index="he" type="array">
+        </languageKey>
+        <languageKey index="ua" type="array">
+        </languageKey>
+        <languageKey index="lv" type="array">
+        </languageKey>
+        <languageKey index="jp" type="array">
+        </languageKey>
+        <languageKey index="vn" type="array">
+        </languageKey>
+        <languageKey index="ca" type="array">
+        </languageKey>
+        <languageKey index="ba" type="array">
+        </languageKey>
+        <languageKey index="kr" type="array">
+        </languageKey>
+        <languageKey index="eo" type="array">
+        </languageKey>
+        <languageKey index="my" type="array">
+        </languageKey>
+        <languageKey index="hi" type="array">
+        </languageKey>
+    </data>
+    <orig_hash type="array">
+        <languageKey index="default" type="array">
+            <label index="folderTree" type="integer">62125109</label>
+            <label index="uploadImage" type="integer">33130562</label>
+            <label index="path" type="integer">180814866</label>
+            <label index="images" type="integer">268373344</label>
+            <label index="magicImage_msg" type="integer">36451032</label>
+            <label index="plainImage_msg" type="integer">227989181</label>
+            <label index="class" type="integer">182617337</label>
+            <label index="width" type="integer">53040229</label>
+            <label index="height" type="integer">250375243</label>
+            <label index="border" type="integer">7361862</label>
+            <label index="margin_tb" type="integer">127734039</label>
+            <label index="margin_lr" type="integer">82280674</label>
+            <label index="float" type="integer">36364514</label>
+            <label index="notSet" type="integer">163210921</label>
+            <label index="nonFloating" type="integer">169566595</label>
+            <label index="left" type="integer">155571682</label>
+            <label index="right" type="integer">153815495</label>
+            <label index="title" type="integer">192455458</label>
+            <label index="alt" type="integer">237067341</label>
+            <label index="update" type="integer">6894342</label>
+            <label index="magicImage" type="integer">87595471</label>
+            <label index="plainImage" type="integer">174130358</label>
+            <label index="dragDropImage" type="integer">228115367</label>
+            <label index="currentImage" type="integer">205301887</label>
+        </languageKey>
+        <languageKey index="dk" type="array">
+            <label index="folderTree" type="integer">62125109</label>
+            <label index="uploadImage" type="integer">33130562</label>
+            <label index="path" type="integer">180814866</label>
+            <label index="images" type="integer">268373344</label>
+            <label index="magicImage_msg" type="integer">36451032</label>
+            <label index="plainImage_msg" type="integer">227989181</label>
+            <label index="class" type="integer">182617337</label>
+            <label index="width" type="integer">53040229</label>
+            <label index="height" type="integer">250375243</label>
+            <label index="border" type="integer">7361862</label>
+            <label index="margin_tb" type="integer">127734039</label>
+            <label index="margin_lr" type="integer">82280674</label>
+            <label index="float" type="integer">36364514</label>
+            <label index="notSet" type="integer">163210921</label>
+            <label index="nonFloating" type="integer">169566595</label>
+            <label index="left" type="integer">155571682</label>
+            <label index="right" type="integer">153815495</label>
+            <label index="title" type="integer">192455458</label>
+            <label index="alt" type="integer">237067341</label>
+            <label index="update" type="integer">6894342</label>
+            <label index="magicImage" type="integer">87595471</label>
+            <label index="plainImage" type="integer">174130358</label>
+            <label index="dragDropImage" type="integer">228115367</label>
+            <label index="currentImage" type="integer">205301887</label>
+        </languageKey>
+        <languageKey index="de" type="array">
+            <label index="folderTree" type="integer">62125109</label>
+            <label index="uploadImage" type="integer">33130562</label>
+            <label index="path" type="integer">180814866</label>
+            <label index="images" type="integer">268373344</label>
+            <label index="magicImage_msg" type="integer">36451032</label>
+            <label index="plainImage_msg" type="integer">227989181</label>
+            <label index="class" type="integer">182617337</label>
+            <label index="width" type="integer">53040229</label>
+            <label index="height" type="integer">250375243</label>
+            <label index="border" type="integer">7361862</label>
+            <label index="margin_tb" type="integer">127734039</label>
+            <label index="margin_lr" type="integer">82280674</label>
+            <label index="float" type="integer">36364514</label>
+            <label index="notSet" type="integer">163210921</label>
+            <label index="nonFloating" type="integer">169566595</label>
+            <label index="left" type="integer">155571682</label>
+            <label index="right" type="integer">153815495</label>
+            <label index="title" type="integer">192455458</label>
+            <label index="alt" type="integer">237067341</label>
+            <label index="update" type="integer">6894342</label>
+            <label index="magicImage" type="integer">87595471</label>
+            <label index="plainImage" type="integer">174130358</label>
+            <label index="dragDropImage" type="integer">228115367</label>
+            <label index="currentImage" type="integer">205301887</label>
+        </languageKey>
+        <languageKey index="no" type="array">
+            <label index="folderTree" type="integer">62125109</label>
+            <label index="uploadImage" type="integer">33130562</label>
+            <label index="path" type="integer">180814866</label>
+            <label index="images" type="integer">268373344</label>
+            <label index="magicImage_msg" type="integer">36451032</label>
+            <label index="plainImage_msg" type="integer">227989181</label>
+            <label index="class" type="integer">182617337</label>
+            <label index="width" type="integer">53040229</label>
+            <label index="height" type="integer">250375243</label>
+            <label index="border" type="integer">7361862</label>
+            <label index="margin_tb" type="integer">127734039</label>
+            <label index="margin_lr" type="integer">82280674</label>
+            <label index="float" type="integer">36364514</label>
+            <label index="notSet" type="integer">163210921</label>
+            <label index="nonFloating" type="integer">169566595</label>
+            <label index="left" type="integer">155571682</label>
+            <label index="right" type="integer">153815495</label>
+            <label index="title" type="integer">192455458</label>
+            <label index="alt" type="integer">237067341</label>
+            <label index="update" type="integer">6894342</label>
+            <label index="magicImage" type="integer">87595471</label>
+            <label index="plainImage" type="integer">174130358</label>
+            <label index="dragDropImage" type="integer">228115367</label>
+            <label index="currentImage" type="integer">205301887</label>
+        </languageKey>
+        <languageKey index="it" type="array">
+            <label index="folderTree" type="integer">62125109</label>
+            <label index="uploadImage" type="integer">33130562</label>
+            <label index="path" type="integer">180814866</label>
+            <label index="images" type="integer">268373344</label>
+            <label index="magicImage_msg" type="integer">36451032</label>
+            <label index="plainImage_msg" type="integer">227989181</label>
+            <label index="class" type="integer">182617337</label>
+            <label index="width" type="integer">53040229</label>
+            <label index="height" type="integer">250375243</label>
+            <label index="border" type="integer">7361862</label>
+            <label index="margin_tb" type="integer">127734039</label>
+            <label index="margin_lr" type="integer">82280674</label>
+            <label index="float" type="integer">36364514</label>
+            <label index="notSet" type="integer">163210921</label>
+            <label index="nonFloating" type="integer">169566595</label>
+            <label index="left" type="integer">155571682</label>
+            <label index="right" type="integer">153815495</label>
+            <label index="title" type="integer">192455458</label>
+            <label index="alt" type="integer">237067341</label>
+            <label index="update" type="integer">6894342</label>
+            <label index="magicImage" type="integer">87595471</label>
+            <label index="plainImage" type="integer">174130358</label>
+            <label index="dragDropImage" type="integer">228115367</label>
+            <label index="currentImage" type="integer">205301887</label>
+        </languageKey>
+        <languageKey index="fr" type="array">
+            <label index="folderTree" type="integer">62125109</label>
+            <label index="uploadImage" type="integer">33130562</label>
+            <label index="path" type="integer">180814866</label>
+            <label index="images" type="integer">268373344</label>
+            <label index="magicImage_msg" type="integer">36451032</label>
+            <label index="plainImage_msg" type="integer">227989181</label>
+            <label index="class" type="integer">182617337</label>
+            <label index="width" type="integer">53040229</label>
+            <label index="height" type="integer">250375243</label>
+            <label index="border" type="integer">7361862</label>
+            <label index="margin_tb" type="integer">127734039</label>
+            <label index="margin_lr" type="integer">82280674</label>
+            <label index="float" type="integer">36364514</label>
+            <label index="notSet" type="integer">163210921</label>
+            <label index="nonFloating" type="integer">169566595</label>
+            <label index="left" type="integer">155571682</label>
+            <label index="right" type="integer">153815495</label>
+            <label index="title" type="integer">192455458</label>
+            <label index="alt" type="integer">237067341</label>
+            <label index="update" type="integer">6894342</label>
+            <label index="magicImage" type="integer">87595471</label>
+            <label index="plainImage" type="integer">174130358</label>
+            <label index="dragDropImage" type="integer">228115367</label>
+            <label index="currentImage" type="integer">205301887</label>
+        </languageKey>
+        <languageKey index="es" type="array">
+            <label index="folderTree" type="integer">62125109</label>
+            <label index="uploadImage" type="integer">33130562</label>
+            <label index="path" type="integer">180814866</label>
+            <label index="images" type="integer">268373344</label>
+            <label index="magicImage_msg" type="integer">36451032</label>
+            <label index="plainImage_msg" type="integer">227989181</label>
+            <label index="class" type="integer">182617337</label>
+            <label index="width" type="integer">53040229</label>
+            <label index="height" type="integer">250375243</label>
+            <label index="border" type="integer">7361862</label>
+            <label index="margin_tb" type="integer">127734039</label>
+            <label index="margin_lr" type="integer">82280674</label>
+            <label index="title" type="integer">192455458</label>
+            <label index="alt" type="integer">237067341</label>
+            <label index="update" type="integer">6894342</label>
+            <label index="magicImage" type="integer">87595471</label>
+            <label index="plainImage" type="integer">174130358</label>
+            <label index="dragDropImage" type="integer">228115367</label>
+            <label index="currentImage" type="integer">205301887</label>
+        </languageKey>
+        <languageKey index="nl" type="array">
+            <label index="folderTree" type="integer">62125109</label>
+            <label index="uploadImage" type="integer">33130562</label>
+            <label index="path" type="integer">180814866</label>
+            <label index="images" type="integer">268373344</label>
+            <label index="magicImage_msg" type="integer">36451032</label>
+            <label index="plainImage_msg" type="integer">227989181</label>
+            <label index="class" type="integer">182617337</label>
+            <label index="width" type="integer">53040229</label>
+            <label index="height" type="integer">250375243</label>
+            <label index="border" type="integer">7361862</label>
+            <label index="margin_tb" type="integer">127734039</label>
+            <label index="margin_lr" type="integer">82280674</label>
+            <label index="float" type="integer">36364514</label>
+            <label index="notSet" type="integer">163210921</label>
+            <label index="nonFloating" type="integer">169566595</label>
+            <label index="left" type="integer">155571682</label>
+            <label index="right" type="integer">153815495</label>
+            <label index="title" type="integer">192455458</label>
+            <label index="alt" type="integer">237067341</label>
+            <label index="update" type="integer">6894342</label>
+            <label index="magicImage" type="integer">87595471</label>
+            <label index="plainImage" type="integer">174130358</label>
+            <label index="dragDropImage" type="integer">228115367</label>
+            <label index="currentImage" type="integer">205301887</label>
+        </languageKey>
+        <languageKey index="cz" type="array">
+            <label index="folderTree" type="integer">62125109</label>
+            <label index="uploadImage" type="integer">33130562</label>
+            <label index="path" type="integer">180814866</label>
+            <label index="images" type="integer">268373344</label>
+            <label index="magicImage_msg" type="integer">36451032</label>
+            <label index="plainImage_msg" type="integer">227989181</label>
+            <label index="class" type="integer">182617337</label>
+            <label index="width" type="integer">53040229</label>
+            <label index="height" type="integer">250375243</label>
+            <label index="border" type="integer">7361862</label>
+            <label index="margin_tb" type="integer">127734039</label>
+            <label index="margin_lr" type="integer">82280674</label>
+            <label index="float" type="integer">36364514</label>
+            <label index="notSet" type="integer">163210921</label>
+            <label index="nonFloating" type="integer">169566595</label>
+            <label index="left" type="integer">155571682</label>
+            <label index="right" type="integer">153815495</label>
+            <label index="title" type="integer">192455458</label>
+            <label index="alt" type="integer">237067341</label>
+            <label index="update" type="integer">6894342</label>
+            <label index="magicImage" type="integer">87595471</label>
+            <label index="plainImage" type="integer">174130358</label>
+            <label index="dragDropImage" type="integer">228115367</label>
+            <label index="currentImage" type="integer">205301887</label>
+        </languageKey>
+        <languageKey index="pl" type="array">
+            <label index="folderTree" type="integer">62125109</label>
+            <label index="uploadImage" type="integer">33130562</label>
+            <label index="path" type="integer">180814866</label>
+            <label index="images" type="integer">268373344</label>
+            <label index="magicImage_msg" type="integer">36451032</label>
+            <label index="plainImage_msg" type="integer">227989181</label>
+            <label index="width" type="integer">53040229</label>
+            <label index="height" type="integer">250375243</label>
+            <label index="border" type="integer">7361862</label>
+            <label index="margin_tb" type="integer">127734039</label>
+            <label index="margin_lr" type="integer">82280674</label>
+            <label index="title" type="integer">192455458</label>
+            <label index="update" type="integer">6894342</label>
+            <label index="magicImage" type="integer">87595471</label>
+            <label index="plainImage" type="integer">174130358</label>
+            <label index="dragDropImage" type="integer">228115367</label>
+            <label index="currentImage" type="integer">205301887</label>
+        </languageKey>
+        <languageKey index="si" type="array">
+            <label index="folderTree" type="integer">62125109</label>
+            <label index="uploadImage" type="integer">33130562</label>
+            <label index="path" type="integer">180814866</label>
+            <label index="images" type="integer">268373344</label>
+            <label index="magicImage_msg" type="integer">36451032</label>
+            <label index="plainImage_msg" type="integer">227989181</label>
+            <label index="width" type="integer">53040229</label>
+            <label index="height" type="integer">250375243</label>
+            <label index="border" type="integer">7361862</label>
+            <label index="margin_tb" type="integer">127734039</label>
+            <label index="margin_lr" type="integer">82280674</label>
+            <label index="title" type="integer">192455458</label>
+            <label index="update" type="integer">6894342</label>
+            <label index="magicImage" type="integer">87595471</label>
+            <label index="plainImage" type="integer">174130358</label>
+            <label index="currentImage" type="integer">205301887</label>
+        </languageKey>
+        <languageKey index="fi" type="array">
+            <label index="folderTree" type="integer">62125109</label>
+            <label index="uploadImage" type="integer">33130562</label>
+            <label index="path" type="integer">180814866</label>
+            <label index="images" type="integer">268373344</label>
+            <label index="magicImage_msg" type="integer">36451032</label>
+            <label index="plainImage_msg" type="integer">227989181</label>
+            <label index="class" type="integer">182617337</label>
+            <label index="width" type="integer">53040229</label>
+            <label index="height" type="integer">250375243</label>
+            <label index="border" type="integer">7361862</label>
+            <label index="margin_tb" type="integer">127734039</label>
+            <label index="margin_lr" type="integer">82280674</label>
+            <label index="float" type="integer">36364514</label>
+            <label index="notSet" type="integer">163210921</label>
+            <label index="nonFloating" type="integer">169566595</label>
+            <label index="left" type="integer">155571682</label>
+            <label index="right" type="integer">153815495</label>
+            <label index="title" type="integer">192455458</label>
+            <label index="alt" type="integer">237067341</label>
+            <label index="update" type="integer">6894342</label>
+            <label index="magicImage" type="integer">87595471</label>
+            <label index="plainImage" type="integer">174130358</label>
+            <label index="dragDropImage" type="integer">228115367</label>
+            <label index="currentImage" type="integer">205301887</label>
+        </languageKey>
+        <languageKey index="tr" type="array">
+            <label index="folderTree" type="integer">62125109</label>
+            <label index="uploadImage" type="integer">33130562</label>
+            <label index="path" type="integer">180814866</label>
+            <label index="images" type="integer">268373344</label>
+            <label index="magicImage_msg" type="integer">36451032</label>
+            <label index="plainImage_msg" type="integer">227989181</label>
+            <label index="width" type="integer">53040229</label>
+            <label index="height" type="integer">250375243</label>
+            <label index="border" type="integer">7361862</label>
+            <label index="margin_tb" type="integer">127734039</label>
+            <label index="margin_lr" type="integer">82280674</label>
+            <label index="title" type="integer">192455458</label>
+            <label index="update" type="integer">6894342</label>
+            <label index="magicImage" type="integer">87595471</label>
+            <label index="plainImage" type="integer">174130358</label>
+            <label index="dragDropImage" type="integer">228115367</label>
+            <label index="currentImage" type="integer">205301887</label>
+        </languageKey>
+        <languageKey index="se" type="array">
+            <label index="folderTree" type="integer">62125109</label>
+            <label index="uploadImage" type="integer">33130562</label>
+            <label index="path" type="integer">180814866</label>
+            <label index="images" type="integer">268373344</label>
+            <label index="magicImage_msg" type="integer">36451032</label>
+            <label index="plainImage_msg" type="integer">227989181</label>
+            <label index="width" type="integer">53040229</label>
+            <label index="height" type="integer">250375243</label>
+            <label index="border" type="integer">7361862</label>
+            <label index="margin_tb" type="integer">127734039</label>
+            <label index="margin_lr" type="integer">82280674</label>
+            <label index="title" type="integer">192455458</label>
+            <label index="update" type="integer">6894342</label>
+            <label index="magicImage" type="integer">87595471</label>
+            <label index="plainImage" type="integer">174130358</label>
+            <label index="dragDropImage" type="integer">228115367</label>
+            <label index="currentImage" type="integer">205301887</label>
+        </languageKey>
+        <languageKey index="pt" type="array">
+            <label index="folderTree" type="integer">62125109</label>
+            <label index="uploadImage" type="integer">33130562</label>
+            <label index="path" type="integer">180814866</label>
+            <label index="images" type="integer">268373344</label>
+            <label index="magicImage_msg" type="integer">36451032</label>
+            <label index="plainImage_msg" type="integer">227989181</label>
+            <label index="width" type="integer">53040229</label>
+            <label index="height" type="integer">250375243</label>
+            <label index="border" type="integer">7361862</label>
+            <label index="margin_tb" type="integer">127734039</label>
+            <label index="margin_lr" type="integer">82280674</label>
+            <label index="title" type="integer">192455458</label>
+            <label index="update" type="integer">6894342</label>
+            <label index="magicImage" type="integer">87595471</label>
+            <label index="plainImage" type="integer">174130358</label>
+            <label index="dragDropImage" type="integer">228115367</label>
+            <label index="currentImage" type="integer">205301887</label>
+        </languageKey>
+        <languageKey index="ru" type="array">
+            <label index="folderTree" type="integer">62125109</label>
+            <label index="uploadImage" type="integer">33130562</label>
+            <label index="path" type="integer">180814866</label>
+            <label index="images" type="integer">268373344</label>
+            <label index="magicImage_msg" type="integer">36451032</label>
+            <label index="plainImage_msg" type="integer">227989181</label>
+            <label index="class" type="integer">182617337</label>
+            <label index="width" type="integer">53040229</label>
+            <label index="height" type="integer">250375243</label>
+            <label index="border" type="integer">7361862</label>
+            <label index="margin_tb" type="integer">127734039</label>
+            <label index="margin_lr" type="integer">82280674</label>
+            <label index="float" type="integer">36364514</label>
+            <label index="notSet" type="integer">163210921</label>
+            <label index="nonFloating" type="integer">169566595</label>
+            <label index="left" type="integer">155571682</label>
+            <label index="right" type="integer">153815495</label>
+            <label index="title" type="integer">192455458</label>
+            <label index="alt" type="integer">237067341</label>
+            <label index="update" type="integer">6894342</label>
+            <label index="magicImage" type="integer">87595471</label>
+            <label index="plainImage" type="integer">174130358</label>
+            <label index="dragDropImage" type="integer">228115367</label>
+            <label index="currentImage" type="integer">205301887</label>
+        </languageKey>
+        <languageKey index="ro" type="array">
+        </languageKey>
+        <languageKey index="ch" type="array">
+            <label index="folderTree" type="integer">62125109</label>
+            <label index="uploadImage" type="integer">33130562</label>
+            <label index="path" type="integer">180814866</label>
+            <label index="images" type="integer">268373344</label>
+            <label index="magicImage_msg" type="integer">36451032</label>
+            <label index="plainImage_msg" type="integer">227989181</label>
+            <label index="width" type="integer">53040229</label>
+            <label index="height" type="integer">250375243</label>
+            <label index="border" type="integer">7361862</label>
+            <label index="margin_tb" type="integer">127734039</label>
+            <label index="margin_lr" type="integer">82280674</label>
+            <label index="title" type="integer">192455458</label>
+            <label index="update" type="integer">6894342</label>
+            <label index="magicImage" type="integer">87595471</label>
+            <label index="plainImage" type="integer">174130358</label>
+            <label index="dragDropImage" type="integer">228115367</label>
+            <label index="currentImage" type="integer">205301887</label>
+        </languageKey>
+        <languageKey index="sk" type="array">
+            <label index="folderTree" type="integer">62125109</label>
+            <label index="uploadImage" type="integer">33130562</label>
+            <label index="path" type="integer">180814866</label>
+            <label index="images" type="integer">268373344</label>
+            <label index="magicImage_msg" type="integer">36451032</label>
+            <label index="plainImage_msg" type="integer">227989181</label>
+            <label index="class" type="integer">182617337</label>
+            <label index="width" type="integer">53040229</label>
+            <label index="height" type="integer">250375243</label>
+            <label index="border" type="integer">7361862</label>
+            <label index="margin_tb" type="integer">127734039</label>
+            <label index="margin_lr" type="integer">82280674</label>
+            <label index="float" type="integer">36364514</label>
+            <label index="notSet" type="integer">163210921</label>
+            <label index="nonFloating" type="integer">169566595</label>
+            <label index="left" type="integer">155571682</label>
+            <label index="right" type="integer">153815495</label>
+            <label index="title" type="integer">192455458</label>
+            <label index="alt" type="integer">237067341</label>
+            <label index="update" type="integer">6894342</label>
+            <label index="magicImage" type="integer">87595471</label>
+            <label index="plainImage" type="integer">174130358</label>
+            <label index="dragDropImage" type="integer">228115367</label>
+            <label index="currentImage" type="integer">205301887</label>
+        </languageKey>
+        <languageKey index="lt" type="array">
+        </languageKey>
+        <languageKey index="is" type="array">
+        </languageKey>
+        <languageKey index="hr" type="array">
+            <label index="folderTree" type="integer">62125109</label>
+            <label index="uploadImage" type="integer">33130562</label>
+            <label index="path" type="integer">180814866</label>
+            <label index="images" type="integer">268373344</label>
+            <label index="magicImage_msg" type="integer">36451032</label>
+            <label index="plainImage_msg" type="integer">227989181</label>
+            <label index="width" type="integer">53040229</label>
+            <label index="height" type="integer">250375243</label>
+            <label index="border" type="integer">7361862</label>
+            <label index="margin_tb" type="integer">127734039</label>
+            <label index="margin_lr" type="integer">82280674</label>
+            <label index="title" type="integer">192455458</label>
+            <label index="update" type="integer">6894342</label>
+            <label index="magicImage" type="integer">87595471</label>
+            <label index="plainImage" type="integer">174130358</label>
+            <label index="dragDropImage" type="integer">228115367</label>
+            <label index="currentImage" type="integer">205301887</label>
+        </languageKey>
+        <languageKey index="hu" type="array">
+            <label index="folderTree" type="integer">62125109</label>
+            <label index="uploadImage" type="integer">33130562</label>
+            <label index="path" type="integer">180814866</label>
+            <label index="images" type="integer">268373344</label>
+            <label index="magicImage_msg" type="integer">36451032</label>
+            <label index="plainImage_msg" type="integer">227989181</label>
+            <label index="width" type="integer">53040229</label>
+            <label index="height" type="integer">250375243</label>
+            <label index="border" type="integer">7361862</label>
+            <label index="margin_tb" type="integer">127734039</label>
+            <label index="margin_lr" type="integer">82280674</label>
+            <label index="title" type="integer">192455458</label>
+            <label index="update" type="integer">6894342</label>
+            <label index="magicImage" type="integer">87595471</label>
+            <label index="plainImage" type="integer">174130358</label>
+            <label index="dragDropImage" type="integer">228115367</label>
+            <label index="currentImage" type="integer">205301887</label>
+        </languageKey>
+        <languageKey index="gl" type="array">
+        </languageKey>
+        <languageKey index="th" type="array">
+        </languageKey>
+        <languageKey index="gr" type="array">
+        </languageKey>
+        <languageKey index="hk" type="array">
+        </languageKey>
+        <languageKey index="eu" type="array">
+        </languageKey>
+        <languageKey index="bg" type="array">
+            <label index="folderTree" type="integer">62125109</label>
+            <label index="uploadImage" type="integer">33130562</label>
+            <label index="path" type="integer">180814866</label>
+            <label index="images" type="integer">268373344</label>
+            <label index="magicImage_msg" type="integer">36451032</label>
+            <label index="plainImage_msg" type="integer">227989181</label>
+            <label index="width" type="integer">53040229</label>
+            <label index="height" type="integer">250375243</label>
+            <label index="border" type="integer">7361862</label>
+            <label index="margin_tb" type="integer">127734039</label>
+            <label index="margin_lr" type="integer">82280674</label>
+            <label index="title" type="integer">192455458</label>
+            <label index="update" type="integer">6894342</label>
+            <label index="magicImage" type="integer">87595471</label>
+            <label index="plainImage" type="integer">174130358</label>
+            <label index="dragDropImage" type="integer">228115367</label>
+            <label index="currentImage" type="integer">205301887</label>
+        </languageKey>
+        <languageKey index="br" type="array">
+            <label index="folderTree" type="integer">62125109</label>
+            <label index="uploadImage" type="integer">33130562</label>
+            <label index="path" type="integer">180814866</label>
+            <label index="images" type="integer">268373344</label>
+            <label index="magicImage_msg" type="integer">36451032</label>
+            <label index="plainImage_msg" type="integer">227989181</label>
+            <label index="class" type="integer">182617337</label>
+            <label index="width" type="integer">53040229</label>
+            <label index="height" type="integer">250375243</label>
+            <label index="border" type="integer">7361862</label>
+            <label index="margin_tb" type="integer">127734039</label>
+            <label index="margin_lr" type="integer">82280674</label>
+            <label index="float" type="integer">36364514</label>
+            <label index="notSet" type="integer">163210921</label>
+            <label index="nonFloating" type="integer">169566595</label>
+            <label index="left" type="integer">155571682</label>
+            <label index="right" type="integer">153815495</label>
+            <label index="title" type="integer">192455458</label>
+            <label index="alt" type="integer">237067341</label>
+            <label index="update" type="integer">6894342</label>
+            <label index="magicImage" type="integer">87595471</label>
+            <label index="plainImage" type="integer">174130358</label>
+            <label index="dragDropImage" type="integer">228115367</label>
+            <label index="currentImage" type="integer">205301887</label>
+        </languageKey>
+        <languageKey index="et" type="array">
+        </languageKey>
+        <languageKey index="ar" type="array">
+        </languageKey>
+        <languageKey index="he" type="array">
+        </languageKey>
+        <languageKey index="ua" type="array">
+        </languageKey>
+        <languageKey index="lv" type="array">
+        </languageKey>
+        <languageKey index="jp" type="array">
+        </languageKey>
+        <languageKey index="vn" type="array">
+        </languageKey>
+        <languageKey index="ca" type="array">
+        </languageKey>
+        <languageKey index="ba" type="array">
+        </languageKey>
+        <languageKey index="kr" type="array">
+        </languageKey>
+        <languageKey index="eo" type="array">
+        </languageKey>
+        <languageKey index="my" type="array">
+        </languageKey>
+        <languageKey index="hi" type="array">
+        </languageKey>
+    </orig_hash>
+    <orig_text type="array">
+        <languageKey index="default" type="array">
+        </languageKey>
+        <languageKey index="dk" type="array">
+        </languageKey>
+        <languageKey index="de" type="array">
+        </languageKey>
+        <languageKey index="no" type="array">
+        </languageKey>
+        <languageKey index="it" type="array">
+        </languageKey>
+        <languageKey index="fr" type="array">
+        </languageKey>
+        <languageKey index="es" type="array">
+        </languageKey>
+        <languageKey index="nl" type="array">
+        </languageKey>
+        <languageKey index="cz" type="array">
+        </languageKey>
+        <languageKey index="pl" type="array">
+        </languageKey>
+        <languageKey index="si" type="array">
+        </languageKey>
+        <languageKey index="fi" type="array">
+        </languageKey>
+        <languageKey index="tr" type="array">
+        </languageKey>
+        <languageKey index="se" type="array">
+        </languageKey>
+        <languageKey index="pt" type="array">
+        </languageKey>
+        <languageKey index="ru" type="array">
+        </languageKey>
+        <languageKey index="ro" type="array">
+        </languageKey>
+        <languageKey index="ch" type="array">
+        </languageKey>
+        <languageKey index="sk" type="array">
+        </languageKey>
+        <languageKey index="lt" type="array">
+        </languageKey>
+        <languageKey index="is" type="array">
+        </languageKey>
+        <languageKey index="hr" type="array">
+        </languageKey>
+        <languageKey index="hu" type="array">
+        </languageKey>
+        <languageKey index="gl" type="array">
+        </languageKey>
+        <languageKey index="th" type="array">
+        </languageKey>
+        <languageKey index="gr" type="array">
+        </languageKey>
+        <languageKey index="hk" type="array">
+        </languageKey>
+        <languageKey index="eu" type="array">
+        </languageKey>
+        <languageKey index="bg" type="array">
+        </languageKey>
+        <languageKey index="br" type="array">
+        </languageKey>
+        <languageKey index="et" type="array">
+        </languageKey>
+        <languageKey index="ar" type="array">
+        </languageKey>
+        <languageKey index="he" type="array">
+        </languageKey>
+        <languageKey index="ua" type="array">
+        </languageKey>
+        <languageKey index="lv" type="array">
+        </languageKey>
+        <languageKey index="jp" type="array">
+        </languageKey>
+        <languageKey index="vn" type="array">
+        </languageKey>
+        <languageKey index="ca" type="array">
+        </languageKey>
+        <languageKey index="ba" type="array">
+        </languageKey>
+        <languageKey index="kr" type="array">
+        </languageKey>
+        <languageKey index="eo" type="array">
+        </languageKey>
+        <languageKey index="my" type="array">
+        </languageKey>
+        <languageKey index="hi" type="array">
+        </languageKey>
+    </orig_text>
+</T3locallang>

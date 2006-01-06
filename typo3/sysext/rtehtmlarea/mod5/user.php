@@ -58,7 +58,7 @@ unset($MCONF);
 require ('conf.php');
 require ($BACK_PATH.'init.php');
 require ($BACK_PATH.'template.php');
-$LANG->includeLLFile('EXT:rtehtmlarea/mod5/locallang.php');
+$LANG->includeLLFile('EXT:rtehtmlarea/mod5/locallang.xml');
 
 /**
  * Script Class

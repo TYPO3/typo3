@@ -1,0 +1,1293 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+    <meta type="array">
+        <description>Labels for tooltips of htmlArea RTE</description>
+        <type>module</type>
+        <csh_table></csh_table>
+        <fileId>EXT:rtehtmlarea/htmlarea/locallang_tooltips.xml</fileId>
+        <labelContext type="array">
+            <label index="bold"></label>
+            <label index="italic"></label>
+            <label index="underline"></label>
+            <label index="strikethrough"></label>
+            <label index="subscript"></label>
+            <label index="superscript"></label>
+            <label index="justifyleft"></label>
+            <label index="justifycenter"></label>
+            <label index="justifyright"></label>
+            <label index="justifyfull"></label>
+            <label index="insertorderedlist"></label>
+            <label index="insertunorderedlist"></label>
+            <label index="outdent"></label>
+            <label index="indent"></label>
+            <label index="forecolor"></label>
+            <label index="hilitecolor"></label>
+            <label index="inserthorizontalrule"></label>
+            <label index="createlink"></label>
+            <label index="insertimage"></label>
+            <label index="inserttable"></label>
+            <label index="htmlmode"></label>
+            <label index="popupeditor"></label>
+            <label index="about"></label>
+            <label index="showhelp"></label>
+            <label index="textindicator"></label>
+            <label index="undo"></label>
+            <label index="redo"></label>
+            <label index="cut"></label>
+            <label index="copy"></label>
+            <label index="paste"></label>
+            <label index="lefttoright"></label>
+            <label index="righttoleft"></label>
+            <label index="removeformat"></label>
+            <label index="print"></label>
+            <label index="killword"></label>
+            <label index="fontname"></label>
+            <label index="fontsize"></label>
+            <label index="formatblock"></label>
+        </labelContext>
+    </meta>
+    <data type="array">
+        <languageKey index="default" type="array">
+            <label index="bold">Bold</label>
+            <label index="italic">Italic</label>
+            <label index="underline">Underline</label>
+            <label index="strikethrough">Strikethrough</label>
+            <label index="subscript">Subscript</label>
+            <label index="superscript">Superscript</label>
+            <label index="justifyleft">Justify Left</label>
+            <label index="justifycenter">Justify Center</label>
+            <label index="justifyright">Justify Right</label>
+            <label index="justifyfull">Justify Full</label>
+            <label index="insertorderedlist">Ordered List</label>
+            <label index="insertunorderedlist">Bulleted List</label>
+            <label index="outdent">Decrease Indent</label>
+            <label index="indent">Increase Indent</label>
+            <label index="forecolor">Font Color</label>
+            <label index="hilitecolor">Background Color</label>
+            <label index="inserthorizontalrule">Horizontal Rule</label>
+            <label index="createlink">Insert Web Link</label>
+            <label index="insertimage">Insert/Modify Image</label>
+            <label index="inserttable">Insert Table</label>
+            <label index="htmlmode">Toggle HTML Source</label>
+            <label index="popupeditor">Enlarge Editor</label>
+            <label index="about">About this editor</label>
+            <label index="showhelp">Help using editor</label>
+            <label index="textindicator">Current style</label>
+            <label index="undo">Undoes your last action</label>
+            <label index="redo">Redoes your last action</label>
+            <label index="cut">Cut selection</label>
+            <label index="copy">Copy selection</label>
+            <label index="paste">Paste from clipboard</label>
+            <label index="lefttoright">Direction left to right</label>
+            <label index="righttoleft">Direction right to left</label>
+            <label index="removeformat">Remove formatting</label>
+            <label index="print">Print document</label>
+            <label index="killword">Clear MSOffice tags</label>
+            <label index="fontname">Font</label>
+            <label index="fontsize">Font size</label>
+            <label index="formatblock">Type of paragragh</label>
+        </languageKey>
+        <languageKey index="dk" type="array">
+            <label index="bold">Fed</label>
+            <label index="italic">Kursiv</label>
+            <label index="underline">Understreget</label>
+            <label index="strikethrough">Gennemstreget</label>
+            <label index="subscript">Subscript</label>
+            <label index="superscript">Superscript</label>
+            <label index="justifyleft">Venstrejusteret</label>
+            <label index="justifycenter">Centreret</label>
+            <label index="justifyright">Højrejusteret</label>
+            <label index="justifyfull">Lige margener</label>
+            <label index="insertorderedlist">Sorteret liste</label>
+            <label index="insertunorderedlist">Punktopstilling</label>
+            <label index="outdent">Formindsk indrykning</label>
+            <label index="indent">Forøg indrykning</label>
+            <label index="forecolor">Tekstfarve</label>
+            <label index="hilitecolor">Baggrundsfarve</label>
+            <label index="inserthorizontalrule">Vandret linje</label>
+            <label index="createlink">Indsæt web link</label>
+            <label index="insertimage">Indsæt/Redigér billede</label>
+            <label index="inserttable">Indsæt tabel</label>
+            <label index="htmlmode">Skift til HTML kildekode</label>
+            <label index="popupeditor">Forstør editor</label>
+            <label index="about">Om denne editor</label>
+            <label index="showhelp">Hjælpeindeks</label>
+            <label index="textindicator">Aktuel stil</label>
+            <label index="undo">Fortryder din sidste handling</label>
+            <label index="redo">Gentager din sidste handling</label>
+            <label index="cut">Klip markering</label>
+            <label index="copy">Kopiér markering</label>
+            <label index="paste">Indsæt fra klippebord</label>
+            <label index="lefttoright">Retning venstre mod højre</label>
+            <label index="righttoleft">Retning højre mod venstre</label>
+            <label index="removeformat">Fjern formatering</label>
+            <label index="print">Udskriv dokument</label>
+            <label index="killword">Fjern MS Office koder</label>
+            <label index="fontname">Skrifttype</label>
+            <label index="fontsize">Skriftstørrelse</label>
+            <label index="formatblock">Afsnitstypografi</label>
+        </languageKey>
+        <languageKey index="de" type="array">
+            <label index="bold">Fett</label>
+            <label index="italic">Kursiv</label>
+            <label index="underline">Unterstrichen</label>
+            <label index="strikethrough">Durchgestrichen</label>
+            <label index="subscript">Tiefgestellt</label>
+            <label index="superscript">Hochgestellt</label>
+            <label index="justifyleft">Links</label>
+            <label index="justifycenter">Zentrieren</label>
+            <label index="justifyright">Rechts</label>
+            <label index="justifyfull">Blocksatz</label>
+            <label index="insertorderedlist">Nummerierung</label>
+            <label index="insertunorderedlist">Punktliste</label>
+            <label index="outdent">Einzug verkleinern</label>
+            <label index="indent">Einzug vergrößern</label>
+            <label index="forecolor">Zeichenfarbe</label>
+            <label index="hilitecolor">Hintergrundfarbe</label>
+            <label index="inserthorizontalrule">Horizontale Linie</label>
+            <label index="createlink">Link einfügen</label>
+            <label index="insertimage">Bild einfügen / verändern</label>
+            <label index="inserttable">Tabelle einfügen</label>
+            <label index="htmlmode">Zur HTML-Ansicht wechseln</label>
+            <label index="popupeditor">Editor-Fenster vergrößern</label>
+            <label index="about">Über diesen Editor</label>
+            <label index="showhelp">Hilfe</label>
+            <label index="textindicator">Momentaner Style</label>
+            <label index="undo">Macht die letzte Aktion rückgängig</label>
+            <label index="redo">Wiederholt die letzte Aktion</label>
+            <label index="cut">Auswahl ausschneiden</label>
+            <label index="copy">Auswahl kopieren</label>
+            <label index="paste">Aus der Zwischenablage einfügen</label>
+            <label index="lefttoright">Schreibrichtung von links nach rechts</label>
+            <label index="righttoleft">Schreibrichtung von rechts nach links</label>
+            <label index="removeformat">Formatierung entfernen</label>
+            <label index="print">Das Dokument drucken</label>
+            <label index="killword">MSOffice &lt;o:&gt; entfernen</label>
+            <label index="fontname">Zeichensatz</label>
+            <label index="fontsize">Zeichengröße</label>
+            <label index="formatblock">Absatzart</label>
+        </languageKey>
+        <languageKey index="no" type="array">
+            <label index="bold">Halvfet</label>
+            <label index="italic">Kursiv</label>
+            <label index="underline">Understreket</label>
+            <label index="strikethrough">Gjennomstreket</label>
+            <label index="subscript">Subscript</label>
+            <label index="superscript">Superscript</label>
+            <label index="justifyleft">Venstrejuster</label>
+            <label index="justifycenter">Sentrer</label>
+            <label index="justifyright">Høyrejuster</label>
+            <label index="justifyfull">Rette marger</label>
+            <label index="insertorderedlist">Nummerert liste</label>
+            <label index="insertunorderedlist">Punktliste</label>
+            <label index="outdent">Reduser innrykk</label>
+            <label index="indent">Øk innrykk</label>
+            <label index="forecolor">Skriftfarge</label>
+            <label index="hilitecolor">Bakgrunnsfarge</label>
+            <label index="inserthorizontalrule">Horisontal linje</label>
+            <label index="createlink">Sett inn link</label>
+            <label index="insertimage">Sett inn/rediger bilde</label>
+            <label index="inserttable">Sett inn tabell</label>
+            <label index="htmlmode">Slå av eller på HTML-kildekode</label>
+            <label index="popupeditor">Forstørr editoren</label>
+            <label index="about">Om denne editoren</label>
+            <label index="showhelp">Hjelp for å bruke editoren</label>
+            <label index="textindicator">Nåværende stil</label>
+            <label index="undo">Gjør om det siste du gjorde</label>
+            <label index="redo">Gjentar det siste du gjorde</label>
+            <label index="cut">Klipp ut markeringen</label>
+            <label index="copy">Lim inn markeringen</label>
+            <label index="paste">Lim inn fra utklippsbord</label>
+            <label index="lefttoright">Tekstretning fra venstre mot høyre</label>
+            <label index="righttoleft">Tekstretning fra høyre mot venstre</label>
+            <label index="removeformat">Fjern formattering</label>
+            <label index="print">Skriv ut dokument</label>
+            <label index="killword">Fjern MSOffice-elementer</label>
+            <label index="fontname">Skrift</label>
+            <label index="fontsize">Skriftstørrelse</label>
+            <label index="formatblock">Avsnittstype</label>
+        </languageKey>
+        <languageKey index="it" type="array">
+            <label index="bold">Grassetto</label>
+            <label index="italic">Corsivo</label>
+            <label index="underline">Sottolineatura</label>
+            <label index="strikethrough">Linea in mezzo al testo</label>
+            <label index="subscript">Indice posto in basso</label>
+            <label index="superscript">Indice posto in alto</label>
+            <label index="justifyleft">Giustificato a Sinistra</label>
+            <label index="justifycenter">Giustificato al Centro</label>
+            <label index="justifyright">Giustificato a Destra</label>
+            <label index="justifyfull">Pienamente Giustificato</label>
+            <label index="insertorderedlist">Lista numerata</label>
+            <label index="insertunorderedlist">Lista non numerata</label>
+            <label index="outdent">Diminuisci Indentazione</label>
+            <label index="indent">Aumenta Indentazione</label>
+            <label index="forecolor">Colore Carattere</label>
+            <label index="hilitecolor">Colore Background</label>
+            <label index="inserthorizontalrule">Linea Orizzontale</label>
+            <label index="createlink">Inserisci Link</label>
+            <label index="insertimage">Inserisci/Modifica Immagine</label>
+            <label index="inserttable">Inserisci Tabella</label>
+            <label index="htmlmode">Visualizza Codice HTML</label>
+            <label index="popupeditor">Allarga Editor</label>
+            <label index="about">Info su questo editor</label>
+            <label index="showhelp">Aiuto nell'utilizzo dell'editor</label>
+            <label index="textindicator">Stile attuale</label>
+            <label index="undo">Annulla l'ultima azione</label>
+            <label index="redo">Rifai l'ultima azione</label>
+            <label index="cut">Taglia selezione</label>
+            <label index="copy">Copia Selezione</label>
+            <label index="paste">Incolla dalla clipboard</label>
+            <label index="lefttoright">Direzione da sinistra a destra</label>
+            <label index="righttoleft">Direzione da destra e sinistra</label>
+            <label index="removeformat">Rimuovi formattazione</label>
+            <label index="print">Stampa documento</label>
+            <label index="killword">Pulisci tag MSOffice</label>
+            <label index="fontname">Carattere</label>
+            <label index="fontsize">Dimensione carattere</label>
+            <label index="formatblock">Tipo di paragrafo</label>
+        </languageKey>
+        <languageKey index="fr" type="array">
+            <label index="bold">Gras</label>
+            <label index="italic">Italique</label>
+            <label index="underline">Souligné</label>
+            <label index="strikethrough">Barré</label>
+            <label index="subscript">Indice inférieur</label>
+            <label index="superscript">Indice supérieur</label>
+            <label index="justifyleft">Justifié à  gauche</label>
+            <label index="justifycenter">Centré</label>
+            <label index="justifyright">Justifié à  droite</label>
+            <label index="justifyfull">Justifié à  gauche et à  droite</label>
+            <label index="insertorderedlist">Liste numérotée</label>
+            <label index="insertunorderedlist">Liste à  puces</label>
+            <label index="outdent">Diminuer le retrait</label>
+            <label index="indent">Augmenter le retrait</label>
+            <label index="forecolor">Couleur du texte</label>
+            <label index="hilitecolor">Couleur du fond</label>
+            <label index="inserthorizontalrule">Ligne horizontale</label>
+            <label index="createlink">Insérer un lien</label>
+            <label index="insertimage">Insérer une image</label>
+            <label index="inserttable">Insérer une table</label>
+            <label index="htmlmode">Mode source HTML</label>
+            <label index="popupeditor">Agrandir l'éditeur</label>
+            <label index="about">A propos de cet éditeur</label>
+            <label index="showhelp">Aide sur l'éditeur</label>
+            <label index="textindicator">Style courant</label>
+            <label index="undo">Annuler la dernière action</label>
+            <label index="redo">Refaire la dernière action</label>
+            <label index="cut">Couper la sélection</label>
+            <label index="copy">Copier la sélection</label>
+            <label index="paste">Coller depuis le presse-papiers</label>
+            <label index="lefttoright">Texte de gauche à droite</label>
+            <label index="righttoleft">Texte de droite à gauche</label>
+            <label index="removeformat">Enlever le formatage</label>
+            <label index="print">Imprimer le document</label>
+            <label index="killword">Enlever les balises MSOffice</label>
+            <label index="fontname">Police</label>
+            <label index="fontsize">Taille de la police</label>
+            <label index="formatblock">Type de paragraghe</label>
+        </languageKey>
+        <languageKey index="es" type="array">
+            <label index="bold">Negrita</label>
+            <label index="italic">Cursiva</label>
+            <label index="underline">Subrayado</label>
+            <label index="strikethrough">Tachado</label>
+            <label index="subscript">Subíndice</label>
+            <label index="superscript">Superíndice</label>
+            <label index="justifyleft">Alinear a la izquierda</label>
+            <label index="justifycenter">Alinear al centro</label>
+            <label index="justifyright">Alinear a la derecha</label>
+            <label index="justifyfull">Justificar</label>
+            <label index="insertorderedlist">Lista ordenada</label>
+            <label index="insertunorderedlist">Lista no ordenada</label>
+            <label index="outdent">Reducir sangría</label>
+            <label index="indent">Aumentar sangría</label>
+            <label index="forecolor">Color del texto</label>
+            <label index="hilitecolor">Color del fondo</label>
+            <label index="inserthorizontalrule">Línea horizontal</label>
+            <label index="createlink">Insertar enlace</label>
+            <label index="insertimage">Insertar imagen</label>
+            <label index="inserttable">Insertar tabla</label>
+            <label index="htmlmode">Ver código HTML</label>
+            <label index="popupeditor">Ampliar editor</label>
+            <label index="about">Acerca de este editor</label>
+            <label index="showhelp">Ayuda</label>
+            <label index="textindicator">Estilo actual</label>
+            <label index="undo">Deshacer la última acción</label>
+            <label index="redo">Volver a efectuar la última acción</label>
+            <label index="cut">Cortar la selección</label>
+            <label index="copy">Copiar la selección</label>
+            <label index="paste">Pegar el contenido del portapapeles</label>
+            <label index="lefttoright">De la izquierda a la derecha</label>
+            <label index="righttoleft">De la derecha a la izquierda</label>
+            <label index="removeformat">Borrar formato</label>
+            <label index="print">Imprimir el documento</label>
+        </languageKey>
+        <languageKey index="nl" type="array">
+            <label index="bold">Vet</label>
+            <label index="italic">Schuinschrift</label>
+            <label index="underline">Onderstrepen</label>
+            <label index="strikethrough">Doorhalen</label>
+            <label index="subscript">Subscript</label>
+            <label index="superscript">Superscript</label>
+            <label index="justifyleft">Links uitlijnen</label>
+            <label index="justifycenter">Gecentreerd uitlijnen</label>
+            <label index="justifyright">Rechts uitlijnen</label>
+            <label index="justifyfull">Uitvullen</label>
+            <label index="insertorderedlist">Nummering</label>
+            <label index="insertunorderedlist">Opsommingstekens</label>
+            <label index="outdent">Inspringen verkleinen</label>
+            <label index="indent">Inspringen vergroten</label>
+            <label index="forecolor">Tekstkleur</label>
+            <label index="hilitecolor">Achtergrond kleur</label>
+            <label index="inserthorizontalrule">Horizontale streep</label>
+            <label index="createlink">Hyperlink invoegen</label>
+            <label index="insertimage">Invoegen/aanpassen afbeelding</label>
+            <label index="inserttable">Invoegen tabel</label>
+            <label index="htmlmode">Wissel HTML broncode</label>
+            <label index="popupeditor">Vergroot editor</label>
+            <label index="about">Over deze editor</label>
+            <label index="showhelp">Hulp over het gebruik van deze editor</label>
+            <label index="textindicator">Huidige stijl</label>
+            <label index="undo">Ongedaan maken laatste actie</label>
+            <label index="redo">Opnieuw laatste actie</label>
+            <label index="cut">Knip selectie</label>
+            <label index="copy">Kopieer selectie</label>
+            <label index="paste">Plak van het klipbord</label>
+            <label index="lefttoright">Rechts naar links</label>
+            <label index="righttoleft">Links naar rechts</label>
+            <label index="removeformat">Verwijderen opmaak</label>
+            <label index="print">Print document</label>
+            <label index="killword">Verwijderen MSOffice tags</label>
+            <label index="fontname">Lettertype</label>
+            <label index="fontsize">Lettergrootte</label>
+            <label index="formatblock">Soort paragraaf</label>
+        </languageKey>
+        <languageKey index="cz" type="array">
+            <label index="bold">Tučně</label>
+            <label index="italic">Kurzíva</label>
+            <label index="underline">Podtržení</label>
+            <label index="strikethrough">Přeškrtnutí</label>
+            <label index="subscript">Dolní index</label>
+            <label index="superscript">Horní index</label>
+            <label index="justifyleft">Zarovnat vlevo</label>
+            <label index="justifycenter">Zarovnat na střed</label>
+            <label index="justifyright">Zarovnat vpravo</label>
+            <label index="justifyfull">Zarovnat do bloku</label>
+            <label index="insertorderedlist">Tříděný seznam</label>
+            <label index="insertunorderedlist">Seznam odrážek</label>
+            <label index="outdent">Zmenšit odsazení</label>
+            <label index="indent">Zvětšit odsazení</label>
+            <label index="forecolor">Barva písma</label>
+            <label index="hilitecolor">Barva pozadí</label>
+            <label index="inserthorizontalrule">Horizontální odělovač</label>
+            <label index="createlink">Vložit www odkaz</label>
+            <label index="insertimage">Vložit/upravit obrázek</label>
+            <label index="inserttable">Vložit tabulku</label>
+            <label index="htmlmode">Přepnout HTML zdroj</label>
+            <label index="popupeditor">Zvětšit editor</label>
+            <label index="about">O tomto editoru</label>
+            <label index="showhelp">Nápověda</label>
+            <label index="textindicator">Aktuální styl</label>
+            <label index="undo">Navrátí zpět poslední akci</label>
+            <label index="redo">Zopakuje poslední akci</label>
+            <label index="cut">Vyříznout výběr</label>
+            <label index="copy">Kopírovat výběr</label>
+            <label index="paste">Vložit ze schránky</label>
+            <label index="lefttoright">Směr zleva do prava</label>
+            <label index="righttoleft">Směr zprava do leva</label>
+            <label index="removeformat">Odstranit formátování</label>
+            <label index="print">Vytisknout dokument</label>
+            <label index="killword">Vyčistit od značek MS Office</label>
+            <label index="fontname">Písmo</label>
+            <label index="fontsize">Velikost písma</label>
+            <label index="formatblock">Typ odstavce</label>
+        </languageKey>
+        <languageKey index="pl" type="array">
+        </languageKey>
+        <languageKey index="si" type="array">
+        </languageKey>
+        <languageKey index="fi" type="array">
+            <label index="bold">Vahvennettu</label>
+            <label index="italic">Kursiivi</label>
+            <label index="underline">Alleviivaus</label>
+            <label index="strikethrough">Läpi merkin</label>
+            <label index="subscript">Alamerkki</label>
+            <label index="superscript">Ylämerkki</label>
+            <label index="justifyleft">Tasaa vasemmalle</label>
+            <label index="justifycenter">Tasaa keskelle</label>
+            <label index="justifyright">Tasaa oikealle</label>
+            <label index="justifyfull">Tasaa koko alueelle</label>
+            <label index="insertorderedlist">Järjestetty lista</label>
+            <label index="insertunorderedlist">Etumerkillinen lista</label>
+            <label index="outdent">Vähennä sisennystä</label>
+            <label index="indent">Lisää sisennystä</label>
+            <label index="forecolor">Merkin väri</label>
+            <label index="hilitecolor">Taustan väri</label>
+            <label index="inserthorizontalrule">Vaakaerotin</label>
+            <label index="createlink">Lisää weblinkki</label>
+            <label index="insertimage">Lisää/muokkaa kuvaa</label>
+            <label index="inserttable">Lisää taulukko</label>
+            <label index="htmlmode">Vaihda HTMLlähdekoodin näyttöä</label>
+            <label index="popupeditor">Suurenna muokkaajaa</label>
+            <label index="about">Yleistä muokkaajasta</label>
+            <label index="showhelp">Muokkaajan avut</label>
+            <label index="textindicator">Nykyinen tyyli</label>
+            <label index="undo">Palauta</label>
+            <label index="redo">Tee uudestaan</label>
+            <label index="cut">Leikkauksen valinta</label>
+            <label index="copy">Kopioinnin valinta</label>
+            <label index="paste">Liitä leikepöydältä</label>
+            <label index="lefttoright">Suunta vasemmalta oikealle</label>
+            <label index="righttoleft">Suunta oikealta vasemmalle</label>
+            <label index="removeformat">Poista muotoilu</label>
+            <label index="print">Tulosta asiakirja</label>
+            <label index="killword">Poista MSOffice tagit</label>
+            <label index="fontname">Merkki</label>
+            <label index="fontsize">Merkin koko</label>
+            <label index="formatblock">Kappaleen tyyppi</label>
+        </languageKey>
+        <languageKey index="tr" type="array">
+        </languageKey>
+        <languageKey index="se" type="array">
+        </languageKey>
+        <languageKey index="pt" type="array">
+        </languageKey>
+        <languageKey index="ru" type="array">
+            <label index="bold">Жирный</label>
+            <label index="italic">Наклонный</label>
+            <label index="underline">Подчёркнутый</label>
+            <label index="strikethrough">Зачёркнутый</label>
+            <label index="subscript">Снизу</label>
+            <label index="superscript">Сверху</label>
+            <label index="justifyleft">Выравние по левому краю</label>
+            <label index="justifycenter">Выравние по центру</label>
+            <label index="justifyright">Выравние по правому краю</label>
+            <label index="justifyfull">Выравние по обоим краям</label>
+            <label index="insertorderedlist">Нумерованый список</label>
+            <label index="insertunorderedlist">Ненумерованый список</label>
+            <label index="outdent">Уменьшить отступ</label>
+            <label index="indent">Увеличить отступ</label>
+            <label index="forecolor">Цвет шрифта</label>
+            <label index="hilitecolor">Цвет фона</label>
+            <label index="inserthorizontalrule">Горизонтальный разделитель</label>
+            <label index="createlink">Вставить ссылку</label>
+            <label index="insertimage">Вставить картинку</label>
+            <label index="inserttable">Вставить таблицу</label>
+            <label index="htmlmode">Переключиться на редактирование HTML</label>
+            <label index="popupeditor">Увеличить редактор</label>
+            <label index="about">Об этом редакторе</label>
+            <label index="showhelp">Подсказка</label>
+            <label index="textindicator">Текущий стиль</label>
+            <label index="undo">Отменяет последнее действие</label>
+            <label index="redo">Выполняет последнее действие снова</label>
+            <label index="cut">Вырезать выбраное</label>
+            <label index="copy">Скопировать выбраное</label>
+            <label index="paste">Вставить из буфера обмена</label>
+            <label index="lefttoright">Направление слева направо</label>
+            <label index="righttoleft">Направление справа налево</label>
+            <label index="removeformat">Удалить форматирование</label>
+            <label index="print">Печатать документ</label>
+            <label index="killword">Убрать все таги MSOffice</label>
+            <label index="fontname">Шрифт</label>
+            <label index="fontsize">Размер шрифта</label>
+            <label index="formatblock">Тип абзаца</label>
+        </languageKey>
+        <languageKey index="ro" type="array">
+        </languageKey>
+        <languageKey index="ch" type="array">
+        </languageKey>
+        <languageKey index="sk" type="array">
+            <label index="bold">Tučné</label>
+            <label index="italic">Kurzíva</label>
+            <label index="underline">Podčiarknuté</label>
+            <label index="strikethrough">Prečiarknuté</label>
+            <label index="subscript">Dolný index</label>
+            <label index="superscript">Horný index</label>
+            <label index="justifyleft">Zarovnanie vľavo</label>
+            <label index="justifycenter">Zarovnanie do stredu</label>
+            <label index="justifyright">Zarovnanie vpravo</label>
+            <label index="justifyfull">Zarovnanie do bloku</label>
+            <label index="insertorderedlist">Číslovaný zoznam</label>
+            <label index="insertunorderedlist">Nečíslovaný zoznam (odrážky)</label>
+            <label index="outdent">Zväčšiť odsadenie</label>
+            <label index="indent">Zmenšiť odsadenie</label>
+            <label index="forecolor">Farba písma</label>
+            <label index="hilitecolor">Farba podkladu</label>
+            <label index="inserthorizontalrule">Horizontálna čiara</label>
+            <label index="createlink">Vložiť webový odkaz</label>
+            <label index="insertimage">Vložiť/Zmeniť obrázok</label>
+            <label index="inserttable">Vložiť tabuľku</label>
+            <label index="htmlmode">Prepnúť do HTML kódu</label>
+            <label index="popupeditor">Rozšíriť editor</label>
+            <label index="about">O tomto editore</label>
+            <label index="showhelp">Ukázať nápovedu</label>
+            <label index="textindicator">Aktuálny štýl</label>
+            <label index="undo">O krok späť</label>
+            <label index="redo">O krok dopredu</label>
+            <label index="cut">Vystrihnúť vybrané</label>
+            <label index="copy">Kopírovať vybrané</label>
+            <label index="paste">Vložiť zo schránky</label>
+            <label index="lefttoright">Smer zľava doprava</label>
+            <label index="righttoleft">Smer zprava doľava</label>
+            <label index="removeformat">Odstrániť formátovanie</label>
+            <label index="print">Vytlačiť dokument</label>
+            <label index="killword">Vyčistiť MS Office tagy</label>
+            <label index="fontname">Typ písma</label>
+            <label index="fontsize">Veľkosť písma</label>
+            <label index="formatblock">Typ odstavca</label>
+        </languageKey>
+        <languageKey index="lt" type="array">
+        </languageKey>
+        <languageKey index="is" type="array">
+        </languageKey>
+        <languageKey index="hr" type="array">
+        </languageKey>
+        <languageKey index="hu" type="array">
+        </languageKey>
+        <languageKey index="gl" type="array">
+        </languageKey>
+        <languageKey index="th" type="array">
+        </languageKey>
+        <languageKey index="gr" type="array">
+        </languageKey>
+        <languageKey index="hk" type="array">
+        </languageKey>
+        <languageKey index="eu" type="array">
+        </languageKey>
+        <languageKey index="bg" type="array">
+        </languageKey>
+        <languageKey index="br" type="array">
+            <label index="bold">Negrito</label>
+            <label index="italic">Itálico</label>
+            <label index="underline">Sublinhado</label>
+            <label index="strikethrough">Cortado</label>
+            <label index="subscript">Sobescrito</label>
+            <label index="superscript">Sobrescrito</label>
+            <label index="justifyleft">Justificado à Esquerda</label>
+            <label index="justifycenter">Centralizado</label>
+            <label index="justifyright">Justificado à Direita</label>
+            <label index="justifyfull">Justificado à Esquerda e à Direita</label>
+            <label index="insertorderedlist">Lista Ordenada</label>
+            <label index="insertunorderedlist">Lista não ordenada</label>
+            <label index="outdent">Diminuir recuo</label>
+            <label index="indent">Aumentar recuo</label>
+            <label index="forecolor">Cor de Fonte</label>
+            <label index="hilitecolor">Cor de Fundo</label>
+            <label index="inserthorizontalrule">Linha Horizontal</label>
+            <label index="createlink">Inserir link</label>
+            <label index="insertimage">Inserir/Modificar Imagem</label>
+            <label index="inserttable">Inserir Tabela</label>
+            <label index="htmlmode">Mudar para Código-Fonte HTML</label>
+            <label index="popupeditor">Expandir o Editor</label>
+            <label index="about">Sobre esse editor</label>
+            <label index="showhelp">Ajuda utilizando este editor</label>
+            <label index="textindicator">Estilo corrente</label>
+            <label index="undo">Anular suas últimas ações</label>
+            <label index="redo">Refazer suas últimas ações</label>
+            <label index="cut">Cortar seleção</label>
+            <label index="copy">Copiar seleção</label>
+            <label index="paste">Colar da área de transferência</label>
+            <label index="lefttoright">Direção esquerda para direita</label>
+            <label index="righttoleft">Direção direita para esquerda</label>
+            <label index="removeformat">Remover formatação</label>
+            <label index="print">Imprimir o documento</label>
+            <label index="killword">Remover MSOffice tags</label>
+            <label index="fontname">Fonte</label>
+            <label index="fontsize">Tamanho de Fonte</label>
+            <label index="formatblock">Tipo de paragráfo</label>
+        </languageKey>
+        <languageKey index="et" type="array">
+        </languageKey>
+        <languageKey index="ar" type="array">
+        </languageKey>
+        <languageKey index="he" type="array">
+        </languageKey>
+        <languageKey index="ua" type="array">
+        </languageKey>
+        <languageKey index="lv" type="array">
+        </languageKey>
+        <languageKey index="jp" type="array">
+        </languageKey>
+        <languageKey index="vn" type="array">
+        </languageKey>
+        <languageKey index="ca" type="array">
+        </languageKey>
+        <languageKey index="ba" type="array">
+        </languageKey>
+        <languageKey index="kr" type="array">
+        </languageKey>
+        <languageKey index="eo" type="array">
+        </languageKey>
+        <languageKey index="my" type="array">
+        </languageKey>
+        <languageKey index="hi" type="array">
+        </languageKey>
+    </data>
+    <orig_hash type="array">
+        <languageKey index="default" type="array">
+            <label index="bold" type="integer">18137861</label>
+            <label index="italic" type="integer">30962801</label>
+            <label index="underline" type="integer">139620890</label>
+            <label index="strikethrough" type="integer">153527579</label>
+            <label index="subscript" type="integer">153638286</label>
+            <label index="superscript" type="integer">103903129</label>
+            <label index="justifyleft" type="integer">103035233</label>
+            <label index="justifycenter" type="integer">155705392</label>
+            <label index="justifyright" type="integer">75036879</label>
+            <label index="justifyfull" type="integer">6823521</label>
+            <label index="insertorderedlist" type="integer">127299663</label>
+            <label index="insertunorderedlist" type="integer">77997053</label>
+            <label index="outdent" type="integer">245172929</label>
+            <label index="indent" type="integer">67026639</label>
+            <label index="forecolor" type="integer">35667911</label>
+            <label index="hilitecolor" type="integer">123630626</label>
+            <label index="inserthorizontalrule" type="integer">219272101</label>
+            <label index="createlink" type="integer">147436421</label>
+            <label index="insertimage" type="integer">146708638</label>
+            <label index="inserttable" type="integer">111652295</label>
+            <label index="htmlmode" type="integer">150105834</label>
+            <label index="popupeditor" type="integer">108884081</label>
+            <label index="about" type="integer">93541894</label>
+            <label index="showhelp" type="integer">224256507</label>
+            <label index="textindicator" type="integer">123554729</label>
+            <label index="undo" type="integer">255659</label>
+            <label index="redo" type="integer">251355262</label>
+            <label index="cut" type="integer">205223202</label>
+            <label index="copy" type="integer">248051882</label>
+            <label index="paste" type="integer">226578047</label>
+            <label index="lefttoright" type="integer">1013968</label>
+            <label index="righttoleft" type="integer">206570525</label>
+            <label index="removeformat" type="integer">187827535</label>
+            <label index="print" type="integer">177493560</label>
+            <label index="killword" type="integer">228066956</label>
+            <label index="fontname" type="integer">26539321</label>
+            <label index="fontsize" type="integer">206127878</label>
+            <label index="formatblock" type="integer">4875199</label>
+        </languageKey>
+        <languageKey index="dk" type="array">
+            <label index="bold" type="integer">18137861</label>
+            <label index="italic" type="integer">30962801</label>
+            <label index="underline" type="integer">139620890</label>
+            <label index="strikethrough" type="integer">153527579</label>
+            <label index="subscript" type="integer">153638286</label>
+            <label index="superscript" type="integer">103903129</label>
+            <label index="justifyleft" type="integer">103035233</label>
+            <label index="justifycenter" type="integer">155705392</label>
+            <label index="justifyright" type="integer">75036879</label>
+            <label index="justifyfull" type="integer">6823521</label>
+            <label index="insertorderedlist" type="integer">127299663</label>
+            <label index="insertunorderedlist" type="integer">77997053</label>
+            <label index="outdent" type="integer">245172929</label>
+            <label index="indent" type="integer">67026639</label>
+            <label index="forecolor" type="integer">35667911</label>
+            <label index="hilitecolor" type="integer">123630626</label>
+            <label index="inserthorizontalrule" type="integer">219272101</label>
+            <label index="createlink" type="integer">147436421</label>
+            <label index="insertimage" type="integer">146708638</label>
+            <label index="inserttable" type="integer">111652295</label>
+            <label index="htmlmode" type="integer">150105834</label>
+            <label index="popupeditor" type="integer">108884081</label>
+            <label index="about" type="integer">93541894</label>
+            <label index="showhelp" type="integer">224256507</label>
+            <label index="textindicator" type="integer">123554729</label>
+            <label index="undo" type="integer">255659</label>
+            <label index="redo" type="integer">251355262</label>
+            <label index="cut" type="integer">205223202</label>
+            <label index="copy" type="integer">248051882</label>
+            <label index="paste" type="integer">226578047</label>
+            <label index="lefttoright" type="integer">1013968</label>
+            <label index="righttoleft" type="integer">206570525</label>
+            <label index="removeformat" type="integer">187827535</label>
+            <label index="print" type="integer">177493560</label>
+            <label index="killword" type="integer">228066956</label>
+            <label index="fontname" type="integer">26539321</label>
+            <label index="fontsize" type="integer">206127878</label>
+            <label index="formatblock" type="integer">4875199</label>
+        </languageKey>
+        <languageKey index="de" type="array">
+            <label index="bold" type="integer">18137861</label>
+            <label index="italic" type="integer">30962801</label>
+            <label index="underline" type="integer">139620890</label>
+            <label index="strikethrough" type="integer">153527579</label>
+            <label index="subscript" type="integer">153638286</label>
+            <label index="superscript" type="integer">103903129</label>
+            <label index="justifyleft" type="integer">103035233</label>
+            <label index="justifycenter" type="integer">155705392</label>
+            <label index="justifyright" type="integer">75036879</label>
+            <label index="justifyfull" type="integer">6823521</label>
+            <label index="insertorderedlist" type="integer">127299663</label>
+            <label index="insertunorderedlist" type="integer">77997053</label>
+            <label index="outdent" type="integer">245172929</label>
+            <label index="indent" type="integer">67026639</label>
+            <label index="forecolor" type="integer">35667911</label>
+            <label index="hilitecolor" type="integer">123630626</label>
+            <label index="inserthorizontalrule" type="integer">219272101</label>
+            <label index="createlink" type="integer">147436421</label>
+            <label index="insertimage" type="integer">146708638</label>
+            <label index="inserttable" type="integer">111652295</label>
+            <label index="htmlmode" type="integer">150105834</label>
+            <label index="popupeditor" type="integer">108884081</label>
+            <label index="about" type="integer">93541894</label>
+            <label index="showhelp" type="integer">224256507</label>
+            <label index="textindicator" type="integer">123554729</label>
+            <label index="undo" type="integer">255659</label>
+            <label index="redo" type="integer">251355262</label>
+            <label index="cut" type="integer">205223202</label>
+            <label index="copy" type="integer">248051882</label>
+            <label index="paste" type="integer">226578047</label>
+            <label index="lefttoright" type="integer">1013968</label>
+            <label index="righttoleft" type="integer">206570525</label>
+            <label index="removeformat" type="integer">187827535</label>
+            <label index="print" type="integer">177493560</label>
+            <label index="killword" type="integer">228066956</label>
+            <label index="fontname" type="integer">26539321</label>
+            <label index="fontsize" type="integer">206127878</label>
+            <label index="formatblock" type="integer">4875199</label>
+        </languageKey>
+        <languageKey index="no" type="array">
+            <label index="bold" type="integer">18137861</label>
+            <label index="italic" type="integer">30962801</label>
+            <label index="underline" type="integer">139620890</label>
+            <label index="strikethrough" type="integer">153527579</label>
+            <label index="subscript" type="integer">153638286</label>
+            <label index="superscript" type="integer">103903129</label>
+            <label index="justifyleft" type="integer">103035233</label>
+            <label index="justifycenter" type="integer">155705392</label>
+            <label index="justifyright" type="integer">75036879</label>
+            <label index="justifyfull" type="integer">6823521</label>
+            <label index="insertorderedlist" type="integer">127299663</label>
+            <label index="insertunorderedlist" type="integer">77997053</label>
+            <label index="outdent" type="integer">245172929</label>
+            <label index="indent" type="integer">67026639</label>
+            <label index="forecolor" type="integer">35667911</label>
+            <label index="hilitecolor" type="integer">123630626</label>
+            <label index="inserthorizontalrule" type="integer">219272101</label>
+            <label index="createlink" type="integer">147436421</label>
+            <label index="insertimage" type="integer">146708638</label>
+            <label index="inserttable" type="integer">111652295</label>
+            <label index="htmlmode" type="integer">150105834</label>
+            <label index="popupeditor" type="integer">108884081</label>
+            <label index="about" type="integer">93541894</label>
+            <label index="showhelp" type="integer">224256507</label>
+            <label index="textindicator" type="integer">123554729</label>
+            <label index="undo" type="integer">255659</label>
+            <label index="redo" type="integer">251355262</label>
+            <label index="cut" type="integer">205223202</label>
+            <label index="copy" type="integer">248051882</label>
+            <label index="paste" type="integer">226578047</label>
+            <label index="lefttoright" type="integer">1013968</label>
+            <label index="righttoleft" type="integer">206570525</label>
+            <label index="removeformat" type="integer">187827535</label>
+            <label index="print" type="integer">177493560</label>
+            <label index="killword" type="integer">228066956</label>
+            <label index="fontname" type="integer">26539321</label>
+            <label index="fontsize" type="integer">206127878</label>
+            <label index="formatblock" type="integer">4875199</label>
+        </languageKey>
+        <languageKey index="it" type="array">
+            <label index="bold" type="integer">18137861</label>
+            <label index="italic" type="integer">30962801</label>
+            <label index="underline" type="integer">139620890</label>
+            <label index="strikethrough" type="integer">153527579</label>
+            <label index="subscript" type="integer">153638286</label>
+            <label index="superscript" type="integer">103903129</label>
+            <label index="justifyleft" type="integer">103035233</label>
+            <label index="justifycenter" type="integer">155705392</label>
+            <label index="justifyright" type="integer">75036879</label>
+            <label index="justifyfull" type="integer">6823521</label>
+            <label index="insertorderedlist" type="integer">127299663</label>
+            <label index="insertunorderedlist" type="integer">77997053</label>
+            <label index="outdent" type="integer">245172929</label>
+            <label index="indent" type="integer">67026639</label>
+            <label index="forecolor" type="integer">35667911</label>
+            <label index="hilitecolor" type="integer">123630626</label>
+            <label index="inserthorizontalrule" type="integer">219272101</label>
+            <label index="createlink" type="integer">147436421</label>
+            <label index="insertimage" type="integer">146708638</label>
+            <label index="inserttable" type="integer">111652295</label>
+            <label index="htmlmode" type="integer">150105834</label>
+            <label index="popupeditor" type="integer">108884081</label>
+            <label index="about" type="integer">93541894</label>
+            <label index="showhelp" type="integer">224256507</label>
+            <label index="textindicator" type="integer">123554729</label>
+            <label index="undo" type="integer">255659</label>
+            <label index="redo" type="integer">251355262</label>
+            <label index="cut" type="integer">205223202</label>
+            <label index="copy" type="integer">248051882</label>
+            <label index="paste" type="integer">226578047</label>
+            <label index="lefttoright" type="integer">1013968</label>
+            <label index="righttoleft" type="integer">206570525</label>
+            <label index="removeformat" type="integer">187827535</label>
+            <label index="print" type="integer">177493560</label>
+            <label index="killword" type="integer">228066956</label>
+            <label index="fontname" type="integer">26539321</label>
+            <label index="fontsize" type="integer">206127878</label>
+            <label index="formatblock" type="integer">4875199</label>
+        </languageKey>
+        <languageKey index="fr" type="array">
+            <label index="bold" type="integer">18137861</label>
+            <label index="italic" type="integer">30962801</label>
+            <label index="underline" type="integer">139620890</label>
+            <label index="strikethrough" type="integer">153527579</label>
+            <label index="subscript" type="integer">153638286</label>
+            <label index="superscript" type="integer">103903129</label>
+            <label index="justifyleft" type="integer">103035233</label>
+            <label index="justifycenter" type="integer">155705392</label>
+            <label index="justifyright" type="integer">75036879</label>
+            <label index="justifyfull" type="integer">6823521</label>
+            <label index="insertorderedlist" type="integer">127299663</label>
+            <label index="insertunorderedlist" type="integer">77997053</label>
+            <label index="outdent" type="integer">245172929</label>
+            <label index="indent" type="integer">67026639</label>
+            <label index="forecolor" type="integer">35667911</label>
+            <label index="hilitecolor" type="integer">123630626</label>
+            <label index="inserthorizontalrule" type="integer">219272101</label>
+            <label index="createlink" type="integer">147436421</label>
+            <label index="insertimage" type="integer">146708638</label>
+            <label index="inserttable" type="integer">111652295</label>
+            <label index="htmlmode" type="integer">150105834</label>
+            <label index="popupeditor" type="integer">108884081</label>
+            <label index="about" type="integer">93541894</label>
+            <label index="showhelp" type="integer">224256507</label>
+            <label index="textindicator" type="integer">123554729</label>
+            <label index="undo" type="integer">255659</label>
+            <label index="redo" type="integer">251355262</label>
+            <label index="cut" type="integer">205223202</label>
+            <label index="copy" type="integer">248051882</label>
+            <label index="paste" type="integer">226578047</label>
+            <label index="lefttoright" type="integer">1013968</label>
+            <label index="righttoleft" type="integer">206570525</label>
+            <label index="removeformat" type="integer">187827535</label>
+            <label index="print" type="integer">177493560</label>
+            <label index="killword" type="integer">228066956</label>
+            <label index="fontname" type="integer">26539321</label>
+            <label index="fontsize" type="integer">206127878</label>
+            <label index="formatblock" type="integer">4875199</label>
+        </languageKey>
+        <languageKey index="es" type="array">
+            <label index="bold" type="integer">18137861</label>
+            <label index="italic" type="integer">30962801</label>
+            <label index="underline" type="integer">139620890</label>
+            <label index="strikethrough" type="integer">153527579</label>
+            <label index="subscript" type="integer">153638286</label>
+            <label index="superscript" type="integer">103903129</label>
+            <label index="justifyleft" type="integer">103035233</label>
+            <label index="justifycenter" type="integer">155705392</label>
+            <label index="justifyright" type="integer">75036879</label>
+            <label index="justifyfull" type="integer">6823521</label>
+            <label index="insertorderedlist" type="integer">127299663</label>
+            <label index="insertunorderedlist" type="integer">77997053</label>
+            <label index="outdent" type="integer">245172929</label>
+            <label index="indent" type="integer">67026639</label>
+            <label index="forecolor" type="integer">35667911</label>
+            <label index="hilitecolor" type="integer">123630626</label>
+            <label index="inserthorizontalrule" type="integer">219272101</label>
+            <label index="createlink" type="integer">147436421</label>
+            <label index="insertimage" type="integer">146708638</label>
+            <label index="inserttable" type="integer">111652295</label>
+            <label index="htmlmode" type="integer">150105834</label>
+            <label index="popupeditor" type="integer">108884081</label>
+            <label index="about" type="integer">93541894</label>
+            <label index="showhelp" type="integer">224256507</label>
+            <label index="textindicator" type="integer">123554729</label>
+            <label index="undo" type="integer">255659</label>
+            <label index="redo" type="integer">251355262</label>
+            <label index="cut" type="integer">205223202</label>
+            <label index="copy" type="integer">248051882</label>
+            <label index="paste" type="integer">226578047</label>
+            <label index="lefttoright" type="integer">1013968</label>
+            <label index="righttoleft" type="integer">206570525</label>
+            <label index="removeformat" type="integer">187827535</label>
+            <label index="print" type="integer">177493560</label>
+        </languageKey>
+        <languageKey index="nl" type="array">
+            <label index="bold" type="integer">18137861</label>
+            <label index="italic" type="integer">30962801</label>
+            <label index="underline" type="integer">139620890</label>
+            <label index="strikethrough" type="integer">153527579</label>
+            <label index="subscript" type="integer">153638286</label>
+            <label index="superscript" type="integer">103903129</label>
+            <label index="justifyleft" type="integer">103035233</label>
+            <label index="justifycenter" type="integer">155705392</label>
+            <label index="justifyright" type="integer">75036879</label>
+            <label index="justifyfull" type="integer">6823521</label>
+            <label index="insertorderedlist" type="integer">127299663</label>
+            <label index="insertunorderedlist" type="integer">77997053</label>
+            <label index="outdent" type="integer">245172929</label>
+            <label index="indent" type="integer">67026639</label>
+            <label index="forecolor" type="integer">35667911</label>
+            <label index="hilitecolor" type="integer">123630626</label>
+            <label index="inserthorizontalrule" type="integer">219272101</label>
+            <label index="createlink" type="integer">147436421</label>
+            <label index="insertimage" type="integer">146708638</label>
+            <label index="inserttable" type="integer">111652295</label>
+            <label index="htmlmode" type="integer">150105834</label>
+            <label index="popupeditor" type="integer">108884081</label>
+            <label index="about" type="integer">93541894</label>
+            <label index="showhelp" type="integer">224256507</label>
+            <label index="textindicator" type="integer">123554729</label>
+            <label index="undo" type="integer">255659</label>
+            <label index="redo" type="integer">251355262</label>
+            <label index="cut" type="integer">205223202</label>
+            <label index="copy" type="integer">248051882</label>
+            <label index="paste" type="integer">226578047</label>
+            <label index="lefttoright" type="integer">1013968</label>
+            <label index="righttoleft" type="integer">206570525</label>
+            <label index="removeformat" type="integer">187827535</label>
+            <label index="print" type="integer">177493560</label>
+            <label index="killword" type="integer">228066956</label>
+            <label index="fontname" type="integer">26539321</label>
+            <label index="fontsize" type="integer">206127878</label>
+            <label index="formatblock" type="integer">4875199</label>
+        </languageKey>
+        <languageKey index="cz" type="array">
+            <label index="bold" type="integer">18137861</label>
+            <label index="italic" type="integer">30962801</label>
+            <label index="underline" type="integer">139620890</label>
+            <label index="strikethrough" type="integer">153527579</label>
+            <label index="subscript" type="integer">153638286</label>
+            <label index="superscript" type="integer">103903129</label>
+            <label index="justifyleft" type="integer">103035233</label>
+            <label index="justifycenter" type="integer">155705392</label>
+            <label index="justifyright" type="integer">75036879</label>
+            <label index="justifyfull" type="integer">6823521</label>
+            <label index="insertorderedlist" type="integer">127299663</label>
+            <label index="insertunorderedlist" type="integer">77997053</label>
+            <label index="outdent" type="integer">245172929</label>
+            <label index="indent" type="integer">67026639</label>
+            <label index="forecolor" type="integer">35667911</label>
+            <label index="hilitecolor" type="integer">123630626</label>
+            <label index="inserthorizontalrule" type="integer">219272101</label>
+            <label index="createlink" type="integer">147436421</label>
+            <label index="insertimage" type="integer">146708638</label>
+            <label index="inserttable" type="integer">111652295</label>
+            <label index="htmlmode" type="integer">150105834</label>
+            <label index="popupeditor" type="integer">108884081</label>
+            <label index="about" type="integer">93541894</label>
+            <label index="showhelp" type="integer">224256507</label>
+            <label index="textindicator" type="integer">123554729</label>
+            <label index="undo" type="integer">255659</label>
+            <label index="redo" type="integer">251355262</label>
+            <label index="cut" type="integer">205223202</label>
+            <label index="copy" type="integer">248051882</label>
+            <label index="paste" type="integer">226578047</label>
+            <label index="lefttoright" type="integer">1013968</label>
+            <label index="righttoleft" type="integer">206570525</label>
+            <label index="removeformat" type="integer">187827535</label>
+            <label index="print" type="integer">177493560</label>
+            <label index="killword" type="integer">228066956</label>
+            <label index="fontname" type="integer">26539321</label>
+            <label index="fontsize" type="integer">206127878</label>
+            <label index="formatblock" type="integer">4875199</label>
+        </languageKey>
+        <languageKey index="pl" type="array">
+        </languageKey>
+        <languageKey index="si" type="array">
+        </languageKey>
+        <languageKey index="fi" type="array">
+            <label index="bold" type="integer">18137861</label>
+            <label index="italic" type="integer">30962801</label>
+            <label index="underline" type="integer">139620890</label>
+            <label index="strikethrough" type="integer">153527579</label>
+            <label index="subscript" type="integer">153638286</label>
+            <label index="superscript" type="integer">103903129</label>
+            <label index="justifyleft" type="integer">103035233</label>
+            <label index="justifycenter" type="integer">155705392</label>
+            <label index="justifyright" type="integer">75036879</label>
+            <label index="justifyfull" type="integer">6823521</label>
+            <label index="insertorderedlist" type="integer">127299663</label>
+            <label index="insertunorderedlist" type="integer">77997053</label>
+            <label index="outdent" type="integer">245172929</label>
+            <label index="indent" type="integer">67026639</label>
+            <label index="forecolor" type="integer">35667911</label>
+            <label index="hilitecolor" type="integer">123630626</label>
+            <label index="inserthorizontalrule" type="integer">219272101</label>
+            <label index="createlink" type="integer">147436421</label>
+            <label index="insertimage" type="integer">146708638</label>
+            <label index="inserttable" type="integer">111652295</label>
+            <label index="htmlmode" type="integer">150105834</label>
+            <label index="popupeditor" type="integer">108884081</label>
+            <label index="about" type="integer">93541894</label>
+            <label index="showhelp" type="integer">224256507</label>
+            <label index="textindicator" type="integer">123554729</label>
+            <label index="undo" type="integer">255659</label>
+            <label index="redo" type="integer">251355262</label>
+            <label index="cut" type="integer">205223202</label>
+            <label index="copy" type="integer">248051882</label>
+            <label index="paste" type="integer">226578047</label>
+            <label index="lefttoright" type="integer">1013968</label>
+            <label index="righttoleft" type="integer">206570525</label>
+            <label index="removeformat" type="integer">187827535</label>
+            <label index="print" type="integer">177493560</label>
+            <label index="killword" type="integer">228066956</label>
+            <label index="fontname" type="integer">26539321</label>
+            <label index="fontsize" type="integer">206127878</label>
+            <label index="formatblock" type="integer">4875199</label>
+        </languageKey>
+        <languageKey index="tr" type="array">
+        </languageKey>
+        <languageKey index="se" type="array">
+        </languageKey>
+        <languageKey index="pt" type="array">
+        </languageKey>
+        <languageKey index="ru" type="array">
+            <label index="bold" type="integer">18137861</label>
+            <label index="italic" type="integer">30962801</label>
+            <label index="underline" type="integer">139620890</label>
+            <label index="strikethrough" type="integer">153527579</label>
+            <label index="subscript" type="integer">153638286</label>
+            <label index="superscript" type="integer">103903129</label>
+            <label index="justifyleft" type="integer">103035233</label>
+            <label index="justifycenter" type="integer">155705392</label>
+            <label index="justifyright" type="integer">75036879</label>
+            <label index="justifyfull" type="integer">6823521</label>
+            <label index="insertorderedlist" type="integer">127299663</label>
+            <label index="insertunorderedlist" type="integer">77997053</label>
+            <label index="outdent" type="integer">245172929</label>
+            <label index="indent" type="integer">67026639</label>
+            <label index="forecolor" type="integer">35667911</label>
+            <label index="hilitecolor" type="integer">123630626</label>
+            <label index="inserthorizontalrule" type="integer">219272101</label>
+            <label index="createlink" type="integer">147436421</label>
+            <label index="insertimage" type="integer">146708638</label>
+            <label index="inserttable" type="integer">111652295</label>
+            <label index="htmlmode" type="integer">150105834</label>
+            <label index="popupeditor" type="integer">108884081</label>
+            <label index="about" type="integer">93541894</label>
+            <label index="showhelp" type="integer">224256507</label>
+            <label index="textindicator" type="integer">123554729</label>
+            <label index="undo" type="integer">255659</label>
+            <label index="redo" type="integer">251355262</label>
+            <label index="cut" type="integer">205223202</label>
+            <label index="copy" type="integer">248051882</label>
+            <label index="paste" type="integer">226578047</label>
+            <label index="lefttoright" type="integer">1013968</label>
+            <label index="righttoleft" type="integer">206570525</label>
+            <label index="removeformat" type="integer">187827535</label>
+            <label index="print" type="integer">177493560</label>
+            <label index="killword" type="integer">228066956</label>
+            <label index="fontname" type="integer">26539321</label>
+            <label index="fontsize" type="integer">206127878</label>
+            <label index="formatblock" type="integer">4875199</label>
+        </languageKey>
+        <languageKey index="ro" type="array">
+        </languageKey>
+        <languageKey index="ch" type="array">
+        </languageKey>
+        <languageKey index="sk" type="array">
+            <label index="bold" type="integer">18137861</label>
+            <label index="italic" type="integer">30962801</label>
+            <label index="underline" type="integer">139620890</label>
+            <label index="strikethrough" type="integer">153527579</label>
+            <label index="subscript" type="integer">153638286</label>
+            <label index="superscript" type="integer">103903129</label>
+            <label index="justifyleft" type="integer">103035233</label>
+            <label index="justifycenter" type="integer">155705392</label>
+            <label index="justifyright" type="integer">75036879</label>
+            <label index="justifyfull" type="integer">6823521</label>
+            <label index="insertorderedlist" type="integer">127299663</label>
+            <label index="insertunorderedlist" type="integer">77997053</label>
+            <label index="outdent" type="integer">245172929</label>
+            <label index="indent" type="integer">67026639</label>
+            <label index="forecolor" type="integer">35667911</label>
+            <label index="hilitecolor" type="integer">123630626</label>
+            <label index="inserthorizontalrule" type="integer">219272101</label>
+            <label index="createlink" type="integer">147436421</label>
+            <label index="insertimage" type="integer">146708638</label>
+            <label index="inserttable" type="integer">111652295</label>
+            <label index="htmlmode" type="integer">150105834</label>
+            <label index="popupeditor" type="integer">108884081</label>
+            <label index="about" type="integer">93541894</label>
+            <label index="showhelp" type="integer">224256507</label>
+            <label index="textindicator" type="integer">123554729</label>
+            <label index="undo" type="integer">255659</label>
+            <label index="redo" type="integer">251355262</label>
+            <label index="cut" type="integer">205223202</label>
+            <label index="copy" type="integer">248051882</label>
+            <label index="paste" type="integer">226578047</label>
+            <label index="lefttoright" type="integer">1013968</label>
+            <label index="righttoleft" type="integer">206570525</label>
+            <label index="removeformat" type="integer">187827535</label>
+            <label index="print" type="integer">177493560</label>
+            <label index="killword" type="integer">228066956</label>
+            <label index="fontname" type="integer">26539321</label>
+            <label index="fontsize" type="integer">206127878</label>
+            <label index="formatblock" type="integer">4875199</label>
+        </languageKey>
+        <languageKey index="lt" type="array">
+        </languageKey>
+        <languageKey index="is" type="array">
+        </languageKey>
+        <languageKey index="hr" type="array">
+        </languageKey>
+        <languageKey index="hu" type="array">
+        </languageKey>
+        <languageKey index="gl" type="array">
+        </languageKey>
+        <languageKey index="th" type="array">
+        </languageKey>
+        <languageKey index="gr" type="array">
+        </languageKey>
+        <languageKey index="hk" type="array">
+        </languageKey>
+        <languageKey index="eu" type="array">
+        </languageKey>
+        <languageKey index="bg" type="array">
+        </languageKey>
+        <languageKey index="br" type="array">
+            <label index="bold" type="integer">18137861</label>
+            <label index="italic" type="integer">30962801</label>
+            <label index="underline" type="integer">139620890</label>
+            <label index="strikethrough" type="integer">153527579</label>
+            <label index="subscript" type="integer">153638286</label>
+            <label index="superscript" type="integer">103903129</label>
+            <label index="justifyleft" type="integer">103035233</label>
+            <label index="justifycenter" type="integer">155705392</label>
+            <label index="justifyright" type="integer">75036879</label>
+            <label index="justifyfull" type="integer">6823521</label>
+            <label index="insertorderedlist" type="integer">127299663</label>
+            <label index="insertunorderedlist" type="integer">77997053</label>
+            <label index="outdent" type="integer">245172929</label>
+            <label index="indent" type="integer">67026639</label>
+            <label index="forecolor" type="integer">35667911</label>
+            <label index="hilitecolor" type="integer">123630626</label>
+            <label index="inserthorizontalrule" type="integer">219272101</label>
+            <label index="createlink" type="integer">147436421</label>
+            <label index="insertimage" type="integer">146708638</label>
+            <label index="inserttable" type="integer">111652295</label>
+            <label index="htmlmode" type="integer">150105834</label>
+            <label index="popupeditor" type="integer">108884081</label>
+            <label index="about" type="integer">93541894</label>
+            <label index="showhelp" type="integer">224256507</label>
+            <label index="textindicator" type="integer">123554729</label>
+            <label index="undo" type="integer">255659</label>
+            <label index="redo" type="integer">251355262</label>
+            <label index="cut" type="integer">205223202</label>
+            <label index="copy" type="integer">248051882</label>
+            <label index="paste" type="integer">226578047</label>
+            <label index="lefttoright" type="integer">1013968</label>
+            <label index="righttoleft" type="integer">206570525</label>
+            <label index="removeformat" type="integer">187827535</label>
+            <label index="print" type="integer">177493560</label>
+            <label index="killword" type="integer">228066956</label>
+            <label index="fontname" type="integer">26539321</label>
+            <label index="fontsize" type="integer">206127878</label>
+            <label index="formatblock" type="integer">4875199</label>
+        </languageKey>
+        <languageKey index="et" type="array">
+        </languageKey>
+        <languageKey index="ar" type="array">
+        </languageKey>
+        <languageKey index="he" type="array">
+        </languageKey>
+        <languageKey index="ua" type="array">
+        </languageKey>
+        <languageKey index="lv" type="array">
+        </languageKey>
+        <languageKey index="jp" type="array">
+        </languageKey>
+        <languageKey index="vn" type="array">
+        </languageKey>
+        <languageKey index="ca" type="array">
+        </languageKey>
+        <languageKey index="ba" type="array">
+        </languageKey>
+        <languageKey index="kr" type="array">
+        </languageKey>
+        <languageKey index="eo" type="array">
+        </languageKey>
+        <languageKey index="my" type="array">
+        </languageKey>
+        <languageKey index="hi" type="array">
+        </languageKey>
+    </orig_hash>
+    <orig_text type="array">
+        <languageKey index="default" type="array">
+        </languageKey>
+        <languageKey index="dk" type="array">
+        </languageKey>
+        <languageKey index="de" type="array">
+        </languageKey>
+        <languageKey index="no" type="array">
+        </languageKey>
+        <languageKey index="it" type="array">
+        </languageKey>
+        <languageKey index="fr" type="array">
+        </languageKey>
+        <languageKey index="es" type="array">
+        </languageKey>
+        <languageKey index="nl" type="array">
+        </languageKey>
+        <languageKey index="cz" type="array">
+        </languageKey>
+        <languageKey index="pl" type="array">
+        </languageKey>
+        <languageKey index="si" type="array">
+        </languageKey>
+        <languageKey index="fi" type="array">
+        </languageKey>
+        <languageKey index="tr" type="array">
+        </languageKey>
+        <languageKey index="se" type="array">
+        </languageKey>
+        <languageKey index="pt" type="array">
+        </languageKey>
+        <languageKey index="ru" type="array">
+        </languageKey>
+        <languageKey index="ro" type="array">
+        </languageKey>
+        <languageKey index="ch" type="array">
+        </languageKey>
+        <languageKey index="sk" type="array">
+        </languageKey>
+        <languageKey index="lt" type="array">
+        </languageKey>
+        <languageKey index="is" type="array">
+        </languageKey>
+        <languageKey index="hr" type="array">
+        </languageKey>
+        <languageKey index="hu" type="array">
+        </languageKey>
+        <languageKey index="gl" type="array">
+        </languageKey>
+        <languageKey index="th" type="array">
+        </languageKey>
+        <languageKey index="gr" type="array">
+        </languageKey>
+        <languageKey index="hk" type="array">
+        </languageKey>
+        <languageKey index="eu" type="array">
+        </languageKey>
+        <languageKey index="bg" type="array">
+        </languageKey>
+        <languageKey index="br" type="array">
+        </languageKey>
+        <languageKey index="et" type="array">
+        </languageKey>
+        <languageKey index="ar" type="array">
+        </languageKey>
+        <languageKey index="he" type="array">
+        </languageKey>
+        <languageKey index="ua" type="array">
+        </languageKey>
+        <languageKey index="lv" type="array">
+        </languageKey>
+        <languageKey index="jp" type="array">
+        </languageKey>
+        <languageKey index="vn" type="array">
+        </languageKey>
+        <languageKey index="ca" type="array">
+        </languageKey>
+        <languageKey index="ba" type="array">
+        </languageKey>
+        <languageKey index="kr" type="array">
+        </languageKey>
+        <languageKey index="eo" type="array">
+        </languageKey>
+        <languageKey index="my" type="array">
+        </languageKey>
+        <languageKey index="hi" type="array">
+        </languageKey>
+    </orig_text>
+</T3locallang>

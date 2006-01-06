@@ -38,7 +38,7 @@ require ('conf.php');
 require ($BACK_PATH.'init.php');
 require ($BACK_PATH.'template.php');
 require_once (PATH_t3lib.'class.t3lib_parsehtml.php');
-//$LANG->includeLLFile('EXT:rtehtmlarea/mod6/locallang.php');
+//$LANG->includeLLFile('EXT:rtehtmlarea/mod6/locallang.xml');
 
 
 class tx_rtehtmlarea_parse_html {

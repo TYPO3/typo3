@@ -2,7 +2,7 @@
 if (!defined ('TYPO3_MODE')) 	die ('Access denied.');
 	$TCA['tx_rtehtmlarea_acronym'] = Array (
 	'ctrl' => Array (
-		'title' => 'LLL:EXT:rtehtmlarea/locallang_db.php:tx_rtehtmlarea_acronym',
+		'title' => 'LLL:EXT:rtehtmlarea/locallang_db.xml:tx_rtehtmlarea_acronym',
 		'label' => 'term',
 		'default_sortby' => 'ORDER BY term',
 		'sortby' => 'sorting',

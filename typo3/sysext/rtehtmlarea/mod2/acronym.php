@@ -37,7 +37,7 @@ unset($MCONF);
 require ('conf.php');
 require ($BACK_PATH.'init.php');
 require ($BACK_PATH.'template.php');
-$LANG->includeLLFile('EXT:rtehtmlarea/mod2/locallang.php');
+$LANG->includeLLFile('EXT:rtehtmlarea/mod2/locallang.xml');
 
 class tx_rtehtmlarea_acronym {
 	var $content;

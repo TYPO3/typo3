@@ -3,7 +3,7 @@
 *  Copyright notice
 *
 *  (c) 1999-2004 Kasper Skaarhoj (kasperYYYY@typo3.com)
-*  (c) 2005 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
+*  (c) 2005-2006 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -129,7 +129,7 @@ require_once (PATH_t3lib.'class.t3lib_foldertree.php');
 require_once (PATH_t3lib.'class.t3lib_stdgraphic.php');
 require_once (PATH_t3lib.'class.t3lib_basicfilefunc.php');
 
-$LANG->includeLLFile('EXT:rtehtmlarea/mod3/locallang.php');
+$LANG->includeLLFile('EXT:rtehtmlarea/mod3/locallang.xml');
 
 	// Include classes
 require_once (PATH_t3lib.'class.t3lib_page.php');

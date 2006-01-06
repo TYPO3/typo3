@@ -74,7 +74,7 @@ require ($BACK_PATH.'template.php');
 require_once (PATH_t3lib.'class.t3lib_foldertree.php');
 require_once (PATH_t3lib.'class.t3lib_stdgraphic.php');
 require_once (PATH_t3lib.'class.t3lib_basicfilefunc.php');
-$LANG->includeLLFile('EXT:rtehtmlarea/mod4/locallang.php');
+$LANG->includeLLFile('EXT:rtehtmlarea/mod4/locallang.xml');
 
 /**
  * Local Folder Tree

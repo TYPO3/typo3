@@ -1,0 +1,559 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+    <meta type="array">
+        <description>Labels for messages of htmlArea RTE</description>
+        <type>module</type>
+        <csh_table></csh_table>
+        <fileId>EXT:rtehtmlarea/htmlarea/locallang_msg.xml</fileId>
+        <labelContext type="array">
+            <label index="Path"></label>
+            <label index="TEXT_MODE"></label>
+            <label index="ActiveX-required"></label>
+            <label index="HTML-document-not-well-formed"></label>
+            <label index="Moz-Clipboard"></label>
+            <label index="Moz-Extension"></label>
+            <label index="Moz-Extension-Success"></label>
+            <label index="Moz-Extension-Failure"></label>
+            <label index="Moz-Extension-Install-Not-Enabled"></label>
+            <label index="Allow-Clipboard-Helper-Extension"></label>
+            <label index="Mozilla-Org-Install-Not-Enabled"></label>
+            <label index="Allow-Clipboard-Helper-Extension-Success"></label>
+        </labelContext>
+    </meta>
+    <data type="array">
+        <languageKey index="default" type="array">
+            <label index="Path">Path</label>
+            <label index="TEXT_MODE">You are in TEXT MODE.  Use the [&lt;&gt;] button to switch back to WYSIWYG.</label>
+            <label index="ActiveX-required">Loading the editor in Internet Explorer requires the execution of ActiveX controls to be enabled.</label>
+            <label index="HTML-document-not-well-formed">The HTML document is not well-formed.</label>
+            <label index="Moz-Clipboard">Unprivileged scripts cannot access Cut/Copy/Paste programatically for security reasons. Click OK to see a technical note at mozilla.org which shows you how to allow a script to access the clipboard.</label>
+            <label index="Moz-Extension">For security reasons, unprivileged applications cannot access the clipboard. Click OK to install a component that will enable applications from this site to access the clipboard and perform copy, cut and paste operations.</label>
+            <label index="Moz-Extension-Success">The installation was successful. You need to exit and restart your browser for the change to take effect.</label>
+            <label index="Moz-Extension-Failure">Sorry, the installation failed.</label>
+            <label index="Moz-Extension-Install-Not-Enabled">The installation cannot be performed. Please change your browser preferences in order to allow installation of sofware from this site.</label>
+            <label index="Allow-Clipboard-Helper-Extension">For security reasons, unprivileged applications cannot access the clipboard. Click OK to install a component that will enable you to specify the sites or pages that will be allowed to access the clipboard and perform copy, cut and paste operations.</label>
+            <label index="Mozilla-Org-Install-Not-Enabled">The installation cannot be performed. Please change your browser preferences in order to allow installation of sofware from http://ftp.mozilla.org.</label>
+            <label index="Allow-Clipboard-Helper-Extension-Success">The installation was successful. You need to exit and restart your browser for the change to take effect. Afterwards, use the AllowClipboard Helper from the tools menu to allow specific sites to use the clipboard.</label>
+        </languageKey>
+        <languageKey index="dk" type="array">
+            <label index="Path">Sti</label>
+            <label index="TEXT_MODE">Du er i TEKST TILSTAND. Benyt [&lt;&gt;] knappen for at skifte til WYSIWYG.</label>
+            <label index="ActiveX-required">Indlæsning af editoren i Internet Explorer kræver at eksekvering af ActiveX kontroller er slået til.</label>
+            <label index="HTML-document-not-well-formed">HTML dokumentet indeholder fejl.</label>
+            <label index="Moz-Clipboard">Uprivilligerede scripts kan ikke tilgå klip/kopiér/indsæt af sikkerheds grunde. Klik OK for at læse et teknisk notat (på engelsk) på mozilla.org, som også viser dig hvordan du kan tillade et script at tilgå klippebordet.</label>
+            <label index="Moz-Extension">Af sikkerhedsmæssige årsager, kan uprivilligerede applikationer ikke tilgå klippebordet. Klik OK for at installere et komponent der vil tillade applikationer fra dette websted i at tilgå klippebordet og udføre klip/kopiér og indsæt.</label>
+            <label index="Moz-Extension-Success">Installationen var succesfuld. Du skal genstarte din browser for at ændringer træder i kraft.</label>
+            <label index="Moz-Extension-Failure">Beklager, installationen fejlede.</label>
+            <label index="Moz-Extension-Install-Not-Enabled">Installationen kan ikke gennemføres. Du skal ændre din browsers indstillinger for at kunne installere software fra dette websted.</label>
+            <label index="Allow-Clipboard-Helper-Extension">Af sikkerhedshensyn kan uprivilligerede applikationer ikke tilgå klippebordet. Klik OK for at installere et ufarligt komponent som giver dig muligheder for at aktivere de websteder du ønsker skal kunne tilgå klippebordet og gennemføre klip/kopiér og indsæt operationer.</label>
+            <label index="Mozilla-Org-Install-Not-Enabled">Installationen kan ikke gennemføres. Du bedes ændre dine browserindstillinger for at tillade download og installaton af software fra http://ftp.mozilla.org.</label>
+            <label index="Allow-Clipboard-Helper-Extension-Success">Installationen var succesfuld. Du skal genstarte din browser for at ændringer træder i kraft. Herefter kan du bruge AllowClipboard Helper fra værktøjsmenuen, for at tillade at specifikke websteder må benytte klippebordet.</label>
+        </languageKey>
+        <languageKey index="de" type="array">
+            <label index="Path">Pfad</label>
+            <label index="TEXT_MODE">Sie befinden sich im TEXT-MODUS. Benutzen Sie den [&lt;&gt;]-Knopf, um zurück in den WYSIWYG-Modus zu wechseln.</label>
+            <label index="ActiveX-required">Wenn Sie den Editor innerhalb des Internet Explorers verwenden wollen, müssen Sie ActiveX Controls zulassen.</label>
+            <label index="HTML-document-not-well-formed">Das HTML-Dokument ist nicht wohlgeformt.</label>
+            <label index="Moz-Clipboard">Unprivilegierte Skripte können aus Sicherheitsgründen Ausschneiden/Kopieren/Einfügen nicht nutzen. Klicken Sie auf OK, um  einen technischen Hinweis von mozilla.org (auf englisch) zu lesen , der Ihnen zeigt, wie Sie Skripten den Zugriff  auf die Zwischenablage ermöglichen.</label>
+            <label index="Moz-Extension">Aus Sicherheitsgründen dürfen unprivilegierte Applikationen nicht auf die Zwischenablage zugreifen. Klicken Sie auf OK, um eine Komponente zu installieren, die Programmen dieser TYPO3-Site erlaubt, auf die Zwischenablage zuzugreifen und Kopieren, Ausschneiden und Einfügen zu verwenden.</label>
+            <label index="Moz-Extension-Success">Die Installation war erfolgreich. Sie müssen Ihren Browser verlassen und erneut starten, damit die Änderungen wirksam werden.</label>
+            <label index="Moz-Extension-Failure">Die Installation war leider nicht erfolgreich.</label>
+            <label index="Moz-Extension-Install-Not-Enabled">Die Installation kann nicht durchgeführt werden. Bitte ändern Sie Ihre Browser-Einstellungen so, dass eine Software-Installation von dieser TYPO3-Site zugelassen wird.</label>
+            <label index="Allow-Clipboard-Helper-Extension">Aus Sicherheitsgründen dürfen unprivilegierte Applikationen nicht auf die Zwischenablage zugreifen. Klicken Sie auf OK, um eine Komponente zu installieren, die Programmen dieser TYPO3-Site erlaubt, auf die Zwischenablage zuzugreifen. Klicken Sie auf OK, um eine Komponente zu installieren, die Programmen dieser TYPO3-Site erlaubt, auf die Zwischenablage zuzugreifen und Kopieren, Ausschneiden und Einfügen zu verwenden.</label>
+            <label index="Mozilla-Org-Install-Not-Enabled">Die Installation kann nicht durchgeführt werden. Bitte ändern Sie Ihre Browser-Einstellungen so, dass eine Software-Installation von der Site http://ftp.mozilla.org zugelassen wird.</label>
+            <label index="Allow-Clipboard-Helper-Extension-Success">Die Installation war erfolgreich. Sie müssen Ihren Browser verlassen und erneut starten, damit die Änderungen wirksam werden. Wählen Sie dann in Ihrem Browser unter [Extras | AllowClipboard Helper] diejenigen Sites aus, denen der Zugriff auf die Zwischenablage gewährt werden soll.</label>
+        </languageKey>
+        <languageKey index="no" type="array">
+            <label index="Path">Sti</label>
+            <label index="TEXT_MODE">Du er i TEKSTMODUS. Bruk &quot;&lt;&gt;&quot;-knappen for å gå tilbake til WYSIWYG-modus.</label>
+            <label index="ActiveX-required">For at denne editoren skal kunne brukes i Internet Explorer må noen ActiveX-kontroller bli aktivert.</label>
+            <label index="HTML-document-not-well-formed">HTML-dokumentet inneholder feil.</label>
+            <label index="Moz-Clipboard">Upriviligerte programmer kan ikke få tilgang til &quot;klipp ut&quot;/&quot;kopier&quot;/&quot;lim inn&quot; av sikkerhetshensyn. Klikk på OK for å se en teknisk notis på Mozilla.org, som viser deg hvordan du kan tillate tilgang til utklipp.</label>
+            <label index="Moz-Extension">Av sikkerhetshensyn har ikke upriviligerte progremmer tilgang til utklipp. Klikk OK for å installere en komponent som gir programmer på dette nettstedet mulighet til å hente utklipp fra maskinen din og gjøre &quot;kopier&quot;-, &quot;klipp ut&quot;- og &quot;lim inn&quot;-operasjoner.</label>
+            <label index="Moz-Extension-Success">Installasjonen gikk etter planen. Du må avslutte og starte nettleseren din på nytt for at endringen skal komme i funsjon.</label>
+            <label index="Moz-Extension-Failure">Beklager, installasjonen var mislykket.</label>
+            <label index="Moz-Extension-Install-Not-Enabled">Installasjonen kan ikke bli gjort. Vennligst endre instillingene i nettleseren din slik at du tillater installasjon av programvare fra dette nettstedet.</label>
+            <label index="Allow-Clipboard-Helper-Extension">Av sikkerhetshensyn kan ikke upriviligerte programmer ha adgang til utklipp. Klikk OK for å installere en komponent som vil gi deg mulighet til å spesifisere nettsteder og -sider som vil ha tilgang til utklipp og utføre &quot;kopier&quot;-, &quot;klipp ut&quot;- og &quot;lim inn&quot;-operasjoner.</label>
+            <label index="Mozilla-Org-Install-Not-Enabled">Installasjonen kan ikke bli gjort. Vennligst endre innstillingene i nettleseren din slik at den tillater programvareinstallasjon fra http://ftp.mozilla.org.</label>
+            <label index="Allow-Clipboard-Helper-Extension-Success">Installasjonen var vellykket. Du må avslutte og starte nettleseren din på nytt for at endringene skal vises. Etterpå kan du bruke AllowClipboard Helper fra Verktøy-menyen for å tillate spesifikke nettsteder tilgang til utklipp.</label>
+        </languageKey>
+        <languageKey index="it" type="array">
+            <label index="Path">Percorso</label>
+            <label index="TEXT_MODE">Sei in MODALITA' TESTO</label>
+            <label index="Moz-Clipboard">Scripts senza l'autorizzazione non possono utilizzare le funzioni Taglia/Copia/Incolla. Clicca OK per visualizzare una nota tecnica in mozilla.org che ti mostrerà come permettere ad uno script di accedere alla clipboard.</label>
+        </languageKey>
+        <languageKey index="fr" type="array">
+            <label index="Path">Chemin</label>
+            <label index="TEXT_MODE">Vous êtes en mode source HTML. Utilisez le bouton [&lt;&gt;] pour revenir au mode WYSIWIG.</label>
+            <label index="ActiveX-required">Pour charger l'éditeur dans Internet Explorer, l'exécution de contrôles ActiveX doit être permise.</label>
+            <label index="HTML-document-not-well-formed">Le document HTML n'est pas bien-formé.</label>
+            <label index="Moz-Clipboard">Pour des raisons de sécurité, les scripts sans privilèges ne peuvent utiliser Couper/Copier/Coller par programmation. Cliquez sur OK pour voir la note technique de mozilla.org qui vous indiquera comment accorder au script l'accès au presse-papiers.</label>
+            <label index="Moz-Extension">Pour des raisons de sécurité, les applications sans privilèges ne peuvent accéder au presse-papiers. Cliquez sur OK pour installer une composante qui permettra aux applications de ce site d'accéder au presse-papiers et de réaliser les opérations couper, copier et coller.</label>
+            <label index="Moz-Extension-Success">L'installation a réussi. Veuillez quitter et redémarrer votre fureteur pour que les changements puissent prendre effet.</label>
+            <label index="Moz-Extension-Failure">Désolé, l'installation a échoué.</label>
+            <label index="Moz-Extension-Install-Not-Enabled">L'installation ne peut pas être effectuée. Veuillez modifier les préférences de votre fureteur de façon à permettre l'installation de logiciel en provenance de ce site.</label>
+            <label index="Allow-Clipboard-Helper-Extension">Pour des raisons de sécurité, les applications sans privilèges ne peuvent accéder au presse-papiers. Cliquez sur OK pour installer une composante qui vous permettra de spécifier les sites ou pages qui pourront accéder au presse-papiers et réaliser les opérations couper, copier et coller.</label>
+            <label index="Mozilla-Org-Install-Not-Enabled">L'installation ne peut pas être effectuée. Veuillez modifier les préférences de votre fureteur de façon à permettre l'installation de logiciel en provenance de http://ftp.mozilla.org.</label>
+            <label index="Allow-Clipboard-Helper-Extension-Success">L'installation a réussi. Veuillez quitter et redémarrer votre fureteur pour que les changements puissent prendre effet. Utilisez ensuite l'option AllowClipboard Helper du menu Outils pour permettre aux sites de votre choix d'utiliser le presse-papiers.</label>
+        </languageKey>
+        <languageKey index="es" type="array">
+            <label index="Path">Vía</label>
+            <label index="TEXT_MODE">Está en MODO TEXTO. Utilice el botón [&lt;&gt;] para volver a WYSIWIG.</label>
+            <label index="ActiveX-required">Para cargar el editor en Internet Explorer, se requiere activar la ejecución de controles ActiveX.</label>
+            <label index="HTML-document-not-well-formed">El documento HTML no es bien-formado.</label>
+        </languageKey>
+        <languageKey index="nl" type="array">
+            <label index="Path">Pad</label>
+            <label index="TEXT_MODE">U bent in de TEKST MODE. Gebruik de [&lt;&gt;] knop om terug te schakelen naar WYSIWYG.</label>
+            <label index="ActiveX-required">Voor het laden van de editor in Internet Explorer is het noodzakelijk dat het uitvoeren van Active-X controls is aangezet.</label>
+            <label index="HTML-document-not-well-formed">Het HTML document is niet correct gestructureerd.</label>
+            <label index="Moz-Clipboard">Niet geautoriseerde scripts kunnen vanwege veiligheidsredenen geen geautomatiseerde toegang krijgen tot knippen, kopieren en plakken. Klik OK om een technische beschrijving op mozilla.org te lezen over goe een script toegang gegeven kan worden tot het klembord.</label>
+            <label index="Moz-Extension">In verband met de veiligheid kunnen niet geautoriseerde applicaties geen toegang krijgen tot het clipboard. Klik op OK om een component te installeren welke toegang mag krijgen tot het clipboard van deze TYPO3 site.</label>
+            <label index="Moz-Extension-Success">De installatie was succesvol. U moet uw browser afsluiten en opnieuw opstarten om de wijzigingen door te voeren.</label>
+            <label index="Moz-Extension-Failure">Helaas, de installatie is mislukt.</label>
+            <label index="Moz-Extension-Install-Not-Enabled">De installatie kan niet uitgevoerd worden. Pas de voorkeuren van uw browser aan zodat software installeren vanaf deze site mogelijk wordt.</label>
+            <label index="Allow-Clipboard-Helper-Extension">Vanwege veiligheidsredenen hebben niet geautoriseerde applicaties geen toegang tot het klembord. Klik op OK om een component te installeren waarmee u de websites of pagina's kunt instellen welke wel toegang krijgen tot het klipbord zodat u gebruik kunt maken van kopieeren, knippen en plakken.</label>
+            <label index="Mozilla-Org-Install-Not-Enabled">De installatie kan niet uitgevoerd worden. Pas de instellingen van uw browser aan zodat installatie van software mogelijk wordt vanaf http://ftp.mozilla.org</label>
+            <label index="Allow-Clipboard-Helper-Extension-Success">De installatie was succesvol. U moet uw browser afsluiten en opnieuw opstarten om de wijzigingen door te voeren. Hierna kunt u in uw browser aangeven welke site gebruik kunnen maken van uw klembord.</label>
+        </languageKey>
+        <languageKey index="cz" type="array">
+            <label index="Path">Cesta</label>
+            <label index="TEXT_MODE">Jste v TEXTOVÉM MÓDU. Použijte tlačítko [&lt;&gt;] pro návrat do vizuálního (WYSIWYG) módu</label>
+            <label index="ActiveX-required">Načtení editoru v Internet Exploreru vyžaduje povolené spouštění ActiveX komponent.</label>
+            <label index="HTML-document-not-well-formed">Tento HTML dokument nemá správnou syntaxi.</label>
+            <label index="Moz-Clipboard">Skript nemůže z bezpečnostních důvodů přistupovat  k systémovým funkcím Vyjmout/Kopírovat/Vložit. Klikněte na OK pro prohlédnutí technických poznámek na mozilla.org, které vás navedou, jak tuto funkci v prohlížeči povolit.</label>
+            <label index="Moz-Extension">Skript nemůže z bezpečnostních důvodů přistupovat  k systémovým funkcím Vyjmout/Kopírovat/Vložit. Kliněte na OK pro instalaci doplňku pro Váš prohllížeč, který tuto funkci umožní.</label>
+            <label index="Moz-Extension-Success">Instalace proběhla úspěšně. Zavřete všechna okna prohlížeče a spusťte jej znovu pro aktivaci změn.</label>
+            <label index="Moz-Extension-Failure">Bohužel, instalace se nezdařila.</label>
+            <label index="Moz-Extension-Install-Not-Enabled">Instalace nemůže být provedena. Změňte prosím nastavení vašeho prohlížeče - je třeba povolit instalaci softwarových doplňků z této adresy.</label>
+            <label index="Allow-Clipboard-Helper-Extension">Skript nemůže z bezpečnostních důvodů přistupovat  k systémovým funkcím Vyjmout/Kopírovat/Vložit. Kliněte na OK pro instalaci doplňku pro Váš prohllížeč, který tuto funkci umožní.</label>
+            <label index="Mozilla-Org-Install-Not-Enabled">Instalace nemůže být provedena. Změňte prosím nastavení vašeho prohlížeče - je třeba povolit instalaci softwarových doplňků z adresy http://ftp.mozilla.org.</label>
+            <label index="Allow-Clipboard-Helper-Extension-Success">Instalace proběhla úspěšně. Zavřete všechna okna prohlížeče a spusťte jej znovu pro aktivaci změn. Po restartu prohlížeče použijte funkci AllowClipboard Helper z menu nástrojů pro povolení využívání systémové schránky pro tento web.</label>
+        </languageKey>
+        <languageKey index="pl" type="array">
+        </languageKey>
+        <languageKey index="si" type="array">
+        </languageKey>
+        <languageKey index="fi" type="array">
+            <label index="Path">Polku</label>
+            <label index="TEXT_MODE">Olet TEXT MODE tilassa. Käytä [&lt;&gt;] näppäintä siirtyksesi takaisin WYSIWYG tilaan.</label>
+            <label index="ActiveX-required">Ladattaessa muokkain Internet Exploreriin tulee ActiveX kontrollien suorittamisen olevan sallittuja.</label>
+            <label index="HTML-document-not-well-formed">HTML dokumentti ei ole oikein muotoiltu.</label>
+            <label index="Moz-Clipboard">Etuoikeudettomat skriptit eivät voi käyttää leikkaa/kopioi/liitä toimintoja ohjelmallisesti turvallisuussyistä. Näpsäytä OKta nähdäksesi teknisen huomautuksen mozilla.org sivuilla, joka näyttää sinulle kuinka voit sallia skriptin käyttävän leikepöytää.</label>
+            <label index="Moz-Extension">Turvallisuud syistä, eivät etuoikeudettomat sovellukset saa käyttää leikepöytää. Näpsäytä OK asentaaksesi komponentin joka oikeuttaa sovellutusten käyttää tätä Typo3 sivustoa leikepöydän käsittelyssä ja suoritta kopiointi, leikkaa ja liitä komentoja.</label>
+            <label index="Moz-Extension-Success">Installointi onnistui. Sinun tulee käynnistää selain uudestaan, jotta muutokset tulisivat voimaan.</label>
+            <label index="Moz-Extension-Failure">Valitan, installointi epäonnistui.</label>
+            <label index="Moz-Extension-Install-Not-Enabled">Installointia ei voida suorittaa. Ole ystävällinen ja muuta selaimesi oletuksia salliaksesi ohjelmiston installoinnin tältä TYPO3 sivustolta.</label>
+            <label index="Allow-Clipboard-Helper-Extension">Turvallisuussyistä, etuoikeudettomat sovellukset eivät voi käyttää leikepöytää. Näpsäytä OK näppäintä asentaaksesi komponentin joka mahdollistaa Sinun määrittelevän sivuston tai sivut joilta sallitaan leikepöydän käyttö sekä kopiointi, leikkaa ja liitä toimintojen suoritus.</label>
+            <label index="Mozilla-Org-Install-Not-Enabled">Asennusta ei voida suorittaa. Ole ystävällinen ja muuta selaimesi asetuksia voidaksesi suorittaa ohjelmiston asentamisen osoitteesta http://ftp.mozilla.org .</label>
+            <label index="Allow-Clipboard-Helper-Extension-Success">Asennus onnistui. Sinun tulee käynnistää selaimesi uudestaan jotta muutokset tulevat voimaan. Jälkeenpäin, käytä AllowClipboard Helper työkalu valikosta salliaksesi tiettyjen sivustojen käyttää leikepöytää.</label>
+        </languageKey>
+        <languageKey index="tr" type="array">
+        </languageKey>
+        <languageKey index="se" type="array">
+        </languageKey>
+        <languageKey index="pt" type="array">
+        </languageKey>
+        <languageKey index="ru" type="array">
+            <label index="Path">Путь</label>
+            <label index="TEXT_MODE">Вы работает в текстовом режиме. Чтобы перейти в визуальный режим, нажмите [&lt;&gt;]</label>
+            <label index="ActiveX-required">Для загрузки редактора в Internet Explorer необходимо, что бы выполнение компонентов ActiveX было разрешено.</label>
+            <label index="HTML-document-not-well-formed">HTML документ содержит ошибки (нарушены требования well-formed).</label>
+            <label index="Moz-Clipboard">Обычные (непривелигированые) скрипты не могут работать с буфером обмена (выполнять копирование/вырезание/вставку) из-за встроеной системы безопасности броузера. Нажмите ОК, чтобы узнать (на английском языке) как разрешить использование буфера обмена.</label>
+            <label index="Moz-Extension">Из соображений безопасности, непривилегированные приложения не могут использовать буфер обмена. Нажмите OK что бы установить компонент, который позволит приложениям с этого сайта использовать буфер обмена для операций копирования, вырезания и вставки.</label>
+            <label index="Moz-Extension-Success">Установка успешно завершена. Для того, что бы изменения вступили в силу Вам необходимо перезагрузить браузер.</label>
+            <label index="Moz-Extension-Failure">Извините, но установка неудалась.</label>
+            <label index="Moz-Extension-Install-Not-Enabled">Невозможно провести установку. Пожалуйста, измените настройки вашего браузера что бы разрешить установку программного обеспечения с этого сайта.</label>
+            <label index="Allow-Clipboard-Helper-Extension">Из соображений безопасности, непривилегированные приложения не могут использовать буфер обмена. Нажмите OK, что бы установить компонент, который позволит вам указать сайты или страницы, которым будет разрешён доступ к буферу обмена для операций копирования, вырезания и вставки.</label>
+            <label index="Mozilla-Org-Install-Not-Enabled">Невозможно провести установку. Пожалуйста, измените настройки вашего браузера что бы разрешить установку программного обеспечения с http://ftp.mozilla.org.</label>
+            <label index="Allow-Clipboard-Helper-Extension-Success">Установка успешно завершена. Для того, что бы изменения вступили в силу Вам необходимо перезагрузить браузер. После этого используйте помощник разрешения буфера обмена (AllowClipboard Helper) из меню инструментов, что бы указать сайты которым будет разрешён доступ к буферу обмена.</label>
+        </languageKey>
+        <languageKey index="ro" type="array">
+        </languageKey>
+        <languageKey index="ch" type="array">
+        </languageKey>
+        <languageKey index="sk" type="array">
+            <label index="Path">Cesta</label>
+            <label index="TEXT_MODE">Ste v textovom móde. Použite [&lt;&gt;] tlačítko na prepnutie do WYSIWYG.</label>
+            <label index="ActiveX-required">Načítanie editora do Internet Explorer-a vyžaduje povolenie prvkov ActiveX.</label>
+            <label index="HTML-document-not-well-formed">HTML dokument nie je správne vytvorený.</label>
+            <label index="Moz-Clipboard">Skripty bez privilégií nemôžu pristupovať k Vystrihnúť/Kopírovať/Vložiť kvôli bezpečnostným dôvodom. Kliknite OK pre zobrazenie technických podrobností na mozilla.org, ktoré Vám ukážu, ako povoliť prístup skriptov k obsahu schránky.</label>
+            <label index="Moz-Extension">Z bezpečnostných dôvodov, skripty bez privilégií nemôžu pristupovať k obsahu schránky. Kliknite OK pre doinštalovanie komponenty, ktorá povolí aplikáciám z tejto stránky pristupovať k obsahu schránky a vykonávať operácie Vystrihnúť/Kopírovať/Vložiť.</label>
+            <label index="Moz-Extension-Success">Inštalácia prebehla úspešne. Je potrebné zatvoriť a znova otvoriť Váš prehliadač, aby sa prejavili zmeny.</label>
+            <label index="Moz-Extension-Failure">Ľututjeme, inštalácia zlyhala.</label>
+            <label index="Moz-Extension-Install-Not-Enabled">Inštalácia nemohla byť vykonaná. Prosím, zmeňte nastavenia Vášho prehliadača, aby mohol byť inštalovaný software z tejto stránky.</label>
+            <label index="Allow-Clipboard-Helper-Extension">Z bezpečnostných dôvodov, skripty bez privilégií nemôžu pristupovať k obsahu schránky. Kliknite OK pre doinštalovanie komponenty, ktorá povolí aplikáciám z tejto stránky pristupovať k obsahu schránky a vykonávať operácie Vystrihnúť/Kopírovať/Vložiť.</label>
+            <label index="Mozilla-Org-Install-Not-Enabled">Inštalácia nemohla byť vykonaná.  Prosím, zmeňte nastavenia Vášho prehliadača, aby mohol byť inštalovaný software z http://ftp.mozilla.org.</label>
+            <label index="Allow-Clipboard-Helper-Extension-Success">Inštalácia prebehla úspešne. Je potrebné zatvoriť a znova otvoriť Váš prehliadač, aby sa prejavili zmeny. Následne použite AllowClipboard Helper z menu Nástroje, aby ste povolili používanie schránky z určitých stránok.</label>
+        </languageKey>
+        <languageKey index="lt" type="array">
+        </languageKey>
+        <languageKey index="is" type="array">
+        </languageKey>
+        <languageKey index="hr" type="array">
+        </languageKey>
+        <languageKey index="hu" type="array">
+        </languageKey>
+        <languageKey index="gl" type="array">
+        </languageKey>
+        <languageKey index="th" type="array">
+        </languageKey>
+        <languageKey index="gr" type="array">
+        </languageKey>
+        <languageKey index="hk" type="array">
+        </languageKey>
+        <languageKey index="eu" type="array">
+        </languageKey>
+        <languageKey index="bg" type="array">
+        </languageKey>
+        <languageKey index="br" type="array">
+            <label index="Path">Caminho</label>
+            <label index="TEXT_MODE">Você está no MODO TEXTO. Use os botões [&lt;&gt;] para voltar ao modo GRÁFICO.</label>
+            <label index="ActiveX-required">Para carregar o editor no Internet Explorer é necessária a execução de controles ActiveX.</label>
+            <label index="HTML-document-not-well-formed">O documento HTML não está bem formatado.</label>
+            <label index="Moz-Clipboard">Script sem privilégios não podem acessar as funcionalidades de Cortar/Copiar/Colar por razões de segurança. Clique em OK para ver uma nota técnica do site mozilla.org que mostra como permitir que um script acesse a área de transferência.</label>
+            <label index="Moz-Extension">Por razões de segurança, scripts não autorizados não podem acessar a área de transferência. Click em OK para instalar um componente que permitirá que aplicações deste site TYPO3 possam acessar a área de transferência, podendo assim copiar, cortar e colar.</label>
+            <label index="Moz-Extension-Success">A instação ocorreu com sucesso. Você precisa sair e reiniciar seu navegador para que as mudanças tenham efeito.</label>
+            <label index="Moz-Extension-Failure">Lamento, mas a instalação falhou.</label>
+            <label index="Moz-Extension-Install-Not-Enabled">A instalação não pode ser executada. Por favor mude as preferência de seu navegador para permitir a instalação de extensões deste site.</label>
+        </languageKey>
+        <languageKey index="et" type="array">
+        </languageKey>
+        <languageKey index="ar" type="array">
+        </languageKey>
+        <languageKey index="he" type="array">
+        </languageKey>
+        <languageKey index="ua" type="array">
+        </languageKey>
+        <languageKey index="lv" type="array">
+        </languageKey>
+        <languageKey index="jp" type="array">
+        </languageKey>
+        <languageKey index="vn" type="array">
+        </languageKey>
+        <languageKey index="ca" type="array">
+        </languageKey>
+        <languageKey index="ba" type="array">
+        </languageKey>
+        <languageKey index="kr" type="array">
+        </languageKey>
+        <languageKey index="eo" type="array">
+        </languageKey>
+        <languageKey index="my" type="array">
+        </languageKey>
+        <languageKey index="hi" type="array">
+        </languageKey>
+    </data>
+    <orig_hash type="array">
+        <languageKey index="default" type="array">
+            <label index="Path" type="integer">180814866</label>
+            <label index="TEXT_MODE" type="integer">198018641</label>
+            <label index="ActiveX-required" type="integer">47968430</label>
+            <label index="HTML-document-not-well-formed" type="integer">210864763</label>
+            <label index="Moz-Clipboard" type="integer">72587076</label>
+            <label index="Moz-Extension" type="integer">188084394</label>
+            <label index="Moz-Extension-Success" type="integer">117468361</label>
+            <label index="Moz-Extension-Failure" type="integer">209906991</label>
+            <label index="Moz-Extension-Install-Not-Enabled" type="integer">266145806</label>
+            <label index="Allow-Clipboard-Helper-Extension" type="integer">198542700</label>
+            <label index="Mozilla-Org-Install-Not-Enabled" type="integer">100556857</label>
+            <label index="Allow-Clipboard-Helper-Extension-Success" type="integer">197915820</label>
+        </languageKey>
+        <languageKey index="dk" type="array">
+            <label index="Path" type="integer">180814866</label>
+            <label index="TEXT_MODE" type="integer">198018641</label>
+            <label index="ActiveX-required" type="integer">47968430</label>
+            <label index="HTML-document-not-well-formed" type="integer">210864763</label>
+            <label index="Moz-Clipboard" type="integer">72587076</label>
+            <label index="Moz-Extension" type="integer">188084394</label>
+            <label index="Moz-Extension-Success" type="integer">117468361</label>
+            <label index="Moz-Extension-Failure" type="integer">209906991</label>
+            <label index="Moz-Extension-Install-Not-Enabled" type="integer">266145806</label>
+            <label index="Allow-Clipboard-Helper-Extension" type="integer">198542700</label>
+            <label index="Mozilla-Org-Install-Not-Enabled" type="integer">100556857</label>
+            <label index="Allow-Clipboard-Helper-Extension-Success" type="integer">197915820</label>
+        </languageKey>
+        <languageKey index="de" type="array">
+            <label index="Path" type="integer">180814866</label>
+            <label index="TEXT_MODE" type="integer">198018641</label>
+            <label index="ActiveX-required" type="integer">47968430</label>
+            <label index="HTML-document-not-well-formed" type="integer">210864763</label>
+            <label index="Moz-Clipboard" type="integer">72587076</label>
+            <label index="Moz-Extension" type="integer">188084394</label>
+            <label index="Moz-Extension-Success" type="integer">117468361</label>
+            <label index="Moz-Extension-Failure" type="integer">209906991</label>
+            <label index="Moz-Extension-Install-Not-Enabled" type="integer">266145806</label>
+            <label index="Allow-Clipboard-Helper-Extension" type="integer">198542700</label>
+            <label index="Mozilla-Org-Install-Not-Enabled" type="integer">100556857</label>
+            <label index="Allow-Clipboard-Helper-Extension-Success" type="integer">197915820</label>
+        </languageKey>
+        <languageKey index="no" type="array">
+            <label index="Path" type="integer">180814866</label>
+            <label index="TEXT_MODE" type="integer">198018641</label>
+            <label index="ActiveX-required" type="integer">47968430</label>
+            <label index="HTML-document-not-well-formed" type="integer">210864763</label>
+            <label index="Moz-Clipboard" type="integer">72587076</label>
+            <label index="Moz-Extension" type="integer">188084394</label>
+            <label index="Moz-Extension-Success" type="integer">117468361</label>
+            <label index="Moz-Extension-Failure" type="integer">209906991</label>
+            <label index="Moz-Extension-Install-Not-Enabled" type="integer">266145806</label>
+            <label index="Allow-Clipboard-Helper-Extension" type="integer">198542700</label>
+            <label index="Mozilla-Org-Install-Not-Enabled" type="integer">100556857</label>
+            <label index="Allow-Clipboard-Helper-Extension-Success" type="integer">197915820</label>
+        </languageKey>
+        <languageKey index="it" type="array">
+            <label index="Path" type="integer">180814866</label>
+            <label index="TEXT_MODE" type="integer">198018641</label>
+            <label index="Moz-Clipboard" type="integer">72587076</label>
+        </languageKey>
+        <languageKey index="fr" type="array">
+            <label index="Path" type="integer">180814866</label>
+            <label index="TEXT_MODE" type="integer">198018641</label>
+            <label index="ActiveX-required" type="integer">47968430</label>
+            <label index="HTML-document-not-well-formed" type="integer">210864763</label>
+            <label index="Moz-Clipboard" type="integer">72587076</label>
+            <label index="Moz-Extension" type="integer">188084394</label>
+            <label index="Moz-Extension-Success" type="integer">117468361</label>
+            <label index="Moz-Extension-Failure" type="integer">209906991</label>
+            <label index="Moz-Extension-Install-Not-Enabled" type="integer">266145806</label>
+            <label index="Allow-Clipboard-Helper-Extension" type="integer">198542700</label>
+            <label index="Mozilla-Org-Install-Not-Enabled" type="integer">100556857</label>
+            <label index="Allow-Clipboard-Helper-Extension-Success" type="integer">197915820</label>
+        </languageKey>
+        <languageKey index="es" type="array">
+            <label index="Path" type="integer">180814866</label>
+            <label index="TEXT_MODE" type="integer">198018641</label>
+            <label index="ActiveX-required" type="integer">47968430</label>
+            <label index="HTML-document-not-well-formed" type="integer">210864763</label>
+        </languageKey>
+        <languageKey index="nl" type="array">
+            <label index="Path" type="integer">180814866</label>
+            <label index="TEXT_MODE" type="integer">198018641</label>
+            <label index="ActiveX-required" type="integer">47968430</label>
+            <label index="HTML-document-not-well-formed" type="integer">210864763</label>
+            <label index="Moz-Clipboard" type="integer">72587076</label>
+            <label index="Moz-Extension" type="integer">188084394</label>
+            <label index="Moz-Extension-Success" type="integer">117468361</label>
+            <label index="Moz-Extension-Failure" type="integer">209906991</label>
+            <label index="Moz-Extension-Install-Not-Enabled" type="integer">266145806</label>
+            <label index="Allow-Clipboard-Helper-Extension" type="integer">198542700</label>
+            <label index="Mozilla-Org-Install-Not-Enabled" type="integer">100556857</label>
+            <label index="Allow-Clipboard-Helper-Extension-Success" type="integer">197915820</label>
+        </languageKey>
+        <languageKey index="cz" type="array">
+            <label index="Path" type="integer">180814866</label>
+            <label index="TEXT_MODE" type="integer">198018641</label>
+            <label index="ActiveX-required" type="integer">47968430</label>
+            <label index="HTML-document-not-well-formed" type="integer">210864763</label>
+            <label index="Moz-Clipboard" type="integer">72587076</label>
+            <label index="Moz-Extension" type="integer">188084394</label>
+            <label index="Moz-Extension-Success" type="integer">117468361</label>
+            <label index="Moz-Extension-Failure" type="integer">209906991</label>
+            <label index="Moz-Extension-Install-Not-Enabled" type="integer">266145806</label>
+            <label index="Allow-Clipboard-Helper-Extension" type="integer">198542700</label>
+            <label index="Mozilla-Org-Install-Not-Enabled" type="integer">100556857</label>
+            <label index="Allow-Clipboard-Helper-Extension-Success" type="integer">197915820</label>
+        </languageKey>
+        <languageKey index="pl" type="array">
+        </languageKey>
+        <languageKey index="si" type="array">
+        </languageKey>
+        <languageKey index="fi" type="array">
+            <label index="Path" type="integer">180814866</label>
+            <label index="TEXT_MODE" type="integer">198018641</label>
+            <label index="ActiveX-required" type="integer">47968430</label>
+            <label index="HTML-document-not-well-formed" type="integer">210864763</label>
+            <label index="Moz-Clipboard" type="integer">72587076</label>
+            <label index="Moz-Extension" type="integer">188084394</label>
+            <label index="Moz-Extension-Success" type="integer">117468361</label>
+            <label index="Moz-Extension-Failure" type="integer">209906991</label>
+            <label index="Moz-Extension-Install-Not-Enabled" type="integer">266145806</label>
+            <label index="Allow-Clipboard-Helper-Extension" type="integer">198542700</label>
+            <label index="Mozilla-Org-Install-Not-Enabled" type="integer">100556857</label>
+            <label index="Allow-Clipboard-Helper-Extension-Success" type="integer">197915820</label>
+        </languageKey>
+        <languageKey index="tr" type="array">
+        </languageKey>
+        <languageKey index="se" type="array">
+        </languageKey>
+        <languageKey index="pt" type="array">
+        </languageKey>
+        <languageKey index="ru" type="array">
+            <label index="Path" type="integer">180814866</label>
+            <label index="TEXT_MODE" type="integer">198018641</label>
+            <label index="ActiveX-required" type="integer">47968430</label>
+            <label index="HTML-document-not-well-formed" type="integer">210864763</label>
+            <label index="Moz-Clipboard" type="integer">72587076</label>
+            <label index="Moz-Extension" type="integer">188084394</label>
+            <label index="Moz-Extension-Success" type="integer">117468361</label>
+            <label index="Moz-Extension-Failure" type="integer">209906991</label>
+            <label index="Moz-Extension-Install-Not-Enabled" type="integer">266145806</label>
+            <label index="Allow-Clipboard-Helper-Extension" type="integer">198542700</label>
+            <label index="Mozilla-Org-Install-Not-Enabled" type="integer">100556857</label>
+            <label index="Allow-Clipboard-Helper-Extension-Success" type="integer">197915820</label>
+        </languageKey>
+        <languageKey index="ro" type="array">
+        </languageKey>
+        <languageKey index="ch" type="array">
+        </languageKey>
+        <languageKey index="sk" type="array">
+            <label index="Path" type="integer">180814866</label>
+            <label index="TEXT_MODE" type="integer">198018641</label>
+            <label index="ActiveX-required" type="integer">47968430</label>
+            <label index="HTML-document-not-well-formed" type="integer">210864763</label>
+            <label index="Moz-Clipboard" type="integer">72587076</label>
+            <label index="Moz-Extension" type="integer">188084394</label>
+            <label index="Moz-Extension-Success" type="integer">117468361</label>
+            <label index="Moz-Extension-Failure" type="integer">209906991</label>
+            <label index="Moz-Extension-Install-Not-Enabled" type="integer">266145806</label>
+            <label index="Allow-Clipboard-Helper-Extension" type="integer">198542700</label>
+            <label index="Mozilla-Org-Install-Not-Enabled" type="integer">100556857</label>
+            <label index="Allow-Clipboard-Helper-Extension-Success" type="integer">197915820</label>
+        </languageKey>
+        <languageKey index="lt" type="array">
+        </languageKey>
+        <languageKey index="is" type="array">
+        </languageKey>
+        <languageKey index="hr" type="array">
+        </languageKey>
+        <languageKey index="hu" type="array">
+        </languageKey>
+        <languageKey index="gl" type="array">
+        </languageKey>
+        <languageKey index="th" type="array">
+        </languageKey>
+        <languageKey index="gr" type="array">
+        </languageKey>
+        <languageKey index="hk" type="array">
+        </languageKey>
+        <languageKey index="eu" type="array">
+        </languageKey>
+        <languageKey index="bg" type="array">
+        </languageKey>
+        <languageKey index="br" type="array">
+            <label index="Path" type="integer">180814866</label>
+            <label index="TEXT_MODE" type="integer">198018641</label>
+            <label index="ActiveX-required" type="integer">47968430</label>
+            <label index="HTML-document-not-well-formed" type="integer">210864763</label>
+            <label index="Moz-Clipboard" type="integer">72587076</label>
+            <label index="Moz-Extension" type="integer">188084394</label>
+            <label index="Moz-Extension-Success" type="integer">117468361</label>
+            <label index="Moz-Extension-Failure" type="integer">209906991</label>
+            <label index="Moz-Extension-Install-Not-Enabled" type="integer">266145806</label>
+        </languageKey>
+        <languageKey index="et" type="array">
+        </languageKey>
+        <languageKey index="ar" type="array">
+        </languageKey>
+        <languageKey index="he" type="array">
+        </languageKey>
+        <languageKey index="ua" type="array">
+        </languageKey>
+        <languageKey index="lv" type="array">
+        </languageKey>
+        <languageKey index="jp" type="array">
+        </languageKey>
+        <languageKey index="vn" type="array">
+        </languageKey>
+        <languageKey index="ca" type="array">
+        </languageKey>
+        <languageKey index="ba" type="array">
+        </languageKey>
+        <languageKey index="kr" type="array">
+        </languageKey>
+        <languageKey index="eo" type="array">
+        </languageKey>
+        <languageKey index="my" type="array">
+        </languageKey>
+        <languageKey index="hi" type="array">
+        </languageKey>
+    </orig_hash>
+    <orig_text type="array">
+        <languageKey index="default" type="array">
+        </languageKey>
+        <languageKey index="dk" type="array">
+        </languageKey>
+        <languageKey index="de" type="array">
+        </languageKey>
+        <languageKey index="no" type="array">
+        </languageKey>
+        <languageKey index="it" type="array">
+        </languageKey>
+        <languageKey index="fr" type="array">
+        </languageKey>
+        <languageKey index="es" type="array">
+        </languageKey>
+        <languageKey index="nl" type="array">
+        </languageKey>
+        <languageKey index="cz" type="array">
+        </languageKey>
+        <languageKey index="pl" type="array">
+        </languageKey>
+        <languageKey index="si" type="array">
+        </languageKey>
+        <languageKey index="fi" type="array">
+        </languageKey>
+        <languageKey index="tr" type="array">
+        </languageKey>
+        <languageKey index="se" type="array">
+        </languageKey>
+        <languageKey index="pt" type="array">
+        </languageKey>
+        <languageKey index="ru" type="array">
+        </languageKey>
+        <languageKey index="ro" type="array">
+        </languageKey>
+        <languageKey index="ch" type="array">
+        </languageKey>
+        <languageKey index="sk" type="array">
+        </languageKey>
+        <languageKey index="lt" type="array">
+        </languageKey>
+        <languageKey index="is" type="array">
+        </languageKey>
+        <languageKey index="hr" type="array">
+        </languageKey>
+        <languageKey index="hu" type="array">
+        </languageKey>
+        <languageKey index="gl" type="array">
+        </languageKey>
+        <languageKey index="th" type="array">
+        </languageKey>
+        <languageKey index="gr" type="array">
+        </languageKey>
+        <languageKey index="hk" type="array">
+        </languageKey>
+        <languageKey index="eu" type="array">
+        </languageKey>
+        <languageKey index="bg" type="array">
+        </languageKey>
+        <languageKey index="br" type="array">
+        </languageKey>
+        <languageKey index="et" type="array">
+        </languageKey>
+        <languageKey index="ar" type="array">
+        </languageKey>
+        <languageKey index="he" type="array">
+        </languageKey>
+        <languageKey index="ua" type="array">
+        </languageKey>
+        <languageKey index="lv" type="array">
+        </languageKey>
+        <languageKey index="jp" type="array">
+        </languageKey>
+        <languageKey index="vn" type="array">
+        </languageKey>
+        <languageKey index="ca" type="array">
+        </languageKey>
+        <languageKey index="ba" type="array">
+        </languageKey>
+        <languageKey index="kr" type="array">
+        </languageKey>
+        <languageKey index="eo" type="array">
+        </languageKey>
+        <languageKey index="my" type="array">
+        </languageKey>
+        <languageKey index="hi" type="array">
+        </languageKey>
+    </orig_text>
+</T3locallang>

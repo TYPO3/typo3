@@ -1,0 +1,350 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+    <meta type="array">
+        <description>Labels for Insert Smiley plugin of htmlArea RTE</description>
+        <type>module</type>
+        <csh_table></csh_table>
+        <fileId>EXT:rtehtmlarea/htmlarea/plugins/InsertSmiley/locallang.xml</fileId>
+        <labelContext type="array">
+            <label index="Insert Smiley"></label>
+            <label index="Smiley"></label>
+            <label index="Cancel"></label>
+        </labelContext>
+    </meta>
+    <data type="array">
+        <languageKey index="default" type="array">
+            <label index="Insert Smiley">Insert Smiley</label>
+            <label index="Smiley">Smiley</label>
+            <label index="Cancel">Cancel</label>
+        </languageKey>
+        <languageKey index="dk" type="array">
+            <label index="Insert Smiley">Indsæt Smiley</label>
+            <label index="Smiley">Smiley</label>
+            <label index="Cancel">Annuller</label>
+        </languageKey>
+        <languageKey index="de" type="array">
+            <label index="Insert Smiley">Smiley einfügen</label>
+            <label index="Smiley">Smiley</label>
+            <label index="Cancel">Abbrechen</label>
+        </languageKey>
+        <languageKey index="no" type="array">
+            <label index="Insert Smiley">Sett inn smiley</label>
+            <label index="Smiley">Smiley</label>
+            <label index="Cancel">Avbryt</label>
+        </languageKey>
+        <languageKey index="it" type="array">
+            <label index="Insert Smiley">Inserisci Smiley</label>
+            <label index="Smiley">Smiley</label>
+            <label index="Cancel">Annulla</label>
+        </languageKey>
+        <languageKey index="fr" type="array">
+            <label index="Insert Smiley">Insérer un émoticône</label>
+            <label index="Smiley">Emoticône</label>
+            <label index="Cancel">Annuler</label>
+        </languageKey>
+        <languageKey index="es" type="array">
+            <label index="Insert Smiley">Insertar emóticono</label>
+            <label index="Smiley">Emóticono</label>
+            <label index="Cancel">Anular</label>
+        </languageKey>
+        <languageKey index="nl" type="array">
+            <label index="Insert Smiley">Invoegen smiley</label>
+            <label index="Smiley">Smiley</label>
+            <label index="Cancel">Annuleren</label>
+        </languageKey>
+        <languageKey index="cz" type="array">
+        </languageKey>
+        <languageKey index="pl" type="array">
+        </languageKey>
+        <languageKey index="si" type="array">
+        </languageKey>
+        <languageKey index="fi" type="array">
+            <label index="Insert Smiley">Lisää kuvake</label>
+            <label index="Smiley">Kuvake</label>
+            <label index="Cancel">Peruuta</label>
+        </languageKey>
+        <languageKey index="tr" type="array">
+        </languageKey>
+        <languageKey index="se" type="array">
+        </languageKey>
+        <languageKey index="pt" type="array">
+        </languageKey>
+        <languageKey index="ru" type="array">
+            <label index="Insert Smiley">Вставить смайлик</label>
+            <label index="Smiley">Смайлик</label>
+            <label index="Cancel">Отмена</label>
+        </languageKey>
+        <languageKey index="ro" type="array">
+        </languageKey>
+        <languageKey index="ch" type="array">
+        </languageKey>
+        <languageKey index="sk" type="array">
+            <label index="Insert Smiley">Vložiť smajlíka</label>
+            <label index="Smiley">Smajlík</label>
+            <label index="Cancel">Zrušiť</label>
+        </languageKey>
+        <languageKey index="lt" type="array">
+        </languageKey>
+        <languageKey index="is" type="array">
+        </languageKey>
+        <languageKey index="hr" type="array">
+        </languageKey>
+        <languageKey index="hu" type="array">
+        </languageKey>
+        <languageKey index="gl" type="array">
+        </languageKey>
+        <languageKey index="th" type="array">
+        </languageKey>
+        <languageKey index="gr" type="array">
+        </languageKey>
+        <languageKey index="hk" type="array">
+        </languageKey>
+        <languageKey index="eu" type="array">
+        </languageKey>
+        <languageKey index="bg" type="array">
+        </languageKey>
+        <languageKey index="br" type="array">
+            <label index="Insert Smiley">Inserir Smiley</label>
+            <label index="Smiley">Smiley</label>
+            <label index="Cancel">Cancelar</label>
+        </languageKey>
+        <languageKey index="et" type="array">
+        </languageKey>
+        <languageKey index="ar" type="array">
+        </languageKey>
+        <languageKey index="he" type="array">
+        </languageKey>
+        <languageKey index="ua" type="array">
+        </languageKey>
+        <languageKey index="lv" type="array">
+        </languageKey>
+        <languageKey index="jp" type="array">
+        </languageKey>
+        <languageKey index="vn" type="array">
+        </languageKey>
+        <languageKey index="ca" type="array">
+        </languageKey>
+        <languageKey index="ba" type="array">
+        </languageKey>
+        <languageKey index="kr" type="array">
+        </languageKey>
+        <languageKey index="eo" type="array">
+        </languageKey>
+        <languageKey index="my" type="array">
+        </languageKey>
+        <languageKey index="hi" type="array">
+        </languageKey>
+    </data>
+    <orig_hash type="array">
+        <languageKey index="default" type="array">
+            <label index="Insert Smiley" type="integer">49611209</label>
+            <label index="Smiley" type="integer">48558208</label>
+            <label index="Cancel" type="integer">245659783</label>
+        </languageKey>
+        <languageKey index="dk" type="array">
+            <label index="Insert Smiley" type="integer">49611209</label>
+            <label index="Smiley" type="integer">48558208</label>
+            <label index="Cancel" type="integer">245659783</label>
+        </languageKey>
+        <languageKey index="de" type="array">
+            <label index="Insert Smiley" type="integer">49611209</label>
+            <label index="Smiley" type="integer">48558208</label>
+            <label index="Cancel" type="integer">245659783</label>
+        </languageKey>
+        <languageKey index="no" type="array">
+            <label index="Insert Smiley" type="integer">49611209</label>
+            <label index="Smiley" type="integer">48558208</label>
+            <label index="Cancel" type="integer">245659783</label>
+        </languageKey>
+        <languageKey index="it" type="array">
+            <label index="Insert Smiley" type="integer">49611209</label>
+            <label index="Smiley" type="integer">48558208</label>
+            <label index="Cancel" type="integer">245659783</label>
+        </languageKey>
+        <languageKey index="fr" type="array">
+            <label index="Insert Smiley" type="integer">49611209</label>
+            <label index="Smiley" type="integer">48558208</label>
+            <label index="Cancel" type="integer">245659783</label>
+        </languageKey>
+        <languageKey index="es" type="array">
+            <label index="Insert Smiley" type="integer">49611209</label>
+            <label index="Smiley" type="integer">48558208</label>
+            <label index="Cancel" type="integer">245659783</label>
+        </languageKey>
+        <languageKey index="nl" type="array">
+            <label index="Insert Smiley" type="integer">49611209</label>
+            <label index="Smiley" type="integer">48558208</label>
+            <label index="Cancel" type="integer">245659783</label>
+        </languageKey>
+        <languageKey index="cz" type="array">
+        </languageKey>
+        <languageKey index="pl" type="array">
+        </languageKey>
+        <languageKey index="si" type="array">
+        </languageKey>
+        <languageKey index="fi" type="array">
+            <label index="Insert Smiley" type="integer">49611209</label>
+            <label index="Smiley" type="integer">48558208</label>
+            <label index="Cancel" type="integer">245659783</label>
+        </languageKey>
+        <languageKey index="tr" type="array">
+        </languageKey>
+        <languageKey index="se" type="array">
+        </languageKey>
+        <languageKey index="pt" type="array">
+        </languageKey>
+        <languageKey index="ru" type="array">
+            <label index="Insert Smiley" type="integer">49611209</label>
+            <label index="Smiley" type="integer">48558208</label>
+            <label index="Cancel" type="integer">245659783</label>
+        </languageKey>
+        <languageKey index="ro" type="array">
+        </languageKey>
+        <languageKey index="ch" type="array">
+        </languageKey>
+        <languageKey index="sk" type="array">
+            <label index="Insert Smiley" type="integer">49611209</label>
+            <label index="Smiley" type="integer">48558208</label>
+            <label index="Cancel" type="integer">245659783</label>
+        </languageKey>
+        <languageKey index="lt" type="array">
+        </languageKey>
+        <languageKey index="is" type="array">
+        </languageKey>
+        <languageKey index="hr" type="array">
+        </languageKey>
+        <languageKey index="hu" type="array">
+        </languageKey>
+        <languageKey index="gl" type="array">
+        </languageKey>
+        <languageKey index="th" type="array">
+        </languageKey>
+        <languageKey index="gr" type="array">
+        </languageKey>
+        <languageKey index="hk" type="array">
+        </languageKey>
+        <languageKey index="eu" type="array">
+        </languageKey>
+        <languageKey index="bg" type="array">
+        </languageKey>
+        <languageKey index="br" type="array">
+            <label index="Insert Smiley" type="integer">49611209</label>
+            <label index="Smiley" type="integer">48558208</label>
+            <label index="Cancel" type="integer">245659783</label>
+        </languageKey>
+        <languageKey index="et" type="array">
+        </languageKey>
+        <languageKey index="ar" type="array">
+        </languageKey>
+        <languageKey index="he" type="array">
+        </languageKey>
+        <languageKey index="ua" type="array">
+        </languageKey>
+        <languageKey index="lv" type="array">
+        </languageKey>
+        <languageKey index="jp" type="array">
+        </languageKey>
+        <languageKey index="vn" type="array">
+        </languageKey>
+        <languageKey index="ca" type="array">
+        </languageKey>
+        <languageKey index="ba" type="array">
+        </languageKey>
+        <languageKey index="kr" type="array">
+        </languageKey>
+        <languageKey index="eo" type="array">
+        </languageKey>
+        <languageKey index="my" type="array">
+        </languageKey>
+        <languageKey index="hi" type="array">
+        </languageKey>
+    </orig_hash>
+    <orig_text type="array">
+        <languageKey index="default" type="array">
+        </languageKey>
+        <languageKey index="dk" type="array">
+        </languageKey>
+        <languageKey index="de" type="array">
+        </languageKey>
+        <languageKey index="no" type="array">
+        </languageKey>
+        <languageKey index="it" type="array">
+        </languageKey>
+        <languageKey index="fr" type="array">
+        </languageKey>
+        <languageKey index="es" type="array">
+        </languageKey>
+        <languageKey index="nl" type="array">
+        </languageKey>
+        <languageKey index="cz" type="array">
+        </languageKey>
+        <languageKey index="pl" type="array">
+        </languageKey>
+        <languageKey index="si" type="array">
+        </languageKey>
+        <languageKey index="fi" type="array">
+        </languageKey>
+        <languageKey index="tr" type="array">
+        </languageKey>
+        <languageKey index="se" type="array">
+        </languageKey>
+        <languageKey index="pt" type="array">
+        </languageKey>
+        <languageKey index="ru" type="array">
+        </languageKey>
+        <languageKey index="ro" type="array">
+        </languageKey>
+        <languageKey index="ch" type="array">
+        </languageKey>
+        <languageKey index="sk" type="array">
+        </languageKey>
+        <languageKey index="lt" type="array">
+        </languageKey>
+        <languageKey index="is" type="array">
+        </languageKey>
+        <languageKey index="hr" type="array">
+        </languageKey>
+        <languageKey index="hu" type="array">
+        </languageKey>
+        <languageKey index="gl" type="array">
+        </languageKey>
+        <languageKey index="th" type="array">
+        </languageKey>
+        <languageKey index="gr" type="array">
+        </languageKey>
+        <languageKey index="hk" type="array">
+        </languageKey>
+        <languageKey index="eu" type="array">
+        </languageKey>
+        <languageKey index="bg" type="array">
+        </languageKey>
+        <languageKey index="br" type="array">
+        </languageKey>
+        <languageKey index="et" type="array">
+        </languageKey>
+        <languageKey index="ar" type="array">
+        </languageKey>
+        <languageKey index="he" type="array">
+        </languageKey>
+        <languageKey index="ua" type="array">
+        </languageKey>
+        <languageKey index="lv" type="array">
+        </languageKey>
+        <languageKey index="jp" type="array">
+        </languageKey>
+        <languageKey index="vn" type="array">
+        </languageKey>
+        <languageKey index="ca" type="array">
+        </languageKey>
+        <languageKey index="ba" type="array">
+        </languageKey>
+        <languageKey index="kr" type="array">
+        </languageKey>
+        <languageKey index="eo" type="array">
+        </languageKey>
+        <languageKey index="my" type="array">
+        </languageKey>
+        <languageKey index="hi" type="array">
+        </languageKey>
+    </orig_text>
+</T3locallang>

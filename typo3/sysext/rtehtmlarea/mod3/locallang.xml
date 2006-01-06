@@ -1,0 +1,2121 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+    <meta type="array">
+        <description>Labels for TYPO3 Element Browser module of htmlArea RTE</description>
+        <type>module</type>
+        <csh_table></csh_table>
+        <fileId>EXT:rtehtmlarea/mod3/locallang.xml</fileId>
+        <labelContext type="array">
+            <label index="removeLink"></label>
+            <label index="uploadImage"></label>
+            <label index="update"></label>
+            <label index="path"></label>
+            <label index="page"></label>
+            <label index="file"></label>
+            <label index="extUrl"></label>
+            <label index="email"></label>
+            <label index="special"></label>
+            <label index="folderTree"></label>
+            <label index="files"></label>
+            <label index="target"></label>
+            <label index="target_popUpWindow"></label>
+            <label index="target_popUpWindow_width"></label>
+            <label index="target_popUpWindow_height"></label>
+            <label index="anchor_class"></label>
+            <label index="anchor_title"></label>
+            <label index="newWindow"></label>
+            <label index="top"></label>
+            <label index="none"></label>
+            <label index="pageTree"></label>
+            <label index="contentElements"></label>
+            <label index="selectRecords"></label>
+            <label index="addToList"></label>
+            <label index="info"></label>
+            <label index="emailAddress"></label>
+            <label index="setLink"></label>
+            <label index="clickToRedrawFullSize"></label>
+            <label index="findDragDrop"></label>
+            <label index="noWebFolder"></label>
+            <label index="currentLink"></label>
+            <label index="invalidChar"></label>
+        </labelContext>
+    </meta>
+    <data type="array">
+        <languageKey index="default" type="array">
+            <label index="removeLink">Remove link</label>
+            <label index="uploadImage">Upload Image</label>
+            <label index="update">Update</label>
+            <label index="path">Path</label>
+            <label index="page">Page</label>
+            <label index="file">File</label>
+            <label index="extUrl">External URL</label>
+            <label index="email">Email</label>
+            <label index="special">Special</label>
+            <label index="folderTree">Folder Tree</label>
+            <label index="files">Files</label>
+            <label index="target">Target</label>
+            <label index="target_popUpWindow">Open in window</label>
+            <label index="target_popUpWindow_width">Width</label>
+            <label index="target_popUpWindow_height">Height</label>
+            <label index="anchor_class">Style</label>
+            <label index="anchor_title">Title</label>
+            <label index="newWindow">New window</label>
+            <label index="top">Top</label>
+            <label index="none">None - new link!</label>
+            <label index="pageTree">Page tree</label>
+            <label index="contentElements">Content elements</label>
+            <label index="selectRecords">Select Records</label>
+            <label index="addToList">Add to list...</label>
+            <label index="info">Info</label>
+            <label index="emailAddress">Email address</label>
+            <label index="setLink">Set Link</label>
+            <label index="clickToRedrawFullSize">Image is larger than shown here! Click to redraw with full size.</label>
+            <label index="findDragDrop">Find your image, then click on the image and drag it into the editor in the main window!</label>
+            <label index="noWebFolder">You cannot drag images from this folder (yellow) because it is internal on the server.</label>
+            <label index="currentLink">Current Link</label>
+            <label index="invalidChar">ERROR: Invalid character found in file path (%s). Cannot add the file!</label>
+        </languageKey>
+        <languageKey index="dk" type="array">
+            <label index="removeLink">Fjern link</label>
+            <label index="uploadImage">Send billede</label>
+            <label index="update">Opdatér</label>
+            <label index="path">Sti</label>
+            <label index="page">Side</label>
+            <label index="file">Fil</label>
+            <label index="extUrl">Ekstern URL</label>
+            <label index="email">Email</label>
+            <label index="special">Specielle</label>
+            <label index="folderTree">Mapper</label>
+            <label index="files">Filer</label>
+            <label index="target">Mål</label>
+            <label index="target_popUpWindow">Åben i vindue</label>
+            <label index="target_popUpWindow_width">Bredde</label>
+            <label index="target_popUpWindow_height">Højde</label>
+            <label index="anchor_class">Stil</label>
+            <label index="anchor_title">Titel</label>
+            <label index="newWindow">Nyt vindue</label>
+            <label index="top">Top</label>
+            <label index="none">Ingen - nyt link!</label>
+            <label index="pageTree">Sidetræ</label>
+            <label index="contentElements">Indholdselementer</label>
+            <label index="selectRecords">Vælg elementer</label>
+            <label index="addToList">Tilføj til liste...</label>
+            <label index="info">Info</label>
+            <label index="emailAddress">Emailadresse</label>
+            <label index="setLink">Sæt link</label>
+            <label index="clickToRedrawFullSize">Billedet er større end vist her! Klik for at gen-indlæse i fuld størrelse.</label>
+            <label index="findDragDrop">Find dit billede, klik på billedet og træk det ind i redigeringsområdet i hovedvinduet!</label>
+            <label index="noWebFolder">Du kan ikke klik-trække billeder fra denne folder (gul), fordi den ligger internt på serveren.</label>
+            <label index="currentLink">Nuværende link</label>
+            <label index="invalidChar">FEJL: Ugyldig karakter fundet i filstien (%s). Kan ikke tilføje filen!</label>
+        </languageKey>
+        <languageKey index="de" type="array">
+            <label index="removeLink">Link entfernen</label>
+            <label index="uploadImage">Bild hochladen</label>
+            <label index="update">Aktualisieren</label>
+            <label index="path">Pfad</label>
+            <label index="page">Seite</label>
+            <label index="file">Datei</label>
+            <label index="extUrl">Externe URL</label>
+            <label index="email">Email</label>
+            <label index="special">Spezial</label>
+            <label index="folderTree">Verzeichnisbaum</label>
+            <label index="files">Dateien</label>
+            <label index="target">Ziel</label>
+            <label index="target_popUpWindow">In neuem Fenster öffnen</label>
+            <label index="target_popUpWindow_width">Breite</label>
+            <label index="target_popUpWindow_height">Höhe</label>
+            <label index="anchor_class">Stil</label>
+            <label index="anchor_title">Titel</label>
+            <label index="newWindow">Neues Fenster</label>
+            <label index="top">Oben</label>
+            <label index="none">Kein - neuer Link!</label>
+            <label index="pageTree">Seitenbaum</label>
+            <label index="contentElements">Inhaltselemente</label>
+            <label index="selectRecords">Datensätze auswählen</label>
+            <label index="addToList">Zur Liste hinzufügen...</label>
+            <label index="info">Info</label>
+            <label index="emailAddress">Email Adresse</label>
+            <label index="setLink">Link setzen</label>
+            <label index="clickToRedrawFullSize">Das Bild ist größer als angezeigt! Zur Anzeige in voller Größe bitte anklicken.</label>
+            <label index="findDragDrop">Suchen Sie das gewünschte Bild, klicken Sie drauf und ziehen Sie es in den Editor im Hauptfenster!</label>
+            <label index="noWebFolder">Sie können Bilder aus diesem Verzeichnis nicht herüberziehen, da sie im internen Bereich des Servers liegen.</label>
+            <label index="currentLink">Aktueller Link</label>
+            <label index="invalidChar">FEHLER: Ungültiges Zeichen im Dateipfad gefunden (%s). Datei kann nicht hinzugefügt werden!</label>
+        </languageKey>
+        <languageKey index="no" type="array">
+            <label index="removeLink">Fjern link</label>
+            <label index="uploadImage">Last opp bilde</label>
+            <label index="update">Oppdater</label>
+            <label index="path">Sti</label>
+            <label index="page">Side</label>
+            <label index="file">Fil</label>
+            <label index="extUrl">Ekstern webadresse (URL)</label>
+            <label index="email">E-post</label>
+            <label index="special">Spesielle</label>
+            <label index="folderTree">Mapper</label>
+            <label index="files">Filer</label>
+            <label index="target">Mål</label>
+            <label index="target_popUpWindow">Åpne i vindu</label>
+            <label index="target_popUpWindow_width">Bredde</label>
+            <label index="target_popUpWindow_height">Høyde</label>
+            <label index="anchor_class">Stil</label>
+            <label index="anchor_title">Tittel</label>
+            <label index="newWindow">Nytt vindu</label>
+            <label index="top">Topp</label>
+            <label index="none">Ingen - ny link!</label>
+            <label index="pageTree">Sidetre</label>
+            <label index="contentElements">Innholdselementer</label>
+            <label index="selectRecords">Velg elementer</label>
+            <label index="addToList">Legg til liste....</label>
+            <label index="info">Info</label>
+            <label index="emailAddress">E-post adresse</label>
+            <label index="setLink">Sett link</label>
+            <label index="clickToRedrawFullSize">Bildet er større enn vist her! Klikk for å lese inn på nytt i full størrelse.</label>
+            <label index="findDragDrop">Finn ditt bilde, klikk på bildet og trekk det inn i redigeringsområdet i hovedvinduet!</label>
+            <label index="noWebFolder">Du kan ikke ?trekke og slippe? bilder fra denne mappen (gul), da den ligger internt på serveren.</label>
+            <label index="currentLink">Gjeldende link</label>
+            <label index="invalidChar">FEIL: Det finnes et ugyldig tegn i filstien (%s). Kan ikke legge til filen!</label>
+        </languageKey>
+        <languageKey index="it" type="array">
+            <label index="removeLink">Rimuovi Link</label>
+            <label index="uploadImage">Upload Immagine</label>
+            <label index="update">Aggiorna</label>
+            <label index="path">Percorso</label>
+            <label index="page">Pagina</label>
+            <label index="file">File</label>
+            <label index="extUrl">URL esterno</label>
+            <label index="email">Email</label>
+            <label index="special">Speciale</label>
+            <label index="folderTree">Folder Tree</label>
+            <label index="files">File</label>
+            <label index="target">Target</label>
+            <label index="target_popUpWindow">Apri in finestra popUp</label>
+            <label index="target_popUpWindow_width">Larghezza</label>
+            <label index="target_popUpWindow_height">Altezza</label>
+            <label index="anchor_class">Stile</label>
+            <label index="anchor_title">Titolo</label>
+            <label index="newWindow">Nuova finestra</label>
+            <label index="top">Top</label>
+            <label index="none">Nulla - nuovo link!</label>
+            <label index="pageTree">Page tree</label>
+            <label index="contentElements">Elementi di contenuto</label>
+            <label index="selectRecords">Seleziona record</label>
+            <label index="addToList">Aggiungi alla lista...</label>
+            <label index="info">Informazioni</label>
+            <label index="emailAddress">Indirizzo email</label>
+            <label index="setLink">Imposta link</label>
+            <label index="clickToRedrawFullSize">L'immagine è più grande di quella mostrata qui! Clicca per vederla a dimensioni naturali.</label>
+            <label index="findDragDrop">Trova l'immagine, cliccaci sopra e trascinala nell'editor della finestra principale.</label>
+            <label index="noWebFolder">Non puoi trascinare le immagini di questa cartella (yellow) perché è una cartella riservata del server.</label>
+            <label index="currentLink">Link corrente</label>
+            <label index="invalidChar">ERRORE: Caratteri non validi (%s).</label>
+        </languageKey>
+        <languageKey index="fr" type="array">
+            <label index="removeLink">Supprimer le lien</label>
+            <label index="uploadImage">Uploader une image</label>
+            <label index="update">Mettre à jour</label>
+            <label index="path">Chemin</label>
+            <label index="page">Page</label>
+            <label index="file">Fichier</label>
+            <label index="extUrl">URL externe</label>
+            <label index="email">E-mail</label>
+            <label index="special">Spécial</label>
+            <label index="folderTree">Arborescence de dossiers</label>
+            <label index="files">Fichiers</label>
+            <label index="target">Cible</label>
+            <label index="target_popUpWindow">Ouvrir dans fenêtre</label>
+            <label index="target_popUpWindow_width">Largeur</label>
+            <label index="target_popUpWindow_height">Hauteur</label>
+            <label index="anchor_class">Style</label>
+            <label index="anchor_title">Titre</label>
+            <label index="newWindow">Nouvelle fenêtre</label>
+            <label index="top">Haut</label>
+            <label index="none">Aucun - Insérer un nouveau lien!</label>
+            <label index="pageTree">Arborescence</label>
+            <label index="contentElements">Eléments de contenu</label>
+            <label index="selectRecords">Séléctionnez un enregistrement</label>
+            <label index="addToList">Ajouter à la liste...</label>
+            <label index="info">Info</label>
+            <label index="emailAddress">Adresse e-mail</label>
+            <label index="setLink">Attribuer le lien</label>
+            <label index="clickToRedrawFullSize">L'image est plus grande en réalité! Cliquez pour la redessiner en taille original.</label>
+            <label index="findDragDrop">Trouvez votre image, ensuite, cliquez sur l'image et glissez là dans l'éditeur, dans la fenêtre principale!</label>
+            <label index="noWebFolder">Vous ne pouvez pas glissez des images depuis ce dossier (jaune) car il est interne au serveur.</label>
+            <label index="currentLink">Lien courant</label>
+        </languageKey>
+        <languageKey index="es" type="array">
+            <label index="removeLink">Eliminar liga</label>
+            <label index="uploadImage">Subir imagen</label>
+            <label index="page">Página</label>
+            <label index="file">Archivo</label>
+            <label index="extUrl">URL Externo</label>
+            <label index="email">Email</label>
+            <label index="folderTree">Árbol de carpetas</label>
+            <label index="files">Archivos</label>
+            <label index="target">Destino</label>
+            <label index="target_popUpWindow">Brir en ventana</label>
+            <label index="target_popUpWindow_width">Anchura</label>
+            <label index="target_popUpWindow_height">Altura</label>
+            <label index="anchor_class">Estilo</label>
+            <label index="anchor_title">Título</label>
+            <label index="newWindow">Nueva ventana</label>
+            <label index="top">Arriba</label>
+            <label index="none">Ninguno - nueva liga</label>
+            <label index="pageTree">Árbol de páginas</label>
+            <label index="contentElements">Elementos de contenido</label>
+            <label index="emailAddress">Dirección de email</label>
+            <label index="setLink">Elegir liga </label>
+            <label index="currentLink">Liga actual</label>
+        </languageKey>
+        <languageKey index="nl" type="array">
+            <label index="removeLink">Verwijder link</label>
+            <label index="uploadImage">Upload afbeelding</label>
+            <label index="update">Actualiseren</label>
+            <label index="path">Pad</label>
+            <label index="page">Pagina</label>
+            <label index="file">Bestand</label>
+            <label index="extUrl">Externe URL</label>
+            <label index="email">Email</label>
+            <label index="special">Speciaal</label>
+            <label index="folderTree">Map Structuur (boom)</label>
+            <label index="files">Bestanden</label>
+            <label index="target">Doel</label>
+            <label index="target_popUpWindow">Open in venster</label>
+            <label index="target_popUpWindow_width">Breedte</label>
+            <label index="target_popUpWindow_height">Hoogte</label>
+            <label index="anchor_class">Stijl</label>
+            <label index="anchor_title">Titel</label>
+            <label index="newWindow">Nieuw venster</label>
+            <label index="top">Top</label>
+            <label index="none">Geen - nieuwe link!</label>
+            <label index="pageTree">Paginastructuur (boom)</label>
+            <label index="contentElements">Inhoudselementen</label>
+            <label index="selectRecords">Selecteer records</label>
+            <label index="addToList">Toevoegen aan lijst</label>
+            <label index="info">Info</label>
+            <label index="emailAddress">Emailadres</label>
+            <label index="setLink">Bepaal link</label>
+            <label index="clickToRedrawFullSize">Afbeelding is groter dan hier getoond! Klik om te hertekenen tot de ware grootte.</label>
+            <label index="findDragDrop">Zoek de benodigde afbeelding en klik dan op de afbeelding en sleep naar de editor in het hoofdvenster!</label>
+            <label index="noWebFolder">Het is niet mogelijk afbeeldingen te slepen, omdat het intern op de server staat.</label>
+            <label index="currentLink">Huidige link</label>
+            <label index="invalidChar">FOUTMELDING: Ongeldig karakter in bestandspad (%s). Kan niet aan bestand toegevoegd worden.</label>
+        </languageKey>
+        <languageKey index="cz" type="array">
+            <label index="removeLink">Odstranit odkaz</label>
+            <label index="uploadImage">Přenést obrázek</label>
+            <label index="update">Aktualizovat</label>
+            <label index="path">Cesta</label>
+            <label index="page">Stránka</label>
+            <label index="file">Soubor</label>
+            <label index="extUrl">Externí URL</label>
+            <label index="email">E-mail</label>
+            <label index="special">Speciální</label>
+            <label index="folderTree">Strom složek</label>
+            <label index="files">Soubory</label>
+            <label index="target">Cíl</label>
+            <label index="target_popUpWindow">Otevřít v okně</label>
+            <label index="target_popUpWindow_width">Šířka</label>
+            <label index="target_popUpWindow_height">Výška</label>
+            <label index="anchor_class">Styl</label>
+            <label index="anchor_title">Nadpis</label>
+            <label index="newWindow">Nové okno</label>
+            <label index="top">Nahoře</label>
+            <label index="none">Žádný - nový odkaz!</label>
+            <label index="pageTree">Strom stránek</label>
+            <label index="contentElements">Prvky obsahu</label>
+            <label index="selectRecords">Zvolte záznamy</label>
+            <label index="addToList">Přidat do seznamu...</label>
+            <label index="info">Info</label>
+            <label index="emailAddress">E-mailová adresa</label>
+            <label index="setLink">Nastavit odkaz</label>
+            <label index="clickToRedrawFullSize">Obrázek je větší než je zde zobrazeno! Klikněte pro překreslení v úplné velikosti.</label>
+            <label index="findDragDrop">Najděte váš obrázek, pak na něj klikněte a přesuňte jej na editor v hlavním okně!</label>
+            <label index="noWebFolder">Nemůžete přesouvat obrázky z této složky (žlutá) protože je to interní složka na serveru.</label>
+            <label index="currentLink">Současný odkaz</label>
+            <label index="invalidChar">CHYBA: Nalezen nesprávný znak v cestě (%s). Nelze přidat soubor!</label>
+        </languageKey>
+        <languageKey index="pl" type="array">
+            <label index="removeLink">Usuń odnośnik</label>
+            <label index="uploadImage">Uploaduj obrazek</label>
+            <label index="update">Aktualizuj</label>
+            <label index="path">Ścieżka</label>
+            <label index="page">Strona</label>
+            <label index="file">Plik</label>
+            <label index="extUrl">Zewnętrzny URL</label>
+            <label index="email">Email</label>
+            <label index="special">Specjalne</label>
+            <label index="folderTree">Drzewko katalogów</label>
+            <label index="files">Pliki</label>
+            <label index="target">Target</label>
+            <label index="newWindow">Nowe okienko</label>
+            <label index="top">Najwyższe</label>
+            <label index="none">Brak - nowy odnośnik!</label>
+            <label index="pageTree">Drzewko stron</label>
+            <label index="contentElements">Elementy zawartości</label>
+            <label index="selectRecords">Wybierz rekordy</label>
+            <label index="addToList">Dodaj do listy...</label>
+            <label index="info">Info</label>
+            <label index="emailAddress">Adresy email</label>
+            <label index="setLink">Ustaw odnośnik</label>
+            <label index="clickToRedrawFullSize">Obrazek jest większy niż widzisz! Kliknij aby zobaczyć oryginalny rozmiar.</label>
+            <label index="findDragDrop">Znajdź plik obrazka, kliknij na niego i przeciągnij do edytora w głównym okienku.</label>
+            <label index="noWebFolder">Nie możesz przecišgnšć obrazków z tego foldera (żółtego), ponieważ jest to wewnętrzny folder serwera.</label>
+            <label index="currentLink">Bieżący odnośnik</label>
+        </languageKey>
+        <languageKey index="si" type="array">
+            <label index="removeLink">Odstrani povezavo</label>
+            <label index="uploadImage">Dodaj sliko</label>
+            <label index="update">Osveži</label>
+            <label index="path">Pot</label>
+            <label index="page">Stran</label>
+            <label index="file">Datoteka</label>
+            <label index="extUrl">Zunanji URL</label>
+            <label index="email">Email</label>
+            <label index="special">Posebno</label>
+            <label index="folderTree">Drevo map</label>
+            <label index="files">Datoteke</label>
+            <label index="target">Cilj</label>
+            <label index="newWindow">Novo okno</label>
+            <label index="top">Vrh</label>
+            <label index="none">Nič - nova povezava!</label>
+            <label index="pageTree">Drevo strani</label>
+            <label index="contentElements">Elementi vsebine</label>
+            <label index="selectRecords">Izberi zapise</label>
+            <label index="addToList">Dodaj v seznam...</label>
+            <label index="info">Info</label>
+            <label index="emailAddress">Email naslov</label>
+            <label index="setLink">Nastavi povezavo</label>
+            <label index="clickToRedrawFullSize">Slika je večja kot je prikazana tukaj! Klikni za prikaz v polni velikosti.</label>
+            <label index="findDragDrop">Poišči sliko, nato jo klikni in povleci v urejevalnik v glavnem oknu!</label>
+            <label index="noWebFolder">To ni vaša lokalna mapa (rumena), zato iz nje ne morete poveči slik.</label>
+            <label index="currentLink">Obstoječa povezava</label>
+        </languageKey>
+        <languageKey index="fi" type="array">
+            <label index="removeLink">Poista linkki</label>
+            <label index="uploadImage">Vie kuva</label>
+            <label index="update">Päivitä</label>
+            <label index="path">Polku</label>
+            <label index="page">Sivu</label>
+            <label index="file">Tiedosto</label>
+            <label index="extUrl">Ulkoinen URL</label>
+            <label index="email">Sähköpostiosoite</label>
+            <label index="special">Erikois</label>
+            <label index="folderTree">Hakemistorakenne</label>
+            <label index="files">Tiedostot</label>
+            <label index="target">Kohde</label>
+            <label index="target_popUpWindow">Avaa ikkunassa</label>
+            <label index="target_popUpWindow_width">Leveys</label>
+            <label index="target_popUpWindow_height">Korkeus</label>
+            <label index="anchor_class">Tyyli</label>
+            <label index="anchor_title">Otsikko</label>
+            <label index="newWindow">Uusi ikkuna</label>
+            <label index="top">Alkuun</label>
+            <label index="none">Ei mitään - uusi linkki!</label>
+            <label index="pageTree">Sivuston rakenne</label>
+            <label index="contentElements">Sisällön elementit</label>
+            <label index="selectRecords">Valitse tietueet</label>
+            <label index="addToList">Lisää listalle...</label>
+            <label index="info">Info</label>
+            <label index="emailAddress">Sähköpostiosoite</label>
+            <label index="setLink">Tee linkki</label>
+            <label index="clickToRedrawFullSize">Kuva on suurempi kuin näytetty! Näpsäytä kuvaa nähdäksesi suurena.</label>
+            <label index="findDragDrop">Etsi kuva, näpsäytä kuvaa ja vedä se pääsivun muotoilun päälle!</label>
+            <label index="noWebFolder">Et voi vetää kuvia tästä hakemistosta (keltainen) koska se on sisäinen palvelin.</label>
+            <label index="currentLink">Nykyinen linkki</label>
+            <label index="invalidChar">VIRHE: Virheellinen merkki löytyi tiedostopolusta (%s). Tiedostoa ei voidä lisätä!</label>
+        </languageKey>
+        <languageKey index="tr" type="array">
+            <label index="removeLink">Linki kaldır</label>
+            <label index="uploadImage">Resmi yükle</label>
+            <label index="update">Güncelle</label>
+            <label index="path">Yol</label>
+            <label index="page">Sayfa</label>
+            <label index="file">Dosya</label>
+            <label index="extUrl">Dış URL</label>
+            <label index="email">E-mail</label>
+            <label index="special">Özel</label>
+            <label index="folderTree">Klasör Ağacı</label>
+            <label index="files">Dosyalar</label>
+            <label index="target">Hedef</label>
+            <label index="target_popUpWindow">Bu pencerede aç</label>
+            <label index="target_popUpWindow_width">Genişlik</label>
+            <label index="target_popUpWindow_height">Uzunluk</label>
+            <label index="newWindow">Yeni pencere</label>
+            <label index="top">Üst</label>
+            <label index="none">Hiç - yeni link yok!</label>
+            <label index="pageTree">Sayfa ağacı</label>
+            <label index="contentElements">İçerik elemanları</label>
+            <label index="selectRecords">Kayıtları seç</label>
+            <label index="addToList">Listeye ekle</label>
+            <label index="info">Bilgi</label>
+            <label index="emailAddress">E-mail adresi</label>
+            <label index="setLink">Link Kur</label>
+            <label index="clickToRedrawFullSize">Resim burda gösterilenden daha büyük! Tam ebat ile yeniden çizmeye tıklayınız.</label>
+            <label index="findDragDrop">Resminizi bulun, sonra resmin üzerine tıklayın ve ana penceredeki düzenleyicinin içine sürükleyin!</label>
+            <label index="noWebFolder">Bu dosyadan resimi sürükleyemezsiniz (Sarı) Çünkü Bu server da iç kısma aittir.</label>
+            <label index="currentLink">Güncel Link</label>
+            <label index="invalidChar">HATA : Dosya yolunda mevcut olmayan karakter bulundu (%s). Dosya eklenemiyor</label>
+        </languageKey>
+        <languageKey index="se" type="array">
+            <label index="removeLink">Ta bort länk</label>
+            <label index="uploadImage">Ladda upp bild</label>
+            <label index="update">Uppdatera</label>
+            <label index="path">Sökväg</label>
+            <label index="page">Sida</label>
+            <label index="file">Fil</label>
+            <label index="extUrl">Yttre web-adress (URL)</label>
+            <label index="email">E-post</label>
+            <label index="special">Speciellt</label>
+            <label index="folderTree">Katalogträd</label>
+            <label index="files">Filer</label>
+            <label index="target">Mål</label>
+            <label index="target_popUpWindow">Öppna i fönster</label>
+            <label index="target_popUpWindow_width">Bredd</label>
+            <label index="target_popUpWindow_height">Höjd</label>
+            <label index="newWindow">Nytt fönster</label>
+            <label index="top">Upp</label>
+            <label index="none">Inget - ny länk!</label>
+            <label index="pageTree">Sidträd</label>
+            <label index="contentElements">Innehållselement</label>
+            <label index="selectRecords">Välj element</label>
+            <label index="addToList">Sätt till i lista...</label>
+            <label index="info">Info</label>
+            <label index="emailAddress">E-post adress</label>
+            <label index="setLink">Sätt länk</label>
+            <label index="clickToRedrawFullSize">Bilden är större än den visas här! Klicka för att visa hela bilden.</label>
+            <label index="findDragDrop">Sök den bild du önskar, klicka på bilden och dra den till bildbehandlaren i huvudfönstret!</label>
+            <label index="noWebFolder">Det går inte att dra bilder från denna katalog (gul), därför att den redan finns på servern.</label>
+            <label index="currentLink">Nuvarande länk</label>
+            <label index="invalidChar">FEL: Felaktigt tecken i sökvägen (%s). Kan inte lägga till filen!</label>
+        </languageKey>
+        <languageKey index="pt" type="array">
+            <label index="removeLink">Remover ligação</label>
+            <label index="uploadImage">Enviar imagem</label>
+            <label index="update">Atualizar</label>
+            <label index="path">Caminho</label>
+            <label index="page">Página</label>
+            <label index="file">Arquivo</label>
+            <label index="extUrl">Endereço externo</label>
+            <label index="email">E-mail</label>
+            <label index="special">Especial</label>
+            <label index="folderTree">Árvore da pasta</label>
+            <label index="files">Arquivos</label>
+            <label index="target">Destino</label>
+            <label index="newWindow">Nova janela</label>
+            <label index="top">Topo</label>
+            <label index="none">Nenhum - nova ligação!</label>
+            <label index="pageTree">Árvore da página</label>
+            <label index="contentElements">Elementos do conteúdo</label>
+            <label index="selectRecords">Selecionar registros</label>
+            <label index="addToList">Adicionar à lista...</label>
+            <label index="info">Informações</label>
+            <label index="emailAddress">Endereço de e-mail</label>
+            <label index="setLink">Definir ligação</label>
+            <label index="clickToRedrawFullSize">A imagem é maior do que mostrado aqui! Clique para redesenhar em tamanho integral.</label>
+            <label index="findDragDrop">Encontre sua imagem, então clique na imagem e arraste para a janela principal do editor!</label>
+            <label index="noWebFolder">Você não pode arrastar imagens desta pasta (amarela) por que ela está contida no servidor.</label>
+            <label index="currentLink">Ligação actual</label>
+        </languageKey>
+        <languageKey index="ru" type="array">
+            <label index="removeLink">Удалить ссылку</label>
+            <label index="uploadImage">Загрузка изображений</label>
+            <label index="update">Обновить</label>
+            <label index="path">Путь</label>
+            <label index="page">Страница</label>
+            <label index="file">Файл</label>
+            <label index="extUrl">Внешний адрес</label>
+            <label index="email">Email</label>
+            <label index="special">Особый</label>
+            <label index="folderTree">Дерево папок</label>
+            <label index="files">Файлы</label>
+            <label index="target">Цель</label>
+            <label index="target_popUpWindow">Открыть в новом окне</label>
+            <label index="target_popUpWindow_width">Ширина</label>
+            <label index="target_popUpWindow_height">Высота</label>
+            <label index="anchor_class">Стиль</label>
+            <label index="anchor_title">Заголовок</label>
+            <label index="newWindow">Новое окно</label>
+            <label index="top">Текущее окно</label>
+            <label index="none">Отсутствует - создать ссылку!</label>
+            <label index="pageTree">Дерево страниц</label>
+            <label index="contentElements">Записи содержания</label>
+            <label index="selectRecords">Выбрать записи</label>
+            <label index="addToList">Добавить в список...</label>
+            <label index="info">Информация</label>
+            <label index="emailAddress">Адрес электронной почты</label>
+            <label index="setLink">Установить ссылку</label>
+            <label index="clickToRedrawFullSize">Картинка больше, чем показано здесь. Щелкните, чтобы открыть в натуральную величину.</label>
+            <label index="findDragDrop">Нажмите на нужную картинку и перетяните ее мышью в редактор в главном окне.</label>
+            <label index="noWebFolder">Вы не можете перетянуть картинки из этой папки (желтой), т.к. она является внутренней папкой сервера.</label>
+            <label index="currentLink">Текущая ссылка</label>
+            <label index="invalidChar">ОШИБКА: найден недопустимый знак в адресе файла. Правка файла невозможна!</label>
+        </languageKey>
+        <languageKey index="ro" type="array">
+            <label index="removeLink">Şterge legătura (link)</label>
+            <label index="uploadImage">Upload imagine</label>
+            <label index="update">Actualizare</label>
+            <label index="path">Cale</label>
+            <label index="page">Pagina</label>
+            <label index="file">Fişier</label>
+            <label index="extUrl">Adresă URL externă</label>
+            <label index="email">Email</label>
+            <label index="special">Special</label>
+            <label index="folderTree">Structură director</label>
+            <label index="files">Fişiere</label>
+            <label index="target">Ţintă</label>
+            <label index="newWindow">Fereastră nouă</label>
+            <label index="top">Sus</label>
+            <label index="none">Gol - legătură nouă!</label>
+            <label index="pageTree">Structura de pagini</label>
+            <label index="contentElements">Elemente de conţinut</label>
+            <label index="selectRecords">Alege înregistrări</label>
+            <label index="addToList">Adaugă la listă...</label>
+            <label index="info">Info</label>
+            <label index="emailAddress">Adresă email</label>
+            <label index="setLink">Setare legătură</label>
+            <label index="clickToRedrawFullSize">Imaginea este mai mare decît apare aici! Click pentru a o vedea la mărimea reală.</label>
+            <label index="findDragDrop">Găseşte imaginea, apoi click pe ea şi eliberează în editorul din pagina principală!</label>
+            <label index="noWebFolder">Nu puteţi muta imagini din acest director (galben), deoarece aparţine structurii interne a server-ului.</label>
+            <label index="currentLink">Legătură curentă</label>
+        </languageKey>
+        <languageKey index="ch" type="array">
+            <label index="removeLink">移除链接</label>
+            <label index="uploadImage">上传图片</label>
+            <label index="update">更新</label>
+            <label index="path">路径</label>
+            <label index="page">页面</label>
+            <label index="file">文件</label>
+            <label index="extUrl">外部URL</label>
+            <label index="email">电子邮件</label>
+            <label index="special">专用的</label>
+            <label index="folderTree">目录树</label>
+            <label index="files">文件</label>
+            <label index="target">目标</label>
+            <label index="newWindow">新窗口</label>
+            <label index="top">顶层</label>
+            <label index="none">没有 - 新链接</label>
+            <label index="pageTree">页面树</label>
+            <label index="contentElements">内容元素</label>
+            <label index="selectRecords">选择记录</label>
+            <label index="addToList">添加到列表</label>
+            <label index="info">信息</label>
+            <label index="emailAddress">电邮地址</label>
+            <label index="setLink">设定链接</label>
+            <label index="clickToRedrawFullSize">图片实际大小比这里显示的大! 点击以全尺寸显示.</label>
+            <label index="findDragDrop">查找图片,然后点击并拖动图片到编辑器的主窗口!</label>
+            <label index="noWebFolder">您不能从该黄色的目录中拖出图片, 因为它是服务器内部目录.</label>
+            <label index="currentLink">当前链接</label>
+        </languageKey>
+        <languageKey index="sk" type="array">
+            <label index="removeLink">Odstráň odkaz</label>
+            <label index="uploadImage">Natiahni obrázok</label>
+            <label index="update">Aktualizuj</label>
+            <label index="path">Cesta</label>
+            <label index="page">Stránka</label>
+            <label index="file">Súbor</label>
+            <label index="extUrl">Externá URL</label>
+            <label index="email">E-mail</label>
+            <label index="special">Špeciálny</label>
+            <label index="folderTree">Strom zložiek</label>
+            <label index="files">Súbory</label>
+            <label index="target">Cieľ</label>
+            <label index="target_popUpWindow">Otvoriť v novom okne</label>
+            <label index="target_popUpWindow_width">Šírka</label>
+            <label index="target_popUpWindow_height">Výška</label>
+            <label index="anchor_class">Štýl</label>
+            <label index="anchor_title">Nadpis</label>
+            <label index="newWindow">Nové okno</label>
+            <label index="top">Nahor</label>
+            <label index="none">Žiaden - nový odkaz!</label>
+            <label index="pageTree">Strom stránok</label>
+            <label index="contentElements">Prvky obsahu</label>
+            <label index="selectRecords">Vyber záznamy</label>
+            <label index="addToList">Pridať do zoznamu ...</label>
+            <label index="info">Info</label>
+            <label index="emailAddress">E-mailová adresa</label>
+            <label index="setLink">Nastaviť odkaz</label>
+            <label index="clickToRedrawFullSize">Obrázok je väčší ako je tu zobrazené! Klikni na jeho prekreslenie v úplnej velkosti.</label>
+            <label index="findDragDrop">Nájdi si tvoj obrázok, potom naňho klikni a presuň ho na editor v hlavnom okne!</label>
+            <label index="noWebFolder">Nemôžeš presúvať obrázky z tejto zložky (žltej), pretože je to interná zložka na serveri.</label>
+            <label index="currentLink">Súčasný odkaz</label>
+            <label index="invalidChar">CHYBA: Bol nájdený nesprávny znak na súborovej ceste (%s). Nie je možné pridať súbor!</label>
+        </languageKey>
+        <languageKey index="lt" type="array">
+        </languageKey>
+        <languageKey index="is" type="array">
+            <label index="removeLink">Eyða tengli</label>
+            <label index="uploadImage">Hlaða upp mynd</label>
+            <label index="update">Uppfæra</label>
+            <label index="path">Slóð</label>
+            <label index="page">Síða</label>
+            <label index="file">Skrá</label>
+            <label index="extUrl">Utan á liggjandi vefslóð</label>
+            <label index="email">Póstfang</label>
+            <label index="special">Sérstakur</label>
+            <label index="folderTree">Möpputré</label>
+            <label index="files">Skjöl</label>
+            <label index="target">Mark</label>
+            <label index="newWindow">Nýr gluggi</label>
+            <label index="top">Efst</label>
+            <label index="none">Enginn - nýr tengill</label>
+            <label index="pageTree">Síðutré</label>
+            <label index="contentElements">Innihald hlutir</label>
+            <label index="selectRecords">Velja skrár</label>
+            <label index="addToList">Bæta við á lista...</label>
+            <label index="info">Upplýsingar</label>
+            <label index="emailAddress">Póstfang</label>
+            <label index="setLink">Bæta við tengli</label>
+            <label index="clickToRedrawFullSize">Myndinn er stærri en sést hér! Smeltu til að stækka.</label>
+            <label index="findDragDrop">Findu myndina, smelltu svo á myndina og draga hana svo yfir á lagfæringasvæðið í aðalglugga!</label>
+            <label index="noWebFolder">Þú getur ekki dregið myndir úr þessari gulu möppu vegna þess að hún er (innbyggð)*innri* á netþjónnin.</label>
+            <label index="currentLink">Núverandi tengill</label>
+        </languageKey>
+        <languageKey index="hr" type="array">
+            <label index="removeLink">Ukloni link</label>
+            <label index="uploadImage">Prebaci sliku</label>
+            <label index="update">Ažuriraj</label>
+            <label index="path">Staza</label>
+            <label index="page">Stranica</label>
+            <label index="file">Datoteka</label>
+            <label index="extUrl">Eksterni URL</label>
+            <label index="email">E-mail</label>
+            <label index="special">Poseban</label>
+            <label index="folderTree">Stablo pretinaca</label>
+            <label index="files">Datoteke</label>
+            <label index="target">Odredište</label>
+            <label index="target_popUpWindow">Otvori u prozoru</label>
+            <label index="target_popUpWindow_width">Širina</label>
+            <label index="target_popUpWindow_height">Visina</label>
+            <label index="newWindow">Novi prozor</label>
+            <label index="top">Vrh</label>
+            <label index="none">Ništa - novi link!</label>
+            <label index="pageTree">Stablo stranica</label>
+            <label index="contentElements">Elementi sadržaja</label>
+            <label index="selectRecords">Odaberi zapise</label>
+            <label index="addToList">Dodaj na popis...</label>
+            <label index="info">Info</label>
+            <label index="emailAddress">E-mail adresa</label>
+            <label index="setLink">Postavi link</label>
+            <label index="clickToRedrawFullSize">Slika je veća nego prikazana! Klikni za prikaz u punoj velićini.</label>
+            <label index="findDragDrop">Nađi sliku i klikni na nju te je odvuci u editor glavnog prozora!</label>
+            <label index="noWebFolder">Ne možete odvući slike iz ovog (žutog) pretinca stoga što je to interni pretinac na poslužitelju.</label>
+            <label index="currentLink">Trenutni link.</label>
+            <label index="invalidChar">GREŠKA: Nevažeći znak u stazi do datoteke (%s). Ne mogu dodati datoteku.</label>
+        </languageKey>
+        <languageKey index="hu" type="array">
+            <label index="removeLink">Link eltávolítása</label>
+            <label index="uploadImage">Kép feltöltése</label>
+            <label index="update">Frissít</label>
+            <label index="path">Útvonal</label>
+            <label index="page">Oldal</label>
+            <label index="file">File</label>
+            <label index="extUrl">Külső URL</label>
+            <label index="email">Email</label>
+            <label index="special">Speciális</label>
+            <label index="folderTree">Mappafa</label>
+            <label index="files">File-ok</label>
+            <label index="target">Cél</label>
+            <label index="target_popUpWindow">Megnyitás ablakban (popup)</label>
+            <label index="target_popUpWindow_width">Szélesség</label>
+            <label index="target_popUpWindow_height">Magasság</label>
+            <label index="newWindow">Új ablak</label>
+            <label index="top">Top</label>
+            <label index="none">None - új link</label>
+            <label index="pageTree">Oldalfa</label>
+            <label index="contentElements">Tartalomelemek</label>
+            <label index="selectRecords">Rekordok kiválasztása</label>
+            <label index="addToList">Add hozzá a listához...</label>
+            <label index="info">Info</label>
+            <label index="emailAddress">Email cím</label>
+            <label index="setLink">Linket beállít</label>
+            <label index="clickToRedrawFullSize">A kép nagyobb az itt láthatónál. Kattints ide a teljes méretű nézethez.</label>
+            <label index="findDragDrop">Keresd meg a képet, kattints rá és húzd a szövegszerkesztőbe.</label>
+            <label index="noWebFolder">Nem húzhatod a képeket ebből a könyvtárból (sárga), mivel a könyvtár nem elérhető a weben.</label>
+            <label index="currentLink">Aktuális Link</label>
+            <label index="invalidChar">HIBA: érvénytelen karakter a file elérési útban (%s). Nem lehet hozzáadni a file-t!</label>
+        </languageKey>
+        <languageKey index="gl" type="array">
+        </languageKey>
+        <languageKey index="th" type="array">
+            <label index="removeLink">ลบลิ้ง</label>
+            <label index="uploadImage">อัปโหลด ภาพ</label>
+            <label index="update">บันทีก</label>
+            <label index="path">ืที่ไป</label>
+            <label index="page">หน้า</label>
+            <label index="file">แฟ้มข้อมูล</label>
+            <label index="extUrl">URL ภายนอก</label>
+            <label index="email">อีเมล์</label>
+            <label index="special">พิเศษ</label>
+            <label index="folderTree">โครงสร้างแฟ้ม</label>
+            <label index="files">แฟ้มข้อมูล</label>
+            <label index="target">ที่หมาย</label>
+            <label index="newWindow">หน้าต่างใหม่</label>
+            <label index="top">ด้านบน</label>
+            <label index="none">ไม่มี - เปิดลิ้งใไหม่!</label>
+            <label index="pageTree">โครงสร้าง หน้า</label>
+            <label index="contentElements">องค์ประกอบของเนื้อหา</label>
+            <label index="selectRecords">เลือกบันทีกข้อมูล</label>
+            <label index="addToList">เพิ่มเข้ารายการ</label>
+            <label index="info">ข้อมูล</label>
+            <label index="emailAddress">ที่อยู่อีเมล์</label>
+            <label index="setLink">กำหนดลิ้ง</label>
+            <label index="clickToRedrawFullSize">ภาพใหญ่เกินกว่าที่จะเสดงที่นี่ได้! กดปุ่มเพื่อให้แสดงเต็มขนาด</label>
+            <label index="findDragDrop">ค้นหาภาพของท่าน แล้วกดปุ่มที่ภาพและลากไปใส่หน้าต่างหลักของโปรเแกรมแก้ไข</label>
+            <label index="noWebFolder">ลากภาพจากแฟ้มสีเหลืองนี้ไม่ได้ เพราะมันอยู่ภายในตัวเซืร์ฟเว่อ</label>
+            <label index="currentLink">ลิ้งปัจจุบัน</label>
+        </languageKey>
+        <languageKey index="gr" type="array">
+        </languageKey>
+        <languageKey index="hk" type="array">
+            <label index="removeLink">移除連結</label>
+            <label index="uploadImage">上載圖片</label>
+            <label index="update">更新</label>
+            <label index="path">路徑</label>
+            <label index="page">網頁</label>
+            <label index="file">檔案</label>
+            <label index="extUrl">外部URL</label>
+            <label index="email">電郵</label>
+            <label index="special">專用</label>
+            <label index="folderTree">資料夾樹形圖</label>
+            <label index="files">檔案</label>
+            <label index="target">目標</label>
+            <label index="target_popUpWindow">在視窗中開啟</label>
+            <label index="target_popUpWindow_width">闊</label>
+            <label index="target_popUpWindow_height">高</label>
+            <label index="newWindow">新視窗</label>
+            <label index="top">頂部</label>
+            <label index="none">沒有 - 新連結</label>
+            <label index="pageTree">網頁樹形圖</label>
+            <label index="contentElements">內容元件</label>
+            <label index="selectRecords">選擇記錄</label>
+            <label index="addToList">加到列表...</label>
+            <label index="info">資料</label>
+            <label index="emailAddress">電郵地址</label>
+            <label index="setLink">設定連結</label>
+            <label index="clickToRedrawFullSize">在此顯示的圖片較大！點擊以用原大小重畫</label>
+            <label index="findDragDrop">尋找你的圖片，然後點擊影像再拉到主視窗的編輯器中！</label>
+            <label index="noWebFolder">你不能從這個資料夾（黃色）拉出圖片，因為這是伺服器的內部資料夾</label>
+            <label index="currentLink">目前的連結</label>
+            <label index="invalidChar">錯誤：在檔案路徑(%s)中發現無效的的字元。不能加入檔案！</label>
+        </languageKey>
+        <languageKey index="eu" type="array">
+            <label index="removeLink">Ezabatu lotura</label>
+            <label index="uploadImage">Igo irudia</label>
+            <label index="update">Eguneratu</label>
+            <label index="path">Bidea</label>
+            <label index="page">Orria</label>
+            <label index="file">Fitxategia</label>
+            <label index="extUrl">Kanpoko URL-a</label>
+            <label index="email">ePosta</label>
+            <label index="special">Berezia</label>
+            <label index="folderTree">Karpeta zuhaitza</label>
+            <label index="files">Fitxategiak</label>
+            <label index="target">Helburua</label>
+            <label index="newWindow">Leiho berria</label>
+            <label index="top">Goian</label>
+            <label index="none">Bat ez - lotura berria!</label>
+            <label index="pageTree">Orri zuhaitza</label>
+            <label index="contentElements">Eduki elementuak</label>
+            <label index="selectRecords">Aukeratu erregistroak</label>
+            <label index="addToList">Gehitu zerrendara...</label>
+            <label index="info">Info</label>
+            <label index="emailAddress">ePosta helbidea</label>
+            <label index="setLink">Ezarri lotura</label>
+            <label index="clickToRedrawFullSize">Irudia hemen erakutsitakoa baino handiagoa da! Egin klik tamaina osaoan ikusteko.</label>
+            <label index="findDragDrop">Bilatu zure irudia, gero egin klik irudian eta arrastatu leiho nagusiko editorera!</label>
+            <label index="noWebFolder">Ezin duzu karpeta honetatik irudirik arrastatu (horia) zerbitzariaren barnekoa delako</label>
+            <label index="currentLink">Oraingo lotura</label>
+        </languageKey>
+        <languageKey index="bg" type="array">
+            <label index="removeLink">Премахни връзка</label>
+            <label index="uploadImage">Upload на изображение</label>
+            <label index="update">Обновяване</label>
+            <label index="path">Път</label>
+            <label index="page">Страница</label>
+            <label index="file">Файл</label>
+            <label index="extUrl">Външно URL</label>
+            <label index="email">Email</label>
+            <label index="special">Специално</label>
+            <label index="folderTree">Дърво на директорийте</label>
+            <label index="files">Файлове</label>
+            <label index="target">Цел</label>
+            <label index="newWindow">Нов прозорец</label>
+            <label index="top">Върха</label>
+            <label index="none">Никаква - нова връзка!</label>
+            <label index="pageTree">Дърво на страницата</label>
+            <label index="contentElements">Елементи на съдържанието</label>
+            <label index="selectRecords">Избери запис</label>
+            <label index="addToList">Добави към списъка</label>
+            <label index="info">Инфо</label>
+            <label index="emailAddress">Email адрес</label>
+            <label index="setLink">Постави (Set) връзка</label>
+            <label index="clickToRedrawFullSize">Изображението е по-голямо отколкото е показано тук! Натиснете за да се опъне в пълния му размер.</label>
+            <label index="findDragDrop">Намерете вашето изображение, след което кликнете на изображението и го завлечете в редактора на главния прозорец !</label>
+            <label index="noWebFolder">Неможе те да завлечете изображение от тази директория (жълта), защото тя е вътрешна (на сървъра).</label>
+            <label index="currentLink">Настояща връзка</label>
+            <label index="invalidChar">ГРЕШКА: Невалиден знак е открит във файл пътя (%s). Файла не може да бъде добавен!</label>
+        </languageKey>
+        <languageKey index="br" type="array">
+            <label index="removeLink">Remover link</label>
+            <label index="uploadImage">Enviar imagem</label>
+            <label index="update">Atualizar</label>
+            <label index="path">Caminho</label>
+            <label index="page">Página</label>
+            <label index="file">Arquivo</label>
+            <label index="extUrl">URL externa</label>
+            <label index="email">E-mail</label>
+            <label index="special">Especial</label>
+            <label index="folderTree">Árvore da pasta</label>
+            <label index="files">Arquivos</label>
+            <label index="target">Destino</label>
+            <label index="target_popUpWindow">Abrir na janela</label>
+            <label index="target_popUpWindow_width">Largura</label>
+            <label index="target_popUpWindow_height">Altura</label>
+            <label index="anchor_class">Estilo</label>
+            <label index="anchor_title">Título</label>
+            <label index="newWindow">Nova janela</label>
+            <label index="top">Topo</label>
+            <label index="none">Nenhum - novo link!</label>
+            <label index="pageTree">Árvore da página</label>
+            <label index="contentElements">Elementos do conteúdo</label>
+            <label index="selectRecords">Selecionar registros</label>
+            <label index="addToList">Adicionar à lista...</label>
+            <label index="info">Informações</label>
+            <label index="emailAddress">Endereço de e-mail</label>
+            <label index="setLink">Definir link</label>
+            <label index="clickToRedrawFullSize">A imagem é maior do que mostrado aqui! Clique para redesenhar em tamanho integral.</label>
+            <label index="findDragDrop">Encontre sua imagem, então clique nela e arraste para o editor na janela principal!</label>
+            <label index="noWebFolder">Você não pode arrastar imagens desta pasta (amarela) por que ela está contida no servidor.</label>
+            <label index="currentLink">Link atual</label>
+            <label index="invalidChar">ERRO: Caractere inválido encontrado no caminho (%s). Não foi possível incluir o arquivo!</label>
+        </languageKey>
+        <languageKey index="et" type="array">
+            <label index="removeLink">Eemalda link</label>
+            <label index="uploadImage">Laadi pilt ülesse</label>
+            <label index="update">Uuenda</label>
+            <label index="path">Rada</label>
+            <label index="page">Lehekülg</label>
+            <label index="file">Fail</label>
+            <label index="extUrl">Väline URL</label>
+            <label index="email">E-mail</label>
+            <label index="special">Spetsiaalne</label>
+            <label index="folderTree">Kataloogipuu</label>
+            <label index="files">Failid</label>
+            <label index="target">Sihtkoht</label>
+            <label index="target_popUpWindow">Ava aknas</label>
+            <label index="target_popUpWindow_width">Laius</label>
+            <label index="target_popUpWindow_height">Kõrgus</label>
+            <label index="newWindow">Uus aken</label>
+            <label index="top">Ülesse</label>
+            <label index="none">Puudub - uus link!</label>
+            <label index="pageTree">Sisupuu</label>
+            <label index="contentElements">Sisuelemendid</label>
+            <label index="selectRecords">Vali kirje</label>
+            <label index="addToList">Lisa loendisse</label>
+            <label index="info">Info</label>
+            <label index="emailAddress">E-maili aadress</label>
+            <label index="setLink">Sea link</label>
+            <label index="clickToRedrawFullSize">Pilt on suurem, kui siin näidatud! Kliki joonistamaks täissuuruses.</label>
+            <label index="findDragDrop">Otsi pilt, seejärel kliki pildile ja lohista peaakna redaktorisse!</label>
+            <label index="noWebFolder">Sellest kaustast (kollane) pilti lohistada ei saa, kuna see on serveri sisemine kaust.</label>
+            <label index="currentLink">Käesolev link</label>
+            <label index="invalidChar">VIGA: failinimes (%s) on lubamatu tähemärk. Faili ei saa lisada!</label>
+        </languageKey>
+        <languageKey index="ar" type="array">
+            <label index="removeLink">إحذف الربط</label>
+            <label index="uploadImage">تحمـيــــل صورة من الحاسب الى الويب</label>
+            <label index="update">تحديث</label>
+            <label index="path">المسار</label>
+            <label index="page">ألصفحة</label>
+            <label index="file">المــلف</label>
+            <label index="extUrl">ربط خارجي</label>
+            <label index="email">بريــد</label>
+            <label index="special">خاص</label>
+            <label index="folderTree">شجرة الملفــات</label>
+            <label index="files">الملفــات</label>
+            <label index="target">الهدف</label>
+            <label index="target_popUpWindow">إفتح في شباك</label>
+            <label index="target_popUpWindow_width">العرض</label>
+            <label index="target_popUpWindow_height">الإرتفاع</label>
+            <label index="newWindow">شباك جديد</label>
+            <label index="top">القمــة</label>
+            <label index="none">ليس ربط جديــد</label>
+            <label index="pageTree">شجرة الصفحــات</label>
+            <label index="contentElements">عناصر المحتويات</label>
+            <label index="selectRecords">إختيــار فقرة</label>
+            <label index="addToList">إضــافة إلى القــائمة</label>
+            <label index="info">معلومــة</label>
+            <label index="emailAddress">عنوان البريــد</label>
+            <label index="setLink">تحديد ربط</label>
+            <label index="clickToRedrawFullSize">الصورحجمهــا أكبــر من المعروضة هنا! إضغط لتراها أكبر</label>
+            <label index="findDragDrop">إبحث عن الصورة و إضغط عليهــا و إسحبهــا إلى داخل شباك التعديــل</label>
+            <label index="noWebFolder">لا تستطيع سحب صور من هده الملفــات لآنهــا ملفــان داخــلية على السيرفر</label>
+            <label index="currentLink">الربط الحــالي</label>
+            <label index="invalidChar">لم تتم عملية إضافة الملف  (%s)خطأ: هناك حرف غير مقبول في في مسار الملف</label>
+        </languageKey>
+        <languageKey index="he" type="array">
+            <label index="removeLink">מחק קישור</label>
+            <label index="uploadImage">להעלות תמונה</label>
+            <label index="update">עדכן</label>
+            <label index="path">נתיב</label>
+            <label index="page">דף</label>
+            <label index="file">קובץ</label>
+            <label index="extUrl">כתובת אינטרנט חיצונית</label>
+            <label index="email">דואר אלקטרוני</label>
+            <label index="special">מיוחד</label>
+            <label index="folderTree">תיקיות</label>
+            <label index="files">קבצים</label>
+            <label index="target">מטרה</label>
+            <label index="target_popUpWindow">פתח בחלון</label>
+            <label index="target_popUpWindow_width">רוחב</label>
+            <label index="target_popUpWindow_height">גובה</label>
+            <label index="newWindow">חלון חדש</label>
+            <label index="top">ראש</label>
+            <label index="none">לא קיים - קישור חדש</label>
+            <label index="pageTree">דפים</label>
+            <label index="contentElements">מרכיבי תוכן</label>
+            <label index="selectRecords">בחר רשומות</label>
+            <label index="addToList">הוסף לרשימה...</label>
+            <label index="info">מידע</label>
+            <label index="emailAddress">כתובת דוא''ל</label>
+            <label index="setLink">קבע קישור</label>
+            <label index="clickToRedrawFullSize">התמונה גדולה יותר מהמוצג! הקלק כדי לראות אותה בגודל מלה.</label>
+            <label index="findDragDrop">מצא את התמונה שלך, הקלק על התמונה וגרור אותה לעורך בחלון הראשי</label>
+            <label index="noWebFolder">אינך יכול לגרור תמונות מתיקייה זו (צהובה) כי היא פנימית בשרת</label>
+            <label index="currentLink">קישור נוכחי</label>
+            <label index="invalidChar">שגיאה: תו לא חוקי נמצא בנתיב הקובץ (%s). לא ניתן להוסיף קובץ זה!</label>
+        </languageKey>
+        <languageKey index="ua" type="array">
+        </languageKey>
+        <languageKey index="lv" type="array">
+            <label index="removeLink">Noņemt linku</label>
+            <label index="uploadImage">Augšuplādēt attēlu</label>
+            <label index="update">Atjaunot</label>
+            <label index="path">Ceļš</label>
+            <label index="page">Lapa</label>
+            <label index="file">Fails</label>
+            <label index="extUrl">Ārējais URL</label>
+            <label index="email">E-pasts</label>
+            <label index="special">Īpašs</label>
+            <label index="folderTree">Folderu koks</label>
+            <label index="files">Faili</label>
+            <label index="target">Mērķis</label>
+            <label index="newWindow">Jauns logs</label>
+            <label index="top">Augša</label>
+            <label index="none">Nav - jauns links!</label>
+            <label index="pageTree">Lapu koks</label>
+            <label index="contentElements">Satura elementi</label>
+            <label index="selectRecords">Izvēlēties ierakstus</label>
+            <label index="addToList">Pievienot listei...</label>
+            <label index="info">Info</label>
+            <label index="emailAddress">E-pasta adrese</label>
+            <label index="setLink">Uzstādīt linku</label>
+            <label index="clickToRedrawFullSize">Attēls ir lielāks, nekā parādīts šeit! Uzklikšķiniet, lai pārzīmētu pilnā izmērā.</label>
+            <label index="findDragDrop">Sameklējiet jūsu bildi, pēc tam uzklikšķiniet uz tās ievelciet to redaktora laukā galvenajā logā!</label>
+            <label index="noWebFolder">Jūs nevarat vilkt bildes no šī (dzeltenā) foldera, tāpēc, ka tas ir iekšējais serverī.</label>
+            <label index="currentLink">Tekošais links</label>
+            <label index="invalidChar">KĻŪDA: Kļūdaina rakstzīme atrasta ceļā līdz failam (%s). Nevar pievienot failu!</label>
+        </languageKey>
+        <languageKey index="jp" type="array">
+        </languageKey>
+        <languageKey index="vn" type="array">
+        </languageKey>
+        <languageKey index="ca" type="array">
+        </languageKey>
+        <languageKey index="ba" type="array">
+        </languageKey>
+        <languageKey index="kr" type="array">
+        </languageKey>
+        <languageKey index="eo" type="array">
+        </languageKey>
+        <languageKey index="my" type="array">
+        </languageKey>
+        <languageKey index="hi" type="array">
+        </languageKey>
+    </data>
+    <orig_hash type="array">
+        <languageKey index="default" type="array">
+            <label index="removeLink" type="integer">127410368</label>
+            <label index="uploadImage" type="integer">33130562</label>
+            <label index="update" type="integer">6894342</label>
+            <label index="path" type="integer">180814866</label>
+            <label index="page" type="integer">26464201</label>
+            <label index="file" type="integer">11696408</label>
+            <label index="extUrl" type="integer">76246465</label>
+            <label index="email" type="integer">216575645</label>
+            <label index="special" type="integer">189541205</label>
+            <label index="folderTree" type="integer">64613660</label>
+            <label index="files" type="integer">153041452</label>
+            <label index="target" type="integer">205628184</label>
+            <label index="target_popUpWindow" type="integer">21986240</label>
+            <label index="target_popUpWindow_width" type="integer">53040229</label>
+            <label index="target_popUpWindow_height" type="integer">250375243</label>
+            <label index="anchor_class" type="integer">182617337</label>
+            <label index="anchor_title" type="integer">192455458</label>
+            <label index="newWindow" type="integer">241027301</label>
+            <label index="top" type="integer">173014479</label>
+            <label index="none" type="integer">11678269</label>
+            <label index="pageTree" type="integer">151051780</label>
+            <label index="contentElements" type="integer">221138583</label>
+            <label index="selectRecords" type="integer">189568969</label>
+            <label index="addToList" type="integer">135970903</label>
+            <label index="info" type="integer">67476226</label>
+            <label index="emailAddress" type="integer">188054354</label>
+            <label index="setLink" type="integer">126500206</label>
+            <label index="clickToRedrawFullSize" type="integer">38116243</label>
+            <label index="findDragDrop" type="integer">164239036</label>
+            <label index="noWebFolder" type="integer">213382956</label>
+            <label index="currentLink" type="integer">220492962</label>
+            <label index="invalidChar" type="integer">103011900</label>
+        </languageKey>
+        <languageKey index="dk" type="array">
+            <label index="removeLink" type="integer">127410368</label>
+            <label index="uploadImage" type="integer">33130562</label>
+            <label index="update" type="integer">6894342</label>
+            <label index="path" type="integer">180814866</label>
+            <label index="page" type="integer">26464201</label>
+            <label index="file" type="integer">11696408</label>
+            <label index="extUrl" type="integer">76246465</label>
+            <label index="email" type="integer">216575645</label>
+            <label index="special" type="integer">189541205</label>
+            <label index="folderTree" type="integer">64613660</label>
+            <label index="files" type="integer">153041452</label>
+            <label index="target" type="integer">205628184</label>
+            <label index="target_popUpWindow" type="integer">21986240</label>
+            <label index="target_popUpWindow_width" type="integer">53040229</label>
+            <label index="target_popUpWindow_height" type="integer">250375243</label>
+            <label index="anchor_class" type="integer">182617337</label>
+            <label index="anchor_title" type="integer">192455458</label>
+            <label index="newWindow" type="integer">241027301</label>
+            <label index="top" type="integer">173014479</label>
+            <label index="none" type="integer">11678269</label>
+            <label index="pageTree" type="integer">151051780</label>
+            <label index="contentElements" type="integer">221138583</label>
+            <label index="selectRecords" type="integer">189568969</label>
+            <label index="addToList" type="integer">135970903</label>
+            <label index="info" type="integer">67476226</label>
+            <label index="emailAddress" type="integer">188054354</label>
+            <label index="setLink" type="integer">126500206</label>
+            <label index="clickToRedrawFullSize" type="integer">38116243</label>
+            <label index="findDragDrop" type="integer">164239036</label>
+            <label index="noWebFolder" type="integer">213382956</label>
+            <label index="currentLink" type="integer">220492962</label>
+            <label index="invalidChar" type="integer">103011900</label>
+        </languageKey>
+        <languageKey index="de" type="array">
+            <label index="removeLink" type="integer">127410368</label>
+            <label index="uploadImage" type="integer">33130562</label>
+            <label index="update" type="integer">6894342</label>
+            <label index="path" type="integer">180814866</label>
+            <label index="page" type="integer">26464201</label>
+            <label index="file" type="integer">11696408</label>
+            <label index="extUrl" type="integer">76246465</label>
+            <label index="email" type="integer">216575645</label>
+            <label index="special" type="integer">189541205</label>
+            <label index="folderTree" type="integer">64613660</label>
+            <label index="files" type="integer">153041452</label>
+            <label index="target" type="integer">205628184</label>
+            <label index="target_popUpWindow" type="integer">21986240</label>
+            <label index="target_popUpWindow_width" type="integer">53040229</label>
+            <label index="target_popUpWindow_height" type="integer">250375243</label>
+            <label index="anchor_class" type="integer">182617337</label>
+            <label index="anchor_title" type="integer">192455458</label>
+            <label index="newWindow" type="integer">241027301</label>
+            <label index="top" type="integer">173014479</label>
+            <label index="none" type="integer">11678269</label>
+            <label index="pageTree" type="integer">151051780</label>
+            <label index="contentElements" type="integer">221138583</label>
+            <label index="selectRecords" type="integer">189568969</label>
+            <label index="addToList" type="integer">135970903</label>
+            <label index="info" type="integer">67476226</label>
+            <label index="emailAddress" type="integer">188054354</label>
+            <label index="setLink" type="integer">126500206</label>
+            <label index="clickToRedrawFullSize" type="integer">38116243</label>
+            <label index="findDragDrop" type="integer">164239036</label>
+            <label index="noWebFolder" type="integer">213382956</label>
+            <label index="currentLink" type="integer">220492962</label>
+            <label index="invalidChar" type="integer">103011900</label>
+        </languageKey>
+        <languageKey index="no" type="array">
+            <label index="removeLink" type="integer">127410368</label>
+            <label index="uploadImage" type="integer">33130562</label>
+            <label index="update" type="integer">6894342</label>
+            <label index="path" type="integer">180814866</label>
+            <label index="page" type="integer">26464201</label>
+            <label index="file" type="integer">11696408</label>
+            <label index="extUrl" type="integer">76246465</label>
+            <label index="email" type="integer">216575645</label>
+            <label index="special" type="integer">189541205</label>
+            <label index="folderTree" type="integer">64613660</label>
+            <label index="files" type="integer">153041452</label>
+            <label index="target" type="integer">205628184</label>
+            <label index="target_popUpWindow" type="integer">21986240</label>
+            <label index="target_popUpWindow_width" type="integer">53040229</label>
+            <label index="target_popUpWindow_height" type="integer">250375243</label>
+            <label index="anchor_class" type="integer">182617337</label>
+            <label index="anchor_title" type="integer">192455458</label>
+            <label index="newWindow" type="integer">241027301</label>
+            <label index="top" type="integer">173014479</label>
+            <label index="none" type="integer">11678269</label>
+            <label index="pageTree" type="integer">151051780</label>
+            <label index="contentElements" type="integer">221138583</label>
+            <label index="selectRecords" type="integer">189568969</label>
+            <label index="addToList" type="integer">135970903</label>
+            <label index="info" type="integer">67476226</label>
+            <label index="emailAddress" type="integer">188054354</label>
+            <label index="setLink" type="integer">126500206</label>
+            <label index="clickToRedrawFullSize" type="integer">38116243</label>
+            <label index="findDragDrop" type="integer">164239036</label>
+            <label index="noWebFolder" type="integer">213382956</label>
+            <label index="currentLink" type="integer">220492962</label>
+            <label index="invalidChar" type="integer">103011900</label>
+        </languageKey>
+        <languageKey index="it" type="array">
+            <label index="removeLink" type="integer">127410368</label>
+            <label index="uploadImage" type="integer">33130562</label>
+            <label index="update" type="integer">6894342</label>
+            <label index="path" type="integer">180814866</label>
+            <label index="page" type="integer">26464201</label>
+            <label index="file" type="integer">11696408</label>
+            <label index="extUrl" type="integer">76246465</label>
+            <label index="email" type="integer">216575645</label>
+            <label index="special" type="integer">189541205</label>
+            <label index="folderTree" type="integer">64613660</label>
+            <label index="files" type="integer">153041452</label>
+            <label index="target" type="integer">205628184</label>
+            <label index="target_popUpWindow" type="integer">21986240</label>
+            <label index="target_popUpWindow_width" type="integer">53040229</label>
+            <label index="target_popUpWindow_height" type="integer">250375243</label>
+            <label index="anchor_class" type="integer">182617337</label>
+            <label index="anchor_title" type="integer">192455458</label>
+            <label index="newWindow" type="integer">241027301</label>
+            <label index="top" type="integer">173014479</label>
+            <label index="none" type="integer">11678269</label>
+            <label index="pageTree" type="integer">151051780</label>
+            <label index="contentElements" type="integer">221138583</label>
+            <label index="selectRecords" type="integer">189568969</label>
+            <label index="addToList" type="integer">135970903</label>
+            <label index="info" type="integer">67476226</label>
+            <label index="emailAddress" type="integer">188054354</label>
+            <label index="setLink" type="integer">126500206</label>
+            <label index="clickToRedrawFullSize" type="integer">38116243</label>
+            <label index="findDragDrop" type="integer">164239036</label>
+            <label index="noWebFolder" type="integer">213382956</label>
+            <label index="currentLink" type="integer">220492962</label>
+            <label index="invalidChar" type="integer">103011900</label>
+        </languageKey>
+        <languageKey index="fr" type="array">
+            <label index="removeLink" type="integer">127410368</label>
+            <label index="uploadImage" type="integer">33130562</label>
+            <label index="update" type="integer">6894342</label>
+            <label index="path" type="integer">180814866</label>
+            <label index="page" type="integer">26464201</label>
+            <label index="file" type="integer">11696408</label>
+            <label index="extUrl" type="integer">76246465</label>
+            <label index="email" type="integer">216575645</label>
+            <label index="special" type="integer">189541205</label>
+            <label index="folderTree" type="integer">64613660</label>
+            <label index="files" type="integer">153041452</label>
+            <label index="target" type="integer">205628184</label>
+            <label index="target_popUpWindow" type="integer">21986240</label>
+            <label index="target_popUpWindow_width" type="integer">53040229</label>
+            <label index="target_popUpWindow_height" type="integer">250375243</label>
+            <label index="anchor_class" type="integer">182617337</label>
+            <label index="anchor_title" type="integer">192455458</label>
+            <label index="newWindow" type="integer">241027301</label>
+            <label index="top" type="integer">173014479</label>
+            <label index="none" type="integer">11678269</label>
+            <label index="pageTree" type="integer">151051780</label>
+            <label index="contentElements" type="integer">221138583</label>
+            <label index="selectRecords" type="integer">189568969</label>
+            <label index="addToList" type="integer">135970903</label>
+            <label index="info" type="integer">67476226</label>
+            <label index="emailAddress" type="integer">188054354</label>
+            <label index="setLink" type="integer">126500206</label>
+            <label index="clickToRedrawFullSize" type="integer">38116243</label>
+            <label index="findDragDrop" type="integer">164239036</label>
+            <label index="noWebFolder" type="integer">213382956</label>
+            <label index="currentLink" type="integer">220492962</label>
+        </languageKey>
+        <languageKey index="es" type="array">
+            <label index="removeLink" type="integer">127410368</label>
+            <label index="uploadImage" type="integer">33130562</label>
+            <label index="page" type="integer">26464201</label>
+            <label index="file" type="integer">11696408</label>
+            <label index="extUrl" type="integer">76246465</label>
+            <label index="email" type="integer">216575645</label>
+            <label index="folderTree" type="integer">64613660</label>
+            <label index="files" type="integer">153041452</label>
+            <label index="target" type="integer">205628184</label>
+            <label index="target_popUpWindow" type="integer">21986240</label>
+            <label index="target_popUpWindow_width" type="integer">53040229</label>
+            <label index="target_popUpWindow_height" type="integer">250375243</label>
+            <label index="anchor_class" type="integer">182617337</label>
+            <label index="anchor_title" type="integer">192455458</label>
+            <label index="newWindow" type="integer">241027301</label>
+            <label index="top" type="integer">173014479</label>
+            <label index="none" type="integer">11678269</label>
+            <label index="pageTree" type="integer">151051780</label>
+            <label index="contentElements" type="integer">221138583</label>
+            <label index="emailAddress" type="integer">188054354</label>
+            <label index="setLink" type="integer">126500206</label>
+            <label index="currentLink" type="integer">220492962</label>
+        </languageKey>
+        <languageKey index="nl" type="array">
+            <label index="removeLink" type="integer">127410368</label>
+            <label index="uploadImage" type="integer">33130562</label>
+            <label index="update" type="integer">6894342</label>
+            <label index="path" type="integer">180814866</label>
+            <label index="page" type="integer">26464201</label>
+            <label index="file" type="integer">11696408</label>
+            <label index="extUrl" type="integer">76246465</label>
+            <label index="email" type="integer">216575645</label>
+            <label index="special" type="integer">189541205</label>
+            <label index="folderTree" type="integer">64613660</label>
+            <label index="files" type="integer">153041452</label>
+            <label index="target" type="integer">205628184</label>
+            <label index="target_popUpWindow" type="integer">21986240</label>
+            <label index="target_popUpWindow_width" type="integer">53040229</label>
+            <label index="target_popUpWindow_height" type="integer">250375243</label>
+            <label index="anchor_class" type="integer">182617337</label>
+            <label index="anchor_title" type="integer">192455458</label>
+            <label index="newWindow" type="integer">241027301</label>
+            <label index="top" type="integer">173014479</label>
+            <label index="none" type="integer">11678269</label>
+            <label index="pageTree" type="integer">151051780</label>
+            <label index="contentElements" type="integer">221138583</label>
+            <label index="selectRecords" type="integer">189568969</label>
+            <label index="addToList" type="integer">135970903</label>
+            <label index="info" type="integer">67476226</label>
+            <label index="emailAddress" type="integer">188054354</label>
+            <label index="setLink" type="integer">126500206</label>
+            <label index="clickToRedrawFullSize" type="integer">38116243</label>
+            <label index="findDragDrop" type="integer">164239036</label>
+            <label index="noWebFolder" type="integer">213382956</label>
+            <label index="currentLink" type="integer">220492962</label>
+            <label index="invalidChar" type="integer">103011900</label>
+        </languageKey>
+        <languageKey index="cz" type="array">
+            <label index="removeLink" type="integer">127410368</label>
+            <label index="uploadImage" type="integer">33130562</label>
+            <label index="update" type="integer">6894342</label>
+            <label index="path" type="integer">180814866</label>
+            <label index="page" type="integer">26464201</label>
+            <label index="file" type="integer">11696408</label>
+            <label index="extUrl" type="integer">76246465</label>
+            <label index="email" type="integer">216575645</label>
+            <label index="special" type="integer">189541205</label>
+            <label index="folderTree" type="integer">64613660</label>
+            <label index="files" type="integer">153041452</label>
+            <label index="target" type="integer">205628184</label>
+            <label index="target_popUpWindow" type="integer">21986240</label>
+            <label index="target_popUpWindow_width" type="integer">53040229</label>
+            <label index="target_popUpWindow_height" type="integer">250375243</label>
+            <label index="anchor_class" type="integer">182617337</label>
+            <label index="anchor_title" type="integer">192455458</label>
+            <label index="newWindow" type="integer">241027301</label>
+            <label index="top" type="integer">173014479</label>
+            <label index="none" type="integer">11678269</label>
+            <label index="pageTree" type="integer">151051780</label>
+            <label index="contentElements" type="integer">221138583</label>
+            <label index="selectRecords" type="integer">189568969</label>
+            <label index="addToList" type="integer">135970903</label>
+            <label index="info" type="integer">67476226</label>
+            <label index="emailAddress" type="integer">188054354</label>
+            <label index="setLink" type="integer">126500206</label>
+            <label index="clickToRedrawFullSize" type="integer">38116243</label>
+            <label index="findDragDrop" type="integer">164239036</label>
+            <label index="noWebFolder" type="integer">213382956</label>
+            <label index="currentLink" type="integer">220492962</label>
+            <label index="invalidChar" type="integer">103011900</label>
+        </languageKey>
+        <languageKey index="pl" type="array">
+            <label index="removeLink" type="integer">127410368</label>
+            <label index="uploadImage" type="integer">33130562</label>
+            <label index="update" type="integer">6894342</label>
+            <label index="path" type="integer">180814866</label>
+            <label index="page" type="integer">26464201</label>
+            <label index="file" type="integer">11696408</label>
+            <label index="extUrl" type="integer">76246465</label>
+            <label index="email" type="integer">216575645</label>
+            <label index="special" type="integer">189541205</label>
+            <label index="folderTree" type="integer">64613660</label>
+            <label index="files" type="integer">153041452</label>
+            <label index="target" type="integer">205628184</label>
+            <label index="newWindow" type="integer">241027301</label>
+            <label index="top" type="integer">173014479</label>
+            <label index="none" type="integer">11678269</label>
+            <label index="pageTree" type="integer">151051780</label>
+            <label index="contentElements" type="integer">221138583</label>
+            <label index="selectRecords" type="integer">189568969</label>
+            <label index="addToList" type="integer">135970903</label>
+            <label index="info" type="integer">67476226</label>
+            <label index="emailAddress" type="integer">188054354</label>
+            <label index="setLink" type="integer">126500206</label>
+            <label index="clickToRedrawFullSize" type="integer">38116243</label>
+            <label index="findDragDrop" type="integer">164239036</label>
+            <label index="noWebFolder" type="integer">213382956</label>
+            <label index="currentLink" type="integer">220492962</label>
+        </languageKey>
+        <languageKey index="si" type="array">
+            <label index="removeLink" type="integer">127410368</label>
+            <label index="uploadImage" type="integer">33130562</label>
+            <label index="update" type="integer">6894342</label>
+            <label index="path" type="integer">180814866</label>
+            <label index="page" type="integer">26464201</label>
+            <label index="file" type="integer">11696408</label>
+            <label index="extUrl" type="integer">76246465</label>
+            <label index="email" type="integer">216575645</label>
+            <label index="special" type="integer">189541205</label>
+            <label index="folderTree" type="integer">64613660</label>
+            <label index="files" type="integer">153041452</label>
+            <label index="target" type="integer">205628184</label>
+            <label index="newWindow" type="integer">241027301</label>
+            <label index="top" type="integer">173014479</label>
+            <label index="none" type="integer">11678269</label>
+            <label index="pageTree" type="integer">151051780</label>
+            <label index="contentElements" type="integer">221138583</label>
+            <label index="selectRecords" type="integer">189568969</label>
+            <label index="addToList" type="integer">135970903</label>
+            <label index="info" type="integer">67476226</label>
+            <label index="emailAddress" type="integer">188054354</label>
+            <label index="setLink" type="integer">126500206</label>
+            <label index="clickToRedrawFullSize" type="integer">38116243</label>
+            <label index="findDragDrop" type="integer">164239036</label>
+            <label index="noWebFolder" type="integer">213382956</label>
+            <label index="currentLink" type="integer">220492962</label>
+        </languageKey>
+        <languageKey index="fi" type="array">
+            <label index="removeLink" type="integer">127410368</label>
+            <label index="uploadImage" type="integer">33130562</label>
+            <label index="update" type="integer">6894342</label>
+            <label index="path" type="integer">180814866</label>
+            <label index="page" type="integer">26464201</label>
+            <label index="file" type="integer">11696408</label>
+            <label index="extUrl" type="integer">76246465</label>
+            <label index="email" type="integer">216575645</label>
+            <label index="special" type="integer">189541205</label>
+            <label index="folderTree" type="integer">64613660</label>
+            <label index="files" type="integer">153041452</label>
+            <label index="target" type="integer">205628184</label>
+            <label index="target_popUpWindow" type="integer">21986240</label>
+            <label index="target_popUpWindow_width" type="integer">53040229</label>
+            <label index="target_popUpWindow_height" type="integer">250375243</label>
+            <label index="anchor_class" type="integer">182617337</label>
+            <label index="anchor_title" type="integer">192455458</label>
+            <label index="newWindow" type="integer">241027301</label>
+            <label index="top" type="integer">173014479</label>
+            <label index="none" type="integer">11678269</label>
+            <label index="pageTree" type="integer">151051780</label>
+            <label index="contentElements" type="integer">221138583</label>
+            <label index="selectRecords" type="integer">189568969</label>
+            <label index="addToList" type="integer">135970903</label>
+            <label index="info" type="integer">67476226</label>
+            <label index="emailAddress" type="integer">188054354</label>
+            <label index="setLink" type="integer">126500206</label>
+            <label index="clickToRedrawFullSize" type="integer">38116243</label>
+            <label index="findDragDrop" type="integer">164239036</label>
+            <label index="noWebFolder" type="integer">213382956</label>
+            <label index="currentLink" type="integer">220492962</label>
+            <label index="invalidChar" type="integer">103011900</label>
+        </languageKey>
+        <languageKey index="tr" type="array">
+            <label index="removeLink" type="integer">127410368</label>
+            <label index="uploadImage" type="integer">33130562</label>
+            <label index="update" type="integer">6894342</label>
+            <label index="path" type="integer">180814866</label>
+            <label index="page" type="integer">26464201</label>
+            <label index="file" type="integer">11696408</label>
+            <label index="extUrl" type="integer">76246465</label>
+            <label index="email" type="integer">216575645</label>
+            <label index="special" type="integer">189541205</label>
+            <label index="folderTree" type="integer">64613660</label>
+            <label index="files" type="integer">153041452</label>
+            <label index="target" type="integer">205628184</label>
+            <label index="target_popUpWindow" type="integer">21986240</label>
+            <label index="target_popUpWindow_width" type="integer">53040229</label>
+            <label index="target_popUpWindow_height" type="integer">250375243</label>
+            <label index="newWindow" type="integer">241027301</label>
+            <label index="top" type="integer">173014479</label>
+            <label index="none" type="integer">11678269</label>
+            <label index="pageTree" type="integer">151051780</label>
+            <label index="contentElements" type="integer">221138583</label>
+            <label index="selectRecords" type="integer">189568969</label>
+            <label index="addToList" type="integer">135970903</label>
+            <label index="info" type="integer">67476226</label>
+            <label index="emailAddress" type="integer">188054354</label>
+            <label index="setLink" type="integer">126500206</label>
+            <label index="clickToRedrawFullSize" type="integer">38116243</label>
+            <label index="findDragDrop" type="integer">164239036</label>
+            <label index="noWebFolder" type="integer">213382956</label>
+            <label index="currentLink" type="integer">220492962</label>
+            <label index="invalidChar" type="integer">103011900</label>
+        </languageKey>
+        <languageKey index="se" type="array">
+            <label index="removeLink" type="integer">127410368</label>
+            <label index="uploadImage" type="integer">33130562</label>
+            <label index="update" type="integer">6894342</label>
+            <label index="path" type="integer">180814866</label>
+            <label index="page" type="integer">26464201</label>
+            <label index="file" type="integer">11696408</label>
+            <label index="extUrl" type="integer">76246465</label>
+            <label index="email" type="integer">216575645</label>
+            <label index="special" type="integer">189541205</label>
+            <label index="folderTree" type="integer">64613660</label>
+            <label index="files" type="integer">153041452</label>
+            <label index="target" type="integer">205628184</label>
+            <label index="target_popUpWindow" type="integer">21986240</label>
+            <label index="target_popUpWindow_width" type="integer">53040229</label>
+            <label index="target_popUpWindow_height" type="integer">250375243</label>
+            <label index="newWindow" type="integer">241027301</label>
+            <label index="top" type="integer">173014479</label>
+            <label index="none" type="integer">11678269</label>
+            <label index="pageTree" type="integer">151051780</label>
+            <label index="contentElements" type="integer">221138583</label>
+            <label index="selectRecords" type="integer">189568969</label>
+            <label index="addToList" type="integer">135970903</label>
+            <label index="info" type="integer">67476226</label>
+            <label index="emailAddress" type="integer">188054354</label>
+            <label index="setLink" type="integer">126500206</label>
+            <label index="clickToRedrawFullSize" type="integer">38116243</label>
+            <label index="findDragDrop" type="integer">164239036</label>
+            <label index="noWebFolder" type="integer">213382956</label>
+            <label index="currentLink" type="integer">220492962</label>
+            <label index="invalidChar" type="integer">103011900</label>
+        </languageKey>
+        <languageKey index="pt" type="array">
+            <label index="removeLink" type="integer">127410368</label>
+            <label index="uploadImage" type="integer">33130562</label>
+            <label index="update" type="integer">6894342</label>
+            <label index="path" type="integer">180814866</label>
+            <label index="page" type="integer">26464201</label>
+            <label index="file" type="integer">11696408</label>
+            <label index="extUrl" type="integer">76246465</label>
+            <label index="email" type="integer">216575645</label>
+            <label index="special" type="integer">189541205</label>
+            <label index="folderTree" type="integer">64613660</label>
+            <label index="files" type="integer">153041452</label>
+            <label index="target" type="integer">205628184</label>
+            <label index="newWindow" type="integer">241027301</label>
+            <label index="top" type="integer">173014479</label>
+            <label index="none" type="integer">11678269</label>
+            <label index="pageTree" type="integer">151051780</label>
+            <label index="contentElements" type="integer">221138583</label>
+            <label index="selectRecords" type="integer">189568969</label>
+            <label index="addToList" type="integer">135970903</label>
+            <label index="info" type="integer">67476226</label>
+            <label index="emailAddress" type="integer">188054354</label>
+            <label index="setLink" type="integer">126500206</label>
+            <label index="clickToRedrawFullSize" type="integer">38116243</label>
+            <label index="findDragDrop" type="integer">164239036</label>
+            <label index="noWebFolder" type="integer">213382956</label>
+            <label index="currentLink" type="integer">220492962</label>
+        </languageKey>
+        <languageKey index="ru" type="array">
+            <label index="removeLink" type="integer">127410368</label>
+            <label index="uploadImage" type="integer">33130562</label>
+            <label index="update" type="integer">6894342</label>
+            <label index="path" type="integer">180814866</label>
+            <label index="page" type="integer">26464201</label>
+            <label index="file" type="integer">11696408</label>
+            <label index="extUrl" type="integer">76246465</label>
+            <label index="email" type="integer">216575645</label>
+            <label index="special" type="integer">189541205</label>
+            <label index="folderTree" type="integer">64613660</label>
+            <label index="files" type="integer">153041452</label>
+            <label index="target" type="integer">205628184</label>
+            <label index="target_popUpWindow" type="integer">21986240</label>
+            <label index="target_popUpWindow_width" type="integer">53040229</label>
+            <label index="target_popUpWindow_height" type="integer">250375243</label>
+            <label index="anchor_class" type="integer">182617337</label>
+            <label index="anchor_title" type="integer">192455458</label>
+            <label index="newWindow" type="integer">241027301</label>
+            <label index="top" type="integer">173014479</label>
+            <label index="none" type="integer">11678269</label>
+            <label index="pageTree" type="integer">151051780</label>
+            <label index="contentElements" type="integer">221138583</label>
+            <label index="selectRecords" type="integer">189568969</label>
+            <label index="addToList" type="integer">135970903</label>
+            <label index="info" type="integer">67476226</label>
+            <label index="emailAddress" type="integer">188054354</label>
+            <label index="setLink" type="integer">126500206</label>
+            <label index="clickToRedrawFullSize" type="integer">38116243</label>
+            <label index="findDragDrop" type="integer">164239036</label>
+            <label index="noWebFolder" type="integer">213382956</label>
+            <label index="currentLink" type="integer">220492962</label>
+            <label index="invalidChar" type="integer">103011900</label>
+        </languageKey>
+        <languageKey index="ro" type="array">
+            <label index="removeLink" type="integer">127410368</label>
+            <label index="uploadImage" type="integer">33130562</label>
+            <label index="update" type="integer">6894342</label>
+            <label index="path" type="integer">180814866</label>
+            <label index="page" type="integer">26464201</label>
+            <label index="file" type="integer">11696408</label>
+            <label index="extUrl" type="integer">76246465</label>
+            <label index="email" type="integer">216575645</label>
+            <label index="special" type="integer">189541205</label>
+            <label index="folderTree" type="integer">64613660</label>
+            <label index="files" type="integer">153041452</label>
+            <label index="target" type="integer">205628184</label>
+            <label index="newWindow" type="integer">241027301</label>
+            <label index="top" type="integer">173014479</label>
+            <label index="none" type="integer">11678269</label>
+            <label index="pageTree" type="integer">151051780</label>
+            <label index="contentElements" type="integer">221138583</label>
+            <label index="selectRecords" type="integer">189568969</label>
+            <label index="addToList" type="integer">135970903</label>
+            <label index="info" type="integer">67476226</label>
+            <label index="emailAddress" type="integer">188054354</label>
+            <label index="setLink" type="integer">126500206</label>
+            <label index="clickToRedrawFullSize" type="integer">38116243</label>
+            <label index="findDragDrop" type="integer">164239036</label>
+            <label index="noWebFolder" type="integer">213382956</label>
+            <label index="currentLink" type="integer">220492962</label>
+        </languageKey>
+        <languageKey index="ch" type="array">
+            <label index="removeLink" type="integer">127410368</label>
+            <label index="uploadImage" type="integer">33130562</label>
+            <label index="update" type="integer">6894342</label>
+            <label index="path" type="integer">180814866</label>
+            <label index="page" type="integer">26464201</label>
+            <label index="file" type="integer">11696408</label>
+            <label index="extUrl" type="integer">76246465</label>
+            <label index="email" type="integer">216575645</label>
+            <label index="special" type="integer">189541205</label>
+            <label index="folderTree" type="integer">64613660</label>
+            <label index="files" type="integer">153041452</label>
+            <label index="target" type="integer">205628184</label>
+            <label index="newWindow" type="integer">241027301</label>
+            <label index="top" type="integer">173014479</label>
+            <label index="none" type="integer">11678269</label>
+            <label index="pageTree" type="integer">151051780</label>
+            <label index="contentElements" type="integer">221138583</label>
+            <label index="selectRecords" type="integer">189568969</label>
+            <label index="addToList" type="integer">135970903</label>
+            <label index="info" type="integer">67476226</label>
+            <label index="emailAddress" type="integer">188054354</label>
+            <label index="setLink" type="integer">126500206</label>
+            <label index="clickToRedrawFullSize" type="integer">38116243</label>
+            <label index="findDragDrop" type="integer">164239036</label>
+            <label index="noWebFolder" type="integer">213382956</label>
+            <label index="currentLink" type="integer">220492962</label>
+        </languageKey>
+        <languageKey index="sk" type="array">
+            <label index="removeLink" type="integer">127410368</label>
+            <label index="uploadImage" type="integer">33130562</label>
+            <label index="update" type="integer">6894342</label>
+            <label index="path" type="integer">180814866</label>
+            <label index="page" type="integer">26464201</label>
+            <label index="file" type="integer">11696408</label>
+            <label index="extUrl" type="integer">76246465</label>
+            <label index="email" type="integer">216575645</label>
+            <label index="special" type="integer">189541205</label>
+            <label index="folderTree" type="integer">64613660</label>
+            <label index="files" type="integer">153041452</label>
+            <label index="target" type="integer">205628184</label>
+            <label index="target_popUpWindow" type="integer">21986240</label>
+            <label index="target_popUpWindow_width" type="integer">53040229</label>
+            <label index="target_popUpWindow_height" type="integer">250375243</label>
+            <label index="anchor_class" type="integer">182617337</label>
+            <label index="anchor_title" type="integer">192455458</label>
+            <label index="newWindow" type="integer">241027301</label>
+            <label index="top" type="integer">173014479</label>
+            <label index="none" type="integer">11678269</label>
+            <label index="pageTree" type="integer">151051780</label>
+            <label index="contentElements" type="integer">221138583</label>
+            <label index="selectRecords" type="integer">189568969</label>
+            <label index="addToList" type="integer">135970903</label>
+            <label index="info" type="integer">67476226</label>
+            <label index="emailAddress" type="integer">188054354</label>
+            <label index="setLink" type="integer">126500206</label>
+            <label index="clickToRedrawFullSize" type="integer">38116243</label>
+            <label index="findDragDrop" type="integer">164239036</label>
+            <label index="noWebFolder" type="integer">213382956</label>
+            <label index="currentLink" type="integer">220492962</label>
+            <label index="invalidChar" type="integer">103011900</label>
+        </languageKey>
+        <languageKey index="lt" type="array">
+        </languageKey>
+        <languageKey index="is" type="array">
+            <label index="removeLink" type="integer">127410368</label>
+            <label index="uploadImage" type="integer">33130562</label>
+            <label index="update" type="integer">6894342</label>
+            <label index="path" type="integer">180814866</label>
+            <label index="page" type="integer">26464201</label>
+            <label index="file" type="integer">11696408</label>
+            <label index="extUrl" type="integer">76246465</label>
+            <label index="email" type="integer">216575645</label>
+            <label index="special" type="integer">189541205</label>
+            <label index="folderTree" type="integer">64613660</label>
+            <label index="files" type="integer">153041452</label>
+            <label index="target" type="integer">205628184</label>
+            <label index="newWindow" type="integer">241027301</label>
+            <label index="top" type="integer">173014479</label>
+            <label index="none" type="integer">11678269</label>
+            <label index="pageTree" type="integer">151051780</label>
+            <label index="contentElements" type="integer">221138583</label>
+            <label index="selectRecords" type="integer">189568969</label>
+            <label index="addToList" type="integer">135970903</label>
+            <label index="info" type="integer">67476226</label>
+            <label index="emailAddress" type="integer">188054354</label>
+            <label index="setLink" type="integer">126500206</label>
+            <label index="clickToRedrawFullSize" type="integer">38116243</label>
+            <label index="findDragDrop" type="integer">164239036</label>
+            <label index="noWebFolder" type="integer">213382956</label>
+            <label index="currentLink" type="integer">220492962</label>
+        </languageKey>
+        <languageKey index="hr" type="array">
+            <label index="removeLink" type="integer">127410368</label>
+            <label index="uploadImage" type="integer">33130562</label>
+            <label index="update" type="integer">6894342</label>
+            <label index="path" type="integer">180814866</label>
+            <label index="page" type="integer">26464201</label>
+            <label index="file" type="integer">11696408</label>
+            <label index="extUrl" type="integer">76246465</label>
+            <label index="email" type="integer">216575645</label>
+            <label index="special" type="integer">189541205</label>
+            <label index="folderTree" type="integer">64613660</label>
+            <label index="files" type="integer">153041452</label>
+            <label index="target" type="integer">205628184</label>
+            <label index="target_popUpWindow" type="integer">21986240</label>
+            <label index="target_popUpWindow_width" type="integer">53040229</label>
+            <label index="target_popUpWindow_height" type="integer">250375243</label>
+            <label index="newWindow" type="integer">241027301</label>
+            <label index="top" type="integer">173014479</label>
+            <label index="none" type="integer">11678269</label>
+            <label index="pageTree" type="integer">151051780</label>
+            <label index="contentElements" type="integer">221138583</label>
+            <label index="selectRecords" type="integer">189568969</label>
+            <label index="addToList" type="integer">135970903</label>
+            <label index="info" type="integer">67476226</label>
+            <label index="emailAddress" type="integer">188054354</label>
+            <label index="setLink" type="integer">126500206</label>
+            <label index="clickToRedrawFullSize" type="integer">38116243</label>
+            <label index="findDragDrop" type="integer">164239036</label>
+            <label index="noWebFolder" type="integer">213382956</label>
+            <label index="currentLink" type="integer">220492962</label>
+            <label index="invalidChar" type="integer">103011900</label>
+        </languageKey>
+        <languageKey index="hu" type="array">
+            <label index="removeLink" type="integer">127410368</label>
+            <label index="uploadImage" type="integer">33130562</label>
+            <label index="update" type="integer">6894342</label>
+            <label index="path" type="integer">180814866</label>
+            <label index="page" type="integer">26464201</label>
+            <label index="file" type="integer">11696408</label>
+            <label index="extUrl" type="integer">76246465</label>
+            <label index="email" type="integer">216575645</label>
+            <label index="special" type="integer">189541205</label>
+            <label index="folderTree" type="integer">64613660</label>
+            <label index="files" type="integer">153041452</label>
+            <label index="target" type="integer">205628184</label>
+            <label index="target_popUpWindow" type="integer">21986240</label>
+            <label index="target_popUpWindow_width" type="integer">53040229</label>
+            <label index="target_popUpWindow_height" type="integer">250375243</label>
+            <label index="newWindow" type="integer">241027301</label>
+            <label index="top" type="integer">173014479</label>
+            <label index="none" type="integer">11678269</label>
+            <label index="pageTree" type="integer">151051780</label>
+            <label index="contentElements" type="integer">221138583</label>
+            <label index="selectRecords" type="integer">189568969</label>
+            <label index="addToList" type="integer">135970903</label>
+            <label index="info" type="integer">67476226</label>
+            <label index="emailAddress" type="integer">188054354</label>
+            <label index="setLink" type="integer">126500206</label>
+            <label index="clickToRedrawFullSize" type="integer">38116243</label>
+            <label index="findDragDrop" type="integer">164239036</label>
+            <label index="noWebFolder" type="integer">213382956</label>
+            <label index="currentLink" type="integer">220492962</label>
+            <label index="invalidChar" type="integer">103011900</label>
+        </languageKey>
+        <languageKey index="gl" type="array">
+        </languageKey>
+        <languageKey index="th" type="array">
+            <label index="removeLink" type="integer">127410368</label>
+            <label index="uploadImage" type="integer">33130562</label>
+            <label index="update" type="integer">6894342</label>
+            <label index="path" type="integer">180814866</label>
+            <label index="page" type="integer">26464201</label>
+            <label index="file" type="integer">11696408</label>
+            <label index="extUrl" type="integer">76246465</label>
+            <label index="email" type="integer">216575645</label>
+            <label index="special" type="integer">189541205</label>
+            <label index="folderTree" type="integer">64613660</label>
+            <label index="files" type="integer">153041452</label>
+            <label index="target" type="integer">205628184</label>
+            <label index="newWindow" type="integer">241027301</label>
+            <label index="top" type="integer">173014479</label>
+            <label index="none" type="integer">11678269</label>
+            <label index="pageTree" type="integer">151051780</label>
+            <label index="contentElements" type="integer">221138583</label>
+            <label index="selectRecords" type="integer">189568969</label>
+            <label index="addToList" type="integer">135970903</label>
+            <label index="info" type="integer">67476226</label>
+            <label index="emailAddress" type="integer">188054354</label>
+            <label index="setLink" type="integer">126500206</label>
+            <label index="clickToRedrawFullSize" type="integer">38116243</label>
+            <label index="findDragDrop" type="integer">164239036</label>
+            <label index="noWebFolder" type="integer">213382956</label>
+            <label index="currentLink" type="integer">220492962</label>
+        </languageKey>
+        <languageKey index="gr" type="array">
+        </languageKey>
+        <languageKey index="hk" type="array">
+            <label index="removeLink" type="integer">127410368</label>
+            <label index="uploadImage" type="integer">33130562</label>
+            <label index="update" type="integer">6894342</label>
+            <label index="path" type="integer">180814866</label>
+            <label index="page" type="integer">26464201</label>
+            <label index="file" type="integer">11696408</label>
+            <label index="extUrl" type="integer">76246465</label>
+            <label index="email" type="integer">216575645</label>
+            <label index="special" type="integer">189541205</label>
+            <label index="folderTree" type="integer">64613660</label>
+            <label index="files" type="integer">153041452</label>
+            <label index="target" type="integer">205628184</label>
+            <label index="target_popUpWindow" type="integer">21986240</label>
+            <label index="target_popUpWindow_width" type="integer">53040229</label>
+            <label index="target_popUpWindow_height" type="integer">250375243</label>
+            <label index="newWindow" type="integer">241027301</label>
+            <label index="top" type="integer">173014479</label>
+            <label index="none" type="integer">11678269</label>
+            <label index="pageTree" type="integer">151051780</label>
+            <label index="contentElements" type="integer">221138583</label>
+            <label index="selectRecords" type="integer">189568969</label>
+            <label index="addToList" type="integer">135970903</label>
+            <label index="info" type="integer">67476226</label>
+            <label index="emailAddress" type="integer">188054354</label>
+            <label index="setLink" type="integer">126500206</label>
+            <label index="clickToRedrawFullSize" type="integer">38116243</label>
+            <label index="findDragDrop" type="integer">164239036</label>
+            <label index="noWebFolder" type="integer">213382956</label>
+            <label index="currentLink" type="integer">220492962</label>
+            <label index="invalidChar" type="integer">103011900</label>
+        </languageKey>
+        <languageKey index="eu" type="array">
+            <label index="removeLink" type="integer">127410368</label>
+            <label index="uploadImage" type="integer">33130562</label>
+            <label index="update" type="integer">6894342</label>
+            <label index="path" type="integer">180814866</label>
+            <label index="page" type="integer">26464201</label>
+            <label index="file" type="integer">11696408</label>
+            <label index="extUrl" type="integer">76246465</label>
+            <label index="email" type="integer">216575645</label>
+            <label index="special" type="integer">189541205</label>
+            <label index="folderTree" type="integer">64613660</label>
+            <label index="files" type="integer">153041452</label>
+            <label index="target" type="integer">205628184</label>
+            <label index="newWindow" type="integer">241027301</label>
+            <label index="top" type="integer">173014479</label>
+            <label index="none" type="integer">11678269</label>
+            <label index="pageTree" type="integer">151051780</label>
+            <label index="contentElements" type="integer">221138583</label>
+            <label index="selectRecords" type="integer">189568969</label>
+            <label index="addToList" type="integer">135970903</label>
+            <label index="info" type="integer">67476226</label>
+            <label index="emailAddress" type="integer">188054354</label>
+            <label index="setLink" type="integer">126500206</label>
+            <label index="clickToRedrawFullSize" type="integer">38116243</label>
+            <label index="findDragDrop" type="integer">164239036</label>
+            <label index="noWebFolder" type="integer">213382956</label>
+            <label index="currentLink" type="integer">220492962</label>
+        </languageKey>
+        <languageKey index="bg" type="array">
+            <label index="removeLink" type="integer">127410368</label>
+            <label index="uploadImage" type="integer">33130562</label>
+            <label index="update" type="integer">6894342</label>
+            <label index="path" type="integer">180814866</label>
+            <label index="page" type="integer">26464201</label>
+            <label index="file" type="integer">11696408</label>
+            <label index="extUrl" type="integer">76246465</label>
+            <label index="email" type="integer">216575645</label>
+            <label index="special" type="integer">189541205</label>
+            <label index="folderTree" type="integer">64613660</label>
+            <label index="files" type="integer">153041452</label>
+            <label index="target" type="integer">205628184</label>
+            <label index="newWindow" type="integer">241027301</label>
+            <label index="top" type="integer">173014479</label>
+            <label index="none" type="integer">11678269</label>
+            <label index="pageTree" type="integer">151051780</label>
+            <label index="contentElements" type="integer">221138583</label>
+            <label index="selectRecords" type="integer">189568969</label>
+            <label index="addToList" type="integer">135970903</label>
+            <label index="info" type="integer">67476226</label>
+            <label index="emailAddress" type="integer">188054354</label>
+            <label index="setLink" type="integer">126500206</label>
+            <label index="clickToRedrawFullSize" type="integer">38116243</label>
+            <label index="findDragDrop" type="integer">164239036</label>
+            <label index="noWebFolder" type="integer">213382956</label>
+            <label index="currentLink" type="integer">220492962</label>
+            <label index="invalidChar" type="integer">103011900</label>
+        </languageKey>
+        <languageKey index="br" type="array">
+            <label index="removeLink" type="integer">127410368</label>
+            <label index="uploadImage" type="integer">33130562</label>
+            <label index="update" type="integer">6894342</label>
+            <label index="path" type="integer">180814866</label>
+            <label index="page" type="integer">26464201</label>
+            <label index="file" type="integer">11696408</label>
+            <label index="extUrl" type="integer">76246465</label>
+            <label index="email" type="integer">216575645</label>
+            <label index="special" type="integer">189541205</label>
+            <label index="folderTree" type="integer">64613660</label>
+            <label index="files" type="integer">153041452</label>
+            <label index="target" type="integer">205628184</label>
+            <label index="target_popUpWindow" type="integer">21986240</label>
+            <label index="target_popUpWindow_width" type="integer">53040229</label>
+            <label index="target_popUpWindow_height" type="integer">250375243</label>
+            <label index="anchor_class" type="integer">182617337</label>
+            <label index="anchor_title" type="integer">192455458</label>
+            <label index="newWindow" type="integer">241027301</label>
+            <label index="top" type="integer">173014479</label>
+            <label index="none" type="integer">11678269</label>
+            <label index="pageTree" type="integer">151051780</label>
+            <label index="contentElements" type="integer">221138583</label>
+            <label index="selectRecords" type="integer">189568969</label>
+            <label index="addToList" type="integer">135970903</label>
+            <label index="info" type="integer">67476226</label>
+            <label index="emailAddress" type="integer">188054354</label>
+            <label index="setLink" type="integer">126500206</label>
+            <label index="clickToRedrawFullSize" type="integer">38116243</label>
+            <label index="findDragDrop" type="integer">164239036</label>
+            <label index="noWebFolder" type="integer">213382956</label>
+            <label index="currentLink" type="integer">220492962</label>
+            <label index="invalidChar" type="integer">103011900</label>
+        </languageKey>
+        <languageKey index="et" type="array">
+            <label index="removeLink" type="integer">127410368</label>
+            <label index="uploadImage" type="integer">33130562</label>
+            <label index="update" type="integer">6894342</label>
+            <label index="path" type="integer">180814866</label>
+            <label index="page" type="integer">26464201</label>
+            <label index="file" type="integer">11696408</label>
+            <label index="extUrl" type="integer">76246465</label>
+            <label index="email" type="integer">216575645</label>
+            <label index="special" type="integer">189541205</label>
+            <label index="folderTree" type="integer">64613660</label>
+            <label index="files" type="integer">153041452</label>
+            <label index="target" type="integer">205628184</label>
+            <label index="target_popUpWindow" type="integer">21986240</label>
+            <label index="target_popUpWindow_width" type="integer">53040229</label>
+            <label index="target_popUpWindow_height" type="integer">250375243</label>
+            <label index="newWindow" type="integer">241027301</label>
+            <label index="top" type="integer">173014479</label>
+            <label index="none" type="integer">11678269</label>
+            <label index="pageTree" type="integer">151051780</label>
+            <label index="contentElements" type="integer">221138583</label>
+            <label index="selectRecords" type="integer">189568969</label>
+            <label index="addToList" type="integer">135970903</label>
+            <label index="info" type="integer">67476226</label>
+            <label index="emailAddress" type="integer">188054354</label>
+            <label index="setLink" type="integer">126500206</label>
+            <label index="clickToRedrawFullSize" type="integer">38116243</label>
+            <label index="findDragDrop" type="integer">164239036</label>
+            <label index="noWebFolder" type="integer">213382956</label>
+            <label index="currentLink" type="integer">220492962</label>
+            <label index="invalidChar" type="integer">103011900</label>
+        </languageKey>
+        <languageKey index="ar" type="array">
+            <label index="removeLink" type="integer">127410368</label>
+            <label index="uploadImage" type="integer">33130562</label>
+            <label index="update" type="integer">6894342</label>
+            <label index="path" type="integer">180814866</label>
+            <label index="page" type="integer">26464201</label>
+            <label index="file" type="integer">11696408</label>
+            <label index="extUrl" type="integer">76246465</label>
+            <label index="email" type="integer">216575645</label>
+            <label index="special" type="integer">189541205</label>
+            <label index="folderTree" type="integer">64613660</label>
+            <label index="files" type="integer">153041452</label>
+            <label index="target" type="integer">205628184</label>
+            <label index="target_popUpWindow" type="integer">21986240</label>
+            <label index="target_popUpWindow_width" type="integer">53040229</label>
+            <label index="target_popUpWindow_height" type="integer">250375243</label>
+            <label index="newWindow" type="integer">241027301</label>
+            <label index="top" type="integer">173014479</label>
+            <label index="none" type="integer">11678269</label>
+            <label index="pageTree" type="integer">151051780</label>
+            <label index="contentElements" type="integer">221138583</label>
+            <label index="selectRecords" type="integer">189568969</label>
+            <label index="addToList" type="integer">135970903</label>
+            <label index="info" type="integer">67476226</label>
+            <label index="emailAddress" type="integer">188054354</label>
+            <label index="setLink" type="integer">126500206</label>
+            <label index="clickToRedrawFullSize" type="integer">38116243</label>
+            <label index="findDragDrop" type="integer">164239036</label>
+            <label index="noWebFolder" type="integer">213382956</label>
+            <label index="currentLink" type="integer">220492962</label>
+            <label index="invalidChar" type="integer">103011900</label>
+        </languageKey>
+        <languageKey index="he" type="array">
+            <label index="removeLink" type="integer">127410368</label>
+            <label index="uploadImage" type="integer">33130562</label>
+            <label index="update" type="integer">6894342</label>
+            <label index="path" type="integer">180814866</label>
+            <label index="page" type="integer">26464201</label>
+            <label index="file" type="integer">11696408</label>
+            <label index="extUrl" type="integer">76246465</label>
+            <label index="email" type="integer">216575645</label>
+            <label index="special" type="integer">189541205</label>
+            <label index="folderTree" type="integer">64613660</label>
+            <label index="files" type="integer">153041452</label>
+            <label index="target" type="integer">205628184</label>
+            <label index="target_popUpWindow" type="integer">21986240</label>
+            <label index="target_popUpWindow_width" type="integer">53040229</label>
+            <label index="target_popUpWindow_height" type="integer">250375243</label>
+            <label index="newWindow" type="integer">241027301</label>
+            <label index="top" type="integer">173014479</label>
+            <label index="none" type="integer">11678269</label>
+            <label index="pageTree" type="integer">151051780</label>
+            <label index="contentElements" type="integer">221138583</label>
+            <label index="selectRecords" type="integer">189568969</label>
+            <label index="addToList" type="integer">135970903</label>
+            <label index="info" type="integer">67476226</label>
+            <label index="emailAddress" type="integer">188054354</label>
+            <label index="setLink" type="integer">126500206</label>
+            <label index="clickToRedrawFullSize" type="integer">38116243</label>
+            <label index="findDragDrop" type="integer">164239036</label>
+            <label index="noWebFolder" type="integer">213382956</label>
+            <label index="currentLink" type="integer">220492962</label>
+            <label index="invalidChar" type="integer">103011900</label>
+        </languageKey>
+        <languageKey index="ua" type="array">
+        </languageKey>
+        <languageKey index="lv" type="array">
+            <label index="removeLink" type="integer">127410368</label>
+            <label index="uploadImage" type="integer">33130562</label>
+            <label index="update" type="integer">6894342</label>
+            <label index="path" type="integer">180814866</label>
+            <label index="page" type="integer">26464201</label>
+            <label index="file" type="integer">11696408</label>
+            <label index="extUrl" type="integer">76246465</label>
+            <label index="email" type="integer">216575645</label>
+            <label index="special" type="integer">189541205</label>
+            <label index="folderTree" type="integer">64613660</label>
+            <label index="files" type="integer">153041452</label>
+            <label index="target" type="integer">205628184</label>
+            <label index="newWindow" type="integer">241027301</label>
+            <label index="top" type="integer">173014479</label>
+            <label index="none" type="integer">11678269</label>
+            <label index="pageTree" type="integer">151051780</label>
+            <label index="contentElements" type="integer">221138583</label>
+            <label index="selectRecords" type="integer">189568969</label>
+            <label index="addToList" type="integer">135970903</label>
+            <label index="info" type="integer">67476226</label>
+            <label index="emailAddress" type="integer">188054354</label>
+            <label index="setLink" type="integer">126500206</label>
+            <label index="clickToRedrawFullSize" type="integer">38116243</label>
+            <label index="findDragDrop" type="integer">164239036</label>
+            <label index="noWebFolder" type="integer">213382956</label>
+            <label index="currentLink" type="integer">220492962</label>
+            <label index="invalidChar" type="integer">103011900</label>
+        </languageKey>
+        <languageKey index="jp" type="array">
+        </languageKey>
+        <languageKey index="vn" type="array">
+        </languageKey>
+        <languageKey index="ca" type="array">
+        </languageKey>
+        <languageKey index="ba" type="array">
+        </languageKey>
+        <languageKey index="kr" type="array">
+        </languageKey>
+        <languageKey index="eo" type="array">
+        </languageKey>
+        <languageKey index="my" type="array">
+        </languageKey>
+        <languageKey index="hi" type="array">
+        </languageKey>
+    </orig_hash>
+    <orig_text type="array">
+        <languageKey index="default" type="array">
+        </languageKey>
+        <languageKey index="dk" type="array">
+        </languageKey>
+        <languageKey index="de" type="array">
+        </languageKey>
+        <languageKey index="no" type="array">
+        </languageKey>
+        <languageKey index="it" type="array">
+        </languageKey>
+        <languageKey index="fr" type="array">
+        </languageKey>
+        <languageKey index="es" type="array">
+        </languageKey>
+        <languageKey index="nl" type="array">
+        </languageKey>
+        <languageKey index="cz" type="array">
+        </languageKey>
+        <languageKey index="pl" type="array">
+        </languageKey>
+        <languageKey index="si" type="array">
+        </languageKey>
+        <languageKey index="fi" type="array">
+        </languageKey>
+        <languageKey index="tr" type="array">
+        </languageKey>
+        <languageKey index="se" type="array">
+        </languageKey>
+        <languageKey index="pt" type="array">
+        </languageKey>
+        <languageKey index="ru" type="array">
+        </languageKey>
+        <languageKey index="ro" type="array">
+        </languageKey>
+        <languageKey index="ch" type="array">
+        </languageKey>
+        <languageKey index="sk" type="array">
+        </languageKey>
+        <languageKey index="lt" type="array">
+        </languageKey>
+        <languageKey index="is" type="array">
+        </languageKey>
+        <languageKey index="hr" type="array">
+        </languageKey>
+        <languageKey index="hu" type="array">
+        </languageKey>
+        <languageKey index="gl" type="array">
+        </languageKey>
+        <languageKey index="th" type="array">
+        </languageKey>
+        <languageKey index="gr" type="array">
+        </languageKey>
+        <languageKey index="hk" type="array">
+        </languageKey>
+        <languageKey index="eu" type="array">
+        </languageKey>
+        <languageKey index="bg" type="array">
+        </languageKey>
+        <languageKey index="br" type="array">
+        </languageKey>
+        <languageKey index="et" type="array">
+        </languageKey>
+        <languageKey index="ar" type="array">
+        </languageKey>
+        <languageKey index="he" type="array">
+        </languageKey>
+        <languageKey index="ua" type="array">
+        </languageKey>
+        <languageKey index="lv" type="array">
+        </languageKey>
+        <languageKey index="jp" type="array">
+        </languageKey>
+        <languageKey index="vn" type="array">
+        </languageKey>
+        <languageKey index="ca" type="array">
+        </languageKey>
+        <languageKey index="ba" type="array">
+        </languageKey>
+        <languageKey index="kr" type="array">
+        </languageKey>
+        <languageKey index="eo" type="array">
+        </languageKey>
+        <languageKey index="my" type="array">
+        </languageKey>
+        <languageKey index="hi" type="array">
+        </languageKey>
+    </orig_text>
+</T3locallang>

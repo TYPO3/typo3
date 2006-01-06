@@ -9,7 +9,7 @@ $TCA['tx_rtehtmlarea_acronym'] = Array (
 	'columns' => Array (
 		'hidden' => Array (
 			'exclude' => 0,
-			'label' => 'LLL:EXT:lang/locallang_general.php:LGL.hidden',
+			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.hidden',
 			'config' => Array (
 				'type' => 'check',
 				'default' => '0'
@@ -17,7 +17,7 @@ $TCA['tx_rtehtmlarea_acronym'] = Array (
 		),
 		'starttime' => Array (
 			'exclude' => 0,
-			"label" => "LLL:EXT:lang/locallang_general.php:LGL.starttime",
+			"label" => "LLL:EXT:lang/locallang_general.xml:LGL.starttime",
 			"config" => Array (
 				"type" => "input",
 				"size" => "8",
@@ -29,7 +29,7 @@ $TCA['tx_rtehtmlarea_acronym'] = Array (
 		),
 		'endtime' => Array (
 			'exclude' => 0,
-			"label" => "LLL:EXT:lang/locallang_general.php:LGL.endtime",
+			"label" => "LLL:EXT:lang/locallang_general.xml:LGL.endtime",
 			"config" => Array (
 				"type" => "input",
 				"size" => "8",
@@ -46,31 +46,31 @@ $TCA['tx_rtehtmlarea_acronym'] = Array (
 		),
 		'sys_language_uid' => Array (
 			'exclude' => 0,
-			'label' => 'LLL:EXT:lang/locallang_general.php:LGL.language',
+			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.language',
 			'config' => Array (
 				'type' => 'select',
 				'foreign_table' => 'sys_language',
 				'foreign_table_where' => 'ORDER BY sys_language.title',
 				'items' => Array (
-					Array('LLL:EXT:lang/locallang_general.php:LGL.allLanguages', '-1'),
-					Array('LLL:EXT:lang/locallang_general.php:LGL.default_value', '0'),
+					Array('LLL:EXT:lang/locallang_general.xml:LGL.allLanguages', '-1'),
+					Array('LLL:EXT:lang/locallang_general.xml:LGL.default_value', '0'),
 				),
 			)
 		),
 		'type' => Array (		
 			'exclude' => 0,		
-			'label' => 'LLL:EXT:rtehtmlarea/locallang_db.php:tx_rtehtmlarea_acronym.type',		
+			'label' => 'LLL:EXT:rtehtmlarea/locallang_db.xml:tx_rtehtmlarea_acronym.type',		
 			'config' => Array (
 				'type' => 'radio',	
 				'items' => Array (
-					Array('LLL:EXT:rtehtmlarea/locallang_db.php:tx_rtehtmlarea_acronym.type.I.0', '1'),
-					Array('LLL:EXT:rtehtmlarea/locallang_db.php:tx_rtehtmlarea_acronym.type.I.1', '2'),
+					Array('LLL:EXT:rtehtmlarea/locallang_db.xml:tx_rtehtmlarea_acronym.type.I.0', '1'),
+					Array('LLL:EXT:rtehtmlarea/locallang_db.xml:tx_rtehtmlarea_acronym.type.I.1', '2'),
 				),
 			)
 		),
 		'term' => Array (		
 			'exclude' => 0,		
-			'label' => 'LLL:EXT:rtehtmlarea/locallang_db.php:tx_rtehtmlarea_acronym.term',		
+			'label' => 'LLL:EXT:rtehtmlarea/locallang_db.xml:tx_rtehtmlarea_acronym.term',		
 			'config' => Array (
 				'type' => 'input',
 				'size' => '30',
@@ -79,7 +79,7 @@ $TCA['tx_rtehtmlarea_acronym'] = Array (
 		),
 		'acronym' => Array (		
 			'exclude' => 0,		
-			'label' => 'LLL:EXT:rtehtmlarea/locallang_db.php:tx_rtehtmlarea_acronym.acronym',		
+			'label' => 'LLL:EXT:rtehtmlarea/locallang_db.xml:tx_rtehtmlarea_acronym.acronym',		
 			'config' => Array (
 				'type' => 'input',
 				'size' => '30',
