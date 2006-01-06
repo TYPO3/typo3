@@ -293,7 +293,7 @@ class SC_wizard_rte {
 		global $BE_USER;
 
 		$calcPRec = t3lib_BEfunc::getRecord($table,$uid);
-		t3lib_BEfunc::fixVersioningPid($table,$uid);
+		t3lib_BEfunc::fixVersioningPid($table,$calcPRec);
 		if (is_array($calcPRec))	{
 			if ($table=='pages')	{	// If pages:
 				$CALC_PERMS = $BE_USER->calcPerms($calcPRec);

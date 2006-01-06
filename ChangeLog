@@ -1,4 +1,8 @@
-2006-01-05  Karsten Dambekalns <karsten@typo3.org>
+2005-01-06  Sebastian Kurfuerst  <sebastian@garbage-group.de>
+
+	* Fixed bug #1854: wrong Access check in RTE Wizard
+
+2006-01-05  Karsten Dambekalns  <karsten@typo3.org>
 
 	* Minor change to the stylesheet to enhance tabmenu display in the BE.
 
@@ -7,11 +11,11 @@
 	* Add escapeStrForLike() to t3lib_db and use it in tslib_cObj->searchWhere()
 	* Update for bug #1354: Use mysql_escape_string() with PHP 4.1.x
 
-2006-01-04  Stanislas Rolland <stanislas.rolland@fructifor.ca>
+2006-01-04  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
 	* Changes to the htmlArea RTE extension (details see local ChangeLog)
 
-2006-01-04  Karsten Dambekalns <karsten@typo3.org>
+2006-01-04  Karsten Dambekalns  <karsten@typo3.org>
 
 	* Changes to the DBAL extension (details see local ChangeLog)
 	* Minor fix to inline comment in class.t3lib_sqlparser.php
