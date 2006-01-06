@@ -1,6 +1,7 @@
 2005-01-06  Sebastian Kurfuerst  <sebastian@garbage-group.de>
 
 	* Fixed bug #1854: wrong Access check in RTE Wizard
+	* Added PHPdoc comments to the update wizard
 
 2006-01-05  Karsten Dambekalns  <karsten@typo3.org>
 

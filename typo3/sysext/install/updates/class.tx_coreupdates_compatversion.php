@@ -35,6 +35,12 @@ class tx_coreupdates_compatversion {
 	var $pObj;	// parent object (tx_install)
 	var $userInput;	// user input
 
+	/**
+	 * Function which checks if update is needed. Called in the beginning of an update process.
+	 *
+	 * @param	string		pointer to description for the update
+	 * @return	boolean		true if update is needs to be performed, false otherwise.
+	 */
 	function checkForUpdate(&$description)	{
 		global $TYPO3_CONF_VARS;
 		if ($this->compatVersionIsCurrent())	{
@@ -58,6 +64,12 @@ class tx_coreupdates_compatversion {
 		return 1;
 	}
 
+	/**
+	 * second step: get user input if needed
+	 *
+	 * @param	string		input prefix, all names of form fields have to start with this. Append custom name in [ ... ]
+	 * @return	string		HTML output
+	 */
 	function getUserInput($inputPrefix)	{
 		global $TYPO3_CONF_VARS;
 		if ($this->compatVersionIsCurrent())	{
@@ -80,6 +92,13 @@ class tx_coreupdates_compatversion {
 		}
 		return $content;
 	}
+
+	/**
+	 * Checks if user input is valid
+	 *
+	 * @param	string		pointer to output custom messages
+	 * @return	boolean		true if user input is correct, then the update is performed. When false, return to getUserInput
+	 */
 	function checkUserInput(&$customMessages)	{
 		global $TYPO3_CONF_VARS;
 		if ($this->compatVersionIsCurrent())	{
@@ -104,6 +123,14 @@ class tx_coreupdates_compatversion {
 			}
 		}
 	}
+
+	/**
+	 * Performs the update itself
+	 *
+	 * @param	array		pointer where to insert all DB queries made, so they can be shown to the user if wanted
+	 * @param	string		pointer to output custom messages
+	 * @return	boolean		true if update succeeded, false otherwise
+	 */
 	function performUpdate(&$dbQueries, &$customMessages)	{
 		$customMessages = '';
 
@@ -123,7 +150,17 @@ class tx_coreupdates_compatversion {
 		return 1;
 	}
 
-		// helper functiopns
+
+	/**********************
+	 *
+	 * HELPER FUNCTIONS - just used in this update method
+	 *
+	 **********************/
+	/**
+	 * checks if compatibility version is set to current version
+	 *
+	 * @return	boolean		true if compat version is equal the current version
+	 */
 	function compatVersionIsCurrent()	{
 		global $TYPO3_CONF_VARS;
 		if ($TYPO3_CONF_VARS['SYS']['compat_version'] && t3lib_div::int_from_ver(TYPO3_version) != t3lib_div::int_from_ver($TYPO3_CONF_VARS['SYS']['compat_version']))	{
@@ -132,21 +169,31 @@ class tx_coreupdates_compatversion {
 			return 1;
 		}
 	}
+
+	/**
+	 * show changes needed
+	 *
+	 * @param	string		input prefix to prepend all form fields with.
+	 * @return string		HTML output
+	 */
 	function showChangesNeeded($inputPrefix = '')	{
 		global $TYPO3_CONF_VARS;
 		$oldVersion = t3lib_div::int_from_ver($TYPO3_CONF_VARS['SYS']['compat_version']);
 		$currentVersion = t3lib_div::int_from_ver(TYPO3_version);
 
 		$tableContents = '';
-		foreach ($TYPO3_CONF_VARS['SC_OPTIONS']['ext/install']['compat_version'] as $internalName => $details)	{
-			if ($details['version'] > $oldVersion && $details['version'] <= $currentVersion)	{
-				$tableContents .= '<tr><td colspan="2"><hr /></td></tr>
-				<tr><td valign="bottom">'.($inputPrefix?'<input type="checkbox" name="'.$inputPrefix.'[compatVersion]['.$internalName.']" id="'.$inputPrefix.'[compatVersion]['.$internalName.']" value="1">':'&nbsp;').'</td><td>'.str_replace(chr(10),'<br />',$details['description']).($inputPrefix?'<br /><b><label for="'.$inputPrefix.'[compatVersion]['.$internalName.']">'.$details['description_acknowledge'].'</label></b>':'').'</td></tr>';
+		if (is_array($TYPO3_CONF_VARS['SC_OPTIONS']['ext/install']['compat_version'])) {
+			foreach ($TYPO3_CONF_VARS['SC_OPTIONS']['ext/install']['compat_version'] as $internalName => $details)	{
+				if ($details['version'] > $oldVersion && $details['version'] <= $currentVersion)	{
+					$tableContents .= '<tr><td colspan="2"><hr /></td></tr>
+					<tr><td valign="bottom">'.($inputPrefix?'<input type="checkbox" name="'.$inputPrefix.'[compatVersion]['.$internalName.']" id="'.$inputPrefix.'[compatVersion]['.$internalName.']" value="1">':'&nbsp;').'</td><td>'.str_replace(chr(10),'<br />',$details['description']).($inputPrefix?'<br /><b><label for="'.$inputPrefix.'[compatVersion]['.$internalName.']">'.$details['description_acknowledge'].'</label></b>':'').'</td></tr>';
+				}
 			}
 		}
-		if ($tableContents)	{
+		if (strlen($tableContents))	{
 			return '<table>'.$tableContents.'</table>';
 		}
+		return '';
 	}
 }
 ?>

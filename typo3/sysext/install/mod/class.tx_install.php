@@ -3828,9 +3828,9 @@ From sub-directory:
 	}
 
 	/**
-	 * [Describe function...]
+	 * Generates update wizard, outputs it as well
 	 *
-	 * @return	[type]		...
+	 * @return	void
 	 */
 	function updateWizard()	{
 		global $TYPO3_CONF_VARS;
@@ -3857,9 +3857,10 @@ From sub-directory:
 		echo $this->outputWrapper($this->printAll());
 	}
 	/**
-	 * [Describe function...]
+	 * Implements the steps for the update wizard
 	 *
-	 * @return	[type]		...
+	 * @param	string		action which should be done.
+	 * @return	void
 	 */
 	function updateWizard_parts($action)	{
 		$content = '';
@@ -3957,9 +3958,12 @@ From sub-directory:
 	}
 
 	/**
-	 * [Describe function...]
+	 * Creates instance of an upgrade object, setting the pObj, versionNumber and pObj
 	 *
-	 * @return	[type]		...
+	 * @param	string		class name
+	 * @param	identifier		identifier of upgrade object - needed to fetch user input
+	 *
+	 * @return	object		newly instanciated upgrade object
 	 */
 	function getUpgradeObjInstance($className, $identifier)	{
 		$tmpObj = &t3lib_div::getUserObj($className);
