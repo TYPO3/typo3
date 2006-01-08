@@ -124,11 +124,11 @@ class tx_rtehtmlarea_user {
 		</script>
 		';
 
-		$this->modData = $BE_USER->getModuleData("rtehtmlarea_user.php","ses");
+		$this->modData = $BE_USER->getModuleData("user.php","ses");
 		if (t3lib_div::_GP("OC_key"))	{
 			$parts = explode("|",t3lib_div::_GP("OC_key"));
 			$this->modData["openKeys"][$parts[1]] = $parts[0]=="O" ? 1 : 0;
-			$BE_USER->pushModuleData("rtehtmlarea_user.php",$this->modData);
+			$BE_USER->pushModuleData("user.php",$this->modData);
 		}
 	}
 

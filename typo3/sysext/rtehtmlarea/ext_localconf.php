@@ -61,8 +61,8 @@ $TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['HTMLAreaPluginList'] = $_EXTCONF["HTMLAre
 $TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['plainImageMaxWidth'] = $_EXTCONF['plainImageMaxWidth'] ? $_EXTCONF['plainImageMaxWidth'] : 640;
 $TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['plainImageMaxHeight'] = $_EXTCONF['plainImageMaxHeight'] ? $_EXTCONF['plainImageMaxHeight'] : 680;
 
-$TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['safari_test'] = 0;
-$TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['opera_test'] = 0;
+//$TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['safari_test'] = 0;
+//$TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['opera_test'] = 0;
 
 	// Add default RTE transformation configuration
 t3lib_extMgm::addPageTSConfig('<INCLUDE_TYPOSCRIPT: source="FILE:EXT:' . $_EXTKEY . '/res/proc/pageTSConfig.txt">');

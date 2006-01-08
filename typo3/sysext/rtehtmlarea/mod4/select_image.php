@@ -195,11 +195,11 @@ class tx_rtehtmlarea_select_image {
 		// Determine nature of current url:
 		$this->act=t3lib_div::_GP("act");
 		
-		$this->modData = $BE_USER->getModuleData("rtehtmlarea_select_image.php","ses");
+		$this->modData = $BE_USER->getModuleData("select_image.php","ses");
 		if ($this->act!="image")	{
 			if (isset($this->act))	{
 				$this->modData["act"]=$this->act;
-				$BE_USER->pushModuleData("rtehtmlarea_select_image.php",$this->modData);
+				$BE_USER->pushModuleData("select_image.php",$this->modData);
 			} else {
 				$this->act=$this->modData["act"];
 			}
@@ -207,7 +207,7 @@ class tx_rtehtmlarea_select_image {
 		$expandPage = t3lib_div::_GP("expandFolder");
 		if (isset($expandPage))	{
 			$this->modData["expandFolder"]=$expandPage;
-			$BE_USER->pushModuleData("rtehtmlarea_select_image.php",$this->modData);
+			$BE_USER->pushModuleData("select_image.php",$this->modData);
 		} else {
 			t3lib_div::_GETset($this->modData["expandFolder"],'expandFolder');
 		}
@@ -547,8 +547,7 @@ class tx_rtehtmlarea_select_image {
 			}
 			
 			function openDragDrop()	{
-				var url = "rtehtmlarea_browse_links.php?mode=filedrag&bparams=|||"+escape("gif,jpg,jpeg,png");
-				//var url = "' . $BACK_PATH . 'browse_links.php?mode=filedrag&bparams=|||"+escape("gif,jpg,jpeg,png");
+				var url = "' . $BACK_PATH . t3lib_extMgm::extRelPath('rtehtmlarea') . 'mod3/browse_links.php?mode=filedrag&bparams=|||"+escape("gif,jpg,jpeg,png");
 				parent.opener.browserWin = window.open(url,"Typo3WinBrowser","height=350,width=600,status=0,menubar=0,resizable=1,scrollbars=1");
 				HTMLArea.edHidePopup();
 			}
@@ -573,7 +572,7 @@ class tx_rtehtmlarea_select_image {
 	 * @return	[type]		...
 	 */
 	function main()	{
-		global $LANG, $TYPO3_CONF_VARS, $FILEMOUNTS;
+		global $LANG, $TYPO3_CONF_VARS, $FILEMOUNTS, $BE_USER;
 		
 		$menu='<table border=0 cellpadding=2 cellspacing=1><tr>';
 		$bgcolor=' class="bgColor4"';
@@ -601,7 +600,7 @@ class tx_rtehtmlarea_select_image {
 				$_MCONF['name']='file_list';
 				$_MOD_SETTINGS = t3lib_BEfunc::getModuleData($_MOD_MENU, t3lib_div::_GP('SET'), $_MCONF['name']);
 				$addParams = '&act='.$this->act.'&expandFolder='.rawurlencode($this->modData["expandFolder"]);
-				$thumbNailCheck = t3lib_BEfunc::getFuncCheck('','SET[displayThumbs]',$_MOD_SETTINGS['displayThumbs'],'rtehtmlarea_select_image.php',$addParams).' '.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_file_list.php:displayThumbs',1);
+				$thumbNailCheck = t3lib_BEfunc::getFuncCheck('','SET[displayThumbs]',$_MOD_SETTINGS['displayThumbs'],'select_image.php',$addParams).' '.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_file_list.php:displayThumbs',1);
 			} else {
 				$thumbNailCheck='';
 			}
@@ -645,18 +644,21 @@ class tx_rtehtmlarea_select_image {
 			// ***************************
 			// Upload
 			// ***************************
-			$fileProcessor = t3lib_div::makeInstance("t3lib_basicFileFunctions");
-			$fileProcessor->init($FILEMOUNTS, $TYPO3_CONF_VARS["BE"]["fileExtensions"]);
-			$path=t3lib_div::_GP("expandFolder");
+						// Adding upload forms if applicable:
+			if ($BE_USER->getTSConfigVal('options.uploadFieldsInTopOfEB'))	{
+				$fileProcessor = t3lib_div::makeInstance("t3lib_basicFileFunctions");
+				$fileProcessor->init($FILEMOUNTS, $TYPO3_CONF_VARS["BE"]["fileExtensions"]);
+				$path=t3lib_div::_GP("expandFolder");
 
-			if (!$path || $path=="/" || !@is_dir($path))	{
-				$path = $fileProcessor->findTempFolder();	// The closest TEMP-path is found
-				if ($path)	$path.="/";
+				if (!$path || $path=="/" || !@is_dir($path))	{
+					$path = $fileProcessor->findTempFolder();	// The closest TEMP-path is found
+					if ($path)	$path.="/";
+				}
+				if ($path && @is_dir($path))	{
+					$this->content.=$this->uploadForm($path)."<BR>";
+				}
 			}
-			if ($path && @is_dir($path))	{
-				$this->content.=$this->uploadForm($path)."<BR>";
-			}
-		
+			
 			// ***************************
 			// Help
 			// ***************************
@@ -791,7 +793,7 @@ class tx_rtehtmlarea_select_image {
 				<input type="Hidden" name="file[upload]['.$a.'][data]" value="'.$a.'"><BR>';
 		}
 		$code.='
-			<input type="Hidden" name="redirect" value="'.t3lib_extMgm::extRelPath('rtehtmlarea').'rtehtmlarea_select_image.php?act='.$this->act.'&expandFolder='.rawurlencode($path).'&RTEtsConfigParams='.rawurlencode(t3lib_div::_GP("RTEtsConfigParams")).'">
+			<input type="Hidden" name="redirect" value="' . $BACK_PATH . t3lib_extMgm::extRelPath('rtehtmlarea').'mod4/select_image.php?act='.$this->act.'&expandFolder='.rawurlencode($path).'&RTEtsConfigParams='.rawurlencode(t3lib_div::_GP("RTEtsConfigParams")).'">
 			<input type="Submit" name="submit" value="'.$LANG->sL("LLL:EXT:lang/locallang_core.php:file_upload.php.submit").'">
 			<div id="c-override">
 				<input type="checkbox" name="overwriteExistingFiles" value="1" /> '.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_misc.php:overwriteExistingFiles',1).'

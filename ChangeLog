@@ -1,3 +1,6 @@
+2006-01-08  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+	* rtehtmlarea: Correction to path settings affecting image drag & drop and file/image upload.
+
 2006-01-08  Sebastian Kurfuerst  <sebastian@garbage-group.de>
 
 	* Fixed bug #1938: Selection "Frontend" gets lost on login failure

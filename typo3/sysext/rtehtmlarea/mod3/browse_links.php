@@ -156,7 +156,7 @@ class TBE_browser_recordList extends localRecordList {
 	 * @return	string		Query-string for URL
 	 */
 	function listURL($altId='',$table=-1,$exclList='')	{
-		return $this->script.
+		return $BACK_PATH . t3lib_extMgm::extRelPath('rtehtmlarea') . 'mod3/' . $this->script .
 			'?id='.(strcmp($altId,'')?$altId:$this->id).
 			'&table='.rawurlencode($table==-1?$this->table:$table).
 			($this->thumbs?'&imagemode='.$this->thumbs:'').
@@ -601,7 +601,7 @@ class tx_rtehtmlarea_browse_links {
 	var $setClass;			// Class (RTE specific)
 	var $setTitle;			// Title(RTE specific)
 	var $doc;				// Backend template object
-	var $script='rtehtmlarea_browse_links.php';
+	var $script='browse_links.php';
 	var $typoVersion;				// Typo3 version
 
 		// GPvars:	(Input variables from outside)

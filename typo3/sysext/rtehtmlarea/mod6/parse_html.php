@@ -69,11 +69,11 @@ class tx_rtehtmlarea_parse_html {
 		$this->doc->backPath = $BACK_PATH;
 		$this->doc->JScode='';
 
-		$this->modData = $BE_USER->getModuleData("rtehtmlarea_parse_html.php","ses");
+		$this->modData = $BE_USER->getModuleData("parse_html.php","ses");
 		if (t3lib_div::_GP("OC_key"))	{
 			$parts = explode("|",t3lib_div::_GP("OC_key"));
 			$this->modData["openKeys"][$parts[1]] = $parts[0]=="O" ? 1 : 0;
-			$BE_USER->pushModuleData("rtehtmlarea_parse_html.php",$this->modData);
+			$BE_USER->pushModuleData("parse_html.php",$this->modData);
 		}
 	}
 

@@ -186,11 +186,11 @@ class tx_rtehtmlarea_acronym {
 		</script>
 		';
 
-		$this->modData = $BE_USER->getModuleData("rtehtmlarea_acronym.php","ses");
+		$this->modData = $BE_USER->getModuleData("acronym.php","ses");
 		if (t3lib_div::_GP("OC_key"))	{
 			$parts = explode("|",t3lib_div::_GP("OC_key"));
 			$this->modData["openKeys"][$parts[1]] = $parts[0]=="O" ? 1 : 0;
-			$BE_USER->pushModuleData("rtehtmlarea_acronym.php",$this->modData);
+			$BE_USER->pushModuleData("acronym.php",$this->modData);
 		}
 	}
 
