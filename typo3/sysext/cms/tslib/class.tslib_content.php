@@ -3420,6 +3420,9 @@ class tslib_cObj {
 										case 'date':
 											$items['sorting'][] = filectime($wholePath);
 										break;
+										case 'mdate':
+											$items['sorting'][] = filemtime($wholePath);
+										break;
 										default:
 											$items['sorting'][] = $count;
 										break;

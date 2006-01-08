@@ -2,6 +2,7 @@
 
 	* Fixed bug #1938: Selection "Frontend" gets lost on login failure
 	* Fixed bug #1149: FE-Editing in new Popups => Page doesnt reload
+	* New feature #1910: Sorting in filelists by modification date
 
 2006-01-06  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
