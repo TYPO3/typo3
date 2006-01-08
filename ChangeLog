@@ -1,3 +1,8 @@
+2006-01-08  Sebastian Kurfuerst  <sebastian@garbage-group.de>
+
+	* Fixed bug #1938: Selection "Frontend" gets lost on login failure
+	* Fixed bug #1149: FE-Editing in new Popups => Page doesnt reload
+
 2006-01-06  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
 	* Converted locallang files of htmlArea RTE extension to xml format.
