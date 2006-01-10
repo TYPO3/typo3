@@ -1,3 +1,7 @@
+2006-01-10  Wolfgang Klinger  <wolfgang@stufenlos.net>
+
+	* Fixed bug #1209: set 'deleteTree' to '1' if 'recursiveDelete' is set in the user preferences
+
 2006-01-08  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
 	* rtehtmlarea: Correction to path settings affecting image drag & drop and file/image upload.
 

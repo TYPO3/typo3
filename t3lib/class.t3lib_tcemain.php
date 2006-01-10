@@ -351,6 +351,10 @@ class t3lib_TCEmain	{
 		$this->username = $this->BE_USER->user['username'];
 		$this->admin = $this->BE_USER->user['admin'];
 
+		if ($GLOBALS['BE_USER']->uc['recursiveDelete'])    {
+			$this->deleteTree = 1;
+		}
+
 			// Initializing default permissions for pages
 		$defaultPermissions = $GLOBALS['TYPO3_CONF_VARS']['BE']['defaultPermissions'];
 		if (isset($defaultPermissions['user']))		{$this->defaultPermissions['user'] = $defaultPermissions['user'];}
