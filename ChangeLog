@@ -1,3 +1,7 @@
+2006-01-11  Dmitry Dulepov <typo3@accio.lv>
+
+	* Fixed bug #2199: Summary contains duplicate labels (indexed_search)
+
 2006-01-10  Wolfgang Klinger  <wolfgang@stufenlos.net>
 
 	* Fixed bug #1209: set 'deleteTree' to '1' if 'recursiveDelete' is set in the user preferences
