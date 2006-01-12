@@ -48,7 +48,7 @@ TCEmain
 		- Implement flexform "index" as well (see marks
 		- In "Help > About Modules" screen we might want to look if the index is empty and if so, present a link to "Tools > DB check" tool so the index can be created initially for updated sites?
 		- (Make class.t3lib_refindex available in the frontend scope for integration in plugins that manipulate the database on their own and need to update the reference index. Actually, I'm inclined to think we should rather think about how to provide t3lib_tcemain for the frontend instead...!)
-		- CLI script for updating refindex with cron-job and reporting inconsistencies by email
+		- CLI script for updating refindex with cron-job [OK] and reporting inconsistencies by email
 	- Record clean-up functionality (Tools > DB check module)
 		- Remove references to deleted records (also deleted-to-recycler records? Maybe "deleted-to-recycler" references are important to remove in order to make sure "recycler" records are not selected!) (refs to MM for both tables/files)
 		- Remove references to lost files etc.
