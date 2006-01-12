@@ -1839,6 +1839,9 @@
 									}
 								}
 							break;
+							case 'ignore':
+								$this->sys_language_content = $this->sys_language_uid;
+							break;
 							default:
 									// Default is that everything defaults to the default language...
 								$this->sys_language_uid = $this->sys_language_content = 0;

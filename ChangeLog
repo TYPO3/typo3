@@ -1,3 +1,7 @@
+2006-01-12  Wolfgang Klinger  <wk@plan2.net>
+
+	* Introduced a new property 'ignore' for config.sys_language_mode
+
 2006-01-12  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
 	* Changes to the htmlArea RTE extension (details see local ChangeLog)
