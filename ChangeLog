@@ -1,3 +1,7 @@
+2006-01-12  Karsten Dambekalns  <karsten@typo3.org>
+
+	* Fixed unclean document.location use in JavaScript parts, replaced by [window.]location.href
+
 2006-01-12  Wolfgang Klinger  <wk@plan2.net>
 
 	* Introduced a new property 'ignore' for config.sys_language_mode
