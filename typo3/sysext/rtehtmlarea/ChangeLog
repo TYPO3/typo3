@@ -1,3 +1,12 @@
+2006-01-12  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+	* Version 1.1.2
+	* Correction to path settings affecting CSS files when TYPO3 is installed in a subdirectory.
+	* Cache the main JS files in typo3temp directory with hashed name including the extension version number.
+	* Adjust opening size of some popup windows.
+	* Correction to the automatic detection of url's in Mozilla/Firefox: the rightmost domain should be alphabetic.
+	* Enable link editing options in the context menu when the cursor is positioned inside a link.
+	* Enable the link button in the tool bar if some text is selected or if the cursor is positioned inside a link.
+
 2006-01-08  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
 	* Version 1.1.1
 	* Correction to path settings affecting image drag & drop and file/image upload.

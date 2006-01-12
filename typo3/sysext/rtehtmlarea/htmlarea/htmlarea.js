@@ -126,12 +126,12 @@ HTMLArea._request = [];
 HTMLArea.loadScript = function(url, plugin) {
 	if (plugin) url = _editor_url + "/plugins/" + plugin + '/' + url;
 	if(HTMLArea.is_opera) url = _typo3_host_url + url;
-	if(HTMLArea._compressedScripts) url = url.replace(/\.js$/gi, "-compressed.js");
+	if(HTMLArea._compressedScripts && url.indexOf("compressed") == -1) url = url.replace(/\.js$/gi, "-compressed.js");
 	HTMLArea._scripts.push(url);
 };
-HTMLArea.loadScript(_editor_url + "popupwin.js");
-if(HTMLArea.is_gecko) HTMLArea.loadScript(_editor_url + "htmlarea-gecko.js");
-if(HTMLArea.is_ie) HTMLArea.loadScript(_editor_url + "htmlarea-ie.js");
+HTMLArea.loadScript(RTEarea[0]["popupwin"] ? RTEarea[0]["popupwin"] : _editor_url + "popupwin.js");
+if(HTMLArea.is_gecko) HTMLArea.loadScript(RTEarea[0]["htmlarea-gecko"] ? RTEarea[0]["htmlarea-gecko"] : _editor_url + "htmlarea-gecko.js");
+if(HTMLArea.is_ie) HTMLArea.loadScript(RTEarea[0]["htmlarea-ie"] ? RTEarea[0]["htmlarea-ie"] : _editor_url + "htmlarea-ie.js");
 
 /*
  * Get a script using asynchronous XMLHttpRequest
@@ -244,7 +244,7 @@ HTMLArea.Reg_body = new RegExp("<\/?(body)[^>]*>", "gi");
 HTMLArea.Reg_entities = new RegExp("&amp;([0-9]+);", "gi");
 HTMLArea.reservedClassNames = /htmlarea/;
 HTMLArea.RE_email    = /([0-9a-z]+([a-z0-9_-]*[0-9a-z])*){1}(\.[0-9a-z]+([a-z0-9_-]*[0-9a-z])*)*@([0-9a-z]+([a-z0-9_-]*[0-9a-z])*\.)+[a-z]{2,9}/i;
-HTMLArea.RE_url      = /(https?:\/\/)?(([a-z0-9_]+:[a-z0-9_]+@)?[a-z0-9_-]{2,}(\.[a-z0-9_-]{2,}){2,}(:[0-9]+)?(\/\S+)*)/i;
+HTMLArea.RE_url      = /(https?:\/\/)?(([a-z0-9_]+:[a-z0-9_]+@)?[a-z0-9_-]{2,}(\.[a-z0-9_-]{2,})+\.[a-z]{2,5}(:[0-9]+)?(\/\S+)*)/i;
 
 /*
  * Editor configuration object constructor
@@ -338,7 +338,7 @@ HTMLArea.Config = function () {
 		ForeColor:		["Font Color", "ed_color_fg.gif",false, function(editor) {editor.execCommand("ForeColor");}],
 		HiliteColor:		["Background Color", "ed_color_bg.gif",false, function(editor) {editor.execCommand("HiliteColor");}],
 		InsertHorizontalRule:	["Horizontal Rule", "ed_hr.gif",false, function(editor) {editor.execCommand("InsertHorizontalRule");}],
-		CreateLink:		["Insert Web Link", "ed_link.gif", false, function(editor) {editor.execCommand("CreateLink", true);}, null, false, true],
+		CreateLink:		["Insert Web Link", "ed_link.gif", false, function(editor) {editor.execCommand("CreateLink", true);}, "a", false, true],
 		InsertImage:		["Insert/Modify Image", "ed_image.gif", false, function(editor) {editor.execCommand("InsertImage");}],
 		InsertTable:		["Insert Table", "insert_table.gif", false, function(editor) {editor.execCommand("InsertTable");}],
 		HtmlMode:		["Toggle HTML Source", "ed_html.gif", true, function(editor) {editor.execCommand("HtmlMode");}],
@@ -1268,14 +1268,18 @@ HTMLArea.prototype.registerPlugin2 = function(plugin, args) {
 /*
  * Load the required plugin script and, unless not requested, the language file
  */
-HTMLArea.loadPlugin = function(pluginName,noLangFile) {
-	var dir = _editor_url + "plugins/" + pluginName;
-	var plugin = pluginName.replace(/([a-z])([A-Z])([a-z])/g, "$1" + "-" + "$2" + "$3").toLowerCase() + ".js";
-	var plugin_file = dir + "/" + plugin;
-	HTMLArea.loadScript(plugin_file);
-	if (typeof(noLangFile) == "undefined" || !noLangFile) {
-		var plugin_lang = dir + "/lang/" + _editor_lang + ".js";
-		HTMLArea._scripts.push(plugin_lang);
+HTMLArea.loadPlugin = function(pluginName,noLangFile,url) {
+	if (typeof(url) == "undefined") {
+		var dir = _editor_url + "plugins/" + pluginName;
+		var plugin = pluginName.replace(/([a-z])([A-Z])([a-z])/g, "$1" + "-" + "$2" + "$3").toLowerCase() + ".js";
+		var plugin_file = dir + "/" + plugin;
+		HTMLArea.loadScript(plugin_file);
+		if (typeof(noLangFile) == "undefined" || !noLangFile) {
+			var plugin_lang = dir + "/lang/" + _editor_lang + ".js";
+			HTMLArea._scripts.push(plugin_lang);
+		}
+	} else {
+		HTMLArea.loadScript(url);
 	}
 };
 
@@ -1591,7 +1595,8 @@ HTMLArea.prototype.updateToolbar = function(noStatus) {
 				}
 			}
 		}
-		btn.state("enabled", (!text || btn.text) && inContext && (selection || !btn.selection));
+		if (cmd == "CreateLink") btn.state("enabled", (!text || btn.text) && (inContext || selection));
+			else btn.state("enabled", (!text || btn.text) && inContext && (selection || !btn.selection));
 		
 		if (typeof(cmd) == "function") { continue; };
 			// look-it-up in the custom dropdown boxes
@@ -2074,16 +2079,19 @@ HTMLArea.prototype.execCommand = function(cmdID, UI, param) {
 	    case "Indent"	:
 	    	var el = this.getParentElement();
 		while (el && (!HTMLArea.isBlockElement(el) || /^li$/i.test(el.nodeName))) el = el.parentNode;
+	    	try { this._doc.execCommand(cmdID, UI, param); }
+			catch(e) { if (this.config.debug) alert(e + "\n\nby execCommand(" + cmdID + ");"); }
 		if (/^(ol|ul)$/i.test(el.nodeName)) {
-			try { this._doc.execCommand(cmdID, UI, param); }
-				catch(e) { if(this.config.debug) alert(e + "\n\nby execCommand(" + cmdID + ");"); }
 			this.makeNestedList(el);
 			this.selectNodeContents(el);
-			break;
 		}
+		break;
 	    case "FontSize"	:
 	    case "FontName"	:
-		if (!param) {
+	    	if (param) {
+			this._doc.execCommand(cmdID, UI, param);
+			break;
+		} else {
 			var sel = this._getSelection();
 				// Find font and select it
 			if (HTMLArea.is_gecko && sel.isCollapsed) {
@@ -2105,13 +2113,11 @@ HTMLArea.prototype.execCommand = function(cmdID, UI, param) {
 					sel.addRange(r);
 				}
 			}
-		} else {
-			this._doc.execCommand(cmdID, UI, param);
 		}
 		break;
 	    default		:
 	    	try { this._doc.execCommand(cmdID, UI, param); }
-			catch(e) { if(this.config.debug) alert(e + "\n\nby execCommand(" + cmdID + ");"); }
+			catch(e) { if (this.config.debug) alert(e + "\n\nby execCommand(" + cmdID + ");"); }
 	}
 	this.updateToolbar();
 	return false;
@@ -2735,7 +2741,7 @@ Dialog._open = function(url, action, init, width, height, _opener, editor) {
 	
 	if (Dialog._modal) Dialog._modal.close();
 	
-	var dlg = window.open(url, 'hadialog', "toolbar=no,location=no,directories=no,menubar=no,width=" + width + ",height=" + height + ",scrollbars=no,resizable=yes,modal=yes,dependent=yes");
+	var dlg = window.open(url, 'hadialog', "toolbar=no,location=no,directories=no,menubar=no,width=" + width + ",height=" + height + ",scrollbars=no,resizable=yes,modal=yes,dependent=yes,top=100,left=100");
 	if (Dialog._modal && !Dialog._modal.closed) {
 		var obj = new Object();
 		obj.dialogWindow = dlg;

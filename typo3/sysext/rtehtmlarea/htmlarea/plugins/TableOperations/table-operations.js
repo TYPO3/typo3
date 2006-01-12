@@ -68,7 +68,7 @@ TableOperations.I18N = TableOperations_langArray;
  */
 TableOperations._pluginInfo = {
 	name		: "TableOperations",
-	version 	: "3.5",
+	version 	: "3.6",
 	developer 	: "Mihai Bazon & Stanislas Rolland",
 	developer_url 	: "http://www.fructifor.ca/",
 	c_owner 	: "Mihai Bazon & Stanislas Rolland",
@@ -246,7 +246,7 @@ TableOperations.prototype.dialogRowCellProperties = function(cell) {
 	if(element) {
 		var rowCellPropertiesInitFunctRef = TableOperations.rowCellPropertiesInit(element, cell);
 		var rowCellPropertiesUpdateFunctRef = TableOperations.rowCellPropertiesUpdate(element);
-		var dialog = new PopupWin(this.editor, TableOperations.I18N[cell ? "Cell Properties" : "Row Properties"], rowCellPropertiesUpdateFunctRef, rowCellPropertiesInitFunctRef, 700, 400);
+		var dialog = new PopupWin(this.editor, TableOperations.I18N[cell ? "Cell Properties" : "Row Properties"], rowCellPropertiesUpdateFunctRef, rowCellPropertiesInitFunctRef, 700, 425);
 	}
 };
 

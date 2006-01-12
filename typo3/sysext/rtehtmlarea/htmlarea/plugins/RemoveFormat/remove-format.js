@@ -40,14 +40,17 @@ RemoveFormat = function(editor) {
 		image		: editor.imgURL("ed_clean.gif", "RemoveFormat"),
 		textMode	: false,
 		action		: actionHandlerFunctRef
-            });
+	});
+	
+	this.popupWidth = 285;
+	this.popupHeight = 255;
 };
 
 RemoveFormat.I18N = RemoveFormat_langArray;
 
 RemoveFormat._pluginInfo = {
 	name          : "RemoveFormat",
-	version       : "1.3",
+	version       : "1.4",
 	developer     : "Stanislas Rolland",
 	developer_url : "http://www.fructifor.ca/",
 	sponsor       : "Fructifor Inc.",
@@ -63,7 +66,7 @@ RemoveFormat.actionHandler = function(instance) {
 
 RemoveFormat.prototype.buttonPress = function(editor){
 	var applyRequestFunctRef = RemoveFormat.applyRequest(this, editor);
-	editor._popupDialog("plugin://RemoveFormat/removeformat", applyRequestFunctRef, editor, 285, 265);
+	editor._popupDialog("plugin://RemoveFormat/removeformat", applyRequestFunctRef, editor, this.popupWidth, this.popupHeight);
 };
 
 RemoveFormat.applyRequest = function(instance,editor){

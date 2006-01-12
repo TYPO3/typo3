@@ -1,3 +1,7 @@
+2006-01-12  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
+
+	* Changes to the htmlArea RTE extension (details see local ChangeLog)
+
 2006-01-11  Dmitry Dulepov <typo3@accio.lv>
 
 	* Fixed bug #2199: Summary contains duplicate labels (indexed_search)

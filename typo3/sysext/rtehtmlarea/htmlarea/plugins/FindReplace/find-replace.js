@@ -44,6 +44,9 @@ FindReplace = function(editor) {
 		false,
 		actionHandlerFunctRef
 	);
+	
+	this.popupWidth = 455;
+	this.popupHeight = 235;
 };
 
 FindReplace.I18N = FindReplace_langArray;
@@ -62,7 +65,7 @@ FindReplace.prototype.buttonPress = function(editor) {
 		sel = sel.replace(/&nbsp;/g,"");
 	}
 	if (/\w/.test(sel)) param = { fr_pattern: sel };
-	editor._popupDialog("plugin://FindReplace/find_replace", null, param, 420, 220);
+	editor._popupDialog("plugin://FindReplace/find_replace", null, param, this.popupWidth, this.popupHeight);
 };
 
 FindReplace._pluginInfo = {

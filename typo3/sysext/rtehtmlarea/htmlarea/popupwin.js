@@ -52,8 +52,8 @@ PopupWin.prototype._parentEvent = function(ev) {
 	// Open the popup
 PopupWin.prototype._geckoOpenModal = function(editor, _title, handler, initFunction, width, height, _opener) {
 	if(!editor) var editor = this.editor;
-	var dlg = editor._iframe.contentWindow.open("", "", "toolbar=no,menubar=no,personalbar=no,width=" + (width?width:100) + ",height=" + (height?height:100) + ",scrollbars=no,resizable=yes,modal=yes,dependent=yes");
-	if(!dlg)  var dlg = window.open("", "", "toolbar=no,menubar=no,personalbar=no,width=" + (width?width:100) + ",height=" + (height?height:100) + ",scrollbars=no,resizable=yes,modal=yes,dependent=yes");
+	var dlg = editor._iframe.contentWindow.open("", "", "toolbar=no,menubar=no,personalbar=no,width=" + (width?width:100) + ",height=" + (height?height:100) + ",scrollbars=no,resizable=yes,modal=yes,dependent=yes,top=100,left=100");
+	if(!dlg)  var dlg = window.open("", "", "toolbar=no,menubar=no,personalbar=no,width=" + (width?width:100) + ",height=" + (height?height:100) + ",scrollbars=no,resizable=yes,modal=yes,dependent=yes,top=100,left=100");
 	this.dialogWindow = dlg;
 	this._opener = (_opener) ? _opener : this.dialogWindow.opener;
 	this._opener.dialog = this;

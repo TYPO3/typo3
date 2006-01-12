@@ -233,7 +233,7 @@ ContextMenu.prototype.getContextMenu = function(target) {
 			break;
 		    case "a":
 			link = target;
-			if (toolbarObjects["CreateLink"] && toolbarObjects["CreateLink"].enabled)  {
+			if (toolbarObjects["CreateLink"])  {
 				if (menu.length) menu.push(null);
 				menu.push(
 					[i18n["Modify Link"],

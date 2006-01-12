@@ -36,13 +36,17 @@ if (!defined ("TYPO3_MODE")) 	die ("Access denied.");
 
 // Configuration of class ux_parsehtml_proc extending class t3lib_parsehtml_proc for TYPO3 older than 4.0
 if (t3lib_div::int_from_ver(TYPO3_VERSION) < 4000000 ) {
-	$TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["t3lib/class.t3lib_parsehtml_proc.php"] = t3lib_extMgm::extPath($_EXTKEY)."class.ux_t3lib_parsehtml_proc.php";
+	$TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/class.t3lib_parsehtml_proc.php'] = t3lib_extMgm::extPath($_EXTKEY) . 'class.ux_t3lib_parsehtml_proc.php';
 }
 
 if(!$TYPO3_CONF_VARS['BE']['RTEenabled'])  $TYPO3_CONF_VARS['BE']['RTEenabled'] = 1;
 
 // Registering the RTE object
 $TYPO3_CONF_VARS['BE']['RTE_reg'][$_EXTKEY] = array('objRef' => 'EXT:'.$_EXTKEY.'/class.tx_rtehtmlarea_base.php:&tx_rtehtmlarea_base');
+
+// Make the extension version number available to the extension scripts
+require_once(t3lib_extMgm::extPath($_EXTKEY) . 'ext_emconf.php');
+$TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['version'] = $EM_CONF[$_EXTKEY]['version'];
 
 $_EXTCONF = unserialize($_EXTCONF);    // unserializing the configuration so we can use it here:
 

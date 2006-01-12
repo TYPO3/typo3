@@ -55,7 +55,7 @@ SelectColor.I18N = SelectColor_langArray;
 
 SelectColor._pluginInfo = {
 	name          : "SelectColor",
-	version       : "1.5",
+	version       : "1.6",
 	developer     : "Stanislas Rolland",
 	developer_url : "http://www.fructifor.ca/",
 	c_owner       : "Stanislas Rolland",
@@ -95,7 +95,7 @@ SelectColor.prototype.buttonPress = function(editor,button_id) {
 SelectColor.prototype.dialogSelectColor = function(button_id,element,field,opener) {
 	var editor = this.editor;
 	var windowWidth = 470;
-	var windowHeight = 220;
+	var windowHeight = 245;
 
 		// button_id's  "color" and "tag" are not registered but used to interface with the Table Operations and QuickTag plugins
 	switch (button_id) {
