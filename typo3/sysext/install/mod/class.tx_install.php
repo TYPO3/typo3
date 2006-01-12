@@ -3374,7 +3374,7 @@ From sub-directory:
 			if (!$action_type)	{
 				$this->message($headCode, "Menu",'
 				<script language="javascript" type="text/javascript">
-				document.location = "'.$directJump.'";
+				window.location.href = "'.$directJump.'";
 				</script>',0,1);
 			}
 		} else {

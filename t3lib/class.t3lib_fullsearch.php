@@ -435,7 +435,7 @@ class t3lib_fullsearch {
 				if (count($rowArr))	{
 					$out.='<textarea name="whatever" rows="20" wrap="off"'.$GLOBALS['SOBE']->doc->formWidthText($this->formW,'','off').' class="fixed-font">'.t3lib_div::formatForTextarea(implode(chr(10),$rowArr)).'</textarea>';
 					if (!$this->noDownloadB)	{
-						$out.='<BR><input type="submit" name="download_file" value="Click to download file" onClick="document.location=\''.$this->downloadScript.'\';">';		// document.forms[0].target=\'_blank\';
+						$out.='<BR><input type="submit" name="download_file" value="Click to download file" onClick="window.location.href=\''.$this->downloadScript.'\';">';		// document.forms[0].target=\'_blank\';
 					}
 						// Downloads file:
 					if (t3lib_div::_GP('download_file'))	{
@@ -470,7 +470,7 @@ class t3lib_fullsearch {
 					$xmlData=$xmlObj->getResult();
 					$out.='<textarea name="whatever" rows="20" wrap="off"'.$GLOBALS['SOBE']->doc->formWidthText($this->formW,'','off').' class="fixed-font">'.t3lib_div::formatForTextarea($xmlData).'</textarea>';
 					if (!$this->noDownloadB)	{
-						$out.='<BR><input type="submit" name="download_file" value="Click to download file" onClick="document.location=\''.$this->downloadScript.'\';">';		// document.forms[0].target=\'_blank\';
+						$out.='<BR><input type="submit" name="download_file" value="Click to download file" onClick="window.location.href=\''.$this->downloadScript.'\';">';		// document.forms[0].target=\'_blank\';
 					}
 						// Downloads file:
 					if (t3lib_div::_GP('download_file'))	{

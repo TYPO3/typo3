@@ -153,7 +153,7 @@ class SC_file_upload {
 			function reload(a)	{	//
 				if (!changed || (changed '.$confirm.'))	{
 					var params = "&target="+escape(path)+"&number="+a+"&returnUrl='.htmlspecialchars($this->returnUrl).'";
-					document.location = "file_upload.php?"+params;
+					window.location.href = "file_upload.php?"+params;
 				}
 			}
 			function backToList()	{	//

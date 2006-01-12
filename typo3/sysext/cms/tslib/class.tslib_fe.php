@@ -422,7 +422,7 @@
 					// Redirects to the Install Tool:
 				echo '<script type="text/javascript">
 						/*<![CDATA[*/
-					document.location = "'.TYPO3_mainDir.'install/index.php?mode=123&step=1&password=joh316";
+					window.location.href = "'.TYPO3_mainDir.'install/index.php?mode=123&step=1&password=joh316";
 						/*]]>*/
 					</script>';
 				exit;
@@ -435,7 +435,7 @@
 					// Redirects to the Install Tool:
 				echo '<script type="text/javascript">
 						/*<![CDATA[*/
-					document.location = "'.TYPO3_mainDir.'install/index.php?mode=123&step=1&password=joh316";
+					window.location.href = "'.TYPO3_mainDir.'install/index.php?mode=123&step=1&password=joh316";
 						/*]]>*/
 					</script>';
 				exit;
@@ -3302,7 +3302,7 @@ if (version == "n3") {
 
 	/**
 	 * Prefixing the input URL with ->baseUrl If ->baseUrl is set and the input url is not absolute in some way.
-	 * Designed as a wrapper functions for use with all frontend links that are processed by JavaScript (for "realurl" compatibility!). So each time a URL goes into window.open, document.location or otherwise, wrap it with this function!
+	 * Designed as a wrapper functions for use with all frontend links that are processed by JavaScript (for "realurl" compatibility!). So each time a URL goes into window.open, window.location.href or otherwise, wrap it with this function!
 	 *
 	 * @param	string		Input URL, relative or absolute
 	 * @return	string		Processed input value.

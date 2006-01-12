@@ -72,7 +72,7 @@ class SC_mod_tools_config_index {
 		<script language="javascript" type="text/javascript">
 			script_ended = 0;
 			function jumpToUrl(URL)	{
-				document.location = URL;
+				window.location.href = URL;
 			}
 		</script>
 		';

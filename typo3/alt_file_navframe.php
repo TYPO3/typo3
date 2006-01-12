@@ -114,9 +114,9 @@ class SC_alt_file_navframe {
 		top.fsMod.currentBank = bank;
 
 		if (top.condensedMode)	{
-			top.content.document.location=theUrl;
+			top.content.location.href=theUrl;
 		} else {
-			parent.list_frame.document.location=theUrl;
+			parent.list_frame.location.href=theUrl;
 		}
 
         '.($this->doHighlight?'hilight_row("file",highLightID+"_"+bank);':'').'
@@ -131,7 +131,7 @@ class SC_alt_file_navframe {
 		window.setTimeout("_refresh_nav();",0);
 	}
 	function _refresh_nav()	{	//
-		document.location="'.$this->pagetree->thisScript.'?unique='.time().'";
+		window.location.href="'.$this->pagetree->thisScript.'?unique='.time().'";
 	}
 
 		// Highlighting rows in the folder tree:

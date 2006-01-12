@@ -436,7 +436,7 @@ class template {
 
 		$onClick = 'if (top.shortcutFrame && confirm('.
 					$GLOBALS['LANG']->JScharCode($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.makeShortcut')).
-					')){top.shortcutFrame.document.location=\''.$backPath.'alt_shortcut.php?modName='.rawurlencode($modName).
+					')){top.shortcutFrame.location.href=\''.$backPath.'alt_shortcut.php?modName='.rawurlencode($modName).
 					'&URL='.rawurlencode($pathInfo['path']."?".$storeUrl).
 					$mMN.
 					'\';}return false;';
@@ -1216,7 +1216,7 @@ $str.=$this->docBodyTagBegin().
 			} else if (this.options[this.selectedIndex].value.indexOf(\';\')!=-1) {
 				eval(this.options[this.selectedIndex].value);
 			}else{
-				document.location=\''.$this->backPath.'tce_db.php?vC='.$BE_USER->veriCode().'&redirect='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI')).'&cacheCmd=\'+this.options[this.selectedIndex].value;
+				window.location.href=\''.$this->backPath.'tce_db.php?vC='.$BE_USER->veriCode().'&redirect='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI')).'&cacheCmd=\'+this.options[this.selectedIndex].value;
 			}';
 		$af_content = '<select name="cacheCmd" onchange="'.htmlspecialchars($onChange).'">'.implode('',$opt).'</select>';
 
@@ -1795,7 +1795,7 @@ $str.=$this->docBodyTagBegin().
 				$opt[] = '<option value="'.htmlspecialchars($this->backPath.t3lib_extMgm::extRelPath('version').'cm1/index.php?table=pages&uid='.$onlineId).'">'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:ver.mgm',1).'</option>';
 
 					// Create onchange handler:
-				$onChange = "document.location=this.options[this.selectedIndex].value;";
+				$onChange = "window.location.href=this.options[this.selectedIndex].value;";
 
 					// Controls:
 				if ($id==$onlineId)	{
@@ -1866,7 +1866,7 @@ $str.=$this->docBodyTagBegin().
 
 
 						$onClick = $this->issueCommand('&cmd[pages]['.$onlineId.'][version][action]=new&cmd[pages]['.$onlineId.'][version][treeLevels]=0',t3lib_div::linkThisScript(array('id'=>$onlineId)));
-						$onClick = 'document.location=\''.$onClick.'\'; return false;';
+						$onClick = 'window.location.href=\''.$onClick.'\'; return false;';
 							// Write out HTML code:
 						return '
 
@@ -1897,7 +1897,7 @@ $str.=$this->docBodyTagBegin().
 					}
 				} elseif ($verPage['t3ver_swapmode']==0 && $GLOBALS['BE_USER']->workspace===0) {
 					$onClick = $this->issueCommand('&cmd[pages]['.$onlineId.'][version][action]=swap&cmd[pages]['.$onlineId.'][version][swapWith]='.$verPage['uid'],t3lib_div::linkThisScript(array('id'=>$onlineId)));
-					$onClick = 'document.location=\''.$onClick.'\'; return false;';
+					$onClick = 'window.location.href=\''.$onClick.'\'; return false;';
 
 						// Write out HTML code:
 					return '

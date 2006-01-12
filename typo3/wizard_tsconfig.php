@@ -246,7 +246,7 @@ class SC_wizard_tsconfig {
 				return output;
 			}
 			function jump(show,objString)	{
-				document.location = "'.t3lib_div::linkThisScript(array('show'=>'','objString'=>'')).'&show="+show+"&objString="+objString;
+				window.location.href = "'.t3lib_div::linkThisScript(array('show'=>'','objString'=>'')).'&show="+show+"&objString="+objString;
 			}
 		');
 

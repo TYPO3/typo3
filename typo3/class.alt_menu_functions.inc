@@ -430,7 +430,7 @@ class alt_menu_functions {
 				if (count($functionArray))	{
 					$selectItems[] = '<option value=""></option>';
 					foreach($functionArray as $fAoptions)	{
-						$selectItems[] = '<option value="'.htmlspecialchars("document.location='".$fAoptions['href']."';").'">[ '.htmlspecialchars($fAoptions['title']).' ]</option>';
+						$selectItems[] = '<option value="'.htmlspecialchars("window.location.href='".$fAoptions['href']."';").'">[ '.htmlspecialchars($fAoptions['title']).' ]</option>';
 					}
 				}
 			}

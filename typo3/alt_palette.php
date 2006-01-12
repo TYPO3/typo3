@@ -286,7 +286,7 @@ class SC_alt_palette {
 				} else closePal();
 			}
 			function closePal()	{	//
-				'.($this->GPbackref?'document.location="alt_topmenu_dummy.php";':'close();').'
+				'.($this->GPbackref?'window.location.href="alt_topmenu_dummy.php";':'close();').'
 			}
 			timeout_func();
 			onBlur="alert();";

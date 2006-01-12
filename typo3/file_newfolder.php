@@ -142,7 +142,7 @@ class SC_file_newfolder {
 			function reload(a)	{	//
 				if (!changed || (changed && confirm('.$LANG->JScharCode($LANG->sL('LLL:EXT:lang/locallang_core.php:mess.redraw')).')))	{
 					var params = "&target="+escape(path)+"&number="+a;
-					document.location = "file_newfolder.php?"+params;
+					window.location.href = "file_newfolder.php?"+params;
 				}
 			}
 			function backToList()	{	//

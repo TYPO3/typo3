@@ -105,13 +105,13 @@ class SC_mod_web_ts_index extends t3lib_SCbase {
 		<script language="javascript" type="text/javascript">
 			script_ended = 0;
 			function jumpToUrl(URL)	{
-				document.location = URL;
+				window.location.href = URL;
 			}
 			function uFormUrl(aname)	{
 				document.forms[0].action = "index.php?id='.$this->id.'#"+aname;
 			}
 			function brPoint(lnumber,t)	{
-				document.location = "index.php?id='.$this->id.'&SET[function]=tx_tstemplateobjbrowser&SET[ts_browser_type]="+(t?"setup":"const")+"&breakPointLN="+lnumber;
+				window.location.href = "index.php?id='.$this->id.'&SET[function]=tx_tstemplateobjbrowser&SET[ts_browser_type]="+(t?"setup":"const")+"&breakPointLN="+lnumber;
 				return false;
 			}
 		</script>

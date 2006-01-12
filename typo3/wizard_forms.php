@@ -217,7 +217,7 @@ class SC_wizard_forms {
 		$this->doc->backPath = $BACK_PATH;
 		$this->doc->JScode=$this->doc->wrapScriptTags('
 			function jumpToUrl(URL,formEl)	{	//
-				document.location = URL;
+				window.location.href = URL;
 			}
 		');
 

@@ -527,7 +527,7 @@ class SC_index {
 						<select name="interface" class="c-interfaceselector">'.$this->interfaceSelector.'
 						</select>';
 				$this->interfaceSelector_jump='
-						<select name="interface" class="c-interfaceselector" onchange="document.location=this.options[this.selectedIndex].value;">'.$this->interfaceSelector_jump.'
+						<select name="interface" class="c-interfaceselector" onchange="window.location.href=this.options[this.selectedIndex].value;">'.$this->interfaceSelector_jump.'
 						</select>';
 
 			} else {	// If there is only ONE interface value set:

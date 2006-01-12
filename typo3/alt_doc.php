@@ -411,7 +411,7 @@ class SC_alt_doc {
 		$this->doc->JScode = $this->doc->wrapScriptTags('
 			function jumpToUrl(URL,formEl)	{	//
 				if (!TBE_EDITOR_isFormChanged())	{
-					document.location = URL;
+					window.location.href = URL;
 				} else if (formEl && formEl.type=="checkbox") {
 					formEl.checked = formEl.checked ? 0 : 1;
 				}
@@ -436,7 +436,7 @@ class SC_alt_doc {
 				if (
 					'.($GLOBALS['BE_USER']->jsConfirmation(4)?'confirm('.$LANG->JScharCode($LANG->getLL('deleteWarning')).')':'1==1').'
 				)	{
-					document.location = "tce_db.php?cmd["+table+"]["+id+"][delete]=1&redirect="+escape(url)+"&vC='.$BE_USER->veriCode().'&prErr=1&uPT=1";
+					window.location.href = "tce_db.php?cmd["+table+"]["+id+"][delete]=1&redirect="+escape(url)+"&vC='.$BE_USER->veriCode().'&prErr=1&uPT=1";
 				}
 				return false;
 			}
@@ -798,13 +798,13 @@ class SC_alt_doc {
 					$undoButton = 1;
 				}
 				if ($undoButton) {
-					$aOnClick = 'document.location=\'show_rechis.php?element='.rawurlencode($this->firstEl['table'].':'.$this->firstEl['uid']).'&revert=ALL_FIELDS&sumUp=-1&returnUrl='.rawurlencode($this->R_URI).'\'; return false;';
+					$aOnClick = 'window.location.href=\'show_rechis.php?element='.rawurlencode($this->firstEl['table'].':'.$this->firstEl['uid']).'&revert=ALL_FIELDS&sumUp=-1&returnUrl='.rawurlencode($this->R_URI).'\'; return false;';
 					$panel.= '<a href="#" onclick="'.htmlspecialchars($aOnClick).'">'.
 							'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/undo.gif','width="21" height="16"').' class="c-inputButton" title="'.htmlspecialchars(sprintf($LANG->getLL('undoLastChange'),t3lib_BEfunc::calcAge(time()-$undoButtonR['tstamp'],$LANG->sL('LLL:EXT:lang/locallang_core.php:labels.minutesHoursDaysYears')))).'" alt="" />'.
 							'</a>';
 				}
 				if ($this->getNewIconMode($this->firstEl['table'],'showHistory'))	{
-					$aOnClick = 'document.location=\'show_rechis.php?element='.rawurlencode($this->firstEl['table'].':'.$this->firstEl['uid']).'&returnUrl='.rawurlencode($this->R_URI).'\'; return false;';
+					$aOnClick = 'window.location.href=\'show_rechis.php?element='.rawurlencode($this->firstEl['table'].':'.$this->firstEl['uid']).'&returnUrl='.rawurlencode($this->R_URI).'\'; return false;';
 					$panel.= '<a href="#" onclick="'.htmlspecialchars($aOnClick).'">'.
 							'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/history2.gif','width="13" height="12"').' class="c-inputButton" alt="" />'.
 							'</a>';
@@ -852,7 +852,7 @@ class SC_alt_doc {
 				}
 
 					// Compile the selector box finally:
-				$onChange = 'if(this.options[this.selectedIndex].value && !TBE_EDITOR_isFormChanged()){document.location=(this.options[this.selectedIndex].value);}';
+				$onChange = 'if(this.options[this.selectedIndex].value && !TBE_EDITOR_isFormChanged()){window.location.href=(this.options[this.selectedIndex].value);}';
 				$docSel='<select name="_docSelector" onchange="'.htmlspecialchars($onChange).'">'.implode('',$opt).'</select>';
 
 					// Add CSH:

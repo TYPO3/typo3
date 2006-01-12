@@ -291,16 +291,16 @@ class SC_db_list {
 				// Add JavaScript functions to the page:
 			$this->doc->JScode=$this->doc->wrapScriptTags('
 				function jumpToUrl(URL)	{	//
-					document.location = URL;
+					window.location.href = URL;
 					return false;
 				}
 				function jumpExt(URL,anchor)	{	//
 					var anc = anchor?anchor:"";
-					document.location = URL+(T3_THIS_LOCATION?"&returnUrl="+T3_THIS_LOCATION:"")+anc;
+					window.location.href = URL+(T3_THIS_LOCATION?"&returnUrl="+T3_THIS_LOCATION:"")+anc;
 					return false;
 				}
 				function jumpSelf(URL)	{	//
-					document.location = URL+(T3_RETURN_URL?"&returnUrl="+T3_RETURN_URL:"");
+					window.location.href = URL+(T3_RETURN_URL?"&returnUrl="+T3_RETURN_URL:"");
 					return false;
 				}
 				function setHighlight(id)	{
@@ -314,7 +314,7 @@ class SC_db_list {
 				'.$this->doc->redirectUrls($dblist->listURL()).'
 				'.$dblist->CBfunctions().'
 				function editRecords(table,idList,addParams,CBflag)	{	//
-					document.location="'.$backPath.'alt_doc.php?returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI')).
+					window.location.href="'.$backPath.'alt_doc.php?returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI')).
 						'&edit["+table+"]["+idList+"]=edit"+addParams;
 				}
 				function editList(table,idList)	{	//

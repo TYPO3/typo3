@@ -2219,7 +2219,7 @@ class t3lib_BEfunc	{
 	 */
 	function editOnClick($params,$backPath='',$requestUri='')	{
 		$retUrl = 'returnUrl='.($requestUri==-1?"'+T3_THIS_LOCATION+'":rawurlencode($requestUri?$requestUri:t3lib_div::getIndpEnv('REQUEST_URI')));
-		return "document.location='".$backPath."alt_doc.php?".$retUrl.$params."'; return false;";
+		return "window.location.href='".$backPath."alt_doc.php?".$retUrl.$params."'; return false;";
 	}
 
 	/**

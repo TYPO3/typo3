@@ -114,16 +114,16 @@ function JSactivate(level) {
 				}
 			}
 			if (!this.entry[entryID].target || this.entry[entryID].target=="_self")	{
-				document.location = this.entry[entryID].url;
+				window.location.href = this.entry[entryID].url;
 			} else if (this.entry[entryID].target=="_top") {
-				top.document.location = this.entry[entryID].url;
+				top.location.href = this.entry[entryID].url;
 			} else {
 				var test = eval ("parent."+this.entry[entryID].target);
 				if (!test) {
 					test = eval ("top."+this.entry[entryID].target);
 				}
 				if (test && test.document) {
-					test.document.location = this.entry[entryID].url;
+					test.location.href = this.entry[entryID].url;
 				} else {
 					window.open(this.entry[entryID].url,this.entry[entryID].target,"status=yes,menubar=yes,resizable=yes,location=yes,directories=yes,scrollbars=yes,toolbar=yes");
 				}

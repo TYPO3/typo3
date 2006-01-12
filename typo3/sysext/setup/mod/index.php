@@ -461,7 +461,7 @@ class SC_mod_user_setup_index {
 					$opt[] = '<option value="'.$rr['uid'].'"'.($this->simUser==$rr['uid']?' selected="selected"':'').'>'.htmlspecialchars($rr['username'].' ('.$rr['realName'].')').'</option>';
 				}
 			}
-			$this->simulateSelector = '<select name="simulateUser" onchange="document.location=\'index.php?simUser=\'+this.options[this.selectedIndex].value;">'.implode('',$opt).'</select>';
+			$this->simulateSelector = '<select name="simulateUser" onchange="window.location.href=\'index.php?simUser=\'+this.options[this.selectedIndex].value;">'.implode('',$opt).'</select>';
 		}
 
 		if ($this->simUser>0)	{	// This can only be set if the previous code was executed.

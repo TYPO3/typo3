@@ -134,11 +134,11 @@ class SC_wizard_rte {
 					function jumpToUrl(URL,formEl)	{	//
 						if (document.editform)	{
 							if (!TBE_EDITOR_isFormChanged())	{
-								document.location = URL;
+								window.location.href = URL;
 							} else if (formEl) {
 								if (formEl.type=="checkbox") formEl.checked = formEl.checked ? 0 : 1;
 							}
-						} else document.location = URL;
+						} else window.location.href = URL;
 					}
 				'.($this->popView ? t3lib_BEfunc::viewOnClick($rawRec['pid'],'',t3lib_BEfunc::BEgetRootLine($rawRec['pid'])) : '').'
 			');
@@ -217,7 +217,7 @@ class SC_wizard_rte {
 				// Undo/Revert:
 			if ($undoButton)	{
 				$toolBarButtons[]=
-					'<a href="#" onclick="'.htmlspecialchars('document.location=\'show_rechis.php?element='.rawurlencode($this->P['table'].':'.$this->P['uid']).'&revert='.rawurlencode('field:'.$this->P['field']).'&sumUp=-1&returnUrl='.rawurlencode($R_URI).'\'; return false;').'">'.
+					'<a href="#" onclick="'.htmlspecialchars('window.location.href=\'show_rechis.php?element='.rawurlencode($this->P['table'].':'.$this->P['uid']).'&revert='.rawurlencode('field:'.$this->P['field']).'&sumUp=-1&returnUrl='.rawurlencode($R_URI).'\'; return false;').'">'.
 					'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/undo.gif','width="21" height="16"').' class="c-inputButton" title="'.htmlspecialchars(sprintf($LANG->getLL('rte_undoLastChange'),t3lib_BEfunc::calcAge(time()-$undoButtonR['tstamp'],$LANG->sL('LLL:EXT:lang/locallang_core.php:labels.minutesHoursDaysYears')))).'" alt="" />'.
 					'</a>';
 			}

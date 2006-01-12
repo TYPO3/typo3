@@ -302,7 +302,7 @@ class t3lib_extFileFunctions extends t3lib_basicFileFunctions	{
 			$lines[] = '
 					<tr>
 						<td colspan="2" align="center"><br />'.
-						'<form action=""><input type="submit" value="Continue" onclick="'.htmlspecialchars('document.location=\''.$redirect.'\';return false;').'" /></form>'.
+						'<form action=""><input type="submit" value="Continue" onclick="'.htmlspecialchars('window.location.href=\''.$redirect.'\';return false;').'" /></form>'.
 						'</td>
 					</tr>';
 

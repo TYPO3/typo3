@@ -4439,7 +4439,7 @@ class t3lib_TCEforms	{
 						if (document.'.$formname.'[theField])		url+="&rec["+field+"]="+TBE_EDITOR_rawurlencode(document.'.$formname.'[theField].value);
 					}
 					if (top.topmenuFrame)	{
-						top.topmenuFrame.document.location = url+"&backRef="+(top.content.list_frame ? (top.content.list_frame.view_frame ? "top.content.list_frame.view_frame" : "top.content.list_frame") : "top.content");
+						top.topmenuFrame.location.href = url+"&backRef="+(top.content.list_frame ? (top.content.list_frame.view_frame ? "top.content.list_frame.view_frame" : "top.content.list_frame") : "top.content");
 					} else if (!isOnFocus) {
 						var vHWin=window.open(url,"palette","height=300,width=200,status=0,menubar=0,scrollbars=1");
 						vHWin.focus();

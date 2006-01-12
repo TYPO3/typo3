@@ -218,7 +218,7 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 		$this->doc->JScode = $this->doc->wrapScriptTags('
 			script_ended = 0;
 			function jumpToUrl(URL)	{	//
-				document.location = URL;
+				window.location.href = URL;
 			}
 
 			function hlSubelements(origId, verId, over, diffLayer)	{	//
@@ -287,7 +287,7 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 		if ($changeWorkspace != '') {
 			$BE_USER->setWorkspace($changeWorkspace);
 			$this->content = $this->doc->startPage($LANG->getLL('title'));
-			$this->content .= $this->doc->wrapScriptTags('top.document.location="' . $BACK_PATH . 'alt_main.php";');
+			$this->content .= $this->doc->wrapScriptTags('top.location.href="' . $BACK_PATH . 'alt_main.php";');
 		}
 		else {
 				// Perform workspace publishing action if buttons are pressed:
@@ -779,7 +779,7 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 		if ($raiseOk && $rec_off['t3ver_stage']!=-1)	{
 			// TODO Localize
 			$onClick = 'var commentTxt=window.prompt("Please explain why you reject:","");
-							if (commentTxt!=null) {document.location="'.$this->doc->issueCommand(
+							if (commentTxt!=null) {window.location.href="'.$this->doc->issueCommand(
 							'&cmd['.$table.']['.$rec_off['uid'].'][version][action]=setStage'.
 							'&cmd['.$table.']['.$rec_off['uid'].'][version][stageId]=-1'
 							).'&cmd['.$table.']['.$rec_off['uid'].'][version][comment]="+escape(commentTxt);}'.
@@ -801,7 +801,7 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 			// Raise
 		if ($raiseOk)	{
 			$onClick = 'var commentTxt=window.prompt("'.$label.'","");
-							if (commentTxt!=null) {document.location="'.$this->doc->issueCommand(
+							if (commentTxt!=null) {window.location.href="'.$this->doc->issueCommand(
 							'&cmd['.$table.']['.$rec_off['uid'].'][version][action]=setStage'.
 							'&cmd['.$table.']['.$rec_off['uid'].'][version][stageId]='.$sId
 							).'&cmd['.$table.']['.$rec_off['uid'].'][version][comment]="+escape(commentTxt);}'.

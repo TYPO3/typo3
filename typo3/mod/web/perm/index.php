@@ -161,7 +161,7 @@ class SC_mod_web_perm_index {
 				}
 			}
 			function jumpToUrl(URL)	{	//
-				document.location = URL;
+				window.location.href = URL;
 			}
 		');
 

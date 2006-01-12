@@ -431,7 +431,7 @@ class tx_cms_layout extends recordList {
 
 						// If it turns out that there are not content elements in the column, then display a big button which links directly to the wizard script:
 					if ($this->doEdit && $this->option_showBigButtons && !intval($key) && !$GLOBALS['TYPO3_DB']->sql_num_rows($result))	{
-						$onClick = "document.location='db_new_content_el.php?id=".$id.'&colPos='.intval($key).'&sys_language_uid='.$lP.'&uid_pid='.$id.'&returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))."';";
+						$onClick = "window.location.href='db_new_content_el.php?id=".$id.'&colPos='.intval($key).'&sys_language_uid='.$lP.'&uid_pid='.$id.'&returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))."';";
 						$theNewButton = $GLOBALS['SOBE']->doc->t3Button($onClick,$GLOBALS['LANG']->getLL('newPageContent'));
 						$content[$key].= '<img src="clear.gif" width="1" height="5" alt="" /><br />'.$theNewButton;
 					}
@@ -639,7 +639,7 @@ class tx_cms_layout extends recordList {
 
 						// If it turns out that there are not content elements in the column, then display a big button which links directly to the wizard script:
 					if ($this->doEdit && $this->option_showBigButtons && !intval($key) && !$GLOBALS['TYPO3_DB']->sql_num_rows($result))	{
-						$onClick="document.location='db_new_content_el.php?id=".$id.'&colPos='.intval($key).'&sys_language_uid='.$lP.'&uid_pid='.$id.'&returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))."';";
+						$onClick="window.location.href='db_new_content_el.php?id=".$id.'&colPos='.intval($key).'&sys_language_uid='.$lP.'&uid_pid='.$id.'&returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))."';";
 						$theNewButton=$GLOBALS['SOBE']->doc->t3Button($onClick,$GLOBALS['LANG']->getLL('newPageContent'));
 						$theNewButton='<img src="clear.gif" width="1" height="5" alt="" /><br />'.$theNewButton;
 					} else $theNewButton='';
@@ -726,9 +726,9 @@ class tx_cms_layout extends recordList {
 					$bArray[0]=$GLOBALS['SOBE']->doc->t3Button(t3lib_BEfunc::editOnClick('&edit[pages_language_overlay]['.$languageOverlayRecord['uid']."]=edit",$this->backPath,''),$GLOBALS['LANG']->getLL('editPageProperties_curLang'));
 				}
 			}
-			if ($this->ext_CALC_PERMS&4 || $this->ext_CALC_PERMS&2)	$bArray[1]=$GLOBALS['SOBE']->doc->t3Button("document.location='".$this->backPath."move_el.php?table=pages&uid=".$id.'&returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))."';",$GLOBALS['LANG']->getLL('move_page'));
-			if ($this->ext_CALC_PERMS&8)	$bArray[2]=$GLOBALS['SOBE']->doc->t3Button("document.location='".$this->backPath."db_new.php?id=".$id.'&pagesOnly=1&returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))."';",$GLOBALS['LANG']->getLL('newPage2'));
-			if ($this->doEdit && $this->ext_function==1) $bArray[3]=$GLOBALS['SOBE']->doc->t3Button("document.location='db_new_content_el.php?id=".$id.'&sys_language_uid='.$GLOBALS['SOBE']->current_sys_language.'&returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))."';",$GLOBALS['LANG']->getLL('newPageContent2'));
+			if ($this->ext_CALC_PERMS&4 || $this->ext_CALC_PERMS&2)	$bArray[1]=$GLOBALS['SOBE']->doc->t3Button("window.location.href='".$this->backPath."move_el.php?table=pages&uid=".$id.'&returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))."';",$GLOBALS['LANG']->getLL('move_page'));
+			if ($this->ext_CALC_PERMS&8)	$bArray[2]=$GLOBALS['SOBE']->doc->t3Button("window.location.href='".$this->backPath."db_new.php?id=".$id.'&pagesOnly=1&returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))."';",$GLOBALS['LANG']->getLL('newPage2'));
+			if ($this->doEdit && $this->ext_function==1) $bArray[3]=$GLOBALS['SOBE']->doc->t3Button("window.location.href='db_new_content_el.php?id=".$id.'&sys_language_uid='.$GLOBALS['SOBE']->current_sys_language.'&returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))."';",$GLOBALS['LANG']->getLL('newPageContent2'));
 			$out = '
 				<table border="0" cellpadding="4" cellspacing="0" class="typo3-page-buttons">
 					<tr>
@@ -1558,7 +1558,7 @@ class tx_cms_layout extends recordList {
 				if (!$disableMoveAndNewButtons)	{
 						// New content element:
 					if ($this->option_newWizard)	{
-						$onClick="document.location='db_new_content_el.php?id=".$row['pid'].'&sys_language_uid='.$row['sys_language_uid'].'&colPos='.$row['colPos'].'&uid_pid='.(-$row['uid']).'&returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))."';";
+						$onClick="window.location.href='db_new_content_el.php?id=".$row['pid'].'&sys_language_uid='.$row['sys_language_uid'].'&colPos='.$row['colPos'].'&uid_pid='.(-$row['uid']).'&returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))."';";
 					} else {
 						$params='&edit[tt_content]['.(-$row['uid']).']=new';
 						$onClick = t3lib_BEfunc::editOnClick($params,$this->backPath);
@@ -1842,7 +1842,7 @@ class tx_cms_layout extends recordList {
 			}
 
 				// Copy for language:
-			$onClick = "document.location='".$GLOBALS['SOBE']->doc->issueCommand($params)."'; return false;";
+			$onClick = "window.location.href='".$GLOBALS['SOBE']->doc->issueCommand($params)."'; return false;";
 			$theNewButton = $GLOBALS['SOBE']->doc->t3Button($onClick,$GLOBALS['LANG']->getLL('newPageContent_copyForLang').' ['.count($defLanguageCount).']');
 			return $theNewButton;
 		}
@@ -1872,7 +1872,7 @@ class tx_cms_layout extends recordList {
 	 */
 	function newContentElementOnClick($id,$colPos,$sys_language)	{
 		if ($this->option_newWizard)	{
-			$onClick="document.location='db_new_content_el.php?id=".$id.'&colPos='.$colPos.'&sys_language_uid='.$sys_language.'&uid_pid='.$id.'&returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))."';";
+			$onClick="window.location.href='db_new_content_el.php?id=".$id.'&colPos='.$colPos.'&sys_language_uid='.$sys_language.'&uid_pid='.$id.'&returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))."';";
 		} else {
 			$onClick=t3lib_BEfunc::editOnClick('&edit[tt_content]['.$id.']=new&defVals[tt_content][colPos]='.$colPos.'&defVals[tt_content][sys_language_uid]='.$sys_language,$this->backPath);
 		}
@@ -1913,7 +1913,7 @@ class tx_cms_layout extends recordList {
 		$params['pid'] = $row['pid'];
 		$params['field'] = 'bodytext';
 		$params['returnUrl'] = t3lib_div::linkThisScript();
-		$RTEonClick = "document.location='".$this->backPath."wizard_rte.php?".t3lib_div::implodeArrayForUrl('',array('P'=>$params))."';return false;";
+		$RTEonClick = "window.location.href='".$this->backPath."wizard_rte.php?".t3lib_div::implodeArrayForUrl('',array('P'=>$params))."';return false;";
 		$addButton = $this->option_showBigButtons && $this->doEdit ? $GLOBALS['SOBE']->doc->t3Button($RTEonClick,$GLOBALS['LANG']->getLL('editInRTE')) : '';
 
 		return $addButton;
@@ -1948,7 +1948,7 @@ class tx_cms_layout extends recordList {
 
 				// If any languages are left, make selector:
 			if (count($langSelItems)>1)		{
-				$onChangeContent = 'document.location=\''.$this->backPath.'alt_doc.php?&edit[pages_language_overlay]['.$id.']=new&overrideVals[pages_language_overlay][sys_language_uid]=\'+this.options[this.selectedIndex].value+\'&returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI')).'\'';
+				$onChangeContent = 'window.location.href=\''.$this->backPath.'alt_doc.php?&edit[pages_language_overlay]['.$id.']=new&overrideVals[pages_language_overlay][sys_language_uid]=\'+this.options[this.selectedIndex].value+\'&returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI')).'\'';
 				return $GLOBALS['LANG']->getLL('new_language',1).': <select name="createNewLanguage" onchange="'.htmlspecialchars($onChangeContent).'">
 						'.implode('',$langSelItems).'
 					</select><br /><br />';

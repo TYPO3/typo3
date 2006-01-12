@@ -744,7 +744,7 @@ class tx_rtehtmlarea_browse_links {
 				$classesAnchor['all'] = array();
 				if (is_array($RTEsetup['properties']['classesAnchor.'])) {
 					reset($RTEsetup['properties']['classesAnchor.']);
-					while(list($label,$conf)=each($RTEsetup['properties']['classesAnchor.'])) { 
+					while(list($label,$conf)=each($RTEsetup['properties']['classesAnchor.'])) {
 						$classesAnchor['all'][] = $conf['class'];
 						if (in_array($conf['type'], $anchorTypes)) {
 							$classesAnchor[$conf['type']][] = $conf['class'];
@@ -928,7 +928,7 @@ class tx_rtehtmlarea_browse_links {
 				var add_act = URL.indexOf("act=")==-1 ? "&act='.$this->act.'" : "";
 				var add_mode = URL.indexOf("mode=")==-1 ? "&mode='.$this->mode.'" : "";
 				var theLocation = URL+add_act+add_mode+add_href+add_target+add_class+add_title+add_params'.($addPassOnParams?'+"'.$addPassOnParams.'"':'').'+(anchor?anchor:"");
-				document.location = theLocation;
+				window.location.href = theLocation;
 				return false;
 			}
 		';
@@ -1427,7 +1427,7 @@ class tx_rtehtmlarea_browse_links {
 							if(anchorClass["titleText"]) document.ltargetform.anchor_title.value = anchorClass["titleText"];
 							break;
 						}
-						
+
 					}
 				}
 				setClass(document.ltargetform.anchor_class.value);
