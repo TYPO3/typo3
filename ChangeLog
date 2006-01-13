@@ -1,3 +1,7 @@
+2006-01-13  Wolfgang Klinger  <wk@plan2.net>
+
+	* The '[Translate to:]' message is now configurable via TSconfig and will be prepended only if there's an actual value
+
 2006-01-12  Karsten Dambekalns  <karsten@typo3.org>
 
 	* Fixed unclean document.location use in JavaScript parts, replaced by [window.]location.href

@@ -2897,8 +2897,18 @@ class t3lib_TCEmain	{
 											// Set exclude Fields:
 										foreach($TCA[$table]['columns'] as $fN => $fCfg)	{
 											if ($fCfg['l10n_mode']=='prefixLangTitle')	{	// Check if we are just prefixing:
-												if ($fCfg['config']['type']=='text' || $fCfg['config']['type']=='input')	{
-													$overrideValues[$fN] = '[Translate to '.$langRec['title'].':] '.$row[$fN];
+												if (($fCfg['config']['type']=='text' || $fCfg['config']['type']=='input') && strlen($row[$fN]))	{
+													list($tscPID) = t3lib_BEfunc::getTSCpid($table,$uid,'');
+													$TSConfig = $this->getTCEMAIN_TSconfig($tscPID);
+
+													if (isset($TSConfig['translateToMessage']) && strlen($TSConfig['translateToMessage'])) {
+														$translateToMsg = @sprintf($TSConfig['translateToMessage'], $langRec['title']);
+													}
+													if (!strlen($translateToMsg)) {
+														$translateToMsg = 'Translate to '.$langRec['title'].':';
+													}
+
+													$overrideValues[$fN] = '['.$translateToMsg.'] '.$row[$fN];
 												}
 											} elseif (t3lib_div::inList('exclude,noCopy,mergeIfNotBlank',$fCfg['l10n_mode']) && $fN!=$TCA[$table]['ctrl']['languageField'] && $fN!=$TCA[$table]['ctrl']['transOrigPointerField']) {	 // Otherwise, do not copy field (unless it is the language field or pointer to the original language)
 												$excludeFields[] = $fN;
