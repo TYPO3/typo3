@@ -488,8 +488,8 @@ class t3lib_TCEforms	{
 								if ($sField)	$sField.=$sFieldPal;
 
 								$out_array[$out_sheet][$out_pointer].= $sField;
-							} elseif($theField=='--div--')	{
-								if ($cc>0) {
+							} elseif ($theField=='--div--')	{
+								if ($cc>0)	{
 									$out_array[$out_sheet][$out_pointer].=$this->getDivider();
 
 									if ($this->enableTabMenu && $TCA[$table]['ctrl']['dividers2tabs'])	{
@@ -2203,7 +2203,7 @@ class t3lib_TCEforms	{
 										$alertMsgOnChange = 'if (confirm('.$GLOBALS['LANG']->JScharCode($this->getLL('m_onChangeAlert')).') && TBE_EDITOR_checkSubmit(-1)){ TBE_EDITOR_submitForm() };';
 									} else {
 										$alertMsgOnChange = 'if(TBE_EDITOR_checkSubmit(-1)){ TBE_EDITOR_submitForm();}';
-										}
+									}
 								} else {
 									$alertMsgOnChange = '';
 								}

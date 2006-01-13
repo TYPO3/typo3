@@ -516,8 +516,8 @@ class SC_db_layout {
 				$idListA[] = $cRow['uid'];
 			}
 
-			$jumpUrl = $BACK_PATH.'alt_doc.php?edit[tt_content]['.implode(',',$idListA).']=edit&returnUrl='.rawurlencode($this->local_linkThisScript(array('edit_record'=>'')));
-			header('Location: '.t3lib_div::locationHeaderUrl($jumpUrl));
+			$url = $BACK_PATH.'alt_doc.php?edit[tt_content]['.implode(',',$idListA).']=edit&returnUrl='.rawurlencode($this->local_linkThisScript(array('edit_record'=>'')));
+			header('Location: '.t3lib_div::locationHeaderUrl($url));
 			exit;
 		}
 

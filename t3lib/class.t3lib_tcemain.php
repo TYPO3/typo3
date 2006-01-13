@@ -2901,10 +2901,10 @@ class t3lib_TCEmain	{
 													list($tscPID) = t3lib_BEfunc::getTSCpid($table,$uid,'');
 													$TSConfig = $this->getTCEMAIN_TSconfig($tscPID);
 
-													if (isset($TSConfig['translateToMessage']) && strlen($TSConfig['translateToMessage'])) {
+													if (isset($TSConfig['translateToMessage']) && strlen($TSConfig['translateToMessage']))	{
 														$translateToMsg = @sprintf($TSConfig['translateToMessage'], $langRec['title']);
 													}
-													if (!strlen($translateToMsg)) {
+													if (!strlen($translateToMsg))	{
 														$translateToMsg = 'Translate to '.$langRec['title'].':';
 													}
 

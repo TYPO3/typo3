@@ -295,7 +295,6 @@ class t3lib_DB {
 		$res = $this->exec_SELECTquery($select_fields,$from_table,$where_clause,$groupBy,$orderBy,$limit);
 		if ($this->debugOutput)	$this->debug('exec_SELECTquery');
 
-		unset($output);
 		if (!$this->sql_error())	{
 			$output = array();
 

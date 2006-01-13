@@ -1,3 +1,7 @@
+2006-01-13  Michael Stucki  <michael@typo3.org>
+
+	* Fixed bug #2102: PHP-Warning in the shortcut frame
+
 2006-01-13  Wolfgang Klinger  <wk@plan2.net>
 
 	* The '[Translate to:]' message is now configurable via TSconfig and will be prepended only if there's an actual value
@@ -23,17 +27,18 @@
 	* Fixed bug #1209: set 'deleteTree' to '1' if 'recursiveDelete' is set in the user preferences
 
 2006-01-08  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+
 	* rtehtmlarea: Correction to path settings affecting image drag & drop and file/image upload.
 
 2006-01-08  Sebastian Kurfuerst  <sebastian@garbage-group.de>
 
 	* Fixed bug #1938: Selection "Frontend" gets lost on login failure
-	* Fixed bug #1149: FE-Editing in new Popups => Page doesnt reload
+	* Fixed bug #1149: FE-Editing in new Popups => Page doesn't reload
 	* New feature #1910: Sorting in filelists by modification date
 
 2006-01-06  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
-	* Converted locallang files of htmlArea RTE extension to xml format.
+	* Converted locallang files of htmlArea RTE extension to XML format.
 	* Revised all licence notices on all scripts of htmlArea RTE in order to publish under GPL.
 
 2005-01-06  Sebastian Kurfuerst  <sebastian@garbage-group.de>
