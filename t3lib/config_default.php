@@ -252,7 +252,7 @@ $typo_db_tables_script = '';	// The filename of the tables.php script in typo3co
 $typo_db_extTableDef_script = '';	// The filename of an additional script in typo3conf/-folder which is included after tables.php. Code in this script should modify the tables.php-configuration only, and this provides a good way to extend the standard-distributed tables.php file.
 
 	// Include localconf.php. Use this file to configure TYPO3 for your needs and database
-if (!@is_file(PATH_typo3conf.'localconf.php'))	die(PATH_typo3conf.'localconf.php is not found!');
+if (!@is_file(PATH_typo3conf.'localconf.php'))	die('localconf.php is not found!');
 require(PATH_typo3conf.'localconf.php');
 
 	// Defining the database setup as constants
