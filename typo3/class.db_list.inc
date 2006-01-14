@@ -592,9 +592,9 @@ class recordList extends t3lib_recordList {
 	}
 
 	/**
-	 * Wrapping input code in link to URL or email if $testString is either.
+	 * Wrapping input code in link to url or email if $testString is either.
 	 *
-	 * @return	string		Link-Wrapped $code value, if $testString was URL or email. Otherwise, the function will return "$code ($testString)"
+	 * @return	string		Link-Wrapped $code value, if $testString was URL or email.
 	 */
 	function linkUrlMail($code,$testString)	{
 
@@ -604,13 +604,13 @@ class recordList extends t3lib_recordList {
 			return '<a href="'.htmlspecialchars($testString).'" target="_blank">'.$code.'</a>';
 		}
 
-			// Check for email:
+			// check for email:
 		if (t3lib_div::validEmail($testString))	{
 			return '<a href="mailto:'.htmlspecialchars($testString).'" target="_blank">'.$code.'</a>';
 		}
 
-			// Otherwise, return URL wrapped in round braces
-		return $code.' ('.$testString.')';
+			// Return if nothing else...
+		return $testString;
 	}
 
 	/**
