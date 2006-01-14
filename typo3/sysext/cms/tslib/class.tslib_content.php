@@ -1920,7 +1920,7 @@ class tslib_cObj {
 
 						// Field:
 					$fieldLabel = $confData['label'];
-					if ($conf['accessibility'] && $confData['type']!='radio' && $confData['type'] != 'label')	{
+					if ($conf['accessibility'] && trim($fieldLabel) && !preg_match('/^(radio|label|hidden|comment)$/',$confData['type']))	{
 						$fieldLabel = '<label for="'.$prefix.$fName.'">'.$fieldLabel.'</label>';
 					}
 

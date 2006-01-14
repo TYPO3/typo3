@@ -9,7 +9,7 @@
 #
 DROP TABLE IF EXISTS static_template;
 CREATE TABLE static_template (
-  uid int(11) unsigned DEFAULT '0' NOT NULL auto_increment,
+  uid int(11) unsigned NOT NULL auto_increment,
   pid int(11) unsigned DEFAULT '0' NOT NULL,
   tstamp int(11) unsigned DEFAULT '0' NOT NULL,
   crdate int(11) unsigned DEFAULT '0' NOT NULL,

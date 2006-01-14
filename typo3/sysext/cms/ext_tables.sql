@@ -9,7 +9,7 @@
 # Table structure for table 'cache_pages'
 #
 CREATE TABLE cache_pages (
-  id int(11) unsigned DEFAULT '0' NOT NULL auto_increment,
+  id int(11) unsigned NOT NULL auto_increment,
   hash varchar(32) DEFAULT '' NOT NULL,
   page_id int(11) unsigned DEFAULT '0' NOT NULL,
   reg1 int(11) unsigned DEFAULT '0' NOT NULL,
@@ -77,7 +77,7 @@ CREATE TABLE cache_imagesizes (
 # Table structure for table 'fe_groups'
 #
 CREATE TABLE fe_groups (
-  uid int(11) unsigned DEFAULT '0' NOT NULL auto_increment,
+  uid int(11) unsigned NOT NULL auto_increment,
   pid int(11) unsigned DEFAULT '0' NOT NULL,
   tstamp int(11) unsigned DEFAULT '0' NOT NULL,
   title varchar(20) DEFAULT '' NOT NULL,
@@ -122,7 +122,7 @@ CREATE TABLE fe_sessions (
 # Table structure for table 'fe_users'
 #
 CREATE TABLE fe_users (
-  uid int(11) unsigned DEFAULT '0' NOT NULL auto_increment,
+  uid int(11) unsigned NOT NULL auto_increment,
   pid int(11) unsigned DEFAULT '0' NOT NULL,
   tstamp int(11) unsigned DEFAULT '0' NOT NULL,
   username varchar(50) DEFAULT '' NOT NULL,
@@ -166,7 +166,7 @@ CREATE TABLE fe_users (
 # Table structure for table 'pages_language_overlay'
 #
 CREATE TABLE pages_language_overlay (
-  uid int(11) DEFAULT '0' NOT NULL auto_increment,
+  uid int(11) NOT NULL auto_increment,
   pid int(11) DEFAULT '0' NOT NULL,
   t3ver_oid int(11) DEFAULT '0' NOT NULL,
   t3ver_id int(11) DEFAULT '0' NOT NULL,
@@ -207,7 +207,7 @@ CREATE TABLE pages_language_overlay (
 # Table structure for table 'static_template'
 #
 CREATE TABLE static_template (
-  uid int(11) unsigned DEFAULT '0' NOT NULL auto_increment,
+  uid int(11) unsigned NOT NULL auto_increment,
   pid int(11) unsigned DEFAULT '0' NOT NULL,
   tstamp int(11) unsigned DEFAULT '0' NOT NULL,
   crdate int(11) unsigned DEFAULT '0' NOT NULL,
@@ -226,7 +226,7 @@ CREATE TABLE static_template (
 # Table structure for table 'sys_domain'
 #
 CREATE TABLE sys_domain (
-  uid int(11) unsigned DEFAULT '0' NOT NULL auto_increment,
+  uid int(11) unsigned NOT NULL auto_increment,
   pid int(11) unsigned DEFAULT '0' NOT NULL,
   tstamp int(11) unsigned DEFAULT '0' NOT NULL,
   hidden tinyint(4) unsigned DEFAULT '0' NOT NULL,
@@ -245,7 +245,7 @@ CREATE TABLE sys_domain (
 # Table structure for table 'sys_template'
 #
 CREATE TABLE sys_template (
-  uid int(11) DEFAULT '0' NOT NULL auto_increment,
+  uid int(11) NOT NULL auto_increment,
   pid int(11) DEFAULT '0' NOT NULL,
   t3ver_oid int(11) DEFAULT '0' NOT NULL,
   t3ver_id int(11) DEFAULT '0' NOT NULL,
@@ -290,7 +290,7 @@ CREATE TABLE sys_template (
 # Table structure for table 'tt_content'
 #
 CREATE TABLE tt_content (
-  uid int(11) DEFAULT '0' NOT NULL auto_increment,
+  uid int(11) NOT NULL auto_increment,
   pid int(11) DEFAULT '0' NOT NULL,
   t3ver_oid int(11) DEFAULT '0' NOT NULL,
   t3ver_id int(11) DEFAULT '0' NOT NULL,

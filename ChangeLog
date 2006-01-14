@@ -1,6 +1,8 @@
-2006-01-13  Michael Stucki  <michael@typo3.org>
+2006-01-14  Michael Stucki  <michael@typo3.org>
 
 	* Fixed bug #2102: PHP-Warning in the shortcut frame
+	* Remove <label> tags around hidden fields in FORM elements
+	* Removed depencency of typo3conf/database.sql: The file contents are now calculated automatically.
 
 2006-01-13  Wolfgang Klinger  <wk@plan2.net>
 

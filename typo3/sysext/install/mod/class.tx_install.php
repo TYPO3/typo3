@@ -749,15 +749,23 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv("REMOTE_ADDR")."' (".t3lib_div::getIndp
 				if ($result = $GLOBALS['TYPO3_DB']->sql_pconnect(TYPO3_db_host, TYPO3_db_username, TYPO3_db_password))	{
 					if ($GLOBALS['TYPO3_DB']->sql_select_db(TYPO3_db))	{
 						$sFiles = t3lib_div::getFilesInDir(PATH_typo3conf,"sql",1,1);
-						reset($sFiles);
+
+							// Check if default database scheme "database.sql" already exists, otherwise create it
+						if (!strstr(implode(',',$sFiles).',', '/database.sql,'))	{
+							array_unshift($sFiles,'Create default database tables');
+						}
+
 						$opt='';
-						while(list(,$f)=each($sFiles))	{
-							$opt.='<option value="import|'.htmlspecialchars($f).'">'.htmlspecialchars(basename($f)).'</option>';
+						foreach ($sFiles as $f)	{
+							if ($f=='Create default database tables')	$key='CURRENT_TABLES+STATIC';
+							else $key=htmlspecialchars($f);
+
+							$opt.='<option value="import|'.$key.'">'.htmlspecialchars(basename($f)).'</option>';
 						}
 
 
 						$content='
-							'.$this->fontTag2.'Database dumps in typo3conf/ directory:</font><BR>
+							'.$this->fontTag2.'Please select a database dump:</font><BR>
 							<input type="hidden" name="TYPO3_INSTALL[database_import_all]" value=1>
 						   <input type="hidden" name="step" value="">
 						   <input type="hidden" name="goto_step" value="go">
@@ -3558,16 +3566,29 @@ From sub-directory:
 				case "import":
 					$mode123Imported=0;
 					$tblFileContent="";
-					if (!strcmp($actionParts[1],"CURRENT_STATIC")) {
-						reset($GLOBALS["TYPO3_LOADED_EXT"]);
-						while(list(,$loadedExtConf)=each($GLOBALS["TYPO3_LOADED_EXT"]))	{
-							if (is_array($loadedExtConf) && $loadedExtConf["ext_tables_static+adt.sql"])	{
-								$tblFileContent.= chr(10).chr(10).chr(10).chr(10).t3lib_div::getUrl($loadedExtConf["ext_tables_static+adt.sql"]);
+					if (preg_match('/^CURRENT_/', $actionParts[1]))	{
+						if (!strcmp($actionParts[1],'CURRENT_TABLES') || !strcmp($actionParts[1],'CURRENT_TABLES+STATIC'))	{
+							$tblFileContent = t3lib_div::getUrl(PATH_t3lib.'stddb/tables.sql');
+
+							reset($GLOBALS['TYPO3_LOADED_EXT']);
+							while(list(,$loadedExtConf)=each($GLOBALS['TYPO3_LOADED_EXT']))	{
+								if (is_array($loadedExtConf) && $loadedExtConf['ext_tables.sql'])	{
+									$tblFileContent.= chr(10).chr(10).chr(10).chr(10).t3lib_div::getUrl($loadedExtConf['ext_tables.sql']);
+								}
+							}
+						}
+						if (!strcmp($actionParts[1],'CURRENT_STATIC') || !strcmp($actionParts[1],'CURRENT_TABLES+STATIC'))	{
+							reset($GLOBALS["TYPO3_LOADED_EXT"]);
+							while(list(,$loadedExtConf)=each($GLOBALS["TYPO3_LOADED_EXT"]))	{
+								if (is_array($loadedExtConf) && $loadedExtConf["ext_tables_static+adt.sql"])	{
+									$tblFileContent.= chr(10).chr(10).chr(10).chr(10).t3lib_div::getUrl($loadedExtConf["ext_tables_static+adt.sql"]);
+								}
 							}
 						}
 					} elseif (@is_file($actionParts[1]))	{
 						$tblFileContent = t3lib_div::getUrl($actionParts[1]);
 					}
+
 					if ($tblFileContent)	{
 						$tLabel="Import SQL dump";
 							// Getting statement array from
@@ -3576,12 +3597,46 @@ From sub-directory:
 
 							// Updating database...
 						if ($this->INSTALL["database_import_all"])	{
-							reset($statements);
 							$r=0;
-							while(list($k,$v)=each($statements))	{
+							foreach ($statements as $k=>$v)	{
 								$res = $GLOBALS['TYPO3_DB']->admin_query($v);
 								$r++;
 							}
+
+								// Make a database comparison because some tables that are defined twice have not been created at this point. This applies to the "pages.*" fields defined in sysext/cms/ext_tables.sql for example.
+							$fileContent = implode(
+								$this->getStatementArray($tblFileContent,1,'^CREATE TABLE '),
+								chr(10)
+							);
+							$FDfile = $this->getFieldDefinitions_sqlContent($fileContent);
+							$FDdb = $this->getFieldDefinitions_database();
+							$diff = $this->getDatabaseExtra($FDfile, $FDdb);
+							$update_statements = $this->getUpdateSuggestions($diff);
+							foreach ($update_statements['add'] as $statement)	{
+								$res = $GLOBALS['TYPO3_DB']->admin_query($statement);
+							}
+
+							if ($this->mode=='123')	{
+									// Create default be_user admin/password
+								$username = 'admin';
+								$pass = 'password';
+
+								$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', 'be_users', 'username='.$GLOBALS['TYPO3_DB']->fullQuoteStr($username, 'be_users'));
+								if (!$GLOBALS['TYPO3_DB']->sql_num_rows($res))	{
+									$insertFields = array(
+										'username' => $username,
+										'password' => md5($pass),
+										'admin' => 1,
+										'uc' => '',
+										'fileoper_perms' => 7,
+										'tstamp' => time(),
+										'crdate' => time()
+									);
+
+									$GLOBALS['TYPO3_DB']->exec_INSERTquery('be_users', $insertFields);
+								}
+							}
+
 							$this->message($tLabel,"Imported ALL","
 								Queries: ".$r."
 							",1,1);
@@ -4911,7 +4966,7 @@ p,td {
 
 				- <a href='../../index.php'><strong>Go to the frontend pages</strong></a>
 
-				- <a href='../index.php?u=admin&p=password'><strong>Go to the backend login</strong></a>
+				- <a href='../index.php'><strong>Go to the backend login</strong></a>
 				 (username may be: <i>admin</i>, password may be: <i>password</i>.)
 
 				- <a href='".$this->scriptSelf."'><strong>Continue to configure TYPO3</strong></a> (Recommended).

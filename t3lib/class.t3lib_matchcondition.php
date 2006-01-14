@@ -341,11 +341,15 @@ class t3lib_matchCondition {
 	 */
 	function matchWild($haystack,$needle)	{
 		if ($needle && $haystack)	{
-			$regex = '/^'.preg_quote($needle,'/').'$/';
-			$regex = str_replace('\\*', '.*', $regex);	// 1st fix: Replace \* with .* because * is our wildcard
-			$regex = str_replace('\\\\.*', '\\*', $regex);	// 2nd fix: Match needle if the * was escaped
+			if (preg_match('/^\/.+\/$/', $needle))	{	// Looks like a regular expression
+				$regex = $needle;
+			} else {
+				$needle = str_replace('*', '###WILD###', $needle);
+				$regex = '/^'.preg_quote($needle,'/').'$/';
+				$regex = str_replace('###WILD###', '.*', $regex);	// Replace the marker with .* to match anything (wildcard)
+			}
 
-			if (preg_match($regex, $haystack, $res)) return true;
+			if (preg_match($regex, $haystack)) return true;
 		}
 	}
 
