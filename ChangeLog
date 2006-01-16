@@ -1,3 +1,7 @@
+2006-01-16 Dmitry Dulepov  <typo3@accio.lv>
+
+	* Fixed bug #2160: Turn off workspaces module for certain users not possible
+
 2006-01-14 Ingmar Schlecht  <ingmar@typo3.org>
 
 	* Fixed #2248: Path disclosure in config_default.php and showpic.php
