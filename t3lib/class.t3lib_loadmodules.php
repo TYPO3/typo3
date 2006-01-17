@@ -541,7 +541,7 @@ class t3lib_loadModules {
 	 * @return	string
 	 */
 	function cleanName ($str)	{
-		return ereg_replace('[^A-Za-z0-9]*','',$str);
+		return preg_replace('/[^a-z0-9]/i','',$str);
 	}
 
 	/**
