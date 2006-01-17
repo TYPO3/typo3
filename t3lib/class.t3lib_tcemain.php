@@ -3033,6 +3033,10 @@ class t3lib_TCEmain	{
 						$deleteRow => 1
 					);
 
+					if ($TCA[$table]['ctrl']['tstamp']) {
+						$updateFields[$TCA[$table]['ctrl']['tstamp']] = time();
+					}
+
 						// If the table is sorted, then the sorting number is set very high
 					if ($TCA[$table]['ctrl']['sortby'])	{
 						$updateFields[$TCA[$table]['ctrl']['sortby']] = 1000000000;
