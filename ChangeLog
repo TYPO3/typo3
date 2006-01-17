@@ -1,3 +1,7 @@
+2006-01-17  Karsten Dambekalns  <karsten@typo3.org>
+
+	* Fixed bug #432
+
 2006-01-17 Wolfgang Klinger  <wk@plan2.net>
 
 	* Update the timestamp field (TCA/ctrl/tstamp) on delete
