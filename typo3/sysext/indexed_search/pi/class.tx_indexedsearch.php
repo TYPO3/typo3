@@ -32,7 +32,7 @@
  * Creates a searchform for indexed search. Indexing must be enabled
  * for this to make sense.
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author	Kasper Skï¿½rhï¿½j <kasperYYYY@typo3.com>
  * @co-author	Christian Jul Jensen <christian@typo3.com>
  */
 /**
@@ -116,7 +116,7 @@ require_once(t3lib_extMgm::extPath('indexed_search').'class.indexer.php');
  *
  * @package TYPO3
  * @subpackage tx_indexedsearch
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author	Kasper Skï¿½rhï¿½j <kasperYYYY@typo3.com>
  */
 class tx_indexedsearch extends tslib_pibase {
 	var $prefixId = 'tx_indexedsearch';        // Same as class name
