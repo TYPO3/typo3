@@ -1555,7 +1555,7 @@ class tslib_tmenu extends tslib_menu {
 				$this->I['spacer'] = $this->menuArr[$key]['isSpacer'];
 
 					// Make link tag
-				$this->I['val']['ATagParams'] = $this->I['val']['ATagParams'] ? ' '.$this->I['val']['ATagParams'] : '';
+				$this->I['val']['ATagParams'] = $this->WMcObj->getATagParams($this->I['val'], 0);
 				$this->I['linkHREF'] =  $this->link($key,$this->I['val']['altTarget'],$this->mconf['forceTypeValue']);
 
 					// Title attribute of links:

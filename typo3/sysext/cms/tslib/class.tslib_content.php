@@ -2559,7 +2559,7 @@ class tslib_cObj {
 					.'&NP[offsite_thumb][1]='.rawurlencode($thumbFile);
 				$linkCObject = $this->cObjGetSingle($conf['cObject'],$conf['cObject.']);
 				if ($linkCObject)	{
-					$ATagParams = trim($conf['ATagParams']) ? ' '.trim($conf['ATagParams']) : '';
+					$ATagParams = $this->getATagParams($conf, 0);
 					$linkCObject='<a href="'.htmlspecialchars($url).'"'.$ATagParams.'>'.$linkCObject.'</a>';
 					$linkCObject=$this->stdWrap($linkCObject,$conf['outerStdWrap.']);
 					if ($conf['before'])	{
@@ -2820,6 +2820,27 @@ class tslib_cObj {
 		return preg_replace('#[^:a-zA-Z0-9]#','',$name);
 	}
 
+	/**
+	 * An abstraction method to add parameters to an A tag.
+	 * Uses the ATagParams property.
+	 *
+	 * @param	array		TypoScript configuration properties
+	 * @param	boolean		If set, will add the global config.ATagParams to the link
+	 * @return	string		String containing the parameters to the A tag (if non empty, with a leading space)
+	 * @see IMGTEXT(), filelink(), makelinks(), typolink()
+	 */
+	 function getATagParams($conf, $addGlobal=1)	{
+		$aTagParams = '';
+		if ($conf['ATagParams.'])	{
+			$aTagParams = ' '.$this->stdWrap($conf['ATagParams'], $conf['ATagParams.']);
+		} elseif ($conf['ATagParams'])	{
+			$aTagParams = ' '.$conf['ATagParams'];
+		}
+		if ($addGlobal)	{
+			$aTagParams = ' '.trim($GLOBALS['TSFE']->ATagParams.$aTagParams);
+		}
+		return $aTagParams;
+	 }
 
 
 
@@ -3810,7 +3831,7 @@ class tslib_cObj {
 	 */
 	function filelink($theValue, $conf)	{
 		$output = '';
-		$aTagParams = $GLOBALS['TSFE']->ATagParams.($conf['ATagParams']?' '.$conf['ATagParams']:'');
+		$aTagParams = $this->getATagParams($conf);
 		$initP = '?id='.$GLOBALS['TSFE']->id.'&type='.$GLOBALS['TSFE']->type;
 		$conf['path'] = $this->stdWrap($conf['path'],$conf['path.']);
 		$theFile = trim($conf['path']).$theValue;
@@ -4415,7 +4436,7 @@ class tslib_cObj {
 	 * @see _parseFunc()
 	 */
 	function http_makelinks($data,$conf)	{
-		$aTagParams = $GLOBALS['TSFE']->ATagParams.($conf['ATagParams']?' '.$conf['ATagParams']:'');
+		$aTagParams = $this->getATagParams($conf);
 		$textpieces = explode('http://', $data);
 		$pieces = count($textpieces);
 		$textstr = $textpieces[0];
@@ -4483,7 +4504,7 @@ class tslib_cObj {
 	 */
 	function mailto_makelinks($data,$conf)	{
 		// http-split
-		$aTagParams = $GLOBALS['TSFE']->ATagParams.($conf['ATagParams']?' '.$conf['ATagParams']:'');
+		$aTagParams = $this->getATagParams($conf);
 		$textpieces = explode('mailto:', $data);
 		$pieces = count($textpieces);
 		$textstr = $textpieces[0];
@@ -4952,7 +4973,7 @@ class tslib_cObj {
 	 */
 	function typoLink($linktxt, $conf)	{
 		$finalTagParts = array();
-		$finalTagParts['aTagParams'] = $GLOBALS['TSFE']->ATagParams.($conf['ATagParams']?' '.$conf['ATagParams']:'');
+		$finalTagParts['aTagParams'] = $this->getATagParams($conf);
 
 		$link_param = trim($this->stdWrap($conf['parameter'],$conf['parameter.']));
 

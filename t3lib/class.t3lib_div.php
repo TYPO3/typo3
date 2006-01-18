@@ -3383,7 +3383,7 @@ class t3lib_div {
 		} else {
 			$singleSheet = TRUE;
 			$dataStruct = $dataStructArray;
-			unset($dataStruct['meta']);	// Meta data should not appear there.
+			if (isset($dataStruct['meta'])) unset($dataStruct['meta']);	// Meta data should not appear there.
 			$sheet = 'sDEF';	// Default sheet
 		}
 		return array($dataStruct,$sheet,$singleSheet);

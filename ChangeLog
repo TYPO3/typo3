@@ -1,3 +1,9 @@
+2006-01-18  Sebastian Kurfuerst  <sebastian@garbage-group.de>
+
+	* Fixed bug #1869: Copy sites with flexible content elements inside crash with fatal error
+	* Fixed bug #2136: changing extended view in list mode changes focus
+	* New feature #1320: stdWrap for all ATagParams (except config.ATagParams)
+
 2006-01-18  Bernhard Kraft  <kraftb@kraftb.at>
 
   * Fixed bugs #277, #1030 and #1472 which are all related to the same charset issue.
