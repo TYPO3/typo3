@@ -2029,7 +2029,7 @@ class tslib_cObj {
 		$hiddenfields = '<div style="display:none;">'.$hiddenfields.'</div>';
 
 		if ($conf['REQ'])	{
-			$validateForm=' onsubmit="return validateForm(\''.$formname.'\',\''.implode(',',$fieldlist).'\',\''.rawurlencode($conf['goodMess']).'\',\''.rawurlencode($conf['badMess']).'\',\''.rawurlencode($conf['emailMess']).'\')"';
+			$validateForm=' onsubmit="return validateForm(\''.$formname.'\',\''.implode(',',$fieldlist).'\','.t3lib_div::quoteJSvalue($conf['goodMess']).','.t3lib_div::quoteJSvalue($conf['badMess']).','.t3lib_div::quoteJSvalue($conf['emailMess']).')"';
 			$GLOBALS['TSFE']->additionalHeaderData['JSFormValidate'] = '<script type="text/javascript" src="'.$GLOBALS['TSFE']->absRefPrefix.'t3lib/jsfunc.validateform.js"></script>';
 		} else $validateForm='';
 
@@ -5885,12 +5885,12 @@ class tslib_cObj {
 				reset($value);
 				while(list(,$Nvalue)=each($value))	{
 					$JSPart.="
-	updateForm('".$formName."','".$arrPrefix."[".$fKey."][]',unescape('".rawurlencode($Nvalue)."'))";
+	updateForm('".$formName."','".$arrPrefix."[".$fKey."][]',".t3lib_div::quoteJSvalue($Nvalue, true).")";
 				}
 
 			} else {
 				$JSPart.="
-	updateForm('".$formName."','".$arrPrefix."[".$fKey."]',unescape('".rawurlencode($value)."'))";
+	updateForm('".$formName."','".$arrPrefix."[".$fKey."]',".t3lib_div::quoteJSvalue($value, true).")";
 			}
 		}
 		$JSPart='<script type="text/javascript">
@@ -6893,7 +6893,7 @@ class tslib_cObj {
 			}
 		} else {
 			if ($confirm && $GLOBALS['BE_USER']->jsConfirmation(8))	{
-				$cf1="if (confirm(unescape('".t3lib_div::rawurlencodeJS($confirm)."'))){";
+ 				$cf1="if (confirm(".t3lib_div::quoteJSvalue($confirm, true).")){";			// Gets htmlspecialchared later
 				$cf2='}';
 			} else {
 				$cf1=$cf2='';

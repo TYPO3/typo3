@@ -214,8 +214,8 @@ class TBE_browser_recordList extends localRecordList {
 		$title = $row[$titleCol];
 
 		$ficon = t3lib_iconWorks::getIcon($table,$row);
-		$aOnClick = "return insertElement('".$table."', '".$row['uid']."', 'db', unescape('".rawurlencode($title)."'), '', '', '".$ficon."');";
-		$ATag = '<a href="#" onclick="'.htmlspecialchars($aOnClick).'">';
+		$aOnClick = "return insertElement('".$table."', '".$row['uid']."', 'db', ".t3lib_div::quoteJSvalue($title).", '', '', '".$ficon."');";
+		$ATag = '<a href="#" onclick="'.$aOnClick.'">';
 		$ATag_alt = substr($ATag,0,-4).',\'\',1);">';
 		$ATag_e = '</a>';
 
@@ -428,11 +428,11 @@ class TBE_PageTree extends localPageTree {
 	function wrapTitle($title,$v,$ext_pArrPages)	{
 		if ($ext_pArrPages)	{
 			$ficon=t3lib_iconWorks::getIcon('pages',$v);
-			$onClick = "return insertElement('pages', '".$v['uid']."', 'db', unescape('".rawurlencode($v['title'])."'), '', '', '".$ficon."','',1);";
+			$onClick = "return insertElement('pages', '".$v['uid']."', 'db', ".t3lib_div::quoteJSvalue($v['title']).", '', '', '".$ficon."','',1);";
 		} else {
 			$onClick = 'return jumpToUrl(\'browse_links.php?act='.$GLOBALS['SOBE']->act.'&mode='.$GLOBALS['SOBE']->mode.'&expandPage='.$v['uid'].'\');';
 		}
-		return '<a href="#" onclick="'.htmlspecialchars($onClick).'">'.$title.'</a>';
+		return '<a href="#" onclick="'.$onClick.'">'.$title.'</a>';
 	}
 }
 
@@ -1622,8 +1622,8 @@ class SC_browse_links {
 			$ATag2='';
 			if (in_array('pages',$tablesArr))	{
 				$ficon=t3lib_iconWorks::getIcon('pages',$mainPageRec);
-				$ATag="<a href=\"#\" onclick=\"return insertElement('pages', '".$mainPageRec['uid']."', 'db', unescape('".rawurlencode($mainPageRec['title'])."'), '', '', '".$ficon."','',1);\">";
-				$ATag2="<a href=\"#\" onclick=\"return insertElement('pages', '".$mainPageRec['uid']."', 'db', unescape('".rawurlencode($mainPageRec['title'])."'), '', '', '".$ficon."','',0);\">";
+				$ATag="<a href=\"#\" onclick=\"return insertElement('pages', '".$mainPageRec['uid']."', 'db', ".t3lib_div::quoteJSvalue($mainPageRec['title']).", '', '', '".$ficon."','',1);\">";
+				$ATag2="<a href=\"#\" onclick=\"return insertElement('pages', '".$mainPageRec['uid']."', 'db', ".t3lib_div::quoteJSvalue($mainPageRec['title']).", '', '', '".$ficon."','',0);\">";
 				$ATag_alt=substr($ATag,0,-4).",'',1);\">";
 				$ATag_e='</a>';
 			}

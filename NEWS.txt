@@ -30,6 +30,7 @@ Bugfixes
 
 	* config.disablePrefixComment was ignored by plugins
 	* When copying a file into the same folder in the "Filelist" module, it is automatically renamed
+	* JSMENU, editPanel and feAdmin fixed when utf-8 entities or other multibyte character sets get used
 
 Usability
 =========

@@ -3957,6 +3957,24 @@ class t3lib_div {
 		}
 		return $paramsArr;
 	}
+
+
+	/**
+	 * Quotes a string for usage as JS parameter. Depends wheter the value is used in script tags (it doesn't need/must not get htmlspecialchared in this case)
+	 *
+	 * @param	string		The string to encode.
+	 * @param	boolean		If the values get's used in <script> tags.
+	 * @return	string	The encoded value already quoted
+	 */
+	function quoteJSvalue($value, $inScriptTags = false)	{
+		$value = addcslashes($value, '\''/*.chr(10).chr(13)*/);
+		if (!$inScriptTags)	{
+			$value = htmlspecialchars($value);
+		}
+		return '\''.$value.'\'';
+	}
+
+
 }
 
 ?>

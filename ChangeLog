@@ -1,3 +1,7 @@
+2006-01-18  Bernhard Kraft  <kraftb@kraftb.at>
+
+  * Fixed bugs #277, #1030 and #1472 which are all related to the same charset issue.
+
 2006-01-17  Karsten Dambekalns  <karsten@typo3.org>
 
 	* Fixed bug #432

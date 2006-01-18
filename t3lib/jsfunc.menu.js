@@ -52,7 +52,7 @@ function JSmenu (levels,formname) {
 function JSmenuAddItem (parent,prevItem,openID,title,url,target) {
 	this.count++;
 	var entryID = this.count;
-	this.entry[entryID] = new JSmenuItem (this, entryID, 0, parent, openID, unescape(title), unescape(url), target);
+	this.entry[entryID] = new JSmenuItem (this, entryID, 0, parent, openID, title, url, target);
 	if (prevItem) {
 		this.entry[prevItem].nextItem = entryID;
 	} else if(parent) {
