@@ -1904,7 +1904,7 @@ class tx_indexedsearch extends tslib_pibase {
 
 		$outputString = $GLOBALS['TSFE']->csConvObj->crop('utf-8',$row['item_title'],50,'...');
 
-		return $this->utf8_to_currentCharset(htmlspecialchars($outputString)).$add;
+		return $this->utf8_to_currentCharset($outputString).$add;
 	}
 
 	/**
@@ -1927,7 +1927,7 @@ class tx_indexedsearch extends tslib_pibase {
 			$tmplArray['path'] = '<a href="'.htmlspecialchars($row['data_filename']).'">'.htmlspecialchars($row['data_filename']).'</a>';
 		} else {
 			$pathStr = htmlspecialchars($this->getPathFromPageId($pathId,$pathMP));
-			$tmplArray['path'] = $this->linkPage($pathId,htmlspecialchars($pathStr),array(
+			$tmplArray['path'] = $this->linkPage($pathId,$pathStr,array(
 				'data_page_type' => $row['data_page_type'],
 				'data_page_mp' => $pathMP,
 				'sys_language_uid' => $row['sys_language_uid'],
