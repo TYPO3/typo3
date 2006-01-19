@@ -865,9 +865,13 @@ class t3lib_DB {
 	 */
 	function sql_pconnect($TYPO3_db_host, $TYPO3_db_username, $TYPO3_db_password)	{
 		if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['no_pconnect'])	{
-			$this->link = mysql_connect($TYPO3_db_host, $TYPO3_db_username, $TYPO3_db_password);
+			$this->link = @mysql_connect($TYPO3_db_host, $TYPO3_db_username, $TYPO3_db_password);
 		} else {
-			$this->link = mysql_pconnect($TYPO3_db_host, $TYPO3_db_username, $TYPO3_db_password);
+			$this->link = @mysql_pconnect($TYPO3_db_host, $TYPO3_db_username, $TYPO3_db_password);
+		}
+
+		if (!$this->link) {
+			t3lib_div::sysLog('Could not connect to Mysql server '.$TYPO3_db_host.' with user '.$TYPO3_db_username.'.','Core',4);
 		}
 		return $this->link;
 	}
@@ -881,7 +885,11 @@ class t3lib_DB {
 	 * @return	boolean		Returns TRUE on success or FALSE on failure.
 	 */
 	function sql_select_db($TYPO3_db)	{
-		return mysql_select_db($TYPO3_db, $this->link);
+		$ret = @mysql_select_db($TYPO3_db, $this->link);
+		if (!$ret) {
+			t3lib_div::sysLog('Could not select Mysql database '.$TYPO3_db.': '.mysql_error(),'Core',4);
+		}
+		return $ret;
 	}
 
 

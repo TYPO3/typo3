@@ -2,12 +2,12 @@
 2005-01-19  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
 	* add t3lib_div::sysLog() for Core logging
+	* use t3lib_div::sysLog() in t3lib_db->sql_pconnect and t3lib_db->sql_select_db()
 
 2006-01-19  Sebastian Kurfuerst  <sebastian@garbage-group.de>
 
 	* New feature: Revised Undo/History feature.
 
->>>>>>> 1.344.2.40
 2006-01-19  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
 	* Changes to the htmlArea RTE extension (details see local ChangeLog)
