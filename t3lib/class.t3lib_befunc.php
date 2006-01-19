@@ -909,6 +909,7 @@ class t3lib_BEfunc	{
 			// Add defaultExtras:
 		$specConfParts = t3lib_div::trimExplode(':', $defaultExtras.':'.$str, 1);
 
+		$reg = array();
 		if (count($specConfParts))	{
 			foreach($specConfParts as $k2 => $v2)	{
 				unset($specConfParts[$k2]);
@@ -985,7 +986,7 @@ class t3lib_BEfunc	{
 				$file = t3lib_div::getFileAbsFileName(substr($ds_array[$srcPointer],5));
 				if ($file && @is_file($file))	{
 					$dataStructArray = t3lib_div::xml2array(t3lib_div::getUrl($file));
-				} else $dataStructArray = 'The file "'.substr($dsSrc,5).'" in ds-array key "'.$srcPointer.'" was not found ("'.$file.'")';	// Error message.
+				} else $dataStructArray = 'The file "'.substr($ds_array[$srcPointer],5).'" in ds-array key "'.$srcPointer.'" was not found ("'.$file.'")';	// Error message.
 			} else {
 				$dataStructArray = t3lib_div::xml2array($ds_array[$srcPointer]);
 			}
@@ -3239,8 +3240,8 @@ class t3lib_BEfunc	{
 							' AND B.pid='.intval($pageId).
 							' AND A.t3ver_wsid='.intval($workspace).
 							' AND A.t3ver_oid=B.uid'.	// ... and finally the join between the two tables.
-							t3lib_BEfunc::deleteClause($table,'A').
-							t3lib_BEfunc::deleteClause($table,'B')
+							t3lib_BEfunc::deleteClause($tableName,'A').
+							t3lib_BEfunc::deleteClause($tableName,'B')
 					);
 
 					if (!is_array($output[$tableName]) || !count($output[$tableName]))	{
