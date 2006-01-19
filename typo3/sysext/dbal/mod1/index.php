@@ -85,7 +85,7 @@ class tx_dbal_module1 extends t3lib_SCbase {
 		$this->doc->JScode = $this->doc->wrapScriptTags('
 				script_ended = 0;
 				function jumpToUrl(URL)	{	//
-					document.location = URL;
+					window.location.href = URL;
 				}
 			');
 

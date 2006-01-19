@@ -338,9 +338,10 @@ class ux_t3lib_DB extends t3lib_DB {
 	 *
 	 * @param	string		Table name
 	 * @param	array		Field values as key=>value pairs. Values will be escaped internally. Typically you would fill an array like "$insertFields" with 'fieldname'=>'value' and pass it to this function as argument.
+	 * @param mixed    List/array of keys NOT to quote (eg. SQL functions)
 	 * @return	mixed		Result from handler, usually TRUE when success and FALSE on failure
 	 */
-	function exec_INSERTquery($table,$fields_values)	{
+	function exec_INSERTquery($table,$fields_values,$no_quote_fields='')	{
 
 		if ($this->debug)	$pt = t3lib_div::milliseconds();
 
@@ -360,7 +361,7 @@ class ux_t3lib_DB extends t3lib_DB {
 		$this->lastHandlerKey = $this->handler_getFromTableList($ORIG_tableName);
 		switch((string)$this->handlerCfg[$this->lastHandlerKey]['type'])	{
 			case 'native':
-			$this->lastQuery = $this->INSERTquery($table,$fields_values);
+			$this->lastQuery = $this->INSERTquery($table,$fields_values,$no_quote_fields);
 			if(is_string($this->lastQuery)) {
 				$sqlResult = mysql_query($this->lastQuery, $this->handlerInstance[$this->lastHandlerKey]['link']);
 			}
@@ -390,7 +391,7 @@ class ux_t3lib_DB extends t3lib_DB {
 				}
 			}
 
-			$this->lastQuery = $this->INSERTquery($table,$fields_values);
+			$this->lastQuery = $this->INSERTquery($table,$fields_values,$no_quote_fields);
 			if(is_string($this->lastQuery)) {
 				$sqlResult = $this->handlerInstance[$this->lastHandlerKey]->_query($this->lastQuery,false);
 			}
@@ -421,7 +422,7 @@ class ux_t3lib_DB extends t3lib_DB {
 			}
 			break;
 			case 'userdefined':
-			$sqlResult = $this->handlerInstance[$this->lastHandlerKey]->exec_INSERTquery($table,$fields_values);
+			$sqlResult = $this->handlerInstance[$this->lastHandlerKey]->exec_INSERTquery($table,$fields_values,$no_quote_fields);
 			break;
 		}
 
@@ -450,9 +451,10 @@ class ux_t3lib_DB extends t3lib_DB {
 	 * @param	string		Database tablename
 	 * @param	string		WHERE clause, eg. "uid=1". NOTICE: You must escape values in this argument with $this->fullQuoteStr() yourself!
 	 * @param	array		Field values as key=>value pairs. Values will be escaped internally. Typically you would fill an array like "$updateFields" with 'fieldname'=>'value' and pass it to this function as argument.
+	 * @param mixed    List/array of keys NOT to quote (eg. SQL functions)
 	 * @return	mixed		Result from handler, usually TRUE when success and FALSE on failure
 	 */
-	function exec_UPDATEquery($table,$where,$fields_values)	{
+	function exec_UPDATEquery($table,$where,$fields_values,$no_quote_fields='')	{
 
 		if ($this->debug)	$pt = t3lib_div::milliseconds();
 
@@ -478,7 +480,7 @@ class ux_t3lib_DB extends t3lib_DB {
 		$this->lastHandlerKey = $this->handler_getFromTableList($ORIG_tableName);
 		switch((string)$this->handlerCfg[$this->lastHandlerKey]['type'])	{
 			case 'native':
-			$this->lastQuery = $this->UPDATEquery($table,$where,$fields_values);
+			$this->lastQuery = $this->UPDATEquery($table,$where,$fields_values,$no_quote_fields);
 			if(is_string($this->lastQuery)) {
 				$sqlResult = mysql_query($this->lastQuery, $this->handlerInstance[$this->lastHandlerKey]['link']);
 			}
@@ -490,7 +492,7 @@ class ux_t3lib_DB extends t3lib_DB {
 			}
 			break;
 			case 'adodb':
-			$this->lastQuery = $this->UPDATEquery($table,$where,$fields_values);
+			$this->lastQuery = $this->UPDATEquery($table,$where,$fields_values,$no_quote_fields);
 			if(is_string($this->lastQuery)) {
 				$sqlResult = $this->handlerInstance[$this->lastHandlerKey]->_query($this->lastQuery,false);
 			} else {
@@ -503,7 +505,7 @@ class ux_t3lib_DB extends t3lib_DB {
 			}
 			break;
 			case 'userdefined':
-			$sqlResult = $this->handlerInstance[$this->lastHandlerKey]->exec_UPDATEquery($table,$where,$fields_values);
+			$sqlResult = $this->handlerInstance[$this->lastHandlerKey]->exec_UPDATEquery($table,$where,$fields_values,$no_quote_fields);
 			break;
 		}
 
@@ -682,12 +684,20 @@ class ux_t3lib_DB extends t3lib_DB {
 	 *
 	 * @param	string		See exec_INSERTquery()
 	 * @param	array		See exec_INSERTquery()
+	 * @param mixed		See exec_INSERTquery()
 	 * @return	string		Full SQL query for INSERT (unless $fields_values does not contain any elements in which case it will be false)
 	 * @depreciated			use exec_INSERTquery() instead if possible!
 	 */
-	function INSERTquery($table,$fields_values)	{
+	function INSERTquery($table,$fields_values,$no_quote_fields='')	{
 		// Table and fieldnames should be "SQL-injection-safe" when supplied to this function (contrary to values in the arrays which may be insecure).
 		if (is_array($fields_values) && count($fields_values))	{
+
+			if (is_string($no_quote_fields))        {
+				$no_quote_fields = explode(',',$no_quote_fields);
+			} elseif (!is_array($no_quote_fields))  {
+				$no_quote_fields = array();
+			}
+
 			$blobfields = array();
 			$nArr = array();
 			foreach($fields_values as $k => $v)	{
@@ -707,7 +717,7 @@ class ux_t3lib_DB extends t3lib_DB {
 					$mt = $this->sql_field_metatype($table,$k);
 					$v = (($mt{0}=='I')||($mt{0}=='F')) ? (int)$v : $v;
 
-					$nArr[$this->quoteFieldNames($k)] = $this->fullQuoteStr($v, $table);
+					$nArr[$this->quoteFieldNames($k)] = (!in_array($k,$no_quote_fields)) ? $this->fullQuoteStr($v, $table) : $v;
 				}
 			}
 			if(((string)$this->handlerCfg[$this->lastHandlerKey]['type']!=='native') && count($blobfields)) {
@@ -746,13 +756,21 @@ class ux_t3lib_DB extends t3lib_DB {
 	 * @param	string		See exec_UPDATEquery()
 	 * @param	string		See exec_UPDATEquery()
 	 * @param	array		See exec_UPDATEquery()
+	 * @param mixed		See exec_UPDATEquery()
 	 * @return	string		Full SQL query for UPDATE (unless $fields_values does not contain any elements in which case it will be false)
 	 * @depreciated			use exec_UPDATEquery() instead if possible!
 	 */
-	function UPDATEquery($table,$where,$fields_values)	{
+	function UPDATEquery($table,$where,$fields_values,$no_quote_fields='')	{
 		// Table and fieldnames should be "SQL-injection-safe" when supplied to this function (contrary to values in the arrays which may be insecure).
 		if (is_string($where))	{
 			if (is_array($fields_values) && count($fields_values))	{
+
+				if (is_string($no_quote_fields))        {
+					$no_quote_fields = explode(',',$no_quote_fields);
+				} elseif (!is_array($no_quote_fields))  {
+					$no_quote_fields = array();
+				}
+
 				$blobfields = array();
 				$nArr = array();
 				foreach($fields_values as $k => $v)	{
@@ -766,13 +784,12 @@ class ux_t3lib_DB extends t3lib_DB {
 						// cast numeric values
 						$mt = $this->sql_field_metatype($table,$k);
 						$v = (($mt{0}=='I')||($mt{0}=='F')) ? (int)$v : $v;
-						$nArr[] = $this->quoteFieldNames($k).'='.$this->fullQuoteStr($v, $table);
+						$nArr[] = $this->quoteFieldNames($k).'='.((!in_array($k,$no_quote_fields)) ? $this->fullQuoteStr($v, $table) : $v);
 					}
 				}
-			}
 
-			if(count($blobfields)) {
-				$query[0] = 'UPDATE '.$this->quoteFromTables($table).'
+				if(count($blobfields)) {
+					$query[0] = 'UPDATE '.$this->quoteFromTables($table).'
 					SET
 						'.implode(',
 						',$nArr).
@@ -781,9 +798,9 @@ class ux_t3lib_DB extends t3lib_DB {
 						'.$this->quoteWhereClause($where) : '');
 						$query[1] = $blobfields;
 						if ($this->debugOutput) $this->debug_lastBuiltQuery = $query[0];
-			}
-			else {
-				$query = 'UPDATE '.$this->quoteFromTables($table).'
+				}
+				else {
+					$query = 'UPDATE '.$this->quoteFromTables($table).'
 					SET
 						'.implode(',
 						',$nArr).
@@ -792,9 +809,10 @@ class ux_t3lib_DB extends t3lib_DB {
 						'.$this->quoteWhereClause($where) : '');
 
 						if ($this->debugOutput) $this->debug_lastBuiltQuery = $query;
-			}
+				}
 
-			return $query;
+				return $query;
+			}
 		}
 		else {
 			die('<strong>TYPO3 Fatal Error:</strong> "Where" clause argument for UPDATE query was not a string in $this->UPDATEquery() !');
@@ -1602,8 +1620,10 @@ class ux_t3lib_DB extends t3lib_DB {
 			// MetaDatabases is done on a stdClass instance
 			if(method_exists($this->handlerInstance['_DEFAULT'],'MetaDatabases')) {
 				$sqlDBs = $this->handlerInstance['_DEFAULT']->MetaDatabases();
-				foreach( $sqlDBs as $k => $theDB) {
-					$dbArr[] = $theDB;
+				if(is_array($sqlDBs)) {
+					foreach($sqlDBs as $k => $theDB) {
+						$dbArr[] = $theDB;
+					}
 				}
 			}
 			break;
@@ -1987,17 +2007,10 @@ class ux_t3lib_DB extends t3lib_DB {
 		if (is_array($cfgArray))	{
 			switch($handlerType)	{
 				case 'native':
-				$link = mysql_pconnect(
-				$cfgArray['config']['host'],
-				$cfgArray['config']['username'],
-				$cfgArray['config']['password']
-				);
+				$link = mysql_pconnect($cfgArray['config']['host'], $cfgArray['config']['username'], $cfgArray['config']['password']);
 
 				// Set handler instance:
-				$this->handlerInstance[$handlerKey] = array(
-				'handlerType' => 'native',
-				'link' => $link
-				);
+				$this->handlerInstance[$handlerKey] = array('handlerType' => 'native', 'link' => $link);
 
 				// If link succeeded:
 				if ($link)	{
@@ -2019,24 +2032,23 @@ class ux_t3lib_DB extends t3lib_DB {
 				$GLOBALS['ADODB_FORCE_TYPE'] = ADODB_FORCE_VALUE;
 				$GLOBALS['ADODB_FETCH_MODE'] = ADODB_FETCH_BOTH;
 
-				//$this->handlerInstance[$handlerKey] = &ADONewConnection($dsn);
 				$this->handlerInstance[$handlerKey] = &ADONewConnection($cfgArray['config']['driver']);
 				if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['no_pconnect'])	{
 					$this->handlerInstance[$handlerKey]->Connect($cfgArray['config']['host'],$cfgArray['config']['username'],$cfgArray['config']['password'],$cfgArray['config']['database']);
 				} else {
 					$this->handlerInstance[$handlerKey]->PConnect($cfgArray['config']['host'],$cfgArray['config']['username'],$cfgArray['config']['password'],$cfgArray['config']['database']);
 				}
-				if($this->handlerInstance[$handlerKey] === false) {
-					$dsn = $cfgArray['config']['driver'].'://'.rawurlencode($cfgArray['config']['username']).
-						(strlen($cfgArray['config']['password']) ? ':'.rawurlencode($cfgArray['config']['password']).'@' : '').
-						rawurlencode($cfgArray['config']['host']).'/'.rawurlencode($cfgArray['config']['database']).
-						($GLOBALS['TYPO3_CONF_VARS']['SYS']['no_pconnect'] ? '?persistent=1' : '');
+				if(!$this->handlerInstance[$handlerKey]->isConnected()) {
+					$dsn = $cfgArray['config']['driver'].'://'.$cfgArray['config']['username'].
+						(strlen($cfgArray['config']['password']) ? ':XXXX@' : '').
+						$cfgArray['config']['host'].'/'.$cfgArray['config']['database'].
+						($GLOBALS['TYPO3_CONF_VARS']['SYS']['no_pconnect'] ? '' : '?persistent=1');
 					error_log('DBAL error: Connection to '.$dsn.' failed. Maybe PHP doesn\'t support the database?');
 					$output = false;
+				} else {
+					$this->handlerInstance[$handlerKey]->DataDictionary  = NewDataDictionary($this->handlerInstance[$handlerKey]);
+					$this->handlerInstance[$handlerKey]->last_insert_id = 0;
 				}
-
-				$this->handlerInstance[$handlerKey]->DataDictionary  = NewDataDictionary($this->handlerInstance[$handlerKey]);
-				$this->handlerInstance[$handlerKey]->last_insert_id = 0;
 				break;
 				case 'userdefined':
 				// Find class file:
