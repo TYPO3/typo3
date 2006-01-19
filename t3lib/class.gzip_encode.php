@@ -318,6 +318,7 @@ class gzip_encode {
      */
     function freebsd_loadavg() {
 	$buffer= `uptime`;
+	$load = array();
 	ereg("averag(es|e): ([0-9][.][0-9][0-9]), ([0-9][.][0-9][0-9]), ([0-9][.][0-9][0-9]*)", $buffer, $load);
 
 	return max((float)$load[2], (float)$load[3], (float)$load[4]);

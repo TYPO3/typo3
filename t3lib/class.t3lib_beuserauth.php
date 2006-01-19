@@ -238,6 +238,7 @@ class t3lib_beUserAuth extends t3lib_userAuthGroup {
 	 * @internal
 	 */
 	function backendSetUC()	{
+		global $TYPO3_CONF_VARS;
 
 			// UC - user configuration is a serialized array inside the userobject
 		$temp_theSavedUC=unserialize($this->user['uc']);		// if there is a saved uc we implement that instead of the default one.

@@ -671,6 +671,7 @@ class t3lib_DB {
 		);
 
 			// Find LIMIT:
+		$reg = array();
 		if (preg_match('/^(.*)[[:space:]]+LIMIT[[:space:]]+([[:alnum:][:space:],._]+)$/i',$str,$reg))	{
 			$wgolParts['LIMIT'] = trim($reg[2]);
 			$str = $reg[1];
@@ -888,7 +889,7 @@ class t3lib_DB {
 		$ret = @mysql_select_db($TYPO3_db, $this->link);
 		if (!$ret) {
 			t3lib_div::sysLog('Could not select Mysql database '.$TYPO3_db.': '.mysql_error(),'Core',4);
-		}
+	}
 		return $ret;
 	}
 

@@ -1440,6 +1440,7 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 		if ($style)	{
 			$regex='[[:space:]]*:[[:space:]]*([0-9]*)[[:space:]]*px';
 				// Width
+			$reg = array();
 			eregi('width'.$regex,$style,$reg);
 			$w = intval($reg[1]);
 				// Height

@@ -169,6 +169,7 @@ class SC_t3lib_thumbs {
 		if ($this->input && @file_exists($this->input))	{
 
 				// Check file extension:
+			$reg = array();
 			if (ereg('(.*)\.([^\.]*$)',$this->input,$reg))	{
 				$ext=strtolower($reg[2]);
 				$ext=($ext=='jpeg')?'jpg':$ext;
@@ -195,7 +196,7 @@ class SC_t3lib_thumbs {
 			$outpath = PATH_site.$this->outdir;
 
 				// Should be - ? 'png' : 'gif' - , but doesn't work (ImageMagick prob.?)
-				// René: png work for me
+				// Renï¿½: png work for me
 			$thmMode = t3lib_div::intInRange($TYPO3_CONF_VARS['GFX']['thumbnails_png'],0);
 			$outext = ($ext!='jpg' || ($thmMode & 2)) ? ($thmMode & 1 ? 'png' : 'gif') : 'jpg';
 
@@ -327,7 +328,7 @@ class SC_t3lib_thumbs {
 	    $col = ImageColorAllocate($im, 0,0,0);
 
 			// The test string and offset in x-axis.
-		$string = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZzÆæØøÅåÄäÖöÜüß';
+		$string = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZzï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½';
 		$x=13;
 
 			// Print (with non-ttf font) the size displayed

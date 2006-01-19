@@ -175,7 +175,7 @@ class t3lib_sqlparser {
 				$result = $this->parseCREATEDATABASE($parseString);
 			break;
 			default:
-				return $this->parseError('"'.$keyword.'" is not a keyword',$parseString);
+				$result = $this->parseError('"'.$keyword.'" is not a keyword',$parseString);
 			break;
 		}
 
@@ -1044,6 +1044,7 @@ class t3lib_sqlparser {
 	 * @return	string		The value of the first parenthesis level of the REGEX.
 	 */
 	function nextPart(&$parseString,$regex,$trimAll=FALSE)	{
+		$reg = array();
 		if (preg_match('/'.$regex.'/i',$parseString.' ', $reg))	{	// Adding space char because [[:space:]]+ is often a requirement in regex's
 			$parseString = ltrim(substr($parseString,strlen($reg[$trimAll?0:1])));
 			return $reg[1];
@@ -1055,9 +1056,11 @@ class t3lib_sqlparser {
 	 *
 	 * @param	string		The parseString, eg. "(0,1,2,3) ..." or "('asdf','qwer') ..." or "1234 ..." or "'My string value here' ..."
 	 * @param	string		The comparator used before. If "NOT IN" or "IN" then the value is expected to be a list of values. Otherwise just an integer (un-quoted) or string (quoted)
-	 * @return	string		The value (string/integer). Otherwise an array with error message in first key (0)
+	 * @return	mixed		The value (string/integer). Otherwise an array with error message in first key (0)
 	 */
 	function getValue(&$parseString,$comparator='')	{
+		$value = '';
+
 		if (t3lib_div::inList('NOTIN,IN,_LIST',strtoupper(str_replace(array(' ',"\n","\r","\t"),'',$comparator))))	{	// List of values:
 			if ($this->nextPart($parseString,'^([(])'))	{
 				$listValues = array();
@@ -1089,19 +1092,21 @@ class t3lib_sqlparser {
 
 			switch($firstChar)	{
 				case '"':
-					return array($this->getValueInQuotes($parseString,'"'),'"');
+					$value = array($this->getValueInQuotes($parseString,'"'),'"');
 				break;
 				case "'":
-					return array($this->getValueInQuotes($parseString,"'"),"'");
+					$value = array($this->getValueInQuotes($parseString,"'"),"'");
 				break;
 				default:
+					$reg = array();
 					if (preg_match('/^([[:alnum:]._-]+)/i',$parseString, $reg))	{
 						$parseString = ltrim(substr($parseString,strlen($reg[0])));
-						return array($reg[1]);
+						$value = array($reg[1]);
 					}
 				break;
 			}
 		}
+		return $value;
 	}
 
 	/**
@@ -1119,10 +1124,10 @@ class t3lib_sqlparser {
 		foreach($parts as $k => $v)	{
 			$buffer.=$v;
 
-			unset($reg);
+			$reg = array();
 			//preg_match('/[\]*$/',$v,$reg); // does not work. what is the *exact* meaning of the next line?
 			ereg('[\]*$',$v,$reg);
-			if (strlen($reg[0])%2)	{
+			if ($reg AND strlen($reg[0])%2)	{
 				$buffer.=$quote;
 			} else {
 				$parseString = ltrim(substr($parseString,strlen($buffer)+2));
@@ -1638,17 +1643,20 @@ return $str;
 	 * @return	mixed		Returns array with string 1 and 2 if error, otherwise false
 	 */
 	function debug_parseSQLpart($part,$str)	{
+		$retVal = false;
+
 		switch($part)	{
 			case 'SELECT':
-				return $this->debug_parseSQLpartCompare($str,$this->compileFieldList($this->parseFieldList($str)));
+				$retVal = $this->debug_parseSQLpartCompare($str,$this->compileFieldList($this->parseFieldList($str)));
 			break;
 			case 'FROM':
-				return $this->debug_parseSQLpartCompare($str,$this->compileFromTables($this->parseFromTables($str)));
+				$retVal = $this->debug_parseSQLpartCompare($str,$this->compileFromTables($this->parseFromTables($str)));
 			break;
 			case 'WHERE':
-				return $this->debug_parseSQLpartCompare($str,$this->compileWhereClause($this->parseWhereClause($str)));
+				$retVal = $this->debug_parseSQLpartCompare($str,$this->compileWhereClause($this->parseWhereClause($str)));
 			break;
 		}
+		return $retVal;
 	}
 
 	/**

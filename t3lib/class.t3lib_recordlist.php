@@ -256,21 +256,23 @@ class t3lib_recordList {
 	 * @access private
 	 */
 	function fwd_rwd_HTML($type,$pointer,$table='')	{
+		$content = '';
 		$tParam = $table ? '&table='.rawurlencode($table) : '';
 		switch($type)	{
 			case 'fwd':
 				$href = $this->listURL().'&pointer='.($pointer-$this->iLimit).$tParam;
-				return '<a href="'.htmlspecialchars($href).'">'.
+				$content = '<a href="'.htmlspecialchars($href).'">'.
 						'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/pilup.gif','width="14" height="14"').' alt="" />'.
 						'</a> <i>[1 - '.$pointer.']</i>';
 			break;
 			case 'rwd':
 				$href = $this->listURL().'&pointer='.$pointer.$tParam;
-				return '<a href="'.htmlspecialchars($href).'">'.
+				$content = '<a href="'.htmlspecialchars($href).'">'.
 						'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/pildown.gif','width="14" height="14"').' alt="" />'.
 						'</a> <i>['.($pointer+1).' - '.$this->totalItems.']</i>';
 			break;
 		}
+		return $content;
 	}
 
 	/**

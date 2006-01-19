@@ -292,17 +292,19 @@ class t3lib_iconWorks	{
 #		if (ereg('^width="([0-9]+)" height="([0-9]+)"$',$wHattribs,$reg))	$wHattribs='width="'.($reg[1]*2).'" height="'.($reg[2]*2).'"';
 
 			// Return icon source/wHattributes:
+		$output = '';
 		switch($outputMode)	{
 			case 0:
-				return ' src="'.$backPath.$src.'" '.$wHattribs;
+				$output = ' src="'.$backPath.$src.'" '.$wHattribs;
 			break;
 			case 1:
-				return $backPath.$src;
+				$output = $backPath.$src;
 			break;
 			case 2:
-				return $wHattribs;
+				$output = $wHattribs;
 			break;
 		}
+		return $output;
 	}
 
 

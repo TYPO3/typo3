@@ -244,6 +244,7 @@ class t3lib_tsStyleConfig extends t3lib_tsparser_ext	{
 	function ext_fNandV($params)	{
 		$fN='data['.$params["name"].']';
 		$fV=$params["value"]=isset($this->ext_realValues[$params["name"]]) ? $this->ext_realValues[$params["name"]] : $params["default_value"];
+		$reg = array();
 		if (ereg("^{[\$][a-zA-Z0-9\.]*}$",trim($fV),$reg))	{		// Values entered from the constantsedit cannot be constants!	230502; removed \{ and set {
 			$fV="";
 		}

@@ -286,6 +286,7 @@ class t3lib_install {
 					}
 				} else {
 					if (substr($value,0,1)==')' && substr($value,-1)==';')	{
+						$ttype = array();
 						preg_match('/(ENGINE|TYPE)=([a-zA-Z]*)/',$value,$ttype);
 						$total[$isTable]['extra']['ttype'] = $ttype[2];
 						$isTable = '';
@@ -626,7 +627,9 @@ class t3lib_install {
 	 */
 	function getCreateTables($statements, $insertCountFlag=0)	{
 		$crTables = array();
+		$insertCount = array();
 		foreach($statements as $line => $linecontent)	{
+			$reg = array();
 			if (eregi('^create[[:space:]]*table[[:space:]]*[`]?([[:alnum:]_]*)[`]?',substr($linecontent,0,100),$reg))	{
 				$table = trim($reg[1]);
 				if ($table)	{
@@ -659,6 +662,7 @@ class t3lib_install {
 	function getTableInsertStatements($statements, $table)	{
 		$outStatements=array();
 		foreach($statements as $line => $linecontent)	{
+			$reg = array();
 			if (eregi('^insert[[:space:]]*into[[:space:]]*[`]?([[:alnum:]_]*)[`]?',substr($linecontent,0,100),$reg))	{
 				$nTable = trim($reg[1]);
 				if ($nTable && !strcmp($table,$nTable))	{

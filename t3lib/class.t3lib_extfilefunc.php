@@ -605,6 +605,8 @@ class t3lib_extFileFunctions extends t3lib_basicFileFunctions	{
 										rename($theFile, $theDestFile);
 									} else {
 										$cmd = 'mv "'.$theFile.'" "'.$theDestFile.'"';
+										$errArr = array();
+										$retVar = 0;
 										exec($cmd,$errArr,$retVar);
 									}
 									clearstatcache();

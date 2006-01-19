@@ -3614,10 +3614,8 @@ class t3lib_TCEforms	{
 				break;
 				case 'modListGroup':
 				case 'modListUser':
-					if (!is_object($loadModules))	{
-						$loadModules = t3lib_div::makeInstance('t3lib_loadModules');
-						$loadModules->load($GLOBALS['TBE_MODULES']);
-					}
+					$loadModules = t3lib_div::makeInstance('t3lib_loadModules');
+					$loadModules->load($GLOBALS['TBE_MODULES']);
 
 					$modList = $fieldValue['config']['special']=='modListUser' ? $loadModules->modListUser : $loadModules->modListGroup;
 					if (is_array($modList))	{
@@ -4863,14 +4861,17 @@ class t3lib_TCEforms	{
 	 * @return	string		The value of the label, fetched for the current backend language.
 	 */
 	function getLL($str)	{
+		$content = '';
+
 		switch(substr($str,0,2))	{
 			case 'l_':
-				return $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.'.substr($str,2));
+				$content = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.'.substr($str,2));
 			break;
 			case 'm_':
-				return $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:mess.'.substr($str,2));
+				$content = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:mess.'.substr($str,2));
 			break;
 		}
+		return $content;
 	}
 
 	/**

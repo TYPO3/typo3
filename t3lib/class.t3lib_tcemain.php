@@ -543,6 +543,7 @@ class t3lib_TCEmain	{
 				*/
 			$modifyAccessList = $this->checkModifyAccessList($table);
 			if (!$modifyAccessList)	{
+				$id = 0;
 				$this->log($table,$id,2,0,1,"Attempt to modify table '%s' without permission",1,array($table));
 			}
 			if (isset($TCA[$table]) && !$this->tableReadOnly($table) && is_array($this->datamap[$table]) && $modifyAccessList)	{
@@ -1019,7 +1020,7 @@ class t3lib_TCEmain	{
 						);
 					}
 				} elseif ($eFile && is_string($eFile))	{
-					$this->log($insertTable,$id,2,0,1,"Write-file error: '%s'",13,array($eFile),$realPid);
+					$this->log($table,$id,2,0,1,"Write-file error: '%s'",13,array($eFile),$realPid);
 				}
 			}
 		}
@@ -1259,7 +1260,7 @@ class t3lib_TCEmain	{
 			$value = implode(',',$value);
 		}
 
-			// This converts all occurencies of '&#123;' to the byte 123 in the string - this is needed in very rare cases where filenames with special characters (like æøå, umlaud etc) gets sent to the server as HTML entities instead of bytes. The error is done only by MSIE, not Mozilla and Opera.
+			// This converts all occurencies of '&#123;' to the byte 123 in the string - this is needed in very rare cases where filenames with special characters (like ï¿½ï¿½ï¿½, umlaud etc) gets sent to the server as HTML entities instead of bytes. The error is done only by MSIE, not Mozilla and Opera.
 			// Anyways, this should NOT disturb anything else:
 		$value = $this->convNumEntityToByteValue($value);
 
@@ -1751,11 +1752,11 @@ class t3lib_TCEmain	{
 				break;
 				case 'upper':
 					$value = strtoupper($value);
-#					$value = strtr($value, 'áéúíâêûôîæøåäöü', 'ÁÉÚÍÂÊÛÔÎÆØÅÄÖÜ');	// WILL make trouble with other charsets than ISO-8859-1, so what do we do here? PHP-function which can handle this for other charsets? Currently the browsers JavaScript will fix it.
+#					$value = strtr($value, 'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½', 'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½');	// WILL make trouble with other charsets than ISO-8859-1, so what do we do here? PHP-function which can handle this for other charsets? Currently the browsers JavaScript will fix it.
 				break;
 				case 'lower':
 					$value = strtolower($value);
-#					$value = strtr($value, 'ÁÉÚÍÂÊÛÔÎÆØÅÄÖÜ', 'áéúíâêûôîæøåäöü');	// WILL make trouble with other charsets than ISO-8859-1, so what do we do here? PHP-function which can handle this for other charsets? Currently the browsers JavaScript will fix it.
+#					$value = strtr($value, 'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½', 'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½');	// WILL make trouble with other charsets than ISO-8859-1, so what do we do here? PHP-function which can handle this for other charsets? Currently the browsers JavaScript will fix it.
 				break;
 				case 'required':
 					if (!$value)	{$set=0;}
@@ -2069,6 +2070,7 @@ class t3lib_TCEmain	{
 				// Check if the table may be modified!
 			$modifyAccessList = $this->checkModifyAccessList($table);
 			if (!$modifyAccessList)	{
+				$id = 0;
 				$this->log($table,$id,2,0,1,"Attempt to modify table '%s' without permission",1,array($table));
 			}	// FIXME: $id not set here (Comment added by Sebastian Kurfuerst)
 
@@ -3723,6 +3725,7 @@ $this->log($table,$id,6,0,0,'Stage raised...',30,array('comment'=>$comment,'stag
 			// If a change has been done, set the new value(s)
 		if ($set)	{
 			if ($conf['MM'])	{
+// FIXME $theUidToUpdate is undefined
 				$dbAnalysis->writeMM($conf['MM'], $theUidToUpdate, $prependName);
 			} else {
 				$vArray = $dbAnalysis->getValueArray($prependName);
@@ -4421,18 +4424,17 @@ $this->log($table,$id,6,0,0,'Stage raised...',30,array('comment'=>$comment,'stag
 			$this->clearHistory($maxAgeSeconds, $table);
 
 				// Set history data:
-			$fields_values = array();
-			$fields_values['history_data'] = serialize($this->historyRecords[$table.':'.$id]);
-			$fields_values['fieldlist'] = implode(',',array_keys($this->historyRecords[$table.':'.$id]['newRecord']));
-			$fields_values['tstamp'] = time();
-			$fields_values['tablename'] = $table;
-			$fields_values['recuid'] = $id;
-			$fields_values['sys_log_uid'] = $logId;
+				$fields_values = array();
+				$fields_values['history_data'] = serialize($this->historyRecords[$table.':'.$id]);
+				$fields_values['fieldlist'] = implode(',',array_keys($this->historyRecords[$table.':'.$id]['newRecord']));
+				$fields_values['tstamp'] = time();
+				$fields_values['tablename'] = $table;
+				$fields_values['recuid'] = $id;
+				$fields_values['sys_log_uid'] = $logId;
 
-			$GLOBALS['TYPO3_DB']->exec_INSERTquery('sys_history', $fields_values);
-
+				$GLOBALS['TYPO3_DB']->exec_INSERTquery('sys_history', $fields_values);
+			}
 		}
-	}
 
 	/**
 	 * Clearing sys_history table from older entries that are expired.
@@ -4445,7 +4447,7 @@ $this->log($table,$id,6,0,0,'Stage raised...',30,array('comment'=>$comment,'stag
 		$tstampLimit = $maxAgeSeconds ? time()-$maxAgeSeconds : 0;
 
 		$GLOBALS['TYPO3_DB']->exec_DELETEquery('sys_history', 'tstamp<'.intval($tstampLimit).' AND tablename="'.$table.'"');
-	}
+		}
 
 	/**
 	 * Update Reference Index (sys_refindex) for a record
@@ -5408,6 +5410,7 @@ State was change by %s (username: %s)
 				// Call post processing function for clear-cache:
 			global $TYPO3_CONF_VARS;
 			if (is_array($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearCachePostProc']))	{
+// FIXME $uid_page is undefined
 				$_params = array('table' => $table,'uid' => $uid,'uid_page' => $uid_page,'TSConfig' => $TSConfig);
 				foreach($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearCachePostProc'] as $_funcRef)	{
 					t3lib_div::callUserFunction($_funcRef,$_params,$this);
