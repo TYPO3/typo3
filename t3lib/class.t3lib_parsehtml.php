@@ -128,6 +128,7 @@ class t3lib_parsehtml	{
 			// Q: What shall get returned if no stop marker is given /*everything till the end*/ or nothing
 		if ($stop===false)	{ return /*substr($content, $start)*/ ''; }
 		$content = substr($content, $start, $stop-$start);
+		$matches = array();
 		if (preg_match('/^([^\<]*\-\-\>)(.*)(\<\!\-\-[^\>]*)$/s', $content, $matches)===1)	{
 			return $matches[2];
 		}
@@ -166,6 +167,7 @@ class t3lib_parsehtml	{
 		}
 
 		if ($keepMarker)	{
+			$matches = array();
 			if (preg_match('/^([^\<]*\-\-\>)(.*)(\<\!\-\-[^\>]*)$/s', $between, $matches)===1)	{
 				$before .= $marker.$matches[1];
 				$between = $matches[2];
@@ -183,6 +185,7 @@ class t3lib_parsehtml	{
 				$after = $marker.$after;
 			}
 		} else	{
+			$matches = array();
 			if (preg_match('/^(.*)\<\!\-\-[^\>]*$/s', $before, $matches)===1)	{
 				$before = $matches[1];
 			}
@@ -417,6 +420,7 @@ class t3lib_parsehtml	{
 	 * @see getFirstTag()
 	 */
 	function getFirstTagName($str,$preserveCase=FALSE)	{
+		$matches = array();
 		if (preg_match('/^\s*\<([^\s\>]+)(\s|\>)/', $str, $matches)===1)	{
 			if (!$preserveCase)	{
 				return strtoupper($matches[1]);
@@ -476,6 +480,7 @@ class t3lib_parsehtml	{
 	 * @see t3lib_div::split_tag_attributes()
 	 */
 	function split_tag_attributes($tag)	{
+		$matches = array();
 		if (preg_match('/(\<[^\s]+\s+)?(.*?)\s*(\>)?$/s', $tag, $matches)!==1)	{
 			return array(array(), array());
 		}
@@ -957,7 +962,7 @@ class t3lib_parsehtml	{
 	function mapTags($value,$tags=array(),$ltChar='<',$ltChar2='<')	{
 
 		foreach($tags as $from => $to)	{
-			$value = preg_replace('/'.$preg_quote($ltChar).'(\/)?'.$from.'\s([^\>])*(\/)?\>/', $ltChar2.'$1'.$to.' $2$3>', $value);
+			$value = preg_replace('/'.preg_quote($ltChar).'(\/)?'.$from.'\s([^\>])*(\/)?\>/', $ltChar2.'$1'.$to.' $2$3>', $value);
 		}
 		return $value;
 	}
