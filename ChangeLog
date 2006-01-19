@@ -1,3 +1,7 @@
+2006-01-19  Dmitry Dulepov  <typo3@accio.lv>
+
+	* Fixed bug #1430: SEO + simulateStaticDocuments
+
 2005-01-19  Peter Niederlag  <peter@niederlag.de>
 
 	* Fixed issue #2268 on cleanup of sysext:css_styled_content

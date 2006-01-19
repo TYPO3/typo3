@@ -1613,7 +1613,11 @@
 					}
 						// if .simulateStaticDocuments was not present, the default value will rule.
 					if (!isset($this->config['config']['simulateStaticDocuments']))	{
-						$this->config['config']['simulateStaticDocuments'] = $this->TYPO3_CONF_VARS['FE']['simulateStaticDocuments'];
+						$this->config['config']['simulateStaticDocuments'] = trim($this->TYPO3_CONF_VARS['FE']['simulateStaticDocuments']);
+					}
+					if ($this->config['config']['simulateStaticDocuments']) {
+							// Set replacement char only if it is needed
+						$this->setSimulReplacementChar();
 					}
 
 							// Processing for the config_array:
@@ -3166,6 +3170,23 @@ if (version == "n3") {
 		$url.=$this->makeSimulFileName($this->page['title'], $this->page['alias']?$this->page['alias']:$this->id, $this->type).'.html';
 		return $url;
 	}
+	
+	/**
+	 * Checks and sets replacement character for simulateStaticDocuments. Default is underscore.
+	 * 
+	 * @return	void
+	 */
+	function setSimulReplacementChar() {
+		$replacement = $defChar = t3lib_div::compat_version('4.0.0') ? '-' : '_';
+		if (isset($this->config['config']['simulateStaticDocuments_replacementChar'])) {
+			$replacement = trim($this->config['config']['simulateStaticDocuments_replacementChar']);
+			if (urlencode($replacement) != $replacement) {
+					// Invalid character
+				$replacement = $defChar;
+			}
+		}
+		$this->config['config']['simulateStaticDocuments_replacementChar'] = $replacement;
+	}
 
 	/**
 	 * Converts input string to an ASCII based file name prefix
@@ -3177,11 +3198,16 @@ if (version == "n3") {
 	 */
 	function fileNameASCIIPrefix($inTitle,$titleChars,$mergeChar='.')	{
 		$out = $this->csConvObj->specCharsToASCII($this->renderCharset, $inTitle);
-		$out = ereg_replace('[^[:alnum:]_-]','_',trim(substr($out,0,$titleChars)));
-		$out = ereg_replace('[_-]*$','',$out);
-		$out = ereg_replace('^[_-]*','',$out);
-		$out = ereg_replace('([_-])[_-]*','\1',$out);
-		if (strlen($out))	$out.=$mergeChar;
+			// Get replacement character
+		$replacementChar = &$this->config['config']['simulateStaticDocuments_replacementChar'];
+		$replacementChars = '_\-' . ($replacementChar != '_' && $replacementChar != '-' ? $replacementChar : '');
+		$out = preg_replace('/[^A-Za-z0-9_-]/', $replacementChar, trim(substr($out, 0, $titleChars)));
+		$out = preg_replace('/([' . $replacementChars . ']){2,}/', '\1', $out);
+		$out = preg_replace('/[' . $replacementChars . ']?$/', '', $out);
+		$out = preg_replace('/^[' . $replacementChars . ']?/', '', $out);
+		if (strlen($out)) {
+			$out .= $mergeChar;
+		}
 
 		return $out;
 	}
