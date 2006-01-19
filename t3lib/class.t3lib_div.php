@@ -3828,6 +3828,140 @@ class t3lib_div {
 		return $font_size;
 	}
 
+
+	/**
+	 * Init system error log.
+	 *
+	 * @return	void
+	 * @see sysLog()
+	 */
+	function initSysLog()	{
+		global $TYPO3_CONF_VARS;
+
+			// for CLI logging name is <fqdn-hostname>:<TYPO3-path>
+		if (defined('TYPO3_cliMode') && TYPO3_cliMode)	{
+			$host = '';
+			if (function_exists('posix_uname'))	{
+				$system = posix_uname();
+				$host = $system['nodename'];
+			} else {
+				$host = exec('hostname');
+			}
+			$TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_div.php']['systemLogHost'] = $TYPO3_CONF_VARS['SYS']['systemLogHost'] = gethostbyaddr(gethostbyname($host)).':'.PATH_site;
+		}
+			// for Web logging name is <protocol>://<request-hostame>
+		else {
+			$TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_div.php']['systemLogHost'] = t3lib_div::getIndpEnv('TYPO3_REQUEST_HOST');
+		}
+
+			// init custom logging
+		if (is_array($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_div.php']['systemLog']))	{
+			$params = array('initLog'=>TRUE);
+			$fakeThis = FALSE;
+			foreach($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_div.php']['systemLog'] as $hookMethod)	{
+				t3lib_div::callUserFunction($hookMethod,$params,$fakeThis);
+			}
+		}
+
+			// init TYPO3 logging
+		foreach (explode(';',$TYPO3_CONF_VARS['SYS']['systemLog'],2) as $log)	{
+			list($type,$destination) = explode(',',$log,3);
+
+			if ($type == 'syslog')	{
+				define_syslog_variables();
+				if (TYPO3_OS == 'WIN')	{
+					$facility = LOG_USER;
+				} else {
+					$facility = constant('LOG_'.strtoupper($destination));
+				}
+				openlog($ident, LOG_ODELAY, $facility);
+			}
+		}
+
+		$TYPO3_CONF_VARS['SYS']['systemLogLevel'] = t3lib_div::intInRange($TYPO3_CONF_VARS['SYS']['systemLogLevel'],0,4);
+		$TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_div.php']['systemLogInit'] = TRUE;
+	}
+
+	/**
+	 * System error log; This should be implemented around the source code, including the Core and both frontend and backend, logging serious errors.
+	 * If you want to implement the sysLog in your applications, simply add lines like:
+	 * 		t3lib_div::sysLog('[write message in English here]', 'extension key');
+	 *
+	 * @param	string		Message (in English).
+	 * @param	string		Extension key (from which extension you are calling the log) or "Core"
+	 * @param	integer		Severity: 0 is info, 1 is notice, 2 is warning, 3 is error, 4 is fatal error
+	 * @return	void
+	 */
+	function sysLog($msg, $extKey, $severity=0) {
+		global $TYPO3_CONF_VARS;
+
+		$severity = t3lib_div::intInRange($severity,0,4);
+
+			// is message worth logging?
+		if (intval($TYPO3_CONF_VARS['SYS']['systemLogLevel']) > $severity)	return;
+
+			// initialize logging
+		if (!$TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_div.php']['systemLogInit'])	{
+			t3lib_div::initSysLog();
+		}
+
+			// do custom logging
+		if (is_array($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_div.php']['systemLog']))	{
+			$params = array('msg'=>$msg, 'extKey'=>$extKey);
+			if (function_exists('debug_backtrace'))	{
+				$params['backTrace'] = debug_backtrace();
+			}
+			$fakeThis = FALSE;
+			foreach($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_div.php']['systemLog'] as $hookMethod)	{
+				t3lib_div::callUserFunction($hookMethod,$params,$fakeThis);
+			}
+		}
+
+			// TYPO3 logging enabled?
+		if (!$TYPO3_CONF_VARS['SYS']['systemLog'])	return;
+
+			// use all configured logging options
+		foreach (explode(';',$TYPO3_CONF_VARS['SYS']['systemLog'],2) as $log)	{
+			list($type,$destination,$level) = explode(',',$log,4);
+
+				// is message worth logging for this log type?
+			if (intval($level) > $severity)	continue;
+
+			$msgLine = ' - '.$extKey.': '.$msg;
+
+				// write message to a file
+			if ($type == 'file')	{
+				$file = fopen($destination, 'a');
+				if ($file)     {
+					flock($file, LOCK_EX);  // try locking, but ignore if not available (eg. on NFS and FAT)
+					fwrite($file, date('d/m/Y i:H').$msgLine.char(10));
+					flock($fp, LOCK_UN);    // release the lock
+					fclose($file);
+				}
+			}
+				// send message per mail
+			elseif ($type == 'mail')	{
+				list($to,$from) = explode('/',$destination);
+				mail($to, 'Warning - error in TYPO3 installation',
+					'Host: '.$TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_div.php']['systemLogHost']."\n".
+					'Extension: '.$extKey."\n".
+					'Severity: '.$severity."\n".
+					"\n".$msg,
+					($from ? 'From: '.$from : '')
+				);
+			}
+				// use the PHP error log
+			elseif ($type == 'error_log')	{
+				error_log($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_div.php']['systemLogHost'].$msgLine, 0);
+			}
+				// use the system log
+			elseif ($type == 'syslog')	{
+				$priority = array(LOG_INFO,LOG_NOTICE,LOG_WARNING,LOG_ERR,LOG_CRIT);
+				syslog($priority[(int)$severity], $msgLine);
+			}
+		}
+	}
+
 	/**
 	 * Developer log; This should be implemented around the source code, both frontend and backend, logging everything from the flow through an application, messages, results from comparisons to fatal errors.
 	 * The result is meant to make sense to developers during development or debugging of a site.
