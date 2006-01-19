@@ -1,5 +1,9 @@
 2006-01-19  René Fritz  <r.fritz@colorcube.de>
 
+	* Fixed bug: fixed bug related to PHP5 and clone() in tslib_content
+
+2006-01-19  René Fritz  <r.fritz@colorcube.de>
+
 	* Fixed issue: Added clone() compatibility function for PHP4
 
 2006-01-19  René Fritz  <r.fritz@colorcube.de>
