@@ -1160,6 +1160,7 @@ tt_content.menu.20 {
 			expAll=1
 			wrap = <ul>|</ul>
 			NO {
+				stdWrap.htmlSpecialChars = 1
 				wrapItemAndSub = <li>|</li>
 				ATagTitle.field = description // title
 			}
