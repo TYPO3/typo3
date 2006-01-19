@@ -1,8 +1,12 @@
+2006-01-19  Sebastian Kurfuerst  <sebastian@garbage-group.de>
+
+	* New feature: Revised Undo/History feature.
+
 2006-01-19  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
 	* Changes to the htmlArea RTE extension (details see local ChangeLog)
 
-2006-01-18  Dmitry Dulepov <typo3@accio.lv>
+2006-01-18  Dmitry Dulepov  <typo3@accio.lv>
 
 	* indexed_search: Removed empty line at the end of class.tx_indexedsearch.php. This line caused undesired effects in MSIE with certain PHP versions and UTF-8 encoding in FE.
 

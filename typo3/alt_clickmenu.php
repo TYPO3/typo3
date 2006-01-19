@@ -303,6 +303,10 @@ class clickMenu {
 				$menuItems['spacer2']='spacer';
 				$menuItems['delete']=$this->DB_delete($table,$uid,$elInfo);
 			}
+
+			if(!in_array('history',$this->disabledItems))	{
+				$menuItems['history']=$this->DB_history($table,$uid,$elInfo);
+			}
 		}
 
 			// Adding external elements to the menuItems array
