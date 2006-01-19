@@ -1248,7 +1248,7 @@
 	 * @param	mixed		Which type of handling; If a true PHP-boolean and TRUE then a ->printError message is outputted. If integer an error message with that number is shown. Otherwise the $code value is expected to be a "Location:" header value.
 	 * @param	string		If set, this is passed directly to the PHP function, header()
 	 * @param	string		If set, error messages will also mention this as the reason for the page-not-found.
-	 * @return	void		(The function exists!)
+	 * @return	void		(The function exits!)
 	 */
 	function pageNotFoundHandler($code, $header='', $reason='')	{
 			// Issue header in any case:

@@ -4,7 +4,7 @@
 
 2006-01-18  Dmitry Dulepov <typo3@accio.lv>
 
-	* indexed_search: Removed empty line at the end of file. This line caused undesired effects in MSIE with certain PHP versions and UTF-8 encoding in FE.
+	* indexed_search: Removed empty line at the end of class.tx_indexedsearch.php. This line caused undesired effects in MSIE with certain PHP versions and UTF-8 encoding in FE.
 
 2006-01-18  Sebastian Kurfuerst  <sebastian@garbage-group.de>
 
