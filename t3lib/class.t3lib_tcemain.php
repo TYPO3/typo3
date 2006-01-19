@@ -1752,11 +1752,11 @@ class t3lib_TCEmain	{
 				break;
 				case 'upper':
 					$value = strtoupper($value);
-#					$value = strtr($value, 'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½', 'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½');	// WILL make trouble with other charsets than ISO-8859-1, so what do we do here? PHP-function which can handle this for other charsets? Currently the browsers JavaScript will fix it.
+#					$value = strtr($value, 'áéúíâêûôîæøåäöü', 'ÁÉÚÍÂÊÛÔÎÆØÅÄÖÜ');	// WILL make trouble with other charsets than ISO-8859-1, so what do we do here? PHP-function which can handle this for other charsets? Currently the browsers JavaScript will fix it.
 				break;
 				case 'lower':
 					$value = strtolower($value);
-#					$value = strtr($value, 'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½', 'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½');	// WILL make trouble with other charsets than ISO-8859-1, so what do we do here? PHP-function which can handle this for other charsets? Currently the browsers JavaScript will fix it.
+#					$value = strtr($value, 'ÁÉÚÍÂÊÛÔÎÆØÅÄÖÜ', 'áéúíâêûôîæøåäöü');	// WILL make trouble with other charsets than ISO-8859-1, so what do we do here? PHP-function which can handle this for other charsets? Currently the browsers JavaScript will fix it.
 				break;
 				case 'required':
 					if (!$value)	{$set=0;}
