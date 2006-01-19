@@ -134,6 +134,9 @@
 			<label index="imagecaption_position.I.1">Center</label>
 			<label index="imagecaption_position.I.2">Right</label>
 			<label index="imagecaption_position.I.3">Left</label>
+			<label index="image_altText">Alternative Text:</label>
+			<label index="image_titleText">Title Text:</label>
+			<label index="image_longdescURL">Long Description URL:</label>
 			<label index="cols">Table Columns:</label>
 			<label index="cols.I.0">Auto</label>
 			<label index="recursive.I.1">1 level</label>

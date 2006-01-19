@@ -750,18 +750,8 @@ class tslib_cObj {
 
 				// initialisation
 			$caption='';
-			if (is_array($conf['caption.']))	{
-				$caption= $this->stdWrap($this->cObjGet($conf['caption.'], 'caption.'),$conf['caption.']);
-			}
-			$captionArray=array();
-			if ($conf['captionSplit'])	{
-				$capSplit = $this->stdWrap($conf['captionSplit.']['token'],$conf['captionSplit.']['token.']);
-				if (!$capSplit) {$capSplit=chr(10);}
-				$caption2= $this->cObjGetSingle($conf['captionSplit.']['cObject'],$conf['captionSplit.']['cObject.'],'captionSplit.cObject');
-				$captionArray=explode($capSplit,$caption2);
-				while(list($ca_key,$ca_val)=each($captionArray))	{
-					$captionArray[$ca_key] = $this->stdWrap(trim($captionArray[$ca_key]), $conf['captionSplit.']['stdWrap.']);
-				}
+			if (!$conf['captionSplit'] && !$conf['imageTextSplit'] && is_array($conf['caption.']))	{
+				$caption = $this->stdWrap($this->cObjGet($conf['caption.'], 'caption.'),$conf['caption.']);	// global caption, no splitting
 			}
 
 			$tablecode='';
@@ -1044,18 +1034,21 @@ class tslib_cObj {
 						if ($noCols)	{$tablecode.='<table width="'.$imageRowsFinalWidths[$c].'" border="0" cellpadding="0" cellspacing="0"><tr>';}		// In case of "noCols" we must set the table-tag that surrounds the images in the row.
 					}
 					for ($a=0;$a<$rowCount_temp;$a++)	{	// Looping through the rows IF "noRows" is set. "noRows"  means that the rows of images is not rendered by physical table rows but images are all in one column and spaced apart with clear-gifs. This loop is only one time if "noRows" is not set.
+						$GLOBALS['TSFE']->register['IMAGE_NUM'] = $imgIndex;	// register previous imgIndex
 						$imgIndex = $index+$a*$colCount_temp;
 						if ($imgsTag[$imgIndex])	{
 							if ($rowspacing && $noRows && $a) {		// Puts distance between the images IF "noRows" is set and this is the first iteration of the loop
 								$tablecode.= '<img src="'.$GLOBALS['TSFE']->absRefPrefix.'clear.gif" width="1" height="'.$rowspacing.'" alt="" title="" /><br />';
 							}
-
+							if ($conf['captionSplit'] || $conf['imageTextSplit'])	{
+								$thisCaption = $this->stdWrap($this->cObjGet($conf['caption.'], 'caption.'), $conf['captionStdWrap.']);
+							}
 							$imageHTML = $imgsTag[$imgIndex].'<br />';
-							$Talign = (!trim($captionArray[$imgIndex]) && !$noRows && !$conf['netprintApplicationLink']) ? ' align="left"' : '';  // this is necessary if the tablerows are supposed to space properly together! "noRows" is excluded because else the images "layer" together.
+							$Talign = (!trim($thisCaption) && !$noRows && !$conf['netprintApplicationLink']) ? ' align="left"' : '';  // this is necessary if the tablerows are supposed to space properly together! "noRows" is excluded because else the images "layer" together.
 							if ($border)	{$imageHTML='<table border="0" cellpadding="'.$borderThickness.'" cellspacing="0" bgcolor="'.$borderColor.'"'.$Talign.'><tr><td>'.$imageHTML.'</td></tr></table>';}		// break-tag added 160301  , ($noRows?'':' align="left"')  removed 160301, break tag removed 160301 (later...)
 							$imageHTML.=$editIconsHTML;		$editIconsHTML='';
 							if ($conf['netprintApplicationLink'])	{$imageHTML = $this->netprintApplication_offsiteLinkWrap($imageHTML,$origImages[$imgIndex],$conf['netprintApplicationLink.']);}
-							$imageHTML.=$captionArray[$imgIndex];	// Adds caption.
+							$imageHTML.=$thisCaption;	// Adds caption.
 							if ($noCols)	{$imageHTML='<td valign="top">'.$imageHTML.'</td>';}		// If noCols, put in table cell.
 							$tablecode.=$imageHTML;
 						}
@@ -2792,15 +2785,20 @@ class tslib_cObj {
 		$altParam = ' alt="'.htmlspecialchars(strip_tags($altText)).'"';
 
 			// "title":
-		if ($titleText) {
+		$emptyTitleHandling = 'useAlt';
+		if ($conf['emptyTitleHandling'])	{
+				// choices: 'keepEmpty' | 'useAlt' | 'removeAttr'
+			$emptyTitleHandling = $conf['emptyTitleHandling'];
+		}
+		if ($titleText || $emptyTitleHandling == 'keepEmpty')	{
 			$altParam.= ' title="'.htmlspecialchars(strip_tags($titleText)).'"';
-		} else {
+		} elseif (!$titleText && $emptyTitleHandling == 'useAlt')	{
 			$altParam.= ' title="'.htmlspecialchars(strip_tags($altText)).'"';
 		}
 
 			// "longDesc" URL
 		if ($longDesc)	{
-			$altParam.= ' longdesc="'.htmlspecialchars($longDesc).'"';
+			$altParam.= ' longdesc="'.htmlspecialchars(strip_tags($longDesc)).'"';
 		}
 
 		return $altParam;
@@ -3980,47 +3978,47 @@ class tslib_cObj {
 	 */
 	function splitObj($value, $conf)	{
 		$conf['token']=$this->stdWrap($conf['token'],$conf['token.']);
+		if (!$conf['token'])	{
+			return $value;
+		}
+		$conf['max']=intval($this->stdWrap($conf['max'],$conf['max.']));
+		$conf['min']=intval($this->stdWrap($conf['min'],$conf['min.']));
 
-		if ($conf['token'])	{
-			$conf['max']=intval($this->stdWrap($conf['max'],$conf['max.']));
-			$conf['min']=intval($this->stdWrap($conf['min'],$conf['min.']));
+		$valArr=explode($conf['token'],$value);
 
-			$valArr=explode($conf['token'],$value);
+		if (count($valArr) && ($conf['returnKey'] || $conf['returnKey.']))	{
+			$key = intval($this->stdWrap($conf['returnKey'],$conf['returnKey.']));
+			$content = isset($valArr[$key]) ? $valArr[$key] : '';
+		} else {
+				// calculate splitCount
+			$splitCount = count($valArr);
+			if ($conf['max'] && $splitCount>$conf['max'])	{
+				$splitCount=$conf['max'];
+			}
+			if ($conf['min'] && $splitCount<$conf['min'])	{
+				$splitCount=$conf['min'];
+			}
 
-			if (count($valArr) && ($conf['returnKey'] || $conf['returnKey.']))	{
-				$key = intval($this->stdWrap($conf['returnKey'],$conf['returnKey.']));
-				$content = isset($valArr[$key]) ? $valArr[$key] : '';
-			} else {
-					// calculate splitCount
-				$splitCount = count($valArr);
-				if ($conf['max'] && $splitCount>$conf['max'])	{
-					$splitCount=$conf['max'];
+			if ($conf['wrap'] || $conf['cObjNum'])	{
+				$splitArr=array();
+				$splitArr['wrap']=$conf['wrap'];
+				$splitArr['cObjNum']=$conf['cObjNum'];
+				$splitArr = $GLOBALS['TSFE']->tmpl->splitConfArray($splitArr,$splitCount);
+			}
+
+			$content='';
+			for($a=0;$a<$splitCount;$a++)	{
+				$GLOBALS['TSFE']->register['SPLIT_COUNT']=$a;
+				$value = ''.$valArr[$a];
+				$this->data[$this->currentValKey] = $value;
+				if ($splitArr[$a]['cObjNum'])	{
+					$objName=intval($splitArr[$a]['cObjNum']);
+					$value = $this->stdWrap($this->cObjGet($conf[$objName.'.'],$objName.'.'),$conf[$objName.'.']);
 				}
-				if ($conf['min'] && $splitCount<$conf['min'])	{
-					$splitCount=$conf['min'];
+				if ($splitArr[$a]['wrap'])	{
+					$value=$this->wrap($value,$splitArr[$a]['wrap']);
 				}
-
-				if ($conf['wrap'] || $conf['cObjNum'])	{
-					$splitArr=array();
-					$splitArr['wrap']=$conf['wrap'];
-					$splitArr['cObjNum']=$conf['cObjNum'];
-					$splitArr = $GLOBALS['TSFE']->tmpl->splitConfArray($splitArr,$splitCount);
-				}
-
-				$content='';
-				for($a=0;$a<$splitCount;$a++)	{
-					$GLOBALS['TSFE']->register['SPLIT_COUNT']=$a;
-					$value = ''.$valArr[$a];
-					$this->data[$this->currentValKey] = $value;
-					if ($splitArr[$a]['cObjNum'])	{
-						$objName=intval($splitArr[$a]['cObjNum']);
-						$value = $this->stdWrap($this->cObjGet($conf[$objName.'.'],$objName.'.'),$conf[$objName.'.']);
-					}
-					if ($splitArr[$a]['wrap'])	{
-						$value=$this->wrap($value,$splitArr[$a]['wrap']);
-					}
-					$content.=$value;
-				}
+				$content.=$value;
 			}
 		}
 		return $content;
@@ -4767,7 +4765,7 @@ class tslib_cObj {
 						}
 					break;
 					case 'tsfe':
-						$retVal = $GLOBALS['TSFE']->$key;
+						$retVal = $this->getGlobal ('TSFE|'.$key);
 					break;
 					case 'getenv':
 						$retVal = getenv($key);
