@@ -2,6 +2,14 @@
 
 	* Added support to fetch values from objects in getText: myVar.data = TSFE:fe_user|user|username
 
+2006-01-19  Sebastian Kurfuerst  <sebastian@garbage-group.de>
+
+	* New feature: Revised Undo/History feature.
+	* Fixed issue #1952: New hook in class.t3lib_userauthgroup.php
+	* Fixed issue #2243: Hook needed in class.t3lib_befunc.php, function getProcessedValue
+	* Fixed bug #2293: Javascript warnings
+	* Fixed errors in t3lib_db::fullQuoteArray and UPDATEquery (came into the core some hours before)
+
 2006-01-19  Karsten Dambekalns  <karsten@typo3.org>
 
 	* sysext/dbal: Some bugfixes to connection handling; added $no_quote_fields support for INSERT and UPDATE methods.
@@ -27,13 +35,6 @@
 	* add t3lib_div::sysLog() for Core logging
 	* use t3lib_div::sysLog() in t3lib_db->sql_pconnect() and t3lib_db->sql_select_db()
 	* add no_quote parameter to t3lib_db->fullQuoteArray() and to all SQL statement generating functions of t3lib_db
-
-2006-01-19  Sebastian Kurfuerst  <sebastian@garbage-group.de>
-
-	* New feature: Revised Undo/History feature.
-	* Fixed issue #1952: New hook in class.t3lib_userauthgroup.php
-	* Fixed issue #2243: Hook needed in class.t3lib_befunc.php, function getProcessedValue
-	* Fixed bug #2293: Javascript warnings
 
 2006-01-19  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 

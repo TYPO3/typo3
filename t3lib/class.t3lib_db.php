@@ -382,11 +382,16 @@ class t3lib_DB {
 					// quote and escape values
 				$nArr = $this->fullQuoteArray($fields_values,$table,$no_quote_fields);
 
+				$fields = array();
+				foreach ($nArr as $k => $v) {
+					$fields[] = $k.'='.$v;
+				}
+
 					// Build query:
 				$query = 'UPDATE '.$table.'
 					SET
 						'.implode(',
-						',$nArr).
+						',$fields).
 					(strlen($where)>0 ? '
 					WHERE
 						'.$where : '');
@@ -547,15 +552,15 @@ class t3lib_DB {
 		}
 	}
 
-        /**
-         * Will fullquote all values in the one-dimensional array so they are ready to "implode" for an sql query.
-         *
-         * @param       array           Array with values
-         * @param       string          Table name for which to quote
-         * @param       string/array    List/array of keys NOT to quote (eg. SQL functions)
-         * @return      array           The input array with the values quoted
-         * @see cleanIntArray()
-         */
+	/**
+	 * Will fullquote all values in the one-dimensional array so they are ready to "implode" for an sql query.
+	 *
+	 * @param       array           Array with values
+	 * @param       string          Table name for which to quote
+	 * @param       string/array    List/array of keys NOT to quote (eg. SQL functions)
+	 * @return      array           The input array with the values quoted
+	 * @see cleanIntArray()
+	 */
 	function fullQuoteArray($arr, $table, $noQuote='')      {
 		if (is_string($noQuote))        {
 			$noQuote = explode(',',$noQuote);
@@ -564,7 +569,7 @@ class t3lib_DB {
 		}
 
 		foreach($arr as $k => $v)       {
-			if (!in_array($v,$noQuote))     {
+			if (!in_array($k,$noQuote))     {
 				$arr[$k] = $this->fullQuoteStr($v, $table);
 			}
 		}
