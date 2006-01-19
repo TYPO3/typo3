@@ -40,51 +40,28 @@
 	border-style:none;padding:0;
 }
 .htmlarea .toolbar ul.tb-line li, .htmlarea .toolbar ul.free-float li {
-
 	margin:1px 0px;
-
 }
-
 .htmlarea .toolbar ul.tb-line li .tb-cell, .htmlarea .toolbar ul.free-float li .tb-cell, .htmlarea .toolbar ul.tb-line li .tb-first-cell, .htmlarea .toolbar ul.free-float li .tb-first-cell {
-
 	height:22px;
-
 }
-
 .htmlarea .toolbar ul.tb-group li, .htmlarea .toolbar ul.free-float li {
-
 	background-image:url(button-background.png);
-
 }
-
 .htmlarea .toolbar ul.tb-group li {
-
 	margin:0;
-
 }
-
 .htmlarea .toolbar label {
-
 	vertical-align:middle;
-
 	background-color:transparent;
-
 	height:22px;
-
 	border-style:none;margin:0;padding:3px 3px 0px 3px;
-
 }
-
 .htmlarea .toolbar button {
-
 	vertical-align:top;
-
 	background-color:transparent;color:ButtonText;background-position:1px 1px;background-repeat:no-repeat;
-
 	width:22px;height:22px;
-
 	border-style:none;margin:0;padding:1px;
-
 }
 .htmlarea .toolbar button div.buttonImgContainer {
 	position:relative;top:0;left:0;
@@ -196,7 +173,8 @@
 .htmlarea .toolbar select {
 	color:black;
 	font:11px Tahoma,Verdana,sans-serif; 
-	margin:1px 2px;padding:0;
+	height:18px;
+	margin:0;padding:0;
 }
 .htmlarea .toolbar select, .htmlarea .toolbar select:hover, .htmlarea .toolbar select:active { 
 	background-color:white;
@@ -388,220 +366,110 @@
 	width:13em;
 	margin-left:10px;padding:2px 5px;
 }
-
 .popupwin .fr {
-
 	float:left;text-align:right;
-
 	width:9em;
-
 	padding:2px 5px;
-
 }
-
 .popupwin .space {
-
 	clear:left;
-
 	padding:2px;
-
 }
-
 .popupwin .label {
-
 	text-align:right;
-
 	width:8em;
-
 }
-
 .popupwin .checkbox {
-
 	text-align:left;
-
 	padding:2px 5px;
-
 }
-
 .popupwin .postlabel {
-
 	text-align:left;
-
 	padding:2px 5px;
-
 }
-
 .popupwin input.value {
-
 	width:30em;
-
 }
-
 .popupwin input.shorter-value {
-
 	width:17em;
-
 }
-
-
-
 .popupwin #HA-layout {
-
 	width:450px;
-
 }
-
 .colorTable {
-
 	border:black 1px solid;
-
 }
-
 .currentColor {
-
 	width:20px;height:20px;
-
 	border:black 1px solid;margin:0pt 15pt;
-
 }
-
 .colorTable tr {
-
 	height:6px;
-
 }
-
 .colorTable td {
-
 	width:6px;
-
 	cursor:pointer;
-
 }
-
-
 
 /* Selectors for the InsertImage popup */
-
 .popupwin div.imagepreview {
-
 	text-align:center;
-
 }
-
 .popupwin .imagepreview iframe {
-
 	width:300px;height:200px;
-
 	border:1px solid gray;
-
 }
-
-
 
 /* Selectors for the InsertSmiley plugin */
-
 .popupwin div.smileytable {
-
 	height:125px;overflow:auto;
-
 }
-
 .popupwin .smileytable td {
-
 	width:35px;height:25px;
-
 }
-
-
 
 /* Selectors for the FindReplace plugin */
-
 .popupwin .long-label {
-
 	text-align:left;
-
 	width:16em;
-
 }
-
-
 
 /* Selectors for the SpellChecker plugin */
-
 .popupwin #b_recheck {
-
 	vertical-align:middle;
-
 	width:12em;
-
 }
-
-
 
 /* Selectors for the ContextMenu plugin */
-
 .htmlarea-context-menu {
-
 	position:absolute;top:-1000px;left:-1000px;z-index:1000;
-
 	background-color:#c3daf9;background-image:url(back.png);background-repeat:repeat-y;cursor:default;
-
 	font:11px tahoma,verdana,sans-serif;
-
 	list-style:none;
-
 	border:1px solid #003355;margin:0;padding:2px;
-
 }
-
 .htmlarea-context-menu li {
-
 	background-color:transparent;background-image:url(button-background.png);
-
 	border:1px solid #c3daf9;margin:1px 0;padding:0;
-
 }
-
 .htmlarea-context-menu li .button {
-
 	text-align:left;vertical-align:middle;
-
 	background-color:transparent;background-repeat:no-repeat;background-position:3px 2px;
-
 	height:21px;
-
 	border-style:none;margin:0;padding:0 0 0 24px;
-
 }
-
 .htmlarea-context-menu li .button img {
-
 	width:18px;height:18px;
-
 }
-
 .htmlarea-context-menu li.separator {
-
 	border-top:1px solid #003355;
-
 }
-
 .htmlarea-context-menu li.hover {
-
 	background-image:url(hover.png);
-
 	border-color:#003355;
-
 }
-
 .htmlarea-context-menu li:active {
-
 	background-image:url(selected.png);
-
 	border-color:#003355;
-
 }
-
-
 

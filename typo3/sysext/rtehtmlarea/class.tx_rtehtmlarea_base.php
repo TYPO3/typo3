@@ -512,7 +512,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			 * =======================================
 			 */
 
-			$RTEWidth = isset($BE_USER->userTS['options.']['RTESmallWidth']) ? $BE_USER->userTS['options.']['RTESmallWidth'] : '460';
+			$RTEWidth = isset($BE_USER->userTS['options.']['RTESmallWidth']) ? $BE_USER->userTS['options.']['RTESmallWidth'] : '530';
 			$RTEHeight = isset($BE_USER->userTS['options.']['RTESmallHeight']) ? $BE_USER->userTS['options.']['RTESmallHeight'] : '380';
 			$RTEWidth  = $RTEWidth + ($pObj->docLarge ? (isset($BE_USER->userTS['options.']['RTELargeWidthIncrement']) ? $BE_USER->userTS['options.']['RTELargeWidthIncrement'] : '150') : 0);
 			$RTEHeight = $RTEHeight + ($pObj->docLarge ?  (isset($BE_USER->userTS['options.']['RTELargeHeightIncrement']) ? $BE_USER->userTS['options.']['RTELargeHeightIncrement'] : 0) : 0);
@@ -639,21 +639,21 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 		
 			// Special toolbar for Mozilla Wamcom on Mac OS 9
 		if($this->client['BROWSER'] == 'gecko' && $this->client['VERSION'] == '1.3')  {
-			$this->defaultToolbarOrder = $this->TCEform->docLarge ? 'bar, blockstylelabel, blockstyle, space, textstylelabel, textstyle, linebreak, 
-				bar, fontstyle, space, fontsize, space, formatblock, bar, bold, italic, underline, strikethrough, 
-				subscript, superscript, lefttoright, righttoleft, bar, left, center, right, justifyfull, linebreak, 
-				bar, orderedlist, unorderedlist, outdent, indent, bar, textcolor, bgcolor, textindicator, bar, emoticon, 
-				insertcharacter, line, link, image, table, user, acronym, bar, findreplace, spellcheck, bar, chMode, inserttag, 
-				removeformat, bar, copy, cut, paste, bar, undo, redo, bar, showhelp, about, linebreak, 
+			$this->defaultToolbarOrder = $this->TCEform->docLarge ? 'bar, blockstylelabel, blockstyle, space, textstylelabel, textstyle, linebreak,
+				bar, fontstyle, space, fontsize, space, formatblock, bar, bold, italic, underline, strikethrough,
+				subscript, superscript, lefttoright, righttoleft, bar, left, center, right, justifyfull, linebreak,
+				bar, orderedlist, unorderedlist, outdent, indent, bar, textcolor, bgcolor, textindicator, bar, emoticon,
+				insertcharacter, line, link, image, table, user, acronym, bar, findreplace, spellcheck, bar, chMode, inserttag,
+				removeformat, bar, copy, cut, paste, bar, undo, redo, bar, showhelp, about, linebreak,
 				bar, toggleborders, bar, tableproperties, bar, rowproperties, rowinsertabove, rowinsertunder, rowdelete, rowsplit, bar,
 				columninsertbefore, columninsertafter, columndelete, columnsplit, bar,
 				cellproperties, cellinsertbefore, cellinsertafter, celldelete, cellsplit, cellmerge'
-				: 'bar, blockstylelabel, blockstyle, space, textstylelabel, textstyle, linebreak, 
-				bar, fontstyle, space, fontsize, space, formatblock, bar, bold, italic, underline, strikethrough, 
-				subscript, superscript, linebreak, bar, lefttoright, righttoleft, bar, left, center, right, justifyfull, 
-				orderedlist, unorderedlist, outdent, indent, bar, textcolor, bgcolor, textindicator, bar, emoticon, 
-				insertcharacter, line, link, image, table, user, acronym, linebreak, bar, findreplace, spellcheck, bar, chMode, inserttag, 
-				removeformat, bar, copy, cut, paste, bar, undo, redo, bar, showhelp, about, linebreak, 
+				: 'bar, blockstylelabel, blockstyle, space, textstylelabel, textstyle, linebreak,
+				bar, fontstyle, space, fontsize, space, formatblock, bar, bold, italic, underline, strikethrough,
+				subscript, superscript, linebreak, bar, lefttoright, righttoleft, bar, left, center, right, justifyfull,
+				orderedlist, unorderedlist, outdent, indent, bar, textcolor, bgcolor, textindicator, bar, emoticon,
+				insertcharacter, line, link, image, table, user, acronym, linebreak, bar, findreplace, spellcheck, bar, chMode, inserttag,
+				removeformat, bar, copy, cut, paste, bar, undo, redo, bar, showhelp, about, linebreak,
 				bar, toggleborders, bar, tableproperties, bar, rowproperties, rowinsertabove, rowinsertunder, rowdelete, rowsplit, bar,
 				columninsertbefore, columninsertafter, columndelete, columnsplit, bar,
 				cellproperties, cellinsertbefore, cellinsertafter, celldelete, cellsplit, cellmerge';
@@ -869,11 +869,10 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 		return (!is_object($TSFE) ? '' : '
 		' . '/*<![CDATA[*/') . '
 			var conf_RTEtsConfigParams = "&RTEtsConfigParams=' . rawurlencode($this->RTEtsConfigParams()) . '";
-			var extHttpPath = "'.$this->extHttpPath.'";
-			var rtePathImageFile = "'. $this->extHttpPath . 'mod4/select_image.php";
-			var rtePathLinkFile = "' . $this->extHttpPath . 'mod3/browse_links.php";
-			var rtePathUserFile = "' . $this->extHttpPath . 'mod5/user.php";
-			var rtePathAcronymFile = "' . $this->extHttpPath . 'mod2/acronym.php";
+			var rtePathImageFile = "../mod4/select_image.php";
+			var rtePathLinkFile = "../mod3/browse_links.php";
+			var rtePathUserFile = "../mod5/user.php";
+			var rtePathAcronymFile = "../mod2/acronym.php";
 			var rtePathParseHtmlFile = "' . $this->extHttpPath . 'mod6/parse_html.php";'
 			. $loadPluginCode .  '
 			HTMLArea.init();' . (!is_object($TSFE) ? '' : '

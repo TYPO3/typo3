@@ -531,8 +531,13 @@ HTMLArea.prototype._detectURL = function(ev) {
 		var a = textNode.parentNode.insertBefore(tag, rightText);
 		HTMLArea.removeFromParent(textNode);
 		a.appendChild(textNode);
-		rightText.data = ' ' + rightText.data;
-		s.collapse(rightText, 1);
+		if (/^>/.test(rightText.data)) {
+			rightText.data = rightText.data.replace(/^(>)/, '$1 ');
+			s.collapse(rightText, 2);
+		} else {
+			rightText.data = ' ' + rightText.data;
+			s.collapse(rightText, 1);
+		}
 		HTMLArea._stopEvent(ev);
 
 		editor._unLink = function() {
@@ -549,7 +554,7 @@ HTMLArea.prototype._detectURL = function(ev) {
 	};
 
 	switch(ev.which) {
-			// Space or Enter, see if the text just typed looks like a URL, or email address and link it accordingly
+			// Space or Enter or >, see if the text just typed looks like a URL, or email address and link it accordingly
 		case 13:	// Enter
 			if(ev.shiftKey || editor.config.disableEnterParagraphs) break;
 				//Space
@@ -564,6 +569,7 @@ HTMLArea.prototype._detectURL = function(ev) {
 					var leftText  = s.anchorNode;
 					var rightText = leftText.splitText(s.anchorOffset);
 					var midText   = leftText.splitText(midStart);
+					if (/>$/.test(midText.data)) var hrefClose = midText.splitText(midText.data.length-1);
 					autoWrap(midText, 'a').href = 'mailto:' + m[0];
 					break;
 				}

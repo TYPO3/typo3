@@ -5,7 +5,7 @@
 *  (c) 2005-2006 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
 *  All rights reserved
 *
-*  This script is part of the TYPO3 project. The TYPO3 project is 
+*  This script is part of the TYPO3 project. The TYPO3 project is
 *  free software; you can redistribute it and/or modify
 *  it under the terms of the GNU General Public License as published by
 *  the Free Software Foundation; either version 2 of the License, or
@@ -44,31 +44,20 @@ require_once (PATH_t3lib.'class.t3lib_parsehtml.php');
 class tx_rtehtmlarea_parse_html {
 	var $content;
 	var $modData;
-	var $siteUrl;
 	var $doc;
-	var $ID = 'rtehtmlarea';
+	var $extKey = 'rtehtmlarea';
+	var $prefixId = 'TYPO3HtmlParser';
 
 	/**
 	 * @return	[type]		...
 	 */
 	function init()	{
-		global $BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$CLIENT,$TYPO3_CONF_VARS;
-
-		$this->siteUrl = t3lib_div::getIndpEnv("TYPO3_SITE_URL");
-				// get the http-path to typo3:
-		$this->httpTypo3Path = substr( substr( t3lib_div::getIndpEnv('TYPO3_SITE_URL'), strlen( t3lib_div::getIndpEnv('TYPO3_REQUEST_HOST') ) ), 0, -1 );
-		if (strlen($this->httpTypo3Path) == 1) {
-			$this->httpTypo3Path = "/";
-		} else {
-			$this->httpTypo3Path .= "/";
-		}
-			// Get the path to this extension:
-		$this->extHttpPath = $this->httpTypo3Path . t3lib_extMgm::siteRelPath($this->ID);
-
+		global $BE_USER,$BACK_PATH;
+		
 		$this->doc = t3lib_div::makeInstance("template");
 		$this->doc->backPath = $BACK_PATH;
 		$this->doc->JScode='';
-
+		
 		$this->modData = $BE_USER->getModuleData("parse_html.php","ses");
 		if (t3lib_div::_GP("OC_key"))	{
 			$parts = explode("|",t3lib_div::_GP("OC_key"));
@@ -76,14 +65,13 @@ class tx_rtehtmlarea_parse_html {
 			$BE_USER->pushModuleData("parse_html.php",$this->modData);
 		}
 	}
-
+	
 	/**
 	 * [Describe function...]
 	 * 
 	 * @return	[type]		...
 	 */
 	function main()	{
-		global $BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$CLIENT,$TYPO3_CONF_VARS;
 
 		$this->content="";
 		$this->content.=$this->main_parse_html($this->modData["openKeys"]);
@@ -118,13 +106,13 @@ class tx_rtehtmlarea_parse_html {
 	 * @return	[type]		...
 	 */
 	function main_parse_html($openKeys)	{
-		global $SOBE,$LANG,$BACK_PATH;
+		global $BE_USER, $TYPO3_CONF_VARS;
 		
 		$editorNo = t3lib_div::_GP("editorNo");
 		$html = t3lib_div::_GP("content");
 		
 		$RTEtsConfigParts = explode(":",t3lib_div::_GP("RTEtsConfigParams"));
-		$RTEsetup = $GLOBALS["BE_USER"]->getTSConfig("RTE",t3lib_BEfunc::getPagesTSconfig($RTEtsConfigParts[5]));
+		$RTEsetup = $BE_USER->getTSConfig("RTE",t3lib_BEfunc::getPagesTSconfig($RTEtsConfigParts[5]));
 		$thisConfig = t3lib_BEfunc::RTEsetup($RTEsetup["properties"],$RTEtsConfigParts[0],$RTEtsConfigParts[2],$RTEtsConfigParts[4]);
 		
 		$HTMLParser = t3lib_div::makeInstance('t3lib_parsehtml');
@@ -133,6 +121,15 @@ class tx_rtehtmlarea_parse_html {
 		}
 		if (is_array($HTMLparserConfig)) {
 			$html = $HTMLParser->HTMLcleaner($html, $HTMLparserConfig[0], $HTMLparserConfig[1], $HTMLparserConfig[2], $HTMLparserConfig[3]);
+		}
+		
+		if (is_array ($TYPO3_CONF_VARS['EXTCONF'][$this->extKey][$this->prefixId]['cleanPastedContent'])) {
+			foreach  ($TYPO3_CONF_VARS['EXTCONF'][$this->extKey][$this->prefixId]['cleanPastedContent'] as $classRef) {
+				$hookObj = &t3lib_div::getUserObj($classRef);
+				if (method_exists($hookObj, 'cleanPastedContent_afterCleanWord')) {
+					$html = $hookObj->cleanPastedContent_afterCleanWord($html, $thisConfig);
+				}
+			}
 		}
 		
 		$content = '

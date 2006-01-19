@@ -143,7 +143,7 @@ class tx_rtehtmlarea_pi2 extends tx_rtehtmlarea_base {
 		 */
 			// htmlArea plugins list
 		$this->pluginEnableArray = array_intersect(t3lib_div::trimExplode(',', $this->pluginList , 1), t3lib_div::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->ID]['HTMLAreaPluginList'], 1));
-		$hidePlugins = array('TYPO3Browsers', 'UserElements', 'Acronym');
+		$hidePlugins = array('TYPO3Browsers', 'UserElements', 'Acronym', 'TYPO3HtmlParser');
 		if ($this->client['BROWSER'] == 'opera') {
 			$hidePlugins[] = 'ContextMenu';
 			$this->thisConfig['hideTableOperationsInToolbar'] = 0;
