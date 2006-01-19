@@ -335,6 +335,10 @@ function debugEnd() {
 }
 
 
+	// include compatibility functions <PHP5
+if (version_compare(phpversion(), '5.0') < 0) {
+	include_once('compat_php5.php');
+}
 
 	// Init services array:
 $T3_SERVICES = array();
