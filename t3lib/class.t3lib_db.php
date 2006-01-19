@@ -164,10 +164,11 @@ class t3lib_DB {
 	 *
 	 * @param	string		Table name
 	 * @param	array		Field values as key=>value pairs. Values will be escaped internally. Typically you would fill an array like "$insertFields" with 'fieldname'=>'value' and pass it to this function as argument.
+	 * @param	string/array	See fullQuoteArray()
 	 * @return	pointer		MySQL result pointer / DBAL object
 	 */
-	function exec_INSERTquery($table,$fields_values)	{
-		$res = mysql_query($this->INSERTquery($table,$fields_values), $this->link);
+	function exec_INSERTquery($table,$fields_values,$no_quote_fields='')	{
+		$res = mysql_query($this->INSERTquery($table,$fields_values,$no_quote_fields), $this->link);
 		if ($this->debugOutput)	$this->debug('exec_INSERTquery');
 		return $res;
 	}
@@ -180,10 +181,11 @@ class t3lib_DB {
 	 * @param	string		Database tablename
 	 * @param	string		WHERE clause, eg. "uid=1". NOTICE: You must escape values in this argument with $this->fullQuoteStr() yourself!
 	 * @param	array		Field values as key=>value pairs. Values will be escaped internally. Typically you would fill an array like "$updateFields" with 'fieldname'=>'value' and pass it to this function as argument.
+	 * @param	string/array	See fullQuoteArray()
 	 * @return	pointer		MySQL result pointer / DBAL object
 	 */
-	function exec_UPDATEquery($table,$where,$fields_values)	{
-		$res = mysql_query($this->UPDATEquery($table,$where,$fields_values), $this->link);
+	function exec_UPDATEquery($table,$where,$fields_values,$no_quote_fields='')	{
+		$res = mysql_query($this->UPDATEquery($table,$where,$fields_values,$no_quote_fields), $this->link);
 		if ($this->debugOutput)	$this->debug('exec_UPDATEquery');
 		return $res;
 	}
@@ -332,18 +334,17 @@ class t3lib_DB {
 	 *
 	 * @param	string		See exec_INSERTquery()
 	 * @param	array		See exec_INSERTquery()
+	 * @param	string/array	See fullQuoteArray()
 	 * @return	string		Full SQL query for INSERT (unless $fields_values does not contain any elements in which case it will be false)
 	 * @deprecated			use exec_INSERTquery() instead if possible!
 	 */
-	function INSERTquery($table,$fields_values)	{
+	function INSERTquery($table,$fields_values,$no_quote_fields='')	{
 
 			// Table and fieldnames should be "SQL-injection-safe" when supplied to this function (contrary to values in the arrays which may be insecure).
 		if (is_array($fields_values) && count($fields_values))	{
 
-				// Add slashes old-school:
-			foreach($fields_values as $k => $v)	{
-				$fields_values[$k] = $this->fullQuoteStr($fields_values[$k], $table);
-			}
+				// quote and escape values
+			$fields_values = $this->fullQuoteArray($fields_values,$table,$no_quote_fields);
 
 				// Build query:
 			$query = 'INSERT INTO '.$table.'
@@ -368,20 +369,18 @@ class t3lib_DB {
 	 * @param	string		See exec_UPDATEquery()
 	 * @param	string		See exec_UPDATEquery()
 	 * @param	array		See exec_UPDATEquery()
+	 * @param	array		See fullQuoteArray()
 	 * @return	string		Full SQL query for UPDATE (unless $fields_values does not contain any elements in which case it will be false)
 	 * @deprecated			use exec_UPDATEquery() instead if possible!
 	 */
-	function UPDATEquery($table,$where,$fields_values)	{
+	function UPDATEquery($table,$where,$fields_values,$no_quote_fields='')	{
 
 			// Table and fieldnames should be "SQL-injection-safe" when supplied to this function (contrary to values in the arrays which may be insecure).
 		if (is_string($where))	{
 			if (is_array($fields_values) && count($fields_values))	{
 
-					// Add slashes old-school:
-				$nArr = array();
-				foreach($fields_values as $k => $v)	{
-					$nArr[] = $k.'='.$this->fullQuoteStr($v, $table);
-				}
+					// quote and escape values
+				$nArr = $this->fullQuoteArray($fields_values,$table,$no_quote_fields);
 
 					// Build query:
 				$query = 'UPDATE '.$table.'
@@ -548,17 +547,26 @@ class t3lib_DB {
 		}
 	}
 
-	/**
-	 * Will fullquote all values in the one-dimensional array so they are ready to "implode" for an sql query.
-	 *
-	 * @param	array		Array with values
-	 * @param	string		Table name for which to quote.
-	 * @return	array		The input array with all values passed through intval()
-	 * @see cleanIntArray()
-	 */
-	function fullQuoteArray($arr, $table)	{
-		foreach($arr as $k => $v)	{
-			$arr[$k] = $this->fullQuoteStr($arr[$k], $table);
+        /**
+         * Will fullquote all values in the one-dimensional array so they are ready to "implode" for an sql query.
+         *
+         * @param       array           Array with values
+         * @param       string          Table name for which to quote
+         * @param       string/array    List/array of keys NOT to quote (eg. SQL functions)
+         * @return      array           The input array with the values quoted
+         * @see cleanIntArray()
+         */
+	function fullQuoteArray($arr, $table, $noQuote='')      {
+		if (is_string($noQuote))        {
+			$noQuote = explode(',',$noQuote);
+		} elseif (!is_array($noQuote))  {
+			$noQuote = array();
+		}
+
+		foreach($arr as $k => $v)       {
+			if (!in_array($v,$noQuote))     {
+				$arr[$k] = $this->fullQuoteStr($v, $table);
+			}
 		}
 		return $arr;
 	}

@@ -1,7 +1,8 @@
 2005-01-19  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
 	* add t3lib_div::sysLog() for Core logging
-	* use t3lib_div::sysLog() in t3lib_db->sql_pconnect and t3lib_db->sql_select_db()
+	* use t3lib_div::sysLog() in t3lib_db->sql_pconnect() and t3lib_db->sql_select_db()
+	* add no_quote parameter to t3lib_db->fullQuoteArray() and to all SQL statement generating functions of t3lib_db
 
 2006-01-19  Sebastian Kurfuerst  <sebastian@garbage-group.de>
 
