@@ -1689,6 +1689,11 @@ $str.=$this->docBodyTagBegin().
 				var DTM_array = new Array();
 				var DTM_origClass = new String();
 
+					// if tabs are used in a popup window the array might not exists
+				if(!top.DTM_currentTabs) {
+					top.DTM_currentTabs = new Array();
+				}
+
 				function DTM_activate(idBase,index,doToogle)	{	//
 						// Hiding all:
 					if (DTM_array[idBase])	{
