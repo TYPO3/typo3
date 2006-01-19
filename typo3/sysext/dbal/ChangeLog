@@ -1,3 +1,8 @@
+2006-01-19  Karsten Dambekalns <karsten@typo3.org>
+
+	* Changes to connection handling, detecting failed connections.
+	* Added support for $no_quote_fields in UPDATE and INSERT methods.
+
 2006-01-04  Karsten Dambekalns <karsten@typo3.org>
 
 	* Changed the way a connection is established with ADOdb. The new
