@@ -1,6 +1,10 @@
 2006-01-19  René Fritz  <r.fritz@colorcube.de>
 
-	* Fixed bug": The javascript dyn tabs used for eg. TCEForms and placed in template.php were not shown when used in popup windows because of an uninitialized variable.
+	* Fixed issue: Added clone() compatibility function for PHP4
+
+2006-01-19  René Fritz  <r.fritz@colorcube.de>
+
+	* Fixed bug: The javascript dyn tabs used for eg. TCEForms and placed in template.php were not shown when used in popup windows because of an uninitialized variable.
 
 2006-01-19  René Fritz  <r.fritz@colorcube.de>
 
