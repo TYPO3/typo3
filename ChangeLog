@@ -1,3 +1,7 @@
+2006-01-19  Michael Stucki  <michael@typo3.org>
+
+	* Added support to fetch values from objects in getText: myVar.data = TSFE:fe_user|user|username
+
 2006-01-19  Karsten Dambekalns  <karsten@typo3.org>
 
 	* sysext/dbal: Some bugfixes to connection handling; added $no_quote_fields support for INSERT and UPDATE methods.

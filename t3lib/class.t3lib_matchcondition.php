@@ -526,20 +526,21 @@ class t3lib_matchCondition {
 
 	/**
 	 * Return global variable where the input string $var defines array keys separated by "|"
+	 * Example: $var = "HTTP_SERVER_VARS | something" will return the value $GLOBALS['HTTP_SERVER_VARS']['something'] value
 	 *
-	 * @param	string		Global var key, eg. "HTTP_GET_VAR" or "HTTP_GET_VARS|id" to get the id GET parameter back.
+	 * @param	string		Global var key, eg. "HTTP_GET_VAR" or "HTTP_GET_VARS|id" to get the GET parameter "id" back.
 	 * @param	array		Alternative array than $GLOBAL to get variables from.
 	 * @return	mixed		Whatever value. If none, then blank string.
 	 * @access private
 	 */
-	function getGlobal($var,$inArr='') {
+	function getGlobal($var, $source=NULL)	{
 		$vars = explode('|',$var);
 		$c = count($vars);
 		$k = trim($vars[0]);
-		$theVar = is_array($inArr) ? $inArr[$k] : $GLOBALS[$k];
+		$theVar = isset($source) ? $source[$k] : $GLOBALS[$k];
 
-		for ($a=1;$a<$c;$a++) {
-			if (!isset($theVar))	{break;}
+		for ($a=1;$a<$c;$a++)	{
+			if (!isset($theVar))	{ break; }
 
 			$key = trim($vars[$a]);
 			if (is_object($theVar))	{

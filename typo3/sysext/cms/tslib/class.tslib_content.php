@@ -4885,24 +4885,35 @@ class tslib_cObj {
 	}
 
 	/**
-	 * Returns a value from the array, $GLOBALS where the input key, $val, is splitted by "|" first and each part points to a key in the $GLOBALS array.
+	 * Return global variable where the input string $var defines array keys separated by "|"
 	 * Example: $var = "HTTP_SERVER_VARS | something" will return the value $GLOBALS['HTTP_SERVER_VARS']['something'] value
 	 *
-	 * @param	string		Key, see description of functon
-	 * @param	array		If you want another array than $GLOBALS used, then just put it in here!
-	 * @return	mixed		Value from $GLOBALS
+	 * @param	string		Global var key, eg. "HTTP_GET_VAR" or "HTTP_GET_VARS|id" to get the GET parameter "id" back.
+	 * @param	array		Alternative array than $GLOBAL to get variables from.
+	 * @return	mixed		Whatever value. If none, then blank string.
 	 * @access private
 	 * @see getData()
 	 */
-	function getGlobal($var, $source=NULL) {
+	function getGlobal($var, $source=NULL)	{
 		$vars = explode('|', $var);
 		$c = count($vars);
-		$theVar = isset($source) ? $source[trim($vars[0])] : $GLOBALS[trim($vars[0])];
-		for ($a=1;$a<$c;$a++) {
-			if (!isset($theVar))	{break;}
-			$theVar = $theVar[trim($vars[$a])];
+		$k = trim($vars[0]);
+		$theVar = isset($source) ? $source[$k] : $GLOBALS[$k];
+
+		for ($a=1;$a<$c;$a++)	{
+			if (!isset($theVar))	{ break; }
+
+			$key = trim($vars[$a]);
+			if (is_object($theVar))	{
+				$theVar = $theVar->$key;
+			} elseif (is_array($theVar))	{
+				$theVar = $theVar[$key];
+			} else {
+				return '';
+			}
 		}
-		if (!is_array($theVar))	{
+
+		if (!is_array($theVar) && !is_object($theVar))	{
 			return $theVar;
 		} else {
 			return '';
