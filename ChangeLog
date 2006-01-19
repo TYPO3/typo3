@@ -1,17 +1,12 @@
+2006-01-19  Karsten Dambekalns  <karsten@typo3.org>
+
+	* sysext/dbal: Some bugfixes to connection handling; added $no_quote_fields support for INSERT and UPDATE methods.
+
 2006-01-19  René Fritz  <r.fritz@colorcube.de>
 
 	* Fixed bug: fixed bug related to PHP5 and clone() in tslib_content
-
-2006-01-19  René Fritz  <r.fritz@colorcube.de>
-
 	* Fixed issue: Added clone() compatibility function for PHP4
-
-2006-01-19  René Fritz  <r.fritz@colorcube.de>
-
 	* Fixed bug: The javascript dyn tabs used for eg. TCEForms and placed in template.php were not shown when used in popup windows because of an uninitialized variable.
-
-2006-01-19  René Fritz  <r.fritz@colorcube.de>
-
 	* Fixed a missing "global": added a missing global $TYPO3_CONF_VARS; to t3lib_userauthgroup::fetchGroups which would have been prevented that the hook fetchGroupQuery worked
 
 2006-01-19  Dmitry Dulepov  <typo3@accio.lv>
