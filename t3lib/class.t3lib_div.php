@@ -408,7 +408,7 @@ class t3lib_div {
 			&& strtolower(substr($theFile,-4,4))=='.png'
 			&& @is_file($theFile))	{	// IM
 				$newFile = substr($theFile,0,-4).'.gif';
-				$cmd = t3lib_div::imageMagickCommand('convert', '"'.$theFile.'" "'.$newFile.'"', $gfxConf['im_path_lzw']);
+				$cmd = t3lib_div::imageMagickCommand('convert', '"'.$theFile.'" "'.$newFile.'"', $GLOBALS['TYPO3_CONF_VARS']['GFX']['im_path_lzw']);
 				exec($cmd);
 				$theFile = $newFile;
 					// unlink old file?? May be bad idea bacause TYPO3 would then recreate the file every time as TYPO3 thinks the file is not generated because it's missing!! So do not unlink $theFile here!!
@@ -815,6 +815,7 @@ class t3lib_div {
 	 * @return	array		Contains keys [path], [file], [filebody], [fileext], [realFileext]
 	 */
 	function split_fileref($fileref)	{
+		$reg = array();
 		if (	ereg('(.*/)(.*)$',$fileref,$reg)	)	{
 			$info['path'] = $reg[1];
 			$info['file'] = $reg[2];
@@ -913,7 +914,7 @@ class t3lib_div {
 	 */
 	function danish_strtoupper($string)	{
 		$value = strtoupper($string);
-		return strtr($value, 'áéúíâêûôîæøåäöü', 'ÁÉÚÍÄËÜÖÏÆØÅÄÖÜ');
+		return strtr($value, 'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½', 'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½');
 	}
 
 	/**
@@ -921,13 +922,13 @@ class t3lib_div {
 	 * Only known characters will be converted, so don't expect a result for any character.
 	 * (DEPRECATED: Works only for western europe single-byte charsets! Use t3lib_cs::specCharsToASCII() instead!)
 	 *
-	 * ä => ae, Ö => Oe
+	 * ï¿½ => ae, ï¿½ => Oe
 	 *
 	 * @param	string		String to convert.
 	 * @return	string
 	 */
 	function convUmlauts($str)	{
-		$pat  = array (	'/ä/',	'/Ä/',	'/ö/',	'/Ö/',	'/ü/',	'/Ü/',	'/ß/',	'/å/',	'/Å/',	'/ø/',	'/Ø/',	'/æ/',	'/Æ/'	);
+		$pat  = array (	'/ï¿½/',	'/ï¿½/',	'/ï¿½/',	'/ï¿½/',	'/ï¿½/',	'/ï¿½/',	'/ï¿½/',	'/ï¿½/',	'/ï¿½/',	'/ï¿½/',	'/ï¿½/',	'/ï¿½/',	'/ï¿½/'	);
 		$repl = array (	'ae',	'Ae',	'oe',	'Oe',	'ue',	'Ue',	'ss',	'aa',	'AA',	'oe',	'OE',	'ae',	'AE'	);
 		return preg_replace($pat,$repl,$str);
 	}
@@ -1044,6 +1045,7 @@ class t3lib_div {
 		$qm='\*\/\+-^%';
 		$regex = '(['.$qm.'])(['.$qm.']?[0-9\.]*)';
 			// split the expression here:
+		$reg = array();
 		preg_match_all('/'.$regex.'/',$string,$reg);
 
 		reset($reg[2]);
@@ -1359,11 +1361,10 @@ class t3lib_div {
 	 * @see implodeArrayForUrl()
 	 */
 	function explodeUrl2Array($string,$multidim=FALSE)	{
+		$output = array();
 		if ($multidim)	{
-			parse_str($string,$tempGetVars);
-			return $tempGetVars;
+			parse_str($string,$output);
 		} else {
-			$output = array();
 			$p = explode('&',$string);
 			foreach($p as $v)	{
 				if (strlen($v))	{
@@ -1371,8 +1372,8 @@ class t3lib_div {
 					$output[rawurldecode($pK)] = rawurldecode($pV);
 				}
 			}
-			return $output;
 		}
+		return $output;
 	}
 
 	/**
@@ -1670,7 +1671,7 @@ class t3lib_div {
 	 * @param	boolean		Wrap script element in linebreaks? Default is TRUE.
 	 * @return	string		The wrapped JS code, ready to put into a XHTML page
 	 * @author	Ingmar Schlecht <ingmars@web.de>
-	 * @author	René Fritz <r.fritz@colorcube.de>
+	 * @author	Renï¿½ Fritz <r.fritz@colorcube.de>
 	 */
 	function wrapJS($string, $linebreak=TRUE) {
 		if(trim($string)) {
@@ -1680,6 +1681,7 @@ class t3lib_div {
 				// remove nl from the beginning
 			$string = preg_replace ('/^\n+/', '', $string);
 				// re-ident to one tab using the first line as reference
+			$match = array();
 			if(preg_match('/^(\t+)/',$string,$match)) {
 				$string = str_replace($match[1],"\t", $string);
 			}
@@ -1918,7 +1920,7 @@ class t3lib_div {
 			// In TYPO3 we expect that the charset of XML content is NOT handled in the parser but internally in TYPO3 instead. Therefore it would be very nice if PHP5 could be configured to NOT process the charset of the files. But this is not possible for now.
 			// What we do here fixes the problem but ONLY if the charset is utf-8, iso-8859-1 or us-ascii. That should work for most TYPO3 installations, in particular if people use utf-8 which we highly recommend.
 		if ((double)phpversion()>=5)	{
-			unset($ereg_result);
+			$ereg_result = array();
 			ereg('^[[:space:]]*<\?xml[^>]*encoding[[:space:]]*=[[:space:]]*"([^"]*)"',substr($string,0,200),$ereg_result);
 			$theCharset = $ereg_result[1] ? $ereg_result[1] : ($TYPO3_CONF_VARS['BE']['forceCharset'] ? $TYPO3_CONF_VARS['BE']['forceCharset'] : 'iso-8859-1');
 			xml_parser_set_option($parser, XML_OPTION_TARGET_ENCODING, $theCharset);  // us-ascii / utf-8 / iso-8859-1
@@ -2373,6 +2375,7 @@ class t3lib_div {
 	function resolveBackPath($pathStr)	{
 		$parts = explode('/',$pathStr);
 		$output=array();
+		$c = 0;
 		foreach($parts as $pV)	{
 			if ($pV=='..')	{
 				if ($c)	{
@@ -2661,12 +2664,10 @@ class t3lib_div {
 	 */
 	function linkThisUrl($url,$getParams=array())	{
 		$parts = parse_url($url);
+		$getP = array();
 		if ($parts['query'])	{
 			parse_str($parts['query'],$getP);
-		} else {
-			$getP = array();
 		}
-
 		$getP = t3lib_div::array_merge_recursive_overrule($getP,$getParams);
 		$uP = explode('?',$url);
 
@@ -3139,6 +3140,9 @@ class t3lib_div {
 	 * @internal
 	 */
 	function stdAuthCode($uid_or_record,$fields='')	{
+
+// FIXME $recCopy is undefined - could never work as expected
+
 		if (is_array($uid_or_record))	{
 			$recCopy_temp=array();
 			if ($fields)	{
@@ -3606,7 +3610,7 @@ class t3lib_div {
 	 * @param	string		Sub type like file extensions or similar. Defined by the service.
 	 * @param	mixed		List of service keys which should be exluded in the search for a service. Array or comma list.
 	 * @return	object		The service object or an array with error info's.
-	 * @author	René Fritz <r.fritz@colorcube.de>
+	 * @author	Renï¿½ Fritz <r.fritz@colorcube.de>
 	 */
 	function &makeInstanceService($serviceType, $serviceSubType='', $excludeServiceKeys=array())	{
 		global $T3_SERVICES, $T3_VAR, $TYPO3_CONF_VARS;
@@ -3827,7 +3831,6 @@ class t3lib_div {
 		if ($dpi!=72)	$font_size = $font_size/$dpi*72;
 		return $font_size;
 	}
-
 
 	/**
 	 * Init system error log.
