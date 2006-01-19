@@ -18,7 +18,7 @@
 	* Fixed issue #2268 on cleanup of sysext:css_styled_content
 	* Fixed small issue with link in LICENSE.txt
 
-	2005-01-19  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+2005-01-19  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
 	* add t3lib_div::sysLog() for Core logging
 	* use t3lib_div::sysLog() in t3lib_db->sql_pconnect() and t3lib_db->sql_select_db()
@@ -35,7 +35,7 @@
 
 	* Changes to the htmlArea RTE extension (details see local ChangeLog)
 
-2006-01-18  Dmitry Dulepov <typo3@accio.lv>
+2006-01-18  Dmitry Dulepov  <typo3@accio.lv>
 
 	* indexed_search: Removed empty line at the end of class.tx_indexedsearch.php. This line caused undesired effects in MSIE with certain PHP versions and UTF-8 encoding in FE.
 
@@ -1409,7 +1409,7 @@ Sorry for writing these changelog entries with a delay of two days. I write them
 2004-06-11  Robert Lemke  <rl@robertlemke.de>
 
 	* Created new hook in class.t3lib_tcemain.php in process_datamap. Search for $TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass']
-	(other hooks in that class will follow by Ren? as I know from a trusted source ... ;-)
+	  (other hooks in that class will follow by René as I know from a trusted source ... ;-)
 
 2004-06-09  Robert Lemke  <rl@robertlemke.de>
 

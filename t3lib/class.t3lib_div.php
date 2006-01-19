@@ -4034,7 +4034,7 @@ class t3lib_div {
 
 		if($command==='combine')	{	// This is only used internally, has no effect outside
 			$command = 'composite';
-}
+		}
 
 			// Compile the path & command
 		if($im_version==='gm')	{
