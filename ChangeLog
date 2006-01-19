@@ -17,6 +17,7 @@
 
 2006-01-19  René Fritz  <r.fritz@colorcube.de>
 
+	* Fixed bug: Fixed a problem with the RTE and inline images and base url's like http://mydomain.com/here_is_my_site/
 	* Fixed bug: fixed bug related to PHP5 and clone() in tslib_content
 	* Fixed issue: Added clone() compatibility function for PHP4
 	* Fixed bug: The javascript dyn tabs used for eg. TCEForms and placed in template.php were not shown when used in popup windows because of an uninitialized variable.
