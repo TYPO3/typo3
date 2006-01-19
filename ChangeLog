@@ -1,4 +1,3 @@
-
 2005-01-19  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
 	* add t3lib_div::sysLog() for Core logging
@@ -7,6 +6,9 @@
 2006-01-19  Sebastian Kurfuerst  <sebastian@garbage-group.de>
 
 	* New feature: Revised Undo/History feature.
+	* Fixed issue #1952: New hook in class.t3lib_userauthgroup.php
+	* Fixed issue #2243: Hook needed in class.t3lib_befunc.php, function getProcessedValue
+	* Fixed bug #2293: Javascript warnings
 
 2006-01-19  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 

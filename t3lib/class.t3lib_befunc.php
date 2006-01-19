@@ -1830,12 +1830,23 @@ class t3lib_BEfunc	{
 	 */
 	function getProcessedValue($table,$col,$value,$fixed_lgd_chars=0,$defaultPassthrough=0,$noRecordLookup=FALSE,$uid=0)	{
 		global $TCA;
+		global $TYPO3_CONF_VARS;
 			// Load full TCA for $table
 		t3lib_div::loadTCA($table);
 			// Check if table and field is configured:
 		if (is_array($TCA[$table]) && is_array($TCA[$table]['columns'][$col]))	{
 				// Depending on the fields configuration, make a meaningful output value.
 			$theColConf = $TCA[$table]['columns'][$col]['config'];
+
+				/*****************
+				 *HOOK: pre-processing the human readable output from a record
+				 ****************/
+			if (is_array ($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['preProcessValue'])) {
+			foreach ($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['preProcessValue'] as $_funcRef) {
+					t3lib_div::callUserFunction($_funcRef,$theColConf,$this);
+				}
+			}
+
 			$l='';
 			switch((string)$theColConf['type'])	{
 				case 'radio':
@@ -1931,6 +1942,20 @@ class t3lib_BEfunc	{
 					}
 				break;
 			}
+
+				/*****************
+				 *HOOK: post-processing the human readable output from a record
+				 ****************/
+			if (is_array ($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['postProcessValue'])) {
+			foreach ($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['postProcessValue'] as $_funcRef) {
+					$params = array(
+						'value' => $l,
+						'colConf' => $theColConf
+					);
+					$l = t3lib_div::callUserFunction($_funcRef,$params,$this);
+				}
+			}
+
 			if ($fixed_lgd_chars)	{
 				return t3lib_div::fixed_lgd_cs($l,$fixed_lgd_chars);
 			} else {
