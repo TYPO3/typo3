@@ -1,5 +1,9 @@
 2006-01-19  René Fritz  <r.fritz@colorcube.de>
 
+	* Fixed bug": The javascript dyn tabs used for eg. TCEForms and placed in template.php were not shown when used in popup windows because of an uninitialized variable.
+
+2006-01-19  René Fritz  <r.fritz@colorcube.de>
+
 	* Fixed a missing "global": added a missing global $TYPO3_CONF_VARS; to t3lib_userauthgroup::fetchGroups which would have been prevented that the hook fetchGroupQuery worked
 
 2006-01-19  Dmitry Dulepov  <typo3@accio.lv>
@@ -10,7 +14,7 @@
 
 	* Fixed issue #2268 on cleanup of sysext:css_styled_content
 	* Fixed small issue with link in LICENSE.txt
-	
+
 	2005-01-19  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
 	* add t3lib_div::sysLog() for Core logging
