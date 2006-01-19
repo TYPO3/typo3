@@ -251,7 +251,7 @@ class t3lib_pageSelect {
 
 			// Initialize:
 		if ($lUid<0)	$lUid = $this->sys_language_uid;
-		unset($row);
+		$row = NULL;
 
 			// If language UID is different from zero, do overlay:
 		if ($lUid)	{
@@ -932,6 +932,8 @@ class t3lib_pageSelect {
 	 * @see tslib_cObj::enableFields(), deleteClause()
 	 */
 	function enableFields($table,$show_hidden=-1,$ignore_array=array(),$noVersionPreview=FALSE)	{
+		global $TYPO3_CONF_VARS;
+
 		if ($show_hidden==-1 && is_object($GLOBALS['TSFE']))	{	// If show_hidden was not set from outside and if TSFE is an object, set it based on showHiddenPage and showHiddenRecords from TSFE
 			$show_hidden = $table=='pages' ? $GLOBALS['TSFE']->showHiddenPage : $GLOBALS['TSFE']->showHiddenRecords;
 		}
