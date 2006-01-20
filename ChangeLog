@@ -1,3 +1,7 @@
+2006-01-20  Karsten Dambekalns  <karsten@typo3.org>
+
+	* Fixed bugs 1907, 1581, 17, 2054, 35, 365 in EM.
+
 2006-01-20  Michael Stucki  <michael@typo3.org>
 
 	* New feature: Merged cron_cssstyledimgtext into CSS Styled Content. Kudos to Ernesto Baschny who did most of the work. Many thanks to Sebastian Kurfuerst for his great support. Great work boys!
