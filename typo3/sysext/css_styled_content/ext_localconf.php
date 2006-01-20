@@ -14,7 +14,7 @@ if ($_EXTCONF['removePositionTypes'])	{
 	');
 }
 
-$TYPO3_CONF_VARS['SC_OPTIONS']['ext/install']['compat_version']['tx_cssstyledcontent_accessibility'] = array('version' => 3009000, 'description' => 'The rendering of the following elements has changed:<ul><li><b>tt_content.menu</b> (used f.e. for sitemaps): Instead of div-tags, lists are used now.</li><li><b>tt_content.mailform</b>: Mailforms do not use tables anymore, instead, they use the div-tag. Besides that, mailforms are accessible now.</li><li><b>The p-tag has been removed from all table cells.</b></li></ul>', 'description_acknowledge' => 'Yes, I know that I will need to update my stylesheets to comply with this change.');
+$TYPO3_CONF_VARS['SC_OPTIONS']['ext/install']['compat_version']['tx_cssstyledcontent_accessibility'] = array('version' => 3009000, 'description' => 'The rendering of the following elements has changed:<ul><li><b>tt_content.menu</b> (used f.e. for sitemaps): Instead of div-tags, lists are used now.</li><li><b>tt_content.mailform</b>: Mailforms do not use tables anymore, instead, they use the div-tag. Besides that, mailforms are accessible now.</li><li><b>The p-tag has been removed from all table cells.</b></li><li><b>CSS based "image" and "text with image"</b><br />As the extension cron_cssstyledimgtext has been merged into the core, rendering of the content elements "image" and "text with image" has been changed to be CSS instead of table based. See the <a href="http://wiki.typo3.org/index.php/TYPO3_4.0">4.0 release notes</a> for further information.</li></ul>', 'description_acknowledge' => 'Yes, I know that I will need to update my stylesheets to comply with this change.');
 
 
 ?>
