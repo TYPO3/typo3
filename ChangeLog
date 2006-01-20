@@ -1,3 +1,7 @@
+2006-01-20  Dmitry Dulepov  <typo3@accio.lv>
+
+	* Fixed bug #2232: Creation of new workspace fails
+
 2006-01-20  Karsten Dambekalns  <karsten@typo3.org>
 
 	* Fixed bugs 1907, 1581, 17, 2054, 35, 365 in EM.
