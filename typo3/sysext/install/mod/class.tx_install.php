@@ -228,7 +228,7 @@ class tx_install extends t3lib_install {
 	function tx_install()	{
 		parent::t3lib_install();
 
-		if (!$GLOBALS["TYPO3_CONF_VARS"]["BE"]["installToolPassword"])	die("Install Tool deactivated.<BR>You must enable it by setting a password in typo3conf/localconf.php. If you insert the line below, the password will be 'joh316':<BR><BR>\$TYPO3_CONF_VARS[\"BE\"][\"installToolPassword\"] = \"bacb98acf97e0b6112b1d1b650b84971\";<BR><BR>See the document 'installing_upgrading_32b1.pdf' for more info.");
+		if (!$GLOBALS["TYPO3_CONF_VARS"]["BE"]["installToolPassword"])	die("Install Tool deactivated.<BR>You must enable it by setting a password in typo3conf/localconf.php. If you insert the line below, the password will be 'joh316':<BR><BR>\$TYPO3_CONF_VARS['BE']['installToolPassword'] = 'bacb98acf97e0b6112b1d1b650b84971';");
 
 		if ($this->sendNoCacheHeaders)	{
 			header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
@@ -1295,16 +1295,12 @@ From sub-directory:
 			case "get_form":
 				$default_config_content = t3lib_div::getUrl(PATH_t3lib."config_default.php");
 				$commentArr = $this->getDefaultConfigArrayComments($default_config_content);
-/*
-				$localconf_content = t3lib_div::getUrl(PATH_typo3conf."localconf.php");
-				$commentArr2 = $this->getConfigArrayComments($localconf_content);
-				debug($commentArr2);
-*/
+
 				reset($GLOBALS["TYPO3_CONF_VARS"]);
 				$this->messageFunc_nl2br=0;
 				while(list($k,$va)=each($GLOBALS["TYPO3_CONF_VARS"]))	{
 					$ext="[".$k."]";
-					$this->message($ext, '$TYPO3_CONF_VARS["'.$k.'"]',$commentArr[0][$k],1);
+					$this->message($ext, '$TYPO3_CONF_VARS[\''.$k.'\']',$commentArr[0][$k],1);
 					while(list($vk,$value)=each($va))	{
 						if (!is_array($value) && $this->checkForBadString($value))	{
 							$k2="[".$vk."]";
@@ -1343,7 +1339,7 @@ From sub-directory:
 											if (t3lib_div::_GP("installToolPassword_md5"))	$value =md5($value);
 										} else $doit=0;
 									}
-									if ($doit && strcmp($GLOBALS["TYPO3_CONF_VARS"][$k][$vk],$value))	$this->setValueInLocalconfFile($lines, '$TYPO3_CONF_VARS["'.$k.'"]["'.$vk.'"]', $value);
+									if ($doit && strcmp($GLOBALS["TYPO3_CONF_VARS"][$k][$vk],$value))	$this->setValueInLocalconfFile($lines, '$TYPO3_CONF_VARS[\''.$k.'\'][\''.$vk.'\']', $value);
 								}
 							}
 						}
@@ -1380,8 +1376,6 @@ From sub-directory:
 						} elseif ($mainKey) {
 							$commentArray[$mainKey][$reg[1]]=trim($theComment);
 						}
-					} else {
-						//debug($lc,1);
 					}
 				}
 			}
@@ -1422,23 +1416,6 @@ From sub-directory:
 			// *****************
 			// Incoming values:
 			// *****************
-/*
-		if (!ini_get("track_vars"))	{
-			$this->message($ext, "Tracking Vars not set","
-				<i>track_vars=".ini_get("track_vars")."</i>
-				Tracking vars are essential for almost any PHP-application.
-				The fact that the value is not set may not impose a problem, because it's always set in version 4.03+ of PHP.
-			",1);
-		} else $this->message($ext, "Tracking Vars enabled","",-1);
-*/
-/*
-		if (!ini_get("allow_url_fopen"))	{
-			$this->message($ext, "fopen() not allowed to open URL's","
-				<i>allow_url_fopen=".ini_get("allow_url_fopen")."</i>
-				allow_url_fopen should be enabled if you want TYPO3 to connect to the online TYPO3 Extension Repository.
-			",2);
-		} else $this->message($ext, "fopen() allowed to open URL's","",-1);
-*/
 
 			// Includepath
 		$incPaths = t3lib_div::trimExplode(TYPO3_OS=="WIN"?";":":", ini_get("include_path"));
@@ -1449,33 +1426,6 @@ From sub-directory:
 			",1);
 		} else $this->message($ext, "Current dir in include path","",-1);
 
-/*
-		if (!ini_get("register_globals"))	{
-			$this->message($ext, "Register globals disabled","
-				<i>register_globals=".ini_get("register_globals")."</i>
-				Incoming values by GET or POST method are not registered as globals. TYPO3 is designed to cope with that - actually we encourage that setting - but you should be aware if your included PHP-scripts (or TypoScript configurations) are compatible with this setting.
-				You should always use the function t3lib_div::_GP(\"<i>[the_var_name_from_GET_or_POST]</i>\") to retrieve values passed to your script from outside.
-			",1);
-		} else $this->message($ext, "Register globals enabled","You should always use the function t3lib_div::_GP(\"<i>[the_var_name_from_GET_or_POST]</i>\") to retrieve values passed to your script from outside.",1);
-		if (!ini_get("magic_quotes_gpc"))	{
-			$this->message($ext, "magic_quotes_gpc","
-				<i>magic_quotes_gpc=".ini_get("magic_quotes_gpc")."</i>
-				Incoming \" and ' chars in values by GET or POST method are currently <i>not</i> escaped. TYPO3 is designed to cope with that but it may be on the expense of a minor performance loss, because all incoming values are addslashes()'ed.
-			",1);
-		} else $this->message($ext, "magic_quotes_gpc","<i>magic_quotes_gpc=".ini_get("magic_quotes_gpc")."</i>",-1);
-		if (ini_get("magic_quotes_runtime"))	{
-			$this->message($ext, "Magic Quotes Runtime is enabled","
-				<i>magic_quotes_runtime=".ini_get("magic_quotes_runtime")."</i>
-				TYPO3 is depending on this option NOT being enabled!
-			",3);
-		} else $this->message($ext, "magic_quotes_runtime","<i>magic_quotes_runtime=".ini_get("magic_quotes_runtime")."</i>",-1);
-		if (ini_get("gpc_order")!="GPC")	{
-			$this->message($ext, "GPC order non-standard","
-				<i>gpc_order=".ini_get("gpc_order")."</i>
-				The order of GET, POST and COOKIE vars are non-standard. The value should be \"GPC\".
-			",2);
-		} else $this->message($ext, "GPC order","",-1);
-*/
 			// *****************
 			// File uploads
 			// *****************
