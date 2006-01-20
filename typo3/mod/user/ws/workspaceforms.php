@@ -176,7 +176,7 @@ class SC_mod_user_ws_workspaceForms extends t3lib_SCbase {
 		}
 
 		// process submission (this may override action and workspace ID!)
-		if (t3lib_div::_GP('submit_x') != '') {
+		if (t3lib_div::_GP('_saveandclosedok') || t3lib_div::_GP('_savedok')) {
 			$this->processData();
 			// if 'Save&Close' was pressed, redirect to main module script
 			if (t3lib_div::_GP('_saveandclosedok_x')) {
@@ -352,14 +352,13 @@ class SC_mod_user_ws_workspaceForms extends t3lib_SCbase {
 //		$form .= $this->doc->spacer(5);
 		$form .= $this->tceforms->getMainFields($table,$rec);
 		$form .= '<input type="hidden" name="data['.$table.']['.$rec['uid'].'][pid]" value="'.$rec['pid'].'" />';
-		$form .= '<input type="hidden" name="submit_x" value="1" />';
 		$form .= '<input type="hidden" name="returnUrl" value="index.php" />';
 		$form .= '<input type="hidden" name="action" value="edit" />';
 		$form .= '<input type="hidden" name="closeDoc" value="0" />';
 		$form .= '<input type="hidden" name="doSave" value="0" />';
 		$form .= '<input type="hidden" name="_serialNumber" value="'.md5(microtime()).'" />';
 		$form .= '<input type="hidden" name="_disableRTE" value="'.$this->tceforms->disableRTE.'" />';
-		$form .= '<input type="hidden" name="workspaceId" value="' . $this->workspaceId . '" />';
+		$form .= '<input type="hidden" name="wkspId" value="' . $this->workspaceId . '" />';
 		$form = $this->tceforms->wrapTotal($form, $rec, $table);
 
 		$buttons = $this->createButtons() . $this->doc->spacer(5);
@@ -418,11 +417,12 @@ class SC_mod_user_ws_workspaceForms extends t3lib_SCbase {
 		$form .= $this->tceforms->getMainFields($table,$rec);
 //		$form .= $this->tceforms->getListedFields($table,$rec,implode(',', $fields));
 		$form .= '<input type="hidden" name="data['.$table.']['.$rec['uid'].'][pid]" value="'.$rec['pid'].'" />';
+		$form .= '<input type="hidden" name="returnUrl" value="index.php" />';
+		$form .= '<input type="hidden" name="action" value="new" />';
 		$form .= '<input type="hidden" name="closeDoc" value="0" />';
 		$form .= '<input type="hidden" name="doSave" value="0" />';
 		$form .= '<input type="hidden" name="_serialNumber" value="'.md5(microtime()).'" />';
 		$form .= '<input type="hidden" name="_disableRTE" value="'.$this->tceforms->disableRTE.'" />';
-		$form .= '<input type="hidden" name="submit" value="1" />';
 		$form = $this->tceforms->wrapTotal($form, $rec, $table);
 
 		$buttons = $this->createButtons() . $this->doc->spacer(5);
@@ -441,8 +441,8 @@ class SC_mod_user_ws_workspaceForms extends t3lib_SCbase {
 		global	$LANG;
 
 		$content = '';
-		$content .= '<input type="image" class="c-inputButton" name="_savedok"' . t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/savedok.gif','').' title="'.$LANG->sL('LLL:EXT:lang/locallang_core.php:rm.saveDoc',1).'" />';
-		$content .= '<input type="image" class="c-inputButton" name="_saveandclosedok"'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/saveandclosedok.gif','').' title="'.$LANG->sL('LLL:EXT:lang/locallang_core.php:rm.saveCloseDoc',1).'" />';
+		$content .= '<input type="image" class="c-inputButton" name="_savedok"' . t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/savedok.gif','').' title="'.$LANG->sL('LLL:EXT:lang/locallang_core.php:rm.saveDoc',1).'" value="_savedok" />';
+		$content .= '<input type="image" class="c-inputButton" name="_saveandclosedok"'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/saveandclosedok.gif','').' title="'.$LANG->sL('LLL:EXT:lang/locallang_core.php:rm.saveCloseDoc',1).'" value="_saveandclosedok" />';
 		// `n` below is simply to prevent caching
 		$content .= '<a href="index.php?n=' . uniqid('wksp') . '"><img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/closedok.gif','width="21" height="16"').' class="c-inputButton" title="'.$LANG->sL('LLL:EXT:lang/locallang_core.php:rm.closeDoc',1).'" alt="" /></a>';
 		return $content;

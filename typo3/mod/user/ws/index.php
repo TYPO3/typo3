@@ -1390,7 +1390,7 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 
 				// row #1, column #4 and 5: title and description
 			$content .= '<td nowrap="nowrap">' . $wksp['title'] . '</td>' .
-						'<td>' . $wksp['description'] . '</td>';
+						'<td>' . nl2br($wksp['description']) . '</td>';
 			$content .= '</tr>';
 
 				// row #2, column #1 and #2
