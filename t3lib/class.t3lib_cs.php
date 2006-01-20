@@ -1518,17 +1518,17 @@ class t3lib_cs {
 	function conv_case($charset,$string,$case)	{
 		if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['t3lib_cs_utils'] == 'mbstring' && (float)phpversion() >= 4.3)	{
 			if ($case == 'toLower')	{
-				return mb_strtolower($string,$charset);
+				$string = mb_strtolower($string,$charset);
 			} else {
-				return mb_strtoupper($string,$charset);
+				$string = mb_strtoupper($string,$charset);
 			}
 		} elseif ($charset == 'utf-8')	{
-			return $this->utf8_char_mapping($string,'case',$case);
+			$string = $this->utf8_char_mapping($string,'case',$case);
 		} elseif (isset($this->eucBasedSets[$charset]))	{
-			return $this->euc_char_mapping($string,$charset,'case',$case);
+			$string = $this->euc_char_mapping($string,$charset,'case',$case);
 		} else {
 				// treat everything else as single-byte encoding
-			return $this->sb_char_mapping($string,$charset,'case',$case);
+			$string = $this->sb_char_mapping($string,$charset,'case',$case);
 		}
 
 		return $string;
@@ -1543,12 +1543,12 @@ class t3lib_cs {
 	 */
 	function specCharsToASCII($charset,$string)	{
 		if ($charset == 'utf-8')	{
-			return $this->utf8_char_mapping($string,'ascii');
+			$string = $this->utf8_char_mapping($string,'ascii');
 		} elseif (isset($this->eucBasedSets[$charset]))	{
-			return $this->euc_char_mapping($string,$charset,'ascii');
+			$string = $this->euc_char_mapping($string,$charset,'ascii');
 		} else {
 				// treat everything else as single-byte encoding
-			return $this->sb_char_mapping($string,$charset,'ascii');
+			$string = $this->sb_char_mapping($string,$charset,'ascii');
 		}
 
 		return $string;
@@ -1741,7 +1741,7 @@ class t3lib_cs {
 		if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['t3lib_cs_utils'] == 'mbstring')	{
 			return mb_strrpos($haystack,$needle,'utf-8');
 		} elseif ($GLOBALS['TYPO3_CONF_VARS']['SYS']['t3lib_cs_utils'] == 'iconv')	{
-			return iconv_strrpos($haystack,$needle,$offset,'utf-8');
+			return iconv_strrpos($haystack,$needle,'utf-8');
 		}
 
 		$byte_pos = strrpos($haystack,$needle);

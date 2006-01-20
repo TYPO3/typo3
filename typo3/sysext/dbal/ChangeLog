@@ -1,3 +1,18 @@
+2006-01-19  Karsten Dambekalns <karsten@typo3.org>
+
+	* Changes to connection handling, detecting failed connections.
+	* Added support for $no_quote_fields in UPDATE and INSERT methods.
+
+2006-01-04  Karsten Dambekalns <karsten@typo3.org>
+
+	* Changed the way a connection is established with ADOdb. The new
+	way allows ODBC connections (rather, connections to drivers having
+	an underscore in their name).
+	* Changes to ext_tables.sql to make it more portable.
+	* When printing errors, output the offending SQL as well.
+	* Some small fixes, enhancements to code documentation.
+	* Some additions to the manual.
+
 2005-12-27  Karsten Dambekalns <karsten@typo3.org>
 
 	* Converted locallang to XML, small adaptions to syext location.

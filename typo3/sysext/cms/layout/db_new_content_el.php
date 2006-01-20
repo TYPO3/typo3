@@ -127,7 +127,7 @@ class ext_posMap extends t3lib_positionMap {
 
 		$location=$this->backPath.'alt_doc.php?edit[tt_content]['.(is_array($row)?-$row['uid']:$pid).']=new&defVals[tt_content][colPos]='.$vv.'&defVals[tt_content][sys_language_uid]='.$sys_lang.'&returnUrl='.rawurlencode($GLOBALS['SOBE']->R_URI);
 
-		return 'document.location=\''.$location.'\'+document.editForm.defValues.value; return false;';
+		return 'window.location.href=\''.$location.'\'+document.editForm.defValues.value; return false;';
 	}
 }
 
@@ -275,7 +275,7 @@ class SC_db_new_content_el {
 					$tL=array();
 
 						// Radio button:
-					$oC = "document.editForm.defValues.value=unescape('".rawurlencode($wInfo['params'])."');goToalt_doc();".(!$onClickEvent?"document.location='#sel2';":'');
+					$oC = "document.editForm.defValues.value=unescape('".rawurlencode($wInfo['params'])."');goToalt_doc();".(!$onClickEvent?"window.location.hash='#sel2';":'');
 					$tL[]='<input type="radio" name="tempB" value="'.htmlspecialchars($k).'" onclick="'.htmlspecialchars($this->doc->thisBlur().$oC).'" />';
 
 						// Onclick action for icon/title:

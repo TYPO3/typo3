@@ -749,15 +749,23 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv("REMOTE_ADDR")."' (".t3lib_div::getIndp
 				if ($result = $GLOBALS['TYPO3_DB']->sql_pconnect(TYPO3_db_host, TYPO3_db_username, TYPO3_db_password))	{
 					if ($GLOBALS['TYPO3_DB']->sql_select_db(TYPO3_db))	{
 						$sFiles = t3lib_div::getFilesInDir(PATH_typo3conf,"sql",1,1);
-						reset($sFiles);
+
+							// Check if default database scheme "database.sql" already exists, otherwise create it
+						if (!strstr(implode(',',$sFiles).',', '/database.sql,'))	{
+							array_unshift($sFiles,'Create default database tables');
+						}
+
 						$opt='';
-						while(list(,$f)=each($sFiles))	{
-							$opt.='<option value="import|'.htmlspecialchars($f).'">'.htmlspecialchars(basename($f)).'</option>';
+						foreach ($sFiles as $f)	{
+							if ($f=='Create default database tables')	$key='CURRENT_TABLES+STATIC';
+							else $key=htmlspecialchars($f);
+
+							$opt.='<option value="import|'.$key.'">'.htmlspecialchars(basename($f)).'</option>';
 						}
 
 
 						$content='
-							'.$this->fontTag2.'Database dumps in typo3conf/ directory:</font><BR>
+							'.$this->fontTag2.'Please select a database dump:</font><BR>
 							<input type="hidden" name="TYPO3_INSTALL[database_import_all]" value=1>
 						   <input type="hidden" name="step" value="">
 						   <input type="hidden" name="goto_step" value="go">
@@ -2128,6 +2136,7 @@ From sub-directory:
 							break;
 							case "encryptionKey":
 								if (strcmp($GLOBALS["TYPO3_CONF_VARS"]["SYS"]["encryptionKey"],$value))	$this->setValueInLocalconfFile($lines, '$TYPO3_CONF_VARS["SYS"]["encryptionKey"]', $value);
+							break;
 							case "compat_version":
 								if (strcmp($GLOBALS["TYPO3_CONF_VARS"]["SYS"]["compat_version"],$value))	$this->setValueInLocalconfFile($lines, '$TYPO3_CONF_VARS["SYS"]["compat_version"]', $value);
 							break;
@@ -3373,7 +3382,7 @@ From sub-directory:
 			if (!$action_type)	{
 				$this->message($headCode, "Menu",'
 				<script language="javascript" type="text/javascript">
-				document.location = "'.$directJump.'";
+				window.location.href = "'.$directJump.'";
 				</script>',0,1);
 			}
 		} else {
@@ -3557,16 +3566,29 @@ From sub-directory:
 				case "import":
 					$mode123Imported=0;
 					$tblFileContent="";
-					if (!strcmp($actionParts[1],"CURRENT_STATIC")) {
-						reset($GLOBALS["TYPO3_LOADED_EXT"]);
-						while(list(,$loadedExtConf)=each($GLOBALS["TYPO3_LOADED_EXT"]))	{
-							if (is_array($loadedExtConf) && $loadedExtConf["ext_tables_static+adt.sql"])	{
-								$tblFileContent.= chr(10).chr(10).chr(10).chr(10).t3lib_div::getUrl($loadedExtConf["ext_tables_static+adt.sql"]);
+					if (preg_match('/^CURRENT_/', $actionParts[1]))	{
+						if (!strcmp($actionParts[1],'CURRENT_TABLES') || !strcmp($actionParts[1],'CURRENT_TABLES+STATIC'))	{
+							$tblFileContent = t3lib_div::getUrl(PATH_t3lib.'stddb/tables.sql');
+
+							reset($GLOBALS['TYPO3_LOADED_EXT']);
+							while(list(,$loadedExtConf)=each($GLOBALS['TYPO3_LOADED_EXT']))	{
+								if (is_array($loadedExtConf) && $loadedExtConf['ext_tables.sql'])	{
+									$tblFileContent.= chr(10).chr(10).chr(10).chr(10).t3lib_div::getUrl($loadedExtConf['ext_tables.sql']);
+								}
+							}
+						}
+						if (!strcmp($actionParts[1],'CURRENT_STATIC') || !strcmp($actionParts[1],'CURRENT_TABLES+STATIC'))	{
+							reset($GLOBALS["TYPO3_LOADED_EXT"]);
+							while(list(,$loadedExtConf)=each($GLOBALS["TYPO3_LOADED_EXT"]))	{
+								if (is_array($loadedExtConf) && $loadedExtConf["ext_tables_static+adt.sql"])	{
+									$tblFileContent.= chr(10).chr(10).chr(10).chr(10).t3lib_div::getUrl($loadedExtConf["ext_tables_static+adt.sql"]);
+								}
 							}
 						}
 					} elseif (@is_file($actionParts[1]))	{
 						$tblFileContent = t3lib_div::getUrl($actionParts[1]);
 					}
+
 					if ($tblFileContent)	{
 						$tLabel="Import SQL dump";
 							// Getting statement array from
@@ -3575,12 +3597,46 @@ From sub-directory:
 
 							// Updating database...
 						if ($this->INSTALL["database_import_all"])	{
-							reset($statements);
 							$r=0;
-							while(list($k,$v)=each($statements))	{
+							foreach ($statements as $k=>$v)	{
 								$res = $GLOBALS['TYPO3_DB']->admin_query($v);
 								$r++;
 							}
+
+								// Make a database comparison because some tables that are defined twice have not been created at this point. This applies to the "pages.*" fields defined in sysext/cms/ext_tables.sql for example.
+							$fileContent = implode(
+								$this->getStatementArray($tblFileContent,1,'^CREATE TABLE '),
+								chr(10)
+							);
+							$FDfile = $this->getFieldDefinitions_sqlContent($fileContent);
+							$FDdb = $this->getFieldDefinitions_database();
+							$diff = $this->getDatabaseExtra($FDfile, $FDdb);
+							$update_statements = $this->getUpdateSuggestions($diff);
+							foreach ($update_statements['add'] as $statement)	{
+								$res = $GLOBALS['TYPO3_DB']->admin_query($statement);
+							}
+
+							if ($this->mode=='123')	{
+									// Create default be_user admin/password
+								$username = 'admin';
+								$pass = 'password';
+
+								$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', 'be_users', 'username='.$GLOBALS['TYPO3_DB']->fullQuoteStr($username, 'be_users'));
+								if (!$GLOBALS['TYPO3_DB']->sql_num_rows($res))	{
+									$insertFields = array(
+										'username' => $username,
+										'password' => md5($pass),
+										'admin' => 1,
+										'uc' => '',
+										'fileoper_perms' => 7,
+										'tstamp' => time(),
+										'crdate' => time()
+									);
+
+									$GLOBALS['TYPO3_DB']->exec_INSERTquery('be_users', $insertFields);
+								}
+							}
+
 							$this->message($tLabel,"Imported ALL","
 								Queries: ".$r."
 							",1,1);
@@ -3827,9 +3883,9 @@ From sub-directory:
 	}
 
 	/**
-	 * [Describe function...]
+	 * Generates update wizard, outputs it as well
 	 *
-	 * @return	[type]		...
+	 * @return	void
 	 */
 	function updateWizard()	{
 		global $TYPO3_CONF_VARS;
@@ -3856,9 +3912,10 @@ From sub-directory:
 		echo $this->outputWrapper($this->printAll());
 	}
 	/**
-	 * [Describe function...]
+	 * Implements the steps for the update wizard
 	 *
-	 * @return	[type]		...
+	 * @param	string		action which should be done.
+	 * @return	void
 	 */
 	function updateWizard_parts($action)	{
 		$content = '';
@@ -3876,7 +3933,7 @@ From sub-directory:
 					$tmpObj = $this->getUpgradeObjInstance($className, $identifier);
 					if (method_exists($tmpObj,'checkForUpdate'))	{
 						$explanation = '';
-						if ($tmpObj->checkForUpdate(&$explanation))	{
+						if ($tmpObj->checkForUpdate($explanation))	{
 							$tableContent .= '<tr><td valign="top"><input type="checkbox" name="TYPO3_INSTALL[update]['.$identifier.']" id="TYPO3_INSTALL[update]['.$identifier.']" value="1" /></td><td><strong><label for="TYPO3_INSTALL[update]['.$identifier.']">'.$identifier.'</label></strong><br />'.str_replace(chr(10),'<br />',$explanation).'</td></tr><tr><td colspan="2"><hr /></td></tr>';
 						}
 					}
@@ -3924,7 +3981,7 @@ From sub-directory:
 						// check user input if testing method is available
 					if (method_exists($tmpObj,'checkUserInput'))	{
 						$customOutput = '';
-						if (!$tmpObj->checkUserInput(&$customOutput))	{
+						if (!$tmpObj->checkUserInput($customOutput))	{
 							$content .= '<strong>'.($customOutput?$customOutput:'Something went wrong').'</strong>';
 							$content .= '<br /><a href="javascript:history.back()">Go back to update configuration</a>';
 							break;
@@ -3934,7 +3991,7 @@ From sub-directory:
 					if (method_exists($tmpObj,'performUpdate'))	{
 						$customOutput = '';
 						$dbQueries = array();
-						if ($tmpObj->performUpdate(&$dbQueries, &$customOutput))	{
+						if ($tmpObj->performUpdate($dbQueries, $customOutput))	{
 							$content .= '<strong>Update successful!</strong>';
 						} else {
 							$content .= '<strong>FAILURE!</strong>';
@@ -3956,9 +4013,12 @@ From sub-directory:
 	}
 
 	/**
-	 * [Describe function...]
+	 * Creates instance of an upgrade object, setting the pObj, versionNumber and pObj
 	 *
-	 * @return	[type]		...
+	 * @param	string		class name
+	 * @param	identifier		identifier of upgrade object - needed to fetch user input
+	 *
+	 * @return	object		newly instanciated upgrade object
 	 */
 	function getUpgradeObjInstance($className, $identifier)	{
 		$tmpObj = &t3lib_div::getUserObj($className);
@@ -4906,7 +4966,7 @@ p,td {
 
 				- <a href='../../index.php'><strong>Go to the frontend pages</strong></a>
 
-				- <a href='../index.php?u=admin&p=password'><strong>Go to the backend login</strong></a>
+				- <a href='../index.php'><strong>Go to the backend login</strong></a>
 				 (username may be: <i>admin</i>, password may be: <i>password</i>.)
 
 				- <a href='".$this->scriptSelf."'><strong>Continue to configure TYPO3</strong></a> (Recommended).

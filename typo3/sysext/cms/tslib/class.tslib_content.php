@@ -750,18 +750,8 @@ class tslib_cObj {
 
 				// initialisation
 			$caption='';
-			if (is_array($conf['caption.']))	{
-				$caption= $this->stdWrap($this->cObjGet($conf['caption.'], 'caption.'),$conf['caption.']);
-			}
-			$captionArray=array();
-			if ($conf['captionSplit'])	{
-				$capSplit = $this->stdWrap($conf['captionSplit.']['token'],$conf['captionSplit.']['token.']);
-				if (!$capSplit) {$capSplit=chr(10);}
-				$caption2= $this->cObjGetSingle($conf['captionSplit.']['cObject'],$conf['captionSplit.']['cObject.'],'captionSplit.cObject');
-				$captionArray=explode($capSplit,$caption2);
-				while(list($ca_key,$ca_val)=each($captionArray))	{
-					$captionArray[$ca_key] = $this->stdWrap(trim($captionArray[$ca_key]), $conf['captionSplit.']['stdWrap.']);
-				}
+			if (!$conf['captionSplit'] && !$conf['imageTextSplit'] && is_array($conf['caption.']))	{
+				$caption = $this->stdWrap($this->cObjGet($conf['caption.'], 'caption.'),$conf['caption.']);	// global caption, no splitting
 			}
 
 			$tablecode='';
@@ -1044,18 +1034,21 @@ class tslib_cObj {
 						if ($noCols)	{$tablecode.='<table width="'.$imageRowsFinalWidths[$c].'" border="0" cellpadding="0" cellspacing="0"><tr>';}		// In case of "noCols" we must set the table-tag that surrounds the images in the row.
 					}
 					for ($a=0;$a<$rowCount_temp;$a++)	{	// Looping through the rows IF "noRows" is set. "noRows"  means that the rows of images is not rendered by physical table rows but images are all in one column and spaced apart with clear-gifs. This loop is only one time if "noRows" is not set.
+						$GLOBALS['TSFE']->register['IMAGE_NUM'] = $imgIndex;	// register previous imgIndex
 						$imgIndex = $index+$a*$colCount_temp;
 						if ($imgsTag[$imgIndex])	{
 							if ($rowspacing && $noRows && $a) {		// Puts distance between the images IF "noRows" is set and this is the first iteration of the loop
 								$tablecode.= '<img src="'.$GLOBALS['TSFE']->absRefPrefix.'clear.gif" width="1" height="'.$rowspacing.'" alt="" title="" /><br />';
 							}
-
+							if ($conf['captionSplit'] || $conf['imageTextSplit'])	{
+								$thisCaption = $this->stdWrap($this->cObjGet($conf['caption.'], 'caption.'), $conf['captionStdWrap.']);
+							}
 							$imageHTML = $imgsTag[$imgIndex].'<br />';
-							$Talign = (!trim($captionArray[$imgIndex]) && !$noRows && !$conf['netprintApplicationLink']) ? ' align="left"' : '';  // this is necessary if the tablerows are supposed to space properly together! "noRows" is excluded because else the images "layer" together.
+							$Talign = (!trim($thisCaption) && !$noRows && !$conf['netprintApplicationLink']) ? ' align="left"' : '';  // this is necessary if the tablerows are supposed to space properly together! "noRows" is excluded because else the images "layer" together.
 							if ($border)	{$imageHTML='<table border="0" cellpadding="'.$borderThickness.'" cellspacing="0" bgcolor="'.$borderColor.'"'.$Talign.'><tr><td>'.$imageHTML.'</td></tr></table>';}		// break-tag added 160301  , ($noRows?'':' align="left"')  removed 160301, break tag removed 160301 (later...)
 							$imageHTML.=$editIconsHTML;		$editIconsHTML='';
 							if ($conf['netprintApplicationLink'])	{$imageHTML = $this->netprintApplication_offsiteLinkWrap($imageHTML,$origImages[$imgIndex],$conf['netprintApplicationLink.']);}
-							$imageHTML.=$captionArray[$imgIndex];	// Adds caption.
+							$imageHTML.=$thisCaption;	// Adds caption.
 							if ($noCols)	{$imageHTML='<td valign="top">'.$imageHTML.'</td>';}		// If noCols, put in table cell.
 							$tablecode.=$imageHTML;
 						}
@@ -1920,7 +1913,7 @@ class tslib_cObj {
 
 						// Field:
 					$fieldLabel = $confData['label'];
-					if ($conf['accessibility'] && $confData['type']!='radio' && $confData['type'] != 'label')	{
+					if ($conf['accessibility'] && trim($fieldLabel) && !preg_match('/^(radio|label|hidden|comment)$/',$confData['type']))	{
 						$fieldLabel = '<label for="'.$prefix.$fName.'">'.$fieldLabel.'</label>';
 					}
 
@@ -2029,7 +2022,7 @@ class tslib_cObj {
 		$hiddenfields = '<div style="display:none;">'.$hiddenfields.'</div>';
 
 		if ($conf['REQ'])	{
-			$validateForm=' onsubmit="return validateForm(\''.$formname.'\',\''.implode(',',$fieldlist).'\',\''.rawurlencode($conf['goodMess']).'\',\''.rawurlencode($conf['badMess']).'\',\''.rawurlencode($conf['emailMess']).'\')"';
+			$validateForm=' onsubmit="return validateForm(\''.$formname.'\',\''.implode(',',$fieldlist).'\','.t3lib_div::quoteJSvalue($conf['goodMess']).','.t3lib_div::quoteJSvalue($conf['badMess']).','.t3lib_div::quoteJSvalue($conf['emailMess']).')"';
 			$GLOBALS['TSFE']->additionalHeaderData['JSFormValidate'] = '<script type="text/javascript" src="'.$GLOBALS['TSFE']->absRefPrefix.'t3lib/jsfunc.validateform.js"></script>';
 		} else $validateForm='';
 
@@ -2559,7 +2552,7 @@ class tslib_cObj {
 					.'&NP[offsite_thumb][1]='.rawurlencode($thumbFile);
 				$linkCObject = $this->cObjGetSingle($conf['cObject'],$conf['cObject.']);
 				if ($linkCObject)	{
-					$ATagParams = trim($conf['ATagParams']) ? ' '.trim($conf['ATagParams']) : '';
+					$ATagParams = $this->getATagParams($conf, 0);
 					$linkCObject='<a href="'.htmlspecialchars($url).'"'.$ATagParams.'>'.$linkCObject.'</a>';
 					$linkCObject=$this->stdWrap($linkCObject,$conf['outerStdWrap.']);
 					if ($conf['before'])	{
@@ -2792,15 +2785,20 @@ class tslib_cObj {
 		$altParam = ' alt="'.htmlspecialchars(strip_tags($altText)).'"';
 
 			// "title":
-		if ($titleText) {
+		$emptyTitleHandling = 'useAlt';
+		if ($conf['emptyTitleHandling'])	{
+				// choices: 'keepEmpty' | 'useAlt' | 'removeAttr'
+			$emptyTitleHandling = $conf['emptyTitleHandling'];
+		}
+		if ($titleText || $emptyTitleHandling == 'keepEmpty')	{
 			$altParam.= ' title="'.htmlspecialchars(strip_tags($titleText)).'"';
-		} else {
+		} elseif (!$titleText && $emptyTitleHandling == 'useAlt')	{
 			$altParam.= ' title="'.htmlspecialchars(strip_tags($altText)).'"';
 		}
 
 			// "longDesc" URL
 		if ($longDesc)	{
-			$altParam.= ' longdesc="'.htmlspecialchars($longDesc).'"';
+			$altParam.= ' longdesc="'.htmlspecialchars(strip_tags($longDesc)).'"';
 		}
 
 		return $altParam;
@@ -2820,6 +2818,27 @@ class tslib_cObj {
 		return preg_replace('#[^:a-zA-Z0-9]#','',$name);
 	}
 
+	/**
+	 * An abstraction method to add parameters to an A tag.
+	 * Uses the ATagParams property.
+	 *
+	 * @param	array		TypoScript configuration properties
+	 * @param	boolean		If set, will add the global config.ATagParams to the link
+	 * @return	string		String containing the parameters to the A tag (if non empty, with a leading space)
+	 * @see IMGTEXT(), filelink(), makelinks(), typolink()
+	 */
+	 function getATagParams($conf, $addGlobal=1)	{
+		$aTagParams = '';
+		if ($conf['ATagParams.'])	{
+			$aTagParams = ' '.$this->stdWrap($conf['ATagParams'], $conf['ATagParams.']);
+		} elseif ($conf['ATagParams'])	{
+			$aTagParams = ' '.$conf['ATagParams'];
+		}
+		if ($addGlobal)	{
+			$aTagParams = ' '.trim($GLOBALS['TSFE']->ATagParams.$aTagParams);
+		}
+		return $aTagParams;
+	 }
 
 
 
@@ -3420,6 +3439,9 @@ class tslib_cObj {
 										case 'date':
 											$items['sorting'][] = filectime($wholePath);
 										break;
+										case 'mdate':
+											$items['sorting'][] = filemtime($wholePath);
+										break;
 										default:
 											$items['sorting'][] = $count;
 										break;
@@ -3807,7 +3829,7 @@ class tslib_cObj {
 	 */
 	function filelink($theValue, $conf)	{
 		$output = '';
-		$aTagParams = $GLOBALS['TSFE']->ATagParams.($conf['ATagParams']?' '.$conf['ATagParams']:'');
+		$aTagParams = $this->getATagParams($conf);
 		$initP = '?id='.$GLOBALS['TSFE']->id.'&type='.$GLOBALS['TSFE']->type;
 		$conf['path'] = $this->stdWrap($conf['path'],$conf['path.']);
 		$theFile = trim($conf['path']).$theValue;
@@ -3956,47 +3978,47 @@ class tslib_cObj {
 	 */
 	function splitObj($value, $conf)	{
 		$conf['token']=$this->stdWrap($conf['token'],$conf['token.']);
+		if (!$conf['token'])	{
+			return $value;
+		}
+		$conf['max']=intval($this->stdWrap($conf['max'],$conf['max.']));
+		$conf['min']=intval($this->stdWrap($conf['min'],$conf['min.']));
 
-		if ($conf['token'])	{
-			$conf['max']=intval($this->stdWrap($conf['max'],$conf['max.']));
-			$conf['min']=intval($this->stdWrap($conf['min'],$conf['min.']));
+		$valArr=explode($conf['token'],$value);
 
-			$valArr=explode($conf['token'],$value);
+		if (count($valArr) && ($conf['returnKey'] || $conf['returnKey.']))	{
+			$key = intval($this->stdWrap($conf['returnKey'],$conf['returnKey.']));
+			$content = isset($valArr[$key]) ? $valArr[$key] : '';
+		} else {
+				// calculate splitCount
+			$splitCount = count($valArr);
+			if ($conf['max'] && $splitCount>$conf['max'])	{
+				$splitCount=$conf['max'];
+			}
+			if ($conf['min'] && $splitCount<$conf['min'])	{
+				$splitCount=$conf['min'];
+			}
 
-			if (count($valArr) && ($conf['returnKey'] || $conf['returnKey.']))	{
-				$key = intval($this->stdWrap($conf['returnKey'],$conf['returnKey.']));
-				$content = isset($valArr[$key]) ? $valArr[$key] : '';
-			} else {
-					// calculate splitCount
-				$splitCount = count($valArr);
-				if ($conf['max'] && $splitCount>$conf['max'])	{
-					$splitCount=$conf['max'];
+			if ($conf['wrap'] || $conf['cObjNum'])	{
+				$splitArr=array();
+				$splitArr['wrap']=$conf['wrap'];
+				$splitArr['cObjNum']=$conf['cObjNum'];
+				$splitArr = $GLOBALS['TSFE']->tmpl->splitConfArray($splitArr,$splitCount);
+			}
+
+			$content='';
+			for($a=0;$a<$splitCount;$a++)	{
+				$GLOBALS['TSFE']->register['SPLIT_COUNT']=$a;
+				$value = ''.$valArr[$a];
+				$this->data[$this->currentValKey] = $value;
+				if ($splitArr[$a]['cObjNum'])	{
+					$objName=intval($splitArr[$a]['cObjNum']);
+					$value = $this->stdWrap($this->cObjGet($conf[$objName.'.'],$objName.'.'),$conf[$objName.'.']);
 				}
-				if ($conf['min'] && $splitCount<$conf['min'])	{
-					$splitCount=$conf['min'];
+				if ($splitArr[$a]['wrap'])	{
+					$value=$this->wrap($value,$splitArr[$a]['wrap']);
 				}
-
-				if ($conf['wrap'] || $conf['cObjNum'])	{
-					$splitArr=array();
-					$splitArr['wrap']=$conf['wrap'];
-					$splitArr['cObjNum']=$conf['cObjNum'];
-					$splitArr = $GLOBALS['TSFE']->tmpl->splitConfArray($splitArr,$splitCount);
-				}
-
-				$content='';
-				for($a=0;$a<$splitCount;$a++)	{
-					$GLOBALS['TSFE']->register['SPLIT_COUNT']=$a;
-					$value = ''.$valArr[$a];
-					$this->data[$this->currentValKey] = $value;
-					if ($splitArr[$a]['cObjNum'])	{
-						$objName=intval($splitArr[$a]['cObjNum']);
-						$value = $this->stdWrap($this->cObjGet($conf[$objName.'.'],$objName.'.'),$conf[$objName.'.']);
-					}
-					if ($splitArr[$a]['wrap'])	{
-						$value=$this->wrap($value,$splitArr[$a]['wrap']);
-					}
-					$content.=$value;
-				}
+				$content.=$value;
 			}
 		}
 		return $content;
@@ -4412,7 +4434,7 @@ class tslib_cObj {
 	 * @see _parseFunc()
 	 */
 	function http_makelinks($data,$conf)	{
-		$aTagParams = $GLOBALS['TSFE']->ATagParams.($conf['ATagParams']?' '.$conf['ATagParams']:'');
+		$aTagParams = $this->getATagParams($conf);
 		$textpieces = explode('http://', $data);
 		$pieces = count($textpieces);
 		$textstr = $textpieces[0];
@@ -4480,7 +4502,7 @@ class tslib_cObj {
 	 */
 	function mailto_makelinks($data,$conf)	{
 		// http-split
-		$aTagParams = $GLOBALS['TSFE']->ATagParams.($conf['ATagParams']?' '.$conf['ATagParams']:'');
+		$aTagParams = $this->getATagParams($conf);
 		$textpieces = explode('mailto:', $data);
 		$pieces = count($textpieces);
 		$textstr = $textpieces[0];
@@ -4743,7 +4765,7 @@ class tslib_cObj {
 						}
 					break;
 					case 'tsfe':
-						$retVal = $GLOBALS['TSFE']->$key;
+						$retVal = $this->getGlobal ('TSFE|'.$key);
 					break;
 					case 'getenv':
 						$retVal = getenv($key);
@@ -4861,24 +4883,35 @@ class tslib_cObj {
 	}
 
 	/**
-	 * Returns a value from the array, $GLOBALS where the input key, $val, is splitted by "|" first and each part points to a key in the $GLOBALS array.
+	 * Return global variable where the input string $var defines array keys separated by "|"
 	 * Example: $var = "HTTP_SERVER_VARS | something" will return the value $GLOBALS['HTTP_SERVER_VARS']['something'] value
 	 *
-	 * @param	string		Key, see description of functon
-	 * @param	array		If you want another array than $GLOBALS used, then just put it in here!
-	 * @return	mixed		Value from $GLOBALS
+	 * @param	string		Global var key, eg. "HTTP_GET_VAR" or "HTTP_GET_VARS|id" to get the GET parameter "id" back.
+	 * @param	array		Alternative array than $GLOBAL to get variables from.
+	 * @return	mixed		Whatever value. If none, then blank string.
 	 * @access private
 	 * @see getData()
 	 */
-	function getGlobal($var, $source=NULL) {
+	function getGlobal($var, $source=NULL)	{
 		$vars = explode('|', $var);
 		$c = count($vars);
-		$theVar = isset($source) ? $source[trim($vars[0])] : $GLOBALS[trim($vars[0])];
-		for ($a=1;$a<$c;$a++) {
-			if (!isset($theVar))	{break;}
-			$theVar = $theVar[trim($vars[$a])];
+		$k = trim($vars[0]);
+		$theVar = isset($source) ? $source[$k] : $GLOBALS[$k];
+
+		for ($a=1;$a<$c;$a++)	{
+			if (!isset($theVar))	{ break; }
+
+			$key = trim($vars[$a]);
+			if (is_object($theVar))	{
+				$theVar = $theVar->$key;
+			} elseif (is_array($theVar))	{
+				$theVar = $theVar[$key];
+			} else {
+				return '';
+			}
 		}
-		if (!is_array($theVar))	{
+
+		if (!is_array($theVar) && !is_object($theVar))	{
 			return $theVar;
 		} else {
 			return '';
@@ -4949,7 +4982,7 @@ class tslib_cObj {
 	 */
 	function typoLink($linktxt, $conf)	{
 		$finalTagParts = array();
-		$finalTagParts['aTagParams'] = $GLOBALS['TSFE']->ATagParams.($conf['ATagParams']?' '.$conf['ATagParams']:'');
+		$finalTagParts['aTagParams'] = $this->getATagParams($conf);
 
 		$link_param = trim($this->stdWrap($conf['parameter'],$conf['parameter.']));
 
@@ -5882,12 +5915,12 @@ class tslib_cObj {
 				reset($value);
 				while(list(,$Nvalue)=each($value))	{
 					$JSPart.="
-	updateForm('".$formName."','".$arrPrefix."[".$fKey."][]',unescape('".rawurlencode($Nvalue)."'))";
+	updateForm('".$formName."','".$arrPrefix."[".$fKey."][]',".t3lib_div::quoteJSvalue($Nvalue, true).")";
 				}
 
 			} else {
 				$JSPart.="
-	updateForm('".$formName."','".$arrPrefix."[".$fKey."]',unescape('".rawurlencode($value)."'))";
+	updateForm('".$formName."','".$arrPrefix."[".$fKey."]',".t3lib_div::quoteJSvalue($value, true).")";
 			}
 		}
 		$JSPart='<script type="text/javascript">
@@ -6330,6 +6363,8 @@ class tslib_cObj {
 	 * @return	string		The WHERE clause.
 	 */
 	function searchWhere($sw,$searchFieldList,$searchTable='')	{
+		global $TYPO3_DB;
+
 		$prefixTableName = $searchTable ? $searchTable.'.' : '';
 		$where = '';
 		if ($sw)	{
@@ -6340,9 +6375,10 @@ class tslib_cObj {
 				$val = trim($val);
 				$where_p = array();
 				if (strlen($val)>=2)	{
+					$val = $TYPO3_DB->escapeStrForLike($TYPO3_DB->quoteStr($val,$searchTable),$searchTable);
 					reset($searchFields);
 					while(list(,$field)=each($searchFields))	{
-						$where_p[] = $prefixTableName.$field.' LIKE \'%'.$GLOBALS['TYPO3_DB']->quoteStr($val, $searchTable).'%\'';
+						$where_p[] = $prefixTableName.$field.' LIKE \'%'.$val.'%\'';
 					}
 				}
 				if (count($where_p))	{
@@ -6715,7 +6751,7 @@ class tslib_cObj {
 					$buttons = '<input type="image" border="0" name="TSFE_EDIT[update]" src="'.$tceforms->backPath.'gfx/savedok.gif" hspace="2" width="21" height="16" title="'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:rm.saveDoc',1).'" />';
 					$buttons.= '<input type="image" border="0" name="TSFE_EDIT[update_close]" src="'.$tceforms->backPath.'gfx/saveandclosedok.gif" hspace="2" width="21" height="16" title="'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:rm.saveCloseDoc',1).'" />';
 					$buttons.= '<input type="image" border="0" name="TSFE_EDIT[cancel]" onclick="'.
-						htmlspecialchars('document.location=\''.t3lib_div::getIndpEnv('REQUEST_URI').'\';return false;').
+						htmlspecialchars('window.location.href=\''.t3lib_div::getIndpEnv('REQUEST_URI').'\';return false;').
 						'" src="'.$tceforms->backPath.'gfx/closedok.gif" hspace="2" width="21" height="16" title="'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:rm.closeDoc',1).'" />';
 					$panel.=$tceforms->intoTemplate(array('ITEM'=>$buttons));		// Buttons top
 					$panel.=$tceforms->getMainFields($table,$processedDataArr);
@@ -6887,7 +6923,7 @@ class tslib_cObj {
 			}
 		} else {
 			if ($confirm && $GLOBALS['BE_USER']->jsConfirmation(8))	{
-				$cf1="if (confirm(unescape('".t3lib_div::rawurlencodeJS($confirm)."'))){";
+ 				$cf1="if (confirm(".t3lib_div::quoteJSvalue($confirm, true).")){";			// Gets htmlspecialchared later
 				$cf2='}';
 			} else {
 				$cf1=$cf2='';

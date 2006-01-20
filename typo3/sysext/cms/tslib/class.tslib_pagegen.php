@@ -94,7 +94,7 @@ class TSpagegen {
 	 */
 	function pagegenInit()	{
 		if ($GLOBALS['TSFE']->page['content_from_pid']>0)	{
-			$temp_copy_TSFE = $GLOBALS['TSFE'];	// make REAL copy of TSFE object - not reference!
+			$temp_copy_TSFE = clone($GLOBALS['TSFE']);	// make REAL copy of TSFE object - not reference!
 			$temp_copy_TSFE->id = $GLOBALS['TSFE']->page['content_from_pid'];	// Set ->id to the content_from_pid value - we are going to evaluate this pid as was it a given id for a page-display!
 			$temp_copy_TSFE->getPageAndRootlineWithDomain($GLOBALS['TSFE']->config['config']['content_from_pid_allowOutsideDomain']?0:$GLOBALS['TSFE']->domainStartPage);
 			$GLOBALS['TSFE']->contentPid = intval($temp_copy_TSFE->id);
@@ -179,7 +179,7 @@ function linkTo_UnCryptMailto(s)	{	//
 
 		if ($GLOBALS['TSFE']->type && $GLOBALS['TSFE']->config['config']['frameReloadIfNotInFrameset'])	{
 			$tdlLD = $GLOBALS['TSFE']->tmpl->linkData($GLOBALS['TSFE']->page,'_top',$GLOBALS['TSFE']->no_cache,'');
-			$GLOBALS['TSFE']->JSCode = 'if(!parent.'.trim($GLOBALS['TSFE']->sPre).' && !parent.view_frame) top.document.location="'.$GLOBALS['TSFE']->baseUrlWrap($tdlLD['totalURL']).'"';
+			$GLOBALS['TSFE']->JSCode = 'if(!parent.'.trim($GLOBALS['TSFE']->sPre).' && !parent.view_frame) top.location.href="'.$GLOBALS['TSFE']->baseUrlWrap($tdlLD['totalURL']).'"';
 		}
 		$GLOBALS['TSFE']->compensateFieldWidth = ''.$GLOBALS['TSFE']->config['config']['compensateFieldWidth'];
 		$GLOBALS['TSFE']->lockFilePath = ''.$GLOBALS['TSFE']->config['config']['lockFilePath'];
@@ -714,8 +714,9 @@ $GLOBALS['TSFE']->content.='
 
 			// Adding default Java Script:
 		$_scriptCode = '
-		browserName = navigator.appName;
-		browserVer = parseInt(navigator.appVersion);
+		var browserName = navigator.appName;
+		var browserVer = parseInt(navigator.appVersion);
+		var version = "";
 		var msie4 = (browserName == "Microsoft Internet Explorer" && browserVer >= 4);
 		if ((browserName == "Netscape" && browserVer >= 3) || msie4 || browserName=="Konqueror" || browserName=="Opera") {version = "n3";} else {version = "n2";}
 			// Blurring links:

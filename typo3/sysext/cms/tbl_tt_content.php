@@ -602,6 +602,33 @@ $TCA['tt_content'] = Array (
 				'default' => ''
 			)
 		),
+		'altText' => Array (
+			'exclude' => 1,
+			'label' => 'LLL:EXT:cms/locallang_ttc.php:image_altText',
+			'config' => Array (
+				'type' => 'text',
+				'cols' => '30',
+				'rows' => '3'
+			)
+		),
+		'titleText' => Array (
+			'exclude' => 1,
+			'label' => 'LLL:EXT:cms/locallang_ttc.php:image_titleText',
+			'config' => Array (
+				'type' => 'text',
+				'cols' => '30',
+				'rows' => '3'
+			)
+		),
+		'longdescURL' => Array (
+			'exclude' => 1,
+			'label' => 'LLL:EXT:cms/locallang_ttc.php:image_longdescURL',
+			'config' => Array (
+				'type' => 'text',
+				'cols' => '30',
+				'rows' => '3'
+			)
+		),
 		'cols' => Array (
 			'label' => 'LLL:EXT:cms/locallang_ttc.php:cols',
 			'config' => Array (
@@ -937,12 +964,14 @@ $TCA['tt_content'] = Array (
 		'textpic' => 	Array('showitem' => 'CType;;4;button;1-1-1, header;;3;;2-2-2, bodytext;;9;richtext[paste|bold|italic|underline|formatblock|class|left|center|right|orderedlist|unorderedlist|outdent|indent|link|image]:rte_transform[flag=rte_enabled|mode=ts];3-3-3, rte_enabled, text_properties, --div--, image;;;;4-4-4, imageorient;;2, imagewidth;;13,
 			--palette--;LLL:EXT:cms/locallang_ttc.php:ALT.imgLinks;7,
 			--palette--;LLL:EXT:cms/locallang_ttc.php:ALT.imgOptions;11,
-			imagecaption;;5'),
+			imagecaption;;5,
+			altText;;;;1-1-1,titleText,longdescURL'),
 		'rte' => 		Array('showitem' => 'CType;;4;button;1-1-1, header;;3;;2-2-2, bodytext;;;nowrap:richtext[*]:rte_transform[mode=ts_images-ts_reglinks];3-3-3'),
 		'image' => 		Array('showitem' => 'CType;;4;button;1-1-1, header;;3;;2-2-2, image;;;;4-4-4, imageorient;;2, imagewidth;;13,
 			--palette--;LLL:EXT:cms/locallang_ttc.php:ALT.imgLinks;7,
 			--palette--;LLL:EXT:cms/locallang_ttc.php:ALT.imgOptions;11,
-			 imagecaption;;5'),
+			 imagecaption;;5,
+			 altText;;;;1-1-1,titleText,longdescURL'),
 		'bullets' => 	Array('showitem' => 'CType;;4;button;1-1-1, header;;3;;2-2-2, layout;;;;3-3-3, bodytext;;9;nowrap, text_properties'),
 		'table' => 		Array('showitem' => 'CType;;4;button;1-1-1, header;;3;;2-2-2, layout;;10;button;3-3-3, cols, bodytext;;9;nowrap:wizards[table], text_properties'),
 		'splash' => 	Array('showitem' => 'CType;;4;button;1-1-1, header;LLL:EXT:lang/locallang_general.php:LGL.name;;;2-2-2, splash_layout, bodytext;;;;3-3-3, image;;6'),

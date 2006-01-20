@@ -295,7 +295,7 @@ class t3lib_positionMap {
 
 		if ($TSconfigProp['overrideWithExtension'])	{
 			if (t3lib_extMgm::isLoaded($TSconfigProp['overrideWithExtension']))	{
-				$onclick = "document.location='".t3lib_extMgm::extRelPath($TSconfigProp['overrideWithExtension']).'mod1/index.php?cmd=crPage&positionPid='.$pid."';";
+				$onclick = "window.location.href='".t3lib_extMgm::extRelPath($TSconfigProp['overrideWithExtension']).'mod1/index.php?cmd=crPage&positionPid='.$pid."';";
 				return $onclick;
 			}
 		}
@@ -518,7 +518,7 @@ class t3lib_positionMap {
 //		$location.='&redirect='.rawurlencode($this->R_URI);		// returns to prev. page
 		$location.='&uPT=1&redirect='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'));		// This redraws screen
 
-		return 'document.location=\''.$location.'\';return false;';
+		return 'window.location.href=\''.$location.'\';return false;';
 	}
 
 	/**

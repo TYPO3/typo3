@@ -223,7 +223,8 @@ class t3lib_sqlengine extends t3lib_sqlparser {
 				$fN = $fInfo['Field'];
 
 					// Set value:
-				$saveArray[$fN] = isset($fields_values[$fN]) ? $fields_values[$fN] : $options['Default'];	// $options not defined, kasper!
+// FIXME $options not defined
+				$saveArray[$fN] = isset($fields_values[$fN]) ? $fields_values[$fN] : $options['Default'];
 
 					// Process value:
 				$this->processAccordingToConfig($saveArray[$fN], $fInfo);

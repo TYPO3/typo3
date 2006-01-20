@@ -672,7 +672,7 @@ class t3lib_queryGenerator	{
 		reset($this->fields);
 		while(list($key,)=each($this->fields)) {
 			if ($GLOBALS['BE_USER']->check('non_exclude_fields',$this->table.':'.$key))	{
-				$out.='<option value="'.$prepend.$key.'"'.($key==$fieldName ? ' selected':'').'>'.$this->fields[$key]['label'].'</option>';
+				$out.='<option value="'.$key.'"'.($key==$fieldName ? ' selected':'').'>'.$this->fields[$key]['label'].'</option>';
 			}
 		}
 		$out.='</select>';

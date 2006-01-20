@@ -422,7 +422,7 @@
 					// Redirects to the Install Tool:
 				echo '<script type="text/javascript">
 						/*<![CDATA[*/
-					document.location = "'.TYPO3_mainDir.'install/index.php?mode=123&step=1&password=joh316";
+					window.location.href = "'.TYPO3_mainDir.'install/index.php?mode=123&step=1&password=joh316";
 						/*]]>*/
 					</script>';
 				exit;
@@ -435,7 +435,7 @@
 					// Redirects to the Install Tool:
 				echo '<script type="text/javascript">
 						/*<![CDATA[*/
-					document.location = "'.TYPO3_mainDir.'install/index.php?mode=123&step=1&password=joh316";
+					window.location.href = "'.TYPO3_mainDir.'install/index.php?mode=123&step=1&password=joh316";
 						/*]]>*/
 					</script>';
 				exit;
@@ -1248,7 +1248,7 @@
 	 * @param	mixed		Which type of handling; If a true PHP-boolean and TRUE then a ->printError message is outputted. If integer an error message with that number is shown. Otherwise the $code value is expected to be a "Location:" header value.
 	 * @param	string		If set, this is passed directly to the PHP function, header()
 	 * @param	string		If set, error messages will also mention this as the reason for the page-not-found.
-	 * @return	void		(The function exists!)
+	 * @return	void		(The function exits!)
 	 */
 	function pageNotFoundHandler($code, $header='', $reason='')	{
 			// Issue header in any case:
@@ -1613,7 +1613,11 @@
 					}
 						// if .simulateStaticDocuments was not present, the default value will rule.
 					if (!isset($this->config['config']['simulateStaticDocuments']))	{
-						$this->config['config']['simulateStaticDocuments'] = $this->TYPO3_CONF_VARS['FE']['simulateStaticDocuments'];
+						$this->config['config']['simulateStaticDocuments'] = trim($this->TYPO3_CONF_VARS['FE']['simulateStaticDocuments']);
+					}
+					if ($this->config['config']['simulateStaticDocuments']) {
+							// Set replacement char only if it is needed
+						$this->setSimulReplacementChar();
 					}
 
 							// Processing for the config_array:
@@ -1838,6 +1842,9 @@
 										break;
 									}
 								}
+							break;
+							case 'ignore':
+								$this->sys_language_content = $this->sys_language_uid;
 							break;
 							default:
 									// Default is that everything defaults to the default language...
@@ -3163,6 +3170,23 @@ if (version == "n3") {
 		$url.=$this->makeSimulFileName($this->page['title'], $this->page['alias']?$this->page['alias']:$this->id, $this->type).'.html';
 		return $url;
 	}
+	
+	/**
+	 * Checks and sets replacement character for simulateStaticDocuments. Default is underscore.
+	 * 
+	 * @return	void
+	 */
+	function setSimulReplacementChar() {
+		$replacement = $defChar = t3lib_div::compat_version('4.0.0') ? '-' : '_';
+		if (isset($this->config['config']['simulateStaticDocuments_replacementChar'])) {
+			$replacement = trim($this->config['config']['simulateStaticDocuments_replacementChar']);
+			if (urlencode($replacement) != $replacement) {
+					// Invalid character
+				$replacement = $defChar;
+			}
+		}
+		$this->config['config']['simulateStaticDocuments_replacementChar'] = $replacement;
+	}
 
 	/**
 	 * Converts input string to an ASCII based file name prefix
@@ -3174,11 +3198,16 @@ if (version == "n3") {
 	 */
 	function fileNameASCIIPrefix($inTitle,$titleChars,$mergeChar='.')	{
 		$out = $this->csConvObj->specCharsToASCII($this->renderCharset, $inTitle);
-		$out = ereg_replace('[^[:alnum:]_-]','_',trim(substr($out,0,$titleChars)));
-		$out = ereg_replace('[_-]*$','',$out);
-		$out = ereg_replace('^[_-]*','',$out);
-		$out = ereg_replace('([_-])[_-]*','\1',$out);
-		if (strlen($out))	$out.=$mergeChar;
+			// Get replacement character
+		$replacementChar = &$this->config['config']['simulateStaticDocuments_replacementChar'];
+		$replacementChars = '_\-' . ($replacementChar != '_' && $replacementChar != '-' ? $replacementChar : '');
+		$out = preg_replace('/[^A-Za-z0-9_-]/', $replacementChar, trim(substr($out, 0, $titleChars)));
+		$out = preg_replace('/([' . $replacementChars . ']){2,}/', '\1', $out);
+		$out = preg_replace('/[' . $replacementChars . ']?$/', '', $out);
+		$out = preg_replace('/^[' . $replacementChars . ']?/', '', $out);
+		if (strlen($out)) {
+			$out .= $mergeChar;
+		}
 
 		return $out;
 	}
@@ -3299,7 +3328,7 @@ if (version == "n3") {
 
 	/**
 	 * Prefixing the input URL with ->baseUrl If ->baseUrl is set and the input url is not absolute in some way.
-	 * Designed as a wrapper functions for use with all frontend links that are processed by JavaScript (for "realurl" compatibility!). So each time a URL goes into window.open, document.location or otherwise, wrap it with this function!
+	 * Designed as a wrapper functions for use with all frontend links that are processed by JavaScript (for "realurl" compatibility!). So each time a URL goes into window.open, window.location.href or otherwise, wrap it with this function!
 	 *
 	 * @param	string		Input URL, relative or absolute
 	 * @return	string		Processed input value.

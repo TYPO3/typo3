@@ -1,5 +1,182 @@
+2006-01-20  Michael Stucki  <michael@typo3.org>
+
+	* New feature: Merged cron_cssstyledimgtext into CSS Styled Content. Kudos to Ernesto Baschny who did most of the work. Many thanks to Sebastian Kurfuerst for his great support. Great work boys!
+	* Added support to fetch values from objects in getText: myVar.data = TSFE:fe_user|user|username
+	* Fixed (part of) #2059: Removing "NOT NULL" when parsing SQL data
+
+2006-01-19  Sebastian Kurfuerst  <sebastian@garbage-group.de>
+
+	* New feature: Revised Undo/History feature.
+	* Fixed issue #1952: New hook in class.t3lib_userauthgroup.php
+	* Fixed issue #2243: Hook needed in class.t3lib_befunc.php, function getProcessedValue
+	* Fixed bug #2293: Javascript warnings
+	* Fixed errors in t3lib_db::fullQuoteArray and UPDATEquery (came into the core some hours before)
+
+2006-01-19  Karsten Dambekalns  <karsten@typo3.org>
+
+	* sysext/dbal: Some bugfixes to connection handling; added $no_quote_fields support for INSERT and UPDATE methods.
+	* Fixed bug #2059
+
+2006-01-19  René Fritz  <r.fritz@colorcube.de>
+
+	* Fixed bug: Fixed a problem with the RTE and inline images and base url's like http://mydomain.com/here_is_my_site/
+	* Fixed bug: The nav frame do not update properly when submodules register different nav frames with navFrameScript in MCONF. (class.alt_menu_functions.php)
+	* Fixed bug: fixed bug related to PHP5 and clone() in tslib_content
+	* Fixed issue: Added clone() compatibility function for PHP4
+	* Fixed bug: The javascript dyn tabs used for eg. TCEForms and placed in template.php were not shown when used in popup windows because of an uninitialized variable.
+	* Fixed a missing "global": added a missing global $TYPO3_CONF_VARS; to t3lib_userauthgroup::fetchGroups which would have been prevented that the hook fetchGroupQuery worked
+
+2006-01-19  Dmitry Dulepov  <typo3@accio.lv>
+
+	* Fixed bug #1430: SEO + simulateStaticDocuments
+
+2005-01-19  Peter Niederlag  <peter@niederlag.de>
+
+	* Fixed issue #2268 on cleanup of sysext:css_styled_content
+	* Fixed small issue with link in LICENSE.txt
+
+2005-01-19  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+
+	* add t3lib_div::sysLog() for Core logging
+	* use t3lib_div::sysLog() in t3lib_db->sql_pconnect() and t3lib_db->sql_select_db()
+	* add no_quote parameter to t3lib_db->fullQuoteArray() and to all SQL statement generating functions of t3lib_db
+
+2006-01-19  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
+
+	* Changes to the htmlArea RTE extension (details see local ChangeLog)
+
+2006-01-18  Dmitry Dulepov  <typo3@accio.lv>
+
+	* indexed_search: Removed empty line at the end of class.tx_indexedsearch.php. This line caused undesired effects in MSIE with certain PHP versions and UTF-8 encoding in FE.
+
+2006-01-18  Sebastian Kurfuerst  <sebastian@garbage-group.de>
+
+	* Fixed bug #1869: Copy sites with flexible content elements inside crash with fatal error
+	* Fixed bug #2136: changing extended view in list mode changes focus
+	* New feature #1320: stdWrap for all ATagParams (except config.ATagParams)
+
+2006-01-18  Bernhard Kraft  <kraftb@kraftb.at>
+
+	* Fixed bugs #277, #1030 and #1472 which are all related to the same charset issue.
+
+2006-01-17  Karsten Dambekalns  <karsten@typo3.org>
+
+	* Fixed bug #432
+
+2006-01-17 Wolfgang Klinger  <wk@plan2.net>
+
+	* Update the timestamp field (TCA/ctrl/tstamp) on delete
+
+2006-01-16 Dmitry Dulepov  <typo3@accio.lv>
+
+	* Fixed bug #2160: Turn off workspaces module for certain users not possible
+
+2006-01-14 Ingmar Schlecht  <ingmar@typo3.org>
+
+	* Fixed #2248: Path disclosure in config_default.php and showpic.php
+
+2006-01-14  Michael Stucki  <michael@typo3.org>
+
+	* Fixed bug #2102: PHP-Warning in the shortcut frame
+	* Remove <label> tags around hidden fields in FORM elements
+	* Removed depencency of typo3conf/database.sql: The file contents are now calculated automatically.
+
+2006-01-13  Wolfgang Klinger  <wk@plan2.net>
+
+	* The '[Translate to:]' message is now configurable via TSconfig and will be prepended only if there's an actual value
+
+2006-01-12  Karsten Dambekalns  <karsten@typo3.org>
+
+	* Fixed unclean document.location use in JavaScript parts, replaced by [window.]location.href
+
+2006-01-12  Wolfgang Klinger  <wk@plan2.net>
+
+	* Introduced a new property 'ignore' for config.sys_language_mode
+
+2006-01-12  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
+
+	* Changes to the htmlArea RTE extension (details see local ChangeLog)
+
+2006-01-11  Dmitry Dulepov <typo3@accio.lv>
+
+	* Fixed bug #2199: Summary contains duplicate labels (indexed_search)
+
+2006-01-10  Wolfgang Klinger  <wolfgang@stufenlos.net>
+
+	* Fixed bug #1209: set 'deleteTree' to '1' if 'recursiveDelete' is set in the user preferences
+
+2006-01-08  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+
+	* rtehtmlarea: Correction to path settings affecting image drag & drop and file/image upload.
+
+2006-01-08  Sebastian Kurfuerst  <sebastian@garbage-group.de>
+
+	* Fixed bug #1938: Selection "Frontend" gets lost on login failure
+	* Fixed bug #1149: FE-Editing in new Popups => Page doesn't reload
+	* New feature #1910: Sorting in filelists by modification date
+
+2006-01-06  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
+
+	* Converted locallang files of htmlArea RTE extension to XML format.
+	* Revised all licence notices on all scripts of htmlArea RTE in order to publish under GPL.
+
+2005-01-06  Sebastian Kurfuerst  <sebastian@garbage-group.de>
+
+	* Fixed bug #1854: wrong Access check in RTE Wizard
+	* Added PHPdoc comments to the update wizard
+
+2006-01-05  Karsten Dambekalns  <karsten@typo3.org>
+
+	* Minor change to the stylesheet to enhance tabmenu display in the BE.
+
+2005-01-05  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+
+	* Add escapeStrForLike() to t3lib_db and use it in tslib_cObj->searchWhere()
+	* Update for bug #1354: Use mysql_escape_string() with PHP 4.1.x
+
+2006-01-04  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
+
+	* Changes to the htmlArea RTE extension (details see local ChangeLog)
+
+2006-01-04  Karsten Dambekalns  <karsten@typo3.org>
+
+	* Changes to the DBAL extension (details see local ChangeLog)
+	* Minor fix to inline comment in class.t3lib_sqlparser.php
+
+2006-01-04  Sebastian Kurfuerst  <sebastian@garbage-group.de>
+
+	* Fixed bug #2169: Import of testsite from T3D exceeds PHP maximum_execution_time
+	* Fixed bug #2127: Fatal error in mod/user/ws/index.php
+	* Changed behavior of alertPopups - there were still some bugs inside, it is cleaned up now.
+
+2005-12-31  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+
+	* Add alternative field name argument to tslib_pibase->pi_initPIflexForm()
+
+2005-12-30  Sebastian Kurfuerst  <sebastian@garbage-group.de>
+
+	* Fixed bug #2108: Error when using hide in Frontend Editing
+
+2005-12-29  Sebastian Kurfuerst  <sebastian@garbage-group.de>
+
+	* Fixed bug #2100: Warning: Call-time pass-by-reference has been deprecated
+	* Fixed bug #2126: Updating encryption key sets compat version to same value
+	* Fixed bug #2132: Error on moving lost records
+	* Fixed bug #2134: "Place as root" does not function
+	* Changed version of indexed search to 2.9.0
+	* Fixed bug #2117: Install-Tool: "Write to localconf.php" sets "sqlDebug" and "USdateFormat" automatically
+	* Fixed a bug in quote settings in CSS styled content - table. Now it is possible to copy/paste a CSV directly.
+
 2005-12-28  Michael Stucki  <michael@typo3.org>
 
+	* Release of TYPO3 4.0beta1
+	* Rised version number to 4.0beta1
+	* Fixed a bug in tstemplate (path still pointing to typo3/ext/)
+
+2005-12-28  Michael Stucki  <michael@typo3.org>
+
+	* Changed TYPO3_CONF_VARS[SYS][fileCreateMask] from 775 to 755
+	* Rised version number to 4.0-dev
 	* Added "rtehtmlarea" as a system extension
 		- Important notice: Because of a known bug, the buttons "blockstylelabel", "blockstyle", "textstylelabel" and "textstyle" will not work with this version.
 	* Fixed bug #1155: Install tool want to recreate the tables, and drop the old ones
@@ -1242,7 +1419,7 @@ Sorry for writing these changelog entries with a delay of two days. I write them
 2004-06-11  Robert Lemke  <rl@robertlemke.de>
 
 	* Created new hook in class.t3lib_tcemain.php in process_datamap. Search for $TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass']
-	(other hooks in that class will follow by Renï¿½ as I know from a trusted source ... ;-)
+	  (other hooks in that class will follow by René as I know from a trusted source ... ;-)
 
 2004-06-09  Robert Lemke  <rl@robertlemke.de>
 

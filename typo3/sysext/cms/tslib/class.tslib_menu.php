@@ -1555,7 +1555,7 @@ class tslib_tmenu extends tslib_menu {
 				$this->I['spacer'] = $this->menuArr[$key]['isSpacer'];
 
 					// Make link tag
-				$this->I['val']['ATagParams'] = $this->I['val']['ATagParams'] ? ' '.$this->I['val']['ATagParams'] : '';
+				$this->I['val']['ATagParams'] = $this->WMcObj->getATagParams($this->I['val'], 0);
 				$this->I['linkHREF'] =  $this->link($key,$this->I['val']['altTarget'],$this->mconf['forceTypeValue']);
 
 					// Title attribute of links:
@@ -2733,7 +2733,7 @@ class tslib_jsmenu extends tslib_menu {
 					} else {
 						$addLines = '';
 					}
-					$title=rawurlencode($data['title']);
+					$title=$data['title'];
 					$url='';
 					$target='';
 					if ((!$addLines && !$levelConf['noLink']) || $levelConf['alwaysLink']) {
@@ -2745,7 +2745,7 @@ class tslib_jsmenu extends tslib_menu {
 						$url = rawurlencode($LD['totalURL']);
 						$target = rawurlencode($LD['target']);
 					}
-					$codeLines.="\n".$var.$count."=".$menuName.".add(".$parent.",".$prev.",0,'".$title."','".$GLOBALS['TSFE']->baseUrlWrap($url)."','".$target."');";
+					$codeLines.="\n".$var.$count."=".$menuName.".add(".$parent.",".$prev.",0,".t3lib_div::quoteJSvalue($title, true).",'".$GLOBALS['TSFE']->baseUrlWrap($url)."','".$target."');";
 						// If the active one should be chosen...
 					$active = ($levelConf['showActive'] && $data['uid'] == $this->tmpl->rootLine[$count]['uid']);
 						// If the first item should be shown
@@ -2770,7 +2770,7 @@ class tslib_jsmenu extends tslib_menu {
 			$levelConf['firstLabel'] = $this->mconf['firstLabelGeneral'];
 		}
 		if ($levelConf['firstLabel'] && $codeLines)	{
-			$codeLines.="\n".$menuName.".defTopTitle[".$count."] = unescape('".rawurlencode($levelConf['firstLabel'])."');";
+			$codeLines.= chr(10).$menuName.'.defTopTitle['.$count.'] = '.t3lib_div::quoteJSvalue($levelConf['firstLabel'], true).';';
 		}
 		return $codeLines;
 	}

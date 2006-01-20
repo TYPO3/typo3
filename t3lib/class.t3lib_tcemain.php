@@ -351,6 +351,10 @@ class t3lib_TCEmain	{
 		$this->username = $this->BE_USER->user['username'];
 		$this->admin = $this->BE_USER->user['admin'];
 
+		if ($GLOBALS['BE_USER']->uc['recursiveDelete'])    {
+			$this->deleteTree = 1;
+		}
+
 			// Initializing default permissions for pages
 		$defaultPermissions = $GLOBALS['TYPO3_CONF_VARS']['BE']['defaultPermissions'];
 		if (isset($defaultPermissions['user']))		{$this->defaultPermissions['user'] = $defaultPermissions['user'];}
@@ -539,6 +543,7 @@ class t3lib_TCEmain	{
 				*/
 			$modifyAccessList = $this->checkModifyAccessList($table);
 			if (!$modifyAccessList)	{
+				$id = 0;
 				$this->log($table,$id,2,0,1,"Attempt to modify table '%s' without permission",1,array($table));
 			}
 			if (isset($TCA[$table]) && !$this->tableReadOnly($table) && is_array($this->datamap[$table]) && $modifyAccessList)	{
@@ -1015,7 +1020,7 @@ class t3lib_TCEmain	{
 						);
 					}
 				} elseif ($eFile && is_string($eFile))	{
-					$this->log($insertTable,$id,2,0,1,"Write-file error: '%s'",13,array($eFile),$realPid);
+					$this->log($table,$id,2,0,1,"Write-file error: '%s'",13,array($eFile),$realPid);
 				}
 			}
 		}
@@ -1255,7 +1260,7 @@ class t3lib_TCEmain	{
 			$value = implode(',',$value);
 		}
 
-			// This converts all occurencies of '&#123;' to the byte 123 in the string - this is needed in very rare cases where filenames with special characters (like æøå, umlaud etc) gets sent to the server as HTML entities instead of bytes. The error is done only by MSIE, not Mozilla and Opera.
+			// This converts all occurencies of '&#123;' to the byte 123 in the string - this is needed in very rare cases where filenames with special characters (like ï¿½ï¿½ï¿½, umlaud etc) gets sent to the server as HTML entities instead of bytes. The error is done only by MSIE, not Mozilla and Opera.
 			// Anyways, this should NOT disturb anything else:
 		$value = $this->convNumEntityToByteValue($value);
 
@@ -2065,8 +2070,9 @@ class t3lib_TCEmain	{
 				// Check if the table may be modified!
 			$modifyAccessList = $this->checkModifyAccessList($table);
 			if (!$modifyAccessList)	{
+				$id = 0;
 				$this->log($table,$id,2,0,1,"Attempt to modify table '%s' without permission",1,array($table));
-			}
+			}	// FIXME: $id not set here (Comment added by Sebastian Kurfuerst)
 
 				// Check basic permissions and circumstances:
 			if (isset($TCA[$table]) && !$this->tableReadOnly($table) && is_array($this->cmdmap[$table]) && $modifyAccessList)	{
@@ -2130,6 +2136,9 @@ class t3lib_TCEmain	{
 							break;
 							case 'delete':
 								$this->deleteAction($table, $id);
+							break;
+							case 'undelete':
+								$this->undeleteRecord($table, $id);
 							break;
 						}
 
@@ -2893,8 +2902,18 @@ class t3lib_TCEmain	{
 											// Set exclude Fields:
 										foreach($TCA[$table]['columns'] as $fN => $fCfg)	{
 											if ($fCfg['l10n_mode']=='prefixLangTitle')	{	// Check if we are just prefixing:
-												if ($fCfg['config']['type']=='text' || $fCfg['config']['type']=='input')	{
-													$overrideValues[$fN] = '[Translate to '.$langRec['title'].':] '.$row[$fN];
+												if (($fCfg['config']['type']=='text' || $fCfg['config']['type']=='input') && strlen($row[$fN]))	{
+													list($tscPID) = t3lib_BEfunc::getTSCpid($table,$uid,'');
+													$TSConfig = $this->getTCEMAIN_TSconfig($tscPID);
+
+													if (isset($TSConfig['translateToMessage']) && strlen($TSConfig['translateToMessage']))	{
+														$translateToMsg = @sprintf($TSConfig['translateToMessage'], $langRec['title']);
+													}
+													if (!strlen($translateToMsg))	{
+														$translateToMsg = 'Translate to '.$langRec['title'].':';
+													}
+
+													$overrideValues[$fN] = '['.$translateToMsg.'] '.$row[$fN];
 												}
 											} elseif (t3lib_div::inList('exclude,noCopy,mergeIfNotBlank',$fCfg['l10n_mode']) && $fN!=$TCA[$table]['ctrl']['languageField'] && $fN!=$TCA[$table]['ctrl']['transOrigPointerField']) {	 // Otherwise, do not copy field (unless it is the language field or pointer to the original language)
 												$excludeFields[] = $fN;
@@ -2994,7 +3013,18 @@ class t3lib_TCEmain	{
 	}
 
 	/**
-	 * Deleting a record
+	 * Undelete a record
+	 *
+	 * @param	string		Table name
+	 * @param	integer		Record UID
+	 * @return	void
+	 */
+	function undeleteRecord($table,$uid)	{
+		$this->deleteRecord($table,$uid,TRUE,FALSE,TRUE);
+	}
+
+	/**
+	 * Deleting/Undeleting a record
 	 * This function may not be used to delete pages-records unless the underlying records are already deleted
 	 * Deletes a record regardless of versioning state (live of offline, doesn't matter, the uid decides)
 	 * If both $noRecordCheck and $forceHardDelete are set it could even delete a "deleted"-flagged record!
@@ -3003,9 +3033,10 @@ class t3lib_TCEmain	{
 	 * @param	integer		Record UID
 	 * @param	boolean		Flag: If $noRecordCheck is set, then the function does not check permission to delete record
 	 * @param	boolean		If TRUE, the "deleted" flag is ignored if applicable for record and the record is deleted COMPLETELY!
+	 * @param	boolean		If TRUE, the "deleted" flag is set to 0 again and thus, the item is undeleted.
 	 * @return	void
 	 */
-	function deleteRecord($table,$uid, $noRecordCheck=FALSE, $forceHardDelete=FALSE)	{
+	function deleteRecord($table,$uid, $noRecordCheck=FALSE, $forceHardDelete=FALSE,$undeleteRecord=FALSE)	{
 		global $TCA;
 
 		$uid = intval($uid);
@@ -3015,12 +3046,17 @@ class t3lib_TCEmain	{
 
 				$deleteRow = $TCA[$table]['ctrl']['delete'];
 				if ($deleteRow && !$forceHardDelete)	{
+					$value = $undeleteRecord ? 0 : 1;
 					$updateFields = array(
-						$deleteRow => 1
+						$deleteRow => $value
 					);
 
+					if ($TCA[$table]['ctrl']['tstamp']) {
+						$updateFields[$TCA[$table]['ctrl']['tstamp']] = time();
+					}
+
 						// If the table is sorted, then the sorting number is set very high
-					if ($TCA[$table]['ctrl']['sortby'])	{
+					if ($TCA[$table]['ctrl']['sortby'] && !$undeleteRecord)	{
 						$updateFields[$TCA[$table]['ctrl']['sortby']] = 1000000000;
 					}
 
@@ -3044,10 +3080,11 @@ class t3lib_TCEmain	{
 					$GLOBALS['TYPO3_DB']->exec_DELETEquery($table, 'uid='.intval($uid));
 				}
 
+				$state = $undeleteRecord ? 1 : 3;	// 1 means insert, 3 means delete
 				if (!$GLOBALS['TYPO3_DB']->sql_error())	{
-					$this->log($table,$uid,3,0,0,'');
+					$this->log($table,$uid,$state,0,0,'');
 				} else {
-					$this->log($table,$uid,3,0,100,$GLOBALS['TYPO3_DB']->sql_error());
+					$this->log($table,$uid,$state,0,100,$GLOBALS['TYPO3_DB']->sql_error());
 				}
 
 					// Update reference index:
@@ -3688,6 +3725,7 @@ $this->log($table,$id,6,0,0,'Stage raised...',30,array('comment'=>$comment,'stag
 			// If a change has been done, set the new value(s)
 		if ($set)	{
 			if ($conf['MM'])	{
+// FIXME $theUidToUpdate is undefined
 				$dbAnalysis->writeMM($conf['MM'], $theUidToUpdate, $prependName);
 			} else {
 				$vArray = $dbAnalysis->getValueArray($prependName);
@@ -4380,14 +4418,12 @@ $this->log($table,$id,6,0,0,'Stage raised...',30,array('comment'=>$comment,'stag
 			$TSConfig = $this->getTCEMAIN_TSconfig($tscPID);
 
 			$tE = $this->getTableEntries($table,$TSConfig);
-			$keepEntries = strcmp($tE['history.']['keepEntries'],'') ? t3lib_div::intInRange($tE['history.']['keepEntries'],0,200) : 10;
-			$maxAgeSeconds = 60*60*24*(strcmp($tE['history.']['maxAgeDays'],'') ? t3lib_div::intInRange($tE['history.']['maxAgeDays'],0,200) : 7);	// one week
+			$maxAgeSeconds = 60*60*24*(strcmp($tE['history.']['maxAgeDays'],'') ? t3lib_div::intInRange($tE['history.']['maxAgeDays'],0,365) : 30);	// one month
 
 				// Garbage collect old entries:
-			$this->clearHistory($table,$id,t3lib_div::intInRange($keepEntries-1,0),$maxAgeSeconds);
+			$this->clearHistory($maxAgeSeconds, $table);
 
 				// Set history data:
-			if ($keepEntries)	{
 				$fields_values = array();
 				$fields_values['history_data'] = serialize($this->historyRecords[$table.':'.$id]);
 				$fields_values['fieldlist'] = implode(',',array_keys($this->historyRecords[$table.':'.$id]['newRecord']));
@@ -4399,37 +4435,19 @@ $this->log($table,$id,6,0,0,'Stage raised...',30,array('comment'=>$comment,'stag
 				$GLOBALS['TYPO3_DB']->exec_INSERTquery('sys_history', $fields_values);
 			}
 		}
-	}
 
 	/**
 	 * Clearing sys_history table from older entries that are expired.
-	 * All snapshots are excluded of course.
 	 *
-	 * @param	string		Table name
-	 * @param	integer		Record UID
-	 * @param	integer		$keepEntries (int+) defines the number of current entries from sys_history table to keep in addition to the new one which is put in.
 	 * @param	integer		$maxAgeSeconds (int+) however will set a max age in seconds so that any entry older than current time minus the age removed no matter what. If zero, this is not effective.
+	 * @param	string		table where the history should be cleared
 	 * @return	void
 	 */
-	function clearHistory($table,$id,$keepEntries=10,$maxAgeSeconds=604800)		{
+	function clearHistory($maxAgeSeconds=604800,$table)	{
 		$tstampLimit = $maxAgeSeconds ? time()-$maxAgeSeconds : 0;
 
-		$where = '
-			tablename='.$GLOBALS['TYPO3_DB']->fullQuoteStr($table, 'sys_history').'
-			AND recuid='.intval($id).'
-			AND snapshot=0';
-
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,tstamp', 'sys_history', $where, '', 'uid DESC', intval($keepEntries).',1');
-		$resRow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
-		if ($tstampLimit && intval($resRow['tstamp'])<$tstampLimit)	{
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,tstamp', 'sys_history', $where.' AND tstamp<'.intval($tstampLimit), '', 'uid DESC', '1');
-			$resRow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
-
-			$GLOBALS['TYPO3_DB']->exec_DELETEquery('sys_history', $where.' AND uid<='.intval($resRow['uid']));
-		} elseif (is_array($resRow)) {
-			$GLOBALS['TYPO3_DB']->exec_DELETEquery('sys_history', $where.' AND uid<='.intval($resRow['uid']));
+		$GLOBALS['TYPO3_DB']->exec_DELETEquery('sys_history', 'tstamp<'.intval($tstampLimit).' AND tablename="'.$table.'"');
 		}
-	}
 
 	/**
 	 * Update Reference Index (sys_refindex) for a record
@@ -5392,6 +5410,7 @@ State was change by %s (username: %s)
 				// Call post processing function for clear-cache:
 			global $TYPO3_CONF_VARS;
 			if (is_array($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearCachePostProc']))	{
+// FIXME $uid_page is undefined
 				$_params = array('table' => $table,'uid' => $uid,'uid_page' => $uid_page,'TSConfig' => $TSConfig);
 				foreach($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearCachePostProc'] as $_funcRef)	{
 					t3lib_div::callUserFunction($_funcRef,$_params,$this);
@@ -5580,7 +5599,7 @@ State was change by %s (username: %s)
 			$lines[] = '
 					<tr>
 						<td colspan="2" align="center"><br />'.
-						'<form action=""><input type="submit" value="Continue" onclick="'.htmlspecialchars('document.location=\''.$redirect.'\';return false;').'"></form>'.
+						'<form action=""><input type="submit" value="Continue" onclick="'.htmlspecialchars('window.location.href=\''.$redirect.'\';return false;').'"></form>'.
 						'</td>
 					</tr>';
 

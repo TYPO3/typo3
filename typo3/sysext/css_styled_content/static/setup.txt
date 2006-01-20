@@ -365,12 +365,31 @@ tt_content.image.20 {
 
 			enable.field = image_zoom
 			enable.ifEmpty.field = image_link
+			enable.ifEmpty.listNum.stdWrap.data = register : IMAGE_NUM
 
 			typolink.parameter.field = image_link
 			typolink.parameter.listNum.stdWrap.data = register : IMAGE_NUM
 			typolink.target = {$styles.content.links.target}
 			typolink.extTarget = {$styles.content.links.extTarget}
 		}
+
+		altText = TEXT
+		altText {
+			field = altText
+			split.token.char = 10
+			split.token.if.isTrue = {$styles.content.imgtext.imageTextSplit}
+			split.returnKey.data = register : IMAGE_NUM
+		}
+
+		titleText < .altText
+		titleText.field = titleText
+
+		longdescURL < .altText
+		longdescURL.field = longdescURL
+
+		emptyTitleHandling = {$styles.content.imgtext.emptyTitleHandling}
+		titleInLink = {$styles.content.imgtext.titleInLink}
+		titleInLinkAndImg = {$styles.content.imgtext.titleInLinkAndImg}
 	}
 
 	maxW = {$styles.content.imgtext.maxW}
@@ -391,23 +410,21 @@ tt_content.image.20 {
 	caption {
 		1 = TEXT
 		1 {
-			if.isFalse = {$styles.content.imgtext.captionSplit}
 			field = imagecaption
 			required = 1
-			parseFunc = < lib.parseFunc
+			parseFunc =< lib.parseFunc
 			br = 1
 			fontTag = <p class="csc-caption">|</p>
 			wrapAlign.field = imagecaption_position
+			split.token.char = 10
+			split.token.if.isPositive = {$styles.content.imgtext.imageTextSplit} + {$styles.content.imgtext.captionSplit}
+			split.returnKey.data = register : IMAGE_NUM
 		}
 	}
+	# captionSplit is deprecated, use imageTextSplit instead
 	captionSplit = {$styles.content.imgtext.captionSplit}
-	captionSplit.cObject = TEXT
-	captionSplit.cObject.field = imagecaption
-	captionSplit.stdWrap < .caption.1
-	captionSplit.stdWrap {
-		field >
-		if >
-	}
+	# caption/alttext/title/longdescURL splitting
+	imageTextSplit = {$styles.content.imgtext.imageTextSplit}
 
 	borderCol = {$styles.content.imgtext.borderColor}
 	borderThick = {$styles.content.imgtext.borderThick}
@@ -1160,6 +1177,7 @@ tt_content.menu.20 {
 			expAll=1
 			wrap = <ul>|</ul>
 			NO {
+				stdWrap.htmlSpecialChars = 1
 				wrapItemAndSub = <li>|</li>
 				ATagTitle.field = description // title
 			}
@@ -1196,6 +1214,228 @@ tt_content.menu.20 {
 	7.2.NO.allWrap = <li class="csc-section">|</li>
 	7.2.NO.ATagTitle.field = description // title
 }
+
+# cObject: Image
+
+tt_content.image.20 = USER
+tt_content.image.20 {
+	userFunc = tx_cssstyledcontent_pi1->render_textpic
+
+	1 {
+		params >
+		imageLinkWrap {
+			bodyTag = <body style="margin:0; background:#fff;">
+			JSwindow.expand =
+		}
+
+	}
+
+	caption.1.wrap = <div class="csc-textpic-caption"> | </div>
+	caption.1.wrapAlign >
+
+	captionAlign.field = imagecaption_position
+
+	defaultW = {$styles.content.imgtext.defaultW}
+	defaultWInText = {$styles.content.imgtext.defaultWInText}
+	borderSpace = {$styles.content.imgtext.borderSpace}
+	separateRows = {$styles.content.imgtext.separateRows}
+	addClasses =
+
+	#
+	imageStdWrap.dataWrap = <div class="csc-textpic-imagewrap" style="width:{register:totalwidth}px;"> | </div>
+	imageStdWrapNoWidth.wrap = <div class="csc-textpic-imagewrap"> | </div>
+
+	# if noRows is set, wrap around each column:
+	imageColumnStdWrap.dataWrap = <div class="csc-textpic-imagecolumn" style="width:{register:columnwidth}px;"> | </div>
+
+	layout = CASE
+	layout {
+		key.field = imageorient
+		# above-center
+		default = TEXT
+		default.value = <div class="csc-textpic csc-textpic-center csc-textpic-above###CLASSES###">###IMAGES######TEXT###</div><div class="csc-textpic-clear"><!-- --></div>
+		# above-right
+		1 = TEXT
+	 	1.value = <div class="csc-textpic csc-textpic-right csc-textpic-above###CLASSES###">###IMAGES######TEXT###</div><div class="csc-textpic-clear"><!-- --></div>
+		# above-left
+		2 = TEXT
+	 	2.value = <div class="csc-textpic csc-textpic-left csc-textpic-above###CLASSES###">###IMAGES######TEXT###</div><div class="csc-textpic-clear"><!-- --></div>
+		# below-center
+		8 = TEXT
+	 	8.value = <div class="csc-textpic csc-textpic-center csc-textpic-below###CLASSES###">###TEXT######IMAGES###</div><div class="csc-textpic-clear"><!-- --></div>
+		# below-right
+		9 = TEXT
+	 	9.value = <div class="csc-textpic csc-textpic-right csc-textpic-below###CLASSES###">###TEXT######IMAGES###</div><div class="csc-textpic-clear"><!-- --></div>
+		# below-left
+		10 = TEXT
+	 	10.value = <div class="csc-textpic csc-textpic-left csc-textpic-below###CLASSES###">###TEXT######IMAGES###</div><div class="csc-textpic-clear"><!-- --></div>
+		# intext-right
+		17 = TEXT
+	 	17.value = <div class="csc-textpic csc-textpic-intext-right###CLASSES###">###IMAGES######TEXT###</div>
+		# intext-left
+		18 = TEXT
+	 	18.value = <div class="csc-textpic csc-textpic-intext-left###CLASSES###">###IMAGES######TEXT###</div>
+		# intext-right-nowrap
+		25 = TEXT
+		25.value = <div class="csc-textpic csc-textpic-intext-right-nowrap###CLASSES###">###IMAGES###<div style="margin-right:{register:rowwidth}px;">###TEXT###</div></div><div class="csc-textpic-clear"><!-- --></div>
+		25.insertData = 1
+		# intext-left-nowrap
+		26 = TEXT
+		26.value = <div class="csc-textpic csc-textpic-intext-left-nowrap###CLASSES###">###IMAGES###<div style="margin-left:{register:rowwidth}px;">###TEXT###</div></div><div class="csc-textpic-clear"><!-- --></div>
+		26.insertData = 1
+	}
+
+	rendering {
+		dl {
+			imageRowStdWrap.dataWrap = <div class="csc-textpic-imagerow" style="width:{register:rowwidth}px;"> | </div>
+			noRowsStdWrap.wrap =
+			oneImageStdWrap.dataWrap = <dl class="csc-textpic-image" style="width:{register:imagewidth}px;"> | </dl>
+			imgTagStdWrap.wrap = <dt> | </dt>
+			editIconsStdWrap.wrap = <dd> | </dd>
+			captionStdWrap.wrap = <dd class="csc-textpic-caption"> | </dd>
+		}
+		ul {
+			imageRowStdWrap.dataWrap = <div class="csc-textpic-imagerow" style="width:{register:rowwidth}px;"><ul> | </ul></div>
+			noRowsStdWrap.wrap = <ul> | </ul>
+			oneImageStdWrap.dataWrap = <li class="csc-textpic-image" style="width:{register:imagewidth}px;"> | </li>
+			imgTagStdWrap.wrap =
+			editIconsStdWrap.wrap = <div> | </div>
+			captionStdWrap.wrap = <div class="csc-textpic-caption"> | </div>
+		}
+		div {
+			imageRowStdWrap.dataWrap = <div class="csc-textpic-imagerow" style="width:{register:rowwidth}px;"> | </div>
+			noRowsStdWrap.wrap =
+			oneImageStdWrap.dataWrap = <div class="csc-textpic-image" style="width:{register:imagewidth}px;"> | </div>
+			imgTagStdWrap.wrap = <div> | </div>
+			editIconsStdWrap.wrap = <div> | </div>
+			captionStdWrap.wrap = <div class="csc-textpic-caption"> | </div>
+		}
+	}
+	renderMethod = dl
+}
+
+# cObject: Text with image
+
+tt_content.textpic.20 < tt_content.image.20
+tt_content.textpic.20 {
+	text.10 = COA
+	text.10 {
+		if.value = 24
+		if.isGreaterThan.field = imageorient
+		10 = < lib.stdheader
+		10.stdWrap.dataWrap = <div class="csc-textpicHeader csc-textpicHeader-{field:imageorient}">|</div>
+	}
+	text.20 = < tt_content.text.20
+	text.wrap = <div class="csc-textpic-text"> | </div>
+}
+
+
+plugin.tx_cssstyledcontent._CSS_DEFAULT_STYLE (
+	/* Captions */
+	P.csc-caption { margin: 0; }
+	DIV.csc-textpic-caption-c .csc-textpic-caption { text-align: center; }
+	DIV.csc-textpic-caption-r .csc-textpic-caption { text-align: right; }
+	DIV.csc-textpic-caption-l .csc-textpic-caption { text-align: left; }
+
+	/* Needed for noRows setting */
+	DIV.csc-textpic DIV.csc-textpic-imagecolumn { float: left; display: inline; }
+
+	/* Border just around the image */
+	{$styles.content.imgtext.borderSelector} {
+		border: {$styles.content.imgtext.borderThick}px solid {$styles.content.imgtext.borderColor};
+		padding: {$styles.content.imgtext.borderSpace}px {$styles.content.imgtext.borderSpace}px;
+	}
+
+	DIV.csc-textpic-imagewrap { padding: 0; }
+
+	DIV.csc-textpic IMG { border: none; }
+
+	/* DIV: This will place the images side by side */
+	DIV.csc-textpic DIV.csc-textpic-imagewrap DIV.csc-textpic-image { float: left; }
+
+	/* UL: This will place the images side by side */
+	DIV.csc-textpic DIV.csc-textpic-imagewrap UL { list-style: none; margin: 0; padding: 0; }
+	DIV.csc-textpic DIV.csc-textpic-imagewrap UL LI { float: left; margin: 0; padding: 0; }
+
+	/* DL: This will place the images side by side */
+	DIV.csc-textpic DIV.csc-textpic-imagewrap DL.csc-textpic-image { float: left; }
+	DIV.csc-textpic DIV.csc-textpic-imagewrap DL.csc-textpic-image DT { float: none; }
+	DIV.csc-textpic DIV.csc-textpic-imagewrap DL.csc-textpic-image DD { float: none; }
+	DIV.csc-textpic DIV.csc-textpic-imagewrap DL.csc-textpic-image DD IMG { border: none; } /* FE-Editing Icons */
+	DL.csc-textpic-image { margin: 0; }
+	DL.csc-textpic-image DT { margin: 0; display: inline; }
+	DL.csc-textpic-image DD { margin: 0; }
+
+	/* Clearer */
+	DIV.csc-textpic-clear { clear: both; }
+
+	/* Margins around images: */
+
+	/* Pictures on left, add margin on right */
+	DIV.csc-textpic-left DIV.csc-textpic-imagewrap .csc-textpic-image,
+	DIV.csc-textpic-intext-left-nowrap DIV.csc-textpic-imagewrap .csc-textpic-image,
+	DIV.csc-textpic-intext-left DIV.csc-textpic-imagewrap .csc-textpic-image {
+		display: inline; /* IE fix for double-margin bug */
+		margin-right: {$styles.content.imgtext.colSpace}px;
+	}
+
+	/* Pictures on right, add margin on left */
+	DIV.csc-textpic-right DIV.csc-textpic-imagewrap .csc-textpic-image,
+	DIV.csc-textpic-intext-right-nowrap DIV.csc-textpic-imagewrap .csc-textpic-image,
+	DIV.csc-textpic-intext-right DIV.csc-textpic-imagewrap .csc-textpic-image {
+		display: inline; /* IE fix for double-margin bug */
+		margin-left: {$styles.content.imgtext.colSpace}px;
+	}
+
+	/* Pictures centered, add margin on left */
+	DIV.csc-textpic-center DIV.csc-textpic-imagewrap .csc-textpic-image {
+		display: inline; /* IE fix for double-margin bug */
+		margin-left: {$styles.content.imgtext.colSpace}px;
+	}
+	DIV.csc-textpic DIV.csc-textpic-imagewrap .csc-textpic-image .csc-textpic-caption { margin: 0; }
+	DIV.csc-textpic DIV.csc-textpic-imagewrap .csc-textpic-image IMG { margin: 0; }
+
+	/* Space below each image (also in-between rows) */
+	DIV.csc-textpic DIV.csc-textpic-imagewrap .csc-textpic-image { margin-bottom: 5px; }
+	DIV.csc-textpic-equalheight DIV.csc-textpic-imagerow { margin-bottom: 5px; display: block; }
+
+	/* Positioning of images: */
+
+	/* Above */
+	DIV.csc-textpic-above DIV.csc-textpic-text { clear: both; }
+
+	/* Center (above or below) */
+	DIV.csc-textpic-center { text-align: center; /* IE-hack */ }
+	DIV.csc-textpic-center DIV.csc-textpic-imagewrap { margin: 0 auto; }
+	DIV.csc-textpic-center DIV.csc-textpic-imagewrap .csc-textpic-image { text-align: left; /* Remove IE-hack */ }
+	DIV.csc-textpic-center DIV.csc-textpic-text { text-align: left; /* Remove IE-hack */ }
+
+	/* Right (above or below) */
+	DIV.csc-textpic-right DIV.csc-textpic-imagewrap { float: right; }
+	DIV.csc-textpic-right DIV.csc-textpic-text { clear: right; }
+
+	/* Left (above or below) */
+	DIV.csc-textpic-left DIV.csc-textpic-imagewrap { float: left; }
+	DIV.csc-textpic-left DIV.csc-textpic-text { clear: left; }
+
+	/* Left (in text) */
+	DIV.csc-textpic-intext-left DIV.csc-textpic-imagewrap { float: left; }
+
+	/* Right (in text) */
+	DIV.csc-textpic-intext-right DIV.csc-textpic-imagewrap { float: right; }
+
+	/* Right (in text, no wrap around) */
+	DIV.csc-textpic-intext-right-nowrap DIV.csc-textpic-imagewrap { float: right; clear: both; }
+	/* Hide from IE5-mac. Only IE-win sees this. \*/
+	* html DIV.csc-textpic-intext-right-nowrap .csc-textpic-text { height: 1%; }
+	/* End hide from IE5/mac */
+
+	/* Left (in text, no wrap around) */
+	DIV.csc-textpic-intext-left-nowrap DIV.csc-textpic-imagewrap { float: left; clear: both; }
+	/* Hide from IE5-mac. Only IE-win sees this. \*/
+	* html DIV.csc-textpic-intext-left-nowrap .csc-textpic-text { height: 1%; }
+	/* End hide from IE5/mac */
+)
 
 [END]
 

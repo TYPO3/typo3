@@ -88,7 +88,7 @@ class SC_browser {
 					close();
 				}
 				function setParams(mode,params)	{	//
-					parent.content.document.location = "browse_links.php?mode="+mode+"&bparams="+params;
+					parent.content.location.href = "browse_links.php?mode="+mode+"&bparams="+params;
 				}
 				if (!window.opener)	{
 					alert("ERROR: Sorry, no link to main window... Closing");

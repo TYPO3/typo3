@@ -387,6 +387,8 @@ class t3lib_loadModules {
 		$modconf=Array();
 		$path = ereg_replace ('/[^/.]+/\.\./', '/', $fullpath); // because 'path/../path' does not work
 		if (@is_dir($path) && @file_exists($path.'/conf.php')) 	{
+			$MCONF = array();
+			$MLANG = array();
 			include($path.'/conf.php');	// The conf-file is included. This must be valid PHP.
 			if (!$MCONF['shy'] && $this->checkModAccess($name,$MCONF) && $this->checkModWorkspace($name,$MCONF))	{
 				$modconf['name']=$name;
@@ -541,7 +543,7 @@ class t3lib_loadModules {
 	 * @return	string
 	 */
 	function cleanName ($str)	{
-		return ereg_replace('[^A-Za-z0-9]*','',$str);
+		return preg_replace('/[^a-z0-9]/i','',$str);
 	}
 
 	/**

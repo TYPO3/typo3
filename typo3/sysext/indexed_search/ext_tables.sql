@@ -84,7 +84,7 @@ CREATE TABLE index_section (
   rl1 int(11) unsigned DEFAULT '0' NOT NULL,
   rl2 int(11) unsigned DEFAULT '0' NOT NULL,
   page_id int(11) DEFAULT '0' NOT NULL,
-  uniqid int(11) DEFAULT '0' NOT NULL auto_increment,
+  uniqid int(11) NOT NULL auto_increment,
   PRIMARY KEY (uniqid),
   KEY joinkey (phash,rl0),
 #  KEY phash_pid (phash,page_id),
@@ -101,7 +101,7 @@ CREATE TABLE index_grlist (
   phash_x int(11) DEFAULT '0' NOT NULL,
   hash_gr_list int(11) DEFAULT '0' NOT NULL,
   gr_list tinytext NOT NULL,
-  uniqid int(11) DEFAULT '0' NOT NULL auto_increment,
+  uniqid int(11) NOT NULL auto_increment,
   PRIMARY KEY (uniqid),
   KEY joinkey (phash,hash_gr_list),
   KEY phash_grouping (phash_x,hash_gr_list)
@@ -111,7 +111,7 @@ CREATE TABLE index_grlist (
 # Table structure for table 'index_stat_search'
 #
 CREATE TABLE index_stat_search (
-  uid int(11) DEFAULT '0' NOT NULL auto_increment,
+  uid int(11) NOT NULL auto_increment,
   searchstring tinytext NOT NULL,
   searchoptions blob NOT NULL,
   tstamp int(11) DEFAULT '0' NOT NULL,
@@ -127,7 +127,7 @@ CREATE TABLE index_stat_search (
 # Table structure for table 'index_stat_word'
 #
 CREATE TABLE index_stat_word (
-  uid int(11) DEFAULT '0' NOT NULL auto_increment,
+  uid int(11) NOT NULL auto_increment,
   word varchar(30) DEFAULT '' NOT NULL,
   index_stat_search_id int(11) DEFAULT '0' NOT NULL,
   tstamp int(11) DEFAULT '0' NOT NULL,
@@ -148,7 +148,7 @@ CREATE TABLE index_debug (
 # Table structure for table 'index_config'
 #
 CREATE TABLE index_config (
-    uid int(11) DEFAULT '0' NOT NULL auto_increment,
+    uid int(11) NOT NULL auto_increment,
     pid int(11) DEFAULT '0' NOT NULL,
     tstamp int(11) DEFAULT '0' NOT NULL,
     crdate int(11) DEFAULT '0' NOT NULL,
@@ -188,7 +188,7 @@ CREATE TABLE index_config (
 # Table structure for table 'index_stat_word'
 #
 CREATE TABLE index_stat_word (
-  uid int(11) DEFAULT '0' NOT NULL auto_increment,
+  uid int(11) NOT NULL auto_increment,
   word varchar(30) DEFAULT '' NOT NULL,
   index_stat_search_id int(11) DEFAULT '0' NOT NULL,
   tstamp int(11) DEFAULT '0' NOT NULL,

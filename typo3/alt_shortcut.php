@@ -247,16 +247,16 @@ class SC_alt_shortcut {
 				top.goToModule(modName);
 			}
 			function editSh(uid)	{	//
-				document.location="alt_shortcut.php?editShortcut="+uid;
+				window.location.href="alt_shortcut.php?editShortcut="+uid;
 			}
 			function submitEditPage(id)	{	//
-				document.location="alt_shortcut.php?editPage="+top.rawurlencode(id);
+				window.location.href="alt_shortcut.php?editPage="+top.rawurlencode(id);
 			}
 			function changeWorkspace(workspaceId)	{	//
-				document.location="alt_shortcut.php?changeWorkspace="+top.rawurlencode(workspaceId);
+				window.location.href="alt_shortcut.php?changeWorkspace="+top.rawurlencode(workspaceId);
 			}
 			function changeWorkspacePreview(newstate)	{	//
-				document.location="alt_shortcut.php?changeWorkspacePreview="+newstate;
+				window.location.href="alt_shortcut.php?changeWorkspacePreview="+newstate;
 			}
 
 			');
@@ -348,7 +348,7 @@ class SC_alt_shortcut {
 					}
 
 					if ($sc_group>=0)	{
-						$onC = 'if (confirm('.$GLOBALS['LANG']->JScharCode($LANG->getLL('shortcut_delAllInCat')).')){document.location=\'alt_shortcut.php?deleteCategory='.$sc_group.'\';}return false;';
+						$onC = 'if (confirm('.$GLOBALS['LANG']->JScharCode($LANG->getLL('shortcut_delAllInCat')).')){window.location.href=\'alt_shortcut.php?deleteCategory='.$sc_group.'\';}return false;';
 						$this->linesPre[]='<td>&nbsp;</td><td class="bgColor5"><a href="#" onclick="'.htmlspecialchars($onC).'" title="'.$LANG->getLL('shortcut_delAllInCat',1).'">'.$label.'</a></td>';
 					} else {
 						$label = $LANG->getLL('shortcut_global',1).': '.($label ? $label : abs($sc_group));	// Fallback label
@@ -609,7 +609,7 @@ class SC_alt_shortcut {
 			// Changing workspace and if so, reloading entire backend:
 		if (strlen($this->changeWorkspace))	{
 			$BE_USER->setWorkspace($this->changeWorkspace);
-			return $this->doc->wrapScriptTags('top.document.location="alt_main.php";');
+			return $this->doc->wrapScriptTags('top.location.href="alt_main.php";');
 		}
 			// Changing workspace and if so, reloading entire backend:
 		if (strlen($this->changeWorkspacePreview))	{
@@ -627,9 +627,11 @@ class SC_alt_shortcut {
 
 			// Add custom workspaces (selecting all, filtering by BE_USER check):
 		$workspaces = $TYPO3_DB->exec_SELECTgetRows('uid,title,adminusers,members,reviewers','sys_workspace','pid=0'.t3lib_BEfunc::deleteClause('sys_workspace'),'','title');
-		foreach($workspaces as $rec)	{
-			if ($BE_USER->checkWorkspace($rec))	{
-				$options[$rec['uid']] = $rec['uid'].': '.$rec['title'];
+		if (count($workspaces))	{
+			foreach ($workspaces as $rec)	{
+				if ($BE_USER->checkWorkspace($rec))	{
+					$options[$rec['uid']] = $rec['uid'].': '.$rec['title'];
+				}
 			}
 		}
 

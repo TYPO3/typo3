@@ -1,3 +1,45 @@
+2006-01-19  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+	* Version 1.1.3
+	* Remove TYPO3HtmlParser plugin when the editor is used in the frontend.
+	* Correct height, margins and padding of toolbar select fields in all editor skins.
+	* Increase default width of the editor area from 460px to 530px.
+	* Correction for Mozilla/Firefox: remove ending > from auto-detected email link.
+	* Use relative addressing for link, image, user and acronym scripts.
+	* Cleaning code and adding hook in TYPO3HtmlParser plugin (mod6/parse_html.php).
+
+2006-01-12  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+	* Version 1.1.2
+	* Correction to path settings affecting CSS files when TYPO3 is installed in a subdirectory.
+	* Cache the main JS files in typo3temp directory with hashed name including the extension version number.
+	* Adjust opening size of some popup windows.
+	* Correction to the automatic detection of url's in Mozilla/Firefox: the rightmost domain should be alphabetic.
+	* Enable link editing options in the context menu when the cursor is positioned inside a link.
+	* Enable the link button in the tool bar if some text is selected or if the cursor is positioned inside a link.
+
+2006-01-08  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+	* Version 1.1.1
+	* Correction to path settings affecting image drag & drop and file/image upload.
+	
+2006-01-06  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+	* Version 1.1.0
+	* Convert all locallang files to xml.
+	* Revise all licence notices in order to publish under GPL.
+
+2006-01-05  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+	* Allow align attribute on p and div tags in Demo Page TSConfig settings.
+	* Restructure extension modules and resources folders.
+	* Make extension conflict with rte_conf.
+	* Reconfigure for new version of extension Lorem Ipsum.
+
+2006-01-03  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+	* Modify conf and module scripts so that the extension may be run as system, global or local extension.
+	* Convert some files to UNIX linebreaks.
+	* Recompress some JS scripts.
+	* Restore Demo and Typical Page TSConfig default settings.
+
+2005-12-29  Michael Stucki  <michael@typo3.org>
+	* Solved problems with wrong backPath when installed as system extension in TYPO3 4.0 beta1.
+
 2005-12-24  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
 	* Extend t3lib_parsehtml_proc only if TYPO3_VERSION is smaller than 4.0
 	* Cleanup images folders.

@@ -227,7 +227,7 @@ class SC_file_list {
 
 			if (top.fsMod) top.fsMod.recentIds["file"] = unescape("'.rawurlencode($this->id).'");
 			function jumpToUrl(URL)	{	//
-				document.location = URL;
+				window.location.href = URL;
 			}
 
 			'.$filelist->CBfunctions()	// ... and add clipboard JavaScript functions

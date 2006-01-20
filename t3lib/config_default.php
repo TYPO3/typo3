@@ -56,11 +56,11 @@ $TYPO3_CONF_VARS = Array(
 		'doNotCheckReferer' => 0,				// Boolean. If set, it's NOT checked numerous places that the refering host is the same as the current. This is an option you should set if you have problems with proxies not passing the HTTP_REFERER variable.
 		'recursiveDomainSearch' => 0,			// Boolean. If set, the search for domain records will be done recursively by stripping parts of the host name off until a matching domain record is found.
 		'devIPmask' => '192.168.*,127.0.0.1',	// Defines a list of IP addresses which will allow development-output to display. The debug() function will use this as a filter. See the function t3lib_div::cmpIP() for details on syntax. Setting this to blank value will deny all. Setting to '*' will allow all.
-		'sqlDebug' => FALSE,					// Boolean. If set, then database queries that fails are outputted in browser. For development.
+		'sqlDebug' => 0,					// Boolean. If set, then database queries that fails are outputted in browser. For development.
 		'enable_DLOG' => FALSE,					// Whether the developer log is enabled. See constant "TYPO3_DLOG"
 		'ddmmyy' => 'd-m-y',					// Format of Date-Month-Year - see PHP-function date()
 		'hhmm' => 'H:i',						// Format of Hours-minutes - see PHP-function date()
-		'USdateFormat' => FALSE,				// Boolean. If true, dates entered in the TCEforms of the backend will be formatted mm-dd-yyyy
+		'USdateFormat' => 0,				// Boolean. If true, dates entered in the TCEforms of the backend will be formatted mm-dd-yyyy
 		'loginCopyrightWarrantyProvider' => '',		// String: If you provide warranty for TYPO3 to your customers insert you (company) name here. It will appear in the login-dialog as the warranty provider. (You must also set URL below).
 		'loginCopyrightWarrantyURL' => '',		// String: Add the URL where you explain the extend of the warranty you provide. This URL is displayed in the login dialog as the place where people can learn more about the conditions of your warranty. Must be set (more than 10 chars) in addition with the 'loginCopyrightWarrantyProvider' message.
 		'loginCopyrightShowVersion' => 0,		// Boolean: If set, the current TYPO3 version is shown.
@@ -77,6 +77,7 @@ $TYPO3_CONF_VARS = Array(
 		't3lib_cs_utils' => '',					// String (values: "iconv" - PHP 5.0 only!, "mbstring", default is homemade PHP-code). Defines which of these PHP-features to use for various Charset processing functions in t3lib_cs. Will speed up charset functions radically.
 		'no_pconnect' => 0,						// Boolean: If true, "connect" is used instead of "pconnect" when connecting to the database!
 		'multiplyDBfieldSize' => 1,				// Double: 1-5: Amount used to multiply the DB field size when the install tool is evaluating the database size (eg. "2.5"). This is useful if you want to expand the size of fields for utf-8 etc. For western european sites using utf-8 the need should not be for more than twice the normal single-byte size (2) and for chinese / asian languages 3 should suffice.
+		'setDBinit' => array(),					// Array, commands to send to database right after connecting. Ignored by the DBAL extension!
 		'setMemoryLimit' => 0,					// Integer, memory_limit in MB: If more than 16, TYPO3 will try to use ini_set() to set the memory limit of PHP to the value. This works only if the function ini_set() is not disabled by your sysadmin.
 		'forceReturnPath' => 0,					// Boolean: Force return path to be applied in mail() calls. If this is set, all calls to mail() done by t3lib_htmlmail will be called with '-f<return_path> as the 5th parameter. This will make the return path correct on almost all Unix systems. There is a known problem with Postfix below version 2: Mails are not sent if this option is set and Postfix is used. On Windows platforms, the return path is set via a call to ini_set. This has no effect if safe_mode in PHP is on.
 		'displayErrors' => -1,					// Integer, -1,0,1,2. 0=Do not display any PHP error messages. 1=Display error messages. 2=Display only if client matches TYPO3_CONF_VARS[SYS][devIPmask]. -1=Default setting. With this option, you can override the PHP setting "display_errors". It is suggested that you set this to "0" and enable the "error_log" option in php.ini instead.
@@ -110,8 +111,8 @@ $TYPO3_CONF_VARS = Array(
 		'userHomePath' => '',					// Path to the directory where TYPO3 backend-users have their home-dirs.  Eg. '/home/typo3/users/'. A home for backend user 2 would be: '/home/typo3/users/2/'. Ending slash required!
 		'groupHomePath' => '',					// Path to the directory where TYPO3 backend-groups have their home-dirs. Remember that the first part of this path must be 'lockRootPath'. Eg. '/home/typo3/groups/'. A home for backend group 1 would be: '/home/typo3/groups/1/'. Ending slash required!
 		'userUploadDir' => '',					// Suffix to the user home dir which is what gets mounted in TYPO3. Eg. if the user dir is "../123_user/" and this value is "/upload" then "../123_user/upload" gets mounted.
-		'fileCreateMask' => '0775',				// File mode mask for Unix file systems (when files are uploaded/created). Execute bit is set since some files installed in extensions might need that.
-		'folderCreateMask' => '0775',			// As above, but for folders.
+		'fileCreateMask' => '0755',				// File mode mask for Unix file systems (when files are uploaded/created). Execute bit is set since some files installed in extensions might need that.
+		'folderCreateMask' => '0755',			// As above, but for folders.
 		'createGroup' => '',					// Group for newly created files and folders (Unix only). Group ownership can be changed on Unix file systems (see above). Set this if you want to change the group ownership of created files/folders to a specific group. This makes sense in all cases where the webserver is running with a different user/group as you do. Create a new group on your system and add you and the webserver user to the group. Now you can safely set the last bit in fileCreateMask/folderCreateMask to 0 (e.g. 770). Important: The user who is running your webserver needs to be a member of the group you specify here! Otherwise you might get some error messages.
 		'warning_email_addr' => '',				// Email-address that will receive a warning if there has been failed logins 4 times within an hour (all users).
 		'warning_mode' => '',					// Bit 1: If set, warning_email_addr gets a mail everytime a user logs in. Bit 2: If set, a mail is sent if an ADMIN user logs in! Other bits reserved for future options.
@@ -239,9 +240,9 @@ $TYPO3_CONF_VARS = Array(
 $T3_VAR = array();	// Initialize.
 
 	// TYPO3 version
-$TYPO_VERSION = '3.9-dev';
+$TYPO_VERSION = '4.0beta1';
 define('TYPO3_version', $TYPO_VERSION);
-define('TYPO3_branch', '3.9');
+define('TYPO3_branch', '4.0');
 
 // Database-variables are cleared!
 $typo_db = '';					// The database name
@@ -252,7 +253,7 @@ $typo_db_tables_script = '';	// The filename of the tables.php script in typo3co
 $typo_db_extTableDef_script = '';	// The filename of an additional script in typo3conf/-folder which is included after tables.php. Code in this script should modify the tables.php-configuration only, and this provides a good way to extend the standard-distributed tables.php file.
 
 	// Include localconf.php. Use this file to configure TYPO3 for your needs and database
-if (!@is_file(PATH_typo3conf.'localconf.php'))	die(PATH_typo3conf.'localconf.php is not found!');
+if (!@is_file(PATH_typo3conf.'localconf.php'))	die('localconf.php is not found!');
 require(PATH_typo3conf.'localconf.php');
 
 	// Defining the database setup as constants
@@ -335,6 +336,10 @@ function debugEnd() {
 }
 
 
+	// include compatibility functions <PHP5
+if (version_compare(phpversion(), '5.0') < 0) {
+	include_once('compat_php5.php');
+}
 
 	// Init services array:
 $T3_SERVICES = array();

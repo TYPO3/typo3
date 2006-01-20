@@ -86,7 +86,7 @@
 			$this->doc->JScode = '  <script language="javascript" type="text/javascript">
 				script_ended = 0;
 				function jumpToUrl(URL) {
-				document.location = URL;
+				window.location.href = URL;
 				}
 				'.(is_object($this->extObj)?$this->extObj->JScode():"").'
 				</script>

@@ -169,6 +169,7 @@ class t3lib_diff {
 		t3lib_div::writeFile($file2,$str2);
 			// Perform diff.
 		$cmd = $GLOBALS['TYPO3_CONF_VARS']['BE']['diff_path'].' '.$this->diffOptions.' '.$file1.' '.$file2;
+		$res = array();
 		exec($cmd,$res);
 
 		unlink($file1);

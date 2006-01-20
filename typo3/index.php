@@ -502,7 +502,7 @@ class SC_index {
 		$this->interfaceSelector_jump = '';
 
 			// If interfaces are defined AND no input redirect URL in GET vars:
-		if ($TYPO3_CONF_VARS['BE']['interfaces'] && !$this->redirect_url)	{
+		if ($TYPO3_CONF_VARS['BE']['interfaces'] && ($this->commandLI || !$this->redirect_url))	{
 			$parts = t3lib_div::trimExplode(',',$TYPO3_CONF_VARS['BE']['interfaces']);
 			if (count($parts)>1)	{	// Only if more than one interface is defined will we show the selector:
 
@@ -519,7 +519,7 @@ class SC_index {
 					// Traverse the interface keys:
 				foreach($parts as $valueStr)	{
 					$this->interfaceSelector.='
-							<option value="'.htmlspecialchars($valueStr).'">'.htmlspecialchars($labels[$valueStr]).'</option>';
+							<option value="'.htmlspecialchars($valueStr).'"'.(t3lib_div::_GP('interface')==htmlspecialchars($valueStr) ? ' selected="selected"' : '').'>'.htmlspecialchars($labels[$valueStr]).'</option>';
 					$this->interfaceSelector_jump.='
 							<option value="'.htmlspecialchars($jumpScript[$valueStr]).'">'.htmlspecialchars($labels[$valueStr]).'</option>';
 				}
@@ -527,7 +527,7 @@ class SC_index {
 						<select name="interface" class="c-interfaceselector">'.$this->interfaceSelector.'
 						</select>';
 				$this->interfaceSelector_jump='
-						<select name="interface" class="c-interfaceselector" onchange="document.location=this.options[this.selectedIndex].value;">'.$this->interfaceSelector_jump.'
+						<select name="interface" class="c-interfaceselector" onchange="window.location.href=this.options[this.selectedIndex].value;">'.$this->interfaceSelector_jump.'
 						</select>';
 
 			} else {	// If there is only ONE interface value set:

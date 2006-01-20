@@ -488,8 +488,8 @@ class t3lib_TCEforms	{
 								if ($sField)	$sField.=$sFieldPal;
 
 								$out_array[$out_sheet][$out_pointer].= $sField;
-							} elseif($theField=='--div--')	{
-								if ($cc>0) {
+							} elseif ($theField=='--div--')	{
+								if ($cc>0)	{
 									$out_array[$out_sheet][$out_pointer].=$this->getDivider();
 
 									if ($this->enableTabMenu && $TCA[$table]['ctrl']['dividers2tabs'])	{
@@ -734,10 +734,13 @@ class t3lib_TCEforms	{
 
 					// Create a JavaScript code line which will ask the user to save/update the form due to changing the element. This is used for eg. "type" fields and others configured with "requestUpdate"
 				if (
-						(($TCA[$table]['ctrl']['type'] && !strcmp($field,$TCA[$table]['ctrl']['type'])) ||
-						($TCA[$table]['ctrl']['requestUpdate'] && t3lib_div::inList($TCA[$table]['ctrl']['requestUpdate'],$field)))
-						&& $GLOBALS['BE_USER']->jsConfirmation(1))	{
-					$alertMsgOnChange = 'if (confirm('.$GLOBALS['LANG']->JScharCode($this->getLL('m_onChangeAlert')).') && TBE_EDITOR_checkSubmit(-1)){ TBE_EDITOR_submitForm() };';
+					($TCA[$table]['ctrl']['type'] && !strcmp($field,$TCA[$table]['ctrl']['type'])) ||
+					($TCA[$table]['ctrl']['requestUpdate'] && t3lib_div::inList($TCA[$table]['ctrl']['requestUpdate'],$field))) {
+					if($GLOBALS['BE_USER']->jsConfirmation(1))	{
+						$alertMsgOnChange = 'if (confirm('.$GLOBALS['LANG']->JScharCode($this->getLL('m_onChangeAlert')).') && TBE_EDITOR_checkSubmit(-1)){ TBE_EDITOR_submitForm() };';
+					} else {
+						$alertMsgOnChange = 'if (TBE_EDITOR_checkSubmit(-1)){ TBE_EDITOR_submitForm() };';
+					}
 				} else {
 					$alertMsgOnChange = '';
 				}
@@ -2194,12 +2197,15 @@ class t3lib_TCEforms	{
 								}
 
 								if (
-									(($GLOBALS['TCA'][$table]['ctrl']['type'] && !strcmp($key,$GLOBALS['TCA'][$table]['ctrl']['type'])) ||
-									($GLOBALS['TCA'][$table]['ctrl']['requestUpdate'] && t3lib_div::inList($GLOBALS['TCA'][$table]['ctrl']['requestUpdate'],$key)))
-									&& $GLOBALS['BE_USER']->jsConfirmation(1))	{
-									$alertMsgOnChange = 'if (confirm('.$GLOBALS['LANG']->JScharCode($this->getLL('m_onChangeAlert')).') && TBE_EDITOR_checkSubmit(-1)){ TBE_EDITOR_submitForm() };';
+									($GLOBALS['TCA'][$table]['ctrl']['type'] && !strcmp($key,$GLOBALS['TCA'][$table]['ctrl']['type'])) ||
+									($GLOBALS['TCA'][$table]['ctrl']['requestUpdate'] && t3lib_div::inList($GLOBALS['TCA'][$table]['ctrl']['requestUpdate'],$key))) {
+									if ($GLOBALS['BE_USER']->jsConfirmation(1))	{
+										$alertMsgOnChange = 'if (confirm('.$GLOBALS['LANG']->JScharCode($this->getLL('m_onChangeAlert')).') && TBE_EDITOR_checkSubmit(-1)){ TBE_EDITOR_submitForm() };';
+									} else {
+										$alertMsgOnChange = 'if(TBE_EDITOR_checkSubmit(-1)){ TBE_EDITOR_submitForm();}';
+									}
 								} else {
-									$alertMsgOnChange = 'if(TBE_EDITOR_checkSubmit(-1)){ TBE_EDITOR_submitForm();}';
+									$alertMsgOnChange = '';
 								}
 
 								$fakePA['fieldChangeFunc']=$PA['fieldChangeFunc'];
@@ -3608,10 +3614,8 @@ class t3lib_TCEforms	{
 				break;
 				case 'modListGroup':
 				case 'modListUser':
-					if (!is_object($loadModules))	{
-						$loadModules = t3lib_div::makeInstance('t3lib_loadModules');
-						$loadModules->load($GLOBALS['TBE_MODULES']);
-					}
+					$loadModules = t3lib_div::makeInstance('t3lib_loadModules');
+					$loadModules->load($GLOBALS['TBE_MODULES']);
 
 					$modList = $fieldValue['config']['special']=='modListUser' ? $loadModules->modListUser : $loadModules->modListGroup;
 					if (is_array($modList))	{
@@ -4433,7 +4437,7 @@ class t3lib_TCEforms	{
 						if (document.'.$formname.'[theField])		url+="&rec["+field+"]="+TBE_EDITOR_rawurlencode(document.'.$formname.'[theField].value);
 					}
 					if (top.topmenuFrame)	{
-						top.topmenuFrame.document.location = url+"&backRef="+(top.content.list_frame ? (top.content.list_frame.view_frame ? "top.content.list_frame.view_frame" : "top.content.list_frame") : "top.content");
+						top.topmenuFrame.location.href = url+"&backRef="+(top.content.list_frame ? (top.content.list_frame.view_frame ? "top.content.list_frame.view_frame" : "top.content.list_frame") : "top.content");
 					} else if (!isOnFocus) {
 						var vHWin=window.open(url,"palette","height=300,width=200,status=0,menubar=0,scrollbars=1");
 						vHWin.focus();
@@ -4857,14 +4861,17 @@ class t3lib_TCEforms	{
 	 * @return	string		The value of the label, fetched for the current backend language.
 	 */
 	function getLL($str)	{
+		$content = '';
+
 		switch(substr($str,0,2))	{
 			case 'l_':
-				return $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.'.substr($str,2));
+				$content = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.'.substr($str,2));
 			break;
 			case 'm_':
-				return $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:mess.'.substr($str,2));
+				$content = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:mess.'.substr($str,2));
 			break;
 		}
+		return $content;
 	}
 
 	/**

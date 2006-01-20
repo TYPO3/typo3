@@ -303,6 +303,10 @@ class clickMenu {
 				$menuItems['spacer2']='spacer';
 				$menuItems['delete']=$this->DB_delete($table,$uid,$elInfo);
 			}
+
+			if(!in_array('history',$this->disabledItems))	{
+				$menuItems['history']=$this->DB_history($table,$uid,$elInfo);
+			}
 		}
 
 			// Adding external elements to the menuItems array
@@ -396,7 +400,7 @@ class clickMenu {
 	 */
 	function urlRefForCM($url,$retUrl='',$hideCM=1)	{
 		$loc='top.content'.($this->listFrame && !$this->alwaysContentFrame ?'.list_frame':'');
-		$editOnClick='var docRef=(top.content.list_frame)?top.content.list_frame:'.$loc.'; docRef.document.location=top.TS.PATH_typo3+\''.$url.'\''.
+		$editOnClick='var docRef=(top.content.list_frame)?top.content.list_frame:'.$loc.'; docRef.location.href=top.TS.PATH_typo3+\''.$url.'\''.
 			($retUrl?"+'&".$retUrl."='+top.rawurlencode(".$this->frameLocation('docRef.document').')':'').';'.
 			($hideCM?'return hideCM();':'');
 		return $editOnClick;
@@ -448,7 +452,7 @@ class clickMenu {
 		} else {
 			$conf = $loc;
 		}
-		$editOnClick = 'if('.$conf.'){'.$loc.'.document.location=top.TS.PATH_typo3+\''.$this->clipObj->pasteUrl($table,$uid,0).'&redirect=\'+top.rawurlencode('.$this->frameLocation($loc.'.document').'); hideCM();}';
+		$editOnClick = 'if('.$conf.'){'.$loc.'.location.href=top.TS.PATH_typo3+\''.$this->clipObj->pasteUrl($table,$uid,0).'&redirect=\'+top.rawurlencode('.$this->frameLocation($loc.'.document').'); hideCM();}';
 
 		return $this->linkItem(
 			$this->label('paste'.$type),
@@ -654,7 +658,7 @@ class clickMenu {
 			}
 		}
 		if (!$editOnClick)	{
-			$editOnClick='if('.$loc.'){'.$loc.".document.location=top.TS.PATH_typo3+'alt_doc.php?returnUrl='+top.rawurlencode(".$this->frameLocation($loc.'.document').")+'&edit[".$table."][".$uid."]=edit".$addParam."';}";
+			$editOnClick='if('.$loc.'){'.$loc.".location.href=top.TS.PATH_typo3+'alt_doc.php?returnUrl='+top.rawurlencode(".$this->frameLocation($loc.'.document').")+'&edit[".$table."][".$uid."]=edit".$addParam."';}";
 		}
 
 		return $this->linkItem(
@@ -675,7 +679,7 @@ class clickMenu {
 	function DB_new($table,$uid)	{
 		$editOnClick='';
 		$loc='top.content'.(!$this->alwaysContentFrame?'.list_frame':'');
-		$editOnClick='if('.$loc.'){'.$loc.".document.location=top.TS.PATH_typo3+'".
+		$editOnClick='if('.$loc.'){'.$loc.".location.href=top.TS.PATH_typo3+'".
 			($this->listFrame?
 				"alt_doc.php?returnUrl='+top.rawurlencode(".$this->frameLocation($loc.'.document').")+'&edit[".$table."][-".$uid."]=new'":
 				'db_new.php?id='.intval($uid)."'").
@@ -705,7 +709,7 @@ class clickMenu {
 		} else {
 			$conf = '1==1';
 		}
-		$editOnClick='if('.$loc." && ".$conf." ){".$loc.".document.location=top.TS.PATH_typo3+'tce_db.php?redirect='+top.rawurlencode(".$this->frameLocation($loc.'.document').")+'".
+		$editOnClick='if('.$loc." && ".$conf." ){".$loc.".location.href=top.TS.PATH_typo3+'tce_db.php?redirect='+top.rawurlencode(".$this->frameLocation($loc.'.document').")+'".
 			"&cmd[".$table.']['.$uid.'][delete]=1&prErr=1&vC='.$GLOBALS['BE_USER']->veriCode()."';hideCM();}";
 
 		return $this->linkItem(
@@ -742,8 +746,7 @@ class clickMenu {
 		return $this->linkItem(
 			$this->label('tempMountPoint'),
 			$this->excludeIcon('<img'.t3lib_iconWorks::skinImg($this->PH_backPath,'gfx/placeasroot.gif','width="14" height="12"').' alt="" />'),
-			'',
-			"if (top.content.nav_frame) { top.content.nav_frame.document.location = 'alt_db_navframe.php?setTempDBmount=".intval($page_id)."'; } return hideCM();"
+			"if (top.content.nav_frame) { top.content.nav_frame.location.href = 'alt_db_navframe.php?setTempDBmount=".intval($page_id)."'; } return hideCM();"
 		);
 	}
 
@@ -775,7 +778,7 @@ class clickMenu {
 	    $uid = $rec['_ORIG_uid'] ? $rec['_ORIG_uid'] : $rec['uid'];
 	    $editOnClick='';
 	    $loc='top.content'.($this->listFrame && !$this->alwaysContentFrame ?'.list_frame':'');
-	    $editOnClick='if('.$loc.'){'.$loc.".document.location=top.TS.PATH_typo3+'tce_db.php?redirect='+top.rawurlencode(".$this->frameLocation($loc.'.document').")+'".
+	    $editOnClick='if('.$loc.'){'.$loc.".location.href=top.TS.PATH_typo3+'tce_db.php?redirect='+top.rawurlencode(".$this->frameLocation($loc.'.document').")+'".
 	        "&data[".$table.']['.$uid.']['.$flagField.']='.($rec[$flagField]?0:1).'&prErr=1&vC='.$GLOBALS['BE_USER']->veriCode()."';hideCM();}";
 
 	    return $this->linkItem(
@@ -886,7 +889,7 @@ class clickMenu {
 	function FILE_launch($path,$script,$type,$image)	{
 		$loc='top.content'.(!$this->alwaysContentFrame?'.list_frame':'');
 
-		$editOnClick='if('.$loc.'){'.$loc.".document.location=top.TS.PATH_typo3+'".$script.'?target='.rawurlencode($path)."&returnUrl='+top.rawurlencode(".$this->frameLocation($loc.'.document').");}";
+		$editOnClick='if('.$loc.'){'.$loc.".location.href=top.TS.PATH_typo3+'".$script.'?target='.rawurlencode($path)."&returnUrl='+top.rawurlencode(".$this->frameLocation($loc.'.document').");}";
 
 		return $this->linkItem(
 			$this->label($type),
@@ -937,7 +940,7 @@ class clickMenu {
 		} else {
 			$conf = '1==1';
 		}
-		$editOnClick='if('.$loc." && ".$conf." ){".$loc.".document.location=top.TS.PATH_typo3+'tce_file.php?redirect='+top.rawurlencode(".$this->frameLocation($loc.'.document').")+'".
+		$editOnClick='if('.$loc." && ".$conf." ){".$loc.".location.href=top.TS.PATH_typo3+'tce_file.php?redirect='+top.rawurlencode(".$this->frameLocation($loc.'.document').")+'".
 			"&file[delete][0][data]=".rawurlencode($path).'&vC='.$GLOBALS['BE_USER']->veriCode()."';hideCM();}";
 
 		return $this->linkItem(
@@ -965,7 +968,7 @@ class clickMenu {
 			$conf=$loc;
 		}
 
-		$editOnClick='if('.$conf.'){'.$loc.".document.location=top.TS.PATH_typo3+'".$this->clipObj->pasteUrl('_FILE',$path,0).
+		$editOnClick='if('.$conf.'){'.$loc.".location.href=top.TS.PATH_typo3+'".$this->clipObj->pasteUrl('_FILE',$path,0).
 			"&redirect='+top.rawurlencode(".$this->frameLocation($loc.'.document').'); hideCM();}';
 
 		return $this->linkItem(
@@ -1513,7 +1516,7 @@ class SC_alt_clickmenu {
 		}
 	}
 	function hideCM()	{	//
-		document.location="alt_topmenu_dummy.php";
+		window.location.href="alt_topmenu_dummy.php";
 		return false;
 	}
 
@@ -1522,7 +1525,7 @@ class SC_alt_clickmenu {
 
 	'.($this->reloadListFrame ? '
 		// Reload list frame:
-	if('.$listFrameDoc.'){'.$listFrameDoc.'.document.location='.$listFrameDoc.'.document.location;}' :
+	if('.$listFrameDoc.'){'.$listFrameDoc.'.location.href='.$listFrameDoc.'.location.href;}' :
 	'').'
 		');
 	}

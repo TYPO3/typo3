@@ -139,7 +139,7 @@ class t3lib_DB {
 	var $store_lastBuiltQuery = FALSE;	// Set "TRUE" if you want the last built query to be stored in $debug_lastBuiltQuery independent of $this->debugOutput
 
 		// Default link identifier:
-	var $link;
+	var $link = FALSE;
 
 
 
@@ -164,10 +164,11 @@ class t3lib_DB {
 	 *
 	 * @param	string		Table name
 	 * @param	array		Field values as key=>value pairs. Values will be escaped internally. Typically you would fill an array like "$insertFields" with 'fieldname'=>'value' and pass it to this function as argument.
+	 * @param	string/array	See fullQuoteArray()
 	 * @return	pointer		MySQL result pointer / DBAL object
 	 */
-	function exec_INSERTquery($table,$fields_values)	{
-		$res = mysql_query($this->INSERTquery($table,$fields_values), $this->link);
+	function exec_INSERTquery($table,$fields_values,$no_quote_fields='')	{
+		$res = mysql_query($this->INSERTquery($table,$fields_values,$no_quote_fields), $this->link);
 		if ($this->debugOutput)	$this->debug('exec_INSERTquery');
 		return $res;
 	}
@@ -180,10 +181,11 @@ class t3lib_DB {
 	 * @param	string		Database tablename
 	 * @param	string		WHERE clause, eg. "uid=1". NOTICE: You must escape values in this argument with $this->fullQuoteStr() yourself!
 	 * @param	array		Field values as key=>value pairs. Values will be escaped internally. Typically you would fill an array like "$updateFields" with 'fieldname'=>'value' and pass it to this function as argument.
+	 * @param	string/array	See fullQuoteArray()
 	 * @return	pointer		MySQL result pointer / DBAL object
 	 */
-	function exec_UPDATEquery($table,$where,$fields_values)	{
-		$res = mysql_query($this->UPDATEquery($table,$where,$fields_values), $this->link);
+	function exec_UPDATEquery($table,$where,$fields_values,$no_quote_fields='')	{
+		$res = mysql_query($this->UPDATEquery($table,$where,$fields_values,$no_quote_fields), $this->link);
 		if ($this->debugOutput)	$this->debug('exec_UPDATEquery');
 		return $res;
 	}
@@ -295,7 +297,6 @@ class t3lib_DB {
 		$res = $this->exec_SELECTquery($select_fields,$from_table,$where_clause,$groupBy,$orderBy,$limit);
 		if ($this->debugOutput)	$this->debug('exec_SELECTquery');
 
-		unset($output);
 		if (!$this->sql_error())	{
 			$output = array();
 
@@ -333,18 +334,17 @@ class t3lib_DB {
 	 *
 	 * @param	string		See exec_INSERTquery()
 	 * @param	array		See exec_INSERTquery()
+	 * @param	string/array	See fullQuoteArray()
 	 * @return	string		Full SQL query for INSERT (unless $fields_values does not contain any elements in which case it will be false)
 	 * @deprecated			use exec_INSERTquery() instead if possible!
 	 */
-	function INSERTquery($table,$fields_values)	{
+	function INSERTquery($table,$fields_values,$no_quote_fields='')	{
 
 			// Table and fieldnames should be "SQL-injection-safe" when supplied to this function (contrary to values in the arrays which may be insecure).
 		if (is_array($fields_values) && count($fields_values))	{
 
-				// Add slashes old-school:
-			foreach($fields_values as $k => $v)	{
-				$fields_values[$k] = $this->fullQuoteStr($fields_values[$k], $table);
-			}
+				// quote and escape values
+			$fields_values = $this->fullQuoteArray($fields_values,$table,$no_quote_fields);
 
 				// Build query:
 			$query = 'INSERT INTO '.$table.'
@@ -369,26 +369,29 @@ class t3lib_DB {
 	 * @param	string		See exec_UPDATEquery()
 	 * @param	string		See exec_UPDATEquery()
 	 * @param	array		See exec_UPDATEquery()
+	 * @param	array		See fullQuoteArray()
 	 * @return	string		Full SQL query for UPDATE (unless $fields_values does not contain any elements in which case it will be false)
 	 * @deprecated			use exec_UPDATEquery() instead if possible!
 	 */
-	function UPDATEquery($table,$where,$fields_values)	{
+	function UPDATEquery($table,$where,$fields_values,$no_quote_fields='')	{
 
 			// Table and fieldnames should be "SQL-injection-safe" when supplied to this function (contrary to values in the arrays which may be insecure).
 		if (is_string($where))	{
 			if (is_array($fields_values) && count($fields_values))	{
 
-					// Add slashes old-school:
-				$nArr = array();
-				foreach($fields_values as $k => $v)	{
-					$nArr[] = $k.'='.$this->fullQuoteStr($v, $table);
+					// quote and escape values
+				$nArr = $this->fullQuoteArray($fields_values,$table,$no_quote_fields);
+
+				$fields = array();
+				foreach ($nArr as $k => $v) {
+					$fields[] = $k.'='.$v;
 				}
 
 					// Build query:
 				$query = 'UPDATE '.$table.'
 					SET
 						'.implode(',
-						',$nArr).
+						',$fields).
 					(strlen($where)>0 ? '
 					WHERE
 						'.$where : '');
@@ -542,20 +545,33 @@ class t3lib_DB {
 	 * @see quoteStr()
 	 */
 	function fullQuoteStr($str, $table)	{
-		return '\''.mysql_real_escape_string($str, $this->link).'\'';
+		if (function_exists('mysql_real_escape_string'))	{
+			return '\''.mysql_real_escape_string($str, $this->link).'\'';
+		} else {
+			return '\''.mysql_escape_string($str).'\'';
+		}
 	}
 
 	/**
-	 * Will fullquote all values in the one-dimentional array so they are ready to "implode" for an sql query.
+	 * Will fullquote all values in the one-dimensional array so they are ready to "implode" for an sql query.
 	 *
-	 * @param	array		Array with values
-	 * @param	string		Table name for which to quote.
-	 * @return	array		The input array with all values passed through intval()
+	 * @param       array           Array with values
+	 * @param       string          Table name for which to quote
+	 * @param       string/array    List/array of keys NOT to quote (eg. SQL functions)
+	 * @return      array           The input array with the values quoted
 	 * @see cleanIntArray()
 	 */
-	function fullQuoteArray($arr, $table)	{
-		foreach($arr as $k => $v)	{
-			$arr[$k] = $this->fullQuoteStr($arr[$k], $table);
+	function fullQuoteArray($arr, $table, $noQuote='')      {
+		if (is_string($noQuote))        {
+			$noQuote = explode(',',$noQuote);
+		} elseif (!is_array($noQuote))  {
+			$noQuote = array();
+		}
+
+		foreach($arr as $k => $v)       {
+			if (!in_array($k,$noQuote))     {
+				$arr[$k] = $this->fullQuoteStr($v, $table);
+			}
 		}
 		return $arr;
 	}
@@ -573,11 +589,27 @@ class t3lib_DB {
 	 * @see quoteStr()
 	 */
 	function quoteStr($str, $table)	{
-		return mysql_real_escape_string($str, $this->link);
+		if (function_exists('mysql_real_escape_string'))	{
+			return mysql_real_escape_string($str, $this->link);
+		} else {
+			return mysql_escape_string($str);
+		}
 	}
 
 	/**
-	 * Will convert all values in the one-dimentional array to integers.
+	 * Escaping values for SQL LIKE statements.
+	 *
+	 * @param	string		Input string
+	 * @param	string		Table name for which to escape string. Just enter the table that the field-value is selected from (and any DBAL will look up which handler to use and then how to quote the string!).
+	 * @return	string		Output string; % and _ will be escaped with \ (or otherwise based on DBAL handler)
+	 * @see quoteStr()
+	 */
+	function escapeStrForLike($str, $table)	{
+		return preg_replace('/[_%]/','\\\$0',$str);
+	}
+
+	/**
+	 * Will convert all values in the one-dimensional array to integers.
 	 * Useful when you want to make sure an array contains only integers before imploding them in a select-list.
 	 * Usage count/core: 7
 	 *
@@ -652,6 +684,7 @@ class t3lib_DB {
 		);
 
 			// Find LIMIT:
+		$reg = array();
 		if (preg_match('/^(.*)[[:space:]]+LIMIT[[:space:]]+([[:alnum:][:space:],._]+)$/i',$str,$reg))	{
 			$wgolParts['LIMIT'] = trim($reg[2]);
 			$str = $reg[1];
@@ -846,9 +879,17 @@ class t3lib_DB {
 	 */
 	function sql_pconnect($TYPO3_db_host, $TYPO3_db_username, $TYPO3_db_password)	{
 		if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['no_pconnect'])	{
-			$this->link = mysql_connect($TYPO3_db_host, $TYPO3_db_username, $TYPO3_db_password);
+			$this->link = @mysql_connect($TYPO3_db_host, $TYPO3_db_username, $TYPO3_db_password);
 		} else {
-			$this->link = mysql_pconnect($TYPO3_db_host, $TYPO3_db_username, $TYPO3_db_password);
+			$this->link = @mysql_pconnect($TYPO3_db_host, $TYPO3_db_username, $TYPO3_db_password);
+		}
+
+		if (!$this->link) {
+			t3lib_div::sysLog('Could not connect to Mysql server '.$TYPO3_db_host.' with user '.$TYPO3_db_username.'.','Core',4);
+		} else {
+			foreach($GLOBALS['TYPO3_CONF_VARS']['SYS']['setDBinit'] as $v) {
+				mysql_query($v, $this->link);
+			}
 		}
 		return $this->link;
 	}
@@ -862,7 +903,11 @@ class t3lib_DB {
 	 * @return	boolean		Returns TRUE on success or FALSE on failure.
 	 */
 	function sql_select_db($TYPO3_db)	{
-		return mysql_select_db($TYPO3_db, $this->link);
+		$ret = @mysql_select_db($TYPO3_db, $this->link);
+		if (!$ret) {
+			t3lib_div::sysLog('Could not select Mysql database '.$TYPO3_db.': '.mysql_error(),'Core',4);
+	}
+		return $ret;
 	}
 
 

@@ -404,7 +404,17 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 					// Init
 				$attribArray = $this->get_tag_attributes_classic($v,1);
 				$siteUrl = $this->siteUrl();
+				$sitePath = str_replace (t3lib_div::getIndpEnv('TYPO3_REQUEST_HOST'), '', $siteUrl);
+
 				$absRef = trim($attribArray['src']);		// It's always a absolute URL coming from the RTE into the Database.
+
+					// make path absolute if it is relative and we have a site path wich is not '/'
+				$pI=pathinfo($absRef);
+				if($sitePath AND !$pI['scheme'] && t3lib_div::isFirstPartOfStr($absRef,$sitePath)) {
+						// if site is in a subpath (eg. /~user_jim/) this path needs to be removed because it will be added with $siteUrl
+					$absRef = substr($absRef,strlen($sitePath));
+					$absRef = $siteUrl.$absRef;
+				}
 
 					// External image from another URL? In that case, fetch image (unless disabled feature).
 				if (!t3lib_div::isFirstPartOfStr($absRef,$siteUrl) && !$this->procOptions['dontFetchExtPictures'])	{
@@ -429,6 +439,7 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 						}
 					}
 				}
+
 					// Check image as local file (siteURL equals the one of the image)
 				if (t3lib_div::isFirstPartOfStr($absRef,$siteUrl))	{
 					$path = rawurldecode(substr($absRef,strlen($siteUrl)));	// Rel-path, rawurldecoded for special characters.
@@ -537,6 +548,9 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 	 */
 	function TS_images_rte($value)	{
 
+		$siteUrl = $this->siteUrl();
+		$sitePath = str_replace (t3lib_div::getIndpEnv('TYPO3_REQUEST_HOST'), '', $siteUrl);
+
 			// Split content by <img> tags and traverse the resulting array for processing:
 		$imgSplit = $this->splitTags('img',$value);
 		foreach($imgSplit as $k => $v)	{
@@ -544,12 +558,14 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 
 					// Init
 				$attribArray=$this->get_tag_attributes_classic($v,1);
-				$siteUrl = $this->siteUrl();
 				$absRef = trim($attribArray['src']);
 
 					// Unless the src attribute is already pointing to an external URL:
 				if (strtolower(substr($absRef,0,4))!='http')	{
-					$attribArray['src'] = $siteUrl.substr($attribArray['src'],strlen($this->relBackPath));
+					$attribArray['src'] = substr($attribArray['src'],strlen($this->relBackPath));
+						// if site is in a subpath (eg. /~user_jim/) this path needs to be removed because it will be added with $siteUrl
+					$attribArray['src'] = preg_replace('#^'.preg_quote($sitePath,'#').'#','',$attribArray['src']);
+					$attribArray['src'] = $siteUrl.$attribArray['src'];
 					if (!isset($attribArray['alt']))	$attribArray['alt']='';
 					$params = t3lib_div::implodeAttributes($attribArray);
 					$imgSplit[$k]='<img '.$params.' />';
@@ -1440,6 +1456,7 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 		if ($style)	{
 			$regex='[[:space:]]*:[[:space:]]*([0-9]*)[[:space:]]*px';
 				// Width
+			$reg = array();
 			eregi('width'.$regex,$style,$reg);
 			$w = intval($reg[1]);
 				// Height

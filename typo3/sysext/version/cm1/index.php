@@ -223,7 +223,7 @@ class tx_version_cm1 extends t3lib_SCbase {
 					<script language="javascript" type="text/javascript">
 						script_ended = 0;
 						function jumpToUrl(URL)	{
-							document.location = URL;
+							window.location.href = URL;
 						}
 
 						function hlSubelements(origId, verId, over, diffLayer)	{	//
@@ -934,7 +934,7 @@ class tx_version_cm1 extends t3lib_SCbase {
 			}
 
 			$onClick = 'var commentTxt=window.prompt("'.$label.'","");
-							if (commentTxt!=null) {document.location="'.$this->doc->issueCommand($issueCmd).'&generalComment="+escape(commentTxt);}'.
+							if (commentTxt!=null) {window.location.href="'.$this->doc->issueCommand($issueCmd).'&generalComment="+escape(commentTxt);}'.
 							' return false;';
 			$actionLinks.=
 				'<input type="submit" name="_" value="'.htmlspecialchars($titleAttrib).'" onclick="'.htmlspecialchars($onClick).'" />';
@@ -1484,7 +1484,7 @@ class tx_version_cm1 extends t3lib_SCbase {
 
 		if ($raiseOk && $rec_off['t3ver_stage']!=-1)	{
 			$onClick = 'var commentTxt=window.prompt("Please explain why you reject:","");
-							if (commentTxt!=null) {document.location="'.$this->doc->issueCommand(
+							if (commentTxt!=null) {window.location.href="'.$this->doc->issueCommand(
 							'&cmd['.$table.']['.$rec_off['uid'].'][version][action]=setStage'.
 							'&cmd['.$table.']['.$rec_off['uid'].'][version][stageId]=-1'
 							).'&cmd['.$table.']['.$rec_off['uid'].'][version][comment]="+escape(commentTxt);}'.
@@ -1505,7 +1505,7 @@ class tx_version_cm1 extends t3lib_SCbase {
 			// Raise
 		if ($raiseOk)	{
 			$onClick = 'var commentTxt=window.prompt("'.$label.'","");
-							if (commentTxt!=null) {document.location="'.$this->doc->issueCommand(
+							if (commentTxt!=null) {window.location.href="'.$this->doc->issueCommand(
 							'&cmd['.$table.']['.$rec_off['uid'].'][version][action]=setStage'.
 							'&cmd['.$table.']['.$rec_off['uid'].'][version][stageId]='.$sId
 							).'&cmd['.$table.']['.$rec_off['uid'].'][version][comment]="+escape(commentTxt);}'.

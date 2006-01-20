@@ -973,12 +973,11 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 	 **/
 	 function jsConfirmation($bitmask)	{
 		 $alertPopup = $GLOBALS['BE_USER']->getTSConfig('options.alertPopups');
-		 $alertPopup = (int)$alertPopup['value'];
-
-		 if(!$alertPopup)	{
+		 if (empty($alertPopup['value']))	{
 			 $alertPopup = 255;	// default: show all warnings
+		 } else {
+			 $alertPopup = (int)$alertPopup['value'];
 		 }
-
 		 if(($alertPopup&$bitmask) == $bitmask)	{ // show confirmation
 			 return 1;
 		 } else { // don't show confirmation
@@ -1144,6 +1143,7 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 	 * @access private
 	 */
 	function fetchGroups($grList,$idList='')	{
+		global $TYPO3_CONF_VARS;
 
 			// Fetching records of the groups in $grList (which are not blocked by lockedToDomain either):
 		$lockToDomain_SQL = ' AND (lockToDomain=\'\' OR lockToDomain=\''.t3lib_div::getIndpEnv('HTTP_HOST').'\')';
@@ -1218,6 +1218,16 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 				if (!strcmp($idList,'') && !$this->firstMainGroup)	{
 					$this->firstMainGroup=$uid;
 				}
+			}
+		}
+
+		// ****************
+		// HOOK: fetchGroups_postProcessing
+		// ****************
+		if (is_array($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_userauthgroup.php']['fetchGroups_postProcessing'])) {
+			foreach($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_userauthgroup.php']['fetchGroups_postProcessing'] as $_funcRef) {
+				$_params = array();
+				t3lib_div::callUserFunction($_funcRef, $_params, $this);
 			}
 		}
 	}

@@ -909,6 +909,7 @@ class t3lib_BEfunc	{
 			// Add defaultExtras:
 		$specConfParts = t3lib_div::trimExplode(':', $defaultExtras.':'.$str, 1);
 
+		$reg = array();
 		if (count($specConfParts))	{
 			foreach($specConfParts as $k2 => $v2)	{
 				unset($specConfParts[$k2]);
@@ -985,7 +986,7 @@ class t3lib_BEfunc	{
 				$file = t3lib_div::getFileAbsFileName(substr($ds_array[$srcPointer],5));
 				if ($file && @is_file($file))	{
 					$dataStructArray = t3lib_div::xml2array(t3lib_div::getUrl($file));
-				} else $dataStructArray = 'The file "'.substr($dsSrc,5).'" in ds-array key "'.$srcPointer.'" was not found ("'.$file.'")';	// Error message.
+				} else $dataStructArray = 'The file "'.substr($ds_array[$srcPointer],5).'" in ds-array key "'.$srcPointer.'" was not found ("'.$file.'")';	// Error message.
 			} else {
 				$dataStructArray = t3lib_div::xml2array($ds_array[$srcPointer]);
 			}
@@ -1829,12 +1830,23 @@ class t3lib_BEfunc	{
 	 */
 	function getProcessedValue($table,$col,$value,$fixed_lgd_chars=0,$defaultPassthrough=0,$noRecordLookup=FALSE,$uid=0)	{
 		global $TCA;
+		global $TYPO3_CONF_VARS;
 			// Load full TCA for $table
 		t3lib_div::loadTCA($table);
 			// Check if table and field is configured:
 		if (is_array($TCA[$table]) && is_array($TCA[$table]['columns'][$col]))	{
 				// Depending on the fields configuration, make a meaningful output value.
 			$theColConf = $TCA[$table]['columns'][$col]['config'];
+
+				/*****************
+				 *HOOK: pre-processing the human readable output from a record
+				 ****************/
+			if (is_array ($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['preProcessValue'])) {
+			foreach ($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['preProcessValue'] as $_funcRef) {
+					t3lib_div::callUserFunction($_funcRef,$theColConf,$this);
+				}
+			}
+
 			$l='';
 			switch((string)$theColConf['type'])	{
 				case 'radio':
@@ -1930,6 +1942,20 @@ class t3lib_BEfunc	{
 					}
 				break;
 			}
+
+				/*****************
+				 *HOOK: post-processing the human readable output from a record
+				 ****************/
+			if (is_array ($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['postProcessValue'])) {
+			foreach ($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['postProcessValue'] as $_funcRef) {
+					$params = array(
+						'value' => $l,
+						'colConf' => $theColConf
+					);
+					$l = t3lib_div::callUserFunction($_funcRef,$params,$this);
+				}
+			}
+
 			if ($fixed_lgd_chars)	{
 				return t3lib_div::fixed_lgd_cs($l,$fixed_lgd_chars);
 			} else {
@@ -2219,7 +2245,7 @@ class t3lib_BEfunc	{
 	 */
 	function editOnClick($params,$backPath='',$requestUri='')	{
 		$retUrl = 'returnUrl='.($requestUri==-1?"'+T3_THIS_LOCATION+'":rawurlencode($requestUri?$requestUri:t3lib_div::getIndpEnv('REQUEST_URI')));
-		return "document.location='".$backPath."alt_doc.php?".$retUrl.$params."'; return false;";
+		return "window.location.href='".$backPath."alt_doc.php?".$retUrl.$params."'; return false;";
 	}
 
 	/**
@@ -3239,8 +3265,8 @@ class t3lib_BEfunc	{
 							' AND B.pid='.intval($pageId).
 							' AND A.t3ver_wsid='.intval($workspace).
 							' AND A.t3ver_oid=B.uid'.	// ... and finally the join between the two tables.
-							t3lib_BEfunc::deleteClause($table,'A').
-							t3lib_BEfunc::deleteClause($table,'B')
+							t3lib_BEfunc::deleteClause($tableName,'A').
+							t3lib_BEfunc::deleteClause($tableName,'B')
 					);
 
 					if (!is_array($output[$tableName]) || !count($output[$tableName]))	{

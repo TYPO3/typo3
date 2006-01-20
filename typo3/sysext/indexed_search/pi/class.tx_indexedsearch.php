@@ -32,7 +32,7 @@
  * Creates a searchform for indexed search. Indexing must be enabled
  * for this to make sense.
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  * @co-author	Christian Jul Jensen <christian@typo3.com>
  */
 /**
@@ -116,7 +116,7 @@ require_once(t3lib_extMgm::extPath('indexed_search').'class.indexer.php');
  *
  * @package TYPO3
  * @subpackage tx_indexedsearch
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  */
 class tx_indexedsearch extends tslib_pibase {
 	var $prefixId = 'tx_indexedsearch';        // Same as class name
@@ -1904,7 +1904,7 @@ class tx_indexedsearch extends tslib_pibase {
 
 		$outputString = $GLOBALS['TSFE']->csConvObj->crop('utf-8',$row['item_title'],50,'...');
 
-		return $this->utf8_to_currentCharset(htmlspecialchars($outputString)).$add;
+		return $this->utf8_to_currentCharset($outputString).$add;
 	}
 
 	/**
@@ -1915,9 +1915,9 @@ class tx_indexedsearch extends tslib_pibase {
 	 * @return	array		Modified template array
 	 */
 	function makeInfo($row,$tmplArray)	{
-		$tmplArray['size'] = $this->pi_getLL('res_size','',1).' '.t3lib_div::formatSize($row['item_size']).'';
-		$tmplArray['created'] = $this->pi_getLL('res_created','',1).' '.date('d-m-y',$row['item_crdate']).'';
-		$tmplArray['modified'] = $this->pi_getLL('res_modified','',1).' '.date('d-m-y H:i',$row['item_mtime']).'';
+		$tmplArray['size'] = t3lib_div::formatSize($row['item_size']);
+		$tmplArray['created'] = date('d-m-y',$row['item_crdate']);
+		$tmplArray['modified'] = date('d-m-y H:i',$row['item_mtime']);
 
 		$pathId = $row['data_page_id']?$row['data_page_id']:$row['page_id'];
 		$pathMP = $row['data_page_id']?$row['data_page_mp']:'';
@@ -1927,7 +1927,7 @@ class tx_indexedsearch extends tslib_pibase {
 			$tmplArray['path'] = '<a href="'.htmlspecialchars($row['data_filename']).'">'.htmlspecialchars($row['data_filename']).'</a>';
 		} else {
 			$pathStr = htmlspecialchars($this->getPathFromPageId($pathId,$pathMP));
-			$tmplArray['path'] = $this->linkPage($pathId,htmlspecialchars($pathStr),array(
+			$tmplArray['path'] = $this->linkPage($pathId,$pathStr,array(
 				'data_page_type' => $row['data_page_type'],
 				'data_page_mp' => $pathMP,
 				'sys_language_uid' => $row['sys_language_uid'],

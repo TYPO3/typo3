@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2005 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
+*  (c) 2005-2006 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -36,7 +36,7 @@ if (!defined ("TYPO3_MODE")) 	die ("Access denied.");
 
 // Configuration of class ux_parsehtml_proc extending class t3lib_parsehtml_proc for TYPO3 older than 4.0
 if (t3lib_div::int_from_ver(TYPO3_VERSION) < 4000000 ) {
-	$TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["t3lib/class.t3lib_parsehtml_proc.php"] = t3lib_extMgm::extPath($_EXTKEY)."class.ux_t3lib_parsehtml_proc.php";
+	$TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/class.t3lib_parsehtml_proc.php'] = t3lib_extMgm::extPath($_EXTKEY) . 'class.ux_t3lib_parsehtml_proc.php';
 }
 
 if(!$TYPO3_CONF_VARS['BE']['RTEenabled'])  $TYPO3_CONF_VARS['BE']['RTEenabled'] = 1;
@@ -44,12 +44,16 @@ if(!$TYPO3_CONF_VARS['BE']['RTEenabled'])  $TYPO3_CONF_VARS['BE']['RTEenabled'] 
 // Registering the RTE object
 $TYPO3_CONF_VARS['BE']['RTE_reg'][$_EXTKEY] = array('objRef' => 'EXT:'.$_EXTKEY.'/class.tx_rtehtmlarea_base.php:&tx_rtehtmlarea_base');
 
+// Make the extension version number available to the extension scripts
+require_once(t3lib_extMgm::extPath($_EXTKEY) . 'ext_emconf.php');
+$TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['version'] = $EM_CONF[$_EXTKEY]['version'];
+
 $_EXTCONF = unserialize($_EXTCONF);    // unserializing the configuration so we can use it here:
 
 $TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['defaultConfiguration'] = $_EXTCONF['defaultConfiguration'] ? $_EXTCONF['defaultConfiguration'] : 'Typical';
 $TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['enableImages'] = $_EXTCONF['enableImages'] ? $_EXTCONF['enableImages'] : 0;
 $TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['enableMozillaExtension'] = $_EXTCONF['enableMozillaExtension'] ? $_EXTCONF['enableMozillaExtension'] : 0;
-$TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['mozAllowClipboardUrl'] = $_EXTCONF['mozAllowClipboardUrl'] ? $_EXTCONF['mozAllowClipboardUrl'] : 'http://ftp.mozilla.org/pub/mozilla.org/extensions/allowclipboard_helper/allowclipboard_helper-0.3.4-fx+mz.xpi';
+$TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['mozAllowClipboardUrl'] = $_EXTCONF['mozAllowClipboardUrl'] ? $_EXTCONF['mozAllowClipboardUrl'] : 'http://releases.mozilla.org/pub/mozilla.org/extensions/allowclipboard_helper/allowclipboard_helper-0.5.3-fx+mz.xpi';
 $TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['forceCommandMode'] = $_EXTCONF["forceCommandMode"] ? $_EXTCONF["forceCommandMode"] : 0;
 $TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['enableDebugMode'] = $_EXTCONF['enableDebugMode'] ? $_EXTCONF['enableDebugMode'] : 0;
 $TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['enableCompressedScripts'] = $_EXTCONF['enableCompressedScripts'] ? $_EXTCONF['enableCompressedScripts'] : 0;
@@ -61,22 +65,22 @@ $TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['HTMLAreaPluginList'] = $_EXTCONF["HTMLAre
 $TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['plainImageMaxWidth'] = $_EXTCONF['plainImageMaxWidth'] ? $_EXTCONF['plainImageMaxWidth'] : 640;
 $TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['plainImageMaxHeight'] = $_EXTCONF['plainImageMaxHeight'] ? $_EXTCONF['plainImageMaxHeight'] : 680;
 
-//$TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['safari_test'] = 1;
-//$TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['opera_test'] = 1;
+//$TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['safari_test'] = 0;
+//$TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['opera_test'] = 0;
 
 	// Add default RTE transformation configuration
-t3lib_extMgm::addPageTSConfig('<INCLUDE_TYPOSCRIPT: source="FILE:EXT:' . $_EXTKEY . '/pageTSConfigProc.txt">');
+t3lib_extMgm::addPageTSConfig('<INCLUDE_TYPOSCRIPT: source="FILE:EXT:' . $_EXTKEY . '/res/proc/pageTSConfig.txt">');
 
 	// Add default Page TSonfig RTE configuration
-t3lib_extMgm::addPageTSConfig('<INCLUDE_TYPOSCRIPT: source="FILE:EXT:' . $_EXTKEY . '/pageTSConfig' .$TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['defaultConfiguration'] . '.txt">');
+t3lib_extMgm::addPageTSConfig('<INCLUDE_TYPOSCRIPT: source="FILE:EXT:' . $_EXTKEY . '/res/' . strtolower($TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['defaultConfiguration']) . '/pageTSConfig.txt">');
 
 	// Add default Page TSonfig RTE configuration for enabling images with the Typical default configuration
 if (($TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['defaultConfiguration'] == 'Typical') && $TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['enableImages']) {
-	t3lib_extMgm::addPageTSConfig('<INCLUDE_TYPOSCRIPT: source="FILE:EXT:' . $_EXTKEY . '/pageTSConfigImage.txt">');
+	t3lib_extMgm::addPageTSConfig('<INCLUDE_TYPOSCRIPT: source="FILE:EXT:' . $_EXTKEY . '/res/image/pageTSConfig.txt">');
 }
 
 	// Add default User TSonfig RTE configuration
-t3lib_extMgm::addUserTSConfig('<INCLUDE_TYPOSCRIPT: source="FILE:EXT:' . $_EXTKEY . '/userTSConfig' .$TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['defaultConfiguration'] . '.txt">');
+t3lib_extMgm::addUserTSConfig('<INCLUDE_TYPOSCRIPT: source="FILE:EXT:' . $_EXTKEY . '/res/' . strtolower($TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['defaultConfiguration']) . 'userTSConfig.txt">');
 
 	// Configure Lorem Ipsum hook to insert nonsense in wysiwyg mode
 if (t3lib_extMgm::isLoaded('lorem_ipsum') && (TYPO3_MODE == 'BE')) {

@@ -1,0 +1,425 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+    <meta type="array">
+        <description>Labels for Select Color plugin of htmlArea RTE</description>
+        <type>module</type>
+        <csh_table></csh_table>
+        <fileId>EXT:rtehtmlarea/htmlarea/plugins/SelectColor/locallang.xml</fileId>
+        <labelContext type="array">
+            <label index="CO-forecolor"></label>
+            <label index="CO-hilitecolor"></label>
+            <label index="CO-forecolor_title"></label>
+            <label index="CO-hilitecolor_title"></label>
+            <label index="color_title"></label>
+            <label index="no_color"></label>
+        </labelContext>
+    </meta>
+    <data type="array">
+        <languageKey index="default" type="array">
+            <label index="CO-forecolor">Text Color</label>
+            <label index="CO-hilitecolor">Background Color</label>
+            <label index="CO-forecolor_title">Set the text color</label>
+            <label index="CO-hilitecolor_title">Set the background color</label>
+            <label index="color_title">Choose a color</label>
+            <label index="no_color">No color</label>
+        </languageKey>
+        <languageKey index="dk" type="array">
+            <label index="CO-forecolor">Tekstfarve</label>
+            <label index="CO-hilitecolor">Baggrundsfarve</label>
+            <label index="CO-forecolor_title">Sæt tekstfarven</label>
+            <label index="CO-hilitecolor_title">Sæt baggrundsfarven</label>
+            <label index="color_title">Vælg en farve</label>
+            <label index="no_color">Ingen farve</label>
+        </languageKey>
+        <languageKey index="de" type="array">
+            <label index="CO-forecolor">Textfarbe</label>
+            <label index="CO-hilitecolor">Hintergrundfarbe</label>
+            <label index="CO-forecolor_title">Wählen Sie die Textfarbe</label>
+            <label index="CO-hilitecolor_title">Wählen Sie die Hintergrundfarbe</label>
+            <label index="color_title">Wählen Sie eine Farbe</label>
+            <label index="no_color">Keine Farbe</label>
+        </languageKey>
+        <languageKey index="no" type="array">
+            <label index="CO-forecolor">Tekstfarge</label>
+            <label index="CO-hilitecolor">Bakgrunnsfarge</label>
+            <label index="CO-forecolor_title">Bestem tekstfarge</label>
+            <label index="CO-hilitecolor_title">Bestem bakgrunnsfarge</label>
+            <label index="color_title">Velg en farge</label>
+            <label index="no_color">Ingen farge</label>
+        </languageKey>
+        <languageKey index="it" type="array">
+            <label index="CO-forecolor">Colore Testo</label>
+            <label index="CO-hilitecolor">Colore Background</label>
+            <label index="CO-forecolor_title">Imposta il colore del testo</label>
+            <label index="CO-hilitecolor_title">Imposta il colore del background</label>
+            <label index="color_title">Scegli un colore</label>
+            <label index="no_color">Nessun colore</label>
+        </languageKey>
+        <languageKey index="fr" type="array">
+            <label index="CO-forecolor">Couleur du texte</label>
+            <label index="CO-hilitecolor">Couleur du fond</label>
+            <label index="CO-forecolor_title">Choix de la couleur du texte</label>
+            <label index="CO-hilitecolor_title">Choix de la couleur du fond</label>
+            <label index="color_title">Choix de couleur</label>
+            <label index="no_color">Aucune couleur</label>
+        </languageKey>
+        <languageKey index="es" type="array">
+            <label index="CO-forecolor">Color del texto</label>
+            <label index="CO-hilitecolor">Color del fondo</label>
+            <label index="CO-forecolor_title">Selección del color del texto</label>
+            <label index="CO-hilitecolor_title">Selección del color del fondo</label>
+            <label index="color_title">Selección de color</label>
+            <label index="no_color">Ningún color</label>
+        </languageKey>
+        <languageKey index="nl" type="array">
+            <label index="CO-forecolor">Tekstkleur</label>
+            <label index="CO-hilitecolor">Achtergrond kleur</label>
+            <label index="CO-forecolor_title">Stel de tekstkleur in</label>
+            <label index="CO-hilitecolor_title">Stel de achtergrond kleur in</label>
+            <label index="color_title">Kies een kleur</label>
+            <label index="no_color">Geen kleur</label>
+        </languageKey>
+        <languageKey index="cz" type="array">
+        </languageKey>
+        <languageKey index="pl" type="array">
+        </languageKey>
+        <languageKey index="si" type="array">
+        </languageKey>
+        <languageKey index="fi" type="array">
+            <label index="CO-forecolor">Tekstin väri</label>
+            <label index="CO-hilitecolor">Taustaväri</label>
+            <label index="CO-forecolor_title">Aseta tekstin väri</label>
+            <label index="CO-hilitecolor_title">Aseta taustan väri</label>
+            <label index="color_title">Valitse väri</label>
+            <label index="no_color">Ei väriä</label>
+        </languageKey>
+        <languageKey index="tr" type="array">
+        </languageKey>
+        <languageKey index="se" type="array">
+        </languageKey>
+        <languageKey index="pt" type="array">
+        </languageKey>
+        <languageKey index="ru" type="array">
+            <label index="CO-forecolor">Цвет текста</label>
+            <label index="CO-hilitecolor">Цвет фона</label>
+            <label index="CO-forecolor_title">Установить цвет текста</label>
+            <label index="CO-hilitecolor_title">Установить цвет фона</label>
+            <label index="color_title">Выбрать цвет</label>
+            <label index="no_color">Нет цвета</label>
+        </languageKey>
+        <languageKey index="ro" type="array">
+        </languageKey>
+        <languageKey index="ch" type="array">
+        </languageKey>
+        <languageKey index="sk" type="array">
+            <label index="CO-forecolor">Farba textu</label>
+            <label index="CO-hilitecolor">Farba pozadia</label>
+            <label index="CO-forecolor_title">Nastaviť farbu textu</label>
+            <label index="CO-hilitecolor_title">Nastaviť farbu pozadia</label>
+            <label index="color_title">Vybrať farbu</label>
+            <label index="no_color">Žiadna farba</label>
+        </languageKey>
+        <languageKey index="lt" type="array">
+        </languageKey>
+        <languageKey index="is" type="array">
+        </languageKey>
+        <languageKey index="hr" type="array">
+        </languageKey>
+        <languageKey index="hu" type="array">
+        </languageKey>
+        <languageKey index="gl" type="array">
+        </languageKey>
+        <languageKey index="th" type="array">
+        </languageKey>
+        <languageKey index="gr" type="array">
+        </languageKey>
+        <languageKey index="hk" type="array">
+        </languageKey>
+        <languageKey index="eu" type="array">
+        </languageKey>
+        <languageKey index="bg" type="array">
+        </languageKey>
+        <languageKey index="br" type="array">
+            <label index="CO-forecolor">Cor de Texto</label>
+            <label index="CO-hilitecolor">Cor de Fundo</label>
+            <label index="CO-forecolor_title">Defina a cor de texto</label>
+            <label index="CO-hilitecolor_title">Defina a cor de fundo</label>
+            <label index="color_title">Escolha uma cor</label>
+            <label index="no_color">Sem cor</label>
+        </languageKey>
+        <languageKey index="et" type="array">
+        </languageKey>
+        <languageKey index="ar" type="array">
+        </languageKey>
+        <languageKey index="he" type="array">
+        </languageKey>
+        <languageKey index="ua" type="array">
+        </languageKey>
+        <languageKey index="lv" type="array">
+        </languageKey>
+        <languageKey index="jp" type="array">
+        </languageKey>
+        <languageKey index="vn" type="array">
+        </languageKey>
+        <languageKey index="ca" type="array">
+        </languageKey>
+        <languageKey index="ba" type="array">
+        </languageKey>
+        <languageKey index="kr" type="array">
+        </languageKey>
+        <languageKey index="eo" type="array">
+        </languageKey>
+        <languageKey index="my" type="array">
+        </languageKey>
+        <languageKey index="hi" type="array">
+        </languageKey>
+    </data>
+    <orig_hash type="array">
+        <languageKey index="default" type="array">
+            <label index="CO-forecolor" type="integer">143669345</label>
+            <label index="CO-hilitecolor" type="integer">123630626</label>
+            <label index="CO-forecolor_title" type="integer">15267315</label>
+            <label index="CO-hilitecolor_title" type="integer">56497584</label>
+            <label index="color_title" type="integer">179788028</label>
+            <label index="no_color" type="integer">84981241</label>
+        </languageKey>
+        <languageKey index="dk" type="array">
+            <label index="CO-forecolor" type="integer">143669345</label>
+            <label index="CO-hilitecolor" type="integer">123630626</label>
+            <label index="CO-forecolor_title" type="integer">15267315</label>
+            <label index="CO-hilitecolor_title" type="integer">56497584</label>
+            <label index="color_title" type="integer">179788028</label>
+            <label index="no_color" type="integer">84981241</label>
+        </languageKey>
+        <languageKey index="de" type="array">
+            <label index="CO-forecolor" type="integer">143669345</label>
+            <label index="CO-hilitecolor" type="integer">123630626</label>
+            <label index="CO-forecolor_title" type="integer">15267315</label>
+            <label index="CO-hilitecolor_title" type="integer">56497584</label>
+            <label index="color_title" type="integer">179788028</label>
+            <label index="no_color" type="integer">84981241</label>
+        </languageKey>
+        <languageKey index="no" type="array">
+            <label index="CO-forecolor" type="integer">143669345</label>
+            <label index="CO-hilitecolor" type="integer">123630626</label>
+            <label index="CO-forecolor_title" type="integer">15267315</label>
+            <label index="CO-hilitecolor_title" type="integer">56497584</label>
+            <label index="color_title" type="integer">179788028</label>
+            <label index="no_color" type="integer">84981241</label>
+        </languageKey>
+        <languageKey index="it" type="array">
+            <label index="CO-forecolor" type="integer">143669345</label>
+            <label index="CO-hilitecolor" type="integer">123630626</label>
+            <label index="CO-forecolor_title" type="integer">15267315</label>
+            <label index="CO-hilitecolor_title" type="integer">56497584</label>
+            <label index="color_title" type="integer">179788028</label>
+            <label index="no_color" type="integer">84981241</label>
+        </languageKey>
+        <languageKey index="fr" type="array">
+            <label index="CO-forecolor" type="integer">143669345</label>
+            <label index="CO-hilitecolor" type="integer">123630626</label>
+            <label index="CO-forecolor_title" type="integer">15267315</label>
+            <label index="CO-hilitecolor_title" type="integer">56497584</label>
+            <label index="color_title" type="integer">179788028</label>
+            <label index="no_color" type="integer">84981241</label>
+        </languageKey>
+        <languageKey index="es" type="array">
+            <label index="CO-forecolor" type="integer">143669345</label>
+            <label index="CO-hilitecolor" type="integer">123630626</label>
+            <label index="CO-forecolor_title" type="integer">15267315</label>
+            <label index="CO-hilitecolor_title" type="integer">56497584</label>
+            <label index="color_title" type="integer">179788028</label>
+            <label index="no_color" type="integer">84981241</label>
+        </languageKey>
+        <languageKey index="nl" type="array">
+            <label index="CO-forecolor" type="integer">143669345</label>
+            <label index="CO-hilitecolor" type="integer">123630626</label>
+            <label index="CO-forecolor_title" type="integer">15267315</label>
+            <label index="CO-hilitecolor_title" type="integer">56497584</label>
+            <label index="color_title" type="integer">179788028</label>
+            <label index="no_color" type="integer">84981241</label>
+        </languageKey>
+        <languageKey index="cz" type="array">
+        </languageKey>
+        <languageKey index="pl" type="array">
+        </languageKey>
+        <languageKey index="si" type="array">
+        </languageKey>
+        <languageKey index="fi" type="array">
+            <label index="CO-forecolor" type="integer">143669345</label>
+            <label index="CO-hilitecolor" type="integer">123630626</label>
+            <label index="CO-forecolor_title" type="integer">15267315</label>
+            <label index="CO-hilitecolor_title" type="integer">56497584</label>
+            <label index="color_title" type="integer">179788028</label>
+            <label index="no_color" type="integer">84981241</label>
+        </languageKey>
+        <languageKey index="tr" type="array">
+        </languageKey>
+        <languageKey index="se" type="array">
+        </languageKey>
+        <languageKey index="pt" type="array">
+        </languageKey>
+        <languageKey index="ru" type="array">
+            <label index="CO-forecolor" type="integer">143669345</label>
+            <label index="CO-hilitecolor" type="integer">123630626</label>
+            <label index="CO-forecolor_title" type="integer">15267315</label>
+            <label index="CO-hilitecolor_title" type="integer">56497584</label>
+            <label index="color_title" type="integer">179788028</label>
+            <label index="no_color" type="integer">84981241</label>
+        </languageKey>
+        <languageKey index="ro" type="array">
+        </languageKey>
+        <languageKey index="ch" type="array">
+        </languageKey>
+        <languageKey index="sk" type="array">
+            <label index="CO-forecolor" type="integer">143669345</label>
+            <label index="CO-hilitecolor" type="integer">123630626</label>
+            <label index="CO-forecolor_title" type="integer">15267315</label>
+            <label index="CO-hilitecolor_title" type="integer">56497584</label>
+            <label index="color_title" type="integer">179788028</label>
+            <label index="no_color" type="integer">84981241</label>
+        </languageKey>
+        <languageKey index="lt" type="array">
+        </languageKey>
+        <languageKey index="is" type="array">
+        </languageKey>
+        <languageKey index="hr" type="array">
+        </languageKey>
+        <languageKey index="hu" type="array">
+        </languageKey>
+        <languageKey index="gl" type="array">
+        </languageKey>
+        <languageKey index="th" type="array">
+        </languageKey>
+        <languageKey index="gr" type="array">
+        </languageKey>
+        <languageKey index="hk" type="array">
+        </languageKey>
+        <languageKey index="eu" type="array">
+        </languageKey>
+        <languageKey index="bg" type="array">
+        </languageKey>
+        <languageKey index="br" type="array">
+            <label index="CO-forecolor" type="integer">143669345</label>
+            <label index="CO-hilitecolor" type="integer">123630626</label>
+            <label index="CO-forecolor_title" type="integer">15267315</label>
+            <label index="CO-hilitecolor_title" type="integer">56497584</label>
+            <label index="color_title" type="integer">179788028</label>
+            <label index="no_color" type="integer">84981241</label>
+        </languageKey>
+        <languageKey index="et" type="array">
+        </languageKey>
+        <languageKey index="ar" type="array">
+        </languageKey>
+        <languageKey index="he" type="array">
+        </languageKey>
+        <languageKey index="ua" type="array">
+        </languageKey>
+        <languageKey index="lv" type="array">
+        </languageKey>
+        <languageKey index="jp" type="array">
+        </languageKey>
+        <languageKey index="vn" type="array">
+        </languageKey>
+        <languageKey index="ca" type="array">
+        </languageKey>
+        <languageKey index="ba" type="array">
+        </languageKey>
+        <languageKey index="kr" type="array">
+        </languageKey>
+        <languageKey index="eo" type="array">
+        </languageKey>
+        <languageKey index="my" type="array">
+        </languageKey>
+        <languageKey index="hi" type="array">
+        </languageKey>
+    </orig_hash>
+    <orig_text type="array">
+        <languageKey index="default" type="array">
+        </languageKey>
+        <languageKey index="dk" type="array">
+        </languageKey>
+        <languageKey index="de" type="array">
+        </languageKey>
+        <languageKey index="no" type="array">
+        </languageKey>
+        <languageKey index="it" type="array">
+        </languageKey>
+        <languageKey index="fr" type="array">
+        </languageKey>
+        <languageKey index="es" type="array">
+        </languageKey>
+        <languageKey index="nl" type="array">
+        </languageKey>
+        <languageKey index="cz" type="array">
+        </languageKey>
+        <languageKey index="pl" type="array">
+        </languageKey>
+        <languageKey index="si" type="array">
+        </languageKey>
+        <languageKey index="fi" type="array">
+        </languageKey>
+        <languageKey index="tr" type="array">
+        </languageKey>
+        <languageKey index="se" type="array">
+        </languageKey>
+        <languageKey index="pt" type="array">
+        </languageKey>
+        <languageKey index="ru" type="array">
+        </languageKey>
+        <languageKey index="ro" type="array">
+        </languageKey>
+        <languageKey index="ch" type="array">
+        </languageKey>
+        <languageKey index="sk" type="array">
+        </languageKey>
+        <languageKey index="lt" type="array">
+        </languageKey>
+        <languageKey index="is" type="array">
+        </languageKey>
+        <languageKey index="hr" type="array">
+        </languageKey>
+        <languageKey index="hu" type="array">
+        </languageKey>
+        <languageKey index="gl" type="array">
+        </languageKey>
+        <languageKey index="th" type="array">
+        </languageKey>
+        <languageKey index="gr" type="array">
+        </languageKey>
+        <languageKey index="hk" type="array">
+        </languageKey>
+        <languageKey index="eu" type="array">
+        </languageKey>
+        <languageKey index="bg" type="array">
+        </languageKey>
+        <languageKey index="br" type="array">
+        </languageKey>
+        <languageKey index="et" type="array">
+        </languageKey>
+        <languageKey index="ar" type="array">
+        </languageKey>
+        <languageKey index="he" type="array">
+        </languageKey>
+        <languageKey index="ua" type="array">
+        </languageKey>
+        <languageKey index="lv" type="array">
+        </languageKey>
+        <languageKey index="jp" type="array">
+        </languageKey>
+        <languageKey index="vn" type="array">
+        </languageKey>
+        <languageKey index="ca" type="array">
+        </languageKey>
+        <languageKey index="ba" type="array">
+        </languageKey>
+        <languageKey index="kr" type="array">
+        </languageKey>
+        <languageKey index="eo" type="array">
+        </languageKey>
+        <languageKey index="my" type="array">
+        </languageKey>
+        <languageKey index="hi" type="array">
+        </languageKey>
+    </orig_text>
+</T3locallang>

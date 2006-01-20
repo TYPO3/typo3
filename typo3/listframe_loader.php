@@ -80,7 +80,7 @@ class SC_listframe_loader {
 		$this->content.=$TBE_TEMPLATE->startPage('List Frame Loader');
 		$this->content.=$TBE_TEMPLATE->wrapScriptTags('
 			var theUrl = top.getModuleUrl("");
-			if (theUrl)	document.location=theUrl;
+			if (theUrl)	window.location.href=theUrl;
 		');
 			// End page:
 		$this->content.=$TBE_TEMPLATE->endPage();

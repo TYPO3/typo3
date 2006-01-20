@@ -1,9 +1,34 @@
+/***************************************************************
+*  Copyright notice
+*
+*  (c) 2002-2004, interactivetools.com, inc.
+*  (c) 2003-2004 dynarch.com
+*  (c) 2004, 2005, 2006 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
+*  All rights reserved
+*
+*  This script is part of the TYPO3 project. The TYPO3 project is
+*  free software; you can redistribute it and/or modify
+*  it under the terms of the GNU General Public License as published by
+*  the Free Software Foundation; either version 2 of the License, or
+*  (at your option) any later version.
+*
+*  The GNU General Public License can be found at
+*  http://www.gnu.org/copyleft/gpl.html.
+*  A copy is found in the textfile GPL.txt and important notices to the license
+*  from the author is found in LICENSE.txt distributed with these scripts.
+*
+*
+*  This script is distributed in the hope that it will be useful,
+*  but WITHOUT ANY WARRANTY; without even the implied warranty of
+*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+*  GNU General Public License for more details.
+*
+*  This script is a modified version of a script published under the htmlArea License.
+*  A copy of the htmlArea License may be found in the textfile HTMLAREA_LICENSE.txt.
+*
+*  This copyright notice MUST APPEAR in all copies of the script!
+***************************************************************/
 /*
- * htmlArea v3.0 - Copyright (c) 2003-2005 dynarch.com
- * htmlArea v3.0 - Copyright (c) 2002-2003 interactivetools.com, inc.
- * TYPO3 htmlArea RTE - Copyright (c) 2004-2005 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
- * This copyright notice MUST stay intact for use.
- *
  * TYPO3 CVS ID: $Id$
  */
 
@@ -506,8 +531,13 @@ HTMLArea.prototype._detectURL = function(ev) {
 		var a = textNode.parentNode.insertBefore(tag, rightText);
 		HTMLArea.removeFromParent(textNode);
 		a.appendChild(textNode);
-		rightText.data = ' ' + rightText.data;
-		s.collapse(rightText, 1);
+		if (/^>/.test(rightText.data)) {
+			rightText.data = rightText.data.replace(/^(>)/, '$1 ');
+			s.collapse(rightText, 2);
+		} else {
+			rightText.data = ' ' + rightText.data;
+			s.collapse(rightText, 1);
+		}
 		HTMLArea._stopEvent(ev);
 
 		editor._unLink = function() {
@@ -524,7 +554,7 @@ HTMLArea.prototype._detectURL = function(ev) {
 	};
 
 	switch(ev.which) {
-			// Space or Enter, see if the text just typed looks like a URL, or email address and link it accordingly
+			// Space or Enter or >, see if the text just typed looks like a URL, or email address and link it accordingly
 		case 13:	// Enter
 			if(ev.shiftKey || editor.config.disableEnterParagraphs) break;
 				//Space
@@ -539,6 +569,7 @@ HTMLArea.prototype._detectURL = function(ev) {
 					var leftText  = s.anchorNode;
 					var rightText = leftText.splitText(s.anchorOffset);
 					var midText   = leftText.splitText(midStart);
+					if (/>$/.test(midText.data)) var hrefClose = midText.splitText(midText.data.length-1);
 					autoWrap(midText, 'a').href = 'mailto:' + m[0];
 					break;
 				}

@@ -169,6 +169,7 @@ class SC_t3lib_thumbs {
 		if ($this->input && @file_exists($this->input))	{
 
 				// Check file extension:
+			$reg = array();
 			if (ereg('(.*)\.([^\.]*$)',$this->input,$reg))	{
 				$ext=strtolower($reg[2]);
 				$ext=($ext=='jpeg')?'jpg':$ext;

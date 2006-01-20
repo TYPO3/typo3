@@ -159,8 +159,9 @@
 }
 .htmlarea .toolbar select {
 	color:WindowText;
-	font:11px Tahoma,Verdana,sans-serif; 
-	margin:1px 2px;padding:0;
+	font:11px Tahoma,Verdana,sans-serif;
+	height:18px;
+	margin:0;padding:0;
 }
 .htmlarea .toolbar select, .htmlarea .toolbar select:hover, .htmlarea .toolbar select:active { 
 	background-color:Window;

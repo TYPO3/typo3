@@ -408,7 +408,7 @@ class t3lib_div {
 			&& strtolower(substr($theFile,-4,4))=='.png'
 			&& @is_file($theFile))	{	// IM
 				$newFile = substr($theFile,0,-4).'.gif';
-				$cmd = t3lib_div::imageMagickCommand('convert', '"'.$theFile.'" "'.$newFile.'"', $gfxConf['im_path_lzw']);
+				$cmd = t3lib_div::imageMagickCommand('convert', '"'.$theFile.'" "'.$newFile.'"', $GLOBALS['TYPO3_CONF_VARS']['GFX']['im_path_lzw']);
 				exec($cmd);
 				$theFile = $newFile;
 					// unlink old file?? May be bad idea bacause TYPO3 would then recreate the file every time as TYPO3 thinks the file is not generated because it's missing!! So do not unlink $theFile here!!
@@ -815,6 +815,7 @@ class t3lib_div {
 	 * @return	array		Contains keys [path], [file], [filebody], [fileext], [realFileext]
 	 */
 	function split_fileref($fileref)	{
+		$reg = array();
 		if (	ereg('(.*/)(.*)$',$fileref,$reg)	)	{
 			$info['path'] = $reg[1];
 			$info['file'] = $reg[2];
@@ -1044,6 +1045,7 @@ class t3lib_div {
 		$qm='\*\/\+-^%';
 		$regex = '(['.$qm.'])(['.$qm.']?[0-9\.]*)';
 			// split the expression here:
+		$reg = array();
 		preg_match_all('/'.$regex.'/',$string,$reg);
 
 		reset($reg[2]);
@@ -1359,11 +1361,10 @@ class t3lib_div {
 	 * @see implodeArrayForUrl()
 	 */
 	function explodeUrl2Array($string,$multidim=FALSE)	{
+		$output = array();
 		if ($multidim)	{
-			parse_str($string,$tempGetVars);
-			return $tempGetVars;
+			parse_str($string,$output);
 		} else {
-			$output = array();
 			$p = explode('&',$string);
 			foreach($p as $v)	{
 				if (strlen($v))	{
@@ -1371,8 +1372,8 @@ class t3lib_div {
 					$output[rawurldecode($pK)] = rawurldecode($pV);
 				}
 			}
-			return $output;
 		}
+		return $output;
 	}
 
 	/**
@@ -1680,6 +1681,7 @@ class t3lib_div {
 				// remove nl from the beginning
 			$string = preg_replace ('/^\n+/', '', $string);
 				// re-ident to one tab using the first line as reference
+			$match = array();
 			if(preg_match('/^(\t+)/',$string,$match)) {
 				$string = str_replace($match[1],"\t", $string);
 			}
@@ -1918,7 +1920,7 @@ class t3lib_div {
 			// In TYPO3 we expect that the charset of XML content is NOT handled in the parser but internally in TYPO3 instead. Therefore it would be very nice if PHP5 could be configured to NOT process the charset of the files. But this is not possible for now.
 			// What we do here fixes the problem but ONLY if the charset is utf-8, iso-8859-1 or us-ascii. That should work for most TYPO3 installations, in particular if people use utf-8 which we highly recommend.
 		if ((double)phpversion()>=5)	{
-			unset($ereg_result);
+			$ereg_result = array();
 			ereg('^[[:space:]]*<\?xml[^>]*encoding[[:space:]]*=[[:space:]]*"([^"]*)"',substr($string,0,200),$ereg_result);
 			$theCharset = $ereg_result[1] ? $ereg_result[1] : ($TYPO3_CONF_VARS['BE']['forceCharset'] ? $TYPO3_CONF_VARS['BE']['forceCharset'] : 'iso-8859-1');
 			xml_parser_set_option($parser, XML_OPTION_TARGET_ENCODING, $theCharset);  // us-ascii / utf-8 / iso-8859-1
@@ -2373,6 +2375,7 @@ class t3lib_div {
 	function resolveBackPath($pathStr)	{
 		$parts = explode('/',$pathStr);
 		$output=array();
+		$c = 0;
 		foreach($parts as $pV)	{
 			if ($pV=='..')	{
 				if ($c)	{
@@ -2661,12 +2664,10 @@ class t3lib_div {
 	 */
 	function linkThisUrl($url,$getParams=array())	{
 		$parts = parse_url($url);
+		$getP = array();
 		if ($parts['query'])	{
 			parse_str($parts['query'],$getP);
-		} else {
-			$getP = array();
 		}
-
 		$getP = t3lib_div::array_merge_recursive_overrule($getP,$getParams);
 		$uP = explode('?',$url);
 
@@ -3139,6 +3140,9 @@ class t3lib_div {
 	 * @internal
 	 */
 	function stdAuthCode($uid_or_record,$fields='')	{
+
+// FIXME $recCopy is undefined - could never work as expected
+
 		if (is_array($uid_or_record))	{
 			$recCopy_temp=array();
 			if ($fields)	{
@@ -3383,7 +3387,7 @@ class t3lib_div {
 		} else {
 			$singleSheet = TRUE;
 			$dataStruct = $dataStructArray;
-			unset($dataStruct['meta']);	// Meta data should not appear there.
+			if (isset($dataStruct['meta'])) unset($dataStruct['meta']);	// Meta data should not appear there.
 			$sheet = 'sDEF';	// Default sheet
 		}
 		return array($dataStruct,$sheet,$singleSheet);
@@ -3829,6 +3833,139 @@ class t3lib_div {
 	}
 
 	/**
+	 * Init system error log.
+	 *
+	 * @return	void
+	 * @see sysLog()
+	 */
+	function initSysLog()	{
+		global $TYPO3_CONF_VARS;
+
+			// for CLI logging name is <fqdn-hostname>:<TYPO3-path>
+		if (defined('TYPO3_cliMode') && TYPO3_cliMode)	{
+			$host = '';
+			if (function_exists('posix_uname'))	{
+				$system = posix_uname();
+				$host = $system['nodename'];
+			} else {
+				$host = exec('hostname');
+			}
+			$TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_div.php']['systemLogHost'] = $TYPO3_CONF_VARS['SYS']['systemLogHost'] = gethostbyaddr(gethostbyname($host)).':'.PATH_site;
+		}
+			// for Web logging name is <protocol>://<request-hostame>
+		else {
+			$TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_div.php']['systemLogHost'] = t3lib_div::getIndpEnv('TYPO3_REQUEST_HOST');
+		}
+
+			// init custom logging
+		if (is_array($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_div.php']['systemLog']))	{
+			$params = array('initLog'=>TRUE);
+			$fakeThis = FALSE;
+			foreach($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_div.php']['systemLog'] as $hookMethod)	{
+				t3lib_div::callUserFunction($hookMethod,$params,$fakeThis);
+			}
+		}
+
+			// init TYPO3 logging
+		foreach (explode(';',$TYPO3_CONF_VARS['SYS']['systemLog'],2) as $log)	{
+			list($type,$destination) = explode(',',$log,3);
+
+			if ($type == 'syslog')	{
+				define_syslog_variables();
+				if (TYPO3_OS == 'WIN')	{
+					$facility = LOG_USER;
+				} else {
+					$facility = constant('LOG_'.strtoupper($destination));
+				}
+				openlog($ident, LOG_ODELAY, $facility);
+			}
+		}
+
+		$TYPO3_CONF_VARS['SYS']['systemLogLevel'] = t3lib_div::intInRange($TYPO3_CONF_VARS['SYS']['systemLogLevel'],0,4);
+		$TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_div.php']['systemLogInit'] = TRUE;
+	}
+
+	/**
+	 * System error log; This should be implemented around the source code, including the Core and both frontend and backend, logging serious errors.
+	 * If you want to implement the sysLog in your applications, simply add lines like:
+	 * 		t3lib_div::sysLog('[write message in English here]', 'extension key');
+	 *
+	 * @param	string		Message (in English).
+	 * @param	string		Extension key (from which extension you are calling the log) or "Core"
+	 * @param	integer		Severity: 0 is info, 1 is notice, 2 is warning, 3 is error, 4 is fatal error
+	 * @return	void
+	 */
+	function sysLog($msg, $extKey, $severity=0) {
+		global $TYPO3_CONF_VARS;
+
+		$severity = t3lib_div::intInRange($severity,0,4);
+
+			// is message worth logging?
+		if (intval($TYPO3_CONF_VARS['SYS']['systemLogLevel']) > $severity)	return;
+
+			// initialize logging
+		if (!$TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_div.php']['systemLogInit'])	{
+			t3lib_div::initSysLog();
+		}
+
+			// do custom logging
+		if (is_array($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_div.php']['systemLog']))	{
+			$params = array('msg'=>$msg, 'extKey'=>$extKey);
+			if (function_exists('debug_backtrace'))	{
+				$params['backTrace'] = debug_backtrace();
+			}
+			$fakeThis = FALSE;
+			foreach($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_div.php']['systemLog'] as $hookMethod)	{
+				t3lib_div::callUserFunction($hookMethod,$params,$fakeThis);
+			}
+		}
+
+			// TYPO3 logging enabled?
+		if (!$TYPO3_CONF_VARS['SYS']['systemLog'])	return;
+
+			// use all configured logging options
+		foreach (explode(';',$TYPO3_CONF_VARS['SYS']['systemLog'],2) as $log)	{
+			list($type,$destination,$level) = explode(',',$log,4);
+
+				// is message worth logging for this log type?
+			if (intval($level) > $severity)	continue;
+
+			$msgLine = ' - '.$extKey.': '.$msg;
+
+				// write message to a file
+			if ($type == 'file')	{
+				$file = fopen($destination, 'a');
+				if ($file)     {
+					flock($file, LOCK_EX);  // try locking, but ignore if not available (eg. on NFS and FAT)
+					fwrite($file, date('d/m/Y i:H').$msgLine.char(10));
+					flock($fp, LOCK_UN);    // release the lock
+					fclose($file);
+				}
+			}
+				// send message per mail
+			elseif ($type == 'mail')	{
+				list($to,$from) = explode('/',$destination);
+				mail($to, 'Warning - error in TYPO3 installation',
+					'Host: '.$TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_div.php']['systemLogHost']."\n".
+					'Extension: '.$extKey."\n".
+					'Severity: '.$severity."\n".
+					"\n".$msg,
+					($from ? 'From: '.$from : '')
+				);
+			}
+				// use the PHP error log
+			elseif ($type == 'error_log')	{
+				error_log($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_div.php']['systemLogHost'].$msgLine, 0);
+			}
+				// use the system log
+			elseif ($type == 'syslog')	{
+				$priority = array(LOG_INFO,LOG_NOTICE,LOG_WARNING,LOG_ERR,LOG_CRIT);
+				syslog($priority[(int)$severity], $msgLine);
+			}
+		}
+	}
+
+	/**
 	 * Developer log; This should be implemented around the source code, both frontend and backend, logging everything from the flow through an application, messages, results from comparisons to fatal errors.
 	 * The result is meant to make sense to developers during development or debugging of a site.
 	 * The idea is that this function is only a wrapper for external extensions which can set a hook which will be allowed to handle the logging of the information to any format they might wish and with any kind of filter they would like.
@@ -3897,7 +4034,7 @@ class t3lib_div {
 
 		if($command==='combine')	{	// This is only used internally, has no effect outside
 			$command = 'composite';
-}
+		}
 
 			// Compile the path & command
 		if($im_version==='gm')	{
@@ -3957,6 +4094,24 @@ class t3lib_div {
 		}
 		return $paramsArr;
 	}
+
+
+	/**
+	 * Quotes a string for usage as JS parameter. Depends wheter the value is used in script tags (it doesn't need/must not get htmlspecialchared in this case)
+	 *
+	 * @param	string		The string to encode.
+	 * @param	boolean		If the values get's used in <script> tags.
+	 * @return	string	The encoded value already quoted
+	 */
+	function quoteJSvalue($value, $inScriptTags = false)	{
+		$value = addcslashes($value, '\''.chr(10).chr(13));
+		if (!$inScriptTags)	{
+			$value = htmlspecialchars($value);
+		}
+		return '\''.$value.'\'';
+	}
+
+
 }
 
 ?>

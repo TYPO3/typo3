@@ -298,7 +298,7 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 		$this->doc->JScode = $this->doc->wrapScriptTags('
 			script_ended = 0;
 			function jumpToUrl(URL)	{	//
-				document.location = URL;
+				window.location.href = URL;
 			}
 		');
 

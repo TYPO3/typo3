@@ -133,7 +133,7 @@ class SC_wizard_table {
 		$this->doc->backPath = $BACK_PATH;
 		$this->doc->JScode=$this->doc->wrapScriptTags('
 			function jumpToUrl(URL,formEl)	{	//
-				document.location = URL;
+				window.location.href = URL;
 			}
 		');
 
@@ -618,7 +618,7 @@ class SC_wizard_table {
 
 				// Traverse columns:
 			for ($a=0;$a<$cols;$a++)	{
-				if ($this->tableParsing_quote)	{
+				if ($this->tableParsing_quote && substr($vParts[$a],0,1) == $this->tableParsing_quote && substr($vParts[$a],-1,1) == $this->tableParsing_quote)	{
 					$vParts[$a] = substr(trim($vParts[$a]),1,-1);
 				}
 				$cfgArr[$k][$a]=$vParts[$a];

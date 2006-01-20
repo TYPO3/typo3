@@ -407,17 +407,17 @@ class SC_db_layout {
 				function jumpToUrl(URL,formEl)	{	//
 					if (document.editform && document.TBE_EDITOR_isFormChanged)	{	// Check if the function exists... (works in all browsers?)
 						if (!TBE_EDITOR_isFormChanged())	{	//
-							document.location = URL;
+							window.location.href = URL;
 						} else if (formEl) {
 							if (formEl.type=="checkbox") formEl.checked = formEl.checked ? 0 : 1;
 						}
-					} else document.location = URL;
+					} else window.location.href = URL;
 				}
 			'.($this->popView ? t3lib_BEfunc::viewOnClick($this->id,$BACK_PATH,t3lib_BEfunc::BEgetRootLine($this->id)) : '').'
 
 				function deleteRecord(table,id,url)	{	//
 					if (confirm('.$LANG->JScharCode($LANG->getLL('deleteWarning')).'))	{
-						document.location = "'.$BACK_PATH.'tce_db.php?cmd["+table+"]["+id+"][delete]=1&redirect="+escape(url)+"&vC='.$BE_USER->veriCode().'&prErr=1&uPT=1";
+						window.location.href = "'.$BACK_PATH.'tce_db.php?cmd["+table+"]["+id+"][delete]=1&redirect="+escape(url)+"&vC='.$BE_USER->veriCode().'&prErr=1&uPT=1";
 					}
 					return false;
 				}
@@ -516,8 +516,8 @@ class SC_db_layout {
 				$idListA[] = $cRow['uid'];
 			}
 
-			$jumpUrl = $BACK_PATH.'alt_doc.php?edit[tt_content]['.implode(',',$idListA).']=edit&returnUrl='.rawurlencode($this->local_linkThisScript(array('edit_record'=>'')));
-			header('Location: '.t3lib_div::locationHeaderUrl($jumpUrl));
+			$url = $BACK_PATH.'alt_doc.php?edit[tt_content]['.implode(',',$idListA).']=edit&returnUrl='.rawurlencode($this->local_linkThisScript(array('edit_record'=>'')));
+			header('Location: '.t3lib_div::locationHeaderUrl($url));
 			exit;
 		}
 
@@ -651,7 +651,7 @@ class SC_db_layout {
 							'<img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/deletedok.gif','width="21" height="16"').' class="c-inputButton" title="'.$LANG->getLL('deleteItem',1).'" alt="" />'.
 							'</a>' : '').
 
-			($undoButton ? '<a href="#" onclick="'.htmlspecialchars('document.location=\''.$BACK_PATH.'show_rechis.php?element='.rawurlencode($eRParts[0].':'.$eRParts[1]).'&revert=ALL_FIELDS&sumUp=-1&returnUrl='.rawurlencode($R_URI).'\'; return false;').'">'.
+			($undoButton ? '<a href="#" onclick="'.htmlspecialchars('window.location.href=\''.$BACK_PATH.'show_rechis.php?element='.rawurlencode($eRParts[0].':'.$eRParts[1]).'&revert=ALL_FIELDS&sumUp=-1&returnUrl='.rawurlencode($R_URI).'\'; return false;').'">'.
 							'<img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/undo.gif','width="21" height="16"').' class="c-inputButton" title="'.htmlspecialchars(sprintf($LANG->getLL('undoLastChange'),t3lib_BEfunc::calcAge(time()-$undoButtonR['tstamp'],$LANG->sL('LLL:EXT:lang/locallang_core.php:labels.minutesHoursDaysYears')))).'" alt="" />'.
 							'</a>' : '');
 

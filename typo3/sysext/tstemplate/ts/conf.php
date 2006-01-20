@@ -1,5 +1,5 @@
 <?php
-define('TYPO3_MOD_PATH', 'ext/tstemplate/ts/');
+define('TYPO3_MOD_PATH', 'sysext/tstemplate/ts/');
 $BACK_PATH='../../../';
 
 $MLANG['default']['tabs_images']['tab'] = 'ts1.gif';
