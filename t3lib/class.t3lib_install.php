@@ -291,7 +291,8 @@ class t3lib_install {
 						$total[$isTable]['extra']['ttype'] = $ttype[2];
 						$isTable = '';
 					} else {
-						$lineV = ereg_replace(',$','',$value);
+						$lineV = preg_replace('/,$/','',$value);
+						$lineV = str_replace('UNIQUE KEY', 'UNIQUE', $lineV);
 						$parts = explode(' ',$lineV,2);
 
 							// Make sure there is no default value when auto_increment is set
@@ -302,8 +303,10 @@ class t3lib_install {
 						if(strstr($parts[1], ' DEFAULT '))	{
 							$parts[1] = str_replace(' DEFAULT ', ' default ', $parts[1]);
 						}
+							// Remove NOT NULL statements (they are not needed)
+						$parts[1] = str_replace(' NOT NULL', '', $parts[1]);
+
 							// Change order of "default" and "null" statements
-						$parts[1] = preg_replace('/(.*) (default .*) (NOT NULL)/', '$1 $3 $2', $parts[1]);
 						$parts[1] = preg_replace('/(.*) (default .*) (NULL)/', '$1 $3 $2', $parts[1]);
 
 							// Remove double blanks
@@ -567,7 +570,7 @@ class t3lib_install {
 	 */
 	function assembleFieldDefinition($row)	{
 		$field[] = $row['Type'];
-		if (!$row['Null'])	{ $field[] = 'NOT NULL'; }
+		// if (!$row['Null'])	{ $field[] = 'NOT NULL'; }
 		if (!strstr($row['Type'],'blob') && !strstr($row['Type'],'text'))	{
 				// Add a default value if the field is not auto-incremented (these fields never have a default definition).
 			if (!stristr($row['Extra'],'auto_increment'))	{

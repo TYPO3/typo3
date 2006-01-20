@@ -2,6 +2,7 @@
 
 	* New feature: Merged cron_cssstyledimgtext into CSS Styled Content. Kudos to Ernesto Baschny who did most of the work. Many thanks to Sebastian Kurfuerst for his great support. Great work boys!
 	* Added support to fetch values from objects in getText: myVar.data = TSFE:fe_user|user|username
+	* Fixed (part of) #2059: Removing "NOT NULL" when parsing SQL data
 
 2006-01-19  Sebastian Kurfuerst  <sebastian@garbage-group.de>
 
