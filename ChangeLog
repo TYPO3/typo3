@@ -1,3 +1,7 @@
+2006-01-22  Sebastian Kurfuerst  <sebastian@garbage-group.de>
+
+	* Fixed issues #2333 and #2255, needed for the upcoming skin
+
 2006-01-20  Dmitry Dulepov  <typo3@accio.lv>
 
 	* Fixed bug #2232: Creation of new workspace fails

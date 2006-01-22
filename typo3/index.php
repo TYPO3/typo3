@@ -408,8 +408,7 @@ class SC_index {
 					-->
 					<table cellspacing="0" cellpadding="0" border="0" id="loginwrapper">
 						<tr>
-							<td>'.$loginboxImage.'</td>
-							<td>
+							<td>'.$loginboxImage.'
 								'.$content.'
 							</td>
 						</tr>
