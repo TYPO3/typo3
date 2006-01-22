@@ -939,6 +939,16 @@ class t3lib_TCEforms	{
 		$item.='<input type="hidden" name="'.$PA['itemFormElName'].'" value="'.htmlspecialchars($PA['itemFormElValue']).'" />';			// This is the ACTUAL form field - values from the EDITABLE field must be transferred to this field which is the one that is written to the database.
 		$this->extJSCODE.='typo3FormFieldSet('.$paramsList.');';
 
+			// going through all custom evaluations configured for this field
+		foreach ($evalList as $evalData) {
+			if (substr($evalData, 0, 3) == 'tx_')	{
+				$evalObj = t3lib_div::getUserObj($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tce']['formevals'][$evalData].':&'.$evalData);
+				if(is_object($evalObj) && method_exists($evalObj, 'returnFieldJS'))	{
+					$this->extJSCODE .= "\n\nfunction ".$evalData."(value) {\n".$evalObj->returnFieldJS($funcName)."\n}\n";
+				}
+			}
+		}
+
 			// Creating an alternative item without the JavaScript handlers.
 		$altItem = '<input type="hidden" name="'.$PA['itemFormElName'].'_hr" value="" />';
 		$altItem.= '<input type="hidden" name="'.$PA['itemFormElName'].'" value="'.htmlspecialchars($PA['itemFormElValue']).'" />';

@@ -1789,6 +1789,14 @@ class t3lib_TCEmain	{
 				case 'alphanum_x':
 					$value = ereg_replace('[^a-zA-Z0-9_-]','',$value);
 				break;
+				default:
+					if (substr($func, 0, 3) == 'tx_')	{
+						$evalObj = t3lib_div::getUserObj($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tce']['formevals'][$func].':&'.$func);
+						if(is_object($evalObj) && method_exists($evalObj, 'evaluateFieldValue'))	{
+							$value = $evalObj->evaluateFieldValue($value, $is_in, &$set);
+						}
+					}
+				break;
 			}
 		}
 		if ($set)	{$res['value'] = $value;}

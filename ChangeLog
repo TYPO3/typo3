@@ -1,3 +1,7 @@
+2006-01-22  Ingmar Schlecht  <ingmar@typo3.org>
+
+	* New feature #1639: Implemented form eval API so it's possible to add custom JS and PHP form evaluation functions to input fields in TCEForms (thanks to Thomas Hempel!)
+
 2006-01-22  Sebastian Kurfuerst  <sebastian@garbage-group.de>
 
 	* Fixed issues #2333 and #2255, needed for the upcoming skin
