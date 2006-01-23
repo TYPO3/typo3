@@ -843,8 +843,8 @@ class t3lib_TCEmain	{
 
 			// Initialize:
 		t3lib_div::loadTCA($table);
-		unset($originalLanguageRecord);
-		unset($originalLanguage_diffStorage);
+		$originalLanguageRecord = NULL;
+		$originalLanguage_diffStorage = NULL;
 		$diffStorageFlag = FALSE;
 
 			// Setting 'currentRecord' and 'checkValueRecord':
@@ -1260,7 +1260,7 @@ class t3lib_TCEmain	{
 			$value = implode(',',$value);
 		}
 
-			// This converts all occurencies of '&#123;' to the byte 123 in the string - this is needed in very rare cases where filenames with special characters (like ���, umlaud etc) gets sent to the server as HTML entities instead of bytes. The error is done only by MSIE, not Mozilla and Opera.
+			// This converts all occurencies of '&#123;' to the byte 123 in the string - this is needed in very rare cases where filenames with special characters (like ???, umlaud etc) gets sent to the server as HTML entities instead of bytes. The error is done only by MSIE, not Mozilla and Opera.
 			// Anyways, this should NOT disturb anything else:
 		$value = $this->convNumEntityToByteValue($value);
 
@@ -1794,8 +1794,8 @@ class t3lib_TCEmain	{
 						$evalObj = t3lib_div::getUserObj($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tce']['formevals'][$func].':&'.$func);
 						if(is_object($evalObj) && method_exists($evalObj, 'evaluateFieldValue'))	{
 							$value = $evalObj->evaluateFieldValue($value, $is_in, &$set);
-						}
-					}
+			}
+		}
 				break;
 			}
 		}
@@ -4279,7 +4279,7 @@ $this->log($table,$id,6,0,0,'Stage raised...',30,array('comment'=>$comment,'stag
 
 						// Set log entry:
 					$propArr = $this->getRecordPropertiesFromRow($table,$newRow);
-					$theLogId = $this->log($table,$id,2,$recpid,0,"Record '%s' (%s) was updated.",10,array($propArr['header'],$table.':'.$id),$propArr['event_pid']);
+					$theLogId = $this->log($table,$id,2,$propArr['pid'],0,"Record '%s' (%s) was updated.",10,array($propArr['header'],$table.':'.$id),$propArr['event_pid']);
 
 						// Set History data:
 					$this->setHistory($table,$id,$theLogId);
