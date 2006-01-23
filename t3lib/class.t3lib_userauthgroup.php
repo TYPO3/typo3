@@ -783,20 +783,24 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 	function workspacePublishAccess($wsid)	{
 		if ($this->isAdmin())	return TRUE;
 
+			// If no access to workspace, of course you cannot publish!
+		$retVal = FALSE;
+
 		$wsAccess = $this->checkWorkspace($wsid);
 		if ($wsAccess)	{
 			switch($wsAccess['uid'])	{
 				case 0:		// Live workspace
-					return TRUE;	// If access to Live workspace, no problem.
+					$retVal =  TRUE;	// If access to Live workspace, no problem.
 				break;
 				case -1:	// Default draft workspace
-					return $this->checkWorkspace(0) ? TRUE : FALSE;	// If access to Live workspace, no problem.
+					$retVal =  $this->checkWorkspace(0) ? TRUE : FALSE;	// If access to Live workspace, no problem.
 				break;
 				default:	// Custom workspace
-					return $wsAccess['_ACCESS'] === 'owner' || ($this->checkWorkspace(0) && !($wsAccess['publish_access']&2));	// Either be an adminuser OR have access to online workspace which is OK as well as long as publishing access is not limited by workspace option.
+					$retVal =  $wsAccess['_ACCESS'] === 'owner' || ($this->checkWorkspace(0) && !($wsAccess['publish_access']&2));	// Either be an adminuser OR have access to online workspace which is OK as well as long as publishing access is not limited by workspace option.
 				break;
 			}
-		} else return FALSE;	// If no access to workspace, of course you cannot publish!
+		}
+		return $retVal;
 	}
 
 	/**
@@ -817,6 +821,8 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 	 * @return	boolean		TRUE if OK
 	 */
 	function workspaceVersioningTypeAccess($type)	{
+		$retVal = FALSE;
+
 		if ($this->workspace>0 && !$this->isAdmin())	{
 			$stat = $this->checkWorkspaceCurrent();
 			if ($stat['_ACCESS']!=='owner')	{
@@ -824,17 +830,19 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 				$type = t3lib_div::intInRange($type,-1);
 				switch((int)$type)	{
 					case -1:
-						return $this->workspaceRec['vtypes']&1 ? FALSE : TRUE;
+						$retVal = $this->workspaceRec['vtypes']&1 ? FALSE : TRUE;
 					break;
 					case 0:
-						return $this->workspaceRec['vtypes']&2 ? FALSE : TRUE;
+						$retVal = $this->workspaceRec['vtypes']&2 ? FALSE : TRUE;
 					break;
 					default:
-						return $this->workspaceRec['vtypes']&4 ? FALSE : TRUE;
+						$retVal = $this->workspaceRec['vtypes']&4 ? FALSE : TRUE;
 					break;
 				}
-			} else return TRUE;
-		} else return TRUE;
+			} else $retVal = TRUE;
+		} else $retVal = TRUE;
+
+		return $retVal;
 	}
 
 	/**
@@ -844,20 +852,22 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 	 * @return	integer		Returning versioning type
 	 */
 	function workspaceVersioningTypeGetClosest($type)	{
+		$type = t3lib_div::intInRange($type,-1);
+
 		if ($this->workspace>0)	{
-			$type = t3lib_div::intInRange($type,-1);
 			switch((int)$type)	{
 				case -1:
-					return -1;
+					$type = -1;
 				break;
 				case 0:
-					return $this->workspaceVersioningTypeAccess($type) ? $type : -1;
+					$type = $this->workspaceVersioningTypeAccess($type) ? $type : -1;
 				break;
 				default:
-					return $this->workspaceVersioningTypeAccess($type) ? $type : ($this->workspaceVersioningTypeAccess(0) ? 0 : -1);
+					$type = $this->workspaceVersioningTypeAccess($type) ? $type : ($this->workspaceVersioningTypeAccess(0) ? 0 : -1);
 				break;
 			}
-		} else return $type;
+		}
+		return $type;
 	}
 
 
@@ -1387,6 +1397,7 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 	 * @return	array		TRUE if access. Output will also show how access was granted. Admin users will have a true output regardless of input.
 	 */
 	function checkWorkspace($wsRec,$fields='uid,title,adminusers,members,reviewers,publish_access,stagechg_notification')	{
+		$retVal = FALSE;
 
 			// If not array, look up workspace record:
 		if (!is_array($wsRec))	{
@@ -1416,10 +1427,10 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 
 				switch((string)$wsRec['uid'])	{
 					case '0':
-						return ($this->groupData['workspace_perms']&1) ? array_merge($wsRec,array('_ACCESS' => 'online')) : FALSE;
+						$retVal = ($this->groupData['workspace_perms']&1) ? array_merge($wsRec,array('_ACCESS' => 'online')) : FALSE;
 					break;
 					case '-1':
-						return ($this->groupData['workspace_perms']&2) ? array_merge($wsRec,array('_ACCESS' => 'offline')) : FALSE;
+						$retVal = ($this->groupData['workspace_perms']&2) ? array_merge($wsRec,array('_ACCESS' => 'offline')) : FALSE;
 					break;
 					default:
 							// Checking if the guy is admin:
@@ -1451,7 +1462,7 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 			}
 		}
 
-		return FALSE;
+		return $retVal;
 	}
 
 	/**

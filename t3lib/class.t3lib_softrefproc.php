@@ -136,6 +136,8 @@ class t3lib_softrefproc {
 	 */
 	function findRef($table, $field, $uid, $content, $spKey, $spParams, $structurePath='')	{
 
+		$retVal = FALSE;
+
 		$this->tokenID_basePrefix = $table.':'.$uid.':'.$field.':'.$structurePath.':'.$spKey;
 
 		switch($spKey)	{
@@ -147,7 +149,7 @@ class t3lib_softrefproc {
 						)
 					)
 				);
-				return $resultArray;
+				$retVal = $resultArray;
 			break;
 			case 'substitute':
 				$tokenID = $this->makeTokenID();
@@ -164,36 +166,38 @@ class t3lib_softrefproc {
 						)
 					)
 				);
-				return $resultArray;
+				$retVal = $resultArray;
 			break;
 			case 'images':
-				return $this->findRef_images($content, $spParams);
+				$retVal = $this->findRef_images($content, $spParams);
 			break;
 			case 'typolink':
-				return $this->findRef_typolink($content, $spParams);
+				$retVal = $this->findRef_typolink($content, $spParams);
 			break;
 			case 'typolink_tag':
-				return $this->findRef_typolink_tag($content, $spParams);
+				$retVal = $this->findRef_typolink_tag($content, $spParams);
 			break;
 			case 'ext_fileref':
-				return $this->findRef_extension_fileref($content, $spParams);
+				$retVal = $this->findRef_extension_fileref($content, $spParams);
 			break;
 			case 'TStemplate':
-				return $this->findRef_TStemplate($content, $spParams);
+				$retVal = $this->findRef_TStemplate($content, $spParams);
 			break;
 			case 'TSconfig':
-				return $this->findRef_TSconfig($content, $spParams);
+				$retVal = $this->findRef_TSconfig($content, $spParams);
 			break;
 			case 'email':
-				return $this->findRef_email($content, $spParams);
+				$retVal = $this->findRef_email($content, $spParams);
 			break;
 			case 'url':
-				return $this->findRef_url($content, $spParams);
+				$retVal = $this->findRef_url($content, $spParams);
 			break;
 			default:
-				return FALSE;
+				$retVal = FALSE;
 			break;
 		}
+
+		return $retVal;
 	}
 
 	/**
@@ -732,7 +736,9 @@ class t3lib_softrefproc {
 			break;
 			case 'url':
 					// Nothing done, only for informational purposes. So return content right away:
-				return $content;
+				{
+					return $content;
+				}
 			break;
 			case 'file':
 					// Process files found in fileadmin directory:
@@ -799,8 +805,10 @@ class t3lib_softrefproc {
 				}
 			break;
 			default:
-				$elements[$tokenID.':'.$idx]['error'] = 'Couldn\t decide typolink mode.';
-				return $content;
+				{
+					$elements[$tokenID.':'.$idx]['error'] = 'Couldn\t decide typolink mode.';
+					return $content;
+				}
 			break;
 		}
 

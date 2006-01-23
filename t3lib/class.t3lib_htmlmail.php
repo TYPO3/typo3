@@ -835,6 +835,7 @@ class t3lib_htmlmail {
 		$codepieces = split($attribRegex, $html_code);	// Splits the document by the beginning of the above tags
 		$len=strlen($codepieces[0]);
 		$pieces = count($codepieces);
+		$reg = array();
 		for($i=1; $i < $pieces; $i++)	{
 			$tag = strtolower(strtok(substr($html_code,$len+1,10)," "));
 			$len+=strlen($tag)+strlen($codepieces[$i])+2;

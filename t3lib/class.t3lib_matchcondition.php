@@ -288,7 +288,7 @@ class t3lib_matchCondition {
 					}
 				break;
 				case 'compatVersion':
-					return t3lib_div::compat_version($pcs[1]);
+					{ return t3lib_div::compat_version($pcs[1]); }
 				break;
 				case 'userFunc':
 					$values = split('\(|\)',$pcs[1]);
@@ -590,7 +590,7 @@ class t3lib_matchCondition {
 						$val = t3lib_div::getIndpEnv($k);
 					break;
 					case 'LIT':
-						return trim($vars[1]);	// return litteral value...
+						{ return trim($vars[1]); }	// return litteral value...
 					break;
 				}
 					// If array:

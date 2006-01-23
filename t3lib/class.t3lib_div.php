@@ -1720,6 +1720,7 @@ class t3lib_div {
 		$stacktop = 0;
 		$startPoint=0;
 
+// FIXME don't use unset() - what does that mean? Use NULL or similar.
 		unset($tagi);
 		foreach($vals as $key => $val) {
 			$type = $val['type'];
@@ -2747,19 +2748,22 @@ class t3lib_div {
 		*/
 
 #		if ($getEnvName=='HTTP_REFERER')	return '';
+
+		$retVal = '';
+
 		switch((string)$getEnvName)	{
 			case 'SCRIPT_NAME':
-				return (php_sapi_name()=='cgi'||php_sapi_name()=='cgi-fcgi')&&($_SERVER['ORIG_PATH_INFO']?$_SERVER['ORIG_PATH_INFO']:$_SERVER['PATH_INFO']) ? ($_SERVER['ORIG_PATH_INFO']?$_SERVER['ORIG_PATH_INFO']:$_SERVER['PATH_INFO']) : ($_SERVER['ORIG_SCRIPT_NAME']?$_SERVER['ORIG_SCRIPT_NAME']:$_SERVER['SCRIPT_NAME']);
+				$retVal = (php_sapi_name()=='cgi'||php_sapi_name()=='cgi-fcgi')&&($_SERVER['ORIG_PATH_INFO']?$_SERVER['ORIG_PATH_INFO']:$_SERVER['PATH_INFO']) ? ($_SERVER['ORIG_PATH_INFO']?$_SERVER['ORIG_PATH_INFO']:$_SERVER['PATH_INFO']) : ($_SERVER['ORIG_SCRIPT_NAME']?$_SERVER['ORIG_SCRIPT_NAME']:$_SERVER['SCRIPT_NAME']);
 			break;
 			case 'SCRIPT_FILENAME':
-				return str_replace('//','/', str_replace('\\','/', (php_sapi_name()=='cgi'||php_sapi_name()=='isapi' ||php_sapi_name()=='cgi-fcgi')&&($_SERVER['ORIG_PATH_TRANSLATED']?$_SERVER['ORIG_PATH_TRANSLATED']:$_SERVER['PATH_TRANSLATED'])? ($_SERVER['ORIG_PATH_TRANSLATED']?$_SERVER['ORIG_PATH_TRANSLATED']:$_SERVER['PATH_TRANSLATED']):($_SERVER['ORIG_SCRIPT_FILENAME']?$_SERVER['ORIG_SCRIPT_FILENAME']:$_SERVER['SCRIPT_FILENAME'])));
+				$retVal = str_replace('//','/', str_replace('\\','/', (php_sapi_name()=='cgi'||php_sapi_name()=='isapi' ||php_sapi_name()=='cgi-fcgi')&&($_SERVER['ORIG_PATH_TRANSLATED']?$_SERVER['ORIG_PATH_TRANSLATED']:$_SERVER['PATH_TRANSLATED'])? ($_SERVER['ORIG_PATH_TRANSLATED']?$_SERVER['ORIG_PATH_TRANSLATED']:$_SERVER['PATH_TRANSLATED']):($_SERVER['ORIG_SCRIPT_FILENAME']?$_SERVER['ORIG_SCRIPT_FILENAME']:$_SERVER['SCRIPT_FILENAME'])));
 			break;
 			case 'REQUEST_URI':
 					// Typical application of REQUEST_URI is return urls, forms submitting to itself etc. Example: returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))
 				if (!$_SERVER['REQUEST_URI'])	{	// This is for ISS/CGI which does not have the REQUEST_URI available.
-					return '/'.ereg_replace('^/','',t3lib_div::getIndpEnv('SCRIPT_NAME')).
+					$retVal = '/'.ereg_replace('^/','',t3lib_div::getIndpEnv('SCRIPT_NAME')).
 						($_SERVER['QUERY_STRING']?'?'.$_SERVER['QUERY_STRING']:'');
-				} else return $_SERVER['REQUEST_URI'];
+				} else $retVal = $_SERVER['REQUEST_URI'];
 			break;
 			case 'PATH_INFO':
 					// $_SERVER['PATH_INFO']!=$_SERVER['SCRIPT_NAME'] is necessary because some servers (Windows/CGI) are seen to set PATH_INFO equal to script_name
@@ -2767,8 +2771,8 @@ class t3lib_div {
 					// IF 'PATH_INFO' never works for our purpose in TYPO3 with CGI-servers, then 'php_sapi_name()=='cgi'' might be a better check. Right now strcmp($_SERVER['PATH_INFO'],t3lib_div::getIndpEnv('SCRIPT_NAME')) will always return false for CGI-versions, but that is only as long as SCRIPT_NAME is set equal to PATH_INFO because of php_sapi_name()=='cgi' (see above)
 //				if (strcmp($_SERVER['PATH_INFO'],t3lib_div::getIndpEnv('SCRIPT_NAME')) && count(explode('/',$_SERVER['PATH_INFO']))>1)	{
 				if (php_sapi_name()!='cgi'&&php_sapi_name()!='cgi-fcgi')	{
-					return $_SERVER['PATH_INFO'];
-				} else return '';
+					$retVal = $_SERVER['PATH_INFO'];
+				}
 			break;
 				// These are let through without modification
 			case 'REMOTE_ADDR':
@@ -2778,7 +2782,7 @@ class t3lib_div {
 			case 'HTTP_USER_AGENT':
 			case 'HTTP_ACCEPT_LANGUAGE':
 			case 'QUERY_STRING':
-				return $_SERVER[$getEnvName];
+				$retVal = $_SERVER[$getEnvName];
 			break;
 			case 'TYPO3_DOCUMENT_ROOT':
 				// Some CGI-versions (LA13CGI) and mod-rewrite rules on MODULE versions will deliver a 'wrong' DOCUMENT_ROOT (according to our description). Further various aliases/mod_rewrite rules can disturb this as well.
@@ -2794,28 +2798,28 @@ class t3lib_div {
 				}
 				$commonEnd=strrev(implode('/',$acc));
 				if (strcmp($commonEnd,''))	{ $DR = substr($SFN,0,-(strlen($commonEnd)+1)); }
-				return $DR;
+				$retVal = $DR;
 			break;
 			case 'TYPO3_HOST_ONLY':
 				$p = explode(':',$_SERVER['HTTP_HOST']);
-				return $p[0];
+				$retVal = $p[0];
 			break;
 			case 'TYPO3_PORT':
 				$p = explode(':',$_SERVER['HTTP_HOST']);
-				return $p[1];
+				$retVal = $p[1];
 			break;
 			case 'TYPO3_REQUEST_HOST':
-				return (t3lib_div::getIndpEnv('TYPO3_SSL') ? 'https://' : 'http://').
+				$retVal = (t3lib_div::getIndpEnv('TYPO3_SSL') ? 'https://' : 'http://').
 					$_SERVER['HTTP_HOST'];
 			break;
 			case 'TYPO3_REQUEST_URL':
-				return t3lib_div::getIndpEnv('TYPO3_REQUEST_HOST').t3lib_div::getIndpEnv('REQUEST_URI');
+				$retVal = t3lib_div::getIndpEnv('TYPO3_REQUEST_HOST').t3lib_div::getIndpEnv('REQUEST_URI');
 			break;
 			case 'TYPO3_REQUEST_SCRIPT':
-				return t3lib_div::getIndpEnv('TYPO3_REQUEST_HOST').t3lib_div::getIndpEnv('SCRIPT_NAME');
+				$retVal = t3lib_div::getIndpEnv('TYPO3_REQUEST_HOST').t3lib_div::getIndpEnv('SCRIPT_NAME');
 			break;
 			case 'TYPO3_REQUEST_DIR':
-				return t3lib_div::getIndpEnv('TYPO3_REQUEST_HOST').t3lib_div::dirname(t3lib_div::getIndpEnv('SCRIPT_NAME')).'/';
+				$retVal = t3lib_div::getIndpEnv('TYPO3_REQUEST_HOST').t3lib_div::dirname(t3lib_div::getIndpEnv('SCRIPT_NAME')).'/';
 			break;
 			case 'TYPO3_SITE_URL':
 				if (defined('PATH_thisScript') && defined('PATH_site'))	{
@@ -2823,14 +2827,14 @@ class t3lib_div {
 					$url = t3lib_div::getIndpEnv('TYPO3_REQUEST_DIR');
 					$siteUrl = substr($url,0,-strlen($lPath));
 					if (substr($siteUrl,-1)!='/')	$siteUrl.='/';
-					return $siteUrl;
-				} else return '';
+					$retVal = $siteUrl;
+				}
 			break;
 			case 'TYPO3_SITE_SCRIPT':
-				return substr(t3lib_div::getIndpEnv('TYPO3_REQUEST_URL'),strlen(t3lib_div::getIndpEnv('TYPO3_SITE_URL')));
+				$retVal = substr(t3lib_div::getIndpEnv('TYPO3_REQUEST_URL'),strlen(t3lib_div::getIndpEnv('TYPO3_SITE_URL')));
 			break;
 			case 'TYPO3_SSL':
-				return $_SERVER['SSL_SESSION_ID'] || !strcmp($_SERVER['HTTPS'],'on') ? TRUE : FALSE;
+				$retVal = $_SERVER['SSL_SESSION_ID'] || !strcmp($_SERVER['HTTPS'],'on') ? TRUE : FALSE;
 			break;
 			case '_ARRAY':
 				$out = array();
@@ -2862,9 +2866,10 @@ class t3lib_div {
 					$out[$v]=t3lib_div::getIndpEnv($v);
 				}
 				reset($out);
-				return $out;
+				$retVal = $out;
 			break;
 		}
+		return $retVal;
 	}
 
 	/**
@@ -3877,6 +3882,7 @@ class t3lib_div {
 				} else {
 					$facility = constant('LOG_'.strtoupper($destination));
 				}
+// FIXME $ident is undefined
 				openlog($ident, LOG_ODELAY, $facility);
 			}
 		}
@@ -3938,7 +3944,7 @@ class t3lib_div {
 				if ($file)     {
 					flock($file, LOCK_EX);  // try locking, but ignore if not available (eg. on NFS and FAT)
 					fwrite($file, date('d/m/Y i:H').$msgLine.char(10));
-					flock($fp, LOCK_UN);    // release the lock
+					flock($file, LOCK_UN);    // release the lock
 					fclose($file);
 				}
 			}
