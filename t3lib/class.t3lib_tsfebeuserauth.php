@@ -931,11 +931,15 @@ class t3lib_tsfeBeUserAuth extends t3lib_beUserAuth {
 		if (is_array($this->TSFE_EDIT))	{
 			if ($this->TSFE_EDIT['cancel'])	{
 				unset($this->TSFE_EDIT['cmd']);
-			} elseif (($cmd!='edit' || (is_array($this->TSFE_EDIT['data']) && ($this->TSFE_EDIT['update'] || $this->TSFE_EDIT['update_close']))) && $cmd!='new')	{
-					// $cmd can be a command like "hide" or "move". If $cmd is "edit" or "new" it's an indication to show the formfields. But if data is sent with update-flag then $cmd = edit is accepted because edit may be sendt because of .keepGoing flag.
-				return true;
+			} else {
+				$cmd = (string)$this->TSFE_EDIT['cmd'];
+				if (($cmd!='edit' || (is_array($this->TSFE_EDIT['data']) && ($this->TSFE_EDIT['update'] || $this->TSFE_EDIT['update_close']))) && $cmd!='new')	{
+						// $cmd can be a command like "hide" or "move". If $cmd is "edit" or "new" it's an indication to show the formfields. But if data is sent with update-flag then $cmd = edit is accepted because edit may be sendt because of .keepGoing flag.
+					return true;
+				}
 			}
 		}
+		return false;
 	}
 
 	/**

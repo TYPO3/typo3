@@ -586,9 +586,11 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 	 * @return	string		Content output
 	 */
 	function TS_reglinks($value,$direction)		{
+		$retVal = '';
+
 		switch($direction)	{
 			case 'rte':
-				return $this->TS_AtagToAbs($value,1);
+				$retVal = $this->TS_AtagToAbs($value,1);
 			break;
 			case 'db':
 				$siteURL = $this->siteUrl();
@@ -606,9 +608,10 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 						$blockSplit[$k] = $bTag.$this->TS_reglinks($this->removeFirstAndLastTag($blockSplit[$k]),$direction).$eTag;
 					}
 				}
-				return implode('',$blockSplit);
+				$retVal = implode('',$blockSplit);
 			break;
 		}
+		return $retVal;
 	}
 
 	/**
@@ -703,9 +706,12 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 						$link_params_parts = explode('#',$link_param);
 						$idPart = trim($link_params_parts[0]);		// Link-data del
 						if (!strcmp($idPart,''))	{ $idPart=$this->recPid; }	// If no id or alias is given, set it to class record pid
-						if ($link_params_parts[1] && !$sectionMark)	{
-							$sectionMark = '#'.trim($link_params_parts[1]);
-						}
+
+// FIXME commented because useless - what is it for?
+//						if ($link_params_parts[1] && !$sectionMark)	{
+//							$sectionMark = '#'.trim($link_params_parts[1]);
+//						}
+
 							// Splitting the parameter by ',' and if the array counts more than 1 element it's a id/type/? pair
 						$pairParts = t3lib_div::trimExplode(',',$idPart);
 						if (count($pairParts)>1)	{

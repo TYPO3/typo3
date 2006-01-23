@@ -139,7 +139,7 @@ class t3lib_exec {
 
 			// try to get the executable with the command 'which'. It do the same like already done, but maybe on other paths??
 		if ($osType=='UNIX') {
-			$cmd = @exec ('which '.$val['cmd']);
+			$cmd = @exec ('which '.$cmd);
 
 			if (@is_executable($cmd)) {
 				$T3_VAR['t3lib_exec']['apps'][$cmd]['app'] = $cmd;

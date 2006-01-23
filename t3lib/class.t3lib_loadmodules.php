@@ -178,7 +178,7 @@ class t3lib_loadModules {
 
 			// Traverses the module setup and creates the internal array $this->modules
 		foreach($theMods as $mods => $subMod)	{
-			unset ($path);
+			$path = NULL;
 
 			$extModRelPath = $this->checkExtensionModule($mods);
 			if ($extModRelPath)	{	// EXTENSION module:
@@ -201,7 +201,7 @@ class t3lib_loadModules {
 			}
 
 				// if $theMainMod is not set (false) there is no access to the module !(?)
-			if ($theMainMod && isset($path))	{
+			if ($theMainMod && !is_null($path))	{
 				$this->modules[$mods] = $theMainMod;
 
 					// SUBMODULES - if any - are loaded (The 'doc' module cannot have submodules...)
@@ -215,6 +215,7 @@ class t3lib_loadModules {
 							}
 						} else {	// 'CLASSIC' submodule
 								// Checking for typo3/mod/xxx/ module existence...
+// FIXME what about $path = 1; from above and using $path as string here?
 							$theTempSubMod = $this->checkMod($mods.'_'.$valsub,$path.$mods.'/'.$valsub);
 							if (is_array($theTempSubMod))	{	// default sub-module in either main-module-path, be it the default or the userdefined.
 								$this->modules[$mods]['sub'][$valsub] = $theTempSubMod;
@@ -230,6 +231,7 @@ class t3lib_loadModules {
 			} else {	// This must be done in order to fill out the select-lists for modules correctly!!
 				if ($mods!='doc' && is_array($subMod))	{
 					foreach($subMod as $valsub)	{
+// FIXME path can only be NULL here, or not?
 						$this->checkMod($mods.'_'.$valsub,$path.$mods.'/'.$valsub);
 					}
 				}

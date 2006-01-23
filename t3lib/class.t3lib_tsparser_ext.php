@@ -432,7 +432,7 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 				$HTML.="<br />";
 
 				if ($deeper)	{
-					$HTML.=$this->ext_getObjTree($arr[$key."."], $depth, $depthData.'<img src="'.$GLOBALS["BACK_PATH"].'t3lib/gfx/ol/'.$LN.'.gif" width="18" height="16" align="top" alt="" />', $validate_info[$key], $arr[$key]);
+					$HTML.=$this->ext_getObjTree($arr[$key."."], $depth, $depthData.'<img src="'.$GLOBALS["BACK_PATH"].'t3lib/gfx/ol/'.$LN.'.gif" width="18" height="16" align="top" alt="" />', '' /* not used: $validate_info[$key] */, $arr[$key]);
 				}
 			}
 		}
@@ -905,6 +905,7 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 			$retArr["type"]=strtolower(substr($type,0,$m));
 			if (t3lib_div::inList("int,options,file,boolean,offset",$retArr["type"]))	{
 				$p=trim(substr($type,$m));
+				$reg = array();
 				ereg("\[(.*)\]",$p,$reg);
 				$p=trim($reg[1]);
 				if ($p)	{
@@ -1527,10 +1528,10 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 								}
 							break;
 							case "comment":
-								if ($val)	{
-									$val="#";
+								if ($var)	{
+									$var="#";
 								} else {
-									$val="";
+									$var="";
 								}
 							break;
 							case "wrap":
