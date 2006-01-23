@@ -944,7 +944,7 @@ class t3lib_TCEforms	{
 			if (substr($evalData, 0, 3) == 'tx_')	{
 				$evalObj = t3lib_div::getUserObj($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tce']['formevals'][$evalData].':&'.$evalData);
 				if(is_object($evalObj) && method_exists($evalObj, 'returnFieldJS'))	{
-					$this->extJSCODE .= "\n\nfunction ".$evalData."(value) {\n".$evalObj->returnFieldJS($funcName)."\n}\n";
+					$this->extJSCODE .= "\n\nfunction ".$evalData."(value) {\n".$evalObj->returnFieldJS()."\n}\n";
 				}
 			}
 		}
