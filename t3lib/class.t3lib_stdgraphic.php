@@ -535,9 +535,7 @@ class t3lib_stdGraphic	{
 	 */
 	function makeText(&$im,$conf,$workArea)	{
 			// Spacing
-		$spacing = intval($conf['spacing']);
-		$wordSpacing = intval($conf['wordSpacing']);
-		$wordSpacing = $wordSpacing?$wordSpacing:$spacing*2;
+		list($spacing,$wordSpacing) = $this->calcWordSpacing($conf);
 			// Position
 		$txtPos = $this->txtPosition($conf,$workArea,$conf['BBOX']);
 		$theText = $this->recodeString($conf['text']);
@@ -704,18 +702,8 @@ class t3lib_stdGraphic	{
 	 * @see txtPosition(), tslib_gifBuilder::start()
 	 */
 	function calcBBox($conf)	{
-		if (!$conf['niceText']) {
-			$sF = 1;
-		} else {		// NICETEXT::
-			$sF = t3lib_div::intInRange($conf['niceText.']['scaleFactor'],2,5);
-		}
-
-		$spacing = intval($conf['spacing']);
-		$wordSpacing = intval($conf['wordSpacing']);
-		$wordSpacing = $wordSpacing?$wordSpacing:$spacing*2;
-
-		$spacing*=$sF;
-		$wordSpacing*=$sF;
+		$sF = $this->getTextScalFactor($conf);
+		list($spacing,$wordSpacing) = $this->calcWordSpacing($conf, $sF);
 		$theText = $this->recodeString($conf['text']);
 
 		$charInf = $this->ImageTTFBBoxWrapper($conf['fontSize'], $conf['angle'], $conf['fontFile'], $theText, $conf['splitRendering.'],$sF);
@@ -760,7 +748,7 @@ class t3lib_stdGraphic	{
 				}
 			}
 		}
-		return Array($x,$y,$theBBoxInfo);
+		return array($x,$y,$theBBoxInfo);
 	}
 
 	/**
@@ -870,6 +858,7 @@ class t3lib_stdGraphic	{
 	function fontResize($conf) {
 		// you have to use +calc options like [10.h] in 'offset' to get the right position of your text-image, if you use +calc in XY height!!!!
 		$maxWidth = intval($conf['maxWidth']);
+		list($spacing,$wordSpacing) = $this->calcWordSpacing($conf);
 		if ($maxWidth)	{
 			if ($spacing || $wordSpacing)	{		// If any kind of spacing applys, we use this function:
 				return $conf['fontSize'];
@@ -1136,9 +1125,42 @@ class t3lib_stdGraphic	{
 		return $result;
 	}
 
+	/**
+	 * Calculates the spacing and wordSpacing values
+	 *
+	 * @param	array		TypoScript array for the TEXT GIFBUILDER object
+	 * @param	integer		TypoScript value from eg $conf['niceText.']['scaleFactor']
+	 * @return	array		Array with two keys [0]/[1] being array($spacing,$wordSpacing)
+	 * @access private
+	 * @see calcBBox()
+	 */
+	function calcWordSpacing($conf, $scaleFactor=1) {
 
+		$spacing = intval($conf['spacing']);
+		$wordSpacing = intval($conf['wordSpacing']);
+		$wordSpacing = $wordSpacing?$wordSpacing:$spacing*2;
 
+		$spacing*=$scaleFactor;
+		$wordSpacing*=$scaleFactor;
 
+		return array($spacing,$wordSpacing);
+	}
+
+	/**
+	 * Calculates and returns the niceText.scaleFactor
+	 *
+	 * @param	array		TypoScript array for the TEXT GIFBUILDER object
+	 * @return	integer		TypoScript value from eg $conf['niceText.']['scaleFactor']
+	 * @access private
+	 */
+	function getTextScalFactor($conf) {
+		if (!$conf['niceText']) {
+			$sF = 1;
+		} else {		// NICETEXT::
+			$sF = t3lib_div::intInRange($conf['niceText.']['scaleFactor'],2,5);
+		}
+		return $sF;
+	}
 
 
 
@@ -2340,6 +2362,7 @@ class t3lib_stdGraphic	{
 		if (!$this->NO_IMAGE_MAGICK)	{
 			$frame = $this->noFramePrepended?'':'[0]';
 			$cmd = t3lib_div::imageMagickCommand('identify', $this->wrapFileName($imagefile).$frame);
+			$returnVal = array();
 			exec($cmd, $returnVal);
 			$splitstring=$returnVal[0];
 			$this->IM_commands[] = Array ('identify',$cmd,$returnVal[0]);
@@ -2533,6 +2556,7 @@ class t3lib_stdGraphic	{
 	 */
 	function output($file)	{
 		if ($file)	{
+			$reg = array();
 			ereg('([^\.]*)$',$file,$reg);
 			$ext=strtolower($reg[0]);
 			switch($ext)	{
