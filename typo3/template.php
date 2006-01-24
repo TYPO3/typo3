@@ -1071,6 +1071,7 @@ $str.=$this->docBodyTagBegin().
 				// remove nl from the beginning
 			$string = preg_replace ('/^\n+/', '', $string);
 				// re-ident to one tab using the first line as reference
+			$match = array();
 			if(preg_match('/^(\t+)/',$string,$match)) {
 				$string = str_replace($match[1],"\t", $string);
 			}
