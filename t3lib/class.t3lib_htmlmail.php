@@ -540,6 +540,7 @@ class t3lib_htmlmail {
 			$newBoundary = $this->getBoundary();
 			$this->add_message("Content-Type: multipart/alternative;");
 			$this->add_message(' boundary="'.$newBoundary.'"');
+			$this->add_message('Content-Transfer-Encoding: 7bit');
 			$this->add_message('');
 
 			$this->constructAlternative($newBoundary);	// Adding the plaintext/html mix
@@ -987,7 +988,7 @@ class t3lib_htmlmail {
 			reset ($this->theParts["html"]["media"]);
 			while (list($key,$val) = each ($this->theParts["html"]["media"]))	{
 				if ($val["use_jumpurl"] && $this->jumperURL_prefix)	{
-					$theSubstVal = $this->jumperURL_prefix.rawurlencode($val["absRef"]);
+					$theSubstVal = $this->jumperURL_prefix.t3lib_div::rawUrlEncodeFP($val['absRef']);
 				} else {
 					$theSubstVal = ($absolute) ? $val["absRef"] : "cid:part".$key.".".$this->messageid;
 				}
@@ -1016,7 +1017,7 @@ class t3lib_htmlmail {
 					if ($this->jumperURL_useId)	{
 						$theSubstVal = $this->jumperURL_prefix.$key;
 					} else {
-						$theSubstVal = $this->jumperURL_prefix.rawurlencode($val["absRef"]);
+						$theSubstVal = $this->jumperURL_prefix.t3lib_div::rawUrlEncodeFP($val['absRef']);
 					}
 				} else {
 					$theSubstVal = $val["absRef"];
@@ -1054,18 +1055,14 @@ class t3lib_htmlmail {
 						$this->theParts["plain"]["link_ids"][$i]=$parts[0];
 						$parts[0] = $this->jumperURL_prefix."-".$i;
 					} else {
-						$parts[0] = $this->jumperURL_prefix.rawurlencode($parts[0]);
+						$parts[0] = $this->jumperURL_prefix.t3lib_div::rawUrlEncodeFP($parts[0]);
 					}
-//					debug($parts);
 					$textstr.=$parts[0].$parts[1];
 				} else {
 					$textstr.='http://'.$textpieces[$i];
 				}
 			}
 			$content = $textstr;
-//			debug(array($textstr));
-//			debug(md5($textstr));
-//			debug(md5($content));
 		}
 		return $content;
 	}
@@ -1141,7 +1138,9 @@ class t3lib_htmlmail {
 		$fileInfo = $this->split_fileref($pathInfo["path"]);
 		if ($fileInfo["fileext"] == "gif")	{$res["content_type"] = "image/gif";}
 		if ($fileInfo["fileext"] == "jpg" || $fileInfo["fileext"] == "jpeg")	{$res["content_type"] = "image/jpeg";}
+		if ($fileInfo['fileext'] == 'png') {$res['content_type'] = 'image/png';}
 		if ($fileInfo["fileext"] == "html" || $fileInfo["fileext"] == "htm")	{$res["content_type"] = "text/html";}
+		if ($fileInfo['fileext'] == 'css') {$res['content_type'] = 'text/css';}
 		if ($fileInfo["fileext"] == "swf")	{$res["content_type"] = "application/x-shockwave-flash";}
 		if (!$res["content_type"])	{$res["content_type"] = $this->getMimeType($url);}
 		return $res;
@@ -1171,16 +1170,7 @@ class t3lib_htmlmail {
 	function getURL($url)	{
 		$url = $this->addUserPass($url);
 			// reads a url or file
-		if($fd = @fopen($url,"rb"))	{
-			$content = "";
-			while (!feof($fd))	{
-				$content.=fread( $fd, 5000 );
-			}
-			fclose( $fd );
-			return $content;
-		} else {
-			return false;
-		}
+		return t3lib_div::getURL($url);
 	}
 
 	/**

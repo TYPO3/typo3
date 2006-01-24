@@ -1,3 +1,9 @@
+2006-01-24  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
+	* Fix issues #282 and 1421
+	* t3lib_htmlmail: Enable use of CURL library functions when $TYPO3_CONF_VARS["SYS"]["curlUse"] = '1'
+	* t3lib_htmlmail: Correct encoding of jumper url
+	* t3lib_htmlmail: Avoid applying illegal encoding domain to multipart headers (when html has media)
+
 2006-01-22  Ingmar Schlecht  <ingmar@typo3.org>
 
 	* New feature #1639: Implemented form eval API so it's possible to add custom JS and PHP form evaluation functions to input fields in TCEForms (thanks to Thomas Hempel!)
