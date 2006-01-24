@@ -231,9 +231,6 @@ class SC_file_upload {
 
 			// Add the HTML as a section:
 		$this->content.= $this->doc->section('',$code);
-
-			// Ending page
-		$this->content.= $this->doc->endPage();
 	}
 
 	/**
@@ -242,7 +239,8 @@ class SC_file_upload {
 	 * @return	void
 	 */
 	function printContent()	{
-
+		$this->content.= $this->doc->endPage();
+		$this->content = $this->doc->insertStylesAndJS($this->content);
 		echo $this->content;
 	}
 }

@@ -278,9 +278,6 @@ class SC_mod_web_perm_index {
 			$this->content.=$this->doc->startPage($LANG->getLL('permissions'));
 			$this->content.=$this->doc->header($LANG->getLL('permissions'));
 		}
-
-			// Ending page:
-		$this->content.=$this->doc->endPage();
 	}
 
 	/**
@@ -289,7 +286,8 @@ class SC_mod_web_perm_index {
 	 * @return	void
 	 */
 	function printContent()	{
-
+		$this->content.= $this->doc->endPage();
+		$this->content = $this->doc->insertStylesAndJS($this->content);
 		echo $this->content;
 	}
 

@@ -1575,6 +1575,7 @@ class SC_alt_clickmenu {
 	function printContent()	{
 		if(!$this->ajax)	{
 			$this->content.= $this->doc->endPage();
+			$this->content = $this->doc->insertStylesAndJS($this->content);
 			echo $this->content;
 		} else {
 			t3lib_ajax::outputXMLreply($this->content);

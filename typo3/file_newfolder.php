@@ -245,8 +245,6 @@ class SC_file_newfolder {
 			// Add the HTML as a section:
 		$this->content.= $this->doc->section($LANG->sL('LLL:EXT:lang/locallang_core.php:file_newfolder.php.newfile'),$code);
 
-			// Ending page
-		$this->content.= $this->doc->endPage();
 	}
 
 	/**
@@ -255,7 +253,8 @@ class SC_file_newfolder {
 	 * @return	void
 	 */
 	function printContent()	{
-
+		$this->content.= $this->doc->endPage();
+		$this->content = $this->doc->insertStylesAndJS($this->content);
 		echo $this->content;
 	}
 }

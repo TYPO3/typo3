@@ -222,7 +222,6 @@ class SC_wizard_colorpicker {
 
 				// Output:
 			$this->content.=$this->doc->section($LANG->getLL('colorpicker_title'), $content, 0,1);
-			$this->content.=$this->doc->endPage();
 		}
 	}
 
@@ -232,6 +231,8 @@ class SC_wizard_colorpicker {
 	 * @return	void
 	 */
 	function printContent()	{
+		$this->content.= $this->doc->endPage();
+		$this->content = $this->doc->insertStylesAndJS($this->content);
 		echo $this->content;
 	}
 

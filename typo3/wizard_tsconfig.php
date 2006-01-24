@@ -278,8 +278,6 @@ class SC_wizard_tsconfig {
 			<a href="'.htmlspecialchars('http://typo3.org/documentation/document-library/doc_core_tsconfig/').'" target="_blank">'.$LANG->getLL('tsprop_tsconfig',1).'</a>
 			',0,1);
 		}
-			// Ending page:
-		$this->content.=$this->doc->endPage();
 	}
 
 	/**
@@ -288,6 +286,8 @@ class SC_wizard_tsconfig {
 	 * @return	void
 	 */
 	function printContent()	{
+		$this->content.= $this->doc->endPage();
+		$this->content = $this->doc->insertStylesAndJS($this->content);
 		echo $this->content;
 	}
 

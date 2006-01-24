@@ -289,8 +289,6 @@ class SC_file_list {
 			$this->content.=$this->doc->startPage($LANG->getLL('files'));
 		}
 
-			// Ending page:
-		$this->content.= $this->doc->endPage();
 	}
 
 	/**
@@ -299,7 +297,8 @@ class SC_file_list {
 	 * @return	void
 	 */
 	function printContent()	{
-
+		$this->content.= $this->doc->endPage();
+		$this->content = $this->doc->insertStylesAndJS($this->content);
 		echo $this->content;
 	}
 }

@@ -201,8 +201,6 @@ class SC_show_item {
 			if (@is_file($this->file) && t3lib_div::isAllowedAbsPath($this->file))	{
 				$this->type = 'file';
 				$this->access = 1;
-
-				require_once(PATH_t3lib.'class.t3lib_stdgraphic.php');
 			}
 		}
 
@@ -228,19 +226,39 @@ class SC_show_item {
 		if ($this->access)	{
 			$returnLinkTag = t3lib_div::_GP('returnUrl') ? '<a href="'.t3lib_div::_GP('returnUrl').'" class="typo3-goBack">' : '<a href="#" onclick="window.close();">';
 
-				// Branch out based on type:
-			switch($this->type)	{
-				case 'db':
-					$this->renderDBInfo();
-				break;
-				case 'file':
-					$this->renderFileInfo($returnLinkTag);
-				break;
+				// render type by user func
+			$typeRendered = false;
+			if (is_array ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/show_item.php']['typeRendering'])) {
+				foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/show_item.php']['typeRendering'] as $classRef) {
+					$typeRenderObj = t3lib_div::getUserObj($classRef);
+					if(is_object($typeRenderObj) && method_exists($typeRenderObj, 'isValid') && method_exists($typeRenderObj, 'render'))	{
+						if ($typeRenderObj->isValid($this->type, $this)) {
+							$this->content .=  $typeRenderObj->render($this->type, $this);
+							$typeRendered = true;
+							break;
+						}
+					}
+				}
+			}
+
+				// if type was not rendered use default rendering functions
+			if(!$typeRendered) {
+					// Branch out based on type:
+				switch($this->type)	{
+					case 'db':
+						$this->renderDBInfo();
+					break;
+					case 'file':
+						$this->renderFileInfo($returnLinkTag);
+					break;
+				}
 			}
 
 				// If return Url is set, output link to go back:
 			if (t3lib_div::_GP('returnUrl'))	{
-				$this->content.= $this->doc->section('','<br />'.$returnLinkTag.'<strong>'.$LANG->sL('LLL:EXT:lang/locallang_core.php:labels.goBack',1).'</strong></a>');
+				$this->content = $this->doc->section('',$returnLinkTag.'<strong>'.$LANG->sL('LLL:EXT:lang/locallang_core.xml:labels.goBack',1).'</strong></a><br /><br />').$this->content;
+
+				$this->content .= $this->doc->section('','<br />'.$returnLinkTag.'<strong>'.$LANG->sL('LLL:EXT:lang/locallang_core.xml:labels.goBack',1).'</strong></a>');
 			}
 		}
 	}
@@ -302,6 +320,7 @@ class SC_show_item {
 		global $LANG;
 
 			// Initialize object to work on the image:
+		require_once(PATH_t3lib.'class.t3lib_stdgraphic.php');
 		$imgObj = t3lib_div::makeInstance('t3lib_stdGraphic');
 		$imgObj->init();
 		$imgObj->mayScaleUp = 0;
@@ -350,6 +369,7 @@ class SC_show_item {
 			if (TYPO3_OS!='WIN' && !$GLOBALS['TYPO3_CONF_VARS']['BE']['disable_exec_function'])	{
 				if ($ext=='zip')	{
 					$code = '';
+					$t = array();
 					exec('unzip -l '.$this->file, $t);
 					if (is_array($t))	{
 						reset($t);
@@ -374,6 +394,7 @@ class SC_show_item {
 					} else {
 						$compr = 'z';
 					}
+					$t = array();
 					exec('tar t'.$compr.'f '.$this->file, $t);
 					if (is_array($t))	{
 						foreach($t as $val)	{
@@ -415,6 +436,7 @@ class SC_show_item {
 	 */
 	function printContent()	{
 		$this->content.= $this->doc->endPage();
+		$this->content = $this->doc->insertStylesAndJS($this->content);
 		echo $this->content;
 	}
 }

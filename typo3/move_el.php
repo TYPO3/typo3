@@ -414,9 +414,8 @@ class SC_move_el {
 	 * @return	void
 	 */
 	function printContent()	{
-		global $SOBE;
-
 		$this->content.= $this->doc->endPage();
+		$this->content = $this->doc->insertStylesAndJS($this->content);
 		echo $this->content;
 	}
 }

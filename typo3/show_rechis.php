@@ -130,7 +130,8 @@ class SC_show_rechis {
 	 */
 	function printContent()	{
 		$this->content.=$this->doc->spacer(8);
-		$this->content.=$this->doc->endPage();
+		$this->content.= $this->doc->endPage();
+		$this->content = $this->doc->insertStylesAndJS($this->content);
 		echo $this->content;
 	}
 }

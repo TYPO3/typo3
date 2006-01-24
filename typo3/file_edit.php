@@ -195,7 +195,6 @@ class SC_file_edit {
 		$this->content.= $this->doc->sectionEnd();
 		$this->content.=$code;
 
-		$this->content.=$this->doc->endPage();
 	}
 
 	/**
@@ -204,6 +203,8 @@ class SC_file_edit {
 	 * @return	void
 	 */
 	function printContent()	{
+		$this->content.= $this->doc->endPage();
+		$this->content = $this->doc->insertStylesAndJS($this->content);
 		echo $this->content;
 	}
 }

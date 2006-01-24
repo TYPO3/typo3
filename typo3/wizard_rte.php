@@ -269,8 +269,6 @@ class SC_wizard_rte {
 			$this->content.=$this->doc->section($LANG->getLL('forms_title'),'<span class="typo3-red">'.$LANG->getLL('table_noData',1).'</span>',0,1);
 		}
 
-			// Ending page:
-		$this->content.=$this->doc->endPage();
 	}
 
 	/**
@@ -279,6 +277,8 @@ class SC_wizard_rte {
 	 * @return	void
 	 */
 	function printContent()	{
+		$this->content.= $this->doc->endPage();
+		$this->content = $this->doc->insertStylesAndJS($this->content);
 		echo $this->content;
 	}
 

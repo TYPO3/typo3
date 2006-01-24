@@ -166,7 +166,9 @@ class SC_alt_doc_nodoc {
 	 * @return	void
 	 */
 	function printContent()	{
-		echo $this->content.$this->doc->endPage();
+		$this->content.= $this->doc->endPage();
+		$this->content = $this->doc->insertStylesAndJS($this->content);
+		echo $this->content;
 	}
 }
 

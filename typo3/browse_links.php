@@ -1355,6 +1355,7 @@ class SC_browse_links {
 
 			// End page, return content:
 		$content.= $this->doc->endPage();
+		$content = $this->doc->insertStylesAndJS($content);
 		return $content;
 	}
 
@@ -1399,6 +1400,7 @@ class SC_browse_links {
 
 			// End page, return content:
 		$content.= $this->doc->endPage();
+		$content = $this->doc->insertStylesAndJS($content);
 		return $content;
 	}
 
@@ -1485,6 +1487,7 @@ class SC_browse_links {
 
 			// Ending page, returning content:
 		$content.= $this->doc->endPage();
+		$content = $this->doc->insertStylesAndJS($content);
 		return $content;
 	}
 
