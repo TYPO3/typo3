@@ -544,10 +544,14 @@ class template {
 	 * @return	string		Formatted timestamp
 	 */
 	function formatTime($tstamp,$type)	{
+		$dateStr = '';
 		switch($type)	{
-			case 1: return date($GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'],$tstamp); break;
-			case 10: return date($GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'],$tstamp); break;
+			case 1: $dateStr = date($GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'],$tstamp);
+			break;
+			case 10: $dateStr = date($GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'],$tstamp);
+			break;
 		}
+		return $dateStr;
 	}
 
 	/**
@@ -1197,7 +1201,7 @@ $str.=$this->docBodyTagBegin().
 	 */
 	function clearCacheMenu($id,$addSaveOptions=0)	{
 		global $BE_USER;
-		$opt=$addOptions;
+		$opt=array();
 		if ($addSaveOptions)	{
 			$opt[]='<option value="">'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:rm.menu',1).'</option>';
 			$opt[]='<option value="TBE_EDITOR_checkAndDoSubmit(1);">'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:rm.saveDoc',1).'</option>';

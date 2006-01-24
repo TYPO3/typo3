@@ -569,6 +569,7 @@ class SC_mod_web_perm_index {
 					<td'.$bgCol.'><img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/line.gif','width="5" height="16"').' alt="" /></td>';
 
 				if ($BE_USER->user['uid']==$data['row']['perms_userid'])	{$bgCol = ' class="bgColor-20"';} else {$bgCol = $lE_bgCol;}
+// FIXME $owner undefined
 				$cells[]='
 					<td'.$bgCol.' nowrap="nowrap" align="center">'.($data['row']['uid']?$owner.$this->printPerms($BE_USER->calcPerms($data['row'])):'').'</td>
 					'.(!$BE_USER->isAdmin()?'

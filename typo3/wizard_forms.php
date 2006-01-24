@@ -508,7 +508,7 @@ class SC_wizard_forms {
 					$ctrl='';
 					$onClick="document.wizardForm.action+='#ANC_".(($k+1)*2-2)."';";
 					$onClick=' onclick="'.htmlspecialchars($onClick).'"';
-
+// FIXME $inputStyle undefined
 					$brTag=$inputStyle?'':'<br />';
 					if ($k!=0)	{
 						$ctrl.='<input type="image" name="FORMCFG[row_up]['.(($k+1)*2).']"'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/pil2up.gif','').$onClick.' title="'.$LANG->getLL('table_up',1).'" />'.$brTag;
@@ -516,6 +516,7 @@ class SC_wizard_forms {
 						$ctrl.='<input type="image" name="FORMCFG[row_bottom]['.(($k+1)*2).']"'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/turn_up.gif','').$onClick.' title="'.$LANG->getLL('table_bottom',1).'" />'.$brTag;
 					}
 					$ctrl.='<input type="image" name="FORMCFG[row_remove]['.(($k+1)*2).']"'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/garbage.gif','').$onClick.' title="'.$LANG->getLL('table_removeRow',1).'" />'.$brTag;
+// FIXME $tLines undefined
 					if (($k+1)!=count($tLines))	{
 						$ctrl.='<input type="image" name="FORMCFG[row_down]['.(($k+1)*2).']"'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/pil2down.gif','').$onClick.' title="'.$LANG->getLL('table_down',1).'" />'.$brTag;
 					} else {
