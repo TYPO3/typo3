@@ -184,6 +184,7 @@ class localRecordList extends recordList {
 
 				// Adding "move page" button:
 			if ($this->id)	{
+// FIXME $table is undefined
 				$theCtrlPanel[]='<a href="#" onclick="'.htmlspecialchars('return jumpExt(\'move_el.php?table=pages&uid='.$row['uid'].'\');').'">'.
 								'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/move_'.($table=='tt_content'?'record':'page').'.gif','width="11" height="12"').' title="'.$LANG->getLL('move_page',1).'" alt="" />'.
 								'</a>';
