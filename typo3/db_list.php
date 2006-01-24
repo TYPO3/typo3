@@ -314,7 +314,7 @@ class SC_db_list {
 				'.$this->doc->redirectUrls($dblist->listURL()).'
 				'.$dblist->CBfunctions().'
 				function editRecords(table,idList,addParams,CBflag)	{	//
-					window.location.href="'.$backPath.'alt_doc.php?returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI')).
+					window.location.href="'.$BACK_PATH.'alt_doc.php?returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI')).
 						'&edit["+table+"]["+idList+"]=edit"+addParams;
 				}
 				function editList(table,idList)	{	//
