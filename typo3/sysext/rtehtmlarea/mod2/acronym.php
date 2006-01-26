@@ -42,26 +42,13 @@ $LANG->includeLLFile('EXT:rtehtmlarea/mod2/locallang.xml');
 class tx_rtehtmlarea_acronym {
 	var $content;
 	var $modData;
-	var $siteUrl;
 	var $doc;
-	var $ID = 'rtehtmlarea';
 
 	/**
 	 * @return	[type]		...
 	 */
 	function init()	{
-		global $BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$CLIENT,$TYPO3_CONF_VARS;
-
-		$this->siteUrl = t3lib_div::getIndpEnv("TYPO3_SITE_URL");
-				// get the http-path to typo3:
-		$this->httpTypo3Path = substr( substr( t3lib_div::getIndpEnv('TYPO3_SITE_URL'), strlen( t3lib_div::getIndpEnv('TYPO3_REQUEST_HOST') ) ), 0, -1 );
-		if (strlen($this->httpTypo3Path) == 1) {
-			$this->httpTypo3Path = "/";
-		} else {
-			$this->httpTypo3Path .= "/";
-		}
-			// Get the path to this extension:
-		$this->extHttpPath = $this->httpTypo3Path . t3lib_extMgm::siteRelPath($this->ID);
+		global $BE_USER,$LANG,$BACK_PATH;
 
 		$this->doc = t3lib_div::makeInstance("template");
 		$this->doc->backPath = $BACK_PATH;
@@ -200,7 +187,6 @@ class tx_rtehtmlarea_acronym {
 	 * @return	[type]		...
 	 */
 	function main()	{
-		global $BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$CLIENT,$TYPO3_CONF_VARS;
 
 		$this->content="";
 		$this->content.=$this->main_acronym($this->modData["openKeys"]);
@@ -222,11 +208,11 @@ class tx_rtehtmlarea_acronym {
 	 * @return	[type]		...
 	 */
 	function main_acronym($openKeys)	{
-		global $SOBE,$LANG,$BACK_PATH;
+		global $LANG, $BE_USER;
 
 		$content.=$this->doc->startPage("RTE acronym");
 		$RTEtsConfigParts = explode(":",t3lib_div::_GP("RTEtsConfigParams"));
-		$RTEsetup = $GLOBALS["BE_USER"]->getTSConfig("RTE",t3lib_BEfunc::getPagesTSconfig($RTEtsConfigParts[5]));
+		$RTEsetup = $BE_USER->getTSConfig("RTE",t3lib_BEfunc::getPagesTSconfig($RTEtsConfigParts[5]));
 		$thisConfig = t3lib_BEfunc::RTEsetup($RTEsetup["properties"],$RTEtsConfigParts[0],$RTEtsConfigParts[2],$RTEtsConfigParts[4]);
 
 		$content.='
@@ -259,9 +245,6 @@ class tx_rtehtmlarea_acronym {
 		<button type="button" title="' . $LANG->getLL("Delete") . '" onclick="return onDelete();">' . $LANG->getLL("Delete") . '</button>
 		<button type="button" title="' . $LANG->getLL("Cancel")  . '" onclick="return onCancel();">' . $LANG->getLL("Cancel") . '</button>
 	</div>';
-
-	//debug($RTEtsConfigParts);
-	//debug($thisConfig);
 	
 		$content.= $this->doc->endPage();
 		return $content;

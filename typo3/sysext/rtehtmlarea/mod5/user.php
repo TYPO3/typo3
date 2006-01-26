@@ -77,19 +77,7 @@ class tx_rtehtmlarea_user {
 	 * @return	[type]		...
 	 */
 	function init()	{
-		global $BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$CLIENT,$TYPO3_CONF_VARS;
-
-/*		$PRE_CODED["clear_gifs"] = Array (
-			"100" => "Clear-gif, 100x20",
-			"100." => Array (
-				"content" => '<img src=clear.gif width=100 height=20><BR>'
-			),
-			"110" => "Clear-gif, 200x50",
-			"110." => Array (
-				"content" => '<img src=clear.gif width=200 height=50><BR>'
-			)
-		);
-	*/	
+		global $BE_USER, $LANG, $BACK_PATH;
 
 		$this->siteUrl = t3lib_div::getIndpEnv("TYPO3_SITE_URL");
 		$this->doc = t3lib_div::makeInstance("template");
@@ -111,7 +99,7 @@ class tx_rtehtmlarea_user {
 				if(editor.hasSelectedText()) {
 					editor.surroundHTML(wrap1,wrap2);
 				} else {
-					alert('.$GLOBALS['LANG']->JScharCode($LANG->getLL("noTextSelection")).');
+					alert('.$LANG->JScharCode($LANG->getLL("noTextSelection")).');
 				}
 				if(!noHide) HTMLArea.edHidePopup();
 			}
@@ -138,7 +126,6 @@ class tx_rtehtmlarea_user {
 	 * @return	[type]		...
 	 */
 	function main()	{
-		global $BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$CLIENT,$TYPO3_CONF_VARS;
 
 		$this->content="";
 		$this->content.=$this->main_user($this->modData["openKeys"]);
@@ -190,19 +177,16 @@ class tx_rtehtmlarea_user {
 	 * @return	[type]		...
 	 */
 	function main_user($openKeys)	{
-		global $SOBE,$LANG,$BACK_PATH;
+		global $LANG, $BACK_PATH, $BE_USER;
 			// Starting content:
 		$content.=$this->doc->startPage("RTE user");
 		
 		$RTEtsConfigParts = explode(":",t3lib_div::_GP("RTEtsConfigParams"));
-		$RTEsetup = $GLOBALS["BE_USER"]->getTSConfig("RTE",t3lib_BEfunc::getPagesTSconfig($RTEtsConfigParts[5])); 
+		$RTEsetup = $BE_USER->getTSConfig("RTE",t3lib_BEfunc::getPagesTSconfig($RTEtsConfigParts[5])); 
 		$thisConfig = t3lib_BEfunc::RTEsetup($RTEsetup["properties"],$RTEtsConfigParts[0],$RTEtsConfigParts[2],$RTEtsConfigParts[4]);
 
-		
-	//debug($RTEtsConfigParts);
-	//debug($thisConfig);
 		if (is_array($thisConfig["userElements."]))	{
-	
+
 			$categories=array();
 			reset($thisConfig["userElements."]);
 			while(list($k)=each($thisConfig["userElements."]))	{
@@ -238,9 +222,6 @@ class tx_rtehtmlarea_user {
 									}						
 								}
 							break;
-		/*					case "clear_gifs":
-								$mArray=$GLOBALS["PRE_CODED"]["clear_gifs"];
-							break;*/
 						}
 						if (is_array($mArray))	{
 							if ($v["merge"])	{
@@ -249,8 +230,6 @@ class tx_rtehtmlarea_user {
 								$v=$mArray;
 							}
 						}
-		
-		//				debug($v);
 						reset($v);
 						while(list($k2)=each($v))	{
 							$k2i = intval($k2);
@@ -272,12 +251,11 @@ class tx_rtehtmlarea_user {
 										$wrap = explode("|",$v[$k2i."."]["content"]); 
 										//$onClickEvent="wrapHTML(unescape('" . str_replace("%20"," ",rawurlencode($wrap[0])) . "'),unescape('".str_replace("%20"," ",rawurlencode($wrap[1]))."'));";
 										//$onClickEvent="alert(wrapHTML(" . $GLOBALS['LANG']->JScharCode(t3lib_div::htmlspecialchars_decode($wrap[0])) . ", " . $GLOBALS['LANG']->JScharCode(t3lib_div::htmlspecialchars_decode($wrap[1])) . "));";
-										$onClickEvent='wrapHTML(' . $GLOBALS['LANG']->JScharCode($wrap[0]) . ',' . $GLOBALS['LANG']->JScharCode($wrap[1]) . ',false);';
+										$onClickEvent='wrapHTML(' . $LANG->JScharCode($wrap[0]) . ',' . $LANG->JScharCode($wrap[1]) . ',false);';
 									break;
 									case "processor":
 										$script = trim($v[$k2i."."]["submitToScript"]);
 										if (substr($script,0,4)!="http") $script = $this->siteUrl.$script;
-							//debug($script);
 										if ($script)	{
 											$onClickEvent="processSelection(unescape('".rawurlencode($script)."'));";
 										}
@@ -285,12 +263,10 @@ class tx_rtehtmlarea_user {
 									case "insert":
 									default:
 										//$onClickEvent="insertHTML(unescape('".str_replace("%20"," ",rawurlencode($v[$k2i."."]["content"]))."'));";
-										$onClickEvent='insertHTML(' . $GLOBALS['LANG']->JScharCode($v[$k2i . '.']['content']) . ');';
+										$onClickEvent='insertHTML(' . $LANG->JScharCode($v[$k2i . '.']['content']) . ');';
 									break;
 								}
 								$A=array('<a href="#" onClick="'.$onClickEvent.'return false;">','</a>');
-		//						debug($v[$k2i."."]);
-								
 								$subcats[$k2i]='<tr>
 									<td><img src="clear.gif" width="18" height="1"></td>
 									<td class="bgColor4" valign=top>'.$A[0].$logo.$A[1].'</td>

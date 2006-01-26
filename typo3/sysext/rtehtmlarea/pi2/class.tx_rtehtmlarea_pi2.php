@@ -72,11 +72,13 @@ class tx_rtehtmlarea_pi2 extends tx_rtehtmlarea_base {
 	 * @return	string		HTML code for RTE!
 	 */
 	function drawRTE(&$pObj,$table,$field,$row,$PA,$specConf,$thisConfig,$RTEtypeVal,$RTErelPath,$thePidValue) {
+		global $TSFE, $TYPO3_CONF_VARS, $TYPO3_DB;
+		
 			//call $this->transformContent
 			//call $this->triggerField
                 $this->TCEform = $pObj;
 		$this->client = $this->clientInfo();
-		$this->typoVersion = t3lib_div::int_from_ver($GLOBALS['TYPO_VERSION']);
+		$this->typoVersion = t3lib_div::int_from_ver(TYPO3_version);
 
 		/* =======================================
 		 * INIT THE EDITOR-SETTINGS
@@ -86,9 +88,9 @@ class tx_rtehtmlarea_pi2 extends tx_rtehtmlarea_base {
 			// first get the http-path to typo3:
 		$this->httpTypo3Path = substr( substr( t3lib_div::getIndpEnv('TYPO3_SITE_URL'), strlen( t3lib_div::getIndpEnv('TYPO3_REQUEST_HOST') ) ), 0, -1 );
 		if (strlen($this->httpTypo3Path) == 1) {
-			$this->httpTypo3Path = "/";
+			$this->httpTypo3Path = '/';
 		} else {
-			$this->httpTypo3Path .= "/";
+			$this->httpTypo3Path .= '/';
 		}
 			// Get the path to this extension:
 		$this->extHttpPath = $this->httpTypo3Path.t3lib_extMgm::siteRelPath($this->ID);
@@ -108,7 +110,7 @@ class tx_rtehtmlarea_pi2 extends tx_rtehtmlarea_base {
 		$this->typeVal = $RTEtypeVal; // TCA "type" value for record
 
 		unset($this->RTEsetup);
-		$pageTSConfig = $GLOBALS['TSFE']->getPagesTSconfig();
+		$pageTSConfig = $TSFE->getPagesTSconfig();
 		$this->RTEsetup = $pageTSConfig['RTE.'];
 		$this->thisConfig = $this->RTEsetup['default.'];
 		$this->thisConfig = $this->thisConfig['FE.'];
@@ -117,8 +119,8 @@ class tx_rtehtmlarea_pi2 extends tx_rtehtmlarea_base {
 		$this->specConf = $specConf;
 		
 			// Language
-		$GLOBALS['TSFE']->initLLvars();
-		$this->language = $GLOBALS['TSFE']->lang;
+		$TSFE->initLLvars();
+		$this->language = $TSFE->lang;
 		if($this->typoVersion >= 3008000 ) {
 			$this->LOCAL_LANG = t3lib_div::readLLfile('EXT:' . $this->ID . '/locallang.xml', $this->language);
 		} else {
@@ -128,27 +130,21 @@ class tx_rtehtmlarea_pi2 extends tx_rtehtmlarea_base {
 			$this->language='en';
 		}
 			// Character set
-		$this->charset = $GLOBALS['TSFE']->labelsCharset;
-		if($this->typoVersion >= 3007000 ) {
-			$this->OutputCharset  = $GLOBALS['TSFE']->metaCharset ? $GLOBALS['TSFE']->metaCharset : $GLOBALS['TSFE']->renderCharset;
-		} else {
-			$renderCharset = $GLOBALS['TSFE']->csConvObj->parse_charset($GLOBALS['TSFE']->config['config']['renderCharset'] ? $GLOBALS['TSFE']->config['config']['renderCharset'] : ($GLOBALS['TSFE']->TYPO3_CONF_VARS['BE']['forceCharset'] ? $GLOBALS['TSFE']->TYPO3_CONF_VARS['BE']['forceCharset'] : $GLOBALS['TSFE']->defaultCharSet));    // REndering charset of HTML page.
-			$metaCharset = $GLOBALS['TSFE']->csConvObj->parse_charset($GLOBALS['TSFE']->config['config']['metaCharset'] ? $GLOBALS['TSFE']->config['config']['metaCharset'] : $renderCharset);
-			$this->OutputCharset  = $metaCharset ? $metaCharset : $renderCharset;
-		}
+		$this->charset = $TSFE->labelsCharset;
+		$this->OutputCharset  = $TSFE->metaCharset ? $TSFE->metaCharset : $TSFE->renderCharset;
 
 		/* =======================================
 		 * TOOLBAR CONFIGURATION
 		 * =======================================
 		 */
 			// htmlArea plugins list
-		$this->pluginEnableArray = array_intersect(t3lib_div::trimExplode(',', $this->pluginList , 1), t3lib_div::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->ID]['HTMLAreaPluginList'], 1));
+		$this->pluginEnableArray = array_intersect(t3lib_div::trimExplode(',', $this->pluginList , 1), t3lib_div::trimExplode(',', $TYPO3_CONF_VARS['EXTCONF'][$this->ID]['HTMLAreaPluginList'], 1));
 		$hidePlugins = array('TYPO3Browsers', 'UserElements', 'Acronym', 'TYPO3HtmlParser');
 		if ($this->client['BROWSER'] == 'opera') {
 			$hidePlugins[] = 'ContextMenu';
 			$this->thisConfig['hideTableOperationsInToolbar'] = 0;
 		}
-		if(!t3lib_extMgm::isLoaded('sr_static_info') || in_array($this->language, t3lib_div::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->ID]['noSpellCheckLanguages']))) $hidePlugins[] = 'SpellChecker';
+		if(!t3lib_extMgm::isLoaded('sr_static_info') || in_array($this->language, t3lib_div::trimExplode(',', $TYPO3_CONF_VARS['EXTCONF'][$this->ID]['noSpellCheckLanguages']))) $hidePlugins[] = 'SpellChecker';
 		$this->pluginEnableArray = array_diff($this->pluginEnableArray, $hidePlugins);
 		$this->pluginEnableArrayMultiple = $this->pluginEnableArray;
 
@@ -165,7 +161,7 @@ class tx_rtehtmlarea_pi2 extends tx_rtehtmlarea_base {
 
 		if( $this->isPluginEnable('SpellChecker') ) {
 				// Set the language of the content for the SpellChecker
-			$this->spellCheckerLanguage = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rtehtmlarea']['defaultDictionary'];
+			$this->spellCheckerLanguage = $TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['defaultDictionary'];
 			if($row['sys_language_uid']) {
 				$tableA = 'sys_language';
 				$tableB = 'static_languages';
@@ -173,23 +169,23 @@ class tx_rtehtmlarea_pi2 extends tx_rtehtmlarea_base {
 				$selectFields = $tableA . '.uid,' . $tableB . '.lg_iso_2,' . $tableB . '.lg_country_iso_2,' . $tableB . '.lg_typo3';
 				$table = $tableA . ' LEFT JOIN ' . $tableB . ' ON ' . $tableA . '.static_lang_isocode=' . $tableB . '.uid';
 				$whereClause = $tableA . '.uid IN (' . $languagesUidsList . ') ';
-				$whereClause .= $GLOBALS['TSFE']->cObj->enableFields($tableA);
-				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($selectFields, $table, $whereClause);
-				while ( $languageRow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res) ) {
+				$whereClause .= $TSFE->cObj->enableFields($tableA);
+				$res = $TYPO3_DB->exec_SELECTquery($selectFields, $table, $whereClause);
+				while ( $languageRow = $TYPO3_DB->sql_fetch_assoc($res) ) {
 					$this->spellCheckerLanguage = strtolower(trim($languageRow['lg_iso_2']).(trim($languageRow['lg_country_iso_2'])?'_'.trim($languageRow['lg_country_iso_2']):''));
 					$this->spellCheckerTypo3Language = strtolower(trim($languageRow['lg_typo3']));
 				}
 			}
 			$this->spellCheckerLanguage = $this->spellCheckerLanguage?$this->spellCheckerLanguage:$this->language;
-			$this->spellCheckerTypo3Language = $this->spellCheckerTypo3Language?$this->spellCheckerTypo3Language:$GLOBALS['TSFE']->lang;
+			$this->spellCheckerTypo3Language = $this->spellCheckerTypo3Language?$this->spellCheckerTypo3Language:$TSFE->lang;
 			if ($this->spellCheckerTypo3Language=='default') {
 				$this->spellCheckerTypo3Language='en';
 			}
 
 				// Set the charset of the content for the SpellChecker
-			$this->spellCheckerCharset = $GLOBALS['TSFE']->csConvObj->charSetArray[$this->spellCheckerTypo3Language];
+			$this->spellCheckerCharset = $TSFE->csConvObj->charSetArray[$this->spellCheckerTypo3Language];
 			$this->spellCheckerCharset = $this->spellCheckerCharset ? $this->spellCheckerCharset : 'iso-8859-1';
-			$this->spellCheckerCharset = trim($GLOBALS['TSFE']->config['config']['metaCharset']) ? trim($GLOBALS['TSFE']->config['config']['metaCharset']) : $this->spellCheckerCharset;
+			$this->spellCheckerCharset = trim($TSFE->config['config']['metaCharset']) ? trim($TSFE->config['config']['metaCharset']) : $this->spellCheckerCharset;
 
 				// Set the SpellChecker mode
 			$this->spellCheckerMode = isset($this->thisConfig['HTMLAreaPspellMode']) ? trim($this->thisConfig['HTMLAreaPspellMode']) : 'normal';
@@ -250,7 +246,7 @@ class tx_rtehtmlarea_pi2 extends tx_rtehtmlarea_base {
 		<link rel="stylesheet" type="text/css" href="' . $this->editorCSS . '" />';
 
 			// Loading CSS, JavaScript files and code
-		$GLOBALS['TSFE']->additionalHeaderData['htmlArea'] = $additionalCode_loadCSS . $this->loadJSfiles($pObj->RTEcounter) . '<script type="text/javascript">' . $this->loadJScode($pObj->RTEcounter) . '</script>'; 
+		$TSFE->additionalHeaderData['htmlArea'] = $additionalCode_loadCSS . $this->loadJSfiles($pObj->RTEcounter) . '<script type="text/javascript">' . $this->loadJScode($pObj->RTEcounter) . '</script>'; 
 
 		/* =======================================
 		 * DRAW THE EDITOR
@@ -260,9 +256,9 @@ class tx_rtehtmlarea_pi2 extends tx_rtehtmlarea_base {
 		$value = $this->transformContent('rte',$PA['itemFormElValue'],$table,$field,$row,$specConf,$thisConfig,$RTErelPath,$thePidValue);
 		if ($this->client['BROWSER'] == 'gecko') {
 				// change <strong> to <b>
-			$value = preg_replace("/<(\/?)strong>/i", "<$1b>", $value);
+			$value = preg_replace('/<(\/?)strong>/i', "<$1b>", $value);
 				// change <em> to <i>
-			$value = preg_replace("/<(\/?)em>/i", "<$1i>", $value);
+			$value = preg_replace('/<(\/?)em>/i', "<$1i>", $value);
 		}
 
 			// Register RTE windows:
@@ -277,10 +273,10 @@ class tx_rtehtmlarea_pi2 extends tx_rtehtmlarea_base {
 			// draw the textarea
 		$visibility = 'hidden';
 		$item = $this->triggerField($PA['itemFormElName']).'
-			<div id="pleasewait' . $pObj->RTEcounter . '" class="pleasewait">' . $GLOBALS['TSFE']->csConvObj->conv($GLOBALS['TSFE']->getLLL('Please wait',$this->LOCAL_LANG), $this->charset, $GLOBALS['TSFE']->renderCharset) . '</div>
+			<div id="pleasewait' . $pObj->RTEcounter . '" class="pleasewait">' . $TSFE->csConvObj->conv($TSFE->getLLL('Please wait',$this->LOCAL_LANG), $this->charset, $TSFE->renderCharset) . '</div>
 			<div id="editorWrap' . $pObj->RTEcounter . '" class="editorWrap" style="visibility:' . $visibility . '; width:' . $editorWrapWidth . '; height:' . $editorWrapHeight . ';">
 			<textarea id="RTEarea'.$pObj->RTEcounter.'" name="'.htmlspecialchars($PA['itemFormElName']).'" style="'.htmlspecialchars($this->RTEdivStyle).'">'.t3lib_div::formatForTextarea($value).'</textarea>
-			</div>' . ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->ID]['enableDebugMode'] ? '<div id="HTMLAreaLog"></div>' : '') . '
+			</div>' . ($TYPO3_CONF_VARS['EXTCONF'][$this->ID]['enableDebugMode'] ? '<div id="HTMLAreaLog"></div>' : '') . '
 			';
 		return $item;
 	}
@@ -350,7 +346,9 @@ class tx_rtehtmlarea_pi2 extends tx_rtehtmlarea_base {
 	}
 	
 	function readLLXMLfile($fileRef,$langKey)       {
-		$csConvObj = $GLOBALS['TSFE']->csConvObj;
+		global $TSFE;
+		
+		$csConvObj = $TSFE->csConvObj;
 
 		if (@is_file($fileRef) && $langKey && is_object($csConvObj))    {
 			

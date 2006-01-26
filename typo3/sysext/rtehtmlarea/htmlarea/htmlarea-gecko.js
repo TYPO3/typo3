@@ -531,13 +531,8 @@ HTMLArea.prototype._detectURL = function(ev) {
 		var a = textNode.parentNode.insertBefore(tag, rightText);
 		HTMLArea.removeFromParent(textNode);
 		a.appendChild(textNode);
-		if (/^>/.test(rightText.data)) {
-			rightText.data = rightText.data.replace(/^(>)/, '$1 ');
-			s.collapse(rightText, 2);
-		} else {
-			rightText.data = ' ' + rightText.data;
-			s.collapse(rightText, 1);
-		}
+		rightText.data += " ";
+		s.collapse(rightText, rightText.data.length);
 		HTMLArea._stopEvent(ev);
 
 		editor._unLink = function() {
@@ -545,6 +540,7 @@ HTMLArea.prototype._detectURL = function(ev) {
 			a.removeChild(t);
 			a.parentNode.insertBefore(t, a);
 			HTMLArea.removeFromParent(a);
+			t.parentNode.normalize();
 			editor._unLink = null;
 			editor._unlinkOnUndo = false;
 		};
@@ -569,7 +565,8 @@ HTMLArea.prototype._detectURL = function(ev) {
 					var leftText  = s.anchorNode;
 					var rightText = leftText.splitText(s.anchorOffset);
 					var midText   = leftText.splitText(midStart);
-					if (/>$/.test(midText.data)) var hrefClose = midText.splitText(midText.data.length-1);
+					var midEnd = midText.data.search(/[^a-zA-Z0-9\.@_\-]/);
+					if (midEnd != -1) var endText = midText.splitText(midEnd);
 					autoWrap(midText, 'a').href = 'mailto:' + m[0];
 					break;
 				}
@@ -578,6 +575,8 @@ HTMLArea.prototype._detectURL = function(ev) {
 					var leftText  = s.anchorNode;
 					var rightText = leftText.splitText(s.anchorOffset);
 					var midText   = leftText.splitText(midStart);
+					var midEnd = midText.data.search(/[^a-zA-Z0-9\._\-\/\&\?=:@]/);
+					if (midEnd != -1) var endText = midText.splitText(midEnd);
 					autoWrap(midText, 'a').href = (m[1] ? m[1] : 'http://') + m[2];
 					break;
 				}

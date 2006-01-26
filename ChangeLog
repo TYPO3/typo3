@@ -1,3 +1,7 @@
+2006-01-26  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
+	* Corrections to the htmlArea RTE extension (see details in local ChangeLog)
+	* Fix issue #2358.
+
 2006-01-26  Michael Stucki  <michael@typo3.org>
 
 	* Fixed bug #1625: TODO: nav_frame

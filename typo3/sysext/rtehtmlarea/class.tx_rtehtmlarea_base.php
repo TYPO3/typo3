@@ -325,11 +325,11 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 				// no Browser config for this RTE-Editor, so all Clients are allow			   
 			}
 			if (!$rteIsAvailable) {
-				$this->errorLog[] = "rte: Browser not supported. Only msie Version 5 or higher and Mozilla based client 1. and higher.";
+				$this->errorLog[] = 'rte: Browser not supported. Only msie Version 5 or higher and Mozilla based client 1. and higher.';
 			}
 			if (t3lib_div::int_from_ver(TYPO3_version) < 3007000) {
 				$rteIsAvailable = 0;
-				$this->errorLog[] = "rte: This version of htmlArea RTE cannot run under this version of TYPO3.";
+				$this->errorLog[] = 'rte: This version of htmlArea RTE cannot run under this version of TYPO3.';
 			}
 		}
 		if ($rteIsAvailable)	return true;
@@ -373,9 +373,9 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 				// first get the http-path to typo3:
 			$this->httpTypo3Path = substr( substr( t3lib_div::getIndpEnv('TYPO3_SITE_URL'), strlen( t3lib_div::getIndpEnv('TYPO3_REQUEST_HOST') ) ), 0, -1 );
 			if (strlen($this->httpTypo3Path) == 1) {
-				$this->httpTypo3Path = "/";
+				$this->httpTypo3Path = '/';
 			} else {
-				$this->httpTypo3Path .= "/";
+				$this->httpTypo3Path .= '/';
 			}
 				// Get the path to this extension:
 			$this->extHttpPath = $this->httpTypo3Path . t3lib_extMgm::siteRelPath($this->ID);
@@ -434,7 +434,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 					$this->contentISOLanguage = trim($TYPO3_CONF_VARS['EXTCONF'][$this->ID]['defaultDictionary']) ? trim($TYPO3_CONF_VARS['EXTCONF'][$this->ID]['defaultDictionary']) : 'en';
 					$selectFields = 'lg_iso_2, lg_typo3';
 					$table = 'static_languages';
-					$whereClause = 'lg_iso_2 = "' . strtoupper($this->contentISOLanguage) . '"';
+					$whereClause = 'lg_iso_2 = ' . $TYPO3_DB->fullQuoteStr(strtoupper($this->contentISOLanguage), $table);
 					$res = $TYPO3_DB->exec_SELECTquery($selectFields, $table, $whereClause);
 					while($languageRow = $TYPO3_DB->sql_fetch_assoc($res)) {
 						$this->contentTypo3Language = strtolower(trim($languageRow['lg_typo3']));
@@ -572,13 +572,13 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 				// Change some tags
 			if ($this->client['BROWSER'] == 'gecko') {
 					// change <strong> to <b>
-				$value = preg_replace("/<(\/?)strong/i", "<$1b", $value);
+				$value = preg_replace('/<(\/?)strong/i', "<$1b", $value);
 					// change <em> to <i>
-				$value = preg_replace("/<(\/?)em/i", "<$1i", $value);
+				$value = preg_replace('/<(\/?)em/i', "<$1i", $value);
 			}
 			if ($this->client['BROWSER'] == 'msie') {
 					// change <abbr> to <acronym>
-				$value = preg_replace("/<(\/?)abbr/i", "<$1acronym", $value);
+				$value = preg_replace('/<(\/?)abbr/i', "<$1acronym", $value);
 			}
 
 				// Register RTE windows
@@ -863,7 +863,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 		while( list(,$plugin) = each($pluginArray) ) {
 			if ($this->isPluginEnable($plugin) || (intval($number) > 1 && in_array($plugin, $this->pluginEnableArrayMultiple))) {
 				$loadPluginCode .= '
-			HTMLArea.loadPlugin("' . $plugin . '", true, "' . $this->writeJSFileToTypo3tempDir('EXT:' . $this->ID . '/htmlarea/plugins/' . $plugin . '/' . strtolower(preg_replace("/([a-z])([A-Z])([a-z])/", "$1".'-'."$2"."$3", $plugin)) . ($TYPO3_CONF_VARS['EXTCONF'][$this->ID]['enableCompressedScripts']?'-compressed':'') .'.js', $plugin, $TYPO3_CONF_VARS['EXTCONF'][$this->ID]['enableCompressedScripts']) . '");';
+			HTMLArea.loadPlugin("' . $plugin . '", true, "' . $this->writeJSFileToTypo3tempDir('EXT:' . $this->ID . '/htmlarea/plugins/' . $plugin . '/' . strtolower(preg_replace('/([a-z])([A-Z])([a-z])/', "$1".'-'."$2"."$3", $plugin)) . ($TYPO3_CONF_VARS['EXTCONF'][$this->ID]['enableCompressedScripts']?'-compressed':'') .'.js', $plugin, $TYPO3_CONF_VARS['EXTCONF'][$this->ID]['enableCompressedScripts']) . '");';
 			}
 		}
 		return (!is_object($TSFE) ? '' : '
@@ -1277,7 +1277,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			$addElementCode = '';
 			reset($mainElements);
 			while(list($elListName,$elValue)=each($mainElements))   {
-				$addElementCode .= strToLower($elListName) . ' {'.$elValue."}\n";
+				$addElementCode .= strToLower($elListName) . ' {' . $elValue . '}\n';
 			}
 			
 			$stylesheet = $this->thisConfig['mainStyleOverride'] ? $this->thisConfig['mainStyleOverride'] : chr(10) .
@@ -1665,8 +1665,8 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 	 */
 
 	function getJSToolbarArray() {
-		$toolbar = "";			// The JS-Code for the toolbar
-		$group = "";			// The TS-Code for the group in the moment, each group are between "bar"s
+		$toolbar = '';			// The JS-Code for the toolbar
+		$group = '';			// The TS-Code for the group in the moment, each group are between "bar"s
 		$group_has_button = false;	// True if the group has any enabled buttons
 		$group_needs_starting_bar = false;
 		$previous_is_space = false;
@@ -1695,7 +1695,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 				$toolbar .= ', "' . $this->convertToolBarForHTMLArea($button) . '"';
 			} elseif ($button == 'bar' && !$group_has_button) {
 				$group_needs_starting_bar = true;
-			} elseif ($button == "space" && $group_has_button && !$previous_is_space) {
+			} elseif ($button == 'space' && $group_has_button && !$previous_is_space) {
 				$convertButton = $this->convertToolBarForHTMLArea($button);
 				$convertButton = '"' . $convertButton . '"';
 				$group .= $group ? (', ' . $convertButton) : ($group_needs_starting_bar ? ('"' . $this->convertToolBarForHTMLArea('bar') . '", ' . $convertButton) : $convertButton);
@@ -1716,7 +1716,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 		}
 			// add the last group
 		if($group_has_button) $toolbar .= $toolbar ? (', ' . $group) : ('[[' . $group);
-		$toolbar = $toolbar . "]]";
+		$toolbar = $toolbar . ']]';
 		return $toolbar;
 	}
 	

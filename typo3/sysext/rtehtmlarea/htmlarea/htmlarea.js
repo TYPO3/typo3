@@ -1350,12 +1350,15 @@ HTMLArea._wordClean = function(editor,html) {
 		}
 	}
 	function clearStyle(node) {
-		if (HTMLArea.is_ie) var declarations = node.style.cssText.split(/\s*;\s*/);
-			else var declarations = node.getAttribute("style").split(/\s*;\s*/);
-		for (var i = declarations.length; --i >= 0;) {
-			if(/^mso|^tab-stops/i.test(declarations[i]) || /^margin\s*:\s*0..\s+0..\s+0../i.test(declarations[i])) declarations.splice(i,1);
+		if (HTMLArea.is_ie) var style = node.style.cssText;
+			else var style = node.getAttribute("style");
+		if (style) {
+			var declarations = style.split(/\s*;\s*/);
+			for (var i = declarations.length; --i >= 0;) {
+				if(/^mso|^tab-stops/i.test(declarations[i]) || /^margin\s*:\s*0..\s+0..\s+0../i.test(declarations[i])) declarations.splice(i,1);
+			}
+			node.setAttribute("style", declarations.join("; "));
 		}
-		node.setAttribute("style", declarations.join("; "));
 	}
 	function stripTag(el) {
 		if(HTMLArea.is_ie) {
