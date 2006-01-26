@@ -274,9 +274,9 @@ class t3lib_userAuth {
 		if ($this->writeDevLog AND is_array($this->user)) 	t3lib_div::devLog('User session finally read: '.t3lib_div::arrayToLogString($this->user, array($this->userid_column,$this->username_column)), 't3lib_userAuth', -1);
 		if ($this->writeDevLog AND !is_array($this->user)) t3lib_div::devLog('No user session found.', 't3lib_userAuth', 2);
 
-			// Hook for alternative ways of filling the $this->user array (is used by TIMTAW extension)
-		if(is_array($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_userauth.php']['postUserLookUp']))	{
-			foreach($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_userauth.php']['postUserLookUp'] as $funcName)	{
+			// Hook for alternative ways of filling the $this->user array (is used by the "timtaw" extension)
+		if (is_array($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_userauth.php']['postUserLookUp']))	{
+			foreach ($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_userauth.php']['postUserLookUp'] as $funcName)	{
 				$_params = array(
 					'pObj' => &$this,
 				);
@@ -639,10 +639,10 @@ class t3lib_userAuth {
 		if ($this->writeDevLog) 	t3lib_div::devLog('logoff: ses_id = '.$this->id, 't3lib_userAuth');
 
 			// Hook for pre-processing the logoff() method, requested and implemented by andreas.otto@dkd.de:
-		if ( is_array( $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_feuserauth.php']['logoff_pre_processing'] ) ) {
+		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauth.php']['logoff_pre_processing']))	{
 			$_params = array();
-			foreach( $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_feuserauth.php']['logoff_pre_processing'] as $_funcRef ) {
-				if ($_funcRef) {
+			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauth.php']['logoff_pre_processing'] as $_funcRef)	{
+				if ($_funcRef)	{
 					t3lib_div::callUserFunction($_funcRef,$_params,$this);
 				}
 			}
@@ -657,10 +657,10 @@ class t3lib_userAuth {
 		$this->user = '';
 
 			// Hook for post-processing the logoff() method, requested and implemented by andreas.otto@dkd.de:
-		if ( is_array( $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_feuserauth.php']['logoff_post_processing'] ) ) {
+		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauth.php']['logoff_post_processing']))	{
 			$_params = array();
-			foreach( $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_feuserauth.php']['logoff_post_processing'] as $_funcRef ) {
-				if ($_funcRef) {
+			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauth.php']['logoff_post_processing'] as $_funcRef)	{
+				if ($_funcRef)	{
 					t3lib_div::callUserFunction($_funcRef,$_params,$this);
 				}
 			}

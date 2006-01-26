@@ -166,7 +166,7 @@ class tx_indexedsearch_lexer {
 
 
 	/**
-	 * Add word to word- array
+	 * Add word to word-array
 	 * This function should be used to make sure CJK sequences are split up in the right way
 	 *
 	 * @param	array		Array of accumulated words
@@ -189,15 +189,15 @@ class tx_indexedsearch_lexer {
 			/*
 				DESCRIPTION OF (CJK) ALGORITHM
 
-				Continuous letters and numbers make up words.  Spaces and symbols
-				separate letters and numbers into words.  This is sufficient for
+				Continuous letters and numbers make up words. Spaces and symbols
+				separate letters and numbers into words. This is sufficient for
 				all western text.
 
 				CJK doesn't use spaces or separators to separate words, so the only
 				way to really find out what constitutes a word would be to have a
-				dictionary and advanced heuristics.  Instead, we form pairs from
+				dictionary and advanced heuristics. Instead, we form pairs from
 				consecutive characters, in such a way that searches will find only
-				characters that appear more-or-less the right sequence.  For example:
+				characters that appear more-or-less the right sequence. For example:
 
 					ABCDE => AB BC CD DE
 

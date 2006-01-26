@@ -427,13 +427,13 @@ class tx_indexedsearch extends tslib_pibase {
 		$newSWArr = array();
 
 			// Traverse the search word array:
-		foreach($SWArr as $wordDef)	{
-			if (!strstr($wordDef['sword'],' '))		{	// No space in word (otherwise it might be a sentense in quotes like "there is").
-					// SPlit the search word by lexer:
+		foreach ($SWArr as $wordDef)	{
+			if (!strstr($wordDef['sword'],' '))	{	// No space in word (otherwise it might be a sentense in quotes like "there is").
+					// Split the search word by lexer:
 				$res = $this->lexerObj->split2Words($wordDef['sword']);
 
 					// Traverse lexer result and add all words again:
-				foreach($res as $word)	{
+				foreach ($res as $word)	{
 					$newSWArr[] = array('sword'=>$word, 'oper'=>$wordDef['oper']);
 				}
 			} else {

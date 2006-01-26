@@ -1,3 +1,9 @@
+2006-01-26  Michael Stucki  <michael@typo3.org>
+
+	* Fixed bug #1625: TODO: nav_frame
+	* Changed $TYPO3_CONF_VARS[GFX][im_version_5] into a string. Possible values are "im4", "im5", "im6" or "gm". Boolean values will still work where "0" means "im4" and "1" means "im5".
+	* !!! Renamed the hooks $TYPO3_CONF_VARS[SC_OPTIONS][tslib/class.tslib_feuserauth.php][logoff_pre_processing] $TYPO3_CONF_VARS[SC_OPTIONS][tslib/class.tslib_feuserauth.php][logoff_post_processing] and replaced "tslib/class.tslib_feuserauth.php" with "t3lib/class.t3lib_userauth.php" (which is the correct place for this hook.
+
 2006-01-26  Dmitry Dulepov  <typo3@accio.lv>
 
 	* Fixed bug #1947: "Page is being generated" is bad for search engines
@@ -45,7 +51,7 @@
 	* sysext/dbal: Some bugfixes to connection handling; added $no_quote_fields support for INSERT and UPDATE methods.
 	* Fixed bug #2059
 
-2006-01-19  Ren� Fritz  <r.fritz@colorcube.de>
+2006-01-19  Rene Fritz  <r.fritz@colorcube.de>
 
 	* Fixed bug: Fixed a problem with the RTE and inline images and base url's like http://mydomain.com/here_is_my_site/
 	* Fixed bug: The nav frame do not update properly when submodules register different nav frames with navFrameScript in MCONF. (class.alt_menu_functions.php)
@@ -885,7 +891,7 @@
 
 2005-04-10  Ingmar Schlecht  <ingmar@typo3.org>
 
-	* Added hook for TIMTAW extension in t3lib_userauth
+	* Added hook for the "timtaw" extension in t3lib_userauth
 	* Changed typo3/mod/tools/em/index.php to support new "Overwrite" checkbox feature of Kickstarter
 
 2005-04-10  Jan-Erik Revsbech  <jer@moccompany.com>
@@ -1447,7 +1453,7 @@ Sorry for writing these changelog entries with a delay of two days. I write them
 2004-06-11  Robert Lemke  <rl@robertlemke.de>
 
 	* Created new hook in class.t3lib_tcemain.php in process_datamap. Search for $TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass']
-	  (other hooks in that class will follow by Ren� as I know from a trusted source ... ;-)
+	  (other hooks in that class will follow by Rene as I know from a trusted source ... ;-)
 
 2004-06-09  Robert Lemke  <rl@robertlemke.de>
 

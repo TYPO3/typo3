@@ -4023,7 +4023,7 @@ class t3lib_div {
 	/**
 	 * Compile the command for running ImageMagick/GraphicsMagick.
 	 *
-	 * @param	string		Command to be run
+	 * @param	string		Command to be run: identify, convert or combine/composite
 	 * @param	string		The parameters string
 	 * @param	string		Override the default path
 	 * @return	string		Compiled command that deals with IM6 & GraphicsMagick

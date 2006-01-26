@@ -1860,7 +1860,7 @@ From sub-directory:
 	}
 
 	/**
-	 * Extracts the version number for imagemagick
+	 * Extracts the version number for ImageMagick
 	 *
 	 * @param	string		The program name to execute in order to find out the version number
 	 * @param	string		Path for the above program
@@ -1871,12 +1871,12 @@ From sub-directory:
 		$im_version = $GLOBALS['TYPO3_CONF_VARS']['GFX']['im_version_5'];
 		$combine_filename = $GLOBALS['TYPO3_CONF_VARS']['GFX']['im_combine_filename'];
 
-		if($file=='gm') {
+		if ($file=='gm')	{
 			$GLOBALS['TYPO3_CONF_VARS']['GFX']['im_version_5'] = 'gm';
 			$file = 'identify';		// Work-around, preventing execution of "gm gm"
 			$parameters = '-version';	// Work-around - GM doesn't like to be executed without any arguments
-		} else	{
-			$GLOBALS['TYPO3_CONF_VARS']['GFX']['im_version_5'] = '1';
+		} else {
+			$GLOBALS['TYPO3_CONF_VARS']['GFX']['im_version_5'] = 'im5';
 
 			if($file=='combine' || $file=='composite')	{	// Override the combine_filename setting
 				$GLOBALS['TYPO3_CONF_VARS']['GFX']['im_combine_filename'] = $file;
@@ -2107,9 +2107,9 @@ From sub-directory:
 									if(doubleval($version)>0 && doubleval($version)<4)	{	// Assume GraphicsMagick
 										$value_ext = 'gm';
 									} elseif(doubleval($version)<5)	{	// Assume ImageMagick 4.x
-										$value_ext = 0;
+										$value_ext = '';
 									} else	{	// Assume ImageMagick 5+
-										$value_ext = 1;
+										$value_ext = 'im5';
 									}
 									if (strcmp(strtolower($GLOBALS['TYPO3_CONF_VARS']['GFX']['im_version_5']),$value_ext))	{
 										$this->setValueInLocalconfFile($lines, '$TYPO3_CONF_VARS["GFX"]["im_version_5"]', $value_ext);
@@ -2314,11 +2314,11 @@ From sub-directory:
 							$found=1;
 						}
 					} elseif (!$found)	{
-						$formArray['im_version_5']=array(1);
+						$formArray['im_version_5']=array('im5');
 						$formArray["im_path"]=array($path);
 						$found=1;
 					}
-				} elseif($dat['gm'])	{
+				} elseif ($dat['gm'])	{
 					$formArray['im_version_5']=array('gm');
 					if ($dat['gif_capability']=='LZW')	{
 						$formArray['im_path']=array($path);

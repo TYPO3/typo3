@@ -132,6 +132,8 @@ class t3lib_iconWorks	{
 
 			// First, find the icon file name. This can depend on configuration in TCA, field values and more:
 		if ($table=='pages')	{
+			if ($row['nav_hide'] && ($row['doktype']==1||$row['doktype']==2))	$row['doktype']=5;	// Workaround to change the icon if "Hide in menu" was set
+
 			if (!$iconfile = $PAGES_TYPES[$row['doktype']]['icon'])	{
 				$iconfile = $PAGES_TYPES['default']['icon'];
 			}
