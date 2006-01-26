@@ -14,6 +14,7 @@ CREATE TABLE cache_pages (
   page_id int(11) unsigned DEFAULT '0' NOT NULL,
   reg1 int(11) unsigned DEFAULT '0' NOT NULL,
   HTML mediumblob NOT NULL,
+  temp_content int(1) DEFAULT '0' NOT NULL,
   tstamp int(11) unsigned DEFAULT '0' NOT NULL,
   expires int(10) unsigned DEFAULT '0' NOT NULL,
   cache_data mediumblob NOT NULL,

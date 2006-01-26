@@ -1,4 +1,9 @@
+2006-01-26  Dmitry Dulepov  <typo3@accio.lv>
+
+	* Fixed bug #1947: "Page is being generated" is bad for search engines
+
 2006-01-24  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
+
 	* Fix issues #282 and 1421
 	* t3lib_htmlmail: Enable use of CURL library functions when $TYPO3_CONF_VARS["SYS"]["curlUse"] = '1'
 	* t3lib_htmlmail: Correct encoding of jumper url
@@ -40,7 +45,7 @@
 	* sysext/dbal: Some bugfixes to connection handling; added $no_quote_fields support for INSERT and UPDATE methods.
 	* Fixed bug #2059
 
-2006-01-19  René Fritz  <r.fritz@colorcube.de>
+2006-01-19  Renï¿½ Fritz  <r.fritz@colorcube.de>
 
 	* Fixed bug: Fixed a problem with the RTE and inline images and base url's like http://mydomain.com/here_is_my_site/
 	* Fixed bug: The nav frame do not update properly when submodules register different nav frames with navFrameScript in MCONF. (class.alt_menu_functions.php)
@@ -1442,7 +1447,7 @@ Sorry for writing these changelog entries with a delay of two days. I write them
 2004-06-11  Robert Lemke  <rl@robertlemke.de>
 
 	* Created new hook in class.t3lib_tcemain.php in process_datamap. Search for $TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass']
-	  (other hooks in that class will follow by René as I know from a trusted source ... ;-)
+	  (other hooks in that class will follow by Renï¿½ as I know from a trusted source ... ;-)
 
 2004-06-09  Robert Lemke  <rl@robertlemke.de>
 

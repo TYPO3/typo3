@@ -1482,6 +1482,7 @@
 
 					$this->config = (array)unserialize($row['cache_data']);		// Fetches the lowlevel config stored with the cached data
 					$this->content = $row['HTML'];	// Getting the content
+					$this->tempContent = $row['temp_content'];	// Flag for temp content
 					$this->cacheContentFlag = 1;	// Setting flag, so we know, that some cached content is gotten.
 					$this->cacheExpires = $row['expires'];
 
@@ -2091,7 +2092,7 @@
 								while(list(,$substField)=each($rowFieldsArray))	{
 									$this->jumpurl = str_replace('###USER_'.$substField.'###', $recipRow[$substField], $this->jumpurl);
 								}
-								$this->jumpurl = str_replace('###SYS_TABLE_NAME###', $tableNameChar, $this->jumpurl);	// Put in the tablename of the userinformation
+								$this->jumpurl = str_replace('###SYS_TABLE_NAME###', $theTable, $this->jumpurl);	// Put in the tablename of the userinformation
 								$this->jumpurl = str_replace('###SYS_MAIL_ID###', $mid, $this->jumpurl);	// Put in the uid of the mail-record
 								$this->jumpurl = str_replace('###SYS_AUTHCODE###', $authCode, $this->jumpurl);
 
@@ -2253,15 +2254,19 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
 		<title>'.$title.'</title>
-		<meta name="robots" content="noarchive" />
-		<script type="text/javascript">
-			window.setTimeout("location.reload()", 3000);
-		</script>
+		<meta http-equiv="refresh" content="10" />
 	</head>
 	<body style="background-color:white; font-family:Verdana,Arial,Helvetica,sans-serif; color:#cccccc; text-align:center;">'.
 		$message.'
 	</body>
 </html>';
+
+				// Fix 'nice errors' feature in modern browsers
+			$padSuffix = '<!--pad-->';	// prevent any trims
+			$padSize = 768 - strlen($padSuffix) - strlen($temp_content);
+			if ($padSize > 0) {
+				$temp_content = str_pad($temp_content, $padSize, "\n") . $padSuffix;
+			}
 
 			if (!$this->headerNoCache() && $cachedRow = $this->getFromCache_queryRow())	{
 					// We are here because between checking for cached content earlier and now some other HTTP-process managed to store something in cache AND it was not due to a shift-reload by-pass.
@@ -2270,8 +2275,8 @@
 					// Actually $cachedRow contains content that we could show instead of rendering. Maybe we should do that to gain more performance but then we should set all the stuff done in $this->getFromCache()... For now we stick to this...
 				$this->set_no_cache();
 			} else {
-				$this->setPageCacheContent($temp_content, $this->config, $GLOBALS['EXEC_TIME']+$seconds);
 				$this->tempContent = TRUE;		// This flag shows that temporary content is put in the cache
+				$this->setPageCacheContent($temp_content, $this->config, $GLOBALS['EXEC_TIME']+$seconds);
 			}
 		}
 	}
@@ -2316,6 +2321,7 @@
 			'hash' => $this->newHash,
 			'page_id' => $this->id,
 			'HTML' => $content,
+			'temp_content' => $this->tempContent,
 			'cache_data' => serialize($data),
 			'expires' => $tstamp,
 			'tstamp' => $GLOBALS['EXEC_TIME']
@@ -2502,6 +2508,7 @@
 		}
 
 			// Storing for cache:
+		$this->tempContent = false;
 		if (!$this->no_cache)	{
 			$this->realPageCacheContent();
 		} elseif ($this->tempContent)	{		// If there happens to be temporary content in the cache and the cache was not cleared due to new content put in it... ($this->no_cache=0)
@@ -2535,8 +2542,8 @@
 		$INTiS_config = $GLOBALS['TSFE']->config['INTincScript'];
 		foreach($INTiS_splitC as $INTiS_c => $INTiS_cPart)	{
 			if (substr($INTiS_cPart,32,3)=='-->')	{	// If the split had a comment-end after 32 characters it's probably a split-string
-				$GLOBALS['TT']->push('Include '.$INTiS_config[$INTiS_key]['file'],'');
 				$INTiS_key = 'INT_SCRIPT.'.substr($INTiS_cPart,0,32);
+				$GLOBALS['TT']->push('Include '.$INTiS_config[$INTiS_key]['file'],'');
 				$incContent='';
 				if (is_array($INTiS_config[$INTiS_key]))	{
 					$INTiS_cObj = unserialize($INTiS_config[$INTiS_key]['cObj']);
@@ -2710,6 +2717,11 @@ if (version == "n3") {
 				$headLine = trim($headLine);
 				header($headLine);
 			}
+		}
+
+			// Send appropriate status code in case of temporary content
+		if ($this->tempContent) {
+			$this->addTempContentHttpHeaders();
 		}
 
 			// Make substitution of eg. username/uid in content only if cache-headers for client/proxy caching is NOT sent!
@@ -3050,6 +3062,18 @@ if (version == "n3") {
 		}
 	}
 
+	/**
+	 * Sends HTTP headers for temporary content. These headers prevent search engines from caching temporary content and asks them to revisit this page again.
+	 * 
+	 * @return void
+	 */
+	function addTempContentHttpHeaders() {
+		header('HTTP/1.0 503 Service unavailable');
+		header('Retry-after: 3600');
+		header('Pragma: no-cache');
+		header('Cache-control: no-cache');
+		header('Expire: 0');
+	}
 
 
 
