@@ -239,7 +239,7 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 				// Table tag params.
 			$tableTagParams = $this->getTableAttributes($conf,$type);
 			if (!$noStyles)	{
-				$tableTagParams['class'] = 'contenttable contenttable-'.$type;
+				$tableTagParams['class'] = 'contenttable contenttable-'.$type.($tableClass?' '.$tableClass:'');
 			} elseif ($tableClass) {
 				$tableTagParams['class'] = $tableClass;
 			}

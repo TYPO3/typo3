@@ -1,6 +1,8 @@
 2005-01-27  Sebastian Kurfuerst  <sebastian@garbage-group.de>
 
 	* Fixed bug #2337: remove 30KB editing limit in Template Editor
+	* Fixed bug #2405: CSC - allow styles and additional table class
+	* Fixed little removed reference operator in class.t3lib_tcemain.php line 1817 (triggers a call-time pass-by-reference warning) - eval API code
 
 2005-01-27  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 

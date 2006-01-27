@@ -572,7 +572,7 @@ class t3lib_TCEmain	{
 						$old_pid_value = '';
 						$resetRejected = FALSE;
 						$this->autoVersioningUpdate = FALSE;
-						
+
 						if (!t3lib_div::testInt($id)) {               // Is it a new record? (Then Id is a string)
 							$fieldArray = $this->newFieldArray($table);	// Get a fieldArray with default values
 							if (isset($incomingFieldArray['pid']))	{	// A pid must be set for new records.
@@ -1261,7 +1261,7 @@ class t3lib_TCEmain	{
 	 * @return	array		Modified $res array
 	 */
 	function checkValue_group_select($res,$value,$tcaFieldConf,$PP,$uploadedFiles,$field)	{
-				
+
 		list($table,$id,$curValue,$status,$realPid,$recFID) = $PP;
 
 			// Detecting if value send is an array and if so, implode it around a comma:
@@ -1408,7 +1408,7 @@ class t3lib_TCEmain	{
 						if ($theFile===basename($theFile))	{
 							$valueArray[$key] = PATH_site.$tcaFieldConf['uploadfolder'].'/'.$theFile;
 						}
-					}		
+					}
 				}
 
 					// Finding the CURRENT files listed, either from MM or from the current record.
@@ -1814,7 +1814,7 @@ class t3lib_TCEmain	{
 					if (substr($func, 0, 3) == 'tx_')	{
 						$evalObj = t3lib_div::getUserObj($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tce']['formevals'][$func].':&'.$func);
 						if(is_object($evalObj) && method_exists($evalObj, 'evaluateFieldValue'))	{
-							$value = $evalObj->evaluateFieldValue($value, $is_in, &$set);
+							$value = $evalObj->evaluateFieldValue($value, $is_in, $set);
 			}
 		}
 				break;
@@ -4666,14 +4666,14 @@ $this->log($table,$id,6,0,0,'Stage raised...',30,array('comment'=>$comment,'stag
 
 	/**
 	 * If a "languageField" is specified for $table this function will add a possible value to the incoming array if none is found in there already.
-	 * 
+	 *
 	 * @param	string	Table name
 	 * @param	array	Incoming array (passed by reference)
 	 * @return	void
 	 */
 	function addDefaultPermittedLanguageIfNotSet($table,&$incomingFieldArray)	{
 		global $TCA;
-		
+
 			// Checking languages:
 		if ($TCA[$table]['ctrl']['languageField'])	{
 			if (!isset($incomingFieldArray[$TCA[$table]['ctrl']['languageField']]))	{	// Language field must be found in input row - otherwise it does not make sense.
@@ -4681,13 +4681,13 @@ $this->log($table,$id,6,0,0,'Stage raised...',30,array('comment'=>$comment,'stag
 				foreach($rows as $r)	{
 					if ($this->BE_USER->checkLanguageAccess($r['uid']))		{
 						$incomingFieldArray[$TCA[$table]['ctrl']['languageField']] = $r['uid'];
-						break; 	
-					}	
+						break;
+					}
 				}
 			}
 		}
 	}
-	
+
 	/**
 	 * Returns the $data array from $table overridden in the fields defined in ->overrideValues.
 	 *
