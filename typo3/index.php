@@ -200,7 +200,7 @@ class SC_index {
 					';
 			} elseif ($this->loginSecurityLevel == 'normal') {
 				$TBE_TEMPLATE->form = '
-					<form action="index.php" method="post" name="loginform" onsubmit="document.loginform.userident.value=document.loginform.p_field.value;document.loginform.p_field.value=\'\';document.loginform.challenge.value=\'\';return true;">
+					<form action="index.php" method="post" name="loginform" onsubmit="document.loginform.userident.value=document.loginform.p_field.value;document.loginform.p_field.value=\'\';return true;">
 					';
 			} else { // if ($this->loginSecurityLevel == 'superchallenged') {
 				$TBE_TEMPLATE->form = '
