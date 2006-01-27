@@ -167,7 +167,7 @@ class t3lib_DB {
 	 * @param	string/array	See fullQuoteArray()
 	 * @return	pointer		MySQL result pointer / DBAL object
 	 */
-	function exec_INSERTquery($table,$fields_values,$no_quote_fields='')	{
+	function exec_INSERTquery($table,$fields_values,$no_quote_fields=FALSE)	{
 		$res = mysql_query($this->INSERTquery($table,$fields_values,$no_quote_fields), $this->link);
 		if ($this->debugOutput)	$this->debug('exec_INSERTquery');
 		return $res;
@@ -184,7 +184,7 @@ class t3lib_DB {
 	 * @param	string/array	See fullQuoteArray()
 	 * @return	pointer		MySQL result pointer / DBAL object
 	 */
-	function exec_UPDATEquery($table,$where,$fields_values,$no_quote_fields='')	{
+	function exec_UPDATEquery($table,$where,$fields_values,$no_quote_fields=FALSE)	{
 		$res = mysql_query($this->UPDATEquery($table,$where,$fields_values,$no_quote_fields), $this->link);
 		if ($this->debugOutput)	$this->debug('exec_UPDATEquery');
 		return $res;
@@ -338,7 +338,7 @@ class t3lib_DB {
 	 * @return	string		Full SQL query for INSERT (unless $fields_values does not contain any elements in which case it will be false)
 	 * @deprecated			use exec_INSERTquery() instead if possible!
 	 */
-	function INSERTquery($table,$fields_values,$no_quote_fields='')	{
+	function INSERTquery($table,$fields_values,$no_quote_fields=FALSE)	{
 
 			// Table and fieldnames should be "SQL-injection-safe" when supplied to this function (contrary to values in the arrays which may be insecure).
 		if (is_array($fields_values) && count($fields_values))	{
@@ -373,7 +373,7 @@ class t3lib_DB {
 	 * @return	string		Full SQL query for UPDATE (unless $fields_values does not contain any elements in which case it will be false)
 	 * @deprecated			use exec_UPDATEquery() instead if possible!
 	 */
-	function UPDATEquery($table,$where,$fields_values,$no_quote_fields='')	{
+	function UPDATEquery($table,$where,$fields_values,$no_quote_fields=FALSE)	{
 
 			// Table and fieldnames should be "SQL-injection-safe" when supplied to this function (contrary to values in the arrays which may be insecure).
 		if (is_string($where))	{
@@ -555,21 +555,21 @@ class t3lib_DB {
 	/**
 	 * Will fullquote all values in the one-dimensional array so they are ready to "implode" for an sql query.
 	 *
-	 * @param       array           Array with values
+	 * @param       array           Array with values (either associative or non-associative array)
 	 * @param       string          Table name for which to quote
-	 * @param       string/array    List/array of keys NOT to quote (eg. SQL functions)
+	 * @param       string/array    List/array of keys NOT to quote (eg. SQL functions) - ONLY for associative arrays
 	 * @return      array           The input array with the values quoted
 	 * @see cleanIntArray()
 	 */
-	function fullQuoteArray($arr, $table, $noQuote='')      {
-		if (is_string($noQuote))        {
+	function fullQuoteArray($arr, $table, $noQuote=FALSE)	{
+		if (is_string($noQuote))	{
 			$noQuote = explode(',',$noQuote);
-		} elseif (!is_array($noQuote))  {
-			$noQuote = array();
+		} elseif (!is_array($noQuote))	{	// sanity check
+			$noQuote = FALSE;
 		}
 
-		foreach($arr as $k => $v)       {
-			if (!in_array($k,$noQuote))     {
+		foreach($arr as $k => $v)	{
+			if ($noQuote===FALSE || !in_array($k,$noQuote))     {
 				$arr[$k] = $this->fullQuoteStr($v, $table);
 			}
 		}

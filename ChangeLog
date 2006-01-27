@@ -8,6 +8,7 @@
 
 	* added error logging to DB initialization code
 	* improved  FQDN detection and fixed empty syslog ident in t3lib_div::initSysLog()
+	* Fix problem with non-associative arrays in t3lib_db->fullQuoteArray()
 
 2006-01-27  Peter Niederlag <peter@niederlag.de>
 
