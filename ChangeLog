@@ -7,6 +7,7 @@
 2005-01-27  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
 	* added error logging to DB initialization code
+	* improved  FQDN detection and fixed empty syslog ident in t3lib_div::initSysLog()
 
 2006-01-27  Peter Niederlag <peter@niederlag.de>
 

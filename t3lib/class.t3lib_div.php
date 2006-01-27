@@ -3848,14 +3848,14 @@ class t3lib_div {
 
 			// for CLI logging name is <fqdn-hostname>:<TYPO3-path>
 		if (defined('TYPO3_cliMode') && TYPO3_cliMode)	{
-			$host = '';
-			if (function_exists('posix_uname'))	{
-				$system = posix_uname();
-				$host = $system['nodename'];
-			} else {
-				$host = exec('hostname');
+				// find FQDN
+			$host = php_uname('n');
+			if (strpos($host,'.') === FALSE)	{
+				$ip = gethostbyname($host);
+				$fqdn = gethostbyaddr($ip);
+				if ($ip != $fqdn)	$host = $fqdn;
 			}
-			$TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_div.php']['systemLogHost'] = $TYPO3_CONF_VARS['SYS']['systemLogHost'] = gethostbyaddr(gethostbyname($host)).':'.PATH_site;
+			$TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_div.php']['systemLogHost'] = $TYPO3_CONF_VARS['SYS']['systemLogHost'] = $host.':'.PATH_site;
 		}
 			// for Web logging name is <protocol>://<request-hostame>
 		else {
@@ -3882,8 +3882,7 @@ class t3lib_div {
 				} else {
 					$facility = constant('LOG_'.strtoupper($destination));
 				}
-// FIXME $ident is undefined
-				openlog($ident, LOG_ODELAY, $facility);
+				openlog($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_div.php']['systemLogHost'], LOG_ODELAY, $facility);
 			}
 		}
 
