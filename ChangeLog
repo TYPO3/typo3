@@ -1,14 +1,21 @@
+2005-01-27  Sebastian Kurfuerst  <sebastian@garbage-group.de>
+
+	* Fixed bug #2337: remove 30KB editing limit in Template Editor
 
 2005-01-27  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+
 	* added error logging to DB initialization code
 
 2006-01-27  Peter Niederlag <peter@niederlag.de>
+
 	* Fixed bug #2023, removed most of RTE-Config from sysEXT:cms and sysExt:css-styled_content
 
 2006-01-27  Ingmar Schlecht <ingmar@typo3.org>
+
 	* Added <label> tags around "Expand all" in class.alt_menu_functions.inc
 
-2006-01-27  Kasper Skaarhoj
+2006-01-27  Kasper Skaarhoj  <kasperYYYY@typo3.com>
+
 	* Improved output of FlexForm contents inside of eg. Web>List module (stripping tags that is :-)
 	* Added function for counting references to records (in t3lib_BEfunc)
 	* Added warning to About Modules if the reference index is empty (which it will be for all updates to 4.0)
@@ -30,9 +37,11 @@
 	* Started a cleaner-module in Web>Function (coming from the "lowlevel" system extension). The cleaner consists of analysis tools and clean-up tools (based on the analysis), all working with the sys_refindex table as well. Eventually it will allow for nightly, cron-job based checks of the system including a report email to administrator. This way, data and link integrity and log reports can be reviewed each day.
 
 2006-01-27  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
+
 	* Adjustments to the htmlArea RTE extension (see details in local ChangeLog)
 
 2006-01-26  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
+	
 	* Corrections to the htmlArea RTE extension (see details in local ChangeLog)
 	* Fix issue #2358.
 
