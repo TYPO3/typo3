@@ -1,3 +1,7 @@
+
+2005-01-27  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+	* added error logging to DB initialization code
+
 2006-01-27  Peter Niederlag <peter@niederlag.de>
 	* Fixed bug #2023, removed most of RTE-Config from sysEXT:cms and sysExt:css-styled_content
 
