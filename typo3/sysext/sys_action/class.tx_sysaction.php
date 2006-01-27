@@ -90,7 +90,7 @@ class tx_sysaction extends mod_user_task {
 
 					// Types of actions:
 				switch($actionRow["type"])	{
-					case 1:
+					case 1: // new BE user
 						$actionContent="";
 						$beRec = t3lib_BEfunc::getRecord("be_users",intval($actionRow["t1_copy_of_user"]));
 						if (is_array($beRec))	{
@@ -112,8 +112,6 @@ class tx_sysaction extends mod_user_task {
 								$userRecord["uid"]="NEW";
 								$newFlag=1;
 							}
-
-
 
 								// List of users...
 							$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'be_users', 'pid=0 AND cruser_id='.intval($this->BE_USER->user['uid']).' AND createdByAction='.intval($actionRow['uid']).t3lib_BEfunc::deleteClause('be_users'), '', 'username');
@@ -171,7 +169,7 @@ class tx_sysaction extends mod_user_task {
 							$theCode.= $this->pObj->doc->section($LANG->getLL("action_error"),'<span class="typo3-red">'.$LANG->getLL("action_notReady").'</span>',0,1);
 						}
 					break;
-					case 2:
+					case 2: //SQL query
 						if (t3lib_extMgm::isLoaded("lowlevel"))	{
 							$sql_query = unserialize($actionRow["t2_data"]);
 							if (is_array($sql_query) && strtoupper(substr(trim($sql_query["qSelect"]),0,6))=="SELECT")	{
@@ -209,11 +207,10 @@ class tx_sysaction extends mod_user_task {
 							$theCode.= $this->pObj->doc->section($LANG->getLL("action_error"),'<span class="typo3-red">The extension "lowlevel" must be installed in order to create a quiry</span>',0,1);
 						}
 					break;
-					case 3:
-						Header("Location: ".t3lib_div::locationHeaderUrl($this->backPath."db_list.php?id=".intval($actionRow["t3_listPid"])."&table=".$actionRow["t3_tables"]));
-						exit;
+					case 3: //list records
+						return htmlspecialchars($this->headLInk('tx_taskcenterrootlist', 1)). '<br />'. $this->urlInIframe($this->backPath."db_list.php?id=".intval($actionRow["t3_listPid"])."&table=".$actionRow["t3_tables"],1);
 					break;
-					case 4:
+					case 4: //edit records
 						$dbAnalysis = t3lib_div::makeInstance("t3lib_loadDBGroup");
 						$dbAnalysis->fromTC=0;
 						$dbAnalysis->start($actionRow["t4_recordsToEdit"],"*");
@@ -233,9 +230,8 @@ class tx_sysaction extends mod_user_task {
 						$actionContent = '<table border=0 cellpadding=0 cellspacing=2>'.implode("",$lines).'</table>';
 						$theCode.= $this->pObj->doc->section($LANG->getLL("action_t4_edit"),$actionContent,0,1);
 					break;
-					case 5:
-						Header('Location: '.t3lib_div::locationHeaderUrl($this->backPath.'alt_doc.php?returnUrl='.rawurlencode('db_list.php?id='.intval($actionRow['t3_listPid']).'&table='.$actionRow['t3_tables']).'&edit['.$actionRow['t3_tables'].']['.intval($actionRow['t3_listPid']).']=new'));
-						exit;
+					case 5: //new record
+						return htmlspecialchars($this->headLInk('tx_taskcenterrootlist', 1)). '<br />'. $this->urlInIframe($this->backPath.'alt_doc.php?returnUrl='.rawurlencode('db_list.php?id='.intval($actionRow['t3_listPid']).'&table='.$actionRow['t3_tables']).'&edit['.$actionRow['t3_tables'].']['.intval($actionRow['t3_listPid']).']=new',1);
 					break;
 					default:
 						$theCode.= $this->pObj->doc->section($LANG->getLL("action_error"),'<span class="typo3-red">'.$LANG->getLL("action_noType").'</span>',0,1);
@@ -251,7 +247,7 @@ class tx_sysaction extends mod_user_task {
 			$wQ='';
 			if (intval($uid)>0)	$wQ.=' AND sys_action.uid='.intval($uid);
 
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'sys_action', 'sys_action.pid=0'.$wQ, '', 'sys_action.title');
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'sys_action', 'sys_action.pid=0'.$wQ, '', 'sys_action.sorting');
 		} else {
 			$wQ = 'be_groups.uid IN ('.($this->BE_USER->groupList?$this->BE_USER->groupList:0).')';
 			$hQ = 'AND sys_action.hidden=0 ';
@@ -264,7 +260,7 @@ class tx_sysaction extends mod_user_task {
 						'be_groups',
 						' AND '.$wQ.' AND sys_action.pid=0 '.$hQ,
 						'sys_action.uid',
-						'sys_action.title'
+						'sys_action.sorting'
 					);
 		}
 

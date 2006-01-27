@@ -14,6 +14,7 @@ if (TYPO3_MODE=='BE')	{
 			'label' => 'title',
 			'tstamp' => 'tstamp',
 			'default_sortby' => 'ORDER BY title',
+			"sortby" => "sorting",	
 			'prependAtCopy' => 'LLL:EXT:lang/locallang_general.php:LGL.prependAtCopy',
 			'title' => 'LLL:EXT:sys_action/locallang_tca.php:sys_action',
 			'crdate' => 'crdate',
