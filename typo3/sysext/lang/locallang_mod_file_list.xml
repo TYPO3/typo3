@@ -24,6 +24,7 @@
 			<label index="c_fileext">Type</label>
 			<label index="c_tstamp">Date</label>
 			<label index="c_rw">RW</label>
+			<label index="c__REF_">Ref</label>			
 			<label index="files">files</label>
 			<label index="mlang_labels_tablabel">Listing of files in the directory</label>
 			<label index="mlang_labels_tabdescr">This is the file administration system in TYPO3. It allows you to access the file mounts of your login. Through this module you can upload, copy, move an delete files on the server.</label>

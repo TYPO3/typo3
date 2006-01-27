@@ -1022,6 +1022,45 @@ class t3lib_DB {
 
 
 
+
+
+	/******************************
+	 *
+	 * Connecting service
+	 *
+	 ******************************/
+
+	/**
+	 * Connects to database for TYPO3 sites:
+	 *
+	 * @return	void
+	 */
+	function connectDB()	{
+		if ($this->sql_pconnect(TYPO3_db_host, TYPO3_db_username, TYPO3_db_password))	{
+			if (!TYPO3_db)	{
+				die('No database selected');
+				exit;
+			} elseif (!$this->sql_select_db(TYPO3_db))	{
+				die('Cannot connect to the current database, "'.TYPO3_db.'"');
+				exit;
+			}
+		} else {
+			die('The current username, password or host was not accepted when the connection to the database was attempted to be established!');
+			exit;
+		}		
+	}
+
+
+
+
+
+
+
+
+
+
+
+
 	/******************************
 	 *
 	 * Debugging

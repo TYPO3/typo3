@@ -192,7 +192,7 @@ class t3lib_install {
 		}
 
 				// Splitting localconf.php file into lines:
-		$lines = explode(chr(10),trim(t3lib_div::getUrl($writeToLocalconf_dat['file'])));
+		$lines = explode(chr(10),str_replace(chr(13),'',trim(t3lib_div::getUrl($writeToLocalconf_dat['file']))));
 		$writeToLocalconf_dat['endLine'] = array_pop($lines);	// Getting "? >" ending.
 
 			// Checking if "updated" line was set by this tool - if so remove old line.

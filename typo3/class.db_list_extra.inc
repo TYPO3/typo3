@@ -1,5 +1,5 @@
 <?php
-/***************************************************************
+/*************************************************************
 *  Copyright notice
 *
 *  (c) 1999-2005 Kasper Skaarhoj (kasperYYYY@typo3.com)
@@ -326,6 +326,9 @@ class localRecordList extends recordList {
 		if ($this->showClipboard)	{
 			$this->fieldArray[] = '_CLIPBOARD_';
 		}
+		if (!$this->dontShowClipControlPanels)	{
+			$this->fieldArray[]='_REF_';
+		}
 		if ($this->searchLevels)	{
 			$this->fieldArray[]='_PATH_';
 		}
@@ -598,6 +601,8 @@ class localRecordList extends recordList {
 				$theData[$fCol]=$row[$fCol];
 			} elseif ($fCol=='_PATH_') {
 				$theData[$fCol]=$this->recPath($row['pid']);
+			} elseif ($fCol=='_REF_') {
+				$theData[$fCol]=$this->makeRef($table,$row['uid']);
 			} elseif ($fCol=='_CONTROL_') {
 				$theData[$fCol]=$this->makeControl($table,$row);
 			} elseif ($fCol=='_CLIPBOARD_') {
@@ -614,7 +619,7 @@ class localRecordList extends recordList {
 		}
 
 			// Add row to CSV list:
-		if ($this->csvOutput) $this->addToCSV($row);
+		if ($this->csvOutput) $this->addToCSV($row,$table);
 
 			// Create element in table cells:
 		$iOut.=$this->addelement(1,$theIcon,$theData,$row_bgColor);
@@ -652,6 +657,9 @@ class localRecordList extends recordList {
 			switch((string)$fCol)	{
 				case '_PATH_':			// Path
 					$theData[$fCol] = '<i>['.$LANG->sL('LLL:EXT:lang/locallang_core.php:labels._PATH_',1).']</i>';
+				break;
+				case '_REF_':			// References
+					$theData[$fCol] = '<i>['.$LANG->sL('LLL:EXT:lang/locallang_mod_file_list.xml:c__REF_',1).']</i>';
 				break;
 				case '_LOCALIZATION_':			// Path
 					$theData[$fCol] = '<i>['.$LANG->sL('LLL:EXT:lang/locallang_core.php:labels._LOCALIZATION_',1).']</i>';
@@ -784,8 +792,6 @@ class localRecordList extends recordList {
 	 */
 	function makeControl($table,$row)	{
 		global $TCA, $LANG, $SOBE;
-
-			// Return blank, if disabled:
 		if ($this->dontShowClipControlPanels)	return '';
 
 			// Initialize:
@@ -920,7 +926,7 @@ class localRecordList extends recordList {
 					($table=='pages' && ($localCalcPerms&4)) || ($table!='pages' && ($this->calcPerms&16))
 					)	{
 					$params='&cmd['.$table.']['.$row['uid'].'][delete]=1';
-					$cells[]='<a href="#" onclick="'.htmlspecialchars('if (confirm('.$LANG->JScharCode($LANG->getLL('deleteWarning')).')) {jumpToUrl(\''.$SOBE->doc->issueCommand($params,-1).'\');} return false;').'">'.
+					$cells[]='<a href="#" onclick="'.htmlspecialchars('if (confirm('.$LANG->JScharCode($LANG->getLL('deleteWarning').t3lib_BEfunc::referenceCount($table,$row['uid'],' (There are %s reference(s) to this record!)')).')) {jumpToUrl(\''.$SOBE->doc->issueCommand($params,-1).'\');} return false;').'">'.
 							'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/garbage.gif','width="11" height="12"').' title="'.$LANG->getLL('delete',1).'" alt="" />'.
 							'</a>';
 				}
@@ -981,6 +987,8 @@ class localRecordList extends recordList {
 		if ($this->dontShowClipControlPanels)	return '';
 		$cells=array();
 
+
+			// Return blank, if disabled:
 			// Whether a numeric clipboard pad is active or the normal pad we will see different content of the panel:
 		if ($this->clipObj->current=='normal')	{	// For the "Normal" pad:
 
@@ -1035,6 +1043,33 @@ class localRecordList extends recordList {
 		return '							<!-- CLIPBOARD PANEL: '.$table.':'.$row['uid'].' -->
 											<div class="typo3-clipCtrl">'.implode('',$cells).'</div>';
 	}
+	
+	/**
+	 * Make reference count
+	 *
+	 * @param	string		Table name
+	 * @param	integer		UID
+	 * @return	string		HTML-table
+	 */
+	function makeRef($table,$uid)	{
+
+			// Look up the path:
+		$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+			'*',
+			'sys_refindex',
+			'ref_table='.$GLOBALS['TYPO3_DB']->fullQuoteStr($table,'sys_refindex').
+				' AND ref_uid='.intval($uid).
+				' AND deleted=0'
+		);
+		
+			// Compile information for title tag:
+		$infoData=array();
+		foreach($rows as $row)	{
+			$infoData[]=$row['tablename'].':'.$row['recuid'].':'.$row['field'];
+		}
+		
+		return count($infoData) ? '<a href="#" onclick="'.htmlspecialchars('top.launchView(\''.$table.'\', \''.$uid.'\'); return false;').'" title="'.htmlspecialchars(t3lib_div::fixed_lgd(implode(' / ',$infoData),100)).'">'.count($infoData).'</a>' : '';		
+	}	
 
 	/**
 	 * Creates the localization panel
@@ -1123,6 +1158,7 @@ class localRecordList extends recordList {
 
 			// Add pseudo "control" fields
 		$fields[]='_PATH_';
+		$fields[]='_REF_';
 		$fields[]='_LOCALIZATION_';
 		$fields[]='_CONTROL_';
 		$fields[]='_CLIPBOARD_';
@@ -1213,7 +1249,7 @@ class localRecordList extends recordList {
 	function addSortLink($code,$field,$table)	{
 
 			// Certain circumstances just return string right away (no links):
-		if ($field=='_CONTROL_' || $field=='_LOCALIZATION_' || $field=='_CLIPBOARD_' || $this->disableSingleTableView)	return $code;
+		if ($field=='_CONTROL_' || $field=='_LOCALIZATION_' || $field=='_CLIPBOARD_' || $field=='_REF_' || $this->disableSingleTableView)	return $code;
 
 			// If "_PATH_" (showing record path) is selected, force sorting by pid field (will at least group the records!)
 		if ($field=='_PATH_')	$field=pid;
@@ -1305,13 +1341,15 @@ class localRecordList extends recordList {
 	 * @param	array		Record array, from which the values of fields found in $this->fieldArray will be listed in the CSV output.
 	 * @return	void
 	 */
-	function addToCSV($row)	{
+	function addToCSV($row,$table)	{
 
 			// Traversing fields, adding values from $row:
 		$csvRow=array();
 		foreach($this->fieldArray as $fN)	{
 			if ($fN=='_PATH_')	{
 				$csvRow[]=$this->recPath($row['pid']);
+			} elseif ($fN=='_REF_')	{
+				$csvRow[]=$this->makeRef($table, $row['uid']);
 			} else {
 				$csvRow[]=$row[$fN];
 			}

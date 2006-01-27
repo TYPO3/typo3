@@ -308,6 +308,12 @@ class SC_show_item {
 		$code.= $LANG->sL('LLL:EXT:lang/locallang_core.php:labels.path').': '.t3lib_div::fixed_lgd_cs($this->pageinfo['_thePath'],-48).'<br />';
 		$code.= $LANG->sL('LLL:EXT:lang/locallang_core.php:labels.table').': '.$LANG->sL($TCA[$this->table]['ctrl']['title']).' ('.$this->table.') - UID: '.$this->uid.'<br />';
 		$this->content.= $this->doc->section('', $code);
+		
+			// References:
+		$this->content.= $this->doc->section('References to this item:',$this->makeRef($this->table,$this->row['uid']));
+		
+			// References:
+		$this->content.= $this->doc->section('References from this item:',$this->makeRefFrom($this->table,$this->row['uid']));
 	}
 
 	/**
@@ -427,6 +433,10 @@ class SC_show_item {
 				$this->content.= $this->doc->section('',$thumb);
 			}
 		}
+		
+		
+			// References:
+		$this->content.= $this->doc->section('References to this item:',$this->makeRef('_FILE',$this->file));		
 	}
 
 	/**
@@ -439,6 +449,113 @@ class SC_show_item {
 		$this->content = $this->doc->insertStylesAndJS($this->content);
 		echo $this->content;
 	}
+	
+	/**
+	 * Make reference display
+	 *
+	 * @param	string		Table name
+	 * @param	string		Filename or uid
+	 * @return	string		HTML
+	 */
+	function makeRef($table,$ref)	{
+		
+		if ($table==='_FILE')	{
+				// First, fit path to match what is stored in the refindex:
+			$fullIdent = $ref;
+	
+			if (t3lib_div::isFirstPartOfStr($fullIdent,PATH_site))	{
+				$fullIdent = substr($fullIdent,strlen(PATH_site));
+			}
+			
+				// Look up the path:
+			$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+				'*',
+				'sys_refindex',
+				'ref_table='.$GLOBALS['TYPO3_DB']->fullQuoteStr('_FILE','sys_refindex').
+					' AND ref_string='.$GLOBALS['TYPO3_DB']->fullQuoteStr($fullIdent,'sys_refindex').
+					' AND deleted=0'
+			);
+		} else {
+				// Look up the path:
+			$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+				'*',
+				'sys_refindex',
+				'ref_table='.$GLOBALS['TYPO3_DB']->fullQuoteStr($table,'sys_refindex').
+					' AND ref_uid='.intval($ref).
+					' AND deleted=0'
+			);
+		}
+		
+			// Compile information for title tag:
+		$infoData = array();
+		if (count($rows))	{
+			$infoData[] = '<tr class="bgColor5 tableheader">' .
+					'<td>Table:</td>' .
+					'<td>Uid:</td>' .
+					'<td>Field:</td>'.
+					'<td>Flexpointer:</td>'.
+					'<td>Softref Key:</td>'.
+					'<td>Sorting:</td>'.
+					'</tr>';
+		}
+		foreach($rows as $row)	{
+			$infoData[] = '<tr class="bgColor4"">' .
+					'<td>'.$row['tablename'].'</td>' .
+					'<td>'.$row['recuid'].'</td>' .
+					'<td>'.$row['field'].'</td>'.
+					'<td>'.$row['flexpointer'].'</td>'.
+					'<td>'.$row['softref_key'].'</td>'.
+					'<td>'.$row['sorting'].'</td>'.
+					'</tr>';
+		}
+		
+		return count($infoData) ? '<table border="0" cellpadding="1" cellspacing="1">'.implode('',$infoData).'</table>' : '';		
+	}	
+	
+	/**
+	 * Make reference display (what this elements points to)
+	 *
+	 * @param	string		Table name
+	 * @param	string		Filename or uid
+	 * @return	string		HTML
+	 */
+	function makeRefFrom($table,$ref)	{
+		
+			// Look up the path:
+		$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+			'*',
+			'sys_refindex',
+			'tablename='.$GLOBALS['TYPO3_DB']->fullQuoteStr($table,'sys_refindex').
+				' AND recuid='.intval($ref)
+		);
+		
+			// Compile information for title tag:
+		$infoData = array();
+		if (count($rows))	{
+			$infoData[] = '<tr class="bgColor5 tableheader">' .
+					'<td>Field:</td>'.
+					'<td>Flexpointer:</td>'.
+					'<td>Softref Key:</td>'.
+					'<td>Sorting:</td>'.
+					'<td>Ref Table:</td>' .
+					'<td>Ref Uid:</td>' .
+					'<td>Ref String:</td>' .
+					'</tr>';
+		}
+		foreach($rows as $row)	{
+			$infoData[] = '<tr class="bgColor4"">' .
+					'<td>'.$row['field'].'</td>'.
+					'<td>'.$row['flexpointer'].'</td>'.
+					'<td>'.$row['softref_key'].'</td>'.
+					'<td>'.$row['sorting'].'</td>'.
+					'<td>'.$row['ref_table'].'</td>' .
+					'<td>'.$row['ref_uid'].'</td>' .
+					'<td>'.$row['ref_string'].'</td>' .
+					'</tr>';
+		}
+		
+		return count($infoData) ? '<table border="0" cellpadding="1" cellspacing="1">'.implode('',$infoData).'</table>' : '';		
+	}	
 }
 
 // Include extension?

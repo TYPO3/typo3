@@ -131,7 +131,7 @@ $TYPO3_CONF_VARS = Array(
 		'forceCharset' => '',					// String. Normally the charset of the backend users language selection is used. If you set this value to a charset found in t3lib/csconvtbl/ (or "utf-8") the backend (and database) will ALWAYS use this charset. Always use a lowercase value.
 		'installToolPassword' => '',			// String. This is the md5-hashed password for the Install Tool. Set this to '' and access will be totally denied. PLEASE consider to externally password protect the typo3/install/ folder, eg. with a .htaccess file.
 		'trackBeUser' => 0,						// Boolean. If set, every invokation of a backend script is logged in sys_trackbeuser. This is used to get a view of the backend users behaviour. Mostly for debugging, support and user interaction analysis. Requires 'beuser_tracking' extension.
- 		'defaultUserTSconfig' => 'options.shortcutFrame=1',			// Enter lines of default backend user/group TSconfig.
+ 		'defaultUserTSconfig' => 'options.shortcutFrame=1',			// String. Enter lines of default backend user/group TSconfig.
 		'defaultPageTSconfig' => '',			// Enter lines of default Page TSconfig.
 		'defaultPermissions' => array (			// Default permissions set for new pages in t3lib/tce_main.php. Keys are 'show,edit,delete,new,editcontent'. Enter as comma-list
 //			'user' => '',				READFILE:			// default in tce_main is 'show,edit,delete,new,editcontent'. If this is set (uncomment), this value is used instead.
@@ -206,6 +206,7 @@ $TYPO3_CONF_VARS = Array(
 		'enable_mount_pids' => 1,					// If set to "1", the mount_pid feature allowing 'symlinks' in the page tree (for frontend operation) is allowed.
 		'pageOverlayFields' => 'uid,title,subtitle,nav_title,media,keywords,description,abstract,author,author_email',				// List of fields from the table "pages_language_overlay" which should be overlaid on page records. See t3lib_page::getPageOverlay()
 		'hidePagesIfNotTranslatedByDefault' => FALSE,	// If TRUE, pages that has no translation will be hidden by default. Basically this will inverse the effect of the page localization setting "Hide page if no translation for current language exists" to "Show page even if no translation exists"
+		'eID_include' => array(),				// Array of key/value pairs where key is "tx_[ext]_[optional suffix]" and value is relative filename of class to include. Key is used as "?eID=" for index_ts.php to include the code file which renders the page from that point. (Useful for functionality that requires a low initialization footprint, eg. frontend ajax applications) 
 	),
 	'MODS' => Array(		// Backend Module Configuration (obsolete, make extension instead)
 	),

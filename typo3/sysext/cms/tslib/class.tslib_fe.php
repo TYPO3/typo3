@@ -232,6 +232,7 @@
 	var $beUserLogin='';				// Flag that indicates if a Backend user is logged in!
 	var $workspacePreview='';			// Integer, that indicates which workspace is being previewed.
 	var $loginAllowedInBranch = TRUE;	// Shows whether logins are allowed in branch
+	var $ADMCMD_preview_BEUSER_uid = 0;	// Integer, set to backend user ID to initialize when keyword-based preview is used.
 
 		// PREVIEW
 	var $fePreview='';					// Flag indication that preview is active. This is based on the login of a backend user and whether the backend user has read access to the current page. A value of 1 means ordinary preview, 2 means preview of a non-live workspace
@@ -1361,9 +1362,40 @@
 
 
 
+	function ADMCMD_preview(){
+		$inputCode = t3lib_div::_GP('ADMCMD_prev');
+		
+		if ($inputCode)	{
+				// Here, look up preview code, test avaibility (valid time period)
+				// Get: Backend login status, Frontend login status, URL prefix, GET vars
+				// - Make sure a POST is not happening!
+				// - Make sure to remove fe/be cookies (temporarily)
+				// - Make sure URL matches the URL-prefix + previewCode only (no other get variables must be passed!)
+			if ($inputCode == 123)	{
+							
+					// Set GET variables:
+				$GET_VARS = '';
+				parse_str('id=1150&L=0&ADMCMD_view=1&ADMCMD_editIcons=1&ADMCMD_previewWS=8',$GET_VARS);
+				t3lib_div::_GETset($GET_VARS);
+				
+					// Return preview keyword record, because its OK.
+				return array(
+					'BEUSER_uid' => 4
+				);
+			} else die('ADMCMD command could not be executed!');			
+		}	
+	}	
 
 
+	function ADMCMD_preview_postInit($previewConfig){
+		if (is_array($previewConfig))	{
 
+				// Clear cookies:
+			unset($_COOKIE['be_typo_user']);
+			$this->ADMCMD_preview_BEUSER_uid = $previewConfig['BEUSER_uid'];
+
+		} else die('Error in inputRecord.');			
+	}	
 
 
 

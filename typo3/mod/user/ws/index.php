@@ -903,6 +903,7 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 	 */
 	function displayWorkspaceOverview_commandLinksSub($table,$rec,$origId)	{
 		global $LANG;
+
 		$uid = $rec['uid'];
 		if ($origId || $GLOBALS['BE_USER']->workspace===0)	{
 			if (!$GLOBALS['BE_USER']->workspaceCannotEditRecord($table,$rec))	{

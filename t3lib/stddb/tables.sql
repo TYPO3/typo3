@@ -263,9 +263,10 @@ CREATE TABLE sys_refindex (
   softref_key varchar(30) DEFAULT '' NOT NULL,
   softref_id varchar(40) DEFAULT '' NOT NULL,
   sorting int(11) DEFAULT '0' NOT NULL,
+  deleted int(11) DEFAULT '0' NOT NULL,
   ref_table varchar(40) DEFAULT '' NOT NULL,
   ref_uid int(11) DEFAULT '0' NOT NULL,
-  ref_string varchar(40) DEFAULT '' NOT NULL,
+  ref_string varchar(200) DEFAULT '' NOT NULL,
 
   PRIMARY KEY (hash),
   KEY lookup_rec (tablename,recuid),

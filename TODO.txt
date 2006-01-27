@@ -41,12 +41,9 @@ TCEmain
 	- Record Reference tracking in a table in TCEmain
 		- Used for (also):
 			- clearing caching more effectively
-			- Implement reflection of relations in Web>List and File>Filelist
-			- Warning at deletion
 		- Offers API to "fix references" if a record carries lost references
 		- Offers way to map a reference to another one ("search/replace")
-		- Implement flexform "index" as well (see marks
-		- In "Help > About Modules" screen we might want to look if the index is empty and if so, present a link to "Tools > DB check" tool so the index can be created initially for updated sites?
+		- Implement flexform "index" as well (see marks)
 		- (Make class.t3lib_refindex available in the frontend scope for integration in plugins that manipulate the database on their own and need to update the reference index. Actually, I'm inclined to think we should rather think about how to provide t3lib_tcemain for the frontend instead...!)
 		- CLI script for updating refindex with cron-job [OK] and reporting inconsistencies by email
 	- Record clean-up functionality (Tools > DB check module)
@@ -334,17 +331,16 @@ TCEmain commands:
 	- ?
 
 Versioning API:
-- (Support for) swapping using temporary file (instead of using negative ID)
+!!!- (Support for) swapping using temporary file (instead of using negative ID)
 - Way to change versioning type from element to page to branch for new records?
-- Lock down lifecycle=1 versions for editing (like when stages prevent editing)
-- New versions can be created from archived versions (way to bring back old content)
+!!!- Lock down lifecycle=1 versions for editing (like when stages prevent editing)
+!!!- New versions can be created from archived versions (way to bring back old content)
 
 Check Various:
 - Auto publishing: Might not work with "Publish only "Publish" stage" because swapped elements will be in editing stage or so!
 
 Workspace Manager TODO:
-- Workspace admin list
-- Disabling stages for a workspace (remove from interface)
+!!!- Disabling stages for a workspace (remove from interface)
 
 Preview:
 - Dualview:
@@ -352,6 +348,9 @@ Preview:
 	- Allow preview by non-be-logins through some token-facility (links from tcemain-mails)
 		- Works for certain timespan
 		- Sets cookie? (for workspace browsing)
+
+RTEMagic images:
+- Core should support copying of RTEmagic images during copies/versions. Otherwise re-scaling of these images will affect online version! A fix should also update the lowlevel clean -up tools which currently ignores these cases.
 
 BUGS:
 - Import/Export module:

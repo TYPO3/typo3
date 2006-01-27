@@ -206,6 +206,7 @@ class tx_version_cm1 extends t3lib_SCbase {
 		if ($record['pid']==-1)	{
 			$record = t3lib_BEfunc::getRecord($this->table,$record['t3ver_oid']);
 		}
+		$pidValue = $this->table==='pages' ? $this->id : $record['pid'];
 
 			// Checking access etc.
 		if (is_array($record) && $TCA[$this->table]['ctrl']['versioningWS'])	{
@@ -213,13 +214,13 @@ class tx_version_cm1 extends t3lib_SCbase {
 
 				// Access check!
 				// The page will show only if there is a valid page and if this page may be viewed by the user
-			$this->pageinfo = t3lib_BEfunc::readPageAccess($record['pid'],$this->perms_clause);
+			$this->pageinfo = t3lib_BEfunc::readPageAccess($pidValue,$this->perms_clause);
 			$access = is_array($this->pageinfo) ? 1 : 0;
 
-			if (($record['pid'] && $access) || ($BE_USER->user['admin'] && !$record['pid']))	{
+			if (($pidValue && $access) || ($BE_USER->user['admin'] && !$pidValue))	{
 
 					// JavaScript
-				$this->doc->JScode = '
+				$this->doc->JScode.= '
 					<script language="javascript" type="text/javascript">
 						script_ended = 0;
 						function jumpToUrl(URL)	{

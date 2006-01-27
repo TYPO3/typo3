@@ -36,20 +36,22 @@
  *
  *
  *
- *  120: class SC_mod_tools_dbint_index
- *  134:     function init()
- *  147:     function jumpToUrl(URL)
- *  164:     function menuConfig()
- *  223:     function main()
- *  265:     function printContent()
- *  276:     function func_refindex()
- *  340:     function func_search()
- *  370:     function func_tree()
- *  391:     function func_     records()
- *  487:     function func_relations()
- *  538:     function func_filesearch()
- *  586:     function findFile($basedir,$pattern,&$matching_files,$depth)
- *  629:     function func_default()
+ *   88: class SC_mod_tools_dbint_index
+ *  104:     function init()
+ *  118:     function jumpToUrl(URL)
+ *  138:     function menuConfig()
+ *  199:     function main()
+ *  241:     function printContent()
+ *  252:     function func_default()
+ *
+ *              SECTION: Functionality implementation
+ *  285:     function func_refindex()
+ *  315:     function func_search()
+ *  347:     function func_tree()
+ *  370:     function func_records()
+ *  468:     function func_relations()
+ *  519:     function func_filesearch()
+ *  568:     function findFile($basedir,$pattern,&$matching_files,$depth)
  *
  * TOTAL FUNCTIONS: 13
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -96,7 +98,7 @@ class SC_mod_tools_dbint_index {
 
 	/**
 	 * Initialization
-	 * 
+	 *
 	 * @return	void
 	 */
 	function init()	{
@@ -108,7 +110,7 @@ class SC_mod_tools_dbint_index {
 		$this->doc = t3lib_div::makeInstance('mediumDoc');
 		$this->doc->form='<form action="" method="post">';
 		$this->doc->backPath = $BACK_PATH;
-		
+
 				// JavaScript
 		$this->doc->JScode = '
 		<script language="javascript" type="text/javascript">
@@ -118,7 +120,7 @@ class SC_mod_tools_dbint_index {
 			}
 		</script>
 		';
-		
+
 		$this->doc->tableLayout = Array (
 			'defRow' => Array (
 				'0' => Array('<td valign="top">','</td>'),
@@ -130,7 +132,7 @@ class SC_mod_tools_dbint_index {
 
 	/**
 	 * Configure menu
-	 * 
+	 *
 	 * @return	void
 	 */
 	function menuConfig()	{
@@ -190,8 +192,8 @@ class SC_mod_tools_dbint_index {
 	}
 
 	/**
-	 * Main 
-	 * 
+	 * Main
+	 *
 	 * @return	void
 	 */
 	function main()	{
@@ -233,13 +235,33 @@ class SC_mod_tools_dbint_index {
 
 	/**
 	 * Print content
-	 * 
+	 *
 	 * @return	void
 	 */
 	function printContent()	{
 
 		$this->content.= $this->doc->endPage();
 		echo $this->content;
+	}
+
+	/**
+	 * Menu
+	 *
+	 * @return	void
+	 */
+	function func_default()	{
+		global $LANG;
+
+		$this->content.=$this->doc->header($LANG->getLL('title'));
+		$this->content.=$this->doc->spacer(5);
+		$this->content.=$this->doc->section('',$this->menu);
+		$this->content.=$this->doc->section('<a href="index.php?SET[function]=records">'.$LANG->getLL('records').'</a>',$LANG->getLL('records_description'),1,1,0,1);
+		$this->content.=$this->doc->section('<a href="index.php?SET[function]=tree">'.$LANG->getLL('tree').'</a>',$LANG->getLL('tree_description'),1,1,0,1);
+		$this->content.=$this->doc->section('<a href="index.php?SET[function]=relations">'.$LANG->getLL('relations').'</a>',$LANG->getLL('relations_description'),1,1,0,1);
+		$this->content.=$this->doc->section('<a href="index.php?SET[function]=search">'.$LANG->getLL('search').'</a>',$LANG->getLL('search_description'),1,1,0,1);
+		$this->content.=$this->doc->section('<a href="index.php?SET[function]=filesearch">'.$LANG->getLL('filesearch').'</a>',$LANG->getLL('filesearch_description'),1,1,0,1);
+		$this->content.=$this->doc->section('<a href="index.php?SET[function]=refindex">'.$LANG->getLL('refindex').'</a>',$LANG->getLL('refindex_description'),1,1,0,1);
+		$this->content.=$this->doc->spacer(50);
 	}
 
 
@@ -249,27 +271,26 @@ class SC_mod_tools_dbint_index {
 
 
 
-
 	/****************************
-	 *  
+	 *
 	 * Functionality implementation
-	 * 
+	 *
 	 ****************************/
 
 	/**
 	 * Check and update reference index!
 	 *
-	 * @return	[type]		...
+	 * @return	void
 	 */
 	function func_refindex()	{
 		global $TYPO3_DB,$TCA;
 
-		$this->content.=$this->doc->section('',$this->menu);//$this->doc->divider(5);
+		$this->content.=$this->doc->section('',$this->menu);
 		$this->content.=$this->doc->section('',$menu2).$this->doc->spacer(10);
 
 		if (t3lib_div::_GP('_update') || t3lib_div::_GP('_check'))	{
 			$testOnly = t3lib_div::_GP('_check')?TRUE:FALSE;
-			
+
 				// Call the functionality
 			$refIndexObj = t3lib_div::makeInstance('t3lib_refindex');
 			list($headerContent,$bodyContent) = $refIndexObj->updateIndex($testOnly);
@@ -287,22 +308,24 @@ class SC_mod_tools_dbint_index {
 	}
 
 	/**
-	 * @return	[type]		...
+	 * Search (Full / Advanced)
+	 *
+	 * @return	void
 	 */
 	function func_search()	{
 		global $LANG;
 
 		$fullsearch = t3lib_div::makeInstance('t3lib_fullsearch');
-		$this->content.=$this->doc->header($LANG->getLL('search'));
-		$this->content.=$this->doc->spacer(5);
+		$this->content.= $this->doc->header($LANG->getLL('search'));
+		$this->content.= $this->doc->spacer(5);
 
 		$menu2=t3lib_BEfunc::getFuncMenu(0,'SET[search]',$this->MOD_SETTINGS['search'],$this->MOD_MENU['search']);
 		if ($this->MOD_SETTINGS['search']=='query')	{
 			$menu2.=t3lib_BEfunc::getFuncMenu(0,'SET[search_query_makeQuery]',$this->MOD_SETTINGS['search_query_makeQuery'],$this->MOD_MENU['search_query_makeQuery']).
 					'&nbsp;'.t3lib_BEfunc::getFuncCheck($GLOBALS['SOBE']->id,'SET[search_query_smallparts]',$this->MOD_SETTINGS['search_query_smallparts']).'&nbsp;Show SQL parts';
 		}
-		$this->content.=$this->doc->section('',$this->menu);//$this->doc->divider(5);
-		$this->content.=$this->doc->section('',$menu2).$this->doc->spacer(10);
+		$this->content.= $this->doc->section('',$this->menu);//$this->doc->divider(5);
+		$this->content.= $this->doc->section('',$menu2).$this->doc->spacer(10);
 
 		switch($this->MOD_SETTINGS['search'])		{
 			case 'query':
@@ -317,46 +340,49 @@ class SC_mod_tools_dbint_index {
 	}
 
 	/**
-	 * @return	[type]		...
+	 * Display page tree
+	 *
+	 * @return	void
 	 */
 	function func_tree()	{
 		global $LANG,$BACK_PATH;
 
-		$startID=0;
+		$startID = 0;
 		$admin = t3lib_div::makeInstance('t3lib_admin');
 		$admin->genTree_makeHTML=1;
 		$admin->backPath = $BACK_PATH;
-		$admin->genTree(intval($startID),'<img src="'.$BACK_PATH.'clear.gif" width="1" height="1" align="top">');
+		$admin->genTree(intval($startID),'<img src="'.$BACK_PATH.'clear.gif" width="1" height="1" align="top" alt="" />');
 
-		$this->content.=$this->doc->header($LANG->getLL('tree'));
-		$this->content.=$this->doc->spacer(5);
-		$this->content.=$this->doc->section('',$this->menu).$this->doc->divider(5);
-		$this->content.=$this->doc->sectionEnd();
+		$this->content.= $this->doc->header($LANG->getLL('tree'));
+		$this->content.= $this->doc->spacer(5);
+		$this->content.= $this->doc->section('',$this->menu).$this->doc->divider(5);
+		$this->content.= $this->doc->sectionEnd();
 
-		$this->content.=$admin->genTree_HTML;
-		$this->content.=$admin->lostRecords($admin->genTree_idlist.'0');
+		$this->content.= $admin->genTree_HTML;
+		$this->content.= $admin->lostRecords($admin->genTree_idlist.'0');
 	}
 
 	/**
-	 * @return	[type]		...
+	 * Records overview
+	 *
+	 * @return	void
 	 */
 	function func_records()	{
-		global $LANG,$TCA,$BACK_PATH;
-		global $PAGES_TYPES;
+		global $LANG,$TCA,$BACK_PATH,$PAGES_TYPES;
 
 		$admin = t3lib_div::makeInstance('t3lib_admin');
-		$admin->genTree_makeHTML=0;
+		$admin->genTree_makeHTML = 0;
 		$admin->backPath = $BACK_PATH;
 		$admin->genTree(0,'');
 
-		$this->content.=$this->doc->header($LANG->getLL('records'));
-		$this->content.=$this->doc->spacer(5);
-		$this->content.=$this->doc->section('',$this->menu);
+		$this->content.= $this->doc->header($LANG->getLL('records'));
+		$this->content.= $this->doc->spacer(5);
+		$this->content.= $this->doc->section('',$this->menu);
 
 			// Pages stat
 		$codeArr=Array();
 		$i++;
-		$codeArr[$i][]='<img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/i/pages.gif','width="18" height="16"').' hspace="4" align="top">';
+		$codeArr[$i][]='<img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/i/pages.gif','width="18" height="16"').' hspace="4" align="top" alt="" />';
 		$codeArr[$i][]=$LANG->getLL('total_pages');
 		$codeArr[$i][]=count($admin->page_idArray);
 		$i++;
@@ -374,34 +400,35 @@ class SC_mod_tools_dbint_index {
 
 			// Doktype
 		$codeArr=Array();
-		$doktype=$TCA['pages']['columns']['doktype']['config']['items'];
+		$doktype= $TCA['pages']['columns']['doktype']['config']['items'];
 		if (is_array($doktype))	{
 			reset($doktype);
-			while(list($n,$setup)=each($doktype))	{
+			while(list($n,$setup) = each($doktype))	{
 				if ($setup[1]!='--div--')	{
-					$codeArr[$n][]='<img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/i/'.($PAGES_TYPES[$setup[1]]['icon'] ? $PAGES_TYPES[$setup[1]]['icon'] : $PAGES_TYPES['default']['icon']),'width="18" height="16"').' hspace="4" align="top">';
-					$codeArr[$n][]=$LANG->sL($setup[0]).' ('.$setup[1].')';
-					$codeArr[$n][]=intval($admin->recStat[doktype][$setup[1]]);
+					$codeArr[$n][] = '<img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/i/'.($PAGES_TYPES[$setup[1]]['icon'] ? $PAGES_TYPES[$setup[1]]['icon'] : $PAGES_TYPES['default']['icon']),'width="18" height="16"').' hspace="4" align="top">';
+					$codeArr[$n][] = $LANG->sL($setup[0]).' ('.$setup[1].')';
+					$codeArr[$n][] = intval($admin->recStat[doktype][$setup[1]]);
 				}
 			}
 			$this->content.=$this->doc->section($LANG->getLL('doktype'),$this->doc->table($codeArr),0,1);
 		}
 
 			// Tables and lost records
-		$id_list='0,'.implode($admin->page_idArray,',');
+		$id_list = '-1,0,'.implode(array_keys($admin->page_idArray),',');
 		$id_list = t3lib_div::rm_endcomma($id_list);
 		$admin->lostRecords($id_list);
+
 		if ($admin->fixLostRecord(t3lib_div::_GET('fixLostRecords_table'),t3lib_div::_GET('fixLostRecords_uid')))	{
 			$admin = t3lib_div::makeInstance('t3lib_admin');
 			$admin->backPath = $BACK_PATH;
 			$admin->genTree(0,'');
-			$id_list='0,'.implode($admin->page_idArray,',');
+			$id_list = '-1,0,'.implode(array_keys($admin->page_idArray),',');
 			$id_list = t3lib_div::rm_endcomma($id_list);
 			$admin->lostRecords($id_list);
 		}
 
-		$codeArr=Array();
-		$countArr=$admin->countRecords($id_list);
+		$codeArr = Array();
+		$countArr = $admin->countRecords($id_list);
 		if (is_array($TCA))	{
 			reset($TCA);
 			while(list($t)=each($TCA))	{
@@ -434,14 +461,16 @@ class SC_mod_tools_dbint_index {
 	}
 
 	/**
-	 * @return	[type]		...
+	 * Show list references
+	 *
+	 * @return	void
 	 */
 	function func_relations()	{
 		global $LANG,$BACK_PATH;
 
-		$this->content.=$this->doc->header($LANG->getLL('relations'));
-		$this->content.=$this->doc->spacer(5);
-		$this->content.=$this->doc->section('',$this->menu);
+		$this->content.= $this->doc->header($LANG->getLL('relations'));
+		$this->content.= $this->doc->spacer(5);
+		$this->content.= $this->doc->section('',$this->menu);
 
 		$admin = t3lib_div::makeInstance('t3lib_admin');
 		$admin->genTree_makeHTML=0;
@@ -451,7 +480,7 @@ class SC_mod_tools_dbint_index {
 		$admin->selectNonEmptyRecordsWithFkeys($fkey_arrays);
 
 
-		$fileTest=$admin->testFileRefs();
+		$fileTest = $admin->testFileRefs();
 
 		$code='';
 		if (is_array($fileTest['noReferences']))	{
@@ -462,7 +491,7 @@ class SC_mod_tools_dbint_index {
 		$this->content.=$this->doc->section($LANG->getLL('files_no_ref'),$code,1,1);
 
 		$code='';
-		if (is_array($fileTest[moreReferences]))	{
+		if (is_array($fileTest['moreReferences']))	{
 			while(list(,$val)=each($fileTest['moreReferences']))	{
 				$code.='<nobr>'.$val[0].'/<b>'.$val[1].'</b>: '.$val[2].' references:</nobr><br>'.$val[3].'<br><br>';
 			}
@@ -485,19 +514,19 @@ class SC_mod_tools_dbint_index {
 	/**
 	 * Searching for files with a specific pattern
 	 *
-	 * @return	[type]		...
+	 * @return	Searching		for files
 	 */
 	function func_filesearch()	{
 		global $LANG;
 
-		$this->content.=$this->doc->header($LANG->getLL('relations'));
-		$this->content.=$this->doc->spacer(5);
-		$this->content.=$this->doc->section('',$this->menu);
+		$this->content.= $this->doc->header($LANG->getLL('relations'));
+		$this->content.= $this->doc->spacer(5);
+		$this->content.= $this->doc->section('',$this->menu);
 
 
 		$pattern = t3lib_div::_GP('pattern');
-		$pcontent='Enter regex pattern: <input type="text" name="pattern" value="'.htmlspecialchars($pattern?$pattern:$GLOBALS['TYPO3_CONF_VARS']['BE']['fileDenyPattern']).'"> <input type="submit" name="Search">';
-		$this->content.=$this->doc->section('Pattern',$pcontent,0,1);
+		$pcontent = 'Enter regex pattern: <input type="text" name="pattern" value="'.htmlspecialchars($pattern?$pattern:$GLOBALS['TYPO3_CONF_VARS']['BE']['fileDenyPattern']).'"> <input type="submit" name="Search">';
+		$this->content.= $this->doc->section('Pattern',$pcontent,0,1);
 
 		if (strcmp($pattern,''))	{
 			$dirs = t3lib_div::get_dirs(PATH_site);
@@ -529,11 +558,12 @@ class SC_mod_tools_dbint_index {
 	/**
 	 * Searching for filename pattern recursively in the specified dir.
 	 *
-	 * @param	[type]		$basedir: ...
-	 * @param	[type]		$pattern: ...
-	 * @param	[type]		$matching_files: ...
-	 * @param	[type]		$depth: ...
-	 * @return	[type]		...
+	 * @param	string		Base directory
+	 * @param	string		Match pattern
+	 * @param	array		Array of matching files, passed by reference
+	 * @param	integer		Depth to recurse
+	 * @return	array		Array with various information about the search result
+	 * @see func_filesearch()
 	 */
 	function findFile($basedir,$pattern,&$matching_files,$depth)	{
 		$files_searched=0;
@@ -571,25 +601,6 @@ class SC_mod_tools_dbint_index {
 		}
 
 		return array($dirs_searched,$files_searched,$dirs_error);
-	}
-
-	/**
-	 * Menu
-	 *
-	 * @return	[type]		...
-	 */
-	function func_default()	{
-		global $LANG;
-
-		$this->content.=$this->doc->header($LANG->getLL('title'));
-		$this->content.=$this->doc->spacer(5);
-		$this->content.=$this->doc->section('',$this->menu);
-		$this->content.=$this->doc->section('<a href="index.php?SET[function]=records">'.$LANG->getLL('records').'</a>',$LANG->getLL('records_description'),1,1,0,1);
-		$this->content.=$this->doc->section('<a href="index.php?SET[function]=tree">'.$LANG->getLL('tree').'</a>',$LANG->getLL('tree_description'),1,1,0,1);
-		$this->content.=$this->doc->section('<a href="index.php?SET[function]=relations">'.$LANG->getLL('relations').'</a>',$LANG->getLL('relations_description'),1,1,0,1);
-		$this->content.=$this->doc->section('<a href="index.php?SET[function]=search">'.$LANG->getLL('search').'</a>',$LANG->getLL('search_description'),1,1,0,1);
-		$this->content.=$this->doc->section('<a href="index.php?SET[function]=filesearch">'.$LANG->getLL('filesearch').'</a>',$LANG->getLL('filesearch_description'),1,1,0,1);
-		$this->content.=$this->doc->spacer(50);
 	}
 }
 

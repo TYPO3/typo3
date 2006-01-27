@@ -537,9 +537,10 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 	 *
 	 * @param	string		Table name
 	 * @param	mixed		If integer, then this is the ID of the record. If Array this just represents fields in the record.
+	 * @param	boolean		Set, if testing a new (non-existing) record array. Will disable certain checks that doesn't make much sense in that context.
 	 * @return	boolean		True if OK, otherwise false
 	 */
-	function recordEditAccessInternals($table,$idOrRow)	{
+	function recordEditAccessInternals($table,$idOrRow,$newRecord=FALSE)	{
 		global $TCA;
 
 		if (isset($TCA[$table]))	{
@@ -564,6 +565,9 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 						$this->errorMsg = 'ERROR: Language was not allowed.';
 						return FALSE;
 					}
+				} else {
+					$this->errorMsg = 'ERROR: The "languageField" field named "'.$TCA[$table]['ctrl']['languageField'].'" was not found in testing record!';
+					return FALSE;
 				}
 			}
 
@@ -581,10 +585,17 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 				}
 			}
 
-				// Checking "editlock" feature
-			if ($TCA[$table]['ctrl']['editlock'] && $idOrRow[$TCA[$table]['ctrl']['editlock']])	{
-				$this->errorMsg = 'ERROR: Record was locked for editing. Only admin users can change this state.';
-				return FALSE;
+				// Checking "editlock" feature (doesn't apply to new records)
+			if (!$newRecord && $TCA[$table]['ctrl']['editlock'])	{
+				if (isset($idOrRow[$TCA[$table]['ctrl']['editlock']]))	{
+					if ($idOrRow[$TCA[$table]['ctrl']['editlock']])	{
+						$this->errorMsg = 'ERROR: Record was locked for editing. Only admin users can change this state.';
+						return FALSE;
+					}	
+				} else {
+					$this->errorMsg = 'ERROR: The "editLock" field named "'.$TCA[$table]['ctrl']['editlock'].'" was not found in testing record!';
+					return FALSE;
+				}	
 			}
 
 				// Checking record permissions

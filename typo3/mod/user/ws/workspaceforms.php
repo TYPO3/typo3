@@ -84,6 +84,7 @@ require_once (PATH_t3lib.'class.t3lib_loaddbgroup.php');
  * @subpackage core
  */
 class SC_mod_user_ws_workspaceForms extends t3lib_SCbase {
+
 	// Default variables for backend modules
 	var $MCONF = array();				// Module configuration
 	var $MOD_MENU = array();			// Module menu items
@@ -358,7 +359,7 @@ class SC_mod_user_ws_workspaceForms extends t3lib_SCbase {
 		$form .= '<input type="hidden" name="doSave" value="0" />';
 		$form .= '<input type="hidden" name="_serialNumber" value="'.md5(microtime()).'" />';
 		$form .= '<input type="hidden" name="_disableRTE" value="'.$this->tceforms->disableRTE.'" />';
-		$form .= '<input type="hidden" name="wkspId" value="' . $this->workspaceId . '" />';
+		$form .= '<input type="hidden" name="wkspId" value="' . htmlspecialchars($this->workspaceId) . '" />';
 		$form = $this->tceforms->wrapTotal($form, $rec, $table);
 
 		$buttons = $this->createButtons() . $this->doc->spacer(5);
@@ -407,6 +408,13 @@ class SC_mod_user_ws_workspaceForms extends t3lib_SCbase {
 		$this->tceforms->registerDefaultLanguageData($table,$rec);
 
 		$this->fixVariousTCAFields();
+		if (!$GLOBALS['BE_USER']->isAdmin()) {
+			// Non-admins cannot select users from the root. We "fix" it for them.
+			$this->fixTCAUserField('adminusers');
+			$this->fixTCAUserField('members');
+			$this->fixTCAUserField('reviewers');
+		}
+
 
 		// Create form for the record (either specific list of fields or the whole record):
 		$form = '';
@@ -416,6 +424,9 @@ class SC_mod_user_ws_workspaceForms extends t3lib_SCbase {
 		$form .= $this->doc->spacer(5);
 		$form .= $this->tceforms->getMainFields($table,$rec);
 //		$form .= $this->tceforms->getListedFields($table,$rec,implode(',', $fields));
+
+		$form .= '<input type="hidden" name="submit_x" value="1" />';
+
 		$form .= '<input type="hidden" name="data['.$table.']['.$rec['uid'].'][pid]" value="'.$rec['pid'].'" />';
 		$form .= '<input type="hidden" name="returnUrl" value="index.php" />';
 		$form .= '<input type="hidden" name="action" value="new" />';
@@ -485,24 +496,35 @@ class SC_mod_user_ws_workspaceForms extends t3lib_SCbase {
 
 
 	/**
-	 * Processes submited data. This function uses <code>t3lib_TCEmain::process_datamap()</code> to create/update records in the <code>sys_workspace</code> table. It will print error messages just like any other Typo3 module with similar functionality. Function also changes workspace ID and module mode to 'edit' if new record was just created.
+	 * Processes submitted data. This function uses <code>t3lib_TCEmain::process_datamap()</code> to create/update records in the <code>sys_workspace</code> table. It will print error messages just like any other Typo3 module with similar functionality. Function also changes workspace ID and module mode to 'edit' if new record was just created.
 	 *
 	 * @return	void
 	 */
 	function processData() {
 		$tce = t3lib_div::makeInstance('t3lib_TCEmain');
 		$tce->stripslashes_values = 0;
+		
 		$TCAdefaultOverride = $GLOBALS['BE_USER']->getTSConfigProp('TCAdefaults');
 		if (is_array($TCAdefaultOverride))	{
 			$tce->setDefaultsFromUserTS($TCAdefaultOverride);
 		}
 		$tce->stripslashes_values = 0;
-		$tce->start(t3lib_div::_GP('data'), array(), $GLOBALS['BE_USER']);
+	
+			// The following is a security precaution; It makes sure that the input data array can ONLY contain data for the sys_workspace table and ONLY one record.
+			// If this is not present it could be mis-used for nasty XSS attacks which can escalate rights to admin for even non-admin users.	
+		$inputData_tmp = t3lib_div::_GP('data');
+		$inputData = array();	
+		if (is_array($inputData_tmp['sys_workspace']))	{
+			reset($inputData_tmp['sys_workspace']);
+			$inputData['sys_workspace'][key($inputData_tmp['sys_workspace'])] = current($inputData_tmp['sys_workspace']);
+		}
+
+		$tce->start($inputData, array(), $GLOBALS['BE_USER']);
 		$tce->admin = 1;	// Bypass table restrictions
 		$tce->bypassWorkspaceRestrictions = true;
 		$tce->process_datamap();
 
-		// print error messages (if any)
+			// print error messages (if any)
 		$script = t3lib_div::getIndpEnv('TYPO3_REQUEST_SCRIPT');
 		$tce->printLogErrorMessages($script . '?' .
 			($this->isEditAction ? 'action=edit&wkspId=' . $this->workspaceId : 'action=new'));
@@ -537,6 +559,7 @@ class SC_mod_user_ws_workspaceForms extends t3lib_SCbase {
 		// fix fields for non-admin
 		if (!$GLOBALS['BE_USER']->isAdmin()) {
 			// make a shortcut to field
+			t3lib_div::loadTCA('sys_workspace');				
 			$field = &$GLOBALS['TCA']['sys_workspace']['columns'][$fieldName];
 			$newField = array (
 				'label' => $field['label'],
@@ -544,7 +567,7 @@ class SC_mod_user_ws_workspaceForms extends t3lib_SCbase {
 					'type' => 'select',
 					'itemsProcFunc' => 'user_SC_mod_user_ws_workspaceForms->processUserAndGroups',
 					//'iconsInOptionTags' => true,
-					'size' => $field['config']['size'],
+					'size' => 10,
 					'maxitems' => $field['config']['maxitems'],
 					'autoSizeMax' => $field['config']['autoSizeMax'],
 					'mod_ws_allowed' => $field['config']['allowed']	// let us know what we can use in itemProcFunc
@@ -560,7 +583,7 @@ class SC_mod_user_ws_workspaceForms extends t3lib_SCbase {
 	 * @return	boolean		Returns true if user can edit workspace
 	 */
 	function checkWorkspaceAccess() {
-		$workspaces = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid,title,adminusers,members,reviewers','sys_workspace','uid=' . $this->workspaceId . ' AND pid=0'.t3lib_BEfunc::deleteClause('sys_workspace'));
+		$workspaces = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid,title,adminusers,members,reviewers','sys_workspace','uid=' . intval($this->workspaceId) . ' AND pid=0'.t3lib_BEfunc::deleteClause('sys_workspace'));
 		if (is_array($workspaces) && count($workspaces) != 0 && false !== ($rec = $GLOBALS['BE_USER']->checkWorkspace($workspaces[0])))	{
 			return ($rec['_ACCESS'] == 'owner' || $rec['_ACCESS'] == 'admin');
 		}

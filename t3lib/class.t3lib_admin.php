@@ -26,6 +26,7 @@
 ***************************************************************/
 /**
  * Contains a class for evaluation of database integrity according to $TCA
+ * Most of these functions are considered obsolete!
  *
  * $Id$
  * Revised for TYPO3 3.6 July/2003 by Kasper Skaarhoj
@@ -38,21 +39,23 @@
  *
  *
  *
- *   90: class t3lib_admin
- *  116:     function genTree($theID, $depthData)
- *  156:     function lostRecords($pid_list)
- *  187:     function fixLostRecord($table,$uid)
- *  208:     function countRecords($pid_list)
- *  236:     function getGroupFields($mode)
- *  270:     function getFileFields($uploadfolder)
- *  293:     function getDBFields($theSearchTable)
- *  321:     function selectNonEmptyRecordsWithFkeys($fkey_arrays)
- *  410:     function testFileRefs ()
- *  461:     function testDBRefs($theArray)
- *  499:     function whereIsRecordReferenced($searchTable,$id)
- *  536:     function whereIsFileReferenced($uploadfolder,$filename)
+ *   92: class t3lib_admin
+ *  123:     function genTree($theID, $depthData, $versions=FALSE)
+ *  212:     function genTree_records($theID, $depthData, $table='', $versions=FALSE)
+ *  287:     function genTreeStatus()
+ *  310:     function lostRecords($pid_list)
+ *  341:     function fixLostRecord($table,$uid)
+ *  362:     function countRecords($pid_list)
+ *  390:     function getGroupFields($mode)
+ *  424:     function getFileFields($uploadfolder)
+ *  447:     function getDBFields($theSearchTable)
+ *  475:     function selectNonEmptyRecordsWithFkeys($fkey_arrays)
+ *  564:     function testFileRefs ()
+ *  615:     function testDBRefs($theArray)
+ *  653:     function whereIsRecordReferenced($searchTable,$id)
+ *  690:     function whereIsFileReferenced($uploadfolder,$filename)
  *
- * TOTAL FUNCTIONS: 12
+ * TOTAL FUNCTIONS: 14
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -88,64 +91,220 @@
  * @subpackage t3lib
  */
 class t3lib_admin {
-	var $genTree_includeDeleted = 1;	// if set, genTree() includes deleted pages. This is default.
-	var $perms_clause='';		// extra where-clauses for the tree-selection
+	var $genTree_includeDeleted = TRUE;		// if set, genTree() includes deleted pages. This is default.
+	var $genTree_includeVersions = TRUE;		// if set, genTree() includes verisonized pages/records. This is default.
+	var $genTree_includeRecords = FALSE;		// if set, genTree() includes records from pages.
+	var $perms_clause = '';				// extra where-clauses for the tree-selection
 	var $genTree_makeHTML = 0;			// if set, genTree() generates HTML, that visualizes the tree.
+
 		// internal
-	var $genTree_idlist = '';	// Will hold the id-list from genTree()
-	var $getTree_HTML = '';		// Will hold the HTML-code visualising the tree. genTree()
-	var $backPath='';
+	var $page_idArray = Array();		// Will hod id/rec pais from genTree()
+	var $rec_idArray = Array();
+	var $getTree_HTML = '';			// Will hold the HTML-code visualising the tree. genTree()
+	var $backPath = '';
 
 		// internal
 	var $checkFileRefs = Array();
 	var $checkSelectDBRefs = Array();	// From the select-fields
 	var $checkGroupDBRefs = Array();	// From the group-fields
 
-	var $page_idArray=Array();
-	var $recStat = Array();
+	var $recStat = Array(
+		'allValid' => array(),
+		'published_versions' => array(),
+		'deleted' => array(),
+	);
 	var $lRecords = Array();
 	var $lostPagesList = '';
+
 
 	/**
 	 * Generates a list of Page-uid's that corresponds to the tables in the tree. This list should ideally include all records in the pages-table.
 	 *
 	 * @param	integer		a pid (page-record id) from which to start making the tree
 	 * @param	string		HTML-code (image-tags) used when this function calls itself recursively.
-	 * @return	integer		Number of $GLOBALS['TYPO3_DB']->sql_num_rows (most recent query)
+	 * @param	boolean		Internal variable, don't set from outside!
+	 * @return	void
 	 */
-	function genTree($theID, $depthData)	{
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-					'uid,title,doktype,deleted'.(t3lib_extMgm::isLoaded('cms')?',hidden':''),
-					'pages',
-					'pid='.intval($theID).' '.((!$this->genTree_includeDeleted)?'AND deleted=0':'').$this->perms_clause,
-					'',
-					'sorting'
-				);
-		$a=0;
+	function genTree($theID, $depthData, $versions=FALSE)	{
+
+		if ($versions)	{
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+				'uid,title,doktype,deleted,t3ver_wsid,t3ver_id,t3ver_count,t3ver_swapmode'.(t3lib_extMgm::isLoaded('cms')?',hidden':''),
+				'pages',
+				'pid=-1 AND t3ver_oid='.intval($theID).' '.((!$this->genTree_includeDeleted)?'AND deleted=0':'').$this->perms_clause,
+				'',
+				'sorting'
+			);
+		} else {
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+				'uid,title,doktype,deleted'.(t3lib_extMgm::isLoaded('cms')?',hidden':''),
+				'pages',
+				'pid='.intval($theID).' '.((!$this->genTree_includeDeleted)?'AND deleted=0':'').$this->perms_clause,
+				'',
+				'sorting'
+			);
+		}
+
+			// Traverse the records selected:
+		$a = 0;
 		$c = $GLOBALS['TYPO3_DB']->sql_num_rows($res);
 		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
+
+				// Prepare the additional label used in the HTML output in case of versions:
+			if ($versions)	{
+				$versionLabel = '[v1.'.$row['t3ver_id'].'; WS#'.$row['t3ver_wsid'].']';
+			} else $versionLabel='';
+
 			$a++;
-			$newID =$row['uid'];
+			$newID = $row['uid'];
+
+				// Build HTML output:
 			if ($this->genTree_makeHTML)	{
 				$this->genTree_HTML.=chr(10).'<div><span class="nobr">';
 				$PM = 'join';
 				$LN = ($a==$c)?'blank':'line';
 				$BTM = ($a==$c)?'bottom':'';
-				$this->genTree_HTML.= $depthData.'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/ol/'.$PM.$BTM.'.gif','width="18" height="16"').' align="top" alt="" />'.t3lib_iconWorks::getIconImage('pages',$row,$this->backPath,'align="top"').htmlspecialchars($row['uid'].': '.t3lib_div::fixed_lgd_cs(strip_tags($row['title']),50)).'</span></div>';
+				$this->genTree_HTML.= $depthData.
+					'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/ol/'.$PM.$BTM.'.gif','width="18" height="16"').' align="top" alt="" />'.
+					$versionLabel.
+					t3lib_iconWorks::getIconImage('pages',$row,$this->backPath,'align="top"').
+					htmlspecialchars($row['uid'].': '.t3lib_div::fixed_lgd_cs(strip_tags($row['title']),50)).'</span></div>';
 			}
 
-			if (isset($page_idlist[$newID]))	{
-				$this->recStat['doublePageID'][]=$newID;
+				// Register various data for this item:
+			$this->page_idArray[$newID]=$row;
+
+			$this->recStats['all_valid']['pages'][$newID] = $newID;
+#			if ($versions)	$this->recStats['versions']['pages'][$newID] = $newID;
+			if ($row['deleted'])	$this->recStats['deleted']['pages'][$newID] = $newID;
+			if ($versions && $row['t3ver_count']>=1) {
+				$this->recStats['published_versions']['pages'][$newID] = $newID;
 			}
-			$this->page_idArray[$newID]=$newID;
+
 			if ($row['deleted']) {$this->recStat['deleted']++;}
 			if ($row['hidden']) {$this->recStat['hidden']++;}
 			$this->recStat['doktype'][$row['doktype']]++;
 
-			$this->genTree($newID,$this->genTree_HTML ? $depthData.'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/ol/'.$LN.'.gif','width="18" height="16"').' align="top" alt="" />'  : '');
+				// Create the HTML code prefix for recursive call:
+			$genHTML =  $depthData.'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/ol/'.$LN.'.gif','width="18" height="16"').' align="top" alt="" />'.$versionLabel;
+
+				// If all records should be shown, do so:
+			if ($this->genTree_includeRecords) 	{
+				foreach($GLOBALS['TCA'] as $tableName => $cfg)	{
+					if ($tableName!='pages') {
+						$this->genTree_records($newID, $this->genTree_HTML ? $genHTML : '', $tableName);
+					}
+				}
+			}
+
+				// Add sub pages:
+			$this->genTree($newID, $this->genTree_HTML ? $genHTML : '');
+
+				// If versions are included in the tree, add those now:
+			if ($this->genTree_includeVersions)	{
+				$this->genTree($newID, $this->genTree_HTML ? $genHTML : '', TRUE);
+			}
 		}
-		return $GLOBALS['TYPO3_DB']->sql_num_rows($res);
 	}
+
+	/**
+	 * @param	[type]		$theID: ...
+	 * @param	[type]		$depthData: ...
+	 * @param	[type]		$table: ...
+	 * @param	[type]		$versions: ...
+	 * @return	[type]		...
+	 */
+	function genTree_records($theID, $depthData, $table='', $versions=FALSE)	{
+		global $TCA;
+
+		if ($versions)	{
+				// Select all records from table pointing to this page:
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+				t3lib_BEfunc::getCommonSelectFields($table),
+				$table,
+				'pid=-1 AND t3ver_oid='.intval($theID).
+					(!$this->genTree_includeDeleted?t3lib_BEfunc::deleteClause($table):'')
+			);
+		} else {
+				// Select all records from table pointing to this page:
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+				t3lib_BEfunc::getCommonSelectFields($table),
+				$table,
+				'pid='.intval($theID).
+					(!$this->genTree_includeDeleted?t3lib_BEfunc::deleteClause($table):'')
+			);
+		}
+
+			// Traverse selected:
+		$a = 0;
+		$c = $GLOBALS['TYPO3_DB']->sql_num_rows($res);
+		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
+
+				// Prepare the additional label used in the HTML output in case of versions:
+			if ($versions)	{
+				$versionLabel = '[v1.'.$row['t3ver_id'].'; WS#'.$row['t3ver_wsid'].']';
+			} else $versionLabel='';
+
+			$a++;
+			$newID = $row['uid'];
+
+				// Build HTML output:
+			if ($this->genTree_makeHTML)	{
+				$this->genTree_HTML.=chr(10).'<div><span class="nobr">';
+				$PM = 'join';
+				$LN = ($a==$c)?'blank':'line';
+				$BTM = ($a==$c)?'bottom':'';
+				$this->genTree_HTML.= $depthData.
+					'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/ol/'.$PM.$BTM.'.gif','width="18" height="16"').' align="top" alt="" />'.
+					$versionLabel.
+					t3lib_iconWorks::getIconImage($table,$row,$this->backPath,'align="top" title="'.$table.'"').htmlspecialchars($row['uid'].': '.t3lib_BEfunc::getRecordTitle($table,$row)).'</span></div>';
+			}
+
+				// Register various data for this item:
+			$this->rec_idArray[$table][$newID]=$row;
+
+			$this->recStats['all_valid'][$table][$newID] = $newID;
+#			$this->recStats[$versions?'versions':'live'][$table][$newID] = $newID;
+			if ($row['deleted'])	$this->recStats['deleted'][$table][$newID] = $newID;
+			if ($versions && $row['t3ver_count']>=1 && $row['t3ver_wsid']==0) {
+				$this->recStats['published_versions'][$table][$newID] = $newID;
+			}
+
+#			if ($row['deleted']) {$this->recStat['deleted']++;}
+#			if ($row['hidden']) {$this->recStat['hidden']++;}
+
+
+
+				// Select all versions of this record:
+			if ($this->genTree_includeVersions && $TCA[$table]['ctrl']['versioningWS']) {
+				$genHTML =  $depthData.'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/ol/'.$LN.'.gif','width="18" height="16"').' align="top" alt="" />';
+
+				$this->genTree_records($newID, $genHTML, $table, TRUE);
+			}
+		}
+	}
+
+	/**
+	 * [Describe function...]
+	 *
+	 * @return	[type]		...
+	 */
+	function genTreeStatus() {
+		$this->genTree_includeDeleted = TRUE;		// if set, genTree() includes deleted pages. This is default.
+		$this->genTree_includeVersions = TRUE;		// if set, genTree() includes verisonized pages/records. This is default.
+		$this->genTree_includeRecords = TRUE;		// if set, genTree() includes records from pages.
+		$this->perms_clause = '';					// extra where-clauses for the tree-selection
+		$this->genTree_makeHTML = 0;				// if set, genTree() generates HTML, that visualizes the tree.
+
+		$this->genTree(537,'');
+
+		return $this->recStats;
+	}
+
+
+
+
+
 
 	/**
 	 * Fills $this->lRecords with the records from all tc-tables that are not attached to a PID in the pid-list.

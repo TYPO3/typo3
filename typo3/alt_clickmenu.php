@@ -705,7 +705,7 @@ class clickMenu {
 		$editOnClick='';
 		$loc='top.content'.($this->listFrame && !$this->alwaysContentFrame ?'.list_frame':'');
 		if($GLOBALS['BE_USER']->jsConfirmation(4))	{
-			$conf = "confirm(".$GLOBALS['LANG']->JScharCode(sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:mess.delete'),$elInfo[0])).")";
+			$conf = "confirm(".$GLOBALS['LANG']->JScharCode(sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:mess.delete'),$elInfo[0]).t3lib_BEfunc::referenceCount($table,$uid,' (There are %s reference(s) to this record!)')).")";
 		} else {
 			$conf = '1==1';
 		}
@@ -936,7 +936,7 @@ class clickMenu {
 		$editOnClick='';
 		$loc='top.content'.($this->listFrame && !$this->alwaysContentFrame ?'.list_frame':'');
 		if($GLOBALS['BE_USER']->jsConfirmation(4))	{
-			$conf = "confirm(".$GLOBALS['LANG']->JScharCode(sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:mess.delete'),basename($path))).")";
+			$conf = "confirm(".$GLOBALS['LANG']->JScharCode(sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:mess.delete'),basename($path)).t3lib_BEfunc::referenceCount('_FILE',$path,' (There are %s reference(s) to this file!)')).")";
 		} else {
 			$conf = '1==1';
 		}

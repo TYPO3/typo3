@@ -133,12 +133,13 @@ class wsol_preview {
 	function generateUrls()	{
 			// Live URL:
 		$pageId = intval(t3lib_div::_GP('id'));
+		$language = intval(t3lib_div::_GP('L'));
 
 		$this->URL = array(
 			'liveHeader' => 'wsol_preview.php?header=live',
 			'draftHeader' => 'wsol_preview.php?header=draft',
-			'live' => t3lib_div::getIndpEnv('TYPO3_SITE_URL').'index.php?id='.$pageId.'&ADMCMD_noBeUser=1',
-			'draft' => t3lib_div::getIndpEnv('TYPO3_SITE_URL').'index.php?id='.$pageId.'&ADMCMD_view=1&ADMCMD_editIcons=1&ADMCMD_previewWS='.$this->workspace,
+			'live' => t3lib_div::getIndpEnv('TYPO3_SITE_URL').'index.php?id='.$pageId.'&L='.$language.'&ADMCMD_noBeUser=1',
+			'draft' => t3lib_div::getIndpEnv('TYPO3_SITE_URL').'index.php?id='.$pageId.'&L='.$language.'&ADMCMD_view=1&ADMCMD_editIcons=1&ADMCMD_previewWS='.$this->workspace,
 			'versionMod' => '../../../sysext/version/cm1/index.php?id='.intval(t3lib_div::_GP('id')).'&diffOnly=1'
 		);
 

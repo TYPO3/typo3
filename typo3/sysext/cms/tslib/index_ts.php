@@ -100,19 +100,6 @@ $CLIENT = t3lib_div::clientInfo();				// Set to the browser: net / msie if 4+ br
 $TT->pull();
 
 
-// *********************
-// Libraries included
-// *********************
-$TT->push('Include Frontend libraries','');
-	require_once(PATH_tslib.'class.tslib_fe.php');
-	require_once(PATH_t3lib.'class.t3lib_page.php');
-	require_once(PATH_t3lib.'class.t3lib_userauth.php');
-	require_once(PATH_tslib.'class.tslib_feuserauth.php');
-	require_once(PATH_t3lib.'class.t3lib_tstemplate.php');
-	require_once(PATH_t3lib.'class.t3lib_cs.php');
-$TT->pull();
-
-
 // *******************************
 // Checking environment
 // *******************************
@@ -127,6 +114,30 @@ if (!get_magic_quotes_gpc())	{
 	$HTTP_POST_VARS = $_POST;
 	$TT->pull();
 }
+
+
+// *********************
+// Look for extension ID which will launch alternative output engine
+// *********************
+if ($temp_extId = t3lib_div::_GP('eID'))	{
+	if ($classPath = t3lib_div::getFileAbsFileName($TYPO3_CONF_VARS['FE']['eID_include'][$temp_extId]))	{
+		require($classPath);
+	}
+	exit;
+}
+
+// *********************
+// Libraries included
+// *********************
+$TT->push('Include Frontend libraries','');
+	require_once(PATH_tslib.'class.tslib_fe.php');
+	require_once(PATH_t3lib.'class.t3lib_page.php');
+	require_once(PATH_t3lib.'class.t3lib_userauth.php');
+	require_once(PATH_tslib.'class.tslib_feuserauth.php');
+	require_once(PATH_t3lib.'class.t3lib_tstemplate.php');
+	require_once(PATH_t3lib.'class.t3lib_cs.php');
+$TT->pull();
+
 
 // ***********************************
 // Create $TSFE object (TSFE = TypoScript Front End)
@@ -144,6 +155,22 @@ $TSFE = new $temp_TSFEclassName(
 		t3lib_div::_GP('RDCT')
 	);
 $TSFE->connectToDB();
+
+	// In case of a keyword-authenticated preview, re-initialize the TSFE object:
+if ($temp_previewConfig = $TSFE->ADMCMD_preview())	{
+	$TSFE = new $temp_TSFEclassName(
+		$TYPO3_CONF_VARS,
+		t3lib_div::_GP('id'),
+		t3lib_div::_GP('type'),
+		t3lib_div::_GP('no_cache'),
+		t3lib_div::_GP('cHash'),
+		t3lib_div::_GP('jumpurl'),
+		t3lib_div::_GP('MP'),
+		t3lib_div::_GP('RDCT')
+	);	
+	$TSFE->ADMCMD_preview_postInit($temp_previewConfig);
+}
+
 if ($TSFE->RDCT)	{$TSFE->sendRedirect();}
 
 
@@ -247,8 +274,26 @@ if ($_COOKIE['be_typo_user']) {		// If the backend cookie is set, we proceed and
 		}
 	$TT->pull();
 	$TYPO3_MISC['microtime_BE_USER_end'] = microtime();
-}
+} elseif ($TSFE->ADMCMD_preview_BEUSER_uid)	{
+	require_once (PATH_t3lib.'class.t3lib_befunc.php');
+	require_once (PATH_t3lib.'class.t3lib_userauthgroup.php');
+	require_once (PATH_t3lib.'class.t3lib_beuserauth.php');
+	require_once (PATH_t3lib.'class.t3lib_tsfebeuserauth.php');
 
+		// the value this->formfield_status is set to empty in order to disable login-attempts to the backend account through this script
+	$BE_USER = t3lib_div::makeInstance('t3lib_tsfeBeUserAuth');	// New backend user object
+	$BE_USER->userTS_dontGetCached = 1;
+	$BE_USER->OS = TYPO3_OS;
+	$BE_USER->setBeUserByUid($TSFE->ADMCMD_preview_BEUSER_uid);
+	$BE_USER->unpack_uc('');
+	if ($BE_USER->user['uid'])	{
+		$BE_USER->fetchGroupData();
+		$TSFE->beUserLogin = 1;
+	} else {
+		$BE_USER = '';
+		$TSFE->beUserLogin = 0;
+	}
+}
 
 // ********************
 // Workspace preview:

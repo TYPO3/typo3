@@ -1,3 +1,24 @@
+2006-01-27  Kasper Skaarhoj
+	* Improved output of FlexForm contents inside of eg. Web>List module (stripping tags that is :-)
+	* Added function for counting references to records (in t3lib_BEfunc)
+	* Added warning to About Modules if the reference index is empty (which it will be for all updates to 4.0)
+	* Added connectDB function in t3lib_db (used by clients of new feature in index_ts.php, see later.)
+	* Fixed bug in t3lib_install which resulted in no recognition of the install tool token in localconf.php files: Essentially this has lead to bloated localconf.php files on windows machines if they were edited manually with chr(13).chr(10) line endings.
+	* Added "deleted" column to reference index.
+	* Working on cli-script for updating reference index from command line (necessary for large databases!!)
+	* Added new class, t3lib_flexformtools, providing framework for manipulation of flexform data. (specifically it can be used for traversal of flexform data).
+	* Fixed a bug related to language-limiting: Now, a backend user limited to a certain language cannot create records in default or other languages anymore.
+	* Fixed bug in t3lib_tcemain where files uploaded to a record in case of auto-versioning did not work
+	* Fixed very tricky problem that an auto-versioned record with files attached would create double-references! Uh.... Look for ->autoVersioningUpdate in tcemain and there is a fine explanation of a scenario and how I worked around it.
+	* Changed the XML markup for flexform output. Now some more reasonable tags are used. Fully backwards compatible. use t3lib_flexformtools for writing XML output for flexforms in the future!
+	* Improved length of sys_refindex.ref_string from 40 to 200 chars.
+	* Added information about number of references pointing to record or file before its deleted (didn't localize the message though)
+	* Added reference count column to Web>List and File>Filelist modules plus overview table in the Info display for files and records (ah, finally there is a reason for that fine info-screen...)
+	* Set a security precaution in ws/workspaceforms.php (Dmitry should take a look and learn :-)
+	* Added feature in index_ts.php allowing faster dynamic websites and AJAX implementations in particular. The idea is that extensions can register a keyword which triggers inclusion of another PHP file quite early in index_ts.php. Only basic libraries and configuration is included, then branched of. From that point its up to the third-party script whether it should connect to database, initialize FE users etc, all depending on their need and allowed overhead. The keyword is registered in $TYPO3_CONF_VARS['FE']['eID_include'][_keyword_] and calling index.php?eID=_keyword_ will trigger the inclusion. I will publish a new extension, "whiteboard", demonstrating a sample implementation using simple AJAX stuff.
+	* Began working on a preview-facility which will allow for preview of eg. a workspace page without a backend login.
+	* Started a cleaner-module in Web>Function (coming from the "lowlevel" system extension). The cleaner consists of analysis tools and clean-up tools (based on the analysis), all working with the sys_refindex table as well. Eventually it will allow for nightly, cron-job based checks of the system including a report email to administrator. This way, data and link integrity and log reports can be reviewed each day.
+
 2006-01-27  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 	* Adjustments to the htmlArea RTE extension (see details in local ChangeLog)
 

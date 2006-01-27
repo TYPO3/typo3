@@ -198,7 +198,7 @@ require_once (PATH_t3lib.'class.t3lib_parsehtml_proc.php');
 require_once (PATH_t3lib.'class.t3lib_stdgraphic.php');
 require_once (PATH_t3lib.'class.t3lib_basicfilefunc.php');
 require_once (PATH_t3lib."class.t3lib_refindex.php");
-
+require_once (PATH_t3lib.'class.t3lib_flexformtools.php');
 
 
 
@@ -320,7 +320,7 @@ class t3lib_TCEmain	{
 		// Various
 	var $fileFunc;								// For "singleTon" file-manipulation object
 	var $checkValue_currentRecord=array();		// Set to "currentRecord" during checking of values.
-
+	var $autoVersioningUpdate = FALSE;			// A signal flag used to tell file processing that autoversioning has happend and hence certain action should be applied.
 
 
 
@@ -571,6 +571,8 @@ class t3lib_TCEmain	{
 						$recordAccess = FALSE;
 						$old_pid_value = '';
 						$resetRejected = FALSE;
+						$this->autoVersioningUpdate = FALSE;
+						
 						if (!t3lib_div::testInt($id)) {               // Is it a new record? (Then Id is a string)
 							$fieldArray = $this->newFieldArray($table);	// Get a fieldArray with default values
 							if (isset($incomingFieldArray['pid']))	{	// A pid must be set for new records.
@@ -619,19 +621,25 @@ class t3lib_TCEmain	{
 								// Now, check if we may insert records on this pid.
 							if ($theRealPid>=0)	{
 								$recordAccess = $this->checkRecordInsertAccess($table,$theRealPid);		// Checks if records can be inserted on this $pid.
-								if ($recordAccess && !$this->bypassWorkspaceRestrictions)	{
-										// Workspace related processing:
-									if ($res = $this->BE_USER->workspaceAllowLiveRecordsInPID($theRealPid,$table))	{	// If LIVE records cannot be created in the current PID due to workspace restrictions, prepare creation of placeholder-record
-										if ($res<0)	{
-											$recordAccess = FALSE;
-											$this->newlog('Stage for versioning root point and users access level did not allow for editing',1);
-										}
-									} else {	// So, if no live records were allowed, we have to create a new version of this record:
-										if ($TCA[$table]['ctrl']['versioningWS'])	{
-											$createNewVersion = TRUE;
-										} else {
-											$recordAccess = FALSE;
-											$this->newlog('Record could not be created in this workspace in this branch',1);
+								if ($recordAccess)	{
+									$this->addDefaultPermittedLanguageIfNotSet($table,$incomingFieldArray);
+									$recordAccess = $this->BE_USER->recordEditAccessInternals($table,$incomingFieldArray,TRUE);
+									if (!$recordAccess)		{
+										$this->newlog("recordEditAccessInternals() check failed. [".$this->BE_USER->errorMsg."]",1);
+									} elseif(!$this->bypassWorkspaceRestrictions)	{
+											// Workspace related processing:
+										if ($res = $this->BE_USER->workspaceAllowLiveRecordsInPID($theRealPid,$table))	{	// If LIVE records cannot be created in the current PID due to workspace restrictions, prepare creation of placeholder-record
+											if ($res<0)	{
+												$recordAccess = FALSE;
+												$this->newlog('Stage for versioning root point and users access level did not allow for editing',1);
+											}
+										} else {	// So, if no live records were allowed, we have to create a new version of this record:
+											if ($TCA[$table]['ctrl']['versioningWS'])	{
+												$createNewVersion = TRUE;
+											} else {
+												$recordAccess = FALSE;
+												$this->newlog('Record could not be created in this workspace in this branch',1);
+											}
 										}
 									}
 								}
@@ -680,8 +688,10 @@ class t3lib_TCEmain	{
 											$this->errorLog = array_merge($this->errorLog,$tce->errorLog);
 
 											if ($tce->copyMappingArray[$table][$id])	{
+												$this->uploadedFileArray[$table][$tce->copyMappingArray[$table][$id]] = $this->uploadedFileArray[$table][$id];
 												$id = $this->autoVersionIdMap[$table][$id] = $tce->copyMappingArray[$table][$id];
 												$recordAccess = TRUE;
+												$this->autoVersioningUpdate = TRUE;
 											} else $this->newlog("Could not be edited in offline workspace in the branch where found (failure state: '".$errorCode."'). Auto-creation of version failed!",1);
 										} else $this->newlog("Could not be edited in offline workspace in the branch where found (failure state: '".$errorCode."'). Auto-creation of version not allowed in workspace!",1);
 									}
@@ -690,9 +700,7 @@ class t3lib_TCEmain	{
 							$status = 'update';	// the default is 'update'
 						}
 
-							// **************************************
-							// If access was granted above, proceed:
-							// **************************************
+							// If access was granted above, proceed to create or update record:
 						if ($recordAccess)	{
 
 							list($tscPID) = t3lib_BEfunc::getTSCpid($table,$id,$old_pid_value ? $old_pid_value : $fieldArray['pid']);	// Here the "pid" is set IF NOT the old pid was a string pointing to a place in the subst-id array.
@@ -887,7 +895,7 @@ class t3lib_TCEmain	{
 		foreach($incomingFieldArray as $field => $fieldValue)	{
 			if (!in_array($table.'-'.$field, $this->exclude_array) && !$this->data_disableFields[$table][$id][$field])	{	// The field must be editable.
 
-					// Checking language:
+					// Checking if a value for language can be changed:
 				$languageDeny = $TCA[$table]['ctrl']['languageField'] && !strcmp($TCA[$table]['ctrl']['languageField'], $field) && !$this->BE_USER->checkLanguageAccess($fieldValue);
 
 				if (!$languageDeny)	{
@@ -1253,6 +1261,7 @@ class t3lib_TCEmain	{
 	 * @return	array		Modified $res array
 	 */
 	function checkValue_group_select($res,$value,$tcaFieldConf,$PP,$uploadedFiles,$field)	{
+				
 		list($table,$id,$curValue,$status,$realPid,$recFID) = $PP;
 
 			// Detecting if value send is an array and if so, implode it around a comma:
@@ -1384,6 +1393,23 @@ class t3lib_TCEmain	{
 
 				// If we are updating:
 			if ($status=='update')	{
+
+					// Traverse the input values and convert to absolute filenames in case the update happens to an autoVersionized record.
+					// Background: This is a horrible workaround! The problem is that when a record is auto-versionized the files of the record get copied and therefore get new names which is overridden with the names from the original record in the incoming data meaning both lost files and double-references!
+					// The only solution I could come up with (except removing support for managing files when autoversioning) was to convert all relative files to absolute names so they are copied again (and existing files deleted). This should keep references intact but means that some files are copied, then deleted after being copied _again_.
+					// Actually, the same problem applies to database references in case auto-versioning would include sub-records since in such a case references are remapped - and they would be overridden due to the same principle then.
+					// Illustration of the problem comes here:
+					// We have a record 123 with a file logo.gif. We open and edit the files header in a workspace. So a new version is automatically made.
+					// The versions uid is 456 and the file is copied to "logo_01.gif". But the form data that we sents was based on uid 123 and hence contains the filename "logo.gif" from the original.
+					// The file management code below will do two things: First it will blindly accept "logo.gif" as a file attached to the record (thus creating a double reference) and secondly it will find that "logo_01.gif" was not in the incoming filelist and therefore should be deleted.
+					// If we prefix the incoming file "logo.gif" with its absolute path it will be seen as a new file added. Thus it will be copied to "logo_02.gif". "logo_01.gif" will still be deleted but since the files are the same the difference is zero - only more processing and file copying for no reason. But it will work.
+				if ($this->autoVersioningUpdate===TRUE)	{
+					foreach($valueArray as $key => $theFile)	{
+						if ($theFile===basename($theFile))	{
+							$valueArray[$key] = PATH_site.$tcaFieldConf['uploadfolder'].'/'.$theFile;
+						}
+					}		
+				}
 
 					// Finding the CURRENT files listed, either from MM or from the current record.
 				$theFileValues=array();
@@ -1573,19 +1599,14 @@ class t3lib_TCEmain	{
 	}
 
 	/**
-	 * [Describe function...]
+	 * Converts an array to FlexForm XML
 	 *
-	 * @param	[type]		$array: ...
-	 * @return	[type]		...
+	 * @param	array		Array with FlexForm data
+	 * @return	string		Input array converted to XML
 	 */
 	function checkValue_flexArray2Xml($array)	{
-		$output = t3lib_div::array2xml($array,'',0,'T3FlexForms',4,array('parentTagMap' => array(
-/*								'data' => 'sheets',
-								'sheets' => 'language',
-								'language' => 'fieldname',
-								'el' => 'fieldname'		*/
-							)));
-		return $output;
+		$flexObj = t3lib_div::makeInstance('t3lib_flexformtools');
+		return $flexObj->flexArray2Xml($array);
 	}
 
 	/**
@@ -4643,6 +4664,30 @@ $this->log($table,$id,6,0,0,'Stage raised...',30,array('comment'=>$comment,'stag
 		return $fieldArray;
 	}
 
+	/**
+	 * If a "languageField" is specified for $table this function will add a possible value to the incoming array if none is found in there already.
+	 * 
+	 * @param	string	Table name
+	 * @param	array	Incoming array (passed by reference)
+	 * @return	void
+	 */
+	function addDefaultPermittedLanguageIfNotSet($table,&$incomingFieldArray)	{
+		global $TCA;
+		
+			// Checking languages:
+		if ($TCA[$table]['ctrl']['languageField'])	{
+			if (!isset($incomingFieldArray[$TCA[$table]['ctrl']['languageField']]))	{	// Language field must be found in input row - otherwise it does not make sense.
+				$rows = array_merge(array('uid'=>0),$GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid','sys_language','pid=0'.t3lib_BEfunc::deleteClause('sys_language')),array('uid'=>-1));
+				foreach($rows as $r)	{
+					if ($this->BE_USER->checkLanguageAccess($r['uid']))		{
+						$incomingFieldArray[$TCA[$table]['ctrl']['languageField']] = $r['uid'];
+						break; 	
+					}	
+				}
+			}
+		}
+	}
+	
 	/**
 	 * Returns the $data array from $table overridden in the fields defined in ->overrideValues.
 	 *
