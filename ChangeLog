@@ -1,3 +1,6 @@
+2006-01-27  Peter Niederlag <peter@niederlag.de>
+	* Fixed bug #2023, removed most of RTE-Config from sysEXT:cms and sysExt:css-styled_content
+
 2006-01-27  Ingmar Schlecht <ingmar@typo3.org>
 	* Added <label> tags around "Expand all" in class.alt_menu_functions.inc
 

@@ -260,6 +260,7 @@ $TCA['tt_content'] = Array (
 			'l10n_mode' => 'prefixLangTitle',
 			'l10n_cat' => 'text',
 			'label' => 'LLL:EXT:lang/locallang_general.php:LGL.text',
+			'defaultExtras' => 'richtext:rte_transform[mode=ts_css]',
 			'config' => Array (
 				'type' => 'text',
 				'cols' => '48',
@@ -960,8 +961,8 @@ $TCA['tt_content'] = Array (
 	'types' => Array (
 		'1' => 	Array('showitem' => 'CType'),
 		'header' => 	Array('showitem' => 'CType;;4;button;1-1-1, header;;3;;2-2-2, subheader;;8'),
-		'text' => 		Array('showitem' => 'CType;;4;button;1-1-1, header;;3;;2-2-2, bodytext;;9;richtext[paste|bold|italic|underline|formatblock|class|left|center|right|orderedlist|unorderedlist|outdent|indent|link|image]:rte_transform[flag=rte_enabled|mode=ts];3-3-3, rte_enabled, text_properties'),
-		'textpic' => 	Array('showitem' => 'CType;;4;button;1-1-1, header;;3;;2-2-2, bodytext;;9;richtext[paste|bold|italic|underline|formatblock|class|left|center|right|orderedlist|unorderedlist|outdent|indent|link|image]:rte_transform[flag=rte_enabled|mode=ts];3-3-3, rte_enabled, text_properties, --div--, image;;;;4-4-4, imageorient;;2, imagewidth;;13,
+		'text' => 		Array('showitem' => 'CType;;4;button;1-1-1, header;;3;;2-2-2, bodytext;;9;richtext:rte_transform[flag=rte_enabled|mode=ts_css];3-3-3, rte_enabled, text_properties'),
+		'textpic' => 	Array('showitem' => 'CType;;4;button;1-1-1, header;;3;;2-2-2, bodytext;;9;richtext:rte_transform[flag=rte_enabled|mode=ts_css];3-3-3, rte_enabled, text_properties, --div--, image;;;;4-4-4, imageorient;;2, imagewidth;;13,
 			--palette--;LLL:EXT:cms/locallang_ttc.php:ALT.imgLinks;7,
 			--palette--;LLL:EXT:cms/locallang_ttc.php:ALT.imgOptions;11,
 			imagecaption;;5,
