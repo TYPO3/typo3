@@ -389,10 +389,10 @@ class alt_menu_functions {
 						<td align="center">
 								<form action="alt_menu.php" method="get">
 									<input type="hidden" name="collapsableExpandAll" value="1" />
-									<input type="checkbox" name="expandAll" value="1" onclick="this.form.submit();" '.($config['expandAll']?'checked="checked"':'').' />
+									<input type="checkbox" name="expandAll" id="expandall" value="1" onclick="this.form.submit();" '.($config['expandAll']?'checked="checked"':'').' />
 								</form>
 						</td>
-						<td class="c-subitem-label">'.$LANG->sL('LLL:EXT:lang/locallang_core.php:labels.expandAll',1).'</td>
+						<td class="c-subitem-label"><label for="expandall">'.$LANG->sL('LLL:EXT:lang/locallang_core.php:labels.expandAll',1).'</label></td>
 					</tr>';
 			} else {
 				$collapseAllHTML = '';

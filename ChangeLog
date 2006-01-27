@@ -1,3 +1,6 @@
+2006-01-27  Ingmar Schlecht <ingmar@typo3.org>
+	* Added <label> tags around "Expand all" in class.alt_menu_functions.inc
+
 2006-01-27  Kasper Skaarhoj
 	* Improved output of FlexForm contents inside of eg. Web>List module (stripping tags that is :-)
 	* Added function for counting references to records (in t3lib_BEfunc)
