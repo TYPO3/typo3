@@ -1186,14 +1186,20 @@ class tslib_cObj {
 								$GLOBALS['TSFE']->currentRecord = $conf['table'].':'.$row['uid'];
 								$this->lastChanged($row['tstamp']);
 								$cObj->start($row,$conf['table']);
-								if ($GLOBALS['TSFE']->config['config']['insertDmailerBoundaries']) { $cobjValue.='<!--DMAILER_SECTION_BOUNDARY_'.intval($row['module_sys_dmail_category']).'-->'; }
 								$tmpValue = $cObj->cObjGetSingle($renderObjName, $renderObjConf, $renderObjKey);
+								if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['CType-content-itemProc']))	{
+									$_params = array(
+										'value' => &$tmpValue,
+										'cObj' => &$cObj
+									);
+									foreach($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['CType-content-itemProc'] as $_funcRef)	{
+										t3lib_div::callUserFunction($_funcRef,$_params,$this);
+									}
+								}
 								$cobjValue .= $tmpValue;
 							}# else debug($GLOBALS['TSFE']->recordRegister,'CONTENT');
 						}
 					}
-
-					if ($GLOBALS['TSFE']->config['config']['insertDmailerBoundaries']) { $cobjValue.='<!--DMAILER_SECTION_BOUNDARY_END-->'; }
 				}
 				if ($slideCollectReverse) {
 					$theValue = $cobjValue.$theValue;
@@ -1287,9 +1293,17 @@ class tslib_cObj {
 						$GLOBALS['TSFE']->currentRecord = $val['table'].':'.$val['id'];
 						$this->lastChanged($row['tstamp']);
 						$cObj->start($row,$val['table']);
-						if ($GLOBALS['TSFE']->config['config']['insertDmailerBoundaries'])	{$theValue.='<!--DMAILER_SECTION_BOUNDARY_'.intval($row['module_sys_dmail_category']).'-->';}
-						$theValue.=$cObj->cObjGetSingle($renderObjName, $renderObjConf, $renderObjKey);
-						if ($GLOBALS['TSFE']->config['config']['insertDmailerBoundaries'])	{$theValue.='<!--DMAILER_SECTION_BOUNDARY_END-->';}
+						$tmpValue = $cObj->cObjGetSingle($renderObjName, $renderObjConf, $renderObjKey);
+						if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['CType-content-itemProc']))	{
+							$_params = array(
+								'value' => &$tmpValue,
+								'cObj' => &$cObj
+							);
+							foreach($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['CType-content-itemProc'] as $_funcRef)	{
+								t3lib_div::callUserFunction($_funcRef,$_params,$this);
+							}
+						}
+						$theValue .= $tmpValue;
 					}# else debug($GLOBALS['TSFE']->recordRegister,'RECORDS');
 				}
 			}
