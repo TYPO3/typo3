@@ -1,3 +1,12 @@
+2006-01-27  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+	* Version 1.1.4
+	* Correction to the behaviour of popups.
+	* Correction to the QuickTag plugin (hx tags).
+	* Change opening default of Acronym plugin to abreviation.
+	* Reduce font size of context menu in all skins.
+	* Work around Mozilla bug to force display update when table borders change.
+	* Adjust opening height of SpellChecker window.
+
 2006-01-26  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
 	* Code cleanup.
 	* Improved link auto-detect in Mozilla/Firefox.

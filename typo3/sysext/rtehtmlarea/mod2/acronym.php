@@ -97,7 +97,7 @@ class tx_rtehtmlarea_acronym {
 
 			function init() {
 				if(abbrType != null) document.getElementById("type").style.display = "none";
-					else abbrType = "acronym";
+					else abbrType = "abbr";
 				if(HTMLArea.is_ie) document.getElementById("type").style.display = "none";
 				if(abbrType == "acronym") document.acronymForm.acronym.checked = true;
 					else  document.acronymForm.abbreviation.checked = true;
@@ -219,8 +219,8 @@ class tx_rtehtmlarea_acronym {
 	<div class="title" id="abbrType">' . $LANG->getLL("Acronym") . '</div>
 	<fieldset id="type">
 		<legend>' . $LANG->getLL("Type_of_abridged_form") . '</legend>
-		<label for="acronym" class="checkbox">' . $LANG->getLL("Acronym") . '</label><input type="radio" name="type" id="acronym" value="acronym" checked="checked" onclick="setType();" />
-		<label for="abbreviation" class="checkbox">' . $LANG->getLL("Abbreviation") . '</label><input type="radio" name="type" id="abbreviation" value="abbreviation" onclick="setType();" />
+		<label for="abbreviation" class="checkbox">' . $LANG->getLL("Abbreviation") . '</label><input type="radio" name="type" id="abbreviation" value="abbreviation" checked="checked" onclick="setType();" />
+		<label for="acronym" class="checkbox">' . $LANG->getLL("Acronym") . '</label><input type="radio" name="type" id="acronym" value="acronym" onclick="setType();" />
 	</fieldset>
 	<fieldset id="selector">
 		<legend>' . $LANG->getLL("Defined_term") . '</legend>

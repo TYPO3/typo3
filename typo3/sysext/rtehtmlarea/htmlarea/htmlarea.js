@@ -1133,6 +1133,10 @@ HTMLArea.resetHandler = function(ev) {
 HTMLArea.removeEditorEvents = function(ev) {
 	if(!ev) var ev = window.event;
 	HTMLArea._stopEvent(ev);
+	if (Dialog._modal) {
+		Dialog._modal.close();
+		Dialog._modal = null;
+	}
 	for (var ed = RTEarea.length; --ed > 0 ;) {
 		var editor = RTEarea[ed]["editor"];
 		if(editor) {
@@ -2742,14 +2746,15 @@ Dialog = function(url, action, init, width, height, opener, editor) {
  */
 Dialog._open = function(url, action, init, width, height, _opener, editor) {
 	
-	if (Dialog._modal) Dialog._modal.close();
+	if (Dialog._modal) {
+		Dialog._modal.close();
+		Dialog._modal = null;
+	}
 	
 	var dlg = window.open(url, 'hadialog', "toolbar=no,location=no,directories=no,menubar=no,width=" + width + ",height=" + height + ",scrollbars=no,resizable=yes,modal=yes,dependent=yes,top=100,left=100");
-	if (Dialog._modal && !Dialog._modal.closed) {
-		var obj = new Object();
-		obj.dialogWindow = dlg;
-		Dialog._dialog = obj;
-	}
+	var obj = new Object();
+	obj.dialogWindow = dlg;
+	Dialog._dialog = obj;
 	Dialog._modal = dlg;
 	Dialog._arguments = null;
 	if (typeof(init) != "undefined") { Dialog._arguments = init; }

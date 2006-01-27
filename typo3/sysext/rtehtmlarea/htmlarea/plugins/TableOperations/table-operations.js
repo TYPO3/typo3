@@ -202,7 +202,8 @@ TableOperations.tablePropertiesUpdate = function(table) {
 				table.frame = (val != "not set") ? val : "";
 				break;
 			    case "f_rules":
-				table.rules = (val != "not set") ? val : "";
+				if (val != "not set") table.rules = val;
+			    		else table.removeAttribute("rules");
 				break;
 			    case "f_class":
 			    case "f_class_tbody":
@@ -218,16 +219,8 @@ TableOperations.tablePropertiesUpdate = function(table) {
 				break;
 			}
 		}
-		dialog.editor.forceRedraw();
 		dialog.editor.focusEditor();
 		dialog.editor.updateToolbar();
-			// Apparently required to force Mozilla to redraw borders
-		if(HTMLArea.is_gecko) {
-			var save_collapse = table.style.borderCollapse;
-			table.style.borderCollapse = "collapse";
-			table.style.borderCollapse = "separate";
-			table.style.borderCollapse = save_collapse;
-		}
 	});
 };
 

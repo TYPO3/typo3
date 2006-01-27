@@ -454,8 +454,9 @@
 }
 .htmlarea-context-menu li .button {
 	text-align:left;vertical-align:middle;
-	background-color:transparent;background-repeat:no-repeat;background-position:3px 2px;
-	height:21px;
+	background-color:transparent;background-repeat:no-repeat;background-position:2px 2px;
+	font-size:11px;
+	height:20px;
 	border-style:none;margin:0;padding:0 0 0 24px;
 }
 .htmlarea-context-menu li .button img {

@@ -79,8 +79,8 @@ SpellChecker.prototype.buttonPress = function(editor, id) {
 		var param = new Object();
 		param.editor = editor;
 		param.HTMLArea = HTMLArea;
-		if (SpellChecker.f_charset.toLowerCase() == 'iso-8859-1') editor._popupDialog("plugin://SpellChecker/spell-check-ui-iso-8859-1", null, param, 670, 500);
-    			else editor._popupDialog("plugin://SpellChecker/spell-check-ui", null, param, 670, 500);
+		if (SpellChecker.f_charset.toLowerCase() == 'iso-8859-1') editor._popupDialog("plugin://SpellChecker/spell-check-ui-iso-8859-1", null, param, 670, 515);
+    			else editor._popupDialog("plugin://SpellChecker/spell-check-ui", null, param, 670, 515);
 		break;
 	}
 };

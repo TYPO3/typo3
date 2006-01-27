@@ -35,7 +35,7 @@
 PopupWin = function(editor, _title, handler, initFunction, width, height, _opener) {
 	this.editor = editor;
 	this.handler = handler;
-	if (typeof initFunction == "undefined") initFunction = window;	// pass this window object by default
+	if (typeof(initFunction) == "undefined") var initFunction = window;	// pass this window object by default
 	this._geckoOpenModal(editor, _title, handler, initFunction, width, height, _opener);
 };
 
@@ -53,9 +53,10 @@ PopupWin.prototype._parentEvent = function(ev) {
 PopupWin.prototype._geckoOpenModal = function(editor, _title, handler, initFunction, width, height, _opener) {
 	if(!editor) var editor = this.editor;
 	var dlg = editor._iframe.contentWindow.open("", "", "toolbar=no,menubar=no,personalbar=no,width=" + (width?width:100) + ",height=" + (height?height:100) + ",scrollbars=no,resizable=yes,modal=yes,dependent=yes,top=100,left=100");
-	if(!dlg)  var dlg = window.open("", "", "toolbar=no,menubar=no,personalbar=no,width=" + (width?width:100) + ",height=" + (height?height:100) + ",scrollbars=no,resizable=yes,modal=yes,dependent=yes,top=100,left=100");
+	if(!dlg) var dlg = window.open("", "", "toolbar=no,menubar=no,personalbar=no,width=" + (width?width:100) + ",height=" + (height?height:100) + ",scrollbars=no,resizable=yes,modal=yes,dependent=yes,top=100,left=100");
 	this.dialogWindow = dlg;
-	this._opener = (_opener) ? _opener : this.dialogWindow.opener;
+	if (typeof(_opener) != "undefined") this._opener = _opener;
+		else this._opener = this.dialogWindow.opener;
 	this._opener.dialog = this;
 	if(Dialog._modal && !Dialog._modal.closed) Dialog._dialog = this;
 	var doc = this.dialogWindow.document;
@@ -77,11 +78,8 @@ PopupWin.prototype._geckoOpenModal = function(editor, _title, handler, initFunct
 	var link = doc.createElement("link");
 	link.rel = "stylesheet";
 	link.type ="text/css";
-	if( _editor_CSS.indexOf("http") == -1 ) {
-		link.href = _typo3_host_url + _editor_CSS;
-	} else {
-		link.href = _editor_CSS;
-	}
+	if( _editor_CSS.indexOf("http") == -1 ) link.href = _typo3_host_url + _editor_CSS;
+		else link.href = _editor_CSS;
 	head.appendChild(link);
 	if(!doc.all) html.appendChild(head);
 	var body = doc.body;
@@ -96,15 +94,14 @@ PopupWin.prototype._geckoOpenModal = function(editor, _title, handler, initFunct
 	this.element = body;
 
 	initFunction(this);
-
 	this.captureEvents();
 	this.dialogWindow.focus();
 };
 
 	// Close the popup when escape is hit
 PopupWin.prototype._dlg_close_on_esc = function(ev) {
+	if (!ev) var ev = window.event;
 	if (ev.keyCode == 27) {
-		this.releaseEvents();
 		this.close();
 		return false;
 	}
@@ -141,8 +138,8 @@ PopupWin.prototype.captureEvents = function() {
 	var self = this;
 
 	function capwin(w) {
-		if(w.addEventListener) {
-			w.addEventListener("focus", self._parentEvent, false);
+		if(HTMLArea.is_gecko) {
+			w.addEventListener("focus", self._parentEvent, true);
 		} else {
 			HTMLArea._addEvent(w, "focus", function(ev) {self._parentEvent(ev); });
 		}
@@ -151,45 +148,49 @@ PopupWin.prototype.captureEvents = function() {
 	capwin(window);
 
 		// capture unload events
-	HTMLArea._addEvent(_opener, "unload", function() { self.releaseEvents(); self.close(); return false; });
+	HTMLArea._addEvent(window, "unload", function() { self.releaseEvents(); self.close(); return false; });
+	if (HTMLArea.is_gecko) HTMLArea._addEvent(editor._iframe.contentWindow, "unload", function() { self.releaseEvents(); self.close(); return false; });
 	HTMLArea._addEvent(self.dialogWindow, "unload", function() { self.releaseEvents(); self.close(); return false; });
 		// capture escape events
-	HTMLArea._addEvent(self.doc, "keypress", function(ev) { return self._dlg_close_on_esc((!ev) ? self.dialogWindow.event : ev); });
+	HTMLArea._addEvent(self.doc, "keypress", function(ev) { return self._dlg_close_on_esc(ev); });
 };
 
 	// Release the capturing of events
 PopupWin.prototype.releaseEvents = function() {
 	var editor = this.editor;
 	var _opener = this._opener;
-	if(_opener) {
+	if(_opener && !_opener.closed) {
 		var self = this;
 			// release the capturing of events
 		function relwin(w) {
-		if(w.removeEventListener) {
-			HTMLArea._removeEvent(w, "focus", self._parentEvent);
-		} else {
-			HTMLArea._removeEvent(w, "focus", function(ev) {self._parentEvent(ev); });
-		}
+			if (HTMLArea.is_gecko) HTMLArea._removeEvent(w, "focus", self._parentEvent);
+				else HTMLArea._removeEvent(w, "focus", function(ev) {self._parentEvent(ev); });
 			try { for (var i = 0; i < w.frames.length; i++) { relwin(w.frames[i]); }; } catch(e) { };
 		};
-		relwin(window);
-		HTMLArea._removeEvent(_opener, "unload", function() { self.releaseEvents(); self.close(); return false; });	
+		relwin(_opener);
+		HTMLArea._removeEvent(_opener, "unload", function() { if (!self.dialogWindow.closed) { self.releaseEvents(); self.close(); } return false; });
+		if (HTMLArea.is_gecko) HTMLArea._addEvent(editor._iframe.contentWindow, "unload", function() { self.releaseEvents(); self.close(); return false; });
 	}
 };
 
 	// Close the popup
 PopupWin.prototype.close = function() {
-	if(this.dialogWindow && this.dialogWindow.dialog) {
+	if (this.dialogWindow && this.dialogWindow.dialog) {
 		this.dialogWindow.dialog.releaseEvents();
 		this.dialogWindow.dialog.close();
 		this.dialogWindow.dialog = null;
 	}
-	if(this.dialogWindow) {
-		this.dialogWindow.close();
-		this.dialogWindow = null;
+	if (this.dialogWindow) {
+		this.releaseEvents();
+		if (!this.dialogWindow.closed) {
+			this.dialogWindow.close();
+			this.dialogWindow = null;
+		}
 	}
-	if(this._opener) this._opener.focus();
-	if(this._opener.dialog) this._opener.dialog = null;
+	if (HTMLArea.is_gecko && this._opener) {
+		if (this._opener.dialog) this._opener.dialog = null;
+		if (!this._opener.closed) this._opener.focus();
+	}
 };
 
 	// Add OK and Cancel buttons to the popup
@@ -207,7 +208,6 @@ PopupWin.prototype.addButtons = function() {
 		    	button.innerHTML = HTMLArea.I18N.dialogs["OK"];
 			button.onclick = function() {
 				try { self.callHandler(); } catch(e) { };
-				self.releaseEvents();
 				self.close();
 				return false;
 			};
@@ -215,7 +215,6 @@ PopupWin.prototype.addButtons = function() {
 		    case "cancel":
 		    	button.innerHTML = HTMLArea.I18N.dialogs["Cancel"];
 			button.onclick = function() {
-				self.releaseEvents();
 				self.close();
 				return false;
 			};

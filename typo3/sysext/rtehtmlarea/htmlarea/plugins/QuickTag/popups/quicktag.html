@@ -189,7 +189,7 @@ curTagOpt = (tagLib[curTag] == true);
 		}
 
 		if(curTagOpt == true) {
-			obj = eval('opAtt_'+curTag+'["'+atrib+'"]');
+			obj = eval('opAtt_'+curTag.replace(/^h[1-6]$/,"h")+'["'+atrib+'"]');
 		} else { 
 			obj = opAtt_all[atrib];
 		} 
