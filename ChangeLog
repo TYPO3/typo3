@@ -1,3 +1,8 @@
+
+2005-01-28  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+
+	* Fixed bug #2382: error when creating a new (and empty) file in BE
+
 2005-01-27  Sebastian Kurfuerst  <sebastian@garbage-group.de>
 
 	* Fixed bug #2337: remove 30KB editing limit in Template Editor

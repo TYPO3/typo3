@@ -2138,15 +2138,14 @@ class t3lib_div {
 	 * @return	boolean		True if the file was successfully opened and written to.
 	 */
 	function writeFile($file,$content)	{
-		if (!@is_file($file))	{ $changePermissions=true; }
+		if (!@is_file($file))	$changePermissions = true;
 
 		if ($fd = fopen($file,'wb'))	{
 			$res = fwrite($fd,$content);
-			fclose($fd );
+			fclose($fd);
 
-			if (!$res)	{
-				return false;
-			}
+			if ($res===false)	return false;
+
 			if ($changePermissions)	{	// Change the permissions only if the file has just been created
 				t3lib_div::fixPermissions($file);
 			}
