@@ -112,6 +112,11 @@ class t3lib_dmailer extends t3lib_htmlmail {
 
 		$this->dmailer['sectionBoundary'] = '<!--DMAILER_SECTION_BOUNDARY';
 		$this->dmailer['html_content'] = base64_decode($this->theParts['html']['content']);
+
+			// Try to auto-detect the charset of the message
+		$res = preg_match('/<meta[\s]+http-equiv="Content-Type"[\s]+content="text\/html;[\s]+charset=([^"]+)"/m', $this->dmailer['html_content'], $matches);
+		if ($res==1)	{ $this->charset = $matches[1]; }
+
 		$this->dmailer['plain_content'] = base64_decode($this->theParts['plain']['content']);
 		$this->dmailer['messageID'] = $this->messageid;
 		$this->dmailer['sys_dmail_uid'] = $sys_dmail_uid;

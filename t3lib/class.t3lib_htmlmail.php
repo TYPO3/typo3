@@ -201,6 +201,7 @@ class t3lib_htmlmail {
 	var $priority = 3;   // 1 = highest, 5 = lowest, 3 = normal
 	var $mailer = "PHP mailer";	// X-mailer
 	var $alt_base64=0;
+	var $alt_8bit=0;
 	var $jumperURL_prefix ="";		// This is a prefix that will be added to all links in the mail. Example: 'http://www.mydomain.com/jump?userid=###FIELD_uid###&url='. if used, anything after url= is urlencoded.
 	var $jumperURL_useId=0;			// If set, then the array-key of the urls are inserted instead of the url itself. Smart in order to reduce link-length
 	var $mediaList="";				// If set, this is a list of the media-files (index-keys to the array) that should be represented in the html-mail
@@ -229,6 +230,7 @@ class t3lib_htmlmail {
 	var $messageid = "";
 	var $returnPath = "";
 	var $Xid = "";
+	var $dontEncodeHeader = false;		// If set, the header will not be encoded
 
 	var $headers = "";
 	var $message = "";
@@ -236,8 +238,10 @@ class t3lib_htmlmail {
 	var $image_fullpath_list = "";
 	var $href_fullpath_list = "";
 
-	var $plain_text_header = "Content-Type: text/plain; charset=iso-8859-1\nContent-Transfer-Encoding: quoted-printable";
-	var $html_text_header = "Content-Type: text/html; charset=iso-8859-1\nContent-Transfer-Encoding: quoted-printable";
+	var $plain_text_header = '';
+	var $html_text_header = '';
+	var $charset = '';
+	var $defaultCharset = 'iso-8859-1';
 
 
 
@@ -263,17 +267,55 @@ class t3lib_htmlmail {
 			// Sets the message id
 		$this->messageid = md5(microtime()).'@domain.tld';
 
+			// Default line break for Unix systems.
+		$this->linebreak = chr(10);
+			// Line break for Windows. This is needed because PHP on Windows systems send mails via SMTP instead of using sendmail, and thus the linebreak needs to be \r\n.
+		if (TYPO3_OS=='WIN')	{
+			$this->linebreak = chr(13).chr(10);
+		}
+
+		$charset = $this->defaultCharset;
+		if (is_object($GLOBALS['TSFE']) && $GLOBALS['TSFE']->config['metaCharset'])	{
+			$charset = $GLOBALS['TSFE']->config['metaCharset'];
+		} elseif ($GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset'])	{
+			$charset = $GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset'];
+		}
+		$this->charset = $charset;
+
+			// Use quoted-printable headers by default
+		$this->useQuotedPrintable();
 	}
 
 	/**
 	 * [Describe function...]
 	 *
-	 * @return	[type]		...
+	 * @return	void
+	 */
+	function useQuotedPrintable()	{
+		$this->plain_text_header = 'Content-Type: text/plain; charset='.$this->charset.$this->linebreak.'Content-Transfer-Encoding: quoted-printable';
+		$this->html_text_header = 'Content-Type: text/html; charset='.$this->charset.$this->linebreak.'Content-Transfer-Encoding: quoted-printable';
+	}
+
+	/**
+	 * [Describe function...]
+	 *
+	 * @return	void
 	 */
 	function useBase64()	{
-		$this->plain_text_header = 'Content-Type: text/plain; charset=iso-8859-1'.chr(10).'Content-Transfer-Encoding: base64';
-		$this->html_text_header = 'Content-Type: text/html; charset=iso-8859-1'.chr(10).'Content-Transfer-Encoding: base64';
+		$this->plain_text_header = 'Content-Type: text/plain; charset='.$this->charset.$this->linebreak.'Content-Transfer-Encoding: base64';
+		$this->html_text_header = 'Content-Type: text/html; charset='.$this->charset.$this->linebreak.'Content-Transfer-Encoding: base64';
 		$this->alt_base64=1;
+	}
+
+	/**
+	 * [Describe function...]
+	 *
+	 * @return	void
+	 */
+	function use8Bit()	{
+		$this->plain_text_header = 'Content-Type: text/plain; charset='.$this->charset.'; format=flowed'.$this->linebreak.'Content-Transfer-Encoding: 8bit';
+		$this->html_text_header = 'Content-Type: text/html; charset='.$this->charset.$this->linebreak.'Content-Transfer-Encoding: 8bit';
+		$this->alt_8bit=1;
 	}
 
 	/**
@@ -283,7 +325,7 @@ class t3lib_htmlmail {
 	 * @return	[type]		...
 	 */
 	function encodeMsg($content)	{
-		return $this->alt_base64 ? $this->makeBase64($content) : t3lib_div::quoted_printable($content, 76);
+		return $this->alt_base64 ? $this->makeBase64($content) : ($this->alt_8bit ? $content : t3lib_div::quoted_printable($content));
 	}
 
 	/**
@@ -385,7 +427,7 @@ class t3lib_htmlmail {
 	/**
 	 * @return	[type]		...
 	 */
-	function setHeaders ()	{
+	function setHeaders()	{
 			// Clears the header-string and sets the headers based on object-vars.
 		$this->headers = "";
 			// Message_id
@@ -403,8 +445,7 @@ class t3lib_htmlmail {
 			// From
 		if ($this->from_email)	{
 			if ($this->from_name)	{
-				$name = $this->convertName($this->from_name);
-				$this->add_header('From: '.$name.' <'.$this->from_email.'>');
+				$this->add_header('From: '.$this->from_name.' <'.$this->from_email.'>');
 			} else {
 				$this->add_header('From: '.$this->from_email);
 			}
@@ -412,16 +453,14 @@ class t3lib_htmlmail {
 			// Reply
 		if ($this->replyto_email)	{
 			if ($this->replyto_name)	{
-				$name = $this->convertName($this->replyto_name);
-				$this->add_header("Reply-To: $name <$this->replyto_email>");
+				$this->add_header('Reply-To: '.$this->replyto_name.' <'.$this->replyto_email.'>');
 			} else {
-				$this->add_header("Reply-To: $this->replyto_email");
+				$this->add_header('Reply-To: '.$this->replyto_email);
 			}
 		}
 			// Organisation
 		if ($this->organisation)	{
-			$name = $this->convertName($this->organisation);
-			$this->add_header("Organisation: $name");
+			$this->add_header('Organisation: '.$this->organisation);
 		}
 			// mailer
 		if ($this->mailer)	{
@@ -432,6 +471,13 @@ class t3lib_htmlmail {
 			$this->add_header("X-Priority: $this->priority");
 		}
 		$this->add_header("Mime-Version: 1.0");
+
+		if (!$this->dontEncodeHeader)	{
+			$enc = $this->alt_base64 ? 'base64' : 'quoted_printable';	// Header must be ASCII, therefore only base64 or quoted_printable are allowed!
+				// Quote recipient and subject
+			$this->recipient = t3lib_div::encodeHeader($this->recipient,$enc,$this->charset);
+			$this->subject = t3lib_div::encodeHeader($this->subject,$enc,$this->charset);
+		}
 	}
 
 	/**
@@ -731,7 +777,17 @@ class t3lib_htmlmail {
 	 * @param	[type]		$header: ...
 	 * @return	[type]		...
 	 */
-	function add_header ($header)	{
+	function add_header($header)	{
+		if (!$this->dontEncodeHeader && !stristr($header,'Content-Type') && !stristr($header,'Content-Transfer-Encoding'))	{
+				// Mail headers must be ASCII, therefore we convert the whole header to either base64 or quoted_printable
+			$parts = explode(': ',$header,2);	// Field tags must not be encoded
+			if (count($parts)==2)	{
+				$enc = $this->alt_base64 ? 'base64' : 'quoted_printable';
+				$parts[1] = t3lib_div::encodeHeader($parts[1],$enc,$this->charset);
+				$header = implode(': ',$parts);
+			}
+		}
+
 			// Adds a header to the mail. Use this AFTER the setHeaders()-function
 		$this->headers.=$header."\n";
 	}
@@ -742,7 +798,7 @@ class t3lib_htmlmail {
 	 * @param	[type]		$string: ...
 	 * @return	[type]		...
 	 */
-	function add_message ($string)	{
+	function add_message($string)	{
 			// Adds a line of text to the mail-body. Is normally use internally
 		$this->message.=$string."\n";
 	}
@@ -1364,13 +1420,10 @@ class t3lib_htmlmail {
 	 *
 	 * @param	[type]		$name: ...
 	 * @return	[type]		...
+	 * @deprecated
 	 */
 	function convertName($name)	{
-		if (ereg("[^".chr(32)."-".chr(60).chr(62)."-".chr(127)."]",$name))	{
-			return '=?iso-8859-1?B?'.base64_encode($name).'?=';
-		} else {
-			return $name;
-		}
+		return $name;
 	}
 }
 

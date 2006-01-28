@@ -86,14 +86,20 @@ class t3lib_formmail extends t3lib_htmlmail {
 	 * [organisation]:		Organisation (header)
 	 * [priority]:			Priority, 1-5, default 3
 	 * [html_enabled]:		If mail is sent as html
-	 * [quoted_printable]:	if set, quoted-printable will be used instead of base 64
+	 * [use_base64]:		If set, base64 encoding will be used instead of quoted-printable
 	 *
 	 * @param	array		Contains values for the field names listed above (with slashes removed if from POST input)
 	 * @param	boolean		Whether to base64 encode the mail content
 	 * @return	void
 	 */
-	function start($V,$base64=1)	{
-		if ($base64 && !$V['quoted_printable'])	{$this->useBase64();}
+	function start($V,$base64=false)	{
+		parent::start();
+
+		if ($base64 || $V['use_base64'])	{ $this->useBase64(); }
+
+		if ($GLOBALS['TSFE']->config['config']['formMailCharset'])	{	// Respect formMailCharset if it was set
+			$this->charset = trim($GLOBALS['TSFE']->config['config']['formMailCharset']);
+		}
 
 		if (isset($V['recipient']))	{
 				// Sets the message id

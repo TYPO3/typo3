@@ -3704,13 +3704,16 @@ if (version == "n3") {
 			$message=t3lib_div::substUrlsInPlainText($message,$urlmode);
 		}
 
+		$encoding = $this->config['config']['notification_email_encoding'] ? $this->config['config']['notification_email_encoding'] : 'quoted-printable';
+		$charset = $this->config['config']['notification_email_charset'] ? $this->config['config']['notification_email_charset'] : ($GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset'] ? $GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset'] : 'ISO-8859-1');
+
 		t3lib_div::plainMailEncoded(
 			$email,
 			$subject,
 			$message,
 			$headers,
-			$this->config['config']['notification_email_encoding'],
-			$this->config['config']['notification_email_charset'] ? $this->config['config']['notification_email_charset'] : 'ISO-8859-1'
+			$encoding,
+			$charset
 		);
 	}
 

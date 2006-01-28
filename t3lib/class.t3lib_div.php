@@ -3675,13 +3675,36 @@ class t3lib_div {
 	 * @param	string		Subject line, non-encoded. (see PHP function mail())
 	 * @param	string		Message content, non-encoded. (see PHP function mail())
 	 * @param	string		Headers, separated by chr(10)
-	 * @param	string		Encoding type: "base64", "quoted-printable", "8bit". If blank, no encoding will be used, no encoding headers set.
+	 * @param	string		Encoding type: "base64", "quoted-printable", "8bit". Default value is "quoted-printable".
 	 * @param	string		Charset used in encoding-headers (only if $enc is set to a valid value which produces such a header)
 	 * @param	boolean		If set, the content of $subject will not be encoded.
 	 * @return	void
 	 */
-	function plainMailEncoded($email,$subject,$message,$headers='',$enc='',$charset='ISO-8859-1',$dontEncodeSubject=0)	{
-		switch((string)$enc)	{
+	function plainMailEncoded($email,$subject,$message,$headers='',$enc='',$charset='',$dontEncodeHeader=false)	{
+		if (!$charset)	{
+			$charset = $GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset'] ? $GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset'] : 'ISO-8859-1';
+		}
+
+		if (!$dontEncodeHeader)	{
+				// Mail headers must be ASCII, therefore we convert the whole header to either base64 or quoted_printable
+			$newHeaders=array();
+			foreach (explode(chr(10),$headers) as $line)	{	// Split the header in lines and convert each line separately
+				$parts = explode(': ',$line,2);	// Field tags must not be encoded
+				if (count($parts)==2)	{
+					$parts[1] = t3lib_div::encodeHeader($parts[1],$enc,$charset);
+					$newHeaders[] = implode(': ',$parts);
+				} else {
+					$newHeaders[] = $line;	// Should never happen - is such a mail header valid? Anyway, just add the unchanged line...
+				}
+			}
+			$headers = implode(chr(10),$newHeaders);
+			unset($newHeaders);
+
+			$email = t3lib_div::encodeHeader($email,$enc,$charset);		// Email address must not be encoded, but it could be appended by a name which should be so (e.g. "Kasper Skårhøj <kasperYYYY@typo3.com>")
+			$subject = t3lib_div::encodeHeader($subject,$enc,$charset);
+		}
+
+		switch ((string)$enc)	{
 			case 'base64':
 				$headers=trim($headers).chr(10).
 				'Mime-Version: 1.0'.chr(10).
@@ -3689,27 +3712,30 @@ class t3lib_div {
 				'Content-Transfer-Encoding: base64';
 
 				$message=trim(chunk_split(base64_encode($message.chr(10)))).chr(10);	// Adding chr(10) because I think MS outlook 2002 wants it... may be removed later again.
-
-				if (!$dontEncodeSubject)	$subject='=?'.$charset.'?B?'.base64_encode($subject).'?=';
-			break;
-			case 'quoted-printable':
-				$headers=trim($headers).chr(10).
-				'Mime-Version: 1.0'.chr(10).
-				'Content-Type: text/plain; charset="'.$charset.'"'.chr(10).
-				'Content-Transfer-Encoding: quoted-printable';
-
-				$message=t3lib_div::quoted_printable($message);
-
-				if (!$dontEncodeSubject)	$subject='=?'.$charset.'?Q?'.trim(t3lib_div::quoted_printable(ereg_replace('[[:space:]]','_',$subject),1000)).'?=';
 			break;
 			case '8bit':
 				$headers=trim($headers).chr(10).
 				'Mime-Version: 1.0'.chr(10).
-				'Content-Type: text/plain; charset="'.$charset.'"'.chr(10).
+				'Content-Type: text/plain; charset='.$charset.'; format=flowed'.chr(10).
 				'Content-Transfer-Encoding: 8bit';
 			break;
+			case 'quoted-printable':
+			default:
+				$headers=trim($headers).chr(10).
+				'Mime-Version: 1.0'.chr(10).
+				'Content-Type: text/plain; charset='.$charset.''.chr(10).
+				'Content-Transfer-Encoding: quoted-printable';
+
+				$message=t3lib_div::quoted_printable($message);
+			break;
 		}
-		$headers=trim(implode(chr(10),t3lib_div::trimExplode(chr(10),$headers,1)));	// make sure no empty lines are there.
+
+		$linebreak = chr(10);			// Default line break for Unix systems.
+		if (TYPO3_OS=='WIN')	{
+			$linebreak = chr(13).chr(10);	// Line break for Windows. This is needed because PHP on Windows systems send mails via SMTP instead of using sendmail, and thus the linebreak needs to be \r\n.
+		}
+
+		$headers=trim(implode($linebreak,t3lib_div::trimExplode(chr(10),$headers,1)));	// Make sure no empty lines are there.
 
 		mail($email,$subject,$message,$headers);
 	}
@@ -3717,7 +3743,6 @@ class t3lib_div {
 	/**
 	 * Implementation of quoted-printable encode.
 	 * This functions is buggy. It seems that in the part where the lines are breaked every 76th character, that it fails if the break happens right in a quoted_printable encode character!
-	 * Important: For the ease of use, this function internally uses Unix linebreaks ("\n") for breaking lines, but the output must use "\r\n" instead!
 	 * See RFC 1521, section 5.1 Quoted-Printable Content-Transfer-Encoding
 	 * Usage: 2
 	 *
@@ -3730,9 +3755,14 @@ class t3lib_div {
 		$string = str_replace(chr(13).chr(10), chr(10), $string);	// Replace Windows breaks (\r\n)
 		$string = str_replace(chr(13), chr(10), $string);		// Replace Mac breaks (\r)
 
+		$linebreak = chr(10);			// Default line break for Unix systems.
+		if (TYPO3_OS=='WIN')	{
+			$linebreak = chr(13).chr(10);	// Line break for Windows. This is needed because PHP on Windows systems send mails via SMTP instead of using sendmail, and thus the linebreak needs to be \r\n.
+		}
+
 		$newString = '';
 		$theLines = explode(chr(10),$string);	// Split lines
-		foreach($theLines as $val)	{
+		foreach ($theLines as $val)	{
 			$newVal = '';
 			$theValLen = strlen($val);
 			$len = 0;
@@ -3740,7 +3770,7 @@ class t3lib_div {
 				$char = substr($val,$index,1);
 				$ordVal = ord($char);
 				if ($len>($maxlen-4) || ($len>(($maxlen-10)-4)&&$ordVal==32))	{
-					$newVal.='='.chr(13).chr(10);	// Add a line break
+					$newVal.='='.$linebreak;	// Add a line break
 					$len=0;			// Reset the length counter
 				}
 				if (($ordVal>=33 && $ordVal<=60) || ($ordVal>=62 && $ordVal<=126) || $ordVal==9 || $ordVal==32)	{
@@ -3751,11 +3781,51 @@ class t3lib_div {
 					$len+=3;
 				}
 			}
-			$newVal = ereg_replace(chr(32).'$','=20',$newVal);		// Replaces a possible SPACE-character at the end of a line
-			$newVal = ereg_replace(chr(9).'$','=09',$newVal);		// Replaces a possible TAB-character at the end of a line
-			$newString.=$newVal.chr(13).chr(10);
+			$newVal = preg_replace('/'.chr(32).'$/','=20',$newVal);		// Replaces a possible SPACE-character at the end of a line
+			$newVal = preg_replace('/'.chr(9).'$/','=09',$newVal);		// Replaces a possible TAB-character at the end of a line
+			$newString.=$newVal.$linebreak;
 		}
-		return ereg_replace(chr(13).chr(10).'$','',$newString);
+		return preg_replace('/'.$linebreak.'$/','',$newString);		// Remove last newline
+	}
+
+	/**
+	 * Encode header lines
+	 * Email headers must be ASCII, therefore they will be encoded to quoted_printable (default) or base64.
+	 *
+	 * @param	string		Content to encode
+	 * @param	string		Encoding type: "base64" or "quoted-printable". Default value is "quoted-printable".
+	 * @param	string		Charset used for encoding
+	 * @return	string		The encoded string
+	 */
+	function encodeHeader($line,$enc='',$charset='ISO-8859-1')	{
+			// Avoid problems if "###" is found in $line (would conflict with the placeholder which is used below)
+		if (strstr($line,'###'))	return $line;
+
+			// Check if any non-ASCII characters are found - otherwise encoding is not needed
+		if (!preg_match('/[^'.chr(32).'-'.chr(127).']/',$line))	return $line;
+
+			// Wrap email addresses in a special marker
+		$line = preg_replace('/([^ ]+@[^ ]+)/', '###$1###', $line);
+
+		$matches = preg_split('/(.?###.+###.?|\(|\))/', $line, -1, PREG_SPLIT_NO_EMPTY);
+		foreach ($matches as $part)	{
+			$oldPart = $part;
+			switch ((string)$enc)	{
+				case 'base64':
+					$part = '=?'.$charset.'?B?'.base64_encode($part).'?=';
+				break;
+				case 'quoted-printable':
+				default:
+					$qpValue = t3lib_div::quoted_printable($part,1000);
+					if ($part!=$qpValue)	{
+						$part = '=?'.$charset.'?Q?'.$qpValue.'?=';
+					}
+			}
+			$line = str_replace($oldPart, $part, $line);
+		}
+		$line = preg_replace('/###(.+?)###/', '$1', $line);	// Remove the wrappers
+
+		return $line;
 	}
 
 	/**

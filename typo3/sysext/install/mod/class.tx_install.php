@@ -396,7 +396,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv("REMOTE_ADDR")."' (".t3lib_div::getIndp
 		$this->check_mail();
 		$this->setupGeneral();
 		$this->generateConfigForm();
-		if (count($this->messages))	debug($this->messages);
+		if (count($this->messages))	t3lib_div::debug($this->messages);
 
 		if ($this->step)	{
 			echo $this->outputWrapper($this->stepOutput());
@@ -1557,7 +1557,7 @@ From sub-directory:
 	}
 
 	/**
-	 * Check if php function mail() works
+	 * Check if PHP function mail() works
 	 *
 	 * @param	string		$cmd	If "get_form" then a formfield for the mail-address is shown. If not, it's checked if "check_mail" was in the INSTALL array and if so a test mail is sent to the recipient given.
 	 * @return	[type]		...
@@ -1571,22 +1571,25 @@ From sub-directory:
 					<input type="submit" value="Send test mail"></form>';
 			break;
 			default:
-				if (trim($this->INSTALL["check_mail"]))	{
-					if($this->INSTALL["use_htmlmail"]) {
+				if (trim($this->INSTALL['check_mail']))	{
+					$subject = 'TEST SUBJECT';
+					$email = trim($this->INSTALL['check_mail']);
+
+					if($this->INSTALL['use_htmlmail'])	{
 						require_once (PATH_t3lib.'class.t3lib_htmlmail.php');
-					  	$email = t3lib_div::makeInstance("t3lib_htmlmail");
-						$email->start();
-						$email->subject = "TEST SUBJECT";
-						$email->from_email = "Test@test.test";
-						$email->from_name = "TYPO3 Install tool";
-						$email->returnPath = "null@".t3lib_div::getIndpEnv("HTTP_HOST");
-						$email->addPlain("TEST CONTENT");
-						$email->setHTML($email->encodeMsg("<html><body>HTML TEST CONTENT</body></html>"));
-						$email->send($this->INSTALL["check_mail"]);
+					  	$emailObj = t3lib_div::makeInstance('t3lib_htmlmail');
+						$emailObj->start();
+						$emailObj->subject = $subject;
+						$emailObj->from_email = 'test@test.test';
+						$emailObj->from_name = 'TYPO3 Install Tool';
+						$emailObj->returnPath = 'null@'.t3lib_div::getIndpEnv('HTTP_HOST');
+						$emailObj->addPlain('TEST CONTENT');
+						$emailObj->setHTML($emailObj->encodeMsg('<html><body>HTML TEST CONTENT</body></html>'));
+						$emailObj->send($email);
 					} else {
-						mail(trim($this->INSTALL["check_mail"]), "TEST SUBJECT", "TEST CONTENT", "From: test@test.test");
+						t3lib_div::plainMailEncoded($email,$subject,'TEST CONTENT','From: test@test.test');
 					}
-					$this->messages[]= "MAIL WAS SENT TO: ".$this->INSTALL["check_mail"];
+					$this->messages[]= 'MAIL WAS SENT TO: '.$email;
 				}
 			break;
 		}
