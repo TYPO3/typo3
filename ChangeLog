@@ -1,4 +1,4 @@
-2005-01-29  Michael Stucki  <michael@typo3.org>
+2005-01-28  Michael Stucki  <michael@typo3.org>
 
 	* Added UTF8-support for emails. Thanks to Bernhard Kraft, Stanislas Rolland and Martin Kutschker for their feedback.
 	* Changes in t3lib_div::plainMailEncoded(): By default, emails will be encoded to quoted-printable.
@@ -12,6 +12,7 @@
 
 	* Fixed bug #2382: error when creating a new (and empty) file in BE
 	* Fixed bug #1878: protect localconf.php from being lost on write error
+	* Enhanced TCE type "none" with many rendering options
 
 2005-01-27  Sebastian Kurfuerst  <sebastian@garbage-group.de>
 
@@ -22,7 +23,7 @@
 2005-01-27  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
 	* added error logging to DB initialization code
-	* improved  FQDN detection and fixed empty syslog ident in t3lib_div::initSysLog()
+	* improved FQDN detection and fixed empty syslog ident in t3lib_div::initSysLog()
 	* Fix problem with non-associative arrays in t3lib_db->fullQuoteArray()
 
 2006-01-27  Peter Niederlag <peter@niederlag.de>

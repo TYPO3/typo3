@@ -1817,6 +1817,7 @@ class t3lib_TCEforms	{
 		return $this->getSingleField_typeNone_render($config,$itemValue);
 	}
 
+
 	/**
 	 * HTML rendering of a value which is not editable.
 	 *
@@ -1827,24 +1828,27 @@ class t3lib_TCEforms	{
 	 */
 	function getSingleField_typeNone_render($config,$itemValue)	{
 
-				// is colorScheme[0] the right value?
+			// is colorScheme[0] the right value?
 		$divStyle = 'border:solid 1px '.t3lib_div::modifyHTMLColorAll($this->colorScheme[0],-30).';'.$this->defStyle.$this->formElStyle('none').' background-color: '.$this->colorScheme[0].'; padding-left:1px;color:#555;';
 
-		if ($config['rows']>1) {
+		if ($config['format'])	{
+			$itemValue = $this->formatValue($config, $itemValue);
+		}
+
+		$rows = intval($config['rows']);
+		if ($rows > 1) {
 			if(!$config['pass_content']) {
 				$itemValue = nl2br(htmlspecialchars($itemValue));
 			}
 				// like textarea
 			$cols = t3lib_div::intInRange($config['cols'] ? $config['cols'] : 30, 5, $this->maxTextareaWidth);
 			if (!$config['fixedRows']) {
-				$origRows = $rows = t3lib_div::intInRange($config['rows'] ? $config['rows'] : 5, 1, 20);
+				$origRows = $rows = t3lib_div::intInRange($rows, 1, 20);
 				if (strlen($itemValue)>$this->charsPerRow*2)	{
 					$cols = $this->maxTextareaWidth;
 					$rows = t3lib_div::intInRange(round(strlen($itemValue)/$this->charsPerRow),count(explode(chr(10),$itemValue)),20);
 					if ($rows<$origRows)	$rows=$origRows;
 				}
-			} else {
-				$rows = intval($config['rows']);
 			}
 
 			if ($this->docLarge)	$cols = round($cols*$this->form_largeComp);
@@ -2297,6 +2301,93 @@ class t3lib_TCEforms	{
 
 
 
+	/************************************************************
+	 *
+	 * Field content processing
+	 *
+	 ************************************************************/
+
+	/**
+	 * Format field content of various types if $config['format'] is set to date, filesize, ..., user
+	 * This is primarily for the field type none but can be used for user field types for example
+	 *
+	 * @param	array		Configuration for the display
+	 * @param	string		The value to display
+	 * @return	string		Formatted Field content
+	 */
+	function formatValue ($config, $itemValue)	{
+		$format = trim($config['format']);
+		switch($format)	{
+			case 'date':
+				$option = trim($config['format.']['option']);
+				if ($option)	{
+					if ($config['format.']['strftime'])	{
+						$value = strftime($option,$itemValue);
+					} else {
+						$value = date($option,$itemValue);
+					}
+				} else {
+					$value = date('d-m-Y',$itemValue);
+				}
+				if ($config['format.']['appendAge'])	{
+					$value .= ' ('.t3lib_BEfunc::calcAge((time()-$itemValue), $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.minutesHoursDaysYears')).')';
+				}
+				$itemValue = $value;
+				break;
+			case 'datetime':	// compatibility with "eval" (type "input")
+				$itemValue = date('H:i d-m-Y',$itemValue);
+				break;
+			case 'time':	// compatibility with "eval" (type "input")
+				$itemValue = date('H:i',$itemValue);
+				break;
+			case 'timesec':	// compatibility with "eval" (type "input")
+				$itemValue = date('H:i:s',$itemValue);
+				break;
+			case 'year':	// compatibility with "eval" (type "input")
+				$itemValue = date('Y',$itemValue);
+				break;
+			case 'int':
+				$baseArr = array('dec'=>'d','hex'=>'x','HEX'=>'X','oct'=>'o','bin'=>'b');
+				$base = trim($config['format.']['base']);
+				$format = $baseArr[$base] ? $baseArr[$base] : 'd';
+				$itemValue = sprintf('%'.$format,$itemValue);
+				break;
+			case 'float':
+				$precision = t3lib_div::intInRange($config['format.']['precision'],1,10,2);
+				$itemValue = sprintf('%.'.$precision.'f',$itemValue);
+				break;
+			case 'number':
+				$format = trim($config['format.']['option']);
+				$itemValue = sprintf('%'.$format,$itemValue);
+				break;
+			case 'md5':
+				$itemValue = md5($itemValue);
+				break;
+			case 'filesize':
+				$value = t3lib_div::formatSize(intval($itemValue));
+				if ($config['format.']['appendByteSize'])	{
+					$value .= ' ('.$itemValue.')';
+				}
+				$itemValue = $value;
+				break;
+			case 'user':
+				$func = trim($config['format.']['userFunc']);
+				if ($func)	{
+					$params = array(
+						'value' => $itemValue,
+						'args' => $config['format.']['userFunc'],
+						'config' => $config,
+						'pObj' => &$this
+					);
+					$itemValue = t3lib_div::callUserFunction($func,$params,$this);
+				}
+				break;
+			default:
+			break;
+		}
+
+		return $itemValue;
+	}
 
 
 
