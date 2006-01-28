@@ -181,7 +181,9 @@ class t3lib_install {
 	 * @see setValueInLocalconfFile()
 	 */
 	function writeToLocalconf_control($inlines='',$absFullPath='')	{
+		$tmpExt = '.TMP.php';
 		$writeToLocalconf_dat['file'] = $absFullPath ? $absFullPath : PATH_typo3conf.'localconf.php';
+		$writeToLocalconf_dat['tmpfile'] = $writeToLocalconf_dat['file'].$tmpExt;
 
 			// Checking write state of localconf.php:
 		if (!$this->allowUpdateLocalConf)	{
@@ -209,14 +211,29 @@ class t3lib_install {
 			array_push($inlines,$writeToLocalconf_dat['endLine']);
 
 			if ($this->setLocalconf)	{
-				t3lib_div::writeFile($writeToLocalconf_dat['file'],implode(chr(10),$inlines));
-
-				if (strcmp(t3lib_div::getUrl($writeToLocalconf_dat['file']), implode(chr(10),$inlines)))	{
-					die('typo3conf/localconf.php was NOT updated properly (written content didn\'t match file content) - maybe write access problem?');
+				$success = FALSE;
+				if (!t3lib_div::writeFile($writeToLocalconf_dat['tmpfile'],implode(chr(10),$inlines)))	{
+					$msg = 'typo3conf/localconf.php'.$tmpExt.' could not be written - maybe a write access problem?';
 				}
+				elseif (strcmp(t3lib_div::getUrl($writeToLocalconf_dat['tmpfile']), implode(chr(10),$inlines)))	{
+					@unlink($writeToLocalconf_dat['tmpfile']);
+					$msg = 'typo3conf/localconf.php'.$tmpExt.' was NOT written properly (written content didn\'t match file content) - maybe a disk space problem?';
+				}
+				elseif (!@rename($writeToLocalconf_dat['tmpfile'],$writeToLocalconf_dat['file']))	{
+					$msg = 'typo3conf/localconf.php could not be replaced by typo3conf/localconf.php'.$tmpExt.' - maybe a write access problem?';
+				}
+				else {
+					$success = TRUE;
+					$msg = 'Configuration written to typo3conf/localconf.php';
+				}
+				$this->messages[]= $msg;
 
-				$this->messages[]= 'Configuration written to typo3conf/localconf.php';
-				return 'continue';
+				if ($success)	{
+					return 'continue';
+				} else {
+					t3lib_div::sysLog($msg, 'Core', 3);
+					return 'nochange';
+				}
 			} else {
 				return 'nochange';
 			}

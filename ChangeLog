@@ -2,6 +2,7 @@
 2005-01-28  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
 	* Fixed bug #2382: error when creating a new (and empty) file in BE
+	* Fixed bug #1878: protect localconf.php from being lost on write error
 
 2005-01-27  Sebastian Kurfuerst  <sebastian@garbage-group.de>
 
