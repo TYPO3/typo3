@@ -4621,7 +4621,8 @@ class tslib_cObj {
 							if (is_array($maskArray) && $GLOBALS['TYPO3_CONF_VARS']['GFX']['im'])	{
 									// Filename:
 								$fI = t3lib_div::split_fileref($theImage);
-								$dest = $gifCreator->tempPath.$hash.'.'.($fI['fileext']==$gifCreator->gifExtension ? $gifCreator->gifExtension : 'jpg');
+								$imgExt = (strtolower($fI['fileext'])==$gifCreator->gifExtension ? $gifCreator->gifExtension : 'jpg');
+								$dest = $gifCreator->tempPath.$hash.'.'.$imgExt;
 								if (!@file_exists($dest))	{		// Generate!
 									$m_mask= $maskImages['m_mask'];
 									$m_bgImg = $maskImages['m_bgImg'];
@@ -4676,9 +4677,23 @@ class tslib_cObj {
 									}
 								}
 									// Finish off
+								if (($fileArray['reduceColors'] || ($imgExt=='png' && !$gifCreateor->png_truecolor)) && is_file($dest))	{
+									$reduced = $gifCreator->IMreduceColors($dest, t3lib_div::intInRange($fileArray['reduceColors'], 256, $gifCreator->truecolorColors, 256));
+									if (is_file($reduced))	{
+										unlink($dest);
+										rename($reduced, $dest);
+									}
+								}
 								$GLOBALS['TSFE']->tmpl->fileCache[$hash]= $gifCreator->getImageDimensions($dest);
 							} else {		// Normal situation:
 								$GLOBALS['TSFE']->tmpl->fileCache[$hash]= $gifCreator->imageMagickConvert($theImage,$fileArray['ext'],$fileArray['width'],$fileArray['height'],$fileArray['params'],$fileArray['frame'],$options);
+								if (($fileArray['reduceColors'] || ($imgExt=='png' && !$gifCreateor->png_truecolor)) && is_file($GLOBALS['TSFE']->tmpl->fileCache[$hash][3]))	{
+									$reduced = $gifCreator->IMreduceColors($GLOBALS['TSFE']->tmpl->fileCache[$hash][3], t3lib_div::intInRange($fileArray['reduceColors'], 256, $gifCreator->truecolorColors, 256));
+									if (is_file($reduced))	{
+										unlink($GLOBALS['TSFE']->tmpl->fileCache[$hash][3]);
+										rename($reduced, $GLOBALS['TSFE']->tmpl->fileCache[$hash][3]);
+									}
+								}
 							}
 							$GLOBALS['TSFE']->tmpl->fileCache[$hash]['origFile'] = $theImage;
 							$GLOBALS['TSFE']->tmpl->fileCache[$hash]['origFile_mtime'] = @filemtime($theImage);	// This is needed by tslib_gifbuilder, ln 100ff in order for the setup-array to create a unique filename hash.

@@ -43,10 +43,11 @@ $TYPO3_CONF_VARS = Array(
 		'im_noScaleUp' => 0,					// Boolean. If set, images are not being scaled up if told so (in t3lib/stdgraphics.php)
 		'im_combine_filename' => 'combine',		// String. Latest ImageMagick versions has changed the name of combine to composite. Configure here if needed.
 		'im_noFramePrepended' => 0,				// Boolean. If set, the [x] frame indicator is NOT prepended to filenames in stdgraphic. Some IM5+ version didn't work at all with the typical [0]-prefix, which allow multipage pdf's and animated gif's to be scaled only for the first frame/page and that seriously cuts down rendering time. Set this flag only if your ImageMagick version cannot find the files. Notice that changing this flag causes temporary filenames to change, thus the server will begin scaling images again which were previously cached.
-		'im_jpg_quality' => 70,					// Integer. Default JPEG generation quality
+		'jpg_quality' => 70,					// Integer. Default JPEG generation quality
 		'enable_typo3temp_db_tracking' => 0,	// Boolean. If set, then all files in typo3temp will be logged in a database table. In addition to being a log of the files with original filenames, it also serves to secure that the same image is not rendered simultaneously by two different processes.
 		'TTFLocaleConv' => '',					// String. Enter locale conversion string used to recode input to TrueType functions. Eg. 'cp1250..UTF-8'. Works ONLY if 'recode' is enabled in PHP. Deprecated from ver. 3.6.0 of TYPO3. Set up [BE][forceCharset] as strings are automatically converted from databsae charset to UTF-8.
 		'TTFdpi' => '72',						// Integer. Enter how many dpi the FreeType module uses. Freetype1 should be set to 72. Freetype2 should be set to 96 (otherwise fonts are rendered way bigger than FreeType1). This works as a global scaling factor for Freetype.
+		'png_truecolor' => 0,						// Boolean. If set PNGs will get created as truecolor PNGs. If you use GDlib2 you can create truecolor images if they look not well currently. Note that this results in an increased image size. JPEGs get always created in truecolor now (GDlib2 required)
 	),
 	'SYS' => Array(			// System related concerning both frontend and backend.
 		'sitename' => 'TYPO3',					// Name of the base-site. This title shows up in the root of the tree structure if you're an 'admin' backend user.
@@ -302,7 +303,8 @@ if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['im_version_5'])	{
 	$GLOBALS['TYPO3_CONF_VARS']['GFX']['im_mask_temp_ext_gif'] = 1;
 
 	if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['im_version_5']==='gm')	{
-		$GLOBALS['TYPO3_CONF_VARS']['GFX']['im_imvMaskState'] = 1;
+		$GLOBALS['TYPO3_CONF_VARS']['GFX']['im_negate_mask'] = 0;
+		$GLOBALS['TYPO3_CONF_VARS']['GFX']['im_imvMaskState'] = 0;
 		$GLOBALS['TYPO3_CONF_VARS']['GFX']['im_no_effects'] = 1;
 		$GLOBALS['TYPO3_CONF_VARS']['GFX']['im_v5effects'] = -1;
 	}

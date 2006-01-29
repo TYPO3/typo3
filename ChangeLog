@@ -1,3 +1,7 @@
+2006-01-27  Bernhard Kraft  <kraftb@kraftb.at>
+
+	* Fixed bug #760: "gifbuilder jpgs are 256 colors" for enabling truecolor pngs set [GFX][png_truecolor] variable (reduceColors still gets respected)
+
 2005-01-30  Michael Stucki  <michael@typo3.org>
 
 	* Added two hooks to class.t3lib_tceforms.php, getMainFieldsClass: getMainFields_preProcess and getMainFields_postProcess (requested by Thomas Hempel for use with the "dynaflex" extension.

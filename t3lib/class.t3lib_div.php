@@ -4124,10 +4124,10 @@ class t3lib_div {
 		if($command=='composite' && $switchCompositeParameters)	{	// Because of some weird incompatibilities between ImageMagick 4 and 6 (plus GraphicsMagick), it is needed to change the parameters order under some preconditions
 			$paramsArr = t3lib_div::unQuoteFilenames($parameters);
 
-			if(count($paramsArr)==6)	{	// The mask image has been specified => swap the parameters
-				$tmp = $paramsArr[3];
-				$paramsArr[3] = $paramsArr[2];
-				$paramsArr[2] = $tmp;
+			if(count($paramsArr)>5)	{	// The mask image has been specified => swap the parameters
+				$tmp = $paramsArr[count($paramsArr)-3];
+				$paramsArr[count($paramsArr)-3] = $paramsArr[count($paramsArr)-4];
+				$paramsArr[count($paramsArr)-4] = $tmp;
 			}
 
 			$cmdLine = $path.' '.implode(' ', $paramsArr);

@@ -2828,14 +2828,8 @@ From sub-directory:
 						if (!@is_file($overlay))	die("Error: ".$overlay." was not a file");
 						if (!@is_file($mask))	die("Error: ".$mask." was not a file");
 
-					if ($imageProc->maskNegate)	{
-						$outmask = $imageProc->tempPath.$imageProc->filenamePrefix.t3lib_div::shortMD5($imageProc->alternativeOutputKey."mask").".gif";
-						$imageProc->imageMagickExec($mask, $outmask, '-negate');
-						$mask = $outmask;
-					}
-
 					$output = $imageProc->tempPath.$imageProc->filenamePrefix.t3lib_div::shortMD5($imageProc->alternativeOutputKey."combine1").".jpg";
-					$imageProc->combineExec($input,$overlay,$mask,$output);
+					$imageProc->combineExec($input,$overlay,$mask,$output, true);
 					$fileInfo = $imageProc->getImageDimensions($output);
 					$result = $this->displayTwinImage($fileInfo[3],$imageProc->IM_commands);
 					$this->message($headCode,"Combine using a GIF mask with only black and white",$result[0],$result[1]);
@@ -2849,14 +2843,8 @@ From sub-directory:
 						if (!@is_file($overlay))	die("Error: ".$overlay." was not a file");
 						if (!@is_file($mask))	die("Error: ".$mask." was not a file");
 
-					if ($imageProc->maskNegate)	{
-						$outmask = $imageProc->tempPath.$imageProc->filenamePrefix.t3lib_div::shortMD5($imageProc->alternativeOutputKey."mask2").".gif";
-						$imageProc->imageMagickExec($mask, $outmask, '-negate');
-						$mask = $outmask;
-					}
-
 					$output = $imageProc->tempPath.$imageProc->filenamePrefix.t3lib_div::shortMD5($imageProc->alternativeOutputKey."combine2").".jpg";
-					$imageProc->combineExec($input,$overlay,$mask,$output);
+					$imageProc->combineExec($input,$overlay,$mask,$output, true);
 					$fileInfo = $imageProc->getImageDimensions($output);
 					$result = $this->displayTwinImage($fileInfo[3],$imageProc->IM_commands);
 					$this->message($headCode,"Combine using a JPG mask with graylevels",$result[0],$result[1]);
@@ -2881,8 +2869,9 @@ From sub-directory:
 				if ($gdActive)	{
 					// GD with box
 					$imageProc->IM_commands=array();
-					$im = imageCreate(170,136);
-					ImageColorAllocate ($im, 0, 0, 0);
+					$im = $imageProc->imageCreate(170,136);
+					$Bcolor = ImageColorAllocate ($im, 0, 0, 0);
+					ImageFilledRectangle($im, 0, 0, 170, 136, $Bcolor);
 					$workArea=array(0,0,170,136);
 					$conf=array(
 						"dimensions" => "10,50,150,36",
@@ -2890,7 +2879,7 @@ From sub-directory:
 					);
 					$imageProc->makeBox($im,$conf,$workArea);
 					$output = $imageProc->tempPath.$imageProc->filenamePrefix.t3lib_div::shortMD5("GDbox").".".$imageProc->gifExtension;
-					$imageProc->ImageGif ($im,$output);
+					$imageProc->ImageWrite($im,$output);
 					$fileInfo = $imageProc->getImageDimensions($output);
 					$result = $this->displayTwinImage($fileInfo[3],$imageProc->IM_commands);
 					$this->message($headCode,"Create simple image",$result[0],$result[1]);
@@ -2907,7 +2896,7 @@ From sub-directory:
 					$conf["color"]="olive";
 					$imageProc->makeBox($im,$conf,$workArea);
 					$output = $imageProc->tempPath.$imageProc->filenamePrefix.t3lib_div::shortMD5("GDfromImage+box").".".$imageProc->gifExtension;
-					$imageProc->ImageGif ($im,$output);
+					$imageProc->ImageWrite($im,$output);
 					$fileInfo = $imageProc->getImageDimensions($output);
 					$GDWithBox_filesize = @filesize($output);
 					$result = $this->displayTwinImage($fileInfo[3],$imageProc->IM_commands);
@@ -2916,8 +2905,9 @@ From sub-directory:
 
 					// GD with text
 					$imageProc->IM_commands=array();
-					$im = imageCreate(170,136);
-					ImageColorAllocate ($im, 128,128,150);
+					$im = $imageProc->imageCreate(170,136);
+					$Bcolor = ImageColorAllocate ($im, 128,128,150);
+					ImageFilledRectangle($im, 0, 0, 170, 136, $Bcolor);
 					$workArea=array(0,0,170,136);
 					$conf=array(
 						"iterations" => 1,
@@ -2933,7 +2923,7 @@ From sub-directory:
 					$imageProc->makeText($im,$conf,$workArea);
 
 					$output = $imageProc->tempPath.$imageProc->filenamePrefix.t3lib_div::shortMD5("GDwithText").".".$imageProc->gifExtension;
-					$imageProc->ImageGif ($im,$output);
+					$imageProc->ImageWrite($im,$output);
 					$fileInfo = $imageProc->getImageDimensions($output);
 					$result = $this->displayTwinImage($fileInfo[3],$imageProc->IM_commands);
 					$this->message($headCode,"Render text with TrueType font",$result[0],$result[1]);
@@ -2945,7 +2935,7 @@ From sub-directory:
 						$imageProc->makeText($im,$conf,$workArea);
 
 						$output = $imageProc->tempPath.$imageProc->filenamePrefix.t3lib_div::shortMD5("GDwithText-niceText").".".$imageProc->gifExtension;
-						$imageProc->ImageGif ($im,$output);
+						$imageProc->ImageWrite($im,$output);
 						$fileInfo = $imageProc->getImageDimensions($output);
 						$result = $this->displayTwinImage($fileInfo[3],$imageProc->IM_commands, array("Note on 'niceText':","'niceText' is a concept that tries to improve the antialiasing of the rendered type by actually rendering the textstring in double size on a black/white mask, downscaling the mask and masking the text onto the image through this mask. This involves ImageMagick 'combine'/'composite' and 'convert'."));
 						$this->message($headCode,"Render text with TrueType font using 'niceText' option",
@@ -2974,7 +2964,7 @@ From sub-directory:
 						$imageProc->makeText($im,$conf,$workArea);
 
 						$output = $imageProc->tempPath.$imageProc->filenamePrefix.t3lib_div::shortMD5("GDwithText-niceText-shadow").".".$imageProc->gifExtension;
-						$imageProc->ImageGif ($im,$output);
+						$imageProc->ImageWrite($im,$output);
 						$fileInfo = $imageProc->getImageDimensions($output);
 						$result = $this->displayTwinImage($fileInfo[3],$imageProc->IM_commands, array("Note on drop shadows:","Drop shadows are done my using ImageMagick to blur a mask through which the drop shadow is generated. The blurring of the mask only works in ImageMagick 4.2.9 and <i>not</i> ImageMagick 5 - which is why you may see a hard and not soft shadow."));
 						$this->message($headCode,"Render 'niceText' with a shadow under",

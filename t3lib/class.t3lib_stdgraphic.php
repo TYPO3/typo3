@@ -153,6 +153,10 @@ class t3lib_stdGraphic	{
 	var $GD2=0;									// Set, if the GDlib used is version 2.
 	var $imagecopyresized_fix=0;				// If set, imagecopyresized will not be called directly. For GD2 (some PHP installs?)
 	var $gifExtension = 'gif';					// This should be changed to 'png' if you want this class to read/make PNG-files instead!
+	var $gdlibExtensions = '';			// File formats supported by gdlib. This variable get's filled in "init" method
+	var $truecolor = true;					// Internal variable which get's used to determine wheter GDlib should use function truecolor pendants
+	var $png_truecolor = false;					// Set to true if generated png's should be truecolor by default
+	var $truecolorColors = 0xffffff;			// 16777216 Colors is the maximum value for PNG, JPEG truecolor images (24-bit, 8-bit / Channel)
 	var $TTFLocaleConv = '';					// Used to recode input to TTF-functions for other charsets.
 	var $enable_typo3temp_db_tracking = 0;		// If set, then all files in typo3temp will be logged in a database table. In addition to being a log of the files with original filenames, it also serves to secure that the same image is not rendered simultaneously by two different processes.
 	var $imageFileExt = 'gif,jpg,jpeg,png,tif,bmp,tga,pcx,ai,pdf';	// Commalist of file extensions perceived as images by TYPO3. List should be set to 'gif,png,jpeg,jpg' if IM is not available. Lowercase and no spaces between!
@@ -167,6 +171,7 @@ class t3lib_stdGraphic	{
 	);
 	var $NO_IMAGE_MAGICK = '';
 	var $V5_EFFECTS = 0;
+	var $im_version_4 = 0;
 	var $mayScaleUp = 1;
 
 		// Variables for testing, alternative usage etc.
@@ -224,8 +229,36 @@ class t3lib_stdGraphic	{
 	function init()	{
 		$gfxConf = $GLOBALS['TYPO3_CONF_VARS']['GFX'];
 
+		if (function_exists('imagecreatefromjpeg')&&function_exists('imagejpeg'))	{
+			$this->gdlibExtensions .= ',jpg,jpeg';
+		}
+		if (function_exists('imagecreatefrompng')&&function_exists('imagepng'))	{
+			$this->gdlibExtensions .= ',png';
+		}
+		if (function_exists('imagecreatefromgif')&&function_exists('imagegif'))	{
+			$this->gdlibExtensions .= ',gif';
+		}
+		if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['png_truecolor'])	{
+			$this->png_truecolor = true;
+		}
+		if (!function_exists('imagecreatetruecolor'))	{
+			$this->truecolor = false;
+		}
+		if (!$gfxConf['im_version_5'])	{
+			$this->im_version_4 = true;
+		}
+
+			// When GIFBUILDER gets used in truecolor mode (GD2 required)
+		if ($this->truecolor)	{
+			if ($this->png_truecolor)	{
+				$this->cmds['png'] = '';	// No colors parameter if we generate truecolor images.
+			}
+			$this->cmds['gif'] = '';	// No colors parameter if we generate truecolor images.
+		}
+
 			// Setting default JPG parameters:
-		$this->cmds['jpg'] = $this->cmds['jpeg'] = '-colorspace RGB -sharpen 50 -quality '.intval($gfxConf['im_jpg_quality']);
+		$this->jpegQuality = t3lib_div::intInRange($gfxConf['jpg_quality'], 10, 100, 75);
+		$this->cmds['jpg'] = $this->cmds['jpeg'] = '-colorspace RGB -sharpen 50 -quality '.$this->jpegQuality;
 
 		if ($gfxConf['im_combine_filename'])	$this->combineScript=$gfxConf['im_combine_filename'];
 		if ($gfxConf['im_noFramePrepended'])	$this->noFramePrepended=1;
@@ -261,7 +294,7 @@ class t3lib_stdGraphic	{
 				// - therefore must be disabled in order not to perform sharpen, blurring and such.
 			$this->NO_IM_EFFECTS = 1;
 
-			$this->cmds['jpg'] = $this->cmds['jpeg'] = '-colorspace RGB -quality '.intval($gfxConf['im_jpg_quality']);
+			$this->cmds['jpg'] = $this->cmds['jpeg'] = '-colorspace RGB -quality '.$this->jpegQuality;
 		}
 			// ... but if 'im_v5effects' is set, dont care about 'im_no_effects'
 		if ($gfxConf['im_v5effects'])	{
@@ -325,8 +358,20 @@ class t3lib_stdGraphic	{
 	 */
 	function maskImageOntoImage(&$im,$conf,$workArea)	{
 		if ($conf['file'] && $conf['mask'])	{
-			$BBimage = $this->imageMagickConvert($conf['file'],$this->gifExtension,'','','','','');
-			$BBmask = $this->imageMagickConvert($conf['mask'],$this->gifExtension,'','','','','');
+			$imgInf = pathinfo($conf['file']);
+			$imgExt = strtolower($imgInf['extension']);
+			if (!t3lib_div::inList($this->gdlibExtensions, $imgExt))	{
+				$BBimage = $this->imageMagickConvert($conf['file'],$this->gifExtension,'','','','','');
+			} else	{
+				$BBimage = $this->getImageDimensions($conf['file']);
+			}
+			$maskInf = pathinfo($conf['mask']);
+			$maskExt = strtolower($maskInf['extension']);
+			if (!t3lib_div::inList($this->gdlibExtensions, $maskExt))	{
+				$BBmask = $this->imageMagickConvert($conf['mask'],$this->gifExtension,'','','','','');
+			} else	{
+				$BBmask = $this->getImageDimensions($conf['mask']);
+			}
 			if ($BBimage && $BBmask)	{
 				$w = imagesx($im);
 				$h = imagesy($im);
@@ -337,26 +382,26 @@ class t3lib_stdGraphic	{
 				$theMask2 = $tmpStr.'_mask2.'.trim($GLOBALS['TYPO3_CONF_VARS']['GFX']['im_mask_temp_ext_noloss']);
 						// prepare overlay image
 				$cpImg = $this->imageCreateFromFile($BBimage[3]);
-				$destImg = imagecreate($w,$h);
-				ImageColorAllocate($destImg, 0,0,0);
+				$destImg = $this->imagecreate($w,$h);
+				$Bcolor = ImageColorAllocate($destImg, 0,0,0);
+				ImageFilledRectangle($destImg, 0, 0, $w, $h, $Bcolor);
 				$this->copyGifOntoGif($destImg,$cpImg,$conf,$workArea);
-				$this->ImageGif($destImg, $theImage);
+				$this->ImageWrite($destImg, $theImage);
 				imageDestroy($cpImg);
 				imageDestroy($destImg);
 						// prepare mask image
 				$cpImg = $this->imageCreateFromFile($BBmask[3]);
-				$destImg = imagecreate($w,$h);
-				ImageColorAllocate($destImg, 0,0,0);
+				$destImg = $this->imagecreate($w,$h);
+				$Bcolor = ImageColorAllocate($destImg, 0, 0, 0);
+				ImageFilledRectangle($destImg, 0, 0, $w, $h, $Bcolor);
 				$this->copyGifOntoGif($destImg,$cpImg,$conf,$workArea);
-				$this->ImageGif($destImg, $theMask);
+				$this->ImageWrite($destImg, $theMask);
 				imageDestroy($cpImg);
 				imageDestroy($destImg);
-					// treat the mask
-				$this->imageMagickExec($theMask,$theMask2,'-colorspace GRAY'.$this->maskNegate);
 					// mask the images
-				$this->ImageGif($im, $theDest);
+				$this->ImageWrite($im, $theDest);
 
-				$this->combineExec($theDest,$theImage,$theMask2,$theDest);
+				$this->combineExec($theDest,$theImage,$theMask,$theDest, true);		// Let combineExec handle maskNegation
 
 				$backIm = $this->imageCreateFromFile($theDest);	// The main image is loaded again...
 				if ($backIm)	{	// ... and if nothing went wrong we load it onto the old one.
@@ -368,7 +413,6 @@ class t3lib_stdGraphic	{
 					unlink($theDest);
 					unlink($theImage);
 					unlink($theMask);
-					unlink($theMask2);
 				}
 			}
 		}
@@ -385,7 +429,7 @@ class t3lib_stdGraphic	{
 	 */
 	function copyImageOntoImage(&$im,$conf,$workArea)	{
 		if ($conf['file'])	{
-			if ($conf['BBOX'][2]!=$this->gifExtension)	{
+			if (!t3lib_div::inList($this->gdlibExtensions, $conf['BBOX'][2]))	{
 				$conf['BBOX']=$this->imageMagickConvert($conf['BBOX'][3],$this->gifExtension,'','','','','');
 				$conf['file']=$conf['BBOX'][3];
 			}
@@ -412,7 +456,7 @@ class t3lib_stdGraphic	{
 		$tile[0] = t3lib_div::intInRange($tile[0],1,20);
 		$tile[1] = t3lib_div::intInRange($tile[1],1,20);
 		$cpOff = $this->objPosition($conf,$workArea,Array($cpW*$tile[0],$cpH*$tile[1]));
-
+	
 		for ($xt=0;$xt<$tile[0];$xt++)	{
 			$Xstart=$cpOff[0]+$cpW*$xt;
 			if ($Xstart+$cpW > $workArea[0])	{	// if this image is inside of the workArea, then go on
@@ -486,16 +530,17 @@ class t3lib_stdGraphic	{
 	 */
 	function imagecopyresized(&$im, $cpImg, $Xstart, $Ystart, $cpImgCutX, $cpImgCutY, $w, $h, $w, $h)	{
 		if ($this->imagecopyresized_fix)	{
-			$im_base = imagecreatetruecolor(imagesx($im), imagesy($im));	// Make true color image
+			$im_base = $this->imagecreate(imagesx($im), imagesy($im));	// Make true color image
 			imagecopyresized($im_base, $im, 0,0,0,0, imagesx($im),imagesy($im),imagesx($im),imagesy($im));	// Copy the source image onto that
 			imagecopyresized($im_base, $cpImg, $Xstart, $Ystart, $cpImgCutX, $cpImgCutY, $w, $h, $w, $h);	// Then copy the $cpImg onto that (the actual operation!)
 			$im = $im_base;	// Set pointer
-			$this->makeEffect($im, Array('value'=>'colors=256'));	// Reduce colors to 256 - make SURE that IM is working then!
+			if (!$this->truecolor)	{
+				$this->makeEffect($im, Array('value'=>'colors='.t3lib_div::intInRange($this->setup['reduceColors'], 256, $this->truecolorColors, 256)));		// Reduce to "reduceColors" colors - make SURE that IM is working then!
+			}
 		} else {
 			imagecopyresized($im, $cpImg, $Xstart, $Ystart, $cpImgCutX, $cpImgCutY, $w, $h, $w, $h);
 		}
 	}
-
 
 
 
@@ -549,7 +594,10 @@ class t3lib_stdGraphic	{
 				// NiceText is calculated
 			if (!$conf['niceText']) {
 					// Font Color is reserved:
-				$this->reduceColors($im,256, 200);
+				if (!$this->truecolor)	{
+					$reduce = t3lib_div::intInRange($this->setup['reduceColors'], 256, $this->truecolorColors, 256);
+					$this->reduceColors($im, $reduce-49, $reduce-50);	// If "reduce-49" colors (or more) are used reduce them to "reduce-50"
+				}
 				$Fcolor = ImageColorAllocate($im, $cols[0],$cols[1],$cols[2]);
 					// antiAliasing is setup:
 				$Fcolor = ($conf['antiAlias']) ? $Fcolor : -$Fcolor;
@@ -576,15 +624,16 @@ class t3lib_stdGraphic	{
 				$newH = ceil($sF*imagesy($im));
 
 					// Make mask
-				$maskImg = imagecreate($newW, $newH);
-				ImageColorAllocate($maskImg, 255,255,255);
+				$maskImg = $this->imagecreate($newW, $newH);
+				$Bcolor = ImageColorAllocate($maskImg, 255,255,255);
+				ImageFilledRectangle($maskImg, 0, 0, $newW, $newH, $Bcolor);
 				$Fcolor = ImageColorAllocate($maskImg, 0,0,0);
 				if ($spacing || $wordSpacing)	{		// If any kind of spacing applys, we use this function:
 					$this->SpacedImageTTFText($maskImg, $conf['fontSize'], $conf['angle'], $txtPos[0], $txtPos[1], $Fcolor, t3lib_stdGraphic::prependAbsolutePath($conf['fontFile']), $theText, $spacing, $wordSpacing, $conf['splitRendering.'],$sF);
 				} else {
 					$this->ImageTTFTextWrapper($maskImg, $conf['fontSize'], $conf['angle'], $txtPos[0], $txtPos[1], $Fcolor, $conf['fontFile'], $theText, $conf['splitRendering.'],$sF);
 				}
-				$this->ImageGif($maskImg, $fileMask);
+				$this->ImageWrite($maskImg, $fileMask);
 				ImageDestroy($maskImg);
 
 					// Downscales the mask
@@ -608,19 +657,21 @@ class t3lib_stdGraphic	{
 						}
 					}
 				}
+
 				$this->imageMagickExec($fileMask,$fileMask,$command);
 
 					// Make the color-file
-				$colorImg = imagecreate($w,$h);
-				ImageColorAllocate($colorImg, $cols[0],$cols[1],$cols[2]);
-				$this->ImageGif($colorImg, $fileColor);
+				$colorImg = $this->imagecreate($w,$h);
+				$Ccolor = ImageColorAllocate($colorImg, $cols[0],$cols[1],$cols[2]);
+				ImageFilledRectangle($colorImg, 0, 0, $w, $h, $Ccolor);
+				$this->ImageWrite($colorImg, $fileColor);
 				ImageDestroy($colorImg);
 
 					// The mask is applied
-				$this->ImageGif($im, $fileMenu);	// The main pictures is saved temporarily
-
-				$this->combineExec($fileMenu,$fileColor,$fileMask,$fileMenu);
-
+				$this->ImageWrite($im, $fileMenu);	// The main pictures is saved temporarily
+		
+				$this->combineExec($fileMenu,$fileColor,$fileMask, $fileMenu);
+				
 				$backIm = $this->imageCreateFromFile($fileMenu);	// The main image is loaded again...
 				if ($backIm)	{	// ... and if nothing went wrong we load it onto the old one.
 					ImageColorTransparent($backIm,-1);
@@ -1280,19 +1331,21 @@ class t3lib_stdGraphic	{
 			$fileMask = $tmpStr.'_mask.'.$this->gifExtension;
 
 				// BlurColor Image laves
-			$blurColImg = imagecreate($w,$h);
+			$blurColImg = $this->imagecreate($w,$h);
 			$bcols=$this->convertColor($conf['color']);
-			ImageColorAllocate($blurColImg, $bcols[0],$bcols[1],$bcols[2]);
-			$this->ImageGif($blurColImg, $fileColor);
+			$Bcolor = ImageColorAllocate($blurColImg, $bcols[0],$bcols[1],$bcols[2]);
+			ImageFilledRectangle($blurColImg, 0, 0, $w, $h, $Bcolor);
+			$this->ImageWrite($blurColImg, $fileColor);
 			ImageDestroy($blurColImg);
 
 				// The mask is made: BlurTextImage
-			$blurTextImg = imagecreate($w+$blurBorder*2,$h+$blurBorder*2);
-			ImageColorAllocate($blurTextImg, 0,0,0);		// black background
+			$blurTextImg = $this->imagecreate($w+$blurBorder*2,$h+$blurBorder*2);
+			$Bcolor = ImageColorAllocate($blurTextImg, 0,0,0);		// black background
+			ImageFilledRectangle($blurTextImg, 0, 0, $w+$blurBorder*2, $h+$blurBorder*2, $Bcolor);
 			$txtConf['fontColor'] = 'white';
 			$blurBordArr = Array($blurBorder,$blurBorder);
 			$this->makeText($blurTextImg,$txtConf,  $this->applyOffset($workArea,$blurBordArr));
-			$this->ImageGif($blurTextImg, $fileMask);	// dump to temporary file
+			$this->ImageWrite($blurTextImg, $fileMask);	// dump to temporary file
 			ImageDestroy($blurTextImg);	// destroy
 
 
@@ -1311,13 +1364,13 @@ class t3lib_stdGraphic	{
 				}
 			}
 
-			$this->imageMagickExec($fileMask,$fileMask,$command);
+			$this->imageMagickExec($fileMask,$fileMask,$command.' +matte');
 
 			$blurTextImg_tmp = $this->imageCreateFromFile($fileMask);	// the mask is loaded again
 			if ($blurTextImg_tmp)	{	// if nothing went wrong we continue with the blurred mask
 
 					// cropping the border from the mask
-				$blurTextImg = imagecreate($w,$h);
+				$blurTextImg = $this->imagecreate($w,$h);
 				$this->imagecopyresized($blurTextImg, $blurTextImg_tmp, 0, 0, $blurBorder, $blurBorder, $w, $h, $w, $h);
 				ImageDestroy($blurTextImg_tmp);	// Destroy the temporary mask
 
@@ -1335,11 +1388,11 @@ class t3lib_stdGraphic	{
 					$this->outputLevels($blurTextImg,0,$high,$this->maskNegate);	// reducing levels as the opacity demands
 				}
 
-				$this->ImageGif($blurTextImg, $fileMask);	// Dump the mask again
+				$this->ImageWrite($blurTextImg, $fileMask);	// Dump the mask again
 				ImageDestroy($blurTextImg);	// Destroy the mask
 
 					// The pictures are combined
-				$this->ImageGif($im, $fileMenu);	// The main pictures is saved temporarily
+				$this->ImageWrite($im, $fileMenu);	// The main pictures is saved temporarily
 
 				$this->combineExec($fileMenu,$fileColor,$fileMask,$fileMenu);
 
@@ -1398,7 +1451,10 @@ class t3lib_stdGraphic	{
 		$conf['offset']=$cords[0].','.$cords[1];
 		$cords = $this->objPosition($conf,$workArea,Array($cords[2],$cords[3]));
 		$cols=$this->convertColor($conf['color']);
-		$this->reduceColors($im,256, 255);
+		if (!$this->truecolor)	{
+			$reduce = t3lib_div::intInRange($this->setup['reduceColors'], 256, $this->truecolorColors, 256);
+			$this->reduceColors($im, $reduce-1, $reduce-2);	// If "reduce-1" colors (or more) are used reduce them to "reduce-2"
+		}
 		$tmpColor = ImageColorAllocate($im, $cols[0],$cols[1],$cols[2]);
 		imagefilledrectangle($im, $cords[0], $cords[1], $cords[0]+$cords[2]-1, $cords[1]+$cords[3]-1, $tmpColor);
 	}
@@ -1548,9 +1604,10 @@ class t3lib_stdGraphic	{
 		$conf['offset']=$cords[0].','.$cords[1];
 		$cords = $this->objPosition($conf,$this->workArea,Array($cords[2],$cords[3]));
 
-		$newIm = imagecreate($cords[2],$cords[3]);
+		$newIm = $this->imagecreate($cords[2],$cords[3]);
 		$cols=$this->convertColor($conf['backColor']?$conf['backColor']:$this->setup['backColor']);
-		ImageColorAllocate($newIm, $cols[0],$cols[1],$cols[2]);
+		$Bcolor = ImageColorAllocate($newIm, $cols[0],$cols[1],$cols[2]);
+		ImageFilledRectangle($newIm, 0, 0, $cords[2], $cords[3], $Bcolor);
 
 		$newConf = Array();
 		$workArea = Array(0,0,$cords[2],$cords[3]);
@@ -1576,7 +1633,7 @@ class t3lib_stdGraphic	{
 		if ($conf['width'] || $conf['height'] || $conf['params'])	{
 			$tmpStr = $this->randomName();
 			$theFile = $tmpStr.'.'.$this->gifExtension;
-			$this->ImageGif($im, $theFile);
+			$this->ImageWrite($im, $theFile);
 			$theNewFile = $this->imageMagickConvert($theFile,$this->gifExtension,$conf['width'],$conf['height'],$conf['params'],'','');
 			$tmpImg = $this->imageCreateFromFile($theNewFile[3]);
 			if ($tmpImg)	{
@@ -1732,7 +1789,7 @@ class t3lib_stdGraphic	{
 	}
 
 	/**
-	 * Reduce colors in image
+	 * Reduce colors in image dependend on the actual amount of colors (Only works if we are not in truecolor mode)
 	 *
 	 * @param	integer		GDlib Image Pointer
 	 * @param	integer		The max number of colors in the image before a reduction will happen; basically this means that IF the GD image current has the same amount or more colors than $limit define, THEN a reduction is performed.
@@ -1740,18 +1797,35 @@ class t3lib_stdGraphic	{
 	 * @return	void
 	 */
 	function reduceColors(&$im,$limit, $cols)	{
-		if (ImageColorsTotal($im)>=$limit)	{
+		if (!$this->truecolor && ImageColorsTotal($im)>=$limit)	{
 			$this->makeEffect($im, Array('value'=>'colors='.$cols) );
 		}
 	}
 
-
-
-
-
-
-
-
+	/**
+	 * Reduce colors in image using IM and create a palette based image if possible (<=256 colors)
+	 *
+	 * @param	string		Image file to reduce
+	 * @param	integer		Number of colors to reduce the image to.
+	 * @return	string		Reduced file
+	 */
+	function IMreduceColors($file, $cols)	{
+		$fI = t3lib_div::split_fileref($file);
+		$ext = strtolower($fI['fileext']);
+		$result = $this->randomName().'.'.$ext;
+		if (($reduce = t3lib_div::intInRange($cols, 0, ($ext=='gif'?256:$this->truecolorColors), 0))>0)	{
+			$params = ' -colors '.$reduce;
+			if (!$this->im_version_4)	{
+					// IM4 doesn't have this options but forces them automatically if applicaple (<256 colors in image)
+				if ($reduce<=256)	{ $params .= ' -type Palette'; }
+				if ($ext=='png' && $reduce<=256)	{ $prefix = 'png8:'; }
+			}
+			$this->imageMagickExec($file, $prefix.$result, $params);
+			return $result;
+		}
+			// Nothing to perform
+		return $file;
+	}
 
 
 
@@ -2415,9 +2489,17 @@ class t3lib_stdGraphic	{
 	 * @param	string		The relative (to PATH_site) image filepath, output filename (written to)
 	 * @return	void
 	 */
-	function combineExec($input,$overlay,$mask,$output)	{
+	function combineExec($input,$overlay,$mask,$output, $handleNegation = false)	{
 		if (!$this->NO_IMAGE_MAGICK)	{
-			$cmd = t3lib_div::imageMagickCommand('combine', '-compose over '.$this->wrapFileName($input).' '.$this->wrapFileName($overlay).' '.$this->wrapFileName($mask).' '.$this->wrapFileName($output));
+			$params = '-colorspace GRAY +matte';
+			if ($handleNegation)	{
+				if ($this->maskNegate)	{
+					$params .= ' '.$this->maskNegate;
+				}
+			}
+			$theMask = $this->randomName().'.'.$this->gifExtension;
+			$this->imageMagickExec($mask, $theMask, $params);
+			$cmd = t3lib_div::imageMagickCommand('combine', '-compose over +matte '.$this->wrapFileName($input).' '.$this->wrapFileName($overlay).' '.$this->wrapFileName($theMask).' '.$this->wrapFileName($output));		// +matte = no alpha layer in output
 			$this->IM_commands[] = Array ($output,$cmd);
 
 			$ret = exec($cmd);
@@ -2514,7 +2596,7 @@ class t3lib_stdGraphic	{
 	function applyImageMagickToPHPGif(&$im, $command)	{
 		$tmpStr = $this->randomName();
 		$theFile = $tmpStr.'.'.$this->gifExtension;
-		$this->ImageGif($im, $theFile);
+		$this->ImageWrite($im, $theFile);
 		$this->imageMagickExec($theFile,$theFile,$command);
 		$tmpImg = $this->imageCreateFromFile($theFile);
 		if ($tmpImg)	{
@@ -2560,32 +2642,25 @@ class t3lib_stdGraphic	{
 			ereg('([^\.]*)$',$file,$reg);
 			$ext=strtolower($reg[0]);
 			switch($ext)	{
-				case $this->gifExtension:
-					if ($this->ImageGif($this->im, $file))	{
-						// ImageMagick operations
-						if($this->setup['reduceColors'])	{
-							$this->imageMagickExec($file,$file,' -colors '.t3lib_div::intInRange($this->setup['reduceColors'],2,255));
-							t3lib_div::gif_compress($file,'');	// Compress with IM (lzw) or GD (rle)      (Workaround for the absence of lzw-compression in GD)
-						} else {
-							t3lib_div::gif_compress($file, 'IM');		// Compress with IM! (adds extra compression, LZW from ImageMagick)     (Workaround for the absence of lzw-compression in GD)
+				case 'gif':
+				case 'png':
+					if ($this->ImageWrite($this->im, $file))	{
+							// ImageMagick operations
+						if ($this->setup['reduceColors'] || !$this->png_truecolor)	{
+							$reduced = $this->IMreduceColors($file, t3lib_div::intInRange($this->setup['reduceColors'], 256, $this->truecolorColors, 256));
+							unlink($file);
+							copy($reduced, $file);
 						}
+						t3lib_div::gif_compress($file, 'IM');		// Compress with IM! (adds extra compression, LZW from ImageMagick)     (Workaround for the absence of lzw-compression in GD)
 					}
 				break;
 				case 'jpg':
 				case 'jpeg':
-					$tmpStr = $this->randomName();
-					$theFile = $tmpStr.'.'.$this->gifExtension;
-					if ($this->ImageGif($this->im, $theFile))	{
-						// ImageMagick operations
-						$operations='';
-						if($this->setup['quality'])	{
-							$operations.=' -quality '.t3lib_div::intInRange($this->setup['quality'],10,100);
-						}
-						$this->imageMagickExec($theFile,$file,$operations);
-						if (!$this->dontUnlinkTempFiles)	{
-							unlink($theFile);
-						}
+					$quality = 0;	// Use the default
+					if($this->setup['quality'])	{
+						$quality = t3lib_div::intInRange($this->setup['quality'],10,100);
 					}
+					if ($this->ImageWrite($this->im, $file, $quality));
 				break;
 			}
 			$GLOBALS['TEMP_IMAGES_ON_PAGE'][]=$file;
@@ -2618,17 +2693,49 @@ class t3lib_stdGraphic	{
 	 *
 	 * @param	pointer		The GDlib image resource pointer
 	 * @param	string		The filename to write to
-	 * @return	mixed		The output of either imageGif or imagePng based on whether the $this->gifExtension was set to "gif" or "png"
+ 	 * @return	mixed		The output of either imageGif, imagePng or imageJpeg based on the filename to write
 	 * @see maskImageOntoImage(), scale(), output()
 	 */
-	function ImageGif($destImg, $theImage)	{
+	function ImageWrite($destImg, $theImage)	{
 		imageinterlace ($destImg,0);
-		if ($this->gifExtension=='gif')	{
-			return ImageGif($destImg, $theImage);
-		}
-		if ($this->gifExtension=='png')	{
-			return ImagePng($destImg, $theImage);
-		}
+ 		$ext = strtolower(substr($theImage, strrpos($theImage, '.')+1));
+ 		switch ($ext)	{
+ 			case 'jpg':
+ 			case 'jpeg':
+ 				if (!$quality)	{
+ 					$quality = $this->jpegQuality;
+ 				}
+ 				if (function_exists('imageJpeg'))	{
+ 					return imageJpeg($destImg, $theImage, $quality);
+ 				}
+ 			break;
+ 			case 'gif':
+ 				if (function_exists('imageGif'))	{
+ 					return imageGif($destImg, $theImage);
+ 				}
+ 			break;
+ 			case 'png':
+ 				if (function_exists('imagePng'))	{
+ 					return ImagePng($destImg, $theImage);
+ 				}
+ 			break;
+ 		}
+ 		return false;		// Extension invalid or write-function does not exist
+ 	}
+ 	
+ 	
+ 
+ 	/**
+ 	 * Writes the input GDlib image pointer to file. Now just a wrapper to ImageWrite.
+ 	 *
+ 	 * @param	pointer		The GDlib image resource pointer
+ 	 * @param	string		The filename to write to
+ 	 * @return	mixed		The output of either imageGif, imagePng or imageJpeg based on the filename to write
+ 	 * @see imageWrite()
+ 	 * @deprecated
+ 	 */
+ 	function imageGif($destImg, $theImage)	{
+ 		return $this->imageWrite($destImg, $theImage);
 	}
 
 	/**
@@ -2647,27 +2754,114 @@ class t3lib_stdGraphic	{
 	 * Creates a new GDlib image resource based on the input image filename.
 	 * If it fails creating a image from the input file a blank gray image with the dimensions of the input image will be created instead.
 	 *
-	 * @param	string		Image filename
+	 * @param		string		Image filename
 	 * @return	pointer		Image Resource pointer
 	 */
 	function imageCreateFromFile($sourceImg)	{
 		$imgInf = pathinfo($sourceImg);
 		$ext = strtolower($imgInf['extension']);
-
-		if ($ext=='gif' && function_exists('imagecreatefromgif'))	{
-			return imageCreateFromGif($sourceImg);
-		} elseif ($ext=='png' && function_exists('imagecreatefrompng'))	{
-			return imageCreateFromPng($sourceImg);
-		} elseif (($ext=='jpg' || $ext=='jpeg') && function_exists('imagecreatefromjpeg'))	{
-			return imageCreateFromJpeg($sourceImg);
+		
+		switch ($ext)	{
+			case 'gif':
+				if (function_exists('imagecreatefromgif'))	{
+					return imageCreateFromGif($sourceImg);
+				}
+			break;
+			case 'png':
+				if (function_exists('imagecreatefrompng'))	{
+					return imageCreateFromPng($sourceImg);
+				}
+			break;
+			case 'jpg':
+			case 'jpeg':
+				if (function_exists('imagecreatefromjpeg'))	{
+					return imageCreateFromJpeg($sourceImg);
+				}
+			break;
 		}
 
 		// If non of the above:
 		$i = @getimagesize($sourceImg);
-		$im = imagecreate($i[0],$i[1]);
-		ImageColorAllocate($im, 128,128,128);
+		$im = $this->imagecreate($i[0],$i[1]);
+		$Bcolor = ImageColorAllocate($im, 128,128,128);
+		ImageFilledRectangle($im, 0, 0, $i[0], $i[1], $Bcolor);
 		return $im;
 	}
+
+
+	/**
+	 * Creates a new GD image resource. Wrapper for imagecreate(truecolor) depended if GD2 is used.
+	 *
+	 * @param		integer		Width
+	 * @param		integer		Height
+	 * @return	pointer		Image Resource pointer
+	 */
+	function imagecreate($w, $h)	{
+		if($this->truecolor && $this->GD2 && function_exists('imagecreatetruecolor'))	{
+			return imagecreatetruecolor($w, $h);
+		} else	{
+			return imagecreate($w, $h);
+		}
+		
+	}
+
+	/**
+	 * Returns the HEX color value for an RGB color array
+	 *
+	 * @param		array		RGB color array
+	 * @return	string	HEX color value
+	 */
+	function hexColor($col)	{
+		$r = dechex($col[0]);
+		if (strlen($r)<2)	{ $r = '0'.$r; }
+		$g = dechex($col[1]);
+		if (strlen($g)<2)	{ $g = '0'.$g; }
+		$b = dechex($col[2]);
+		if (strlen($b)<2)	{ $b = '0'.$b; }
+		return '#'.$r.$g.$b;
+	}
+
+	/**
+	 * Unifies all colors given in the colArr color array to the first color in the array.
+	 *
+	 * @param		pointer	Image resource
+	 * @param		array		array containing RGB color arrays
+	 * @return	integer	The index of the unified color
+	 */
+	function unifyColors(&$img, $colArr)	{
+		$retCol = false;
+		if (is_array($colArr)&&function_exists('imagepng')&&function_exists('imagecreatefrompng'))	{
+			$origName = $preName = $this->randomName().'.png';
+			$postName = $this->randomName().'.'.trim($GLOBALS['TYPO3_CONF_VARS']['GFX']['im_mask_temp_ext_noloss']);
+			$this->imageWrite($img, $preName);
+			$firstCol = array_shift($colArr);
+			$firstColArr = $this->convertColor($firstCol);
+			$firstCol = $this->hexColor($firstColArr);
+			while(list(,$transparentColor)=each($colArr))	{
+				$transparentColor = $this->convertColor($transparentColor);
+				$transparentColor = $this->hexColor($transparentColor);
+				$cmd = '-fill "'.$firstCol.'" -opaque "'.$transparentColor.'"';
+				$this->imageMagickExec($preName, $postName, $cmd);
+				$preName = $postName;
+			}
+			$this->imageMagickExec($postName, $origName, '');
+			if (@is_file($origName))	{
+				$tmpImg = $this->imageCreateFromFile($origName);
+				if ($tmpImg)	{
+					$img = $tmpImg;
+					$retCol = ImageColorExact ($img, $firstColArr[0], $firstColArr[1], $firstColArr[2]);
+				}
+			}
+				// unlink files from process
+			if (!$this->dontUnlinkTempFiles)	{
+				unlink($origName);
+				unlink($postName);
+			}
+		}
+		return $retCol;
+	}
+
+
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/class.t3lib_stdgraphic.php'])	{

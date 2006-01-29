@@ -132,6 +132,7 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 			$this->setup = $conf;
 			$this->data = $data;
 
+
 			/* Hook preprocess gifbuilder conf 
 			 * Added by Julle for 3.8.0
 			 *
@@ -173,8 +174,8 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 				$cObj->start($this->data);
 				$this->setup['backColor'] = trim($cObj->stdWrap($this->setup['backColor'], $this->setup['backColor.']));
 			}
-			if (!$this->setup['backColor'])	{$this->setup['backColor']='white';}
-
+			if (!$this->setup['backColor'])	{ $this->setup['backColor']='white'; }
+			
 				// Transparent GIFs
 				// not working with reduceColors
 				// there's an option for IM: -transparent colors
@@ -344,13 +345,14 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 		$XY = $this->XY;
 
 			// Gif-start
-		$this->im = imagecreate($XY[0],$XY[1]);
+		$this->im = $this->imagecreate($XY[0],$XY[1]);
 		$this->w = $XY[0];
 		$this->h = $XY[1];
 
 			// backColor is set
-		$cols=$this->convertColor($this->setup['backColor']);
-		ImageColorAllocate($this->im, $cols[0],$cols[1],$cols[2]);
+		$BGcols = $this->convertColor($this->setup['backColor']);
+		$Bcolor = ImageColorAllocate($this->im, $BGcols[0],$BGcols[1],$BGcols[2]);
+		ImageFilledRectangle($this->im, 0, 0, $XY[0], $XY[1], $Bcolor);
 
 			// Traverse the GIFBUILDER objects an render each one:
 		if (is_array($this->setup))	{
@@ -431,28 +433,19 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 				}
 			}
 		}
-			// Auto transparent background is set
+
+
 		if ($this->setup['transparentBackground'])	{
-			imagecolortransparent($this->im, imagecolorat($this->im, 0, 0));
-		}
-			// TransparentColors are set
-		if (is_array($this->setup['transparentColor_array']))	{
-			reset($this->setup['transparentColor_array']);
-			while(list(,$transparentColor)=each($this->setup['transparentColor_array']))	{
-				$cols=$this->convertColor($transparentColor);
-				if ($this->setup['transparentColor.']['closest'])	{
-					$colIndex = ImageColorClosest ($this->im, $cols[0],$cols[1],$cols[2]);
-				} else {
-					$colIndex = ImageColorExact ($this->im, $cols[0],$cols[1],$cols[2]);
-				}
-				if ($colIndex > -1) {
-					ImageColorTransparent($this->im, $colIndex);
-				} else {
-					ImageColorTransparent($this->im, ImageColorAllocate($this->im, $cols[0],$cols[1],$cols[2]));
-				}
-				break;		// Originally we thought of letting many colors be defined as transparent, but GDlib seems to accept only one definition. Therefore we break here. Maybe in the future this 'break' will be cancelled if a method of truly defining many transparent colors could be found.
+				// Auto transparent background is set
+			imagecolortransparent($this->im, $Bcolor);
+		} elseif (is_array($this->setup['transparentColor_array']))	{
+				// Multiple transparent colors are set. This is done via the trick that all transparent colors get converted to one color and then this one gets set as transparent as png/gif can just have one transparent color.
+			$Tcolor = $this->unifyColors($this->im, $this->setup['transparentColor_array']);
+			if ($Tcolor)	{
+				imagecolortransparent($this->im, $Tcolor);
 			}
 		}
+
 	}
 
 
