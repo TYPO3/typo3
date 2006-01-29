@@ -191,7 +191,6 @@ class SC_mod_tools_isearch_index {
 	 * @return	[type]		...
 	 */
 	function printContent()	{
-
 		$this->content.=$this->doc->endPage();
 		echo $this->content;
 	}

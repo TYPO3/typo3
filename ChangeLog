@@ -1,4 +1,13 @@
-2005-01-28  Michael Stucki  <michael@typo3.org>
+2005-01-30  Michael Stucki  <michael@typo3.org>
+
+	* Added two hooks to class.t3lib_tceforms.php, getMainFieldsClass: getMainFields_preProcess and getMainFields_postProcess (requested by Thomas Hempel for use with the "dynaflex" extension.
+	* Fixed gremlin #1628: Removed "Text with image below" from the content wizard
+	* Some cleanup to indexed_search: Removed the TypoScript property "tableParams" which is not used anymore.
+	* Replaced the function "procesWordsInArray" with its correctly spelled pendant. The old function remains as a wrapper but is going to be removed sooner or later.
+	* Fixed non-working clearing of indexed_search page-hashes when the list of phashes caused an oversized URL
+	* Removed hardcoded maximum size of popup images
+
+2005-01-29  Michael Stucki  <michael@typo3.org>
 
 	* Added UTF8-support for emails. Thanks to Bernhard Kraft, Stanislas Rolland and Martin Kutschker for their feedback.
 	* Changes in t3lib_div::plainMailEncoded(): By default, emails will be encoded to quoted-printable.
@@ -67,7 +76,7 @@
 
 2006-01-26  Michael Stucki  <michael@typo3.org>
 
-	* Fixed bug #1625: TODO: nav_frame
+	* Fixed bug #1625: Pages with "hide in menu" flag have got the same pagetree icon like not-in-menu pages.
 	* Changed $TYPO3_CONF_VARS[GFX][im_version_5] into a string. Possible values are "im4", "im5", "im6" or "gm". Boolean values will still work where "0" means "im4" and "1" means "im5".
 	* !!! Renamed the hooks $TYPO3_CONF_VARS[SC_OPTIONS][tslib/class.tslib_feuserauth.php][logoff_pre_processing] + $TYPO3_CONF_VARS[SC_OPTIONS][tslib/class.tslib_feuserauth.php][logoff_post_processing] and replaced "tslib/class.tslib_feuserauth.php" with "t3lib/class.t3lib_userauth.php" (which is the correct place for this hook).
 

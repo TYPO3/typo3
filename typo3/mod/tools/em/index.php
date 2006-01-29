@@ -196,7 +196,7 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 	var $repositoryUrl = '';			// Default is "http://ter.typo3.com/?id=t3_extrep" configured in config_default.php
 	var $requiredExt = '';				// List of required extension (from TYPO3_CONF_VARS)
 	var $maxUploadSize = 6024000;		// Max size of extension upload to repository
-	var $kbMax = 100;					// Max size in kilobytes for files to be edited.
+	var $kbMax = 500;					// Max size in kilobytes for files to be edited.
 
 	/**
 	 * Internal variable loaded with extension categories (for display/listing). Should reflect $categories above

@@ -149,26 +149,6 @@ plugin.tx_indexedsearch.CSS_editor.ch {
 		P.ch.links = < CSS_editor.ch.A
 	  }
 	  
-	  sechead = Section headers
-	  sechead.selector = .tx-indexedsearch-secHead
-	  sechead.attribs = margin+
-  	  sechead.example = <DIV class="tx-indexedsearch-secHead"></DIV>
-	   	sechead.ch {
-			H2 = Section header
-			H2.selector = H2
-			H2.attribs = HEADER
-			H2.ch.links = < CSS_editor.ch.A
-			P = Page count
-			P.selector = P
-			P.attribs = TEXT
-		  TABLE = Table
-		  TABLE.selector = TABLE
-		  TABLE.attribs = TABLE
-		  TD = Table cells (TD)
-		  TD.selector = TD
-		  TD.attribs = TD
-		}
-	}
 	P.ch.noresults = "No results" text
 	P.ch.noresults {
 	  selector = +.tx-indexedsearch-noresults

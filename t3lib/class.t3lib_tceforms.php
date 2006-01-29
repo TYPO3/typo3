@@ -411,7 +411,7 @@ class t3lib_TCEforms	{
 	 * @see getSoloField()
 	 */
 	function getMainFields($table,$row,$depth=0)	{
-		global $TCA;
+		global $TCA, $TYPO3_CONF_VARS;
 
 		$this->renderDepth=$depth;
 
@@ -425,6 +425,21 @@ class t3lib_TCEforms	{
 		$out_sheet=0;
 		$this->palettesRendered=array();
 		$this->palettesRendered[$this->renderDepth][$table]=array();
+
+			// First prepare user defined objects (if any) for hooks which extend this function:
+		$hookObjectsArr = array();
+		if (is_array ($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tceforms.php']['getMainFieldsClass']))	{
+			foreach ($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tceforms.php']['getMainFieldsClass'] as $classRef)	{
+				$hookObjectsArr[] = &t3lib_div::getUserObj($classRef);
+			}
+		}
+
+			// Hook: getMainFields_preProcess (requested by Thomas Hempel for use with the "dynaflex" extension)
+		foreach ($hookObjectsArr as $hookObj)	{
+			if (method_exists($hookObj,'getMainFields_preProcess'))	{
+				$hookObj->getMainFields_preProcess($table,$row,$this);
+			}
+		}
 
 		if ($TCA[$table])	{
 
@@ -517,6 +532,13 @@ class t3lib_TCEforms	{
 						$cc++;
 					}
 				}
+			}
+		}
+
+			// Hook: getMainFields_postProcess (requested by Thomas Hempel for use with the "dynaflex" extension)
+		foreach ($hookObjectsArr as $hookObj)	{
+			if (method_exists($hookObj,'getMainFields_postProcess'))	{
+				$hookObj->getMainFields_postProcess($table,$row,$this);
 			}
 		}
 

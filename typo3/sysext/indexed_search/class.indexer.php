@@ -69,7 +69,7 @@
  *
  *              SECTION: Analysing content, Extracting words
  * 1091:     function charsetEntity2utf8(&$contentArr, $charset)
- * 1114:     function procesWordsInArrays($contentArr)
+ * 1114:     function processWordsInArrays($contentArr)
  * 1137:     function bodyDescription($contentArr)
  * 1159:     function indexAnalyze($content)
  * 1180:     function analyzeHeaderinfo(&$retArr,$content,$key,$offset)
@@ -541,7 +541,7 @@ class tx_indexedsearch_indexer {
 
 						// Splitting words
 				$this->log_push('Extract words from content','');
-					$splitInWords = $this->procesWordsInArrays($this->contentParts);
+					$splitInWords = $this->processWordsInArrays($this->contentParts);
 				$this->log_pull();
 
 						// Analyse the indexed words.
@@ -938,7 +938,7 @@ class tx_indexedsearch_indexer {
 		}
 
 			// Indexing the document:
-		if ($absFile &&  @is_file($absFile))	{
+		if ($absFile && @is_file($absFile))	{
 			if ($this->external_parsers[$ext])	{
 				$mtime = filemtime($absFile);
 				$cParts = $this->fileContentParts($ext,$absFile);
@@ -976,7 +976,7 @@ class tx_indexedsearch_indexer {
 
 										// Splitting words
 									$this->log_push('Extract words from content','');
-										$splitInWords = $this->procesWordsInArrays($contentParts);
+										$splitInWords = $this->processWordsInArrays($contentParts);
 									$this->log_pull();
 
 										// Analyse the indexed words.
@@ -1116,7 +1116,7 @@ class tx_indexedsearch_indexer {
 	 * @param	array		Array of content to index, see splitHTMLContent() and splitRegularContent()
 	 * @return	array		Content input array modified so each key is not a unique array of words
 	 */
-	function procesWordsInArrays($contentArr)	{
+	function processWordsInArrays($contentArr)	{
 
 			// split all parts to words
 		reset($contentArr);
@@ -1131,6 +1131,18 @@ class tx_indexedsearch_indexer {
 
 			// Return modified array:
 		return $contentArr;
+	}
+
+	/**
+	 * Processing words in the array from split*Content -functions
+	 * This function is only a wrapper because the function has been removed (see above).
+	 *
+	 * @param	array		Array of content to index, see splitHTMLContent() and splitRegularContent()
+	 * @return	array		Content input array modified so each key is not a unique array of words
+	 * @deprecated
+	 */
+	function procesWordsInArrays($contentArr)	{
+		return $this->processWordsInArrays($contentArr);
 	}
 
 	/**
@@ -1427,7 +1439,7 @@ class tx_indexedsearch_indexer {
 			// Split filename:
 		$fileParts = parse_url($file);
 
-			// setting new
+			// Setting new
 		$fields = array(
 			'phash' => $hash['phash'],
 			'phash_grouping' => $hash['phash_grouping'],

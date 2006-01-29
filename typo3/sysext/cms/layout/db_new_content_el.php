@@ -400,96 +400,87 @@ class SC_db_new_content_el {
 
 		$wizardItems = array(
 			'common' => array('header'=>$LANG->getLL('common')),
-			'common_1' => array(
+			'common_regularText' => array(	// Regular text element
 				'icon'=>'gfx/c_wiz/regular_text.gif',
-				'title'=>$LANG->getLL('common_1_title'),
-				'description'=>$LANG->getLL('common_1_description'),
+				'title'=>$LANG->getLL('common_regularText_title'),
+				'description'=>$LANG->getLL('common_regularText_description'),
 				'tt_content_defValues' => array(
 					'CType' => 'text'
 				)
 			),
-			'common_2' => array(
-				'icon'=>'gfx/c_wiz/text_image_below.gif',
-				'title'=>$LANG->getLL('common_2_title'),
-				'description'=>$LANG->getLL('common_2_description'),
-				'tt_content_defValues' => array(
-					'CType' => 'textpic',
-					'imageorient' => 8
-				)
-			),
-			'common_3' => array(
+			'common_textImage' => array(	// Text with image
 				'icon'=>'gfx/c_wiz/text_image_right.gif',
-				'title'=>$LANG->getLL('common_3_title'),
-				'description'=>$LANG->getLL('common_3_description'),
+				'title'=>$LANG->getLL('common_textImage_title'),
+				'description'=>$LANG->getLL('common_textImage_description'),
 				'tt_content_defValues' => array(
 					'CType' => 'textpic',
 					'imageorient' => 17
 				)
 			),
-			'common_4' => array(
+			'common_imagesOnly' => array(	// Images only
 				'icon'=>'gfx/c_wiz/images_only.gif',
-				'title'=>$LANG->getLL('common_4_title'),
-				'description'=>$LANG->getLL('common_4_description'),
+				'title'=>$LANG->getLL('common_imagesOnly_title'),
+				'description'=>$LANG->getLL('common_imagesOnly_description'),
 				'tt_content_defValues' => array(
 					'CType' => 'image',
 					'imagecols' => 2
 				)
 			),
-			'common_5' => array(
+			'common_bulletList' => array(	// Bullet list
 				'icon'=>'gfx/c_wiz/bullet_list.gif',
-				'title'=>$LANG->getLL('common_5_title'),
-				'description'=>$LANG->getLL('common_5_description'),
+				'title'=>$LANG->getLL('common_bulletList_title'),
+				'description'=>$LANG->getLL('common_bulletList_description'),
 				'tt_content_defValues' => array(
 					'CType' => 'bullets',
 				)
 			),
-			'common_6' => array(
+			'common_table' => array(	// Table
 				'icon'=>'gfx/c_wiz/table.gif',
-				'title'=>$LANG->getLL('common_6_title'),
-				'description'=>$LANG->getLL('common_6_description'),
+				'title'=>$LANG->getLL('common_table_title'),
+				'description'=>$LANG->getLL('common_table_description'),
 				'tt_content_defValues' => array(
 					'CType' => 'table',
 				)
 			),
 			'special' => array('header'=>$LANG->getLL('special')),
-			'special_1' => array(
+			'special_filelinks' => array(	// Filelinks
 				'icon'=>'gfx/c_wiz/filelinks.gif',
-				'title'=>$LANG->getLL('special_1_title'),
-				'description'=>$LANG->getLL('special_1_description'),
+				'title'=>$LANG->getLL('special_filelinks_title'),
+				'description'=>$LANG->getLL('special_filelinks_description'),
 				'tt_content_defValues' => array(
 					'CType' => 'uploads',
 				)
 			),
-			'special_2' => array(
+			'special_multimedia' => array(	// Multimedia
 				'icon'=>'gfx/c_wiz/multimedia.gif',
-				'title'=>$LANG->getLL('special_2_title'),
-				'description'=>$LANG->getLL('special_2_description'),
+				'title'=>$LANG->getLL('special_multimedia_title'),
+				'description'=>$LANG->getLL('special_multimedia_description'),
 				'tt_content_defValues' => array(
 					'CType' => 'multimedia',
 				)
 			),
-			'special_3' => array(
+			'special_sitemap' => array(	// Sitemap
 				'icon'=>'gfx/c_wiz/sitemap2.gif',
-				'title'=>$LANG->getLL('special_3_title'),
-				'description'=>$LANG->getLL('special_3_description'),
+				'title'=>$LANG->getLL('special_sitemap_title'),
+				'description'=>$LANG->getLL('special_sitemap_description'),
 				'tt_content_defValues' => array(
 					'CType' => 'menu',
 					'menu_type' => 2
 				)
 			),
-			'special_4' => array(
+			'special_plainHTML' => array(	// Plain HTML
 				'icon'=>'gfx/c_wiz/html.gif',
-				'title'=>$LANG->getLL('special_4_title'),
-				'description'=>$LANG->getLL('special_4_description'),
+				'title'=>$LANG->getLL('special_plainHTML_title'),
+				'description'=>$LANG->getLL('special_plainHTML_description'),
 				'tt_content_defValues' => array(
 					'CType' => 'html',
 				)
 			),
 			'forms' => array('header'=>$LANG->getLL('forms')),
-			'forms_1' => array(
+			'forms_mail' => array(	// Mail form
 				'icon'=>'gfx/c_wiz/mailform.gif',
-				'title'=>$LANG->getLL('forms_1_title'),
-				'description'=>$LANG->getLL('forms_1_description'),
+				'title'=>$LANG->getLL('forms_mail_title'),
+				'description'=>$LANG->getLL('forms_mail_description'),
 				'tt_content_defValues' => array(
 					'CType' => 'mailform',
 					'bodytext' => trim('
@@ -505,27 +496,27 @@ Contact me: | tv=check | 1
 					')
 				)
 			),
-			'forms_2' => array(
+			'forms_search' => array(	// Search form
 				'icon'=>'gfx/c_wiz/searchform.gif',
-				'title'=>$LANG->getLL('forms_2_title'),
-				'description'=>$LANG->getLL('forms_2_description'),
+				'title'=>$LANG->getLL('forms_search_title'),
+				'description'=>$LANG->getLL('forms_search_description'),
 				'tt_content_defValues' => array(
 					'CType' => 'search',
 				)
 			),
-			'forms_3' => array(
+			'forms_login' => array(	// Login form
 				'icon'=>'gfx/c_wiz/login_form.gif',
-				'title'=>$LANG->getLL('forms_3_title'),
-				'description'=>$LANG->getLL('forms_3_description'),
+				'title'=>$LANG->getLL('forms_login_title'),
+				'description'=>$LANG->getLL('forms_login_description'),
 				'tt_content_defValues' => array(
 					'CType' => 'login',
 				)
 			),
 			'plugins' => array('header'=>$LANG->getLL('plugins')),
-			'plugins_1' => array(
+			'plugins_general' => array(	// General plugin
 				'icon'=>'gfx/c_wiz/user_defined.gif',
-				'title'=>$LANG->getLL('plugins_1_title'),
-				'description'=>$LANG->getLL('plugins_1_description'),
+				'title'=>$LANG->getLL('plugins_general_title'),
+				'description'=>$LANG->getLL('plugins_general_description'),
 				'tt_content_defValues' => array(
 					'CType' => 'list',
 				)

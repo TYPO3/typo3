@@ -536,7 +536,7 @@ class tx_indexedsearch_modfunc1 extends t3lib_extobjbase {
 				$lines[] = '<td>&nbsp;</td>';
 				$lines[] = '<td>&nbsp;</td>';
 				$lines[] = '<td>Title</td>';
-				$lines[] = '<td bgcolor="red">'.$this->printRemoveIndexed(implode(',',$this->allPhashListed),'Clear ALL phash-rows below!').'</td>';
+				$lines[] = '<td bgcolor="red">'.$this->printRemoveIndexed('ALL','Clear ALL phash-rows below!').'</td>';
 
 				$lines[] = '<td>pHash</td>';
 				$lines[] = '<td>cHash</td>';
@@ -557,7 +557,7 @@ class tx_indexedsearch_modfunc1 extends t3lib_extobjbase {
 				$lines[] = '<td>&nbsp;</td>';
 				$lines[] = '<td>&nbsp;</td>';
 				$lines[] = '<td>Title</td>';
-				$lines[] = '<td bgcolor="red">'.$this->printRemoveIndexed(implode(',',$this->allPhashListed),'Clear ALL phash-rows below!').'</td>';
+				$lines[] = '<td bgcolor="red">'.$this->printRemoveIndexed('ALL','Clear ALL phash-rows below!').'</td>';
 				$lines[] = '<td>Content<br/>
 							<img src="clear.gif" width="300" height="1" alt="" /></td>';
 				$lines[] = '<td>Words<br/>
@@ -567,7 +567,7 @@ class tx_indexedsearch_modfunc1 extends t3lib_extobjbase {
 				$lines[] = '<td>&nbsp;</td>';
 				$lines[] = '<td>&nbsp;</td>';
 				$lines[] = '<td>Title</td>';
-				$lines[] = '<td bgcolor="red">'.$this->printRemoveIndexed(implode(',',$this->allPhashListed),'Clear ALL phash-rows below!').'</td>';
+				$lines[] = '<td bgcolor="red">'.$this->printRemoveIndexed('ALL','Clear ALL phash-rows below!').'</td>';
 				$lines[] = '<td>Description</td>';
 				$lines[] = '<td>Size</td>';
 				$lines[] = '<td>Indexed:</td>';
@@ -1272,7 +1272,14 @@ class tx_indexedsearch_modfunc1 extends t3lib_extobjbase {
 	 * @return	void
 	 */
 	function removeIndexedPhashRow($phashList,$clearPageCache=1)	{
-		$phashRows = t3lib_div::trimExplode(',',$phashList,1);
+			// FIXME: This is only a workaround
+		if ($phashList=='ALL')	{
+			$this->drawTableOfIndexedPages();
+			$phashRows = $this->allPhashListed;
+			$this->allPhashListed = array();	// Reset it because it will be filled again later...
+		} else {
+			$phashRows = t3lib_div::trimExplode(',',$phashList,1);
+		}
 
 		foreach($phashRows as $phash)	{
 			$phash = intval($phash);
