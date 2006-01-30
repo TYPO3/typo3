@@ -456,7 +456,7 @@ class t3lib_stdGraphic	{
 		$tile[0] = t3lib_div::intInRange($tile[0],1,20);
 		$tile[1] = t3lib_div::intInRange($tile[1],1,20);
 		$cpOff = $this->objPosition($conf,$workArea,Array($cpW*$tile[0],$cpH*$tile[1]));
-	
+
 		for ($xt=0;$xt<$tile[0];$xt++)	{
 			$Xstart=$cpOff[0]+$cpW*$xt;
 			if ($Xstart+$cpW > $workArea[0])	{	// if this image is inside of the workArea, then go on
@@ -669,9 +669,9 @@ class t3lib_stdGraphic	{
 
 					// The mask is applied
 				$this->ImageWrite($im, $fileMenu);	// The main pictures is saved temporarily
-		
+
 				$this->combineExec($fileMenu,$fileColor,$fileMask, $fileMenu);
-				
+
 				$backIm = $this->imageCreateFromFile($fileMenu);	// The main image is loaded again...
 				if ($backIm)	{	// ... and if nothing went wrong we load it onto the old one.
 					ImageColorTransparent($backIm,-1);
@@ -903,7 +903,7 @@ class t3lib_stdGraphic	{
 	 * @param	array		The TypoScript properties of the TEXT GIFBUILDER object
 	 * @return	integer		The new fontSize
 	 * @access private
-	 * @author	Rene Fritz <r.fritz@colorcube.de>
+	 * @author Rene Fritz <r.fritz@colorcube.de>
 	 * @see tslib_gifBuilder::start()
 	 */
 	function fontResize($conf) {
@@ -2215,7 +2215,7 @@ class t3lib_stdGraphic	{
 	 *
 	 * @param	array		$identifyResult: Result of the getImageDimensions function
 	 * @return	boolean		True if operation was successful
-	 * @author	Michael Stucki <mundaun@gmx.ch> / Robert Lemke <rl@robertlemke.de>
+	 * @author	Michael Stucki <michael@typo3.org> / Robert Lemke <rl@robertlemke.de>
 	 */
 	function cacheImageDimensions($identifyResult)	{
 		global $TYPO3_DB;
@@ -2247,7 +2247,7 @@ class t3lib_stdGraphic	{
 	 *
 	 * @param	string		The image filepath
 	 * @return	array		Returns an array where [0]/[1] is w/h, [2] is extension and [3] is the filename.
-	 * @author	Michael Stucki <mundaun@gmx.ch> / Robert Lemke <rl@robertlemke.de>
+	 * @author	Michael Stucki <michael@typo3.org> / Robert Lemke <rl@robertlemke.de>
 	 */
 	function getCachedImageDimensions($imageFile)	{
 		global $TYPO3_DB;
@@ -2722,9 +2722,9 @@ class t3lib_stdGraphic	{
  		}
  		return false;		// Extension invalid or write-function does not exist
  	}
- 	
- 	
- 
+
+
+
  	/**
  	 * Writes the input GDlib image pointer to file. Now just a wrapper to ImageWrite.
  	 *
@@ -2754,13 +2754,13 @@ class t3lib_stdGraphic	{
 	 * Creates a new GDlib image resource based on the input image filename.
 	 * If it fails creating a image from the input file a blank gray image with the dimensions of the input image will be created instead.
 	 *
-	 * @param		string		Image filename
+	 * @param	string		Image filename
 	 * @return	pointer		Image Resource pointer
 	 */
 	function imageCreateFromFile($sourceImg)	{
 		$imgInf = pathinfo($sourceImg);
 		$ext = strtolower($imgInf['extension']);
-		
+
 		switch ($ext)	{
 			case 'gif':
 				if (function_exists('imagecreatefromgif'))	{
@@ -2792,8 +2792,8 @@ class t3lib_stdGraphic	{
 	/**
 	 * Creates a new GD image resource. Wrapper for imagecreate(truecolor) depended if GD2 is used.
 	 *
-	 * @param		integer		Width
-	 * @param		integer		Height
+	 * @param	integer		Width
+	 * @param	integer		Height
 	 * @return	pointer		Image Resource pointer
 	 */
 	function imagecreate($w, $h)	{
@@ -2802,14 +2802,14 @@ class t3lib_stdGraphic	{
 		} else	{
 			return imagecreate($w, $h);
 		}
-		
+
 	}
 
 	/**
 	 * Returns the HEX color value for an RGB color array
 	 *
-	 * @param		array		RGB color array
-	 * @return	string	HEX color value
+	 * @param	array		RGB color array
+	 * @return	string		HEX color value
 	 */
 	function hexColor($col)	{
 		$r = dechex($col[0]);
@@ -2824,9 +2824,9 @@ class t3lib_stdGraphic	{
 	/**
 	 * Unifies all colors given in the colArr color array to the first color in the array.
 	 *
-	 * @param		pointer	Image resource
-	 * @param		array		array containing RGB color arrays
-	 * @return	integer	The index of the unified color
+	 * @param	pointer		Image resource
+	 * @param	array		Array containing RGB color arrays
+	 * @return	integer		The index of the unified color
 	 */
 	function unifyColors(&$img, $colArr)	{
 		$retCol = false;
