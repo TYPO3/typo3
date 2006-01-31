@@ -1187,15 +1187,6 @@ class tslib_cObj {
 								$this->lastChanged($row['tstamp']);
 								$cObj->start($row,$conf['table']);
 								$tmpValue = $cObj->cObjGetSingle($renderObjName, $renderObjConf, $renderObjKey);
-								if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['CType-content-itemProc']))	{
-									$_params = array(
-										'value' => &$tmpValue,
-										'cObj' => &$cObj
-									);
-									foreach($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['CType-content-itemProc'] as $_funcRef)	{
-										t3lib_div::callUserFunction($_funcRef,$_params,$this);
-									}
-								}
 								$cobjValue .= $tmpValue;
 							}# else debug($GLOBALS['TSFE']->recordRegister,'CONTENT');
 						}
@@ -1294,15 +1285,6 @@ class tslib_cObj {
 						$this->lastChanged($row['tstamp']);
 						$cObj->start($row,$val['table']);
 						$tmpValue = $cObj->cObjGetSingle($renderObjName, $renderObjConf, $renderObjKey);
-						if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['CType-content-itemProc']))	{
-							$_params = array(
-								'value' => &$tmpValue,
-								'cObj' => &$cObj
-							);
-							foreach($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['CType-content-itemProc'] as $_funcRef)	{
-								t3lib_div::callUserFunction($_funcRef,$_params,$this);
-							}
-						}
 						$theValue .= $tmpValue;
 					}# else debug($GLOBALS['TSFE']->recordRegister,'RECORDS');
 				}
