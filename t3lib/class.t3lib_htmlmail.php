@@ -265,7 +265,14 @@ class t3lib_htmlmail {
 	 */
 	function start ()	{
 			// Sets the message id
-		$this->messageid = md5(microtime()).'@domain.tld';
+		$host = php_uname('n');
+		if (strpos('.',$host) === FALSE) {
+			$host = gethostbyaddr(gethostbyname($host));
+		}
+		if (!$host || $host == '127.0.0.1' || $host == 'localhost') {
+			$host = ($TYPO3_CONF_VARS['SYS']['sitename'] ? preg_replace('/[^A-Za-z0-9_\-]/', '_', $TYPO3_CONF_VARS['SYS']['sitename']) : 'localhost') . '.TYPO3';
+		}
+		$this->messageid = md5(microtime()) . '@' . $host;
 
 			// Default line break for Unix systems.
 		$this->linebreak = chr(10);
