@@ -1,3 +1,7 @@
+2006-01-31  Bernhard Kraft  <kraftb@kraftb.at>
+
+	* Fixed bug #2396: Select-box items where displayed with garbled characters when forceCharset was set to utf-8
+
 2006-01-31  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 	
 	* t3lib_htmlmail: make email message-id compliant with RFC 2822.

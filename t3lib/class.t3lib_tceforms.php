@@ -1610,8 +1610,6 @@ class t3lib_TCEforms	{
 				$tvP[1] = rawurlencode(@sprintf($nMV_label, $evalValue));
 			} elseif (isset($PA['fieldTSConfig']['altLabels.'][$evalValue])) {
 				$tvP[1] = rawurlencode($this->sL($PA['fieldTSConfig']['altLabels.'][$evalValue]));
-			} else {
-				$tvP[1] = rawurlencode($this->sL(rawurldecode($tvP[1])));
 			}
 			$itemArray[$tk] = implode('|',$tvP);
 		}
@@ -2803,7 +2801,7 @@ class t3lib_TCEforms	{
 				break;
 				default:
 					while(list(,$pp)=each($itemArray))	{
-						$pParts = explode('|',$pp);
+						$pParts = explode('|',$pp, 2);
 						$uidList[]=$pUid=$pParts[0];
 						$pTitle = $pParts[1];
 						$opt[]='<option value="'.htmlspecialchars(rawurldecode($pUid)).'">'.htmlspecialchars(rawurldecode($pTitle)).'</option>';

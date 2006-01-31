@@ -419,7 +419,7 @@ class t3lib_transferData {
 				foreach($fieldConfig['config']['items'] as $pvpv)	{
 					foreach($elements as $eKey => $value)	{
 						if (!strcmp($value,$pvpv[1]))	{
-							$dataAcc[$eKey]=rawurlencode($pvpv[1]).'|'.rawurlencode($pvpv[0]);
+							$dataAcc[$eKey]=rawurlencode($pvpv[1]).'|'.rawurlencode($this->sL($pvpv[0]));
 						}
 					}
 				}
@@ -732,7 +732,7 @@ class t3lib_transferData {
 							foreach($coValue['items'] as $itemKey => $itemCfg)	{
 								foreach($elements as $eKey => $value)	{
 									if (!strcmp($coKey.':'.$itemKey, $value))	{
-										$dataAcc[$eKey] = rawurlencode($value).'|'.rawurlencode($GLOBALS['LANG']->sl($itemCfg[0]));
+										$dataAcc[$eKey] = rawurlencode($value).'|'.rawurlencode($this->sL($itemCfg[0]));
 									}
 								}
 							}
