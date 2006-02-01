@@ -1,3 +1,7 @@
+2006-02-01  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
+
+	* t3lib_htmlmail email message-id: global declaration was missing.
+
 2006-01-31  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 	
 	* tslib_content: remove unused hooks originally intended for use by Direct Mail

@@ -264,6 +264,8 @@ class t3lib_htmlmail {
 	 * @return	[type]		...
 	 */
 	function start ()	{
+		global $TYPO3_CONF_VARS;
+		
 			// Sets the message id
 		$host = php_uname('n');
 		if (strpos('.',$host) === FALSE) {
