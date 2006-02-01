@@ -219,10 +219,11 @@ class t3lib_install {
 					@unlink($writeToLocalconf_dat['tmpfile']);
 					$msg = 'typo3conf/localconf.php'.$tmpExt.' was NOT written properly (written content didn\'t match file content) - maybe a disk space problem?';
 				}
-				elseif (!@rename($writeToLocalconf_dat['tmpfile'],$writeToLocalconf_dat['file']))	{
+				elseif (!@copy($writeToLocalconf_dat['tmpfile'],$writeToLocalconf_dat['file']))	{
 					$msg = 'typo3conf/localconf.php could not be replaced by typo3conf/localconf.php'.$tmpExt.' - maybe a write access problem?';
 				}
 				else {
+					@unlink($writeToLocalconf_dat['tmpfile']);
 					$success = TRUE;
 					$msg = 'Configuration written to typo3conf/localconf.php';
 				}
