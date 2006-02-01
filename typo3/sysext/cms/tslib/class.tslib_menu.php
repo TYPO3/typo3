@@ -2742,10 +2742,10 @@ class tslib_jsmenu extends tslib_menu {
 							// If access restricted pages should be shown in menus, change the link of such pages to link to a redirection page:
 						$this->changeLinksForAccessRestrictedPages($LD, $data, $this->mconf['target'], $this->mconf['forceTypeValue']);
 
-						$url = rawurlencode($LD['totalURL']);
-						$target = rawurlencode($LD['target']);
+						$url = $LD['totalURL'];
+						$target = $LD['target'];
 					}
-					$codeLines.="\n".$var.$count."=".$menuName.".add(".$parent.",".$prev.",0,".t3lib_div::quoteJSvalue($title, true).",'".$GLOBALS['TSFE']->baseUrlWrap($url)."','".$target."');";
+					$codeLines.="\n".$var.$count."=".$menuName.".add(".$parent.",".$prev.",0,".t3lib_div::quoteJSvalue($title, true).",".t3lib_div::quoteJSvalue($GLOBALS['TSFE']->baseUrlWrap($url), true).",".t3lib_div::quoteJSvalue($target, true).");";
 						// If the active one should be chosen...
 					$active = ($levelConf['showActive'] && $data['uid'] == $this->tmpl->rootLine[$count]['uid']);
 						// If the first item should be shown

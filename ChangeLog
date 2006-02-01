@@ -1,3 +1,7 @@
+2006-02-01  Bernhard Kraft  <kraftb@kraftb.at>
+
+	* Fixed an issue with non working links in JSMENUs
+
 2006-02-01  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
 	* t3lib_htmlmail email message-id: global declaration was missing.
