@@ -22,11 +22,13 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 /**
-*  Spell checking plugin 'tx_rtehtmlarea_pi1' for the htmlArea RTE extension.
-*
-*  @author Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
-*
-*/
+ * Spell checking plugin 'tx_rtehtmlarea_pi1' for the htmlArea RTE extension.
+ *
+ * @author Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
+ *
+ * TYPO3 CVS ID: $Id$
+ *
+ */
 require_once(PATH_tslib.'class.tslib_pibase.php');
 
 class tx_rtehtmlarea_pi1 extends tslib_pibase {

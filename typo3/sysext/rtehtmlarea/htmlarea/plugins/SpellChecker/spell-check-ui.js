@@ -210,7 +210,6 @@ function initDocument() {
 	var field = document.getElementById("f_content");
 	field.value = HTMLArea.getHTML(editor._doc.body, false, editor);
 	document.getElementById("f_init").value = "0";
-// initial_dictonary, pspell_charset and pspell_mode added and order changed by Stanislas Rolland 2004-09-16
 	document.getElementById("f_dictionary").value = initial_dictionary;
 	document.getElementById("f_charset").value = pspell_charset;
 	document.getElementById("f_pspell_mode").value = pspell_mode;
@@ -289,10 +288,6 @@ function wordClicked(scroll) {
 	}
 	// document.getElementById("b_replall").disabled = (a.length <= 1);
 	// document.getElementById("b_ignall").disabled = (a.length <= 1);
-
-	// 2004-09-08 Stanislas Rolland: Change
-	// 2004-09-8 Stanislas Rolland: Modified variables txt and text2 in following lines to make the status translatable
-	//
 	var txt;
 	var txt2;
 	if (a.length == 1) {

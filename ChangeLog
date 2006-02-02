@@ -1,3 +1,7 @@
+2006-02-02  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
+
+	* Adjustments to the htmlArea RTE extension (see details in local ChangeLog)
+
 2006-02-01  Dmitry Dulepov  <typo3@accio.lv>
 
 	* Fix: renaming of localconf.php.TMP.php to localconf.php did not work on Windows platform

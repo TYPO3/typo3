@@ -1,3 +1,10 @@
+2006-02-02 Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+	* Version 1.1.5
+	* Automatic update of the extension version number in the About window.
+	* Enable use of RTE in IE 7.
+	* Small adjustments to SpellChecker plugin.
+	* Change names of default settings.
+
 2006-01-27  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
 	* Version 1.1.4
 	* Correction to the behaviour of popups.

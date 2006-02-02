@@ -1799,7 +1799,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			$bInfo['BROWSER']= 'konqu';
 		} elseif (strstr($useragent,'Opera') &&  $TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['opera_test'] == 1)	{
 			$bInfo['BROWSER']= 'opera';
-		} elseif (strstr($useragent,'MSIE 4') || strstr($useragent,'MSIE 5') || strstr($useragent,'MSIE 6'))	{
+		} elseif (strstr($useragent,'MSIE'))	{
 			$bInfo['BROWSER']= 'msie';
 		} elseif (strstr($useragent,'Gecko/'))	{
 			$bInfo['BROWSER']='gecko';
