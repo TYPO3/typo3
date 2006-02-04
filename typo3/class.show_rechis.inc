@@ -141,20 +141,36 @@ class recordHistory {
 		}
 
 		$reloadPageFrame=0;
+		$rollbackData = explode(':',$this->rollbackFields);
 
 			// PROCESS INSERTS AND DELETES
 			// rewrite inserts and deletes
 		$cmdmapArray = array();
 		if ($diff['insertsDeletes'])	{
-			foreach ($diff['insertsDeletes'] as $key => $action)	{
-				$elParts = explode(':',$key);
-				if ($action == 1)	{	// inserted records should be deleted
-					$cmdmapArray[$elParts[0]][$elParts[1]]['delete'] = 1;
-						// when the record is deleted, the contents of the record do not need to be updated
-					unset($diff['oldData'][$key]);
-					unset($diff['newData'][$key]);
-				} else {	// deleted records should be inserted again
-					$cmdmapArray[$elParts[0]][$elParts[1]]['undelete'] = 1;
+
+			switch (count($rollbackData))	{
+				case 1:	// all tables
+					$data = $diff['insertsDeletes'];
+					break;
+				case 2:	// one record
+					if ($diff['insertsDeletes'][$this->rollbackFields]) {
+						$data[$this->rollbackFields] = $diff['insertsDeletes'][$this->rollbackFields];
+					}
+					break;
+				case 3:	// one field in one record -- ignore!
+					break;
+			}
+			if ($data)	{
+				foreach ($data as $key => $action)	{
+					$elParts = explode(':',$key);
+					if ($action == 1)	{	// inserted records should be deleted
+						$cmdmapArray[$elParts[0]][$elParts[1]]['delete'] = 1;
+							// when the record is deleted, the contents of the record do not need to be updated
+						unset($diff['oldData'][$key]);
+						unset($diff['newData'][$key]);
+					} elseif ($action == -1) {	// deleted records should be inserted again
+						$cmdmapArray[$elParts[0]][$elParts[1]]['undelete'] = 1;
+					}
 				}
 			}
 		}
@@ -179,9 +195,6 @@ class recordHistory {
 			$splitKey = explode(':',$key);
 			$diff_modified[$splitKey[0]][$splitKey[1]] = $value;
 		}
-
-		$rollbackData = explode(':',$this->rollbackFields);
-
 		switch (count($rollbackData))	{
 			case 1:	// all tables
 				$data = $diff_modified;
@@ -457,33 +470,36 @@ class recordHistory {
 		$arrayKeys = array_merge(array_keys($diff['newData']),array_keys($diff['insertsDeletes']),array_keys($diff['oldData']));
 		$arrayKeys = array_unique($arrayKeys);
 
-		foreach ($arrayKeys as $key)	{
-			$record = '';
-			$elParts = explode(':',$key);
-				// turn around diff because it should be a "rollback preview"
-			if ($diff['insertsDeletes'][$key] == 1)	{	// insert
-				$record .= '<b>'.$LANG->getLL('delete',1).'</b>';
-				$record .= '<br />';
-			} elseif ($diff['insertsDeletes'][$key] == -1)	{
-				$record .= '<b>'.$LANG->getLL('insert',1).'</b>';
-				$record .= '<br />';
-			}
-				// build up temporary diff array
-				// turn around diff because it should be a "rollback preview"
-			if ($diff['newData'][$key])	{
-				$tmpArr['newRecord'] = $diff['oldData'][$key];
-				$tmpArr['oldRecord'] = $diff['newData'][$key];
-				$record .= $this->renderDiff($tmpArr, $elParts[0],$elParts[1]);
-			}
+		if ($arrayKeys)	{
+			foreach ($arrayKeys as $key)	{
+				$record = '';
+				$elParts = explode(':',$key);
+					// turn around diff because it should be a "rollback preview"
+				if ($diff['insertsDeletes'][$key] == 1)	{	// insert
+					$record .= '<b>'.$LANG->getLL('delete',1).'</b>';
+					$record .= '<br />';
+				} elseif ($diff['insertsDeletes'][$key] == -1)	{
+					$record .= '<b>'.$LANG->getLL('insert',1).'</b>';
+					$record .= '<br />';
+				}
+					// build up temporary diff array
+					// turn around diff because it should be a "rollback preview"
+				if ($diff['newData'][$key])	{
+					$tmpArr['newRecord'] = $diff['oldData'][$key];
+					$tmpArr['oldRecord'] = $diff['newData'][$key];
+					$record .= $this->renderDiff($tmpArr, $elParts[0],$elParts[1]);
+				}
 
-			$elParts = explode(':',$key);
-			$titleLine = $this->createRollbackLink($key, $LANG->getLL('revertRecord',1),1) . $this->generateTitle($elParts[0],$elParts[1]);
-			$record = '<div style="margin-left:10px;padding-left:5px;border-left:1px solid black;border-bottom:1px dotted black;padding-bottom:2px;">'.$record.'</div>';
+				$elParts = explode(':',$key);
+				$titleLine = $this->createRollbackLink($key, $LANG->getLL('revertRecord',1),1) . $this->generateTitle($elParts[0],$elParts[1]);
+				$record = '<div style="margin-left:10px;padding-left:5px;border-left:1px solid black;border-bottom:1px dotted black;padding-bottom:2px;">'.$record.'</div>';
 
-			$content .= $SOBE->doc->section($titleLine,$record,0,0,0,1);
+				$content .= $SOBE->doc->section($titleLine,$record,0,0,0,1);
+			}
+			$content = $this->createRollbackLink('ALL', $LANG->getLL('revertAll',1),0)  . '<div style="margin-left:10px;padding-left:5px;border-left:1px solid black;border-bottom:1px dotted black;padding-bottom:2px;">'.$content.'</div>';
+		} else {
+			$content = $LANG->getLL('noDifferences',1);
 		}
-		$content = $this->createRollbackLink('ALL', $LANG->getLL('revertAll',1),0)  . '<div style="margin-left:10px;padding-left:5px;border-left:1px solid black;border-bottom:1px dotted black;padding-bottom:2px;">'.$content.'</div>';
-
 		return $SOBE->doc->section($LANG->getLL('mergedDifferences',1),$content,0,1,0,1);
 	}
 
@@ -586,7 +602,10 @@ class recordHistory {
 					unset($differences[$record][$key]);
 				}
 			}
-
+			if (empty($newArr[$record]) && empty($differences[$record]))	{
+				unset($newArr[$record]);
+				unset($differences[$record]);
+			}
 		}
 		return array(
 			'newData' => $newArr,

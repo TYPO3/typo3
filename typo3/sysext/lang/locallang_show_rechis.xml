@@ -47,6 +47,7 @@
 			<label index="yes">Yes</label>
 			<label index="showInsertDelete">Show inserts/deletes of records:</label>
 			<label index="consistenceWarning">From this point on, there is no guarantee that a rollback reverts all changes, as changes of records  prior to this message are normally not preserved.</label>
+			<label index="noDifferences">There are no differences to the current page!</label>
 		</languageKey>
 		<languageKey index="dk">EXT:csh_dk/lang/dk.locallang_show_rechis.xml</languageKey>
 		<languageKey index="de">EXT:csh_de/lang/de.locallang_show_rechis.xml</languageKey>
