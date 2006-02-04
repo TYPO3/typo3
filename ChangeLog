@@ -1,6 +1,7 @@
 2006-02-04  Sebastian Kurfuerst  <sebastian@garbage-group.de>
 
 	* Fixed a minor logical bug in undo/history
+	* Made SU-mode work again (was affected by hook name change)
 
 2006-02-02  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
