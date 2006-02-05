@@ -1,3 +1,7 @@
+2006-02-05  Dmitry Dulepov  <typo3@accio.lv>
+
+	* Fix: (Versioning sysext) Two cells in table had hard-coded bgcolor attribute (were not skinnable)
+
 2006-02-04  Sebastian Kurfuerst  <sebastian@garbage-group.de>
 
 	* Fixed a minor logical bug in undo/history
