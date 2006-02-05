@@ -178,6 +178,12 @@ class tx_version_cm1 extends t3lib_SCbase {
 		$this->doc = t3lib_div::makeInstance('mediumDoc');
 		$this->doc->backPath = $BACK_PATH;
 		$this->doc->form='<form action="" method="post">';
+		
+	        // Add styles
+		$this->doc->inDocStylesArray[$GLOBALS['MCONF']['name']] = '
+.version-diff-1 { background-color: green; }
+.version-diff-2 { background-color: red; }
+';
 
 			// Setting up the context sensitive menu:
 		$CMparts = $this->doc->getContextMenuCode();
@@ -417,8 +423,8 @@ class tx_version_cm1 extends t3lib_SCbase {
 					<td>'.$row['t3ver_count'].'</td>
 					<td>'.$row['pid'].'</td>
 					<td nowrap="nowrap"><a href="#" onclick="'.htmlspecialchars(t3lib_BEfunc::editOnClick('&edit['.$this->table.']['.$row['uid'].']=edit&columnsOnly=t3ver_label',$this->doc->backPath)).'"><img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/edit2.gif','width="11" height="12"').' alt="" title="Edit"/></a>'.htmlspecialchars($row['t3ver_label']).'</td>
-					<td bgcolor="green"><input type="radio" name="diff_1" value="'.$row['uid'].'"'.($diff_1==$row['uid'] ? ' checked="checked"':'').'/></td>
-					<td bgcolor="red"><input type="radio" name="diff_2" value="'.$row['uid'].'"'.($diff_2==$row['uid'] ? ' checked="checked"':'').'/></td>
+					<td class="version-diff-1"><input type="radio" name="diff_1" value="'.$row['uid'].'"'.($diff_1==$row['uid'] ? ' checked="checked"':'').'/></td>
+					<td class="version-diff-2"><input type="radio" name="diff_2" value="'.$row['uid'].'"'.($diff_2==$row['uid'] ? ' checked="checked"':'').'/></td>
 				</tr>';
 
 				// Show sub-content if the table is pages AND it is not the online branch (because that will mostly render the WHOLE tree below - not smart;)
