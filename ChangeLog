@@ -1,3 +1,7 @@
+2006-02-06  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
+	
+	* Fix bugtracker issue 408: enable direct mail to fetch https pages with user authentification
+
 2006-02-06  Sebastian Kurfuerst  <sebastian@garbage-group.de>
 
 	* New feature: Integrated ss_dragdrop extension into the core (Page and folder drag and drop)

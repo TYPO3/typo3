@@ -1220,8 +1220,9 @@ class t3lib_htmlmail {
 	function addUserPass($url)	{
 		$user=$this->http_username;
 		$pass=$this->http_password;
-		if ($user && $pass && substr($url,0,7)=="http://")	{
-			$url = "http://".$user.":".$pass."@".substr($url,7);
+		$matches = array();
+		if ($user && $pass && preg_match('/^(https?:\/\/)/', $url, $matches)) {
+			$url = $matches[1].$user.':'.$pass.'@'.substr($url,strlen($matches[1]));
 		}
 		return $url;
 	}
