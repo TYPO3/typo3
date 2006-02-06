@@ -167,6 +167,12 @@ class clickMenu {
 			ini_set('display_errors',0);	// XML has to be parsed, no parse errors allowed
 		}
 
+			// Deal with Drag&Drop context menus
+		if (strcmp(t3lib_div::_GP('dragDrop'),''))	{
+			$CMcontent = $this->printDragDropClickMenu(t3lib_div::_GP('dragDrop'),t3lib_div::_GP('srcId'),t3lib_div::_GP('dstId'));
+			return $CMcontent;
+		}
+
 			// can be set differently as well
 		$this->iParts[0] = t3lib_div::_GP('table');
 		$this->iParts[1] = t3lib_div::_GP('uid');
@@ -981,6 +987,115 @@ class clickMenu {
 
 
 
+
+	/***************************************
+	 *
+	 * DRAG AND DROP
+	 *
+	 ***************************************/
+
+	/**
+	 * Make 1st level clickmenu:
+	 *
+	 * @param	string		The absolute path
+	 * @param	integer		UID for the current record.
+	 * @return	string		HTML content
+	 */
+	function printDragDropClickMenu($table,$srcId,$dstId)	{
+		$menuItems=array();
+
+			// If the drag and drop menu should apply to PAGES use this set of menu items
+		if ($table == 'pages')	{
+				// Move Into:
+			$menuItems['movePage_into']=$this->dragDrop_copymovepage($srcId,$dstId,'move','into');
+				// Move After:
+			$menuItems['movePage_after']=$this->dragDrop_copymovepage($srcId,$dstId,'move','after');
+				// Copy Into:
+			$menuItems['copyPage_into']=$this->dragDrop_copymovepage($srcId,$dstId,'copy','into');
+				// Copy After:
+			$menuItems['copyPage_after']=$this->dragDrop_copymovepage($srcId,$dstId,'copy','after');
+		}
+
+			// If the drag and drop menu should apply to FOLDERS use this set of menu items
+		if ($table == 'folders')	{
+				// Move Into:
+			$menuItems['moveFolder_into']=$this->dragDrop_copymovefolder($srcId,$dstId,'move');
+				// Copy Into:
+			$menuItems['copyFolder_into']=$this->dragDrop_copymovefolder($srcId,$dstId,'copy');
+		}
+
+			// Adding external elements to the menuItems array
+		$menuItems = $this->processingByExtClassArray($menuItems,"dragDrop_".$table,$srcId);  // to extend this, you need to apply a Context Menu to a "virtual" table called "dragDrop_pages" or similar
+
+			// Processing by external functions?
+		$menuItems = $this->externalProcessingOfDBMenuItems($menuItems);
+
+			// Return the printed elements:
+		return $this->printItems($menuItems,
+			t3lib_iconWorks::getIconImage($table,$this->rec,$this->PH_backPath,' class="absmiddle" title="'.htmlspecialchars(t3lib_BEfunc::getRecordIconAltText($this->rec,$table)).'"').t3lib_BEfunc::getRecordTitle($table,$this->rec,1)
+		);
+	}
+
+
+	/**
+	 * Processing the $menuItems array (for extension classes) (DRAG'N DROP)
+	 *
+	 * @param	array		$menuItems array for manipulation.
+	 * @return	array		Processed $menuItems array
+	 */
+	function externalProcessingOfDragDropMenuItems($menuItems)	{
+		return $menuItems;
+	}
+
+
+	/**
+	 * Adding CM element for Copying/Moving a Page Into/After from a drag & drop action
+	 *
+	 * @param	integer		source UID code for the record to modify
+	 * @param	integer		destination UID code for the record to modify
+	 * @param	string		Action code: either "move" or "copy"
+	 * @param	string		Parameter code: either "into" or "after"
+	 * @return	array		Item array, element in $menuItems
+	 * @internal
+	 */
+	function dragDrop_copymovepage($srcUid,$dstUid,$action,$into)	{
+		$negativeSign = ($into == 'into') ? '' : '-';
+		$editOnClick='';
+		$loc='top.content'.($this->listFrame && !$this->alwaysContentFrame ?'.list_frame':'');
+		$editOnClick='if('.$loc.'){'.$loc.'.document.location=top.TS.PATH_typo3+"tce_db.php?redirect="+top.rawurlencode('.$this->frameLocation($loc.'.document').')+"'.
+			'&cmd[pages]['.$srcUid.']['.$action.']='.$negativeSign.$dstUid.'&prErr=1&vC='.$GLOBALS['BE_USER']->veriCode().'";hideCM();}';
+
+		return $this->linkItem(
+			$this->label($action.'Page_'.$into),
+			$this->excludeIcon('<img'.t3lib_iconWorks::skinImg($this->PH_backPath,'gfx/'.$action.'_page_'.$into.'.gif','width="11" height="12"').' alt="" />'),
+			$editOnClick.'return false;',
+			0
+		);
+	}
+
+
+	/**
+	 * Adding CM element for Copying/Moving a Folder Into from a drag & drop action
+	 *
+	 * @param	string		source path for the record to modify
+	 * @param	string		destination path for the records to modify
+	 * @param       string          Action code: either "move" or "copy"
+	 * @return      array           Item array, element in $menuItems
+	 * @internal
+	 */
+	function dragDrop_copymovefolder($srcPath,$dstPath,$action)	{
+		$editOnClick='';
+		$loc='top.content'.($this->listFrame && !$this->alwaysContentFrame ?'.list_frame':'');
+		$editOnClick='if('.$loc.'){'.$loc.'.document.location=top.TS.PATH_typo3+"tce_file.php?redirect="+top.rawurlencode('.$this->frameLocation($loc.'.document').')+"'.
+			'&file['.$action.'][0][data]='.$srcPath.'&file['.$action.'][0][target]='.$dstPath.'&prErr=1&vC='.$GLOBALS['BE_USER']->veriCode().'";hideCM();}';
+
+		return $this->linkItem(
+			$this->label($action.'Folder_into'),
+			$this->excludeIcon('<img'.t3lib_iconWorks::skinImg($this->PH_backPath,'gfx/'.$action.'_folder_into.gif','width="11" height="12"').' alt="" />'),
+			$editOnClick.'return false;',
+			0
+		);
+	}
 
 
 

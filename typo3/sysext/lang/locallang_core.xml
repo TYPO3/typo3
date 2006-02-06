@@ -180,6 +180,12 @@ Would you like to save now in order to refresh the display?</label>
 			<label index="cm.info">Info</label>
 			<label index="cm.createnew">Create new</label>
 			<label index="cm.tempMountPoint">Mount as treeroot</label>
+			<label index="cm.copyPage_into">Copy page into</label>
+			<label index="cm.copyPage_after">Copy page after</label>
+			<label index="cm.movePage_into">Move page into</label>
+			<label index="cm.movePage_after">Move page after</label>
+			<label index="cm.copyFolder_into">Copy folder into</label>
+			<label index="cm.moveFolder_into">Move folder into</label>
 		</languageKey>
 		<languageKey index="dk">EXT:csh_dk/lang/dk.locallang_core.xml</languageKey>
 		<languageKey index="de">EXT:csh_de/lang/de.locallang_core.xml</languageKey>

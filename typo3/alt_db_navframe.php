@@ -116,6 +116,11 @@ class localPageTree extends t3lib_browseTree {
 			$thePageIcon='<a href="#" onclick="'.htmlspecialchars($aOnClick).'">'.$thePageIcon.'</a>';
 		}
 
+			// Wrap icon in a drag/drop span.
+		$spanOnDrag = htmlspecialchars('return dragElement("'.$row['uid'].'")');
+		$spanOnDrop = htmlspecialchars('return dropElement("'.$row['uid'].'")');
+		$dragDropIcon = '<span id="dragIconID_'.$row['uid'].'" ondragstart="'.$spanOnDrag.'" onmousedown="'.$spanOnDrag.'" onmouseup="'.$spanOnDrop.'">'.$thePageIcon.'</span>';
+
 			// Add Page ID:
 		if ($this->ext_showPageId)	{
 			$pageIdStr = '['.$row['uid'].']&nbsp;';
@@ -123,7 +128,7 @@ class localPageTree extends t3lib_browseTree {
 			$pageIdStr = '';
 		}
 
-		return $thePageIcon.$lockIcon.$pageIdStr;
+		return $dragDropIcon.$lockIcon.$pageIdStr;
 	}
 
 	/**
@@ -156,7 +161,13 @@ class localPageTree extends t3lib_browseTree {
 		if ($GLOBALS['TYPO3_CONF_VARS']['BE']['useOnContextMenuHandler'])	{
 			$CSM = ' oncontextmenu="'.htmlspecialchars($GLOBALS['TBE_TEMPLATE']->wrapClickMenuOnIcon('','pages',$row['uid'],0,'&bank='.$this->bank,'',TRUE)).'"';
 		}
-		return '<a href="#" onclick="'.htmlspecialchars($aOnClick).'"'.$CSM.'>'.$title.'</a>';
+		$thePageTitle='<a href="#" onclick="'.htmlspecialchars($aOnClick).'"'.$CSM.'>'.$title.'</a>';
+
+			// Wrap title in a drag/drop span.
+		$spanOnDrag = htmlspecialchars('return dragElement("'.$row['uid'].'")');
+		$spanOnDrop = htmlspecialchars('return dropElement("'.$row['uid'].'")');
+		$dragDropTitle = '<span id="dragTitleID_'.$row['uid'].'" ondragstart="'.$spanOnDrag.'" onmousedown="'.$spanOnDrag.'" onmouseup="'.$spanOnDrop.'">'.$thePageTitle.'</span>';
+		return $dragDropTitle;
 	}
 }
 
@@ -286,6 +297,12 @@ class SC_alt_db_navframe {
 		$this->doc->bodyTagAdditions = $CMparts[1];
 		$this->doc->JScode.= $CMparts[0];
 		$this->doc->postCode.= $CMparts[2];
+
+			// Drag and Drop code is added:
+		$DDparts=$this->doc->getDragDropCode('pages');
+		// ignore the $DDparts[1] for now
+		$this->doc->JScode.= $DDparts[0];
+		$this->doc->postCode.= $DDparts[2];
 	}
 
 	/**

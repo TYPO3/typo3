@@ -1449,6 +1449,84 @@ $str.=$this->docBodyTagBegin().
 	}
 
 	/**
+	 * Returns an array with parts (JavaScript, init-functions, <div>-layers) for use on pages which have the drag and drop functionality (usually pages and folder display trees)
+	 *
+	 * @param	string		indicator of which table the drag and drop function should work on (pages or folders)
+	 * @return	array		If values are present: [0] = A <script> section for the HTML page header, [1] = onmousemove/onload handler for HTML tag or alike, [2] = One empty <div> layer for the follow-mouse drag element
+	 */
+	function getDragDropCode($table)	{
+		$content = '
+			<script type="text/javascript">
+			/*<![CDATA[*/
+			';
+
+		if ($this->isCMlayers())	{
+			$content.= '
+				var dragID = null;
+				var dragIconCSS = null;
+
+				function cancelDragEvent(event) {
+					dragID = null;
+					dragIconCSS.visibility = "hidden";
+					document.onmouseup = null;
+					document.onmousemove = null;
+				}
+
+				function mouseMoveEvent (event) {
+					dragIconCSS.left = GLV_x+5+"px";
+					dragIconCSS.top = GLV_y-5+"px";
+					dragIconCSS.visibility = "visible";
+					return false;
+				}
+
+				function dragElement(id,elementID) {
+					dragID = id;
+					if (elementID == null)	{
+						elementID = id;
+					}
+					document.getElementById("dragIcon").innerHTML=document.getElementById("dragIconID_"+elementID).innerHTML + document.getElementById("dragTitleID_"+elementID).getElementsByTagName("a")[0].innerHTML;
+					dragIconCSS = new GL_getObjCss("dragIcon");
+					dragIconCSS.whiteSpace = "nowrap";
+					document.onmouseup = cancelDragEvent;
+					document.onmousemove = mouseMoveEvent;
+					return false;
+				}
+
+				function dropElement(id) {
+					if ((dragID != null) && (dragID != id)) {
+						var url = "'.$this->backPath.'alt_clickmenu.php?dragDrop='.$table.'"
+									+ "&srcId=" + dragID
+									+ "&dstId=" + id
+									+ "&backPath='.t3lib_div::shortMD5(''.'|'.$GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']).'";
+						showClickmenu_raw(url);
+					}
+					cancelDragEvent();
+					return false;
+				}
+				';
+		}
+		else {
+			$content.= '
+				function dragElement(id) { return false; }
+				function dropElement(id) { return false; }
+				';
+		}
+		$content.='
+			/*]]>*/
+			</script>';
+
+		if ($this->isCMlayers())	{
+			return array(
+				$content,
+				'',
+				'<div id="dragIcon" style="z-index:1;position:absolute;visibility:hidden;filter:alpha(opacity=50);-moz-opacity:0.5;opacity:0.5;"><img src="" width="18" height="16"></div>'
+			);
+		} else {
+			return array($content,'','');
+		}
+	}
+
+	/**
 	 * Creates a tab menu from an array definition
 	 *
 	 * Returns a tab menu for a module

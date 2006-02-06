@@ -1,3 +1,7 @@
+2006-02-06  Sebastian Kurfuerst  <sebastian@garbage-group.de>
+
+	* New feature: Integrated ss_dragdrop extension into the core (Page and folder drag and drop)
+
 2006-02-05  Dmitry Dulepov  <typo3@accio.lv>
 
 	* Fix: (Versioning sysext) Two cells in table had hard-coded bgcolor attribute (were not skinnable)
