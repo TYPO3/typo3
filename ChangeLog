@@ -110,6 +110,12 @@
 	* Began working on a preview-facility which will allow for preview of eg. a workspace page without a backend login.
 	* Started a cleaner-module in Web>Function (coming from the "lowlevel" system extension). The cleaner consists of analysis tools and clean-up tools (based on the analysis), all working with the sys_refindex table as well. Eventually it will allow for nightly, cron-job based checks of the system including a report email to administrator. This way, data and link integrity and log reports can be reviewed each day.
 
+2006-01-27  Christian Jul Jensen  <christian@jul.net>
+
+	* Minor bugfix in sys_actions related to the taskcenter changes in 3.8
+	* Added manual sorting of sys_actions records
+	* FIxes #2245
+
 2006-01-27  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
 	* Adjustments to the htmlArea RTE extension (see details in local ChangeLog)
