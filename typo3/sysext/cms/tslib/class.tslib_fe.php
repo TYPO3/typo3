@@ -2103,6 +2103,8 @@
 							$responseType=2;	// Link (number, plaintext)
 							$this->jumpurl = $temp_unpackedMail['plain']['link_ids'][abs($url_id)];
 						}
+						$this->jumpurl = t3lib_div::htmlspecialchars_decode($this->jumpurl);
+
 						switch($temp_recip[0])	{
 							case 't':
 								$theTable = 'tt_address';

@@ -1,3 +1,7 @@
+2006-02-07  Ingmar Schlecht <ingmar@typo3.org>
+	
+	* Fix "&amp;" problem in DMail jumpURLs
+
 2006-02-06  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 	
 	* Fix bugtracker issue 408: enable direct mail to fetch https pages with user authentification
