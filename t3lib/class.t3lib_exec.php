@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2002-2005 René Fritz (r.fritz@colorcube.de)
+*  (c) 2002-2006 René Fritz (r.fritz@colorcube.de)
 *  All rights reserved
 *
 *  This script is part of the Typo3 project. The Typo3 project is
@@ -33,15 +33,14 @@
  *
  *
  *
- *   81: class t3lib_exec
- *   91:     function checkCommand($cmd, $handler='')
- *  162:     function getCommand($cmd, $handler='', $handlerOpt='')
- *  191:     function addPaths($paths)
- *  201:     function _getPaths()
- *  269:     function _init()
- *  285:     function _initPaths($paths='')
- *  340:     function _getOS()
- *  351:     function _fixPath($path)
+ *   80: class t3lib_exec
+ *   90:     function checkCommand($cmd, $handler='')
+ *  161:     function getCommand($cmd, $handler='', $handlerOpt='')
+ *  194:     function addPaths($paths)
+ *  232:     function _getPaths()
+ *  292:     function _init()
+ *  314:     function _initPaths($paths='')
+ *  368:     function _fixPath($path)
  *
  * TOTAL FUNCTIONS: 8
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -95,8 +94,6 @@ class t3lib_exec {
 			return false;
 		}
 
-		$osType = t3lib_exec::_getOS();
-
 
 		if ($handler && !t3lib_exec::checkCommand($handler)) {
 			return -1;
@@ -113,7 +110,7 @@ class t3lib_exec {
 		foreach($T3_VAR['t3lib_exec']['paths'] as $path => $validPath) {
 				// ignore invalid (false) paths
 			if ($validPath) {
-				if ($osType=='WIN') {
+				if (TYPO3_OS=='WIN') {
 					if (@is_file($path.$cmd)) {
 						$T3_VAR['t3lib_exec']['apps'][$cmd]['app'] = $cmd;
 						$T3_VAR['t3lib_exec']['apps'][$cmd]['path'] = $path;
@@ -138,7 +135,7 @@ class t3lib_exec {
 		}
 
 			// try to get the executable with the command 'which'. It do the same like already done, but maybe on other paths??
-		if ($osType=='UNIX') {
+		if (TYPO3_OS!='WIN') {
 			$cmd = @exec ('which '.$cmd);
 
 			if (@is_executable($cmd)) {
@@ -237,7 +234,6 @@ class t3lib_exec {
 
 		$pathsArr = array();
 		$sysPathArr = array();
-		$osType = t3lib_exec::_getOS();
 
 			// image magick paths first
 			// im_path_lzw take precedence over im_path
@@ -257,9 +253,9 @@ class t3lib_exec {
 
 
 			// add path from environment
-#TODO: how does this work for WIN
+// TODO: how does this work for WIN
 		if ($GLOBALS['_SERVER']['PATH']) {
-			$sep = ($osType=='WIN') ? ';' : ':';
+			$sep = (TYPO3_OS=='WIN') ? ';' : ':';
 			$envPath = t3lib_div::trimExplode($sep,$GLOBALS['_SERVER']['PATH'],1);
 			foreach($envPath as $val) {
 				$val = t3lib_exec::_fixPath($val);
@@ -267,8 +263,8 @@ class t3lib_exec {
 			}
 		}
 
-		if ($osType=='WIN') {
-#TODO: add the most common paths for WIN
+		if (TYPO3_OS=='WIN') {
+// TODO: add the most common paths for WIN
 			$sysPathArr = array_merge($sysPathArr, array (
 				'/usr/bin/' => '/usr/bin/',
 				'/perl/bin/' => '/perl/bin/',
@@ -359,17 +355,6 @@ class t3lib_exec {
 				}
 			}
 		}
-	}
-
-
-	/**
-	 * Returns on which OS we're runing
-	 *
-	 * @return	string		the OS type: "UNIX" or "WIN"
-	 * @internal
-	 */
-	function _getOS()	{
-		return stristr(PHP_OS,'win')&&!stristr(PHP_OS,'darwin')?'WIN':'UNIX';
 	}
 
 
