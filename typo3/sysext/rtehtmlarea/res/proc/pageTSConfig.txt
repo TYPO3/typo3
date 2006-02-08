@@ -41,9 +41,9 @@ RTE.default.proc {
 		## b and i will be remapped on exit (see below).
 		## Note that the link accessibility feature of htmlArea RTE does insert img tags.
 	allowTags (
-		a, abbr, acronym, address, blockquote, b, br, caption, cite, code, div, em,
+		a, abbr, acronym, address, blockquote, b, br, caption, center, cite, code, div, em, font,
 		h1, h2, h3, h4, h5, h6, hr, i, img, li, link, ol, p, pre, q, sdfield,
-		span, strong, sub, sup, table, thead, tbody, tfoot, td, th, tr, tt, ul
+		span, strike, strong, sub, sup, table, thead, tbody, tfoot, td, th, tr, tt, u, ul
 		)
 	
 		## TAGS DENIED

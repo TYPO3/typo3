@@ -750,7 +750,7 @@ class tx_rtehtmlarea_browse_links {
 							$classesAnchor[$conf['type']][] = $conf['class'];
 							if (is_array($this->thisConfig['classesAnchor.']) && is_array($this->thisConfig['classesAnchor.']['default.']) && $this->thisConfig['classesAnchor.']['default.'][$conf['type']] == $conf['class']) {
 								$classesAnchorDefault[$conf['type']] = $conf['class'];
-								if ($conf['titleText']) {
+								if ($conf['titleText'] && $this->typoVersion >= 3008002) {
 									$string = trim($conf['titleText']);
 									if (substr($string,0,4)=='LLL:') {       // language file
 										$arr = explode(':',$string);
@@ -897,23 +897,23 @@ class tx_rtehtmlarea_browse_links {
 			$JScode.='
 				function link_typo3Page(id,anchor)	{
 					var theLink = \''.$this->siteURL.'?id=\'+id+(anchor?anchor:"");
-					setTitle(document.ltargetform.anchor_title.value);
+					if (document.ltargetform.anchor_title) setTitle(document.ltargetform.anchor_title.value);
 					editor.renderPopup_addLink(theLink,cur_target,cur_class,cur_title);
 					return false;
 				}
 				function link_folder(folder)	{	//
 					var theLink = \''.$this->siteURL.'\'+folder;
-					setTitle(document.ltargetform.anchor_title.value);
+					if (document.ltargetform.anchor_title) setTitle(document.ltargetform.anchor_title.value);
 					editor.renderPopup_addLink(theLink,cur_target,cur_class,cur_title);
 					return false;
 				}
 				function link_spec(theLink)	{	//
-					setTitle(document.ltargetform.anchor_title.value);
+					if (document.ltargetform.anchor_title) setTitle(document.ltargetform.anchor_title.value);
 					editor.renderPopup_addLink(theLink,cur_target,cur_class,cur_title);
 					return false;
 				}
 				function link_current()	{	//
-					setTitle(document.ltargetform.anchor_title.value);
+					if (document.ltargetform.anchor_title) setTitle(document.ltargetform.anchor_title.value);
 					if (cur_href!="http://" && cur_href!="mailto:")	{
 						editor.renderPopup_addLink(cur_href,cur_target,cur_class,cur_title);
 					}
@@ -1383,7 +1383,7 @@ class tx_rtehtmlarea_browse_links {
 						for (var i = editor.classesAnchorSetup.length; --i >= 0;) {
 							var anchorClass = editor.classesAnchorSetup[i];
 							if (anchorClass["name"] == document.ltargetform.anchor_class.value) {
-								if(anchorClass["titleText"]) document.ltargetform.anchor_title.value = anchorClass["titleText"];
+								if(anchorClass["titleText"] && document.ltargetform.anchor_title) document.ltargetform.anchor_title.value = anchorClass["titleText"];
 								break;
 							}
 						}
@@ -1400,20 +1400,21 @@ class tx_rtehtmlarea_browse_links {
 								</select>';
 			}
 				// Title:
-			$ltarget .='		</td>
+			if ($this->typoVersion >= 3008002) {
+				$ltarget .='		</td>
 						</tr>
 						<tr>
 							<td>'.$GLOBALS['LANG']->getLL('anchor_title',1).':</td>
 							<td colspan="3">
 								<input type="text" name="anchor_title" value="' . ($this->setTitle?$this->setTitle:($this->thisConfig['classesAnchor']?$this->classesAnchorDefaultTitle[$this->act]:'')) . '" ' . $GLOBALS['TBE_TEMPLATE']->formWidth(30) . ' />';
-
+			}
 				$ltarget.='	</td>
 						</tr>
 					</table>
 				</form>';
 
-				// Add class selector boxand title field to content:
-			$content .=$ltarget;
+				// Add class selector box and title field to content:
+				$content .=$ltarget;
 
 				// Add some space
 			$content.='<br /><br />';
@@ -1424,7 +1425,7 @@ class tx_rtehtmlarea_browse_links {
 					for (var i = editor.classesAnchorSetup.length; --i >= 0;) {
 						var anchorClass = editor.classesAnchorSetup[i];
 						if (anchorClass["name"] == document.ltargetform.anchor_class.value) {
-							if(anchorClass["titleText"]) document.ltargetform.anchor_title.value = anchorClass["titleText"];
+							if(anchorClass["titleText"] && document.ltargetform.anchor_title) document.ltargetform.anchor_title.value = anchorClass["titleText"];
 							break;
 						}
 
@@ -1449,13 +1450,16 @@ class tx_rtehtmlarea_browse_links {
 						</td>
 						</tr>';
 			}
-			$ltarget .='
+			if ($this->typoVersion >= 3008002) {
+				$ltarget .='
 						<tr>
 							<td>'.$GLOBALS['LANG']->getLL('anchor_title',1).':</td>
 							<td colspan="3">
 								<input type="text" name="anchor_title" value="' .  ($this->setTitle?$this->setTitle:($this->thisConfig['classesAnchor']?$this->classesAnchorDefaultTitle[$this->act]:'')) . '" ' . $GLOBALS['TBE_TEMPLATE']->formWidth(30) . ' />
 						</td>
-						</tr>
+						</tr>';
+			}
+			$ltarget .='
 					</table>
 				</form>';
 				// Add class selector box and title field to content:

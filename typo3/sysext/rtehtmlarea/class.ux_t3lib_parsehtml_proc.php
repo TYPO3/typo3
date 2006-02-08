@@ -3,7 +3,7 @@
 *  Copyright notice
 *
 *  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
-*  (c) 2004-2005 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
+*  (c) 2004, 2005, 2006 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -42,9 +42,6 @@ require_once (PATH_t3lib.'class.t3lib_parsehtml_proc.php');
 /**
  * Class for parsing HTML for the Rich Text Editor. (also called transformations)
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
- * @package TYPO3
- * @subpackage t3lib
  * Modification by Stanislas Rolland 2004-12-10 to allow style and xml:lang attributes on span tags
  * Modification by Stanislas Rolland 2005-02-10 to include hr in headListTags
  * Modification by Stanislas Rolland 2005-04-02 to avoid insertion of superfluous linebreaks by transform_db
@@ -206,7 +203,7 @@ class ux_t3lib_parsehtml_proc extends t3lib_parsehtml_proc {
 							if (!isset($this->procOptions['typolist']) || $this->procOptions['typolist'])	{
 								$parts = $this->getAllParts($this->splitIntoBlock('LI',$this->removeFirstAndLastTag($blockSplit[$k])),1,0);
 								while(list($k2)=each($parts))	{
-									$parts[$k2]=ereg_replace(chr(10).'|'.chr(13),'',$parts[$k2]);	// remove all linesbreaks!
+									$parts[$k2]=preg_replace('/['.preg_quote(chr(10).chr(13)).']+/','',$parts[$k2]);	// remove all linesbreaks!
 									$parts[$k2]=$this->defaultTStagMapping($parts[$k2],'db');
 									$parts[$k2]=$this->cleanFontTags($parts[$k2],0,0,0);
 									$parts[$k2] = $this->HTMLcleaner_db($parts[$k2],strtolower($this->procOptions['allowTagsInTypolists']?$this->procOptions['allowTagsInTypolists']:'br,font,b,i,u,a,img,span,strong,em'));
@@ -217,7 +214,7 @@ class ux_t3lib_parsehtml_proc extends t3lib_parsehtml_proc {
 						} else {
 // <Dimitrij Denissenko 2005-11-15 wrap a-tags that contain a style attribute with a span-tag>
 							//$blockSplit[$k].=$lastBR;
-							$blockSplit[$k]=$this->transformStyledATags($blockSplit[$k]).$lastBR;
+							$blockSplit[$k]=preg_replace('/['.preg_quote(chr(10).chr(13)).']+/',' ',$this->transformStyledATags($blockSplit[$k])).$lastBR;
 // <Dimitrij Denissenko 2005-11-15 wrap a-tags that contain a style attribute with a span-tag>
 						}
 					break;
@@ -228,7 +225,7 @@ class ux_t3lib_parsehtml_proc extends t3lib_parsehtml_proc {
 						} else {
 // <Johannes Bornhold 2005-05-09 linebreaks are spaces>
 // <Dimitrij Denissenko 2005-11-15 wrap a-tags that contain a style attribute with a span-tag>
-							$blockSplit[$k]=str_replace(chr(10),chr(32),$this->transformStyledATags($blockSplit[$k])).$lastBR;
+							$blockSplit[$k]=preg_replace('/['.preg_quote(chr(10).chr(13)).']+/',' ',$this->transformStyledATags($blockSplit[$k])).$lastBR;
 							//$blockSplit[$k]=str_replace(chr(10),'',$blockSplit[$k]).$lastBR;
 // </Dimitrij Denissenko 2005-11-15 wrap a-tags that contain a style attribute with a span-tag>
 // </Johannes Bornhold 2005-05-09 linebreaks are spaces>
@@ -268,18 +265,17 @@ class ux_t3lib_parsehtml_proc extends t3lib_parsehtml_proc {
 // <Stanislas Rolland 2005-04-06 to eliminate true linebreaks inside hx tags>
 // <Johannes Bornhold 2005-05-09 linebreaks are spaces>
 // <Dimitrij Denissenko 2005-11-15 wrap a-tags that contain a style attribute with a span-tag>
-							$blockSplit[$k]=str_replace(chr(10),chr(32),$this->transformStyledATags($blockSplit[$k])).$lastBR;
+							$blockSplit[$k]=preg_replace('/['.preg_quote(chr(10).chr(13)).']+/',' ',$this->transformStyledATags($blockSplit[$k])).$lastBR;
 							//$blockSplit[$k].=$lastBR;
 // </Dimitrij Denissenko 2005-11-15 wrap a-tags that contain a style attribute with a span-tag>
 // </Johannes Bornhold 2005-05-09 linebreaks are spaces>
 // </Stanislas Rolland 2005-04-06 to eliminate true linebreaks inside hx tags>
 						}
 					break;
-					
 					default:
 // <Dimitrij Denissenko 2005-11-15 wrap a-tags that contain a style attribute with a span-tag>
-						//$blockSplit[$k].=$lastBR;
-						$blockSplit[$k]=$this->transformStyledATags($blockSplit[$k]).$lastBR;
+							// Eliminate true linebreaks inside other block tags
+						$blockSplit[$k]=preg_replace('/['.preg_quote(chr(10).chr(13)).']+/',' ',$this->transformStyledATags($blockSplit[$k])).$lastBR;
 // </Dimitrij Denissenko 2005-11-15 wrap a-tags that contain a style attribute with a span-tag>
 					break;
 					
@@ -287,7 +283,7 @@ class ux_t3lib_parsehtml_proc extends t3lib_parsehtml_proc {
 			} else {	// NON-block:
 				if (strcmp(trim($blockSplit[$k]),''))	{
 // <Johannes Bornhold 2005-05-09 linebreaks are spaces>
-					$blockSplit[$k]=$this->divideIntoLines(str_replace(chr(10),chr(32), $blockSplit[$k])).$lastBR;
+					$blockSplit[$k]=$this->divideIntoLines(preg_replace('/['.preg_quote(chr(10).chr(13)).']+/',' ', $blockSplit[$k])).$lastBR;
 					//$blockSplit[$k]=$this->divideIntoLines($blockSplit[$k]).$lastBR;
 // </Johannes Bornhold 2005-05-09 linebreaks are spaces>
 // <Dimitrij Denissenko 2005-11-15 wrap a-tags that contain a style attribute with a span-tag>

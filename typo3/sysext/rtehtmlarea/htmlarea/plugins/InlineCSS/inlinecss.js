@@ -36,20 +36,21 @@ InlineCSS = function(editor,args) {
 	var toolbar = cfg.toolbar;
 	var editorNumber = editor._editorNumber;
 	var obj = {
-		id		: "InlineCSS-class",
-		tooltip		:	InlineCSS_langArray["InlineCSSStyleTooltip"],
-		options		:	{"":""},
-		action		:	null,
-		refresh		:	null,
-		context		:	"*",
-		cssArray	: new Array(),
-		parseCount	: 1,
-		loaded		: false,
-		timeout		: null,
-		lastTag		: "",
-		lastClass	: "",
-		classesUrl	: RTEarea[editorNumber]["classesUrl"],
-		classesCharacter : RTEarea[editorNumber]["classesTag"]["span"]
+		id			: "InlineCSS-class",
+		tooltip			: InlineCSS_langArray["InlineCSSStyleTooltip"],
+		options			: {"":""},
+		action			: null,
+		refresh			: null,
+		context			: "*",
+		cssArray		: new Array(),
+		parseCount		: 1,
+		loaded			: false,
+		timeout			: null,
+		lastTag			: "",
+		lastClass		: "",
+		showTagFreeClasses	: RTEarea[editorNumber]["showTagFreeClasses"],
+		classesUrl		: RTEarea[editorNumber]["classesUrl"],
+		classesCharacter	: RTEarea[editorNumber]["classesTag"]["span"]
 	};
 
 	var actionHandlerFunctRef = InlineCSS.actionHandler(this, obj);
@@ -159,7 +160,7 @@ InlineCSS.applyCSSIEImport=function(editor,i18n,cssIEImport,cssArray){
 
 InlineCSS._pluginInfo = {
 	name          : "InlineCSS",
-	version       : "1.3",
+	version       : "1.4",
 	developer     : "Stanislas Rolland",
 	developer_url : "http://www.fructifor.ca/",
 	c_owner       : "Stanislas Rolland",

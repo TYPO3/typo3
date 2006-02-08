@@ -19,8 +19,8 @@ dictionaryList  = en
   # cat=basic; type=string; label=List of htmlArea RTE plugins: The list of htmlArea RTE plugins that may be enabled.
 HTMLAreaPluginList = TableOperations, SpellChecker, ContextMenu, SelectColor, TYPO3Browsers, InsertSmiley, FindReplace, RemoveFormat, CharacterMap, QuickTag, InlineCSS, DynamicCSS, UserElements, Acronym, TYPO3HtmlParser
 
-  # cat=basic/enable; type=options[Minimal (For advanced administrators only),Typical (For most situations),Demo (Not for production environments)]; label=Default configuration settings: Select Typical for most situations. Select Minimal for minimal settings. Select Demo to explore available features.
-defaultConfiguration = Typical (For most situations)
+  # cat=basic/enable; type=options[Minimal (Most features disabled. Administrator needs to enable them using TypoScript. For advanced administrators only.),Typical (Most commonly used features are enabled. Select this option if you are unsure which one to use.),Demo (Show-off configuration. Includes pre-configured styles. Not for production environments.)]; label=Default configuration settings
+defaultConfiguration = Typical (Most commonly used features are enabled. Select this option if you are unsure which one to use.)
 
   # cat=basic/enable; type=boolean; label=Enable images in the RTE: If set, the use of images in the "Typical" default configuration of the RTE will be enabled. WARNING: this option will not work for Classic RTE (ext: rte).
 enableImages = 0

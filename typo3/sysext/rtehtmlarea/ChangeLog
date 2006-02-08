@@ -1,3 +1,10 @@
+2006-02-08 Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+	* Version 1.1.6
+	* Correct default processing configuration for the case of center, font, strike and u tags when encountered outside paragraphs.
+	* Remove title field from link creation window when TYPO3 version is smaller than 3.8.2.
+	* Replace true linebreaks with space inside block tags and after hr tags (see bugtracker issue 2365).
+	* Plugin InlineCSS was not honoring property showTagFreeClasses.
+
 2006-02-02 Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
 	* Version 1.1.5
 	* Automatic update of the extension version number in the About window.

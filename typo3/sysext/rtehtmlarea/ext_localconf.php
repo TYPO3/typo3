@@ -50,9 +50,9 @@ $TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['version'] = $EM_CONF[$_EXTKEY]['version']
 
 $_EXTCONF = unserialize($_EXTCONF);    // unserializing the configuration so we can use it here:
 
-if ($_EXTCONF['defaultConfiguration'] == 'Minimal (For advanced administrators only)') {
+if (strstr($_EXTCONF['defaultConfiguration'],'Minimal')) {
 	$TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['defaultConfiguration'] = 'Advanced';
-} elseif ($_EXTCONF['defaultConfiguration'] == 'Demo (Not for production environments)') {
+} elseif (strstr($_EXTCONF['defaultConfiguration'],'Demo')) {
 	$TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['defaultConfiguration'] = 'Demo';
 } else {
 	$TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['defaultConfiguration'] = 'Typical';
