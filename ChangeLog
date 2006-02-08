@@ -4,6 +4,9 @@
 	* !!! Changed default value of TYPO3_CONF_VARS[BE][fileCreateMask/folderCreateMask]. By default, those files are no longer writable for the group.
 	* Fixed bug #2272: Added [PAGE].includeJS plus possibility to attach .js files to template resources (thanks to Johannes Vockeroth)
 	* Fixed bug #75: t3lib_extfilefunc::func_copy() does not set file permissions properly
+	* Encode whitespaces in t3lib_div::encodeHeader() as required by RFC 2047 (thanks to Stanislas)
+	* Added crdate and tstamp fields to be selected by users in the Web->List view
+	* Fixed bug #2200: In FEediting the creation of new records in other pages than the current should be possible
 
 2006-02-07  Ingmar Schlecht <ingmar@typo3.org>
 

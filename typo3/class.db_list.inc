@@ -224,6 +224,8 @@ class recordList extends t3lib_recordList {
 					// Setting fields to select:
 				if ($this->allFields)	{
 					$fields = $this->makeFieldList($tableName);
+					$fields[]='tstamp';
+					$fields[]='crdate';
 					$fields[]='_PATH_';
 					$fields[]='_CONTROL_';
 					if (is_array($this->setFields[$tableName]))	{

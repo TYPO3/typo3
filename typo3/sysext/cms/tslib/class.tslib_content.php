@@ -6696,6 +6696,7 @@ class tslib_cObj {
 		if (!count($dataArr))	$dataArr=$this->data;
 		list($table,$uid) = explode(':',$currentRecord);
 		$mayEdit=0;
+		$nPid=intval($conf['newRecordInPid']);	// Page ID for new records, 0 if not specified
 
 		if (!$conf['onlyCurrentPid'] || $dataArr['pid']==$GLOBALS['TSFE']->id)	{
 				// Permissions:
@@ -6714,6 +6715,7 @@ class tslib_cObj {
 				$mayEdit = count($allow)&&($perms&16);
 				if ($conf['newRecordFromTable'])	{
 					$newUid=$GLOBALS['TSFE']->id;
+					if ($nPid) $newUid=$nPid;
 				} else {
 					$newUid = -1*$uid;
 				}
@@ -6798,9 +6800,9 @@ class tslib_cObj {
 					}
 					if (isset($allow['new']))	{
 						if ($table=='pages')	{
-							$panel.=$this->editPanelLinkWrap('<img src="t3lib/gfx/new_page.gif" width="13" height="12" vspace="1" hspace="2" border="0" title="'.$BE_USER->extGetLL('p_newSubpage').'" align="top" alt="" title="" />',$formName,'new',$currentRecord);
+							$panel.=$this->editPanelLinkWrap('<img src="t3lib/gfx/new_page.gif" width="13" height="12" vspace="1" hspace="2" border="0" title="'.$BE_USER->extGetLL('p_newSubpage').'" align="top" alt="" title="" />',$formName,'new',$currentRecord,'',$nPid);
 						} else {
-							$panel.=$this->editPanelLinkWrap('<img src="t3lib/gfx/new_record.gif" width="16" height="12" vspace="1" hspace="2" border="0" title="'.$BE_USER->extGetLL('p_newRecordAfter').'" align="top" alt="" title="" />',$formName,'new',$currentRecord);
+							$panel.=$this->editPanelLinkWrap('<img src="t3lib/gfx/new_record.gif" width="16" height="12" vspace="1" hspace="2" border="0" title="'.$BE_USER->extGetLL('p_newRecordAfter').'" align="top" alt="" title="" />',$formName,'new',$currentRecord,'',$nPid);
 						}
 					}
 					if (isset($allow['delete']))		{$panel.=$this->editPanelLinkWrap('<img src="t3lib/gfx/delete_record.gif" width="12" height="12" vspace="1" hspace="2" border="0" title="'.$BE_USER->extGetLL('p_delete').'" align="top" alt="" title="" />',$formName,'delete','',$BE_USER->extGetLL('p_deleteConfirm'));	}
@@ -6916,7 +6918,7 @@ class tslib_cObj {
 	 * @access private
 	 * @see editPanel(), editIcons(), t3lib_tsfeBeUserAuth::extEditAction()
 	 */
-	function editPanelLinkWrap($string,$formName,$cmd,$currentRecord='',$confirm='')	{
+	function editPanelLinkWrap($string,$formName,$cmd,$currentRecord='',$confirm='',$nPid='')	{
 		$eFONPage = $GLOBALS['BE_USER']->uc['TSFE_adminConfig']['edit_editFormsOnPage'];
 		$nV=t3lib_div::_GP('ADMCMD_view')?1:0;
 		$adminURL = t3lib_div::getIndpEnv('TYPO3_SITE_URL').TYPO3_mainDir;
@@ -6929,7 +6931,9 @@ class tslib_cObj {
 			if ($rParts[0]=='pages')	{
 				$out=$this->editPanelLinkWrap_doWrap($string,$adminURL.'db_new.php?id='.$rParts[1].'&pagesOnly=1',$currentRecord);
 			} else {
-				$nPid = t3lib_div::testInt($rParts[1]) ? -$rParts[1] : $GLOBALS['TSFE']->id;
+				if (!intval($nPid))	{
+					$nPid = t3lib_div::testInt($rParts[1]) ? -$rParts[1] : $GLOBALS['TSFE']->id;
+				}
 				$out=$this->editPanelLinkWrap_doWrap($string,$adminURL.'alt_doc.php?edit['.$rParts[0].']['.$nPid.']=new&noView='.$nV,$currentRecord);
 			}
 		} else {

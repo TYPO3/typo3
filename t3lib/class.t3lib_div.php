@@ -3818,6 +3818,7 @@ class t3lib_div {
 				default:
 					$qpValue = t3lib_div::quoted_printable($part,1000);
 					if ($part!=$qpValue)	{
+						$qpValue = str_replace(' ','_',$qpValue);	// Encoded words in the header should not contain non-encoded spaces. "_" is a shortcut for "=20". See RFC 2047 for details.
 						$part = '=?'.$charset.'?Q?'.$qpValue.'?=';
 					}
 			}

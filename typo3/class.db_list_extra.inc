@@ -1043,7 +1043,7 @@ class localRecordList extends recordList {
 		return '							<!-- CLIPBOARD PANEL: '.$table.':'.$row['uid'].' -->
 											<div class="typo3-clipCtrl">'.implode('',$cells).'</div>';
 	}
-	
+
 	/**
 	 * Make reference count
 	 *
@@ -1061,15 +1061,15 @@ class localRecordList extends recordList {
 				' AND ref_uid='.intval($uid).
 				' AND deleted=0'
 		);
-		
+
 			// Compile information for title tag:
 		$infoData=array();
 		foreach($rows as $row)	{
 			$infoData[]=$row['tablename'].':'.$row['recuid'].':'.$row['field'];
 		}
-		
-		return count($infoData) ? '<a href="#" onclick="'.htmlspecialchars('top.launchView(\''.$table.'\', \''.$uid.'\'); return false;').'" title="'.htmlspecialchars(t3lib_div::fixed_lgd(implode(' / ',$infoData),100)).'">'.count($infoData).'</a>' : '';		
-	}	
+
+		return count($infoData) ? '<a href="#" onclick="'.htmlspecialchars('top.launchView(\''.$table.'\', \''.$uid.'\'); return false;').'" title="'.htmlspecialchars(t3lib_div::fixed_lgd(implode(' / ',$infoData),100)).'">'.count($infoData).'</a>' : '';
+	}
 
 	/**
 	 * Creates the localization panel
@@ -1157,6 +1157,8 @@ class localRecordList extends recordList {
 		$fields = $this->makeFieldList($table);
 
 			// Add pseudo "control" fields
+		$fields[]='tstamp';
+		$fields[]='crdate';
 		$fields[]='_PATH_';
 		$fields[]='_REF_';
 		$fields[]='_LOCALIZATION_';
