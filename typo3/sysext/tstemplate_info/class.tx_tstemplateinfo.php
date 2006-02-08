@@ -352,7 +352,7 @@ class tx_tstemplateinfo extends t3lib_extobjbase {
 
 				$fI=t3lib_div::split_fileref($e[file]);
 				if (@is_file($path) && t3lib_div::inList($this->pObj->textExtensions,$fI["fileext"]))	{
-					if (filesize($path)<($TCA['sys_template']['columns']['resources']['config']*1024))	{
+					if (filesize($path)<($TCA['sys_template']['columns']['resources']['config']['max_size']*1024))	{
 						$fileContent = t3lib_div::getUrl($path);
 						$outCode='File: <b>'.$e[file].'</b><BR>';
 						$outCode.='<textarea name="edit[file]" rows="'.$numberOfRows.'" wrap="off" class="fixed-font enable-tab"'.$this->pObj->doc->formWidthText(48,"width:98%;height:70%","off").' class="fixed-font">'.t3lib_div::formatForTextarea($fileContent).'</textarea>';
@@ -363,7 +363,7 @@ class tx_tstemplateinfo extends t3lib_extobjbase {
 						$theOutput.=$this->pObj->doc->sectionEnd().$outCode;
 					} else {
 						$theOutput.=$this->pObj->doc->spacer(15);
-						$theOutput.=$this->pObj->doc->section('<font color=red>Filesize exceeded '.$TCA['sys_template']['columns']['resources']['config'].' Kbytes</font>','Files larger than '.$TCA['sys_template']['columns']['resources']['config'].' KByes are not allowed to be edited.',0,0,0,1);
+						$theOutput.=$this->pObj->doc->section('<font color=red>Filesize exceeded '.$TCA['sys_template']['columns']['resources']['config']['max_size'].' Kbytes</font>','Files larger than '.$TCA['sys_template']['columns']['resources']['config']['max_size'].' KByes are not allowed to be edited.',0,0,0,1);
 					}
 				}
 			}
