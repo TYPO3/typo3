@@ -645,7 +645,7 @@ $GLOBALS['TSFE']->content.='
 
 			// JavaScript files
 		if (is_array($GLOBALS['TSFE']->pSetup['includeJS.']))	{
-			foreach ($GLOBALS['TSFE']->pSetup['includeJS.'] as $key=>$JSfile);
+			foreach ($GLOBALS['TSFE']->pSetup['includeJS.'] as $key=>$JSfile)	{
 				if (!is_array($JSfile))	{
 					$ss = $GLOBALS['TSFE']->tmpl->getFileName($JSfile);
 					if ($ss)	{
