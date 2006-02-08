@@ -3,6 +3,7 @@
 	* Various changes to indexed_search, see local ChangeLog for details
 	* !!! Changed default value of TYPO3_CONF_VARS[BE][fileCreateMask/folderCreateMask]. By default, those files are no longer writable for the group.
 	* Fixed bug #2272: Added [PAGE].includeJS plus possibility to attach .js files to template resources (thanks to Johannes Vockeroth)
+	* Fixed bug #75: t3lib_extfilefunc::func_copy() does not set file permissions properly
 
 2006-02-07  Ingmar Schlecht <ingmar@typo3.org>
 

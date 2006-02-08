@@ -484,6 +484,7 @@ class t3lib_extFileFunctions extends t3lib_basicFileFunctions	{
 									$cmd = 'cp "'.$theFile.'" "'.$theDestFile.'"';
 									exec($cmd);
 								}
+								t3lib_div::fixPermissions($theDestFile);
 								clearstatcache();
 								if (@is_file($theDestFile))	{
 									$this->writelog(2,0,1,'File "%s" copied to "%s"',Array($theFile,$theDestFile));
