@@ -132,9 +132,11 @@ class t3lib_parsehtml	{
 		if (preg_match('/^([^\<]*\-\-\>)(.*)(\<\!\-\-[^\>]*)$/s', $content, $matches)===1)	{
 			return $matches[2];
 		}
+		$matches = array();
 		if (preg_match('/(.*)(\<\!\-\-[^\>]*)$/s', $content, $matches)===1)	{
 			return $matches[1];
 		}
+		$matches = array();
 		if (preg_match('/^([^\<]*\-\-\>)(.*)$/s', $content, $matches)===1)	{
 			return $matches[2];
 		}
@@ -190,6 +192,7 @@ class t3lib_parsehtml	{
 				$before = $matches[1];
 			}
 			if (is_array($subpartContent))	{
+				$matches = array();
 				if (preg_match('/^([^\<]*\-\-\>)(.*)(\<\!\-\-[^\>]*)$/s', $between, $matches)===1)	{
 					$between = $matches[2];
 				} elseif (preg_match('/^(.*)(\<\!\-\-[^\>]*)$/s', $between, $matches)===1)	{
@@ -198,6 +201,7 @@ class t3lib_parsehtml	{
 					$between = $matches[2];
 				}
 			}
+			$matches = array();
 			if (preg_match('/^[^\<]*\-\-\>(.*)$/s', $after, $matches)===1)	{
 				$after = $matches[1];
 			}
@@ -488,6 +492,7 @@ class t3lib_parsehtml	{
 
 		$metaValue = array();
 		$value = array();
+		$matches = array();
 		if (preg_match_all('/("[^"]*"|\'[^\']*\'|[^\s"\'\=]+|\=)/s', $tag_tmp, $matches)>0)	{
 			foreach ($matches[1] as $part)	{
 				$firstChar = substr($part, 0, 1);

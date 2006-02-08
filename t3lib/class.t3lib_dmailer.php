@@ -114,6 +114,7 @@ class t3lib_dmailer extends t3lib_htmlmail {
 		$this->dmailer['html_content'] = base64_decode($this->theParts['html']['content']);
 
 			// Try to auto-detect the charset of the message
+		$matches = array();
 		$res = preg_match('/<meta[\s]+http-equiv="Content-Type"[\s]+content="text\/html;[\s]+charset=([^"]+)"/m', $this->dmailer['html_content'], $matches);
 		if ($res==1)	{ $this->charset = $matches[1]; }
 

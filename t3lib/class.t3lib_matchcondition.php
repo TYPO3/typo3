@@ -345,7 +345,7 @@ class t3lib_matchCondition {
 			$regex = str_replace('\\*', '.*', $regex);	// 1st fix: Replace \* with .* because * is our wildcard
 			$regex = str_replace('\\\\.*', '\\*', $regex);	// 2nd fix: Match needle if the * was escaped
 
-			if (preg_match($regex, $haystack, $res)) return true;
+			if (preg_match($regex, $haystack)) return true;
 		}
 	}
 

@@ -691,12 +691,14 @@ class t3lib_DB {
 		}
 
 			// Find ORDER BY:
+		$reg = array();
 		if (preg_match('/^(.*)[[:space:]]+ORDER[[:space:]]+BY[[:space:]]+([[:alnum:][:space:],._]+)$/i',$str,$reg))	{
 			$wgolParts['ORDERBY'] = trim($reg[2]);
 			$str = $reg[1];
 		}
 
 			// Find GROUP BY:
+		$reg = array();
 		if (preg_match('/^(.*)[[:space:]]+GROUP[[:space:]]+BY[[:space:]]+([[:alnum:][:space:],._]+)$/i',$str,$reg))	{
 			$wgolParts['GROUPBY'] = trim($reg[2]);
 			$str = $reg[1];
@@ -1049,7 +1051,7 @@ class t3lib_DB {
 		} else {
 			die('The current username, password or host was not accepted when the connection to the database was attempted to be established!');
 			exit;
-		}		
+		}
 	}
 
 
