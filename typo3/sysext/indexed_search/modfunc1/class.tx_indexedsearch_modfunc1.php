@@ -147,7 +147,7 @@ class tx_indexedsearch_modfunc1 extends t3lib_extobjbase {
 	 */
 	function main()	{
 			// Initializes the module. Done in this function because we may need to re-initialize if data is submitted!
-		global $SOBE,$BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$CLIENT,$TYPO3_CONF_VARS;
+		global $LANG,$TYPO3_CONF_VARS;
 
 			// Return if no page id:
 		if ($this->pObj->id<=0)		return;
@@ -1229,12 +1229,12 @@ class tx_indexedsearch_modfunc1 extends t3lib_extobjbase {
 	 * @return	array		Array where the root lines uid values are found.
 	 */
 	function getUidRootLineForClosestTemplate($id)	{
-		$tmpl = t3lib_div::makeInstance("t3lib_tsparser_ext");	// Defined global here!
+		$tmpl = t3lib_div::makeInstance('t3lib_tsparser_ext');	// Defined global here!
 		$tmpl->tt_track = 0;	// Do not log time-performance information
 		$tmpl->init();
 
 				// Gets the rootLine
-		$sys_page = t3lib_div::makeInstance("t3lib_pageSelect");
+		$sys_page = t3lib_div::makeInstance('t3lib_pageSelect');
 		$rootLine = $sys_page->getRootLine($id);
 		$tmpl->runThroughTemplates($rootLine,0);	// This generates the constants/config + hierarchy info for the template.
 

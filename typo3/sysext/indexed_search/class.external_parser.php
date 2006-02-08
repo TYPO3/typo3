@@ -370,7 +370,7 @@ class tx_indexed_search_extparse {
 			case 'pdf':
 				if ($this->app['pdfinfo'])	{
 						// Getting pdf-info:
-					$cmd = $this->app['pdfinfo'].' '.$absFile;
+					$cmd = $this->app['pdfinfo'].' "'.$absFile.'"';
 					exec($cmd,$res);
 					$pdfInfo = $this->splitPdfInfo($res);
 					if (intval($pdfInfo['pages']))	{
@@ -379,7 +379,7 @@ class tx_indexed_search_extparse {
 							// Get pdf content:
 						$tempFileName = t3lib_div::tempnam('Typo3_indexer');		// Create temporary name
 						@unlink ($tempFileName);	// Delete if exists, just to be safe.
-						$cmd = $this->app['pdftotext'].' -f '.$low.' -l '.$high.' -enc UTF-8 -q '.$absFile.' '.$tempFileName;
+						$cmd = $this->app['pdftotext'].' -f '.$low.' -l '.$high.' -enc UTF-8 -q "'.$absFile.'" '.$tempFileName;
 						exec($cmd,$res);
 						if (@is_file($tempFileName))	{
 							$content = t3lib_div::getUrl($tempFileName);
@@ -387,13 +387,15 @@ class tx_indexed_search_extparse {
 						} else {
 							$this->pObj->log_setTSlogMessage('PDFtoText Failed on this document: '.$absFile.". Maybe the PDF file is locked for printing or encrypted.",2);
 						}
-						$contentArr = $this->pObj->splitRegularContent($this->removeEndJunk($content));
+						if (strlen($content))	{
+							$contentArr = $this->pObj->splitRegularContent($this->removeEndJunk($content));
+						}
 					}
 				}
 			break;
 			case 'doc':
 				if ($this->app['catdoc'])	{
-					$cmd = $this->app['catdoc'].' -d utf-8 '.$absFile;
+					$cmd = $this->app['catdoc'].' -d utf-8 "'.$absFile.'"';
 					exec($cmd,$res);
 					$content = implode(chr(10),$res);
 					$contentArr = $this->pObj->splitRegularContent($this->removeEndJunk($content));
@@ -402,7 +404,7 @@ class tx_indexed_search_extparse {
 			case 'pps':
 			case 'ppt':
 				if ($this->app['ppthtml'])	{
-					$cmd = $this->app['ppthtml'].' '.$absFile;
+					$cmd = $this->app['ppthtml'].' "'.$absFile.'"';
 					exec($cmd,$res);
 					$content = implode(chr(10),$res);
 					$content = $this->pObj->convertHTMLToUtf8($content);
@@ -412,7 +414,7 @@ class tx_indexed_search_extparse {
 			break;
 			case 'xls':
 				if ($this->app['xlhtml'])	{
-					$cmd = $this->app['xlhtml'].' -nc -te '.$absFile;
+					$cmd = $this->app['xlhtml'].' -nc -te "'.$absFile.'"';
 					exec($cmd,$res);
 					$content = implode(chr(10),$res);
 					$content = $this->pObj->convertHTMLToUtf8($content);
@@ -459,11 +461,11 @@ class tx_indexed_search_extparse {
 				} else {
 					if ($this->app['ruby'])	{
 							// Extracting document headers:
-						$cmd = $this->app['ruby'].' '.$this->app['OOo'].' --heading '.$absFile;
+						$cmd = $this->app['ruby'].' '.$this->app['OOo'].' --heading "'.$absFile.'"';
 						exec($cmd,$headings);
 
 							// Extracting document text:
-						$cmd = $this->app['ruby'].' '.$this->app['OOo'].' '.$absFile;
+						$cmd = $this->app['ruby'].' '.$this->app['OOo'].' "'.$absFile.'"';
 						exec($cmd,$texts);
 
 						$content = implode(chr(10),$headings).' '.implode(chr(10),$texts);
@@ -474,7 +476,7 @@ class tx_indexed_search_extparse {
 			break;
 			case 'rtf':
 				if ($this->app['unrtf'])	{
-					$cmd = $this->app['unrtf'].' '.$absFile;
+					$cmd = $this->app['unrtf'].' "'.$absFile.'"';
 					exec($cmd,$res);
 					$fileContent = implode(chr(10),$res);
 					$fileContent = $this->pObj->convertHTMLToUtf8($fileContent);
@@ -544,7 +546,7 @@ class tx_indexed_search_extparse {
 		switch ($ext)	{
 			case 'pdf':
 					// Getting pdf-info:
-				$cmd = $this->app['pdfinfo'].' '.$absFile;
+				$cmd = $this->app['pdfinfo'].' "'.$absFile.'"';
 				exec($cmd,$res);
 				$pdfInfo = $this->splitPdfInfo($res);
 

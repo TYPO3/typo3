@@ -501,13 +501,12 @@ $GLOBALS['TSFE']->content.='
 	<link rel="SHORTCUT ICON" href="'.htmlspecialchars($ss).'" />';
 		}
 
-		/** CSS STYLESHEET handling: */
-		if (is_array($GLOBALS['TSFE']->tmpl->setup['plugin.'])) {
+			// Including CSS files
+		if (is_array($GLOBALS['TSFE']->tmpl->setup['plugin.']))	{
 			$temp_styleLines=array();
-			reset($GLOBALS['TSFE']->tmpl->setup['plugin.']);
-			while(list($k2,$iCSScode)=each($GLOBALS['TSFE']->tmpl->setup['plugin.']))	{
+			foreach ($GLOBALS['TSFE']->tmpl->setup['plugin.'] as $key=>$iCSScode)	{
 				if (is_array($iCSScode) && $iCSScode['_CSS_DEFAULT_STYLE'])	{
-					$temp_styleLines[]='/* default styles for extension "'.substr($k2,0,-1).'" */'.chr(10).$iCSScode['_CSS_DEFAULT_STYLE'];
+					$temp_styleLines[]='/* default styles for extension "'.substr($key,0,-1).'" */'.chr(10).$iCSScode['_CSS_DEFAULT_STYLE'];
 				}
 			}
 			if (count($temp_styleLines))	{
@@ -526,35 +525,34 @@ $GLOBALS['TSFE']->content.='
 			}
 		}
 
-		if ($GLOBALS['TSFE']->pSetup['stylesheet']) {
+		if ($GLOBALS['TSFE']->pSetup['stylesheet'])	{
 			$ss=$GLOBALS['TSFE']->tmpl->getFileName($GLOBALS['TSFE']->pSetup['stylesheet']);
-			if ($ss) {
+			if ($ss)	{
 				$GLOBALS['TSFE']->content.='
 	<link rel="stylesheet" type="text/css" href="'.htmlspecialchars($ss).'" />';
 			}
 		}
-		if (is_array($GLOBALS['TSFE']->pSetup['includeCSS.'])) {
-			reset($GLOBALS['TSFE']->pSetup['includeCSS.']);
-			while(list($k2,$iCSSfile)=each($GLOBALS['TSFE']->pSetup['includeCSS.']))	{
+		if (is_array($GLOBALS['TSFE']->pSetup['includeCSS.']))	{
+			foreach ($GLOBALS['TSFE']->pSetup['includeCSS.'] as $key=>$iCSSfile)	{
 				if (!is_array($iCSSfile))	{
-					$ss = $GLOBALS['TSFE']->tmpl->getFileName($iCSSfile);
-					if ($ss) {
-						if ($GLOBALS['TSFE']->pSetup['includeCSS.'][$k2.'.']['import'])	{
+					$ss=$GLOBALS['TSFE']->tmpl->getFileName($iCSSfile);
+					if ($ss)	{
+						if ($GLOBALS['TSFE']->pSetup['includeCSS.'][$key.'.']['import'])	{
 							if (substr($ss,0,1)!='/')	{	// To fix MSIE 6 that cannot handle these as relative paths (according to Ben v Ende)
 								$ss = t3lib_div::dirname(t3lib_div::getIndpEnv('SCRIPT_NAME')).'/'.$ss;
 							}
 							$GLOBALS['TSFE']->content.='
 	<style type="text/css">
 	<!--
-	@import url("'.htmlspecialchars($ss).'") '.htmlspecialchars($GLOBALS['TSFE']->pSetup['includeCSS.'][$k2.'.']['media']).';
+	@import url("'.htmlspecialchars($ss).'") '.htmlspecialchars($GLOBALS['TSFE']->pSetup['includeCSS.'][$key.'.']['media']).';
 	-->
 	</style>
 							';
 						} else {
 							$GLOBALS['TSFE']->content.='
-	<link rel="'.($GLOBALS['TSFE']->pSetup['includeCSS.'][$k2.'.']['alternate'] ? 'alternate stylesheet' : 'stylesheet').'" type="text/css" href="'.htmlspecialchars($ss).'"'.
-			($GLOBALS['TSFE']->pSetup['includeCSS.'][$k2.'.']['title'] ? ' title="'.htmlspecialchars($GLOBALS['TSFE']->pSetup['includeCSS.'][$k2.'.']['title']).'"' : '').
-			($GLOBALS['TSFE']->pSetup['includeCSS.'][$k2.'.']['media'] ? ' media="'.htmlspecialchars($GLOBALS['TSFE']->pSetup['includeCSS.'][$k2.'.']['media']).'"' : '').
+	<link rel="'.($GLOBALS['TSFE']->pSetup['includeCSS.'][$key.'.']['alternate'] ? 'alternate stylesheet' : 'stylesheet').'" type="text/css" href="'.htmlspecialchars($ss).'"'.
+			($GLOBALS['TSFE']->pSetup['includeCSS.'][$key.'.']['title'] ? ' title="'.htmlspecialchars($GLOBALS['TSFE']->pSetup['includeCSS.'][$key.'.']['title']).'"' : '').
+			($GLOBALS['TSFE']->pSetup['includeCSS.'][$key.'.']['media'] ? ' media="'.htmlspecialchars($GLOBALS['TSFE']->pSetup['includeCSS.'][$key.'.']['media']).'"' : '').
 			' />';
 						}
 					}
@@ -562,7 +560,7 @@ $GLOBALS['TSFE']->content.='
 			}
 		}
 
-		// Stylesheets
+			// Stylesheets
 		$style='';
 		$style.=trim($GLOBALS['TSFE']->pSetup['CSS_inlineStyle']).chr(10);
 
@@ -570,8 +568,7 @@ $GLOBALS['TSFE']->content.='
 			$pageTSConfig = $GLOBALS['TSFE']->getPagesTSconfig();
 			$RTEclasses = $pageTSConfig['RTE.']['classes.'];
 			if (is_array($RTEclasses))	{
-				reset($RTEclasses);
-				while(list($RTEclassName,$RTEvalueArray)=each($RTEclasses))	{
+				foreach ($RTEclasses as $RTEclassName=>$RTEvalueArray)	{
 					if ($RTEvalueArray['value'])	{
 						$style.='
 .'.substr($RTEclassName,0,-1).' {'.$RTEvalueArray['value'].'}';
@@ -581,8 +578,7 @@ $GLOBALS['TSFE']->content.='
 
 			if ($GLOBALS['TSFE']->pSetup['insertClassesFromRTE.']['add_mainStyleOverrideDefs'] && is_array($pageTSConfig['RTE.']['default.']['mainStyleOverride_add.']))	{
 				$mSOa_tList = t3lib_div::trimExplode(',',strtoupper($GLOBALS['TSFE']->pSetup['insertClassesFromRTE.']['add_mainStyleOverrideDefs']),1);
-				reset($pageTSConfig['RTE.']['default.']['mainStyleOverride_add.']);
-				while(list($mSOa_key,$mSOa_value)=each($pageTSConfig['RTE.']['default.']['mainStyleOverride_add.']))	{
+				foreach ($pageTSConfig['RTE.']['default.']['mainStyleOverride_add.'] as $mSOa_key=>$mSOa_value)	{
 					if (!is_array($mSOa_value) && (in_array('*',$mSOa_tList)||in_array($mSOa_key,$mSOa_tList)))	{
 						$style.='
 '.$mSOa_key.' {'.$mSOa_value.'}';
@@ -647,16 +643,32 @@ $GLOBALS['TSFE']->content.='
 			}
 		}
 
+			// JavaScript files
+		if (is_array($GLOBALS['TSFE']->pSetup['includeJS.']))	{
+			foreach ($GLOBALS['TSFE']->pSetup['includeJS.'] as $key=>$JSfile);
+				if (!is_array($JSfile))	{
+					$ss = $GLOBALS['TSFE']->tmpl->getFileName($JSfile);
+					if ($ss)	{
+						$type = $GLOBALS['TSFE']->pSetup['includeJS.'][$key.'.']['type'];
+						if (!$type)	$type = 'text/javascript';
+
+						$GLOBALS['TSFE']->content.='
+	<script src="'.htmlspecialchars($ss).'" type="'.htmlspecialchars($type).'"></script>';
+					}
+				}
+			}
+		}
 
 
 
 
-		// Headerdata
+
+			// Headerdata
 		if (is_array($GLOBALS['TSFE']->pSetup['headerData.']))	{
 			$GLOBALS['TSFE']->content.= chr(10).$GLOBALS['TSFE']->cObj->cObjGet($GLOBALS['TSFE']->pSetup['headerData.'],'headerData.');
 		}
 
-			// <title></title> :
+			// Title
 		$titleTagContent = $GLOBALS['TSFE']->tmpl->printTitle(
 			$GLOBALS['TSFE']->altPageTitle?$GLOBALS['TSFE']->altPageTitle:$GLOBALS['TSFE']->page['title'],
 			$GLOBALS['TSFE']->config['config']['noPageTitle'],

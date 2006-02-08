@@ -322,7 +322,7 @@ class t3lib_htmlmail {
 	 * @return	void
 	 */
 	function use8Bit()	{
-		$this->plain_text_header = 'Content-Type: text/plain; charset='.$this->charset.'; format=flowed'.$this->linebreak.'Content-Transfer-Encoding: 8bit';
+		$this->plain_text_header = 'Content-Type: text/plain; charset='.$this->charset.$this->linebreak.'Content-Transfer-Encoding: 8bit';
 		$this->html_text_header = 'Content-Type: text/html; charset='.$this->charset.$this->linebreak.'Content-Transfer-Encoding: 8bit';
 		$this->alt_8bit=1;
 	}

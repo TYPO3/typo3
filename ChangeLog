@@ -1,14 +1,20 @@
+2006-02-08  Michael Stucki  <michael@typo3.org>
+
+	* Various changes to indexed_search, see local ChangeLog for details
+	* !!! Changed default value of TYPO3_CONF_VARS[BE][fileCreateMask/folderCreateMask]. By default, those files are no longer writable for the group.
+	* Fixed bug #2272: Added [PAGE].includeJS plus possibility to attach .js files to template resources (thanks to Johannes Vockeroth)
+
 2006-02-07  Ingmar Schlecht <ingmar@typo3.org>
-	
+
 	* Fix "&amp;" problem in DMail jumpURLs
 
 2006-02-06  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
-	
-	* Fix bugtracker issue 408: enable direct mail to fetch https pages with user authentification
+
+	* Fix bugtracker issue #408: enable direct mail to fetch https pages with user authentification
 
 2006-02-06  Sebastian Kurfuerst  <sebastian@garbage-group.de>
 
-	* New feature: Integrated ss_dragdrop extension into the core (Page and folder drag and drop)
+	* New feature: Integrated ss_dragdrop extension into the core (page and folder drag and drop). Thanks to Stephane Schitter for his work on this.
 
 2006-02-05  Dmitry Dulepov  <typo3@accio.lv>
 
@@ -55,9 +61,6 @@
 
 	* Added two hooks to class.t3lib_tceforms.php, getMainFieldsClass: getMainFields_preProcess and getMainFields_postProcess (requested by Thomas Hempel for use with the "dynaflex" extension.
 	* Fixed gremlin #1628: Removed "Text with image below" from the content wizard
-	* Some cleanup to indexed_search: Removed the TypoScript property "tableParams" which is not used anymore.
-	* Replaced the function "procesWordsInArray" with its correctly spelled pendant. The old function remains as a wrapper but is going to be removed sooner or later.
-	* Fixed non-working clearing of indexed_search page-hashes when the list of phashes caused an oversized URL
 	* Removed hardcoded maximum size of popup images
 
 2005-01-29  Michael Stucki  <michael@typo3.org>
@@ -122,7 +125,7 @@
 
 	* Minor bugfix in sys_actions related to the taskcenter changes in 3.8
 	* Added manual sorting of sys_actions records
-	* FIxes #2245
+	* Fixed bug #2245.
 
 2006-01-27  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 

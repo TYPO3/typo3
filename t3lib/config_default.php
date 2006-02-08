@@ -112,8 +112,8 @@ $TYPO3_CONF_VARS = Array(
 		'userHomePath' => '',					// Path to the directory where TYPO3 backend-users have their home-dirs.  Eg. '/home/typo3/users/'. A home for backend user 2 would be: '/home/typo3/users/2/'. Ending slash required!
 		'groupHomePath' => '',					// Path to the directory where TYPO3 backend-groups have their home-dirs. Remember that the first part of this path must be 'lockRootPath'. Eg. '/home/typo3/groups/'. A home for backend group 1 would be: '/home/typo3/groups/1/'. Ending slash required!
 		'userUploadDir' => '',					// Suffix to the user home dir which is what gets mounted in TYPO3. Eg. if the user dir is "../123_user/" and this value is "/upload" then "../123_user/upload" gets mounted.
-		'fileCreateMask' => '0755',				// File mode mask for Unix file systems (when files are uploaded/created). Execute bit is set since some files installed in extensions might need that.
-		'folderCreateMask' => '0755',			// As above, but for folders.
+		'fileCreateMask' => '0644',				// File mode mask for Unix file systems (when files are uploaded/created).
+		'folderCreateMask' => '0755',				// As above, but for folders.
 		'createGroup' => '',					// Group for newly created files and folders (Unix only). Group ownership can be changed on Unix file systems (see above). Set this if you want to change the group ownership of created files/folders to a specific group. This makes sense in all cases where the webserver is running with a different user/group as you do. Create a new group on your system and add you and the webserver user to the group. Now you can safely set the last bit in fileCreateMask/folderCreateMask to 0 (e.g. 770). Important: The user who is running your webserver needs to be a member of the group you specify here! Otherwise you might get some error messages.
 		'warning_email_addr' => '',				// Email-address that will receive a warning if there has been failed logins 4 times within an hour (all users).
 		'warning_mode' => '',					// Bit 1: If set, warning_email_addr gets a mail everytime a user logs in. Bit 2: If set, a mail is sent if an ADMIN user logs in! Other bits reserved for future options.
@@ -206,7 +206,7 @@ $TYPO3_CONF_VARS = Array(
 		'enable_mount_pids' => 1,					// If set to "1", the mount_pid feature allowing 'symlinks' in the page tree (for frontend operation) is allowed.
 		'pageOverlayFields' => 'uid,title,subtitle,nav_title,media,keywords,description,abstract,author,author_email',				// List of fields from the table "pages_language_overlay" which should be overlaid on page records. See t3lib_page::getPageOverlay()
 		'hidePagesIfNotTranslatedByDefault' => FALSE,	// If TRUE, pages that has no translation will be hidden by default. Basically this will inverse the effect of the page localization setting "Hide page if no translation for current language exists" to "Show page even if no translation exists"
-		'eID_include' => array(),				// Array of key/value pairs where key is "tx_[ext]_[optional suffix]" and value is relative filename of class to include. Key is used as "?eID=" for index_ts.php to include the code file which renders the page from that point. (Useful for functionality that requires a low initialization footprint, eg. frontend ajax applications) 
+		'eID_include' => array(),				// Array of key/value pairs where key is "tx_[ext]_[optional suffix]" and value is relative filename of class to include. Key is used as "?eID=" for index_ts.php to include the code file which renders the page from that point. (Useful for functionality that requires a low initialization footprint, eg. frontend ajax applications)
 		'XCLASS' => Array(),					// See 'Inside TYPO3' document for more information.
 	),
 	'MODS' => Array(		// Backend Module Configuration (obsolete, make extension instead)

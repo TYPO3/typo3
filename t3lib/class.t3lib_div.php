@@ -3716,14 +3716,14 @@ class t3lib_div {
 			case '8bit':
 				$headers=trim($headers).chr(10).
 				'Mime-Version: 1.0'.chr(10).
-				'Content-Type: text/plain; charset='.$charset.'; format=flowed'.chr(10).
+				'Content-Type: text/plain; charset='.$charset.chr(10).
 				'Content-Transfer-Encoding: 8bit';
 			break;
 			case 'quoted-printable':
 			default:
 				$headers=trim($headers).chr(10).
 				'Mime-Version: 1.0'.chr(10).
-				'Content-Type: text/plain; charset='.$charset.''.chr(10).
+				'Content-Type: text/plain; charset='.$charset.chr(10).
 				'Content-Transfer-Encoding: quoted-printable';
 
 				$message=t3lib_div::quoted_printable($message);

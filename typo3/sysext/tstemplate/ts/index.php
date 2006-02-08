@@ -57,7 +57,7 @@ class SC_mod_web_ts_index extends t3lib_SCbase {
 	var $e;
 	var $sObj;
 	var $edit;
-	var $textExtensions = "html,htm,txt,css,tmpl,inc";
+	var $textExtensions = 'html,htm,txt,css,tmpl,inc,js';
 
 	var $modMenu_type = "";
 	var $modMenu_dontValidateList = "ts_browser_toplevel_setup,ts_browser_toplevel_const,ts_browser_TLKeys_setup,ts_browser_TLKeys_const";
