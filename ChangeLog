@@ -1,3 +1,6 @@
+2006-02-08  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
+	* Fixed bug #2365: Replace true linebreaks with space inside block tags and after hr tags in t3lib_parsehtml_proc.
+
 2006-02-08  Michael Stucki  <michael@typo3.org>
 
 	* Various changes to indexed_search, see local ChangeLog for details

@@ -841,7 +841,7 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 							if (!isset($this->procOptions['typolist']) || $this->procOptions['typolist'])	{
 								$parts = $this->getAllParts($this->splitIntoBlock('LI',$this->removeFirstAndLastTag($blockSplit[$k])),1,0);
 								while(list($k2)=each($parts))	{
-									$parts[$k2]=ereg_replace(chr(10).'|'.chr(13),'',$parts[$k2]);	// remove all linesbreaks!
+									$parts[$k2]=preg_replace('/['.preg_quote(chr(10).chr(13)).']+/','',$parts[$k2]);	// remove all linesbreaks!
 									$parts[$k2]=$this->defaultTStagMapping($parts[$k2],'db');
 									$parts[$k2]=$this->cleanFontTags($parts[$k2],0,0,0);
 									$parts[$k2] = $this->HTMLcleaner_db($parts[$k2],strtolower($this->procOptions['allowTagsInTypolists']?$this->procOptions['allowTagsInTypolists']:'br,font,b,i,u,a,img,span,strong,em'));
@@ -850,14 +850,14 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 								$blockSplit[$k]='<typolist'.$params.'>'.chr(10).implode(chr(10),$parts).chr(10).'</typolist>'.$lastBR;
 							}
 						} else {
-							$blockSplit[$k]=$this->transformStyledATags($blockSplit[$k]).$lastBR;
+							$blockSplit[$k]=preg_replace('/['.preg_quote(chr(10).chr(13)).']+/',' ',$this->transformStyledATags($blockSplit[$k])).$lastBR;
 						}
 					break;
 					case 'table':	// Tables are NOT allowed in any form (unless preserveTables is set or CSS is the mode)
 						if (!$this->procOptions['preserveTables'] && !$css)	{
 							$blockSplit[$k]=$this->TS_transform_db($this->removeTables($blockSplit[$k]));
 						} else {
-							$blockSplit[$k]=str_replace(chr(10),' ',$this->transformStyledATags($blockSplit[$k])).$lastBR;
+							$blockSplit[$k]=preg_replace('/['.preg_quote(chr(10).chr(13)).']+/',' ',$this->transformStyledATags($blockSplit[$k])).$lastBR;
 						}
 					break;
 					case 'h1':
@@ -892,16 +892,17 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 							}
 						} else {
 								// Eliminate true linebreaks inside Hx tags
-							$blockSplit[$k]=str_replace(chr(10),' ',$this->transformStyledATags($blockSplit[$k])).$lastBR;
+							$blockSplit[$k]=preg_replace('/['.preg_quote(chr(10).chr(13)).']+/',' ',$this->transformStyledATags($blockSplit[$k])).$lastBR;
 						}
 					break;
 					default:
-						$blockSplit[$k]=$this->transformStyledATags($blockSplit[$k]).$lastBR;
+							// Eliminate true linebreaks inside other headlist tags and after hr tag
+						$blockSplit[$k]=preg_replace('/['.preg_quote(chr(10).chr(13)).']+/',' ',$this->transformStyledATags($blockSplit[$k])).$lastBR;
 					break;
 				}
 			} else {	// NON-block:
 				if (strcmp(trim($blockSplit[$k]),''))	{
-					$blockSplit[$k]=$this->divideIntoLines(str_replace(chr(10),' ',$blockSplit[$k])).$lastBR;
+					$blockSplit[$k]=$this->divideIntoLines(preg_replace('/['.preg_quote(chr(10).chr(13)).']+/',' ',$blockSplit[$k])).$lastBR;
 					$blockSplit[$k]=$this->transformStyledATags($blockSplit[$k]);
 				} else unset($blockSplit[$k]);
 			}
