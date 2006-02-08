@@ -860,7 +860,7 @@ class t3lib_htmlmail {
 		$this->theParts["html"]["content"] = $this->getURL($file);	// Fetches the content of the page
 		if ($this->theParts["html"]["content"])	{
 			$addr = $this->extParseUrl($file);
- 			$path = ($addr["scheme"]) ? $addr["scheme"]."://".$addr["host"].(($addr["filepath"])?$addr["filepath"]:"/") : $addr["filepath"];
+ 			$path = ($addr['scheme']) ? $addr['scheme'].'://'.$addr['host'].(($addr['port'])?':'.$addr['port']:'').(($addr['filepath'])?$addr['filepath']:'/') : $addr['filepath'];
 			$this->theParts["html"]["path"] = $path;
 			return true;
 		} else {
@@ -1272,7 +1272,7 @@ class t3lib_htmlmail {
 		$pathInfo = parse_url($url);
 		if (!$pathInfo["scheme"])	{return false;}
 		$getAdr = ($pathInfo["query"])?$pathInfo["path"]."?".$pathInfo["query"]:$pathInfo["path"];
-		$fp = fsockopen($pathInfo["host"], 80, $errno, $errstr);
+		$fp = fsockopen($pathInfo['host'], ($pathInfo['port']?$pathInfo['port']:80), $errno, $errstr);
 		if(!$fp) {
 			return false;
 		} else {
@@ -1303,7 +1303,7 @@ class t3lib_htmlmail {
 			return $ref;
 		} elseif (eregi("^/",$ref)){
 			$addr = parse_url($this->theParts["html"]["path"]);
-			return  $addr["scheme"]."://".$addr["host"].$ref;
+			return  $addr['scheme'].'://'.$addr['host'].($addr['port']?':'.$addr['port']:'').$ref;
 		} else {
 			return $this->theParts["html"]["path"].$ref;	// If the reference is relative, the path is added, in order for us to fetch the content
 		}

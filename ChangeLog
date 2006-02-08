@@ -2,6 +2,7 @@
 
 	* Fixed bug #2365: Replace true linebreaks with space inside block tags and after hr tags in t3lib_parsehtml_proc.
 	* Changes to the htmlArea RTE extension (see details in local ChangeLog)
+	* Fixed bug #1496: Enable Direct Mail to fetch a server listening to a port other than 80 (t3lib_htmlmail)
 
 2006-02-08  Michael Stucki  <michael@typo3.org>
 
