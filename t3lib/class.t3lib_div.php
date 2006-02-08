@@ -3135,17 +3135,16 @@ class t3lib_div {
 	}
 
 	/**
-	 * standard authentication code - can't remember what it's used for.
+	 * Standard authentication code (used in Direct Mail, checkJumpUrl and setfixed links computations)
 	 * Usage: 2
 	 *
 	 * @param	mixed		Uid (integer) or record (array)
 	 * @param	string		List of fields from the record if that is given.
+	 * @param	integer		Length of returned authentication code.
 	 * @return	string		MD5 hash of 8 chars.
 	 * @internal
 	 */
-	function stdAuthCode($uid_or_record,$fields='')	{
-
-// FIXME $recCopy is undefined - could never work as expected
+	function stdAuthCode($uid_or_record,$fields='',$codeLength=8)	{
 
 		if (is_array($uid_or_record))	{
 			$recCopy_temp=array();
@@ -3153,10 +3152,10 @@ class t3lib_div {
 				$fieldArr = t3lib_div::trimExplode(',',$fields,1);
 				reset($fieldArr);
 				while(list($k,$v)=each($fieldArr))	{
-					$recCopy_temp[$k]=$recCopy[$v];
+					$recCopy_temp[$k]=$uid_or_record[$v];
 				}
 			} else {
-				$recCopy_temp=$recCopy;
+				$recCopy_temp=$uid_or_record;
 			}
 			$preKey = implode('|',$recCopy_temp);
 		} else {
@@ -3164,7 +3163,7 @@ class t3lib_div {
 		}
 
 		$authCode = $preKey.'||'.$GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'];
-		$authCode = substr(md5($authCode),0,8);
+		$authCode = substr(md5($authCode),0,$codeLength);
 		return $authCode;
 	}
 
