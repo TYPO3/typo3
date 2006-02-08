@@ -2702,11 +2702,8 @@ class t3lib_stdGraphic	{
  		switch ($ext)	{
  			case 'jpg':
  			case 'jpeg':
- 				if (!$quality)	{
- 					$quality = $this->jpegQuality;
- 				}
  				if (function_exists('imageJpeg'))	{
- 					return imageJpeg($destImg, $theImage, $quality);
+ 					return imageJpeg($destImg, $theImage, $this->jpegQuality);
  				}
  			break;
  			case 'gif':
