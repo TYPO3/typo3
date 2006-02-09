@@ -119,8 +119,8 @@ class t3lib_iconWorks	{
 		global $TCA, $PAGES_TYPES, $ICON_TYPES;
 
 			// Flags:
-		$doNotGenerateIcon = $GLOBALS['TYPO3_CONF_VARS']['GFX']['noIconProc'];				// If set, the icon will NOT be generated with GDlib. Rather the icon will be looked for as [iconfilename]_X.[extension]
-		$doNotRenderUserGroupNumber = TRUE;		// If set, then the usergroup number will NOT be printed unto the icon. NOTICE. the icon is generated only if a default icon for groups is not found... So effectively this is ineffective...
+		$doNotGenerateIcon = $GLOBALS['TYPO3_CONF_VARS']['GFX']['noIconProc'];	// If set, the icon will NOT be generated with GDlib. Rather the icon will be looked for as [iconfilename]_X.[extension]
+		$doNotRenderUserGroupNumber = TRUE;	// If set, then the usergroup number will NOT be printed unto the icon. NOTICE. the icon is generated only if a default icon for groups is not found... So effectively this is ineffective...
 
 			// Shadow:
 		if ($TCA[$table]['ctrl']['versioningWS'] && (int)$row['t3ver_state']===1)	{
@@ -241,7 +241,7 @@ class t3lib_iconWorks	{
 					return 'gfx/i/no_icon_found.gif';
 				}
 			} else {	// Otherwise, create the icon:
-				$theRes= t3lib_iconWorks::makeIcon($GLOBALS['BACK_PATH'].$iconfile, $string, $user, $protectSection, $absfile, $iconFileName_stateTagged);
+				$theRes = t3lib_iconWorks::makeIcon($GLOBALS['BACK_PATH'].$iconfile, $string, $user, $protectSection, $absfile, $iconFileName_stateTagged);
 				return $theRes;
 			}
 		} else {
@@ -351,7 +351,7 @@ class t3lib_iconWorks	{
 			if (@file_exists($absFile))	{
 				if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib'])	{
 
-						// Create image pointer, if possible:
+						// Create image pointer, if possible
 					$im = t3lib_iconworks::imagecreatefrom($absFile);
 					if ($im<0)	return $iconfile;
 
@@ -430,13 +430,13 @@ class t3lib_iconWorks	{
 
 	/**
 	 * The necessity of using this function for combining two images if GD is version 2 is that
-	 * 	GD2 cannot manage to combine two indexed-color images without totally spoiling everything.
-	 * 	In class.t3lib_stdgraphic this was solved by combining the images onto a first created true color image
-	 * 	However it has turned out that this method will not work if the indexed png-files contains transparency.
-	 * 	So I had to turn my attention to ImageMagick - my 'enemy of death'.
-	 * 	And so it happend - ImageMagick is now used to combine my two indexed-color images with transparency. And that works.
-	 * 	Of course it works only if ImageMagick is able to create valid png-images - which you cannot be sure of with older versions (still 5+)
-	 * 	The only drawback is (apparently) that IM creates true-color png's. The transparency of these will not be shown by MSIE on windows at this time (although it's straight 0%/100% transparency!) and the file size may be larger.
+	 * GD2 cannot manage to combine two indexed-color images without totally spoiling everything.
+	 * In class.t3lib_stdgraphic this was solved by combining the images onto a first created true color image
+	 * However it has turned out that this method will not work if the indexed png-files contains transparency.
+	 * So I had to turn my attention to ImageMagick - my 'enemy of death'.
+	 * And so it happend - ImageMagick is now used to combine my two indexed-color images with transparency. And that works.
+	 * Of course it works only if ImageMagick is able to create valid png-images - which you cannot be sure of with older versions (still 5+)
+	 * The only drawback is (apparently) that IM creates true-color png's. The transparency of these will not be shown by MSIE on windows at this time (although it's straight 0%/100% transparency!) and the file size may be larger.
 	 *
 	 * For parameters, see PHP function "imagecopyresized()"
 	 *
