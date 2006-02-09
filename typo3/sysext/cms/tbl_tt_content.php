@@ -1019,7 +1019,8 @@ $TCA['tt_content'] = Array (
 			bodytext;LLL:EXT:cms/locallang_ttc.php:bodytext.ALT.html;;nowrap;3-3-3')
 	),
 	'palettes' => Array (
-		'1' => Array('showitem' => 'hidden, starttime, endtime, fe_group'),
+		'1' => Array('showitem' => 'hidden, starttime, endtime'),
+		'15' => Array('showitem' => 'fe_group'),
 		'2' => Array('showitem' => 'imagecols, image_noRows, imageborder'),
 		'3' => Array('showitem' => 'header_position, header_layout, header_link, date'),
 		'4' => Array('showitem' => 'sys_language_uid, l18n_parent, colPos, spaceBefore, spaceAfter, section_frame, sectionIndex, linkToTop'),

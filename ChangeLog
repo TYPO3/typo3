@@ -1,3 +1,7 @@
+2006-02-09  Sebastian Kurfuerst  <sebastian@garbage-group.de>
+
+	* Fixed bug #2105: The width of tt_content is too large (due to access options)
+
 2006-02-08  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
 	* Fixed bug #2365: Replace true linebreaks with space inside block tags and after hr tags in t3lib_parsehtml_proc.

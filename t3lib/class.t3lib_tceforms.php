@@ -548,19 +548,25 @@ class t3lib_TCEforms	{
 			// Resetting styles:
 		$this->resetSchemes();
 
-			// Rendering Main palette, if any
-		$mP = $TCA[$table]['ctrl']['mainpalette'];
-		if ($mP && !isset($this->palettesRendered[$this->renderDepth][$table][$mP]))	{
-			$temp_palettesCollapsed=$this->palettesCollapsed;
-			$this->palettesCollapsed=0;
-			$out_array[$out_sheet][$out_pointer].=$this->getPaletteFields($table,$row,$mP,$this->getLL('l_generalOptions'));
-			$this->palettesCollapsed=$temp_palettesCollapsed;
-			$this->palettesRendered[$this->renderDepth][$table][$mP] = 1;
-		}
-		$this->wrapBorder($out_array[$out_sheet],$out_pointer);
-
-		if ($this->renderDepth)	{
-			$this->renderDepth--;
+			// Rendering Main palettes, if any
+		$mParr = t3lib_div::trimExplode(',',$TCA[$table]['ctrl']['mainpalette']);
+		$i = 0;
+		if (count($mParr))	{
+			foreach ($mParr as $mP)	{
+				if (!isset($this->palettesRendered[$this->renderDepth][$table][$mP]))	{
+					$temp_palettesCollapsed=$this->palettesCollapsed;
+					$this->palettesCollapsed=0;
+					$label = ($i==0?$this->getLL('l_generalOptions'):$this->getLL('l_generalOptions_more'));
+					$out_array[$out_sheet][$out_pointer].=$this->getPaletteFields($table,$row,$mP,$label);
+					$this->palettesCollapsed=$temp_palettesCollapsed;
+					$this->palettesRendered[$this->renderDepth][$table][$mP] = 1;
+				}
+				$this->wrapBorder($out_array[$out_sheet],$out_pointer);
+				$i++;
+				if ($this->renderDepth)	{
+					$this->renderDepth--;
+				}
+			}
 		}
 
 

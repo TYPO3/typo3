@@ -465,7 +465,7 @@ if (TYPO3_MODE=='BE')	{
 	$TCA['pages']['interface']['showRecordFieldList'].=',alias,hidden,starttime,endtime,fe_group,url,target,no_cache,shortcut,keywords,description,abstract,newUntil,lastUpdated,cache_timeout';
 
 		// Setting main palette
-	$TCA['pages']['ctrl']['mainpalette']='1';
+	$TCA['pages']['ctrl']['mainpalette']='1,15';
 
 		// Totally overriding all type-settings:
 	$TCA['pages']['types'] = Array (
@@ -482,7 +482,8 @@ if (TYPO3_MODE=='BE')	{
 		// Merging palette settings:
 		// t3lib_div::array_merge() MUST be used - otherwise the keys will be re-numbered!
 	$TCA['pages']['palettes'] = t3lib_div::array_merge($TCA['pages']['palettes'],Array(
-		'1' => Array('showitem' => 'starttime,endtime,fe_group,extendToSubpages'),
+		'1' => Array('showitem' => 'starttime,endtime,extendToSubpages'),
+		'15' => Array('showitem' => 'fe_group'),
 		'2' => Array('showitem' => 'layout, lastUpdated, newUntil, no_search'),
 		'3' => Array('showitem' => 'alias, target, no_cache, cache_timeout'),
 		'5' => Array('showitem' => 'author,author_email'),
@@ -541,7 +542,7 @@ $TCA['tt_content'] = Array (
 			'div' => 'tt_content_div.gif',
 			'html' => 'tt_content_html.gif'
 		),
-		'mainpalette' => '1',
+		'mainpalette' => '1,15',
 		'thumbnail' => 'image',
 		'requestUpdate' => 'list_type',
 		'dynamicConfigFile' => t3lib_extMgm::extPath($_EXTKEY).'tbl_tt_content.php'

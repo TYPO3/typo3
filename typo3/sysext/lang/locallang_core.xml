@@ -77,6 +77,7 @@ Do you want to continue WITHOUT saving?</label>
 			<label index="labels.clipInsert_file">Insert %s file(s) from the clipboard</label>
 			<label index="labels.clipInsert_db">Insert %s record(s) from the clipboard</label>
 			<label index="labels.generalOptions">General options:</label>
+			<label index="labels.generalOptions_more">General options (continued):</label>
 			<label index="labels.allTables">[All tables]</label>
 			<label index="labels.moreOptions">More options...</label>
 			<label index="labels.noMatchingValue">INVALID VALUE (&quot;%s&quot;)</label>
