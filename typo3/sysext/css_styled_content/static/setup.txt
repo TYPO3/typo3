@@ -1130,6 +1130,7 @@ tt_content.default {
 # ACCESSIBILTY MODE
 # *********************************************************************
 
+# Match TYPO3 3.9.0 and later
 [compatVersion = 3.9.0]
 
 # switch off <p>-Tags in table cells
@@ -1137,23 +1138,23 @@ tt_content.table.20.innerStdWrap.wrap = |
 
 # change mailform to accesssible mode
 tt_content.mailform.20 {
-  accessibility = 1
-  noWrapAttr=1
-  formName = mailform
-  dontMd5FieldNames = 1
-  REQ = 1
-  layout = <div class="csc-mailform-field">###LABEL### ###FIELD###</div>
-  COMMENT.layout = <div class="csc-mailform-label">###LABEL###</div>
-  RADIO.layout = <div class="csc-mailform-field">###LABEL### <fieldset class="csc-mailform-radio" id="testform_radio">###FIELD###</fieldset></div>
-  LABEL.layout = <div class="csc-mailform-field">###LABEL### <span class="csc-mailform-label">###FIELD###</span></div>
-  labelWrap.wrap = |
-  commentWrap.wrap = |
-  radioWrap.wrap = |
-  REQ.labelWrap.wrap = |
-  stdWrap.wrap = <fieldset class="csc-mailform"> | </fieldset>
-  params.radio = class="csc-mailform-radio"
-  params.check = class="csc-mailform-check"
-  params.submit = class="csc-mailform-submit"
+	accessibility = 1
+	noWrapAttr=1
+	formName = mailform
+	dontMd5FieldNames = 1
+	REQ = 1
+	layout = <div class="csc-mailform-field">###LABEL### ###FIELD###</div>
+	COMMENT.layout = <div class="csc-mailform-label">###LABEL###</div>
+	RADIO.layout = <div class="csc-mailform-field">###LABEL### <fieldset class="csc-mailform-radio" id="testform_radio">###FIELD###</fieldset></div>
+	LABEL.layout = <div class="csc-mailform-field">###LABEL### <span class="csc-mailform-label">###FIELD###</span></div>
+	labelWrap.wrap = |
+	commentWrap.wrap = |
+	radioWrap.wrap = |
+	REQ.labelWrap.wrap = |
+	stdWrap.wrap = <fieldset class="csc-mailform"> | </fieldset>
+	params.radio = class="csc-mailform-radio"
+	params.check = class="csc-mailform-check"
+	params.submit = class="csc-mailform-submit"
 }
 
 # accessible menu
@@ -1256,25 +1257,25 @@ tt_content.image.20 {
 		default.value = <div class="csc-textpic csc-textpic-center csc-textpic-above###CLASSES###">###IMAGES######TEXT###</div><div class="csc-textpic-clear"><!-- --></div>
 		# above-right
 		1 = TEXT
-	 	1.value = <div class="csc-textpic csc-textpic-right csc-textpic-above###CLASSES###">###IMAGES######TEXT###</div><div class="csc-textpic-clear"><!-- --></div>
+		1.value = <div class="csc-textpic csc-textpic-right csc-textpic-above###CLASSES###">###IMAGES######TEXT###</div><div class="csc-textpic-clear"><!-- --></div>
 		# above-left
 		2 = TEXT
-	 	2.value = <div class="csc-textpic csc-textpic-left csc-textpic-above###CLASSES###">###IMAGES######TEXT###</div><div class="csc-textpic-clear"><!-- --></div>
+		2.value = <div class="csc-textpic csc-textpic-left csc-textpic-above###CLASSES###">###IMAGES######TEXT###</div><div class="csc-textpic-clear"><!-- --></div>
 		# below-center
 		8 = TEXT
-	 	8.value = <div class="csc-textpic csc-textpic-center csc-textpic-below###CLASSES###">###TEXT######IMAGES###</div><div class="csc-textpic-clear"><!-- --></div>
+		8.value = <div class="csc-textpic csc-textpic-center csc-textpic-below###CLASSES###">###TEXT######IMAGES###</div><div class="csc-textpic-clear"><!-- --></div>
 		# below-right
 		9 = TEXT
-	 	9.value = <div class="csc-textpic csc-textpic-right csc-textpic-below###CLASSES###">###TEXT######IMAGES###</div><div class="csc-textpic-clear"><!-- --></div>
+		9.value = <div class="csc-textpic csc-textpic-right csc-textpic-below###CLASSES###">###TEXT######IMAGES###</div><div class="csc-textpic-clear"><!-- --></div>
 		# below-left
 		10 = TEXT
-	 	10.value = <div class="csc-textpic csc-textpic-left csc-textpic-below###CLASSES###">###TEXT######IMAGES###</div><div class="csc-textpic-clear"><!-- --></div>
+		10.value = <div class="csc-textpic csc-textpic-left csc-textpic-below###CLASSES###">###TEXT######IMAGES###</div><div class="csc-textpic-clear"><!-- --></div>
 		# intext-right
 		17 = TEXT
-	 	17.value = <div class="csc-textpic csc-textpic-intext-right###CLASSES###">###IMAGES######TEXT###</div>
+		17.value = <div class="csc-textpic csc-textpic-intext-right###CLASSES###">###IMAGES######TEXT###</div>
 		# intext-left
 		18 = TEXT
-	 	18.value = <div class="csc-textpic csc-textpic-intext-left###CLASSES###">###IMAGES######TEXT###</div>
+		18.value = <div class="csc-textpic csc-textpic-intext-left###CLASSES###">###IMAGES######TEXT###</div>
 		# intext-right-nowrap
 		25 = TEXT
 		25.value = <div class="csc-textpic csc-textpic-intext-right-nowrap###CLASSES###">###IMAGES###<div style="margin-right:{register:rowwidth}px;">###TEXT###</div></div><div class="csc-textpic-clear"><!-- --></div>

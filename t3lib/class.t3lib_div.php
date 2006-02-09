@@ -3676,7 +3676,7 @@ class t3lib_div {
 	 * @param	string		Headers, separated by chr(10)
 	 * @param	string		Encoding type: "base64", "quoted-printable", "8bit". Default value is "quoted-printable".
 	 * @param	string		Charset used in encoding-headers (only if $enc is set to a valid value which produces such a header)
-	 * @param	boolean		If set, the content of $subject will not be encoded.
+	 * @param	boolean		If set, the header content will not be encoded.
 	 * @return	void
 	 */
 	function plainMailEncoded($email,$subject,$message,$headers='',$enc='',$charset='',$dontEncodeHeader=false)	{
