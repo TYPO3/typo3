@@ -1,6 +1,7 @@
 2006-02-09  Rene Fritz  <r.fritz@colorcube.de>
 
 	* Added $TYPO3_CONF_VARS['SYS']['binSetup'] and made t3lib_exec use of it.
+	* Added TSconfig option options.hideRecords.[table]. Used in pagetree nav frame, web>list module, new record wizard
 
 2006-02-09  Sebastian Kurfuerst  <sebastian@garbage-group.de>
 

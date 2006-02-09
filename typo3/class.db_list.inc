@@ -177,6 +177,14 @@ class recordList extends t3lib_recordList {
 			// Set select levels:
 		$sL=intval($this->searchLevels);
 		$this->perms_clause = $GLOBALS['BE_USER']->getPagePermsClause(1);
+
+			// this will hide records from display - it has nothing todo with user rights!!
+		if ($pidList = $GLOBALS['BE_USER']->getTSConfigVal('options.hideRecords.pages')) {
+			if ($pidList = $GLOBALS['TYPO3_DB']->cleanIntList($pidList)) {
+				$this->perms_clause .= ' AND pages.uid NOT IN ('.$pidList.')';
+			}
+		}
+
 		if ($sL>0)	{
 			$tree = $this->getTreeObject($id,$sL,$this->perms_clause);
 			$this->pidSelect = 'pid IN ('.implode(',',$tree->ids).')';

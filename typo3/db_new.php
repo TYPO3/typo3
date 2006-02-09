@@ -160,6 +160,12 @@ class SC_db_new {
 			// page-selection permission clause (reading)
 		$this->perms_clause = $BE_USER->getPagePermsClause(1);
 
+			// this will hide records from display - it has nothing todo with user rights!!
+		if ($pidList = $GLOBALS['BE_USER']->getTSConfigVal('options.hideRecords.pages')) {
+			if ($pidList = $GLOBALS['TYPO3_DB']->cleanIntList($pidList)) {
+				$this->perms_clause .= ' AND pages.uid NOT IN ('.$pidList.')';
+			}
+		}
 			// Setting GPvars:
 		$this->id = intval(t3lib_div::_GP('id'));	// The page id to operate from
 		$this->returnUrl = t3lib_div::_GP('returnUrl');
