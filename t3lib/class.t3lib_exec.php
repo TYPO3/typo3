@@ -224,66 +224,6 @@ class t3lib_exec {
 
 
 	/**
-	 * Set the search paths from different sources, internal
-	 *
-	 * @return	array		Array of absolute paths (keys and values are equal)
-	 * @internal
-	 */
-	function _getPaths()	{
-		global $T3_VAR, $TYPO3_CONF_VARS;
-
-		$pathsArr = array();
-		$sysPathArr = array();
-
-			// image magick paths first
-			// im_path_lzw take precedence over im_path
-		if ($imPath = ($TYPO3_CONF_VARS['GFX']['im_path_lzw'] ? $TYPO3_CONF_VARS['GFX']['im_path_lzw'] : $TYPO3_CONF_VARS['GFX']['im_path'])) {
-			$imPath = t3lib_exec::_fixPath($imPath);
-			$pathsArr[$imPath] = $imPath;
-		}
-
-			// add configured paths
-		if ($TYPO3_CONF_VARS['SYS']['binPath']) {
-			$sysPath = t3lib_div::trimExplode(',',$TYPO3_CONF_VARS['SYS']['binPath'],1);
-			foreach($sysPath as $val) {
-				$val = t3lib_exec::_fixPath($val);
-				$sysPathArr[$val]=$val;
-			}
-		}
-
-
-			// add path from environment
-// TODO: how does this work for WIN
-		if ($GLOBALS['_SERVER']['PATH']) {
-			$sep = (TYPO3_OS=='WIN') ? ';' : ':';
-			$envPath = t3lib_div::trimExplode($sep,$GLOBALS['_SERVER']['PATH'],1);
-			foreach($envPath as $val) {
-				$val = t3lib_exec::_fixPath($val);
-				$sysPathArr[$val]=$val;
-			}
-		}
-
-		if (TYPO3_OS=='WIN') {
-// TODO: add the most common paths for WIN
-			$sysPathArr = array_merge($sysPathArr, array (
-				'/usr/bin/' => '/usr/bin/',
-				'/perl/bin/' => '/perl/bin/',
-			));
-		} else { // UNIX
-			$sysPathArr = array_merge($sysPathArr, array (
-				'/usr/bin/' => '/usr/bin/',
-				'/usr/local/bin/' => '/usr/local/bin/',
-			));
-		}
-
-
-		$pathsArr = array_merge($pathsArr, $sysPathArr);
-
-		return $pathsArr;
-	}
-
-
-	/**
 	 * Initialization, internal
 	 *
 	 * @return	void
@@ -355,6 +295,66 @@ class t3lib_exec {
 				}
 			}
 		}
+	}
+
+
+	/**
+	 * Set the search paths from different sources, internal
+	 *
+	 * @return	array		Array of absolute paths (keys and values are equal)
+	 * @internal
+	 */
+	function _getPaths()	{
+		global $T3_VAR, $TYPO3_CONF_VARS;
+
+		$pathsArr = array();
+		$sysPathArr = array();
+
+			// image magick paths first
+			// im_path_lzw take precedence over im_path
+		if ($imPath = ($TYPO3_CONF_VARS['GFX']['im_path_lzw'] ? $TYPO3_CONF_VARS['GFX']['im_path_lzw'] : $TYPO3_CONF_VARS['GFX']['im_path'])) {
+			$imPath = t3lib_exec::_fixPath($imPath);
+			$pathsArr[$imPath] = $imPath;
+		}
+
+			// add configured paths
+		if ($TYPO3_CONF_VARS['SYS']['binPath']) {
+			$sysPath = t3lib_div::trimExplode(',',$TYPO3_CONF_VARS['SYS']['binPath'],1);
+			foreach($sysPath as $val) {
+				$val = t3lib_exec::_fixPath($val);
+				$sysPathArr[$val]=$val;
+			}
+		}
+
+
+			// add path from environment
+// TODO: how does this work for WIN
+		if ($GLOBALS['_SERVER']['PATH']) {
+			$sep = (TYPO3_OS=='WIN') ? ';' : ':';
+			$envPath = t3lib_div::trimExplode($sep,$GLOBALS['_SERVER']['PATH'],1);
+			foreach($envPath as $val) {
+				$val = t3lib_exec::_fixPath($val);
+				$sysPathArr[$val]=$val;
+			}
+		}
+
+		if (TYPO3_OS=='WIN') {
+// TODO: add the most common paths for WIN
+			$sysPathArr = array_merge($sysPathArr, array (
+				'/usr/bin/' => '/usr/bin/',
+				'/perl/bin/' => '/perl/bin/',
+			));
+		} else { // UNIX
+			$sysPathArr = array_merge($sysPathArr, array (
+				'/usr/bin/' => '/usr/bin/',
+				'/usr/local/bin/' => '/usr/local/bin/',
+			));
+		}
+
+
+		$pathsArr = array_merge($pathsArr, $sysPathArr);
+
+		return $pathsArr;
 	}
 
 
