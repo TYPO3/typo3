@@ -73,6 +73,9 @@
  * $GLOBALS['_SERVER']['PATH']
  * '/usr/bin/,/usr/local/bin/' on Unix
  *
+ * binaries can be preconfigured with
+ * $TYPO3_CONF_VARS['SYS']['binSetup']
+ *
  * @author	René Fritz <r.fritz@colorcube.de>
  * @package TYPO3
  * @subpackage t3lib
@@ -237,7 +240,7 @@ class t3lib_exec {
 		}
 		if (!$T3_VAR['t3lib_exec']['init']) {
 			t3lib_exec::_initPaths();
-			$T3_VAR['t3lib_exec']['apps'] = array();
+			$T3_VAR['t3lib_exec']['apps'] = t3lib_exec::_getConfiguredApps();;
 			$T3_VAR['t3lib_exec']['init'] = true;
 		}
 		return true;
@@ -295,6 +298,32 @@ class t3lib_exec {
 				}
 			}
 		}
+	}
+
+
+	/**
+	 * Processes and returns the paths from $TYPO3_CONF_VARS['SYS']['binSetup']
+	 *
+	 * @return	array		Array of commands and path
+	 * @internal
+	 */
+	function _getConfiguredApps()	{
+		global $TYPO3_CONF_VARS;
+
+		$cmdArr = array();
+
+		if ($TYPO3_CONF_VARS['SYS']['binSetup']) {
+			$pathSetup = t3lib_div::trimExplode(',',$TYPO3_CONF_VARS['SYS']['binSetup'],1);
+			foreach($pathSetup as $val) {
+				list($cmd, $cmdPath) = t3lib_div::trimExplode('=',$val,1);
+
+				$cmdArr[$cmd]['app'] = basename($cmdPath);
+				$cmdArr[$cmd]['path'] = dirname($cmdPath).'/';
+				$cmdArr[$cmd]['valid'] = true;
+			}
+		}
+
+		return $cmdArr;
 	}
 
 
