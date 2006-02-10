@@ -3223,9 +3223,9 @@ class tslib_cObj {
 				}
 				if ($conf['typolink.']){$content=$this->typolink($content, $conf['typolink.']);}
 				if (is_array($conf['TCAselectItem.'])) {$content=$this->TCAlookup($content,$conf['TCAselectItem.']);}
-					
-			
-				
+
+
+
 					// Spacing
 				if ($conf['space']){$content=$this->wrapSpace($content, $conf['space']);}
 				$spaceBefore = '';
@@ -4957,19 +4957,18 @@ class tslib_cObj {
 
 
 	/**
-	 * looks up the incoming value in the defined TCA configuration
-	 * 
-	 * works only with TCA-type 'select' and options defined in 'items'
-	 * 
-	 * @todo would be nice it this function basically looked up any type of value, db-relations etc
+	 * Looks up the incoming value in the defined TCA configuration
+	 * Works only with TCA-type 'select' and options defined in 'items'
 	 *
-	 * @param mixed $inputValue	commaseperated list of values to look up
-	 * @param array $conf		TS-configuration array, see TSref for details
-	 * @return string			String of translated values, seperated by $delimiter. If no matches were found, the input value is simply returned.
+	 * @todo	It would be nice it this function basically looked up any type of value, db-relations etc.
+	 *
+	 * @param	mixed 		Comma-separated list of values to look up
+	 * @param	array 		TS-configuration array, see TSref for details
+	 * @return	string		String of translated values, seperated by $delimiter. If no matches were found, the input value is simply returned.
 	 */
-	function TCAlookup($inputValue,$conf) {
-		global $TCA;	
-	
+	function TCAlookup($inputValue,$conf)	{
+		global $TCA;
+
 		$table = $conf['table'];
 		$field = $conf['field'];
 		$delimiter = $conf['delimiter']?$conf['delimiter']:' ,';
@@ -4978,14 +4977,13 @@ class tslib_cObj {
 
 		if (is_array($TCA[$table]) && is_array($TCA[$table]['columns'][$field]) && is_array($TCA[$table]['columns'][$field]['config']['items'])) {
 			$values = t3lib_div::trimExplode(',',$inputValue);
-			foreach ($values as $value) {
+			foreach ($values as $value)	{
 					// Traverse the items-array...
 				reset($TCA[$table]['columns'][$field]['config']['items']);
 				while(list($key,$item)=each($TCA[$table]['columns'][$field]['config']['items']))	{
 						// ... and return the first found label where the value was equal to $key
 					if (!strcmp($item[1],trim($value)))	$output[] = $GLOBALS['TSFE']->sL($item[0]);
 				}
-
 			}
 			$returnValue = implode($delimiter,$output);
 		} else {
@@ -4994,7 +4992,7 @@ class tslib_cObj {
 		return $returnValue;
 	}
 
-	
+
 
 
 

@@ -31,7 +31,7 @@
  * Revised for TYPO3 3.6 November/2003 by Kasper Skaarhoj
  *
  * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
- * @coauthor	Ren? Fritz <r.fritz@colorcube.de>
+ * @coauthor	René Fritz <r.fritz@colorcube.de>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
@@ -66,7 +66,7 @@ require_once (PATH_t3lib.'class.t3lib_treeview.php');
  * Extension class for the t3lib_treeView class, specially made for browsing pages
  *
  * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
- * @coauthor	Ren? Fritz <r.fritz@colorcube.de>
+ * @coauthor	René Fritz <r.fritz@colorcube.de>
  * @see t3lib_treeView, t3lib_pageTree
  * @package TYPO3
  * @subpackage t3lib
