@@ -1962,11 +1962,11 @@
 	 * @return	string		'email' if a formmail has been send, 'fe_tce' if front-end data submission (like forums, guestbooks) is send. '' if none.
 	 */
 	function checkDataSubmission()	{
+		$ret = '';
 		if ($_POST['formtype_db'] || $_POST['formtype_mail'])	{
 			$refInfo = parse_url(t3lib_div::getIndpEnv('HTTP_REFERER'));
 			if (t3lib_div::getIndpEnv('TYPO3_HOST_ONLY')==$refInfo['host'] || $this->TYPO3_CONF_VARS['SYS']['doNotCheckReferer'])	{
 				if ($this->locDataCheck($_POST['locationData']))	{
-					$ret = '';
 					if ($_POST['formtype_mail'])	{
 						$ret = 'email';
 					} elseif ($_POST['formtype_db'] && is_array($_POST['data']))	{
@@ -1977,6 +1977,14 @@
 				}
 			} else $GLOBALS['TT']->setTSlogMessage('"Check Data Submission": HTTP_HOST and REFERER HOST did not match when processing submitted formdata!',3);
 		}
+			// Hook for processing data submission to extensions:
+		if (is_array($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['checkDataSubmission']))	{
+			foreach($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['checkDataSubmission'] as $_classRef)	{
+				$_procObj = &t3lib_div::getUserObj($_classRef);
+				$_procObj->checkDataSubmission($this);
+			}
+		}
+		return $ret;
 	}
 
 	/**
@@ -2078,85 +2086,15 @@
 
 	/**
 	 * Checks if jumpurl is set.
-	 * This function also takes care of jumpurl utilized by the Direct Mail module (ext: direct_mail) which may set an integer value for jumpurl which refers to a link in a certain mail-record, mid
 	 *
 	 * @return	void
 	 */
 	function checkJumpUrl()	{
-		global $TCA;
-
-		$mid = t3lib_div::_GP('mid');		// mail id, if direct mail link
-		$rid = t3lib_div::_GP('rid');		// recipient id, if direct mail link
-		if ((strcmp($this->jumpurl,'') && ((t3lib_div::getIndpEnv('HTTP_REFERER') || $this->TYPO3_CONF_VARS['SYS']['doNotCheckReferer']) || $mid)) || ($this->jumpurl = $this->sys_page->getExtURL($this->page,$this->config['config']['disablePageExternalUrl'])))	{
-			if ($mid && is_array($TCA['sys_dmail']))	{	// Yes, it's OK if the link comes from a direct mail. AND sys_dmail module has installed the table, sys_dmail (and therefore we expect sys_dmail_maillog as well!)
-				$temp_recip=explode('_',$rid);
-				$url_id=0;
-				if (t3lib_div::testInt($this->jumpurl))	{
-					$temp_res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('mailContent', 'sys_dmail', 'uid='.intval($mid));
-					if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($temp_res))	{
-						$temp_unpackedMail = unserialize($row['mailContent']);
-						$url_id=$this->jumpurl;
-						if ($this->jumpurl>=0)	{
-							$responseType=1;	// Link (number)
-							$this->jumpurl = $temp_unpackedMail['html']['hrefs'][$url_id]['absRef'];
-						} else {
-							$responseType=2;	// Link (number, plaintext)
-							$this->jumpurl = $temp_unpackedMail['plain']['link_ids'][abs($url_id)];
-						}
-						$this->jumpurl = t3lib_div::htmlspecialchars_decode($this->jumpurl);
-
-						switch($temp_recip[0])	{
-							case 't':
-								$theTable = 'tt_address';
-							break;
-							case 'f':
-								$theTable = 'fe_users';
-							break;
-							default:
-								$theTable='';
-							break;
-						}
-						if ($theTable)	{
-							$recipRow = $this->sys_page->getRawRecord($theTable,$temp_recip[1]);
-							if (is_array($recipRow))	{
-//								debug($recipRow);
-								$authCode = t3lib_div::stdAuthCode($recipRow['uid']);
-								$rowFieldsArray = explode(',', 'uid,name,title,email,phone,www,address,company,city,zip,country,fax,firstname');
-								reset($rowFieldsArray);
-								while(list(,$substField)=each($rowFieldsArray))	{
-									$this->jumpurl = str_replace('###USER_'.$substField.'###', $recipRow[$substField], $this->jumpurl);
-								}
-								$this->jumpurl = str_replace('###SYS_TABLE_NAME###', $theTable, $this->jumpurl);	// Put in the tablename of the userinformation
-								$this->jumpurl = str_replace('###SYS_MAIL_ID###', $mid, $this->jumpurl);	// Put in the uid of the mail-record
-								$this->jumpurl = str_replace('###SYS_AUTHCODE###', $authCode, $this->jumpurl);
-
-						//		debug($this->jumpurl);
-							}
-						}
-					}
-
-					$GLOBALS['TYPO3_DB']->sql_free_result($temp_res);
-
-					if (!$this->jumpurl)	die('Error: No further link. Please report error to the mail sender.');
-				} else {
-					$responseType=-1;	// received (url, dmailerping)
-				}
-				if ($responseType!=0)	{
-					$insertFields = array(
-						'mid' => intval($mid),
-						'rtbl' => $temp_recip[0],
-						'rid' => intval($temp_recip[1]),
-						'tstamp' => time(),
-						'url' => $this->jumpurl,
-						'response_type' => intval($responseType),
-						'url_id' => intval($url_id)
-					);
-
-					$GLOBALS['TYPO3_DB']->exec_INSERTquery('sys_dmail_maillog', $insertFields);
-				}
-			}
-		} else {
-			unset($this->jumpurl);
+		if (strcmp($this->jumpurl,'') && !$this->TYPO3_CONF_VARS['SYS']['doNotCheckReferer'])	{
+			$referer = parse_url(t3lib_div::getIndpEnv('HTTP_REFERER'));
+			if (!( $referer['host'] == t3lib_div::getIndpEnv('TYPO3_HOST_ONLY')))	{
+				unset($this->jumpurl);
+ 			}
 		}
 	}
 
@@ -2167,6 +2105,9 @@
 	 * @return	void
 	 */
 	function jumpUrl()	{
+		if ($extUrl=$this->sys_page->getExtURL($this->page,$this->config['config']['disablePageExternalUrl']))	{
+			$this->jumpurl = $extUrl;
+		}
 		if ($this->jumpurl)	{
 			if (t3lib_div::_GP('juSecure'))	{
 				$hArr = array(

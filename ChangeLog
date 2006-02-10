@@ -1,3 +1,7 @@
+2006-02-10  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
+
+	* Remove Direct Mail code from tslib_fe and add	checkDataSubmission hook
+
 2006-02-10  Christian Jul Jensen  <christian@jul.net>
 
 	* Added TCAselectItem to stdWrap, see TSref

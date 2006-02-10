@@ -370,6 +370,12 @@ $TSFE->settingLocale();
 
 
 // ********************************
+// Check JumpUrl
+// *******************************
+$TSFE->checkJumpUrl();
+
+
+// ********************************
 // Check Submission of data.
 // This is done at this point, because we need the config values
 // *******************************
@@ -387,12 +393,6 @@ switch($TSFE->checkDataSubmission())	{
 		$TT->pull();
 	break;
 }
-
-
-// ********************************
-// Check JumpUrl
-// *******************************
-$TSFE->checkJumpUrl();
 
 
 // ********************************
