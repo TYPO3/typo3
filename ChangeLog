@@ -1,3 +1,7 @@
+2006-02-10  Christian Jul Jensen  <christian@jul.net>
+
+	* Added TCAselectItem to stdWrap, see TSref
+
 2006-02-09  Rene Fritz  <r.fritz@colorcube.de>
 
 	* Added $TYPO3_CONF_VARS['SYS']['binSetup'] and made t3lib_exec use of it.
