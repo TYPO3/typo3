@@ -1,3 +1,6 @@
+2006-02-11  Kasper Skaarhoj	
+	* Changed swapping mechanism for versioning. Still need to fix locking file integration.
+
 2006-02-10  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
 	* Remove Direct Mail code from tslib_fe and add	checkDataSubmission hook
