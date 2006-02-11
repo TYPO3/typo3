@@ -1,4 +1,9 @@
-2006-02-11  Kasper Skaarhoj	
+2006-02-11  Bernhard Kraft  <kraftb@kraftb.at>
+
+	* Fixed bug #1270: Garbled characters in cshItems when forceCharset is set to utf-8 
+
+2006-02-11  Kasper Skaarhoj  <kasperYYYY@typo3.com>
+
 	* Changed swapping mechanism for versioning. Still need to fix locking file integration.
 
 2006-02-10  Stanislas Rolland  <stanislas.rolland@fructifor.ca>

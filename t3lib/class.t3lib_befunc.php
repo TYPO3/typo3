@@ -2222,7 +2222,7 @@ class t3lib_BEfunc	{
 				$icon = t3lib_BEfunc::helpTextIcon($table,$field,$BACK_PATH,$onlyIconMode);
 
 				if ($fullText && !$onlyIconMode)	{
-					$output = $fullText;
+					$output = $GLOBALS['LANG']->hscAndCharConv($fullText, false);
 				} else {
 					#$output = '<span style="position:absolute; filter: alpha(opacity=50); -moz-opacity: 0.50;">'.$icon.'</span>';
 					$output = $icon;
