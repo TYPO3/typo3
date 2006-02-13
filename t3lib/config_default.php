@@ -92,7 +92,8 @@ $TYPO3_CONF_VARS = Array(
 		'em_devVerUpdate' => 0,					// If set, developer versions will also appear as red - ready for upgrade
 		'em_alwaysGetOOManual' => 0,			// If set, OO-manuals are always downloaded
 		'em_systemInstall' => 0,				// If set, you can install extensions in the sysext/ dir. Use this to upgrade the 'cms' and 'lang' extensions.
-		'em_TERurls' => array('http://ter.typo3.com/?id=t3_extrep'),
+		'em_wsdlURL' => 'http://typo3.org/wsdl/tx_ter_wsdl.php',				// The SOAP URL for uploading extensions to the TER2. Usually doesn't need to be changed.
+		'em_mirrorListURL' => 'http://repositories.typo3.org/mirrors.xml.gz',				// Allows to preset the URL for fetching the extension repository mirror list from. Used in the Extension Manager.
 
 		'requiredExt' => 'cms,lang,sv',			// String list: List of extensions which are REQUIRED and cannot be unloaded by the Extension Manager!
 		'extCache' => 1,						// Int. 0,1,2,3: 0: ext-scripts (ext_localconf.php and ext_tables.php) are NOT cached, but included every time. 1: scripts cached to typo3conf/temp_CACHED_[sitePathHash]* (saves some milliseconds even with PHP accelerators), 2: scripts cached and prefix includes a hash based on the 'extList' string, 3: scripts cached to typo3conf/temp_CACHED_* (no hash included at all...)
