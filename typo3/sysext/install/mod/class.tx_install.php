@@ -1368,13 +1368,14 @@ From sub-directory:
 				if (!strcmp($lc,");"))	{
 					$in=0;
 				} else {
-					if (eregi('["\']([[:alnum:]_-]*)["\'][[:space:]]*=>(.*)',$lc,$reg))	{
-						list(,$theComment)=explode("//",$reg[2],2);
+					if (preg_match('/["\']([[:alnum:]_-]*)["\'][[:space:]]*=>(.*)/i',$lc,$reg))	{
+						preg_match('/,[\t\s]*\/\/(.*)/i',$reg[2],$creg);
+						$theComment = trim($creg[1]);
 						if (substr(strtolower(trim($reg[2])),0,5)=="array" && !strcmp($reg[1],strtoupper($reg[1])))	{
 							$mainKey=trim($reg[1]);
-							$mainArray[$mainKey]=trim($theComment);
+							$mainArray[$mainKey]=$theComment;
 						} elseif ($mainKey) {
-							$commentArray[$mainKey][$reg[1]]=trim($theComment);
+							$commentArray[$mainKey][$reg[1]]=$theComment;
 						}
 					}
 				}
