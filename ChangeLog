@@ -1,10 +1,11 @@
 2006-02-13  Rene Fritz  <r.fritz@colorcube.de>
 
-	* Install toot PHP and HTML code cleanup towards xhtml
+	* Install tool PHP and HTML code cleanup towards xhtml
 
 2006-02-13 Karsten Dambekalns <karsten@typo3.org>
 
 	* class.tx_install.php: Changed the way documentation is extracted from comments in config_default.php.
+	* t3lib/config_default.php, typo3/stylesheet.css, typo3/mod/tolls/em/: First CVS release of new Extension Manager codebase.
 
 2006-02-11  Bernhard Kraft  <kraftb@kraftb.at>
 
