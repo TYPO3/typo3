@@ -1,10 +1,14 @@
+2006-02-13  Rene Fritz  <r.fritz@colorcube.de>
+
+	* Install toot PHP and HTML code cleanup towards xhtml
+
 2006-02-13 Karsten Dambekalns <karsten@typo3.org>
 
 	* class.tx_install.php: Changed the way documentation is extracted from comments in config_default.php.
 
 2006-02-11  Bernhard Kraft  <kraftb@kraftb.at>
 
-	* Fixed bug #1270: Garbled characters in cshItems when forceCharset is set to utf-8 
+	* Fixed bug #1270: Garbled characters in cshItems when forceCharset is set to utf-8
 
 2006-02-11  Kasper Skaarhoj  <kasperYYYY@typo3.com>
 
