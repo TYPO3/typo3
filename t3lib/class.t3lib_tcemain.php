@@ -2470,6 +2470,8 @@ class t3lib_TCEmain	{
 						// Do the copy by internal function
 					$theNewSQLID = $this->insertNewCopyVersion($table,$row,$pid);
 					if ($theNewSQLID)	{
+						$this->dbAnalysisStoreExec();
+						$this->dbAnalysisStore = array();
 						return $this->copyMappingArray[$table][$uid] = $theNewSQLID;
 					}
 				} else $this->log($table,$uid,3,0,1,'Attempt to rawcopy/versionize record that did not exist!');
@@ -3432,22 +3434,22 @@ class t3lib_TCEmain	{
 									if ((int)$swapVersion['pid']==-1 && (int)$curVersion['pid']>=0 && !strcmp($swapVersion['t3ver_oid'],$id))	{
 										if (TRUE)	{
 
-		# Check for lock-file		
+		# Check for lock-file
 		# TODO: Check for other lock-file, save two records to lock-file.
-	
+
 												// Find fields to keep
 											$keepFields = $this->getUniqueFields($table);
 											if ($TCA[$table]['ctrl']['sortby'])	{
 												$keepFields[] = $TCA[$table]['ctrl']['sortby'];
 											}
-								
+
 												// Swap "keepfields"
 											foreach($keepFields as $fN)	{
 												$tmp = $swapVersion[$fN];
 												$swapVersion[$fN] = $curVersion[$fN];
 												$curVersion[$fN] = $tmp;
 											}
-	
+
 												// Modify offline version to become online:
 											$tmp_wsid = $swapVersion['t3ver_wsid'];
 											unset($swapVersion['uid']);
@@ -3456,8 +3458,8 @@ class t3lib_TCEmain	{
 											$swapVersion['t3ver_wsid'] = $swapIntoWS ? intval($curVersion['t3ver_wsid']) : 0;
 											$swapVersion['t3ver_tstamp'] = time();
 											$swapVersion['t3ver_stage'] = $swapVersion['t3ver_state'] = 0;
-	
-												// Modify online version to become offline:										
+
+												// Modify online version to become offline:
 											unset($curVersion['uid']);
 											$curVersion['pid'] = -1;	// Set pid for OFFLINE
 											$curVersion['t3ver_oid'] = intval($id);
@@ -3465,10 +3467,10 @@ class t3lib_TCEmain	{
 											$curVersion['t3ver_tstamp'] = time();
 											$curVersion['t3ver_count'] = $curVersion['t3ver_count']+1;	// Increment lifecycle counter
 											$curVersion['t3ver_stage'] = $curVersion['t3ver_state'] = 0;
-											if ($table==='pages') {		// Keeping the swapmode state
+										if ($table==='pages') {		// Keeping the swapmode state
 												$curVersion['t3ver_swapmode'] = $swapVersion['t3ver_swapmode'];
-											}
-	
+										}
+
 												// Execute swapping:
 											$sqlErrors = array();
 											$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table,'uid='.intval($id),$swapVersion);
@@ -3479,52 +3481,52 @@ class t3lib_TCEmain	{
 												if ($GLOBALS['TYPO3_DB']->sql_error())	{
 													$sqlErrors[]=$GLOBALS['TYPO3_DB']->sql_error();
 												} else {
-		# REMOVE lock record		
+		# REMOVE lock record
 												}
 											}
-	
+
 											if (!count($sqlErrors))	{
-													// Checking for delete:
-												if ($swapVersion['t3ver_state']==2)	{
-													$this->deleteEl($table,$id,TRUE);	// Force delete
-												}
-	
-												$this->newlog('Swapping successful for table "'.$table.'" uid '.$id.'=>'.$swapWith);
-	
-													// Update reference index:
-												$this->updateRefIndex($table,$id);
-												$this->updateRefIndex($table,$swapWith);
-	
-													// SWAPPING pids for subrecords:
-												if ($table=='pages' && $swapVersion['t3ver_swapmode']>=0)	{
-	
-														// Collect table names that should be copied along with the tables:
-													foreach($TCA as $tN => $tCfg)	{
-														if ($swapVersion['t3ver_swapmode']>0 || $TCA[$tN]['ctrl']['versioning_followPages'])	{	// For "Branch" publishing swap ALL, otherwise for "page" publishing, swap only "versioning_followPages" tables
-															$temporaryPid = -($id+1000000);
-	
-															$GLOBALS['TYPO3_DB']->exec_UPDATEquery($tN,'pid='.intval($id),array('pid'=>$temporaryPid));
-															if ($GLOBALS['TYPO3_DB']->sql_error())	$sqlErrors[]=$GLOBALS['TYPO3_DB']->sql_error();
-	
-															$GLOBALS['TYPO3_DB']->exec_UPDATEquery($tN,'pid='.intval($swapWith),array('pid'=>$id));
-															if ($GLOBALS['TYPO3_DB']->sql_error())	$sqlErrors[]=$GLOBALS['TYPO3_DB']->sql_error();
-	
-															$GLOBALS['TYPO3_DB']->exec_UPDATEquery($tN,'pid='.intval($temporaryPid),array('pid'=>$swapWith));
-															if ($GLOBALS['TYPO3_DB']->sql_error())	$sqlErrors[]=$GLOBALS['TYPO3_DB']->sql_error();
-	
-															if (count($sqlErrors))	{
-																$this->newlog('During Swapping: SQL errors happend: '.implode('; ',$sqlErrors),2);
-															}
+											// Checking for delete:
+										if ($swapVersion['t3ver_state']==2)	{
+											$this->deleteEl($table,$id,TRUE);	// Force delete
+										}
+
+											$this->newlog('Swapping successful for table "'.$table.'" uid '.$id.'=>'.$swapWith);
+
+												// Update reference index:
+											$this->updateRefIndex($table,$id);
+											$this->updateRefIndex($table,$swapWith);
+
+												// SWAPPING pids for subrecords:
+											if ($table=='pages' && $swapVersion['t3ver_swapmode']>=0)	{
+
+													// Collect table names that should be copied along with the tables:
+												foreach($TCA as $tN => $tCfg)	{
+													if ($swapVersion['t3ver_swapmode']>0 || $TCA[$tN]['ctrl']['versioning_followPages'])	{	// For "Branch" publishing swap ALL, otherwise for "page" publishing, swap only "versioning_followPages" tables
+														$temporaryPid = -($id+1000000);
+
+														$GLOBALS['TYPO3_DB']->exec_UPDATEquery($tN,'pid='.intval($id),array('pid'=>$temporaryPid));
+														if ($GLOBALS['TYPO3_DB']->sql_error())	$sqlErrors[]=$GLOBALS['TYPO3_DB']->sql_error();
+
+														$GLOBALS['TYPO3_DB']->exec_UPDATEquery($tN,'pid='.intval($swapWith),array('pid'=>$id));
+														if ($GLOBALS['TYPO3_DB']->sql_error())	$sqlErrors[]=$GLOBALS['TYPO3_DB']->sql_error();
+
+														$GLOBALS['TYPO3_DB']->exec_UPDATEquery($tN,'pid='.intval($temporaryPid),array('pid'=>$swapWith));
+														if ($GLOBALS['TYPO3_DB']->sql_error())	$sqlErrors[]=$GLOBALS['TYPO3_DB']->sql_error();
+
+														if (count($sqlErrors))	{
+															$this->newlog('During Swapping: SQL errors happend: '.implode('; ',$sqlErrors),2);
 														}
 													}
 												}
-													// Clear cache:
-												$this->clear_cache($table,$id);
-	
-													// Checking for "new-placeholder" and if found, delete it (BUT FIRST after swapping!):
-												if ($curVersion['t3ver_state']==1)	{
-													$this->deleteEl($table, $swapWith, TRUE, TRUE); 	// For delete + completely delete!
-												}
+											}
+												// Clear cache:
+											$this->clear_cache($table,$id);
+
+											// Checking for "new-placeholder" and if found, delete it (BUT FIRST after swapping!):
+										if ($curVersion['t3ver_state']==1)	{
+											$this->deleteEl($table, $swapWith, TRUE, TRUE); 	// For delete + completely delete!
+										}
 											} else $this->newlog('During Swapping: SQL errors happend: '.implode('; ',$sqlErrors),2);
 										} else $this->newlog('A swapping lock file was present. Either another swap process is already running or a previous swap process failed. Ask your administrator to handle the situation.',2);
 									} else $this->newlog('In swap version, either pid was not -1 or the t3ver_oid didn\'t match the id of the online version as it must!',2);
