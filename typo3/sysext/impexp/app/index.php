@@ -223,7 +223,7 @@ class localPageTree extends t3lib_browseTree {
 
 			// Set PM icon:
 		$cmd = $this->bank.'_'.($isOpen?'0_':'1_').$pid;
-		$icon = '<img'.t3lib_iconWorks::skinImg($this->backPath,'t3lib/gfx/ol/'.($isOpen?'minus':'plus').'only.gif','width="18" height="16"').' align="top" alt="" />';
+		$icon = '<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/ol/'.($isOpen?'minus':'plus').'only.gif','width="18" height="16"').' align="top" alt="" />';
 		$firstHtml = $this->PM_ATagWrap($icon,$cmd);
 
 		if ($pid>0)	{
@@ -239,7 +239,7 @@ class localPageTree extends t3lib_browseTree {
 		$this->tree[] = array('HTML'=>$firstHtml, 'row'=>$rootRec);
 		if ($isOpen)	{
 				// Set depth:
-			$depthD = '<img'.t3lib_iconWorks::skinImg($this->backPath,'t3lib/gfx/ol/blank.gif','width="18" height="16"').' align="top" alt="" />';
+			$depthD = '<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/ol/blank.gif','width="18" height="16"').' align="top" alt="" />';
 			if ($this->addSelfId)	$this->ids[] = $pid;
 			$this->getTree($pid,999,$depthD);
 

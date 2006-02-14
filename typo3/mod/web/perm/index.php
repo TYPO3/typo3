@@ -140,7 +140,7 @@ class SC_mod_web_perm_index {
 		$this->doc->backPath = $BACK_PATH;
 		$this->doc->docType = 'xhtml_trans';
 		$this->doc->form='<form action="'.$BACK_PATH.'tce_db.php" method="post" name="editform">';
-		$this->doc->JScode = '<script type="text/javascript" src="'.$BACK_PATH.'t3lib/jsfunc.updateform.js"></script>';
+		$this->doc->JScode = '<script type="text/javascript" src="'.$BACK_PATH.'../t3lib/jsfunc.updateform.js"></script>';
 		$this->doc->JScode.= $this->doc->wrapScriptTags('
 			function checkChange(checknames, varname)	{	//
 				var res = 0;

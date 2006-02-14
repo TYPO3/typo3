@@ -1984,8 +1984,15 @@ class tx_indexedsearch extends tslib_pibase {
 					// Flag code:
 				$flag = $rowDat[0]['flag'];
 				if ($flag)	{
-					$file = 't3lib/gfx/flags/'.$flag;
+
+// FIXME not all flags from typo3/gfx/flags are available in media/flags/
+// FIXME this is untested
+					$file = preg_replace('/^'.PATH_site.'/', PATH_tslib).'media/flags/flag_'.$flag;
 					$imgInfo = @getimagesize(PATH_site.$file);
+
+// original
+#					$file = TYPO3_mainDir.'gfx/flags/'.$flag;
+#					$imgInfo = @getimagesize(PATH_site.$file);
 
 					if (is_array($imgInfo))	{
 						$output = '<img src="'.$file.'" '.$imgInfo[3].' title="'.htmlspecialchars($rowDat[0]['title']).'" alt="'.htmlspecialchars($rowDat[0]['title']).'" />';

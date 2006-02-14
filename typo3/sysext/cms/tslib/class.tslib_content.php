@@ -3224,8 +3224,6 @@ class tslib_cObj {
 				if ($conf['typolink.']){$content=$this->typolink($content, $conf['typolink.']);}
 				if (is_array($conf['TCAselectItem.'])) {$content=$this->TCAlookup($content,$conf['TCAselectItem.']);}
 
-
-
 					// Spacing
 				if ($conf['space']){$content=$this->wrapSpace($content, $conf['space']);}
 				$spaceBefore = '';
@@ -3841,7 +3839,8 @@ class tslib_cObj {
 			$theSize = filesize($theFile);
 			$fI = t3lib_div::split_fileref($theFile);
 			if ($conf['icon'])	{
-				$iconP = 't3lib/gfx/fileicons/';
+// TODO the path should be configurable
+				$iconP = t3lib_extMgm::siteRelPath('cms').'media/fileicons/';
 				$icon = @is_file($iconP.$fI['fileext'].'.gif') ? $iconP.$fI['fileext'].'.gif' : $iconP.'default.gif';
 					// Checking for images: If image, then return link to thumbnail.
 				$IEList = $this->stdWrap($conf['icon_image_ext_list'],$conf['icon_image_ext_list.']);
@@ -3855,7 +3854,7 @@ class tslib_cObj {
 							if ($conf['icon_thumbSize'] || $conf['icon_thumbSize.'])	{ $thumbSize = '&size='.$this->stdWrap($conf['icon_thumbSize'], $conf['icon_thumbSize.']); }
 							$icon = 't3lib/thumbs.php?dummy='.$GLOBALS['EXEC_TIME'].'&file='.rawurlencode('../'.$theFile).$thumbSize;
 						} else {
-							$icon = 't3lib/gfx/notfound_thumb.gif';
+							$icon = t3lib_extMgm::siteRelPath('cms').'media/miscicons/notfound_thumb.gif';
 						}
 						$icon = '<img src="'.htmlspecialchars($GLOBALS['TSFE']->absRefPrefix.$icon).'"'.$this->getBorderAttr(' border="0"').''.$this->getAltParam($conf).' />';
 					}
@@ -4991,9 +4990,6 @@ class tslib_cObj {
 		}
 		return $returnValue;
 	}
-
-
-
 
 
 
@@ -6824,26 +6820,26 @@ class tslib_cObj {
 				default:
 					$panel = '';
 					if (isset($allow['toolbar']))		$panel.=$GLOBALS['BE_USER']->ext_makeToolBar().'<img src="clear.gif" width="2" height="1" alt="" title="" />';
-					if (isset($allow['edit']))		$panel.=$this->editPanelLinkWrap('<img src="t3lib/gfx/edit2.gif" width="11" height="12" hspace="2" border="0" title="'.$BE_USER->extGetLL('p_editRecord').'" align="top" alt="" title="" />',$formName,'edit',$currentRecord);
+					if (isset($allow['edit']))		$panel.=$this->editPanelLinkWrap('<img src="'.TYPO3_mainDir.'gfx/edit2.gif" width="11" height="12" hspace="2" border="0" title="'.$BE_USER->extGetLL('p_editRecord').'" align="top" alt="" title="" />',$formName,'edit',$currentRecord);
 					if (isset($allow['move']) && $sortField)	{
-						$panel.=$this->editPanelLinkWrap('<img src="t3lib/gfx/button_up.gif" width="11" height="10" vspace="1" hspace="2" border="0" title="'.$BE_USER->extGetLL('p_moveUp').'" align="top" alt="" title="" />',$formName,'up');
-						$panel.=$this->editPanelLinkWrap('<img src="t3lib/gfx/button_down.gif" width="11" height="10" vspace="1" hspace="2" border="0" title="'.$BE_USER->extGetLL('p_moveDown').'" align="top" alt="" title="" />',$formName,'down');
+						$panel.=$this->editPanelLinkWrap('<img src="'.TYPO3_mainDir.'gfx/button_up.gif" width="11" height="10" vspace="1" hspace="2" border="0" title="'.$BE_USER->extGetLL('p_moveUp').'" align="top" alt="" title="" />',$formName,'up');
+						$panel.=$this->editPanelLinkWrap('<img src="'.TYPO3_mainDir.'gfx/button_down.gif" width="11" height="10" vspace="1" hspace="2" border="0" title="'.$BE_USER->extGetLL('p_moveDown').'" align="top" alt="" title="" />',$formName,'down');
 					}
 					if (isset($allow['hide']) && $hideField)	{
 						if ($dataArr[$hideField])	{
-							$panel.=$this->editPanelLinkWrap('<img src="t3lib/gfx/button_unhide.gif" width="11" height="10" vspace="1" hspace="2" border="0" title="'.$BE_USER->extGetLL('p_unhide').'" align="top" alt="" title="" />',$formName,'unhide');
+							$panel.=$this->editPanelLinkWrap('<img src="'.TYPO3_mainDir.'gfx/button_unhide.gif" width="11" height="10" vspace="1" hspace="2" border="0" title="'.$BE_USER->extGetLL('p_unhide').'" align="top" alt="" title="" />',$formName,'unhide');
 						} else {
-							$panel.=$this->editPanelLinkWrap('<img src="t3lib/gfx/button_hide.gif" width="11" height="10" vspace="1" hspace="2" border="0" title="'.$BE_USER->extGetLL('p_hide').'" align="top" alt="" title="" />',$formName,'hide','',$BE_USER->extGetLL('p_hideConfirm'));
+							$panel.=$this->editPanelLinkWrap('<img src="'.TYPO3_mainDir.'gfx/button_hide.gif" width="11" height="10" vspace="1" hspace="2" border="0" title="'.$BE_USER->extGetLL('p_hide').'" align="top" alt="" title="" />',$formName,'hide','',$BE_USER->extGetLL('p_hideConfirm'));
 						}
 					}
 					if (isset($allow['new']))	{
 						if ($table=='pages')	{
-							$panel.=$this->editPanelLinkWrap('<img src="t3lib/gfx/new_page.gif" width="13" height="12" vspace="1" hspace="2" border="0" title="'.$BE_USER->extGetLL('p_newSubpage').'" align="top" alt="" title="" />',$formName,'new',$currentRecord,'',$nPid);
+							$panel.=$this->editPanelLinkWrap('<img src="'.TYPO3_mainDir.'gfx/new_page.gif" width="13" height="12" vspace="1" hspace="2" border="0" title="'.$BE_USER->extGetLL('p_newSubpage').'" align="top" alt="" title="" />',$formName,'new',$currentRecord,'',$nPid);
 						} else {
-							$panel.=$this->editPanelLinkWrap('<img src="t3lib/gfx/new_record.gif" width="16" height="12" vspace="1" hspace="2" border="0" title="'.$BE_USER->extGetLL('p_newRecordAfter').'" align="top" alt="" title="" />',$formName,'new',$currentRecord,'',$nPid);
+							$panel.=$this->editPanelLinkWrap('<img src="'.TYPO3_mainDir.'gfx/new_record.gif" width="16" height="12" vspace="1" hspace="2" border="0" title="'.$BE_USER->extGetLL('p_newRecordAfter').'" align="top" alt="" title="" />',$formName,'new',$currentRecord,'',$nPid);
 						}
 					}
-					if (isset($allow['delete']))		{$panel.=$this->editPanelLinkWrap('<img src="t3lib/gfx/delete_record.gif" width="12" height="12" vspace="1" hspace="2" border="0" title="'.$BE_USER->extGetLL('p_delete').'" align="top" alt="" title="" />',$formName,'delete','',$BE_USER->extGetLL('p_deleteConfirm'));	}
+					if (isset($allow['delete']))		{$panel.=$this->editPanelLinkWrap('<img src="'.TYPO3_mainDir.'gfx/delete_record.gif" width="12" height="12" vspace="1" hspace="2" border="0" title="'.$BE_USER->extGetLL('p_delete').'" align="top" alt="" title="" />',$formName,'delete','',$BE_USER->extGetLL('p_deleteConfirm'));	}
 
 						//	Final
 					$labelTxt = $this->stdWrap($conf['label'],$conf['label.']);
@@ -6922,7 +6918,7 @@ class tslib_cObj {
 			$GLOBALS['TSFE']->set_no_cache();		// Special content is about to be shown, so the cache must be disabled.
 			$style = $conf['styleAttribute'] ? ' style="'.htmlspecialchars($conf['styleAttribute']).'"' : '';
 			$iconTitle = $this->stdWrap($conf['iconTitle'],$conf['iconTitle.']);
-			$iconImg = $conf['iconImg'] ? $conf['iconImg'] : '<img src="t3lib/gfx/edit_fe.gif" width="11" height="12" border="0" align="top" title="'.t3lib_div::deHSCentities(htmlspecialchars($iconTitle)).'"'.$style.' class="frontEndEditIcons" alt="" title="" />';
+			$iconImg = $conf['iconImg'] ? $conf['iconImg'] : '<img src="'.TYPO3_mainDir.'gfx/edit_fe.gif" width="11" height="12" border="0" align="top" title="'.t3lib_div::deHSCentities(htmlspecialchars($iconTitle)).'"'.$style.' class="frontEndEditIcons" alt="" title="" />';
 			$nV=t3lib_div::_GP('ADMCMD_view')?1:0;
 			$adminURL = t3lib_div::getIndpEnv('TYPO3_SITE_URL').TYPO3_mainDir;
 			$icon = $this->editPanelLinkWrap_doWrap($iconImg, $adminURL.'alt_doc.php?edit['.$rParts[0].']['.$rParts[1].']=edit&columnsOnly='.rawurlencode($fieldList).'&noView='.$nV.$addUrlParamStr,implode(':',$rParts));

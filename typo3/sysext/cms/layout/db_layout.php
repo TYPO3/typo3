@@ -400,7 +400,7 @@ class SC_db_layout {
 			$this->doc->docType='xhtml_trans';
 
 				// JavaScript:
-			$this->doc->JScode = '<script type="text/javascript" src="'.$BACK_PATH.'t3lib/jsfunc.updateform.js"></script>';
+			$this->doc->JScode = '<script type="text/javascript" src="'.$BACK_PATH.'../t3lib/jsfunc.updateform.js"></script>';
 			$this->doc->JScode.= $this->doc->wrapScriptTags('
 				if (top.fsMod) top.fsMod.recentIds["web"] = '.intval($this->id).';
 				if (top.fsMod) top.fsMod.navFrameHighlightedID["web"] = "pages'.intval($this->id).'_"+top.fsMod.currentBank; '.intval($this->id).';

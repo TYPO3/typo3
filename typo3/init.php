@@ -121,7 +121,8 @@ if (!$temp_path || substr($temp_path,-strlen(TYPO3_mainDir))!=TYPO3_mainDir)	{	/
 	define('PATH_typo3', $temp_path);			// Abs. path of the TYPO3 admin dir (PATH_site + TYPO3_mainDir).
 	define('PATH_typo3_mod', $temp_modPath);	// Relative path (from the PATH_typo3) to a properly configured module
 	define('PATH_site', substr(PATH_typo3,0,-strlen(TYPO3_mainDir)));	// Abs. path to directory with the frontend (one above the admin-dir)
-	define('PATH_t3lib', PATH_typo3.'t3lib/');			// Abs. path to t3lib/ (general TYPO3 library) within the TYPO3 admin dir
+	$temp_path_t3lib = @is_dir(PATH_site.'t3lib/') ? PATH_site.'t3lib/' : PATH_typo3.'t3lib/';
+	define('PATH_t3lib', $temp_path_t3lib);			// Abs. path to t3lib/ (general TYPO3 library) within the TYPO3 admin dir
 	define('PATH_typo3conf', PATH_site.'typo3conf/');	// Abs. TYPO3 configuration path (local, not part of source)
 }
 
