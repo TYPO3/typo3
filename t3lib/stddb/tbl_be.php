@@ -926,7 +926,7 @@ $TCA['sys_language'] = Array (
 				'items' => Array (
 					Array('',0),
 				),
-				'fileFolder' => 't3lib/gfx/flags/',	// Only shows if "t3lib/" is in the PATH_site...
+				'fileFolder' => 'typo3/gfx/flags/',	// Only shows if "t3lib/" is in the PATH_site...
 				'fileFolder_extList' => 'png,jpg,jpeg,gif',
 				'fileFolder_recursions' => 0,
 				'selicon_cols' => 8,

@@ -52,7 +52,7 @@ while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
 }
 
 // Little red arrow, which is inserted to the left of the flag-icon if the TSFE->sys_language_uid equals the language uid (notice that 0=english, 1=danish and 2=german is SPECIFIC to this database, because these numbers refer to uid's of the table sys_language)
-$pointer = '<img src="t3lib/gfx/content_client.gif" width="7" height="10" align="middle" alt="" />';
+$pointer = '<img src="'.t3lib_extMgm::siteRelPath('cms').'media/icons_misc/content_client.gif" width="7" height="10" align="middle" alt="" />';
 
 // Set each icon. If the language is the current, red arrow is printed to the left. If the language is NOT found (represented by a pages_language_overlay record on this page), the icon is dimmed.
 $flags = array();

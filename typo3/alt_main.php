@@ -465,7 +465,7 @@ class SC_alt_main {
 		$this->generateJScode();
 		$GLOBALS['TBE_TEMPLATE']->JScode= '
 			<script type="text/javascript" src="md5.js"></script>
-			<script type="text/javascript" src="t3lib/jsfunc.evalfield.js"></script>
+			<script type="text/javascript" src="../t3lib/jsfunc.evalfield.js"></script>
 			';
 		$GLOBALS['TBE_TEMPLATE']->JScode.=$GLOBALS['TBE_TEMPLATE']->wrapScriptTags($this->mainJScode);
 
