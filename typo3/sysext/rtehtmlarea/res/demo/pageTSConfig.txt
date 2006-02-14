@@ -123,6 +123,7 @@ RTE.default {
 		p.fixAttrib.align.unset >
 		div.fixAttrib.align.unset >
 		p.allowedAttribs = class,style,align
+		span.fixAttrib.style.unset >
 	}
 	
 		## Toolbar options

@@ -1,3 +1,8 @@
+2006-02-13 Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+	* Version 1.1.7
+	* Correction: incorrect default styles were assigned to links other than internal.
+	* Allow style attribute on span tag in the Demo default settings.
+
 2006-02-08 Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
 	* Version 1.1.6
 	* Correct default processing configuration for the case of center, font, strike and u tags when encountered outside paragraphs.

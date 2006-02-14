@@ -765,30 +765,29 @@ class tx_rtehtmlarea_browse_links {
 											$LANG->origCharSet = $BE_origCharset;
 										}
 									}
-									//$string = $LANG->hscAndCharConv($LANG->sL(trim($conf['titleText'])), 1);
 									$this->classesAnchorDefaultTitle[$conf['type']] = $string;
 								}
 							}
 						}
 					}
 				}
+				$this->classesAnchorJSOptions = array();
 				reset($anchorTypes);
 				while (list(, $anchorType) = each($anchorTypes) ) {
 					reset($classesAnchorArray);
 					while(list(,$class)=each($classesAnchorArray)) {
 						if (!in_array($class, $classesAnchor['all']) || (in_array($class, $classesAnchor['all']) && is_array($classesAnchor[$anchorType]) && in_array($class, $classesAnchor[$anchorType]))) {
 							$selected = '';
-							if ($this->setClass == $class) $selected = 'selected';
+							if ($this->setClass == $class) $selected = 'selected="selected"';
 							if (!$this->setClass && $classesAnchorDefault[$anchorType] == $class) {
-								$selected = 'selected';
-								$this->setClass = $class;
+								$selected = 'selected="selected"';
 							}
 							$this->classesAnchorJSOptions[$anchorType] .= '<option ' . $selected . ' value="' .$class . '">' . $class . '</option>';
 						}
 					}
 					if ($this->classesAnchorJSOptions[$anchorType]) {
 						$selected = '';
-						if (!$this->setClass && !$classesAnchorDefault[$anchorType])  $selected = 'selected';
+						if (!$this->setClass && !$classesAnchorDefault[$anchorType])  $selected = 'selected="selected"';
 						$this->classesAnchorJSOptions[$anchorType] =  '<option ' . $selected . ' value=""></option>' . $this->classesAnchorJSOptions[$anchorType];
 					}
 				}
@@ -898,22 +897,26 @@ class tx_rtehtmlarea_browse_links {
 				function link_typo3Page(id,anchor)	{
 					var theLink = \''.$this->siteURL.'?id=\'+id+(anchor?anchor:"");
 					if (document.ltargetform.anchor_title) setTitle(document.ltargetform.anchor_title.value);
+					setClass(document.ltargetform.anchor_class.value);
 					editor.renderPopup_addLink(theLink,cur_target,cur_class,cur_title);
 					return false;
 				}
 				function link_folder(folder)	{	//
 					var theLink = \''.$this->siteURL.'\'+folder;
 					if (document.ltargetform.anchor_title) setTitle(document.ltargetform.anchor_title.value);
+					setClass(document.ltargetform.anchor_class.value);
 					editor.renderPopup_addLink(theLink,cur_target,cur_class,cur_title);
 					return false;
 				}
 				function link_spec(theLink)	{	//
 					if (document.ltargetform.anchor_title) setTitle(document.ltargetform.anchor_title.value);
+					setClass(document.ltargetform.anchor_class.value);
 					editor.renderPopup_addLink(theLink,cur_target,cur_class,cur_title);
 					return false;
 				}
 				function link_current()	{	//
 					if (document.ltargetform.anchor_title) setTitle(document.ltargetform.anchor_title.value);
+					setClass(document.ltargetform.anchor_class.value);
 					if (cur_href!="http://" && cur_href!="mailto:")	{
 						editor.renderPopup_addLink(cur_href,cur_target,cur_class,cur_title);
 					}
@@ -1345,7 +1348,7 @@ class tx_rtehtmlarea_browse_links {
 
 			$selectJS = '
 				if (document.ltargetform.popup_width.options[document.ltargetform.popup_width.selectedIndex].value>0 && document.ltargetform.popup_height.options[document.ltargetform.popup_height.selectedIndex].value>0)	{
-					document.ltargetform.ltarget.value = document.ltargetform.popup_width.options[document.ltargetform.popup_width.selectedIndex].value+"x"+document.ltargetform.popup_height.options[document.ltargetform.popup_height.selectedIndex].value;
+					document.ltargetform.ltarget.value = document.ltargetform.popup_width.options[document.ltargetform.popup_width.selectedIndex].value+\'x\'+document.ltargetform.popup_height.options[document.ltargetform.popup_height.selectedIndex].value;
 					setTarget(document.ltargetform.ltarget.value);
 					document.ltargetform.popup_width.selectedIndex=0;
 					document.ltargetform.popup_height.selectedIndex=0;
@@ -1357,7 +1360,7 @@ class tx_rtehtmlarea_browse_links {
 						<tr>
 							<td>'.$GLOBALS['LANG']->getLL('target_popUpWindow',1).':</td>
 							<td colspan="3">
-								<select name="popup_width" onchange="'.htmlspecialchars($selectJS).'">
+								<select name="popup_width" onchange="'.$selectJS.'">
 									<option value="0">'.$GLOBALS['LANG']->getLL('target_popUpWindow_width',1).'</option>
 									<option value="300">300</option>
 									<option value="400">400</option>
@@ -1367,7 +1370,7 @@ class tx_rtehtmlarea_browse_links {
 									<option value="800">800</option>
 								</select>
 								x
-								<select name="popup_height" onchange="'.htmlspecialchars($selectJS).'">
+								<select name="popup_height" onchange="'.$selectJS.'">
 									<option value="0">'.$GLOBALS['LANG']->getLL('target_popUpWindow_height',1).'</option>
 									<option value="200">200</option>
 									<option value="300">300</option>
@@ -1382,8 +1385,8 @@ class tx_rtehtmlarea_browse_links {
 					if(document.ltargetform.anchor_class.value && editor.classesAnchorSetup) {
 						for (var i = editor.classesAnchorSetup.length; --i >= 0;) {
 							var anchorClass = editor.classesAnchorSetup[i];
-							if (anchorClass["name"] == document.ltargetform.anchor_class.value) {
-								if(anchorClass["titleText"] && document.ltargetform.anchor_title) document.ltargetform.anchor_title.value = anchorClass["titleText"];
+							if (anchorClass[\'name\'] == document.ltargetform.anchor_class.value) {
+								if(anchorClass[\'titleText\'] && document.ltargetform.anchor_title) document.ltargetform.anchor_title.value = anchorClass[\'titleText\'];
 								break;
 							}
 						}
@@ -1395,7 +1398,7 @@ class tx_rtehtmlarea_browse_links {
 						<tr>
 							<td>'.$GLOBALS['LANG']->getLL('anchor_class',1).':</td>
 							<td colspan="3">
-								<select name="anchor_class" onchange="'.htmlspecialchars($selectClassJS).'">
+								<select name="anchor_class" onchange="'.$selectClassJS.'">
 									' . $this->classesAnchorJSOptions[$this->act] . '
 								</select>';
 			}
@@ -1424,8 +1427,8 @@ class tx_rtehtmlarea_browse_links {
 				if(document.ltargetform.anchor_class.value && editor.classesAnchorSetup) {
 					for (var i = editor.classesAnchorSetup.length; --i >= 0;) {
 						var anchorClass = editor.classesAnchorSetup[i];
-						if (anchorClass["name"] == document.ltargetform.anchor_class.value) {
-							if(anchorClass["titleText"] && document.ltargetform.anchor_title) document.ltargetform.anchor_title.value = anchorClass["titleText"];
+						if (anchorClass[\'name\'] == document.ltargetform.anchor_class.value) {
+							if(anchorClass[\'titleText\'] && document.ltargetform.anchor_title) document.ltargetform.anchor_title.value = anchorClass[\'titleText\'];
 							break;
 						}
 
@@ -1444,7 +1447,7 @@ class tx_rtehtmlarea_browse_links {
 						<tr>
 							<td>'.$GLOBALS['LANG']->getLL('anchor_class',1).':</td>
 							<td colspan="3">
-								<select name="anchor_class" onchange="'.htmlspecialchars($selectClassJS).'">
+								<select name="anchor_class" onchange="'.$selectClassJS.'">
 									' . $this->classesAnchorJSOptions[$this->act] . '
 								</select>
 						</td>

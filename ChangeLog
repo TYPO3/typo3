@@ -1,3 +1,7 @@
+2006-02-14  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
+
+	* Changes to the htmlArea RTE extension (see details in local ChangeLog)
+
 2006-02-14  Rene Fritz  <r.fritz@colorcube.de>
 
 	* Moved t3lib/gfx/ to typo3/gfx/
