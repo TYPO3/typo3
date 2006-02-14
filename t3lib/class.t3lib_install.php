@@ -740,13 +740,13 @@ class t3lib_install {
 				$ico = '';
 				if ($iconDis)	{
 					if (stristr($string,' user_'))	{
-						$ico.= '<img src="'.$this->backPath.'t3lib/gfx/icon_warning.gif" width="18" height="16" align="top" alt="" /><strong>(USER) </strong>';
+						$ico.= '<img src="'.$this->backPath.'gfx/icon_warning.gif" width="18" height="16" align="top" alt="" /><strong>(USER) </strong>';
 					}
 					if (stristr($string,' app_'))	{
-						$ico.= '<img src="'.$this->backPath.'t3lib/gfx/icon_warning.gif" width="18" height="16" align="top" alt="" /><strong>(APP) </strong>';
+						$ico.= '<img src="'.$this->backPath.'gfx/icon_warning.gif" width="18" height="16" align="top" alt="" /><strong>(APP) </strong>';
 					}
 					if (stristr($string,' ttx_') || stristr($string,' tx_'))	{
-						$ico.= '<img src="'.$this->backPath.'t3lib/gfx/icon_warning.gif" width="18" height="16" align="top" alt="" /><strong>(EXT) </strong>';
+						$ico.= '<img src="'.$this->backPath.'gfx/icon_warning.gif" width="18" height="16" align="top" alt="" /><strong>(EXT) </strong>';
 					}
 				}
 				$out[]='

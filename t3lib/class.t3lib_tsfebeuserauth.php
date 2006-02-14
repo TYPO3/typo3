@@ -165,7 +165,7 @@ class t3lib_tsfeBeUserAuth extends t3lib_beUserAuth {
 		$header.='
 			<tr class="typo3-adminPanel-hRow" bgcolor="#9BA1A8">
 				<td colspan="4" nowrap="nowrap">'.
-					$this->extItemLink('top','<img src="t3lib/gfx/ol/'.($this->uc['TSFE_adminConfig']['display_top']?'minus':'plus').'bullet.gif" width="18" height="16" align="absmiddle" border="0" alt="" /><strong>'.$this->extFw($this->extGetLL('adminOptions')).'</strong>').
+					$this->extItemLink('top','<img src="'.TYPO3_mainDir.'gfx/ol/'.($this->uc['TSFE_adminConfig']['display_top']?'minus':'plus').'bullet.gif" width="18" height="16" align="absmiddle" border="0" alt="" /><strong>'.$this->extFw($this->extGetLL('adminOptions')).'</strong>').
 					$this->extFw(': '.$this->user['username']).'
 					<img src="clear.gif" width="40" height="1" alt="" />
 					<input type="hidden" name="TSFE_ADMIN_PANEL[display_top]" value="'.$this->uc['TSFE_adminConfig']['display_top'].'" />'.($this->extNeedUpdate?'<input type="submit" value="'.$this->extGetLL('update').'" />':'').'</td>
@@ -299,7 +299,7 @@ class t3lib_tsfeBeUserAuth extends t3lib_beUserAuth {
 			$this->extGetTreeList($GLOBALS['TSFE']->id, $depth,0,$this->getPagePermsClause(1));
 			reset($this->extPageInTreeInfo);
 			while(list(,$row)=each($this->extPageInTreeInfo))	{
-				$outTable.='<tr><td nowrap="nowrap"><img src="clear.gif" width="'.(($depth+1-$row[2])*18).'" height="1" alt="" /><img src="t3lib/gfx/i/pages.gif" width="18" height="16" align="absmiddle" border="0" alt="" />'.$this->extFw($row[1]).'</td><td><img src="clear.gif" width="10" height="1" alt="" /></td><td>'.$this->extFw($this->extGetNumberOfCachedPages($row[0])).'</td></tr>';
+				$outTable.='<tr><td nowrap="nowrap"><img src="clear.gif" width="'.(($depth+1-$row[2])*18).'" height="1" alt="" /><img src="'.TYPO3_mainDir.'gfx/i/pages.gif" width="18" height="16" align="absmiddle" border="0" alt="" />'.$this->extFw($row[1]).'</td><td><img src="clear.gif" width="10" height="1" alt="" /></td><td>'.$this->extFw($this->extGetNumberOfCachedPages($row[0])).'</td></tr>';
 			}
 			$outTable='<br /><table border="0" cellpadding="0" cellspacing="0">'.$outTable.'</table>';
 			$outTable.='<input type="submit" name="TSFE_ADMIN_PANEL[action][clearCache]" value="'.$this->extGetLL('cache_doit').'" />';
@@ -335,7 +335,7 @@ class t3lib_tsfeBeUserAuth extends t3lib_beUserAuth {
 			$this->extGetTreeList($GLOBALS['TSFE']->id, $depth,0,$this->getPagePermsClause(1));
 			reset($this->extPageInTreeInfo);
 			while(list(,$row)=each($this->extPageInTreeInfo))	{
-				$outTable.='<tr><td nowrap="nowrap"><img src="clear.gif" width="'.(($depth+1-$row[2])*18).'" height="1" alt="" /><img src="t3lib/gfx/i/pages.gif" width="18" height="16" align="absmiddle" border="0" alt="" />'.$this->extFw($row[1]).'</td><td><img src="clear.gif" width="10" height="1" alt="" /></td><td>'.$this->extFw('...').'</td></tr>';
+				$outTable.='<tr><td nowrap="nowrap"><img src="clear.gif" width="'.(($depth+1-$row[2])*18).'" height="1" alt="" /><img src="'.TYPO3_mainDir.'gfx/i/pages.gif" width="18" height="16" align="absmiddle" border="0" alt="" />'.$this->extFw($row[1]).'</td><td><img src="clear.gif" width="10" height="1" alt="" /></td><td>'.$this->extFw('...').'</td></tr>';
 			}
 			$outTable='<br /><table border="0" cellpadding="0" cellspacing="0">'.$outTable.'</table>';
 			$outTable.='<input type="submit" name="TSFE_ADMIN_PANEL[action][publish]" value="'.$this->extGetLL('publish_doit').'" />';
@@ -502,8 +502,8 @@ class t3lib_tsfeBeUserAuth extends t3lib_beUserAuth {
 	 * @see extGetItem()
 	 */
 	function extGetHead($pre)	{
-		$out.='<img src="t3lib/gfx/ol/blank.gif" width="18" height="16" align="absmiddle" border="0" alt="" />';
-		$out.='<img src="t3lib/gfx/ol/'.($this->uc['TSFE_adminConfig']['display_'.$pre]?'minus':'plus').'bullet.gif" width="18" height="16" align="absmiddle" border="0" alt="" />';
+		$out.='<img src="'.TYPO3_mainDir.'gfx/ol/blank.gif" width="18" height="16" align="absmiddle" border="0" alt="" />';
+		$out.='<img src="'.TYPO3_mainDir.'gfx/ol/'.($this->uc['TSFE_adminConfig']['display_'.$pre]?'minus':'plus').'bullet.gif" width="18" height="16" align="absmiddle" border="0" alt="" />';
 		$out.=$this->extFw($this->extGetLL($pre));
 		$out=$this->extItemLink($pre,$out);
 		return '
@@ -575,28 +575,28 @@ class t3lib_tsfeBeUserAuth extends t3lib_beUserAuth {
 		$toolBar='';
 		$id = $GLOBALS['TSFE']->id;
 		$toolBar.='<a href="'.htmlspecialchars(TYPO3_mainDir.'show_rechis.php?element='.rawurlencode('pages:'.$id).'&returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))).'#latest">'.
-					'<img src="t3lib/gfx/history2.gif" width="13" height="12" hspace="2" border="0" align="top" title="'.$this->extGetLL('edit_recordHistory').'" alt="" /></a>';
+					'<img src="'.TYPO3_mainDir.'gfx/history2.gif" width="13" height="12" hspace="2" border="0" align="top" title="'.$this->extGetLL('edit_recordHistory').'" alt="" /></a>';
 
 		if ($perms&16)	{
 			$toolBar.='<a href="'.htmlspecialchars($newContentWizScriptPath.'?id='.$id.'&returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))).'">'.
-						'<img src="t3lib/gfx/new_record.gif" width="16" height="12" hspace="1" border="0" align="top" title="'.$this->extGetLL('edit_newContentElement').'" alt="" /></a>';
+						'<img src="'.TYPO3_mainDir.'gfx/new_record.gif" width="16" height="12" hspace="1" border="0" align="top" title="'.$this->extGetLL('edit_newContentElement').'" alt="" /></a>';
 		}
 		if ($perms&2)	{
 			$toolBar.='<a href="'.htmlspecialchars(TYPO3_mainDir.'move_el.php?table=pages&uid='.$id.'&returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))).'">'.
-					'<img src="t3lib/gfx/move_page.gif" width="11" height="12" hspace="2" border="0" align="top" title="'.$this->extGetLL('edit_move_page').'" alt="" /></a>';
+					'<img src="'.TYPO3_mainDir.'gfx/move_page.gif" width="11" height="12" hspace="2" border="0" align="top" title="'.$this->extGetLL('edit_move_page').'" alt="" /></a>';
 		}
 		if ($perms&8)	{
 			$toolBar.='<a href="'.htmlspecialchars(TYPO3_mainDir.'db_new.php?id='.$id.'&pagesOnly=1&returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))).'">'.
-					'<img src="t3lib/gfx/new_page.gif" width="13" height="12" hspace="0" border="0" align="top" title="'.$this->extGetLL('edit_newPage').'" alt="" /></a>';
+					'<img src="'.TYPO3_mainDir.'gfx/new_page.gif" width="13" height="12" hspace="0" border="0" align="top" title="'.$this->extGetLL('edit_newPage').'" alt="" /></a>';
 		}
 		if ($perms&2)	{
 			$params='&edit[pages]['.$id.']=edit';
 			$toolBar.='<a href="'.htmlspecialchars(TYPO3_mainDir.'alt_doc.php?'.$params.'&noView=1&returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))).'">'.
-					'<img src="t3lib/gfx/edit2.gif" width="11" height="12" hspace="2" border="0" align="top" title="'.$this->extGetLL('edit_editPageProperties').'" alt="" /></a>';
+					'<img src="'.TYPO3_mainDir.'gfx/edit2.gif" width="11" height="12" hspace="2" border="0" align="top" title="'.$this->extGetLL('edit_editPageProperties').'" alt="" /></a>';
 		}
 		if ($this->check('modules','web_list'))	{
 			$toolBar.='<a href="'.htmlspecialchars(TYPO3_mainDir.'db_list.php?id='.$id.'&returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))).'">'.
-					'<img src="t3lib/gfx/list.gif" width="11" height="11" hspace="2" border="0" align="top" title="'.$this->extGetLL('edit_db_list').'" alt="" /></a>';
+					'<img src="'.TYPO3_mainDir.'gfx/list.gif" width="11" height="11" hspace="2" border="0" align="top" title="'.$this->extGetLL('edit_db_list').'" alt="" /></a>';
 		}
 		return $toolBar;
 	}

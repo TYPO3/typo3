@@ -999,7 +999,7 @@ class t3lib_queryGenerator	{
 	function JSbottom($formname='forms[0]')	{
 		if ($this->extJSCODE)	{
 			$out.='
-			<script language="javascript" type="text/javascript" src="'.$GLOBALS['BACK_PATH'].'t3lib/jsfunc.evalfield.js"></script>
+			<script language="javascript" type="text/javascript" src="'.$GLOBALS['BACK_PATH'].'../t3lib/jsfunc.evalfield.js"></script>
 			<script language="javascript" type="text/javascript">
 				var evalFunc = new evalFunc;
 				function typo3FormFieldSet(theField, evallist, is_in, checkbox, checkboxValue)	{

@@ -389,7 +389,7 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 				$PM = is_array($arr[$key."."]) && !$this->ext_noPMicons ? ($deeper ? "minus":"plus") : "join";
 
 				$HTML.=$depthData;
-				$theIcon='<img src="'.$GLOBALS["BACK_PATH"].'t3lib/gfx/ol/'.$PM.$BTM.'.gif" width="18" height="16" align="top" border="0" alt="" />';
+				$theIcon='<img src="'.$GLOBALS["BACK_PATH"].'gfx/ol/'.$PM.$BTM.'.gif" width="18" height="16" align="top" border="0" alt="" />';
 				if ($PM=="join")	{
 					$HTML.=$theIcon;
 				} else {
@@ -432,7 +432,7 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 				$HTML.="<br />";
 
 				if ($deeper)	{
-					$HTML.=$this->ext_getObjTree($arr[$key."."], $depth, $depthData.'<img src="'.$GLOBALS["BACK_PATH"].'t3lib/gfx/ol/'.$LN.'.gif" width="18" height="16" align="top" alt="" />', '' /* not used: $validate_info[$key] */, $arr[$key]);
+					$HTML.=$this->ext_getObjTree($arr[$key."."], $depth, $depthData.'<img src="'.$GLOBALS["BACK_PATH"].'gfx/ol/'.$LN.'.gif" width="18" height="16" align="top" alt="" />', '' /* not used: $validate_info[$key] */, $arr[$key]);
 				}
 			}
 		}
@@ -598,7 +598,7 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 				$A_B="";
 				$A_E="";
 			}
-			$HTML.=($first?'':'<IMG src="'.$GLOBALS["BACK_PATH"].'t3lib/gfx/ol/'.$PM.$BTM.'.gif" width="18" height="16" align="top" border=0>').'<IMG src="'.$GLOBALS["BACK_PATH"].$icon.'" width="18" height="16" align="top" title="'.$alttext.'">'.$A_B.t3lib_div::fixed_lgd_cs($row['title'],$GLOBALS["BE_USER"]->uc["titleLen"]).$A_E."&nbsp;&nbsp;";
+			$HTML.=($first?'':'<IMG src="'.$GLOBALS["BACK_PATH"].'gfx/ol/'.$PM.$BTM.'.gif" width="18" height="16" align="top" border=0>').'<IMG src="'.$GLOBALS["BACK_PATH"].$icon.'" width="18" height="16" align="top" title="'.$alttext.'">'.$A_B.t3lib_div::fixed_lgd_cs($row['title'],$GLOBALS["BE_USER"]->uc["titleLen"]).$A_E."&nbsp;&nbsp;";
 			$RL = $this->ext_getRootlineNumber($row['pid']);
 			$keyArray[] = '<tr>
 							<td nowrap>'.$HTML.'</td>
@@ -609,7 +609,7 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 							<td>'.($row["next"]?"&nbsp;".$row["next"]."&nbsp;&nbsp;":"").'</td>
 						</tr>';
 			if ($deeper)	{
-				$keyArray = $this->ext_getTemplateHierarchyArr($arr[$key."."], $depthData.($first?'':'<IMG src="'.$GLOBALS["BACK_PATH"].'t3lib/gfx/ol/'.$LN.'.gif" width="18" height="16" align="top">'), $keyArray);
+				$keyArray = $this->ext_getTemplateHierarchyArr($arr[$key."."], $depthData.($first?'':'<IMG src="'.$GLOBALS["BACK_PATH"].'gfx/ol/'.$LN.'.gif" width="18" height="16" align="top">'), $keyArray);
 			}
 		}
 		return $keyArray;

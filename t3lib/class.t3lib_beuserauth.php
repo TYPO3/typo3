@@ -188,7 +188,7 @@ class t3lib_beUserAuth extends t3lib_userAuthGroup {
 	function backendCheckLogin()	{
 		if (!$this->user['uid'])	{
 			if (!defined('TYPO3_PROCEED_IF_NO_USER') || !TYPO3_PROCEED_IF_NO_USER)	{
-				t3lib_BEfunc::typo3PrintError ('Login-error or session timed-out', 'No user logged in! Sorry, I can\'t proceed then!<br /><br />(You must have cookies enabled!)<br /><br />If your session has just timed-out, you may<br /><a href="'.t3lib_div::locationHeaderUrl(t3lib_div::getIndpEnv('TYPO3_SITE_URL').'typo3/index.php'.'" target="_top">click here to re-login</a>.',0));
+				t3lib_BEfunc::typo3PrintError ('Login-error or session timed-out', 'No user logged in! Sorry, I can\'t proceed then!<br /><br />(You must have cookies enabled!)<br /><br />If your session has just timed-out, you may<br /><a href="'.t3lib_div::locationHeaderUrl(t3lib_div::getIndpEnv('TYPO3_SITE_URL').TYPO3_mainDir.'index.php'.'" target="_top">click here to re-login</a>.',0));
 				exit;
 			}
 		} else {	// ...and if that's the case, call these functions

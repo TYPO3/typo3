@@ -111,9 +111,9 @@ class t3lib_timeTrack {
 	);
 	var $wrapIcon =array(
 		0 => '',
-		1 => '<img src="t3lib/gfx/icon_note.gif" width="18" height="16" align="absmiddle" alt="" />',
-		2 => '<img src="t3lib/gfx/icon_warning.gif" width="18" height="16" align="absmiddle" alt="" />',
-		3 => '<img src="t3lib/gfx/icon_fatalerror.gif" width="18" height="16" align="absmiddle" alt="" />'
+		1 => '<img src="typo3/gfx/icon_note.gif" width="18" height="16" align="absmiddle" alt="" />',
+		2 => '<img src="typo3/gfx/icon_warning.gif" width="18" height="16" align="absmiddle" alt="" />',
+		3 => '<img src="typo3/gfx/icon_fatalerror.gif" width="18" height="16" align="absmiddle" alt="" />'
 	);
 
 	var $uniqueCounter=0;
@@ -142,6 +142,13 @@ class t3lib_timeTrack {
 	 * @return	void
 	 */
 	function start()    {
+		$this->wrapIcon =array(
+			0 => '',
+			1 => '<img src="'.TYPO3_mainDir.'gfx/icon_note.gif" width="18" height="16" align="absmiddle" alt="" />',
+			2 => '<img src="'.TYPO3_mainDir.'gfx/icon_warning.gif" width="18" height="16" align="absmiddle" alt="" />',
+			3 => '<img src="'.TYPO3_mainDir.'gfx/icon_fatalerror.gif" width="18" height="16" align="absmiddle" alt="" />'
+		);
+
 		$this->starttime=0;
 		$this->starttime=$this->mtime();
 	}
@@ -459,13 +466,13 @@ class t3lib_timeTrack {
 				$LN = ($ac==$c)?'blank':'line';
 				$BTM = ($ac==$c)?'bottom':'';
 				$PM = is_array($arr[$k.'.']) ? ($deeper ? 'minus':'plus') : 'join';
-				$this->tsStackLog[$v]['icons']=$depthData.($first?'':'<img src="t3lib/gfx/ol/'.$PM.$BTM.'.gif" width="18" height="16" align="top" border="0" alt="" />');
+				$this->tsStackLog[$v]['icons']=$depthData.($first?'':'<img src="'.TYPO3_mainDir.'gfx/ol/'.$PM.$BTM.'.gif" width="18" height="16" align="top" border="0" alt="" />');
 
 				if (strlen($this->tsStackLog[$v]['content']))   {
 					$content = str_replace($this->tsStackLog[$v]['content'],$v, $content);
 				}
 				if (is_array($arr[$k.'.'])) {
-					$this->tsStackLog[$v]['content'] = $this->fixContent($arr[$k.'.'], $this->tsStackLog[$v]['content'], $depthData.($first?'':'<img src="t3lib/gfx/ol/'.$LN.'.gif" width="18" height="16" align="top" border="0" alt="" />'), 0, $v);
+					$this->tsStackLog[$v]['content'] = $this->fixContent($arr[$k.'.'], $this->tsStackLog[$v]['content'], $depthData.($first?'':'<img src="'.TYPO3_mainDir.'gfx/ol/'.$LN.'.gif" width="18" height="16" align="top" border="0" alt="" />'), 0, $v);
 				} else {
 					$this->tsStackLog[$v]['content'] = $this->fixCLen($this->tsStackLog[$v]['content'], $this->tsStackLog[$v]['value']);
 					$this->tsStackLog[$v]['subtime']='';
@@ -565,7 +572,7 @@ class t3lib_timeTrack {
 						<div align="center">
 							<table border="0" cellspacing="0" cellpadding="0" width="333" bgcolor="#ffffff">
 								<tr>
-									<td><img src="t3lib/gfx/typo3logo.gif" width="333" height="43" vspace="10" border="0" alt="" /></td>
+									<td><img src="'.TYPO3_mainDir.'gfx/typo3logo.gif" width="333" height="43" vspace="10" border="0" alt="" /></td>
 								</tr>
 								<tr>
 									<td bgcolor="black">
