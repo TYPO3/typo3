@@ -1359,34 +1359,57 @@
 			if (isset($GET_VARS['no_cache']) && $GET_VARS['no_cache'])	$this->set_no_cache();
 		}
 	}
-
-
-
+	
+	/**
+	 * Looking for a ADMCMD_prev code, looks it up if found and returns configuration data.
+	 * Background: From the backend a request to the frontend to show a page, possibly with workspace preview can be "recorded" and associated with a keyword. When the frontend is requested with this keyword the associated request parameters are restored from the database AND the backend user is loaded - only for that request.
+	 * The main point is that a special URL valid for a limited time, eg. http://localhost/typo3site/?ADMCMD_prev=035d9bf938bd23cb657735f68a8cedbf will open up for a preview that doesn't require login. Thus its useful for sending an email.
+	 * This can also be used to generate previews of hidden pages, start/endtimes, usergroups and those other settings from the Admin Panel - just not implemented yet.
+	 *
+	 * @return array 	Preview configuration array from sys_preview record.
+	 * @see t3lib_BEfunc::compilePreviewKeyword() 
+	 */
 	function ADMCMD_preview(){
 		$inputCode = t3lib_div::_GP('ADMCMD_prev');
 		
 		if ($inputCode)	{
-				// Here, look up preview code, test avaibility (valid time period)
-				// Get: Backend login status, Frontend login status, URL prefix, GET vars
-				// - Make sure a POST is not happening!
-				// - Make sure to remove fe/be cookies (temporarily)
-				// - Make sure URL matches the URL-prefix + previewCode only (no other get variables must be passed!)
-			if ($inputCode == 123)	{
-							
-					// Set GET variables:
-				$GET_VARS = '';
-				parse_str('id=1150&L=0&ADMCMD_view=1&ADMCMD_editIcons=1&ADMCMD_previewWS=8',$GET_VARS);
-				t3lib_div::_GETset($GET_VARS);
-				
-					// Return preview keyword record, because its OK.
-				return array(
-					'BEUSER_uid' => 4
-				);
-			} else die('ADMCMD command could not be executed!');			
+			
+				// Look for keyword configuration record:
+			list($previewData) = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+				'*',
+				'sys_preview',
+				'keyword='.$GLOBALS['TYPO3_DB']->fullQuoteStr($inputCode, 'sys_preview').
+					' AND endtime>'.time()
+			);
+
+				// Get: Backend login status, Frontend login status
+				// - Make sure to remove fe/be cookies (temporarily); BE already done in ADMCMD_preview_postInit()
+			if (is_array($previewData))	{
+				if (!count(t3lib_div::_POST()))	{
+					if (t3lib_div::getIndpEnv('TYPO3_SITE_URL').'?ADMCMD_prev='.$inputCode === t3lib_div::getIndpEnv('TYPO3_REQUEST_URL'))	{
+						
+							// Unserialize configuration:
+						$previewConfig = unserialize($previewData['config']);
+									
+							// Set GET variables:
+						$GET_VARS = '';
+						parse_str($previewConfig['getVars'], $GET_VARS);
+						t3lib_div::_GETset($GET_VARS);
+	
+							// Return preview keyword configuration:
+						return $previewConfig;
+					} else die(htmlspecialchars('Request URL did not match "'.t3lib_div::getIndpEnv('TYPO3_SITE_URL').'?ADMCMD_prev='.$inputCode.'"'));	// This check is to prevent people from setting additional GET vars via realurl or other URL path based ways of passing parameters.
+				} else die('POST requests are incompatible with keyword preview.');
+			} else die('ADMCMD command could not be executed! (No keyword configuration found)');			
 		}	
 	}	
 
-
+	/**
+	 * Configuration after initialization of TSFE object.
+	 * Basically this unsets the BE cookie if any and forces the BE user set according to the preview configuration.
+	 * @param	array 	Preview configuration, see ADMCMD_preview()
+	 * @see ADMCMD_preview(), index_ts.php
+	 */
 	function ADMCMD_preview_postInit($previewConfig){
 		if (is_array($previewConfig))	{
 
@@ -1394,7 +1417,7 @@
 			unset($_COOKIE['be_typo_user']);
 			$this->ADMCMD_preview_BEUSER_uid = $previewConfig['BEUSER_uid'];
 
-		} else die('Error in inputRecord.');			
+		} else die('Error in preview configuration.');			
 	}	
 
 
@@ -3406,13 +3429,17 @@ if (version == "n3") {
 
 	/**
 	 * Initialize workspace preview
-	 * STILL VERY TEMPORARY - MUST INCLUDE SECURITY of some sort.
 	 *
 	 * @return	void
 	 */
 	function workspacePreviewInit()	{
-		if ($this->beUserLogin && is_object($GLOBALS['BE_USER']) && t3lib_div::testInt(t3lib_div::_GP('ADMCMD_previewWS')))	{
-			$this->workspacePreview = intval(t3lib_div::_GP('ADMCMD_previewWS'));
+		$previewWS = t3lib_div::_GP('ADMCMD_previewWS');
+		if ($this->beUserLogin && is_object($GLOBALS['BE_USER']) && t3lib_div::testInt($previewWS))	{
+			if ($previewWS>=-1 && ($previewWS==0 || $GLOBALS['BE_USER']->checkWorkspace($previewWS)))	{	// Check Access to workspace. Live (0) is OK to preview for all.
+				$this->workspacePreview = intval($previewWS);
+			} else {
+				$this->workspacePreview = -99;	// No preview, will default to "Live" at the moment
+			}
 		}
 	}
 

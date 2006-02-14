@@ -643,7 +643,7 @@ class tx_version_cm1 extends t3lib_SCbase {
 		$WSoverview = $this->displayWorkspaceOverview();
 
 			// Buttons for publish / swap:
-		$actionLinks = '';
+		$actionLinks = '<br/>';
 		if ($GLOBALS['BE_USER']->workspace!==0)	{
 			if ($this->publishAccess)	{
 				$actionLinks.= '<input type="submit" name="_publish" value="Publish page" onclick="return confirm(\'Are you sure you want to publish all content '.($GLOBALS['BE_USER']->workspaceRec['publish_access']&1 ? 'in &quot;Publish&quot; stage ':'').'from this page?\');"/>';
@@ -655,10 +655,18 @@ class tx_version_cm1 extends t3lib_SCbase {
 			}
 		}
 		$actionLinks.= '<input type="submit" name="_" value="Refresh" />';
+		$actionLinks.= '<input type="submit" name="_previewLink" value="Preview Link" />';
 		$actionLinks.= $this->displayWorkspaceOverview_allStageCmd();
 
 		if ($actionLinks || count($errors))	{
 			$this->content.= $this->doc->section('',$actionLinks.(count($errors) ? '<h3>Errors:</h3><br/>'.implode('<br/>',$errors).'<hr/>' : ''),0,1);
+		}
+		
+		if (t3lib_div::_POST('_previewLink'))	{
+			$params = 'id='.$this->id.'&ADMCMD_view=1&ADMCMD_editIcons=1&ADMCMD_previewWS='.$GLOBALS['BE_USER']->workspace;
+			$previewUrl = t3lib_div::getIndpEnv('TYPO3_SITE_URL').'?ADMCMD_prev='.t3lib_BEfunc::compilePreviewKeyword($params, $GLOBALS['BE_USER']->user['uid']);
+			
+			$this->content.= $this->doc->section('Preview Url:','You can preview this page from the workspace using this link for the next 48 hours (does not require backend login):<br/><br/><a target="_blank" href="'.htmlspecialchars($previewUrl).'">'.$previewUrl.'</a>',0,1);
 		}
 
 			// Output overview content:

@@ -3428,92 +3428,102 @@ class t3lib_TCEmain	{
 
 						if ($this->doesRecordExist($table,$swapWith,'show') && $this->checkRecordUpdateAccess($table,$swapWith)) {
 							if (!$swapIntoWS || $this->BE_USER->workspaceSwapAccess())	{
-								if (!is_array(t3lib_BEfunc::getRecord($table,-$id,'uid')))	{
 
-										// Check if the swapWith record really IS a version of the original!
-									if ((int)$swapVersion['pid']==-1 && (int)$curVersion['pid']>=0 && !strcmp($swapVersion['t3ver_oid'],$id))	{
-										if (TRUE)	{
+									// Check if the swapWith record really IS a version of the original!
+								if ((int)$swapVersion['pid']==-1 && (int)$curVersion['pid']>=0 && !strcmp($swapVersion['t3ver_oid'],$id))	{
 
-		# Check for lock-file
-		# TODO: Check for other lock-file, save two records to lock-file.
+										// Lock file name:
+									$lockFileName = PATH_site.'typo3temp/swap_locking/'.$table.':'.$id.'.ser';
 
-												// Find fields to keep
-											$keepFields = $this->getUniqueFields($table);
-											if ($TCA[$table]['ctrl']['sortby'])	{
-												$keepFields[] = $TCA[$table]['ctrl']['sortby'];
-											}
+									if (!@is_file($lockFileName))	{
+					
+											// Write lock-file:
+										t3lib_div::writeFileToTypo3tempDir($lockFileName,serialize(array(
+											'tstamp'=>time(),
+											'user'=>$GLOBALS['BE_USER']->user['username'],
+											'curVersion'=>$curVersion,
+											'swapVersion'=>$swapVersion
+										)));
+	
+											// Find fields to keep
+										$keepFields = $this->getUniqueFields($table);
+										if ($TCA[$table]['ctrl']['sortby'])	{
+											$keepFields[] = $TCA[$table]['ctrl']['sortby'];
+										}
 
-												// Swap "keepfields"
-											foreach($keepFields as $fN)	{
-												$tmp = $swapVersion[$fN];
-												$swapVersion[$fN] = $curVersion[$fN];
-												$curVersion[$fN] = $tmp;
-											}
+											// Swap "keepfields"
+										foreach($keepFields as $fN)	{
+											$tmp = $swapVersion[$fN];
+											$swapVersion[$fN] = $curVersion[$fN];
+											$curVersion[$fN] = $tmp;
+										}
 
-												// Modify offline version to become online:
-											$tmp_wsid = $swapVersion['t3ver_wsid'];
-											unset($swapVersion['uid']);
-											$swapVersion['pid'] = intval($curVersion['pid']);	// Set pid for ONLINE
-											$swapVersion['t3ver_oid'] = intval($id);
-											$swapVersion['t3ver_wsid'] = $swapIntoWS ? intval($curVersion['t3ver_wsid']) : 0;
-											$swapVersion['t3ver_tstamp'] = time();
-											$swapVersion['t3ver_stage'] = $swapVersion['t3ver_state'] = 0;
+											// Modify offline version to become online:
+										$tmp_wsid = $swapVersion['t3ver_wsid'];
+										unset($swapVersion['uid']);
+										$swapVersion['pid'] = intval($curVersion['pid']);	// Set pid for ONLINE
+										$swapVersion['t3ver_oid'] = intval($id);
+										$swapVersion['t3ver_wsid'] = $swapIntoWS ? intval($curVersion['t3ver_wsid']) : 0;
+										$swapVersion['t3ver_tstamp'] = time();
+										$swapVersion['t3ver_stage'] = $swapVersion['t3ver_state'] = 0;
 
-												// Modify online version to become offline:
-											unset($curVersion['uid']);
-											$curVersion['pid'] = -1;	// Set pid for OFFLINE
-											$curVersion['t3ver_oid'] = intval($id);
-											$curVersion['t3ver_wsid'] = $swapIntoWS ? intval($tmp_wsid) : 0;
-											$curVersion['t3ver_tstamp'] = time();
-											$curVersion['t3ver_count'] = $curVersion['t3ver_count']+1;	// Increment lifecycle counter
-											$curVersion['t3ver_stage'] = $curVersion['t3ver_state'] = 0;
+											// Modify online version to become offline:
+										unset($curVersion['uid']);
+										$curVersion['pid'] = -1;	// Set pid for OFFLINE
+										$curVersion['t3ver_oid'] = intval($id);
+										$curVersion['t3ver_wsid'] = $swapIntoWS ? intval($tmp_wsid) : 0;
+										$curVersion['t3ver_tstamp'] = time();
+										$curVersion['t3ver_count'] = $curVersion['t3ver_count']+1;	// Increment lifecycle counter
+										$curVersion['t3ver_stage'] = $curVersion['t3ver_state'] = 0;
+									
 										if ($table==='pages') {		// Keeping the swapmode state
 												$curVersion['t3ver_swapmode'] = $swapVersion['t3ver_swapmode'];
 										}
 
-												// Execute swapping:
-											$sqlErrors = array();
-											$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table,'uid='.intval($id),$swapVersion);
-											if ($GLOBALS['TYPO3_DB']->sql_error())		{
-												$sqlErrors[] = $GLOBALS['TYPO3_DB']->sql_error();
+											// Execute swapping:
+										$sqlErrors = array();
+										$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table,'uid='.intval($id),$swapVersion);
+										if ($GLOBALS['TYPO3_DB']->sql_error())		{
+											$sqlErrors[] = $GLOBALS['TYPO3_DB']->sql_error();
+										} else {
+											$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table,'uid='.intval($swapWith),$curVersion);
+											if ($GLOBALS['TYPO3_DB']->sql_error())	{
+												$sqlErrors[]=$GLOBALS['TYPO3_DB']->sql_error();
 											} else {
-												$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table,'uid='.intval($swapWith),$curVersion);
-												if ($GLOBALS['TYPO3_DB']->sql_error())	{
-													$sqlErrors[]=$GLOBALS['TYPO3_DB']->sql_error();
-												} else {
-		# REMOVE lock record
-												}
+												unlink($lockFileName);
 											}
-
-											if (!count($sqlErrors))	{
-											// Checking for delete:
-										if ($swapVersion['t3ver_state']==2)	{
-											$this->deleteEl($table,$id,TRUE);	// Force delete
 										}
 
+										if (!count($sqlErrors))	{
+									
+												// Checking for delete:
+											if ($swapVersion['t3ver_state']==2)	{
+												$this->deleteEl($table,$id,TRUE);	// Force delete
+											}
+	
 											$this->newlog('Swapping successful for table "'.$table.'" uid '.$id.'=>'.$swapWith);
-
+	
 												// Update reference index:
 											$this->updateRefIndex($table,$id);
 											$this->updateRefIndex($table,$swapWith);
-
+	
 												// SWAPPING pids for subrecords:
 											if ($table=='pages' && $swapVersion['t3ver_swapmode']>=0)	{
-
+	
 													// Collect table names that should be copied along with the tables:
 												foreach($TCA as $tN => $tCfg)	{
 													if ($swapVersion['t3ver_swapmode']>0 || $TCA[$tN]['ctrl']['versioning_followPages'])	{	// For "Branch" publishing swap ALL, otherwise for "page" publishing, swap only "versioning_followPages" tables
 														$temporaryPid = -($id+1000000);
-
+	
 														$GLOBALS['TYPO3_DB']->exec_UPDATEquery($tN,'pid='.intval($id),array('pid'=>$temporaryPid));
 														if ($GLOBALS['TYPO3_DB']->sql_error())	$sqlErrors[]=$GLOBALS['TYPO3_DB']->sql_error();
-
+	
 														$GLOBALS['TYPO3_DB']->exec_UPDATEquery($tN,'pid='.intval($swapWith),array('pid'=>$id));
 														if ($GLOBALS['TYPO3_DB']->sql_error())	$sqlErrors[]=$GLOBALS['TYPO3_DB']->sql_error();
-
+	
 														$GLOBALS['TYPO3_DB']->exec_UPDATEquery($tN,'pid='.intval($temporaryPid),array('pid'=>$swapWith));
 														if ($GLOBALS['TYPO3_DB']->sql_error())	$sqlErrors[]=$GLOBALS['TYPO3_DB']->sql_error();
-
+	
 														if (count($sqlErrors))	{
 															$this->newlog('During Swapping: SQL errors happend: '.implode('; ',$sqlErrors),2);
 														}
@@ -3522,15 +3532,14 @@ class t3lib_TCEmain	{
 											}
 												// Clear cache:
 											$this->clear_cache($table,$id);
-
-											// Checking for "new-placeholder" and if found, delete it (BUT FIRST after swapping!):
-										if ($curVersion['t3ver_state']==1)	{
-											$this->deleteEl($table, $swapWith, TRUE, TRUE); 	// For delete + completely delete!
-										}
-											} else $this->newlog('During Swapping: SQL errors happend: '.implode('; ',$sqlErrors),2);
-										} else $this->newlog('A swapping lock file was present. Either another swap process is already running or a previous swap process failed. Ask your administrator to handle the situation.',2);
-									} else $this->newlog('In swap version, either pid was not -1 or the t3ver_oid didn\'t match the id of the online version as it must!',2);
-								} else $this->newlog('Error: A record with a negative UID existed - that indicates some inconsistency in the database from prior versioning actions!',2);
+	
+												// Checking for "new-placeholder" and if found, delete it (BUT FIRST after swapping!):
+											if ($curVersion['t3ver_state']==1)	{
+												$this->deleteEl($table, $swapWith, TRUE, TRUE); 	// For delete + completely delete!
+											}
+										} else $this->newlog('During Swapping: SQL errors happend: '.implode('; ',$sqlErrors),2);
+									} else $this->newlog('A swapping lock file was present. Either another swap process is already running or a previous swap process failed. Ask your administrator to handle the situation.',2);
+								} else $this->newlog('In swap version, either pid was not -1 or the t3ver_oid didn\'t match the id of the online version as it must!',2);
 							} else $this->newlog('Workspace #'.$swapVersion['t3ver_wsid'].' does not support swapping.',1);
 						} else $this->newlog('You cannot publish a record you do not have edit and show permissions for',1);
 					} else $this->newlog('Records in workspace #'.$swapVersion['t3ver_wsid'].' can only be published when in "Publish" stage.',1);

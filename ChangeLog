@@ -1,3 +1,7 @@
+2006-02-14  Kasper SkŒrh¿j  
+	* Fixed part II of the versioning swapping change: Now versioning is completely independent of MySQL versions and it is fully DBAL compliant: Records are swapping content rather than ids (locking file support integrated which stores swapped records in case something goes wrong - however, no tool for reverting using this lock file...)
+	* Finished version 1.0 of the ADMCMD_prev feature which allows a keyword (md5 hash) to preview pages which otherwise would require a backend login (like workspace preview). In Web>Versioning you will find an implementation of this feature which will generate links you can sent to people for previewing workspace content. The concept could be extended to set other preview flags like hidden/starttime/endtime/fe_groups etc. But this is just a simple implementation for workspaces.
+	
 2006-02-14  Wolfgang Klinger  <wk@plan2.net>
 
 	* Fixed bug #2507: Wrong where clause ('1' instead of '1=1')

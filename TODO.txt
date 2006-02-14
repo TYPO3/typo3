@@ -1,5 +1,5 @@
 *******************************************
-TODO LIST for the Core of TYPO3.
+Kaspers TODO LIST for the Core of TYPO3.
 
 Maintained by Kasper
 Do not modify without permission!
@@ -316,7 +316,7 @@ Backend preview:
 	- Finally define logging in tcemain!
 
 TCEmain commands:
-- copy:
+- copying in a workspace doesn't work exactly as it should:
 	- copying versions:
 		- with references in workspace?
 		- "Page" types?
@@ -331,23 +331,19 @@ TCEmain commands:
 	- ?
 
 Versioning API:
-!!!- (Support for) swapping using temporary file (instead of using negative ID)
 - Way to change versioning type from element to page to branch for new records?
-!!!- Lock down lifecycle=1 versions for editing (like when stages prevent editing)
-!!!- New versions can be created from archived versions (way to bring back old content)
+- Lock down lifecycle=1 versions for editing (like when stages prevent editing)
+- New versions can be created from archived versions (way to bring back old content)
 
 Check Various:
 - Auto publishing: Might not work with "Publish only "Publish" stage" because swapped elements will be in editing stage or so!
 
 Workspace Manager TODO:
-!!!- Disabling stages for a workspace (remove from interface)
+- Disabling stages for a workspace (remove from interface)
 
 Preview:
 - Dualview:
 	- Implement links in notification email + only one notification per. "instance" of TCEmain
-	- Allow preview by non-be-logins through some token-facility (links from tcemain-mails)
-		- Works for certain timespan
-		- Sets cookie? (for workspace browsing)
 
 RTEMagic images:
 - Core should support copying of RTEmagic images during copies/versions. Otherwise re-scaling of these images will affect online version! A fix should also update the lowlevel clean -up tools which currently ignores these cases.
@@ -357,16 +353,10 @@ BUGS:
 	- In draft workspace: importing a treestructure when "newPagesVersioningType" is set to "1" (new pages as "branch" versions) will only create root point and no subsequent records.
 	- Correct references for softreferences on import.
 
-
 -----LATER:
 
 - Branch versioning:
 	- Intelligent swapping of "sub-element" ids that CAN be traced back to the original? (solution to loosing anchor point and inter-version references?)
-- MySQL/DBAL:
-	- 4.0.14 fails with -1 uid! (4.0.18 is ok eg.)
-	- Correction possible:
-		-> ALTER TABLE jlajlajla AUTO_INCREMENT = 123
-	- Problems with other RDBMS because ID values cannot be changed at all!
 - Swapping consequences:
 	- UID references for such as the sys_history and sys_log table are misleading.
 	- Branchpoints being swapped will swap their UIDs just like "page" and "element" versions - but in the backend the offline UID of "branch" versions are used heavily. This means references to the branchpoint will be invalid when published.

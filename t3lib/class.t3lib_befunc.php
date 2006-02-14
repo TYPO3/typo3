@@ -2545,6 +2545,33 @@ class t3lib_BEfunc	{
 	 *******************************************/
 
 	/**
+	 * Set preview keyword, eg:
+	 * 	$previewUrl = t3lib_div::getIndpEnv('TYPO3_SITE_URL').'?ADMCMD_prev='.t3lib_BEfunc::compilePreviewKeyword('id='.$pageId.'&L='.$language.'&ADMCMD_view=1&ADMCMD_editIcons=1&ADMCMD_previewWS='.$this->workspace, $GLOBALS['BE_USER']->user['uid'], 120);	
+	 * 
+	 * todo for sys_preview: 
+	 * - Add a comment which can be shown to previewer in frontend in some way (plus maybe ability to write back, take other action?)
+	 * - Add possibility for the preview keyword to work in the backend as well: So it becomes a quick way to a certain action of sorts? 
+	 * 
+	 * @param	string	Get variables to preview, eg. 'id=1150&L=0&ADMCMD_view=1&ADMCMD_editIcons=1&ADMCMD_previewWS=8'
+	 * @param	string	32 byte MD5 hash keyword for the URL: "?ADMCMD_prev=[keyword]"
+	 */
+	function compilePreviewKeyword($getVarsStr, $beUserUid, $ttl=172800)	{
+		$field_array = array(
+			'keyword' => md5(uniqid(microtime())),
+			'tstamp' => time(),
+			'endtime' => time()+$ttl,
+			'config' => serialize(array(
+				'getVars' => $getVarsStr,
+				'BEUSER_uid' => $beUserUid
+			))
+		);
+		
+		$GLOBALS['TYPO3_DB']->exec_INSERTquery('sys_preview', $field_array);
+
+		return $field_array['keyword'];
+	}
+	
+	/**
 	 * Unlock or Lock a record from $table with $uid
 	 * If $table and $uid is not set, then all locking for the current BE_USER is removed!
 	 * Usage: 5
