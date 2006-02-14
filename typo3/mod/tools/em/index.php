@@ -1827,9 +1827,9 @@ EXTENSION KEYS:
 		$lines[]='<tr class="bgColor4"><td>Shy?</td><td>'.($extInfo['EM_CONF']['shy']?'Yes':'').'</td>'.$this->helpCol('shy').'</tr>';
 		$lines[]='<tr class="bgColor4"><td>Internal?</td><td>'.($extInfo['EM_CONF']['internal']?'Yes':'').'</td>'.$this->helpCol('internal').'</tr>';
 
-		$lines[]='<tr class="bgColor4"><td>Depends on:</td><td>'.$this->depToString($extInfo['EM_CONF']['dependencies']).'</td>'.$this->helpCol('dependencies').'</tr>';
-		$lines[]='<tr class="bgColor4"><td>Conflicts with:</td><td>'.$this->depToString($extInfo['EM_CONF']['dependencies'],'conflicts').'</td>'.$this->helpCol('dependencies').'</tr>';
-		$lines[]='<tr class="bgColor4"><td>Suggests:</td><td>'.$this->depToString($extInfo['EM_CONF']['dependencies'],'suggests').'</td>'.$this->helpCol('dependencies').'</tr>';
+		$lines[]='<tr class="bgColor4"><td>Depends on:</td><td>'.$this->depToString($extInfo['EM_CONF']['constraints']).'</td>'.$this->helpCol('dependencies').'</tr>';
+		$lines[]='<tr class="bgColor4"><td>Conflicts with:</td><td>'.$this->depToString($extInfo['EM_CONF']['constraints'],'conflicts').'</td>'.$this->helpCol('dependencies').'</tr>';
+		$lines[]='<tr class="bgColor4"><td>Suggests:</td><td>'.$this->depToString($extInfo['EM_CONF']['constraints'],'suggests').'</td>'.$this->helpCol('dependencies').'</tr>';
 		if (!$remote)	{
 			$lines[]='<tr class="bgColor4"><td>Priority:</td><td>'.$extInfo['EM_CONF']['priority'].'</td>'.$this->helpCol('priority').'</tr>';
 			$lines[]='<tr class="bgColor4"><td>Clear cache?</td><td>'.($extInfo['EM_CONF']['clearCacheOnLoad']?'Yes':'').'</td>'.$this->helpCol('clearCacheOnLoad').'</tr>';
@@ -2365,9 +2365,20 @@ EXTENSION KEYS:
 	function fixEMCONF($emConf) {
 		if(!isset($emConf['constraints'])) {
 			$emConf['constraints']['depends'] = $this->stringToDep($emConf['dependencies']);
-			$emConf['constraints']['depends']['php'] = $emConf['PHP_version'];
-			$emConf['constraints']['depends']['typo3'] = $emConf['TYPO3_version'];
+			if(strlen($emConf['PHP_version'])) {
+				$versionRange = $this->splitVersionRange($emConf['PHP_version']);
+				if(version_compare($versionRange[0],'3.0.0','<')) $versionRange[0] = '3.0.0';
+				if(version_compare($versionRange[1],'3.0.0','<')) $versionRange[1] = '';
+				$emConf['constraints']['depends']['php'] = implode('-',$versionRange);
+			}
+			if(strlen($emConf['TYPO3_version'])) {
+				$versionRange = $this->splitVersionRange($emConf['TYPO3_version']);
+				if(version_compare($versionRange[0],'3.5.0','<')) $versionRange[0] = '3.5.0';
+				if(version_compare($versionRange[1],'3.5.0','<')) $versionRange[1] = '';
+				$emConf['constraints']['depends']['typo3'] = implode('-',$versionRange);
+			}
 			$emConf['constraints']['conflicts'] = $this->stringToDep($emConf['conflicts']);
+			$emConf['constraints']['suggests'] = array();
 		} elseif (isset($emConf['constraints']) && isset($emConf['dependencies'])) {
 			$constraints = $emConf['constraints'];
 			$emConf['dependencies'] = $this->depToString($constraints);
@@ -2379,6 +2390,26 @@ EXTENSION KEYS:
 		unset($emConf['PHP_version']);
 
 		return $emConf;
+	}
+
+	/**
+	 * Splits a version range into an array.
+	 *
+	 * If a single version number is given, it is considered a minimum value.
+	 * If a dash is found, the numbers left and right are considered as minimum and maximum. Empty values are allowed.
+	 *
+	 * @param string $ver A string with a version range.
+	 * @return array
+	 */
+	function splitVersionRange($ver) {
+		$versionRange = array();
+		if(strstr($ver, '-')) $versionRange = explode('-', $ver, 2);
+		else {
+			$versionRange[0] = $ver;
+			$versionRange[1] = '';
+		}
+
+		return $versionRange;
 	}
 
 	/**
@@ -3333,33 +3364,88 @@ $EM_CONF[$_EXTKEY] = '.$this->arrayToCode($EM_CONF, 0).';
 		$conf = $instExtInfo[$extKey]['EM_CONF'];
 
 			// Check dependencies on other extensions:
-		if ($conf['dependencies'])	{
-			$dep = t3lib_div::trimExplode(',',$conf['dependencies'],1);
-
-			foreach($dep as $depK)	{
-				if (!t3lib_extMgm::isLoaded($depK))	{
-					if (!isset($instExtInfo[$depK]))	{
-						$msg = 'Extension "'.$depK.'" was not available in the system. Please import it from the TYPO3 Extension Repository.';
-					} else {
-						$msg = 'Extension "'.$depK.'" ('.$instExtInfo[$depK]['EM_CONF']['title'].') was not installed. Please install it first.';
-					}
-					$this->content.= $this->doc->section('Dependency Error',$msg,0,1,2);
-					return -1;
+		$depError = false;
+		$msg = array();
+		foreach($conf['constraints']['depends'] as $depK => $depV)	{
+			if($depK == 'php' && $depV) {
+				$versionRange = $this->splitVersionRange($depV);
+				$phpv = substr(PHP_VERSION,0,strpos(PHP_VERSION,'-')); // Linux distributors like to add suffixes, like in 5.1.2-1. Those must be ignored!
+				if($versionRange[0] && version_compare($phpv,$versionRange[0],'<')) {
+					$msg[] = 'The running PHP version ('.$phpv.') is lower than required ('.$versionRange[0].')';
+					$depError = true;
+					continue;
+				} elseif($versionRange[1] && version_compare($phpv,$versionRange[1],'>')) {
+					$msg[] = 'The running PHP version ('.$phpv.') is higher than allowed ('.$versionRange[1].')';
+					$depError = true;
+					continue;
+				}
+			} elseif($depK == 'typo3' && $depV) {
+				$versionRange = $this->splitVersionRange($depV);
+				if($versionRange[0] && version_compare(TYPO3_version,$versionRange[0],'<')) {
+					$msg[] = 'The running TYPO3 version ('.TYPO3_version.') is lower than required ('.$versionRange[0].')';
+					$depError = true;
+					continue;
+				} elseif($versionRange[1] && version_compare(TYPO3_version,$versionRange[1],'>')) {
+					$msg[] = 'The running TYPO3 version ('.TYPO3_version.') is higher than allowed ('.$versionRange[1].')';
+					$depError = true;
+					continue;
+				}
+			} elseif (!t3lib_extMgm::isLoaded($depK))	{
+				if(!isset($instExtInfo[$depK]))	{
+					$msg[] = 'Extension "'.$depK.'" was not available in the system. Please import it from the TYPO3 Extension Repository.';
+				} else {
+					$msg[] = 'Extension "'.$depK.'" ('.$instExtInfo[$depK]['EM_CONF']['title'].') was not installed. Please install it first.';
+				}
+				$depError = true;
+			} else {
+				$versionRange = $this->splitVersionRange($depV);
+				if($versionRange[0] && version_compare($instExtInfo[$depK]['EM_CONF']['version'],$versionRange[0],'<')) {
+					$msg[] = 'The running version of extension "'.$depK.'" ('.$instExtInfo[$depK]['EM_CONF']['version'].') is lower than required ('.$versionRange[0].')';
+					$depError = true;
+					continue;
+				} elseif($versionRange[1] && version_compare($instExtInfo[$depK]['EM_CONF']['version'],$versionRange[1],'>')) {
+					$msg[] = 'The running version of extension "'.$depK.'" ('.$instExtInfo[$depK]['EM_CONF']['version'].') is higher than allowed ('.$versionRange[1].')';
+					$depError = true;
+					continue;
 				}
 			}
 		}
+		if($depError) {
+			$this->content.= $this->doc->section('Dependency Error',implode('<br />',$msg),0,1,2);
+		}
 
 			// Check conflicts with other extensions:
-		if ($conf['conflicts'])	{
-			$conflict = t3lib_div::trimExplode(',',$conf['conflicts'],1);
-
-			foreach($conflict as $conflictK)	{
-				if (t3lib_extMgm::isLoaded($conflictK))	{
-					$msg = 'The extention "'.$extKey.'" and "'.$conflictK.'" ('.$instExtInfo[$conflictK]['EM_CONF']['title'].') will conflict with each other. Please remove "'.$conflictK.'" if you want to install "'.$extKey.'".';
-					$this->content.= $this->doc->section('Conflict Error',$msg,0,1,2);
-					return -1;
-				}
+		$conflictError = false;
+		$msg = array();
+		foreach($conf['constraints']['conflicts'] as $conflictK => $conflictV)	{
+			if (t3lib_extMgm::isLoaded($conflictK))	{
+				$msg[] = 'The extensions "'.$extKey.'" and "'.$conflictK.'" ('.$instExtInfo[$conflictK]['EM_CONF']['title'].') will conflict with each other. Please remove "'.$conflictK.'" if you want to install "'.$extKey.'".';
+				$conflictError = true;
 			}
+		}
+		if($conflictError) {
+			$this->content.= $this->doc->section('Conflict Error',implode('<br />',$msg),0,1,2);
+		}
+
+			// Check suggests on other extensions:
+		$suggestion = false;
+		$msg = array();
+		foreach($conf['constraints']['suggests'] as $suggestK => $suggestV)	{
+			if (!t3lib_extMgm::isLoaded($suggestK))	{
+				if (!isset($instExtInfo[$suggestK]))	{
+					$msg = 'Extension "'.$suggestK.'" was not available in the system. You may want to import it from the TYPO3 Extension Repository.';
+				} else {
+					$msg = 'Extension "'.$suggestK.'" ('.$instExtInfo[$suggestK]['EM_CONF']['title'].') was not installed. You may want to install it.';
+				}
+				$conflictError = true;
+			}
+		}
+		if($suggestion) {
+				$this->content.= $this->doc->section('Extensions suggested by extension "'.$extKey.'"',$msg,0,1,1);
+		}
+
+		if($depError || $conflictError || $suggestion) {
+			return -1;
 		}
 
 			// Get list of installed extensions and add this one.
@@ -3678,7 +3764,7 @@ $EM_CONF[$_EXTKEY] = '.$this->arrayToCode($EM_CONF, 0).';
 							<td><img src="clear.gif" width="10" height="1" alt="" /></td>
 							<td nowrap="nowrap">'.($insertCount[$table]?'Rows: '.$insertCount[$table]:'').'</td>
 							<td><img src="clear.gif" width="10" height="1" alt="" /></td>
-							<td nowrap="nowrap">'.($exist?'<img src="'.$GLOBALS['BACK_PATH'].'t3lib/gfx/icon_warning.gif" width="18" height="16" align="top" alt="" />Table exists!':'').'</td>
+							<td nowrap="nowrap">'.($exist?'<img src="'.$GLOBALS['BACK_PATH'].'gfx/icon_warning.gif" width="18" height="16" align="top" alt="" />Table exists!':'').'</td>
 							</tr>';
 					}
 					$content.= '
