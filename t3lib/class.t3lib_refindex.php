@@ -640,7 +640,7 @@ class t3lib_refindex {
 			$tableCount++;
 
 				// Traverse all non-deleted records in tables:
-			$allRecs = $TYPO3_DB->exec_SELECTgetRows('uid',$tableName,'1');	//.t3lib_BEfunc::deleteClause($tableName)
+			$allRecs = $TYPO3_DB->exec_SELECTgetRows('uid',$tableName,'1=1');	//.t3lib_BEfunc::deleteClause($tableName)
 			$uidList = array(0);
 			foreach($allRecs as $recdat)	{
 				$refIndexObj = t3lib_div::makeInstance('t3lib_refindex');

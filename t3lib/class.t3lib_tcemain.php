@@ -4473,7 +4473,7 @@ $this->log($table,$id,6,0,0,'Stage raised...',30,array('comment'=>$comment,'stag
 	function clearHistory($maxAgeSeconds=604800,$table)	{
 		$tstampLimit = $maxAgeSeconds ? time()-$maxAgeSeconds : 0;
 
-		$GLOBALS['TYPO3_DB']->exec_DELETEquery('sys_history', 'tstamp<'.intval($tstampLimit).' AND tablename="'.$table.'"');
+		$GLOBALS['TYPO3_DB']->exec_DELETEquery('sys_history', 'tstamp<'.intval($tstampLimit).' AND tablename='.$GLOBALS['TYPO3_DB']->fullQuoteStr($table, 'sys_history'));
 		}
 
 	/**

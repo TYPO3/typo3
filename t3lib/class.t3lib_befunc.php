@@ -3457,7 +3457,7 @@ class t3lib_BEfunc	{
 
 				// check if sys_refindex is empty
 			if (is_object($GLOBALS['TYPO3_DB']))	{
-				list($count) = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('count(*)','sys_refindex','1');
+				list($count) = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('count(*)','sys_refindex','1=1');
 				if (!$count['count(*)'])	{
 					$warnings[] = 'The Reference Index table is empty which is likely to be the case because you just upgraded your TYPO3 source. Please to the Tools>DB Check and update the reference index.';
 				}

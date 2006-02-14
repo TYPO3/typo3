@@ -1,3 +1,8 @@
+2006-02-14  Wolfgang Klinger  <wk@plan2.net>
+
+	* Fixed bug #2507: Wrong where clause ('1' instead of '1=1')
+	* Fixed bug #2508: t3lib/class.t3lib_tcemain.php uses hardcoded quotes
+
 2006-02-13  Rene Fritz  <r.fritz@colorcube.de>
 
 	* Install tool PHP and HTML code cleanup towards xhtml
