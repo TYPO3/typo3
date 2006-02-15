@@ -2,6 +2,7 @@
 
 	* typo3/mod/tools/em: More fixes and better error checking.
 	* typo3/sysext/adodb: Update to upstream version 4.71.
+	* t3lib/class.t3lib_tsfebeuserauth: The admin panel uses GET instead of POST now.
 
 2006-02-15  Bernhard Kraft  <kraftb@kraftb.at>
 
