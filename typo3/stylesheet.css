@@ -440,7 +440,7 @@ TABLE#typo3-permissionMatrix TD.bgColor2 { font-weight: bold; padding-left: 10px
 #typo3-mod-help-about-index-php-outer { margin: 0 auto; width: 333px; }
 #typo3-mod-help-about-index-php-inner { margin: 0 auto; border: 1px solid black; background: #EAEAEA; padding: 5px; }
 #typo3-mod-help-about-index-php-inner h2 { margin-top: 0; }
-#typo3-mod-help-about-index-php-inner h3 { margin-top: 10; margin-bottom: 10; background-color: transparent; font-size: 14px; text-align: center; }
+#typo3-mod-help-about-index-php-inner h3 { margin-top: 10px; margin-bottom: 10px; background-color: transparent; font-size: 14px; text-align: center; }
 #typo3-mod-help-about-index-php-inner a { color: black; }
 #typo3-mod-help-about-index-php-inner a:hover { text-decoration: none; }
 
@@ -512,8 +512,8 @@ TABLE.warningbox TD { padding: 20px 20px 20px 20px; font-weight: bold; }
 .nobr {white-space: nowrap;}
 .diff-r {color: red;}
 .diff-g {color: green;}
-DIV.diff-r {background-color: red; color:black; padding: 3 3 3 3;}
-DIV.diff-g {background-color: green; color:black; padding: 3 3 3 3;}
+DIV.diff-r {background-color: red; color:black; padding: 3px 3px 3px 3px;}
+DIV.diff-g {background-color: green; color:black; padding: 3px 3px 3px 3px;}
 IMG.absmiddle { vertical-align: middle; }
 TEXTAREA.fixed-font { font-family: monospace; font-size: 11px; }
 
