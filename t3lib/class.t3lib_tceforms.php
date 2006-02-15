@@ -224,6 +224,7 @@ class t3lib_TCEforms	{
 	var $clipObj=FALSE;					// Set to initialized clipboard object; Then the element browser will offer a link to paste in records from clipboard.
 	var $enableClickMenu=FALSE;			// Enable click menu on reference icons.
 	var $enableTabMenu = FALSE;			// Enable Tab Menus. If set to true, the JavaScript content from template::getDynTabMenuJScode() must be included in the document.
+	var $renderReadonly = FALSE; 		// When enabled all fields are rendered non-editable.
 
 	var $form_rowsToStylewidth = 9.58;	// Form field width compensation: Factor from NN4 form field widths to style-aware browsers (like NN6+ and MSIE, with the $CLIENT[FORMSTYLE] value set)
 	var $form_largeComp = 1.33;			// Form field width compensation: Compensation for large documents, doc-tab (editing)
@@ -940,10 +941,29 @@ class t3lib_TCEforms	{
 		// typo3FormFieldGet(theField, evallist, is_in, checkbox, checkboxValue, checkbox_off)
 
 		$config = $PA['fieldConf']['config'];
+
 #		$specConf = $this->getSpecConfForField($table,$row,$field);
 		$specConf = $this->getSpecConfFromString($PA['extra'], $PA['fieldConf']['defaultExtras']);
 		$size = t3lib_div::intInRange($config['size']?$config['size']:30,5,$this->maxInputWidth);
 		$evalList = t3lib_div::trimExplode(',',$config['eval'],1);
+
+
+		if($this->renderReadonly || $config['readonly'])  {
+			$itemFormElValue = $PA['itemFormElValue'];
+			if (in_array('date',$evalList))	{
+				$config['format'] = 'date';
+			} elseif (in_array('date',$evalList))	{
+				$config['format'] = 'date';
+			} elseif (in_array('datetime',$evalList))	{
+				$config['format'] = 'datetime';
+			} elseif (in_array('time',$evalList))	{
+				$config['format'] = 'time';
+			}
+			if (in_array('password',$evalList))	{
+				$itemFormElValue = $itemFormElValue ? '*********' : '';
+			}
+			return $this->getSingleField_typeNone_render($config, $itemFormElValue);
+		}
 
 		if (in_array('required',$evalList))	{
 			$this->requiredFields[$table.'_'.$row['uid'].'_'.$field]=$PA['itemFormElName'];
@@ -1001,6 +1021,10 @@ class t3lib_TCEforms	{
 
 			// Init config:
 		$config = $PA['fieldConf']['config'];
+
+		if($this->renderReadonly || $config['readonly'])  {
+			return $this->getSingleField_typeNone_render($config, $PA['itemFormElValue']);
+		}
 
 			// Setting columns number:
 		$cols = t3lib_div::intInRange($config['cols'] ? $config['cols'] : 30, 5, $this->maxTextareaWidth);
@@ -1108,6 +1132,11 @@ class t3lib_TCEforms	{
 	function getSingleField_typeCheck($table,$field,$row,&$PA)	{
 		$config = $PA['fieldConf']['config'];
 
+		$disabled = '';
+		if($this->renderReadonly || $config['readonly'])  {
+			$disabled = ' disabled="disabled"';
+		}
+
 			// Traversing the array of items:
 		$selItems = $this->initItemArray($PA['fieldConf']);
 		if ($config['itemsProcFunc']) $selItems = $this->procItems($selItems,$PA['fieldTSConfig']['itemsProcFunc.'],$config,$table,$row,$field);
@@ -1126,7 +1155,7 @@ class t3lib_TCEforms	{
 				$cBP = $this->checkBoxParams($PA['itemFormElName'],$thisValue,$c,count($selItems),implode('',$PA['fieldChangeFunc']));
 				$cBName = $PA['itemFormElName'].'_'.$c;
 				$item.= '<td nowrap="nowrap">'.
-						'<input type="checkbox"'.$this->insertDefStyle('check').' value="1" name="'.$cBName.'"'.$cBP.' />'.
+						'<input type="checkbox"'.$this->insertDefStyle('check').' value="1" name="'.$cBName.'"'.$cBP.$disabled.' />'.
 						$this->wrapLabels(htmlspecialchars($p[0]).'&nbsp;').
 						'</td>';
 				if(($c%$cols)+1==$cols)	{$item.='</tr>';}
@@ -1145,11 +1174,13 @@ class t3lib_TCEforms	{
 				$cBP = $this->checkBoxParams($PA['itemFormElName'],$thisValue,$c,count($selItems),implode('',$PA['fieldChangeFunc']));
 				$cBName = $PA['itemFormElName'].'_'.$c;
 				$item.= ($c>0?'<br />':'').
-						'<input type="checkbox"'.$this->insertDefStyle('check').' value="1" name="'.$cBName.'"'.$cBP.$PA['onFocus'].' />'.
+						'<input type="checkbox"'.$this->insertDefStyle('check').' value="1" name="'.$cBName.'"'.$cBP.$PA['onFocus'].$disabled.' />'.
 						htmlspecialchars($p[0]);
 			}
 		}
-		$item.= '<input type="hidden" name="'.$PA['itemFormElName'].'" value="'.htmlspecialchars($thisValue).'" />';
+		if (!$disabled) {
+			$item.= '<input type="hidden" name="'.$PA['itemFormElName'].'" value="'.htmlspecialchars($thisValue).'" />';
+		}
 
 		return $item;
 	}
@@ -1167,6 +1198,11 @@ class t3lib_TCEforms	{
 	function getSingleField_typeRadio($table,$field,$row,&$PA)	{
 		$config = $PA['fieldConf']['config'];
 
+		$disabled = '';
+		if($this->renderReadonly || $config['readonly'])  {
+			$disabled = ' disabled="disabled"';
+		}
+
 			// Get items for the array:
 		$selItems = $this->initItemArray($PA['fieldConf']);
 		if ($config['itemsProcFunc']) $selItems = $this->procItems($selItems,$PA['fieldTSConfig']['itemsProcFunc.'],$config,$table,$row,$field);
@@ -1176,7 +1212,7 @@ class t3lib_TCEforms	{
 			$p = $selItems[$c];
 			$rOnClick = implode('',$PA['fieldChangeFunc']);
 			$rChecked = (!strcmp($p[1],$PA['itemFormElValue'])?' checked="checked"':'');
-			$item.= '<input type="radio"'.$this->insertDefStyle('radio').' name="'.$PA['itemFormElName'].'" value="'.htmlspecialchars($p[1]).'" onclick="'.htmlspecialchars($rOnClick).'"'.$rChecked.$PA['onFocus'].' />'.
+			$item.= '<input type="radio"'.$this->insertDefStyle('radio').' name="'.$PA['itemFormElName'].'" value="'.htmlspecialchars($p[1]).'" onclick="'.htmlspecialchars($rOnClick).'"'.$rChecked.$PA['onFocus'].$disabled.' />'.
 					htmlspecialchars($p[0]).
 					'<br />';
 		}
@@ -1199,6 +1235,11 @@ class t3lib_TCEforms	{
 
 			// Field configuration from TCA:
 		$config = $PA['fieldConf']['config'];
+
+		$disabled = '';
+		if($this->renderReadonly || $config['readonly'])  {
+			$disabled = ' disabled="disabled"';
+		}
 
 			// "Extra" configuration; Returns configuration for the field based on settings found in the "types" fieldlist. See http://typo3.org/documentation/document-library/doc_core_api/Wizards_Configuratio/.
 		$specConf = $this->getSpecConfFromString($PA['extra'], $PA['fieldConf']['defaultExtras']);
@@ -1247,8 +1288,10 @@ class t3lib_TCEforms	{
 		}
 
 			// Wizards:
-		$altItem = '<input type="hidden" name="'.$PA['itemFormElName'].'" value="'.htmlspecialchars($PA['itemFormElValue']).'" />';
-		$item = $this->renderWizards(array($item,$altItem),$config['wizards'],$table,$row,$field,$PA,$PA['itemFormElName'],$specConf);
+		if (!$disabled) {
+			$altItem = '<input type="hidden" name="'.$PA['itemFormElName'].'" value="'.htmlspecialchars($PA['itemFormElValue']).'" />';
+			$item = $this->renderWizards(array($item,$altItem),$config['wizards'],$table,$row,$field,$PA,$PA['itemFormElName'],$specConf);
+		}
 
 		return $item;
 	}
@@ -1277,6 +1320,12 @@ class t3lib_TCEforms	{
 		$selicons = array();
 		$onlySelectedIconShown = 0;
 		$size = intval($config['size']);
+
+		$disabled = '';
+		if($this->renderReadonly || $config['readonly'])  {
+			$disabled = ' disabled="disabled"';
+			$onlySelectedIconShown = 1;
+		}
 
 			// Icon configuration:
 		if ($config['suppress_icons']=='IF_VALUE_FALSE')	{
@@ -1329,12 +1378,14 @@ class t3lib_TCEforms	{
 
 			// Create item form fields:
 		$sOnChange = 'if (this.options[this.selectedIndex].value==\'--div--\') {this.selectedIndex='.$sI.';} '.implode('',$PA['fieldChangeFunc']);
-		$item.= '<input type="hidden" name="'.$PA['itemFormElName'].'_selIconVal" value="'.htmlspecialchars($sI).'" />';	// MUST be inserted before the selector - else is the value of the hiddenfield here mysteriously submitted...
+		if(!$disabled) {
+			$item.= '<input type="hidden" name="'.$PA['itemFormElName'].'_selIconVal" value="'.htmlspecialchars($sI).'" />';	// MUST be inserted before the selector - else is the value of the hiddenfield here mysteriously submitted...
+		}
 		$item.= '<select name="'.$PA['itemFormElName'].'"'.
 					$this->insertDefStyle('select').
 					($size?' size="'.$size.'"':'').
 					' onchange="'.htmlspecialchars($sOnChange).'"'.
-					$PA['onFocus'].'>';
+					$PA['onFocus'].$disabled.'>';
 		$item.= implode('',$opt);
 		$item.= '</select>';
 
@@ -1381,69 +1432,76 @@ class t3lib_TCEforms	{
 			// Get values in an array (and make unique, which is fine because there can be no duplicates anyway):
 		$itemArray = array_flip($this->extractValuesOnlyFromValueLabelList($PA['itemFormElValue']));
 
-			// Traverse the Array of selector box items:
-		$tRows = array();
-		$sOnChange = implode('',$PA['fieldChangeFunc']);
-		$c=0;
-		$setAll = array();	// Used to accumulate the JS needed to restore the original selection.
-		foreach($selItems as $p)	{
-				// Non-selectable element:
-			if (!strcmp($p[1],'--div--'))	{
-				if (count($setAll))	{
-						$tRows[] = '
-							<tr>
-								<td colspan="2">'.
-								'<a href="#" onclick="'.htmlspecialchars(implode('',$setAll).' return false;').'">'.
-								htmlspecialchars($this->getLL('l_setAllCheckboxes')).
-								'</a></td>
-							</tr>';
-						$setAll = array();
-				}
-
-				$tRows[] = '
-					<tr class="c-header">
-						<td colspan="2">'.htmlspecialchars($p[0]).'</td>
-					</tr>';
-			} else {
-					// Selected or not by default:
-				$sM = '';
-				if (isset($itemArray[$p[1]]))	{
-					$sM = ' checked="checked"';
-					unset($itemArray[$p[1]]);
-				}
-
-					// Icon:
-				$selIconFile = '';
-				if ($p[2])	{
-					list($selIconFile,$selIconInfo) = $this->getIcon($p[2]);
-				}
-
-					// Compile row:
-				$onClickCell = $this->elName($PA['itemFormElName'].'['.$c.']').'.checked=!'.$this->elName($PA['itemFormElName'].'['.$c.']').'.checked;';
-				$onClick = 'this.attributes.getNamedItem("class").nodeValue = '.$this->elName($PA['itemFormElName'].'['.$c.']').'.checked ? "c-selectedItem" : "";';
-				$setAll[] = $this->elName($PA['itemFormElName'].'['.$c.']').'.checked=1;';
-				$tRows[] = '
-					<tr class="'.($sM ? 'c-selectedItem' : '').'" onclick="'.htmlspecialchars($onClick).'" style="cursor: pointer;">
-						<td><input type="checkbox" name="'.htmlspecialchars($PA['itemFormElName'].'['.$c.']').'" value="'.htmlspecialchars($p[1]).'"'.$sM.' onclick="'.htmlspecialchars($sOnChange).'"'.$PA['onFocus'].' /></td>
-						<td class="c-labelCell" onclick="'.htmlspecialchars($onClickCell).'">'.
-							($selIconFile ? '<img src="'.$selIconFile.'" '.$selIconInfo[3].' vspace="2" border="0" class="absmiddle" style="margin-right: 4px;" alt="" />' : '').
-							t3lib_div::deHSCentities(htmlspecialchars($p[0])).
-							(strcmp($p[3],'') ? '<br/><p class="c-descr">'.nl2br(trim(htmlspecialchars($p[3]))).'</p>' : '').
-							'</td>
-					</tr>';
-				$c++;
-			}
+		$disabled = '';
+		if($this->renderReadonly || $config['readonly'])  {
+			$disabled = ' disabled="disabled"';
 		}
 
-			// Remaining checkboxes will get their set-all link:
-		if (count($setAll))	{
-				$tRows[] = '
-					<tr>
-						<td colspan="2">'.
-						'<a href="#" onclick="'.htmlspecialchars(implode('',$setAll).' return false;').'">'.
-						htmlspecialchars($this->getLL('l_setAllCheckboxes')).
-						'</a></td>
-					</tr>';
+			// Traverse the Array of selector box items:
+		$tRows = array();
+		$c=0;
+		if (!$disabled) {
+			$sOnChange = implode('',$PA['fieldChangeFunc']);
+			$setAll = array();	// Used to accumulate the JS needed to restore the original selection.
+			foreach($selItems as $p)	{
+					// Non-selectable element:
+				if (!strcmp($p[1],'--div--'))	{
+					if (count($setAll))	{
+							$tRows[] = '
+								<tr>
+									<td colspan="2">'.
+									'<a href="#" onclick="'.htmlspecialchars(implode('',$setAll).' return false;').'">'.
+									htmlspecialchars($this->getLL('l_setAllCheckboxes')).
+									'</a></td>
+								</tr>';
+							$setAll = array();
+					}
+
+					$tRows[] = '
+						<tr class="c-header">
+							<td colspan="2">'.htmlspecialchars($p[0]).'</td>
+						</tr>';
+				} else {
+						// Selected or not by default:
+					$sM = '';
+					if (isset($itemArray[$p[1]]))	{
+						$sM = ' checked="checked"';
+						unset($itemArray[$p[1]]);
+					}
+
+						// Icon:
+					$selIconFile = '';
+					if ($p[2])	{
+						list($selIconFile,$selIconInfo) = $this->getIcon($p[2]);
+					}
+
+						// Compile row:
+					$onClickCell = $this->elName($PA['itemFormElName'].'['.$c.']').'.checked=!'.$this->elName($PA['itemFormElName'].'['.$c.']').'.checked;';
+					$onClick = 'this.attributes.getNamedItem("class").nodeValue = '.$this->elName($PA['itemFormElName'].'['.$c.']').'.checked ? "c-selectedItem" : "";';
+					$setAll[] = $this->elName($PA['itemFormElName'].'['.$c.']').'.checked=1;';
+					$tRows[] = '
+						<tr class="'.($sM ? 'c-selectedItem' : '').'" onclick="'.htmlspecialchars($onClick).'" style="cursor: pointer;">
+							<td><input type="checkbox" name="'.htmlspecialchars($PA['itemFormElName'].'['.$c.']').'" value="'.htmlspecialchars($p[1]).'"'.$sM.' onclick="'.htmlspecialchars($sOnChange).'"'.$PA['onFocus'].' /></td>
+							<td class="c-labelCell" onclick="'.htmlspecialchars($onClickCell).'">'.
+								($selIconFile ? '<img src="'.$selIconFile.'" '.$selIconInfo[3].' vspace="2" border="0" class="absmiddle" style="margin-right: 4px;" alt="" />' : '').
+								t3lib_div::deHSCentities(htmlspecialchars($p[0])).
+								(strcmp($p[3],'') ? '<br/><p class="c-descr">'.nl2br(trim(htmlspecialchars($p[3]))).'</p>' : '').
+								'</td>
+						</tr>';
+					$c++;
+				}
+			}
+
+				// Remaining checkboxes will get their set-all link:
+			if (count($setAll))	{
+					$tRows[] = '
+						<tr>
+							<td colspan="2">'.
+							'<a href="#" onclick="'.htmlspecialchars(implode('',$setAll).' return false;').'">'.
+							htmlspecialchars($this->getLL('l_setAllCheckboxes')).
+							'</a></td>
+						</tr>';
+			}
 		}
 
 			// Remaining values (invalid):
@@ -1452,7 +1510,7 @@ class t3lib_TCEforms	{
 					// Compile <checkboxes> tag:
 				array_unshift($tRows,'
 						<tr class="c-invalidItem">
-							<td><input type="checkbox" name="'.htmlspecialchars($PA['itemFormElName'].'['.$c.']').'" value="'.htmlspecialchars($theNoMatchValue).'" checked="checked" onclick="'.htmlspecialchars($sOnChange).'"'.$PA['onFocus'].' /></td>
+							<td><input type="checkbox" name="'.htmlspecialchars($PA['itemFormElName'].'['.$c.']').'" value="'.htmlspecialchars($theNoMatchValue).'" checked="checked" onclick="'.htmlspecialchars($sOnChange).'"'.$PA['onFocus'].$disabled.' /></td>
 							<td class="c-labelCell">'.
 								t3lib_div::deHSCentities(htmlspecialchars(@sprintf($nMV_label, $theNoMatchValue))).
 								'</td>
@@ -1492,6 +1550,11 @@ class t3lib_TCEforms	{
 
 			// Get values in an array (and make unique, which is fine because there can be no duplicates anyway):
 		$itemArray = array_flip($this->extractValuesOnlyFromValueLabelList($PA['itemFormElValue']));
+
+		$disabled = '';
+		if($this->renderReadonly || $config['readonly'])  {
+			$disabled = ' disabled="disabled"';
+		}
 
 			// Traverse the Array of selector box items:
 		$opt = array();
@@ -1544,14 +1607,17 @@ class t3lib_TCEforms	{
 						($size ? ' size="'.$size.'"' : '').
 						' multiple="multiple" onchange="'.htmlspecialchars($sOnChange).'"'.
 						$PA['onFocus'].
-						$selector_itemListStyle.'>
+						$selector_itemListStyle.
+						$disabled.'>
 						'.
 					implode('
 						',$opt).'
 					</select>';
 
 			// Add an empty hidden field which will send a blank value if all items are unselected.
-		$item.='<input type="hidden" name="'.htmlspecialchars($PA['itemFormElName']).'" value="" />';
+		if (!$disabled) {
+			$item.='<input type="hidden" name="'.htmlspecialchars($PA['itemFormElName']).'" value="" />';
+		}
 
 			// Put it all into a table:
 		$item.= '
@@ -1592,8 +1658,15 @@ class t3lib_TCEforms	{
 	 */
 	function getSingleField_typeSelect_multiple($table,$field,$row,&$PA,$config,$selItems,$nMV_label)	{
 
+		$disabled = '';
+		if($this->renderReadonly || $config['readonly'])  {
+			$disabled = ' disabled="disabled"';
+		}
+
 			// Setting this hidden field (as a flag that JavaScript can read out)
-		$item.= '<input type="hidden" name="'.$PA['itemFormElName'].'_mul" value="'.($config['multiple']?1:0).'" />';
+		if (!$disabled) {
+			$item.= '<input type="hidden" name="'.$PA['itemFormElName'].'_mul" value="'.($config['multiple']?1:0).'" />';
+		}
 
 			// Set max and min items:
 		$maxitems = t3lib_div::intInRange($config['maxitems'],0);
@@ -1619,34 +1692,37 @@ class t3lib_TCEforms	{
 			}
 			$itemArray[$tk] = implode('|',$tvP);
 		}
+		$itemsToSelect = '';
 
-			// Create option tags:
-		$opt = array();
-		$styleAttrValue = '';
-		foreach($selItems as $p)	{
-			if ($config['iconsInOptionTags'])	{
-				$styleAttrValue = $this->optionTagStyle($p[2]);
+		if(!$disabled) {
+				// Create option tags:
+			$opt = array();
+			$styleAttrValue = '';
+			foreach($selItems as $p)	{
+				if ($config['iconsInOptionTags'])	{
+					$styleAttrValue = $this->optionTagStyle($p[2]);
+				}
+				$opt[]= '<option value="'.htmlspecialchars($p[1]).'"'.
+								($styleAttrValue ? ' style="'.htmlspecialchars($styleAttrValue).'"' : '').
+								'>'.htmlspecialchars($p[0]).'</option>';
 			}
-			$opt[]= '<option value="'.htmlspecialchars($p[1]).'"'.
-							($styleAttrValue ? ' style="'.htmlspecialchars($styleAttrValue).'"' : '').
-							'>'.htmlspecialchars($p[0]).'</option>';
-		}
 
-			// Put together the selector box:
-		$selector_itemListStyle = isset($config['itemListStyle']) ? ' style="'.htmlspecialchars($config['itemListStyle']).'"' : ' style="'.$this->defaultMultipleSelectorStyle.'"';
-		$size = intval($config['size']);
-		$size = $config['autoSizeMax'] ? t3lib_div::intInRange(count($itemArray)+1,t3lib_div::intInRange($size,1),$config['autoSizeMax']) : $size;
-		$sOnChange = 'setFormValueFromBrowseWin(\''.$PA['itemFormElName'].'\',this.options[this.selectedIndex].value,this.options[this.selectedIndex].text); '.implode('',$PA['fieldChangeFunc']);
-		$itemsToSelect = '
-			<select name="'.$PA['itemFormElName'].'_sel"'.
-						$this->insertDefStyle('select').
-						($size ? ' size="'.$size.'"' : '').
-						' onchange="'.htmlspecialchars($sOnChange).'"'.
-						$PA['onFocus'].
-						$selector_itemListStyle.'>
-				'.implode('
-				',$opt).'
-			</select>';
+				// Put together the selector box:
+			$selector_itemListStyle = isset($config['itemListStyle']) ? ' style="'.htmlspecialchars($config['itemListStyle']).'"' : ' style="'.$this->defaultMultipleSelectorStyle.'"';
+			$size = intval($config['size']);
+			$size = $config['autoSizeMax'] ? t3lib_div::intInRange(count($itemArray)+1,t3lib_div::intInRange($size,1),$config['autoSizeMax']) : $size;
+			$sOnChange = 'setFormValueFromBrowseWin(\''.$PA['itemFormElName'].'\',this.options[this.selectedIndex].value,this.options[this.selectedIndex].text); '.implode('',$PA['fieldChangeFunc']);
+			$itemsToSelect = '
+				<select name="'.$PA['itemFormElName'].'_sel"'.
+							$this->insertDefStyle('select').
+							($size ? ' size="'.$size.'"' : '').
+							' onchange="'.htmlspecialchars($sOnChange).'"'.
+							$PA['onFocus'].
+							$selector_itemListStyle.'>
+					'.implode('
+					',$opt).'
+				</select>';
+		}
 
 			// Pass to "dbFileIcons" function:
 		$params = array(
@@ -1661,7 +1737,8 @@ class t3lib_TCEforms	{
 				'items' => $this->getLL('l_items').':<br />'
 			),
 			'noBrowser' => 1,
-			'thumbnails' => $itemsToSelect
+			'thumbnails' => $itemsToSelect,
+			'readonly' => $disabled
 		);
 		$item.= $this->dbFileIcons($PA['itemFormElName'],'','',$itemArray,'',$params,$PA['onFocus']);
 
@@ -1690,7 +1767,12 @@ class t3lib_TCEforms	{
 		$allowed = $config['allowed'];
 		$disallowed = $config['disallowed'];
 
-		$item.= '<input type="hidden" name="'.$PA['itemFormElName'].'_mul" value="'.($config['multiple']?1:0).'" />';
+		$disabled = '';
+		if($this->renderReadonly || $config['readonly'])  {
+			$disabled = ' disabled="disabled"';
+		}
+
+		$item.= '<input type="hidden" name="'.$PA['itemFormElName'].'_mul" value="'.($config['multiple']?1:0).'"'.$disabled.' />';
 		$this->requiredElements[$PA['itemFormElName']] = array($minitems,$maxitems,'imgName'=>$table.'_'.$row['uid'].'_'.$field);
 		$info='';
 
@@ -1754,12 +1836,15 @@ class t3lib_TCEforms	{
 					'maxitems' => $maxitems,
 					'style' => isset($config['selectedListStyle']) ? ' style="'.htmlspecialchars($config['selectedListStyle']).'"' : ' style="'.$this->defaultMultipleSelectorStyle.'"',
 					'info' => $info,
-					'thumbnails' => $thumbsnail
+					'thumbnails' => $thumbsnail,
+					'readonly' => $disabled
 				);
 				$item.= $this->dbFileIcons($PA['itemFormElName'],'file',implode(',',$tempFT),$itemArray,'',$params,$PA['onFocus']);
 
-					// Adding the upload field:
-				if ($this->edit_docModuleUpload)	$item.='<input type="file" name="'.$PA['itemFormElName_file'].'"'.$this->formWidth().' size="60" />';
+				if(!$disabled) {
+						// Adding the upload field:
+					if ($this->edit_docModuleUpload)	$item.='<input type="file" name="'.$PA['itemFormElName_file'].'"'.$this->formWidth().' size="60" />';
+				}
 			break;
 			case 'db':	// If the element is of the internal type "db":
 
@@ -1790,7 +1875,7 @@ class t3lib_TCEforms	{
 					$recordParts = explode('|',$dbRead);
 					list($this_table,$this_uid) = t3lib_BEfunc::splitTable_Uid($recordParts[0]);
 					$itemArray[] = array('table'=>$this_table, 'id'=>$this_uid);
-					if ($show_thumbs)	{
+					if (!$disabled && $show_thumbs)	{
 						$rr = t3lib_BEfunc::getRecordWSOL($this_table,$this_uid);
 						$imgs[] = '<span class="nobr">'.
 								$this->getClickMenu(t3lib_iconWorks::getIconImage($this_table,$rr,$this->backPath,'align="top" title="'.htmlspecialchars(t3lib_BEfunc::getRecordPath($rr['pid'],$perms_clause,15)).' [UID: '.$rr['uid'].']"'),$this_table, $this_uid).
@@ -1800,7 +1885,7 @@ class t3lib_TCEforms	{
 					}
 				}
 				$thumbsnail='';
-				if ($show_thumbs)	{
+				if (!$disabled && $show_thumbs)	{
 					$thumbsnail = implode('<br />',$imgs);
 				}
 
@@ -1812,15 +1897,19 @@ class t3lib_TCEforms	{
 					'maxitems' => $maxitems,
 					'style' => isset($config['selectedListStyle']) ? ' style="'.htmlspecialchars($config['selectedListStyle']).'"' : ' style="'.$this->defaultMultipleSelectorStyle.'"',
 					'info' => $info,
-					'thumbnails' => $thumbsnail
+					'thumbnails' => $thumbsnail,
+					'readonly' => $disabled
 				);
 				$item.= $this->dbFileIcons($PA['itemFormElName'],'db',implode(',',$tempFT),$itemArray,'',$params,$PA['onFocus']);
+
 			break;
 		}
 
 			// Wizards:
 		$altItem = '<input type="hidden" name="'.$PA['itemFormElName'].'" value="'.htmlspecialchars($PA['itemFormElValue']).'" />';
-		$item = $this->renderWizards(array($item,$altItem),$config['wizards'],$table,$row,$field,$PA,$PA['itemFormElName'],$specConf);
+		if (!$disabled) {
+			$item = $this->renderWizards(array($item,$altItem),$config['wizards'],$table,$row,$field,$PA,$PA['itemFormElName'],$specConf);
+		}
 
 		return $item;
 	}
@@ -1843,7 +1932,6 @@ class t3lib_TCEforms	{
 		return $this->getSingleField_typeNone_render($config,$itemValue);
 	}
 
-
 	/**
 	 * HTML rendering of a value which is not editable.
 	 *
@@ -1854,7 +1942,7 @@ class t3lib_TCEforms	{
 	 */
 	function getSingleField_typeNone_render($config,$itemValue)	{
 
-			// is colorScheme[0] the right value?
+				// is colorScheme[0] the right value?
 		$divStyle = 'border:solid 1px '.t3lib_div::modifyHTMLColorAll($this->colorScheme[0],-30).';'.$this->defStyle.$this->formElStyle('none').' background-color: '.$this->colorScheme[0].'; padding-left:1px;color:#555;';
 
 		if ($config['format'])	{
@@ -2774,6 +2862,12 @@ class t3lib_TCEforms	{
 	 */
 	function dbFileIcons($fName,$mode,$allowed,$itemArray,$selector='',$params=array(),$onFocus='')	{
 
+
+		$disabled = '';
+		if($this->renderReadonly || $params['readonly'])  {
+			$disabled = ' disabled="disabled"';
+		}
+
 			// Sets a flag which means some JavaScript is included on the page to support this element.
 		$this->printNeededJS['dbFileIcons']=1;
 
@@ -2819,7 +2913,7 @@ class t3lib_TCEforms	{
 			// Create selector box of the options
 		$sSize = $params['autoSizeMax'] ? t3lib_div::intInRange($itemArrayC+1,t3lib_div::intInRange($params['size'],1),$params['autoSizeMax']) : $params['size'];
 		if (!$selector)	{
-			$selector = '<select size="'.$sSize.'"'.$this->insertDefStyle('group').' multiple="multiple" name="'.$fName.'_list" '.$onFocus.$params['style'].'>'.implode('',$opt).'</select>';
+			$selector = '<select size="'.$sSize.'"'.$this->insertDefStyle('group').' multiple="multiple" name="'.$fName.'_list" '.$onFocus.$params['style'].$disabled.'>'.implode('',$opt).'</select>';
 		}
 
 
@@ -2827,57 +2921,58 @@ class t3lib_TCEforms	{
 			'L' => array(),
 			'R' => array(),
 		);
-		if (!$params['noBrowser'])	{
-			$aOnClick='setFormValueOpenBrowser(\''.$mode.'\',\''.($fName.'|||'.$allowed.'|').'\'); return false;';
-			$icons['R'][]='<a href="#" onclick="'.htmlspecialchars($aOnClick).'">'.
-					'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/insert3.gif','width="14" height="14"').' border="0" '.t3lib_BEfunc::titleAltAttrib($this->getLL('l_browse_'.($mode=='file'?'file':'db'))).' />'.
-					'</a>';
-		}
-		if (!$params['dontShowMoveIcons'])	{
-			if ($sSize>=5)	{
-				$icons['L'][]='<a href="#" onclick="setFormValueManipulate(\''.$fName.'\',\'Top\'); return false;">'.
-						'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/group_totop.gif','width="14" height="14"').' border="0" '.t3lib_BEfunc::titleAltAttrib($this->getLL('l_move_to_top')).' />'.
+		if (!$params['readonly']) {
+			if (!$params['noBrowser'])	{
+				$aOnClick='setFormValueOpenBrowser(\''.$mode.'\',\''.($fName.'|||'.$allowed.'|').'\'); return false;';
+				$icons['R'][]='<a href="#" onclick="'.htmlspecialchars($aOnClick).'">'.
+						'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/insert3.gif','width="14" height="14"').' border="0" '.t3lib_BEfunc::titleAltAttrib($this->getLL('l_browse_'.($mode=='file'?'file':'db'))).' />'.
 						'</a>';
 			}
-			$icons['L'][]='<a href="#" onclick="setFormValueManipulate(\''.$fName.'\',\'Up\'); return false;">'.
-					'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/up.gif','width="14" height="14"').' border="0" '.t3lib_BEfunc::titleAltAttrib($this->getLL('l_move_up')).' />'.
-					'</a>';
-			$icons['L'][]='<a href="#" onclick="setFormValueManipulate(\''.$fName.'\',\'Down\'); return false;">'.
-					'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/down.gif','width="14" height="14"').' border="0" '.t3lib_BEfunc::titleAltAttrib($this->getLL('l_move_down')).' />'.
-					'</a>';
-			if ($sSize>=5)	{
-				$icons['L'][]='<a href="#" onclick="setFormValueManipulate(\''.$fName.'\',\'Bottom\'); return false;">'.
-						'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/group_tobottom.gif','width="14" height="14"').' border="0" '.t3lib_BEfunc::titleAltAttrib($this->getLL('l_move_to_bottom')).' />'.
-						'</a>';
-			}
-		}
-
-		$clipElements = $this->getClipboardElements($allowed,$mode);
-		if (count($clipElements))	{
-			$aOnClick = '';
-#			$counter = 0;
-			foreach($clipElements as $elValue)	{
-				if ($mode=='file')	{
-					$itemTitle = 'unescape(\''.rawurlencode(basename($elValue)).'\')';
-				} else {	// 'db' mode assumed
-					list($itemTable,$itemUid) = explode('|', $elValue);
-					$itemTitle = $GLOBALS['LANG']->JScharCode(t3lib_BEfunc::getRecordTitle($itemTable, t3lib_BEfunc::getRecordWSOL($itemTable,$itemUid)));
-					$elValue = $itemTable.'_'.$itemUid;
+			if (!$params['dontShowMoveIcons'])	{
+				if ($sSize>=5)	{
+					$icons['L'][]='<a href="#" onclick="setFormValueManipulate(\''.$fName.'\',\'Top\'); return false;">'.
+							'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/group_totop.gif','width="14" height="14"').' border="0" '.t3lib_BEfunc::titleAltAttrib($this->getLL('l_move_to_top')).' />'.
+							'</a>';
 				}
-				$aOnClick.= 'setFormValueFromBrowseWin(\''.$fName.'\',unescape(\''.rawurlencode(str_replace('%20',' ',$elValue)).'\'),'.$itemTitle.');';
-
-#				$counter++;
-#				if ($params['maxitems'] && $counter >= $params['maxitems'])	{	break;	}	// Makes sure that no more than the max items are inserted... for convenience.
+				$icons['L'][]='<a href="#" onclick="setFormValueManipulate(\''.$fName.'\',\'Up\'); return false;">'.
+						'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/up.gif','width="14" height="14"').' border="0" '.t3lib_BEfunc::titleAltAttrib($this->getLL('l_move_up')).' />'.
+						'</a>';
+				$icons['L'][]='<a href="#" onclick="setFormValueManipulate(\''.$fName.'\',\'Down\'); return false;">'.
+						'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/down.gif','width="14" height="14"').' border="0" '.t3lib_BEfunc::titleAltAttrib($this->getLL('l_move_down')).' />'.
+						'</a>';
+				if ($sSize>=5)	{
+					$icons['L'][]='<a href="#" onclick="setFormValueManipulate(\''.$fName.'\',\'Bottom\'); return false;">'.
+							'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/group_tobottom.gif','width="14" height="14"').' border="0" '.t3lib_BEfunc::titleAltAttrib($this->getLL('l_move_to_bottom')).' />'.
+							'</a>';
+				}
 			}
-			$aOnClick.= 'return false;';
-			$icons['R'][]='<a href="#" onclick="'.htmlspecialchars($aOnClick).'">'.
-					'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/insert5.png','width="14" height="14"').' border="0" '.t3lib_BEfunc::titleAltAttrib(sprintf($this->getLL('l_clipInsert_'.($mode=='file'?'file':'db')),count($clipElements))).' />'.
+
+			$clipElements = $this->getClipboardElements($allowed,$mode);
+			if (count($clipElements))	{
+				$aOnClick = '';
+	#			$counter = 0;
+				foreach($clipElements as $elValue)	{
+					if ($mode=='file')	{
+						$itemTitle = 'unescape(\''.rawurlencode(basename($elValue)).'\')';
+					} else {	// 'db' mode assumed
+						list($itemTable,$itemUid) = explode('|', $elValue);
+						$itemTitle = $GLOBALS['LANG']->JScharCode(t3lib_BEfunc::getRecordTitle($itemTable, t3lib_BEfunc::getRecordWSOL($itemTable,$itemUid)));
+						$elValue = $itemTable.'_'.$itemUid;
+					}
+					$aOnClick.= 'setFormValueFromBrowseWin(\''.$fName.'\',unescape(\''.rawurlencode(str_replace('%20',' ',$elValue)).'\'),'.$itemTitle.');';
+
+	#				$counter++;
+	#				if ($params['maxitems'] && $counter >= $params['maxitems'])	{	break;	}	// Makes sure that no more than the max items are inserted... for convenience.
+				}
+				$aOnClick.= 'return false;';
+				$icons['R'][]='<a href="#" onclick="'.htmlspecialchars($aOnClick).'">'.
+						'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/insert5.png','width="14" height="14"').' border="0" '.t3lib_BEfunc::titleAltAttrib(sprintf($this->getLL('l_clipInsert_'.($mode=='file'?'file':'db')),count($clipElements))).' />'.
+						'</a>';
+			}
+			$icons['L'][]='<a href="#" onclick="setFormValueManipulate(\''.$fName.'\',\'Remove\'); return false;">'.
+					'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/group_clear.gif','width="14" height="14"').' border="0" '.t3lib_BEfunc::titleAltAttrib($this->getLL('l_remove_selected')).' />'.
 					'</a>';
 		}
-
-		$icons['L'][]='<a href="#" onclick="setFormValueManipulate(\''.$fName.'\',\'Remove\'); return false;">'.
-				'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/group_clear.gif','width="14" height="14"').' border="0" '.t3lib_BEfunc::titleAltAttrib($this->getLL('l_remove_selected')).' />'.
-				'</a>';
 
 		$str='<table border="0" cellpadding="0" cellspacing="0" width="1">
 			'.($params['headers']?'
@@ -2886,7 +2981,7 @@ class t3lib_TCEforms	{
 					<td></td>
 					<td></td>
 					<td></td>
-					<td>'.$this->wrapLabels($params['headers']['items']).'</td>
+					<td>'.($params['thumbnails'] ? $this->wrapLabels($params['headers']['items']) : '').'</td>
 				</tr>':'').
 			'
 			<tr>
@@ -3616,7 +3711,7 @@ class t3lib_TCEforms	{
 						if (!$TCA[$theTableNames]['ctrl']['adminOnly'])	{
 
 								// Icon:
-							$icon = '../typo3/'.t3lib_iconWorks::skinImg($this->backPath,t3lib_iconWorks::getIcon($theTableNames, array()),'',1);
+							$icon = '../'.TYPO3_mainDir.t3lib_iconWorks::skinImg($this->backPath,t3lib_iconWorks::getIcon($theTableNames, array()),'',1);
 
 								// Add description texts:
 							if ($this->edit_showFieldHelp)	{
@@ -3640,7 +3735,7 @@ class t3lib_TCEforms	{
 
 					foreach($theTypes as $theTypeArrays)	{
 							// Icon:
-						$icon = $theTypeArrays[1]!='--div--' ? '../typo3/'.t3lib_iconWorks::skinImg($this->backPath,t3lib_iconWorks::getIcon('pages', array('doktype' => $theTypeArrays[1])),'',1) : '';
+						$icon = $theTypeArrays[1]!='--div--' ? '../'.TYPO3_mainDir.t3lib_iconWorks::skinImg($this->backPath,t3lib_iconWorks::getIcon('pages', array('doktype' => $theTypeArrays[1])),'',1) : '';
 
 							// Item configuration:
 						$items[] = array(
@@ -3678,8 +3773,8 @@ class t3lib_TCEforms	{
 
 							// Icons:
 					$icons = array(
-						'ALLOW' => '../typo3/'.t3lib_iconWorks::skinImg($this->backPath,'gfx/icon_ok2.gif','',1),
-						'DENY' => '../typo3/'.t3lib_iconWorks::skinImg($this->backPath,'gfx/icon_fatalerror.gif','',1),
+						'ALLOW' => '../'.TYPO3_mainDir.t3lib_iconWorks::skinImg($this->backPath,'gfx/icon_ok2.gif','',1),
+						'DENY' => '../'.TYPO3_mainDir.t3lib_iconWorks::skinImg($this->backPath,'gfx/icon_fatalerror.gif','',1),
 					);
 
 						// Traverse types:
@@ -3724,7 +3819,7 @@ class t3lib_TCEforms	{
 										// Icon:
 									if ($itemCfg[1])	{
 										list($icon) = $this->getIcon($itemCfg[1]);
-										if ($icon)	$icon = '../typo3/'.$icon;
+										if ($icon)	$icon = '../'.TYPO3_mainDir.$icon;
 									} else $icon = '';
 
 										// Add item to be selected:
@@ -3842,7 +3937,7 @@ class t3lib_TCEforms	{
 				$iParts = t3lib_div::trimExplode(',',$row[$iField],1);
 				$icon = '../'.$iPath.'/'.trim($iParts[0]);
 			} elseif (t3lib_div::inList('singlebox,checkbox',$fieldValue['config']['renderMode'])) {
-				$icon = '../typo3/'.t3lib_iconWorks::skinImg($this->backPath,t3lib_iconWorks::getIcon($f_table, $row),'',1);
+				$icon = '../'.TYPO3_mainDir.t3lib_iconWorks::skinImg($this->backPath,t3lib_iconWorks::getIcon($f_table, $row),'',1);
 			} else $icon = '';
 
 				// Add the item:
@@ -4348,7 +4443,7 @@ class t3lib_TCEforms	{
 			<script type="text/javascript" src="'.$this->backPath.'md5.js"></script>';
 			}
 			$out.='
-			<script type="text/javascript" src="'.$this->backPath.'t3lib/jsfunc.evalfield.js"></script>
+			<script type="text/javascript" src="'.$this->backPath.'../t3lib/jsfunc.evalfield.js"></script>
 			<script type="text/javascript">
 				/*<![CDATA[*/
 
