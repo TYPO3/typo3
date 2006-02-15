@@ -49,6 +49,8 @@
  */
 
 
+
+
 // *******************************
 // Set error reporting
 // *******************************
@@ -82,6 +84,17 @@ if (!defined ('TYPO3_db')) 	die ('The configuration file was not included.');
 require_once(PATH_t3lib.'class.t3lib_db.php');
 $TYPO3_DB = t3lib_div::makeInstance('t3lib_DB');
 
+
+
+
+
+
+
+
+# NOTICE: ALL LINES above can be commented out since this script is now used via the ?eID=tx_cms_showpic parameter passed to index.php!
+# For backwards compatibility in extensions using showpic.php directly this is kept for the version 4.0 until 4.5 where it is planned removed!
+
+if (!defined ('PATH_typo3conf')) 	die ('The configuration path was not properly defined!');
 require_once(PATH_t3lib.'class.t3lib_stdgraphic.php');
 
 

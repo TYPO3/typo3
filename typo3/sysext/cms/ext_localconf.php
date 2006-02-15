@@ -3,6 +3,7 @@
 if (!defined ('TYPO3_MODE')) 	die ('Access denied.');
 
 $TYPO3_CONF_VARS['SYS']['contentTable'] = 'tt_content';
+$TYPO3_CONF_VARS['FE']['eID_include']['tx_cms_showpic'] = 'EXT:cms/tslib/showpic.php';
 
 $TYPO3_CONF_VARS['SC_OPTIONS']['ext/install']['compat_version']['cms'] = array(
 	'version' => 4000000,

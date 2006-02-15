@@ -2664,7 +2664,7 @@ class tslib_cObj {
 						$GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'].'|');
 
 				$params.= '&md5='.$md5_value;
-				$url = $GLOBALS['TSFE']->absRefPrefix.'showpic.php?file='.rawurlencode($imageFile).$params;
+				$url = $GLOBALS['TSFE']->absRefPrefix.'index.php?eID=tx_cms_showpic&file='.rawurlencode($imageFile).$params;
 				if ($conf['JSwindow.']['altUrl'] || $conf['JSwindow.']['altUrl.'])	{
 					$altUrl = $this->stdWrap($conf['JSwindow.']['altUrl'], $conf['JSwindow.']['altUrl.']);
 					if ($altUrl)	{
