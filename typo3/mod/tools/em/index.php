@@ -168,7 +168,7 @@ require_once('class.em_xmlhandler.php');
 require_once('class.em_terconnection.php');
 
 	// from tx_ter by Robert Lemke
-define(TX_TER_RESULT_EXTENSIONSUCCESSFULLYUPLOADED, '10504');
+define('TX_TER_RESULT_EXTENSIONSUCCESSFULLYUPLOADED', '10504');
 
 /**
  * Module: Extension manager
@@ -181,7 +181,7 @@ define(TX_TER_RESULT_EXTENSIONSUCCESSFULLYUPLOADED, '10504');
 class SC_mod_tools_em_index extends t3lib_SCbase {
 
 		// Internal, static:
-	var $versionDiffFactor = 1000;		// This means that version difference testing for import is detected for sub-versions only, not dev-versions. Default: 1000
+	var $versionDiffFactor = 1;		// This means that version difference testing for import is detected for sub-versions only, not dev-versions. Default: 1000
 	var $systemInstall = 0;				// If "1" then installs in the sysext directory is allowed. Default: 0
 	var $requiredExt = '';				// List of required extension (from TYPO3_CONF_VARS)
 	var $maxUploadSize = 31457280;		// Max size in bytes of extension upload to repository
@@ -350,7 +350,6 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 		$this->menuConfig();
 
 			// Setting internal static:
-		if ($TYPO3_CONF_VARS['EXT']['em_devVerUpdate'])		$this->versionDiffFactor = 1;
 		if ($TYPO3_CONF_VARS['EXT']['em_systemInstall'])	$this->systemInstall = 1;
 		$this->requiredExt = t3lib_div::trimExplode(',',$TYPO3_CONF_VARS['EXT']['requiredExt'],1);
 
@@ -674,9 +673,8 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 				$extensions = array();
 				while(list($extKey)=each($extEkeys))	{
 					$allKeys[]=$extKey;
-					if (($this->MOD_SETTINGS['display_shy'] || !$list[$extKey]['EM_CONF']['shy'])
-					 && ($this->MOD_SETTINGS['display_unsupported'] || t3lib_extMgm::isLoaded($extKey) || $this->xmlhandler->getReviewState($extKey,$list[$extKey]['EM_CONF']['version'])>0)
-					 && ($this->MOD_SETTINGS['display_obsolete'] || $list[$extKey]['EM_CONF']['state']!='obsolete')
+					if (($this->MOD_SETTINGS['display_shy'] || !$list[$extKey]['EM_CONF']['shy']) &&
+							($this->MOD_SETTINGS['display_obsolete'] || $list[$extKey]['EM_CONF']['state']!='obsolete')
 					 && $this->searchExtension($extKey,$list[$extKey]))	{
 						$loadUnloadLink = t3lib_extMgm::isLoaded($extKey)?
 						'<a href="'.htmlspecialchars('index.php?CMD[showExt]='.$extKey.'&CMD[remove]=1&CMD[clrCmd]=1&SET[singleDetails]=info').'">'.$this->removeButton().'</a>':
@@ -1043,29 +1041,33 @@ EXTENSION KEYS:
 	 */
 	function fetchMetaData($metaType, $quiet=false)	{
 		global $TYPO3_CONF_VARS;
-		$extensions = array();
 
 		$content.= '<a href="index.php" class="typo3-goBack"><img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/goback.gif','width="14" height="14"').' alt="" /> Go back</a><br /><br />';
 
 		switch($metaType) {
 			case 'mirrors':
 				$mfile = t3lib_div::tempnam('mirrors');
-				t3lib_div::writeFile($mfile,t3lib_div::getURL($this->MOD_SETTINGS['mirrorListURL']));
-				$mirrors = implode(gzfile($mfile));
-				t3lib_div::unlink_tempfile($mfile);
+				$mirrorsFile = t3lib_div::getURL($this->MOD_SETTINGS['mirrorListURL']);
+				if($mirrorsFile===false) {
+					$content.= '<p>The mirror list was not updated, it could not be fetched from '.$this->MOD_SETTINGS['mirrorListURL'].'</p>';
+				} else {
+					t3lib_div::writeFile($mfile, $mirrorsFile);
+					$mirrors = implode(gzfile($mfile));
+					t3lib_div::unlink_tempfile($mfile);
 
-				$mirrors = $this->xmlhandler->parseMirrorsXML($mirrors);
-				if(is_array($mirrors) && count($mirrors)) {
-					t3lib_BEfunc::getModuleData($this->MOD_MENU, array('extMirrors' => serialize($mirrors)), $this->MCONF['name'], '', 'extMirrors');
-					$this->MOD_SETTINGS['extMirrors'] = serialize($mirrors);
-					$content.= '<p>The mirror list has been updated and now contains '.count($mirrors).' entries:</p><ul>';
-					foreach($mirrors as $v) {
-						$content.='<li>'.$v['title'].', '.$v['country'].'</li>';
+					$mirrors = $this->xmlhandler->parseMirrorsXML($mirrors);
+					if(is_array($mirrors) && count($mirrors)) {
+						t3lib_BEfunc::getModuleData($this->MOD_MENU, array('extMirrors' => serialize($mirrors)), $this->MCONF['name'], '', 'extMirrors');
+						$this->MOD_SETTINGS['extMirrors'] = serialize($mirrors);
+						$content.= '<p>The mirror list has been updated and now contains '.count($mirrors).' entries:</p><ul>';
+						foreach($mirrors as $v) {
+							$content.='<li>'.$v['title'].', '.$v['country'].'</li>';
+						}
+						$content.= '</ul>';
 					}
-					$content.= '</ul>';
-				}
-				else {
-					$content.= '<p>'.$mirrors.'<br />The mirror list was not updated as it contained no entries.</p>';
+					else {
+						$content.= '<p>'.$mirrors.'<br />The mirror list was not updated as it contained no entries.</p>';
+					}
 				}
 				break;
 			case 'extensions':
@@ -1073,9 +1075,14 @@ EXTENSION KEYS:
 					$this->fetchMetaData('mirrors', true);
 				}
 				$extfile = $this->getMirrorURL().'extensions.xml.gz';
-				t3lib_div::writeFile(PATH_site.'typo3temp/extensions.xml.gz',t3lib_div::getURL($extfile));
-				$content.= $this->xmlhandler->parseExtensionsXML(implode(gzfile(PATH_site.'typo3temp/extensions.xml.gz')));
-				$this->xmlhandler->saveExtensionsXML();
+				$extXML = t3lib_div::getURL($extfile);
+				if($extXML === false) {
+					$content .= '<p>Error: The extension list could not be fetched from '.$extfile.'</p>';
+				} else {
+					t3lib_div::writeFile(PATH_site.'typo3temp/extensions.xml.gz', $extXML);
+					$content.= $this->xmlhandler->parseExtensionsXML(implode(gzfile(PATH_site.'typo3temp/extensions.xml.gz')));
+					$this->xmlhandler->saveExtensionsXML();
+				}
 				break;
 		}
 
@@ -2065,7 +2072,7 @@ EXTENSION KEYS:
 		}
 
 			// Extension title:
-		$cells[] = '<td nowrap="nowrap"><a href="'.htmlspecialchars($altLinkUrl?$altLinkUrl:'index.php?CMD[showExt]='.$extKey.'&SET[singleDetails]=info').'" title="'.$extKey.'"'.$style.'>'.t3lib_div::fixed_lgd($extInfo['EM_CONF']['title']?$extInfo['EM_CONF']['title']:'<em>'.$extKey.'</em>',40).'</a></td>';
+		$cells[] = '<td nowrap="nowrap"><a href="'.htmlspecialchars($altLinkUrl?$altLinkUrl:'index.php?CMD[showExt]='.$extKey.'&SET[singleDetails]=info').'" title="'.$extKey.'"'/*.($extInfo['EM_CONF']['shy'] ? ' style="color:#666;" ' : '')*/.'>'.t3lib_div::fixed_lgd($extInfo['EM_CONF']['title']?$extInfo['EM_CONF']['title']:'<em>'.$extKey.'</em>',40).'</a></td>';
 
 			// Based on which display mode you will see more or less details:
 		if (!$this->MOD_SETTINGS['display_details'])	{
@@ -2357,7 +2364,7 @@ EXTENSION KEYS:
 	}
 
 	/**
-	 * Fixes an old styke ext_emconf.php array by adding constraints if needed and removing deprecated keys
+	 * Fixes an old style ext_emconf.php array by adding constraints if needed and removing deprecated keys
 	 *
 	 * @param unknown_type $emConf
 	 * @return unknown
@@ -3369,7 +3376,7 @@ $EM_CONF[$_EXTKEY] = '.$this->arrayToCode($EM_CONF, 0).';
 		foreach($conf['constraints']['depends'] as $depK => $depV)	{
 			if($depK == 'php' && $depV) {
 				$versionRange = $this->splitVersionRange($depV);
-				$phpv = substr(PHP_VERSION,0,strpos(PHP_VERSION,'-')); // Linux distributors like to add suffixes, like in 5.1.2-1. Those must be ignored!
+				$phpv = strstr(PHP_VERSION,'-') ? substr(PHP_VERSION,0,strpos(PHP_VERSION,'-')) : PHP_VERSION; // Linux distributors like to add suffixes, like in 5.1.2-1. Those must be ignored!
 				if($versionRange[0] && version_compare($phpv,$versionRange[0],'<')) {
 					$msg[] = 'The running PHP version ('.$phpv.') is lower than required ('.$versionRange[0].')';
 					$depError = true;
