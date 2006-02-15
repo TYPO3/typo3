@@ -1,4 +1,9 @@
-2006-02-15  Kasper Skaarhoj
+2006-02-15  Bernhard Kraft  <kraftb@kraftb.at>
+
+	* Fixed an issue with the new GIFBUILDER code and transparentColor TS option. Also fixed some minor bugs with not unlinked temp files
+
+2006-02-15  Kasper Skaarhoj  <kasperYYYY@typo3.com>
+
 	* Changed usage of showpic.php: Now, the reference to showpic.php from inside tslib_content is done using "index.php?eID=tx_cms_showpic&..."+usual parameters. This is the future supported way of accessing the services of showpic! It also means that other scripts offering FE services bypassing tslib_fe can use same methodology! Applications I can think of: AJAX data, streams (like secure download scripts passing binary data through). This change means that "showpic.php" is not needed as a symlink anymore, neither as a script in the core root!
 
 2006-02-15  Michael Stucki  <michael@typo3.org>
@@ -8,7 +13,7 @@
 	* !!! Indexed Search: Removed all options for indexing OpenOffice.org/OpenDocument files and replaced them with the above "unzip" option. Affected options are: nativeOOMethod, OOoExtract, ruby
 	* !!! Indexed Search: Changed all default paths from /usr/local/bin/ to /usr/bin/
 
-006-02-15  Rene Fritz  <r.fritz@colorcube.de>
+2006-02-15  Rene Fritz  <r.fritz@colorcube.de>
 
 	* Added hook to element browser to make it possible to render own EB's. All EB classes are moved into an own file.
 	* Added the possiblity to set TCEForm items to read-only.
@@ -25,7 +30,7 @@
 	* Added index.php, showpic.php and thumbs.php scripts
 	* All thoese changes were made to make it possible to use the TYPO3 source without symlinks
 
-2006-02-14  Kasper Skaarhoj
+2006-02-14  Kasper Skaarhoj  <kasperYYYY@typo3.com>
 
 	* Fixed part II of the versioning swapping change: Now versioning is completely independent of MySQL versions and it is fully DBAL compliant: Records are swapping content rather than ids (locking file support integrated which stores swapped records in case something goes wrong - however, no tool for reverting using this lock file...)
 	* Finished version 1.0 of the ADMCMD_prev feature which allows a keyword (md5 hash) to preview pages which otherwise would require a backend login (like workspace preview). In Web>Versioning you will find an implementation of this feature which will generate links you can sent to people for previewing workspace content. The concept could be extended to set other preview flags like hidden/starttime/endtime/fe_groups etc. But this is just a simple implementation for workspaces.

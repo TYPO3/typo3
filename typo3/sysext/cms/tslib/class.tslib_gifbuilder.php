@@ -440,7 +440,7 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 			imagecolortransparent($this->im, $Bcolor);
 		} elseif (is_array($this->setup['transparentColor_array']))	{
 				// Multiple transparent colors are set. This is done via the trick that all transparent colors get converted to one color and then this one gets set as transparent as png/gif can just have one transparent color.
-			$Tcolor = $this->unifyColors($this->im, $this->setup['transparentColor_array']);
+			$Tcolor = $this->unifyColors($this->im, $this->setup['transparentColor_array'], intval($this->setup['transparentColor.']['closest']));
 			if ($Tcolor)	{
 				imagecolortransparent($this->im, $Tcolor);
 			}
@@ -613,7 +613,9 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 	 * @link http://typo3.org/doc.0.html?&tx_extrepmgm_pi1[extUid]=270&tx_extrepmgm_pi1[tocEl]=282&cHash=831a95115d
 	 */
 	function getResource($file,$fileArray)	{
-		$fileArray['ext']= $this->gifExtension;
+		if (!t3lib_div::inList($this->imageFileExt, $fileArray['ext']))	{
+			$fileArray['ext'] = $this->gifExtension;
+		}
 		$cObj =t3lib_div::makeInstance('tslib_cObj');
 		$cObj->start($this->data);
 		return $cObj->getImgResource($file,$fileArray);

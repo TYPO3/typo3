@@ -379,7 +379,6 @@ class t3lib_stdGraphic	{
 				$theImage = $tmpStr.'_img.'.$this->gifExtension;
 				$theDest = $tmpStr.'_dest.'.$this->gifExtension;
 				$theMask = $tmpStr.'_mask.'.$this->gifExtension;
-				$theMask2 = $tmpStr.'_mask2.'.trim($GLOBALS['TYPO3_CONF_VARS']['GFX']['im_mask_temp_ext_noloss']);
 						// prepare overlay image
 				$cpImg = $this->imageCreateFromFile($BBimage[3]);
 				$destImg = $this->imagecreate($w,$h);
@@ -1821,10 +1820,11 @@ class t3lib_stdGraphic	{
 				if ($ext=='png' && $reduce<=256)	{ $prefix = 'png8:'; }
 			}
 			$this->imageMagickExec($file, $prefix.$result, $params);
-			return $result;
+			if ($result)	{
+				return $result;
+			}
 		}
-			// Nothing to perform
-		return $file;
+		return '';
 	}
 
 
@@ -2505,6 +2505,10 @@ class t3lib_stdGraphic	{
 			$ret = exec($cmd);
 			t3lib_div::fixPermissions($this->wrapFileName($output));	// Change the permissions of the file
 
+			if (is_file($theMask))	{
+				@unlink($theMask);
+			}
+
 			return $ret;
 		}
 	}
@@ -2648,8 +2652,10 @@ class t3lib_stdGraphic	{
 							// ImageMagick operations
 						if ($this->setup['reduceColors'] || !$this->png_truecolor)	{
 							$reduced = $this->IMreduceColors($file, t3lib_div::intInRange($this->setup['reduceColors'], 256, $this->truecolorColors, 256));
-							unlink($file);
-							copy($reduced, $file);
+							if ($reduced)	{
+								@copy($reduced, $file);
+								@unlink($reduced);
+							}
 						}
 						t3lib_div::gif_compress($file, 'IM');		// Compress with IM! (adds extra compression, LZW from ImageMagick)     (Workaround for the absence of lzw-compression in GD)
 					}
@@ -2708,6 +2714,9 @@ class t3lib_stdGraphic	{
  			break;
  			case 'gif':
  				if (function_exists('imageGif'))	{
+					if ($this->truecolor)	{
+						imagetruecolortopalette($destImg, true, 256);
+					}
  					return imageGif($destImg, $theImage);
  				}
  			break;
@@ -2825,34 +2834,46 @@ class t3lib_stdGraphic	{
 	 * @param	array		Array containing RGB color arrays
 	 * @return	integer		The index of the unified color
 	 */
-	function unifyColors(&$img, $colArr)	{
+	function unifyColors(&$img, $colArr, $closest = false)	{
 		$retCol = false;
-		if (is_array($colArr)&&function_exists('imagepng')&&function_exists('imagecreatefrompng'))	{
-			$origName = $preName = $this->randomName().'.png';
-			$postName = $this->randomName().'.'.trim($GLOBALS['TYPO3_CONF_VARS']['GFX']['im_mask_temp_ext_noloss']);
-			$this->imageWrite($img, $preName);
+		if (is_array($colArr) && count($colArr) && function_exists('imagepng') && function_exists('imagecreatefrompng'))	{
 			$firstCol = array_shift($colArr);
 			$firstColArr = $this->convertColor($firstCol);
-			$firstCol = $this->hexColor($firstColArr);
-			while(list(,$transparentColor)=each($colArr))	{
-				$transparentColor = $this->convertColor($transparentColor);
-				$transparentColor = $this->hexColor($transparentColor);
-				$cmd = '-fill "'.$firstCol.'" -opaque "'.$transparentColor.'"';
-				$this->imageMagickExec($preName, $postName, $cmd);
-				$preName = $postName;
+			if (count($colArr)>1)	{
+				$origName = $preName = $this->randomName().'.png';
+				$postName = $this->randomName().'.png';
+				$this->imageWrite($img, $preName);
+				$firstCol = $this->hexColor($firstColArr);
+				foreach ($colArr as $transparentColor)	{
+					$transparentColor = $this->convertColor($transparentColor);
+					$transparentColor = $this->hexColor($transparentColor);
+					$cmd = '-fill "'.$firstCol.'" -opaque "'.$transparentColor.'"';
+					$this->imageMagickExec($preName, $postName, $cmd);
+					$preName = $postName;
+				}
+				$this->imageMagickExec($postName, $origName, '');
+				if (@is_file($origName))	{
+					$tmpImg = $this->imageCreateFromFile($origName);
+				}
+			} else	{
+				$tmpImg = $img;
 			}
-			$this->imageMagickExec($postName, $origName, '');
-			if (@is_file($origName))	{
-				$tmpImg = $this->imageCreateFromFile($origName);
-				if ($tmpImg)	{
-					$img = $tmpImg;
+			if ($tmpImg)	{
+				$img = $tmpImg;
+				if ($closest)	{
+					$retCol = ImageColorClosest ($img, $firstColArr[0], $firstColArr[1], $firstColArr[2]);
+				} else	{
 					$retCol = ImageColorExact ($img, $firstColArr[0], $firstColArr[1], $firstColArr[2]);
 				}
 			}
 				// unlink files from process
 			if (!$this->dontUnlinkTempFiles)	{
-				unlink($origName);
-				unlink($postName);
+				if ($origName)	{
+					@unlink($origName);
+				}
+				if ($postName)	{
+					@unlink($postName);
+				}
 			}
 		}
 		return $retCol;
