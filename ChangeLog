@@ -1,3 +1,8 @@
+2006-02-15 Karsten Dambekalns <karsten@typo3.org>
+
+	* typo3/mod/tools/em: More fixes and better error checking.
+	* typo3/sysext/adodb: Update to upstream version 4.71.
+
 2006-02-15  Bernhard Kraft  <kraftb@kraftb.at>
 
 	* Fixed an issue with the new GIFBUILDER code and transparentColor TS option. Also fixed some minor bugs with not unlinked temp files
@@ -17,6 +22,10 @@
 
 	* Added hook to element browser to make it possible to render own EB's. All EB classes are moved into an own file.
 	* Added the possiblity to set TCEForm items to read-only.
+
+2006-02-14 Karsten Dambekalns <karsten@typo3.org>
+
+	* typo3/mod/tools/em: Fixed/enhanced dependency checking in the new EM.
 
 2006-02-14  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
