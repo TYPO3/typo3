@@ -1,7 +1,7 @@
-diff -ruw adodb468/adodb-lib.inc.php adodb468.p/adodb-lib.inc.php
---- adodb468/adodb-lib.inc.php	2005-11-25 15:16:03.000000000 +0100
-+++ adodb468.p/adodb-lib.inc.php	2005-12-01 17:48:52.000000000 +0100
-@@ -770,7 +770,7 @@
+diff -ruw /home/karsten/Desktop/adodb/adodb-lib.inc.php adodb/adodb-lib.inc.php
+--- /home/karsten/Desktop/adodb/adodb-lib.inc.php	2006-01-25 04:58:25.000000000 +0100
++++ adodb/adodb-lib.inc.php	2006-02-16 00:20:48.000000000 +0100
+@@ -778,7 +778,7 @@
  	$values = substr($values, 0, -2);
  
  	// Append the fields and their values to the insert query.
@@ -10,9 +10,9 @@ diff -ruw adodb468/adodb-lib.inc.php adodb468.p/adodb-lib.inc.php
  }
  
  
-diff -ruw adodb468/datadict/datadict-oci8.inc.php adodb468.p/datadict/datadict-oci8.inc.php
---- adodb468/datadict/datadict-oci8.inc.php	2005-11-25 15:15:57.000000000 +0100
-+++ adodb468.p/datadict/datadict-oci8.inc.php	2005-12-01 17:50:02.000000000 +0100
+diff -ruw /home/karsten/Desktop/adodb/datadict/datadict-oci8.inc.php adodb/datadict/datadict-oci8.inc.php
+--- /home/karsten/Desktop/adodb/datadict/datadict-oci8.inc.php	2006-01-24 05:37:21.000000000 +0100
++++ adodb/datadict/datadict-oci8.inc.php	2006-02-16 00:20:48.000000000 +0100
 @@ -251,8 +251,8 @@
  		}
  		
@@ -24,9 +24,9 @@ diff -ruw adodb468/datadict/datadict-oci8.inc.php adodb468.p/datadict/datadict-o
  		
  		if ( isset($idxoptions[$this->upperName]) )
  			$s .= $idxoptions[$this->upperName];
-diff -ruw adodb468/datadict/datadict-postgres.inc.php adodb468.p/datadict/datadict-postgres.inc.php
---- adodb468/datadict/datadict-postgres.inc.php	2005-11-25 15:15:57.000000000 +0100
-+++ adodb468.p/datadict/datadict-postgres.inc.php	2005-12-01 17:46:28.000000000 +0100
+diff -ruw /home/karsten/Desktop/adodb/datadict/datadict-postgres.inc.php adodb/datadict/datadict-postgres.inc.php
+--- /home/karsten/Desktop/adodb/datadict/datadict-postgres.inc.php	2006-01-24 05:37:21.000000000 +0100
++++ adodb/datadict/datadict-postgres.inc.php	2006-02-16 00:20:48.000000000 +0100
 @@ -342,7 +342,7 @@
  		
  		$unique = isset($idxoptions['UNIQUE']) ? ' UNIQUE' : '';
@@ -47,9 +47,9 @@ diff -ruw adodb468/datadict/datadict-postgres.inc.php adodb468.p/datadict/datadi
  		$sql[] = $s;
  		
  		return $sql;
-diff -ruw adodb468/drivers/adodb-oci8.inc.php adodb468.p/drivers/adodb-oci8.inc.php
---- adodb468/drivers/adodb-oci8.inc.php	2005-11-25 15:16:03.000000000 +0100
-+++ adodb468.p/drivers/adodb-oci8.inc.php	2005-12-01 17:46:24.000000000 +0100
+diff -ruw /home/karsten/Desktop/adodb/drivers/adodb-oci8.inc.php adodb/drivers/adodb-oci8.inc.php
+--- /home/karsten/Desktop/adodb/drivers/adodb-oci8.inc.php	2006-01-24 05:37:31.000000000 +0100
++++ adodb/drivers/adodb-oci8.inc.php	2006-02-16 00:20:48.000000000 +0100
 @@ -104,7 +104,7 @@
  		$ADODB_FETCH_MODE = ADODB_FETCH_NUM;
  		if ($this->fetchMode !== false) $savem = $this->SetFetchMode(false);
@@ -59,10 +59,10 @@ diff -ruw adodb468/drivers/adodb-oci8.inc.php adodb468.p/drivers/adodb-oci8.inc.
  		
  		if (isset($savem)) $this->SetFetchMode($savem);
  		$ADODB_FETCH_MODE = $save;
-diff -ruw adodb468/drivers/adodb-postgres64.inc.php adodb468.p/drivers/adodb-postgres64.inc.php
---- adodb468/drivers/adodb-postgres64.inc.php	2005-11-25 15:16:03.000000000 +0100
-+++ adodb468.p/drivers/adodb-postgres64.inc.php	2005-12-01 17:48:01.000000000 +0100
-@@ -448,6 +448,7 @@
+diff -ruw /home/karsten/Desktop/adodb/drivers/adodb-postgres64.inc.php adodb/drivers/adodb-postgres64.inc.php
+--- /home/karsten/Desktop/adodb/drivers/adodb-postgres64.inc.php	2006-01-24 05:37:31.000000000 +0100
++++ adodb/drivers/adodb-postgres64.inc.php	2006-02-16 00:20:48.000000000 +0100
+@@ -464,6 +464,7 @@
  	{
  	global $ADODB_FETCH_MODE;
  	

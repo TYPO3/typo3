@@ -1,6 +1,6 @@
 <?php
 /*
- V4.68 25 Nov 2005  (c) 2000-2005 John Lim (jlim@natsoft.com.my). All rights reserved.
+ V4.71 24 Jan 2006  (c) 2000-2006 John Lim (jlim@natsoft.com.my). All rights reserved.
   Released under both BSD license and Lesser GPL library license. 
   Whenever there is any discrepancy between the two licenses, 
   the BSD license will take precedence.
@@ -49,7 +49,7 @@ function adodb_addslashes($s)
 {
 	$len = strlen($s);
 	if ($len == 0) return "''";
-	if (strncmp($s,"'",1) === 0 && substr(s,$len-1) == "'") return $s; // already quoted
+	if (strncmp($s,"'",1) === 0 && substr($s,$len-1) == "'") return $s; // already quoted
 	
 	return "'".addslashes($s)."'";
 }
@@ -232,7 +232,7 @@ select viewname,'V' from pg_views where viewname like $mask";
 		return $ret;
 	}
 	
-	/*
+	
 	// if magic quotes disabled, use pg_escape_string()
 	function qstr($s,$magic_quotes=false)
 	{
@@ -241,7 +241,7 @@ select viewname,'V' from pg_views where viewname like $mask";
 				return  "'".pg_escape_string($s)."'";
 			}
 			if ($this->replaceQuote[0] == '\\'){
-				$s = adodb_str_replace(array('\\',"\0"),array('\\\\',"\\\0"),$s);
+				$s = adodb_str_replace(array('\\',"\0"),array('\\\\',"\\\\000"),$s);
 			}
 			return  "'".str_replace("'",$this->replaceQuote,$s)."'"; 
 		}
@@ -250,7 +250,7 @@ select viewname,'V' from pg_views where viewname like $mask";
 		$s = str_replace('\\"','"',$s);
 		return "'$s'";
 	}
-	*/
+	
 	
 	
 	// Format date column in sql string given an input format that understands Y M D
@@ -362,6 +362,22 @@ select viewname,'V' from pg_views where viewname like $mask";
 	} 
 	
 	/*
+	* Deletes/Unlinks a Blob from the database, otherwise it 
+	* will be left behind
+	*
+	* Returns TRUE on success or FALSE on failure.
+	*
+	* contributed by Todd Rogers todd#windfox.net
+	*/
+	function BlobDelete( $blob )
+	{
+		pg_exec ($this->_connectionID, "begin");
+		$result = @pg_lo_unlink($blob);
+		pg_exec ($this->_connectionID, "commit");
+		return( $result );
+	}
+
+	/*
 		Hueristic - not guaranteed to work.
 	*/
 	function GuessOID($oid)
@@ -397,7 +413,7 @@ select viewname,'V' from pg_views where viewname like $mask";
 		@pg_loclose($fd); 
 		if ($hastrans) @pg_exec($this->_connectionID,"commit"); 
 		return $realblob;
-	} 
+	}
 	
 	/* 
 		See http://www.postgresql.org/idocs/index.php?datatype-binary.html
@@ -626,7 +642,7 @@ WHERE (c2.relname=\'%s\' or c2.relname=lower(\'%s\'))';
 	function _connect($str,$user='',$pwd='',$db='',$ctype=0)
 	{
 		
-		if (!function_exists('pg_pconnect')) return null;
+		if (!function_exists('pg_connect')) return null;
 		
 		$this->_errorMsg = false;
 		

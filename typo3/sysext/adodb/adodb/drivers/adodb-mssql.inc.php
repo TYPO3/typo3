@@ -1,6 +1,6 @@
 <?php
 /* 
-V4.68 25 Nov 2005  (c) 2000-2005 John Lim (jlim@natsoft.com.my). All rights reserved.
+V4.71 24 Jan 2006  (c) 2000-2006 John Lim (jlim@natsoft.com.my). All rights reserved.
   Released under both BSD license and Lesser GPL library license. 
   Whenever there is any discrepancy between the two licenses, 
   the BSD license will take precedence. 
@@ -74,7 +74,7 @@ class ADODB_mssql extends ADOConnection {
 	var $databaseType = "mssql";	
 	var $dataProvider = "mssql";
 	var $replaceQuote = "''"; // string to use to replace quotes
-	var $fmtDate = "Y-m-d";
+	var $fmtDate = "'Y-m-d'";
 	var $fmtTimeStamp = "'Y-m-d H:i:s'";
 	var $hasInsertID = true;
 	var $substr = "substring";
@@ -583,7 +583,7 @@ order by constraint_name, referenced_table_name, keyno";
 	{
 		if (!$this->_has_mssql_init) {
 			ADOConnection::outp( "Parameter: mssql_bind only available since PHP 4.1.0");
-			return $sql;
+			return false;
 		}
 
 		$isNull = is_null($var); // php 4.0.4 and above...

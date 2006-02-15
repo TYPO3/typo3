@@ -15,9 +15,9 @@ pre {
 <body bgcolor="#ffffff" text="black">
 
 <h2>ADOdb Library for PHP</h2>
-<p>V4.68 25 Nov 2005 (c) 2000-2005 John Lim (jlim#natsoft.com)</p>
+<p>V4.71 24 Jan 2006 (c) 2000-2006 John Lim (jlim#natsoft.com)</p>
 <p><font size="1">This software is dual licensed using BSD-Style and LGPL. This 
-  means you can use it in compiled proprfietary and commercial products.</font></p>
+  means you can use it in compiled proprietary and commercial products.</font></p>
   
 
 	<p>Useful ADOdb links:  <a href="http://adodb.sourceforge.net/#download">Download</a> &nbsp; <a href="http://adodb.sourceforge.net/#docs">Other Docs</a>
@@ -317,7 +317,20 @@ ADOdb DSN's are compatible with version 1.0 of PEAR DB's DSN format.
  </a></pre>
 <p><a name="connect_ex"> For most drivers, you can use the standard function: Connect($server, $user, $password, $database), or
 a </a><a href="dsnsupport">DSN</a> since ADOdb 4.51. Exceptions to this are listed below.
-</p><h4>PostgreSQL</h4>
+</p>
+<h4>PDO</h4>
+<p>PDO accepts a PDO connection string:
+<pre>
+	$conn = NewADConnection('pdo');
+	$conn->Connect('mysql:host=localhost',$user,$pwd,$mydb);
+	$conn->Connect('mysql:host=localhost;dbname=mydb',$user,$pwd);
+	$conn->Connect("mysql:host=localhost;dbname=mydb;username=$user;password=$pwd");
+</pre>
+<p>The DSN mechanism is also supported:
+<pre>
+	$conn = NewADConnection("pdo_mysql://user:pwd@localhost/mydb?persist"); # persist is optional
+</pre>
+<h4>PostgreSQL</h4>
 <p>PostgreSQL 7 and 8 accepts connections using: </p>
 <p>a. the standard connection string:</p>
 <pre>	$conn = &amp;ADONewConnection('postgres');  <br>	$conn-&gt;PConnect('host=localhost port=5432 dbname=mary');</pre>
@@ -2395,7 +2408,7 @@ database. You can define a function  ADODB_View_PrimaryKeys($databaseType, $data
 should return an array containing the fields that make up the primary key. If that function exists,
 it will be called when MetaPrimaryKeys() cannot find a primary key for a table or view.
 </font></p><pre><font>// In this example: dbtype = 'oci8', $db = 'mydb', $view = 'dataView', $owner = false <br>function ADODB_View_PrimaryKeys($dbtype,$db,$view,$owner)<br>{<br>	switch(strtoupper($view)) {<br>	case 'DATAVIEW': return array('DATAID');<br>	default: return false;<br>	}<br>}<br><br>$db = NewADOConnection('oci8');<br>$db-&gt;Connect('localhost','root','','mydb'); <br>$db-&gt;MetaPrimaryKeys('dataView');<br></font></pre>
-<p><font><b>ServerInfo<a name="serverinfo" id="serverinfo"></a>($table)</b></font> 
+<p><font><b>ServerInfo<a name="serverinfo" id="serverinfo"></a>()</b></font> 
 </p>
 <p><font>Returns an array of containing two elements 'description' 
   and 'version'. The 'description' element contains the string description of 
@@ -2812,7 +2825,27 @@ of MySQL.</font></p>
   PHP</a>. </font></p>
 
 <h2><font>Change Log<a name="Changes"></a><a name="changes"></a><a name="changelog"></a></font></h2>
-
+<P>
+<p><a name="4.71"></a><b>4.71 24 Jan 2006</b>
+<p>Fixes postgresql security issue related to binary strings. Thx to Andy Staudacher.
+<p>Several DSN bugs found:
+<p>1. Fix bugs in DSN connections introduced in 4.70 when underscores are found in the DSN. 
+<p>2. DSN with _ did not work properly in PHP5 (fine in PHP4). Fixed.
+<p>3. Added support for PDO DSN connections in NewADOConnection(), and database parameter in PDO::Connect().
+<p>The oci8 datetime flag not correctly implemented in ADORecordSet_array. Fixed.
+<p>Added BlobDelete() to postgres, as a counterpoint to UpdateBlobFile().
+<p>Fixed GetInsertSQL() to support oci8po.
+<p>Fixed qstr() issue with postgresql with \0 in strings. 
+<p>Added register shutdown function session_write_close in adodb-session.inc.php for PHP 5 compat. See http://phplens.com/lens/lensforum/msgs.php?id=14200.
+<p><a name="4.70"></a><b>4.70 6 Jan 2006</b>
+<p>Many fixes from Danila Ulyanov  to ibase, oci8, postgres, mssql, odbc_oracle, odbtp, etc drivers.
+<p>Changed usage of binary hint in adodb-session.inc.php for mysql. See 
+http://phplens.com/lens/lensforum/msgs.php?id=14160
+<p>Fixed invalid variable reference problem in undomq(), adodb-perf.inc.php.
+<p>Fixed http://phplens.com/lens/lensforum/msgs.php?id=14254 in adodb-perf.inc.php, _DBParameter() settings of fetchmode was wrong.
+<p>Fixed security issues in server.php and tmssql.php discussed by Andreas Sandblad in a Secunia security advisory. Added $ACCEPTIP = 127.0.0.1
+and changed suggested root password to something more secure.
+<p>Changed pager to close recordset after RenderLayout().
 <p><a name="4.68"></a><b>4.68 25 Nov  2005</b>
 <p>PHP 5 compat for mysqli. MetaForeignKeys repeated twice and MYSQLI_BINARY_FLAG missing.
 <p>PHP 5.1 support for postgresql bind parameters using ? did not work if >= 10 parameters. Fixed. Thx to Stanislav Shramko.

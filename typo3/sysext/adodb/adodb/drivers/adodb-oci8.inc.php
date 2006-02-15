@@ -1,7 +1,7 @@
 <?php
 /*
 
-  version V4.68 25 Nov 2005 (c) 2000-2005 John Lim. All rights reserved.
+  version V4.71 24 Jan 2006 (c) 2000-2006 John Lim. All rights reserved.
 
   Released under both BSD license and Lesser GPL library license. 
   Whenever there is any discrepancy between the two licenses, 
@@ -797,6 +797,7 @@ NATSOFT.DOMAIN =
 	
 		if (is_array($stmt) && sizeof($stmt) >= 5) {
 			$hasref = true;
+			$ignoreCur = false;
 			$this->Parameter($stmt, $ignoreCur, $cursorName, false, -1, OCI_B_CURSOR);
 			if ($params) {
 				foreach($params as $k => $v) {
