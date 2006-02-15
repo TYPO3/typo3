@@ -18,6 +18,7 @@
 	* Install Tool: Added "cache_imagesizes" to list of tables that can be cleared
 	* !!! Indexed Search: Removed all options for indexing OpenOffice.org/OpenDocument files and replaced them with the above "unzip" option. Affected options are: nativeOOMethod, OOoExtract, ruby
 	* !!! Indexed Search: Changed all default paths from /usr/local/bin/ to /usr/bin/
+	* Removed create_symlink.sh and remove_symlink.sh from CVS because they are not needed anymore. If you still want to use symbolic links for some reason, you can find some good information in the "TYPO3 Installation & Upgrade" manual.
 
 2006-02-15  Rene Fritz  <r.fritz@colorcube.de>
 
