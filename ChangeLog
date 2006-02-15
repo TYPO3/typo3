@@ -6,7 +6,7 @@
 
 2006-02-15  Bernhard Kraft  <kraftb@kraftb.at>
 
-	* Fixed an issue with the new GIFBUILDER code and transparentColor TS option. Also fixed some minor bugs with not unlinked temp files
+	* Fixed an issue with the new GIFBUILDER code and transparentColor TS option. Also fixed some minor bugs with not unlinked temp files.
 
 2006-02-15  Kasper Skaarhoj  <kasperYYYY@typo3.com>
 
@@ -39,6 +39,7 @@
 	* Made some FE references to media/...
 	* Added index.php, showpic.php and thumbs.php scripts
 	* All thoese changes were made to make it possible to use the TYPO3 source without symlinks
+	* !!! As a consequence of this, the symlinks "arial.ttf" and "verdana.ttf" in t3lib/fonts/ have been removed completely. Please make sure that you have updated your TypoScript template accordingly. You can either upload the original fonts to the server or use a similar looking font instead (nimbus.ttf instead of arial.ttf, vera.ttf instead of verdana.ttf - both are located in t3lib/fonts/).
 
 2006-02-14  Kasper Skaarhoj  <kasperYYYY@typo3.com>
 
