@@ -1,3 +1,7 @@
+2006-02-15  Rene Fritz  <r.fritz@colorcube.de>
+
+	* Added hook to element browser to make it possible to render own EB's. All EB classes are moved into an own file.
+	
 2006-02-14  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
 	* Changes to the htmlArea RTE extension (see details in local ChangeLog)
