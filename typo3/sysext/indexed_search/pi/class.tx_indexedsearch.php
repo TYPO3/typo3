@@ -670,7 +670,6 @@ class tx_indexedsearch extends tslib_pibase {
 		}
 		$resultRows = $newResultRows;
 
-
 		switch($this->piVars['group'])	{
 			case 'sections':
 
@@ -689,6 +688,7 @@ class tx_indexedsearch extends tslib_pibase {
 					$theRLid = $rlParts[2] ? 'rl2_'.$rlParts[2]:($rlParts[1]?'rl1_'.$rlParts[1]:'0');
 
 					$sectionName = substr($this->getPathFromPageId($theId),1);
+
 					if (!trim($sectionName))	{
 						$sectionTitleLinked = $this->pi_getLL('unnamedSection','',1).':';
 					} else {

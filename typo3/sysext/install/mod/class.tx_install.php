@@ -3752,7 +3752,7 @@ From sub-directory:
 					}
 				break;
 				case 'cache':
-					$tableListArr = explode(',','cache_pages,cache_pagesection,cache_hash,--div--,sys_log,sys_history,--div--,be_sessions,fe_sessions,fe_session_data'.
+					$tableListArr = explode(',','cache_pages,cache_pagesection,cache_hash,cache_imagesizes,--div--,sys_log,sys_history,--div--,be_sessions,fe_sessions,fe_session_data'.
 						(t3lib_extMgm::isLoaded('indexed_search') ? ',--div--,index_words,index_rel,index_phash,index_grlist,index_section,index_fulltext' : '').
 						(t3lib_extMgm::isLoaded('tt_products') ? ',--div--,sys_products_orders,sys_products_orders_mm_tt_products' : '').
 						(t3lib_extMgm::isLoaded('direct_mail') ? ',--div--,sys_dmail_maillog' : '').
@@ -3783,6 +3783,7 @@ From sub-directory:
 						'cache_pages' => 'Pages',
 						'cache_pagesection' => 'TS template related information',
 						'cache_hash' => 'Multipurpose md5-hash cache',
++						'cache_imagesizes' => 'Cached image sizes',
 						'sys_log' => 'Backend action logging',
 						'sys_stat' => 'Page hit statistics',
 						'sys_history' => 'Addendum to the sys_log which tracks ALL changes to content through TCE. May become huge by time. Is used for rollback (undo) and the WorkFlow engine.',
@@ -3804,7 +3805,7 @@ From sub-directory:
 								$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('count(*)', $table, '');
 								list($countEntries[$table]) = $GLOBALS['TYPO3_DB']->sql_fetch_row($res);
 									// Checkboxes:
-								$checkBoxes[]= '<input type="checkbox" name="TYPO3_INSTALL[database_clearcache]['.$table.']" value="1"'.($this->INSTALL['database_clearcache'][$table]||$_GET['PRESET']['database_clearcache'][$table]?' checked="checked"':'').'> <strong>'.$table.'</strong> ('.$countEntries[$table].' rows) - '.$labelArr[$table];
+								$checkBoxes[]= '<input type="checkbox" name="TYPO3_INSTALL[database_clearcache]['.$table.']" id="TYPO3_INSTALL[database_clearcache]['.$table.']" value="1"'.($this->INSTALL['database_clearcache'][$table]||$_GET['PRESET']['database_clearcache'][$table]?' checked="checked"':'').'> <label for="TYPO3_INSTALL[database_clearcache]['.$table.']"><strong>'.$table.'</strong> ('.$countEntries[$table].' rows) - '.$labelArr[$table].'</label>';
 							}
 						} else {
 								$checkBoxes[]= 	'<hr />';
@@ -3908,7 +3909,7 @@ From sub-directory:
 					}
 					$formContent .= '</p><hr />';
 				}
-				$formContent .= '<p><input type="checkbox" name="TYPO3_INSTALL[update][showDatabaseQueries]" id="TYPO3_INSTALL[update][showDatabaseQueries]" value="1" /> <label  for="TYPO3_INSTALL[update][showDatabaseQueries]">Show database queries performed</label></p>';
+				$formContent .= '<p><input type="checkbox" name="TYPO3_INSTALL[update][showDatabaseQueries]" id="TYPO3_INSTALL[update][showDatabaseQueries]" value="1" /> <label for="TYPO3_INSTALL[update][showDatabaseQueries]">Show database queries performed</label></p>';
 				$content = $this->getUpdateDbFormWrap('performUpdate', $formContent,'3 -Perform updates!');
 			break;
 			case 'performUpdate':	// third step - perform update

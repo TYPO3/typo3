@@ -1,29 +1,23 @@
-  # cat=basic; type=string; label=Path to PDF parsers: The indexer uses the applications 'pdftotext' and 'pdfinfo' for extracting content from PDF files. You must install these applications in this path. Otherwise leave the field empty.
-pdftools = /usr/local/bin/
+  # cat=basic; type=string; label=Path to PDF parsers: The indexer uses the applications 'pdftotext' and 'pdfinfo' for extracting content from PDF files. These applications must be installed in this path. Otherwise leave the field empty.
+pdftools = /usr/bin/
 
   # cat=basic; type=int; label=PDF parsing mode: Zero=whole file is indexed in one. Positive value: Indicates number of pages at a time, eg. "5" would mean 1-5,6-10,.... Negative integer would indicate (abs value) number of groups. Eg "3" groups of 10 pages would be 1-4,5-8,9-10. Range is -100 to 100.
 pdf_mode = 20
 
-  # cat=basic; type=boolean; label = Native OpenOffice support: Use the extension "libunzipped" to extract Open Office files instead of the external program "ruby" / "ooo_extract.rb"
-nativeOOMethod = 0
+  # cat=basic; type=string; label=Path to unzip: The indexer uses "unzip" to extract the contents from OpenOffice.org/Oasis OpenDocument files. The application must be installed in this path. Otherwise leave the field empty.
+unzip = /usr/bin/
 
-  # cat=basic; type=string; label=Path to OOo parser: The indexer uses the application 'ooo_extract' for extracting content from OpenOffice files (unless "[nativeOOMethod]" above is set). You must install ooo_extract in this path. Otherwise leave the field empty.
-OOoExtract = /usr/local/bin/
+  # cat=basic; type=string; label=Path to WORD parser: The indexer uses the application 'catdoc' for extracting content from WORD files. The application must be installed in this path. Otherwise leave the field empty.
+catdoc = /usr/bin/
 
-  # cat=basic; type=string; label=Path to RUBY: The indexer uses the application 'ruby' for extracting content from OpenOffice files (unless "[nativeOOMethod]" above is set). You must install this application in this path. Otherwise (if ooo_extract is directly executable) leave the field empty.
-ruby = /usr/local/bin/
+  # cat=basic; type=string; label=Path to EXCEL parser: The indexer uses the application 'xlhtml' for extracting content from EXCEL files. The application must be installed in this path. Otherwise leave the field empty.
+xlhtml = /usr/bin/
 
-  # cat=basic; type=string; label=Path to WORD parser: The indexer uses the application 'catdoc' for extracting content from WORD files. You must install this application in this path. Otherwise leave the field empty.
-catdoc = /usr/local/bin/
+  # cat=basic; type=string; label=Path to POWERPOINT parser: The indexer uses the application 'ppthtml' for extracting content from POWERPOINT files. The application must be installed in this path. Otherwise leave the field empty.
+ppthtml = /usr/bin/
 
-  # cat=basic; type=string; label=Path to EXCEL parser: The indexer uses the application 'xlhtml' for extracting content from EXCEL files. You must install this application in this path. Otherwise leave the field empty.
-xlhtml = /usr/local/bin/
-
-  # cat=basic; type=string; label=Path to POWERPOINT parser: The indexer uses the application 'ppthtml' for extracting content from POWERPOINT files. You must install this application in this path. Otherwise leave the field empty.
-ppthtml = /usr/local/bin/
-
-  # cat=basic; type=string; label=Path to RTF parser: The indexer uses the application 'unrtf' for extracting content from RTF files. You must install this application in this path. Otherwise leave the field empty.
-unrtf = /usr/local/bin/
+  # cat=basic; type=string; label=Path to RTF parser: The indexer uses the application 'unrtf' for extracting content from RTF files. The application must be installed in this path. Otherwise leave the field empty.
+unrtf = /usr/bin/
 
    # cat=basic; type=boolean; label=Debug mode: If set, debugging information is collected during indexing and can be shown in the backend. Only for debugging since it slows down the system and fills the database with crap.
 debugMode = 0

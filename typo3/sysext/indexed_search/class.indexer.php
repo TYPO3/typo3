@@ -742,7 +742,11 @@ class tx_indexedsearch_indexer {
 		foreach($list as $linkInfo)	{
 
 				// Decode entities:
-			$linkSource = t3lib_div::htmlspecialchars_decode($linkInfo['href']);
+			if ($linkInfo['localPath'])	{	// localPath means: This file is sent by a download script. While the indexed URL has to point to $linkInfo['href'], the absolute path to the file is specified here!
+				$linkSource = t3lib_div::htmlspecialchars_decode($linkInfo['localPath']);
+			} else {
+				$linkSource = t3lib_div::htmlspecialchars_decode($linkInfo['href']);
+			}
 
 				// Parse URL:
 			$qParts = parse_url($linkSource);
@@ -760,10 +764,20 @@ class tx_indexedsearch_indexer {
 					$this->indexExternalUrl($linkSource);
 				}
 			} elseif (!$qParts['query']) {
-				$localFile = t3lib_div::getFileAbsFileName(PATH_site.$linkSource);
+				if (t3lib_div::isAllowedAbsPath($linkSource))	{
+					$localFile = $linkSource;
+				} else {
+					$localFile = t3lib_div::getFileAbsFileName(PATH_site.$linkSource);
+				}
 				if ($localFile && @is_file($localFile))	{
 						// Index local file:
-					$this->indexRegularDocument($linkSource);
+					if ($linkInfo['localPath'])	{
+						$fI = pathinfo($linkSource);
+						$ext = strtolower($fI['extension']);
+						$this->indexRegularDocument($linkInfo['href'], false, $linkSource, $ext);
+					} else {
+						$this->indexRegularDocument($linkSource);
+					}
 				}
 			}
 		}
@@ -792,9 +806,16 @@ class tx_indexedsearch_indexer {
 					case 'a':
 						$src = $params[0]['href'];
 						if ($src)	{
+								// Check if a local path to that file has been set - useful if you are using a download script.
+							$md5 = t3lib_div::shortMD5($src);
+							if (is_array($indexLocalFiles=$GLOBALS['T3_VAR']['ext']['indexed_search']['indexLocalFiles']))	{
+								$localPath = isset($indexLocalFiles[$md5]) ? $indexLocalFiles[$md5] : '';
+							}
+
 							$list[] = array(
 								'tag' => $v,
-								'href' => $params[0]['href']
+								'href' => $params[0]['href'],
+								'localPath' => $localPath
 							);
 						}
 					break;

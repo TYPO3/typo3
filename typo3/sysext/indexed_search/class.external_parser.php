@@ -105,7 +105,6 @@ class tx_indexed_search_extparse {
 		$ignoreExtensions = t3lib_div::trimExplode(',', strtolower($indexerConfig['ignoreExtensions']),1);
 		if (in_array($extension, $ignoreExtensions))	{
 			$this->pObj->log_setTSlogMessage('Extension "'.$extension.'" was set to be ignored.',1);
-
 			return FALSE;
 		}
 
@@ -131,7 +130,7 @@ class tx_indexed_search_extparse {
 					if (ini_get('safe_mode') || @is_file($catdocPath.'catdoc'.$exe))	{
 						$this->app['catdoc'] = $catdocPath.'catdoc'.$exe;
 						$extOK = TRUE;
-					} else $this->pObj->log_setTSlogMessage("'catdoc' tool for reading Word-files was not found in paths '".$catdocPath."catdoc'",3);
+					} else $this->pObj->log_setTSlogMessage("'catdoc' tool for reading Word-files was not found in path '".$catdocPath."catdoc'",3);
 				} else $this->pObj->log_setTSlogMessage('catdoc tools (Word-files) disabled',1);
 			break;
 			case 'pps':		// MS PowerPoint(?)
@@ -142,7 +141,7 @@ class tx_indexed_search_extparse {
 					if (ini_get('safe_mode') || @is_file($ppthtmlPath.'ppthtml'.$exe)){
 						$this->app['ppthtml'] = $ppthtmlPath.'ppthtml'.$exe;
 						$extOK = TRUE;
-					} else $this->pObj->log_setTSlogMessage("'ppthtml' tool for reading Powerpoint-files was not found in paths '".$ppthtmlPath."ppthtml'",3);
+					} else $this->pObj->log_setTSlogMessage("'ppthtml' tool for reading Powerpoint-files was not found in path '".$ppthtmlPath."ppthtml'",3);
 				} else $this->pObj->log_setTSlogMessage('ppthtml tools (Powerpoint-files) disabled',1);
 			break;
 			case 'xls':		// MS Excel
@@ -152,35 +151,22 @@ class tx_indexed_search_extparse {
 					if (ini_get('safe_mode') || @is_file($xlhtmlPath.'xlhtml'.$exe)){
 						$this->app['xlhtml'] = $xlhtmlPath.'xlhtml'.$exe;
 						$extOK = TRUE;
-					} else $this->pObj->log_setTSlogMessage("'xlhtml' tool for reading Excel-files was not found in paths '".$xlhtmlPath."xlhtml'",3);
+					} else $this->pObj->log_setTSlogMessage("'xlhtml' tool for reading Excel-files was not found in path '".$xlhtmlPath."xlhtml'",3);
 				} else $this->pObj->log_setTSlogMessage('xlhtml tools (Excel-files) disabled',1);
 			break;
 			case 'sxc':		// Open Office Calc.
 			case 'sxi':		// Open Office Impress
 			case 'sxw':		// Open Office Writer
-					// ooo_extract.rb can be found at: http://www.math.umd.edu/~dcarrera/openoffice/misc/tools/ooo_extract.html
-					// I had to run this on debian before I could run the ooo_extract.rb script:
-					//		apt-get install libzlib-ruby1.8
-					//		apt-get install librexml-ruby1.8
-					// ruby + ooo_extract
-				if ($indexerConfig['nativeOOMethod'])	{
-					if (t3lib_extMgm::isLoaded('libunzipped'))	{
-						$this->app['nativeOOMethod'] = TRUE;
+			case 'ods':		// Oasis OpenDocument Spreadsheet
+			case 'odp':		// Oasis OpenDocument Presentation
+			case 'odt':		// Oasis OpenDocument Text
+				if ($indexerConfig['unzip'])	{
+					$unzipPath = preg_replace('/\/$/','',$indexerConfig['unzip']).'/';
+					if (ini_get('safe_mode') || @is_file($unzipPath.'unzip'.$exe))	{
+						$this->app['unzip'] = $unzipPath.'unzip'.$exe;
 						$extOK = TRUE;
-						$this->pObj->log_setTSlogMessage('Using "libunzipped" for extraction of Open Office files, "'.$extension.'".',1);
-					} else $this->pObj->log_setTSlogMessage('The extension "libunzipped" was not loaded (for extraction of Open Office files, "'.$extension.'")',2);
-				} else {
-					if ($indexerConfig['OOoExtract'])	{
-						if($indexerConfig['ruby'])	{ $rubyPath = ereg_replace('\/$','',$indexerConfig['ruby']).'/'; }
-
-						$oooExPath = ereg_replace('\/$','',$indexerConfig['OOoExtract']).'/';
-						if (ini_get('safe_mode') || (($rubyPath ? @is_file($rubyPath.'ruby'.$exe) : true) && @is_file($oooExPath.'ooo_extract.rb')))	{
-							$this->app['ruby'] = $rubyPath.'ruby'.$exe;
-							$this->app['OOo'] = $oooExPath.'ooo_extract.rb';
-							$extOK = TRUE;
-						} else $this->pObj->log_setTSlogMessage("'Ruby and OOo_extract' tools for reading OpenOffice.org documents were not found in paths '".$rubyPath."ruby".$exe."' OR '".$oooExPath."ooo_extract.rb'",3);
-					} else $this->pObj->log_setTSlogMessage('Ruby & OOo_extract tools (OpenOffice-files) disabled',1);
-				}
+					} else $this->pObj->log_setTSlogMessage("'unzip' tool for reading OpenOffice.org-files was not found in path '".$unzipPath."unzip'",3);
+				} else $this->pObj->log_setTSlogMessage('unzip tool (OpenOffice.org-files) disabled',1);
 			break;
 			case 'rtf':
 					// Catdoc
@@ -189,7 +175,7 @@ class tx_indexed_search_extparse {
 					if (ini_get('safe_mode') || @is_file($unrtfPath.'unrtf'.$exe))	{
 						$this->app['unrtf'] = $unrtfPath.'unrtf'.$exe;
 						$extOK = TRUE;
-					} else $this->pObj->log_setTSlogMessage("'unrtf' tool for reading RTF-files was not found in paths '".$unrtfPath."unrtf'",3);
+					} else $this->pObj->log_setTSlogMessage("'unrtf' tool for reading RTF-files was not found in path '".$unrtfPath."unrtf'",3);
 				} else $this->pObj->log_setTSlogMessage('unrtf tool (RTF-files) disabled',1);
 			break;
 			case 'txt':		// Raw text
@@ -235,6 +221,9 @@ class tx_indexed_search_extparse {
 			case 'sxc':		// Open Office Calc.
 			case 'sxi':		// Open Office Impress
 			case 'sxw':		// Open Office Writer
+			case 'ods':		// Oasis OpenDocument Spreadsheet
+			case 'odp':		// Oasis OpenDocument Presentation
+			case 'odt':		// Oasis OpenDocument Text
 			case 'rtf':		// RTF documents
 			case 'txt':		// ASCII Text documents
 			case 'html':	// HTML
@@ -296,7 +285,10 @@ class tx_indexed_search_extparse {
 			case 'sxc':		// Open Office Calc.
 			case 'sxi':		// Open Office Impress
 			case 'sxw':		// Open Office Writer
-				if ($indexerConfig['nativeOOMethod'] || $indexerConfig['ruby'])	{
+			case 'ods':		// Oasis OpenDocument Spreadsheet
+			case 'odp':		// Oasis OpenDocument Presentation
+			case 'odt':		// Oasis OpenDocument Text
+				if ($indexerConfig['unzip'])	{
 					return 'Open Office';
 				}
 			break;
@@ -425,52 +417,37 @@ class tx_indexed_search_extparse {
 			case 'sxi':
 			case 'sxc':
 			case 'sxw':
-				if ($this->app['nativeOOMethod'])	{
-					if (t3lib_extMgm::isLoaded('libunzipped'))	{
+			case 'ods':
+			case 'odp':
+			case 'odt':
+				if ($this->app['unzip'])	{
+						// Read content.xml:
+					$cmd = $this->app['unzip'].' -p '.$absFile.' content.xml';
+					exec($cmd,$out);
+					$content_xml = implode(chr(10),$out);
 
-						global $TYPO3_CONF_VARS;
-						require_once(t3lib_extMgm::extPath('libunzipped').'class.tx_libunzipped.php');
+						// Read meta.xml:
+					$cmd = $this->app['unzip'].' -p '.$absFile.' meta.xml';
+					exec($cmd, $out);
+					$meta_xml = implode(chr(10),$out);
 
-							// Initialize Unzip object:
-						$unzip = t3lib_div::makeInstance('tx_libunzipped');
-						$ooFiles = $unzip->init($absFile);
-						if (is_array($ooFiles))	{
-								// Read content.xml:
-							$content_xml = $unzip->getFileFromArchive('content.xml');
-							$meta_xml = $unzip->getFileFromArchive('meta.xml');
-							$utf8_content = trim(strip_tags(str_replace('<',' <',$content_xml['content'])));
-							$contentArr = $this->pObj->splitRegularContent($utf8_content);
-							$contentArr['title'] = basename($absFile);	// Make sure the title doesn't expose the absolute path!
+					$utf8_content = trim(strip_tags(str_replace('<',' <',$content_xml)));
+					$contentArr = $this->pObj->splitRegularContent($utf8_content);
+					$contentArr['title'] = basename($absFile);	// Make sure the title doesn't expose the absolute path!
 
-								// Meta information
-							$metaContent = t3lib_div::xml2tree($meta_xml['content']);
-							$metaContent = $metaContent['office:document-meta'][0]['ch']['office:meta'][0]['ch'];
-							if (is_array($metaContent))	{
-								$contentArr['title'] = $metaContent['dc:title'][0]['values'][0] ? $metaContent['dc:title'][0]['values'][0] : $contentArr['title'];
-								$contentArr['description'] = $metaContent['dc:subject'][0]['values'][0].' '.$metaContent['dc:description'][0]['values'][0];
+						// Meta information
+					$metaContent = t3lib_div::xml2tree($meta_xml);
+					$metaContent = $metaContent['office:document-meta'][0]['ch']['office:meta'][0]['ch'];
+					if (is_array($metaContent))	{
+						$contentArr['title'] = $metaContent['dc:title'][0]['values'][0] ? $metaContent['dc:title'][0]['values'][0] : $contentArr['title'];
+						$contentArr['description'] = $metaContent['dc:subject'][0]['values'][0].' '.$metaContent['dc:description'][0]['values'][0];
 
-									// Keywords collected:
-								if (is_array($metaContent['meta:keywords'][0]['ch']['meta:keyword']))	{
-									foreach($metaContent['meta:keywords'][0]['ch']['meta:keyword'] as $kwDat)	{
-										$contentArr['keywords'].= $kwDat['values'][0].' ';
-									}
-								}
+							// Keywords collected:
+						if (is_array($metaContent['meta:keywords'][0]['ch']['meta:keyword']))	{
+							foreach ($metaContent['meta:keywords'][0]['ch']['meta:keyword'] as $kwDat)	{
+								$contentArr['keywords'].= $kwDat['values'][0].' ';
 							}
 						}
-					}
-				} else {
-					if ($this->app['ruby'])	{
-							// Extracting document headers:
-						$cmd = $this->app['ruby'].' '.$this->app['OOo'].' --heading "'.$absFile.'"';
-						exec($cmd,$headings);
-
-							// Extracting document text:
-						$cmd = $this->app['ruby'].' '.$this->app['OOo'].' "'.$absFile.'"';
-						exec($cmd,$texts);
-
-						$content = implode(chr(10),$headings).' '.implode(chr(10),$texts);
-						$contentArr = $this->pObj->splitRegularContent($content);
-						$contentArr['title'] = basename($absFile);	// Make sure the title doesn't expose the absolute path!
 					}
 				}
 			break;

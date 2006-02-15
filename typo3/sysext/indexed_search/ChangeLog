@@ -1,3 +1,11 @@
+2006-02-15  Michael Stucki  <michael@typo3.org>
+
+	* Added $GLOBALS['T3_VAR']['ext']['indexed_search']['indexLocalFiles'] to the indexed_search. This array may contain key/value pairs of the MD5sum of a download URL (key) and the local path of that document (value).
+	* Added support for indexing Oasis/OpenDocument files
+	* OpenOffice.org/OpenDocument now uses "unzip" to extract content.xml/meta.xml. Should be faster than before, and is easier to configure.
+	* !!! Removed all options for indexing OpenOffice.org/OpenDocument files and replaced them with the above "unzip" option. Affected options are: nativeOOMethod, OOoExtract, ruby
+	* !!! Changed all default paths from /usr/local/bin/ to /usr/bin/
+
 2006-02-08  Michael Stucki  <michael@typo3.org>
 
 	* Added support to index files that contain whitespaces in the path

@@ -1,7 +1,14 @@
+2006-02-15  Michael Stucki  <michael@typo3.org>
+
+	* Various changes to indexed_search, see local ChangeLog for details
+	* Install Tool: Added "cache_imagesizes" to list of tables that can be cleared
+	* !!! Indexed Search: Removed all options for indexing OpenOffice.org/OpenDocument files and replaced them with the above "unzip" option. Affected options are: nativeOOMethod, OOoExtract, ruby
+	* !!! Indexed Search: Changed all default paths from /usr/local/bin/ to /usr/bin/
+
 2006-02-15  Rene Fritz  <r.fritz@colorcube.de>
 
 	* Added hook to element browser to make it possible to render own EB's. All EB classes are moved into an own file.
-	
+
 2006-02-14  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
 	* Changes to the htmlArea RTE extension (see details in local ChangeLog)
@@ -14,7 +21,8 @@
 	* Added index.php, showpic.php and thumbs.php scripts
 	* All thoese changes were made to make it possible to use the TYPO3 source without symlinks
 
-2006-02-14  Kasper SkŒrh¿j
+2006-02-14  Kasper Skaarhoj
+
 	* Fixed part II of the versioning swapping change: Now versioning is completely independent of MySQL versions and it is fully DBAL compliant: Records are swapping content rather than ids (locking file support integrated which stores swapped records in case something goes wrong - however, no tool for reverting using this lock file...)
 	* Finished version 1.0 of the ADMCMD_prev feature which allows a keyword (md5 hash) to preview pages which otherwise would require a backend login (like workspace preview). In Web>Versioning you will find an implementation of this feature which will generate links you can sent to people for previewing workspace content. The concept could be extended to set other preview flags like hidden/starttime/endtime/fe_groups etc. But this is just a simple implementation for workspaces.
 
@@ -30,7 +38,7 @@
 2006-02-13 Karsten Dambekalns <karsten@typo3.org>
 
 	* class.tx_install.php: Changed the way documentation is extracted from comments in config_default.php.
-	* t3lib/config_default.php, typo3/stylesheet.css, typo3/mod/tolls/em/: First CVS release of new Extension Manager codebase.
+	* t3lib/config_default.php, typo3/stylesheet.css, typo3/mod/tools/em/: First CVS release of new Extension Manager codebase.
 
 2006-02-11  Bernhard Kraft  <kraftb@kraftb.at>
 
@@ -735,6 +743,11 @@
 	* Added a JavaScript to the backend which makes it possible to use tabulator keys in textareas. Can be disabled by setting $BE_USER->uc['disableTabInTextarea'].
 	* Added template support to indexed_search. Many thanks to Udo von Eynern for his great work!
 	* Many other changes to indexed_search. For details, see typo3/sysext/indexed_search/ChangeLog.
+	* !!! Indexed Search: In the past, pages were marked as search hits even if a user had no access to it. This default has been changed, but the setting can be reverted by setting "show.forbiddenRecords"
+	* !!! Indexed Search: New option "show.resultNumber" for displaying the numbers of the search results. The old behavior was to display the numbers, but the default value has been changed to the opposite (0).
+	* !!! Indexed Search: The default search type has been changed to "part of word" instead of "distinct word". Please note that this will be slower than before, however it is more Google-like (=logical?) that searching for "mistak" will match "mistake", too.
+	* !!! Indexed Search: The default result layout has been changed from "sections" to "flat"
+	* !!! Indexed Search: Because of the template support, some options have been removed. You will need to adjust the layout in the template file for these settings: "tableParams.secHead", "tableParams.searchRes"
 
 2005-10-14  Andreas Otto  <andreas.otto@dkd.de>
 
