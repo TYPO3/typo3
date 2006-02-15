@@ -99,14 +99,14 @@ class SC_browser {
 		$this->content.=$GLOBALS['TBE_TEMPLATE']->startPage($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:TYPO3_Element_Browser'));
 
 			// URL for the inner main frame:
-		$url = 'browse_links.php?mode='.rawurlencode($mode).'&bparams='.rawurlencode($bparams);
+		$url = $GLOBALS['BACK_PATH'].'browse_links.php?mode='.rawurlencode($mode).'&bparams='.rawurlencode($bparams);
 
 			// Create the frameset for the window:
 			// Formerly there were a ' onunload="closing();"' in the <frameset> tag - but it failed on Safari browser on Mac unless the handler was "onUnload"
 		$this->content.='
 			<frameset rows="*,1" framespacing="0" frameborder="0" border="0">
 				<frame name="content" src="'.htmlspecialchars($url).'" marginwidth="0" marginheight="0" frameborder="0" scrolling="auto" noresize="noresize" />
-				<frame name="menu" src="dummy.php" marginwidth="0" marginheight="0" frameborder="0" scrolling="no" noresize="noresize" />
+				<frame name="menu" src="'.$GLOBALS['BACK_PATH'].'dummy.php" marginwidth="0" marginheight="0" frameborder="0" scrolling="no" noresize="noresize" />
 			</frameset>
 		';
 
