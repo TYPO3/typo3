@@ -163,7 +163,7 @@ class t3lib_tsfeBeUserAuth extends t3lib_beUserAuth {
 		}
 
 		$header.='
-			<tr class="typo3-adminPanel-hRow" bgcolor="#9BA1A8">
+			<tr class="typo3-adminPanel-hRow" style="background-color:#9ba1a8;">
 				<td colspan="4" nowrap="nowrap">'.
 					$this->extItemLink('top','<img src="'.TYPO3_mainDir.'gfx/ol/'.($this->uc['TSFE_adminConfig']['display_top']?'minus':'plus').'bullet.gif" width="18" height="16" align="absmiddle" border="0" alt="" /><strong>'.$this->extFw($this->extGetLL('adminOptions')).'</strong>').
 					$this->extFw(': '.$this->user['username']).'
@@ -176,8 +176,8 @@ class t3lib_tsfeBeUserAuth extends t3lib_beUserAuth {
 	ADMIN PANEL
 -->
 <a name="TSFE_ADMIN"></a>
-<form name="TSFE_ADMIN_PANEL_FORM" action="'.htmlspecialchars(t3lib_div::getIndpEnv('REQUEST_URI')).'#TSFE_ADMIN" method="post" style="margin: 0 0 0 0;">
-	<table border="0" cellpadding="0" cellspacing="0" class="typo3-adminPanel" bgcolor="#F6F2E6" style="border: 1px solid black; z-index:0; position:absolute;">'.
+<form name="TSFE_ADMIN_PANEL_FORM" action="'.htmlspecialchars(t3lib_div::getIndpEnv('REQUEST_URI')).'#TSFE_ADMIN" method="get" style="margin:0;">
+	<table border="0" cellpadding="0" cellspacing="0" class="typo3-adminPanel" style="background-color:#f6f2e6; border: 1px solid black; z-index:0; position:absolute;">'.
 		$header.$out.'
 	</table>
 </form>';
@@ -507,8 +507,8 @@ class t3lib_tsfeBeUserAuth extends t3lib_beUserAuth {
 		$out.=$this->extFw($this->extGetLL($pre));
 		$out=$this->extItemLink($pre,$out);
 		return '
-				<tr class="typo3-adminPanel-itemHRow" bgcolor="#ABBBB4">
-					<td colspan="4" nowrap="nowrap">'.$out.'<input type="hidden" name="TSFE_ADMIN_PANEL[display_'.$pre.']" value="'.$this->uc['TSFE_adminConfig']['display_'.$pre].'" /></td>
+				<tr class="typo3-adminPanel-itemHRow" style="background-color:#abbbb4;">
+					<td colspan="4" nowrap="nowrap" style="border-top:dashed 1px #007a8c;">'.$out.'<input type="hidden" name="TSFE_ADMIN_PANEL[display_'.$pre.']" value="'.$this->uc['TSFE_adminConfig']['display_'.$pre].'" /></td>
 				</tr>';
 	}
 
@@ -522,7 +522,7 @@ class t3lib_tsfeBeUserAuth extends t3lib_beUserAuth {
 	 * @see extGetHead()
 	 */
 	function extItemLink($pre,$str)	{
-		return '<a href="#" onclick="'.
+		return '<a href="#" style="text-decoration:none;" onclick="'.
 			htmlspecialchars('document.TSFE_ADMIN_PANEL_FORM[\'TSFE_ADMIN_PANEL[display_'.$pre.']\'].value='.($this->uc['TSFE_adminConfig']['display_'.$pre]?'0':'1').'; document.TSFE_ADMIN_PANEL_FORM.submit(); return false;').
 			'">'.$str.'</a>';
 	}
@@ -705,7 +705,7 @@ class t3lib_tsfeBeUserAuth extends t3lib_beUserAuth {
 	 * @return	void
 	 */
 	function extSaveFeAdminConfig()	{
-		$input = t3lib_div::_POST('TSFE_ADMIN_PANEL');
+		$input = t3lib_div::_GET('TSFE_ADMIN_PANEL');
 		if (is_array($input))	{
 				// Setting
 			$this->uc['TSFE_adminConfig'] = array_merge(!is_array($this->uc['TSFE_adminConfig'])?array():$this->uc['TSFE_adminConfig'], $input);			// Candidate for t3lib_div::array_merge() if integer-keys will some day make trouble...
