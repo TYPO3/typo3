@@ -368,7 +368,7 @@ class t3lib_recordList {
 			// Set default:
 		$this->languageIconTitles[0]=array(
 			'uid' => 0,
-			'title' => strlen ($this->modSharedTSconfig['properties']['defaultLanguageFlag']) ? $this->modSharedTSconfig['properties']['defaultLanguageLabel'].' ('.$LANG->getLL('defaultLanguage').')' : $LANG->getLL('defaultLanguage'),
+			'title' => strlen ($this->modSharedTSconfig['properties']['defaultLanguageLabel']) ? $this->modSharedTSconfig['properties']['defaultLanguageLabel'].' ('.$LANG->getLL('defaultLanguage').')' : $LANG->getLL('defaultLanguage'),
 			'ISOcode' => 'DEF',
 			'flagIcon' => strlen($this->modSharedTSconfig['properties']['defaultLanguageFlag']) && @is_file($flagAbsPath.$this->modSharedTSconfig['properties']['defaultLanguageFlag']) ? $flagIconPath.$this->modSharedTSconfig['properties']['defaultLanguageFlag'] : null,
 		);
