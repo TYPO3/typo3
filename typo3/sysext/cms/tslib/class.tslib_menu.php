@@ -1687,7 +1687,7 @@ class tslib_tmenu extends tslib_menu {
 				}
 			}
 			$GLOBALS['TSFE']->imagesOnPage[]=$imgInfo[3];
-			$res='<img src="'.$GLOBALS['TSFE']->absRefPrefix.$imgInfo[3].'" width="'.$imgInfo[0].'" height="'.$imgInfo[1].'"'.$name.($this->I['val'][$pref.'ImgTagParams']?" ".$this->I['val'][$pref.'ImgTagParams']:'').' border="0"';
+			$res='<img src="'.$GLOBALS['TSFE']->absRefPrefix.$imgInfo[3].'" width="'.$imgInfo[0].'" height="'.$imgInfo[1].'"'.$name.($this->I['val'][$pref.'ImgTagParams']?" ".$this->I['val'][$pref.'ImgTagParams']:'').tslib_cObj::getBorderAttr('border="0"');
 			if (!strstr($res,'alt="'))	$res.=' alt=""';	// Adding alt attribute if not set.
 			$res.=' />';
 			if ($this->I['val'][$pref.'ImgLink'])	{$res=$this->I['A1'].$res.$this->I['A2'];}
@@ -2218,7 +2218,7 @@ class tslib_gmenu extends tslib_menu {
 						$this->I['A1'] = '';
 						$this->I['A2'] = '';
 					}
-					$this->I['IMG'] = '<img src="'.$GLOBALS['TSFE']->absRefPrefix.$this->I['val']['output_file'].'" width="'.$this->I['val']['output_w'].'" height="'.$this->I['val']['output_h'].'" border="0" alt="'.htmlspecialchars($this->I['altText']).'"'.$this->I['name'].($this->I['val']['imgParams']?' '.$this->I['val']['imgParams']:'').' />';
+					$this->I['IMG'] = '<img src="'.$GLOBALS['TSFE']->absRefPrefix.$this->I['val']['output_file'].'" width="'.$this->I['val']['output_w'].'" height="'.$this->I['val']['output_h'].'" '.tslib_cObj::getBorderAttr('border="0"').' alt="'.htmlspecialchars($this->I['altText']).'"'.$this->I['name'].($this->I['val']['imgParams']?' '.$this->I['val']['imgParams']:'').' />';
 
 						// Make before, middle and after parts
 					$this->I['parts'] = array();

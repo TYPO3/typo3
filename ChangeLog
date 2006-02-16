@@ -1,3 +1,7 @@
+2006-02-16	Michael Scharkow <michael@underused.org>
+	* Fixed bug #2457: image border settings are respected in GMENUs
+	* Updated the copyright notices to 2006 and set version back to 4.0-CVS
+
 2006-02-16  Kasper Skaarhoj  <kasperYYYY@typo3.com>
 	* Added new script (tslib/class.tslib_eidtools.php) with tools for "eID scripts". See extension "whiteboard" for an example!
 

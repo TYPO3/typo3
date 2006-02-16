@@ -564,7 +564,7 @@ class SC_index {
 					'<img src="gfx/loginlogo_transp.gif" width="75" height="19" alt="TYPO3 logo" align="left" />'.
 					'TYPO3 CMS'.($GLOBALS['TYPO3_CONF_VARS']['SYS']['loginCopyrightShowVersion']?' ver. '.htmlspecialchars($GLOBALS['TYPO_VERSION']):'').
 					'</a>. '.
-					'Copyright &copy; 1998-2005 Kasper Sk&#229;rh&#248;j. Extensions are copyright of their respective owners. '.
+					'Copyright &copy; 1998-2006 Kasper Sk&#229;rh&#248;j. Extensions are copyright of their respective owners. '.
 					'Go to <a href="http://typo3.com/" target="_blank">http://typo3.com/</a> for details. '.
 					$warrantyNote.' '.
 					'This is free software, and you are welcome to redistribute it under certain conditions; <a href="http://typo3.com/1316.0.html" target="_blank">click for details</a>. '.

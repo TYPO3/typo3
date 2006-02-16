@@ -242,7 +242,7 @@ $TYPO3_CONF_VARS = Array(
 $T3_VAR = array();	// Initialize.
 
 	// TYPO3 version
-$TYPO_VERSION = '4.0beta1';
+$TYPO_VERSION = '4.0-CVS';
 define('TYPO3_version', $TYPO_VERSION);
 define('TYPO3_branch', '4.0');
 
