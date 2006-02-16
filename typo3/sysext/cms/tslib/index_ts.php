@@ -133,6 +133,7 @@ if (!get_magic_quotes_gpc())	{
 // *********************
 if ($temp_extId = t3lib_div::_GP('eID'))	{
 	if ($classPath = t3lib_div::getFileAbsFileName($TYPO3_CONF_VARS['FE']['eID_include'][$temp_extId]))	{
+		require_once(PATH_tslib.'class.tslib_eidtools.php');
 		require($classPath);
 	}
 	exit;
