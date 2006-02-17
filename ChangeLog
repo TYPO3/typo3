@@ -1,3 +1,7 @@
+2006-02-17 Karsten Dambekalns <karsten@typo3.org>
+
+	* Fixed bugs #2368, #2521, #2385, #2186 related to DBAL
+
 2006-02-17  Michael Stucki  <michael@typo3.org>
 
 	* Fixed bug #2597: GDlib TrueType tests fail because of wrong fontFile-path (caused by the symlinks change)
@@ -16,7 +20,8 @@
 	* Fixed bug #2457: image border settings are respected in GMENUs
 	* Updated the copyright notices to 2006 and set version back to 4.0-CVS
 
-2006-02-16  Kasper Skaarhoj  <kasperYYYY@typo3.com>
+2006-02-16 Kasper Skaarhoj  <kasperYYYY@typo3.com>
+
 	* Added new script (tslib/class.tslib_eidtools.php) with tools for "eID scripts". See extension "whiteboard" for an example!
 
 2006-02-15  Karsten Dambekalns  <karsten@typo3.org>

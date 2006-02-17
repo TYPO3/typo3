@@ -622,7 +622,7 @@ class ux_t3lib_DB extends t3lib_DB {
 			$this->resourceIdToTableNameMap[(string)$sqlResult] = $ORIG_tableName;
 			break;
 			case 'adodb':
-			if ($limit)	{
+			if ($limit!='')	{
 				$splitLimit = t3lib_div::intExplode(',',$limit);		// Splitting the limit values:
 				if ($splitLimit[1])	{	// If there are two parameters, do mapping differently than otherwise:
 					$numrows = $splitLimit[1];
@@ -635,7 +635,7 @@ class ux_t3lib_DB extends t3lib_DB {
 				$sqlResult = $this->handlerInstance[$this->lastHandlerKey]->SelectLimit($this->SELECTquery($select_fields,$from_table,$where_clause,$groupBy,$orderBy), $numrows, $offset);
 				$this->lastQuery = $sqlResult->sql;
 			} else {
-				$this->lastQuery = $this->SELECTquery($select_fields,$from_table,$where_clause,$groupBy,$orderBy,$limit);
+				$this->lastQuery = $this->SELECTquery($select_fields,$from_table,$where_clause,$groupBy,$orderBy);
 				$sqlResult = $this->handlerInstance[$this->lastHandlerKey]->_Execute($this->lastQuery);
 			}
 			$sqlResult->TYPO3_DBAL_handlerType = 'adodb';	// Setting handler type in result object (for later recognition!)
@@ -1529,13 +1529,15 @@ class ux_t3lib_DB extends t3lib_DB {
 			break;
 			case 'adodb':
 			$sqlResult = $this->handlerInstance['_DEFAULT']->Execute($query);
+			$sqlResult->TYPO3_DBAL_handlerType = 'adodb';
 			break;
 			case 'userdefined':
 			$sqlResult = $this->handlerInstance['_DEFAULT']->sql_query($query);
+			$sqlResult->TYPO3_DBAL_handlerType = 'userdefined';
 			break;
 		}
 
-		// Print errors:
+			// Print errors:
 		if ($this->printErrors && $this->sql_error())	{ debug(array($this->lastQuery, $this->sql_error()));	}
 
 		return $sqlResult;
@@ -2007,7 +2009,7 @@ class ux_t3lib_DB extends t3lib_DB {
 		if (is_array($cfgArray))	{
 			switch($handlerType)	{
 				case 'native':
-				$link = mysql_pconnect($cfgArray['config']['host'], $cfgArray['config']['username'], $cfgArray['config']['password']);
+				$link = mysql_pconnect($cfgArray['config']['host'].(isset($cfgArray['config']['port']) ? ':'.$cfgArray['config']['port'] : ''), $cfgArray['config']['username'], $cfgArray['config']['password']);
 
 				// Set handler instance:
 				$this->handlerInstance[$handlerKey] = array('handlerType' => 'native', 'link' => $link);
@@ -2034,14 +2036,14 @@ class ux_t3lib_DB extends t3lib_DB {
 
 				$this->handlerInstance[$handlerKey] = &ADONewConnection($cfgArray['config']['driver']);
 				if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['no_pconnect'])	{
-					$this->handlerInstance[$handlerKey]->Connect($cfgArray['config']['host'],$cfgArray['config']['username'],$cfgArray['config']['password'],$cfgArray['config']['database']);
+					$this->handlerInstance[$handlerKey]->Connect($cfgArray['config']['host'].(isset($cfgArray['config']['port']) ? ':'.$cfgArray['config']['port'] : ''),$cfgArray['config']['username'],$cfgArray['config']['password'],$cfgArray['config']['database']);
 				} else {
-					$this->handlerInstance[$handlerKey]->PConnect($cfgArray['config']['host'],$cfgArray['config']['username'],$cfgArray['config']['password'],$cfgArray['config']['database']);
+					$this->handlerInstance[$handlerKey]->PConnect($cfgArray['config']['host'].(isset($cfgArray['config']['port']) ? ':'.$cfgArray['config']['port'] : ''),$cfgArray['config']['username'],$cfgArray['config']['password'],$cfgArray['config']['database']);
 				}
 				if(!$this->handlerInstance[$handlerKey]->isConnected()) {
 					$dsn = $cfgArray['config']['driver'].'://'.$cfgArray['config']['username'].
 						(strlen($cfgArray['config']['password']) ? ':XXXX@' : '').
-						$cfgArray['config']['host'].'/'.$cfgArray['config']['database'].
+						$cfgArray['config']['host'].(isset($cfgArray['config']['port']) ? ':'.$cfgArray['config']['port'] : '').'/'.$cfgArray['config']['database'].
 						($GLOBALS['TYPO3_CONF_VARS']['SYS']['no_pconnect'] ? '' : '?persistent=1');
 					error_log('DBAL error: Connection to '.$dsn.' failed. Maybe PHP doesn\'t support the database?');
 					$output = false;

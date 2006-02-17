@@ -150,7 +150,11 @@ class ux_t3lib_sqlengine extends t3lib_sqlengine {
 						foreach($kCfg as $n => $field)	{
 							$fieldsKeys[$field] .= ' PRIMARY';
 						}
-						} else {
+					} elseif ($kN == 'UNIQUE')	{
+						foreach($kCfg as $n => $field)	{
+							$indexKeys = array_merge($indexKeys, $GLOBALS['TYPO3_DB']->handlerInstance[$GLOBALS['TYPO3_DB']->handler_getFromTableList($components['TABLE'])]->DataDictionary->CreateIndexSQL($n, $components['TABLE'], $field, array('UNIQUE')));
+						}
+					} else {
 						$indexKeys = array_merge($indexKeys, $GLOBALS['TYPO3_DB']->handlerInstance[$GLOBALS['TYPO3_DB']->handler_getFromTableList($components['TABLE'])]->DataDictionary->CreateIndexSQL($components['TABLE'].'_'.$kN, $components['TABLE'], $kCfg));
 					}
 				}

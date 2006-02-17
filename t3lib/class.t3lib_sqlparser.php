@@ -449,13 +449,20 @@ class t3lib_sqlparser {
 
 				// While the parseString is not yet empty:
 			while(strlen($parseString)>0)	{
-				if ($key = $this->nextPart($parseString, '^(KEY|PRIMARY KEY)([[:space:]]+|\()'))	{	// Getting key
+				if ($key = $this->nextPart($parseString, '^(KEY|PRIMARY KEY|UNIQUE KEY|UNIQUE)([[:space:]]+|\()'))	{	// Getting key
 					$key = strtoupper(str_replace(array(' ',"\t","\r","\n"),'',$key));
 
 					switch($key)	{
 						case 'PRIMARYKEY':
-							$result['KEYS'][$key] = $this->getValue($parseString,'_LIST');
+							$result['KEYS']['PRIMARYKEY'] = $this->getValue($parseString,'_LIST');
 							if ($this->parse_error)	{ return $this->parse_error; }
+						break;
+						case 'UNIQUE':
+						case 'UNIQUEKEY':
+							if ($keyName = $this->nextPart($parseString, '^([[:alnum:]_]+)([[:space:]]+|\()'))	{
+								$result['KEYS']['UNIQUE'] = array($keyName => $this->getValue($parseString,'_LIST'));
+								if ($this->parse_error)	{ return $this->parse_error; }
+							} else return $this->parseError('No keyname found',$parseString);
 						break;
 						case 'KEY':
 							if ($keyName = $this->nextPart($parseString, '^([[:alnum:]_]+)([[:space:]]+|\()'))	{
@@ -1382,6 +1389,8 @@ return $str;
 		foreach($components['KEYS'] as $kN => $kCfg)	{
 			if ($kN == 'PRIMARYKEY')	{
 				$fieldsKeys[]='PRIMARY KEY ('.implode(',', $kCfg).')';
+			} elseif ($kN == 'UNIQUE')	{
+				$fieldsKeys[]='UNIQUE '.$kN.' ('.implode(',', $kCfg).')';
 			} else {
 				$fieldsKeys[]='KEY '.$kN.' ('.implode(',', $kCfg).')';
 			}

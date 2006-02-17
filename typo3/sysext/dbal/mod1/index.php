@@ -223,16 +223,16 @@ updateQryForm(\''.$input['QUERY'].'\');
 
 		$out .= '<tr id="tx-dbal-result" class="bgColor4"><th>Result:</th><td>';
 		switch($input['QUERY']) {
-			case 'SELECT';
+			case 'SELECT':
 			$qry = $GLOBALS['TYPO3_DB']->SELECTquery($input['FIELDS'],$input['FROM'],$input['WHERE'],$input['GROUP'],$input['ORDER'],$input['LIMIT']);
 			break;
-			case 'INSERT';
+			case 'INSERT':
 			$qry = $GLOBALS['TYPO3_DB']->INSERTquery($input['INTO'],$this->createFieldsValuesArray($input['INSERTVALUES']));
 			break;
-			case 'UPDATE';
+			case 'UPDATE':
 			$qry = $GLOBALS['TYPO3_DB']->UPDATEquery($input['UPDATE'],$input['WHERE'],$this->createFieldsValuesArray($input['UPDATEVALUES']));
 			break;
-			case 'DELETE';
+			case 'DELETE':
 			$qry = $GLOBALS['TYPO3_DB']->DELETEquery($input['FROM'],$input['WHERE']);
 			break;
 		}
