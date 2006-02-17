@@ -1,3 +1,7 @@
+2006-02-17 Ingmar Schlecht <ingmar@typo3.org>
+
+	* Fixed obvious bug #2588 in right-click context menu of filelist navframe
+
 2006-02-17  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
 	* Correction to the htmlArea RTE extension (see details in local ChangeLog)
