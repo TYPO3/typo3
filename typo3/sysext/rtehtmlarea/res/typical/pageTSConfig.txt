@@ -102,7 +102,7 @@ RTE.default {
 	enableWordClean = 1
 	removeTrailingBR = 1
 	removeComments = 1
-	removeTags = center, font, sdfield, strike,u
+	removeTags = center, font, o:p, sdfield, strike,u
 	removeTagsAndContents = style,script
 	
 		## Toolbar options

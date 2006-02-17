@@ -112,7 +112,7 @@ RTE.default {
 	enableWordClean = 1
 	removeTrailingBR = 1
 	removeComments = 1
-	removeTags = center, sdfield
+	removeTags = center, o:p, sdfield
 	removeTagsAndContents = style,script
 		
 		## Allow img tags
@@ -168,7 +168,7 @@ RTE.default {
 	ignoreMainStyleOverride = 1
 	
 		## For this demo, do not remove font, strike and u tags
-	proc.entryHTMLparser_db.removeTags = center, sdfield
+	proc.entryHTMLparser_db.removeTags = center, o:p, sdfield
 	
 		## List all class selectors that are allowed on the way to the database
 	proc.allowedClasses (

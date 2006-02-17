@@ -1378,7 +1378,7 @@ HTMLArea._wordClean = function(editor,html) {
 	}
 	function parseTree(root) {
 		var tag = root.tagName.toLowerCase(), i, next;
-		if((HTMLArea.is_ie && root.scopeName != 'HTML') || (!HTMLArea.is_ie && /:/.test(tag))) {
+		if((HTMLArea.is_ie && root.scopeName != 'HTML') || (!HTMLArea.is_ie && /:/.test(tag)) || /o:p/.test(tag)) {
 			stripTag(root);
 			return false;
 		} else {

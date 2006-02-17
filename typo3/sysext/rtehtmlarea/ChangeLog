@@ -1,3 +1,6 @@
+2006-02-17 Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+	* Remove Word 2003 o:p tags on paste with enableWordClean and/or save.
+
 2006-02-16 Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
 	* Version 1.1.8
 	* Correction: RemoveFormat plugin was removing too many tags and attributes.
