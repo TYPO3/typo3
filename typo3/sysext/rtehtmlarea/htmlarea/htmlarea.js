@@ -2838,7 +2838,7 @@ HTMLArea.getElementById = function(tag, id) {
  */
 HTMLArea.edHidePopup = function() {
 	Dialog._modal.close();
-	if (typeof(browserWin) != "undefined") setTimeout("browserWin.focus();", 200);
+	setTimeout( "if (typeof(browserWin) != 'undefined' && typeof(browserWin.focus) == 'function') browserWin.focus();", 200);
 };
 
 /***************************************************

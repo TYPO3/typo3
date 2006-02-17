@@ -50,7 +50,7 @@ RemoveFormat.I18N = RemoveFormat_langArray;
 
 RemoveFormat._pluginInfo = {
 	name          : "RemoveFormat",
-	version       : "1.4",
+	version       : "1.5",
 	developer     : "Stanislas Rolland",
 	developer_url : "http://www.fructifor.ca/",
 	sponsor       : "Fructifor Inc.",
@@ -89,11 +89,11 @@ RemoveFormat.applyRequest = function(instance,editor){
  
 				if (param["formatting"] == true) {
 						// remove font, b, strong, i, em, u, strike, span and other tags
-					var regF1 = new RegExp("<\/?(abbr|acronym|b[^r]|big|cite|code|em|font|i|q|s|samp|small|span|strike|strong|sub|sup|u|var)[^>]*>", "gi"); 
+					var regF1 = new RegExp("<\/?(abbr|acronym|b|big|cite|code|em|font|i|q|s|samp|small|span|strike|strong|sub|sup|u|var)(([\s][^>]*>)|>)", "gi"); 
 					html = html.replace(regF1, "");
 						// keep tags, strip attributes
 					var regF2 = new RegExp(" style=\"[^>\"]*\"", "gi");
-					var regF3 = new RegExp(" (class|align|cellpadding|cellspacing|frame|bgcolor)=(([^>\s\"]+)|(\"[^>]*\"))", "gi");
+					var regF3 = new RegExp(" (class|align|cellpadding|cellspacing|frame|bgcolor)=(([^>\s\"]+)|(\"[^>\"]*\"))", "gi");
 					html = html.replace(regF2, "").replace(regF3, "");
 				}
 
@@ -111,7 +111,7 @@ RemoveFormat.applyRequest = function(instance,editor){
 					html = html.replace(regMS2, "<$1>");
 						// keep tags, strip attributes
 					var regMS3 = new RegExp(" style=\"[^>\"]*\"", "gi");
-					var regMS4 = new RegExp(" (class|align)=(([^>\s\"]+)|(\"[^>]*\"))", "gi");
+					var regMS4 = new RegExp(" (class|align)=(([^>\s\"]+)|(\"[^>\"]*\"))", "gi");
 					html = html.replace(regMS3, "").replace(regMS4, "");
 						// mozilla doesn't like <em> tags
 					html = html.replace(/<em>/gi, "<i>").replace(/<\/em>/gi, "</i>");
