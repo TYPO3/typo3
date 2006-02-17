@@ -2913,7 +2913,7 @@ From sub-directory:
 						'text' => 'HELLO WORLD',
 						'fontColor' => '#003366',
 						'fontSize' => 18,
-						'fontFile' => $this->backPath."t3lib/fonts/vera.ttf",
+						'fontFile' => $this->backPath.'../t3lib/fonts/vera.ttf',
 						'offset' => '17,40'
 					);
 					$conf['BBOX'] = $imageProc->calcBBox($conf);

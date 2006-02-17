@@ -1,3 +1,7 @@
+2006-02-17  Michael Stucki  <michael@typo3.org>
+
+	* Install Tool: Fixed a wrong fontFile-path caused by the symlinks change
+
 2006-02-17 Ingmar Schlecht <ingmar@typo3.org>
 
 	* Fixed obvious bug #2588 in right-click context menu of filelist navframe
@@ -6,14 +10,15 @@
 
 	* Correction to the htmlArea RTE extension (see details in local ChangeLog)
 
-2006-02-16	Michael Scharkow <michael@underused.org>
+2006-02-16  Michael Scharkow  <michael@underused.org>
+
 	* Fixed bug #2457: image border settings are respected in GMENUs
 	* Updated the copyright notices to 2006 and set version back to 4.0-CVS
 
 2006-02-16  Kasper Skaarhoj  <kasperYYYY@typo3.com>
 	* Added new script (tslib/class.tslib_eidtools.php) with tools for "eID scripts". See extension "whiteboard" for an example!
 
-2006-02-15 Karsten Dambekalns <karsten@typo3.org>
+2006-02-15  Karsten Dambekalns  <karsten@typo3.org>
 
 	* typo3/mod/tools/em: More fixes and better error checking.
 	* typo3/sysext/adodb: Update to upstream version 4.71.
