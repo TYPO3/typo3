@@ -1828,11 +1828,11 @@ From sub-directory:
 			$tempPath = $this->typo3temp_path;
 			$uniqueName = md5(uniqid(microtime()));
 			$dest = $tempPath.$uniqueName.'.gif';
-			$src = PATH_t3lib.'gfx/typo3logo.gif';
+			$src = $this->backPath.'gfx/typo3logo.gif';
 			if (@is_file($src) && !strstr($src,' ') && !strstr($dest,' '))	{
 				$cmd = t3lib_div::imageMagickCommand('convert', $src.' '.$dest, $path);
 				exec($cmd);
-			} else die('No gfx/typo3logo.gif file!');
+			} else die('No typo3/gfx/typo3logo.gif file!');
 			$out='';
 			if (@is_file($dest))	{
 				$new_info = @getimagesize($dest);

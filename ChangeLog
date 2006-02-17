@@ -1,6 +1,7 @@
 2006-02-17  Michael Stucki  <michael@typo3.org>
 
-	* Install Tool: Fixed a wrong fontFile-path caused by the symlinks change
+	* Fixed bug #2597: GDlib TrueType tests fail because of wrong fontFile-path (caused by the symlinks change)
+	* Fixed bug #2594: Install Tool says "No gfx/typo3logo.gif file!" (caused by the symlinks change)
 
 2006-02-17 Ingmar Schlecht <ingmar@typo3.org>
 
