@@ -1,3 +1,6 @@
+2006-02-18 Robert Lemke <robert@typo3.org>
+	* Changed flexform tag names in t3lib_flexformtools->flex2ArrayXml()
+
 2006-02-17 Karsten Dambekalns <karsten@typo3.org>
 
 	* Fixed bugs #2368, #2521, #2385, #2186 related to DBAL
@@ -237,7 +240,7 @@
 	* Fixed a bug related to language-limiting: Now, a backend user limited to a certain language cannot create records in default or other languages anymore.
 	* Fixed bug in t3lib_tcemain where files uploaded to a record in case of auto-versioning did not work
 	* Fixed very tricky problem that an auto-versioned record with files attached would create double-references! Uh.... Look for ->autoVersioningUpdate in tcemain and there is a fine explanation of a scenario and how I worked around it.
-	* Changed the XML markup for flexform output. Now some more reasonable tags are used. Fully backwards compatible. use t3lib_flexformtools for writing XML output for flexforms in the future!
+	!!! Changed the XML markup for flexform output. Now some more reasonable tags are used. If t3lib_div xml2array + array2xml functions are used, fully backwards compatible. Extensions which depend on the old tag names will break. Use t3lib_flexformtools for writing XML output for flexforms in the future!
 	* Improved length of sys_refindex.ref_string from 40 to 200 chars.
 	* Added information about number of references pointing to record or file before its deleted (didn't localize the message though)
 	* Added reference count column to Web>List and File>Filelist modules plus overview table in the Info display for files and records (ah, finally there is a reason for that fine info-screen...)

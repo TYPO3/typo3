@@ -415,10 +415,10 @@ class t3lib_flexformtools {
 	 */
 	function flexArray2Xml($array)	{
 		$output = t3lib_div::array2xml($array,'',0,'T3FlexForms',4,array('parentTagMap' => array(
-					'data' => 'sheets',
-					'sheets' => 'language',
-					'language' => 'fieldname',
-					'el' => 'fieldname'
+					'data' => 'sheet',
+					'sheet' => 'language',
+					'language' => 'field',
+					'el' => 'field'
 				)));
 		return $output;
 	}
