@@ -4684,7 +4684,7 @@ $this->log($table,$id,6,0,0,'Stage raised...',30,array('comment'=>$comment,'stag
 			// Checking languages:
 		if ($TCA[$table]['ctrl']['languageField'])	{
 			if (!isset($incomingFieldArray[$TCA[$table]['ctrl']['languageField']]))	{	// Language field must be found in input row - otherwise it does not make sense.
-				$rows = array_merge(array('uid'=>0),$GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid','sys_language','pid=0'.t3lib_BEfunc::deleteClause('sys_language')),array('uid'=>-1));
+				$rows = array_merge(array(array('uid'=>0)),$GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid','sys_language','pid=0'.t3lib_BEfunc::deleteClause('sys_language')),array(array('uid'=>-1)));
 				foreach($rows as $r)	{
 					if ($this->BE_USER->checkLanguageAccess($r['uid']))		{
 						$incomingFieldArray[$TCA[$table]['ctrl']['languageField']] = $r['uid'];
