@@ -1,4 +1,9 @@
+2006-02-20 Wolfgang Klinger <wolfgang@stufenlos.net>
+
+	* Feature request #568: AND (&&) and OR (||) combination of TypoScript conditions
+
 2006-02-18 Robert Lemke <robert@typo3.org>
+
 	* Changed flexform tag names in t3lib_flexformtools->flex2ArrayXml()
 
 2006-02-17 Karsten Dambekalns <karsten@typo3.org>

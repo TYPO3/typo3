@@ -80,6 +80,66 @@ class t3lib_matchCondition {
 
 	var $altRootLine=array();
 
+	var $hookObjectsArr = array();
+
+	function __construct() {
+		global $TYPO3_CONF_VARS;
+
+		// Usage (ext_localconf.php): 
+		// $TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_matchcondition.php']['matchConditionClass'] = 
+		// 'EXT:my_ext/class.browserinfo.php:MyBrowserInfoClass';
+		if (is_array($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_matchcondition.php']['matchConditionClass'])) {
+			foreach ($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_matchcondition.php']['matchConditionClass'] as $classRef) {
+				$this->hookObjectsArr[] = &t3lib_div::getUserObj($classRef, '');
+			}
+		}
+	}
+
+	function t3lib_matchCondition() {
+		$this->__construct();
+	}
+	
+	function match($condition_line) {
+		if ($this->matchAll) {
+			return true;
+		}
+		if (count($this->matchAlternative))	{
+			return in_array($condition_line, $this->matchAlternative);
+		}
+
+		// Getting the value from inside of the wrapping 
+		// square brackets of the condition line:
+		$insideSqrBrackets = substr(trim($condition_line), 1, strlen($condition_line) - 2);
+		$insideSqrBrackets = preg_replace('/\]\s*OR\s*\[/i', ']||[', $insideSqrBrackets);
+		$insideSqrBrackets = preg_replace('/\]\s*AND\s*\[/i', ']&&[', $insideSqrBrackets);
+
+		// The "weak" operator "||" (OR) takes precedence:
+		// backwards compatible, [XYZ][ZYX] does still work as OR
+		$orParts = preg_split('/\]\s*(\|\|){0,1}\s*\[/',$insideSqrBrackets);
+
+		foreach($orParts as $partString) {
+			$matches = false;
+
+			// Splits by the "&&" (AND) operator:
+			$andParts = preg_split('/\]\s*&&\s*\[/',$partString);
+			foreach($andParts as $condStr) {
+				$matches = $this->evalConditionStr($condStr);
+				// only true AND true = true, so we have to break here
+				if (false === $matches) {
+					break;
+				}
+			}
+
+			// true OR false = true, so we break if we have a positive result
+			if (true === $matches) {
+				break;
+			}
+		}
+
+		return $matches;
+	}
+
+
 	/**
 	 * Evaluates a TypoScript condition given as input, eg. "[browser=net][...(other conditions)...]"
 	 *
@@ -88,226 +148,218 @@ class t3lib_matchCondition {
 	 * @see t3lib_tsparser::parse()
 	 * @link http://typo3.org/doc.0.html?&tx_extrepmgm_pi1[extUid]=270&tx_extrepmgm_pi1[tocEl]=292&cHash=c6c7d43d2f
 	 */
-	function match($string)	{
-		if ( !is_array( $this->altRootLine ) ) {
+	function evalConditionStr($string)	{
+		if (!is_array($this->altRootLine)) {
 			$this->altRootLine = array();
 		}
-
-		if ($this->matchAll)	return true;
-		if (count($this->matchAlternative))	{
-			return in_array($string,$this->matchAlternative);
+		list($key, $value) = explode('=', $string, 2);
+		$key = trim($key);
+		if (stristr(',browser,version,system,useragent,', ",$key,")) {
+			$browserInfo = $this->browserInfo(t3lib_div::getIndpEnv('HTTP_USER_AGENT'));
 		}
+		$value = trim($value);
+		switch ($key) {
+			case 'browser':
+				$values = explode(',',$value);
+				while(list(,$test)=each($values))	{
+					if (strstr($browserInfo['browser'].$browserInfo['version'],trim($test)))	{
+						return true;
+					}
+				}
+			break;
+			case 'version':
+				$values = explode(',',$value);
+				while(list(,$test)=each($values))	{
+					$test = trim($test);
+					if (strlen($test)) {
+						if (strcspn($test,'=<>')==0)	{
+							switch(substr($test,0,1))	{
+								case '=':
+									if (doubleval(substr($test,1))==$browserInfo['version']) return true;
+								break;
+								case '<':
+									if (doubleval(substr($test,1))>$browserInfo['version'])	return true;
+								break;
+								case '>':
+									if (doubleval(substr($test,1))<$browserInfo['version'])	return true;
+								break;
+							}
+						} else {
+							if (strpos(' '.$browserInfo['version'],$test)==1)	{return true;}
+						}
+					}
+				}
+			break;
+			case 'system':
+				$values = explode(',',$value);
+				while(list(,$test)=each($values))	{
+					$test = trim($test);
+					if (strlen($test)) {
+						if (strpos(' '.$browserInfo['system'],$test)==1)	{return true;}
+					}
+				}
+			break;
+			case 'device':
+				$values = explode(',',$value);
+				if (!isset($this->deviceInfo))	{
+					$this->deviceInfo = $this->whichDevice(t3lib_div::getIndpEnv('HTTP_USER_AGENT'));
+				}
+				while(list(,$test)=each($values))	{
+					$test = trim($test);
+					if (strlen($test)) {
+						if ($this->deviceInfo==$test)	{return true;}
+					}
+				}
+			break;
+			case 'useragent':
+				$test = trim($value);
+				if (strlen($test)) {
+					return $this->matchWild($browserInfo['useragent'],$test);
+				}
+			break;
+			case 'language':
+				$values = explode(',',$value);
+				while(list(,$test)=each($values))	{
+					$test = trim($test);
+					if (strlen($test)) {
+						if (preg_match('/^\*.+\*$/',$test))	{
+							$allLanguages = split('[,;]',t3lib_div::getIndpEnv('HTTP_ACCEPT_LANGUAGE'));
+							if (in_array(substr($test,1,-1), $allLanguages))	{return true;}
+						} else {
+							if (t3lib_div::getIndpEnv('HTTP_ACCEPT_LANGUAGE') == $test)	{return true;}
+						}
+					}
+				}
+			break;
+			case 'IP':
+				if (t3lib_div::cmpIP(t3lib_div::getIndpEnv('REMOTE_ADDR'), $value))	{return true;}
+			break;
+			case 'hostname':
+				if (t3lib_div::cmpFQDN(t3lib_div::getIndpEnv('REMOTE_ADDR'), $value))  {return true;}
+			break;
+				// hour, minute, dayofweek, dayofmonth, month
+			case 'hour':
+			case 'minute':
+			case 'dayofweek':
+			case 'dayofmonth':
+			case 'month':
+				$theEvalTime = $GLOBALS['SIM_EXEC_TIME'];	// In order to simulate time properly in templates.
+				switch($key) {
+					case 'hour':		$theTestValue = date('H',$theEvalTime);	break;
+					case 'minute':		$theTestValue = date('i',$theEvalTime);	break;
+					case 'dayofweek':	$theTestValue = date('w',$theEvalTime);	break;
+					case 'dayofmonth':	$theTestValue = date('d',$theEvalTime);	break;
+					case 'month':		$theTestValue = date('m',$theEvalTime);	break;
+				}
+				$theTestValue = intval($theTestValue);
+					// comp
+				$values = explode(',',$value);
+				reset($values);
+				while(list(,$test)=each($values))	{
+					$test = trim($test);
+					if (t3lib_div::testInt($test))	{$test='='.$test;}
+					if (strlen($test)) {
+						if ($this->testNumber($test,$theTestValue)) {return true;}
+					}
+				}
+			break;
+			case 'usergroup':
+				if ($GLOBALS['TSFE']->gr_list!='0,-1')	{		// '0,-1' is the default usergroups when not logged in!
+					$values = explode(',',$value);
+					while(list(,$test)=each($values))	{
+						$test = trim($test);
+						if (strlen($test)) {
+							if ($test=='*' || t3lib_div::inList($GLOBALS['TSFE']->gr_list,$test))	{return true;}
+						}
+					}
+				}
+			break;
+			case 'loginUser':
+				if ($GLOBALS['TSFE']->loginUser)	{
+					$values = explode(',',$value);
+					while(list(,$test)=each($values))	{
+						$test = trim($test);
+						if (strlen($test)) {
+							if ($test=='*' || !strcmp($GLOBALS['TSFE']->fe_user->user['uid'],$test))	{return true;}
+						}
+					}
+				}
+			break;
+			case 'globalVar':
+				$values = explode(',',$value);
+				while(list(,$test)=each($values))	{
+					$test = trim($test);
+					if (strlen($test)) {
+						$point = strcspn($test,'=<>');
+						$theVarName = substr($test,0,$point);
+						$nv = $this->getGP_ENV_TSFE(trim($theVarName));
+						$testValue = substr($test,$point);
 
-		if (!$this->browserInfoArray)	{
-			$this->browserInfoArray = $this->browserInfo(t3lib_div::getIndpEnv('HTTP_USER_AGENT'));
-		}
-		$browserInfo = $this->browserInfoArray;
-		$string = trim($string);
-		$string = substr($string,1,strlen($string)-2);
-		$parts = explode('][',$string);
-		foreach ($parts as $val)	{
-			$pcs = explode('=',$val,2);
-			$switchKey = trim($pcs[0]);
-			switch($switchKey)	{
-				case 'browser':
-					$values = explode(',',$pcs[1]);
-					while(list(,$test)=each($values))	{
-						if (strstr($browserInfo['browser'].$browserInfo['version'],trim($test)))	{
-							return true;
-						}
+						if ($this->testNumber($testValue,$nv)) {return true;}
 					}
-				break;
-				case 'version':
-					$values = explode(',',$pcs[1]);
-					while(list(,$test)=each($values))	{
-						$test = trim($test);
-						if ($test)	{
-							if (strcspn($test,'=<>')==0)	{
-								switch(substr($test,0,1))	{
-									case '=':
-										if (doubleval(substr($test,1))==$browserInfo['version'])	return true;
-									break;
-									case '<':
-										if (doubleval(substr($test,1))>$browserInfo['version'])	return true;
-									break;
-									case '>':
-										if (doubleval(substr($test,1))<$browserInfo['version'])	return true;
-									break;
-								}
-							} else {
-								if (strpos(' '.$browserInfo['version'],$test)==1)	{return true;}
-							}
-						}
+				}
+			break;
+			case 'globalString':
+				$values = explode(',',$value);
+				while(list(,$test)=each($values))	{
+					$test = trim($test);
+					if (strlen($test)) {
+						$point = strcspn($test,'=');
+						$theVarName = substr($test,0,$point);
+						$nv = $this->getGP_ENV_TSFE(trim($theVarName));
+						$testValue = substr($test,$point+1);
+
+						if ($this->matchWild($nv,trim($testValue))) {return true;}
 					}
-				break;
-				case 'system':
-					$values = explode(',',$pcs[1]);
-					while(list(,$test)=each($values))	{
-						$test = trim($test);
-						if ($test)	{
-							if (strpos(' '.$browserInfo['system'],$test)==1)	{return true;}
-						}
-					}
-				break;
-				case 'device':
-					$values = explode(',',$pcs[1]);
-					if (!isset($this->deviceInfo))	{
-						$this->deviceInfo = $this->whichDevice(t3lib_div::getIndpEnv('HTTP_USER_AGENT'));
-					}
-					while(list(,$test)=each($values))	{
-						$test = trim($test);
-						if ($test)	{
-							if ($this->deviceInfo==$test)	{return true;}
-						}
-					}
-				break;
-				case 'useragent':
-					$test = trim($pcs[1]);
-					if ($test)	{
-						return $this->matchWild($browserInfo['useragent'],$test);
-					}
-				break;
-				case 'language':
-					$values = explode(',',$pcs[1]);
-					while(list(,$test)=each($values))	{
-						$test = trim($test);
-						if ($test)	{
-							if (ereg('^\*.+\*$',$test))	{
-								$allLanguages = split('[,;]',t3lib_div::getIndpEnv('HTTP_ACCEPT_LANGUAGE'));
-								if (in_array(substr($test,1,-1), $allLanguages))	{return true;}
-							} else {
-								if (t3lib_div::getIndpEnv('HTTP_ACCEPT_LANGUAGE') == $test)	{return true;}
-							}
-						}
-					}
-				break;
-				case 'IP':
-					if (t3lib_div::cmpIP(t3lib_div::getIndpEnv('REMOTE_ADDR'), $pcs[1]))	{return true;}
-				break;
-				case 'hostname':
-					if (t3lib_div::cmpFQDN(t3lib_div::getIndpEnv('REMOTE_ADDR'), $pcs[1]))  {return true;}
-				break;
-					// hour, minute, dayofweek, dayofmonth, month
-				case 'hour':
-				case 'minute':
-				case 'dayofweek':
-				case 'dayofmonth':
-				case 'month':
-					$theEvalTime = $GLOBALS['SIM_EXEC_TIME'];	// In order to simulate time properly in templates.
-					switch($switchKey)	{
-						case 'hour':		$theTestValue = date('H',$theEvalTime);	break;
-						case 'minute':		$theTestValue = date('i',$theEvalTime);	break;
-						case 'dayofweek':	$theTestValue = date('w',$theEvalTime);	break;
-						case 'dayofmonth':	$theTestValue = date('d',$theEvalTime);	break;
-						case 'month':		$theTestValue = date('m',$theEvalTime);	break;
-					}
-					$theTestValue = intval($theTestValue);
-						// comp
-					$values = explode(',',$pcs[1]);
+				}
+			break;
+			case 'treeLevel':
+				$values = explode(',',$value);
+				$theRootLine = is_array($GLOBALS['TSFE']->tmpl->rootLine) ? $GLOBALS['TSFE']->tmpl->rootLine : $this->altRootLine;
+				$theRLC = count($theRootLine)-1;
+				while(list(,$test)=each($values))	{
+					$test = trim($test);
+					if ($test==$theRLC)	{	return true;	}
+				}
+			break;
+			case 'PIDupinRootline':
+			case 'PIDinRootline':
+				$values = explode(',',$value);
+				if (($key=='PIDinRootline') || (!in_array($GLOBALS['TSFE']->id,$values))) {
+					$theRootLine = is_array($GLOBALS['TSFE']->tmpl->rootLine) ? $GLOBALS['TSFE']->tmpl->rootLine : $this->altRootLine;
 					reset($values);
 					while(list(,$test)=each($values))	{
 						$test = trim($test);
-						if (t3lib_div::testInt($test))	{$test='='.$test;}
-						if ($test)	{
-							if ($this->testNumber($test,$theTestValue)) {return true;}
+						reset($theRootLine);
+						while(list($rl_key,$rl_dat)=each($theRootLine))	{
+							if ($rl_dat['uid']==$test)	{	return true;	}
 						}
 					}
-				break;
-				case 'usergroup':
-					if ($GLOBALS['TSFE']->gr_list!='0,-1')	{		// '0,-1' is the default usergroups when not logged in!
-						$values = explode(',',$pcs[1]);
-						while(list(,$test)=each($values))	{
-							$test = trim($test);
-							if ($test)	{
-								if ($test=='*' || t3lib_div::inList($GLOBALS['TSFE']->gr_list,$test))	{return true;}
-							}
-						}
-					}
-				break;
-				case 'loginUser':
-					if ($GLOBALS['TSFE']->loginUser)	{
-						$values = explode(',',$pcs[1]);
-						while(list(,$test)=each($values))	{
-							$test = trim($test);
-							if ($test)	{
-								if ($test=='*' || !strcmp($GLOBALS['TSFE']->fe_user->user['uid'],$test))	{return true;}
-							}
-						}
-					}
-				break;
-				case 'globalVar':
-					$values = explode(',',$pcs[1]);
-					while(list(,$test)=each($values))	{
-						$test = trim($test);
-						if ($test)	{
-							$point = strcspn($test,'=<>');
-							$theVarName = substr($test,0,$point);
-							$nv = $this->getGP_ENV_TSFE(trim($theVarName));
-							$testValue = substr($test,$point);
-
-							if ($this->testNumber($testValue,$nv)) {return true;}
-						}
-					}
-				break;
-				case 'globalString':
-					$values = explode(',',$pcs[1]);
-					while(list(,$test)=each($values))	{
-						$test = trim($test);
-						if ($test)	{
-							$point = strcspn($test,'=');
-							$theVarName = substr($test,0,$point);
-							$nv = $this->getGP_ENV_TSFE(trim($theVarName));
-							$testValue = substr($test,$point+1);
-
-							if ($this->matchWild($nv,trim($testValue))) {return true;}
-						}
-					}
-				break;
-				case 'treeLevel':
-					$values = explode(',',$pcs[1]);
-					$theRootLine = is_array($GLOBALS['TSFE']->tmpl->rootLine) ? $GLOBALS['TSFE']->tmpl->rootLine : $this->altRootLine;
-					$theRLC = count($theRootLine)-1;
-					while(list(,$test)=each($values))	{
-						$test = trim($test);
-						if ($test==$theRLC)	{	return true;	}
-					}
-				break;
-				case 'PIDupinRootline':
-				case 'PIDinRootline':
-					$values = explode(',',$pcs[1]);
-					if (($switchKey=='PIDinRootline') || (!in_array($GLOBALS['TSFE']->id,$values))) {
-						$theRootLine = is_array($GLOBALS['TSFE']->tmpl->rootLine) ? $GLOBALS['TSFE']->tmpl->rootLine : $this->altRootLine;
-						reset($values);
-						while(list(,$test)=each($values))	{
-							$test = trim($test);
-							reset($theRootLine);
-							while(list($rl_key,$rl_dat)=each($theRootLine))	{
-								if ($rl_dat['uid']==$test)	{	return true;	}
-							}
-						}
-					}
-				break;
-				case 'compatVersion':
-					{ return t3lib_div::compat_version($pcs[1]); }
-				break;
-				case 'userFunc':
-					$values = split('\(|\)',$pcs[1]);
-					$funcName=trim($values[0]);
-					$funcValue = t3lib_div::trimExplode(',',$values[1]);
-					$pre = $GLOBALS['TSFE']->TYPO3_CONF_VARS['FE']['userFuncClassPrefix'];
-					if ($pre &&
-						!t3lib_div::isFirstPartOfStr(trim($funcName),$pre) &&
-						!t3lib_div::isFirstPartOfStr(trim($funcName),'tx_')
-					)	{
-						if (is_object($GLOBALS['TT']))	$GLOBALS['TT']->setTSlogMessage('Match condition: Function "'.$funcName.'" was not prepended with "'.$pre.'"',3);
-						return false;
-					}
-					if (function_exists($funcName) && call_user_func($funcName, $funcValue[0]))	{
-						return true;
-					}
-				break;
-			}
+				}
+			break;
+			case 'compatVersion':
+				{ return t3lib_div::compat_version($value); }
+			break;
+			case 'userFunc':
+				$values = split('\(|\)',$value);
+				$funcName=trim($values[0]);
+				$funcValue = t3lib_div::trimExplode(',',$values[1]);
+				$pre = $GLOBALS['TSFE']->TYPO3_CONF_VARS['FE']['userFuncClassPrefix'];
+				if ($pre &&
+					!t3lib_div::isFirstPartOfStr(trim($funcName),$pre) &&
+					!t3lib_div::isFirstPartOfStr(trim($funcName),'tx_')
+				)	{
+					if (is_object($GLOBALS['TT']))	$GLOBALS['TT']->setTSlogMessage('Match condition: Function "'.$funcName.'" was not prepended with "'.$pre.'"',3);
+					return false;
+				}
+				if (function_exists($funcName) && call_user_func($funcName, $funcValue[0]))	{
+					return true;
+				}
+			break;
 		}
+		
+
+		return false;
 	}
 
 	/**
@@ -330,6 +382,8 @@ class t3lib_matchCondition {
 				if (trim(substr($test,1))==$value)	return true;
 			break;
 		}
+
+		return false;
 	}
 
 	/**
@@ -347,6 +401,8 @@ class t3lib_matchCondition {
 
 			if (preg_match($regex, $haystack)) return true;
 		}
+
+		return false;
 	}
 
 	/**
@@ -358,6 +414,24 @@ class t3lib_matchCondition {
 	 * @link http://typo3.org/doc.0.html?&tx_extrepmgm_pi1[extUid]=270&tx_extrepmgm_pi1[tocEl]=296&cHash=a8ae66c7d6
 	 */
 	function whichDevice($useragent)	{
+		foreach($this->hookObjectsArr as $hookObj)	{
+			if (method_exists($hookObj, 'whichDevice')) {
+				$result = $hookObj->whichDevice($useragent);
+				if (strlen($result)) {
+					return $result;
+				}
+			}
+		}
+
+		// deprecated, see above
+		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_matchcondition.php']['devices_class']))	{
+			foreach($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_matchcondition.php']['devices_class'] as $_classRef)	{
+				$_procObj = &t3lib_div::getUserObj($_classRef);
+				return $_procObj->whichDevice_ext($useragent);
+			}
+		}
+		//
+
 		$agent=strtolower(trim($useragent));
 			// pda
 		if(	strstr($agent, 'avantgo'))	{
@@ -397,19 +471,11 @@ class t3lib_matchCondition {
 			return 'robot';
 		}
 
-			// Hook for extending device recognition capabilities:
-		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_matchcondition.php']['devices_class']))	{
-			foreach($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_matchcondition.php']['devices_class'] as $_classRef)	{
-				$_procObj = &t3lib_div::getUserObj($_classRef);
-				return $_procObj->whichDevice_ext($useragent);
-			}
-		}
-
 	}
 
 	/**
 	 * Generates an array with abstracted browser information
-	 * In the function match() this method is called and the result stored in $this->browserInfoArray
+	 * This method is used in the function match() in this class
 	 *
 	 * @param	string		The useragent string, t3lib_div::getIndpEnv('HTTP_USER_AGENT')
 	 * @return	array		Contains keys "browser", "version", "system"
@@ -417,6 +483,15 @@ class t3lib_matchCondition {
 	 * @see match()
 	 */
 	function browserInfo($useragent)	{
+		foreach($this->hookObjectsArr as $hookObj)	{
+			if (method_exists($hookObj, 'browserInfo')) {
+				$result = $hookObj->browserInfo($useragent);
+				if (strlen($result)) {
+					return $result;
+				}
+			}
+		}
+
 		$useragent = trim($useragent);
 		$browserInfo=Array();
 		$browserInfo['useragent']=$useragent;
@@ -521,7 +596,7 @@ class t3lib_matchCondition {
 	 * @return	double		Returns double value, eg. "7.32"
 	 */
 	function browserInfo_version($tmp)	{
-		return doubleval(ereg_replace('^[^0-9]*','',$tmp));
+		return doubleval(preg_replace('/^[^0-9]*/','',$tmp));
 	}
 
 	/**
