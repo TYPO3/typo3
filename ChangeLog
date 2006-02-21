@@ -1,3 +1,7 @@
+2006-02-21 Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+
+	* Path setting correction in htmlArea RTE SpellChecker plugin.
+
 2006-02-20  Christian Jul Jensen  <christian@jul.net>
 
 	* Fixed bug #2628
