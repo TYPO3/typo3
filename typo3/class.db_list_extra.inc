@@ -501,9 +501,11 @@ class localRecordList extends recordList {
 							);
 
 								// For each available translation, render the record:
-							foreach($translations as $lRow)	{
-								if ($GLOBALS['BE_USER']->checkLanguageAccess($lRow[$TCA[$table]['ctrl']['languageField']]))	{
-									$iOut.=$this->renderListRow($table,$lRow,$cc,$titleCol,$thumbsCol,18);
+							if (is_array($translations)) {
+								foreach($translations as $lRow)	{
+									if ($GLOBALS['BE_USER']->checkLanguageAccess($lRow[$TCA[$table]['ctrl']['languageField']]))	{
+										$iOut.=$this->renderListRow($table,$lRow,$cc,$titleCol,$thumbsCol,18);
+									}
 								}
 							}
 						}

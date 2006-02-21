@@ -123,21 +123,23 @@ NOTICE: Uses the Reference Index Table (sys_refindex) for analysis. Update it be
 		);
 
 			// Traverse the files and put into a large table:
-		foreach($recs as $rec)	{
+		if (is_array($recs)) {
+			foreach($recs as $rec)	{
 
-				// Compile info string for location of reference:
-			$infoString = $rec['tablename'].':'.$rec['recuid'].':'.$rec['field'].':'.$rec['flexpointer'].':'.$rec['softref_key'];
+					// Compile info string for location of reference:
+				$infoString = $rec['tablename'].':'.$rec['recuid'].':'.$rec['field'].':'.$rec['flexpointer'].':'.$rec['softref_key'];
 
-				// Handle missing file:
-			if (!@is_file(PATH_site.$rec['ref_string']))	{
+					// Handle missing file:
+				if (!@is_file(PATH_site.$rec['ref_string']))	{
 
-				if ((string)$rec['softref_key']=='')	{
-					$resultArrayIndex = 'managedFilesMissing';
-				} else {
-					$resultArrayIndex = 'softrefFilesMissing';
+					if ((string)$rec['softref_key']=='')	{
+						$resultArrayIndex = 'managedFilesMissing';
+					} else {
+						$resultArrayIndex = 'softrefFilesMissing';
+					}
+
+					$resultArray[$resultArrayIndex][$rec['ref_string']][$rec['hash']] = $infoString;
 				}
-
-				$resultArray[$resultArrayIndex][$rec['ref_string']][$rec['hash']] = $infoString;
 			}
 		}
 
@@ -202,38 +204,40 @@ NOTICE: Uses the Reference Index Table (sys_refindex) for analysis. Update it be
 
 			// Traverse the files and put into a large table:
 		$tempExists = array();
-		foreach($recs as $rec)	{
-			$idx = $rec['ref_table'].':'.$rec['ref_uid'];
+		if (is_array($recs)) {
+			foreach($recs as $rec)	{
+				$idx = $rec['ref_table'].':'.$rec['ref_uid'];
 
-			if (!isset($tempExists[$idx]))	{
-		
-					// Select all files in the reference table not found by a soft reference parser (thus TCA configured)
-				if (isset($GLOBALS['TCA'][$rec['ref_table']]))	{
-					$recs = $TYPO3_DB->exec_SELECTgetRows(
-						'uid,pid'.($GLOBALS['TCA'][$rec['ref_table']]['ctrl']['delete'] ? ','.$GLOBALS['TCA'][$rec['ref_table']]['ctrl']['delete'] : ''),
-						$rec['ref_table'],
-						'uid='.intval($rec['ref_uid'])
-					);
+				if (!isset($tempExists[$idx]))	{
+			
+						// Select all files in the reference table not found by a soft reference parser (thus TCA configured)
+					if (isset($GLOBALS['TCA'][$rec['ref_table']]))	{
+						$recs = $TYPO3_DB->exec_SELECTgetRows(
+							'uid,pid'.($GLOBALS['TCA'][$rec['ref_table']]['ctrl']['delete'] ? ','.$GLOBALS['TCA'][$rec['ref_table']]['ctrl']['delete'] : ''),
+							$rec['ref_table'],
+							'uid='.intval($rec['ref_uid'])
+						);
 
-					$tempExists[$idx] = count($recs) ? TRUE : FALSE;
+						$tempExists[$idx] = count($recs) ? TRUE : FALSE;
+					} else {
+						$tempExists[$idx] = FALSE;
+					}
+					$resultArray['uniqueReferencesToTables'][$rec['ref_table']]++;
+				}
+
+					// Compile info string for location of reference:
+				$infoString = $rec['tablename'].':'.$rec['recuid'].':'.$rec['field'].':'.$rec['flexpointer'].':'.$rec['softref_key'];
+
+					// Handle missing file:
+				if ($tempExists[$idx])	{
+					if ($recs[0]['pid']==-1)	{
+						$resultArray['offlineVersionRecords'][$idx][$rec['hash']] = $infoString;
+					} elseif ($GLOBALS['TCA'][$rec['ref_table']]['ctrl']['delete'] && $recs[0][$GLOBALS['TCA'][$rec['ref_table']]['ctrl']['delete']])	{
+						$resultArray['deletedRecords'][$idx][$rec['hash']] = $infoString;
+					}
 				} else {
-					$tempExists[$idx] = FALSE;
+					$resultArray['nonExistingRecords'][$idx][$rec['hash']] = $infoString;
 				}
-				$resultArray['uniqueReferencesToTables'][$rec['ref_table']]++;
-			}
-
-				// Compile info string for location of reference:
-			$infoString = $rec['tablename'].':'.$rec['recuid'].':'.$rec['field'].':'.$rec['flexpointer'].':'.$rec['softref_key'];
-
-				// Handle missing file:
-			if ($tempExists[$idx])	{
-				if ($recs[0]['pid']==-1)	{
-					$resultArray['offlineVersionRecords'][$idx][$rec['hash']] = $infoString;
-				} elseif ($GLOBALS['TCA'][$rec['ref_table']]['ctrl']['delete'] && $recs[0][$GLOBALS['TCA'][$rec['ref_table']]['ctrl']['delete']])	{
-					$resultArray['deletedRecords'][$idx][$rec['hash']] = $infoString;
-				}
-			} else {
-				$resultArray['nonExistingRecords'][$idx][$rec['hash']] = $infoString;
 			}
 		}
 
@@ -288,28 +292,30 @@ NOTICE: Uses the Reference Index Table (sys_refindex) for analysis. Update it be
 
 			// Traverse the files and put into a large table:
 		$tempCount = array();
-		foreach($recs as $rec)	{
+		if (is_array($recs)) {
+			foreach($recs as $rec)	{
 
-				// Compile info string for location of reference:
-			$infoString = $rec['tablename'].':'.$rec['recuid'].':'.$rec['field'].':'.$rec['flexpointer'].':';
+					// Compile info string for location of reference:
+				$infoString = $rec['tablename'].':'.$rec['recuid'].':'.$rec['field'].':'.$rec['flexpointer'].':';
 
-				// Registering occurencies in directories:
-			$resultArray['dirname_registry'][dirname($rec['ref_string'])][$rec['tablename'].':'.$rec['field']]++;
+					// Registering occurencies in directories:
+				$resultArray['dirname_registry'][dirname($rec['ref_string'])][$rec['tablename'].':'.$rec['field']]++;
 
-				// Handle missing file:
-			if (!@is_file(PATH_site.$rec['ref_string']))	{
-				$resultArray['missingFiles'][$rec['ref_string']][$rec['hash']] = $infoString;
-			}
-
-				// Add entry if file has multiple references pointing to it:
-			if (isset($tempCount[$rec['ref_string']]))	{
-				if (!is_array($resultArray['multipleReferencesList'][$rec['ref_string']]))	{
-					$resultArray['multipleReferencesList'][$rec['ref_string']] = array();
-					$resultArray['multipleReferencesList'][$rec['ref_string']][$tempCount[$rec['ref_string']][1]] = $tempCount[$rec['ref_string']][0];
+					// Handle missing file:
+				if (!@is_file(PATH_site.$rec['ref_string']))	{
+					$resultArray['missingFiles'][$rec['ref_string']][$rec['hash']] = $infoString;
 				}
-				$resultArray['multipleReferencesList'][$rec['ref_string']][$rec['hash']] = $infoString;
-			} else {
-				$tempCount[$rec['ref_string']] = array($infoString,$rec['hash']);
+
+					// Add entry if file has multiple references pointing to it:
+				if (isset($tempCount[$rec['ref_string']]))	{
+					if (!is_array($resultArray['multipleReferencesList'][$rec['ref_string']]))	{
+						$resultArray['multipleReferencesList'][$rec['ref_string']] = array();
+						$resultArray['multipleReferencesList'][$rec['ref_string']][$tempCount[$rec['ref_string']][1]] = $tempCount[$rec['ref_string']][0];
+					}
+					$resultArray['multipleReferencesList'][$rec['ref_string']][$rec['hash']] = $infoString;
+				} else {
+					$tempCount[$rec['ref_string']] = array($infoString,$rec['hash']);
+				}
 			}
 		}
 
@@ -374,25 +380,27 @@ NOTICE: Uses the Reference Index Table (sys_refindex) for analysis. Update it be
 		);
 
 			// Traverse the files and put into a large table:
-		foreach($recs as $rec)	{
-			$filename = basename($rec['ref_string']);
-			if (t3lib_div::isFirstPartOfStr($filename,'RTEmagicC_'))	{
-				$original = 'RTEmagicP_'.ereg_replace('\.[[:alnum:]]+$','',substr($filename,10));
-				$infoString = $rec['tablename'].':'.$rec['recuid'].':'.$rec['field'].':'.$rec['flexpointer'].':'.$rec['softref_key'];
-				
-					// Build index:
-				$resultArray['RTEmagicFilePairs'][$rec['ref_string']]['exists'] = @is_file(PATH_site.$rec['ref_string']);
-				$resultArray['RTEmagicFilePairs'][$rec['ref_string']]['original'] = substr($rec['ref_string'],0,-strlen($filename)).$original;
-				$resultArray['RTEmagicFilePairs'][$rec['ref_string']]['original_exists'] = @is_file(PATH_site.$resultArray['RTEmagicFilePairs'][$rec['ref_string']]['original']);
-				$resultArray['RTEmagicFilePairs'][$rec['ref_string']]['count']++;
-				$resultArray['RTEmagicFilePairs'][$rec['ref_string']]['usedIn'][$rec['hash']] = $infoString;
+		if (is_array($recs)) {
+			foreach($recs as $rec)	{
+				$filename = basename($rec['ref_string']);
+				if (t3lib_div::isFirstPartOfStr($filename,'RTEmagicC_'))	{
+					$original = 'RTEmagicP_'.ereg_replace('\.[[:alnum:]]+$','',substr($filename,10));
+					$infoString = $rec['tablename'].':'.$rec['recuid'].':'.$rec['field'].':'.$rec['flexpointer'].':'.$rec['softref_key'];
+					
+						// Build index:
+					$resultArray['RTEmagicFilePairs'][$rec['ref_string']]['exists'] = @is_file(PATH_site.$rec['ref_string']);
+					$resultArray['RTEmagicFilePairs'][$rec['ref_string']]['original'] = substr($rec['ref_string'],0,-strlen($filename)).$original;
+					$resultArray['RTEmagicFilePairs'][$rec['ref_string']]['original_exists'] = @is_file(PATH_site.$resultArray['RTEmagicFilePairs'][$rec['ref_string']]['original']);
+					$resultArray['RTEmagicFilePairs'][$rec['ref_string']]['count']++;
+					$resultArray['RTEmagicFilePairs'][$rec['ref_string']]['usedIn'][$rec['hash']] = $infoString;
 
-				$resultArray['completeFileList'][$resultArray['RTEmagicFilePairs'][$rec['ref_string']]['original']]++;
-				$resultArray['completeFileList'][$rec['ref_string']]++;
+					$resultArray['completeFileList'][$resultArray['RTEmagicFilePairs'][$rec['ref_string']]['original']]++;
+					$resultArray['completeFileList'][$rec['ref_string']]++;
 
-					// Missing files:
-				if (!$resultArray['RTEmagicFilePairs'][$rec['ref_string']]['exists'] || !$resultArray['RTEmagicFilePairs'][$rec['ref_string']]['original_exists'])	{
-					$resultArray['missingFiles'][$rec['ref_string']] = $rec['ref_string'];
+						// Missing files:
+					if (!$resultArray['RTEmagicFilePairs'][$rec['ref_string']]['exists'] || !$resultArray['RTEmagicFilePairs'][$rec['ref_string']]['original_exists'])	{
+						$resultArray['missingFiles'][$rec['ref_string']] = $rec['ref_string'];
+					}
 				}
 			}
 		}
@@ -566,31 +574,33 @@ exit;
 		}
 
 			// Traverse headers for output:
-		foreach($res['headers'] as $key => $value)	{
+		if (is_array($res['headers'])) {
+			foreach($res['headers'] as $key => $value)	{
 
-			if ($detailLevel <= intval($value[2]))	{
-				if (!$silent || (is_array($res[$key]) && count($res[$key]))) {
-						// Header and explanaion:
-					$output.= '<b>'.
-							($silent ? '<i>'.htmlspecialchars($header).'</i><br/>' : '').
-							(is_array($res[$key]) && count($res[$key]) ? $GLOBALS['SOBE']->doc->icons($value[2]) : '').
-							htmlspecialchars($value[0]).
-							'</b><br/>';
-					if (trim($value[1]))	{
-						$output.= '<em>'.htmlspecialchars(trim($value[1])).'</em><br/>';
+				if ($detailLevel <= intval($value[2]))	{
+					if (!$silent || (is_array($res[$key]) && count($res[$key]))) {
+							// Header and explanaion:
+						$output.= '<b>'.
+								($silent ? '<i>'.htmlspecialchars($header).'</i><br/>' : '').
+								(is_array($res[$key]) && count($res[$key]) ? $GLOBALS['SOBE']->doc->icons($value[2]) : '').
+								htmlspecialchars($value[0]).
+								'</b><br/>';
+						if (trim($value[1]))	{
+							$output.= '<em>'.htmlspecialchars(trim($value[1])).'</em><br/>';
+						}
+						$output.='<br/>';
 					}
-					$output.='<br/>';
-				}
-	
-					// Content:
-				if (is_array($res[$key]))	{
-					if (count($res[$key]))	{
-						$output.= t3lib_div::view_array($res[$key]).'<br/><br/>';
+		
+						// Content:
+					if (is_array($res[$key]))	{
+						if (count($res[$key]))	{
+							$output.= t3lib_div::view_array($res[$key]).'<br/><br/>';
+						} else {
+							if (!$silent) $output.= '(None)'.'<br/><br/>';
+						}
 					} else {
-						if (!$silent) $output.= '(None)'.'<br/><br/>';
+						if (!$silent) $output.= htmlspecialchars($res[$key]).'<br/><br/>';
 					}
-				} else {
-					if (!$silent) $output.= htmlspecialchars($res[$key]).'<br/><br/>';
 				}
 			}
 		}
@@ -685,29 +695,31 @@ exit;
 		}
 
 			// Traverse headers for output:
-		foreach($res['headers'] as $key => $value)	{
+		if (is_array($res['headers'])) {
+			foreach($res['headers'] as $key => $value)	{
 
-			if ($detailLevel <= intval($value[2]))	{
-				if (!$silent || (is_array($res[$key]) && count($res[$key]))) {
-						// Header and explanaion:
-					echo '---------------------------------------------'.chr(10).
-							($silent ? '['.$header.']'.chr(10) : '').
-							$value[0].' ['.$value[2].']'.chr(10).
-							'---------------------------------------------'.chr(10);
-					if (trim($value[1]))	{
-						echo '[Explanation: '.trim($value[1]).']'.chr(10);
+				if ($detailLevel <= intval($value[2]))	{
+					if (!$silent || (is_array($res[$key]) && count($res[$key]))) {
+							// Header and explanaion:
+						echo '---------------------------------------------'.chr(10).
+								($silent ? '['.$header.']'.chr(10) : '').
+								$value[0].' ['.$value[2].']'.chr(10).
+								'---------------------------------------------'.chr(10);
+						if (trim($value[1]))	{
+							echo '[Explanation: '.trim($value[1]).']'.chr(10);
+						}
 					}
-				}
-	
-					// Content:
-				if (is_array($res[$key]))	{
-					if (count($res[$key]))	{
-						print_r($res[$key]);
+		
+						// Content:
+					if (is_array($res[$key]))	{
+						if (count($res[$key]))	{
+							print_r($res[$key]);
+						} else {
+							if (!$silent) echo '(None)'.chr(10).chr(10);
+						}
 					} else {
-						if (!$silent) echo '(None)'.chr(10).chr(10);
+						if (!$silent) echo $res[$key].chr(10).chr(10);
 					}
-				} else {
-					if (!$silent) echo $res[$key].chr(10).chr(10);
 				}
 			}
 		}
