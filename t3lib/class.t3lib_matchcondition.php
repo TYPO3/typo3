@@ -79,14 +79,13 @@ class t3lib_matchCondition {
 	var $matchAll=0;					// If set all is matched!
 
 	var $altRootLine=array();
-
 	var $hookObjectsArr = array();
 
-	function __construct() {
+	function __construct()	{
 		global $TYPO3_CONF_VARS;
 
-		// Usage (ext_localconf.php): 
-		// $TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_matchcondition.php']['matchConditionClass'] = 
+		// Usage (ext_localconf.php):
+		// $TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_matchcondition.php']['matchConditionClass'] =
 		// 'EXT:my_ext/class.browserinfo.php:MyBrowserInfoClass';
 		if (is_array($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_matchcondition.php']['matchConditionClass'])) {
 			foreach ($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_matchcondition.php']['matchConditionClass'] as $classRef) {
@@ -98,7 +97,7 @@ class t3lib_matchCondition {
 	function t3lib_matchCondition() {
 		$this->__construct();
 	}
-	
+
 	function match($condition_line) {
 		if ($this->matchAll) {
 			return true;
@@ -107,32 +106,28 @@ class t3lib_matchCondition {
 			return in_array($condition_line, $this->matchAlternative);
 		}
 
-		// Getting the value from inside of the wrapping 
-		// square brackets of the condition line:
+			// Getting the value from inside of the wrapping square brackets of the condition line:
 		$insideSqrBrackets = substr(trim($condition_line), 1, strlen($condition_line) - 2);
 		$insideSqrBrackets = preg_replace('/\]\s*OR\s*\[/i', ']||[', $insideSqrBrackets);
 		$insideSqrBrackets = preg_replace('/\]\s*AND\s*\[/i', ']&&[', $insideSqrBrackets);
 
-		// The "weak" operator "||" (OR) takes precedence:
-		// backwards compatible, [XYZ][ZYX] does still work as OR
+			// The "weak" operator "||" (OR) takes precedence: backwards compatible, [XYZ][ZYX] does still work as OR
 		$orParts = preg_split('/\]\s*(\|\|){0,1}\s*\[/',$insideSqrBrackets);
 
-		foreach($orParts as $partString) {
+		foreach ($orParts as $partString)	{
 			$matches = false;
 
-			// Splits by the "&&" (AND) operator:
+				// Splits by the "&&" (AND) operator:
 			$andParts = preg_split('/\]\s*&&\s*\[/',$partString);
-			foreach($andParts as $condStr) {
+			foreach ($andParts as $condStr)	{
 				$matches = $this->evalConditionStr($condStr);
-				// only true AND true = true, so we have to break here
-				if (false === $matches) {
-					break;
+				if ($matches===false)	{
+					break;		// only true AND true = true, so we have to break here
 				}
 			}
 
-			// true OR false = true, so we break if we have a positive result
-			if (true === $matches) {
-				break;
+			if ($matches===true)	{
+				break;		// true OR false = true, so we break if we have a positive result
 			}
 		}
 
@@ -357,7 +352,7 @@ class t3lib_matchCondition {
 				}
 			break;
 		}
-		
+
 
 		return false;
 	}

@@ -1,4 +1,4 @@
-2006-02-21 Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+2006-02-21  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
 	* Path setting correction in htmlArea RTE SpellChecker plugin.
 
@@ -6,15 +6,15 @@
 
 	* Fixed bug #2628
 
-2006-02-20 Wolfgang Klinger <wolfgang@stufenlos.net>
+2006-02-20  Wolfgang Klinger  <wolfgang@stufenlos.net>
 
 	* Feature request #568: AND (&&) and OR (||) combination of TypoScript conditions
 
-2006-02-18 Robert Lemke <robert@typo3.org>
+2006-02-18  Robert Lemke  <robert@typo3.org>
 
 	* Changed flexform tag names in t3lib_flexformtools->flex2ArrayXml()
 
-2006-02-17 Karsten Dambekalns <karsten@typo3.org>
+2006-02-17  Karsten Dambekalns  <karsten@typo3.org>
 
 	* Fixed bugs #2368, #2521, #2385, #2186 related to DBAL
 
@@ -23,7 +23,7 @@
 	* Fixed bug #2597: GDlib TrueType tests fail because of wrong fontFile-path (caused by the symlinks change)
 	* Fixed bug #2594: Install Tool says "No gfx/typo3logo.gif file!" (caused by the symlinks change)
 
-2006-02-17 Ingmar Schlecht <ingmar@typo3.org>
+2006-02-17  Ingmar Schlecht  <ingmar@typo3.org>
 
 	* Fixed obvious bug #2588 in right-click context menu of filelist navframe
 
@@ -36,7 +36,7 @@
 	* Fixed bug #2457: image border settings are respected in GMENUs
 	* Updated the copyright notices to 2006 and set version back to 4.0-CVS
 
-2006-02-16 Kasper Skaarhoj  <kasperYYYY@typo3.com>
+2006-02-16  Kasper Skaarhoj  <kasperYYYY@typo3.com>
 
 	* Added new script (tslib/class.tslib_eidtools.php) with tools for "eID scripts". See extension "whiteboard" for an example!
 
@@ -67,7 +67,7 @@
 	* Added hook to element browser to make it possible to render own EB's. All EB classes are moved into an own file.
 	* Added the possiblity to set TCEForm items to read-only.
 
-2006-02-14 Karsten Dambekalns <karsten@typo3.org>
+2006-02-14  Karsten Dambekalns  <karsten@typo3.org>
 
 	* typo3/mod/tools/em: Fixed/enhanced dependency checking in the new EM.
 
@@ -98,7 +98,7 @@
 
 	* Install tool PHP and HTML code cleanup towards xhtml
 
-2006-02-13 Karsten Dambekalns <karsten@typo3.org>
+2006-02-13  Karsten Dambekalns  <karsten@typo3.org>
 
 	* class.tx_install.php: Changed the way documentation is extracted from comments in config_default.php.
 	* t3lib/config_default.php, typo3/stylesheet.css, typo3/mod/tools/em/: First CVS release of new Extension Manager codebase.
@@ -232,11 +232,11 @@
 	* improved FQDN detection and fixed empty syslog ident in t3lib_div::initSysLog()
 	* Fix problem with non-associative arrays in t3lib_db->fullQuoteArray()
 
-2006-01-27  Peter Niederlag <peter@niederlag.de>
+2006-01-27  Peter Niederlag  <peter@niederlag.de>
 
 	* Fixed bug #2023, removed most of RTE-Config from sysEXT:cms and sysExt:css-styled_content
 
-2006-01-27  Ingmar Schlecht <ingmar@typo3.org>
+2006-01-27  Ingmar Schlecht  <ingmar@typo3.org>
 
 	* Added <label> tags around "Expand all" in class.alt_menu_functions.inc
 
@@ -253,7 +253,7 @@
 	* Fixed a bug related to language-limiting: Now, a backend user limited to a certain language cannot create records in default or other languages anymore.
 	* Fixed bug in t3lib_tcemain where files uploaded to a record in case of auto-versioning did not work
 	* Fixed very tricky problem that an auto-versioned record with files attached would create double-references! Uh.... Look for ->autoVersioningUpdate in tcemain and there is a fine explanation of a scenario and how I worked around it.
-	!!! Changed the XML markup for flexform output. Now some more reasonable tags are used. If t3lib_div xml2array + array2xml functions are used, fully backwards compatible. Extensions which depend on the old tag names will break. Use t3lib_flexformtools for writing XML output for flexforms in the future!
+	* !!! Changed the XML markup for flexform output. Now some more reasonable tags are used. If t3lib_div xml2array + array2xml functions are used, fully backwards compatible. Extensions which depend on the old tag names will break. Use t3lib_flexformtools for writing XML output for flexforms in the future!
 	* Improved length of sys_refindex.ref_string from 40 to 200 chars.
 	* Added information about number of references pointing to record or file before its deleted (didn't localize the message though)
 	* Added reference count column to Web>List and File>Filelist modules plus overview table in the Info display for files and records (ah, finally there is a reason for that fine info-screen...)
@@ -418,7 +418,7 @@
 
 	* Fixed bug #1209: set 'deleteTree' to '1' if 'recursiveDelete' is set in the user preferences
 
-2006-01-08  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+2006-01-08  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
 	* rtehtmlarea: Correction to path settings affecting image drag & drop and file/image upload.
 
@@ -1646,7 +1646,7 @@ Sorry for writing these changelog entries with a delay of two days. I write them
 	* Made "explicitDeny" mode for backend users configurable in TYPo3_CONF_VARS as requested on the dev-list.
 	* Added "sleep(5)" when a false login was detected in the login-screen. This makes trying lots of username/passwords in the login screen boooooring...
 	* Added new GUI type: Dynamic TAB menu which can switch between a number of sheets of content dynamically with tabs. Used in flexforms and also in TemplaVoila.
-	* Set-locale issue for USER_INT objects should be fixed. Please test this someone!!!
+	* Set-locale issue for USER_INT objects should be fixed. Please test this someone!
 
 
 2004-08-20  Ingmar Schlecht  <ingmar@typo3.org>
@@ -1811,7 +1811,7 @@ Sorry for writing these changelog entries with a delay of two days. I write them
 2004-05-18  Kasper Skaarhoj  <kasper@typo3.com>
 	* Added t3lib_cs::specCharsToASCII() for converting special chars (like umlauts) to their double-byte alternatives in ASCII (like au, oe etc...). Function is NOT finished at all, only added so I could use it for the conversion of filenames in simulateStaticDocuments.
 	* TypoScript charset compatibility extended: tslib_cObj::caseshift(), tslib_cObj::substring(), tslib_cObj::crop() uses functions in t3lib_cs now. Also stdWrap.strftime will automatically convert localized string from locale charset (guessed by t3lib_cs) to renderCharset.
-	* !!! website charset is now taken from "forceCharset" by default (if found) and in any case the http-header with text/html and charset is sent UNLESS you disable it with "config.disableCharsetHeader=1". You will probably have to disable this header if you are using TYPO3 for XML feeds or wap-pages.
+	* !!! Website charset is now taken from "forceCharset" by default (if found) and in any case the http-header with text/html and charset is sent UNLESS you disable it with "config.disableCharsetHeader=1". You will probably have to disable this header if you are using TYPO3 for XML feeds or wap-pages.
 	* Added "config.renderCharset" option: This is the charset of the content while rendered in the frontend engine. If different from "metaCharset" a conversion must happen before output to browser. Both renderCharset and metaCharset takes their default values from TYPO3_CONF_VARS[BE][forceCharset] if found, otherwise they default to "iso-8859-1". Also "metaCharset" takes "renderCharset" as default - and if metaCharset is different from renderCharset a conversion will happen on output.
 
 2004-05-18  Kasper Skaarhoj  <kasper@typo3.com>
@@ -2033,7 +2033,7 @@ Fixed bugs in Mount Points / Status:
 2004-04-01  Kasper Skaarhoj  <kasper@typo3.com>
 
 	* Added full safety for the internal TYPO3 formmail; email addresses in the fields "recipient" and "recipient_copy" are encrypted in the transfer and the "formmail" interface is safe for spam-misuse (since a proper recipient address cannot be forged automatically).
-	  !!! If someone is using the "formmail" API from other renderers than the FORM cObject in TypoScript you will have to set the recipient address to the encrypted value by default OR alternatively disabled the check by TYPO3_CONF_VARS[FE][strictFormmail] = FALSE
+	* !!! If someone is using the "formmail" API from other renderers than the FORM cObject in TypoScript you will have to set the recipient address to the encrypted value by default OR alternatively disabled the check by TYPO3_CONF_VARS[FE][strictFormmail] = FALSE
 
 2004-04-01  Kasper Skaarhoj  <kasper@typo3.com>
 
