@@ -17,14 +17,14 @@ TYPO3 CVS ID: $Id$
  *********************************************/
 
 SELECT, TEXTAREA, INPUT, TD, BODY, .defstyle, P, DIV {
-	font-family: Verdana, Arial, Helvetica;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
 	font-size: 10px;
 	margin: 0 0 0 0;
 	color: black;
 }
 FORM { margin: 0 0 0 0; }
 H1, H2, H3, H4 {
-	font-family: Verdana, Arial, Helvetica;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
 	font-size: 10px;
 	font-weight: bold;
 	margin: 3px 0px 3px 0px;
