@@ -227,48 +227,49 @@ class tx_indexedsearch_indexer {
 			if (!$indexerConfig['disableFrontendIndexing'] || $this->crawlerActive)	{
 				if (!$pObj->page['no_search'])	{
 					if (!$pObj->no_cache)	{
+						if (!strcmp($pObj->sys_language_uid,$pObj->sys_language_content))	{
 
-							// Setting up internal configuration from config array:
-						$this->conf = array();
+								// Setting up internal configuration from config array:
+							$this->conf = array();
 
-							// Information about page for which the indexing takes place
-						$this->conf['id'] = $pObj->id;				// Page id
-						$this->conf['type'] = $pObj->type;			// Page type
-						$this->conf['sys_language_uid'] = $pObj->sys_language_uid;	// sys_language UID of the language of the indexing.
-						$this->conf['MP'] = $pObj->MP;				// MP variable, if any (Mount Points)
-						$this->conf['gr_list'] = $pObj->gr_list;	// Group list
+								// Information about page for which the indexing takes place
+							$this->conf['id'] = $pObj->id;				// Page id
+							$this->conf['type'] = $pObj->type;			// Page type
+							$this->conf['sys_language_uid'] = $pObj->sys_language_uid;	// sys_language UID of the language of the indexing.
+							$this->conf['MP'] = $pObj->MP;				// MP variable, if any (Mount Points)
+							$this->conf['gr_list'] = $pObj->gr_list;	// Group list
 
-						$this->conf['cHash'] = $pObj->cHash;					// cHash string for additional parameters
-						$this->conf['cHash_array'] = $pObj->cHash_array;		// Array of the additional parameters
+							$this->conf['cHash'] = $pObj->cHash;					// cHash string for additional parameters
+							$this->conf['cHash_array'] = $pObj->cHash_array;		// Array of the additional parameters
 
-						$this->conf['crdate'] = $pObj->page['crdate'];			// The creation date of the TYPO3 page
-						$this->conf['page_cache_reg1'] = $pObj->page_cache_reg1;	// reg1 of the caching table. Not known what practical use this has.
+							$this->conf['crdate'] = $pObj->page['crdate'];			// The creation date of the TYPO3 page
+							$this->conf['page_cache_reg1'] = $pObj->page_cache_reg1;	// reg1 of the caching table. Not known what practical use this has.
 
-							// Root line uids
-						$this->conf['rootline_uids'] = array();
-						foreach($pObj->config['rootLine'] as $rlkey => $rldat)	{
-							$this->conf['rootline_uids'][$rlkey] = $rldat['uid'];
-						}
+								// Root line uids
+							$this->conf['rootline_uids'] = array();
+							foreach($pObj->config['rootLine'] as $rlkey => $rldat)	{
+								$this->conf['rootline_uids'][$rlkey] = $rldat['uid'];
+							}
 
-							// Content of page:
-						$this->conf['content'] = $pObj->content;					// Content string (HTML of TYPO3 page)
-						$this->conf['indexedDocTitle'] = $pObj->convOutputCharset($pObj->indexedDocTitle);	// Alternative title for indexing
-						$this->conf['metaCharset'] = $pObj->metaCharset;			// Character set of content (will be converted to utf-8 during indexing)
-						$this->conf['mtime'] = $pObj->register['SYS_LASTCHANGED'];	// Most recent modification time (seconds) of the content on the page. Used to evaluate whether it should be re-indexed.
+								// Content of page:
+							$this->conf['content'] = $pObj->content;					// Content string (HTML of TYPO3 page)
+							$this->conf['indexedDocTitle'] = $pObj->convOutputCharset($pObj->indexedDocTitle);	// Alternative title for indexing
+							$this->conf['metaCharset'] = $pObj->metaCharset;			// Character set of content (will be converted to utf-8 during indexing)
+							$this->conf['mtime'] = $pObj->register['SYS_LASTCHANGED'];	// Most recent modification time (seconds) of the content on the page. Used to evaluate whether it should be re-indexed.
 
-							// Configuration of behavior:
-						$this->conf['index_externals'] = $pObj->config['config']['index_externals'];	// Whether to index external documents like PDF, DOC etc. (if possible)
-						$this->conf['index_descrLgd'] = $pObj->config['config']['index_descrLgd'];		// Length of description text (max 250, default 200)
+								// Configuration of behavior:
+							$this->conf['index_externals'] = $pObj->config['config']['index_externals'];	// Whether to index external documents like PDF, DOC etc. (if possible)
+							$this->conf['index_descrLgd'] = $pObj->config['config']['index_descrLgd'];		// Length of description text (max 250, default 200)
 
-							// Set to zero:
-						$this->conf['recordUid'] = 0;
-						$this->conf['freeIndexUid'] = 0;
-						$this->conf['freeIndexSetId'] = 0;
+								// Set to zero:
+							$this->conf['recordUid'] = 0;
+							$this->conf['freeIndexUid'] = 0;
+							$this->conf['freeIndexSetId'] = 0;
 
-							// Init and start indexing:
-						$this->init();
-						$this->indexTypo3PageContent();
-
+								// Init and start indexing:
+							$this->init();
+							$this->indexTypo3PageContent();
+						} else $this->log_setTSlogMessage('Index page? No, ->sys_language_uid was different from sys_language_content which indicates that the page contains fall-back content and that would be falsely indexed as localized content.');
 					} else $this->log_setTSlogMessage('Index page? No, page was set to "no_cache" and so cannot be indexed.');
 				} else $this->log_setTSlogMessage('Index page? No, The "No Search" flag has been set in the page properties!');
 			} else $this->log_setTSlogMessage('Index page? No, Ordinary Frontend indexing during rendering is disabled.');

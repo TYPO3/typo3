@@ -1,23 +1,8 @@
 Version 3:
 
-BUGS to solve before 4.0:
-	- The "crawler" extension: what if crawler-script doesn't end and clear the process-script?
-	- Indexing of TYPO3.org resulted in: links to wiki pages were wrong!
-
-TODO:
-	Frontend:
-		- Searching in certain external site
-		- Mac "spotlight" like searching? (Define which categories are bundled and which not)
-		- Alternative presentationer af når records er indexerede.
-
 ***************
 TODO / projects:
 ***************
-
-
-**************
-- IndexCfg option:
-	- New type: Page Tree (traversing a part at night like crawler allows us...) [Basing this on the features of "crawler", simply adding log-entries]
 
 - Indexing configuration overview (including status and manual clearing possibility)
 

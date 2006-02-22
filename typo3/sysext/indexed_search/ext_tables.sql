@@ -168,6 +168,7 @@ CREATE TABLE index_config (
     get_params tinytext NOT NULL,
     fieldlist tinytext NOT NULL,
 	externalUrl tinytext NOT NULL,
+	indexcfgs text NOT NULL,
     chashcalc tinyint(3) unsigned DEFAULT '0' NOT NULL,
     filepath tinytext NOT NULL,
     extensions tinytext NOT NULL,

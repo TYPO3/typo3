@@ -33,6 +33,8 @@ index_config:timer_frequency</label>
 			<label index="type.details">&lt;b&gt;Records&lt;/b&gt; - You will be able to index records on a specified page from a specified database table. You can determine which fields from that record you want to index and how additional GET parameters should look like when linking to the search result.
 &lt;b&gt;Files&lt;/b&gt; - Allows you to index a whole directory of files from the fileadmin/ folder. You can optionally specify how many levels of recursion you want.
 &lt;b&gt;External URL&lt;/b&gt; - Allows you to index an external site and search it from your TYPO3 installation! You can specify how deep the crawler should go on that external URL.
+&lt;b&gt;Page tree&lt;/b&gt; - Allows you to index the page tree using the cron script. This type will not be useful as a category for searching like the other types.
+&lt;b&gt;Meta configuration&lt;/b&gt; - Points to a collection of other indexing configurations in which the search will be done. Cannot be used for cron-job based indexing.
 &lt;b&gt;Custom&lt;/b&gt; - Other extensions might register custom types of configurations.</label>
 			<label index="table2index.description">Specify the database table to index records from.</label>
 			<label index="alternative_source_pid.description">By default the indexer will select records from the page id where the Indexing Configuration is stored. If you want an alternative page as the source of your records you can enter it here.</label>
@@ -66,6 +68,7 @@ http://typo3.org/extensions/</label>
 			<label index="depth.details">For file indexing it is the level of directories to decend. For External URLs it's the depth to which the crawler will go with links.</label>
 			<label index="_depth.seeAlso">index_config:externalUrl, 
 index_config:filepath</label>
+			<label index="indexcfgs.description">When a search is conducted in this indexing configuration the actual search will take place in the indexed content from the configurations listed here. You can also enter pages and if you do so the search will take place in indexing configurations found on those pages.</label>
 		</languageKey>
 		<languageKey index="dk">EXT:csh_dk/indexed_search/dk.locallang_csh_indexcfg.xml</languageKey>
 		<languageKey index="de">EXT:csh_de/indexed_search/de.locallang_csh_indexcfg.xml</languageKey>

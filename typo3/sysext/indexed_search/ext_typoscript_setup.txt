@@ -21,6 +21,7 @@ plugin.tx_indexedsearch {
 		type = 0
 		defOp = 0
 		sections = 0
+		freeIndexUid = 1
 		media = 0
 		order = 0
 		group = 0
@@ -39,6 +40,7 @@ plugin.tx_indexedsearch {
 	search {
 		rootPidList =
 		page_links = 10
+		defaultFreeIndexUidList = 
 	}
 
 	result_link_target =
@@ -87,6 +89,7 @@ plugin.tx_indexedsearch {
 		.tx-indexedsearch .tx-indexedsearch-res .tx-indexedsearch-secHead TABLE { background:#cccccc; }
 		.tx-indexedsearch .tx-indexedsearch-res .tx-indexedsearch-secHead TD { vertical-align:middle; }
 		.tx-indexedsearch .tx-indexedsearch-res .noResume { color : #666666; }
+		.tx-indexedsearch H1.category { background:#cccccc; font-size: 16px; font-weight: bold; }		
 	)
 	_LOCAL_LANG {
 	}

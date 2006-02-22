@@ -1119,18 +1119,22 @@ EXTENSION KEYS:
 
 	/**
 	 * Imports an extensions from the online repository
+	 * NOTICE: in version 4.0 this changed from "importExtFromRep_old($extRepUid,$loc,$uploadFlag=0,$directInput='',$recentTranslations=0,$incManual=0,$dontDelete=0)"
 	 *
 	 * @param	string		Extension key
 	 * @param	string		Version
 	 * @param	string		Install scope: "L" or "G"
 	 * @param	boolean		If true, extension is uploaded as file
-	 * @param	boolean		If true, manual is included.
 	 * @param	boolean		If true, extension directory+files will not be deleted before writing the new ones. That way custom files stored in the extension folder will be kept.
+	 * @param	array 		Direct input array (like from kickstarter)
 	 * @return	string		Return false on success, returns error message if error.
 	 */
-	function importExtFromRep($extKey,$version,$loc,$uploadFlag=0,$dontDelete=0)	{
+	function importExtFromRep($extKey,$version,$loc,$uploadFlag=0,$dontDelete=0,$directInput='')	{
 
-		if ($uploadFlag)	{
+		if (is_array($directInput))	{
+			$fetchData = array($directInput,'');
+			$loc = !strcmp($loc,'G')?'G':'L';
+		} elseif ($uploadFlag)	{
 			if ($_FILES['upload_ext_file']['tmp_name'])	{
 
 					// Read uploaded file:

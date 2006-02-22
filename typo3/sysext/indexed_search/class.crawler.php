@@ -163,6 +163,21 @@ class tx_indexedsearch_crawler {
 
 					$pObj->addQueueEntry_callBack($setId,$params,$this->callBack,$cfgRec['pid']);
 				break;
+				case 4:	// Page tree
+
+						// Parameters:
+					$params = array(
+						'indexConfigUid' => $cfgRec['uid'],		// General
+						'procInstructions' => array('[Index Cfg UID#'.$cfgRec['uid'].']'),	// General
+						'url' => $cfgRec['alternative_source_pid'],	// Partly general... (for URL and file types and page tree (root))
+						'depth' => 0	// Specific for URL and file types and page tree
+					);
+
+					$pObj->addQueueEntry_callBack($setId,$params,$this->callBack,$cfgRec['pid']);
+				break;
+				case 5:	// Meta configuration, nothing to do:
+					# NOOP
+				break;
 				default:
 					if ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['crawler'][$cfgRec['type']])	{
 						$hookObj = &t3lib_div::getUserObj($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['crawler'][$cfgRec['type']]);
@@ -222,6 +237,12 @@ class tx_indexedsearch_crawler {
 					case 3:	// External URL:
 						$this->crawler_execute_type3($cfgRec,$session_data,$params,$pObj);
 					break;
+					case 4:	// Page tree:
+						$this->crawler_execute_type4($cfgRec,$session_data,$params,$pObj);
+					break;
+					case 5:	// Meta
+						# NOOP (should never enter here!)
+					break;
 					default:
 						if ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['crawler'][$cfgRec['type']])	{
 							$hookObj = &t3lib_div::getUserObj($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['crawler'][$cfgRec['type']]);
@@ -265,7 +286,7 @@ class tx_indexedsearch_crawler {
 			}
 
 				// Init:
-			$pid = intval($cfgRec['alternative_source_pid']) ? intval($cfgRec['alternative_source_pid']) : $this->pObj->id;
+			$pid = intval($cfgRec['alternative_source_pid']) ? intval($cfgRec['alternative_source_pid']) : $cfgRec['pid'];
 			$numberOfRecords = $cfgRec['recordsbatch'] ? t3lib_div::intInRange($cfgRec['recordsbatch'],1) : 100;
 
 				// Get root line:
@@ -413,6 +434,65 @@ class tx_indexedsearch_crawler {
 						);
 						$pObj->addQueueEntry_callBack($cfgRec['set_id'],$nparams,$this->callBack,$cfgRec['pid'],time()+$this->instanceCounter*$this->secondsPerExternalUrl);
 					}
+				}
+			}
+		}
+	}
+
+	/**
+	 * Page tree
+	 *
+	 * @param	array		Indexing Configuration Record
+	 * @param	arrar		Session data for the indexing session spread over multiple instances of the script. Passed by reference so changes hereto will be saved for the next call!
+	 * @param	array		Parameters from the log queue.
+	 * @param	object		Parent object (from "crawler" extension!)
+	 * @return	void
+	 */
+	function crawler_execute_type4($cfgRec,&$session_data,$params,&$pObj)	{
+
+			// Base page uid:
+		$pageUid = intval($params['url']);
+
+			// Get array of URLs from page:
+		$pageRow = t3lib_BEfunc::getRecord('pages',$pageUid);
+		$res = $pObj->getUrlsForPageRow($pageRow);
+
+		$duplicateTrack = array();	// Registry for duplicates
+		$downloadUrls = array();	// Dummy.
+
+			// Submit URLs:
+		if (count($res))	{
+			foreach($res as $paramSetKey => $vv)	{
+				$urlList = $pObj->urlListFromUrlArray($vv,$pageRow,time(),30,1,0,$duplicateTrack,$downloadUrls,array('tx_indexedsearch_reindex'));
+			}
+		}
+		
+			// Add subpages to log now:
+		if ($params['depth'] < $cfgRec['depth'])	{
+			
+				// Subpages selected
+			$recs = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+				'uid,title',
+				'pages',
+				'pid = '.intval($pageUid).
+					t3lib_BEfunc::deleteClause('pages')
+			);
+
+				// Traverse subpages and add to queue:
+			if (count($recs))	{
+				foreach($recs as $r)	{			
+					$this->instanceCounter++;
+					$url = 'pages:'.$r['uid'].': '.$r['title'];
+					$session_data['urlLog'][] = $url;
+
+							// Parameters:
+					$nparams = array(
+						'indexConfigUid' => $cfgRec['uid'],
+						'url' => $r['uid'],
+						'procInstructions' => array('[Index Cfg UID#'.$cfgRec['uid'].']'),
+						'depth' => $params['depth']+1
+					);
+					$pObj->addQueueEntry_callBack($cfgRec['set_id'],$nparams,$this->callBack,$cfgRec['pid'],time()+$this->instanceCounter*$this->secondsPerExternalUrl);
 				}
 			}
 		}
@@ -712,6 +792,45 @@ class tx_indexedsearch_crawler {
 		$this->pObj->addQueueEntry_callBack($cfgRec['set_id'],$nparams,$this->callBack,$cfgRec['pid']);
 	}
 
+/*
+	function createParameterCombinationsForPage($pageId,$paramConfiguration)	{
+		
+		$paramList = array('');
+		
+			// First, split configurations:
+		$cfgLines = t3lib_div::trimExplode(chr(10),$paramConfiguration,1);
+		
+			// Traverse each
+		foreach($cfgLines as $cfgLine)	{
+			list($table,$field,$param)	= t3lib_div::trimExplode(':',$cfgLine);
+debug(array($table,$field,$param));
+			if ($GLOBALS['TCA'][$table]) {
+				t3lib_div::loadTCA($table);
+				if ($GLOBALS['TCA'][$table]['columns'][$field] || $field==='uid') {
+					
+					$allRows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+						$field,
+						$table,
+						'pid='.intval($pageId).
+							t3lib_BEfunc::deleteClause($table)
+					);
+debug($allRows,$table);					
+					$paramListTemp = $paramList;
+					foreach($allRows as $row)	{
+						$addvalue = str_replace('###FIELD###',$row[$field],$param);
+						
+						foreach($paramList as $pLine)	{
+							$paramListTemp[] = $pLine.$addvalue;
+						}
+					}
+					$paramList = $paramListTemp;
+				}
+			}
+		}
+		
+		return $paramList;
+	}
+*/
 
 
 

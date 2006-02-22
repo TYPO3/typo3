@@ -449,6 +449,9 @@ class t3lib_cs {
 		'eo' => 'utf-8',
 		'my' => '',
 		'hi' => 'utf-8',
+		'fo' => 'utf-8',
+		'fa' => 'utf-8',
+		'sr' => 'utf-8'
 	);
 
 		// TYPO3 specific: Array with the iso names used for each system language in TYPO3:

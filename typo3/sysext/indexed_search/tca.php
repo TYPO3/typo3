@@ -51,6 +51,8 @@ $TCA['index_config'] = Array (
                     Array('LLL:EXT:indexed_search/locallang_db.php:index_config.type.I.1', '1'),
                     Array('LLL:EXT:indexed_search/locallang_db.php:index_config.type.I.2', '2'),
                     Array('LLL:EXT:indexed_search/locallang_db.php:index_config.type.I.3', '3'),
+                    Array('LLL:EXT:indexed_search/locallang_db.php:index_config.type.I.4', '4'),
+                    Array('LLL:EXT:indexed_search/locallang_db.php:index_config.type.I.5', '5'),
                 ),
                 'size' => 1,
                 'maxitems' => 1,
@@ -91,6 +93,17 @@ $TCA['index_config'] = Array (
                 'size' => 1,
                 'minitems' => 0,
                 'maxitems' => 1,
+            )
+        ),
+        'indexcfgs' => Array (
+            'label' => 'LLL:EXT:indexed_search/locallang_db.php:index_config.indexcfgs',
+            'config' => Array (
+                'type' => 'group',
+                'internal_type' => 'db',
+                'allowed' => 'index_config,pages',
+                'size' => 5,
+                'minitems' => 0,
+                'maxitems' => 200,
             )
         ),
         'get_params' => Array (
@@ -207,6 +220,8 @@ $TCA['index_config'] = Array (
         '1' => Array('showitem' => 'title;;1;;2-2-2, description, timer_next_indexing, timer_offset, timer_frequency, set_id, type;;;;3-3-3, table2index;;;;3-3-3, alternative_source_pid, fieldlist, get_params, chashcalc,recordsbatch,records_indexonchange'),
         '2' => Array('showitem' => 'title;;1;;2-2-2, description, timer_next_indexing, timer_offset, timer_frequency, set_id, type;;;;3-3-3, filepath;;;;3-3-3, extensions, depth'),
         '3' => Array('showitem' => 'title;;1;;2-2-2, description, timer_next_indexing, timer_offset, timer_frequency, set_id, type;;;;3-3-3, externalUrl;;;;3-3-3, depth, url_deny'),
+        '4' => Array('showitem' => 'title;;1;;2-2-2, description, timer_next_indexing, timer_offset, timer_frequency, set_id, type;;;;3-3-3, alternative_source_pid;LLL:EXT:indexed_search/locallang_db.php:index_config.rootpage;;;3-3-3, depth'),
+        '5' => Array('showitem' => 'title;;;;2-2-2, description, type;;;;3-3-3, indexcfgs;;;;3-3-3'),
     ),
     'palettes' => Array (
         '1' => Array('showitem' => 'starttime,hidden')

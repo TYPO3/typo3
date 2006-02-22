@@ -3183,7 +3183,7 @@ class t3lib_div {
 		foreach($params as $theP)	{
 			$pKV = explode('=', $theP);	// Splitting single param by '=' sign
 			if (!t3lib_div::inList('id,type,no_cache,cHash,MP,ftu',$pKV[0]))	{
-				$pA[$pKV[0]] = (string)rawurldecode($pKV[1]);
+				$pA[rawurldecode($pKV[0])] = (string)rawurldecode($pKV[1]);
 			}
 		}
 		$pA['encryptionKey'] = $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'];

@@ -1,3 +1,13 @@
+2006-02-22 Kasper Skaarhoj  <kasperYYYY@typo3.com>
+
+	* Added 3 languages: Faroe, Serbian, Farsi
+	* Fixed bug in t3lib_div::cHashParams()
+	* Brought back support in EM's index.php::importExtFromRep() function for direct injection of an array with extension files (needed for support for kickstarter, but new function parameters are kept)
+	* Added new Indexing Configuration for indexed search: Traversal of page tree. Means that now the page tree can be indexed by the "crawler" extension (cronscript)
+	* Added meta indexing configuration type (useful for group-categorizing of search results)
+	* Added a condition to indexing of pages; that sys_language_uid and sys_language_content must be similar; it is assumed that for pages with fallback to default content no indexing is wanted.
+	* Added "Spotlight" categorizing feature to search results. The categories are defined as indexing configurations + natural categories like pages in the page tree. TypoScript configuration applies.
+	
 2006-02-21  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
 	* Path setting correction in htmlArea RTE SpellChecker plugin.

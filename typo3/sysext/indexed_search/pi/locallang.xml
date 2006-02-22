@@ -47,6 +47,7 @@
 			<label index="form_searchIn"></label>
 			<label index="form_match"></label>
 			<label index="form_style"></label>
+			
 			<label index="rules_header"></label>
 			<label index="rules_text"></label>
 			<label index="searchFor"></label>
@@ -98,6 +99,11 @@
 			<label index="opt_sections_-1">Only this page</label>
 			<label index="opt_sections_-2">Top + level 1</label>
 			<label index="opt_sections_-3">Level 2 and out</label>
+			<label index="opt_freeIndexUid_-1">All, mixed</label>
+			<label index="opt_freeIndexUid_-2">All, categorized</label>
+			<label index="opt_freeIndexUid_0">Pages</label>
+			<label index="opt_freeIndexUid_header_-1">Mixed categories</label>
+			<label index="opt_freeIndexUid_header_0">Website Pages</label>
 			<label index="opt_media_-1">All media</label>
 			<label index="opt_media_0">Internal pages</label>
 			<label index="opt_media_-2">All External</label>
@@ -123,6 +129,7 @@
 			<label index="form_atATime">at a time</label>
 			<label index="form_orderBy">Order by:</label>
 			<label index="form_fromSection">From section:</label>
+			<label index="form_freeIndexUid">Category:</label>
 			<label index="form_searchIn">Search in:</label>
 			<label index="form_match">Match:</label>
 			<label index="form_style">Style:</label>

@@ -36,6 +36,8 @@
 			<label index="index_config.type.I.1">Database Records</label>
 			<label index="index_config.type.I.2">Filepath on server</label>
 			<label index="index_config.type.I.3">External URL</label>
+			<label index="index_config.type.I.4">Page tree</label>
+			<label index="index_config.type.I.5">Meta configuration</label>
 			<label index="index_config.type">Type:</label>
 			<label index="index_config.depth.I.0">Single page</label>
 			<label index="index_config.depth.I.1">1 Level</label>
@@ -60,6 +62,9 @@
 			<label index="index_config.timer_frequency.I.1">Every day (24 hours)</label>
 			<label index="index_config.timer_frequency.I.2">Every week</label>
 			<label index="index_config.recordsbatch">How many records to index a minute (default is 100):</label>
+			<label index="index_config.indexcfgs">Indexing configurations:</label>
+			<label index="index_config.parameterCfgs">Parameter combination configuration ([tablename]:&amp;[param]=###UID###):</label>
+			<label index="index_config.rootpage">Root page:</label>
 		</languageKey>
 		<languageKey index="dk">EXT:csh_dk/indexed_search/dk.locallang_db.xml</languageKey>
 		<languageKey index="de">EXT:csh_de/indexed_search/de.locallang_db.xml</languageKey>

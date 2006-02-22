@@ -11,6 +11,7 @@
 <!-- ###SEARCH_FORM### begin -->
 <form action="###ACTION_URL###" method="POST" name="tx_indexedsearch">
 	<input type="hidden" name="tx_indexedsearch[_sections]" value="0">
+	<input type="hidden" name="tx_indexedsearch[_freeIndexUid]" value="_">
 	<input type="hidden" name="tx_indexedsearch[pointer]" value="0">
 	<input type="hidden" name="tx_indexedsearch[type]" value="###HIDDEN_VALUE_TYPE###">
 	<input type="hidden" name="tx_indexedsearch[ext]" value="###HIDDEN_VALUE_EXT###">
@@ -74,13 +75,25 @@
 		<!-- ###SELECT_SECTION### begin -->
 		<tr>
 			<td class="tx-indexedsearch-form">###FORM_FROMSECTION###</td>
-			<td class="tx-indexedsearch-form" colspan=2">
+			<td class="tx-indexedsearch-form" colspan="2">
 				<select name="tx_indexedsearch[sections]" class="tx-indexedsearch-selectbox-sections">
 					###SELECTBOX_SECTIONS_VALUES###
 				</select>
 			</td>
 		</tr>
 		<!-- ###SELECT_SECTION### end -->
+
+			
+			<!-- ###SELECT_FREEINDEXUID### begin -->
+			<tr>
+				<td  class="tx-indexedsearch-form">###FORM_FREEINDEXUID###</td>
+				<td class="tx-indexedsearch-form" colspan="2">
+					<select name="tx_indexedsearch[freeIndexUid]" class="tx-indexedsearch-selectbox-freeIndexUid">
+						###SELECTBOX_FREEINDEXUIDS_VALUES###
+					</select>
+				</td>
+			</tr>
+			<!-- ###SELECT_FREEINDEXUID### end -->
 
 		<!-- ###SELECT_ORDER### begin -->
 		<tr>

@@ -3557,8 +3557,11 @@ From sub-directory:
 							$FDdb = $this->getFieldDefinitions_database();
 							$diff = $this->getDatabaseExtra($FDfile, $FDdb);
 							$update_statements = $this->getUpdateSuggestions($diff);
-							foreach ($update_statements['add'] as $statement)	{
-								$res = $GLOBALS['TYPO3_DB']->admin_query($statement);
+
+							if (count($update_statements['add']))	{
+								foreach ($update_statements['add'] as $statement)	{
+									$res = $GLOBALS['TYPO3_DB']->admin_query($statement);
+								}
 							}
 
 							if ($this->mode=='123')	{

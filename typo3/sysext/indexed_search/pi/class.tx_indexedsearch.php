@@ -219,6 +219,9 @@ class tx_indexedsearch extends tslib_pibase {
 			// If "_sections" is set, this value overrides any existing value.
 		if ($this->piVars['_sections'])		$this->piVars['sections'] = $this->piVars['_sections'];
 
+			// If "_sections" is set, this value overrides any existing value.
+		if ($this->piVars['_freeIndexUid']!=='_')		$this->piVars['freeIndexUid'] = $this->piVars['_freeIndexUid'];
+
 			// Add previous search words to current
 		if ($this->piVars['sword_prev_include'] && $this->piVars['sword_prev'])	{
 			$this->piVars['sword'] = trim($this->piVars['sword_prev']).' '.$this->piVars['sword'];
@@ -246,6 +249,11 @@ class tx_indexedsearch extends tslib_pibase {
 				'-2' => $this->pi_getLL('opt_sections_-2'),
 				'-3' => $this->pi_getLL('opt_sections_-3'),
 				// Here values like "rl1_" and "rl2_" + a rootlevel 1/2 id can be added to perform searches in rootlevel 1+2 specifically. The id-values can even be commaseparated. Eg. "rl1_1,2" would search for stuff inside pages on menu-level 1 which has the uid's 1 and 2.
+			),
+			'freeIndexUid' => Array(
+				'-1' => $this->pi_getLL('opt_freeIndexUid_-1'),
+				'-2' => $this->pi_getLL('opt_freeIndexUid_-2'),
+				'0' => $this->pi_getLL('opt_freeIndexUid_0'),
 			),
 			'media' => Array(
 				'-1' => $this->pi_getLL('opt_media_-1'),
@@ -280,6 +288,19 @@ class tx_indexedsearch extends tslib_pibase {
 				'100' => '100',
 			)
 		);
+		
+			// Free Index Uid:
+		if ($this->conf['search.']['defaultFreeIndexUidList'])	{
+			$uidList = t3lib_div::intExplode(',', $this->conf['search.']['defaultFreeIndexUidList']);
+			$indexCfgRecords = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid,title','index_config','uid IN ('.implode(',',$uidList).')'.$this->cObj->enableFields('index_config'),'','','','uid');
+
+			foreach($uidList as $uidValue)	{
+				if (is_array($indexCfgRecords[$uidValue]))	{
+					$this->optValues['freeIndexUid'][$uidValue] = $indexCfgRecords[$uidValue]['title'];
+				}
+			}
+		}
+
 
 			// Add media to search in:
 		if (strlen(trim($this->conf['search.']['mediaList'])))	{
@@ -466,43 +487,68 @@ class tx_indexedsearch extends tslib_pibase {
 	 * @return	string		HTML for result display.
 	 */
 	function doSearch($sWArr)	{
-
-			// Get result rows:
-		$pt1 = t3lib_div::milliseconds();
-		if ($hookObj = &$this->hookRequest('getResultRows'))	{
-			$resData = $hookObj->getResultRows($sWArr);
-		} else {
-			$resData = $this->getResultRows($sWArr);
+		
+			// Find free index uid:
+		$freeIndexUid = $this->piVars['freeIndexUid'];
+		if ($freeIndexUid==-2)	{
+			$freeIndexUid = $this->conf['search.']['defaultFreeIndexUidList'];
 		}
 
-			// Display search results:
-		$pt2 = t3lib_div::milliseconds();
-		if ($hookObj = &$this->hookRequest('getDisplayResults'))	{
-			$content = $hookObj->getDisplayResults($sWArr, $resData);
-		} else {
-			$content = $this->getDisplayResults($sWArr, $resData);
-		}
+		$indexCfgs = t3lib_div::intExplode(',',$freeIndexUid);
+		$accumulatedContent = '';
 
-		$pt3 = t3lib_div::milliseconds();
+		foreach($indexCfgs as $freeIndexUid)	{
+				// Get result rows:
+			$pt1 = t3lib_div::milliseconds();
+			if ($hookObj = &$this->hookRequest('getResultRows'))	{
+				$resData = $hookObj->getResultRows($sWArr,$freeIndexUid);
+			} else {
+				$resData = $this->getResultRows($sWArr,$freeIndexUid);
+			}
+
+				// Display search results:
+			$pt2 = t3lib_div::milliseconds();
+			if ($hookObj = &$this->hookRequest('getDisplayResults'))	{
+				$content = $hookObj->getDisplayResults($sWArr, $resData, $freeIndexUid);
+			} else {
+				$content = $this->getDisplayResults($sWArr, $resData, $freeIndexUid);
+			}
+
+			$pt3 = t3lib_div::milliseconds();
+
+				// Create header if we are searching more than one indexing configuration:
+			if (count($indexCfgs)>1)	{
+				if ($freeIndexUid>0)	{
+					list($indexCfgRec) = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('title','index_config','uid='.intval($freeIndexUid).$this->cObj->enableFields('index_config'));
+					$titleString = $indexCfgRec['title'];
+				} else {
+					$titleString = $this->pi_getLL('opt_freeIndexUid_header_'.$freeIndexUid);
+				}
+				$content = '<h1 class="category">'.htmlspecialchars($titleString).'</h1>'.$content;
+			}
+		
+			$accumulatedContent.=$content;
+		}
 
 			// Write search statistics
 		$this->writeSearchStat($sWArr,$resData['count'],array($pt1,$pt2,$pt3));
 
 			// Return content:
-		return $content;
+		return $accumulatedContent;
 	}
 
 	/**
 	 * Get search result rows / data from database. Returned as data in array.
 	 *
 	 * @param	array		Search word array
+	 * @param	integer		Pointer to which indexing configuration you want to search in. -1 means no filtering. 0 means only regular indexed content.	
 	 * @return	array		False if no result, otherwise an array with keys for first row, result rows and total number of results found.
 	 */
-	function getResultRows($sWArr)	{
+	function getResultRows($sWArr,$freeIndexUid=-1)	{
 
 			// Getting SQL result pointer:
 			$GLOBALS['TT']->push('Searching result');
-		$res = $this->getResultRows_SQLpointer($sWArr);
+		$res = $this->getResultRows_SQLpointer($sWArr,$freeIndexUid);
 			$GLOBALS['TT']->pull();
 
 			// Organize and process result:
@@ -569,9 +615,10 @@ class tx_indexedsearch extends tslib_pibase {
 	 * Gets a SQL result pointer to traverse for the search records.
 	 *
 	 * @param	array		Search words
+	 * @param	integer		Pointer to which indexing configuration you want to search in. -1 means no filtering. 0 means only regular indexed content.
 	 * @return	pointer
 	 */
-	function getResultRows_SQLpointer($sWArr)	{
+	function getResultRows_SQLpointer($sWArr,$freeIndexUid=-1)	{
 				// This SEARCHES for the searchwords in $sWArr AND returns a COMPLETE list of phash-integers of the matches.
 		$list = $this->getPhashList($sWArr);
 
@@ -579,7 +626,7 @@ class tx_indexedsearch extends tslib_pibase {
 		if ($list)	{
 				// Do the search:
 			$GLOBALS['TT']->push('execFinalQuery');
-			$res = $this->execFinalQuery($list);
+			$res = $this->execFinalQuery($list,$freeIndexUid);
 			$GLOBALS['TT']->pull();
 			return $res;
 		} else {
@@ -592,9 +639,10 @@ class tx_indexedsearch extends tslib_pibase {
 	 *
 	 * @param	array		Search words array (for display of text describing what was searched for)
 	 * @param	array		Array with result rows, count, first row.
+	 * @param	integer		Pointer to which indexing configuration you want to search in. -1 means no filtering. 0 means only regular indexed content.
 	 * @return	string		HTML content to display result.
 	 */
-	function getDisplayResults($sWArr, $resData)	{
+	function getDisplayResults($sWArr, $resData, $freeIndexUid=-1)	{
 			// Perform display of result rows array:
 		if ($resData)	{
 			$GLOBALS['TT']->push('Display Final result');
@@ -604,16 +652,16 @@ class tx_indexedsearch extends tslib_pibase {
 
 				// Result display here:
 			$rowcontent = '';
-			$rowcontent.= $this->compileResult($resData['resultRows']);
+			$rowcontent.= $this->compileResult($resData['resultRows'], $freeIndexUid);
 
 				// Browsing box:
 			if ($resData['count'])	{
 				$this->internal['res_count'] = $resData['count'];
 				$this->internal['results_at_a_time'] = $this->piVars['results'];
 				$this->internal['maxPages'] = t3lib_div::intInRange($this->conf['search.']['page_links'],1,100,10);
-				$addString = ($resData['count']&&$this->piVars['group']=='sections' ? ' '.sprintf($this->pi_getLL(count($this->resultSections)>1?'inNsections':'inNsection'),count($this->resultSections)):'');
-				$browseBox1 = $this->pi_list_browseresults(1,$addString,$this->printResultSectionLinks());
-				$browseBox2 = $this->pi_list_browseresults(0);
+				$addString = ($resData['count']&&$this->piVars['group']=='sections'&&$freeIndexUid<=0 ? ' '.sprintf($this->pi_getLL(count($this->resultSections)>1?'inNsections':'inNsection'),count($this->resultSections)):'');
+				$browseBox1 = $this->pi_list_browseresults(1,$addString,$this->printResultSectionLinks(),$freeIndexUid);
+				$browseBox2 = $this->pi_list_browseresults(0,'','',$freeIndexUid);
 			}
 
 				// Browsing nav, bottom.
@@ -643,9 +691,10 @@ class tx_indexedsearch extends tslib_pibase {
 	 * Takes the "group" var into account: Makes a "section" or "flat" display.
 	 *
 	 * @param	array		Result rows
+	 * @param	integer		Pointer to which indexing configuration you want to search in. -1 means no filtering. 0 means only regular indexed content.
 	 * @return	string		HTML
 	 */
-	function compileResult($resultRows)	{
+	function compileResult($resultRows, $freeIndexUid=-1)	{
 		$content = '';
 
 			// Transfer result rows to new variable, performing some mapping of sub-results etc.
@@ -669,49 +718,57 @@ class tx_indexedsearch extends tslib_pibase {
 			}
 		}
 		$resultRows = $newResultRows;
+		$this->resultSections = array();
 
-		switch($this->piVars['group'])	{
-			case 'sections':
+		if ($freeIndexUid<=0)	{
+			switch($this->piVars['group'])	{
+				case 'sections':
 
-				$rl2flag = substr($this->piVars['sections'],0,2)=='rl';
-				$sections = array();
-				foreach($resultRows as $row)	{
-					$id = $row['rl0'].'-'.$row['rl1'].($rl2flag?'-'.$row['rl2']:'');
-					$sections[$id][] = $row;
-				}
-
-				$this->resultSections = array();
-
-				foreach($sections as $id => $resultRows)	{
-					$rlParts = explode('-',$id);
-					$theId = $rlParts[2] ? $rlParts[2] : ($rlParts[1]?$rlParts[1]:$rlParts[0]);
-					$theRLid = $rlParts[2] ? 'rl2_'.$rlParts[2]:($rlParts[1]?'rl1_'.$rlParts[1]:'0');
-
-					$sectionName = substr($this->getPathFromPageId($theId),1);
-
-					if (!trim($sectionName))	{
-						$sectionTitleLinked = $this->pi_getLL('unnamedSection','',1).':';
-					} else {
-						$onclick = 'document.'.$this->prefixId.'[\''.$this->prefixId.'[_sections]\'].value=\''.$theRLid.'\';document.'.$this->prefixId.'.submit();return false;';
-						$sectionTitleLinked = '<a href="#" onclick="'.htmlspecialchars($onclick).'">'.htmlspecialchars($sectionName).':</a>';
+					$rl2flag = substr($this->piVars['sections'],0,2)=='rl';
+					$sections = array();
+					foreach($resultRows as $row)	{
+						$id = $row['rl0'].'-'.$row['rl1'].($rl2flag?'-'.$row['rl2']:'');
+						$sections[$id][] = $row;
 					}
-					$this->resultSections[$id] = array($sectionName,count($resultRows));
 
-						// Add content header:
-					$content.= $this->makeSectionHeader($id,$sectionTitleLinked,count($resultRows));
+					$this->resultSections = array();
 
-						// Render result rows:
+					foreach($sections as $id => $resultRows)	{
+						$rlParts = explode('-',$id);
+						$theId = $rlParts[2] ? $rlParts[2] : ($rlParts[1]?$rlParts[1]:$rlParts[0]);
+						$theRLid = $rlParts[2] ? 'rl2_'.$rlParts[2]:($rlParts[1]?'rl1_'.$rlParts[1]:'0');
+
+						$sectionName = substr($this->getPathFromPageId($theId),1);
+
+						if (!trim($sectionName))	{
+							$sectionTitleLinked = $this->pi_getLL('unnamedSection','',1).':';
+						} else {
+							$onclick = 'document.'.$this->prefixId.'[\''.$this->prefixId.'[_sections]\'].value=\''.$theRLid.'\';document.'.$this->prefixId.'.submit();return false;';
+							$sectionTitleLinked = '<a href="#" onclick="'.htmlspecialchars($onclick).'">'.htmlspecialchars($sectionName).':</a>';
+						}
+						$this->resultSections[$id] = array($sectionName,count($resultRows));
+
+							// Add content header:
+						$content.= $this->makeSectionHeader($id,$sectionTitleLinked,count($resultRows));
+
+							// Render result rows:
+						foreach($resultRows as $row)	{
+							$content.= $this->printResultRow($row);
+						}
+					}
+				break;
+				default:	// flat:
 					foreach($resultRows as $row)	{
 						$content.= $this->printResultRow($row);
 					}
-				}
-			break;
-			default:	// flat:
-				foreach($resultRows as $row)	{
-					$content.= $this->printResultRow($row);
-				}
-			break;
+				break;
+			}			
+		} else {
+			foreach($resultRows as $row)	{
+				$content.= $this->printResultRow($row);
+			}
 		}
+		
 		return '<div'.$this->pi_classParam('res').'>'.$content.'</div>';
 	}
 
@@ -936,18 +993,56 @@ class tx_indexedsearch extends tslib_pibase {
 			return 'AND IP.sys_language_uid='.intval($this->piVars['lang']);
 		}
 	}
-
+	
+	function freeIndexUidWhere($freeIndexUid)	{
+		
+		if ($freeIndexUid>=0)	{
+			
+				// First, look if the freeIndexUid is a meta configuration:
+			list($indexCfgRec) = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('indexcfgs','index_config','type=5 AND uid='.intval($freeIndexUid).$this->cObj->enableFields('index_config'));			
+			if (is_array($indexCfgRec))	{
+				$refs = t3lib_div::trimExplode(',',$indexCfgRec['indexcfgs']);
+				$list = array(-99);	// Default value to protect against empty array.
+				foreach($refs as $ref)	{
+					list($table,$uid) = t3lib_div::revExplode('_',$ref,2);
+					switch ($table)	{
+						case 'index_config':
+							list($idxRec) = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid','index_config','uid='.intval($uid).$this->cObj->enableFields('index_config'));
+							if ($idxRec)	$list[] = $uid;
+						break;
+						case 'pages':
+							$indexCfgRecordsFromPid = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid','index_config','pid='.intval($uid).$this->cObj->enableFields('index_config'));
+							foreach($indexCfgRecordsFromPid as $idxRec)	{
+								$list[] = $idxRec['uid'];
+							}			
+						break;
+					}	
+				}
+				
+				$list = array_unique($list);
+			} else {
+				$list = array(intval($freeIndexUid));
+			}
+			
+			return ' AND IP.freeIndexUid IN ('.implode(',',$list).')';
+		}
+	}
+	
 	/**
 	 * Execute final query, based on phash integer list. The main point is sorting the result in the right order.
 	 *
 	 * @param	string		List of phash integers which match the search.
+	 * @param	integer		Pointer to which indexing configuration you want to search in. -1 means no filtering. 0 means only regular indexed content.
 	 * @return	pointer		Query result pointer
 	 */
-	function execFinalQuery($list)	{
+	function execFinalQuery($list,$freeIndexUid=-1)	{
 
 			// Setting up methods of filtering results based on page types, access, etc.
 		$page_join = '';
 		$page_where = '';
+		
+			// Indexing configuration clause:
+		$freeIndexUidClause = $this->freeIndexUidWhere($freeIndexUid);
 
 			// Calling hook for alternative creation of page ID list
 		if ($hookObj = &$this->hookRequest('execFinalQuery_idList'))	{
@@ -1037,7 +1132,8 @@ class tx_indexedsearch extends tslib_pibase {
 						$wordSel.'
 							IP.phash IN ('.$list.') '.
 							$this->mediaTypeWhere().' '.
-							$this->languageWhere().'
+							$this->languageWhere().
+							$freeIndexUidClause.'
 							AND IW.wid=IR.wid
 							AND ISEC.phash = IR.phash
 							AND IP.phash = IR.phash
@@ -1065,7 +1161,8 @@ class tx_indexedsearch extends tslib_pibase {
 						'index_phash IP,index_section ISEC'.$page_join,
 						'IP.phash IN ('.$list.') '.
 							$this->mediaTypeWhere().' '.
-							$this->languageWhere().'
+							$this->languageWhere().
+							$freeIndexUidClause.'
 							AND IP.phash = ISEC.phash
 							AND '.$page_where,
 						'IP.phash,ISEC.phash,ISEC.phash_t3,ISEC.rl0,ISEC.rl1,ISEC.rl2 ,ISEC.page_id,ISEC.uniqid,IP.phash_grouping,IP.data_filename ,IP.data_page_id ,IP.data_page_reg1,IP.data_page_type,IP.data_page_mp,IP.gr_list,IP.item_type,IP.item_title,IP.item_description,IP.item_mtime,IP.tstamp,IP.item_size,IP.contentHash,IP.crdate,IP.parsetime,IP.sys_language_uid,IP.item_crdate,IP.cHashParams,IP.externalUrl,IP.recordUid,IP.freeIndexUid',
@@ -1198,7 +1295,7 @@ class tx_indexedsearch extends tslib_pibase {
 		$html = $this->cObj->getSubpart($this->templateCode, '###SEARCH_FORM###');
 
 			// Multilangual text
-		$substituteArray = array('searchFor', 'extResume', 'atATime', 'orderBy', 'fromSection', 'searchIn', 'match', 'style');
+		$substituteArray = array('searchFor', 'extResume', 'atATime', 'orderBy', 'fromSection', 'searchIn', 'match', 'style', 'freeIndexUid');
 		foreach ($substituteArray as $marker)	{
 			$markerArray['###FORM_'.strtoupper($marker).'###'] = $this->pi_getLL('form_'.$marker,'',1);
 		}
@@ -1263,6 +1360,13 @@ class tx_indexedsearch extends tslib_pibase {
 				$html = $this->cObj->substituteSubpart($html, '###SELECT_SECTION###', '');
 			} else {
 				$markerArray['###SELECTBOX_SECTIONS_VALUES###'] = $this->renderSelectBoxValues($this->piVars['sections'],$optValues['sections']);
+			}
+
+				// Free Indexing Configurations:
+			if (!is_array($optValues['freeIndexUid']) || $this->conf['blind.']['freeIndexUid'])	{
+				$html = $this->cObj->substituteSubpart($html, '###SELECT_FREEINDEXUID###', '');
+			} else {
+				$markerArray['###SELECTBOX_FREEINDEXUIDS_VALUES###'] = $this->renderSelectBoxValues($this->piVars['freeIndexUid'],$optValues['freeIndexUid']);
 			}
 
 				// Sorting
@@ -1471,9 +1575,10 @@ class tx_indexedsearch extends tslib_pibase {
 	 * @param	boolean		Show result count
 	 * @param	string		String appended to "displaying results..." notice.
 	 * @param	string		String appended after section "displaying results..."
+	 * @param	string		List of integers pointing to free indexing configurations to search. -1 represents no filtering, 0 represents TYPO3 pages only, any number above zero is a uid of an indexing configuration!
 	 * @return	string		HTML output
 	 */
-	function pi_list_browseresults($showResultCount=1,$addString='',$addPart='')	{
+	function pi_list_browseresults($showResultCount=1,$addString='',$addPart='',$freeIndexUid=-1)	{
 
 			// Initializing variables:
 		$pointer=$this->piVars['pointer'];
@@ -1489,7 +1594,7 @@ class tx_indexedsearch extends tslib_pibase {
 
 				// Make browse-table/links:
 			if ($pointer>0)	{	// all pages after the 1st one
-				$links[]='<td><p>'.$this->makePointerSelector_link($this->pi_getLL('pi_list_browseresults_prev','< Previous',1),$pointer-1).'</p></td>';
+				$links[]='<td><p>'.$this->makePointerSelector_link($this->pi_getLL('pi_list_browseresults_prev','< Previous',1),$pointer-1,$freeIndexUid).'</p></td>';
 			}
 
 			for($a=0;$a<$pageCount;$a++)	{
@@ -1501,14 +1606,14 @@ class tx_indexedsearch extends tslib_pibase {
 
 				if($a >= $min && $a < $max)	{
 					if($a==$pointer)	{
-						$links[]='<td'.($pointer==$a?$this->pi_classParam('browsebox-SCell'):'').'><p><strong>'.$this->makePointerSelector_link(trim($this->pi_getLL('pi_list_browseresults_page','Page',1).' '.($a+1)),$a).'</strong></p></td>';
+						$links[]='<td'.($pointer==$a?$this->pi_classParam('browsebox-SCell'):'').'><p><strong>'.$this->makePointerSelector_link(trim($this->pi_getLL('pi_list_browseresults_page','Page',1).' '.($a+1)),$a,$freeIndexUid).'</strong></p></td>';
 					} else {
-						$links[]='<td'.($pointer==$a?$this->pi_classParam('browsebox-SCell'):'').'><p>'.$this->makePointerSelector_link(trim($this->pi_getLL('pi_list_browseresults_page','Page',1).' '.($a+1)),$a).'</p></td>';
+						$links[]='<td'.($pointer==$a?$this->pi_classParam('browsebox-SCell'):'').'><p>'.$this->makePointerSelector_link(trim($this->pi_getLL('pi_list_browseresults_page','Page',1).' '.($a+1)),$a,$freeIndexUid).'</p></td>';
 					}
 				}
 			}
 			if ($pointer+1 < $pageCount)	{
-				$links[]='<td><p>'.$this->makePointerSelector_link($this->pi_getLL('pi_list_browseresults_next','Next >',1),$pointer+1).'</p></td>';
+				$links[]='<td><p>'.$this->makePointerSelector_link($this->pi_getLL('pi_list_browseresults_next','Next >',1),$pointer+1,$freeIndexUid).'</p></td>';
 			}
 		}
 
@@ -1678,10 +1783,13 @@ class tx_indexedsearch extends tslib_pibase {
 	 *
 	 * @param	string		String to wrap in <a> tag
 	 * @param	integer		Pointer value
+	 * @param	string		List of integers pointing to free indexing configurations to search. -1 represents no filtering, 0 represents TYPO3 pages only, any number above zero is a uid of an indexing configuration!
 	 * @return	string		Input string wrapped in <a> tag with onclick event attribute set.
 	 */
-	function makePointerSelector_link($str,$p)	{
-		$onclick = 'document.'.$this->prefixId.'[\''.$this->prefixId.'[pointer]\'].value=\''.$p.'\';document.'.$this->prefixId.'.submit();return false;';
+	function makePointerSelector_link($str,$p,$freeIndexUid)	{
+		$onclick = 'document.'.$this->prefixId.'[\''.$this->prefixId.'[pointer]\'].value=\''.$p.'\';'.
+					'document.'.$this->prefixId.'[\''.$this->prefixId.'[_freeIndexUid]\'].value=\''.rawurlencode($freeIndexUid).'\';'.
+					'document.'.$this->prefixId.'.submit();return false;';
 		return '<a href="#" onclick="'.htmlspecialchars($onclick).'">'.$str.'</a>';
 	}
 
@@ -1986,8 +2094,7 @@ class tx_indexedsearch extends tslib_pibase {
 				if ($flag)	{
 
 // FIXME not all flags from typo3/gfx/flags are available in media/flags/
-// FIXME this is untested
-					$file = preg_replace('/^'.PATH_site.'/', PATH_tslib).'media/flags/flag_'.$flag;
+					$file = substr(PATH_tslib,strlen(PATH_site)).'media/flags/flag_'.$flag;
 					$imgInfo = @getimagesize(PATH_site.$file);
 
 // original
