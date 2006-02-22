@@ -1,6 +1,7 @@
 2006-02-22  Dmitry Dulepov  <typo3@accio.lv>
 
 	* t3libBEfunc::thumbCode() did not make proper image path under certain conditions
+	* Fixed bug #2654: Incorrect conversion of non-ascii (Latvian) characters in URL
 
 2006-02-22  Wolfgang Klinger  <wk@plan2.net>
 
