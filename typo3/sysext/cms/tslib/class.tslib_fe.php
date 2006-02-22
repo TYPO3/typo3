@@ -95,7 +95,8 @@
  * 1949:     function locDataCheck($locationData)
  * 1965:     function sendFormmail()
  * 2016:     function extractRecipientCopy($bodytext)
- * 2031:     function checkJumpUrl()
+ * 2116:     function setExternalJumpUrl()
+ * 2126:     function checkJumpUrlReferer()
  * 2113:     function jumpUrl()
  * 2157:     function setUrlIdToken()
  *
@@ -2108,14 +2109,25 @@
 	}
 
 	/**
-	 * Checks if jumpurl is set.
+	 * Sets the jumpurl for page type "External URL"
 	 *
 	 * @return	void
 	 */
-	function checkJumpUrl()	{
-		if (strcmp($this->jumpurl,'') && !$this->TYPO3_CONF_VARS['SYS']['doNotCheckReferer'])	{
+	function setExternalJumpUrl()	{
+		if ($extUrl = $this->sys_page->getExtURL($this->page, $this->config['config']['disablePageExternalUrl']))	{
+			$this->jumpurl = $extUrl;
+		}
+	}
+
+	/**
+	 * Checks the jumpurl referer if required
+	 *
+	 * @return	void
+	 */
+	function checkJumpUrlReferer()	{
+		if (strcmp($this->jumpurl,'') && !$this->TYPO3_CONF_VARS['SYS']['doNotCheckReferer']) {
 			$referer = parse_url(t3lib_div::getIndpEnv('HTTP_REFERER'));
-			if (!( $referer['host'] == t3lib_div::getIndpEnv('TYPO3_HOST_ONLY')))	{
+			if (isset($referer['host']) && !($referer['host'] == t3lib_div::getIndpEnv('TYPO3_HOST_ONLY')))	{
 				unset($this->jumpurl);
  			}
 		}
@@ -2128,9 +2140,6 @@
 	 * @return	void
 	 */
 	function jumpUrl()	{
-		if ($extUrl=$this->sys_page->getExtURL($this->page,$this->config['config']['disablePageExternalUrl']))	{
-			$this->jumpurl = $extUrl;
-		}
 		if ($this->jumpurl)	{
 			if (t3lib_div::_GP('juSecure'))	{
 				$hArr = array(

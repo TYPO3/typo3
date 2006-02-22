@@ -1,3 +1,7 @@
+2006-02-22  Wolfgang Klinger  <wk@plan2.net>
+
+	* Fixed bug #2592: Page type "External URL" and "Shortcut" causes an error (jumpUrlX methods)
+
 2006-02-22 Kasper Skaarhoj  <kasperYYYY@typo3.com>
 
 	* Added 3 languages: Faroe, Serbian, Farsi

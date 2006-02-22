@@ -654,7 +654,7 @@ class t3lib_pageSelect {
 	 * @param	array		The page row to return URL type for
 	 * @param	boolean		A flag to simply disable any output from here.
 	 * @return	string		The URL type from $this->urltypes array. False if not found or disabled.
-	 * @see tslib_fe::checkJumpUrl()
+	 * @see tslib_fe::setExternalJumpUrl()
 	 */
 	function getExtURL($pagerow,$disable=0)	{
 		if ($pagerow['doktype']==3 && !$disable)	{

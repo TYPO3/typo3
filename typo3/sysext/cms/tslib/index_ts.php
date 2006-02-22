@@ -385,7 +385,8 @@ $TSFE->settingLocale();
 // ********************************
 // Check JumpUrl
 // *******************************
-$TSFE->checkJumpUrl();
+$TSFE->setExternalJumpUrl();
+$TSFE->checkJumpUrlReferer();
 
 
 // ********************************
