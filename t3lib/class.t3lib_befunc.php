@@ -1588,10 +1588,9 @@ class t3lib_BEfunc	{
 				}
 					// use the original image if it's size fits to the thumbnail size
 				if ($max && $max<=(count($sizeParts)&&max($sizeParts)?max($sizeParts):56))	{
-					$url = $uploaddir.'/'.trim($theFile);
-					$theFile = '../'.$url;
+					$theFile = $url = ($abs?'':'../').($uploaddir?$uploaddir.'/':'').trim($theFile);
 					$onClick='top.launchView(\''.$theFile.'\',\'\',\''.$backPath.'\');return false;';
-					$thumbData.='<a href="#" onclick="'.htmlspecialchars($onClick).'"><img src="../'.$backPath.$url.'" '.$imgInfo[3].' hspace="2" border="0" title="'.trim($url).'"'.$tparams.' alt="" /></a> ';
+					$thumbData.='<a href="#" onclick="'.htmlspecialchars($onClick).'"><img src="'.$backPath.$url.'" '.$imgInfo[3].' hspace="2" border="0" title="'.trim($url).'"'.$tparams.' alt="" /></a> ';
 						// New 190201 stop
 				} elseif ($ext=='ttf' || t3lib_div::inList($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'],$ext)) {
 					$theFile = ($abs?'':'../').($uploaddir?$uploaddir.'/':'').trim($theFile);
