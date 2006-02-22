@@ -1,3 +1,7 @@
+2006-02-22  Dmitry Dulepov  <typo3@accio.lv>
+
+	* t3libBEfunc::thumbCode() did not make proper image path under certain conditions
+
 2006-02-22  Wolfgang Klinger  <wk@plan2.net>
 
 	* Fixed bug #1596: checkIncludeLines uses preg_match now and checks for all whitespace before and after <INCLUDE_TYPOSCRIPT>
