@@ -452,9 +452,9 @@ class t3lib_TSparser {
 			while(list($c,$v)=each($allParts))	{
 				if (!$c)	{	 // first goes through
 					$newString.=$v;
-				} elseif (ereg("\r?\n[ ]*$",$allParts[$c-1]))	{	// There must be a line-break char before.
+				} elseif (preg_match('/\r?\n\s*$/',$allParts[$c-1]))	{	// There must be a line-break char before.
 					$subparts=explode('>',$v,2);
-					if (ereg("^[ ]*\r?\n",$subparts[1]))	{	// There must be a line-break char after
+					if (preg_match('/^\s*\r?\n/',$subparts[1]))	{	// There must be a line-break char after
 							// SO, the include was positively recognized:
 						$newString.='### '.$splitStr.$subparts[0].'> BEGIN:'.chr(10);
 						$params = t3lib_div::get_tag_attributes($subparts[0]);
