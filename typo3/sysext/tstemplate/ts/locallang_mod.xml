@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+	<meta type="array">
+		<description>Module labels</description>
+		<type>module</type>
+		<csh_table></csh_table>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index="mlang_labels_tablabel">Template tools</label>
+			<label index="mlang_labels_tabdescr">Here you manage the TypoScript templates which are in charge of the look of your website on the frontend. The module provides specialized features like an object browser, a constant editor and raw editing facilities.&lt;br /&gt;&lt;em&gt;Access for 'admin' users only!&lt;/em&gt;</label>
+			<label index="mlang_tabs_tab">Template</label>
+		</languageKey>
+	</data>
+</T3locallang>

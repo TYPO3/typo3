@@ -2861,17 +2861,8 @@ EXTENSION KEYS:
 	function createDirsInPath($dirs,$extDirPath)	{
 		if (is_array($dirs))	{
 			foreach($dirs as $dir)	{
-				$allDirs = t3lib_div::trimExplode('/',$dir,1);
-				$root = '';
-				foreach($allDirs as $dirParts)	{
-					$root.=$dirParts.'/';
-					if (!is_dir($extDirPath.$root))	{
-						t3lib_div::mkdir($extDirPath.$root);
-						if (!@is_dir($extDirPath.$root))	{
-							return 'Error: The directory "'.$extDirPath.$root.'" could not be created...';
-						}
-					}
-				}
+				$error = t3lib_div::mkdir_deep($extDirPath,$dir);
+				if ($error)	return $error;
 			}
 		}
 

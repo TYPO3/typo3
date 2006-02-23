@@ -3,68 +3,10 @@
 	<meta type="array">
 		<description>Module labels</description>
 		<type>module</type>
-		<csh_table></csh_table>
-		<fileId>EXT:indexed_search/modfunc1/locallang.xml</fileId>
-		<labelContext type="array">
-			<label index="title"></label>
-		</labelContext>
-		<ext_filename_template>EXT:csh_###LANGKEY###/indexed_search/modfunc1/###LANGKEY###.locallang.xml</ext_filename_template>
-		<keep_original_text type="integer">1</keep_original_text>
 	</meta>
 	<data type="array">
 		<languageKey index="default" type="array">
 			<label index="title">Indexed search</label>
 		</languageKey>
-		<languageKey index="dk">EXT:csh_dk/indexed_search/modfunc1/dk.locallang.xml</languageKey>
-		<languageKey index="de">EXT:csh_de/indexed_search/modfunc1/de.locallang.xml</languageKey>
-		<languageKey index="no">EXT:csh_no/indexed_search/modfunc1/no.locallang.xml</languageKey>
-		<languageKey index="it">EXT:csh_it/indexed_search/modfunc1/it.locallang.xml</languageKey>
-		<languageKey index="fr">EXT:csh_fr/indexed_search/modfunc1/fr.locallang.xml</languageKey>
-		<languageKey index="es">EXT:csh_es/indexed_search/modfunc1/es.locallang.xml</languageKey>
-		<languageKey index="nl">EXT:csh_nl/indexed_search/modfunc1/nl.locallang.xml</languageKey>
-		<languageKey index="cz">EXT:csh_cz/indexed_search/modfunc1/cz.locallang.xml</languageKey>
-		<languageKey index="pl">EXT:csh_pl/indexed_search/modfunc1/pl.locallang.xml</languageKey>
-		<languageKey index="si">EXT:csh_si/indexed_search/modfunc1/si.locallang.xml</languageKey>
-		<languageKey index="fi">EXT:csh_fi/indexed_search/modfunc1/fi.locallang.xml</languageKey>
-		<languageKey index="tr">EXT:csh_tr/indexed_search/modfunc1/tr.locallang.xml</languageKey>
-		<languageKey index="se">EXT:csh_se/indexed_search/modfunc1/se.locallang.xml</languageKey>
-		<languageKey index="pt">EXT:csh_pt/indexed_search/modfunc1/pt.locallang.xml</languageKey>
-		<languageKey index="ru">EXT:csh_ru/indexed_search/modfunc1/ru.locallang.xml</languageKey>
-		<languageKey index="ro">EXT:csh_ro/indexed_search/modfunc1/ro.locallang.xml</languageKey>
-		<languageKey index="ch">EXT:csh_ch/indexed_search/modfunc1/ch.locallang.xml</languageKey>
-		<languageKey index="sk">EXT:csh_sk/indexed_search/modfunc1/sk.locallang.xml</languageKey>
-		<languageKey index="lt">EXT:csh_lt/indexed_search/modfunc1/lt.locallang.xml</languageKey>
-		<languageKey index="is">EXT:csh_is/indexed_search/modfunc1/is.locallang.xml</languageKey>
-		<languageKey index="hr">EXT:csh_hr/indexed_search/modfunc1/hr.locallang.xml</languageKey>
-		<languageKey index="hu">EXT:csh_hu/indexed_search/modfunc1/hu.locallang.xml</languageKey>
-		<languageKey index="gl">EXT:csh_gl/indexed_search/modfunc1/gl.locallang.xml</languageKey>
-		<languageKey index="th">EXT:csh_th/indexed_search/modfunc1/th.locallang.xml</languageKey>
-		<languageKey index="gr">EXT:csh_gr/indexed_search/modfunc1/gr.locallang.xml</languageKey>
-		<languageKey index="hk">EXT:csh_hk/indexed_search/modfunc1/hk.locallang.xml</languageKey>
-		<languageKey index="eu">EXT:csh_eu/indexed_search/modfunc1/eu.locallang.xml</languageKey>
-		<languageKey index="bg">EXT:csh_bg/indexed_search/modfunc1/bg.locallang.xml</languageKey>
-		<languageKey index="br">EXT:csh_br/indexed_search/modfunc1/br.locallang.xml</languageKey>
-		<languageKey index="et">EXT:csh_et/indexed_search/modfunc1/et.locallang.xml</languageKey>
-		<languageKey index="ar">EXT:csh_ar/indexed_search/modfunc1/ar.locallang.xml</languageKey>
-		<languageKey index="he">EXT:csh_he/indexed_search/modfunc1/he.locallang.xml</languageKey>
-		<languageKey index="ua">EXT:csh_ua/indexed_search/modfunc1/ua.locallang.xml</languageKey>
-		<languageKey index="lv">EXT:csh_lv/indexed_search/modfunc1/lv.locallang.xml</languageKey>
-		<languageKey index="jp">EXT:csh_jp/indexed_search/modfunc1/jp.locallang.xml</languageKey>
-		<languageKey index="vn">EXT:csh_vn/indexed_search/modfunc1/vn.locallang.xml</languageKey>
-		<languageKey index="ca">EXT:csh_ca/indexed_search/modfunc1/ca.locallang.xml</languageKey>
-		<languageKey index="ba">EXT:csh_ba/indexed_search/modfunc1/ba.locallang.xml</languageKey>
-		<languageKey index="kr">EXT:csh_kr/indexed_search/modfunc1/kr.locallang.xml</languageKey>
-		<languageKey index="eo">EXT:csh_eo/indexed_search/modfunc1/eo.locallang.xml</languageKey>
-		<languageKey index="my">EXT:csh_my/indexed_search/modfunc1/my.locallang.xml</languageKey>
-		<languageKey index="hi">EXT:csh_hi/indexed_search/modfunc1/hi.locallang.xml</languageKey>
 	</data>
-	<orig_hash type="array">
-		<languageKey index="default" type="array">
-			<label index="title" type="integer">108129979</label>
-		</languageKey>
-	</orig_hash>
-	<orig_text type="array">
-		<languageKey index="default" type="array">
-		</languageKey>
-	</orig_text>
 </T3locallang>

@@ -3,10 +3,6 @@
 	<meta type="array">
 		<description>Module labels for Sort Page Wizard</description>
 		<type>module</type>
-		<csh_table></csh_table>
-		<fileId>EXT:wizard_sortpages/locallang.xml</fileId>
-		<ext_filename_template>EXT:csh_###LANGKEY###/wizard_sortpages/###LANGKEY###.locallang.xml</ext_filename_template>
-		<keep_original_text type="integer">1</keep_original_text>
 	</meta>
 	<data type="array">
 		<languageKey index="default" type="array">
@@ -21,47 +17,5 @@
 			<label index="wiz_changeOrder_REVERSE">Reverse current order</label>
 			<label index="wiz_changeOrder_msg1">You're about to change the order of the above pages. Are you sure you want to continue?</label>
 		</languageKey>
-		<languageKey index="dk">EXT:csh_dk/wizard_sortpages/dk.locallang.xml</languageKey>
-		<languageKey index="de">EXT:csh_de/wizard_sortpages/de.locallang.xml</languageKey>
-		<languageKey index="no">EXT:csh_no/wizard_sortpages/no.locallang.xml</languageKey>
-		<languageKey index="it">EXT:csh_it/wizard_sortpages/it.locallang.xml</languageKey>
-		<languageKey index="fr">EXT:csh_fr/wizard_sortpages/fr.locallang.xml</languageKey>
-		<languageKey index="es">EXT:csh_es/wizard_sortpages/es.locallang.xml</languageKey>
-		<languageKey index="nl">EXT:csh_nl/wizard_sortpages/nl.locallang.xml</languageKey>
-		<languageKey index="cz">EXT:csh_cz/wizard_sortpages/cz.locallang.xml</languageKey>
-		<languageKey index="pl">EXT:csh_pl/wizard_sortpages/pl.locallang.xml</languageKey>
-		<languageKey index="si">EXT:csh_si/wizard_sortpages/si.locallang.xml</languageKey>
-		<languageKey index="fi">EXT:csh_fi/wizard_sortpages/fi.locallang.xml</languageKey>
-		<languageKey index="tr">EXT:csh_tr/wizard_sortpages/tr.locallang.xml</languageKey>
-		<languageKey index="se">EXT:csh_se/wizard_sortpages/se.locallang.xml</languageKey>
-		<languageKey index="pt">EXT:csh_pt/wizard_sortpages/pt.locallang.xml</languageKey>
-		<languageKey index="ru">EXT:csh_ru/wizard_sortpages/ru.locallang.xml</languageKey>
-		<languageKey index="ro">EXT:csh_ro/wizard_sortpages/ro.locallang.xml</languageKey>
-		<languageKey index="ch">EXT:csh_ch/wizard_sortpages/ch.locallang.xml</languageKey>
-		<languageKey index="sk">EXT:csh_sk/wizard_sortpages/sk.locallang.xml</languageKey>
-		<languageKey index="lt">EXT:csh_lt/wizard_sortpages/lt.locallang.xml</languageKey>
-		<languageKey index="is">EXT:csh_is/wizard_sortpages/is.locallang.xml</languageKey>
-		<languageKey index="hr">EXT:csh_hr/wizard_sortpages/hr.locallang.xml</languageKey>
-		<languageKey index="hu">EXT:csh_hu/wizard_sortpages/hu.locallang.xml</languageKey>
-		<languageKey index="gl">EXT:csh_gl/wizard_sortpages/gl.locallang.xml</languageKey>
-		<languageKey index="th">EXT:csh_th/wizard_sortpages/th.locallang.xml</languageKey>
-		<languageKey index="gr">EXT:csh_gr/wizard_sortpages/gr.locallang.xml</languageKey>
-		<languageKey index="hk">EXT:csh_hk/wizard_sortpages/hk.locallang.xml</languageKey>
-		<languageKey index="eu">EXT:csh_eu/wizard_sortpages/eu.locallang.xml</languageKey>
-		<languageKey index="bg">EXT:csh_bg/wizard_sortpages/bg.locallang.xml</languageKey>
-		<languageKey index="br">EXT:csh_br/wizard_sortpages/br.locallang.xml</languageKey>
-		<languageKey index="et">EXT:csh_et/wizard_sortpages/et.locallang.xml</languageKey>
-		<languageKey index="ar">EXT:csh_ar/wizard_sortpages/ar.locallang.xml</languageKey>
-		<languageKey index="he">EXT:csh_he/wizard_sortpages/he.locallang.xml</languageKey>
-		<languageKey index="ua">EXT:csh_ua/wizard_sortpages/ua.locallang.xml</languageKey>
-		<languageKey index="lv">EXT:csh_lv/wizard_sortpages/lv.locallang.xml</languageKey>
-		<languageKey index="jp">EXT:csh_jp/wizard_sortpages/jp.locallang.xml</languageKey>
-		<languageKey index="vn">EXT:csh_vn/wizard_sortpages/vn.locallang.xml</languageKey>
-		<languageKey index="ca">EXT:csh_ca/wizard_sortpages/ca.locallang.xml</languageKey>
-		<languageKey index="ba">EXT:csh_ba/wizard_sortpages/ba.locallang.xml</languageKey>
-		<languageKey index="kr">EXT:csh_kr/wizard_sortpages/kr.locallang.xml</languageKey>
-		<languageKey index="eo">EXT:csh_eo/wizard_sortpages/eo.locallang.xml</languageKey>
-		<languageKey index="my">EXT:csh_my/wizard_sortpages/my.locallang.xml</languageKey>
-		<languageKey index="hi">EXT:csh_hi/wizard_sortpages/hi.locallang.xml</languageKey>
 	</data>
 </T3locallang>

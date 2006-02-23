@@ -2,11 +2,7 @@
 <T3locallang>
 	<meta type="array">
 		<description>DB labels for the ADO DB datasource configuration</description>
-		<type>database</type>
-		<csh_table></csh_table>
-		<fileId>EXT:adodb/locallang_datasource_config.xml</fileId>
-		<labelContext type="array">
-		</labelContext>
+		<type>module</type>
 	</meta>
 	<data type="array">
 		<languageKey index="default" type="array">
@@ -19,6 +15,4 @@
 			<label index="checkconnectionwizard">Check connection to database with configuration entered below</label>
 		</languageKey>
 	</data>
-	<orig_hash type="array">
-	</orig_hash>
 </T3locallang>

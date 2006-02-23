@@ -3,12 +3,7 @@
 	<meta type="array">
 		<description>[Insert Title]</description>
 		<type>[Insert type: module/CSH/database]</type>
-		<fileId>EXT:[extkey]/[filepath]</fileId>
 		<csh_table>[first argument of the t3lib_extMgm::addLLrefForTCAdescr() function call including this file inside of ext_tables.php]</csh_table>
-		<keep_original_text></keep_original_text>
-		<ext_filename_template>EXT:test_###LANGKEY###/test/###LANGKEY###.locallang_test.xml</ext_filename_template>
-		<labelContext type="array">
-		</labelContext>
 	</meta>
 	<data type="array">
 		<languageKey index="default" type="array">

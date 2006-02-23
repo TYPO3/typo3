@@ -267,11 +267,12 @@ define('TYPO3_tables_script', $typo_db_tables_script);
 define('TYPO3_extTableDef_script', $typo_db_extTableDef_script);
 
 	// Defining backend system languages
-	// Remember to
+	// When adding new keys, remember to:
 	//		- pages.lang item array (t3lib/stddb/tbl_be.php)
-	//		- Add character encoding for lang key in t3lib/class.t3lib_cs.php
+	//		- Add character encoding for lang key in t3lib/class.t3lib_cs.php (default for new languages is "utf-8")
 	//		- update 'setup' extension labels (sysext/setup/mod/locallang.xml)
-	// 		- Add "csh_[key]" language pack and setup all core ll-XML scripts to point to XML files inside of that. (Kasper: see typo3_l10n/README.prepare_languages.txt)
+	//		- Using translation server? Create new user with username = "language key", member of "translator" group, set to "language key" language.
+	// Thats it! Use extension "llxmltranslate" to begin translation. Language pack is automatically created in "typo3conf/l10n/[language key]/"
 define('TYPO3_languages', 'default|dk|de|no|it|fr|es|nl|cz|pl|si|fi|tr|se|pt|ru|ro|ch|sk|lt|is|hr|hu|gl|th|gr|hk|eu|bg|br|et|ar|he|ua|lv|jp|vn|ca|ba|kr|eo|my|hi|fo|fa|sr');
 
 	// Unsetting the configured values. Use of these are deprecated.
@@ -344,7 +345,7 @@ function debugEnd() {
 
 	// include compatibility functions <PHP5
 if (version_compare(phpversion(), '5.0') < 0) {
-	include_once('compat_php5.php');
+	include_once(PATH_t3lib.'compat_php5.php');
 }
 
 	// Init services array:

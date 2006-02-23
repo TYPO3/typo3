@@ -2233,6 +2233,27 @@ class t3lib_div {
 			return TRUE;
 		}
 	}
+	
+	/**
+	 * Creates a directory - including parent directories if necessary - in the file system
+	 *
+	 * @param	string		Base folder. This must exist! Must have trailing slash! Example "/root/typo3site/" 
+	 * @param	string		Deep directory to create, eg. "xx/yy/" which creates "/root/typo3site/xx/yy/" if $destination is "/root/typo3site/"
+	 * @return	string		If error, returns error string.
+	 */
+	function mkdir_deep($destination,$deepDir)	{
+		$allParts = t3lib_div::trimExplode('/',$deepDir,1);
+		$root = '';
+		foreach($allParts as $part)	{
+			$root.= $part.'/';
+			if (!is_dir($destination.$root))	{
+				t3lib_div::mkdir($destination.$root);
+				if (!@is_dir($destination.$root))	{
+					return 'Error: The directory "'.$destination.$root.'" could not be created...';
+				}
+			}
+		}		
+	}
 
 	/**
 	 * Returns an array with the names of folders in a specific path
@@ -3251,7 +3272,7 @@ class t3lib_div {
 			$origCharset = $csConvObj->parse_charset($csConvObj->charSetArray[$langKey] ? $csConvObj->charSetArray[$langKey] : 'iso-8859-1');
 
 				// Cache file name:
-			$hashSource = substr($fileRef,strlen(PATH_site)).'|'.date('d-m-Y H:i:s',filemtime($fileRef));
+			$hashSource = substr($fileRef,strlen(PATH_site)).'|'.date('d-m-Y H:i:s',filemtime($fileRef)).'|version=2.2';
 			$cacheFileName = PATH_site.'typo3temp/llxml/'.
 							#str_replace('_','',ereg_replace('^.*\/','',dirname($fileRef))).
 							#'_'.basename($fileRef).
@@ -3271,9 +3292,15 @@ class t3lib_div {
 
 					// Specific language, convert from utf-8 to backend language charset:
 					// NOTICE: Converting from utf-8 back to "native" language may be a temporary solution until we can totally discard "locallang.php" files altogether (and use utf-8 for everything). But doing this conversion is the quickest way to migrate now and the source is in utf-8 anyway which is the main point.
-				if ($langKey!='default')	{
-					$LOCAL_LANG[$langKey] = $xmlContent['data'][$langKey];
-
+				if ($langKey!='default')	{				
+					
+						// If no entry is found for the language key, then force a value depending on meta-data setting. By default an automated filename will be used:
+					if (!isset($xmlContent['data'][$langKey]))	{
+						$LOCAL_LANG[$langKey] = t3lib_div::llXmlAutoFileName($fileRef, $langKey);
+ 					} else {
+						$LOCAL_LANG[$langKey] = $xmlContent['data'][$langKey];
+					}
+					
 						// Checking if charset should be converted.
 					if (is_array($LOCAL_LANG[$langKey]) && $origCharset!='utf-8')	{
 						foreach($LOCAL_LANG[$langKey] as $labelKey => $labelValue)	{
@@ -3337,6 +3364,45 @@ class t3lib_div {
 			return $LOCAL_LANG;
 		}
 	}
+
+	/**
+	 * Returns auto-filename for locallang-XML localizations.
+	 *
+	 * @param	string		Absolute file reference to locallang-XML file. Must be inside system/global/local extension
+	 * @param	string		Language key
+	 * @return	string		Returns the filename reference for the language unless error occured (or local mode is used) in which case it will be NULL
+	 */
+	function llXmlAutoFileName($fileRef,$language)	{
+
+			// Analyse file reference:
+		$location = 'typo3conf/l10n/'.$language.'/';	// Default location of translations
+		if (t3lib_div::isFirstPartOfStr($fileRef,PATH_site.TYPO3_mainDir.'sysext/'))	{	// Is system:
+			$validatedPrefix = PATH_site.TYPO3_mainDir.'sysext/';
+			#$location = 'EXT:csh_'.$language.'/';	// For system extensions translations are found in "csh_*" extensions (language packs)
+		} elseif (t3lib_div::isFirstPartOfStr($fileRef,PATH_site.TYPO3_mainDir.'ext/'))	{	// Is global:
+			$validatedPrefix = PATH_site.TYPO3_mainDir.'ext/';
+		} elseif (t3lib_div::isFirstPartOfStr($fileRef,PATH_site.'typo3conf/ext/'))	{	// Is local:
+			$validatedPrefix = PATH_site.'typo3conf/ext/';
+		} else {
+			$validatedPrefix = '';
+		}
+
+		if ($validatedPrefix)	{
+			
+				// Divide file reference into extension key, directory (if any) and base name:
+			list($file_extKey,$file_extPath) = explode('/',substr($fileRef,strlen($validatedPrefix)),2);
+			$temp = t3lib_div::revExplode('/',$file_extPath,2);
+			if (count($temp)==1)	array_unshift($temp,'');	// Add empty first-entry if not there.
+			list($file_extPath,$file_fileName) = $temp;
+
+				// The filename is prefixed with "[language key]." because it prevents the llxmltranslate tool from detecting it.
+			return $location.
+				$file_extKey.'/'.
+				($file_extPath?$file_extPath.'/':'').
+				$language.'.'.$file_fileName;
+		} else return NULL;
+	}
+
 
 	/**
 	 * Loads the $TCA (Table Configuration Array) for the $table

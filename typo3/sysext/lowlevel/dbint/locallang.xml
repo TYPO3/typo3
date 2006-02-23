@@ -3,33 +3,6 @@
     <meta type="array">
         <description>Labels for DB int module</description>
         <type>module</type>
-        <csh_table></csh_table>
-        <fileId>EXT:lowlevel/dbint/locallang.xml</fileId>
-        <labelContext type="array">
-            <label index="tables"></label>
-            <label index="fixLostRecord"></label>
-            <label index="doktype"></label>
-            <label index="pages"></label>
-            <label index="total_pages"></label>
-            <label index="deleted_pages"></label>
-            <label index="hidden_pages"></label>
-            <label index="relations"></label>
-            <label index="relations_description"></label>
-            <label index="files_many_ref"></label>
-            <label index="files_no_ref"></label>
-            <label index="files_no_file"></label>
-            <label index="select_db"></label>
-            <label index="group_db"></label>
-            <label index="tree"></label>
-            <label index="tree_description"></label>
-            <label index="records"></label>
-            <label index="records_description"></label>
-            <label index="search"></label>
-            <label index="search_description"></label>
-            <label index="filesearch"></label>
-            <label index="filesearch_description"></label>
-            <label index="title"></label>
-        </labelContext>
     </meta>
     <data type="array">
         <languageKey index="default" type="array">
@@ -60,35 +33,4 @@
             <label index="title">Database integrity check</label>
         </languageKey>
     </data>
-    <orig_hash type="array">
-        <languageKey index="default" type="array">
-            <label index="tables" type="integer">267355363</label>
-            <label index="fixLostRecord" type="integer">264598103</label>
-            <label index="doktype" type="integer">59646372</label>
-            <label index="pages" type="integer">9915692</label>
-            <label index="total_pages" type="integer">120516512</label>
-            <label index="deleted_pages" type="integer">251989828</label>
-            <label index="hidden_pages" type="integer">56221326</label>
-            <label index="relations" type="integer">158458960</label>
-            <label index="relations_description" type="integer">98163255</label>
-            <label index="files_many_ref" type="integer">253873964</label>
-            <label index="files_no_ref" type="integer">51429792</label>
-            <label index="files_no_file" type="integer">103076812</label>
-            <label index="select_db" type="integer">222215195</label>
-            <label index="group_db" type="integer">89872761</label>
-            <label index="tree" type="integer">254322778</label>
-            <label index="tree_description" type="integer">13437987</label>
-            <label index="records" type="integer">107937849</label>
-            <label index="records_description" type="integer">36151804</label>
-            <label index="search" type="integer">201691087</label>
-            <label index="search_description" type="integer">44447557</label>
-            <label index="filesearch" type="integer">138409460</label>
-            <label index="filesearch_description" type="integer">206400326</label>
-            <label index="title" type="integer">152428276</label>
-        </languageKey>
-    </orig_hash>
-    <orig_text type="array">
-        <languageKey index="default" type="array">
-        </languageKey>
-    </orig_text>
 </T3locallang>
