@@ -1,3 +1,8 @@
+2006-02-23 Kasper Skaarhoj  <kasperYYYY@typo3.com>
+	* Changed things related to locallang-XML handling. Most significantly is it that translations are looked for in the new language pack directories typo3conf/l10n/[langyage key]/. 
+	* All locallang-XML files are updated to have ONLY the default labels in them and no specific references to external files; means translations will work only with language packs installed in typo3conf/l10n/. Such language packs will be distributed as zip-files around the release. 
+	* csh_* extensions (language pack extensions) are now obsolete.
+
 2006-02-22  Dmitry Dulepov  <typo3@accio.lv>
 
 	* t3libBEfunc::thumbCode() did not make proper image path under certain conditions
