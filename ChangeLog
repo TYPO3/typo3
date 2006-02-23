@@ -1,3 +1,7 @@
+2006-02-23  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
+
+	* Remove RTE-enabling defaultExtras off tt_content bodytext (related to bug #2023).
+
 2006-02-23  Rene Fritz  <r.fritz@colorcube.de>
 
 	* Fixed bug #2662: added check against "Limit to languages"

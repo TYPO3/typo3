@@ -260,7 +260,6 @@ $TCA['tt_content'] = Array (
 			'l10n_mode' => 'prefixLangTitle',
 			'l10n_cat' => 'text',
 			'label' => 'LLL:EXT:lang/locallang_general.php:LGL.text',
-			'defaultExtras' => 'richtext:rte_transform[mode=ts_css]',
 			'config' => Array (
 				'type' => 'text',
 				'cols' => '48',
