@@ -1936,8 +1936,10 @@ class tx_cms_layout extends recordList {
 			$langSelItems[0]='
 						<option value="0"></option>';
 			while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
-				$langSelItems[$row['uid']]='
-						<option value="'.$row['uid'].'">'.htmlspecialchars($row['title']).'</option>';
+				if ($GLOBALS['BE_USER']->checkLanguageAccess($row['uid']))	{
+					$langSelItems[$row['uid']]='
+							<option value="'.$row['uid'].'">'.htmlspecialchars($row['title']).'</option>';
+				}
 			}
 
 				// Then, subtract the languages which are already on the page:

@@ -328,7 +328,9 @@ class SC_db_layout {
 			 // First, select all pages_language_overlay records on the current page. Each represents a possibility for a language on the page. Add these to language selector.
 		$res = $this->exec_languageQuery($this->id);
 		while($lrow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
-			$this->MOD_MENU['language'][$lrow['uid']]=($lrow['hidden']?'('.$lrow['title'].')':$lrow['title']);
+			if ($GLOBALS['BE_USER']->checkLanguageAccess($lrow['uid']))	{
+				$this->MOD_MENU['language'][$lrow['uid']]=($lrow['hidden']?'('.$lrow['title'].')':$lrow['title']);
+			}
 		}
 
 			// Find if there are ANY languages at all (and if not, remove the language option from function menu).
