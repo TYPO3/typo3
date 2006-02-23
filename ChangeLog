@@ -1,3 +1,7 @@
+2006-02-23  Ingmar Schlecht  <ingmar@typo3.org>
+
+	* Changed formURL in fe_adminLib.inc to always contain a question mark "?" because in the templates the formurl marker is used like ###FORM_URL###&cmd=edit which didn't work if the URL didn't contain a question mark like in simulStatic- or RealURLs. This fixes typo3.org bug #2563.
+
 2006-02-23  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
 	* Remove RTE-enabling defaultExtras off tt_content bodytext (related to bug #2023).

@@ -222,8 +222,13 @@ class user_feAdmin	{
 			$linkConf['additionalParams'] = $this->conf['addParams'];
 		}
 
+		$formURL = $this->cObj->typoLink_URL($linkConf);
+		if(!strstr($formURL,'?')) {
+			$formURL .= '?';
+		}
+
 			// Initialize markerArray, setting FORM_URL and HIDDENFIELDS
-		$this->markerArray['###FORM_URL###'] = $this->cObj->typoLink_URL($linkConf);
+		$this->markerArray['###FORM_URL###'] = $formURL;
 		$this->markerArray['###FORM_URL_ENC###'] = rawurlencode($this->markerArray['###FORM_URL###']);
 		$this->markerArray['###FORM_URL_HSC###'] = htmlspecialchars($this->markerArray['###FORM_URL###']);
 
