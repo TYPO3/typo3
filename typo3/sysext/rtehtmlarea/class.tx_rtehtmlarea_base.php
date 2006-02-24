@@ -1515,19 +1515,21 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 		$classesAnchorIndex = 0;
 		reset($this->RTEsetup['properties']['classesAnchor.']);
 		while(list($label,$conf)=each($this->RTEsetup['properties']['classesAnchor.'])) {
-			if(is_array($conf) && $conf['class']) {
+			if (is_array($conf) && $conf['class']) {
 				$JSClassesAnchorArray .= (($classesAnchorIndex++)?',':'') . ' { ' . $linebreak;
 				$index = 0;
 				$JSClassesAnchorArray .= (($index++)?',':'') . 'name : "' . $conf['class'] . '"' . $linebreak;
-				if($conf['type']) $JSClassesAnchorArray .= (($index++)?',':'') . 'type : "' . $conf['type'] . '"' . $linebreak;
-				if(trim($conf['image'])) {
-					$JSClassesAnchorArray .= (($index++)?',':'') . 'image : "' . $this->getFullFileName(trim($conf['image'])) . '"' . $linebreak;
+				if ($conf['type']) {
+					$JSClassesAnchorArray .= (($index++)?',':'') . 'type : "' . $conf['type'] . '"' . $linebreak;
 				}
-				if(trim($conf['altText'])) {
+				if (trim(str_replace('\'', '', str_replace('"', '', $conf['image'])))) {
+					$JSClassesAnchorArray .= (($index++)?',':'') . 'image : "' . $this->getFullFileName(trim(str_replace('\'', '', str_replace('"', '', $conf['image'])))) . '"' . $linebreak;
+				}
+				if (trim($conf['altText'])) {
 					$string = $this->getLLContent(trim($conf['altText']));
 					$JSClassesAnchorArray .= (($index++)?',':'') . 'altText : ' . str_replace('"', '\"', str_replace('\\\'', '\'', $string)) . $linebreak;
 				}
-				if(trim($conf['titleText'])) {
+				if (trim($conf['titleText'])) {
 					$string = $this->getLLContent(trim($conf['titleText']));
 					$JSClassesAnchorArray .= (($index++)?',':'') . 'titleText : ' . str_replace('"', '\"', str_replace('\\\'', '\'', $string)) . $linebreak;
 				}

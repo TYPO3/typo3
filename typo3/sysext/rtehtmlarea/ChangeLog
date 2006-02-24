@@ -1,3 +1,6 @@
+2006-02-23 Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+	* Fix bugtracker issue 2656
+
 2006-02-21 Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
 	* Path setting correction in SpellChecker plugin.
 
