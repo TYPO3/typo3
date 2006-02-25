@@ -3,48 +3,51 @@ CHANGES & IMPROVEMENTS in TYPO3 4.0
 (for technical details see ChangeLog)
 ************************************************************************
 
-New features / improvements
-===========================
+New features
+============
 
-	* Workspaces
-	* indexed search (template support, speed improvements) - many thanks to Udo von Eynern for implementing the template support!
-	* Integrated kb_cont_slide extension into core
-	* tab indenting in textareas in the backend
-	* display of BE clickmenus with XMLHTTP / AJAX
+	* workspaces
+	* a new update wizard of the installer handles compatibility issues
+	* improved indexed search (template support, faster) - many thanks to Udo von Eynern for implementing the template support!
+	* "sliding" of content elements similar to TypoScript's getText level* feature (integration of extension "kb_cont_slide" by Bernhard Kraft)
 	* User admin module: switch back to admin user after user switch (SU-mode), "create new user" link
-	* Zapped a lot of gremlins
-	* Update Wizard taking care of non-backwards compatible changes
+
+Usability
+=========
+
+	* pages can be moved by drag and drop within the page tree
+	* faster context menues (implemented with AJAX)
+	* fixed fonts are used in BE configuration fields for increased readability
+	* tab indenting in BE configuration fields for enhanced layout
+	* files can be created or uploaded with buttons in the Web>List content frame
+	* improved content element wizard (eg empty categories are removed)
+	* RTE wizard has now a save-and-close button
 
 Access Control
 ==============
 
-	* FE-groups are now nested. Additionally, pages and content elements can have more than one group assigned. (Michael Stucki, integrating extension "fenestgrp" by Glen Gibb and extension "ingmar_accessctrl" by Ingmar Schlecht)
+	* FE-groups may now be nested (integration of extension "fenestgrp" by Glenn Gibb)
+	* pages and content elements can have more than one group assigned (integration of extension "ingmar_accessctrl" by Ingmar Schlecht)
 
 Security
 =========
 
 	* New option for lockSSL: get redirected to standard http after BE login with SSL
 
-Bugfixes
-========
-
-	* config.disablePrefixComment was ignored by plugins
-	* When copying a file into the same folder in the "Filelist" module, it is automatically renamed
-	* JSMENU, editPanel and feAdmin fixed when utf-8 entities or other multibyte character sets get used
-	* 256-color GIFBUILDER bug fixed
-
-Usability
-=========
-
-	* on timeout in BE, popup won't appear again after clicking "No"
-	* made new content element wizard easier to use (removed empty categories)
-	* RTE wizard has save and close buttons now
-
 Accessibility
 =============
 
-	* output of CSS styled content is now accessible by default
-	* (mailforms, menus, sitemaps)
+	* output of CSS styled content is now accessible by default (mailforms, menus, sitemaps)
+	* the "table" content element has now limited accesibility support
+
+Bugfixes
+========
+
+	* the relogin popup on session timeout in BE won't appear again after clicking "No"
+	* config.disablePrefixComment was ignored by plugins
+	* when copying a file into the same folder in the "Filelist" module, it is automatically renamed
+	* JSMENU, editPanel and feAdmin works now with multi-byte character sets (eg UTF-8)
+	* 256-color GIFBUILDER bug fixed
 
 Speed
 =====
