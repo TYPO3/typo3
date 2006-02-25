@@ -250,6 +250,32 @@ class SC_file_list {
 				// FileList Module CSH:
 			$this->content.= t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'filelist_module', $GLOBALS['BACK_PATH'],'<br/>|');
 
+			$this->content.='
+				<!--
+					"Upload" and "New" buttons
+				-->
+				<div id="typo3-filelist-buttons">
+					<table border="0" cellpadding="4" cellspacing="0">
+						<tr>
+							<td>
+								<form name="upload" action="'.$BACK_PATH.'file_upload.php">
+									<input type="hidden" name="target" value="'.htmlspecialchars($this->id).'" />
+									<input type="hidden" name="returnUrl" value="'.htmlspecialchars($filelist->listURL()).'" />
+									<input type="submit" value="'.$GLOBALS['LANG']->makeEntities($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:cm.upload',1)).'" />
+								</form>
+							</td>
+							<td>
+								<form name="new" action="'.$BACK_PATH.'file_newfolder.php">
+									<input type="hidden" name="target" value="'.htmlspecialchars($this->id).'" />
+									<input type="hidden" name="returnUrl" value="'.htmlspecialchars($filelist->listURL()).'" />
+									<input type="submit" value="'.$GLOBALS['LANG']->makeEntities($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:cm.new',1)).'" />
+								</form>
+							</td>
+						</tr>
+					</table>
+				</div>
+			';
+
 			if ($filelist->HTMLcode)	{	// Making listing options:
 
 				$this->content.='
