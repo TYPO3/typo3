@@ -9,7 +9,7 @@
 			<label index="tt_content.tx_cssstyledcontent_acctables">Accessibility</label>
 			<label index="tt_content.tx_cssstyledcontent_acctables_caption">Table caption (&lt;caption&gt;)</label>
 			<label index="tt_content.tx_cssstyledcontent_acctables_summary">Table summary (&quot;summary&quot; attribute in &lt;table&gt; tags)</label>
-			<label index="tt_content.tx_cssstyledcontent_acctables_tfoot">Use table-footer (&lt;tfoot&gt;) on last table row</label>
+			<label index="tt_content.tx_cssstyledcontent_acctables_tfoot">Use table-footer (&lt;tfoot&gt; around last table row)</label>
 			<label index="tt_content.tx_cssstyledcontent_acctables_headerpos.I.0">no header</label>
 			<label index="tt_content.tx_cssstyledcontent_acctables_headerpos.I.1">top</label>
 			<label index="tt_content.tx_cssstyledcontent_acctables_headerpos.I.2">left</label>
