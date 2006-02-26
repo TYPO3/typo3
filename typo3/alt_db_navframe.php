@@ -430,8 +430,13 @@ class SC_alt_db_navframe {
 
 			// If mount point ID existed and is within users real mount points, then set it temporarily:
 		if ($temporaryMountPoint > 0 && $BE_USER->isInWebMount($temporaryMountPoint))	{
-			$this->pagetree->MOUNTS = array($temporaryMountPoint);
-			$this->active_tempMountPoint = t3lib_BEfunc::readPageAccess($temporaryMountPoint, $BE_USER->getPagePermsClause(1));
+			if ($this->active_tempMountPoint = t3lib_BEfunc::readPageAccess($temporaryMountPoint, $BE_USER->getPagePermsClause(1))) {
+				$this->pagetree->MOUNTS = array($temporaryMountPoint);
+			}
+			else {
+				// Clear temporary mount point as we have no access to it any longer
+				$this->settingTemporaryMountPoint(0);
+			}
 		}
 	}
 

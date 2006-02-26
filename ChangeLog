@@ -3,6 +3,7 @@
 	* Fixed bug #1060: Sitemap with SectionIndex does not display content header when page has a navigation title assigned
 	* Fixed bug #284: substUrlsInPlainText does not allow other characters than space and () to terminate URLs in the text.
 	* Fixed bug #2543: tslib_div uses deprecated function call_user_method
+	* Fixed bug #1827: Empty page tree after deleting the current temporary page mount.
 
 2006-02-25  Ingmar Schlecht  <ingmar@typo3.org>
 
