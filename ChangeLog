@@ -1,3 +1,9 @@
+2006-02-26  Wolfgang Klinger <wk@plan2.net>
+
+	* Fixed bug #1060: Sitemap with SectionIndex does not display content header when page has a navigation title assigned
+	* Fixed bug #284: substUrlsInPlainText does not allow other characters than space and () to terminate URLs in the text.
+	* Fixed bug #2543: tslib_div uses deprecated function call_user_method
+
 2006-02-25  Ingmar Schlecht  <ingmar@typo3.org>
 
 	* Added an "upload" and "new" button to the filelist module (Gremlin #1599, thanks to Stefano Cecere for the patch)

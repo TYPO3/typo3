@@ -3503,9 +3503,9 @@ class t3lib_div {
 
 			// Check persistent object and if found, call directly and exit.
 		if (is_array($GLOBALS['T3_VAR']['callUserFunction'][$funcName]))	{
-			return call_user_method(
-						$GLOBALS['T3_VAR']['callUserFunction'][$funcName]['method'],
-						$GLOBALS['T3_VAR']['callUserFunction'][$funcName]['obj'],
+			return call_user_func(
+						array(&$GLOBALS['T3_VAR']['callUserFunction'][$funcName]['obj'], 
+							$GLOBALS['T3_VAR']['callUserFunction'][$funcName]['method']),
 						$params,
 						$ref
 					);
@@ -3564,9 +3564,8 @@ class t3lib_div {
 						);
 					}
 						// Call method:
-					$content = call_user_method(
-						$parts[1],
-						$classObj,
+					$content = call_user_func(
+						array(&$classObj, $parts[1]),
 						$params,
 						$ref
 					);
@@ -3911,7 +3910,7 @@ class t3lib_div {
 		reset($urlSplit);
 		while(list($c,$v)=each($urlSplit))	{
 			if ($c)	{
-				$newParts = split('[[:space:]]|\)|\(',$v,2);
+				$newParts = preg_split('/\s|[<>"{}|\\\^`()\']/', $v, 2);
 				$newURL='http://'.$newParts[0];
 					switch((string)$urlmode)	{
 						case 'all':

@@ -764,6 +764,7 @@ class tslib_menu {
 						if (is_array($row))	{
 							$temp[$row['uid']]=$basePageRow;
 							$temp[$row['uid']]['title']=$row['header'];
+							$temp[$row['uid']]['nav_title']=$row['header'];
 							$temp[$row['uid']]['subtitle']=$row['subheader'];
 							$temp[$row['uid']]['starttime']=$row['starttime'];
 							$temp[$row['uid']]['endtime']=$row['endtime'];
