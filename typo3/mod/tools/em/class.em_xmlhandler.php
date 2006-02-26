@@ -62,7 +62,7 @@ class SC_mod_tools_em_xmlhandler {
 		while (list($extkey, $data) = each($this->extensionsXML)) {
 
 				// Unset extension key in installed keys array (for tracking)
-			if(isset($this->inst_keys[$extkey])) unset($this->inst_keys[$extkey]);
+			if(isset($this->emObj->inst_keys[$extkey])) unset($this->emObj->inst_keys[$extkey]);
 
 			if(strlen($search) && !stristr($extkey,$search)) {
 				unset($this->extensionsXML[$extkey]);
@@ -281,6 +281,7 @@ class SC_mod_tools_em_xmlhandler {
 				}
 			} elseif($this->currentTag == 'reviewstate') {
 					$this->reviewStates[$this->currentExt][$this->currentVersion] = (int)trim($data);
+					$this->extXMLResult[$this->currentExt]['versions'][$this->currentVersion]['reviewstate'] = (int)trim($data);
 			} else {
 				$this->extXMLResult[$this->currentExt]['versions'][$this->currentVersion][$this->currentTag] .= trim($data);
 			}

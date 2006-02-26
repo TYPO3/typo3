@@ -141,7 +141,6 @@
  * 4224:     function importAtAll()
  * 4235:     function importAsType($type,$lockType='')
  * 4255:     function deleteAsType($type)
- * 4273:     function getDocManual($extension_key,$loc='')
  * 4289:     function versionDifference($v1,$v2,$div=1)
  * 4301:     function first_in_array($str,$array,$caseInsensitive=FALSE)
  * 4318:     function includeEMCONF($path,$_EXTKEY)
@@ -512,8 +511,6 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 			}
 		} elseif ($this->CMD['importExtInfo'])	{	// Gets detailed information of an extension from online rep.
 			$this->importExtInfo($this->CMD['importExtInfo'],$this->CMD['extVersion']);
-		} elseif ($this->CMD['fetchMetaData'])	{	// fetches mirror/extension data from online rep.
-			$this->fetchMetaData($this->CMD['fetchMetaData']);
 		} else {	// No command - we show what the menu setting tells us:
 
 			$menu = $LANG->sL('LLL:EXT:lang/locallang_core.php:labels.menu').' '.
@@ -673,8 +670,8 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 				$extensions = array();
 				while(list($extKey)=each($extEkeys))	{
 					$allKeys[]=$extKey;
-					if (($this->MOD_SETTINGS['display_shy'] || !$list[$extKey]['EM_CONF']['shy']) &&
-							($this->MOD_SETTINGS['display_obsolete'] || $list[$extKey]['EM_CONF']['state']!='obsolete')
+					if ((!$list[$extKey]['EM_CONF']['shy'] || $this->MOD_SETTINGS['display_shy']) &&
+							($list[$extKey]['EM_CONF']['state']!='obsolete' || $this->MOD_SETTINGS['display_obsolete'])
 					 && $this->searchExtension($extKey,$list[$extKey]))	{
 						$loadUnloadLink = t3lib_extMgm::isLoaded($extKey)?
 						'<a href="'.htmlspecialchars('index.php?CMD[showExt]='.$extKey.'&CMD[remove]=1&CMD[clrCmd]=1&SET[singleDetails]=info').'">'.$this->removeButton().'</a>':
@@ -760,15 +757,15 @@ EXTENSION KEYS:
 								$ext['downloadcounter_all'] = $list[$extKey]['downloadcounter'];
 								$ext['_ICON'] = $list[$extKey]['_ICON'];
 								$loadUnloadLink='';
-								if ($inst_list[$extKey]['type']!='S' && (!isset($inst_list[$extKey]) || $this->versionDifference($list[$extKey]['EM_CONF']['version'],$inst_list[$extKey]['EM_CONF']['version'],$this->versionDiffFactor)))	{
+								if ($inst_list[$extKey]['type']!='S' && (!isset($inst_list[$extKey]) || $this->versionDifference($version,$inst_list[$extKey]['EM_CONF']['version'],$this->versionDiffFactor)))	{
 									if (isset($inst_list[$extKey]))	{
 											// update
 										$loc= ($inst_list[$extKey]['type']=='G'?'G':'L');
-										$aUrl = 'index.php?CMD[importExt]='.$extKey.'&CMD[extVersion]='.$version.'&CMD[loc]='.$loc.($this->getDocManual($extKey,$loc)?'&CMD[inc_manual]=1':'');
+										$aUrl = 'index.php?CMD[importExt]='.$extKey.'&CMD[extVersion]='.$version.'&CMD[loc]='.$loc;
 										$loadUnloadLink.= '<a href="'.htmlspecialchars($aUrl).'"><img src="'.$GLOBALS['BACK_PATH'].'gfx/import_update.gif" width="12" height="12" title="Update the extension in \''.($loc=='G'?'global':'local').'\' from online repository to server" alt="" /></a>';
 									} else {
 											// import
-										$aUrl = 'index.php?CMD[importExt]='.$extKey.'&CMD[extVersion]='.$version.'&CMD[loc]=L'.($this->getDocManual($extKey)?'&CMD[inc_manual]=1':'');
+										$aUrl = 'index.php?CMD[importExt]='.$extKey.'&CMD[extVersion]='.$version.'&CMD[loc]=L';
 										$loadUnloadLink.= '<a href="'.htmlspecialchars($aUrl).'"><img src="'.$GLOBALS['BACK_PATH'].'gfx/import.gif" width="12" height="12" title="Import this extension to \'local\' dir typo3conf/ext/ from online repository." alt="" /></a>';
 									}
 								} else {
@@ -842,16 +839,20 @@ EXTENSION KEYS:
 
 			$onsubmit = "window.location.href='index.php?ter_connect=1&ter_search='+escape(this.elements['_lookUp'].value);return false;";
 			$content.= '</form><form action="index.php" method="post" onsubmit="'.htmlspecialchars($onsubmit).'">List or look up extensions<br />
-			<input type="text" name="_lookUp" value="" /> <input type="submit" value="Look up" />';
+			<input type="text" name="_lookUp" value="" /> <input type="submit" value="Look up" /><br /><br />';
 
-			$onCLick = "window.location.href='index.php?CMD[fetchMetaData]=extensions';return false;";
-			$content.= '<br /><br />Connect to the current mirror and retrieve the current list of available plugins from the TYPO3 Extension Repository.<br />
-			<input type="submit" value="Retrieve/Update" onclick="'.htmlspecialchars($onCLick).'" />';
-			if(is_file(PATH_site.'typo3temp/extensions.bin')) {
-				$content .= ' (last update: '.date('Y-m-d H:i',filemtime(PATH_site.'typo3temp/extensions.bin')).')';
+			if ($this->CMD['fetchMetaData'])	{	// fetches mirror/extension data from online rep.
+				$content .= $this->fetchMetaData($this->CMD['fetchMetaData']);
+			} else {
+				$onCLick = "window.location.href='index.php?CMD[fetchMetaData]=extensions';return false;";
+				$content.= 'Connect to the current mirror and retrieve the current list of available plugins from the TYPO3 Extension Repository.<br />
+				<input type="submit" value="Retrieve/Update" onclick="'.htmlspecialchars($onCLick).'" />';
+				if(is_file(PATH_site.'typo3temp/extensions.bin')) {
+					$content .= ' (last update: '.date('Y-m-d H:i',filemtime(PATH_site.'typo3temp/extensions.bin')).')';
+				}
 			}
 
-			$content .= '<br /><br /><strong>PRIVACY NOTICE:</strong><br /> '.$this->privacyNotice;
+			$content .= '<br /><br /><strong>PRIVACY NOTICE:</strong><br />';
 
 			$this->content.=$this->doc->section('Extensions in TYPO3 Extension Repository',$content,0,1);
 		}
@@ -926,7 +927,7 @@ EXTENSION KEYS:
 			<tr><th>Use</th><th>Name</th><th>URL</th><th>Country</th><th>Sponsored by</th></tr>
 		';
 
-		if (!strlen($this->MOD_SETTINGS['extMirrors'])) $this->fetchMetaData('mirrors', true);
+		if (!strlen($this->MOD_SETTINGS['extMirrors'])) $this->fetchMetaData('mirrors');
 		$extMirrors = unserialize($this->MOD_SETTINGS['extMirrors']);
 		if(is_array($extMirrors)) {
 			foreach($extMirrors as $k => $v) {
@@ -1039,10 +1040,8 @@ EXTENSION KEYS:
 	 * @param	boolean		If true the method doesn't produce any output
 	 * @return	void
 	 */
-	function fetchMetaData($metaType, $quiet=false)	{
+	function fetchMetaData($metaType)	{
 		global $TYPO3_CONF_VARS;
-
-		$content.= '<a href="index.php" class="typo3-goBack"><img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/goback.gif','width="14" height="14"').' alt="" /> Go back</a><br /><br />';
 
 		switch($metaType) {
 			case 'mirrors':
@@ -1072,23 +1071,29 @@ EXTENSION KEYS:
 				break;
 			case 'extensions':
 				if(empty($this->MOD_SETTINGS['extMirrors'])) {
-					$this->fetchMetaData('mirrors', true);
+					$this->fetchMetaData('mirrors');
 				}
-				$extfile = $this->getMirrorURL().'extensions.xml.gz';
-				$extXML = t3lib_div::getURL($extfile);
-				if($extXML === false) {
-					$content .= '<p>Error: The extension list could not be fetched from '.$extfile.'</p>';
+				$mirror = $this->getMirrorURL();
+				$extfile = $mirror.'extensions.xml.gz';
+				$extmd5 = t3lib_div::getURL($mirror.'extensions.md5');
+				if(is_file(PATH_site.'typo3temp/extensions.xml.gz')) $localmd5 = md5_file(PATH_site.'typo3temp/extensions.xml.gz');
+
+				if($extmd5 == $localmd5) {
+					$content .= '<p>The extension has not changed remotely, it has thus not been fetched.</p>';
 				} else {
-					t3lib_div::writeFile(PATH_site.'typo3temp/extensions.xml.gz', $extXML);
-					$content.= $this->xmlhandler->parseExtensionsXML(implode(gzfile(PATH_site.'typo3temp/extensions.xml.gz')));
-					$this->xmlhandler->saveExtensionsXML();
+					$extXML = t3lib_div::getURL($extfile);
+					if($extXML === false) {
+						$content .= '<p>Error: The extension list could not be fetched from '.$extfile.'</p>';
+					} else {
+						t3lib_div::writeFile(PATH_site.'typo3temp/extensions.xml.gz', $extXML);
+						$content .= $this->xmlhandler->parseExtensionsXML(implode(gzfile(PATH_site.'typo3temp/extensions.xml.gz')));
+						$this->xmlhandler->saveExtensionsXML();
+					}
 				}
 				break;
 		}
 
-		if(!$quiet) {
-			$this->content.= $this->doc->section('',$content);
-		}
+		return $content;
 	}
 
 	/**
@@ -1103,7 +1108,7 @@ EXTENSION KEYS:
 		if($this->MOD_SETTINGS['selectedMirror']=='') {
 			srand((float) microtime() * 10000000); // not needed after PHP 4.2.0...
 			$rand = array_rand($mirrors);
-			$url = 'http://'.$mirrors[$rand[0]]['host'].$mirrors[$rand[0]]['path'];
+			$url = 'http://'.$mirrors[$rand]['host'].$mirrors[$rand]['path'];
 		}
 		else {
 			$url = 'http://'.$mirrors[$this->MOD_SETTINGS['selectedMirror']]['host'].$mirrors[$this->MOD_SETTINGS['selectedMirror']]['path'];
@@ -1160,12 +1165,12 @@ EXTENSION KEYS:
 			} else return 'No file uploaded! Probably the file was too large for PHPs internal limit for uploadable files.';
 		} else {
 			$this->xmlhandler->loadExtensionsXML();
-				// Create link:
-			$content = '<a href="index.php" class="typo3-goBack"><img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/goback.gif','width="14" height="14"').' alt="" /> Go back</a>';
-			$this->content.= $this->doc->section('',$content);
-			$content = '';
 
 				// Fetch extension from TER:
+			if(!strlen($version)) {
+				$versions = array_keys($this->xmlhandler->extensionsXML[$extKey]['versions']);
+				$version = end($versions);
+			}
 			$fetchData = $this->terConnection->fetchExtension($extKey, $version, $this->xmlhandler->extensionsXML[$extKey]['versions'][$version]['t3xfilemd5'], $this->getMirrorURL());
 		}
 
@@ -1218,11 +1223,7 @@ EXTENSION KEYS:
 										// But this order of the code works.... (using the empty Array with type, EMCONF and files hereunder).
 
 										// Writing to ext_emconf.php:
-										$sEMD5A = $this->serverExtensionMD5Array($extKey,array(
-										'type' => $loc,
-										'EM_CONF' => array(),
-										'files' => array()
-										));
+										$sEMD5A = $this->serverExtensionMD5Array($extKey,array('type' => $loc, 'EM_CONF' => array(), 'files' => array()));
 										$EM_CONF['_md5_values_when_last_written'] = serialize($sEMD5A);
 										$emConfFile = $this->construct_ext_emconf_file($extKey,$EM_CONF);
 										t3lib_div::writeFile($extDirPath.'ext_emconf.php',$emConfFile);
@@ -1241,11 +1242,15 @@ EXTENSION KEYS:
 										}
 
 										// Install / Uninstall:
-										$content.='<h3>Install / Uninstall Extension:</h3>';
-										$content.=
-										$new_list[$extKey] ?
-										'<a href="'.htmlspecialchars('index.php?CMD[showExt]='.$extKey.'&CMD[remove]=1&CMD[clrCmd]=1&SET[singleDetails]=info').'">'.$this->removeButton().' Uninstall extension</a>' :
-										'<a href="'.htmlspecialchars('index.php?CMD[showExt]='.$extKey.'&CMD[load]=1&CMD[clrCmd]=1&SET[singleDetails]=info').'">'.$this->installButton().' Install extension</a>';
+										if(!$this->CMD['standAlone']) {
+											$content = '<a href="index.php" class="typo3-goBack"><img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/goback.gif','width="14" height="14"').' alt="" /> Go back</a>'.$content;
+											$content.='<h3>Install / Uninstall Extension:</h3>';
+											$content.= $new_list[$extKey] ?
+												'<a href="'.htmlspecialchars('index.php?CMD[showExt]='.$extKey.'&CMD[remove]=1&CMD[clrCmd]=1&SET[singleDetails]=info').'">'.$this->removeButton().' Uninstall extension</a>' :
+												'<a href="'.htmlspecialchars('index.php?CMD[showExt]='.$extKey.'&CMD[load]=1&CMD[clrCmd]=1&SET[singleDetails]=info').'">'.$this->installButton().' Install extension</a>';
+										} else {
+											$content = 'Extension has been imported.<br /><br /><a href="javascript:opener.top.content.document.forms[0].submit();window.close();">Close window and recheck dependencies</a>';
+										}
 
 									}
 								} else $content = $res;
@@ -1288,19 +1293,21 @@ EXTENSION KEYS:
 			$this->MOD_MENU['singleDetails'] = array();
 		}
 
-		// Function menu here:
-		$content = '
-			<table border="0" cellpadding="0" cellspacing="0" width="100%">
-				<tr>
-					<td nowrap="nowrap">Extension:&nbsp;<strong>'.$this->extensionTitleIconHeader($extKey,$list[$extKey]).'</strong> ('.$extKey.')</td>
-					<td align="right" nowrap="nowrap">'.
-		t3lib_BEfunc::getFuncMenu(0,'SET[singleDetails]',$this->MOD_SETTINGS['singleDetails'],$this->MOD_MENU['singleDetails'],'','&CMD[showExt]='.$extKey).' &nbsp; &nbsp; '.
-		'<a href="index.php" class="typo3-goBack"><img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/goback.gif','width="14" height="14"').' class="absmiddle" alt="" /> Go back</a></td>
-				</tr>
-			</table>';
-		$this->content.=$this->doc->section('',$content);
+			// Function menu here:
+		if(!$this->CMD['standAlone']) {
+			$content = '
+				<table border="0" cellpadding="0" cellspacing="0" width="100%">
+					<tr>
+						<td nowrap="nowrap">Extension:&nbsp;<strong>'.$this->extensionTitleIconHeader($extKey,$list[$extKey]).'</strong> ('.$extKey.')</td>
+						<td align="right" nowrap="nowrap">'.
+			t3lib_BEfunc::getFuncMenu(0,'SET[singleDetails]',$this->MOD_SETTINGS['singleDetails'],$this->MOD_MENU['singleDetails'],'','&CMD[showExt]='.$extKey).' &nbsp; &nbsp; '.
+			'<a href="index.php" class="typo3-goBack"><img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/goback.gif','width="14" height="14"').' class="absmiddle" alt="" /> Go back</a></td>
+					</tr>
+				</table>';
+			$this->content.=$this->doc->section('',$content);
+		}
 
-		// Show extension details:
+			// Show extension details:
 		if ($list[$extKey])	{
 
 			// Checking if a command for install/uninstall is executed:
@@ -1318,9 +1325,20 @@ EXTENSION KEYS:
 					if ($newExtList!=-1)	{
 						$updates = '';
 						if ($this->CMD['load'])	{
-							$updates = $this->updatesForm($extKey,$list[$extKey],1,'','<input type="hidden" name="_do_install" value="1" /><input type="hidden" name="_clrCmd" value="'.$this->CMD['clrCmd'].'" />');
+							if($_SERVER['REQUEST_METHOD'] == 'POST') {
+								$script = t3lib_div::linkThisScript(array('CMD[showExt]' => $extKey, 'CMD[load]' => 1, 'CMD[clrCmd]' => $this->CMD['clrCmd'], 'SET[singleDetails]' => 'info'));
+							} else {
+								$script = '';
+							}
+							$updates = $this->updatesForm($extKey,$list[$extKey],1,$script,'<input type="hidden" name="_do_install" value="1" /><input type="hidden" name="_clrCmd" value="'.$this->CMD['clrCmd'].'" />');
 							if ($updates)	{
 								$updates = 'Before the extension can be installed the database needs to be updated with new tables or fields. Please select which operations to perform:'.$updates;
+								if($this->CMD['standAlone']) $updates .= '<input type="hidden" name="standAlone" value="1" />';
+								$depsolver = t3lib_div::_POST('depsolver');
+								foreach($depsolver['ignore'] as $depK => $depV)	{
+									$updates .= '<input type="hidden" name="depsolver[ignore]['.$depK.']" value="1" />';
+								}
+
 								$this->content.=$this->doc->section('Installing '.$this->extensionTitleIconHeader($extKey,$list[$extKey]).strtoupper(': Database needs to be updated'),$updates,1,1,1,1);
 							}
 						} elseif ($this->CMD['remove']) {
@@ -1331,8 +1349,9 @@ EXTENSION KEYS:
 								<br /><input type="submit" name="write" value="Remove extension" />
 								<input type="hidden" name="_do_install" value="1" />
 								<input type="hidden" name="_clrCmd" value="'.$this->CMD['clrCmd'].'" />
+								<input type="hidden" name="standAlone" value="'.$this->CMD['standAlone'].'" />
 								';
-								$this->content.=$this->doc->section('Installing '.$this->extensionTitleIconHeader($extKey,$list[$extKey]).strtoupper(': Database needs to be updated'),$updates,1,1,1,1);
+								$this->content.=$this->doc->section('Removing '.$this->extensionTitleIconHeader($extKey,$list[$extKey]).strtoupper(': Database needs to be updated'),$updates,1,1,1,1);
 							}
 						}
 						if (!$updates || t3lib_div::_GP('_do_install')) {
@@ -1343,7 +1362,11 @@ EXTENSION KEYS:
 							} else {
 								$vA = array('CMD'=>Array('showExt'=>$extKey));
 							}
-							header('Location: '.t3lib_div::linkThisScript($vA));
+							if($this->CMD['standAlone']) {
+								$this->content .= 'Extension has been '.($this->CMD['load'] ? 'installed' : 'removed').'.<br /><br /><a href="javascript:opener.top.content.document.forms[0].submit();window.close();">Close window and recheck dependencies</a>';
+							} else {
+								header('Location: '.t3lib_div::linkThisScript($vA));
+							}
 						}
 					}
 				} else {
@@ -1360,7 +1383,7 @@ EXTENSION KEYS:
 					Header('Content-Disposition: attachment; filename='.basename($dlFile));
 					echo t3lib_div::getUrl($dlFile);
 					exit;
-				} else die('error....');
+				} else die('Error while trying to download extension file...');
 
 			} elseif ($this->CMD['editFile'] && !in_array($extKey,$this->requiredExt))	{
 
@@ -1376,23 +1399,31 @@ EXTENSION KEYS:
 							$submittedContent = t3lib_div::_POST('edit');
 							$saveFlag = 0;
 
-							if(isset($submittedContent['file']))	{		// Check referer here?
-								$info.= $GLOBALS['TBE_TEMPLATE']->rfw('<br /><strong>File saved.</strong>').'<br />';
+							if(isset($submittedContent['file']) && !$GLOBALS['TYPO3_CONF_VARS']['EXT']['noEdit'])	{		// Check referer here?
 								$oldFileContent = t3lib_div::getUrl($editFile);
-								$info.= 'MD5: <b>'.md5(str_replace(chr(13),'',$oldFileContent)).'</b> (Previous File)<br />';
-								if (!$GLOBALS['TYPO3_CONF_VARS']['EXT']['noEdit'])	{
+								if($oldFileContent != $submittedContent['file']) {
+									$oldMD5 = md5(str_replace(chr(13),'',$oldFileContent));
+									$info.= 'MD5: <b>'.$oldMD5.'</b> (Previous File)<br />';
 									t3lib_div::writeFile($editFile,$submittedContent['file']);
 									$saveFlag = 1;
-								} else die('Saving disabled!!!');
+								} else {
+									$info .= 'No changes to the file detected!<br />';
+								}
 							}
 
 							$fileContent = t3lib_div::getUrl($editFile);
-							$numberOfRows = 35;
 
 							$outCode.= 'File: <b>'.substr($editFile,strlen($absPath)).'</b> ('.t3lib_div::formatSize(filesize($editFile)).')<br />';
-							$info.= 'MD5: <b>'.md5(str_replace(chr(13),'',$fileContent)).'</b> (File)<br />';
-							if($saveFlag)	$info.= 'MD5: <b>'.md5(str_replace(chr(13),'',$submittedContent['file'])).'</b> (Saved)<br />';
-							$outCode.= '<textarea name="edit[file]" rows="'.$numberOfRows.'" wrap="off"'.$this->doc->formWidthText(48,'width:98%;height:70%','off').' class="fixed-font enable-tab">'.t3lib_div::formatForTextarea($fileContent).'</textarea>';
+							$fileMD5 = md5(str_replace(chr(13),'',$fileContent));
+							$info.= 'MD5: <b>'.$fileMD5.'</b> (Current File)<br />';
+							if($saveFlag)	{
+								$saveMD5 = md5(str_replace(chr(13),'',$submittedContent['file']));
+								$info.= 'MD5: <b>'.$saveMD5.'</b> (Submitted)<br />';
+								if($fileMD5!=$saveMD5) $info .= $GLOBALS['TBE_TEMPLATE']->rfw('<br /><strong>Saving failed, the content was not correctly written to disk. Changes have been lost!</strong>').'<br />';
+								else $info.= $GLOBALS['TBE_TEMPLATE']->rfw('<br /><strong>File saved.</strong>').'<br />';
+							}
+
+							$outCode.= '<textarea name="edit[file]" rows="35" wrap="off"'.$this->doc->formWidthText(48,'width:98%;height:70%','off').' class="fixed-font enable-tab">'.t3lib_div::formatForTextarea($fileContent).'</textarea>';
 							$outCode.= '<input type="hidden" name="edit[filename]" value="'.$editFile.'" />';
 							$outCode.= '<input type="hidden" name="CMD[editFile]" value="'.htmlspecialchars($editFile).'" />';
 							$outCode.= '<input type="hidden" name="CMD[showExt]" value="'.$extKey.'" />';
@@ -1400,7 +1431,7 @@ EXTENSION KEYS:
 
 							if (!$GLOBALS['TYPO3_CONF_VARS']['EXT']['noEdit'])	{
 								$outCode.='<br /><input type="submit" name="save_file" value="Save file" />';
-							} else $outCode.=$GLOBALS['TBE_TEMPLATE']->rfw('<br />[SAVING IS DISABLED - can be enabled by the TYPO3_CONF_VARS[EXT][noEdit]-flag] ');
+							} else $outCode.=$GLOBALS['TBE_TEMPLATE']->rfw('<br />[SAVING IS DISABLED - can be enabled by the $TYPO3_CONF_VARS[\'EXT\'][\'noEdit\']-flag] ');
 
 							$onClick = 'window.location.href=\'index.php?CMD[showExt]='.$extKey.'\';return false;';
 							$outCode.='<input type="submit" name="cancel" value="Cancel" onclick="'.htmlspecialchars($onClick).'" />';
@@ -1878,11 +1909,8 @@ EXTENSION KEYS:
 			$lines[]='<tr class="bgColor4"><td>Create directories:</td><td>'.(is_array($techInfo['createDirs'])?implode('<br />',$techInfo['createDirs']):'').'</td>'.$this->helpCol('createDirs').'</tr>';
 			$lines[]='<tr class="bgColor4"><td>Module names:</td><td>'.(is_array($techInfo['moduleNames'])?implode('<br />',$techInfo['moduleNames']):'').'</td>'.$this->helpCol('moduleNames').'</tr>';
 			$lines[]='<tr class="bgColor4"><td>Class names:</td><td>'.(is_array($techInfo['classes'])?implode('<br />',$techInfo['classes']):'').'</td>'.$this->helpCol('classNames').'</tr>';
-			$lines[]='<tr class="bgColor4"><td>Code warnings:<br />(developer-relevant)</td><td>'.(is_array($techInfo['errors'])?$GLOBALS['TBE_TEMPLATE']->rfw(implode('<hr />',$techInfo['errors'])):'').'</td>'.$this->helpCol('errors').'</tr>';
-			$lines[]='<tr class="bgColor4"><td>Naming annoyances:<br />(developer-relevant)</td><td>'.(is_array($techInfo['NSerrors'])?
-			(!t3lib_div::inList($this->nameSpaceExceptions,$extKey)?t3lib_div::view_array($techInfo['NSerrors']):$GLOBALS['TBE_TEMPLATE']->dfw('[exception]'))
-			:'').'</td>'.$this->helpCol('NSerrors').'</tr>';
-
+			$lines[]='<tr class="bgColor4"><td>Code warnings:<br />(developer-relevant)</td><td>'.(is_array($techInfo['errors'])?$GLOBALS['TBE_TEMPLATE']->rfw(implode('<br />',$techInfo['errors'])):'').'</td>'.$this->helpCol('errors').'</tr>';
+			$lines[]='<tr class="bgColor4"><td>Naming annoyances:<br />(developer-relevant)</td><td>'.(is_array($techInfo['NSerrors']) ? (!t3lib_div::inList($this->nameSpaceExceptions,$extKey)?t3lib_div::view_array($techInfo['NSerrors']):$GLOBALS['TBE_TEMPLATE']->dfw('[exception]')) : '').'</td>'.$this->helpCol('NSerrors').'</tr>';
 
 			$currentMd5Array = $this->serverExtensionMD5Array($extKey,$extInfo);
 			$affectedFiles='';
@@ -2285,7 +2313,7 @@ EXTENSION KEYS:
 	 * @param string $type The dependency type to list if $dep is an array
 	 * @return string	A simple dependency list for display
 	 */
-	function stringToDep($dep,$type='depends') {
+	function stringToDep($dep) {
 		$constraint = array();
 		if(is_string($dep) && strlen($dep)) {
 			$dep = explode(',',$dep);
@@ -2435,9 +2463,10 @@ EXTENSION KEYS:
 
 		reset($this->xmlhandler->extensionsXML);
 		while (list($extKey, $data) = each($this->xmlhandler->extensionsXML)) {
+			$GLOBALS['LANG']->csConvObj->convArray(&$data,'utf-8',$GLOBALS['LANG']->charSet); // is there a better place for conversion?
 			$list[$extKey]['type'] = '_';
 			$version = array_keys($data['versions']);
-			$list[$extKey]['_ICON'] = '<img alt="" height="18" width="21" src="'.$filepath.$extKey{0}.'/'.$extKey{1}.'/'.$extKey.'_'.end($version).'.gif" />';
+			$list[$extKey]['_ICON'] = '<img alt="" src="'.$filepath.$extKey{0}.'/'.$extKey{1}.'/'.$extKey.'_'.end($version).'.gif" />';
 			$list[$extKey]['downloadcounter'] = $data['downloadcounter'];
 
 			foreach(array_keys($data['versions']) as $version) {
@@ -2708,7 +2737,7 @@ EXTENSION KEYS:
 		$out = array();
 
 		foreach($filesInside as $fileName)	{
-			if (substr($fileName,0,4)!='ext_')	{
+			if (substr($fileName,0,4)!='ext_' && substr($fileName,0,6)!='tests/')	{	// ignore supposed-to-be unit tests as well
 				$baseName = basename($fileName);
 				if (substr($baseName,0,9)=='locallang' && substr($baseName,-4)=='.php')	{
 					$out['locallang'][] = $fileName;
@@ -3365,88 +3394,10 @@ $EM_CONF[$_EXTKEY] = '.$this->arrayToCode($EM_CONF, 0).';
 			// ext_emconf.php information:
 		$conf = $instExtInfo[$extKey]['EM_CONF'];
 
-			// Check dependencies on other extensions:
-		$depError = false;
-		$msg = array();
-		foreach($conf['constraints']['depends'] as $depK => $depV)	{
-			if($depK == 'php' && $depV) {
-				$versionRange = $this->splitVersionRange($depV);
-				$phpv = strstr(PHP_VERSION,'-') ? substr(PHP_VERSION,0,strpos(PHP_VERSION,'-')) : PHP_VERSION; // Linux distributors like to add suffixes, like in 5.1.2-1. Those must be ignored!
-				if($versionRange[0] && version_compare($phpv,$versionRange[0],'<')) {
-					$msg[] = 'The running PHP version ('.$phpv.') is lower than required ('.$versionRange[0].')';
-					$depError = true;
-					continue;
-				} elseif($versionRange[1] && version_compare($phpv,$versionRange[1],'>')) {
-					$msg[] = 'The running PHP version ('.$phpv.') is higher than allowed ('.$versionRange[1].')';
-					$depError = true;
-					continue;
-				}
-			} elseif($depK == 'typo3' && $depV) {
-				$versionRange = $this->splitVersionRange($depV);
-				if($versionRange[0] && version_compare(TYPO3_version,$versionRange[0],'<')) {
-					$msg[] = 'The running TYPO3 version ('.TYPO3_version.') is lower than required ('.$versionRange[0].')';
-					$depError = true;
-					continue;
-				} elseif($versionRange[1] && version_compare(TYPO3_version,$versionRange[1],'>')) {
-					$msg[] = 'The running TYPO3 version ('.TYPO3_version.') is higher than allowed ('.$versionRange[1].')';
-					$depError = true;
-					continue;
-				}
-			} elseif (!t3lib_extMgm::isLoaded($depK))	{
-				if(!isset($instExtInfo[$depK]))	{
-					$msg[] = 'Extension "'.$depK.'" was not available in the system. Please import it from the TYPO3 Extension Repository.';
-				} else {
-					$msg[] = 'Extension "'.$depK.'" ('.$instExtInfo[$depK]['EM_CONF']['title'].') was not installed. Please install it first.';
-				}
-				$depError = true;
-			} else {
-				$versionRange = $this->splitVersionRange($depV);
-				if($versionRange[0] && version_compare($instExtInfo[$depK]['EM_CONF']['version'],$versionRange[0],'<')) {
-					$msg[] = 'The running version of extension "'.$depK.'" ('.$instExtInfo[$depK]['EM_CONF']['version'].') is lower than required ('.$versionRange[0].')';
-					$depError = true;
-					continue;
-				} elseif($versionRange[1] && version_compare($instExtInfo[$depK]['EM_CONF']['version'],$versionRange[1],'>')) {
-					$msg[] = 'The running version of extension "'.$depK.'" ('.$instExtInfo[$depK]['EM_CONF']['version'].') is higher than allowed ('.$versionRange[1].')';
-					$depError = true;
-					continue;
-				}
-			}
-		}
-		if($depError) {
-			$this->content.= $this->doc->section('Dependency Error',implode('<br />',$msg),0,1,2);
-		}
-
-			// Check conflicts with other extensions:
-		$conflictError = false;
-		$msg = array();
-		foreach($conf['constraints']['conflicts'] as $conflictK => $conflictV)	{
-			if (t3lib_extMgm::isLoaded($conflictK))	{
-				$msg[] = 'The extensions "'.$extKey.'" and "'.$conflictK.'" ('.$instExtInfo[$conflictK]['EM_CONF']['title'].') will conflict with each other. Please remove "'.$conflictK.'" if you want to install "'.$extKey.'".';
-				$conflictError = true;
-			}
-		}
-		if($conflictError) {
-			$this->content.= $this->doc->section('Conflict Error',implode('<br />',$msg),0,1,2);
-		}
-
-			// Check suggests on other extensions:
-		$suggestion = false;
-		$msg = array();
-		foreach($conf['constraints']['suggests'] as $suggestK => $suggestV)	{
-			if (!t3lib_extMgm::isLoaded($suggestK))	{
-				if (!isset($instExtInfo[$suggestK]))	{
-					$msg = 'Extension "'.$suggestK.'" was not available in the system. You may want to import it from the TYPO3 Extension Repository.';
-				} else {
-					$msg = 'Extension "'.$suggestK.'" ('.$instExtInfo[$suggestK]['EM_CONF']['title'].') was not installed. You may want to install it.';
-				}
-				$conflictError = true;
-			}
-		}
-		if($suggestion) {
-				$this->content.= $this->doc->section('Extensions suggested by extension "'.$extKey.'"',$msg,0,1,1);
-		}
-
-		if($depError || $conflictError || $suggestion) {
+			// Check dependencies:
+		$depStatus = $this->checkDependencies($extKey, $conf, $instExtInfo);
+		if(!$depStatus['returnCode']) {
+			$this->content .= $depStatus['html'];
 			return -1;
 		}
 
@@ -3465,6 +3416,137 @@ $EM_CONF[$_EXTKEY] = '.$this->arrayToCode($EM_CONF, 0).';
 			// Implode unique list of extensions to load and return:
 		$list = implode(',',array_unique($listArr));
 		return $list;
+	}
+
+	function checkDependencies($extKey, $conf, $instExtInfo) {
+		$content = '';
+		$depError = false;
+		$msg = array();
+		$depsolver = t3lib_div::_POST('depsolver');
+
+		foreach($conf['constraints']['depends'] as $depK => $depV)	{
+			if($depsolver['ignore'][$depK]) {
+				$msg[] = '<br />Dependency on '.$depK.' ignored as requested.
+				<input type="hidden" value="1" name="depsolver[ignore]['.$depK.']" />';
+				continue;
+			}
+			if($depK == 'php') {
+				if(!$depV) continue;
+				$versionRange = $this->splitVersionRange($depV);
+				$phpv = strstr(PHP_VERSION,'-') ? substr(PHP_VERSION,0,strpos(PHP_VERSION,'-')) : PHP_VERSION; // Linux distributors like to add suffixes, like in 5.1.2-1. Those must be ignored!
+				if($versionRange[0] && version_compare($phpv,$versionRange[0],'<')) {
+					$msg[] = '<br />The running PHP version ('.$phpv.') is lower than required ('.$versionRange[0].')';
+					$msg[] = '&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" value="1" name="depsolver[ignore]['.$depK.']" /> Ignore this version requirement';
+					$depError = true;
+					continue;
+				} elseif($versionRange[1] && version_compare($phpv,$versionRange[1],'>')) {
+					$msg[] = '<br />The running PHP version ('.$phpv.') is higher than allowed ('.$versionRange[1].')';
+					$msg[] = '&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" value="1" name="depsolver[ignore]['.$depK.']" /> Ignore this version requirement';
+					$depError = true;
+					continue;
+				}
+			} elseif($depK == 'typo3') {
+				if(!$depV) continue;
+				$versionRange = $this->splitVersionRange($depV);
+				if($versionRange[0] && version_compare(TYPO3_version,$versionRange[0],'<')) {
+					$msg[] = '<br />The running TYPO3 version ('.TYPO3_version.') is lower than required ('.$versionRange[0].')';
+					$msg[] = '&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" value="1" name="depsolver[ignore]['.$depK.']" /> Ignore this version requirement';
+					$depError = true;
+					continue;
+				} elseif($versionRange[1] && version_compare(TYPO3_version,$versionRange[1],'>')) {
+					$msg[] = '<br />The running TYPO3 version ('.TYPO3_version.') is higher than allowed ('.$versionRange[1].')';
+					$msg[] = '&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" value="1" name="depsolver[ignore]['.$depK.']" /> Ignore this version requirement';
+					$depError = true;
+					continue;
+				}
+			} elseif (!t3lib_extMgm::isLoaded($depK))	{
+				if(!isset($instExtInfo[$depK]))	{
+					$msg[] = '<br />Extension "'.$depK.'" was not available in the system. Please import it from the TYPO3 Extension Repository.';
+					$msg[] = '&nbsp;&nbsp;&nbsp;&nbsp;<img src="'.$GLOBALS['BACK_PATH'].'gfx/import.gif" width="12" height="12" title="Import this extension to \'local\' dir typo3conf/ext/ from online repository." alt="" />&nbsp;<a href="index.php?CMD[importExt]='.$depK.'&CMD[loc]=L&CMD[standAlone]=1" target="_blank">Import now (opens a new window)</a>';
+//					$msg[] = '&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" value="1" name="depsolver[import]['.$depK.']" /> Import this extension from the repository and install it';
+					$msg[] = '&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" value="1" name="depsolver[ignore]['.$depK.']" /> Ignore this extension requirement';
+				} else {
+					$msg[] = '<br />Extension "'.$depK.'" ('.$instExtInfo[$depK]['EM_CONF']['title'].') was not installed. Please install it first.';
+					$msg[] = '&nbsp;&nbsp;&nbsp;&nbsp;'.$this->installButton().'&nbsp;<a href="'.htmlspecialchars('index.php?CMD[showExt]='.$depK.'&CMD[load]=1&CMD[clrCmd]=1&CMD[standAlone]=1&SET[singleDetails]=info').'" target="_blank">Install now (opens a new window)</a>';
+//					$msg[] = '&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" value="1" name="depsolver[install]['.$depK.']" /> Install this extension';
+					$msg[] = '&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" value="1" name="depsolver[ignore]['.$depK.']" /> Ignore this extension requirement';
+				}
+				$depError = true;
+			} else {
+				$versionRange = $this->splitVersionRange($depV);
+				if($versionRange[0] && version_compare($instExtInfo[$depK]['EM_CONF']['version'],$versionRange[0],'<')) {
+					$msg[] = '<br />The running version of extension "'.$depK.'" ('.$instExtInfo[$depK]['EM_CONF']['version'].') is lower than required ('.$versionRange[0].')';
+					$msg[] = '&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" value="1" name="depsolver[ignore]['.$depK.']" /> Ignore this version requirement';
+					$depError = true;
+					continue;
+				} elseif($versionRange[1] && version_compare($instExtInfo[$depK]['EM_CONF']['version'],$versionRange[1],'>')) {
+					$msg[] = '<br />The running version of extension "'.$depK.'" ('.$instExtInfo[$depK]['EM_CONF']['version'].') is higher than allowed ('.$versionRange[1].')';
+					$msg[] = '&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" value="1" name="depsolver[ignore]['.$depK.']" /> Ignore this version requirement';
+					$depError = true;
+					continue;
+				}
+			}
+		}
+		if($depError) {
+			$content .= $this->doc->section('Dependency Error',implode('<br />',$msg),0,1,2);
+		}
+
+			// Check conflicts with other extensions:
+		$conflictError = false;
+		$msg = array();
+		foreach($conf['constraints']['conflicts'] as $conflictK => $conflictV)	{
+			if($depsolver['ignore'][$conflictK]) {
+				$msg[] = '<br />Conflict with '.$conflictK.' ignored as requested.
+				<input type="hidden" value="1" name="depsolver[ignore]['.$conflictK.']" />';
+				continue;
+			}
+			if (t3lib_extMgm::isLoaded($conflictK))	{
+				$msg[] = 'The extensions "'.$extKey.'" and "'.$conflictK.'" ('.$instExtInfo[$conflictK]['EM_CONF']['title'].') will conflict with each other. Please remove "'.$conflictK.'" if you want to install "'.$extKey.'".';
+				$msg[] = '&nbsp;&nbsp;&nbsp;&nbsp;'.$this->removeButton().'&nbsp;<a href="'.htmlspecialchars('index.php?CMD[showExt]='.$conflictK.'&CMD[remove]=1&CMD[clrCmd]=1&CMD[standAlone]=1&SET[singleDetails]=info').'" target="_blank">Remove now (opens a new window)</a>';
+				$msg[] = '&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" value="1" name="depsolver[ignore]['.$conflictK.']" /> Ignore this conflict error';
+				$conflictError = true;
+			}
+		}
+		if($conflictError) {
+			$content .= $this->doc->section('Conflict Error',implode('<br />',$msg),0,1,2);
+		}
+
+			// Check suggests on other extensions:
+		$suggestion = false;
+		$msg = array();
+		foreach($conf['constraints']['suggests'] as $suggestK => $suggestV)	{
+			if($depsolver['ignore'][$suggestK]) {
+				$msg[] = '<br />Suggestion of '.$suggestK.' acknowledged.
+				<input type="hidden" value="1" name="depsolver[ignore]['.$suggestK.']" />';
+				continue;
+			}
+			if (!t3lib_extMgm::isLoaded($suggestK))	{
+				if (!isset($instExtInfo[$suggestK]))	{
+					$msg[] = 'Extension "'.$suggestK.'" was not available in the system. You may want to import it from the TYPO3 Extension Repository.';
+					$msg[] = '&nbsp;&nbsp;&nbsp;&nbsp;<img src="'.$GLOBALS['BACK_PATH'].'gfx/import.gif" width="12" height="12" title="Import this extension to \'local\' dir typo3conf/ext/ from online repository." alt="" />&nbsp;<a href="index.php?CMD[importExt]='.$depK.'&CMD[loc]=L&CMD[standAlone]=1" target="_blank">Import now (opens a new window)</a>';
+					$msg[] = '&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" value="1" name="depsolver[ignore]['.$suggestK.']" /> Ignore this suggestion';
+				} else {
+					$msg[] = 'Extension "'.$suggestK.'" ('.$instExtInfo[$suggestK]['EM_CONF']['title'].') was not installed. You may want to install it.';
+					$msg[] = '&nbsp;&nbsp;&nbsp;&nbsp;'.$this->installButton().'&nbsp;<a href="'.htmlspecialchars('index.php?CMD[showExt]='.$suggestK.'&CMD[load]=1&CMD[clrCmd]=1&CMD[standAlone]=1&SET[singleDetails]=info').'" target="_blank">Install now (opens a new window)</a>';
+					$msg[] = '&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" value="1" name="depsolver[ignore]['.$suggestK.']" /> Ignore this suggestion';
+				}
+				$suggestion = true;
+			}
+		}
+		if($suggestion) {
+				$content .= $this->doc->section('Extensions suggested by extension "'.$extKey.'"',implode('<br />',$msg),0,1,1);
+		}
+
+		if($depError || $conflictError || $suggestion) {
+			$content .= '<input type="hidden" name="CMD[showExt]" value="'.$extKey.'" />
+			<input type="hidden" name="CMD[load]" value="1" />
+			<input type="hidden" name="CMD[clrCmd]" value="1" /><br /><br />
+			<input type="submit" value="Try again" />';
+
+			return array('returnCode' => false, 'html' => $content);
+		}
+
+		return array('returnCode' => true);
 	}
 
 	/**
@@ -4249,21 +4331,6 @@ $EM_CONF[$_EXTKEY] = '.$this->arrayToCode($EM_CONF, 0).';
 			default:
 				return false;
 		}
-	}
-
-	/**
-	 * Returns true if the doc/manual.sxw should be returned
-	 *
-	 * @param	string		Extension key
-	 * @param	string		Extension install type (L, G, S)
-	 * @return	boolean		Returns true if either the TYPO3_CONF_VARS flag for always including manuals are set OR if the manual is ALREADY found for the extension in question.
-	 */
-	function getDocManual($extension_key,$loc='')	{
-		$res = FALSE;
-		if ($GLOBALS['TYPO3_CONF_VARS']['EXT']['em_alwaysGetOOManual'])	$res = TRUE;
-		if ($loc && $this->typePaths[$loc] && @is_file(PATH_site.$this->typePaths[$loc].$extension_key.'/doc/manual.sxw'))	$res = TRUE;
-
-		return $res;
 	}
 
 	/**

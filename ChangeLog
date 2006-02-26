@@ -1,3 +1,12 @@
+2006-02-26 Karsten Dambekalns <karsten@typo3.org>
+
+	* Extension Manager: Fixed bug #2630 (thanks Peter Niederlag), #2610, #2607, #1904 (partly), #2579
+	* Extension Manager: Fixed checking of review states (thanks Rupert Germann)
+	* Extension Manager: Now the EM shows update icons again
+	* Extension Manager: Dependency handling has been reworked, now it is much more comfortable, fixes #1607 (partly), #2584
+	* class.t3lib_befunc.php: Fixed bug #2528
+	* class.tslib_content.php: Fixed bug #2676
+
 2006-02-26  Wolfgang Klinger <wk@plan2.net>
 
 	* Fixed bug #1060: Sitemap with SectionIndex does not display content header when page has a navigation title assigned
@@ -46,6 +55,10 @@
 	* Added meta indexing configuration type (useful for group-categorizing of search results)
 	* Added a condition to indexing of pages; that sys_language_uid and sys_language_content must be similar; it is assumed that for pages with fallback to default content no indexing is wanted.
 	* Added "Spotlight" categorizing feature to search results. The categories are defined as indexing configurations + natural categories like pages in the page tree. TypoScript configuration applies.
+
+2006-02-21 Karsten Dambekalns <karsten@typo3.org>
+
+	* typo3/stylesheet.css: Fir for trivial bug #2644, added sans-serif as fallback font-family.
 
 2006-02-21  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
