@@ -195,7 +195,7 @@ class tslib_menu {
 		$this->debug=$GLOBALS['TSFE']->debug;
 
 			// In XHTML there is no "name" attribute anymore
-		switch ($GLOBALS['TSFE']->config['config']['doctype'])	{
+		switch ($GLOBALS['TSFE']->xhtmlDoctype)	{
 			case 'xhtml_strict':
 			case 'xhtml_11':
 			case 'xhtml_2':

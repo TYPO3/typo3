@@ -1610,7 +1610,7 @@ class tslib_cObj {
 		$fieldname_hashArray = Array();
 		$cc = 0;
 
-		$xhtmlStrict = t3lib_div::inList('xhtml_strict,xhtml_11,xhtml_2',$GLOBALS['TSFE']->config['config']['doctype']);
+		$xhtmlStrict = t3lib_div::inList('xhtml_strict,xhtml_11,xhtml_2',$GLOBALS['TSFE']->xhtmlDoctype);
 			// Formname
 		if ($conf['formName'])	{
 			$formname = $this->cleanFormName($conf['formName']);
@@ -2619,7 +2619,7 @@ class tslib_cObj {
 	 * @return	string		the border attribute
 	 */
 	function getBorderAttr($borderAttr) {
-		if (!t3lib_div::inList('xhtml_strict,xhtml_11,xhtml_2',$GLOBALS['TSFE']->config['config']['doctype']) && !$GLOBALS['TSFE']->config['config']['disableImgBorderAttr']) {
+		if (!t3lib_div::inList('xhtml_strict,xhtml_11,xhtml_2',$GLOBALS['TSFE']->xhtmlDoctype) && !$GLOBALS['TSFE']->config['config']['disableImgBorderAttr']) {
 			return $borderAttr;
 		}
 	}
@@ -2673,7 +2673,7 @@ class tslib_cObj {
 				}
 
 					// Create TARGET-attribute only if the right doctype is used
-				if (!t3lib_div::inList('xhtml_strict,xhtml_11,xhtml_2', $GLOBALS['TSFE']->config['config']['doctype']))	{
+				if (!t3lib_div::inList('xhtml_strict,xhtml_11,xhtml_2', $GLOBALS['TSFE']->xhtmlDoctype))	{
 					if (isset($conf['target']))	{
 						$target = sprintf(' target="%s"', $conf['target']);
 					} else {
@@ -5268,7 +5268,7 @@ class tslib_cObj {
 			if ($JSwindowParams)	{
 
 					// Create TARGET-attribute only if the right doctype is used
-				if (!t3lib_div::inList('xhtml_strict,xhtml_11,xhtml_2', $GLOBALS['TSFE']->config['config']['doctype']))	{
+				if (!t3lib_div::inList('xhtml_strict,xhtml_11,xhtml_2', $GLOBALS['TSFE']->xhtmlDoctype))	{
 					$target = ' target="FEopenLink"';
 				} else {
 					$target = '';

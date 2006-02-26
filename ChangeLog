@@ -1,3 +1,9 @@
+
+2005-02-26  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+
+	* Enchanced config.xmlprologue (takes new keyowrds and arbitrary string as arguments)
+	* Fixed issues with config.xhtmlDoctype
+
 2006-02-26  Karsten Dambekalns  <karsten@typo3.org>
 
 	* Extension Manager: Fixed bug #2630 (thanks Peter Niederlag), #2610, #2607, #1904 (partly), #2579

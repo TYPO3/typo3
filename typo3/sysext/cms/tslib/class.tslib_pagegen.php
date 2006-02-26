@@ -231,6 +231,36 @@ function linkTo_UnCryptMailto(s)	{	//
 		} else {
 			$GLOBALS['TSFE']->linkVars='';
 		}
+
+			// Setting XHTML-doctype from doctype
+		if (!$GLOBALS['TSFE']->config['config']['xhtmlDoctype'])	{
+			$GLOBALS['TSFE']->config['config']['xhtmlDoctype'] = $GLOBALS['TSFE']->config['config']['doctype'];
+		}
+
+		if ($GLOBALS['TSFE']->config['config']['xhtmlDoctype'])	{
+			$GLOBALS['TSFE']->xhtmlDoctype = $GLOBALS['TSFE']->config['config']['xhtmlDoctype'];
+
+				// Checking XHTML-docytpe
+			switch((string)$GLOBALS['TSFE']->config['config']['xhtmlDoctype'])	{
+				case 'xhtml_trans':
+				case 'xhtml_strict':
+				case 'xhtml_frames':
+					$GLOBALS['TSFE']->xhtmlVersion = 100;
+				break;
+				case 'xhtml_basic':
+					$GLOBALS['TSFE']->xhtmlVersion = 105;
+				break;
+				case 'xhtml_11':
+					$GLOBALS['TSFE']->xhtmlVersion = 110;
+				break;
+				case 'xhtml_2':
+					$GLOBALS['TSFE']->xhtmlVersion = 200;
+				break;
+				default:
+					$GLOBALS['TSFE']->xhtmlDoctype = '';
+					$GLOBALS['TSFE']->xhtmlVersion = 0;
+			}
+		}
 	}
 
 	/**
@@ -353,105 +383,72 @@ function linkTo_UnCryptMailto(s)	{	//
 
 			// Setting document type:
 		$docTypeParts = array();
-		$docTypeKeyword = '';
-		$XMLprologue = $GLOBALS['TSFE']->config['config']['xmlprologue'] != 'none';
+			// Part 1: XML prologue
+		switch((string)$GLOBALS['TSFE']->config['config']['xmlprologue'])	{
+			case 'none':
+			break;
+			case 'xml_10':
+				$docTypeParts[]='<?xml version="1.0" encoding="'.$theCharset.'"?>';
+			break;
+			case 'xml_11':
+				$docTypeParts[]='<?xml version="1.1" encoding="'.$theCharset.'"?>';
+			break;
+			case '':
+				if ($GLOBALS['TSFE']->xhtmlVersion)	$docTypeParts[]='<?xml version="1.0" encoding="'.$theCharset.'"?>';
+			break;
+			default:
+				$docTypeParts[]=$GLOBALS['TSFE']->config['config']['xmlprologue'];
+		}
+			// Part 2: DTD
 		if ($GLOBALS['TSFE']->config['config']['doctype'])	{
-			$docTypeKeyword = $GLOBALS['TSFE']->config['config']['doctype'];
-
-				// Setting doctypes:
 			switch((string)$GLOBALS['TSFE']->config['config']['doctype'])	{
 				case 'xhtml_trans':
-		 			if ($XMLprologue) $docTypeParts[]='<?xml version="1.0" encoding="'.$theCharset.'"?>';
 					$docTypeParts[]='<!DOCTYPE html
      PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">';
 				break;
 				case 'xhtml_strict':
-		 			if ($XMLprologue) $docTypeParts[]='<?xml version="1.0" encoding="'.$theCharset.'"?>';
 					$docTypeParts[]='<!DOCTYPE html
      PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">';
 				break;
 				case 'xhtml_frames':
-		 			if ($XMLprologue) $docTypeParts[]='<?xml version="1.0" encoding="'.$theCharset.'"?>';
 					$docTypeParts[]='<!DOCTYPE html
      PUBLIC "-//W3C//DTD XHTML 1.0 Frameset//EN"
      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd">';
 				break;
 				case 'xhtml_basic':
-		 			if ($XMLprologue) $docTypeParts[]='<?xml version="1.0" encoding="'.$theCharset.'"?>';
 					$docTypeParts[]='<!DOCTYPE html
     PUBLIC "-//W3C//DTD XHTML Basic 1.0//EN"
     "http://www.w3.org/TR/xhtml-basic/xhtml-basic10.dtd">';
 				break;
 				case 'xhtml_11':
-		 			if ($XMLprologue) $docTypeParts[]='<?xml version="1.1" encoding="'.$theCharset.'"?>';
 					$docTypeParts[]='<!DOCTYPE html
      PUBLIC "-//W3C//DTD XHTML 1.1//EN"
      "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">';
 				break;
 				case 'xhtml_2':
-		 			if ($XMLprologue) $docTypeParts[]='<?xml version="2.0" encoding="'.$theCharset.'"?>';
 					$docTypeParts[]='<!DOCTYPE html
 	PUBLIC "-//W3C//DTD XHTML 2.0//EN"
 	"http://www.w3.org/TR/xhtml2/DTD/xhtml2.dtd">';
 				break;
 				case 'none':
-					$docTypeKeyword = '';
 				break;
 				default:
 					$docTypeParts[] = $GLOBALS['TSFE']->config['config']['doctype'];
-					$docTypeKeyword = '';
 			}
 		} else {
 			$docTypeParts[]='<!DOCTYPE html
 	PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">';
 		}
 
-			// Setting XHTML doctype from doctype
-		if (!$GLOBALS['TSFE']->config['config']['xhtmlDoctype'])	{
-			$GLOBALS['TSFE']->config['config']['xhtmlDoctype'] = $docTypeKeyword;
-		}
-
-		if ($GLOBALS['TSFE']->config['config']['xhtmlDoctype'])	{
-			$GLOBALS['TSFE']->xhtmlDoctype = $GLOBALS['TSFE']->config['config']['xhtmlDoctype'];
+		if ($GLOBALS['TSFE']->xhtmlVersion)	{
 
 				// Setting <html> tag attributes:
-			switch((string)$GLOBALS['TSFE']->config['config']['xhtmlDoctype'])	{
-				case 'xhtml_trans':
-				case 'xhtml_strict':
-				case 'xhtml_frames':
-				case 'xhtml_basic':
-	 				$htmlTagAttributes['xmlns'] = 'http://www.w3.org/1999/xhtml';
-					$htmlTagAttributes['xml:lang'] = $htmlLang;
+	 		$htmlTagAttributes['xmlns'] = 'http://www.w3.org/1999/xhtml';
+			$htmlTagAttributes['xml:lang'] = $htmlLang;
+			if ($GLOBALS['TSFE']->xhtmlVersion < 110)	{
 					$htmlTagAttributes['lang'] = $htmlLang;
-				break;
-				case 'xhtml_11':
-				case 'xhtml_2':
-	 				$htmlTagAttributes['xmlns'] = 'http://www.w3.org/1999/xhtml';
-					$htmlTagAttributes['xml:lang'] = $htmlLang;
-				break;
-				default:
-					$GLOBALS['TSFE']->xhtmlDoctype = '';
-			}
-				// Setting xhtml version number:
-			switch((string)$GLOBALS['TSFE']->config['config']['xhtmlDoctype'])	{
-				case 'xhtml_trans':
-				case 'xhtml_strict':
-				case 'xhtml_frames':
-					$GLOBALS['TSFE']->xhtmlVersion = 100;
-				break;
-				case 'xhtml_basic':
-					$GLOBALS['TSFE']->xhtmlVersion = 105;
-				break;
-				case 'xhtml_11':
-					$GLOBALS['TSFE']->xhtmlVersion = 110;
-				break;
-				case 'xhtml_2':
-					$GLOBALS['TSFE']->xhtmlVersion = 200;
-				break;
-				default:
-					$GLOBALS['TSFE']->xhtmlVersion = 0;
 			}
 		}
 
