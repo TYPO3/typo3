@@ -1,4 +1,4 @@
-2006-02-26 Karsten Dambekalns <karsten@typo3.org>
+2006-02-26  Karsten Dambekalns  <karsten@typo3.org>
 
 	* Extension Manager: Fixed bug #2630 (thanks Peter Niederlag), #2610, #2607, #1904 (partly), #2579
 	* Extension Manager: Fixed checking of review states (thanks Rupert Germann)
@@ -7,7 +7,7 @@
 	* class.t3lib_befunc.php: Fixed bug #2528
 	* class.tslib_content.php: Fixed bug #2676
 
-2006-02-26  Wolfgang Klinger <wk@plan2.net>
+2006-02-26  Wolfgang Klinger  <wk@plan2.net>
 
 	* Fixed bug #1060: Sitemap with SectionIndex does not display content header when page has a navigation title assigned
 	* Fixed bug #284: substUrlsInPlainText does not allow other characters than space and () to terminate URLs in the text.
@@ -31,9 +31,10 @@
 
 	* Fixed bug #2662: added check against "Limit to languages"
 
-2006-02-23 Kasper Skaarhoj  <kasperYYYY@typo3.com>
-	* Changed things related to locallang-XML handling. Most significantly is it that translations are looked for in the new language pack directories typo3conf/l10n/[langyage key]/. 
-	* All locallang-XML files are updated to have ONLY the default labels in them and no specific references to external files; means translations will work only with language packs installed in typo3conf/l10n/. Such language packs will be distributed as zip-files around the release. 
+2006-02-23  Kasper Skaarhoj  <kasperYYYY@typo3.com>
+
+	* Changed things related to locallang-XML handling. Most significantly is it that translations are looked for in the new language pack directories typo3conf/l10n/[langyage key]/.
+	* All locallang-XML files are updated to have ONLY the default labels in them and no specific references to external files; means translations will work only with language packs installed in typo3conf/l10n/. Such language packs will be distributed as zip-files around the release.
 	* csh_* extensions (language pack extensions) are now obsolete.
 
 2006-02-22  Dmitry Dulepov  <typo3@accio.lv>
@@ -46,7 +47,7 @@
 	* Fixed bug #1596: checkIncludeLines uses preg_match now and checks for all whitespace before and after <INCLUDE_TYPOSCRIPT>
 	* Fixed bug #2592: Page type "External URL" and "Shortcut" causes an error (jumpUrlX methods)
 
-2006-02-22 Kasper Skaarhoj  <kasperYYYY@typo3.com>
+2006-02-22  Kasper Skaarhoj  <kasperYYYY@typo3.com>
 
 	* Added 3 languages: Faroe, Serbian, Farsi
 	* Fixed bug in t3lib_div::cHashParams()
@@ -56,9 +57,9 @@
 	* Added a condition to indexing of pages; that sys_language_uid and sys_language_content must be similar; it is assumed that for pages with fallback to default content no indexing is wanted.
 	* Added "Spotlight" categorizing feature to search results. The categories are defined as indexing configurations + natural categories like pages in the page tree. TypoScript configuration applies.
 
-2006-02-21 Karsten Dambekalns <karsten@typo3.org>
+2006-02-21  Karsten Dambekalns  <karsten@typo3.org>
 
-	* typo3/stylesheet.css: Fir for trivial bug #2644, added sans-serif as fallback font-family.
+	* typo3/stylesheet.css: Fix for trivial bug #2644, added sans-serif as fallback font-family.
 
 2006-02-21  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
