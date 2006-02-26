@@ -1,5 +1,5 @@
 
-2005-02-26  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+2006-02-26  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
 	* Fixed bug #1614: page type "external URL" has no https option (thanks to Marc Bastian Heinrichs)
 	* Enchanced config.xmlprologue (takes new keyowrds and arbitrary string as arguments)
@@ -268,13 +268,13 @@
 
 	* Fixed bug #760: "gifbuilder jpgs are 256 colors" for enabling truecolor pngs set [GFX][png_truecolor] variable (reduceColors still gets respected)
 
-2005-01-30  Michael Stucki  <michael@typo3.org>
+2006-01-30  Michael Stucki  <michael@typo3.org>
 
 	* Added two hooks to class.t3lib_tceforms.php, getMainFieldsClass: getMainFields_preProcess and getMainFields_postProcess (requested by Thomas Hempel for use with the "dynaflex" extension.
 	* Fixed gremlin #1628: Removed "Text with image below" from the content wizard
 	* Removed hardcoded maximum size of popup images
 
-2005-01-29  Michael Stucki  <michael@typo3.org>
+2006-01-29  Michael Stucki  <michael@typo3.org>
 
 	* Added UTF8-support for emails. Thanks to Bernhard Kraft, Stanislas Rolland and Martin Kutschker for their feedback.
 	* Changes in t3lib_div::plainMailEncoded(): By default, emails will be encoded to quoted-printable.
@@ -284,19 +284,19 @@
 	* Install Tool now displays warning messages using t3lib_div::debug() instead of debug() which does not work in all cases.
 	* Marked t3lib_htmlmail->convertName() as deprecated because header lines are now encoded automatically.
 
-2005-01-28  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+2006-01-28  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
 	* Fixed bug #2382: error when creating a new (and empty) file in BE
 	* Fixed bug #1878: protect localconf.php from being lost on write error
 	* Enhanced TCE type "none" with many rendering options
 
-2005-01-27  Sebastian Kurfuerst  <sebastian@garbage-group.de>
+2006-01-27  Sebastian Kurfuerst  <sebastian@garbage-group.de>
 
 	* Fixed bug #2337: remove 30KB editing limit in Template Editor
 	* Fixed bug #2405: CSC - allow styles and additional table class
 	* Fixed little removed reference operator in class.t3lib_tcemain.php line 1817 (triggers a call-time pass-by-reference warning) - eval API code
 
-2005-01-27  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+2006-01-27  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
 	* added error logging to DB initialization code
 	* improved FQDN detection and fixed empty syslog ident in t3lib_div::initSysLog()
@@ -413,12 +413,12 @@
 
 	* Fixed bug #1430: SEO + simulateStaticDocuments
 
-2005-01-19  Peter Niederlag  <peter@niederlag.de>
+2006-01-19  Peter Niederlag  <peter@niederlag.de>
 
 	* Fixed issue #2268 on cleanup of sysext:css_styled_content
 	* Fixed small issue with link in LICENSE.txt
 
-2005-01-19  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+2006-01-19  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
 	* add t3lib_div::sysLog() for Core logging
 	* use t3lib_div::sysLog() in t3lib_db->sql_pconnect() and t3lib_db->sql_select_db()
@@ -503,7 +503,7 @@
 	* Converted locallang files of htmlArea RTE extension to XML format.
 	* Revised all licence notices on all scripts of htmlArea RTE in order to publish under GPL.
 
-2005-01-06  Sebastian Kurfuerst  <sebastian@garbage-group.de>
+2006-01-06  Sebastian Kurfuerst  <sebastian@garbage-group.de>
 
 	* Fixed bug #1854: wrong Access check in RTE Wizard
 	* Added PHPdoc comments to the update wizard
@@ -512,7 +512,7 @@
 
 	* Minor change to the stylesheet to enhance tabmenu display in the BE.
 
-2005-01-05  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+2006-01-05  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
 	* Add escapeStrForLike() to t3lib_db and use it in tslib_cObj->searchWhere()
 	* Update for bug #1354: Use mysql_escape_string() with PHP 4.1.x
