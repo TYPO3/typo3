@@ -228,6 +228,7 @@ if (TYPO3_MODE=='BE')	{
 				'items' => Array (
 					Array('', '0'),
 					Array('http://', '1'),
+					Array('https://', '4'),
 					Array('ftp://', '2'),
 					Array('mailto:', '3')
 				),

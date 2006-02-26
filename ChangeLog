@@ -1,6 +1,7 @@
 
 2005-02-26  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
+	* Fixed bug #1614: page type "external URL" has no https option (thanks to Marc Bastian Heinrichs)
 	* Enchanced config.xmlprologue (takes new keyowrds and arbitrary string as arguments)
 	* Fixed issues with config.xhtmlDoctype
 

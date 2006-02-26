@@ -107,7 +107,7 @@
  * @see tslib_fe::fetch_the_id()
  */
 class t3lib_pageSelect {
-	var $urltypes = Array('','http://','ftp://','mailto:');
+	var $urltypes = Array('','http://','ftp://','mailto:','https://');
 	var $where_hid_del = ' AND pages.deleted=0';	// This is not the final clauses. There will normally be conditions for the hidden,starttime and endtime fields as well. You MUST initialize the object by the init() function
 	var $where_groupAccess = '';	// Clause for fe_group access
 	var $sys_language_uid = 0;
