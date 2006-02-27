@@ -264,10 +264,9 @@ class t3lib_TStemplate	{
 	 */
 	function matching($cc)	{
 		if (is_array($cc['all']))	{
-			reset($cc['all']);
 			$matchObj = t3lib_div::makeInstance('t3lib_matchCondition');
 			$matchObj->altRootLine=$cc['rootLine'];
-			while(list($key,$pre)=each($cc['all']))	{
+			foreach ($cc['all'] as $key=>$pre)	{
 				if ($matchObj->match($pre))	{
 					$sectionsMatch[$key]=$pre;
 				}
@@ -294,7 +293,7 @@ class t3lib_TStemplate	{
 			$this->runThroughTemplates($theRootLine);
 
 				// Getting the currentPageData if not already found
-			if (!$this->currentPageData)	{
+			if (!$this->currentPageData && !$GLOBALS['TSFE']->no_cache)	{
 				$this->getCurrentPageData();
 			}
 
@@ -304,19 +303,19 @@ class t3lib_TStemplate	{
 			if (is_array($this->currentPageData) &&
 				!strcmp(serialize($this->rowSum), serialize($this->currentPageData['rowSum']))	// The two ROWsums must NOT be different from each other - which they will be if start/endtime or hidden has changed!
 			)	{
-					// If currentPageData was actually there, we match the result...
 				$cc['all'] = $this->currentPageData['all'];
+				$cc['match'] = $this->currentPageData['match'];
 				$cc['rowSum'] = $this->currentPageData['rowSum'];
-				$cc = $this->matching($cc);
 				$hash = md5(serialize($cc));
+
 			} else {
 					// If currentPageData was not there, we first find $rowSum (freshly generated). After that we try to see, if rowSum is stored with a list of all matching-parameters. If so we match the result
 				$rowSumHash = md5('ROWSUM:'.serialize($this->rowSum));
 				$result = t3lib_pageSelect::getHash($rowSumHash, 0);
 				if ($result)	{
 					$cc['all'] = unserialize($result);
-					$cc['rowSum'] = $this->rowSum;
 					$cc = $this->matching($cc);
+					$cc['rowSum'] = $this->rowSum;
 					$hash = md5(serialize($cc));
 				}
 			}
@@ -336,8 +335,8 @@ class t3lib_TStemplate	{
 					// This stores the template hash thing
 				$cc=Array();
 				$cc['all']=$this->sections;	// All sections in the template at this point is found
-				$cc['rowSum']=$this->rowSum;	// The line of templates is collected
 				$cc = $this->matching($cc);
+				$cc['rowSum']=$this->rowSum;	// The line of templates is collected
 
 				$hash = md5(serialize($cc));
 

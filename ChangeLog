@@ -1,3 +1,7 @@
+2006-02-27  Sebastian Kurfuerst  <sebastian@garbage-group.de>
+
+	* !!! Avoiding double checking of match-conditions now.
+
 2006-02-27  Rene Fritz  <r.fritz@colorcube.de>
 
 	* Added possiblity to create dimmed icons by adding _i to the filename with t3lib_iconworks::skinImg().
