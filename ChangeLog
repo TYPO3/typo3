@@ -1,3 +1,7 @@
+2006-02-27  Rene Fritz  <r.fritz@colorcube.de>
+
+	* Added possiblity to create dimmed icons by adding _i to the filename with t3lib_iconworks::skinImg().
+
 2006-02-27  Wolfgang Klinger  <wk@plan2.net>
 
 	* Fixed bug #549: No information about deleted records in the backend log
