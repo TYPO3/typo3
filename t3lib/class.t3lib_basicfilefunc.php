@@ -139,6 +139,8 @@ class t3lib_basicFileFunctions	{
 		$this->mounts = $mounts;
 		$this->webPath = t3lib_div::getIndpEnv('TYPO3_DOCUMENT_ROOT');
 		$this->isInit = 1;
+
+		$this->maxInputNameLen = $GLOBALS['TYPO3_CONF_VARS']['SYS']['maxFileNameLength'] ? $GLOBALS['TYPO3_CONF_VARS']['SYS']['maxFileNameLength'] : $this->maxInputNameLen;
 	}
 
 	/**
