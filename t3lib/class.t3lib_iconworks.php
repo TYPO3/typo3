@@ -293,6 +293,19 @@ class t3lib_iconWorks	{
 			// DEBUG: This doubles the size of all icons - for testing/debugging:
 #		if (ereg('^width="([0-9]+)" height="([0-9]+)"$',$wHattribs,$reg))	$wHattribs='width="'.($reg[1]*2).'" height="'.($reg[2]*2).'"';
 
+
+			// rendering disabled (greyed) icons using _i (inactive) as name suffix ("_d" is already used)
+		$matches = array();
+		$srcBasename = basename($src);
+		if (preg_match('/(.*)_i(\....)$/', $srcBasename, $matches)) {
+			$temp_path = dirname(PATH_thisScript).'/';
+			if(!@is_file($temp_path.$backPath.$src)) {
+				$srcOrg = preg_replace('/_i'.preg_quote($matches[2]).'$/', $matches[2], $src);
+				$src = t3lib_iconWorks::makeIcon($backPath.$srcOrg, 'disabled', 0, false, $temp_path.$backPath.$srcOrg, $srcBasename);
+			}
+		}
+
+
 			// Return icon source/wHattributes:
 		$output = '';
 		switch($outputMode)	{
@@ -356,11 +369,11 @@ class t3lib_iconWorks	{
 					if ($im<0)	return $iconfile;
 
 						// Converting to gray scale, dimming the icon:
-					if ($mode!='futuretiming' && $mode!='no_icon_found' && !(!$mode && $user))	{
+					if (($mode=='disabled') OR ($mode!='futuretiming' && $mode!='no_icon_found' && !(!$mode && $user)))	{
 						for ($c=0; $c<ImageColorsTotal($im); $c++)	{
 							$cols = ImageColorsForIndex($im,$c);
 							$newcol = round(($cols['red']+$cols['green']+$cols['blue'])/3);
-							$lighten = 2;
+							$lighten = ($mode=='disabled') ? 2.5 : 2;
 							$newcol = round(255-((255-$newcol)/$lighten));
 							ImageColorSet($im,$c,$newcol,$newcol,$newcol);
 						}
@@ -399,13 +412,19 @@ class t3lib_iconWorks	{
 							case 'no_icon_found':
 								$ol_im = t3lib_iconworks::imagecreatefrom($GLOBALS['BACK_PATH'].'gfx/overlay_no_icon_found.gif');
 							break;
+							case 'disabled':
+									// is already greyed - nothing more
+								$ol_im = 0;
+							break;
 							case 'hidden':
 							default:
 								$ol_im = t3lib_iconworks::imagecreatefrom($GLOBALS['BACK_PATH'].'gfx/overlay_hidden.gif');
 							break;
 						}
 						if ($ol_im<0)	return $iconfile;
-						t3lib_iconworks::imagecopyresized($im, $ol_im, 0, 0, 0, 0, imagesx($ol_im), imagesy($ol_im), imagesx($ol_im), imagesy($ol_im));
+						if ($ol_im) {
+							t3lib_iconworks::imagecopyresized($im, $ol_im, 0, 0, 0, 0, imagesx($ol_im), imagesy($ol_im), imagesx($ol_im), imagesy($ol_im));
+						}
 					}
 						// Protect-section icon:
 					if ($protectSection)	{
