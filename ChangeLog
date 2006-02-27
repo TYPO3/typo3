@@ -10,6 +10,7 @@
 2006-02-27  Wolfgang Klinger  <wk@plan2.net>
 
 	* Fixed bug #549: No information about deleted records in the backend log
+	* Fixed bug #1796: HMENU with includeNotInMenu does not work with the nav_hide page property
 
 2006-02-26  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
