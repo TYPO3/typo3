@@ -3075,6 +3075,9 @@ class t3lib_TCEmain	{
 			if ($noRecordCheck || $this->doesRecordExist($table,$uid,'delete'))	{
 				$this->clear_cache($table,$uid);	// clear cache before deleting the record, else the correct page cannot be identified by clear_cache
 
+				$propArr = $this->getRecordProperties($table, $uid);
+				$pagePropArr = $this->getRecordProperties('pages', $propArr['pid']);
+
 				$deleteRow = $TCA[$table]['ctrl']['delete'];
 				if ($deleteRow && !$forceHardDelete)	{
 					$value = $undeleteRecord ? 0 : 1;
@@ -3113,7 +3116,24 @@ class t3lib_TCEmain	{
 
 				$state = $undeleteRecord ? 1 : 3;	// 1 means insert, 3 means delete
 				if (!$GLOBALS['TYPO3_DB']->sql_error())	{
-					$this->log($table,$uid,$state,0,0,'');
+					if ($forceHardDelete) {
+						$message = "Record '%s' (%s) was deleted unrecoverable from page '%s' (%s)";
+					}
+					else {
+						$message = $state == 1 ? 
+							"Record '%s' (%s) was restored on page '%s' (%s)" :
+							"Record '%s' (%s) was deleted from page '%s' (%s)";
+					}
+					$this->log($table, $uid, $state, 0, 0,
+								$message, 0,
+								array(
+									$propArr['header'],
+									$table.':'.$uid,
+									$pagePropArr['header'],
+									$propArr['pid']
+									),
+								$propArr['pid']);
+
 				} else {
 					$this->log($table,$uid,$state,0,100,$GLOBALS['TYPO3_DB']->sql_error());
 				}
