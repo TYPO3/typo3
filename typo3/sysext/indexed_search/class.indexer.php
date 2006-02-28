@@ -771,13 +771,27 @@ class tx_indexedsearch_indexer {
 					$localFile = t3lib_div::getFileAbsFileName(PATH_site.$linkSource);
 				}
 				if ($localFile && @is_file($localFile))	{
+
 						// Index local file:
 					if ($linkInfo['localPath'])	{
+						
 						$fI = pathinfo($linkSource);
 						$ext = strtolower($fI['extension']);
 						$this->indexRegularDocument($linkInfo['href'], false, $linkSource, $ext);
 					} else {
-						$this->indexRegularDocument($linkSource);
+						if ($this->indexerConfig['useCrawlerForExternalFiles'] && t3lib_extMgm::isLoaded('crawler'))	{
+							$this->includeCrawlerClass();
+							$crawler = t3lib_div::makeInstance('tx_crawler_lib');
+							$params = array(
+								'document' => $linkSource,
+								'conf' => $this->conf
+							);
+							unset($params['conf']['content']);
+							$crawler->addQueueEntry_callBack(0,$params,'EXT:indexed_search/class.crawler.php:&tx_indexedsearch_files',$this->conf['id']);
+							$this->log_setTSlogMessage('media "'.$linkSource.'" added to "crawler" queue.',1);
+						} else {
+							$this->indexRegularDocument($linkSource);
+						}
 					}
 				}
 			}
@@ -1760,7 +1774,11 @@ class tx_indexedsearch_indexer {
 		}
 	}
 
-
+	function includeCrawlerClass()	{
+		global $TYPO3_CONF_VARS;
+		
+		require_once(t3lib_extMgm::extPath('crawler').'class.tx_crawler_lib.php');		
+	}
 
 
 
