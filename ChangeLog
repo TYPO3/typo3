@@ -1,4 +1,9 @@
+2006-02-28  Sebastian Kurfuerst  <sebastian@garbage-group.de>
+
+	* Fixed bug: admin panel doesn't stay on page (introduced by "Change admin panel to use get instead of post"
+
 2006-02-28  Kasper Skaarhoj  <kasperYYYY@typo3.com>
+
 	* Added new feature to indexed search allowing the "crawler" extension to be used for indexing of media found on a page. This is a solution to the problem of for example many heavy pdf files on a page being indexed along with the page content; now such files can be added to the "crawler"'s queue and indexed via a cron-script.
 	* debug flag added to lang-class so labels in backend can be identified by translators (debug feature).
 		
