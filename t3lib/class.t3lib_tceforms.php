@@ -816,7 +816,7 @@ class t3lib_TCEforms	{
 					}
 
 						// Create output value:
-					if ($PA['fieldConf']['config']['form_type']=='user' && $PA['fieldConf']['config']['noTableWrapping'])	{
+					if ($PA['fieldConf']['config']['noTableWrapping'])	{
 						$out = $item;
 					} elseif ($PA['palette'])	{
 							// Array:
@@ -866,37 +866,61 @@ class t3lib_TCEforms	{
 	function getSingleField_SW($table,$field,$row,&$PA)	{
 		$PA['fieldConf']['config']['form_type'] = $PA['fieldConf']['config']['form_type'] ? $PA['fieldConf']['config']['form_type'] : $PA['fieldConf']['config']['type'];	// Using "form_type" locally in this script
 
-		switch($PA['fieldConf']['config']['form_type'])	{
-			case 'input':
-				$item = $this->getSingleField_typeInput($table,$field,$row,$PA);
-			break;
-			case 'text':
-				$item = $this->getSingleField_typeText($table,$field,$row,$PA);
-			break;
-			case 'check':
-				$item = $this->getSingleField_typeCheck($table,$field,$row,$PA);
-			break;
-			case 'radio':
-				$item = $this->getSingleField_typeRadio($table,$field,$row,$PA);
-			break;
-			case 'select':
-				$item = $this->getSingleField_typeSelect($table,$field,$row,$PA);
-			break;
-			case 'group':
-				$item = $this->getSingleField_typeGroup($table,$field,$row,$PA);
-			break;
-			case 'none':
-				$item = $this->getSingleField_typeNone($table,$field,$row,$PA);
-			break;
-			case 'user':
-				$item = $this->getSingleField_typeUser($table,$field,$row,$PA);
-			break;
-			case 'flex':
-				$item = $this->getSingleField_typeFlex($table,$field,$row,$PA);
-			break;
-			default:
-				$item = $this->getSingleField_typeUnknown($table,$field,$row,$PA);
-			break;
+		$fieldRendered = false;
+
+			// render type by user func if registered for type except it is already type "user"
+		if ($PA['fieldConf']['config']['form_type']!='user') {
+			if (is_array ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tceforms.php']['fieldRendering'][$PA['fieldConf']['config']['form_type']])) {
+				foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tceforms.php']['fieldRendering'][$PA['fieldConf']['config']['form_type']] as $classRef) {
+					$fieldRenderObj = t3lib_div::getUserObj($classRef);
+					if(is_object($fieldRenderObj) && method_exists($fieldRenderObj, 'isValid') && method_exists($fieldRenderObj, 'getSingleField'))	{
+						if ($fieldRenderObj->isValid($table, $field, $row, $PA, $this)) {
+
+							$item = $fieldRenderObj->getSingleField($table, $field, $row, $PA, $this);
+
+							$fieldRendered = true;
+							break;
+						}
+					}
+				}
+			}
+		}
+
+			// if type was not rendered use default rendering functions
+		if(!$fieldRendered) {
+
+			switch($PA['fieldConf']['config']['form_type'])	{
+				case 'input':
+					$item = $this->getSingleField_typeInput($table,$field,$row,$PA);
+				break;
+				case 'text':
+					$item = $this->getSingleField_typeText($table,$field,$row,$PA);
+				break;
+				case 'check':
+					$item = $this->getSingleField_typeCheck($table,$field,$row,$PA);
+				break;
+				case 'radio':
+					$item = $this->getSingleField_typeRadio($table,$field,$row,$PA);
+				break;
+				case 'select':
+					$item = $this->getSingleField_typeSelect($table,$field,$row,$PA);
+				break;
+				case 'group':
+					$item = $this->getSingleField_typeGroup($table,$field,$row,$PA);
+				break;
+				case 'none':
+					$item = $this->getSingleField_typeNone($table,$field,$row,$PA);
+				break;
+				case 'user':
+					$item = $this->getSingleField_typeUser($table,$field,$row,$PA);
+				break;
+				case 'flex':
+					$item = $this->getSingleField_typeFlex($table,$field,$row,$PA);
+				break;
+				default:
+					$item = $this->getSingleField_typeUnknown($table,$field,$row,$PA);
+				break;
+			}
 		}
 
 		return $item;
@@ -948,7 +972,7 @@ class t3lib_TCEforms	{
 		$evalList = t3lib_div::trimExplode(',',$config['eval'],1);
 
 
-		if($this->renderReadonly || $config['readonly'])  {
+		if($this->renderReadonly || $config['readOnly'])  {
 			$itemFormElValue = $PA['itemFormElValue'];
 			if (in_array('date',$evalList))	{
 				$config['format'] = 'date';
@@ -1022,7 +1046,7 @@ class t3lib_TCEforms	{
 			// Init config:
 		$config = $PA['fieldConf']['config'];
 
-		if($this->renderReadonly || $config['readonly'])  {
+		if($this->renderReadonly || $config['readOnly'])  {
 			return $this->getSingleField_typeNone_render($config, $PA['itemFormElValue']);
 		}
 
@@ -1133,7 +1157,7 @@ class t3lib_TCEforms	{
 		$config = $PA['fieldConf']['config'];
 
 		$disabled = '';
-		if($this->renderReadonly || $config['readonly'])  {
+		if($this->renderReadonly || $config['readOnly'])  {
 			$disabled = ' disabled="disabled"';
 		}
 
@@ -1199,7 +1223,7 @@ class t3lib_TCEforms	{
 		$config = $PA['fieldConf']['config'];
 
 		$disabled = '';
-		if($this->renderReadonly || $config['readonly'])  {
+		if($this->renderReadonly || $config['readOnly'])  {
 			$disabled = ' disabled="disabled"';
 		}
 
@@ -1237,7 +1261,7 @@ class t3lib_TCEforms	{
 		$config = $PA['fieldConf']['config'];
 
 		$disabled = '';
-		if($this->renderReadonly || $config['readonly'])  {
+		if($this->renderReadonly || $config['readOnly'])  {
 			$disabled = ' disabled="disabled"';
 		}
 
@@ -1322,7 +1346,7 @@ class t3lib_TCEforms	{
 		$size = intval($config['size']);
 
 		$disabled = '';
-		if($this->renderReadonly || $config['readonly'])  {
+		if($this->renderReadonly || $config['readOnly'])  {
 			$disabled = ' disabled="disabled"';
 			$onlySelectedIconShown = 1;
 		}
@@ -1433,7 +1457,7 @@ class t3lib_TCEforms	{
 		$itemArray = array_flip($this->extractValuesOnlyFromValueLabelList($PA['itemFormElValue']));
 
 		$disabled = '';
-		if($this->renderReadonly || $config['readonly'])  {
+		if($this->renderReadonly || $config['readOnly'])  {
 			$disabled = ' disabled="disabled"';
 		}
 
@@ -1552,7 +1576,7 @@ class t3lib_TCEforms	{
 		$itemArray = array_flip($this->extractValuesOnlyFromValueLabelList($PA['itemFormElValue']));
 
 		$disabled = '';
-		if($this->renderReadonly || $config['readonly'])  {
+		if($this->renderReadonly || $config['readOnly'])  {
 			$disabled = ' disabled="disabled"';
 		}
 
@@ -1659,7 +1683,7 @@ class t3lib_TCEforms	{
 	function getSingleField_typeSelect_multiple($table,$field,$row,&$PA,$config,$selItems,$nMV_label)	{
 
 		$disabled = '';
-		if($this->renderReadonly || $config['readonly'])  {
+		if($this->renderReadonly || $config['readOnly'])  {
 			$disabled = ' disabled="disabled"';
 		}
 
@@ -1738,7 +1762,7 @@ class t3lib_TCEforms	{
 			),
 			'noBrowser' => 1,
 			'thumbnails' => $itemsToSelect,
-			'readonly' => $disabled
+			'readOnly' => $disabled
 		);
 		$item.= $this->dbFileIcons($PA['itemFormElName'],'','',$itemArray,'',$params,$PA['onFocus']);
 
@@ -1768,7 +1792,7 @@ class t3lib_TCEforms	{
 		$disallowed = $config['disallowed'];
 
 		$disabled = '';
-		if($this->renderReadonly || $config['readonly'])  {
+		if($this->renderReadonly || $config['readOnly'])  {
 			$disabled = ' disabled="disabled"';
 		}
 
@@ -1837,7 +1861,7 @@ class t3lib_TCEforms	{
 					'style' => isset($config['selectedListStyle']) ? ' style="'.htmlspecialchars($config['selectedListStyle']).'"' : ' style="'.$this->defaultMultipleSelectorStyle.'"',
 					'info' => $info,
 					'thumbnails' => $thumbsnail,
-					'readonly' => $disabled
+					'readOnly' => $disabled
 				);
 				$item.= $this->dbFileIcons($PA['itemFormElName'],'file',implode(',',$tempFT),$itemArray,'',$params,$PA['onFocus']);
 
@@ -1898,7 +1922,7 @@ class t3lib_TCEforms	{
 					'style' => isset($config['selectedListStyle']) ? ' style="'.htmlspecialchars($config['selectedListStyle']).'"' : ' style="'.$this->defaultMultipleSelectorStyle.'"',
 					'info' => $info,
 					'thumbnails' => $thumbsnail,
-					'readonly' => $disabled
+					'readOnly' => $disabled
 				);
 				$item.= $this->dbFileIcons($PA['itemFormElName'],'db',implode(',',$tempFT),$itemArray,'',$params,$PA['onFocus']);
 
@@ -2864,7 +2888,7 @@ class t3lib_TCEforms	{
 
 
 		$disabled = '';
-		if($this->renderReadonly || $params['readonly'])  {
+		if($this->renderReadonly || $params['readOnly'])  {
 			$disabled = ' disabled="disabled"';
 		}
 
@@ -2921,7 +2945,7 @@ class t3lib_TCEforms	{
 			'L' => array(),
 			'R' => array(),
 		);
-		if (!$params['readonly']) {
+		if (!$params['readOnly']) {
 			if (!$params['noBrowser'])	{
 				$aOnClick='setFormValueOpenBrowser(\''.$mode.'\',\''.($fName.'|||'.$allowed.'|').'\'); return false;';
 				$icons['R'][]='<a href="#" onclick="'.htmlspecialchars($aOnClick).'">'.
