@@ -1,3 +1,7 @@
+2006-02-28  Michael Stucki  <michael@typo3.org>
+
+	* !!! Removed showpic.php from TYPO3 root. Future applications will just use index.php instead.
+
 2006-02-27  Sebastian Kurfuerst  <sebastian@garbage-group.de>
 
 	* !!! Avoiding double checking of match-conditions now.
@@ -15,7 +19,7 @@
 2006-02-26  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
 	* Fixed bug #1614: page type "external URL" has no https option (thanks to Marc Bastian Heinrichs)
-	* Enchanced config.xmlprologue (takes new keyowrds and arbitrary string as arguments)
+	* Enchanced config.xmlprologue (takes new keywords and arbitrary string as arguments)
 	* Fixed issues with config.xhtmlDoctype
 
 2006-02-26  Karsten Dambekalns  <karsten@typo3.org>
