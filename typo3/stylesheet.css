@@ -19,10 +19,10 @@ TYPO3 CVS ID: $Id$
 SELECT, TEXTAREA, INPUT, TD, BODY, .defstyle, P, DIV {
 	font-family: Verdana, Arial, Helvetica, sans-serif;
 	font-size: 10px;
-	margin: 0 0 0 0;
+	margin: 0px;
 	color: black;
 }
-FORM { margin: 0 0 0 0; }
+FORM { margin: 0px; }
 H1, H2, H3, H4 {
 	font-family: Verdana, Arial, Helvetica, sans-serif;
 	font-size: 10px;
@@ -59,9 +59,9 @@ H4 {
 
 /* Preformatted text - not used so much in TYPO3 */
 PRE   {
-	font-family: monospace;
-	font-size:11px;
-	margin: 0 0 0 0;
+	font-family: "Lucida Sans Typewriter", "Bitstream Vera Sans Mono", monospace;
+	font-size: 11px;
+	margin: 0px;
 }
 
 /* Links in general */
@@ -411,7 +411,7 @@ TABLE#typo3-versionSelector TD { padding-left: 2px; padding-right: 2px; }
 DIV#typo3-newRecordLink { margin: 5px 0px 5px 0px; font-weight: bold;}
 DIV#typo3-newRecordLink IMG { margin-right: 5px; vertical-align: middle; }
 
-INPUT.smallCheckboxes { vertical-align: middle; margin: 0 0 0 0; padding: 0 0 0 0; width: 12px; height: 12px; }
+INPUT.smallCheckboxes { vertical-align: middle; margin: 0px; padding: 0px; width: 12px; height: 12px; }
 DIV#typo3-listOptions { margin: 10px 0px 10px 0px; }
 
 /* File > List */
@@ -437,8 +437,8 @@ TABLE#typo3-permissionMatrix TD { text-align: center; width: 16%; }
 TABLE#typo3-permissionMatrix TD.bgColor2 { font-weight: bold; padding-left: 10px; padding-right: 10px; }
 
 /* Help > About */
-#typo3-mod-help-about-index-php-outer { margin: 0 auto; width: 333px; }
-#typo3-mod-help-about-index-php-inner { margin: 0 auto; border: 1px solid black; background: #EAEAEA; padding: 5px; }
+#typo3-mod-help-about-index-php-outer { margin: 0px auto; width: 333px; }
+#typo3-mod-help-about-index-php-inner { margin: 0px auto; border: 1px solid black; background: #EAEAEA; padding: 5px; }
 #typo3-mod-help-about-index-php-inner h2 { margin-top: 0; }
 #typo3-mod-help-about-index-php-inner h3 { margin-top: 10px; margin-bottom: 10px; background-color: transparent; font-size: 14px; text-align: center; }
 #typo3-mod-help-about-index-php-inner a { color: black; }
@@ -515,9 +515,9 @@ TABLE.warningbox TD { padding: 20px 20px 20px 20px; font-weight: bold; }
 DIV.diff-r {background-color: red; color:black; padding: 3px 3px 3px 3px;}
 DIV.diff-g {background-color: green; color:black; padding: 3px 3px 3px 3px;}
 IMG.absmiddle { vertical-align: middle; }
-TEXTAREA.fixed-font { font-family: monospace; font-size: 11px; }
+TEXTAREA.fixed-font { font-family: "Lucida Sans Typewriter", "Bitstream Vera Sans Mono", monospace; font-size: 11px; }
 
-.smallCheckboxes { width:12px; height:12px; margin:0 0 0 0; }
+.smallCheckboxes { width: 12px; height: 12px; margin: 0px; }
 .uppercase { text-transform : uppercase; }
 .tableheader TD { font-weight: bold; padding-left: 2px; padding-right: 2px; }
 .lrPadding TD { padding-left: 2px; padding-right: 2px; }
@@ -551,7 +551,7 @@ IMG.typo3-csh-icon { vertical-align: middle; cursor: help; }
  * TypoScript Highlighting:
  *********************************************/
 
-PRE.ts-hl {font-size: 11px; font-family : monospace;}
+PRE.ts-hl {font-size: 11px; font-family : "Lucida Sans Typewriter", "Bitsream Vera Sans Mono", monospace;}
 PRE.ts-hl .ts-prespace {}
 PRE.ts-hl .ts-objstr_postspace {}
 PRE.ts-hl .ts-operator_postspace {}
