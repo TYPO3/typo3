@@ -102,6 +102,8 @@ class language {
 	var $helpUrlArray = array(
 		'dk' => 'http://www.typo3.com/man_dk/',
 	);
+	
+	var $debugKey = FALSE;		// If true, will show the key/location of labels in the backend.
 
 
 	var $moduleLabels = Array();	// Can contain labels and image references from the backend modules. Relies on t3lib_loadmodules to initialize modules after a global instance of $LANG has been created.
@@ -259,10 +261,11 @@ class language {
 	function getLL($index,$hsc=0)	{
 		// Get Local Language
 		if (strcmp($GLOBALS['LOCAL_LANG'][$this->lang][$index],''))	{
-			return $this->hscAndCharConv($GLOBALS['LOCAL_LANG'][$this->lang][$index], $hsc);	// Returns local label if not blank.
+			$output = $this->hscAndCharConv($GLOBALS['LOCAL_LANG'][$this->lang][$index], $hsc);	// Returns local label if not blank.
 		} else {
-			return $this->hscAndCharConv($GLOBALS['LOCAL_LANG']['default'][$index], $hsc);	// Returns default label
+			$output = $this->hscAndCharConv($GLOBALS['LOCAL_LANG']['default'][$index], $hsc);	// Returns default label
 		}
+		return $output.($this->debugKey ? ' ['.$index.']':'');
 	}
 
 	/**
@@ -276,10 +279,11 @@ class language {
 	function getLLL($index,$LOCAL_LANG,$hsc=0)	{
 		// Get Local Language
 		if (strcmp($LOCAL_LANG[$this->lang][$index],''))	{
-			return $this->hscAndCharConv($LOCAL_LANG[$this->lang][$index], $hsc);	// Returns local label if not blank.
+			$output = $this->hscAndCharConv($LOCAL_LANG[$this->lang][$index], $hsc);	// Returns local label if not blank.
 		} else {
-			return $this->hscAndCharConv($LOCAL_LANG['default'][$index], $hsc);		// Returns default label
+			$output = $this->hscAndCharConv($LOCAL_LANG['default'][$index], $hsc);		// Returns default label
 		}
+		return $output.($this->debugKey ? ' ['.$index.']':'');
 	}
 
 	/**
@@ -326,7 +330,8 @@ class language {
 				}
 				$this->LL_labels_cache[$this->lang][$input] = $this->getLLL($parts[1],$this->LL_files_cache[$parts[0]]);
 			}
-			return $hsc ? t3lib_div::deHSCentities(htmlspecialchars($this->LL_labels_cache[$this->lang][$input])) : $this->LL_labels_cache[$this->lang][$input]; // For the cached output charset conversion has already happend! So perform HSC right here.
+			$output = $hsc ? t3lib_div::deHSCentities(htmlspecialchars($this->LL_labels_cache[$this->lang][$input])) : $this->LL_labels_cache[$this->lang][$input]; // For the cached output charset conversion has already happend! So perform HSC right here.
+			return $output.($this->debugKey ? ' ['.$input.']':'');
 		}
 	}
 
