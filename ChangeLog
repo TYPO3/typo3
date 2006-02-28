@@ -1,4 +1,3 @@
-
 2006-02-28  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
 	* Enhance typolink.addQueryString and add addQueyString to HMENU with special=language (fix bug #2280)
@@ -25,6 +24,7 @@
 
 	* Added possiblity to create dimmed icons by adding _i to the filename with t3lib_iconworks::skinImg().
 	* Added $GLOBALS['TYPO3_CONF_VARS']['SYS']['maxFileNameLength'] for use in t3lib_basicfilefunc
+	* Added hook that allow to implement the rendering of the standard types with extensions.
 
 2006-02-27  Wolfgang Klinger  <wk@plan2.net>
 
@@ -88,7 +88,7 @@
 
 2006-02-22  Kasper Skaarhoj  <kasperYYYY@typo3.com>
 
-	* Added 3 languages: Faroe, Serbian, Persian (Farsi)
+	* Added 3 languages: Faroe, Serbian, Farsi
 	* Fixed bug in t3lib_div::cHashParams()
 	* Brought back support in EM's index.php::importExtFromRep() function for direct injection of an array with extension files (needed for support for kickstarter, but new function parameters are kept)
 	* Added new Indexing Configuration for indexed search: Traversal of page tree. Means that now the page tree can be indexed by the "crawler" extension (cronscript)
