@@ -12,7 +12,7 @@ $TCA['index_config'] = Array (
             'label' => 'Disable',
             'config' => Array (
                 'type' => 'check',
-                'default' => '0'
+                'default' => '1'
             )
         ),
         'starttime' => Array (

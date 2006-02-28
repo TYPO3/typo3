@@ -83,7 +83,7 @@
 
 2006-02-22  Kasper Skaarhoj  <kasperYYYY@typo3.com>
 
-	* Added 3 languages: Faroe, Serbian, Farsi
+	* Added 3 languages: Faroe, Serbian, Persian (Farsi)
 	* Fixed bug in t3lib_div::cHashParams()
 	* Brought back support in EM's index.php::importExtFromRep() function for direct injection of an array with extension files (needed for support for kickstarter, but new function parameters are kept)
 	* Added new Indexing Configuration for indexed search: Traversal of page tree. Means that now the page tree can be indexed by the "crawler" extension (cronscript)
