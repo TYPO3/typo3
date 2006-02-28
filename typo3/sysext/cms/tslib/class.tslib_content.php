@@ -5197,7 +5197,7 @@ class tslib_cObj {
 						if ($linktxt=='') $linktxt = $page['title'];
 
 							// Query Params:
-						$addQueryParams = $conf['addQueryString'] ? '&'.t3lib_div::getIndpEnv('QUERY_STRING') : '';
+						$addQueryParams = $conf['addQueryString'] ? $this->getQueryArguments($conf['addQueryString.']) : '';
 						$addQueryParams .= trim($this->stdWrap($conf['additionalParams'],$conf['additionalParams.']));
 						if (substr($addQueryParams,0,1)!='&')		{
 							$addQueryParams = '';
@@ -5480,6 +5480,66 @@ class tslib_cObj {
 			$mailToUrl = $GLOBALS['TSFE']->absRefPrefix.$GLOBALS['TSFE']->config['mainScript'].$initP.'&jumpurl='.rawurlencode($mailToUrl).$GLOBALS['TSFE']->getMethodUrlIdToken;
 		}
 		return array($mailToUrl,$linktxt);
+	}
+
+	/**
+	 * Gets the query arguments and assembles them for URLs.
+	 * Arguments may be removed or set, depending on configuration.
+	 *
+	 * @param	string		Configuration
+	 * @param	array		Key/value pairs that overrule incoming query arguments
+	 * @param	boolean		If set key/value pairs not in the query but the overrule array will be set
+	 * @return	string		The URL query part (starting with a &)
+	 */
+	function getQueryArguments($conf,$overruleQueryArgs=array(),$forceArgs=FALSE) {
+		$rawValues = FALSE;
+		switch((string)$conf['method'])	{
+			case 'GET':
+				$q_in = t3lib_div::_GET();
+			break;
+			case 'POST':
+				$q_in = t3lib_div::_POST();
+			break;
+			default:
+					// shortcut (no further processing necessary)
+				if (!$conf['exclude'])	return '&'.t3lib_div::getIndpEnv('QUERY_STRING');
+
+				$q_in = array();
+				foreach (explode('&',t3lib_div::getIndpEnv('QUERY_STRING')) as $arg)	{
+					list($k,$v) = explode('=',$arg);
+					$q_in[$k] = $v;
+				}
+				$rawValues = TRUE;
+		}
+
+		if ($conf['exclude'])	{
+			$q_out = array();
+			$exclude = t3lib_div::trimExplode(',', $conf['exclude']);
+			$exclude[] = 'id';	// never repeat id
+			foreach ($q_in as $k => $v)   {
+				if (!in_array($k, $exclude)) {
+					if (isset($overruleQueryArgs[$k]))	{
+						$v = $overruleQueryArgs[$k];
+						unset($overruleQueryArgs[$k]);
+					}
+					$q_out[$k] = $v;
+				}
+			}
+				// any remaining overrule arguments?
+			if ($forceArgs)	{
+				foreach ($overruleQueryArgs as $k => $v)	{
+					$q_out[$k] = $v;
+				}
+			}
+		} else {
+			$q_out = &$q_in;
+		}
+
+		$content = '';
+		foreach ($q_out as $k => $v)	{
+			$content .= '&'.$k.'='.($rawValues ? $v : rawurlencode($v));
+		}
+		return $content;
 	}
 
 

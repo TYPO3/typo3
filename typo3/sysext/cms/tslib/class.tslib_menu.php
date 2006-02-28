@@ -371,12 +371,19 @@ class tslib_menu {
 							} else {
 								$iState = $GLOBALS['TSFE']->sys_language_uid==$sUid ? 'ACT' : 'NO';
 							}
+
+							if ($this->conf['addQueryString'])	{
+								$getVars = $this->parent_cObj->getQueryArguments($this->conf['addQueryString.'],array('L'=>$sUid),true);
+							} else {
+								$getVars = '&L='.$sUid;
+							}
+
 								// Adding menu item:
 							$temp[] = array_merge(
 								array_merge($currentPageWithNoOverlay, $lRecs),
 								array(
 									'ITEM_STATE' => $iState,
-									'_ADD_GETVARS' => '&L='.$sUid,
+									'_ADD_GETVARS' => $getVars,
 									'_SAFE' => TRUE
 								)
 							);

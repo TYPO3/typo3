@@ -1,3 +1,8 @@
+
+2006-02-28  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+
+	* Enhance typolink.addQueryString and add addQueyString to HMENU with special=language (fix bug #2280)
+
 2006-02-28  Sebastian Kurfuerst  <sebastian@garbage-group.de>
 
 	* Fixed bug: admin panel doesn't stay on page (introduced by "Change admin panel to use get instead of post"
