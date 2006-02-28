@@ -1,6 +1,7 @@
 2006-02-28  Sebastian Kurfuerst  <sebastian@garbage-group.de>
 
 	* Fixed bug: admin panel doesn't stay on page (introduced by "Change admin panel to use get instead of post"
+	* Made static templates work again by adjusting	ext_tables_static+adt.sql (the paths to the media directory needed to be adjusted)
 
 2006-02-28  Kasper Skaarhoj  <kasperYYYY@typo3.com>
 
