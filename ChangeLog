@@ -1,3 +1,7 @@
+2006-03-01  Wolfgang Klinger  <wk@plan2.net>
+
+	* Feature #1520: Allow to exclude the current page in HMENU / excludeUidList
+
 2006-03-01  Ingmar Schlecht  <ingmar@typo3.org>
 
 	* Made the update wizard of the install tool work with buttons instead of checkboxes

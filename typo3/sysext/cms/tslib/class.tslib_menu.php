@@ -796,10 +796,7 @@ class tslib_menu {
 			$maxItems = intval($this->mconf['maxItems'] ? $this->mconf['maxItems'] : $this->conf['maxItems']);
 			$begin = tslib_cObj::calc($this->mconf['begin'] ? $this->mconf['begin'] : $this->conf['begin']);
 
-			$banUidArray=array();
-			if (trim($this->conf['excludeUidList']))	{
-				$banUidArray = t3lib_div::intExplode(',', $this->conf['excludeUidList']);
-			}
+			$banUidArray = $this->getBannedUids();
 
 				// Fill in the menuArr with elements that should go into the menu:
 			$this->menuArr = Array();
@@ -1481,6 +1478,23 @@ class tslib_menu {
 	 */
 	function getDoktypeExcludeWhere() {
 		return $this->doktypeExcludeList ? ' AND pages.doktype NOT IN ('.$this->doktypeExcludeList.')' : '';
+	}
+
+	/**
+	 * Returns an array of banned UIDs (from excludeUidList)
+	 *
+	 * @return      array           Array of banned UIDs
+	 * @access private
+	 */
+	function getBannedUids() {
+		$banUidArray = array();
+
+		if (trim($this->conf['excludeUidList']))        {
+			$banUidList = str_replace('current', $GLOBALS['TSFE']->page['uid'], $this->conf['excludeUidList']);
+			$banUidArray = t3lib_div::intExplode(',', $banUidList);
+		}
+
+		return $banUidArray;
 	}
 
 }
@@ -2719,10 +2733,7 @@ class tslib_jsmenu extends tslib_menu {
 		$MP_params = $MP_var ? '&MP='.rawurlencode($MP_var) : '';
 
 			// UIDs to ban:
-		$banUidArray=array();
-		if (trim($this->conf['excludeUidList']))	{
-			$banUidArray = t3lib_div::intExplode(',', $this->conf['excludeUidList']);
-		}
+		$banUidArray = $this->getBannedUids();
 
 			// Initializing variables:
 		$var = $this->JSVarName;
