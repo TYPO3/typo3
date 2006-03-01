@@ -3869,7 +3869,7 @@ From sub-directory:
 		switch ($action)	{
 			case 'checkForUpdate':	// first step - check for updates available
 				$title = '1 - select update-wizards to perform';
-				$tableContent = '';
+				$updateWizardBoxes = '';
 				if (!$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'])	{
 					$content = '<strong>No updates registered!</strong>';
 					break;
@@ -3881,13 +3881,25 @@ From sub-directory:
 					if (method_exists($tmpObj,'checkForUpdate'))	{
 						$explanation = '';
 						if ($tmpObj->checkForUpdate($explanation))	{
-							$tableContent .= '<tr><td valign="top"><input type="checkbox" name="TYPO3_INSTALL[update]['.$identifier.']" id="TYPO3_INSTALL[update]['.$identifier.']" value="1" /></td><td><strong><label for="TYPO3_INSTALL[update]['.$identifier.']">'.$identifier.'</label></strong><br />'.str_replace(chr(10),'<br />',$explanation).'</td></tr><tr><td colspan="2"><hr /></td></tr>';
+							$updateWizardBoxes .= '
+								<div style="border: 1px solid; padding: 5px; margin: 5px;">
+									<input type="checkbox" name="TYPO3_INSTALL[update]['.$identifier.']" id="TYPO3_INSTALL[update]['.$identifier.']" value="1" />
+									<label for="TYPO3_INSTALL[update]['.$identifier.']">'.$identifier.'</label>
+									<p>'.str_replace(chr(10),'<br />',$explanation).'</p>
+								</div>
+							';
 						}
 					}
 				}
-				if ($tableContent)	{
-					$tableContent = '<table>'.$tableContent.'</table>';
-					$content = $this->getUpdateDbFormWrap('getUserInput', $tableContent,'2 - Configure updates!');
+
+				if ($updateWizardBoxes)	{
+					$updateWizardBoxes = '<table><tr><td>'.$updateWizardBoxes.'</td></tr></table>';
+					$content = '
+						<form action="'.$this->action.'#bottom" method="post">
+						<input type="hidden" name="TYPO3_INSTALL[database_type]" value="'.htmlspecialchars('getUserInput').'">
+						'.$updateWizardBoxes.'<br />
+						<input type="submit" value="2 - Configure updates!">
+					';
 				} else {
 					$content = '<strong>No updates to perform!</strong>';
 				}
