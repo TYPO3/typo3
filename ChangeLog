@@ -1,3 +1,7 @@
+2006-03-01  Ingmar Schlecht  <ingmar@typo3.org>
+
+	* Made the update wizard of the install tool work with buttons instead of checkboxes
+
 2006-02-28  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
 	* Enhance typolink.addQueryString and add addQueyString to HMENU with special=language (fix bug #2280)

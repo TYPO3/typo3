@@ -3868,7 +3868,7 @@ From sub-directory:
 		$content = '';
 		switch ($action)	{
 			case 'checkForUpdate':	// first step - check for updates available
-				$title = '1 - select update-wizards to perform';
+				$title = 'Update wizards';
 				$updateWizardBoxes = '';
 				if (!$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'])	{
 					$content = '<strong>No updates registered!</strong>';
@@ -3882,10 +3882,10 @@ From sub-directory:
 						$explanation = '';
 						if ($tmpObj->checkForUpdate($explanation))	{
 							$updateWizardBoxes .= '
-								<div style="border: 1px solid; padding: 5px; margin: 5px;">
-									<input type="checkbox" name="TYPO3_INSTALL[update]['.$identifier.']" id="TYPO3_INSTALL[update]['.$identifier.']" value="1" />
-									<label for="TYPO3_INSTALL[update]['.$identifier.']">'.$identifier.'</label>
+								<div style="border: 1px solid; padding: 10px; margin: 10px; padding-top:0px;">
+									<h3>'.$identifier.'</h3>
 									<p>'.str_replace(chr(10),'<br />',$explanation).'</p>
+									<input type="submit" name="TYPO3_INSTALL[update]['.$identifier.']" id="TYPO3_INSTALL[update]['.$identifier.']" value="'.$identifier.'" />
 								</div>
 							';
 						}
@@ -3896,9 +3896,9 @@ From sub-directory:
 					$updateWizardBoxes = '<table><tr><td>'.$updateWizardBoxes.'</td></tr></table>';
 					$content = '
 						<form action="'.$this->action.'#bottom" method="post">
-						<input type="hidden" name="TYPO3_INSTALL[database_type]" value="'.htmlspecialchars('getUserInput').'">
-						'.$updateWizardBoxes.'<br />
-						<input type="submit" value="2 - Configure updates!">
+							<input type="hidden" name="TYPO3_INSTALL[database_type]" value="'.htmlspecialchars('getUserInput').'">
+							'.$updateWizardBoxes.'<br />
+						</form>
 					';
 				} else {
 					$content = '<strong>No updates to perform!</strong>';
