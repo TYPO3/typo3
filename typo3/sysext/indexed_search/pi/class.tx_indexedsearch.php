@@ -288,7 +288,7 @@ class tx_indexedsearch extends tslib_pibase {
 				'100' => '100',
 			)
 		);
-		
+
 			// Free Index Uid:
 		if ($this->conf['search.']['defaultFreeIndexUidList'])	{
 			$uidList = t3lib_div::intExplode(',', $this->conf['search.']['defaultFreeIndexUidList']);
@@ -487,7 +487,7 @@ class tx_indexedsearch extends tslib_pibase {
 	 * @return	string		HTML for result display.
 	 */
 	function doSearch($sWArr)	{
-		
+
 			// Find free index uid:
 		$freeIndexUid = $this->piVars['freeIndexUid'];
 		if ($freeIndexUid==-2)	{
@@ -541,7 +541,7 @@ class tx_indexedsearch extends tslib_pibase {
 	 * Get search result rows / data from database. Returned as data in array.
 	 *
 	 * @param	array		Search word array
-	 * @param	integer		Pointer to which indexing configuration you want to search in. -1 means no filtering. 0 means only regular indexed content.	
+	 * @param	integer		Pointer to which indexing configuration you want to search in. -1 means no filtering. 0 means only regular indexed content.
 	 * @return	array		False if no result, otherwise an array with keys for first row, result rows and total number of results found.
 	 */
 	function getResultRows($sWArr,$freeIndexUid=-1)	{
@@ -762,13 +762,13 @@ class tx_indexedsearch extends tslib_pibase {
 						$content.= $this->printResultRow($row);
 					}
 				break;
-			}			
+			}
 		} else {
 			foreach($resultRows as $row)	{
 				$content.= $this->printResultRow($row);
 			}
 		}
-		
+
 		return '<div'.$this->pi_classParam('res').'>'.$content.'</div>';
 	}
 
@@ -993,11 +993,11 @@ class tx_indexedsearch extends tslib_pibase {
 			return 'AND IP.sys_language_uid='.intval($this->piVars['lang']);
 		}
 	}
-	
+
 	function freeIndexUidWhere($freeIndexUid)	{
-		
+
 		if ($freeIndexUid>=0)	{
-			
+
 				// First, look if the freeIndexUid is a meta configuration:
 			list($indexCfgRec) = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('indexcfgs','index_config','type=5 AND uid='.intval($freeIndexUid).$this->cObj->enableFields('index_config'));			
 			if (is_array($indexCfgRec))	{
@@ -1014,20 +1014,20 @@ class tx_indexedsearch extends tslib_pibase {
 							$indexCfgRecordsFromPid = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid','index_config','pid='.intval($uid).$this->cObj->enableFields('index_config'));
 							foreach($indexCfgRecordsFromPid as $idxRec)	{
 								$list[] = $idxRec['uid'];
-							}			
+							}
 						break;
-					}	
+					}
 				}
-				
+
 				$list = array_unique($list);
 			} else {
 				$list = array(intval($freeIndexUid));
 			}
-			
+
 			return ' AND IP.freeIndexUid IN ('.implode(',',$list).')';
 		}
 	}
-	
+
 	/**
 	 * Execute final query, based on phash integer list. The main point is sorting the result in the right order.
 	 *
@@ -1040,7 +1040,7 @@ class tx_indexedsearch extends tslib_pibase {
 			// Setting up methods of filtering results based on page types, access, etc.
 		$page_join = '';
 		$page_where = '';
-		
+
 			// Indexing configuration clause:
 		$freeIndexUidClause = $this->freeIndexUidWhere($freeIndexUid);
 

@@ -66,7 +66,7 @@ PRE   {
 
 /* Links in general */
 A {
-	color : black;
+	color: black;
 	text-decoration: underline;
 }
 A:hover {color: #254D7B}
@@ -188,7 +188,7 @@ TABLE#typo3-tabmenu TD.tab:hover { background: #f6eab7; }
 
 /* Dynamic Tab menu (template.php) */
 DIV.typo3-dyntabmenu-tabs { margin-top: 5px; padding-right: 20px; }
-DIV.typo3-dyntabmenu-divs P.c-descr { font-style : italic; padding: 3px 10px 5px 10px; background: #e7dba8;  }
+DIV.typo3-dyntabmenu-divs P.c-descr { font-style: italic; padding: 3px 10px 5px 10px; background: #e7dba8;  }
 TABLE.typo3-dyntabmenu TR { height:1.5em; }
 TABLE.typo3-dyntabmenu TD { padding-left:5px; padding-right:5px; }
 TABLE.typo3-dyntabmenu TD.tabact { color: #000; border: solid black 1px; background: #e7dba8; }
@@ -224,12 +224,12 @@ TABLE#typo3-about-modules TR.c-mainitem TD IMG { vertical-align: middle;  paddin
 BODY#typo3-alt-menu-php { margin: 2px 0px 0px 2px; }
 BODY#typo3-alt-menu-php A { text-decoration: none; }
 TABLE#typo3-vmenu TR.c-mainitem TD { background-color: #D9D9D8; padding: 1px 1px 1px 1px; border: #9BA1A8 1px solid; vertical-align: middle; width: 100px; cursor:pointer; }
-TABLE#typo3-vmenu TR.c-mainitem TD SPAN.c-label A { text-decoration : underline; }
+TABLE#typo3-vmenu TR.c-mainitem TD SPAN.c-label A { text-decoration: underline; }
 TABLE#typo3-vmenu TR.c-mainitem TD IMG { vertical-align: middle; margin-right: 2px;}
 TABLE#typo3-vmenu TR.c-mainitem TD SPAN.c-label { position: relative; top: 1px; }
 TABLE#typo3-vmenu TR.c-mainitem TD SPAN.c-iconCollapse { position:absolute; left:90px; }
 TABLE#typo3-vmenu TR.c-mainitem-HL TD { background-color: #AAAAAA; padding: 1px 1px 1px 1px; border: #9BA1A8 1px solid; vertical-align: middle;}
-TABLE#typo3-vmenu TR.c-mainitem-HL TD SPAN.c-label A { text-decoration : underline; }
+TABLE#typo3-vmenu TR.c-mainitem-HL TD SPAN.c-label A { text-decoration: underline; }
 TABLE#typo3-vmenu TR.c-mainitem-HL TD IMG { vertical-align: middle; margin-right: 2px;}
 TABLE#typo3-vmenu TR.c-mainitem-HL TD SPAN.c-label { position: relative; top: 1px;}
 TABLE#typo3-vmenu TR.c-endrow TD {height: 5px;}
@@ -250,13 +250,13 @@ TABLE#typo3-tree TR TD IMG { vertical-align: middle; }
 TABLE#typo3-tree TR TD IMG.c-recIcon { margin-right: 1px;}
 TABLE#typo3-tree { margin-bottom: 10px; width: 95%; }
 P.c-refresh IMG { vertical-align: middle;  margin-right: 7px; }
-BODY#typo3-alt-db-navframe-php DIV.c-notice { border: 1px solid black; padding: 5px 5px 5px 5px; margin-top: 5px; margin-bottom: 10px; width : 95%; }
+BODY#typo3-alt-db-navframe-php DIV.c-notice { border: 1px solid black; padding: 5px 5px 5px 5px; margin-top: 5px; margin-bottom: 10px; width: 95%; }
 
 /* TCEforms */
 TABLE.typo3-TCEforms SPAN.typo3-TCEforms-recHeader { font-weight: bold; color: #333366; }
 TABLE.typo3-TCEforms SPAN.typo3-TCEforms-newToken { font-weight: bold; color: #990000; }
 TABLE.typo3-TCEforms SPAN.typo3-TCEforms-helpText { color: #666666; }
-TABLE.typo3-TCEforms OPTION.c-divider { font-style: italic; color: #666666; background-color: #eeeeee; text-transform : uppercase; margin-top: 10px; border-bottom: 1px solid #666666; }
+TABLE.typo3-TCEforms OPTION.c-divider { font-style: italic; color: #666666; background-color: #eeeeee; text-transform: uppercase; margin-top: 10px; border-bottom: 1px solid #666666; }
 TABLE.typo3-TCEforms TABLE.typo3-TCEforms-select-checkbox TR.c-selectedItem {background-color: #c5c1b5; }
 TABLE.typo3-TCEforms TABLE.typo3-TCEforms-select-checkbox TR.c-invalidItem {background-color: #ff6600; }
 TABLE.typo3-TCEforms TABLE.typo3-TCEforms-select-checkbox TR TD {border-bottom: 1px #999999 dashed; padding: 1px 3px 1px 3px; }
@@ -283,8 +283,8 @@ TABLE#typo3-msgBox { margin-top: 10px; margin-bottom: 10px;}
 TABLE#typo3-msgBox TR TD { padding: 10px 50px 10px 50px; }
 
 /* RTE select image */
-BODY#ext-rte-app-rte-select-image-php A { text-decoration : none; }
-BODY#ext-rte-app-rte-select-image-php TABLE TR TD TABLE TR.bgColor4 TD A { text-decoration : underline; }
+BODY#ext-rte-app-rte-select-image-php A { text-decoration: none; }
+BODY#ext-rte-app-rte-select-image-php TABLE TR TD TABLE TR.bgColor4 TD A { text-decoration: underline; }
 
 /* Palette display for TCEforms (top frame, alt_palette.php) */
 BODY#typo3-alt-palette-php { background-image: url(gfx/alt_topmenu_back_full.gif); margin-top: 8px; margin-left: 6px; }
@@ -470,7 +470,7 @@ DIV.workspace-info {padding: 0px 2px 0px 2px; margin: 0px 0px 4px 0px; border: 1
 .ver-branch { background-color: #ffcccc; }
 .ver-branchpoint { background-color: #ff9999; }
 .ver-versions { background-color: #ffffaa; }
-TABLE.workspace-overview TD { vertical-align : top; }
+TABLE.workspace-overview TD { vertical-align: top; }
 TABLE.ver-subtree A { text-decoration: none; }
 TABLE.ver-subtree TR TD.iconTitle { white-space: nowrap; }
 TABLE.ver-subtree TR TD.diffCell { white-space: normal; }
@@ -482,7 +482,7 @@ TABLE.ver-verElement { width: 100%;}
 TABLE.ver-subtree TR.typo3-ver TD.iconTitle, TABLE.ver-subtree TR.typo3-ver TD.diffCell, TABLE.ver-subtree TR.typo3-ver TD.cmdCell {background-color: #c5c1b5; }
 TABLE.ver-subtree TR.typo3-ver-hl TD.iconTitle, TABLE.ver-subtree TR.typo3-ver-hl TD.diffCell, TABLE.ver-subtree TR.typo3-ver-hl TD.cmdCell { background-color: #999999; }
 TABLE.ver-subtree TR.typo3-ver-new TD { color: #666666; background-color: #eeeeee; }
-TABLE.ver-subtree TR.typo3-ver-noComp TD { font-style : italic; }
+TABLE.ver-subtree TR.typo3-ver-noComp TD { font-style: italic; }
 
 .ver-wl-table { border: 1px solid black; }
 .ver-wl-details-table { border: 1px solid #D9D5C9; }
@@ -518,7 +518,7 @@ IMG.absmiddle { vertical-align: middle; }
 TEXTAREA.fixed-font { font-family: "Lucida Sans Typewriter", "Bitstream Vera Sans Mono", monospace; font-size: 11px; }
 
 .smallCheckboxes { width: 12px; height: 12px; margin: 0px; }
-.uppercase { text-transform : uppercase; }
+.uppercase { text-transform: uppercase; }
 .tableheader TD { font-weight: bold; padding-left: 2px; padding-right: 2px; }
 .lrPadding TD { padding-left: 2px; padding-right: 2px; }
 
@@ -551,7 +551,7 @@ IMG.typo3-csh-icon { vertical-align: middle; cursor: help; }
  * TypoScript Highlighting:
  *********************************************/
 
-PRE.ts-hl {font-size: 11px; font-family : "Lucida Sans Typewriter", "Bitsream Vera Sans Mono", monospace;}
+PRE.ts-hl {font-size: 11px; font-family: "Lucida Sans Typewriter", "Bitsream Vera Sans Mono", monospace;}
 PRE.ts-hl .ts-prespace {}
 PRE.ts-hl .ts-objstr_postspace {}
 PRE.ts-hl .ts-operator_postspace {}

@@ -40,7 +40,7 @@ plugin.tx_indexedsearch {
 	search {
 		rootPidList =
 		page_links = 10
-		defaultFreeIndexUidList = 
+		defaultFreeIndexUidList =
 	}
 
 	result_link_target =
