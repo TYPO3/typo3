@@ -1,3 +1,7 @@
+2006-03-02  Bernhard Kraft  <kraftb@kraftb.at>
+
+	* Fixed bug #2716: Negative age wasn't generated correctly in FE
+
 2006-03-01  Wolfgang Klinger  <wk@plan2.net>
 
 	* Feature #1520: Allow to exclude the current page in HMENU / excludeUidList

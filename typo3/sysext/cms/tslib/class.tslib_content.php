@@ -5781,11 +5781,12 @@ class tslib_cObj {
 		}
 
 		$labelArr = explode('|',$labels);
-		if ($seconds<3600)	{
+		$absSeconds = abs($seconds);
+		if ($absSeconds<3600)	{
 			$seconds = round ($seconds/60).$labelArr[0];
-		} elseif ($seconds<24*3600)	{
+		} elseif ($absSeconds<24*3600)	{
 			$seconds = round ($seconds/3600).$labelArr[1];
-		} elseif ($seconds<365*24*3600)	{
+		} elseif ($absSeconds<365*24*3600)	{
 			$seconds = round ($seconds/(24*3600)).$labelArr[2];
 		} else {
 			$seconds = round ($seconds/(365*24*3600)).$labelArr[3];
