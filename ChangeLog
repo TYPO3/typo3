@@ -1,6 +1,11 @@
 2006-03-03  Michael Stucki  <michael@typo3.org>
 
 	* Added new feature: Merged Advanced BE Search form extension (Tools -> DB check). Written by Joey Hasenau - great work!
+	* Added support to modify TypoScript values inside the TS parser using "lib.myVar := function(value)" - see "doc_core_ts" for more information.
+	* Fixed bug #1364: t3lib_div::getURL() uses CURL only for HTTP protocol
+	* Fixed bug #1153: tslib_cObj::imageLinkWrap() not passing information if image.imageLinkWrap.JSwindow.altUrl is set. Thanks to Peter Russ.
+	* Fixed bug #2347: Wrong labels displayed
+	* Fixed bug #1391: TYPO3 can't display a single "0" in a table cell
 
 2006-03-03  Rene Fritz  <r.fritz@colorcube.de>
 

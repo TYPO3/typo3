@@ -59,7 +59,7 @@
  *
  *              SECTION: Indexing; external URL
  *  826:     function indexExternalUrl($externalUrl)
- *  857:     function getUrlHeaders($url, $timeout = 2)
+ *  857:     function getUrlHeaders($url)
  *
  *              SECTION: Indexing; external files (PDF, DOC, etc)
  *  917:     function indexRegularDocument($file, $force=FALSE, $contentTmpFile='', $altExtension='')
@@ -895,32 +895,18 @@ class tx_indexedsearch_indexer {
 	 * @param	integer		Timeout (seconds?)
 	 * @return	mixed		If no answer, returns false. Otherwise an array where HTTP headers are keys
 	 */
-	function getUrlHeaders($url, $timeout = 2)	{
-		$url = parse_url($url);
+	function getUrlHeaders($url)	{
+		$content = t3lib_div::getURL($url,2);	// Try to get the headers only
 
-		if(!in_array($url['scheme'],array('','http')))	return FALSE;
-
-		$fp = fsockopen ($url['host'], ($url['port'] > 0 ? $url['port'] : 80), $errno, $errstr, $timeout);
-		if (!$fp)	{
-			return FALSE;
-		} else {
-			$msg = "GET ".$url['path'].($url['query'] ? '?'.$url['query'] : '')." HTTP/1.0\r\nHost: ".$url['host']."\r\n\r\n";
-			fputs ($fp, $msg);
-			$d = '';
-			while (!feof($fp)) {
-				$line = fgets ($fp,2048);
-
-				$d.=$line;
-				if (!strlen(trim($line)))	{
-					break;
-				}
-			}
-			fclose ($fp);
-
+		if (strlen($content))	{
 				// Compile headers:
-			$headers = t3lib_div::trimExplode(chr(10),$d,1);
+			$headers = t3lib_div::trimExplode(chr(10),$content,1);
 			$retVal = array();
 			foreach($headers as $line)	{
+				if (!strlen(trim($line)))	{
+					break;	// Stop at the first empty line (= end of header)
+				}
+
 				list($headKey, $headValue) = explode(':', $line, 2);
 				$retVal[$headKey] = $headValue;
 			}

@@ -124,7 +124,7 @@ lib.parseFunc_RTE {
 		encapsTagList = div,p,pre,h1,h2,h3,h4,h5,h6
 		remapTag.DIV = P
 		nonWrappedTag = P
-		innerStdWrap_all.ifEmpty = &nbsp;
+		innerStdWrap_all.ifBlank = &nbsp;
 		addAttributes.P.class = bodytext
 		addAttributes.P.class.setOnly=blank
 	}

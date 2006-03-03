@@ -2089,17 +2089,20 @@ class t3lib_div {
 	 * Usage: 83
 	 *
 	 * @param	string		Filepath/URL to read
+	 * @param	int		Whether the HTTP header should be fetched or not. 0=disable, 1=fetch header+content, 2=fetch header only (will be ignored when using CURL)
 	 * @return	string		The content from the resource given as input.
 	 */
-	function getURL($url)	{
+	function getURL($url, $includeHeader=0)	{
 		$content = '';
 
 			// (Proxy support implemented by Arco <arco@appeltaart.mine.nu>)
 		if ((substr($url,0,7)=='http://') && ($GLOBALS['TYPO3_CONF_VARS']['SYS']['curlUse']=='1'))	{
-			//external URL without error checking.
+			// External URL without error checking.
 			$ch = curl_init();
+			if (!$ch)	{ return false; }
+
 			curl_setopt ($ch,CURLOPT_URL, $url);
-			curl_setopt ($ch,CURLOPT_HEADER, 0);
+			curl_setopt ($ch,CURLOPT_HEADER, $includeHeader?1:0);
 			curl_setopt ($ch,CURLOPT_RETURNTRANSFER, 1);
 
 			if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyServer']) {
@@ -2115,18 +2118,37 @@ class t3lib_div {
 			}
 			$content=curl_exec ($ch);
 			curl_close ($ch);
-			return $content;
+
+		} elseif ($includeHeader)	{
+			$parsedURL = parse_url($url);
+			if (!t3lib_div::inList('ftp,ftps,http,https,gopher,telnet', $parsedURL['scheme']))	{ return false; }
+
+			$fp = fsockopen ($parsedURL['host'], ($parsedURL['port']>0 ? $parsedURL['port'] : 80), $errno, $errstr, $timeout=2);
+			if (!$fp)	{ return false;	}
+
+			$msg = 'GET '.$parsedURL['path'].($parsedURL['query'] ? '?'.$parsedURL['query'] : '')." HTTP/1.0\r\nHost: ".$parsedURL['host']."\r\n\r\n";
+			fputs ($fp, $msg);
+			while (!feof($fp))	{
+				$line = fgets ($fp,2048);
+				$content.=$line;
+				if ($includeHeader==2 && !strlen(trim($line)))	{ break; }	// Stop at the first empty line (= end of header)
+			}
+			fclose ($fp);
+
 		} elseif (function_exists('file_get_contents'))	{
-			return file_get_contents($url);
+			$content = file_get_contents($url);
+
 		} elseif ($fd = fopen($url,'rb'))    {
 			while (!feof($fd))	{
 				$content.=fread($fd, 4096);
 			}
 			fclose($fd);
-			return $content;
+
+		} else {
+			return false;
 		}
 
-		return false;
+		return $content;
 	}
 
 	/**

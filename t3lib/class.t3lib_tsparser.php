@@ -183,6 +183,8 @@ class t3lib_TSparser {
 	 * @return	string		Returns the string of the condition found, the exit signal or possible nothing (if it completed parsing with no interruptions)
 	 */
 	function parseSub(&$setup)	{
+		global $TYPO3_CONF_VARS;
+
 		while (isset($this->raw[$this->rawP]))	{
 			$line = ltrim($this->raw[$this->rawP]);
 			$lineP = $this->rawP;
@@ -216,7 +218,7 @@ class t3lib_TSparser {
 								$setup[$this->multiLineObject.'.ln..'][]=($this->lineNumberOffset+$this->rawP-1);
 							}
 						}
-					} else{
+					} else {
 						if ($this->syntaxHighLight)	$this->regHighLight("value",$lineP);
 						$this->multiLineValue[]=$this->raw[($this->rawP-1)];
 					}
@@ -230,12 +232,12 @@ class t3lib_TSparser {
 						$this->inBrace=0;
 						return $line;
 					} elseif (strcspn($line,'}#/')!=0)	{	// If not brace-end or comment
-						$varL = strcspn($line,' {=<>(');		// Find object name string until we meet an operator	VER2: Added '>'!!
+						$varL = strcspn($line,' {=<>:(');	// Find object name string until we meet an operator
 						$objStrName=trim(substr($line,0,$varL));
 						if ($this->syntaxHighLight)	$this->regHighLight("objstr",$lineP,strlen(substr($line,$varL)));
 						if ($objStrName)	{
 							$r = array();
-							if ($this->strict && eregi('[^[:alnum:]_\.-]',$objStrName,$r))	{
+							if ($this->strict && preg_match('/[^[:alnum:]_\.-]/i',$objStrName,$r))	{
 								$this->error('Line '.($this->lineNumberOffset+$this->rawP-1).': Object Name String, "'.htmlspecialchars($objStrName).'" contains invalid character "'.$r[0].'". Must be alphanumeric or one of: "_-."');
 							} else {
 								$line = ltrim(substr($line,$varL));
@@ -246,9 +248,50 @@ class t3lib_TSparser {
 										$this->regHighLight("operator_postspace", $lineP, strlen(ltrim(substr($line,1))));
 									}
 								}
+
+									// Checking for special TSparser properties (to change TS values at parsetime)
+								if (preg_match('/^:=/', $line))	{
+									$operator = trim(preg_replace('/^:=([^\(]+)\((.+)\).*/', '$1', $line));
+									$operationValue = preg_replace('/^:=([^\(]+)\((.+)\).*/', '$2', $line);	// Value to be added/removed from $currentValue
+									list ($currentValue) = $this->getVal($objStrName,$setup);
+
+									switch ($operator)	{
+										case 'addString':
+											$newValue = $currentValue . trim($operationValue);
+										break;
+										case 'removeString':
+											$newValue = str_replace(trim($operationValue), '', $currentValue);
+										break;
+										case 'addToList':
+											$newValue = (strcmp('',$currentValue) ? $currentValue.',' : '') . trim($operationValue);
+										break;
+										case 'removeFromList':
+											$existingElements = t3lib_div::trimExplode(',',$currentValue);
+											$removeElements = t3lib_div::trimExplode(',',$operationValue);
+											if (count($removeElements))	{
+												$newValue = implode(',', array_diff($existingElements, $removeElements));
+											}
+										break;
+										default:
+											if (isset($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tsparser.php']['preParseFunc'][$operator]))	{
+												$hookMethod = $TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tsparser.php']['preParseFunc'][$operator];
+												$params = array('currentValue'=>$currentValue, 'operationValue'=>$operationValue);
+												$fakeThis = FALSE;
+												$newValue = t3lib_div::callUserFunction($hookMethod,$params,$fakeThis);
+											} else {
+												t3lib_div::sysLog('Missing operator function for '.$operator.' on Typoscript line '.$lineP,'Core',2);
+											}
+									}
+
+									if (isset($newValue))	{
+										$line = '= '.$newValue;
+									}
+								}
+
 								switch(substr($line,0,1))	{
 									case '=':
-										if ($this->syntaxHighLight)	$this->regHighLight("value", $lineP, strlen(ltrim(substr($line,1)))-strlen(trim(substr($line,1))));
+										if ($this->syntaxHighLight)	$this->regHighLight('value', $lineP, strlen(ltrim(substr($line,1)))-strlen(trim(substr($line,1))));
+
 										if (strstr($objStrName,'.'))	{
 											$value = Array();
 											$value[0] = trim(substr($line,1));
@@ -523,7 +566,7 @@ class t3lib_TSparser {
 
 	/**
 	 * Syntax highlight a TypoScript text
-	 * Will parse the content. Remember, the internal setup array may contain INvalid parsed content since conditions are ignored!
+	 * Will parse the content. Remember, the internal setup array may contain invalid parsed content since conditions are ignored!
 	 *
 	 * @param	string		The TypoScript text
 	 * @param	mixed		If blank, linenumbers are NOT printed. If array then the first key is the linenumber offset to add to the internal counter.

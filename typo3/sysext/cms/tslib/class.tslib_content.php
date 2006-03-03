@@ -2668,7 +2668,7 @@ class tslib_cObj {
 				if ($conf['JSwindow.']['altUrl'] || $conf['JSwindow.']['altUrl.'])	{
 					$altUrl = $this->stdWrap($conf['JSwindow.']['altUrl'], $conf['JSwindow.']['altUrl.']);
 					if ($altUrl)	{
-						$url=$altUrl;
+						$url=$altUrl.'?file='.rawurlencode($imageFile).$params;
 					}
 				}
 
@@ -3153,8 +3153,12 @@ class tslib_cObj {
 				$preIfEmptyListNumber = isset($conf['preIfEmptyListNum.']['stdWrap.'])  ?  $this->stdWrap($conf['preIfEmptyListNum'], $conf['preIfEmptyListNum.']['stdWrap.'])  :  $conf['preIfEmptyListNum'];
 				$content=$this->listNum($content,$preIfEmptyListNumber,$conf['preIfEmptyListNum.']['splitChar']);
 			}
-			if (!trim($content) && ($conf['ifEmpty'] || $conf['ifEmpty.'])){ $content = $this->stdWrap($conf['ifEmpty'], $conf['ifEmpty.']);}
-
+			if (!trim($content) && ($conf['ifEmpty'] || $conf['ifEmpty.']))	{
+				$content = $this->stdWrap($conf['ifEmpty'], $conf['ifEmpty.']);
+			}
+			if (!strlen(trim($content)) && ($conf['ifBlank'] || $conf['ifBlank.']))	{
+				$content = $this->stdWrap($conf['ifBlank'], $conf['ifBlank.']);
+			}
 
 				// values...
 			if (isset($conf['listNum']) || isset($conf['listNum.']['stdWrap.'])) {
