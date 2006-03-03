@@ -746,9 +746,11 @@ class t3lib_TCEforms	{
 				$PA['fieldConf']['config']['form_type']!='passthrough' &&
 				($this->RTEenabled || !$PA['fieldConf']['config']['showIfRTE']) &&
 				(!$PA['fieldConf']['displayCond'] || $this->isDisplayCondition($PA['fieldConf']['displayCond'],$row)) &&
-				(!$TCA[$table]['ctrl']['languageField'] || strcmp($PA['fieldConf']['l10n_mode'],'exclude') || $row[$TCA[$table]['ctrl']['languageField']]<=0) &&
+				(!$TCA[$table]['ctrl']['languageField'] || $PA['fieldConf']['l10n_display'] || strcmp($PA['fieldConf']['l10n_mode'],'exclude') || $row[$TCA[$table]['ctrl']['languageField']]<=0) &&
 				(!$TCA[$table]['ctrl']['languageField'] || !$this->localizationMode || $this->localizationMode===$PA['fieldConf']['l10n_cat'])
 			)	{
+
+
 
 				// Fetching the TSconfig for the current table/field. This includes the $row which means that
 			$PA['fieldTSConfig'] = $this->setTSconfig($table,$row,$field);
@@ -760,6 +762,12 @@ class t3lib_TCEforms	{
 				$PA['itemFormElName']=$this->prependFormFieldNames.'['.$table.']['.$row['uid'].']['.$field.']';		// Form field name
 				$PA['itemFormElName_file']=$this->prependFormFieldNames_file.'['.$table.']['.$row['uid'].']['.$field.']';	// Form field name, in case of file uploads
 				$PA['itemFormElValue']=$row[$field];		// The value to show in the form field.
+
+					// set field to read-only if configured for translated records to show default language content as readonly
+				if ($PA['fieldConf']['l10n_display'] AND t3lib_div::inList($PA['fieldConf']['l10n_display'], 'defaultAsReadonly') AND $row[$TCA[$table]['ctrl']['languageField']]) {
+					$PA['fieldConf']['config']['readOnly'] =  true;
+					$PA['itemFormElValue'] = $this->defaultLanguageData[$table.':'.$row['uid']][$field];
+				}
 
 					// Create a JavaScript code line which will ask the user to save/update the form due to changing the element. This is used for eg. "type" fields and others configured with "requestUpdate"
 				if (
@@ -803,10 +811,18 @@ class t3lib_TCEforms	{
 						// Based on the type of the item, call a render function:
 					$item = $this->getSingleField_SW($table,$field,$row,$PA);
 
-						// Add language + diff
-					$item = $this->renderDefaultLanguageContent($table,$field,$row,$item);
-					$item = $this->renderDefaultLanguageDiff($table,$field,$row,$item);
 
+						// Add language + diff
+					if ($PA['fieldConf']['l10n_display'] && (t3lib_div::inList($PA['fieldConf']['l10n_display'], 'hideDiff') || t3lib_div::inList($PA['fieldConf']['l10n_display'], 'defaultAsReadonly'))) {
+						$renderLanguageDiff = false;
+					} else {
+						$renderLanguageDiff = true;
+					}
+
+					if ($renderLanguageDiff) {
+						$item = $this->renderDefaultLanguageContent($table,$field,$row,$item);
+						$item = $this->renderDefaultLanguageDiff($table,$field,$row,$item);
+					}
 						// If the record has been saved and the "linkTitleToSelf" is set, we make the field name into a link, which will load ONLY this field in alt_doc.php
 					$PA['label'] = t3lib_div::deHSCentities(htmlspecialchars($PA['label']));
 					if (t3lib_div::testInt($row['uid']) && $PA['fieldTSConfig']['linkTitleToSelf'])	{
@@ -816,7 +832,7 @@ class t3lib_TCEforms	{
 					}
 
 						// Create output value:
-					if ($PA['fieldConf']['config']['noTableWrapping'])	{
+					if ($PA['fieldConf']['config']['form_type']=='user' && $PA['fieldConf']['config']['noTableWrapping'])	{
 						$out = $item;
 					} elseif ($PA['palette'])	{
 							// Array:
@@ -866,61 +882,37 @@ class t3lib_TCEforms	{
 	function getSingleField_SW($table,$field,$row,&$PA)	{
 		$PA['fieldConf']['config']['form_type'] = $PA['fieldConf']['config']['form_type'] ? $PA['fieldConf']['config']['form_type'] : $PA['fieldConf']['config']['type'];	// Using "form_type" locally in this script
 
-		$fieldRendered = false;
-
-			// render type by user func if registered for type except it is already type "user"
-		if ($PA['fieldConf']['config']['form_type']!='user') {
-			if (is_array ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tceforms.php']['fieldRendering'][$PA['fieldConf']['config']['form_type']])) {
-				foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tceforms.php']['fieldRendering'][$PA['fieldConf']['config']['form_type']] as $classRef) {
-					$fieldRenderObj = t3lib_div::getUserObj($classRef);
-					if(is_object($fieldRenderObj) && method_exists($fieldRenderObj, 'isValid') && method_exists($fieldRenderObj, 'getSingleField'))	{
-						if ($fieldRenderObj->isValid($table, $field, $row, $PA, $this)) {
-
-							$item = $fieldRenderObj->getSingleField($table, $field, $row, $PA, $this);
-
-							$fieldRendered = true;
-							break;
-						}
-					}
-				}
-			}
-		}
-
-			// if type was not rendered use default rendering functions
-		if(!$fieldRendered) {
-
-			switch($PA['fieldConf']['config']['form_type'])	{
-				case 'input':
-					$item = $this->getSingleField_typeInput($table,$field,$row,$PA);
-				break;
-				case 'text':
-					$item = $this->getSingleField_typeText($table,$field,$row,$PA);
-				break;
-				case 'check':
-					$item = $this->getSingleField_typeCheck($table,$field,$row,$PA);
-				break;
-				case 'radio':
-					$item = $this->getSingleField_typeRadio($table,$field,$row,$PA);
-				break;
-				case 'select':
-					$item = $this->getSingleField_typeSelect($table,$field,$row,$PA);
-				break;
-				case 'group':
-					$item = $this->getSingleField_typeGroup($table,$field,$row,$PA);
-				break;
-				case 'none':
-					$item = $this->getSingleField_typeNone($table,$field,$row,$PA);
-				break;
-				case 'user':
-					$item = $this->getSingleField_typeUser($table,$field,$row,$PA);
-				break;
-				case 'flex':
-					$item = $this->getSingleField_typeFlex($table,$field,$row,$PA);
-				break;
-				default:
-					$item = $this->getSingleField_typeUnknown($table,$field,$row,$PA);
-				break;
-			}
+		switch($PA['fieldConf']['config']['form_type'])	{
+			case 'input':
+				$item = $this->getSingleField_typeInput($table,$field,$row,$PA);
+			break;
+			case 'text':
+				$item = $this->getSingleField_typeText($table,$field,$row,$PA);
+			break;
+			case 'check':
+				$item = $this->getSingleField_typeCheck($table,$field,$row,$PA);
+			break;
+			case 'radio':
+				$item = $this->getSingleField_typeRadio($table,$field,$row,$PA);
+			break;
+			case 'select':
+				$item = $this->getSingleField_typeSelect($table,$field,$row,$PA);
+			break;
+			case 'group':
+				$item = $this->getSingleField_typeGroup($table,$field,$row,$PA);
+			break;
+			case 'none':
+				$item = $this->getSingleField_typeNone($table,$field,$row,$PA);
+			break;
+			case 'user':
+				$item = $this->getSingleField_typeUser($table,$field,$row,$PA);
+			break;
+			case 'flex':
+				$item = $this->getSingleField_typeFlex($table,$field,$row,$PA);
+			break;
+			default:
+				$item = $this->getSingleField_typeUnknown($table,$field,$row,$PA);
+			break;
 		}
 
 		return $item;
@@ -2792,6 +2784,34 @@ class t3lib_TCEforms	{
 				$this->defaultLanguageData_diff[$table.':'.$rec['uid']] = unserialize($rec[$TCA[$table]['ctrl']['transOrigDiffSourceField']]);
 			}
 		}
+	}
+
+	/**
+	 * Creates language-overlay for a field value
+	 * This means the requested field value will be overridden with the data from the default language.
+	 * Can be used to render read only fields for example.
+	 *
+	 * @param	string		Table name of the record being edited
+	 * @param	string		Field name represented by $item
+	 * @param	array		Record array of the record being edited in current language
+	 * @param	array		Content of $PA['fieldConf']
+	 * @return	string		Unprocessed field value merged with default language data if needed
+	 */
+	function getLanguageOverlayRawValue($table, $row, $field, $fieldConf)	{
+		global $TCA;
+
+		$value = $row[$field];
+
+		if (is_array($this->defaultLanguageData[$table.':'.$row['uid']]))	{
+
+			if ($fieldConf['l10n_mode']=='exclude'
+					|| ($fieldConf['l10n_mode']=='mergeIfNotBlank' && strcmp(trim($this->defaultLanguageData[$table.':'.$row['uid']][$field]),'')))	{
+				$value = $this->defaultLanguageData[$table.':'.$row['uid']][$field];
+			}
+
+		}
+
+		return $value;
 	}
 
 	/**
