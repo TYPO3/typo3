@@ -30,6 +30,7 @@
  * This module lets you check if all pages and the records relate properly to each other
  *
  * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
+ * @coauthor	Jo Hasenau <info@cybercraft.de>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
@@ -158,6 +159,10 @@ class SC_mod_tools_dbint_index {
 			),
 
 			'search_query_smallparts' => '',
+			'search_result_labels' => '',
+			'labels_noprefix' => '',
+			'options_sortlabel' => '',
+			'show_deleted' => '',
 
 			'queryConfig' => '',	// Current query
 			'queryTable' => '',	// Current table
@@ -182,12 +187,34 @@ class SC_mod_tools_dbint_index {
 
 			'sword' => ''
 		);
-			// CLEANSE SETTINGS
+			// CLEAN SETTINGS
+		$OLD_MOD_SETTINGS = t3lib_BEfunc::getModuleData($this->MOD_MENU,'', $this->MCONF['name'], 'ses');
 		$this->MOD_SETTINGS = t3lib_BEfunc::getModuleData($this->MOD_MENU, t3lib_div::_GP('SET'), $this->MCONF['name'], 'ses');
 
 		if (t3lib_div::_GP('queryConfig'))	{
 			$qA = t3lib_div::_GP('queryConfig');
 			$this->MOD_SETTINGS = t3lib_BEfunc::getModuleData($this->MOD_MENU, array('queryConfig'=>serialize($qA)), $this->MCONF['name'], 'ses');
+		}
+		$addConditionCheck = t3lib_div::_GP('qG_ins');
+		foreach ($OLD_MOD_SETTINGS as $key=>$val)	{
+			if (substr($key, 0, 5)=='query' && $this->MOD_SETTINGS[$key]!=$val && $key!='queryLimit' && $key!='use_listview')	{
+				$setLimitToStart = 1;
+				if ($key == 'queryTable' && !$addConditionCheck) {
+					$this->MOD_SETTINGS['queryConfig'] = '';
+				}
+			}
+			if ($key=='queryTable' && $this->MOD_SETTINGS[$key]!=$val)	{
+				$this->MOD_SETTINGS['queryFields'] = '';
+			}
+		}
+		if ($setLimitToStart)	{
+			$currentLimit = explode(',',$this->MOD_SETTINGS['queryLimit']);
+			if ($currentLimit[1])	{
+				$this->MOD_SETTINGS['queryLimit']='0,'.$currentLimit[1];
+			} else {
+				$this->MOD_SETTINGS['queryLimit']='0';
+			}
+			$this->MOD_SETTINGS = t3lib_BEfunc::getModuleData($this->MOD_MENU, $this->MOD_SETTINGS, $this->MCONF['name'], 'ses');
 		}
 	}
 
@@ -201,7 +228,9 @@ class SC_mod_tools_dbint_index {
 
 			// Content creation
 		$this->content.= $this->doc->startPage($LANG->getLL('title'));
-		$this->menu = t3lib_BEfunc::getFuncMenu(0,'SET[function]',$this->MOD_SETTINGS['function'],$this->MOD_MENU['function']);
+		if (!$GLOBALS['BE_USER']->userTS['mod.']['dbint.']['disableTopMenu'])	{
+			$this->menu = t3lib_BEfunc::getFuncMenu(0,'SET[function]',$this->MOD_SETTINGS['function'],$this->MOD_MENU['function']);
+		}
 
 		switch($this->MOD_SETTINGS['function'])	{
 			case 'search':
@@ -319,11 +348,21 @@ class SC_mod_tools_dbint_index {
 		$this->content.= $this->doc->header($LANG->getLL('search'));
 		$this->content.= $this->doc->spacer(5);
 
-		$menu2=t3lib_BEfunc::getFuncMenu(0,'SET[search]',$this->MOD_SETTINGS['search'],$this->MOD_MENU['search']);
-		if ($this->MOD_SETTINGS['search']=='query')	{
-			$menu2.=t3lib_BEfunc::getFuncMenu(0,'SET[search_query_makeQuery]',$this->MOD_SETTINGS['search_query_makeQuery'],$this->MOD_MENU['search_query_makeQuery']).
-					'&nbsp;'.t3lib_BEfunc::getFuncCheck($GLOBALS['SOBE']->id,'SET[search_query_smallparts]',$this->MOD_SETTINGS['search_query_smallparts']).'&nbsp;Show SQL parts';
+		$menu2='';
+		if (!$GLOBALS['BE_USER']->userTS['mod.']['dbint.']['disableTopMenu'])	{
+			$menu2 = t3lib_BEfunc::getFuncMenu(0, 'SET[search]', $this->MOD_SETTINGS['search'], $this->MOD_MENU['search']);
 		}
+		if ($this->MOD_SETTINGS['search']=='query' && !$GLOBALS['BE_USER']->userTS['mod.']['dbint.']['disableTopMenu'])	{
+			$menu2 .= t3lib_BEfunc::getFuncMenu(0, 'SET[search_query_makeQuery]', $this->MOD_SETTINGS['search_query_makeQuery'], $this->MOD_MENU['search_query_makeQuery']). '<br />';
+		}
+		if (!$GLOBALS['BE_USER']->userTS['mod.']['dbint.']['disableTopCheckboxes'] && $this->MOD_SETTINGS['search']=='query')	{
+			$menu2 .= t3lib_BEfunc::getFuncCheck($GLOBALS['SOBE']->id, 'SET[search_query_smallparts]', $this->MOD_SETTINGS['search_query_smallparts']).'&nbsp;Show SQL parts<br />';
+			$menu2 .= t3lib_BEfunc::getFuncCheck($GLOBALS['SOBE']->id, 'SET[search_result_labels]', $this->MOD_SETTINGS['search_result_labels']).'&nbsp;Use formatted strings, labels and dates instead of original values for results<br />';
+			$menu2 .= t3lib_BEfunc::getFuncCheck($GLOBALS['SOBE']->id, 'SET[labels_noprefix]', $this->MOD_SETTINGS['labels_noprefix']).'&nbsp;Don\'t use original values in brackets as prefix for labelled results<br />';
+			$menu2 .= t3lib_BEfunc::getFuncCheck($GLOBALS['SOBE']->id, 'SET[options_sortlabel]', $this->MOD_SETTINGS['options_sortlabel']).'&nbsp;Sort selectbox options for relations by label and not by value<br />';
+			$menu2 .= t3lib_BEfunc::getFuncCheck($GLOBALS['SOBE']->id, 'SET[show_deleted]', $this->MOD_SETTINGS['show_deleted']).'&nbsp;Show even deleted entries (with undelete buttons)';
+		}
+
 		$this->content.= $this->doc->section('',$this->menu);//$this->doc->divider(5);
 		$this->content.= $this->doc->section('',$menu2).$this->doc->spacer(10);
 

@@ -1,9 +1,12 @@
+2006-03-03  Michael Stucki  <michael@typo3.org>
+
+	* Added new feature: Merged Advanced BE Search form extension (Tools -> DB check). Written by Joey Hasenau - great work!
+
 2006-03-03  Rene Fritz  <r.fritz@colorcube.de>
 
 	* t3lib_stdGraphic: Check if a font exists and when not the text rendering will not be done and a debug() message will be shown.
 	* alt_doc.php: Added a selector box for localization to the record editing form.
 	* t3lib_tceforms: Added a new option "l10n_display" to have configuration options for form rendering and display of language overlay data.
-
 
 2006-03-02  Bernhard Kraft  <kraftb@kraftb.at>
 
