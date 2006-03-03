@@ -956,18 +956,24 @@ class t3lib_stdGraphic	{
 
 			// Traverse string parts:
 		foreach($stringParts as $strCfg)	{
+			$fontFile = t3lib_stdGraphic::prependAbsolutePath($strCfg['fontFile']);
+			if (is_readable($fontFile)) {
 
-				// Calculate Bounding Box for part:
-			$calc = ImageTTFBBox(t3lib_div::freetypeDpiComp($sF*$strCfg['fontSize']), $angle, t3lib_stdGraphic::prependAbsolutePath($strCfg['fontFile']), $strCfg['str']);
+					// Calculate Bounding Box for part:
+				$calc = ImageTTFBBox(t3lib_div::freetypeDpiComp($sF*$strCfg['fontSize']), $angle, $fontFile, $strCfg['str']);
 
-				// Calculate offsets:
-			if (!count($offsetInfo))	{
-				$offsetInfo = $calc;	// First run, just copy over.
+					// Calculate offsets:
+				if (!count($offsetInfo))	{
+					$offsetInfo = $calc;	// First run, just copy over.
+				} else {
+					$offsetInfo[2]+=$calc[2]-$calc[0]+intval($splitRendering['compX'])+intval($strCfg['xSpaceBefore'])+intval($strCfg['xSpaceAfter']);
+					$offsetInfo[3]+=$calc[3]-$calc[1]-intval($splitRendering['compY'])-intval($strCfg['ySpaceBefore'])-intval($strCfg['ySpaceAfter']);
+					$offsetInfo[4]+=$calc[4]-$calc[6]+intval($splitRendering['compX'])+intval($strCfg['xSpaceBefore'])+intval($strCfg['xSpaceAfter']);
+					$offsetInfo[5]+=$calc[5]-$calc[7]-intval($splitRendering['compY'])-intval($strCfg['ySpaceBefore'])-intval($strCfg['ySpaceAfter']);
+				}
+
 			} else {
-				$offsetInfo[2]+=$calc[2]-$calc[0]+intval($splitRendering['compX'])+intval($strCfg['xSpaceBefore'])+intval($strCfg['xSpaceAfter']);
-				$offsetInfo[3]+=$calc[3]-$calc[1]-intval($splitRendering['compY'])-intval($strCfg['ySpaceBefore'])-intval($strCfg['ySpaceAfter']);
-				$offsetInfo[4]+=$calc[4]-$calc[6]+intval($splitRendering['compX'])+intval($strCfg['xSpaceBefore'])+intval($strCfg['xSpaceAfter']);
-				$offsetInfo[5]+=$calc[5]-$calc[7]-intval($splitRendering['compY'])-intval($strCfg['ySpaceBefore'])-intval($strCfg['ySpaceAfter']);
+				debug('cannot read file: '.$fontFile, 't3lib_stdGraphic::ImageTTFBBoxWrapper()');
 			}
 		}
 
@@ -1015,13 +1021,21 @@ class t3lib_stdGraphic	{
 				$y-= intval($strCfg['ySpaceBefore']);
 			}
 
-				// Render part:
-			ImageTTFText($im, t3lib_div::freetypeDpiComp($sF*$strCfg['fontSize']), $angle, $x, $y, $colorIndex, t3lib_stdGraphic::prependAbsolutePath($strCfg['fontFile']), $strCfg['str']);
+			$fontFile = t3lib_stdGraphic::prependAbsolutePath($strCfg['fontFile']);
+			if (is_readable($fontFile)) {
 
-				// Calculate offset to apply:
-			$wordInf = ImageTTFBBox(t3lib_div::freetypeDpiComp($sF*$strCfg['fontSize']), $angle, t3lib_stdGraphic::prependAbsolutePath($strCfg['fontFile']), $strCfg['str']);
-			$x+= $wordInf[2]-$wordInf[0]+intval($splitRendering['compX'])+intval($strCfg['xSpaceAfter']);
-			$y+= $wordInf[5]-$wordInf[7]-intval($splitRendering['compY'])-intval($strCfg['ySpaceAfter']);
+					// Render part:
+				ImageTTFText($im, t3lib_div::freetypeDpiComp($sF*$strCfg['fontSize']), $angle, $x, $y, $colorIndex, $fontFile, $strCfg['str']);
+
+					// Calculate offset to apply:
+				$wordInf = ImageTTFBBox(t3lib_div::freetypeDpiComp($sF*$strCfg['fontSize']), $angle, t3lib_stdGraphic::prependAbsolutePath($strCfg['fontFile']), $strCfg['str']);
+				$x+= $wordInf[2]-$wordInf[0]+intval($splitRendering['compX'])+intval($strCfg['xSpaceAfter']);
+				$y+= $wordInf[5]-$wordInf[7]-intval($splitRendering['compY'])-intval($strCfg['ySpaceAfter']);
+
+			} else {
+				debug('cannot read file: '.$fontFile, 't3lib_stdGraphic::ImageTTFTextWrapper()');
+			}
+
 		}
 	}
 
@@ -1853,7 +1867,7 @@ class t3lib_stdGraphic	{
 	 */
 	function prependAbsolutePath($fontFile)	{
 		$absPath = defined('PATH_typo3') ? dirname(PATH_thisScript).'/' :PATH_site;
-		$fontFile = t3lib_div::isAbsPath($fontFile) ? $fontFile : $absPath.$fontFile;
+		$fontFile = t3lib_div::isAbsPath($fontFile) ? $fontFile : t3lib_div::resolveBackPath($absPath.$fontFile);
 		return $fontFile;
 	}
 
