@@ -1,6 +1,7 @@
 2006-03-03  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
 	* Update to htmlArea RTE manual.
+	* Fix bugtracker issue 1736: Make TS_CASE object and ts_parser support key value 0.
 
 2006-03-03  Michael Stucki  <michael@typo3.org>
 

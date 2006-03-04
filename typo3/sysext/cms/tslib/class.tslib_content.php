@@ -1495,7 +1495,7 @@ class tslib_cObj {
 		if ($this->checkIf($conf['if.']))	{
 			if ($conf['setCurrent'] || $conf['setCurrent.']){$this->data[$this->currentValKey] = $this->stdWrap($conf['setCurrent'], $conf['setCurrent.']);}
 	 		$key = $this->stdWrap($conf['key'],$conf['key.']);
-	 		$key = $conf[$key] ? $key : 'default';
+	 		$key = isset($conf[$key]) ? $key : 'default';
 	 		$name = $conf[$key];
 	 		$theValue = $this->cObjGetSingle($name,$conf[$key.'.'], $key);
 	 		if ($conf['stdWrap.'])	{
