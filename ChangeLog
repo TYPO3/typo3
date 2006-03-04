@@ -1,3 +1,6 @@
+2006-03-04  Michael Stucki  <michael@typo3.org>
+
+	* Fixed bug #1475: Added stdWrap properties for RECORDS cObject
 
 2006-03-04  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 

@@ -1290,8 +1290,11 @@ class tslib_cObj {
 				}
 			}
 		}
+		if ($conf['wrap'])	$theValue = $this->wrap($theValue,$conf['wrap']);
+		if ($conf['stdWrap.'])	$theValue = $this->stdWrap($theValue,$conf['stdWrap.']);
+
 		$GLOBALS['TSFE']->currentRecord = $originalRec;	// Restore
-		return $this->wrap($theValue,$conf['wrap']);
+		return $theValue;
 	}
 
 	/**
