@@ -244,21 +244,40 @@ class t3lib_userAuth {
 		$this->user = '';
 
 			// Setting cookies
+		if ($TYPO3_CONF_VARS['SYS']['cookieDomain'])	{
+			if ($TYPO3_CONF_VARS['SYS']['cookieDomain']{0} == '/')	{
+				$matchCnt = @preg_match($TYPO3_CONF_VARS['SYS']['cookieDomain'], t3lib_div::getIndpEnv('TYPO3_HOST_ONLY'), $match);
+				if ($matchCnt === FALSE)	{
+					t3lib_div::sysLog('The regular expression of $TYPO3_CONF_VARS[SYS][cookieDomain] contains errors. The session is not shared across sub-domains.', 'Core', 3);
+				} elseif ($matchCnt)	{
+					$cookieDomain = $match[0];
+				}
+			} else {
+				$cookieDomain = $TYPO3_CONF_VARS['SYS']['cookieDomain'];
+			}
+		}
+
 			// If new session and the cookie is a sessioncookie, we need to set it only once!
 		if (($this->newSessionID || $this->forceSetCookie) && $this->lifetime==0 )	{
 			if (!$this->dontSetCookie)	{
-				if ($TYPO3_CONF_VARS['SYS']['cookieDomain'])	SetCookie($this->name, $id, 0, '/', $TYPO3_CONF_VARS['SYS']['cookieDomain']);
-				else	SetCookie($this->name, $id, 0, '/');
-				if ($this->writeDevLog) 	t3lib_div::devLog('Set new Cookie: '.$id, 't3lib_userAuth');
+				if ($cookieDomain)	{
+					SetCookie($this->name, $id, 0, '/', $cookieDomain);
+				} else {
+					SetCookie($this->name, $id, 0, '/');
+				}
+				if ($this->writeDevLog) 	t3lib_div::devLog('Set new Cookie: '.$id.($cookieDomain ? ', '.$cookieDomain : ''), 't3lib_userAuth');
 			}
 		}
 
 			// If it is NOT a session-cookie, we need to refresh it.
 		if ($this->lifetime > 0)	{
 			if (!$this->dontSetCookie)	{
-				if ($TYPO3_CONF_VARS['SYS']['cookieDomain'])	SetCookie($this->name, $id, time()+$this->lifetime, '/', $TYPO3_CONF_VARS['SYS']['cookieDomain']);
-				else 	SetCookie($this->name, $id, time()+$this->lifetime, '/');
-				if ($this->writeDevLog) 	t3lib_div::devLog('Update Cookie: '.$id, 't3lib_userAuth');
+				if ($cookieDomain)	{
+					SetCookie($this->name, $id, time()+$this->lifetime, '/', $cookieDomain);
+				} else {
+					SetCookie($this->name, $id, time()+$this->lifetime, '/');
+				}
+				if ($this->writeDevLog) 	t3lib_div::devLog('Update Cookie: '.$id.($cookieDomain ? ', '.$cookieDomain : ''), 't3lib_userAuth');
 			}
 		}
 

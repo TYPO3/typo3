@@ -1,3 +1,8 @@
+
+2006-03-04  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+
+	* Changed $TYPO3_CONF_VARS['SYS']['domainCookie'] to take a regular expressions allowing for multiple domains with sub-domains.
+
 2006-03-03  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
 	* Update to htmlArea RTE manual.
@@ -665,7 +670,7 @@
 
 2005-12-26  Sebastian Kurfuerst  <sebastian@garbage-group.de>
 
-	* Fixed bug #0752: scope of BE- and FE-Cookie: can't cope with multidomain-setup
+	* Fixed bug #752: scope of BE- and FE-Cookie: can't cope with multidomain-setup
 
 2005-12-26  Michael Stucki  <michael@typo3.org>
 
