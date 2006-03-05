@@ -37,6 +37,7 @@ require_once(t3lib_extMgm::extPath('rtehtmlarea').'class.tx_rtehtmlarea_base.php
 class tx_rtehtmlarea_pi2 extends tx_rtehtmlarea_base {
 
 		// External:
+	var $RTEWrapStyle;				// Alternative style for RTE wrapper <div> tag.
 	var $RTEdivStyle;				// Alternative style for RTE <div> tag.
 	var $extHttpPath;				// full Path to this extension for http (so no Server path). It ends with "/"
 
@@ -207,6 +208,7 @@ class tx_rtehtmlarea_pi2 extends tx_rtehtmlarea_base {
 		$RTEHeight = 380;
 		$editorWrapWidth = $RTEWidth . 'px';
 		$editorWrapHeight = $RTEHeight . 'px';
+		$this->RTEWrapStyle = $this->RTEWrapStyle ? $this->RTEWrapStyle : ($this->RTEdivStyle ? $this->RTEdivStyle : 'height:' . $RTEHeight+2 . 'px; width:'. $RTEWidth+2 . 'px;');		
 		$this->RTEdivStyle = $this->RTEdivStyle ? $this->RTEdivStyle : 'position:relative; left:0px; top:0px; height:' . $RTEHeight . 'px; width:'.$RTEWidth.'px; border: 1px solid black;';
 		$this->toolbar_level_size = $RTEWidth;
 
@@ -274,7 +276,7 @@ class tx_rtehtmlarea_pi2 extends tx_rtehtmlarea_base {
 		$visibility = 'hidden';
 		$item = $this->triggerField($PA['itemFormElName']).'
 			<div id="pleasewait' . $pObj->RTEcounter . '" class="pleasewait">' . $TSFE->csConvObj->conv($TSFE->getLLL('Please wait',$this->LOCAL_LANG), $this->charset, $TSFE->renderCharset) . '</div>
-			<div id="editorWrap' . $pObj->RTEcounter . '" class="editorWrap" style="visibility:' . $visibility . '; width:' . $editorWrapWidth . '; height:' . $editorWrapHeight . ';">
+			<div id="editorWrap' . $pObj->RTEcounter . '" class="editorWrap" style="visibility:' . $visibility . '; '. htmlspecialchars($this->RTEWrapStyle). '">
 			<textarea id="RTEarea'.$pObj->RTEcounter.'" name="'.htmlspecialchars($PA['itemFormElName']).'" style="'.htmlspecialchars($this->RTEdivStyle).'">'.t3lib_div::formatForTextarea($value).'</textarea>
 			</div>' . ($TYPO3_CONF_VARS['EXTCONF'][$this->ID]['enableDebugMode'] ? '<div id="HTMLAreaLog"></div>' : '') . '
 			';

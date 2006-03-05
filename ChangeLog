@@ -1,3 +1,8 @@
+2006-03-05  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
+
+	* Replace isset with strlen in fix of bugtracker issue 1736.
+	* htmlArea RTE: Add $RTEWrapStyle variable to frontend plugin class.tx_rtehtmlarea_pi2.php (bugtracker issue 2760).
+
 2006-03-04  Michael Stucki  <michael@typo3.org>
 
 	* Fixed bug #1475: Added stdWrap properties for RECORDS cObject

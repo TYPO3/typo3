@@ -235,7 +235,7 @@ class t3lib_TSparser {
 						$varL = strcspn($line,' {=<>:(');	// Find object name string until we meet an operator
 						$objStrName=trim(substr($line,0,$varL));
 						if ($this->syntaxHighLight)	$this->regHighLight("objstr",$lineP,strlen(substr($line,$varL)));
-						if (isset($objStrName)) {
+						if (strlen($objStrName)) {
 							$r = array();
 							if ($this->strict && preg_match('/[^[:alnum:]_\.-]/i',$objStrName,$r))	{
 								$this->error('Line '.($this->lineNumberOffset+$this->rawP-1).': Object Name String, "'.htmlspecialchars($objStrName).'" contains invalid character "'.$r[0].'". Must be alphanumeric or one of: "_-."');

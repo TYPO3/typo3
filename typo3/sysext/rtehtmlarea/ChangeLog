@@ -1,3 +1,6 @@
+2006-03-04 Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+	* Add $RTEWrapStyle variable to frontend plugin class.tx_rtehtmlarea_pi2.php (bugtracker issue 2760).
+
 2006-03-03 Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
 	* Version 1.2.0
 	* Update to manual
