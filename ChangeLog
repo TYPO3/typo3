@@ -1,3 +1,9 @@
+2006-03-06  Sebastian Kurfuerst  <sebastian@garbage-group.de>
+
+	* Fixed some broken media relations
+	* Fixed bug #2713: change hardcoded "typo3/" to TYPO3_mainDir in sysext/cms/tslib/index_ts.php
+	* Fixed bug #1635: Add page TSconfig via user TSconfig
+
 2006-03-06  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 	
 	* Remove from core some remaining elements used only by Direct Mail extension and already moved to Direct Mail 2.0:

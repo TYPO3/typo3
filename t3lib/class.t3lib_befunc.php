@@ -1154,10 +1154,9 @@ class t3lib_BEfunc	{
 			$rootLine = t3lib_BEfunc::BEgetRootLine($id,'',TRUE);
 		}
 		ksort($rootLine);	// Order correctly
-		reset($rootLine);
 		$TSdataArray = array();
 		$TSdataArray['defaultPageTSconfig']=$GLOBALS['TYPO3_CONF_VARS']['BE']['defaultPageTSconfig'];	// Setting default configuration:
-		while(list($k,$v)=each($rootLine))	{
+		foreach($rootLine as $k => $v)	{
 			$TSdataArray['uid_'.$v['uid']]=$v['TSconfig'];
 		}
 		$TSdataArray = t3lib_TSparser::checkIncludeLines_array($TSdataArray);
@@ -1177,6 +1176,12 @@ class t3lib_BEfunc	{
 			$parseObj->parse($userTS);
 			$TSconfig = $parseObj->setup;
 			t3lib_BEfunc::storeHash($hash,serialize($TSconfig),'PAGES_TSconfig');
+		}
+
+			// get User TSconfig overlay
+		$userTSconfig = $GLOBALS['BE_USER']->userTS['page.'];
+		if (is_array($userTSconfig))	{
+			$TSconfig = t3lib_div::array_merge_recursive_overrule($TSconfig, $userTSconfig);
 		}
 		return $TSconfig;
 	}

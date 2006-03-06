@@ -64,8 +64,8 @@ define('PATH_typo3conf', PATH_site.'typo3conf/');
 define('TYPO3_mainDir', 'typo3/');		// This is the directory of the backend administration for the sites of this TYPO3 installation.
 
 if (!defined('PATH_tslib')) {
-	if (@is_dir(PATH_site.'typo3/sysext/cms/tslib/')) {
-		define('PATH_tslib', PATH_site.'typo3/sysext/cms/tslib/');
+	if (@is_dir(PATH_site.TYPO3_mainDir.'sysext/cms/tslib/')) {
+		define('PATH_tslib', PATH_site.TYPO3_mainDir.'sysext/cms/tslib/');
 	} elseif (@is_dir(PATH_site.'tslib/')) {
 		define('PATH_tslib', PATH_site.'tslib/');
 	}
