@@ -1,5 +1,5 @@
 plugin.tx_indexedsearch {
-	templateFile = EXT:indexed_search/pi/template_traditional.tmpl
+	templateFile = EXT:indexed_search/pi/template_css.tmpl
 
 	show {
 		rules = 1
@@ -73,26 +73,23 @@ plugin.tx_indexedsearch {
 		group = flat
 	}
 	_CSS_DEFAULT_STYLE (
+		.tx-indexedsearch .tx-indexedsearch-browsebox li { display:inline; margin-right:5px; }
 		.tx-indexedsearch .tx-indexedsearch-searchbox INPUT.tx-indexedsearch-searchbox-button { width:100px; }
 		.tx-indexedsearch .tx-indexedsearch-searchbox INPUT.tx-indexedsearch-searchbox-sword { width:150px; }
-		.tx-indexedsearch .tx-indexedsearch-whatis P .tx-indexedsearch-sw { font-weight:bold; font-style:italic; }
 		.tx-indexedsearch .tx-indexedsearch-whatis { margin-top:10px; margin-bottom:5px; }
-		.tx-indexedsearch P.tx-indexedsearch-noresults { text-align:center; font-weight:bold; }
+		.tx-indexedsearch .tx-indexedsearch-whatis .tx-indexedsearch-sw { font-weight:bold; font-style:italic; }
+		.tx-indexedsearch .tx-indexedsearch-noresults { text-align:center; font-weight:bold; }
 		.tx-indexedsearch .tx-indexedsearch-res .tx-indexedsearch-title { background:#eeeeee; }
-		.tx-indexedsearch .tx-indexedsearch-res .tx-indexedsearch-title P { font-weight:bold; }
-		.tx-indexedsearch .tx-indexedsearch-res .tx-indexedsearch-title P.tx-indexedsearch-percent { font-weight:normal; }
-		.tx-indexedsearch .tx-indexedsearch-res .tx-indexedsearch-descr P { font-style:italic; }
-		.tx-indexedsearch .tx-indexedsearch-res .tx-indexedsearch-descr P .tx-indexedsearch-redMarkup { color:red; }
+		.tx-indexedsearch .tx-indexedsearch-res .tx-indexedsearch-descr { font-style:italic; }
+		.tx-indexedsearch .tx-indexedsearch-res .tx-indexedsearch-descr .tx-indexedsearch-redMarkup { color:red; }
 		.tx-indexedsearch .tx-indexedsearch-res .tx-indexedsearch-info { background:#eeeeff; }
 		.tx-indexedsearch .tx-indexedsearch-res .tx-indexedsearch-secHead { margin-top:20px; margin-bottom:5px; }
 		.tx-indexedsearch .tx-indexedsearch-res .tx-indexedsearch-secHead H2 { margin-top:0px; margin-bottom:0px; }
 		.tx-indexedsearch .tx-indexedsearch-res .tx-indexedsearch-secHead TABLE { background:#cccccc; }
 		.tx-indexedsearch .tx-indexedsearch-res .tx-indexedsearch-secHead TD { vertical-align:middle; }
 		.tx-indexedsearch .tx-indexedsearch-res .noResume { color : #666666; }
-		.tx-indexedsearch H1.category { background:#cccccc; font-size: 16px; font-weight: bold; }		
+		.tx-indexedsearch .tx-indexedsearch-category { background:#cccccc; font-size: 16px; font-weight: bold; }
 	)
 	_LOCAL_LANG {
 	}
 }
-
-

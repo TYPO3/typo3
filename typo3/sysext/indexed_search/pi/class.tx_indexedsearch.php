@@ -524,9 +524,9 @@ class tx_indexedsearch extends tslib_pibase {
 				} else {
 					$titleString = $this->pi_getLL('opt_freeIndexUid_header_'.$freeIndexUid);
 				}
-				$content = '<h1 class="category">'.htmlspecialchars($titleString).'</h1>'.$content;
+				$content = '<h1 class="tx-indexedsearch-category">'.htmlspecialchars($titleString).'</h1>'.$content;
 			}
-		
+
 			$accumulatedContent.=$content;
 		}
 
@@ -999,7 +999,7 @@ class tx_indexedsearch extends tslib_pibase {
 		if ($freeIndexUid>=0)	{
 
 				// First, look if the freeIndexUid is a meta configuration:
-			list($indexCfgRec) = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('indexcfgs','index_config','type=5 AND uid='.intval($freeIndexUid).$this->cObj->enableFields('index_config'));			
+			list($indexCfgRec) = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('indexcfgs','index_config','type=5 AND uid='.intval($freeIndexUid).$this->cObj->enableFields('index_config'));
 			if (is_array($indexCfgRec))	{
 				$refs = t3lib_div::trimExplode(',',$indexCfgRec['indexcfgs']);
 				$list = array(-99);	// Default value to protect against empty array.
@@ -1395,7 +1395,7 @@ class tx_indexedsearch extends tslib_pibase {
 			if ($this->conf['blind.']['extResume'])	{
 				$html = $this->cObj->substituteSubpart($html, '###SELECT_EXTRESUME###', '');
 			} else {
-				$markerArray['###EXT_RESUME_CHECKED###'] = $this->piVars['extResume'] ? ' CHECKED' : '';
+				$markerArray['###EXT_RESUME_CHECKED###'] = $this->piVars['extResume'] ? ' checked="checked"' : '';
 			}
 
 		} else {	// Extended search
@@ -1403,10 +1403,12 @@ class tx_indexedsearch extends tslib_pibase {
 		}
 
 		if($this->conf['show.']['advancedSearchLink'])	{
-			$markerArray['###LINKTOOTHERMODE###'] = ($this->piVars['ext'] ?
-				'<a href="'.$this->pi_getPageLink($GLOBALS['TSFE']->id,$GLOBALS['TSFE']->sPre,array($this->prefixId.'[ext]'=>0)).'">'.$this->pi_getLL('link_regularSearch','',1).'</a>' :
-				'<a href="'.$this->pi_getPageLink($GLOBALS['TSFE']->id,$GLOBALS['TSFE']->sPre,array($this->prefixId.'[ext]'=>1)).'">'.$this->pi_getLL('link_advancedSearch','',1).'</a>'
+			$linkToOtherMode = ($this->piVars['ext'] ?
+				$this->pi_getPageLink($GLOBALS['TSFE']->id,$GLOBALS['TSFE']->sPre,array($this->prefixId.'[ext]'=>0)) :
+				$this->pi_getPageLink($GLOBALS['TSFE']->id,$GLOBALS['TSFE']->sPre,array($this->prefixId.'[ext]'=>1))
 			);
+
+			$markerArray['###LINKTOOTHERMODE###'] = '<a href="'.htmlspecialchars($linkToOtherMode).'">'.$this->pi_getLL($this->piVars['ext']?'link_regularSearch':'link_advancedSearch', '', 1).'</a>';
 		} else {
 			$markerArray['###LINKTOOTHERMODE###'] = '';
 		}
@@ -1421,7 +1423,7 @@ class tx_indexedsearch extends tslib_pibase {
 			$opt=array();
 			$isSelFlag=0;
 			foreach($optValues as $k=>$v)	{
-				$sel = (!strcmp($k,$value) ? ' selected' : '');
+				$sel = (!strcmp($k,$value) ? ' selected="selected"' : '');
 				if ($sel)	{ $isSelFlag++; }
 				$opt[]='<option value="'.htmlspecialchars($k).'"'.$sel.'>'.htmlspecialchars($v).'</option>';
 			}
@@ -1594,7 +1596,7 @@ class tx_indexedsearch extends tslib_pibase {
 
 				// Make browse-table/links:
 			if ($pointer>0)	{	// all pages after the 1st one
-				$links[]='<td><p>'.$this->makePointerSelector_link($this->pi_getLL('pi_list_browseresults_prev','< Previous',1),$pointer-1,$freeIndexUid).'</p></td>';
+				$links[]='<li>'.$this->makePointerSelector_link($this->pi_getLL('pi_list_browseresults_prev','< Previous',1),$pointer-1,$freeIndexUid).'</li>';
 			}
 
 			for($a=0;$a<$pageCount;$a++)	{
@@ -1606,14 +1608,14 @@ class tx_indexedsearch extends tslib_pibase {
 
 				if($a >= $min && $a < $max)	{
 					if($a==$pointer)	{
-						$links[]='<td'.($pointer==$a?$this->pi_classParam('browsebox-SCell'):'').'><p><strong>'.$this->makePointerSelector_link(trim($this->pi_getLL('pi_list_browseresults_page','Page',1).' '.($a+1)),$a,$freeIndexUid).'</strong></p></td>';
+						$links[]='<li'.$this->pi_classParam('browselist-currentPage').'><strong>'.$this->makePointerSelector_link(trim($this->pi_getLL('pi_list_browseresults_page','Page',1).' '.($a+1)),$a,$freeIndexUid).'</strong></li>';
 					} else {
-						$links[]='<td'.($pointer==$a?$this->pi_classParam('browsebox-SCell'):'').'><p>'.$this->makePointerSelector_link(trim($this->pi_getLL('pi_list_browseresults_page','Page',1).' '.($a+1)),$a,$freeIndexUid).'</p></td>';
+						$links[]='<li>'.$this->makePointerSelector_link(trim($this->pi_getLL('pi_list_browseresults_page','Page',1).' '.($a+1)),$a,$freeIndexUid).'</li>';
 					}
 				}
 			}
 			if ($pointer+1 < $pageCount)	{
-				$links[]='<td><p>'.$this->makePointerSelector_link($this->pi_getLL('pi_list_browseresults_next','Next >',1),$pointer+1,$freeIndexUid).'</p></td>';
+				$links[]='<li>'.$this->makePointerSelector_link($this->pi_getLL('pi_list_browseresults_next','Next >',1),$pointer+1,$freeIndexUid).'</li>';
 			}
 		}
 
@@ -1621,14 +1623,18 @@ class tx_indexedsearch extends tslib_pibase {
 		$pR2 = $pointer*$results_at_a_time+$results_at_a_time;
 		if(is_array($links))	{
 			$addPart .= '
-		<table>
-			<tr>'.implode('',$links).'</tr>
-		</table>';
+		<ul class="browsebox">
+			'.implode('',$links).'
+		</ul>';
 		}
+
+		$label = $this->pi_getLL('pi_list_browseresults_displays','Displaying results ###TAG_BEGIN###%s to %s###TAG_END### out of ###TAG_BEGIN###%s###TAG_END###');
+		$label = str_replace('###TAG_BEGIN###','<strong>',$label);
+		$label = str_replace('###TAG_END###','</strong>',$label);
 
 		$sTables = '<div'.$this->pi_classParam('browsebox').'>'.
 			($showResultCount ? '<p>'.sprintf(
-				str_replace('###SPAN_BEGIN###','<span'.$this->pi_classParam('browsebox-strong').'>',$this->pi_getLL('pi_list_browseresults_displays','Displaying results ###SPAN_BEGIN###%s to %s</span> out of ###SPAN_BEGIN###%s</span>')),
+				$label,
 				$pR1,
 				min(array($this->internal['res_count'],$pR2)),
 				$this->internal['res_count']
@@ -1984,7 +1990,7 @@ class tx_indexedsearch extends tslib_pibase {
 				}
 			} else {
 				$summaryLgd+= $GLOBALS['TSFE']->csConvObj->strlen('utf-8',$strP);
-				$output[$k] = '<span class="tx-indexedsearch-redMarkup">'.htmlspecialchars($parts[$k]).'</span>';
+				$output[$k] = '<strong class="tx-indexedsearch-redMarkup">'.htmlspecialchars($parts[$k]).'</strong>';
 			}
 		}
 

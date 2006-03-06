@@ -54,7 +54,7 @@ plugin.tx_indexedsearch.CSS_editor.ch {
 	whatis = "What is searched for" text
 	whatis.selector = .tx-indexedsearch-whatis
 	whatis.attribs = margin+
-	whatis.example = <DIV class="tx-indexedsearch-whatis"><p>Searching for '<span class="tx-indexedsearch-sw">my</span>' and '<span class="tx-indexedsearch-sw">searchword</span>' in the section 'My section'</p></DIV>
+	whatis.example = <DIV class="tx-indexedsearch-whatis"><p>Searching for '<strong class="tx-indexedsearch-sw">my</strong>' and '<strong class="tx-indexedsearch-sw">searchword</strong>' in the section 'My section'</p></DIV>
 	whatis.exampleStop = 1
 	whatis.ch {
 		P = Text
@@ -68,12 +68,12 @@ plugin.tx_indexedsearch.CSS_editor.ch {
 	browsebox = Browsing box
 	browsebox.selector = .tx-indexedsearch-browsebox
 	browsebox.attribs = margin+
-	browsebox.example = <DIV class="tx-indexedsearch-browsebox"><P>Displaying results <span class="tx-indexedsearch-browsebox-strong">1 to 3</span> out of <span class="tx-indexedsearch-browsebox-strong">4</span></P><div class="tx-indexedsearch-sectionlinks"><ul><li><a href="#">Products (1 pages)</a></li><li><a href="#">Main pages (2 pages)</a></li><li><a href="#">Other pages (5 pages)</a></li></ul></div><table><tr><td class="tx-indexedsearch-browsebox-SCell"><p><A HREF="#">Page 1 (S)</a></p></td><td><p><A HREF="#">Page 2</a></p></td><td><p><A HREF="#">Next ></a></p></td></tr></table></DIV>
+	browsebox.example = <DIV class="tx-indexedsearch-browsebox"><P>Displaying results <strong>1 to 3</strong> out of <strong>4</strong></P><div class="tx-indexedsearch-sectionlinks"><ul><li><a href="#">Products (1 pages)</a></li><li><a href="#">Main pages (2 pages)</a></li><li><a href="#">Other pages (5 pages)</a></li></ul></div><ul><li class="tx-indexedsearch-browselist-currentPage"><A HREF="#">Page 1 (S)</a></li><li><A HREF="#">Page 2</a></li><li><A HREF="#">Next ></a></li></ul></DIV>
 	browsebox.exampleStop = 1
 	browsebox.ch.P < .P
 	browsebox.ch.P.ch.strong = Emphasized numbers
 	browsebox.ch.P.ch.strong {
-	  selector = SPAN.tx-indexedsearch-browsebox-strong
+	  selector = STRONG
 	  attribs = TEXT
 	}
 	browsebox.ch.sectionlinks = Section links (UL)
@@ -87,7 +87,7 @@ plugin.tx_indexedsearch.CSS_editor.ch {
 	browsebox.ch.TD.attribs = TD
 	browsebox.ch.TD.ch {
 	  TD = Selected table cells
-	  TD.selector = + .tx-indexedsearch-browsebox-SCell
+	  TD.selector = + .tx-indexedsearch-browselist-currentPage
 	  TD.attribs = TD
 	}
 	browsebox.ch.TD.ch.P < .P

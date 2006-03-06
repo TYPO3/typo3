@@ -9,24 +9,25 @@
 <h3>SEARCH FORM</h3>
 
 <!-- ###SEARCH_FORM### begin -->
-<form action="###ACTION_URL###" method="POST" name="tx_indexedsearch">
-	<input type="hidden" name="tx_indexedsearch[_sections]" value="0">
-	<input type="hidden" name="tx_indexedsearch[_freeIndexUid]" value="_">
-	<input type="hidden" name="tx_indexedsearch[pointer]" value="0">
-	<input type="hidden" name="tx_indexedsearch[type]" value="###HIDDEN_VALUE_TYPE###">
-	<input type="hidden" name="tx_indexedsearch[ext]" value="###HIDDEN_VALUE_EXT###">
+<div class="tx-indexedsearch-searchbox">
+<form action="###ACTION_URL###" method="post" name="tx_indexedsearch">
+	<input type="hidden" name="tx_indexedsearch[_sections]" value="0" />
+	<input type="hidden" name="tx_indexedsearch[_freeIndexUid]" value="_" />
+	<input type="hidden" name="tx_indexedsearch[pointer]" value="0" />
+	<input type="hidden" name="tx_indexedsearch[type]" value="###HIDDEN_VALUE_TYPE###" />
+	<input type="hidden" name="tx_indexedsearch[ext]" value="###HIDDEN_VALUE_EXT###" />
 
-	<table cellpadding="0" cellspacing="0" border="0">
+	<table cellpadding="0" cellspacing="0" border="0" summary="Search form">
 
 		<tr>
-			<td class="tx-indexedsearch-form">###FORM_SEARCHFOR###</td>
-			<td class="tx-indexedsearch-form" colspan="2"><input type="text" name="tx_indexedsearch[sword]" value="###SWORD_VALUE###" class="tx-indexedsearch-searchbox-sword"></td>
+			<td>###FORM_SEARCHFOR###</td>
+			<td colspan="2"><input type="text" name="tx_indexedsearch[sword]" value="###SWORD_VALUE###" class="tx-indexedsearch-searchbox-sword sword" /></td>
 		</tr>
 
 		<!-- ###ADDITONAL_KEYWORD### begin -->
 		<tr>
-			<td class="tx-indexedsearch-form">&nbsp;</td>
-			<td class="tx-indexedsearch-form" colspan="2"><input type="hidden" name="tx_indexedsearch[sword_prev]" value="###SWORD_PREV_VALUE###"><input type="checkbox" name="tx_indexedsearch[sword_prev_include]" value="1" ###SWORD_PREV_INCLUDE_CHECKED###> ###ADD_TO_CURRENT_SEARCH###.</td>
+			<td>&nbsp;</td>
+			<td colspan="2"><input type="hidden" name="tx_indexedsearch[sword_prev]" value="###SWORD_PREV_VALUE###" /><input type="checkbox" name="tx_indexedsearch[sword_prev_include]" value="1" ###SWORD_PREV_INCLUDE_CHECKED### /> ###ADD_TO_CURRENT_SEARCH###.</td>
 		</tr>
 		<!-- ###ADDITONAL_KEYWORD### end -->
 
@@ -34,17 +35,17 @@
 
 		<!-- ###SELECT_SEARCH_FOR### begin -->
 		<tr>
-			<td class="tx-indexedsearch-form">###FORM_MATCH###</td>
-			<td class="tx-indexedsearch-form">
+			<td>###FORM_MATCH###</td>
+			<td>
 				<!-- ###SELECT_SEARCH_TYPE### begin -->
-				<select name="tx_indexedsearch[type]" class="tx-indexedsearch-selectbox-type">
+				<select name="tx_indexedsearch[type]" class="tx-indexedsearch-selectbox-type type">
 					###SELECTBOX_TYPE_VALUES###
 				</select>
 				<!-- ###SELECT_SEARCH_TYPE### end -->
 			</td>
-			<td class="tx-indexedsearch-form">
+			<td>
 				<!-- ###SELECT_SEARCH_DEFOP### begin -->
-				<select name="tx_indexedsearch[defOp]" class="tx-indexedsearch-selectbox-defop">
+				<select name="tx_indexedsearch[defOp]" class="tx-indexedsearch-selectbox-defop defop">
 					###SELECTBOX_DEFOP_VALUES###
 				</select>
 				<!-- ###SELECT_SEARCH_DEFOP### end -->
@@ -54,17 +55,17 @@
 
 		<!-- ###SELECT_SEARCH_IN### begin -->
 		<tr>
-			<td class="tx-indexedsearch-form">###FORM_SEARCHIN###</td>
-			<td class="tx-indexedsearch-form">
+			<td>###FORM_SEARCHIN###</td>
+			<td>
 				<!-- ###SELECT_SEARCH_MEDIA### begin -->
-				<select name="tx_indexedsearch[media]" class="tx-indexedsearch-selectbox-media">
+				<select name="tx_indexedsearch[media]" class="tx-indexedsearch-selectbox-media media">
 					###SELECTBOX_MEDIA_VALUES###
 				</select>
 				<!-- ###SELECT_SEARCH_MEDIA### end -->
 			</td>
-			<td class="tx-indexedsearch-form">
+			<td>
 				<!-- ###SELECT_SEARCH_LANG### begin -->
-				<select name="tx_indexedsearch[lang]" class="tx-indexedsearch-selectbox-lang">
+				<select name="tx_indexedsearch[lang]" class="tx-indexedsearch-selectbox-lang lang">
 					###SELECTBOX_LANG_VALUES###
 				</select>
 				<!-- ###SELECT_SEARCH_LANG### end -->
@@ -74,21 +75,21 @@
 
 		<!-- ###SELECT_SECTION### begin -->
 		<tr>
-			<td class="tx-indexedsearch-form">###FORM_FROMSECTION###</td>
-			<td class="tx-indexedsearch-form" colspan="2">
-				<select name="tx_indexedsearch[sections]" class="tx-indexedsearch-selectbox-sections">
+			<td>###FORM_FROMSECTION###</td>
+			<td colspan="2">
+				<select name="tx_indexedsearch[sections]" class="tx-indexedsearch-selectbox-sections sections">
 					###SELECTBOX_SECTIONS_VALUES###
 				</select>
 			</td>
 		</tr>
 		<!-- ###SELECT_SECTION### end -->
 
-			
+
 			<!-- ###SELECT_FREEINDEXUID### begin -->
 			<tr>
-				<td  class="tx-indexedsearch-form">###FORM_FREEINDEXUID###</td>
-				<td class="tx-indexedsearch-form" colspan="2">
-					<select name="tx_indexedsearch[freeIndexUid]" class="tx-indexedsearch-selectbox-freeIndexUid">
+				<td>###FORM_FREEINDEXUID###</td>
+				<td colspan="2">
+					<select name="tx_indexedsearch[freeIndexUid]" class="tx-indexedsearch-selectbox-freeIndexUid freeIndexUid">
 						###SELECTBOX_FREEINDEXUIDS_VALUES###
 					</select>
 				</td>
@@ -97,12 +98,12 @@
 
 		<!-- ###SELECT_ORDER### begin -->
 		<tr>
-			<td class="tx-indexedsearch-form" valign="top">###FORM_ORDERBY###</td>
-			<td class="tx-indexedsearch-form" colspan=2">
-				<select name="tx_indexedsearch[order]" class="tx-indexedsearch-selectbox-order">
+			<td valign="top">###FORM_ORDERBY###</td>
+			<td colspan="2">
+				<select name="tx_indexedsearch[order]" class="tx-indexedsearch-selectbox-order order">
 					###SELECTBOX_ORDER_VALUES###
 				</select>&nbsp;
-				<select name="tx_indexedsearch[desc]" class="tx-indexedsearch-selectbox-desc">
+				<select name="tx_indexedsearch[desc]" class="tx-indexedsearch-selectbox-desc desc">
 					###SELECTBOX_DESC_VALUES###
 				</select>
 			</td>
@@ -111,9 +112,9 @@
 
 		<!-- ###SELECT_RESULTS### begin -->
 		<tr>
-			<td class="tx-indexedsearch-form" valign="top">###FORM_ATATIME###</td>
-			<td class="tx-indexedsearch-form" colspan=2">
-				<select name="tx_indexedsearch[results]" class="tx-indexedsearch-selectbox-results">
+			<td valign="top">###FORM_ATATIME###</td>
+			<td colspan="2">
+				<select name="tx_indexedsearch[results]" class="tx-indexedsearch-selectbox-results results">
 					###SELECTBOX_RESULTS_VALUES###
 				</select>
 			</td>
@@ -122,14 +123,14 @@
 
 		<!-- ###SELECT_GROUP### begin -->
 		<tr>
-			<td class="tx-indexedsearch-form" valign="top">###FORM_STYLE###</td>
-			<td class="tx-indexedsearch-form" colspan=2">
-				<select name="tx_indexedsearch[group]" class="tx-indexedsearch-selectbox-group">
+			<td valign="top">###FORM_STYLE###</td>
+			<td colspan="2">
+				<select name="tx_indexedsearch[group]" class="tx-indexedsearch-selectbox-group group">
 					###SELECTBOX_GROUP_VALUES###
 				</select>&nbsp;&nbsp;
 
 				<!-- ###SELECT_EXTRESUME### begin -->
-				<br><input type="hidden" name="tx_indexedsearch[extResume]" value="0"><input type="checkbox" value="1" name="tx_indexedsearch[extResume]" ###EXT_RESUME_CHECKED###>&nbsp;###FORM_EXTRESUME###
+				<br /><input type="hidden" name="tx_indexedsearch[extResume]" value="0" /><input type="checkbox" value="1" name="tx_indexedsearch[extResume]" ###EXT_RESUME_CHECKED### />&nbsp;###FORM_EXTRESUME###
 				<!-- ###SELECT_EXTRESUME### end -->
 			</td>
 		</tr>
@@ -137,32 +138,37 @@
 
 		<!-- ###SEARCH_FORM_EXTENDED### end -->
 		<tr>
-			<td class="tx-indexedsearch-form">&nbsp;</td>
-			<td class="tx-indexedsearch-form"><input type="submit" name="tx_indexedsearch[submit_button]" value="###FORM_SUBMIT###" class="tx-indexedsearch-searchbox-button"></td>
+			<td>&nbsp;</td>
+			<td><input type="submit" name="tx_indexedsearch[submit_button]" value="###FORM_SUBMIT###" class="tx-indexedsearch-searchbox-button submit" /></td>
 		</tr>
 	</table>
+	<p>###LINKTOOTHERMODE###</p>
 </form>
-<p>###LINKTOOTHERMODE###</p>
+</div>
 <!-- ###SEARCH_FORM### end -->
 
 
 
 
 <!-- ###RULES### begin -->
-<h2>###RULES_HEADER###</h2>
-<p>###RULES_TEXT###</p>
+<div class="tx-indexedsearch-rules">
+	<h2>###RULES_HEADER###</h2>
+	<p>###RULES_TEXT###</p>
+</div>
 <!-- ###RULES### end -->
 
 
 <!-- ###RESULT_SECTION_LINKS### begin -->
-<table cellpadding="0" cellspacing="0" border="0">
-	###LINKS###
-</table>
+<div class="tx-indexedsearch-sec">
+	<table cellpadding="0" cellspacing="0" border="0" summary="Result links">
+		###LINKS###
+	</table>
+</div>
 <!-- ###RESULT_SECTION_LINKS### end -->
 
 <!-- ###RESULT_SECTION_LINKS_LINK### begin -->
 	<tr>
-		<td class="tx-indexedsearch-form" width="100%">--> ###LINK###</td>
+		<td width="100%">--&gt; ###LINK###</td>
 	</tr>
 
 <!-- ###RESULT_SECTION_LINKS_LINK### end -->
@@ -171,14 +177,14 @@
 
 
 <!-- ###SECTION_HEADER### begin -->
-<p><a name="###ANCHOR_URL###"></a>
-	<table cellpadding="0" cellspacing="0" border="0">
+<div class="tx-indexedsearch-secHead"><a name="###ANCHOR_URL###"></a>
+	<table cellpadding="0" cellspacing="0" border="0" summary="Section header">
 		<tr>
-			<td class="tx-indexedsearch-section-header" width="100%">###SECTION_TITLE###</b></td>
-			<td class="tx-indexedsearch-section-header" nowrap>###RESULT_COUNT### ###RESULT_NAME###</td>
+			<td class="tx-indexedsearch-title title" width="100%">###SECTION_TITLE###</td>
+			<td class="tx-indexedsearch-result-count result-count" nowrap="nowrap">###RESULT_COUNT### ###RESULT_NAME###</td>
 		</tr>
 	</table>
-</p>
+</div>
 
 <!-- ###SECTION_HEADER### end -->
 
@@ -186,46 +192,46 @@
 
 
 <!-- ###RESULT_OUTPUT### begin -->
-<br>
-<table cellpadding="0" cellspacing="0" border="0">
+<div class="tx-indexedsearch-res">
+	<table cellpadding="0" cellspacing="0" border="0" summary="Result row">
 
-	<!-- ###HEADER_ROW### begin -->
-	<tr>
-		<td class="tx-indexedsearch-list" nowrap>###ICON###</td>
-		<td class="tx-indexedsearch-list" width="100%">###RESULT_NUMBER######TITLE###</td>
-		<td class="tx-indexedsearch-list" nowrap>###RATING###</td>
-	</tr>
-	<!-- ###HEADER_ROW### end -->
+		<!-- ###HEADER_ROW### begin -->
+		<tr>
+			<td class="tx-indexedsearch-icon icon" nowrap="nowrap">###ICON###</td>
+			<td class="tx-indexedsearch-result-number result-number" nowrap="nowrap">###RESULT_NUMBER###</td>
+			<td class="tx-indexedsearch-title title" width="100%">###TITLE###</td>
+			<td class="tx-indexedsearch-percent percent" nowrap="nowrap">###RATING###</td>
+		</tr>
+		<!-- ###HEADER_ROW### end -->
 
-	<!-- ###ROW_LONG### begin -->
-	<tr>
-		<td class="tx-indexedsearch-list" nowrap>&nbsp;</td>
-		<td class="tx-indexedsearch-list" width="100%" colspan="2">###DESCRIPTION###</td>
-	</tr>
-	<tr>
-		<td class="tx-indexedsearch-list" nowrap>&nbsp;</td>
-		<td class="tx-indexedsearch-list" width="100%"><p class="datum">###TEXT_ITEM_SIZE###: ###SIZE###<br>###TEXT_ITEM_CRDATE### ###CREATED### - ###TEXT_ITEM_MTIME### ###MODIFIED###</p></td>
-		<td class="tx-indexedsearch-list" nowrap>###PATH###</td>
-	</tr>
-	<!-- ###ROW_LONG### end -->
+		<!-- ###ROW_LONG### begin -->
+		<tr>
+			<td>&nbsp;</td>
+			<td class="tx-indexedsearch-descr descr" width="100%" colspan="3">###DESCRIPTION###</td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td class="tx-indexedsearch-info info" width="100%" colspan="3">###TEXT_ITEM_SIZE### ###SIZE### - ###TEXT_ITEM_CRDATE### ###CREATED### - ###TEXT_ITEM_MTIME### ###MODIFIED###<br />
+				###TEXT_ITEM_PATH### <span class="tx-indexedsearch-path path">###PATH###</span></td>
+		</tr>
+		<!-- ###ROW_LONG### end -->
 
-	<!-- ###ROW_SHORT### begin -->
-	<tr>
-		<td class="tx-indexedsearch-list" nowrap>&nbsp;</td>
-		<td class="tx-indexedsearch-list" width="100%" colspan="2">###DESCRIPTION###</td>
-	</tr>
-	<!-- ###ROW_SHORT### end -->
+		<!-- ###ROW_SHORT### begin -->
+		<tr>
+			<td>&nbsp;</td>
+			<td class="tx-indexedsearch-descr descr" width="100%" colspan="3">###DESCRIPTION###</td>
+		</tr>
+		<!-- ###ROW_SHORT### end -->
 
-	<!-- ###ROW_SUB### begin -->
-	<tr>
-		<td class="tx-indexedsearch-list" nowrap>&nbsp;</td>
-		<td class="tx-indexedsearch-list" width="100%" colspan="2"><br/>###TEXT_ROW_SUB###<br/><br/></td>
-	</tr>
-	<!-- ###ROW_SUB### end -->
-
-
-</table>
-
+		<!-- ###ROW_SUB### begin -->
+		<tr>
+			<td>&nbsp;</td>
+			<td class="tx-indexedsearch-list list" width="100%" colspan="3"><br />###TEXT_ROW_SUB###<br /><br /></td>
+		</tr>
+		<!-- ###ROW_SUB### end -->
+	</table>
+	<br />
+</div>
 <!-- ###RESULT_OUTPUT### end -->
 
 </body>

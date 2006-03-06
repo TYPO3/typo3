@@ -1,3 +1,8 @@
+2006-03-06  Michael Stucki  <michael@typo3.org>
+
+	* Changed file icons for recently added advanced-BE-search feature
+	* Changes to indexed search, see local ChangeLog for details
+
 2006-03-06  Sebastian Kurfuerst  <sebastian@garbage-group.de>
 
 	* Fixed some broken media relations
@@ -5,8 +10,8 @@
 	* Fixed bug #1635: Add page TSconfig via user TSconfig
 
 2006-03-06  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
-	
-	* Remove from core some remaining elements used only by Direct Mail extension and already moved to Direct Mail 2.0:
+
+	* !!! Remove from core some remaining elements used only by Direct Mail extension and already moved to Direct Mail 2.0:
 		- remove file t3lib/gfx/i/dmail_list.gif
 		- remove file t3lib/gfx/i/modules_dmail.gif
 		- remove file t3lib/gfx/i/modules_dmail__h.gif
@@ -14,10 +19,6 @@
 		- remove methods find_MIDfromReturnPath and find_XTypo3MID from t3lib/class.t3lib_readmail.php
 		- remove columns 'module_sys_dmail_html' (fe_users) and 'module_sys_dmail_category' (fe_users and tt_content) from typo3/sysext/cms/ext_tables.sql
 		- remove item 'dmail' on column 'module' of table 'pages' in typo3/sysext/cms/ext_tables.php
-	
-2006-03-06  Michael Stucki  <michael@typo3.org>
-
-	* Changed file icons for recently added advanced-BE-search feature
 
 2006-03-05  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
