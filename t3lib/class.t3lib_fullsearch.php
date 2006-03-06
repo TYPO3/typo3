@@ -629,9 +629,9 @@ class t3lib_fullsearch {
 			$out .= '<a href="#" onClick="'.t3lib_BEfunc::editOnClick($params, $GLOBALS['BACK_PATH'], t3lib_div::getIndpEnv('REQUEST_URI').t3lib_div::implodeArrayForUrl('SET', t3lib_div::_POST('SET'))).'"><img src="'.$GLOBALS['BACK_PATH'].'gfx/edit2.gif" width="11" height="12" border="0" alt=""></a>';
 		} else {
 			$out.= '<a href="'.t3lib_div::linkThisUrl($GLOBALS['BACK_PATH'].'tce_db.php', array('cmd['.$table.']['.$row['uid'].'][undelete]' => '1', 'redirect' => t3lib_div::linkThisScript(array()))).'">';
-			$out.= '<img src="'.$GLOBALS['BACK_PATH'].'gfx/undelete.gif" width="18" height="16" border="0" alt="undelete" only></A>';
+			$out.= '<img src="'.$GLOBALS['BACK_PATH'].'gfx/undelete.gif" width="13" height="12" border="0" alt="undelete" only></A>';
 			$out.= '<a href="'.t3lib_div::linkThisUrl($GLOBALS['BACK_PATH'].'tce_db.php', array('cmd['.$table.']['.$row['uid'].'][undelete]' => '1', 'redirect' => t3lib_div::linkThisUrl('alt_doc.php', array('edit['.$table.']['.$row['uid'].']' => 'edit', 'returnUrl' => t3lib_div::linkThisScript(array()))))).'">';
-			$out.= '<img src="'.$GLOBALS['BACK_PATH'].'gfx/undelete_and_edit.gif" width="18" height="16" border="0" alt="undelete and edit">';
+			$out.= '<img src="'.$GLOBALS['BACK_PATH'].'gfx/undelete_and_edit.gif" width="13" height="12" border="0" alt="undelete and edit">';
 		}
 		$_params = array($table=>$row);
 		if (is_array($this->hookArray['additionalButtons']))	{
