@@ -431,7 +431,6 @@ if (TYPO3_MODE=='BE')	{
 					Array('LLL:EXT:cms/locallang_tca.php:pages.module.I.2', 'board'),
 					Array('LLL:EXT:cms/locallang_tca.php:pages.module.I.3', 'news'),
 					Array('LLL:EXT:cms/locallang_tca.php:pages.module.I.4', 'fe_users'),
-					Array('LLL:EXT:cms/locallang_tca.php:pages.module.I.5', 'dmail'),
 					Array('LLL:EXT:cms/locallang_tca.php:pages.module.I.6', 'approve')
 				),
 				'default' => ''
