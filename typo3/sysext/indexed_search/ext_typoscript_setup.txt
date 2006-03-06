@@ -1,5 +1,5 @@
 plugin.tx_indexedsearch {
-	templateFile = EXT:indexed_search/pi/template_css.tmpl
+	templateFile = EXT:indexed_search/pi/indexed_search.tmpl
 
 	show {
 		rules = 1

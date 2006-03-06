@@ -3,6 +3,7 @@
 	* Removed template_traditional.tmpl because it seems not needed
 	* Changes to template_css.tmpl to make it fully XHTML Transitional
 	* Changed the result browser: Use unsorted list instead of a table element
+	* Renamed template_css.tmpl to indexed_search.tmpl
 
 2006-02-15  Michael Stucki  <michael@typo3.org>
 
