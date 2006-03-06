@@ -2,6 +2,7 @@
 
 	* Replace isset with strlen in fix of bugtracker issue 1736.
 	* htmlArea RTE: Add $RTEWrapStyle variable to frontend plugin class.tx_rtehtmlarea_pi2.php (bugtracker issue 2760).
+	* Use new ts parsing := in cumulative sets of configuration defaults.
 
 2006-03-04  Michael Stucki  <michael@typo3.org>
 

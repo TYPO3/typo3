@@ -40,16 +40,17 @@ RTE.classesAnchor {
 	## Default RTE configuration
 RTE.default {
 	
-		## Enable the image button (htmlArea RTE only)
-	showButtons.image = 1
+		## Enable the image button
+	showButtons := addToList(image)
 	
-		## TAGS ALLOWED OUTSIDE P & DIV
+		## Tags allowed outside p & div
 		## Adding img tag to the default list
-	proc.allowTagsOutside = img, hr, address
+	proc.allowTagsOutside := addToList(img)
 	
-		## DO NOT REMOVE IMG TAGS
+		## Do not remove img tags
 	proc.entryHTMLparser_db.tags.img >
 }
 
+RTE.default.FE.showButtons < RTE.default.showButtons
 RTE.default.FE.proc.allowTagsOutside < RTE.default.proc.allowTagsOutside
-RTE.default.FE.proc.entryHTMLparser_db.removeTags < RTE.default.proc.entryHTMLparser_db.removeTags
+RTE.default.FE.proc.entryHTMLparser_db.tags.img >

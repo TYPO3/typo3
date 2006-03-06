@@ -168,7 +168,7 @@ RTE.default {
 	ignoreMainStyleOverride = 1
 	
 		## For this demo, do not remove font, strike and u tags
-	proc.entryHTMLparser_db.removeTags = center, o:p, sdfield
+	proc.entryHTMLparser_db.removeTags := removeFromList(font,strike,u)
 	
 		## List all class selectors that are allowed on the way to the database
 	proc.allowedClasses (

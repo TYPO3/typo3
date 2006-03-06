@@ -131,6 +131,9 @@ RTE.default.proc {
 	}
 }
 
+	## Use same RTE processing rules in FE
+RTE.default.FE.proc < RTE.default.proc
+
 	## RTE processing rules for bodytext column of tt_content table
 	## Erase settings from other extensions
 RTE.config.tt_content.bodytext >
