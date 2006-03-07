@@ -933,12 +933,24 @@
 				}
 			}
 		}
+
+		// spacer is not accessible in frontend
+		if ($this->page['doktype'] == 199)	{
+			if ($this->TYPO3_CONF_VARS['FE']['pageNotFound_handling'])	{
+				$this->pageNotFoundAndExit('The requested page does not exist!');
+			} else {
+				$this->printError('The requested page does not exist!');
+				exit;
+			}
+		}
+
 			// Is the ID a link to another page??
 		if ($this->page['doktype']==4)	{
 			$this->MP = '';		// We need to clear MP if the page is a shortcut. Reason is if the short cut goes to another page, then we LEAVE the rootline which the MP expects.
 			$this->page = $this->getPageShortcut($this->page['shortcut'],$this->page['shortcut_mode'],$this->page['uid']);
 			$this->id = $this->page['uid'];
 		}
+
 			// Gets the rootLine
 		$this->rootLine = $this->sys_page->getRootLine($this->id,$this->MP);
 

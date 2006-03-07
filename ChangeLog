@@ -1,6 +1,7 @@
 2006-03-07  Wolfgang Klinger  <wolfgang@stufenlos.net>
 
 	* Feature #2675: Cropscale for imgResources (thanks to Stefan Geith)
+	* Fixed bug #2753: Page type 'Spacer' is accessible via FE
 
 2006-03-07  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
