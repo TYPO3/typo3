@@ -1,3 +1,8 @@
+
+2006-03-07  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+
+	* Renamed TS := function addString to appenString and added prependString
+
 2006-03-06  Michael Stucki  <michael@typo3.org>
 
 	* Changed file icons for recently added advanced-BE-search feature

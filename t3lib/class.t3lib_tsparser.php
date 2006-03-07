@@ -250,36 +250,44 @@ class t3lib_TSparser {
 								}
 
 									// Checking for special TSparser properties (to change TS values at parsetime)
-								if (preg_match('/^:=/', $line))	{
-									$operator = trim(preg_replace('/^:=([^\(]+)\((.+)\).*/', '$1', $line));
-									$operationValue = preg_replace('/^:=([^\(]+)\((.+)\).*/', '$2', $line);	// Value to be added/removed from $currentValue
+								$match = array();
+								if (preg_match('/^:=([^\(]+)\((.+)\).*/', $line, $match))	{
+									$tsFunc = trim($match[1]);
+									$tsFuncArg = $match[2];
 									list ($currentValue) = $this->getVal($objStrName,$setup);
 
-									switch ($operator)	{
-										case 'addString':
-											$newValue = $currentValue . trim($operationValue);
+									switch ($tsFunc)	{
+										case 'prependString':
+											$newValue = $tsFuncArg . $currentValue;
+										break;
+										case 'apppendString':
+											$newValue = $currentValue . $tsFuncArg;
 										break;
 										case 'removeString':
-											$newValue = str_replace(trim($operationValue), '', $currentValue);
+											$newValue = str_replace($tsFuncArg, '', $currentValue);
+										break;
+										case 'replaceString':
+											list($fromStr,$toStr) = explode('|', $tsFuncArg, 2);
+											$newValue = str_replace($fromStr, $toStr, $currentValue);
 										break;
 										case 'addToList':
-											$newValue = (strcmp('',$currentValue) ? $currentValue.',' : '') . trim($operationValue);
+											$newValue = (strcmp('',$currentValue) ? $currentValue.',' : '') . trim($tsFuncArg);
 										break;
 										case 'removeFromList':
 											$existingElements = t3lib_div::trimExplode(',',$currentValue);
-											$removeElements = t3lib_div::trimExplode(',',$operationValue);
+											$removeElements = t3lib_div::trimExplode(',',$tsFuncArg);
 											if (count($removeElements))	{
 												$newValue = implode(',', array_diff($existingElements, $removeElements));
 											}
 										break;
 										default:
-											if (isset($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tsparser.php']['preParseFunc'][$operator]))	{
-												$hookMethod = $TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tsparser.php']['preParseFunc'][$operator];
-												$params = array('currentValue'=>$currentValue, 'operationValue'=>$operationValue);
+											if (isset($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tsparser.php']['preParseFunc'][$tsFunc]))	{
+												$hookMethod = $TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tsparser.php']['preParseFunc'][$tsFunc];
+												$params = array('currentValue'=>$currentValue, 'functionArgument'=>$tsFuncArg);
 												$fakeThis = FALSE;
 												$newValue = t3lib_div::callUserFunction($hookMethod,$params,$fakeThis);
 											} else {
-												t3lib_div::sysLog('Missing operator function for '.$operator.' on Typoscript line '.$lineP,'Core',2);
+												t3lib_div::sysLog('Missing function definition for '.$tsFunc.' on Typoscript line '.$lineP,'Core',2);
 											}
 									}
 
