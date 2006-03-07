@@ -2255,11 +2255,11 @@ class t3lib_div {
 			return TRUE;
 		}
 	}
-	
+
 	/**
 	 * Creates a directory - including parent directories if necessary - in the file system
 	 *
-	 * @param	string		Base folder. This must exist! Must have trailing slash! Example "/root/typo3site/" 
+	 * @param	string		Base folder. This must exist! Must have trailing slash! Example "/root/typo3site/"
 	 * @param	string		Deep directory to create, eg. "xx/yy/" which creates "/root/typo3site/xx/yy/" if $destination is "/root/typo3site/"
 	 * @return	string		If error, returns error string.
 	 */
@@ -2274,7 +2274,7 @@ class t3lib_div {
 					return 'Error: The directory "'.$destination.$root.'" could not be created...';
 				}
 			}
-		}		
+		}
 	}
 
 	/**
@@ -3314,15 +3314,15 @@ class t3lib_div {
 
 					// Specific language, convert from utf-8 to backend language charset:
 					// NOTICE: Converting from utf-8 back to "native" language may be a temporary solution until we can totally discard "locallang.php" files altogether (and use utf-8 for everything). But doing this conversion is the quickest way to migrate now and the source is in utf-8 anyway which is the main point.
-				if ($langKey!='default')	{				
-					
+				if ($langKey!='default')	{
+
 						// If no entry is found for the language key, then force a value depending on meta-data setting. By default an automated filename will be used:
 					if (!isset($xmlContent['data'][$langKey]))	{
 						$LOCAL_LANG[$langKey] = t3lib_div::llXmlAutoFileName($fileRef, $langKey);
  					} else {
 						$LOCAL_LANG[$langKey] = $xmlContent['data'][$langKey];
 					}
-					
+
 						// Checking if charset should be converted.
 					if (is_array($LOCAL_LANG[$langKey]) && $origCharset!='utf-8')	{
 						foreach($LOCAL_LANG[$langKey] as $labelKey => $labelValue)	{
@@ -3410,7 +3410,7 @@ class t3lib_div {
 		}
 
 		if ($validatedPrefix)	{
-			
+
 				// Divide file reference into extension key, directory (if any) and base name:
 			list($file_extKey,$file_extPath) = explode('/',substr($fileRef,strlen($validatedPrefix)),2);
 			$temp = t3lib_div::revExplode('/',$file_extPath,2);
@@ -3526,7 +3526,7 @@ class t3lib_div {
 			// Check persistent object and if found, call directly and exit.
 		if (is_array($GLOBALS['T3_VAR']['callUserFunction'][$funcName]))	{
 			return call_user_func(
-						array(&$GLOBALS['T3_VAR']['callUserFunction'][$funcName]['obj'], 
+						array(&$GLOBALS['T3_VAR']['callUserFunction'][$funcName]['obj'],
 							$GLOBALS['T3_VAR']['callUserFunction'][$funcName]['method']),
 						$params,
 						$ref
