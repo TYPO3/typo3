@@ -73,7 +73,7 @@ plugin.tx_indexedsearch {
 		group = flat
 	}
 	_CSS_DEFAULT_STYLE (
-		.tx-indexedsearch .tx-indexedsearch-browsebox li { display:inline; margin-right:5px; }
+		.tx-indexedsearch .tx-indexedsearch-browsebox LI { display:inline; margin-right:5px; }
 		.tx-indexedsearch .tx-indexedsearch-searchbox INPUT.tx-indexedsearch-searchbox-button { width:100px; }
 		.tx-indexedsearch .tx-indexedsearch-searchbox INPUT.tx-indexedsearch-searchbox-sword { width:150px; }
 		.tx-indexedsearch .tx-indexedsearch-whatis { margin-top:10px; margin-bottom:5px; }

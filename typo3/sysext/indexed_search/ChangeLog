@@ -1,3 +1,7 @@
+2006-03-07  Michael Stucki  <michael@typo3.org>
+
+	* Changed a label key to prevent any problems in case the translation is not updated
+
 2006-03-06  Michael Stucki  <michael@typo3.org>
 
 	* Removed template_traditional.tmpl because it seems not needed

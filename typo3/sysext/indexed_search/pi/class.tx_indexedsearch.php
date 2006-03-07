@@ -1628,7 +1628,7 @@ class tx_indexedsearch extends tslib_pibase {
 		</ul>';
 		}
 
-		$label = $this->pi_getLL('pi_list_browseresults_displays','Displaying results ###TAG_BEGIN###%s to %s###TAG_END### out of ###TAG_BEGIN###%s###TAG_END###');
+		$label = $this->pi_getLL('pi_list_browseresults_display','Displaying results ###TAG_BEGIN###%s to %s###TAG_END### out of ###TAG_BEGIN###%s###TAG_END###');
 		$label = str_replace('###TAG_BEGIN###','<strong>',$label);
 		$label = str_replace('###TAG_END###','</strong>',$label);
 

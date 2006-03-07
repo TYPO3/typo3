@@ -86,7 +86,7 @@
 			<label index="pi_list_browseresults_prev">&lt; Previous</label>
 			<label index="pi_list_browseresults_page">Page</label>
 			<label index="pi_list_browseresults_next">Next &gt;</label>
-			<label index="pi_list_browseresults_displays">Displaying results ###TAG_BEGIN###%s to %s###TAG_END### out of ###TAG_BEGIN###%s###TAG_END###</label>
+			<label index="pi_list_browseresults_display">Displaying results ###TAG_BEGIN###%s to %s###TAG_END### out of ###TAG_BEGIN###%s###TAG_END###</label>
 			<label index="local_operator_AND">AND</label>
 			<label index="local_operator_OR">OR</label>
 			<label index="local_operator_NOT">NOT</label>
