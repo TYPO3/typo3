@@ -1,3 +1,7 @@
+2006-03-08  Bernhard Kraft  <kraftb@kraftb.at>
+
+	* Implemented featured #2695: Tables can not get hidden in Web>List. Now this can get accomplished via Page/User/Group TS-Config
+
 2006-03-08  Rene Fritz  <r.fritz@colorcube.de>
 
 	* Enhanced MM handling in TCE for usage from foreign tables. Means MM relations can be edited in TCEForms from both ends of the relation.

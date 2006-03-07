@@ -115,6 +115,7 @@ class recordList extends t3lib_recordList {
 	var $clickTitleMode = '';			// Mode for what happens when a user clicks the title of a record.
 	var $modSharedTSconfig = array();		// Shared module configuration, used by localization features
 	var $pageRecord = array();		// Loaded with page record with version overlay if any.
+	var $hideTables = '';			// Tables which should not get listed
 
 		// Internal, dynamic:
 	var $JScode = '';				// JavaScript code accumulation
@@ -220,6 +221,9 @@ class recordList extends t3lib_recordList {
 
 					// Load full table definitions:
 				t3lib_div::loadTCA($tableName);
+
+					// Hide tables which are configured via TSConfig not to be shown (also works for admins):
+				if (t3lib_div::inList($this->hideTables, $tableName))	continue;
 
 					// iLimit is set depending on whether we're in single- or multi-table mode
 				if ($this->table)	{
