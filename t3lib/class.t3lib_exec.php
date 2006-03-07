@@ -184,7 +184,7 @@ class t3lib_exec {
 		}
 		$cmd = $T3_VAR['t3lib_exec']['apps'][$cmd]['path'].$T3_VAR['t3lib_exec']['apps'][$cmd]['app'].' ';
 
-		return $handler.$cmd;
+		return trim($handler.$cmd);
 	}
 
 
