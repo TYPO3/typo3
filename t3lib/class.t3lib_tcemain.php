@@ -1315,13 +1315,13 @@ class t3lib_TCEmain	{
 					);
 				break;
 				case 'db':
-					$valueArray = $this->checkValue_group_select_processDBdata($valueArray,$tcaFieldConf,$id,$status,'group');
+					$valueArray = $this->checkValue_group_select_processDBdata($valueArray,$tcaFieldConf,$id,$status,'group',$PP);
 				break;
 			}
 		}
 			// For select types which has a foreign table attached:
 		if ($tcaFieldConf['type']=='select' && $tcaFieldConf['foreign_table'])	{
-			$valueArray = $this->checkValue_group_select_processDBdata($valueArray,$tcaFieldConf,$id,$status,'select');
+			$valueArray = $this->checkValue_group_select_processDBdata($valueArray,$tcaFieldConf,$id,$status,'select',$PP);
 		}
 
 // BTW, checking for min and max items here does NOT make any sense when MM is used because the above function calls will just return an array with a single item (the count) if MM is used... Why didn't I perform the check before? Probably because we could not evaluate the validity of record uids etc... Hmm...
@@ -1832,25 +1832,35 @@ class t3lib_TCEmain	{
 	 * @param	integer		Record id, used for look-up of MM relations (local_uid)
 	 * @param	string		Status string ('update' or 'new')
 	 * @param	string		The type, either 'select' or 'group'
+	 * @param	array		Additional parameters in a numeric array: $table,$id,$curValue,$status,$realPid,$recFID
 	 * @return	array		Modified value array
 	 */
-	function checkValue_group_select_processDBdata($valueArray,$tcaFieldConf,$id,$status,$type)	{
+	function checkValue_group_select_processDBdata($valueArray,$tcaFieldConf,$id,$status,$type,$PP)	{
+
+		list($table,$id,$curValue,$status,$realPid,$recFID) = $PP;
+
 		$tables = $type=='group'?$tcaFieldConf['allowed']:$tcaFieldConf['foreign_table'].','.$tcaFieldConf['neg_foreign_table'];
 		$prep = $type=='group'?$tcaFieldConf['prepend_tname']:$tcaFieldConf['neg_foreign_table'];
 
 		$dbAnalysis = t3lib_div::makeInstance('t3lib_loadDBGroup');
 		$dbAnalysis->registerNonTableValues=$tcaFieldConf['allowNonIdValues'] ? 1 : 0;
-		$dbAnalysis->start(implode(',',$valueArray),$tables);
 
 		if ($tcaFieldConf['MM'])	{
+
+			$dbAnalysis->init($table, $tcaFieldConf);
+			$dbAnalysis->start(implode(',',$valueArray),$tables,$tcaFieldConf['MM']);
+
 			if ($status=='update')	{
 				$dbAnalysis->writeMM($tcaFieldConf['MM'],$id,$prep);
 			} else {
 				$this->dbAnalysisStore[] = array($dbAnalysis,$tcaFieldConf['MM'],$id,$prep);	// This will be traversed later to execute the actions
 			}
+
 			$cc=count($dbAnalysis->itemArray);
 			$valueArray = array($cc);
+
 		} else {
+			$dbAnalysis->start(implode(',',$valueArray),$tables);
 			$valueArray = $dbAnalysis->getValueArray($prep);
 			if ($type=='select' && $prep)	{
 				$valueArray = $dbAnalysis->convertPosNeg($valueArray,$tcaFieldConf['foreign_table'],$tcaFieldConf['neg_foreign_table']);
@@ -2577,6 +2587,7 @@ class t3lib_TCEmain	{
 			$prependName = $conf['type']=='group' ? $conf['prepend_tname'] : $conf['neg_foreign_table'];
 			if ($conf['MM'])	{
 				$dbAnalysis = t3lib_div::makeInstance('t3lib_loadDBGroup');
+				$dbAnalysis->init($table, $conf);
 				$dbAnalysis->start('',$allowedTables,$conf['MM'],$uid);
 				$value = implode(',',$dbAnalysis->getValueArray($prependName));
 			}
@@ -2685,6 +2696,7 @@ class t3lib_TCEmain	{
 
 				// Implode the new filelist into the new value (all files have absolute paths now which means they will get copied when entering TCEmain as new values...)
 			$value = implode(',',$newValue);
+
 		}
 
 			// Return the new value:
@@ -3120,7 +3132,7 @@ class t3lib_TCEmain	{
 						$message = "Record '%s' (%s) was deleted unrecoverable from page '%s' (%s)";
 					}
 					else {
-						$message = $state == 1 ? 
+						$message = $state == 1 ?
 							"Record '%s' (%s) was restored on page '%s' (%s)" :
 							"Record '%s' (%s) was deleted from page '%s' (%s)";
 					}
@@ -3456,7 +3468,7 @@ class t3lib_TCEmain	{
 									$lockFileName = PATH_site.'typo3temp/swap_locking/'.$table.':'.$id.'.ser';
 
 									if (!@is_file($lockFileName))	{
-					
+
 											// Write lock-file:
 										t3lib_div::writeFileToTypo3tempDir($lockFileName,serialize(array(
 											'tstamp'=>time(),
@@ -3464,7 +3476,7 @@ class t3lib_TCEmain	{
 											'curVersion'=>$curVersion,
 											'swapVersion'=>$swapVersion
 										)));
-	
+
 											// Find fields to keep
 										$keepFields = $this->getUniqueFields($table);
 										if ($TCA[$table]['ctrl']['sortby'])	{
@@ -3495,7 +3507,7 @@ class t3lib_TCEmain	{
 										$curVersion['t3ver_tstamp'] = time();
 										$curVersion['t3ver_count'] = $curVersion['t3ver_count']+1;	// Increment lifecycle counter
 										$curVersion['t3ver_stage'] = $curVersion['t3ver_state'] = 0;
-									
+
 										if ($table==='pages') {		// Keeping the swapmode state
 												$curVersion['t3ver_swapmode'] = $swapVersion['t3ver_swapmode'];
 										}
@@ -3515,35 +3527,35 @@ class t3lib_TCEmain	{
 										}
 
 										if (!count($sqlErrors))	{
-									
+
 												// Checking for delete:
 											if ($swapVersion['t3ver_state']==2)	{
 												$this->deleteEl($table,$id,TRUE);	// Force delete
 											}
-	
+
 											$this->newlog('Swapping successful for table "'.$table.'" uid '.$id.'=>'.$swapWith);
-	
+
 												// Update reference index:
 											$this->updateRefIndex($table,$id);
 											$this->updateRefIndex($table,$swapWith);
-	
+
 												// SWAPPING pids for subrecords:
 											if ($table=='pages' && $swapVersion['t3ver_swapmode']>=0)	{
-	
+
 													// Collect table names that should be copied along with the tables:
 												foreach($TCA as $tN => $tCfg)	{
 													if ($swapVersion['t3ver_swapmode']>0 || $TCA[$tN]['ctrl']['versioning_followPages'])	{	// For "Branch" publishing swap ALL, otherwise for "page" publishing, swap only "versioning_followPages" tables
 														$temporaryPid = -($id+1000000);
-	
+
 														$GLOBALS['TYPO3_DB']->exec_UPDATEquery($tN,'pid='.intval($id),array('pid'=>$temporaryPid));
 														if ($GLOBALS['TYPO3_DB']->sql_error())	$sqlErrors[]=$GLOBALS['TYPO3_DB']->sql_error();
-	
+
 														$GLOBALS['TYPO3_DB']->exec_UPDATEquery($tN,'pid='.intval($swapWith),array('pid'=>$id));
 														if ($GLOBALS['TYPO3_DB']->sql_error())	$sqlErrors[]=$GLOBALS['TYPO3_DB']->sql_error();
-	
+
 														$GLOBALS['TYPO3_DB']->exec_UPDATEquery($tN,'pid='.intval($temporaryPid),array('pid'=>$swapWith));
 														if ($GLOBALS['TYPO3_DB']->sql_error())	$sqlErrors[]=$GLOBALS['TYPO3_DB']->sql_error();
-	
+
 														if (count($sqlErrors))	{
 															$this->newlog('During Swapping: SQL errors happend: '.implode('; ',$sqlErrors),2);
 														}
@@ -3552,7 +3564,7 @@ class t3lib_TCEmain	{
 											}
 												// Clear cache:
 											$this->clear_cache($table,$id);
-	
+
 												// Checking for "new-placeholder" and if found, delete it (BUT FIRST after swapping!):
 											if ($curVersion['t3ver_state']==1)	{
 												$this->deleteEl($table, $swapWith, TRUE, TRUE); 	// For delete + completely delete!

@@ -70,46 +70,126 @@
  * @subpackage t3lib
  */
 class t3lib_loadDBGroup	{
-		// External, static:
-	var $fromTC = 1;					// Means that only uid and the label-field is returned
-	var $registerNonTableValues=0;		// If set, values that are not ids in tables are normally discarded. By this options they will be preserved.
 
-		// Internal, dynamic:
-	var $tableArray=Array();			// Contains the table names as keys. The values are the id-values for each table. Should ONLY contain proper table names.
-	var $itemArray=Array();				// Contains items in an numeric array (table/id for each). Tablenames here might be "_NO_TABLE"
-	var $nonTableArray=array();			// Array for NON-table elements
-	var $additionalWhere=array();
-	var $checkIfDeleted = 1;			// deleted-column is added to additionalWhere... if this is set...
-	var $dbPaths=Array();
-	var $firstTable = '';				// Will contain the first table name in the $tablelist (for positive ids)
-	var $secondTable = '';				// Will contain the second table name in the $tablelist (for negative ids)
+	/**
+	 * Means that only uid and the label-field is returned
+	 */
+	var $fromTC = true;
 
+	/**
+	 * Will exclude deleted records.
+	 * deleted-column is added to $additionalWhere...
+	 */
+	var $checkIfDeleted = true;
+
+	/**
+	 * If set, values that are not ids in tables are normally discarded.
+	 * By this options they will be preserved and stored in $itemArray.
+	 */
+	var $registerNonTableValues = false;
+
+	/**
+	 * Usded to collect NON-table elements if registerNonTableValues = true
+	 */
+	var $nonTableArray = array();
 
 
 
 	/**
+	 * Contains the table names htat are allowed for the relation as keys.
+	 * The values are the id-values for each table. Should ONLY contain proper table names.
+	 */
+	var $tableArray = array();
+
+	/**
+	 * Contains items in an numeric array (table/id for each). Tablenames here might be "_NO_TABLE"
+	 */
+	var $itemArray = array();
+
+
+
+	var $additionalWhere = array();		// used for additional where clause like "AND table.delete=0"
+	var $firstTable = '';				// Will contain the first table name in the $tablelist (for positive ids)
+	var $secondTable = '';				// Will contain the second table name in the $tablelist (for negative ids)
+
+
+	var $MMmatchFields = array();
+	var $MMinsertFields = array();
+	var $MMlocalTable = '';
+	var $MMmatchTablenames = '';
+	var $MMtableWhere = '';
+	var $MMswapLocalForeign = false;
+
+	/**
 	 * Initialization of the class.
 	 *
-	 * @param	string		List of group/select items
-	 * @param	string		Comma list of tables, first table takes priority if no table is set for an entry in the list.
+	 * Known parameter from TCA:
+	 *
+	 * MM_foreign_select
+	 * MM_table_where
+	 * MM_insert_fields
+	 * prepend_tname
+	 * allowed
+	 *
+	 * @param 	string	 	Name of the local table
+	 * @param	array		Configuration array coming from TCA.
+	 * @return	void
+	 */
+	function init($thisTable, $MMconf) {
+
+			// the local table name, needed for foreign select
+		$this->MMlocalTable = $thisTable;
+
+			// If set, uid_local and uid_foreign field names will be swapped
+		$this->MMswapLocalForeign = $MMconf['MM_foreign_select'];
+
+			// extra MM table where
+		$this->MMtableWhere = $MMconf['MM_table_where'];
+
+			// array of fields value pairs that should match while SELECT and will be written into MM table
+		$this->MMmatchFields = is_array($MMconf['MM_match_fields']) ? $MMconf['MM_match_fields'] : array();
+
+			// array of fields and value pairs used for insert in MM table
+		$this->MMinsertFields = is_array($MMconf['MM_insert_fields']) ? $MMconf['MM_insert_fields'] : $this->MMmatchFields;
+
+	 		// the "tablenames" field will be queried with this table name list if needed.
+		$this->MMmatchTablenames = '';
+		if ($MMconf['prepend_tname'] && $MMconf['MM_foreign_select']) {
+			$this->MMmatchTablenames = $this->MMlocalTable;
+		}
+	}
+
+
+	/**
+	 * Start of the MM handling. Reads relations.
+	 *
+	 * @param	string		List of group/select items. Possible format: tablename_uid,tablename2_uid
+	 * @param	string		Comma list of allowed tables, first table takes priority if no table is set for an entry in the item list.
 	 * @param	string		Name of a MM table.
 	 * @param	integer		Local UID for MM lookup
 	 * @return	void
 	 */
-	function start($itemlist,$tablelist, $MMtable='',$MMuid=0)	{
+	function start($itemlist, $tablelist, $MMtable='', $MMuid=0)	{
+
 			// If the table list is "*" then all tables are used in the list:
 		if (!strcmp(trim($tablelist),'*'))	{
 			$tablelist = implode(',',array_keys($GLOBALS['TCA']));
+		} else {
+				// add MMmatchTablenames which might be the local table for foreign access
+			$tablelist = $tablelist.','.$this->MMmatchTablenames;
+			$tablelist = implode(',', array_unique(t3lib_div::trimExplode(',',$tablelist,1)));
 		}
+
+		$MMmatchTablenames = $this->MMmatchTablenames ? $this->MMmatchTablenames : $tablelist;
 
 			// The tables are traversed and internal arrays are initialized:
 		$tempTableArray = t3lib_div::trimExplode(',',$tablelist,1);
 		foreach($tempTableArray as $key => $val)	{
 			$tName = trim($val);
-			$this->tableArray[$tName] = Array();
+			$this->tableArray[$tName] = array();
 			if ($this->checkIfDeleted && $GLOBALS['TCA'][$tName]['ctrl']['delete'])	{
 				$fieldN = $tName.'.'.$GLOBALS['TCA'][$tName]['ctrl']['delete'];
-				$this->additionalWhere[$tName].=' AND '.$fieldN.'=0';
+				$this->additionalWhere[$tName].=' AND NOT '.$fieldN;
 			}
 		}
 
@@ -122,9 +202,24 @@ class t3lib_loadDBGroup	{
 		next($this->tableArray);
 		$this->secondTable = key($this->tableArray);	// If the second table is set and the ID number is less than zero (later) then the record is regarded to come from the second table...
 
+		$this->itemArray = array();
+
 			// Now, populate the internal itemArray and tableArray arrays:
 		if ($MMtable)	{	// If MM, then call this function to do that:
-			$this->readMM($MMtable,$MMuid);
+
+				// used here to get defVals when set - [tablename]_[id]
+			if(strpos($itemlist, '_')) {
+				$this->readList($itemlist);
+
+					// remap submitted defVals from form to local table if in foreign mode
+				if ($this->MMswapLocalForeign && $this->MMlocalTable) {
+					foreach ($this->itemArray as $key => $val) {
+						$this->itemArray[$key]['table_relation'] = $this->MMlocalTable; // is the current table
+					}
+				}
+			}
+
+			$this->readMM($MMtable, $MMuid, $MMmatchTablenames);
 		} else {
 				// If not MM, then explode the itemlist by "," and traverse the list:
 			$this->readList($itemlist);
@@ -181,26 +276,57 @@ class t3lib_loadDBGroup	{
 	 *
 	 * @param	string		MM Tablename
 	 * @param	integer		Local UID
+	 * @param	string		The "tablenames" field will be queried with this table name list
 	 * @return	void
 	 */
-	function readMM($tableName,$uid)	{
+	function readMM($tableName, $uid, $tableList='')	{
 		$key=0;
 
+		if ($this->MMswapLocalForeign) {
+			$uid_foreign = 'uid_local';
+			$uid_local = 'uid_foreign';
+		} else {
+			$uid_local = 'uid_local';
+			$uid_foreign = 'uid_foreign';
+		}
+
+		$where = $uid_local.'='.intval($uid);
+		if ($this->MMtableWhere) {
+			$where.= "\n".str_replace('###THIS_UID###', intval($uid), $this->MMtableWhere);
+		}
+		foreach ($this->MMmatchFields as $field => $value) {
+			$where.= ' AND '.$field.'='.$GLOBALS['TYPO3_DB']->fullQuoteStr($value, $tableName);
+		}
+		if ($tableList) {
+			$tableArr = t3lib_div::trimExplode(',', $tableList, 1);
+			$whereArr = array();
+			foreach($tableArr as $foreignTable) {
+				$whereArr[] = 'tablenames='.$GLOBALS['TYPO3_DB']->fullQuoteStr($foreignTable, $tableName);
+			}
+			$where.= ' AND ( '.implode(' OR ', $whereArr).' ) ';
+		}
+
 			// Select all MM relations:
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $tableName, 'uid_local='.intval($uid), '', 'sorting');
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $tableName, $where, '', 'sorting');
 		while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
-			$theTable = $row['tablenames'] ? $row['tablenames'] : $this->firstTable;		// If tablesnames columns exists and contain a name, then this value is the table, else it's the firstTable...
-			if (($row['uid_foreign'] || $theTable=='pages') && $theTable && isset($this->tableArray[$theTable]))	{
-				$this->itemArray[$key]['id'] = $row['uid_foreign'];
+
+				// in foreign_select mode firstTable is the right table - tablenames should then be the current table
+			$theTable = ($row['tablenames'] AND !$this->MMswapLocalForeign) ? $row['tablenames'] : $this->firstTable;
+
+			if (($row[$uid_foreign] || $theTable=='pages') && $theTable && isset($this->tableArray[$theTable]))	{
+				$this->itemArray[$key]['id'] = $row[$uid_foreign];
 				$this->itemArray[$key]['table'] = $theTable;
-				$this->tableArray[$theTable][]= $row['uid_foreign'];
+				$this->itemArray[$key]['table_relation'] = $row['tablenames'];
+				$this->tableArray[$theTable][]= $row[$uid_foreign];
 			} elseif ($this->registerNonTableValues)	{
-				$this->itemArray[$key]['id'] = $row['uid_foreign'];
+				$this->itemArray[$key]['id'] = $row[$uid_foreign];
 				$this->itemArray[$key]['table'] = '_NO_TABLE';
-				$this->nonTableArray[] = $row['uid_foreign'];
+				$this->itemArray[$key]['table_relation'] = '_NO_TABLE';
+				$this->nonTableArray[] = $row[$uid_foreign];
 			}
 			$key++;
 		}
+
 		$GLOBALS['TYPO3_DB']->sql_free_result($res);
 	}
 
@@ -212,10 +338,23 @@ class t3lib_loadDBGroup	{
 	 * @param	boolean		If set, then table names will always be written.
 	 * @return	void
 	 */
-	function writeMM($tableName,$uid,$prependTableName=0)	{
+	function writeMM($tableName, $uid, $prependTableName=0)	{
+
+		if ($this->MMswapLocalForeign) {
+			$uid_foreign = 'uid_local';
+			$uid_local = 'uid_foreign';
+		} else {
+			$uid_local = 'uid_local';
+			$uid_foreign = 'uid_foreign';
+		}
+
+		$where = $uid_local.'='.intval($uid);
+		if ($this->MMtableWhere) {
+			$where.= "\n".str_replace('###THIS_UID###', intval($uid), $this->MMtableWhere);
+		}
 
 			// Delete all relations:
-		$GLOBALS['TYPO3_DB']->exec_DELETEquery($tableName, 'uid_local='.intval($uid));
+		$GLOBALS['TYPO3_DB']->exec_DELETEquery($tableName, $where);
 
 			// If there are tables...
 		$tableC = count($this->tableArray);
@@ -228,13 +367,13 @@ class t3lib_loadDBGroup	{
 			foreach($this->itemArray as $val)	{
 				$c++;
 
-				$insertFields = array(
-					'uid_local' => $uid,
-					'uid_foreign' => $val['id'],
-					'sorting' => $c
-				);
+				$insertFields = $this->MMinsertFields;
+				$insertFields[$uid_local] = $uid;
+				$insertFields[$uid_foreign] = $val['id'];
+				$insertFields['sorting'] = $c;
+
 				if ($prep || $val['table']=='_NO_TABLE')	{
-					$insertFields['tablenames'] = $val['table'];
+					$insertFields['tablenames'] = $val['table_relation'] ? $val['table_relation'] : $val['table'];
 				}
 
 				$GLOBALS['TYPO3_DB']->exec_INSERTquery($tableName, $insertFields);
@@ -248,9 +387,9 @@ class t3lib_loadDBGroup	{
 	 * @param	boolean		If set, then table names will ALWAYS be prepended (unless its a _NO_TABLE value)
 	 * @return	array		A numeric array.
 	 */
-	function getValueArray($prependTableName='')	{
+	function getValueArray($prependTableName=false)	{
 			// INIT:
-		$valueArray=Array();
+		$valueArray=array();
 		$tableC = count($this->tableArray);
 
 			// If there are tables in the table array:
@@ -300,23 +439,23 @@ class t3lib_loadDBGroup	{
 	 */
 	function getFromDB()	{
 			// Traverses the tables listed:
-		foreach($this->tableArray as $key => $val)	{
+		foreach($this->tableArray as $table => $val)	{
 			if (is_array($val))	{
 				$itemList = implode(',',$val);
 				if ($itemList)	{
 					$from = '*';
 					if ($this->fromTC)	{
 						$from = 'uid,pid';
-						if ($GLOBALS['TCA'][$key]['ctrl']['label'])	{
-							$from.= ','.$GLOBALS['TCA'][$key]['ctrl']['label'];	// Titel
+						if ($GLOBALS['TCA'][$table]['ctrl']['label'])	{
+							$from.= ','.$GLOBALS['TCA'][$table]['ctrl']['label'];	// Title
 						}
-						if ($GLOBALS['TCA'][$key]['ctrl']['thumbnail'])	{
-							$from.= ','.$GLOBALS['TCA'][$key]['ctrl']['thumbnail'];	// Thumbnail
+						if ($GLOBALS['TCA'][$table]['ctrl']['thumbnail'])	{
+							$from.= ','.$GLOBALS['TCA'][$table]['ctrl']['thumbnail'];	// Thumbnail
 						}
 					}
-					$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($from, $key, 'uid IN ('.$itemList.')'.$this->additionalWhere[$key]);
+					$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($from, $table, 'uid IN ('.$itemList.')'.$this->additionalWhere[$table]);
 					while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
-						$this->results[$key][$row['uid']]=$row;
+						$this->results[$table][$row['uid']]=$row;
 					}
 				}
 			}
