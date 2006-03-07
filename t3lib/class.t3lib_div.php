@@ -1473,20 +1473,21 @@ class t3lib_div {
 	 * @return	array		Resulting array where $arr1 values has overruled $arr0 values
 	 */
 	function array_merge_recursive_overrule($arr0,$arr1,$notAddKeys=0,$includeEmtpyValues=true) {
-		foreach ($arr1 as $key => $val)	{
-			if (is_array($arr0[$key]))	{
+		reset($arr1);
+		while(list($key,$val) = each($arr1)) {
+			if(is_array($arr0[$key])) {
 				if (is_array($arr1[$key]))	{
 					$arr0[$key] = t3lib_div::array_merge_recursive_overrule($arr0[$key],$arr1[$key],$notAddKeys);
 				}
 			} else {
-				if ($notAddKeys)	{
-					if (isset($arr0[$key]))	{
-						if ($includeEmtpyValues OR $val)	{
+				if ($notAddKeys) {
+					if (isset($arr0[$key])) {
+						if ($includeEmtpyValues OR $val) {
 							$arr0[$key] = $val;
 						}
 					}
 				} else {
-					if ($includeEmtpyValues OR $val)	{
+					if ($includeEmtpyValues OR $val) {
 						$arr0[$key] = $val;
 					}
 				}

@@ -287,7 +287,7 @@ class t3lib_TSparser {
 												$fakeThis = FALSE;
 												$newValue = t3lib_div::callUserFunction($hookMethod,$params,$fakeThis);
 											} else {
-												t3lib_div::sysLog('Missing function definition for '.$tsFunc.' on Typoscript line '.$lineP,'Core',2);
+												t3lib_div::sysLog('Missing function definition for '.$tsFunc.' on TypoScript line '.$lineP,'Core',2);
 											}
 									}
 
