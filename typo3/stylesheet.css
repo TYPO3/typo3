@@ -251,6 +251,7 @@ TABLE#typo3-tree TR TD IMG.c-recIcon { margin-right: 1px;}
 TABLE#typo3-tree { margin-bottom: 10px; width: 95%; }
 P.c-refresh IMG { vertical-align: middle;  margin-right: 7px; }
 BODY#typo3-alt-db-navframe-php DIV.c-notice { border: 1px solid black; padding: 5px 5px 5px 5px; margin-top: 5px; margin-bottom: 10px; width: 95%; }
+.navFrameHL { background-color: #ebebeb; }
 
 /* TCEforms */
 TABLE.typo3-TCEforms SPAN.typo3-TCEforms-recHeader { font-weight: bold; color: #333366; }

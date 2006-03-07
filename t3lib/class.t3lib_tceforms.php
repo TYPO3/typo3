@@ -993,7 +993,7 @@ class t3lib_TCEforms	{
 			$checkSetValue = in_array('datetime',$evalList) ? time() : $checkSetValue;
 
 			$cOnClick = 'typo3FormFieldGet('.$paramsList.',1,\''.$checkSetValue.'\');'.implode('',$PA['fieldChangeFunc']);
-			$item.='<input type="checkbox" name="'.$PA['itemFormElName'].'_cb" onclick="'.htmlspecialchars($cOnClick).'" />';
+			$item.='<input type="checkbox"'.$this->insertDefStyle('check').' name="'.$PA['itemFormElName'].'_cb" onclick="'.htmlspecialchars($cOnClick).'" />';
 		}
 
 		$PA['fieldChangeFunc'] = array_merge(array('typo3FormFieldGet'=>'typo3FormFieldGet('.$paramsList.');'), $PA['fieldChangeFunc']);
@@ -1497,7 +1497,7 @@ class t3lib_TCEforms	{
 					$setAll[] = $this->elName($PA['itemFormElName'].'['.$c.']').'.checked=1;';
 					$tRows[] = '
 						<tr class="'.($sM ? 'c-selectedItem' : '').'" onclick="'.htmlspecialchars($onClick).'" style="cursor: pointer;">
-							<td><input type="checkbox" name="'.htmlspecialchars($PA['itemFormElName'].'['.$c.']').'" value="'.htmlspecialchars($p[1]).'"'.$sM.' onclick="'.htmlspecialchars($sOnChange).'"'.$PA['onFocus'].' /></td>
+							<td><input type="checkbox"'.$this->insertDefStyle('check').' name="'.htmlspecialchars($PA['itemFormElName'].'['.$c.']').'" value="'.htmlspecialchars($p[1]).'"'.$sM.' onclick="'.htmlspecialchars($sOnChange).'"'.$PA['onFocus'].' /></td>
 							<td class="c-labelCell" onclick="'.htmlspecialchars($onClickCell).'">'.
 								($selIconFile ? '<img src="'.$selIconFile.'" '.$selIconInfo[3].' vspace="2" border="0" class="absmiddle" style="margin-right: 4px;" alt="" />' : '').
 								t3lib_div::deHSCentities(htmlspecialchars($p[0])).
@@ -1526,7 +1526,7 @@ class t3lib_TCEforms	{
 					// Compile <checkboxes> tag:
 				array_unshift($tRows,'
 						<tr class="c-invalidItem">
-							<td><input type="checkbox" name="'.htmlspecialchars($PA['itemFormElName'].'['.$c.']').'" value="'.htmlspecialchars($theNoMatchValue).'" checked="checked" onclick="'.htmlspecialchars($sOnChange).'"'.$PA['onFocus'].$disabled.' /></td>
+							<td><input type="checkbox"'.$this->insertDefStyle('check').' name="'.htmlspecialchars($PA['itemFormElName'].'['.$c.']').'" value="'.htmlspecialchars($theNoMatchValue).'" checked="checked" onclick="'.htmlspecialchars($sOnChange).'"'.$PA['onFocus'].$disabled' /></td>
 							<td class="c-labelCell">'.
 								t3lib_div::deHSCentities(htmlspecialchars(@sprintf($nMV_label, $theNoMatchValue))).
 								'</td>
@@ -2294,9 +2294,9 @@ class t3lib_TCEforms	{
 								// Put row together
 							$tRows[]='<tr class="bgColor2">
 								<td nowrap="nowrap" valign="top">'.
-								'<input name="_DELETE_FLEX_FORM'.$PA['itemFormElName'].$formPrefix.'" id="'.$idTagPrefix.'-del" type="checkbox" value="1" /><label for="'.$idTagPrefix.'-del"><img src="'.$this->backPath.'gfx/garbage.gif" border="0" alt="" /></label>'.
-								'<input name="_MOVEUP_FLEX_FORM'.$PA['itemFormElName'].$formPrefix.'" id="'.$idTagPrefix.'-mvup" type="checkbox" value="1" /><label for="'.$idTagPrefix.'-mvup"><img src="'.$this->backPath.'gfx/button_up.gif" border="0" alt="" /></label>'.
-								'<input name="_MOVEDOWN_FLEX_FORM'.$PA['itemFormElName'].$formPrefix.'" id="'.$idTagPrefix.'-mvdown" type="checkbox" value="1" /><label for="'.$idTagPrefix.'-mvdown"><img src="'.$this->backPath.'gfx/button_down.gif" border="0" alt="" /></label>'.
+								'<input name="_DELETE_FLEX_FORM'.$PA['itemFormElName'].$formPrefix.'" id="'.$idTagPrefix.'-del" type="checkbox"'.$this->insertDefStyle('check').' value="1" /><label for="'.$idTagPrefix.'-del"><img src="'.$this->backPath.'gfx/garbage.gif" border="0" alt="" /></label>'.
+								'<input name="_MOVEUP_FLEX_FORM'.$PA['itemFormElName'].$formPrefix.'" id="'.$idTagPrefix.'-mvup" type="checkbox"'.$this->insertDefStyle('check').' value="1" /><label for="'.$idTagPrefix.'-mvup"><img src="'.$this->backPath.'gfx/button_up.gif" border="0" alt="" /></label>'.
+								'<input name="_MOVEDOWN_FLEX_FORM'.$PA['itemFormElName'].$formPrefix.'" id="'.$idTagPrefix.'-mvdown" type="checkbox"'.$this->insertDefStyle('check').' value="1" /><label for="'.$idTagPrefix.'-mvdown"><img src="'.$this->backPath.'gfx/button_down.gif" border="0" alt="" /></label>'.
 								$rowCells['title'].'</td>
 								<td>'.$rowCells['formEl'].'</td>
 							</tr>';

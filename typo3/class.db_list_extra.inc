@@ -564,7 +564,7 @@ class localRecordList extends recordList {
 			// Background color, if any:
 		$row_bgColor=
 			$this->alternateBgColors ?
-			(($cc%2)?'' :' bgcolor="'.t3lib_div::modifyHTMLColor($GLOBALS['SOBE']->doc->bgColor4,+10,+10,+10).'"') :
+			(($cc%2)?'' :' class="db_list_alt"') :
 			'';
 
 			// Overriding with versions background color if any:

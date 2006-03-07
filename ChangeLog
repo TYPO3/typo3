@@ -1,3 +1,9 @@
+2006-03-07  Sebastian Kurfuerst  <sebastian@garbage-group.de>
+
+	* Fixed skin issue #2766: class.t3lib_tceforms.php / type="checkbox" / bugs
+	* Fixed skin issue #2317: The background-color on highlighted items in alt_db_navframe.php
+	* Fixed skin issue #2453: alternating colors and rollover in list module have not enough contrast
+
 2006-03-07  Michael Stucki  <michael@typo3.org>
 
 	* Reverting a change in t3lib_div as discussed with Sebastian (reason was that this could lead to some trouble if foreach is used instead of while over a recursively called array)
