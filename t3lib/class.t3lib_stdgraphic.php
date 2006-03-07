@@ -2160,11 +2160,12 @@ class t3lib_stdGraphic	{
 				}
 
 				$command = $this->scalecmd.' '.$info[0].'x'.$info[1].'! '.$params.' ';
+				$cropscale = ($data['crs'] ? 'crs-V'.$data['cropV'].'H'.$data['cropH'] : '');
 
 				if ($this->alternativeOutputKey)	{
-					$theOutputName = t3lib_div::shortMD5($command.basename($imagefile).$this->alternativeOutputKey.$frame);
+					$theOutputName = t3lib_div::shortMD5($command.$cropscale.basename($imagefile).$this->alternativeOutputKey.$frame);
 				} else {
-					$theOutputName = t3lib_div::shortMD5($command.$imagefile.filemtime($imagefile).$frame);
+					$theOutputName = t3lib_div::shortMD5($command.$cropscale.$imagefile.filemtime($imagefile).$frame);
 				}
 				if ($this->imageMagickConvert_forceFileNameBody)	{
 					$theOutputName = $this->imageMagickConvert_forceFileNameBody;
@@ -2178,7 +2179,31 @@ class t3lib_stdGraphic	{
 					// Register temporary filename:
 				$GLOBALS['TEMP_IMAGES_ON_PAGE'][] = $output;
 
-				if ($this->dontCheckForExistingTempFile || !$this->file_exists_typo3temp_file($output,$imagefile))	{
+				if ($data['crs']) {
+					if ($this->dontCheckForExistingTempFile || !$this->file_exists_typo3temp_file($output, $imagefile))	{
+						$crsOutput = str_replace('pics/', 'pics/crs-', $output);
+						$this->imageMagickExec($imagefile.$frame, $crsOutput, $command);
+						$gifCreator = t3lib_div::makeInstance('tslib_gifbuilder');
+						$gifCreator->init();
+						if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib'] !== 0)	{
+							if (!$data['origW']) { $data['origW'] = $data[0]; }
+							if (!$data['origH']) { $data['origH'] = $data[1]; }
+							$ofX = intval(($data['origW'] - $data[0]) * ($data['cropH']+100)/200);   
+							$ofY = intval(($data['origH'] - $data[1]) * ($data['cropV']+100)/200);
+							$tmpParm = Array('XY' => intval($data['origW']).','.intval($data['origH']),
+									'10' => 'IMAGE',
+									'10.' => array('file'=> $crsOutput, 'offset'=> $ofX.','.$ofY),
+							);
+							$gifCreator->start($tmpParm, array());
+							$newoutput = $gifCreator->gifBuild();
+							if (!copy($newoutput,$output)) {
+								$output = $newoutput;
+							} 
+						} else {
+							$output = $crsOutput; 
+						}
+					}
+				} elseif ($this->dontCheckForExistingTempFile || !$this->file_exists_typo3temp_file($output,$imagefile)) {
 					$this->imageMagickExec($imagefile.$frame,$output,$command);
 				}
 				if (@file_exists($output))	{
@@ -2299,6 +2324,16 @@ class t3lib_stdGraphic	{
 	 */
 	function getImageScale($info,$w,$h,$options) {
 		if (strstr($w.$h, 'm')) {$max=1;} else {$max=0;}
+
+		if (strstr($w.$h, 'c')) {
+			$out['cropH'] = intval(substr(strstr($w, 'c'), 1));
+			$out['cropV'] = intval(substr(strstr($h, 'c'), 1));
+			$crs = true;
+		} else {
+			$crs = false;
+		}
+		$out['crs'] = $crs;
+
 		$w=intval($w);
 		$h=intval($h);
 			// if there are max-values...
@@ -2354,6 +2389,14 @@ class t3lib_stdGraphic	{
 						$w = round($h*$ratio);
 					}
 				}
+				if ($crs)	{
+					$ratio = $info[0] / $info[1];
+					if ($h * $ratio < $w) {
+						$h = round($w / $ratio);
+					} else {
+						$w = round($h * $ratio);
+					}
+				}
 				$info[0] = $w;
 				$info[1] = $h;
 			}
@@ -2362,13 +2405,13 @@ class t3lib_stdGraphic	{
 		$out[1]=$info[1];
 			// Set minimum-measures!
 		if ($options['minW'] && $out[0]<$options['minW'])	{
-			if ($max && $out[0])	{
+			if (($max || $crs) && $out[0])	{
 				$out[1]= round($out[1]*$options['minW']/$out[0]);
 			}
 			$out[0]=$options['minW'];
 		}
 		if ($options['minH'] && $out[1]<$options['minH'])	{
-			if ($max && $out[1])	{
+			if (($max || $crs) && $out[1])	{
 				$out[0]= round($out[0]*$options['minH']/$out[1]);
 			}
 			$out[1]=$options['minH'];
