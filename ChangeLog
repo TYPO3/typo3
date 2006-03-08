@@ -1,3 +1,7 @@
+2006-03-08  Dmitry Dulepov  <typo3@accio.lv>
+
+	* Added <onChange> tag to flexforms to enable automatic form reloading when tagged field changes. Useful for creating dynamic flexforms.
+
 2006-03-08  Michael Stucki  <michael@typo3.org>
 
 	* Changed the globalString condition to allow PCRE regular expressions only if wrapped in dashes "/"

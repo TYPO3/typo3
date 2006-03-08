@@ -2331,7 +2331,8 @@ class t3lib_TCEforms	{
 								$fakePA['fieldConf']=array(
 									'label' => $this->sL($value['TCEforms']['label']),
 									'config' => $value['TCEforms']['config'],
-									'defaultExtras' => $value['TCEforms']['defaultExtras']
+									'defaultExtras' => $value['TCEforms']['defaultExtras'],
+                                    'onChange' => $value['TCEforms']['onChange']
 								);
 								if ($PA['_noEditDEF'] && $PA['_lang']==='lDEF') {
 									$fakePA['fieldConf']['config'] = array(
@@ -2341,6 +2342,7 @@ class t3lib_TCEforms	{
 								}
 
 								if (
+                                    $fakePA['fieldConf']['onChange'] == 'reload' ||
 									($GLOBALS['TCA'][$table]['ctrl']['type'] && !strcmp($key,$GLOBALS['TCA'][$table]['ctrl']['type'])) ||
 									($GLOBALS['TCA'][$table]['ctrl']['requestUpdate'] && t3lib_div::inList($GLOBALS['TCA'][$table]['ctrl']['requestUpdate'],$key))) {
 									if ($GLOBALS['BE_USER']->jsConfirmation(1))	{
