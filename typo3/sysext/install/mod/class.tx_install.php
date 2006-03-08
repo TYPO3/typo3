@@ -4768,7 +4768,7 @@ A:hover {color: #000066}
 		<div align="center">
 		<table border="0" cellspacing="0" cellpadding="0" width="333" bgcolor="white">
 		<tr>
-			<td><img src="'.$this->backPath.'gfx/typo3logo.gif" width="333" height="43" vspace="10" hspace="50" alt="TYPO3"></td>
+			<td style="text-align:center;"><img src="'.$this->backPath.'gfx/typo3logo.gif" width="123" height="34" vspace="10" hspace="50" alt="TYPO3"></td>
 		</tr>
 		<tr>
 			<td bgcolor="black">
