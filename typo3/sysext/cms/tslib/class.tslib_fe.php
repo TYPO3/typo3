@@ -1691,6 +1691,14 @@
 						$this->setSimulReplacementChar();
 					}
 
+						// set default values for removeDefaultJS and inlineStyle2TempFile so CSS and JS are externalized if compatversion is higher than 4.0
+					if(!isset($this->config['config']['removeDefaultJS']) && t3lib_div::compat_version('4.0.0')) {
+						$this->config['config']['removeDefaultJS'] = 'external';
+					}
+					if(!isset($this->config['config']['inlineStyle2TempFile']) && t3lib_div::compat_version('4.0.0')) {
+						$this->config['config']['inlineStyle2TempFile'] = 1;
+					}
+
 							// Processing for the config_array:
 					$this->config['rootLine'] = $this->tmpl->rootLine;
 					$this->config['mainScript'] = trim($this->config['config']['mainScript']) ? trim($this->config['config']['mainScript']) : 'index.php';

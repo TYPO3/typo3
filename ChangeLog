@@ -1,3 +1,7 @@
+2006-03-08  Ingmar Schlecht  <ingmar@typo3.org>
+
+	* Set the default value of config.inlineStyle2TempFile to 1 and config.removeDefaultJS to 'external' if compatversion is set to > 4.0.0. This means default styles of extensions and default JS functions are now automatically put to files like typo3temp/stylesheet_ec23910b0b.css by default.
+
 2006-03-08  Bernhard Kraft  <kraftb@kraftb.at>
 
 	* Implemented featured #2695: Tables can not get hidden in Web>List. Now this can get accomplished via Page/User/Group TS-Config
