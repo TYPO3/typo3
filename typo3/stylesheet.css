@@ -340,7 +340,7 @@ BODY#typo3-index-php TABLE#loginwrapper img#loginbox-image {position:absolute; t
 * html BODY#typo3-index-php TABLE#loginwrapper img#loginbox-image {position:absolute; top: 80px;}
 BODY#typo3-index-php DIV#copyrightnotice { width: 70%; text-align: left; margin-top: 10px; }
 BODY#typo3-index-php DIV#copyrightnotice IMG { margin-right:5px; margin-bottom:5px; }
-BODY#typo3-index-php DIV#loginimage {text-align: right; padding-right: 30px; margin-bottom: 5px;}
+BODY#typo3-index-php DIV#loginimage {text-align: right; padding-right: 30px; margin-bottom: 5px; height:43px;}
 TABLE#logintable { position: absolute; right: 35%; top: 78px; margin: 5px 20px 5px 20px; }
 TABLE#logintable TR TD { padding: 1px 1px 1px 1px;}
 TABLE#logintable H2 { background-color: transparent; font-size: 14px; color: white; text-align: left; }
