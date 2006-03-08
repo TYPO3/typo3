@@ -579,6 +579,7 @@ class t3lib_div {
 
 	/**
 	 * Match IP number with list of numbers with wildcard
+	 * Dispatcher method for switching into specialised IPv4 and IPv6 methods.
 	 * Usage: 10
 	 *
 	 * @param	string		$baseIP is the current remote IP address for instance, typ. REMOTE_ADDR
@@ -586,6 +587,21 @@ class t3lib_div {
 	 * @return	boolean		True if an IP-mask from $list matches $baseIP
 	 */
 	function cmpIP($baseIP, $list)	{
+		if (strstr($baseIP, ':') && t3lib_div::validIPv6($baseIP))	{
+			return t3lib_div::cmpIPv6($baseIP, $list);
+		} else {
+			return t3lib_div::cmpIPv4($baseIP, $list);
+		}
+	}
+
+	/**
+	 * Match IPv4 number with list of numbers with wildcard
+	 *
+	 * @param	string		$baseIP is the current remote IP address for instance, typ. REMOTE_ADDR
+	 * @param	string		$list is a comma-list of IP-addresses to match with. *-wildcard allowed instead of number, plus leaving out parts in the IP number is accepted as wildcard (eg. 192.168.*.* equals 192.168)
+	 * @return	boolean		True if an IP-mask from $list matches $baseIP
+	 */
+	function cmpIPv4($baseIP, $list)	{
 		$IPpartsReq = explode('.',$baseIP);
 		if (count($IPpartsReq)==4)	{
 			$values = t3lib_div::trimExplode(',',$list,1);
@@ -618,6 +634,137 @@ class t3lib_div {
 			}
 		}
 		return false;
+	}
+
+	/**
+	 * Match IPv6 address with a list of IPv6 prefixes
+	 *
+	 * @param	string		$baseIP is the current remote IP address for instance
+	 * @param	string		$list is a comma-list of IPv6 prefixes, could also contain IPv4 addresses
+	 * @return	boolean		True if an baseIP matches any prefix
+	 */
+	function cmpIPv6($baseIP, $list)	{
+		$success = false;	// Policy default: Deny connection
+		$baseIP = t3lib_div::normalizeIPv6($baseIP);
+
+		$values = t3lib_div::trimExplode(',',$list,1);
+		foreach ($values as $test)	{
+			list($test,$mask) = explode('/',$test);
+			if (t3lib_div::validIPv6($test))	{
+				$test = t3lib_div::normalizeIPv6($test);
+				if (intval($mask))	{
+					switch ($mask) {	// test on /48 /64
+						case '48':
+							$testBin = substr(t3lib_div::IPv6Hex2Bin($test), 0, 48);
+							$baseIPBin = substr(t3lib_div::IPv6Hex2Bin($baseIP), 0, 48);
+							$success = strcmp($testBin, $baseIPBin)==0 ? true : false;
+						break;
+						case '64':
+							$testBin = substr(t3lib_div::IPv6Hex2Bin($test), 0, 64);
+							$baseIPBin = substr(t3lib_div::IPv6Hex2Bin($baseIP), 0, 64);
+							$success = strcmp($testBin, $baseIPBin)==0 ? true : false;
+						break;
+						default:
+							$success = false;
+					}
+				} else {
+					if (t3lib_div::validIPv6($test))	{	// test on full ip address 128 bits
+						$testBin = t3lib_div::IPv6Hex2Bin($test);
+						$baseIPBin = t3lib_div::IPv6Hex2Bin($baseIP);
+						$success = strcmp($testBin, $baseIPBin)==0 ? true : false;
+					}
+				}
+			}
+			if ($success) return true;
+		}
+		return false;
+	}
+
+	function IPv6Hex2Bin ($hex)	{
+		$bin = '';
+		$hex = str_replace(':', '', $hex);	// Replace colon to nothing
+		for ($i=0; $i<strlen($hex); $i=$i+2)	{
+			$bin.= chr(hexdec(substr($hex, $i, 2)));
+		}
+		return $bin;
+	}
+
+	/**
+	 * Normalize an IPv6 address to full length
+	 *
+	 * @param	string		Given IPv6 address
+	 * @return	string		Normalized address
+	 */
+	function normalizeIPv6($address)	{
+		$normalizedAddress = '';
+		$stageOneAddress = '';
+
+		$chunks = explode('::', $address);	// Count 2 if if address has hidden zero blocks
+		if (count($chunks)==2)	{
+			$chunksLeft = explode(':', $chunks[0]);
+			$chunksRight = explode(':', $chunks[1]);
+			$left = count($chunksLeft);
+			$right = count($chunksRight);
+
+				// Special case: leading zero-only blocks count to 1, should be 0
+			if ($left==1 && strlen($chunksLeft[0])==0)	$left=0;
+
+			$hiddenBlocks = 8 - ($left + $right);
+			$hiddenPart = '';
+			while ($h<$hiddenBlocks)	{
+				$hiddenPart .= '0000:';
+				$h++;
+			}
+
+			if ($left == 0) {
+				$stageOneAddress = $hiddenPart . $chunks[1];
+			} else {
+				$stageOneAddress = $chunks[0] . ':' . $hiddenPart . $chunks[1];
+			}
+		} else $stageOneAddress = $address;
+
+			// normalize the blocks:
+		$blocks = explode(':', $stageOneAddress);
+		$divCounter = 0;
+		foreach ($blocks as $block)	{
+			$tmpBlock = '';
+			$i = 0;
+			$hiddenZeros = 4 - strlen($block);
+			while ($i < $hiddenZeros)	{
+				$tmpBlock .= '0';
+				$i++;
+			}
+			$normalizedAddress .= $tmpBlock . $block;
+			if ($divCounter < 7)	{
+				$normalizedAddress .= ':';
+				$divCounter++;
+			}
+		}
+		return $normalizedAddress;
+	}
+
+	/**
+	 * Validate a given IP address to the IPv6 address format.
+	 *
+	 * Example for possible format:  43FB::BB3F:A0A0:0 | ::1
+	 *
+	 * @param	string		IP address to be tested
+	 * @return	boolean		True if $ip is of IPv6 format.
+	 */
+	function validIPv6($ip)	{
+		$uppercaseIP = strtoupper($ip);
+
+		$regex = '/^(';
+		$regex.= '(([\dA-F]{1,4}:){7}[\dA-F]{1,4})|';
+		$regex.= '(([\dA-F]{1,4}){1}::([\dA-F]{1,4}:){1,5}[\dA-F]{1,4})|';
+		$regex.= '(([\dA-F]{1,4}:){2}:([\dA-F]{1,4}:){1,4}[\dA-F]{1,4})|';
+		$regex.= '(([\dA-F]{1,4}:){3}:([\dA-F]{1,4}:){1,3}[\dA-F]{1,4})|';
+		$regex.= '(([\dA-F]{1,4}:){4}:([\dA-F]{1,4}:){1,2}[\dA-F]{1,4})|';
+		$regex.= '(([\dA-F]{1,4}:){5}:([\dA-F]{1,4}:){0,1}[\dA-F]{1,4})|';
+		$regex.= '(::([\dA-F]{1,4}:){0,6}[\dA-F]{1,4})';
+		$regex.= ')$/';
+
+		return preg_match($regex, $uppercaseIP) ? true : false;
 	}
 
 	/**

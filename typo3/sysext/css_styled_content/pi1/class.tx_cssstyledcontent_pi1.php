@@ -690,13 +690,14 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 				$GLOBALS['TSFE']->register['IMAGE_NUM'] = $i;
 				$GLOBALS['TSFE']->register['ORIG_FILENAME'] = $origImages[$i]['origFile'];
 				$GLOBALS['TSFE']->register['imagewidth'] = $origImages[$i][0];
+				$GLOBALS['TSFE']->register['imagespace'] = $origImages[$i][0] + $border*($borderSpace+$borderThickness)*2;
 				$GLOBALS['TSFE']->register['imageheight'] = $origImages[$i][1];
 
 				$thisImage = '';
 				$thisImage .= $this->cObj->stdWrap($imgsTag[$i], $conf['imgTagStdWrap.']);
 
 				if ($conf['captionSplit'] || $conf['imageTextSplit'])	{
-					$thisImage .= $this->cObj->stdWrap($this->cObj->cObjGet($conf['caption.'], 'caption.'), $conf['captionStdWrap.']);
+					$thisImage .= $this->cObj->stdWrap($this->cObj->cObjGet($conf['caption.'], 'caption.'), $conf['caption.']);
 				}
 				if ($editIconsHTML)	{
 					$thisImage .= $this->cObj->stdWrap($editIconsHTML, $conf['editIconsStdWrap.']);

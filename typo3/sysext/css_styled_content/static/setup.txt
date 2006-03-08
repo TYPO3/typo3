@@ -1231,8 +1231,8 @@ tt_content.image.20 {
 
 	}
 
-	caption.1.wrap = <div class="csc-textpic-caption"> | </div>
 	caption.1.wrapAlign >
+	caption.1.fontTag >
 
 	captionAlign.field = imagecaption_position
 
@@ -1290,26 +1290,26 @@ tt_content.image.20 {
 		dl {
 			imageRowStdWrap.dataWrap = <div class="csc-textpic-imagerow" style="width:{register:rowwidth}px;"> | </div>
 			noRowsStdWrap.wrap =
-			oneImageStdWrap.dataWrap = <dl class="csc-textpic-image" style="width:{register:imagewidth}px;"> | </dl>
+			oneImageStdWrap.dataWrap = <dl class="csc-textpic-image" style="width:{register:imagespace}px;"> | </dl>
 			imgTagStdWrap.wrap = <dt> | </dt>
 			editIconsStdWrap.wrap = <dd> | </dd>
-			captionStdWrap.wrap = <dd class="csc-textpic-caption"> | </dd>
+			caption.wrap = <dd class="csc-textpic-caption"> | </dd>
 		}
 		ul {
 			imageRowStdWrap.dataWrap = <div class="csc-textpic-imagerow" style="width:{register:rowwidth}px;"><ul> | </ul></div>
 			noRowsStdWrap.wrap = <ul> | </ul>
-			oneImageStdWrap.dataWrap = <li class="csc-textpic-image" style="width:{register:imagewidth}px;"> | </li>
+			oneImageStdWrap.dataWrap = <li class="csc-textpic-image" style="width:{register:imagespace}px;"> | </li>
 			imgTagStdWrap.wrap =
 			editIconsStdWrap.wrap = <div> | </div>
-			captionStdWrap.wrap = <div class="csc-textpic-caption"> | </div>
+			caption.wrap = <div class="csc-textpic-caption"> | </div>
 		}
 		div {
 			imageRowStdWrap.dataWrap = <div class="csc-textpic-imagerow" style="width:{register:rowwidth}px;"> | </div>
 			noRowsStdWrap.wrap =
-			oneImageStdWrap.dataWrap = <div class="csc-textpic-image" style="width:{register:imagewidth}px;"> | </div>
+			oneImageStdWrap.dataWrap = <div class="csc-textpic-image" style="width:{register:imagespace}px;"> | </div>
 			imgTagStdWrap.wrap = <div> | </div>
 			editIconsStdWrap.wrap = <div> | </div>
-			captionStdWrap.wrap = <div class="csc-textpic-caption"> | </div>
+			caption.wrap = <div class="csc-textpic-caption"> | </div>
 		}
 	}
 	renderMethod = dl
@@ -1317,7 +1317,7 @@ tt_content.image.20 {
 
 # cObject: Text with image
 
-tt_content.textpic.20 < tt_content.image.20
+tt_content.textpic.20 =< tt_content.image.20
 tt_content.textpic.20 {
 	text.10 = COA
 	text.10 {
@@ -1399,6 +1399,7 @@ plugin.tx_cssstyledcontent._CSS_DEFAULT_STYLE (
 	/* Space below each image (also in-between rows) */
 	DIV.csc-textpic DIV.csc-textpic-imagewrap .csc-textpic-image { margin-bottom: 5px; }
 	DIV.csc-textpic-equalheight DIV.csc-textpic-imagerow { margin-bottom: 5px; display: block; }
+	DIV.csc-textpic DIV.csc-textpic-imagerow { clear: both; }
 
 	/* Positioning of images: */
 

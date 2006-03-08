@@ -1041,7 +1041,7 @@ class tslib_cObj {
 								$tablecode.= '<img src="'.$GLOBALS['TSFE']->absRefPrefix.'clear.gif" width="1" height="'.$rowspacing.'" alt="" title="" /><br />';
 							}
 							if ($conf['captionSplit'] || $conf['imageTextSplit'])	{
-								$thisCaption = $this->stdWrap($this->cObjGet($conf['caption.'], 'caption.'), $conf['captionStdWrap.']);
+								$thisCaption = $this->stdWrap($this->cObjGet($conf['caption.'], 'caption.'), $conf['caption.']);
 							}
 							$imageHTML = $imgsTag[$imgIndex].'<br />';
 							$Talign = (!trim($thisCaption) && !$noRows && !$conf['netprintApplicationLink']) ? ' align="left"' : '';  // this is necessary if the tablerows are supposed to space properly together! "noRows" is excluded because else the images "layer" together.

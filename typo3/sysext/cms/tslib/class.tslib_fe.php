@@ -2537,7 +2537,6 @@
 		}
 
 			// Storing for cache:
-		$this->tempContent = false;
 		if (!$this->no_cache)	{
 			$this->realPageCacheContent();
 		} elseif ($this->tempContent)	{		// If there happens to be temporary content in the cache and the cache was not cleared due to new content put in it... ($this->no_cache=0)
