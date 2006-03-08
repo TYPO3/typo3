@@ -113,12 +113,41 @@ class t3lib_loadDBGroup	{
 	var $secondTable = '';				// Will contain the second table name in the $tablelist (for negative ids)
 
 
+
+	// MM stuff for foreign select
+
+	/**
+	 * field value pairs that should match while select and to be set while insert
+	 */
 	var $MMmatchFields = array();
+
+	/**
+	 * Extra field value pairs that should be set while insert
+	 */
 	var $MMinsertFields = array();
+
+	/**
+	 * The name of the local table. Needed for foreign select
+	 */
 	var $MMlocalTable = '';
+
+	/**
+	 * The tablenames field should match this list
+	 */
 	var $MMmatchTablenames = '';
+
+	/**
+	 * Extra table where clause
+	 */
 	var $MMtableWhere = '';
+
+	/**
+	 * If true this is a foregin select and uid's needs to be swapped
+	 */
 	var $MMswapLocalForeign = false;
+
+
+
 
 	/**
 	 * Initialization of the class.
@@ -280,7 +309,7 @@ class t3lib_loadDBGroup	{
 	 * @return	void
 	 */
 	function readMM($tableName, $uid, $tableList='')	{
-		$key=0;
+		$key=count($this->itemArray);
 
 		if ($this->MMswapLocalForeign) {
 			$uid_foreign = 'uid_local';
@@ -324,6 +353,7 @@ class t3lib_loadDBGroup	{
 				$this->itemArray[$key]['table_relation'] = '_NO_TABLE';
 				$this->nonTableArray[] = $row[$uid_foreign];
 			}
+			$this->itemArray[$key]['foreign_select'] = $this->MMswapLocalForeign;
 			$key++;
 		}
 
