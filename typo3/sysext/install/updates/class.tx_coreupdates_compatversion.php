@@ -76,7 +76,7 @@ class tx_coreupdates_compatversion {
 			$content = '<b>You updated from an older version of TYPO3</b>:<br>
 			<label for="'.$inputPrefix.'[version]">Select the version where you have upgraded from:</label> <select name="'.$inputPrefix.'[version]" id="'.$inputPrefix.'[version]">';
 			$versions = array(
-				'3.8.1' => '<= 3.8.1'
+				'3.8' => '<= 3.8'
 			);
 			foreach ($versions as $singleVersion => $caption)	{
 				$content .= '<option value="'.$singleVersion.'">'.$caption.'</option>';
