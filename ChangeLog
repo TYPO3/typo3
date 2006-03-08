@@ -13,6 +13,7 @@
 2006-03-08  Karsten Dambekalns  <karsten@typo3.org>
 
 	* EM: Fixed three small issues, mostly cosmetic.
+	* Install Tool: Using new logo now, uuuuhhh! Changes CSS so links are colored again.
 
 2006-03-08  Dmitry Dulepov  <typo3@accio.lv>
 
