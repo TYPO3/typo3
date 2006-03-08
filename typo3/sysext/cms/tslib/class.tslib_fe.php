@@ -1372,7 +1372,7 @@
 			if (isset($GET_VARS['no_cache']) && $GET_VARS['no_cache'])	$this->set_no_cache();
 		}
 	}
-	
+
 	/**
 	 * Looking for a ADMCMD_prev code, looks it up if found and returns configuration data.
 	 * Background: From the backend a request to the frontend to show a page, possibly with workspace preview can be "recorded" and associated with a keyword. When the frontend is requested with this keyword the associated request parameters are restored from the database AND the backend user is loaded - only for that request.
@@ -1380,13 +1380,13 @@
 	 * This can also be used to generate previews of hidden pages, start/endtimes, usergroups and those other settings from the Admin Panel - just not implemented yet.
 	 *
 	 * @return array 	Preview configuration array from sys_preview record.
-	 * @see t3lib_BEfunc::compilePreviewKeyword() 
+	 * @see t3lib_BEfunc::compilePreviewKeyword()
 	 */
 	function ADMCMD_preview(){
 		$inputCode = t3lib_div::_GP('ADMCMD_prev');
-		
+
 		if ($inputCode)	{
-			
+
 				// Look for keyword configuration record:
 			list($previewData) = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
 				'*',
@@ -1400,22 +1400,22 @@
 			if (is_array($previewData))	{
 				if (!count(t3lib_div::_POST()))	{
 					if (t3lib_div::getIndpEnv('TYPO3_SITE_URL').'?ADMCMD_prev='.$inputCode === t3lib_div::getIndpEnv('TYPO3_REQUEST_URL'))	{
-						
+
 							// Unserialize configuration:
 						$previewConfig = unserialize($previewData['config']);
-									
+
 							// Set GET variables:
 						$GET_VARS = '';
 						parse_str($previewConfig['getVars'], $GET_VARS);
 						t3lib_div::_GETset($GET_VARS);
-	
+
 							// Return preview keyword configuration:
 						return $previewConfig;
 					} else die(htmlspecialchars('Request URL did not match "'.t3lib_div::getIndpEnv('TYPO3_SITE_URL').'?ADMCMD_prev='.$inputCode.'"'));	// This check is to prevent people from setting additional GET vars via realurl or other URL path based ways of passing parameters.
 				} else die('POST requests are incompatible with keyword preview.');
-			} else die('ADMCMD command could not be executed! (No keyword configuration found)');			
-		}	
-	}	
+			} else die('ADMCMD command could not be executed! (No keyword configuration found)');
+		}
+	}
 
 	/**
 	 * Configuration after initialization of TSFE object.
@@ -1430,8 +1430,8 @@
 			unset($_COOKIE['be_typo_user']);
 			$this->ADMCMD_preview_BEUSER_uid = $previewConfig['BEUSER_uid'];
 
-		} else die('Error in preview configuration.');			
-	}	
+		} else die('Error in preview configuration.');
+	}
 
 
 
@@ -2324,6 +2324,7 @@
 				$timeOutTime = $midnightTime;
 			}
 		}
+		$this->tempContent = false;
 		$this->setPageCacheContent($this->content, $this->config, $timeOutTime);
 
 			// Hook for cache post processing (eg. writing static files!)
@@ -3092,7 +3093,7 @@ if (version == "n3") {
 
 	/**
 	 * Sends HTTP headers for temporary content. These headers prevent search engines from caching temporary content and asks them to revisit this page again.
-	 * 
+	 *
 	 * @return void
 	 */
 	function addTempContentHttpHeaders() {
@@ -3222,10 +3223,10 @@ if (version == "n3") {
 		$url.=$this->makeSimulFileName($this->page['title'], $this->page['alias']?$this->page['alias']:$this->id, $this->type).'.html';
 		return $url;
 	}
-	
+
 	/**
 	 * Checks and sets replacement character for simulateStaticDocuments. Default is underscore.
-	 * 
+	 *
 	 * @return	void
 	 */
 	function setSimulReplacementChar() {
