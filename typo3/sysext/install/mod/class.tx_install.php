@@ -1296,16 +1296,16 @@ From sub-directory:
 				while(list($k,$va)=each($GLOBALS['TYPO3_CONF_VARS']))	{
 					$ext='['.$k.']';
 					$this->message($ext, '$TYPO3_CONF_VARS[\''.$k.'\']',$commentArr[0][$k],1);
+
 					while(list($vk,$value)=each($va))	{
 						if (!is_array($value) && $this->checkForBadString($value))	{
 							$k2='['.$vk.']';
 							$description = trim($commentArr[1][$k][$vk]);
 							$msg=$description.'<br /><br /><em>'.$ext.$k2.' = '.htmlspecialchars(t3lib_div::fixed_lgd($value,60)).'</em><br />';
 
-							if (strstr($value,chr(10)))	{
-										// Never used at this point:
-								$form='<textarea name="TYPO3_INSTALL[extConfig]['.$k.']['.$vk.']" cols=40 rows=5 wrap="off">'.htmlspecialchars($value).'</textarea>';
-							} elseif (eregi('^boolean',$description)) {
+							if (preg_match('/^string \(textarea\)/i', $description) || strstr($value,chr(10)))	{
+								$form='<textarea name="TYPO3_INSTALL[extConfig]['.$k.']['.$vk.']" cols=60 rows=5 wrap="off">'.htmlspecialchars($value).'</textarea>';
+							} elseif (preg_match('/^boolean/i',$description)) {
 								$form='<input type="hidden" name="TYPO3_INSTALL[extConfig]['.$k.']['.$vk.']" value="0">';
 								$form.='<input type="checkbox" name="TYPO3_INSTALL[extConfig]['.$k.']['.$vk.']"'.($value?' checked="checked"':'').' value="'.($value&&strcmp($value,'0')?htmlspecialchars($value):1).'">';
 							} else {

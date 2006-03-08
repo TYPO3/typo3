@@ -74,19 +74,19 @@ $TYPO3_CONF_VARS = Array(
 		'contentTable' => '',					// This is the page-content table (Normally 'tt_content')
 		'T3instID' => 'N/A',					// A unique installation ID - not used yet. The idea is that a TYPO3 installation can identify itself by this ID string to the Extension Repository on TYPO3.org so that we can keep a realistic count of serious TYPO3 installations.
 		'binPath' => '', 						// String: List of absolute paths where external programs should be searched for. Eg. '/usr/local/webbin/,/home/xyz/bin/'. (ImageMagick path have to be configured separately)
-		'binSetup' => '', 						// String: List of programs. By default programs will be searched in default paths and the special paths defined by 'binPath'. When PHP has openbasedir enabled the programs can not be found and have to be configured here. Example: 'perl=/usr/bin/perl,unzip=/usr/local/bin/unzip'
+		'binSetup' => '', 						// String (textarea): List of programs (separated by newline or comma). By default programs will be searched in default paths and the special paths defined by 'binPath'. When PHP has openbasedir enabled the programs can not be found and have to be configured here. Example: 'perl=/usr/bin/perl,unzip=/usr/local/bin/unzip'
 		't3lib_cs_convMethod' => '',			// String (values: "iconv", "recode", "mbstring", default is homemade PHP-code). Defines which of these PHP-features to use for various Charset conversing functions in t3lib_cs. Will speed up charset conversion radically.
 		't3lib_cs_utils' => '',					// String (values: "iconv" - PHP 5.0 only!, "mbstring", default is homemade PHP-code). Defines which of these PHP-features to use for various Charset processing functions in t3lib_cs. Will speed up charset functions radically.
 		'no_pconnect' => 0,						// Boolean: If true, "connect" is used instead of "pconnect" when connecting to the database!
 		'multiplyDBfieldSize' => 1,				// Double: 1-5: Amount used to multiply the DB field size when the install tool is evaluating the database size (eg. "2.5"). This is useful if you want to expand the size of fields for utf-8 etc. For western european sites using utf-8 the need should not be for more than twice the normal single-byte size (2) and for chinese / asian languages 3 should suffice.
-		'setDBinit' => array(),					// Array, commands to send to database right after connecting. Ignored by the DBAL extension!
+		'setDBinit' => '',					// String (textarea): Commands to send to database right after connecting, separated by newline. Ignored by the DBAL extension!
 		'setMemoryLimit' => 0,					// Integer, memory_limit in MB: If more than 16, TYPO3 will try to use ini_set() to set the memory limit of PHP to the value. This works only if the function ini_set() is not disabled by your sysadmin.
 		'forceReturnPath' => 0,					// Boolean: Force return path to be applied in mail() calls. If this is set, all calls to mail() done by t3lib_htmlmail will be called with '-f<return_path> as the 5th parameter. This will make the return path correct on almost all Unix systems. There is a known problem with Postfix below version 2: Mails are not sent if this option is set and Postfix is used. On Windows platforms, the return path is set via a call to ini_set. This has no effect if safe_mode in PHP is on.
 		'displayErrors' => -1,					// Integer, -1,0,1,2. 0=Do not display any PHP error messages. 1=Display error messages. 2=Display only if client matches TYPO3_CONF_VARS[SYS][devIPmask]. -1=Default setting. With this option, you can override the PHP setting "display_errors". It is suggested that you set this to "0" and enable the "error_log" option in php.ini instead.
 		'serverTimeZone' => 1,					// Integer, GMT offset of servers time (from time()). Default is "1" which is "GMT+1" (central european time). This value can be used in extensions that are GMT aware and wants to convert times to/from other timezones.
 		'systemLog' => '',					// String, semi-colon separated list: Defines one or more logging methods. Possible methods: file,<abs-path-to-file>[,<level>];mail,<to>[/<from>][,<level>];syslog,<facility>,[,<level>];error_log[,,<level>]. "file" logs to a file, "mail" sends the log entries via mail, "syslog" uses the operating system's log, "error_log" uses the PHP error log. The level is the individual logging level (see [SYS][systemLogLevel]. Facility may be one of LOCAL0..LOCAL7, USER (on Windows USER is the only valid type).
 		'systemLogLevel' => 0,					// Integer: Only messages with same or higher severity are logged; 0 is info, 1 is notice, 2 is warning, 3 is error, 4 is fatal error.
-		'maxFileNameLength' => 60				// Integer, This is the maximum file name length. The value will be taken into account by basic file opertaions like renaming or creation of files and folders.
+		'maxFileNameLength' => 60,				// Integer, This is the maximum file name length. The value will be taken into account by basic file opertaions like renaming or creation of files and folders.
 	),
 	'EXT' => Array (	// Options related to the Extension Management
 		'noEdit' => 1,							// Boolean: If set, the Extension Manager does NOT allow extension files to be edited! (Otherwise both local and global extensions can be edited.)
@@ -101,7 +101,7 @@ $TYPO3_CONF_VARS = Array(
 		'extList' => 'tsconfig_help,context_help,extra_page_cm_options,impexp,belog,aboutmodules,setup,install',						// String list: List of extensions which are enabled for this install. Use the Extension Manager (EM) to manage this!
 		'extConf' => array(						// Config-options for extensions, stored as serialized arrays by extension-keys. Handled automatically by the EM.
 //			'--key--' => array()
-		)
+		),
 	),
 	'BE' => Array(		// Backend Configuration.
 		'unzip_path' => '',						// Path to "unzip".
@@ -231,7 +231,7 @@ $TYPO3_CONF_VARS = Array(
 				'url' => 't3lib/class.t3lib_softrefproc.php:&t3lib_softrefproc',
 			),
 			'softRefParser_GL' => array()	// Global soft reference parsers
-		)
+		),
 	),
 	'EXTCONF' => Array (		// Here you may add manually set configuration options for your extensions. Eg. $TYPO3_CONF_VARS['EXTCONF']['my_extension_key']['my_option'] = 'my_value';
 //		'--key--' => array()

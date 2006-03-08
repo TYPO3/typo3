@@ -889,7 +889,8 @@ class t3lib_DB {
 		if (!$this->link) {
 			t3lib_div::sysLog('Could not connect to Mysql server '.$TYPO3_db_host.' with user '.$TYPO3_db_username.'.','Core',4);
 		} else {
-			foreach($GLOBALS['TYPO3_CONF_VARS']['SYS']['setDBinit'] as $v) {
+			$setDBinit = t3lib_div::trimExplode(chr(10), $GLOBALS['TYPO3_CONF_VARS']['SYS']['setDBinit']);
+			foreach ($setDBinit as $v)	{
 				if (mysql_query($v, $this->link) === FALSE)	{
 					t3lib_div::sysLog('Could not initialize DB connection with query "'.$v.'".','Core',3);
 				}
