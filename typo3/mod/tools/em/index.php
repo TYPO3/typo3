@@ -852,7 +852,7 @@ EXTENSION KEYS:
 				}
 			}
 
-			$content .= '<br /><br /><strong>PRIVACY NOTICE:</strong><br />';
+			$content .= '<br /><br /><strong>PRIVACY NOTICE:</strong><br />'.$this->privacyNotice;
 
 			$this->content.=$this->doc->section('Extensions in TYPO3 Extension Repository',$content,0,1);
 		}
@@ -1335,8 +1335,10 @@ EXTENSION KEYS:
 								$updates = 'Before the extension can be installed the database needs to be updated with new tables or fields. Please select which operations to perform:'.$updates;
 								if($this->CMD['standAlone']) $updates .= '<input type="hidden" name="standAlone" value="1" />';
 								$depsolver = t3lib_div::_POST('depsolver');
-								foreach($depsolver['ignore'] as $depK => $depV)	{
+								if(is_array($depsolver['ignore'])) {
+								    foreach($depsolver['ignore'] as $depK => $depV)	{
 									$updates .= '<input type="hidden" name="depsolver[ignore]['.$depK.']" value="1" />';
+								    }
 								}
 
 								$this->content.=$this->doc->section('Installing '.$this->extensionTitleIconHeader($extKey,$list[$extKey]).strtoupper(': Database needs to be updated'),$updates,1,1,1,1);
@@ -2463,7 +2465,7 @@ EXTENSION KEYS:
 
 		reset($this->xmlhandler->extensionsXML);
 		while (list($extKey, $data) = each($this->xmlhandler->extensionsXML)) {
-			$GLOBALS['LANG']->csConvObj->convArray(&$data,'utf-8',$GLOBALS['LANG']->charSet); // is there a better place for conversion?
+			$GLOBALS['LANG']->csConvObj->convArray($data,'utf-8',$GLOBALS['LANG']->charSet); // is there a better place for conversion?
 			$list[$extKey]['type'] = '_';
 			$version = array_keys($data['versions']);
 			$list[$extKey]['_ICON'] = '<img alt="" src="'.$filepath.$extKey{0}.'/'.$extKey{1}.'/'.$extKey.'_'.end($version).'.gif" />';
