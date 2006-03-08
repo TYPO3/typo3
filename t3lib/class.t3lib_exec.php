@@ -313,7 +313,8 @@ class t3lib_exec {
 		$cmdArr = array();
 
 		if ($TYPO3_CONF_VARS['SYS']['binSetup']) {
-			$pathSetup = t3lib_div::trimExplode(',',$TYPO3_CONF_VARS['SYS']['binSetup'],1);
+			$pathSetup = implode("\n", t3lib_div::trimExplode(',',$TYPO3_CONF_VARS['SYS']['binSetup'],1));
+			$pathSetup = t3lib_div::trimExplode("\n",$pathSetup,1);
 			foreach($pathSetup as $val) {
 				list($cmd, $cmdPath) = t3lib_div::trimExplode('=',$val,1);
 
