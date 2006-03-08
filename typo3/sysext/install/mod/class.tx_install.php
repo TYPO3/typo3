@@ -4734,8 +4734,7 @@ $out="
 <html>
 	<head>
 
-<STYLE TYPE="text/css">
-<!--
+<style type="text/css">
 body, p, td, a, span, input, .bodytext {
 	font-family:verdana,sans-serif;
 	font-size:1em;
@@ -4750,12 +4749,10 @@ body, p, td, a, span, input, .bodytext {
 .size4text {
 	font-size:1.5em;
 }
-A:link {text-decoration: none}
-A:visited {text-decoration: none}
-A:active {text-decoration: none}
-A:hover {color: #000066}
--->
-</STYLE>
+a {color: #600; text-decoration: none;}
+a:active {text-decoration: none;}
+a:hover {color: #006; text-decoration:underline:}
+</style>
 '.$this->headerStyle.'
 
  		<title>TYPO3 Install Tool</title>
