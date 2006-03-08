@@ -3405,7 +3405,7 @@ class t3lib_BEfunc	{
 					<table border="0" cellspacing="0" cellpadding="0" width="333">
 						<tr>
 							<td align="center">'.
-								($GLOBALS['TBE_STYLES']['logo_login']?'<img src="'.$GLOBALS['BACK_PATH'].$GLOBALS['TBE_STYLES']['logo_login'].'" alt="" />':'<img src="'.$GLOBALS['BACK_PATH'].'gfx/typo3logo.gif" width="333" height="43" vspace="10" />').
+								($GLOBALS['TBE_STYLES']['logo_login']?'<img src="'.$GLOBALS['BACK_PATH'].$GLOBALS['TBE_STYLES']['logo_login'].'" alt="" />':'<img src="'.$GLOBALS['BACK_PATH'].'gfx/typo3logo.gif" width="123" height="34" vspace="10" />').
 							'</td>
 						</tr>
 						<tr>
@@ -3446,7 +3446,7 @@ class t3lib_BEfunc	{
 		} else {
 			$warrantyNote='TYPO3 comes with ABSOLUTELY NO WARRANTY; <a href="http://typo3.com/1316.0.html" target="_blank">click for details.</a>';
 		}
-		$cNotice = '<a href="http://typo3.com/" target="_blank"><img src="gfx/loginlogo_transp.gif" width="75" vspace="2" height="19" alt="TYPO3 logo" align="left" />TYPO3 CMS ver. '.htmlspecialchars($GLOBALS['TYPO_VERSION']).'</a>. Copyright &copy; 1998-2006 Kasper Sk&aring;rh&oslash;j. Extensions are copyright of their respective owners. Go to <a href="http://typo3.com/" target="_blank">http://typo3.com/</a> for details.
+		$cNotice = '<a href="http://typo3.com/" target="_blank"><img src="gfx/loginlogo_transp.gif" width="75" vspace="2" hspace="4" height="19" alt="TYPO3 logo" align="left" />TYPO3 CMS ver. '.htmlspecialchars($GLOBALS['TYPO_VERSION']).'</a>. Copyright &copy; 1998-2006 Kasper Sk&aring;rh&oslash;j. Extensions are copyright of their respective owners. Go to <a href="http://typo3.com/" target="_blank">http://typo3.com/</a> for details.
 		'.strip_tags($warrantyNote,'<a>').' This is free software, and you are welcome to redistribute it under certain conditions; <a href="http://typo3.com/1316.0.html" target="_blank">click for details</a>. Obstructing the appearance of this notice is prohibited by law.';
 
 		return $cNotice;
