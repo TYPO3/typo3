@@ -1,5 +1,7 @@
 2006-03-08  Michael Stucki  <michael@typo3.org>
 
+	* Release of TYPO3 4.0rc1
+	* === Development feature freeze ===
 	* Small usability improvement for dyntab-menus in typo3/stylesheet.css (plus cleanup of that file)
 	* More changes required because of the logo update
 
@@ -275,7 +277,6 @@
 2006-02-15  Michael Stucki  <michael@typo3.org>
 
 	* Release of TYPO3 4.0beta3
-	* Rised version number to 4.0beta3
 	* Various changes to indexed_search, see local ChangeLog for details
 	* Install Tool: Added "cache_imagesizes" to list of tables that can be cleared
 	* !!! Indexed Search: Removed all options for indexing OpenOffice.org/OpenDocument files and replaced them with the above "unzip" option. Affected options are: nativeOOMethod, OOoExtract, ruby
@@ -548,7 +549,6 @@
 2006-01-20  Michael Stucki  <michael@typo3.org>
 
 	* Release of TYPO3 4.0beta2
-	* Rised version number to 4.0beta2
 	* New feature: Merged cron_cssstyledimgtext into CSS Styled Content. Kudos to Ernesto Baschny who did most of the work. Many thanks to Sebastian Kurfuerst for his great support. Great work boys!
 	* Added support to fetch values from objects in getText: myVar.data = TSFE:fe_user|user|username
 	* Fixed (part of) #2059: Removing "NOT NULL" when parsing SQL data
@@ -719,7 +719,6 @@
 2005-12-28  Michael Stucki  <michael@typo3.org>
 
 	* Release of TYPO3 4.0beta1
-	* Rised version number to 4.0beta1
 	* Fixed a bug in tstemplate (path still pointing to typo3/ext/)
 
 2005-12-28  Michael Stucki  <michael@typo3.org>
