@@ -444,8 +444,8 @@ TABLE#typo3-permissionMatrix TD { text-align: center; width: 16%; }
 TABLE#typo3-permissionMatrix TD.bgColor2 { font-weight: bold; padding-left: 10px; padding-right: 10px; }
 
 /* Help > About */
-#typo3-mod-help-about-index-php-outer { margin: 0px auto; width: 333px; }
-#typo3-mod-help-about-index-php-inner { margin: 0px auto; border: 1px solid black; background: #EAEAEA; padding: 5px; }
+#typo3-mod-help-about-index-php-outer { margin: 0px auto; width: 333px; text-align:center;}
+#typo3-mod-help-about-index-php-inner { margin: 0px auto; border: 1px solid black; background: #eaeaea; padding: 5px; text-align: left; }
 #typo3-mod-help-about-index-php-inner h2 { margin-top: 0; }
 #typo3-mod-help-about-index-php-inner h3 { margin-top: 10px; margin-bottom: 10px; background-color: transparent; font-size: 14px; text-align: center; }
 #typo3-mod-help-about-index-php-inner a { color: black; }

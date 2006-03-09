@@ -381,7 +381,7 @@ class SC_index {
 			// Logo:
 		$logo = $GLOBALS['TBE_STYLES']['logo_login'] ?
 					'<img src="'.htmlspecialchars($GLOBALS['BACK_PATH'].$GLOBALS['TBE_STYLES']['logo_login']).'" alt="" />' :
-					'<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/typo3logo.gif').' alt="" />';
+					'<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/typo3logo.gif','width="123" height="34"').' alt="" />';
 
 			// Login box image:
 		$loginboxImage = $this->makeLoginBoxImage();

@@ -572,7 +572,7 @@ class t3lib_timeTrack {
 						<div align="center">
 							<table border="0" cellspacing="0" cellpadding="0" width="333" bgcolor="#ffffff">
 								<tr>
-									<td><img src="'.TYPO3_mainDir.'gfx/typo3logo.gif" width="333" height="43" vspace="10" border="0" alt="" /></td>
+									<td style="text-align:center";><img src="'.TYPO3_mainDir.'gfx/typo3logo.gif" width="123" height="34" vspace="10" border="0" alt="" /></td>
 								</tr>
 								<tr>
 									<td bgcolor="black">

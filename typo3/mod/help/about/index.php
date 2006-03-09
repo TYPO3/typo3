@@ -105,7 +105,7 @@ class SC_mod_help_about_index {
 
 		$content='
 			<div id="typo3-mod-help-about-index-php-outer">
-				<img src="'.$BACK_PATH.'gfx/typo3logo.gif" width="333" height="43" vspace="10" alt="TYPO3 logo" />
+				<img src="'.$BACK_PATH.'gfx/typo3logo.gif" width="123" height="34" vspace="10" alt="TYPO3 logo" />
 				<div id="typo3-mod-help-about-index-php-inner">
 					<h2>TYPO3 Information</h2>
 					<h3>'.$LANG->getLL('welcome',1).'</h3>
