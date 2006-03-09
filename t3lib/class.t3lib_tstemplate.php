@@ -965,15 +965,21 @@ class t3lib_TStemplate	{
 	 */
 	function substituteConstants($all)	{
 		if ($this->tt_track)	$GLOBALS['TT']->setTSlogMessage('Constants to substitute: '.count($this->flatSetup));
-		reset($this->flatSetup);
-		while (list($const,$val)=each($this->flatSetup))	{
-			if (!is_array($val))	{
-				$all = str_replace('{$'.$const.'}',$val,$all);
-			}
-		}
-		return $all;
+
+		return preg_replace_callback('/\{\$(.[^}]+)\}/', array($this, 'substituteConstantsCallBack'), $all);
 	}
 
+	/**
+	 * Call back method for preg_replace_callback in substituteConstants
+	 *
+	 * @param	array		Regular expression matches
+	 * @return	string		Replacement
+	 * @see substituteConstants()
+	 */
+	function substituteConstantsCallBack($matches) {
+		// replace {$CONST} if found in $this->flatSetup, else leave unchanged
+		return isset($this->flatSetup[$matches[1]]) && !is_array($this->flatSetup[$matches[1]]) ? $this->flatSetup[$matches[1]] : $matches[0];
+	}
 
 
 

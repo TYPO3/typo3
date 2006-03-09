@@ -218,26 +218,40 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 	 * @return	[type]		...
 	 */
 	function substituteConstants($all)	{
-		$this->Cmarker=substr(md5(uniqid("")),0,6);
-		reset($this->flatSetup);
-		while (list($const,$val)=each($this->flatSetup))	{
-			if (!is_array($val))	{
-				switch($this->constantMode)	{
-					case "const":
-						$all = str_replace('{$'.$const.'}','##'.$this->Cmarker.'_B##{$'.$const.'}##'.$this->Cmarker.'_E##',$all);
-					break;
-					case "subst":
-						$all = str_replace('{$'.$const.'}','##'.$this->Cmarker.'_B##'.$val.'##'.$this->Cmarker.'_E##',$all);
-					break;
-					case "untouched":
-					break;
-					default:
-						$all = str_replace('{$'.$const.'}',$val,$all);
-					break;
-				}
-			}
+		$this->Cmarker = substr(md5(uniqid("")),0,6);
+
+		return preg_replace_callback('/\{\$(.[^}]+)\}/', array($this, 'substituteConstantsCallBack'), $all);
+	}
+
+	/**
+	 * Call back method for preg_replace_callback in substituteConstants
+	 *
+	 * @param       array           Regular expression matches
+	 * @return      string          Replacement
+	 * @see substituteConstants()
+	 */
+	function substituteConstantsCallBack($matches) {
+		switch($this->constantMode) {
+			case 'const':
+				$ret_val =  isset($this->flatSetup[$matches[1]]) && !is_array($this->flatSetup[$matches[1]]) ?
+							'##'.$this->Cmarker.'_B##'.$matches[0].'##'.$this->Cmarker.'_E##' :
+							$matches[0];
+				break;
+			case 'subst':
+				$ret_val =  isset($this->flatSetup[$matches[1]]) && !is_array($this->flatSetup[$matches[1]]) ?
+							'##'.$this->Cmarker.'_B##'.$this->flatSetup[$matches[1]].'##'.$this->Cmarker.'_E##' :
+							$matches[0];
+				break;
+			case 'untouched':
+				$ret_val = $matches[0];
+				break;
+			default:
+				$ret_val = 	isset($this->flatSetup[$matches[1]]) && !is_array($this->flatSetup[$matches[1]]) ? 
+							$this->flatSetup[$matches[1]] : 
+							$matches[0];
 		}
-		return $all;
+
+		return $ret_val;
 	}
 
 	/**

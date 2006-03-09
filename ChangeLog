@@ -1,3 +1,7 @@
+2006-03-07  Wolfgang Klinger  <wk@plan2.net>
+
+	* Fixed bug #2743: Speed up substituteConstants with preg_replace_callback
+
 2006-03-08  Michael Stucki  <michael@typo3.org>
 
 	* Changed the globalString condition to allow PCRE regular expressions only if wrapped in dashes "/"
