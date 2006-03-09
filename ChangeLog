@@ -1,4 +1,8 @@
-2006-03-07  Wolfgang Klinger  <wk@plan2.net>
+2006-03-08  Michael Stucki  <michael@typo3.org>
+
+	* Small usability improvement for dyntab-menus in typo3/stylesheet.css (plus cleanup of that file)
+
+2006-03-08  Wolfgang Klinger  <wk@plan2.net>
 
 	* Fixed bug #2743: Speed up substituteConstants with preg_replace_callback
 
@@ -17,7 +21,7 @@
 2006-03-08  Karsten Dambekalns  <karsten@typo3.org>
 
 	* EM: Fixed three small issues, mostly cosmetic.
-	* Install Tool: Using new logo now, uuuuhhh! Changes CSS so links are colored again.
+	* Install Tool: Using new logo now, uuuuhhh! Changes to CSS so links are colored again.
 
 2006-03-08  Dmitry Dulepov  <typo3@accio.lv>
 

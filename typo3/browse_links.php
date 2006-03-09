@@ -119,7 +119,7 @@ class SC_browse_links {
 	/**
 	 * not really needed but for backwards compatibility ...
 	 */
-	function init () {
+	function init ()	{
 
 			// Find "mode"
 		$this->mode = t3lib_div::_GP('mode');
