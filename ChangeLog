@@ -1,6 +1,6 @@
 2006-03-11  Michael Stucki  <michael@typo3.org>
 
-	* More CSS fixes in typo3/stylesheet.css: Changed the height of dyntab-menues & fixed login screen for IE5.x and Opera browsers
+	* More CSS fixes in typo3/stylesheet.css: Changed the height of dyntab-menues & various fixes to login screen
 
 2006-03-10  Sebastian Kurfuerst  <sebastian@garbage-group.de>
 
