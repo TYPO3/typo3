@@ -1188,12 +1188,12 @@ class clickMenu {
 
 				// Set back path place holder to real back path
 			$CMtable = str_replace($this->PH_backPath,$this->backPath,$CMtable);
-			if($this->ajax)	{
+			if ($this->ajax)	{
 				$innerXML = '<data><clickmenu><htmltable><![CDATA['.$CMtable.']]></htmltable><cmlevel>'.$this->cmLevel.'</cmlevel></clickmenu></data>';
 				return $innerXML;
 			} else {
-				// Create JavaScript section:
-			$script=$GLOBALS['TBE_TEMPLATE']->wrapScriptTags('
+					// Create JavaScript section:
+				$script=$GLOBALS['TBE_TEMPLATE']->wrapScriptTags('
 
 				if (top.content && top.content'.$frameName.' && top.content'.$frameName.'.setLayerObj)	{
 					top.content'.$frameName.'.setLayerObj(unescape("'.t3lib_div::rawurlencodeJS($CMtable).'"),'.$this->cmLevel.');
@@ -1653,8 +1653,7 @@ class SC_alt_clickmenu {
 	 * @return	void
 	 */
 	function main()	{
-
-		$this->ajax = t3lib_div::_GP('ajax')?TRUE:FALSE;
+		$this->ajax = t3lib_div::_GP('ajax') ? TRUE : FALSE;
 
 			// Initialize Clipboard object:
 		$clipObj = t3lib_div::makeInstance('t3lib_clipboard');

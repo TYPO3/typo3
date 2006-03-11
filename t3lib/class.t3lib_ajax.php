@@ -46,18 +46,18 @@
  */
 class t3lib_ajax {
 	/**
-	 * gets javascript code needed to handle an XMLHTTP request in the frontend.
-	 * all JS functions have to call ajax_doRequest(url) to make a request to the server.
+	 * Gets the JavaScript code needed to handle an XMLHTTP request in the frontend.
+	 * All JS functions have to call ajax_doRequest(url) to make a request to the server.
 	 * USE:
-	 * see examples of using this function in template.php -> getContextMenuCode and alt_clickmenu.php -> printContent
+	 * See examples of using this function in template.php -> getContextMenuCode and alt_clickmenu.php -> printContent
 	 *
-	 * @param	string	$handlerFunction	JS function handling the XML data from the server. That function gets the returned XML data as parameter.
-	 * @param	string	$fallback		JS fallback function which is called with the URL of the request in case ajax is not available.
-	 * @param	boolean	$debug	If set to 1, the returned XML data is outputted as text in an alert window - useful for debugging, PHP errors are shown there, ...
-	 * @return	string	JavaScript code needed to make and handle an XMLHTTP request
+	 * @param	string		JS function handling the XML data from the server. That function gets the returned XML data as parameter.
+	 * @param	string		JS fallback function which is called with the URL of the request in case ajax is not available.
+	 * @param	boolean		If set to 1, the returned XML data is outputted as text in an alert window - useful for debugging, PHP errors are shown there, ...
+	 * @return	string		JavaScript code needed to make and handle an XMLHTTP request
 	 */
-	function getJScode($handlerFunction, $fallback = '', $debug=0)	{
-			// init xmlhttp request object
+	function getJScode($handlerFunction, $fallback='', $debug=0)	{
+			// Init the XMLHTTP request object
 		$code = '
 		function ajax_initObject()	{
 			var A;
@@ -75,7 +75,7 @@ class t3lib_ajax {
 			}
 			return A;
 		}';
-			// in case ajax is not available, fallback function
+			// in case AJAX is not available, fallback function
 		if($fallback)	{
 			$fallback .= '(url)';
 		} else {
@@ -115,7 +115,7 @@ class t3lib_ajax {
 	 * @return	void
 	 */
 	function outputXMLreply($innerXML)	{
-			// ajax needs xml data
+			// AJAX needs some XML data
 		header('Content-Type: text/xml');
 		$xml = '<?xml version="1.0"?>
 <t3ajax>'.$innerXML.'</t3ajax>';
