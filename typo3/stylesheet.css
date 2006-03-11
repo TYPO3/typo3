@@ -196,7 +196,7 @@ TABLE.typo3-dyntabmenu TD.tabact { background: #e7dba8; }
 TABLE.typo3-dyntabmenu TD.tabact, TABLE.typo3-dyntabmenu TD.tabact_over { border-color: black; }
 TABLE.typo3-dyntabmenu TD.tab_over, TABLE.typo3-dyntabmenu TD.tabact_over { background: #f6eab7; }
 TABLE.typo3-dyntabmenu TD.disabled, TABLE.typo3-dyntabmenu TD.disabled_over { color: #999; background: #ccc; cursor: default; }
-TABLE.typo3-dyntabmenu TD A { color: #666; text-decoration: none; display: block; width: 100%; }
+TABLE.typo3-dyntabmenu TD A { color: #666; text-decoration: none; display: block; width: 100%; padding-top: 2px; padding-bottom: 2px; }
 TABLE.typo3-dyntabmenu TD.tabact A, TABLE.typo3-dyntabmenu TD.tabact_over A { color: black; }
 TABLE.typo3-tabmenu TD:hover { background: #f6eab7; }
 
@@ -332,11 +332,10 @@ DIV#typo3-altdoc-lang-selector { text-align: right; }
 	 Color set: #A69E8D / #858585
 
 */
-BODY#typo3-index-php { background-color: white; margin: 0px 0px 0px 0px; }
+BODY#typo3-index-php { background-color: white; margin: 0; padding: 0; }
 BODY#typo3-index-php TABLE#wrapper { width: 100%; height: 80%; margin-top: 30px; }
 BODY#typo3-index-php TABLE#loginwrapper { width: 100%; height: 133px; background-color: #A69E8D; text-align: left; }
-BODY#typo3-index-php TABLE#loginwrapper img#loginbox-image { position: absolute; top: 78px; }
-* html BODY#typo3-index-php TABLE#loginwrapper img#loginbox-image { position: absolute; top: 80px; }
+BODY#typo3-index-php TABLE#loginwrapper IMG#loginbox-image { position: absolute; top: 78px; }
 BODY#typo3-index-php DIV#copyrightnotice { width: 70%; text-align: left; margin-top: 10px; }
 BODY#typo3-index-php DIV#copyrightnotice IMG { margin-right: 5px; margin-bottom: 5px; }
 BODY#typo3-index-php DIV#loginimage { text-align: right; padding-right: 30px; margin-bottom: 5px; height: 43px; }
@@ -348,6 +347,10 @@ TABLE#logintable P.c-info { font-size: 10px; font-weight: normal; }
 TABLE#logintable P.c-wrong { font-size: 10px; width: 300px; border: #858585 solid 1px; margin: 5px 0px 5px 0px; padding: 5px 15px 5px 15px; }
 TABLE#logintable INPUT.c-username, TABLE#logintable INPUT.c-password, TABLE#logintable SELECT.c-interfaceselector { width: 150px; }
 TABLE#logintable INPUT { border: #858585 solid 1px; background-color: white; }
+
+/* Workarounds for buggy IE5 */
+* HTML BODY#typo3-index-php TABLE#loginwrapper { position: relative; }
+* HTML BODY TABLE#logintable, * HTML BODY#typo3-index-php TABLE#loginwrapper IMG#loginbox-image { top: 0; }
 
 DIV#loginNews { width: 70%; margin-top: 30px; }
 DIV#loginNews H2 { background-color: #E26816; color: white; font-size: 12px; }
