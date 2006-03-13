@@ -18,3 +18,4 @@ RTE.default {
 
 	## front end RTE configuration for the general public (htmlArea RTE only)
 RTE.default.FE < RTE.default
+RTE.default.FE.FE >

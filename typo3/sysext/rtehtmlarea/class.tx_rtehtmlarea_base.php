@@ -574,7 +574,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 					// change <strong> to <b>
 				$value = preg_replace('/<(\/?)strong/i', "<$1b", $value);
 					// change <em> to <i>
-				$value = preg_replace('/<(\/?)em/i', "<$1i", $value);
+				$value = preg_replace('/<(\/?)em([^b>]*>)/i', "<$1i$2", $value);
 			}
 			if ($this->client['BROWSER'] == 'msie') {
 					// change <abbr> to <acronym>
@@ -1154,11 +1154,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			while(list($fontName,$conf)=each($RTEProperties['fonts.'])) {
 				$fontName=substr($fontName,0,-1);
 				if (is_object($TSFE)) {
-					if($this->typoVersion >= 3008000) {
-						$string = $TSFE->sL($conf['name']);
-					} else {
-						$string = $this->sL($conf['name']);
-					}
+					$string = $TSFE->sL($conf['name']);
 				} else {
 					$string = $LANG->sL($conf['name']);
 				}
@@ -1218,11 +1214,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			while(list($colorName,$conf)=each($RTEProperties['colors.']))      {
 				$colorName=substr($colorName,0,-1);
 				if (is_object($TSFE)) {
-					if($this->typoVersion >= 3008000) {
-						$string = $TSFE->csConvObj->conv($TSFE->sL(trim($conf['name'])), $TSFE->renderCharset, $TSFE->metaCharset);
-					} else {
-						$string = $TSFE->csConvObj->conv($this->sL(trim($conf['name'])), $TSFE->renderCharset, $TSFE->metaCharset);
-					}
+					$string = $TSFE->csConvObj->conv($TSFE->sL(trim($conf['name'])), $TSFE->renderCharset, $TSFE->metaCharset);
 					$string = str_replace('"', '\"', str_replace('\\\'', '\'', $string));
 					$string = $this->feJScharCode($string);
 				} else {
@@ -1356,11 +1348,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			while(list($className,$conf)=each($RTEProperties['classes.'])) {
 				$className = substr($className,0,-1);
 				if (is_object($TSFE)) {
-					if($this->typoVersion >= 3008000) {
-						$string = $TSFE->csConvObj->conv($TSFE->sL(trim($conf['name'])), $TSFE->renderCharset, $TSFE->metaCharset);
-					} else {
-						$string = $TSFE->csConvObj->conv($this->sL(trim($conf['name'])), $TSFE->renderCharset, $TSFE->metaCharset);
-					}
+					$string = $TSFE->csConvObj->conv($TSFE->sL(trim($conf['name'])), $TSFE->renderCharset, $TSFE->metaCharset);
 					$string = str_replace('"', '\"', str_replace('\\\'', '\'', $string));
 					$string = $this->feJScharCode($string);
 				} else {
@@ -1401,27 +1389,13 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 		foreach($subArrays as $labels) {
 			$JSLanguageArray .= (($subArraysIndex++)?',':'') . $labels . ': {' . $linebreak;
 			if(is_object($TSFE)) {
-				if($this->typoVersion >= 3008000 ) {
-					$LOCAL_LANG = $TSFE->readLLfile(t3lib_extMgm::extPath($this->ID).'htmlarea/locallang_' . $labels . '.xml', $this->language);
-				} else {
-					$LOCAL_LANG = $this->readLLfile(t3lib_extMgm::extPath($this->ID).'htmlarea/locallang_' . $labels . '.xml', $this->language);
-				}
-				if($this->typoVersion >= 3007000 ) {
-					$TSFE->csConvObj->convArray($LOCAL_LANG['default'], 'iso-8859-1', $this->OutputCharset);
-					if(!empty($LOCAL_LANG[$this->language])) $TSFE->csConvObj->convArray($LOCAL_LANG[$this->language], $this->charset, $this->OutputCharset);
-				} else {
-					$this->convArray($LOCAL_LANG['default'], 'iso-8859-1', $this->OutputCharset);
-					if(!empty($LOCAL_LANG[$this->language])) $this->convArray($LOCAL_LANG[$this->language], $this->charset, $this->OutputCharset);
-				}
+				$LOCAL_LANG = $TSFE->readLLfile(t3lib_extMgm::extPath($this->ID).'htmlarea/locallang_' . $labels . '.xml', $this->language);
+				$TSFE->csConvObj->convArray($LOCAL_LANG['default'], 'iso-8859-1', $this->OutputCharset);
+				if(!empty($LOCAL_LANG[$this->language])) $TSFE->csConvObj->convArray($LOCAL_LANG[$this->language], $this->charset, $this->OutputCharset);
 			} else {
 				$LOCAL_LANG = $LANG->readLLfile(t3lib_extMgm::extPath($this->ID).'htmlarea/locallang_' . $labels . '.xml');
-				if($this->typoVersion >= 3007000 ) {
-					$LANG->csConvObj->convArray($LOCAL_LANG['default'], 'iso-8859-1', $this->OutputCharset);
-					if(!empty($LOCAL_LANG[$this->language])) $LANG->csConvObj->convArray($LOCAL_LANG[$this->language], $this->charset, $this->OutputCharset);
-				} else {
-					$this->convArray($LOCAL_LANG['default'], 'iso-8859-1', $this->OutputCharset);
-					if(!empty($LOCAL_LANG[$this->language])) $this->convArray($LOCAL_LANG[$this->language], $this->charset, $this->OutputCharset);
-				}
+				$LANG->csConvObj->convArray($LOCAL_LANG['default'], 'iso-8859-1', $this->OutputCharset);
+				if(!empty($LOCAL_LANG[$this->language])) $LANG->csConvObj->convArray($LOCAL_LANG[$this->language], $this->charset, $this->OutputCharset);
 			}
 			if(!empty($LOCAL_LANG[$this->language])) {
 				$LOCAL_LANG[$this->language] = t3lib_div::array_merge_recursive_overrule($LOCAL_LANG['default'], $LOCAL_LANG[$this->language]);
@@ -1553,9 +1527,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			$outputHandle = fopen($outputFilename,'wb');
 			fwrite($outputHandle, $contents);
 			fclose($outputHandle);
-			if ($this->typoVersion >= 3008000) {
-				t3lib_div::fixPermissions($outputFilename);
-			}
+			t3lib_div::fixPermissions($outputFilename);
 		}
 		return $this->httpTypo3Path . $relFilename;
 	}
@@ -1574,9 +1546,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 		$destination = PATH_site . $relFilename;
 		if(!file_exists($destination)) {
 			@copy($source,$destination);
-			if ($this->typoVersion >= 3008000) {
-				t3lib_div::fixPermissions($destination);
-			}
+			t3lib_div::fixPermissions($destination);
 		}
 		return $this->httpTypo3Path . $relFilename;
 	}
@@ -1609,27 +1579,13 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 		
 		$linebreak = $TYPO3_CONF_VARS['EXTCONF'][$this->ID]['enableCompressedScripts'] ? '' : chr(10);
 		if(is_object($TSFE)) {
-			if($this->typoVersion >= 3008000 ) {
-				$LOCAL_LANG = $TSFE->readLLfile(t3lib_extMgm::extPath($this->ID).'htmlarea/plugins/' . $plugin . '/locallang.xml', $this->language);
-			} else {
-				$LOCAL_LANG = $this->readLLfile(t3lib_extMgm::extPath($this->ID).'htmlarea/plugins/' . $plugin . '/locallang.xml', $this->language);
-			}
-			if($this->typoVersion >= 3007000 ) {
-				if(!empty($LOCAL_LANG['default'])) $TSFE->csConvObj->convArray($LOCAL_LANG['default'], 'iso-8859-1', $this->OutputCharset);
-				if(!empty($LOCAL_LANG[$this->language])) $TSFE->csConvObj->convArray($LOCAL_LANG[$this->language], $this->charset, $this->OutputCharset);
-			} else {
-				if(!empty($LOCAL_LANG['default'])) $this->convArray($LOCAL_LANG['default'], 'iso-8859-1', $this->OutputCharset);
-				if(!empty($LOCAL_LANG[$this->language])) $this->convArray($LOCAL_LANG[$this->language], $this->charset, $this->OutputCharset);
-			}
+			$LOCAL_LANG = $TSFE->readLLfile(t3lib_extMgm::extPath($this->ID).'htmlarea/plugins/' . $plugin . '/locallang.xml', $this->language);
+			if(!empty($LOCAL_LANG['default'])) $TSFE->csConvObj->convArray($LOCAL_LANG['default'], 'iso-8859-1', $this->OutputCharset);
+			if(!empty($LOCAL_LANG[$this->language])) $TSFE->csConvObj->convArray($LOCAL_LANG[$this->language], $this->charset, $this->OutputCharset);
 		} else {
 			$LOCAL_LANG = $LANG->readLLfile(t3lib_extMgm::extPath($this->ID).'htmlarea/plugins/' . $plugin . '/locallang.xml');
-			if($this->typoVersion >= 3007000 ) {
-				if(!empty($LOCAL_LANG['default'])) $LANG->csConvObj->convArray($LOCAL_LANG['default'], 'iso-8859-1', $this->OutputCharset);
-				if(!empty($LOCAL_LANG[$this->language])) $LANG->csConvObj->convArray($LOCAL_LANG[$this->language], $this->charset, $this->OutputCharset);
-			} else {
-				if(!empty($LOCAL_LANG['default'])) $this->convArray($LOCAL_LANG['default'], 'iso-8859-1', $this->OutputCharset);
-				if(!empty($LOCAL_LANG[$this->language])) $this->convArray($LOCAL_LANG[$this->language], $this->charset, $this->OutputCharset);
-			}
+			if(!empty($LOCAL_LANG['default'])) $LANG->csConvObj->convArray($LOCAL_LANG['default'], 'iso-8859-1', $this->OutputCharset);
+			if(!empty($LOCAL_LANG[$this->language])) $LANG->csConvObj->convArray($LOCAL_LANG[$this->language], $this->charset, $this->OutputCharset);
 		}
 		
 		if(!empty($LOCAL_LANG[$this->language])) {
@@ -1904,21 +1860,6 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			}
 		}
 		return implode('; ',$nStyle);
-	}
-	
-	function convArray(&$array,$fromCS,$toCS,$useEntityForNoChar=0) {
-		global $TSFE, $LANG;
-		foreach($array as $key => $value)       {
-			if (is_array($array[$key]))     {
-				$this->convArray($array[$key],$fromCS,$toCS,$useEntityForNoChar);
-			} else {
-				if(is_object($TSFE)) {
-					$array[$key] = $TSFE->csConvObj->conv($array[$key],$fromCS,$toCS,$useEntityForNoChar);
-				} else {
-					$array[$key] = $LANG->csConvObj->conv($array[$key],$fromCS,$toCS,$useEntityForNoChar);
-				}
-			}
-		}
 	}
 	
 		// Hook on lorem_ipsum extension to insert text into the RTE in wysiwyg mode

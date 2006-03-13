@@ -288,7 +288,7 @@ HTMLArea.Config = function () {
 		// remove comments
 	this.htmlRemoveComments = false;
 		// custom tags (these have to be a regexp, or null if this functionality is not desired)
-	this.customTags = /rougegras/ig;
+	this.customTags = null;
 		// BaseURL included in the iframe document
 	this.baseURL = document.baseURI || document.URL;
 	if(this.baseURL && this.baseURL.match(/(.*)\/([^\/]+)/)) this.baseURL = RegExp.$1 + "/";
@@ -2468,7 +2468,7 @@ HTMLArea._hasClass = function(el, className) {
 
 HTMLArea.RE_blockTags = /^(body|p|h1|h2|h3|h4|h5|h6|ul|ol|pre|dl|div|noscript|blockquote|form|hr|table|fieldset|address|td|tr|th|li|tbody|thead|tfoot|iframe|object)$/;
 HTMLArea.isBlockElement = function(el) { return el && el.nodeType == 1 && HTMLArea.RE_blockTags.test(el.nodeName.toLowerCase()); };
-HTMLArea.RE_closingTags = /^(p|span|a|li|ol|ul|dl|dt|td|th|tr|tbody|thead|tfoot|caption|table|div|em|i|strong|b|code|cite|blockquote|q|dfn|abbr|acronym|font|center|object|tt|style|script|title|head)$/;
+HTMLArea.RE_closingTags = /^(p|span|a|li|ol|ul|dl|dt|td|th|tr|tbody|thead|tfoot|caption|table|div|em|i|strong|b|code|cite|blockquote|q|dfn|abbr|acronym|font|center|object|embed|tt|style|script|title|head)$/;
 HTMLArea.RE_noClosingTag = /^(img|br|hr|input|area|base|link|meta|param)$/;
 HTMLArea.needsClosingTag = function(el) { return el && el.nodeType == 1 && !HTMLArea.RE_noClosingTag.test(el.tagName.toLowerCase()); };
 
@@ -2693,17 +2693,16 @@ HTMLArea._colorToRgb = function(v) {
  */
 HTMLArea._postback = function(url, data, handler, addParams) {
 	var req = null;
-	if(HTMLArea.is_ie) {
-		var success = false;
-		for (var k = 0; k < HTMLArea.MSXML_XMLHTTP_PROGIDS.length && !success; k++) {
-			try {
-				req = new ActiveXObject(HTMLArea.MSXML_XMLHTTP_PROGIDS[k]);
-				success = true;
-			} catch (e) { }
+	if (window.XMLHttpRequest) req = new XMLHttpRequest();
+		else if (window.ActiveXObject) {
+			var success = false;
+			for (var k = 0; k < HTMLArea.MSXML_XMLHTTP_PROGIDS.length && !success; k++) {
+				try {
+					req = new ActiveXObject(HTMLArea.MSXML_XMLHTTP_PROGIDS[k]);
+					success = true;
+				} catch (e) { }
+			}
 		}
-	} else {
-		req = new XMLHttpRequest();
-	}
 	
 	if(req) {
 		var content = '';
@@ -2746,7 +2745,7 @@ Dialog = function(url, action, init, width, height, opener, editor) {
  */
 Dialog._open = function(url, action, init, width, height, _opener, editor) {
 	
-	if (Dialog._modal) {
+	if (typeof(Dialog._modal) == "object" && typeof(Dialog._modal.close) == "function") {
 		Dialog._modal.close();
 		Dialog._modal = null;
 	}

@@ -1,3 +1,7 @@
+2006-03-13  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
+
+	* Fixes and cleanup in htmlArea RTE extension (see details in local ChangeLog)
+
 2006-03-11  Michael Stucki  <michael@typo3.org>
 
 	* More CSS fixes in typo3/stylesheet.css: Changed the height of dyntab-menues & various fixes to login screen

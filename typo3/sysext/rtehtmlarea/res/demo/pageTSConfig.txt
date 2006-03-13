@@ -224,6 +224,7 @@ RTE.default.enableWordClean.HTMLparser < RTE.default.proc.entryHTMLparser_db
 
 	## front end RTE configuration (htmlArea RTE only)
 RTE.default.FE < RTE.default
+RTE.default.FE.FE >
 RTE.default.FE.userElements >
 RTE.default.FE.userLinks >
 

@@ -36,7 +36,7 @@
 .htmlarea .toolbar ul li {
 	float:left;
 	background-color:transparent;
-	font:11px tahoma,verdana,sans-serif;
+	font:11px Tahoma,Verdana,sans-serif;
 	border-style:none;padding:0;
 }
 .htmlarea .toolbar ul.tb-line li, .htmlarea .toolbar ul.free-float li {
@@ -152,7 +152,7 @@
 	border:1px solid ButtonShadow;margin:3px 2px 0px 2px;padding:0px 3px;
 }
 .htmlarea .toolbar button.buttonDisabled, .htmlarea .toolbar select.buttonDisabled {
-	filter: gray() alpha(opacity = 25);
+	filter: gray() alpha(opacity=25);
 	-moz-opacity:0.25;
 	opacity:0.25;
 }
@@ -270,6 +270,7 @@
 	margin-left: -5px; float: left; position: relative; top: -3px; left: -2px; z-index: 0;
 	border: 1px solid black; border-top: none; padding: 2px 10px 3px 10px;
 	-moz-border-radius: 0px 0px 4px 4px;
+	border-radius: 0px 0px 4px 4px;
 }
 .popupwin .tab-current {
 	color: #000; background-color: #ddf;
@@ -306,15 +307,11 @@
 	margin-top:5px;margin-bottom:5px;
 }
 .popupwin fieldset {
-	display:inline;
+	display:block;
 	margin:5px 5px 0 5px;padding:5px;
 }
 .popupwin .floating {
 	float:left;
-}
-/* fieldset is inline only for Opera */
-* html .popupwin fieldset, :root .popupwin fieldset {
-	display:block;
 }
 .popupwin legend {
 	font-weight:bold;padding:0 3px;
@@ -444,7 +441,7 @@
 .htmlarea-context-menu {
 	position:absolute;top:-1000px;left:-1000px;z-index:1000;
 	background-color:#c3daf9;background-image:url(back.png);background-repeat:repeat-y;cursor:default;
-	font:11px tahoma,verdana,sans-serif;
+	font:11px Tahoma,Verdana,sans-serif;
 	list-style:none;
 	border:1px solid #003355;margin:0;padding:2px;
 }

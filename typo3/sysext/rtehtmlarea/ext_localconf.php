@@ -32,12 +32,7 @@
  * $Id$  *
  */
 
-if (!defined ("TYPO3_MODE")) 	die ("Access denied.");
-
-// Configuration of class ux_parsehtml_proc extending class t3lib_parsehtml_proc for TYPO3 older than 4.0
-if (t3lib_div::int_from_ver(TYPO3_VERSION) < 4000000 ) {
-	$TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/class.t3lib_parsehtml_proc.php'] = t3lib_extMgm::extPath($_EXTKEY) . 'class.ux_t3lib_parsehtml_proc.php';
-}
+if (!defined ("TYPO3_MODE")) 	die ('Access denied.');
 
 if(!$TYPO3_CONF_VARS['BE']['RTEenabled'])  $TYPO3_CONF_VARS['BE']['RTEenabled'] = 1;
 
