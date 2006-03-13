@@ -1,6 +1,7 @@
 2006-03-13  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
 	* Fixes and cleanup in htmlArea RTE extension (see details in local ChangeLog)
+	* htmlArea RTE: Fix bugtracker issue 2820.
 
 2006-03-11  Michael Stucki  <michael@typo3.org>
 

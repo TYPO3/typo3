@@ -897,26 +897,26 @@ class tx_rtehtmlarea_browse_links {
 				function link_typo3Page(id,anchor)	{
 					var theLink = \''.$this->siteURL.'?id=\'+id+(anchor?anchor:"");
 					if (document.ltargetform.anchor_title) setTitle(document.ltargetform.anchor_title.value);
-					setClass(document.ltargetform.anchor_class.value);
+					if (document.ltargetform.anchor_class) setClass(document.ltargetform.anchor_class.value);
 					editor.renderPopup_addLink(theLink,cur_target,cur_class,cur_title);
 					return false;
 				}
 				function link_folder(folder)	{	//
 					var theLink = \''.$this->siteURL.'\'+folder;
 					if (document.ltargetform.anchor_title) setTitle(document.ltargetform.anchor_title.value);
-					setClass(document.ltargetform.anchor_class.value);
+					if (document.ltargetform.anchor_class) setClass(document.ltargetform.anchor_class.value);
 					editor.renderPopup_addLink(theLink,cur_target,cur_class,cur_title);
 					return false;
 				}
 				function link_spec(theLink)	{	//
 					if (document.ltargetform.anchor_title) setTitle(document.ltargetform.anchor_title.value);
-					setClass(document.ltargetform.anchor_class.value);
+					if (document.ltargetform.anchor_class) setClass(document.ltargetform.anchor_class.value);
 					editor.renderPopup_addLink(theLink,cur_target,cur_class,cur_title);
 					return false;
 				}
 				function link_current()	{	//
 					if (document.ltargetform.anchor_title) setTitle(document.ltargetform.anchor_title.value);
-					setClass(document.ltargetform.anchor_class.value);
+					if (document.ltargetform.anchor_class) setClass(document.ltargetform.anchor_class.value);
 					if (cur_href!="http://" && cur_href!="mailto:")	{
 						editor.renderPopup_addLink(cur_href,cur_target,cur_class,cur_title);
 					}
