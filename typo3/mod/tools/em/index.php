@@ -3025,17 +3025,7 @@ EXTENSION KEYS:
 	 * @return	integer		Number of deleted files.
 	 */
 	function removeCacheFiles()	{
-		$cacheFiles = t3lib_extMgm::currentCacheFiles();
-		$out = 0;
-		if (is_array($cacheFiles))	{
-			reset($cacheFiles);
-			while(list(,$cfile) = each($cacheFiles))	{
-				@unlink($cfile);
-				clearstatcache();
-				$out++;
-			}
-		}
-		return $out;
+		return t3lib_extMgm::removeCacheFiles();
 	}
 
 	/**

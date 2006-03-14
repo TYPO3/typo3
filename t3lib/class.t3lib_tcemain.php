@@ -4941,18 +4941,7 @@ $this->log($table,$id,6,0,0,'Stage raised...',30,array('comment'=>$comment,'stag
 	 * @return	integer		The number of files deleted
 	 */
 	function removeCacheFiles()	{
-		$cacheFiles=t3lib_extMgm::currentCacheFiles();
-		$out=0;
-		if (is_array($cacheFiles))	{
-			reset($cacheFiles);
-			while(list(,$cfile)=each($cacheFiles))	{
-				@unlink($cfile);
-				clearstatcache();
-				$out++;
-			}
-		}
-
-		return $out;
+		return t3lib_extMgm::removeCacheFiles();
 	}
 
 	/**

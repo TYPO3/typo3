@@ -939,6 +939,7 @@ tt_content.'.$key.$prefix.' {
 					// Return cache file prefix:
 				$extensions['_CACHEFILE'] = $cacheFilePrefix;
 			} else {	// ... but if not, configure...
+				
 					// Prepare reserved filenames:
 				$files = t3lib_div::trimExplode(',','ext_localconf.php,ext_tables.php,ext_tables.sql,ext_tables_static+adt.sql,ext_typoscript_constants.txt,ext_typoscript_editorcfg.txt,ext_typoscript_setup.txt',1);
 
@@ -1119,6 +1120,25 @@ $TYPO3_LOADED_EXT = unserialize(stripslashes(\''.addslashes(serialize($extension
 
 		return $extensions;
 	}
+	
+	/**
+	 * Unlink (delete) cache files
+	 *
+	 * @return	integer		Number of deleted files.
+	 */
+	function removeCacheFiles()	{
+		$cacheFiles = t3lib_extMgm::currentCacheFiles();
+		$out = 0;
+		if (is_array($cacheFiles))	{
+			reset($cacheFiles);
+			foreach($cacheFiles as $cfile)	{
+				@unlink($cfile);
+				clearstatcache();
+				$out++;
+			}
+		}
+		return $out;
+	}	
 }
 
 ?>

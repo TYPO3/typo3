@@ -3837,14 +3837,8 @@ From sub-directory:
 	function updateWizard()	{
 		global $TYPO3_CONF_VARS;
 
-			// clear cache files - adapted from t3lib_tcemain::removeCacheFiles
-		$cacheFiles=t3lib_extMgm::currentCacheFiles();
-		if (is_array($cacheFiles))	{
-			foreach ($cacheFiles as $cfile)	{
-				@unlink($cfile);
-				clearstatcache();
-			}
-		}
+			// clear cache files
+		t3lib_extMgm::removeCacheFiles();
 
 			// generate new cache files and include them
 		$GLOBALS['TYPO3_CONF_VARS']['EXT']['extCache'] = 1;
