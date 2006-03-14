@@ -904,9 +904,9 @@ class tslib_menu {
 
 									// Checking if "&L" should be modified so links to non-accessible pages will not happen.
 								if ($this->conf['protectLvar'])	{
-									$Lvar = intval(t3lib_div::_GP('L'));
-									if (($this->conf['protectLvar']=='all' || t3lib_div::hideIfNotTranslated($data['l18n_cfg'])) && $Lvar!=$GLOBALS['TSFE']->sys_language_uid)	{	// page cannot be access in locaization and Lvar is different than sys_language uid - this means we must check!
-										$olRec = $GLOBALS['TSFE']->sys_page->getPageOverlay($data['uid'], $Lvar);
+									$languageUid = intval($GLOBALS['TSFE']->config['config']['sys_language_uid']);
+									if ($languageUid && ($this->conf['protectLvar']=='all' || t3lib_div::hideIfNotTranslated($data['l18n_cfg'])))	{
+										$olRec = $GLOBALS['TSFE']->sys_page->getPageOverlay($data['uid'], $languageUid);
 										if (!count($olRec))	{
 												// If no pages_language_overlay record then page can NOT be accessed in the language pointed to by "&L" and therefore we protect the link by setting "&L=0"
 											$data['_ADD_GETVARS'].= '&L=0';

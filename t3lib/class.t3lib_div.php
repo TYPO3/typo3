@@ -583,10 +583,11 @@ class t3lib_div {
 	 * Usage: 10
 	 *
 	 * @param	string		$baseIP is the current remote IP address for instance, typ. REMOTE_ADDR
-	 * @param	string		$list is a comma-list of IP-addresses to match with. *-wildcard allowed instead of number, plus leaving out parts in the IP number is accepted as wildcard (eg. 192.168.*.* equals 192.168)
+	 * @param	string		$list is a comma-list of IP-addresses to match with. *-wildcard allowed instead of number, plus leaving out parts in the IP number is accepted as wildcard (eg. 192.168.*.* equals 192.168). If list is "*" no check is done and the function returns TRUE immediately.
 	 * @return	boolean		True if an IP-mask from $list matches $baseIP
 	 */
 	function cmpIP($baseIP, $list)	{
+		if ($list==='*')	return TRUE;
 		if (strstr($baseIP, ':') && t3lib_div::validIPv6($baseIP))	{
 			return t3lib_div::cmpIPv6($baseIP, $list);
 		} else {
@@ -2652,7 +2653,7 @@ class t3lib_div {
 			$result='<table border="1" cellpadding="1" cellspacing="0" bgcolor="white">';
 			if (!count($array_in))	{$result.= '<tr><td><font face="Verdana,Arial" size="1"><b>'.htmlspecialchars("EMPTY!").'</b></font></td></tr>';}
 			while (list($key,$val)=each($array_in))	{
-				$result.= '<tr><td><font face="Verdana,Arial" size="1">'.htmlspecialchars((string)$key).'</font></td><td>';
+				$result.= '<tr><td valign="top"><font face="Verdana,Arial" size="1">'.htmlspecialchars((string)$key).'</font></td><td>';
 				if (is_array($array_in[$key]))	{
 					$result.=t3lib_div::view_array($array_in[$key]);
 				} else
@@ -3454,6 +3455,9 @@ class t3lib_div {
 					// Read XML, parse it.
 				$xmlString = t3lib_div::getUrl($fileRef);
 				$xmlContent = t3lib_div::xml2array($xmlString);
+				if (!is_array($xmlContent))	{
+					die($fileRef.' was not XML!: '.$xmlContent);
+				}
 
 					// Set default LOCAL_LANG array content:
 				$LOCAL_LANG = array();

@@ -1104,58 +1104,60 @@ class SC_alt_doc {
 				$rowCurrent = t3lib_befunc::getRecord($table, $uid, $fetchFields);
 				$currentLanguage = $rowCurrent[$languageField];
 
-					// get record in default language if needed
-				if ($currentLanguage) {
-					$rowsByLang[0] = t3lib_befunc::getRecord($table, $rowCurrent[$transOrigPointerField], $fetchFields);
-				} else {
-					$rowsByLang[0] = $rowCurrent;
-				}
-
-					// get record in other languages to see what's already available
-				$translations = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
-					$fetchFields,
-					$table,
-					'pid='.intval($pid).
-						' AND '.$languageField.'>0'.
-						' AND '.$transOrigPointerField.'='.intval($rowsByLang[0]['uid']).
-						t3lib_BEfunc::deleteClause($table).
-						t3lib_BEfunc::versioningPlaceholderClause($table)
-				);
-				foreach ($translations as $row)	{
-					$rowsByLang[$row[$languageField]] = $row;
-				}
-
-				$langSelItems=array();
-				foreach ($langRows as $lang) {
-					if ($GLOBALS['BE_USER']->checkLanguageAccess($lang['uid']))	{
-
-						$newTranslation = isset($rowsByLang[$lang['uid']]) ? '' : ' ['.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:labels.new',1).']';
-
-							// create url for creating a localized record
-						if($newTranslation) {
-							$href = $this->doc->issueCommand(
-								'&cmd['.$table.']['.$rowsByLang[0]['uid'].'][localize]='.$lang['uid'],
-								$this->backPath.'alt_doc.php?justLocalized='.rawurlencode($table.':'.$rowsByLang[0]['uid'].':'.$lang['uid']).'&returnUrl='.rawurlencode($this->retUrl)
-							);
-
-							// create edit url
-						} else {
-							$href = $this->backPath.'alt_doc.php?';
-							$href .= '&edit['.$table.']['.$rowsByLang[$lang['uid']]['uid'].']=edit';
-							$href .= '&returnUrl='.rawurlencode($this->retUrl);
-						}
-
-						$langSelItems[$lang['uid']]='
-								<option value="'.htmlspecialchars($href).'"'.($currentLanguage==$lang['uid']?' selected="selected"':'').'>'.htmlspecialchars($lang['title'].$newTranslation).'</option>';
+				if ($currentLanguage>-1)	{	// Disabled for records with [all] language!
+						// get record in default language if needed
+					if ($currentLanguage) {
+						$rowsByLang[0] = t3lib_befunc::getRecord($table, $rowCurrent[$transOrigPointerField], $fetchFields);
+					} else {
+						$rowsByLang[0] = $rowCurrent;
 					}
-				}
 
-					// If any languages are left, make selector:
-				if (count($langSelItems)>1)		{
-					$onChange = 'if(this.options[this.selectedIndex].value){window.location.href=(this.options[this.selectedIndex].value);}';
-					$content = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_general.xml:LGL.language',1).' <select name="_langSelector" onchange="'.htmlspecialchars($onChange).'">
-							'.implode('',$langSelItems).'
-						</select>';
+						// get record in other languages to see what's already available
+					$translations = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+						$fetchFields,
+						$table,
+						'pid='.intval($pid).
+							' AND '.$languageField.'>0'.
+							' AND '.$transOrigPointerField.'='.intval($rowsByLang[0]['uid']).
+							t3lib_BEfunc::deleteClause($table).
+							t3lib_BEfunc::versioningPlaceholderClause($table)
+					);
+					foreach ($translations as $row)	{
+						$rowsByLang[$row[$languageField]] = $row;
+					}
+
+					$langSelItems=array();
+					foreach ($langRows as $lang) {
+						if ($GLOBALS['BE_USER']->checkLanguageAccess($lang['uid']))	{
+
+							$newTranslation = isset($rowsByLang[$lang['uid']]) ? '' : ' ['.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:labels.new',1).']';
+
+								// create url for creating a localized record
+							if($newTranslation) {
+								$href = $this->doc->issueCommand(
+									'&cmd['.$table.']['.$rowsByLang[0]['uid'].'][localize]='.$lang['uid'],
+									$this->backPath.'alt_doc.php?justLocalized='.rawurlencode($table.':'.$rowsByLang[0]['uid'].':'.$lang['uid']).'&returnUrl='.rawurlencode($this->retUrl)
+								);
+
+								// create edit url
+							} else {
+								$href = $this->backPath.'alt_doc.php?';
+								$href .= '&edit['.$table.']['.$rowsByLang[$lang['uid']]['uid'].']=edit';
+								$href .= '&returnUrl='.rawurlencode($this->retUrl);
+							}
+
+							$langSelItems[$lang['uid']]='
+									<option value="'.htmlspecialchars($href).'"'.($currentLanguage==$lang['uid']?' selected="selected"':'').'>'.htmlspecialchars($lang['title'].$newTranslation).'</option>';
+						}
+					}
+
+						// If any languages are left, make selector:
+					if (count($langSelItems)>1)		{
+						$onChange = 'if(this.options[this.selectedIndex].value){window.location.href=(this.options[this.selectedIndex].value);}';
+						$content = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_general.xml:LGL.language',1).' <select name="_langSelector" onchange="'.htmlspecialchars($onChange).'">
+								'.implode('',$langSelItems).'
+							</select>';
+					}
 				}
 			}
 		}
