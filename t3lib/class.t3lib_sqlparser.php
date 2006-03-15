@@ -1529,7 +1529,7 @@ return $str;
 					$outputParts[$k] .= ($v['JOIN']['ON'][0]['table']) ? $v['JOIN']['ON'][0]['table'].'.' : '';
 					$outputParts[$k] .= $v['JOIN']['ON'][0]['field'];
 					$outputParts[$k] .= '=';
-					$outputParts[$k] .= ($v['JOIN']['ON'][1]['table']) ? $v['JOIN']['ON'][0]['table'].'.' : '';
+					$outputParts[$k] .= ($v['JOIN']['ON'][1]['table']) ? $v['JOIN']['ON'][1]['table'].'.' : '';
 					$outputParts[$k] .= $v['JOIN']['ON'][1]['field'];
 				}
 			}
