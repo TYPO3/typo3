@@ -170,6 +170,14 @@ class tx_lowlevel_cleaner extends t3lib_extobjbase {
 			break;
 		}
 		
+/*
+// TEST of how we can get the used Content Elements on a TemplaVOila page:
+require_once(t3lib_extMgm::extPath('templavoila').'class.tx_templavoila_api.php');
+$apiClassName = t3lib_div::makeInstanceClassName('tx_templavoila_api');
+$apiObj = new $apiClassName('pages');
+$contentTreeData = $apiObj->getContentTree('pages', t3lib_BEfunc::getRecordWSOL('pages',33),FALSE);
+debug($contentTreeData);		
+*/		
 		return $output;
 	}
 }

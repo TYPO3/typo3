@@ -1,3 +1,9 @@
+2006-03-15  Kasper Skårhøj	
+
+	* !!!Cleaned up t3lib_flexformtools::traverseFlexFormXMLData() and related functions, generally I did many changes to this class. However I think no one is using it yet except me. Anyway, the changes were necessary since it was simply never cleaned up as it should have been, including the new cleanFlexFormXML() function.
+	* Bigfix: Modified sys_refindex so it does not register references for content in flexforms outside what the data structure describes. Update your reference table again!
+	* Added configuration option TYPO3_CONF_VARS[BE][niceFlexFormXMLtags] which allows people who depends on the old FlexForm tags to maintain that compliancy. See my changelog from 2006-01-27 (sorry for this semi-feature).
+
 2006-03-13  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
 	* Fixes and cleanup in htmlArea RTE extension (see details in local ChangeLog)

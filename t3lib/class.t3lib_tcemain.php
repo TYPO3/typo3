@@ -1890,13 +1890,14 @@ class t3lib_TCEmain	{
 	/**
 	 * Starts the processing the input data for flexforms. This will traverse all sheets / languages and for each it will traverse the sub-structure.
 	 * See checkValue_flex_procInData_travDS() for more details.
+	 * WARNING: Currently, it traverses based on the actual _data_ array and NOT the _structure_. This means that values for non-valid fields, lKey/vKey/sKeys will be accepted! For traversal of data with a call back function you should rather use class.t3lib_flexformtools.php 
 	 *
 	 * @param	array		The 'data' part of the INPUT flexform data
 	 * @param	array		The 'data' part of the CURRENT flexform data
 	 * @param	array		The uploaded files for the 'data' part of the INPUT flexform data
 	 * @param	array		Data structure for the form (might be sheets or not). Only values in the data array which has a configuration in the data structure will be processed.
 	 * @param	array		A set of parameters to pass through for the calling of the evaluation functions
-	 * @param	string		Optional call back function, see checkValue_flex_procInData_travDS()
+	 * @param	string		Optional call back function, see checkValue_flex_procInData_travDS()  DEPRICATED, use class.t3lib_flexformtools.php instead for traversal!
 	 * @return	array		The modified 'data' part.
 	 * @see checkValue_flex_procInData_travDS()
 	 */

@@ -1962,6 +1962,9 @@ class t3lib_div {
 				if(isset($options['grandParentTagMap'][$stackData['grandParentTagName'].'/'.$stackData['parentTagName']])) {		// Use tag based on grand-parent + parent tag name
 					$attr.=' index="'.htmlspecialchars($tagName).'"';
 					$tagName = (string)$options['grandParentTagMap'][$stackData['grandParentTagName'].'/'.$stackData['parentTagName']];
+				}elseif(isset($options['parentTagMap'][$stackData['parentTagName'].':_IS_NUM']) && t3lib_div::testInt($tagName)) {		// Use tag based on parent tag name + if current tag is numeric
+					$attr.=' index="'.htmlspecialchars($tagName).'"';
+					$tagName = (string)$options['parentTagMap'][$stackData['parentTagName'].':_IS_NUM'];
 				}elseif(isset($options['parentTagMap'][$stackData['parentTagName'].':'.$tagName])) {		// Use tag based on parent tag name + current tag
 					$attr.=' index="'.htmlspecialchars($tagName).'"';
 					$tagName = (string)$options['parentTagMap'][$stackData['parentTagName'].':'.$tagName];
@@ -2735,7 +2738,7 @@ class t3lib_div {
 		} else return 'N/A';
 	}
 
-	function debugRows($rows,$header)	{
+	function debugRows($rows,$header='')	{
 		if (is_array($rows))	{
 			reset($rows);
 			$firstEl = current($rows);

@@ -61,6 +61,7 @@
  */
 
 require_once(PATH_t3lib.'class.t3lib_tcemain.php');
+require_once(PATH_t3lib.'class.t3lib_flexformtools.php');
 
 
 
@@ -405,16 +406,9 @@ class t3lib_refindex {
 							'softrefs' => array()
 						);
 
-						$iteratorObj = t3lib_div::makeInstance('t3lib_TCEmain');
-						$iteratorObj->callBackObj = &$this;
-						$iteratorObj->checkValue_flex_procInData(
-									$currentValueArray['data'],
-									array(),	// Not used.
-									array(),	// Not used.
-									$dataStructArray,
-									array($table,$uid,$field),	// Parameters.
-									'getRelations_flexFormCallBack'
-								);
+							// Create and call iterator object:
+						$flexObj = t3lib_div::makeInstance('t3lib_flexformtools');
+						$flexObj->traverseFlexFormXMLData($table,$field,$row,$this,'getRelations_flexFormCallBack');
 
 							// Create an entry for the field:
 						$outRow[$field] = array(
@@ -453,19 +447,21 @@ class t3lib_refindex {
 	/**
 	 * Callback function for traversing the FlexForm structure in relation to finding file and DB references!
 	 *
-	 * @param	array		Array of parameters in num-indexes: table, uid, field
-	 * @param	array		TCA field configuration (from Data Structure XML)
-	 * @param	string		The value of the flexForm field
-	 * @param	string		Not used.
-	 * @param	string		Not used.
-	 * @param	string		Path of where in the data structure this element is.
-	 * @return	array		Result array with key "value" containing the value of the processing.
+	 * @param	array		Data structure for the current value
+	 * @param	mixed		Current value
+	 * @param	array		Additional configuration used in calling function
+	 * @param	string		Path of value in DS structure
+	 * @param	object		Object reference to caller
+	 * @return	void
 	 * @see t3lib_TCEmain::checkValue_flex_procInData_travDS()
 	 */
-	function getRelations_flexFormCallBack($pParams, $dsConf, $dataValue, $dataValue_ext1, $dataValue_ext2, $structurePath)	{
+	function getRelations_flexFormCallBack($dsArr, $dataValue, $PA, $structurePath, &$pObj)	{
+		$structurePath = substr($structurePath,5);	// removing "data/" in the beginning of path (which points to location in data array)
+		
+		$dsConf = $dsArr['TCEforms']['config'];
 
 			// Implode parameter values:
-		list($table, $uid, $field) = $pParams;
+		list($table, $uid, $field) = array($PA['table'],$PA['uid'],$PA['field']);
 
 			// Add files
 		if ($result = $this->getRelations_procFiles($dataValue, $dsConf, $uid))	{

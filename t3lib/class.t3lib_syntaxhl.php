@@ -113,6 +113,8 @@ class t3lib_syntaxhl {
 		'meta' => array('<span style="font-weight: bold; color: #800080;">','</span>'),
 		'data' => array('<span style="font-weight: bold; color: #800080;">','</span>'),
 		'el' => array('<span style="font-weight: bold; color: #80a000;">','</span>'),
+		'itemType' => array('<span style="font-weight: bold; color: #804000;">','</span>'),
+		'section' => array('<span style="font-weight: bold; color: #604080;">','</span>'),
 		'numIndex' => array('<span style="color: #333333;">','</span>'),
 		'_unknown' => array('<span style="font-style: italic; color: #666666;">','</span>'),
 
