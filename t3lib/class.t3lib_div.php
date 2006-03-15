@@ -2013,7 +2013,9 @@ class t3lib_div {
 									)
 								).
 								str_pad('',($level+1)*$indentN,$indentChar);
-					$attr.=' type="array"';
+					if ((int)$options['disableTypeAttrib']!=2)	{	// Do not set "type = array". Makes prettier XML but means that empty arrays are not restored with xml2array
+						$attr.=' type="array"';
+					}
 				} else {	// Just a value:
 
 						// Look for binary chars:

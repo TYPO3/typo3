@@ -76,11 +76,12 @@ class t3lib_flexformtools {
 				'sheet' => 'language',
 				'language' => 'field',
 				'el' => 'field',
-/*				'field' => 'value',
+				'field' => 'value',
 				'field:el' => 'el',
 				'el:_IS_NUM' => 'section',
 				'section' => 'itemType'
-*/			)
+			),
+			'disableTypeAttrib' => 2
 		);
 
 		// Internal:

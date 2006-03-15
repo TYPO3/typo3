@@ -1,4 +1,7 @@
-2006-03-15  Kasper Skårhøj	
+2006-03-15  Kasper Skaarhoj
+	* !!!Implemented complete "flavouring" of FlexForm XML; Basically it doesn't affect anyone using xml2array() to extract FlexForm data but everyone who uses own XML parsers will have to modify them (after converting all XML). Basically the flavouring means that a tag like "<lDEF>, <lDA>" is rather represented with "<language index="lDEF">, <language index="lDA">". 
+
+2006-03-15  Kasper Skaarhoj
 
 	* !!!Cleaned up t3lib_flexformtools::traverseFlexFormXMLData() and related functions, generally I did many changes to this class. However I think no one is using it yet except me. Anyway, the changes were necessary since it was simply never cleaned up as it should have been, including the new cleanFlexFormXML() function.
 	* Bigfix: Modified sys_refindex so it does not register references for content in flexforms outside what the data structure describes. Update your reference table again!
