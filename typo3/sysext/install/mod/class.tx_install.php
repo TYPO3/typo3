@@ -1304,7 +1304,7 @@ From sub-directory:
 							$msg=$description.'<br /><br /><em>'.$ext.$k2.' = '.htmlspecialchars(t3lib_div::fixed_lgd($value,60)).'</em><br />';
 
 							if (preg_match('/^string \(textarea\)/i', $description) || strstr($value,chr(10)))	{
-								$form='<textarea name="TYPO3_INSTALL[extConfig]['.$k.']['.$vk.']" cols=60 rows=5 wrap="off">'.htmlspecialchars($value).'</textarea>';
+								$form='<textarea name="TYPO3_INSTALL[extConfig]['.$k.']['.$vk.']" cols="60" rows="5" wrap="off">'.htmlspecialchars($value).'</textarea>';
 							} elseif (preg_match('/^boolean/i',$description)) {
 								$form='<input type="hidden" name="TYPO3_INSTALL[extConfig]['.$k.']['.$vk.']" value="0">';
 								$form.='<input type="checkbox" name="TYPO3_INSTALL[extConfig]['.$k.']['.$vk.']"'.($value?' checked="checked"':'').' value="'.($value&&strcmp($value,'0')?htmlspecialchars($value):1).'">';
