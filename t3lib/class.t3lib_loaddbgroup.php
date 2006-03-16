@@ -209,8 +209,6 @@ class t3lib_loadDBGroup	{
 			$tablelist = implode(',', array_unique(t3lib_div::trimExplode(',',$tablelist,1)));
 		}
 
-		$MMmatchTablenames = $this->MMmatchTablenames ? $this->MMmatchTablenames : $tablelist;
-
 			// The tables are traversed and internal arrays are initialized:
 		$tempTableArray = t3lib_div::trimExplode(',',$tablelist,1);
 		foreach($tempTableArray as $key => $val)	{
@@ -248,7 +246,8 @@ class t3lib_loadDBGroup	{
 				}
 			}
 
-			$this->readMM($MMtable, $MMuid, $MMmatchTablenames);
+			$this->readMM($MMtable, $MMuid, $this->MMmatchTablenames);
+
 		} else {
 				// If not MM, then explode the itemlist by "," and traverse the list:
 			$this->readList($itemlist);
@@ -378,22 +377,42 @@ class t3lib_loadDBGroup	{
 			$uid_foreign = 'uid_foreign';
 		}
 
-		$where = $uid_local.'='.intval($uid);
-		if ($this->MMtableWhere) {
-			$where.= "\n".str_replace('###THIS_UID###', intval($uid), $this->MMtableWhere);
-		}
-
-			// Delete all relations:
-		$GLOBALS['TYPO3_DB']->exec_DELETEquery($tableName, $where);
-
 			// If there are tables...
 		$tableC = count($this->tableArray);
 		if ($tableC)	{
 			$prep = ($tableC>1||$prependTableName) ? 1 : 0;
-			$c=0;
-			$tName=array();
+		}
 
+			// delete all relations with local uid
+		$where = $uid_local.'='.intval($uid);
+
+			// add WHERE clause if configured
+		if ($this->MMtableWhere) {
+			$where.= "\n".str_replace('###THIS_UID###', intval($uid), $this->MMtableWhere);
+		}
+			// delete those relations that match the configured fields
+		foreach ($this->MMmatchFields as $field => $value) {
+			$where.= ' AND '.$field.'='.$GLOBALS['TYPO3_DB']->fullQuoteStr($value, $tableName);
+		}
+
+			// if prepend table name is configured the 'tablenames' have to match those
+		if ($prep) {
+			$whereArr = array();
+			foreach($this->tableArray as $matchTable => $dummy) {
+				$whereArr[] = 'tablenames='.$GLOBALS['TYPO3_DB']->fullQuoteStr($matchTable, $tableName);
+			}
+			$where.= ' AND ( '.implode(' OR ', $whereArr).' ) ';
+		}
+
+
+			// Delete all relations:
+		$GLOBALS['TYPO3_DB']->exec_DELETEquery($tableName, $where);
+
+
+
+		if ($tableC)	{
 				// For each item, insert it:
+			$c=0;
 			foreach($this->itemArray as $val)	{
 				$c++;
 
