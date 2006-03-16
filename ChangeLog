@@ -2,6 +2,7 @@
 
 	* EM: Fixed bugs #2787, #2785, #1807
 	* EM: Extension list is now fetched automatically if it isn't available at all.
+	* ADOdb extension: a fix regarding the MS SQL driver, fixed bug #2810, cleaned up ext_emconf.php
 
 2006-03-16  Rene Fritz  <r.fritz@colorcube.de>
 
