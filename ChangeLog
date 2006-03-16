@@ -1,3 +1,8 @@
+2006-03-16  Karsten Dambekalns <karsten@typo3.org>
+
+	* EM: Fixed bugs #2787, #2785, #1807
+	* EM: Extension list is now fetched automatically if it isn't available at all.
+
 2006-03-16  Rene Fritz  <r.fritz@colorcube.de>
 
 	* fixed bug 0002840: Related to: Enhanced MM handling in TCE for usage from foreign tables.
@@ -7,6 +12,7 @@
 	* Fix bugtracker issue 2860 in t3lib_sqlparser.
 
 2006-03-15  Kasper Skaarhoj
+
 	* !!!Implemented complete "flavouring" of FlexForm XML; Basically it doesn't affect anyone using xml2array() to extract FlexForm data but everyone who uses own XML parsers will have to modify them (after converting all XML). Basically the flavouring means that a tag like "<lDEF>, <lDA>" is rather represented with "<language index="lDEF">, <language index="lDA">".
 
 2006-03-15  Kasper Skaarhoj

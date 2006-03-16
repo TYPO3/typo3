@@ -349,7 +349,7 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 		$this->menuConfig();
 
 			// Setting internal static:
-		if ($TYPO3_CONF_VARS['EXT']['em_systemInstall'])	$this->systemInstall = 1;
+		if ($TYPO3_CONF_VARS['EXT']['allowSystemInstall'])	$this->systemInstall = 1;
 		$this->requiredExt = t3lib_div::trimExplode(',',$TYPO3_CONF_VARS['EXT']['requiredExt'],1);
 
 
@@ -721,6 +721,7 @@ EXTENSION KEYS:
 	 */
 	function extensionList_import()	{
 		global $TYPO3_LOADED_EXT;
+		$content='';
 
 			// Listing from online repository:
 		if ($this->listRemote)	{
@@ -728,6 +729,11 @@ EXTENSION KEYS:
 			$this->inst_keys = array_flip(array_keys($inst_list));
 
 			$this->detailCols[1]+=6;
+
+				// see if we have an extensionlist at all
+			if (!count($this->xmlhandler->extensionsXML))	{
+				$content .= $this->fetchMetaData('extensions');
+			}
 
 			if($this->MOD_SETTINGS['display_own'] && strlen($this->fe_user['username'])) {
 				$this->xmlhandler->searchExtensionsXML($this->listRemote_search, $this->fe_user['username']);
@@ -739,7 +745,6 @@ EXTENSION KEYS:
 
 					// Available extensions
 				if (is_array($cat[$this->MOD_SETTINGS['listOrder']]))	{
-					$content='';
 					$lines=array();
 					$lines[]=$this->extensionListRowHeader(' class="bgColor5"',array('<td><img src="clear.gif" width="18" height="1" alt="" /></td>'),1);
 
@@ -821,8 +826,7 @@ EXTENSION KEYS:
 						$this->content.=$this->doc->section('Extensions found only on this server',$content,0,1);
 					}
 				}
-			}
-			else {
+			}	else {
 				$content.= t3lib_BEfunc::cshItem('_MOD_tools_em', 'import_ter', $GLOBALS['BACK_PATH'],'|<br/>');
 				$onsubmit = "window.location.href='index.php?ter_connect=1&ter_search='+escape(this.elements['_lookUp'].value);return false;";
 				$content.= '</form><form action="index.php" method="post" onsubmit="'.htmlspecialchars($onsubmit).'">List or look up extensions<br />
@@ -1078,8 +1082,10 @@ EXTENSION KEYS:
 				$extmd5 = t3lib_div::getURL($mirror.'extensions.md5');
 				if(is_file(PATH_site.'typo3temp/extensions.xml.gz')) $localmd5 = md5_file(PATH_site.'typo3temp/extensions.xml.gz');
 
-				if($extmd5 == $localmd5) {
-					$content .= '<p>The extension has not changed remotely, it has thus not been fetched.</p>';
+				if($extmd5 === false) {
+					$content .= '<p>Error: The extension MD5 sum could not be fetched from '.$mirror.'extensions.md5</p>';
+				} elseif($extmd5 == $localmd5) {
+					$content .= '<p>The extension list has not changed remotely, it has thus not been fetched.</p>';
 				} else {
 					$extXML = t3lib_div::getURL($extfile);
 					if($extXML === false) {
@@ -1128,7 +1134,7 @@ EXTENSION KEYS:
 	 *
 	 * @param	string		Extension key
 	 * @param	string		Version
-	 * @param	string		Install scope: "L" or "G"
+	 * @param	string		Install scope: "L" or "G" or "S"
 	 * @param	boolean		If true, extension is uploaded as file
 	 * @param	boolean		If true, extension directory+files will not be deleted before writing the new ones. That way custom files stored in the extension folder will be kept.
 	 * @param	array 		Direct input array (like from kickstarter)
@@ -1138,7 +1144,7 @@ EXTENSION KEYS:
 
 		if (is_array($directInput))	{
 			$fetchData = array($directInput,'');
-			$loc = !strcmp($loc,'G')?'G':'L';
+			$loc = ($loc==='G'||$loc==='S') ? $loc : 'L';
 		} elseif ($uploadFlag)	{
 			if ($_FILES['upload_ext_file']['tmp_name'])	{
 
@@ -1154,7 +1160,7 @@ EXTENSION KEYS:
 					$extKey = $fetchData[0]['extKey'];
 					if ($extKey)	{
 						if (!$this->CMD['uploadOverwrite'])	{
-							$loc = !strcmp($loc,'G')?'G':'L';
+							$loc = ($loc==='G'||$loc==='S') ? $loc : 'L';
 							$comingExtPath = PATH_site.$this->typePaths[$loc].$extKey.'/';
 							if (@is_dir($comingExtPath))	{
 								return 'Extension was already present in "'.$comingExtPath.'" - and the overwrite flag was not set! So nothing done...';
@@ -1179,83 +1185,91 @@ EXTENSION KEYS:
 			if (is_array($fetchData))	{	// There was some data successfully transferred
 				if ($fetchData[0]['extKey'] && is_array($fetchData[0]['FILES']))	{
 					$extKey = $fetchData[0]['extKey'];
+					if(!isset($fetchData[0]['EM_CONF']['constraints'])) $fetchData[0]['EM_CONF']['constraints'] = $this->xmlhandler->extensionsXML[$extKey]['versions'][$version]['dependencies'];
 					$EM_CONF = $this->fixEMCONF($fetchData[0]['EM_CONF']);
 					if (!$EM_CONF['lockType'] || !strcmp($EM_CONF['lockType'],$loc))	{
-						$res = $this->clearAndMakeExtensionDir($fetchData[0],$loc,$dontDelete);
-						if (is_array($res))	{
-							$extDirPath = trim($res[0]);
-							if ($extDirPath && @is_dir($extDirPath) && substr($extDirPath,-1)=='/')	{
+							// check dependencies, act accordingly if ext is loaded
+						list($instExtInfo,)=$this->getInstalledExtensions();
+						$depStatus = $this->checkDependencies($extKey, $EM_CONF, $instExtInfo);
+						if(t3lib_extMgm::isLoaded($extKey) && !$depStatus['returnCode']) {
+							$this->content .= $depStatus['html'];
+						} else {
+							$res = $this->clearAndMakeExtensionDir($fetchData[0],$loc,$dontDelete);
+							if (is_array($res))	{
+								$extDirPath = trim($res[0]);
+								if ($extDirPath && @is_dir($extDirPath) && substr($extDirPath,-1)=='/')	{
 
-								$emConfFile = $this->construct_ext_emconf_file($extKey,$EM_CONF);
-								$dirs = $this->extractDirsFromFileList(array_keys($fetchData[0]['FILES']));
+									$emConfFile = $this->construct_ext_emconf_file($extKey,$EM_CONF);
+									$dirs = $this->extractDirsFromFileList(array_keys($fetchData[0]['FILES']));
 
-								$res = $this->createDirsInPath($dirs,$extDirPath);
-								if (!$res)	{
-									$writeFiles = $fetchData[0]['FILES'];
-									$writeFiles['ext_emconf.php']['content'] = $emConfFile;
-									$writeFiles['ext_emconf.php']['content_md5'] = md5($emConfFile);
+									$res = $this->createDirsInPath($dirs,$extDirPath);
+									if (!$res)	{
+										$writeFiles = $fetchData[0]['FILES'];
+										$writeFiles['ext_emconf.php']['content'] = $emConfFile;
+										$writeFiles['ext_emconf.php']['content_md5'] = md5($emConfFile);
 
-									// Write files:
-									foreach($writeFiles as $theFile => $fileData)	{
-										t3lib_div::writeFile($extDirPath.$theFile,$fileData['content']);
-										if (!@is_file($extDirPath.$theFile))	{
-											$content.='Error: File "'.$extDirPath.$theFile.'" could not be created!!!<br />';
-										} elseif (md5(t3lib_div::getUrl($extDirPath.$theFile)) != $fileData['content_md5']) {
-											$content.='Error: File "'.$extDirPath.$theFile.'" MD5 was different from the original files MD5 - so the file is corrupted!<br />';
-										}
-									}
-
-									// No content, no errors. Create success output here:
-									if (!$content)	{
-										$content='SUCCESS: '.$extDirPath.'<br />';
-
-										// Fix TYPO3_MOD_PATH for backend modules in extension:
-										$modules = t3lib_div::trimExplode(',',$EM_CONF['module'],1);
-										if (count($modules))	{
-											foreach($modules as $mD)	{
-												$confFileName = $extDirPath.$mD.'/conf.php';
-												if (@is_file($confFileName))	{
-													$content.= $this->writeTYPO3_MOD_PATH($confFileName,$loc,$extKey.'/'.$mD.'/').'<br />';
-												} else $content.='Error: Couldn\'t find "'.$confFileName.'"<br />';
+										// Write files:
+										foreach($writeFiles as $theFile => $fileData)	{
+											t3lib_div::writeFile($extDirPath.$theFile,$fileData['content']);
+											if (!@is_file($extDirPath.$theFile))	{
+												$content.='Error: File "'.$extDirPath.$theFile.'" could not be created!!!<br />';
+											} elseif (md5(t3lib_div::getUrl($extDirPath.$theFile)) != $fileData['content_md5']) {
+												$content.='Error: File "'.$extDirPath.$theFile.'" MD5 was different from the original files MD5 - so the file is corrupted!<br />';
 											}
 										}
-										// NOTICE: I used two hours trying to find out why a script, ext_emconf.php, written twice and in between included by PHP did not update correct the second time. Probably something with PHP-A cache and mtime-stamps.
-										// But this order of the code works.... (using the empty Array with type, EMCONF and files hereunder).
 
-										// Writing to ext_emconf.php:
-										$sEMD5A = $this->serverExtensionMD5Array($extKey,array('type' => $loc, 'EM_CONF' => array(), 'files' => array()));
-										$EM_CONF['_md5_values_when_last_written'] = serialize($sEMD5A);
-										$emConfFile = $this->construct_ext_emconf_file($extKey,$EM_CONF);
-										t3lib_div::writeFile($extDirPath.'ext_emconf.php',$emConfFile);
+										// No content, no errors. Create success output here:
+										if (!$content)	{
+											$content='SUCCESS: '.$extDirPath.'<br />';
 
-										$content.='ext_emconf.php: '.$extDirPath.'ext_emconf.php<br />';
-										$content.='Type: '.$loc.'<br />';
+											// Fix TYPO3_MOD_PATH for backend modules in extension:
+											$modules = t3lib_div::trimExplode(',',$EM_CONF['module'],1);
+											if (count($modules))	{
+												foreach($modules as $mD)	{
+													$confFileName = $extDirPath.$mD.'/conf.php';
+													if (@is_file($confFileName))	{
+														$content.= $this->writeTYPO3_MOD_PATH($confFileName,$loc,$extKey.'/'.$mD.'/').'<br />';
+													} else $content.='Error: Couldn\'t find "'.$confFileName.'"<br />';
+												}
+											}
+											// NOTICE: I used two hours trying to find out why a script, ext_emconf.php, written twice and in between included by PHP did not update correct the second time. Probably something with PHP-A cache and mtime-stamps.
+											// But this order of the code works.... (using the empty Array with type, EMCONF and files hereunder).
 
-										// Remove cache files:
-										if (t3lib_extMgm::isLoaded($extKey))	{
-											if ($this->removeCacheFiles())	{
-												$content.='Cache-files are removed and will be re-written upon next hit<br />';
+											// Writing to ext_emconf.php:
+											$sEMD5A = $this->serverExtensionMD5Array($extKey,array('type' => $loc, 'EM_CONF' => array(), 'files' => array()));
+											$EM_CONF['_md5_values_when_last_written'] = serialize($sEMD5A);
+											$emConfFile = $this->construct_ext_emconf_file($extKey,$EM_CONF);
+											t3lib_div::writeFile($extDirPath.'ext_emconf.php',$emConfFile);
+
+											$content.='ext_emconf.php: '.$extDirPath.'ext_emconf.php<br />';
+											$content.='Type: '.$loc.'<br />';
+
+											// Remove cache files:
+											if (t3lib_extMgm::isLoaded($extKey))	{
+												if ($this->removeCacheFiles())	{
+													$content.='Cache-files are removed and will be re-written upon next hit<br />';
+												}
+
+												list($new_list)=$this->getInstalledExtensions();
+												$content.=$this->updatesForm($extKey,$new_list[$extKey],1,'index.php?CMD[showExt]='.$extKey.'&SET[singleDetails]=info');
 											}
 
-											list($new_list)=$this->getInstalledExtensions();
-											$content.=$this->updatesForm($extKey,$new_list[$extKey],1,'index.php?CMD[showExt]='.$extKey.'&SET[singleDetails]=info');
-										}
+											// Install / Uninstall:
+											if(!$this->CMD['standAlone']) {
+												$content = '<a href="index.php" class="typo3-goBack"><img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/goback.gif','width="14" height="14"').' alt="" /> Go back</a>'.$content;
+												$content.='<h3>Install / Uninstall Extension:</h3>';
+												$content.= $new_list[$extKey] ?
+													'<a href="'.htmlspecialchars('index.php?CMD[showExt]='.$extKey.'&CMD[remove]=1&CMD[clrCmd]=1&SET[singleDetails]=info').'">'.$this->removeButton().' Uninstall extension</a>' :
+													'<a href="'.htmlspecialchars('index.php?CMD[showExt]='.$extKey.'&CMD[load]=1&CMD[clrCmd]=1&SET[singleDetails]=info').'">'.$this->installButton().' Install extension</a>';
+											} else {
+												$content = 'Extension has been imported.<br /><br /><a href="javascript:opener.top.content.document.forms[0].submit();window.close();">Close window and recheck dependencies</a>';
+											}
 
-										// Install / Uninstall:
-										if(!$this->CMD['standAlone']) {
-											$content = '<a href="index.php" class="typo3-goBack"><img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/goback.gif','width="14" height="14"').' alt="" /> Go back</a>'.$content;
-											$content.='<h3>Install / Uninstall Extension:</h3>';
-											$content.= $new_list[$extKey] ?
-												'<a href="'.htmlspecialchars('index.php?CMD[showExt]='.$extKey.'&CMD[remove]=1&CMD[clrCmd]=1&SET[singleDetails]=info').'">'.$this->removeButton().' Uninstall extension</a>' :
-												'<a href="'.htmlspecialchars('index.php?CMD[showExt]='.$extKey.'&CMD[load]=1&CMD[clrCmd]=1&SET[singleDetails]=info').'">'.$this->installButton().' Install extension</a>';
-										} else {
-											$content = 'Extension has been imported.<br /><br /><a href="javascript:opener.top.content.document.forms[0].submit();window.close();">Close window and recheck dependencies</a>';
 										}
-
-									}
-								} else $content = $res;
-							} else $content = 'Error: The extension path "'.$extDirPath.'" was different than expected...';
-						} else $content = $res;
+									} else $content = $res;
+								} else $content = 'Error: The extension path "'.$extDirPath.'" was different than expected...';
+							} else $content = $res;
+						}
 					} else $content = 'Error: The extension can only be installed in the path '.$this->typePaths[$EM_CONF['lockType']].' (lockType='.$EM_CONF['lockType'].')';
 				} else $content = 'Error: No extension key!!! Why? - nobody knows... (Or no files in the file-array...)';
 			}  else $content = 'Error: The datatransfer did not succeed, '.$fetchData;
@@ -2421,9 +2435,9 @@ EXTENSION KEYS:
 			$emConf['constraints']['conflicts'] = $this->stringToDep($emConf['conflicts']);
 			$emConf['constraints']['suggests'] = array();
 		} elseif (isset($emConf['constraints']) && isset($emConf['dependencies'])) {
-			$constraints = $emConf['constraints'];
-			$emConf['dependencies'] = $this->depToString($constraints);
-			$emConf['conflicts'] = $this->depToString($constraints, 'conflicts');
+			$emConf['suggests'] = isset($emConf['suggests']) ? $emConf['suggests'] : array();
+			$emConf['dependencies'] = $this->depToString($emConf['constraints']);
+			$emConf['conflicts'] = $this->depToString($emConf['constraints'], 'conflicts');
 		}
 		unset($emConf['private']);
 		unset($emConf['download_password']);
@@ -3410,6 +3424,14 @@ $EM_CONF[$_EXTKEY] = '.$this->arrayToCode($EM_CONF, 0).';
 		return $list;
 	}
 
+	/**
+	 * Enter description here...
+	 *
+	 * @param string $extKey
+	 * @param array $conf
+	 * @param array $instExtInfo
+	 * @return array
+	 */
 	function checkDependencies($extKey, $conf, $instExtInfo) {
 		$content = '';
 		$depError = false;
@@ -3451,16 +3473,14 @@ $EM_CONF[$_EXTKEY] = '.$this->arrayToCode($EM_CONF, 0).';
 					$depError = true;
 					continue;
 				}
-			} elseif (!t3lib_extMgm::isLoaded($depK))	{
+			} elseif (strlen($depK) && !t3lib_extMgm::isLoaded($depK))	{ // strlen check for braindead empty dependencies coming from extensions...
 				if(!isset($instExtInfo[$depK]))	{
 					$msg[] = '<br />Extension "'.$depK.'" was not available in the system. Please import it from the TYPO3 Extension Repository.';
 					$msg[] = '&nbsp;&nbsp;&nbsp;&nbsp;<img src="'.$GLOBALS['BACK_PATH'].'gfx/import.gif" width="12" height="12" title="Import this extension to \'local\' dir typo3conf/ext/ from online repository." alt="" />&nbsp;<a href="index.php?CMD[importExt]='.$depK.'&CMD[loc]=L&CMD[standAlone]=1" target="_blank">Import now (opens a new window)</a>';
-//					$msg[] = '&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" value="1" name="depsolver[import]['.$depK.']" /> Import this extension from the repository and install it';
 					$msg[] = '&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" value="1" name="depsolver[ignore]['.$depK.']" /> Ignore this extension requirement';
 				} else {
 					$msg[] = '<br />Extension "'.$depK.'" ('.$instExtInfo[$depK]['EM_CONF']['title'].') was not installed. Please install it first.';
 					$msg[] = '&nbsp;&nbsp;&nbsp;&nbsp;'.$this->installButton().'&nbsp;<a href="'.htmlspecialchars('index.php?CMD[showExt]='.$depK.'&CMD[load]=1&CMD[clrCmd]=1&CMD[standAlone]=1&SET[singleDetails]=info').'" target="_blank">Install now (opens a new window)</a>';
-//					$msg[] = '&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" value="1" name="depsolver[install]['.$depK.']" /> Install this extension';
 					$msg[] = '&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" value="1" name="depsolver[ignore]['.$depK.']" /> Ignore this extension requirement';
 				}
 				$depError = true;
@@ -3530,10 +3550,10 @@ $EM_CONF[$_EXTKEY] = '.$this->arrayToCode($EM_CONF, 0).';
 		}
 
 		if($depError || $conflictError || $suggestion) {
-			$content .= '<input type="hidden" name="CMD[showExt]" value="'.$extKey.'" />
-			<input type="hidden" name="CMD[load]" value="1" />
-			<input type="hidden" name="CMD[clrCmd]" value="1" /><br /><br />
-			<input type="submit" value="Try again" />';
+			foreach($this->CMD as $k => $v) {
+				$content .= '<input type="hidden" name="CMD['.$k.']" value="'.$v.'" />';
+			}
+			$content .= '<br /><br /><input type="submit" value="Try again" />';
 
 			return array('returnCode' => false, 'html' => $content);
 		}
