@@ -235,7 +235,7 @@ class t3lib_loadDBGroup	{
 		if ($MMtable)	{	// If MM, then call this function to do that:
 
 				// used here to get defVals when set - [tablename]_[id]
-			if(strpos($itemlist, '_')) {
+			if($itemlist) {
 				$this->readList($itemlist);
 
 					// remap submitted defVals from form to local table if in foreign mode
@@ -280,9 +280,10 @@ class t3lib_loadDBGroup	{
 							// Get ID as the right value:
 						$theID = $this->secondTable ? abs(intval($theID)) : intval($theID);
 							// Register ID/table name in internal arrays:
-						$this->itemArray[$key]['id'] = $theID;
-						$this->itemArray[$key]['table'] = $theTable;
-						$this->tableArray[$theTable][] = $theID;
+						$itemKey = $theTable.'_'.$theID;
+						$this->itemArray[$itemKey]['id'] = $theID;
+						$this->itemArray[$itemKey]['table'] = $theTable;
+						$this->tableArray[$theTable][$theID] = $theID;
 							// Set update-flag:
 						$isSet=1;
 					}
@@ -340,19 +341,20 @@ class t3lib_loadDBGroup	{
 
 				// in foreign_select mode firstTable is the right table - tablenames should then be the current table
 			$theTable = ($row['tablenames'] AND !$this->MMswapLocalForeign) ? $row['tablenames'] : $this->firstTable;
-
+			$itemKey = $key;
 			if (($row[$uid_foreign] || $theTable=='pages') && $theTable && isset($this->tableArray[$theTable]))	{
-				$this->itemArray[$key]['id'] = $row[$uid_foreign];
-				$this->itemArray[$key]['table'] = $theTable;
-				$this->itemArray[$key]['table_relation'] = $row['tablenames'];
-				$this->tableArray[$theTable][]= $row[$uid_foreign];
+				$itemKey = $theTable.'_'.$row[$uid_foreign];
+				$this->itemArray[$itemKey]['id'] = $row[$uid_foreign];
+				$this->itemArray[$itemKey]['table'] = $theTable;
+				$this->itemArray[$itemKey]['table_relation'] = $row['tablenames'];
+				$this->tableArray[$theTable][$row[$uid_foreign]]= $row[$uid_foreign];
 			} elseif ($this->registerNonTableValues)	{
-				$this->itemArray[$key]['id'] = $row[$uid_foreign];
-				$this->itemArray[$key]['table'] = '_NO_TABLE';
-				$this->itemArray[$key]['table_relation'] = '_NO_TABLE';
+				$this->itemArray[$itemKey]['id'] = $row[$uid_foreign];
+				$this->itemArray[$itemKey]['table'] = '_NO_TABLE';
+				$this->itemArray[$itemKey]['table_relation'] = '_NO_TABLE';
 				$this->nonTableArray[] = $row[$uid_foreign];
 			}
-			$this->itemArray[$key]['foreign_select'] = $this->MMswapLocalForeign;
+			$this->itemArray[$itemKey]['foreign_select'] = $this->MMswapLocalForeign;
 			$key++;
 		}
 
@@ -379,9 +381,7 @@ class t3lib_loadDBGroup	{
 
 			// If there are tables...
 		$tableC = count($this->tableArray);
-		if ($tableC)	{
-			$prep = ($tableC>1||$prependTableName) ? 1 : 0;
-		}
+		$prep = ($tableC>1||$prependTableName) ? 1 : 0;
 
 			// delete all relations with local uid
 		$where = $uid_local.'='.intval($uid);

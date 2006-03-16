@@ -1848,7 +1848,7 @@ class t3lib_TCEmain	{
 		if ($tcaFieldConf['MM'])	{
 
 			$dbAnalysis->init($table, $tcaFieldConf);
-			$dbAnalysis->start(implode(',',$valueArray),$tables /*, $tcaFieldConf['MM']*/); // defVals need to be resolved. Using MM here will not always work.
+			$dbAnalysis->start(implode(',',$valueArray),$tables,$tcaFieldConf['MM']);
 
 			if ($status=='update')	{
 				$dbAnalysis->writeMM($tcaFieldConf['MM'],$id,$prep);
@@ -1890,7 +1890,7 @@ class t3lib_TCEmain	{
 	/**
 	 * Starts the processing the input data for flexforms. This will traverse all sheets / languages and for each it will traverse the sub-structure.
 	 * See checkValue_flex_procInData_travDS() for more details.
-	 * WARNING: Currently, it traverses based on the actual _data_ array and NOT the _structure_. This means that values for non-valid fields, lKey/vKey/sKeys will be accepted! For traversal of data with a call back function you should rather use class.t3lib_flexformtools.php 
+	 * WARNING: Currently, it traverses based on the actual _data_ array and NOT the _structure_. This means that values for non-valid fields, lKey/vKey/sKeys will be accepted! For traversal of data with a call back function you should rather use class.t3lib_flexformtools.php
 	 *
 	 * @param	array		The 'data' part of the INPUT flexform data
 	 * @param	array		The 'data' part of the CURRENT flexform data

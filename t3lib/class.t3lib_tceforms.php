@@ -2329,7 +2329,7 @@ class t3lib_TCEforms	{
 							if (!$value['TCEforms']['displayCond'] || $this->isDisplayCondition($value['TCEforms']['displayCond'],$editData,$vDEFkey)) {
 								$fakePA=array();
 								$fakePA['fieldConf']=array(
-									'label' => $this->sL($value['TCEforms']['label']),
+									'label' => $this->sL(trim($value['TCEforms']['label'])),
 									'config' => $value['TCEforms']['config'],
 									'defaultExtras' => $value['TCEforms']['defaultExtras'],
                                     'onChange' => $value['TCEforms']['onChange']
