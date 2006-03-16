@@ -1,0 +1,31 @@
+Index: typo3/sysext/adodb/adodb/drivers/adodb-odbc.inc.php
+===================================================================
+RCS file: /cvsroot/typo3/TYPO3core/typo3/sysext/adodb/adodb/drivers/adodb-odbc.inc.php,v
+retrieving revision 1.1.2.1
+diff -u -r1.1.2.1 adodb-odbc.inc.php
+--- typo3/sysext/adodb/adodb/drivers/adodb-odbc.inc.php	15 Feb 2006 23:26:46 -0000	1.1.2.1
++++ typo3/sysext/adodb/adodb/drivers/adodb-odbc.inc.php	16 Mar 2006 19:37:17 -0000
+@@ -513,6 +513,11 @@
+ 					$this->_errorMsg = odbc_errormsg();
+ 					$this->_errorCode = odbc_error();
+ 				}
++				if($this->_errorCode == '00000') {	// FIXME MS SQL Server sometimes returns this in combination with
++					$this->_errorMsg = '';		// the FreeTDS driver and UnixODBC under Linux. This fixes the bogus "error"
++					$this->_errorCode = 0;		// karsten@typo3.org
++					return true;
++				}
+ 				return false;
+ 			}
+ 		
+@@ -524,6 +529,11 @@
+ 					$this->_errorMsg = odbc_errormsg();
+ 					$this->_errorCode = odbc_error();
+ 				}
++				if($this->_errorCode == '00000') {	// FIXME MS SQL Server sometimes returns this in combination with
++					$this->_errorMsg = '';		// the FreeTDS driver and UnixODBC under Linux. This fixes the bogus "error"
++					$this->_errorCode = 0;		// karsten@typo3.org
++					return true;
++				}
+ 				return false;
+ 			}
+ 		} else

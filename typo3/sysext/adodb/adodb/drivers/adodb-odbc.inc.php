@@ -513,6 +513,11 @@ See http://msdn.microsoft.com/library/default.asp?url=/library/en-us/odbc/htm/od
 					$this->_errorMsg = odbc_errormsg();
 					$this->_errorCode = odbc_error();
 				}
+				if($this->_errorCode == '00000') {	// FIXME MS SQL Server sometimes returns this in combination with
+					$this->_errorMsg = '';		// the FreeTDS driver and UnixODBC under Linux. This fixes the bogus "error"
+					$this->_errorCode = 0;		// karsten@typo3.org
+					return true;
+				}
 				return false;
 			}
 		
@@ -523,6 +528,11 @@ See http://msdn.microsoft.com/library/default.asp?url=/library/en-us/odbc/htm/od
 				if ($this->_haserrorfunctions) {
 					$this->_errorMsg = odbc_errormsg();
 					$this->_errorCode = odbc_error();
+				}
+				if($this->_errorCode == '00000') {	// FIXME MS SQL Server sometimes returns this in combination with
+					$this->_errorMsg = '';		// the FreeTDS driver and UnixODBC under Linux. This fixes the bogus "error"
+					$this->_errorCode = 0;		// karsten@typo3.org
+					return true;
 				}
 				return false;
 			}
