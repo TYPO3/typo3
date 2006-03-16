@@ -1848,7 +1848,7 @@ class t3lib_TCEmain	{
 		if ($tcaFieldConf['MM'])	{
 
 			$dbAnalysis->init($table, $tcaFieldConf);
-			$dbAnalysis->start(implode(',',$valueArray),$tables,$tcaFieldConf['MM']);
+			$dbAnalysis->start(implode(',',$valueArray),$tables /*, $tcaFieldConf['MM']*/); // defVals need to be resolved. Using MM here will not always work.
 
 			if ($status=='update')	{
 				$dbAnalysis->writeMM($tcaFieldConf['MM'],$id,$prep);
@@ -4943,7 +4943,7 @@ $this->log($table,$id,6,0,0,'Stage raised...',30,array('comment'=>$comment,'stag
 	 */
 	function removeCacheFiles()	{
 		return t3lib_extMgm::removeCacheFiles();
-	}
+			}
 
 	/**
 	 * Returns array, $CPtable, of pages under the $pid going down to $counter levels.
