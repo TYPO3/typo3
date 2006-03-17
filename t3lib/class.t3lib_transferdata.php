@@ -196,6 +196,7 @@ class t3lib_transferData {
 							// Fetch database values
 						$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $table, 'uid='.intval($id).t3lib_BEfunc::deleteClause($table));
 						if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
+							t3lib_BEfunc::fixVersioningPid($table,$row);
 							$this->renderRecord($table, $id, $row['pid'], $row);
 							$contentTable = $GLOBALS['TYPO3_CONF_VARS']['SYS']['contentTable'];
 							$this->lockRecord($table, $id, $contentTable==$table?$row['pid']:0);	// Locking the pid if the table edited is the content table.

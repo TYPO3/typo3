@@ -1067,6 +1067,7 @@ class t3lib_TCEforms	{
 		if ($this->RTEenabled) {
 			$p = t3lib_BEfunc::getSpecConfParametersFromArray($specConf['rte_transform']['parameters']);
 			if (isset($specConf['richtext']) && (!$p['flag'] || !$row[$p['flag']]))	{	// If the field is configured for RTE and if any flag-field is not set to disable it.
+				t3lib_BEfunc::fixVersioningPid($table,$row);
 				list($tscPID,$thePidValue) = $this->getTSCpid($table,$row['uid'],$row['pid']);
 
 					// If the pid-value is not negative (that is, a pid could NOT be fetched)
@@ -4159,6 +4160,7 @@ class t3lib_TCEforms	{
 							$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.new',1).
 							'</span>';
 
+ 				#t3lib_BEfunc::fixVersioningPid($table,$rec);	// Kasper: Should not be used here because NEW records are not offline workspace versions...
 				$truePid = t3lib_BEfunc::getTSconfig_pidValue($table,$rec['uid'],$rec['pid']);
 				$prec = t3lib_BEfunc::getRecordWSOL('pages',$truePid,'title');
 				$rLabel = '<em>[PID: '.$truePid.'] '.htmlspecialchars(trim(t3lib_div::fixed_lgd_cs(t3lib_BEfunc::getRecordTitle('pages',$prec),40))).'</em>';

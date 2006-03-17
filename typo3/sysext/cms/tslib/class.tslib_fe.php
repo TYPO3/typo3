@@ -303,9 +303,9 @@
 	var $excludeCHashVars='';			// A string set with a comma list of additional GET vars which should NOT be included in the cHash calculation. These vars should otherwise be detected and involved in caching, eg. through a condition in TypoScript.
 	var $displayEditIcons='';			// If set, edit icons are rendered aside content records. Must be set only if the ->beUserLogin flag is set and set_no_cache() must be called as well.
 	var $displayFieldEditIcons='';		// If set, edit icons are rendered aside individual fields of content. Must be set only if the ->beUserLogin flag is set and set_no_cache() must be called as well.
-	var $sys_language_uid=0;			// Site language, 0 (zero) is default, int+ is uid pointing to a sys_language record. Should reflect which language it DOES actually display!
-	var $sys_language_mode='';			// Site language mode
-	var $sys_language_content=0;		// Site content selection uid
+	var $sys_language_uid=0;			// Site language, 0 (zero) is default, int+ is uid pointing to a sys_language record. Should reflect which language menus, templates etc is displayed in (master language) - but not necessarily the content which could be falling back to default (see sys_language_content)
+	var $sys_language_mode='';			// Site language mode for content fall back.
+	var $sys_language_content=0;		// Site content selection uid (can be different from sys_language_uid if content is to be selected from a fall-back language. Depends on sys_language_mode)
 	var $sys_language_contentOL=0;		// Site content overlay flag; If set - and sys_language_content is > 0 - , records selected will try to look for a translation pointing to their uid. (If configured in [ctrl][languageField] / [ctrl][transOrigP...]
 	var $sys_language_isocode = '';		// Is set to the iso code of the sys_language_content if that is properly defined by the sys_language record representing the sys_language_uid. (Requires the extension "static_info_tables")
 
@@ -3049,7 +3049,14 @@ if (version == "n3") {
 						</tr>
 					</table>
 				</div>';
-				$temp_content = $this->config['config']['message_preview'] ? $this->config['config']['message_preview'] : $stdMsg;
+				
+				if ($this->fePreview==2)	{
+					$temp_content = $this->config['config']['message_preview_workspace'] ? 
+						@sprintf($this->config['config']['message_preview_workspace'], $this->whichWorkspace(TRUE),$this->whichWorkspace()) : 
+						$stdMsg;
+				} else {
+					$temp_content = $this->config['config']['message_preview'] ? $this->config['config']['message_preview'] : $stdMsg;
+				}
 				echo $temp_content;
 		}
 	}

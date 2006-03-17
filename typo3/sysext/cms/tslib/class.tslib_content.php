@@ -1171,12 +1171,12 @@ class tslib_cObj {
 					$cobjValue = '';
 					while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 
-						// Versioning preview:
+							// Versioning preview:
 						$GLOBALS['TSFE']->sys_page->versionOL($conf['table'],$row);
 
-						// Language Overlay:
+							// Language Overlay:
 						if (is_array($row) && $GLOBALS['TSFE']->sys_language_contentOL) {
-						$row = $GLOBALS['TSFE']->sys_page->getRecordOverlay($conf['table'],$row,$GLOBALS['TSFE']->sys_language_content,$GLOBALS['TSFE']->sys_language_contentOL);
+							$row = $GLOBALS['TSFE']->sys_page->getRecordOverlay($conf['table'],$row,$GLOBALS['TSFE']->sys_language_content,$GLOBALS['TSFE']->sys_language_contentOL);
 						}
 
 						if (is_array($row)) { // Might be unset in the sys_language_contentOL

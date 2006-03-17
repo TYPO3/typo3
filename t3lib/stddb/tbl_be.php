@@ -841,7 +841,7 @@ $TCA['sys_workspace'] = Array (
 			)
 		),
 		'vtypes' => Array (
-			'label' => 'Disable Versioning Types',
+			'label' => 'Disable Versioning Types (not for admins and owners):',
 			'config' => Array (
 				'type' => 'check',
 				'items' => Array (

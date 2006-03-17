@@ -611,13 +611,18 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 
 										// Prepare diff-code:
 									if ($this->MOD_SETTINGS['diff'])	{
-										if ($rec_on['t3ver_state']!=1)	{	// Not new record:
-											list($diffHTML,$diffPct) = $this->createDiffView($table, $rec_off, $rec_on);
-											$diffCode = ($diffPct<0 ? 'N/A' : ($diffPct ? $diffPct.'% change:' : '')).
-														$diffHTML;
+										$diffCode = '';
+										list($diffHTML,$diffPct) = $this->createDiffView($table, $rec_off, $rec_on);
+										if ($rec_on['t3ver_state']==1)	{	// New record:
+											$diffCode.= $this->doc->icons(1).'New element<br/>';	// TODO Localize?
+											$diffCode.= $diffHTML;
+										} elseif ($rec_off['t3ver_state']==2)	{
+											$diffCode.= $this->doc->icons(2).'Deleted element<br/>';
 										} else {
-											$diffCode = $this->doc->icons(1).'New element';	// TODO Localize?
+											$diffCode.= ($diffPct<0 ? 'N/A' : ($diffPct ? $diffPct.'% change:' : ''));
+											$diffCode.= $diffHTML;
 										}
+										
 									} else $diffCode = '';
 
 										// Prepare swap-mode values:
@@ -852,12 +857,15 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 		}
 
 		if (!$GLOBALS['BE_USER']->workspaceCannotEditOfflineVersion($table,$rec_off))	{
-				// Release
-			$confirm = $LANG->JScharCode($LANG->getLL('remove_from_ws_confirmation'));
-			$actionLinks.=
-				'<a href="'.htmlspecialchars($this->doc->issueCommand('&cmd['.$table.']['.$rec_off['uid'].'][version][action]=clearWSID')).'" onclick="return confirm(' . $confirm . ');">'.
-				'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/group_clear.gif','width="14" height="14"').' alt="" align="top" title="' . $LANG->getLL('img_title_remove_from_ws') . '" />'.
-				'</a>';
+			
+			if ($GLOBALS['BE_USER']->workspace!==0)	{
+					// Release
+				$confirm = $LANG->JScharCode($LANG->getLL('remove_from_ws_confirmation'));
+				$actionLinks.=
+					'<a href="'.htmlspecialchars($this->doc->issueCommand('&cmd['.$table.']['.$rec_off['uid'].'][version][action]=clearWSID')).'" onclick="return confirm(' . $confirm . ');">'.
+					'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/group_clear.gif','width="14" height="14"').' alt="" align="top" title="' . $LANG->getLL('img_title_remove_from_ws') . '" />'.
+					'</a>';
+			}
 
 				// Edit
 			if ($table==='pages' && $vType!=='element')	{

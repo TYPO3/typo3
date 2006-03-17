@@ -318,7 +318,7 @@ class t3lib_pageSelect {
 			if ($TCA[$table] && $TCA[$table]['ctrl']['languageField'] && $TCA[$table]['ctrl']['transOrigPointerField'])	{
 				if (!$TCA[$table]['ctrl']['transOrigPointerTable'])	{	// Will not be able to work with other tables (Just didn't implement it yet; Requires a scan over all tables [ctrl] part for first FIND the table that carries localization information for this table (which could even be more than a single table) and then use that. Could be implemented, but obviously takes a little more....)
 
-						// Will try to overlay a record only if the sys_language_content value is larger that zero.
+						// Will try to overlay a record only if the sys_language_content value is larger than zero.
 					if ($sys_language_content>0)	{
 
 							// Must be default language or [All], otherwise no overlaying:
@@ -326,16 +326,16 @@ class t3lib_pageSelect {
 
 								// Select overlay record:
 							$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-										'*',
-										$table,
-										'pid='.intval($row['pid']).
-											' AND '.$TCA[$table]['ctrl']['languageField'].'='.intval($sys_language_content).
-											' AND '.$TCA[$table]['ctrl']['transOrigPointerField'].'='.intval($row['uid']).
-											$this->enableFields($table),
-										'',
-										'',
-										'1'
-									);
+								'*',
+								$table,
+								'pid='.intval($row['pid']).
+									' AND '.$TCA[$table]['ctrl']['languageField'].'='.intval($sys_language_content).
+									' AND '.$TCA[$table]['ctrl']['transOrigPointerField'].'='.intval($row['uid']).
+									$this->enableFields($table),
+								'',
+								'',
+								'1'
+							);
 							$olrow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
 							$this->versionOL($table,$olrow);
 	#debug($row);

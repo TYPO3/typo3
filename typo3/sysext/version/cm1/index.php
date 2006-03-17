@@ -212,7 +212,7 @@ class tx_version_cm1 extends t3lib_SCbase {
 		if ($record['pid']==-1)	{
 			$record = t3lib_BEfunc::getRecord($this->table,$record['t3ver_oid']);
 		}
-		$pidValue = $this->table==='pages' ? $this->id : $record['pid'];
+		$pidValue = $this->table==='pages' ? $this->uid : $record['pid'];
 
 			// Checking access etc.
 		if (is_array($record) && $TCA[$this->table]['ctrl']['versioningWS'])	{
@@ -453,9 +453,9 @@ class tx_version_cm1 extends t3lib_SCbase {
 			<form action="'.$this->doc->backPath.'tce_db.php" method="post">
 			Label: <input type="text" name="cmd['.$this->table.']['.$this->uid.'][version][label]" /><br/>
 			'.($this->table == 'pages' ? '<select name="cmd['.$this->table.']['.$this->uid.'][version][treeLevels]">
-				<option value="0">Page: Page + content</option>
-				<option value="100">Branch: All subpages</option>
-				<option value="-1">Element: Just record</option>
+				'.($GLOBALS['BE_USER']->workspaceVersioningTypeAccess(0) ? '<option value="0">Page: Page + content</option>' : '').'
+				'.($GLOBALS['BE_USER']->workspaceVersioningTypeAccess(1) ? '<option value="100">Branch: All subpages</option>' : '').'
+				'.($GLOBALS['BE_USER']->workspaceVersioningTypeAccess(-1) ? '<option value="-1">Element: Just record</option>' : '').'
 			</select>' : '').'
 			<br/><input type="hidden" name="cmd['.$this->table.']['.$this->uid.'][version][action]" value="new" />
 			<input type="hidden" name="prErr" value="1" />
@@ -794,12 +794,16 @@ class tx_version_cm1 extends t3lib_SCbase {
 
 							// Prepare diff-code:
 						if ($this->MOD_SETTINGS['diff'] || $this->diffOnly)	{
-							if ($rec_on['t3ver_state']!=1)	{	// Not new record:
-								list($diffHTML,$diffPct) = $this->createDiffView($table, $rec_off, $rec_on);
-								$diffCode = ($diffPct<0 ? 'N/A' : ($diffPct ? $diffPct.'% change:' : '')).
-											$diffHTML;
+							$diffCode = '';
+							list($diffHTML,$diffPct) = $this->createDiffView($table, $rec_off, $rec_on);
+							if ($rec_on['t3ver_state']==1)	{	// New record:
+								$diffCode.= $this->doc->icons(1).'New element<br/>';	// TODO Localize?
+								$diffCode.= $diffHTML;
+							} elseif ($rec_off['t3ver_state']==2)	{
+								$diffCode.= $this->doc->icons(2).'Deleted element<br/>';
 							} else {
-								$diffCode = $this->doc->icons(1).'New element';
+								$diffCode.= ($diffPct<0 ? 'N/A' : ($diffPct ? $diffPct.'% change:' : ''));
+								$diffCode.= $diffHTML;
 							}
 						} else $diffCode = '';
 

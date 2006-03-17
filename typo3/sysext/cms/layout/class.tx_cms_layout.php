@@ -2275,6 +2275,7 @@ class tx_cms_layout extends recordList {
 		$specConf = $this->getSpecConfForField($table,$row,$field);
 		$p = t3lib_BEfunc::getSpecConfParametersFromArray($specConf['rte_transform']['parameters']);
 		if (isset($specConf['richtext']) && (!$p['flag'] || !$row[$p['flag']]))	{
+			t3lib_BEfunc::fixVersioningPid($table,$row);
 			list($tscPID,$thePidValue) = t3lib_BEfunc::getTSCpid($table,$row['uid'],$row['pid']);
 			if ($thePidValue>=0)	{	// If the pid-value is not negative (that is, a pid could NOT be fetched)
 				$RTEsetup = $GLOBALS['BE_USER']->getTSConfig('RTE',t3lib_BEfunc::getPagesTSconfig($tscPID));
