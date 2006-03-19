@@ -1,3 +1,7 @@
+2006-03-19  Martin Kutschker <martin.t.kutschker@blackbox.net>
+
+	* Removed "select_key" and "pages (CODE and Startingpoint) from the plugin UI
+
 2006-03-07  Michael Stucki  <michael@typo3.org>
 
 	* Changed a label key to prevent any problems in case the translation is not updated
