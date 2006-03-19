@@ -175,7 +175,7 @@ class SC_alt_menu {
 <!--
   Logout button / username
 -->
-<div id="typo3-alt-menu-php-logininfo">'.$alt_menuObj->topButtons().$username.'				
+<div id="typo3-alt-menu-php-logininfo">'.$alt_menuObj->topButtons().$username.'
 </div>';
 
 			// End page:

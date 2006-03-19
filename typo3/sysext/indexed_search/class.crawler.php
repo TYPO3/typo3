@@ -466,10 +466,10 @@ class tx_indexedsearch_crawler {
 				$urlList = $pObj->urlListFromUrlArray($vv,$pageRow,time(),30,1,0,$duplicateTrack,$downloadUrls,array('tx_indexedsearch_reindex'));
 			}
 		}
-		
+
 			// Add subpages to log now:
 		if ($params['depth'] < $cfgRec['depth'])	{
-			
+
 				// Subpages selected
 			$recs = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
 				'uid,title',
@@ -480,7 +480,7 @@ class tx_indexedsearch_crawler {
 
 				// Traverse subpages and add to queue:
 			if (count($recs))	{
-				foreach($recs as $r)	{			
+				foreach($recs as $r)	{
 					$this->instanceCounter++;
 					$url = 'pages:'.$r['uid'].': '.$r['title'];
 					$session_data['urlLog'][] = $url;
@@ -794,12 +794,12 @@ class tx_indexedsearch_crawler {
 
 /*
 	function createParameterCombinationsForPage($pageId,$paramConfiguration)	{
-		
+
 		$paramList = array('');
-		
+
 			// First, split configurations:
 		$cfgLines = t3lib_div::trimExplode(chr(10),$paramConfiguration,1);
-		
+
 			// Traverse each
 		foreach($cfgLines as $cfgLine)	{
 			list($table,$field,$param)	= t3lib_div::trimExplode(':',$cfgLine);
@@ -807,18 +807,18 @@ debug(array($table,$field,$param));
 			if ($GLOBALS['TCA'][$table]) {
 				t3lib_div::loadTCA($table);
 				if ($GLOBALS['TCA'][$table]['columns'][$field] || $field==='uid') {
-					
+
 					$allRows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
 						$field,
 						$table,
 						'pid='.intval($pageId).
 							t3lib_BEfunc::deleteClause($table)
 					);
-debug($allRows,$table);					
+debug($allRows,$table);
 					$paramListTemp = $paramList;
 					foreach($allRows as $row)	{
 						$addvalue = str_replace('###FIELD###',$row[$field],$param);
-						
+
 						foreach($paramList as $pLine)	{
 							$paramListTemp[] = $pLine.$addvalue;
 						}
@@ -827,7 +827,7 @@ debug($allRows,$table);
 				}
 			}
 		}
-		
+
 		return $paramList;
 	}
 */
@@ -912,20 +912,20 @@ class tx_indexedsearch_files {
 	 * @return	array		Result array
 	 */
 	function crawler_execute($params,&$pObj)	{
-				
+
 			// Load indexer if not yet.
 		$this->loadIndexerClass();
-		
+
 		if (is_array($params['conf']))	{
-			
+
 				// Initialize the indexer class:
 			$indexerObj = &t3lib_div::makeInstance('tx_indexedsearch_indexer');
 			$indexerObj->conf = $params['conf'];
 			$indexerObj->init();
-			
+
 				// Index document:
 			$indexerObj->indexRegularDocument($params['document'], TRUE);
-			
+
 				// Return OK:
 			return array('content' => array());
 		}
@@ -939,7 +939,7 @@ class tx_indexedsearch_files {
 	function loadIndexerClass()	{
 		global $TYPO3_CONF_VARS;
 		require_once(t3lib_extMgm::extPath('indexed_search').'class.indexer.php');
-	}	
+	}
 }
 
 

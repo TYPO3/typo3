@@ -968,7 +968,7 @@ class t3lib_TStemplate	{
 
 		$noChange = false;
 		// recursive substitution of constants (up to 10 nested levels)
-		for ($i = 0; $i < 10 && !$noChange; $i++) { 
+		for ($i = 0; $i < 10 && !$noChange; $i++) {
 			$old_all = $all;
 			$all = preg_replace_callback('/\{\$(.[^}]*)\}/', array($this, 'substituteConstantsCallBack'), $all);
 			if ($old_all == $all) {

@@ -86,7 +86,7 @@ class tx_lowlevel_cleaner extends t3lib_extobjbase {
 #				'l10n_duplicates' => 'Localization errors',		
 # Find TCA/FlexForm fields which should probably have a soft reference parser attached!
 
-			# TemplaVOila plugs in to display mapping issues.
+			# TemplaVoila plugs in to display mapping issues.
 			# Overview of http://  and emails 						// UPDATE index!
 			
 				'missing_files' => 'Missing files',				// UPDATE index!
@@ -171,7 +171,7 @@ class tx_lowlevel_cleaner extends t3lib_extobjbase {
 		}
 		
 /*
-// TEST of how we can get the used Content Elements on a TemplaVOila page:
+// TEST of how we can get the used Content Elements on a TemplaVoila page:
 require_once(t3lib_extMgm::extPath('templavoila').'class.tx_templavoila_api.php');
 $apiClassName = t3lib_div::makeInstanceClassName('tx_templavoila_api');
 $apiObj = new $apiClassName('pages');

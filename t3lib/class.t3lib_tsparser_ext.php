@@ -246,8 +246,8 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 				$ret_val = $matches[0];
 				break;
 			default:
-				$ret_val = 	isset($this->flatSetup[$matches[1]]) && !is_array($this->flatSetup[$matches[1]]) ? 
-							$this->flatSetup[$matches[1]] : 
+				$ret_val = 	isset($this->flatSetup[$matches[1]]) && !is_array($this->flatSetup[$matches[1]]) ?
+							$this->flatSetup[$matches[1]] :
 							$matches[0];
 		}
 
@@ -1650,7 +1650,7 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 			$resList=implode(t3lib_div::trimExplode(",",$resList,1),",");
 				// Making data-array
 			$saveId = $tplRow['_ORIG_uid'] ? $tplRow['_ORIG_uid'] : $tplRow['uid'];
-debug($saveId);
+// debug($saveId);
 			$recData=array();
 			$recData["sys_template"][$saveId]["resources"] = $resList;
 				// Saving

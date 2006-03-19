@@ -774,7 +774,7 @@ class tx_indexedsearch_indexer {
 
 						// Index local file:
 					if ($linkInfo['localPath'])	{
-						
+
 						$fI = pathinfo($linkSource);
 						$ext = strtolower($fI['extension']);
 						$this->indexRegularDocument($linkInfo['href'], false, $linkSource, $ext);
@@ -1762,8 +1762,8 @@ class tx_indexedsearch_indexer {
 
 	function includeCrawlerClass()	{
 		global $TYPO3_CONF_VARS;
-		
-		require_once(t3lib_extMgm::extPath('crawler').'class.tx_crawler_lib.php');		
+
+		require_once(t3lib_extMgm::extPath('crawler').'class.tx_crawler_lib.php');
 	}
 
 

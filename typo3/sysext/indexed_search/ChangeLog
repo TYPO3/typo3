@@ -1,4 +1,4 @@
-2006-03-19  Martin Kutschker <martin.t.kutschker@blackbox.net>
+2006-03-19  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
 	* Moved subtype exclude list from "cms"'s tbl_tt_content.php to ext_tables.php
 	* Removed "select_key" and "pages (CODE and Startingpoint) from the plugin UI
