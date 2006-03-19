@@ -117,6 +117,7 @@ $TCA['tt_content'] = Array (
 					Array('LLL:EXT:lang/locallang_general.php:LGL.any_login', -2),
 					Array('LLL:EXT:lang/locallang_general.php:LGL.usergroups', '--div--')
 				),
+				'exclusiveKeys' => '-1,-2',
 				'foreign_table' => 'fe_groups'
 			)
 		),
@@ -919,6 +920,7 @@ $TCA['tt_content'] = Array (
 			)
 		),
 		'pi_flexform' => array(
+			'l10n_display' => 'hideDiff',
 			'label' => 'LLL:EXT:cms/locallang_ttc.php:pi_flexform',
 			'config' => Array (
 				'type' => 'flex',
@@ -1007,7 +1009,6 @@ $TCA['tt_content'] = Array (
 								'7' => 'layout',
 								'1' => 'layout',
 								'8' => 'layout',
-								'indexed_search' => 'layout',
 								'11' => 'layout',
 								'20' => 'layout',
 								'21' => 'layout'
