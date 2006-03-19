@@ -151,7 +151,8 @@ if (TYPO3_MODE=='BE')	{
 					Array('LLL:EXT:lang/locallang_general.php:LGL.any_login', -2),
 					Array('LLL:EXT:lang/locallang_general.php:LGL.usergroups', '--div--')
 				),
-				'foreign_table' => 'fe_groups'
+				'exclusiveKeys' => '-1,-2',
+				'foreign_table' => 'fe_groups',
 			)
 		),
 		'extendToSubpages' => Array (
