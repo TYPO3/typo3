@@ -1523,19 +1523,17 @@
 	 * @return	void
 	 */
 	function getFromCache()	{
-		if (!$this->no_cache)	{ $this->tmpl->getCurrentPageData(); }
-
+		$this->tmpl->getCurrentPageData();
 		$cc = Array();
 		if (is_array($this->tmpl->currentPageData))	{
-				// BE CAREFUL to change the content of the currentPageData-array. This array is serialized and an md5-hash based on this is used for caching the page.
+				// BE CAREFULL to change the content of the cc-array. This array is serialized and an md5-hash based on this is used for caching the page.
 				// If this hash is not the same in here in this section and after page-generation the page will not be properly cached!
-			$cc['all'] = $this->tmpl->currentPageData['all'];
-			$cc = $this->tmpl->matching($cc);	// tmpl->matching needs only the key "all". We make use of this because we don't need to sort the array keys afterwards...
-			$cc['rootLine'] = $this->tmpl->currentPageData['rootLine'];	// This rootline is used with templates only (matching()-function)
-			$cc['rowSum'] = $this->tmpl->currentPageData['rowSum'];
 
-			$this->tmpl->currentPageData = $cc;
-			$this->all = $cc;	// This array is an identification of the template. If $this->all is empty it's because the template-data is not cached, which it must be.
+			$cc['all'] = $this->tmpl->currentPageData['all'];
+			$cc['rowSum'] = $this->tmpl->currentPageData['rowSum'];
+			$cc['rootLine'] = $this->tmpl->currentPageData['rootLine'];		// This rootline is used with templates only (matching()-function)
+			$this->all = $this->tmpl->matching($cc);	// This array is an identification of the template. If $this->all is empty it's because the template-data is not cached, which it must be.
+			ksort($this->all);
 		}
 
 		$this->content='';	// clearing the content-variable, which will hold the pagecontent

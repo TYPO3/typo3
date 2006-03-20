@@ -1161,11 +1161,14 @@ tt_content.mailform.20 {
 tt_content.menu.20 {
 	# "Menu of these pages"
 	default.wrap = <ul class="csc-menu csc-menu-def">|</ul>
-	default.1.NO.allWrap = <li>|</li>
+	default.1.NO.allWrap >
+	default.1.NO.wrapItemAndSub = <li>|</li>
 	default.1.NO.ATagTitle.field = description // title
 
 	# "Menu of subpages to these pages"
 	1.wrap = <ul class="csc-menu csc-menu-1">|</ul>
+	1.1.NO.allWrap >
+	1.1.NO.wrapItemAndSub = <li>|</li>
 
 	# "Sitemap - liststyle"
 	2 >
@@ -1199,20 +1202,29 @@ tt_content.menu.20 {
 	# "Menu of subpages to these pages (with abstract)"
 	4.wrap = <dl class="csc-menu csc-menu-4">|</dl>
 	4.1.NO {
-		allWrap = <dt>|</dd>
-		after.wrap = </dt><dd>|
+		allWrap >
+		linkWrap = <dt>|</dt>
+		after.wrap = <dd>|</dd>
 		ATagTitle.field = description // title
 	}
 
 	# "Recently updated pages"
 	5.wrap = <ul class="csc-menu csc-menu-5">|</ul>
+	5.1.NO.allWrap >
+	5.1.NO.wrapItemAndSub = <li>|</li>
 
 	# "Related pages (based on keywords)"
 	6.wrap = <ul class="csc-menu csc-menu-6">|</ul>
+	6.1.NO.allWrap >
+	6.1.NO.wrapItemAndSub = <li>|</li>
 
 	# "Menu of subpages to these pages + sections - liststyle"
 	7.wrap = <ul class="csc-menu csc-menu-7">|</ul>
-	7.2.NO.allWrap = <li class="csc-section">|</li>
+	7.1.NO.allWrap >
+	7.1.NO.wrapItemAndSub = <li>|</li>
+	7.2.wrap = <ul>|</ul>
+	7.2.NO.allWrap >
+	7.2.NO.wrapItemAndSub = <li class="csc-section">|</li>
 	7.2.NO.ATagTitle.field = description // title
 }
 

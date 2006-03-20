@@ -172,6 +172,10 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 				$quotedInput = '';
 			}
 
+				// generate id prefix for accessible header
+			$headerScope = ($headerPos=='top'?'col':'row');
+			$headerIdPrefix = $headerScope.$this->cObj->data['uid'].'-';
+
 				// Split into single lines (will become table-rows):
 			$rows = t3lib_div::trimExplode(chr(10),$content);
 
@@ -191,13 +195,20 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 
 					if (!strcmp(trim($cells[$a]),''))	$cells[$a]='&nbsp;';
 					$cellAttribs = ($noStyles?'':($a>0 && ($cols-1)==$a) ? ' class="td-last"' : ' class="td-'.$a.'"');
-					if (($headerPos == 'top' && !$k) || (!$a && $headerPos == 'left'))	{
-						$scope = ' scope="'.($headerPos == 'top'?'col':'row').'"';
+					if (($headerPos == 'top' && !$k) || ($headerPos == 'left' && !$a))	{
+						$scope = ' scope="'.$headerScope.'"';
+						$scope .= ' id="'.$headerIdPrefix.(($headerScope=='col')?$a:$k).'"';
+
 						$newCells[$a] = '
 							<th'.$cellAttribs.$scope.'>'.$this->cObj->stdWrap($cells[$a],$conf['innerStdWrap.']).'</th>';
 					} else {
+						if (!empty($headerPos))	{
+							$accessibleHeader = ' headers="'.$headerIdPrefix.(($headerScope=='col')?$a:$k).'"';
+						} else {
+							$accessibleHeader = '';
+						}
 						$newCells[$a] = '
-							<td'.$cellAttribs.'>'.$this->cObj->stdWrap($cells[$a],$conf['innerStdWrap.']).'</td>';
+							<td'.$cellAttribs.$accessibleHeader.'>'.$this->cObj->stdWrap($cells[$a],$conf['innerStdWrap.']).'</td>';
 					}
 				}
 				if (!$noStyles)	{
