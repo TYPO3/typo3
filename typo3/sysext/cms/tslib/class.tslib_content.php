@@ -5162,27 +5162,6 @@ class tslib_cObj {
 					$page = $GLOBALS['TSFE']->sys_page->getPage($link_param,$disableGroupAccessCheck);
 
 					if (count($page))	{
-							// This checks if the linked id is in the rootline of this site and if not it will find the domain for that ID and prefix it:
-						$tCR_domain='';
-						if ($GLOBALS['TSFE']->config['config']['typolinkCheckRootline'])	{
-							$tCR_rootline = $GLOBALS['TSFE']->sys_page->getRootLine($page['uid']);	// Gets rootline of linked-to page
-							$tCR_flag = 0;
-							foreach($tCR_rootline as $tCR_data)	{
-								if ($tCR_data['uid']==$GLOBALS['TSFE']->tmpl->rootLine[0]['uid'])	{
-									$tCR_flag = 1;	// OK, it was in rootline!
-									break;
-								}
-							}
-							if (!$tCR_flag)	{
-								foreach($tCR_rootline as $tCR_data)	{
-									$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'sys_domain', 'pid='.intval($tCR_data['uid']).' AND redirectTo=\'\''.$this->enableFields('sys_domain'), '', 'sorting');
-									if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
-										$tCR_domain = ereg_replace('\/$','',$row['domainName']);
-										break;
-									}
-								}
-							}
-						}
 							// MointPoints, look for closest MPvar:
 						$MPvarAcc = array();
 						if (!$GLOBALS['TSFE']->config['config']['MP_disableTypolinkClosestMPvalue'])	{
@@ -5212,12 +5191,35 @@ class tslib_cObj {
 							$pA = t3lib_div::cHashParams($addQueryParams.$GLOBALS['TSFE']->linkVars);	// Added '.$this->linkVars' dec 2003: The need for adding the linkVars is that they will be included in the link, but not the cHash. Thus the linkVars will always be the problem that prevents the cHash from working. I cannot see what negative implications in terms of incompatibilities this could bring, but for now I hope there are none. So here we go... (- kasper)
 							$addQueryParams.= '&cHash='.t3lib_div::shortMD5(serialize($pA));
 						}
-							// Add "&MP" var:
+
+						$tCR_domain = '';
+						// Mount pages are always local and never link to another domain
 						if (count($MPvarAcc))	{
+							// Add "&MP" var:
 							$addQueryParams.= '&MP='.rawurlencode(implode(',',$MPvarAcc));
 						}
+						elseif ($GLOBALS['TSFE']->config['config']['typolinkCheckRootline'])	{
+							// This checks if the linked id is in the rootline of this site and if not it will find the domain for that ID and prefix it:
+							$tCR_rootline = $GLOBALS['TSFE']->sys_page->getRootLine($page['uid']);	// Gets rootline of linked-to page
+							$tCR_flag = 0;
+							foreach($tCR_rootline as $tCR_data)	{
+								if ($tCR_data['uid']==$GLOBALS['TSFE']->tmpl->rootLine[0]['uid'])	{
+									$tCR_flag = 1;	// OK, it was in rootline!
+									break;
+								}
+							}
+							if (!$tCR_flag)	{
+								foreach($tCR_rootline as $tCR_data)	{
+									$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'sys_domain', 'pid='.intval($tCR_data['uid']).' AND redirectTo=\'\''.$this->enableFields('sys_domain'), '', 'sorting');
+									if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
+										$tCR_domain = preg_replace('/\/$/','',$row['domainName']);
+										break;
+									}
+								}
+							}
+						}
 							// If other domain, overwrite
-						if ($tCR_domain)	{
+						if (strlen($tCR_domain))	{
 							$target = isset($conf['extTarget']) ? $conf['extTarget'] : $GLOBALS['TSFE']->extTarget;
 							if ($conf['extTarget.'])	{$target = $this->stdWrap($target, $conf['extTarget.']);}
 							if ($forceTarget)	{$target=$forceTarget;}

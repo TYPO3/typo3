@@ -1,3 +1,7 @@
+2006-03-20  Wolfgang Klinger <wk@plan2.net>
+
+	* Fixed bug #608: Typolink for mounted pages from another domain
+
 2006-03-19  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
 	* Corrections/adjustments to the htmlArea RTE extension (see details in local ChangeLog)
