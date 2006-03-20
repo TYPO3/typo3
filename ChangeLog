@@ -1,3 +1,8 @@
+2006-03-20  Kasper Skaarhoj  <kasperYYYY@typo3.com>
+
+	* Fixed more workspace issues:
+	* Added info about workspaces to Tools > User Admin (sorry, considered important)
+	* Frontend editing: Fixed that it works with localizations. Disabled many of the features in draft workspaces (since we have no time for an implementation)
 
 2006-03-19  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 

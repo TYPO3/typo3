@@ -349,6 +349,8 @@ class t3lib_pageSelect {
 												&& ($GLOBALS['TSFE']->TCAcachedExtras[$table]['l10n_mode'][$fN]!='mergeIfNotBlank' || strcmp(trim($olrow[$fN]),'')))	{
 											$row[$fN] = $olrow[$fN];
 										}
+									} elseif ($fN=='uid')	{
+										$row['_LOCALIZED_UID'] = $olrow['uid'];
 									}
 								}
 							} elseif ($OLmode==='hideNonTranslated' && $row[$TCA[$table]['ctrl']['languageField']]==0)	{	// Unset, if non-translated records should be hidden. ONLY done if the source record really is default language and not [All] in which case it is allowed.

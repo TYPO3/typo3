@@ -123,12 +123,18 @@ class SC_wizard_rte {
 	function main()	{
 		global $BE_USER,$LANG;
 
+			// translate id to the workspace version:
+		if ($versionRec = t3lib_BEfunc::getWorkspaceVersionOfRecord($GLOBALS['BE_USER']->workspace, $this->P['table'], $this->P['uid'], 'uid'))	{
+			$this->P['uid'] = $versionRec['uid'];
+		}
+
 			// If all parameters are available:
 		if ($this->P['table'] && $this->P['field'] && $this->P['uid'] && $this->checkEditAccess($this->P['table'],$this->P['uid']))	{
 
 				// Getting the raw record (we need only the pid-value from here...)
 			$rawRec = t3lib_BEfunc::getRecord($this->P['table'],$this->P['uid']);
-
+			t3lib_BEfunc::fixVersioningPid($this->P['table'], $rawRec);
+			
 				// Setting JavaScript, including the pid value for viewing:
 			$this->doc->JScode = $this->doc->wrapScriptTags('
 					function jumpToUrl(URL,formEl)	{	//

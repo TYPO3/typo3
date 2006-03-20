@@ -789,6 +789,9 @@ class local_beUserAuth extends t3lib_beUserAuth {
 					case 'workspace_perms':
 						$out[$k] = implode('<br/>',explode(', ',t3lib_BEfunc::getProcessedValue('be_users','workspace_perms',$v)));
 					break;
+					case 'workspace_membership':
+						$out[$k] = implode('<br/>',$this->ext_workspaceMembership());
+					break;
 					case 'custom_options':
 
 							// Explode and flip values:
@@ -897,61 +900,99 @@ class local_beUserAuth extends t3lib_beUserAuth {
 	/**
 	 * Creates uInfo array for the user.
 	 *
+	 * @param	array		Might contain array where keys/values indicate whether to render a certain value
 	 * @return	array		Array with the information of the user for each analysis topic.
 	 */
-	function ext_compileUserInfoForHash()	{
+	function ext_compileUserInfoForHash($filter=NULL)	{
 		$uInfo=array();
+		$renderAll = !is_array($filter);
 
 			// Filemounts:
-		$uInfo['filemounts']=$this->ext_uniqueAndSortList(implode(',',array_keys($this->groupData['filemounts'])));
+		if ($renderAll || $filter['filemounts'])	{
+			$uInfo['filemounts'] = $this->ext_uniqueAndSortList(implode(',',array_keys($this->groupData['filemounts'])));
+		}
 
 			// DBmounts:
-		$uInfo['webmounts']=$this->ext_uniqueAndSortList($this->groupData['webmounts']);
+		if ($renderAll || $filter['webmounts'])	{
+			$uInfo['webmounts'] = $this->ext_uniqueAndSortList($this->groupData['webmounts']);
+		}
 
 			// Sharing Upload Folder
-		$fileProcessor = t3lib_div::makeInstance('t3lib_basicFileFunctions');
-		$fileProcessor->init($this->groupData['filemounts'], $GLOBALS['TYPO3_CONF_VARS']['BE']['fileExtensions']);
-		$uInfo['tempPath'] = $fileProcessor->findTempFolder();	// The closest TEMP-path is found
+		if ($renderAll || $filter['tempPath'])	{
+			$fileProcessor = t3lib_div::makeInstance('t3lib_basicFileFunctions');
+			$fileProcessor->init($this->groupData['filemounts'], $GLOBALS['TYPO3_CONF_VARS']['BE']['fileExtensions']);
+			$uInfo['tempPath'] = $fileProcessor->findTempFolder();	// The closest TEMP-path is found
+		}
 
 			// First Main Group:
-		$uInfo['firstMainGroup']=$this->firstMainGroup;
+		if ($renderAll || $filter['firstMainGroup'])	{
+			$uInfo['firstMainGroup'] = $this->firstMainGroup;
+		}
 
 			// Group List:
-//		$uInfo['groupList']=$this->ext_uniqueAndSortList($this->groupList);
-		$uInfo['groupList']=$this->groupList;	// This gives a list that shows in which order the groups are processed. This may result in a list of groups which is similar to that of another user regarding which group but not the order of groups. For now, I believe it's most usefull to let separate orders of groups appear as different group settings for a user.
+		if ($renderAll || $filter['groupList'])	{
+			$uInfo['groupList'] = $this->groupList;	// This gives a list that shows in which order the groups are processed. This may result in a list of groups which is similar to that of another user regarding which group but not the order of groups. For now, I believe it's most usefull to let separate orders of groups appear as different group settings for a user.
+		}
 
 			// Page Types:
-		$uInfo['pagetypes_select']=$this->ext_uniqueAndSortList($this->groupData['pagetypes_select']);
+		if ($renderAll || $filter['pagetypes_select'])	{
+			$uInfo['pagetypes_select'] = $this->ext_uniqueAndSortList($this->groupData['pagetypes_select']);
+		}
 
 			// Tables select:
-		$uInfo['tables_select']=$this->ext_uniqueAndSortList($this->groupData['tables_select'].','.$this->groupData['tables_modify']);
+		if ($renderAll || $filter['tables_select'])	{
+			$uInfo['tables_select'] = $this->ext_uniqueAndSortList($this->groupData['tables_select'].','.$this->groupData['tables_modify']);
+		}
 
 			// Tables modify:
-		$uInfo['tables_modify']=$this->ext_uniqueAndSortList($this->groupData['tables_modify']);
+		if ($renderAll || $filter['tables_modify'])	{
+			$uInfo['tables_modify'] = $this->ext_uniqueAndSortList($this->groupData['tables_modify']);
+		}
 
 			// Non-exclude fields:
-		$uInfo['non_exclude_fields']=$this->ext_uniqueAndSortList($this->groupData['non_exclude_fields']);
+		if ($renderAll || $filter['non_exclude_fields'])	{
+			$uInfo['non_exclude_fields'] = $this->ext_uniqueAndSortList($this->groupData['non_exclude_fields']);
+		}
 
 			// Explicit Allow/Deny:
-		$uInfo['explicit_allowdeny']=$this->ext_uniqueAndSortList($this->groupData['explicit_allowdeny']);
+		if ($renderAll || $filter['explicit_allowdeny'])	{
+			$uInfo['explicit_allowdeny'] = $this->ext_uniqueAndSortList($this->groupData['explicit_allowdeny']);
+		}
 
 			// Limit to languages:
-		$uInfo['allowed_languages']=$this->ext_uniqueAndSortList($this->groupData['allowed_languages']);
+		if ($renderAll || $filter['allowed_languages'])	{
+			$uInfo['allowed_languages'] = $this->ext_uniqueAndSortList($this->groupData['allowed_languages']);
+		}
 
 			// Workspace permissions
-		$uInfo['workspace_perms']=$this->ext_uniqueAndSortList($this->groupData['workspace_perms']);
+		if ($renderAll || $filter['workspace_perms'])	{
+			$uInfo['workspace_perms'] = $this->ext_uniqueAndSortList($this->groupData['workspace_perms']);
+		}
+		
+			// Workspace membership
+		if ($renderAll || $filter['workspace_membership'])	{
+			$uInfo['workspace_membership'] = $this->ext_workspaceMembership();
+		}
 
 			// Custom options:
-		$uInfo['custom_options']=$this->ext_uniqueAndSortList($this->groupData['custom_options']);
+		if ($renderAll || $filter['custom_options'])	{
+			$uInfo['custom_options'] = $this->ext_uniqueAndSortList($this->groupData['custom_options']);
+		}
 
 			// Modules:
-		$uInfo['modules']=$this->ext_uniqueAndSortList($this->groupData['modules']);
+		if ($renderAll || $filter['modules'])	{
+			$uInfo['modules'] = $this->ext_uniqueAndSortList($this->groupData['modules']);
+		}
 
 			// User TS:
 		$this->ext_ksortArrayRecursive($this->userTS);
-		$uInfo['userTS'] = $this->userTS;
+		if ($renderAll || $filter['userTS'])	{
+			$uInfo['userTS'] = $this->userTS;
+		}
 
-		$uInfo['userTS_hl'] = $this->userTS_text;
+		if ($renderAll || $filter['userTS_hl'])	{
+			$uInfo['userTS_hl'] = $this->userTS_text;
+		}
 
 		return $uInfo;
 	}
@@ -982,6 +1023,41 @@ class local_beUserAuth extends t3lib_beUserAuth {
 		while(list($k,$v)=each($arr))	{
 			if (is_array($v))	$this->ext_ksortArrayRecursive($arr[$k]);
 		}
+	}
+	
+	function ext_workspaceMembership()	{
+		global $TYPO3_DB;
+
+			// Create accessible workspace arrays:
+		$options = array();
+		if ($this->checkWorkspace(array('uid' => 0)))	{
+			$options[0] = '0: [LIVE]';
+		}
+		if ($this->checkWorkspace(array('uid' => -1)))	{
+			$options[-1] = '-1: [Default Draft]';
+		}
+
+			// Add custom workspaces (selecting all, filtering by BE_USER check):
+		$workspaces = $TYPO3_DB->exec_SELECTgetRows('uid,title,adminusers,members,reviewers,db_mountpoints','sys_workspace','pid=0'.t3lib_BEfunc::deleteClause('sys_workspace'),'','title');
+		if (count($workspaces))	{
+			foreach ($workspaces as $rec)	{
+				if ($this->checkWorkspace($rec))	{
+					$options[$rec['uid']] = $rec['uid'].': '.$rec['title'];
+
+						// Check if all mount points are accessible, otherwise show error:
+					if (trim($rec['db_mountpoints'])!=='')	{
+						$mountPoints = t3lib_div::intExplode(',',$this->workspaceRec['db_mountpoints'],1);
+						foreach($mountPoints as $mpId)	{
+							if (!$this->isInWebMount($mpId,'1=1'))	{
+								$options[$rec['uid']].= '<br> \- WARNING: Workspace Webmount page id "'.$mpId.'" not accessible!';
+							}
+						}					
+					}
+				}
+			}
+		}
+		
+		return $options;
 	}
 }
 
@@ -1138,6 +1214,7 @@ class SC_mod_tools_be_user_index {
 			'explicit_allowdeny' => 'Explicit Allow/Deny',
 			'allowed_languages' => 'Limit to languages',
 			'workspace_perms' => 'Workspace permissions',
+			'workspace_membership' => 'Workspace membership',
 			'custom_options' => 'Custom options',
 			'modules' => 'Modules',
 			'userTS' => 'TSconfig',
@@ -1219,7 +1296,7 @@ class SC_mod_tools_be_user_index {
 						// Making group data
 					$md5pre='';
 					$menu=array();
-					$uInfo = $tempBE_USER->ext_compileUserInfoForHash();
+					$uInfo = $tempBE_USER->ext_compileUserInfoForHash((array)$compareFlags);
 					reset($options);
 					while(list($kk,$vv)=each($options))	{
 						if ($compareFlags[$kk])	{

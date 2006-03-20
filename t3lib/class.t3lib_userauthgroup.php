@@ -1370,7 +1370,7 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 		$this->setWorkspace($this->user['workspace_id']);
 
 			// Setting up the db mount points of the (custom) workspace, if any:
-		if ($this->workspace>0 && $this->workspaceRec['db_mountpoints']!=='')	{
+		if ($this->workspace>0 && trim($this->workspaceRec['db_mountpoints'])!=='')	{
 
 				// Initialize:
 			$newMounts = array();
@@ -1390,7 +1390,7 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 
 			// Setting up the file mount points of the (custom) workspace, if any:
 		if ($this->workspace!==0)	$this->groupData['filemounts'] = array();
-		if ($this->workspace>0 && $this->workspaceRec['file_mountpoints']!=='')	{
+		if ($this->workspace>0 && trim($this->workspaceRec['file_mountpoints'])!=='')	{
 
 				// Processing filemounts
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'sys_filemounts', 'deleted=0 AND hidden=0 AND pid=0 AND uid IN ('.$GLOBALS['TYPO3_DB']->cleanIntList($this->workspaceRec['file_mountpoints']).')');

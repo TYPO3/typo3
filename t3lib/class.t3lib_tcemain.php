@@ -3023,7 +3023,7 @@ class t3lib_TCEmain	{
 
 						if ($delRec['t3ver_wsid']==0 || (int)$liveRec['t3ver_state']!==1)	{	// Delete those in WS 0 + if their live records state was not "Placeholder".
 							$this->deleteEl($table, $id);
-						} else {	// If live record was placeholder, rather clear it from workspace (because it clears both version and placeholder). Yes, of course we would most like to just delete them, BUT what if placeholder has other versions in other workspaces...
+						} else {	// If live record was placeholder, rather clear it from workspace (because it clears both version and placeholder).
 							$this->version_clearWSID($table,$id);
 						}
 					} else $this->newlog('Tried to delete record from another workspace',1);
@@ -3297,6 +3297,38 @@ class t3lib_TCEmain	{
 						if ($row['pid']>=0)	{	// record must be online record
 							if (!$delete || !$this->cannotDeleteRecord($table,$id)) {
 
+									// Look for next version number:
+								$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+									't3ver_id',
+									$table,
+									'(t3ver_oid='.$id.' || uid='.$id.')'.$this->deleteClause($table),
+									'',
+									't3ver_id DESC',
+									'1'
+								);
+								list($highestVerNumber) = $GLOBALS['TYPO3_DB']->sql_fetch_row($res);
+
+									// Look for version number of the current:
+								$subVer = $row['t3ver_id'].'.'.($highestVerNumber+1);
+
+									// Set up the values to override when making a raw-copy:
+								$overrideArray = array(
+									't3ver_id' => $highestVerNumber+1,
+									't3ver_oid' => $id,
+									't3ver_label' => ($label ? $label : $subVer.' / '.date('d-m-Y H:m:s')),
+									't3ver_wsid' => $this->BE_USER->workspace,
+									't3ver_state' => $delete ? 2 : 0,
+									't3ver_count' => 0,
+									't3ver_stage' => 0,
+									't3ver_tstamp' => 0
+								);
+								if ($TCA[$table]['ctrl']['editlock'])	{
+									$overrideArray[$TCA[$table]['ctrl']['editlock']] = 0;
+								}
+								if ($table==='pages')	{
+									$overrideArray['t3ver_swapmode'] = $versionizeTree;
+								}
+
 									// Checking if the record already has a version in the current workspace of the backend user
 								$workspaceCheck = TRUE;
 								if ($this->BE_USER->workspace!==0)	{
@@ -3305,41 +3337,9 @@ class t3lib_TCEmain	{
 								}
 
 								if ($workspaceCheck)	{
-										// Look for next version number:
-									$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-										't3ver_id',
-										$table,
-										'(t3ver_oid='.$id.' || uid='.$id.')'.$this->deleteClause($table),
-										'',
-										't3ver_id DESC',
-										'1'
-									);
-									list($highestVerNumber) = $GLOBALS['TYPO3_DB']->sql_fetch_row($res);
-
-										// Look for version number of the current:
-									$subVer = $row['t3ver_id'].'.'.($highestVerNumber+1);
-
-										// Set up the values to override when making a raw-copy:
-									$overrideArray = array(
-										't3ver_id' => $highestVerNumber+1,
-										't3ver_oid' => $id,
-										't3ver_label' => ($label ? $label : $subVer.' / '.date('d-m-Y H:m:s')),
-										't3ver_wsid' => $this->BE_USER->workspace,
-										't3ver_state' => $delete ? 2 : 0,
-										't3ver_count' => 0,
-										't3ver_stage' => 0,
-										't3ver_tstamp' => 0
-									);
-									if ($TCA[$table]['ctrl']['editlock'])	{
-										$overrideArray[$TCA[$table]['ctrl']['editlock']] = 0;
-									}
-									if ($table==='pages')	{
-										$overrideArray['t3ver_swapmode'] = $versionizeTree;
-									}
 
 										// Create raw-copy and return result:
 									return $this->copyRecord_raw($table,$id,-1,$overrideArray);
-
 								} else $this->newlog('Record you wanted to versionize was already a version in the workspace (wsid='.$this->BE_USER->workspace.')!',1);
 							} else $this->newlog('Record cannot be deleted: '.$this->cannotDeleteRecord($table,$id),1);
 						} else $this->newlog('Record you wanted to versionize was already a version in archive (pid=-1)!',1);
@@ -3490,6 +3490,11 @@ class t3lib_TCEmain	{
 											$swapVersion[$fN] = $curVersion[$fN];
 											$curVersion[$fN] = $tmp;
 										}
+										
+											// Preserve states:
+										$t3ver_state = array();
+										$t3ver_state['swapVersion'] = $swapVersion['t3ver_state'];
+										$t3ver_state['curVersion'] = $curVersion['t3ver_state'];
 
 											// Modify offline version to become online:
 										$tmp_wsid = $swapVersion['t3ver_wsid'];
@@ -3530,7 +3535,7 @@ class t3lib_TCEmain	{
 										if (!count($sqlErrors))	{
 
 												// Checking for delete:
-											if ($swapVersion['t3ver_state']==2)	{
+											if ($t3ver_state['swapVersion']==2)	{
 												$this->deleteEl($table,$id,TRUE);	// Force delete
 											}
 
@@ -3567,7 +3572,7 @@ class t3lib_TCEmain	{
 											$this->clear_cache($table,$id);
 
 												// Checking for "new-placeholder" and if found, delete it (BUT FIRST after swapping!):
-											if ($curVersion['t3ver_state']==1)	{
+											if ($t3ver_state['curVersion']==1)	{
 												$this->deleteEl($table, $swapWith, TRUE, TRUE); 	// For delete + completely delete!
 											}
 										} else $this->newlog('During Swapping: SQL errors happend: '.implode('; ',$sqlErrors),2);
@@ -3598,9 +3603,10 @@ class t3lib_TCEmain	{
 				$sArray['t3ver_wsid'] = 0;
 				$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table,'uid='.intval($id),$sArray);
 
-					// Clear workspace ID for live version as well because it is a new record!
+					// Clear workspace ID for live version AND DELETE IT as well because it is a new record!
 				if ((int)$liveRec['t3ver_state']===1)	{
 					$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table,'uid='.intval($liveRec['uid']),$sArray);
+					$this->deleteEl($table, $liveRec['uid'], TRUE);	// THIS assumes that the record was placeholder ONLY for ONE record (namely $id)
 				}
 
 					// If "deleted" flag is set for the version that got released it doesn't make sense to keep that "placeholder" anymore and we delete it completly.
