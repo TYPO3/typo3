@@ -84,7 +84,7 @@ HTMLArea.prototype._initEditMode = function () {
  * Get the current selection object
  */
 HTMLArea.prototype._getSelection = function() {
-	if(HTMLArea.is_safari) return window.getSelection();
+	if (HTMLArea.is_safari) return window.getSelection();
 	return this._iframe.contentWindow.getSelection();
 };
 
@@ -123,13 +123,12 @@ HTMLArea.prototype._createRange = function(sel) {
  */
 HTMLArea.prototype.selectNode = function(node,pos) {
 	this.focusEditor();
-	this.forceRedraw();
 	var sel = this._getSelection();
 	var range = this._doc.createRange();
-	if(node.nodeType == 1 && node.tagName.toLowerCase() == "body") range.selectNodeContents(node);
+	if (node.nodeType == 1 && node.tagName.toLowerCase() == "body") range.selectNodeContents(node);
 		else range.selectNode(node);
 	if ((typeof(pos) != "undefined")) range.collapse(pos);
-	if(HTMLArea.is_safari) {
+	if (HTMLArea.is_safari) {
 		sel.empty();
 		sel.setBaseAndExtent(range.startContainer,range.startOffset,range.endContainer,range.endOffset);
 	} else {
@@ -143,7 +142,6 @@ HTMLArea.prototype.selectNode = function(node,pos) {
  */
 HTMLArea.prototype.selectNodeContents = function(node,pos) {
 	this.focusEditor();
-	this.forceRedraw();
 	var sel = this._getSelection();
 	var range = this._doc.createRange();
 	range.selectNodeContents(node);
@@ -317,10 +315,9 @@ HTMLArea.statusBarHandler = function (ev) {
 	editor.updateToolbar(true);
 	switch (ev.type) {
 		case "click" :
+		case "mousedown" :
 			HTMLArea._stopEvent(ev);
 			return false;
-		case "mousedown" :
-			if (!HTMLArea.is_opera || ev.button < 2) return false;
 		case "contextmenu" :
 			return editor.plugins["ContextMenu"] ? editor.plugins["ContextMenu"].instance.popupMenu(ev,target.el) : false;
 	}

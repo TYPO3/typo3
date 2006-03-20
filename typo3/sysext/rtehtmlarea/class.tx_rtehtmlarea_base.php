@@ -769,6 +769,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 		if($this->thisConfig['disableContextMenu'] || $this->thisConfig['disableRightClick']) $hidePlugins[] = 'ContextMenu';
 		if($this->thisConfig['disableSelectColor']) $hidePlugins[] = 'SelectColor';
 		if($this->thisConfig['disableTYPO3Browsers']) $hidePlugins[] = 'TYPO3Browsers';
+		if(!$this->thisConfig['enableWordClean'] || !is_array($this->thisConfig['enableWordClean.'])) $hidePlugins[] = 'TYPO3HtmlParser';
 		if(!t3lib_extMgm::isLoaded('sr_static_info') || in_array($this->language, t3lib_div::trimExplode(',', $TYPO3_CONF_VARS['EXTCONF'][$this->ID]['noSpellCheckLanguages']))) $hidePlugins[] = 'SpellChecker';
 		
 		$this->pluginEnableArray = array_diff($this->pluginEnableArray, $hidePlugins);

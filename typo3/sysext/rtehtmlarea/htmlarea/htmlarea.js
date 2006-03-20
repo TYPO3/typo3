@@ -295,31 +295,7 @@ HTMLArea.Config = function () {
 		// URL-s
 	this.imgURL = "images/";
 	this.popupURL = "popups/";
-/* TYPO3 will provide its own defaults for the following objects	
-		// Default toolbar
-	this.toolbar = [
-		[ "FontName", "space", "FontSize", "space", "FormatBlock", "space", "Bold", "Italic", "Underline", "StrikeThrough", "separator",
-		  "Subscript", "Superscript", "separator", "Copy", "Cut", "Paste", "space", "Undo", "Redo" ],
-		[ "JustifyLeft", "JustifyCenter", "JustifyRight", "JustifyFull", "separator", "LeftToRight", "RightToLeft", "separator",
-		  "InsertOrderedList", "InsertUnorderedList", "Outdent", "Indent", "separator", "ForeColor", "HiliteColor", "separator",
-		  "InsertHorizontalRule", "CreateLink", "InsertImage", "InsertTable", "HtmlMode", "separator", "ShowHelp", "About" ]
-	];
-		// Default fonts
-	this.FontName = {
-		"Arial":		'arial,helvetica,sans-serif',
-		"Courier New":		'courier new,courier,monospace',
-		"Georgia":		'georgia,times new roman,times,serif',
-		"Tahoma":		'tahoma,arial,helvetica,sans-serif',
-		"Times New Roman":	'times new roman,times,serif',
-		"Verdana":		'verdana,arial,helvetica,sans-serif',
-		"impact":		'impact',
-		"WingDings":		'wingdings'
-	};
-		// Default font sizes
-	this.FontSize = { "1 (8 pt)":  "1", "2 (10 pt)": "2", "3 (12 pt)": "3", "4 (14 pt)": "4", "5 (18 pt)": "5", "6 (24 pt)": "6", "7 (36 pt)": "7" };
-		// Default block elements
-	this.FormatBlock = {"Heading 1": "h1", "Heading 2": "h2", "Heading 3": "h3", "Heading 4": "h4", "Heading 5": "h5", "Heading 6": "h6", "Normal": "p", "Address": "address", "Formatted": "pre" };
-*/
+
 	this.btnList = {
 		Bold:			["Bold", "ed_format_bold", false, function(editor) {editor.execCommand("Bold");}],
 		Italic:			["Italic", "ed_format_italic", false, function(editor) {editor.execCommand("Italic");}],
@@ -345,7 +321,6 @@ HTMLArea.Config = function () {
 		SelectAll:		["SelectAll", "", true, function(editor) {editor.execCommand("SelectAll");}, null, true, false],
 		SplitBlock:		["Toggle Container Block", "ed_splitblock.gif", false, function(editor) {editor.execCommand("SplitBlock");}],
 		About:			["About this editor", "ed_about.gif", true, function(editor) {editor.execCommand("About");}],
-		ShowHelp:		["Help using editor", "ed_help.gif", true, function(editor) {editor.execCommand("ShowHelp");}],
 		Undo:			["Undoes your last action", "ed_undo.gif", false, function(editor) {editor.execCommand("Undo");}],
 		Redo:			["Redoes your last action", "ed_redo.gif", false, function(editor) {editor.execCommand("Redo");}],
 		Cut:			["Cut selection", "ed_cut.gif", false, function(editor,command,obj) {editor.execCommand("Cut");}],
@@ -928,13 +903,16 @@ HTMLArea.prototype.sizeIframe = function(diff) {
 	}
 	this._iframe.style.height = height;
 	this._textArea.style.height = textareaHeight;
-	var textareaWidth = (this.config.width == "auto" ? (this._textArea.style.width) : this.config.width);
+	var textareaWidth = (this.config.width == "auto" ? this._textArea.style.width : this.config.width);
+	var iframeWidth = textareaWidth;
 	if(textareaWidth.indexOf("%") == -1) {
+		iframeWidth = parseInt(textareaWidth) + "px";
 		textareaWidth = parseInt(textareaWidth) - diff;
 		if (textareaWidth < 0) textareaWidth = 0;
 		textareaWidth += "px";
 	}
 	this._iframe.style.width = "100%";
+	if (HTMLArea.is_opera) this._iframe.style.width = iframeWidth;
 	this._textArea.style.width = textareaWidth;
 };
 
@@ -1549,10 +1527,11 @@ HTMLArea.prototype.updateToolbar = function(noStatus) {
 				if (!HTMLArea.is_opera) {
 					HTMLArea._addEvents(a, ["click", "contextmenu"], HTMLArea.statusBarHandler);
 				} else {
-					HTMLArea._addEvents(a, ["click", "mousedown"], HTMLArea.statusBarHandler);
+					HTMLArea._addEvents(a, ["mousedown", "click"], HTMLArea.statusBarHandler);
 				}
 				txt = el.tagName.toLowerCase();
 				if (!HTMLArea.is_opera) a.title = el.style.cssText;
+				a.title = el.style.cssText;
 				if (el.id) { txt += "#" + el.id; }
 				if (el.className) {
 					txtClass = "";
@@ -1910,11 +1889,16 @@ HTMLArea.insertImageDialog = function(editor,image) {
 			var sel = editor._getSelection();
 			var range = editor._createRange(sel);
 			editor._doc.execCommand("InsertImage",false,param.f_url);
-			if(HTMLArea.is_ie) {
+			if (HTMLArea.is_ie) {
 				img = range.parentElement();
 				if(img.tagName.toLowerCase() != "img") img = img.previousSibling;
 			} else {
-				img = range.startContainer.previousSibling;
+				var sel = editor._getSelection();
+				var range = editor._createRange(sel);
+				img = range.startContainer;
+				if (HTMLArea.is_opera) img = img.parentNode;
+				img = img.lastChild;
+				while(img && img.nodeName.toLowerCase() != "img") img = img.previousSibling;
 			}
 		} else {
 			img.src = param.f_url;
@@ -1924,11 +1908,40 @@ HTMLArea.insertImageDialog = function(editor,image) {
 			var value = param[field];
 			switch (field) {
 				case "f_alt"    : img.alt = value; break;
-				case "f_border" : img.border = parseInt(value || "0"); break;
-				case "f_align"  : img.align = value; break;
-				case "f_vert"   : img.vspace = parseInt(value || "0"); break;
-				case "f_horiz"  : img.hspace = parseInt(value || "0"); break;
-				case "f_float"  : if (HTMLArea.is_ie) { img.style.styleFloat = value; }  else { img.style.cssFloat = value;}; break; 
+				case "f_border" :
+					if (parseInt(value)) {
+						img.style.borderWidth = parseInt(value)+"px";
+						img.style.borderStyle = "solid";
+					} else {
+						img.style.borderWidth = "";
+						img.style.borderStyle = "none";
+					}
+					break;
+				case "f_align"  :
+					img.style.verticalAlign = value;
+					break;
+				case "f_vert"   :
+					if (parseInt(value)) {
+						img.style.marginTop = parseInt(value)+"px";
+						img.style.marginBottom = parseInt(value)+"px";
+					} else {
+						img.style.marginTop = "";
+						img.style.marginBottom = "";
+					}
+					break;
+				case "f_horiz"  :
+					if (parseInt(value)) {
+						img.style.marginLeft = parseInt(value)+"px";
+						img.style.marginRight = parseInt(value)+"px";
+					} else {
+						img.style.marginLeft = "";
+						img.style.marginRight = "";
+					}
+					break;
+				case "f_float"  :
+					if (HTMLArea.is_ie) img.style.styleFloat = value;
+						else img.style.cssFloat = value;
+					break; 
 			}
 		}
 		editor = null;
@@ -1949,12 +1962,12 @@ HTMLArea.prototype._insertImage = function(image) {
 	}
 	if(image) outparam = {
 		f_base		: this.config.baseURL,
-		f_url		: HTMLArea.is_ie ? this.stripBaseURL(image.src) : image.getAttribute("src"),
+		f_url		: image.getAttribute("src"),
 		f_alt		: image.alt,
-		f_border	: image.border,
-		f_align 	: image.align,
-		f_vert		: image.vspace,
-		f_horiz 	: image.hspace,
+		f_border	: isNaN(parseInt(image.style.borderWidth))?"":parseInt(image.style.borderWidth),
+		f_align 	: image.style.verticalAlign,
+		f_vert		: isNaN(parseInt(image.style.marginTop))?"":parseInt(image.style.marginTop),
+		f_horiz 	: isNaN(parseInt(image.style.marginLeft))?"":parseInt(image.style.marginLeft),
  		f_float 	: HTMLArea.is_ie ? image.style.styleFloat : image.style.cssFloat
 	};
 	var insertImageDialogFunctRef = HTMLArea.insertImageDialog(this, image);
@@ -2061,7 +2074,6 @@ HTMLArea.prototype.execCommand = function(cmdID, UI, param) {
 	    case "InsertTable"	: this._insertTable(); break;
 	    case "InsertImage"	: this._insertImage(); break;
 	    case "About"	: this._popupDialog("about.html", null, this, 475, 350); break;
-	    case "ShowHelp"	: window.open(_editor_url + "reference.html","ha_help"); break;
 	    case "CleanWord"	: HTMLArea._wordClean(this, this._doc.body); break;
 	    case "Cut"		:
 	    case "Copy"		:
@@ -2691,7 +2703,8 @@ HTMLArea._colorToRgb = function(v) {
 /** Use XML HTTPRequest to post some data back to the server and do something
  * with the response (asyncronously!), this is used by such things as the spellchecker update personal dict function
  */
-HTMLArea._postback = function(url, data, handler, addParams) {
+HTMLArea._postback = function(url, data, handler, addParams, charset) {
+	if (typeof(charset) == "undefined") var charset = "UTF-8";
 	var req = null;
 	if (window.XMLHttpRequest) req = new XMLHttpRequest();
 		else if (window.ActiveXObject) {
@@ -2725,7 +2738,7 @@ HTMLArea._postback = function(url, data, handler, addParams) {
 		}
 		
 		req.open('POST', _typo3_host_url + _editor_url + url, true);
-		req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+		req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=' + charset);
 		window.setTimeout(sendRequest, 500);
 	}
 };

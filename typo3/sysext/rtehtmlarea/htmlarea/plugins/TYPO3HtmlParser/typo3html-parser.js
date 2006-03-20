@@ -51,7 +51,7 @@ HTMLArea._wordClean = function(editor, body) {
 	var url = '../../../..' + rtePathParseHtmlFile;
 	var addParams = conf_RTEtsConfigParams;
 	HTMLArea._postback(url, {'editorNo' : editor._editorNumber, 'content' : body.innerHTML },
-		function(javascriptResponse) { eval(javascriptResponse) }, addParams);
+		function(javascriptResponse) { eval(decodeURIComponent(javascriptResponse)) }, addParams, RTEarea[editor._editorNumber]["typo3ContentCharset"]);
 	return true;
 };
 

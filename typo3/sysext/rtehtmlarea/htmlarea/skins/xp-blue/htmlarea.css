@@ -112,7 +112,7 @@
 .htmlarea .toolbar .Undo {background-image:url("images/ed_undo.gif");}
 .htmlarea .toolbar .Redo {background-image:url("images/ed_redo.gif");}
 .htmlarea .toolbar .About {background-image:url("images/ed_about.gif");}
-.htmlarea .toolbar .ShowHelp {background-image:url("images/ed_help.gif");}
+.htmlarea .toolbar .ShowHelp { background-image:url("images/TYPO3ViewHelp/module_help.gif");}
 .htmlarea .toolbar .TO-toggle-borders, .htmlarea-context-menu .TO-toggle-borders {background-image:url("images/TableOperations/toggle-borders.gif");}
 .htmlarea .toolbar .TO-table-prop, .htmlarea-context-menu .TO-table-prop  {background-image:url("images/TableOperations/table-prop.gif");}
 .htmlarea .toolbar .TO-row-prop, .htmlarea-context-menu .TO-row-prop {background-image:url("images/TableOperations/row-prop.gif");}

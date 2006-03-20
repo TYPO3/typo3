@@ -915,7 +915,7 @@ TableOperations.buildRowGroupFieldset = function(w,doc,editor,el,i18n,content) {
 	TableOperations.insertLegend(doc, i18n, fieldset, "Row group");
 	TableOperations.insertSpace(doc, fieldset);
 	selected = el.parentNode.tagName.toLowerCase();
-	var selectScope = TableOperations.buildSelectField(doc, el, i18n, fieldset, "f_rowgroup", "Row group:", "", "", "Table section", ["Table body", "Table header", "Table footer"], ["tbody", "thead", "tfoot"], new RegExp((selected ? selected : "tbody"), "i"));
+	var selectScope = TableOperations.buildSelectField(doc, el, i18n, fieldset, "f_rowgroup", "Row group:", "fr", "", "Table section", ["Table body", "Table header", "Table footer"], ["tbody", "thead", "tfoot"], new RegExp((selected ? selected : "tbody"), "i"));
 	TableOperations.insertSpace(doc, fieldset);
 	content.appendChild(fieldset);
 };
@@ -923,11 +923,11 @@ TableOperations.buildCellTypeFieldset = function(w,doc,editor,el,i18n,content) {
 	var fieldset = doc.createElement("fieldset");
 	TableOperations.insertLegend(doc, i18n, fieldset, "Cell Type and Scope");
 	TableOperations.insertSpace(doc, fieldset);
-	var selectType = TableOperations.buildSelectField(doc, el, i18n, fieldset, "f_cell_type", "Type of cell", "", "", "Specifies the type of cell", ["Normal", "Header"], ["td", "th"], new RegExp(el.tagName.toLowerCase(), "i"));
+	var selectType = TableOperations.buildSelectField(doc, el, i18n, fieldset, "f_cell_type", "Type of cell", "fr", "", "Specifies the type of cell", ["Normal", "Header"], ["td", "th"], new RegExp(el.tagName.toLowerCase(), "i"));
 	selectType.onchange = function() { TableOperations.setStyleOptions(doc, editor, el, i18n, this); };
 	selected = el.scope.toLowerCase();
 	(selected.match(/([^\s]*)\s/)) && (selected = RegExp.$1);
-	var selectScope = TableOperations.buildSelectField(doc, el, i18n, fieldset, "f_scope", "Scope", "", "", "Scope of header cell", ["Not set", "scope_row", "scope_column", "scope_rowgroup"], ["not set", "row", "col", "rowgroup"], new RegExp((selected ? selected : "not set"), "i"));
+	var selectScope = TableOperations.buildSelectField(doc, el, i18n, fieldset, "f_scope", "Scope", "fr", "", "Scope of header cell", ["Not set", "scope_row", "scope_column", "scope_rowgroup"], ["not set", "row", "col", "rowgroup"], new RegExp((selected ? selected : "not set"), "i"));
 	TableOperations.insertSpace(doc, fieldset);
 	content.appendChild(fieldset);
 };
