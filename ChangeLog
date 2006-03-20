@@ -1,3 +1,8 @@
+
+2006-03-19  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+
+	* Fix a few language/locale codes in t3lib_cs.php
+
 2006-03-20  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
 	* htmlArea RTE: remove alternate skins from core CVS.
@@ -15,6 +20,11 @@
 2006-03-19  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
 	* Corrections/adjustments to the htmlArea RTE extension (see details in local ChangeLog)
+
+2006-03-19  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+
+	* Created exclusiveKeys for the TCA field configuration of type "select"
+	* Configured fields fe_groups of "pages" and "tt_content" to use exclusiveKeys for "Hide at login" and "Show at any login"
 
 2006-03-18  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 

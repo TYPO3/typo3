@@ -256,10 +256,12 @@ class t3lib_cs {
 		'de' => 'west_european',
 		'es' => 'west_european',
 		'et' => 'estonian',
+		'eo' => 'unicode',
 		'eu' => 'west_european',
 		'fi' => 'west_european',
 		'fr' => 'west_european',
 		'gr' => 'greek',
+		'hi' => 'unicode',
 		'hr' => 'east_european',
 		'hu' => 'east_european',
 		'iw' => 'hebrew',
@@ -278,6 +280,7 @@ class t3lib_cs {
 		'ru' => 'cyrillic',
 		'sk' => 'east_european',
 		'sl' => 'east_european',
+		'sr' => 'cyrillic',
 		'sv' => 'west_european',
 		'th' => 'thai',
 		'uk' => 'cyrillic',
@@ -330,6 +333,7 @@ class t3lib_cs {
 		'danish' => 'west_european',
 		'dutch' => 'west_european',
 		'english' => 'west_european',
+		'esperanto' => 'unicode',
 		'finnish' => 'west_european',
 		'french' => 'west_european',
 		'galician' => 'west_european',
@@ -371,6 +375,7 @@ class t3lib_cs {
 		'simpl_chinese' => 'gb2312',
 		'trad_chinese' => 'big5',
 		'vietnamese' => '',
+		'unicode' => 'utf-8',
 	);
 
 		// mapping of language (family) names to charsets on Windows
@@ -399,6 +404,7 @@ class t3lib_cs {
 		'japanese.euc' => 'euc-jp',
 		'ja_jp.ujis' => 'euc-jp',
 		'korean.euc' => 'euc-kr',
+		'sr@Latn' => 'iso-8859-2',
 		'zh_cn' => 'gb2312',
 		'zh_hk' => 'big5',
 		'zh_tw' => 'big5',
@@ -458,44 +464,18 @@ class t3lib_cs {
 		// Empty values means sames as Typo3
 	var $isoArray = array(
 		'dk' => 'da',
-		'de' => '',
-		'no' => '',
-		'it' => '',
-		'fr' => '',
-		'es' => '',
-		'nl' => '',
 		'cz' => 'cs',
-		'pl' => '',
 		'si' => 'sl',
-		'fi' => '',
-		'tr' => '',
 		'se' => 'sv',
-		'pt' => '',
-		'ru' => '',
-		'ro' => '',
 		'ch' => 'zh_CN',
-		'sk' => '',
-		'lt' => '',
-		'is' => '',
-		'hr' => '',
-		'hu' => '',
-		'gl' => '', // Greenlandic
-		'th' => '',
 		'gr' => 'el',
 		'hk' => 'zh_HK',
-		'eu' => '',
-		'bg' => '',
 		'br' => 'pt_BR',
-		'et' => '',
-		'ar' => '',
 		'he' => 'iw',
 		'ua' => 'uk',
 		'jp' => 'ja',
-		'lv' => '',
 		'vn' => 'vi',
-		'ca' => '',
-		'ba' => '', // Bosnian
-		'kr' => '',
+		'ba' => 'sh', // mapping TYPO3 "Bosnian" to ISO "Serbo-Croatian"
 	);
 
 	/**
@@ -545,12 +525,12 @@ class t3lib_cs {
 		if (isset($this->lang_to_langfamily[$language]))	$language = $this->lang_to_langfamily[$language];
 
 		if (TYPO3_OS == 'WIN')	{
-			$cs = $this->lang_to_charset_windows[$language];
+			$cs = $this->lang_to_charset_windows[$language] ? $this->lang_to_charset_windows[$language] : 'window-1252';
 		} else {
-			$cs = $this->lang_to_charset_unix[$language];
+			$cs = $this->lang_to_charset_unix[$language] ? $this->lang_to_charset_unix[$language] : 'iso-8859-1';
 		}
 
-		return $cs ? $cs : 'iso-8859-1';
+		return $cs;
 	}
 
 
