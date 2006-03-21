@@ -3145,14 +3145,16 @@ class t3lib_BEfunc	{
 	 * Find page-tree PID for versionized record
 	 * Will look if the "pid" value of the input record is -1 and if the table supports versioning - if so, it will translate the -1 PID into the PID of the original record
 	 * Used whenever you are tracking something back, like making the root line.
+	 * Will only translate if the workspace of the input record matches that of the current user (unless flag set)
 	 * Principle; Record offline! => Find online?
 	 *
 	 * @param	string		Table name
 	 * @param	array		Record array passed by reference. As minimum, "pid" and "uid" fields must exist! "t3ver_oid" and "t3ver_wsid" is nice and will save you a DB query.
+	 * @param	boolean		Ignore workspace match
 	 * @return	void		(Passed by ref). If the record had its pid corrected to the online versions pid, then "_ORIG_pid" is set to the original pid value (-1 of course). The field "_ORIG_pid" is used by various other functions to detect if a record was in fact in a versionized branch.
 	 * @see t3lib_page::fixVersioningPid()
 	 */
-	function fixVersioningPid($table,&$rr)	{
+	function fixVersioningPid($table,&$rr,$ignoreWorkspaceMatch=FALSE)	{
 		global $TCA;
 
 			// Check that the input record is an offline version from a table that supports versioning:
@@ -3171,7 +3173,7 @@ class t3lib_BEfunc	{
 			}
 
 				// If ID of current online version is found, look up the PID value of that:
-			if ($oid && !strcmp((int)$wsid,$GLOBALS['BE_USER']->workspace))	{
+			if ($oid && ($ignoreWorkspaceMatch || !strcmp((int)$wsid,$GLOBALS['BE_USER']->workspace)))	{
 				$oidRec = t3lib_BEfunc::getRecord($table,$oid,'pid');
 				if (is_array($oidRec))	{
 					$rr['_ORIG_pid'] = $rr['pid'];

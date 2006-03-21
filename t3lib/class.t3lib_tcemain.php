@@ -3458,7 +3458,6 @@ class t3lib_TCEmain	{
 				if ($this->BE_USER->workspacePublishAccess($swapVersion['t3ver_wsid']))	{
 					$wsAccess = $this->BE_USER->checkWorkspace($swapVersion['t3ver_wsid']);
 					if ($swapVersion['t3ver_wsid']<=0 || !($wsAccess['publish_access']&1) || (int)$swapVersion['t3ver_stage']===10)	{
-
 						if ($this->doesRecordExist($table,$swapWith,'show') && $this->checkRecordUpdateAccess($table,$swapWith)) {
 							if (!$swapIntoWS || $this->BE_USER->workspaceSwapAccess())	{
 
@@ -4002,7 +4001,7 @@ $this->log($table,$id,6,0,0,'Stage raised...',30,array('comment'=>$comment,'stag
 					// Find record without checking page:
 				$mres = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,pid', $table, 'uid='.intval($id).$this->deleteClause($table));	// THIS SHOULD CHECK FOR editlock I think!
 				$output = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($mres);
-				t3lib_BEfunc::fixVersioningPid($table,$output);
+				t3lib_BEfunc::fixVersioningPid($table,$output,TRUE);
 
 					// If record found, check page as well:
 				if (is_array($output))	{
@@ -4010,7 +4009,6 @@ $this->log($table,$id,6,0,0,'Stage raised...',30,array('comment'=>$comment,'stag
 						// Looking up the page for record:
 					$mres = $this->doesRecordExist_pageLookUp($output['pid'], $perms);
 					$pageRec = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($mres);
-
 						// Return true if either a page was found OR if the PID is zero AND the user is ADMIN (in which case the record is at root-level):
 					if (is_array($pageRec) || (!$output['pid'] && $this->admin))	{
 						return TRUE;
