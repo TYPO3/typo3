@@ -2347,7 +2347,7 @@ class t3lib_div {
 	}
 
 	/**
-	 * Writes $content to a filename in the typo3temp/ folder (and possibly a subfolder...)
+	 * Writes $content to a filename in the typo3temp/ folder (and possibly one or two subfolders...)
 	 * Accepts an additional subdirectory in the file path!
 	 *
 	 * @param	string		Absolute filepath to write to inside "typo3temp/". First part of this string must match PATH_site."typo3temp/"
@@ -2370,12 +2370,12 @@ class t3lib_div {
 							// Checking if the "subdir" is found:
 						$subdir = substr($fI['dirname'],strlen($dirName));
 						if ($subdir)	{
-							if (ereg('^[[:alnum:]_]+\/$',$subdir))	{
+							if (ereg('^[[:alnum:]_]+\/$',$subdir) || ereg('^[[:alnum:]_]+\/[[:alnum:]_]+\/$',$subdir))	{
 								$dirName.= $subdir;
 								if (!@is_dir($dirName))	{
-									t3lib_div::mkdir($dirName);
+									t3lib_div::mkdir_deep(PATH_site.'typo3temp/', $subdir);
 								}
-							} else return 'Subdir, "'.$subdir.'", was NOT on the form "[a-z]/"';
+							} else return 'Subdir, "'.$subdir.'", was NOT on the form "[[:alnum:]_]/" or  "[[:alnum:]_]/[[:alnum:]_]/"';
 						}
 							// Checking dir-name again (sub-dir might have been created):
 						if (@is_dir($dirName))	{

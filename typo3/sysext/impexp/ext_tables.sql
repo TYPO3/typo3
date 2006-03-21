@@ -5,7 +5,7 @@
 
 
 #
-# Table structure for table 'index_fulltext'
+# Table structure for table 'tx_impexp_presets'
 #
 CREATE TABLE tx_impexp_presets (
   uid int(11) NOT NULL auto_increment,

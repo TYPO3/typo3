@@ -1584,7 +1584,9 @@
 			);
 		$GLOBALS['TT']->pull();
 
-		$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
+		if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
+			$this->pageCachePostProcess($row,'get');
+		}
 		$GLOBALS['TYPO3_DB']->sql_free_result($res);
 		return $row;
 	}
@@ -2360,6 +2362,8 @@
 		if ($this->page_cache_reg1)	{
 			$insertFields['reg1'] = intval($this->page_cache_reg1);
 		}
+		$this->pageCachePostProcess($insertFields,'set');
+
 		$GLOBALS['TYPO3_DB']->exec_INSERTquery('cache_pages', $insertFields);
 	}
 
@@ -2380,6 +2384,22 @@
 	 */
 	function clearPageCacheContent_pidList($pidList)	{
 		$GLOBALS['TYPO3_DB']->exec_DELETEquery('cache_pages', 'page_id IN ('.$GLOBALS['TYPO3_DB']->cleanIntList($pidList).')');
+	}
+	
+	function pageCachePostProcess(&$row,$type)	{
+
+		if ($this->TYPO3_CONF_VARS['FE']['pageCacheToExternalFiles'])	{
+			$cacheFileName = PATH_site.'typo3temp/cache_pages/'.$row['hash']{0}.$row['hash']{1}.'/'.$row['hash'].'.html';
+			switch((string)$type)	{
+				case 'get':
+					$row['HTML'] = @is_file($cacheFileName) ? t3lib_div::getUrl($cacheFileName) : '<!-- CACHING ERROR, sorry -->';
+				break;
+				case 'set':
+					t3lib_div::writeFileToTypo3tempDir($cacheFileName,$row['HTML']);
+					$row['HTML'] = '';
+				break;
+			}
+		}
 	}
 
 	/**

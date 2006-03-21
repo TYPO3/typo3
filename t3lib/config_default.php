@@ -79,7 +79,7 @@ $TYPO3_CONF_VARS = Array(
 		't3lib_cs_utils' => '',					// String (values: "iconv" - PHP 5.0 only!, "mbstring", default is homemade PHP-code). Defines which of these PHP-features to use for various Charset processing functions in t3lib_cs. Will speed up charset functions radically.
 		'no_pconnect' => 0,						// Boolean: If true, "connect" is used instead of "pconnect" when connecting to the database!
 		'multiplyDBfieldSize' => 1,				// Double: 1-5: Amount used to multiply the DB field size when the install tool is evaluating the database size (eg. "2.5"). This is useful if you want to expand the size of fields for utf-8 etc. For western european sites using utf-8 the need should not be for more than twice the normal single-byte size (2) and for chinese / asian languages 3 should suffice.
-		'setDBinit' => '',					// String (textarea): Commands to send to database right after connecting, separated by newline. Ignored by the DBAL extension except for the 'native' type!
+		'setDBinit' => '',					// String (textarea): Commands to send to database right after connecting, separated by newline. Ignored by the DBAL extension!
 		'setMemoryLimit' => 0,					// Integer, memory_limit in MB: If more than 16, TYPO3 will try to use ini_set() to set the memory limit of PHP to the value. This works only if the function ini_set() is not disabled by your sysadmin.
 		'forceReturnPath' => 0,					// Boolean: Force return path to be applied in mail() calls. If this is set, all calls to mail() done by t3lib_htmlmail will be called with '-f<return_path> as the 5th parameter. This will make the return path correct on almost all Unix systems. There is a known problem with Postfix below version 2: Mails are not sent if this option is set and Postfix is used. On Windows platforms, the return path is set via a call to ini_set. This has no effect if safe_mode in PHP is on.
 		'displayErrors' => -1,					// Integer, -1,0,1,2. 0=Do not display any PHP error messages. 1=Display error messages. 2=Display only if client matches TYPO3_CONF_VARS[SYS][devIPmask]. -1=Default setting. With this option, you can override the PHP setting "display_errors". It is suggested that you set this to "0" and enable the "error_log" option in php.ini instead.
@@ -92,7 +92,7 @@ $TYPO3_CONF_VARS = Array(
 		'noEdit' => 1,							// Boolean: If set, the Extension Manager does NOT allow extension files to be edited! (Otherwise both local and global extensions can be edited.)
 		'allowGlobalInstall' => 0,				// Boolean: If set, global extensions in typo3/ext/ are allowed to be installed, updated and deleted etc.
 		'allowLocalInstall' => 1,				// Boolean: If set, local extensions in typo3conf/ext/ are allowed to be installed, updated and deleted etc.
-		'allowSystemInstall' => 0,				// If set, you can install extensions in the sysext/ dir. Use this to upgrade the 'cms' and 'lang' extensions.
+		'em_systemInstall' => 0,				// If set, you can install extensions in the sysext/ dir. Use this to upgrade the 'cms' and 'lang' extensions.
 		'em_wsdlURL' => 'http://typo3.org/wsdl/tx_ter_wsdl.php',				// The SOAP URL for uploading extensions to the TER2. Usually doesn't need to be changed.
 		'em_mirrorListURL' => 'http://repositories.typo3.org/mirrors.xml.gz',				// Allows to preset the URL for fetching the extension repository mirror list from. Used in the Extension Manager.
 
@@ -212,6 +212,7 @@ $TYPO3_CONF_VARS = Array(
 		'hidePagesIfNotTranslatedByDefault' => FALSE,	// If TRUE, pages that has no translation will be hidden by default. Basically this will inverse the effect of the page localization setting "Hide page if no translation for current language exists" to "Show page even if no translation exists"
 		'eID_include' => array(),				// Array of key/value pairs where key is "tx_[ext]_[optional suffix]" and value is relative filename of class to include. Key is used as "?eID=" for index_ts.php to include the code file which renders the page from that point. (Useful for functionality that requires a low initialization footprint, eg. frontend ajax applications)
 		'XCLASS' => Array(),					// See 'Inside TYPO3' document for more information.
+		'pageCacheToExternalFiles' => TRUE		// If set, page cache entries will be stored in typo3temp/cache_pages/ab/ instead of the database. Still, "cache_pages" will be filled in database but the "HTML" field will be empty. When the cache is flushed the files in cache_pages/ab/ will not be flush - you will have to garbage clean manually once in a while.
 	),
 	'MODS' => Array(		// Backend Module Configuration (obsolete, make extension instead)
 	),
@@ -249,7 +250,6 @@ $T3_VAR = array();	// Initialize.
 $TYPO_VERSION = '4.0-CVS';
 define('TYPO3_version', $TYPO_VERSION);
 define('TYPO3_branch', '4.0');
-define('TYPO3_copyright_year', '1998-2006');
 
 // Database-variables are cleared!
 $typo_db = '';					// The database name

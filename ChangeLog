@@ -1,3 +1,9 @@
+2006-03-20  Kasper Skaarhoj  <kasperYYYY@typo3.com>
+
+	* Added function to indexed search so index_fulldata is filled with less content (configurable)
+	* Added function so that the HTML data of the cache_pages table can be stored in the file system (see TYPO3_CONF_VARS[FE][pageCacheToExternalFiles]
+	* Both changes are new features excused by optimization of TYPO3.org.
+
 2006-03-21  Karsten Dambekalns <karsten@typo3.org>
 
 	* EM: Moved some code around and added a method for installing an extension with one method call (for use in impexp)

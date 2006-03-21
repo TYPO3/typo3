@@ -175,7 +175,7 @@ class tx_indexedsearch_indexer {
 	var $externalFileCounter = 0;
 
 	var $conf = array();		// Configuration set internally (see init functions for required keys and their meaning)
-	var $indexerConfig = array();	// Indexer configuration
+	var $indexerConfig = array();	// Indexer configuration, coming from $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['indexed_search']
 	var $hash = array();		// Hash array, contains phash and phash_grouping
 	var $file_phash_arr = array();	// Hash array for files
 	var $contentParts = array();	// Content of TYPO3 page
@@ -1341,6 +1341,9 @@ class tx_indexedsearch_indexer {
 			'phash' => $this->hash['phash'],
 			'fulltextdata' => implode(' ', $this->contentParts)
 		);
+		if ($this->indexerConfig['fullTextDataLength']>0)	{
+			$fields['fulltextdata'] = substr($fields['fulltextdata'],0,$this->indexerConfig['fullTextDataLength']);
+		}
 		$GLOBALS['TYPO3_DB']->exec_INSERTquery('index_fulltext', $fields);
 
 			// PROCESSING index_debug
@@ -1489,6 +1492,9 @@ class tx_indexedsearch_indexer {
 			'phash' => $hash['phash'],
 			'fulltextdata' => implode(' ', $contentParts)
 		);
+		if ($this->indexerConfig['fullTextDataLength']>0)	{
+			$fields['fulltextdata'] = substr($fields['fulltextdata'],0,$this->indexerConfig['fullTextDataLength']);
+		}
 		$GLOBALS['TYPO3_DB']->exec_INSERTquery('index_fulltext', $fields);
 
 			// PROCESSING index_debug
