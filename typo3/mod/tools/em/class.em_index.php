@@ -3642,29 +3642,31 @@ $EM_CONF[$_EXTKEY] = '.$this->arrayToCode($EM_CONF, 0).';
 		}
 
 			// Check suggests on other extensions:
-		$suggestion = false;
-		$msg = array();
-		foreach($conf['constraints']['suggests'] as $suggestK => $suggestV)	{
-			if($depsolver['ignore'][$suggestK]) {
-				$msg[] = '<br />Suggestion of '.$suggestK.' acknowledged.
+		if(is_array($conf['constraints']['suggests'])) {
+			$suggestion = false;
+			$msg = array();
+			foreach($conf['constraints']['suggests'] as $suggestK => $suggestV)	{
+				if($depsolver['ignore'][$suggestK]) {
+					$msg[] = '<br />Suggestion of '.$suggestK.' acknowledged.
 				<input type="hidden" value="1" name="depsolver[ignore]['.$suggestK.']" />';
-				continue;
-			}
-			if (!t3lib_extMgm::isLoaded($suggestK))	{
-				if (!isset($instExtInfo[$suggestK]))	{
-					$msg[] = 'Extension "'.$suggestK.'" was not available in the system. You may want to import it from the TYPO3 Extension Repository.';
-					$msg[] = '&nbsp;&nbsp;&nbsp;&nbsp;<img src="'.$GLOBALS['BACK_PATH'].'gfx/import.gif" width="12" height="12" title="Import this extension to \'local\' dir typo3conf/ext/ from online repository." alt="" />&nbsp;<a href="index.php?CMD[importExt]='.$depK.'&CMD[loc]=L&CMD[standAlone]=1" target="_blank">Import now (opens a new window)</a>';
-					$msg[] = '&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" value="1" name="depsolver[ignore]['.$suggestK.']" /> Ignore this suggestion';
-				} else {
-					$msg[] = 'Extension "'.$suggestK.'" ('.$instExtInfo[$suggestK]['EM_CONF']['title'].') was not installed. You may want to install it.';
-					$msg[] = '&nbsp;&nbsp;&nbsp;&nbsp;'.$this->installButton().'&nbsp;<a href="'.htmlspecialchars('index.php?CMD[showExt]='.$suggestK.'&CMD[load]=1&CMD[clrCmd]=1&CMD[standAlone]=1&SET[singleDetails]=info').'" target="_blank">Install now (opens a new window)</a>';
-					$msg[] = '&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" value="1" name="depsolver[ignore]['.$suggestK.']" /> Ignore this suggestion';
+					continue;
 				}
-				$suggestion = true;
+				if (!t3lib_extMgm::isLoaded($suggestK))	{
+					if (!isset($instExtInfo[$suggestK]))	{
+						$msg[] = 'Extension "'.$suggestK.'" was not available in the system. You may want to import it from the TYPO3 Extension Repository.';
+						$msg[] = '&nbsp;&nbsp;&nbsp;&nbsp;<img src="'.$GLOBALS['BACK_PATH'].'gfx/import.gif" width="12" height="12" title="Import this extension to \'local\' dir typo3conf/ext/ from online repository." alt="" />&nbsp;<a href="index.php?CMD[importExt]='.$depK.'&CMD[loc]=L&CMD[standAlone]=1" target="_blank">Import now (opens a new window)</a>';
+						$msg[] = '&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" value="1" name="depsolver[ignore]['.$suggestK.']" /> Ignore this suggestion';
+					} else {
+						$msg[] = 'Extension "'.$suggestK.'" ('.$instExtInfo[$suggestK]['EM_CONF']['title'].') was not installed. You may want to install it.';
+						$msg[] = '&nbsp;&nbsp;&nbsp;&nbsp;'.$this->installButton().'&nbsp;<a href="'.htmlspecialchars('index.php?CMD[showExt]='.$suggestK.'&CMD[load]=1&CMD[clrCmd]=1&CMD[standAlone]=1&SET[singleDetails]=info').'" target="_blank">Install now (opens a new window)</a>';
+						$msg[] = '&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" value="1" name="depsolver[ignore]['.$suggestK.']" /> Ignore this suggestion';
+					}
+					$suggestion = true;
+				}
 			}
-		}
-		if($suggestion) {
+			if($suggestion) {
 				$content .= $this->doc->section('Extensions suggested by extension "'.$extKey.'"',implode('<br />',$msg),0,1,1);
+			}
 		}
 
 		if($depError || $conflictError || $suggestion) {
