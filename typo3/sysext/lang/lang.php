@@ -102,7 +102,7 @@ class language {
 	var $helpUrlArray = array(
 		'dk' => 'http://www.typo3.com/man_dk/',
 	);
-	
+
 	var $debugKey = FALSE;		// If true, will show the key/location of labels in the backend.
 
 
