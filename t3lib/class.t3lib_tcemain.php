@@ -1315,13 +1315,13 @@ class t3lib_TCEmain	{
 					);
 				break;
 				case 'db':
-					$valueArray = $this->checkValue_group_select_processDBdata($valueArray,$tcaFieldConf,$id,$status,'group',$PP);
+					$valueArray = $this->checkValue_group_select_processDBdata($valueArray,$tcaFieldConf,$id,$status,'group');
 				break;
 			}
 		}
 			// For select types which has a foreign table attached:
 		if ($tcaFieldConf['type']=='select' && $tcaFieldConf['foreign_table'])	{
-			$valueArray = $this->checkValue_group_select_processDBdata($valueArray,$tcaFieldConf,$id,$status,'select',$PP);
+			$valueArray = $this->checkValue_group_select_processDBdata($valueArray,$tcaFieldConf,$id,$status,'select');
 		}
 
 // BTW, checking for min and max items here does NOT make any sense when MM is used because the above function calls will just return an array with a single item (the count) if MM is used... Why didn't I perform the check before? Probably because we could not evaluate the validity of record uids etc... Hmm...
@@ -1832,35 +1832,25 @@ class t3lib_TCEmain	{
 	 * @param	integer		Record id, used for look-up of MM relations (local_uid)
 	 * @param	string		Status string ('update' or 'new')
 	 * @param	string		The type, either 'select' or 'group'
-	 * @param	array		Additional parameters in a numeric array: $table,$id,$curValue,$status,$realPid,$recFID
 	 * @return	array		Modified value array
 	 */
-	function checkValue_group_select_processDBdata($valueArray,$tcaFieldConf,$id,$status,$type,$PP)	{
-
-		list($table,$id,$curValue,$status,$realPid,$recFID) = $PP;
-
+	function checkValue_group_select_processDBdata($valueArray,$tcaFieldConf,$id,$status,$type)	{
 		$tables = $type=='group'?$tcaFieldConf['allowed']:$tcaFieldConf['foreign_table'].','.$tcaFieldConf['neg_foreign_table'];
 		$prep = $type=='group'?$tcaFieldConf['prepend_tname']:$tcaFieldConf['neg_foreign_table'];
 
 		$dbAnalysis = t3lib_div::makeInstance('t3lib_loadDBGroup');
 		$dbAnalysis->registerNonTableValues=$tcaFieldConf['allowNonIdValues'] ? 1 : 0;
+		$dbAnalysis->start(implode(',',$valueArray),$tables);
 
 		if ($tcaFieldConf['MM'])	{
-
-			$dbAnalysis->init($table, $tcaFieldConf);
-			$dbAnalysis->start(implode(',',$valueArray),$tables,$tcaFieldConf['MM']);
-
 			if ($status=='update')	{
 				$dbAnalysis->writeMM($tcaFieldConf['MM'],$id,$prep);
 			} else {
 				$this->dbAnalysisStore[] = array($dbAnalysis,$tcaFieldConf['MM'],$id,$prep);	// This will be traversed later to execute the actions
 			}
-
 			$cc=count($dbAnalysis->itemArray);
 			$valueArray = array($cc);
-
 		} else {
-			$dbAnalysis->start(implode(',',$valueArray),$tables);
 			$valueArray = $dbAnalysis->getValueArray($prep);
 			if ($type=='select' && $prep)	{
 				$valueArray = $dbAnalysis->convertPosNeg($valueArray,$tcaFieldConf['foreign_table'],$tcaFieldConf['neg_foreign_table']);
@@ -2588,7 +2578,6 @@ class t3lib_TCEmain	{
 			$prependName = $conf['type']=='group' ? $conf['prepend_tname'] : $conf['neg_foreign_table'];
 			if ($conf['MM'])	{
 				$dbAnalysis = t3lib_div::makeInstance('t3lib_loadDBGroup');
-				$dbAnalysis->init($table, $conf);
 				$dbAnalysis->start('',$allowedTables,$conf['MM'],$uid);
 				$value = implode(',',$dbAnalysis->getValueArray($prependName));
 			}
@@ -2697,7 +2686,6 @@ class t3lib_TCEmain	{
 
 				// Implode the new filelist into the new value (all files have absolute paths now which means they will get copied when entering TCEmain as new values...)
 			$value = implode(',',$newValue);
-
 		}
 
 			// Return the new value:
@@ -3489,7 +3477,7 @@ class t3lib_TCEmain	{
 											$swapVersion[$fN] = $curVersion[$fN];
 											$curVersion[$fN] = $tmp;
 										}
-										
+
 											// Preserve states:
 										$t3ver_state = array();
 										$t3ver_state['swapVersion'] = $swapVersion['t3ver_state'];
@@ -4947,7 +4935,7 @@ $this->log($table,$id,6,0,0,'Stage raised...',30,array('comment'=>$comment,'stag
 	 */
 	function removeCacheFiles()	{
 		return t3lib_extMgm::removeCacheFiles();
-			}
+	}
 
 	/**
 	 * Returns array, $CPtable, of pages under the $pid going down to $counter levels.
