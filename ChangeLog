@@ -1,3 +1,7 @@
+2006-03-21  Karsten Dambekalns <karsten@typo3.org>
+
+	* EM: Moved some code around and added a method for installing an extension with one method call (for use in impexp)
+
 2006-03-20  Kasper Skaarhoj  <kasperYYYY@typo3.com>
 
 	* Fixed more workspace issues:
