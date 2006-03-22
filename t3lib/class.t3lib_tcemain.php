@@ -3672,6 +3672,7 @@ $this->log($table,$id,6,0,0,'Stage raised...',30,array('comment'=>$comment,'stag
 				while(list($uid,$fields)=each($records))	{
 					$newData = array();
 					$theUidToUpdate = $this->copyMappingArray_merged[$table][$uid];
+					$theUidToUpdate_saveTo = t3lib_BEfunc::wsMapId($table,$theUidToUpdate);
 
 					foreach($fields as $fieldName => $value)	{
 						$conf = $TCA[$table]['columns'][$fieldName]['config'];
@@ -3689,6 +3690,7 @@ $this->log($table,$id,6,0,0,'Stage raised...',30,array('comment'=>$comment,'stag
 									$origRecordRow = $this->recordInfo($table,$theUidToUpdate,'*');	// This will fetch the new row for the element
 
 									if (is_array($origRecordRow))	{
+										t3lib_BEfunc::workspaceOL($table,$origRecordRow);
 
 											// Get current data structure and value array:
 										$dataStructArray = t3lib_BEfunc::getFlexFormDS($conf, $origRecordRow, $table);
@@ -3720,7 +3722,7 @@ $this->log($table,$id,6,0,0,'Stage raised...',30,array('comment'=>$comment,'stag
 					}
 
 					if (count($newData))	{	// If any fields were changed, those fields are updated!
-						$this->updateDB($table,$theUidToUpdate,$newData);
+						$this->updateDB($table,$theUidToUpdate_saveTo,$newData);
 					}
 				}
 			}

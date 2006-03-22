@@ -1,3 +1,8 @@
+2006-03-22  Kasper Skaarhoj  <kasperYYYY@typo3.com>
+	
+	* Fixed that the tcemain copy command works properly under workspaces: Remapping of references is correct now. This also affects TemplaVoila which can now copy a FCE container with sub elements properly.
+	* Also added check for extension dependencies in Import/Export: It is not possible to import a T3D file unless extension dependencies are OK. This still needs more work and connection to EM.
+
 
 2006-03-22  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 

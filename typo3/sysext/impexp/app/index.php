@@ -1240,9 +1240,21 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 				$trow = array();
 				if ($import->loadFile($inFile,1))	{
 
-					if ($inData['import_file'])	{
+						// Check extension dependencies:
+					$extKeysToInstall = array();
+					if (is_array($import->dat['header']['extensionDependencies']))	{
+						foreach($import->dat['header']['extensionDependencies'] as $extKey)	{
+							if (!t3lib_extMgm::isLoaded($extKey))	{
+								$extKeysToInstall[] = $extKey;
+							}
+						}
+					}
+
+					if ($inData['import_file'] && !count($extKeysToInstall))	{
 						$import->importData($this->id);
 						t3lib_BEfunc::getSetUpdateSignal('updatePageTree');
+					} else {
+						debug($extKeysToInstall, 'ERROR: Extensions not installed:');
 					}
 
 					$import->display_import_pid_record = $this->pageinfo;
