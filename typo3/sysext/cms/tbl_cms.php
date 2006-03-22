@@ -547,7 +547,7 @@ $TCA['pages_language_overlay'] = Array (
 		),
 		'author_email' => Array (
 			'exclude' => 1,
-			'label' => $TCA['pages']['columns']['author']['label'],
+			'label' => $TCA['pages']['columns']['author_email']['label'],
 			'config' => Array (
 				'type' => 'input',
 				'size' => '20',
