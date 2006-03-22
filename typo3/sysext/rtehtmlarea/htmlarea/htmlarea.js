@@ -2704,7 +2704,7 @@ HTMLArea._colorToRgb = function(v) {
  * with the response (asyncronously!), this is used by such things as the spellchecker update personal dict function
  */
 HTMLArea._postback = function(url, data, handler, addParams, charset) {
-	if (typeof(charset) == "undefined") var charset = "UTF-8";
+	if (typeof(charset) == "undefined") var charset = "utf-8";
 	var req = null;
 	if (window.XMLHttpRequest) req = new XMLHttpRequest();
 		else if (window.ActiveXObject) {
@@ -2720,6 +2720,7 @@ HTMLArea._postback = function(url, data, handler, addParams, charset) {
 	if(req) {
 		var content = '';
 		for (var i in data) content += (content.length ? '&' : '') + i + '=' + encodeURIComponent(data[i]);
+		content += (content.length ? '&' : '') + 'charset=' + charset;
 		if (typeof(addParams) != "undefined") content += addParams;
 		
 		function callBack() {
@@ -2734,11 +2735,12 @@ HTMLArea._postback = function(url, data, handler, addParams, charset) {
 		}
 		req.onreadystatechange = callBack;
 		function sendRequest() {
+			HTMLArea._appendToLog("[HTMLArea::_postback]: Request: " + content);
 			req.send(content);
 		}
 		
 		req.open('POST', _typo3_host_url + _editor_url + url, true);
-		req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=' + charset);
+		req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
 		window.setTimeout(sendRequest, 500);
 	}
 };

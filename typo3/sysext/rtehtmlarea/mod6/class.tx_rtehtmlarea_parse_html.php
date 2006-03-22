@@ -65,9 +65,32 @@ class tx_rtehtmlarea_parse_html {
 	 * @return	[type]		...
 	 */
 	function main()	{
-
-		$this->content='';
-		$this->content.=$this->main_parse_html($this->modData['openKeys']);
+		global $LANG;
+		
+		$this->content .= $this->main_parse_html($this->modData['openKeys']);
+		
+			// if no HTTP input conversion is configured, the input was uft-8 (urlencoded).
+		$fromCharSet = 'utf-8';
+			// if conversion was done, the input is encoded in mbstring.internal_encoding
+		if (in_array('mbstring', get_loaded_extensions()) && ini_get('mbstring.encoding_translation')) {
+			$fromCharSet = strToLower(ini_get('mbstring.internal_encoding'));
+		}
+		
+		$clientInfo = t3lib_div::clientInfo();
+			// the charset of the content element, possibly overidden by forceCharset
+		$toCharSet = t3lib_div::_GP('charset')?t3lib_div::_GP('charset'):'iso-8859-1';
+			// IE wants it back in utf-8
+		if ( $clientInfo['BROWSER']= 'msie') {
+			$toCharSet = 'utf-8';
+		} elseif ($clientInfo['SYSTEM'] = 'win') {
+				// if the client is windows the input may contain windows-1252 characters;
+			if (strToLower($toCharSet) == 'iso-8859-1') {
+				$toCharSet = 'Windows-1252';
+			}
+		}
+			// convert to requested charset
+		$this->content = $LANG->csConvObj->conv($this->content, $fromCharSet, $toCharSet);
+		header('Content-Type: text/plain; charset='.$toCharSet);
 	}
 
 	/**
@@ -112,13 +135,9 @@ class tx_rtehtmlarea_parse_html {
 			}
 		}
 		
-		$content = '
-		var editor = RTEarea[' . $editorNo . ']["editor"];
-		var html = ' . t3lib_div::quoteJSvalue($html, true) . ';
-		editor.setHTML(html);';
-		
-		return $content;
+		return $html;
 	}
+
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rtehtmlarea/mod6/class.tx_rtehtmlarea_parse_html.php']) {
