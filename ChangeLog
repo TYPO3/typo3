@@ -2,6 +2,7 @@
 2006-03-22  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
 	* Fixed label of 'author_email' ('pages_language_overlay')
+	* Fix bug #2918: TCEFORM.tt_content.CType.removeItems not applied to db_new_content_el.php
 
 2006-03-22  Bernhard Kraft  <kraftb@kraftb.at>
 
