@@ -1,3 +1,11 @@
+2006-03-22  Michael Stucki  <michael@typo3.org>
+
+	* Changed Install Tool so it accepts newlines in values (needed for recently introduced textarea fields)
+	* Changed style of admin-menu title in alt_menu.php so it looks equally to the headers above
+	* Fixed bug #1932: Can't limit content columns for Page>QuickEdit
+	* Fixed bug #2596: "=undefined" when transferring TSconfig code from TSconfig wizard to textarea
+	* Changed RFC: "flagBitMask" default value in indexed_search (seems like this was a typo) / The change has no effect but is more logical for understanding the concept.
+
 2006-03-22  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
 	* Corrections/adjustments to the htmlArea RTE extension (see details in local ChangeLog)

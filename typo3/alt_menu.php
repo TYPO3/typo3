@@ -129,21 +129,22 @@ class SC_alt_menu {
 -->
 <div id="typo3-alt-menu-php-adminFunc">';
 
-				// Header: Admin functions
-			$this->content.=
-				'<h2 class="bgColor5">'.
-				$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:rm.adminFunctions',1).
-				'</h2>';
 
 				// Table with those admin functions
 			$this->content.='
-				<table border="0" cellpadding="0" cellspacing="1" width="100%">';
+				<table border="0" cellpadding="0" cellspacing="1" width="100%" id="typo3-adminmenu">';
+
+				// Header: Admin functions
+			$this->content.='
+					<tr class="c-mainitem">
+						<td colspan="2"><span class="c-label"><b>'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:rm.adminFunctions',1).'</b>&nbsp;</span><span class="c-iconCollapse"></span></td>
+					</tr>';
 
 			$rows=array();
 			foreach($functionsArray as $functionsArraySetup)	{
 				$rows[]='
-					<tr>
-						<td valign="top" align="center">'.$functionsArraySetup['icon'].'</td>
+					<tr class="c-subitem">
+						<td valign="top" align="center" class="icon">'.$functionsArraySetup['icon'].'</td>
 						<td><a href="'.htmlspecialchars($functionsArraySetup['href']).'">'.htmlspecialchars($functionsArraySetup['title']).'</a></td>
 					</tr>';
 			}

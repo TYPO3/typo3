@@ -550,11 +550,11 @@ class SC_db_layout {
 			$opt[]='<option value="'.$inValue.'"'.($edit_record==$inValue?' selected="selected"':'').'>[ '.$LANG->getLL('editPageProperties',1).' ]</option>';
 		}
 
-			// Selecting all content elements from this language:
+			// Selecting all content elements from this language and allowed colPos:
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 					'*',
 					'tt_content',
-					'pid='.intval($this->id).' AND sys_language_uid='.intval($this->current_sys_language).
+					'pid='.intval($this->id).' AND sys_language_uid='.intval($this->current_sys_language).' AND colPos IN ('.$this->colPosList.')'.
 							($this->MOD_SETTINGS['tt_content_showHidden'] ? '' : t3lib_BEfunc::BEenableFields('tt_content')).
 							t3lib_Befunc::deleteClause('tt_content').
 							t3lib_BEfunc::versioningPlaceholderClause('tt_content'),

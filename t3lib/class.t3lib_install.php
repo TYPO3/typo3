@@ -251,9 +251,7 @@ class t3lib_install {
 	 * @see setValueInLocalconfFile()
 	 */
 	function checkForBadString($string)	{
-		if (ereg('['.chr(10).chr(13).']',$string)){
-			return FALSE;
-		} else return TRUE;
+		return preg_match('/['.chr(10).chr(13).']/',$string) ? FALSE : TRUE;
 	}
 
 	/**
@@ -264,7 +262,11 @@ class t3lib_install {
 	 * @see setValueInLocalconfFile()
 	 */
 	function slashValueForSingleDashes($value)	{
-		return str_replace("'","\'",str_replace('\\','\\\\',$value));
+		$value = str_replace("'.chr(10).'", '###INSTALL_TOOL_LINEBREAK###', $value);
+		$value = str_replace("'","\'",str_replace('\\','\\\\',$value));
+		$value = str_replace('###INSTALL_TOOL_LINEBREAK###', "'.chr(10).'", $value);
+
+		return $value;
 	}
 
 

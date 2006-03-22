@@ -206,8 +206,12 @@ class SC_wizard_tsconfig {
 					if (valueField)	{	// This applies to the TS Object Browser module
 						nameField.value=field;
 						valueField.value=value;
-					} else {		// This applies to the Info/Modify module
-						nameField.value=field+"="+value+"\n"+nameField.value;
+					} else {		// This applies to the Info/Modify module and the Page TSconfig field
+						if (value) {
+							nameField.value=field+"="+value+"\n"+nameField.value;
+						} else {
+							nameField.value=field+"\n"+nameField.value;
+						}
 					}
 					'.$update.'
 					window.opener.focus();

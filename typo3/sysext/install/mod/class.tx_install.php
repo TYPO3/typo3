@@ -1297,11 +1297,11 @@ From sub-directory:
 	 * @return	[type]		...
 	 */
 	function generateConfigForm($type='')	{
+		$default_config_content = t3lib_div::getUrl(PATH_t3lib.'config_default.php');
+		$commentArr = $this->getDefaultConfigArrayComments($default_config_content);
+
 		switch($type)	{
 			case 'get_form':
-				$default_config_content = t3lib_div::getUrl(PATH_t3lib.'config_default.php');
-				$commentArr = $this->getDefaultConfigArrayComments($default_config_content);
-
 				reset($GLOBALS['TYPO3_CONF_VARS']);
 				$this->messageFunc_nl2br=0;
 				while(list($k,$va)=each($GLOBALS['TYPO3_CONF_VARS']))	{
@@ -1309,12 +1309,14 @@ From sub-directory:
 					$this->message($ext, '$TYPO3_CONF_VARS[\''.$k.'\']',$commentArr[0][$k],1);
 
 					while(list($vk,$value)=each($va))	{
-						if (!is_array($value) && $this->checkForBadString($value))	{
+						$description = trim($commentArr[1][$k][$vk]);
+						$isTextarea = preg_match('/^string \(textarea\)/i',$description) ? TRUE : FALSE;
+
+						if (!is_array($value) && ($this->checkForBadString($value) || $isTextarea))	{
 							$k2='['.$vk.']';
-							$description = trim($commentArr[1][$k][$vk]);
 							$msg=$description.'<br /><br /><em>'.$ext.$k2.' = '.htmlspecialchars(t3lib_div::fixed_lgd($value,60)).'</em><br />';
 
-							if (preg_match('/^string \(textarea\)/i', $description) || strstr($value,chr(10)))	{
+							if ($isTextarea)	{
 								$form='<textarea name="TYPO3_INSTALL[extConfig]['.$k.']['.$vk.']" cols="60" rows="5" wrap="off">'.htmlspecialchars($value).'</textarea>';
 							} elseif (preg_match('/^boolean/i',$description)) {
 								$form='<input type="hidden" name="TYPO3_INSTALL[extConfig]['.$k.']['.$vk.']" value="0">';
@@ -1340,11 +1342,18 @@ From sub-directory:
 										if ($value)	{
 											if (isset($_POST['installToolPassword_check']) && (!t3lib_div::_GP('installToolPassword_check') || strcmp(t3lib_div::_GP('installToolPassword_check'),$value)))	{
 												$doit=0;
-												debug('ERROR: The two passwords did not match! The password was not changed.');
+												t3lib_div::debug('ERROR: The two passwords did not match! The password was not changed.');
 											}
 											if (t3lib_div::_GP('installToolPassword_md5'))	$value =md5($value);
 										} else $doit=0;
 									}
+
+									$description = trim($commentArr[1][$k][$vk]);
+									if (preg_match('/^string \(textarea\)/i', $description))	{
+										$value = str_replace(chr(13),'',$value);	// Force Unix linebreaks in textareas
+										$value = str_replace(chr(10),"'.chr(10).'",$value);	// Preserve linebreaks
+									}
+
 									if ($doit && strcmp($GLOBALS['TYPO3_CONF_VARS'][$k][$vk],$value))	$this->setValueInLocalconfFile($lines, '$TYPO3_CONF_VARS[\''.$k.'\'][\''.$vk.'\']', $value);
 								}
 							}
