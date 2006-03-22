@@ -39,11 +39,11 @@
  *
  *
  *
- *   79: class SC_tce_db
+ *   78: class SC_tce_db
  *  106:     function init()
- *  160:     function initClipboard()
- *  180:     function main()
- *  216:     function finish()
+ *  162:     function initClipboard()
+ *  182:     function main()
+ *  218:     function finish()
  *
  * TOTAL FUNCTIONS: 4
  * (This index is automatically created/updated by the extension "extdeveval")

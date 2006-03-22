@@ -37,18 +37,18 @@
  *
  *   75: class tx_indexed_search_extparse
  *   94:     function initParser($extension)
- *  227:     function softInit($extension)
- *  257:     function searchTypeMediaTitle($extension)
- *  330:     function isMultiplePageExtension($extension)
+ *  214:     function softInit($extension)
+ *  247:     function searchTypeMediaTitle($extension)
+ *  323:     function isMultiplePageExtension($extension)
  *
  *              SECTION: Reading documents (for parsing)
- *  361:     function readFileContent($ext,$absFile,$cPKey)
- *  541:     function fileContentParts($ext,$absFile)
- *  580:     function splitPdfInfo($pdfInfoArray)
- *  599:     function removeEndJunk($string)
+ *  354:     function readFileContent($ext,$absFile,$cPKey)
+ *  521:     function fileContentParts($ext,$absFile)
+ *  560:     function splitPdfInfo($pdfInfoArray)
+ *  579:     function removeEndJunk($string)
  *
  *              SECTION: Backend analyzer
- *  626:     function getIcon($extension)
+ *  606:     function getIcon($extension)
  *
  * TOTAL FUNCTIONS: 9
  * (This index is automatically created/updated by the extension "extdeveval")

@@ -38,116 +38,131 @@
  *
  *
  *
- *  191: class SC_mod_tools_em_index extends t3lib_SCbase
+ *  194: class SC_mod_tools_em_index extends t3lib_SCbase
  *
  *              SECTION: Standard module initialization
- *  341:     function init()
- *  414:     function handleExternalFunctionValue($MM_key='function', $MS_value=NULL)
- *  428:     function menuConfig()
- *  500:     function main()
- *  572:     function printContent()
+ *  337:     function init()
+ *  417:     function handleExternalFunctionValue($MM_key='function', $MS_value=NULL)
+ *  431:     function menuConfig()
+ *  508:     function main()
+ *  584:     function printContent()
  *
  *              SECTION: Function Menu Applications
- *  599:     function extensionList_loaded()
- *  637:     function extensionList_installed()
- *  707:     function extensionList_import()
- *  869:     function alterSettings()
+ *  609:     function extensionList_loaded()
+ *  664:     function extensionList_installed()
+ *  736:     function extensionList_import()
+ *  903:     function alterSettings()
  *
  *              SECTION: Command Applications (triggered by GET var)
- *  916:     function importExtInfo($extRepUid)
- * 1017:     function importExtFromRep($extRepUid,$loc,$uploadFlag=0,$directInput='',$recentTranslations=0,$incManual=0)
- * 1185:     function showExtDetails($extKey)
+ * 1005:     function importExtInfo($extKey, $version='')
+ * 1062:     function fetchMetaData($metaType)
+ * 1125:     function getMirrorURL()
+ * 1158:     function installExtension($extKey, $version=null, $mode=EM_INSTALL_VERSION_MIN)
+ * 1279:     function importExtFromRep($extKey,$version,$loc,$uploadFlag=0,$dontDelete=0,$directInput='')
+ * 1425:     function showExtDetails($extKey)
  *
  *              SECTION: Application Sub-functions (HTML parts)
- * 1478:     function updatesForm($extKey,$extInfo,$notSilent=0,$script='',$addFields='')
- * 1509:     function extDumpTables($extKey,$extInfo)
- * 1576:     function getFileListOfExtension($extKey,$conf)
- * 1627:     function extDelete($extKey,$extInfo)
- * 1658:     function extUpdateEMCONF($extKey,$extInfo)
- * 1678:     function extBackup($extKey,$extInfo)
- * 1746:     function extBackup_dumpDataTablesLine($tablesArray,$extKey)
- * 1774:     function extInformationArray($extKey,$extInfo,$remote=0)
- * 1871:     function extInformationArray_dbReq($techInfo,$tableHeader=0)
- * 1884:     function extInformationArray_dbInst($dbInst,$current)
- * 1903:     function getRepositoryUploadForm($extKey,$extInfo)
+ * 1737:     function updatesForm($extKey,$extInfo,$notSilent=0,$script='',$addFields='')
+ * 1768:     function extDumpTables($extKey,$extInfo)
+ * 1835:     function getFileListOfExtension($extKey,$conf)
+ * 1889:     function extDelete($extKey,$extInfo)
+ * 1920:     function extUpdateEMCONF($extKey,$extInfo)
+ * 1940:     function extBackup($extKey,$extInfo)
+ * 1987:     function extBackup_dumpDataTablesLine($tablesArray,$extKey)
+ * 2015:     function extInformationArray($extKey,$extInfo,$remote=0)
+ * 2097:     function extInformationArray_dbReq($techInfo,$tableHeader=0)
+ * 2110:     function extInformationArray_dbInst($dbInst,$current)
+ * 2129:     function getRepositoryUploadForm($extKey,$extInfo)
  *
  *              SECTION: Extension list rendering
- * 2001:     function extensionListRowHeader($trAttrib,$cells,$import=0)
- * 2066:     function extensionListRow($extKey,$extInfo,$cells,$bgColorClass='',$inst_list=array(),$import=0,$altLinkUrl='')
+ * 2190:     function extensionListRowHeader($trAttrib,$cells,$import=0)
+ * 2251:     function extensionListRow($extKey,$extInfo,$cells,$bgColorClass='',$inst_list=array(),$import=0,$altLinkUrl='')
  *
  *              SECTION: Output helper functions
- * 2191:     function wrapEmail($str,$email)
- * 2204:     function helpCol($key)
- * 2218:     function labelInfo($str)
- * 2230:     function extensionTitleIconHeader($extKey,$extInfo,$align='top')
- * 2245:     function removeButton()
- * 2254:     function installButton()
- * 2263:     function noImportMsg()
+ * 2367:     function wrapEmail($str,$email)
+ * 2380:     function helpCol($key)
+ * 2396:     function labelInfo($str)
+ * 2408:     function extensionTitleIconHeader($extKey,$extInfo,$align='top')
+ * 2423:     function removeButton()
+ * 2432:     function installButton()
+ * 2441:     function noImportMsg()
+ * 2454:     function depToString($dep,$type='depends')
+ * 2473:     function stringToDep($dep)
  *
  *              SECTION: Read information about all available extensions
- * 2288:     function getInstalledExtensions()
- * 2315:     function getInstExtList($path,&$list,&$cat,$type)
- * 2401:     function setCat(&$cat,$listArrayPart,$extKey)
+ * 2503:     function getInstalledExtensions()
+ * 2530:     function getInstExtList($path,&$list,&$cat,$type)
+ * 2561:     function fixEMCONF($emConf)
+ * 2600:     function splitVersionRange($ver)
+ * 2616:     function prepareImportExtList()
+ * 2660:     function setCat(&$cat,$listArrayPart,$extKey)
  *
  *              SECTION: Extension analyzing (detailed information)
- * 2463:     function makeDetailedExtensionAnalysis($extKey,$extInfo,$validity=0)
- * 2645:     function getClassIndexLocallangFiles($absPath,$table_class_prefix,$extKey)
- * 2716:     function modConfFileAnalysis($confFilePath)
- * 2744:     function serverExtensionMD5Array($extKey,$conf)
- * 2769:     function findMD5ArrayDiff($current,$past)
+ * 2710:     function makeDetailedExtensionAnalysis($extKey,$extInfo,$validity=0)
+ * 2892:     function getClassIndexLocallangFiles($absPath,$table_class_prefix,$extKey)
+ * 2962:     function modConfFileAnalysis($confFilePath)
+ * 2990:     function serverExtensionMD5Array($extKey,$conf)
+ * 3015:     function findMD5ArrayDiff($current,$past)
  *
  *              SECTION: File system operations
- * 2801:     function createDirsInPath($dirs,$extDirPath)
- * 2826:     function removeExtDirectory($removePath,$removeContentOnly=0)
- * 2888:     function clearAndMakeExtensionDir($importedData,$type)
- * 2941:     function removeCacheFiles()
- * 2961:     function extractDirsFromFileList($files)
- * 2987:     function getExtPath($extKey,$type)
+ * 3047:     function createDirsInPath($dirs,$extDirPath)
+ * 3065:     function removeExtDirectory($removePath,$removeContentOnly=0)
+ * 3128:     function clearAndMakeExtensionDir($importedData,$type,$dontDelete=0)
+ * 3182:     function removeCacheFiles()
+ * 3192:     function extractDirsFromFileList($files)
+ * 3218:     function getExtPath($extKey,$type)
  *
  *              SECTION: Writing to "conf.php" and "localconf.php" files
- * 3019:     function writeTYPO3_MOD_PATH($confFilePath,$type,$mP)
- * 3056:     function writeNewExtensionList($newExtList)
- * 3079:     function writeTsStyleConfig($extKey,$arr)
- * 3101:     function updateLocalEM_CONF($extKey,$extInfo)
+ * 3252:     function writeTYPO3_MOD_PATH($confFilePath,$type,$mP)
+ * 3289:     function writeNewExtensionList($newExtList)
+ * 3312:     function writeTsStyleConfig($extKey,$arr)
+ * 3334:     function updateLocalEM_CONF($extKey,$extInfo)
  *
  *              SECTION: Compiling upload information, emconf-file etc.
- * 3139:     function construct_ext_emconf_file($extKey,$EM_CONF)
- * 3184:     function makeUploadArray($extKey,$conf)
- * 3251:     function getSerializedLocalLang($file,$content)
+ * 3376:     function construct_ext_emconf_file($extKey,$EM_CONF)
+ * 3407:     function arrayToCode($array, $level=0)
+ * 3433:     function makeUploadArray($extKey,$conf)
+ * 3502:     function getSerializedLocalLang($file,$content)
  *
  *              SECTION: Managing dependencies, conflicts, priorities, load order of extension keys
- * 3285:     function addExtToList($extKey,$instExtInfo)
- * 3347:     function removeExtFromList($extKey,$instExtInfo)
- * 3384:     function removeRequiredExtFromListArr($listArr)
- * 3399:     function managesPriorities($listArr,$instExtInfo)
+ * 3538:     function addExtToList($extKey,$instExtInfo)
+ * 3569:     function checkDependencies($extKey, $conf, $instExtInfo)
+ * 3709:     function removeExtFromList($extKey,$instExtInfo)
+ * 3746:     function removeRequiredExtFromListArr($listArr)
+ * 3761:     function managesPriorities($listArr,$instExtInfo)
  *
  *              SECTION: System Update functions (based on extension requirements)
- * 3451:     function checkClearCache($extInfo)
- * 3478:     function checkUploadFolder($extKey,$extInfo)
- * 3563:     function checkDBupdates($extKey,$extInfo,$infoOnly=0)
- * 3662:     function tsStyleConfigForm($extKey,$extInfo,$output=0,$script='',$addFields='')
+ * 3813:     function checkClearCache($extInfo)
+ * 3840:     function checkUploadFolder($extKey,$extInfo)
+ * 3925:     function checkDBupdates($extKey,$extInfo,$infoOnly=0)
+ * 4022:     function forceDBupdates($extKey, $extInfo)
+ * 4080:     function tsStyleConfigForm($extKey,$extInfo,$output=0,$script='',$addFields='')
  *
  *              SECTION: Dumping database (MySQL compliant)
- * 3757:     function dumpTableAndFieldStructure($arr)
- * 3782:     function dumpStaticTables($tableList)
- * 3811:     function dumpHeader()
- * 3828:     function dumpTableHeader($table,$fieldKeyInfo,$dropTableIfExists=0)
- * 3867:     function dumpTableContent($table,$fieldStructure)
- * 3902:     function getTableAndFieldStructure($parts)
+ * 4175:     function dumpTableAndFieldStructure($arr)
+ * 4200:     function dumpStaticTables($tableList)
+ * 4229:     function dumpHeader()
+ * 4246:     function dumpTableHeader($table,$fieldKeyInfo,$dropTableIfExists=0)
+ * 4288:     function dumpTableContent($table,$fieldStructure)
+ * 4323:     function getTableAndFieldStructure($parts)
+ *
+ *              SECTION: TER Communication functions
+ * 4373:     function uploadExtensionToTER($em)
  *
  *              SECTION: Various helper functions
- * 4135:     function listOrderTitle($listOrder,$key)
- * 4166:     function makeVersion($v,$mode)
- * 4178:     function renderVersion($v,$raise='')
- * 4215:     function ulFolder($extKey)
- * 4224:     function importAtAll()
- * 4235:     function importAsType($type,$lockType='')
- * 4255:     function deleteAsType($type)
- * 4289:     function versionDifference($v1,$v2,$div=1)
- * 4301:     function first_in_array($str,$array,$caseInsensitive=FALSE)
- * 4318:     function includeEMCONF($path,$_EXTKEY)
+ * 4411:     function listOrderTitle($listOrder,$key)
+ * 4436:     function makeVersion($v,$mode)
+ * 4448:     function renderVersion($v,$raise='')
+ * 4485:     function ulFolder($extKey)
+ * 4494:     function importAtAll()
+ * 4505:     function importAsType($type,$lockType='')
+ * 4527:     function deleteAsType($type)
+ * 4548:     function versionDifference($v1,$v2,$div=1)
+ * 4560:     function first_in_array($str,$array,$caseInsensitive=FALSE)
+ * 4578:     function includeEMCONF($path,$_EXTKEY)
+ * 4593:     function searchExtension($extKey,$row)
  *
- * TOTAL FUNCTIONS: 87
+ * TOTAL FUNCTIONS: 90
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -984,6 +999,7 @@ EXTENSION KEYS:
 	 * Returns detailed info about an extension in the online repository
 	 *
 	 * @param	string		Extension repository uid + optional "private key": [uid]-[key].
+	 * @param	[type]		$version: ...
 	 * @return	void
 	 */
 	function importExtInfo($extKey, $version='')	{
@@ -1104,7 +1120,7 @@ EXTENSION KEYS:
 	/**
 	 * Returns the base URL for the slected or a random mirror.
 	 *
-	 * @return string	The URL for the selected or a random mirror
+	 * @return	string		The URL for the selected or a random mirror
 	 */
 	function getMirrorURL() {
 		if(strlen($this->MOD_SETTINGS['rep_url'])) return $this->MOD_SETTINGS['rep_url'];
@@ -1133,11 +1149,11 @@ EXTENSION KEYS:
 	 * fetched from the repository. This means, if you use EM_INSTALL_VERSION_MIN, you will not always get the latest
 	 * version of an extension!
 	 *
+	 * @param	string		$extKey	The extension key to install
+	 * @param	string		$version	A version number that should be installed
+	 * @param	int		$mode	If a version is requested, this determines if it is the min, max or strict version requested
+	 * @return	[type]		...
 	 * @todo Make the method able to handle needed interaction somehow (unmatched dependencies)
-	 *
-	 * @param string $extKey	The extension key to install
-	 * @param string $version	A version number that should be installed
-	 * @param int $mode	If a version is requested, this determines if it is the min, max or strict version requested
 	 */
 	function installExtension($extKey, $version=null, $mode=EM_INSTALL_VERSION_MIN) {
 		list($inst_list,) = $this->getInstalledExtensions();
@@ -1257,7 +1273,7 @@ EXTENSION KEYS:
 	 * @param	string		Install scope: "L" or "G" or "S"
 	 * @param	boolean		If true, extension is uploaded as file
 	 * @param	boolean		If true, extension directory+files will not be deleted before writing the new ones. That way custom files stored in the extension folder will be kept.
-	 * @param	array 		Direct input array (like from kickstarter)
+	 * @param	array		Direct input array (like from kickstarter)
 	 * @return	string		Return false on success, returns error message if error.
 	 */
 	function importExtFromRep($extKey,$version,$loc,$uploadFlag=0,$dontDelete=0,$directInput='')	{
@@ -2431,9 +2447,9 @@ EXTENSION KEYS:
 	 *
 	 * It leaves out all version numbers and the "php" and "typo3" dependencies, as they are implicit and of no interest without the version number.
 	 *
-	 * @param mixed $dep Either a string or an array listing dependencies.
-	 * @param string $type The dependency type to list if $dep is an array
-	 * @return string	A simple dependency list for display
+	 * @param	mixed		$dep Either a string or an array listing dependencies.
+	 * @param	string		$type The dependency type to list if $dep is an array
+	 * @return	string		A simple dependency list for display
 	 */
 	function depToString($dep,$type='depends') {
 		if(is_array($dep)) {
@@ -2450,9 +2466,9 @@ EXTENSION KEYS:
 	 *
 	 * It leaves out all version numbers and the "php" and "typo3" dependencies, as they are implicit and of no interest without the version number.
 	 *
-	 * @param mixed $dep Either a string or an array listing dependencies.
-	 * @param string $type The dependency type to list if $dep is an array
-	 * @return string	A simple dependency list for display
+	 * @param	mixed		$dep Either a string or an array listing dependencies.
+	 * @param	string		$type The dependency type to list if $dep is an array
+	 * @return	string		A simple dependency list for display
 	 */
 	function stringToDep($dep) {
 		$constraint = array();
@@ -2539,8 +2555,8 @@ EXTENSION KEYS:
 	/**
 	 * Fixes an old style ext_emconf.php array by adding constraints if needed and removing deprecated keys
 	 *
-	 * @param unknown_type $emConf
-	 * @return unknown
+	 * @param	unknown_type		$emConf
+	 * @return	unknown
 	 */
 	function fixEMCONF($emConf) {
 		if(!isset($emConf['constraints'])) {
@@ -2578,8 +2594,8 @@ EXTENSION KEYS:
 	 * If a single version number is given, it is considered a minimum value.
 	 * If a dash is found, the numbers left and right are considered as minimum and maximum. Empty values are allowed.
 	 *
-	 * @param string $ver A string with a version range.
-	 * @return array
+	 * @param	string		$ver A string with a version range.
+	 * @return	array
 	 */
 	function splitVersionRange($ver) {
 		$versionRange = array();
@@ -3383,10 +3399,10 @@ $EM_CONF[$_EXTKEY] = '.$this->arrayToCode($EM_CONF, 0).';
 	/**
 	 * Enter description here...
 	 *
-	 * @param unknown_type $array
-	 * @param unknown_type $lines
-	 * @param unknown_type $level
-	 * @return unknown
+	 * @param	unknown_type		$array
+	 * @param	unknown_type		$lines
+	 * @param	unknown_type		$level
+	 * @return	unknown
 	 */
 	function arrayToCode($array, $level=0) {
 		$lines = 'array('.chr(10);
@@ -3545,10 +3561,10 @@ $EM_CONF[$_EXTKEY] = '.$this->arrayToCode($EM_CONF, 0).';
 	/**
 	 * Enter description here...
 	 *
-	 * @param string $extKey
-	 * @param array $conf
-	 * @param array $instExtInfo
-	 * @return array
+	 * @param	string		$extKey
+	 * @param	array		$conf
+	 * @param	array		$instExtInfo
+	 * @return	array
 	 */
 	function checkDependencies($extKey, $conf, $instExtInfo) {
 		$content = '';

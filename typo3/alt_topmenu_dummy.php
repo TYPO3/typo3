@@ -44,8 +44,8 @@
  *
  *   74: class SC_alt_topmenu_dummy
  *   82:     function main()
- *  127:     function dummyContent()
- *  143:     function printContent()
+ *  162:     function dummyContent()
+ *  178:     function printContent()
  *
  * TOTAL FUNCTIONS: 3
  * (This index is automatically created/updated by the extension "extdeveval")

@@ -43,39 +43,39 @@
  *  154:     function extPrintFeAdminDialog()
  *
  *              SECTION: Creating sections of the Admin Panel
- *  249:     function extGetCategory_preview($out='')
- *  282:     function extGetCategory_cache($out='')
- *  320:     function extGetCategory_publish($out='')
- *  355:     function extGetCategory_edit($out='')
- *  399:     function extGetCategory_tsdebug($out='')
- *  429:     function extGetCategory_info($out='')
+ *  250:     function extGetCategory_preview($out='')
+ *  283:     function extGetCategory_cache($out='')
+ *  321:     function extGetCategory_publish($out='')
+ *  356:     function extGetCategory_edit($out='')
+ *  400:     function extGetCategory_tsdebug($out='')
+ *  433:     function extGetCategory_info($out='')
  *
  *              SECTION: Admin Panel Layout Helper functions
- *  502:     function extGetHead($pre)
- *  522:     function extItemLink($pre,$str)
- *  538:     function extGetItem($pre,$element)
- *  555:     function extFw($str)
- *  564:     function ext_makeToolBar()
+ *  506:     function extGetHead($pre)
+ *  526:     function extItemLink($pre,$str)
+ *  542:     function extGetItem($pre,$element)
+ *  559:     function extFw($str)
+ *  568:     function ext_makeToolBar()
  *
  *              SECTION: TSFE BE user Access Functions
- *  622:     function checkBackendAccessSettingsFromInitPhp()
- *  667:     function extPageReadAccess($pageRec)
- *  678:     function extAdmModuleEnabled($key)
- *  694:     function extSaveFeAdminConfig()
- *  726:     function extGetFeAdminValue($pre,$val='')
- *  759:     function extIsAdmMenuOpen($pre)
+ *  637:     function checkBackendAccessSettingsFromInitPhp()
+ *  682:     function extPageReadAccess($pageRec)
+ *  693:     function extAdmModuleEnabled($key)
+ *  709:     function extSaveFeAdminConfig()
+ *  741:     function extGetFeAdminValue($pre,$val='')
+ *  783:     function extIsAdmMenuOpen($pre)
  *
  *              SECTION: TSFE BE user Access Functions
- *  794:     function extGetTreeList($id,$depth,$begin=0,$perms_clause)
- *  825:     function extGetNumberOfCachedPages($page_id)
+ *  818:     function extGetTreeList($id,$depth,$begin=0,$perms_clause)
+ *  849:     function extGetNumberOfCachedPages($page_id)
  *
  *              SECTION: Localization handling
- *  864:     function extGetLL($key)
+ *  888:     function extGetLL($key)
  *
  *              SECTION: Frontend Editing
- *  908:     function extIsEditAction()
- *  926:     function extIsFormShown()
- *  942:     function extEditAction()
+ *  932:     function extIsEditAction()
+ *  954:     function extIsFormShown()
+ *  970:     function extEditAction()
  *
  * TOTAL FUNCTIONS: 25
  * (This index is automatically created/updated by the extension "extdeveval")

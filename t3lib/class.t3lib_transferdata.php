@@ -41,30 +41,30 @@
  *
  *              SECTION: Getting record content, ready for display in TCEforms
  *  137:     function fetchRecord($table,$idList,$operation)
- *  223:     function renderRecord($table, $id, $pid, $row)
- *  267:     function renderRecordRaw($table, $id, $pid, $row, $TSconfig='', $tscPID=0)
- *  325:     function renderRecord_SW($data,$fieldConfig,$TSconfig,$table,$row,$field)
- *  355:     function renderRecord_groupProc($data,$fieldConfig,$TSconfig,$table,$row,$field)
- *  406:     function renderRecord_selectProc($data,$fieldConfig,$TSconfig,$table,$row,$field)
- *  469:     function renderRecord_flexProc($data,$fieldConfig,$TSconfig,$table,$row,$field)
- *  498:     function renderRecord_typesProc($totalRecordContent,$types_fieldConfig,$tscPID,$table,$pid)
+ *  224:     function renderRecord($table, $id, $pid, $row)
+ *  268:     function renderRecordRaw($table, $id, $pid, $row, $TSconfig='', $tscPID=0)
+ *  326:     function renderRecord_SW($data,$fieldConfig,$TSconfig,$table,$row,$field)
+ *  356:     function renderRecord_groupProc($data,$fieldConfig,$TSconfig,$table,$row,$field)
+ *  407:     function renderRecord_selectProc($data,$fieldConfig,$TSconfig,$table,$row,$field)
+ *  470:     function renderRecord_flexProc($data,$fieldConfig,$TSconfig,$table,$row,$field)
+ *  499:     function renderRecord_typesProc($totalRecordContent,$types_fieldConfig,$tscPID,$table,$pid)
  *
  *              SECTION: FlexForm processing functions
- *  554:     function renderRecord_flexProc_procInData($dataPart,$dataStructArray,$pParams)
- *  583:     function renderRecord_flexProc_procInData_travDS(&$dataValues,$DSelements,$pParams)
+ *  555:     function renderRecord_flexProc_procInData($dataPart,$dataStructArray,$pParams)
+ *  584:     function renderRecord_flexProc_procInData_travDS(&$dataValues,$DSelements,$pParams)
  *
  *              SECTION: Selector box processing functions
- *  660:     function selectAddSpecial($dataAcc, $elements, $specialKey)
- *  784:     function selectAddForeign($dataAcc, $elements, $fieldConfig, $field, $TSconfig, $row)
- *  837:     function getDataIdList($elements, $fieldConfig, $row)
- *  860:     function procesItemArray($selItems,$config,$fieldTSConfig,$table,$row,$field)
- *  875:     function addItems($items,$iArray)
- *  897:     function procItems($items,$itemsProcFuncTSconfig,$config,$table,$row,$field)
+ *  661:     function selectAddSpecial($dataAcc, $elements, $specialKey)
+ *  785:     function selectAddForeign($dataAcc, $elements, $fieldConfig, $field, $TSconfig, $row)
+ *  838:     function getDataIdList($elements, $fieldConfig, $row)
+ *  861:     function procesItemArray($selItems,$config,$fieldTSConfig,$table,$row,$field)
+ *  876:     function addItems($items,$iArray)
+ *  898:     function procItems($items,$itemsProcFuncTSconfig,$config,$table,$row,$field)
  *
  *              SECTION: Helper functions
- *  932:     function lockRecord($table, $id, $pid=0)
- *  949:     function regItem($table, $id, $field, $content)
- *  959:     function sL($in)
+ *  933:     function lockRecord($table, $id, $pid=0)
+ *  950:     function regItem($table, $id, $field, $content)
+ *  960:     function sL($in)
  *
  * TOTAL FUNCTIONS: 19
  * (This index is automatically created/updated by the extension "extdeveval")

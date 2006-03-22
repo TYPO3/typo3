@@ -65,9 +65,10 @@ class em_soap {
 	/**
 	 * Enter description here...
 	 *
-	 * @param array $options
-	 * @param string $username
-	 * @param string $password
+	 * @param	array		$options
+	 * @param	string		$username
+	 * @param	string		$password
+	 * @return	[type]		...
 	 */
 	function init($options=false, $username=false, $password=false) {
 		if ($username !== false) {
@@ -114,9 +115,9 @@ class em_soap {
 	/**
 	 * Enter description here...
 	 *
-	 * @param string $username
-	 * @param string $password
-	 * @return mixed	false on failure, $reactid on success
+	 * @param	string		$username
+	 * @param	string		$password
+	 * @return	mixed		false on failure, $reactid on success
 	 */
 	function login($username, $password) {
 		$reactid = $this->call('login', array('username' => $username, 'password' => $password));
@@ -135,7 +136,7 @@ class em_soap {
 	/**
 	 * Enter description here...
 	 *
-	 * @return unknown
+	 * @return	unknown
 	 */
 	function logout() {
 		$this->call('logout');
@@ -150,11 +151,11 @@ class em_soap {
 	/**
 	 * Enter description here...
 	 *
-	 * @param unknown_type $func
-	 * @param unknown_type $param
-	 * @param unknown_type $username
-	 * @param unknown_type $password
-	 * @return unknown
+	 * @param	unknown_type		$func
+	 * @param	unknown_type		$param
+	 * @param	unknown_type		$username
+	 * @param	unknown_type		$password
+	 * @return	unknown
 	 */
 	function call($func, $param=array(), $username=false, $password=false) {
 		if (!$this->client) {
@@ -194,9 +195,9 @@ class em_soap {
 	/**
 	 * Enter description here...
 	 *
-	 * @param unknown_type $func
-	 * @param unknown_type $param
-	 * @return unknown
+	 * @param	unknown_type		$func
+	 * @param	unknown_type		$param
+	 * @return	unknown
 	 */
 	function callPhpSOAP($func, $param) {
 		$header = null;
@@ -235,9 +236,9 @@ class em_soap {
 	/**
 	 * Enter description here...
 	 *
-	 * @param unknown_type $func
-	 * @param unknown_type $param
-	 * @return unknown
+	 * @param	unknown_type		$func
+	 * @param	unknown_type		$param
+	 * @return	unknown
 	 */
 	function callPearSOAP($func,$param) {
 		if ($this->options['authentication'] == 'headers') {
@@ -280,9 +281,9 @@ class em_soap {
 	/**
 	 * Enter description here...
 	 *
-	 * @param unknown_type $func
-	 * @param unknown_type $param
-	 * @return unknown
+	 * @param	unknown_type		$func
+	 * @param	unknown_type		$param
+	 * @return	unknown
 	 */
 	function callNuSOAP($func,$param) {
 		$header = false;
@@ -323,8 +324,8 @@ class em_soap {
 	/**
 	 * Enter description here...
 	 *
-	 * @param unknown_type $object
-	 * @return unknown
+	 * @param	unknown_type		$object
+	 * @return	unknown
 	 */
 	function object2array($object) {
 		if (!is_object($object) && !is_array($object)) {
@@ -341,8 +342,8 @@ class em_soap {
 	/**
 	 * Enter description here...
 	 *
-	 * @param unknown_type $array
-	 * @return unknown
+	 * @param	unknown_type		$array
+	 * @return	unknown
 	 */
 	function array2object($array) {
 		if (!is_array($array)) {
@@ -358,7 +359,7 @@ class em_soap {
 	/**
 	 * Enter description here...
 	 *
-	 * @return unknown
+	 * @return	unknown
 	 */
 	function lastRequest() {
 		switch ($this->options['implementation']) {
@@ -373,7 +374,7 @@ class em_soap {
 	/**
 	 * Enter description here...
 	 *
-	 * @return unknown
+	 * @return	unknown
 	 */
 	function lastResponse() {
 		switch ($this->options['implementation']) {
@@ -388,7 +389,7 @@ class em_soap {
 	/**
 	 * Enter description here...
 	 *
-	 * @return unknown
+	 * @return	unknown
 	 */
 	function getFunctions() {
 		switch ($this->options['implementation']) {

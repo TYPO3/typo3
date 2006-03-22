@@ -40,16 +40,16 @@
  *
  *  102: class tslib_gifBuilder extends t3lib_stdGraphic
  *  129:     function start($conf,$data)
- *  299:     function gifBuild()
- *  327:     function make()
+ *  315:     function gifBuild()
+ *  343:     function make()
  *
  *              SECTION: Various helper functions
- *  478:     function checkTextObj($conf)
- *  557:     function calcOffset($string)
- *  606:     function getResource($file,$fileArray)
- *  621:     function checkFile($file)
- *  632:     function fileName($pre)
- *  648:     function extension()
+ *  486:     function checkTextObj($conf)
+ *  566:     function calcOffset($string)
+ *  615:     function getResource($file,$fileArray)
+ *  632:     function checkFile($file)
+ *  643:     function fileName($pre)
+ *  659:     function extension()
  *
  * TOTAL FUNCTIONS: 9
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -133,7 +133,7 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 			$this->data = $data;
 
 
-			/* Hook preprocess gifbuilder conf 
+			/* Hook preprocess gifbuilder conf
 			 * Added by Julle for 3.8.0
 			 *
 			 * Let's you pre-process the gifbuilder configuration. for
@@ -175,7 +175,7 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 				$this->setup['backColor'] = trim($cObj->stdWrap($this->setup['backColor'], $this->setup['backColor.']));
 			}
 			if (!$this->setup['backColor'])	{ $this->setup['backColor']='white'; }
-			
+
 				// Transparent GIFs
 				// not working with reduceColors
 				// there's an option for IM: -transparent colors

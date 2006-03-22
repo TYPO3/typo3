@@ -37,14 +37,14 @@
  *
  *
  *
- *  114: class SC_t3lib_thumbs
- *  135:     function init()
- *  165:     function main()
+ *  113: class SC_t3lib_thumbs
+ *  134:     function init()
+ *  164:     function main()
  *
  *              SECTION: OTHER FUNCTIONS:
- *  268:     function errorGif($l1,$l2,$l3)
- *  320:     function fontGif($font)
- *  367:     function wrapFileName($inputName)
+ *  267:     function errorGif($l1,$l2,$l3)
+ *  319:     function fontGif($font)
+ *  366:     function wrapFileName($inputName)
  *
  * TOTAL FUNCTIONS: 5
  * (This index is automatically created/updated by the extension "extdeveval")

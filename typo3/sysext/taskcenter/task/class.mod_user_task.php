@@ -47,16 +47,17 @@
 		}
 
 		/**
-		* Send an email...
-		*
-		* @param string  $email: the email address to send to
-		* @param string  $subject: the subject of the emil
-		* @param string  $message: the message body of the email
-		* @return void
-		*
-		* @todo this function is from the old implementation of the
-		*       taskcenter, it should be updated to modern standards
-		*/
+ * Send an email...
+ *
+ *
+ *       taskcenter, it should be updated to modern standards
+ *
+ * @param	string		$email: the email address to send to
+ * @param	string		$subject: the subject of the emil
+ * @param	string		$message: the message body of the email
+ * @return	void
+ * @todo this function is from the old implementation of the
+ */
 		function sendEmail($email, $subject, $message) {
 			$sender = $this->BE_USER->user['realName'].' <'.$this->BE_USER->user['email'].'>';
 			$message .= '
@@ -70,34 +71,34 @@
 		}
 
 		/**
-		* Initialise the object
-		*
-		* @param object  $BE_USER: instance of t3lib_beuserauth representing the current be user.
-		* @return void
-		*/
+ * Initialise the object
+ *
+ * @param	object		$BE_USER: instance of t3lib_beuserauth representing the current be user.
+ * @return	void
+ */
 		function mod_user_task_init($BE_USER) {
 			$this->BE_USER = $BE_USER;
 			$this->perms_clause = $this->BE_USER->getPagePermsClause(1);
 		}
 
 		/**
-		* Return helpbubble image
-		*
-		* @return string  image tag (HTML)
-		*/
+ * Return helpbubble image
+ *
+ * @return	string		image tag (HTML)
+ */
 		function helpBubble() {
 			return '<img src="'.$this->backPath.'gfx/helpbubble.gif" width="14" height="14" hspace=2 align=top'.$GLOBALS['SOBE']->doc->helpStyle().'>';
 		}
 
 
 		/**
-		* Create a link to the module with the name of the module as link text.
-		*
-		* @param string  $key: the classname of the module
-		* @param bool    $dontLink: Just return the name of the module without a link.
-		* @param stting  $params: HTTP GET parameter string to add to the link (not used if dontLink true)
-		* @return string  link (HTML) / name of module (regular string)
-		*/
+ * Create a link to the module with the name of the module as link text.
+ *
+ * @param	string		$key: the classname of the module
+ * @param	bool		$dontLink: Just return the name of the module without a link.
+ * @param	stting		$params: HTTP GET parameter string to add to the link (not used if dontLink true)
+ * @return	string		link (HTML) / name of module (regular string)
+ */
 		function headLink($key, $dontLink = false, $params = '') {
 			$str = $GLOBALS['SOBE']->MOD_MENU['function'][$key];
 			if (!$dontLink) $str = '<a href="index.php?SET[function]='.$key.$params.'" onClick="this.blur();">'.htmlspecialchars($str).'</a>';
@@ -105,30 +106,30 @@
 		}
 
 		/**
-		* Return a string cropped to a fixed length according to system setting or parameter
-		*
-		* @param string  $str: string to be cropped.
-		* @param int	   $len: length of the cropped string, system settings is used if none is given
-		* @return string 	cropped string
-		*/
+ * Return a string cropped to a fixed length according to system setting or parameter
+ *
+ * @param	string		$str: string to be cropped.
+ * @param	int		$len: length of the cropped string, system settings is used if none is given
+ * @return	string		cropped string
+ */
 		function fixed_lgd($str, $len = 0) {
 			return t3lib_div::fixed_lgd($str, $len?$len:$this->BE_USER->uc['titleLen']);
 		}
 
 		/**
-		* Return an error icon
-		*
-		* @return string	Image tag (HTML)
-		*/
+ * Return an error icon
+ *
+ * @return	string		Image tag (HTML)
+ */
 		function errorIcon() {
 			return '<img src="'.$this->backPath.'gfx/icon_fatalerror.gif" width="18" height="16" align=top>';
 		}
 
 		/**
-		* [Describe function...]
-		*
-		* @return array  ...
-		*/
+ * [Describe function...]
+ *
+ * @return	array		...
+ */
 		function getUserAndGroupArrays() {
 			// Get groupnames for todo-tasks
 			$be_group_Array = t3lib_BEfunc::getListGroupNames('title,uid');
@@ -142,35 +143,35 @@
 		}
 
 		/**
-		* [Describe function...]
-		*
-		* @param [type]  $tstamp: ...
-		* @param [type]  $prefix: ...
-		* @return [type]  ...
-		*/
+ * [Describe function...]
+ *
+ * @param	[type]		$tstamp: ...
+ * @param	[type]		$prefix: ...
+ * @return	[type]		...
+ */
 		function dateTimeAge($tstamp, $prefix = 1) {
 			return t3lib_BEfunc::dateTimeAge($tstamp, $prefix);
 		}
 
 		/**
-		* [Describe function...]
-		*
-		* @param [type]  $mod: ...
-		* @return [type]  ...
-		*/
+ * [Describe function...]
+ *
+ * @param	[type]		$mod: ...
+ * @return	[type]		...
+ */
 		function accessMod($mod) {
 			return $this->BE_USER->modAccess(array('name' => $mod, 'access' => 'user,group'), 0);
 		}
 
 		/**
-		* Create configuration for entry in the left tab menu.
-		*
-		* @param string  $htmlContent: 			Content that does not get escaped, use this for icons links etc. (HTML)
-		* @param string  $label: 						bTitle of the tab, escaped for HTML, dispalyed after html content.
-		* @param string  $content: 					html content that gets displayed when the tab is activated. (HTML)
-		* @param string  $popUpDescription: alt-text for the tab text
-		* @return array											proper configuration for the tab menu.
-		*/
+ * Create configuration for entry in the left tab menu.
+ *
+ * @param	string		$htmlContent: 			Content that does not get escaped, use this for icons links etc. (HTML)
+ * @param	string		$label: 						bTitle of the tab, escaped for HTML, dispalyed after html content.
+ * @param	string		$content: 					html content that gets displayed when the tab is activated. (HTML)
+ * @param	string		$popUpDescription: alt-text for the tab text
+ * @return	array		proper configuration for the tab menu.
+ */
 		function mkMenuConfig($htmlContent, $label = "", $content = "", $popUpDescription = '') {
 			$configArr = Array();
 			if ((string) $htmlContent) $configArr['icon'] = $htmlContent;
@@ -181,11 +182,12 @@
 		}
 
 		/**
-		* Returns HTML code to dislay an url in an iframe with the right side of the taskcenter
-		*
-		* @param string  $url: url to display
-		* @return string	code that inserts the iframe (HTML)
-		*/
+ * Returns HTML code to dislay an url in an iframe with the right side of the taskcenter
+ *
+ * @param	string		$url: url to display
+ * @param	[type]		$max: ...
+ * @return	string		code that inserts the iframe (HTML)
+ */
 		function urlInIframe($url,$max=0) {
 			return '<iframe onload="resizeIframe(this,'.$max.');" scrolling="auto" width="100%" src="'.$url.'" name="list_frame" frameborder="no" style="border: none;"></iframe>';
 		}

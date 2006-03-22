@@ -37,51 +37,52 @@
  *
  *
  *
- *  104: class t3lib_tsparser_ext extends t3lib_TStemplate
- *  193:     function flattenSetup($setupArray, $prefix, $resourceFlag)
- *  220:     function substituteConstants($all)
- *  249:     function substituteCMarkers($all)
- *  271:     function generateConfig_constants()
- *  320:     function ext_getSetup($theSetup,$theKey)
- *  351:     function ext_getObjTree($arr, $depth_in, $depthData, $parentType="",$parentValue="")
- *  446:     function lineNumberToScript($lnArr)
- *  477:     function makeHtmlspecialchars($theValue)
- *  490:     function ext_getSearchKeys($arr, $depth_in, $searchString, $keyArray)
- *  530:     function ext_getRootlineNumber($pid)
- *  548:     function ext_getTemplateHierarchyArr($arr,$depthData, $keyArray,$first=0)
- *  607:     function ext_process_hierarchyInfo($depthDataArr,&$pointer)
- *  638:     function ext_outputTS($config, $lineNumbers=0, $comments=0, $crop=0, $syntaxHL=0, $syntaxHLBlockmode=0)
- *  665:     function ext_fixed_lgd($string,$chars)
- *  681:     function ext_lnBreakPointWrap($ln,$str)
- *  694:     function ext_formatTS($input, $ln, $comments=1, $crop=0)
- *  733:     function ext_getFirstTemplate($id,$template_uid=0)
- *  752:     function ext_getAllTemplates($id)
- *  772:     function ext_compareFlatSetups($default)
- *  838:     function ext_categorizeEditableConstants($editConstArray)
- *  861:     function ext_getCategoryLabelArray()
- *  878:     function ext_getTypeData($type)
- *  919:     function ext_getTSCE_config($category)
- *  958:     function ext_getKeyImage($key)
- *  968:     function ext_getTSCE_config_image($imgConf)
- *  992:     function ext_resourceDims()
- * 1022:     function ext_readDirResources($path)
- * 1037:     function readDirectory($path,$type="file")
- * 1062:     function ext_fNandV($params)
- * 1080:     function ext_printFields($theConstants,$category)
+ *  105: class t3lib_tsparser_ext extends t3lib_TStemplate
+ *  194:     function flattenSetup($setupArray, $prefix, $resourceFlag)
+ *  221:     function substituteConstants($all)
+ *  234:     function substituteConstantsCallBack($matches)
+ *  264:     function substituteCMarkers($all)
+ *  286:     function generateConfig_constants()
+ *  335:     function ext_getSetup($theSetup,$theKey)
+ *  366:     function ext_getObjTree($arr, $depth_in, $depthData, $parentType="",$parentValue="")
+ *  463:     function lineNumberToScript($lnArr)
+ *  494:     function makeHtmlspecialchars($theValue)
+ *  507:     function ext_getSearchKeys($arr, $depth_in, $searchString, $keyArray)
+ *  563:     function ext_getRootlineNumber($pid)
+ *  581:     function ext_getTemplateHierarchyArr($arr,$depthData, $keyArray,$first=0)
+ *  640:     function ext_process_hierarchyInfo($depthDataArr,&$pointer)
+ *  671:     function ext_outputTS($config, $lineNumbers=0, $comments=0, $crop=0, $syntaxHL=0, $syntaxHLBlockmode=0)
+ *  698:     function ext_fixed_lgd($string,$chars)
+ *  714:     function ext_lnBreakPointWrap($ln,$str)
+ *  727:     function ext_formatTS($input, $ln, $comments=1, $crop=0)
+ *  766:     function ext_getFirstTemplate($id,$template_uid=0)
+ *  786:     function ext_getAllTemplates($id)
+ *  807:     function ext_compareFlatSetups($default)
+ *  873:     function ext_categorizeEditableConstants($editConstArray)
+ *  896:     function ext_getCategoryLabelArray()
+ *  913:     function ext_getTypeData($type)
+ *  955:     function ext_getTSCE_config($category)
+ *  994:     function ext_getKeyImage($key)
+ * 1004:     function ext_getTSCE_config_image($imgConf)
+ * 1028:     function ext_resourceDims()
+ * 1058:     function ext_readDirResources($path)
+ * 1073:     function readDirectory($path,$type="file")
+ * 1098:     function ext_fNandV($params)
+ * 1116:     function ext_printFields($theConstants,$category)
  *
  *              SECTION: Processing input values
- * 1337:     function ext_regObjectPositions($constants)
- * 1352:     function ext_regObjects($pre)
- * 1397:     function ext_putValueInConf($key, $var)
- * 1420:     function ext_removeValueInConf($key)
- * 1436:     function ext_depthKeys($arr,$settings)
- * 1471:     function ext_procesInput($http_post_vars,$http_post_files,$theConstants,$tplRow)
- * 1598:     function upload_copy_file($typeDat,&$tplRow,$theRealFileName,$tmp_name)
- * 1644:     function ext_prevPageWithTemplate($id,$perms_clause)
- * 1660:     function ext_setStar($val)
- * 1672:     function ext_detectAndFixExtensionPrefix($value)
+ * 1373:     function ext_regObjectPositions($constants)
+ * 1388:     function ext_regObjects($pre)
+ * 1433:     function ext_putValueInConf($key, $var)
+ * 1456:     function ext_removeValueInConf($key)
+ * 1472:     function ext_depthKeys($arr,$settings)
+ * 1507:     function ext_procesInput($http_post_vars,$http_post_files,$theConstants,$tplRow)
+ * 1634:     function upload_copy_file($typeDat,&$tplRow,$theRealFileName,$tmp_name)
+ * 1683:     function ext_prevPageWithTemplate($id,$perms_clause)
+ * 1699:     function ext_setStar($val)
+ * 1711:     function ext_detectAndFixExtensionPrefix($value)
  *
- * TOTAL FUNCTIONS: 40
+ * TOTAL FUNCTIONS: 41
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -226,8 +227,8 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 	/**
 	 * Call back method for preg_replace_callback in substituteConstants
 	 *
-	 * @param       array           Regular expression matches
-	 * @return      string          Replacement
+	 * @param	array		Regular expression matches
+	 * @return	string		Replacement
 	 * @see substituteConstants()
 	 */
 	function substituteConstantsCallBack($matches) {

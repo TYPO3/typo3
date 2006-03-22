@@ -37,86 +37,93 @@
  *
  *
  *
- *  148: class t3lib_stdGraphic
- *  225:     function init()
+ *  155: class t3lib_stdGraphic
+ *  236:     function init()
  *
  *              SECTION: Layering images / "IMAGE" GIFBUILDER object
- *  328:     function maskImageOntoImage(&$im,$conf,$workArea)
- *  388:     function copyImageOntoImage(&$im,$conf,$workArea)
- *  410:     function copyGifOntoGif(&$im,$cpImg,$conf,$workArea)
- *  489:     function imagecopyresized(&$im, $cpImg, $Xstart, $Ystart, $cpImgCutX, $cpImgCutY, $w, $h, $w, $h)
+ *  366:     function maskImageOntoImage(&$im,$conf,$workArea)
+ *  436:     function copyImageOntoImage(&$im,$conf,$workArea)
+ *  458:     function copyGifOntoGif(&$im,$cpImg,$conf,$workArea)
+ *  537:     function imagecopyresized(&$im, $cpImg, $Xstart, $Ystart, $cpImgCutX, $cpImgCutY, $w, $h, $w, $h)
  *
  *              SECTION: Text / "TEXT" GIFBUILDER object
- *  538:     function makeText(&$im,$conf,$workArea)
- *  654:     function txtPosition($conf,$workArea,$BB)
- *  708:     function calcBBox($conf)
- *  777:     function addToMap($cords,$conf)
- *  800:     function calcTextCordsForMap($cords,$offset, $conf)
- *  835:     function SpacedImageTTFText(&$im, $fontSize, $angle, $x, $y, $Fcolor, $fontFile, $text, $spacing, $wordSpacing, $splitRenderingConf, $sF=1)
- *  872:     function fontResize($conf)
- *  914:     function ImageTTFBBoxWrapper($fontSize, $angle, $fontFile, $string, $splitRendering, $sF=1)
- *  955:     function ImageTTFTextWrapper($im, $fontSize, $angle, $x, $y, $color, $fontFile, $string, $splitRendering,$sF=1)
- * 1000:     function splitString($string,$splitRendering,$fontSize,$fontFile)
+ *  587:     function makeText(&$im,$conf,$workArea)
+ *  707:     function txtPosition($conf,$workArea,$BB)
+ *  761:     function calcBBox($conf)
+ *  820:     function addToMap($cords,$conf)
+ *  843:     function calcTextCordsForMap($cords,$offset, $conf)
+ *  878:     function SpacedImageTTFText(&$im, $fontSize, $angle, $x, $y, $Fcolor, $fontFile, $text, $spacing, $wordSpacing, $splitRenderingConf, $sF=1)
+ *  915:     function fontResize($conf)
+ *  958:     function ImageTTFBBoxWrapper($fontSize, $angle, $fontFile, $string, $splitRendering, $sF=1)
+ * 1005:     function ImageTTFTextWrapper($im, $fontSize, $angle, $x, $y, $color, $fontFile, $string, $splitRendering,$sF=1)
+ * 1058:     function splitString($string,$splitRendering,$fontSize,$fontFile)
+ * 1208:     function calcWordSpacing($conf, $scaleFactor=1)
+ * 1227:     function getTextScalFactor($conf)
  *
  *              SECTION: Other GIFBUILDER objects related to TEXT
- * 1171:     function makeOutline(&$im,$conf,$workArea,$txtConf)
- * 1200:     function circleOffset($distance, $iterations)
- * 1224:     function makeEmboss(&$im,$conf,$workArea,$txtConf)
- * 1246:     function makeShadow(&$im,$conf,$workArea,$txtConf)
+ * 1262:     function makeOutline(&$im,$conf,$workArea,$txtConf)
+ * 1291:     function circleOffset($distance, $iterations)
+ * 1315:     function makeEmboss(&$im,$conf,$workArea,$txtConf)
+ * 1337:     function makeShadow(&$im,$conf,$workArea,$txtConf)
  *
  *              SECTION: Other GIFBUILDER objects
- * 1376:     function makeBox(&$im,$conf,$workArea)
- * 1395:     function makeEffect(&$im, $conf)
- * 1410:     function IMparams($setup)
- * 1493:     function adjust(&$im, $conf)
- * 1525:     function crop(&$im,$conf)
- * 1555:     function scale(&$im,$conf)
- * 1587:     function setWorkArea($workArea)
+ * 1469:     function makeBox(&$im,$conf,$workArea)
+ * 1491:     function makeEffect(&$im, $conf)
+ * 1506:     function IMparams($setup)
+ * 1589:     function adjust(&$im, $conf)
+ * 1621:     function crop(&$im,$conf)
+ * 1652:     function scale(&$im,$conf)
+ * 1684:     function setWorkArea($workArea)
  *
  *              SECTION: Adjustment functions
- * 1628:     function autolevels(&$im)
- * 1659:     function outputLevels(&$im,$low,$high,$swap='')
- * 1691:     function inputLevels(&$im,$low,$high,$swap='')
- * 1722:     function reduceColors(&$im,$limit, $cols)
+ * 1725:     function autolevels(&$im)
+ * 1756:     function outputLevels(&$im,$low,$high,$swap='')
+ * 1788:     function inputLevels(&$im,$low,$high,$swap='')
+ * 1819:     function reduceColors(&$im,$limit, $cols)
+ * 1832:     function IMreduceColors($file, $cols)
  *
  *              SECTION: GIFBUILDER Helper functions
- * 1760:     function prependAbsolutePath($fontFile)
- * 1774:     function v5_sharpen($factor)
- * 1793:     function v5_blur($factor)
- * 1810:     function randomName()
- * 1823:     function applyOffset($cords,$OFFSET)
- * 1836:     function convertColor($string)
- * 1886:     function recodeString($string)
- * 1908:     function singleChars($theText,$returnUnicodeNumber=FALSE)
- * 1931:     function objPosition($conf,$workArea,$BB)
+ * 1875:     function prependAbsolutePath($fontFile)
+ * 1889:     function v5_sharpen($factor)
+ * 1908:     function v5_blur($factor)
+ * 1925:     function randomName()
+ * 1938:     function applyOffset($cords,$OFFSET)
+ * 1951:     function convertColor($string)
+ * 2001:     function recodeString($string)
+ * 2023:     function singleChars($theText,$returnUnicodeNumber=FALSE)
+ * 2046:     function objPosition($conf,$workArea,$BB)
  *
  *              SECTION: Scaling, Dimensions of images
- * 2010:     function imageMagickConvert($imagefile,$newExt='',$w='',$h='',$params='',$frame='',$options='',$mustCreate=0)
- * 2098:     function getImageDimensions($imageFile)
- * 2126:     function cacheImageDimensions($identifyResult)
- * 2158:     function getCachedImageDimensions($imageFile)
- * 2192:     function getImageScale($info,$w,$h,$options)
- * 2280:     function file_exists_typo3temp_file($output,$orig='')
+ * 2125:     function imageMagickConvert($imagefile,$newExt='',$w='',$h='',$params='',$frame='',$options='',$mustCreate=0)
+ * 2238:     function getImageDimensions($imageFile)
+ * 2266:     function cacheImageDimensions($identifyResult)
+ * 2298:     function getCachedImageDimensions($imageFile)
+ * 2332:     function getImageScale($info,$w,$h,$options)
+ * 2438:     function file_exists_typo3temp_file($output,$orig='')
  *
  *              SECTION: ImageMagick API functions
- * 2341:     function imageMagickIdentify($imagefile)
- * 2375:     function imageMagickExec($input,$output,$params)
- * 2397:     function combineExec($input,$overlay,$mask,$output)
- * 2416:     function wrapFileName($inputName)
+ * 2499:     function imageMagickIdentify($imagefile)
+ * 2534:     function imageMagickExec($input,$output,$params)
+ * 2557:     function combineExec($input,$overlay,$mask,$output, $handleNegation = false)
+ * 2588:     function wrapFileName($inputName)
  *
  *              SECTION: Various IO functions
- * 2457:     function checkFile($file)
- * 2471:     function createTempSubDir($dirName)
- * 2493:     function applyImageMagickToPHPGif(&$im, $command)
- * 2519:     function gif_or_jpg($type,$w,$h)
- * 2536:     function output($file)
- * 2580:     function destroy()
- * 2590:     function imgTag ($imgInfo)
- * 2602:     function ImageGif($destImg, $theImage)
- * 2620:     function imageCreateFromGif($sourceImg)
- * 2631:     function imageCreateFromFile($sourceImg)
+ * 2629:     function checkFile($file)
+ * 2643:     function createTempSubDir($dirName)
+ * 2665:     function applyImageMagickToPHPGif(&$im, $command)
+ * 2691:     function gif_or_jpg($type,$w,$h)
+ * 2708:     function output($file)
+ * 2748:     function destroy()
+ * 2758:     function imgTag ($imgInfo)
+ * 2770:     function ImageWrite($destImg, $theImage)
+ * 2808:     function imageGif($destImg, $theImage)
+ * 2820:     function imageCreateFromGif($sourceImg)
+ * 2831:     function imageCreateFromFile($sourceImg)
+ * 2870:     function imagecreate($w, $h)
+ * 2885:     function hexColor($col)
+ * 2903:     function unifyColors(&$img, $colArr, $closest = false)
  *
- * TOTAL FUNCTIONS: 59
+ * TOTAL FUNCTIONS: 66
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -2188,7 +2195,7 @@ class t3lib_stdGraphic	{
 						if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib'] !== 0)	{
 							if (!$data['origW']) { $data['origW'] = $data[0]; }
 							if (!$data['origH']) { $data['origH'] = $data[1]; }
-							$ofX = intval(($data['origW'] - $data[0]) * ($data['cropH']+100)/200);   
+							$ofX = intval(($data['origW'] - $data[0]) * ($data['cropH']+100)/200);
 							$ofY = intval(($data['origH'] - $data[1]) * ($data['cropV']+100)/200);
 							$tmpParm = Array('XY' => intval($data['origW']).','.intval($data['origH']),
 									'10' => 'IMAGE',
@@ -2198,9 +2205,9 @@ class t3lib_stdGraphic	{
 							$newoutput = $gifCreator->gifBuild();
 							if (!copy($newoutput,$output)) {
 								$output = $newoutput;
-							} 
+							}
 						} else {
-							$output = $crsOutput; 
+							$output = $crsOutput;
 						}
 					}
 				} elseif ($this->dontCheckForExistingTempFile || !$this->file_exists_typo3temp_file($output,$imagefile)) {
@@ -2544,6 +2551,7 @@ class t3lib_stdGraphic	{
 	 * @param	string		The relative (to PATH_site) image filepath, overlay file (top)
 	 * @param	string		The relative (to PATH_site) image filepath, the mask file (grayscale)
 	 * @param	string		The relative (to PATH_site) image filepath, output filename (written to)
+	 * @param	[type]		$handleNegation: ...
 	 * @return	void
 	 */
 	function combineExec($input,$overlay,$mask,$output, $handleNegation = false)	{
@@ -2756,7 +2764,7 @@ class t3lib_stdGraphic	{
 	 *
 	 * @param	pointer		The GDlib image resource pointer
 	 * @param	string		The filename to write to
- 	 * @return	mixed		The output of either imageGif, imagePng or imageJpeg based on the filename to write
+	 * @return	mixed		The output of either imageGif, imagePng or imageJpeg based on the filename to write
 	 * @see maskImageOntoImage(), scale(), output()
 	 */
 	function ImageWrite($destImg, $theImage)	{
@@ -2789,14 +2797,14 @@ class t3lib_stdGraphic	{
 
 
  	/**
- 	 * Writes the input GDlib image pointer to file. Now just a wrapper to ImageWrite.
- 	 *
- 	 * @param	pointer		The GDlib image resource pointer
- 	 * @param	string		The filename to write to
- 	 * @return	mixed		The output of either imageGif, imagePng or imageJpeg based on the filename to write
- 	 * @see imageWrite()
- 	 * @deprecated
- 	 */
+ * Writes the input GDlib image pointer to file. Now just a wrapper to ImageWrite.
+ *
+ * @param	pointer		The GDlib image resource pointer
+ * @param	string		The filename to write to
+ * @return	mixed		The output of either imageGif, imagePng or imageJpeg based on the filename to write
+ * @see imageWrite()
+ * @deprecated
+ */
  	function imageGif($destImg, $theImage)	{
  		return $this->imageWrite($destImg, $theImage);
 	}
@@ -2855,8 +2863,8 @@ class t3lib_stdGraphic	{
 	/**
 	 * Creates a new GD image resource. Wrapper for imagecreate(truecolor) depended if GD2 is used.
 	 *
-	 * @param	integer		Width
-	 * @param	integer		Height
+	 * @param	integer		Width of image
+	 * @param	integer		Height of image
 	 * @return	pointer		Image Resource pointer
 	 */
 	function imagecreate($w, $h)	{
@@ -2889,6 +2897,7 @@ class t3lib_stdGraphic	{
 	 *
 	 * @param	pointer		Image resource
 	 * @param	array		Array containing RGB color arrays
+	 * @param	[type]		$closest: ...
 	 * @return	integer		The index of the unified color
 	 */
 	function unifyColors(&$img, $colArr, $closest = false)	{

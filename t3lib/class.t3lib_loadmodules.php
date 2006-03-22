@@ -39,16 +39,17 @@
  *
  *
  *
- *   78: class t3lib_loadModules
- *   97:     function load($modulesArray,$BE_USER='')
- *  366:     function checkExtensionModule($name)
- *  385:     function checkMod($name, $fullpath)
- *  465:     function checkModAccess($name,$MCONF)
- *  488:     function parseModulesArray($arr)
- *  517:     function cleanName ($str)
- *  528:     function getRelativePath($baseDir,$destDir)
+ *   79: class t3lib_loadModules
+ *   99:     function load($modulesArray,$BE_USER='')
+ *  370:     function checkExtensionModule($name)
+ *  389:     function checkMod($name, $fullpath)
+ *  471:     function checkModAccess($name,$MCONF)
+ *  495:     function checkModWorkspace($name,$MCONF)
+ *  519:     function parseModulesArray($arr)
+ *  548:     function cleanName ($str)
+ *  559:     function getRelativePath($baseDir,$destDir)
  *
- * TOTAL FUNCTIONS: 7
+ * TOTAL FUNCTIONS: 8
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */

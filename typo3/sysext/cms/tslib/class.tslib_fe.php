@@ -42,138 +42,143 @@
  *
  *
  *
- *  207: class tslib_fe
- *  375:     function tslib_fe($TYPO3_CONF_VARS, $id, $type, $no_cache='', $cHash='', $jumpurl='',$MP='',$RDCT='')
- *  408:     function connectToMySQL()
- *  418:     function connectToDB()
- *  463:     function sendRedirect()
+ *  213: class tslib_fe
+ *  382:     function tslib_fe($TYPO3_CONF_VARS, $id, $type, $no_cache='', $cHash='', $jumpurl='',$MP='',$RDCT='')
+ *  415:     function connectToMySQL()
+ *  425:     function connectToDB()
+ *  470:     function sendRedirect()
  *
  *              SECTION: Initializing, resolving page id
- *  501:     function initFEuser()
- *  551:     function initUserGroups()
- *  586:     function isUserOrGroupSet()
- *  611:     function checkAlternativeIdMethods()
- *  663:     function clear_preview()
- *  676:     function determineId()
- *  811:     function fetch_the_id()
- *  904:     function getPageAndRootline()
- *  975:     function getPageShortcut($SC,$mode,$thisUid,$itera=20,$pageLog=array())
- * 1025:     function checkRootlineForIncludeSection()
- * 1062:     function checkEnableFields($row,$bypassGroupCheck=FALSE)
- * 1078:     function checkPageGroupAccess($row, $groupList=NULL)
- * 1097:     function checkPagerecordForIncludeSection($row)
- * 1106:     function checkIfLoginAllowedInBranch()
- * 1131:     function getPageAccessFailureReasons()
- * 1163:     function setIDfromArgV()
- * 1179:     function getPageAndRootlineWithDomain($domainStartPage)
- * 1206:     function setSysPageWhereClause()
- * 1218:     function findDomainRecord($recursive=0)
- * 1238:     function pageNotFoundAndExit($reason='', $header='')
- * 1253:     function pageNotFoundHandler($code, $header='', $reason='')
- * 1297:     function checkAndSetAlias()
- * 1312:     function idPartsAnalyze($str)
- * 1337:     function mergingWithGetVars($GET_VARS)
+ *  508:     function initFEuser()
+ *  558:     function initUserGroups()
+ *  593:     function isUserOrGroupSet()
+ *  618:     function checkAlternativeIdMethods()
+ *  670:     function clear_preview()
+ *  683:     function determineId()
+ *  817:     function fetch_the_id()
+ *  911:     function getPageAndRootline()
+ *  994:     function getPageShortcut($SC,$mode,$thisUid,$itera=20,$pageLog=array())
+ * 1044:     function checkRootlineForIncludeSection()
+ * 1081:     function checkEnableFields($row,$bypassGroupCheck=FALSE)
+ * 1097:     function checkPageGroupAccess($row, $groupList=NULL)
+ * 1116:     function checkPagerecordForIncludeSection($row)
+ * 1125:     function checkIfLoginAllowedInBranch()
+ * 1150:     function getPageAccessFailureReasons()
+ * 1182:     function setIDfromArgV()
+ * 1198:     function getPageAndRootlineWithDomain($domainStartPage)
+ * 1225:     function setSysPageWhereClause()
+ * 1237:     function findDomainRecord($recursive=0)
+ * 1257:     function pageNotFoundAndExit($reason='', $header='')
+ * 1272:     function pageNotFoundHandler($code, $header='', $reason='')
+ * 1316:     function checkAndSetAlias()
+ * 1335:     function idPartsAnalyze($str)
+ * 1360:     function mergingWithGetVars($GET_VARS)
+ * 1390:     function ADMCMD_preview()
+ * 1433:     function ADMCMD_preview_postInit($previewConfig)
  *
  *              SECTION: Template and caching related functions.
- * 1386:     function makeCacheHash()
- * 1410:     function reqCHash()
- * 1432:     function cHashParams($addQueryParams)
- * 1441:     function initTemplate()
- * 1453:     function getFromCache()
- * 1498:     function getFromCache_queryRow()
- * 1526:     function headerNoCache()
- * 1555:     function getHash()
- * 1575:     function getConfigArray()
+ * 1465:     function makeCacheHash()
+ * 1489:     function reqCHash()
+ * 1511:     function cHashParams($addQueryParams)
+ * 1520:     function initTemplate()
+ * 1532:     function getFromCache()
+ * 1578:     function getFromCache_queryRow()
+ * 1608:     function headerNoCache()
+ * 1637:     function getHash()
+ * 1657:     function getConfigArray()
  *
  *              SECTION: Further initialization and data processing
- * 1714:     function getCompressedTCarray()
- * 1768:     function includeTCA($TCAloaded=1)
- * 1795:     function settingLanguage()
- * 1885:     function settingLocale()
- * 1910:     function checkDataSubmission()
- * 1935:     function fe_tce()
- * 1949:     function locDataCheck($locationData)
- * 1965:     function sendFormmail()
- * 2016:     function extractRecipientCopy($bodytext)
- * 2116:     function setExternalJumpUrl()
- * 2126:     function checkJumpUrlReferer()
- * 2113:     function jumpUrl()
- * 2157:     function setUrlIdToken()
+ * 1818:     function getCompressedTCarray()
+ * 1872:     function includeTCA($TCAloaded=1)
+ * 1899:     function settingLanguage()
+ * 1992:     function settingLocale()
+ * 2017:     function checkDataSubmission()
+ * 2050:     function fe_tce()
+ * 2064:     function locDataCheck($locationData)
+ * 2080:     function sendFormmail()
+ * 2131:     function extractRecipientCopy($bodytext)
+ * 2145:     function setExternalJumpUrl()
+ * 2156:     function checkJumpUrlReferer()
+ * 2171:     function jumpUrl()
+ * 2215:     function setUrlIdToken()
  *
  *              SECTION: Page generation; cache handling
- * 2200:     function isGeneratePage()
- * 2210:     function tempPageCacheContent()
- * 2251:     function realPageCacheContent()
- * 2280:     function setPageCacheContent($c,$d,$t)
- * 2304:     function clearPageCacheContent()
- * 2314:     function clearPageCacheContent_pidList($pidList)
- * 2325:     function setSysLastChanged()
+ * 2258:     function isGeneratePage()
+ * 2268:     function tempPageCacheContent()
+ * 2325:     function realPageCacheContent()
+ * 2355:     function setPageCacheContent($content,$data,$tstamp)
+ * 2382:     function clearPageCacheContent()
+ * 2392:     function clearPageCacheContent_pidList($pidList)
+ * 2403:     function pageCachePostProcess(&$row,$type)
+ * 2426:     function setSysLastChanged()
  *
  *              SECTION: Page generation; rendering and inclusion
- * 2361:     function generatePage_preProcessing()
- * 2383:     function generatePage_whichScript()
- * 2395:     function generatePage_postProcessing()
- * 2487:     function INTincScript()
- * 2547:     function INTincScript_loadJSCode()
- * 2588:     function isINTincScript()
- * 2597:     function doXHTML_cleaning()
- * 2606:     function doLocalAnchorFix()
+ * 2462:     function generatePage_preProcessing()
+ * 2484:     function generatePage_whichScript()
+ * 2496:     function generatePage_postProcessing()
+ * 2588:     function INTincScript()
+ * 2648:     function INTincScript_loadJSCode()
+ * 2689:     function isINTincScript()
+ * 2698:     function doXHTML_cleaning()
+ * 2707:     function doLocalAnchorFix()
  *
  *              SECTION: Finished off; outputting, storing session data, statistics...
- * 2637:     function isOutputting()
- * 2660:     function processOutput()
- * 2728:     function sendCacheHeaders()
- * 2796:     function isStaticCacheble()
- * 2809:     function contentStrReplace()
- * 2835:     function isEXTincScript()
- * 2844:     function storeSessionData()
- * 2854:     function setParseTime()
- * 2866:     function statistics()
- * 2974:     function previewInfo()
- * 3002:     function hook_eofe()
- * 3018:     function beLoginLinkIPList()
+ * 2738:     function isOutputting()
+ * 2761:     function processOutput()
+ * 2834:     function sendCacheHeaders()
+ * 2902:     function isStaticCacheble()
+ * 2915:     function contentStrReplace()
+ * 2941:     function isEXTincScript()
+ * 2950:     function storeSessionData()
+ * 2960:     function setParseTime()
+ * 2972:     function statistics()
+ * 3066:     function previewInfo()
+ * 3101:     function hook_eofe()
+ * 3117:     function beLoginLinkIPList()
+ * 3138:     function addTempContentHttpHeaders()
  *
  *              SECTION: Various internal API functions
- * 3073:     function makeSimulFileName($inTitle,$page,$type,$addParams='',$no_cache='')
- * 3120:     function simulateStaticDocuments_pEnc_onlyP_proc($linkVars)
- * 3149:     function getSimulFileName()
- * 3163:     function fileNameASCIIPrefix($inTitle,$titleChars,$mergeChar='.')
- * 3181:     function encryptEmail($string,$back=0)
- * 3207:     function codeString($string, $decode=FALSE)
- * 3233:     function roundTripCryptString($string)
- * 3253:     function checkFileInclude($incFile)
- * 3268:     function newCObj()
- * 3281:     function setAbsRefPrefix()
- * 3295:     function baseUrlWrap($url)
- * 3314:     function printError($label,$header='Error!')
- * 3325:     function updateMD5paramsRecord($hash)
- * 3336:     function tidyHTML($content)
- * 3362:     function prefixLocalAnchorsWithScript()
- * 3373:     function workspacePreviewInit()
- * 3382:     function doWorkspacePreview()
- * 3392:     function whichWorkspace($returnTitle = FALSE)
+ * 3184:     function makeSimulFileName($inTitle,$page,$type,$addParams='',$no_cache='')
+ * 3231:     function simulateStaticDocuments_pEnc_onlyP_proc($linkVars)
+ * 3260:     function getSimulFileName()
+ * 3271:     function setSimulReplacementChar()
+ * 3291:     function fileNameASCIIPrefix($inTitle,$titleChars,$mergeChar='.')
+ * 3314:     function encryptEmail($string,$back=0)
+ * 3340:     function codeString($string, $decode=FALSE)
+ * 3366:     function roundTripCryptString($string)
+ * 3386:     function checkFileInclude($incFile)
+ * 3401:     function newCObj()
+ * 3414:     function setAbsRefPrefix()
+ * 3428:     function baseUrlWrap($url)
+ * 3447:     function printError($label,$header='Error!')
+ * 3458:     function updateMD5paramsRecord($hash)
+ * 3469:     function tidyHTML($content)
+ * 3495:     function prefixLocalAnchorsWithScript()
+ * 3505:     function workspacePreviewInit()
+ * 3521:     function doWorkspacePreview()
+ * 3531:     function whichWorkspace($returnTitle = FALSE)
  *
  *              SECTION: Various external API functions - for use in plugins etc.
- * 3450:     function getStorageSiterootPids()
- * 3465:     function getPagesTSconfig()
- * 3498:     function setJS($key,$content='')
- * 3536:     function setCSS($key,$content)
- * 3551:     function make_seed()
- * 3564:     function uniqueHash($str='')
- * 3573:     function set_no_cache()
- * 3583:     function set_cache_timeout_default($seconds)
- * 3599:     function plainMailEncoded($email,$subject,$message,$headers='')
+ * 3589:     function getStorageSiterootPids()
+ * 3604:     function getPagesTSconfig()
+ * 3637:     function setJS($key,$content='')
+ * 3677:     function setCSS($key,$content)
+ * 3692:     function make_seed()
+ * 3705:     function uniqueHash($str='')
+ * 3714:     function set_no_cache()
+ * 3724:     function set_cache_timeout_default($seconds)
+ * 3740:     function plainMailEncoded($email,$subject,$message,$headers='')
  *
  *              SECTION: Localization and character set conversion
- * 3640:     function sL($input)
- * 3669:     function readLLfile($fileRef)
- * 3680:     function getLLL($index,$LOCAL_LANG)
- * 3694:     function initLLvars()
- * 3728:     function csConv($str,$from='')
- * 3746:     function convOutputCharset($content,$label='')
- * 3759:     function convPOSTCharset()
+ * 3784:     function sL($input)
+ * 3813:     function readLLfile($fileRef)
+ * 3824:     function getLLL($index,$LOCAL_LANG)
+ * 3838:     function initLLvars()
+ * 3872:     function csConv($str,$from='')
+ * 3890:     function convOutputCharset($content,$label='')
+ * 3903:     function convPOSTCharset()
  *
- * TOTAL FUNCTIONS: 110
+ * TOTAL FUNCTIONS: 116
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -1379,7 +1384,7 @@
 	 * The main point is that a special URL valid for a limited time, eg. http://localhost/typo3site/?ADMCMD_prev=035d9bf938bd23cb657735f68a8cedbf will open up for a preview that doesn't require login. Thus its useful for sending an email.
 	 * This can also be used to generate previews of hidden pages, start/endtimes, usergroups and those other settings from the Admin Panel - just not implemented yet.
 	 *
-	 * @return array 	Preview configuration array from sys_preview record.
+	 * @return	array		Preview configuration array from sys_preview record.
 	 * @see t3lib_BEfunc::compilePreviewKeyword()
 	 */
 	function ADMCMD_preview(){
@@ -1420,7 +1425,9 @@
 	/**
 	 * Configuration after initialization of TSFE object.
 	 * Basically this unsets the BE cookie if any and forces the BE user set according to the preview configuration.
-	 * @param	array 	Preview configuration, see ADMCMD_preview()
+	 *
+	 * @param	array		Preview configuration, see ADMCMD_preview()
+	 * @return	void
 	 * @see ADMCMD_preview(), index_ts.php
 	 */
 	function ADMCMD_preview_postInit($previewConfig){
@@ -2385,7 +2392,14 @@
 	function clearPageCacheContent_pidList($pidList)	{
 		$GLOBALS['TYPO3_DB']->exec_DELETEquery('cache_pages', 'page_id IN ('.$GLOBALS['TYPO3_DB']->cleanIntList($pidList).')');
 	}
-	
+
+	/**
+	 * Post processing page cache rows for both get and set.
+	 *
+	 * @param	array		Input "cache_pages" row, passed by reference!
+	 * @param	string		Type of operation, either "get" or "set"
+	 * @return	void
+	 */
 	function pageCachePostProcess(&$row,$type)	{
 
 		if ($this->TYPO3_CONF_VARS['FE']['pageCacheToExternalFiles'])	{
@@ -3067,10 +3081,10 @@ if (version == "n3") {
 						</tr>
 					</table>
 				</div>';
-				
+
 				if ($this->fePreview==2)	{
-					$temp_content = $this->config['config']['message_preview_workspace'] ? 
-						@sprintf($this->config['config']['message_preview_workspace'], $this->whichWorkspace(TRUE),$this->whichWorkspace()) : 
+					$temp_content = $this->config['config']['message_preview_workspace'] ?
+						@sprintf($this->config['config']['message_preview_workspace'], $this->whichWorkspace(TRUE),$this->whichWorkspace()) :
 						$stdMsg;
 				} else {
 					$temp_content = $this->config['config']['message_preview'] ? $this->config['config']['message_preview'] : $stdMsg;
@@ -3119,7 +3133,7 @@ if (version == "n3") {
 	/**
 	 * Sends HTTP headers for temporary content. These headers prevent search engines from caching temporary content and asks them to revisit this page again.
 	 *
-	 * @return void
+	 * @return	void
 	 */
 	function addTempContentHttpHeaders() {
 		header('HTTP/1.0 503 Service unavailable');

@@ -29,7 +29,6 @@
  *
  * @author	Sebastian Kurfuerst <sebastian@garbage-group.de
  */
-
 class tx_coreupdates_compatversion {
 	var $versionNumber;	// version number coming from t3lib_div::int_from_ver()
 	var $pObj;	// parent object (tx_install)
@@ -174,7 +173,7 @@ class tx_coreupdates_compatversion {
 	 * show changes needed
 	 *
 	 * @param	string		input prefix to prepend all form fields with.
-	 * @return string		HTML output
+	 * @return	string		HTML output
 	 */
 	function showChangesNeeded($inputPrefix = '')	{
 		global $TYPO3_CONF_VARS;

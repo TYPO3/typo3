@@ -35,91 +35,94 @@
  *
  *
  *
- *  138: class tx_indexedsearch_indexer
- *  204:     function hook_indexContent(&$pObj)
+ *  141: class tx_indexedsearch_indexer
+ *  207:     function hook_indexContent(&$pObj)
  *
  *              SECTION: Backend API
- *  303:     function backend_initIndexer($id, $type, $sys_language_uid, $MP, $uidRL, $cHash_array=array(), $createCHash=FALSE)
- *  340:     function backend_setFreeIndexUid($freeIndexUid)
- *  357:     function backend_indexAsTYPO3Page($title, $keywords, $description, $content, $charset, $mtime, $crdate=0, $recordUid=0)
+ *  308:     function backend_initIndexer($id, $type, $sys_language_uid, $MP, $uidRL, $cHash_array=array(), $createCHash=FALSE)
+ *  347:     function backend_setFreeIndexUid($freeIndexUid, $freeIndexSetId=0)
+ *  365:     function backend_indexAsTYPO3Page($title, $keywords, $description, $content, $charset, $mtime, $crdate=0, $recordUid=0)
  *
  *              SECTION: Initialization
- *  408:     function init()
- *  459:     function initializeExternalParsers()
+ *  416:     function init()
+ *  468:     function initializeExternalParsers()
  *
  *              SECTION: Indexing; TYPO3 pages (HTML content)
- *  500:     function indexTypo3PageContent()
- *  586:     function splitHTMLContent($content)
- *  632:     function getHTMLcharset($content)
- *  647:     function convertHTMLToUtf8($content,$charset='')
- *  675:     function embracingTags($string,$tagName,&$tagContent,&$stringAfter,&$paramList)
- *  702:     function typoSearchTags(&$body)
- *  731:     function extractLinks($content)
- *  774:     function extractHyperLinks($string)
+ *  509:     function indexTypo3PageContent()
+ *  596:     function splitHTMLContent($content)
+ *  642:     function getHTMLcharset($content)
+ *  657:     function convertHTMLToUtf8($content,$charset='')
+ *  685:     function embracingTags($string,$tagName,&$tagContent,&$stringAfter,&$paramList)
+ *  712:     function typoSearchTags(&$body)
+ *  741:     function extractLinks($content)
+ *  812:     function extractHyperLinks($string)
  *
  *              SECTION: Indexing; external URL
- *  826:     function indexExternalUrl($externalUrl)
- *  857:     function getUrlHeaders($url)
+ *  871:     function indexExternalUrl($externalUrl)
+ *  902:     function getUrlHeaders($url)
  *
  *              SECTION: Indexing; external files (PDF, DOC, etc)
- *  917:     function indexRegularDocument($file, $force=FALSE, $contentTmpFile='', $altExtension='')
- * 1023:     function readFileContent($ext,$absFile,$cPKey)
- * 1040:     function fileContentParts($ext,$absFile)
- * 1058:     function splitRegularContent($content)
+ *  948:     function indexRegularDocument($file, $force=FALSE, $contentTmpFile='', $altExtension='')
+ * 1054:     function readFileContent($ext,$absFile,$cPKey)
+ * 1071:     function fileContentParts($ext,$absFile)
+ * 1089:     function splitRegularContent($content)
  *
  *              SECTION: Analysing content, Extracting words
- * 1091:     function charsetEntity2utf8(&$contentArr, $charset)
- * 1114:     function processWordsInArrays($contentArr)
- * 1137:     function bodyDescription($contentArr)
- * 1159:     function indexAnalyze($content)
- * 1180:     function analyzeHeaderinfo(&$retArr,$content,$key,$offset)
- * 1199:     function analyzeBody(&$retArr,$content)
- * 1219:     function metaphone($word,$retRaw=FALSE)
+ * 1122:     function charsetEntity2utf8(&$contentArr, $charset)
+ * 1145:     function processWordsInArrays($contentArr)
+ * 1170:     function procesWordsInArrays($contentArr)
+ * 1180:     function bodyDescription($contentArr)
+ * 1202:     function indexAnalyze($content)
+ * 1223:     function analyzeHeaderinfo(&$retArr,$content,$key,$offset)
+ * 1242:     function analyzeBody(&$retArr,$content)
+ * 1262:     function metaphone($word,$retRaw=FALSE)
  *
  *              SECTION: SQL; TYPO3 Pages
- * 1261:     function submitPage()
- * 1330:     function submit_grlist($hash,$phash_x)
- * 1350:     function submit_section($hash,$hash_t3)
- * 1368:     function removeOldIndexedPages($phash)
+ * 1304:     function submitPage()
+ * 1378:     function submit_grlist($hash,$phash_x)
+ * 1398:     function submit_section($hash,$hash_t3)
+ * 1416:     function removeOldIndexedPages($phash)
  *
  *              SECTION: SQL; External media
- * 1411:     function submitFilePage($hash,$file,$subinfo,$ext,$mtime,$ctime,$size,$content_md5h,$contentParts)
- * 1473:     function submitFile_grlist($hash)
- * 1487:     function submitFile_section($hash)
- * 1501:     function removeOldIndexedFiles($phash)
+ * 1459:     function submitFilePage($hash,$file,$subinfo,$ext,$mtime,$ctime,$size,$content_md5h,$contentParts)
+ * 1525:     function submitFile_grlist($hash)
+ * 1539:     function submitFile_section($hash)
+ * 1553:     function removeOldIndexedFiles($phash)
  *
  *              SECTION: SQL Helper functions
- * 1537:     function checkMtimeTstamp($mtime,$phash)
- * 1573:     function checkContentHash()
- * 1590:     function checkExternalDocContentHash($hashGr,$content_md5h)
- * 1604:     function is_grlist_set($phash_x)
- * 1617:     function update_grlist($phash,$phash_x)
- * 1632:     function updateTstamp($phash,$mtime=0)
- * 1648:     function updateParsetime($phash,$parsetime)
- * 1661:     function updateRootline()
- * 1676:     function getRootLineFields(&$fieldArr)
- * 1695:     function removeLoginpagesWithContentHash()
+ * 1589:     function checkMtimeTstamp($mtime,$phash)
+ * 1625:     function checkContentHash()
+ * 1642:     function checkExternalDocContentHash($hashGr,$content_md5h)
+ * 1656:     function is_grlist_set($phash_x)
+ * 1669:     function update_grlist($phash,$phash_x)
+ * 1684:     function updateTstamp($phash,$mtime=0)
+ * 1699:     function updateSetId($phash)
+ * 1714:     function updateParsetime($phash,$parsetime)
+ * 1727:     function updateRootline()
+ * 1742:     function getRootLineFields(&$fieldArr)
+ * 1761:     function removeLoginpagesWithContentHash()
+ * 1778:     function includeCrawlerClass()
  *
  *              SECTION: SQL; Submitting words
- * 1730:     function checkWordList($wl)
- * 1767:     function submitWords($wl,$phash)
- * 1791:     function freqMap($freq)
+ * 1805:     function checkWordList($wl)
+ * 1842:     function submitWords($wl,$phash)
+ * 1866:     function freqMap($freq)
  *
  *              SECTION: Hashing
- * 1824:     function setT3Hashes()
- * 1850:     function setExtHashes($file,$subinfo=array())
- * 1874:     function md5inthash($str)
- * 1884:     function makeCHash($paramArray)
+ * 1899:     function setT3Hashes()
+ * 1925:     function setExtHashes($file,$subinfo=array())
+ * 1949:     function md5inthash($str)
+ * 1959:     function makeCHash($paramArray)
  *
  *              SECTION: Internal logging functions
- * 1916:     function log_push($msg,$key)
- * 1925:     function log_pull()
- * 1936:     function log_setTSlogMessage($msg, $errorNum=0)
+ * 1991:     function log_push($msg,$key)
+ * 2000:     function log_pull()
+ * 2011:     function log_setTSlogMessage($msg, $errorNum=0)
  *
  *              SECTION: tslib_fe hooks:
- * 1961:     function fe_headerNoCache(&$params, $ref)
+ * 2036:     function fe_headerNoCache(&$params, $ref)
  *
- * TOTAL FUNCTIONS: 56
+ * TOTAL FUNCTIONS: 59
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -338,6 +341,7 @@ class tx_indexedsearch_indexer {
 	 * Sets the free-index uid. Can be called right after backend_initIndexer()
 	 *
 	 * @param	integer		Free index UID
+	 * @param	integer		Set id - an integer identifying the "set" of indexing operations.
 	 * @return	void
 	 */
 	function backend_setFreeIndexUid($freeIndexUid, $freeIndexSetId=0)	{
@@ -1687,7 +1691,7 @@ class tx_indexedsearch_indexer {
 	}
 
 	/**
-	 * Update SetID
+	 * Update SetID of the index_phash record.
 	 *
 	 * @param	integer		phash value
 	 * @return	void
@@ -1766,6 +1770,11 @@ class tx_indexedsearch_indexer {
 		}
 	}
 
+	/**
+	 * Includes the crawler class
+	 *
+	 * @return	void
+	 */
 	function includeCrawlerClass()	{
 		global $TYPO3_CONF_VARS;
 

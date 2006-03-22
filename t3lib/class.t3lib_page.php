@@ -50,29 +50,29 @@
  *  314:     function getRecordOverlay($table,$row,$sys_language_content,$OLmode='')
  *
  *              SECTION: Page related: Menu, Domain record, Root line
- *  410:     function getMenu($uid,$fields='*',$sortField='sorting',$addWhere='')
- *  448:     function getDomainStartPage($domain, $path='',$request_uri='')
- *  496:     function getRootLine($uid, $MP='', $ignoreMPerrors=FALSE)
- *  617:     function getPathFromRootline($rl,$len=20)
- *  638:     function getExtURL($pagerow,$disable=0)
- *  662:     function getMountPointInfo($pageId, $pageRec=FALSE, $prevMountPids=array(), $firstPageUid=0)
+ *  413:     function getMenu($uid,$fields='*',$sortField='sorting',$addWhere='',$checkShortcuts=1)
+ *  471:     function getDomainStartPage($domain, $path='',$request_uri='')
+ *  519:     function getRootLine($uid, $MP='', $ignoreMPerrors=FALSE)
+ *  640:     function getPathFromRootline($rl,$len=20)
+ *  661:     function getExtURL($pagerow,$disable=0)
+ *  685:     function getMountPointInfo($pageId, $pageRec=FALSE, $prevMountPids=array(), $firstPageUid=0)
  *
  *              SECTION: Selecting records in general
- *  739:     function checkRecord($table,$uid,$checkPage=0)
- *  773:     function getRawRecord($table,$uid,$fields='*')
- *  797:     function getRecordsByField($theTable,$theField,$theValue,$whereClause='',$groupBy='',$orderBy='',$limit='')
+ *  762:     function checkRecord($table,$uid,$checkPage=0)
+ *  797:     function getRawRecord($table,$uid,$fields='*',$noWSOL=FALSE)
+ *  823:     function getRecordsByField($theTable,$theField,$theValue,$whereClause='',$groupBy='',$orderBy='',$limit='')
  *
  *              SECTION: Caching and standard clauses
- *  849:     function getHash($hash,$expTime=0)
- *  872:     function storeHash($hash,$data,$ident)
- *  890:     function deleteClause($table)
- *  910:     function enableFields($table,$show_hidden=-1,$ignore_array=array(),$noVersionPreview=FALSE)
- *  979:     function getMultipleGroupsWhereClause($field, $table)
+ *  875:     function getHash($hash,$expTime=0)
+ *  898:     function storeHash($hash,$data,$ident)
+ *  916:     function deleteClause($table)
+ *  936:     function enableFields($table,$show_hidden=-1,$ignore_array=array(),$noVersionPreview=FALSE)
+ * 1008:     function getMultipleGroupsWhereClause($field, $table)
  *
  *              SECTION: Versioning Preview
- * 1026:     function fixVersioningPid($table,&$rr)
- * 1066:     function versionOL($table,&$row)
- * 1121:     function getWorkspaceVersionOfRecord($workspace, $table, $uid, $fields='*')
+ * 1055:     function fixVersioningPid($table,&$rr)
+ * 1096:     function versionOL($table,&$row)
+ * 1151:     function getWorkspaceVersionOfRecord($workspace, $table, $uid, $fields='*')
  *
  * TOTAL FUNCTIONS: 24
  * (This index is automatically created/updated by the extension "extdeveval")

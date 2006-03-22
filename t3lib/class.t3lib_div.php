@@ -39,144 +39,165 @@
  *
  *
  *
- *  211: class t3lib_div
+ *  232: class t3lib_div
  *
  *              SECTION: GET/POST Variables
- *  241:     function _GP($var)
- *  259:     function _GET($var=NULL)
- *  276:     function _POST($var=NULL)
- *  292:     function _GETset($inputGet,$key='')
- *  315:     function GPvar($var,$strip=0)
- *  332:     function GParrayMerged($var)
+ *  262:     function _GP($var)
+ *  280:     function _GET($var=NULL)
+ *  297:     function _POST($var=NULL)
+ *  313:     function _GETset($inputGet,$key='')
+ *  336:     function GPvar($var,$strip=0)
+ *  353:     function GParrayMerged($var)
  *
  *              SECTION: IMAGE FUNCTIONS
- *  376:     function gif_compress($theFile, $type)
- *  402:     function png_to_gif_by_imagemagick($theFile)
- *  426:     function read_png_gif($theFile,$output_png=0)
+ *  397:     function gif_compress($theFile, $type)
+ *  425:     function png_to_gif_by_imagemagick($theFile)
+ *  450:     function read_png_gif($theFile,$output_png=0)
  *
  *              SECTION: STRING FUNCTIONS
- *  475:     function fixed_lgd($string,$origChars,$preStr='...')
- *  500:     function fixed_lgd_pre($string,$chars)
- *  514:     function fixed_lgd_cs($string,$chars)
- *  531:     function breakTextForEmail($str,$implChar="\n",$charWidth=76)
- *  550:     function breakLinesForEmail($str,$implChar="\n",$charWidth=76)
- *  585:     function cmpIP($baseIP, $list)
- *  627:     function cmpFQDN($baseIP, $list)
- *  657:     function inList($list,$item)
- *  669:     function rmFromList($element,$list)
- *  687:     function intInRange($theInt,$min,$max=2000000000,$zeroValue=0)
- *  703:     function intval_positive($theInt)
- *  716:     function int_from_ver($verNumberStr)
- *  728:     function md5int($str)
- *  741:     function shortMD5($input, $len=10)
- *  754:     function uniqueList($in_list, $secondParameter=NULL)
- *  768:     function split_fileref($fileref)
- *  805:     function dirname($path)
- *  821:     function modifyHTMLColor($color,$R,$G,$B)
- *  841:     function modifyHTMLColorAll($color,$all)
- *  852:     function rm_endcomma($string)
- *  865:     function danish_strtoupper($string)
- *  880:     function convUmlauts($str)
- *  893:     function testInt($var)
- *  905:     function isFirstPartOfStr($str,$partStr)
- *  921:     function formatSize($sizeInBytes,$labels='')
- *  956:     function convertMicrotime($microtime)
- *  970:     function splitCalc($string,$operators)
- *  992:     function calcPriority($string)
- * 1032:     function calcParenthesis($string)
- * 1058:     function htmlspecialchars_decode($value)
- * 1073:     function deHSCentities($str)
- * 1086:     function slashJS($string,$extended=0,$char="'")
- * 1099:     function rawUrlEncodeJS($str)
- * 1111:     function rawUrlEncodeFP($str)
- * 1122:     function validEmail($email)
- * 1137:     function formatForTextarea($content)
+ *  499:     function fixed_lgd($string,$origChars,$preStr='...')
+ *  524:     function fixed_lgd_pre($string,$chars)
+ *  538:     function fixed_lgd_cs($string,$chars)
+ *  555:     function breakTextForEmail($str,$implChar="\n",$charWidth=76)
+ *  574:     function breakLinesForEmail($str,$implChar="\n",$charWidth=76)
+ *  610:     function cmpIP($baseIP, $list)
+ *  626:     function cmpIPv4($baseIP, $list)
+ *  668:     function cmpIPv6($baseIP, $list)
+ *  711:     function IPv6Hex2Bin ($hex)
+ *  726:     function normalizeIPv6($address)
+ *  782:     function validIPv6($ip)
+ *  805:     function cmpFQDN($baseIP, $list)
+ *  835:     function inList($list,$item)
+ *  847:     function rmFromList($element,$list)
+ *  863:     function expandList($list)
+ *  894:     function intInRange($theInt,$min,$max=2000000000,$zeroValue=0)
+ *  910:     function intval_positive($theInt)
+ *  923:     function int_from_ver($verNumberStr)
+ *  934:     function compat_version($verNumberStr)
+ *  952:     function md5int($str)
+ *  965:     function shortMD5($input, $len=10)
+ *  978:     function uniqueList($in_list, $secondParameter=NULL)
+ *  992:     function split_fileref($fileref)
+ * 1030:     function dirname($path)
+ * 1046:     function modifyHTMLColor($color,$R,$G,$B)
+ * 1066:     function modifyHTMLColorAll($color,$all)
+ * 1077:     function rm_endcomma($string)
+ * 1090:     function danish_strtoupper($string)
+ * 1105:     function convUmlauts($str)
+ * 1118:     function testInt($var)
+ * 1130:     function isFirstPartOfStr($str,$partStr)
+ * 1146:     function formatSize($sizeInBytes,$labels='')
+ * 1181:     function convertMicrotime($microtime)
+ * 1195:     function splitCalc($string,$operators)
+ * 1217:     function calcPriority($string)
+ * 1258:     function calcParenthesis($string)
+ * 1284:     function htmlspecialchars_decode($value)
+ * 1299:     function deHSCentities($str)
+ * 1312:     function slashJS($string,$extended=0,$char="'")
+ * 1325:     function rawUrlEncodeJS($str)
+ * 1337:     function rawUrlEncodeFP($str)
+ * 1348:     function validEmail($email)
+ * 1363:     function formatForTextarea($content)
  *
  *              SECTION: ARRAY FUNCTIONS
- * 1168:     function inArray($in_array,$item)
- * 1185:     function intExplode($delim, $string)
- * 1204:     function revExplode($delim, $string, $count=0)
- * 1224:     function trimExplode($delim, $string, $onlyNonEmptyValues=0)
- * 1246:     function uniqueArray($valueArray)
- * 1258:     function removeArrayEntryByValue($array,$cmpValue)
- * 1286:     function implodeArrayForUrl($name,$theArray,$str='',$skipBlank=0,$rawurlencodeParamName=0)
- * 1313:     function compileSelectedGetVarsFromArray($varList,$getArray,$GPvarAlt=1)
- * 1336:     function addSlashesOnArray(&$theArray)
- * 1360:     function stripSlashesOnArray(&$theArray)
- * 1382:     function slashArray($arr,$cmd)
- * 1399:     function array_merge_recursive_overrule($arr0,$arr1,$notAddKeys=0,$includeEmtpyValues=true)
- * 1432:     function array_merge($arr1,$arr2)
- * 1445:     function csvValues($row,$delim=',',$quote='"')
+ * 1394:     function inArray($in_array,$item)
+ * 1411:     function intExplode($delim, $string)
+ * 1430:     function revExplode($delim, $string, $count=0)
+ * 1450:     function trimExplode($delim, $string, $onlyNonEmptyValues=0)
+ * 1472:     function uniqueArray($valueArray)
+ * 1484:     function removeArrayEntryByValue($array,$cmpValue)
+ * 1513:     function implodeArrayForUrl($name,$theArray,$str='',$skipBlank=0,$rawurlencodeParamName=0)
+ * 1538:     function explodeUrl2Array($string,$multidim=FALSE)
+ * 1564:     function compileSelectedGetVarsFromArray($varList,$getArray,$GPvarAlt=1)
+ * 1587:     function addSlashesOnArray(&$theArray)
+ * 1611:     function stripSlashesOnArray(&$theArray)
+ * 1633:     function slashArray($arr,$cmd)
+ * 1650:     function array_merge_recursive_overrule($arr0,$arr1,$notAddKeys=0,$includeEmtpyValues=true)
+ * 1683:     function array_merge($arr1,$arr2)
+ * 1696:     function csvValues($row,$delim=',',$quote='"')
  *
  *              SECTION: HTML/XML PROCESSING
- * 1487:     function get_tag_attributes($tag)
- * 1524:     function split_tag_attributes($tag)
- * 1558:     function implodeAttributes($arr,$xhtmlSafe=FALSE,$dontOmitBlankAttribs=FALSE)
- * 1585:     function implodeParams($arr,$xhtmlSafe=FALSE,$dontOmitBlankAttribs=FALSE)
- * 1600:     function wrapJS($string, $linebreak=TRUE)
- * 1630:     function xml2tree($string,$depth=999)
- * 1716:     function array2xml($array,$NSprefix='',$level=0,$docTag='phparray',$spaceInd=0, $options=array(),$stackData=array())
- * 1830:     function xml2array($string,$NSprefix='',$reportDocTag=FALSE)
- * 1940:     function xmlRecompileFromStructValArray($vals)
- * 1984:     function xmlGetHeaderAttribs($xmlData)
+ * 1738:     function get_tag_attributes($tag)
+ * 1775:     function split_tag_attributes($tag)
+ * 1809:     function implodeAttributes($arr,$xhtmlSafe=FALSE,$dontOmitBlankAttribs=FALSE)
+ * 1836:     function implodeParams($arr,$xhtmlSafe=FALSE,$dontOmitBlankAttribs=FALSE)
+ * 1851:     function wrapJS($string, $linebreak=TRUE)
+ * 1882:     function xml2tree($string,$depth=999)
+ * 1969:     function array2xml($array,$NSprefix='',$level=0,$docTag='phparray',$spaceInd=0, $options=array(),$stackData=array())
+ * 2088:     function xml2array($string,$NSprefix='',$reportDocTag=FALSE)
+ * 2198:     function xmlRecompileFromStructValArray($vals)
+ * 2242:     function xmlGetHeaderAttribs($xmlData)
  *
  *              SECTION: FILES FUNCTIONS
- * 2016:     function getURL($url)
- * 2058:     function writeFile($file,$content)
- * 2075:     function fixPermissions($file)
- * 2092:     function writeFileToTypo3tempDir($filepath,$content)
- * 2135:     function mkdir($theNewFolder)
- * 2155:     function get_dirs($path)
- * 2180:     function getFilesInDir($path,$extensionList='',$prependPath=0,$order='')
- * 2234:     function getAllFilesAndFoldersInPath($fileArr,$path,$extList='',$regDirs=0,$recursivityLevels=99)
- * 2257:     function removePrefixPathFromList($fileArr,$prefixToRemove)
- * 2273:     function fixWindowsFilePath($theFile)
- * 2285:     function resolveBackPath($pathStr)
- * 2312:     function locationHeaderUrl($path)
+ * 2275:     function getURL($url, $includeHeader=0)
+ * 2342:     function writeFile($file,$content)
+ * 2367:     function fixPermissions($file)
+ * 2384:     function writeFileToTypo3tempDir($filepath,$content)
+ * 2427:     function mkdir($theNewFolder)
+ * 2446:     function mkdir_deep($destination,$deepDir)
+ * 2468:     function get_dirs($path)
+ * 2493:     function getFilesInDir($path,$extensionList='',$prependPath=0,$order='')
+ * 2547:     function getAllFilesAndFoldersInPath($fileArr,$path,$extList='',$regDirs=0,$recursivityLevels=99)
+ * 2570:     function removePrefixPathFromList($fileArr,$prefixToRemove)
+ * 2586:     function fixWindowsFilePath($theFile)
+ * 2598:     function resolveBackPath($pathStr)
+ * 2626:     function locationHeaderUrl($path)
  *
  *              SECTION: DEBUG helper FUNCTIONS
- * 2352:     function debug_ordvalue($string,$characters=100)
- * 2369:     function view_array($array_in)
- * 2397:     function print_array($array_in)
- * 2412:     function debug($var="",$brOrHeader=0)
+ * 2666:     function debug_ordvalue($string,$characters=100)
+ * 2683:     function view_array($array_in)
+ * 2711:     function print_array($array_in)
+ * 2726:     function debug($var="",$brOrHeader=0)
+ * 2757:     function debug_trail()
+ * 2779:     function debugRows($rows,$header='')
  *
  *              SECTION: SYSTEM INFORMATION
- * 2481:     function getThisUrl()
- * 2497:     function linkThisScript($getParams=array())
- * 2521:     function linkThisUrl($url,$getParams=array())
- * 2546:     function getIndpEnv($getEnvName)
- * 2735:     function milliseconds()
- * 2747:     function clientInfo($useragent='')
+ * 2857:     function getThisUrl()
+ * 2873:     function linkThisScript($getParams=array())
+ * 2897:     function linkThisUrl($url,$getParams=array())
+ * 2920:     function getIndpEnv($getEnvName)
+ * 3113:     function milliseconds()
+ * 3125:     function clientInfo($useragent='')
  *
  *              SECTION: TYPO3 SPECIFIC FUNCTIONS
- * 2834:     function getFileAbsFileName($filename,$onlyRelative=1,$relToTYPO3_mainDir=0)
- * 2870:     function validPathStr($theFile)
- * 2881:     function isAbsPath($path)
- * 2892:     function isAllowedAbsPath($path)
- * 2909:     function verifyFilenameAgainstDenyPattern($filename)
- * 2927:     function upload_copy_move($source,$destination)
- * 2953:     function upload_to_tempfile($uploadedFileName)
- * 2971:     function unlink_tempfile($uploadedTempFileName)
- * 2987:     function tempnam($filePrefix)
- * 3000:     function stdAuthCode($uid_or_record,$fields='')
- * 3030:     function cHashParams($addQueryParams)
- * 3059:     function loadTCA($table)
- * 3079:     function resolveSheetDefInDS($dataStructArray,$sheet='sDEF')
- * 3109:     function resolveAllSheetsInDS($dataStructArray)
- * 3138:     function callUserFunction($funcName,&$params,&$ref,$checkPrefix='user_',$silent=0)
- * 3237:     function &getUserObj($classRef,$checkPrefix='user_',$silent=0)
- * 3295:     function &makeInstance($className)
- * 3307:     function makeInstanceClassName($className)
- * 3321:     function &makeInstanceService($serviceType, $serviceSubType='', $excludeServiceKeys=array())
- * 3382:     function plainMailEncoded($email,$subject,$message,$headers='',$enc='',$charset='ISO-8859-1',$dontEncodeSubject=0)
- * 3427:     function quoted_printable($string,$maxlen=76)
- * 3471:     function substUrlsInPlainText($message,$urlmode='76',$index_script_url='')
- * 3505:     function makeRedirectUrl($inUrl,$l=0,$index_script_url='')
- * 3532:     function freetypeDpiComp($font_size)
- * 3551:     function devLog($msg, $extKey, $severity=0, $dataVar=FALSE)
- * 3572:     function arrayToLogString($arr, $valueList=array(), $valueLength=20)
+ * 3212:     function getFileAbsFileName($filename,$onlyRelative=1,$relToTYPO3_mainDir=0)
+ * 3248:     function validPathStr($theFile)
+ * 3259:     function isAbsPath($path)
+ * 3270:     function isAllowedAbsPath($path)
+ * 3287:     function verifyFilenameAgainstDenyPattern($filename)
+ * 3305:     function upload_copy_move($source,$destination)
+ * 3331:     function upload_to_tempfile($uploadedFileName)
+ * 3349:     function unlink_tempfile($uploadedTempFileName)
+ * 3365:     function tempnam($filePrefix)
+ * 3379:     function stdAuthCode($uid_or_record,$fields='',$codeLength=8)
+ * 3410:     function cHashParams($addQueryParams)
+ * 3433:     function hideIfNotTranslated($l18n_cfg_fieldValue)
+ * 3448:     function readLLfile($fileRef,$langKey)
+ * 3472:     function readLLXMLfile($fileRef,$langKey)
+ * 3589:     function llXmlAutoFileName($fileRef,$language)
+ * 3633:     function loadTCA($table)
+ * 3653:     function resolveSheetDefInDS($dataStructArray,$sheet='sDEF')
+ * 3686:     function resolveAllSheetsInDS($dataStructArray)
+ * 3715:     function callUserFunction($funcName,&$params,&$ref,$checkPrefix='user_',$silent=0)
+ * 3813:     function &getUserObj($classRef,$checkPrefix='user_',$silent=0)
+ * 3871:     function &makeInstance($className)
+ * 3883:     function makeInstanceClassName($className)
+ * 3897:     function &makeInstanceService($serviceType, $serviceSubType='', $excludeServiceKeys=array())
+ * 3961:     function plainMailEncoded($email,$subject,$message,$headers='',$enc='',$charset='',$dontEncodeHeader=false)
+ * 4031:     function quoted_printable($string,$maxlen=76)
+ * 4078:     function encodeHeader($line,$enc='',$charset='ISO-8859-1')
+ * 4121:     function substUrlsInPlainText($message,$urlmode='76',$index_script_url='')
+ * 4155:     function makeRedirectUrl($inUrl,$l=0,$index_script_url='')
+ * 4182:     function freetypeDpiComp($font_size)
+ * 4194:     function initSysLog()
+ * 4251:     function sysLog($msg, $extKey, $severity=0)
+ * 4334:     function devLog($msg, $extKey, $severity=0, $dataVar=FALSE)
+ * 4355:     function arrayToLogString($arr, $valueList=array(), $valueLength=20)
+ * 4378:     function imageMagickCommand($command, $parameters, $path='')
+ * 4425:     function unQuoteFilenames($parameters,$unQuote=FALSE)
+ * 4459:     function quoteJSvalue($value, $inScriptTags = false)
  *
- * TOTAL FUNCTIONS: 117
+ * TOTAL FUNCTIONS: 138
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -681,6 +702,12 @@ class t3lib_div {
 		return false;
 	}
 
+	/**
+	 * [Describe function...]
+	 *
+	 * @param	[type]		$hex: ...
+	 * @return	[type]		...
+	 */
 	function IPv6Hex2Bin ($hex)	{
 		$bin = '';
 		$hex = str_replace(':', '', $hex);	// Replace colon to nothing
@@ -2242,7 +2269,7 @@ class t3lib_div {
 	 * Usage: 83
 	 *
 	 * @param	string		Filepath/URL to read
-	 * @param	int		Whether the HTTP header should be fetched or not. 0=disable, 1=fetch header+content, 2=fetch header only (will be ignored when using CURL)
+	 * @param	integer		Whether the HTTP header should be fetched or not. 0=disable, 1=fetch header+content, 2=fetch header only (will be ignored when using CURL)
 	 * @return	string		The content from the resource given as input.
 	 */
 	function getURL($url, $includeHeader=0)	{
@@ -2723,7 +2750,9 @@ class t3lib_div {
 	}
 
 	/**
+	 * Displays the "path" of the function call stack in a string, using debug_backtrace
 	 *
+	 * @return	string
 	 */
 	function debug_trail()	{
 		if (function_exists('debug_backtrace'))	{
@@ -2740,6 +2769,13 @@ class t3lib_div {
 		} else return 'N/A';
 	}
 
+	/**
+	 * Displays an array as rows in a table. Useful to debug output like an array of database records.
+	 *
+	 * @param	array		Array of arrays with similar keys
+	 * @param	string		Table header
+	 * @return	void		Outputs to browser.
+	 */
 	function debugRows($rows,$header='')	{
 		if (is_array($rows))	{
 			reset($rows);
@@ -4418,7 +4454,7 @@ class t3lib_div {
 	 *
 	 * @param	string		The string to encode.
 	 * @param	boolean		If the values get's used in <script> tags.
-	 * @return	string	The encoded value already quoted
+	 * @return	string		The encoded value already quoted
 	 */
 	function quoteJSvalue($value, $inScriptTags = false)	{
 		$value = addcslashes($value, '\''.chr(10).chr(13));

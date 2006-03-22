@@ -44,14 +44,14 @@
  *  114:     function storeIncomingData()
  *
  *              SECTION: Rendering module
- *  215:     function init()
- *  247:     function main()
- *  402:     function printContent()
+ *  216:     function init()
+ *  248:     function main()
+ *  403:     function printContent()
  *
  *              SECTION: Helper functions
- *  431:     function getRealScriptUserObj()
- *  441:     function simulateUser()
- *  487:     function setLabel($str,$key='')
+ *  432:     function getRealScriptUserObj()
+ *  442:     function simulateUser()
+ *  488:     function setLabel($str,$key='')
  *
  * TOTAL FUNCTIONS: 7
  * (This index is automatically created/updated by the extension "extdeveval")

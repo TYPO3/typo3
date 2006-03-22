@@ -40,8 +40,8 @@
  *
  *   74: class t3lib_browseTree extends t3lib_treeView
  *   83:     function init($clause='')
- *  107:     function getTitleAttrib($row)
- *  119:     function wrapIcon($icon,$row)
+ *  116:     function getTitleAttrib($row)
+ *  128:     function wrapIcon($icon,$row)
  *
  * TOTAL FUNCTIONS: 3
  * (This index is automatically created/updated by the extension "extdeveval")

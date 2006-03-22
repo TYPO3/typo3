@@ -39,49 +39,49 @@
  *
  *
  *  115: class t3lib_treeView
- *  267:     function init($clause='', $orderByFields='')
- *  298:     function setTreeName($treeName='')
- *  312:     function addField($field,$noCheck=0)
- *  326:     function reset()
+ *  270:     function init($clause='', $orderByFields='')
+ *  301:     function setTreeName($treeName='')
+ *  315:     function addField($field,$noCheck=0)
+ *  329:     function reset()
  *
  *              SECTION: output
- *  346:     function getBrowsableTree()
- *  407:     function printTree($treeArr='')
+ *  349:     function getBrowsableTree()
+ *  412:     function printTree($treeArr='')
  *
  *              SECTION: rendering parts
- *  460:     function PMicon($row,$a,$c,$nextCount,$exp)
- *  482:     function PM_ATagWrap($icon,$cmd,$bMark='')
- *  504:     function wrapTitle($title,$row,$bank=0)
- *  517:     function wrapIcon($icon,$row)
- *  528:     function addTagAttributes($icon,$attr)
- *  540:     function wrapStop($str,$row)
+ *  467:     function PMicon($row,$a,$c,$nextCount,$exp)
+ *  489:     function PM_ATagWrap($icon,$cmd,$bMark='')
+ *  511:     function wrapTitle($title,$row,$bank=0)
+ *  524:     function wrapIcon($icon,$row)
+ *  535:     function addTagAttributes($icon,$attr)
+ *  547:     function wrapStop($str,$row)
  *
  *              SECTION: tree handling
- *  568:     function expandNext($id)
- *  578:     function initializePositionSaving()
- *  605:     function savePosition()
+ *  575:     function expandNext($id)
+ *  585:     function initializePositionSaving()
+ *  612:     function savePosition()
  *
  *              SECTION: Functions that might be overwritten by extended classes
- *  634:     function getRootIcon($rec)
- *  647:     function getIcon($row)
- *  666:     function getTitleStr($row,$titleLen=30)
- *  678:     function getTitleAttrib($row)
- *  688:     function getId($row)
- *  698:     function getJumpToParam($row)
+ *  641:     function getRootIcon($rec)
+ *  654:     function getIcon($row)
+ *  673:     function getTitleStr($row,$titleLen=30)
+ *  685:     function getTitleAttrib($row)
+ *  695:     function getId($row)
+ *  705:     function getJumpToParam($row)
  *
  *              SECTION: tree data buidling
- *  731:     function getTree($uid, $depth=999, $depthData='',$blankLineCode='')
+ *  739:     function getTree($uid, $depth=999, $depthData='',$blankLineCode='',$subCSSclass='')
  *
  *              SECTION: Data handling
- *  828:     function getCount($uid)
- *  855:     function getRootRecord($uid)
- *  868:     function getRecord($uid)
- *  885:     function getDataInit($parentId)
- *  915:     function getDataCount(&$res)
- *  932:     function getDataNext(&$res)
- *  960:     function getDataFree(&$res)
- *  980:     function setDataFromArray(&$dataArr,$traverse=FALSE,$pid=0)
- * 1009:     function setDataFromTreeArray(&$treeArr, &$treeLookupArr)
+ *  839:     function getCount($uid)
+ *  865:     function getRootRecord($uid)
+ *  878:     function getRecord($uid)
+ *  898:     function getDataInit($parentId,$subCSSclass='')
+ *  929:     function getDataCount(&$res)
+ *  947:     function getDataNext(&$res,$subCSSclass='')
+ *  986:     function getDataFree(&$res)
+ * 1006:     function setDataFromArray(&$dataArr,$traverse=FALSE,$pid=0)
+ * 1035:     function setDataFromTreeArray(&$treeArr, &$treeLookupArr)
  *
  * TOTAL FUNCTIONS: 31
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -891,6 +891,7 @@ class t3lib_treeView {
 	 * For arrays: This will return key to the ->dataLookup array
 	 *
 	 * @param	integer		parent item id
+	 * @param	string		Class for sub-elements. 
 	 * @return	mixed		data handle (Tables: An sql-resource, arrays: A parentId integer. -1 is returned if there were NO subLevel.)
 	 * @access private
 	 */
@@ -938,6 +939,7 @@ class t3lib_treeView {
 	 * Getting the tree data: next entry
 	 *
 	 * @param	mixed		data handle
+	 * @param	string		CSS class for sub elements (workspace related)
 	 * @return	array		item data array OR FALSE if end of elements.
 	 * @access private
 	 * @see getDataInit()

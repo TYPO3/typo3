@@ -38,40 +38,42 @@
  *
  *
  *
- *   95: class t3lib_queryGenerator
- *  176:     function makeFieldList()
- *  203:     function init($name,$table,$fieldList='')
- *  292:     function setAndCleanUpExternalLists($name,$list,$force='')
- *  308:     function procesData($qC='')
- *  411:     function cleanUpQueryConfig($queryConfig)
- *  468:     function getFormElements($subLevel=0,$queryConfig='',$parent='')
- *  555:     function printCodeArray($codeArr,$l=0)
- *  578:     function formatQ($str)
- *  591:     function mkOperatorSelect($name,$op,$draw,$submit)
- *  613:     function mkTypeSelect($name,$fieldName,$prepend='FIELD_')
- *  632:     function verifyType($fieldName)
- *  649:     function verifyComparison($comparison,$neg)
- *  668:     function mkFieldToInputSelect($name,$fieldName)
- *  689:     function mkTableSelect($name,$cur)
- *  711:     function mkCompSelect($name,$comparison,$neg)
- *  729:     function getSubscript($arr)
- *  744:     function initUserDef()
- *  753:     function userDef()
- *  762:     function userDefCleanUp($queryConfig)
- *  773:     function getQuery ($queryConfig,$pad='')
- *  803:     function getQuerySingle($conf,$first)
- *  824:     function cleanInputVal($conf,$suffix='')
- *  843:     function getUserDefQuery ($qcArr)
- *  851:     function updateIcon()
- *  860:     function getLabelCol()
- *  872:     function makeSelectorTable($modSettings,$enableList='table,fields,query,group,order,limit')
- *  976:     function getSelectQuery($qString='')
- *  996:     function JSbottom($formname='forms[0]')
- * 1002:     function typo3FormFieldSet(theField, evallist, is_in, checkbox, checkboxValue)
- * 1020:     function typo3FormFieldGet(theField, evallist, is_in, checkbox, checkboxValue, checkbox_off)
+ *   98: class t3lib_queryGenerator
+ *  245:     function makeFieldList()
+ *  273:     function init($name,$table,$fieldList='')
+ *  410:     function setAndCleanUpExternalLists($name,$list,$force='')
+ *  426:     function procesData($qC='')
+ *  529:     function cleanUpQueryConfig($queryConfig)
+ *  586:     function getFormElements($subLevel=0,$queryConfig='',$parent='')
+ *  744:     function makeOptionList($fN, $conf, $table)
+ *  953:     function printCodeArray($codeArr,$l=0)
+ *  976:     function formatQ($str)
+ *  989:     function mkOperatorSelect($name,$op,$draw,$submit)
+ * 1011:     function mkTypeSelect($name,$fieldName,$prepend='FIELD_')
+ * 1032:     function verifyType($fieldName)
+ * 1049:     function verifyComparison($comparison,$neg)
+ * 1068:     function mkFieldToInputSelect($name,$fieldName)
+ * 1091:     function mkTableSelect($name,$cur)
+ * 1113:     function mkCompSelect($name,$comparison,$neg)
+ * 1131:     function getSubscript($arr)
+ * 1146:     function initUserDef()
+ * 1155:     function userDef()
+ * 1164:     function userDefCleanUp($queryConfig)
+ * 1175:     function getQuery ($queryConfig,$pad='')
+ * 1205:     function getQuerySingle($conf,$first)
+ * 1245:     function cleanInputVal($conf,$suffix='')
+ * 1270:     function getUserDefQuery ($qcArr)
+ * 1278:     function updateIcon()
+ * 1287:     function getLabelCol()
+ * 1299:     function makeSelectorTable($modSettings,$enableList='table,fields,query,group,order,limit')
+ * 1431:     function getTreeList($id, $depth, $begin=0, $perms_clause)
+ * 1465:     function getSelectQuery($qString = '', $fN = '')
+ * 1504:     function JSbottom($formname='forms[0]')
+ * 1510:     function typo3FormFieldSet(theField, evallist, is_in, checkbox, checkboxValue)
+ * 1528:     function typo3FormFieldGet(theField, evallist, is_in, checkbox, checkboxValue, checkbox_off)
  *
- * TOTAL FUNCTIONS: 30
- * (This index is automatically created/updated by the extension 'extdeveval')
+ * TOTAL FUNCTIONS: 32
+ * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
 
@@ -942,12 +944,12 @@ class t3lib_queryGenerator	{
 
 
 	 /**
-	 * [Describe function...]
-	 *
-	 * @param	[type]		$codeArr: ...
-	 * @param	[type]		$l: ...
-	 * @return	[type]		...
-	 */
+ * [Describe function...]
+ *
+ * @param	[type]		$codeArr: ...
+ * @param	[type]		$l: ...
+ * @return	[type]		...
+ */
 	function printCodeArray($codeArr,$l=0)	{
 		reset($codeArr);
 		$line='';

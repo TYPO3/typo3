@@ -39,7 +39,7 @@
  *
  *   67: class tx_extrapagecmoptions
  *   79:     function main(&$backRef,$menuItems,$table,$uid)
- *  159:     function includeLL()
+ *  158:     function includeLL()
  *
  * TOTAL FUNCTIONS: 2
  * (This index is automatically created/updated by the extension "extdeveval")

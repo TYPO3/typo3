@@ -42,13 +42,13 @@
  *
  *   73: class alt_menu_functions
  *   94:     function topMenu($theModules,$dontLink=0,$backPath='',$descr=0)
- *  402:     function getNavFramePrefix ($moduleInfo, $subModuleInfo=array())
- *  429:     function mIconFile($Ifilename,$backPath)
- *  444:     function mIconFilename($Ifilename,$backPath)
- *  456:     function topButtons()
- *  468:     function adminButtons()
- *  487:     function adminFunctions($backPath)
- *  520:     function wrapLinkWithAB($link)
+ *  473:     function getNavFramePrefix($moduleInfo, $subModuleInfo=array())
+ *  504:     function mIconFile($Ifilename,$backPath)
+ *  519:     function mIconFilename($Ifilename,$backPath)
+ *  531:     function topButtons()
+ *  544:     function adminButtons()
+ *  563:     function adminFunctions($backPath)
+ *  596:     function wrapLinkWithAB($link)
  *
  * TOTAL FUNCTIONS: 8
  * (This index is automatically created/updated by the extension "extdeveval")

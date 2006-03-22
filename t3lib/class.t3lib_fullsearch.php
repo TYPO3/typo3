@@ -38,24 +38,28 @@
  *
  *
  *
- *   83: class t3lib_fullsearch
- *   98:     function form()
- *  112:     function makeStoreControl()
- *  151:     function initStoreArray()
- *  171:     function cleanStoreQueryConfigs($storeQueryConfigs,$storeArray)
- *  188:     function addToStoreQueryConfigs($storeQueryConfigs,$index)
- *  204:     function saveQueryInAction($uid)
- *  251:     function loadStoreQueryConfigs($storeQueryConfigs,$storeIndex,$writeArray)
- *  267:     function procesStoreControl()
- *  339:     function queryMaker()
- *  402:     function getQueryResultCode($mQ,$res,$table)
- *  509:     function csvValues($row,$delim=',',$quote='"')
- *  519:     function tableWrap($str)
- *  528:     function search()
- *  583:     function resultRowDisplay($row,$conf,$table)
- *  606:     function resultRowTitles($row,$conf,$table)
+ *   88: class t3lib_fullsearch
+ *  103:     function form()
+ *  117:     function makeStoreControl()
+ *  156:     function initStoreArray()
+ *  176:     function cleanStoreQueryConfigs($storeQueryConfigs,$storeArray)
+ *  193:     function addToStoreQueryConfigs($storeQueryConfigs,$index)
+ *  209:     function saveQueryInAction($uid)
+ *  256:     function loadStoreQueryConfigs($storeQueryConfigs,$storeIndex,$writeArray)
+ *  272:     function procesStoreControl()
+ *  344:     function queryMaker()
+ *  414:     function getQueryResultCode($mQ,$res,$table)
+ *  534:     function csvValues($row, $delim=',', $quote='"', $conf=array(), $table='')
+ *  550:     function tableWrap($str)
+ *  559:     function search()
+ *  614:     function resultRowDisplay($row,$conf,$table)
+ *  662:     function getProcessedValueExtra($table, $fN, $fV, $conf, $splitString)
+ *  781:     function getTreeList($id, $depth, $begin = 0, $perms_clause)
+ *  818:     function makeValueList($fN, $fV, $conf, $table, $splitString)
+ * 1028:     function resultRowTitles($row,$conf,$table)
+ * 1058:     function csvRowTitles($row, $conf, $table)
  *
- * TOTAL FUNCTIONS: 15
+ * TOTAL FUNCTIONS: 19
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -802,15 +806,15 @@ class t3lib_fullsearch {
 	}
 
 	/**
-	* [Describe function...]
-	*
-	* @param [type]  $fN: ...
-	* @param [type]  $fV: ...
-	* @param [type]  $conf: ...
-	* @param [type]  $table: ...
-	* @param [type]  $splitString: ...
-	* @return [type]  ...
-	*/
+	 * [Describe function...]
+	 *
+	 * @param	[type]		$fN: ...
+	 * @param	[type]		$fV: ...
+	 * @param	[type]		$conf: ...
+	 * @param	[type]		$table: ...
+	 * @param	[type]		$splitString: ...
+	 * @return	[type]		...
+	 */
 	function makeValueList($fN, $fV, $conf, $table, $splitString) {
 		$fieldSetup = $conf;
 		if ($fieldSetup['type'] == 'files') {
@@ -1014,13 +1018,13 @@ class t3lib_fullsearch {
 	}
 
 	 /**
-	 * [Describe function...]
-	 *
-	 * @param	[type]		$row: ...
-	 * @param	[type]		$conf: ...
-	 * @param	[type]		$table: ...
-	 * @return	[type]		...
-	 */
+ * [Describe function...]
+ *
+ * @param	[type]		$row: ...
+ * @param	[type]		$conf: ...
+ * @param	[type]		$table: ...
+ * @return	[type]		...
+ */
 	function resultRowTitles($row,$conf,$table)	{
 		$SET = $GLOBALS['SOBE']->MOD_SETTINGS;
 		$out='<tr class="bgColor5">';
@@ -1043,6 +1047,14 @@ class t3lib_fullsearch {
 		return $out;
 	}
 
+	/**
+	 * [Describe function...]
+	 *
+	 * @param	[type]		$row: ...
+	 * @param	[type]		$conf: ...
+	 * @param	[type]		$table: ...
+	 * @return	[type]		...
+	 */
 	function csvRowTitles($row, $conf, $table)	{
 		$SET = $GLOBALS['SOBE']->MOD_SETTINGS;
 		foreach ($row as $fN => $fV)	{

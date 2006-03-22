@@ -41,7 +41,7 @@
  *  103:     function init()
  *  130:     function menuConfig()
  *  151:     function main()
- *  295:     function printContent()
+ *  325:     function printContent()
  *
  * TOTAL FUNCTIONS: 4
  * (This index is automatically created/updated by the extension "extdeveval")

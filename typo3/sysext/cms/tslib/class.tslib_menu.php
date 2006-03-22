@@ -42,65 +42,67 @@
  *
  *
  *
- *  143: class tslib_menu
- *  187:     function start(&$tmpl,&$sys_page,$id,$conf,$menuNumber)
- *  313:     function makeMenu()
- *  822:     function includeMakeMenu($conf,$altSortField)
- *  838:     function filterMenuPages(&$data,$banUidArray,$spacer)
- *  894:     function procesItemStates($splitCount)
- * 1082:     function link($key,$altTarget='',$typeOverride='')
- * 1142:     function subMenu($uid)
- * 1184:     function isNext($uid, $MPvar='')
- * 1205:     function isActive($uid, $MPvar='')
- * 1226:     function isCurrent($uid, $MPvar='')
- * 1241:     function isSubMenu($uid)
- * 1266:     function isItemState($kind,$key)
- * 1303:     function accessKey($title)
- * 1329:     function userProcess($mConfKey,$passVar)
- * 1344:     function setATagParts()
- * 1357:     function getPageTitle($title,$nav_title)
- * 1369:     function getMPvar($key)
- * 1384:     function getDoktypeExcludeWhere()
+ *  145: class tslib_menu
+ *  191:     function start(&$tmpl,&$sys_page,$id,$conf,$menuNumber,$objSuffix='')
+ *  324:     function makeMenu()
+ *  865:     function includeMakeMenu($conf,$altSortField)
+ *  881:     function filterMenuPages(&$data,$banUidArray,$spacer)
+ *  937:     function procesItemStates($splitCount)
+ * 1147:     function link($key,$altTarget='',$typeOverride='')
+ * 1212:     function changeLinksForAccessRestrictedPages(&$LD, $page, $mainTarget, $typeOverride)
+ * 1233:     function subMenu($uid, $objSuffix='')
+ * 1278:     function isNext($uid, $MPvar='')
+ * 1299:     function isActive($uid, $MPvar='')
+ * 1320:     function isCurrent($uid, $MPvar='')
+ * 1335:     function isSubMenu($uid)
+ * 1360:     function isItemState($kind,$key)
+ * 1400:     function accessKey($title)
+ * 1426:     function userProcess($mConfKey,$passVar)
+ * 1441:     function setATagParts()
+ * 1454:     function getPageTitle($title,$nav_title)
+ * 1466:     function getMPvar($key)
+ * 1481:     function getDoktypeExcludeWhere()
+ * 1491:     function getBannedUids()
  *
  *
- * 1416: class tslib_tmenu extends tslib_menu
- * 1425:     function generate()
- * 1441:     function writeMenu()
- * 1582:     function getBeforeAfter($pref)
- * 1612:     function addJScolorShiftFunction()
- * 1634:     function extProc_init()
- * 1645:     function extProc_RO($key)
- * 1656:     function extProc_beforeLinking($key)
- * 1668:     function extProc_afterLinking($key)
- * 1685:     function extProc_beforeAllWrap($item,$key)
- * 1696:     function extProc_finish()
+ * 1530: class tslib_tmenu extends tslib_menu
+ * 1539:     function generate()
+ * 1555:     function writeMenu()
+ * 1699:     function getBeforeAfter($pref)
+ * 1729:     function addJScolorShiftFunction()
+ * 1751:     function extProc_init()
+ * 1762:     function extProc_RO($key)
+ * 1773:     function extProc_beforeLinking($key)
+ * 1785:     function extProc_afterLinking($key)
+ * 1802:     function extProc_beforeAllWrap($item,$key)
+ * 1813:     function extProc_finish()
  *
  *
- * 1732: class tslib_gmenu extends tslib_menu
- * 1741:     function generate()
- * 1779:     function makeGifs($conf, $resKey)
- * 1984:     function findLargestDims($conf,$items,$Hobjs,$Wobjs,$minDim,$maxDim)
- * 2056:     function writeMenu()
- * 2173:     function extProc_init()
- * 2184:     function extProc_RO($key)
- * 2195:     function extProc_beforeLinking($key)
- * 2208:     function extProc_afterLinking($key)
- * 2225:     function extProc_beforeAllWrap($item,$key)
- * 2236:     function extProc_finish()
+ * 1849: class tslib_gmenu extends tslib_menu
+ * 1858:     function generate()
+ * 1896:     function makeGifs($conf, $resKey)
+ * 2101:     function findLargestDims($conf,$items,$Hobjs,$Wobjs,$minDim,$maxDim)
+ * 2173:     function writeMenu()
+ * 2294:     function extProc_init()
+ * 2305:     function extProc_RO($key)
+ * 2316:     function extProc_beforeLinking($key)
+ * 2329:     function extProc_afterLinking($key)
+ * 2346:     function extProc_beforeAllWrap($item,$key)
+ * 2357:     function extProc_finish()
  *
  *
- * 2270: class tslib_imgmenu extends tslib_menu
- * 2279:     function generate()
- * 2297:     function makeImageMap($conf)
- * 2480:     function writeMenu()
+ * 2391: class tslib_imgmenu extends tslib_menu
+ * 2400:     function generate()
+ * 2418:     function makeImageMap($conf)
+ * 2604:     function writeMenu()
  *
  *
- * 2523: class tslib_jsmenu extends tslib_menu
- * 2530:     function generate()
- * 2538:     function writeMenu()
- * 2599:     function generate_level($levels,$count,$pid,$menuItemArray='',$MP_array=array())
+ * 2647: class tslib_jsmenu extends tslib_menu
+ * 2654:     function generate()
+ * 2662:     function writeMenu()
+ * 2723:     function generate_level($levels,$count,$pid,$menuItemArray='',$MP_array=array())
  *
- * TOTAL FUNCTIONS: 44
+ * TOTAL FUNCTIONS: 46
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -1201,11 +1203,11 @@ class tslib_menu {
 	/**
 	 * Will change $LD (passed by reference) if the page is access restricted
 	 *
-	 * @param	array	$LD, the array from the linkData() function
-	 * @param	array	Page array
-	 * @param	string	Main target value
-	 * @param	string	Type number override if any
-	 * @return	void	($LD passed by reference might be changed.)
+	 * @param	array		$LD, the array from the linkData() function
+	 * @param	array		Page array
+	 * @param	string		Main target value
+	 * @param	string		Type number override if any
+	 * @return	void		($LD passed by reference might be changed.)
 	 */
 	function changeLinksForAccessRestrictedPages(&$LD, $page, $mainTarget, $typeOverride)	{
 
@@ -1483,7 +1485,7 @@ class tslib_menu {
 	/**
 	 * Returns an array of banned UIDs (from excludeUidList)
 	 *
-	 * @return      array           Array of banned UIDs
+	 * @return	array		Array of banned UIDs
 	 * @access private
 	 */
 	function getBannedUids() {

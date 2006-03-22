@@ -48,13 +48,13 @@
  *              SECTION: File operation functions
  *  384:     function func_delete($cmds)
  *  451:     function func_copy($cmds)
- *  541:     function func_move($cmds)
- *  634:     function func_rename($cmds)
- *  680:     function func_newfolder($cmds)
- *  710:     function func_newfile($cmds)
- *  747:     function func_edit($cmds)
- *  779:     function func_upload($cmds)
- *  818:     function func_unzip($cmds)
+ *  542:     function func_move($cmds)
+ *  637:     function func_rename($cmds)
+ *  683:     function func_newfolder($cmds)
+ *  713:     function func_newfile($cmds)
+ *  750:     function func_edit($cmds)
+ *  782:     function func_upload($cmds)
+ *  821:     function func_unzip($cmds)
  *
  * TOTAL FUNCTIONS: 15
  * (This index is automatically created/updated by the extension "extdeveval")

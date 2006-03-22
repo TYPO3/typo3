@@ -50,41 +50,41 @@
  *  454:     function displayVersionDetails($details)
  *  463:     function displayWorkspaceOverview()
  *  538:     function displayWorkspaceOverview_list($pArray, $tableRows=array(), $c=0, $warnAboutVersions=FALSE)
- *  726:     function displayWorkspaceOverview_pageTreeIconTitle($pageUid, $title, $indentCount)
- *  741:     function displayWorkspaceOverview_stageCmd($table,&$rec_off)
- *  831:     function displayWorkspaceOverview_commandLinks($table,&$rec_on,&$rec_off,$vType)
- *  904:     function displayWorkspaceOverview_commandLinksSub($table,$rec,$origId)
- *  952:     function displayWorkspaceOverview_setInPageArray(&$pArray,$rlArr,$table,$row)
- *  983:     function subElements($uid,$treeLevel,$origId=0)
- * 1086:     function subElements_getNonPageRecords($tN, $uid, &$recList)
- * 1116:     function subElements_renderItem(&$tCell,$tN,$uid,$rec,$origId,$iconMode,$HTMLdata)
- * 1185:     function markupNewOriginals()
- * 1207:     function createDiffView($table, $diff_1_record, $diff_2_record)
+ *  731:     function displayWorkspaceOverview_pageTreeIconTitle($pageUid, $title, $indentCount)
+ *  746:     function displayWorkspaceOverview_stageCmd($table,&$rec_off)
+ *  836:     function displayWorkspaceOverview_commandLinks($table,&$rec_on,&$rec_off,$vType)
+ *  912:     function displayWorkspaceOverview_commandLinksSub($table,$rec,$origId)
+ *  962:     function displayWorkspaceOverview_setInPageArray(&$pArray,$rlArr,$table,$row)
+ *  993:     function subElements($uid,$treeLevel,$origId=0)
+ * 1096:     function subElements_getNonPageRecords($tN, $uid, &$recList)
+ * 1126:     function subElements_renderItem(&$tCell,$tN,$uid,$rec,$origId,$iconMode,$HTMLdata)
+ * 1195:     function markupNewOriginals()
+ * 1217:     function createDiffView($table, $diff_1_record, $diff_2_record)
  *
  *              SECTION: Module content: Workspace list
- * 1339:     function moduleContent_workspaceList()
- * 1354:     function workspaceList_displayUserWorkspaceList()
- * 1431:     function workspaceList_getUserWorkspaceList()
- * 1473:     function workspaceList_formatWorkspaceData(&$wksp)
- * 1515:     function workspaceList_getWebMountPoints(&$wksp)
- * 1564:     function workspaceList_getFileMountPoints(&$wksp)
- * 1617:     function workspaceList_displayUserWorkspaceListHeader()
- * 1637:     function workspaceList_getUserList(&$wksp)
- * 1664:     function workspaceList_getUserListForSysWorkspace(&$wksp)
- * 1691:     function workspaceList_getUserListWithAccess(&$list, $access)
- * 1764:     function workspaceList_displayIcons($currentWorkspace, &$wksp)
- * 1812:     function workspaceList_hasEditAccess(&$wksp)
- * 1824:     function workspaceList_createFakeWorkspaceRecord($uid)
+ * 1349:     function moduleContent_workspaceList()
+ * 1364:     function workspaceList_displayUserWorkspaceList()
+ * 1441:     function workspaceList_getUserWorkspaceList()
+ * 1483:     function workspaceList_formatWorkspaceData(&$wksp)
+ * 1525:     function workspaceList_getWebMountPoints(&$wksp)
+ * 1574:     function workspaceList_getFileMountPoints(&$wksp)
+ * 1627:     function workspaceList_displayUserWorkspaceListHeader()
+ * 1647:     function workspaceList_getUserList(&$wksp)
+ * 1674:     function workspaceList_getUserListForSysWorkspace(&$wksp)
+ * 1701:     function workspaceList_getUserListWithAccess(&$list, $access)
+ * 1774:     function workspaceList_displayIcons($currentWorkspace, &$wksp)
+ * 1822:     function workspaceList_hasEditAccess(&$wksp)
+ * 1834:     function workspaceList_createFakeWorkspaceRecord($uid)
  *
  *              SECTION: Helper functions
- * 1889:     function formatVerId($verId)
- * 1899:     function formatWorkspace($wsid)
- * 1926:     function formatCount($count)
- * 1954:     function versionsInOtherWS($table,$uid)
- * 1984:     function showStageChangeLog($table,$id,$stageCommands)
+ * 1899:     function formatVerId($verId)
+ * 1909:     function formatWorkspace($wsid)
+ * 1936:     function formatCount($count)
+ * 1964:     function versionsInOtherWS($table,$uid)
+ * 1994:     function showStageChangeLog($table,$id,$stageCommands)
  *
  *              SECTION: Processing
- * 2045:     function publishAction()
+ * 2055:     function publishAction()
  *
  * TOTAL FUNCTIONS: 37
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -622,7 +622,7 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 											$diffCode.= ($diffPct<0 ? 'N/A' : ($diffPct ? $diffPct.'% change:' : ''));
 											$diffCode.= $diffHTML;
 										}
-										
+
 									} else $diffCode = '';
 
 										// Prepare swap-mode values:
@@ -857,7 +857,7 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 		}
 
 		if (!$GLOBALS['BE_USER']->workspaceCannotEditOfflineVersion($table,$rec_off))	{
-			
+
 			if ($GLOBALS['BE_USER']->workspace!==0)	{
 					// Release
 				$confirm = $LANG->JScharCode($LANG->getLL('remove_from_ws_confirmation'));
@@ -905,7 +905,7 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 	 * Links to publishing etc of a version
 	 *
 	 * @param	string		Table name
-	 * @param	array		Record
+	 * @param	array		Record array
 	 * @param	integer		The uid of the online version of $uid. If zero it means we are drawing a row for the online version itself while a value means we are drawing display for an offline version.
 	 * @return	string		HTML content, mainly link tags and images.
 	 */

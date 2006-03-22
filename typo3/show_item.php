@@ -37,18 +37,20 @@
  *
  *
  *
- *   82: class transferData extends t3lib_transferData
- *   99:     function regItem($table, $id, $field, $content)
+ *   84: class transferData extends t3lib_transferData
+ *  101:     function regItem($table, $id, $field, $content)
  *
  *
- *  133: class SC_show_item
- *  158:     function init()
+ *  135: class SC_show_item
+ *  160:     function init()
  *  225:     function main()
- *  253:     function renderDBInfo()
- *  301:     function renderFileInfo($returnLinkTag)
- *  416:     function printContent()
+ *  273:     function renderDBInfo()
+ *  327:     function renderFileInfo($returnLinkTag)
+ *  449:     function printContent()
+ *  462:     function makeRef($table,$ref)
+ *  524:     function makeRefFrom($table,$ref)
  *
- * TOTAL FUNCTIONS: 6
+ * TOTAL FUNCTIONS: 8
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -308,10 +310,10 @@ class SC_show_item {
 		$code.= $LANG->sL('LLL:EXT:lang/locallang_core.php:labels.path').': '.t3lib_div::fixed_lgd_cs($this->pageinfo['_thePath'],-48).'<br />';
 		$code.= $LANG->sL('LLL:EXT:lang/locallang_core.php:labels.table').': '.$LANG->sL($TCA[$this->table]['ctrl']['title']).' ('.$this->table.') - UID: '.$this->uid.'<br />';
 		$this->content.= $this->doc->section('', $code);
-		
+
 			// References:
 		$this->content.= $this->doc->section('References to this item:',$this->makeRef($this->table,$this->row['uid']));
-		
+
 			// References:
 		$this->content.= $this->doc->section('References from this item:',$this->makeRefFrom($this->table,$this->row['uid']));
 	}
@@ -433,10 +435,10 @@ class SC_show_item {
 				$this->content.= $this->doc->section('',$thumb);
 			}
 		}
-		
-		
+
+
 			// References:
-		$this->content.= $this->doc->section('References to this item:',$this->makeRef('_FILE',$this->file));		
+		$this->content.= $this->doc->section('References to this item:',$this->makeRef('_FILE',$this->file));
 	}
 
 	/**
@@ -449,7 +451,7 @@ class SC_show_item {
 		$this->content = $this->doc->insertStylesAndJS($this->content);
 		echo $this->content;
 	}
-	
+
 	/**
 	 * Make reference display
 	 *
@@ -458,15 +460,15 @@ class SC_show_item {
 	 * @return	string		HTML
 	 */
 	function makeRef($table,$ref)	{
-		
+
 		if ($table==='_FILE')	{
 				// First, fit path to match what is stored in the refindex:
 			$fullIdent = $ref;
-	
+
 			if (t3lib_div::isFirstPartOfStr($fullIdent,PATH_site))	{
 				$fullIdent = substr($fullIdent,strlen(PATH_site));
 			}
-			
+
 				// Look up the path:
 			$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
 				'*',
@@ -485,7 +487,7 @@ class SC_show_item {
 					' AND deleted=0'
 			);
 		}
-		
+
 			// Compile information for title tag:
 		$infoData = array();
 		if (count($rows))	{
@@ -508,10 +510,10 @@ class SC_show_item {
 					'<td>'.$row['sorting'].'</td>'.
 					'</tr>';
 		}
-		
-		return count($infoData) ? '<table border="0" cellpadding="1" cellspacing="1">'.implode('',$infoData).'</table>' : '';		
-	}	
-	
+
+		return count($infoData) ? '<table border="0" cellpadding="1" cellspacing="1">'.implode('',$infoData).'</table>' : '';
+	}
+
 	/**
 	 * Make reference display (what this elements points to)
 	 *
@@ -520,7 +522,7 @@ class SC_show_item {
 	 * @return	string		HTML
 	 */
 	function makeRefFrom($table,$ref)	{
-		
+
 			// Look up the path:
 		$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
 			'*',
@@ -528,7 +530,7 @@ class SC_show_item {
 			'tablename='.$GLOBALS['TYPO3_DB']->fullQuoteStr($table,'sys_refindex').
 				' AND recuid='.intval($ref)
 		);
-		
+
 			// Compile information for title tag:
 		$infoData = array();
 		if (count($rows))	{
@@ -553,9 +555,9 @@ class SC_show_item {
 					'<td>'.$row['ref_string'].'</td>' .
 					'</tr>';
 		}
-		
-		return count($infoData) ? '<table border="0" cellpadding="1" cellspacing="1">'.implode('',$infoData).'</table>' : '';		
-	}	
+
+		return count($infoData) ? '<table border="0" cellpadding="1" cellspacing="1">'.implode('',$infoData).'</table>' : '';
+	}
 }
 
 // Include extension?

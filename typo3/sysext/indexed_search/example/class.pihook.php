@@ -67,7 +67,7 @@ class tx_indexedsearch_pihook {
 	 * This hook is activated by this key / value pair in ext_localconf.php
 	 * 		'initialize_postProc' => 'EXT:indexed_search/example/class.pihook.php:&tx_indexedsearch_pihook',
 	 *
-	 * @return	[type]		...
+	 * @return	void
 	 */
 	function initialize_postProc()	{
 		$this->pObj->optValues['order'] = array_reverse($this->pObj->optValues['order']);

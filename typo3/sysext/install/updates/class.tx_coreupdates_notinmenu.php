@@ -29,7 +29,6 @@
  *
  * @author	Sebastian Kurfuerst <sebastian@garbage-group.de
  */
-
 class tx_coreupdates_notinmenu {
 	var $versionNumber;	// version number coming from t3lib_div::int_from_ver()
 	var $pObj;	// parent object (tx_install)
@@ -45,6 +44,13 @@ class tx_coreupdates_notinmenu {
 		return 0;
 	}
 
+	/**
+	 * [Describe function...]
+	 *
+	 * @param	[type]		$$dbQueries: ...
+	 * @param	[type]		$customMessages: ...
+	 * @return	[type]		...
+	 */
 	function performUpdate(&$dbQueries, &$customMessages)	{
 		if($this->versionNumber >= 3009000)	{
 			$updateArray = array(

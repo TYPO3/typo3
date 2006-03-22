@@ -36,10 +36,10 @@
  *
  *
  *   65: class tx_lowlevel_cleaner extends t3lib_extobjbase
- *   75:     function modMenu()
- *  106:     function main()
- *  127:     function createMenu()
- *  142:     function moduleContent()
+ *   74:     function modMenu()
+ *  109:     function main()
+ *  130:     function createMenu()
+ *  145:     function moduleContent()
  *
  * TOTAL FUNCTIONS: 4
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -82,16 +82,16 @@ class tx_lowlevel_cleaner extends t3lib_extobjbase {
 
 #				'clean_flexform_xml' => 'Clean up FlexForm XML',	// ID/depth related
 			# tt_content element removal: templavoila plugin!		// ID/depth related
-			# Check for various: uid>0, pid>-1	, lost swapping operations, 
-#				'l10n_duplicates' => 'Localization errors',		
+			# Check for various: uid>0, pid>-1	, lost swapping operations,
+#				'l10n_duplicates' => 'Localization errors',
 # Find TCA/FlexForm fields which should probably have a soft reference parser attached!
 
 			# TemplaVoila plugs in to display mapping issues.
 			# Overview of http://  and emails 						// UPDATE index!
-			
+
 				'missing_files' => 'Missing files',				// UPDATE index!
 				'missing_relations' => 'Missing relations',		// UPDATE index!
-#				'lost_records' => 'Orphan records', 				
+#				'lost_records' => 'Orphan records',
 				'lost_files' => 'Orphan files (from uploads/)',	// UPDATE index!
 				'RTEmagic_files' => 'RTE Magic Images',			// UPDATE index!
 				'double_files' => 'Double file references', 		// UPDATE index!
@@ -125,7 +125,7 @@ class tx_lowlevel_cleaner extends t3lib_extobjbase {
 	/**
 	 * Creates HTML menu for the module.
 	 *
-	 * @return	string 	HTML code for menu
+	 * @return	string		HTML code for menu
 	 */
 	function createMenu()	{
 		if (is_array($this->pObj->MOD_MENU['tx_lowlevel_cleaner']))	{
@@ -146,7 +146,7 @@ class tx_lowlevel_cleaner extends t3lib_extobjbase {
 		$cleanerObj = t3lib_div::makeInstance('tx_lowlevel_cleaner_core');
 		$silent = FALSE;
 		$filter = 0;
-		
+
 		switch(t3lib_div::_GP('tx_lowlevel_cleaner'))	{
 			case 'lost_files':
 				$res = $cleanerObj->clean_lost_files_analyze();
@@ -169,15 +169,15 @@ class tx_lowlevel_cleaner extends t3lib_extobjbase {
 				$output = $cleanerObj->html_printInfo('missing_relations_analyze()',$res,$silent,$filter);
 			break;
 		}
-		
+
 /*
 // TEST of how we can get the used Content Elements on a TemplaVoila page:
 require_once(t3lib_extMgm::extPath('templavoila').'class.tx_templavoila_api.php');
 $apiClassName = t3lib_div::makeInstanceClassName('tx_templavoila_api');
 $apiObj = new $apiClassName('pages');
 $contentTreeData = $apiObj->getContentTree('pages', t3lib_BEfunc::getRecordWSOL('pages',33),FALSE);
-debug($contentTreeData);		
-*/		
+debug($contentTreeData);
+*/
 		return $output;
 	}
 }

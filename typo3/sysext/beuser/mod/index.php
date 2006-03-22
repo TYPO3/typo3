@@ -34,67 +34,68 @@
  *
  *
  *
- *  128: class localPageTree extends t3lib_browseTree
- *  139:     function localPageTree($BE_USER,$WEBMOUNTS='')
- *  153:     function ext_permsC()
- *  164:     function wrapTitle($str,$row)
- *  176:     function PM_ATagWrap($icon,$cmd,$bMark='')
- *  187:     function wrapIcon($icon,$row)
- *  200:     function initializePositionSaving()
+ *  129: class localPageTree extends t3lib_browseTree
+ *  140:     function localPageTree($BE_USER,$WEBMOUNTS='')
+ *  154:     function ext_permsC()
+ *  165:     function wrapTitle($str,$row)
+ *  177:     function PM_ATagWrap($icon,$cmd,$bMark='')
+ *  188:     function wrapIcon($icon,$row)
+ *  201:     function initializePositionSaving()
  *
  *
- *  221: class printAllPageTree extends localPageTree
- *  230:     function ext_permsC()
- *  242:     function PM_ATagWrap($icon,$cmd,$bMark='')
- *  253:     function wrapIcon($icon,$row)
+ *  222: class printAllPageTree extends localPageTree
+ *  231:     function ext_permsC()
+ *  243:     function PM_ATagWrap($icon,$cmd,$bMark='')
+ *  254:     function wrapIcon($icon,$row)
  *
  *
- *  278: class printAllPageTree_perms extends printAllPageTree
- *  287:     function printTree($treeArr='',$printPath=0)
- *  330:     function ext_printPerms($int)
- *  348:     function ext_groupPerms($row,$firstGroup)
+ *  279: class printAllPageTree_perms extends printAllPageTree
+ *  288:     function printTree($treeArr='',$printPath=0)
+ *  331:     function ext_printPerms($int)
+ *  349:     function ext_groupPerms($row,$firstGroup)
  *
  *
- *  376: class localFolderTree extends t3lib_folderTree
- *  387:     function localFolderTree($BE_USER,$FILEMOUNTS='')
- *  402:     function wrapTitle($str,$row)
- *  414:     function PM_ATagWrap($icon,$cmd,$bMark='')
- *  425:     function wrapIcon($icon,$row)
- *  438:     function initializePositionSaving()
+ *  377: class localFolderTree extends t3lib_folderTree
+ *  388:     function localFolderTree($BE_USER,$FILEMOUNTS='')
+ *  403:     function wrapTitle($str,$row)
+ *  415:     function PM_ATagWrap($icon,$cmd,$bMark='')
+ *  426:     function wrapIcon($icon,$row)
+ *  439:     function initializePositionSaving()
  *
  *
- *  462: class printAllFolderTree extends localFolderTree
- *  474:     function PM_ATagWrap($icon,$cmd,$bMark='')
+ *  463: class printAllFolderTree extends localFolderTree
+ *  475:     function PM_ATagWrap($icon,$cmd,$bMark='')
  *
  *
- *  496: class local_beUserAuth extends t3lib_beUserAuth
- *  508:     function returnWebmounts($pClause='')
- *  532:     function ext_non_readAccessPages()
- *  555:     function user_where_clause()
- *  567:     function ext_printOverview($uInfo,$compareFlags,$printTrees=0)
- *  831:     function ext_getReadableButNonmounted()
- *  866:     function ext_printPerms($int)
- *  884:     function ext_groupPerms($row,$firstGroup)
- *  899:     function ext_compileUserInfoForHash()
- *  959:     function ext_uniqueAndSortList($list)
- *  973:     function ext_ksortArrayRecursive(&$arr)
+ *  497: class local_beUserAuth extends t3lib_beUserAuth
+ *  509:     function returnWebmounts($pClause='')
+ *  533:     function ext_non_readAccessPages()
+ *  556:     function user_where_clause()
+ *  568:     function ext_printOverview($uInfo,$compareFlags,$printTrees=0)
+ *  838:     function ext_getReadableButNonmounted()
+ *  873:     function ext_printPerms($int)
+ *  891:     function ext_groupPerms($row,$firstGroup)
+ *  907:     function ext_compileUserInfoForHash($filter=NULL)
+ * 1007:     function ext_uniqueAndSortList($list)
+ * 1021:     function ext_ksortArrayRecursive(&$arr)
+ * 1034:     function ext_workspaceMembership()
  *
  *
- * 1000: class SC_mod_tools_be_user_index
- * 1012:     function init()
- * 1040:     function menuConfig()
- * 1061:     function main()
- * 1097:     function printContent()
+ * 1088: class SC_mod_tools_be_user_index
+ * 1100:     function init()
+ * 1128:     function menuConfig()
+ * 1149:     function main()
+ * 1185:     function printContent()
  *
  *              SECTION: OTHER FUNCTIONS:
- * 1119:     function compareUsers($compareFlags)
- * 1297:     function linkUser($str,$rec)
- * 1308:     function elementLinks($table,$row)
- * 1339:     function initUsers()
- * 1359:     function localPath($str)
- * 1371:     function switchUser($switchUser)
+ * 1207:     function compareUsers($compareFlags)
+ * 1394:     function linkUser($str,$rec)
+ * 1405:     function elementLinks($table,$row)
+ * 1436:     function initUsers()
+ * 1456:     function localPath($str)
+ * 1468:     function switchUser($switchUser)
  *
- * TOTAL FUNCTIONS: 38
+ * TOTAL FUNCTIONS: 39
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -968,7 +969,7 @@ class local_beUserAuth extends t3lib_beUserAuth {
 		if ($renderAll || $filter['workspace_perms'])	{
 			$uInfo['workspace_perms'] = $this->ext_uniqueAndSortList($this->groupData['workspace_perms']);
 		}
-		
+
 			// Workspace membership
 		if ($renderAll || $filter['workspace_membership'])	{
 			$uInfo['workspace_membership'] = $this->ext_workspaceMembership();
@@ -1024,7 +1025,12 @@ class local_beUserAuth extends t3lib_beUserAuth {
 			if (is_array($v))	$this->ext_ksortArrayRecursive($arr[$k]);
 		}
 	}
-	
+
+	/**
+	 * [Describe function...]
+	 *
+	 * @return	[type]		...
+	 */
 	function ext_workspaceMembership()	{
 		global $TYPO3_DB;
 
@@ -1051,12 +1057,12 @@ class local_beUserAuth extends t3lib_beUserAuth {
 							if (!$this->isInWebMount($mpId,'1=1'))	{
 								$options[$rec['uid']].= '<br> \- WARNING: Workspace Webmount page id "'.$mpId.'" not accessible!';
 							}
-						}					
+						}
 					}
 				}
 			}
 		}
-		
+
 		return $options;
 	}
 }

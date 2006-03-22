@@ -36,17 +36,21 @@
  *
  *
  *
- *   67: class t3lib_flexformtools
- *   85:     function traverseFlexFormXMLData($table,$field,$row,&$callBackObj,$callBackMethod_value)
- *  206:     function traverseFlexFormXMLData_recurse($dataStruct,$editData,$table,$field,&$PA,$path='')
- *  298:     function getAvailableLanguages()
+ *   71: class t3lib_flexformtools
+ *  105:     function traverseFlexFormXMLData($table,$field,$row,&$callBackObj,$callBackMethod_value)
+ *  203:     function traverseFlexFormXMLData_recurse($dataStruct,$editData,&$PA,$path='')
+ *  274:     function getAvailableLanguages()
+ *
+ *              SECTION: Processing functions
+ *  323:     function cleanFlexFormXML($table,$field,$row)
+ *  347:     function cleanFlexFormXML_callBackFunction($dsArr, $data, $PA, $path, &$pObj)
  *
  *              SECTION: Multi purpose functions
- *  346:     function &getArrayValueByPath($pathArray,&$array)
- *  375:     function setArrayValueByPath($pathArray,&$array,$value)
- *  402:     function flexArray2Xml($array)
+ *  374:     function &getArrayValueByPath($pathArray,&$array)
+ *  403:     function setArrayValueByPath($pathArray,&$array,$value)
+ *  433:     function flexArray2Xml($array, $addPrologue=FALSE)
  *
- * TOTAL FUNCTIONS: 6
+ * TOTAL FUNCTIONS: 8
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -68,7 +72,7 @@ class t3lib_flexformtools {
 
 	var $convertCharset = FALSE;		// If set, the charset of data XML is converted to system charset.
 	var $reNumberIndexesOfSectionData = FALSE;	// If set, section indexes are re-numbered before processing
-	
+
 		// Options for array2xml() for flexform. This will map the weird keys from the internal array to tags that could potentially be checked with a DTD/schema
 	var $flexArray2Xml_options = array(
 			'parentTagMap' => array(
@@ -94,7 +98,7 @@ class t3lib_flexformtools {
 	 * @param	string		The table name of the record
 	 * @param	string		The field name of the flexform field to work on
 	 * @param	array		The record data array
-	 * @poram	object		Object (passed by reference) in which the call back function is located
+	 * @param	object		Object (passed by reference) in which the call back function is located
 	 * @param	string		Method name of call back function in object for values
 	 * @return	boolean		If true, error happened (error string returned)
 	 */
@@ -103,7 +107,7 @@ class t3lib_flexformtools {
 		if (!is_array($GLOBALS['TCA'][$table]) || !is_array($GLOBALS['TCA'][$table]['columns'][$field])) 	{
 			return 'TCA table/field was not defined.';
 		}
-		
+
 		$this->callBackObj = &$callBackObj;
 
 			// Get Data Structure:
@@ -207,7 +211,7 @@ class t3lib_flexformtools {
 
 							$cc = 0;
 							if (is_array($editData[$key]['el']))	{
-								
+
 								if ($this->reNumberIndexesOfSectionData)	{
 									$temp = array();
 									$c3=0;
@@ -216,7 +220,7 @@ class t3lib_flexformtools {
 									}
 									$editData[$key]['el'] = $temp;
 								}
-								
+
 								foreach($editData[$key]['el'] as $k3 => $v3)	{
 									$cc=$k3;
 									$theType = key($v3);
@@ -307,13 +311,13 @@ class t3lib_flexformtools {
 	 * Processing functions
 	 *
 	 ***********************************/
-	
+
 	/**
 	 * Cleaning up FlexForm XML to hold only the values it may according to its Data Structure. Also the order of tags will follow that of the data structure.
-	 * 
+	 *
 	 * @param	string		Table name
 	 * @param	string		Field name of the flex form field in which the XML is found that should be cleaned.
-	 * @param	array		The record 
+	 * @param	array		The record
 	 * @return	string		Clean XML from FlexForm field
 	 */
 	function cleanFlexFormXML($table,$field,$row)	{
@@ -325,21 +329,21 @@ class t3lib_flexformtools {
 		$flexObj = t3lib_div::makeInstance('t3lib_flexformtools');
 		$flexObj->reNumberIndexesOfSectionData = TRUE;
 		$flexObj->traverseFlexFormXMLData($table,$field,$row,$this,'cleanFlexFormXML_callBackFunction');
-		
+
 		return $this->flexArray2Xml($this->cleanFlexFormXML, TRUE);
 	}
-	
+
 	/**
 	 * Call back function for t3lib_flexformtools class
 	 * Basically just setting the value in a new array (thus cleaning because only values that are valid are visited!)
-	 * 
+	 *
 	 * @param	array		Data structure for the current value
 	 * @param	mixed		Current value
 	 * @param	array		Additional configuration used in calling function
 	 * @param	string		Path of value in DS structure
 	 * @param	object		Object reference to caller
 	 * @return	void
-	 */	
+	 */
 	function cleanFlexFormXML_callBackFunction($dsArr, $data, $PA, $path, &$pObj)	{
 		#debug(array($dsArr, $data, $PA),$path);
 			// Just setting value in our own result array, basically replicating the structure:
@@ -397,14 +401,14 @@ class t3lib_flexformtools {
 	 * @return	mixed		Value returned
 	 */
 	function setArrayValueByPath($pathArray,&$array,$value)	{
-		if (isset($value))	 {		
+		if (isset($value))	 {
 			if (!is_array($pathArray))	{
 				$pathArray = explode('/',$pathArray);
 			}
 			if (is_array($array))	{
 				if (count($pathArray))	{
 					$key = array_shift($pathArray);
-	
+
 					if (!count($pathArray))	{
 						$array[$key] = $value;
 						return TRUE;
@@ -422,14 +426,15 @@ class t3lib_flexformtools {
 	/**
 	 * Convert FlexForm data array to XML
 	 *
-	 * @param	array		Array
-	 * @return	string		XML
+	 * @param	array		Array to output in <T3FlexForms> XML
+	 * @param	boolean		If set, the XML prologue is returned as well.
+	 * @return	string		XML content.
 	 */
 	function flexArray2Xml($array, $addPrologue=FALSE)	{
-		
+
 		$options = $GLOBALS['TYPO3_CONF_VARS']['BE']['niceFlexFormXMLtags'] ? $this->flexArray2Xml_options : array();
 		$output = t3lib_div::array2xml($array,'',0,'T3FlexForms',4, $options);
-				
+
 		if ($addPrologue)	{
 			$output = '<?xml version="1.0" encoding="'.$GLOBALS['LANG']->charSet.'" standalone="yes" ?>'.chr(10).$output;
 		}

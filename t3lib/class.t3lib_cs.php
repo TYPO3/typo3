@@ -35,53 +35,53 @@
  *
  *
  *  136: class t3lib_cs
- *  503:     function parse_charset($charset)
- *  522:     function get_locale_charset($locale)
+ *  488:     function parse_charset($charset)
+ *  507:     function get_locale_charset($locale)
  *
  *              SECTION: Charset Conversion functions
- *  575:     function conv($str,$fromCS,$toCS,$useEntityForNoChar=0)
- *  615:     function convArray(&$array,$fromCS,$toCS,$useEntityForNoChar=0)
- *  632:     function utf8_encode($str,$charset)
- *  678:     function utf8_decode($str,$charset,$useEntityForNoChar=0)
- *  721:     function utf8_to_entities($str)
- *  754:     function entities_to_utf8($str,$alsoStdHtmlEnt=0)
- *  788:     function utf8_to_numberarray($str,$convEntities=0,$retChar=0)
- *  838:     function UnumberToChar($cbyte)
- *  883:     function utf8CharToUnumber($str,$hex=0)
+ *  560:     function conv($str,$fromCS,$toCS,$useEntityForNoChar=0)
+ *  600:     function convArray(&$array,$fromCS,$toCS,$useEntityForNoChar=0)
+ *  617:     function utf8_encode($str,$charset)
+ *  663:     function utf8_decode($str,$charset,$useEntityForNoChar=0)
+ *  706:     function utf8_to_entities($str)
+ *  739:     function entities_to_utf8($str,$alsoStdHtmlEnt=0)
+ *  773:     function utf8_to_numberarray($str,$convEntities=0,$retChar=0)
+ *  823:     function UnumberToChar($cbyte)
+ *  868:     function utf8CharToUnumber($str,$hex=0)
  *
  *              SECTION: Init functions
- *  926:     function initCharset($charset)
- *  988:     function initUnicodeData($mode=null)
- * 1213:     function initCaseFolding($charset)
- * 1275:     function initToASCII($charset)
+ *  911:     function initCharset($charset)
+ *  973:     function initUnicodeData($mode=null)
+ * 1198:     function initCaseFolding($charset)
+ * 1260:     function initToASCII($charset)
  *
  *              SECTION: String operation functions
- * 1346:     function substr($charset,$string,$start,$len=null)
+ * 1331:     function substr($charset,$string,$start,$len=null)
  * 1384:     function strlen($charset,$string)
- * 1412:     function crop($charset,$string,$len,$crop='')
- * 1465:     function strtrunc($charset,$string,$len)
- * 1499:     function conv_case($charset,$string,$case)
- * 1525:     function specCharsToASCII($charset,$string)
+ * 1414:     function crop($charset,$string,$len,$crop='')
+ * 1467:     function strtrunc($charset,$string,$len)
+ * 1501:     function conv_case($charset,$string,$case)
+ * 1527:     function specCharsToASCII($charset,$string)
  *
  *              SECTION: Internal string operation functions
- * 1565:     function sb_char_mapping($str,$charset,$mode,$opt='')
+ * 1567:     function sb_char_mapping($str,$charset,$mode,$opt='')
  *
  *              SECTION: Internal UTF-8 string operation functions
- * 1620:     function utf8_substr($str,$start,$len=null)
- * 1653:     function utf8_strlen($str)
- * 1674:     function utf8_strtrunc($str,$len)
- * 1696:     function utf8_strpos($haystack,$needle,$offset=0)
- * 1719:     function utf8_strrpos($haystack,$needle)
- * 1739:     function utf8_char2byte_pos($str,$pos)
- * 1780:     function utf8_byte2char_pos($str,$pos)
- * 1803:     function utf8_char_mapping($str,$mode,$opt='')
+ * 1622:     function utf8_substr($str,$start,$len=null)
+ * 1655:     function utf8_strlen($str)
+ * 1676:     function utf8_strtrunc($str,$len)
+ * 1698:     function utf8_strpos($haystack,$needle,$offset=0)
+ * 1723:     function utf8_strrpos($haystack,$needle)
+ * 1745:     function utf8_char2byte_pos($str,$pos)
+ * 1786:     function utf8_byte2char_pos($str,$pos)
+ * 1809:     function utf8_char_mapping($str,$mode,$opt='')
  *
  *              SECTION: Internal EUC string operation functions
- * 1879:     function euc_strtrunc($str,$len,$charset)
- * 1908:     function euc_substr($str,$start,$charset,$len=null)
- * 1933:     function euc_strlen($str,$charset)
- * 1960:     function euc_char2byte_pos($str,$pos,$charset)
- * 2001:     function euc_char_mapping($str,$charset,$mode,$opt='')
+ * 1885:     function euc_strtrunc($str,$len,$charset)
+ * 1914:     function euc_substr($str,$start,$charset,$len=null)
+ * 1939:     function euc_strlen($str,$charset)
+ * 1966:     function euc_char2byte_pos($str,$pos,$charset)
+ * 2007:     function euc_char_mapping($str,$charset,$mode,$opt='')
  *
  * TOTAL FUNCTIONS: 35
  * (This index is automatically created/updated by the extension "extdeveval")

@@ -42,7 +42,7 @@
  *
  *   73: class SC_alt_menu_sel
  *   81:     function main()
- *  107:     function printContent()
+ *  108:     function printContent()
  *
  * TOTAL FUNCTIONS: 2
  * (This index is automatically created/updated by the extension "extdeveval")

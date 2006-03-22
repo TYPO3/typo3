@@ -40,34 +40,39 @@
  *
  *
  *
- *  100: class SC_alt_doc
- *  174:     function preInit()
- *  232:     function doProcessData()
- *  242:     function processData()
- *  370:     function init()
- *  462:     function main()
- *  531:     function printContent()
+ *  105: class SC_alt_doc
+ *  179:     function preInit()
+ *  241:     function doProcessData()
+ *  251:     function processData()
+ *  379:     function init()
+ *  473:     function main()
+ *  551:     function printContent()
  *
  *              SECTION: Sub-content functions, rendering specific parts of the module content.
- *  566:     function makeEditForm()
- *  749:     function makeButtonPanel()
- *  828:     function makeDocSel()
- *  870:     function makeCmenu()
- *  891:     function compileForm($panel,$docSel,$cMenu,$editForm)
- *  953:     function functionMenus()
- *  984:     function shortCutLink()
- * 1015:     function tceformMessages()
+ *  587:     function makeEditForm()
+ *  771:     function makeButtonPanel()
+ *  850:     function makeDocSel()
+ *  892:     function makeCmenu()
+ *  914:     function compileForm($panel,$docSel,$cMenu,$editForm, $langSelector='')
+ *  982:     function functionMenus()
+ * 1013:     function shortCutLink()
+ * 1044:     function tceformMessages()
+ *
+ *              SECTION: Localization stuff
+ * 1083:     function languageSwitch($table, $uid, $pid=NULL)
+ * 1179:     function localizationRedirect($justLocalized)
+ * 1213:     function getLanguages($id)
  *
  *              SECTION: Other functions
- * 1054:     function fixWSversioningInEditConf($mapArray=FALSE)
- * 1103:     function getRecordForEdit($table,$theUid)
- * 1138:     function editRegularContentFromId()
- * 1165:     function compileStoreDat()
- * 1178:     function getNewIconMode($table,$key='saveDocNew')
- * 1191:     function closeDocument($code=0)
- * 1223:     function setDocument($currentDocFromHandlerMD5='',$retUrl='alt_doc_nodoc.php')
+ * 1275:     function fixWSversioningInEditConf($mapArray=FALSE)
+ * 1324:     function getRecordForEdit($table,$theUid)
+ * 1358:     function editRegularContentFromId()
+ * 1386:     function compileStoreDat()
+ * 1399:     function getNewIconMode($table,$key='saveDocNew')
+ * 1412:     function closeDocument($code=0)
+ * 1444:     function setDocument($currentDocFromHandlerMD5='',$retUrl='alt_doc_nodoc.php')
  *
- * TOTAL FUNCTIONS: 21
+ * TOTAL FUNCTIONS: 24
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -1070,7 +1075,7 @@ class SC_alt_doc {
 	 * Make selector box for creating new translation for a record or switching to edit the record in an existing language.
 	 * Displays only languages which are available for the current page.
 	 *
-	 * @param 	string 		Table name
+	 * @param	string		Table name
 	 * @param	integer		uid for which to create a new language
 	 * @param	integer		pid of the record
 	 * @return	string		<select> HTML element (if there were items for the box anyways...)
@@ -1168,8 +1173,8 @@ class SC_alt_doc {
 	/**
 	 * Redirects to alt_doc with new parameters to edit a just created localized record
 	 *
-	 * @param string 	String passed by GET &justLocalized=
-	 * @return void
+	 * @param	string		String passed by GET &justLocalized=
+	 * @return	void
 	 */
 	function localizationRedirect($justLocalized)	{
 		global $TCA;

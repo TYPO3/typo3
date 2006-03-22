@@ -38,10 +38,10 @@
  *
  *
  *
- *   97: class SC_tslib_showpic
- *  118:     function init()
- *  166:     function main()
- *  213:     function printContent()
+ *  112: class SC_tslib_showpic
+ *  133:     function init()
+ *  190:     function main()
+ *  237:     function printContent()
  *
  * TOTAL FUNCTIONS: 3
  * (This index is automatically created/updated by the extension "extdeveval")

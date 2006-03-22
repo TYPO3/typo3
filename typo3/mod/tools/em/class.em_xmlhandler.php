@@ -52,8 +52,9 @@ class SC_mod_tools_em_xmlhandler {
 	/**
 	 * Reduces the entries in $this->extensionsXML to the latest version per extension and removes entries not matching the search parameter
 	 *
-	 * @param string $search The list of extensions is reduced to entries matching this. If empty, the full list is returned.
-	 * @param boolean $latest If true, only the latest version is kept in the list
+	 * @param	string		$search The list of extensions is reduced to entries matching this. If empty, the full list is returned.
+	 * @param	boolean		$latest If true, only the latest version is kept in the list
+	 * @return	[type]		...
 	 */
 	function searchExtensionsXML($search, $owner='') {
 		if(!count($this->extensionsXML)) $this->loadExtensionsXML();
@@ -90,9 +91,9 @@ class SC_mod_tools_em_xmlhandler {
 	/**
 	 * Checks whether at least one of the extension versions is owned by the given username
 	 *
-	 * @param string $extkey
-	 * @param string $owner
-	 * @return boolean
+	 * @param	string		$extkey
+	 * @param	string		$owner
+	 * @return	boolean
 	 */
 	function checkOwner($extkey, $owner) {
 		foreach($this->extensionsXML[$extkey]['versions'] as $ext) {
@@ -104,7 +105,7 @@ class SC_mod_tools_em_xmlhandler {
 	/**
 	 * Loads the pre-parsed extension list
 	 *
-	 * @return boolean	true on success, false on error
+	 * @return	boolean		true on success, false on error
 	 */
 	function loadExtensionsXML() {
 		if(is_file(PATH_site.'typo3temp/extensions.bin')) {
@@ -119,7 +120,7 @@ class SC_mod_tools_em_xmlhandler {
 	/**
 	 * Loads the pre-parsed extension list
 	 *
-	 * @return boolean	true on success, false on error
+	 * @return	boolean		true on success, false on error
 	 */
 	function loadReviewStates() {
 		if(is_file(PATH_site.'typo3temp/reviewstates.bin')) {
@@ -134,6 +135,7 @@ class SC_mod_tools_em_xmlhandler {
 	/**
 	 * Enter description here...
 	 *
+	 * @return	[type]		...
 	 */
 	function saveExtensionsXML() {
 		t3lib_div::writeFile(PATH_site.'typo3temp/extensions.bin',gzcompress(serialize($this->extXMLResult)));
@@ -143,7 +145,7 @@ class SC_mod_tools_em_xmlhandler {
 	/**
 	 * Frees the pre-parsed extension list
 	 *
-	 * @return void
+	 * @return	void
 	 */
 	function freeExtensionsXML() {
 		unset($this->extensionsXML);
@@ -153,8 +155,8 @@ class SC_mod_tools_em_xmlhandler {
 	/**
 	 * Removes all extension with a certain state from the list
 	 *
-	 * @param array	&$extensions	The "versions" subpart of the extension list
-	 * @return void
+	 * @param	array		&$extensions	The "versions" subpart of the extension list
+	 * @return	void
 	 */
 	function removeObsolete(&$extensions) {
 		if($this->useObsolete) return;
@@ -169,7 +171,9 @@ class SC_mod_tools_em_xmlhandler {
 	/**
 	 * Enter description here...
 	 *
-	 * @param unknown_type $extKey
+	 * @param	unknown_type		$extKey
+	 * @param	[type]		$version: ...
+	 * @return	[type]		...
 	 */
 	function getReviewState($extKey, $version) {
 		if(!is_array($this->reviewStates)) $this->loadReviewStates();
@@ -184,8 +188,8 @@ class SC_mod_tools_em_xmlhandler {
 	/**
 	 * Removes all extension versions from $extensions that have a reviewstate<1, unless explicitly allowed
 	 *
-	 * @param array	&$extensions	The "versions" subpart of the extension list
-	 * @return void
+	 * @param	array		&$extensions	The "versions" subpart of the extension list
+	 * @return	void
 	 */
 	function checkReviewState(&$extensions) {
 		if($this->useUnsupported) return;
@@ -200,7 +204,7 @@ class SC_mod_tools_em_xmlhandler {
 	/**
 	 * Removes all extension versions from the list of available extensions that have a reviewstate<1, unless explicitly allowed
 	 *
-	 * @return void
+	 * @return	void
 	 */
 	function checkReviewStateGlobal() {
 		if($this->useUnsupported) return;
@@ -221,9 +225,10 @@ class SC_mod_tools_em_xmlhandler {
 	/**
 	 * Enter description here...
 	 *
-	 * @param unknown_type $parser
-	 * @param unknown_type $name
-	 * @param unknown_type $attrs
+	 * @param	unknown_type		$parser
+	 * @param	unknown_type		$name
+	 * @param	unknown_type		$attrs
+	 * @return	[type]		...
 	 */
 	function startElement($parser, $name, $attrs) {
 		switch($name) {
@@ -244,8 +249,9 @@ class SC_mod_tools_em_xmlhandler {
 	/**
 	 * Enter description here...
 	 *
-	 * @param unknown_type $parser
-	 * @param unknown_type $name
+	 * @param	unknown_type		$parser
+	 * @param	unknown_type		$name
+	 * @return	[type]		...
 	 */
 	function endElement($parser, $name) {
 		switch($name) {
@@ -263,8 +269,9 @@ class SC_mod_tools_em_xmlhandler {
 	/**
 	 * Enter description here...
 	 *
-	 * @param unknown_type $parser
-	 * @param unknown_type $data
+	 * @param	unknown_type		$parser
+	 * @param	unknown_type		$data
+	 * @return	[type]		...
 	 */
 	function characterData($parser, $data) {
 		if(isset($this->currentTag)) {
@@ -291,8 +298,8 @@ class SC_mod_tools_em_xmlhandler {
 	/**
 	 * Parses content of mirrors.xml into a suitable array
 	 *
-	 * @param string XML data file to parse
-	 * @return string		HTLML output informing about result
+	 * @param	string		XML data file to parse
+	 * @return	string		HTLML output informing about result
 	 */
 	function parseExtensionsXML($string) {
 		global $TYPO3_CONF_VARS;

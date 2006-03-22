@@ -36,26 +36,27 @@
  *
  *
  *
- *   74: class t3lib_refindex
- *   91:     function updateRefIndexTable($table,$uid,$testOnly=FALSE)
- *  162:     function generateRefIndexData($table,$uid)
- *  235:     function createEntryData($table,$uid,$field,$flexpointer,$ref_table,$ref_uid,$ref_string='',$sort=-1,$softref_key='',$softref_id='')
- *  260:     function createEntryData_dbRels($table,$uid,$fieldname,$flexpointer,$items)
- *  276:     function createEntryData_fileRels($table,$uid,$fieldname,$flexpointer,$items)
- *  296:     function createEntryData_softreferences($table,$uid,$fieldname,$flexpointer,$keys)
+ *   76: class t3lib_refindex
+ *   94:     function updateRefIndexTable($table,$uid,$testOnly=FALSE)
+ *  165:     function generateRefIndexData($table,$uid)
+ *  242:     function createEntryData($table,$uid,$field,$flexpointer,$deleted,$ref_table,$ref_uid,$ref_string='',$sort=-1,$softref_key='',$softref_id='')
+ *  269:     function createEntryData_dbRels($table,$uid,$fieldname,$flexpointer,$deleted,$items)
+ *  286:     function createEntryData_fileRels($table,$uid,$fieldname,$flexpointer,$deleted,$items)
+ *  307:     function createEntryData_softreferences($table,$uid,$fieldname,$flexpointer,$deleted,$keys)
  *
  *              SECTION: Get relations from table row
- *  351:     function getRelations($table,$row)
- *  456:     function getRelations_flexFormCallBack($pParams, $dsConf, $dataValue, $dataValue_ext1, $dataValue_ext2, $structurePath)
- *  503:     function getRelations_procFiles($value, $conf, $uid)
- *  553:     function getRelations_procDB($value, $conf, $uid)
+ *  362:     function getRelations($table,$row)
+ *  459:     function getRelations_flexFormCallBack($dsArr, $dataValue, $PA, $structurePath, &$pObj)
+ *  509:     function getRelations_procFiles($value, $conf, $uid)
+ *  559:     function getRelations_procDB($value, $conf, $uid)
  *
  *              SECTION: Helper functions
- *  590:     function isReferenceField($conf)
- *  600:     function destPathFromUploadFolder($folder)
- *  610:     function error($msg)
+ *  596:     function isReferenceField($conf)
+ *  606:     function destPathFromUploadFolder($folder)
+ *  616:     function error($msg)
+ *  627:     function updateIndex($testOnly,$cli_echo=FALSE)
  *
- * TOTAL FUNCTIONS: 13
+ * TOTAL FUNCTIONS: 14
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -86,7 +87,7 @@ class t3lib_refindex {
 	 * NOTICE: Currently, references updated for a deleted-flagged record will not include those from within flexform fields in some cases where the data structure is defined by another record since the resolving process ignores deleted records! This will also result in bad cleaning up in tcemain I think... Anyway, thats the story of flexforms; as long as the DS can change, lots of references can get lost in no time.
 	 *
 	 * @param	string		Table name
-	 * @param	uid		UID of record
+	 * @param	integer		UID of record
 	 * @param	boolean		If set, nothing will be written to the index but the result value will still report statistics on what as added, deleted and kept. Can be used for mere analysis.
 	 * @return	array		Array with statistics about how many index records were added, deleted and not altered plus the complete reference set for the record.
 	 */
@@ -353,7 +354,7 @@ class t3lib_refindex {
 	 * Traverses all fields in input row which are configured in TCA/columns
 	 * It looks for hard relations to files and records in the TCA types "select" and "group"
 	 *
-	 * @param	string		Table
+	 * @param	string		Table name
 	 * @param	array		Row from table
 	 * @return	array		Array with information about relations
 	 * @see export_addRecord()
@@ -457,7 +458,7 @@ class t3lib_refindex {
 	 */
 	function getRelations_flexFormCallBack($dsArr, $dataValue, $PA, $structurePath, &$pObj)	{
 		$structurePath = substr($structurePath,5);	// removing "data/" in the beginning of path (which points to location in data array)
-		
+
 		$dsConf = $dsArr['TCEforms']['config'];
 
 			// Implode parameter values:
@@ -615,21 +616,28 @@ class t3lib_refindex {
 	function error($msg)	{
 		$this->errorLog[]=$msg;
 	}
-	
+
+	/**
+	 * Updating Index (External API)
+	 *
+	 * @param	boolean		If set, only a test
+	 * @param	boolean		If set, output CLI status
+	 * @return	array		Header and body status content
+	 */
 	function updateIndex($testOnly,$cli_echo=FALSE)	{
 		global $TCA, $TYPO3_DB;
-		
+
 		$errors = array();
 		$tableNames = array();
 		$recCount=0;
 		$tableCount=0;
 
 		$headerContent = $testOnly ? 'Reference Index TESTED (nothing written)' : 'Reference Index Updated';
-		if ($cli_echo) echo 
+		if ($cli_echo) echo
 						'*******************************************'.chr(10).
 						$headerContent.chr(10).
-						'*******************************************'.chr(10); 
-		
+						'*******************************************'.chr(10);
+
 			// Traverse all tables:
 		foreach($TCA as $tableName => $cfg)	{
 			$tableNames[] = $tableName;
@@ -646,7 +654,7 @@ class t3lib_refindex {
 
 				if ($result['addedNodes'] || $result['deletedNodes'])	{
 					$Err = 'Record '.$tableName.':'.$recdat['uid'].' had '.$result['addedNodes'].' added indexes and '.$result['deletedNodes'].' deleted indexes';
-					$errors[]= $Err; 
+					$errors[]= $Err;
 					if ($cli_echo) echo $Err.chr(10);
 					#$errors[] = t3lib_div::view_array($result);
 				}
@@ -674,10 +682,10 @@ class t3lib_refindex {
 		}
 
 		$testedHowMuch = $recCount.' records from '.$tableCount.' tables were checked/updated.'.chr(10);
-		
+
 		$bodyContent = $testedHowMuch.(count($errors)?implode(chr(10),$errors):'Index Integrity was perfect!');
 		if ($cli_echo) echo $testedHowMuch.(count($errors)?'Updates: '.count($errors):'Index Integrity was perfect!').chr(10);
-				
+
 		return array($headerContent,$bodyContent);
 	}
 }

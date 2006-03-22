@@ -35,12 +35,12 @@
  *
  *
  *   68: class wslib
- *   80:     function getCmdArrayForPublishWS($wsid, $doSwap)
- *  126:     function selectVersionsInWorkspace($wsid,$filter=0,$stage=-99,$pageId=-1)
+ *   81:     function getCmdArrayForPublishWS($wsid, $doSwap,$pageId=0)
+ *  127:     function selectVersionsInWorkspace($wsid,$filter=0,$stage=-99,$pageId=-1)
  *
  *              SECTION: CLI functions
- *  182:     function CLI_main()
- *  192:     function autoPublishWorkspaces()
+ *  183:     function CLI_main()
+ *  193:     function autoPublishWorkspaces()
  *
  * TOTAL FUNCTIONS: 4
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -75,6 +75,7 @@ class wslib {
 	 *
 	 * @param	integer		Real workspace ID, cannot be ONLINE (zero).
 	 * @param	boolean		If set, then the currently online versions are swapped into the workspace in exchange for the offline versions. Otherwise the workspace is emptied.
+	 * @param	[type]		$pageId: ...
 	 * @return	array		Command array for tcemain
 	 */
 	function getCmdArrayForPublishWS($wsid, $doSwap,$pageId=0)	{

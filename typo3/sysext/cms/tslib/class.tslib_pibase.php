@@ -41,57 +41,57 @@
  *  132: class tslib_pibase
  *
  *              SECTION: Init functions
- *  211:     function tslib_pibase()
- *  225:     function pi_setPiVarDefaults()
+ *  214:     function tslib_pibase()
+ *  240:     function pi_setPiVarDefaults()
  *
  *              SECTION: Link functions
- *  264:     function pi_getPageLink($id,$target='',$urlParameters=array())
- *  280:     function pi_linkToPage($str,$id,$target='',$urlParameters=array())
- *  295:     function pi_linkTP($str,$urlParameters=array(),$cache=0,$altPageId=0)
- *  318:     function pi_linkTP_keepPIvars($str,$overrulePIvars=array(),$cache=0,$clearAnyway=0,$altPageId=0)
- *  342:     function pi_linkTP_keepPIvars_url($overrulePIvars=array(),$cache=0,$clearAnyway=0,$altPageId=0)
- *  360:     function pi_list_linkSingle($str,$uid,$cache=FALSE,$mergeArr=array(),$urlOnly=FALSE,$altPageId=0)
- *  388:     function pi_openAtagHrefInJSwindow($str,$winName='',$winParams='width=670,height=500,status=0,menubar=0,scrollbars=1,resizable=1')
+ *  277:     function pi_getPageLink($id,$target='',$urlParameters=array())
+ *  293:     function pi_linkToPage($str,$id,$target='',$urlParameters=array())
+ *  308:     function pi_linkTP($str,$urlParameters=array(),$cache=0,$altPageId=0)
+ *  331:     function pi_linkTP_keepPIvars($str,$overrulePIvars=array(),$cache=0,$clearAnyway=0,$altPageId=0)
+ *  355:     function pi_linkTP_keepPIvars_url($overrulePIvars=array(),$cache=0,$clearAnyway=0,$altPageId=0)
+ *  373:     function pi_list_linkSingle($str,$uid,$cache=FALSE,$mergeArr=array(),$urlOnly=FALSE,$altPageId=0)
+ *  401:     function pi_openAtagHrefInJSwindow($str,$winName='',$winParams='width=670,height=500,status=0,menubar=0,scrollbars=1,resizable=1')
  *
  *              SECTION: Functions for listing, browsing, searching etc.
- *  428:     function pi_list_browseresults($showResultCount=1,$tableParams='')
- *  500:     function pi_list_searchBox($tableParams='')
- *  531:     function pi_list_modeSelector($items=array(),$tableParams='')
- *  569:     function pi_list_makelist($res,$tableParams='')
- *  604:     function pi_list_row($c)
- *  616:     function pi_list_header()
+ *  456:     function pi_list_browseresults($showResultCount=1,$tableParams='',$wrapArr=array(), $pointerName = 'pointer', $hscText = TRUE)
+ *  618:     function pi_list_searchBox($tableParams='')
+ *  649:     function pi_list_modeSelector($items=array(),$tableParams='')
+ *  687:     function pi_list_makelist($res,$tableParams='')
+ *  722:     function pi_list_row($c)
+ *  734:     function pi_list_header()
  *
  *              SECTION: Stylesheet, CSS
- *  647:     function pi_getClassName($class)
- *  659:     function pi_classParam($class)
- *  673:     function pi_setClassStyle($class,$data,$selector='')
- *  684:     function pi_wrapInBaseClass($str)
+ *  765:     function pi_getClassName($class)
+ *  777:     function pi_classParam($class)
+ *  791:     function pi_setClassStyle($class,$data,$selector='')
+ *  802:     function pi_wrapInBaseClass($str)
  *
  *              SECTION: Frontend editing: Edit panel, edit icons
- *  733:     function pi_getEditPanel($row='',$tablename='',$label='',$conf=Array())
- *  775:     function pi_getEditIcon($content,$fields,$title='',$row='',$tablename='',$oConf=array())
+ *  858:     function pi_getEditPanel($row='',$tablename='',$label='',$conf=Array())
+ *  900:     function pi_getEditIcon($content,$fields,$title='',$row='',$tablename='',$oConf=array())
  *
  *              SECTION: Localization, locallang functions
- *  822:     function pi_getLL($key,$alt='',$hsc=FALSE)
- *  843:     function pi_loadLL()
+ *  947:     function pi_getLL($key,$alt='',$hsc=FALSE)
+ *  970:     function pi_loadLL()
  *
  *              SECTION: Database, queries
- *  908:     function pi_list_query($table,$count=0,$addWhere='',$mm_cat='',$groupBy='',$orderBy='',$query='',$returnQueryArray=FALSE)
- * 1000:     function pi_exec_query($table,$count=0,$addWhere='',$mm_cat='',$groupBy='',$orderBy='',$query='')
- * 1015:     function pi_getRecord($table,$uid,$checkPage=0)
- * 1026:     function pi_getPidList($pid_list,$recursive=0)
- * 1051:     function pi_prependFieldsWithTable($table,$fieldList)
- * 1071:     function pi_getCategoryTableContents($table,$pid,$whereClause='',$groupBy='',$orderBy='',$limit='')
+ * 1048:     function pi_list_query($table,$count=0,$addWhere='',$mm_cat='',$groupBy='',$orderBy='',$query='',$returnQueryArray=FALSE)
+ * 1140:     function pi_exec_query($table,$count=0,$addWhere='',$mm_cat='',$groupBy='',$orderBy='',$query='')
+ * 1155:     function pi_getRecord($table,$uid,$checkPage=0)
+ * 1166:     function pi_getPidList($pid_list,$recursive=0)
+ * 1191:     function pi_prependFieldsWithTable($table,$fieldList)
+ * 1211:     function pi_getCategoryTableContents($table,$pid,$whereClause='',$groupBy='',$orderBy='',$limit='')
  *
  *              SECTION: Various
- * 1115:     function pi_isOnlyFields($fList,$lowerThan=-1)
- * 1135:     function pi_autoCache($inArray)
- * 1166:     function pi_RTEcssText($str)
+ * 1255:     function pi_isOnlyFields($fList,$lowerThan=-1)
+ * 1275:     function pi_autoCache($inArray)
+ * 1306:     function pi_RTEcssText($str)
  *
  *              SECTION: FlexForms related functions
- * 1187:     function pi_initPIflexForm()
- * 1205:     function pi_getFFvalue($T3FlexForm_array,$fieldName,$sheet='sDEF',$lang='lDEF',$value='vDEF')
- * 1222:     function pi_getFFvalueFromSheetArray($sheetArray,$fieldNameArr,$value)
+ * 1328:     function pi_initPIflexForm($field='pi_flexform')
+ * 1346:     function pi_getFFvalue($T3FlexForm_array,$fieldName,$sheet='sDEF',$lang='lDEF',$value='vDEF')
+ * 1363:     function pi_getFFvalueFromSheetArray($sheetArray,$fieldNameArr,$value)
  *
  * TOTAL FUNCTIONS: 35
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -444,13 +444,14 @@ class tslib_pibase {
 	 * If $wrapArr['showResultsNumbersWrap'] is set, the formatting string is expected to hold template markers (###FROM###, ###TO###, ###OUT_OF###, ###FROM_TO###, ###CURRENT_PAGE###, ###TOTAL_PAGES###)
 	 * otherwise the formatting sting is expected to hold sprintf-markers (%s) for from, to, outof (in that sequence)
 	 *
+	 * 										otherwise wrapping is totally controlled/modified by this array
+	 *
 	 * @param	integer		determines how the results of the pagerowser will be shown. See description below
 	 * @param	string		Attributes for the table tag which is wrapped around the table cells containing the browse links
 	 * @param	array		Array with elements to overwrite the default $wrapper-array.
 	 * @param	string		varname for the pointer.
 	 * @param	boolean		enable htmlspecialchars() for the pi_getLL function (set this to FALSE if you want f.e use images instead of text for links like 'previous' and 'next').
 	 * @return	string		Output HTML-Table, wrapped in <div>-tags with a class attribute (if $wrapArr is not passed,
-	 *										otherwise wrapping is totally controlled/modified by this array
 	 */
 	function pi_list_browseresults($showResultCount=1,$tableParams='',$wrapArr=array(), $pointerName = 'pointer', $hscText = TRUE)	{
 
@@ -1320,8 +1321,8 @@ class tslib_pibase {
 
 	/**
 	 * Converts $this->cObj->data['pi_flexform'] from XML string to flexForm array.
-	 * @param	string		Field name to convert
 	 *
+	 * @param	string		Field name to convert
 	 * @return	void
 	 */
 	function pi_initPIflexForm($field='pi_flexform')	{

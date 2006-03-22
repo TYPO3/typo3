@@ -40,76 +40,77 @@
  *
  *
  *
- *  157: class TBE_browser_recordList extends localRecordList
- *  168:     function listURL($altId='',$table=-1,$exclList='')
- *  187:     function ext_addP()
- *  204:     function linkWrapItems($table,$uid,$code,$row)
- *  237:     function linkWrapTable($table,$code)
+ *  155: class TBE_browser_recordList extends localRecordList
+ *  163:     function TBE_browser_recordList ()
+ *  175:     function listURL($altId='',$table=-1,$exclList='')
+ *  194:     function ext_addP()
+ *  211:     function linkWrapItems($table,$uid,$code,$row)
+ *  244:     function linkWrapTable($table,$code)
  *
  *
- *  254: class localPageTree extends t3lib_browseTree
- *  261:     function localPageTree()
- *  275:     function wrapTitle($title,$v,$ext_pArrPages='')
- *  290:     function printTree($treeArr='')
- *  340:     function ext_isLinkable($doktype,$uid)
- *  354:     function PM_ATagWrap($icon,$cmd,$bMark='')
- *  371:     function wrapIcon($icon,$row)
+ *  261: class localPageTree extends t3lib_browseTree
+ *  268:     function localPageTree()
+ *  284:     function wrapTitle($title,$v,$ext_pArrPages='')
+ *  299:     function printTree($treeArr='')
+ *  350:     function ext_isLinkable($doktype,$uid)
+ *  364:     function PM_ATagWrap($icon,$cmd,$bMark='')
+ *  381:     function wrapIcon($icon,$row)
  *
  *
- *  390: class rtePageTree extends localPageTree
+ *  400: class rtePageTree extends localPageTree
  *
  *
- *  407: class TBE_PageTree extends localPageTree
- *  416:     function ext_isLinkable($doktype,$uid)
- *  428:     function wrapTitle($title,$v,$ext_pArrPages)
+ *  417: class TBE_PageTree extends localPageTree
+ *  426:     function ext_isLinkable($doktype,$uid)
+ *  438:     function wrapTitle($title,$v,$ext_pArrPages)
  *
  *
- *  454: class localFolderTree extends t3lib_folderTree
- *  464:     function wrapTitle($title,$v)
- *  479:     function ext_isLinkable($v)
- *  496:     function PM_ATagWrap($icon,$cmd,$bMark='')
- *  511:     function printTree($treeArr='')
+ *  464: class localFolderTree extends t3lib_folderTree
+ *  473:     function localFolderTree()
+ *  485:     function wrapTitle($title,$v)
+ *  500:     function ext_isLinkable($v)
+ *  517:     function PM_ATagWrap($icon,$cmd,$bMark='')
+ *  532:     function printTree($treeArr='')
  *
  *
- *  577: class rteFolderTree extends localFolderTree
+ *  599: class rteFolderTree extends localFolderTree
  *
  *
- *  593: class TBE_FolderTree extends localFolderTree
- *  602:     function ext_isLinkable($v)
- *  615:     function wrapTitle($title,$v)
+ *  615: class TBE_FolderTree extends localFolderTree
+ *  624:     function ext_isLinkable($v)
+ *  637:     function wrapTitle($title,$v)
  *
  *
- *  636: class SC_browse_links
- *  729:     function init()
- *  984:     function main()
- * 1026:     function printContent()
+ *  658: class browse_links
+ *  764:     function init()
+ * 1034:     function processSessionData($data)
  *
  *              SECTION: Main functions
- * 1057:     function main_rte($wiz=0)
- * 1336:     function main_db()
- * 1380:     function main_file()
+ * 1077:     function main_rte($wiz=0)
+ * 1379:     function main_db()
+ * 1424:     function main_file()
  *
  *              SECTION: Record listing
- * 1489:     function expandPage()
- * 1568:     function TBE_expandPage($tables)
+ * 1534:     function expandPage()
+ * 1615:     function TBE_expandPage($tables)
  *
  *              SECTION: File listing
- * 1661:     function expandFolder($expandFolder=0,$extensionList='')
- * 1730:     function TBE_expandFolder($expandFolder=0,$extensionList='',$noThumbs=0)
- * 1753:     function fileList($files, $folderName='', $noThumbs=0)
- * 1870:     function TBE_dragNDrop($expandFolder=0,$extensionList='')
+ * 1708:     function expandFolder($expandFolder=0,$extensionList='')
+ * 1778:     function TBE_expandFolder($expandFolder=0,$extensionList='',$noThumbs=0)
+ * 1801:     function fileList($files, $folderName='', $noThumbs=0)
+ * 1918:     function TBE_dragNDrop($expandFolder=0,$extensionList='')
  *
  *              SECTION: Miscellaneous functions
- * 1997:     function isWebFolder($folder)
- * 2008:     function checkFolder($folder)
- * 2021:     function barheader($str)
- * 2038:     function getMsgBox($in_msg,$icon='icon_note')
- * 2060:     function printCurrentUrl($str)
- * 2080:     function parseCurUrl($href,$siteUrl)
- * 2142:     function uploadForm($path)
- * 2195:     function createFolder($path)
+ * 2046:     function isWebFolder($folder)
+ * 2057:     function checkFolder($folder)
+ * 2070:     function barheader($str)
+ * 2087:     function getMsgBox($in_msg,$icon='icon_note')
+ * 2111:     function printCurrentUrl($str)
+ * 2131:     function parseCurUrl($href,$siteUrl)
+ * 2193:     function uploadForm($path)
+ * 2247:     function createFolder($path)
  *
- * TOTAL FUNCTIONS: 38
+ * TOTAL FUNCTIONS: 39
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -157,7 +158,7 @@ class TBE_browser_recordList extends localRecordList {
 	/**
 	 * Initializes the script path
 	 *
-	 * @return void
+	 * @return	void
 	 */
 	function TBE_browser_recordList () {
 		$this->thisScript = t3lib_div::getIndpEnv('SCRIPT_NAME');
@@ -467,7 +468,7 @@ class localFolderTree extends t3lib_folderTree {
 	/**
 	 * Initializes the script path
 	 *
-	 * @return void
+	 * @return	void
 	 */
 	function localFolderTree() {
 		$this->thisScript = t3lib_div::getIndpEnv('SCRIPT_NAME');
@@ -1027,8 +1028,8 @@ class browse_links {
 	 * Session data for this class can be set from outside with this method.
 	 * Call after init()
 	 *
-	 * @param array Session data array
-	 * @return array Session data and boolean which indicates that data needs to be stored in session because it's changed
+	 * @param	array		Session data array
+	 * @return	array		Session data and boolean which indicates that data needs to be stored in session because it's changed
 	 */
 	function processSessionData($data) {
 		$store = false;

@@ -41,12 +41,12 @@
  *              SECTION: Rendering of Content Elements:
  *   96:     function render_bullets($content,$conf)
  *  141:     function render_table($content,$conf)
- *  277:     function render_uploads($content,$conf)
- *  388:     function render_textpic($content, $conf)
+ *  283:     function render_uploads($content,$conf)
+ *  395:     function render_textpic($content, $conf)
  *
  *              SECTION: Helper functions
- *  839:     function getTableAttributes($conf,$type)
- *  868:     function &hookRequest($functionName)
+ *  832:     function getTableAttributes($conf,$type)
+ *  861:     function &hookRequest($functionName)
  *
  * TOTAL FUNCTIONS: 6
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -389,7 +389,7 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 	 * @param	string		Content input. Not used, ignore.
 	 * @param	array		TypoScript configuration. See TSRef "IMGTEXT". This function aims to be compatible.
 	 * @return	string		HTML output.
-	 * @access	private
+	 * @access private
 	 * @coauthor	Ernesto Baschny <ernst@cron-it.de>
 	 */
 	 function render_textpic($content, $conf)	{

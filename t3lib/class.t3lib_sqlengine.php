@@ -37,35 +37,35 @@
  *
  *
  *
- *  103: class t3lib_sqlengine extends t3lib_sqlparser
- *  125:     function init($config, &$pObj)
- *  133:     function resetStatusVars()
- *  149:     function processAccordingToConfig(&$value,$fInfo)
+ *  104: class t3lib_sqlengine extends t3lib_sqlparser
+ *  126:     function init($config, &$pObj)
+ *  134:     function resetStatusVars()
+ *  150:     function processAccordingToConfig(&$value,$fInfo)
  *
  *              SECTION: SQL queries
- *  204:     function exec_INSERTquery($table,$fields_values)
- *  271:     function exec_UPDATEquery($table,$where,$fields_values)
- *  330:     function exec_DELETEquery($table,$where)
- *  381:     function exec_SELECTquery($select_fields,$from_table,$where_clause,$groupBy,$orderBy,$limit)
- *  424:     function sql_query($query)
- *  435:     function sql_error()
- *  444:     function sql_insert_id()
- *  453:     function sql_affected_rows()
- *  463:     function quoteStr($str)
+ *  205:     function exec_INSERTquery($table,$fields_values)
+ *  273:     function exec_UPDATEquery($table,$where,$fields_values)
+ *  332:     function exec_DELETEquery($table,$where)
+ *  383:     function exec_SELECTquery($select_fields,$from_table,$where_clause,$groupBy,$orderBy,$limit)
+ *  426:     function sql_query($query)
+ *  437:     function sql_error()
+ *  446:     function sql_insert_id()
+ *  455:     function sql_affected_rows()
+ *  465:     function quoteStr($str)
  *
  *              SECTION: SQL admin functions
- *  488:     function admin_get_tables()
- *  499:     function admin_get_fields($tableName)
- *  510:     function admin_get_keys($tableName)
- *  521:     function admin_query($query)
+ *  490:     function admin_get_tables()
+ *  501:     function admin_get_fields($tableName)
+ *  512:     function admin_get_keys($tableName)
+ *  523:     function admin_query($query)
  *
  *              SECTION: Data Source I/O
- *  546:     function readDataSource($table)
- *  558:     function saveDataSource($table)
+ *  548:     function readDataSource($table)
+ *  560:     function saveDataSource($table)
  *
  *              SECTION: SQL engine functions (PHP simulation of SQL) - still experimental
- *  588:     function selectFromData($table,$where)
- *  626:     function select_evalSingle($table,$config,&$itemKeys)
+ *  590:     function selectFromData($table,$where)
+ *  628:     function select_evalSingle($table,$config,&$itemKeys)
  *  747:     function getResultSet($keys, $table, $fieldList)
  *
  *              SECTION: Debugging

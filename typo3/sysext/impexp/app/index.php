@@ -51,25 +51,25 @@
  *  387:     function exportData($inData)
  *  661:     function addRecordsForPid($k, $tables, $maxNumber)
  *  687:     function exec_listQueryPid($table,$pid,$limit)
- *  716:     function makeConfigurationForm($inData, &$row)
- *  884:     function makeAdvancedOptionsForm($inData, &$row)
- *  932:     function makeSaveForm($inData, &$row)
+ *  717:     function makeConfigurationForm($inData, &$row)
+ *  885:     function makeAdvancedOptionsForm($inData, &$row)
+ *  933:     function makeSaveForm($inData, &$row)
  *
  *              SECTION: IMPORT FUNCTIONS
- * 1063:     function importData($inData)
+ * 1064:     function importData($inData)
  *
  *              SECTION: Preset functions
- * 1355:     function processPresets(&$inData)
- * 1452:     function getPreset($uid)
+ * 1363:     function processPresets(&$inData)
+ * 1458:     function getPreset($uid)
  *
  *              SECTION: Helper functions
- * 1478:     function userTempFolder()
- * 1494:     function userSaveFolder()
- * 1517:     function checkUpload()
- * 1547:     function renderSelectBox($prefix,$value,$optValues)
- * 1570:     function tableSelector($prefix,$value,$excludeList='')
- * 1606:     function extensionSelector($prefix,$value)
- * 1631:     function filterPageIds($exclude)
+ * 1484:     function userTempFolder()
+ * 1500:     function userSaveFolder()
+ * 1523:     function checkUpload()
+ * 1553:     function renderSelectBox($prefix,$value,$optValues)
+ * 1576:     function tableSelector($prefix,$value,$excludeList='')
+ * 1612:     function extensionSelector($prefix,$value)
+ * 1637:     function filterPageIds($exclude)
  *
  * TOTAL FUNCTIONS: 24
  * (This index is automatically created/updated by the extension "extdeveval")

@@ -37,27 +37,27 @@
  *
  *
  *   83: class t3lib_install
- *  112:     function t3lib_install()
+ *  108:     function t3lib_install()
  *
  *              SECTION: Writing to localconf.php
- *  136:     function setValueInLocalconfFile(&$line_array, $variable, $value)
- *  186:     function writeToLocalconf_control($inlines='')
- *  238:     function checkForBadString($string)
- *  251:     function slashValueForSingleDashes($value)
+ *  132:     function setValueInLocalconfFile(&$line_array, $variable, $value)
+ *  183:     function writeToLocalconf_control($inlines='',$absFullPath='')
+ *  253:     function checkForBadString($string)
+ *  266:     function slashValueForSingleDashes($value)
  *
  *              SECTION: SQL
- *  276:     function getFieldDefinitions_sqlContent($sqlContent)
- *  320:     function getFieldDefinitions_sqlContent_parseTypes(&$total)
- *  367:     function getFieldDefinitions_database()
- *  411:     function getDatabaseExtra($FDsrc, $FDcomp, $onlyTableList='')
- *  456:     function getUpdateSuggestions($diffArr,$keyList='extra,diff')
- *  557:     function assembleFieldDefinition($row)
- *  586:     function getStatementArray($sqlcode,$removeNonSQL=0,$query_regex='')
- *  626:     function getCreateTables($statements, $insertCountFlag=0)
- *  650:     function getTableInsertStatements($statements, $table)
- *  670:     function performUpdateQueries($arr,$keyArr)
- *  686:     function getListOfTables()
- *  702:     function generateUpdateDatabaseForm_checkboxes($arr,$label,$checked=1,$iconDis=0,$currentValue=array(),$cVfullMsg=0)
+ *  291:     function getFieldDefinitions_sqlContent($sqlContent)
+ *  359:     function getFieldDefinitions_sqlContent_parseTypes(&$total)
+ *  406:     function getFieldDefinitions_database()
+ *  450:     function getDatabaseExtra($FDsrc, $FDcomp, $onlyTableList='')
+ *  496:     function getUpdateSuggestions($diffArr,$keyList='extra,diff')
+ *  589:     function assembleFieldDefinition($row)
+ *  611:     function getStatementArray($sqlcode,$removeNonSQL=0,$query_regex='')
+ *  649:     function getCreateTables($statements, $insertCountFlag=0)
+ *  683:     function getTableInsertStatements($statements, $table)
+ *  704:     function performUpdateQueries($arr,$keyArr)
+ *  720:     function getListOfTables()
+ *  736:     function generateUpdateDatabaseForm_checkboxes($arr,$label,$checked=1,$iconDis=0,$currentValue=array(),$cVfullMsg=0)
  *
  * TOTAL FUNCTIONS: 17
  * (This index is automatically created/updated by the extension "extdeveval")

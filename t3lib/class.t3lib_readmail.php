@@ -37,27 +37,23 @@
  *
  *
  *
- *   87: class t3lib_readmail
- *
- *              SECTION: FUNCTIONS for the Dmailer
- *  122:     function find_MIDfromReturnPath($to)
- *  142:     function find_XTypo3MID($content)
+ *   83: class t3lib_readmail
  *
  *              SECTION: General
- *  188:     function getMessage($mailParts)
- *  213:     function getTextContent($content)
- *  228:     function getMailBoundaryParts($boundary,$content)
- *  248:     function getCType($str)
- *  271:     function analyseReturnError($c)
- *  326:     function decodeHeaderString($str)
- *  354:     function extractNameEmail($str)
- *  383:     function getContentTypeData($contentTypeStr)
- *  406:     function makeUnixDate($dateStr)
- *  429:     function getGMToffset($GMT)
- *  443:     function extractMailHeader($content,$limit=0)
- *  474:     function fullParse($content)
+ *  113:     function getMessage($mailParts)
+ *  138:     function getTextContent($content)
+ *  153:     function getMailBoundaryParts($boundary,$content)
+ *  173:     function getCType($str)
+ *  196:     function analyseReturnError($c)
+ *  251:     function decodeHeaderString($str)
+ *  279:     function extractNameEmail($str)
+ *  308:     function getContentTypeData($contentTypeStr)
+ *  331:     function makeUnixDate($dateStr)
+ *  354:     function getGMToffset($GMT)
+ *  368:     function extractMailHeader($content,$limit=0)
+ *  399:     function fullParse($content)
  *
- * TOTAL FUNCTIONS: 14
+ * TOTAL FUNCTIONS: 12
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */

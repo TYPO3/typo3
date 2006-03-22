@@ -36,62 +36,64 @@
  *
  *
  *
- *  191: class t3lib_htmlmail
- *  256:     function t3lib_htmlmail ()
- *  275:     function start ()
- *  286:     function useBase64()
- *  298:     function encodeMsg($content)
- *  308:     function addPlain ($content)
- *  320:     function addAttachment($file)
- *  338:     function addHTML ($file)
- *  361:     function extractHtmlInit($html,$url)
- *  372:     function send($recipient)
+ *  193: class t3lib_htmlmail
+ *  261:     function t3lib_htmlmail ()
+ *  268:     function start ()
+ *  305:     function useQuotedPrintable()
+ *  315:     function useBase64()
+ *  326:     function use8Bit()
+ *  338:     function encodeMsg($content)
+ *  348:     function addPlain ($content)
+ *  360:     function addAttachment($file)
+ *  378:     function addHTML ($file)
+ *  401:     function extractHtmlInit($html,$url)
+ *  412:     function send($recipient)
  *
  *              SECTION: Main functions
- *  401:     function setHeaders ()
- *  455:     function setRecipient ($recip)
- *  473:     function getHTMLContentType()
- *  482:     function setContent()
- *  509:     function constructMixed ($boundary)
- *  548:     function constructHTML ($boundary)
- *  571:     function constructAlternative($boundary)
- *  592:     function constructHTML_media ($boundary)
- *  646:     function sendTheMail ()
- *  712:     function getBoundary()
- *  724:     function setPlain ($content)
- *  735:     function setHtml ($content)
- *  746:     function add_header ($header)
- *  757:     function add_message ($string)
- *  768:     function getContent($type)
- *  777:     function preview()
+ *  441:     function setHeaders()
+ *  500:     function setRecipient ($recip)
+ *  518:     function getHTMLContentType()
+ *  527:     function setContent()
+ *  554:     function constructMixed ($boundary)
+ *  593:     function constructHTML ($boundary)
+ *  617:     function constructAlternative($boundary)
+ *  638:     function constructHTML_media ($boundary)
+ *  691:     function sendTheMail ()
+ *  757:     function getBoundary()
+ *  769:     function setPlain ($content)
+ *  780:     function setHtml ($content)
+ *  791:     function add_header($header)
+ *  812:     function add_message($string)
+ *  823:     function getContent($type)
+ *  832:     function preview()
  *
  *              SECTION: Functions for acquiring attachments, HTML, analyzing and so on  **
- *  805:     function fetchHTML($file)
- *  823:     function fetchHTMLMedia()
- *  844:     function extractMediaLinks()
- *  920:     function extractHyperLinks()
- *  969:     function extractFramesInfo()
- *  995:     function substMediaNamesInHTML($absolute)
- * 1022:     function substHREFsInHTML()
- * 1050:     function substHTTPurlsInPlainText($content)
- * 1090:     function fixRollOvers()
+ *  860:     function fetchHTML($file)
+ *  878:     function fetchHTMLMedia()
+ *  899:     function extractMediaLinks()
+ *  976:     function extractHyperLinks()
+ * 1025:     function extractFramesInfo()
+ * 1051:     function substMediaNamesInHTML($absolute)
+ * 1078:     function substHREFsInHTML()
+ * 1106:     function substHTTPurlsInPlainText($content)
+ * 1142:     function fixRollOvers()
  *
  *              SECTION: File and URL-functions
- * 1137:     function makeBase64($inputstr)
- * 1148:     function getExtendedURL($url)
- * 1168:     function addUserPass($url)
- * 1183:     function getURL($url)
- * 1204:     function getStrippedURL($url)
- * 1225:     function getMimeType($url)
- * 1254:     function absRef($ref)
- * 1274:     function split_fileref($fileref)
- * 1301:     function extParseUrl($path)
- * 1316:     function tag_regex($tagArray)
- * 1338:     function get_tag_attributes($tag)
- * 1380:     function quoted_printable($string)
- * 1390:     function convertName($name)
+ * 1189:     function makeBase64($inputstr)
+ * 1200:     function getExtendedURL($url)
+ * 1222:     function addUserPass($url)
+ * 1238:     function getURL($url)
+ * 1250:     function getStrippedURL($url)
+ * 1271:     function getMimeType($url)
+ * 1300:     function absRef($ref)
+ * 1320:     function split_fileref($fileref)
+ * 1347:     function extParseUrl($path)
+ * 1362:     function tag_regex($tagArray)
+ * 1384:     function get_tag_attributes($tag)
+ * 1426:     function quoted_printable($string)
+ * 1437:     function convertName($name)
  *
- * TOTAL FUNCTIONS: 47
+ * TOTAL FUNCTIONS: 49
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -265,7 +267,7 @@ class t3lib_htmlmail {
 	 */
 	function start ()	{
 		global $TYPO3_CONF_VARS;
-		
+
 			// Sets the message id
 		$host = php_uname('n');
 		if (strpos('.',$host) === FALSE) {

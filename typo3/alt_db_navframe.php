@@ -41,18 +41,18 @@
  *   78: class localPageTree extends t3lib_browseTree
  *   88:     function localPageTree()
  *   99:     function wrapIcon($icon,&$row)
- *  137:     function wrapStop($str,$row)
- *  153:     function wrapTitle($title,$row,$bank=0)
+ *  142:     function wrapStop($str,$row)
+ *  158:     function wrapTitle($title,$row,$bank=0)
  *
  *
- *  181: class SC_alt_db_navframe
- *  199:     function init()
- *  295:     function main()
- *  346:     function printContent()
+ *  192: class SC_alt_db_navframe
+ *  210:     function init()
+ *  313:     function main()
+ *  387:     function printContent()
  *
  *              SECTION: Temporary DB mounts
- *  373:     function initializeTemporaryDBmount()
- *  402:     function settingTemporaryMountPoint($pageId)
+ *  415:     function initializeTemporaryDBmount()
+ *  449:     function settingTemporaryMountPoint($pageId)
  *
  * TOTAL FUNCTIONS: 9
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -247,7 +247,7 @@ class SC_alt_db_navframe {
 	($this->currentSubScript?'top.currentSubScript=unescape("'.rawurlencode($this->currentSubScript).'");':'').'
 
 		// Function, loading the list frame from navigation tree:
-	function jumpTo(id,linkObj,highLightID,bank)	{
+	function jumpTo(id,linkObj,highLightID,bank)	{	//
 		var theUrl = top.TS.PATH_typo3+top.currentSubScript+"?id="+id;
 		top.fsMod.currentBank = bank;
 

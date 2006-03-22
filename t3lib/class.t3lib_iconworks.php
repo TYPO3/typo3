@@ -41,13 +41,13 @@
  *   85: class t3lib_iconWorks
  *  100:     function getIconImage($table,$row=array(),$backPath,$params='',$shaded=FALSE)
  *  118:     function getIcon($table,$row=array(),$shaded=FALSE)
- *  254:     function skinImg($backPath,$src,$wHattribs='',$outputMode=0)
+ *  264:     function skinImg($backPath,$src,$wHattribs='',$outputMode=0)
  *
  *              SECTION: Other functions
- *  328:     function makeIcon($iconfile,$mode, $user, $protectSection,$absFile,$iconFileName_stateTagged)
- *  444:     function imagecopyresized(&$im, $cpImg, $Xstart, $Ystart, $cpImgCutX, $cpImgCutY, $w, $h, $w, $h)
- *  477:     function imagecreatefrom($file)
- *  494:     function imagemake($im, $path)
+ *  353:     function makeIcon($iconfile,$mode, $user, $protectSection,$absFile,$iconFileName_stateTagged)
+ *  475:     function imagecopyresized(&$im, $cpImg, $Xstart, $Ystart, $cpImgCutX, $cpImgCutY, $w, $h, $w, $h)
+ *  505:     function imagecreatefrom($file)
+ *  522:     function imagemake($im, $path)
  *
  * TOTAL FUNCTIONS: 7
  * (This index is automatically created/updated by the extension "extdeveval")

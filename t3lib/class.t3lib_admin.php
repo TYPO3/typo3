@@ -39,21 +39,21 @@
  *
  *
  *
- *   92: class t3lib_admin
- *  123:     function genTree($theID, $depthData, $versions=FALSE)
- *  212:     function genTree_records($theID, $depthData, $table='', $versions=FALSE)
- *  287:     function genTreeStatus()
- *  310:     function lostRecords($pid_list)
- *  341:     function fixLostRecord($table,$uid)
- *  362:     function countRecords($pid_list)
- *  390:     function getGroupFields($mode)
- *  424:     function getFileFields($uploadfolder)
- *  447:     function getDBFields($theSearchTable)
- *  475:     function selectNonEmptyRecordsWithFkeys($fkey_arrays)
- *  564:     function testFileRefs ()
- *  615:     function testDBRefs($theArray)
- *  653:     function whereIsRecordReferenced($searchTable,$id)
- *  690:     function whereIsFileReferenced($uploadfolder,$filename)
+ *   93: class t3lib_admin
+ *  128:     function genTree($theID, $depthData, $versions=FALSE)
+ *  217:     function genTree_records($theID, $depthData, $table='', $versions=FALSE)
+ *  292:     function genTreeStatus()
+ *  315:     function lostRecords($pid_list)
+ *  346:     function fixLostRecord($table,$uid)
+ *  367:     function countRecords($pid_list)
+ *  395:     function getGroupFields($mode)
+ *  429:     function getFileFields($uploadfolder)
+ *  452:     function getDBFields($theSearchTable)
+ *  480:     function selectNonEmptyRecordsWithFkeys($fkey_arrays)
+ *  569:     function testFileRefs ()
+ *  620:     function testDBRefs($theArray)
+ *  658:     function whereIsRecordReferenced($searchTable,$id)
+ *  695:     function whereIsFileReferenced($uploadfolder,$filename)
  *
  * TOTAL FUNCTIONS: 14
  * (This index is automatically created/updated by the extension "extdeveval")

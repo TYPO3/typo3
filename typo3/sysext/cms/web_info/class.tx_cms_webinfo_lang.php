@@ -36,15 +36,16 @@
  *
  *
  *
- *   65: class tx_cms_webinfo_lang extends t3lib_extobjbase
- *   72:     function modMenu()
- *   89:     function main()
- *  156:     function renderL10nTable(&$tree)
- *  320:     function getSystemLanguages()
- *  342:     function getLangStatus($pageId, $langId)
- *  369:     function getContentElementCount($pageId,$sysLang)
+ *   66: class tx_cms_webinfo_lang extends t3lib_extobjbase
+ *   73:     function modMenu()
+ *  102:     function main()
+ *  171:     function renderL10nTable(&$tree)
+ *  342:     function getSystemLanguages()
+ *  364:     function getLangStatus($pageId, $langId)
+ *  393:     function getLocalizedElementInfo($pageId,$sysLang)
+ *  471:     function getContentElementCount($pageId,$sysLang)
  *
- * TOTAL FUNCTIONS: 6
+ * TOTAL FUNCTIONS: 7
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */

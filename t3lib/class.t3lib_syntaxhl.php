@@ -39,16 +39,16 @@
  *   84: class t3lib_syntaxhl
  *
  *              SECTION: Markup of Data Structure, <T3DataStructure>
- *  154:     function highLight_DS($str)
- *  181:     function highLight_DS_markUpRecursively($struct,$parent='',$app='')
+ *  156:     function highLight_DS($str)
+ *  183:     function highLight_DS_markUpRecursively($struct,$parent='',$app='')
  *
  *              SECTION: Markup of Data Structure, <T3FlexForms>
- *  266:     function highLight_FF($str)
- *  293:     function highLight_FF_markUpRecursively($struct,$parent='',$app='')
+ *  268:     function highLight_FF($str)
+ *  295:     function highLight_FF_markUpRecursively($struct,$parent='',$app='')
  *
  *              SECTION: Various
- *  374:     function getAllTags($str)
- *  405:     function splitXMLbyTags($tagList,$str)
+ *  376:     function getAllTags($str)
+ *  407:     function splitXMLbyTags($tagList,$str)
  *
  * TOTAL FUNCTIONS: 6
  * (This index is automatically created/updated by the extension "extdeveval")

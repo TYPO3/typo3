@@ -49,7 +49,7 @@
  *  160:     function menuConfig()
  *  181:     function clearCache()
  *  195:     function main()
- *  435:     function printContent()
+ *  451:     function printContent()
  *
  * TOTAL FUNCTIONS: 5
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -304,7 +304,8 @@ class SC_db_list {
 					window.location.href = URL+(T3_RETURN_URL?"&returnUrl="+T3_RETURN_URL:"");
 					return false;
 				}
-				function setHighlight(id)	{
+
+				function setHighlight(id)	{	//
 					top.fsMod.recentIds["web"]=id;
 					top.fsMod.navFrameHighlightedID["web"]="pages"+id+"_"+top.fsMod.currentBank;	// For highlighting
 

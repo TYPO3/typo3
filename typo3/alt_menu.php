@@ -39,10 +39,10 @@
  *
  *
  *
- *   78: class SC_alt_menu
- *   89:     function init()
- *  105:     function main()
- *  182:     function printContent()
+ *   80: class SC_alt_menu
+ *   91:     function init()
+ *  108:     function main()
+ *  190:     function printContent()
  *
  * TOTAL FUNCTIONS: 3
  * (This index is automatically created/updated by the extension "extdeveval")

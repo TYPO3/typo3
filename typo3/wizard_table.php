@@ -40,17 +40,17 @@
  *
  *
  *   84: class SC_wizard_table
- *  112:     function init()
- *  153:     function main()
- *  169:     function printContent()
- *  178:     function tableWizard()
+ *  116:     function init()
+ *  158:     function main()
+ *  173:     function printContent()
+ *  184:     function tableWizard()
  *
  *              SECTION: Helper functions
- *  217:     function getConfigCode($row)
- *  282:     function getTableHTML($cfgArr,$row)
- *  438:     function changeFunc()
- *  554:     function cfgArray2CfgString($cfgArr)
- *  585:     function cfgString2CfgArray($cfgStr,$cols)
+ *  223:     function getConfigCode($row)
+ *  293:     function getTableHTML($cfgArr,$row)
+ *  450:     function changeFunc()
+ *  572:     function cfgArray2CfgString($cfgArr)
+ *  603:     function cfgString2CfgArray($cfgStr,$cols)
  *
  * TOTAL FUNCTIONS: 9
  * (This index is automatically created/updated by the extension "extdeveval")

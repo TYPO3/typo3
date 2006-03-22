@@ -39,45 +39,45 @@
  *
  *
  *  111: class t3lib_userAuth
- *  187:     function start()
- *  300:     function checkAuthentication()
+ *  195:     function start()
+ *  329:     function checkAuthentication()
  *
  *              SECTION: User Sessions
- *  531:     function createUserSession ($tempuser)
- *  568:     function fetchUserSession()
- *  619:     function logoff()
+ *  569:     function createUserSession ($tempuser)
+ *  606:     function fetchUserSession()
+ *  657:     function logoff()
  *
  *              SECTION: SQL Functions
- *  655:     function user_where_clause()
- *  669:     function ipLockClause()
- *  687:     function ipLockClause_remoteIPNumber($parts)
- *  708:     function hashLockClause()
- *  719:     function hashLockClause_getHashInt()
+ *  713:     function user_where_clause()
+ *  727:     function ipLockClause()
+ *  745:     function ipLockClause_remoteIPNumber($parts)
+ *  766:     function hashLockClause()
+ *  777:     function hashLockClause_getHashInt()
  *
  *              SECTION: Session and Configuration Handling
- *  751:     function writeUC($variable='')
- *  766:     function unpack_uc($theUC='')
- *  782:     function pushModuleData($module,$data,$noSave=0)
- *  795:     function getModuleData($module,$type='')
- *  808:     function getSessionData($key)
- *  821:     function setAndSaveSessionData($key,$data)
+ *  809:     function writeUC($variable='')
+ *  824:     function unpack_uc($theUC='')
+ *  840:     function pushModuleData($module,$data,$noSave=0)
+ *  853:     function getModuleData($module,$type='')
+ *  866:     function getSessionData($key)
+ *  879:     function setAndSaveSessionData($key,$data)
  *
  *              SECTION: Misc
- *  854:     function getLoginFormData()
- *  881:     function processLoginData($loginData, $security_level='')
- *  915:     function getAuthInfoArray()
- *  945:     function compareUident($user, $loginData, $security_level='')
- *  983:     function gc()
- *  997:     function redirect()
- * 1019:     function writelog($type,$action,$error,$details_nr,$details,$data,$tablename,$recuid,$recpid)
- * 1028:     function checkLogFailures()
- * 1041:     function setBeUserByUid($uid)
- * 1053:     function setBeUserByName($name)
- * 1064:     function getRawUserByUid($uid)
- * 1082:     function getRawUserByName($name)
+ *  912:     function getLoginFormData()
+ *  939:     function processLoginData($loginData, $security_level='')
+ *  981:     function getAuthInfoArray()
+ * 1011:     function compareUident($user, $loginData, $security_level='')
+ * 1050:     function gc()
+ * 1064:     function redirect()
+ * 1086:     function writelog($type,$action,$error,$details_nr,$details,$data,$tablename,$recuid,$recpid)
+ * 1095:     function checkLogFailures()
+ * 1108:     function setBeUserByUid($uid)
+ * 1120:     function setBeUserByName($name)
+ * 1131:     function getRawUserByUid($uid)
+ * 1149:     function getRawUserByName($name)
  *
  *              SECTION: Create/update user - EXPERIMENTAL
- * 1121:     function fetchUserRecord($dbUser, $username, $extraWhere='' )
+ * 1188:     function fetchUserRecord($dbUser, $username, $extraWhere='' )
  *
  * TOTAL FUNCTIONS: 29
  * (This index is automatically created/updated by the extension "extdeveval")

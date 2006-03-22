@@ -41,17 +41,17 @@
  *  175: class SC_wizard_forms
  *  203:     function init()
  *  242:     function main()
- *  258:     function printContent()
- *  267:     function formsWizard()
+ *  257:     function printContent()
+ *  268:     function formsWizard()
  *
  *              SECTION: Helper functions
- *  310:     function getConfigCode(&$row)
- *  381:     function getFormHTML($formCfgArray,$row)
- *  660:     function changeFunc()
- *  719:     function cfgArray2CfgString($cfgArr)
- *  801:     function cfgString2CfgArray($cfgStr)
- *  900:     function cleanT($tArr)
- *  918:     function formatCells($fArr)
+ *  311:     function getConfigCode(&$row)
+ *  382:     function getFormHTML($formCfgArray,$row)
+ *  662:     function changeFunc()
+ *  721:     function cfgArray2CfgString($cfgArr)
+ *  803:     function cfgString2CfgArray($cfgStr)
+ *  902:     function cleanT($tArr)
+ *  920:     function formatCells($fArr)
  *
  * TOTAL FUNCTIONS: 11
  * (This index is automatically created/updated by the extension "extdeveval")

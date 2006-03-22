@@ -39,19 +39,19 @@
  *
  *
  *   87: class SC_index
- *  119:     function init()
- *  150:     function main()
- *  243:     function printContent()
+ *  120:     function init()
+ *  159:     function main()
+ *  268:     function printContent()
  *
  *              SECTION: Various functions
- *  267:     function makeLoginForm()
- *  312:     function makeLogoutForm()
- *  354:     function wrapLoginForm($content)
- *  414:     function checkRedirect()
- *  459:     function makeInterfaceSelectorBox()
- *  513:     function makeCopyrightNotice()
- *  546:     function makeLoginBoxImage()
- *  586:     function makeLoginNews()
+ *  292:     function makeLoginForm()
+ *  337:     function makeLogoutForm()
+ *  379:     function wrapLoginForm($content)
+ *  438:     function checkRedirect()
+ *  495:     function makeInterfaceSelectorBox()
+ *  549:     function makeCopyrightNotice()
+ *  582:     function makeLoginBoxImage()
+ *  622:     function makeLoginNews()
  *
  * TOTAL FUNCTIONS: 11
  * (This index is automatically created/updated by the extension "extdeveval")

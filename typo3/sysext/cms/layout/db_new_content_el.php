@@ -52,7 +52,7 @@
  *              SECTION: OTHER FUNCTIONS:
  *  388:     function getWizardItems()
  *  398:     function wizardArray()
- *  559:     function removeInvalidElements(&$wizardItems)
+ *  549:     function removeInvalidElements(&$wizardItems)
  *
  * TOTAL FUNCTIONS: 8
  * (This index is automatically created/updated by the extension "extdeveval")

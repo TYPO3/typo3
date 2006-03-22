@@ -40,37 +40,12 @@
  *
  *
  *
- *  636: class SC_browse_links
- *  729:     function init()
- *  984:     function main()
- * 1026:     function printContent()
+ *   78: class SC_browse_links
+ *   99:     function init ()
+ *  120:     function main()
+ *  174:     function printContent()
  *
- *              SECTION: Main functions
- * 1057:     function main_rte($wiz=0)
- * 1336:     function main_db()
- * 1380:     function main_file()
- *
- *              SECTION: Record listing
- * 1489:     function expandPage()
- * 1568:     function TBE_expandPage($tables)
- *
- *              SECTION: File listing
- * 1661:     function expandFolder($expandFolder=0,$extensionList='')
- * 1730:     function TBE_expandFolder($expandFolder=0,$extensionList='',$noThumbs=0)
- * 1753:     function fileList($files, $folderName='', $noThumbs=0)
- * 1870:     function TBE_dragNDrop($expandFolder=0,$extensionList='')
- *
- *              SECTION: Miscellaneous functions
- * 1997:     function isWebFolder($folder)
- * 2008:     function checkFolder($folder)
- * 2021:     function barheader($str)
- * 2038:     function getMsgBox($in_msg,$icon='icon_note')
- * 2060:     function printCurrentUrl($str)
- * 2080:     function parseCurUrl($href,$siteUrl)
- * 2142:     function uploadForm($path)
- * 2195:     function createFolder($path)
- *
- * TOTAL FUNCTIONS: 38
+ * TOTAL FUNCTIONS: 3
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -118,6 +93,8 @@ class SC_browse_links {
 
 	/**
 	 * not really needed but for backwards compatibility ...
+	 *
+	 * @return	void
 	 */
 	function init ()	{
 

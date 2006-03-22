@@ -33,9 +33,9 @@
  *
  *   62: class wsol_preview
  *   71:     function main()
- *  109:     function generateUrls()
- *  125:     function printFrameset()
- *  167:     function isBeLogin()
+ *  133:     function generateUrls()
+ *  164:     function printFrameset()
+ *  206:     function isBeLogin()
  *
  * TOTAL FUNCTIONS: 4
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -64,7 +64,7 @@ class wsol_preview {
 	var $workspace = 0;		// Which workspace to preview!
 
 	/**
-	 * Main function
+	 * Main function of class
 	 *
 	 * @return	void
 	 */
@@ -126,7 +126,7 @@ class wsol_preview {
 	}
 
 	/**
-	 * URLs generated
+	 * URLs generated in $this->URL array
 	 *
 	 * @return	void
 	 */
@@ -157,7 +157,7 @@ class wsol_preview {
 	}
 
 	/**
-	 * Outputting frameset
+	 * Outputting frameset HTML code
 	 *
 	 * @return	void
 	 */

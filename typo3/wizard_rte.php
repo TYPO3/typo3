@@ -41,8 +41,8 @@
  *   81: class SC_wizard_rte
  *   99:     function init()
  *  123:     function main()
- *  279:     function printContent()
- *  290:     function checkEditAccess($table,$uid)
+ *  285:     function printContent()
+ *  298:     function checkEditAccess($table,$uid)
  *
  * TOTAL FUNCTIONS: 4
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -134,7 +134,7 @@ class SC_wizard_rte {
 				// Getting the raw record (we need only the pid-value from here...)
 			$rawRec = t3lib_BEfunc::getRecord($this->P['table'],$this->P['uid']);
 			t3lib_BEfunc::fixVersioningPid($this->P['table'], $rawRec);
-			
+
 				// Setting JavaScript, including the pid value for viewing:
 			$this->doc->JScode = $this->doc->wrapScriptTags('
 					function jumpToUrl(URL,formEl)	{	//

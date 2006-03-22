@@ -40,7 +40,7 @@
  *   74: class SC_file_newfolder
  *  101:     function init()
  *  161:     function main()
- *  257:     function printContent()
+ *  255:     function printContent()
  *
  * TOTAL FUNCTIONS: 3
  * (This index is automatically created/updated by the extension "extdeveval")

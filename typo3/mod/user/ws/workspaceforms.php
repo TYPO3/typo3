@@ -36,25 +36,32 @@
  *
  *
  *
- *   86: class SC_mod_user_ws_workspaceForms extends t3lib_SCbase
+ *   93: class SC_mod_user_ws_workspaceForms extends t3lib_SCbase
  *
  *              SECTION: PUBLIC MODULE METHODS
- *  115:     function init()
- *  151:     function main()
- *  200:     function printContent()
+ *  123:     function init()
+ *  158:     function main()
+ *  233:     function printContent()
  *
  *              SECTION: PRIVATE FUNCTIONS
- *  224:     function initTCEForms()
- *  251:     function getModuleParameters()
- *  269:     function getTitle()
- *  288:     function buildForm()
- *  297:     function buildEditForm()
- *  349:     function buildNewForm()
- *  394:     function createButtons()
- *  421:     function getOwnerUser($uid)
- *  447:     function processData()
+ *  257:     function initTCEForms()
+ *  284:     function getModuleParameters()
+ *  302:     function getTitle()
+ *  321:     function buildForm()
+ *  330:     function buildEditForm()
+ *  395:     function buildNewForm()
+ *  458:     function createButtons()
+ *  484:     function getOwnerUser($uid)
+ *  510:     function processData()
+ *  554:     function fixVariousTCAFields()
+ *  566:     function fixTCAUserField($fieldName)
+ *  593:     function checkWorkspaceAccess()
  *
- * TOTAL FUNCTIONS: 12
+ *
+ *  606: class user_SC_mod_user_ws_workspaceForms
+ *  615:     function processUserAndGroups($conf, $tceforms)
+ *
+ * TOTAL FUNCTIONS: 16
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -503,17 +510,17 @@ class SC_mod_user_ws_workspaceForms extends t3lib_SCbase {
 	function processData() {
 		$tce = t3lib_div::makeInstance('t3lib_TCEmain');
 		$tce->stripslashes_values = 0;
-		
+
 		$TCAdefaultOverride = $GLOBALS['BE_USER']->getTSConfigProp('TCAdefaults');
 		if (is_array($TCAdefaultOverride))	{
 			$tce->setDefaultsFromUserTS($TCAdefaultOverride);
 		}
 		$tce->stripslashes_values = 0;
-	
+
 			// The following is a security precaution; It makes sure that the input data array can ONLY contain data for the sys_workspace table and ONLY one record.
-			// If this is not present it could be mis-used for nasty XSS attacks which can escalate rights to admin for even non-admin users.	
+			// If this is not present it could be mis-used for nasty XSS attacks which can escalate rights to admin for even non-admin users.
 		$inputData_tmp = t3lib_div::_GP('data');
-		$inputData = array();	
+		$inputData = array();
 		if (is_array($inputData_tmp['sys_workspace']))	{
 			reset($inputData_tmp['sys_workspace']);
 			$inputData['sys_workspace'][key($inputData_tmp['sys_workspace'])] = current($inputData_tmp['sys_workspace']);
@@ -541,7 +548,7 @@ class SC_mod_user_ws_workspaceForms extends t3lib_SCbase {
 
 	/**
 	 * Fixes various <code>$TCA</code> fields for better visual representation of workspace editor.
-	 * 
+	 *
 	 * @return	void
 	 */
 	function fixVariousTCAFields() {
@@ -553,13 +560,14 @@ class SC_mod_user_ws_workspaceForms extends t3lib_SCbase {
 	/**
 	 * "Fixes" <code>$TCA</code> to enable blinding for users/groups for non-admin users only.
 	 *
-	 * @param	string	$fieldName	Name of the field to change
+	 * @param	string		$fieldName	Name of the field to change
+	 * @return	void
 	 */
 	function fixTCAUserField($fieldName) {
 		// fix fields for non-admin
 		if (!$GLOBALS['BE_USER']->isAdmin()) {
 			// make a shortcut to field
-			t3lib_div::loadTCA('sys_workspace');				
+			t3lib_div::loadTCA('sys_workspace');
 			$field = &$GLOBALS['TCA']['sys_workspace']['columns'][$fieldName];
 			$newField = array (
 				'label' => $field['label'],
@@ -593,14 +601,15 @@ class SC_mod_user_ws_workspaceForms extends t3lib_SCbase {
 
 /**
  * This class contains Typo3 callback functions. Class name must start from <code>user_</code> thus we use a separate class.
+ *
  */
 class user_SC_mod_user_ws_workspaceForms {
 
 	/**
 	 * Callback function to blind user and group accounts. Used as <code>itemsProcFunc</code> in <code>$TCA</code>.
 	 *
-	 * @param	array	$conf	Configuration array. The following elements are set:<ul><li>items - initial set of items (empty in our case)</li><li>config - field config from <code>$TCA</code></li><li>TSconfig - this function name</li><li>table - table name</li><li>row - record row (???)</li><li>field - field name</li></ul>
-	 * @param	object	$tceforms	<code>t3lib_div::TCEforms</code> object
+	 * @param	array		$conf	Configuration array. The following elements are set:<ul><li>items - initial set of items (empty in our case)</li><li>config - field config from <code>$TCA</code></li><li>TSconfig - this function name</li><li>table - table name</li><li>row - record row (???)</li><li>field - field name</li></ul>
+	 * @param	object		$tceforms	<code>t3lib_div::TCEforms</code> object
 	 * @return	void
 	 */
 	function processUserAndGroups($conf, $tceforms) {

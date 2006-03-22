@@ -37,63 +37,64 @@
  *
  *
  *
- *  134: class t3lib_userAuthGroup extends t3lib_userAuth
+ *  135: class t3lib_userAuthGroup extends t3lib_userAuth
  *
  *              SECTION: Permission checking functions:
- *  198:     function isAdmin()
- *  210:     function isMemberOfGroup($groupId)
- *  232:     function doesUserHaveAccess($row,$perms)
- *  249:     function isInWebMount($id,$readPerms='',$exitOnError=0)
- *  276:     function modAccess($conf,$exitOnError)
- *  327:     function getPagePermsClause($perms)
- *  366:     function calcPerms($row)
- *  404:     function isRTE()
- *  438:     function check($type,$value)
- *  455:     function checkAuthMode($table,$field,$value,$authMode)
- *  521:     function checkLanguageAccess($langValue)
- *  542:     function recordEditAccessInternals($table,$idOrRow)
- *  607:     function isPSet($lCP,$table,$type='')
- *  624:     function mayMakeShortcut()
- *  638:     function workspaceCannotEditRecord($table,$recData)
- *  677:     function workspaceCannotEditOfflineVersion($table,$recData)
- *  700:     function workspaceAllowLiveRecordsInPID($pid, $table)
- *  721:     function workspaceCreateNewRecord($pid, $table)
- *  740:     function workspaceAllowAutoCreation($table,$id,$recpid)
- *  760:     function workspaceCheckStageForCurrent($stage)
- *  783:     function workspacePublishAccess($wsid)
- *  807:     function workspaceSwapAccess()
- *  819:     function workspaceVersioningTypeAccess($type)
- *  846:     function workspaceVersioningTypeGetClosest($type)
+ *  199:     function isAdmin()
+ *  211:     function isMemberOfGroup($groupId)
+ *  233:     function doesUserHaveAccess($row,$perms)
+ *  250:     function isInWebMount($id,$readPerms='',$exitOnError=0)
+ *  277:     function modAccess($conf,$exitOnError)
+ *  328:     function getPagePermsClause($perms)
+ *  367:     function calcPerms($row)
+ *  405:     function isRTE()
+ *  439:     function check($type,$value)
+ *  456:     function checkAuthMode($table,$field,$value,$authMode)
+ *  522:     function checkLanguageAccess($langValue)
+ *  544:     function recordEditAccessInternals($table,$idOrRow,$newRecord=FALSE)
+ *  619:     function isPSet($lCP,$table,$type='')
+ *  636:     function mayMakeShortcut()
+ *  650:     function workspaceCannotEditRecord($table,$recData)
+ *  689:     function workspaceCannotEditOfflineVersion($table,$recData)
+ *  712:     function workspaceAllowLiveRecordsInPID($pid, $table)
+ *  733:     function workspaceCreateNewRecord($pid, $table)
+ *  752:     function workspaceAllowAutoCreation($table,$id,$recpid)
+ *  772:     function workspaceCheckStageForCurrent($stage)
+ *  795:     function workspacePublishAccess($wsid)
+ *  823:     function workspaceSwapAccess()
+ *  835:     function workspaceVersioningTypeAccess($type)
+ *  866:     function workspaceVersioningTypeGetClosest($type)
  *
  *              SECTION: Miscellaneous functions
- *  887:     function getTSConfig($objectString,$config='')
- *  913:     function getTSConfigVal($objectString)
- *  925:     function getTSConfigProp($objectString)
- *  937:     function inList($in_list,$item)
- *  948:     function returnWebmounts()
- *  958:     function returnFilemounts()
+ *  909:     function getTSConfig($objectString,$config='')
+ *  935:     function getTSConfigVal($objectString)
+ *  947:     function getTSConfigProp($objectString)
+ *  959:     function inList($in_list,$item)
+ *  970:     function returnWebmounts()
+ *  980:     function returnFilemounts()
+ *  997:     function jsConfirmation($bitmask)
  *
  *              SECTION: Authentication methods
- *  989:     function fetchGroupData()
- * 1122:     function fetchGroups($grList,$idList='')
- * 1209:     function setCachedList($cList)
- * 1229:     function addFileMount($title, $altTitle, $path, $webspace, $type)
- * 1276:     function addTScomment($str)
+ * 1035:     function fetchGroupData()
+ * 1168:     function fetchGroups($grList,$idList='')
+ * 1266:     function setCachedList($cList)
+ * 1286:     function addFileMount($title, $altTitle, $path, $webspace, $type)
+ * 1333:     function addTScomment($str)
  *
  *              SECTION: Workspaces
- * 1312:     function workspaceInit()
- * 1355:     function checkWorkspace($wsRec,$fields='uid,title,adminusers,members,reviewers,publish_access,stagechg_notification')
- * 1429:     function checkWorkspaceCurrent()
- * 1442:     function setWorkspace($workspaceId)
- * 1470:     function setWorkspacePreview($previewState)
- * 1480:     function getDefaultWorkspace()
+ * 1369:     function workspaceInit()
+ * 1412:     function checkWorkspace($wsRec,$fields='uid,title,adminusers,members,reviewers,publish_access,stagechg_notification')
+ * 1487:     function checkWorkspaceCurrent()
+ * 1500:     function setWorkspace($workspaceId)
+ * 1528:     function setWorkspacePreview($previewState)
+ * 1538:     function getDefaultWorkspace()
  *
  *              SECTION: Logging
- * 1531:     function writelog($type,$action,$error,$details_nr,$details,$data,$tablename='',$recuid='',$recpid='',$event_pid=-1,$NEWid='',$userId=0)
- * 1563:     function simplelog($message, $extKey='', $error=0)
- * 1584:     function checkLogFailures($email, $secondsBack=3600, $max=3)
+ * 1589:     function writelog($type,$action,$error,$details_nr,$details,$data,$tablename='',$recuid='',$recpid='',$event_pid=-1,$NEWid='',$userId=0)
+ * 1621:     function simplelog($message, $extKey='', $error=0)
+ * 1642:     function checkLogFailures($email, $secondsBack=3600, $max=3)
  *
- * TOTAL FUNCTIONS: 44
+ * TOTAL FUNCTIONS: 45
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -591,11 +592,11 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 					if ($idOrRow[$TCA[$table]['ctrl']['editlock']])	{
 						$this->errorMsg = 'ERROR: Record was locked for editing. Only admin users can change this state.';
 						return FALSE;
-					}	
+					}
 				} else {
 					$this->errorMsg = 'ERROR: The "editLock" field named "'.$TCA[$table]['ctrl']['editlock'].'" was not found in testing record!';
 					return FALSE;
-				}	
+				}
 			}
 
 				// Checking record permissions
@@ -984,14 +985,15 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 	 * Returns true or false, depending if an alert popup (a javascript confirmation) should be shown
 	 * call like $GLOBALS['BE_USER']->jsConfirmation($BITMASK)
 	 *
-	 * @param $bitmask int   Bitmask
 	 *    1 - typeChange
 	 *    2 - copy/move/paste
 	 *    4 - delete
 	 *    8 - frontend editing
 	 *    128 - other (not used yet)
-	 * @return boolean true if the confirmation should be shown
-	 **/
+	 *
+	 * @param	integer   Bitmask
+	 * @return	boolean		true if the confirmation should be shown
+	 */
 	 function jsConfirmation($bitmask)	{
 		 $alertPopup = $GLOBALS['BE_USER']->getTSConfig('options.alertPopups');
 		 if (empty($alertPopup['value']))	{
@@ -1520,7 +1522,7 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 	/**
 	 * Setting workspace preview state for user:
 	 *
-	 * @param	boolean		State
+	 * @param	boolean		State of user preview.
 	 * @return	void
 	 */
 	function setWorkspacePreview($previewState)	{

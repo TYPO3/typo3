@@ -39,16 +39,16 @@
  *
  *
  *
- *   77: class tslib_feUserAuth extends t3lib_userAuth
- *  141:     function fetchGroupData()
- *  194:     function getUserTSconf()
+ *   79: class tslib_feUserAuth extends t3lib_userAuth
+ *  143:     function fetchGroupData()
+ *  233:     function getUserTSconf()
  *
  *              SECTION: Session data management functions
- *  239:     function fetchSessionData()
- *  261:     function storeSessionData()
- *  287:     function getKey($type,$key)
- *  312:     function setKey($type,$key,$data)
- *  337:     function record_registration($recs)
+ *  278:     function fetchSessionData()
+ *  300:     function storeSessionData()
+ *  326:     function getKey($type,$key)
+ *  351:     function setKey($type,$key,$data)
+ *  377:     function record_registration($recs,$maxSizeOfSessionData=0)
  *
  * TOTAL FUNCTIONS: 7
  * (This index is automatically created/updated by the extension "extdeveval")

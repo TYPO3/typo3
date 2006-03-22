@@ -38,8 +38,8 @@
  *
  *
  *   69: class t3lib_formmail extends t3lib_htmlmail
- *   95:     function start($V,$base64=1)
- *  166:     function addAttachment($file, $filename)
+ *   95:     function start($V,$base64=false)
+ *  172:     function addAttachment($file, $filename)
  *
  * TOTAL FUNCTIONS: 2
  * (This index is automatically created/updated by the extension "extdeveval")

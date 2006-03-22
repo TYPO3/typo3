@@ -1,3 +1,7 @@
+2006-03-22  Kasper Skaarhoj  <kasperYYYY@typo3.com>
+
+	* Updated almost all Function indexes in the core plus fixed javaDoc documentation for the functions and classes I could manage to do. The rest of you; Please make sure to document the functions and classes you have added during development of 4.0! Search for "[type]" or "[Describe" to find places to add documentation.
+
 2006-03-20  Kasper Skaarhoj  <kasperYYYY@typo3.com>
 
 	* Added function to indexed search so index_fulldata is filled with less content (configurable)

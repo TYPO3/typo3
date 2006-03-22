@@ -41,16 +41,16 @@
  *
  *   88: class TSpagegen
  *   95:     function pagegenInit()
- *  229:     function getIncFiles()
- *  262:     function JSeventFunctions()
- *  296:     function renderContent()
- *  323:     function renderContentWithHeader($pageContent)
+ *  271:     function getIncFiles()
+ *  304:     function JSeventFunctions()
+ *  338:     function renderContent()
+ *  365:     function renderContentWithHeader($pageContent)
  *
  *              SECTION: Helper functions
- *  760:     function inline2TempFile($str,$ext)
+ *  827:     function inline2TempFile($str,$ext)
  *
  *
- *  814: class FE_loadDBGroup extends t3lib_loadDBGroup
+ *  881: class FE_loadDBGroup extends t3lib_loadDBGroup
  *
  * TOTAL FUNCTIONS: 6
  * (This index is automatically created/updated by the extension "extdeveval")

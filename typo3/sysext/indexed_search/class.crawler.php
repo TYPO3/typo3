@@ -34,27 +34,34 @@
  *
  *
  *
- *   80: class tx_indexedsearch_crawler
- *   99:     function crawler_init(&$pObj)
- *  197:     function crawler_execute($params,&$pObj)
- *  256:     function crawler_execute_type1($cfgRec,&$session_data,$params,&$pObj)
- *  316:     function crawler_execute_type2($cfgRec,&$session_data,$params,&$pObj)
- *  385:     function crawler_execute_type3($cfgRec,&$session_data,$params,&$pObj)
- *  425:     function cleanUpOldRunningConfigurations()
+ *   87: class tx_indexedsearch_crawler
+ *  106:     function crawler_init(&$pObj)
+ *  219:     function crawler_execute($params,&$pObj)
+ *  285:     function crawler_execute_type1($cfgRec,&$session_data,$params,&$pObj)
+ *  345:     function crawler_execute_type2($cfgRec,&$session_data,$params,&$pObj)
+ *  414:     function crawler_execute_type3($cfgRec,&$session_data,$params,&$pObj)
+ *  458:     function crawler_execute_type4($cfgRec,&$session_data,$params,&$pObj)
+ *  513:     function cleanUpOldRunningConfigurations()
  *
  *              SECTION: Helper functions
- *  491:     function checkUrl($url,$urlLog,$baseUrl)
- *  514:     function indexExtUrl($url, $pageId, $rl, $cfgUid, $setId)
- *  556:     function indexSingleRecord($r,$cfgRec,$rl=NULL)
- *  605:     function loadIndexerClass()
- *  617:     function getUidRootLineForClosestTemplate($id)
- *  650:     function generateNextIndexingTime($cfgRec)
- *  689:     function checkDeniedSuburls($url, $url_deny)
+ *  579:     function checkUrl($url,$urlLog,$baseUrl)
+ *  602:     function indexExtUrl($url, $pageId, $rl, $cfgUid, $setId)
+ *  645:     function indexSingleRecord($r,$cfgRec,$rl=NULL)
+ *  694:     function loadIndexerClass()
+ *  706:     function getUidRootLineForClosestTemplate($id)
+ *  739:     function generateNextIndexingTime($cfgRec)
+ *  778:     function checkDeniedSuburls($url, $url_deny)
+ *  798:     function addQueueEntryForHook($cfgRec, $title)
  *
  *              SECTION: Hook functions for TCEmain (indexing of records)
- *  725:     function processDatamap_afterDatabaseOperations($status, $table, $id, $fieldArray, &$pObj)
+ *  830:     function processDatamap_afterDatabaseOperations($status, $table, $id, $fieldArray, &$pObj)
  *
- * TOTAL FUNCTIONS: 14
+ *
+ *  879: class tx_indexedsearch_files
+ *  888:     function crawler_execute($params,&$pObj)
+ *  913:     function loadIndexerClass()
+ *
+ * TOTAL FUNCTIONS: 18
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -270,7 +277,7 @@ class tx_indexedsearch_crawler {
 	 * Indexing records from a table
 	 *
 	 * @param	array		Indexing Configuration Record
-	 * @param	arrar		Session data for the indexing session spread over multiple instances of the script. Passed by reference so changes hereto will be saved for the next call!
+	 * @param	array		Session data for the indexing session spread over multiple instances of the script. Passed by reference so changes hereto will be saved for the next call!
 	 * @param	array		Parameters from the log queue.
 	 * @param	object		Parent object (from "crawler" extension!)
 	 * @return	void
@@ -330,7 +337,7 @@ class tx_indexedsearch_crawler {
 	 * Indexing files from fileadmin
 	 *
 	 * @param	array		Indexing Configuration Record
-	 * @param	arrar		Session data for the indexing session spread over multiple instances of the script. Passed by reference so changes hereto will be saved for the next call!
+	 * @param	array		Session data for the indexing session spread over multiple instances of the script. Passed by reference so changes hereto will be saved for the next call!
 	 * @param	array		Parameters from the log queue.
 	 * @param	object		Parent object (from "crawler" extension!)
 	 * @return	void
@@ -399,7 +406,7 @@ class tx_indexedsearch_crawler {
 	 * Indexing External URLs
 	 *
 	 * @param	array		Indexing Configuration Record
-	 * @param	arrar		Session data for the indexing session spread over multiple instances of the script. Passed by reference so changes hereto will be saved for the next call!
+	 * @param	array		Session data for the indexing session spread over multiple instances of the script. Passed by reference so changes hereto will be saved for the next call!
 	 * @param	array		Parameters from the log queue.
 	 * @param	object		Parent object (from "crawler" extension!)
 	 * @return	void
@@ -440,10 +447,10 @@ class tx_indexedsearch_crawler {
 	}
 
 	/**
-	 * Page tree
+	 * Page tree indexing type
 	 *
 	 * @param	array		Indexing Configuration Record
-	 * @param	arrar		Session data for the indexing session spread over multiple instances of the script. Passed by reference so changes hereto will be saved for the next call!
+	 * @param	array		Session data for the indexing session spread over multiple instances of the script. Passed by reference so changes hereto will be saved for the next call!
 	 * @param	array		Parameters from the log queue.
 	 * @param	object		Parent object (from "crawler" extension!)
 	 * @return	void
@@ -564,7 +571,7 @@ class tx_indexedsearch_crawler {
 	/**
 	 * Check if an input URL are allowed to be indexed. Depends on whether it is already present in the url log.
 	 *
-	 * @param	string		URL
+	 * @param	string		URL string to check
 	 * @param	array		Array of already indexed URLs (input url is looked up here and must not exist already)
 	 * @param	string		Base URL of the indexing process (input URL must be "inside" the base URL!)
 	 * @return	string		Returls the URL if OK, otherwise false
@@ -589,7 +596,7 @@ class tx_indexedsearch_crawler {
 	 * @param	integer		Page id to relate indexing to.
 	 * @param	array		Rootline array to relate indexing to
 	 * @param	integer		Configuration UID
-	 * @param	integer		Set ID
+	 * @param	integer		Set ID value
 	 * @return	array		URLs found on this page
 	 */
 	function indexExtUrl($url, $pageId, $rl, $cfgUid, $setId)	{
@@ -781,7 +788,13 @@ class tx_indexedsearch_crawler {
 		return FALSE;
 	}
 
-
+	/**
+	 * Adding entry in queue for Hook
+	 *
+	 * @param	array		Configuration record
+	 * @param	string		Title/URL
+	 * @return	void
+	 */
 	function addQueueEntryForHook($cfgRec, $title)	{
 
 		$nparams = array(
@@ -792,45 +805,6 @@ class tx_indexedsearch_crawler {
 		$this->pObj->addQueueEntry_callBack($cfgRec['set_id'],$nparams,$this->callBack,$cfgRec['pid']);
 	}
 
-/*
-	function createParameterCombinationsForPage($pageId,$paramConfiguration)	{
-
-		$paramList = array('');
-
-			// First, split configurations:
-		$cfgLines = t3lib_div::trimExplode(chr(10),$paramConfiguration,1);
-
-			// Traverse each
-		foreach($cfgLines as $cfgLine)	{
-			list($table,$field,$param)	= t3lib_div::trimExplode(':',$cfgLine);
-debug(array($table,$field,$param));
-			if ($GLOBALS['TCA'][$table]) {
-				t3lib_div::loadTCA($table);
-				if ($GLOBALS['TCA'][$table]['columns'][$field] || $field==='uid') {
-
-					$allRows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
-						$field,
-						$table,
-						'pid='.intval($pageId).
-							t3lib_BEfunc::deleteClause($table)
-					);
-debug($allRows,$table);
-					$paramListTemp = $paramList;
-					foreach($allRows as $row)	{
-						$addvalue = str_replace('###FIELD###',$row[$field],$param);
-
-						foreach($paramList as $pLine)	{
-							$paramListTemp[] = $pLine.$addvalue;
-						}
-					}
-					$paramList = $paramListTemp;
-				}
-			}
-		}
-
-		return $paramList;
-	}
-*/
 
 
 

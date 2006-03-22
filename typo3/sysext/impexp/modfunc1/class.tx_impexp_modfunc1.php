@@ -36,11 +36,11 @@
  *
  *   63: class tx_impexp_modfunc1 extends mod_user_task
  *   72:     function overview_main()
- *  106:     function main()
+ *  109:     function main()
  *
  *              SECTION: Helper functions
- *  186:     function getPresets()
- *  203:     function userTempFolder()
+ *  192:     function getPresets()
+ *  209:     function userTempFolder()
  *
  * TOTAL FUNCTIONS: 4
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -157,7 +157,7 @@ class tx_impexp_modfunc1 extends mod_user_task {
 					$content = '<table border="0" cellpadding="0" cellspacing="1" class="lrPadding">'.implode('',$opt).'</table>';
 				}
 			}
-		
+
 			// Output:
         $theOutput.= $this->pObj->doc->spacer(5);
         $theOutput.= $this->pObj->doc->section('Export presets',$content,0,1);

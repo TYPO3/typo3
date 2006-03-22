@@ -42,7 +42,6 @@
  * @package TYPO3
  * @subpackage core
  */
-
 class recordHistory {
 		// External, static:
 	var $maxSteps=20;		// Maximum number of sys_history steps to show.
@@ -77,7 +76,7 @@ class recordHistory {
 	 * Main function for the listing of history.
 	 * It detects incoming variables like element reference, history element uid etc. and renders the correct screen.
 	 *
-	 * @return	HTML content for the module
+	 * @return	HTML		content for the module
 	 */
 	function main()	{
 		$content = '';
@@ -115,6 +114,7 @@ class recordHistory {
 	 * toggles highlight state of record
 	 *
 	 * @param	integer		uid of sys_history entry
+	 * @return	[type]		...
 	 */
 	function toggleHighlight($uid)	{
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('snapshot','sys_history','uid='.intval($uid));
@@ -133,7 +133,7 @@ class recordHistory {
 	 *
 	 * @param	array		diff array to rollback
 	 * @return	void
-	 * @access	private
+	 * @access private
 	 */
 	function performRollback($diff)	{
 		if (!$this->rollbackFields)	{
@@ -617,6 +617,7 @@ class recordHistory {
 	/**
 	 * Creates change log including sub-elements, filling $this->changeLog
 	 *
+	 * @return	[type]		...
 	 */
 	function createChangeLog()	{
 
@@ -751,6 +752,10 @@ class recordHistory {
 
 	/**
 	 * generates the title and puts the record title behind
+	 *
+	 * @param	[type]		$table: ...
+	 * @param	[type]		$uid: ...
+	 * @return	[type]		...
 	 */
 	function generateTitle($table, $uid)	{
 		global $TCA;
@@ -846,6 +851,8 @@ class recordHistory {
 
 	/**
 	 * resolve sh_uid (used from log)
+	 *
+	 * @return	[type]		...
 	 */
 	function resolveShUid()	{
 		if (t3lib_div::_GP('sh_uid'))	{

@@ -46,64 +46,71 @@
  *
  *
  *
- *  128: class clickMenu
- *  160:     function init($item)
- *  203:     function doDisplayTopFrameCM()
+ *  136: class clickMenu
+ *  168:     function init()
+ *  222:     function doDisplayTopFrameCM()
  *
  *              SECTION: DATABASE
- *  231:     function printDBClickMenu($table,$uid)
- *  318:     function printNewDBLevel($table,$uid)
- *  355:     function externalProcessingOfDBMenuItems($menuItems)
- *  367:     function processingByExtClassArray($menuItems,$table,$uid)
- *  386:     function urlRefForCM($url,$retUrl='',$hideCM=1)
- *  403:     function DB_copycut($table,$uid,$type)
- *  432:     function DB_paste($table,$uid,$type,$elInfo)
- *  453:     function DB_info($table,$uid)
- *  469:     function DB_history($table,$uid)
- *  488:     function DB_perms($table,$uid,$rec)
- *  507:     function DB_db_list($table,$uid,$rec)
- *  526:     function DB_moveWizard($table,$uid,$rec)
- *  547:     function DB_newWizard($table,$uid,$rec)
- *  570:     function DB_editAccess($table,$uid)
- *  588:     function DB_editPageHeader($uid)
- *  606:     function DB_edit($table,$uid)
- *  648:     function DB_new($table,$uid)
- *  673:     function DB_delete($table,$uid,$elInfo)
- *  694:     function DB_view($id,$anchor='')
- *  709:     function DB_tempMountPoint($page_id)
- *  727:     function DB_hideUnhide($table,$rec,$hideField)
- *  742:     function DB_changeFlag($table, $rec, $flagField, $title, $name, $iconRelPath='gfx/')
+ *  254:     function printDBClickMenu($table,$uid)
+ *  346:     function printNewDBLevel($table,$uid)
+ *  383:     function externalProcessingOfDBMenuItems($menuItems)
+ *  395:     function processingByExtClassArray($menuItems,$table,$uid)
+ *  414:     function urlRefForCM($url,$retUrl='',$hideCM=1)
+ *  431:     function DB_copycut($table,$uid,$type)
+ *  460:     function DB_paste($table,$uid,$type,$elInfo)
+ *  485:     function DB_info($table,$uid)
+ *  501:     function DB_history($table,$uid)
+ *  520:     function DB_perms($table,$uid,$rec)
+ *  539:     function DB_db_list($table,$uid,$rec)
+ *  558:     function DB_moveWizard($table,$uid,$rec)
+ *  579:     function DB_newWizard($table,$uid,$rec)
+ *  602:     function DB_editAccess($table,$uid)
+ *  621:     function DB_editPageHeader($uid)
+ *  632:     function DB_editPageProperties($uid)
+ *  650:     function DB_edit($table,$uid)
+ *  692:     function DB_new($table,$uid)
+ *  717:     function DB_delete($table,$uid,$elInfo)
+ *  743:     function DB_view($id,$anchor='')
+ *  758:     function DB_tempMountPoint($page_id)
+ *  775:     function DB_hideUnhide($table,$rec,$hideField)
+ *  790:     function DB_changeFlag($table, $rec, $flagField, $title, $name, $iconRelPath='gfx/')
  *
  *              SECTION: FILE
- *  776:     function printFileClickMenu($path)
- *  840:     function externalProcessingOfFileMenuItems($menuItems)
- *  854:     function FILE_launch($path,$script,$type,$image)
- *  874:     function FILE_copycut($path,$type)
- *  900:     function FILE_delete($path)
- *  922:     function FILE_paste($path,$target,$elInfo)
+ *  824:     function printFileClickMenu($path)
+ *  888:     function externalProcessingOfFileMenuItems($menuItems)
+ *  902:     function FILE_launch($path,$script,$type,$image)
+ *  922:     function FILE_copycut($path,$type)
+ *  948:     function FILE_delete($path)
+ *  975:     function FILE_paste($path,$target,$elInfo)
+ *
+ *              SECTION: DRAG AND DROP
+ * 1012:     function printDragDropClickMenu($table,$srcId,$dstId)
+ * 1054:     function externalProcessingOfDragDropMenuItems($menuItems)
+ * 1069:     function dragDrop_copymovepage($srcUid,$dstUid,$action,$into)
+ * 1094:     function dragDrop_copymovefolder($srcPath,$dstPath,$action)
  *
  *              SECTION: COMMON
- *  962:     function printItems($menuItems,$item)
- * 1014:     function printLayerJScode($menuItems)
- * 1052:     function wrapColorTableCM($str)
- * 1075:     function menuItemsForTopFrame($menuItems)
- * 1092:     function menuItemsForClickMenu($menuItems)
- * 1126:     function addMenuItems($menuItems,$newMenuItems,$position='')
- * 1202:     function linkItem($str,$icon,$onClick,$onlyCM=0,$dontHide=0)
- * 1226:     function excludeIcon($iconCode)
- * 1236:     function enableDisableItems($menuItems)
- * 1274:     function cleanUpSpacers($menuItems)
- * 1316:     function label($label)
- * 1325:     function isCMlayers()
- * 1335:     function frameLocation($str)
+ * 1130:     function printItems($menuItems,$item)
+ * 1182:     function printLayerJScode($menuItems)
+ * 1223:     function wrapColorTableCM($str)
+ * 1246:     function menuItemsForTopFrame($menuItems)
+ * 1263:     function menuItemsForClickMenu($menuItems)
+ * 1301:     function addMenuItems($menuItems,$newMenuItems,$position='')
+ * 1377:     function linkItem($str,$icon,$onClick,$onlyCM=0,$dontHide=0)
+ * 1406:     function excludeIcon($iconCode)
+ * 1416:     function enableDisableItems($menuItems)
+ * 1454:     function cleanUpSpacers($menuItems)
+ * 1496:     function label($label)
+ * 1505:     function isCMlayers()
+ * 1519:     function frameLocation($str)
  *
  *
- * 1360: class SC_alt_clickmenu
- * 1379:     function init()
- * 1477:     function main()
- * 1511:     function printContent()
+ * 1544: class SC_alt_clickmenu
+ * 1563:     function init()
+ * 1663:     function main()
+ * 1699:     function printContent()
  *
- * TOTAL FUNCTIONS: 46
+ * TOTAL FUNCTIONS: 51
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -999,6 +1006,7 @@ class clickMenu {
 	 *
 	 * @param	string		The absolute path
 	 * @param	integer		UID for the current record.
+	 * @param	integer		Destination ID
 	 * @return	string		HTML content
 	 */
 	function printDragDropClickMenu($table,$srcId,$dstId)	{
@@ -1079,8 +1087,8 @@ class clickMenu {
 	 *
 	 * @param	string		source path for the record to modify
 	 * @param	string		destination path for the records to modify
-	 * @param       string          Action code: either "move" or "copy"
-	 * @return      array           Item array, element in $menuItems
+	 * @param	string		Action code: either "move" or "copy"
+	 * @return	array		Item array, element in $menuItems
 	 * @internal
 	 */
 	function dragDrop_copymovefolder($srcPath,$dstPath,$action)	{

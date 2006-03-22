@@ -44,10 +44,10 @@
  *  206:     function writeBottom()
  *  225:     function fwd_rwd_nav($table='')
  *  258:     function fwd_rwd_HTML($type,$pointer,$table='')
- *  282:     function listURL($altId='')
- *  292:     function CBfunctions()
- *  342:     function initializeLanguages()
- *  408:     function languageFlag($sys_language_uid)
+ *  284:     function listURL($altId='')
+ *  294:     function CBfunctions()
+ *  344:     function initializeLanguages()
+ *  411:     function languageFlag($sys_language_uid)
  *
  * TOTAL FUNCTIONS: 9
  * (This index is automatically created/updated by the extension "extdeveval")

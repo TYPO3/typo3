@@ -48,9 +48,9 @@
  *  221:     function ext_getKeyImage($key)
  *  231:     function ext_getTSCE_config_image($imgConf)
  *  244:     function ext_fNandV($params)
- *  261:     function ext_loadResources($absPath)
- *  277:     function ext_putValueInConf($key, $var)
- *  287:     function ext_removeValueInConf($key)
+ *  262:     function ext_loadResources($absPath)
+ *  278:     function ext_putValueInConf($key, $var)
+ *  288:     function ext_removeValueInConf($key)
  *
  * TOTAL FUNCTIONS: 14
  * (This index is automatically created/updated by the extension "extdeveval")

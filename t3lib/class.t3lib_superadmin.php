@@ -37,51 +37,51 @@
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
  *
- *  119: function debug($p1,$p2='')
+ *  120: function debug($p1,$p2='')
  *
  *
- *  133: class t3lib_superadmin
+ *  134: class t3lib_superadmin
  *
  *              SECTION: Initialize stuff
- *  179:     function t3lib_superadmin()
- *  191:     function init($parentDirs)
+ *  180:     function t3lib_superadmin()
+ *  192:     function init($parentDirs)
  *
  *              SECTION: Main functions
- *  214:     function defaultSet()
- *  270:     function make()
+ *  215:     function defaultSet()
+ *  271:     function make()
  *
  *              SECTION: Output preparation
- *  372:     function setMenuItem($code,$label)
- *  386:     function error($str)
- *  397:     function headerParentDir($str)
- *  408:     function headerSiteDir($str)
+ *  376:     function setMenuItem($code,$label)
+ *  390:     function error($str)
+ *  401:     function headerParentDir($str)
+ *  412:     function headerSiteDir($str)
  *
  *              SECTION: Collection information
- *  440:     function initProcess()
- *  478:     function processSiteDir($path,$dir)
- *  520:     function includeLocalconf($localconf)
- *  544:     function connectToDatabase($siteInfo)
- *  566:     function getDBInfo($key)
+ *  444:     function initProcess()
+ *  482:     function processSiteDir($path,$dir)
+ *  524:     function includeLocalconf($localconf)
+ *  554:     function connectToDatabase($siteInfo)
+ *  576:     function getDBInfo($key)
  *
  *              SECTION: Content: Installation Overview
- *  616:     function makeTable()
+ *  626:     function makeTable()
  *
  *              SECTION: Content: Local extensions
- *  719:     function localExtensions()
- *  892:     function getExtensionInfo($path,$extKey,$k)
- *  945:     function getAllFilesAndFoldersInPath($fileArr,$extPath,$extList='',$regDirs=0)
- *  967:     function findMostRecent($fileArr,$extPath)
- *  985:     function removePrefixPathFromList($fileArr,$extPath)
+ *  729:     function localExtensions()
+ *  902:     function getExtensionInfo($path,$extKey,$k)
+ *  956:     function getAllFilesAndFoldersInPath($fileArr,$extPath,$extList='',$regDirs=0)
+ *  978:     function findMostRecent($fileArr,$extPath)
+ *  996:     function removePrefixPathFromList($fileArr,$extPath)
  *
  *              SECTION: Content: Other
- * 1022:     function singleSite($exp)
- * 1053:     function loginLog($DB)
- * 1091:     function log_getDetails($text,$data)
- * 1105:     function rmCachedFiles($exp)
- * 1138:     function menuContent($exp)
- * 1210:     function makeAdminLogin()
- * 1284:     function changeAdminPasswordsForm()
- * 1319:     function setNewPasswords()
+ * 1033:     function singleSite($exp)
+ * 1064:     function loginLog($DB)
+ * 1102:     function log_getDetails($text,$data)
+ * 1116:     function rmCachedFiles($exp)
+ * 1149:     function menuContent($exp)
+ * 1221:     function makeAdminLogin()
+ * 1295:     function changeAdminPasswordsForm()
+ * 1330:     function setNewPasswords()
  *
  * TOTAL FUNCTIONS: 28
  * (This index is automatically created/updated by the extension "extdeveval")

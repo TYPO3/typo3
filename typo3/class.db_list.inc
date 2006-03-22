@@ -39,26 +39,28 @@
  *
  *
  *
- *   84: class recordList extends t3lib_recordList
- *  144:     function start($id,$table,$pointer,$search="",$levels="",$showLimit=0)
- *  195:     function generateList()
- *  242:     function getSearchBox($formFields=1)
- *  286:     function showSysNotesForPage()
+ *   86: class recordList extends t3lib_recordList
+ *  148:     function start($id,$table,$pointer,$search="",$levels="",$showLimit=0)
+ *  211:     function generateList()
+ *  275:     function getSearchBox($formFields=1)
+ *  319:     function showSysNotesForPage()
  *
  *              SECTION: Various helper functions
- *  363:     function setDispFields()
- *  388:     function thumbCode($row,$table,$field)
- *  401:     function makeQueryArray($table, $id, $addWhere="",$fieldList='*')
- *  443:     function setTotalItems($queryParts)
- *  459:     function makeSearchString($table)
- *  498:     function linkWrapTable($table,$code)
- *  515:     function linkWrapItems($table,$uid,$code,$row)
- *  578:     function listURL($altId='',$table=-1,$exclList='')
- *  597:     function requestUri()
- *  608:     function makeFieldList($table,$dontCheckUser=0)
- *  648:     function getTreeObject($id,$depth,$perms_clause)
+ *  396:     function setDispFields()
+ *  421:     function thumbCode($row,$table,$field)
+ *  434:     function makeQueryArray($table, $id, $addWhere="",$fieldList='*')
+ *  481:     function setTotalItems($queryParts)
+ *  497:     function makeSearchString($table)
+ *  536:     function linkWrapTable($table,$code)
+ *  553:     function linkWrapItems($table,$uid,$code,$row)
+ *  617:     function linkUrlMail($code,$testString)
+ *  644:     function listURL($altId='',$table=-1,$exclList='')
+ *  663:     function requestUri()
+ *  674:     function makeFieldList($table,$dontCheckUser=0)
+ *  721:     function getTreeObject($id,$depth,$perms_clause)
+ *  739:     function localizationRedirect($justLocalized)
  *
- * TOTAL FUNCTIONS: 15
+ * TOTAL FUNCTIONS: 17
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -608,6 +610,8 @@ class recordList extends t3lib_recordList {
 	/**
 	 * Wrapping input code in link to URL or email if $testString is either.
 	 *
+	 * @param	string		code to wrap
+	 * @param	string		String which is tested for being a URL or email and which will be used for the link if so.
 	 * @return	string		Link-Wrapped $code value, if $testString was URL or email.
 	 */
 	function linkUrlMail($code,$testString)	{
@@ -726,6 +730,12 @@ class recordList extends t3lib_recordList {
 		return $tree;
 	}
 
+	/**
+	 * Redirects to TCEforms (alt_doc) if a record is just localized.
+	 *
+	 * @param	string		string with table, orig uid and language separated by ":"
+	 * @return	void
+	 */
 	function localizationRedirect($justLocalized)	{
 		global $TCA;
 

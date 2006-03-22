@@ -41,7 +41,7 @@
  *   76: class SC_show_rechis
  *   87:     function init()
  *  105:     function main()
- *  126:     function printContent()
+ *  131:     function printContent()
  *
  * TOTAL FUNCTIONS: 3
  * (This index is automatically created/updated by the extension "extdeveval")

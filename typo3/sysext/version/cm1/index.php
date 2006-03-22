@@ -31,42 +31,46 @@
  *
  *
  *
- *   97: class tx_version_cm1 extends t3lib_SCbase
+ *  102: class tx_version_cm1 extends t3lib_SCbase
  *
  *              SECTION: Standard module initialization
- *  132:     function menuConfig()
- *  169:     function main()
- *  222:     function jumpToUrl(URL)
- *  282:     function printContent()
+ *  138:     function menuConfig()
+ *  175:     function main()
+ *  236:     function jumpToUrl(URL)
+ *  296:     function printContent()
  *
  *              SECTION: Versioning management
- *  308:     function versioningMgm()
- *  471:     function pageSubContent($pid,$c=0)
- *  525:     function lookForOwnVersions($table,$uid)
- *  542:     function adminLinks($table,$row)
+ *  322:     function versioningMgm()
+ *  485:     function pageSubContent($pid,$c=0)
+ *  539:     function lookForOwnVersions($table,$uid)
+ *  556:     function adminLinks($table,$row)
  *
  *              SECTION: Workspace management
- *  614:     function workspaceMgm()
- *  639:     function displayWorkspaceOverview()
- *  708:     function displayWorkspaceOverview_list($pArray)
- *  865:     function displayWorkspaceOverview_setInPageArray(&$pArray,$table,$row)
+ *  628:     function workspaceMgm()
+ *  688:     function displayWorkspaceOverview()
+ *  758:     function displayWorkspaceOverview_list($pArray)
+ *  923:     function displayWorkspaceOverview_setInPageArray(&$pArray,$table,$row)
+ *  936:     function displayWorkspaceOverview_allStageCmd()
  *
  *              SECTION: Helper functions (REDUNDANT FROM user/ws/index.php - someone could refactor this...)
- *  892:     function formatVerId($verId)
- *  902:     function formatWorkspace($wsid)
- *  929:     function formatCount($count)
- *  956:     function versionsInOtherWS($table,$uid)
- *  986:     function showStageChangeLog($table,$id,$stageCommands)
- * 1035:     function subElements($uid,$treeLevel,$origId=0)
- * 1138:     function subElements_getNonPageRecords($tN, $uid, &$recList)
- * 1168:     function subElements_renderItem(&$tCell,$tN,$uid,$rec,$origId,$iconMode,$HTMLdata)
- * 1237:     function markupNewOriginals()
- * 1259:     function createDiffView($table, $diff_1_record, $diff_2_record)
- * 1376:     function displayWorkspaceOverview_stageCmd($table,&$rec_off)
- * 1461:     function displayWorkspaceOverview_commandLinks($table,&$rec_on,&$rec_off,$vType)
- * 1531:     function displayWorkspaceOverview_commandLinksSub($table,$rec,$origId)
+ *  986:     function formatVerId($verId)
+ *  996:     function formatWorkspace($wsid)
+ * 1023:     function formatCount($count)
+ * 1050:     function versionsInOtherWS($table,$uid)
+ * 1080:     function showStageChangeLog($table,$id,$stageCommands)
+ * 1129:     function subElements($uid,$treeLevel,$origId=0)
+ * 1232:     function subElements_getNonPageRecords($tN, $uid, &$recList)
+ * 1262:     function subElements_renderItem(&$tCell,$tN,$uid,$rec,$origId,$iconMode,$HTMLdata)
+ * 1331:     function markupNewOriginals()
+ * 1353:     function createDiffView($table, $diff_1_record, $diff_2_record)
+ * 1470:     function displayWorkspaceOverview_stageCmd($table,&$rec_off)
+ * 1557:     function displayWorkspaceOverview_commandLinks($table,&$rec_on,&$rec_off,$vType)
+ * 1627:     function displayWorkspaceOverview_commandLinksSub($table,$rec,$origId)
  *
- * TOTAL FUNCTIONS: 25
+ *              SECTION: Processing
+ * 1683:     function publishAction()
+ *
+ * TOTAL FUNCTIONS: 27
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -178,7 +182,7 @@ class tx_version_cm1 extends t3lib_SCbase {
 		$this->doc = t3lib_div::makeInstance('mediumDoc');
 		$this->doc->backPath = $BACK_PATH;
 		$this->doc->form='<form action="" method="post">';
-		
+
 	        // Add styles
 		$this->doc->inDocStylesArray[$GLOBALS['MCONF']['name']] = '
 .version-diff-1 { background-color: green; }
@@ -661,11 +665,11 @@ class tx_version_cm1 extends t3lib_SCbase {
 		if ($actionLinks || count($errors))	{
 			$this->content.= $this->doc->section('',$actionLinks.(count($errors) ? '<h3>Errors:</h3><br/>'.implode('<br/>',$errors).'<hr/>' : ''),0,1);
 		}
-		
+
 		if (t3lib_div::_POST('_previewLink'))	{
 			$params = 'id='.$this->id.'&ADMCMD_view=1&ADMCMD_editIcons=1&ADMCMD_previewWS='.$GLOBALS['BE_USER']->workspace;
 			$previewUrl = t3lib_div::getIndpEnv('TYPO3_SITE_URL').'?ADMCMD_prev='.t3lib_BEfunc::compilePreviewKeyword($params, $GLOBALS['BE_USER']->user['uid']);
-			
+
 			$this->content.= $this->doc->section('Preview Url:','You can preview this page from the workspace using this link for the next 48 hours (does not require backend login):<br/><br/><a target="_blank" href="'.htmlspecialchars($previewUrl).'">'.$previewUrl.'</a>',0,1);
 		}
 

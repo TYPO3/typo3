@@ -37,8 +37,8 @@
  *
  *
  *   57: class tx_indexedsearch_crawlerhook
- *   62:     function initMessage()
- *   74:     function indexOperation($cfgRec,$session_data,$params,$gpObj,$pObj)
+ *   64:     function initMessage()
+ *   80:     function indexOperation($cfgRec,&$session_data,$params,&$pObj)
  *
  * TOTAL FUNCTIONS: 2
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -59,7 +59,7 @@ class tx_indexedsearch_crawlerhook {
 	/**
 	 * Function is called when an indexing session starts according to the time intervals set for the indexing configuration.
 	 *
-	 * @return	string	Return a text string for the first, initiating queue entry for the crawler.
+	 * @return	string		Return a text string for the first, initiating queue entry for the crawler.
 	 */
 	function initMessage()	{
 		return 'Start of Custom Example Indexing session!';

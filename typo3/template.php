@@ -36,78 +36,86 @@
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
  *
- *  137: function fw($str)
+ *  145: function fw($str)
  *
  *
- *  161: class template
- *  216:     function template()
+ *  169: class template
+ *  224:     function template()
  *
  *              SECTION: EVALUATION FUNCTIONS
- *  290:     function wrapClickMenuOnIcon($str,$table,$uid='',$listFr=1,$addParams='',$enDisItems='', $returnOnClick=FALSE)
- *  307:     function viewPageIcon($id,$backPath,$addParams='hspace="3"')
- *  333:     function issueCommand($params,$rUrl='')
- *  348:     function isCMlayers()
- *  358:     function thisBlur()
- *  368:     function helpStyle()
- *  385:     function getHeader($table,$row,$path,$noViewPageIcon=0,$tWrap=array('',''))
- *  411:     function getFileheader($title,$path,$iconfile)
- *  426:     function makeShortcutIcon($gvList,$setList,$modName,$motherModName="")
- *  459:     function makeShortcutUrl($gvList,$setList)
- *  480:     function formWidth($size=48,$textarea=0,$styleOverride='')
- *  505:     function formWidthText($size=48,$styleOverride='',$wrap='')
- *  522:     function redirectUrls($thisLocation='')
- *  546:     function formatTime($tstamp,$type)
- *  559:     function parseTime()
+ *  298:     function wrapClickMenuOnIcon($str,$table,$uid='',$listFr=1,$addParams='',$enDisItems='', $returnOnClick=FALSE)
+ *  315:     function viewPageIcon($id,$backPath,$addParams='hspace="3"')
+ *  341:     function issueCommand($params,$rUrl='')
+ *  356:     function isCMlayers()
+ *  366:     function thisBlur()
+ *  376:     function helpStyle()
+ *  393:     function getHeader($table,$row,$path,$noViewPageIcon=0,$tWrap=array('',''))
+ *  419:     function getFileheader($title,$path,$iconfile)
+ *  434:     function makeShortcutIcon($gvList,$setList,$modName,$motherModName="")
+ *  467:     function makeShortcutUrl($gvList,$setList)
+ *  488:     function formWidth($size=48,$textarea=0,$styleOverride='')
+ *  513:     function formWidthText($size=48,$styleOverride='',$wrap='')
+ *  530:     function redirectUrls($thisLocation='')
+ *  554:     function formatTime($tstamp,$type)
+ *  571:     function parseTime()
  *
  *              SECTION: PAGE BUILDING FUNCTIONS.
- *  592:     function startPage($title)
- *  667:     function endPage()
- *  701:     function header($text)
- *  722:     function section($label,$text,$nostrtoupper=FALSE,$sH=FALSE,$type=0,$allowHTMLinHeader=FALSE)
- *  746:     function divider($dist)
- *  762:     function spacer($dist)
- *  781:     function sectionHeader($label,$sH=FALSE,$addAttrib='')
- *  798:     function sectionBegin()
- *  819:     function sectionEnd()
- *  839:     function middle()
- *  848:     function endPageJS()
- *  865:     function docBodyTagBegin()
- *  875:     function docStyle()
- *  917:     function insertStylesAndJS($content)
- *  937:     function initCharset()
- *  949:     function generator()
+ *  604:     function startPage($title)
+ *  686:     function endPage()
+ *  720:     function header($text)
+ *  741:     function section($label,$text,$nostrtoupper=FALSE,$sH=FALSE,$type=0,$allowHTMLinHeader=FALSE)
+ *  765:     function divider($dist)
+ *  781:     function spacer($dist)
+ *  800:     function sectionHeader($label,$sH=FALSE,$addAttrib='')
+ *  817:     function sectionBegin()
+ *  838:     function sectionEnd()
+ *  858:     function middle()
+ *  867:     function endPageJS()
+ *  884:     function docBodyTagBegin()
+ *  894:     function docStyle()
+ *  936:     function insertStylesAndJS($content)
+ *  956:     function initCharset()
+ *  968:     function generator()
  *
  *              SECTION: OTHER ELEMENTS
- *  982:     function icons($type, $styleAttribValue='')
- * 1011:     function t3Button($onClick,$label)
- * 1022:     function dfw($string)
- * 1032:     function rfw($string)
- * 1042:     function wrapInCData($string)
- * 1059:     function wrapScriptTags($string, $linebreak=TRUE)
- * 1097:     function table($arr, $layout='')
- * 1139:     function menuTable($arr1,$arr2=array(), $arr3=array())
- * 1172:     function funcMenu($content,$menu)
- * 1190:     function clearCacheMenu($id,$addSaveOptions=0)
- * 1226:     function getContextMenuCode()
- * 1413:     function getTabMenu($mainParams,$elementName,$currentValue,$menuItems,$script='',$addparams='')
- * 1443:     function getTabMenuRaw($menuItems)
- * 1512:     function getDynTabMenu($menuItems,$identString,$toggle=0,$foldout=FALSE,$newRowCharLimit=50,$noWrap=1,$fullWidth=FALSE,$defaultTabIndex=1)
- * 1637:     function getDynTabMenuJScode()
- * 1723:     function getVersionSelector($id,$noAction=FALSE)
+ * 1001:     function icons($type, $styleAttribValue='')
+ * 1030:     function t3Button($onClick,$label)
+ * 1041:     function dfw($string)
+ * 1051:     function rfw($string)
+ * 1061:     function wrapInCData($string)
+ * 1078:     function wrapScriptTags($string, $linebreak=TRUE)
+ * 1117:     function table($arr, $layout='')
+ * 1159:     function menuTable($arr1,$arr2=array(), $arr3=array())
+ * 1192:     function funcMenu($content,$menu)
+ * 1210:     function clearCacheMenu($id,$addSaveOptions=0)
+ * 1246:     function getContextMenuCode()
+ * 1251:     function showClickmenu(table, uid, listFr, enDisItems, backPath, addParams)
+ * 1280:     function showClickmenu_noajax(url)
+ * 1287:     function showClickmenu_ajax(t3ajax)
+ * 1472:     function getDragDropCode($table)
+ * 1483:     function cancelDragEvent(event)
+ * 1496:     function mouseMoveEvent (event)
+ * 1509:     function dragElement(id,elementID)
+ * 1528:     function dropElement(id)
+ * 1577:     function getTabMenu($mainParams,$elementName,$currentValue,$menuItems,$script='',$addparams='')
+ * 1607:     function getTabMenuRaw($menuItems)
+ * 1676:     function getDynTabMenu($menuItems,$identString,$toggle=0,$foldout=FALSE,$newRowCharLimit=50,$noWrap=1,$fullWidth=FALSE,$defaultTabIndex=1)
+ * 1801:     function getDynTabMenuJScode()
+ * 1892:     function getVersionSelector($id,$noAction=FALSE)
  *
  *
- * 1797: class bigDoc extends template
+ * 2060: class bigDoc extends template
  *
  *
- * 1806: class noDoc extends template
+ * 2069: class noDoc extends template
  *
  *
- * 1815: class smallDoc extends template
+ * 2078: class smallDoc extends template
  *
  *
- * 1824: class mediumDoc extends template
+ * 2087: class mediumDoc extends template
  *
- * TOTAL FUNCTIONS: 49
+ * TOTAL FUNCTIONS: 57
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -1262,6 +1270,13 @@ $str.=$this->docBodyTagBegin().
 		}
 		$content .= '
 				}
+
+	/**
+	 * [Describe function...]
+	 *
+	 * @param	[type]		$url: ...
+	 * @return	[type]		...
+	 */
 				function showClickmenu_noajax(url)	{
 					top.loadTopMenu(url);
 				}';
@@ -1472,6 +1487,12 @@ $str.=$this->docBodyTagBegin().
 					document.onmousemove = null;
 				}
 
+	/**
+	 * [Describe function...]
+	 *
+	 * @param	[type]		$event: ...
+	 * @return	[type]		...
+	 */
 				function mouseMoveEvent (event) {
 					dragIconCSS.left = GLV_x+5+"px";
 					dragIconCSS.top = GLV_y-5+"px";
@@ -1479,6 +1500,12 @@ $str.=$this->docBodyTagBegin().
 					return false;
 				}
 
+	/**
+	 * [Describe function...]
+	 *
+	 * @param	[type]		$id,elementID: ...
+	 * @return	[type]		...
+	 */
 				function dragElement(id,elementID) {
 					dragID = id;
 					if (elementID == null)	{
@@ -1492,6 +1519,12 @@ $str.=$this->docBodyTagBegin().
 					return false;
 				}
 
+	/**
+	 * [Describe function...]
+	 *
+	 * @param	[type]		$id: ...
+	 * @return	[type]		...
+	 */
 				function dropElement(id) {
 					if ((dragID != null) && (dragID != id)) {
 						var url = "'.$this->backPath.'alt_clickmenu.php?dragDrop='.$table.'"
@@ -2006,7 +2039,7 @@ $str.=$this->docBodyTagBegin().
 					}
 				}
 			}
-		} 
+		}
 	}
 }
 

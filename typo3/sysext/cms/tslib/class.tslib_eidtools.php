@@ -29,7 +29,7 @@
  * Included from index_ts.php
  * Since scripts using the eID feature does not
  * have a full FE environment initialized by default
- * this class seeks to provide functions that can 
+ * this class seeks to provide functions that can
  * initialize parts of the FE environment as needed,
  * eg. Frontend User session, Database connection etc.
  *
@@ -42,9 +42,9 @@
  *
  *
  *
- *   69: class tslib_eidtools
- *   76:     function initFeUser()
- *  103:     function connectDB()
+ *   74: class tslib_eidtools
+ *   81:     function initFeUser()
+ *  108:     function connectDB()
  *
  * TOTAL FUNCTIONS: 2
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -101,7 +101,7 @@ class tslib_eidtools {
 	}
 
 	/**
-	 * Connect to database
+	 * Connecting to database
 	 *
 	 * @return	void
 	 */

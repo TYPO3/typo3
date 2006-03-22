@@ -33,16 +33,18 @@
  *
  *
  *
- *   80: class t3lib_exec
- *   90:     function checkCommand($cmd, $handler='')
- *  161:     function getCommand($cmd, $handler='', $handlerOpt='')
- *  194:     function addPaths($paths)
- *  232:     function _getPaths()
- *  292:     function _init()
- *  314:     function _initPaths($paths='')
- *  368:     function _fixPath($path)
+ *   85: class t3lib_exec
+ *   95:     function checkCommand($cmd, $handler='')
+ *  166:     function getCommand($cmd, $handler='', $handlerOpt='')
+ *  199:     function addPaths($paths)
+ *  211:     function getPaths($addInvalid=false)
+ *  237:     function _init()
+ *  259:     function _initPaths($paths='')
+ *  312:     function _getConfiguredApps()
+ *  339:     function _getPaths()
+ *  400:     function _fixPath($path)
  *
- * TOTAL FUNCTIONS: 8
+ * TOTAL FUNCTIONS: 9
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */

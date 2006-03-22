@@ -48,13 +48,13 @@
  *
  *  128: class SC_db_new
  *  157:     function init()
- *  217:     function main()
- *  269:     function pagesOnly()
- *  287:     function regularNew()
- *  442:     function printContent()
- *  456:     function linkWrap($code,$table,$pid,$addContentTable=0)
- *  476:     function isTableAllowedForThisPage($pid_row, $checkTable)
- *  506:     function showNewRecLink($table,$allowedNewTables='')
+ *  224:     function main()
+ *  276:     function pagesOnly()
+ *  294:     function regularNew()
+ *  458:     function printContent()
+ *  473:     function linkWrap($code,$table,$pid,$addContentTable=0)
+ *  493:     function isTableAllowedForThisPage($pid_row, $checkTable)
+ *  523:     function showNewRecLink($table,$allowedNewTables='')
  *
  * TOTAL FUNCTIONS: 10
  * (This index is automatically created/updated by the extension "extdeveval")

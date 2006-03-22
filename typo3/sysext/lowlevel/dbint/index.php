@@ -37,22 +37,22 @@
  *
  *
  *
- *   88: class SC_mod_tools_dbint_index
- *  104:     function init()
- *  118:     function jumpToUrl(URL)
- *  138:     function menuConfig()
- *  199:     function main()
- *  241:     function printContent()
- *  252:     function func_default()
+ *   89: class SC_mod_tools_dbint_index
+ *  105:     function init()
+ *  119:     function jumpToUrl(URL)
+ *  139:     function menuConfig()
+ *  226:     function main()
+ *  270:     function printContent()
+ *  281:     function func_default()
  *
  *              SECTION: Functionality implementation
- *  285:     function func_refindex()
- *  315:     function func_search()
- *  347:     function func_tree()
- *  370:     function func_records()
- *  468:     function func_relations()
- *  519:     function func_filesearch()
- *  568:     function findFile($basedir,$pattern,&$matching_files,$depth)
+ *  314:     function func_refindex()
+ *  344:     function func_search()
+ *  386:     function func_tree()
+ *  409:     function func_records()
+ *  507:     function func_relations()
+ *  558:     function func_filesearch()
+ *  607:     function findFile($basedir,$pattern,&$matching_files,$depth)
  *
  * TOTAL FUNCTIONS: 13
  * (This index is automatically created/updated by the extension "extdeveval")

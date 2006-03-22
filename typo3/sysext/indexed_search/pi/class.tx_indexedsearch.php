@@ -40,63 +40,65 @@
  *
  *
  *
- *  121: class tx_indexedsearch extends tslib_pibase
- *  165:     function main($content, $conf)
- *  198:     function initialize()
- *  381:     function getSearchWords($defOp)
- *  415:     function procSearchWordsByLexer($SWArr)
+ *  123: class tx_indexedsearch extends tslib_pibase
+ *  168:     function main($content, $conf)
+ *  200:     function initialize()
+ *  413:     function getSearchWords($defOp)
+ *  447:     function procSearchWordsByLexer($SWArr)
  *
  *              SECTION: Main functions
- *  459:     function doSearch($sWArr)
- *  492:     function getResultRows($sWArr)
- *  562:     function getResultRows_SQLpointer($sWArr)
- *  582:     function getDisplayResults($sWArr, $resData)
- *  633:     function compileResult($resultRows)
+ *  491:     function doSearch($sWArr)
+ *  549:     function getResultRows($sWArr,$freeIndexUid=-1)
+ *  623:     function getResultRows_SQLpointer($sWArr,$freeIndexUid=-1)
+ *  647:     function getDisplayResults($sWArr, $resData, $freeIndexUid=-1)
+ *  699:     function compileResult($resultRows, $freeIndexUid=-1)
  *
  *              SECTION: Searching functions (SQL)
- *  726:     function getPhashList($sWArr)
- *  827:     function execPHashListQuery($wordSel,$plusQ='')
- *  847:     function sectionTableWhere()
- *  894:     function mediaTypeWhere()
- *  919:     function languageWhere()
- *  931:     function execFinalQuery($list)
- * 1069:     function checkResume($row)
- * 1116:     function isDescending($inverse=FALSE)
- * 1130:     function writeSearchStat($sWArr,$count,$pt)
+ *  800:     function getPhashList($sWArr)
+ *  901:     function execPHashListQuery($wordSel,$plusQ='')
+ *  921:     function sectionTableWhere()
+ *  968:     function mediaTypeWhere()
+ *  993:     function languageWhere()
+ * 1005:     function freeIndexUidWhere($freeIndexUid)
+ * 1046:     function execFinalQuery($list,$freeIndexUid=-1)
+ * 1189:     function checkResume($row)
+ * 1236:     function isDescending($inverse=FALSE)
+ * 1250:     function writeSearchStat($sWArr,$count,$pt)
  *
  *              SECTION: HTML output functions
- * 1181:     function makeSearchForm($optValues)
- * 1253:     function printRules()
- * 1269:     function printResultSectionLinks()
- * 1291:     function makeSectionHeader($id,$sectionTitleLinked,$countResultRows)
- * 1307:     function printResultRow($row, $headerOnly=0)
- * 1382:     function pi_list_browseresults($showResultCount=1,$addString='',$addPart='')
+ * 1302:     function makeSearchForm($optValues)
+ * 1436:     function renderSelectBoxValues($value,$optValues)
+ * 1455:     function printRules()
+ * 1474:     function printResultSectionLinks()
+ * 1508:     function makeSectionHeader($id, $sectionTitleLinked, $countResultRows)
+ * 1529:     function printResultRow($row, $headerOnly=0)
+ * 1598:     function pi_list_browseresults($showResultCount=1,$addString='',$addPart='',$freeIndexUid=-1)
  *
  *              SECTION: Support functions for HTML output (with a minimum of fixed markup)
- * 1445:     function prepareResultRowTemplateData($row, $headerOnly)
- * 1489:     function tellUsWhatIsSeachedFor($sWArr)
- * 1523:     function wrapSW($str)
- * 1535:     function renderSelectBox($name,$value,$optValues)
- * 1558:     function makePointerSelector_link($str,$p)
- * 1571:     function makeItemTypeIcon($it,$alt='',$specRowConf)
- * 1613:     function makeRating($row)
- * 1658:     function makeDescription($row,$noMarkup=0,$lgd=180)
- * 1688:     function markupSWpartsOfString($str)
- * 1768:     function makeTitle($row)
- * 1792:     function makeInfo($row,$tmplArray)
- * 1817:     function getSpecialConfigForRow($row)
- * 1841:     function makeLanguageIndication($row)
- * 1878:     function makeAccessIndication($id)
- * 1892:     function linkPage($id,$str,$row=array())
- * 1935:     function getRootLine($id,$pathMP='')
- * 1950:     function getFirstSysDomainRecordForPage($id)
- * 1963:     function getPathFromPageId($id,$pathMP='')
- * 2015:     function getMenu($id)
- * 2034:     function multiplePagesType($item_type)
- * 2044:     function utf8_to_currentCharset($str)
- * 2054:     function &hookRequest($functionName)
+ * 1686:     function prepareResultRowTemplateData($row, $headerOnly)
+ * 1740:     function tellUsWhatIsSeachedFor($sWArr)
+ * 1774:     function wrapSW($str)
+ * 1786:     function renderSelectBox($name,$value,$optValues)
+ * 1810:     function makePointerSelector_link($str,$p,$freeIndexUid)
+ * 1825:     function makeItemTypeIcon($it,$alt='',$specRowConf)
+ * 1867:     function makeRating($row)
+ * 1911:     function makeDescription($row,$noMarkup=0,$lgd=180)
+ * 1942:     function markupSWpartsOfString($str)
+ * 2022:     function makeTitle($row)
+ * 2046:     function makeInfo($row,$tmplArray)
+ * 2075:     function getSpecialConfigForRow($row)
+ * 2099:     function makeLanguageIndication($row)
+ * 2142:     function makeAccessIndication($id)
+ * 2157:     function linkPage($id,$str,$row=array(),$markUpSwParams=array())
+ * 2201:     function getRootLine($id,$pathMP='')
+ * 2216:     function getFirstSysDomainRecordForPage($id)
+ * 2229:     function getPathFromPageId($id,$pathMP='')
+ * 2281:     function getMenu($id)
+ * 2300:     function multiplePagesType($item_type)
+ * 2310:     function utf8_to_currentCharset($str)
+ * 2320:     function &hookRequest($functionName)
  *
- * TOTAL FUNCTIONS: 46
+ * TOTAL FUNCTIONS: 48
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -994,6 +996,12 @@ class tx_indexedsearch extends tslib_pibase {
 		}
 	}
 
+	/**
+	 * Where-clause for free index-uid value.
+	 *
+	 * @param	integer		Free Index UID value to limit search to.
+	 * @return	string		WHERE SQL clause part.
+	 */
 	function freeIndexUidWhere($freeIndexUid)	{
 
 		if ($freeIndexUid>=0)	{
@@ -1418,6 +1426,13 @@ class tx_indexedsearch extends tslib_pibase {
 		return $substitutedContent;
 	}
 
+	/**
+	 * Function, rendering selector box values.
+	 *
+	 * @param	string		Current value 
+	 * @param	array		Array with the options as key=>value pairs
+	 * @return	string		<options> imploded.
+	 */
 	function renderSelectBoxValues($value,$optValues)	{
 		if (is_array($optValues))	{
 			$opt=array();
@@ -2136,6 +2151,7 @@ class tx_indexedsearch extends tslib_pibase {
 	 * @param	integer		Page id
 	 * @param	string		Title String to link
 	 * @param	array		Result row
+	 * @param	array		Additional parameters for marking up seach words
 	 * @return	string		<A> tag wrapped title string.
 	 */
 	function linkPage($id,$str,$row=array(),$markUpSwParams=array())	{

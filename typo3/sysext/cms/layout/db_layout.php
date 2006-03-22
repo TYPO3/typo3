@@ -44,22 +44,22 @@
  *  117:     function wrapRecordTitle($str,$row)
  *  130:     function wrapColumnHeader($str,$vv)
  *  144:     function onClickInsertRecord($row,$vv,$moveUid,$pid)
- *  161:     function wrapRecordHeader($str,$row)
+ *  160:     function wrapRecordHeader($str,$row)
  *
  *
- *  182: class SC_db_layout
- *  231:     function init()
- *  284:     function menuConfig()
- *  366:     function clearCache()
- *  381:     function main()
- *  482:     function renderQuickEdit()
- *  868:     function renderListContent()
- * 1147:     function printContent()
+ *  181: class SC_db_layout
+ *  230:     function init()
+ *  283:     function menuConfig()
+ *  372:     function clearCache()
+ *  387:     function main()
+ *  489:     function renderQuickEdit()
+ *  886:     function renderListContent()
+ * 1165:     function printContent()
  *
  *              SECTION: Other functions
- * 1174:     function getNumberOfHiddenElements()
- * 1187:     function local_linkThisScript($params)
- * 1199:     function exec_languageQuery($id)
+ * 1192:     function getNumberOfHiddenElements()
+ * 1205:     function local_linkThisScript($params)
+ * 1217:     function exec_languageQuery($id)
  *
  * TOTAL FUNCTIONS: 14
  * (This index is automatically created/updated by the extension "extdeveval")

@@ -39,14 +39,15 @@
  *
  *
  *
- *   71: class SC_alt_main
- *   90:     function init()
- *  112:     function generateJScode()
- *  370:     function editPageHandling()
- *  420:     function main()
- *  494:     function printContent()
+ *   72: class SC_alt_main
+ *   91:     function init()
+ *  113:     function generateJScode()
+ *  386:     function editPageHandling()
+ *  437:     function startModule()
+ *  459:     function main()
+ *  533:     function printContent()
  *
- * TOTAL FUNCTIONS: 5
+ * TOTAL FUNCTIONS: 6
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -322,7 +323,7 @@ class SC_alt_main {
 	/**
 	 * Function restoring previous selection in left menu after clearing cache
 	 */
-	function restoreHighlightedModuleMenuItem() {
+	function restoreHighlightedModuleMenuItem() {	//
 		if (currentlyHighLightedId) {
 			highlightModuleMenuItem(currentlyHighLightedId,currentlyHighLightedMain);
 		}
@@ -448,7 +449,7 @@ class SC_alt_main {
 			';
 		}
 	}
-	
+
 
 	/**
 	 * Creates the header and frameset of the backend interface

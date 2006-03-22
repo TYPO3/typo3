@@ -40,7 +40,7 @@
  *   74: class SC_file_rename
  *   96:     function init()
  *  149:     function main()
- *  194:     function printContent()
+ *  192:     function printContent()
  *
  * TOTAL FUNCTIONS: 3
  * (This index is automatically created/updated by the extension "extdeveval")

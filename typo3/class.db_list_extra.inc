@@ -39,33 +39,34 @@
  *
  *
  *
- *   90: class localRecordList extends recordList
- *  122:     function writeTop($row)
- *  303:     function getTable($table,$id,$rowlist)
- *  547:     function renderListRow($table,$row,$cc,$titleCol,$thumbsCol,$indent=0)
- *  616:     function renderListHeader($table,$currentIdList)
+ *   91: class localRecordList extends recordList
+ *  123:     function writeTop($row)
+ *  304:     function getTable($table,$id,$rowlist)
+ *  559:     function renderListRow($table,$row,$cc,$titleCol,$thumbsCol,$indent=0)
+ *  648:     function renderListHeader($table,$currentIdList)
  *
  *              SECTION: Rendering of various elements
- *  761:     function makeControl($table,$row)
- *  953:     function makeClip($table,$row)
- * 1022:     function makeLocalizationPanel($table,$row)
- * 1080:     function fieldSelectBox($table,$formFields=1)
+ *  796:     function makeControl($table,$row)
+ *  986:     function makeClip($table,$row)
+ * 1057:     function makeRef($table,$uid)
+ * 1086:     function makeLocalizationPanel($table,$row)
+ * 1148:     function fieldSelectBox($table,$formFields=1)
  *
  *              SECTION: Helper functions
- * 1160:     function linkClipboardHeaderIcon($string,$table,$cmd,$warning='')
- * 1171:     function clipNumPane()
- * 1185:     function addSortLink($code,$field,$table)
- * 1210:     function recPath($pid)
- * 1223:     function showNewRecLink($table)
- * 1233:     function makeReturnUrl()
+ * 1231:     function linkClipboardHeaderIcon($string,$table,$cmd,$warning='')
+ * 1242:     function clipNumPane()
+ * 1256:     function addSortLink($code,$field,$table)
+ * 1281:     function recPath($pid)
+ * 1294:     function showNewRecLink($table)
+ * 1304:     function makeReturnUrl()
  *
  *              SECTION: CSV related functions
- * 1258:     function initCSV()
- * 1280:     function addToCSV($row)
- * 1302:     function setCsvRow($csvRow)
- * 1313:     function outputCSV($prefix)
+ * 1329:     function initCSV()
+ * 1352:     function addToCSV($row,$table)
+ * 1376:     function setCsvRow($csvRow)
+ * 1387:     function outputCSV($prefix)
  *
- * TOTAL FUNCTIONS: 18
+ * TOTAL FUNCTIONS: 19
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -1050,7 +1051,7 @@ class localRecordList extends recordList {
 	 * Make reference count
 	 *
 	 * @param	string		Table name
-	 * @param	integer		UID
+	 * @param	integer		UID of record
 	 * @return	string		HTML-table
 	 */
 	function makeRef($table,$uid)	{
@@ -1345,6 +1346,7 @@ class localRecordList extends recordList {
 	 * Adds the content of input array $row to the CSV list:
 	 *
 	 * @param	array		Record array, from which the values of fields found in $this->fieldArray will be listed in the CSV output.
+	 * @param	string		Table name
 	 * @return	void
 	 */
 	function addToCSV($row,$table)	{

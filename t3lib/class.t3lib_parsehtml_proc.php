@@ -39,42 +39,43 @@
  *
  *
  *
- *  102: class t3lib_parsehtml_proc extends t3lib_parsehtml
- *  137:     function init($elRef='',$recPid=0)
- *  149:     function setRelPath($path)
- *  173:     function evalWriteFile($pArr,$currentRecord)
+ *  103: class t3lib_parsehtml_proc extends t3lib_parsehtml
+ *  138:     function init($elRef='',$recPid=0)
+ *  150:     function setRelPath($path)
+ *  174:     function evalWriteFile($pArr,$currentRecord)
  *
  *              SECTION: Main function
- *  231:     function RTE_transform($value,$specConf,$direction='rte',$thisConfig=array())
+ *  232:     function RTE_transform($value,$specConf,$direction='rte',$thisConfig=array())
  *
  *              SECTION: Specific RTE TRANSFORMATION functions
- *  397:     function TS_images_db($value)
- *  538:     function TS_images_rte($value)
- *  572:     function TS_reglinks($value,$direction)
- *  606:     function TS_links_db($value)
- *  654:     function TS_links_rte($value)
- *  735:     function TS_preserve_db($value)
- *  759:     function TS_preserve_rte($value)
- *  780:     function TS_transform_db($value,$css=FALSE)
- *  891:     function TS_transform_rte($value,$css=0)
- *  962:     function TS_strip_db($value)
+ *  398:     function TS_images_db($value)
+ *  550:     function TS_images_rte($value)
+ *  589:     function TS_reglinks($value,$direction)
+ *  626:     function TS_links_db($value)
+ *  675:     function TS_links_rte($value)
+ *  760:     function TS_preserve_db($value)
+ *  784:     function TS_preserve_rte($value)
+ *  805:     function TS_transform_db($value,$css=FALSE)
+ *  922:     function transformStyledATags($value)
+ *  948:     function TS_transform_rte($value,$css=0)
+ * 1019:     function TS_strip_db($value)
  *
  *              SECTION: Generic RTE transformation, analysis and helper functions
- *  993:     function getURL($url)
- * 1007:     function HTMLcleaner_db($content,$tagList='')
- * 1028:     function getKeepTags($direction='rte',$tagList='')
- * 1137:     function divideIntoLines($value,$count=5,$returnArray=FALSE)
- * 1241:     function setDivTags($value,$dT='p')
- * 1286:     function internalizeFontTags($value)
- * 1322:     function siteUrl()
- * 1332:     function rteImageStorageDir()
- * 1344:     function removeTables($value,$breakChar='<br />')
- * 1376:     function defaultTStagMapping($code,$direction='rte')
- * 1399:     function getWHFromAttribs($attribArray)
- * 1425:     function urlInfoForLinkTags($url)
- * 1484:     function TS_AtagToAbs($value,$dontSetRTEKEEP=FALSE)
+ * 1050:     function getURL($url)
+ * 1064:     function HTMLcleaner_db($content,$tagList='')
+ * 1091:     function getKeepTags($direction='rte',$tagList='')
+ * 1200:     function divideIntoLines($value,$count=5,$returnArray=FALSE)
+ * 1304:     function setDivTags($value,$dT='p')
+ * 1349:     function internalizeFontTags($value)
+ * 1385:     function siteUrl()
+ * 1395:     function rteImageStorageDir()
+ * 1407:     function removeTables($value,$breakChar='<br />')
+ * 1439:     function defaultTStagMapping($code,$direction='rte')
+ * 1462:     function getWHFromAttribs($attribArray)
+ * 1489:     function urlInfoForLinkTags($url)
+ * 1548:     function TS_AtagToAbs($value,$dontSetRTEKEEP=FALSE)
  *
- * TOTAL FUNCTIONS: 27
+ * TOTAL FUNCTIONS: 28
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */

@@ -53,11 +53,11 @@
 		var $BE_USER;
 
 		/**
-		* This makes sure that all classes of task-center related extensions are included
-		* Further it registers the classes in the variable $this->allExtClassConf
-		*
-		* @return void
-		*/
+ * This makes sure that all classes of task-center related extensions are included
+ * Further it registers the classes in the variable $this->allExtClassConf
+ *
+ * @return	void
+ */
 		function includeAllClasses() {
 			foreach($this->MOD_MENU['function'] as $key => $name) {
 				$curExtClassConf = $this->getExternalItemConfig($this->MCONF['name'], 'function', $key);
@@ -69,10 +69,10 @@
 		}
 
 		/**
-		* This is the main function called by the TYPO3 framework
-		*
-		* @return string  The conntent of the module (HTML)
-		*/
+ * This is the main function called by the TYPO3 framework
+ *
+ * @return	string		The conntent of the module (HTML)
+ */
 		function main() {
 			global $BE_USER, $LANG, $BACK_PATH, $TCA_DESCR, $TCA, $CLIENT, $TYPO3_CONF_VARS;
 
@@ -146,10 +146,10 @@
 		}
 
 		/**
-		* Generate the header of the left column
-		*
-		* @return string  header in the left side (HTML)
-		*/
+ * Generate the header of the left column
+ *
+ * @return	string		header in the left side (HTML)
+ */
 		function getleftHeader() {
 			$name = $GLOBALS['BE_USER']->user['realName']?$GLOBALS['BE_USER']->user['realName']:
 			$GLOBALS['BE_USER']->user['username'];
@@ -158,10 +158,10 @@
 		}
 
 		/**
-		* Get the main content for the module by initiating the external object (if any) and calling it's main function.
-		*
-		* @return string main content (HTML)
-		*/
+ * Get the main content for the module by initiating the external object (if any) and calling it's main function.
+ *
+ * @return	string		main content (HTML)
+ */
 		function getMainContent() {
 			if (is_object($this->extObj)) {
 				$this->extObj->backPath = $this->backPath;
@@ -171,10 +171,10 @@
 		}
 
 		/**
-		* Output the content of the object to the browser
-		*
-		* @return void
-		*/
+ * Output the content of the object to the browser
+ *
+ * @return	void
+ */
 		function printContent() {
 			$this->content .= $this->doc->endPage();
 			echo $this->content;

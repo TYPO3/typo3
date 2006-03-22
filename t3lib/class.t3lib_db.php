@@ -37,60 +37,65 @@
  *
  *
  *
- *  133: class t3lib_DB
+ *  138: class t3lib_DB
  *
  *              SECTION: Query execution
- *  168:     function exec_INSERTquery($table,$fields_values)
- *  184:     function exec_UPDATEquery($table,$where,$fields_values)
- *  198:     function exec_DELETEquery($table,$where)
- *  217:     function exec_SELECTquery($select_fields,$from_table,$where_clause,$groupBy='',$orderBy='',$limit='')
- *  242:     function exec_SELECT_mm_query($select,$local_table,$mm_table,$foreign_table,$whereClause='',$groupBy='',$orderBy='',$limit='')
- *  265:     function exec_SELECT_queryArray($queryParts)
- *  288:     function exec_SELECTgetRows($select_fields,$from_table,$where_clause,$groupBy='',$orderBy='',$limit='',$uidIndexField='')
+ *  175:     function exec_INSERTquery($table,$fields_values,$no_quote_fields=FALSE)
+ *  192:     function exec_UPDATEquery($table,$where,$fields_values,$no_quote_fields=FALSE)
+ *  206:     function exec_DELETEquery($table,$where)
+ *  225:     function exec_SELECTquery($select_fields,$from_table,$where_clause,$groupBy='',$orderBy='',$limit='')
+ *  250:     function exec_SELECT_mm_query($select,$local_table,$mm_table,$foreign_table,$whereClause='',$groupBy='',$orderBy='',$limit='')
+ *  278:     function exec_SELECT_queryArray($queryParts)
+ *  301:     function exec_SELECTgetRows($select_fields,$from_table,$where_clause,$groupBy='',$orderBy='',$limit='',$uidIndexField='')
  *
  *              SECTION: Query building
- *  333:     function INSERTquery($table,$fields_values)
- *  369:     function UPDATEquery($table,$where,$fields_values)
- *  408:     function DELETEquery($table,$where)
- *  437:     function SELECTquery($select_fields,$from_table,$where_clause,$groupBy='',$orderBy='',$limit='')
- *  478:     function listQuery($field, $value, $table)
- *  492:     function searchQuery($searchWords,$fields,$table)
+ *  346:     function INSERTquery($table,$fields_values,$no_quote_fields=FALSE)
+ *  381:     function UPDATEquery($table,$where,$fields_values,$no_quote_fields=FALSE)
+ *  422:     function DELETEquery($table,$where)
+ *  451:     function SELECTquery($select_fields,$from_table,$where_clause,$groupBy='',$orderBy='',$limit='')
+ *  492:     function listQuery($field, $value, $table)
+ *  506:     function searchQuery($searchWords,$fields,$table)
  *
  *              SECTION: Various helper functions
- *  538:     function fullQuoteStr($str, $table)
- *  554:     function quoteStr($str, $table)
- *  567:     function cleanIntArray($arr)
- *  583:     function cleanIntList($list)
- *  597:     function stripOrderBy($str)
- *  611:     function stripGroupBy($str)
- *  623:     function splitGroupOrderLimit($str)
+ *  552:     function fullQuoteStr($str, $table)
+ *  569:     function fullQuoteArray($arr, $table, $noQuote=FALSE)
+ *  596:     function quoteStr($str, $table)
+ *  612:     function escapeStrForLike($str, $table)
+ *  625:     function cleanIntArray($arr)
+ *  641:     function cleanIntList($list)
+ *  655:     function stripOrderBy($str)
+ *  669:     function stripGroupBy($str)
+ *  681:     function splitGroupOrderLimit($str)
  *
  *              SECTION: MySQL wrapper functions
- *  688:     function sql($db,$query)
- *  702:     function sql_query($query)
- *  715:     function sql_error()
- *  727:     function sql_num_rows($res)
- *  739:     function sql_fetch_assoc($res)
- *  752:     function sql_fetch_row($res)
- *  764:     function sql_free_result($res)
- *  775:     function sql_insert_id()
- *  786:     function sql_affected_rows()
- *  799:     function sql_data_seek($res,$seek)
- *  812:     function sql_field_type($res,$pointer)
- *  826:     function sql_pconnect($TYPO3_db_host, $TYPO3_db_username, $TYPO3_db_password)
- *  843:     function sql_select_db($TYPO3_db)
+ *  749:     function sql($db,$query)
+ *  763:     function sql_query($query)
+ *  776:     function sql_error()
+ *  788:     function sql_num_rows($res)
+ *  800:     function sql_fetch_assoc($res)
+ *  813:     function sql_fetch_row($res)
+ *  825:     function sql_free_result($res)
+ *  836:     function sql_insert_id()
+ *  847:     function sql_affected_rows()
+ *  860:     function sql_data_seek($res,$seek)
+ *  873:     function sql_field_type($res,$pointer)
+ *  887:     function sql_pconnect($TYPO3_db_host, $TYPO3_db_username, $TYPO3_db_password)
+ *  915:     function sql_select_db($TYPO3_db)
  *
  *              SECTION: SQL admin functions
- *  871:     function admin_get_dbs()
- *  889:     function admin_get_tables()
- *  908:     function admin_get_fields($tableName)
- *  926:     function admin_get_keys($tableName)
- *  944:     function admin_query($query)
+ *  947:     function admin_get_dbs()
+ *  965:     function admin_get_tables()
+ *  984:     function admin_get_fields($tableName)
+ * 1002:     function admin_get_keys($tableName)
+ * 1020:     function admin_query($query)
+ *
+ *              SECTION: Connecting service
+ * 1048:     function connectDB()
  *
  *              SECTION: Debugging
- *  971:     function debug($func)
+ * 1086:     function debug($func)
  *
- * TOTAL FUNCTIONS: 39
+ * TOTAL FUNCTIONS: 42
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -164,7 +169,7 @@ class t3lib_DB {
 	 *
 	 * @param	string		Table name
 	 * @param	array		Field values as key=>value pairs. Values will be escaped internally. Typically you would fill an array like "$insertFields" with 'fieldname'=>'value' and pass it to this function as argument.
-	 * @param	string/array	See fullQuoteArray()
+	 * @param	string/array		See fullQuoteArray()
 	 * @return	pointer		MySQL result pointer / DBAL object
 	 */
 	function exec_INSERTquery($table,$fields_values,$no_quote_fields=FALSE)	{
@@ -181,7 +186,7 @@ class t3lib_DB {
 	 * @param	string		Database tablename
 	 * @param	string		WHERE clause, eg. "uid=1". NOTICE: You must escape values in this argument with $this->fullQuoteStr() yourself!
 	 * @param	array		Field values as key=>value pairs. Values will be escaped internally. Typically you would fill an array like "$updateFields" with 'fieldname'=>'value' and pass it to this function as argument.
-	 * @param	string/array	See fullQuoteArray()
+	 * @param	string/array		See fullQuoteArray()
 	 * @return	pointer		MySQL result pointer / DBAL object
 	 */
 	function exec_UPDATEquery($table,$where,$fields_values,$no_quote_fields=FALSE)	{
@@ -334,7 +339,7 @@ class t3lib_DB {
 	 *
 	 * @param	string		See exec_INSERTquery()
 	 * @param	array		See exec_INSERTquery()
-	 * @param	string/array	See fullQuoteArray()
+	 * @param	string/array		See fullQuoteArray()
 	 * @return	string		Full SQL query for INSERT (unless $fields_values does not contain any elements in which case it will be false)
 	 * @deprecated			use exec_INSERTquery() instead if possible!
 	 */
@@ -555,10 +560,10 @@ class t3lib_DB {
 	/**
 	 * Will fullquote all values in the one-dimensional array so they are ready to "implode" for an sql query.
 	 *
-	 * @param       array           Array with values (either associative or non-associative array)
-	 * @param       string          Table name for which to quote
-	 * @param       string/array    List/array of keys NOT to quote (eg. SQL functions) - ONLY for associative arrays
-	 * @return      array           The input array with the values quoted
+	 * @param	array		Array with values (either associative or non-associative array)
+	 * @param	string		Table name for which to quote
+	 * @param	string/array		List/array of keys NOT to quote (eg. SQL functions) - ONLY for associative arrays
+	 * @return	array		The input array with the values quoted
 	 * @see cleanIntArray()
 	 */
 	function fullQuoteArray($arr, $table, $noQuote=FALSE)	{

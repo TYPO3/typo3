@@ -42,11 +42,11 @@
  *  123:     function init()
  *  183:     function menuConfig()
  *  214:     function main()
- *  291:     function printContent()
+ *  288:     function printContent()
  *
  *              SECTION: Listing and Form rendering
- *  317:     function doEdit()
- *  454:     function notEdit()
+ *  315:     function doEdit()
+ *  452:     function notEdit()
  *
  *              SECTION: Helper functions
  *  647:     function printCheckBox($checkName,$num)

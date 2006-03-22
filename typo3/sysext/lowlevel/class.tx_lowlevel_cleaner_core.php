@@ -34,18 +34,24 @@
  *
  *
  *
- *   63: class tx_lowlevel_cleaner_core
- *   70:     function missing_files_analyze()
- *  133:     function missing_relations_analyze($filter='')
- *  221:     function double_files_analyze()
- *  305:     function RTEmagic_files_analyze()
- *  386:     function clean_lost_files_analyze()
+ *   71: class tx_lowlevel_cleaner_core
+ *
+ *              SECTION: Analyse functions
+ *   94:     function missing_files_analyze()
+ *  161:     function missing_relations_analyze($filter='')
+ *  258:     function double_files_analyze()
+ *  348:     function RTEmagic_files_analyze()
+ *  437:     function clean_lost_files_analyze()
+ *  525:     function orphan_records_analyze()
+ *
+ *              SECTION: Helper functions
+ *  572:     function html_printInfo($header,$res,$silent=FALSE,$detailLevel=0)
  *
  *              SECTION: CLI functionality
- *  487:     function cli_main($argv)
- *  517:     function cli_printInfo($header,$res,$silent=FALSE)
+ *  642:     function cli_main($argv)
+ *  693:     function cli_printInfo($header,$res,$silent=FALSE,$detailLevel=0)
  *
- * TOTAL FUNCTIONS: 7
+ * TOTAL FUNCTIONS: 9
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -180,7 +186,7 @@ NOTICE: Uses the Reference Index Table (sys_refindex) for analysis. Update it be
 			'deletedRecords' => array(),
 			'nonExistingRecords' => array(),
 			'uniqueReferencesToTables' => array(),
-			'warnings' => array()	
+			'warnings' => array()
 		);
 
 			// Create clause to filter by:
@@ -209,7 +215,7 @@ NOTICE: Uses the Reference Index Table (sys_refindex) for analysis. Update it be
 				$idx = $rec['ref_table'].':'.$rec['ref_uid'];
 
 				if (!isset($tempExists[$idx]))	{
-			
+
 						// Select all files in the reference table not found by a soft reference parser (thus TCA configured)
 					if (isset($GLOBALS['TCA'][$rec['ref_table']]))	{
 						$recs = $TYPO3_DB->exec_SELECTgetRows(
@@ -275,11 +281,11 @@ NOTICE: Uses the Reference Index Table (sys_refindex) for analysis. Update it be
 				'warnings' => array('Warnings picked up','',2)
 			),
 			'multipleReferencesList_count' => 0,
-			'singleReferencesList_count' => 0,	
+			'singleReferencesList_count' => 0,
 			'multipleReferencesList' => array(),
 			'dirname_registry' => array(),
 			'missingFiles' => array(),
-			'warnings' => array()	
+			'warnings' => array()
 		);
 
 			// Select all files in the reference table not found by a soft reference parser (thus TCA configured)
@@ -386,7 +392,7 @@ NOTICE: Uses the Reference Index Table (sys_refindex) for analysis. Update it be
 				if (t3lib_div::isFirstPartOfStr($filename,'RTEmagicC_'))	{
 					$original = 'RTEmagicP_'.ereg_replace('\.[[:alnum:]]+$','',substr($filename,10));
 					$infoString = $rec['tablename'].':'.$rec['recuid'].':'.$rec['field'].':'.$rec['flexpointer'].':'.$rec['softref_key'];
-					
+
 						// Build index:
 					$resultArray['RTEmagicFilePairs'][$rec['ref_string']]['exists'] = @is_file(PATH_site.$rec['ref_string']);
 					$resultArray['RTEmagicFilePairs'][$rec['ref_string']]['original'] = substr($rec['ref_string'],0,-strlen($filename)).$original;
@@ -459,7 +465,7 @@ NOTICE: Uses the Reference Index Table (sys_refindex) for analysis. Update it be
 			'ignoredFiles' => array(),
 			'RTEmagicFiles' => array(),
 			'lostFiles' => array(),
-			'warnings' => array()	
+			'warnings' => array()
 		);
 
 			// Get all files:
@@ -590,7 +596,7 @@ exit;
 						}
 						$output.='<br/>';
 					}
-		
+
 						// Content:
 					if (is_array($res[$key]))	{
 						if (count($res[$key]))	{
@@ -604,7 +610,7 @@ exit;
 				}
 			}
 		}
-		
+
 		return $output;
 	}
 
@@ -669,7 +675,7 @@ exit;
 
 		$res = $this->orphan_records_analyze();
 		$this->cli_printInfo('orphan_records_analyze()', $res, $silentFlag, $filter);
-		
+
 #			ob_start();
 #			$output.= ob_get_contents().chr(10);
 #			ob_end_clean();
@@ -682,7 +688,7 @@ exit;
 	 * @param	array		Result array from an analyze function
 	 * @param	boolean		Silent flag, if set, will only output when the result array contains data in arrays.
 	 * @param	integer		Detail level: 0=all, 1=info and greater, 2=warnings and greater, 3=errors
-	 * @return	void			Outputs with echo - capture content with output buffer if needed.
+	 * @return	void		Outputs with echo - capture content with output buffer if needed.
 	 */
 	function cli_printInfo($header,$res,$silent=FALSE,$detailLevel=0)	{
 
@@ -709,7 +715,7 @@ exit;
 							echo '[Explanation: '.trim($value[1]).']'.chr(10);
 						}
 					}
-		
+
 						// Content:
 					if (is_array($res[$key]))	{
 						if (count($res[$key]))	{

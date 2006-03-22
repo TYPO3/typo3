@@ -39,8 +39,8 @@
  *
  *   77: class SC_file_upload
  *  103:     function init()
- *  162:     function main()
- *  235:     function printContent()
+ *  171:     function main()
+ *  241:     function printContent()
  *
  * TOTAL FUNCTIONS: 3
  * (This index is automatically created/updated by the extension "extdeveval")

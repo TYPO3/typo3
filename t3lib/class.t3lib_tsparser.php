@@ -41,17 +41,17 @@
  *  133:     function parse($string,$matchObj='')
  *  169:     function nextDivider()
  *  185:     function parseSub(&$setup)
- *  337:     function rollParseSub($string,&$setup)
- *  361:     function getVal($string,$setup)
- *  387:     function setVal($string,&$setup,$value,$wipeOut=0)
- *  433:     function error($err,$num=2)
- *  445:     function checkIncludeLines($string)
- *  489:     function checkIncludeLines_array($array)
+ *  389:     function rollParseSub($string,&$setup)
+ *  413:     function getVal($string,$setup)
+ *  439:     function setVal($string,&$setup,$value,$wipeOut=0)
+ *  485:     function error($err,$num=2)
+ *  497:     function checkIncludeLines($string)
+ *  541:     function checkIncludeLines_array($array)
  *
  *              SECTION: Syntax highlighting
- *  532:     function doSyntaxHighlight($string,$lineNum='',$highlightBlockMode=0)
- *  553:     function regHighLight($code,$pointer,$strlen=-1)
- *  571:     function syntaxHighlight_print($lineNumDat,$highlightBlockMode)
+ *  584:     function doSyntaxHighlight($string,$lineNum='',$highlightBlockMode=0)
+ *  605:     function regHighLight($code,$pointer,$strlen=-1)
+ *  623:     function syntaxHighlight_print($lineNumDat,$highlightBlockMode)
  *
  * TOTAL FUNCTIONS: 12
  * (This index is automatically created/updated by the extension "extdeveval")

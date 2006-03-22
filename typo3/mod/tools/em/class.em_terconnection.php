@@ -50,11 +50,11 @@ class SC_mod_tools_em_terconnection {
 	/**
 	 * Fetches an extension from the given mirror
 	 *
-	 * @param string $extKey	Extension Key
-	 * @param string $version	Version to install
-	 * @param string $expectedMD5	Expected MD5 hash of extension file
-	 * @param string $mirrorURL	URL of mirror to use
-	 * @return mixed	T3X data (array) or error message (string)
+	 * @param	string		$extKey	Extension Key
+	 * @param	string		$version	Version to install
+	 * @param	string		$expectedMD5	Expected MD5 hash of extension file
+	 * @param	string		$mirrorURL	URL of mirror to use
+	 * @return	mixed		T3X data (array) or error message (string)
 	 */
 	function fetchExtension($extKey, $version, $expectedMD5, $mirrorURL) {
 		$mirrorURL .= $extKey{0}.'/'.$extKey{1}.'/'.$extKey.'_'.$version.'.t3x';
@@ -138,6 +138,12 @@ class SC_mod_tools_em_terconnection {
 		return $content;
 	}
 
+	/**
+	 * [Describe function...]
+	 *
+	 * @param	[type]		$em: ...
+	 * @return	[type]		...
+	 */
 	function uploadToTER($em) {
 		$uArr = $this->emObj->makeUploadArray($em['extKey'],$em['extInfo']);
 		if(!is_array($uArr)) return $uArr;

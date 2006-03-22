@@ -39,8 +39,8 @@
  *
  *   67: class tx_wizardsortpages_webfunc_2 extends t3lib_extobjbase
  *   75:     function modMenu()
- *   92:     function main()
- *  174:     function wiz_linkOrder($title,$order)
+ *   88:     function main()
+ *  175:     function wiz_linkOrder($title,$order)
  *
  * TOTAL FUNCTIONS: 3
  * (This index is automatically created/updated by the extension "extdeveval")

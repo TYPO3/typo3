@@ -37,17 +37,20 @@
  *
  *
  *
- *   77: class t3lib_matchCondition
- *   91:     function match($string)
- *  311:     function testNumber($test,$value)
- *  333:     function matchWild($haystack,$needle)
- *  363:     function whichDevice($useragent)
- *  413:     function browserInfo($useragent)
- *  517:     function browserInfo_version($tmp)
- *  529:     function getGlobal($var,$inArr='')
- *  554:     function getGP_ENV_TSFE($var)
+ *   80: class t3lib_matchCondition
+ *   87:     function __construct()
+ *  105:     function t3lib_matchCondition()
+ *  115:     function match($condition_line)
+ *  160:     function evalConditionStr($string)
+ *  381:     function testNumber($test,$value)
+ *  405:     function matchWild($haystack,$needle)
+ *  429:     function whichDevice($useragent)
+ *  498:     function browserInfo($useragent)
+ *  611:     function browserInfo_version($tmp)
+ *  624:     function getGlobal($var, $source=NULL)
+ *  658:     function getGP_ENV_TSFE($var)
  *
- * TOTAL FUNCTIONS: 8
+ * TOTAL FUNCTIONS: 11
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -81,6 +84,11 @@ class t3lib_matchCondition {
 	var $altRootLine=array();
 	var $hookObjectsArr = array();
 
+	/**
+	 * Constructor for this class
+	 *
+	 * @return	void
+	 */
 	function __construct()	{
 		global $TYPO3_CONF_VARS;
 
@@ -94,10 +102,21 @@ class t3lib_matchCondition {
 		}
 	}
 
+	/**
+	 * Constructor for this class
+	 *
+	 * @return	void
+	 */
 	function t3lib_matchCondition() {
 		$this->__construct();
 	}
 
+	/**
+	 * Matching TS condition
+	 *
+	 * @param	string		Line to match
+	 * @return	boolean		True if matched
+	 */
 	function match($condition_line) {
 		if ($this->matchAll) {
 			return true;

@@ -39,16 +39,16 @@
  *
  *
  *   81: class t3lib_BEDisplayLog
- *  102:     function initArray()
- *  119:     function getTimeLabel($code)
- *  134:     function getUserLabel($code)
- *  148:     function getTypeLabel($code)
- *  162:     function getActionLabel($code)
- *  180:     function getDetails($code,$text,$data,$sys_log_uid=0)
- *  212:     function reset()
- *  226:     function getErrorFormatting($sign)
- *  236:     function formatDetailsForList($row)
- *  253:     function stripPath($inArr)
+ *  106:     function initArray()
+ *  123:     function getTimeLabel($code)
+ *  139:     function getUserLabel($code,$workspace=0)
+ *  154:     function getTypeLabel($code)
+ *  168:     function getActionLabel($code)
+ *  186:     function getDetails($code,$text,$data,$sys_log_uid=0)
+ *  220:     function reset()
+ *  234:     function getErrorFormatting($sign, $error=0)
+ *  244:     function formatDetailsForList($row)
+ *  261:     function stripPath($inArr)
  *
  * TOTAL FUNCTIONS: 10
  * (This index is automatically created/updated by the extension "extdeveval")

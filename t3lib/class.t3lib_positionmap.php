@@ -53,13 +53,13 @@
  *
  *              SECTION: Content element positioning:
  *  404:     function printContentElementColumns($pid,$moveUid,$colPosList,$showHidden,$R_URI)
- *  440:     function printRecordMap($lines,$colPosArray)
- *  478:     function wrapColumnHeader($str,$vv)
- *  492:     function insertPositionIcon($row,$vv,$kk,$moveUid,$pid)
- *  509:     function onClickInsertRecord($row,$vv,$moveUid,$pid,$sys_lang=0)
- *  529:     function wrapRecordHeader($str,$row)
- *  539:     function getRecordHeader($row)
- *  552:     function wrapRecordTitle($str,$row)
+ *  442:     function printRecordMap($lines,$colPosArray)
+ *  480:     function wrapColumnHeader($str,$vv)
+ *  494:     function insertPositionIcon($row,$vv,$kk,$moveUid,$pid)
+ *  511:     function onClickInsertRecord($row,$vv,$moveUid,$pid,$sys_lang=0)
+ *  531:     function wrapRecordHeader($str,$row)
+ *  541:     function getRecordHeader($row)
+ *  554:     function wrapRecordTitle($str,$row)
  *
  * TOTAL FUNCTIONS: 17
  * (This index is automatically created/updated by the extension "extdeveval")
