@@ -202,10 +202,10 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 						$newCells[$a] = '
 							<th'.$cellAttribs.$scope.'>'.$this->cObj->stdWrap($cells[$a],$conf['innerStdWrap.']).'</th>';
 					} else {
-						if (!empty($headerPos))	{
-							$accessibleHeader = ' headers="'.$headerIdPrefix.(($headerScope=='col')?$a:$k).'"';
-						} else {
+						if (empty($headerPos))	{
 							$accessibleHeader = '';
+						} else {
+							$accessibleHeader = ' headers="'.$headerIdPrefix.(($headerScope=='col')?$a:$k).'"';
 						}
 						$newCells[$a] = '
 							<td'.$cellAttribs.$accessibleHeader.'>'.$this->cObj->stdWrap($cells[$a],$conf['innerStdWrap.']).'</td>';
