@@ -681,4 +681,5 @@ $SOBE = t3lib_div::makeInstance('SC_index');
 $SOBE->init();
 $SOBE->main();
 $SOBE->printContent();
+echo "argl";
 ?>

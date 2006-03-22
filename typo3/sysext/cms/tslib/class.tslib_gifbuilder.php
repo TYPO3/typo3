@@ -176,14 +176,17 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 			}
 			if (!$this->setup['backColor'])	{ $this->setup['backColor']='white'; }
 
-				// Transparent GIFs
-				// not working with reduceColors
-				// there's an option for IM: -transparent colors
 			if ($conf['transparentColor.'] || $conf['transparentColor'])	{
 				$cObj =t3lib_div::makeInstance('tslib_cObj');
 				$cObj->start($this->data);
 				$this->setup['transparentColor_array'] = explode('|', trim($cObj->stdWrap($this->setup['transparentColor'], $this->setup['transparentColor.'])));
 			}
+ 			
+ 				// Transparency does not properly work when, GIFs or 8-bit PNGs are generated or reduceColors is set -- disable truecolor flag so they get generated "natively" in 8-bit.
+ 				// not working with reduceColors and truecolor images
+ 			if (($this->setup['transparentBackground'] || is_array($this->setup['transparentColor_array'])) && ($this->gifExtension=='gif' || !$this->png_truecolor || isset($this->setup['reduceColors'])))	{
+ 				$this->truecolor = false;
+ 			}
 
 				// Set default dimensions
 			if (!$this->setup['XY'])	{$this->setup['XY']='120,50';}
@@ -437,11 +440,12 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 
 		if ($this->setup['transparentBackground'])	{
 				// Auto transparent background is set
+			$Bcolor = ImageColorExact($this->im, $BGcols[0],$BGcols[1],$BGcols[2]);
 			imagecolortransparent($this->im, $Bcolor);
 		} elseif (is_array($this->setup['transparentColor_array']))	{
 				// Multiple transparent colors are set. This is done via the trick that all transparent colors get converted to one color and then this one gets set as transparent as png/gif can just have one transparent color.
 			$Tcolor = $this->unifyColors($this->im, $this->setup['transparentColor_array'], intval($this->setup['transparentColor.']['closest']));
-			if ($Tcolor)	{
+			if ($Tcolor>=0)	{
 				imagecolortransparent($this->im, $Tcolor);
 			}
 		}

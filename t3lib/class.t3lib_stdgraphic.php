@@ -2715,7 +2715,7 @@ class t3lib_stdGraphic	{
 				case 'png':
 					if ($this->ImageWrite($this->im, $file))	{
 							// ImageMagick operations
-						if ($this->setup['reduceColors'] || !$this->png_truecolor)	{
+						if ($this->setup['reduceColors'] || (!$this->png_truecolor && $this->truecolor))	{
 							$reduced = $this->IMreduceColors($file, t3lib_div::intInRange($this->setup['reduceColors'], 256, $this->truecolorColors, 256));
 							if ($reduced)	{
 								@copy($reduced, $file);
@@ -2901,7 +2901,7 @@ class t3lib_stdGraphic	{
 	 * @return	integer		The index of the unified color
 	 */
 	function unifyColors(&$img, $colArr, $closest = false)	{
-		$retCol = false;
+		$retCol = -1;
 		if (is_array($colArr) && count($colArr) && function_exists('imagepng') && function_exists('imagecreatefrompng'))	{
 			$firstCol = array_shift($colArr);
 			$firstColArr = $this->convertColor($firstCol);
