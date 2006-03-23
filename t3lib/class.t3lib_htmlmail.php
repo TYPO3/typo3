@@ -1278,15 +1278,15 @@ class t3lib_htmlmail {
 		if(!$fp) {
 			return false;
 		} else {
-	        fputs($fp,"GET ".$getAdr." HTTP/1.0\n\n");
-	        while(!feof($fp)) {
+			fputs($fp,'HEAD '.$getAdr.' HTTP/1.0\r\nHost: '.$pathInfo['host'].'\r\n\r\n');
+			while(!feof($fp)) {
 				$thePortion= fgets($fp,128);
 				if (eregi("(^Content-Type: )(.*)",trim($thePortion), $reg))	{
 					$res = trim($reg[2]);
 					break;
 				}
-	        }
-	        fclose($fp);
+			}
+			fclose($fp);
 		}
 		return $res;
 	}

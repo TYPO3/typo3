@@ -1,3 +1,7 @@
+2006-03-23 Stanislas Rolland  <stanislas.rolland@fructifor.ca>
+
+	* Fix bugtracker issue 2958: t3lib_htmlmail::getMimeTypeisn't working with name based virtual hosts
+
 2006-03-22  Kasper Skaarhoj  <kasperYYYY@typo3.com>
 	
 	* Fixed that the tcemain copy command works properly under workspaces: Remapping of references is correct now. This also affects TemplaVoila which can now copy a FCE container with sub elements properly.
