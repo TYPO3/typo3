@@ -1,3 +1,8 @@
+2006-03-22  Kasper Skaarhoj  <kasperYYYY@typo3.com>
+	
+	* Fixed a bug in t3lib_refindex which prevented correct indexing from live workspace of records in draft workspaces with references inside flexforms  
+	* Fixed bug in T3D export where an array key prevented references in flexform fields to be correctly remapped. My mistake from cleaning up t3lib_flexformtools.
+	
 2006-03-23 Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
 	* Fix bugtracker issue 2958: t3lib_htmlmail::getMimeTypeisn't working with name based virtual hosts

@@ -1003,7 +1003,7 @@ class t3lib_BEfunc	{
 				$rr = t3lib_BEfunc::getRecord($table,$row['uid'],'uid,'.$ds_searchParentField);	// Get the "pid" field - we cannot know that it is in the input record!
 				if ($WSOL)	{
 					t3lib_BEfunc::workspaceOL($table,$rr);
-					t3lib_BEfunc::fixVersioningPid($table,$rr);
+					t3lib_BEfunc::fixVersioningPid($table,$rr,TRUE);	// Added "TRUE" 23/03/06 before 4.0. (Also to similar call below!).  Reason: When t3lib_refindex is scanning the system in Live workspace all Pages with FlexForms will not find their inherited datastructure. Thus all references from workspaces are removed! Setting TRUE means that versioning PID doesn't check workspace of the record. I can't see that this should give problems anywhere. See more information inside t3lib_refindex!
 				}
 				$uidAcc=array();	// Used to avoid looping, if any should happen.
 				$subFieldPointer = $conf['ds_pointerField_searchParent_subField'];
@@ -1021,7 +1021,7 @@ class t3lib_BEfunc	{
 
 					if ($WSOL)	{
 						t3lib_BEfunc::workspaceOL($table,$rr);
-						t3lib_BEfunc::fixVersioningPid($table,$rr);
+						t3lib_BEfunc::fixVersioningPid($table,$rr,TRUE);
 					}
 					$srcPointer = ($subFieldPointer && $rr[$subFieldPointer]) ? $rr[$subFieldPointer] : $rr[$ds_pointerField];
 				}

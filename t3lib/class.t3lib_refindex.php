@@ -69,6 +69,13 @@ require_once(PATH_t3lib.'class.t3lib_flexformtools.php');
 /**
  * Reference index processing and relation extraction
  *
+ * NOTICE: When the reference index is updated for an offline version the results may not be correct. 
+ * First, lets assumed that the reference update happens in LIVE workspace (ALWAYS update from Live workspace if you analyse whole database!)
+ * Secondly, lets assume that in a Draft workspace you have changed the data structure of a parent page record - this is (in TemplaVoila) inherited by subpages.
+ * When in the LIVE workspace the data structure for the records/pages in the offline workspace will not be evaluated to the right one simply because the data structure is taken from a rootline traversal and in the Live workspace that will NOT include the changed DataSTructure! Thus the evaluation will be based on the Data Structure set in the Live workspace! 
+ * Somehow this scenario is rarely going to happen. Yet, it is an inconsistency and I see now practical way to handle it - other than simply ignoring maintaining the index for workspace records. Or we can say that the index is precise for all Live elements while glitches might happen in an offline workspace?
+ * Anyway, I just wanted to document this finding - I don't think we can find a solution for it. And its very TemplaVoila specific.
+ *
  * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage t3lib
@@ -457,7 +464,7 @@ class t3lib_refindex {
 	 * @see t3lib_TCEmain::checkValue_flex_procInData_travDS()
 	 */
 	function getRelations_flexFormCallBack($dsArr, $dataValue, $PA, $structurePath, &$pObj)	{
-		$structurePath = substr($structurePath,5);	// removing "data/" in the beginning of path (which points to location in data array)
+		$structurePath = substr($structurePath,5).'/';	// removing "data/" in the beginning of path (which points to location in data array)
 
 		$dsConf = $dsArr['TCEforms']['config'];
 
@@ -639,14 +646,14 @@ class t3lib_refindex {
 						'*******************************************'.chr(10);
 
 			// Traverse all tables:
-		foreach($TCA as $tableName => $cfg)	{
+		foreach ($TCA as $tableName => $cfg)	{
 			$tableNames[] = $tableName;
 			$tableCount++;
 
 				// Traverse all non-deleted records in tables:
 			$allRecs = $TYPO3_DB->exec_SELECTgetRows('uid',$tableName,'1=1');	//.t3lib_BEfunc::deleteClause($tableName)
 			$uidList = array(0);
-			foreach($allRecs as $recdat)	{
+			foreach ($allRecs as $recdat)	{
 				$refIndexObj = t3lib_div::makeInstance('t3lib_refindex');
 				$result = $refIndexObj->updateRefIndexTable($tableName,$recdat['uid'],$testOnly);
 				$uidList[]= $recdat['uid'];

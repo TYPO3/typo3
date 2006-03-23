@@ -1645,7 +1645,8 @@ class tx_impexp {
 				// If the record has been written and received a new id, then proceed:
 			if (is_array($this->import_mapId[$table]) && isset($this->import_mapId[$table][$uid]))	{
 				$thisNewUid = t3lib_BEfunc::wsMapId($table,$this->import_mapId[$table][$uid]);
-
+#debug($thisNewUid,'$thisNewUid');
+#debug($this->dat['records'][$table.':'.$uid]['rels']);
 				if (is_array($this->dat['records'][$table.':'.$uid]['rels']))	{
 					reset($this->dat['records'][$table.':'.$uid]['rels']);
 					t3lib_div::loadTCA($table);
@@ -1667,10 +1668,10 @@ class tx_impexp {
 											// Get current data structure and value array:
 										$dataStructArray = t3lib_BEfunc::getFlexFormDS($conf, $origRecordRow, $table);
 										$currentValueArray = t3lib_div::xml2array($updateData[$table][$thisNewUid][$field]);
-	#debug($dataStructArray);
-	#debug($currentValueArray);remapListedDBRecords_flexFormCallBack
-	#debug($origRecordRow);
-	#debug($currentValueArray['data'],'BE');
+#	debug($dataStructArray);
+#	debug($currentValueArray);
+#	debug($origRecordRow);
+#	debug($currentValueArray['data'],'BE');
 											// Do recursive processing of the XML data:
 										$iteratorObj = t3lib_div::makeInstance('t3lib_TCEmain');
 										$iteratorObj->callBackObj = &$this;
@@ -1720,9 +1721,14 @@ class tx_impexp {
 			// Extract parameters:
 		list($table,$uid,$field,$config)	= $pParams;
 
+			// In case the $path is used as index without a trailing slash we will remove that 
+		if (!is_array($config['flexFormRels']['db'][$path]) && is_array($config['flexFormRels']['db'][ereg_replace('\/$','',$path)]))	{
+			$path = ereg_replace('\/$','',$path);
+		}	
 		if (is_array($config['flexFormRels']['db'][$path]))	{
 			$valArray = $this->setRelations_db($config['flexFormRels']['db'][$path]);
 			$dataValue = implode(',',$valArray);
+#	debug(array('value' => $dataValue));
 		}
 
 		if (is_array($config['flexFormRels']['file'][$path]))	{
@@ -1731,7 +1737,7 @@ class tx_impexp {
 			}
 			$dataValue = implode(',',$valArr);
 		}
-
+		
 			// Return
 		return array('value' => $dataValue);
 	}
