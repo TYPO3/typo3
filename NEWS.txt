@@ -3,14 +3,37 @@ CHANGES & IMPROVEMENTS in TYPO3 4.0
 (for technical details see ChangeLog)
 ************************************************************************
 
+Installation/Upgrade
+====================
+
+	* TYPO3 4.0 ships with an empty typo3/ext folder. Sites which depend on them must reinstall this extensions.
+	* TYPO3 4.0 uses a new localization scheme (typo3conf/l10n/). To install language packs do ??? (exensions csh_<language> are obsolete).
+	* TYPO3 4.0  doesn't use symbolic links any more (on Unix systems).
+	* Existing symbolic links from index.php to <TYPO3_root>/tslib/index_ts.php mus be changed to <TYPO3_src>/index.php (Unix).
+	* The symbolic links from nimbus.ttf and vera.ttf to arial.ttf and verdana.ttf have been removed. If you need those fonts create the links manually (Unix) or copy the fonts (Windows).
+
 New features
 ============
 
-	* workspaces
+	* Workspaces: this new system extension brings offline editing to TYPO3 (using the built-in versioning) - add/change contet in a "draft" workspace and publish the changes into the "live" workspace
+	* DBAL 1.0: this new system extension offers database independence (currently working with Oracle and PostgreSQL)
+	* The 1-2-3 quick install has been enhanced
 	* a new update wizard of the installer handles compatibility issues
-	* improved indexed search (template support, faster) - many thanks to Udo von Eynern for implementing the template support!
+	* the new default RTE (rtehtmlarea) is compatible with more browsers and operating systems (Firefox, Opera; Linux, BSD, Mac OS X)
 	* "sliding" of content elements similar to TypoScript's getText level* feature (integration of extension "kb_cont_slide" by Bernhard Kraft)
 	* User admin module: switch back to admin user after user switch (SU-mode), "create new user" link
+	* System log (eg DB errors; configured via $CONF_VARS['SYS']['systemLog']
+	* Sharing of sessions between subdomains (configured via $CONF_VARS['SYS']['domainCookie'])
+
+Improvements
+============
+
+	* the undo and history feature has been enhanced: rollback/preview on page and record level; history includes now innserts and deletes
+	* improved indexed search (template support, faster) - many thanks to Udo von Eynern for implementing the template support!
+	* the page type "external link" supports HTTPS (thanks to Marc Bastian Heinrichs)
+	* the extension manager has been overhauled and works now with TER 2.0 
+	* the GIFBUILDER objects may create true colour images (PNG and JPEG)
+	* typolinks and HMENUs (type "language") may preserve the query parameters
 
 Usability
 =========
@@ -22,6 +45,7 @@ Usability
 	* files can be created or uploaded with buttons in the Web>List content frame
 	* improved content element wizard (eg empty categories are removed)
 	* RTE wizard has now a save-and-close button
+	* the admin panel uses HTTP GET instead of POST (no more browser warnings when reloading a previewed page)
 
 Access Control
 ==============
@@ -37,19 +61,34 @@ Security
 Accessibility
 =============
 
-	* output of CSS styled content is now accessible by default (mailforms, menus, sitemaps)
-	* the "table" content element has now limited accesibility support
+	* TYPO3's output is now valid XHTML (the conforming DTD is configurable)
+	* the overall DTD and the XHTML-DTD may be set indepenently (config.docytpe and config.xhtmlDoctype)
+	* output of CSS styled content is now accessible by default (mailforms, menus, sitemaps) - many thanks to ???
+	* images have accessibility features (integration of extension "cron_cssstyledimgtext" by Ernesto Baschny)
+	* the "table" content element has now limited accessibility support (integration of extension "accessible_tables" by Rupert Germann)
 
-Bugfixes
-========
+Configuration
+=============
 
+	* the new := assignement for Typoscript allows now parse time maniplation of TS values (eg "obj.val := appendString(foobar)", "obj.list := addToList(3,5,9")
+	* Typoscripr constants may be linked with OR and AND
+
+API
+===
+
+	* loading of scripts into the default URL with index.php?eID=<key> (using this feature showpic.php has been removed from the TYPO3 root directory)
+	* TCA form fields may have custom PHP and Javascript evaluation (thanks to Thomas Hempel)
+	* TCA form fields may be set to readonly (HTML attribute)
+	* TCA fields of type "none" have new rendering options (date and other formats)
+	* Direct mail has been removed from the core (t3lib/class.t3lib_dmailer.php)
+	* the currenty XHTML-DTD setting may be queried via $GLOBALS['TSFE']->xhtmlDoctype
+	* t3lib_div::sysLog() may be used to log errors
+
+Notable Bugfixes
+================
+
+	* versioning works with all MySQL versions (3.23.x and higher)
 	* the relogin popup on session timeout in BE won't appear again after clicking "No"
-	* config.disablePrefixComment was ignored by plugins
 	* when copying a file into the same folder in the "Filelist" module, it is automatically renamed
 	* JSMENU, editPanel and feAdmin works now with multi-byte character sets (eg UTF-8)
-	* 256-color GIFBUILDER bug fixed
 
-Speed
-=====
-
-	* HTML Parsing class got a speed improvement (use faster preg instead of ereg, report bugs with inproperly replaced markers or subparts with previously working setup or TV problems with HTML templates having no problems before at http://bugs.typo3.org/view.php?id=1685)
