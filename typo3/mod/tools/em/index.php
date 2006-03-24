@@ -51,8 +51,6 @@ foreach($SOBE->include_once as $INC_FILE) {
 }
 $SOBE->checkExtObj();
 
-//var_dump($SOBE->installExtension('tt_products','2.4.0',EM_INSTALL_VERSION_MAX)); exit();
-
 $SOBE->main();
 $SOBE->printContent();
 ?>
