@@ -1,3 +1,7 @@
+2006-03-24  Kasper Skaarhoj  <kasperYYYY@typo3.com>
+	
+	* Integration between Import/export and Extension Manager (extension dependencies)
+
 2006-03-22  Kasper Skaarhoj  <kasperYYYY@typo3.com>
 	
 	* Fixed a bug in t3lib_refindex which prevented correct indexing from live workspace of records in draft workspaces with references inside flexforms  
