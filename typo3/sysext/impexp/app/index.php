@@ -1235,6 +1235,8 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 
 				// Perform import or preview depending:
 			$overviewContent = '';
+			$extensionInstallationMessage = '';
+			$emURL = '';
 			$inFile = t3lib_div::getFileAbsFileName($inData['file']);
 			if ($inFile && @is_file($inFile))	{
 				$trow = array();
@@ -1250,11 +1252,24 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 						}
 					}
 
-					if ($inData['import_file'] && !count($extKeysToInstall))	{
-						$import->importData($this->id);
-						t3lib_BEfunc::getSetUpdateSignal('updatePageTree');
-					} else {
-						debug($extKeysToInstall, 'ERROR: Extensions not installed:');
+					if (count($extKeysToInstall)) {
+						$passParams = t3lib_div::_POST('tx_impexp');
+						unset($passParams['import_mode']);
+						unset($passParams['import_file']);
+
+						$thisScriptUrl = t3lib_div::getIndpEnv('REQUEST_URI').'?id='.$this->id.t3lib_div::implodeArrayForUrl('tx_impexp',$passParams);
+						$emURL = $this->doc->backPath.'mod/tools/em/index.php?CMD[requestInstallExtensions]='.implode(',',$extKeysToInstall).'&returnUrl='.rawurlencode($thisScriptUrl);
+						$extensionInstallationMessage = 'Before you can install this T3D file you need to install the extensions "'.implode('", "',$extKeysToInstall).'". Clicking Import will first take you to the Extension Manager so these dependencies can be resolved.';
+					} 
+
+					if ($inData['import_file'])	{
+						if (!count($extKeysToInstall))	{
+							$import->importData($this->id);
+							t3lib_BEfunc::getSetUpdateSignal('updatePageTree');
+						} else {
+							header('Location: '.t3lib_div::locationHeaderUrl($emURL));
+							exit;
+						}
 					}
 
 					$import->display_import_pid_record = $this->pageinfo;
@@ -1338,6 +1353,9 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 
 				// Output tabs:
 			$content = $this->doc->getDynTabMenu($menuItems,'tx_impexp_import',-1);
+			if ($extensionInstallationMessage)	{
+				$content = '<div style="border: 1px black solid; margin: 10px 10px 10px 10px; padding: 10px 10px 10px 10px;">'.$this->doc->icons(1).htmlspecialchars($extensionInstallationMessage).'</div>'.$content;
+			}
 			$this->content.= $this->doc->section('',$content,0,1);
 
 

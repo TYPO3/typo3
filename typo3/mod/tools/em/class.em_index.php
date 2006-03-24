@@ -518,6 +518,8 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 		// Commands given which is executed regardless of main menu setting:
 		if ($this->CMD['showExt'])	{	// Show details for a single extension
 			$this->showExtDetails($this->CMD['showExt']);
+		} elseif ($this->CMD['requestInstallExtensions'])	{	// Show details for a single extension
+				$this->requestInstallExtensions($this->CMD['requestInstallExtensions']);
 		} elseif ($this->CMD['importExt'] || $this->CMD['uploadExt'])	{	// Imports an extension from online rep.
 			$err = $this->importExtFromRep($this->CMD['importExt'],$this->CMD['extVersion'],$this->CMD['loc'],$this->CMD['uploadExt']);
 			if ($err)	{
@@ -1708,7 +1710,69 @@ EXTENSION KEYS:
 		}
 	}
 
+	/**
+	 * Outputs a screen from where you can install multiple extensions in one go
+	 * This can be called from external modules with "...index.php?CMD[requestInstallExtensions]=
+	 *
+	 * @param	string		Comma list of extension keys to install. Renders a screen with checkboxes for all extensions not already imported or installed
+	 * @return	void		
+	 */
+	function requestInstallExtensions($extList)	{
 
+			// Return URL:
+		$returnUrl = t3lib_div::_GP('returnUrl');
+		$installOrImportExtension = t3lib_div::_POST('installOrImportExtension');
+
+			// Extension List:
+		$extArray = explode(',',$extList);
+		$outputRow = array();
+		$outputRow[] = '
+			<tr class="bgColor5 tableheader">
+				<td>Install/Import:</td>
+				<td>Extension Key:</td>
+			</tr>
+		';
+
+		foreach($extArray as $extKey)	{
+
+				// Check for the request:
+			if ($installOrImportExtension[$extKey])	{
+				$this->installExtension($extKey);
+			}
+
+				// Display:
+			if (!t3lib_extMgm::isLoaded($extKey))	{
+				$outputRow[] = '
+				<tr class="bgColor4">
+					<td><input type="checkbox" name="'.htmlspecialchars('installOrImportExtension['.$extKey.']').'" value="1" checked="checked" /></td>
+					<td>'.htmlspecialchars($extKey).'</td>
+				</tr>
+				';
+			}
+		}
+
+		if (count($outputRow)>1 || !$returnUrl)	{
+			$content = '
+			</form>	<!-- ending page form ... -->
+			<form action="'.htmlspecialchars(t3lib_div::getIndpEnv('REQUEST_URI')).'" method="post">
+				<table border="0" cellpadding="1" cellspacing="1">'.implode('',$outputRow).'</table>
+			<input type="submit" name="_" value="Import and Install selected" />
+			</form>			
+			<form>	<!-- continuing page form... -->';
+
+			if ($returnUrl)	{
+				$content.= '
+				<br/>
+				<br/>
+				<a href="'.htmlspecialchars($returnUrl).'">Return</a>
+				';
+			}
+
+			$this->content.= $this->doc->section('Import/Install Extensions:',$content,0,1);
+		} else {
+			header('Location: '.t3lib_div::locationHeaderUrl($returnUrl));
+		}
+	}	
 
 
 
@@ -3640,7 +3704,7 @@ $EM_CONF[$_EXTKEY] = '.$this->arrayToCode($EM_CONF, 0).';
 			// Check conflicts with other extensions:
 		$conflictError = false;
 		$msg = array();
-		foreach($conf['constraints']['conflicts'] as $conflictK => $conflictV)	{
+		foreach((array)$conf['constraints']['conflicts'] as $conflictK => $conflictV)	{
 			if($depsolver['ignore'][$conflictK]) {
 				$msg[] = '<br />Conflict with '.$conflictK.' ignored as requested.
 				<input type="hidden" value="1" name="depsolver[ignore]['.$conflictK.']" />';
@@ -4032,13 +4096,13 @@ $EM_CONF[$_EXTKEY] = '.$this->arrayToCode($EM_CONF, 0).';
 				$diff = $instObj->getDatabaseExtra($FDfile, $FDdb);
 				$update_statements = $instObj->getUpdateSuggestions($diff);
 
-				foreach($update_statements['add'] as $string)	{
+				foreach((array)$update_statements['add'] as $string)	{
 					$GLOBALS['TYPO3_DB']->admin_query($string);
 				}
-				foreach($update_statements['change'] as $string)	{
+				foreach((array)$update_statements['change'] as $string)	{
 					$GLOBALS['TYPO3_DB']->admin_query($string);
 				}
-				foreach($update_statements['create_table'] as $string)	{
+				foreach((array)$update_statements['create_table'] as $string)	{
 					$GLOBALS['TYPO3_DB']->admin_query($string);
 				}
 			}
