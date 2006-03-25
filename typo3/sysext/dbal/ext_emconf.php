@@ -3,7 +3,7 @@
 ########################################################################
 # Extension Manager/Repository config file for ext: "dbal"
 #
-# Auto generated 16-03-2006 21:07
+# Auto generated 25-03-2006 23:26
 #
 # Manual updates:
 # Only the data in the array - anything else is removed by next write.
@@ -33,7 +33,7 @@ $EM_CONF[$_EXTKEY] = array(
 	'CGLcompliance' => '',
 	'CGLcompliance_note' => '',
 	'version' => '0.9.0',
-	'_md5_values_when_last_written' => 'a:36:{s:9:"ChangeLog";s:4:"8f10";s:21:"class.ux_t3lib_db.php";s:4:"24f7";s:28:"class.ux_t3lib_sqlengine.php";s:4:"badd";s:28:"class.ux_t3lib_sqlparser.php";s:4:"796d";s:12:"ext_icon.gif";s:4:"1bdc";s:17:"ext_localconf.php";s:4:"4c9c";s:15:"ext_php_api.dat";s:4:"56e0";s:14:"ext_tables.php";s:4:"427e";s:14:"ext_tables.sql";s:4:"9a69";s:11:"CVS/Entries";s:4:"d892";s:14:"CVS/Repository";s:4:"2282";s:8:"CVS/Root";s:4:"b923";s:7:"CVS/Tag";s:4:"c437";s:12:"doc/TODO.txt";s:4:"8ff6";s:14:"doc/manual.sxw";s:4:"0936";s:15:"doc/CVS/Entries";s:4:"1e8d";s:18:"doc/CVS/Repository";s:4:"351a";s:12:"doc/CVS/Root";s:4:"b923";s:11:"doc/CVS/Tag";s:4:"c437";s:45:"handlers/class.tx_dbal_handler_openoffice.php";s:4:"84f3";s:43:"handlers/class.tx_dbal_handler_rawmysql.php";s:4:"160b";s:40:"handlers/class.tx_dbal_handler_xmldb.php";s:4:"6651";s:20:"handlers/CVS/Entries";s:4:"b59b";s:23:"handlers/CVS/Repository";s:4:"77d9";s:17:"handlers/CVS/Root";s:4:"b923";s:16:"handlers/CVS/Tag";s:4:"c437";s:14:"mod1/clear.gif";s:4:"cc11";s:13:"mod1/conf.php";s:4:"cf19";s:14:"mod1/index.php";s:4:"b900";s:18:"mod1/locallang.xml";s:4:"0b57";s:22:"mod1/locallang_mod.xml";s:4:"86ef";s:19:"mod1/moduleicon.gif";s:4:"8074";s:16:"mod1/CVS/Entries";s:4:"724f";s:19:"mod1/CVS/Repository";s:4:"16e3";s:13:"mod1/CVS/Root";s:4:"b923";s:12:"mod1/CVS/Tag";s:4:"c437";}',
+	'_md5_values_when_last_written' => 'a:36:{s:9:"ChangeLog";s:4:"8f10";s:21:"class.ux_t3lib_db.php";s:4:"a71a";s:28:"class.ux_t3lib_sqlengine.php";s:4:"41b4";s:28:"class.ux_t3lib_sqlparser.php";s:4:"96ac";s:12:"ext_icon.gif";s:4:"1bdc";s:17:"ext_localconf.php";s:4:"4c9c";s:15:"ext_php_api.dat";s:4:"56e0";s:14:"ext_tables.php";s:4:"427e";s:14:"ext_tables.sql";s:4:"9a69";s:11:"CVS/Entries";s:4:"ca91";s:14:"CVS/Repository";s:4:"2282";s:8:"CVS/Root";s:4:"b923";s:7:"CVS/Tag";s:4:"c437";s:12:"doc/TODO.txt";s:4:"8ff6";s:14:"doc/manual.sxw";s:4:"ffe7";s:15:"doc/CVS/Entries";s:4:"14bb";s:18:"doc/CVS/Repository";s:4:"351a";s:12:"doc/CVS/Root";s:4:"b923";s:11:"doc/CVS/Tag";s:4:"c437";s:45:"handlers/class.tx_dbal_handler_openoffice.php";s:4:"84f3";s:43:"handlers/class.tx_dbal_handler_rawmysql.php";s:4:"160b";s:40:"handlers/class.tx_dbal_handler_xmldb.php";s:4:"6651";s:20:"handlers/CVS/Entries";s:4:"b59b";s:23:"handlers/CVS/Repository";s:4:"77d9";s:17:"handlers/CVS/Root";s:4:"b923";s:16:"handlers/CVS/Tag";s:4:"c437";s:14:"mod1/clear.gif";s:4:"cc11";s:13:"mod1/conf.php";s:4:"cf19";s:14:"mod1/index.php";s:4:"240c";s:18:"mod1/locallang.xml";s:4:"0b57";s:22:"mod1/locallang_mod.xml";s:4:"86ef";s:19:"mod1/moduleicon.gif";s:4:"8074";s:16:"mod1/CVS/Entries";s:4:"9074";s:19:"mod1/CVS/Repository";s:4:"16e3";s:13:"mod1/CVS/Root";s:4:"b923";s:12:"mod1/CVS/Tag";s:4:"c437";}',
 	'constraints' => array(
 		'depends' => array(
 			'adodb' => '4.70.0-',
@@ -41,6 +41,8 @@ $EM_CONF[$_EXTKEY] = array(
 			'typo3' => '3.8.1-',
 		),
 		'conflicts' => array(
+		),
+		'suggests' => array(
 		),
 	),
 	'suggests' => array(
