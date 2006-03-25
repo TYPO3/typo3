@@ -23,7 +23,7 @@ unrtf = /usr/bin/
 debugMode = 0
 
   # cat=basic; type=int; label=Full Text Data Length: If set, the full text data stored will be limited to this byte length. It means you can save some database space but to the degree you cut the length down you also limit possibilities to search for sentences and the search result resume will be limited.
-fullTextDataLength = 0;
+fullTextDataLength = 0
 
   # cat=basic; type=boolean; label=Disable Indexing in Frontend: By default pages are indexed during viewing of pages in the frontend. You can disable this features so indexing of pages is only initiated through the backend page crawler.
 disableFrontendIndexing = 0

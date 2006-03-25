@@ -156,6 +156,7 @@ class tx_indexedsearch extends tslib_pibase {
 	var $iconFileNameCache = array();	// Storage of icons....
 	var $lexerObj;				// Lexer object
 	var $templateCode;			// Will hold the content of $conf['templateFile']
+	var $hiddenFieldList = 'ext, type, defOp, media, order, group, lang, desc, results';
 
 
 	/**
@@ -740,7 +741,8 @@ class tx_indexedsearch extends tslib_pibase {
 						$theId = $rlParts[2] ? $rlParts[2] : ($rlParts[1]?$rlParts[1]:$rlParts[0]);
 						$theRLid = $rlParts[2] ? 'rl2_'.$rlParts[2]:($rlParts[1]?'rl1_'.$rlParts[1]:'0');
 
-						$sectionName = substr($this->getPathFromPageId($theId),1);
+						$sectionName = $this->getPathFromPageId($theId);
+						if ($sectionName{0} == '/') $sectionName = substr($sectionName,1);
 
 						if (!trim($sectionName))	{
 							$sectionTitleLinked = $this->pi_getLL('unnamedSection','',1).':';
@@ -1323,8 +1325,18 @@ class tx_indexedsearch extends tslib_pibase {
 		}
 
 		$markerArray['###ACTION_URL###'] = $this->pi_getPageLink($GLOBALS['TSFE']->id, $GLOBALS['TSFE']->sPre);
-		$markerArray['###HIDDEN_VALUE_TYPE###'] = $this->piVars['type'] ? 1 : 0;
-		$markerArray['###HIDDEN_VALUE_EXT###'] = $this->piVars['ext'] ? 1 : 0;
+
+		$hiddenFieldCode = $this->cObj->getSubpart($this->templateCode, '###HIDDEN_FIELDS###');
+		$hiddenFieldCode = preg_replace('/^\n\t(.+)/ms', '$1', $hiddenFieldCode);		// Remove first newline and tab (cosmetical issue)
+		$hiddenFieldArr = array();
+
+		foreach (t3lib_div::trimExplode(',',$this->hiddenFieldList) as $fieldName)	{
+			$hiddenFieldMarkerArray = array();
+			$hiddenFieldMarkerArray['###HIDDEN_FIELDNAME###'] = $this->prefixId.'['.$fieldName.']';
+			$hiddenFieldMarkerArray['###HIDDEN_VALUE###'] = (string)$this->piVars[$fieldName];
+
+			$hiddenFieldArr[$fieldName] = $this->cObj->substituteMarkerArrayCached($hiddenFieldCode, $hiddenFieldMarkerArray, array(), array());
+		}
 
 			// Extended search
 		if ($this->piVars['ext'])	{
@@ -1334,6 +1346,7 @@ class tx_indexedsearch extends tslib_pibase {
 				$html = $this->cObj->substituteSubpart($html, '###SELECT_SEARCH_FOR###', '');
 			} else {
 				if (is_array($optValues['type']) && !$this->conf['blind.']['type'])	{
+					unset($hiddenFieldArr['type']);
 					$markerArray['###SELECTBOX_TYPE_VALUES###'] = $this->renderSelectBoxValues($this->piVars['type'],$optValues['type']);
 				} else {
 					$html = $this->cObj->substituteSubpart($html, '###SELECT_SEARCH_TYPE###', '');
@@ -1351,12 +1364,14 @@ class tx_indexedsearch extends tslib_pibase {
 				$html = $this->cObj->substituteSubpart($html, '###SELECT_SEARCH_IN###', '');
 			} else {
 				if (is_array($optValues['media']) && !$this->conf['blind.']['media'])	{
+					unset($hiddenFieldArr['media']);
 					$markerArray['###SELECTBOX_MEDIA_VALUES###'] = $this->renderSelectBoxValues($this->piVars['media'],$optValues['media']);
 				} else {
 					$html = $this->cObj->substituteSubpart($html, '###SELECT_SEARCH_MEDIA###', '');
 				}
 
 				if (is_array($optValues['lang']) || !$this->conf['blind.']['lang'])	{
+					unset($hiddenFieldArr['lang']);
 					$markerArray['###SELECTBOX_LANG_VALUES###'] = $this->renderSelectBoxValues($this->piVars['lang'],$optValues['lang']);
 				} else {
 					$html = $this->cObj->substituteSubpart($html, '###SELECT_SEARCH_LANG###', '');
@@ -1381,6 +1396,9 @@ class tx_indexedsearch extends tslib_pibase {
 			if (!is_array($optValues['order']) || !is_array($optValues['desc']) || $this->conf['blind.']['order'])	{
 				$html = $this->cObj->substituteSubpart($html, '###SELECT_ORDER###', '');
 			} else {
+				unset($hiddenFieldArr['order']);
+				unset($hiddenFieldArr['desc']);
+				unset($hiddenFieldArr['results']);
 				$markerArray['###SELECTBOX_ORDER_VALUES###'] = $this->renderSelectBoxValues($this->piVars['order'],$optValues['order']);
 				$markerArray['###SELECTBOX_DESC_VALUES###'] = $this->renderSelectBoxValues($this->piVars['desc'],$optValues['desc']);
 				$markerArray['###SELECTBOX_RESULTS_VALUES###'] = $this->renderSelectBoxValues($this->piVars['results'],$optValues['results']);
@@ -1397,6 +1415,7 @@ class tx_indexedsearch extends tslib_pibase {
 			if (!is_array($optValues['group']) || $this->conf['blind.']['group'])	{
 				$html = $this->cObj->substituteSubpart($html, '###SELECT_GROUP###', '');
 			} else {
+				unset($hiddenFieldArr['group']);
 				$markerArray['###SELECTBOX_GROUP_VALUES###'] = $this->renderSelectBoxValues($this->piVars['group'],$optValues['group']);
 			}
 
@@ -1421,6 +1440,9 @@ class tx_indexedsearch extends tslib_pibase {
 			$markerArray['###LINKTOOTHERMODE###'] = '';
 		}
 
+			// Write all hidden fields
+		$html = $this->cObj->substituteSubpart($html, '###HIDDEN_FIELDS###', implode('',$hiddenFieldArr));
+
 		$substitutedContent = $this->cObj->substituteMarkerArrayCached($html, $markerArray, array(), array());
 
 		return $substitutedContent;
@@ -1429,7 +1451,7 @@ class tx_indexedsearch extends tslib_pibase {
 	/**
 	 * Function, rendering selector box values.
 	 *
-	 * @param	string		Current value 
+	 * @param	string		Current value
 	 * @param	array		Array with the options as key=>value pairs
 	 * @return	string		<options> imploded.
 	 */

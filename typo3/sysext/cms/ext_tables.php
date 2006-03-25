@@ -472,8 +472,8 @@ if (TYPO3_MODE=='BE')	{
 	$TCA['pages']['types'] = Array (
 		'1' => Array('showitem' => 'hidden;;;;1-1-1, doktype;;2;button, title;;3;;2-2-2, subtitle, nav_hide, TSconfig;;6;nowrap;5-5-5, storage_pid;;7, l18n_cfg'),
 		'2' => Array('showitem' => 'hidden;;;;1-1-1, doktype;;2;button, title;;3;;2-2-2, subtitle, nav_hide, nav_title, --div--, abstract;;5;;3-3-3, keywords, description, media;;;;4-4-4, --div--, TSconfig;;6;nowrap;5-5-5, storage_pid;;7, l18n_cfg, fe_login_mode, module, content_from_pid'),
-		'3' => Array('showitem' => 'hidden;;;;1-1-1, doktype, title;;3;;2-2-2, nav_hide, url;;;;3-3-3, urltype, TSconfig;;6;nowrap;5-5-5, storage_pid;;7, l18n_cfg'),
-		'4' => Array('showitem' => 'hidden;;;;1-1-1, doktype, title;;3;;2-2-2, nav_hide, shortcut;;;;3-3-3, shortcut_mode, TSconfig;;6;nowrap;5-5-5, storage_pid;;7, l18n_cfg'),
+		'3' => Array('showitem' => 'hidden;;;;1-1-1, doktype, title;;3;;2-2-2, subtitle, nav_hide, url;;;;3-3-3, urltype, TSconfig;;6;nowrap;5-5-5, storage_pid;;7, l18n_cfg'),
+		'4' => Array('showitem' => 'hidden;;;;1-1-1, doktype, title;;3;;2-2-2, subtitle, nav_hide, shortcut;;;;3-3-3, shortcut_mode, TSconfig;;6;nowrap;5-5-5, storage_pid;;7, l18n_cfg'),
 		'5' => Array('showitem' => 'hidden;;;;1-1-1, doktype;;2;button, title;;3;;2-2-2, subtitle, nav_hide, nav_title, --div--, media;;;;4-4-4, --div--, TSconfig;;6;nowrap;5-5-5, storage_pid;;7, l18n_cfg, fe_login_mode, module, content_from_pid'),
 		'7' => Array('showitem' => 'hidden;;;;1-1-1, doktype;;2;button, title;;3;;2-2-2, subtitle, nav_hide, nav_title, --div--, mount_pid;;;;3-3-3, mount_pid_ol, media;;;;4-4-4, --div--, TSconfig;;6;nowrap;5-5-5, storage_pid;;7, l18n_cfg, fe_login_mode, module, content_from_pid'),
 		'199' => Array('showitem' => 'hidden;;;;1-1-1, doktype, title;;;;2-2-2, TSconfig;;6;nowrap;5-5-5, storage_pid;;7'),

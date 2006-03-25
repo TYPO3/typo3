@@ -1,7 +1,18 @@
+2006-03-25  Michael Stucki  <michael@typo3.org>
+
+	* Fixed bug #1390: Ereg error in class.t3lib_tsstyleconfig.php
+	* Fixed bug #0177: Indexed Search cuts the first letter of domain name in searchresult
+	* Fixed bug #2415: Navigation "Icons in top frame" were rendered wrong
+	* Fixed bug #2666: Preview from searchresult shows rootpage only
+	* Fixed bug #2968: Some hidden fields were missing in the indexed_search form
+	* Fixed bug #0388: No subtitle field in some page types
+	* Fixed bug in Install Tool: Hide warning if GraphicsMagick is used
+	* Fixed bug in Indexed Search: Change marker detection in indexer class
+	* Fixed some more problems with the BE stylesheet
 
 2006-03-25  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
-	* Made "version" a required extensoin (necessary for workspaces)
+	* Made "version" a required extension (necessary for workspaces)
 	* Fix FE-editing bug: new-record icon appears for languages without edit rights (admin panel)
 	* Fix FE-editing bug: edit panel and edit icons were shown for languages without edit rights
 
@@ -10,25 +21,25 @@
 	* ADOdb sysext: Update to version 4.80, added a fix for MSSQL bogus errors.
 	* EM: Added new way of handling translations.
 
-2006-03-24 Stanislas Rolland  <stanislas.rolland@fructifor.ca>
+2006-03-24  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
 	* Fix to htmlArea RTE extension (see details in local ChangeLog)
 
 2006-03-24  Kasper Skaarhoj  <kasperYYYY@typo3.com>
-	
+
 	* Integration between Import/export and Extension Manager (extension dependencies)
 
 2006-03-22  Kasper Skaarhoj  <kasperYYYY@typo3.com>
-	
-	* Fixed a bug in t3lib_refindex which prevented correct indexing from live workspace of records in draft workspaces with references inside flexforms  
+
+	* Fixed a bug in t3lib_refindex which prevented correct indexing from live workspace of records in draft workspaces with references inside flexforms
 	* Fixed bug in T3D export where an array key prevented references in flexform fields to be correctly remapped. My mistake from cleaning up t3lib_flexformtools.
 
-2006-03-23 Stanislas Rolland  <stanislas.rolland@fructifor.ca>
+2006-03-23  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
 	* Fix bugtracker issue 2958: t3lib_htmlmail::getMimeType isn't working with name based virtual hosts
 
 2006-03-22  Kasper Skaarhoj  <kasperYYYY@typo3.com>
-	
+
 	* Fixed that the tcemain copy command works properly under workspaces: Remapping of references is correct now. This also affects TemplaVoila which can now copy a FCE container with sub elements properly.
 	* Also added check for extension dependencies in Import/Export: It is not possible to import a T3D file unless extension dependencies are OK. This still needs more work and connection to EM.
 

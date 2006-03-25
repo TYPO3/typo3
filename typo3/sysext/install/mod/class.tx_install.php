@@ -2607,14 +2607,18 @@ From sub-directory:
 		");
 
 		$im_path = $GLOBALS['TYPO3_CONF_VARS']['GFX']['im_path'];
-		$im_path_version = $this->config_array['im_versions'][$im_path]['convert'];
+		if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['im_version_5']=='gm')	{
+			$im_path_version = $this->config_array['im_versions'][$im_path]['gm'];
+		} else {
+			$im_path_version = $this->config_array['im_versions'][$im_path]['convert'];
+		}
 		$im_path_lzw = $GLOBALS['TYPO3_CONF_VARS']['GFX']['im_path_lzw'];
 		$im_path_lzw_version = $this->config_array['im_versions'][$im_path_lzw]['convert'];
 		$msg = '
 		ImageMagick enabled: <strong>'.$GLOBALS['TYPO3_CONF_VARS']['GFX']['im'].'</strong>
 		ImageMagick path: <strong>'.$im_path.'</strong> ('.$im_path_version.')
 		ImageMagick path/LZW: <strong>'.$im_path_lzw.'</strong>  ('.$im_path_lzw_version.')
-		Version 5 flag: <strong>'.$GLOBALS['TYPO3_CONF_VARS']['GFX']['im_version_5'].'</strong>
+		Version 5/GraphicsMagick flag: <strong>'.$GLOBALS['TYPO3_CONF_VARS']['GFX']['im_version_5'].'</strong>
 
 		GDLib enabled: <strong>'.$GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib'].'</strong>
 		GDLib using PNG: <strong>'.$GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib_png'].'</strong>
@@ -2625,10 +2629,31 @@ From sub-directory:
 
 		File Formats: <strong>'.$GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'].'</strong>
 		';
-		if (($GLOBALS['TYPO3_CONF_VARS']['GFX']['im_version_5']?true:false) != (doubleval($im_path_version)>=5))	{
-			$msg.='Warning: Mismatch between the version of ImageMagick ('.$im_path_version.') and the configuration of [GFX][im_version_5] ('.$GLOBALS['TYPO3_CONF_VARS']['GFX']['im_version_5'].')';
+
+			// Various checks to detect IM/GM version mismatches
+		$mismatch=false;
+		switch (strtolower($GLOBALS['TYPO3_CONF_VARS']['GFX']['im_version_5']))	{
+			case 'gm':
+				if (doubleval($im_path_version)>=2)	$mismatch=true;
+			break;
+			case 'im4':
+				if (doubleval($im_path_version)>=5)	$mismatch=true;
+			break;
+			default:
+				if (($GLOBALS['TYPO3_CONF_VARS']['GFX']['im_version_5']?true:false) != (doubleval($im_path_version)>=5))	$mismatch=true;
+			break;
+		}
+
+		if ($mismatch)	{
+			$msg.= 'Warning: Mismatch between the version of ImageMagick'.
+					' ('.$im_path_version.') and the configuration of '.
+					'[GFX][im_version_5] ('.$GLOBALS['TYPO3_CONF_VARS']['GFX']['im_version_5'].')';
 			$etype=2;
 		} else $etype=1;
+
+		if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['im_version_5']=='gm')	{
+			$msg = str_replace('ImageMagick','GraphicsMagick',$msg);
+		}
 
 		$this->message('Image Processing','Current configuration',$msg,$etype);
 

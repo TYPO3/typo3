@@ -559,6 +559,11 @@ class localRecordList extends recordList {
 	function renderListRow($table,$row,$cc,$titleCol,$thumbsCol,$indent=0)	{
 		$iOut = '';
 
+		if (strlen($this->searchString))	{	// If in search mode, make sure the preview will show the correct page
+			$id_orig = $this->id;
+			$this->id = $row['pid'];
+		}
+
 			// In offline workspace, look for alternative record:
 		t3lib_BEfunc::workspaceOL($table, $row, $GLOBALS['BE_USER']->workspace);
 
@@ -619,6 +624,10 @@ class localRecordList extends recordList {
 			} else {
 				$theData[$fCol] = $this->linkUrlMail(htmlspecialchars(t3lib_BEfunc::getProcessedValueExtra($table,$fCol,$row[$fCol],100,$row['uid'])),$row[$fCol]);
 			}
+		}
+
+		if (strlen($this->searchString))	{	// Reset the ID if it was overwritten
+			$this->id = $id_orig;
 		}
 
 			// Add row to CSV list:

@@ -710,7 +710,7 @@ class tx_indexedsearch_indexer {
 	 * @return	boolean		Returns true if a TYPOSEARCH_ tag was found, otherwise false.
 	 */
 	function typoSearchTags(&$body) {
-		$expBody = explode('<!--TYPO3SEARCH_',$body);
+		$expBody = preg_split('/\<\!\-\-[\s]?TYPO3SEARCH_/',$body);
 
 		if(count($expBody)>1) {
 			$body = '';

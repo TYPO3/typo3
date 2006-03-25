@@ -7,8 +7,8 @@ Installation/Upgrade
 ====================
 
 	* TYPO3 4.0 ships with an empty typo3/ext folder. Sites which depend on them must reinstall this extensions.
-	* TYPO3 4.0 uses a new localization scheme (typo3conf/l10n/). To install language packs use the extension manager's function for translation handling (exensions csh_<language> are obsolete!).
-	* TYPO3 4.0  doesn't have to use symbolic links any more (on Unix systems); no more duplicate files (in Windows systems)
+	* TYPO3 4.0 uses a new localization scheme (typo3conf/l10n/). To install language packs use the extension managers function for translation handling. (Exensions csh_<language> are obsolete!)
+	* TYPO3 4.0  doesn't need symbolic links anymore (on Unix systems); no more duplicate files (on Windows systems)
 	* Existing symbolic links from index.php to <TYPO3_root>/tslib/index_ts.php must be changed to <TYPO3_src>/index.php (Unix).
 	* The symbolic links from nimbus.ttf and vera.ttf to arial.ttf and verdana.ttf have been removed. If you need those fonts create the symbolic links manually (Unix) or copy the fonts (Windows).
 
@@ -71,7 +71,7 @@ Configuration
 =============
 
 	* the new := assignment for Typoscript allows now parse time maniplation of TS values (eg "obj.val := appendString(foobar)", "obj.list := addToList(3,5,9)")
-	* Typoscripr constants may be linked with OR and AND
+	* TypoScript conditions may be combined with OR and AND
 
 API
 ===

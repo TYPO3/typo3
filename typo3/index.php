@@ -291,12 +291,10 @@ class SC_index {
 	 */
 	function makeLoginForm()	{
 
-		$content.='
-
-							<!--
+			// There must be no white-spaces outside of the tags (needed for buggy IE)
+		$content.=				'<!--
 								Login form:
-							-->
-							<table cellspacing="0" cellpadding="0" border="0" id="logintable">
+							--><table cellspacing="0" cellpadding="0" border="0" id="logintable">
 									<tr>
 										<td colspan="2"><h2>'.htmlspecialchars($this->L_vars[6]).'</h2></td>
 									</tr>'.($this->commandLI ? '
@@ -408,8 +406,8 @@ class SC_index {
 					-->
 					<table cellspacing="0" cellpadding="0" border="0" id="loginwrapper">
 						<tr>
-							<td>'.$loginboxImage.'
-								'.$content.'
+							<td'.($this->commandLI ? ' class="error"' : '').'>'.$loginboxImage.
+								$content.'
 							</td>
 						</tr>
 					</table>

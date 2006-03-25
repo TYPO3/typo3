@@ -346,7 +346,7 @@ class tx_indexedsearch_crawler {
 
 			// Prepare path, making it absolute and checking:
 		$readpath = $params['url'];
-		if (!t3lib_div::isAbsPath($readPath))	{
+		if (!t3lib_div::isAbsPath($readpath))	{
 			$readpath = t3lib_div::getFileAbsFileName($readpath);
 		}
 

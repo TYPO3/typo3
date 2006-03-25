@@ -2012,7 +2012,7 @@
 	/**
 	 * Checks if any email-submissions or submission via the fe_tce
 	 *
-	 * @return	string		'email' if a formmail has been send, 'fe_tce' if front-end data submission (like forums, guestbooks) is send. '' if none.
+	 * @return	string		'email' if a formmail has been sent, 'fe_tce' if front-end data submission (like forums, guestbooks) is sent. '' if none.
 	 */
 	function checkDataSubmission()	{
 		$ret = '';
@@ -2030,6 +2030,7 @@
 				}
 			} else $GLOBALS['TT']->setTSlogMessage('"Check Data Submission": HTTP_HOST and REFERER HOST did not match when processing submitted formdata!',3);
 		}
+
 			// Hook for processing data submission to extensions:
 		if (is_array($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['checkDataSubmission']))	{
 			foreach($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['checkDataSubmission'] as $_classRef)	{

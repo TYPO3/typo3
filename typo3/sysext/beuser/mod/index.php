@@ -774,7 +774,7 @@ class local_beUserAuth extends t3lib_beUserAuth {
 						foreach($items as $iCfg)	{
 							if (isset($nef[$iCfg[1]]))	{
 								unset($nef[$iCfg[1]]);
-								if ($iCfg[2])	{
+								if (strlen($iCfg[2]))	{
 									$icon = '<img src="'.$GLOBALS['BACK_PATH'].'gfx/'.$iCfg[2].'" class="absmiddle" style="margin-right: 5px;" alt="" />';
 								} else {
 									$icon = '';
