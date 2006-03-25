@@ -2,7 +2,8 @@
 2006-03-25  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
 	* Made "version" a required extensoin (necessary for workspaces)
-	* Fix FE-editing bug: new-record icon appears for languages without edit rights
+	* Fix FE-editing bug: new-record icon appears for languages without edit rights (admin panel)
+	* Fix FE-editing bug: edit panel and edit icons were shown for languages without edit rights
 
 2006-03-25  Karsten Dambekalns  <karsten@typo3.org>
 
@@ -36,7 +37,7 @@
 	* Fixed label of 'author_email' ('pages_language_overlay')
 	* Fix bug #2918: TCEFORM.tt_content.CType.removeItems not applied to db_new_content_el.php (thanks to Oliver Hader)
 	* Tools>User Admin didn't check if language icon was set for 'Limit to languages'
-	* Fix FE-editing bug: new records were always created in the default language
+	* Fix FE-editing bug: new records were always created in the default language (admin panel)
 
 2006-03-22  Bernhard Kraft  <kraftb@kraftb.at>
 

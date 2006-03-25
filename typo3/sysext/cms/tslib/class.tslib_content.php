@@ -6791,7 +6791,10 @@ class tslib_cObj {
 		global $TCA,$BE_USER;
 
 			// If no backend user, return immediately
-		if (!$GLOBALS['TSFE']->beUserLogin)		{return $content;}
+		if (!$GLOBALS['TSFE']->beUserLogin)	{ return $content; }
+
+			// If no access right to current languages, return immediately
+		if (!$BE_USER->checkLanguageAccess($GLOBALS['TSFE']->sys_language_uid))	{ return $content; }
 
 			// If a backend user is logged in, then go on...
 		if ($conf['newRecordFromTable'])	{
@@ -6967,6 +6970,9 @@ class tslib_cObj {
 
 			// If no backend user, return immediately
 		if (!$GLOBALS['TSFE']->beUserLogin)		{return $content;}
+
+			// If no access right to current languages, return immediately
+		if (!$BE_USER->checkLanguageAccess($GLOBALS['TSFE']->sys_language_uid))	{ return $content; }
 
 			// Check incoming params:
 		$rParts = explode(':',$currentRecord?$currentRecord:$this->currentRecord);
