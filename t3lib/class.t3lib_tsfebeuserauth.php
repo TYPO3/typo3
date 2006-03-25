@@ -573,15 +573,16 @@ class t3lib_tsfeBeUserAuth extends t3lib_beUserAuth {
 
 
 		$perms = $GLOBALS['BE_USER']->calcPerms($GLOBALS['TSFE']->page);
+		$langAllowed = $GLOBALS['BE_USER']->checkLanguageAccess($GLOBALS['TSFE']->sys_language_uid);
 
 		$toolBar='';
 		$id = $GLOBALS['TSFE']->id;
 		$toolBar.='<a href="'.htmlspecialchars(TYPO3_mainDir.'show_rechis.php?element='.rawurlencode('pages:'.$id).'&returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))).'#latest">'.
 					'<img src="'.TYPO3_mainDir.'gfx/history2.gif" width="13" height="12" hspace="2" border="0" align="top" title="'.$this->extGetLL('edit_recordHistory').'" alt="" /></a>';
 
-		if ($perms&16)	{
+		if ($perms&16 && $langAllowed)	{
 			$params = '';
-			if ($TSFE->sys_language_uid)	$params = '&sys_language_uid='.$TSFE->sys_language_uid;
+			if ($GLOBALS['TSFE']->sys_language_uid)	$params = '&sys_language_uid='.$GLOBALS['TSFE']->sys_language_uid;
 			$toolBar.='<a href="'.htmlspecialchars($newContentWizScriptPath.'?id='.$id.$params.'&returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))).'">'.
 						'<img src="'.TYPO3_mainDir.'gfx/new_record.gif" width="16" height="12" hspace="1" border="0" align="top" title="'.$this->extGetLL('edit_newContentElement').'" alt="" /></a>';
 		}

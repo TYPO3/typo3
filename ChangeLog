@@ -2,6 +2,7 @@
 2006-03-25  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
 	* Made "version" a required extensoin (necessary for workspaces)
+	* Fix FE-editing bug: new-record icon appears for languages without edit rights
 
 2006-03-25  Karsten Dambekalns  <karsten@typo3.org>
 
