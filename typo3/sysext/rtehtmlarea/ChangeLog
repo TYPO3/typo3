@@ -1,3 +1,7 @@
+2006-03-24 Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+	* Version 1.3.6
+	* Correction to RemoveFormat plugin.
+
 2006-03-21 Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
 	* Version 1.3.5
 	* Fix bugtracker issue 2530.

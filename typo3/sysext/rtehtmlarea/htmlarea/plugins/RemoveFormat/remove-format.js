@@ -89,7 +89,7 @@ RemoveFormat.applyRequest = function(instance,editor){
  
 				if (param["formatting"] == true) {
 						// remove font, b, strong, i, em, u, strike, span and other tags
-					var regF1 = new RegExp("<\/?(abbr|acronym|b|big|cite|code|em|font|i|q|s|samp|small|span|strike|strong|sub|sup|u|var)(([\s][^>]*>)|>)", "gi"); 
+					var regF1 = new RegExp("<\/?(abbr|acronym|b[^a-zA-Z]|big|cite|code|em[^a-zA-Z]|font|i[^a-zA-Z]|q|s[^a-zA-Z]|samp|small|span|strike|strong|sub|sup|u[^a-zA-Z]|var)[^>]*>", "gi"); 
 					html = html.replace(regF1, "");
 						// keep tags, strip attributes
 					var regF2 = new RegExp(" style=\"[^>\"]*\"", "gi");
