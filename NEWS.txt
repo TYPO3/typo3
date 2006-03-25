@@ -7,15 +7,15 @@ Installation/Upgrade
 ====================
 
 	* TYPO3 4.0 ships with an empty typo3/ext folder. Sites which depend on them must reinstall this extensions.
-	* TYPO3 4.0 uses a new localization scheme (typo3conf/l10n/). To install language packs use the extension manager function for translation handling (exensions csh_<language> are obsolete!).
+	* TYPO3 4.0 uses a new localization scheme (typo3conf/l10n/). To install language packs use the extension manager's function for translation handling (exensions csh_<language> are obsolete!).
 	* TYPO3 4.0  doesn't have to use symbolic links any more (on Unix systems); no more duplicate files (in Windows systems)
-	* Existing symbolic links from index.php to <TYPO3_root>/tslib/index_ts.php mus be changed to <TYPO3_src>/index.php (Unix).
-	* The symbolic links from nimbus.ttf and vera.ttf to arial.ttf and verdana.ttf have been removed. If you need those fonts create the links manually (Unix) or copy the fonts (Windows).
+	* Existing symbolic links from index.php to <TYPO3_root>/tslib/index_ts.php must be changed to <TYPO3_src>/index.php (Unix).
+	* The symbolic links from nimbus.ttf and vera.ttf to arial.ttf and verdana.ttf have been removed. If you need those fonts create the symbolic links manually (Unix) or copy the fonts (Windows).
 
 New features
 ============
 
-	* Workspaces: this new system extension brings offline editing to TYPO3 (using the built-in versioning) - add/change contet in a "draft" workspace and publish the changes into the "live" workspace
+	* Workspaces: this new system extension brings offline editing to TYPO3 (using the built-in versioning) - add/change content in a "draft" workspace and publish the changes into the "live" workspace
 	* DBAL 1.0: this new system extension offers database independence (currently working with Oracle and PostgreSQL)
 	* The 1-2-3 quick install has been enhanced
 	* a new update wizard of the installer handles compatibility issues
@@ -28,17 +28,17 @@ New features
 Improvements
 ============
 
-	* the undo and history feature has been enhanced: rollback/preview on page and record level; history includes now innserts and deletes
+	* the undo and history feature has been enhanced: rollback/preview on page and record level; history includes now inserts and deletes
 	* improved indexed search (template support, faster) - many thanks to Udo von Eynern for implementing the template support!
 	* the page type "external link" supports HTTPS (thanks to Marc Bastian Heinrichs)
-	* the extension manager has been overhauled and works now with TER 2.0 
+	* the extension manager has been overhauled and benefits from new enhancements of TER 2.0
 	* the GIFBUILDER objects may create true colour images (PNG and JPEG)
 	* typolinks and HMENUs (type "language") may preserve the query parameters
 
 Usability
 =========
 
-	* pages can be moved by drag and drop within the page tree
+	* pages can be moved by drag and drop within the page tree (thanks to Stephane Schitter)
 	* faster context menues (implemented with AJAX)
 	* fixed fonts are used in BE configuration fields for increased readability
 	* tab indenting in BE configuration fields for enhanced layout
@@ -63,14 +63,14 @@ Accessibility
 
 	* TYPO3's output is now valid XHTML (the conforming DTD is configurable)
 	* the overall DTD and the XHTML-DTD may be set indepenently (config.docytpe and config.xhtmlDoctype)
-	* output of CSS styled content is now accessible by default (mailforms, menus, sitemaps) - many thanks to ???
+	* output of CSS styled content is now accessible by default (mailforms, menus, sitemaps) - many thanks to Ernesto Baschny, kudos also to Sebastian Kurfuerst and Michael Stucki
 	* images have accessibility features (integration of extension "cron_cssstyledimgtext" by Ernesto Baschny)
 	* the "table" content element has now limited accessibility support (integration of extension "accessible_tables" by Rupert Germann)
 
 Configuration
 =============
 
-	* the new := assignement for Typoscript allows now parse time maniplation of TS values (eg "obj.val := appendString(foobar)", "obj.list := addToList(3,5,9")
+	* the new := assignment for Typoscript allows now parse time maniplation of TS values (eg "obj.val := appendString(foobar)", "obj.list := addToList(3,5,9)")
 	* Typoscripr constants may be linked with OR and AND
 
 API
