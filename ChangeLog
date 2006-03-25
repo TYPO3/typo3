@@ -1,3 +1,7 @@
+2006-03-26  Ingmar Schlecht  <ingmar@typo3.org>
+
+	* Fixed bug #2777: "NOT NULL" removed from SQL gives error with MySQL 3.23.52
+
 2006-03-25  Michael Stucki  <michael@typo3.org>
 
 	* Fixed bug #1390: Ereg error in class.t3lib_tsstyleconfig.php

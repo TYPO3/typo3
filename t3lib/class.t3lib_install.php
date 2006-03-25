@@ -323,10 +323,9 @@ class t3lib_install {
 						if(strstr($parts[1], ' DEFAULT '))	{
 							$parts[1] = str_replace(' DEFAULT ', ' default ', $parts[1]);
 						}
-							// Remove NOT NULL statements (they are not needed)
-						$parts[1] = str_replace(' NOT NULL', '', $parts[1]);
 
 							// Change order of "default" and "null" statements
+						$parts[1] = preg_replace('/(.*) (default .*) (NOT NULL)/', '$1 $3 $2', $parts[1]);
 						$parts[1] = preg_replace('/(.*) (default .*) (NULL)/', '$1 $3 $2', $parts[1]);
 
 							// Remove double blanks
@@ -447,9 +446,10 @@ class t3lib_install {
 	 * @param	array		Field definitions, source (from getFieldDefinitions_sqlContent())
 	 * @param	array		Field definitions, comparison. (from getFieldDefinitions_database())
 	 * @param	string		Table names (in list) which is the ONLY one observed.
+	 * @param	boolean		If set, this function ignores NOT NULL statements of the sql file field definition when comparing current field definition from database with field definition from sql file. This way, NOT NULL statements will be executed when the field is initially created, but the sql parser will never complain about missing NOT NULL statements afterwards.
 	 * @return	array		Returns an array with 1) all elements from $FSsrc that is not in $FDcomp (in key 'extra') and 2) all elements from $FSsrc that is difference from the ones in $FDcomp
 	 */
-	function getDatabaseExtra($FDsrc, $FDcomp, $onlyTableList='')	{
+	function getDatabaseExtra($FDsrc, $FDcomp, $onlyTableList='',$ignoreNotNullWhenComparing=true)	{
 		$extraArr = array();
 		$diffArr = array();
 
@@ -467,7 +467,7 @@ class t3lib_install {
 									$fieldN = str_replace('`','',$fieldN);
 									if (!isset($FDcomp[$table][$theKey][$fieldN]))	{
 										$extraArr[$table][$theKey][$fieldN] = $fieldC;
-									} elseif (strcmp($FDcomp[$table][$theKey][$fieldN], $fieldC))	{
+									} elseif (strcmp($FDcomp[$table][$theKey][$fieldN], $ignoreNotNullWhenComparing?str_replace(' NOT NULL', '', $fieldC):$fieldC))	{
 										$diffArr[$table][$theKey][$fieldN] = $fieldC;
 										$diffArr_cur[$table][$theKey][$fieldN] = $FDcomp[$table][$theKey][$fieldN];
 									}
