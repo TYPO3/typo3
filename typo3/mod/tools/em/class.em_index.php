@@ -175,6 +175,7 @@ require_once(PATH_t3lib.'class.t3lib_scbase.php');
 
 require_once('class.em_xmlhandler.php');
 require_once('class.em_terconnection.php');
+require_once('class.em_unzip.php');
 
 	// from tx_ter by Robert Lemke
 define('TX_TER_RESULT_EXTENSIONSUCCESSFULLYUPLOADED', '10504');
@@ -199,6 +200,7 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 	var $requiredExt = '';				// List of required extension (from TYPO3_CONF_VARS)
 	var $maxUploadSize = 31457280;		// Max size in bytes of extension upload to repository
 	var $kbMax = 500;					// Max size in kilobytes for files to be edited.
+	var $doPrintContent = true;			// If set (default), the function printContent() will echo the content which was collected in $this->content. You can set this to FALSE in order to echo content from elsewhere, fx. when using outbut buffering
 
 	/**
 	 * Internal variable loaded with extension categories (for display/listing). Should reflect $categories above
@@ -437,6 +439,7 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 				0 => 'Loaded extensions',
 				1 => 'Install extensions',
 				2 => 'Import extensions',
+				4 => 'Translation handling',
 				3 => 'Settings',
 			),
 			'listOrder' => array(
@@ -473,7 +476,9 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 			'mirrorListURL' => '',
 			'rep_url' => '',
 			'extMirrors' => '',
-			'selectedMirror' => ''
+			'selectedMirror' => '',
+
+			'selectedLanguages' => ''
 		);
 
 		$this->MOD_MENU['singleDetails'] = $this->mergeExternalItems($this->MCONF['name'],'singleDetails',$this->MOD_MENU['singleDetails']);
@@ -525,6 +530,9 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 			if ($err)	{
 				$this->content.=$this->doc->section('',$GLOBALS['TBE_TEMPLATE']->rfw($err));
 			}
+			if(!$err && $this->CMD['importExt']) {
+				$this->installTranslationsForExtension($this->CMD['importExt'], $this->getMirrorURL());
+			}
 		} elseif ($this->CMD['importExtInfo'])	{	// Gets detailed information of an extension from online rep.
 			$this->importExtInfo($this->CMD['importExtInfo'],$this->CMD['extVersion']);
 		} else {	// No command - we show what the menu setting tells us:
@@ -563,8 +571,12 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 					$this->extensionList_import();
 					break;
 				case '3':
-					// Lists the extensions available from online rep.
+					// Shows the settings screen
 					$this->alterSettings();
+					break;
+				case '4':
+					// Allows to set the translation preferences and check the status
+					$this->translationHandling();
 					break;
 				default:
 					$this->extObjContent();
@@ -584,8 +596,10 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 	 * @return	void
 	 */
 	function printContent()	{
-		$this->content.= $this->doc->endPage();
-		echo $this->content;
+		if ($this->doPrintContent) {
+			$this->content.= $this->doc->endPage();
+			echo $this->content;
+		}
 	}
 
 
@@ -941,29 +955,36 @@ EXTENSION KEYS:
 				</tr>
 			</table>
 			<br />
-			<p>Select a mirror from below. This list is built from the online mirror list retrieved from the URL above. If no mirror is selected, a random one will be used.<br /><br /></p>
-			<fieldset><legend>Mirror list</legend>
+			<p>Select a mirror from below. This list is built from the online mirror list retrieved from the URL above.<br /><br /></p>
+			<fieldset><legend>Mirror list</legend>';
+		if(!empty($this->MOD_SETTINGS['mirrorListURL'])) {
+			if ($this->CMD['fetchMetaData'])	{	// fetches mirror/extension data from online rep.
+				$content .= $this->fetchMetaData($this->CMD['fetchMetaData']);
+			} else {
+				$content.= '<a href="index.php?CMD[fetchMetaData]=mirrors">Click here to reload the list.</a>';
+			}
+		}
+		$content .= '<br />
 			<table cellspacing="4" style="text-align:left; vertical-alignment:top;">
-			<tr><th>Use</th><th>Name</th><th>URL</th><th>Country</th><th>Sponsored by</th></tr>
+			<tr><td>Use</td><td>Name</td><td>URL</td><td>Country</td><td>Sponsored by</td></tr>
 		';
 
 		if (!strlen($this->MOD_SETTINGS['extMirrors'])) $this->fetchMetaData('mirrors');
 		$extMirrors = unserialize($this->MOD_SETTINGS['extMirrors']);
+		$extMirrors[''] = array('title'=>'Random (recommended!)');
+		ksort($extMirrors);
 		if(is_array($extMirrors)) {
 			foreach($extMirrors as $k => $v) {
-				$sponsor = '<a href="'.$v['sponsor']['link'].'" target="_new"><img src="'.$v['sponsor']['logo'].'" title="'.$v['sponsor']['name'].'" alt="'.$v['sponsor']['name'].'" /></a>';
+				if(isset($v['sponsor'])) {
+					$sponsor = '<a href="'.htmlspecialchars($v['sponsor']['link']).'" target="_new"><img src="'.$v['sponsor']['logo'].'" title="'.htmlspecialchars($v['sponsor']['name']).'" alt="'.htmlspecialchars($v['sponsor']['name']).'" /></a>';
+				}
 				$selected = ($this->MOD_SETTINGS['selectedMirror']==$k) ? 'checked="checked"' : '';
 				$content.='<tr class="bgColor4">
-			<td><input type="radio" name="SET[selectedMirror]" value="'.$k.'" '.$selected.'/></td><td>'.$v['title'].'</td><td>'.$v['host'].$v['path'].'</td><td>'.$v['country'].'</td><td>'.$sponsor.'</td></tr>';
+			<td><input type="radio" name="SET[selectedMirror]" value="'.$k.'" '.$selected.'/></td><td>'.htmlspecialchars($v['title']).'</td><td>'.htmlspecialchars($v['host'].$v['path']).'</td><td>'.$v['country'].'</td><td>'.$sponsor.'</td></tr>';
 			}
 		}
 		$content.= '
-			</table>';
-		if(!empty($this->MOD_SETTINGS['mirrorListURL'])) {
-			$content.= '<br />
-			<a href="index.php?CMD[fetchMetaData]=mirrors">Click here to reload the list.</a>';
-		}
-		$content.= '
+			</table>
 			</fieldset>
 			<br />
 			<table border="0" cellpadding="2" cellspacing="2">
@@ -982,12 +1003,309 @@ EXTENSION KEYS:
 		$this->content.=$this->doc->section('Repository settings',$content,0,1);
 	}
 
+	/**
+	 * Allows to set the translation preferences and check the status
+	 *
+	 * @return	void
+	 */
+	function translationHandling()	{
+		global $LANG, $TYPO3_LOADED_EXT;
+		$LANG->includeLLFile('EXT:setup/mod/locallang.xml');
 
+		$incoming = t3lib_div::_POST('SET');
+		if(isset($incoming['selectedLanguages']) && is_array($incoming['selectedLanguages'])) {
+			t3lib_BEfunc::getModuleData($this->MOD_MENU, array('selectedLanguages' => serialize($incoming['selectedLanguages'])), $this->MCONF['name'], '', 'selectedLanguages');
+			$this->MOD_SETTINGS['selectedLanguages'] = serialize($incoming['selectedLanguages']);
+		}
 
+		$selectedLanguages = unserialize($this->MOD_SETTINGS['selectedLanguages']);
+		if(count($selectedLanguages)==1 && empty($selectedLanguages[0])) $selectedLanguages = array();
+		$theLanguages = t3lib_div::trimExplode('|',TYPO3_languages);
+		foreach($theLanguages as $val)  {
+			if ($val!='default')    {
+				$localLabel = '  -  ['.htmlspecialchars($GLOBALS['LOCAL_LANG']['default']['lang_'.$val]).']';
+				$selected = (is_array($selectedLanguages) && in_array($val, $selectedLanguages)) ? ' selected="selected"' : '';
+				$opt[$GLOBALS['LOCAL_LANG']['default']['lang_'.$val].'--'.$val]='
+             <option value="'.$val.'"'.$selected.'>'.$LANG->getLL('lang_'.$val,1).$localLabel.'</option>';
+			}
+		}
+		ksort($opt);
 
+			// Prepare the HTML output:
+		$content.= '
+			'.t3lib_BEfunc::cshItem('_MOD_tools_em', 'translation', $GLOBALS['BACK_PATH'],'|<br/>').'
+			<fieldset><legend>Translation Settings</legend>
+			<table border="0" cellpadding="2" cellspacing="2">
+				<tr class="bgColor4">
+					<td>Languages to fetch:</td>
+					<td>
+					  <select name="SET[selectedLanguages][]" multiple="multiple" size="10">
+					  <option></option>'.
+            implode('',$opt).'
+            </select>
+          </td>
+				</tr>
+			</table>
+			<br />
+			<p>For the selected languages the EM tries to download and install translation files if available, whenever an extension is installed. (This replaces the <code>csh_*</code> extensions that were used to install core translations before TYPO3 version 4!)<br />
+			<br />To request an update/install for already loaded extensions, see below.</p>
+			</fieldset>
+			<br />
+			<input type="submit" value="Save selection" />
+			<br />
+			</fieldset>';
 
+		$this->content.=$this->doc->section('Translation settings',$content,0,1);
 
+		if(count($selectedLanguages)>0) {
+			$mirrorURL = $this->getMirrorURL();
+			$content = '<input type="button" value="Check status against repository" onclick="document.location.href=\''.t3lib_div::linkThisScript(array('l10n'=>'check')).'\'" />&nbsp;<input type="button" value="Update from repository" onclick="document.location.href=\''.t3lib_div::linkThisScript(array('l10n'=>'update')).'\'" />';
 
+			if(t3lib_div::_GET('l10n') == 'check') {
+				$loadedExtensions = array_keys($TYPO3_LOADED_EXT);
+				$loadedExtensions = array_diff($loadedExtensions,array('_CACHEFILE'));
+
+					// Override content output - we now do that ourself:
+				echo ($this->content . $this->doc->section('Translation status',$content,0,1));
+				$this->doPrintContent = FALSE;
+				flush();
+
+				echo '
+				<br />
+				<br />
+				<p id="progress-message">
+					Checking translation status, please wait ...
+				</p>
+				<br />
+				<div style="width:100%; height:20px; border: 1px solid black;">
+					<div id="progress-bar" style="float: left; width: 0%; height: 20px; background-color:green;">&nbsp;</div>
+					<div id="transparent-bar" style="float: left; width: 100%; height: 20px; background-color:'.$this->doc->bgColor2.';">&nbsp;</div>
+				</div>
+				<br />
+				<br /><p>This table shows the status of the loaded extension\'s translations.</p><br />
+				<table border="0" cellpadding="2" cellspacing="2">
+					<tr class="bgColor2"><td>Extension key</td>
+				';
+
+				foreach($selectedLanguages as $lang) {
+					echo ('<td>'.$LANG->getLL('lang_'.$lang,1).'</td>');
+				}
+				echo ('</tr>');
+
+				$counter = 1;
+				foreach($loadedExtensions as $extKey) {
+
+					$percentDone = intval (($counter / count($loadedExtensions)) * 100);
+					echo ('
+					<script>
+						document.getElementById("progress-bar").style.width = "'.$percentDone.'%";
+						document.getElementById("transparent-bar").style.width = "'.(100-$percentDone).'%";
+						document.getElementById("progress-message").firstChild.data="Checking translation status for extension \"'.$extKey.'\" ...";
+					</script>
+					');
+
+					flush();
+					$translationStatusArr = $this->terConnection->fetchTranslationStatus($extKey,$mirrorURL);
+
+					echo ('<tr class="bgColor4"><td>'.$extKey.'</td>');
+					foreach($selectedLanguages as $lang) {
+						// remote unknown -> keine l10n
+						if(!isset($translationStatusArr[$lang])) {
+							echo ('<td title="No translation available">N/A</td>');
+							continue;
+						}
+							// determine local md5 from zip
+						if(is_file(PATH_site.'typo3temp/'.$extKey.'-l10n-'.$lang.'.zip')) {
+							$localmd5 = md5_file(PATH_site.'typo3temp/'.$extKey.'-l10n-'.$lang.'.zip');
+						} else {
+							echo ('<td title="Not installed / Unknown" style="background-color:#ff0">???</td>');
+							continue;
+						}
+							// local!=remote -> needs update
+						if($localmd5 != $translationStatusArr[$lang]['md5']) {
+							echo ('<td title="Needs update" style="background-color:#ff0">UPD</td>');
+							continue;
+						}
+						echo ('<td title="Is up to date" style="background-color:#69a550">OK</td>');
+					}
+					echo ('</tr>');
+
+					$counter ++;
+				}
+				echo '</table>
+					<script>
+						document.getElementById("progress-message").firstChild.data="Check done.";
+					</script>
+				';
+				echo $this->doc->endPage();
+				return '';
+
+			} elseif(t3lib_div::_GET('l10n') == 'update') {
+				$loadedExtensions = array_keys($TYPO3_LOADED_EXT);
+				$loadedExtensions = array_diff($loadedExtensions,array('_CACHEFILE'));
+
+					// Override content output - we now do that ourself:
+				echo ($this->content . $this->doc->section('Translation status',$content,0,1));
+				$this->doPrintContent = FALSE;
+				flush();
+
+				echo ('
+				<br />
+				<br />
+				<p id="progress-message">
+					Updating translations, please wait ...
+				</p>
+				<br />
+				<div style="width:100%; height:20px; border: 1px solid black;">
+					<div id="progress-bar" style="float: left; width: 0%; height: 20px; background-color:green;">&nbsp;</div>
+					<div id="transparent-bar" style="float: left; width: 100%; height: 20px; background-color:'.$this->doc->bgColor2.';">&nbsp;</div>
+				</div>
+				<br />
+				<br /><p>This table shows the update results of the loaded extension\'s translations.<br />
+				<em>If you want to force a full check/update, delete the l10n zip-files from the typo3temp folder.</em></p><br />
+				<table border="0" cellpadding="2" cellspacing="2">
+					<tr class="bgColor2"><td>Extension key</td>
+				');
+
+				foreach($selectedLanguages as $lang) {
+					echo '<td>'.$LANG->getLL('lang_'.$lang,1).'</td>';
+				}
+				echo '</tr>';
+
+				$counter = 1;
+				foreach($loadedExtensions as $extKey) {
+					$percentDone = intval (($counter / count($loadedExtensions)) * 100);
+					echo ('
+					<script>
+						document.getElementById("progress-bar").style.width = "'.$percentDone.'%";
+						document.getElementById("transparent-bar").style.width = "'.(100-$percentDone).'%";
+						document.getElementById("progress-message").firstChild.data="Updating translation for extension \"'.$extKey.'\" ...";
+					</script>
+					');
+
+					flush();
+					$translationStatusArr = $this->terConnection->fetchTranslationStatus($extKey,$mirrorURL);
+
+					echo ('<tr class="bgColor4"><td>'.$extKey.'</td>');
+					foreach($selectedLanguages as $lang) {
+							// remote unknown -> no l10n available
+						if(!isset($translationStatusArr[$lang])) {
+							echo ('<td title="No translation available">N/A</td>');
+							continue;
+						}
+						// determine local md5 from zip
+						if(is_file(PATH_site.'typo3temp/'.$extKey.'-l10n-'.$lang.'.zip')) {
+							$localmd5 = md5_file(PATH_site.'typo3temp/'.$extKey.'-l10n-'.$lang.'.zip');
+						} else {
+							$localmd5 = 'zzz';
+						}
+						// local!=remote or not installed -> needs update
+						if($localmd5 != $translationStatusArr[$lang]['md5']) {
+							$ret = $this->updateTranslation($extKey, $lang, $mirrorURL);
+							if($ret === true) {
+								echo ('<td title="Has been updated" style="background-color:#69a550">UPD</td>');
+							} else {
+								echo ('<td title="'.htmlspecialchars($ret).'" style="background-color:#cb3352">ERR</td>');
+							}
+							continue;
+						}
+						echo ('<td title="Is up to date" style="background-color:#69a550">OK</td>');
+					}
+					echo ('</tr>');
+
+					$counter++;
+				}
+				echo '</table>
+					<script>
+						document.getElementById("progress-message").firstChild.data="Update done.";
+					</script>
+				';
+				echo $this->doc->endPage();
+				return '';
+			}
+
+			$this->content.=$this->doc->section('Translation status',$content,0,1);
+		}
+	}
+
+	/**
+	 * Install translations for all selected languages for an extension
+	 *
+	 * @param string $extKey		The extension key to install the translations for
+	 * @param string $lang		Language code of translation to fetch
+	 * @param string $mirrorURL		Mirror URL to fetch data from
+	 * @return mixed	true on success, error string on fauilure
+	 */
+	function updateTranslation($extKey, $lang, $mirrorURL) {
+		$l10n = $this->terConnection->fetchTranslation($extKey, $lang, $mirrorURL);
+		if(is_array($l10n)) {
+			$file = PATH_site.'typo3temp/'.$extKey.'-l10n-'.$lang.'.zip';
+			$path = 'l10n/'.$lang.'/';
+			if(!is_dir(PATH_typo3conf.$path)) t3lib_div::mkdir_deep(PATH_typo3conf,$path);
+			t3lib_div::writeFile($file, $l10n[0]);
+			if($this->unzip($file, PATH_typo3conf.$path)) {
+				return true;
+			} else {
+				return 'Unpacking the language pack failed!';
+			}
+		} else {
+			return $l10n;
+		}
+	}
+
+	/**
+	 * Install translations for all selected languages for an extension
+	 *
+	 * @param string $extKey		The extension key to install the translations for
+	 * @param string $mirrorURL		Mirror URL to fetch data from
+	 * @return mixed	true on success, error string on fauilure
+	 */
+	function installTranslationsForExtension($extKey, $mirrorURL) {
+		$selectedLanguages = unserialize($this->MOD_SETTINGS['selectedLanguages']);
+		foreach($selectedLanguages as $lang) {
+			$l10n = $this->terConnection->fetchTranslation($extKey, $lang, $mirrorURL);
+			if(is_array($l10n)) {
+				$file = PATH_typo3conf.'l10n/'.$extKey.'-l10n-'.$lang.'.zip';
+				$path = 'l10n/'.$lang.'/'.$extKey;
+				t3lib_div::writeFile($file, $l10n[0]);
+				if(!is_dir(PATH_typo3conf.$path)) t3lib_div::mkdir_deep(PATH_typo3conf,$path);
+				if($this->unzip($file, PATH_typo3conf.$path)) {
+					return 'Unpacking the language pack failed!';
+				} else {
+					return true;
+				}
+			} else {
+				return $l10n;
+			}
+		}
+	}
+
+	/**
+	 * Unzips a zip file in the given path.
+	 *
+	 * Uses unzip binary if available, otherwise a pure PHP unzip is used.
+	 *
+	 * @param string $file		Full path to zip file
+	 * @param string $path		Path to change to before extracting
+	 * @return boolean	True on success, false in failure
+	 */
+	function unzip($file, $path) {
+		$ret = false;
+
+		if(strlen($GLOBALS['TYPO3_CONF_VARS']['BE']['unzip_path'])) {
+			chdir($path);
+			$cmd = $GLOBALS['TYPO3_CONF_VARS']['BE']['unzip_path'].' -o '.$file;
+			exec($cmd, $list, $ret);
+			if($ret == 0) $ret = true;
+		} else {
+				// we use a pure PHP unzip
+			$unzip = new em_unzip($file);
+			$ret = $unzip->extract(array('add_path'=>$path));
+			if(is_array($ret)) $ret = true;
+		}
+
+		return $ret;
+	}
 
 
 
@@ -1069,7 +1387,7 @@ EXTENSION KEYS:
 				$mfile = t3lib_div::tempnam('mirrors');
 				$mirrorsFile = t3lib_div::getURL($this->MOD_SETTINGS['mirrorListURL']);
 				if($mirrorsFile===false) {
-					$content.= '<p>The mirror list was not updated, it could not be fetched from '.$this->MOD_SETTINGS['mirrorListURL'].'</p>';
+					$content = '<p>The mirror list was not updated, it could not be fetched from '.$this->MOD_SETTINGS['mirrorListURL'].'</p>';
 				} else {
 					t3lib_div::writeFile($mfile, $mirrorsFile);
 					$mirrors = implode(gzfile($mfile));
@@ -1079,21 +1397,16 @@ EXTENSION KEYS:
 					if(is_array($mirrors) && count($mirrors)) {
 						t3lib_BEfunc::getModuleData($this->MOD_MENU, array('extMirrors' => serialize($mirrors)), $this->MCONF['name'], '', 'extMirrors');
 						$this->MOD_SETTINGS['extMirrors'] = serialize($mirrors);
-						$content.= '<p>The mirror list has been updated and now contains '.count($mirrors).' entries:</p><ul>';
-						foreach($mirrors as $v) {
-							$content.='<li>'.$v['title'].', '.$v['country'].'</li>';
-						}
-						$content.= '</ul>';
+						$content = '<p>The mirror list has been updated and now contains '.count($mirrors).' entries.</p>';
 					}
 					else {
-						$content.= '<p>'.$mirrors.'<br />The mirror list was not updated as it contained no entries.</p>';
+						$content = '<p>'.$mirrors.'<br />The mirror list was not updated as it contained no entries.</p>';
 					}
 				}
 				break;
 			case 'extensions':
-				if(empty($this->MOD_SETTINGS['extMirrors'])) {
-					$this->fetchMetaData('mirrors');
-				}
+				$this->fetchMetaData('mirrors'); // if we fetch the extensions anyway, we can as well keep this up-to-date
+
 				$mirror = $this->getMirrorURL();
 				$extfile = $mirror.'extensions.xml.gz';
 				$extmd5 = t3lib_div::getURL($mirror.'extensions.md5');
@@ -1128,6 +1441,11 @@ EXTENSION KEYS:
 		if(strlen($this->MOD_SETTINGS['rep_url'])) return $this->MOD_SETTINGS['rep_url'];
 
 		$mirrors = unserialize($this->MOD_SETTINGS['extMirrors']);
+		if(!is_array($mirrors)) {
+			$this->fetchMetaData('mirrors');
+			$mirrors = unserialize($this->MOD_SETTINGS['extMirrors']);
+			if(!is_array($mirrors)) return false;
+		}
 		if($this->MOD_SETTINGS['selectedMirror']=='') {
 			srand((float) microtime() * 10000000); // not needed after PHP 4.2.0...
 			$rand = array_rand($mirrors);
@@ -1255,6 +1573,7 @@ EXTENSION KEYS:
 			if ($newExtList!=-1)	{
 				$this->writeNewExtensionList($newExtList);
 				$this->forceDBupdates($extKey, $inst_list[$extKey]);
+				$this->installTranslationsForExtension($extKey, $this->getMirrorURL());
 				return array(true, 'Extension has been imported from repository and loaded.');
 			} else {
 				return array(false, 'Extension is in repository, but could not be loaded.');
@@ -1394,7 +1713,7 @@ EXTENSION KEYS:
 
 												// Install / Uninstall:
 											if(!$this->CMD['standAlone']) {
-												$content = '<a href="index.php" class="typo3-goBack"><img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/goback.gif','width="14" height="14"').' alt="" /> Go back</a>'.$content;
+												$content = '<a href="index.php" class="typo3-goBack"><img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/goback.gif','width="14" height="14"').' alt="" /> Go back</a><br />'.$content;
 												$content.='<h3>Install / Uninstall Extension:</h3>';
 												$content.= $new_list[$extKey] ?
 													'<a href="'.htmlspecialchars('index.php?CMD[showExt]='.$extKey.'&CMD[remove]=1&CMD[clrCmd]=1&SET[singleDetails]=info').'">'.$this->removeButton().' Uninstall extension</a>' :
@@ -1715,7 +2034,7 @@ EXTENSION KEYS:
 	 * This can be called from external modules with "...index.php?CMD[requestInstallExtensions]=
 	 *
 	 * @param	string		Comma list of extension keys to install. Renders a screen with checkboxes for all extensions not already imported or installed
-	 * @return	void		
+	 * @return	void
 	 */
 	function requestInstallExtensions($extList)	{
 
@@ -1757,7 +2076,7 @@ EXTENSION KEYS:
 			<form action="'.htmlspecialchars(t3lib_div::getIndpEnv('REQUEST_URI')).'" method="post">
 				<table border="0" cellpadding="1" cellspacing="1">'.implode('',$outputRow).'</table>
 			<input type="submit" name="_" value="Import and Install selected" />
-			</form>			
+			</form>
 			<form>	<!-- continuing page form... -->';
 
 			if ($returnUrl)	{
@@ -1772,7 +2091,7 @@ EXTENSION KEYS:
 		} else {
 			header('Location: '.t3lib_div::locationHeaderUrl($returnUrl));
 		}
-	}	
+	}
 
 
 

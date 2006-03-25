@@ -2303,7 +2303,7 @@ class t3lib_div {
 			$parsedURL = parse_url($url);
 			if (!t3lib_div::inList('ftp,ftps,http,https,gopher,telnet', $parsedURL['scheme']))	{ return false; }
 
-			$fp = fsockopen ($parsedURL['host'], ($parsedURL['port']>0 ? $parsedURL['port'] : 80), $errno, $errstr, $timeout=2);
+			$fp = @fsockopen($parsedURL['host'], ($parsedURL['port']>0 ? $parsedURL['port'] : 80), $errno, $errstr, $timeout=2);
 			if (!$fp)	{ return false;	}
 
 			$msg = 'GET '.$parsedURL['path'].($parsedURL['query'] ? '?'.$parsedURL['query'] : '')." HTTP/1.0\r\nHost: ".$parsedURL['host']."\r\n\r\n";
@@ -2316,9 +2316,9 @@ class t3lib_div {
 			fclose ($fp);
 
 		} elseif (function_exists('file_get_contents'))	{
-			$content = file_get_contents($url);
+			$content = @file_get_contents($url);
 
-		} elseif ($fd = fopen($url,'rb'))    {
+		} elseif ($fd = @fopen($url,'rb'))    {
 			while (!feof($fd))	{
 				$content.=fread($fd, 4096);
 			}

@@ -7,8 +7,8 @@ Installation/Upgrade
 ====================
 
 	* TYPO3 4.0 ships with an empty typo3/ext folder. Sites which depend on them must reinstall this extensions.
-	* TYPO3 4.0 uses a new localization scheme (typo3conf/l10n/). To install language packs do ??? (exensions csh_<language> are obsolete).
-	* TYPO3 4.0  doesn't use symbolic links any more (on Unix systems).
+	* TYPO3 4.0 uses a new localization scheme (typo3conf/l10n/). To install language packs use the extension manager function for translation handling (exensions csh_<language> are obsolete!).
+	* TYPO3 4.0  doesn't have to use symbolic links any more (on Unix systems); no more duplicate files (in Windows systems)
 	* Existing symbolic links from index.php to <TYPO3_root>/tslib/index_ts.php mus be changed to <TYPO3_src>/index.php (Unix).
 	* The symbolic links from nimbus.ttf and vera.ttf to arial.ttf and verdana.ttf have been removed. If you need those fonts create the links manually (Unix) or copy the fonts (Windows).
 

@@ -377,7 +377,76 @@ class SC_mod_tools_em_xmlhandler {
 			foreach($vals as $val) {
 
 				// First, process the tag-name (which is used in both cases, whether "complete" or "close")
-				$tagName = ($val['tag']=='mirror' && $val['type']=='open') ? $mirrornumber++ : $val['tag'];
+				$tagName = ($val['tag']=='mirror' && $val['type']=='open') ? '__plh' : $val['tag'];
+				if (!$documentTag)	$documentTag = $tagName;
+
+				// Setting tag-values, manage stack:
+				switch($val['type'])	{
+					case 'open':		// If open tag it means there is an array stored in sub-elements. Therefore increase the stackpointer and reset the accumulation array:
+						$current[$tagName] = array();	// Setting blank place holder
+						$stack[$stacktop++] = $current;
+						$current = array();
+						break;
+					case 'close':	// If the tag is "close" then it is an array which is closing and we decrease the stack pointer.
+					$oldCurrent = $current;
+					$current = $stack[--$stacktop];
+					end($current);	// Going to the end of array to get placeholder key, key($current), and fill in array next:
+					if($tagName=='mirror') {
+						unset($current['__plh']);
+						$current[$oldCurrent['host']] = $oldCurrent;
+					} else {
+						$current[key($current)] = $oldCurrent;
+					}
+					unset($oldCurrent);
+					break;
+					case 'complete':	// If "complete", then it's a value. If the attribute "base64" is set, then decode the value, otherwise just set it.
+					$current[$tagName] = (string)$val['value']; // Had to cast it as a string - otherwise it would be evaluate false if tested with isset()!!
+					break;
+				}
+			}
+			return $current[$tagName];
+		}
+	}
+
+	/**
+	 * Parses content of *-l10n.xml into a suitable array
+	 *
+	 * @param	string		$string: XML data to parse
+	 * @return	array		Array representation of XML data
+	 */
+	function parseL10nXML($string) {
+		// Create parser:
+		$parser = xml_parser_create();
+		$vals = array();
+		$index = array();
+
+		xml_parser_set_option($parser, XML_OPTION_CASE_FOLDING, 0);
+		xml_parser_set_option($parser, XML_OPTION_SKIP_WHITE, 0);
+
+		// Parse content:
+		xml_parse_into_struct($parser, $string, $vals, $index);
+
+		// If error, return error message:
+		if (xml_get_error_code($parser))	{
+			$line = xml_get_current_line_number($parser);
+			$error = xml_error_string(xml_get_error_code($parser));
+			debug($error);
+			xml_parser_free($parser);
+			return 'Error in XML parser while decoding l10n XML file. Line '.$line.': '.$error;
+		} else  {
+			// Init vars:
+			$stack = array(array());
+			$stacktop = 0;
+			$mirrornumber = 0;
+			$current=array();
+			$tagName = '';
+			$documentTag = '';
+
+			// Traverse the parsed XML structure:
+			foreach($vals as $val) {
+
+				// First, process the tag-name (which is used in both cases, whether "complete" or "close")
+				$tagName = ($val['tag']=='languagepack' && $val['type']=='open') ? $val['attributes']['language'] : $val['tag'];
 				if (!$documentTag)	$documentTag = $tagName;
 
 				// Setting tag-values, manage stack:

@@ -70,6 +70,45 @@ class SC_mod_tools_em_terconnection {
 	}
 
 	/**
+	 * Fetches an extensions l10n file from the given mirror
+	 *
+	 * @param string $extKey	Extension Key
+	 * @param string $lang	The language code of the translation to fetch
+	 * @param string $mirrorURL	URL of mirror to use
+	 * @return mixed	Array containing l10n data or error message (string)
+	 */
+	function fetchTranslation($extKey, $lang, $mirrorURL) {
+		$mirrorURL .= $extKey{0}.'/'.$extKey{1}.'/'.$extKey.'-l10n/'.$extKey.'-l10n-'.$lang.'.zip';
+		$l10n = t3lib_div::getURL($mirrorURL);
+
+		if($l10n !== false) {
+			return array($l10n);
+		} else {
+			return 'Error: Translation could not be fetched.';
+		}
+	}
+
+	/**
+	 * Fetches extension l10n status from the given mirror
+	 *
+	 * @param string 	$extKey	Extension Key
+	 * @param string 	$mirrorURL	URL of mirror to use
+	 * @return mixed	Array containing l10n status data or FALSE if no status could be fetched
+	 */
+	function fetchTranslationStatus($extKey, $mirrorURL) {
+
+		$url = $mirrorURL . $extKey{0}.'/'.$extKey{1}.'/'.$extKey.'-l10n/'.$extKey.'-l10n.xml';
+		$remote = t3lib_div::getURL($url);
+
+		if($remote !== false) {
+			$parsed = $this->emObj->xmlhandler->parseL10nXML($remote);
+			return $parsed['languagePackIndex'];
+		}
+
+		return FALSE;
+	}
+
+	/**
 	 * Decode server data
 	 * This is information like the extension list, extension information etc., return data after uploads (new em_conf)
 	 *
