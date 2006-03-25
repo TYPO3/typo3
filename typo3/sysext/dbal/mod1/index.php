@@ -300,6 +300,7 @@ updateQryForm(\''.$input['QUERY'].'\');
 		}
 
 		$out = '<table border="1" cellspacing="0"><caption>auto_increment</caption><tbody><tr><th>Table</th><th>Field</th></tr>';
+		ksort($GLOBALS['TYPO3_DB']->cache_autoIncFields);
 		foreach($GLOBALS['TYPO3_DB']->cache_autoIncFields as $table => $field) {
 			$out .= '<tr>';
 			$out .= '<td>'.$table.'</td>';
@@ -309,6 +310,7 @@ updateQryForm(\''.$input['QUERY'].'\');
 		$out .= '</tbody></table>';
 		$out .= $this->doc->spacer(5);
 		$out .= '<table border="1" cellspacing="0"><caption>Primary keys</caption><tbody><tr><th>Table</th><th>Field(s)</th></tr>';
+		ksort($GLOBALS['TYPO3_DB']->cache_primaryKeys);
 		foreach($GLOBALS['TYPO3_DB']->cache_primaryKeys as $table => $field) {
 			$out .= '<tr>';
 			$out .= '<td>'.$table.'</td>';
@@ -317,9 +319,10 @@ updateQryForm(\''.$input['QUERY'].'\');
 		}
 		$out .= '</tbody></table>';
 		$out .= $this->doc->spacer(5);
-		$out .= '<table border="1" cellspacing="0"><caption>Field types</caption><tbody><tr><th colspan="3">Table</th></tr><tr><th>Field</th><th>Type</th><th>Metatype</th><th>NOT NULL</th></th></tr>';
+		$out .= '<table border="1" cellspacing="0"><caption>Field types</caption><tbody><tr><th colspan="4">Table</th></tr><tr><th>Field</th><th>Type</th><th>Metatype</th><th>NOT NULL</th></th></tr>';
+		ksort($GLOBALS['TYPO3_DB']->cache_fieldType);
 		foreach($GLOBALS['TYPO3_DB']->cache_fieldType as $table => $fields) {
-			$out .= '<th colspan="3">'.$table.'</th>';
+			$out .= '<th colspan="4">'.$table.'</th>';
 			foreach($fields as $field => $data) {
 				$out .= '<tr>';
 				$out .= '<td>'.$field.'</td>';

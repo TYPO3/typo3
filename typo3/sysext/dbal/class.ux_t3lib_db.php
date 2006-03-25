@@ -220,61 +220,54 @@ class ux_t3lib_DB extends t3lib_DB {
 			$this->cache_primaryKeys = $fdata['primaryKeys'];
 		}
 		else {
-			// handle stddb.sql
+				// handle stddb.sql, parse and analyze
 			$extSQL = t3lib_div::getUrl(PATH_site.'t3lib/stddb/tables.sql');
 			$parsedExtSQL = $this->Installer->getFieldDefinitions_sqlContent($extSQL);
+			$this->analyzeFields($parsedExtSQL);
 
-			// extract auto_inc field (if any)
-			foreach($parsedExtSQL as $table => $tdef) {
-				foreach($tdef['fields'] as $field => $fdef) {
-					$fdef = $this->SQLparser->parseFieldDef($fdef);
-					$this->cache_fieldType[$table][$field]['type'] = $fdef['fieldType'];
-					$this->cache_fieldType[$table][$field]['metaType'] = $this->MySQLMetaType($fdef['fieldType']);
-					$this->cache_fieldType[$table][$field]['notnull'] = (isset($fdef['featureIndex']['NOTNULL']) && !$this->SQLparser->checkEmptyDefaultValue($fdef['featureIndex'])) ? 1 : 0;
-					if(isset($fdef['featureIndex']['AUTO_INCREMENT'])) {
-						// store in array
-						$this->cache_autoIncFields[$table] = $field;
-					}
-					if(isset($tdef['keys']['PRIMARY'])) {
-						$this->cache_primaryKeys[$table] = substr($tdef['keys']['PRIMARY'], 13, -1);
-					}
-				}
-			}
-
-			// loop over all installed extensions
+				// loop over all installed extensions
 			foreach($TYPO3_LOADED_EXT as $ext => $v)	{
 				if(!is_array($v) || !isset($v['ext_tables.sql']))
 				continue;
 
-				// fetch db dump (if any) and parse it
+					// fetch db dump (if any) and parse it, then analyze
 				$extSQL = t3lib_div::getUrl($v['ext_tables.sql']);
 				$parsedExtSQL = $this->Installer->getFieldDefinitions_sqlContent($extSQL);
-
-				// extract auto_inc field (if any)
-				foreach($parsedExtSQL as $table => $tdef) {
-					foreach($tdef['fields'] as $field => $fdef) {
-						$fdef = $this->SQLparser->parseFieldDef($fdef);
-						$this->cache_fieldType[$table][$field]['type'] = $fdef['fieldType'];
-						$this->cache_fieldType[$table][$field]['metaType'] = $this->MySQLMetaType($fdef['fieldType']);
-						$this->cache_fieldType[$table][$field]['notnull'] = (isset($fdef['featureIndex']['NOTNULL']) && !$this->SQLparser->checkEmptyDefaultValue($fdef['featureIndex'])) ? 1 : 0;
-						if(isset($fdef['featureIndex']['AUTO_INCREMENT'])) {
-							$this->cache_autoIncFields[$table] = $field;
-						}
-						if(isset($tdef['keys']['PRIMARY'])) {
-							$this->cache_primaryKeys[$table] = substr($tdef['keys']['PRIMARY'], 13, -1);
-						}
-					}
-				}
+				$this->analyzeFields($parsedExtSQL);
 			}
 
 			$cachedFieldInfo = array('incFields' => $this->cache_autoIncFields, 'fieldTypes' => $this->cache_fieldType, 'primaryKeys' => $this->cache_primaryKeys);
 			$cachedFieldInfo = serialize($this->mapCachedFieldInfo($cachedFieldInfo));
 
-			// write serialized content to file
+				// write serialized content to file
 			t3lib_div::writeFile(PATH_typo3conf."temp_fieldInfo.php", $cachedFieldInfo);
 
 			if (strcmp(t3lib_div::getUrl(PATH_typo3conf."temp_fieldInfo.php"), $cachedFieldInfo))	{
 				die('typo3temp/temp_incfields.php was NOT updated properly (written content didn\'t match file content) - maybe write access problem?');
+			}
+		}
+	}
+
+	/**
+	 * Analyzes fields and adds the extracted information to the field type, auto increment and primary key info caches.
+	 *
+	 * @param array $parsedExtSQL The output produced by t3lib_install::getFieldDefinitions_sqlContent()
+	 * @return void
+	 * @see t3lib_install::getFieldDefinitions_sqlContent()
+	 */
+	function analyzeFields($parsedExtSQL) {
+		foreach($parsedExtSQL as $table => $tdef) {
+			foreach($tdef['fields'] as $field => $fdef) {
+				$fdef = $this->SQLparser->parseFieldDef($fdef);
+				$this->cache_fieldType[$table][$field]['type'] = $fdef['fieldType'];
+				$this->cache_fieldType[$table][$field]['metaType'] = $this->MySQLMetaType($fdef['fieldType']);
+				$this->cache_fieldType[$table][$field]['notnull'] = (isset($fdef['featureIndex']['NOTNULL']) && !$this->SQLparser->checkEmptyDefaultValue($fdef['featureIndex'])) ? 1 : 0;
+				if(isset($fdef['featureIndex']['AUTO_INCREMENT'])) {
+					$this->cache_autoIncFields[$table] = $field;
+				}
+				if(isset($tdef['keys']['PRIMARY'])) {
+					$this->cache_primaryKeys[$table] = substr($tdef['keys']['PRIMARY'], 13, -1);
+				}
 			}
 		}
 	}
@@ -361,75 +354,71 @@ class ux_t3lib_DB extends t3lib_DB {
 		$this->lastHandlerKey = $this->handler_getFromTableList($ORIG_tableName);
 		switch((string)$this->handlerCfg[$this->lastHandlerKey]['type'])	{
 			case 'native':
-			$this->lastQuery = $this->INSERTquery($table,$fields_values,$no_quote_fields);
-			if(is_string($this->lastQuery)) {
-				$sqlResult = mysql_query($this->lastQuery, $this->handlerInstance[$this->lastHandlerKey]['link']);
-			}
-			else {
-				$sqlResult = mysql_query($this->lastQuery[0], $this->handlerInstance[$this->lastHandlerKey]['link']);
-				foreach($this->lastQuery[1] as $field => $content) {
-					mysql_query('UPDATE '.$this->quoteFromTables($table).' SET '.$this->quoteFromTables($field).'='.$this->fullQuoteStr($content,$table).' WHERE '.$this->quoteWhereClause($where), $this->handlerInstance[$this->lastHandlerKey]['link']);
-				}
-			}
-			break;
-			case 'adodb':
-			// auto generate ID for auto_increment fields if not present (static import needs this!)
-			// should we check the table name here (static_*)?
-			if(isset($this->cache_autoIncFields[$table])) {
-				if(isset($fields_values[$this->cache_autoIncFields[$table]])) {
-					$new_id = $fields_values[$this->cache_autoIncFields[$table]];
-					if($table !== 'tx_dbal_debuglog') {
-						$this->handlerInstance[$this->lastHandlerKey]->last_insert_id = $new_id;
-					}
+				$this->lastQuery = $this->INSERTquery($table,$fields_values,$no_quote_fields);
+				if(is_string($this->lastQuery)) {
+					$sqlResult = mysql_query($this->lastQuery, $this->handlerInstance[$this->lastHandlerKey]['link']);
 				}
 				else {
-					$new_id = $this->handlerInstance[$this->lastHandlerKey]->GenID($table.'_'.$this->cache_autoIncFields[$table]);
-					$fields_values[$this->cache_autoIncFields[$table]] = $new_id;
-					if($table !== 'tx_dbal_debuglog') {
-						$this->handlerInstance[$this->lastHandlerKey]->last_insert_id = $new_id;
+					$sqlResult = mysql_query($this->lastQuery[0], $this->handlerInstance[$this->lastHandlerKey]['link']);
+					foreach($this->lastQuery[1] as $field => $content) {
+						mysql_query('UPDATE '.$this->quoteFromTables($table).' SET '.$this->quoteFromTables($field).'='.$this->fullQuoteStr($content,$table).' WHERE '.$this->quoteWhereClause($where), $this->handlerInstance[$this->lastHandlerKey]['link']);
 					}
 				}
-			}
-
-			$this->lastQuery = $this->INSERTquery($table,$fields_values,$no_quote_fields);
-			if(is_string($this->lastQuery)) {
-				$sqlResult = $this->handlerInstance[$this->lastHandlerKey]->_query($this->lastQuery,false);
-			}
-			else {
-				$this->handlerInstance[$this->lastHandlerKey]->StartTrans();
-				$sqlResult = $this->handlerInstance[$this->lastHandlerKey]->_query($this->lastQuery[0],false);
-				foreach($this->lastQuery[1] as $field => $content) {
-					if(empty($content)) continue;
-
-					if(isset($this->cache_autoIncFields[$table]) && isset($new_id)) {
-						$this->handlerInstance[$this->lastHandlerKey]->UpdateBlob($this->quoteFromTables($table),$field,$content,$this->quoteWhereClause($this->cache_autoIncFields[$table].'='.$new_id));
-					}
-					elseif(isset($this->cache_primaryKeys[$table])) {
-						$pks = explode(',', $this->cache_primaryKeys[$table]);
-						foreach ($pks as $pk) {
-							if(isset($fields_values[$pk]))
-							$where .= $pk.'='.$this->fullQuoteStr($fields_values[$pk], $table).' AND ';
+				break;
+			case 'adodb':
+				// auto generate ID for auto_increment fields if not present (static import needs this!)
+				// should we check the table name here (static_*)?
+				if(isset($this->cache_autoIncFields[$table])) {
+					if(isset($fields_values[$this->cache_autoIncFields[$table]])) {
+						$new_id = $fields_values[$this->cache_autoIncFields[$table]];
+						if($table !== 'tx_dbal_debuglog') {
+							$this->handlerInstance[$this->lastHandlerKey]->last_insert_id = $new_id;
 						}
-						$where = $this->quoteWhereClause($where.'1=1');
-						$this->handlerInstance[$this->lastHandlerKey]->UpdateBlob($this->quoteFromTables($table),$field,$content,$where);
-					}
-					else {
-						$this->handlerInstance[$this->lastHandlerKey]->CompleteTrans(false);
-						die('Could not update BLOB >>>> no WHERE clause found!'); // should never ever happen
+					} else {
+						$new_id = $this->handlerInstance[$this->lastHandlerKey]->GenID($table.'_'.$this->cache_autoIncFields[$table]);
+						$fields_values[$this->cache_autoIncFields[$table]] = $new_id;
+						if($table !== 'tx_dbal_debuglog') {
+							$this->handlerInstance[$this->lastHandlerKey]->last_insert_id = $new_id;
+						}
 					}
 				}
-				$this->handlerInstance[$this->lastHandlerKey]->CompleteTrans();
-			}
-			break;
+
+				$this->lastQuery = $this->INSERTquery($table,$fields_values,$no_quote_fields);
+				if(is_string($this->lastQuery)) {
+					$sqlResult = $this->handlerInstance[$this->lastHandlerKey]->_query($this->lastQuery,false);
+				} else {
+					$this->handlerInstance[$this->lastHandlerKey]->StartTrans();
+					$sqlResult = $this->handlerInstance[$this->lastHandlerKey]->_query($this->lastQuery[0],false);
+					foreach($this->lastQuery[1] as $field => $content) {
+						if(empty($content)) continue;
+
+						if(isset($this->cache_autoIncFields[$table]) && isset($new_id)) {
+							$this->handlerInstance[$this->lastHandlerKey]->UpdateBlob($this->quoteFromTables($table),$field,$content,$this->quoteWhereClause($this->cache_autoIncFields[$table].'='.$new_id));
+						} elseif(isset($this->cache_primaryKeys[$table])) {
+							$pks = explode(',', $this->cache_primaryKeys[$table]);
+							foreach ($pks as $pk) {
+								if(isset($fields_values[$pk]))
+								$where .= $pk.'='.$this->fullQuoteStr($fields_values[$pk], $table).' AND ';
+							}
+							$where = $this->quoteWhereClause($where.'1=1');
+							$this->handlerInstance[$this->lastHandlerKey]->UpdateBlob($this->quoteFromTables($table),$field,$content,$where);
+						} else {
+							$this->handlerInstance[$this->lastHandlerKey]->CompleteTrans(false);
+							die('Could not update BLOB >>>> no WHERE clause found!'); // should never ever happen
+						}
+					}
+					$this->handlerInstance[$this->lastHandlerKey]->CompleteTrans();
+				}
+				break;
 			case 'userdefined':
-			$sqlResult = $this->handlerInstance[$this->lastHandlerKey]->exec_INSERTquery($table,$fields_values,$no_quote_fields);
-			break;
+				$sqlResult = $this->handlerInstance[$this->lastHandlerKey]->exec_INSERTquery($table,$fields_values,$no_quote_fields);
+				break;
 		}
 
-		// Print errors:
-		if ($this->printErrors && $this->sql_error())	{ debug(array($this->lastQuery, $this->sql_error()));	}
+		if ($this->printErrors && $this->sql_error())	{
+			debug(array($this->lastQuery, $this->sql_error()));
+		}
 
-		# DEBUG:
 		if ($this->debug)	{
 			$this->debugHandler(
 			'exec_INSERTquery',
@@ -480,39 +469,39 @@ class ux_t3lib_DB extends t3lib_DB {
 		$this->lastHandlerKey = $this->handler_getFromTableList($ORIG_tableName);
 		switch((string)$this->handlerCfg[$this->lastHandlerKey]['type'])	{
 			case 'native':
-			$this->lastQuery = $this->UPDATEquery($table,$where,$fields_values,$no_quote_fields);
-			if(is_string($this->lastQuery)) {
-				$sqlResult = mysql_query($this->lastQuery, $this->handlerInstance[$this->lastHandlerKey]['link']);
-			}
-			else {
-				$sqlResult = mysql_query($this->lastQuery[0], $this->handlerInstance[$this->lastHandlerKey]['link']);
-				foreach($this->lastQuery[1] as $field => $content) {
-					mysql_query('UPDATE '.$this->quoteFromTables($table).' SET '.$this->quoteFromTables($field).'='.$this->fullQuoteStr($content,$table).' WHERE '.$this->quoteWhereClause($where), $this->handlerInstance[$this->lastHandlerKey]['link']);
+				$this->lastQuery = $this->UPDATEquery($table,$where,$fields_values,$no_quote_fields);
+				if(is_string($this->lastQuery)) {
+					$sqlResult = mysql_query($this->lastQuery, $this->handlerInstance[$this->lastHandlerKey]['link']);
 				}
-			}
+				else {
+					$sqlResult = mysql_query($this->lastQuery[0], $this->handlerInstance[$this->lastHandlerKey]['link']);
+					foreach($this->lastQuery[1] as $field => $content) {
+						mysql_query('UPDATE '.$this->quoteFromTables($table).' SET '.$this->quoteFromTables($field).'='.$this->fullQuoteStr($content,$table).' WHERE '.$this->quoteWhereClause($where), $this->handlerInstance[$this->lastHandlerKey]['link']);
+					}
+				}
 			break;
 			case 'adodb':
-			$this->lastQuery = $this->UPDATEquery($table,$where,$fields_values,$no_quote_fields);
-			if(is_string($this->lastQuery)) {
-				$sqlResult = $this->handlerInstance[$this->lastHandlerKey]->_query($this->lastQuery,false);
-			} else {
-				$this->handlerInstance[$this->lastHandlerKey]->StartTrans();
-				$sqlResult = $this->handlerInstance[$this->lastHandlerKey]->_query($this->lastQuery[0],false);
-				foreach($this->lastQuery[1] as $field => $content) {
-					$this->handlerInstance[$this->lastHandlerKey]->UpdateBlob($this->quoteFromTables($table),$field,$content,$this->quoteWhereClause($where));
+				$this->lastQuery = $this->UPDATEquery($table,$where,$fields_values,$no_quote_fields);
+				if(is_string($this->lastQuery)) {
+					$sqlResult = $this->handlerInstance[$this->lastHandlerKey]->_query($this->lastQuery,false);
+				} else {
+					$this->handlerInstance[$this->lastHandlerKey]->StartTrans();
+					$sqlResult = $this->handlerInstance[$this->lastHandlerKey]->_query($this->lastQuery[0],false);
+					foreach($this->lastQuery[1] as $field => $content) {
+						$this->handlerInstance[$this->lastHandlerKey]->UpdateBlob($this->quoteFromTables($table),$field,$content,$this->quoteWhereClause($where));
+					}
+					$this->handlerInstance[$this->lastHandlerKey]->CompleteTrans();
 				}
-				$this->handlerInstance[$this->lastHandlerKey]->CompleteTrans();
-			}
-			break;
+				break;
 			case 'userdefined':
-			$sqlResult = $this->handlerInstance[$this->lastHandlerKey]->exec_UPDATEquery($table,$where,$fields_values,$no_quote_fields);
-			break;
+				$sqlResult = $this->handlerInstance[$this->lastHandlerKey]->exec_UPDATEquery($table,$where,$fields_values,$no_quote_fields);
+				break;
 		}
 
-		// Print errors:
-		if ($this->printErrors && $this->sql_error())	{ debug(array($this->lastQuery, $this->sql_error()));	}
+		if ($this->printErrors && $this->sql_error())	{
+			debug(array($this->lastQuery, $this->sql_error()));
+		}
 
-		# DEBUG:
 		if ($this->debug)	{
 			$this->debugHandler(
 			'exec_UPDATEquery',
@@ -559,22 +548,22 @@ class ux_t3lib_DB extends t3lib_DB {
 		$this->lastHandlerKey = $this->handler_getFromTableList($ORIG_tableName);
 		switch((string)$this->handlerCfg[$this->lastHandlerKey]['type'])	{
 			case 'native':
-			$this->lastQuery = $this->DELETEquery($table,$where);
-			$sqlResult = mysql_query($this->lastQuery, $this->handlerInstance[$this->lastHandlerKey]['link']);
-			break;
+				$this->lastQuery = $this->DELETEquery($table,$where);
+				$sqlResult = mysql_query($this->lastQuery, $this->handlerInstance[$this->lastHandlerKey]['link']);
+				break;
 			case 'adodb':
-			$this->lastQuery = $this->DELETEquery($table,$where);
-			$sqlResult = $this->handlerInstance[$this->lastHandlerKey]->_query($this->lastQuery,false);
-			break;
+				$this->lastQuery = $this->DELETEquery($table,$where);
+				$sqlResult = $this->handlerInstance[$this->lastHandlerKey]->_query($this->lastQuery,false);
+				break;
 			case 'userdefined':
-			$sqlResult = $this->handlerInstance[$this->lastHandlerKey]->exec_DELETEquery($table,$where);
-			break;
+				$sqlResult = $this->handlerInstance[$this->lastHandlerKey]->exec_DELETEquery($table,$where);
+				break;
 		}
 
-		// Print errors:
-		if ($this->printErrors && $this->sql_error())	{ debug(array($this->lastQuery, $this->sql_error()));	}
+		if ($this->printErrors && $this->sql_error())	{
+			debug(array($this->lastQuery, $this->sql_error()));
+		}
 
-		# DEBUG:
 		if ($this->debug)	{
 			$this->debugHandler(
 			'exec_DELETEquery',
@@ -617,43 +606,43 @@ class ux_t3lib_DB extends t3lib_DB {
 		$hType = (string)$this->handlerCfg[$this->lastHandlerKey]['type'];
 		switch($hType)	{
 			case 'native':
-			$this->lastQuery = $this->SELECTquery($select_fields,$from_table,$where_clause,$groupBy,$orderBy,$limit);
-			$sqlResult = mysql_query($this->lastQuery, $this->handlerInstance[$this->lastHandlerKey]['link']);
-			$this->resourceIdToTableNameMap[(string)$sqlResult] = $ORIG_tableName;
-			break;
+				$this->lastQuery = $this->SELECTquery($select_fields,$from_table,$where_clause,$groupBy,$orderBy,$limit);
+				$sqlResult = mysql_query($this->lastQuery, $this->handlerInstance[$this->lastHandlerKey]['link']);
+				$this->resourceIdToTableNameMap[(string)$sqlResult] = $ORIG_tableName;
+				break;
 			case 'adodb':
-			if ($limit!='')	{
-				$splitLimit = t3lib_div::intExplode(',',$limit);		// Splitting the limit values:
-				if ($splitLimit[1])	{	// If there are two parameters, do mapping differently than otherwise:
-					$numrows = $splitLimit[1];
-					$offset = $splitLimit[0];
-				} else {
-					$numrows = $splitLimit[0];
-					$offset = 0;
-				}
+				if ($limit!='')	{
+					$splitLimit = t3lib_div::intExplode(',',$limit);		// Splitting the limit values:
+					if ($splitLimit[1])	{	// If there are two parameters, do mapping differently than otherwise:
+						$numrows = $splitLimit[1];
+						$offset = $splitLimit[0];
+					} else {
+						$numrows = $splitLimit[0];
+						$offset = 0;
+					}
 
-				$sqlResult = $this->handlerInstance[$this->lastHandlerKey]->SelectLimit($this->SELECTquery($select_fields,$from_table,$where_clause,$groupBy,$orderBy), $numrows, $offset);
-				$this->lastQuery = $sqlResult->sql;
-			} else {
-				$this->lastQuery = $this->SELECTquery($select_fields,$from_table,$where_clause,$groupBy,$orderBy);
-				$sqlResult = $this->handlerInstance[$this->lastHandlerKey]->_Execute($this->lastQuery);
-			}
-			$sqlResult->TYPO3_DBAL_handlerType = 'adodb';	// Setting handler type in result object (for later recognition!)
-			$sqlResult->TYPO3_DBAL_tableList = $ORIG_tableName;
-			break;
-			case 'userdefined':
-			$sqlResult = $this->handlerInstance[$this->lastHandlerKey]->exec_SELECTquery($select_fields,$from_table,$where_clause,$groupBy,$orderBy,$limit);
-			if (is_object($sqlResult))	{
-				$sqlResult->TYPO3_DBAL_handlerType = 'userdefined';	// Setting handler type in result object (for later recognition!)
+					$sqlResult = $this->handlerInstance[$this->lastHandlerKey]->SelectLimit($this->SELECTquery($select_fields,$from_table,$where_clause,$groupBy,$orderBy), $numrows, $offset);
+					$this->lastQuery = $sqlResult->sql;
+				} else {
+					$this->lastQuery = $this->SELECTquery($select_fields,$from_table,$where_clause,$groupBy,$orderBy);
+					$sqlResult = $this->handlerInstance[$this->lastHandlerKey]->_Execute($this->lastQuery);
+				}
+				$sqlResult->TYPO3_DBAL_handlerType = 'adodb';	// Setting handler type in result object (for later recognition!)
 				$sqlResult->TYPO3_DBAL_tableList = $ORIG_tableName;
-			}
-			break;
+				break;
+			case 'userdefined':
+				$sqlResult = $this->handlerInstance[$this->lastHandlerKey]->exec_SELECTquery($select_fields,$from_table,$where_clause,$groupBy,$orderBy,$limit);
+				if (is_object($sqlResult))	{
+					$sqlResult->TYPO3_DBAL_handlerType = 'userdefined';	// Setting handler type in result object (for later recognition!)
+					$sqlResult->TYPO3_DBAL_tableList = $ORIG_tableName;
+				}
+				break;
 		}
 
-		// Print errors:
-		if ($this->printErrors && $this->sql_error())	{ debug(array($this->lastQuery, $this->sql_error())); }
+		if ($this->printErrors && $this->sql_error())	{
+			debug(array($this->lastQuery, $this->sql_error()));
+		}
 
-		# DEBUG:
 		if ($this->debug)	{
 			$this->debugHandler(
 			'exec_SELECTquery',
@@ -1068,17 +1057,17 @@ class ux_t3lib_DB extends t3lib_DB {
 		$this->lastHandlerKey = $this->handler_getFromTableList($table);
 		switch((string)$this->handlerCfg[$this->lastHandlerKey]['type'])	{
 			case 'native':
-			$str = mysql_real_escape_string($str, $this->handlerInstance[$this->lastHandlerKey]['link']);
-			break;
+				$str = mysql_real_escape_string($str, $this->handlerInstance[$this->lastHandlerKey]['link']);
+				break;
 			case 'adodb':
-			$str = substr($this->handlerInstance[$this->lastHandlerKey]->qstr($str),1,-1);
-			break;
+				$str = substr($this->handlerInstance[$this->lastHandlerKey]->qstr($str),1,-1);
+				break;
 			case 'userdefined':
-			$str = $this->handlerInstance[$this->lastHandlerKey]->quoteStr($str);
-			break;
+				$str = $this->handlerInstance[$this->lastHandlerKey]->quoteStr($str);
+				break;
 			default:
-			die('No handler found!!!');
-			break;
+				die('No handler found!!!');
+				break;
 		}
 
 		return $str;
@@ -1120,13 +1109,12 @@ class ux_t3lib_DB extends t3lib_DB {
 			case 'STRING':
 			case 'CHAR':
 			case 'VARCHAR':
-			//		case 'TINYBLOB': // moved below, see there for the reason
-			//		case 'TINYTEXT': // moved below, see there for the reason
+			case 'TINYBLOB':
+			case 'TINYTEXT':
 			case 'ENUM':
 			case 'SET':
 			return 'C';
 
-			case 'TINYTEXT': // basically the same as with TINYBLOB
 			case 'TEXT':
 			case 'LONGTEXT':
 			case 'MEDIUMTEXT':
@@ -1135,9 +1123,6 @@ class ux_t3lib_DB extends t3lib_DB {
 			// php_mysql extension always returns 'blob' even if 'text'
 			// so we have to check whether binary...
 			case 'IMAGE':
-			case 'TINYBLOB': // this got moved here from above.
-			// otherwise tinyblob fields become varchar without length.
-			// this fails on Oracle and results in char(1) on PostgreSQL
 			case 'LONGBLOB':
 			case 'BLOB':
 			case 'MEDIUMBLOB':
@@ -1156,7 +1141,7 @@ class ux_t3lib_DB extends t3lib_DB {
 
 			case 'INT':
 			case 'INTEGER': return 'I';
-			case 'TINYINT': return 'I1';
+			case 'TINYINT': // MS SQL Server allows only 0..255 for tinyint, so we do not map to I1
 			case 'SMALLINT': return 'I2';
 			case 'MEDIUMINT': return 'I4';
 			case 'BIGINT': return 'I8';
@@ -1187,7 +1172,7 @@ class ux_t3lib_DB extends t3lib_DB {
 			case 'L': return 'TINYINT';
 
 			case 'I': return 'INT';
-			case 'I1': return 'TINYINT';
+			case 'I1': // MS SQL Server allows only 0..255 for tinyint, so we do not map to TINYINT
 			case 'I2': return 'SMALLINT';
 			case 'I4': return 'MEDIUMINT';
 			case 'I8': return 'BIGINT';
@@ -1218,14 +1203,14 @@ class ux_t3lib_DB extends t3lib_DB {
 
 		switch($this->handlerCfg[$this->lastHandlerKey]['type'])	{
 			case 'native':
-			$output = mysql_error($this->handlerInstance[$this->lastHandlerKey]['link']);
-			break;
+				$output = mysql_error($this->handlerInstance[$this->lastHandlerKey]['link']);
+				break;
 			case 'adodb':
-			$output = $this->handlerInstance[$this->lastHandlerKey]->ErrorMsg();
-			break;
+				$output = $this->handlerInstance[$this->lastHandlerKey]->ErrorMsg();
+				break;
 			case 'userdefined':
-			$output = $this->handlerInstance[$this->lastHandlerKey]->sql_error();
-			break;
+				$output = $this->handlerInstance[$this->lastHandlerKey]->sql_error();
+				break;
 		}
 		return $output;
 	}
@@ -1241,14 +1226,14 @@ class ux_t3lib_DB extends t3lib_DB {
 		$handlerType = is_object($res) ? $res->TYPO3_DBAL_handlerType : 'native';
 		switch($handlerType)	{
 			case 'native':
-			$output = mysql_num_rows($res);
-			break;
+				$output = mysql_num_rows($res);
+				break;
 			case 'adodb':
-			$output = method_exists($res, 'RecordCount') ? $res->RecordCount() : 0;
-			break;
+				$output = method_exists($res, 'RecordCount') ? $res->RecordCount() : 0;
+				break;
 			case 'userdefined':
-			$output = $res->sql_num_rows();
-			break;
+				$output = $res->sql_num_rows();
+				break;
 		}
 		return $output;
 	}
@@ -1265,30 +1250,31 @@ class ux_t3lib_DB extends t3lib_DB {
 		$handlerType = is_object($res) ? $res->TYPO3_DBAL_handlerType : (is_resource($res) ? 'native' : false);
 		switch($handlerType)	{
 			case 'native':
-			$output = mysql_fetch_assoc($res);
-			$tableList = $this->resourceIdToTableNameMap[(string)$res];	// Reading list of tables from SELECT query:
-			break;
+				$output = mysql_fetch_assoc($res);
+				$tableList = $this->resourceIdToTableNameMap[(string)$res];	// Reading list of tables from SELECT query:
+				break;
 			case 'adodb':
-			// Check if method exists for the current $res object.
-			// If a table exists in TCA but not in the db, a error
-			// occured because $res is not a valid object.
-			if(method_exists($res, 'FetchRow')) {
-				$output = $res->FetchRow();
-				$tableList = $res->TYPO3_DBAL_tableList;	// Reading list of tables from SELECT query:
+					// Check if method exists for the current $res object.
+					// If a table exists in TCA but not in the db, a error
+					// occured because $res is not a valid object.
+				if(method_exists($res, 'FetchRow')) {
+					$output = $res->FetchRow();
+					$tableList = $res->TYPO3_DBAL_tableList;	// Reading list of tables from SELECT query:
 
-				// Removing all numeric/integer keys.
-				// Just a temporary workaround till I know how to make ADOdb return this by default... Most likely this will not work with other databases than MySQL
-				if (is_array($output))	{
-					foreach($output as $key => $value)	{
-						if (is_integer($key))	unset($output[$key]);
+						// Removing all numeric/integer keys.
+						// A workaround because in ADOdb we would need to know what we want before executing the query...
+					if (is_array($output))	{
+						foreach($output as $key => $value)	{
+							if (is_integer($key))	unset($output[$key]);
+							elseif($value===' ' && strstr($GLOBALS['TYPO3_DB']->handlerCfg[$GLOBALS['TYPO3_DB']->lastHandlerKey]['config']['driver'],'mssql')) $output[$key]=''; // MSSQL does not know such thing as an empty string. So it returns one space instead, which we must fix.
+						}
 					}
 				}
-			}
-			break;
+				break;
 			case 'userdefined':
-			$output = $res->sql_fetch_assoc();
-			$tableList = $res->TYPO3_DBAL_tableList;	// Reading list of tables from SELECT query:
-			break;
+				$output = $res->sql_fetch_assoc();
+				$tableList = $res->TYPO3_DBAL_tableList;	// Reading list of tables from SELECT query:
+				break;
 		}
 
 		// Table/Fieldname mapping:
@@ -1313,27 +1299,28 @@ class ux_t3lib_DB extends t3lib_DB {
 		$handlerType = is_object($res) ? $res->TYPO3_DBAL_handlerType :  'native';
 		switch($handlerType)	{
 			case 'native':
-			$output = mysql_fetch_row($res);
-			break;
+				$output = mysql_fetch_row($res);
+				break;
 			case 'adodb':
-			// Check if method exists for the current $res object.
-			// If a table exists in TCA but not in the db, a error
-			// occured because $res is not a valid object.
-			if(method_exists($res, 'FetchRow')) {
-				$output = $res->FetchRow();
+					// Check if method exists for the current $res object.
+					// If a table exists in TCA but not in the db, a error
+					// occured because $res is not a valid object.
+				if(method_exists($res, 'FetchRow')) {
+					$output = $res->FetchRow();
 
-				// Removing all assoc. keys.
-				// Just a temporary workaround till I know how to make ADOdb return this by default... Most likely this will not work with other databases than MySQL
-				if (is_array($output))	{
-					foreach($output as $key => $value)	{
-						if (!is_integer($key))	unset($output[$key]);
+						// Removing all assoc. keys.
+						// A workaround because in ADOdb we would need to know what we want before executing the query...
+					if (is_array($output))	{
+						foreach($output as $key => $value)	{
+							if (!is_integer($key))	unset($output[$key]);
+							elseif($value===' ' && strstr($GLOBALS['TYPO3_DB']->handlerCfg[$GLOBALS['TYPO3_DB']->lastHandlerKey]['config']['driver'],'mssql')) $output[$key]=''; // MSSQL does not know such thing as an empty string. So it returns one space instead, which we must fix.
+						}
 					}
 				}
-			}
-			break;
+				break;
 			case 'userdefined':
-			$output = $res->sql_fetch_row();
-			break;
+				$output = $res->sql_fetch_row();
+				break;
 		}
 		return $output;
 	}
@@ -1349,20 +1336,20 @@ class ux_t3lib_DB extends t3lib_DB {
 		$handlerType = is_object($res) ? $res->TYPO3_DBAL_handlerType :  'native';
 		switch($handlerType)	{
 			case 'native':
-			$output = mysql_free_result($res);
-			break;
+				$output = mysql_free_result($res);
+				break;
 			case 'adodb':
-			if(method_exists($res, 'Close')) {
-				$res->Close();
-				unset($res);
-				$output = true;
-			} else {
-				$output = false;
-			}
-			break;
+				if(method_exists($res, 'Close')) {
+					$res->Close();
+					unset($res);
+					$output = true;
+				} else {
+					$output = false;
+				}
+				break;
 			case 'userdefined':
-			unset($res);
-			break;
+				unset($res);
+				break;
 		}
 		return $output;
 	}
@@ -1376,14 +1363,14 @@ class ux_t3lib_DB extends t3lib_DB {
 
 		switch($this->handlerCfg[$this->lastHandlerKey]['type'])	{
 			case 'native':
-			$output = mysql_insert_id($this->handlerInstance[$this->lastHandlerKey]['link']);
-			break;
+				$output = mysql_insert_id($this->handlerInstance[$this->lastHandlerKey]['link']);
+				break;
 			case 'adodb':
-			$output = $this->handlerInstance[$this->lastHandlerKey]->last_insert_id;
-			break;
+				$output = $this->handlerInstance[$this->lastHandlerKey]->last_insert_id;
+				break;
 			case 'userdefined':
-			$output = $this->handlerInstance[$this->lastHandlerKey]->sql_insert_id();
-			break;
+				$output = $this->handlerInstance[$this->lastHandlerKey]->sql_insert_id();
+				break;
 		}
 		return $output;
 	}
@@ -1397,14 +1384,14 @@ class ux_t3lib_DB extends t3lib_DB {
 
 		switch($this->handlerCfg[$this->lastHandlerKey]['type'])	{
 			case 'native':
-			$output = mysql_affected_rows();
-			break;
+				$output = mysql_affected_rows();
+				break;
 			case 'adodb':
-			$output = $this->handlerInstance[$this->lastHandlerKey]->Affected_Rows();
-			break;
+				$output = $this->handlerInstance[$this->lastHandlerKey]->Affected_Rows();
+				break;
 			case 'userdefined':
-			$output = $this->handlerInstance[$this->lastHandlerKey]->sql_affected_rows();
-			break;
+				$output = $this->handlerInstance[$this->lastHandlerKey]->sql_affected_rows();
+				break;
 		}
 		return $output;
 	}
@@ -1421,14 +1408,14 @@ class ux_t3lib_DB extends t3lib_DB {
 		$handlerType = is_object($res) ? $res->TYPO3_DBAL_handlerType :  'native';
 		switch($handlerType)	{
 			case 'native':
-			$output = mysql_data_seek($res,$seek);
-			break;
+				$output = mysql_data_seek($res,$seek);
+				break;
 			case 'adodb':
-			$output = $res->Move($seek);
-			break;
+				$output = $res->Move($seek);
+				break;
 			case 'userdefined':
-			$output = $res->sql_data_seek($seek);
-			break;
+				$output = $res->sql_data_seek($seek);
+				break;
 		}
 		return $output;
 	}
@@ -1470,17 +1457,17 @@ class ux_t3lib_DB extends t3lib_DB {
 
 		switch($handlerType)	{
 			case 'native':
-			$output = mysql_field_type($res,$pointer);
-			break;
+				$output = mysql_field_type($res,$pointer);
+				break;
 			case 'adodb':
-			if(is_string($pointer)){
-				$output = $this->cache_fieldType[$res][$pointer]['type'];
-			}
+				if(is_string($pointer)){
+					$output = $this->cache_fieldType[$res][$pointer]['type'];
+				}
 
-			break;
+				break;
 			case 'userdefined':
-			$output = $res->sql_field_type($pointer);
-			break;
+				$output = $res->sql_field_type($pointer);
+				break;
 		}
 
 		return $output;
@@ -1525,20 +1512,21 @@ class ux_t3lib_DB extends t3lib_DB {
 
 		switch($this->handlerCfg['_DEFAULT']['type'])	{
 			case 'native':
-			$sqlResult = mysql_query($query, $this->handlerInstance['_DEFAULT']['link']);
-			break;
+				$sqlResult = mysql_query($query, $this->handlerInstance['_DEFAULT']['link']);
+				break;
 			case 'adodb':
-			$sqlResult = $this->handlerInstance['_DEFAULT']->Execute($query);
-			$sqlResult->TYPO3_DBAL_handlerType = 'adodb';
-			break;
+				$sqlResult = $this->handlerInstance['_DEFAULT']->Execute($query);
+				$sqlResult->TYPO3_DBAL_handlerType = 'adodb';
+				break;
 			case 'userdefined':
-			$sqlResult = $this->handlerInstance['_DEFAULT']->sql_query($query);
-			$sqlResult->TYPO3_DBAL_handlerType = 'userdefined';
-			break;
+				$sqlResult = $this->handlerInstance['_DEFAULT']->sql_query($query);
+				$sqlResult->TYPO3_DBAL_handlerType = 'userdefined';
+				break;
 		}
 
-			// Print errors:
-		if ($this->printErrors && $this->sql_error())	{ debug(array($this->lastQuery, $this->sql_error()));	}
+		if ($this->printErrors && $this->sql_error())	{
+			debug(array($this->lastQuery, $this->sql_error()));
+		}
 
 		return $sqlResult;
 	}
@@ -1610,28 +1598,28 @@ class ux_t3lib_DB extends t3lib_DB {
 		$dbArr = array();
 		switch($this->handlerCfg['_DEFAULT']['type'])	{
 			case 'native':
-			$db_list = mysql_list_dbs($this->link);
-			while ($row = mysql_fetch_object($db_list)) {
-				if ($this->sql_select_db($row->Database))	{
-					$dbArr[] = $row->Database;
-				}
-			}
-			break;
-			case 'adodb':
-			// check needed for install tool - otherwise it will just die because the call to
-			// MetaDatabases is done on a stdClass instance
-			if(method_exists($this->handlerInstance['_DEFAULT'],'MetaDatabases')) {
-				$sqlDBs = $this->handlerInstance['_DEFAULT']->MetaDatabases();
-				if(is_array($sqlDBs)) {
-					foreach($sqlDBs as $k => $theDB) {
-						$dbArr[] = $theDB;
+				$db_list = mysql_list_dbs($this->link);
+				while ($row = mysql_fetch_object($db_list)) {
+					if ($this->sql_select_db($row->Database))	{
+						$dbArr[] = $row->Database;
 					}
 				}
-			}
-			break;
+				break;
+			case 'adodb':
+					// check needed for install tool - otherwise it will just die because the call to
+					// MetaDatabases is done on a stdClass instance
+				if(method_exists($this->handlerInstance['_DEFAULT'],'MetaDatabases')) {
+					$sqlDBs = $this->handlerInstance['_DEFAULT']->MetaDatabases();
+					if(is_array($sqlDBs)) {
+						foreach($sqlDBs as $k => $theDB) {
+							$dbArr[] = $theDB;
+						}
+					}
+				}
+				break;
 			case 'userdefined':
-			$dbArr = $this->handlerInstance['_DEFAULT']->admin_get_tables();
-			break;
+				$dbArr = $this->handlerInstance['_DEFAULT']->admin_get_tables();
+				break;
 		}
 
 		return $dbArr;
@@ -1649,22 +1637,22 @@ class ux_t3lib_DB extends t3lib_DB {
 		// Getting real list of tables:
 		switch($this->handlerCfg['_DEFAULT']['type'])	{
 			case 'native':
-			$tables_result = mysql_list_tables(TYPO3_db, $this->handlerInstance['_DEFAULT']['link']);
-			if (!$this->sql_error())	{
-				while ($theTable = $this->sql_fetch_assoc($tables_result)) {
-					$whichTables[current($theTable)] = current($theTable);
+				$tables_result = mysql_list_tables(TYPO3_db, $this->handlerInstance['_DEFAULT']['link']);
+				if (!$this->sql_error())	{
+					while ($theTable = $this->sql_fetch_assoc($tables_result)) {
+						$whichTables[current($theTable)] = current($theTable);
+					}
 				}
-			}
-			break;
+				break;
 			case 'adodb':
-			$sqlTables = $this->handlerInstance['_DEFAULT']->MetaTables('TABLES');
-			while (list($k, $theTable) = each($sqlTables)) {
-				$whichTables[$theTable] = $theTable;
-			}
-			break;
+				$sqlTables = $this->handlerInstance['_DEFAULT']->MetaTables('TABLES');
+				while (list($k, $theTable) = each($sqlTables)) {
+					$whichTables[$theTable] = $theTable;
+				}
+				break;
 			case 'userdefined':
-			$whichTables = $this->handlerInstance['_DEFAULT']->admin_get_tables();
-			break;
+				$whichTables = $this->handlerInstance['_DEFAULT']->admin_get_tables();
+				break;
 		}
 
 		// Check mapping:
@@ -1721,29 +1709,29 @@ class ux_t3lib_DB extends t3lib_DB {
 		$this->lastHandlerKey = $this->handler_getFromTableList($ORIG_tableName);
 		switch((string)$this->handlerCfg[$this->lastHandlerKey]['type'])	{
 			case 'native':
-			$columns_res = mysql_query('SHOW columns FROM '.$tableName, $this->handlerInstance[$this->lastHandlerKey]['link']);
-			while($fieldRow = mysql_fetch_assoc($columns_res))	{
-				$output[$fieldRow['Field']] = $fieldRow;
-			}
-			break;
+				$columns_res = mysql_query('SHOW columns FROM '.$tableName, $this->handlerInstance[$this->lastHandlerKey]['link']);
+				while($fieldRow = mysql_fetch_assoc($columns_res))	{
+					$output[$fieldRow['Field']] = $fieldRow;
+				}
+				break;
 			case 'adodb':
-			$fieldRows = $this->handlerInstance[$this->lastHandlerKey]->MetaColumns($tableName, false);
-			foreach($fieldRows as $k => $fieldRow) {
-				settype($fieldRow, 'array');
-				$fieldRow['Field'] = $fieldRow['name'];
-				$ntype = $this->MySQLActualType($this->MetaType($fieldRow['type'],$tableName));
-				$ntype .= (($fieldRow['max_length'] != -1) ? (($ntype == 'INT') ? '(11)' :'('.$fieldRow['max_length'].')') : '');
-				$fieldRow['Type'] = strtolower($ntype);
-				$fieldRow['Null'] = '';
-				$fieldRow['Key'] = '';
-				$fieldRow['Default'] = $fieldRow['default_value'];
-				$fieldRow['Extra'] = '';
-				$output[$fieldRow['name']] = $fieldRow;
-			}
-			break;
+				$fieldRows = $this->handlerInstance[$this->lastHandlerKey]->MetaColumns($tableName, false);
+				foreach($fieldRows as $k => $fieldRow) {
+					settype($fieldRow, 'array');
+					$fieldRow['Field'] = $fieldRow['name'];
+					$ntype = $this->MySQLActualType($this->MetaType($fieldRow['type'],$tableName));
+					$ntype .= (($fieldRow['max_length'] != -1) ? (($ntype == 'INT') ? '(11)' :'('.$fieldRow['max_length'].')') : '');
+					$fieldRow['Type'] = strtolower($ntype);
+					$fieldRow['Null'] = '';
+					$fieldRow['Key'] = '';
+					$fieldRow['Default'] = $fieldRow['default_value'];
+					$fieldRow['Extra'] = '';
+					$output[$fieldRow['name']] = $fieldRow;
+				}
+				break;
 			case 'userdefined':
-			$output = $this->handlerInstance[$this->lastHandlerKey]->admin_get_fields($tableName);
-			break;
+				$output = $this->handlerInstance[$this->lastHandlerKey]->admin_get_fields($tableName);
+				break;
 		}
 
 		// mapping should be done:
@@ -1888,16 +1876,18 @@ class ux_t3lib_DB extends t3lib_DB {
 				case 'CREATETABLE':
 				case 'ALTERTABLE':
 				case 'DROPTABLE':
-				if(file_exists(PATH_typo3conf.'temp_fieldInfo.php'))
-				unlink(PATH_typo3conf.'temp_fieldInfo.php');
-				$this->map_genericQueryParsed($parsedQuery);
-				break;
+					if(file_exists(PATH_typo3conf.'temp_fieldInfo.php')) unlink(PATH_typo3conf.'temp_fieldInfo.php');
+					$this->map_genericQueryParsed($parsedQuery);
+					break;
 				case 'INSERT':
-				$this->map_genericQueryParsed($parsedQuery);
-				break;
+					$this->map_genericQueryParsed($parsedQuery);
+					break;
+				case 'CREATEDATABASE':
+					die('Creating a database with DBAL is not supported. Did you really read the manual?');
+					break;
 				default:
-				die('ERROR: Invalid Query type ('.$parsedQuery['type'].') for ->admin_query() function!: "'.htmlspecialchars($query).'"');
-				break;
+					die('ERROR: Invalid Query type ('.$parsedQuery['type'].') for ->admin_query() function!: "'.htmlspecialchars($query).'"');
+					break;
 			}
 
 			// Setting query array (for other applications to access if needed)
@@ -1907,25 +1897,25 @@ class ux_t3lib_DB extends t3lib_DB {
 			$this->lastHandlerKey = $this->handler_getFromTableList($ORIG_table);
 			switch((string)$this->handlerCfg[$this->lastHandlerKey]['type'])	{
 				case 'native':
-				// Compiling query:
-				$compiledQuery =  $this->SQLparser->compileSQL($this->lastParsedAndMappedQueryArray);
+					// Compiling query:
+					$compiledQuery =  $this->SQLparser->compileSQL($this->lastParsedAndMappedQueryArray);
 
-				return mysql_query($compiledQuery[0], $this->link);
-				break;
+					return mysql_query($compiledQuery[0], $this->link);
+					break;
 				case 'adodb':
-				// Compiling query:
-				$compiledQuery =  $this->SQLparser->compileSQL($this->lastParsedAndMappedQueryArray);
-				if($this->lastParsedAndMappedQueryArray['type']=='INSERT') {
-					return $this->exec_INSERTquery($this->lastParsedAndMappedQueryArray['TABLE'],$compiledQuery);
-				}
-				return $this->handlerInstance[$this->lastHandlerKey]->DataDictionary->ExecuteSQLArray($compiledQuery);
-				break;
+					// Compiling query:
+					$compiledQuery =  $this->SQLparser->compileSQL($this->lastParsedAndMappedQueryArray);
+					if($this->lastParsedAndMappedQueryArray['type']=='INSERT') {
+						return $this->exec_INSERTquery($this->lastParsedAndMappedQueryArray['TABLE'],$compiledQuery);
+					}
+					return $this->handlerInstance[$this->lastHandlerKey]->DataDictionary->ExecuteSQLArray($compiledQuery);
+					break;
 				case 'userdefined':
-				// Compiling query:
-				$compiledQuery =  $this->SQLparser->compileSQL($this->lastParsedAndMappedQueryArray);
+					// Compiling query:
+					$compiledQuery =  $this->SQLparser->compileSQL($this->lastParsedAndMappedQueryArray);
 
-				return $this->handlerInstance[$this->lastHandlerKey]->admin_query($compiledQuery);
-				break;
+					return $this->handlerInstance[$this->lastHandlerKey]->admin_query($compiledQuery);
+					break;
 			}
 		} else die('ERROR: Query could not be parsed: "'.htmlspecialchars($parsedQuery).'". Query: "'.htmlspecialchars($query).'"');
 	}
@@ -2024,6 +2014,12 @@ class ux_t3lib_DB extends t3lib_DB {
 					// Select database as well:
 					if (mysql_select_db($cfgArray['config']['database'], $link))	{
 						$output = TRUE;
+					}
+					$setDBinit = t3lib_div::trimExplode(chr(10), $GLOBALS['TYPO3_CONF_VARS']['SYS']['setDBinit']);
+					foreach ($setDBinit as $v)      {
+						if (mysql_query($v, $this->link) === FALSE)     {
+							t3lib_div::sysLog('Could not initialize DB connection with query "'.$v.'".','Core',3);
+						}
 					}
 				}
 				break;
