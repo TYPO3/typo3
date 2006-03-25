@@ -1,3 +1,7 @@
+2006-03-25  Karsten Dambekalns  <karsten@typo3.org>
+
+	* ADOdb sysext: Update to version 4.80, added a fix for MSSQL bogus errors.
+
 2006-03-24 Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
 	* Fix to htmlArea RTE extension (see details in local ChangeLog)

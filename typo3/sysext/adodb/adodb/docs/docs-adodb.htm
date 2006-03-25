@@ -15,7 +15,7 @@ pre {
 <body bgcolor="#ffffff" text="black">
 
 <h2>ADOdb Library for PHP</h2>
-<p>V4.71 24 Jan 2006 (c) 2000-2006 John Lim (jlim#natsoft.com)</p>
+<p>V4.80 8 Mar 2006 (c) 2000-2006 John Lim (jlim#natsoft.com)</p>
 <p><font size="1">This software is dual licensed using BSD-Style and LGPL. This 
   means you can use it in compiled proprietary and commercial products.</font></p>
   
@@ -166,6 +166,7 @@ pre {
   <li><b>Portable table and index creation</b> with the <a href="docs-datadict.htm">datadict</a> classes.
   </li><li><b>Database performance monitoring and SQL tuning</b> with the <a href="docs-perf.htm">performance monitoring</a> classes.
   </li><li><b>Database-backed sessions</b> with the <a href="docs-session.htm">session management</a> classes. Supports session expiry notification.
+<li><b>Object-Relational Mapping</b> using <a href="docs-active-record.htm">ADOdb_Active_Record</a> classes.
 </li></ul>
 <h2>How People are using ADOdb<a name="users"></a></h2>
 Here are some examples of how people are using ADOdb (for a much longer list, 
@@ -214,14 +215,15 @@ Norway.<p>
 </li><li>adodb-time.inc.php
 </li><li>drivers/adodb-$database.inc.php
 </li><li>license.txt (for legal reasons)
-</li><li>adodb-php4.inc.php
-</li><li>adodb-iterator.inc.php
+</li><li>adodb-php4.inc.php 
+</li><li>adodb-iterator.inc.php  (php5 functionality)
 </li></ul>
 Optional:
 <ul>
 <li>adodb-error.inc.php and lang/adodb-$lang.inc.php (if you use MetaError())
 </li><li>adodb-csvlib.inc.php (if you use cached recordsets - CacheExecute(), etc)
 </li><li>adodb-exceptions.inc.php and adodb-errorhandler.inc.php (if you use adodb error handler or php5 exceptions).
+<li>adodb-active-record.inc.php if you use <a href=docs-active-record.htm>Active Records</a>.
 </li></ul>
 
 <h3>Code Initialization Examples<a name="coding"></a></h3>
@@ -276,7 +278,7 @@ If you have special characters such as /:? in your dsn, then you need to rawurle
 Legal options are:
 </p><p>
 <table align="center" border="1"><tbody><tr><td>For all drivers</td><td>
-	'persist', 'persistent', 'debug', 'fetchmode'
+	'persist', 'persistent', 'debug', 'fetchmode', 'new'
 	</td></tr><tr><td>Interbase/Firebird
 	</td><td>
 					 'dialect','charset','buffers','role'
@@ -291,7 +293,8 @@ Legal options are:
  'nls_date_format','charset'
 </td></tr></tbody></table>
 </p><p>
-For all drivers, when the options <i>persist</i> or <i>persistent</i> are set,  a persistent connection is forced.
+For all drivers, when the options <i>persist</i> or <i>persistent</i> are set,  a persistent connection is forced; similarly, when <i>new</i> is set, then
+a new connection will be created using NConnect if the underlying driver supports it. 
 The <i>debug</i> option enables debugging. The <i>fetchmode</i> calls <a href="#setfetchmode">SetFetchMode()</a>.
 If no value is defined for an option, then the value is set to 1.
 </p><p>
@@ -318,17 +321,18 @@ ADOdb DSN's are compatible with version 1.0 of PEAR DB's DSN format.
 <p><a name="connect_ex"> For most drivers, you can use the standard function: Connect($server, $user, $password, $database), or
 a </a><a href="dsnsupport">DSN</a> since ADOdb 4.51. Exceptions to this are listed below.
 </p>
+<a name=pdo>
 <h4>PDO</h4>
-<p>PDO accepts a PDO connection string:
+<p>PDO, which only works with PHP5, accepts a driver specific connection string:
 <pre>
-	$conn = NewADConnection('pdo');
+	$conn =& NewADConnection('pdo');
 	$conn->Connect('mysql:host=localhost',$user,$pwd,$mydb);
 	$conn->Connect('mysql:host=localhost;dbname=mydb',$user,$pwd);
 	$conn->Connect("mysql:host=localhost;dbname=mydb;username=$user;password=$pwd");
 </pre>
 <p>The DSN mechanism is also supported:
 <pre>
-	$conn = NewADConnection("pdo_mysql://user:pwd@localhost/mydb?persist"); # persist is optional
+	$conn =& NewADConnection("pdo_mysql://user:pwd@localhost/mydb?persist"); # persist is optional
 </pre>
 <h4>PostgreSQL</h4>
 <p>PostgreSQL 7 and 8 accepts connections using: </p>
@@ -441,7 +445,12 @@ For Microsoft SQL Server:
 or if you prefer to use the mssql extension (which is limited to mssql 6.5 functionality):
 <pre>	$db =&amp; ADONewConnection('mssql');<br>	$db-&gt;Execute('localhost', 'userid', 'password', 'northwind');<br></pre>
 For DB2:
-<pre>	$db =&amp; ADONewConnection('db2');<br>	$dsn = "driver={IBM db2 odbc DRIVER};Database=sample;hostname=localhost;port=50000;protocol=TCPIP;".<br>			"uid=root; pwd=secret";<br>	$db-&gt;Connect($dsn);<br></pre>
+<pre>
+	$dbms = 'db2'; # or 'odbc_db2' if db2 extension not available
+	$db =&amp; ADONewConnection($dbms);
+	$dsn = "driver={IBM db2 odbc DRIVER};Database=sample;hostname=localhost;port=50000;protocol=TCPIP;".
+				"uid=root; pwd=secret";<br>	$db-&gt;Connect($dsn);
+</pre>
 <b>DSN-less Connections with ADO</b><br>
 If you are using versions of PHP earlier than PHP 4.3.0, DSN-less connections 
 only work with Microsoft's ADO, which is Microsoft's COM based API. An example 
@@ -524,6 +533,9 @@ false in the above hack_factory() function.
  ADOdb 4.02 or later will transparently determine which version of PHP you are using.
 If PHP5 is detected, the following features become available:
 <ul>
+
+<li><b>PDO</b>: PDO drivers are available. See the <a href=#pdo>connection examples</a>. Currently PDO drivers are
+ not as powerful as native drivers, and should be treated as experimental.<br><br>
 <a name="php5iterators"></a>
 <li><b>Foreach iterators</b>: This is a very natural way of going through a recordset:
 <pre>	$ADODB_FETCH_MODE = ADODB_FETCH_NUM;<br>	$rs = $db-&gt;Execute($sql);<br>	foreach($rs as $k =&gt; $row) {<br>		echo "r1=".$row[0]." r2=".$row[1]."&lt;br&gt;";<br>	}<br></pre>
@@ -584,11 +596,18 @@ The <i>name</i> below is the value you pass to NewADOConnection($name) to create
     <td><font size="2">ADO or OLEDB provider</font></td>
     <td><font size="2">Windows only</font></td>
   </tr>
-  <tr valign="top"> 
+    <tr valign="top"> 
     <td height="54"><b><font size="2">db2</font></b></td>
-    <td height="54"><font size="2">A</font></td>
-    <td height="54"><font size="2">DB2. Should work reliably as based on ODBC 
-      driver.</font></td>
+    <td height="54"><font size="2">C</font></td>
+    <td height="54"><font size="2">Uses PHP's db2-specific extension for better performance.</font></td>
+    <td height="54"><font size="2">Y/N</font></td>
+    <td height="54"><font size="2">DB2 CLI/ODBC interface</font></td>
+    <td height="54"> <p><font size="2">Unix and Windows. Requires IBM DB2 Universal Database client.</font></p></td>
+  </tr>
+  <tr valign="top"> 
+    <td height="54"><b><font size="2">odbc_db2</font></b></td>
+    <td height="54"><font size="2">C</font></td>
+    <td height="54"><font size="2">Connects to DB2 using generic ODBC extension.</font></td>
     <td height="54"><font size="2">Y/N</font></td>
     <td height="54"><font size="2">DB2 CLI/ODBC interface</font></td>
     <td height="54"> <p><font size="2">Unix and Windows. <a href="http://www.faqts.com/knowledge_base/view.phtml/aid/6283/fid/14">Unix 
@@ -1399,10 +1418,10 @@ tutorial</a>. We assume that your database supports the SQL case-when expression
 </tbody></table>
 <font> 
 </font><p><font>The following code will generate the SQL for a cross-tabulation: 
-</font></p><pre><font># Query the main "product" table<br># Set the rows to CompanyName<br># and the columns to the values of Categories<br># and define the joins to link to lookup tables <br># "categories" and "suppliers"<br>#<br> include "adodb/pivottable.php";<br> $sql = PivotTableSQL(<br> 	$gDB,                                      # adodb connection<br> 	'products p ,categories c ,suppliers s',   # tables<br>	'CompanyName',                             # rows (multiple fields allowed)<br>	'CategoryName',                            # column to pivot on <br>	'p.CategoryID = c.CategoryID and s.SupplierID= p.SupplierID' # joins/where<br>);<br></font></pre>
+</font></p><pre><font># Query the main "product" table<br># Set the rows to SupplierName<br># and the columns to the values of Categories<br># and define the joins to link to lookup tables <br># "categories" and "suppliers"<br>#<br> include "adodb/pivottable.inc.php";<br> $sql = PivotTableSQL(<br> 	$gDB,                                      # adodb connection<br> 	'products p ,categories c ,suppliers s',   # tables<br>	'SupplierName',                             # rows (multiple fields allowed)<br>	'CategoryName',                            # column to pivot on <br>	'p.CategoryID = c.CategoryID and s.SupplierID= p.SupplierID' # joins/where<br>);<br></font></pre>
  
 <p><font> This will generate the following SQL:</font></p>
-<p><code><font size="2">SELECT CompanyName, <br>
+<p><code><font size="2">SELECT SupplierName, <br>
   SUM(CASE WHEN CategoryName='Beverages' THEN 1 ELSE 0 END) AS "Beverages", 
   <br>
   SUM(CASE WHEN CategoryName='Condiments' THEN 1 ELSE 0 END) AS "Condiments", 
@@ -1422,11 +1441,11 @@ tutorial</a>. We assume that your database supports the SQL case-when expression
   SUM(1) as Total <br>
   FROM products p ,categories c ,suppliers s WHERE p.CategoryID = c.CategoryID 
   and s.SupplierID= p.SupplierID <br>
-  GROUP BY CompanyName</font></code></p>
+  GROUP BY SupplierName</font></code></p>
 <p> You can also pivot on <i>numerical columns</i> and <i>generate totals</i> 
 	by using ranges. <font>This code was revised in ADODB 2.41 
 	and is not backward compatible.</font> The second example shows this:</p>
-<pre> $sql = PivotTableSQL(<br> 	$gDB,                                       # adodb connection<br> 	'products p ,categories c ,suppliers s',    # tables<br>	'CompanyName',                              #<font> rows (multiple fields allowed)</font>
+<pre> $sql = PivotTableSQL(<br> 	$gDB,                                       # adodb connection<br> 	'products p ,categories c ,suppliers s',    # tables<br>	'SupplierName',                              #<font> rows (multiple fields allowed)</font>
    array(                                       # column ranges
 	' 0 '      =&gt; 'UnitsInStock &lt;= 0',
 	"1 to 5"   =&gt; '0 &lt; UnitsInStock and UnitsInStock &lt;= 5',
@@ -1440,7 +1459,7 @@ tutorial</a>. We assume that your database supports the SQL case-when expression
 );
 </pre> 
 <p>Which generates: </p>
-<p> <code> <font size="2">SELECT CompanyName, <br>
+<p> <code> <font size="2">SELECT SupplierName, <br>
 	SUM(CASE WHEN UnitsInStock &lt;= 0 THEN UnitsInStock ELSE 0 END) AS "Sum 
 	0 ", <br>
 	SUM(CASE WHEN 0 &lt; UnitsInStock and UnitsInStock &lt;= 5 THEN UnitsInStock 
@@ -1455,7 +1474,7 @@ tutorial</a>. We assume that your database supports the SQL case-when expression
 	SUM(1) as Total,<br>
 	FROM products p ,categories c ,suppliers s WHERE p.CategoryID = c.CategoryID 
 	and s.SupplierID= p.SupplierID <br>
-	GROUP BY CompanyName</font></code><font size="2"><br>
+	GROUP BY SupplierName</font></code><font size="2"><br>
 	</font> </p>
 <font><hr />
 <h1>Class Reference<a name="ref"></a></h1>
@@ -2826,6 +2845,17 @@ of MySQL.</font></p>
 
 <h2><font>Change Log<a name="Changes"></a><a name="changes"></a><a name="changelog"></a></font></h2>
 <P>
+<p><a name="4.80"></a><b>4.80 8 Mar 2006</b>
+<p>Added activerecord support.
+<p>Added mysql $conn->compat323 = true if you want MySQL 3.23 compat enabled. Fixes GetOne() Select-Limit problems.
+<p>Added adodb-xmlschema03.inc.php to support XML Schema version 3 and updated adodb-datadict.htm docs.
+<p><a name="4.72"></a><b>4.72 21 Feb 2006</b>
+<p>Added 'new' DSN parameter for NConnect().
+<p>Pager now sanitizes $PHP_SELF to protect against XSS. Thx to James Bercegay and others.
+<p>ADOConnection::MetaType changed to setup $rs->connection correctly. 
+<p>New native DB2 driver contributed by Larry Menard, Dan Scott, Andy Staudacher, Bharat Mediratta.
+<p>The mssql CreateSequence() did not BEGIN TRANSACTION correctly. Fixed. Thx Sean Lee.
+<p>The _adodb_countrecs() function in adodb-lib.inc.php has been revised to handle more ORDER BY variations.
 <p><a name="4.71"></a><b>4.71 24 Jan 2006</b>
 <p>Fixes postgresql security issue related to binary strings. Thx to Andy Staudacher.
 <p>Several DSN bugs found:
@@ -2835,7 +2865,8 @@ of MySQL.</font></p>
 <p>The oci8 datetime flag not correctly implemented in ADORecordSet_array. Fixed.
 <p>Added BlobDelete() to postgres, as a counterpoint to UpdateBlobFile().
 <p>Fixed GetInsertSQL() to support oci8po.
-<p>Fixed qstr() issue with postgresql with \0 in strings. 
+<p>Fixed qstr() issue with postgresql with \0 in strings.
+<p>Fixed some datadict driver loading issues in _adodb_getdriver(). 
 <p>Added register shutdown function session_write_close in adodb-session.inc.php for PHP 5 compat. See http://phplens.com/lens/lensforum/msgs.php?id=14200.
 <p><a name="4.70"></a><b>4.70 6 Jan 2006</b>
 <p>Many fixes from Danila Ulyanov  to ibase, oci8, postgres, mssql, odbc_oracle, odbtp, etc drivers.

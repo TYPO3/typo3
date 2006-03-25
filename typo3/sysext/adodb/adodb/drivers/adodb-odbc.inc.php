@@ -1,6 +1,6 @@
 <?php
 /* 
-V4.71 24 Jan 2006  (c) 2000-2006 John Lim (jlim#natsoft.com.my). All rights reserved.
+V4.80 8 Mar 2006  (c) 2000-2006 John Lim (jlim#natsoft.com.my). All rights reserved.
   Released under both BSD license and Lesser GPL library license. 
   Whenever there is any discrepancy between the two licenses, 
   the BSD license will take precedence. 
@@ -513,9 +513,9 @@ See http://msdn.microsoft.com/library/default.asp?url=/library/en-us/odbc/htm/od
 					$this->_errorMsg = odbc_errormsg();
 					$this->_errorCode = odbc_error();
 				}
-				if($this->_errorCode == '00000') {	// FIXME MS SQL Server sometimes returns this in combination with
-					$this->_errorMsg = '';		// the FreeTDS driver and UnixODBC under Linux. This fixes the bogus "error"
-					$this->_errorCode = 0;		// karsten@typo3.org
+				if($this->_errorCode == '00000') {	// MS SQL Server sometimes returns this in combination with the FreeTDS
+					$this->_errorMsg = '';		// driver and UnixODBC under Linux. This fixes the bogus "error"
+					$this->_errorCode = 0;		// <karsten@typo3.org>
 					return true;
 				}
 				return false;
@@ -529,9 +529,9 @@ See http://msdn.microsoft.com/library/default.asp?url=/library/en-us/odbc/htm/od
 					$this->_errorMsg = odbc_errormsg();
 					$this->_errorCode = odbc_error();
 				}
-				if($this->_errorCode == '00000') {	// FIXME MS SQL Server sometimes returns this in combination with
-					$this->_errorMsg = '';		// the FreeTDS driver and UnixODBC under Linux. This fixes the bogus "error"
-					$this->_errorCode = 0;		// karsten@typo3.org
+				if($this->_errorCode == '00000') {	// MS SQL Server sometimes returns this in combination with the FreeTDS
+					$this->_errorMsg = '';		// driver and UnixODBC under Linux. This fixes the bogus "error"
+					$this->_errorCode = 0;		// <karsten@typo3.org>
 					return true;
 				}
 				return false;

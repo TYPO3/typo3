@@ -14,7 +14,7 @@
 /**
 	\mainpage 	
 	
-	 @version V4.71 24 Jan 2006  (c) 2000-2006 John Lim (jlim#natsoft.com.my). All rights reserved.
+	 @version V4.80 8 Mar 2006  (c) 2000-2006 John Lim (jlim#natsoft.com.my). All rights reserved.
 
 	Released under both BSD license and Lesser GPL library license. You can choose which license
 	you prefer.
@@ -171,7 +171,7 @@
 		/**
 		 * ADODB version as a string.
 		 */
-		$ADODB_vers = 'V4.71 24 Jan 2006  (c) 2000-2006 John Lim (jlim#natsoft.com.my). All rights reserved. Released BSD & LGPL.';
+		$ADODB_vers = 'V4.80 8 Mar 2006  (c) 2000-2006 John Lim (jlim#natsoft.com.my). All rights reserved. Released BSD & LGPL.';
 	
 		/**
 		 * Determines whether recordset->RecordCount() is used. 
@@ -314,7 +314,6 @@
 	var $_evalAll = false;
 	var $_affected = false;
 	var $_logsql = false;
-
 	
 	/**
 	 * Constructor
@@ -801,6 +800,8 @@
 			$element0 = reset($inputarr);
 			# is_object check because oci8 descriptors can be passed in
 			$array_2d = is_array($element0) && !is_object(reset($element0));
+			//remove extra memory copy of input -mikefedyk
+			unset($element0);
 			
 			if (!is_array($sql) && !$this->_bindInputArray) {
 				$sqlarr = explode('?',$sql);
@@ -808,12 +809,14 @@
 				if (!$array_2d) $inputarr = array($inputarr);
 				foreach($inputarr as $arr) {
 					$sql = ''; $i = 0;
-					foreach($arr as $v) {
+					//Use each() instead of foreach to reduce memory usage -mikefedyk
+					while(list(, $v) = each($arr)) {
 						$sql .= $sqlarr[$i];
 						// from Ron Baldwin <ron.baldwin#sourceprose.com>
 						// Only quote string types	
 						$typ = gettype($v);
 						if ($typ == 'string')
+							//New memory copy of input created here -mikefedyk
 							$sql .= $this->qstr($v);
 						else if ($typ == 'double')
 							$sql .= str_replace(',','.',$v); // locales fix so 1.1 does not get converted to 1,1
@@ -1506,11 +1509,11 @@
    * Flush cached recordsets that match a particular $sql statement. 
    * If $sql == false, then we purge all files in the cache.
     */
-   function CacheFlush($sql=false,$inputarr=false)
-   {
-   global $ADODB_CACHE_DIR;
-   
-      if (strlen($ADODB_CACHE_DIR) > 1 && !$sql) {
+	function CacheFlush($sql=false,$inputarr=false)
+	{
+	global $ADODB_CACHE_DIR;
+	
+		if (strlen($ADODB_CACHE_DIR) > 1 && !$sql) {
          /*if (strncmp(PHP_OS,'WIN',3) === 0)
             $dir = str_replace('/', '\\', $ADODB_CACHE_DIR);
          else */
@@ -1787,9 +1790,6 @@
 		return _adodb_getupdatesql($this,$rs,$arrFields,$forceUpdate,$magicq,$force);
 	}
 
-	
-	
-
 	/**
 	 * Generates an Insert Query based on an existing recordset.
 	 * $arrFields is an associative array of fields with the value
@@ -1911,8 +1911,8 @@
 		if (empty($this->_metars)) {
 			$rsclass = $this->rsPrefix.$this->databaseType;
 			$this->_metars =& new $rsclass(false,$this->fetchMode); 
+			$this->_metars->connection =& $this;
 		}
-		
 		return $this->_metars->MetaType($t,$len,$fieldobj);
 	}
 	
@@ -1956,6 +1956,48 @@
 		}
 	}
 
+	function &GetActiveRecordsClass($class, $table,$whereOrderBy=false,$bindarr=false, $primkeyArr=false)
+	{
+	global $_ADODB_ACTIVE_DBS;
+	
+		$save = $this->SetFetchMode(ADODB_FETCH_NUM);
+		if (empty($whereOrderBy)) $whereOrderBy = '1=1';
+		$rows = $this->GetAll("select * from ".$table.' WHERE '.$whereOrderBy,$bindarr);
+		$this->SetFetchMode($save);
+		
+		$false = false;
+		
+		if ($rows === false) {	
+			return $false;
+		}
+		
+		
+		if (!isset($_ADODB_ACTIVE_DBS)) {
+			include_once(ADODB_DIR.'/adodb-active-record.inc.php');
+		}	
+		if (!class_exists($class)) {
+			ADOConnection::outp("Unknown class $class in GetActiveRcordsClass()");
+			return $false;
+		}
+		$arr = array();
+		foreach($rows as $row) {
+		
+			$obj =& new $class($table,$primkeyArr,$this);
+			if ($obj->ErrorMsg()){
+				$this->_errorMsg = $obj->ErrorMsg();
+				return $false;
+			}
+			$obj->Set($row);
+			$arr[] =& $obj;
+		}
+		return $arr;
+	}
+	
+	function &GetActiveRecords($table,$where=false,$bindarr=false,$primkeyArr=false)
+	{
+		$arr =& $this->GetActiveRecordsClass('ADODB_Active_Record', $table, $where, $bindarr, $primkeyArr);
+		return $arr;
+	}
 	
 	/**
 	 * Close Connection
@@ -2020,6 +2062,7 @@
 			
 			return false;
 		}
+	
 		
 	/**
 	 * @param ttype can either be 'VIEW' or 'TABLE' or false. 
@@ -3146,6 +3189,7 @@
 		return $lnumrows;
 	}
 	
+	
 	/**
 	 * @return the current row in the recordset. If at EOF, will return the last row. 0-based.
 	 */
@@ -3731,7 +3775,7 @@
 				$fakedsn = 'fake'.substr($db,$at);
 				$dsna = @parse_url($fakedsn);
 				$dsna['scheme'] = substr($db,0,$at);
-				
+			
 				if (strncmp($db,'pdo',3) == 0) {
 					$sch = explode('_',$dsna['scheme']);
 					if (sizeof($sch)>1) {
@@ -3764,7 +3808,6 @@
 				}
 			} else $opt = array();
 		}
-		
 	/*
 	 *  phptype: Database backend used in PHP (mysql, odbc etc.)
 	 *  dbsyntax: Database used with regards to SQL syntax etc.
@@ -3814,6 +3857,8 @@
 				if (isset($dsna['port'])) $obj->port = $dsna['port'];
 				foreach($opt as $k => $v) {
 					switch(strtolower($k)) {
+					case 'new':
+										$nconnect = true; $persist = true; break;
 					case 'persist':
 					case 'persistent': 	$persist = $v; break;
 					case 'debug':		$obj->debug = (integer) $v; break;
@@ -3837,8 +3882,10 @@
 				}
 				if (empty($persist))
 					$ok = $obj->Connect($dsna['host'], $dsna['user'], $dsna['pass'], $dsna['path']);
-				else
+				else if (empty($nconnect))
 					$ok = $obj->PConnect($dsna['host'], $dsna['user'], $dsna['pass'], $dsna['path']);
+				else
+					$ok = $obj->NConnect($dsna['host'], $dsna['user'], $dsna['pass'], $dsna['path']);
 					
 				if (!$ok) return $false;
 			}

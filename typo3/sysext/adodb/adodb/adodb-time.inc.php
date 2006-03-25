@@ -108,7 +108,7 @@ The format fields that adodb_date supports:
 	n - month without leading zeros; i.e. "1" to "12" 
 	O - Difference to Greenwich time in hours; e.g. "+0200" 
 	Q - Quarter, as in 1, 2, 3, 4 
-	r - RFC 822 formatted date; e.g. "Thu, 21 Dec 2000 16:01:07 +0200" 
+	r - RFC 2822 formatted date; e.g. "Thu, 21 Dec 2000 16:01:07 +0200" 
 	s - seconds; i.e. "00" to "59" 
 	S - English ordinal suffix for the day of the month, 2 characters; 
 	   			i.e. "st", "nd", "rd" or "th" 
@@ -241,6 +241,10 @@ b. Implement daylight savings, which looks awfully complicated, see
 
 
 CHANGELOG
+- 10 Feb 2006 0.23
+PHP5 compat: when we detect PHP5, the RFC2822 format for gmt 0000hrs is changed from -0000 to +0000. 
+	In PHP4, we will still use -0000 for 100% compat with PHP4.
+
 - 08 Sept 2005 0.22
 In adodb_date2(), $is_gmt not supported properly. Fixed.
 
@@ -361,7 +365,7 @@ First implementation.
 /*
 	Version Number
 */
-define('ADODB_DATE_VERSION',0.22);
+define('ADODB_DATE_VERSION',0.23);
 
 /*
 	This code was originally for windows. But apparently this problem happens 
@@ -473,7 +477,7 @@ function adodb_date_test()
 	
 	// Test string formating
 	print "<p>Testing date formating</p>";
-	$fmt = '\d\a\t\e T Y-m-d H:i:s a A d D F g G h H i j l L m M n O \R\F\C822 r s t U w y Y z Z 2003';
+	$fmt = '\d\a\t\e T Y-m-d H:i:s a A d D F g G h H i j l L m M n O \R\F\C2822 r s t U w y Y z Z 2003';
 	$s1 = date($fmt,0);
 	$s2 = adodb_date($fmt,0);
 	if ($s1 != $s2) {
@@ -977,6 +981,8 @@ static $daylight;
 	$max = strlen($fmt);
 	$dates = '';
 	
+	$isphp5 = PHP_VERSION >= 5;
+	
 	/*
 		at this point, we have the following integer vars to manipulate:
 		$year, $month, $day, $hour, $min, $secs
@@ -1000,7 +1006,11 @@ static $daylight;
 			if ($secs < 10) $dates .= ':0'.$secs; else $dates .= ':'.$secs;
 			
 			$gmt = adodb_get_gmt_diff();
-			$dates .= sprintf(' %s%04d',($gmt<0)?'+':'-',abs($gmt)/36); break;
+			if ($isphp5) 
+				$dates .= sprintf(' %s%04d',($gmt<=0)?'+':'-',abs($gmt)/36); 
+			else
+				$dates .= sprintf(' %s%04d',($gmt<0)?'+':'-',abs($gmt)/36); 
+			break;
 				
 		case 'Y': $dates .= $year; break;
 		case 'y': $dates .= substr($year,strlen($year)-2,2); break;
@@ -1031,7 +1041,12 @@ static $daylight;
 			$dates .= ($is_gmt) ? 0 : -adodb_get_gmt_diff(); break;
 		case 'O': 
 			$gmt = ($is_gmt) ? 0 : adodb_get_gmt_diff();
-			$dates .= sprintf('%s%04d',($gmt<0)?'+':'-',abs($gmt)/36); break;
+			
+			if ($isphp5)
+				$dates .= sprintf('%s%04d',($gmt<=0)?'+':'-',abs($gmt)/36); 
+			else
+				$dates .= sprintf('%s%04d',($gmt<0)?'+':'-',abs($gmt)/36); 
+			break;
 			
 		case 'H': 
 			if ($hour < 10) $dates .= '0'.$hour; 

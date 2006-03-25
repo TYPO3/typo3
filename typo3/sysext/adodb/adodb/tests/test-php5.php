@@ -1,6 +1,6 @@
 <?php
 /*
-  V4.71 24 Jan 2006  (c) 2000-2006 John Lim (jlim@natsoft.com.my). All rights reserved.
+  V4.80 8 Mar 2006  (c) 2000-2006 John Lim (jlim@natsoft.com.my). All rights reserved.
   Released under both BSD license and Lesser GPL library license. 
   Whenever there is any discrepancy between the two licenses, 
   the BSD license will take precedence.
@@ -30,7 +30,7 @@ case 'oci8po':
 default:
 case 'mysql':
 	$db = NewADOConnection("mysql");
-	$db->Connect('localhost','roots','','northwind');
+	$db->Connect('localhost','root','','northwind');
 	break;
 	
 case 'mysqli':
@@ -74,5 +74,35 @@ $rs = $db->Execute("select bad from badder");
 }
 
 $rs = $db->Execute("select distinct id, firstname,lastname from adoxyz order by id");
-echo "Result=\n",$rs;
+echo "Result=\n",$rs,"</p>";
+
+echo "<h3>Active Record</h3>";
+try {
+	include_once("../adodb-active-record.inc.php");
+	class City extends ADOdb_Active_Record{};
+	$a = new City();
+
+} catch(exception $e){
+	echo $e->getMessage();
+}
+
+try {
+	
+	ADOdb_Active_Record::SetDatabaseAdapter($db);
+	$a = new City();
+	
+	echo "<p>Successfully created City()<br>";
+	var_dump($a->GetPrimaryKeys());
+	$a->city = 'Kuala Lumpur';
+	$a->Save();
+	$a->Update();
+	$a->SetPrimaryKeys(array('city'));	
+	$a->country = "M'sia";
+	$a->save();
+	$a->Delete();
+} catch(exception $e){
+	echo $e->getMessage();
+}
+
+include_once("test-active-record.php");
 ?>

@@ -9,9 +9,9 @@ diff -u -r1.1.2.1 adodb-odbc.inc.php
  					$this->_errorMsg = odbc_errormsg();
  					$this->_errorCode = odbc_error();
  				}
-+				if($this->_errorCode == '00000') {	// FIXME MS SQL Server sometimes returns this in combination with
-+					$this->_errorMsg = '';		// the FreeTDS driver and UnixODBC under Linux. This fixes the bogus "error"
-+					$this->_errorCode = 0;		// karsten@typo3.org
++				if($this->_errorCode == '00000') {	// MS SQL Server sometimes returns this in combination with the FreeTDS
++					$this->_errorMsg = '';		// driver and UnixODBC under Linux. This fixes the bogus "error"
++					$this->_errorCode = 0;		// <karsten@typo3.org>
 +					return true;
 +				}
  				return false;
@@ -21,9 +21,9 @@ diff -u -r1.1.2.1 adodb-odbc.inc.php
  					$this->_errorMsg = odbc_errormsg();
  					$this->_errorCode = odbc_error();
  				}
-+				if($this->_errorCode == '00000') {	// FIXME MS SQL Server sometimes returns this in combination with
-+					$this->_errorMsg = '';		// the FreeTDS driver and UnixODBC under Linux. This fixes the bogus "error"
-+					$this->_errorCode = 0;		// karsten@typo3.org
++				if($this->_errorCode == '00000') {	// MS SQL Server sometimes returns this in combination with the FreeTDS
++					$this->_errorMsg = '';		// driver and UnixODBC under Linux. This fixes the bogus "error"
++					$this->_errorCode = 0;		// <karsten@typo3.org>
 +					return true;
 +				}
  				return false;

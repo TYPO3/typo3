@@ -4,7 +4,7 @@
 
 error_reporting(E_ALL);
 include_once( "../adodb.inc.php" );
-include_once( "../adodb-xmlschema.inc.php" );
+include_once( "../adodb-xmlschema03.inc.php" );
 
 // To build the schema, start by creating a normal ADOdb connection:
 $db = ADONewConnection( 'mysql' );
