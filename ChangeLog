@@ -1,3 +1,8 @@
+
+2006-03-25  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+
+	* Made "version" a required extensoin (necessary for workspaces)
+
 2006-03-25  Karsten Dambekalns  <karsten@typo3.org>
 
 	* ADOdb sysext: Update to version 4.80, added a fix for MSSQL bogus errors.
