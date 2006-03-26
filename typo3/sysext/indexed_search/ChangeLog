@@ -3,6 +3,7 @@
 	* Fix missing htmlspecialchars for section indexes
 	* Fix invalid (number-only) anchors when sections are used
 	* Fix some indenting (needed for the change below)
+	* Fixed "bug" #2956: Add a table-less XHTML 1.1-ready template (thanks to Robert Markula)
 
 2006-03-25  Michael Stucki  <michael@typo3.org>
 

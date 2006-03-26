@@ -90,6 +90,14 @@ plugin.tx_indexedsearch {
 		.tx-indexedsearch .tx-indexedsearch-res .tx-indexedsearch-secHead TD { vertical-align:middle; }
 		.tx-indexedsearch .tx-indexedsearch-res .noResume { color:#666666; }
 		.tx-indexedsearch .tx-indexedsearch-category { background:#cccccc; font-size:16px; font-weight:bold; }
+
+		/* Additional styles, needed for the tableless template_css.tmpl (styles don't conflict with the original template) */
+		.tx-indexedsearch .res-tmpl-css { clear:both; margin-bottom:1em; }
+		.tx-indexedsearch .searchbox-tmpl-css LABEL { margin-right:1em; width:10em; float:left; }
+		.tx-indexedsearch .result-count-tmpl-css, .tx-indexedsearch .percent-tmpl-css { font-size:0.9em; letter-spacing:0; font-weight:normal; margin-top:-1.2em; float:right; }
+		.tx-indexedsearch .info-tmpl-css dt, .tx-indexedsearch dl.info-tmpl-css dd { float:left; }
+		.tx-indexedsearch .info-tmpl-css dd.item-mtime { float:none; }
+		.tx-indexedsearch .info-tmpl-css dd.item-path { float:none; }
 	)
 	_LOCAL_LANG {
 	}
