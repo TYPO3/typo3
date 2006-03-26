@@ -237,11 +237,13 @@ TABLE#typo3-vmenu TD.c-subitem-label A { display: block; width: 100%; }
 TABLE#typo3-vmenu TR.c-subitem-row { }
 TABLE#typo3-vmenu TR.c-subitem-row-HL { background-color: #e3dfdb; }
 TABLE#typo3-adminmenu TR.c-mainitem TD { background-color: #d9d9d8; padding: 1px 1px 1px 1px; border: #9BA1A8 1px solid; vertical-align: middle; height: 14px; text-align: center; white-space: nowrap; cursor: default; }
-TABLE#typo3-adminmenu TR.c-subitem TD.icon { padding: 0 2px 0 0; }
+TABLE#typo3-adminmenu TR.c-subitem TD.icon { vertical-align: middle; padding: 0 2px 0 0; }
 
 DIV#typo3-alt-menu-php-logininfo { text-align: center; width: 90px; margin-top: 15px; margin-bottom: 15px; }
 DIV#typo3-alt-menu-php-logininfo P { margin-top: 5px; }
+
 DIV#typo3-alt-menu-php-adminFunc { text-align: left; width: 80px; margin-top: 15px; }
+DIV#typo3-alt-menu-php-adminFunc TABLE { border-spacing: 0; margin: 0 0 2px 0 ; }
 
 /* Trees */
 TABLE#typo3-tree A { text-decoration: none; }

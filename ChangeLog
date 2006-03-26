@@ -1,6 +1,7 @@
 2006-03-26  Michael Stucki  <michael@typo3.org>
 
 	* Various indexed_search fixes, see local ChangeLog for details
+	* Small fix to typo3/stylesheet.css (admin menu)
 
 2006-03-26  Karsten Dambekalns  <karsten@typo3.org>
 
