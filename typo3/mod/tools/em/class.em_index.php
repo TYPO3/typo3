@@ -1785,7 +1785,7 @@ EXTENSION KEYS:
 					// Install / Uninstall extension here:
 				if (t3lib_extMgm::isLocalconfWritable())	{
 						// Check dependencies:
-					$depStatus = $this->checkDependencies($extKey, $list[$extKey]['EM_CONF'], $list, $this->CMD['remove']);
+					$depStatus = $this->checkDependencies($extKey, $list[$extKey]['EM_CONF'], $list);
 					if(!$this->CMD['remove'] && !$depStatus['returnCode']) {
 						$this->content .= $depStatus['html'];
 						$newExtList = -1;
