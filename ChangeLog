@@ -1,5 +1,6 @@
 2006-03-26  Michael Stucki  <michael@typo3.org>
 
+	* Release of TYPO3 4.0rc2
 	* Various indexed_search fixes, see local ChangeLog for details
 	* Small fix to typo3/stylesheet.css (admin menu)
 
