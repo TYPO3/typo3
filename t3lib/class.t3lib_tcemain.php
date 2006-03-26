@@ -1817,8 +1817,8 @@ class t3lib_TCEmain	{
 						$evalObj = t3lib_div::getUserObj($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tce']['formevals'][$func].':&'.$func);
 						if(is_object($evalObj) && method_exists($evalObj, 'evaluateFieldValue'))	{
 							$value = $evalObj->evaluateFieldValue($value, $is_in, $set);
-			}
-		}
+						}
+					}
 				break;
 			}
 		}
