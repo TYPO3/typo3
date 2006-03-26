@@ -1,6 +1,7 @@
 2006-03-26  Karsten Dambekalns  <karsten@typo3.org>
 
 	* sysext/setup/mod/index.php: Fixed detection of unavailable language packs.
+	* EM: Fixed bug #2974, a rare bug when unzipping language packs, a bug with installing dependencies that needed a db update, avoid unnecessary fetching of extensions.xml.gz, 
 
 2006-03-26  Ingmar Schlecht  <ingmar@typo3.org>
 

@@ -761,6 +761,7 @@ EXTENSION KEYS:
 			$this->detailCols[1]+=6;
 
 				// see if we have an extensionlist at all
+			$this->xmlhandler->loadExtensionsXML();
 			if (!count($this->xmlhandler->extensionsXML))	{
 				$content .= $this->fetchMetaData('extensions');
 			}
@@ -1262,6 +1263,7 @@ EXTENSION KEYS:
 	 */
 	function installTranslationsForExtension($extKey, $mirrorURL) {
 		$selectedLanguages = unserialize($this->MOD_SETTINGS['selectedLanguages']);
+		if(!is_array($selectedLanguages)) $selectedLanguages = array();
 		foreach($selectedLanguages as $lang) {
 			$l10n = $this->terConnection->fetchTranslation($extKey, $lang, $mirrorURL);
 			if(is_array($l10n)) {
@@ -1270,9 +1272,9 @@ EXTENSION KEYS:
 				t3lib_div::writeFile($file, $l10n[0]);
 				if(!is_dir(PATH_typo3conf.$path)) t3lib_div::mkdir_deep(PATH_typo3conf,$path);
 				if($this->unzip($file, PATH_typo3conf.$path)) {
-					return 'Unpacking the language pack failed!';
-				} else {
 					return true;
+				} else {
+					return 'Unpacking the language pack failed!';
 				}
 			} else {
 				return $l10n;
@@ -1290,21 +1292,17 @@ EXTENSION KEYS:
 	 * @return boolean	True on success, false in failure
 	 */
 	function unzip($file, $path) {
-		$ret = false;
-
 		if(strlen($GLOBALS['TYPO3_CONF_VARS']['BE']['unzip_path'])) {
 			chdir($path);
 			$cmd = $GLOBALS['TYPO3_CONF_VARS']['BE']['unzip_path'].' -o '.$file;
 			exec($cmd, $list, $ret);
-			if($ret == 0) $ret = true;
+			return ($ret === 0);
 		} else {
 				// we use a pure PHP unzip
 			$unzip = new em_unzip($file);
 			$ret = $unzip->extract(array('add_path'=>$path));
-			if(is_array($ret)) $ret = true;
+			return (is_array($ret));
 		}
-
-		return $ret;
 	}
 
 
@@ -1765,7 +1763,7 @@ EXTENSION KEYS:
 		}
 
 			// Function menu here:
-		if(!$this->CMD['standAlone']) {
+		if(!$this->CMD['standAlone'] && !t3lib_div::_GP('standAlone')) {
 			$content = '
 				<table border="0" cellpadding="0" cellspacing="0" width="100%">
 					<tr>
@@ -1787,8 +1785,8 @@ EXTENSION KEYS:
 					// Install / Uninstall extension here:
 				if (t3lib_extMgm::isLocalconfWritable())	{
 						// Check dependencies:
-					$depStatus = $this->checkDependencies($extKey, $list[$extKey]['EM_CONF'], $list);
-					if(!$depStatus['returnCode']) {
+					$depStatus = $this->checkDependencies($extKey, $list[$extKey]['EM_CONF'], $list, $this->CMD['remove']);
+					if(!$this->CMD['remove'] && !$depStatus['returnCode']) {
 						$this->content .= $depStatus['html'];
 						$newExtList = -1;
 					} elseif ($this->CMD['remove'])	{
@@ -1834,13 +1832,13 @@ EXTENSION KEYS:
 						}
 						if (!$updates || t3lib_div::_GP('_do_install')) {
 							$this->writeNewExtensionList($newExtList);
-
+							$GLOBALS['BE_USER']->writelog(5,1,0,0,'Extension list has been changed, extension %s has been %s',array($extKey,($this->CMD['load']?'installed':'removed')));
 							if ($this->CMD['clrCmd'] || t3lib_div::_GP('_clrCmd'))	{
 								$vA = array('CMD'=>'');
 							} else {
 								$vA = array('CMD'=>Array('showExt'=>$extKey));
 							}
-							if($this->CMD['standAlone']) {
+							if($this->CMD['standAlone'] || t3lib_div::_GP('standAlone')) {
 								$this->content .= 'Extension has been '.($this->CMD['load'] ? 'installed' : 'removed').'.<br /><br /><a href="javascript:opener.top.content.document.forms[0].submit();window.close();">Close window and recheck dependencies</a>';
 							} else {
 								header('Location: '.t3lib_div::linkThisScript($vA));
