@@ -1,3 +1,7 @@
+2006-03-26  Karsten Dambekalns  <karsten@typo3.org>
+
+	* sysext/setup/mod/index.php: Fixed detection of unavailable language packs.
+
 2006-03-26  Ingmar Schlecht  <ingmar@typo3.org>
 
 	* Fixed bug #2777: "NOT NULL" removed from SQL gives error with MySQL 3.23.52

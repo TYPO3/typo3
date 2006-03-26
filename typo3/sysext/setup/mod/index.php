@@ -29,8 +29,8 @@
  *
  * This module lets users viev and change their individual settings
  *
- * @author	Kasper Sk�hj <kasperYYYY@typo3.com>
- * Revised for TYPO3 3.7 6/2004 by Kasper Sk�hj
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
+ * Revised for TYPO3 3.7 6/2004 by Kasper Skaarhoj
  * XHTML compatible.
  */
 /**
@@ -285,7 +285,7 @@ class SC_mod_user_setup_index {
 		foreach($theLanguages as $val)	{
 			if ($val!='default')	{
 				$localLabel = '  -  ['.htmlspecialchars($GLOBALS['LOCAL_LANG']['default']['lang_'.$val]).']';
-				$unavailable = $val!='default' && !@is_dir(PATH_site.'typo3conf/l10n/'.$BE_USER->uc['lang']) ? '1' : '';
+				$unavailable = $val!='default' && !@is_dir(PATH_site.'typo3conf/l10n/'.$val) ? '1' : '';
 				$opt[$GLOBALS['LOCAL_LANG']['default']['lang_'.$val].'--'.$val]='
 					<option value="'.$val.'"'.($BE_USER->uc['lang']==$val?' selected="selected"':'').($unavailable ? ' class="c-na"' : '').'>'.$LANG->getLL('lang_'.$val,1).$localLabel.'</option>';
 			}
@@ -299,8 +299,8 @@ class SC_mod_user_setup_index {
 				if ($BE_USER->uc['lang'] && !@is_dir(PATH_site.'typo3conf/l10n/'.$BE_USER->uc['lang']))	{
 					$code.= '<table border="0" cellpadding="0" cellspacing="0" class="warningbox"><tr><td>'.
 								$this->doc->icons(3).
-								sprintf(nl2br('The selected language is not available before the language pack is installed in typo3conf/l10n/.
-								Please ask your system administrator for this.'), 'csh_'.$BE_USER->uc['lang']).
+								'The selected language is not available before the language pack is installed.<br />'.
+								($BE_USER->isAdmin()? 'You can use the Extension Manager to easily download and install new language packs.':'Please ask your system administrator to do this.').
 							'</td></tr></table>';
 				}
 		$this->content.=$this->doc->section($LANG->getLL('language').':',$code,0,1);
