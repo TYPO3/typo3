@@ -3283,14 +3283,14 @@ EXTENSION KEYS:
 					if (filesize($absPath.$fileName)<500*1024)	{
 						$fContent = t3lib_div::getUrl($absPath.$fileName);
 						unset($reg);
-						if (preg_match('/\n[[:space:]]*class[[:space:]]*([[:alnum:]_]+)([[:alnum:][:space:]_]*)\{/',$fContent,$reg))	{
+						if (preg_match('/\n[[:space:]]*class[[:space:]]*([[:alnum:]_]+)([[:alnum:][:space:]_]*)/',$fContent,$reg))	{
 
 							// Find classes:
 							$lines = explode(chr(10),$fContent);
 							foreach($lines as $l)	{
 								$line = trim($l);
 								unset($reg);
-								if (preg_match('/^class[[:space:]]*([[:alnum:]_]+)([[:alnum:][:space:]_]*)\{/',$line,$reg))	{
+								if (preg_match('/^class[[:space:]]*([[:alnum:]_]+)([[:alnum:][:space:]_]*)/',$line,$reg))	{
 									$out['classes'][] = $reg[1];
 									$out['files'][$fileName]['classes'][] = $reg[1];
 									if ($reg[1]!=='ext_update' && substr($reg[1],0,3)!='ux_' && !t3lib_div::isFirstPartOfStr($reg[1],$table_class_prefix) && strcmp(substr($table_class_prefix,0,-1),$reg[1]))	{

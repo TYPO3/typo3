@@ -1,7 +1,13 @@
+2006-03-26  Michael Stucki  <michael@typo3.org>
+
+	* Various indexed_search fixes, see local ChangeLog for details
+
 2006-03-26  Karsten Dambekalns  <karsten@typo3.org>
 
 	* sysext/setup/mod/index.php: Fixed detection of unavailable language packs.
-	* EM: Fixed bug #2974, a rare bug when unzipping language packs, a bug with installing dependencies that needed a db update, avoid unnecessary fetching of extensions.xml.gz, 
+	* EM: Fixed bug #2974, a rare bug when unzipping language packs, a bug with installing dependencies that needed a db update, avoid unnecessary fetching of extensions.xml.gz,
+	* Fixed bug #359: EM ignores PEAR compatible classes (committed by Stucki)
+	* Fixed bug #2380: t3lib_sqlparser doesn't handle LEFT OUTER JOIN (committed by Stucki)
 
 2006-03-26  Ingmar Schlecht  <ingmar@typo3.org>
 
@@ -10,14 +16,11 @@
 2006-03-25  Michael Stucki  <michael@typo3.org>
 
 	* Fixed bug #1390: Ereg error in class.t3lib_tsstyleconfig.php
-	* Fixed bug #0177: Indexed Search cuts the first letter of domain name in searchresult
 	* Fixed bug #2415: Navigation "Icons in top frame" were rendered wrong
-	* Fixed bug #2666: Preview from searchresult shows rootpage only
-	* Fixed bug #2968: Some hidden fields were missing in the indexed_search form
 	* Fixed bug #0388: No subtitle field in some page types
 	* Fixed bug in Install Tool: Hide warning if GraphicsMagick is used
-	* Fixed bug in Indexed Search: Change marker detection in indexer class
 	* Fixed some more problems with the BE stylesheet
+	* Various indexed_search fixes, see local ChangeLog for details
 
 2006-03-25  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 

@@ -1,12 +1,17 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title>indexed_search</title>
+	<title>indexed_search template</title>
 </head>
 
 <body>
 
-<h3>SEARCH FORM</h3>
+<h1>Indexed Search: Default template</h1>
+
+
+<h2>TEMPLATE_SEARCH_FORM</h2>
+<p><em>Template for displaying the search form.</em></p>
 
 <!-- ###SEARCH_FORM### begin -->
 <div class="tx-indexedsearch-searchbox">
@@ -19,7 +24,6 @@
 	<!-- ###HIDDEN_FIELDS### end -->
 
 	<table cellpadding="0" cellspacing="0" border="0" summary="Search form">
-
 		<tr>
 			<td>###FORM_SEARCHFOR###</td>
 			<td colspan="2"><input type="text" name="tx_indexedsearch[sword]" value="###SWORD_VALUE###" class="tx-indexedsearch-searchbox-sword sword" /></td>
@@ -85,17 +89,16 @@
 		</tr>
 		<!-- ###SELECT_SECTION### end -->
 
-
-			<!-- ###SELECT_FREEINDEXUID### begin -->
-			<tr>
-				<td>###FORM_FREEINDEXUID###</td>
-				<td colspan="2">
-					<select name="tx_indexedsearch[freeIndexUid]" class="tx-indexedsearch-selectbox-freeIndexUid freeIndexUid">
-						###SELECTBOX_FREEINDEXUIDS_VALUES###
-					</select>
-				</td>
-			</tr>
-			<!-- ###SELECT_FREEINDEXUID### end -->
+		<!-- ###SELECT_FREEINDEXUID### begin -->
+		<tr>
+			<td valign="top">###FORM_FREEINDEXUID###</td>
+			<td colspan="2">
+				<select name="tx_indexedsearch[freeIndexUid]" class="tx-indexedsearch-selectbox-freeIndexUid freeIndexUid">
+					###SELECTBOX_FREEINDEXUIDS_VALUES###
+				</select>
+			</td>
+		</tr>
+		<!-- ###SELECT_FREEINDEXUID### end -->
 
 		<!-- ###SELECT_ORDER### begin -->
 		<tr>
@@ -147,93 +150,110 @@
 </form>
 </div>
 <!-- ###SEARCH_FORM### end -->
+<br /><br />
 
 
 
+
+<h2>TEMPLATE_RULES</h2>
+<p><em>Template for displaying the search rules.</em></p>
 
 <!-- ###RULES### begin -->
-<div class="tx-indexedsearch-rules">
-	<h2>###RULES_HEADER###</h2>
-	<p>###RULES_TEXT###</p>
-</div>
+	<div class="tx-indexedsearch-rules">
+		<h2>###RULES_HEADER###</h2>
+		<p>###RULES_TEXT###</p>
+	</div>
 <!-- ###RULES### end -->
+<br /><br />
 
+
+
+
+<h2>TEMPLATE_RESULT_SECTION_LINKS</h2>
+<p><em>Template for the section links in section mode.</em></p>
 
 <!-- ###RESULT_SECTION_LINKS### begin -->
-<div class="tx-indexedsearch-sec">
-	<table cellpadding="0" cellspacing="0" border="0" summary="Result links">
-		###LINKS###
-	</table>
-</div>
+	<div class="tx-indexedsearch-sec">
+		<table cellpadding="0" cellspacing="0" border="0" summary="Result links">
+			###LINKS###
+		</table>
+	</div>
 <!-- ###RESULT_SECTION_LINKS### end -->
 
 <!-- ###RESULT_SECTION_LINKS_LINK### begin -->
-	<tr>
-		<td width="100%">--&gt; ###LINK###</td>
-	</tr>
-
+			<tr>
+				<td width="100%">--&gt; ###LINK###</td>
+			</tr>
 <!-- ###RESULT_SECTION_LINKS_LINK### end -->
+<br /><br />
 
 
 
 
+<h2>TEMPLATE_SECTION_HEADER</h2>
+<p><em>Template for the section title in section mode.</em></p>
 <!-- ###SECTION_HEADER### begin -->
-<div class="tx-indexedsearch-secHead"><a name="###ANCHOR_URL###"></a>
-	<table cellpadding="0" cellspacing="0" border="0" summary="Section header">
-		<tr>
-			<td class="tx-indexedsearch-title title" width="100%">###SECTION_TITLE###</td>
-			<td class="tx-indexedsearch-result-count result-count" nowrap="nowrap">###RESULT_COUNT### ###RESULT_NAME###</td>
-		</tr>
-	</table>
-</div>
+	<div class="tx-indexedsearch-secHead"><a name="###ANCHOR_URL###"></a>
+		<table cellpadding="0" cellspacing="0" border="0" summary="Section header">
+			<tr>
+				<td class="tx-indexedsearch-title title" width="100%">###SECTION_TITLE###</td>
+				<td class="tx-indexedsearch-result-count result-count" nowrap="nowrap">###RESULT_COUNT### ###RESULT_NAME###</td>
+			</tr>
+		</table>
+	</div>
 
 <!-- ###SECTION_HEADER### end -->
+<br /><br />
 
 
 
+
+<h2>TEMPLATE_RESULT_OUTPUT</h2>
+<p><em>Template for the search result list.</em></p>
 
 <!-- ###RESULT_OUTPUT### begin -->
-<div class="tx-indexedsearch-res">
-	<table cellpadding="0" cellspacing="0" border="0" summary="Result row">
+	<div class="tx-indexedsearch-res">
+		<table cellpadding="0" cellspacing="0" border="0" summary="Result row">
+			<!-- ###HEADER_ROW### begin -->
+			<tr>
+				<td class="tx-indexedsearch-icon icon" nowrap="nowrap">###ICON###</td>
+				<td class="tx-indexedsearch-result-number result-number" nowrap="nowrap">###RESULT_NUMBER###</td>
+				<td class="tx-indexedsearch-title title" width="100%">###TITLE###</td>
+				<td class="tx-indexedsearch-percent percent" nowrap="nowrap">###RATING###</td>
+			</tr>
+			<!-- ###HEADER_ROW### end -->
 
-		<!-- ###HEADER_ROW### begin -->
-		<tr>
-			<td class="tx-indexedsearch-icon icon" nowrap="nowrap">###ICON###</td>
-			<td class="tx-indexedsearch-result-number result-number" nowrap="nowrap">###RESULT_NUMBER###</td>
-			<td class="tx-indexedsearch-title title" width="100%">###TITLE###</td>
-			<td class="tx-indexedsearch-percent percent" nowrap="nowrap">###RATING###</td>
-		</tr>
-		<!-- ###HEADER_ROW### end -->
+			<!-- ###ROW_LONG### begin -->
+			<tr>
+				<td>&nbsp;</td>
+				<td class="tx-indexedsearch-descr descr" width="100%" colspan="3">###DESCRIPTION###</td>
+			</tr>
+			<tr>
+				<td>&nbsp;</td>
+				<td class="tx-indexedsearch-info info" width="100%" colspan="3">###TEXT_ITEM_SIZE### ###SIZE### - ###TEXT_ITEM_CRDATE### ###CREATED### - ###TEXT_ITEM_MTIME### ###MODIFIED###<br />
+					###TEXT_ITEM_PATH### <span class="tx-indexedsearch-path path">###PATH###</span></td>
+			</tr>
+			<!-- ###ROW_LONG### end -->
 
-		<!-- ###ROW_LONG### begin -->
-		<tr>
-			<td>&nbsp;</td>
-			<td class="tx-indexedsearch-descr descr" width="100%" colspan="3">###DESCRIPTION###</td>
-		</tr>
-		<tr>
-			<td>&nbsp;</td>
-			<td class="tx-indexedsearch-info info" width="100%" colspan="3">###TEXT_ITEM_SIZE### ###SIZE### - ###TEXT_ITEM_CRDATE### ###CREATED### - ###TEXT_ITEM_MTIME### ###MODIFIED###<br />
-				###TEXT_ITEM_PATH### <span class="tx-indexedsearch-path path">###PATH###</span></td>
-		</tr>
-		<!-- ###ROW_LONG### end -->
+			<!-- ###ROW_SHORT### begin -->
+			<tr>
+				<td>&nbsp;</td>
+				<td class="tx-indexedsearch-descr descr" width="100%" colspan="3">###DESCRIPTION###</td>
+			</tr>
+			<!-- ###ROW_SHORT### end -->
 
-		<!-- ###ROW_SHORT### begin -->
-		<tr>
-			<td>&nbsp;</td>
-			<td class="tx-indexedsearch-descr descr" width="100%" colspan="3">###DESCRIPTION###</td>
-		</tr>
-		<!-- ###ROW_SHORT### end -->
-
-		<!-- ###ROW_SUB### begin -->
-		<tr>
-			<td>&nbsp;</td>
-			<td class="tx-indexedsearch-list list" width="100%" colspan="3"><br />###TEXT_ROW_SUB###<br /><br /></td>
-		</tr>
-		<!-- ###ROW_SUB### end -->
-	</table>
-	<br />
-</div>
+			<!-- ###ROW_SUB### begin -->
+			<tr>
+				<td>&nbsp;</td>
+				<td class="tx-indexedsearch-list list" width="100%" colspan="3"><br />###TEXT_ROW_SUB###<br /><br /></td>
+			</tr>
+			<!-- ###ROW_SUB### end -->
+		</table>
+		<br />
+	</div>
 <!-- ###RESULT_OUTPUT### end -->
+<br /><br />
+
 
 </body>
 </html>

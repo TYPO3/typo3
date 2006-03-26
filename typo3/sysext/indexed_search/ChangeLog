@@ -1,3 +1,16 @@
+2006-03-26  Michael Stucki  <michael@typo3.org>
+
+	* Fix missing htmlspecialchars for section indexes
+	* Fix invalid (number-only) anchors when sections are used
+	* Fix some indenting (needed for the change below)
+
+2006-03-25  Michael Stucki  <michael@typo3.org>
+
+	* Fixed bug #0177: Indexed Search cuts the first letter of domain name in search result
+	* Fixed bug #2666: Preview from searchresult shows rootpage only
+	* Fixed bug #2968: Some hidden fields were missing in the indexed_search form
+	* Fixed bug: Change marker detection in indexer class
+
 2006-03-19  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
 	* Moved subtype exclude list from "cms"'s tbl_tt_content.php to ext_tables.php

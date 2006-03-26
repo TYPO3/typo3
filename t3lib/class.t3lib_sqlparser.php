@@ -815,7 +815,7 @@ class t3lib_sqlparser {
 			} else return $this->parseError('No table name found as expected in parseFromTables()!',$parseString);
 
 				// Looking for JOIN
-			if ($join = $this->nextPart($parseString,'^(LEFT[[:space:]]+JOIN|JOIN)[[:space:]]+'))	{
+			if ($join = $this->nextPart($parseString,'^(LEFT[[:space:]]+JOIN|LEFT[[:space:]]+OUTER[[:space:]]+JOIN|JOIN)[[:space:]]+'))	{
 				$stack[$pnt]['JOIN']['type'] = $join;
 				if ($stack[$pnt]['JOIN']['withTable'] = $this->nextPart($parseString,'^([[:alnum:]_]+)[[:space:]]+ON[[:space:]]+',1))	{
 					$field1 = $this->nextPart($parseString,'^([[:alnum:]_.]+)[[:space:]]*=[[:space:]]*',1);

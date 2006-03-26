@@ -80,7 +80,7 @@ plugin.tx_indexedsearch {
 		.tx-indexedsearch .tx-indexedsearch-whatis { margin-top:10px; margin-bottom:5px; }
 		.tx-indexedsearch .tx-indexedsearch-whatis .tx-indexedsearch-sw { font-weight:bold; font-style:italic; }
 		.tx-indexedsearch .tx-indexedsearch-noresults { text-align:center; font-weight:bold; }
-		.tx-indexedsearch .tx-indexedsearch-res .tx-indexedsearch-title { background:#eeeeee; }
+		.tx-indexedsearch .tx-indexedsearch-res .tx-indexedsearch-title, .tx-indexedsearch .tx-indexedsearch-res .tx-indexedsearch-result-count { background:#eeeeee; }
 		.tx-indexedsearch .tx-indexedsearch-res .tx-indexedsearch-descr { font-style:italic; }
 		.tx-indexedsearch .tx-indexedsearch-res .tx-indexedsearch-descr .tx-indexedsearch-redMarkup { color:red; }
 		.tx-indexedsearch .tx-indexedsearch-res .tx-indexedsearch-info { background:#eeeeff; }
@@ -88,8 +88,8 @@ plugin.tx_indexedsearch {
 		.tx-indexedsearch .tx-indexedsearch-res .tx-indexedsearch-secHead H2 { margin-top:0px; margin-bottom:0px; }
 		.tx-indexedsearch .tx-indexedsearch-res .tx-indexedsearch-secHead TABLE { background:#cccccc; }
 		.tx-indexedsearch .tx-indexedsearch-res .tx-indexedsearch-secHead TD { vertical-align:middle; }
-		.tx-indexedsearch .tx-indexedsearch-res .noResume { color : #666666; }
-		.tx-indexedsearch .tx-indexedsearch-category { background:#cccccc; font-size: 16px; font-weight: bold; }
+		.tx-indexedsearch .tx-indexedsearch-res .noResume { color:#666666; }
+		.tx-indexedsearch .tx-indexedsearch-category { background:#cccccc; font-size:16px; font-weight:bold; }
 	)
 	_LOCAL_LANG {
 	}
