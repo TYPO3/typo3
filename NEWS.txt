@@ -30,6 +30,7 @@ Improvements
 
 	* the undo and history feature has been enhanced: rollback/preview on page and record level; history includes now inserts and deletes
 	* improved indexed search (template support, faster) - many thanks to Udo von Eynern for implementing the template support!
+	* The import/export tool now automatically resolves extension dependencies of T3D files (.t3d)
 	* the page type "external link" supports HTTPS (thanks to Marc Bastian Heinrichs)
 	* the extension manager has been overhauled and benefits from new enhancements of TER 2.0
 	* the GIFBUILDER objects may create true colour images (PNG and JPEG)
@@ -66,6 +67,7 @@ Accessibility
 	* output of CSS styled content is now accessible by default (mailforms, menus, sitemaps) - many thanks to Ernesto Baschny, kudos also to Sebastian Kurfuerst and Michael Stucki
 	* images have accessibility features (integration of extension "cron_cssstyledimgtext" by Ernesto Baschny)
 	* the "table" content element has now limited accessibility support (integration of extension "accessible_tables" by Rupert Germann)
+	* indexed search comes with an additional template without any HTML tables - thanks to Robert Markula and Michael Stucki
 
 Configuration
 =============
