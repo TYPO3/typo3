@@ -1,3 +1,8 @@
+2006-03-28  Christian Jul Jensen  <christian@jul.net>
+
+	* Fixed bug 999: Encoding mail headers in taskcenter
+	* Fixed bug 3001: Support for multiple tables with columnsonly in alt_doc.php
+
 2006-03-26  Michael Stucki  <michael@typo3.org>
 
 	* Release of TYPO3 4.0rc2

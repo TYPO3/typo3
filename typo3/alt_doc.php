@@ -716,7 +716,11 @@ class SC_alt_doc {
 										// Create form for the record (either specific list of fields or the whole record):
 									$panel = '';
 									if ($this->columnsOnly)	{
-										$panel.= $this->tceforms->getListedFields($table,$rec,$this->columnsOnly);
+										if(is_array($this->columnsOnly)){
+											$panel.= $this->tceforms->getListedFields($table,$rec,$this->columnsOnly[$table]);
+										} else {
+											$panel.= $this->tceforms->getListedFields($table,$rec,$this->columnsOnly);
+										}
 									} else {
 										$panel.= $this->tceforms->getMainFields($table,$rec);
 									}
