@@ -1,3 +1,7 @@
+2006-03-28  Ingmar Schlecht  <ingmar@typo3.org>
+
+	* Fixed bug #3027: Wrong value for "Marked-deleted pages" in Records Statistics
+
 2006-03-28  Christian Jul Jensen  <christian@jul.net>
 
 	* Fixed bug 999: Encoding mail headers in taskcenter

@@ -108,7 +108,7 @@ class t3lib_admin {
 	var $checkSelectDBRefs = Array();	// From the select-fields
 	var $checkGroupDBRefs = Array();	// From the group-fields
 
-	var $recStat = Array(
+	var $recStats = Array(
 		'allValid' => array(),
 		'published_versions' => array(),
 		'deleted' => array(),
