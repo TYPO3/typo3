@@ -1,6 +1,7 @@
 2006-03-28  Ingmar Schlecht  <ingmar@typo3.org>
 
 	* Fixed bug #3027: Wrong value for "Marked-deleted pages" in Records Statistics
+	* Fixed bug #3022: "c" prefixed to local #anchors causes trouble
 
 2006-03-28  Christian Jul Jensen  <christian@jul.net>
 

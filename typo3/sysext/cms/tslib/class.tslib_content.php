@@ -5042,7 +5042,7 @@ class tslib_cObj {
 		$link_param = trim($this->stdWrap($conf['parameter'],$conf['parameter.']));
 
 		$sectionMark = trim($this->stdWrap($conf['section'],$conf['section.']));
-		$sectionMark = $sectionMark ? '#c'.$sectionMark : '';
+		$sectionMark = $sectionMark ? (t3lib_div::testInt($sectionMark)?'#c':'#').$sectionMark : '';
 		$initP = '?id='.$GLOBALS['TSFE']->id.'&type='.$GLOBALS['TSFE']->type;
 		$this->lastTypoLinkUrl = '';
 		$this->lastTypoLinkTarget = '';
@@ -5146,7 +5146,8 @@ class tslib_cObj {
 					$link_param = trim($link_params_parts[0]);		// Link-data del
 					if (!strcmp($link_param,''))	{$link_param=$GLOBALS['TSFE']->id;}	// If no id or alias is given
 					if ($link_params_parts[1] && !$sectionMark)	{
-						$sectionMark='#c'.trim($link_params_parts[1]);
+						$sectionMark = trim($link_params_parts[1]);
+						$sectionMark = (t3lib_div::testInt($sectionMark)?'#c':'#').$sectionMark;
 					}
 						// Splitting the parameter by ',' and if the array counts more than 1 element it's a id/type/? pair
 					unset($theTypeP);
