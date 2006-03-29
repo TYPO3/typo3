@@ -1012,9 +1012,7 @@ class t3lib_pageSelect {
 		$orChecks[]=$field.'=\'0\'';	// If the field contsains zero, then OK
 
 		foreach($memberGroups as $value)	{
-			// if ($value > 0)	{	// outcommented by Ingmar Schlecht because we want those pseudo groups like "hide at login" etc. to work. Original comment from Kasper was: "If user is member of a real group, not zero or negative pseudo group"
-				$orChecks[] = $GLOBALS['TYPO3_DB']->listQuery($field, $value, $table);
-			// }
+			$orChecks[] = $GLOBALS['TYPO3_DB']->listQuery($field, $value, $table);
 		}
 
 		return ' AND ('.implode(' OR ',$orChecks).')';
