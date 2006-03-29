@@ -1120,6 +1120,7 @@ class t3lib_TStemplate	{
 
 			// find
 		if (strstr($file,'/')) {	// here it is manual media
+			if(!strcmp(substr($file,0,6),'media/')) $file = 'typo3/sysext/cms/tslib/'.$file;
 			if (@is_file($this->getFileName_backPath.$file))	{
 				$outFile = $file;
 				$fileInfo = t3lib_div::split_fileref($outFile);
