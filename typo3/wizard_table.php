@@ -148,6 +148,9 @@ class SC_wizard_table {
 		if ($_POST['savedok_x'] || $_POST['saveandclosedok_x'])	{
 			$this->include_once[]=PATH_t3lib.'class.t3lib_tcemain.php';
 		}
+		
+		$this->tableParsing_delimiter = '|';
+		$this->tableParsing_quote = '';
 	}
 
 	/**
@@ -224,9 +227,12 @@ class SC_wizard_table {
 
 			// get delimiter settings
 		$flexForm = t3lib_div::xml2array($row['pi_flexform']);
-
-		$this->tableParsing_quote = $flexForm['data']['s_parsing']['lDEF']['tableparsing_quote']['vDEF']?chr(intval($flexForm['data']['s_parsing']['lDEF']['tableparsing_quote']['vDEF'])):'';
-		$this->tableParsing_delimiter = $flexForm['data']['s_parsing']['lDEF']['tableparsing_delimiter']['vDEF']?chr(intval($flexForm['data']['s_parsing']['lDEF']['tableparsing_delimiter']['vDEF'])):'|';
+	
+		if (is_array($flexForm)) {
+			$this->tableParsing_quote = $flexForm['data']['s_parsing']['lDEF']['tableparsing_quote']['vDEF']?chr(intval($flexForm['data']['s_parsing']['lDEF']['tableparsing_quote']['vDEF'])):'';
+			$this->tableParsing_delimiter = $flexForm['data']['s_parsing']['lDEF']['tableparsing_delimiter']['vDEF']?chr(intval($flexForm['data']['s_parsing']['lDEF']['tableparsing_delimiter']['vDEF'])):'|';
+		}
+		
 			// If some data has been submitted, then construct
 		if (isset($this->TABLECFG['c']))	{
 
@@ -580,7 +586,7 @@ class SC_wizard_table {
 			$thisLine=array();
 			reset($this->TABLECFG['c'][$a]);
 			while(list($b)=each($this->TABLECFG['c'][$a]))	{
-				$thisLine[]=$this->tableParsing_quote.str_replace('|','',$this->TABLECFG['c'][$a][$b]).$this->tableParsing_quote;
+				$thisLine[]=$this->tableParsing_quote.str_replace($this->tableParsing_delimiter,'',$this->TABLECFG['c'][$a][$b]).$this->tableParsing_quote;
 			}
 			$inLines[]=implode($this->tableParsing_delimiter,$thisLine);
 		}
