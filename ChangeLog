@@ -1,3 +1,7 @@
+2006-04-06  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
+
+	* rtehtmlarea: fix bugtracker issue 3120: transforming text in link in Firefox may take excessive time.
+
 2006-04-05  Peter Niederlag  <peter@niederlag.de>
 	* Fixed Bug #313 Problem with LOAD/RESTORE_REGISTER in lib.stdheader, thx to click/Ernesto for solution
 

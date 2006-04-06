@@ -557,15 +557,17 @@ HTMLArea.prototype._detectURL = function(ev) {
 				if(midStart == -1) break;
 				if(this._getFirstAncestor(s, 'a')) break; // already in an anchor
 				var matchData = s.anchorNode.data.substring(0,s.anchorOffset).replace(/^.*?(\S*)$/, '$1');
-				var m = matchData.match(HTMLArea.RE_email);
-				if(m) {
-					var leftText  = s.anchorNode;
-					var rightText = leftText.splitText(s.anchorOffset);
-					var midText   = leftText.splitText(midStart);
-					var midEnd = midText.data.search(/[^a-zA-Z0-9\.@_\-]/);
-					if (midEnd != -1) var endText = midText.splitText(midEnd);
-					autoWrap(midText, 'a').href = 'mailto:' + m[0];
-					break;
+				if (matchData.indexOf('@') != -1) {
+					var m = matchData.match(HTMLArea.RE_email);
+					if(m) {
+						var leftText  = s.anchorNode;
+						var rightText = leftText.splitText(s.anchorOffset);
+						var midText   = leftText.splitText(midStart);
+						var midEnd = midText.data.search(/[^a-zA-Z0-9\.@_\-]/);
+						if (midEnd != -1) var endText = midText.splitText(midEnd);
+						autoWrap(midText, 'a').href = 'mailto:' + m[0];
+						break;
+					}
 				}
 				var m = matchData.match(HTMLArea.RE_url);
 				if(m) {
