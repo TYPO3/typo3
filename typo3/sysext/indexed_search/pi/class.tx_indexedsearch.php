@@ -1513,7 +1513,7 @@ class tx_indexedsearch extends tslib_pibase {
 				$links[] = $this->cObj->substituteMarkerArrayCached($item, $markerArray, array(), array());
 			}
 
-			$html = $this->cObj->substituteMarkerArrayCached($html, array('###LINKS###' => implode(chr(10),$links)), array(), array());
+			$html = $this->cObj->substituteMarkerArrayCached($html, array('###LINKS###' => implode('',$links)), array(), array());
 
 			return '<div'.$this->pi_classParam('sectionlinks').'>'.$this->cObj->stdWrap($html, $this->conf['sectionlinks_stdWrap.']).'</div>';
 		}
@@ -1937,7 +1937,7 @@ class tx_indexedsearch extends tslib_pibase {
 				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'index_fulltext', 'phash='.intval($row['phash']));
 				if ($ftdrow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
 						// Cut HTTP references after some length
-					$content = preg_replace('/(http:\/\/[^\?]+)\?[^[:blank:]]*/i', '$1?...', $ftdrow['fulltextdata']);
+					$content = preg_replace('/(http:\/\/[^ ]{60})([^ ]+)/i', '$1...', $ftdrow['fulltextdata']);
 					$markedSW = $this->markupSWpartsOfString($content);
 				}
 				$GLOBALS['TYPO3_DB']->sql_free_result($res);

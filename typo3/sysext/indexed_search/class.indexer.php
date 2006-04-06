@@ -831,12 +831,12 @@ class tx_indexedsearch_indexer {
 
 		$parts = $this->htmlParser->splitTags('a',$string);
 		$list = array();
-		foreach($parts as $k => $v)	{
+		foreach ($parts as $k => $v)	{
 			if ($k%2)	{
 				$params = $this->htmlParser->get_tag_attributes($v,1);
 				$firstTagName = $this->htmlParser->getFirstTagName($v);	// The 'name' of the first tag
 
-				switch(strtolower($firstTagName))	{
+				switch (strtolower($firstTagName))	{
 					case 'a':
 						$src = $params[0]['href'];
 						if ($src)	{
