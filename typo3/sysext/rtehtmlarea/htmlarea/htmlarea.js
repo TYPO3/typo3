@@ -1853,10 +1853,7 @@ HTMLArea.prototype._createLink = function(link) {
 	}
 	if (!link) {
 		var sel = this._getSelection();
-		var range = this._createRange(sel);
-		var compare = 0;
-		compare = HTMLArea.is_ie ? range.compareEndPoints("StartToEnd", range) : range.compareBoundaryPoints(range.START_TO_END, range);
-		if (compare == 0) {
+		if (this._selectionEmpty(sel)) {
 			alert("You need to select some text before creating a link");
 			return;
 		}
@@ -2722,6 +2719,11 @@ HTMLArea._postback = function(url, data, handler, addParams, charset) {
 		for (var i in data) content += (content.length ? '&' : '') + i + '=' + encodeURIComponent(data[i]);
 		content += (content.length ? '&' : '') + 'charset=' + charset;
 		if (typeof(addParams) != "undefined") content += addParams;
+		if (url.substring(0,1) == '/') {
+			var postUrl = _typo3_host_url + url; 
+		} else {
+			var postUrl = _typo3_host_url + _editor_url + url;
+		}
 		
 		function callBack() {
 			if(req.readyState == 4) {
@@ -2729,7 +2731,7 @@ HTMLArea._postback = function(url, data, handler, addParams, charset) {
 					if (typeof(handler) == 'function') handler(req.responseText, req);
 					HTMLArea._appendToLog("[HTMLArea::_postback]: Server response: " + req.responseText);
 				} else {
-					HTMLArea._appendToLog("ERROR [HTMLArea::_postback]: Unable to post " + _typo3_host_url + _editor_url + url + " . Server reported " + req.statusText);
+					HTMLArea._appendToLog("ERROR [HTMLArea::_postback]: Unable to post " + postUrl + " . Server reported " + req.statusText);
 				}
 			}
 		}
@@ -2739,7 +2741,7 @@ HTMLArea._postback = function(url, data, handler, addParams, charset) {
 			req.send(content);
 		}
 		
-		req.open('POST', _typo3_host_url + _editor_url + url, true);
+		req.open('POST', postUrl, true);
 		req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
 		window.setTimeout(sendRequest, 500);
 	}
