@@ -1,3 +1,7 @@
+2006-04-06   Rupert Germann  <rupi@gmx.li>
+	* fixed bug 3134: install tool / all text centered in IE and Opera
+	* fixed bug 3154: Misspelling in instal tool
+
 2006-04-06  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
 	* rtehtmlarea: fix bugtracker issue 3120: transforming text in link in Firefox may take excessive time.
