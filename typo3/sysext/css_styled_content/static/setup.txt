@@ -190,6 +190,10 @@ lib.stdheader {
 	10.5 < .10.1
 	10.5.fontTag = <h5{register:headerStyle}{register:headerClass}>|</h5>
 
+	# Pops the used registers off the stack:
+	98 = RESTORE_REGISTER
+	99 = RESTORE_REGISTER
+
 	# Post-processing:
 	stdWrap.fieldRequired = header
 	stdWrap.if {
