@@ -1159,11 +1159,11 @@ tt_content.mailform.20 {
 	REQ = 1
 	layout = <div class="csc-mailform-field">###LABEL### ###FIELD###</div>
 	COMMENT.layout = <div class="csc-mailform-label">###LABEL###</div>
-	RADIO.layout = <div class="csc-mailform-field">###LABEL### <fieldset class="csc-mailform-radio" id="testform_radio">###FIELD###</fieldset></div>
+	RADIO.layout = <div class="csc-mailform-field">###LABEL### <span class="csc-mailform-radio">###FIELD###</span></div>
 	LABEL.layout = <div class="csc-mailform-field">###LABEL### <span class="csc-mailform-label">###FIELD###</span></div>
 	labelWrap.wrap = |
 	commentWrap.wrap = |
-	radioWrap.wrap = |
+	radioWrap.wrap = |<br />
 	REQ.labelWrap.wrap = |
 	stdWrap.wrap = <fieldset class="csc-mailform"> | </fieldset>
 	params.radio = class="csc-mailform-radio"

@@ -1830,7 +1830,6 @@ class tslib_cObj {
 							} else {
 								$option .= $this->stdWrap(trim($items[$a][0]), $conf['radioWrap.']);
 							}
- 							$option .= '<br />';
  						}
 						if ($conf['accessibility'])	{
 							$option.='</fieldset>';
@@ -1916,7 +1915,7 @@ class tslib_cObj {
 
 						// Field:
 					$fieldLabel = $confData['label'];
-					if ($conf['accessibility'] && trim($fieldLabel) && !preg_match('/^(radio|label|hidden|comment)$/',$confData['type']))	{
+					if ($conf['accessibility'] && trim($fieldLabel) && !preg_match('/^(label|hidden|comment)$/',$confData['type']))	{
 						$fieldLabel = '<label for="'.$prefix.$fName.'">'.$fieldLabel.'</label>';
 					}
 

@@ -309,7 +309,7 @@ class t3lib_stdGraphic	{
 			$this->V5_EFFECTS = 1;
 
 			if ($gfxConf['im_v5effects']>0)	{
-				$this->cmds['jpg'] = $this->cmds['jpeg'] = '-colorspace RGB -quality '.intval($gfxConf['im_jpg_quality']).$this->v5_sharpen(10);
+				$this->cmds['jpg'] = $this->cmds['jpeg'] = '-colorspace RGB -quality '.intval($gfxConf['jpg_quality']).$this->v5_sharpen(10);
 			}
 		}
 
