@@ -152,7 +152,7 @@ class t3lib_tsfeBeUserAuth extends t3lib_beUserAuth {
 	 * @see index_ts.php
 	 */
 	function extPrintFeAdminDialog()	{
-
+		$out='';
 		if ($this->uc['TSFE_adminConfig']['display_top'])	{
 			if ($this->extAdmModuleEnabled('preview'))	$out.= $this->extGetCategory_preview();
 			if ($this->extAdmModuleEnabled('cache'))	$out.= $this->extGetCategory_cache();
@@ -162,7 +162,7 @@ class t3lib_tsfeBeUserAuth extends t3lib_beUserAuth {
 			if ($this->extAdmModuleEnabled('info'))		$out.= $this->extGetCategory_info();
 		}
 
-		$header.='
+		$header='
 			<tr class="typo3-adminPanel-hRow" style="background-color:#9ba1a8;">
 				<td colspan="4" nowrap="nowrap">'.
 					$this->extItemLink('top','<img src="'.TYPO3_mainDir.'gfx/ol/'.($this->uc['TSFE_adminConfig']['display_top']?'minus':'plus').'bullet.gif" width="18" height="16" align="absmiddle" border="0" alt="" /><strong>'.$this->extFw($this->extGetLL('adminOptions')).'</strong>').
@@ -171,16 +171,24 @@ class t3lib_tsfeBeUserAuth extends t3lib_beUserAuth {
 					<input type="hidden" name="TSFE_ADMIN_PANEL[display_top]" value="'.$this->uc['TSFE_adminConfig']['display_top'].'" />'.($this->extNeedUpdate?'<input type="submit" value="'.$this->extGetLL('update').'" />':'').'</td>
 			</tr>';
 
+		$query='';
+		foreach(t3lib_div::_GET() as $k => $v)	{
+			if ($k != 'TSFE_ADMIN_PANEL')	{
+				if (is_array($v))	{
+					$query.=$this->extPrintFeAdminDialogHiddenFields($k,$v);
+				} else {
+					$query.='<input type="hidden" name="'.$k.'" value="'.htmlspecialchars($v).'">'.chr(10);
+				}
+			}
+		}
 		$out='
 <!--
 	ADMIN PANEL
 -->
 <a name="TSFE_ADMIN"></a>
 <form name="TSFE_ADMIN_PANEL_FORM" action="'.htmlspecialchars(t3lib_div::getIndpEnv('SCRIPT_NAME')).'#TSFE_ADMIN" method="get" style="margin:0;">
-	<input type="hidden" name="id" value="'.$GLOBALS['TSFE']->id.'" />
-	<input type="hidden" name="type" value="'.$GLOBALS['TSFE']->type.'" />
-	<table border="0" cellpadding="0" cellspacing="0" class="typo3-adminPanel" style="background-color:#f6f2e6; border: 1px solid black; z-index:0; position:absolute;">'.
-		$header.$out.'
+'.$query.
+'	<table border="0" cellpadding="0" cellspacing="0" class="typo3-adminPanel" style="background-color:#f6f2e6; border: 1px solid black; z-index:0; position:absolute;">'.$header.$out.'
 	</table>
 </form>';
 
@@ -217,6 +225,27 @@ class t3lib_tsfeBeUserAuth extends t3lib_beUserAuth {
 			<script language="javascript" type="text/javascript">'.$this->extJSCODE.'</script>';
 		}
 		return "\n\n\n\n".$out.'<br />';
+	}
+
+	/**
+	 * Fetches recursively all GET parameters as hidden fields.
+	 * Called from extPrintFeAdminDialog.
+	 *
+	 * @param	string		current key
+	 * @param	mixed		current value
+	 * @return	string		hidden fields
+	 * @see extPrintFeAdminDialog()
+	 */
+	function extPrintFeAdminDialogHiddenFields($key,&$val)	{
+		$out='';
+		foreach($val as $k => $v)	{
+			if (is_array($v))	{
+				$out.=$this->extPrintFeAdminDialogHiddenFields($key.'['.$k.']',$v);
+			} else {
+				$out.='<input type="hidden" name="'.$key.'['.$k.']" value="'.htmlspecialchars($v).'">'.chr(10);
+			}
+		}
+		return $out;
 	}
 
 

@@ -1549,7 +1549,7 @@ class t3lib_TCEmain	{
 			$value['data'] = $this->checkValue_flex_procInData($value['data'],$currentValueArray['data'],$uploadedFiles['data'],$dataStructArray,$PP);
 
 				// Create XML and convert charsets from input value:
-			$xmlValue = $this->checkValue_flexArray2Xml($value);
+			$xmlValue = $this->checkValue_flexArray2Xml($value,TRUE);
 
 				// If we wanted to set UTF fixed:
 			// $storeInCharset='utf-8';
@@ -1562,7 +1562,7 @@ class t3lib_TCEmain	{
 			if (is_array($currentValueArray))	{
 				$arrValue = t3lib_div::xml2array($xmlValue);
 				$arrValue = t3lib_div::array_merge_recursive_overrule($currentValueArray,$arrValue);
-				$xmlValue = $this->checkValue_flexArray2Xml($arrValue);
+				$xmlValue = $this->checkValue_flexArray2Xml($arrValue,TRUE);
 			}
 
 				// Temporary fix to delete flex form elements:
@@ -1570,7 +1570,7 @@ class t3lib_TCEmain	{
 			if (is_array($deleteCMDs[$table][$id][$field]['data']))	{
 				$arrValue = t3lib_div::xml2array($xmlValue);
 				$this->_DELETE_FLEX_FORMdata($arrValue['data'],$deleteCMDs[$table][$id][$field]['data']);
-				$xmlValue = $this->checkValue_flexArray2Xml($arrValue);
+				$xmlValue = $this->checkValue_flexArray2Xml($arrValue,TRUE);
 			}
 
 				// Temporary fix to move flex form elements up:
@@ -1578,7 +1578,7 @@ class t3lib_TCEmain	{
 			if (is_array($moveCMDs[$table][$id][$field]['data']))	{
 				$arrValue = t3lib_div::xml2array($xmlValue);
 				$this->_MOVE_FLEX_FORMdata($arrValue['data'],$moveCMDs[$table][$id][$field]['data'], 'up');
-				$xmlValue = $this->checkValue_flexArray2Xml($arrValue);
+				$xmlValue = $this->checkValue_flexArray2Xml($arrValue,TRUE);
 			}
 
 				// Temporary fix to move flex form elements down:
@@ -1586,12 +1586,11 @@ class t3lib_TCEmain	{
 			if (is_array($moveCMDs[$table][$id][$field]['data']))	{
 				$arrValue = t3lib_div::xml2array($xmlValue);
 				$this->_MOVE_FLEX_FORMdata($arrValue['data'],$moveCMDs[$table][$id][$field]['data'], 'down');
-				$xmlValue = $this->checkValue_flexArray2Xml($arrValue);
+				$xmlValue = $this->checkValue_flexArray2Xml($arrValue,TRUE);
 			}
 
 				// Create the value XML:
 			$res['value']='';
-			$res['value'].='<?xml version="1.0" encoding="'.$storeInCharset.'" standalone="yes" ?>'.chr(10);
 			$res['value'].=$xmlValue;
 		} else {	// Passthrough...:
 			$res['value']=$value;
@@ -1604,11 +1603,12 @@ class t3lib_TCEmain	{
 	 * Converts an array to FlexForm XML
 	 *
 	 * @param	array		Array with FlexForm data
+	 * @param	boolean		If set, the XML prologue is returned as well.
 	 * @return	string		Input array converted to XML
 	 */
-	function checkValue_flexArray2Xml($array)	{
+	function checkValue_flexArray2Xml($array, $addPrologue=FALSE)	{
 		$flexObj = t3lib_div::makeInstance('t3lib_flexformtools');
-		return $flexObj->flexArray2Xml($array);
+		return $flexObj->flexArray2Xml($array, $addPrologue);
 	}
 
 	/**
@@ -3709,8 +3709,7 @@ $this->log($table,$id,6,0,0,'Stage raised...',30,array('comment'=>$comment,'stag
 											// The return value should be compiled back into XML, ready to insert directly in the field (as we call updateDB() directly later):
 										if (is_array($currentValueArray['data']))	{
 											$newData[$fieldName] =
-												'<?xml version="1.0" encoding="'.$GLOBALS['LANG']->charSet.'" standalone="yes" ?>'.chr(10).
-												$this->checkValue_flexArray2Xml($currentValueArray);
+												$this->checkValue_flexArray2Xml($currentValueArray,TRUE);
 										}
 									}
 								}

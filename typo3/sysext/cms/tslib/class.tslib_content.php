@@ -3246,11 +3246,11 @@ class tslib_cObj {
 					// Wraps
 				if ($conf['wrap']){$content=$this->wrap($content, $conf['wrap'], ($conf['wrap.']['splitChar']?$conf['wrap.']['splitChar']:'|'));}
 				if ($conf['noTrimWrap']){$content=$this->noTrimWrap($content, $conf['noTrimWrap']);}
-				if ($conf['wrap2']){$content=$this->wrap($content, $conf['wrap2'], ($conf['wrap.']['splitChar']?$conf['wrap.']['splitChar']:'|'));}
+				if ($conf['wrap2']){$content=$this->wrap($content, $conf['wrap2'], ($conf['wrap2.']['splitChar']?$conf['wrap2.']['splitChar']:'|'));}
 				if ($conf['dataWrap']){$content=$this->dataWrap($content, $conf['dataWrap']);}
 				if ($conf['prepend']){$content=$this->cObjGetSingle($conf['prepend'],$conf['prepend.'],'/stdWrap/.prepend').$content;}
 				if ($conf['append']){$content.=$this->cObjGetSingle($conf['append'],$conf['append.'],'/stdWrap/.append');}
-				if ($conf['wrap3']){$content=$this->wrap($content, $conf['wrap3'], ($conf['wrap.']['splitChar']?$conf['wrap.']['splitChar']:'|'));}
+				if ($conf['wrap3']){$content=$this->wrap($content, $conf['wrap3'], ($conf['wrap3.']['splitChar']?$conf['wrap3.']['splitChar']:'|'));}
 				if ($conf['outerWrap'] || $conf['outerWrap.']){$content=$this->wrap($content, $this->stdWrap($conf['outerWrap'], $conf['outerWrap.']));}
 				if ($conf['insertData'])	{$content = $this->insertData($content);}
 				if ($conf['offsetWrap']){
@@ -6794,9 +6794,6 @@ class tslib_cObj {
 			// If no backend user, return immediately
 		if (!$GLOBALS['TSFE']->beUserLogin)	{ return $content; }
 
-			// If no access right to current languages, return immediately
-		if (!$BE_USER->checkLanguageAccess($GLOBALS['TSFE']->sys_language_uid))	{ return $content; }
-
 			// If a backend user is logged in, then go on...
 		if ($conf['newRecordFromTable'])	{
 			$currentRecord = $conf['newRecordFromTable'].':NEW';
@@ -6808,6 +6805,18 @@ class tslib_cObj {
 		list($table,$uid) = explode(':',$currentRecord);
 		$mayEdit=0;
 		$nPid=intval($conf['newRecordInPid']);	// Page ID for new records, 0 if not specified
+
+			// If no access right to record languages, return immediately
+		if ($table === 'pages')	{
+			$lang = $GLOBALS['TSFE']->sys_language_uid;
+		} elseif ($table === 'tt_content')	{
+			$lang = $GLOBALS['TSFE']->sys_language_content;
+		} elseif ($TCA[$table]['ctrl']['languageField'])	{
+			$lang = $currentRecord[$TCA[$table]['ctrl']['languageField']];
+		} else {
+			$lang = -1;
+		}
+		if (!$BE_USER->checkLanguageAccess($GLOBALS['TSFE']->sys_language_uid))	{ return $content; }
 
 		if (!$conf['onlyCurrentPid'] || $dataArr['pid']==$GLOBALS['TSFE']->id)	{
 				// Permissions:
@@ -6972,9 +6981,6 @@ class tslib_cObj {
 			// If no backend user, return immediately
 		if (!$GLOBALS['TSFE']->beUserLogin)		{return $content;}
 
-			// If no access right to current languages, return immediately
-		if (!$BE_USER->checkLanguageAccess($GLOBALS['TSFE']->sys_language_uid))	{ return $content; }
-
 			// Check incoming params:
 		$rParts = explode(':',$currentRecord?$currentRecord:$this->currentRecord);
 
@@ -6986,7 +6992,7 @@ class tslib_cObj {
 			if ($table!=$rParts[0])	return $content;	// If the table is set as the first parameter, and does not match the table of the current record, then just return.
 		}
 
-		// Check if allowed to edit content:
+			// Check if allowed to edit content:
 		$mayEdit=0;
 		$dataArr=count($dataArr)?$dataArr:$this->data;	// If pages-record, should contain correct perms-field, if not, should contain correct pid value.
 
@@ -6996,6 +7002,20 @@ class tslib_cObj {
 			$mayEdit = $BE_USER->isAdmin()||$BE_USER->doesUserHaveAccess($dataArr,2)?1:0;
 		} else {
 			$mayEdit = $BE_USER->isAdmin()||$BE_USER->doesUserHaveAccess(t3lib_BEfunc::getRecord('pages',$dataArr['pid']),16)?1:0;
+		}
+
+			// Check if allowed to edit language
+		if ($mayEdit)	{
+			if ($table === 'pages')	{
+				$lang = $GLOBALS['TSFE']->sys_language_uid;
+			} elseif ($table === 'tt_content')	{
+				$lang = $GLOBALS['TSFE']->sys_language_content;
+			} elseif ($TCA[$table]['ctrl']['languageField'])	{
+				$lang = $currentRecord[$TCA[$table]['ctrl']['languageField']];
+			} else {
+				$lang = -1;
+			}
+			if (!$BE_USER->checkLanguageAccess($GLOBALS['TSFE']->sys_language_uid))	{ $mayEdit = 0; }
 		}
 
 		if ($GLOBALS['TSFE']->displayFieldEditIcons && $table && $mayEdit && $fieldList)	{

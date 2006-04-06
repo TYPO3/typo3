@@ -89,6 +89,16 @@ class SC_browse_links {
 	 * @see main()
 	 */
 	var $mode;
+	
+	/**
+	 * holds Instance of main browse_links class
+	 * needed fo intercommunication between various classes that need access to variables via $GLOBALS['SOBE'] 
+	 * Not the most nice solution but introduced since we don't have another general way to return class-instances or registry for now
+	 *
+	 * @var browse_links
+	 */
+	
+	var $browser;
 
 
 	/**
@@ -140,27 +150,27 @@ class SC_browse_links {
 			// if type was not rendered use default rendering functions
 		if(!$browserRendered) {
 
-			$browser = t3lib_div::makeInstance('browse_links');
-			$browser->init();
+			$this->browser = t3lib_div::makeInstance('browse_links');
+			$this->browser->init();
 
 			$modData = $BE_USER->getModuleData('browse_links.php','ses');
-			list($modData, $store) = $browser->processSessionData($modData);
+			list($modData, $store) = $this->browser->processSessionData($modData);
 			$BE_USER->pushModuleData('browse_links.php',$modData);
 
 				// Output the correct content according to $this->mode
 			switch((string)$this->mode)	{
 				case 'rte':
-					$this->content = $browser->main_rte();
+					$this->content = $this->browser->main_rte();
 				break;
 				case 'db':
-					$this->content = $browser->main_db();
+					$this->content = $this->browser->main_db();
 				break;
 				case 'file':
 				case 'filedrag':
-					$this->content = $browser->main_file();
+					$this->content = $this->browser->main_file();
 				break;
 				case 'wizard':
-					$this->content = $browser->main_rte(1);
+					$this->content = $this->browser->main_rte(1);
 				break;
 			}
 		}

@@ -898,7 +898,13 @@ class tx_indexedsearch_files {
 			$indexerObj->init();
 
 				// Index document:
-			$indexerObj->indexRegularDocument($params['document'], TRUE);
+			if ($params['alturl'])	{
+				$fI = pathinfo($params['document']);
+				$ext = strtolower($fI['extension']);
+				$indexerObj->indexRegularDocument($params['alturl'], TRUE, $params['document'], $ext);
+			} else {
+				$indexerObj->indexRegularDocument($params['document'], TRUE);
+			}
 
 				// Return OK:
 			return array('content' => array());

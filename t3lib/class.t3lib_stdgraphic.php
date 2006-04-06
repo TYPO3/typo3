@@ -248,7 +248,7 @@ class t3lib_stdGraphic	{
 		if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['png_truecolor'])	{
 			$this->png_truecolor = true;
 		}
-		if (!function_exists('imagecreatetruecolor'))	{
+		if (!$gfxConf['gdlib_2'] || !function_exists('imagecreatetruecolor'))	{
 			$this->truecolor = false;
 		}
 		if (!$gfxConf['im_version_5'])	{
@@ -2868,7 +2868,7 @@ class t3lib_stdGraphic	{
 	 * @return	pointer		Image Resource pointer
 	 */
 	function imagecreate($w, $h)	{
-		if($this->truecolor && $this->GD2 && function_exists('imagecreatetruecolor'))	{
+		if($this->truecolor && function_exists('imagecreatetruecolor'))	{
 			return imagecreatetruecolor($w, $h);
 		} else	{
 			return imagecreate($w, $h);

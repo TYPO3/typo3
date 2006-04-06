@@ -126,6 +126,7 @@ require_once (PATH_t3lib.'class.t3lib_page.php');
 require_once (PATH_t3lib.'class.t3lib_recordlist.php');
 require_once (PATH_typo3.'/class.db_list.inc');
 require_once (PATH_typo3.'/class.db_list_extra.inc');
+require_once (PATH_t3lib.'/class.t3lib_pagetree.php');
 
 
 
@@ -192,10 +193,10 @@ class TBE_browser_recordList extends localRecordList {
 	 * @return	string
 	 */
 	function ext_addP()	{
-		$str = '&act='.$GLOBALS['SOBE']->act.
-				'&mode='.$GLOBALS['SOBE']->mode.
-				'&expandPage='.$GLOBALS['SOBE']->expandPage.
-				'&bparams='.rawurlencode($GLOBALS['SOBE']->bparams);
+		$str = '&act='.$GLOBALS['SOBE']->browser->act.
+				'&mode='.$GLOBALS['SOBE']->browser->mode.
+				'&expandPage='.$GLOBALS['SOBE']->browser->expandPage.
+				'&bparams='.rawurlencode($GLOBALS['SOBE']->browser->bparams);
 		return $str;
 	}
 
@@ -307,14 +308,14 @@ class localPageTree extends t3lib_browseTree {
 		foreach($treeArr as $k => $v)	{
 			$c++;
 			$bgColorClass = ($c+1)%2 ? 'bgColor' : 'bgColor-10';
-			if ($GLOBALS['SOBE']->curUrlInfo['act']=='page' && $GLOBALS['SOBE']->curUrlInfo['pageid']==$v['row']['uid'] && $GLOBALS['SOBE']->curUrlInfo['pageid'])	{
+			if ($GLOBALS['SOBE']->browser->curUrlInfo['act']=='page' && $GLOBALS['SOBE']->browser->curUrlInfo['pageid']==$v['row']['uid'] && $GLOBALS['SOBE']->browser->curUrlInfo['pageid'])	{
 				$arrCol='<td><img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/blinkarrow_right.gif','width="5" height="9"').' class="c-blinkArrowR" alt="" /></td>';
 				$bgColorClass='bgColor4';
 			} else {
 				$arrCol='<td></td>';
 			}
 
-			$aOnClick = 'return jumpToUrl(\''.$this->thisScript.'?act='.$GLOBALS['SOBE']->act.'&mode='.$GLOBALS['SOBE']->mode.'&expandPage='.$v['row']['uid'].'\');';
+			$aOnClick = 'return jumpToUrl(\''.$this->thisScript.'?act='.$GLOBALS['SOBE']->browser->act.'&mode='.$GLOBALS['SOBE']->browser->mode.'&expandPage='.$v['row']['uid'].'\');';
 			$cEbullet = $this->ext_isLinkable($v['row']['doktype'],$v['row']['uid']) ?
 						'<a href="#" onclick="'.htmlspecialchars($aOnClick).'"><img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/ol/arrowbullet.gif','width="18" height="16"').' alt="" /></a>' :
 						'';
@@ -440,7 +441,7 @@ class TBE_PageTree extends localPageTree {
 			$ficon=t3lib_iconWorks::getIcon('pages',$v);
 			$onClick = "return insertElement('pages', '".$v['uid']."', 'db', ".t3lib_div::quoteJSvalue($v['title']).", '', '', '".$ficon."','',1);";
 		} else {
-			$onClick = htmlspecialchars('return jumpToUrl(\''.$this->thisScript.'?act='.$GLOBALS['SOBE']->act.'&mode='.$GLOBALS['SOBE']->mode.'&expandPage='.$v['uid'].'\');');
+			$onClick = htmlspecialchars('return jumpToUrl(\''.$this->thisScript.'?act='.$GLOBALS['SOBE']->browser->act.'&mode='.$GLOBALS['SOBE']->browser->mode.'&expandPage='.$v['uid'].'\');');
 		}
 		return '<a href="#" onclick="'.$onClick.'">'.$title.'</a>';
 	}
@@ -484,7 +485,7 @@ class localFolderTree extends t3lib_folderTree {
 	 */
 	function wrapTitle($title,$v)	{
 		if ($this->ext_isLinkable($v))	{
-			$aOnClick = 'return jumpToUrl(\''.$this->thisScript.'?act='.$GLOBALS['SOBE']->act.'&mode='.$GLOBALS['SOBE']->mode.'&expandFolder='.rawurlencode($v['path']).'\');';
+			$aOnClick = 'return jumpToUrl(\''.$this->thisScript.'?act='.$GLOBALS['SOBE']->browser->act.'&mode='.$GLOBALS['SOBE']->browser->mode.'&expandFolder='.rawurlencode($v['path']).'\');';
 			return '<a href="#" onclick="'.htmlspecialchars($aOnClick).'">'.$title.'</a>';
 		} else {
 			return '<span class="typo3-dimmed">'.$title.'</span>';
@@ -539,12 +540,12 @@ class localFolderTree extends t3lib_folderTree {
 		$c=0;
 
 			// Preparing the current-path string (if found in the listing we will see a red blinking arrow).
-		if (!$GLOBALS['SOBE']->curUrlInfo['value'])	{
+		if (!$GLOBALS['SOBE']->browser->curUrlInfo['value'])	{
 			$cmpPath='';
-		} else if (substr(trim($GLOBALS['SOBE']->curUrlInfo['info']),-1)!='/')	{
-			$cmpPath=PATH_site.dirname($GLOBALS['SOBE']->curUrlInfo['info']).'/';
+		} else if (substr(trim($GLOBALS['SOBE']->browser->curUrlInfo['info']),-1)!='/')	{
+			$cmpPath=PATH_site.dirname($GLOBALS['SOBE']->browser->curUrlInfo['info']).'/';
 		} else {
-			$cmpPath=PATH_site.$GLOBALS['SOBE']->curUrlInfo['info'];
+			$cmpPath=PATH_site.$GLOBALS['SOBE']->browser->curUrlInfo['info'];
 		}
 
 			// Traverse rows for the tree and print them into table rows:
@@ -553,14 +554,14 @@ class localFolderTree extends t3lib_folderTree {
 			$bgColorClass=($c+1)%2 ? 'bgColor' : 'bgColor-10';
 
 				// Creating blinking arrow, if applicable:
-			if ($GLOBALS['SOBE']->curUrlInfo['act']=='file' && $cmpPath==$v['row']['path'])	{
+			if ($GLOBALS['SOBE']->browser->curUrlInfo['act']=='file' && $cmpPath==$v['row']['path'])	{
 				$arrCol='<td><img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/blinkarrow_right.gif','width="5" height="9"').' class="c-blinkArrowR" alt="" /></td>';
 				$bgColorClass='bgColor4';
 			} else {
 				$arrCol='<td></td>';
 			}
 				// Create arrow-bullet for file listing (if folder path is linkable):
-			$aOnClick = 'return jumpToUrl(\''.$this->thisScript.'?act='.$GLOBALS['SOBE']->act.'&mode='.$GLOBALS['SOBE']->mode.'&expandFolder='.rawurlencode($v['row']['path']).'\');';
+			$aOnClick = 'return jumpToUrl(\''.$this->thisScript.'?act='.$GLOBALS['SOBE']->browser->act.'&mode='.$GLOBALS['SOBE']->browser->mode.'&expandFolder='.rawurlencode($v['row']['path']).'\');';
 			$cEbullet = $this->ext_isLinkable($v['row']) ? '<a href="#" onclick="'.htmlspecialchars($aOnClick).'"><img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/ol/arrowbullet.gif','width="18" height="16"').' alt="" /></a>' : '';
 
 				// Put table row with folder together:
@@ -636,7 +637,7 @@ class TBE_FolderTree extends localFolderTree {
 	 */
 	function wrapTitle($title,$v)	{
 		if ($this->ext_isLinkable($v))	{
-			$aOnClick = 'return jumpToUrl(\''.$this->thisScript.'?act='.$GLOBALS['SOBE']->act.'&mode='.$GLOBALS['SOBE']->mode.'&expandFolder='.rawurlencode($v['path']).'\');';
+			$aOnClick = 'return jumpToUrl(\''.$this->thisScript.'?act='.$GLOBALS['SOBE']->browser->act.'&mode='.$GLOBALS['SOBE']->browser->mode.'&expandFolder='.rawurlencode($v['path']).'\');';
 			return '<a href="#" onclick="'.htmlspecialchars($aOnClick).'">'.$title.'</a>';
 		} else {
 			return '<span class="typo3-dimmed">'.$title.'</span>';

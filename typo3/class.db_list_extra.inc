@@ -407,7 +407,7 @@ class localRecordList extends recordList {
 					if (in_array('_CONTROL_',$this->fieldArray))	$theData['_CONTROL_']='';
 					if (in_array('_CLIPBOARD_',$this->fieldArray))	$theData['_CLIPBOARD_']='';
 				}
-				$out.=$this->addelement(0,'',$theData,'',$this->leftMargin);
+				$out.=$this->addelement(0,'',$theData,'class="c-table-row-spacer"',$this->leftMargin);
 			}
 
 				// Header line is drawn

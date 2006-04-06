@@ -1944,15 +1944,45 @@ class t3lib_div {
 		}
 		return $tagi['ch'];
 	}
+	
+	/**
+	 * Turns PHP array into XML. See array2xml()
+	 *
+	 * @param	array		The input PHP array with any kind of data; text, binary, integers. Not objects though.
+	 * @param	string		Alternative document tag. Default is "phparray".
+	 * @param	array		Options for the compilation. See array2xml() for description.
+	 * @param	string		Forced charset to prologue
+	 * @return	string		An XML string made from the input content in the array.
+	 * @see xml2array(),array2xml()
+	 */
+	function array2xml_cs($array,$docTag='phparray',$options=array(),$charset='')	{
+		
+			// Figure out charset if not given explicitly:
+		if (!$charset)	{
+			if ($GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset'])	{	// First priority: forceCharset! If set, this will be authoritative!
+				$charset = $GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset'];
+			} elseif (is_object($GLOBALS['LANG']))	{
+				$charset = $GLOBALS['LANG']->charSet;	// If "LANG" is around, that will hold the current charset 
+			} else {
+				$charset = 'iso-8859-1';	// THIS is just a hopeful guess! 
+			}		
+		}
+		
+			// Return XML:
+		return '<?xml version="1.0" encoding="'.htmlspecialchars($charset).'" standalone="yes" ?>'.chr(10).
+				t3lib_div::array2xml($array,'',0,$docTag,0, $options);
+	}
 
 	/**
+	 * Deprecated to call directly (unless you are aware of using XML prologues)! Use "array2xml_cs" instead (which adds an XML-prologue)
+	 *
 	 * Converts a PHP array into an XML string.
 	 * The XML output is optimized for readability since associative keys are used as tagnames.
 	 * This also means that only alphanumeric characters are allowed in the tag names AND only keys NOT starting with numbers (so watch your usage of keys!). However there are options you can set to avoid this problem.
 	 * Numeric keys are stored with the default tagname "numIndex" but can be overridden to other formats)
 	 * The function handles input values from the PHP array in a binary-safe way; All characters below 32 (except 9,10,13) will trigger the content to be converted to a base64-string
 	 * The PHP variable type of the data IS preserved as long as the types are strings, arrays, integers and booleans. Strings are the default type unless the "type" attribute is set.
-	 * The output XML has been tested with the PHP XML-parser and parses OK under all tested circumstances.
+	 * The output XML has been tested with the PHP XML-parser and parses OK under all tested circumstances with 4.x versions. However, with PHP5 there seems to be the need to add an XML prologue a la <?xml version="1.0" encoding="[charset]" standalone="yes" ?> - otherwise UTF-8 is assumed! Unfortunately, many times the output from this function is used without adding that prologue meaning that non-ASCII characters will break the parsing!! This suchs of course! Effectively it means that the prologue should always be prepended setting the right characterset, alternatively the system should always run as utf-8! 
 	 * However using MSIE to read the XML output didn't always go well: One reason could be that the character encoding is not observed in the PHP data. The other reason may be if the tag-names are invalid in the eyes of MSIE. Also using the namespace feature will make MSIE break parsing. There might be more reasons...
 	 * Usage: 5
 	 *
@@ -3504,6 +3534,17 @@ class t3lib_div {
 				$LOCAL_LANG = array();
 				$LOCAL_LANG['default'] = $xmlContent['data']['default'];
 
+					// Converting charset of default language from utf-8 to iso-8859-1 (since that is what the system would expect for default langauge in the core due to historical reasons)
+					// This conversion is unneccessary for 99,99% of all default labels since they are in english, therefore ASCII.
+					// However, an extension like TemplaVoila uses an extended character in its name, even in Default language. To accommodate that (special chars for default) this conversion must be made.
+					// Since the output from this function is probably always cached it is considered insignificant to do this conversion.
+					// - kasper
+				if (is_array($LOCAL_LANG['default']))	{
+					foreach($LOCAL_LANG['default'] as $labelKey => $labelValue)	{
+						$LOCAL_LANG['default'][$labelKey] = $csConvObj->utf8_decode($labelValue,'iso-8859-1');
+					}
+				}
+
 					// Specific language, convert from utf-8 to backend language charset:
 					// NOTICE: Converting from utf-8 back to "native" language may be a temporary solution until we can totally discard "locallang.php" files altogether (and use utf-8 for everything). But doing this conversion is the quickest way to migrate now and the source is in utf-8 anyway which is the main point.
 				if ($langKey!='default')	{
@@ -4148,7 +4189,7 @@ class t3lib_div {
 	 *
 	 * @param	string		Input URL
 	 * @param	integer		URL string length limit
-	 * @param	string		URL of "index script" - the prefix of the "?RDCT=..." parameter. If not supplyed it will default to t3lib_div::getIndpEnv('TYPO3_REQUEST_DIR')
+	 * @param	string		URL of "index script" - the prefix of the "?RDCT=..." parameter. If not supplyed it will default to t3lib_div::getIndpEnv('TYPO3_REQUEST_DIR').'index.php'
 	 * @return	string		Processed URL
 	 * @internal
 	 */
@@ -4166,7 +4207,7 @@ class t3lib_div {
 
 				$GLOBALS['TYPO3_DB']->exec_INSERTquery('cache_md5params', $insertFields);
 			}
-			$inUrl=($index_script_url ? $index_script_url : t3lib_div::getIndpEnv('TYPO3_REQUEST_DIR')).
+			$inUrl=($index_script_url ? $index_script_url : t3lib_div::getIndpEnv('TYPO3_REQUEST_DIR').'index.php').
 				'?RDCT='.$md5;
 		}
 		return $inUrl;

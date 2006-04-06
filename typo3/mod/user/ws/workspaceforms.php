@@ -184,7 +184,7 @@ class SC_mod_user_ws_workspaceForms extends t3lib_SCbase {
 		}
 
 		// process submission (this may override action and workspace ID!)
-		if (t3lib_div::_GP('_saveandclosedok') || t3lib_div::_GP('_savedok')) {
+		if (t3lib_div::_GP('workspace_form_submited')) {
 			$this->processData();
 			// if 'Save&Close' was pressed, redirect to main module script
 			if (t3lib_div::_GP('_saveandclosedok_x')) {
@@ -356,10 +356,9 @@ class SC_mod_user_ws_workspaceForms extends t3lib_SCbase {
 
 		// Create form for the record (either specific list of fields or the whole record):
 		$form = '';
-//		$form .= $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.path', 1) . ': ' . $this->tceforms->getRecordPath($table,$rec);
-//		$form .= $this->doc->spacer(5);
 		$form .= $this->tceforms->getMainFields($table,$rec);
 		$form .= '<input type="hidden" name="data['.$table.']['.$rec['uid'].'][pid]" value="'.$rec['pid'].'" />';
+		$form .= '<input type="hidden" name="workspace_form_submited" value="1" />';
 		$form .= '<input type="hidden" name="returnUrl" value="index.php" />';
 		$form .= '<input type="hidden" name="action" value="edit" />';
 		$form .= '<input type="hidden" name="closeDoc" value="0" />';
@@ -425,15 +424,11 @@ class SC_mod_user_ws_workspaceForms extends t3lib_SCbase {
 
 		// Create form for the record (either specific list of fields or the whole record):
 		$form = '';
-//		$fields = array_keys($GLOBALS['TCA'][$table]['columns']);
-//		unset($fields[array_search('freeze', $fields)]);
 		$form .= $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.path', 1) . ': ' . $this->tceforms->getRecordPath($table,$rec);
 		$form .= $this->doc->spacer(5);
 		$form .= $this->tceforms->getMainFields($table,$rec);
-//		$form .= $this->tceforms->getListedFields($table,$rec,implode(',', $fields));
 
-		$form .= '<input type="hidden" name="submit_x" value="1" />';
-
+		$form .= '<input type="hidden" name="workspace_form_submited" value="1" />';
 		$form .= '<input type="hidden" name="data['.$table.']['.$rec['uid'].'][pid]" value="'.$rec['pid'].'" />';
 		$form .= '<input type="hidden" name="returnUrl" value="index.php" />';
 		$form .= '<input type="hidden" name="action" value="new" />';

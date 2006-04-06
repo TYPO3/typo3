@@ -1099,6 +1099,16 @@ tt_content.script {
 
 
 # ****************
+# CType: div
+# ****************
+tt_content.div = TEXT
+tt_content.div {
+	value =
+	prefixComment = 2 | Div element
+}
+
+
+# ****************
 # CType: html
 # ****************
 # This truely IS a content object, launched from inside the PHP class of course.
@@ -1240,7 +1250,6 @@ tt_content.image.20 {
 			bodyTag = <body style="margin:0; background:#fff;">
 			JSwindow.expand =
 		}
-
 	}
 
 	caption.1.wrapAlign >
@@ -1248,11 +1257,16 @@ tt_content.image.20 {
 
 	captionAlign.field = imagecaption_position
 
-	defaultW = {$styles.content.imgtext.defaultW}
-	defaultWInText = {$styles.content.imgtext.defaultWInText}
 	borderSpace = {$styles.content.imgtext.borderSpace}
 	separateRows = {$styles.content.imgtext.separateRows}
 	addClasses =
+	addClassesImage =
+	addClassesImage.ifEmpty = csc-textpic-firstcol csc-textpic-lastcol
+	addClassesImage.override = csc-textpic-firstcol |*| |*| csc-textpic-lastcol
+	addClassesImage.override.if {
+		isGreaterThan.field = imagecols
+		value = 1
+	}
 
 	#
 	imageStdWrap.dataWrap = <div class="csc-textpic-imagewrap" style="width:{register:totalwidth}px;"> | </div>
@@ -1302,7 +1316,7 @@ tt_content.image.20 {
 		dl {
 			imageRowStdWrap.dataWrap = <div class="csc-textpic-imagerow" style="width:{register:rowwidth}px;"> | </div>
 			noRowsStdWrap.wrap =
-			oneImageStdWrap.dataWrap = <dl class="csc-textpic-image" style="width:{register:imagespace}px;"> | </dl>
+			oneImageStdWrap.dataWrap = <dl class="csc-textpic-image###CLASSES###" style="width:{register:imagespace}px;"> | </dl>
 			imgTagStdWrap.wrap = <dt> | </dt>
 			editIconsStdWrap.wrap = <dd> | </dd>
 			caption.wrap = <dd class="csc-textpic-caption"> | </dd>
@@ -1310,7 +1324,7 @@ tt_content.image.20 {
 		ul {
 			imageRowStdWrap.dataWrap = <div class="csc-textpic-imagerow" style="width:{register:rowwidth}px;"><ul> | </ul></div>
 			noRowsStdWrap.wrap = <ul> | </ul>
-			oneImageStdWrap.dataWrap = <li class="csc-textpic-image" style="width:{register:imagespace}px;"> | </li>
+			oneImageStdWrap.dataWrap = <li class="csc-textpic-image###CLASSES###" style="width:{register:imagespace}px;"> | </li>
 			imgTagStdWrap.wrap =
 			editIconsStdWrap.wrap = <div> | </div>
 			caption.wrap = <div class="csc-textpic-caption"> | </div>
@@ -1318,7 +1332,7 @@ tt_content.image.20 {
 		div {
 			imageRowStdWrap.dataWrap = <div class="csc-textpic-imagerow" style="width:{register:rowwidth}px;"> | </div>
 			noRowsStdWrap.wrap =
-			oneImageStdWrap.dataWrap = <div class="csc-textpic-image" style="width:{register:imagespace}px;"> | </div>
+			oneImageStdWrap.dataWrap = <div class="csc-textpic-image###CLASSES###" style="width:{register:imagespace}px;"> | </div>
 			imgTagStdWrap.wrap = <div> | </div>
 			editIconsStdWrap.wrap = <div> | </div>
 			caption.wrap = <div class="csc-textpic-caption"> | </div>
@@ -1345,7 +1359,6 @@ tt_content.textpic.20 {
 
 plugin.tx_cssstyledcontent._CSS_DEFAULT_STYLE (
 	/* Captions */
-	P.csc-caption { margin: 0; }
 	DIV.csc-textpic-caption-c .csc-textpic-caption { text-align: center; }
 	DIV.csc-textpic-caption-r .csc-textpic-caption { text-align: right; }
 	DIV.csc-textpic-caption-l .csc-textpic-caption { text-align: left; }
@@ -1412,6 +1425,20 @@ plugin.tx_cssstyledcontent._CSS_DEFAULT_STYLE (
 	DIV.csc-textpic DIV.csc-textpic-imagewrap .csc-textpic-image { margin-bottom: 5px; }
 	DIV.csc-textpic-equalheight DIV.csc-textpic-imagerow { margin-bottom: 5px; display: block; }
 	DIV.csc-textpic DIV.csc-textpic-imagerow { clear: both; }
+
+	/* No margins around the whole image-block */
+	DIV.csc-textpic DIV.csc-textpic-imagewrap .csc-textpic-firstcol { margin-left: 0px !important; }
+	DIV.csc-textpic DIV.csc-textpic-imagewrap .csc-textpic-lastcol { margin-right: 0px !important; }
+
+	/* Add margin from image-block to text (in case of "Text w/ images") */
+	DIV.csc-textpic-intext-left DIV.csc-textpic-imagewrap,
+	DIV.csc-textpic-intext-left-nowrap DIV.csc-textpic-imagewrap {
+		margin-right: {$styles.content.imgtext.textMargin}px !important;
+	}
+	DIV.csc-textpic-intext-right DIV.csc-textpic-imagewrap,
+	DIV.csc-textpic-intext-right-nowrap DIV.csc-textpic-imagewrap {
+		margin-left: {$styles.content.imgtext.textMargin}px !important;
+	}
 
 	/* Positioning of images: */
 

@@ -61,6 +61,8 @@ class SC_mod_tools_em_terconnection {
 		$t3x = t3lib_div::getURL($mirrorURL);
 		$MD5 = md5($t3x);
 
+		if($t3x===false) return 'The T3X file could not be fetched. Possible reasons: network problems, allow_url_fopen is off, curl is not enabled in Install tool.';
+
 		if($MD5 == $expectedMD5) {
 				// Fetch and return:
 			return $this->decodeExchangeData($t3x);
@@ -258,13 +260,13 @@ class SC_mod_tools_em_terconnection {
 			'technicalData' => array (
 				'dependencies' => $dependenciesArr,
 				'loadOrder' => utf8_encode($uArr['EM_CONF']['loadOrder']),
-				'uploadFolder' => utf8_encode($uArr['EM_CONF']['uploadfolder']),
+				'uploadFolder' => (boolean) intval($uArr['EM_CONF']['uploadfolder']),
 				'createDirs' => utf8_encode($uArr['EM_CONF']['createDirs']),
-				'shy' => utf8_encode($uArr['EM_CONF']['shy']),
+				'shy' => (boolean) intval($uArr['EM_CONF']['shy']),
 				'modules' => utf8_encode($uArr['EM_CONF']['module']),
 				'modifyTables' => utf8_encode($uArr['EM_CONF']['modify_tables']),
 				'priority' => utf8_encode($uArr['EM_CONF']['priority']),
-				'clearCacheOnLoad' => utf8_encode($uArr['EM_CONF']['clearCacheOnLoad']),
+				'clearCacheOnLoad' => (boolean) intval($uArr['EM_CONF']['clearCacheOnLoad']),
 				'lockType' => utf8_encode($uArr['EM_CONF']['lockType']),
 			),
 			'infoData' => array(

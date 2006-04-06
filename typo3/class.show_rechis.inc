@@ -81,6 +81,24 @@ class recordHistory {
 	function main()	{
 		$content = '';
 
+			// single-click rollback
+		if (t3lib_div::_GP('revert') && t3lib_div::_GP('sumUp'))	{
+			$this->rollbackFields = t3lib_div::_GP('revert');
+			$this->showInsertDelete = 0;
+			$this->showSubElements = 0;
+
+			$element = explode(':',$this->element);
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*','sys_history', 'tablename='.$GLOBALS['TYPO3_DB']->fullQuoteStr($element[0], 'sys_history').' AND recuid='.intval($element[1]), '', 'uid DESC', '1');
+			$record = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
+			$this->lastSyslogId = $record['sys_log_uid'];
+
+			$this->createChangeLog();
+			$completeDiff = $this->createMultipleDiff();
+			$this->performRollback($completeDiff);
+			Header ('Location: '.t3lib_div::locationHeaderUrl($this->returnUrl));
+			exit;
+		}
+
 			// save snapshot
 		if (t3lib_div::_GP('highlight') && !t3lib_div::_GP('settings'))	{
 			$this->toggleHighlight(t3lib_div::_GP('highlight'));

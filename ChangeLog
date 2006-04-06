@@ -1,3 +1,55 @@
+2006-04-04  Michael Stucki  <michael@typo3.org>
+
+	* Release of TYPO3 4.0rc3
+	* Fixed bug #3065: wrap2.splitChar and wrap3.splitChar are ignored
+	* Fix RDCT links: Did not point to index.php by default
+	* Fix several bugs related with CSS Styled Content, see below. Many thanks to Ernesto Baschny who did all of this!
+		* Now the CSS version of "Text w/images" and "Images" (table-less) also respect the textMargin constant so that (finally) the user can specify a different margin to separate the image block from the text. "colSpacing" now only applies to inter-images spacing, which is what the table-based approach also does.
+		* For this to work we need to apply two new classes to the images (csc-textpic-firstcol and csc-textpic-lastcol). This is configurable through an optionSplitted new property "addClassesImage" of the USER object
+		* Having this also allowed us to fix a bug in positioning: The whole image-block can now stretch correctly over the given width without any margins around it (which is required if you have just an image-block, without text). Without the patch, you always have "margin-right" (if images are placed to the left or center) or "margin-right" (if images are placed to the right).
+		* Fixed also a problem with the calculation of image width if we have borders and border-spacings: Now the whole image-block will always be exactly maxW wide (so if you have borders and spacing, the images will get slightly smaller). Without this, the image-block could "explode" a fixed-width layout.
+		* Added empty rendering definition for cType "div"  (divider) to prevent error message
+	* Fixed setup module: Colons were wrapped to the next line
+	* Small fixes to t3skin
+	* Indexed Search: Added crawler support for $GLOBALS[T3_VAR][ext][indexed_search][indexLocalFiles]
+
+2006-04-04  Peter Niederlag  <peter@niederlag.de>
+
+	* Fixed bugs #2949, #3016, #3037: Several Element Browser bugs
+
+2006-04-04  Sebastian Kurfuerst  <sebastian@garbage-group.de>
+
+	* Implement Single-Click rollback in record history
+
+2006-04-04  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
+
+	* Fixed bug #1303: Broken FE-links with "config.locale_all=tr_TR"
+
+2006-04-04  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+
+	* Fixed bug #2868: Admin Panel always loses GET parameters
+	* Fixed bug #2994: Calling PHP5-only iconv functions in PHP4
+	* Language related changes:
+		* Fixed TYPO3/ISO mappings: kr=>ko, gl=>kl, removed old mapping he=>iw (ISO code has changed a long time ago), added ba=>bs.
+		* Updated and fixed locale/script-family mapping (for detection of the locale charset).
+		* Updated info for adding a language in config_default.php
+		* Changed variable names to reflect true meaning, so somebody else may understand what's going on.
+		* Corrected language drop down in BE.
+	* Fixed restriction to languages in Frontend editing
+
+2006-04-04  Karsten Dambekalns  <karsten@typo3.org>
+
+	* Fixed bug #3097: EM leaves mirror* files on failure
+
+2006-04-04  Dmitry Dulepov  <typo3@accio.lv>
+
+	* Fix to workspace forms
+
+2006-04-04  Kasper Skaarhoj  <kasperYYYY@typo3.com>
+
+	* New function t3lib_div::array2xml_cs() that respects character sets
+	* Change default value of $TYPO3_CONF_VARS[FE][pageCacheToExternalFiles] to false (feature was enabled by default, which was a mistake of course)
+
 2006-03-29  Franz Holzinger <kontakt@fholzinger.com>
 
 	* Fixed bug #2722 and #2837: table wizard has wrong array elements

@@ -309,23 +309,23 @@ class SC_mod_user_setup_index {
 			// 'Startup' section:
 		$code = Array();
 
-		$code[2][1] = $this->setLabel('condensedMode','condensedMode').':';
+		$code[2][1] = $this->setLabel('condensedMode','condensedMode');
 		$code[2][2] = '<input type="checkbox" name="data[condensedMode]"'.($BE_USER->uc['condensedMode']?' checked="checked"':'').' />';
-		$code[3][1] = $this->setLabel('noMenuMode','noMenuMode').':';
+		$code[3][1] = $this->setLabel('noMenuMode','noMenuMode');
 		$code[3][2] = '<select name="data[noMenuMode]">
 			<option value=""'.(!$BE_USER->uc['noMenuMode']?' selected="selected"':'').'>'.$this->setLabel('noMenuMode_def').'</option>
 			<option value="1"'.($BE_USER->uc['noMenuMode'] && (string)$BE_USER->uc['noMenuMode']!="icons"?' selected="selected"':'').'>'.$this->setLabel('noMenuMode_sel').'</option>
 			<option value="icons"'.((string)$BE_USER->uc['noMenuMode']=='icons'?' selected="selected"':'').'>'.$this->setLabel('noMenuMode_icons').'</option>
 		</select>';
 		if (t3lib_extMgm::isLoaded('taskcenter'))	{
-			$code[4][1] = $this->setLabel('startInTaskCenter','startInTaskCenter').':';
+			$code[4][1] = $this->setLabel('startInTaskCenter','startInTaskCenter');
 			$code[4][2] = '<input type="checkbox" name="data[startInTaskCenter]"'.($BE_USER->uc['startInTaskCenter']?' checked="checked"':'').' />';
 		}
-		$code[5][1] = $this->setLabel('showThumbs','thumbnailsByDefault').':';
+		$code[5][1] = $this->setLabel('showThumbs','thumbnailsByDefault');
 		$code[5][2] = '<input type="checkbox" name="data[thumbnailsByDefault]"'.($BE_USER->uc['thumbnailsByDefault']?' checked="checked"':'').' />';
-		$code[6][1] = $this->setLabel('helpText').':';
+		$code[6][1] = $this->setLabel('helpText');
 		$code[6][2] = '<input type="checkbox" name="data[helpText]"'.($BE_USER->uc['helpText']?' checked="checked"':'').' />';
-		$code[7][1] = $this->setLabel('maxTitleLen','titleLen').':';
+		$code[7][1] = $this->setLabel('maxTitleLen','titleLen');
 		$code[7][2] = '<input type="text" name="data[titleLen]" value="'.$BE_USER->uc['titleLen'].'"'.$GLOBALS['TBE_TEMPLATE']->formWidth(5).' maxlength="5" />';
 
 		$this->content.=$this->doc->section($LANG->getLL('opening').':',$this->doc->table($code),0,1);
@@ -333,9 +333,9 @@ class SC_mod_user_setup_index {
 
 			// Advanced Operations:
 		$code = Array();
-		$code[1][1] = $this->setLabel('copyLevels').':';
+		$code[1][1] = $this->setLabel('copyLevels');
 		$code[1][2] = '<input type="text" name="data[copyLevels]" value="'.$BE_USER->uc['copyLevels'].'"'.$GLOBALS['TBE_TEMPLATE']->formWidth(5).' maxlength="5" /> '.$this->setLabel('levels','copyLevels');
-		$code[2][1] = $this->setLabel('recursiveDelete').':';
+		$code[2][1] = $this->setLabel('recursiveDelete');
 		$code[2][2] = '<input type="checkbox" name="data[recursiveDelete]"'.($BE_USER->uc['recursiveDelete']?' checked="checked"':'').' />';
 
 		$this->content.=$this->doc->section($LANG->getLL('functions').":",$this->doc->table($code),0,1);
@@ -343,23 +343,23 @@ class SC_mod_user_setup_index {
 
 			// Edit
 		$code = Array();
-		$code[2][1] = $this->setLabel('edit_wideDocument').':';
+		$code[2][1] = $this->setLabel('edit_wideDocument');
 		$code[2][2] = '<input type="checkbox" name="data[edit_wideDocument]"'.($BE_USER->uc['edit_wideDocument']?' checked="checked"':'').' />';
 		if ($GLOBALS['TYPO3_CONF_VARS']['BE']['RTEenabled'])	{
-			$code[3][1] = $this->setLabel('edit_RTE').':';
+			$code[3][1] = $this->setLabel('edit_RTE');
 			$code[3][2] = '<input type="checkbox" name="data[edit_RTE]"'.($BE_USER->uc['edit_RTE']?' checked="checked"':'').' />';
 		}
-		$code[4][1] = $this->setLabel('edit_docModuleUpload').':';
+		$code[4][1] = $this->setLabel('edit_docModuleUpload');
 		$code[4][2] = '<input type="checkbox" name="data[edit_docModuleUpload]"'.($BE_USER->uc['edit_docModuleUpload']?' checked="checked"':'').' />';
 
-		$code[6][1] = $this->setLabel('edit_showFieldHelp').':';
+		$code[6][1] = $this->setLabel('edit_showFieldHelp');
 		$code[6][2] = '<select name="data[edit_showFieldHelp]">
 			<option value=""></option>
 			<option value="icon"'.($BE_USER->uc['edit_showFieldHelp']=='icon'?' selected="selected"':'').'>'.$this->setLabel('edit_showFieldHelp_icon').'</option>
 			<option value="text"'.($BE_USER->uc['edit_showFieldHelp']=='text'?' selected="selected"':'').'>'.$this->setLabel('edit_showFieldHelp_message').'</option>
 		</select>';
 
-		$code[7][1] = $this->setLabel('disableCMlayers').':';
+		$code[7][1] = $this->setLabel('disableCMlayers');
 		$code[7][2] = '<input type="checkbox" name="data[disableCMlayers]"'.($BE_USER->uc['disableCMlayers']?' checked="checked"':'').' />';
 
 		$this->content.=$this->doc->section($LANG->getLL('edit_functions').":",$this->doc->table($code),0,1);
@@ -367,15 +367,15 @@ class SC_mod_user_setup_index {
 
 			// Personal data
 		$code = Array();
-		$code[1][1] = $this->setLabel('beUser_realName').':';
+		$code[1][1] = $this->setLabel('beUser_realName');
 		$code[1][2] = '<input type="text" name="ext_beuser[realName]" value="'.htmlspecialchars($BE_USER->user['realName']).'"'.$GLOBALS['TBE_TEMPLATE']->formWidth(20).' />';
-		$code[2][1] = $this->setLabel('beUser_email').':';
+		$code[2][1] = $this->setLabel('beUser_email');
 		$code[2][2] = '<input type="text" name="ext_beuser[email]" value="'.htmlspecialchars($BE_USER->user['email']).'"'.$GLOBALS['TBE_TEMPLATE']->formWidth(20).' />';
-		$code[3][1] = $this->setLabel('emailMeAtLogin').' ('.$GLOBALS['BE_USER']->user['email'].'):';
+		$code[3][1] = $this->setLabel('emailMeAtLogin').' ('.$GLOBALS['BE_USER']->user['email'].')';
 		$code[3][2] = '<input type="checkbox" name="data[emailMeAtLogin]"'.($BE_USER->uc['emailMeAtLogin']?' checked="checked"':'').' />';
-		$code[4][1] = $this->setLabel('newPassword').':';
+		$code[4][1] = $this->setLabel('newPassword');
 		$code[4][2] = '<input type="password" name="ext_beuser[password1]" value=""'.$GLOBALS['TBE_TEMPLATE']->formWidth(20).' onchange="this.value=this.value?MD5(this.value):\'\';" />';
-		$code[5][1] = $this->setLabel('newPasswordAgain').':';
+		$code[5][1] = $this->setLabel('newPasswordAgain');
 		$code[5][2] = '<input type="password" name="ext_beuser[password2]" value=""'.$GLOBALS['TBE_TEMPLATE']->formWidth(20).' onchange="this.value=this.value?MD5(this.value):\'\'" />';
 
 		$this->content.=$this->doc->section($LANG->getLL('personal_data').":",$this->doc->table($code),0,1);
@@ -492,10 +492,11 @@ class SC_mod_user_setup_index {
 		}
 
 			// CSH:
-		$out.= t3lib_BEfunc::cshItem('_MOD_user_setup', 'option_'.$str, $GLOBALS['BACK_PATH'],'|',FALSE,'margin-bottom:0px;');
+		$csh = t3lib_BEfunc::cshItem('_MOD_user_setup', 'option_'.$str, $GLOBALS['BACK_PATH'],'|',FALSE,'margin-bottom:0px;');
+		if (strlen($csh))	$csh = ': '.$csh;
 
 			// Return value:
-		return $out;
+		return $out.$csh;
 	}
 }
 

@@ -75,7 +75,7 @@
 require_once (PATH_t3lib.'class.t3lib_loaddbgroup.php');
 require_once (PATH_t3lib.'class.t3lib_loadmodules.php');
 require_once (PATH_t3lib.'class.t3lib_parsehtml_proc.php');
-
+require_once (PATH_t3lib.'class.t3lib_flexformtools.php');
 
 
 
@@ -478,7 +478,9 @@ class t3lib_transferData {
 			$dataStructArray = t3lib_BEfunc::getFlexFormDS($fieldConfig['config'],$row,$table);
 			if (is_array($dataStructArray))	{
 				$currentValueArray['data'] = $this->renderRecord_flexProc_procInData($currentValueArray['data'],$dataStructArray,array($data,$fieldConfig,$TSconfig,$table,$row,$field));
-				$data = t3lib_div::array2xml($currentValueArray);
+
+				$flexObj = t3lib_div::makeInstance('t3lib_flexformtools');
+				$data = $flexObj->flexArray2Xml($currentValueArray, TRUE);
 			}
 		}
 

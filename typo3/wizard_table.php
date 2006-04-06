@@ -243,7 +243,7 @@ class SC_wizard_table {
 				// Convert to string (either line based or XML):
 			if ($this->xmlStorage)	{
 					// Convert the input array to XML:
-				$bodyText = t3lib_div::array2xml($this->TABLECFG['c'],'',0,'T3TableWizard');
+				$bodyText = t3lib_div::array2xml_cs($this->TABLECFG['c'],'T3TableWizard');
 
 					// Setting cfgArr directly from the input:
 				$cfgArr = $this->TABLECFG['c'];

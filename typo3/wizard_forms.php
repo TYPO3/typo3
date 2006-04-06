@@ -319,7 +319,7 @@ class SC_wizard_forms {
 				// Convert to string (either line based or XML):
 			if ($this->xmlStorage)	{
 					// Convert the input array to XML:
-				$bodyText = t3lib_div::array2xml($this->FORMCFG['c'],'',0,'T3FormWizard');
+				$bodyText = t3lib_div::array2xml_cs($this->FORMCFG['c'],'T3FormWizard');
 
 					// Setting cfgArr directly from the input:
 				$cfgArr = $this->FORMCFG['c'];

@@ -40,7 +40,7 @@ styles.content.imgtext {
   colSpace = 10
     # cat=content/cImage/x; type=int[0-100]; label= Advanced, Row space: Vertical distance between images in a block in content elements of type "Image" or "Text w/Image".
   rowSpace = 10
-    # cat=content/cImage/x; type=int[0-100]; label= Advanced, Margin to text: Horizontal distance between an imageblock and text in content elements of type "Image" or "Text w/Image".
+    # cat=content/cImage/x; type=int[0-100]; label= Advanced, Margin to text: Horizontal distance between an imageblock and text in content elements of type "Text w/Image".
   textMargin = 10
   linkWrap.width = 800m
   linkWrap.height = 600m
@@ -103,9 +103,6 @@ styles.content.imgtext {
     # cat=content/cImage/b2; type=int+; label= Max Image Width (Text): Same as above, but this is the maximum width when text is wrapped around an imageblock. Default is 50% of the normal Max Image Width.
   maxWInText =
     # cat=content/cImage/c1; type=int+; label= Default Image Width: This indicates that default number of pixels (width) a block of images inserted as content will consume, if the user didn't specify otherwise in the content object.
-  defaultW =
-    # cat=content/cImage/c2; type=int+; label= Default Image Width (In Text): Same as above, but this is the default width when text is wrapped around an imageblock. Default is 50% of the normal Default Image Width.
-  defaultWInText =
   linkWrap.width = 800m
   linkWrap.height = 600m
   linkWrap.effects =
@@ -127,6 +124,8 @@ styles.content.imgtext {
 
     # cat=content/cImage/g1; type=int[0-100]; label= Column space: Horizontal distance between images in a block in content elements of type "Image" or "Text w/Image". If you change this manually in your CSS, you need to adjust this setting acordingly
   colSpace = 10
+    # cat=content/cImage/g2; type=int[0-100]; label= Advanced, Margin to text: Horizontal distance between an imageblock and text in content elements of type "Text w/Image".
+  textMargin = 10
 
     # cat=content/cImage/i1; type=color; label= Image border, color: Bordercolor of images in content elements when "Border"-option for element is set.
   borderColor = black

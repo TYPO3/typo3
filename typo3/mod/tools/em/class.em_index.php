@@ -1385,7 +1385,8 @@ EXTENSION KEYS:
 				$mfile = t3lib_div::tempnam('mirrors');
 				$mirrorsFile = t3lib_div::getURL($this->MOD_SETTINGS['mirrorListURL']);
 				if($mirrorsFile===false) {
-					$content = '<p>The mirror list was not updated, it could not be fetched from '.$this->MOD_SETTINGS['mirrorListURL'].'</p>';
+					t3lib_div::unlink_tempfile($mfile);
+					$content = '<p>The mirror list was not updated, it could not be fetched from '.$this->MOD_SETTINGS['mirrorListURL'].'. Possible reasons: network problems, allow_url_fopen is off, curl is not enabled in Install tool.</p>';
 				} else {
 					t3lib_div::writeFile($mfile, $mirrorsFile);
 					$mirrors = implode(gzfile($mfile));
@@ -1411,13 +1412,13 @@ EXTENSION KEYS:
 				if(is_file(PATH_site.'typo3temp/extensions.xml.gz')) $localmd5 = md5_file(PATH_site.'typo3temp/extensions.xml.gz');
 
 				if($extmd5 === false) {
-					$content .= '<p>Error: The extension MD5 sum could not be fetched from '.$mirror.'extensions.md5</p>';
+					$content .= '<p>Error: The extension MD5 sum could not be fetched from '.$mirror.'extensions.md5. Possible reasons: network problems, allow_url_fopen is off, curl is not enabled in Install tool.</p>';
 				} elseif($extmd5 == $localmd5) {
 					$content .= '<p>The extension list has not changed remotely, it has thus not been fetched.</p>';
 				} else {
 					$extXML = t3lib_div::getURL($extfile);
 					if($extXML === false) {
-						$content .= '<p>Error: The extension list could not be fetched from '.$extfile.'</p>';
+						$content .= '<p>Error: The extension list could not be fetched from '.$extfile.'. Possible reasons: network problems, allow_url_fopen is off, curl is not enabled in Install tool.</p>';
 					} else {
 						t3lib_div::writeFile(PATH_site.'typo3temp/extensions.xml.gz', $extXML);
 						$content .= $this->xmlhandler->parseExtensionsXML(implode(gzfile(PATH_site.'typo3temp/extensions.xml.gz')));
@@ -1526,6 +1527,7 @@ EXTENSION KEYS:
 				}
 				if ($newExtList!=-1)	{
 					$this->writeNewExtensionList($newExtList);
+					$this->refreshGlobalExtList();
 					$this->forceDBupdates($extKey, $inst_list[$extKey]);
 					return array(true, 'Extension was already installed, it has been loaded.');
 				}
@@ -1570,6 +1572,7 @@ EXTENSION KEYS:
 			$newExtList = $this->addExtToList($extKey, $inst_list);
 			if ($newExtList!=-1)	{
 				$this->writeNewExtensionList($newExtList);
+				$this->refreshGlobalExtList();
 				$this->forceDBupdates($extKey, $inst_list[$extKey]);
 				$this->installTranslationsForExtension($extKey, $this->getMirrorURL());
 				return array(true, 'Extension has been imported from repository and loaded.');
@@ -1581,6 +1584,29 @@ EXTENSION KEYS:
 		}
 	}
 
+	function refreshGlobalExtList() {
+		global $TYPO3_LOADED_EXT;
+
+		$TYPO3_LOADED_EXT = t3lib_extMgm::typo3_loadExtensions();
+		if ($TYPO3_LOADED_EXT['_CACHEFILE'])    {
+			require(PATH_typo3conf.$TYPO3_LOADED_EXT['_CACHEFILE'].'_ext_localconf.php');
+		}
+		return;
+
+		$GLOBALS['TYPO3_LOADED_EXT'] = t3lib_extMgm::typo3_loadExtensions();
+		if ($TYPO3_LOADED_EXT['_CACHEFILE'])    {
+			require(PATH_typo3conf.$TYPO3_LOADED_EXT['_CACHEFILE'].'_ext_localconf.php');
+		} else {
+			$temp_TYPO3_LOADED_EXT = $TYPO3_LOADED_EXT;
+			reset($temp_TYPO3_LOADED_EXT);
+			while(list($_EXTKEY,$temp_lEDat)=each($temp_TYPO3_LOADED_EXT))  {
+				if (is_array($temp_lEDat) && $temp_lEDat['ext_localconf.php'])  {
+					$_EXTCONF = $TYPO3_CONF_VARS['EXT']['extConf'][$_EXTKEY];
+					require($temp_lEDat['ext_localconf.php']);
+				}
+			}
+		}
+	}
 
 
 	/**
@@ -1727,7 +1753,7 @@ EXTENSION KEYS:
 						}
 					} else $content = 'Error: The extension can only be installed in the path '.$this->typePaths[$EM_CONF['lockType']].' (lockType='.$EM_CONF['lockType'].')';
 				} else $content = 'Error: No extension key!!! Why? - nobody knows... (Or no files in the file-array...)';
-			}  else $content = 'Error: The datatransfer did not succeed, '.$fetchData;
+			}  else $content = 'Error: The datatransfer did not succeed. '.$fetchData;
 		}  else $content = 'Error: Installation is not allowed in this path ('.$this->typePaths[$loc].')';
 
 		$this->content.=$this->doc->section('Extension import results',$content,0,1);
@@ -2936,26 +2962,32 @@ EXTENSION KEYS:
 	/**
 	 * Fixes an old style ext_emconf.php array by adding constraints if needed and removing deprecated keys
 	 *
-	 * @param	unknown_type		$emConf
-	 * @return	unknown
+	 * @param	array		$emConf
+	 * @return	array
 	 */
 	function fixEMCONF($emConf) {
-		if(!isset($emConf['constraints'])) {
-			$emConf['constraints']['depends'] = $this->stringToDep($emConf['dependencies']);
-			if(strlen($emConf['PHP_version'])) {
-				$versionRange = $this->splitVersionRange($emConf['PHP_version']);
-				if(version_compare($versionRange[0],'3.0.0','<')) $versionRange[0] = '3.0.0';
-				if(version_compare($versionRange[1],'3.0.0','<')) $versionRange[1] = '';
-				$emConf['constraints']['depends']['php'] = implode('-',$versionRange);
+		if(!isset($emConf['constraints']) || !isset($emConf['constraints']['depends']) || !isset($emConf['constraints']['conflicts']) || !isset($emConf['constraints']['suggests'])) {
+			if(!isset($emConf['constraints']) || !isset($emConf['constraints']['depends'])) {
+				$emConf['constraints']['depends'] = $this->stringToDep($emConf['dependencies']);
+				if(strlen($emConf['PHP_version'])) {
+					$versionRange = $this->splitVersionRange($emConf['PHP_version']);
+					if(version_compare($versionRange[0],'3.0.0','<')) $versionRange[0] = '3.0.0';
+					if(version_compare($versionRange[1],'3.0.0','<')) $versionRange[1] = '';
+					$emConf['constraints']['depends']['php'] = implode('-',$versionRange);
+				}
+				if(strlen($emConf['TYPO3_version'])) {
+					$versionRange = $this->splitVersionRange($emConf['TYPO3_version']);
+					if(version_compare($versionRange[0],'3.5.0','<')) $versionRange[0] = '3.5.0';
+					if(version_compare($versionRange[1],'3.5.0','<')) $versionRange[1] = '';
+					$emConf['constraints']['depends']['typo3'] = implode('-',$versionRange);
+				}
 			}
-			if(strlen($emConf['TYPO3_version'])) {
-				$versionRange = $this->splitVersionRange($emConf['TYPO3_version']);
-				if(version_compare($versionRange[0],'3.5.0','<')) $versionRange[0] = '3.5.0';
-				if(version_compare($versionRange[1],'3.5.0','<')) $versionRange[1] = '';
-				$emConf['constraints']['depends']['typo3'] = implode('-',$versionRange);
+			if(!isset($emConf['constraints']) || !isset($emConf['constraints']['conflicts'])) {
+				$emConf['constraints']['conflicts'] = $this->stringToDep($emConf['conflicts']);
 			}
-			$emConf['constraints']['conflicts'] = $this->stringToDep($emConf['conflicts']);
-			$emConf['constraints']['suggests'] = array();
+			if(!isset($emConf['constraints']) || !isset($emConf['constraints']['suggests'])) {
+				$emConf['constraints']['suggests'] = array();
+			}
 		} elseif (isset($emConf['constraints']) && isset($emConf['dependencies'])) {
 			$emConf['suggests'] = isset($emConf['suggests']) ? $emConf['suggests'] : array();
 			$emConf['dependencies'] = $this->depToString($emConf['constraints']);
@@ -3668,6 +3700,7 @@ EXTENSION KEYS:
 	 * @return	void
 	 */
 	function writeNewExtensionList($newExtList)	{
+		global $TYPO3_CONF_VARS;
 
 		// Instance of install tool
 		$instObj = new t3lib_install;
@@ -3679,6 +3712,7 @@ EXTENSION KEYS:
 		$instObj->setValueInLocalconfFile($lines, '$TYPO3_CONF_VARS[\'EXT\'][\'extList\']', $newExtList);
 		$instObj->writeToLocalconf_control($lines);
 
+		$TYPO3_CONF_VARS['EXT']['extList'] = $newExtList;
 		$this->removeCacheFiles();
 	}
 
@@ -3789,14 +3823,10 @@ $EM_CONF[$_EXTKEY] = '.$this->arrayToCode($EM_CONF, 0).';
 		$lines = 'array('.chr(10);
 		$level++;
 		foreach($array as $k => $v)	{
-			if(is_array($v)) {
+			if(strlen($k) && is_array($v)) {
 				$lines .= str_repeat(chr(9),$level)."'".$k."' => ".$this->arrayToCode($v, $level);
-			} else {
-				$lines .= str_repeat(chr(9),$level)."'".$k."' => ".(
-				t3lib_div::testInt($v)?
-				intval($v):
-				"'".t3lib_div::slashJS(trim($v),1)."'"
-				).','.chr(10);
+			} elseif(strlen($k)) {
+				$lines .= str_repeat(chr(9),$level)."'".$k."' => ".(t3lib_div::testInt($v) ? intval($v) : "'".t3lib_div::slashJS(trim($v),1)."'").','.chr(10);
 			}
 		}
 

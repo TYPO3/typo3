@@ -212,7 +212,7 @@ $TYPO3_CONF_VARS = Array(
 		'hidePagesIfNotTranslatedByDefault' => FALSE,	// If TRUE, pages that has no translation will be hidden by default. Basically this will inverse the effect of the page localization setting "Hide page if no translation for current language exists" to "Show page even if no translation exists"
 		'eID_include' => array(),				// Array of key/value pairs where key is "tx_[ext]_[optional suffix]" and value is relative filename of class to include. Key is used as "?eID=" for index_ts.php to include the code file which renders the page from that point. (Useful for functionality that requires a low initialization footprint, eg. frontend ajax applications)
 		'XCLASS' => Array(),					// See 'Inside TYPO3' document for more information.
-		'pageCacheToExternalFiles' => TRUE		// If set, page cache entries will be stored in typo3temp/cache_pages/ab/ instead of the database. Still, "cache_pages" will be filled in database but the "HTML" field will be empty. When the cache is flushed the files in cache_pages/ab/ will not be flush - you will have to garbage clean manually once in a while.
+		'pageCacheToExternalFiles' => FALSE		// If set, page cache entries will be stored in typo3temp/cache_pages/ab/ instead of the database. Still, "cache_pages" will be filled in database but the "HTML" field will be empty. When the cache is flushed the files in cache_pages/ab/ will not be flush - you will have to garbage clean manually once in a while.
 	),
 	'MODS' => Array(		// Backend Module Configuration (obsolete, make extension instead)
 	),
@@ -274,9 +274,10 @@ define('TYPO3_extTableDef_script', $typo_db_extTableDef_script);
 
 	// Defining backend system languages
 	// When adding new keys, remember to:
-	//		- pages.lang item array (t3lib/stddb/tbl_be.php)
-	//		- Add character encoding for lang key in t3lib/class.t3lib_cs.php (default for new languages is "utf-8")
-	//		- update 'setup' extension labels (sysext/setup/mod/locallang.xml)
+	//		- Update pages.lang item array (t3lib/stddb/tbl_be.php)
+	//		- Add character encoding for lang. key in t3lib/class.t3lib_cs.php (default for new languages is "utf-8")
+	//		- Add mappings for language in t3lib/class.t3lib_cs.php (TYPO3/ISO, language/script, script/charset)
+	//		- Update 'setup' extension labels (sysext/setup/mod/locallang.xml)
 	//		- Using translation server? Create new user with username = "language key", member of "translator" group, set to "language key" language.
 	// Thats it! Use extension "llxmltranslate" to begin translation. Language pack is automatically created in "typo3conf/l10n/[language key]/"
 define('TYPO3_languages', 'default|dk|de|no|it|fr|es|nl|cz|pl|si|fi|tr|se|pt|ru|ro|ch|sk|lt|is|hr|hu|gl|th|gr|hk|eu|bg|br|et|ar|he|ua|lv|jp|vn|ca|ba|kr|eo|my|hi|fo|fa|sr');
@@ -317,6 +318,11 @@ if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['im_version_5'])	{
 }
 if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['im_imvMaskState'])	{
 	$GLOBALS['TYPO3_CONF_VARS']['GFX']['im_negate_mask']=$GLOBALS['TYPO3_CONF_VARS']['GFX']['im_negate_mask']?0:1;
+}
+
+	// The iconv utility functions are only available in PHP5 and later
+if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['t3lib_cs_utils']==='iconv' && t3lib_div::int_from_ver(phpversion())<5000000)	{
+	$GLOBALS['TYPO3_CONF_VARS']['SYS']['t3lib_cs_utils'] = '';
 }
 
 	// simple debug function which prints output immediately

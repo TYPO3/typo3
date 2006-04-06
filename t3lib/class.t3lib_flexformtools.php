@@ -314,6 +314,7 @@ class t3lib_flexformtools {
 
 	/**
 	 * Cleaning up FlexForm XML to hold only the values it may according to its Data Structure. Also the order of tags will follow that of the data structure.
+	 * BE CAREFUL: DO not clean records in workspaces unless IN the workspace! The Data Structure might resolve falsely on a workspace record when cleaned from Live workspace.
 	 *
 	 * @param	string		Table name
 	 * @param	string		Field name of the flex form field in which the XML is found that should be cleaned.
@@ -438,6 +439,7 @@ class t3lib_flexformtools {
 		if ($addPrologue)	{
 			$output = '<?xml version="1.0" encoding="'.$GLOBALS['LANG']->charSet.'" standalone="yes" ?>'.chr(10).$output;
 		}
+
 		return $output;
 	}
 }

@@ -617,7 +617,7 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 
 	/**
 	 * Transformation handler: 'ts_links' / direction: "db"
-	 * Converting <A>-tags to <LINK tags>
+	 * Converting <A>-tags to <link tags>
 	 *
 	 * @param	string		Content input
 	 * @return	string		Content output
@@ -644,8 +644,8 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 				}
 				if (!count($attribArray_copy))	{	// Only if href, target and class are the only attributes, we can alter the link!
 						// Creating the TYPO3 pseudo-tag "<LINK>" for the link (includes href/url, target and class attributes):
-					$bTag='<LINK '.$info['url'].($attribArray['target']?' '.$attribArray['target']:(($attribArray['class'] || $attribArray['title'])?' -':'')).($attribArray['class']?' '.$attribArray['class']:($attribArray['title']?' -':'')).($attribArray['title']?' "'.$attribArray['title'].'"':'').'>';
-					$eTag='</LINK>';
+					$bTag='<link '.$info['url'].($attribArray['target']?' '.$attribArray['target']:(($attribArray['class'] || $attribArray['title'])?' -':'')).($attribArray['class']?' '.$attribArray['class']:($attribArray['title']?' -':'')).($attribArray['title']?' "'.$attribArray['title'].'"':'').'>';
+					$eTag='</link>';
 					$blockSplit[$k] = $bTag.$this->TS_links_db($this->removeFirstAndLastTag($blockSplit[$k])).$eTag;
 				} else {	// ... otherwise store the link as a-tag.
 						// Unsetting 'rtekeep' attribute if that had been set.
@@ -666,7 +666,7 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 
 	/**
 	 * Transformation handler: 'ts_links' / direction: "rte"
-	 * Converting <LINK tags> to <A>-tags
+	 * Converting <link tags> to <A>-tags
 	 *
 	 * @param	string		Content input
 	 * @return	string		Content output
@@ -675,7 +675,7 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 	function TS_links_rte($value)	{
 		$value = $this->TS_AtagToAbs($value);
 
-			// Split content by the TYPO3 pseudo tag "<LINK>":
+			// Split content by the TYPO3 pseudo tag "<link>":
 		$blockSplit = $this->splitIntoBlock('link',$value,1);
 		foreach($blockSplit as $k => $v)	{
 			$error = '';

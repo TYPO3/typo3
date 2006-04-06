@@ -743,6 +743,11 @@ class tx_indexedsearch_indexer {
 			// Get links:
 		$list = $this->extractHyperLinks($content);
 
+		if ($this->indexerConfig['useCrawlerForExternalFiles'] && t3lib_extMgm::isLoaded('crawler'))	{
+			$this->includeCrawlerClass();
+			$crawler = t3lib_div::makeInstance('tx_crawler_lib');
+		}
+
 			// Traverse links:
 		foreach($list as $linkInfo)	{
 
@@ -781,18 +786,28 @@ class tx_indexedsearch_indexer {
 
 						$fI = pathinfo($linkSource);
 						$ext = strtolower($fI['extension']);
-						$this->indexRegularDocument($linkInfo['href'], false, $linkSource, $ext);
+						if (is_object($crawler))	{
+							$params = array(
+								'document' => $linkSource,
+								'alturl' => $linkInfo['href'],
+								'conf' => $this->conf
+							);
+							unset($params['conf']['content']);
+
+							$crawler->addQueueEntry_callBack(0,$params,'EXT:indexed_search/class.crawler.php:&tx_indexedsearch_files',$this->conf['id']);
+							$this->log_setTSlogMessage('media "'.$params['document'].'" added to "crawler" queue.',1);
+						} else {
+							$this->indexRegularDocument($linkInfo['href'], false, $linkSource, $ext);
+						}
 					} else {
-						if ($this->indexerConfig['useCrawlerForExternalFiles'] && t3lib_extMgm::isLoaded('crawler'))	{
-							$this->includeCrawlerClass();
-							$crawler = t3lib_div::makeInstance('tx_crawler_lib');
+						if (is_object($crawler))	{
 							$params = array(
 								'document' => $linkSource,
 								'conf' => $this->conf
 							);
 							unset($params['conf']['content']);
 							$crawler->addQueueEntry_callBack(0,$params,'EXT:indexed_search/class.crawler.php:&tx_indexedsearch_files',$this->conf['id']);
-							$this->log_setTSlogMessage('media "'.$linkSource.'" added to "crawler" queue.',1);
+							$this->log_setTSlogMessage('media "'.$params['document'].'" added to "crawler" queue.',1);
 						} else {
 							$this->indexRegularDocument($linkSource);
 						}
@@ -829,7 +844,7 @@ class tx_indexedsearch_indexer {
 							$md5 = t3lib_div::shortMD5($src);
 							if (is_array($indexLocalFiles=$GLOBALS['T3_VAR']['ext']['indexed_search']['indexLocalFiles']))	{
 								$localPath = isset($indexLocalFiles[$md5]) ? $indexLocalFiles[$md5] : '';
-							}
+							} else $localPath=false;
 
 							$list[] = array(
 								'tag' => $v,

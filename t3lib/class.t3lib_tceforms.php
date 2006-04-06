@@ -2028,7 +2028,6 @@ class t3lib_TCEforms	{
 			// Data Structure:
 		$dataStructArray = t3lib_BEfunc::getFlexFormDS($PA['fieldConf']['config'],$row,$table);
 #debug($dataStructArray);
-
 			// Get data structure:
 		if (is_array($dataStructArray))	{
 #debug(array(str_replace(' ',chr(160),$PA['itemFormElValue'])));
@@ -5245,6 +5244,9 @@ class t3lib_TCEforms	{
 				} elseif ($parts[1]==='except_admin' && $GLOBALS['BE_USER']->isAdmin())	{
 					$output = TRUE;
 				}
+			break;
+			case 'HIDE_FOR_NON_ADMINS':
+				$output = $GLOBALS['BE_USER']->isAdmin() ? TRUE : FALSE;
 			break;
 			case 'VERSION':
 				switch((string)$parts[1])	{

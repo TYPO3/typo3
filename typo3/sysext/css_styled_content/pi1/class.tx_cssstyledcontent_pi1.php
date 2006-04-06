@@ -444,7 +444,7 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 			// Positioning
 		$position = $this->cObj->stdWrap($conf['textPos'], $conf['textPos.']);
 
-		$imagePosition = $position&7;	// 0,1,2 = center,left,right
+		$imagePosition = $position&7;	// 0,1,2 = center,right,left
 		$contentPosition = $position&24;	// 0,8,16,24 (above,below,intext,intext-wrap)
 		$align = $this->cObj->align[$imagePosition];
 		$textMargin = intval($this->cObj->stdWrap($conf['textMargin'],$conf['textMargin.']));
@@ -479,7 +479,6 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 
 			// Max Width
 		$maxW = intval($this->cObj->stdWrap($conf['maxW'], $conf['maxW.']));
-		$defaultW = intval($this->cObj->stdWrap($conf['defaultW'], $conf['defaultW.']));
 
 		if ($contentPosition>=16)	{	// in Text
 			$maxWInText = intval($this->cObj->stdWrap($conf['maxWInText'],$conf['maxWInText.']));
@@ -489,17 +488,10 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 			} else {
 				$maxW = $maxWInText;
 			}
-			$defaultW = intval($this->cObj->stdWrap($conf['defaultWInText'],$conf['defaultWInText.']));
-		}
-		if (!$defaultW)	{ $defaultW = $maxW; }
-
-			// Explicit setting in tt_content might override the maxW, if within the allowed limits
-		if ($this->cObj->data['imagewidth'] && $this->cObj->data['imagewidth'] <= $maxW)	{
-			$maxW = $this->cObj->data['imagewidth'];
 		}
 
 			// All columns have the same width:
-		$defaultColumnWidth = ceil(($maxW-$colspacing*($colCount-1)-$colCount*$border*$borderThickness*2)/$colCount);
+		$defaultColumnWidth = ceil(($maxW-$colspacing*($colCount-1)-$colCount*$border*($borderThickness+$borderSpace)*2)/$colCount);
 
 			// Specify the maximum width for each column
 		$columnWidths = array();
@@ -651,11 +643,8 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 			$imageRowsFinalWidths[floor($a/$colCount)] += $GLOBALS['TSFE']->lastImageInfo[0];
 		}
 			// How much space will the image-block occupy?
-		$imageBlockWidth = max($imageRowsFinalWidths)+ $colspacing*($colCount) + $colCount*$border*($borderSpace+$borderThickness)*2;
+		$imageBlockWidth = max($imageRowsFinalWidths)+ $colspacing*($colCount-1) + $colCount*$border*($borderSpace+$borderThickness)*2;
 		$GLOBALS['TSFE']->register['rowwidth'] = $imageBlockWidth;
-		foreach ($columnWidths as $a => $w)	{
-			$allColumnsWidth += $w + $colspacing + $border*($borderSpace+$borderThickness)*2;
-		}
 
 			// noRows is in fact just one ROW, with the amount of columns specified, where the images are placed in.
 			// noCols is just one COLUMN, each images placed side by side on each row
@@ -686,14 +675,26 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 		if ($noRows)	{ $separateRows = 0; }
 		if ($rowCount == 1)	{ $separateRows = 0; }
 
+			// Apply optionSplit to the list of classes that we want to add to each image
+		$addClassesImage = $conf['addClassesImage'];
+		if ($conf['addClassesImage.'])	{
+			$addClassesImage = $this->cObj->stdWrap($addClassesImageConf, $conf['addClassesImage.']);
+		}
+		$addClassesImageConf = $GLOBALS['TSFE']->tmpl->splitConfArray(array('addClassesImage' => $addClassesImage), $colCount);
+
 			// Render the images
 		$images = '';
 		for ($c = 0; $c < $imageWrapCols; $c++)	{
-			$GLOBALS['TSFE']->register['columnwidth'] = $columnWidths[$c] + $colspacing + $border*($borderSpace+$borderThickness)*2;
+			$tmpColspacing = $colspacing;
+			if (($c==$imageWrapCols-1 && $imagePosition==2) || ($c==0 && $imagePosition==1)) {
+				$tmpColspacing = 0;
+			}
+			$GLOBALS['TSFE']->register['columnwidth'] = $columnWidths[$c] + $tmpColspacing + $border*($borderSpace+$borderThickness)*2;
 			$thisImages = '';
 			$allRows = '';
 			for ($i = $c; $i<count($imgsTag); $i=$i+$imageWrapCols)	{
-				if ($separateRows && $i%$colCount == 0) {
+				$colPos = $i%$colCount;
+				if ($separateRows && $colPos == 0) {
 					$thisRow = '';
 				}
 
@@ -717,13 +718,18 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 					$thisImage .= $this->cObj->netprintApplication_offsiteLinkWrap($thisImage, $origImages[$i], $conf['netprintApplicationLink.']);
 				}
 				$thisImage = $this->cObj->stdWrap($thisImage, $conf['oneImageStdWrap.']);
+				$classes = '';
+				if ($addClassesImageConf[$colPos]['addClassesImage'])	{
+					$classes = ' ' . $addClassesImageConf[$colPos]['addClassesImage'];
+				}
+				$thisImage = str_replace('###CLASSES###', $classes, $thisImage);
 
 				if ($separateRows)	{
 					$thisRow .= $thisImage;
 				} else {
 					$allRows .= $thisImage;
 				}
-				if ($separateRows && ($i%$colCount == ($colCount-1) || $i+1==count($imgsTag)))	{
+				if ($separateRows && ($colPos == ($colCount-1) || $i+1==count($imgsTag)))	{
 					// Close this row at the end (colCount), or the last row at the final end
 					$allRows .= $this->cObj->stdWrap($thisRow, $conf['imageRowStdWrap.']);
 				}
