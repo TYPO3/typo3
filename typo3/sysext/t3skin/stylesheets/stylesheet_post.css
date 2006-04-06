@@ -1,0 +1,123 @@
+@import "typo3-colors.css";
+@import "typo3-alt-menu-php.css";
+@import "typo3-alt-db-navframe-php.css";
+@import "typo3-db-list-php.css";
+@import "typo3-clipboard.css";
+@import "typo3-alt-topmenu-dummy-php.css";
+@import "typo3-alt-palette-php.css";
+@import "typo3-TCEforms.css";
+@import "typo3-dyntabmenu.css";
+@import "typo3-index-php.css";
+@import "typo3-tree.css";
+@import "ext-cms-layout-db-layout-php.css";
+@import "typo3-workspaces.css";
+
+/***************************************************************
+*  Copyright notice
+*
+*  (c) 2006 TYPO3 Design Team
+*  All rights reserved
+*
+*  Author: Thomas Murphy (murphy@spreekonzept.de)
+*
+*  This script is part of the TYPO3 project. The TYPO3 project is
+*  free software; you can redistribute it and/or modify
+*  it under the terms of the GNU General Public License as published by
+*  the Free Software Foundation; either version 2 of the License, or
+*  (at your option) any later version.
+*
+*  The GNU General Public License can be found at
+*  http://www.gnu.org/copyleft/gpl.html.
+*  A copy is found in the textfile GPL.txt and important notices to the license
+*  from the author is found in LICENSE.txt distributed with these scripts.
+*
+*
+*  This script is distributed in the hope that it will be useful,
+*  but WITHOUT ANY WARRANTY; without even the implied warranty of
+*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+*  GNU General Public License for more details.
+*
+*  This copyright notice MUST APPEAR in all copies of the script!
+***************************************************************/
+
+
+/* Links in general */
+a {
+	color: #212424;
+	background-color: transparent;
+	text-decoration: none;
+	}
+
+a:hover {
+	color: #000000;
+	background-color: transparent;
+	}
+
+select, textarea, input, td, body, .defstyle, p, div {
+	color: #212424;
+	}
+
+select, textarea, input {
+	border-top: 1px solid #838EA0;
+	border-left: 1px solid #838EA0;
+	border-right: 1px solid #545861;
+	border-bottom: 1px solid #545861;
+	background-color: #FEFEFE;
+	}
+
+select:hover, textarea:hover, input:hover {
+	border-top: 1px solid #AAAAAA;
+	border-left: 1px solid #AAAAAA;
+	border-right: 1px solid #888888;
+	border-bottom: 1px solid #888888;
+	background-color: #FFFFFF;
+	}
+
+textarea:focus, input:focus {
+	border-top: 1px solid #999999;
+	border-left: 1px solid #999999;
+	border-right: 1px solid #777777;
+	border-bottom: 1px solid #777777;
+	background-color: #FFFFFF;
+	}
+
+.checkbox,
+.checkbox:hover {
+	border: 0;
+}
+
+
+
+/* PAGE HEADERS: */
+
+h1, h2, h3, h4 {
+	color: #555555;
+}
+
+/* Occasionally used, eg. in About Modules: */
+h1 {
+	background-color: #EFEFF4;
+	}
+
+/* MAIN page header: */
+h2 {
+	background-color: #EFEFF4;
+	text-align: left;
+	font-size: 12px;
+	}
+
+/* Normal section headers */
+h3 {
+	background-color: #EFEFF4;
+	}
+
+/* Discrete section headers (no background) */
+h4 {
+	background-color: #EFEFF4;
+	}
+
+/* END PAGE HEADERS: */
+
+
+
+

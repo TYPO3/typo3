@@ -1,0 +1,54 @@
+/*
+ *	typo3-db-list-php.css
+ */
+
+table.typo3-dblist {
+	margin-top: 10px;
+	border: 1px solid #A2AAB8;
+}
+
+table.typo3-dblist .db_list_alt {
+	background-color: #F8F9FB;
+}
+
+table#typo3-dblist-top table.bgColor4 {
+	background-color: #EFEFF4;
+}
+
+table.typo3-dblist td.c-headLineTable {
+	background-color: #B8BEC9;
+	background-image: url('../icons/gfx/alt_menu_mainitem_bg.gif');
+	background-repeat: repeat-x;
+}
+
+table.typo3-dblist td.c-headLineTable a {
+	font-weight: bold;
+	color: #FFFFFF;
+}
+
+table.typo3-dblist tr td.c-headLine {
+	height: 24px;
+	background-color: #EFEFF4;
+	background-image: url(../backgrounds/list_sep.gif);
+	background-position: bottom left;
+	background-repeat: repeat-x;
+}
+
+table.typo3-dblist td.c-table-row-spacer {
+	display: none;
+}
+
+table.typo3-dblist tr:hover {
+	background-color: #EFEFF4;
+}
+
+table.typo3-dblist tr td div.typo3-DBctrl {
+	background-color: transparent;
+}
+
+table.typo3-dblist tr td div.typo3-clipCtrl {
+	background-color: transparent;
+	border: 1px solid #D0D4DB;
+	margin: 1px 1px 1px 10px;
+	float: right;
+}

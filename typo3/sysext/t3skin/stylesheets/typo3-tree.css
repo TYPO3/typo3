@@ -1,0 +1,8 @@
+/**
+*	typo3-tree.css
+*/
+
+table#typo3-tree,
+table#typo3-browsetree {
+	margin: 10px 0 20px 10px;
+}
