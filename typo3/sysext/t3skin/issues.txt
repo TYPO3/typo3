@@ -1,0 +1,27 @@
+ISSUES:
+
+DAM:
+------
+
+lib/class.tx_dam_scbase.php :: addDocStyles()
+There has to be some way to disable these indoc styles for us to style the DAM according to the new CI.
+
+templavoila:
+------------
+
+hardcoded border-color:
+<table cellpadding="0" cellspacing="0" style="width: 100%; border: 1px solid black; margin-bottom:5px;">
+
+
+just a small one:
+/*
+					<table cellpadding="0" cellspacing="0" border="0" width="100%" class="typo3-dyntabmenu">
+						<tr>
+															<!!! missing space in lines below !!!>
+							<td class="disabled" id="DTM-ecb6fdee89-1-MENU"onmouseover="DTM_mouseOver(this);" onmouseout="DTM_mouseOut(this);">Versioning</td>
+							<td class="disabled" id="DTM-ecb6fdee89-2-MENU"onmouseover="DTM_mouseOver(this);" onmouseout="DTM_mouseOut(this);">Page related information</td>
+							<td class="disabled" id="DTM-ecb6fdee89-3-MENU"onmouseover="DTM_mouseOver(this);" onmouseout="DTM_mouseOut(this);">Non-used elements</td>
+							<td class="tab" id="DTM-ecb6fdee89-4-MENU"onmouseover="DTM_mouseOver(this);" onmouseout="DTM_mouseOut(this);"><a href="#" onclick="this.blur(); DTM_toggle(&quot;DTM-ecb6fdee89&quot;,&quot;4&quot;); return false;">Advanced functions</a></td>
+						</tr>
+					</table></div>
+*/
