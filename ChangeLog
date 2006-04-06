@@ -2,7 +2,7 @@
 
 	* !!! Fixed bug #3151: $TYPO3_CONF_VARS[im_jpg_quality] was changed to $TYPO3_CONF_VARS[jpg_quality] some time ago except in one place. Three questions marks since this was changed some time ago but not mentioned in here.
 	* !!! Remove hardcoded linebreak after radio elements. Notice that this will affect your template when in "accessibility" mode with $TYPO3_CONF_VARS[SYS][compat_version] lower than 4.0.
-	* Fixed bug #2485: Duplicate fieldset definition for radio elements
+	* Fixed bug #2485: Duplicate fieldset definition for radio elements. Thanks to Ernesto Baschny for providing a fix for this.
 	* Minor changes to Indexed Search, see local ChangeLog for details
 
 2006-04-06   Rupert Germann  <rupi@gmx.li>
