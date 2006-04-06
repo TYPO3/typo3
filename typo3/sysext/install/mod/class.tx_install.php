@@ -3696,7 +3696,7 @@ From sub-directory:
 								$this->message($tLabel,'Select tables to import',"
 								This is an overview of the CREATE TABLE definitions in the SQL file.
 								Select which tables you want to dump to the database.
-								Any table you choose dump to the database is dropped from the database first, so you'll loose all data in existing tables.
+								Any table you choose dump to the database is dropped from the database first, so you'll lose all data in existing tables.
 								".$form,1,1);
 							} else {
 								$this->message($tLabel,'No tables',"
@@ -4779,6 +4779,7 @@ body, p, td, a, span, input, .bodytext {
 	font-family:verdana,sans-serif;
 	font-size:1em;
 	color:#000;
+	text-align: left;
 }
 .smalltext {
 	font-size:0.9em;
