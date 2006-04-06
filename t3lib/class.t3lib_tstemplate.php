@@ -1098,7 +1098,12 @@ class t3lib_TStemplate	{
 	 */
 	function getFileName($fileFromSetup)	{
 		$file = trim($fileFromSetup);
-		if (!$file)	return;
+		if (!$file)	{
+			return;
+		} elseif (strstr($file,'../'))	{
+			if ($this->tt_track)	$GLOBALS['TT']->setTSlogMessage('File path "'.$file.'" contained illegal string "../"!',3);
+			return;
+		}
 			// cache
 		$hash = md5($file);
 		if (isset($this->fileCache[$hash]))	{

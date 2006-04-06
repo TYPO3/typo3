@@ -4,6 +4,7 @@
 	* !!! Remove hardcoded linebreak after radio elements. Notice that this will affect your template when in "accessibility" mode with $TYPO3_CONF_VARS[SYS][compat_version] lower than 4.0.
 	* Fixed bug #2485: Duplicate fieldset definition for radio elements. Thanks to Ernesto Baschny for providing a fix for this.
 	* Minor changes to Indexed Search, see local ChangeLog for details
+	* Prevented path traversal (../) in t3lib_tstemplate::getFileName(). This is was never really a security issue, because it affected only paths set in TypoScript which only full TYPO3 admins have access to anyway. Thanks to Ingmar for providing a fix.
 
 2006-04-06   Rupert Germann  <rupi@gmx.li>
 

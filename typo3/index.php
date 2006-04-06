@@ -602,8 +602,8 @@ class SC_index {
 				}
 			}
 		} else {	// If no rotation folder configured, print default image:
-			$loginImage = 'loginbox_image_dev.png';
-			$imagecopy = $loginImage=='loginbox_image_dev.png' ? 'You are running the CVS version of TYPO3 '.$GLOBALS['TYPO_VERSION'] : 'Photo: &copy; 2005 Kasper Sk&#229;rh&#248;j';	// Directly outputted in image attributes...
+			$loginImage = 'loginbox_image_400.png';
+			$imagecopy = $loginImage=='loginbox_image_dev.png' ? 'You are running the CVS version of TYPO3 '.$GLOBALS['TYPO_VERSION'] : 'Photo: &copy; 2006 Kasper Sk&#229;rh&#248;j';	// Directly outputted in image attributes...
 			$loginboxImage = '<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/'.$loginImage,'width="200" height="133"').' id="loginbox-image" alt="'.$imagecopy.'" title="'.$imagecopy.'" />';
 		}
 
