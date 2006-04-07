@@ -1,3 +1,7 @@
+2006-04-07  Michael Stucki  <michael@typo3.org>
+
+	* Release of TYPO3 4.0
+
 2006-04-06  Michael Stucki  <michael@typo3.org>
 
 	* !!! Fixed bug #3151: $TYPO3_CONF_VARS[im_jpg_quality] was changed to $TYPO3_CONF_VARS[jpg_quality] some time ago except in one place. Three questions marks since this was changed some time ago but not mentioned in here.
