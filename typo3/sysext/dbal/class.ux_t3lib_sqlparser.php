@@ -2,7 +2,8 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2004 Kasper Skaarhoj (kasper@typo3.com)
+*  (c) 2004 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 2004-2006 Karsten Dambekalns <karsten@typo3.org>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -29,6 +30,7 @@
  *
  * $Id$
  *
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  * @author	Karsten Dambekalns <k.dambekalns@fishfarm.de>
  */
 
@@ -61,28 +63,28 @@ class ux_t3lib_sqlparser extends t3lib_sqlparser {
 		switch($components['type'])	{
 			case 'SELECT':
 				$query = $this->compileSELECT($components);
-			break;
+				break;
 			case 'UPDATE':
 				$query = $this->compileUPDATE($components);
-			break;
+				break;
 			case 'INSERT':
 				$query = $this->compileINSERT($components);
-			break;
+				break;
 			case 'DELETE':
 				$query = $this->compileDELETE($components);
-			break;
+				break;
 			case 'EXPLAIN':
 				$query = 'EXPLAIN '.$this->compileSELECT($components);
-			break;
+				break;
 			case 'DROPTABLE':
 				$query = $this->compileDROPTABLE($components);
-			break;
+				break;
 			case 'CREATETABLE':
 				$query = $this->compileCREATETABLE($components);
-			break;
+				break;
 			case 'ALTERTABLE':
 				$query = $this->compileALTERTABLE($components);
-			break;
+				break;
 		}
 
 		return $query;
@@ -92,17 +94,17 @@ class ux_t3lib_sqlparser extends t3lib_sqlparser {
 	function compileINSERT($components)	{
 		switch((string)$GLOBALS['TYPO3_DB']->handlerCfg[$GLOBALS['TYPO3_DB']->lastHandlerKey]['type'])	{
 			case 'native':
-			    parent::compileINSERT($components);
-			break;
+				parent::compileINSERT($components);
+				break;
 			case 'adodb':
-					if(isset($components['VALUES_ONLY']) && is_array($components['VALUES_ONLY'])) {
-						$fields = $GLOBALS['TYPO3_DB']->cache_fieldType[$components['TABLE']];
-						$fc = 0;
-						foreach($fields as $fn => $fd) {
-							$query[$fn] = $components['VALUES_ONLY'][$fc++][0];
-						}
+				if(isset($components['VALUES_ONLY']) && is_array($components['VALUES_ONLY'])) {
+					$fields = $GLOBALS['TYPO3_DB']->cache_fieldType[$components['TABLE']];
+					$fc = 0;
+					foreach($fields as $fn => $fd) {
+						$query[$fn] = $components['VALUES_ONLY'][$fc++][0];
 					}
-			break;
+				}
+				break;
 		}
 
 		return $query;
@@ -112,10 +114,10 @@ class ux_t3lib_sqlparser extends t3lib_sqlparser {
 		switch((string)$GLOBALS['TYPO3_DB']->handlerCfg[$GLOBALS['TYPO3_DB']->lastHandlerKey]['type'])	{
 			case 'native':
 				$query = 'DROP TABLE'.($components['ifExists']?' IF EXISTS':'').' '.$components['TABLE'];
-			break;
+				break;
 			case 'adodb':
 				$query = $GLOBALS['TYPO3_DB']->handlerInstance[$GLOBALS['TYPO3_DB']->handler_getFromTableList($components['TABLE'])]->DataDictionary->DropTableSQL('`'.$components['TABLE'].'`');
-			break;
+				break;
 		}
 
 		return $query;
@@ -129,67 +131,69 @@ class ux_t3lib_sqlparser extends t3lib_sqlparser {
 	 * @see parseCREATETABLE()
 	 */
 	function compileCREATETABLE($components)	{
-		// Execute query (based on handler derived from the TABLE name which we actually know for once!)
-		//$this->lastHandlerKey = $this->handler_getFromTableList($ORIG_table);
+			// Execute query (based on handler derived from the TABLE name which we actually know for once!)
 		switch((string)$GLOBALS['TYPO3_DB']->handlerCfg[$GLOBALS['TYPO3_DB']->handler_getFromTableList($components['TABLE'])]['type'])	{
 			case 'native':
 				$query[] = parent::compileCREATETABLE($components);
-			break;
+				break;
 			case 'adodb':
-				// Create fields and keys:
+					// Create fields and keys:
 				$fieldsKeys = array();
 				$indexKeys = array();
 
 				foreach($components['FIELDS'] as $fN => $fCfg)	{
-					// the backticks get converted to the correct quote char automatically
+						// the backticks get converted to the correct quote char automatically
 					$fieldsKeys[$fN] = '`'.$fN.'` '.$this->compileFieldCfg($fCfg['definition'],$fN);
 				}
 
-				foreach($components['KEYS'] as $kN => $kCfg)	{
-					if ($kN == 'PRIMARYKEY')	{
-						foreach($kCfg as $n => $field)	{
-							$fieldsKeys[$field] .= ' PRIMARY';
-						}
+				if(isset($components['KEYS']) && is_array($components['KEYS'])) {
+					foreach($components['KEYS'] as $kN => $kCfg)	{
+						if ($kN == 'PRIMARYKEY')	{
+							foreach($kCfg as $n => $field)	{
+								$fieldsKeys[$field] .= ' PRIMARY';
+							}
+						} elseif ($kN == 'UNIQUE')	{
+							foreach($kCfg as $n => $field)	{
+								$indexKeys = array_merge($indexKeys, $GLOBALS['TYPO3_DB']->handlerInstance[$GLOBALS['TYPO3_DB']->handler_getFromTableList($components['TABLE'])]->DataDictionary->CreateIndexSQL($n, $components['TABLE'], $field, array('UNIQUE')));
+							}
 						} else {
-						$indexKeys = array_merge($indexKeys, $GLOBALS['TYPO3_DB']->handlerInstance[$GLOBALS['TYPO3_DB']->handler_getFromTableList($components['TABLE'])]->DataDictionary->CreateIndexSQL($components['TABLE'].'_'.$kN, $components['TABLE'], $kCfg));
+							$indexKeys = array_merge($indexKeys, $GLOBALS['TYPO3_DB']->handlerInstance[$GLOBALS['TYPO3_DB']->handler_getFromTableList($components['TABLE'])]->DataDictionary->CreateIndexSQL($components['TABLE'].'_'.$kN, $components['TABLE'], $kCfg));
+						}
 					}
 				}
 
-				// Fetch table/index generation query:
+					// Fetch table/index generation query:
 				$query = array_merge($GLOBALS['TYPO3_DB']->handlerInstance[$GLOBALS['TYPO3_DB']->lastHandlerKey]->DataDictionary->CreateTableSQL('`'.$components['TABLE'].'`',implode(','.chr(10), $fieldsKeys)), $indexKeys);
-			break;
+				break;
 		}
 
 		return $query;
 	}
 
 	function compileALTERTABLE($components)	{
-
-		// Execute query (based on handler derived from the TABLE name which we actually know for once!)
-		//$this->lastHandlerKey = $this->handler_getFromTableList($ORIG_table);
+			// Execute query (based on handler derived from the TABLE name which we actually know for once!)
 		switch((string)$GLOBALS['TYPO3_DB']->handlerCfg[$GLOBALS['TYPO3_DB']->lastHandlerKey]['type'])	{
 			case 'native':
 				$query[] = parent::compileALTERTABLE($components);
-			break;
+				break;
 			case 'adodb':
 				switch(strtoupper(str_replace(array(" ","\n","\r","\t"),'',$components['action'])))	{
 					case 'ADD':
 						$query = $GLOBALS['TYPO3_DB']->handlerInstance[$GLOBALS['TYPO3_DB']->lastHandlerKey]->DataDictionary->AddColumnSQL('`'.$components['TABLE'].'`','`'.$components['FIELD'].'` '.$this->compileFieldCfg($components['definition']));
-					break;
+						break;
 					case 'CHANGE':
 						$query = $GLOBALS['TYPO3_DB']->handlerInstance[$GLOBALS['TYPO3_DB']->lastHandlerKey]->DataDictionary->AlterColumnSQL('`'.$components['TABLE'].'`','`'.$components['FIELD'].'` '.$this->compileFieldCfg($components['definition']));
-					break;
+						break;
 					case 'DROP':
 					case 'DROPKEY':
-					break;
+						break;
 					case 'ADDKEY':
 					case 'ADDPRIMARYKEY':
 						$query.=' ('.implode(',',$components['fields']).')';
-					break;
+						break;
 				}
-			break;
+				break;
 		}
-		echo '<!-- ';var_dump($query);echo ' -->'.chr(10);
 
 		return $query;
 	}
@@ -204,58 +208,58 @@ class ux_t3lib_sqlparser extends t3lib_sqlparser {
 		switch((string)$GLOBALS['TYPO3_DB']->handlerCfg[$GLOBALS['TYPO3_DB']->lastHandlerKey]['type'])	{
 			case 'native':
 				$cfg = parent::compileFieldCfg($fieldCfg,$fN);
-			break;
+				break;
 			case 'adodb':
-			// Set type:
-			$cfg = $GLOBALS['TYPO3_DB']->MySQLMetaType($fieldCfg['fieldType']);
+				// Set type:
+				$cfg = $GLOBALS['TYPO3_DB']->MySQLMetaType($fieldCfg['fieldType']);
 
-			// Add value, if any:
-			if (strlen($fieldCfg['value']) && (in_array($cfg, array('C','C2'))))	{
-				$cfg.=' '.$fieldCfg['value'];
-			}
-
-			// Add additional features:
-			if (is_array($fieldCfg['featureIndex']))	{
-
-				// MySQL assigns DEFAULT value automatically if NOT NULL, fake this here
-				//if(array_key_exists('NOTNULL',$fieldCfg['featureIndex']) && !array_key_exists('DEFAULT',$fieldCfg['featureIndex']) && !array_key_exists('AUTO_INCREMENT',$fieldCfg['featureIndex'])) {
-				if(isset($fieldCfg['featureIndex']['NOTNULL']) && !isset($fieldCfg['featureIndex']['DEFAULT']) && !isset($fieldCfg['featureIndex']['AUTO_INCREMENT'])) {
-					$fieldCfg['featureIndex']['DEFAULT'] = array('keyword' => 'DEFAULT', 'value' => array('','\''));
+					// Add value, if any:
+				if (strlen($fieldCfg['value']) && (in_array($cfg, array('C','C2'))))	{
+					$cfg.=' '.$fieldCfg['value'];
+				} elseif (!isset($fieldCfg['value']) && (in_array($cfg, array('C','C2')))) {
+					$cfg .= ' 255'; // add 255 as length for varchar without specified length (e.g. coming from tinytext, tinyblob)
 				}
 
-				// we handle unsigned, auto_increment and NOT NULL
-				foreach($fieldCfg['featureIndex'] as $featureDef)	{
-					if($featureDef['keyword'] == 'unsigned') {
-						continue;
+					// Add additional features:
+				if (is_array($fieldCfg['featureIndex']))	{
+
+						// MySQL assigns DEFAULT value automatically if NOT NULL, fake this here
+					if(isset($fieldCfg['featureIndex']['NOTNULL']) && !isset($fieldCfg['featureIndex']['DEFAULT']) && !isset($fieldCfg['featureIndex']['AUTO_INCREMENT'])) {
+						$fieldCfg['featureIndex']['DEFAULT'] = array('keyword' => 'DEFAULT', 'value' => array('','\''));
 					}
-					if($featureDef['keyword'] == 'auto_increment') {
-						//$cfg.=' AUTO'; removed as we handle auto_increment different now
-						continue;
-					}
-					if($featureDef['keyword'] == 'NOT NULL') {
-						if($this->checkEmptyDefaultValue($fieldCfg['featureIndex'])) // we do not have a default value or it is an empty string
+
+					foreach($fieldCfg['featureIndex'] as $featureDef)	{
+							// unsigned only for mysql, as it is mysql specific
+						if($featureDef['keyword'] == 'unsigned' && !strstr($GLOBALS['TYPO3_DB']->handlerCfg[$GLOBALS['TYPO3_DB']->lastHandlerKey]['config']['driver'],'mysql')) {
 							continue;
-						else
-							$cfg.=' NOTNULL';
-					}
+						}
+							// auto_increment is removed, it is handled by (emulated) sequences
+						if($featureDef['keyword'] == 'auto_increment') {
+							continue;
+						}
+							// NOT NULL only if there is no default value, as this conflicts
+						if($featureDef['keyword'] == 'NOT NULL') {
+							if($this->checkEmptyDefaultValue($fieldCfg['featureIndex'])) continue; // we do not have a default value or it is an empty string
+							else $cfg.=' NOTNULL';
+						}
 
-					$cfg.=' '.$featureDef['keyword'];
+						$cfg.=' '.$featureDef['keyword'];
 
-					// Add value if found:
-					if (is_array($featureDef['value']))	{
-						if(!is_numeric($featureDef['value'][0]) && empty($featureDef['value'][0])) {
-							$cfg .= '" \'\' "';
-						} else{
-							$cfg.=' '.$featureDef['value'][1].$this->compileAddslashes($featureDef['value'][0]).$featureDef['value'][1];
+							// Add value if found:
+						if (is_array($featureDef['value']))	{
+							if(!is_numeric($featureDef['value'][0]) && empty($featureDef['value'][0])) {
+								$cfg .= ' "\'\'"';
+							} else {
+								$cfg.=' '.$featureDef['value'][1].$this->compileAddslashes($featureDef['value'][0]).$featureDef['value'][1];
+							}
 						}
 					}
 				}
-			}
-			$cfg .= ' NOQUOTE';
-		break;
+				$cfg .= ' NOQUOTE';
+				break;
 		}
 
-		// Return field definition string:
+			// Return field definition string:
 		return $cfg;
 	}
 
@@ -263,8 +267,7 @@ class ux_t3lib_sqlparser extends t3lib_sqlparser {
 		if (is_array($featureIndex['DEFAULT']['value']))	{
 			if(!is_numeric($featureIndex['DEFAULT']['value'][0]) && empty($featureIndex['DEFAULT']['value'][0])) {
 				return true;
-			}
-			else {
+			} else {
 				return false;
 			}
 		}
