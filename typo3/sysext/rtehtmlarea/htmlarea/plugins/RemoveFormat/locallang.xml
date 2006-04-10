@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+	<meta type="array">
+		<description>Labels for Remove Format plugin of htmlArea RTE</description>
+		<type>module</type>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index="RemoveFormatTooltip">Remove formatting</label>
+			<label index="Cleaning Area">Cleaning Area</label>
+			<label index="Selection">Selection</label>
+			<label index="All">All</label>
+			<label index="Remove formatting">Remove formatting</label>
+			<label index="Cleaning options">Type of formatting to remove</label>
+			<label index="Formatting:">HTML Formatting:</label>
+			<label index="MS Word Formatting:">MS Word Formatting:</label>
+			<label index="Images:">Images:</label>
+			<label index="All HTML:">All HTML tags:</label>
+			<label index="Select the type of formatting you wish to remove.">Select the type of formatting to remove.</label>
+			<label index="OK">OK</label>
+			<label index="Cancel">Cancel</label>
+		</languageKey>
+	</data>
+	<orig_hash type="array">
+		<languageKey index="default" type="array">
+			<label index="RemoveFormatTooltip" type="integer">187827535</label>
+			<label index="Cleaning Area" type="integer">111670107</label>
+			<label index="Selection" type="integer">117415376</label>
+			<label index="All" type="integer">186422474</label>
+			<label index="Remove formatting" type="integer">187827535</label>
+			<label index="Cleaning options" type="integer">120951142</label>
+			<label index="Formatting:" type="integer">241123716</label>
+			<label index="MS Word Formatting:" type="integer">232036571</label>
+			<label index="Images:" type="integer">160221445</label>
+			<label index="All HTML:" type="integer">60736661</label>
+			<label index="Select the type of formatting you wish to remove." type="integer">46612032</label>
+			<label index="OK" type="integer">235577377</label>
+			<label index="Cancel" type="integer">245659783</label>
+		</languageKey>
+	</orig_hash>
+	<orig_text type="array">
+		<languageKey index="default" type="array">
+		</languageKey>
+	</orig_text>
+</T3locallang>

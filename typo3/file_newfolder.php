@@ -40,7 +40,7 @@
  *   74: class SC_file_newfolder
  *  101:     function init()
  *  161:     function main()
- *  257:     function printContent()
+ *  255:     function printContent()
  *
  * TOTAL FUNCTIONS: 3
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -142,7 +142,7 @@ class SC_file_newfolder {
 			function reload(a)	{	//
 				if (!changed || (changed && confirm('.$LANG->JScharCode($LANG->sL('LLL:EXT:lang/locallang_core.php:mess.redraw')).')))	{
 					var params = "&target="+escape(path)+"&number="+a;
-					document.location = "file_newfolder.php?"+params;
+					window.location.href = "file_newfolder.php?"+params;
 				}
 			}
 			function backToList()	{	//
@@ -245,8 +245,6 @@ class SC_file_newfolder {
 			// Add the HTML as a section:
 		$this->content.= $this->doc->section($LANG->sL('LLL:EXT:lang/locallang_core.php:file_newfolder.php.newfile'),$code);
 
-			// Ending page
-		$this->content.= $this->doc->endPage();
 	}
 
 	/**
@@ -255,7 +253,8 @@ class SC_file_newfolder {
 	 * @return	void
 	 */
 	function printContent()	{
-
+		$this->content.= $this->doc->endPage();
+		$this->content = $this->doc->insertStylesAndJS($this->content);
 		echo $this->content;
 	}
 }

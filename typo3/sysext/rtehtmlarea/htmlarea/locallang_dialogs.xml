@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+	<meta type="array">
+		<description>Labels for dialogs of htmlArea RTE</description>
+		<type>module</type>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index="OK">OK</label>
+			<label index="Cancel">Cancel</label>
+			<label index="Close">Close</label>
+			<label index="Not set">Not set</label>
+			<label index="Alignment:">Text alignment:</label>
+			<label index="Alignment not set">Not set</label>
+			<label index="Left">Left</label>
+			<label index="Center">Center</label>
+			<label index="Right">Right</label>
+			<label index="Texttop">Texttop</label>
+			<label index="Absmiddle">Absmiddle</label>
+			<label index="Baseline">Baseline</label>
+			<label index="Absbottom">Absbottom</label>
+			<label index="Bottom">Bottom</label>
+			<label index="Middle">Middle</label>
+			<label index="Top">Top</label>
+			<label index="Justify">Justify</label>
+			<label index="Float:">Float:</label>
+			<label index="Non-floating">Non-floating</label>
+			<label index="Layout">Layout</label>
+			<label index="Spacing and padding">Spacing and padding</label>
+			<label index="Horizontal:">Horizontal:</label>
+			<label index="Horizontal padding">Horizontal padding</label>
+			<label index="Vertical:">Vertical:</label>
+			<label index="Vertical padding">Vertical padding</label>
+			<label index="Border">Border</label>
+			<label index="Border thickness:">Border thickness:</label>
+			<label index="Leave empty for no border">Leave empty for no border</label>
+			<label index="Insert/Modify Link">Insert/Modify Link</label>
+			<label index="URL:">URL:</label>
+			<label index="link_href_tooltip">Enter the link URL here</label>
+			<label index="link_url_required">Please enter the URL where this link points to</label>
+			<label index="Title (tooltip):">Title:</label>
+			<label index="link_title_tooltip">Enter the link tooltip here</label>
+			<label index="Target:">Target:</label>
+			<label index="link_target_tooltip">Select the name of the target frame</label>
+			<label index="target_none">None (use implicit)</label>
+			<label index="target_blank">New window (_blank)</label>
+			<label index="target_self">Same frame (_self)</label>
+			<label index="target_top">Top frame (_top)</label>
+			<label index="target_other">Other frame</label>
+			<label index="Insert Custom Element">Insert Custom Element</label>
+			<label index="Insert Table">Insert Table</label>
+			<label index="Dimension">Dimension</label>
+			<label index="Rows:">Rows:</label>
+			<label index="Number of rows">Number of rows</label>
+			<label index="You must enter a number of rows">You must enter a number of rows</label>
+			<label index="Cols:">Cols:</label>
+			<label index="Number of columns">Number of columns</label>
+			<label index="You must enter a number of colums">You must enter a number of columns</label>
+			<label index="Width:">Width:</label>
+			<label index="Width of the table">Width of the table</label>
+			<label index="Percent">Percent</label>
+			<label index="Pixels">Pixels</label>
+			<label index="Em">Em</label>
+			<label index="Width unit">Width unit</label>
+			<label index="Text alignment">Text alignment</label>
+			<label index="Where the table should float">Specifies where the table should float</label>
+			<label index="Cell spacing:">Cell spacing:</label>
+			<label index="Space between adjacent cells">Space between adjacent cells</label>
+			<label index="Cell padding:">Cell padding:</label>
+			<label index="Space between content and border in cell">Space between content and border in cell</label>
+			<label index="Insert Image">Insert/Modify Image</label>
+			<label index="Image URL:">Image URL:</label>
+			<label index="Enter the image URL here">Enter the image URL here</label>
+			<label index="Preview">Preview</label>
+			<label index="Preview the image in a new window">Preview the image in a new window</label>
+			<label index="Alternate text:">Alternate text:</label>
+			<label index="For browsers that dont support images">For browsers that don't support images</label>
+			<label index="Where the image should float">Specifies where the image should float</label>
+			<label index="Image alignment:">Image alignment:</label>
+			<label index="Positioning of this image">Positioning of this image relative to text</label>
+			<label index="Image Preview">Image Preview</label>
+			<label index="image_url_first">You have to enter the image URL first</label>
+			<label index="image_url_required">You must enter the image URL</label>
+			<label index="Select Color">Select Color</label>
+			<label index="Insert/Modify Acronym">Insert/Modify Acronym or Abbreviation</label>
+			<label index="About HTMLArea">About htmlArea RTE</label>
+			<label index="About">About</label>
+			<label index="free_editor">A free and open-source editor for &lt;textarea&gt; fields, featuring integration with TYPO3.</label>
+			<label index="Mozilla_or_IE">For Mozilla 1.3.1+, Firefox 0.8+ and Netscape 7.1+ on any platform, and for Internet Explorer 5.5+ on Windows.</label>
+			<label index="product_documentation">For more information, please visit:</label>
+			<label index="All rights reserved.">All Rights Reserved.</label>
+			<label index="License">License</label>
+			<label index="htmlArea License (based on BSD license)">htmlArea RTE License, based on BSD License</label>
+			<label index="Plugins">Plugins</label>
+			<label index="Name">Name</label>
+			<label index="Developer">Developer</label>
+			<label index="Sponsored by">Sponsored by</label>
+			<label index="The following plugins have been loaded.">The following plugins have been loaded.</label>
+			<label index="No plugins have been loaded.">No plugins have been loaded.</label>
+			<label index="User agent reports:">User agent reports:</label>
+			<label index="style">Paragraph:</label>
+			<label index="text_style">Text:</label>
+		</languageKey>
+	</data>
+	<orig_hash type="array">
+		<languageKey index="default" type="array">
+			<label index="OK" type="integer">235577377</label>
+			<label index="Cancel" type="integer">245659783</label>
+			<label index="Close" type="integer">222113377</label>
+			<label index="Not set" type="integer">163210921</label>
+			<label index="Alignment:" type="integer">140755028</label>
+			<label index="Alignment not set" type="integer">163210921</label>
+			<label index="Left" type="integer">155571682</label>
+			<label index="Center" type="integer">82966017</label>
+			<label index="Right" type="integer">153815495</label>
+			<label index="Texttop" type="integer">178125674</label>
+			<label index="Absmiddle" type="integer">81019456</label>
+			<label index="Baseline" type="integer">172634820</label>
+			<label index="Absbottom" type="integer">151493113</label>
+			<label index="Bottom" type="integer">44932451</label>
+			<label index="Middle" type="integer">186426191</label>
+			<label index="Top" type="integer">173014479</label>
+			<label index="Justify" type="integer">78915026</label>
+			<label index="Float:" type="integer">69520925</label>
+			<label index="Non-floating" type="integer">169566595</label>
+			<label index="Layout" type="integer">247307244</label>
+			<label index="Spacing and padding" type="integer">137006425</label>
+			<label index="Horizontal:" type="integer">162843144</label>
+			<label index="Horizontal padding" type="integer">227663783</label>
+			<label index="Vertical:" type="integer">173275547</label>
+			<label index="Vertical padding" type="integer">192088461</label>
+			<label index="Border" type="integer">7361862</label>
+			<label index="Border thickness:" type="integer">190226477</label>
+			<label index="Leave empty for no border" type="integer">65292842</label>
+			<label index="Insert/Modify Link" type="integer">24150906</label>
+			<label index="URL:" type="integer">62115936</label>
+			<label index="link_href_tooltip" type="integer">62621912</label>
+			<label index="link_url_required" type="integer">258938822</label>
+			<label index="Title (tooltip):" type="integer">85903807</label>
+			<label index="link_title_tooltip" type="integer">77087309</label>
+			<label index="Target:" type="integer">253363033</label>
+			<label index="link_target_tooltip" type="integer">213509885</label>
+			<label index="target_none" type="integer">36086571</label>
+			<label index="target_blank" type="integer">94939297</label>
+			<label index="target_self" type="integer">237240544</label>
+			<label index="target_top" type="integer">117060982</label>
+			<label index="target_other" type="integer">74478568</label>
+			<label index="Insert Custom Element" type="integer">171733976</label>
+			<label index="Insert Table" type="integer">111652295</label>
+			<label index="Dimension" type="integer">165733138</label>
+			<label index="Rows:" type="integer">254407209</label>
+			<label index="Number of rows" type="integer">124458660</label>
+			<label index="You must enter a number of rows" type="integer">244540236</label>
+			<label index="Cols:" type="integer">220674286</label>
+			<label index="Number of columns" type="integer">4029516</label>
+			<label index="You must enter a number of colums" type="integer">97746525</label>
+			<label index="Width:" type="integer">76336968</label>
+			<label index="Width of the table" type="integer">104456832</label>
+			<label index="Percent" type="integer">182103780</label>
+			<label index="Pixels" type="integer">205336413</label>
+			<label index="Em" type="integer">102461673</label>
+			<label index="Width unit" type="integer">203578597</label>
+			<label index="Text alignment" type="integer">200720102</label>
+			<label index="Where the table should float" type="integer">108767642</label>
+			<label index="Cell spacing:" type="integer">99196501</label>
+			<label index="Space between adjacent cells" type="integer">241930679</label>
+			<label index="Cell padding:" type="integer">81605023</label>
+			<label index="Space between content and border in cell" type="integer">172243927</label>
+			<label index="Insert Image" type="integer">146708638</label>
+			<label index="Image URL:" type="integer">56765140</label>
+			<label index="Enter the image URL here" type="integer">237203181</label>
+			<label index="Preview" type="integer">52420219</label>
+			<label index="Preview the image in a new window" type="integer">221674284</label>
+			<label index="Alternate text:" type="integer">116960653</label>
+			<label index="For browsers that dont support images" type="integer">176989565</label>
+			<label index="Where the image should float" type="integer">120743091</label>
+			<label index="Image alignment:" type="integer">17644215</label>
+			<label index="Positioning of this image" type="integer">116781233</label>
+			<label index="Image Preview" type="integer">178102401</label>
+			<label index="image_url_first" type="integer">22082387</label>
+			<label index="image_url_required" type="integer">90201758</label>
+			<label index="Select Color" type="integer">26375550</label>
+			<label index="Insert/Modify Acronym" type="integer">2385255</label>
+			<label index="About HTMLArea" type="integer">142131926</label>
+			<label index="About" type="integer">150467777</label>
+			<label index="free_editor" type="integer">86844054</label>
+			<label index="Mozilla_or_IE" type="integer">220043206</label>
+			<label index="product_documentation" type="integer">37937410</label>
+			<label index="All rights reserved." type="integer">266025584</label>
+			<label index="License" type="integer">127196983</label>
+			<label index="htmlArea License (based on BSD license)" type="integer">115038196</label>
+			<label index="Plugins" type="integer">196313238</label>
+			<label index="Name" type="integer">77521672</label>
+			<label index="Developer" type="integer">108186354</label>
+			<label index="Sponsored by" type="integer">144405061</label>
+			<label index="The following plugins have been loaded." type="integer">214144516</label>
+			<label index="No plugins have been loaded." type="integer">11414715</label>
+			<label index="User agent reports:" type="integer">228316465</label>
+			<label index="style" type="integer">176896432</label>
+			<label index="text_style" type="integer">248708136</label>
+		</languageKey>
+	</orig_hash>
+	<orig_text type="array">
+		<languageKey index="default" type="array">
+		</languageKey>
+	</orig_text>
+</T3locallang>

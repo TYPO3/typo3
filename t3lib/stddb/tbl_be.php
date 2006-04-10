@@ -287,20 +287,20 @@ $TCA['be_users'] = Array (
 				'items' => Array (
 					Array('English', ''),
 					Array('Arabic', 'ar'),
-					Array('Bahasa Malaysia', 'my'),
 					Array('Basque', 'eu'),
 					Array('Bosnian', 'ba'),
 					Array('Brazilian Portuguese', 'br'),
 					Array('Bulgarian', 'bg'),
 					Array('Catalan', 'ca'),
-					Array('Chinese (Simpl)', 'ch'),
-					Array('Chinese (Trad)', 'hk'),
+					Array('Chinese (Simpl.)', 'ch'),
+					Array('Chinese (Trad.)', 'hk'),
 					Array('Croatian', 'hr'),
 					Array('Czech', 'cz'),
 					Array('Danish', 'dk'),
 					Array('Dutch', 'nl'),
-					Array('Estonian', 'et'),
 					Array('Esperanto', 'eo'),
+					Array('Estonian', 'et'),
+					Array('Faroese', 'fo'),
 					Array('Finnish', 'fi'),
 					Array('French', 'fr'),
 					Array('German', 'de'),
@@ -315,11 +315,14 @@ $TCA['be_users'] = Array (
 					Array('Korean', 'kr'),
 					Array('Latvian', 'lv'),
 					Array('Lithuanian', 'lt'),
+					Array('Malay', 'my'),
 					Array('Norwegian', 'no'),
+					Array('Persian', 'fa'),
 					Array('Polish', 'pl'),
 					Array('Portuguese', 'pt'),
 					Array('Romanian', 'ro'),
 					Array('Russian', 'ru'),
+					Array('Serbian', 'sr'),	
 					Array('Slovak', 'sk'),
 					Array('Slovenian', 'si'),
 					Array('Spanish', 'es'),
@@ -838,7 +841,7 @@ $TCA['sys_workspace'] = Array (
 			)
 		),
 		'vtypes' => Array (
-			'label' => 'Disable Versioning Types',
+			'label' => 'Disable Versioning Types (not for admins and owners):',
 			'config' => Array (
 				'type' => 'check',
 				'items' => Array (
@@ -926,7 +929,7 @@ $TCA['sys_language'] = Array (
 				'items' => Array (
 					Array('',0),
 				),
-				'fileFolder' => 't3lib/gfx/flags/',	// Only shows if "t3lib/" is in the PATH_site...
+				'fileFolder' => 'typo3/gfx/flags/',	// Only shows if "t3lib/" is in the PATH_site...
 				'fileFolder_extList' => 'png,jpg,jpeg,gif',
 				'fileFolder_recursions' => 0,
 				'selicon_cols' => 8,

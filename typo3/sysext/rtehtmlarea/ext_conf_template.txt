@@ -19,10 +19,10 @@ dictionaryList  = en
   # cat=basic; type=string; label=List of htmlArea RTE plugins: The list of htmlArea RTE plugins that may be enabled.
 HTMLAreaPluginList = TableOperations, SpellChecker, ContextMenu, SelectColor, TYPO3Browsers, InsertSmiley, FindReplace, RemoveFormat, CharacterMap, QuickTag, InlineCSS, DynamicCSS, UserElements, Acronym, TYPO3HtmlParser
 
-  # cat=basic/enable; type=options[Typical,Advanced,Demo]; label=Default configuration settings: Select Typical for the most common situation. Select Advanced for minimal settings. Select Demo to enable all available features.
-defaultConfiguration = Typical
+  # cat=basic/enable; type=options[Minimal (Most features disabled. Administrator needs to enable them using TypoScript. For advanced administrators only.),Typical (Most commonly used features are enabled. Select this option if you are unsure which one to use.),Demo (Show-off configuration. Includes pre-configured styles. Not for production environments.)]; label=Default configuration settings
+defaultConfiguration = Typical (Most commonly used features are enabled. Select this option if you are unsure which one to use.)
 
-  # cat=basic/enable; type=boolean; label=Enable images in the RTE: If set, the use of images in the "Typical" default configuration of the RTE will be enabled. WARNING: this option will not work for Classic RTE (ext: rte).
+  # cat=basic/enable; type=boolean; label=Enable images in the RTE: If set, the use of images in the "Typical" default configuration of the RTE will be enabled.
 enableImages = 0
 
   # cat=basic/enable; type=boolean; label=Enable Mozilla/Firefox extension: If set, enables the triggering of installation of a Mozilla/Firefox extension to allow the RTE to access the clipboard.

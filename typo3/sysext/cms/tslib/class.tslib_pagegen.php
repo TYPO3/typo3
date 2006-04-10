@@ -41,16 +41,16 @@
  *
  *   88: class TSpagegen
  *   95:     function pagegenInit()
- *  229:     function getIncFiles()
- *  262:     function JSeventFunctions()
- *  296:     function renderContent()
- *  323:     function renderContentWithHeader($pageContent)
+ *  271:     function getIncFiles()
+ *  304:     function JSeventFunctions()
+ *  338:     function renderContent()
+ *  365:     function renderContentWithHeader($pageContent)
  *
  *              SECTION: Helper functions
- *  760:     function inline2TempFile($str,$ext)
+ *  827:     function inline2TempFile($str,$ext)
  *
  *
- *  814: class FE_loadDBGroup extends t3lib_loadDBGroup
+ *  881: class FE_loadDBGroup extends t3lib_loadDBGroup
  *
  * TOTAL FUNCTIONS: 6
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -94,7 +94,7 @@ class TSpagegen {
 	 */
 	function pagegenInit()	{
 		if ($GLOBALS['TSFE']->page['content_from_pid']>0)	{
-			$temp_copy_TSFE = $GLOBALS['TSFE'];	// make REAL copy of TSFE object - not reference!
+			$temp_copy_TSFE = clone($GLOBALS['TSFE']);	// make REAL copy of TSFE object - not reference!
 			$temp_copy_TSFE->id = $GLOBALS['TSFE']->page['content_from_pid'];	// Set ->id to the content_from_pid value - we are going to evaluate this pid as was it a given id for a page-display!
 			$temp_copy_TSFE->getPageAndRootlineWithDomain($GLOBALS['TSFE']->config['config']['content_from_pid_allowOutsideDomain']?0:$GLOBALS['TSFE']->domainStartPage);
 			$GLOBALS['TSFE']->contentPid = intval($temp_copy_TSFE->id);
@@ -179,7 +179,7 @@ function linkTo_UnCryptMailto(s)	{	//
 
 		if ($GLOBALS['TSFE']->type && $GLOBALS['TSFE']->config['config']['frameReloadIfNotInFrameset'])	{
 			$tdlLD = $GLOBALS['TSFE']->tmpl->linkData($GLOBALS['TSFE']->page,'_top',$GLOBALS['TSFE']->no_cache,'');
-			$GLOBALS['TSFE']->JSCode = 'if(!parent.'.trim($GLOBALS['TSFE']->sPre).' && !parent.view_frame) top.document.location="'.$GLOBALS['TSFE']->baseUrlWrap($tdlLD['totalURL']).'"';
+			$GLOBALS['TSFE']->JSCode = 'if(!parent.'.trim($GLOBALS['TSFE']->sPre).' && !parent.view_frame) top.location.href="'.$GLOBALS['TSFE']->baseUrlWrap($tdlLD['totalURL']).'"';
 		}
 		$GLOBALS['TSFE']->compensateFieldWidth = ''.$GLOBALS['TSFE']->config['config']['compensateFieldWidth'];
 		$GLOBALS['TSFE']->lockFilePath = ''.$GLOBALS['TSFE']->config['config']['lockFilePath'];
@@ -230,6 +230,36 @@ function linkTo_UnCryptMailto(s)	{	//
 			}
 		} else {
 			$GLOBALS['TSFE']->linkVars='';
+		}
+
+			// Setting XHTML-doctype from doctype
+		if (!$GLOBALS['TSFE']->config['config']['xhtmlDoctype'])	{
+			$GLOBALS['TSFE']->config['config']['xhtmlDoctype'] = $GLOBALS['TSFE']->config['config']['doctype'];
+		}
+
+		if ($GLOBALS['TSFE']->config['config']['xhtmlDoctype'])	{
+			$GLOBALS['TSFE']->xhtmlDoctype = $GLOBALS['TSFE']->config['config']['xhtmlDoctype'];
+
+				// Checking XHTML-docytpe
+			switch((string)$GLOBALS['TSFE']->config['config']['xhtmlDoctype'])	{
+				case 'xhtml_trans':
+				case 'xhtml_strict':
+				case 'xhtml_frames':
+					$GLOBALS['TSFE']->xhtmlVersion = 100;
+				break;
+				case 'xhtml_basic':
+					$GLOBALS['TSFE']->xhtmlVersion = 105;
+				break;
+				case 'xhtml_11':
+					$GLOBALS['TSFE']->xhtmlVersion = 110;
+				break;
+				case 'xhtml_2':
+					$GLOBALS['TSFE']->xhtmlVersion = 200;
+				break;
+				default:
+					$GLOBALS['TSFE']->xhtmlDoctype = '';
+					$GLOBALS['TSFE']->xhtmlVersion = 0;
+			}
 		}
 	}
 
@@ -353,105 +383,72 @@ function linkTo_UnCryptMailto(s)	{	//
 
 			// Setting document type:
 		$docTypeParts = array();
-		$docTypeKeyword = '';
-		$XMLprologue = $GLOBALS['TSFE']->config['config']['xmlprologue'] != 'none';
+			// Part 1: XML prologue
+		switch((string)$GLOBALS['TSFE']->config['config']['xmlprologue'])	{
+			case 'none':
+			break;
+			case 'xml_10':
+				$docTypeParts[]='<?xml version="1.0" encoding="'.$theCharset.'"?>';
+			break;
+			case 'xml_11':
+				$docTypeParts[]='<?xml version="1.1" encoding="'.$theCharset.'"?>';
+			break;
+			case '':
+				if ($GLOBALS['TSFE']->xhtmlVersion)	$docTypeParts[]='<?xml version="1.0" encoding="'.$theCharset.'"?>';
+			break;
+			default:
+				$docTypeParts[]=$GLOBALS['TSFE']->config['config']['xmlprologue'];
+		}
+			// Part 2: DTD
 		if ($GLOBALS['TSFE']->config['config']['doctype'])	{
-			$docTypeKeyword = $GLOBALS['TSFE']->config['config']['doctype'];
-
-				// Setting doctypes:
 			switch((string)$GLOBALS['TSFE']->config['config']['doctype'])	{
 				case 'xhtml_trans':
-		 			if ($XMLprologue) $docTypeParts[]='<?xml version="1.0" encoding="'.$theCharset.'"?>';
 					$docTypeParts[]='<!DOCTYPE html
      PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">';
 				break;
 				case 'xhtml_strict':
-		 			if ($XMLprologue) $docTypeParts[]='<?xml version="1.0" encoding="'.$theCharset.'"?>';
 					$docTypeParts[]='<!DOCTYPE html
      PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">';
 				break;
 				case 'xhtml_frames':
-		 			if ($XMLprologue) $docTypeParts[]='<?xml version="1.0" encoding="'.$theCharset.'"?>';
 					$docTypeParts[]='<!DOCTYPE html
      PUBLIC "-//W3C//DTD XHTML 1.0 Frameset//EN"
      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd">';
 				break;
 				case 'xhtml_basic':
-		 			if ($XMLprologue) $docTypeParts[]='<?xml version="1.0" encoding="'.$theCharset.'"?>';
 					$docTypeParts[]='<!DOCTYPE html
     PUBLIC "-//W3C//DTD XHTML Basic 1.0//EN"
     "http://www.w3.org/TR/xhtml-basic/xhtml-basic10.dtd">';
 				break;
 				case 'xhtml_11':
-		 			if ($XMLprologue) $docTypeParts[]='<?xml version="1.1" encoding="'.$theCharset.'"?>';
 					$docTypeParts[]='<!DOCTYPE html
      PUBLIC "-//W3C//DTD XHTML 1.1//EN"
      "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">';
 				break;
 				case 'xhtml_2':
-		 			if ($XMLprologue) $docTypeParts[]='<?xml version="2.0" encoding="'.$theCharset.'"?>';
 					$docTypeParts[]='<!DOCTYPE html
 	PUBLIC "-//W3C//DTD XHTML 2.0//EN"
 	"http://www.w3.org/TR/xhtml2/DTD/xhtml2.dtd">';
 				break;
 				case 'none':
-					$docTypeKeyword = '';
 				break;
 				default:
 					$docTypeParts[] = $GLOBALS['TSFE']->config['config']['doctype'];
-					$docTypeKeyword = '';
 			}
 		} else {
 			$docTypeParts[]='<!DOCTYPE html
 	PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">';
 		}
 
-			// Setting XHTML doctype from doctype
-		if (!$GLOBALS['TSFE']->config['config']['xhtmlDoctype'])	{
-			$GLOBALS['TSFE']->config['config']['xhtmlDoctype'] = $docTypeKeyword;
-		}
-
-		if ($GLOBALS['TSFE']->config['config']['xhtmlDoctype'])	{
-			$GLOBALS['TSFE']->xhtmlDoctype = $GLOBALS['TSFE']->config['config']['xhtmlDoctype'];
+		if ($GLOBALS['TSFE']->xhtmlVersion)	{
 
 				// Setting <html> tag attributes:
-			switch((string)$GLOBALS['TSFE']->config['config']['xhtmlDoctype'])	{
-				case 'xhtml_trans':
-				case 'xhtml_strict':
-				case 'xhtml_frames':
-				case 'xhtml_basic':
-	 				$htmlTagAttributes['xmlns'] = 'http://www.w3.org/1999/xhtml';
-					$htmlTagAttributes['xml:lang'] = $htmlLang;
+	 		$htmlTagAttributes['xmlns'] = 'http://www.w3.org/1999/xhtml';
+			$htmlTagAttributes['xml:lang'] = $htmlLang;
+			if ($GLOBALS['TSFE']->xhtmlVersion < 110)	{
 					$htmlTagAttributes['lang'] = $htmlLang;
-				break;
-				case 'xhtml_11':
-				case 'xhtml_2':
-	 				$htmlTagAttributes['xmlns'] = 'http://www.w3.org/1999/xhtml';
-					$htmlTagAttributes['xml:lang'] = $htmlLang;
-				break;
-				default:
-					$GLOBALS['TSFE']->xhtmlDoctype = '';
-			}
-				// Setting xhtml version number:
-			switch((string)$GLOBALS['TSFE']->config['config']['xhtmlDoctype'])	{
-				case 'xhtml_trans':
-				case 'xhtml_strict':
-				case 'xhtml_frames':
-					$GLOBALS['TSFE']->xhtmlVersion = 100;
-				break;
-				case 'xhtml_basic':
-					$GLOBALS['TSFE']->xhtmlVersion = 105;
-				break;
-				case 'xhtml_11':
-					$GLOBALS['TSFE']->xhtmlVersion = 110;
-				break;
-				case 'xhtml_2':
-					$GLOBALS['TSFE']->xhtmlVersion = 200;
-				break;
-				default:
-					$GLOBALS['TSFE']->xhtmlVersion = 0;
 			}
 		}
 
@@ -484,7 +481,7 @@ $GLOBALS['TSFE']->content.='
 <!-- '.($customContent?$customContent.chr(10):'').'
 	This website is powered by TYPO3 - inspiring people to share!
 	TYPO3 is a free open source Content Management Framework initially created by Kasper Skaarhoj and licensed under GNU/GPL.
-	TYPO3 is copyright 1998-2005 of Kasper Skaarhoj. Extensions are copyright of their respective owners.
+	TYPO3 is copyright 1998-2006 of Kasper Skaarhoj. Extensions are copyright of their respective owners.
 	Information and contribution at http://typo3.com/ and http://typo3.org/
 -->
 ';
@@ -501,13 +498,12 @@ $GLOBALS['TSFE']->content.='
 	<link rel="SHORTCUT ICON" href="'.htmlspecialchars($ss).'" />';
 		}
 
-		/** CSS STYLESHEET handling: */
-		if (is_array($GLOBALS['TSFE']->tmpl->setup['plugin.'])) {
+			// Including CSS files
+		if (is_array($GLOBALS['TSFE']->tmpl->setup['plugin.']))	{
 			$temp_styleLines=array();
-			reset($GLOBALS['TSFE']->tmpl->setup['plugin.']);
-			while(list($k2,$iCSScode)=each($GLOBALS['TSFE']->tmpl->setup['plugin.']))	{
+			foreach ($GLOBALS['TSFE']->tmpl->setup['plugin.'] as $key=>$iCSScode)	{
 				if (is_array($iCSScode) && $iCSScode['_CSS_DEFAULT_STYLE'])	{
-					$temp_styleLines[]='/* default styles for extension "'.substr($k2,0,-1).'" */'.chr(10).$iCSScode['_CSS_DEFAULT_STYLE'];
+					$temp_styleLines[]='/* default styles for extension "'.substr($key,0,-1).'" */'.chr(10).$iCSScode['_CSS_DEFAULT_STYLE'];
 				}
 			}
 			if (count($temp_styleLines))	{
@@ -526,35 +522,34 @@ $GLOBALS['TSFE']->content.='
 			}
 		}
 
-		if ($GLOBALS['TSFE']->pSetup['stylesheet']) {
+		if ($GLOBALS['TSFE']->pSetup['stylesheet'])	{
 			$ss=$GLOBALS['TSFE']->tmpl->getFileName($GLOBALS['TSFE']->pSetup['stylesheet']);
-			if ($ss) {
+			if ($ss)	{
 				$GLOBALS['TSFE']->content.='
 	<link rel="stylesheet" type="text/css" href="'.htmlspecialchars($ss).'" />';
 			}
 		}
-		if (is_array($GLOBALS['TSFE']->pSetup['includeCSS.'])) {
-			reset($GLOBALS['TSFE']->pSetup['includeCSS.']);
-			while(list($k2,$iCSSfile)=each($GLOBALS['TSFE']->pSetup['includeCSS.']))	{
+		if (is_array($GLOBALS['TSFE']->pSetup['includeCSS.']))	{
+			foreach ($GLOBALS['TSFE']->pSetup['includeCSS.'] as $key=>$iCSSfile)	{
 				if (!is_array($iCSSfile))	{
-					$ss = $GLOBALS['TSFE']->tmpl->getFileName($iCSSfile);
-					if ($ss) {
-						if ($GLOBALS['TSFE']->pSetup['includeCSS.'][$k2.'.']['import'])	{
+					$ss=$GLOBALS['TSFE']->tmpl->getFileName($iCSSfile);
+					if ($ss)	{
+						if ($GLOBALS['TSFE']->pSetup['includeCSS.'][$key.'.']['import'])	{
 							if (substr($ss,0,1)!='/')	{	// To fix MSIE 6 that cannot handle these as relative paths (according to Ben v Ende)
 								$ss = t3lib_div::dirname(t3lib_div::getIndpEnv('SCRIPT_NAME')).'/'.$ss;
 							}
 							$GLOBALS['TSFE']->content.='
 	<style type="text/css">
 	<!--
-	@import url("'.htmlspecialchars($ss).'") '.htmlspecialchars($GLOBALS['TSFE']->pSetup['includeCSS.'][$k2.'.']['media']).';
+	@import url("'.htmlspecialchars($ss).'") '.htmlspecialchars($GLOBALS['TSFE']->pSetup['includeCSS.'][$key.'.']['media']).';
 	-->
 	</style>
 							';
 						} else {
 							$GLOBALS['TSFE']->content.='
-	<link rel="'.($GLOBALS['TSFE']->pSetup['includeCSS.'][$k2.'.']['alternate'] ? 'alternate stylesheet' : 'stylesheet').'" type="text/css" href="'.htmlspecialchars($ss).'"'.
-			($GLOBALS['TSFE']->pSetup['includeCSS.'][$k2.'.']['title'] ? ' title="'.htmlspecialchars($GLOBALS['TSFE']->pSetup['includeCSS.'][$k2.'.']['title']).'"' : '').
-			($GLOBALS['TSFE']->pSetup['includeCSS.'][$k2.'.']['media'] ? ' media="'.htmlspecialchars($GLOBALS['TSFE']->pSetup['includeCSS.'][$k2.'.']['media']).'"' : '').
+	<link rel="'.($GLOBALS['TSFE']->pSetup['includeCSS.'][$key.'.']['alternate'] ? 'alternate stylesheet' : 'stylesheet').'" type="text/css" href="'.htmlspecialchars($ss).'"'.
+			($GLOBALS['TSFE']->pSetup['includeCSS.'][$key.'.']['title'] ? ' title="'.htmlspecialchars($GLOBALS['TSFE']->pSetup['includeCSS.'][$key.'.']['title']).'"' : '').
+			($GLOBALS['TSFE']->pSetup['includeCSS.'][$key.'.']['media'] ? ' media="'.htmlspecialchars($GLOBALS['TSFE']->pSetup['includeCSS.'][$key.'.']['media']).'"' : '').
 			' />';
 						}
 					}
@@ -562,7 +557,7 @@ $GLOBALS['TSFE']->content.='
 			}
 		}
 
-		// Stylesheets
+			// Stylesheets
 		$style='';
 		$style.=trim($GLOBALS['TSFE']->pSetup['CSS_inlineStyle']).chr(10);
 
@@ -570,8 +565,7 @@ $GLOBALS['TSFE']->content.='
 			$pageTSConfig = $GLOBALS['TSFE']->getPagesTSconfig();
 			$RTEclasses = $pageTSConfig['RTE.']['classes.'];
 			if (is_array($RTEclasses))	{
-				reset($RTEclasses);
-				while(list($RTEclassName,$RTEvalueArray)=each($RTEclasses))	{
+				foreach ($RTEclasses as $RTEclassName=>$RTEvalueArray)	{
 					if ($RTEvalueArray['value'])	{
 						$style.='
 .'.substr($RTEclassName,0,-1).' {'.$RTEvalueArray['value'].'}';
@@ -581,8 +575,7 @@ $GLOBALS['TSFE']->content.='
 
 			if ($GLOBALS['TSFE']->pSetup['insertClassesFromRTE.']['add_mainStyleOverrideDefs'] && is_array($pageTSConfig['RTE.']['default.']['mainStyleOverride_add.']))	{
 				$mSOa_tList = t3lib_div::trimExplode(',',strtoupper($GLOBALS['TSFE']->pSetup['insertClassesFromRTE.']['add_mainStyleOverrideDefs']),1);
-				reset($pageTSConfig['RTE.']['default.']['mainStyleOverride_add.']);
-				while(list($mSOa_key,$mSOa_value)=each($pageTSConfig['RTE.']['default.']['mainStyleOverride_add.']))	{
+				foreach ($pageTSConfig['RTE.']['default.']['mainStyleOverride_add.'] as $mSOa_key=>$mSOa_value)	{
 					if (!is_array($mSOa_value) && (in_array('*',$mSOa_tList)||in_array($mSOa_key,$mSOa_tList)))	{
 						$style.='
 '.$mSOa_key.' {'.$mSOa_value.'}';
@@ -647,16 +640,32 @@ $GLOBALS['TSFE']->content.='
 			}
 		}
 
+			// JavaScript files
+		if (is_array($GLOBALS['TSFE']->pSetup['includeJS.']))	{
+			foreach ($GLOBALS['TSFE']->pSetup['includeJS.'] as $key=>$JSfile)	{
+				if (!is_array($JSfile))	{
+					$ss = $GLOBALS['TSFE']->tmpl->getFileName($JSfile);
+					if ($ss)	{
+						$type = $GLOBALS['TSFE']->pSetup['includeJS.'][$key.'.']['type'];
+						if (!$type)	$type = 'text/javascript';
+
+						$GLOBALS['TSFE']->content.='
+	<script src="'.htmlspecialchars($ss).'" type="'.htmlspecialchars($type).'"></script>';
+					}
+				}
+			}
+		}
 
 
 
 
-		// Headerdata
+
+			// Headerdata
 		if (is_array($GLOBALS['TSFE']->pSetup['headerData.']))	{
 			$GLOBALS['TSFE']->content.= chr(10).$GLOBALS['TSFE']->cObj->cObjGet($GLOBALS['TSFE']->pSetup['headerData.'],'headerData.');
 		}
 
-			// <title></title> :
+			// Title
 		$titleTagContent = $GLOBALS['TSFE']->tmpl->printTitle(
 			$GLOBALS['TSFE']->altPageTitle?$GLOBALS['TSFE']->altPageTitle:$GLOBALS['TSFE']->page['title'],
 			$GLOBALS['TSFE']->config['config']['noPageTitle'],
@@ -714,8 +723,9 @@ $GLOBALS['TSFE']->content.='
 
 			// Adding default Java Script:
 		$_scriptCode = '
-		browserName = navigator.appName;
-		browserVer = parseInt(navigator.appVersion);
+		var browserName = navigator.appName;
+		var browserVer = parseInt(navigator.appVersion);
+		var version = "";
 		var msie4 = (browserName == "Microsoft Internet Explorer" && browserVer >= 4);
 		if ((browserName == "Netscape" && browserVer >= 3) || msie4 || browserName=="Konqueror" || browserName=="Opera") {version = "n3";} else {version = "n2";}
 			// Blurring links:

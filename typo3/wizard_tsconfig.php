@@ -38,27 +38,31 @@
  *
  *
  *
- *   94: class ext_TSparser extends t3lib_tsparser_ext
- *  102:     function makeHtmlspecialchars($P)
+ *   98: class ext_TSparser extends t3lib_tsparser_ext
+ *  106:     function makeHtmlspecialchars($P)
  *
  *
- *  123: class SC_wizard_tsconfig
- *  145:     function init()
- *  252:     function main()
- *  279:     function printContent()
- *  290:     function browseTSprop($mode,$show)
+ *  127: class SC_wizard_tsconfig
+ *  149:     function init()
+ *  202:     function setValue(field,value)
+ *  232:     function mixerField(cmd,objString)
+ *  258:     function str_replace(match,replace,string)
+ *  280:     function jump(show,objString)
+ *  295:     function main()
+ *  320:     function printContent()
+ *  333:     function browseTSprop($mode,$show)
  *
  *              SECTION: Module functions
- *  376:     function getObjTree()
- *  406:     function setObj(&$objTree,$strArr,$params)
- *  426:     function revertFromSpecialChars($str)
- *  439:     function doLink($params)
- *  452:     function removePointerObjects($objArray)
- *  471:     function linkToObj($str,$uid,$objString='')
- *  484:     function printTable($table,$objString,$objTree)
- *  565:     function linkProperty($str,$propertyName,$prefix,$datatype)
+ *  419:     function getObjTree()
+ *  449:     function setObj(&$objTree,$strArr,$params)
+ *  469:     function revertFromSpecialChars($str)
+ *  482:     function doLink($params)
+ *  495:     function removePointerObjects($objArray)
+ *  514:     function linkToObj($str,$uid,$objString='')
+ *  527:     function printTable($table,$objString,$objTree)
+ *  608:     function linkProperty($str,$propertyName,$prefix,$datatype)
  *
- * TOTAL FUNCTIONS: 13
+ * TOTAL FUNCTIONS: 17
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -188,6 +192,13 @@ class SC_wizard_tsconfig {
 					return window.opener.document.'.$this->P['formName'].'["'.$this->P['itemValue'].'"];
 				}
 			}
+
+	/**
+	 * [Describe function...]
+	 *
+	 * @param	[type]		$field,value: ...
+	 * @return	[type]		...
+	 */
 			function setValue(field,value)	{
 				var nameField = checkReference_name();
 				var valueField = checkReference_value();
@@ -195,8 +206,12 @@ class SC_wizard_tsconfig {
 					if (valueField)	{	// This applies to the TS Object Browser module
 						nameField.value=field;
 						valueField.value=value;
-					} else {		// This applies to the Info/Modify module
-						nameField.value=field+"="+value+"\n"+nameField.value;
+					} else {		// This applies to the Info/Modify module and the Page TSconfig field
+						if (value) {
+							nameField.value=field+"="+value+"\n"+nameField.value;
+						} else {
+							nameField.value=field+"\n"+nameField.value;
+						}
 					}
 					'.$update.'
 					window.opener.focus();
@@ -211,6 +226,13 @@ class SC_wizard_tsconfig {
 					close();
 				}
 			}
+
+	/**
+	 * [Describe function...]
+	 *
+	 * @param	[type]		$cmd,objString: ...
+	 * @return	[type]		...
+	 */
 			function mixerField(cmd,objString)	{
 				var temp;
 				switch(cmd)	{
@@ -230,6 +252,13 @@ class SC_wizard_tsconfig {
 					break;
 				}
 			}
+
+	/**
+	 * [Describe function...]
+	 *
+	 * @param	[type]		$match,replace,string: ...
+	 * @return	[type]		...
+	 */
 			function str_replace(match,replace,string)	{
 				var input = ""+string;
 				var matchStr = ""+match;
@@ -245,8 +274,15 @@ class SC_wizard_tsconfig {
 				output+=""+input.substr(pointer);
 				return output;
 			}
+
+	/**
+	 * [Describe function...]
+	 *
+	 * @param	[type]		$show,objString: ...
+	 * @return	[type]		...
+	 */
 			function jump(show,objString)	{
-				document.location = "'.t3lib_div::linkThisScript(array('show'=>'','objString'=>'')).'&show="+show+"&objString="+objString;
+				window.location.href = "'.t3lib_div::linkThisScript(array('show'=>'','objString'=>'')).'&show="+show+"&objString="+objString;
 			}
 		');
 
@@ -278,8 +314,6 @@ class SC_wizard_tsconfig {
 			<a href="'.htmlspecialchars('http://typo3.org/documentation/document-library/doc_core_tsconfig/').'" target="_blank">'.$LANG->getLL('tsprop_tsconfig',1).'</a>
 			',0,1);
 		}
-			// Ending page:
-		$this->content.=$this->doc->endPage();
 	}
 
 	/**
@@ -288,6 +322,8 @@ class SC_wizard_tsconfig {
 	 * @return	void
 	 */
 	function printContent()	{
+		$this->content.= $this->doc->endPage();
+		$this->content = $this->doc->insertStylesAndJS($this->content);
 		echo $this->content;
 	}
 

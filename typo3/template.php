@@ -36,78 +36,86 @@
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
  *
- *  137: function fw($str)
+ *  145: function fw($str)
  *
  *
- *  161: class template
- *  216:     function template()
+ *  169: class template
+ *  224:     function template()
  *
  *              SECTION: EVALUATION FUNCTIONS
- *  290:     function wrapClickMenuOnIcon($str,$table,$uid='',$listFr=1,$addParams='',$enDisItems='', $returnOnClick=FALSE)
- *  307:     function viewPageIcon($id,$backPath,$addParams='hspace="3"')
- *  333:     function issueCommand($params,$rUrl='')
- *  348:     function isCMlayers()
- *  358:     function thisBlur()
- *  368:     function helpStyle()
- *  385:     function getHeader($table,$row,$path,$noViewPageIcon=0,$tWrap=array('',''))
- *  411:     function getFileheader($title,$path,$iconfile)
- *  426:     function makeShortcutIcon($gvList,$setList,$modName,$motherModName="")
- *  459:     function makeShortcutUrl($gvList,$setList)
- *  480:     function formWidth($size=48,$textarea=0,$styleOverride='')
- *  505:     function formWidthText($size=48,$styleOverride='',$wrap='')
- *  522:     function redirectUrls($thisLocation='')
- *  546:     function formatTime($tstamp,$type)
- *  559:     function parseTime()
+ *  298:     function wrapClickMenuOnIcon($str,$table,$uid='',$listFr=1,$addParams='',$enDisItems='', $returnOnClick=FALSE)
+ *  315:     function viewPageIcon($id,$backPath,$addParams='hspace="3"')
+ *  341:     function issueCommand($params,$rUrl='')
+ *  356:     function isCMlayers()
+ *  366:     function thisBlur()
+ *  376:     function helpStyle()
+ *  393:     function getHeader($table,$row,$path,$noViewPageIcon=0,$tWrap=array('',''))
+ *  419:     function getFileheader($title,$path,$iconfile)
+ *  434:     function makeShortcutIcon($gvList,$setList,$modName,$motherModName="")
+ *  467:     function makeShortcutUrl($gvList,$setList)
+ *  488:     function formWidth($size=48,$textarea=0,$styleOverride='')
+ *  513:     function formWidthText($size=48,$styleOverride='',$wrap='')
+ *  530:     function redirectUrls($thisLocation='')
+ *  554:     function formatTime($tstamp,$type)
+ *  571:     function parseTime()
  *
  *              SECTION: PAGE BUILDING FUNCTIONS.
- *  592:     function startPage($title)
- *  667:     function endPage()
- *  701:     function header($text)
- *  722:     function section($label,$text,$nostrtoupper=FALSE,$sH=FALSE,$type=0,$allowHTMLinHeader=FALSE)
- *  746:     function divider($dist)
- *  762:     function spacer($dist)
- *  781:     function sectionHeader($label,$sH=FALSE,$addAttrib='')
- *  798:     function sectionBegin()
- *  819:     function sectionEnd()
- *  839:     function middle()
- *  848:     function endPageJS()
- *  865:     function docBodyTagBegin()
- *  875:     function docStyle()
- *  917:     function insertStylesAndJS($content)
- *  937:     function initCharset()
- *  949:     function generator()
+ *  604:     function startPage($title)
+ *  686:     function endPage()
+ *  720:     function header($text)
+ *  741:     function section($label,$text,$nostrtoupper=FALSE,$sH=FALSE,$type=0,$allowHTMLinHeader=FALSE)
+ *  765:     function divider($dist)
+ *  781:     function spacer($dist)
+ *  800:     function sectionHeader($label,$sH=FALSE,$addAttrib='')
+ *  817:     function sectionBegin()
+ *  838:     function sectionEnd()
+ *  858:     function middle()
+ *  867:     function endPageJS()
+ *  884:     function docBodyTagBegin()
+ *  894:     function docStyle()
+ *  936:     function insertStylesAndJS($content)
+ *  956:     function initCharset()
+ *  968:     function generator()
  *
  *              SECTION: OTHER ELEMENTS
- *  982:     function icons($type, $styleAttribValue='')
- * 1011:     function t3Button($onClick,$label)
- * 1022:     function dfw($string)
- * 1032:     function rfw($string)
- * 1042:     function wrapInCData($string)
- * 1059:     function wrapScriptTags($string, $linebreak=TRUE)
- * 1097:     function table($arr, $layout='')
- * 1139:     function menuTable($arr1,$arr2=array(), $arr3=array())
- * 1172:     function funcMenu($content,$menu)
- * 1190:     function clearCacheMenu($id,$addSaveOptions=0)
- * 1226:     function getContextMenuCode()
- * 1413:     function getTabMenu($mainParams,$elementName,$currentValue,$menuItems,$script='',$addparams='')
- * 1443:     function getTabMenuRaw($menuItems)
- * 1512:     function getDynTabMenu($menuItems,$identString,$toggle=0,$foldout=FALSE,$newRowCharLimit=50,$noWrap=1,$fullWidth=FALSE,$defaultTabIndex=1)
- * 1637:     function getDynTabMenuJScode()
- * 1723:     function getVersionSelector($id,$noAction=FALSE)
+ * 1001:     function icons($type, $styleAttribValue='')
+ * 1030:     function t3Button($onClick,$label)
+ * 1041:     function dfw($string)
+ * 1051:     function rfw($string)
+ * 1061:     function wrapInCData($string)
+ * 1078:     function wrapScriptTags($string, $linebreak=TRUE)
+ * 1117:     function table($arr, $layout='')
+ * 1159:     function menuTable($arr1,$arr2=array(), $arr3=array())
+ * 1192:     function funcMenu($content,$menu)
+ * 1210:     function clearCacheMenu($id,$addSaveOptions=0)
+ * 1246:     function getContextMenuCode()
+ * 1251:     function showClickmenu(table, uid, listFr, enDisItems, backPath, addParams)
+ * 1280:     function showClickmenu_noajax(url)
+ * 1287:     function showClickmenu_ajax(t3ajax)
+ * 1472:     function getDragDropCode($table)
+ * 1483:     function cancelDragEvent(event)
+ * 1496:     function mouseMoveEvent (event)
+ * 1509:     function dragElement(id,elementID)
+ * 1528:     function dropElement(id)
+ * 1577:     function getTabMenu($mainParams,$elementName,$currentValue,$menuItems,$script='',$addparams='')
+ * 1607:     function getTabMenuRaw($menuItems)
+ * 1676:     function getDynTabMenu($menuItems,$identString,$toggle=0,$foldout=FALSE,$newRowCharLimit=50,$noWrap=1,$fullWidth=FALSE,$defaultTabIndex=1)
+ * 1801:     function getDynTabMenuJScode()
+ * 1892:     function getVersionSelector($id,$noAction=FALSE)
  *
  *
- * 1797: class bigDoc extends template
+ * 2060: class bigDoc extends template
  *
  *
- * 1806: class noDoc extends template
+ * 2069: class noDoc extends template
  *
  *
- * 1815: class smallDoc extends template
+ * 2078: class smallDoc extends template
  *
  *
- * 1824: class mediumDoc extends template
+ * 2087: class mediumDoc extends template
  *
- * TOTAL FUNCTIONS: 49
+ * TOTAL FUNCTIONS: 57
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -436,7 +444,7 @@ class template {
 
 		$onClick = 'if (top.shortcutFrame && confirm('.
 					$GLOBALS['LANG']->JScharCode($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.makeShortcut')).
-					')){top.shortcutFrame.document.location=\''.$backPath.'alt_shortcut.php?modName='.rawurlencode($modName).
+					')){top.shortcutFrame.location.href=\''.$backPath.'alt_shortcut.php?modName='.rawurlencode($modName).
 					'&URL='.rawurlencode($pathInfo['path']."?".$storeUrl).
 					$mMN.
 					'\';}return false;';
@@ -544,10 +552,14 @@ class template {
 	 * @return	string		Formatted timestamp
 	 */
 	function formatTime($tstamp,$type)	{
+		$dateStr = '';
 		switch($type)	{
-			case 1: return date($GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'],$tstamp); break;
-			case 10: return date($GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'],$tstamp); break;
+			case 1: $dateStr = date($GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'],$tstamp);
+			break;
+			case 10: $dateStr = date($GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'],$tstamp);
+			break;
 		}
+		return $dateStr;
 	}
 
 	/**
@@ -954,7 +966,7 @@ $str.=$this->docBodyTagBegin().
 	 * @return	string		<meta> tag with name "generator"
 	 */
 	function generator()	{
-		$str = 'TYPO3 '.TYPO3_branch.', http://typo3.com, &#169; Kasper Sk&#229;rh&#248;j 1998-2005, extensions are copyright of their respective owners.';
+		$str = 'TYPO3 '.TYPO3_branch.', http://typo3.com, &#169; Kasper Sk&#229;rh&#248;j 1998-2006, extensions are copyright of their respective owners.';
 		return '<meta name="generator" content="'.$str .'" />';
 	}
 
@@ -1071,6 +1083,7 @@ $str.=$this->docBodyTagBegin().
 				// remove nl from the beginning
 			$string = preg_replace ('/^\n+/', '', $string);
 				// re-ident to one tab using the first line as reference
+			$match = array();
 			if(preg_match('/^(\t+)/',$string,$match)) {
 				$string = str_replace($match[1],"\t", $string);
 			}
@@ -1196,7 +1209,7 @@ $str.=$this->docBodyTagBegin().
 	 */
 	function clearCacheMenu($id,$addSaveOptions=0)	{
 		global $BE_USER;
-		$opt=$addOptions;
+		$opt=array();
 		if ($addSaveOptions)	{
 			$opt[]='<option value="">'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:rm.menu',1).'</option>';
 			$opt[]='<option value="TBE_EDITOR_checkAndDoSubmit(1);">'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:rm.saveDoc',1).'</option>';
@@ -1216,7 +1229,7 @@ $str.=$this->docBodyTagBegin().
 			} else if (this.options[this.selectedIndex].value.indexOf(\';\')!=-1) {
 				eval(this.options[this.selectedIndex].value);
 			}else{
-				document.location=\''.$this->backPath.'tce_db.php?vC='.$BE_USER->veriCode().'&redirect='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI')).'&cacheCmd=\'+this.options[this.selectedIndex].value;
+				window.location.href=\''.$this->backPath.'tce_db.php?vC='.$BE_USER->veriCode().'&redirect='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI')).'&cacheCmd=\'+this.options[this.selectedIndex].value;
 			}';
 		$af_content = '<select name="cacheCmd" onchange="'.htmlspecialchars($onChange).'">'.implode('',$opt).'</select>';
 
@@ -1257,6 +1270,13 @@ $str.=$this->docBodyTagBegin().
 		}
 		$content .= '
 				}
+
+	/**
+	 * [Describe function...]
+	 *
+	 * @param	[type]		$url: ...
+	 * @return	[type]		...
+	 */
 				function showClickmenu_noajax(url)	{
 					top.loadTopMenu(url);
 				}';
@@ -1439,6 +1459,102 @@ $str.=$this->docBodyTagBegin().
 		} else {
 			$content.='	/*]]>*/
 				</script>';
+			return array($content,'','');
+		}
+	}
+
+	/**
+	 * Returns an array with parts (JavaScript, init-functions, <div>-layers) for use on pages which have the drag and drop functionality (usually pages and folder display trees)
+	 *
+	 * @param	string		indicator of which table the drag and drop function should work on (pages or folders)
+	 * @return	array		If values are present: [0] = A <script> section for the HTML page header, [1] = onmousemove/onload handler for HTML tag or alike, [2] = One empty <div> layer for the follow-mouse drag element
+	 */
+	function getDragDropCode($table)	{
+		$content = '
+			<script type="text/javascript">
+			/*<![CDATA[*/
+			';
+
+		if ($this->isCMlayers())	{
+			$content.= '
+				var dragID = null;
+				var dragIconCSS = null;
+
+				function cancelDragEvent(event) {
+					dragID = null;
+					dragIconCSS.visibility = "hidden";
+					document.onmouseup = null;
+					document.onmousemove = null;
+				}
+
+	/**
+	 * [Describe function...]
+	 *
+	 * @param	[type]		$event: ...
+	 * @return	[type]		...
+	 */
+				function mouseMoveEvent (event) {
+					dragIconCSS.left = GLV_x+5+"px";
+					dragIconCSS.top = GLV_y-5+"px";
+					dragIconCSS.visibility = "visible";
+					return false;
+				}
+
+	/**
+	 * [Describe function...]
+	 *
+	 * @param	[type]		$id,elementID: ...
+	 * @return	[type]		...
+	 */
+				function dragElement(id,elementID) {
+					dragID = id;
+					if (elementID == null)	{
+						elementID = id;
+					}
+					document.getElementById("dragIcon").innerHTML=document.getElementById("dragIconID_"+elementID).innerHTML + document.getElementById("dragTitleID_"+elementID).getElementsByTagName("a")[0].innerHTML;
+					dragIconCSS = new GL_getObjCss("dragIcon");
+					dragIconCSS.whiteSpace = "nowrap";
+					document.onmouseup = cancelDragEvent;
+					document.onmousemove = mouseMoveEvent;
+					return false;
+				}
+
+	/**
+	 * [Describe function...]
+	 *
+	 * @param	[type]		$id: ...
+	 * @return	[type]		...
+	 */
+				function dropElement(id) {
+					if ((dragID != null) && (dragID != id)) {
+						var url = "'.$this->backPath.'alt_clickmenu.php?dragDrop='.$table.'"
+									+ "&srcId=" + dragID
+									+ "&dstId=" + id
+									+ "&backPath='.t3lib_div::shortMD5(''.'|'.$GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']).'";
+						showClickmenu_raw(url);
+					}
+					cancelDragEvent();
+					return false;
+				}
+				';
+		}
+		else {
+			$content.= '
+				function dragElement(id) { return false; }
+				function dropElement(id) { return false; }
+				';
+		}
+		$content.='
+			/*]]>*/
+			</script>';
+
+		if ($this->isCMlayers())	{
+			return array(
+				$content,
+				'',
+				'<div id="dragIcon" style="z-index:1;position:absolute;visibility:hidden;filter:alpha(opacity=50);-moz-opacity:0.5;opacity:0.5;"><img src="" width="18" height="16"></div>'
+			);
+		} else {
 			return array($content,'','');
 		}
 	}
@@ -1689,6 +1805,11 @@ $str.=$this->docBodyTagBegin().
 				var DTM_array = new Array();
 				var DTM_origClass = new String();
 
+					// if tabs are used in a popup window the array might not exists
+				if(!top.DTM_currentTabs) {
+					top.DTM_currentTabs = new Array();
+				}
+
 				function DTM_activate(idBase,index,doToogle)	{	//
 						// Hiding all:
 					if (DTM_array[idBase])	{
@@ -1770,134 +1891,42 @@ $str.=$this->docBodyTagBegin().
 	 */
 	function getVersionSelector($id,$noAction=FALSE)	{
 
-		if ($id>0 && t3lib_extMgm::isLoaded('version') && $GLOBALS['BE_USER']->workspace==0)	{
+		if ($id>0)	{
+			if (t3lib_extMgm::isLoaded('version') && $GLOBALS['BE_USER']->workspace==0)	{
 
-				// Get Current page record:
-			$curPage = t3lib_BEfunc::getRecord('pages',$id);
-				// If the selected page is not online, find the right ID
-			$onlineId = ($curPage['pid']==-1 ? $curPage['t3ver_oid'] : $id);
-				// Select all versions of online version:
-			$versions = t3lib_BEfunc::selectVersionsOfRecord('pages', $onlineId, 'uid,pid,t3ver_label,t3ver_oid,t3ver_wsid,t3ver_id');
-
-				// If more than one was found...:
-			if (count($versions)>1)	{
-
-					// Create selector box entries:
-				$opt = array();
-				foreach($versions as $vRow)	{
-					$opt[] = '<option value="'.htmlspecialchars(t3lib_div::linkThisScript(array('id'=>$vRow['uid']))).'"'.($id==$vRow['uid']?' selected="selected"':'').'>'.
-							htmlspecialchars($vRow['t3ver_label'].' [v#'.$vRow['t3ver_id'].', WS:'.$vRow['t3ver_wsid'].']'.($vRow['uid']==$onlineId ? ' =>'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:ver.online').'<=':'')).
-							'</option>';
-				}
-
-					// Add management link:
-				$opt[] = '<option value="'.htmlspecialchars(t3lib_div::linkThisScript(array('id'=>$id))).'">---</option>';
-				$opt[] = '<option value="'.htmlspecialchars($this->backPath.t3lib_extMgm::extRelPath('version').'cm1/index.php?table=pages&uid='.$onlineId).'">'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:ver.mgm',1).'</option>';
-
-					// Create onchange handler:
-				$onChange = "document.location=this.options[this.selectedIndex].value;";
-
-					// Controls:
-				if ($id==$onlineId)	{
-					$controls = '<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/blinkarrow_left.gif','width="5" height="9"').' class="absmiddle" alt="" /> <b>'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:ver.online',1).'</b>';
-				} elseif (!$noAction) {
-					$controls = '<a href="'.$this->issueCommand('&cmd[pages]['.$onlineId.'][version][swapWith]='.$id.'&cmd[pages]['.$onlineId.'][version][action]=swap',t3lib_div::linkThisScript(array('id'=>$onlineId))).'" class="nobr">'.
-							'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/insert1.gif','width="14" height="14"').' style="margin-right: 2px;" class="absmiddle" alt="" title="'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:ver.swapPage',1).'" />'.
-							'<b>'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:ver.swap',1).'</b></a>';
-				}
-
-					// Write out HTML code:
-				return '
-
-					<!--
-						Version selector:
-					-->
-					<table border="0" cellpadding="0" cellspacing="0" id="typo3-versionSelector">
-						<tr>
-							<td>'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:ver.selVer',1).'</td>
-							<td>
-								<select onchange="'.htmlspecialchars($onChange).'">
-									'.implode('',$opt).'
-								</select></td>
-							<td>'.$controls.'</td>
-						</tr>
-					</table>
-				';
-			}
-		} elseif ($GLOBALS['BE_USER']->workspace!==0) {
-
-				// Write out HTML code:
-			switch($GLOBALS['BE_USER']->workspace)	{
-				case 0:
-					$wsTitle = 'LIVE';
-				break;
-				case -1:
-					$wsTitle = 'Draft';
-				break;
-				default:
-					$wsTitle = $GLOBALS['BE_USER']->workspaceRec['title'];
-				break;
-			}
-
-			if (t3lib_BEfunc::isPidInVersionizedBranch($id)=='branchpoint')	{
-				return '
-
-					<!--
-						Version selector:
-					-->
-					<table border="0" cellpadding="0" cellspacing="0" id="typo3-versionSelector">
-						<tr>
-							<td>Workspace: "'.htmlspecialchars($wsTitle).'"</td>
-							<td><em>Inside branch, no further versioning possible</em></td>
-						</tr>
-					</table>
-				';
-			} else {
 					// Get Current page record:
 				$curPage = t3lib_BEfunc::getRecord('pages',$id);
 					// If the selected page is not online, find the right ID
 				$onlineId = ($curPage['pid']==-1 ? $curPage['t3ver_oid'] : $id);
-					// The version of page:
-				$verPage = t3lib_BEfunc::getWorkspaceVersionOfRecord($GLOBALS['BE_USER']->workspace, 'pages', $onlineId);
+					// Select all versions of online version:
+				$versions = t3lib_BEfunc::selectVersionsOfRecord('pages', $onlineId, 'uid,pid,t3ver_label,t3ver_oid,t3ver_wsid,t3ver_id');
 
-				if (!$verPage)	{
+					// If more than one was found...:
+				if (count($versions)>1)	{
 
-					if (!count(t3lib_BEfunc::countVersionsOfRecordsOnPage($GLOBALS['BE_USER']->workspace, $onlineId)))	{
-
-
-						$onClick = $this->issueCommand('&cmd[pages]['.$onlineId.'][version][action]=new&cmd[pages]['.$onlineId.'][version][treeLevels]=0',t3lib_div::linkThisScript(array('id'=>$onlineId)));
-						$onClick = 'document.location=\''.$onClick.'\'; return false;';
-							// Write out HTML code:
-						return '
-
-							<!--
-								No version yet, create one?
-							-->
-							<table border="0" cellpadding="0" cellspacing="0" id="typo3-versionSelector">
-								<tr>
-									<td>Workspace: "'.htmlspecialchars($wsTitle).'"</td>
-									<td>
-										<input type="submit" value="New version of page" name="_" onclick="'.htmlspecialchars($onClick).'" /></td>
-								</tr>
-							</table>
-						';
-					} else {
-						return '
-
-							<!--
-								Version selector:
-							-->
-							<table border="0" cellpadding="0" cellspacing="0" id="typo3-versionSelector">
-								<tr>
-									<td>Workspace: "'.htmlspecialchars($wsTitle).'"</td>
-									<td><em>Versions found on page, no "Page" versioning possible</em></td>
-								</tr>
-							</table>
-						';
+						// Create selector box entries:
+					$opt = array();
+					foreach($versions as $vRow)	{
+						$opt[] = '<option value="'.htmlspecialchars(t3lib_div::linkThisScript(array('id'=>$vRow['uid']))).'"'.($id==$vRow['uid']?' selected="selected"':'').'>'.
+								htmlspecialchars($vRow['t3ver_label'].' [v#'.$vRow['t3ver_id'].', WS:'.$vRow['t3ver_wsid'].']'.($vRow['uid']==$onlineId ? ' =>'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:ver.online').'<=':'')).
+								'</option>';
 					}
-				} elseif ($verPage['t3ver_swapmode']==0 && $GLOBALS['BE_USER']->workspace===0) {
-					$onClick = $this->issueCommand('&cmd[pages]['.$onlineId.'][version][action]=swap&cmd[pages]['.$onlineId.'][version][swapWith]='.$verPage['uid'],t3lib_div::linkThisScript(array('id'=>$onlineId)));
-					$onClick = 'document.location=\''.$onClick.'\'; return false;';
+
+						// Add management link:
+					$opt[] = '<option value="'.htmlspecialchars(t3lib_div::linkThisScript(array('id'=>$id))).'">---</option>';
+					$opt[] = '<option value="'.htmlspecialchars($this->backPath.t3lib_extMgm::extRelPath('version').'cm1/index.php?table=pages&uid='.$onlineId).'">'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:ver.mgm',1).'</option>';
+
+						// Create onchange handler:
+					$onChange = "window.location.href=this.options[this.selectedIndex].value;";
+
+						// Controls:
+					if ($id==$onlineId)	{
+						$controls = '<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/blinkarrow_left.gif','width="5" height="9"').' class="absmiddle" alt="" /> <b>'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:ver.online',1).'</b>';
+					} elseif (!$noAction) {
+						$controls = '<a href="'.$this->issueCommand('&cmd[pages]['.$onlineId.'][version][swapWith]='.$id.'&cmd[pages]['.$onlineId.'][version][action]=swap',t3lib_div::linkThisScript(array('id'=>$onlineId))).'" class="nobr">'.
+								'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/insert1.gif','width="14" height="14"').' style="margin-right: 2px;" class="absmiddle" alt="" title="'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:ver.swapPage',1).'" />'.
+								'<b>'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:ver.swap',1).'</b></a>';
+					}
 
 						// Write out HTML code:
 					return '
@@ -1907,12 +1936,107 @@ $str.=$this->docBodyTagBegin().
 						-->
 						<table border="0" cellpadding="0" cellspacing="0" id="typo3-versionSelector">
 							<tr>
-								<td>Workspace: "'.htmlspecialchars($wsTitle).'"</td>
+								<td>'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:ver.selVer',1).'</td>
 								<td>
-									<input type="submit" value="Publish page" name="_" onclick="'.htmlspecialchars($onClick).'" /></td>
+									<select onchange="'.htmlspecialchars($onChange).'">
+										'.implode('',$opt).'
+									</select></td>
+								<td>'.$controls.'</td>
 							</tr>
 						</table>
 					';
+				}
+			} elseif ($GLOBALS['BE_USER']->workspace!==0) {
+
+					// Write out HTML code:
+				switch($GLOBALS['BE_USER']->workspace)	{
+					case 0:
+						$wsTitle = 'LIVE';
+					break;
+					case -1:
+						$wsTitle = 'Draft';
+					break;
+					default:
+						$wsTitle = $GLOBALS['BE_USER']->workspaceRec['title'];
+					break;
+				}
+
+				if (t3lib_BEfunc::isPidInVersionizedBranch($id)=='branchpoint')	{
+					return '
+
+						<!--
+							Version selector:
+						-->
+						<table border="0" cellpadding="0" cellspacing="0" id="typo3-versionSelector">
+							<tr>
+								<td>Workspace: "'.htmlspecialchars($wsTitle).'"</td>
+								<td><em>Inside branch, no further versioning possible</em></td>
+							</tr>
+						</table>
+					';
+				} else {
+						// Get Current page record:
+					$curPage = t3lib_BEfunc::getRecord('pages',$id);
+						// If the selected page is not online, find the right ID
+					$onlineId = ($curPage['pid']==-1 ? $curPage['t3ver_oid'] : $id);
+						// The version of page:
+					$verPage = t3lib_BEfunc::getWorkspaceVersionOfRecord($GLOBALS['BE_USER']->workspace, 'pages', $onlineId);
+
+					if (!$verPage)	{
+
+						if (!count(t3lib_BEfunc::countVersionsOfRecordsOnPage($GLOBALS['BE_USER']->workspace, $onlineId)))	{
+							if ($GLOBALS['BE_USER']->workspaceVersioningTypeAccess(0))	{
+
+								$onClick = $this->issueCommand('&cmd[pages]['.$onlineId.'][version][action]=new&cmd[pages]['.$onlineId.'][version][treeLevels]=0',t3lib_div::linkThisScript(array('id'=>$onlineId)));
+								$onClick = 'window.location.href=\''.$onClick.'\'; return false;';
+									// Write out HTML code:
+								return '
+
+									<!--
+										No version yet, create one?
+									-->
+									<table border="0" cellpadding="0" cellspacing="0" id="typo3-versionSelector">
+										<tr>
+											<td>Workspace: "'.htmlspecialchars($wsTitle).'"</td>
+											<td>
+												<input type="submit" value="New version of page" name="_" onclick="'.htmlspecialchars($onClick).'" /></td>
+										</tr>
+									</table>
+								';
+							}
+						} else {
+							return '
+
+								<!--
+									Version selector:
+								-->
+								<table border="0" cellpadding="0" cellspacing="0" id="typo3-versionSelector">
+									<tr>
+										<td>Workspace: "'.htmlspecialchars($wsTitle).'"</td>
+										<td><em>Versions found on page, no "Page" versioning possible</em></td>
+									</tr>
+								</table>
+							';
+						}
+					} elseif ($verPage['t3ver_swapmode']==0) {
+						$onClick = $this->issueCommand('&cmd[pages]['.$onlineId.'][version][action]=swap&cmd[pages]['.$onlineId.'][version][swapWith]='.$verPage['uid'],t3lib_div::linkThisScript(array('id'=>$onlineId)));
+						$onClick = 'window.location.href=\''.$onClick.'\'; return false;';
+
+							// Write out HTML code:
+						return '
+
+							<!--
+								Version selector:
+							-->
+							<table border="0" cellpadding="0" cellspacing="0" id="typo3-versionSelector">
+								<tr>
+									<td>Workspace: "'.htmlspecialchars($wsTitle).'"</td>
+									<td>
+										<input type="submit" value="Publish page" name="_" onclick="'.htmlspecialchars($onClick).'" /></td>
+								</tr>
+							</table>
+						';
+					}
 				}
 			}
 		}

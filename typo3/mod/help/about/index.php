@@ -101,11 +101,11 @@ class SC_mod_help_about_index {
 		$TBE_TEMPLATE->docType = 'xhtml_trans';
 		$this->content.= $TBE_TEMPLATE->startPage('About');
 
-		$minorText = sprintf($LANG->getLL('minor'), 'TYPO3 Ver. '.TYPO3_version.', Copyright &#169; 1998-2005', 'Kasper Sk&#229;rh&#248;j');
+		$minorText = sprintf($LANG->getLL('minor'), 'TYPO3 Ver. '.htmlspecialchars(TYPO3_version).', Copyright &copy; '.htmlspecialchars(TYPO3_copyright_year), 'Kasper Sk&aring;rh&oslash;j');
 
 		$content='
 			<div id="typo3-mod-help-about-index-php-outer">
-				<img src="'.$BACK_PATH.'gfx/typo3logo.gif" width="333" height="43" vspace="10" alt="TYPO3 logo" />
+				<img src="'.$BACK_PATH.'gfx/typo3logo.gif" width="123" height="34" vspace="10" alt="TYPO3 logo" />
 				<div id="typo3-mod-help-about-index-php-inner">
 					<h2>TYPO3 Information</h2>
 					<h3>'.$LANG->getLL('welcome',1).'</h3>

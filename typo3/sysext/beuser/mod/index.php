@@ -34,67 +34,68 @@
  *
  *
  *
- *  128: class localPageTree extends t3lib_browseTree
- *  139:     function localPageTree($BE_USER,$WEBMOUNTS='')
- *  153:     function ext_permsC()
- *  164:     function wrapTitle($str,$row)
- *  176:     function PM_ATagWrap($icon,$cmd,$bMark='')
- *  187:     function wrapIcon($icon,$row)
- *  200:     function initializePositionSaving()
+ *  129: class localPageTree extends t3lib_browseTree
+ *  140:     function localPageTree($BE_USER,$WEBMOUNTS='')
+ *  154:     function ext_permsC()
+ *  165:     function wrapTitle($str,$row)
+ *  177:     function PM_ATagWrap($icon,$cmd,$bMark='')
+ *  188:     function wrapIcon($icon,$row)
+ *  201:     function initializePositionSaving()
  *
  *
- *  221: class printAllPageTree extends localPageTree
- *  230:     function ext_permsC()
- *  242:     function PM_ATagWrap($icon,$cmd,$bMark='')
- *  253:     function wrapIcon($icon,$row)
+ *  222: class printAllPageTree extends localPageTree
+ *  231:     function ext_permsC()
+ *  243:     function PM_ATagWrap($icon,$cmd,$bMark='')
+ *  254:     function wrapIcon($icon,$row)
  *
  *
- *  278: class printAllPageTree_perms extends printAllPageTree
- *  287:     function printTree($treeArr='',$printPath=0)
- *  330:     function ext_printPerms($int)
- *  348:     function ext_groupPerms($row,$firstGroup)
+ *  279: class printAllPageTree_perms extends printAllPageTree
+ *  288:     function printTree($treeArr='',$printPath=0)
+ *  331:     function ext_printPerms($int)
+ *  349:     function ext_groupPerms($row,$firstGroup)
  *
  *
- *  376: class localFolderTree extends t3lib_folderTree
- *  387:     function localFolderTree($BE_USER,$FILEMOUNTS='')
- *  402:     function wrapTitle($str,$row)
- *  414:     function PM_ATagWrap($icon,$cmd,$bMark='')
- *  425:     function wrapIcon($icon,$row)
- *  438:     function initializePositionSaving()
+ *  377: class localFolderTree extends t3lib_folderTree
+ *  388:     function localFolderTree($BE_USER,$FILEMOUNTS='')
+ *  403:     function wrapTitle($str,$row)
+ *  415:     function PM_ATagWrap($icon,$cmd,$bMark='')
+ *  426:     function wrapIcon($icon,$row)
+ *  439:     function initializePositionSaving()
  *
  *
- *  462: class printAllFolderTree extends localFolderTree
- *  474:     function PM_ATagWrap($icon,$cmd,$bMark='')
+ *  463: class printAllFolderTree extends localFolderTree
+ *  475:     function PM_ATagWrap($icon,$cmd,$bMark='')
  *
  *
- *  496: class local_beUserAuth extends t3lib_beUserAuth
- *  508:     function returnWebmounts($pClause='')
- *  532:     function ext_non_readAccessPages()
- *  555:     function user_where_clause()
- *  567:     function ext_printOverview($uInfo,$compareFlags,$printTrees=0)
- *  831:     function ext_getReadableButNonmounted()
- *  866:     function ext_printPerms($int)
- *  884:     function ext_groupPerms($row,$firstGroup)
- *  899:     function ext_compileUserInfoForHash()
- *  959:     function ext_uniqueAndSortList($list)
- *  973:     function ext_ksortArrayRecursive(&$arr)
+ *  497: class local_beUserAuth extends t3lib_beUserAuth
+ *  509:     function returnWebmounts($pClause='')
+ *  533:     function ext_non_readAccessPages()
+ *  556:     function user_where_clause()
+ *  568:     function ext_printOverview($uInfo,$compareFlags,$printTrees=0)
+ *  838:     function ext_getReadableButNonmounted()
+ *  873:     function ext_printPerms($int)
+ *  891:     function ext_groupPerms($row,$firstGroup)
+ *  907:     function ext_compileUserInfoForHash($filter=NULL)
+ * 1007:     function ext_uniqueAndSortList($list)
+ * 1021:     function ext_ksortArrayRecursive(&$arr)
+ * 1034:     function ext_workspaceMembership()
  *
  *
- * 1000: class SC_mod_tools_be_user_index
- * 1012:     function init()
- * 1040:     function menuConfig()
- * 1061:     function main()
- * 1097:     function printContent()
+ * 1088: class SC_mod_tools_be_user_index
+ * 1100:     function init()
+ * 1128:     function menuConfig()
+ * 1149:     function main()
+ * 1185:     function printContent()
  *
  *              SECTION: OTHER FUNCTIONS:
- * 1119:     function compareUsers($compareFlags)
- * 1297:     function linkUser($str,$rec)
- * 1308:     function elementLinks($table,$row)
- * 1339:     function initUsers()
- * 1359:     function localPath($str)
- * 1371:     function switchUser($switchUser)
+ * 1207:     function compareUsers($compareFlags)
+ * 1394:     function linkUser($str,$rec)
+ * 1405:     function elementLinks($table,$row)
+ * 1436:     function initUsers()
+ * 1456:     function localPath($str)
+ * 1468:     function switchUser($switchUser)
  *
- * TOTAL FUNCTIONS: 38
+ * TOTAL FUNCTIONS: 39
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -773,7 +774,11 @@ class local_beUserAuth extends t3lib_beUserAuth {
 						foreach($items as $iCfg)	{
 							if (isset($nef[$iCfg[1]]))	{
 								unset($nef[$iCfg[1]]);
-								$icon = '<img src="'.$GLOBALS['BACK_PATH'].$iCfg[2].'" class="absmiddle" style="margin-right: 5px;" alt="" />';
+								if (strlen($iCfg[2]))	{
+									$icon = '<img src="'.$GLOBALS['BACK_PATH'].'gfx/'.$iCfg[2].'" class="absmiddle" style="margin-right: 5px;" alt="" />';
+								} else {
+									$icon = '';
+								}
 								$pout[] = $icon.$iCfg[0];
 							}
 						}
@@ -788,6 +793,9 @@ class local_beUserAuth extends t3lib_beUserAuth {
 					break;
 					case 'workspace_perms':
 						$out[$k] = implode('<br/>',explode(', ',t3lib_BEfunc::getProcessedValue('be_users','workspace_perms',$v)));
+					break;
+					case 'workspace_membership':
+						$out[$k] = implode('<br/>',$this->ext_workspaceMembership());
 					break;
 					case 'custom_options':
 
@@ -897,61 +905,99 @@ class local_beUserAuth extends t3lib_beUserAuth {
 	/**
 	 * Creates uInfo array for the user.
 	 *
+	 * @param	array		Might contain array where keys/values indicate whether to render a certain value
 	 * @return	array		Array with the information of the user for each analysis topic.
 	 */
-	function ext_compileUserInfoForHash()	{
+	function ext_compileUserInfoForHash($filter=NULL)	{
 		$uInfo=array();
+		$renderAll = !is_array($filter);
 
 			// Filemounts:
-		$uInfo['filemounts']=$this->ext_uniqueAndSortList(implode(',',array_keys($this->groupData['filemounts'])));
+		if ($renderAll || $filter['filemounts'])	{
+			$uInfo['filemounts'] = $this->ext_uniqueAndSortList(implode(',',array_keys($this->groupData['filemounts'])));
+		}
 
 			// DBmounts:
-		$uInfo['webmounts']=$this->ext_uniqueAndSortList($this->groupData['webmounts']);
+		if ($renderAll || $filter['webmounts'])	{
+			$uInfo['webmounts'] = $this->ext_uniqueAndSortList($this->groupData['webmounts']);
+		}
 
 			// Sharing Upload Folder
-		$fileProcessor = t3lib_div::makeInstance('t3lib_basicFileFunctions');
-		$fileProcessor->init($this->groupData['filemounts'], $GLOBALS['TYPO3_CONF_VARS']['BE']['fileExtensions']);
-		$uInfo['tempPath'] = $fileProcessor->findTempFolder();	// The closest TEMP-path is found
+		if ($renderAll || $filter['tempPath'])	{
+			$fileProcessor = t3lib_div::makeInstance('t3lib_basicFileFunctions');
+			$fileProcessor->init($this->groupData['filemounts'], $GLOBALS['TYPO3_CONF_VARS']['BE']['fileExtensions']);
+			$uInfo['tempPath'] = $fileProcessor->findTempFolder();	// The closest TEMP-path is found
+		}
 
 			// First Main Group:
-		$uInfo['firstMainGroup']=$this->firstMainGroup;
+		if ($renderAll || $filter['firstMainGroup'])	{
+			$uInfo['firstMainGroup'] = $this->firstMainGroup;
+		}
 
 			// Group List:
-//		$uInfo['groupList']=$this->ext_uniqueAndSortList($this->groupList);
-		$uInfo['groupList']=$this->groupList;	// This gives a list that shows in which order the groups are processed. This may result in a list of groups which is similar to that of another user regarding which group but not the order of groups. For now, I believe it's most usefull to let separate orders of groups appear as different group settings for a user.
+		if ($renderAll || $filter['groupList'])	{
+			$uInfo['groupList'] = $this->groupList;	// This gives a list that shows in which order the groups are processed. This may result in a list of groups which is similar to that of another user regarding which group but not the order of groups. For now, I believe it's most usefull to let separate orders of groups appear as different group settings for a user.
+		}
 
 			// Page Types:
-		$uInfo['pagetypes_select']=$this->ext_uniqueAndSortList($this->groupData['pagetypes_select']);
+		if ($renderAll || $filter['pagetypes_select'])	{
+			$uInfo['pagetypes_select'] = $this->ext_uniqueAndSortList($this->groupData['pagetypes_select']);
+		}
 
 			// Tables select:
-		$uInfo['tables_select']=$this->ext_uniqueAndSortList($this->groupData['tables_select'].','.$this->groupData['tables_modify']);
+		if ($renderAll || $filter['tables_select'])	{
+			$uInfo['tables_select'] = $this->ext_uniqueAndSortList($this->groupData['tables_select'].','.$this->groupData['tables_modify']);
+		}
 
 			// Tables modify:
-		$uInfo['tables_modify']=$this->ext_uniqueAndSortList($this->groupData['tables_modify']);
+		if ($renderAll || $filter['tables_modify'])	{
+			$uInfo['tables_modify'] = $this->ext_uniqueAndSortList($this->groupData['tables_modify']);
+		}
 
 			// Non-exclude fields:
-		$uInfo['non_exclude_fields']=$this->ext_uniqueAndSortList($this->groupData['non_exclude_fields']);
+		if ($renderAll || $filter['non_exclude_fields'])	{
+			$uInfo['non_exclude_fields'] = $this->ext_uniqueAndSortList($this->groupData['non_exclude_fields']);
+		}
 
 			// Explicit Allow/Deny:
-		$uInfo['explicit_allowdeny']=$this->ext_uniqueAndSortList($this->groupData['explicit_allowdeny']);
+		if ($renderAll || $filter['explicit_allowdeny'])	{
+			$uInfo['explicit_allowdeny'] = $this->ext_uniqueAndSortList($this->groupData['explicit_allowdeny']);
+		}
 
 			// Limit to languages:
-		$uInfo['allowed_languages']=$this->ext_uniqueAndSortList($this->groupData['allowed_languages']);
+		if ($renderAll || $filter['allowed_languages'])	{
+			$uInfo['allowed_languages'] = $this->ext_uniqueAndSortList($this->groupData['allowed_languages']);
+		}
 
 			// Workspace permissions
-		$uInfo['workspace_perms']=$this->ext_uniqueAndSortList($this->groupData['workspace_perms']);
+		if ($renderAll || $filter['workspace_perms'])	{
+			$uInfo['workspace_perms'] = $this->ext_uniqueAndSortList($this->groupData['workspace_perms']);
+		}
+
+			// Workspace membership
+		if ($renderAll || $filter['workspace_membership'])	{
+			$uInfo['workspace_membership'] = $this->ext_workspaceMembership();
+		}
 
 			// Custom options:
-		$uInfo['custom_options']=$this->ext_uniqueAndSortList($this->groupData['custom_options']);
+		if ($renderAll || $filter['custom_options'])	{
+			$uInfo['custom_options'] = $this->ext_uniqueAndSortList($this->groupData['custom_options']);
+		}
 
 			// Modules:
-		$uInfo['modules']=$this->ext_uniqueAndSortList($this->groupData['modules']);
+		if ($renderAll || $filter['modules'])	{
+			$uInfo['modules'] = $this->ext_uniqueAndSortList($this->groupData['modules']);
+		}
 
 			// User TS:
 		$this->ext_ksortArrayRecursive($this->userTS);
-		$uInfo['userTS'] = $this->userTS;
+		if ($renderAll || $filter['userTS'])	{
+			$uInfo['userTS'] = $this->userTS;
+		}
 
-		$uInfo['userTS_hl'] = $this->userTS_text;
+		if ($renderAll || $filter['userTS_hl'])	{
+			$uInfo['userTS_hl'] = $this->userTS_text;
+		}
 
 		return $uInfo;
 	}
@@ -982,6 +1028,46 @@ class local_beUserAuth extends t3lib_beUserAuth {
 		while(list($k,$v)=each($arr))	{
 			if (is_array($v))	$this->ext_ksortArrayRecursive($arr[$k]);
 		}
+	}
+
+	/**
+	 * [Describe function...]
+	 *
+	 * @return	[type]		...
+	 */
+	function ext_workspaceMembership()	{
+		global $TYPO3_DB;
+
+			// Create accessible workspace arrays:
+		$options = array();
+		if ($this->checkWorkspace(array('uid' => 0)))	{
+			$options[0] = '0: [LIVE]';
+		}
+		if ($this->checkWorkspace(array('uid' => -1)))	{
+			$options[-1] = '-1: [Default Draft]';
+		}
+
+			// Add custom workspaces (selecting all, filtering by BE_USER check):
+		$workspaces = $TYPO3_DB->exec_SELECTgetRows('uid,title,adminusers,members,reviewers,db_mountpoints','sys_workspace','pid=0'.t3lib_BEfunc::deleteClause('sys_workspace'),'','title');
+		if (count($workspaces))	{
+			foreach ($workspaces as $rec)	{
+				if ($this->checkWorkspace($rec))	{
+					$options[$rec['uid']] = $rec['uid'].': '.$rec['title'];
+
+						// Check if all mount points are accessible, otherwise show error:
+					if (trim($rec['db_mountpoints'])!=='')	{
+						$mountPoints = t3lib_div::intExplode(',',$this->workspaceRec['db_mountpoints'],1);
+						foreach($mountPoints as $mpId)	{
+							if (!$this->isInWebMount($mpId,'1=1'))	{
+								$options[$rec['uid']].= '<br> \- WARNING: Workspace Webmount page id "'.$mpId.'" not accessible!';
+							}
+						}
+					}
+				}
+			}
+		}
+
+		return $options;
 	}
 }
 
@@ -1033,7 +1119,7 @@ class SC_mod_tools_be_user_index {
 		$this->doc->JScode = $this->doc->wrapScriptTags('
 			script_ended = 0;
 			function jumpToUrl(URL)	{	//
-				document.location = URL;
+				window.location.href = URL;
 			}
 		' . $this->doc->redirectUrls());
 	}
@@ -1138,6 +1224,7 @@ class SC_mod_tools_be_user_index {
 			'explicit_allowdeny' => 'Explicit Allow/Deny',
 			'allowed_languages' => 'Limit to languages',
 			'workspace_perms' => 'Workspace permissions',
+			'workspace_membership' => 'Workspace membership',
 			'custom_options' => 'Custom options',
 			'modules' => 'Modules',
 			'userTS' => 'TSconfig',
@@ -1219,7 +1306,7 @@ class SC_mod_tools_be_user_index {
 						// Making group data
 					$md5pre='';
 					$menu=array();
-					$uInfo = $tempBE_USER->ext_compileUserInfoForHash();
+					$uInfo = $tempBE_USER->ext_compileUserInfoForHash((array)$compareFlags);
 					reset($options);
 					while(list($kk,$vv)=each($options))	{
 						if ($compareFlags[$kk])	{

@@ -52,7 +52,7 @@
  *              SECTION: OTHER FUNCTIONS:
  *  388:     function getWizardItems()
  *  398:     function wizardArray()
- *  559:     function removeInvalidElements(&$wizardItems)
+ *  549:     function removeInvalidElements(&$wizardItems)
  *
  * TOTAL FUNCTIONS: 8
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -127,7 +127,7 @@ class ext_posMap extends t3lib_positionMap {
 
 		$location=$this->backPath.'alt_doc.php?edit[tt_content]['.(is_array($row)?-$row['uid']:$pid).']=new&defVals[tt_content][colPos]='.$vv.'&defVals[tt_content][sys_language_uid]='.$sys_lang.'&returnUrl='.rawurlencode($GLOBALS['SOBE']->R_URI);
 
-		return 'document.location=\''.$location.'\'+document.editForm.defValues.value; return false;';
+		return 'window.location.href=\''.$location.'\'+document.editForm.defValues.value; return false;';
 	}
 }
 
@@ -275,7 +275,7 @@ class SC_db_new_content_el {
 					$tL=array();
 
 						// Radio button:
-					$oC = "document.editForm.defValues.value=unescape('".rawurlencode($wInfo['params'])."');goToalt_doc();".(!$onClickEvent?"document.location='#sel2';":'');
+					$oC = "document.editForm.defValues.value=unescape('".rawurlencode($wInfo['params'])."');goToalt_doc();".(!$onClickEvent?"window.location.hash='#sel2';":'');
 					$tL[]='<input type="radio" name="tempB" value="'.htmlspecialchars($k).'" onclick="'.htmlspecialchars($this->doc->thisBlur().$oC).'" />';
 
 						// Onclick action for icon/title:
@@ -400,96 +400,87 @@ class SC_db_new_content_el {
 
 		$wizardItems = array(
 			'common' => array('header'=>$LANG->getLL('common')),
-			'common_1' => array(
+			'common_regularText' => array(	// Regular text element
 				'icon'=>'gfx/c_wiz/regular_text.gif',
-				'title'=>$LANG->getLL('common_1_title'),
-				'description'=>$LANG->getLL('common_1_description'),
+				'title'=>$LANG->getLL('common_regularText_title'),
+				'description'=>$LANG->getLL('common_regularText_description'),
 				'tt_content_defValues' => array(
 					'CType' => 'text'
 				)
 			),
-			'common_2' => array(
-				'icon'=>'gfx/c_wiz/text_image_below.gif',
-				'title'=>$LANG->getLL('common_2_title'),
-				'description'=>$LANG->getLL('common_2_description'),
-				'tt_content_defValues' => array(
-					'CType' => 'textpic',
-					'imageorient' => 8
-				)
-			),
-			'common_3' => array(
+			'common_textImage' => array(	// Text with image
 				'icon'=>'gfx/c_wiz/text_image_right.gif',
-				'title'=>$LANG->getLL('common_3_title'),
-				'description'=>$LANG->getLL('common_3_description'),
+				'title'=>$LANG->getLL('common_textImage_title'),
+				'description'=>$LANG->getLL('common_textImage_description'),
 				'tt_content_defValues' => array(
 					'CType' => 'textpic',
 					'imageorient' => 17
 				)
 			),
-			'common_4' => array(
+			'common_imagesOnly' => array(	// Images only
 				'icon'=>'gfx/c_wiz/images_only.gif',
-				'title'=>$LANG->getLL('common_4_title'),
-				'description'=>$LANG->getLL('common_4_description'),
+				'title'=>$LANG->getLL('common_imagesOnly_title'),
+				'description'=>$LANG->getLL('common_imagesOnly_description'),
 				'tt_content_defValues' => array(
 					'CType' => 'image',
 					'imagecols' => 2
 				)
 			),
-			'common_5' => array(
+			'common_bulletList' => array(	// Bullet list
 				'icon'=>'gfx/c_wiz/bullet_list.gif',
-				'title'=>$LANG->getLL('common_5_title'),
-				'description'=>$LANG->getLL('common_5_description'),
+				'title'=>$LANG->getLL('common_bulletList_title'),
+				'description'=>$LANG->getLL('common_bulletList_description'),
 				'tt_content_defValues' => array(
 					'CType' => 'bullets',
 				)
 			),
-			'common_6' => array(
+			'common_table' => array(	// Table
 				'icon'=>'gfx/c_wiz/table.gif',
-				'title'=>$LANG->getLL('common_6_title'),
-				'description'=>$LANG->getLL('common_6_description'),
+				'title'=>$LANG->getLL('common_table_title'),
+				'description'=>$LANG->getLL('common_table_description'),
 				'tt_content_defValues' => array(
 					'CType' => 'table',
 				)
 			),
 			'special' => array('header'=>$LANG->getLL('special')),
-			'special_1' => array(
+			'special_filelinks' => array(	// Filelinks
 				'icon'=>'gfx/c_wiz/filelinks.gif',
-				'title'=>$LANG->getLL('special_1_title'),
-				'description'=>$LANG->getLL('special_1_description'),
+				'title'=>$LANG->getLL('special_filelinks_title'),
+				'description'=>$LANG->getLL('special_filelinks_description'),
 				'tt_content_defValues' => array(
 					'CType' => 'uploads',
 				)
 			),
-			'special_2' => array(
+			'special_multimedia' => array(	// Multimedia
 				'icon'=>'gfx/c_wiz/multimedia.gif',
-				'title'=>$LANG->getLL('special_2_title'),
-				'description'=>$LANG->getLL('special_2_description'),
+				'title'=>$LANG->getLL('special_multimedia_title'),
+				'description'=>$LANG->getLL('special_multimedia_description'),
 				'tt_content_defValues' => array(
 					'CType' => 'multimedia',
 				)
 			),
-			'special_3' => array(
+			'special_sitemap' => array(	// Sitemap
 				'icon'=>'gfx/c_wiz/sitemap2.gif',
-				'title'=>$LANG->getLL('special_3_title'),
-				'description'=>$LANG->getLL('special_3_description'),
+				'title'=>$LANG->getLL('special_sitemap_title'),
+				'description'=>$LANG->getLL('special_sitemap_description'),
 				'tt_content_defValues' => array(
 					'CType' => 'menu',
 					'menu_type' => 2
 				)
 			),
-			'special_4' => array(
+			'special_plainHTML' => array(	// Plain HTML
 				'icon'=>'gfx/c_wiz/html.gif',
-				'title'=>$LANG->getLL('special_4_title'),
-				'description'=>$LANG->getLL('special_4_description'),
+				'title'=>$LANG->getLL('special_plainHTML_title'),
+				'description'=>$LANG->getLL('special_plainHTML_description'),
 				'tt_content_defValues' => array(
 					'CType' => 'html',
 				)
 			),
 			'forms' => array('header'=>$LANG->getLL('forms')),
-			'forms_1' => array(
+			'forms_mail' => array(	// Mail form
 				'icon'=>'gfx/c_wiz/mailform.gif',
-				'title'=>$LANG->getLL('forms_1_title'),
-				'description'=>$LANG->getLL('forms_1_description'),
+				'title'=>$LANG->getLL('forms_mail_title'),
+				'description'=>$LANG->getLL('forms_mail_description'),
 				'tt_content_defValues' => array(
 					'CType' => 'mailform',
 					'bodytext' => trim('
@@ -505,27 +496,27 @@ Contact me: | tv=check | 1
 					')
 				)
 			),
-			'forms_2' => array(
+			'forms_search' => array(	// Search form
 				'icon'=>'gfx/c_wiz/searchform.gif',
-				'title'=>$LANG->getLL('forms_2_title'),
-				'description'=>$LANG->getLL('forms_2_description'),
+				'title'=>$LANG->getLL('forms_search_title'),
+				'description'=>$LANG->getLL('forms_search_description'),
 				'tt_content_defValues' => array(
 					'CType' => 'search',
 				)
 			),
-			'forms_3' => array(
+			'forms_login' => array(	// Login form
 				'icon'=>'gfx/c_wiz/login_form.gif',
-				'title'=>$LANG->getLL('forms_3_title'),
-				'description'=>$LANG->getLL('forms_3_description'),
+				'title'=>$LANG->getLL('forms_login_title'),
+				'description'=>$LANG->getLL('forms_login_description'),
 				'tt_content_defValues' => array(
 					'CType' => 'login',
 				)
 			),
 			'plugins' => array('header'=>$LANG->getLL('plugins')),
-			'plugins_1' => array(
+			'plugins_general' => array(	// General plugin
 				'icon'=>'gfx/c_wiz/user_defined.gif',
-				'title'=>$LANG->getLL('plugins_1_title'),
-				'description'=>$LANG->getLL('plugins_1_description'),
+				'title'=>$LANG->getLL('plugins_general_title'),
+				'description'=>$LANG->getLL('plugins_general_description'),
 				'tt_content_defValues' => array(
 					'CType' => 'list',
 				)
@@ -561,6 +552,11 @@ Contact me: | tv=check | 1
 			// Load full table definition:
 		t3lib_div::loadTCA('tt_content');
 
+			// Get TCEFORM from TSconfig of current page
+		$row = array('pid'=>$this->id);
+		$TCEFORM_TSconfig = t3lib_BEfunc::getTCEFORM_TSconfig('tt_content',$row);
+		$removeItems = t3lib_div::trimExplode(',',$TCEFORM_TSconfig['CType']['removeItems'],1);
+		
 		$headersUsed = Array();
 			// Traverse wizard items:
 		foreach($wizardItems as $key => $cfg)	{
@@ -587,7 +583,7 @@ Contact me: | tv=check | 1
 						$config = &$TCA['tt_content']['columns'][$fN]['config'];
 						$authModeDeny = $config['type']=='select' && $config['authMode'] && !$GLOBALS['BE_USER']->checkAuthMode('tt_content',$fN,$fV,$config['authMode']);
 
-						if ($authModeDeny)	{
+						if ($authModeDeny || in_array($fV,$removeItems))	{
 								// Remove element all together:
 							unset($wizardItems[$key]);
 							break;
@@ -604,7 +600,7 @@ Contact me: | tv=check | 1
 			// remove headers without elements
 		foreach ($wizardItems as $key => $cfg)	{
 			$tmp = explode('_',$key);
-			if (count($tmp) == 2 && !$tmp[1] && !in_array($tmp[0], $headersUsed))	{
+			if ($tmp[0] && !$tmp[1] && !in_array($tmp[0], $headersUsed))	{
 				unset($wizardItems[$key]);
 			}
 		}

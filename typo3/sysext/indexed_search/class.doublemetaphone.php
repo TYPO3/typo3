@@ -1003,10 +1003,23 @@ class user_DoubleMetaPhone
     return 0;
   }
 
+	/**
+	 * [Describe function...]
+	 *
+	 * @param	[type]		$string: ...
+	 * @param	[type]		$pos: ...
+	 * @return	[type]		...
+	 */
   function IsVowel($string, $pos) {
     return ereg("[AEIOUY]", substr($string, $pos, 1));
   }
 
+	/**
+	 * [Describe function...]
+	 *
+	 * @param	[type]		$string: ...
+	 * @return	[type]		...
+	 */
   function SlavoGermanic($string) {
     return ereg("W|K|CZ|WITZ", $string);
   }

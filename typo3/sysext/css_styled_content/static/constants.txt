@@ -40,7 +40,7 @@ styles.content.imgtext {
   colSpace = 10
     # cat=content/cImage/x; type=int[0-100]; label= Advanced, Row space: Vertical distance between images in a block in content elements of type "Image" or "Text w/Image".
   rowSpace = 10
-    # cat=content/cImage/x; type=int[0-100]; label= Advanced, Margin to text: Horizontal distance between an imageblock and text in content elements of type "Image" or "Text w/Image".
+    # cat=content/cImage/x; type=int[0-100]; label= Advanced, Margin to text: Horizontal distance between an imageblock and text in content elements of type "Text w/Image".
   textMargin = 10
   linkWrap.width = 800m
   linkWrap.height = 600m
@@ -49,6 +49,13 @@ styles.content.imgtext {
   linkWrap.newWindow = 0
     # cat=content/cImage/c; type=boolean; label= Images, caption split: If this is checked, then the image caption will be split by each line and they will appear underneath the corresponding image in the imagelist.
   captionSplit = 0
+    # cat=content/cImage/c1; type=boolean; label= Images, text split: If this is checked, then the image text (alt, title, longdesc) will be split by each line and they will appear on the corresponding images in the imagelist.
+  imageTextSplit = 0
+    # cat=content/cImage/c2; type=string; label= Images, empty title handling: How will the 'title' attribute be handled if no title is given for an image. Possible choices: "keepEmpty", "useAlt" or "removeAttr". Recommended for accessibility is "removeAttr". For correct tooltips on IE, use "keepEmpty". For previous TYPO3 behaviour, use "useAlt".
+  emptyTitleHandling = useAlt
+
+  titleInLink = 0
+  titleInLinkAndImg = 0
 }
 
 styles.content.uploads {
@@ -86,6 +93,51 @@ styles.content.searchresult {
   # cat=advanced/links; type=small; label= Target for internal links: Should match the name of the content PAGE-object in TypoScript when used with frames. Most cases: Set to "page" if you have frames in the template. If not, set to "" (empty)
 PAGE_TARGET = page
 
+[compatVersion = 3.9.0]
+
+styles.content.imgtext >
+styles.content.imgtext {
+    # TIP! if register[maxImageWidth] is set, this will override maxW
+    # cat=content/cImage/b1; type=int+; label= Max Image Width: This indicates that maximum number of pixels (width) a block of images inserted as content is allowed to consume.
+  maxW = 600
+    # cat=content/cImage/b2; type=int+; label= Max Image Width (Text): Same as above, but this is the maximum width when text is wrapped around an imageblock. Default is 50% of the normal Max Image Width.
+  maxWInText =
+    # cat=content/cImage/c1; type=int+; label= Default Image Width: This indicates that default number of pixels (width) a block of images inserted as content will consume, if the user didn't specify otherwise in the content object.
+  linkWrap.width = 800m
+  linkWrap.height = 600m
+  linkWrap.effects =
+    # cat=content/cImage/x; type=boolean; label= Advanced, New window: If set, every click-enlarged image will open in it's own popup window and not the current popup window (which may have a wrong size for the image to fit in)
+  linkWrap.newWindow = 0
+
+    # cat=content/cImage/d1; type=boolean; label= Images, new window: If set, every click-enlarged image will open in it's own popup window and not the current popup window (which may have a wrong size for the image to fit in).
+  linkWrap.newWindow = 0
+
+  captionSplit = 0
+    # cat=content/cImage/e1; type=boolean; label= Images, text split: If this is checked, then the image text (caption, alt, title, longdesc) will be split by each line and they will appear on the corresponding images in the imagelist.
+  imageTextSplit = 1
+    # cat=content/cImage/e2; type=string; label= Images, empty title handling: How will the 'title' attribute be handled if no title is given for an image. Possible choices: "keepEmpty", "useAlt" or "removeAttr". Recommended for accessibility is "removeAttr". For correct tooltips on IE, use "keepEmpty". For previous TYPO3 behaviour, use "useAlt".
+  emptyTitleHandling = removeAttr
+    # cat=content/cImage/e3; type=boolean; label= Images, title in link: Do you want the 'title' attribute to be added to the surrounding <a> tag, if present? Recommended for accessibility is "true".
+  titleInLink = 1
+    # cat=content/cImage/e4; type=boolean; label= Images, title in link and IMG: If you have the title in the <a>-tag (titleInLink=true), you don't get the 'title' in the <img>-tag. IE will not show the tooltip anymore. So to get the 'title' in <img> too (to keep IE happy), set this too. Recommended for accessibility is "false". For correct tooltips on IE, set this to "true".
+  titleInLinkAndImg = 0
+
+    # cat=content/cImage/g1; type=int[0-100]; label= Column space: Horizontal distance between images in a block in content elements of type "Image" or "Text w/Image". If you change this manually in your CSS, you need to adjust this setting acordingly
+  colSpace = 10
+    # cat=content/cImage/g2; type=int[0-100]; label= Advanced, Margin to text: Horizontal distance between an imageblock and text in content elements of type "Text w/Image".
+  textMargin = 10
+
+    # cat=content/cImage/i1; type=color; label= Image border, color: Bordercolor of images in content elements when "Border"-option for element is set.
+  borderColor = black
+    # cat=content/cImage/i2; type=int[0-100]; label= Image border, thickness: Thickness of border around images in content elements when "Border"-option for element is set.
+  borderThick = 2
+    # cat=content/cImage/i3; type=int+; label= Image border, padding: Padding left and right to the image, around the border.
+  borderSpace = 0
+    # cat=content/cImage/i4; type=string; label= Image border CSS-selector: If you want your border to apply elsewhere, change this setting. E.g. to apply to the whole image+caption, use 'DIV.csc-textpic-border DIV.csc-textpic-imagewrap .csc-textpic-image'.
+  borderSelector = DIV.csc-textpic-border DIV.csc-textpic-imagewrap .csc-textpic-image IMG
+}
+
+[END]
 
 # TYPO3 CVS ID: $Id$
 

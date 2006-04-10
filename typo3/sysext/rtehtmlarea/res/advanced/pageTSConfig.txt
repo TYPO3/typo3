@@ -1,0 +1,21 @@
+# ***************************************************************************************
+# "Advanced" Page TSconfig for htmlArea RTE
+#
+# Sets default Page TSConfig with minimal features for advanced users.
+#
+# @author	Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
+#
+# TYPO3 CVS ID: $Id$
+# ***************************************************************************************
+
+RTE.default {
+	
+		## Toolbar options applicable to all RTE's
+		## The TCA configuration may add buttons to the toolbar
+	showButtons =  bold,italic,undo,redo,about
+	
+}
+
+	## front end RTE configuration for the general public (htmlArea RTE only)
+RTE.default.FE < RTE.default
+RTE.default.FE.FE >

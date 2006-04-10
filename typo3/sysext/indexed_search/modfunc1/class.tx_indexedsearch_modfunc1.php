@@ -31,55 +31,51 @@
  *
  *
  *
- *  110: class tx_indexedsearch_modfunc1 extends t3lib_extobjbase
- *  124:     function modMenu()
- *  148:     function main()
+ *  106: class tx_indexedsearch_modfunc1 extends t3lib_extobjbase
+ *  120:     function modMenu()
+ *  144:     function main()
  *
  *              SECTION: Drawing table of indexed pages
- *  261:     function drawTableOfIndexedPages()
- *  312:     function indexed_info($data, $firstColContent)
- *  398:     function printPhashRow($row,$grouping=0,$extraGrListRows)
- *  539:     function printPhashRowHeader()
- *  594:     function returnNumberOfColumns()
+ *  248:     function drawTableOfIndexedPages()
+ *  299:     function indexed_info($data, $firstColContent)
+ *  386:     function printPhashRow($row,$grouping=0,$extraGrListRows)
+ *  527:     function printPhashRowHeader()
+ *  582:     function returnNumberOfColumns()
  *
  *              SECTION: Details display, phash row
- *  630:     function showDetailsForPhash($phash)
- *  747:     function listWords($ftrows,$header, $stopWordBoxes=FALSE, $page='')
- *  796:     function listMetaphoneStat($ftrows,$header)
- *  833:     function linkWordDetails($string,$wid)
- *  845:     function linkMetaPhoneDetails($string,$metaphone)
- *  855:     function flagsMsg($flags)
+ *  618:     function showDetailsForPhash($phash)
+ *  737:     function listWords($ftrows,$header, $stopWordBoxes=FALSE, $page='')
+ *  787:     function listMetaphoneStat($ftrows,$header)
+ *  824:     function linkWordDetails($string,$wid)
+ *  836:     function linkMetaPhoneDetails($string,$metaphone)
+ *  846:     function flagsMsg($flags)
  *
  *              SECTION: Details display, words / metaphone
- *  886:     function showDetailsForWord($wid)
- *  945:     function showDetailsForMetaphone($metaphone)
+ *  877:     function showDetailsForWord($wid)
+ *  936:     function showDetailsForMetaphone($metaphone)
  *
  *              SECTION: Helper functions
- * 1016:     function printRemoveIndexed($phash,$alt)
- * 1029:     function printReindex($resultRow,$alt)
- * 1044:     function linkDetails($string,$phash)
- * 1053:     function linkList()
- * 1064:     function showPageDetails($string,$id)
- * 1074:     function printExtraGrListRows($extraGrListRows)
- * 1091:     function printRootlineInfo($row)
- * 1125:     function makeItemTypeIcon($it,$alt='')
- * 1150:     function utf8_to_currentCharset($string)
+ * 1007:     function printRemoveIndexed($phash,$alt)
+ * 1020:     function printReindex($resultRow,$alt)
+ * 1035:     function linkDetails($string,$phash)
+ * 1044:     function linkList()
+ * 1055:     function showPageDetails($string,$id)
+ * 1065:     function printExtraGrListRows($extraGrListRows)
+ * 1082:     function printRootlineInfo($row)
+ * 1116:     function makeItemTypeIcon($it,$alt='')
+ * 1141:     function utf8_to_currentCharset($string)
  *
  *              SECTION: Reindexing
- * 1183:     function reindexPhash($phash, $pageId)
- * 1237:     function getUidRootLineForClosestTemplate($id)
- *
- *              SECTION: Indexing of configurations
- * 1278:     function extraIndexing()
- * 1389:     function indexExtUrlRecursively($url, $depth, $pageId, $rl, $cfgUid)
+ * 1173:     function reindexPhash($phash, $pageId)
+ * 1227:     function getUidRootLineForClosestTemplate($id)
  *
  *              SECTION: SQL functions
- * 1446:     function removeIndexedPhashRow($phashList,$clearPageCache=1)
- * 1483:     function getGrListEntriesForPhash($phash,$gr_list)
- * 1503:     function processStopWords($stopWords)
- * 1523:     function processPageKeywords($pageKeywords, $pageUid)
+ * 1270:     function removeIndexedPhashRow($phashList,$clearPageCache=1)
+ * 1314:     function getGrListEntriesForPhash($phash,$gr_list)
+ * 1334:     function processStopWords($stopWords)
+ * 1354:     function processPageKeywords($pageKeywords, $pageUid)
  *
- * TOTAL FUNCTIONS: 32
+ * TOTAL FUNCTIONS: 30
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -147,7 +143,7 @@ class tx_indexedsearch_modfunc1 extends t3lib_extobjbase {
 	 */
 	function main()	{
 			// Initializes the module. Done in this function because we may need to re-initialize if data is submitted!
-		global $SOBE,$BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$CLIENT,$TYPO3_CONF_VARS;
+		global $LANG,$TYPO3_CONF_VARS;
 
 			// Return if no page id:
 		if ($this->pObj->id<=0)		return;
@@ -536,7 +532,7 @@ class tx_indexedsearch_modfunc1 extends t3lib_extobjbase {
 				$lines[] = '<td>&nbsp;</td>';
 				$lines[] = '<td>&nbsp;</td>';
 				$lines[] = '<td>Title</td>';
-				$lines[] = '<td bgcolor="red">'.$this->printRemoveIndexed(implode(',',$this->allPhashListed),'Clear ALL phash-rows below!').'</td>';
+				$lines[] = '<td bgcolor="red">'.$this->printRemoveIndexed('ALL','Clear ALL phash-rows below!').'</td>';
 
 				$lines[] = '<td>pHash</td>';
 				$lines[] = '<td>cHash</td>';
@@ -557,7 +553,7 @@ class tx_indexedsearch_modfunc1 extends t3lib_extobjbase {
 				$lines[] = '<td>&nbsp;</td>';
 				$lines[] = '<td>&nbsp;</td>';
 				$lines[] = '<td>Title</td>';
-				$lines[] = '<td bgcolor="red">'.$this->printRemoveIndexed(implode(',',$this->allPhashListed),'Clear ALL phash-rows below!').'</td>';
+				$lines[] = '<td bgcolor="red">'.$this->printRemoveIndexed('ALL','Clear ALL phash-rows below!').'</td>';
 				$lines[] = '<td>Content<br/>
 							<img src="clear.gif" width="300" height="1" alt="" /></td>';
 				$lines[] = '<td>Words<br/>
@@ -567,7 +563,7 @@ class tx_indexedsearch_modfunc1 extends t3lib_extobjbase {
 				$lines[] = '<td>&nbsp;</td>';
 				$lines[] = '<td>&nbsp;</td>';
 				$lines[] = '<td>Title</td>';
-				$lines[] = '<td bgcolor="red">'.$this->printRemoveIndexed(implode(',',$this->allPhashListed),'Clear ALL phash-rows below!').'</td>';
+				$lines[] = '<td bgcolor="red">'.$this->printRemoveIndexed('ALL','Clear ALL phash-rows below!').'</td>';
 				$lines[] = '<td>Description</td>';
 				$lines[] = '<td>Size</td>';
 				$lines[] = '<td>Indexed:</td>';
@@ -1229,12 +1225,12 @@ class tx_indexedsearch_modfunc1 extends t3lib_extobjbase {
 	 * @return	array		Array where the root lines uid values are found.
 	 */
 	function getUidRootLineForClosestTemplate($id)	{
-		$tmpl = t3lib_div::makeInstance("t3lib_tsparser_ext");	// Defined global here!
+		$tmpl = t3lib_div::makeInstance('t3lib_tsparser_ext');	// Defined global here!
 		$tmpl->tt_track = 0;	// Do not log time-performance information
 		$tmpl->init();
 
 				// Gets the rootLine
-		$sys_page = t3lib_div::makeInstance("t3lib_pageSelect");
+		$sys_page = t3lib_div::makeInstance('t3lib_pageSelect');
 		$rootLine = $sys_page->getRootLine($id);
 		$tmpl->runThroughTemplates($rootLine,0);	// This generates the constants/config + hierarchy info for the template.
 
@@ -1272,7 +1268,14 @@ class tx_indexedsearch_modfunc1 extends t3lib_extobjbase {
 	 * @return	void
 	 */
 	function removeIndexedPhashRow($phashList,$clearPageCache=1)	{
-		$phashRows = t3lib_div::trimExplode(',',$phashList,1);
+			// FIXME: This is only a workaround
+		if ($phashList=='ALL')	{
+			$this->drawTableOfIndexedPages();
+			$phashRows = $this->allPhashListed;
+			$this->allPhashListed = array();	// Reset it because it will be filled again later...
+		} else {
+			$phashRows = t3lib_div::trimExplode(',',$phashList,1);
+		}
 
 		foreach($phashRows as $phash)	{
 			$phash = intval($phash);

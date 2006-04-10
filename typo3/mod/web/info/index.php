@@ -111,7 +111,7 @@ class SC_mod_web_info_index extends t3lib_SCbase {
 			$this->doc->JScode = $this->doc->wrapScriptTags('
 				script_ended = 0;
 				function jumpToUrl(URL)	{	//
-					document.location = URL;
+					window.location.href = URL;
 				}
 			');
 			$this->doc->postCode=$this->doc->wrapScriptTags('
@@ -176,8 +176,8 @@ class SC_mod_web_info_index extends t3lib_SCbase {
 	 * @return	void
 	 */
 	function printContent()	{
-
-		$this->content.=$this->doc->endPage();
+		$this->content.= $this->doc->endPage();
+		$this->content = $this->doc->insertStylesAndJS($this->content);
 		echo $this->content;
 	}
 }

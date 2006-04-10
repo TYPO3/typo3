@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2005 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2006 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -37,51 +37,51 @@
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
  *
- *  119: function debug($p1,$p2='')
+ *  120: function debug($p1,$p2='')
  *
  *
- *  133: class t3lib_superadmin
+ *  134: class t3lib_superadmin
  *
  *              SECTION: Initialize stuff
- *  179:     function t3lib_superadmin()
- *  191:     function init($parentDirs)
+ *  180:     function t3lib_superadmin()
+ *  192:     function init($parentDirs)
  *
  *              SECTION: Main functions
- *  214:     function defaultSet()
- *  270:     function make()
+ *  215:     function defaultSet()
+ *  271:     function make()
  *
  *              SECTION: Output preparation
- *  372:     function setMenuItem($code,$label)
- *  386:     function error($str)
- *  397:     function headerParentDir($str)
- *  408:     function headerSiteDir($str)
+ *  376:     function setMenuItem($code,$label)
+ *  390:     function error($str)
+ *  401:     function headerParentDir($str)
+ *  412:     function headerSiteDir($str)
  *
  *              SECTION: Collection information
- *  440:     function initProcess()
- *  478:     function processSiteDir($path,$dir)
- *  520:     function includeLocalconf($localconf)
- *  544:     function connectToDatabase($siteInfo)
- *  566:     function getDBInfo($key)
+ *  444:     function initProcess()
+ *  482:     function processSiteDir($path,$dir)
+ *  524:     function includeLocalconf($localconf)
+ *  554:     function connectToDatabase($siteInfo)
+ *  576:     function getDBInfo($key)
  *
  *              SECTION: Content: Installation Overview
- *  616:     function makeTable()
+ *  626:     function makeTable()
  *
  *              SECTION: Content: Local extensions
- *  719:     function localExtensions()
- *  892:     function getExtensionInfo($path,$extKey,$k)
- *  945:     function getAllFilesAndFoldersInPath($fileArr,$extPath,$extList='',$regDirs=0)
- *  967:     function findMostRecent($fileArr,$extPath)
- *  985:     function removePrefixPathFromList($fileArr,$extPath)
+ *  729:     function localExtensions()
+ *  902:     function getExtensionInfo($path,$extKey,$k)
+ *  956:     function getAllFilesAndFoldersInPath($fileArr,$extPath,$extList='',$regDirs=0)
+ *  978:     function findMostRecent($fileArr,$extPath)
+ *  996:     function removePrefixPathFromList($fileArr,$extPath)
  *
  *              SECTION: Content: Other
- * 1022:     function singleSite($exp)
- * 1053:     function loginLog($DB)
- * 1091:     function log_getDetails($text,$data)
- * 1105:     function rmCachedFiles($exp)
- * 1138:     function menuContent($exp)
- * 1210:     function makeAdminLogin()
- * 1284:     function changeAdminPasswordsForm()
- * 1319:     function setNewPasswords()
+ * 1033:     function singleSite($exp)
+ * 1064:     function loginLog($DB)
+ * 1102:     function log_getDetails($text,$data)
+ * 1116:     function rmCachedFiles($exp)
+ * 1149:     function menuContent($exp)
+ * 1221:     function makeAdminLogin()
+ * 1295:     function changeAdminPasswordsForm()
+ * 1330:     function setNewPasswords()
  *
  * TOTAL FUNCTIONS: 28
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -104,8 +104,9 @@ define('TYPO3_mainDir', 'typo3/');		// This is the directory of the backend admi
 
 
 // Dependency:
-include_once('./typo3_src/t3lib/class.t3lib_div.php');
-include_once('./typo3_src/t3lib/class.t3lib_db.php');
+$path_t3lib = './typo3_src/t3lib/';
+include_once($path_t3lib.'class.t3lib_div.php');
+include_once($path_t3lib.'class.t3lib_db.php');
 $TYPO3_DB = t3lib_div::makeInstance('t3lib_DB');
 
 
@@ -269,6 +270,8 @@ class t3lib_superadmin {
 	 */
 	function make()	{
 
+		$retVal = '';
+
 			// Creating information about the sites found:
 		$content = $this->initProcess();
 
@@ -288,10 +291,10 @@ class t3lib_superadmin {
 				$content = implode('<br />',$lines);
 				$content.= '<hr />';
 				$content.=$this->menuContent($this->exp);
-				return '<h2 align="center">TYPO3<br />Super Admin</h2>'.$content;
+				$retVal = '<h2 align="center">TYPO3<br />Super Admin</h2>'.$content;
 			break;
 			case 'all':
-				return '
+				$retVal = '
 					<h1>All details:</h1>
 					<h2>Overview:</h2>
 					'.$this->makeTable().'
@@ -302,7 +305,7 @@ class t3lib_superadmin {
 			case 'admin':
 				$content = $this->setNewPasswords();
 				$this->makeTable();
-				return $content.'
+				$retVal = $content.'
 					<h1>Admin options:</h1>
 
 					<h2>Admin logins:</h2>
@@ -322,29 +325,30 @@ class t3lib_superadmin {
 					<br /><hr /><br />';
 			break;
 			case 'info':
-				return '
+				$retVal = '
 					<h1>Single site details</h1>
 					'.$this->singleSite($this->exp).
 					'<br />';
 			break;
 			case 'rmTempCached':
-				return '
+				$retVal = '
 					<h1>Removing temp_CACHED_*.php files</h1>
 					'.$this->rmCachedFiles($this->exp).
 					'<br />';
 			break;
 			case 'localext':
-				return '
+				$retVal = '
 					<h1>Local Extensions Found:</h1>
 					'.$this->localExtensions().
 					'<br />';
 			break;
 			default:
-				return '
+				$retVal = '
 					<h1>Default info:</h1>'.
 					$content;
 			break;
 		}
+		return $retVal;
 	}
 
 
@@ -518,6 +522,12 @@ class t3lib_superadmin {
 	 * @see processSiteDir()
 	 */
 	function includeLocalconf($localconf)	{
+		$TYPO3_CONF_VARS = array();
+		$typo_db = '';
+		$typo_db_username = '';
+		$typo_db_password = '';
+		$typo_db_host = '';
+
 		include($localconf);
 
 		$siteInfo=array();
@@ -893,6 +903,7 @@ class t3lib_superadmin {
 		$file = $path.$extKey.'/ext_emconf.php';
 		if (@is_file($file))	{
 			$_EXTKEY = $extKey;
+			$EM_CONF = array();
 			include($file);
 
 			$eInfo = array();

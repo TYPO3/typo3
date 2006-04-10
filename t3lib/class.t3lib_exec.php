@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2002-2005 René Fritz (r.fritz@colorcube.de)
+*  (c) 2002-2006 René Fritz (r.fritz@colorcube.de)
 *  All rights reserved
 *
 *  This script is part of the Typo3 project. The Typo3 project is
@@ -33,17 +33,18 @@
  *
  *
  *
- *   81: class t3lib_exec
- *   91:     function checkCommand($cmd, $handler='')
- *  162:     function getCommand($cmd, $handler='', $handlerOpt='')
- *  191:     function addPaths($paths)
- *  201:     function _getPaths()
- *  269:     function _init()
- *  285:     function _initPaths($paths='')
- *  340:     function _getOS()
- *  351:     function _fixPath($path)
+ *   85: class t3lib_exec
+ *   95:     function checkCommand($cmd, $handler='')
+ *  166:     function getCommand($cmd, $handler='', $handlerOpt='')
+ *  199:     function addPaths($paths)
+ *  211:     function getPaths($addInvalid=false)
+ *  237:     function _init()
+ *  259:     function _initPaths($paths='')
+ *  312:     function _getConfiguredApps()
+ *  339:     function _getPaths()
+ *  400:     function _fixPath($path)
  *
- * TOTAL FUNCTIONS: 8
+ * TOTAL FUNCTIONS: 9
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -74,6 +75,9 @@
  * $GLOBALS['_SERVER']['PATH']
  * '/usr/bin/,/usr/local/bin/' on Unix
  *
+ * binaries can be preconfigured with
+ * $TYPO3_CONF_VARS['SYS']['binSetup']
+ *
  * @author	René Fritz <r.fritz@colorcube.de>
  * @package TYPO3
  * @subpackage t3lib
@@ -95,8 +99,6 @@ class t3lib_exec {
 			return false;
 		}
 
-		$osType = t3lib_exec::_getOS();
-
 
 		if ($handler && !t3lib_exec::checkCommand($handler)) {
 			return -1;
@@ -113,7 +115,7 @@ class t3lib_exec {
 		foreach($T3_VAR['t3lib_exec']['paths'] as $path => $validPath) {
 				// ignore invalid (false) paths
 			if ($validPath) {
-				if ($osType=='WIN') {
+				if (TYPO3_OS=='WIN') {
 					if (@is_file($path.$cmd)) {
 						$T3_VAR['t3lib_exec']['apps'][$cmd]['app'] = $cmd;
 						$T3_VAR['t3lib_exec']['apps'][$cmd]['path'] = $path;
@@ -138,8 +140,8 @@ class t3lib_exec {
 		}
 
 			// try to get the executable with the command 'which'. It do the same like already done, but maybe on other paths??
-		if ($osType=='UNIX') {
-			$cmd = @exec ('which '.$val['cmd']);
+		if (TYPO3_OS!='WIN') {
+			$cmd = @exec ('which '.$cmd);
 
 			if (@is_executable($cmd)) {
 				$T3_VAR['t3lib_exec']['apps'][$cmd]['app'] = $cmd;
@@ -184,7 +186,7 @@ class t3lib_exec {
 		}
 		$cmd = $T3_VAR['t3lib_exec']['apps'][$cmd]['path'].$T3_VAR['t3lib_exec']['apps'][$cmd]['app'].' ';
 
-		return $handler.$cmd;
+		return trim($handler.$cmd);
 	}
 
 
@@ -227,67 +229,6 @@ class t3lib_exec {
 
 
 	/**
-	 * Set the search paths from different sources, internal
-	 *
-	 * @return	array		Array of absolute paths (keys and values are equal)
-	 * @internal
-	 */
-	function _getPaths()	{
-		global $T3_VAR, $TYPO3_CONF_VARS;
-
-		$pathsArr = array();
-		$sysPathArr = array();
-		$osType = t3lib_exec::_getOS();
-
-			// image magick paths first
-			// im_path_lzw take precedence over im_path
-		if ($imPath = ($TYPO3_CONF_VARS['GFX']['im_path_lzw'] ? $TYPO3_CONF_VARS['GFX']['im_path_lzw'] : $TYPO3_CONF_VARS['GFX']['im_path'])) {
-			$imPath = t3lib_exec::_fixPath($imPath);
-			$pathsArr[$imPath] = $imPath;
-		}
-
-			// add configured paths
-		if ($TYPO3_CONF_VARS['SYS']['binPath']) {
-			$sysPath = t3lib_div::trimExplode(',',$TYPO3_CONF_VARS['SYS']['binPath'],1);
-			foreach($sysPath as $val) {
-				$val = t3lib_exec::_fixPath($val);
-				$sysPathArr[$val]=$val;
-			}
-		}
-
-
-			// add path from environment
-#TODO: how does this work for WIN
-		if ($GLOBALS['_SERVER']['PATH']) {
-			$sep = ($osType=='WIN') ? ';' : ':';
-			$envPath = t3lib_div::trimExplode($sep,$GLOBALS['_SERVER']['PATH'],1);
-			foreach($envPath as $val) {
-				$val = t3lib_exec::_fixPath($val);
-				$sysPathArr[$val]=$val;
-			}
-		}
-
-		if ($osType=='WIN') {
-#TODO: add the most common paths for WIN
-			$sysPathArr = array_merge($sysPathArr, array (
-				'/usr/bin/' => '/usr/bin/',
-				'/perl/bin/' => '/perl/bin/',
-			));
-		} else { // UNIX
-			$sysPathArr = array_merge($sysPathArr, array (
-				'/usr/bin/' => '/usr/bin/',
-				'/usr/local/bin/' => '/usr/local/bin/',
-			));
-		}
-
-
-		$pathsArr = array_merge($pathsArr, $sysPathArr);
-
-		return $pathsArr;
-	}
-
-
-	/**
 	 * Initialization, internal
 	 *
 	 * @return	void
@@ -301,7 +242,7 @@ class t3lib_exec {
 		}
 		if (!$T3_VAR['t3lib_exec']['init']) {
 			t3lib_exec::_initPaths();
-			$T3_VAR['t3lib_exec']['apps'] = array();
+			$T3_VAR['t3lib_exec']['apps'] = t3lib_exec::_getConfiguredApps();;
 			$T3_VAR['t3lib_exec']['init'] = true;
 		}
 		return true;
@@ -363,13 +304,89 @@ class t3lib_exec {
 
 
 	/**
-	 * Returns on which OS we're runing
+	 * Processes and returns the paths from $TYPO3_CONF_VARS['SYS']['binSetup']
 	 *
-	 * @return	string		the OS type: "UNIX" or "WIN"
+	 * @return	array		Array of commands and path
 	 * @internal
 	 */
-	function _getOS()	{
-		return stristr(PHP_OS,'win')&&!stristr(PHP_OS,'darwin')?'WIN':'UNIX';
+	function _getConfiguredApps()	{
+		global $TYPO3_CONF_VARS;
+
+		$cmdArr = array();
+
+		if ($TYPO3_CONF_VARS['SYS']['binSetup']) {
+			$pathSetup = implode("\n", t3lib_div::trimExplode(',',$TYPO3_CONF_VARS['SYS']['binSetup'],1));
+			$pathSetup = t3lib_div::trimExplode("\n",$pathSetup,1);
+			foreach($pathSetup as $val) {
+				list($cmd, $cmdPath) = t3lib_div::trimExplode('=',$val,1);
+
+				$cmdArr[$cmd]['app'] = basename($cmdPath);
+				$cmdArr[$cmd]['path'] = dirname($cmdPath).'/';
+				$cmdArr[$cmd]['valid'] = true;
+			}
+		}
+
+		return $cmdArr;
+	}
+
+
+	/**
+	 * Set the search paths from different sources, internal
+	 *
+	 * @return	array		Array of absolute paths (keys and values are equal)
+	 * @internal
+	 */
+	function _getPaths()	{
+		global $T3_VAR, $TYPO3_CONF_VARS;
+
+		$pathsArr = array();
+		$sysPathArr = array();
+
+			// image magick paths first
+			// im_path_lzw take precedence over im_path
+		if ($imPath = ($TYPO3_CONF_VARS['GFX']['im_path_lzw'] ? $TYPO3_CONF_VARS['GFX']['im_path_lzw'] : $TYPO3_CONF_VARS['GFX']['im_path'])) {
+			$imPath = t3lib_exec::_fixPath($imPath);
+			$pathsArr[$imPath] = $imPath;
+		}
+
+			// add configured paths
+		if ($TYPO3_CONF_VARS['SYS']['binPath']) {
+			$sysPath = t3lib_div::trimExplode(',',$TYPO3_CONF_VARS['SYS']['binPath'],1);
+			foreach($sysPath as $val) {
+				$val = t3lib_exec::_fixPath($val);
+				$sysPathArr[$val]=$val;
+			}
+		}
+
+
+			// add path from environment
+// TODO: how does this work for WIN
+		if ($GLOBALS['_SERVER']['PATH']) {
+			$sep = (TYPO3_OS=='WIN') ? ';' : ':';
+			$envPath = t3lib_div::trimExplode($sep,$GLOBALS['_SERVER']['PATH'],1);
+			foreach($envPath as $val) {
+				$val = t3lib_exec::_fixPath($val);
+				$sysPathArr[$val]=$val;
+			}
+		}
+
+		if (TYPO3_OS=='WIN') {
+// TODO: add the most common paths for WIN
+			$sysPathArr = array_merge($sysPathArr, array (
+				'/usr/bin/' => '/usr/bin/',
+				'/perl/bin/' => '/perl/bin/',
+			));
+		} else { // UNIX
+			$sysPathArr = array_merge($sysPathArr, array (
+				'/usr/bin/' => '/usr/bin/',
+				'/usr/local/bin/' => '/usr/local/bin/',
+			));
+		}
+
+
+		$pathsArr = array_merge($pathsArr, $sysPathArr);
+
+		return $pathsArr;
 	}
 
 

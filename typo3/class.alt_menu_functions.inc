@@ -42,13 +42,13 @@
  *
  *   73: class alt_menu_functions
  *   94:     function topMenu($theModules,$dontLink=0,$backPath='',$descr=0)
- *  402:     function getNavFramePrefix ($moduleInfo, $subModuleInfo=array())
- *  429:     function mIconFile($Ifilename,$backPath)
- *  444:     function mIconFilename($Ifilename,$backPath)
- *  456:     function topButtons()
- *  468:     function adminButtons()
- *  487:     function adminFunctions($backPath)
- *  520:     function wrapLinkWithAB($link)
+ *  473:     function getNavFramePrefix($moduleInfo, $subModuleInfo=array())
+ *  504:     function mIconFile($Ifilename,$backPath)
+ *  519:     function mIconFilename($Ifilename,$backPath)
+ *  531:     function topButtons()
+ *  544:     function adminButtons()
+ *  563:     function adminFunctions($backPath)
+ *  596:     function wrapLinkWithAB($link)
  *
  * TOTAL FUNCTIONS: 8
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -198,7 +198,7 @@ class alt_menu_functions {
 				$mIcons[] = '<a href="#" onclick="top.goToModule(\''.$moduleName.'\');'.$onBlur.'return false;" class="c-mainitem" id="'.$moduleCSSId.'">'.$descr3_imageCode.'</a>';
 
 				$JScmd = '
-						top.content.location=top.getModuleUrl(top.TS.PATH_typo3+\''.$this->wrapLinkWithAB($link).'\'+additionalGetVariables);
+						top.content.location=top.getModuleUrl(top.TS.PATH_typo3+"'.$this->wrapLinkWithAB($link).'"+additionalGetVariables);
 						top.highlightModuleMenuItem("'.$moduleCSSId.'",1);';
 				$mJScmds[] = "case '".$moduleName."': \n ".$JScmd." \n break;";
 			}
@@ -285,10 +285,15 @@ class alt_menu_functions {
 						if ($addJS && $BE_USER->uc['condensedMode'])	{$addJS.=  "+(cMR?'&cMR=1':'')";}
 
 							// Command for the selector box:
-						$JScmd = "
-								top.content.location=top.getModuleUrl(top.TS.PATH_typo3+'".$this->wrapLinkWithAB($link)."'".$addJS.'+additionalGetVariables);
+						$JScmd = '
+								top.content.location=top.getModuleUrl(top.TS.PATH_typo3+"'.$this->wrapLinkWithAB($link).'"'.$addJS.'+additionalGetVariables);
 								top.fsMod.currentMainLoaded="'.$moduleName.'";
 								';
+
+						if ($subInfo['navFrameScript'])	{
+							$JScmd.='
+								top.currentSubScript="'.$origLink.'";';
+						}
 
 							// If there is a frameset script in place:
 						if (!$BE_USER->uc['condensedMode'] && $moduleInfo['navFrameScript'])	{
@@ -384,10 +389,10 @@ class alt_menu_functions {
 						<td align="center">
 								<form action="alt_menu.php" method="get">
 									<input type="hidden" name="collapsableExpandAll" value="1" />
-									<input type="checkbox" name="expandAll" value="1" onclick="this.form.submit();" '.($config['expandAll']?'checked="checked"':'').' />
+									<input type="checkbox" name="expandAll" id="expandall" value="1" onclick="this.form.submit();" '.($config['expandAll']?'checked="checked"':'').' />
 								</form>
 						</td>
-						<td class="c-subitem-label">'.$LANG->sL('LLL:EXT:lang/locallang_core.php:labels.expandAll',1).'</td>
+						<td class="c-subitem-label"><label for="expandall">'.$LANG->sL('LLL:EXT:lang/locallang_core.php:labels.expandAll',1).'</label></td>
 					</tr>';
 			} else {
 				$collapseAllHTML = '';
@@ -430,7 +435,7 @@ class alt_menu_functions {
 				if (count($functionArray))	{
 					$selectItems[] = '<option value=""></option>';
 					foreach($functionArray as $fAoptions)	{
-						$selectItems[] = '<option value="'.htmlspecialchars("document.location='".$fAoptions['href']."';").'">[ '.htmlspecialchars($fAoptions['title']).' ]</option>';
+						$selectItems[] = '<option value="'.htmlspecialchars("window.location.href='".$fAoptions['href']."';").'">[ '.htmlspecialchars($fAoptions['title']).' ]</option>';
 					}
 				}
 			}
@@ -469,9 +474,10 @@ class alt_menu_functions {
 		global $BE_USER;
 
 		$prefix = '';
-		$navFrameScriptParam = $subModuleInfo['navFrameScriptParam'] ? $subModuleInfo['navFrameScriptParam'] : $moduleInfo['navFrameScriptParam'];
-		if ($moduleInfo['navFrameScript'])	{
-			$navFrameScript = t3lib_div::resolveBackPath($moduleInfo['navFrameScript']);
+		$navFrameScript = $subModuleInfo['navFrameScript'] ? $subModuleInfo['navFrameScript'] : $moduleInfo['navFrameScript'];
+		$navFrameScriptParam = isset($subModuleInfo['navFrameScriptParam']) ? $subModuleInfo['navFrameScriptParam'] : $moduleInfo['navFrameScriptParam'];
+		if ($navFrameScript)	{
+			$navFrameScript = t3lib_div::resolveBackPath($navFrameScript);
 			$navFrameScript = $this->wrapLinkWithAB($navFrameScript);
 
 			if ($BE_USER->uc['condensedMode'])	{

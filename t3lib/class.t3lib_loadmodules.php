@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2005 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2006 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -39,16 +39,17 @@
  *
  *
  *
- *   78: class t3lib_loadModules
- *   97:     function load($modulesArray,$BE_USER='')
- *  366:     function checkExtensionModule($name)
- *  385:     function checkMod($name, $fullpath)
- *  465:     function checkModAccess($name,$MCONF)
- *  488:     function parseModulesArray($arr)
- *  517:     function cleanName ($str)
- *  528:     function getRelativePath($baseDir,$destDir)
+ *   79: class t3lib_loadModules
+ *   99:     function load($modulesArray,$BE_USER='')
+ *  370:     function checkExtensionModule($name)
+ *  389:     function checkMod($name, $fullpath)
+ *  471:     function checkModAccess($name,$MCONF)
+ *  495:     function checkModWorkspace($name,$MCONF)
+ *  519:     function parseModulesArray($arr)
+ *  548:     function cleanName ($str)
+ *  559:     function getRelativePath($baseDir,$destDir)
  *
- * TOTAL FUNCTIONS: 7
+ * TOTAL FUNCTIONS: 8
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -178,7 +179,7 @@ class t3lib_loadModules {
 
 			// Traverses the module setup and creates the internal array $this->modules
 		foreach($theMods as $mods => $subMod)	{
-			unset ($path);
+			$path = NULL;
 
 			$extModRelPath = $this->checkExtensionModule($mods);
 			if ($extModRelPath)	{	// EXTENSION module:
@@ -201,7 +202,7 @@ class t3lib_loadModules {
 			}
 
 				// if $theMainMod is not set (false) there is no access to the module !(?)
-			if ($theMainMod && isset($path))	{
+			if ($theMainMod && !is_null($path))	{
 				$this->modules[$mods] = $theMainMod;
 
 					// SUBMODULES - if any - are loaded (The 'doc' module cannot have submodules...)
@@ -215,6 +216,7 @@ class t3lib_loadModules {
 							}
 						} else {	// 'CLASSIC' submodule
 								// Checking for typo3/mod/xxx/ module existence...
+// FIXME what about $path = 1; from above and using $path as string here?
 							$theTempSubMod = $this->checkMod($mods.'_'.$valsub,$path.$mods.'/'.$valsub);
 							if (is_array($theTempSubMod))	{	// default sub-module in either main-module-path, be it the default or the userdefined.
 								$this->modules[$mods]['sub'][$valsub] = $theTempSubMod;
@@ -230,6 +232,7 @@ class t3lib_loadModules {
 			} else {	// This must be done in order to fill out the select-lists for modules correctly!!
 				if ($mods!='doc' && is_array($subMod))	{
 					foreach($subMod as $valsub)	{
+// FIXME path can only be NULL here, or not?
 						$this->checkMod($mods.'_'.$valsub,$path.$mods.'/'.$valsub);
 					}
 				}
@@ -387,6 +390,8 @@ class t3lib_loadModules {
 		$modconf=Array();
 		$path = ereg_replace ('/[^/.]+/\.\./', '/', $fullpath); // because 'path/../path' does not work
 		if (@is_dir($path) && @file_exists($path.'/conf.php')) 	{
+			$MCONF = array();
+			$MLANG = array();
 			include($path.'/conf.php');	// The conf-file is included. This must be valid PHP.
 			if (!$MCONF['shy'] && $this->checkModAccess($name,$MCONF) && $this->checkModWorkspace($name,$MCONF))	{
 				$modconf['name']=$name;
@@ -541,7 +546,7 @@ class t3lib_loadModules {
 	 * @return	string
 	 */
 	function cleanName ($str)	{
-		return ereg_replace('[^A-Za-z0-9]*','',$str);
+		return preg_replace('/[^a-z0-9]/i','',$str);
 	}
 
 	/**

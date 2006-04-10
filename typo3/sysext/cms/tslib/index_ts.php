@@ -30,11 +30,6 @@
  * The script configures constants, includes libraries and does a little logic here and there in order to instantiate the right classes to create the webpage.
  * All the real data processing goes on in the "tslib/" classes which this script will include and use as needed.
  *
- * On UNIX: You should create a symlink to this file from the directory from which you want your TYPO3 website to run (which is ../)
- * ln -s tslib/index_ts.php index.php
- *
- * On Windows this file should copied to "index.php" in your website root (which is ../)
- *
  * $Id$
  * Revised for TYPO3 3.6 June/2003 by Kasper Skaarhoj
  *
@@ -55,13 +50,21 @@ error_reporting (E_ALL ^ E_NOTICE);
 $TYPO3_MISC['microtime_start'] = microtime();
 define('TYPO3_OS', stristr(PHP_OS,'win')&&!stristr(PHP_OS,'darwin')?'WIN':'');
 define('TYPO3_MODE','FE');
-define('PATH_thisScript',str_replace('//','/', str_replace('\\','/', (php_sapi_name()=='cgi'||php_sapi_name()=='isapi' ||php_sapi_name()=='cgi-fcgi')&&($_SERVER['ORIG_PATH_TRANSLATED']?$_SERVER['ORIG_PATH_TRANSLATED']:$_SERVER['PATH_TRANSLATED'])? ($_SERVER['ORIG_PATH_TRANSLATED']?$_SERVER['ORIG_PATH_TRANSLATED']:$_SERVER['PATH_TRANSLATED']):($_SERVER['ORIG_SCRIPT_FILENAME']?$_SERVER['ORIG_SCRIPT_FILENAME']:$_SERVER['SCRIPT_FILENAME']))));
 
-define('PATH_site', dirname(PATH_thisScript).'/');
-define('PATH_t3lib', PATH_site.'t3lib/');
-define('PATH_tslib', PATH_site.'tslib/');
+if (!defined('PATH_thisScript')) 	define('PATH_thisScript',str_replace('//','/', str_replace('\\','/', (php_sapi_name()=='cgi'||php_sapi_name()=='isapi' ||php_sapi_name()=='cgi-fcgi')&&($_SERVER['ORIG_PATH_TRANSLATED']?$_SERVER['ORIG_PATH_TRANSLATED']:$_SERVER['PATH_TRANSLATED'])? ($_SERVER['ORIG_PATH_TRANSLATED']?$_SERVER['ORIG_PATH_TRANSLATED']:$_SERVER['PATH_TRANSLATED']):($_SERVER['ORIG_SCRIPT_FILENAME']?$_SERVER['ORIG_SCRIPT_FILENAME']:$_SERVER['SCRIPT_FILENAME']))));
+if (!defined('PATH_site')) 			define('PATH_site', dirname(PATH_thisScript).'/');
+if (!defined('PATH_t3lib')) 		define('PATH_t3lib', PATH_site.'t3lib/');
+
 define('PATH_typo3conf', PATH_site.'typo3conf/');
 define('TYPO3_mainDir', 'typo3/');		// This is the directory of the backend administration for the sites of this TYPO3 installation.
+
+if (!defined('PATH_tslib')) {
+	if (@is_dir(PATH_site.TYPO3_mainDir.'sysext/cms/tslib/')) {
+		define('PATH_tslib', PATH_site.TYPO3_mainDir.'sysext/cms/tslib/');
+	} elseif (@is_dir(PATH_site.'tslib/')) {
+		define('PATH_tslib', PATH_site.'tslib/');
+	}
+}
 
 if (!@is_dir(PATH_typo3conf))	die('Cannot find configuration. This file is probably executed from the wrong location.');
 
@@ -92,24 +95,15 @@ require(PATH_t3lib.'config_default.php');
 if (!defined ('TYPO3_db')) 	die ('The configuration file was not included.');	// the name of the TYPO3 database is stored in this constant. Here the inclusion of the config-file is verified by checking if this var is set.
 if (!t3lib_extMgm::isLoaded('cms'))	die('<strong>Error:</strong> The main frontend extension "cms" was not loaded. Enable it in the extension manager in the backend.');
 
+if (!defined('PATH_tslib')) {
+	define('PATH_tslib', t3lib_extMgm::extPath('cms').'tslib/');
+}
+
 require_once(PATH_t3lib.'class.t3lib_db.php');
 $TYPO3_DB = t3lib_div::makeInstance('t3lib_DB');
 $TYPO3_DB->debugOutput = $TYPO3_CONF_VARS['SYS']['sqlDebug'];
 
 $CLIENT = t3lib_div::clientInfo();				// Set to the browser: net / msie if 4+ browsers
-$TT->pull();
-
-
-// *********************
-// Libraries included
-// *********************
-$TT->push('Include Frontend libraries','');
-	require_once(PATH_tslib.'class.tslib_fe.php');
-	require_once(PATH_t3lib.'class.t3lib_page.php');
-	require_once(PATH_t3lib.'class.t3lib_userauth.php');
-	require_once(PATH_tslib.'class.tslib_feuserauth.php');
-	require_once(PATH_t3lib.'class.t3lib_tstemplate.php');
-	require_once(PATH_t3lib.'class.t3lib_cs.php');
 $TT->pull();
 
 
@@ -128,6 +122,31 @@ if (!get_magic_quotes_gpc())	{
 	$TT->pull();
 }
 
+
+// *********************
+// Look for extension ID which will launch alternative output engine
+// *********************
+if ($temp_extId = t3lib_div::_GP('eID'))	{
+	if ($classPath = t3lib_div::getFileAbsFileName($TYPO3_CONF_VARS['FE']['eID_include'][$temp_extId]))	{
+		require_once(PATH_tslib.'class.tslib_eidtools.php');
+		require($classPath);
+	}
+	exit;
+}
+
+// *********************
+// Libraries included
+// *********************
+$TT->push('Include Frontend libraries','');
+	require_once(PATH_tslib.'class.tslib_fe.php');
+	require_once(PATH_t3lib.'class.t3lib_page.php');
+	require_once(PATH_t3lib.'class.t3lib_userauth.php');
+	require_once(PATH_tslib.'class.tslib_feuserauth.php');
+	require_once(PATH_t3lib.'class.t3lib_tstemplate.php');
+	require_once(PATH_t3lib.'class.t3lib_cs.php');
+$TT->pull();
+
+
 // ***********************************
 // Create $TSFE object (TSFE = TypoScript Front End)
 // Connecting to database
@@ -144,6 +163,22 @@ $TSFE = new $temp_TSFEclassName(
 		t3lib_div::_GP('RDCT')
 	);
 $TSFE->connectToDB();
+
+	// In case of a keyword-authenticated preview, re-initialize the TSFE object:
+if ($temp_previewConfig = $TSFE->ADMCMD_preview())	{
+	$TSFE = new $temp_TSFEclassName(
+		$TYPO3_CONF_VARS,
+		t3lib_div::_GP('id'),
+		t3lib_div::_GP('type'),
+		t3lib_div::_GP('no_cache'),
+		t3lib_div::_GP('cHash'),
+		t3lib_div::_GP('jumpurl'),
+		t3lib_div::_GP('MP'),
+		t3lib_div::_GP('RDCT')
+	);
+	$TSFE->ADMCMD_preview_postInit($temp_previewConfig);
+}
+
 if ($TSFE->RDCT)	{$TSFE->sendRedirect();}
 
 
@@ -247,8 +282,26 @@ if ($_COOKIE['be_typo_user']) {		// If the backend cookie is set, we proceed and
 		}
 	$TT->pull();
 	$TYPO3_MISC['microtime_BE_USER_end'] = microtime();
-}
+} elseif ($TSFE->ADMCMD_preview_BEUSER_uid)	{
+	require_once (PATH_t3lib.'class.t3lib_befunc.php');
+	require_once (PATH_t3lib.'class.t3lib_userauthgroup.php');
+	require_once (PATH_t3lib.'class.t3lib_beuserauth.php');
+	require_once (PATH_t3lib.'class.t3lib_tsfebeuserauth.php');
 
+		// the value this->formfield_status is set to empty in order to disable login-attempts to the backend account through this script
+	$BE_USER = t3lib_div::makeInstance('t3lib_tsfeBeUserAuth');	// New backend user object
+	$BE_USER->userTS_dontGetCached = 1;
+	$BE_USER->OS = TYPO3_OS;
+	$BE_USER->setBeUserByUid($TSFE->ADMCMD_preview_BEUSER_uid);
+	$BE_USER->unpack_uc('');
+	if ($BE_USER->user['uid'])	{
+		$BE_USER->fetchGroupData();
+		$TSFE->beUserLogin = 1;
+	} else {
+		$BE_USER = '';
+		$TSFE->beUserLogin = 0;
+	}
+}
 
 // ********************
 // Workspace preview:
@@ -325,6 +378,13 @@ $TSFE->settingLocale();
 
 
 // ********************************
+// Check JumpUrl
+// *******************************
+$TSFE->setExternalJumpUrl();
+$TSFE->checkJumpUrlReferer();
+
+
+// ********************************
 // Check Submission of data.
 // This is done at this point, because we need the config values
 // *******************************
@@ -342,12 +402,6 @@ switch($TSFE->checkDataSubmission())	{
 		$TT->pull();
 	break;
 }
-
-
-// ********************************
-// Check JumpUrl
-// *******************************
-$TSFE->checkJumpUrl();
 
 
 // ********************************

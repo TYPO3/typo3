@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2005 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2006 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -41,17 +41,17 @@
  *  133:     function parse($string,$matchObj='')
  *  169:     function nextDivider()
  *  185:     function parseSub(&$setup)
- *  337:     function rollParseSub($string,&$setup)
- *  361:     function getVal($string,$setup)
- *  387:     function setVal($string,&$setup,$value,$wipeOut=0)
- *  433:     function error($err,$num=2)
- *  445:     function checkIncludeLines($string)
- *  489:     function checkIncludeLines_array($array)
+ *  389:     function rollParseSub($string,&$setup)
+ *  413:     function getVal($string,$setup)
+ *  439:     function setVal($string,&$setup,$value,$wipeOut=0)
+ *  485:     function error($err,$num=2)
+ *  497:     function checkIncludeLines($string)
+ *  541:     function checkIncludeLines_array($array)
  *
  *              SECTION: Syntax highlighting
- *  532:     function doSyntaxHighlight($string,$lineNum='',$highlightBlockMode=0)
- *  553:     function regHighLight($code,$pointer,$strlen=-1)
- *  571:     function syntaxHighlight_print($lineNumDat,$highlightBlockMode)
+ *  584:     function doSyntaxHighlight($string,$lineNum='',$highlightBlockMode=0)
+ *  605:     function regHighLight($code,$pointer,$strlen=-1)
+ *  623:     function syntaxHighlight_print($lineNumDat,$highlightBlockMode)
  *
  * TOTAL FUNCTIONS: 12
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -183,6 +183,8 @@ class t3lib_TSparser {
 	 * @return	string		Returns the string of the condition found, the exit signal or possible nothing (if it completed parsing with no interruptions)
 	 */
 	function parseSub(&$setup)	{
+		global $TYPO3_CONF_VARS;
+
 		while (isset($this->raw[$this->rawP]))	{
 			$line = ltrim($this->raw[$this->rawP]);
 			$lineP = $this->rawP;
@@ -216,7 +218,7 @@ class t3lib_TSparser {
 								$setup[$this->multiLineObject.'.ln..'][]=($this->lineNumberOffset+$this->rawP-1);
 							}
 						}
-					} else{
+					} else {
 						if ($this->syntaxHighLight)	$this->regHighLight("value",$lineP);
 						$this->multiLineValue[]=$this->raw[($this->rawP-1)];
 					}
@@ -230,11 +232,12 @@ class t3lib_TSparser {
 						$this->inBrace=0;
 						return $line;
 					} elseif (strcspn($line,'}#/')!=0)	{	// If not brace-end or comment
-						$varL = strcspn($line,' {=<>(');		// Find object name string until we meet an operator	VER2: Added '>'!!
+						$varL = strcspn($line,' {=<>:(');	// Find object name string until we meet an operator
 						$objStrName=trim(substr($line,0,$varL));
 						if ($this->syntaxHighLight)	$this->regHighLight("objstr",$lineP,strlen(substr($line,$varL)));
-						if ($objStrName)	{
-							if ($this->strict && eregi('[^[:alnum:]_\.-]',$objStrName,$r))	{
+						if (strlen($objStrName)) {
+							$r = array();
+							if ($this->strict && preg_match('/[^[:alnum:]_\.-]/i',$objStrName,$r))	{
 								$this->error('Line '.($this->lineNumberOffset+$this->rawP-1).': Object Name String, "'.htmlspecialchars($objStrName).'" contains invalid character "'.$r[0].'". Must be alphanumeric or one of: "_-."');
 							} else {
 								$line = ltrim(substr($line,$varL));
@@ -245,9 +248,58 @@ class t3lib_TSparser {
 										$this->regHighLight("operator_postspace", $lineP, strlen(ltrim(substr($line,1))));
 									}
 								}
+
+									// Checking for special TSparser properties (to change TS values at parsetime)
+								$match = array();
+								if (preg_match('/^:=([^\(]+)\((.+)\).*/', $line, $match))	{
+									$tsFunc = trim($match[1]);
+									$tsFuncArg = $match[2];
+									list ($currentValue) = $this->getVal($objStrName,$setup);
+
+									switch ($tsFunc)	{
+										case 'prependString':
+											$newValue = $tsFuncArg . $currentValue;
+										break;
+										case 'apppendString':
+											$newValue = $currentValue . $tsFuncArg;
+										break;
+										case 'removeString':
+											$newValue = str_replace($tsFuncArg, '', $currentValue);
+										break;
+										case 'replaceString':
+											list($fromStr,$toStr) = explode('|', $tsFuncArg, 2);
+											$newValue = str_replace($fromStr, $toStr, $currentValue);
+										break;
+										case 'addToList':
+											$newValue = (strcmp('',$currentValue) ? $currentValue.',' : '') . trim($tsFuncArg);
+										break;
+										case 'removeFromList':
+											$existingElements = t3lib_div::trimExplode(',',$currentValue);
+											$removeElements = t3lib_div::trimExplode(',',$tsFuncArg);
+											if (count($removeElements))	{
+												$newValue = implode(',', array_diff($existingElements, $removeElements));
+											}
+										break;
+										default:
+											if (isset($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tsparser.php']['preParseFunc'][$tsFunc]))	{
+												$hookMethod = $TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tsparser.php']['preParseFunc'][$tsFunc];
+												$params = array('currentValue'=>$currentValue, 'functionArgument'=>$tsFuncArg);
+												$fakeThis = FALSE;
+												$newValue = t3lib_div::callUserFunction($hookMethod,$params,$fakeThis);
+											} else {
+												t3lib_div::sysLog('Missing function definition for '.$tsFunc.' on TypoScript line '.$lineP,'Core',2);
+											}
+									}
+
+									if (isset($newValue))	{
+										$line = '= '.$newValue;
+									}
+								}
+
 								switch(substr($line,0,1))	{
 									case '=':
-										if ($this->syntaxHighLight)	$this->regHighLight("value", $lineP, strlen(ltrim(substr($line,1)))-strlen(trim(substr($line,1))));
+										if ($this->syntaxHighLight)	$this->regHighLight('value', $lineP, strlen(ltrim(substr($line,1)))-strlen(trim(substr($line,1))));
+
 										if (strstr($objStrName,'.'))	{
 											$value = Array();
 											$value[0] = trim(substr($line,1));
@@ -451,9 +503,9 @@ class t3lib_TSparser {
 			while(list($c,$v)=each($allParts))	{
 				if (!$c)	{	 // first goes through
 					$newString.=$v;
-				} elseif (ereg("\r?\n[ ]*$",$allParts[$c-1]))	{	// There must be a line-break char before.
+				} elseif (preg_match('/\r?\n\s*$/',$allParts[$c-1]))	{	// There must be a line-break char before.
 					$subparts=explode('>',$v,2);
-					if (ereg("^[ ]*\r?\n",$subparts[1]))	{	// There must be a line-break char after
+					if (preg_match('/^\s*\r?\n/',$subparts[1]))	{	// There must be a line-break char after
 							// SO, the include was positively recognized:
 						$newString.='### '.$splitStr.$subparts[0].'> BEGIN:'.chr(10);
 						$params = t3lib_div::get_tag_attributes($subparts[0]);
@@ -522,7 +574,7 @@ class t3lib_TSparser {
 
 	/**
 	 * Syntax highlight a TypoScript text
-	 * Will parse the content. Remember, the internal setup array may contain INvalid parsed content since conditions are ignored!
+	 * Will parse the content. Remember, the internal setup array may contain invalid parsed content since conditions are ignored!
 	 *
 	 * @param	string		The TypoScript text
 	 * @param	mixed		If blank, linenumbers are NOT printed. If array then the first key is the linenumber offset to add to the internal counter.

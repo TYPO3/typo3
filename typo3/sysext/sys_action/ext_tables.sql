@@ -2,11 +2,12 @@
 # Table structure for table 'sys_action'
 #
 CREATE TABLE sys_action (
-  uid int(11) unsigned DEFAULT '0' NOT NULL auto_increment,
+  uid int(11) unsigned NOT NULL auto_increment,
   pid int(11) unsigned DEFAULT '0' NOT NULL,
   tstamp int(11) unsigned DEFAULT '0' NOT NULL,
   crdate int(11) unsigned DEFAULT '0' NOT NULL,
   cruser_id int(11) unsigned DEFAULT '0' NOT NULL,
+	sorting int(10) DEFAULT '0' NOT NULL,
   title tinytext NOT NULL,
   description text NOT NULL,
   type tinyint(3) unsigned DEFAULT '0' NOT NULL,
@@ -20,6 +21,7 @@ CREATE TABLE sys_action (
   t3_listPid int(11) DEFAULT '0' NOT NULL,
   t3_tables varchar(40) DEFAULT '' NOT NULL,
   t4_recordsToEdit text NOT NULL,
+
   PRIMARY KEY (uid),
   KEY cruser_id (cruser_id),
   KEY parent (pid)

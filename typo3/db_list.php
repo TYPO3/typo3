@@ -49,7 +49,7 @@
  *  160:     function menuConfig()
  *  181:     function clearCache()
  *  195:     function main()
- *  435:     function printContent()
+ *  451:     function printContent()
  *
  * TOTAL FUNCTIONS: 5
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -215,6 +215,7 @@ class SC_db_list {
 		$dblist->showClipboard = 1;
 		$dblist->disableSingleTableView = $this->modTSconfig['properties']['disableSingleTableView'];
 		$dblist->listOnlyInSingleTableMode = $this->modTSconfig['properties']['listOnlyInSingleTableView'];
+		$dblist->hideTables = $this->modTSconfig['properties']['hideTables'];
 		$dblist->clickTitleMode = $this->modTSconfig['properties']['clickTitleMode'];
 		$dblist->alternateBgColors=$this->modTSconfig['properties']['alternateBgColors']?1:0;
 		$dblist->allowedNewTables = t3lib_div::trimExplode(',',$this->modTSconfig['properties']['allowedNewTables'],1);
@@ -291,19 +292,20 @@ class SC_db_list {
 				// Add JavaScript functions to the page:
 			$this->doc->JScode=$this->doc->wrapScriptTags('
 				function jumpToUrl(URL)	{	//
-					document.location = URL;
+					window.location.href = URL;
 					return false;
 				}
 				function jumpExt(URL,anchor)	{	//
 					var anc = anchor?anchor:"";
-					document.location = URL+(T3_THIS_LOCATION?"&returnUrl="+T3_THIS_LOCATION:"")+anc;
+					window.location.href = URL+(T3_THIS_LOCATION?"&returnUrl="+T3_THIS_LOCATION:"")+anc;
 					return false;
 				}
 				function jumpSelf(URL)	{	//
-					document.location = URL+(T3_RETURN_URL?"&returnUrl="+T3_RETURN_URL:"");
+					window.location.href = URL+(T3_RETURN_URL?"&returnUrl="+T3_RETURN_URL:"");
 					return false;
 				}
-				function setHighlight(id)	{
+
+				function setHighlight(id)	{	//
 					top.fsMod.recentIds["web"]=id;
 					top.fsMod.navFrameHighlightedID["web"]="pages"+id+"_"+top.fsMod.currentBank;	// For highlighting
 
@@ -314,7 +316,7 @@ class SC_db_list {
 				'.$this->doc->redirectUrls($dblist->listURL()).'
 				'.$dblist->CBfunctions().'
 				function editRecords(table,idList,addParams,CBflag)	{	//
-					document.location="'.$backPath.'alt_doc.php?returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI')).
+					window.location.href="'.$BACK_PATH.'alt_doc.php?returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI')).
 						'&edit["+table+"]["+idList+"]=edit"+addParams;
 				}
 				function editList(table,idList)	{	//
@@ -388,11 +390,11 @@ class SC_db_list {
 					<div id="typo3-listOptions">
 						<form action="" method="post">';
 
-			$this->content.=t3lib_BEfunc::getFuncCheck($this->id,'SET[bigControlPanel]',$this->MOD_SETTINGS['bigControlPanel'],'db_list.php','').' '.$LANG->getLL('largeControl',1).'<br />';
+			$this->content.=t3lib_BEfunc::getFuncCheck($this->id,'SET[bigControlPanel]',$this->MOD_SETTINGS['bigControlPanel'],'db_list.php',($this->table?'&table='.$this->table:'')).' '.$LANG->getLL('largeControl',1).'<br />';
 			if ($dblist->showClipboard)	{
-				$this->content.=t3lib_BEfunc::getFuncCheck($this->id,'SET[clipBoard]',$this->MOD_SETTINGS['clipBoard'],'db_list.php','').' '.$LANG->getLL('showClipBoard',1).'<br />';
+				$this->content.=t3lib_BEfunc::getFuncCheck($this->id,'SET[clipBoard]',$this->MOD_SETTINGS['clipBoard'],'db_list.php',($this->table?'&table='.$this->table:'')).' '.$LANG->getLL('showClipBoard',1).'<br />';
 			}
-			$this->content.=t3lib_BEfunc::getFuncCheck($this->id,'SET[localization]',$this->MOD_SETTINGS['localization'],'db_list.php','').' '.$LANG->getLL('localization',1).'<br />';
+			$this->content.=t3lib_BEfunc::getFuncCheck($this->id,'SET[localization]',$this->MOD_SETTINGS['localization'],'db_list.php',($this->table?'&table='.$this->table:'')).' '.$LANG->getLL('localization',1).'<br />';
 			$this->content.='
 						</form>
 					</div>';

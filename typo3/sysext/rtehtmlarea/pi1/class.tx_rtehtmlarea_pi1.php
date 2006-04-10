@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2003-2005 Stanislas Rolland (stanislas.rolland@fructifor.ca)
+*  (c) 2003-2006 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
 *  All rights reserved
 *
 *  This script is part of the Typo3 project. The Typo3 project is
@@ -22,11 +22,13 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 /**
-*  Spell checking plugin 'tx_rtehtmlarea_pi1' for the htmlArea RTE extension.
-*
-*  @author Stanislas Rolland <stanislas.rolland@fructifor.ca>
-*
-*/
+ * Spell checking plugin 'tx_rtehtmlarea_pi1' for the htmlArea RTE extension.
+ *
+ * @author Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
+ *
+ * TYPO3 CVS ID: $Id$
+ *
+ */
 require_once(PATH_tslib.'class.tslib_pibase.php');
 
 class tx_rtehtmlarea_pi1 extends tslib_pibase {
@@ -38,7 +40,6 @@ class tx_rtehtmlarea_pi1 extends tslib_pibase {
 	var $siteUrl;
 	var $charset = 'utf-8';
 	var $parserCharset = 'utf-8';
-	var $typoVersion; // Typo3 version
 	var $result;
 	var $text;
 	var $misspelled = array();
@@ -65,6 +66,8 @@ class tx_rtehtmlarea_pi1 extends tslib_pibase {
 	 * @return	string		content produced by the plugin
 	 */
 	function main($conf) {
+		global $TYPO3_CONF_VARS, $TYPO3_DB;
+		
 		$this->conf = $conf;
 		$this->tslib_pibase();
 		$this->pi_setPiVarDefaults();
@@ -73,8 +76,8 @@ class tx_rtehtmlarea_pi1 extends tslib_pibase {
 			// Setting start time
 		$time_start = microtime(true);
 		$this->pspell_is_available = in_array('pspell', get_loaded_extensions());
-		$this->AspellDirectory = trim($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extKey]['AspellDirectory'])? trim($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extKey]['AspellDirectory']) : '/usr/bin/aspell';
-		$this->forceCommandMode = (trim($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extKey]['forceCommandMode']))? trim($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extKey]['forceCommandMode']) : 0;
+		$this->AspellDirectory = trim($TYPO3_CONF_VARS['EXTCONF'][$this->extKey]['AspellDirectory'])? trim($TYPO3_CONF_VARS['EXTCONF'][$this->extKey]['AspellDirectory']) : '/usr/bin/aspell';
+		$this->forceCommandMode = (trim($TYPO3_CONF_VARS['EXTCONF'][$this->extKey]['forceCommandMode']))? trim($TYPO3_CONF_VARS['EXTCONF'][$this->extKey]['forceCommandMode']) : 0;
 		$safe_mode_is_enabled = ini_get('safe_mode');
 		if($safe_mode_is_enabled && !$this->pspell_is_available ) echo('Configuration problem: Spell checking cannot be performed');
 		if($safe_mode_is_enabled && $this->forceCommandMode) echo('Configuration problem: Spell checking cannot be performed in command mode');
@@ -90,14 +93,14 @@ class tx_rtehtmlarea_pi1 extends tslib_pibase {
 			$dictionaryList = implode(',', t3lib_div::trimExplode(chr(10), $dictionaryList, 1));
 		}
 		if( empty($dictionaryList) ) {
-			$dictionaryList = trim($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extKey]['dictionaryList']);
+			$dictionaryList = trim($TYPO3_CONF_VARS['EXTCONF'][$this->extKey]['dictionaryList']);
 		}
 		if( empty($dictionaryList) ) {
 			$dictionaryList = 'en';
 		}
 		$dictionaryArray = t3lib_div::trimExplode(',', $dictionaryList, 1);
 
-		$defaultDictionary = trim($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extKey]['defaultDictionary']);
+		$defaultDictionary = trim($TYPO3_CONF_VARS['EXTCONF'][$this->extKey]['defaultDictionary']);
 		if(!$defaultDictionary || !in_array($defaultDictionary, $dictionaryArray)) {
 			$defaultDictionary = 'en';
 		}
@@ -109,9 +112,9 @@ class tx_rtehtmlarea_pi1 extends tslib_pibase {
 		$selectFields = $tableA . '.uid,' . $tableB . '.lg_iso_2,' . $tableB . '.lg_country_iso_2';
 		$table = $tableA . ' LEFT JOIN ' . $tableB . ' ON ' . $tableA . '.static_lang_isocode=' . $tableB . '.uid';
 		$whereClause = '1=1 ';
-		$whereClause .= ' AND ' . $tableA . '.hidden != "1"';
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($selectFields, $table, $whereClause);
-		while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))    {
+		$whereClause .= ' AND ' . $tableA . '.hidden != 1';
+		$res = $TYPO3_DB->exec_SELECTquery($selectFields, $table, $whereClause);
+		while($row = $TYPO3_DB->sql_fetch_assoc($res))    {
 			$languageArray[] = strtolower($row['lg_iso_2']).($row['lg_country_iso_2']?'_'.$row['lg_country_iso_2']:'');
 		}
 		if(!in_array($defaultDictionary, $languageArray)) {

@@ -1,9 +1,8 @@
 Fonts:
 
 ***********************************************
-Nimbus Sans L regular  (the Arial substitute)
-"nimbus.ttf" - An "arial"-look-alike font, see below
-"arial.ttf" - is a symlink (equal to) "nimbus.ttf" because some setups might need this file. If you want to use the real Arial font you should just substitute this file with a arial-normal ttf file from your Windows system (fonts/arial.ttf)
+Nimbus Sans L regular
+"nimbus.ttf" - An "arial"-look-alike font. If you want to use the real Arial font you should upload the arial-normal ttf file from your Windows system (fonts/arial.ttf).
 ***********************************************
 
 From "http://www.math.utah.edu/~beebe/fonts/urw.html":
@@ -25,9 +24,8 @@ Fax: +49 (40) 60 60 5 111
 
 
 ***********************************************
-Bitstream Vera Sans  (a Verdana substitute)
-"vera.ttf" - A "arial"-look-alike font, 
-"verdana.ttf" - is a symlink (equal to) "vera.ttf" because some setups might need this file. If you want to use the real Verdana font you should just substitute this file with a verdana-normal ttf file from your Windows system (fonts/verdana.ttf)
+Bitstream Vera Sans
+"vera.ttf" - A "verdana"-look-alike font. If you want to use the real Verdana font you should upload the verdana-normal ttf file from your Windows system (fonts/verdana.ttf).
 ***********************************************
 
 More information:

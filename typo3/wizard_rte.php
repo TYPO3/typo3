@@ -41,8 +41,8 @@
  *   81: class SC_wizard_rte
  *   99:     function init()
  *  123:     function main()
- *  279:     function printContent()
- *  290:     function checkEditAccess($table,$uid)
+ *  285:     function printContent()
+ *  298:     function checkEditAccess($table,$uid)
  *
  * TOTAL FUNCTIONS: 4
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -123,22 +123,28 @@ class SC_wizard_rte {
 	function main()	{
 		global $BE_USER,$LANG;
 
+			// translate id to the workspace version:
+		if ($versionRec = t3lib_BEfunc::getWorkspaceVersionOfRecord($GLOBALS['BE_USER']->workspace, $this->P['table'], $this->P['uid'], 'uid'))	{
+			$this->P['uid'] = $versionRec['uid'];
+		}
+
 			// If all parameters are available:
 		if ($this->P['table'] && $this->P['field'] && $this->P['uid'] && $this->checkEditAccess($this->P['table'],$this->P['uid']))	{
 
 				// Getting the raw record (we need only the pid-value from here...)
 			$rawRec = t3lib_BEfunc::getRecord($this->P['table'],$this->P['uid']);
+			t3lib_BEfunc::fixVersioningPid($this->P['table'], $rawRec);
 
 				// Setting JavaScript, including the pid value for viewing:
 			$this->doc->JScode = $this->doc->wrapScriptTags('
 					function jumpToUrl(URL,formEl)	{	//
 						if (document.editform)	{
 							if (!TBE_EDITOR_isFormChanged())	{
-								document.location = URL;
+								window.location.href = URL;
 							} else if (formEl) {
 								if (formEl.type=="checkbox") formEl.checked = formEl.checked ? 0 : 1;
 							}
-						} else document.location = URL;
+						} else window.location.href = URL;
 					}
 				'.($this->popView ? t3lib_BEfunc::viewOnClick($rawRec['pid'],'',t3lib_BEfunc::BEgetRootLine($rawRec['pid'])) : '').'
 			');
@@ -217,7 +223,7 @@ class SC_wizard_rte {
 				// Undo/Revert:
 			if ($undoButton)	{
 				$toolBarButtons[]=
-					'<a href="#" onclick="'.htmlspecialchars('document.location=\'show_rechis.php?element='.rawurlencode($this->P['table'].':'.$this->P['uid']).'&revert='.rawurlencode('field:'.$this->P['field']).'&sumUp=-1&returnUrl='.rawurlencode($R_URI).'\'; return false;').'">'.
+					'<a href="#" onclick="'.htmlspecialchars('window.location.href=\'show_rechis.php?element='.rawurlencode($this->P['table'].':'.$this->P['uid']).'&revert='.rawurlencode('field:'.$this->P['field']).'&sumUp=-1&returnUrl='.rawurlencode($R_URI).'\'; return false;').'">'.
 					'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/undo.gif','width="21" height="16"').' class="c-inputButton" title="'.htmlspecialchars(sprintf($LANG->getLL('rte_undoLastChange'),t3lib_BEfunc::calcAge(time()-$undoButtonR['tstamp'],$LANG->sL('LLL:EXT:lang/locallang_core.php:labels.minutesHoursDaysYears')))).'" alt="" />'.
 					'</a>';
 			}
@@ -269,8 +275,6 @@ class SC_wizard_rte {
 			$this->content.=$this->doc->section($LANG->getLL('forms_title'),'<span class="typo3-red">'.$LANG->getLL('table_noData',1).'</span>',0,1);
 		}
 
-			// Ending page:
-		$this->content.=$this->doc->endPage();
 	}
 
 	/**
@@ -279,6 +283,8 @@ class SC_wizard_rte {
 	 * @return	void
 	 */
 	function printContent()	{
+		$this->content.= $this->doc->endPage();
+		$this->content = $this->doc->insertStylesAndJS($this->content);
 		echo $this->content;
 	}
 
@@ -293,7 +299,7 @@ class SC_wizard_rte {
 		global $BE_USER;
 
 		$calcPRec = t3lib_BEfunc::getRecord($table,$uid);
-		t3lib_BEfunc::fixVersioningPid($table,$uid);
+		t3lib_BEfunc::fixVersioningPid($table,$calcPRec);
 		if (is_array($calcPRec))	{
 			if ($table=='pages')	{	// If pages:
 				$CALC_PERMS = $BE_USER->calcPerms($calcPRec);

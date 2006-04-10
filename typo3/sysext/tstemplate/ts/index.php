@@ -57,7 +57,7 @@ class SC_mod_web_ts_index extends t3lib_SCbase {
 	var $e;
 	var $sObj;
 	var $edit;
-	var $textExtensions = "html,htm,txt,css,tmpl,inc";
+	var $textExtensions = 'html,htm,txt,css,tmpl,inc,js';
 
 	var $modMenu_type = "";
 	var $modMenu_dontValidateList = "ts_browser_toplevel_setup,ts_browser_toplevel_const,ts_browser_TLKeys_setup,ts_browser_TLKeys_const";
@@ -105,13 +105,13 @@ class SC_mod_web_ts_index extends t3lib_SCbase {
 		<script language="javascript" type="text/javascript">
 			script_ended = 0;
 			function jumpToUrl(URL)	{
-				document.location = URL;
+				window.location.href = URL;
 			}
 			function uFormUrl(aname)	{
 				document.forms[0].action = "index.php?id='.$this->id.'#"+aname;
 			}
 			function brPoint(lnumber,t)	{
-				document.location = "index.php?id='.$this->id.'&SET[function]=tx_tstemplateobjbrowser&SET[ts_browser_type]="+(t?"setup":"const")+"&breakPointLN="+lnumber;
+				window.location.href = "index.php?id='.$this->id.'&SET[function]=tx_tstemplateobjbrowser&SET[ts_browser_type]="+(t?"setup":"const")+"&breakPointLN="+lnumber;
 				return false;
 			}
 		</script>
@@ -286,11 +286,11 @@ class SC_mod_web_ts_index extends t3lib_SCbase {
 			$theOutput.=$this->doc->section("Create new website",'If you want this page to be the root of a new website, optionally based on one of the standard templates, then press the button below:<BR>
 			<BR>
 			'.$selector.'<BR>
-			<img src="'.$GLOBALS["BACK_PATH"].'t3lib/gfx/icon_warning.gif" width=18 height=16 hspace=5 align=top><input type="Submit" name="newWebsite" value="Create template for a new site"'.$confirm.'>',0,1);
+			<img src="'.$GLOBALS["BACK_PATH"].'gfx/icon_warning.gif" width=18 height=16 hspace=5 align=top><input type="Submit" name="newWebsite" value="Create template for a new site"'.$confirm.'>',0,1);
 		}
 			// Extension?
 		$theOutput.=$this->doc->spacer(10);
-		$theOutput.=$this->doc->section("Create extension template",'An extension template allows you to enter TypoScript values that will affect only this page and subpages.<BR><BR><img src="'.$GLOBALS["BACK_PATH"].'t3lib/gfx/icon_warning.gif" width=18 height=16 hspace=5 align=top><input type="submit" name="createExtension" value="Click here to create an extension template."'.$confirm.'>',0,1);
+		$theOutput.=$this->doc->section("Create extension template",'An extension template allows you to enter TypoScript values that will affect only this page and subpages.<BR><BR><img src="'.$GLOBALS["BACK_PATH"].'gfx/icon_warning.gif" width=18 height=16 hspace=5 align=top><input type="submit" name="createExtension" value="Click here to create an extension template."'.$confirm.'>',0,1);
 
 			// Go to first appearing...
 		$first = $tmpl->ext_prevPageWithTemplate($this->id,$this->perms_clause);

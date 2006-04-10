@@ -42,8 +42,8 @@
  *
  *   75: class SC_alt_intro
  *   84:     function init()
- *   97:     function main()
- *  147:     function printContent()
+ *   98:     function main()
+ *  148:     function printContent()
  *
  * TOTAL FUNCTIONS: 3
  * (This index is automatically created/updated by the extension "extdeveval")

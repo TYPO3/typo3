@@ -41,17 +41,17 @@
  *  175: class SC_wizard_forms
  *  203:     function init()
  *  242:     function main()
- *  258:     function printContent()
- *  267:     function formsWizard()
+ *  257:     function printContent()
+ *  268:     function formsWizard()
  *
  *              SECTION: Helper functions
- *  310:     function getConfigCode(&$row)
- *  381:     function getFormHTML($formCfgArray,$row)
- *  660:     function changeFunc()
- *  719:     function cfgArray2CfgString($cfgArr)
- *  801:     function cfgString2CfgArray($cfgStr)
- *  900:     function cleanT($tArr)
- *  918:     function formatCells($fArr)
+ *  311:     function getConfigCode(&$row)
+ *  382:     function getFormHTML($formCfgArray,$row)
+ *  662:     function changeFunc()
+ *  721:     function cfgArray2CfgString($cfgArr)
+ *  803:     function cfgString2CfgArray($cfgStr)
+ *  902:     function cleanT($tArr)
+ *  920:     function formatCells($fArr)
  *
  * TOTAL FUNCTIONS: 11
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -217,7 +217,7 @@ class SC_wizard_forms {
 		$this->doc->backPath = $BACK_PATH;
 		$this->doc->JScode=$this->doc->wrapScriptTags('
 			function jumpToUrl(URL,formEl)	{	//
-				document.location = URL;
+				window.location.href = URL;
 			}
 		');
 
@@ -247,7 +247,6 @@ class SC_wizard_forms {
 		} else {
 			$this->content.=$this->doc->section($LANG->getLL('forms_title'),'<span class="typo3-red">'.$LANG->getLL('table_noData',1).'</span>',0,1);
 		}
-		$this->content.=$this->doc->endPage();
 	}
 
 	/**
@@ -256,6 +255,8 @@ class SC_wizard_forms {
 	 * @return	void
 	 */
 	function printContent()	{
+		$this->content.= $this->doc->endPage();
+		$this->content = $this->doc->insertStylesAndJS($this->content);
 		echo $this->content;
 	}
 
@@ -318,7 +319,7 @@ class SC_wizard_forms {
 				// Convert to string (either line based or XML):
 			if ($this->xmlStorage)	{
 					// Convert the input array to XML:
-				$bodyText = t3lib_div::array2xml($this->FORMCFG['c'],'',0,'T3FormWizard');
+				$bodyText = t3lib_div::array2xml_cs($this->FORMCFG['c'],'T3FormWizard');
 
 					// Setting cfgArr directly from the input:
 				$cfgArr = $this->FORMCFG['c'];
@@ -507,7 +508,7 @@ class SC_wizard_forms {
 					$ctrl='';
 					$onClick="document.wizardForm.action+='#ANC_".(($k+1)*2-2)."';";
 					$onClick=' onclick="'.htmlspecialchars($onClick).'"';
-
+// FIXME $inputStyle undefined
 					$brTag=$inputStyle?'':'<br />';
 					if ($k!=0)	{
 						$ctrl.='<input type="image" name="FORMCFG[row_up]['.(($k+1)*2).']"'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/pil2up.gif','').$onClick.' title="'.$LANG->getLL('table_up',1).'" />'.$brTag;
@@ -515,6 +516,7 @@ class SC_wizard_forms {
 						$ctrl.='<input type="image" name="FORMCFG[row_bottom]['.(($k+1)*2).']"'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/turn_up.gif','').$onClick.' title="'.$LANG->getLL('table_bottom',1).'" />'.$brTag;
 					}
 					$ctrl.='<input type="image" name="FORMCFG[row_remove]['.(($k+1)*2).']"'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/garbage.gif','').$onClick.' title="'.$LANG->getLL('table_removeRow',1).'" />'.$brTag;
+// FIXME $tLines undefined
 					if (($k+1)!=count($tLines))	{
 						$ctrl.='<input type="image" name="FORMCFG[row_down]['.(($k+1)*2).']"'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/pil2down.gif','').$onClick.' title="'.$LANG->getLL('table_down',1).'" />'.$brTag;
 					} else {

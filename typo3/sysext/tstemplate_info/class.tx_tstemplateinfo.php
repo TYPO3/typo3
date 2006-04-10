@@ -299,7 +299,7 @@ class tx_tstemplateinfo extends t3lib_extobjbase {
 				$theOutput.=$this->pObj->doc->section("Sitetitle:",$outCode);
 			}
 			if ($e["description"])	{
-				$outCode='<textarea name="data[description]" rows="5" '.$this->pObj->doc->formWidthText(48,"","").'>'.t3lib_div::formatForTextarea($tplRow[description]).'</textarea>';
+				$outCode='<textarea name="data[description]" rows="5" class="fixed-font enable-tab"'.$this->pObj->doc->formWidthText(48,"","").'>'.t3lib_div::formatForTextarea($tplRow[description]).'</textarea>';
 				$outCode.='<input type="Hidden" name="e[description]" value="1">';
 				$theOutput.=$this->pObj->doc->spacer(15);
 				$theOutput.=$this->pObj->doc->section("Description:",$outCode);
@@ -341,7 +341,7 @@ class tx_tstemplateinfo extends t3lib_extobjbase {
 				}
 			}
 			if ($e["constants"])	{
-				$outCode='<textarea name="data[constants]" rows="'.$numberOfRows.'" wrap="off"'.$this->pObj->doc->formWidthText(48,"width:98%;height:70%","off").' class="fixed-font">'.t3lib_div::formatForTextarea($tplRow["constants"]).'</textarea>';
+				$outCode='<textarea name="data[constants]" rows="'.$numberOfRows.'" wrap="off" class="fixed-font enable-tab"'.$this->pObj->doc->formWidthText(48,"width:98%;height:70%","off").' class="fixed-font">'.t3lib_div::formatForTextarea($tplRow["constants"]).'</textarea>';
 				$outCode.='<input type="Hidden" name="e[constants]" value="1">';
 				$theOutput.=$this->pObj->doc->spacer(15);
 				$theOutput.=$this->pObj->doc->section("Constants:","");
@@ -349,13 +349,13 @@ class tx_tstemplateinfo extends t3lib_extobjbase {
 			}
 			if ($e["file"])	{
 				$path = PATH_site.$TCA["sys_template"]["columns"]["resources"]["config"]["uploadfolder"]."/".$e[file];
-		//		debug($path);
+
 				$fI=t3lib_div::split_fileref($e[file]);
 				if (@is_file($path) && t3lib_div::inList($this->pObj->textExtensions,$fI["fileext"]))	{
-					if (filesize($path)<(30*1024))	{
+					if (filesize($path)<($TCA['sys_template']['columns']['resources']['config']['max_size']*1024))	{
 						$fileContent = t3lib_div::getUrl($path);
 						$outCode='File: <b>'.$e[file].'</b><BR>';
-						$outCode.='<textarea name="edit[file]" rows="'.$numberOfRows.'" wrap="off"'.$this->pObj->doc->formWidthText(48,"width:98%;height:70%","off").' class="fixed-font">'.t3lib_div::formatForTextarea($fileContent).'</textarea>';
+						$outCode.='<textarea name="edit[file]" rows="'.$numberOfRows.'" wrap="off" class="fixed-font enable-tab"'.$this->pObj->doc->formWidthText(48,"width:98%;height:70%","off").' class="fixed-font">'.t3lib_div::formatForTextarea($fileContent).'</textarea>';
 						$outCode.='<input type="Hidden" name="edit[filename]" value="'.$e[file].'">';
 						$outCode.='<input type="Hidden" name="e[file]" value="'.htmlspecialchars($e[file]).'">';
 						$theOutput.=$this->pObj->doc->spacer(15);
@@ -363,12 +363,12 @@ class tx_tstemplateinfo extends t3lib_extobjbase {
 						$theOutput.=$this->pObj->doc->sectionEnd().$outCode;
 					} else {
 						$theOutput.=$this->pObj->doc->spacer(15);
-						$theOutput.=$this->pObj->doc->section('<font color=red>Filesize exceeded 30 Kbytes</font>','Files larger than 30 KByes are not allowed to be edited.',0,0,0,1);
+						$theOutput.=$this->pObj->doc->section('<font color=red>Filesize exceeded '.$TCA['sys_template']['columns']['resources']['config']['max_size'].' Kbytes</font>','Files larger than '.$TCA['sys_template']['columns']['resources']['config']['max_size'].' KByes are not allowed to be edited.',0,0,0,1);
 					}
 				}
 			}
 			if ($e["config"])	{
-				$outCode='<textarea name="data[config]" rows="'.$numberOfRows.'" wrap="off"'.$this->pObj->doc->formWidthText(48,"width:98%;height:70%","off").' class="fixed-font">'.t3lib_div::formatForTextarea($tplRow["config"]).'</textarea>';
+				$outCode='<textarea name="data[config]" rows="'.$numberOfRows.'" wrap="off" class="fixed-font enable-tab"'.$this->pObj->doc->formWidthText(48,"width:98%;height:70%","off").' class="fixed-font">'.t3lib_div::formatForTextarea($tplRow["config"]).'</textarea>';
 
 				if (t3lib_extMgm::isLoaded("tsconfig_help"))	{
 					$url=$BACK_PATH."wizard_tsconfig.php?mode=tsref";

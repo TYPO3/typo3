@@ -41,48 +41,48 @@
  *  179:     function init($content,$conf)
  *
  *              SECTION: Data processing
- *  408:     function parseValues()
- *  503:     function processFiles($cmdParts,$theField)
- *  609:     function overrideValues()
- *  625:     function defaultValues()
- *  644:     function evalValues()
- *  766:     function userProcess($mConfKey,$passVar)
- *  784:     function userProcess_alt($confVal,$confArr,$passVar)
+ *  423:     function parseValues()
+ *  518:     function processFiles($cmdParts,$theField)
+ *  624:     function overrideValues()
+ *  640:     function defaultValues()
+ *  659:     function evalValues()
+ *  781:     function userProcess($mConfKey,$passVar)
+ *  799:     function userProcess_alt($confVal,$confArr,$passVar)
  *
  *              SECTION: Database manipulation functions
- *  826:     function save()
- *  884:     function deleteRecord()
- *  914:     function deleteFilesFromRecord($uid)
+ *  841:     function save()
+ *  899:     function deleteRecord()
+ *  929:     function deleteFilesFromRecord($uid)
  *
  *              SECTION: Command "display" functions
- *  971:     function displayDeleteScreen()
- *  999:     function displayCreateScreen()
- * 1022:     function displayEditScreen()
- * 1073:     function displayEditForm($origArr)
- * 1101:     function procesSetFixed()
+ *  986:     function displayDeleteScreen()
+ * 1014:     function displayCreateScreen()
+ * 1037:     function displayEditScreen()
+ * 1088:     function displayEditForm($origArr)
+ * 1116:     function procesSetFixed()
  *
  *              SECTION: Template processing functions
- * 1190:     function removeRequired($templateCode,$failure)
- * 1208:     function getPlainTemplate($key,$r='')
- * 1225:     function modifyDataArrForFormUpdate($inputArr)
- * 1294:     function setCObjects($templateCode,$currentArr=array(),$markerArray='',$specialPrefix='')
+ * 1205:     function removeRequired($templateCode,$failure)
+ * 1223:     function getPlainTemplate($key,$r='')
+ * 1240:     function modifyDataArrForFormUpdate($inputArr)
+ * 1309:     function setCObjects($templateCode,$currentArr=array(),$markerArray='',$specialPrefix='')
  *
  *              SECTION: Emailing
- * 1356:     function sendInfoMail()
- * 1404:     function compileMail($key, $DBrows, $recipient, $setFixedConfig=array())
- * 1450:     function sendMail($recipient, $admin, $content='', $adminContent='')
- * 1495:     function isHTMLContent($c)
- * 1516:     function sendHTMLMail($content,$recipient,$dummy,$fromEmail,$fromName,$replyTo='')
+ * 1371:     function sendInfoMail()
+ * 1419:     function compileMail($key, $DBrows, $recipient, $setFixedConfig=array())
+ * 1465:     function sendMail($recipient, $admin, $content='', $adminContent='')
+ * 1510:     function isHTMLContent($c)
+ * 1531:     function sendHTMLMail($content,$recipient,$dummy,$fromEmail,$fromName,$replyTo='')
  *
  *              SECTION: Various helper functions
- * 1600:     function aCAuth($r)
- * 1614:     function authCode($r,$extra='')
- * 1640:     function setfixed($markerArray, $setfixed, $r)
- * 1678:     function setfixedHash($recCopy,$fields='')
- * 1699:     function isPreview()
- * 1708:     function createFileFuncObj()
- * 1719:     function clearCacheIfSet()
- * 1734:     function getFailure($theField, $theCmd, $label)
+ * 1615:     function aCAuth($r)
+ * 1629:     function authCode($r,$extra='')
+ * 1655:     function setfixed($markerArray, $setfixed, $r)
+ * 1693:     function setfixedHash($recCopy,$fields='')
+ * 1714:     function isPreview()
+ * 1723:     function createFileFuncObj()
+ * 1734:     function clearCacheIfSet()
+ * 1749:     function getFailure($theField, $theCmd, $label)
  *
  * TOTAL FUNCTIONS: 33
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -222,8 +222,13 @@ class user_feAdmin	{
 			$linkConf['additionalParams'] = $this->conf['addParams'];
 		}
 
+		$formURL = $this->cObj->typoLink_URL($linkConf);
+		if(!strstr($formURL,'?')) {
+			$formURL .= '?';
+		}
+
 			// Initialize markerArray, setting FORM_URL and HIDDENFIELDS
-		$this->markerArray['###FORM_URL###'] = $this->cObj->typoLink_URL($linkConf);
+		$this->markerArray['###FORM_URL###'] = $formURL;
 		$this->markerArray['###FORM_URL_ENC###'] = rawurlencode($this->markerArray['###FORM_URL###']);
 		$this->markerArray['###FORM_URL_HSC###'] = htmlspecialchars($this->markerArray['###FORM_URL###']);
 

@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2005 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2006 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -36,36 +36,45 @@
  *
  *
  *
- *   74: class t3lib_refindex
- *   91:     function updateRefIndexTable($table,$uid,$testOnly=FALSE)
- *  162:     function generateRefIndexData($table,$uid)
- *  235:     function createEntryData($table,$uid,$field,$flexpointer,$ref_table,$ref_uid,$ref_string='',$sort=-1,$softref_key='',$softref_id='')
- *  260:     function createEntryData_dbRels($table,$uid,$fieldname,$flexpointer,$items)
- *  276:     function createEntryData_fileRels($table,$uid,$fieldname,$flexpointer,$items)
- *  296:     function createEntryData_softreferences($table,$uid,$fieldname,$flexpointer,$keys)
+ *   76: class t3lib_refindex
+ *   94:     function updateRefIndexTable($table,$uid,$testOnly=FALSE)
+ *  165:     function generateRefIndexData($table,$uid)
+ *  242:     function createEntryData($table,$uid,$field,$flexpointer,$deleted,$ref_table,$ref_uid,$ref_string='',$sort=-1,$softref_key='',$softref_id='')
+ *  269:     function createEntryData_dbRels($table,$uid,$fieldname,$flexpointer,$deleted,$items)
+ *  286:     function createEntryData_fileRels($table,$uid,$fieldname,$flexpointer,$deleted,$items)
+ *  307:     function createEntryData_softreferences($table,$uid,$fieldname,$flexpointer,$deleted,$keys)
  *
  *              SECTION: Get relations from table row
- *  351:     function getRelations($table,$row)
- *  456:     function getRelations_flexFormCallBack($pParams, $dsConf, $dataValue, $dataValue_ext1, $dataValue_ext2, $structurePath)
- *  503:     function getRelations_procFiles($value, $conf, $uid)
- *  553:     function getRelations_procDB($value, $conf, $uid)
+ *  362:     function getRelations($table,$row)
+ *  459:     function getRelations_flexFormCallBack($dsArr, $dataValue, $PA, $structurePath, &$pObj)
+ *  509:     function getRelations_procFiles($value, $conf, $uid)
+ *  559:     function getRelations_procDB($value, $conf, $uid)
  *
  *              SECTION: Helper functions
- *  590:     function isReferenceField($conf)
- *  600:     function destPathFromUploadFolder($folder)
- *  610:     function error($msg)
+ *  596:     function isReferenceField($conf)
+ *  606:     function destPathFromUploadFolder($folder)
+ *  616:     function error($msg)
+ *  627:     function updateIndex($testOnly,$cli_echo=FALSE)
  *
- * TOTAL FUNCTIONS: 13
+ * TOTAL FUNCTIONS: 14
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
 
 require_once(PATH_t3lib.'class.t3lib_tcemain.php');
+require_once(PATH_t3lib.'class.t3lib_flexformtools.php');
 
 
 
 /**
  * Reference index processing and relation extraction
+ *
+ * NOTICE: When the reference index is updated for an offline version the results may not be correct. 
+ * First, lets assumed that the reference update happens in LIVE workspace (ALWAYS update from Live workspace if you analyse whole database!)
+ * Secondly, lets assume that in a Draft workspace you have changed the data structure of a parent page record - this is (in TemplaVoila) inherited by subpages.
+ * When in the LIVE workspace the data structure for the records/pages in the offline workspace will not be evaluated to the right one simply because the data structure is taken from a rootline traversal and in the Live workspace that will NOT include the changed DataSTructure! Thus the evaluation will be based on the Data Structure set in the Live workspace! 
+ * Somehow this scenario is rarely going to happen. Yet, it is an inconsistency and I see now practical way to handle it - other than simply ignoring maintaining the index for workspace records. Or we can say that the index is precise for all Live elements while glitches might happen in an offline workspace?
+ * Anyway, I just wanted to document this finding - I don't think we can find a solution for it. And its very TemplaVoila specific.
  *
  * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  * @package TYPO3
@@ -82,9 +91,10 @@ class t3lib_refindex {
 
 	/**
 	 * Call this function to update the sys_refindex table for a record.
+	 * NOTICE: Currently, references updated for a deleted-flagged record will not include those from within flexform fields in some cases where the data structure is defined by another record since the resolving process ignores deleted records! This will also result in bad cleaning up in tcemain I think... Anyway, thats the story of flexforms; as long as the DS can change, lots of references can get lost in no time.
 	 *
 	 * @param	string		Table name
-	 * @param	uid		UID of record
+	 * @param	integer		UID of record
 	 * @param	boolean		If set, nothing will be written to the index but the result value will still report statistics on what as added, deleted and kept. Can be used for mere analysis.
 	 * @return	array		Array with statistics about how many index records were added, deleted and not altered plus the complete reference set for the record.
 	 */
@@ -110,7 +120,7 @@ class t3lib_refindex {
 		);
 
 			// First, test to see if the record exists (being deleted also means it doesn't exist!)
-		if (t3lib_BEfunc::getRecord($table,$uid,'uid'))	{
+		if (t3lib_BEfunc::getRecordRaw($table,'uid='.intval($uid),'uid'))	{
 
 				// Then, get relations:
 			$relations = $this->generateRefIndexData($table,$uid);
@@ -168,6 +178,9 @@ class t3lib_refindex {
 
 			if (is_array($record))	{
 
+					// Deleted:
+				$deleted = $TCA[$table]['ctrl']['delete'] ? ($record[$TCA[$table]['ctrl']['delete']]?1:0) : 0;
+
 					// Get all relations from record:
 				$dbrels = $this->getRelations($table,$record);
 
@@ -178,28 +191,28 @@ class t3lib_refindex {
  						// Based on type,
  					switch((string)$dat['type'])	{
  						case 'db':
- 							$this->createEntryData_dbRels($table,$uid,$fieldname,'',$dat['itemArray']);
+ 							$this->createEntryData_dbRels($table,$uid,$fieldname,'',$deleted,$dat['itemArray']);
  						break;
  						case 'file':
- 							$this->createEntryData_fileRels($table,$uid,$fieldname,'',$dat['newValueFiles']);
+ 							$this->createEntryData_fileRels($table,$uid,$fieldname,'',$deleted,$dat['newValueFiles']);
  						break;
  						case 'flex':
 								// DB references:
 							if (is_array($dat['flexFormRels']['db']))	{
 								foreach($dat['flexFormRels']['db'] as $flexpointer => $subList)	{
-									$this->createEntryData_dbRels($table,$uid,$fieldname,$flexpointer,$subList);
+									$this->createEntryData_dbRels($table,$uid,$fieldname,$flexpointer,$deleted,$subList);
 								}
 							}
 								// File references (NOT TESTED!)
 							if (is_array($dat['flexFormRels']['file']))	{	// Not tested
 								foreach($dat['flexFormRels']['file'] as $flexpointer => $subList)	{
-									$this->createEntryData_fileRels($table,$uid,$fieldname,$flexpointer,$subList);
+									$this->createEntryData_fileRels($table,$uid,$fieldname,$flexpointer,$deleted,$subList);
 								}
 							}
 								// Soft references in flexforms (NOT TESTED!)
 							if (is_array($dat['flexFormRels']['softrefs']))	{
 								foreach($dat['flexFormRels']['softrefs'] as $flexpointer => $subList)	{
-									$this->createEntryData_softreferences($table,$uid,$fieldname,$flexpointer,$subList['keys']);
+									$this->createEntryData_softreferences($table,$uid,$fieldname,$flexpointer,$deleted,$subList['keys']);
 								}
 							}
  						break;
@@ -207,7 +220,7 @@ class t3lib_refindex {
 
  						// Softreferences in the field:
  					if (is_array($dat['softrefs']))	{
- 						$this->createEntryData_softreferences($table,$uid,$fieldname,'',$dat['softrefs']['keys']);
+ 						$this->createEntryData_softreferences($table,$uid,$fieldname,'',$deleted,$dat['softrefs']['keys']);
  					}
 				}
 
@@ -224,6 +237,7 @@ class t3lib_refindex {
 	 * @param	integer		UID of source record (where reference is located)
 	 * @param	string		Fieldname of source record (where reference is located)
 	 * @param	string		Pointer to location inside flexform structure where reference is located in [field]
+	 * @param	integer		Whether record is deleted-flagged or not
 	 * @param	string		For database references; the tablename the reference points to. Special keyword "_FILE" indicates that "ref_string" is a file reference either absolute or relative to PATH_site. Special keyword "_STRING" indicates some special usage (typ. softreference) where "ref_string" is used for the value.
 	 * @param	integer		For database references; The UID of the record (zero "ref_table" is "_FILE" or "_STRING")
 	 * @param	string		For "_FILE" or "_STRING" references: The filepath (relative to PATH_site or absolute) or other string.
@@ -232,7 +246,7 @@ class t3lib_refindex {
 	 * @param	string		Soft reference ID for key. Might be useful for replace operations.
 	 * @return	array		Array record to insert into table.
 	 */
-	function createEntryData($table,$uid,$field,$flexpointer,$ref_table,$ref_uid,$ref_string='',$sort=-1,$softref_key='',$softref_id='')	{
+	function createEntryData($table,$uid,$field,$flexpointer,$deleted,$ref_table,$ref_uid,$ref_string='',$sort=-1,$softref_key='',$softref_id='')	{
 		return array(
 			'tablename' => $table,
 			'recuid' => $uid,
@@ -241,6 +255,7 @@ class t3lib_refindex {
 			'softref_key' => $softref_key,
 			'softref_id' => $softref_id,
 			'sorting' => $sort,
+			'deleted' => $deleted,
 			'ref_table' => $ref_table,
 			'ref_uid' => $ref_uid,
 			'ref_string' => $ref_string,
@@ -254,12 +269,13 @@ class t3lib_refindex {
 	 * @param	integer		[See createEntryData, arg 2]
 	 * @param	string		[See createEntryData, arg 3]
 	 * @param	string		[See createEntryData, arg 4]
+	 * @param	string		[See createEntryData, arg 5]
 	 * @param	array		Data array with databaes relations (table/id)
 	 * @return	void
 	 */
-	function createEntryData_dbRels($table,$uid,$fieldname,$flexpointer,$items)	{
+	function createEntryData_dbRels($table,$uid,$fieldname,$flexpointer,$deleted,$items)	{
 		foreach($items as $sort => $i)	{
-			$this->relations[] = $this->createEntryData($table,$uid,$fieldname,$flexpointer,$i['table'],$i['id'],'',$sort);
+			$this->relations[] = $this->createEntryData($table,$uid,$fieldname,$flexpointer,$deleted,$i['table'],$i['id'],'',$sort);
 		}
 	}
 
@@ -270,16 +286,17 @@ class t3lib_refindex {
 	 * @param	integer		[See createEntryData, arg 2]
 	 * @param	string		[See createEntryData, arg 3]
 	 * @param	string		[See createEntryData, arg 4]
+	 * @param	string		[See createEntryData, arg 5]
 	 * @param	array		Data array with file relations
 	 * @return	void
 	 */
-	function createEntryData_fileRels($table,$uid,$fieldname,$flexpointer,$items)	{
+	function createEntryData_fileRels($table,$uid,$fieldname,$flexpointer,$deleted,$items)	{
 		foreach($items as $sort => $i)	{
 			$filePath = $i['ID_absFile'];
 			if (t3lib_div::isFirstPartOfStr($filePath,PATH_site))	{
 				$filePath = substr($filePath,strlen(PATH_site));
 			}
-			$this->relations[] = $this->createEntryData($table,$uid,$fieldname,$flexpointer,'_FILE',0,$filePath,$sort);
+			$this->relations[] = $this->createEntryData($table,$uid,$fieldname,$flexpointer,$deleted,'_FILE',0,$filePath,$sort);
 		}
 	}
 
@@ -290,10 +307,11 @@ class t3lib_refindex {
 	 * @param	integer		[See createEntryData, arg 2]
 	 * @param	string		[See createEntryData, arg 3]
 	 * @param	string		[See createEntryData, arg 4]
+	 * @param	string		[See createEntryData, arg 5]
 	 * @param	array		Data array with soft reference keys
 	 * @return	void
 	 */
-	function createEntryData_softreferences($table,$uid,$fieldname,$flexpointer,$keys)	{
+	function createEntryData_softreferences($table,$uid,$fieldname,$flexpointer,$deleted,$keys)	{
 		if (is_array($keys))	{
 			foreach($keys as $spKey => $elements)	{
 				if (is_array($elements))	{
@@ -302,13 +320,13 @@ class t3lib_refindex {
 							switch((string)$el['subst']['type'])	{
 								 case 'db':
 								 	list($tableName,$recordId) = explode(':',$el['subst']['recordRef']);
-								 	$this->relations[] = $this->createEntryData($table,$uid,$fieldname,$flexpointer,$tableName,$recordId,'',-1,$spKey,$subKey);
+								 	$this->relations[] = $this->createEntryData($table,$uid,$fieldname,$flexpointer,$deleted,$tableName,$recordId,'',-1,$spKey,$subKey);
 								 break;
 								 case 'file':
-								 	$this->relations[] = $this->createEntryData($table,$uid,$fieldname,$flexpointer,'_FILE',0,$el['subst']['relFileName'],-1,$spKey,$subKey);
+								 	$this->relations[] = $this->createEntryData($table,$uid,$fieldname,$flexpointer,$deleted,'_FILE',0,$el['subst']['relFileName'],-1,$spKey,$subKey);
 								 break;
 								 case 'string':
-								 	$this->relations[] = $this->createEntryData($table,$uid,$fieldname,$flexpointer,'_STRING',0,$el['subst']['tokenValue'],-1,$spKey,$subKey);
+								 	$this->relations[] = $this->createEntryData($table,$uid,$fieldname,$flexpointer,$deleted,'_STRING',0,$el['subst']['tokenValue'],-1,$spKey,$subKey);
 								 break;
 							}
 						}
@@ -343,7 +361,7 @@ class t3lib_refindex {
 	 * Traverses all fields in input row which are configured in TCA/columns
 	 * It looks for hard relations to files and records in the TCA types "select" and "group"
 	 *
-	 * @param	string		Table
+	 * @param	string		Table name
 	 * @param	array		Row from table
 	 * @return	array		Array with information about relations
 	 * @see export_addRecord()
@@ -396,16 +414,9 @@ class t3lib_refindex {
 							'softrefs' => array()
 						);
 
-						$iteratorObj = t3lib_div::makeInstance('t3lib_TCEmain');
-						$iteratorObj->callBackObj = &$this;
-						$iteratorObj->checkValue_flex_procInData(
-									$currentValueArray['data'],
-									array(),	// Not used.
-									array(),	// Not used.
-									$dataStructArray,
-									array($table,$uid,$field),	// Parameters.
-									'getRelations_flexFormCallBack'
-								);
+							// Create and call iterator object:
+						$flexObj = t3lib_div::makeInstance('t3lib_flexformtools');
+						$flexObj->traverseFlexFormXMLData($table,$field,$row,$this,'getRelations_flexFormCallBack');
 
 							// Create an entry for the field:
 						$outRow[$field] = array(
@@ -416,7 +427,7 @@ class t3lib_refindex {
 				}
 
 					// Soft References:
-				if (strlen($value) && $softRefs = t3lib_BEfunc::explodeSoftRefParserList($conf['softref'], $table, $field))	{
+				if (strlen($value) && $softRefs = t3lib_BEfunc::explodeSoftRefParserList($conf['softref']))	{
 					$softRefValue = $value;
 					foreach($softRefs as $spKey => $spParams)	{
 						$softRefObj = &t3lib_BEfunc::softRefParserObj($spKey);
@@ -444,19 +455,21 @@ class t3lib_refindex {
 	/**
 	 * Callback function for traversing the FlexForm structure in relation to finding file and DB references!
 	 *
-	 * @param	array		Array of parameters in num-indexes: table, uid, field
-	 * @param	array		TCA field configuration (from Data Structure XML)
-	 * @param	string		The value of the flexForm field
-	 * @param	string		Not used.
-	 * @param	string		Not used.
-	 * @param	string		Path of where in the data structure this element is.
-	 * @return	array		Result array with key "value" containing the value of the processing.
+	 * @param	array		Data structure for the current value
+	 * @param	mixed		Current value
+	 * @param	array		Additional configuration used in calling function
+	 * @param	string		Path of value in DS structure
+	 * @param	object		Object reference to caller
+	 * @return	void
 	 * @see t3lib_TCEmain::checkValue_flex_procInData_travDS()
 	 */
-	function getRelations_flexFormCallBack($pParams, $dsConf, $dataValue, $dataValue_ext1, $dataValue_ext2, $structurePath)	{
+	function getRelations_flexFormCallBack($dsArr, $dataValue, $PA, $structurePath, &$pObj)	{
+		$structurePath = substr($structurePath,5).'/';	// removing "data/" in the beginning of path (which points to location in data array)
+
+		$dsConf = $dsArr['TCEforms']['config'];
 
 			// Implode parameter values:
-		list($table, $uid, $field) = $pParams;
+		list($table, $uid, $field) = array($PA['table'],$PA['uid'],$PA['field']);
 
 			// Add files
 		if ($result = $this->getRelations_procFiles($dataValue, $dsConf, $uid))	{
@@ -473,7 +486,7 @@ class t3lib_refindex {
 		}
 
 			// Soft References:
-		if (strlen($dataValue) && $softRefs = t3lib_BEfunc::explodeSoftRefParserList($dsConf['softref'], $table, $field))	{
+		if (strlen($dataValue) && $softRefs = t3lib_BEfunc::explodeSoftRefParserList($dsConf['softref']))	{
 			$softRefValue = $dataValue;
 			foreach($softRefs as $spKey => $spParams)	{
 				$softRefObj = &t3lib_BEfunc::softRefParserObj($spKey);
@@ -609,6 +622,78 @@ class t3lib_refindex {
 	 */
 	function error($msg)	{
 		$this->errorLog[]=$msg;
+	}
+
+	/**
+	 * Updating Index (External API)
+	 *
+	 * @param	boolean		If set, only a test
+	 * @param	boolean		If set, output CLI status
+	 * @return	array		Header and body status content
+	 */
+	function updateIndex($testOnly,$cli_echo=FALSE)	{
+		global $TCA, $TYPO3_DB;
+
+		$errors = array();
+		$tableNames = array();
+		$recCount=0;
+		$tableCount=0;
+
+		$headerContent = $testOnly ? 'Reference Index TESTED (nothing written)' : 'Reference Index Updated';
+		if ($cli_echo) echo
+						'*******************************************'.chr(10).
+						$headerContent.chr(10).
+						'*******************************************'.chr(10);
+
+			// Traverse all tables:
+		foreach ($TCA as $tableName => $cfg)	{
+			$tableNames[] = $tableName;
+			$tableCount++;
+
+				// Traverse all non-deleted records in tables:
+			$allRecs = $TYPO3_DB->exec_SELECTgetRows('uid',$tableName,'1=1');	//.t3lib_BEfunc::deleteClause($tableName)
+			$uidList = array(0);
+			foreach ($allRecs as $recdat)	{
+				$refIndexObj = t3lib_div::makeInstance('t3lib_refindex');
+				$result = $refIndexObj->updateRefIndexTable($tableName,$recdat['uid'],$testOnly);
+				$uidList[]= $recdat['uid'];
+				$recCount++;
+
+				if ($result['addedNodes'] || $result['deletedNodes'])	{
+					$Err = 'Record '.$tableName.':'.$recdat['uid'].' had '.$result['addedNodes'].' added indexes and '.$result['deletedNodes'].' deleted indexes';
+					$errors[]= $Err;
+					if ($cli_echo) echo $Err.chr(10);
+					#$errors[] = t3lib_div::view_array($result);
+				}
+			}
+
+				// Searching lost indexes for this table:
+			$where = 'tablename='.$TYPO3_DB->fullQuoteStr($tableName,'sys_refindex').' AND recuid NOT IN ('.implode(',',$uidList).')';
+			$lostIndexes = $TYPO3_DB->exec_SELECTgetRows('hash','sys_refindex',$where);
+			if (count($lostIndexes))	{
+				$Err = 'Table '.$tableName.' has '.count($lostIndexes).' lost indexes which are now deleted';
+				$errors[]= $Err;
+				if ($cli_echo) echo $Err.chr(10);
+				if (!$testOnly)	$TYPO3_DB->exec_DELETEquery('sys_refindex',$where);
+			}
+		}
+
+			// Searching lost indexes for non-existing tables:
+		$where = 'tablename NOT IN ('.implode(',',$TYPO3_DB->fullQuoteArray($tableNames,'sys_refindex')).')';
+		$lostTables = $TYPO3_DB->exec_SELECTgetRows('hash','sys_refindex',$where);
+		if (count($lostTables))	{
+			$Err = 'Index table hosted '.count($lostTables).' indexes for non-existing tables, now removed';
+			$errors[]= $Err;
+			if ($cli_echo) echo $Err.chr(10);
+			if (!$testOnly)	$TYPO3_DB->exec_DELETEquery('sys_refindex',$where);
+		}
+
+		$testedHowMuch = $recCount.' records from '.$tableCount.' tables were checked/updated.'.chr(10);
+
+		$bodyContent = $testedHowMuch.(count($errors)?implode(chr(10),$errors):'Index Integrity was perfect!');
+		if ($cli_echo) echo $testedHowMuch.(count($errors)?'Updates: '.count($errors):'Index Integrity was perfect!').chr(10);
+
+		return array($headerContent,$bodyContent);
 	}
 }
 

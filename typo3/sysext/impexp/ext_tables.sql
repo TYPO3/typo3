@@ -5,10 +5,10 @@
 
 
 #
-# Table structure for table 'index_fulltext'
+# Table structure for table 'tx_impexp_presets'
 #
 CREATE TABLE tx_impexp_presets (
-  uid int(11) DEFAULT '0' NOT NULL auto_increment,
+  uid int(11) NOT NULL auto_increment,
   user_uid int(11) DEFAULT '0' NOT NULL,
   title tinytext NOT NULL,
   public tinyint(3) DEFAULT '0' NOT NULL,

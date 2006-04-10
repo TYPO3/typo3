@@ -40,34 +40,39 @@
  *
  *
  *
- *  100: class SC_alt_doc
- *  174:     function preInit()
- *  232:     function doProcessData()
- *  242:     function processData()
- *  370:     function init()
- *  462:     function main()
- *  531:     function printContent()
+ *  105: class SC_alt_doc
+ *  179:     function preInit()
+ *  241:     function doProcessData()
+ *  251:     function processData()
+ *  379:     function init()
+ *  473:     function main()
+ *  551:     function printContent()
  *
  *              SECTION: Sub-content functions, rendering specific parts of the module content.
- *  566:     function makeEditForm()
- *  749:     function makeButtonPanel()
- *  828:     function makeDocSel()
- *  870:     function makeCmenu()
- *  891:     function compileForm($panel,$docSel,$cMenu,$editForm)
- *  953:     function functionMenus()
- *  984:     function shortCutLink()
- * 1015:     function tceformMessages()
+ *  587:     function makeEditForm()
+ *  771:     function makeButtonPanel()
+ *  850:     function makeDocSel()
+ *  892:     function makeCmenu()
+ *  914:     function compileForm($panel,$docSel,$cMenu,$editForm, $langSelector='')
+ *  982:     function functionMenus()
+ * 1013:     function shortCutLink()
+ * 1044:     function tceformMessages()
+ *
+ *              SECTION: Localization stuff
+ * 1083:     function languageSwitch($table, $uid, $pid=NULL)
+ * 1179:     function localizationRedirect($justLocalized)
+ * 1213:     function getLanguages($id)
  *
  *              SECTION: Other functions
- * 1054:     function fixWSversioningInEditConf($mapArray=FALSE)
- * 1103:     function getRecordForEdit($table,$theUid)
- * 1138:     function editRegularContentFromId()
- * 1165:     function compileStoreDat()
- * 1178:     function getNewIconMode($table,$key='saveDocNew')
- * 1191:     function closeDocument($code=0)
- * 1223:     function setDocument($currentDocFromHandlerMD5='',$retUrl='alt_doc_nodoc.php')
+ * 1275:     function fixWSversioningInEditConf($mapArray=FALSE)
+ * 1324:     function getRecordForEdit($table,$theUid)
+ * 1358:     function editRegularContentFromId()
+ * 1386:     function compileStoreDat()
+ * 1399:     function getNewIconMode($table,$key='saveDocNew')
+ * 1412:     function closeDocument($code=0)
+ * 1444:     function setDocument($currentDocFromHandlerMD5='',$retUrl='alt_doc_nodoc.php')
  *
- * TOTAL FUNCTIONS: 21
+ * TOTAL FUNCTIONS: 24
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -173,6 +178,10 @@ class SC_alt_doc {
 	 */
 	function preInit()	{
 		global $BE_USER;
+
+		if (t3lib_div::_GP('justLocalized'))	{
+			$this->localizationRedirect(t3lib_div::_GP('justLocalized'));
+		}
 
 			// Setting GPvars:
 		$this->editconf = t3lib_div::_GP('edit');
@@ -411,7 +420,7 @@ class SC_alt_doc {
 		$this->doc->JScode = $this->doc->wrapScriptTags('
 			function jumpToUrl(URL,formEl)	{	//
 				if (!TBE_EDITOR_isFormChanged())	{
-					document.location = URL;
+					window.location.href = URL;
 				} else if (formEl && formEl.type=="checkbox") {
 					formEl.checked = formEl.checked ? 0 : 1;
 				}
@@ -436,7 +445,7 @@ class SC_alt_doc {
 				if (
 					'.($GLOBALS['BE_USER']->jsConfirmation(4)?'confirm('.$LANG->JScharCode($LANG->getLL('deleteWarning')).')':'1==1').'
 				)	{
-					document.location = "tce_db.php?cmd["+table+"]["+id+"][delete]=1&redirect="+escape(url)+"&vC='.$BE_USER->veriCode().'&prErr=1&uPT=1";
+					window.location.href = "tce_db.php?cmd["+table+"]["+id+"][delete]=1&redirect="+escape(url)+"&vC='.$BE_USER->veriCode().'&prErr=1&uPT=1";
 				}
 				return false;
 			}
@@ -495,9 +504,17 @@ class SC_alt_doc {
 
 				// Creating the editing form, wrap it with buttons, document selector etc.
 			$editForm = $this->makeEditForm();
+
 			if ($editForm)	{
 				reset($this->elementsData);
 				$this->firstEl = current($this->elementsData);
+
+					// language switch/selector for editing
+					// show only when a single record is edited - multiple records are too confusing
+				if (count($this->elementsData)==1) {
+					$languageSwitch = $this->languageSwitch($this->firstEl['table'], $this->firstEl['uid'], $this->firstEl['pid']);
+				}
+
 
 				if ($this->viewId)	{
 						// Module configuration:
@@ -508,7 +525,7 @@ class SC_alt_doc {
 				$docSel = $this->makeDocSel();
 				$cMenu = $this->makeCmenu();
 
-				$formContent = $this->compileForm($panel,$docSel,$cMenu,$editForm);
+				$formContent = $this->compileForm($panel,$docSel,$cMenu,$editForm,$languageSwitch);
 
 				$this->content.= $this->tceforms->printNeededJSFunctions_top().
 									$formContent.
@@ -525,14 +542,16 @@ class SC_alt_doc {
 		}
 	}
 
+
 	/**
 	 * Outputting the accumulated content to screen
 	 *
 	 * @return	void
 	 */
 	function printContent()	{
-
-		echo $this->content.$this->doc->endPage();
+		$this->content.= $this->doc->endPage();
+		$this->content = $this->doc->insertStylesAndJS($this->content);
+		echo $this->content;
 	}
 
 
@@ -664,15 +683,16 @@ class SC_alt_doc {
 								reset($trData->regTableItems_data);
 								$rec = current($trData->regTableItems_data);
 								$rec['uid'] = $cmd=='new' ? uniqid('NEW') : $theUid;
-								$this->elementsData[]=array(
-									'table' => $table,
-									'uid' => $rec['uid'],
-									'cmd' => $cmd,
-									'deleteAccess' => $deleteAccess
-								);
 								if ($cmd=='new')	{
 									$rec['pid'] = $theUid=='prev'?$thePrevUid:$theUid;
 								}
+								$this->elementsData[]=array(
+									'table' => $table,
+									'uid' => $rec['uid'],
+									'pid' => $rec['pid'],
+									'cmd' => $cmd,
+									'deleteAccess' => $deleteAccess
+								);
 
 									// Now, render the form:
 								if (is_array($rec))	{
@@ -696,7 +716,11 @@ class SC_alt_doc {
 										// Create form for the record (either specific list of fields or the whole record):
 									$panel = '';
 									if ($this->columnsOnly)	{
-										$panel.= $this->tceforms->getListedFields($table,$rec,$this->columnsOnly);
+										if(is_array($this->columnsOnly)){
+											$panel.= $this->tceforms->getListedFields($table,$rec,$this->columnsOnly[$table]);
+										} else {
+											$panel.= $this->tceforms->getListedFields($table,$rec,$this->columnsOnly);
+										}
 									} else {
 										$panel.= $this->tceforms->getMainFields($table,$rec);
 									}
@@ -798,13 +822,13 @@ class SC_alt_doc {
 					$undoButton = 1;
 				}
 				if ($undoButton) {
-					$aOnClick = 'document.location=\'show_rechis.php?element='.rawurlencode($this->firstEl['table'].':'.$this->firstEl['uid']).'&revert=ALL_FIELDS&sumUp=-1&returnUrl='.rawurlencode($this->R_URI).'\'; return false;';
+					$aOnClick = 'window.location.href=\'show_rechis.php?element='.rawurlencode($this->firstEl['table'].':'.$this->firstEl['uid']).'&revert=ALL_FIELDS&sumUp=-1&returnUrl='.rawurlencode($this->R_URI).'\'; return false;';
 					$panel.= '<a href="#" onclick="'.htmlspecialchars($aOnClick).'">'.
 							'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/undo.gif','width="21" height="16"').' class="c-inputButton" title="'.htmlspecialchars(sprintf($LANG->getLL('undoLastChange'),t3lib_BEfunc::calcAge(time()-$undoButtonR['tstamp'],$LANG->sL('LLL:EXT:lang/locallang_core.php:labels.minutesHoursDaysYears')))).'" alt="" />'.
 							'</a>';
 				}
 				if ($this->getNewIconMode($this->firstEl['table'],'showHistory'))	{
-					$aOnClick = 'document.location=\'show_rechis.php?element='.rawurlencode($this->firstEl['table'].':'.$this->firstEl['uid']).'&returnUrl='.rawurlencode($this->R_URI).'\'; return false;';
+					$aOnClick = 'window.location.href=\'show_rechis.php?element='.rawurlencode($this->firstEl['table'].':'.$this->firstEl['uid']).'&returnUrl='.rawurlencode($this->R_URI).'\'; return false;';
 					$panel.= '<a href="#" onclick="'.htmlspecialchars($aOnClick).'">'.
 							'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/history2.gif','width="13" height="12"').' class="c-inputButton" alt="" />'.
 							'</a>';
@@ -852,7 +876,7 @@ class SC_alt_doc {
 				}
 
 					// Compile the selector box finally:
-				$onChange = 'if(this.options[this.selectedIndex].value && !TBE_EDITOR_isFormChanged()){document.location=(this.options[this.selectedIndex].value);}';
+				$onChange = 'if(this.options[this.selectedIndex].value && !TBE_EDITOR_isFormChanged()){window.location.href=(this.options[this.selectedIndex].value);}';
 				$docSel='<select name="_docSelector" onchange="'.htmlspecialchars($onChange).'">'.implode('',$opt).'</select>';
 
 					// Add CSH:
@@ -888,9 +912,10 @@ class SC_alt_doc {
 	 * @param	string		Document selector HTML
 	 * @param	string		Clear-cache menu HTML
 	 * @param	string		HTML form.
+	 * @param	string		Language selector HTML for localization
 	 * @return	string		Composite HTML
 	 */
-	function compileForm($panel,$docSel,$cMenu,$editForm)	{
+	function compileForm($panel,$docSel,$cMenu,$editForm, $langSelector='')	{
 		global $LANG;
 
 
@@ -906,12 +931,18 @@ class SC_alt_doc {
 				<tr>
 					<td nowrap="nowrap" valign="top">'.$panel.'</td>
 					<td nowrap="nowrap" valign="top" align="right">'.$docSel.$cMenu.'</td>
-				</tr>
+				</tr>';
+
+		if ($langSelector) {
+			$langSelector ='<div id="typo3-altdoc-lang-selector">'.$langSelector.'</div>';
+		}
+		$pagePath = '<div id="typo3-altdoc-page-path">'.$LANG->sL('LLL:EXT:lang/locallang_core.php:labels.path',1).': '.htmlspecialchars($this->generalPathOfForm).'</div>';
+
+		$formContent.='
 				<tr>
-					<td colspan="2">'.$LANG->sL('LLL:EXT:lang/locallang_core.php:labels.path',1).': '.htmlspecialchars($this->generalPathOfForm).'</td>
+					<td colspan="2"><div id="typo3-altdoc-header-info-options">'.$pagePath.$langSelector.'<div></td>
 				</tr>
 			</table>
-			<img src="clear.gif" width="1" height="4" alt="" /><br />
 
 
 
@@ -1031,6 +1062,198 @@ class SC_alt_doc {
 
 
 
+
+
+
+
+
+
+
+	/***************************
+	 *
+	 * Localization stuff
+	 *
+	 ***************************/
+
+	/**
+	 * Make selector box for creating new translation for a record or switching to edit the record in an existing language.
+	 * Displays only languages which are available for the current page.
+	 *
+	 * @param	string		Table name
+	 * @param	integer		uid for which to create a new language
+	 * @param	integer		pid of the record
+	 * @return	string		<select> HTML element (if there were items for the box anyways...)
+	 */
+	function languageSwitch($table, $uid, $pid=NULL)	{
+		global $TCA;
+
+		$content = '';
+
+		$languageField = $TCA[$table]['ctrl']['languageField'];
+		$transOrigPointerField = $TCA[$table]['ctrl']['transOrigPointerField'];
+
+			// table editable and activated for languages?
+		if ($GLOBALS['BE_USER']->check('tables_modify',$table) && $languageField && $transOrigPointerField && !$TCA[$table]['ctrl']['transOrigPointerTable'])	{
+
+			if(is_null($pid)) {
+				$row = t3lib_befunc::getRecord($table, $uid, 'pid');
+				$pid = $row['pid'];
+			}
+
+				// get all avalibale languages for the page
+			$langRows = $this->getLanguages($pid);
+
+				// page available in other languages than default language?
+			if (is_array($langRows) && count($langRows)>1) {
+
+				$rowsByLang = array();
+				$fetchFields = 'uid,'.$languageField.','.$transOrigPointerField;
+
+					// get record in current language
+				$rowCurrent = t3lib_befunc::getRecord($table, $uid, $fetchFields);
+				$currentLanguage = $rowCurrent[$languageField];
+
+				if ($currentLanguage>-1)	{	// Disabled for records with [all] language!
+						// get record in default language if needed
+					if ($currentLanguage) {
+						$rowsByLang[0] = t3lib_befunc::getRecord($table, $rowCurrent[$transOrigPointerField], $fetchFields);
+					} else {
+						$rowsByLang[0] = $rowCurrent;
+					}
+
+						// get record in other languages to see what's already available
+					$translations = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+						$fetchFields,
+						$table,
+						'pid='.intval($pid).
+							' AND '.$languageField.'>0'.
+							' AND '.$transOrigPointerField.'='.intval($rowsByLang[0]['uid']).
+							t3lib_BEfunc::deleteClause($table).
+							t3lib_BEfunc::versioningPlaceholderClause($table)
+					);
+					foreach ($translations as $row)	{
+						$rowsByLang[$row[$languageField]] = $row;
+					}
+
+					$langSelItems=array();
+					foreach ($langRows as $lang) {
+						if ($GLOBALS['BE_USER']->checkLanguageAccess($lang['uid']))	{
+
+							$newTranslation = isset($rowsByLang[$lang['uid']]) ? '' : ' ['.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:labels.new',1).']';
+
+								// create url for creating a localized record
+							if($newTranslation) {
+								$href = $this->doc->issueCommand(
+									'&cmd['.$table.']['.$rowsByLang[0]['uid'].'][localize]='.$lang['uid'],
+									$this->backPath.'alt_doc.php?justLocalized='.rawurlencode($table.':'.$rowsByLang[0]['uid'].':'.$lang['uid']).'&returnUrl='.rawurlencode($this->retUrl)
+								);
+
+								// create edit url
+							} else {
+								$href = $this->backPath.'alt_doc.php?';
+								$href .= '&edit['.$table.']['.$rowsByLang[$lang['uid']]['uid'].']=edit';
+								$href .= '&returnUrl='.rawurlencode($this->retUrl);
+							}
+
+							$langSelItems[$lang['uid']]='
+									<option value="'.htmlspecialchars($href).'"'.($currentLanguage==$lang['uid']?' selected="selected"':'').'>'.htmlspecialchars($lang['title'].$newTranslation).'</option>';
+						}
+					}
+
+						// If any languages are left, make selector:
+					if (count($langSelItems)>1)		{
+						$onChange = 'if(this.options[this.selectedIndex].value){window.location.href=(this.options[this.selectedIndex].value);}';
+						$content = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_general.xml:LGL.language',1).' <select name="_langSelector" onchange="'.htmlspecialchars($onChange).'">
+								'.implode('',$langSelItems).'
+							</select>';
+					}
+				}
+			}
+		}
+		return $content;
+	}
+
+
+	/**
+	 * Redirects to alt_doc with new parameters to edit a just created localized record
+	 *
+	 * @param	string		String passed by GET &justLocalized=
+	 * @return	void
+	 */
+	function localizationRedirect($justLocalized)	{
+		global $TCA;
+
+		list($table,$orig_uid,$language) = explode(':',$justLocalized);
+
+		if ($TCA[$table] && $TCA[$table]['ctrl']['languageField'] && $TCA[$table]['ctrl']['transOrigPointerField'])	{
+			list($localizedRecord) = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+					'uid',
+					$table,
+					$TCA[$table]['ctrl']['languageField'].'='.intval($language).' AND '.
+						$TCA[$table]['ctrl']['transOrigPointerField'].'='.intval($orig_uid).
+						t3lib_BEfunc::deleteClause($table).
+						t3lib_BEfunc::versioningPlaceholderClause($table)
+				);
+
+			if (is_array($localizedRecord))	{
+					// Create parameters and finally run the classic page module for creating a new page translation
+				$params = '&edit['.$table.']['.$localizedRecord['uid'].']=edit';
+				$returnUrl = '&returnUrl='.rawurlencode(t3lib_div::_GP('returnUrl'));
+				$location = $GLOBALS['BACK_PATH'].'alt_doc.php?'.$params.$returnUrl;
+
+				header('Location: '.t3lib_div::locationHeaderUrl($location));
+				exit;
+			}
+		}
+	}
+
+
+	/**
+	 * Returns sys_language records.
+	 *
+	 * @param	integer		Page id: If zero, the query will select all sys_language records from root level which are NOT hidden. If set to another value, the query will select all sys_language records that has a pages_language_overlay record on that page (and is not hidden, unless you are admin user)
+	 * @return	array		Language records including faked record for default language
+	 */
+	function getLanguages($id)	{
+		global $LANG;
+
+		$modSharedTSconfig = t3lib_BEfunc::getModTSconfig($id, 'mod.SHARED');
+
+		$languages = array(
+			0 => array(
+				'uid' => 0,
+				'pid' => 0,
+				'hidden' => 0,
+				'title' => strlen($modSharedTSconfig['properties']['defaultLanguageLabel']) ? $modSharedTSconfig['properties']['defaultLanguageLabel'].' ('.$GLOBALS['LANG']->sl('LLL:EXT:lang/locallang_mod_web_list.xml:defaultLanguage').')' : $GLOBALS['LANG']->sl('LLL:EXT:lang/locallang_mod_web_list.xml:defaultLanguage'),
+				'flag' => $modSharedTSconfig['properties']['defaultLanguageFlag'],
+			)
+		);
+
+		$exQ = $GLOBALS['BE_USER']->isAdmin() ? '' : ' AND sys_language.hidden=0';
+		if ($id)	{
+			$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+							'sys_language.*',
+							'pages_language_overlay,sys_language',
+							'pages_language_overlay.sys_language_uid=sys_language.uid AND pages_language_overlay.pid='.intval($id).$exQ,
+							'pages_language_overlay.sys_language_uid,sys_language.uid,sys_language.pid,sys_language.tstamp,sys_language.hidden,sys_language.title,sys_language.static_lang_isocode,sys_language.flag',
+							'sys_language.title'
+						);
+		} else {
+			$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+							'sys_language.*',
+							'sys_language',
+							'sys_language.hidden=0',
+							'',
+							'sys_language.title'
+						);
+		}
+		if ($rows) {
+			foreach ($rows as $row) {
+				$languages[$row['uid']] = $row;
+			}
+		}
+		return $languages;
+	}
 
 
 

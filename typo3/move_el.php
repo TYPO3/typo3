@@ -135,7 +135,7 @@ class ext_posMap_pages extends t3lib_positionMap {
 	 * @return	string		Onclick attribute content
 	 */
 	function onClickEvent($pid,$newPagePID)	{
-		return 'document.location=\'tce_db.php?cmd[pages]['.$GLOBALS['SOBE']->moveUid.']['.$this->moveOrCopy.']='.$pid.'&redirect='.rawurlencode($this->R_URI).'&prErr=1&uPT=1&vC='.$GLOBALS['BE_USER']->veriCode().'\';return false;';
+		return 'window.location.href=\'tce_db.php?cmd[pages]['.$GLOBALS['SOBE']->moveUid.']['.$this->moveOrCopy.']='.$pid.'&redirect='.rawurlencode($this->R_URI).'&prErr=1&uPT=1&vC='.$GLOBALS['BE_USER']->veriCode().'\';return false;';
 	}
 
 	/**
@@ -294,7 +294,7 @@ class SC_move_el {
 			$hline.= t3lib_BEfunc::getRecordTitle($this->table,$elRow,1);
 
 				// Make-copy checkbox (clicking this will reload the page with the GET var makeCopy set differently):
-			$onClick = 'document.location=\''.t3lib_div::linkThisScript(array('makeCopy'=>!$this->makeCopy)).'\';';
+			$onClick = 'window.location.href=\''.t3lib_div::linkThisScript(array('makeCopy'=>!$this->makeCopy)).'\';';
 			$hline.= '<br /><input type="hidden" name="makeCopy" value="0" /><input type="checkbox" name="makeCopy" value="1"'.($this->makeCopy?' checked="checked"':'').' onclick="'.htmlspecialchars($onClick).'" />'.
 				$LANG->getLL('makeCopy',1);
 
@@ -414,9 +414,8 @@ class SC_move_el {
 	 * @return	void
 	 */
 	function printContent()	{
-		global $SOBE;
-
 		$this->content.= $this->doc->endPage();
+		$this->content = $this->doc->insertStylesAndJS($this->content);
 		echo $this->content;
 	}
 }

@@ -1,4 +1,4 @@
-This folder contains the patch that has been applied to the vanilla 4.68
+This folder contains the patch that has been applied to the vanilla
 release of ADOdb before it has been packaged in this extension.
 
 The changes aren't as clean as they should be, but are needed for the

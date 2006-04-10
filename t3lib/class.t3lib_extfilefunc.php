@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2005 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2006 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -48,13 +48,13 @@
  *              SECTION: File operation functions
  *  384:     function func_delete($cmds)
  *  451:     function func_copy($cmds)
- *  541:     function func_move($cmds)
- *  634:     function func_rename($cmds)
- *  680:     function func_newfolder($cmds)
- *  710:     function func_newfile($cmds)
- *  747:     function func_edit($cmds)
- *  779:     function func_upload($cmds)
- *  818:     function func_unzip($cmds)
+ *  542:     function func_move($cmds)
+ *  637:     function func_rename($cmds)
+ *  683:     function func_newfolder($cmds)
+ *  713:     function func_newfile($cmds)
+ *  750:     function func_edit($cmds)
+ *  782:     function func_upload($cmds)
+ *  821:     function func_unzip($cmds)
  *
  * TOTAL FUNCTIONS: 15
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -302,7 +302,7 @@ class t3lib_extFileFunctions extends t3lib_basicFileFunctions	{
 			$lines[] = '
 					<tr>
 						<td colspan="2" align="center"><br />'.
-						'<form action=""><input type="submit" value="Continue" onclick="'.htmlspecialchars('document.location=\''.$redirect.'\';return false;').'" /></form>'.
+						'<form action=""><input type="submit" value="Continue" onclick="'.htmlspecialchars('window.location.href=\''.$redirect.'\';return false;').'" /></form>'.
 						'</td>
 					</tr>';
 
@@ -484,6 +484,7 @@ class t3lib_extFileFunctions extends t3lib_basicFileFunctions	{
 									$cmd = 'cp "'.$theFile.'" "'.$theDestFile.'"';
 									exec($cmd);
 								}
+								t3lib_div::fixPermissions($theDestFile);
 								clearstatcache();
 								if (@is_file($theDestFile))	{
 									$this->writelog(2,0,1,'File "%s" copied to "%s"',Array($theFile,$theDestFile));
@@ -605,6 +606,8 @@ class t3lib_extFileFunctions extends t3lib_basicFileFunctions	{
 										rename($theFile, $theDestFile);
 									} else {
 										$cmd = 'mv "'.$theFile.'" "'.$theDestFile.'"';
+										$errArr = array();
+										$retVar = 0;
 										exec($cmd,$errArr,$retVar);
 									}
 									clearstatcache();

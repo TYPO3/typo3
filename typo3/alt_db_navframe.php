@@ -41,18 +41,18 @@
  *   78: class localPageTree extends t3lib_browseTree
  *   88:     function localPageTree()
  *   99:     function wrapIcon($icon,&$row)
- *  137:     function wrapStop($str,$row)
- *  153:     function wrapTitle($title,$row,$bank=0)
+ *  142:     function wrapStop($str,$row)
+ *  158:     function wrapTitle($title,$row,$bank=0)
  *
  *
- *  181: class SC_alt_db_navframe
- *  199:     function init()
- *  295:     function main()
- *  346:     function printContent()
+ *  192: class SC_alt_db_navframe
+ *  210:     function init()
+ *  313:     function main()
+ *  387:     function printContent()
  *
  *              SECTION: Temporary DB mounts
- *  373:     function initializeTemporaryDBmount()
- *  402:     function settingTemporaryMountPoint($pageId)
+ *  415:     function initializeTemporaryDBmount()
+ *  449:     function settingTemporaryMountPoint($pageId)
  *
  * TOTAL FUNCTIONS: 9
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -116,6 +116,11 @@ class localPageTree extends t3lib_browseTree {
 			$thePageIcon='<a href="#" onclick="'.htmlspecialchars($aOnClick).'">'.$thePageIcon.'</a>';
 		}
 
+			// Wrap icon in a drag/drop span.
+		$spanOnDrag = htmlspecialchars('return dragElement("'.$row['uid'].'")');
+		$spanOnDrop = htmlspecialchars('return dropElement("'.$row['uid'].'")');
+		$dragDropIcon = '<span id="dragIconID_'.$row['uid'].'" ondragstart="'.$spanOnDrag.'" onmousedown="'.$spanOnDrag.'" onmouseup="'.$spanOnDrop.'">'.$thePageIcon.'</span>';
+
 			// Add Page ID:
 		if ($this->ext_showPageId)	{
 			$pageIdStr = '['.$row['uid'].']&nbsp;';
@@ -123,7 +128,7 @@ class localPageTree extends t3lib_browseTree {
 			$pageIdStr = '';
 		}
 
-		return $thePageIcon.$lockIcon.$pageIdStr;
+		return $dragDropIcon.$lockIcon.$pageIdStr;
 	}
 
 	/**
@@ -156,7 +161,13 @@ class localPageTree extends t3lib_browseTree {
 		if ($GLOBALS['TYPO3_CONF_VARS']['BE']['useOnContextMenuHandler'])	{
 			$CSM = ' oncontextmenu="'.htmlspecialchars($GLOBALS['TBE_TEMPLATE']->wrapClickMenuOnIcon('','pages',$row['uid'],0,'&bank='.$this->bank,'',TRUE)).'"';
 		}
-		return '<a href="#" onclick="'.htmlspecialchars($aOnClick).'"'.$CSM.'>'.$title.'</a>';
+		$thePageTitle='<a href="#" onclick="'.htmlspecialchars($aOnClick).'"'.$CSM.'>'.$title.'</a>';
+
+			// Wrap title in a drag/drop span.
+		$spanOnDrag = htmlspecialchars('return dragElement("'.$row['uid'].'")');
+		$spanOnDrop = htmlspecialchars('return dropElement("'.$row['uid'].'")');
+		$dragDropTitle = '<span id="dragTitleID_'.$row['uid'].'" ondragstart="'.$spanOnDrag.'" onmousedown="'.$spanOnDrag.'" onmouseup="'.$spanOnDrop.'">'.$thePageTitle.'</span>';
+		return $dragDropTitle;
 	}
 }
 
@@ -236,14 +247,14 @@ class SC_alt_db_navframe {
 	($this->currentSubScript?'top.currentSubScript=unescape("'.rawurlencode($this->currentSubScript).'");':'').'
 
 		// Function, loading the list frame from navigation tree:
-	function jumpTo(id,linkObj,highLightID,bank)	{
+	function jumpTo(id,linkObj,highLightID,bank)	{	//
 		var theUrl = top.TS.PATH_typo3+top.currentSubScript+"?id="+id;
 		top.fsMod.currentBank = bank;
 
 		if (top.condensedMode)	{
-			top.content.document.location=theUrl;
+			top.content.location.href=theUrl;
 		} else {
-			parent.list_frame.document.location=theUrl;
+			parent.list_frame.location.href=theUrl;
 		}
 
 		'.($this->doHighlight?'hilight_row("web",highLightID+"_"+bank);':'').'
@@ -258,7 +269,7 @@ class SC_alt_db_navframe {
 		window.setTimeout("_refresh_nav();",0);
 	}
 	function _refresh_nav()	{	//
-		document.location="'.$this->pagetree->thisScript.'?unique='.time().'";
+		window.location.href="'.$this->pagetree->thisScript.'?unique='.time().'";
 	}
 
 		// Highlighting rows in the page tree:
@@ -267,14 +278,14 @@ class SC_alt_db_navframe {
 			// Remove old:
 		theObj = document.getElementById(top.fsMod.navFrameHighlightedID[frameSetModule]);
 		if (theObj)	{
-			theObj.style.backgroundColor="";
+			theObj.setAttribute("class", "");
 		}
 
 			// Set new:
 		top.fsMod.navFrameHighlightedID[frameSetModule] = highLightID;
 		theObj = document.getElementById(highLightID);
 		if (theObj)	{
-			theObj.style.backgroundColor="'.t3lib_div::modifyHTMLColorAll($this->doc->bgColor,-20).'";
+			theObj.setAttribute("class", "navFrameHL");
 		}
 	}
 
@@ -286,6 +297,12 @@ class SC_alt_db_navframe {
 		$this->doc->bodyTagAdditions = $CMparts[1];
 		$this->doc->JScode.= $CMparts[0];
 		$this->doc->postCode.= $CMparts[2];
+
+			// Drag and Drop code is added:
+		$DDparts=$this->doc->getDragDropCode('pages');
+		// ignore the $DDparts[1] for now
+		$this->doc->JScode.= $DDparts[0];
+		$this->doc->postCode.= $DDparts[2];
 	}
 
 	/**
@@ -369,6 +386,7 @@ class SC_alt_db_navframe {
 	 */
 	function printContent()	{
 		$this->content.= $this->doc->endPage();
+		$this->content = $this->doc->insertStylesAndJS($this->content);
 		echo $this->content;
 	}
 
@@ -412,8 +430,13 @@ class SC_alt_db_navframe {
 
 			// If mount point ID existed and is within users real mount points, then set it temporarily:
 		if ($temporaryMountPoint > 0 && $BE_USER->isInWebMount($temporaryMountPoint))	{
-			$this->pagetree->MOUNTS = array($temporaryMountPoint);
-			$this->active_tempMountPoint = t3lib_BEfunc::readPageAccess($temporaryMountPoint, $BE_USER->getPagePermsClause(1));
+			if ($this->active_tempMountPoint = t3lib_BEfunc::readPageAccess($temporaryMountPoint, $BE_USER->getPagePermsClause(1))) {
+				$this->pagetree->MOUNTS = array($temporaryMountPoint);
+			}
+			else {
+				// Clear temporary mount point as we have no access to it any longer
+				$this->settingTemporaryMountPoint(0);
+			}
 		}
 	}
 

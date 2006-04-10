@@ -39,19 +39,19 @@
  *
  *
  *   87: class SC_index
- *  119:     function init()
- *  150:     function main()
- *  243:     function printContent()
+ *  120:     function init()
+ *  159:     function main()
+ *  268:     function printContent()
  *
  *              SECTION: Various functions
- *  267:     function makeLoginForm()
- *  312:     function makeLogoutForm()
- *  354:     function wrapLoginForm($content)
- *  414:     function checkRedirect()
- *  459:     function makeInterfaceSelectorBox()
- *  513:     function makeCopyrightNotice()
- *  546:     function makeLoginBoxImage()
- *  586:     function makeLoginNews()
+ *  292:     function makeLoginForm()
+ *  337:     function makeLogoutForm()
+ *  379:     function wrapLoginForm($content)
+ *  438:     function checkRedirect()
+ *  495:     function makeInterfaceSelectorBox()
+ *  549:     function makeCopyrightNotice()
+ *  582:     function makeLoginBoxImage()
+ *  622:     function makeLoginNews()
  *
  * TOTAL FUNCTIONS: 11
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -200,7 +200,7 @@ class SC_index {
 					';
 			} elseif ($this->loginSecurityLevel == 'normal') {
 				$TBE_TEMPLATE->form = '
-					<form action="index.php" method="post" name="loginform" onsubmit="document.loginform.userident.value=document.loginform.p_field.value;document.loginform.p_field.value=\'\';document.loginform.challenge.value=\'\';return true;">
+					<form action="index.php" method="post" name="loginform" onsubmit="document.loginform.userident.value=document.loginform.p_field.value;document.loginform.p_field.value=\'\';return true;">
 					';
 			} else { // if ($this->loginSecurityLevel == 'superchallenged') {
 				$TBE_TEMPLATE->form = '
@@ -291,12 +291,10 @@ class SC_index {
 	 */
 	function makeLoginForm()	{
 
-		$content.='
-
-							<!--
+			// There must be no white-spaces outside of the tags (needed for buggy IE)
+		$content.=				'<!--
 								Login form:
-							-->
-							<table cellspacing="0" cellpadding="0" border="0" id="logintable">
+							--><table cellspacing="0" cellpadding="0" border="0" id="logintable">
 									<tr>
 										<td colspan="2"><h2>'.htmlspecialchars($this->L_vars[6]).'</h2></td>
 									</tr>'.($this->commandLI ? '
@@ -381,7 +379,7 @@ class SC_index {
 			// Logo:
 		$logo = $GLOBALS['TBE_STYLES']['logo_login'] ?
 					'<img src="'.htmlspecialchars($GLOBALS['BACK_PATH'].$GLOBALS['TBE_STYLES']['logo_login']).'" alt="" />' :
-					'<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/typo3logo.gif','width="333" height="43"').' alt="" />';
+					'<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/typo3logo.gif','width="123" height="34"').' alt="" />';
 
 			// Login box image:
 		$loginboxImage = $this->makeLoginBoxImage();
@@ -408,9 +406,8 @@ class SC_index {
 					-->
 					<table cellspacing="0" cellpadding="0" border="0" id="loginwrapper">
 						<tr>
-							<td>'.$loginboxImage.'</td>
-							<td>
-								'.$content.'
+							<td'.($this->commandLI ? ' class="error"' : '').'>'.$loginboxImage.
+								$content.'
 							</td>
 						</tr>
 					</table>
@@ -502,7 +499,7 @@ class SC_index {
 		$this->interfaceSelector_jump = '';
 
 			// If interfaces are defined AND no input redirect URL in GET vars:
-		if ($TYPO3_CONF_VARS['BE']['interfaces'] && !$this->redirect_url)	{
+		if ($TYPO3_CONF_VARS['BE']['interfaces'] && ($this->commandLI || !$this->redirect_url))	{
 			$parts = t3lib_div::trimExplode(',',$TYPO3_CONF_VARS['BE']['interfaces']);
 			if (count($parts)>1)	{	// Only if more than one interface is defined will we show the selector:
 
@@ -519,7 +516,7 @@ class SC_index {
 					// Traverse the interface keys:
 				foreach($parts as $valueStr)	{
 					$this->interfaceSelector.='
-							<option value="'.htmlspecialchars($valueStr).'">'.htmlspecialchars($labels[$valueStr]).'</option>';
+							<option value="'.htmlspecialchars($valueStr).'"'.(t3lib_div::_GP('interface')==htmlspecialchars($valueStr) ? ' selected="selected"' : '').'>'.htmlspecialchars($labels[$valueStr]).'</option>';
 					$this->interfaceSelector_jump.='
 							<option value="'.htmlspecialchars($jumpScript[$valueStr]).'">'.htmlspecialchars($labels[$valueStr]).'</option>';
 				}
@@ -527,7 +524,7 @@ class SC_index {
 						<select name="interface" class="c-interfaceselector">'.$this->interfaceSelector.'
 						</select>';
 				$this->interfaceSelector_jump='
-						<select name="interface" class="c-interfaceselector" onchange="document.location=this.options[this.selectedIndex].value;">'.$this->interfaceSelector_jump.'
+						<select name="interface" class="c-interfaceselector" onchange="window.location.href=this.options[this.selectedIndex].value;">'.$this->interfaceSelector_jump.'
 						</select>';
 
 			} else {	// If there is only ONE interface value set:
@@ -565,7 +562,7 @@ class SC_index {
 					'<img src="gfx/loginlogo_transp.gif" width="75" height="19" alt="TYPO3 logo" align="left" />'.
 					'TYPO3 CMS'.($GLOBALS['TYPO3_CONF_VARS']['SYS']['loginCopyrightShowVersion']?' ver. '.htmlspecialchars($GLOBALS['TYPO_VERSION']):'').
 					'</a>. '.
-					'Copyright &copy; 1998-2005 Kasper Sk&#229;rh&#248;j. Extensions are copyright of their respective owners. '.
+					'Copyright &copy; 1998-2006 Kasper Sk&#229;rh&#248;j. Extensions are copyright of their respective owners. '.
 					'Go to <a href="http://typo3.com/" target="_blank">http://typo3.com/</a> for details. '.
 					$warrantyNote.' '.
 					'This is free software, and you are welcome to redistribute it under certain conditions; <a href="http://typo3.com/1316.0.html" target="_blank">click for details</a>. '.
@@ -605,8 +602,8 @@ class SC_index {
 				}
 			}
 		} else {	// If no rotation folder configured, print default image:
-			$loginImage = 'loginbox_image_dev.png';
-			$imagecopy = $loginImage=='loginbox_image_dev.png' ? 'You are running the CVS version of TYPO3 '.$GLOBALS['TYPO_VERSION'] : 'Photo: &copy; 2005 Kasper Sk&#229;rh&#248;j';	// Directly outputted in image attributes...
+			$loginImage = 'loginbox_image_400.png';
+			$imagecopy = $loginImage=='loginbox_image_dev.png' ? 'You are running the CVS version of TYPO3 '.$GLOBALS['TYPO_VERSION'] : 'Photo: &copy; 2006 Kasper Sk&#229;rh&#248;j';	// Directly outputted in image attributes...
 			$loginboxImage = '<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/'.$loginImage,'width="200" height="133"').' id="loginbox-image" alt="'.$imagecopy.'" title="'.$imagecopy.'" />';
 		}
 

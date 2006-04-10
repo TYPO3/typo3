@@ -7,5 +7,6 @@ $MLANG['default']['ll_ref']='LLL:EXT:lang/locallang_mod_user_ws.php';
 
 $MCONF['shy'] = FALSE;
 $MCONF['script'] = 'index.php';
+$MCONF['access']='user,group';
 $MCONF['name']='user_ws';
 ?>

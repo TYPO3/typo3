@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2005 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2006 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -48,9 +48,9 @@
  *  221:     function ext_getKeyImage($key)
  *  231:     function ext_getTSCE_config_image($imgConf)
  *  244:     function ext_fNandV($params)
- *  261:     function ext_loadResources($absPath)
- *  277:     function ext_putValueInConf($key, $var)
- *  287:     function ext_removeValueInConf($key)
+ *  262:     function ext_loadResources($absPath)
+ *  278:     function ext_putValueInConf($key, $var)
+ *  288:     function ext_removeValueInConf($key)
  *
  * TOTAL FUNCTIONS: 14
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -244,7 +244,8 @@ class t3lib_tsStyleConfig extends t3lib_tsparser_ext	{
 	function ext_fNandV($params)	{
 		$fN='data['.$params["name"].']';
 		$fV=$params["value"]=isset($this->ext_realValues[$params["name"]]) ? $this->ext_realValues[$params["name"]] : $params["default_value"];
-		if (ereg("^{[\$][a-zA-Z0-9\.]*}$",trim($fV),$reg))	{		// Values entered from the constantsedit cannot be constants!	230502; removed \{ and set {
+		$reg = array();
+		if (preg_match('/^\{[\$][a-zA-Z0-9\.]*\}$/',trim($fV),$reg))	{		// Values entered from the constantsedit cannot be constants!
 			$fV="";
 		}
 		$fV=htmlspecialchars($fV);

@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2005 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2006 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -44,10 +44,10 @@
  *  206:     function writeBottom()
  *  225:     function fwd_rwd_nav($table='')
  *  258:     function fwd_rwd_HTML($type,$pointer,$table='')
- *  282:     function listURL($altId='')
- *  292:     function CBfunctions()
- *  342:     function initializeLanguages()
- *  408:     function languageFlag($sys_language_uid)
+ *  284:     function listURL($altId='')
+ *  294:     function CBfunctions()
+ *  344:     function initializeLanguages()
+ *  411:     function languageFlag($sys_language_uid)
  *
  * TOTAL FUNCTIONS: 9
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -256,21 +256,23 @@ class t3lib_recordList {
 	 * @access private
 	 */
 	function fwd_rwd_HTML($type,$pointer,$table='')	{
+		$content = '';
 		$tParam = $table ? '&table='.rawurlencode($table) : '';
 		switch($type)	{
 			case 'fwd':
 				$href = $this->listURL().'&pointer='.($pointer-$this->iLimit).$tParam;
-				return '<a href="'.htmlspecialchars($href).'">'.
+				$content = '<a href="'.htmlspecialchars($href).'">'.
 						'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/pilup.gif','width="14" height="14"').' alt="" />'.
 						'</a> <i>[1 - '.$pointer.']</i>';
 			break;
 			case 'rwd':
 				$href = $this->listURL().'&pointer='.$pointer.$tParam;
-				return '<a href="'.htmlspecialchars($href).'">'.
+				$content = '<a href="'.htmlspecialchars($href).'">'.
 						'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/pildown.gif','width="14" height="14"').' alt="" />'.
 						'</a> <i>['.($pointer+1).' - '.$this->totalItems.']</i>';
 			break;
 		}
+		return $content;
 	}
 
 	/**
@@ -366,7 +368,7 @@ class t3lib_recordList {
 			// Set default:
 		$this->languageIconTitles[0]=array(
 			'uid' => 0,
-			'title' => strlen ($this->modSharedTSconfig['properties']['defaultLanguageFlag']) ? $this->modSharedTSconfig['properties']['defaultLanguageLabel'].' ('.$LANG->getLL('defaultLanguage').')' : $LANG->getLL('defaultLanguage'),
+			'title' => strlen ($this->modSharedTSconfig['properties']['defaultLanguageLabel']) ? $this->modSharedTSconfig['properties']['defaultLanguageLabel'].' ('.$LANG->getLL('defaultLanguage').')' : $LANG->getLL('defaultLanguage'),
 			'ISOcode' => 'DEF',
 			'flagIcon' => strlen($this->modSharedTSconfig['properties']['defaultLanguageFlag']) && @is_file($flagAbsPath.$this->modSharedTSconfig['properties']['defaultLanguageFlag']) ? $flagIconPath.$this->modSharedTSconfig['properties']['defaultLanguageFlag'] : null,
 		);

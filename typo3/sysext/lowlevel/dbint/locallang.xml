@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+    <meta type="array">
+        <description>Labels for DB int module</description>
+        <type>module</type>
+    </meta>
+    <data type="array">
+        <languageKey index="default" type="array">
+            <label index="tables">Tables:</label>
+            <label index="fixLostRecord">Click to move this lost record to rootlevel (pid=0)</label>
+            <label index="doktype">Document types:</label>
+            <label index="pages">Pages:</label>
+            <label index="total_pages">Total number of pages:</label>
+            <label index="deleted_pages">Marked-deleted pages:</label>
+            <label index="hidden_pages">Hidden pages:</label>
+            <label index="relations">Relations:</label>
+            <label index="relations_description">This will analyse the content of the tables and check if there are 'empty' relations between records or if files are missing from their expected position.</label>
+            <label index="files_many_ref">Files referenced from more than one record:</label>
+            <label index="files_no_ref">Files with no references at all (delete them!):</label>
+            <label index="files_no_file">Missing files:</label>
+            <label index="select_db">Select fields:</label>
+            <label index="group_db">Group fields:</label>
+            <label index="tree">The Page Tree:</label>
+            <label index="tree_description">This shows all pages in the system in one large tree. Beware that this will probably result in a very long document which will also take some time for the server to compute!</label>
+            <label index="records">Records Statistics:</label>
+            <label index="records_description">This shows some statistics for the records in the database. This runs through the entire page-tree and therefore it will also load the server heavily!</label>
+            <label index="search">Search Whole Database</label>
+            <label index="search_description">This searches through all database tables and records for a text string.</label>
+            <label index="filesearch">Search all filenames for pattern</label>
+            <label index="filesearch_description">Will search recursively for filenames in the PATH_site (subdirs to the website path) matching a certain regex pattern.</label>
+            <label index="refindex">Check and update global reference index</label>
+            <label index="refindex_description">Allows you to maintain the reference index kept by TYPO3.</label>
+            <label index="title">Database integrity check</label>
+        </languageKey>
+    </data>
+</T3locallang>

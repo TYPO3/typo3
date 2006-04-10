@@ -31,42 +31,46 @@
  *
  *
  *
- *   97: class tx_version_cm1 extends t3lib_SCbase
+ *  102: class tx_version_cm1 extends t3lib_SCbase
  *
  *              SECTION: Standard module initialization
- *  132:     function menuConfig()
- *  169:     function main()
- *  222:     function jumpToUrl(URL)
- *  282:     function printContent()
+ *  138:     function menuConfig()
+ *  175:     function main()
+ *  236:     function jumpToUrl(URL)
+ *  296:     function printContent()
  *
  *              SECTION: Versioning management
- *  308:     function versioningMgm()
- *  471:     function pageSubContent($pid,$c=0)
- *  525:     function lookForOwnVersions($table,$uid)
- *  542:     function adminLinks($table,$row)
+ *  322:     function versioningMgm()
+ *  485:     function pageSubContent($pid,$c=0)
+ *  539:     function lookForOwnVersions($table,$uid)
+ *  556:     function adminLinks($table,$row)
  *
  *              SECTION: Workspace management
- *  614:     function workspaceMgm()
- *  639:     function displayWorkspaceOverview()
- *  708:     function displayWorkspaceOverview_list($pArray)
- *  865:     function displayWorkspaceOverview_setInPageArray(&$pArray,$table,$row)
+ *  628:     function workspaceMgm()
+ *  688:     function displayWorkspaceOverview()
+ *  758:     function displayWorkspaceOverview_list($pArray)
+ *  923:     function displayWorkspaceOverview_setInPageArray(&$pArray,$table,$row)
+ *  936:     function displayWorkspaceOverview_allStageCmd()
  *
  *              SECTION: Helper functions (REDUNDANT FROM user/ws/index.php - someone could refactor this...)
- *  892:     function formatVerId($verId)
- *  902:     function formatWorkspace($wsid)
- *  929:     function formatCount($count)
- *  956:     function versionsInOtherWS($table,$uid)
- *  986:     function showStageChangeLog($table,$id,$stageCommands)
- * 1035:     function subElements($uid,$treeLevel,$origId=0)
- * 1138:     function subElements_getNonPageRecords($tN, $uid, &$recList)
- * 1168:     function subElements_renderItem(&$tCell,$tN,$uid,$rec,$origId,$iconMode,$HTMLdata)
- * 1237:     function markupNewOriginals()
- * 1259:     function createDiffView($table, $diff_1_record, $diff_2_record)
- * 1376:     function displayWorkspaceOverview_stageCmd($table,&$rec_off)
- * 1461:     function displayWorkspaceOverview_commandLinks($table,&$rec_on,&$rec_off,$vType)
- * 1531:     function displayWorkspaceOverview_commandLinksSub($table,$rec,$origId)
+ *  986:     function formatVerId($verId)
+ *  996:     function formatWorkspace($wsid)
+ * 1023:     function formatCount($count)
+ * 1050:     function versionsInOtherWS($table,$uid)
+ * 1080:     function showStageChangeLog($table,$id,$stageCommands)
+ * 1129:     function subElements($uid,$treeLevel,$origId=0)
+ * 1232:     function subElements_getNonPageRecords($tN, $uid, &$recList)
+ * 1262:     function subElements_renderItem(&$tCell,$tN,$uid,$rec,$origId,$iconMode,$HTMLdata)
+ * 1331:     function markupNewOriginals()
+ * 1353:     function createDiffView($table, $diff_1_record, $diff_2_record)
+ * 1470:     function displayWorkspaceOverview_stageCmd($table,&$rec_off)
+ * 1557:     function displayWorkspaceOverview_commandLinks($table,&$rec_on,&$rec_off,$vType)
+ * 1627:     function displayWorkspaceOverview_commandLinksSub($table,$rec,$origId)
  *
- * TOTAL FUNCTIONS: 25
+ *              SECTION: Processing
+ * 1683:     function publishAction()
+ *
+ * TOTAL FUNCTIONS: 27
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -179,6 +183,12 @@ class tx_version_cm1 extends t3lib_SCbase {
 		$this->doc->backPath = $BACK_PATH;
 		$this->doc->form='<form action="" method="post">';
 
+	        // Add styles
+		$this->doc->inDocStylesArray[$GLOBALS['MCONF']['name']] = '
+.version-diff-1 { background-color: green; }
+.version-diff-2 { background-color: red; }
+';
+
 			// Setting up the context sensitive menu:
 		$CMparts = $this->doc->getContextMenuCode();
 		$this->doc->JScode.= $CMparts[0];
@@ -206,6 +216,7 @@ class tx_version_cm1 extends t3lib_SCbase {
 		if ($record['pid']==-1)	{
 			$record = t3lib_BEfunc::getRecord($this->table,$record['t3ver_oid']);
 		}
+		$pidValue = $this->table==='pages' ? $this->uid : $record['pid'];
 
 			// Checking access etc.
 		if (is_array($record) && $TCA[$this->table]['ctrl']['versioningWS'])	{
@@ -213,17 +224,17 @@ class tx_version_cm1 extends t3lib_SCbase {
 
 				// Access check!
 				// The page will show only if there is a valid page and if this page may be viewed by the user
-			$this->pageinfo = t3lib_BEfunc::readPageAccess($record['pid'],$this->perms_clause);
+			$this->pageinfo = t3lib_BEfunc::readPageAccess($pidValue,$this->perms_clause);
 			$access = is_array($this->pageinfo) ? 1 : 0;
 
-			if (($record['pid'] && $access) || ($BE_USER->user['admin'] && !$record['pid']))	{
+			if (($pidValue && $access) || ($BE_USER->user['admin'] && !$pidValue))	{
 
 					// JavaScript
-				$this->doc->JScode = '
+				$this->doc->JScode.= '
 					<script language="javascript" type="text/javascript">
 						script_ended = 0;
 						function jumpToUrl(URL)	{
-							document.location = URL;
+							window.location.href = URL;
 						}
 
 						function hlSubelements(origId, verId, over, diffLayer)	{	//
@@ -416,8 +427,8 @@ class tx_version_cm1 extends t3lib_SCbase {
 					<td>'.$row['t3ver_count'].'</td>
 					<td>'.$row['pid'].'</td>
 					<td nowrap="nowrap"><a href="#" onclick="'.htmlspecialchars(t3lib_BEfunc::editOnClick('&edit['.$this->table.']['.$row['uid'].']=edit&columnsOnly=t3ver_label',$this->doc->backPath)).'"><img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/edit2.gif','width="11" height="12"').' alt="" title="Edit"/></a>'.htmlspecialchars($row['t3ver_label']).'</td>
-					<td bgcolor="green"><input type="radio" name="diff_1" value="'.$row['uid'].'"'.($diff_1==$row['uid'] ? ' checked="checked"':'').'/></td>
-					<td bgcolor="red"><input type="radio" name="diff_2" value="'.$row['uid'].'"'.($diff_2==$row['uid'] ? ' checked="checked"':'').'/></td>
+					<td class="version-diff-1"><input type="radio" name="diff_1" value="'.$row['uid'].'"'.($diff_1==$row['uid'] ? ' checked="checked"':'').'/></td>
+					<td class="version-diff-2"><input type="radio" name="diff_2" value="'.$row['uid'].'"'.($diff_2==$row['uid'] ? ' checked="checked"':'').'/></td>
 				</tr>';
 
 				// Show sub-content if the table is pages AND it is not the online branch (because that will mostly render the WHOLE tree below - not smart;)
@@ -446,9 +457,9 @@ class tx_version_cm1 extends t3lib_SCbase {
 			<form action="'.$this->doc->backPath.'tce_db.php" method="post">
 			Label: <input type="text" name="cmd['.$this->table.']['.$this->uid.'][version][label]" /><br/>
 			'.($this->table == 'pages' ? '<select name="cmd['.$this->table.']['.$this->uid.'][version][treeLevels]">
-				<option value="0">Page: Page + content</option>
-				<option value="100">Branch: All subpages</option>
-				<option value="-1">Element: Just record</option>
+				'.($GLOBALS['BE_USER']->workspaceVersioningTypeAccess(0) ? '<option value="0">Page: Page + content</option>' : '').'
+				'.($GLOBALS['BE_USER']->workspaceVersioningTypeAccess(1) ? '<option value="100">Branch: All subpages</option>' : '').'
+				'.($GLOBALS['BE_USER']->workspaceVersioningTypeAccess(-1) ? '<option value="-1">Element: Just record</option>' : '').'
 			</select>' : '').'
 			<br/><input type="hidden" name="cmd['.$this->table.']['.$this->uid.'][version][action]" value="new" />
 			<input type="hidden" name="prErr" value="1" />
@@ -636,7 +647,7 @@ class tx_version_cm1 extends t3lib_SCbase {
 		$WSoverview = $this->displayWorkspaceOverview();
 
 			// Buttons for publish / swap:
-		$actionLinks = '';
+		$actionLinks = '<br/>';
 		if ($GLOBALS['BE_USER']->workspace!==0)	{
 			if ($this->publishAccess)	{
 				$actionLinks.= '<input type="submit" name="_publish" value="Publish page" onclick="return confirm(\'Are you sure you want to publish all content '.($GLOBALS['BE_USER']->workspaceRec['publish_access']&1 ? 'in &quot;Publish&quot; stage ':'').'from this page?\');"/>';
@@ -648,10 +659,18 @@ class tx_version_cm1 extends t3lib_SCbase {
 			}
 		}
 		$actionLinks.= '<input type="submit" name="_" value="Refresh" />';
+		$actionLinks.= '<input type="submit" name="_previewLink" value="Preview Link" />';
 		$actionLinks.= $this->displayWorkspaceOverview_allStageCmd();
 
 		if ($actionLinks || count($errors))	{
 			$this->content.= $this->doc->section('',$actionLinks.(count($errors) ? '<h3>Errors:</h3><br/>'.implode('<br/>',$errors).'<hr/>' : ''),0,1);
+		}
+
+		if (t3lib_div::_POST('_previewLink'))	{
+			$params = 'id='.$this->id.'&ADMCMD_view=1&ADMCMD_editIcons=1&ADMCMD_previewWS='.$GLOBALS['BE_USER']->workspace;
+			$previewUrl = t3lib_div::getIndpEnv('TYPO3_SITE_URL').'?ADMCMD_prev='.t3lib_BEfunc::compilePreviewKeyword($params, $GLOBALS['BE_USER']->user['uid']);
+
+			$this->content.= $this->doc->section('Preview Url:','You can preview this page from the workspace using this link for the next 48 hours (does not require backend login):<br/><br/><a target="_blank" href="'.htmlspecialchars($previewUrl).'">'.$previewUrl.'</a>',0,1);
 		}
 
 			// Output overview content:
@@ -779,12 +798,16 @@ class tx_version_cm1 extends t3lib_SCbase {
 
 							// Prepare diff-code:
 						if ($this->MOD_SETTINGS['diff'] || $this->diffOnly)	{
-							if ($rec_on['t3ver_state']!=1)	{	// Not new record:
-								list($diffHTML,$diffPct) = $this->createDiffView($table, $rec_off, $rec_on);
-								$diffCode = ($diffPct<0 ? 'N/A' : ($diffPct ? $diffPct.'% change:' : '')).
-											$diffHTML;
+							$diffCode = '';
+							list($diffHTML,$diffPct) = $this->createDiffView($table, $rec_off, $rec_on);
+							if ($rec_on['t3ver_state']==1)	{	// New record:
+								$diffCode.= $this->doc->icons(1).'New element<br/>';	// TODO Localize?
+								$diffCode.= $diffHTML;
+							} elseif ($rec_off['t3ver_state']==2)	{
+								$diffCode.= $this->doc->icons(2).'Deleted element<br/>';
 							} else {
-								$diffCode = $this->doc->icons(1).'New element';
+								$diffCode.= ($diffPct<0 ? 'N/A' : ($diffPct ? $diffPct.'% change:' : ''));
+								$diffCode.= $diffHTML;
 							}
 						} else $diffCode = '';
 
@@ -934,7 +957,7 @@ class tx_version_cm1 extends t3lib_SCbase {
 			}
 
 			$onClick = 'var commentTxt=window.prompt("'.$label.'","");
-							if (commentTxt!=null) {document.location="'.$this->doc->issueCommand($issueCmd).'&generalComment="+escape(commentTxt);}'.
+							if (commentTxt!=null) {window.location.href="'.$this->doc->issueCommand($issueCmd).'&generalComment="+escape(commentTxt);}'.
 							' return false;';
 			$actionLinks.=
 				'<input type="submit" name="_" value="'.htmlspecialchars($titleAttrib).'" onclick="'.htmlspecialchars($onClick).'" />';
@@ -1484,7 +1507,7 @@ class tx_version_cm1 extends t3lib_SCbase {
 
 		if ($raiseOk && $rec_off['t3ver_stage']!=-1)	{
 			$onClick = 'var commentTxt=window.prompt("Please explain why you reject:","");
-							if (commentTxt!=null) {document.location="'.$this->doc->issueCommand(
+							if (commentTxt!=null) {window.location.href="'.$this->doc->issueCommand(
 							'&cmd['.$table.']['.$rec_off['uid'].'][version][action]=setStage'.
 							'&cmd['.$table.']['.$rec_off['uid'].'][version][stageId]=-1'
 							).'&cmd['.$table.']['.$rec_off['uid'].'][version][comment]="+escape(commentTxt);}'.
@@ -1505,7 +1528,7 @@ class tx_version_cm1 extends t3lib_SCbase {
 			// Raise
 		if ($raiseOk)	{
 			$onClick = 'var commentTxt=window.prompt("'.$label.'","");
-							if (commentTxt!=null) {document.location="'.$this->doc->issueCommand(
+							if (commentTxt!=null) {window.location.href="'.$this->doc->issueCommand(
 							'&cmd['.$table.']['.$rec_off['uid'].'][version][action]=setStage'.
 							'&cmd['.$table.']['.$rec_off['uid'].'][version][stageId]='.$sId
 							).'&cmd['.$table.']['.$rec_off['uid'].'][version][comment]="+escape(commentTxt);}'.

@@ -7,7 +7,7 @@ global $ADODB_INCLUDED_LIB;
 $ADODB_INCLUDED_LIB = 1;
 
 /* 
- @version V4.68 25 Nov 2005 (c) 2000-2005 John Lim (jlim\@natsoft.com.my). All rights reserved.
+ @version V4.80 8 Mar 2006 (c) 2000-2006 John Lim (jlim\@natsoft.com.my). All rights reserved.
   Released under both BSD license and Lesser GPL library license. 
   Whenever there is any discrepancy between the two licenses, 
   the BSD license will take precedence. See License.txt. 
@@ -283,9 +283,15 @@ function _adodb_getmenu_gp(&$zthis, $name,$defstr='',$blank1stItem=true,$multipl
 
 /*
 	Count the number of records this sql statement will return by using
-	query rewriting techniques...
+	query rewriting heuristics...
 	
 	Does not work with UNIONs, except with postgresql and oracle.
+	
+	Usage:
+	
+	$conn->Connect(...);
+	$cnt = _adodb_getcount($conn, $sql);
+	
 */
 function _adodb_getcount(&$zthis, $sql,$inputarr=false,$secs2cache=0) 
 {
@@ -321,7 +327,12 @@ function _adodb_getcount(&$zthis, $sql,$inputarr=false,$secs2cache=0)
 
 		// fix by alexander zhukov, alex#unipack.ru, because count(*) and 'order by' fails 
 		// with mssql, access and postgresql. Also a good speedup optimization - skips sorting!
-		$rewritesql = preg_replace('/(\sORDER\s+BY\s[^)]*)/is','',$rewritesql);
+		// also see http://phplens.com/lens/lensforum/msgs.php?id=12752
+		if (preg_match('/\sORDER\s+BY\s*\(/i',$rewritesql))
+			$rewritesql = preg_replace('/(\sORDER\s+BY\s.*)/is','',$rewritesql);
+		else
+			$rewritesql = preg_replace('/(\sORDER\s+BY\s[^)]*)/is','',$rewritesql);
+		 
 	}
 	
 	if (isset($rewritesql) && $rewritesql != $sql) {
@@ -597,9 +608,11 @@ function _adodb_getupdatesql(&$zthis,&$rs, $arrFields,$forceUpdate=false,$magicq
 			$discard = false;
 			// not a good hack, improvements?
 			if ($whereClause) {
+			#var_dump($whereClause);
 				if (preg_match('/\s(ORDER\s.*)/is', $whereClause[1], $discard));
 				else if (preg_match('/\s(LIMIT\s.*)/is', $whereClause[1], $discard));
-				else preg_match('/\s(FOR UPDATE.*)/is', $whereClause[1], $discard);
+				else if (preg_match('/\s(FOR UPDATE.*)/is', $whereClause[1], $discard));
+				else preg_match('/\s.*(\) WHERE .*)/is', $whereClause[1], $discard); # see http://sourceforge.net/tracker/index.php?func=detail&aid=1379638&group_id=42718&atid=433976
 			} else
 				$whereClause = array(false,false);
 				

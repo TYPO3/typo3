@@ -1,8 +1,35 @@
+/***************************************************************
+*  Copyright notice
+*
+*  (c) 2002-2004, interactivetools.com, inc.
+*  (c) 2003-2004 dynarch.com
+*  (c) 2004, 2005, 2006 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
+*  All rights reserved
+*
+*  This script is part of the TYPO3 project. The TYPO3 project is
+*  free software; you can redistribute it and/or modify
+*  it under the terms of the GNU General Public License as published by
+*  the Free Software Foundation; either version 2 of the License, or
+*  (at your option) any later version.
+*
+*  The GNU General Public License can be found at
+*  http://www.gnu.org/copyleft/gpl.html.
+*  A copy is found in the textfile GPL.txt and important notices to the license
+*  from the author is found in LICENSE.txt distributed with these scripts.
+*
+*
+*  This script is distributed in the hope that it will be useful,
+*  but WITHOUT ANY WARRANTY; without even the implied warranty of
+*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+*  GNU General Public License for more details.
+*
+*  This script is a modified version of a script published under the htmlArea License.
+*  A copy of the htmlArea License may be found in the textfile HTMLAREA_LICENSE.txt.
+*
+*  This copyright notice MUST APPEAR in all copies of the script!
+***************************************************************/
 /*
- * htmlArea v3.0 - Copyright (c) 2003-2005 dynarch.com
- * htmlArea v3.0 - Copyright (c) 2002-2003 interactivetools.com, inc.
- * TYPO3 htmlArea RTE - Copyright (c) 2004-2005 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
- * This copyright notice MUST stay intact for use.
+ * Main script of TYPO3 htmlArea RTE
  *
  * TYPO3 CVS ID: $Id$
  */
@@ -99,12 +126,12 @@ HTMLArea._request = [];
 HTMLArea.loadScript = function(url, plugin) {
 	if (plugin) url = _editor_url + "/plugins/" + plugin + '/' + url;
 	if(HTMLArea.is_opera) url = _typo3_host_url + url;
-	if(HTMLArea._compressedScripts) url = url.replace(/\.js$/gi, "-compressed.js");
+	if(HTMLArea._compressedScripts && url.indexOf("compressed") == -1) url = url.replace(/\.js$/gi, "-compressed.js");
 	HTMLArea._scripts.push(url);
 };
-HTMLArea.loadScript(_editor_url + "popupwin.js");
-if(HTMLArea.is_gecko) HTMLArea.loadScript(_editor_url + "htmlarea-gecko.js");
-if(HTMLArea.is_ie) HTMLArea.loadScript(_editor_url + "htmlarea-ie.js");
+HTMLArea.loadScript(RTEarea[0]["popupwin"] ? RTEarea[0]["popupwin"] : _editor_url + "popupwin.js");
+if(HTMLArea.is_gecko) HTMLArea.loadScript(RTEarea[0]["htmlarea-gecko"] ? RTEarea[0]["htmlarea-gecko"] : _editor_url + "htmlarea-gecko.js");
+if(HTMLArea.is_ie) HTMLArea.loadScript(RTEarea[0]["htmlarea-ie"] ? RTEarea[0]["htmlarea-ie"] : _editor_url + "htmlarea-ie.js");
 
 /*
  * Get a script using asynchronous XMLHttpRequest
@@ -217,7 +244,7 @@ HTMLArea.Reg_body = new RegExp("<\/?(body)[^>]*>", "gi");
 HTMLArea.Reg_entities = new RegExp("&amp;([0-9]+);", "gi");
 HTMLArea.reservedClassNames = /htmlarea/;
 HTMLArea.RE_email    = /([0-9a-z]+([a-z0-9_-]*[0-9a-z])*){1}(\.[0-9a-z]+([a-z0-9_-]*[0-9a-z])*)*@([0-9a-z]+([a-z0-9_-]*[0-9a-z])*\.)+[a-z]{2,9}/i;
-HTMLArea.RE_url      = /(https?:\/\/)?(([a-z0-9_]+:[a-z0-9_]+@)?[a-z0-9_-]{2,}(\.[a-z0-9_-]{2,}){2,}(:[0-9]+)?(\/\S+)*)/i;
+HTMLArea.RE_url      = /(https?:\/\/)?(([a-z0-9_]+:[a-z0-9_]+@)?[a-z0-9_-]{2,}(\.[a-z0-9_-]{2,})+\.[a-z]{2,5}(:[0-9]+)?(\/\S+)*)/i;
 
 /*
  * Editor configuration object constructor
@@ -261,38 +288,14 @@ HTMLArea.Config = function () {
 		// remove comments
 	this.htmlRemoveComments = false;
 		// custom tags (these have to be a regexp, or null if this functionality is not desired)
-	this.customTags = /rougegras/ig;
+	this.customTags = null;
 		// BaseURL included in the iframe document
 	this.baseURL = document.baseURI || document.URL;
 	if(this.baseURL && this.baseURL.match(/(.*)\/([^\/]+)/)) this.baseURL = RegExp.$1 + "/";
 		// URL-s
 	this.imgURL = "images/";
 	this.popupURL = "popups/";
-/* TYPO3 will provide its own defaults for the following objects	
-		// Default toolbar
-	this.toolbar = [
-		[ "FontName", "space", "FontSize", "space", "FormatBlock", "space", "Bold", "Italic", "Underline", "StrikeThrough", "separator",
-		  "Subscript", "Superscript", "separator", "Copy", "Cut", "Paste", "space", "Undo", "Redo" ],
-		[ "JustifyLeft", "JustifyCenter", "JustifyRight", "JustifyFull", "separator", "LeftToRight", "RightToLeft", "separator",
-		  "InsertOrderedList", "InsertUnorderedList", "Outdent", "Indent", "separator", "ForeColor", "HiliteColor", "separator",
-		  "InsertHorizontalRule", "CreateLink", "InsertImage", "InsertTable", "HtmlMode", "separator", "ShowHelp", "About" ]
-	];
-		// Default fonts
-	this.FontName = {
-		"Arial":		'arial,helvetica,sans-serif',
-		"Courier New":		'courier new,courier,monospace',
-		"Georgia":		'georgia,times new roman,times,serif',
-		"Tahoma":		'tahoma,arial,helvetica,sans-serif',
-		"Times New Roman":	'times new roman,times,serif',
-		"Verdana":		'verdana,arial,helvetica,sans-serif',
-		"impact":		'impact',
-		"WingDings":		'wingdings'
-	};
-		// Default font sizes
-	this.FontSize = { "1 (8 pt)":  "1", "2 (10 pt)": "2", "3 (12 pt)": "3", "4 (14 pt)": "4", "5 (18 pt)": "5", "6 (24 pt)": "6", "7 (36 pt)": "7" };
-		// Default block elements
-	this.FormatBlock = {"Heading 1": "h1", "Heading 2": "h2", "Heading 3": "h3", "Heading 4": "h4", "Heading 5": "h5", "Heading 6": "h6", "Normal": "p", "Address": "address", "Formatted": "pre" };
-*/
+
 	this.btnList = {
 		Bold:			["Bold", "ed_format_bold", false, function(editor) {editor.execCommand("Bold");}],
 		Italic:			["Italic", "ed_format_italic", false, function(editor) {editor.execCommand("Italic");}],
@@ -311,14 +314,13 @@ HTMLArea.Config = function () {
 		ForeColor:		["Font Color", "ed_color_fg.gif",false, function(editor) {editor.execCommand("ForeColor");}],
 		HiliteColor:		["Background Color", "ed_color_bg.gif",false, function(editor) {editor.execCommand("HiliteColor");}],
 		InsertHorizontalRule:	["Horizontal Rule", "ed_hr.gif",false, function(editor) {editor.execCommand("InsertHorizontalRule");}],
-		CreateLink:		["Insert Web Link", "ed_link.gif", false, function(editor) {editor.execCommand("CreateLink", true);}, null, false, true],
+		CreateLink:		["Insert Web Link", "ed_link.gif", false, function(editor) {editor.execCommand("CreateLink", true);}, "a", false, true],
 		InsertImage:		["Insert/Modify Image", "ed_image.gif", false, function(editor) {editor.execCommand("InsertImage");}],
 		InsertTable:		["Insert Table", "insert_table.gif", false, function(editor) {editor.execCommand("InsertTable");}],
 		HtmlMode:		["Toggle HTML Source", "ed_html.gif", true, function(editor) {editor.execCommand("HtmlMode");}],
 		SelectAll:		["SelectAll", "", true, function(editor) {editor.execCommand("SelectAll");}, null, true, false],
 		SplitBlock:		["Toggle Container Block", "ed_splitblock.gif", false, function(editor) {editor.execCommand("SplitBlock");}],
 		About:			["About this editor", "ed_about.gif", true, function(editor) {editor.execCommand("About");}],
-		ShowHelp:		["Help using editor", "ed_help.gif", true, function(editor) {editor.execCommand("ShowHelp");}],
 		Undo:			["Undoes your last action", "ed_undo.gif", false, function(editor) {editor.execCommand("Undo");}],
 		Redo:			["Redoes your last action", "ed_redo.gif", false, function(editor) {editor.execCommand("Redo");}],
 		Cut:			["Cut selection", "ed_cut.gif", false, function(editor,command,obj) {editor.execCommand("Cut");}],
@@ -901,13 +903,16 @@ HTMLArea.prototype.sizeIframe = function(diff) {
 	}
 	this._iframe.style.height = height;
 	this._textArea.style.height = textareaHeight;
-	var textareaWidth = (this.config.width == "auto" ? (this._textArea.style.width) : this.config.width);
+	var textareaWidth = (this.config.width == "auto" ? this._textArea.style.width : this.config.width);
+	var iframeWidth = textareaWidth;
 	if(textareaWidth.indexOf("%") == -1) {
+		iframeWidth = parseInt(textareaWidth) + "px";
 		textareaWidth = parseInt(textareaWidth) - diff;
 		if (textareaWidth < 0) textareaWidth = 0;
 		textareaWidth += "px";
 	}
 	this._iframe.style.width = "100%";
+	if (HTMLArea.is_opera) this._iframe.style.width = iframeWidth;
 	this._textArea.style.width = textareaWidth;
 };
 
@@ -1106,6 +1111,10 @@ HTMLArea.resetHandler = function(ev) {
 HTMLArea.removeEditorEvents = function(ev) {
 	if(!ev) var ev = window.event;
 	HTMLArea._stopEvent(ev);
+	if (Dialog._modal) {
+		Dialog._modal.close();
+		Dialog._modal = null;
+	}
 	for (var ed = RTEarea.length; --ed > 0 ;) {
 		var editor = RTEarea[ed]["editor"];
 		if(editor) {
@@ -1241,14 +1250,18 @@ HTMLArea.prototype.registerPlugin2 = function(plugin, args) {
 /*
  * Load the required plugin script and, unless not requested, the language file
  */
-HTMLArea.loadPlugin = function(pluginName,noLangFile) {
-	var dir = _editor_url + "plugins/" + pluginName;
-	var plugin = pluginName.replace(/([a-z])([A-Z])([a-z])/g, "$1" + "-" + "$2" + "$3").toLowerCase() + ".js";
-	var plugin_file = dir + "/" + plugin;
-	HTMLArea.loadScript(plugin_file);
-	if (typeof(noLangFile) == "undefined" || !noLangFile) {
-		var plugin_lang = dir + "/lang/" + _editor_lang + ".js";
-		HTMLArea._scripts.push(plugin_lang);
+HTMLArea.loadPlugin = function(pluginName,noLangFile,url) {
+	if (typeof(url) == "undefined") {
+		var dir = _editor_url + "plugins/" + pluginName;
+		var plugin = pluginName.replace(/([a-z])([A-Z])([a-z])/g, "$1" + "-" + "$2" + "$3").toLowerCase() + ".js";
+		var plugin_file = dir + "/" + plugin;
+		HTMLArea.loadScript(plugin_file);
+		if (typeof(noLangFile) == "undefined" || !noLangFile) {
+			var plugin_lang = dir + "/lang/" + _editor_lang + ".js";
+			HTMLArea._scripts.push(plugin_lang);
+		}
+	} else {
+		HTMLArea.loadScript(url);
 	}
 };
 
@@ -1319,12 +1332,15 @@ HTMLArea._wordClean = function(editor,html) {
 		}
 	}
 	function clearStyle(node) {
-		if (HTMLArea.is_ie) var declarations = node.style.cssText.split(/\s*;\s*/);
-			else var declarations = node.getAttribute("style").split(/\s*;\s*/);
-		for (var i = declarations.length; --i >= 0;) {
-			if(/^mso|^tab-stops/i.test(declarations[i]) || /^margin\s*:\s*0..\s+0..\s+0../i.test(declarations[i])) declarations.splice(i,1);
+		if (HTMLArea.is_ie) var style = node.style.cssText;
+			else var style = node.getAttribute("style");
+		if (style) {
+			var declarations = style.split(/\s*;\s*/);
+			for (var i = declarations.length; --i >= 0;) {
+				if(/^mso|^tab-stops/i.test(declarations[i]) || /^margin\s*:\s*0..\s+0..\s+0../i.test(declarations[i])) declarations.splice(i,1);
+			}
+			node.setAttribute("style", declarations.join("; "));
 		}
-		node.setAttribute("style", declarations.join("; "));
 	}
 	function stripTag(el) {
 		if(HTMLArea.is_ie) {
@@ -1340,7 +1356,7 @@ HTMLArea._wordClean = function(editor,html) {
 	}
 	function parseTree(root) {
 		var tag = root.tagName.toLowerCase(), i, next;
-		if((HTMLArea.is_ie && root.scopeName != 'HTML') || (!HTMLArea.is_ie && /:/.test(tag))) {
+		if((HTMLArea.is_ie && root.scopeName != 'HTML') || (!HTMLArea.is_ie && /:/.test(tag)) || /o:p/.test(tag)) {
 			stripTag(root);
 			return false;
 		} else {
@@ -1511,10 +1527,11 @@ HTMLArea.prototype.updateToolbar = function(noStatus) {
 				if (!HTMLArea.is_opera) {
 					HTMLArea._addEvents(a, ["click", "contextmenu"], HTMLArea.statusBarHandler);
 				} else {
-					HTMLArea._addEvents(a, ["click", "mousedown"], HTMLArea.statusBarHandler);
+					HTMLArea._addEvents(a, ["mousedown", "click"], HTMLArea.statusBarHandler);
 				}
 				txt = el.tagName.toLowerCase();
 				if (!HTMLArea.is_opera) a.title = el.style.cssText;
+				a.title = el.style.cssText;
 				if (el.id) { txt += "#" + el.id; }
 				if (el.className) {
 					txtClass = "";
@@ -1564,7 +1581,8 @@ HTMLArea.prototype.updateToolbar = function(noStatus) {
 				}
 			}
 		}
-		btn.state("enabled", (!text || btn.text) && inContext && (selection || !btn.selection));
+		if (cmd == "CreateLink") btn.state("enabled", (!text || btn.text) && (inContext || selection));
+			else btn.state("enabled", (!text || btn.text) && inContext && (selection || !btn.selection));
 		
 		if (typeof(cmd) == "function") { continue; };
 			// look-it-up in the custom dropdown boxes
@@ -1835,10 +1853,7 @@ HTMLArea.prototype._createLink = function(link) {
 	}
 	if (!link) {
 		var sel = this._getSelection();
-		var range = this._createRange(sel);
-		var compare = 0;
-		compare = HTMLArea.is_ie ? range.compareEndPoints("StartToEnd", range) : range.compareBoundaryPoints(range.START_TO_END, range);
-		if (compare == 0) {
+		if (this._selectionEmpty(sel)) {
 			alert("You need to select some text before creating a link");
 			return;
 		}
@@ -1871,11 +1886,16 @@ HTMLArea.insertImageDialog = function(editor,image) {
 			var sel = editor._getSelection();
 			var range = editor._createRange(sel);
 			editor._doc.execCommand("InsertImage",false,param.f_url);
-			if(HTMLArea.is_ie) {
+			if (HTMLArea.is_ie) {
 				img = range.parentElement();
 				if(img.tagName.toLowerCase() != "img") img = img.previousSibling;
 			} else {
-				img = range.startContainer.previousSibling;
+				var sel = editor._getSelection();
+				var range = editor._createRange(sel);
+				img = range.startContainer;
+				if (HTMLArea.is_opera) img = img.parentNode;
+				img = img.lastChild;
+				while(img && img.nodeName.toLowerCase() != "img") img = img.previousSibling;
 			}
 		} else {
 			img.src = param.f_url;
@@ -1885,11 +1905,40 @@ HTMLArea.insertImageDialog = function(editor,image) {
 			var value = param[field];
 			switch (field) {
 				case "f_alt"    : img.alt = value; break;
-				case "f_border" : img.border = parseInt(value || "0"); break;
-				case "f_align"  : img.align = value; break;
-				case "f_vert"   : img.vspace = parseInt(value || "0"); break;
-				case "f_horiz"  : img.hspace = parseInt(value || "0"); break;
-				case "f_float"  : if (HTMLArea.is_ie) { img.style.styleFloat = value; }  else { img.style.cssFloat = value;}; break; 
+				case "f_border" :
+					if (parseInt(value)) {
+						img.style.borderWidth = parseInt(value)+"px";
+						img.style.borderStyle = "solid";
+					} else {
+						img.style.borderWidth = "";
+						img.style.borderStyle = "none";
+					}
+					break;
+				case "f_align"  :
+					img.style.verticalAlign = value;
+					break;
+				case "f_vert"   :
+					if (parseInt(value)) {
+						img.style.marginTop = parseInt(value)+"px";
+						img.style.marginBottom = parseInt(value)+"px";
+					} else {
+						img.style.marginTop = "";
+						img.style.marginBottom = "";
+					}
+					break;
+				case "f_horiz"  :
+					if (parseInt(value)) {
+						img.style.marginLeft = parseInt(value)+"px";
+						img.style.marginRight = parseInt(value)+"px";
+					} else {
+						img.style.marginLeft = "";
+						img.style.marginRight = "";
+					}
+					break;
+				case "f_float"  :
+					if (HTMLArea.is_ie) img.style.styleFloat = value;
+						else img.style.cssFloat = value;
+					break; 
 			}
 		}
 		editor = null;
@@ -1910,12 +1959,12 @@ HTMLArea.prototype._insertImage = function(image) {
 	}
 	if(image) outparam = {
 		f_base		: this.config.baseURL,
-		f_url		: HTMLArea.is_ie ? this.stripBaseURL(image.src) : image.getAttribute("src"),
+		f_url		: image.getAttribute("src"),
 		f_alt		: image.alt,
-		f_border	: image.border,
-		f_align 	: image.align,
-		f_vert		: image.vspace,
-		f_horiz 	: image.hspace,
+		f_border	: isNaN(parseInt(image.style.borderWidth))?"":parseInt(image.style.borderWidth),
+		f_align 	: image.style.verticalAlign,
+		f_vert		: isNaN(parseInt(image.style.marginTop))?"":parseInt(image.style.marginTop),
+		f_horiz 	: isNaN(parseInt(image.style.marginLeft))?"":parseInt(image.style.marginLeft),
  		f_float 	: HTMLArea.is_ie ? image.style.styleFloat : image.style.cssFloat
 	};
 	var insertImageDialogFunctRef = HTMLArea.insertImageDialog(this, image);
@@ -2022,7 +2071,6 @@ HTMLArea.prototype.execCommand = function(cmdID, UI, param) {
 	    case "InsertTable"	: this._insertTable(); break;
 	    case "InsertImage"	: this._insertImage(); break;
 	    case "About"	: this._popupDialog("about.html", null, this, 475, 350); break;
-	    case "ShowHelp"	: window.open(_editor_url + "reference.html","ha_help"); break;
 	    case "CleanWord"	: HTMLArea._wordClean(this, this._doc.body); break;
 	    case "Cut"		:
 	    case "Copy"		:
@@ -2047,16 +2095,19 @@ HTMLArea.prototype.execCommand = function(cmdID, UI, param) {
 	    case "Indent"	:
 	    	var el = this.getParentElement();
 		while (el && (!HTMLArea.isBlockElement(el) || /^li$/i.test(el.nodeName))) el = el.parentNode;
+	    	try { this._doc.execCommand(cmdID, UI, param); }
+			catch(e) { if (this.config.debug) alert(e + "\n\nby execCommand(" + cmdID + ");"); }
 		if (/^(ol|ul)$/i.test(el.nodeName)) {
-			try { this._doc.execCommand(cmdID, UI, param); }
-				catch(e) { if(this.config.debug) alert(e + "\n\nby execCommand(" + cmdID + ");"); }
 			this.makeNestedList(el);
 			this.selectNodeContents(el);
-			break;
 		}
+		break;
 	    case "FontSize"	:
 	    case "FontName"	:
-		if (!param) {
+	    	if (param) {
+			this._doc.execCommand(cmdID, UI, param);
+			break;
+		} else {
 			var sel = this._getSelection();
 				// Find font and select it
 			if (HTMLArea.is_gecko && sel.isCollapsed) {
@@ -2078,13 +2129,11 @@ HTMLArea.prototype.execCommand = function(cmdID, UI, param) {
 					sel.addRange(r);
 				}
 			}
-		} else {
-			this._doc.execCommand(cmdID, UI, param);
 		}
 		break;
 	    default		:
 	    	try { this._doc.execCommand(cmdID, UI, param); }
-			catch(e) { if(this.config.debug) alert(e + "\n\nby execCommand(" + cmdID + ");"); }
+			catch(e) { if (this.config.debug) alert(e + "\n\nby execCommand(" + cmdID + ");"); }
 	}
 	this.updateToolbar();
 	return false;
@@ -2428,7 +2477,7 @@ HTMLArea._hasClass = function(el, className) {
 
 HTMLArea.RE_blockTags = /^(body|p|h1|h2|h3|h4|h5|h6|ul|ol|pre|dl|div|noscript|blockquote|form|hr|table|fieldset|address|td|tr|th|li|tbody|thead|tfoot|iframe|object)$/;
 HTMLArea.isBlockElement = function(el) { return el && el.nodeType == 1 && HTMLArea.RE_blockTags.test(el.nodeName.toLowerCase()); };
-HTMLArea.RE_closingTags = /^(p|span|a|li|ol|ul|dl|dt|td|th|tr|tbody|thead|tfoot|caption|table|div|em|i|strong|b|code|cite|blockquote|q|dfn|abbr|acronym|font|center|object|tt|style|script|title|head)$/;
+HTMLArea.RE_closingTags = /^(p|span|a|li|ol|ul|dl|dt|td|th|tr|tbody|thead|tfoot|caption|table|div|em|i|strong|b|code|cite|blockquote|q|dfn|abbr|acronym|font|center|object|embed|tt|style|script|title|head)$/;
 HTMLArea.RE_noClosingTag = /^(img|br|hr|input|area|base|link|meta|param)$/;
 HTMLArea.needsClosingTag = function(el) { return el && el.nodeType == 1 && !HTMLArea.RE_noClosingTag.test(el.tagName.toLowerCase()); };
 
@@ -2651,24 +2700,30 @@ HTMLArea._colorToRgb = function(v) {
 /** Use XML HTTPRequest to post some data back to the server and do something
  * with the response (asyncronously!), this is used by such things as the spellchecker update personal dict function
  */
-HTMLArea._postback = function(url, data, handler, addParams) {
+HTMLArea._postback = function(url, data, handler, addParams, charset) {
+	if (typeof(charset) == "undefined") var charset = "utf-8";
 	var req = null;
-	if(HTMLArea.is_ie) {
-		var success = false;
-		for (var k = 0; k < HTMLArea.MSXML_XMLHTTP_PROGIDS.length && !success; k++) {
-			try {
-				req = new ActiveXObject(HTMLArea.MSXML_XMLHTTP_PROGIDS[k]);
-				success = true;
-			} catch (e) { }
+	if (window.XMLHttpRequest) req = new XMLHttpRequest();
+		else if (window.ActiveXObject) {
+			var success = false;
+			for (var k = 0; k < HTMLArea.MSXML_XMLHTTP_PROGIDS.length && !success; k++) {
+				try {
+					req = new ActiveXObject(HTMLArea.MSXML_XMLHTTP_PROGIDS[k]);
+					success = true;
+				} catch (e) { }
+			}
 		}
-	} else {
-		req = new XMLHttpRequest();
-	}
 	
 	if(req) {
 		var content = '';
 		for (var i in data) content += (content.length ? '&' : '') + i + '=' + encodeURIComponent(data[i]);
+		content += (content.length ? '&' : '') + 'charset=' + charset;
 		if (typeof(addParams) != "undefined") content += addParams;
+		if (url.substring(0,1) == '/') {
+			var postUrl = _typo3_host_url + url; 
+		} else {
+			var postUrl = _typo3_host_url + _editor_url + url;
+		}
 		
 		function callBack() {
 			if(req.readyState == 4) {
@@ -2676,16 +2731,17 @@ HTMLArea._postback = function(url, data, handler, addParams) {
 					if (typeof(handler) == 'function') handler(req.responseText, req);
 					HTMLArea._appendToLog("[HTMLArea::_postback]: Server response: " + req.responseText);
 				} else {
-					HTMLArea._appendToLog("ERROR [HTMLArea::_postback]: Unable to post " + _typo3_host_url + _editor_url + url + " . Server reported " + req.statusText);
+					HTMLArea._appendToLog("ERROR [HTMLArea::_postback]: Unable to post " + postUrl + " . Server reported " + req.statusText);
 				}
 			}
 		}
 		req.onreadystatechange = callBack;
 		function sendRequest() {
+			HTMLArea._appendToLog("[HTMLArea::_postback]: Request: " + content);
 			req.send(content);
 		}
 		
-		req.open('POST', _typo3_host_url + _editor_url + url, true);
+		req.open('POST', postUrl, true);
 		req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
 		window.setTimeout(sendRequest, 500);
 	}
@@ -2706,14 +2762,15 @@ Dialog = function(url, action, init, width, height, opener, editor) {
  */
 Dialog._open = function(url, action, init, width, height, _opener, editor) {
 	
-	if (Dialog._modal) Dialog._modal.close();
-	
-	var dlg = window.open(url, 'hadialog', "toolbar=no,location=no,directories=no,menubar=no,width=" + width + ",height=" + height + ",scrollbars=no,resizable=yes,modal=yes,dependent=yes");
-	if (Dialog._modal && !Dialog._modal.closed) {
-		var obj = new Object();
-		obj.dialogWindow = dlg;
-		Dialog._dialog = obj;
+	if (typeof(Dialog._modal) == "object" && typeof(Dialog._modal.close) == "function") {
+		Dialog._modal.close();
+		Dialog._modal = null;
 	}
+	
+	var dlg = window.open(url, 'hadialog', "toolbar=no,location=no,directories=no,menubar=no,width=" + width + ",height=" + height + ",scrollbars=no,resizable=yes,modal=yes,dependent=yes,top=100,left=100");
+	var obj = new Object();
+	obj.dialogWindow = dlg;
+	Dialog._dialog = obj;
 	Dialog._modal = dlg;
 	Dialog._arguments = null;
 	if (typeof(init) != "undefined") { Dialog._arguments = init; }
@@ -2797,7 +2854,7 @@ HTMLArea.getElementById = function(tag, id) {
  */
 HTMLArea.edHidePopup = function() {
 	Dialog._modal.close();
-	if (typeof(browserWin) != "undefined") setTimeout("browserWin.focus();", 200);
+	setTimeout( "if (typeof(browserWin) != 'undefined' && typeof(browserWin.focus) == 'function') browserWin.focus();", 200);
 };
 
 /***************************************************

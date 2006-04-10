@@ -40,17 +40,17 @@
  *
  *
  *   84: class SC_wizard_table
- *  112:     function init()
- *  153:     function main()
- *  169:     function printContent()
- *  178:     function tableWizard()
+ *  116:     function init()
+ *  158:     function main()
+ *  173:     function printContent()
+ *  184:     function tableWizard()
  *
  *              SECTION: Helper functions
- *  217:     function getConfigCode($row)
- *  282:     function getTableHTML($cfgArr,$row)
- *  438:     function changeFunc()
- *  554:     function cfgArray2CfgString($cfgArr)
- *  585:     function cfgString2CfgArray($cfgStr,$cols)
+ *  223:     function getConfigCode($row)
+ *  293:     function getTableHTML($cfgArr,$row)
+ *  450:     function changeFunc()
+ *  572:     function cfgArray2CfgString($cfgArr)
+ *  603:     function cfgString2CfgArray($cfgStr,$cols)
  *
  * TOTAL FUNCTIONS: 9
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -133,7 +133,7 @@ class SC_wizard_table {
 		$this->doc->backPath = $BACK_PATH;
 		$this->doc->JScode=$this->doc->wrapScriptTags('
 			function jumpToUrl(URL,formEl)	{	//
-				document.location = URL;
+				window.location.href = URL;
 			}
 		');
 
@@ -148,6 +148,9 @@ class SC_wizard_table {
 		if ($_POST['savedok_x'] || $_POST['saveandclosedok_x'])	{
 			$this->include_once[]=PATH_t3lib.'class.t3lib_tcemain.php';
 		}
+		
+		$this->tableParsing_delimiter = '|';
+		$this->tableParsing_quote = '';
 	}
 
 	/**
@@ -163,7 +166,6 @@ class SC_wizard_table {
 		} else {
 			$this->content.=$this->doc->section($LANG->getLL('table_title'),'<span class="typo3-red">'.$LANG->getLL('table_noData',1).'</span>',0,1);
 		}
-		$this->content.=$this->doc->endPage();
 	}
 
 	/**
@@ -172,6 +174,8 @@ class SC_wizard_table {
 	 * @return	void
 	 */
 	function printContent()	{
+		$this->content.= $this->doc->endPage();
+		$this->content = $this->doc->insertStylesAndJS($this->content);
 		echo $this->content;
 	}
 
@@ -223,9 +227,12 @@ class SC_wizard_table {
 
 			// get delimiter settings
 		$flexForm = t3lib_div::xml2array($row['pi_flexform']);
-
-		$this->tableParsing_quote = $flexForm['data']['s_parsing']['lDEF']['tableparsing_quote']['vDEF']?chr(intval($flexForm['data']['s_parsing']['lDEF']['tableparsing_quote']['vDEF'])):'';
-		$this->tableParsing_delimiter = $flexForm['data']['s_parsing']['lDEF']['tableparsing_delimiter']['vDEF']?chr(intval($flexForm['data']['s_parsing']['lDEF']['tableparsing_delimiter']['vDEF'])):'|';
+	
+		if (is_array($flexForm)) {
+			$this->tableParsing_quote = $flexForm['data']['s_parsing']['lDEF']['tableparsing_quote']['vDEF']?chr(intval($flexForm['data']['s_parsing']['lDEF']['tableparsing_quote']['vDEF'])):'';
+			$this->tableParsing_delimiter = $flexForm['data']['s_parsing']['lDEF']['tableparsing_delimiter']['vDEF']?chr(intval($flexForm['data']['s_parsing']['lDEF']['tableparsing_delimiter']['vDEF'])):'|';
+		}
+		
 			// If some data has been submitted, then construct
 		if (isset($this->TABLECFG['c']))	{
 
@@ -236,7 +243,7 @@ class SC_wizard_table {
 				// Convert to string (either line based or XML):
 			if ($this->xmlStorage)	{
 					// Convert the input array to XML:
-				$bodyText = t3lib_div::array2xml($this->TABLECFG['c'],'',0,'T3TableWizard');
+				$bodyText = t3lib_div::array2xml_cs($this->TABLECFG['c'],'T3TableWizard');
 
 					// Setting cfgArr directly from the input:
 				$cfgArr = $this->TABLECFG['c'];
@@ -327,6 +334,7 @@ class SC_wizard_table {
 				}
 				$ctrl.='<input type="image" name="TABLE[row_remove]['.(($k+1)*2).']"'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/garbage.gif','').$onClick.' title="'.$LANG->getLL('table_removeRow',1).'" />'.$brTag;
 
+// FIXME what is $tLines? See wizard_forms.php for the same.
 				if (($k+1)!=count($tLines))	{
 					$ctrl.='<input type="image" name="TABLE[row_down]['.(($k+1)*2).']"'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/pil2down.gif','').$onClick.' title="'.$LANG->getLL('table_down',1).'" />'.$brTag;
 				} else {
@@ -578,7 +586,7 @@ class SC_wizard_table {
 			$thisLine=array();
 			reset($this->TABLECFG['c'][$a]);
 			while(list($b)=each($this->TABLECFG['c'][$a]))	{
-				$thisLine[]=$this->tableParsing_quote.str_replace('|','',$this->TABLECFG['c'][$a][$b]).$this->tableParsing_quote;
+				$thisLine[]=$this->tableParsing_quote.str_replace($this->tableParsing_delimiter,'',$this->TABLECFG['c'][$a][$b]).$this->tableParsing_quote;
 			}
 			$inLines[]=implode($this->tableParsing_delimiter,$thisLine);
 		}
@@ -618,7 +626,7 @@ class SC_wizard_table {
 
 				// Traverse columns:
 			for ($a=0;$a<$cols;$a++)	{
-				if ($this->tableParsing_quote)	{
+				if ($this->tableParsing_quote && substr($vParts[$a],0,1) == $this->tableParsing_quote && substr($vParts[$a],-1,1) == $this->tableParsing_quote)	{
 					$vParts[$a] = substr(trim($vParts[$a]),1,-1);
 				}
 				$cfgArr[$k][$a]=$vParts[$a];

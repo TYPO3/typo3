@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2005 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2006 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -40,8 +40,8 @@
  *
  *   74: class t3lib_browseTree extends t3lib_treeView
  *   83:     function init($clause='')
- *  107:     function getTitleAttrib($row)
- *  119:     function wrapIcon($icon,$row)
+ *  116:     function getTitleAttrib($row)
+ *  128:     function wrapIcon($icon,$row)
  *
  * TOTAL FUNCTIONS: 3
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -81,8 +81,17 @@ class t3lib_browseTree extends t3lib_treeView {
 	 * @return	void
 	 */
 	function init($clause='')	{
+
+			// this will hide records from display - it has nothing todo with user rights!!
+		$clauseExludePidList = '';
+		if ($pidList = $GLOBALS['BE_USER']->getTSConfigVal('options.hideRecords.pages')) {
+			if ($pidList = $GLOBALS['TYPO3_DB']->cleanIntList($pidList)) {
+				$clauseExludePidList = ' AND pages.uid NOT IN ('.$pidList.')';
+			}
+		}
+
 			// This is very important for making trees of pages: Filtering out deleted pages, pages with no access to and sorting them correctly:
-		parent::init(' AND '.$GLOBALS['BE_USER']->getPagePermsClause(1).' '.$clause, 'sorting');
+		parent::init(' AND '.$GLOBALS['BE_USER']->getPagePermsClause(1).' '.$clause.$clauseExludePidList, 'sorting');
 
 		$this->table = 'pages';
 		$this->setTreeName('browsePages');

@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+	<meta type="array">
+		<description>Labels for Spell Checker plugin of htmlArea RTE</description>
+		<type>module</type>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index="Spell Checker">Spell Checker</label>
+			<label index="CONFIRM_LINK_CLICK">Please confirm that you want to open this link</label>
+			<label index="Cancel">Cancel</label>
+			<label index="Dictionary">Dictionary</label>
+			<label index="Finished list of mispelled words">Finished list of mispelled words</label>
+			<label index="I will open it in a new page.">I will open it in a new page.</label>
+			<label index="Ignore all">Ignore all</label>
+			<label index="Ignore">Ignore</label>
+			<label index="NO_ERRORS">No mispelled words found with the selected dictionary.</label>
+			<label index="NO_ERRORS_CLOSING">Spell check complete, didn't find any mispelled words.  Closing now...</label>
+			<label index="OK">OK</label>
+			<label index="Original word">Original word</label>
+			<label index="Please wait. Calling spell checker.">Please wait. Calling spell checker.</label>
+			<label index="Please wait: changing dictionary to">Please wait: changing dictionary to</label>
+			<label index="HTMLArea Spell Checker">HTMLArea Spell Checker</label>
+			<label index="QUIT_CONFIRMATION">This will drop changes and quit spell checker.  Please confirm.</label>
+			<label index="Re-check">Re-check</label>
+			<label index="Replace all">Replace all</label>
+			<label index="Replace with">Replace with</label>
+			<label index="Replace">Replace</label>
+			<label index="Learn">Add to dictionary</label>
+			<label index="Revert">Revert</label>
+			<label index="SC-spell-check">Spell-check</label>
+			<label index="Suggestions">Suggestions</label>
+			<label index="One occurrence">One occurrence</label>
+			<label index="Two occurrences">Two occurrences</label>
+			<label index="occurrences">occurrences</label>
+			<label index="of the word">of the word</label>
+			<label index="was found.">was found.</label>
+			<label index="were found.">were found.</label>
+			<label index="Document information">Document information</label>
+			<label index="No information available">No information available</label>
+			<label index="Total words">Total words</label>
+			<label index="Misspelled words">Misspelled words</label>
+			<label index="Total suggestions">Total suggestions</label>
+			<label index="Total words suggested">Total words suggested</label>
+			<label index="Spelling checked in">Spelling checked in</label>
+			<label index="seconds">seconds</label>
+			<label index="pliz weit ;-)">Please wait...</label>
+		</languageKey>
+	</data>
+	<orig_hash type="array">
+		<languageKey index="default" type="array">
+			<label index="Spell Checker" type="integer">254910581</label>
+			<label index="CONFIRM_LINK_CLICK" type="integer">108074176</label>
+			<label index="Cancel" type="integer">245659783</label>
+			<label index="Dictionary" type="integer">62830429</label>
+			<label index="Finished list of mispelled words" type="integer">133530958</label>
+			<label index="I will open it in a new page." type="integer">265878635</label>
+			<label index="Ignore all" type="integer">178106496</label>
+			<label index="Ignore" type="integer">265304316</label>
+			<label index="NO_ERRORS" type="integer">228321476</label>
+			<label index="NO_ERRORS_CLOSING" type="integer">161618228</label>
+			<label index="OK" type="integer">235577377</label>
+			<label index="Original word" type="integer">66231380</label>
+			<label index="Please wait. Calling spell checker." type="integer">148918033</label>
+			<label index="Please wait: changing dictionary to" type="integer">239672371</label>
+			<label index="HTMLArea Spell Checker" type="integer">53028677</label>
+			<label index="QUIT_CONFIRMATION" type="integer">51730008</label>
+			<label index="Re-check" type="integer">79580335</label>
+			<label index="Replace all" type="integer">143973048</label>
+			<label index="Replace with" type="integer">162009250</label>
+			<label index="Replace" type="integer">15460063</label>
+			<label index="Learn" type="integer">216577856</label>
+			<label index="Revert" type="integer">86547441</label>
+			<label index="SC-spell-check" type="integer">166914019</label>
+			<label index="Suggestions" type="integer">69127335</label>
+			<label index="One occurrence" type="integer">221664781</label>
+			<label index="Two occurrences" type="integer">159856692</label>
+			<label index="occurrences" type="integer">55536701</label>
+			<label index="of the word" type="integer">127518453</label>
+			<label index="was found." type="integer">64986070</label>
+			<label index="were found." type="integer">142112845</label>
+			<label index="Document information" type="integer">71822581</label>
+			<label index="No information available" type="integer">635660</label>
+			<label index="Total words" type="integer">235123490</label>
+			<label index="Misspelled words" type="integer">239097890</label>
+			<label index="Total suggestions" type="integer">50316335</label>
+			<label index="Total words suggested" type="integer">252274671</label>
+			<label index="Spelling checked in" type="integer">26327379</label>
+			<label index="seconds" type="integer">126085346</label>
+			<label index="pliz weit ;-)" type="integer">39751471</label>
+		</languageKey>
+	</orig_hash>
+	<orig_text type="array">
+		<languageKey index="default" type="array">
+		</languageKey>
+	</orig_text>
+</T3locallang>

@@ -38,12 +38,18 @@
  *
  *
  *
- *   68: class SC_alt_file_navframe
- *   85:     function init()
- *  168:     function main()
- *  199:     function printContent()
+ *   72: class localFolderTree extends t3lib_folderTree
+ *   81:     function localFolderTree()
+ *   92:     function wrapIcon($icon,&$row)
+ *  121:     function wrapTitle($title,$row,$bank=0)
  *
- * TOTAL FUNCTIONS: 3
+ *
+ *  146: class SC_alt_file_navframe
+ *  163:     function init()
+ *  253:     function main()
+ *  284:     function printContent()
+ *
+ * TOTAL FUNCTIONS: 6
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -55,6 +61,78 @@ require ('template.php');
 require_once (PATH_t3lib.'class.t3lib_foldertree.php');
 
 
+/**
+ * Extension class for the t3lib_filetree class, needed for drag and drop functionality
+ *
+ * @author	Sebastian Kurfuerst <sebastian@garbage-group.de>
+ * @package TYPO3
+ * @subpackage core
+ * @see class t3lib_browseTree
+ */
+class localFolderTree extends t3lib_folderTree {
+
+	var $ext_IconMode;
+
+	/**
+	 * Calls init functions
+	 *
+	 * @return	void
+	 */
+	function localFolderTree() {
+		parent::t3lib_folderTree();
+	}
+
+	/**
+	 * Wrapping icon in browse tree
+	 *
+	 * @param	string		Icon IMG code
+	 * @param	array		Data row for element.
+	 * @return	string		Page icon
+	 */
+	function wrapIcon($icon,&$row)	{
+
+			// Add title attribute to input icon tag
+		$theFolderIcon = $this->addTagAttributes($icon,($this->titleAttrib ? $this->titleAttrib.'="'.$this->getTitleAttrib($row).'"' : ''));
+
+			// Wrap icon in click-menu link.
+		if (!$this->ext_IconMode)	{
+			$theFolderIcon = $GLOBALS['TBE_TEMPLATE']->wrapClickMenuOnIcon($theFolderIcon,$row['path'],'',0);
+		} elseif (!strcmp($this->ext_IconMode,'titlelink'))	{
+			$aOnClick = 'return jumpTo(\''.$this->getJumpToParam($row).'\',this,\''.$this->domIdPrefix.$this->getId($row).'\','.$this->bank.');';
+			$theFolderIcon='<a href="#" onclick="'.htmlspecialchars($aOnClick).'">'.$theFolderIcon.'</a>';
+		}
+			// Wrap icon in a drag/drop span.
+		$spanOnDrag = htmlspecialchars('return dragElement("'.$this->getJumpToParam($row).'", "'.$row['uid'].'")');
+		$spanOnDrop = htmlspecialchars('return dropElement("'.$this->getJumpToParam($row).'")');
+		$dragDropIcon = '<span id="dragIconID_'.$row['uid'].'" ondragstart="'.$spanOnDrag.'" onmousedown="'.$spanOnDrag.'" onmouseup="'.$spanOnDrop.'">'.$theFolderIcon.'</span>';
+
+		return $dragDropIcon;
+	}
+
+	/**
+	 * Wrapping $title in a-tags.
+	 *
+	 * @param	string		Title string
+	 * @param	string		Item record
+	 * @param	integer		Bank pointer (which mount point number)
+	 * @return	string
+	 * @access private
+	 */
+	function wrapTitle($title,$row,$bank=0)	{
+		$aOnClick = 'return jumpTo(\''.$this->getJumpToParam($row).'\',this,\''.$this->domIdPrefix.$this->getId($row).'\','.$bank.');';
+		$CSM = '';
+		if ($GLOBALS['TYPO3_CONF_VARS']['BE']['useOnContextMenuHandler'])	{
+			$CSM = ' oncontextmenu="'.htmlspecialchars($GLOBALS['TBE_TEMPLATE']->wrapClickMenuOnIcon('',$row['path'],'',0,'&bank='.$this->bank,'',TRUE)).'"';
+		}
+		$theFolderTitle='<a href="#" onclick="'.htmlspecialchars($aOnClick).'"'.$CSM.'>'.$title.'</a>';
+
+			// Wrap title in a drag/drop span.
+		$spanOnDrag = htmlspecialchars('return dragElement("'.$this->getJumpToParam($row).'","'.$row['uid'].'")');
+		$spanOnDrop = htmlspecialchars('return dropElement("'.$this->getJumpToParam($row).'")');
+		$dragDropTitle = '<span id="dragTitleID_'.$row['uid'].'" ondragstart="'.$spanOnDrag.'" onmousedown="'.$spanOnDrag.'" onmouseup="'.$spanOnDrop.'">'.$theFolderTitle.'</span>';
+		return $dragDropTitle;
+	}
+}
 
 
 
@@ -90,7 +168,7 @@ class SC_alt_file_navframe {
 		$this->cMR = t3lib_div::_GP('cMR');
 
 			// Create folder tree object:
-		$this->foldertree = t3lib_div::makeInstance('t3lib_folderTree');
+		$this->foldertree = t3lib_div::makeInstance('localFolderTree');
 		$this->foldertree->ext_IconMode = $BE_USER->getTSConfigVal('options.folderTree.disableIconLinkToContextmenu');
 		$this->foldertree->thisScript = 'alt_file_navframe.php';
 
@@ -114,9 +192,9 @@ class SC_alt_file_navframe {
 		top.fsMod.currentBank = bank;
 
 		if (top.condensedMode)	{
-			top.content.document.location=theUrl;
+			top.content.location.href=theUrl;
 		} else {
-			parent.list_frame.document.location=theUrl;
+			parent.list_frame.location.href=theUrl;
 		}
 
         '.($this->doHighlight?'hilight_row("file",highLightID+"_"+bank);':'').'
@@ -131,7 +209,7 @@ class SC_alt_file_navframe {
 		window.setTimeout("_refresh_nav();",0);
 	}
 	function _refresh_nav()	{	//
-		document.location="'.$this->pagetree->thisScript.'?unique='.time().'";
+		window.location.href="'.$this->pagetree->thisScript.'?unique='.time().'";
 	}
 
 		// Highlighting rows in the folder tree:
@@ -159,6 +237,12 @@ class SC_alt_file_navframe {
 		$this->doc->bodyTagAdditions = $CMparts[1];
 		$this->doc->JScode.=$CMparts[0];
 		$this->doc->postCode.= $CMparts[2];
+
+			// Drag and Drop code is added:
+		$DDparts=$this->doc->getDragDropCode('folders');
+			// ignore the $DDparts[1] for now
+		$this->doc->JScode.= $DDparts[0];
+		$this->doc->postCode.= $DDparts[2];
 	}
 
 	/**
@@ -199,6 +283,7 @@ class SC_alt_file_navframe {
 	 */
 	function printContent()	{
 		$this->content.= $this->doc->endPage();
+		$this->content = $this->doc->insertStylesAndJS($this->content);
 		echo $this->content;
 	}
 }

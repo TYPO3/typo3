@@ -59,7 +59,13 @@ function evalFunc_evalObjValue(FObj,value)	{
 	var theEvalType = (FObj.evallist) ? this.split(evallist, ",", index) : false;
 	var newValue=value;
 	while (theEvalType) {
-		newValue = evalFunc.input(theEvalType, newValue);
+		if (theEvalType.slice(0, 3) == 'tx_') {
+			if(typeof window[theEvalType] == 'function') {
+				newValue = window[theEvalType](newValue);	// variable function call, calling functions like tx_myext_myeval(value)
+			}
+		} else {
+			newValue = evalFunc.input(theEvalType, newValue);
+		}
 		index++;
 		theEvalType = this.split(evallist, ",", index);
 	}

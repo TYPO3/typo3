@@ -32,13 +32,14 @@
  *
  *
  *
- *   50: class tx_indexedsearch_modfunc2 extends t3lib_extobjbase
- *   57:     function main()
- *   79:     function showStats()
- *  107:     function listSeveralStats($title,$addwhere,$conf)
- *  186:     function extGetTreeList($id,$depth,$begin = 0,$perms_clause)
+ *   60: class tx_indexedsearch_modfunc2 extends t3lib_extobjbase
+ *   67:     function main()
+ *   88:     function showStats()
+ *  121:     function listSeveralStats($title,$addwhere,$conf)
+ *  199:     function extGetTreeList($id,$depth,$begin = 0,$perms_clause)
+ *  210:     function &hookRequest($functionName)
  *
- * TOTAL FUNCTIONS: 4
+ * TOTAL FUNCTIONS: 5
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -47,12 +48,21 @@ require_once(PATH_t3lib.'class.t3lib_extobjbase.php');
 require_once(PATH_t3lib.'class.t3lib_tsfebeuserauth.php');
 
 
+
+
+/**
+ * Module extension (addition to function menu) 'Indexed search statistics' for the 'indexed_search' extension.
+ *
+ * @author	Dimitri Ebert <dimitri.ebert@dkd.de>
+ * @package TYPO3
+ * @subpackage tx_indexedsearch
+ */
 class tx_indexedsearch_modfunc2 extends t3lib_extobjbase {
 
 	/**
 	 * Calls showStats to generate output.
 	 *
-	 * @return	string	html table with results from showStats()
+	 * @return	string		html table with results from showStats()
 	 */
 	function main()	{
 			// Initializes the module. Done in this function because we may need to re-initialize if data is submitted!
@@ -73,7 +83,7 @@ class tx_indexedsearch_modfunc2 extends t3lib_extobjbase {
 	 * Generates html table containing the statistics.
 	 * Calls listSeveralStats 3 times, for all statistics, statistics of the last 30 days and statistics of the last 24 hours.
 	 *
-	 * @return	string	html table with results
+	 * @return	string		html table with results
 	 */
 	function showStats()	{
 		global $LANG,$HTTP_GET_VARS,$TYPO3_CONF_VARS;
@@ -103,10 +113,10 @@ class tx_indexedsearch_modfunc2 extends t3lib_extobjbase {
 	/**
 	 * Generates html table with title and several statistics
 	 *
-	 * @param	string	title for statistic, like 'Last 30 days' or 'Last 24 hours'
-	 * @param	string	add where for sql query
-	 * @param	array	configuration: words = max words for results, bid = pageid
-	 * @return	string	html table with results
+	 * @param	string		title for statistic, like 'Last 30 days' or 'Last 24 hours'
+	 * @param	string		add where for sql query
+	 * @param	array		configuration: words = max words for results, bid = pageid
+	 * @return	string		html table with results
 	 */
 	function listSeveralStats($title,$addwhere,$conf)	{
 		global $LANG;
@@ -180,12 +190,12 @@ class tx_indexedsearch_modfunc2 extends t3lib_extobjbase {
 	 * Generates a list of Page-uid's from $id. List does not include $id itself
 	 * The only pages excluded from the list are deleted pages.
 	 *
-	 * @param	integer	Start page id
-	 * @param	integer	Depth to traverse down the page tree.
-	 * @param	integer	$begin is an optional integer that determines at which level in the tree to start collecting uid's. Zero means 'start right away', 1 = 'next level and out'
-	 * @param	string	Perms clause
-	 * @return	string	Returns the list with a comma in the end (if any pages selected!)
-	*/
+	 * @param	integer		Start page id
+	 * @param	integer		Depth to traverse down the page tree.
+	 * @param	integer		$begin is an optional integer that determines at which level in the tree to start collecting uid's. Zero means 'start right away', 1 = 'next level and out'
+	 * @param	string		Perms clause
+	 * @return	string		Returns the list with a comma in the end (if any pages selected!)
+	 */
 	function extGetTreeList($id,$depth,$begin = 0,$perms_clause)	{
 		return t3lib_tsfeBeUserAuth::extGetTreeList($id,$depth,$begin,$perms_clause);
 	}

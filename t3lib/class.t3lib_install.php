@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2005 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2006 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -37,27 +37,27 @@
  *
  *
  *   83: class t3lib_install
- *  112:     function t3lib_install()
+ *  108:     function t3lib_install()
  *
  *              SECTION: Writing to localconf.php
- *  136:     function setValueInLocalconfFile(&$line_array, $variable, $value)
- *  186:     function writeToLocalconf_control($inlines='')
- *  238:     function checkForBadString($string)
- *  251:     function slashValueForSingleDashes($value)
+ *  132:     function setValueInLocalconfFile(&$line_array, $variable, $value)
+ *  183:     function writeToLocalconf_control($inlines='',$absFullPath='')
+ *  253:     function checkForBadString($string)
+ *  266:     function slashValueForSingleDashes($value)
  *
  *              SECTION: SQL
- *  276:     function getFieldDefinitions_sqlContent($sqlContent)
- *  320:     function getFieldDefinitions_sqlContent_parseTypes(&$total)
- *  367:     function getFieldDefinitions_database()
- *  411:     function getDatabaseExtra($FDsrc, $FDcomp, $onlyTableList='')
- *  456:     function getUpdateSuggestions($diffArr,$keyList='extra,diff')
- *  557:     function assembleFieldDefinition($row)
- *  586:     function getStatementArray($sqlcode,$removeNonSQL=0,$query_regex='')
- *  626:     function getCreateTables($statements, $insertCountFlag=0)
- *  650:     function getTableInsertStatements($statements, $table)
- *  670:     function performUpdateQueries($arr,$keyArr)
- *  686:     function getListOfTables()
- *  702:     function generateUpdateDatabaseForm_checkboxes($arr,$label,$checked=1,$iconDis=0,$currentValue=array(),$cVfullMsg=0)
+ *  291:     function getFieldDefinitions_sqlContent($sqlContent)
+ *  359:     function getFieldDefinitions_sqlContent_parseTypes(&$total)
+ *  406:     function getFieldDefinitions_database()
+ *  450:     function getDatabaseExtra($FDsrc, $FDcomp, $onlyTableList='')
+ *  496:     function getUpdateSuggestions($diffArr,$keyList='extra,diff')
+ *  589:     function assembleFieldDefinition($row)
+ *  611:     function getStatementArray($sqlcode,$removeNonSQL=0,$query_regex='')
+ *  649:     function getCreateTables($statements, $insertCountFlag=0)
+ *  683:     function getTableInsertStatements($statements, $table)
+ *  704:     function performUpdateQueries($arr,$keyArr)
+ *  720:     function getListOfTables()
+ *  736:     function generateUpdateDatabaseForm_checkboxes($arr,$label,$checked=1,$iconDis=0,$currentValue=array(),$cVfullMsg=0)
  *
  * TOTAL FUNCTIONS: 17
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -181,7 +181,9 @@ class t3lib_install {
 	 * @see setValueInLocalconfFile()
 	 */
 	function writeToLocalconf_control($inlines='',$absFullPath='')	{
+		$tmpExt = '.TMP.php';
 		$writeToLocalconf_dat['file'] = $absFullPath ? $absFullPath : PATH_typo3conf.'localconf.php';
+		$writeToLocalconf_dat['tmpfile'] = $writeToLocalconf_dat['file'].$tmpExt;
 
 			// Checking write state of localconf.php:
 		if (!$this->allowUpdateLocalConf)	{
@@ -192,7 +194,7 @@ class t3lib_install {
 		}
 
 				// Splitting localconf.php file into lines:
-		$lines = explode(chr(10),trim(t3lib_div::getUrl($writeToLocalconf_dat['file'])));
+		$lines = explode(chr(10),str_replace(chr(13),'',trim(t3lib_div::getUrl($writeToLocalconf_dat['file']))));
 		$writeToLocalconf_dat['endLine'] = array_pop($lines);	// Getting "? >" ending.
 
 			// Checking if "updated" line was set by this tool - if so remove old line.
@@ -209,14 +211,30 @@ class t3lib_install {
 			array_push($inlines,$writeToLocalconf_dat['endLine']);
 
 			if ($this->setLocalconf)	{
-				t3lib_div::writeFile($writeToLocalconf_dat['file'],implode(chr(10),$inlines));
-
-				if (strcmp(t3lib_div::getUrl($writeToLocalconf_dat['file']), implode(chr(10),$inlines)))	{
-					die('typo3conf/localconf.php was NOT updated properly (written content didn\'t match file content) - maybe write access problem?');
+				$success = FALSE;
+				if (!t3lib_div::writeFile($writeToLocalconf_dat['tmpfile'],implode(chr(10),$inlines)))	{
+					$msg = 'typo3conf/localconf.php'.$tmpExt.' could not be written - maybe a write access problem?';
 				}
+				elseif (strcmp(t3lib_div::getUrl($writeToLocalconf_dat['tmpfile']), implode(chr(10),$inlines)))	{
+					@unlink($writeToLocalconf_dat['tmpfile']);
+					$msg = 'typo3conf/localconf.php'.$tmpExt.' was NOT written properly (written content didn\'t match file content) - maybe a disk space problem?';
+				}
+				elseif (!@copy($writeToLocalconf_dat['tmpfile'],$writeToLocalconf_dat['file']))	{
+					$msg = 'typo3conf/localconf.php could not be replaced by typo3conf/localconf.php'.$tmpExt.' - maybe a write access problem?';
+				}
+				else {
+					@unlink($writeToLocalconf_dat['tmpfile']);
+					$success = TRUE;
+					$msg = 'Configuration written to typo3conf/localconf.php';
+				}
+				$this->messages[]= $msg;
 
-				$this->messages[]= 'Configuration written to typo3conf/localconf.php';
-				return 'continue';
+				if ($success)	{
+					return 'continue';
+				} else {
+					t3lib_div::sysLog($msg, 'Core', 3);
+					return 'nochange';
+				}
 			} else {
 				return 'nochange';
 			}
@@ -233,9 +251,7 @@ class t3lib_install {
 	 * @see setValueInLocalconfFile()
 	 */
 	function checkForBadString($string)	{
-		if (ereg('['.chr(10).chr(13).']',$string)){
-			return FALSE;
-		} else return TRUE;
+		return preg_match('/['.chr(10).chr(13).']/',$string) ? FALSE : TRUE;
 	}
 
 	/**
@@ -246,7 +262,11 @@ class t3lib_install {
 	 * @see setValueInLocalconfFile()
 	 */
 	function slashValueForSingleDashes($value)	{
-		return str_replace("'","\'",str_replace('\\','\\\\',$value));
+		$value = str_replace("'.chr(10).'", '###INSTALL_TOOL_LINEBREAK###', $value);
+		$value = str_replace("'","\'",str_replace('\\','\\\\',$value));
+		$value = str_replace('###INSTALL_TOOL_LINEBREAK###', "'.chr(10).'", $value);
+
+		return $value;
 	}
 
 
@@ -286,11 +306,13 @@ class t3lib_install {
 					}
 				} else {
 					if (substr($value,0,1)==')' && substr($value,-1)==';')	{
+						$ttype = array();
 						preg_match('/(ENGINE|TYPE)=([a-zA-Z]*)/',$value,$ttype);
 						$total[$isTable]['extra']['ttype'] = $ttype[2];
 						$isTable = '';
 					} else {
-						$lineV = ereg_replace(',$','',$value);
+						$lineV = preg_replace('/,$/','',$value);
+						$lineV = str_replace('UNIQUE KEY', 'UNIQUE', $lineV);
 						$parts = explode(' ',$lineV,2);
 
 							// Make sure there is no default value when auto_increment is set
@@ -301,6 +323,7 @@ class t3lib_install {
 						if(strstr($parts[1], ' DEFAULT '))	{
 							$parts[1] = str_replace(' DEFAULT ', ' default ', $parts[1]);
 						}
+
 							// Change order of "default" and "null" statements
 						$parts[1] = preg_replace('/(.*) (default .*) (NOT NULL)/', '$1 $3 $2', $parts[1]);
 						$parts[1] = preg_replace('/(.*) (default .*) (NULL)/', '$1 $3 $2', $parts[1]);
@@ -423,9 +446,10 @@ class t3lib_install {
 	 * @param	array		Field definitions, source (from getFieldDefinitions_sqlContent())
 	 * @param	array		Field definitions, comparison. (from getFieldDefinitions_database())
 	 * @param	string		Table names (in list) which is the ONLY one observed.
+	 * @param	boolean		If set, this function ignores NOT NULL statements of the sql file field definition when comparing current field definition from database with field definition from sql file. This way, NOT NULL statements will be executed when the field is initially created, but the sql parser will never complain about missing NOT NULL statements afterwards.
 	 * @return	array		Returns an array with 1) all elements from $FSsrc that is not in $FDcomp (in key 'extra') and 2) all elements from $FSsrc that is difference from the ones in $FDcomp
 	 */
-	function getDatabaseExtra($FDsrc, $FDcomp, $onlyTableList='')	{
+	function getDatabaseExtra($FDsrc, $FDcomp, $onlyTableList='',$ignoreNotNullWhenComparing=true)	{
 		$extraArr = array();
 		$diffArr = array();
 
@@ -443,7 +467,7 @@ class t3lib_install {
 									$fieldN = str_replace('`','',$fieldN);
 									if (!isset($FDcomp[$table][$theKey][$fieldN]))	{
 										$extraArr[$table][$theKey][$fieldN] = $fieldC;
-									} elseif (strcmp($FDcomp[$table][$theKey][$fieldN], $fieldC))	{
+									} elseif (strcmp($FDcomp[$table][$theKey][$fieldN], $ignoreNotNullWhenComparing?str_replace(' NOT NULL', '', $fieldC):$fieldC))	{
 										$diffArr[$table][$theKey][$fieldN] = $fieldC;
 										$diffArr_cur[$table][$theKey][$fieldN] = $FDcomp[$table][$theKey][$fieldN];
 									}
@@ -566,7 +590,7 @@ class t3lib_install {
 	 */
 	function assembleFieldDefinition($row)	{
 		$field[] = $row['Type'];
-		if (!$row['Null'])	{ $field[] = 'NOT NULL'; }
+		// if (!$row['Null'])	{ $field[] = 'NOT NULL'; }
 		if (!strstr($row['Type'],'blob') && !strstr($row['Type'],'text'))	{
 				// Add a default value if the field is not auto-incremented (these fields never have a default definition).
 			if (!stristr($row['Extra'],'auto_increment'))	{
@@ -626,7 +650,9 @@ class t3lib_install {
 	 */
 	function getCreateTables($statements, $insertCountFlag=0)	{
 		$crTables = array();
+		$insertCount = array();
 		foreach($statements as $line => $linecontent)	{
+			$reg = array();
 			if (eregi('^create[[:space:]]*table[[:space:]]*[`]?([[:alnum:]_]*)[`]?',substr($linecontent,0,100),$reg))	{
 				$table = trim($reg[1]);
 				if ($table)	{
@@ -659,6 +685,7 @@ class t3lib_install {
 	function getTableInsertStatements($statements, $table)	{
 		$outStatements=array();
 		foreach($statements as $line => $linecontent)	{
+			$reg = array();
 			if (eregi('^insert[[:space:]]*into[[:space:]]*[`]?([[:alnum:]_]*)[`]?',substr($linecontent,0,100),$reg))	{
 				$nTable = trim($reg[1]);
 				if ($nTable && !strcmp($table,$nTable))	{
@@ -715,13 +742,13 @@ class t3lib_install {
 				$ico = '';
 				if ($iconDis)	{
 					if (stristr($string,' user_'))	{
-						$ico.= '<img src="'.$this->backPath.'t3lib/gfx/icon_warning.gif" width="18" height="16" align="top" alt="" /><strong>(USER) </strong>';
+						$ico.= '<img src="'.$this->backPath.'gfx/icon_warning.gif" width="18" height="16" align="top" alt="" /><strong>(USER) </strong>';
 					}
 					if (stristr($string,' app_'))	{
-						$ico.= '<img src="'.$this->backPath.'t3lib/gfx/icon_warning.gif" width="18" height="16" align="top" alt="" /><strong>(APP) </strong>';
+						$ico.= '<img src="'.$this->backPath.'gfx/icon_warning.gif" width="18" height="16" align="top" alt="" /><strong>(APP) </strong>';
 					}
 					if (stristr($string,' ttx_') || stristr($string,' tx_'))	{
-						$ico.= '<img src="'.$this->backPath.'t3lib/gfx/icon_warning.gif" width="18" height="16" align="top" alt="" /><strong>(EXT) </strong>';
+						$ico.= '<img src="'.$this->backPath.'gfx/icon_warning.gif" width="18" height="16" align="top" alt="" /><strong>(EXT) </strong>';
 					}
 				}
 				$out[]='

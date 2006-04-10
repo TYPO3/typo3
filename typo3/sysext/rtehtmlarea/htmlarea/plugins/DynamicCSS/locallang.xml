@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+	<meta type="array">
+		<description>Labels for DynamicCSS plugin of htmlArea RTE</description>
+		<type>module</type>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index="Default">Default</label>
+			<label index="Undefined">Undefined</label>
+			<label index="DynamicCSSStyleTooltip">Apply style to the containing paragraph</label>
+			<label index="frame-frame1">Frame with grey background</label>
+			<label index="frame-frame2">Frame with yellow background</label>
+			<label index="important">Important</label>
+			<label index="name-of-person">Name of person</label>
+			<label index="detail">Detail</label>
+			<label index="component-items">Component items</label>
+			<label index="action-items">Action items</label>
+		</languageKey>
+	</data>
+	<orig_hash type="array">
+		<languageKey index="default" type="array">
+			<label index="Default" type="integer">128029197</label>
+			<label index="Undefined" type="integer">247528449</label>
+			<label index="DynamicCSSStyleTooltip" type="integer">171321932</label>
+			<label index="frame-frame1" type="integer">227775000</label>
+			<label index="frame-frame2" type="integer">132443473</label>
+			<label index="important" type="integer">11245645</label>
+			<label index="name-of-person" type="integer">60822295</label>
+			<label index="detail" type="integer">170216485</label>
+			<label index="component-items" type="integer">219044525</label>
+			<label index="action-items" type="integer">96400524</label>
+		</languageKey>
+	</orig_hash>
+	<orig_text type="array">
+		<languageKey index="default" type="array">
+		</languageKey>
+	</orig_text>
+</T3locallang>

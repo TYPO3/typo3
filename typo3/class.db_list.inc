@@ -39,26 +39,28 @@
  *
  *
  *
- *   84: class recordList extends t3lib_recordList
- *  144:     function start($id,$table,$pointer,$search="",$levels="",$showLimit=0)
- *  195:     function generateList()
- *  242:     function getSearchBox($formFields=1)
- *  286:     function showSysNotesForPage()
+ *   86: class recordList extends t3lib_recordList
+ *  148:     function start($id,$table,$pointer,$search="",$levels="",$showLimit=0)
+ *  211:     function generateList()
+ *  275:     function getSearchBox($formFields=1)
+ *  319:     function showSysNotesForPage()
  *
  *              SECTION: Various helper functions
- *  363:     function setDispFields()
- *  388:     function thumbCode($row,$table,$field)
- *  401:     function makeQueryArray($table, $id, $addWhere="",$fieldList='*')
- *  443:     function setTotalItems($queryParts)
- *  459:     function makeSearchString($table)
- *  498:     function linkWrapTable($table,$code)
- *  515:     function linkWrapItems($table,$uid,$code,$row)
- *  578:     function listURL($altId='',$table=-1,$exclList='')
- *  597:     function requestUri()
- *  608:     function makeFieldList($table,$dontCheckUser=0)
- *  648:     function getTreeObject($id,$depth,$perms_clause)
+ *  396:     function setDispFields()
+ *  421:     function thumbCode($row,$table,$field)
+ *  434:     function makeQueryArray($table, $id, $addWhere="",$fieldList='*')
+ *  481:     function setTotalItems($queryParts)
+ *  497:     function makeSearchString($table)
+ *  536:     function linkWrapTable($table,$code)
+ *  553:     function linkWrapItems($table,$uid,$code,$row)
+ *  617:     function linkUrlMail($code,$testString)
+ *  644:     function listURL($altId='',$table=-1,$exclList='')
+ *  663:     function requestUri()
+ *  674:     function makeFieldList($table,$dontCheckUser=0)
+ *  721:     function getTreeObject($id,$depth,$perms_clause)
+ *  739:     function localizationRedirect($justLocalized)
  *
- * TOTAL FUNCTIONS: 15
+ * TOTAL FUNCTIONS: 17
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -115,6 +117,7 @@ class recordList extends t3lib_recordList {
 	var $clickTitleMode = '';			// Mode for what happens when a user clicks the title of a record.
 	var $modSharedTSconfig = array();		// Shared module configuration, used by localization features
 	var $pageRecord = array();		// Loaded with page record with version overlay if any.
+	var $hideTables = '';			// Tables which should not get listed
 
 		// Internal, dynamic:
 	var $JScode = '';				// JavaScript code accumulation
@@ -177,6 +180,14 @@ class recordList extends t3lib_recordList {
 			// Set select levels:
 		$sL=intval($this->searchLevels);
 		$this->perms_clause = $GLOBALS['BE_USER']->getPagePermsClause(1);
+
+			// this will hide records from display - it has nothing todo with user rights!!
+		if ($pidList = $GLOBALS['BE_USER']->getTSConfigVal('options.hideRecords.pages')) {
+			if ($pidList = $GLOBALS['TYPO3_DB']->cleanIntList($pidList)) {
+				$this->perms_clause .= ' AND pages.uid NOT IN ('.$pidList.')';
+			}
+		}
+
 		if ($sL>0)	{
 			$tree = $this->getTreeObject($id,$sL,$this->perms_clause);
 			$this->pidSelect = 'pid IN ('.implode(',',$tree->ids).')';
@@ -213,6 +224,9 @@ class recordList extends t3lib_recordList {
 					// Load full table definitions:
 				t3lib_div::loadTCA($tableName);
 
+					// Hide tables which are configured via TSConfig not to be shown (also works for admins):
+				if (t3lib_div::inList($this->hideTables, $tableName))	continue;
+
 					// iLimit is set depending on whether we're in single- or multi-table mode
 				if ($this->table)	{
 					$this->iLimit=(isset($TCA[$tableName]['interface']['maxSingleDBListItems'])?intval($TCA[$tableName]['interface']['maxSingleDBListItems']):$this->itemsLimitSingleTable);
@@ -224,6 +238,8 @@ class recordList extends t3lib_recordList {
 					// Setting fields to select:
 				if ($this->allFields)	{
 					$fields = $this->makeFieldList($tableName);
+					$fields[]='tstamp';
+					$fields[]='crdate';
 					$fields[]='_PATH_';
 					$fields[]='_CONTROL_';
 					if (is_array($this->setFields[$tableName]))	{
@@ -592,8 +608,10 @@ class recordList extends t3lib_recordList {
 	}
 
 	/**
-	 * Wrapping input code in link to url or email if $testString is either.
+	 * Wrapping input code in link to URL or email if $testString is either.
 	 *
+	 * @param	string		code to wrap
+	 * @param	string		String which is tested for being a URL or email and which will be used for the link if so.
 	 * @return	string		Link-Wrapped $code value, if $testString was URL or email.
 	 */
 	function linkUrlMail($code,$testString)	{
@@ -604,13 +622,13 @@ class recordList extends t3lib_recordList {
 			return '<a href="'.htmlspecialchars($testString).'" target="_blank">'.$code.'</a>';
 		}
 
-			// check for email:
+			// Check for email:
 		if (t3lib_div::validEmail($testString))	{
 			return '<a href="mailto:'.htmlspecialchars($testString).'" target="_blank">'.$code.'</a>';
 		}
 
 			// Return if nothing else...
-		return $testString;
+		return $code;
 	}
 
 	/**
@@ -712,6 +730,12 @@ class recordList extends t3lib_recordList {
 		return $tree;
 	}
 
+	/**
+	 * Redirects to TCEforms (alt_doc) if a record is just localized.
+	 *
+	 * @param	string		string with table, orig uid and language separated by ":"
+	 * @return	void
+	 */
 	function localizationRedirect($justLocalized)	{
 		global $TCA;
 

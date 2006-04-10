@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2004-2005 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 2004-2006 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -37,60 +37,65 @@
  *
  *
  *
- *  133: class t3lib_DB
+ *  138: class t3lib_DB
  *
  *              SECTION: Query execution
- *  168:     function exec_INSERTquery($table,$fields_values)
- *  184:     function exec_UPDATEquery($table,$where,$fields_values)
- *  198:     function exec_DELETEquery($table,$where)
- *  217:     function exec_SELECTquery($select_fields,$from_table,$where_clause,$groupBy='',$orderBy='',$limit='')
- *  242:     function exec_SELECT_mm_query($select,$local_table,$mm_table,$foreign_table,$whereClause='',$groupBy='',$orderBy='',$limit='')
- *  265:     function exec_SELECT_queryArray($queryParts)
- *  288:     function exec_SELECTgetRows($select_fields,$from_table,$where_clause,$groupBy='',$orderBy='',$limit='',$uidIndexField='')
+ *  175:     function exec_INSERTquery($table,$fields_values,$no_quote_fields=FALSE)
+ *  192:     function exec_UPDATEquery($table,$where,$fields_values,$no_quote_fields=FALSE)
+ *  206:     function exec_DELETEquery($table,$where)
+ *  225:     function exec_SELECTquery($select_fields,$from_table,$where_clause,$groupBy='',$orderBy='',$limit='')
+ *  250:     function exec_SELECT_mm_query($select,$local_table,$mm_table,$foreign_table,$whereClause='',$groupBy='',$orderBy='',$limit='')
+ *  278:     function exec_SELECT_queryArray($queryParts)
+ *  301:     function exec_SELECTgetRows($select_fields,$from_table,$where_clause,$groupBy='',$orderBy='',$limit='',$uidIndexField='')
  *
  *              SECTION: Query building
- *  333:     function INSERTquery($table,$fields_values)
- *  369:     function UPDATEquery($table,$where,$fields_values)
- *  408:     function DELETEquery($table,$where)
- *  437:     function SELECTquery($select_fields,$from_table,$where_clause,$groupBy='',$orderBy='',$limit='')
- *  478:     function listQuery($field, $value, $table)
- *  492:     function searchQuery($searchWords,$fields,$table)
+ *  346:     function INSERTquery($table,$fields_values,$no_quote_fields=FALSE)
+ *  381:     function UPDATEquery($table,$where,$fields_values,$no_quote_fields=FALSE)
+ *  422:     function DELETEquery($table,$where)
+ *  451:     function SELECTquery($select_fields,$from_table,$where_clause,$groupBy='',$orderBy='',$limit='')
+ *  492:     function listQuery($field, $value, $table)
+ *  506:     function searchQuery($searchWords,$fields,$table)
  *
  *              SECTION: Various helper functions
- *  538:     function fullQuoteStr($str, $table)
- *  554:     function quoteStr($str, $table)
- *  567:     function cleanIntArray($arr)
- *  583:     function cleanIntList($list)
- *  597:     function stripOrderBy($str)
- *  611:     function stripGroupBy($str)
- *  623:     function splitGroupOrderLimit($str)
+ *  552:     function fullQuoteStr($str, $table)
+ *  569:     function fullQuoteArray($arr, $table, $noQuote=FALSE)
+ *  596:     function quoteStr($str, $table)
+ *  612:     function escapeStrForLike($str, $table)
+ *  625:     function cleanIntArray($arr)
+ *  641:     function cleanIntList($list)
+ *  655:     function stripOrderBy($str)
+ *  669:     function stripGroupBy($str)
+ *  681:     function splitGroupOrderLimit($str)
  *
  *              SECTION: MySQL wrapper functions
- *  688:     function sql($db,$query)
- *  702:     function sql_query($query)
- *  715:     function sql_error()
- *  727:     function sql_num_rows($res)
- *  739:     function sql_fetch_assoc($res)
- *  752:     function sql_fetch_row($res)
- *  764:     function sql_free_result($res)
- *  775:     function sql_insert_id()
- *  786:     function sql_affected_rows()
- *  799:     function sql_data_seek($res,$seek)
- *  812:     function sql_field_type($res,$pointer)
- *  826:     function sql_pconnect($TYPO3_db_host, $TYPO3_db_username, $TYPO3_db_password)
- *  843:     function sql_select_db($TYPO3_db)
+ *  749:     function sql($db,$query)
+ *  763:     function sql_query($query)
+ *  776:     function sql_error()
+ *  788:     function sql_num_rows($res)
+ *  800:     function sql_fetch_assoc($res)
+ *  813:     function sql_fetch_row($res)
+ *  825:     function sql_free_result($res)
+ *  836:     function sql_insert_id()
+ *  847:     function sql_affected_rows()
+ *  860:     function sql_data_seek($res,$seek)
+ *  873:     function sql_field_type($res,$pointer)
+ *  887:     function sql_pconnect($TYPO3_db_host, $TYPO3_db_username, $TYPO3_db_password)
+ *  915:     function sql_select_db($TYPO3_db)
  *
  *              SECTION: SQL admin functions
- *  871:     function admin_get_dbs()
- *  889:     function admin_get_tables()
- *  908:     function admin_get_fields($tableName)
- *  926:     function admin_get_keys($tableName)
- *  944:     function admin_query($query)
+ *  947:     function admin_get_dbs()
+ *  965:     function admin_get_tables()
+ *  984:     function admin_get_fields($tableName)
+ * 1002:     function admin_get_keys($tableName)
+ * 1020:     function admin_query($query)
+ *
+ *              SECTION: Connecting service
+ * 1048:     function connectDB()
  *
  *              SECTION: Debugging
- *  971:     function debug($func)
+ * 1086:     function debug($func)
  *
- * TOTAL FUNCTIONS: 39
+ * TOTAL FUNCTIONS: 42
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -139,7 +144,7 @@ class t3lib_DB {
 	var $store_lastBuiltQuery = FALSE;	// Set "TRUE" if you want the last built query to be stored in $debug_lastBuiltQuery independent of $this->debugOutput
 
 		// Default link identifier:
-	var $link;
+	var $link = FALSE;
 
 
 
@@ -164,10 +169,11 @@ class t3lib_DB {
 	 *
 	 * @param	string		Table name
 	 * @param	array		Field values as key=>value pairs. Values will be escaped internally. Typically you would fill an array like "$insertFields" with 'fieldname'=>'value' and pass it to this function as argument.
+	 * @param	string/array		See fullQuoteArray()
 	 * @return	pointer		MySQL result pointer / DBAL object
 	 */
-	function exec_INSERTquery($table,$fields_values)	{
-		$res = mysql_query($this->INSERTquery($table,$fields_values), $this->link);
+	function exec_INSERTquery($table,$fields_values,$no_quote_fields=FALSE)	{
+		$res = mysql_query($this->INSERTquery($table,$fields_values,$no_quote_fields), $this->link);
 		if ($this->debugOutput)	$this->debug('exec_INSERTquery');
 		return $res;
 	}
@@ -180,10 +186,11 @@ class t3lib_DB {
 	 * @param	string		Database tablename
 	 * @param	string		WHERE clause, eg. "uid=1". NOTICE: You must escape values in this argument with $this->fullQuoteStr() yourself!
 	 * @param	array		Field values as key=>value pairs. Values will be escaped internally. Typically you would fill an array like "$updateFields" with 'fieldname'=>'value' and pass it to this function as argument.
+	 * @param	string/array		See fullQuoteArray()
 	 * @return	pointer		MySQL result pointer / DBAL object
 	 */
-	function exec_UPDATEquery($table,$where,$fields_values)	{
-		$res = mysql_query($this->UPDATEquery($table,$where,$fields_values), $this->link);
+	function exec_UPDATEquery($table,$where,$fields_values,$no_quote_fields=FALSE)	{
+		$res = mysql_query($this->UPDATEquery($table,$where,$fields_values,$no_quote_fields), $this->link);
 		if ($this->debugOutput)	$this->debug('exec_UPDATEquery');
 		return $res;
 	}
@@ -233,7 +240,7 @@ class t3lib_DB {
 	 * @param	string		Tablename, local table
 	 * @param	string		Tablename, relation table
 	 * @param	string		Tablename, foreign table
-	 * @param	string		Optional additional WHERE clauses put in the end of the query. NOTICE: You must escape values in this argument with $this->fullQuoteStr() yourself! DO NOT PUT IN GROUP BY, ORDER BY or LIMIT!
+	 * @param	string		Optional additional WHERE clauses put in the end of the query. NOTICE: You must escape values in this argument with $this->fullQuoteStr() yourself! DO NOT PUT IN GROUP BY, ORDER BY or LIMIT! You have to prepend 'AND ' to this parameter yourself!
 	 * @param	string		Optional GROUP BY field(s), if none, supply blank string.
 	 * @param	string		Optional ORDER BY field(s), if none, supply blank string.
 	 * @param	string		Optional LIMIT value ([begin,]max), if none, supply blank string.
@@ -295,7 +302,6 @@ class t3lib_DB {
 		$res = $this->exec_SELECTquery($select_fields,$from_table,$where_clause,$groupBy,$orderBy,$limit);
 		if ($this->debugOutput)	$this->debug('exec_SELECTquery');
 
-		unset($output);
 		if (!$this->sql_error())	{
 			$output = array();
 
@@ -333,18 +339,17 @@ class t3lib_DB {
 	 *
 	 * @param	string		See exec_INSERTquery()
 	 * @param	array		See exec_INSERTquery()
+	 * @param	string/array		See fullQuoteArray()
 	 * @return	string		Full SQL query for INSERT (unless $fields_values does not contain any elements in which case it will be false)
 	 * @deprecated			use exec_INSERTquery() instead if possible!
 	 */
-	function INSERTquery($table,$fields_values)	{
+	function INSERTquery($table,$fields_values,$no_quote_fields=FALSE)	{
 
 			// Table and fieldnames should be "SQL-injection-safe" when supplied to this function (contrary to values in the arrays which may be insecure).
 		if (is_array($fields_values) && count($fields_values))	{
 
-				// Add slashes old-school:
-			foreach($fields_values as $k => $v)	{
-				$fields_values[$k] = $this->fullQuoteStr($fields_values[$k], $table);
-			}
+				// quote and escape values
+			$fields_values = $this->fullQuoteArray($fields_values,$table,$no_quote_fields);
 
 				// Build query:
 			$query = 'INSERT INTO '.$table.'
@@ -369,26 +374,29 @@ class t3lib_DB {
 	 * @param	string		See exec_UPDATEquery()
 	 * @param	string		See exec_UPDATEquery()
 	 * @param	array		See exec_UPDATEquery()
+	 * @param	array		See fullQuoteArray()
 	 * @return	string		Full SQL query for UPDATE (unless $fields_values does not contain any elements in which case it will be false)
 	 * @deprecated			use exec_UPDATEquery() instead if possible!
 	 */
-	function UPDATEquery($table,$where,$fields_values)	{
+	function UPDATEquery($table,$where,$fields_values,$no_quote_fields=FALSE)	{
 
 			// Table and fieldnames should be "SQL-injection-safe" when supplied to this function (contrary to values in the arrays which may be insecure).
 		if (is_string($where))	{
 			if (is_array($fields_values) && count($fields_values))	{
 
-					// Add slashes old-school:
-				$nArr = array();
-				foreach($fields_values as $k => $v)	{
-					$nArr[] = $k.'='.$this->fullQuoteStr($v, $table);
+					// quote and escape values
+				$nArr = $this->fullQuoteArray($fields_values,$table,$no_quote_fields);
+
+				$fields = array();
+				foreach ($nArr as $k => $v) {
+					$fields[] = $k.'='.$v;
 				}
 
 					// Build query:
 				$query = 'UPDATE '.$table.'
 					SET
 						'.implode(',
-						',$nArr).
+						',$fields).
 					(strlen($where)>0 ? '
 					WHERE
 						'.$where : '');
@@ -542,20 +550,33 @@ class t3lib_DB {
 	 * @see quoteStr()
 	 */
 	function fullQuoteStr($str, $table)	{
-		return '\''.mysql_real_escape_string($str, $this->link).'\'';
+		if (function_exists('mysql_real_escape_string'))	{
+			return '\''.mysql_real_escape_string($str, $this->link).'\'';
+		} else {
+			return '\''.mysql_escape_string($str).'\'';
+		}
 	}
 
 	/**
-	 * Will fullquote all values in the one-dimentional array so they are ready to "implode" for an sql query.
+	 * Will fullquote all values in the one-dimensional array so they are ready to "implode" for an sql query.
 	 *
-	 * @param	array		Array with values
-	 * @param	string		Table name for which to quote.
-	 * @return	array		The input array with all values passed through intval()
+	 * @param	array		Array with values (either associative or non-associative array)
+	 * @param	string		Table name for which to quote
+	 * @param	string/array		List/array of keys NOT to quote (eg. SQL functions) - ONLY for associative arrays
+	 * @return	array		The input array with the values quoted
 	 * @see cleanIntArray()
 	 */
-	function fullQuoteArray($arr, $table)	{
+	function fullQuoteArray($arr, $table, $noQuote=FALSE)	{
+		if (is_string($noQuote))	{
+			$noQuote = explode(',',$noQuote);
+		} elseif (!is_array($noQuote))	{	// sanity check
+			$noQuote = FALSE;
+		}
+
 		foreach($arr as $k => $v)	{
-			$arr[$k] = $this->fullQuoteStr($arr[$k], $table);
+			if ($noQuote===FALSE || !in_array($k,$noQuote))     {
+				$arr[$k] = $this->fullQuoteStr($v, $table);
+			}
 		}
 		return $arr;
 	}
@@ -573,11 +594,27 @@ class t3lib_DB {
 	 * @see quoteStr()
 	 */
 	function quoteStr($str, $table)	{
-		return mysql_real_escape_string($str, $this->link);
+		if (function_exists('mysql_real_escape_string'))	{
+			return mysql_real_escape_string($str, $this->link);
+		} else {
+			return mysql_escape_string($str);
+		}
 	}
 
 	/**
-	 * Will convert all values in the one-dimentional array to integers.
+	 * Escaping values for SQL LIKE statements.
+	 *
+	 * @param	string		Input string
+	 * @param	string		Table name for which to escape string. Just enter the table that the field-value is selected from (and any DBAL will look up which handler to use and then how to quote the string!).
+	 * @return	string		Output string; % and _ will be escaped with \ (or otherwise based on DBAL handler)
+	 * @see quoteStr()
+	 */
+	function escapeStrForLike($str, $table)	{
+		return preg_replace('/[_%]/','\\\$0',$str);
+	}
+
+	/**
+	 * Will convert all values in the one-dimensional array to integers.
 	 * Useful when you want to make sure an array contains only integers before imploding them in a select-list.
 	 * Usage count/core: 7
 	 *
@@ -652,18 +689,21 @@ class t3lib_DB {
 		);
 
 			// Find LIMIT:
+		$reg = array();
 		if (preg_match('/^(.*)[[:space:]]+LIMIT[[:space:]]+([[:alnum:][:space:],._]+)$/i',$str,$reg))	{
 			$wgolParts['LIMIT'] = trim($reg[2]);
 			$str = $reg[1];
 		}
 
 			// Find ORDER BY:
+		$reg = array();
 		if (preg_match('/^(.*)[[:space:]]+ORDER[[:space:]]+BY[[:space:]]+([[:alnum:][:space:],._]+)$/i',$str,$reg))	{
 			$wgolParts['ORDERBY'] = trim($reg[2]);
 			$str = $reg[1];
 		}
 
 			// Find GROUP BY:
+		$reg = array();
 		if (preg_match('/^(.*)[[:space:]]+GROUP[[:space:]]+BY[[:space:]]+([[:alnum:][:space:],._]+)$/i',$str,$reg))	{
 			$wgolParts['GROUPBY'] = trim($reg[2]);
 			$str = $reg[1];
@@ -846,9 +886,20 @@ class t3lib_DB {
 	 */
 	function sql_pconnect($TYPO3_db_host, $TYPO3_db_username, $TYPO3_db_password)	{
 		if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['no_pconnect'])	{
-			$this->link = mysql_connect($TYPO3_db_host, $TYPO3_db_username, $TYPO3_db_password);
+			$this->link = @mysql_connect($TYPO3_db_host, $TYPO3_db_username, $TYPO3_db_password);
 		} else {
-			$this->link = mysql_pconnect($TYPO3_db_host, $TYPO3_db_username, $TYPO3_db_password);
+			$this->link = @mysql_pconnect($TYPO3_db_host, $TYPO3_db_username, $TYPO3_db_password);
+		}
+
+		if (!$this->link) {
+			t3lib_div::sysLog('Could not connect to Mysql server '.$TYPO3_db_host.' with user '.$TYPO3_db_username.'.','Core',4);
+		} else {
+			$setDBinit = t3lib_div::trimExplode(chr(10), $GLOBALS['TYPO3_CONF_VARS']['SYS']['setDBinit']);
+			foreach ($setDBinit as $v)	{
+				if (mysql_query($v, $this->link) === FALSE)	{
+					t3lib_div::sysLog('Could not initialize DB connection with query "'.$v.'".','Core',3);
+				}
+			}
 		}
 		return $this->link;
 	}
@@ -862,7 +913,11 @@ class t3lib_DB {
 	 * @return	boolean		Returns TRUE on success or FALSE on failure.
 	 */
 	function sql_select_db($TYPO3_db)	{
-		return mysql_select_db($TYPO3_db, $this->link);
+		$ret = @mysql_select_db($TYPO3_db, $this->link);
+		if (!$ret) {
+			t3lib_div::sysLog('Could not select Mysql database '.$TYPO3_db.': '.mysql_error(),'Core',4);
+	}
+		return $ret;
 	}
 
 
@@ -967,6 +1022,45 @@ class t3lib_DB {
 		if ($this->debugOutput)	$this->debug('admin_query');
 		return $res;
 	}
+
+
+
+
+
+
+
+
+
+
+
+
+	/******************************
+	 *
+	 * Connecting service
+	 *
+	 ******************************/
+
+	/**
+	 * Connects to database for TYPO3 sites:
+	 *
+	 * @return	void
+	 */
+	function connectDB()	{
+		if ($this->sql_pconnect(TYPO3_db_host, TYPO3_db_username, TYPO3_db_password))	{
+			if (!TYPO3_db)	{
+				die('No database selected');
+				exit;
+			} elseif (!$this->sql_select_db(TYPO3_db))	{
+				die('Cannot connect to the current database, "'.TYPO3_db.'"');
+				exit;
+			}
+		} else {
+			die('The current username, password or host was not accepted when the connection to the database was attempted to be established!');
+			exit;
+		}
+	}
+
+
 
 
 

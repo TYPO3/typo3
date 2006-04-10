@@ -37,18 +37,20 @@
  *
  *
  *
- *   82: class transferData extends t3lib_transferData
- *   99:     function regItem($table, $id, $field, $content)
+ *   84: class transferData extends t3lib_transferData
+ *  101:     function regItem($table, $id, $field, $content)
  *
  *
- *  133: class SC_show_item
- *  158:     function init()
+ *  135: class SC_show_item
+ *  160:     function init()
  *  225:     function main()
- *  253:     function renderDBInfo()
- *  301:     function renderFileInfo($returnLinkTag)
- *  416:     function printContent()
+ *  273:     function renderDBInfo()
+ *  327:     function renderFileInfo($returnLinkTag)
+ *  449:     function printContent()
+ *  462:     function makeRef($table,$ref)
+ *  524:     function makeRefFrom($table,$ref)
  *
- * TOTAL FUNCTIONS: 6
+ * TOTAL FUNCTIONS: 8
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -201,8 +203,6 @@ class SC_show_item {
 			if (@is_file($this->file) && t3lib_div::isAllowedAbsPath($this->file))	{
 				$this->type = 'file';
 				$this->access = 1;
-
-				require_once(PATH_t3lib.'class.t3lib_stdgraphic.php');
 			}
 		}
 
@@ -228,19 +228,39 @@ class SC_show_item {
 		if ($this->access)	{
 			$returnLinkTag = t3lib_div::_GP('returnUrl') ? '<a href="'.t3lib_div::_GP('returnUrl').'" class="typo3-goBack">' : '<a href="#" onclick="window.close();">';
 
-				// Branch out based on type:
-			switch($this->type)	{
-				case 'db':
-					$this->renderDBInfo();
-				break;
-				case 'file':
-					$this->renderFileInfo($returnLinkTag);
-				break;
+				// render type by user func
+			$typeRendered = false;
+			if (is_array ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/show_item.php']['typeRendering'])) {
+				foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/show_item.php']['typeRendering'] as $classRef) {
+					$typeRenderObj = t3lib_div::getUserObj($classRef);
+					if(is_object($typeRenderObj) && method_exists($typeRenderObj, 'isValid') && method_exists($typeRenderObj, 'render'))	{
+						if ($typeRenderObj->isValid($this->type, $this)) {
+							$this->content .=  $typeRenderObj->render($this->type, $this);
+							$typeRendered = true;
+							break;
+						}
+					}
+				}
+			}
+
+				// if type was not rendered use default rendering functions
+			if(!$typeRendered) {
+					// Branch out based on type:
+				switch($this->type)	{
+					case 'db':
+						$this->renderDBInfo();
+					break;
+					case 'file':
+						$this->renderFileInfo($returnLinkTag);
+					break;
+				}
 			}
 
 				// If return Url is set, output link to go back:
 			if (t3lib_div::_GP('returnUrl'))	{
-				$this->content.= $this->doc->section('','<br />'.$returnLinkTag.'<strong>'.$LANG->sL('LLL:EXT:lang/locallang_core.php:labels.goBack',1).'</strong></a>');
+				$this->content = $this->doc->section('',$returnLinkTag.'<strong>'.$LANG->sL('LLL:EXT:lang/locallang_core.xml:labels.goBack',1).'</strong></a><br /><br />').$this->content;
+
+				$this->content .= $this->doc->section('','<br />'.$returnLinkTag.'<strong>'.$LANG->sL('LLL:EXT:lang/locallang_core.xml:labels.goBack',1).'</strong></a>');
 			}
 		}
 	}
@@ -290,6 +310,12 @@ class SC_show_item {
 		$code.= $LANG->sL('LLL:EXT:lang/locallang_core.php:labels.path').': '.t3lib_div::fixed_lgd_cs($this->pageinfo['_thePath'],-48).'<br />';
 		$code.= $LANG->sL('LLL:EXT:lang/locallang_core.php:labels.table').': '.$LANG->sL($TCA[$this->table]['ctrl']['title']).' ('.$this->table.') - UID: '.$this->uid.'<br />';
 		$this->content.= $this->doc->section('', $code);
+
+			// References:
+		$this->content.= $this->doc->section('References to this item:',$this->makeRef($this->table,$this->row['uid']));
+
+			// References:
+		$this->content.= $this->doc->section('References from this item:',$this->makeRefFrom($this->table,$this->row['uid']));
 	}
 
 	/**
@@ -302,6 +328,7 @@ class SC_show_item {
 		global $LANG;
 
 			// Initialize object to work on the image:
+		require_once(PATH_t3lib.'class.t3lib_stdgraphic.php');
 		$imgObj = t3lib_div::makeInstance('t3lib_stdGraphic');
 		$imgObj->init();
 		$imgObj->mayScaleUp = 0;
@@ -350,6 +377,7 @@ class SC_show_item {
 			if (TYPO3_OS!='WIN' && !$GLOBALS['TYPO3_CONF_VARS']['BE']['disable_exec_function'])	{
 				if ($ext=='zip')	{
 					$code = '';
+					$t = array();
 					exec('unzip -l '.$this->file, $t);
 					if (is_array($t))	{
 						reset($t);
@@ -374,6 +402,7 @@ class SC_show_item {
 					} else {
 						$compr = 'z';
 					}
+					$t = array();
 					exec('tar t'.$compr.'f '.$this->file, $t);
 					if (is_array($t))	{
 						foreach($t as $val)	{
@@ -406,6 +435,10 @@ class SC_show_item {
 				$this->content.= $this->doc->section('',$thumb);
 			}
 		}
+
+
+			// References:
+		$this->content.= $this->doc->section('References to this item:',$this->makeRef('_FILE',$this->file));
 	}
 
 	/**
@@ -415,7 +448,115 @@ class SC_show_item {
 	 */
 	function printContent()	{
 		$this->content.= $this->doc->endPage();
+		$this->content = $this->doc->insertStylesAndJS($this->content);
 		echo $this->content;
+	}
+
+	/**
+	 * Make reference display
+	 *
+	 * @param	string		Table name
+	 * @param	string		Filename or uid
+	 * @return	string		HTML
+	 */
+	function makeRef($table,$ref)	{
+
+		if ($table==='_FILE')	{
+				// First, fit path to match what is stored in the refindex:
+			$fullIdent = $ref;
+
+			if (t3lib_div::isFirstPartOfStr($fullIdent,PATH_site))	{
+				$fullIdent = substr($fullIdent,strlen(PATH_site));
+			}
+
+				// Look up the path:
+			$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+				'*',
+				'sys_refindex',
+				'ref_table='.$GLOBALS['TYPO3_DB']->fullQuoteStr('_FILE','sys_refindex').
+					' AND ref_string='.$GLOBALS['TYPO3_DB']->fullQuoteStr($fullIdent,'sys_refindex').
+					' AND deleted=0'
+			);
+		} else {
+				// Look up the path:
+			$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+				'*',
+				'sys_refindex',
+				'ref_table='.$GLOBALS['TYPO3_DB']->fullQuoteStr($table,'sys_refindex').
+					' AND ref_uid='.intval($ref).
+					' AND deleted=0'
+			);
+		}
+
+			// Compile information for title tag:
+		$infoData = array();
+		if (count($rows))	{
+			$infoData[] = '<tr class="bgColor5 tableheader">' .
+					'<td>Table:</td>' .
+					'<td>Uid:</td>' .
+					'<td>Field:</td>'.
+					'<td>Flexpointer:</td>'.
+					'<td>Softref Key:</td>'.
+					'<td>Sorting:</td>'.
+					'</tr>';
+		}
+		foreach($rows as $row)	{
+			$infoData[] = '<tr class="bgColor4"">' .
+					'<td>'.$row['tablename'].'</td>' .
+					'<td>'.$row['recuid'].'</td>' .
+					'<td>'.$row['field'].'</td>'.
+					'<td>'.$row['flexpointer'].'</td>'.
+					'<td>'.$row['softref_key'].'</td>'.
+					'<td>'.$row['sorting'].'</td>'.
+					'</tr>';
+		}
+
+		return count($infoData) ? '<table border="0" cellpadding="1" cellspacing="1">'.implode('',$infoData).'</table>' : '';
+	}
+
+	/**
+	 * Make reference display (what this elements points to)
+	 *
+	 * @param	string		Table name
+	 * @param	string		Filename or uid
+	 * @return	string		HTML
+	 */
+	function makeRefFrom($table,$ref)	{
+
+			// Look up the path:
+		$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+			'*',
+			'sys_refindex',
+			'tablename='.$GLOBALS['TYPO3_DB']->fullQuoteStr($table,'sys_refindex').
+				' AND recuid='.intval($ref)
+		);
+
+			// Compile information for title tag:
+		$infoData = array();
+		if (count($rows))	{
+			$infoData[] = '<tr class="bgColor5 tableheader">' .
+					'<td>Field:</td>'.
+					'<td>Flexpointer:</td>'.
+					'<td>Softref Key:</td>'.
+					'<td>Sorting:</td>'.
+					'<td>Ref Table:</td>' .
+					'<td>Ref Uid:</td>' .
+					'<td>Ref String:</td>' .
+					'</tr>';
+		}
+		foreach($rows as $row)	{
+			$infoData[] = '<tr class="bgColor4"">' .
+					'<td>'.$row['field'].'</td>'.
+					'<td>'.$row['flexpointer'].'</td>'.
+					'<td>'.$row['softref_key'].'</td>'.
+					'<td>'.$row['sorting'].'</td>'.
+					'<td>'.$row['ref_table'].'</td>' .
+					'<td>'.$row['ref_uid'].'</td>' .
+					'<td>'.$row['ref_string'].'</td>' .
+					'</tr>';
+		}
+
+		return count($infoData) ? '<table border="0" cellpadding="1" cellspacing="1">'.implode('',$infoData).'</table>' : '';
 	}
 }
 

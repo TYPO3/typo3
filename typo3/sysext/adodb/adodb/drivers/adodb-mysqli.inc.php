@@ -1,6 +1,6 @@
 <?php
 /*
-V4.68 25 Nov 2005  (c) 2000-2005 John Lim (jlim@natsoft.com.my). All rights reserved.
+V4.80 8 Mar 2006  (c) 2000-2006 John Lim (jlim@natsoft.com.my). All rights reserved.
   Released under both BSD license and Lesser GPL library license. 
   Whenever there is any discrepancy between the two licenses, 
   the BSD license will take precedence.
@@ -163,6 +163,14 @@ class ADODB_mysqli extends ADOConnection {
 		$this->Execute('ROLLBACK');
 		$this->Execute('SET AUTOCOMMIT=1');
 		return true;
+	}
+	
+	function RowLock($tables,$where='',$flds='1 as adodb_ignore') 
+	{
+		if ($this->transCnt==0) $this->BeginTrans();
+		if ($where) $where = ' where '.$where;
+		$rs =& $this->Execute("select $flds from $tables $where for update");
+		return !empty($rs); 
 	}
 	
 	// if magic quotes disabled, use mysql_real_escape_string()
@@ -435,7 +443,7 @@ class ADODB_mysqli extends ADOConnection {
 	}
 	
 	// "Innox - Juan Carlos Gonzalez" <jgonzalez#innox.com.mx>
-	function MetaForeignKeys( $table, $owner = FALSE, $upper = FALSE, $asociative = FALSE )
+	function MetaForeignKeys( $table, $owner = FALSE, $upper = FALSE, $associative = FALSE )
 	{
 	    if ( !empty($owner) ) {
 	       $table = "$owner.$table";
@@ -461,7 +469,7 @@ class ADODB_mysqli extends ADOConnection {
 	        $foreign_keys[$ref_table] = array();
 	        $num_fields               = count($my_field);
 	        for ( $j = 0;  $j < $num_fields;  $j ++ ) {
-	            if ( $asociative ) {
+	            if ( $associative ) {
 	                $foreign_keys[$ref_table][$ref_field[$j]] = $my_field[$j];
 	            } else {
 	                $foreign_keys[$ref_table][] = "{$my_field[$j]}={$ref_field[$j]}";

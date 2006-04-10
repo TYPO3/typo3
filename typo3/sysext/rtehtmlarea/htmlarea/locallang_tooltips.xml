@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+	<meta type="array">
+		<description>Labels for tooltips of htmlArea RTE</description>
+		<type>module</type>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index="bold">Bold</label>
+			<label index="italic">Italic</label>
+			<label index="underline">Underline</label>
+			<label index="strikethrough">Strikethrough</label>
+			<label index="subscript">Subscript</label>
+			<label index="superscript">Superscript</label>
+			<label index="justifyleft">Justify Left</label>
+			<label index="justifycenter">Justify Center</label>
+			<label index="justifyright">Justify Right</label>
+			<label index="justifyfull">Justify Full</label>
+			<label index="insertorderedlist">Ordered List</label>
+			<label index="insertunorderedlist">Bulleted List</label>
+			<label index="outdent">Decrease Indent</label>
+			<label index="indent">Increase Indent</label>
+			<label index="forecolor">Font Color</label>
+			<label index="hilitecolor">Background Color</label>
+			<label index="inserthorizontalrule">Horizontal Rule</label>
+			<label index="createlink">Insert Web Link</label>
+			<label index="insertimage">Insert/Modify Image</label>
+			<label index="inserttable">Insert Table</label>
+			<label index="htmlmode">Toggle HTML Source</label>
+			<label index="popupeditor">Enlarge Editor</label>
+			<label index="about">About this editor</label>
+			<label index="showhelp">Help using editor</label>
+			<label index="textindicator">Current style</label>
+			<label index="undo">Undoes your last action</label>
+			<label index="redo">Redoes your last action</label>
+			<label index="cut">Cut selection</label>
+			<label index="copy">Copy selection</label>
+			<label index="paste">Paste from clipboard</label>
+			<label index="lefttoright">Direction left to right</label>
+			<label index="righttoleft">Direction right to left</label>
+			<label index="removeformat">Remove formatting</label>
+			<label index="print">Print document</label>
+			<label index="killword">Clear MSOffice tags</label>
+			<label index="fontname">Font</label>
+			<label index="fontsize">Font size</label>
+			<label index="formatblock">Type of paragragh</label>
+		</languageKey>
+	</data>
+	<orig_hash type="array">
+		<languageKey index="default" type="array">
+			<label index="bold" type="integer">18137861</label>
+			<label index="italic" type="integer">30962801</label>
+			<label index="underline" type="integer">139620890</label>
+			<label index="strikethrough" type="integer">153527579</label>
+			<label index="subscript" type="integer">153638286</label>
+			<label index="superscript" type="integer">103903129</label>
+			<label index="justifyleft" type="integer">103035233</label>
+			<label index="justifycenter" type="integer">155705392</label>
+			<label index="justifyright" type="integer">75036879</label>
+			<label index="justifyfull" type="integer">6823521</label>
+			<label index="insertorderedlist" type="integer">127299663</label>
+			<label index="insertunorderedlist" type="integer">77997053</label>
+			<label index="outdent" type="integer">245172929</label>
+			<label index="indent" type="integer">67026639</label>
+			<label index="forecolor" type="integer">35667911</label>
+			<label index="hilitecolor" type="integer">123630626</label>
+			<label index="inserthorizontalrule" type="integer">219272101</label>
+			<label index="createlink" type="integer">147436421</label>
+			<label index="insertimage" type="integer">146708638</label>
+			<label index="inserttable" type="integer">111652295</label>
+			<label index="htmlmode" type="integer">150105834</label>
+			<label index="popupeditor" type="integer">108884081</label>
+			<label index="about" type="integer">93541894</label>
+			<label index="showhelp" type="integer">224256507</label>
+			<label index="textindicator" type="integer">123554729</label>
+			<label index="undo" type="integer">255659</label>
+			<label index="redo" type="integer">251355262</label>
+			<label index="cut" type="integer">205223202</label>
+			<label index="copy" type="integer">248051882</label>
+			<label index="paste" type="integer">226578047</label>
+			<label index="lefttoright" type="integer">1013968</label>
+			<label index="righttoleft" type="integer">206570525</label>
+			<label index="removeformat" type="integer">187827535</label>
+			<label index="print" type="integer">177493560</label>
+			<label index="killword" type="integer">228066956</label>
+			<label index="fontname" type="integer">26539321</label>
+			<label index="fontsize" type="integer">206127878</label>
+			<label index="formatblock" type="integer">4875199</label>
+		</languageKey>
+	</orig_hash>
+	<orig_text type="array">
+		<languageKey index="default" type="array">
+		</languageKey>
+	</orig_text>
+</T3locallang>

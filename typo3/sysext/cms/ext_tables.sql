@@ -9,11 +9,12 @@
 # Table structure for table 'cache_pages'
 #
 CREATE TABLE cache_pages (
-  id int(11) unsigned DEFAULT '0' NOT NULL auto_increment,
+  id int(11) unsigned NOT NULL auto_increment,
   hash varchar(32) DEFAULT '' NOT NULL,
   page_id int(11) unsigned DEFAULT '0' NOT NULL,
   reg1 int(11) unsigned DEFAULT '0' NOT NULL,
   HTML mediumblob NOT NULL,
+  temp_content int(1) DEFAULT '0' NOT NULL,
   tstamp int(11) unsigned DEFAULT '0' NOT NULL,
   expires int(10) unsigned DEFAULT '0' NOT NULL,
   cache_data mediumblob NOT NULL,
@@ -77,7 +78,7 @@ CREATE TABLE cache_imagesizes (
 # Table structure for table 'fe_groups'
 #
 CREATE TABLE fe_groups (
-  uid int(11) unsigned DEFAULT '0' NOT NULL auto_increment,
+  uid int(11) unsigned NOT NULL auto_increment,
   pid int(11) unsigned DEFAULT '0' NOT NULL,
   tstamp int(11) unsigned DEFAULT '0' NOT NULL,
   title varchar(20) DEFAULT '' NOT NULL,
@@ -122,7 +123,7 @@ CREATE TABLE fe_sessions (
 # Table structure for table 'fe_users'
 #
 CREATE TABLE fe_users (
-  uid int(11) unsigned DEFAULT '0' NOT NULL auto_increment,
+  uid int(11) unsigned NOT NULL auto_increment,
   pid int(11) unsigned DEFAULT '0' NOT NULL,
   tstamp int(11) unsigned DEFAULT '0' NOT NULL,
   username varchar(50) DEFAULT '' NOT NULL,
@@ -149,8 +150,6 @@ CREATE TABLE fe_users (
   company varchar(80) DEFAULT '' NOT NULL,
   image tinyblob NOT NULL,
   TSconfig blob NOT NULL,
-  module_sys_dmail_category int(10) unsigned DEFAULT '0' NOT NULL,
-  module_sys_dmail_html tinyint(3) unsigned DEFAULT '0' NOT NULL,
   fe_cruser_id int(10) unsigned DEFAULT '0' NOT NULL,
   lastlogin int(10) unsigned DEFAULT '0' NOT NULL,
   is_online int(10) unsigned DEFAULT '0' NOT NULL,
@@ -166,7 +165,7 @@ CREATE TABLE fe_users (
 # Table structure for table 'pages_language_overlay'
 #
 CREATE TABLE pages_language_overlay (
-  uid int(11) DEFAULT '0' NOT NULL auto_increment,
+  uid int(11) NOT NULL auto_increment,
   pid int(11) DEFAULT '0' NOT NULL,
   t3ver_oid int(11) DEFAULT '0' NOT NULL,
   t3ver_id int(11) DEFAULT '0' NOT NULL,
@@ -207,7 +206,7 @@ CREATE TABLE pages_language_overlay (
 # Table structure for table 'static_template'
 #
 CREATE TABLE static_template (
-  uid int(11) unsigned DEFAULT '0' NOT NULL auto_increment,
+  uid int(11) unsigned NOT NULL auto_increment,
   pid int(11) unsigned DEFAULT '0' NOT NULL,
   tstamp int(11) unsigned DEFAULT '0' NOT NULL,
   crdate int(11) unsigned DEFAULT '0' NOT NULL,
@@ -226,7 +225,7 @@ CREATE TABLE static_template (
 # Table structure for table 'sys_domain'
 #
 CREATE TABLE sys_domain (
-  uid int(11) unsigned DEFAULT '0' NOT NULL auto_increment,
+  uid int(11) unsigned NOT NULL auto_increment,
   pid int(11) unsigned DEFAULT '0' NOT NULL,
   tstamp int(11) unsigned DEFAULT '0' NOT NULL,
   hidden tinyint(4) unsigned DEFAULT '0' NOT NULL,
@@ -245,7 +244,7 @@ CREATE TABLE sys_domain (
 # Table structure for table 'sys_template'
 #
 CREATE TABLE sys_template (
-  uid int(11) DEFAULT '0' NOT NULL auto_increment,
+  uid int(11) NOT NULL auto_increment,
   pid int(11) DEFAULT '0' NOT NULL,
   t3ver_oid int(11) DEFAULT '0' NOT NULL,
   t3ver_id int(11) DEFAULT '0' NOT NULL,
@@ -290,7 +289,7 @@ CREATE TABLE sys_template (
 # Table structure for table 'tt_content'
 #
 CREATE TABLE tt_content (
-  uid int(11) DEFAULT '0' NOT NULL auto_increment,
+  uid int(11) NOT NULL auto_increment,
   pid int(11) DEFAULT '0' NOT NULL,
   t3ver_oid int(11) DEFAULT '0' NOT NULL,
   t3ver_id int(11) DEFAULT '0' NOT NULL,
@@ -334,6 +333,9 @@ CREATE TABLE tt_content (
   image_noRows tinyint(3) unsigned DEFAULT '0' NOT NULL,
   image_effects tinyint(3) unsigned DEFAULT '0' NOT NULL,
   image_compression tinyint(3) unsigned DEFAULT '0' NOT NULL,
+  altText text NOT NULL,
+  titleText text NOT NULL,
+  longdescURL text NOT NULL,
   header_layout varchar(30) DEFAULT '0' NOT NULL,
   text_align varchar(6) DEFAULT '' NOT NULL,
   text_face tinyint(3) unsigned DEFAULT '0' NOT NULL,
@@ -357,7 +359,6 @@ CREATE TABLE tt_content (
   image_frames tinyint(3) unsigned DEFAULT '0' NOT NULL,
   recursive tinyint(3) unsigned DEFAULT '0' NOT NULL,
   imageheight mediumint(8) unsigned DEFAULT '0' NOT NULL,
-  module_sys_dmail_category int(10) unsigned DEFAULT '0' NOT NULL,
   rte_enabled tinyint(4) DEFAULT '0' NOT NULL,
   sys_language_uid int(11) DEFAULT '0' NOT NULL,
   tx_impexp_origuid int(11) DEFAULT '0' NOT NULL,

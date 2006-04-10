@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2005 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2006 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -50,29 +50,29 @@
  *  314:     function getRecordOverlay($table,$row,$sys_language_content,$OLmode='')
  *
  *              SECTION: Page related: Menu, Domain record, Root line
- *  410:     function getMenu($uid,$fields='*',$sortField='sorting',$addWhere='')
- *  448:     function getDomainStartPage($domain, $path='',$request_uri='')
- *  496:     function getRootLine($uid, $MP='', $ignoreMPerrors=FALSE)
- *  617:     function getPathFromRootline($rl,$len=20)
- *  638:     function getExtURL($pagerow,$disable=0)
- *  662:     function getMountPointInfo($pageId, $pageRec=FALSE, $prevMountPids=array(), $firstPageUid=0)
+ *  413:     function getMenu($uid,$fields='*',$sortField='sorting',$addWhere='',$checkShortcuts=1)
+ *  471:     function getDomainStartPage($domain, $path='',$request_uri='')
+ *  519:     function getRootLine($uid, $MP='', $ignoreMPerrors=FALSE)
+ *  640:     function getPathFromRootline($rl,$len=20)
+ *  661:     function getExtURL($pagerow,$disable=0)
+ *  685:     function getMountPointInfo($pageId, $pageRec=FALSE, $prevMountPids=array(), $firstPageUid=0)
  *
  *              SECTION: Selecting records in general
- *  739:     function checkRecord($table,$uid,$checkPage=0)
- *  773:     function getRawRecord($table,$uid,$fields='*')
- *  797:     function getRecordsByField($theTable,$theField,$theValue,$whereClause='',$groupBy='',$orderBy='',$limit='')
+ *  762:     function checkRecord($table,$uid,$checkPage=0)
+ *  797:     function getRawRecord($table,$uid,$fields='*',$noWSOL=FALSE)
+ *  823:     function getRecordsByField($theTable,$theField,$theValue,$whereClause='',$groupBy='',$orderBy='',$limit='')
  *
  *              SECTION: Caching and standard clauses
- *  849:     function getHash($hash,$expTime=0)
- *  872:     function storeHash($hash,$data,$ident)
- *  890:     function deleteClause($table)
- *  910:     function enableFields($table,$show_hidden=-1,$ignore_array=array(),$noVersionPreview=FALSE)
- *  979:     function getMultipleGroupsWhereClause($field, $table)
+ *  875:     function getHash($hash,$expTime=0)
+ *  898:     function storeHash($hash,$data,$ident)
+ *  916:     function deleteClause($table)
+ *  936:     function enableFields($table,$show_hidden=-1,$ignore_array=array(),$noVersionPreview=FALSE)
+ * 1008:     function getMultipleGroupsWhereClause($field, $table)
  *
  *              SECTION: Versioning Preview
- * 1026:     function fixVersioningPid($table,&$rr)
- * 1066:     function versionOL($table,&$row)
- * 1121:     function getWorkspaceVersionOfRecord($workspace, $table, $uid, $fields='*')
+ * 1055:     function fixVersioningPid($table,&$rr)
+ * 1096:     function versionOL($table,&$row)
+ * 1151:     function getWorkspaceVersionOfRecord($workspace, $table, $uid, $fields='*')
  *
  * TOTAL FUNCTIONS: 24
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -107,7 +107,7 @@
  * @see tslib_fe::fetch_the_id()
  */
 class t3lib_pageSelect {
-	var $urltypes = Array('','http://','ftp://','mailto:');
+	var $urltypes = Array('','http://','ftp://','mailto:','https://');
 	var $where_hid_del = ' AND pages.deleted=0';	// This is not the final clauses. There will normally be conditions for the hidden,starttime and endtime fields as well. You MUST initialize the object by the init() function
 	var $where_groupAccess = '';	// Clause for fe_group access
 	var $sys_language_uid = 0;
@@ -251,7 +251,7 @@ class t3lib_pageSelect {
 
 			// Initialize:
 		if ($lUid<0)	$lUid = $this->sys_language_uid;
-		unset($row);
+		$row = NULL;
 
 			// If language UID is different from zero, do overlay:
 		if ($lUid)	{
@@ -318,7 +318,7 @@ class t3lib_pageSelect {
 			if ($TCA[$table] && $TCA[$table]['ctrl']['languageField'] && $TCA[$table]['ctrl']['transOrigPointerField'])	{
 				if (!$TCA[$table]['ctrl']['transOrigPointerTable'])	{	// Will not be able to work with other tables (Just didn't implement it yet; Requires a scan over all tables [ctrl] part for first FIND the table that carries localization information for this table (which could even be more than a single table) and then use that. Could be implemented, but obviously takes a little more....)
 
-						// Will try to overlay a record only if the sys_language_content value is larger that zero.
+						// Will try to overlay a record only if the sys_language_content value is larger than zero.
 					if ($sys_language_content>0)	{
 
 							// Must be default language or [All], otherwise no overlaying:
@@ -326,16 +326,16 @@ class t3lib_pageSelect {
 
 								// Select overlay record:
 							$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-										'*',
-										$table,
-										'pid='.intval($row['pid']).
-											' AND '.$TCA[$table]['ctrl']['languageField'].'='.intval($sys_language_content).
-											' AND '.$TCA[$table]['ctrl']['transOrigPointerField'].'='.intval($row['uid']).
-											$this->enableFields($table),
-										'',
-										'',
-										'1'
-									);
+								'*',
+								$table,
+								'pid='.intval($row['pid']).
+									' AND '.$TCA[$table]['ctrl']['languageField'].'='.intval($sys_language_content).
+									' AND '.$TCA[$table]['ctrl']['transOrigPointerField'].'='.intval($row['uid']).
+									$this->enableFields($table),
+								'',
+								'',
+								'1'
+							);
 							$olrow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
 							$this->versionOL($table,$olrow);
 	#debug($row);
@@ -349,6 +349,8 @@ class t3lib_pageSelect {
 												&& ($GLOBALS['TSFE']->TCAcachedExtras[$table]['l10n_mode'][$fN]!='mergeIfNotBlank' || strcmp(trim($olrow[$fN]),'')))	{
 											$row[$fN] = $olrow[$fN];
 										}
+									} elseif ($fN=='uid')	{
+										$row['_LOCALIZED_UID'] = $olrow['uid'];
 									}
 								}
 							} elseif ($OLmode==='hideNonTranslated' && $row[$TCA[$table]['ctrl']['languageField']]==0)	{	// Unset, if non-translated records should be hidden. ONLY done if the source record really is default language and not [All] in which case it is allowed.
@@ -654,7 +656,7 @@ class t3lib_pageSelect {
 	 * @param	array		The page row to return URL type for
 	 * @param	boolean		A flag to simply disable any output from here.
 	 * @return	string		The URL type from $this->urltypes array. False if not found or disabled.
-	 * @see tslib_fe::checkJumpUrl()
+	 * @see tslib_fe::setExternalJumpUrl()
 	 */
 	function getExtURL($pagerow,$disable=0)	{
 		if ($pagerow['doktype']==3 && !$disable)	{
@@ -932,6 +934,8 @@ class t3lib_pageSelect {
 	 * @see tslib_cObj::enableFields(), deleteClause()
 	 */
 	function enableFields($table,$show_hidden=-1,$ignore_array=array(),$noVersionPreview=FALSE)	{
+		global $TYPO3_CONF_VARS;
+
 		if ($show_hidden==-1 && is_object($GLOBALS['TSFE']))	{	// If show_hidden was not set from outside and if TSFE is an object, set it based on showHiddenPage and showHiddenRecords from TSFE
 			$show_hidden = $table=='pages' ? $GLOBALS['TSFE']->showHiddenPage : $GLOBALS['TSFE']->showHiddenRecords;
 		}
@@ -1008,9 +1012,7 @@ class t3lib_pageSelect {
 		$orChecks[]=$field.'=\'0\'';	// If the field contsains zero, then OK
 
 		foreach($memberGroups as $value)	{
-			// if ($value > 0)	{	// outcommented by Ingmar Schlecht because we want those pseudo groups like "hide at login" etc. to work. Original comment from Kasper was: "If user is member of a real group, not zero or negative pseudo group"
-				$orChecks[] = $GLOBALS['TYPO3_DB']->listQuery($field, $value, $table);
-			// }
+			$orChecks[] = $GLOBALS['TYPO3_DB']->listQuery($field, $value, $table);
 		}
 
 		return ' AND ('.implode(' OR ',$orChecks).')';

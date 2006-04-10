@@ -39,7 +39,7 @@
  *
  *   67: class tx_extrapagecmoptions
  *   79:     function main(&$backRef,$menuItems,$table,$uid)
- *  159:     function includeLL()
+ *  158:     function includeLL()
  *
  * TOTAL FUNCTIONS: 2
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -135,7 +135,6 @@ class tx_extrapagecmoptions {
 			if ($backRef->editOK)	{	// If the page can be edited, then show this:
 				if (!in_array('move_wizard',$backRef->disabledItems) && ($table=='pages' || $table=='tt_content'))	$localItems['move_wizard']=$backRef->DB_moveWizard($table,$uid,$backRef->rec);
 				if (!in_array('new_wizard',$backRef->disabledItems) && ($table=='pages' || $table=='tt_content'))	$localItems['new_wizard']=$backRef->DB_newWizard($table,$uid,$backRef->rec);
-				if (!in_array('history',$backRef->disabledItems))	$localItems['history']=$backRef->DB_history($table,$uid);
 				if (!in_array('perms',$backRef->disabledItems) && $table=='pages' && $BE_USER->check('modules','web_perm'))	$localItems['perms']=$backRef->DB_perms($table,$uid,$backRef->rec);
 				if (!in_array('db_list',$backRef->disabledItems) && $BE_USER->check('modules','web_list'))	$localItems['db_list']=$backRef->DB_db_list($table,$uid,$backRef->rec);
 			}

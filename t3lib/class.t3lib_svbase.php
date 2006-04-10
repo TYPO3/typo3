@@ -37,11 +37,11 @@
  *
  *
  *
- *  127: class t3lib_svbase
+ *  125: class t3lib_svbase
  *
  *              SECTION: Get service meta information
- *  195:     function getServiceInfo()
- *  203:     function getServiceKey()
+ *  191:     function getServiceInfo()
+ *  201:     function getServiceKey()
  *  211:     function getServiceTitle()
  *  224:     function getServiceOption($optionName, $defaultValue='', $includeDefaultConfig=TRUE)
  *
@@ -58,34 +58,32 @@
  *              SECTION: General service functions
  *  377:     function checkExec($progList)
  *  401:     function deactivateService()
- *  407:     function available()
  *
  *              SECTION: IO tools
- *  445:     function checkInputFile ($absFile)
- *  466:     function readFile ($absFile, $length=0)
- *  491:     function writeFile ($content, $absFile='')
- *  517:     function tempFile ($filePrefix)
- *  535:     function registerTempFile ($absFile)
- *  545:     function unlinkTempFiles ()
+ *  427:     function checkInputFile ($absFile)
+ *  448:     function readFile ($absFile, $length=0)
+ *  473:     function writeFile ($content, $absFile='')
+ *  499:     function tempFile ($filePrefix)
+ *  517:     function registerTempFile ($absFile)
+ *  527:     function unlinkTempFiles ()
  *
  *              SECTION: IO input
- *  567:     function setInput ($content, $type='')
- *  581:     function setInputFile ($absFile, $type='')
- *  594:     function getInput ()
- *  609:     function getInputFile ($createFile='')
+ *  549:     function setInput ($content, $type='')
+ *  563:     function setInputFile ($absFile, $type='')
+ *  576:     function getInput ()
+ *  591:     function getInputFile ($createFile='')
  *
  *              SECTION: IO output
- *  634:     function setOutputFile ($absFile)
- *  644:     function getOutput ()
- *  658:     function getOutputFile ($absFile='')
+ *  616:     function setOutputFile ($absFile)
+ *  626:     function getOutput ()
+ *  640:     function getOutputFile ($absFile='')
  *
  *              SECTION: Service implementation
- *  682:     function init()
- *  706:     function reset()
- *  721:     function __destruct()
- *  727:     function process($content='', $type='', $conf=array())
+ *  664:     function init()
+ *  688:     function reset()
+ *  703:     function __destruct()
  *
- * TOTAL FUNCTIONS: 32
+ * TOTAL FUNCTIONS: 30
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -219,8 +217,8 @@ class t3lib_svbase {
 	 * Returns service configuration values from the $TYPO3_CONF_VARS['SVCONF'] array
 	 *
 	 * @param	string		Name of the config option
-	 * @return	mixed		Default configuration value for the service. Will be returned if no value found.
 	 * @param	boolean		If set the 'default' config will be return if no special config for this service is available (default: true)
+	 * @param	[type]		$includeDefaultConfig: ...
 	 * @return	mixed		configuration value for the service
 	 */
 	function getServiceOption($optionName, $defaultValue='', $includeDefaultConfig=TRUE) {

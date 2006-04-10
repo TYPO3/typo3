@@ -37,22 +37,21 @@
  *
  *
  *
- *   89: class language
- *  137:     function init($lang,$altPath='')
- *  182:     function addModuleLabels($arr,$prefix)
- *  208:     function hscAndCharConv($lStr,$hsc)
- *  223:     function makeEntities($str)
- *  240:     function JScharCode($str)
- *  259:     function getLL($index,$hsc=0)
- *  276:     function getLLL($index,$LOCAL_LANG,$hsc=0)
- *  296:     function sL($input,$hsc=0)
- *  340:     function loadSingleTableDescription($table)
- *  392:     function includeLLFile($fileRef,$setGlobal=1,$mergeLocalOntoDefault=0)
- *  437:     function readLLfile($fileRef)
- *  458:     function readLLXMLfile($fileRef,$langKey)
- *  559:     function localizedFileRef($fileRef)
+ *   88: class language
+ *  138:     function init($lang,$altPath='')
+ *  183:     function addModuleLabels($arr,$prefix)
+ *  209:     function hscAndCharConv($lStr,$hsc)
+ *  224:     function makeEntities($str)
+ *  241:     function JScharCode($str)
+ *  260:     function getLL($index,$hsc=0)
+ *  278:     function getLLL($index,$LOCAL_LANG,$hsc=0)
+ *  299:     function sL($input,$hsc=0)
+ *  344:     function loadSingleTableDescription($table)
+ *  396:     function includeLLFile($fileRef,$setGlobal=1,$mergeLocalOntoDefault=0)
+ *  441:     function readLLfile($fileRef)
+ *  451:     function localizedFileRef($fileRef)
  *
- * TOTAL FUNCTIONS: 13
+ * TOTAL FUNCTIONS: 12
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -102,6 +101,8 @@ class language {
 	var $helpUrlArray = array(
 		'dk' => 'http://www.typo3.com/man_dk/',
 	);
+
+	var $debugKey = FALSE;		// If true, will show the key/location of labels in the backend.
 
 
 	var $moduleLabels = Array();	// Can contain labels and image references from the backend modules. Relies on t3lib_loadmodules to initialize modules after a global instance of $LANG has been created.
@@ -259,10 +260,11 @@ class language {
 	function getLL($index,$hsc=0)	{
 		// Get Local Language
 		if (strcmp($GLOBALS['LOCAL_LANG'][$this->lang][$index],''))	{
-			return $this->hscAndCharConv($GLOBALS['LOCAL_LANG'][$this->lang][$index], $hsc);	// Returns local label if not blank.
+			$output = $this->hscAndCharConv($GLOBALS['LOCAL_LANG'][$this->lang][$index], $hsc);	// Returns local label if not blank.
 		} else {
-			return $this->hscAndCharConv($GLOBALS['LOCAL_LANG']['default'][$index], $hsc);	// Returns default label
+			$output = $this->hscAndCharConv($GLOBALS['LOCAL_LANG']['default'][$index], $hsc);	// Returns default label
 		}
+		return $output.($this->debugKey ? ' ['.$index.']':'');
 	}
 
 	/**
@@ -276,10 +278,11 @@ class language {
 	function getLLL($index,$LOCAL_LANG,$hsc=0)	{
 		// Get Local Language
 		if (strcmp($LOCAL_LANG[$this->lang][$index],''))	{
-			return $this->hscAndCharConv($LOCAL_LANG[$this->lang][$index], $hsc);	// Returns local label if not blank.
+			$output = $this->hscAndCharConv($LOCAL_LANG[$this->lang][$index], $hsc);	// Returns local label if not blank.
 		} else {
-			return $this->hscAndCharConv($LOCAL_LANG['default'][$index], $hsc);		// Returns default label
+			$output = $this->hscAndCharConv($LOCAL_LANG['default'][$index], $hsc);		// Returns default label
 		}
+		return $output.($this->debugKey ? ' ['.$index.']':'');
 	}
 
 	/**
@@ -326,7 +329,8 @@ class language {
 				}
 				$this->LL_labels_cache[$this->lang][$input] = $this->getLLL($parts[1],$this->LL_files_cache[$parts[0]]);
 			}
-			return $hsc ? t3lib_div::deHSCentities(htmlspecialchars($this->LL_labels_cache[$this->lang][$input])) : $this->LL_labels_cache[$this->lang][$input]; // For the cached output charset conversion has already happend! So perform HSC right here.
+			$output = $hsc ? t3lib_div::deHSCentities(htmlspecialchars($this->LL_labels_cache[$this->lang][$input])) : $this->LL_labels_cache[$this->lang][$input]; // For the cached output charset conversion has already happend! So perform HSC right here.
+			return $output.($this->debugKey ? ' ['.$input.']':'');
 		}
 	}
 

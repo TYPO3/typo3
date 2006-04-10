@@ -42,137 +42,143 @@
  *
  *
  *
- *  207: class tslib_fe
- *  375:     function tslib_fe($TYPO3_CONF_VARS, $id, $type, $no_cache='', $cHash='', $jumpurl='',$MP='',$RDCT='')
- *  408:     function connectToMySQL()
- *  418:     function connectToDB()
- *  463:     function sendRedirect()
+ *  213: class tslib_fe
+ *  382:     function tslib_fe($TYPO3_CONF_VARS, $id, $type, $no_cache='', $cHash='', $jumpurl='',$MP='',$RDCT='')
+ *  415:     function connectToMySQL()
+ *  425:     function connectToDB()
+ *  470:     function sendRedirect()
  *
  *              SECTION: Initializing, resolving page id
- *  501:     function initFEuser()
- *  551:     function initUserGroups()
- *  586:     function isUserOrGroupSet()
- *  611:     function checkAlternativeIdMethods()
- *  663:     function clear_preview()
- *  676:     function determineId()
- *  811:     function fetch_the_id()
- *  904:     function getPageAndRootline()
- *  975:     function getPageShortcut($SC,$mode,$thisUid,$itera=20,$pageLog=array())
- * 1025:     function checkRootlineForIncludeSection()
- * 1062:     function checkEnableFields($row,$bypassGroupCheck=FALSE)
- * 1078:     function checkPageGroupAccess($row, $groupList=NULL)
- * 1097:     function checkPagerecordForIncludeSection($row)
- * 1106:     function checkIfLoginAllowedInBranch()
- * 1131:     function getPageAccessFailureReasons()
- * 1163:     function setIDfromArgV()
- * 1179:     function getPageAndRootlineWithDomain($domainStartPage)
- * 1206:     function setSysPageWhereClause()
- * 1218:     function findDomainRecord($recursive=0)
- * 1238:     function pageNotFoundAndExit($reason='', $header='')
- * 1253:     function pageNotFoundHandler($code, $header='', $reason='')
- * 1297:     function checkAndSetAlias()
- * 1312:     function idPartsAnalyze($str)
- * 1337:     function mergingWithGetVars($GET_VARS)
+ *  508:     function initFEuser()
+ *  558:     function initUserGroups()
+ *  593:     function isUserOrGroupSet()
+ *  618:     function checkAlternativeIdMethods()
+ *  670:     function clear_preview()
+ *  683:     function determineId()
+ *  817:     function fetch_the_id()
+ *  911:     function getPageAndRootline()
+ *  994:     function getPageShortcut($SC,$mode,$thisUid,$itera=20,$pageLog=array())
+ * 1044:     function checkRootlineForIncludeSection()
+ * 1081:     function checkEnableFields($row,$bypassGroupCheck=FALSE)
+ * 1097:     function checkPageGroupAccess($row, $groupList=NULL)
+ * 1116:     function checkPagerecordForIncludeSection($row)
+ * 1125:     function checkIfLoginAllowedInBranch()
+ * 1150:     function getPageAccessFailureReasons()
+ * 1182:     function setIDfromArgV()
+ * 1198:     function getPageAndRootlineWithDomain($domainStartPage)
+ * 1225:     function setSysPageWhereClause()
+ * 1237:     function findDomainRecord($recursive=0)
+ * 1257:     function pageNotFoundAndExit($reason='', $header='')
+ * 1272:     function pageNotFoundHandler($code, $header='', $reason='')
+ * 1316:     function checkAndSetAlias()
+ * 1335:     function idPartsAnalyze($str)
+ * 1360:     function mergingWithGetVars($GET_VARS)
+ * 1390:     function ADMCMD_preview()
+ * 1433:     function ADMCMD_preview_postInit($previewConfig)
  *
  *              SECTION: Template and caching related functions.
- * 1386:     function makeCacheHash()
- * 1410:     function reqCHash()
- * 1432:     function cHashParams($addQueryParams)
- * 1441:     function initTemplate()
- * 1453:     function getFromCache()
- * 1498:     function getFromCache_queryRow()
- * 1526:     function headerNoCache()
- * 1555:     function getHash()
- * 1575:     function getConfigArray()
+ * 1465:     function makeCacheHash()
+ * 1489:     function reqCHash()
+ * 1511:     function cHashParams($addQueryParams)
+ * 1520:     function initTemplate()
+ * 1532:     function getFromCache()
+ * 1578:     function getFromCache_queryRow()
+ * 1608:     function headerNoCache()
+ * 1637:     function getHash()
+ * 1657:     function getConfigArray()
  *
  *              SECTION: Further initialization and data processing
- * 1714:     function getCompressedTCarray()
- * 1768:     function includeTCA($TCAloaded=1)
- * 1795:     function settingLanguage()
- * 1885:     function settingLocale()
- * 1910:     function checkDataSubmission()
- * 1935:     function fe_tce()
- * 1949:     function locDataCheck($locationData)
- * 1965:     function sendFormmail()
- * 2016:     function extractRecipientCopy($bodytext)
- * 2031:     function checkJumpUrl()
- * 2113:     function jumpUrl()
- * 2157:     function setUrlIdToken()
+ * 1818:     function getCompressedTCarray()
+ * 1872:     function includeTCA($TCAloaded=1)
+ * 1899:     function settingLanguage()
+ * 1992:     function settingLocale()
+ * 2017:     function checkDataSubmission()
+ * 2050:     function fe_tce()
+ * 2064:     function locDataCheck($locationData)
+ * 2080:     function sendFormmail()
+ * 2131:     function extractRecipientCopy($bodytext)
+ * 2145:     function setExternalJumpUrl()
+ * 2156:     function checkJumpUrlReferer()
+ * 2171:     function jumpUrl()
+ * 2215:     function setUrlIdToken()
  *
  *              SECTION: Page generation; cache handling
- * 2200:     function isGeneratePage()
- * 2210:     function tempPageCacheContent()
- * 2251:     function realPageCacheContent()
- * 2280:     function setPageCacheContent($c,$d,$t)
- * 2304:     function clearPageCacheContent()
- * 2314:     function clearPageCacheContent_pidList($pidList)
- * 2325:     function setSysLastChanged()
+ * 2258:     function isGeneratePage()
+ * 2268:     function tempPageCacheContent()
+ * 2325:     function realPageCacheContent()
+ * 2355:     function setPageCacheContent($content,$data,$tstamp)
+ * 2382:     function clearPageCacheContent()
+ * 2392:     function clearPageCacheContent_pidList($pidList)
+ * 2403:     function pageCachePostProcess(&$row,$type)
+ * 2426:     function setSysLastChanged()
  *
  *              SECTION: Page generation; rendering and inclusion
- * 2361:     function generatePage_preProcessing()
- * 2383:     function generatePage_whichScript()
- * 2395:     function generatePage_postProcessing()
- * 2487:     function INTincScript()
- * 2547:     function INTincScript_loadJSCode()
- * 2588:     function isINTincScript()
- * 2597:     function doXHTML_cleaning()
- * 2606:     function doLocalAnchorFix()
+ * 2462:     function generatePage_preProcessing()
+ * 2484:     function generatePage_whichScript()
+ * 2496:     function generatePage_postProcessing()
+ * 2588:     function INTincScript()
+ * 2648:     function INTincScript_loadJSCode()
+ * 2689:     function isINTincScript()
+ * 2698:     function doXHTML_cleaning()
+ * 2707:     function doLocalAnchorFix()
  *
  *              SECTION: Finished off; outputting, storing session data, statistics...
- * 2637:     function isOutputting()
- * 2660:     function processOutput()
- * 2728:     function sendCacheHeaders()
- * 2796:     function isStaticCacheble()
- * 2809:     function contentStrReplace()
- * 2835:     function isEXTincScript()
- * 2844:     function storeSessionData()
- * 2854:     function setParseTime()
- * 2866:     function statistics()
- * 2974:     function previewInfo()
- * 3002:     function hook_eofe()
- * 3018:     function beLoginLinkIPList()
+ * 2738:     function isOutputting()
+ * 2761:     function processOutput()
+ * 2834:     function sendCacheHeaders()
+ * 2902:     function isStaticCacheble()
+ * 2915:     function contentStrReplace()
+ * 2941:     function isEXTincScript()
+ * 2950:     function storeSessionData()
+ * 2960:     function setParseTime()
+ * 2972:     function statistics()
+ * 3066:     function previewInfo()
+ * 3101:     function hook_eofe()
+ * 3117:     function beLoginLinkIPList()
+ * 3138:     function addTempContentHttpHeaders()
  *
  *              SECTION: Various internal API functions
- * 3073:     function makeSimulFileName($inTitle,$page,$type,$addParams='',$no_cache='')
- * 3120:     function simulateStaticDocuments_pEnc_onlyP_proc($linkVars)
- * 3149:     function getSimulFileName()
- * 3163:     function fileNameASCIIPrefix($inTitle,$titleChars,$mergeChar='.')
- * 3181:     function encryptEmail($string,$back=0)
- * 3207:     function codeString($string, $decode=FALSE)
- * 3233:     function roundTripCryptString($string)
- * 3253:     function checkFileInclude($incFile)
- * 3268:     function newCObj()
- * 3281:     function setAbsRefPrefix()
- * 3295:     function baseUrlWrap($url)
- * 3314:     function printError($label,$header='Error!')
- * 3325:     function updateMD5paramsRecord($hash)
- * 3336:     function tidyHTML($content)
- * 3362:     function prefixLocalAnchorsWithScript()
- * 3373:     function workspacePreviewInit()
- * 3382:     function doWorkspacePreview()
- * 3392:     function whichWorkspace($returnTitle = FALSE)
+ * 3184:     function makeSimulFileName($inTitle,$page,$type,$addParams='',$no_cache='')
+ * 3231:     function simulateStaticDocuments_pEnc_onlyP_proc($linkVars)
+ * 3260:     function getSimulFileName()
+ * 3271:     function setSimulReplacementChar()
+ * 3291:     function fileNameASCIIPrefix($inTitle,$titleChars,$mergeChar='.')
+ * 3314:     function encryptEmail($string,$back=0)
+ * 3340:     function codeString($string, $decode=FALSE)
+ * 3366:     function roundTripCryptString($string)
+ * 3386:     function checkFileInclude($incFile)
+ * 3401:     function newCObj()
+ * 3414:     function setAbsRefPrefix()
+ * 3428:     function baseUrlWrap($url)
+ * 3447:     function printError($label,$header='Error!')
+ * 3458:     function updateMD5paramsRecord($hash)
+ * 3469:     function tidyHTML($content)
+ * 3495:     function prefixLocalAnchorsWithScript()
+ * 3505:     function workspacePreviewInit()
+ * 3521:     function doWorkspacePreview()
+ * 3531:     function whichWorkspace($returnTitle = FALSE)
  *
  *              SECTION: Various external API functions - for use in plugins etc.
- * 3450:     function getStorageSiterootPids()
- * 3465:     function getPagesTSconfig()
- * 3498:     function setJS($key,$content='')
- * 3536:     function setCSS($key,$content)
- * 3551:     function make_seed()
- * 3564:     function uniqueHash($str='')
- * 3573:     function set_no_cache()
- * 3583:     function set_cache_timeout_default($seconds)
- * 3599:     function plainMailEncoded($email,$subject,$message,$headers='')
+ * 3589:     function getStorageSiterootPids()
+ * 3604:     function getPagesTSconfig()
+ * 3637:     function setJS($key,$content='')
+ * 3677:     function setCSS($key,$content)
+ * 3692:     function make_seed()
+ * 3705:     function uniqueHash($str='')
+ * 3714:     function set_no_cache()
+ * 3724:     function set_cache_timeout_default($seconds)
+ * 3740:     function plainMailEncoded($email,$subject,$message,$headers='')
  *
  *              SECTION: Localization and character set conversion
- * 3640:     function sL($input)
- * 3669:     function readLLfile($fileRef)
- * 3680:     function getLLL($index,$LOCAL_LANG)
- * 3694:     function initLLvars()
- * 3728:     function csConv($str,$from='')
- * 3746:     function convOutputCharset($content,$label='')
- * 3759:     function convPOSTCharset()
+ * 3784:     function sL($input)
+ * 3813:     function readLLfile($fileRef)
+ * 3824:     function getLLL($index,$LOCAL_LANG)
+ * 3838:     function initLLvars()
+ * 3872:     function csConv($str,$from='')
+ * 3890:     function convOutputCharset($content,$label='')
+ * 3903:     function convPOSTCharset()
  *
- * TOTAL FUNCTIONS: 110
+ * TOTAL FUNCTIONS: 116
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -232,6 +238,7 @@
 	var $beUserLogin='';				// Flag that indicates if a Backend user is logged in!
 	var $workspacePreview='';			// Integer, that indicates which workspace is being previewed.
 	var $loginAllowedInBranch = TRUE;	// Shows whether logins are allowed in branch
+	var $ADMCMD_preview_BEUSER_uid = 0;	// Integer, set to backend user ID to initialize when keyword-based preview is used.
 
 		// PREVIEW
 	var $fePreview='';					// Flag indication that preview is active. This is based on the login of a backend user and whether the backend user has read access to the current page. A value of 1 means ordinary preview, 2 means preview of a non-live workspace
@@ -301,9 +308,9 @@
 	var $excludeCHashVars='';			// A string set with a comma list of additional GET vars which should NOT be included in the cHash calculation. These vars should otherwise be detected and involved in caching, eg. through a condition in TypoScript.
 	var $displayEditIcons='';			// If set, edit icons are rendered aside content records. Must be set only if the ->beUserLogin flag is set and set_no_cache() must be called as well.
 	var $displayFieldEditIcons='';		// If set, edit icons are rendered aside individual fields of content. Must be set only if the ->beUserLogin flag is set and set_no_cache() must be called as well.
-	var $sys_language_uid=0;			// Site language, 0 (zero) is default, int+ is uid pointing to a sys_language record. Should reflect which language it DOES actually display!
-	var $sys_language_mode='';			// Site language mode
-	var $sys_language_content=0;		// Site content selection uid
+	var $sys_language_uid=0;			// Site language, 0 (zero) is default, int+ is uid pointing to a sys_language record. Should reflect which language menus, templates etc is displayed in (master language) - but not necessarily the content which could be falling back to default (see sys_language_content)
+	var $sys_language_mode='';			// Site language mode for content fall back.
+	var $sys_language_content=0;		// Site content selection uid (can be different from sys_language_uid if content is to be selected from a fall-back language. Depends on sys_language_mode)
 	var $sys_language_contentOL=0;		// Site content overlay flag; If set - and sys_language_content is > 0 - , records selected will try to look for a translation pointing to their uid. (If configured in [ctrl][languageField] / [ctrl][transOrigP...]
 	var $sys_language_isocode = '';		// Is set to the iso code of the sys_language_content if that is properly defined by the sys_language record representing the sys_language_uid. (Requires the extension "static_info_tables")
 
@@ -422,7 +429,7 @@
 					// Redirects to the Install Tool:
 				echo '<script type="text/javascript">
 						/*<![CDATA[*/
-					document.location = "'.TYPO3_mainDir.'install/index.php?mode=123&step=1&password=joh316";
+					window.location.href = "'.TYPO3_mainDir.'install/index.php?mode=123&step=1&password=joh316";
 						/*]]>*/
 					</script>';
 				exit;
@@ -435,7 +442,7 @@
 					// Redirects to the Install Tool:
 				echo '<script type="text/javascript">
 						/*<![CDATA[*/
-					document.location = "'.TYPO3_mainDir.'install/index.php?mode=123&step=1&password=joh316";
+					window.location.href = "'.TYPO3_mainDir.'install/index.php?mode=123&step=1&password=joh316";
 						/*]]>*/
 					</script>';
 				exit;
@@ -931,12 +938,24 @@
 				}
 			}
 		}
+
+		// spacer is not accessible in frontend
+		if ($this->page['doktype'] == 199)	{
+			if ($this->TYPO3_CONF_VARS['FE']['pageNotFound_handling'])	{
+				$this->pageNotFoundAndExit('The requested page does not exist!');
+			} else {
+				$this->printError('The requested page does not exist!');
+				exit;
+			}
+		}
+
 			// Is the ID a link to another page??
 		if ($this->page['doktype']==4)	{
 			$this->MP = '';		// We need to clear MP if the page is a shortcut. Reason is if the short cut goes to another page, then we LEAVE the rootline which the MP expects.
 			$this->page = $this->getPageShortcut($this->page['shortcut'],$this->page['shortcut_mode'],$this->page['uid']);
 			$this->id = $this->page['uid'];
 		}
+
 			// Gets the rootLine
 		$this->rootLine = $this->sys_page->getRootLine($this->id,$this->MP);
 
@@ -1248,7 +1267,7 @@
 	 * @param	mixed		Which type of handling; If a true PHP-boolean and TRUE then a ->printError message is outputted. If integer an error message with that number is shown. Otherwise the $code value is expected to be a "Location:" header value.
 	 * @param	string		If set, this is passed directly to the PHP function, header()
 	 * @param	string		If set, error messages will also mention this as the reason for the page-not-found.
-	 * @return	void		(The function exists!)
+	 * @return	void		(The function exits!)
 	 */
 	function pageNotFoundHandler($code, $header='', $reason='')	{
 			// Issue header in any case:
@@ -1359,11 +1378,67 @@
 		}
 	}
 
+	/**
+	 * Looking for a ADMCMD_prev code, looks it up if found and returns configuration data.
+	 * Background: From the backend a request to the frontend to show a page, possibly with workspace preview can be "recorded" and associated with a keyword. When the frontend is requested with this keyword the associated request parameters are restored from the database AND the backend user is loaded - only for that request.
+	 * The main point is that a special URL valid for a limited time, eg. http://localhost/typo3site/?ADMCMD_prev=035d9bf938bd23cb657735f68a8cedbf will open up for a preview that doesn't require login. Thus its useful for sending an email.
+	 * This can also be used to generate previews of hidden pages, start/endtimes, usergroups and those other settings from the Admin Panel - just not implemented yet.
+	 *
+	 * @return	array		Preview configuration array from sys_preview record.
+	 * @see t3lib_BEfunc::compilePreviewKeyword()
+	 */
+	function ADMCMD_preview(){
+		$inputCode = t3lib_div::_GP('ADMCMD_prev');
 
+		if ($inputCode)	{
 
+				// Look for keyword configuration record:
+			list($previewData) = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+				'*',
+				'sys_preview',
+				'keyword='.$GLOBALS['TYPO3_DB']->fullQuoteStr($inputCode, 'sys_preview').
+					' AND endtime>'.time()
+			);
 
+				// Get: Backend login status, Frontend login status
+				// - Make sure to remove fe/be cookies (temporarily); BE already done in ADMCMD_preview_postInit()
+			if (is_array($previewData))	{
+				if (!count(t3lib_div::_POST()))	{
+					if (t3lib_div::getIndpEnv('TYPO3_SITE_URL').'?ADMCMD_prev='.$inputCode === t3lib_div::getIndpEnv('TYPO3_REQUEST_URL'))	{
 
+							// Unserialize configuration:
+						$previewConfig = unserialize($previewData['config']);
 
+							// Set GET variables:
+						$GET_VARS = '';
+						parse_str($previewConfig['getVars'], $GET_VARS);
+						t3lib_div::_GETset($GET_VARS);
+
+							// Return preview keyword configuration:
+						return $previewConfig;
+					} else die(htmlspecialchars('Request URL did not match "'.t3lib_div::getIndpEnv('TYPO3_SITE_URL').'?ADMCMD_prev='.$inputCode.'"'));	// This check is to prevent people from setting additional GET vars via realurl or other URL path based ways of passing parameters.
+				} else die('POST requests are incompatible with keyword preview.');
+			} else die('ADMCMD command could not be executed! (No keyword configuration found)');
+		}
+	}
+
+	/**
+	 * Configuration after initialization of TSFE object.
+	 * Basically this unsets the BE cookie if any and forces the BE user set according to the preview configuration.
+	 *
+	 * @param	array		Preview configuration, see ADMCMD_preview()
+	 * @return	void
+	 * @see ADMCMD_preview(), index_ts.php
+	 */
+	function ADMCMD_preview_postInit($previewConfig){
+		if (is_array($previewConfig))	{
+
+				// Clear cookies:
+			unset($_COOKIE['be_typo_user']);
+			$this->ADMCMD_preview_BEUSER_uid = $previewConfig['BEUSER_uid'];
+
+		} else die('Error in preview configuration.');
+	}
 
 
 
@@ -1482,6 +1557,7 @@
 
 					$this->config = (array)unserialize($row['cache_data']);		// Fetches the lowlevel config stored with the cached data
 					$this->content = $row['HTML'];	// Getting the content
+					$this->tempContent = $row['temp_content'];	// Flag for temp content
 					$this->cacheContentFlag = 1;	// Setting flag, so we know, that some cached content is gotten.
 					$this->cacheExpires = $row['expires'];
 
@@ -1515,7 +1591,9 @@
 			);
 		$GLOBALS['TT']->pull();
 
-		$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
+		if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
+			$this->pageCachePostProcess($row,'get');
+		}
 		$GLOBALS['TYPO3_DB']->sql_free_result($res);
 		return $row;
 	}
@@ -1613,7 +1691,19 @@
 					}
 						// if .simulateStaticDocuments was not present, the default value will rule.
 					if (!isset($this->config['config']['simulateStaticDocuments']))	{
-						$this->config['config']['simulateStaticDocuments'] = $this->TYPO3_CONF_VARS['FE']['simulateStaticDocuments'];
+						$this->config['config']['simulateStaticDocuments'] = trim($this->TYPO3_CONF_VARS['FE']['simulateStaticDocuments']);
+					}
+					if ($this->config['config']['simulateStaticDocuments']) {
+							// Set replacement char only if it is needed
+						$this->setSimulReplacementChar();
+					}
+
+						// set default values for removeDefaultJS and inlineStyle2TempFile so CSS and JS are externalized if compatversion is higher than 4.0
+					if(!isset($this->config['config']['removeDefaultJS']) && t3lib_div::compat_version('4.0.0')) {
+						$this->config['config']['removeDefaultJS'] = 'external';
+					}
+					if(!isset($this->config['config']['inlineStyle2TempFile']) && t3lib_div::compat_version('4.0.0')) {
+						$this->config['config']['inlineStyle2TempFile'] = 1;
 					}
 
 							// Processing for the config_array:
@@ -1839,6 +1929,9 @@
 									}
 								}
 							break;
+							case 'ignore':
+								$this->sys_language_content = $this->sys_language_uid;
+							break;
 							default:
 									// Default is that everything defaults to the default language...
 								$this->sys_language_uid = $this->sys_language_content = 0;
@@ -1919,14 +2012,14 @@
 	/**
 	 * Checks if any email-submissions or submission via the fe_tce
 	 *
-	 * @return	string		'email' if a formmail has been send, 'fe_tce' if front-end data submission (like forums, guestbooks) is send. '' if none.
+	 * @return	string		'email' if a formmail has been sent, 'fe_tce' if front-end data submission (like forums, guestbooks) is sent. '' if none.
 	 */
 	function checkDataSubmission()	{
+		$ret = '';
 		if ($_POST['formtype_db'] || $_POST['formtype_mail'])	{
 			$refInfo = parse_url(t3lib_div::getIndpEnv('HTTP_REFERER'));
 			if (t3lib_div::getIndpEnv('TYPO3_HOST_ONLY')==$refInfo['host'] || $this->TYPO3_CONF_VARS['SYS']['doNotCheckReferer'])	{
 				if ($this->locDataCheck($_POST['locationData']))	{
-					$ret = '';
 					if ($_POST['formtype_mail'])	{
 						$ret = 'email';
 					} elseif ($_POST['formtype_db'] && is_array($_POST['data']))	{
@@ -1937,6 +2030,15 @@
 				}
 			} else $GLOBALS['TT']->setTSlogMessage('"Check Data Submission": HTTP_HOST and REFERER HOST did not match when processing submitted formdata!',3);
 		}
+
+			// Hook for processing data submission to extensions:
+		if (is_array($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['checkDataSubmission']))	{
+			foreach($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['checkDataSubmission'] as $_classRef)	{
+				$_procObj = &t3lib_div::getUserObj($_classRef);
+				$_procObj->checkDataSubmission($this);
+			}
+		}
+		return $ret;
 	}
 
 	/**
@@ -2037,84 +2139,27 @@
 	}
 
 	/**
-	 * Checks if jumpurl is set.
-	 * This function also takes care of jumpurl utilized by the Direct Mail module (ext: direct_mail) which may set an integer value for jumpurl which refers to a link in a certain mail-record, mid
+	 * Sets the jumpurl for page type "External URL"
 	 *
 	 * @return	void
 	 */
-	function checkJumpUrl()	{
-		global $TCA;
+	function setExternalJumpUrl()	{
+		if ($extUrl = $this->sys_page->getExtURL($this->page, $this->config['config']['disablePageExternalUrl']))	{
+			$this->jumpurl = $extUrl;
+		}
+	}
 
-		$mid = t3lib_div::_GP('mid');		// mail id, if direct mail link
-		$rid = t3lib_div::_GP('rid');		// recipient id, if direct mail link
-		if ((strcmp($this->jumpurl,'') && ((t3lib_div::getIndpEnv('HTTP_REFERER') || $this->TYPO3_CONF_VARS['SYS']['doNotCheckReferer']) || $mid)) || ($this->jumpurl = $this->sys_page->getExtURL($this->page,$this->config['config']['disablePageExternalUrl'])))	{
-			if ($mid && is_array($TCA['sys_dmail']))	{	// Yes, it's OK if the link comes from a direct mail. AND sys_dmail module has installed the table, sys_dmail (and therefore we expect sys_dmail_maillog as well!)
-				$temp_recip=explode('_',$rid);
-				$url_id=0;
-				if (t3lib_div::testInt($this->jumpurl))	{
-					$temp_res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('mailContent', 'sys_dmail', 'uid='.intval($mid));
-					if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($temp_res))	{
-						$temp_unpackedMail = unserialize($row['mailContent']);
-						$url_id=$this->jumpurl;
-						if ($this->jumpurl>=0)	{
-							$responseType=1;	// Link (number)
-							$this->jumpurl = $temp_unpackedMail['html']['hrefs'][$url_id]['absRef'];
-						} else {
-							$responseType=2;	// Link (number, plaintext)
-							$this->jumpurl = $temp_unpackedMail['plain']['link_ids'][abs($url_id)];
-						}
-						switch($temp_recip[0])	{
-							case 't':
-								$theTable = 'tt_address';
-							break;
-							case 'f':
-								$theTable = 'fe_users';
-							break;
-							default:
-								$theTable='';
-							break;
-						}
-						if ($theTable)	{
-							$recipRow = $this->sys_page->getRawRecord($theTable,$temp_recip[1]);
-							if (is_array($recipRow))	{
-//								debug($recipRow);
-								$authCode = t3lib_div::stdAuthCode($recipRow['uid']);
-								$rowFieldsArray = explode(',', 'uid,name,title,email,phone,www,address,company,city,zip,country,fax,firstname');
-								reset($rowFieldsArray);
-								while(list(,$substField)=each($rowFieldsArray))	{
-									$this->jumpurl = str_replace('###USER_'.$substField.'###', $recipRow[$substField], $this->jumpurl);
-								}
-								$this->jumpurl = str_replace('###SYS_TABLE_NAME###', $tableNameChar, $this->jumpurl);	// Put in the tablename of the userinformation
-								$this->jumpurl = str_replace('###SYS_MAIL_ID###', $mid, $this->jumpurl);	// Put in the uid of the mail-record
-								$this->jumpurl = str_replace('###SYS_AUTHCODE###', $authCode, $this->jumpurl);
-
-						//		debug($this->jumpurl);
-							}
-						}
-					}
-
-					$GLOBALS['TYPO3_DB']->sql_free_result($temp_res);
-
-					if (!$this->jumpurl)	die('Error: No further link. Please report error to the mail sender.');
-				} else {
-					$responseType=-1;	// received (url, dmailerping)
-				}
-				if ($responseType!=0)	{
-					$insertFields = array(
-						'mid' => intval($mid),
-						'rtbl' => $temp_recip[0],
-						'rid' => intval($temp_recip[1]),
-						'tstamp' => time(),
-						'url' => $this->jumpurl,
-						'response_type' => intval($responseType),
-						'url_id' => intval($url_id)
-					);
-
-					$GLOBALS['TYPO3_DB']->exec_INSERTquery('sys_dmail_maillog', $insertFields);
-				}
-			}
-		} else {
-			unset($this->jumpurl);
+	/**
+	 * Checks the jumpurl referer if required
+	 *
+	 * @return	void
+	 */
+	function checkJumpUrlReferer()	{
+		if (strcmp($this->jumpurl,'') && !$this->TYPO3_CONF_VARS['SYS']['doNotCheckReferer']) {
+			$referer = parse_url(t3lib_div::getIndpEnv('HTTP_REFERER'));
+			if (isset($referer['host']) && !($referer['host'] == t3lib_div::getIndpEnv('TYPO3_HOST_ONLY')))	{
+				unset($this->jumpurl);
+ 			}
 		}
 	}
 
@@ -2246,15 +2291,19 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
 		<title>'.$title.'</title>
-		<meta name="robots" content="noarchive" />
-		<script type="text/javascript">
-			window.setTimeout("location.reload()", 3000);
-		</script>
+		<meta http-equiv="refresh" content="10" />
 	</head>
 	<body style="background-color:white; font-family:Verdana,Arial,Helvetica,sans-serif; color:#cccccc; text-align:center;">'.
 		$message.'
 	</body>
 </html>';
+
+				// Fix 'nice errors' feature in modern browsers
+			$padSuffix = '<!--pad-->';	// prevent any trims
+			$padSize = 768 - strlen($padSuffix) - strlen($temp_content);
+			if ($padSize > 0) {
+				$temp_content = str_pad($temp_content, $padSize, "\n") . $padSuffix;
+			}
 
 			if (!$this->headerNoCache() && $cachedRow = $this->getFromCache_queryRow())	{
 					// We are here because between checking for cached content earlier and now some other HTTP-process managed to store something in cache AND it was not due to a shift-reload by-pass.
@@ -2263,8 +2312,8 @@
 					// Actually $cachedRow contains content that we could show instead of rendering. Maybe we should do that to gain more performance but then we should set all the stuff done in $this->getFromCache()... For now we stick to this...
 				$this->set_no_cache();
 			} else {
-				$this->setPageCacheContent($temp_content, $this->config, $GLOBALS['EXEC_TIME']+$seconds);
 				$this->tempContent = TRUE;		// This flag shows that temporary content is put in the cache
+				$this->setPageCacheContent($temp_content, $this->config, $GLOBALS['EXEC_TIME']+$seconds);
 			}
 		}
 	}
@@ -2283,6 +2332,7 @@
 				$timeOutTime = $midnightTime;
 			}
 		}
+		$this->tempContent = false;
 		$this->setPageCacheContent($this->content, $this->config, $timeOutTime);
 
 			// Hook for cache post processing (eg. writing static files!)
@@ -2309,6 +2359,7 @@
 			'hash' => $this->newHash,
 			'page_id' => $this->id,
 			'HTML' => $content,
+			'temp_content' => $this->tempContent,
 			'cache_data' => serialize($data),
 			'expires' => $tstamp,
 			'tstamp' => $GLOBALS['EXEC_TIME']
@@ -2319,6 +2370,8 @@
 		if ($this->page_cache_reg1)	{
 			$insertFields['reg1'] = intval($this->page_cache_reg1);
 		}
+		$this->pageCachePostProcess($insertFields,'set');
+
 		$GLOBALS['TYPO3_DB']->exec_INSERTquery('cache_pages', $insertFields);
 	}
 
@@ -2339,6 +2392,29 @@
 	 */
 	function clearPageCacheContent_pidList($pidList)	{
 		$GLOBALS['TYPO3_DB']->exec_DELETEquery('cache_pages', 'page_id IN ('.$GLOBALS['TYPO3_DB']->cleanIntList($pidList).')');
+	}
+
+	/**
+	 * Post processing page cache rows for both get and set.
+	 *
+	 * @param	array		Input "cache_pages" row, passed by reference!
+	 * @param	string		Type of operation, either "get" or "set"
+	 * @return	void
+	 */
+	function pageCachePostProcess(&$row,$type)	{
+
+		if ($this->TYPO3_CONF_VARS['FE']['pageCacheToExternalFiles'])	{
+			$cacheFileName = PATH_site.'typo3temp/cache_pages/'.$row['hash']{0}.$row['hash']{1}.'/'.$row['hash'].'.html';
+			switch((string)$type)	{
+				case 'get':
+					$row['HTML'] = @is_file($cacheFileName) ? t3lib_div::getUrl($cacheFileName) : '<!-- CACHING ERROR, sorry -->';
+				break;
+				case 'set':
+					t3lib_div::writeFileToTypo3tempDir($cacheFileName,$row['HTML']);
+					$row['HTML'] = '';
+				break;
+			}
+		}
 	}
 
 	/**
@@ -2528,8 +2604,8 @@
 		$INTiS_config = $GLOBALS['TSFE']->config['INTincScript'];
 		foreach($INTiS_splitC as $INTiS_c => $INTiS_cPart)	{
 			if (substr($INTiS_cPart,32,3)=='-->')	{	// If the split had a comment-end after 32 characters it's probably a split-string
-				$GLOBALS['TT']->push('Include '.$INTiS_config[$INTiS_key]['file'],'');
 				$INTiS_key = 'INT_SCRIPT.'.substr($INTiS_cPart,0,32);
+				$GLOBALS['TT']->push('Include '.$INTiS_config[$INTiS_key]['file'],'');
 				$incContent='';
 				if (is_array($INTiS_config[$INTiS_key]))	{
 					$INTiS_cObj = unserialize($INTiS_config[$INTiS_key]['cObj']);
@@ -2703,6 +2779,11 @@ if (version == "n3") {
 				$headLine = trim($headLine);
 				header($headLine);
 			}
+		}
+
+			// Send appropriate status code in case of temporary content
+		if ($this->tempContent) {
+			$this->addTempContentHttpHeaders();
 		}
 
 			// Make substitution of eg. username/uid in content only if cache-headers for client/proxy caching is NOT sent!
@@ -3001,7 +3082,14 @@ if (version == "n3") {
 						</tr>
 					</table>
 				</div>';
-				$temp_content = $this->config['config']['message_preview'] ? $this->config['config']['message_preview'] : $stdMsg;
+
+				if ($this->fePreview==2)	{
+					$temp_content = $this->config['config']['message_preview_workspace'] ?
+						@sprintf($this->config['config']['message_preview_workspace'], $this->whichWorkspace(TRUE),$this->whichWorkspace()) :
+						$stdMsg;
+				} else {
+					$temp_content = $this->config['config']['message_preview'] ? $this->config['config']['message_preview'] : $stdMsg;
+				}
 				echo $temp_content;
 		}
 	}
@@ -3043,6 +3131,18 @@ if (version == "n3") {
 		}
 	}
 
+	/**
+	 * Sends HTTP headers for temporary content. These headers prevent search engines from caching temporary content and asks them to revisit this page again.
+	 *
+	 * @return	void
+	 */
+	function addTempContentHttpHeaders() {
+		header('HTTP/1.0 503 Service unavailable');
+		header('Retry-after: 3600');
+		header('Pragma: no-cache');
+		header('Cache-control: no-cache');
+		header('Expire: 0');
+	}
 
 
 
@@ -3165,6 +3265,23 @@ if (version == "n3") {
 	}
 
 	/**
+	 * Checks and sets replacement character for simulateStaticDocuments. Default is underscore.
+	 *
+	 * @return	void
+	 */
+	function setSimulReplacementChar() {
+		$replacement = $defChar = t3lib_div::compat_version('4.0.0') ? '-' : '_';
+		if (isset($this->config['config']['simulateStaticDocuments_replacementChar'])) {
+			$replacement = trim($this->config['config']['simulateStaticDocuments_replacementChar']);
+			if (urlencode($replacement) != $replacement) {
+					// Invalid character
+				$replacement = $defChar;
+			}
+		}
+		$this->config['config']['simulateStaticDocuments_replacementChar'] = $replacement;
+	}
+
+	/**
 	 * Converts input string to an ASCII based file name prefix
 	 *
 	 * @param	string		String to base output on
@@ -3174,11 +3291,16 @@ if (version == "n3") {
 	 */
 	function fileNameASCIIPrefix($inTitle,$titleChars,$mergeChar='.')	{
 		$out = $this->csConvObj->specCharsToASCII($this->renderCharset, $inTitle);
-		$out = ereg_replace('[^[:alnum:]_-]','_',trim(substr($out,0,$titleChars)));
-		$out = ereg_replace('[_-]*$','',$out);
-		$out = ereg_replace('^[_-]*','',$out);
-		$out = ereg_replace('([_-])[_-]*','\1',$out);
-		if (strlen($out))	$out.=$mergeChar;
+			// Get replacement character
+		$replacementChar = &$this->config['config']['simulateStaticDocuments_replacementChar'];
+		$replacementChars = '_\-' . ($replacementChar != '_' && $replacementChar != '-' ? $replacementChar : '');
+		$out = preg_replace('/[^A-Za-z0-9_-]/', $replacementChar, trim(substr($out, 0, $titleChars)));
+		$out = preg_replace('/([' . $replacementChars . ']){2,}/', '\1', $out);
+		$out = preg_replace('/[' . $replacementChars . ']?$/', '', $out);
+		$out = preg_replace('/^[' . $replacementChars . ']?/', '', $out);
+		if (strlen($out)) {
+			$out .= $mergeChar;
+		}
 
 		return $out;
 	}
@@ -3299,7 +3421,7 @@ if (version == "n3") {
 
 	/**
 	 * Prefixing the input URL with ->baseUrl If ->baseUrl is set and the input url is not absolute in some way.
-	 * Designed as a wrapper functions for use with all frontend links that are processed by JavaScript (for "realurl" compatibility!). So each time a URL goes into window.open, document.location or otherwise, wrap it with this function!
+	 * Designed as a wrapper functions for use with all frontend links that are processed by JavaScript (for "realurl" compatibility!). So each time a URL goes into window.open, window.location.href or otherwise, wrap it with this function!
 	 *
 	 * @param	string		Input URL, relative or absolute
 	 * @return	string		Processed input value.
@@ -3378,13 +3500,17 @@ if (version == "n3") {
 
 	/**
 	 * Initialize workspace preview
-	 * STILL VERY TEMPORARY - MUST INCLUDE SECURITY of some sort.
 	 *
 	 * @return	void
 	 */
 	function workspacePreviewInit()	{
-		if ($this->beUserLogin && is_object($GLOBALS['BE_USER']) && t3lib_div::testInt(t3lib_div::_GP('ADMCMD_previewWS')))	{
-			$this->workspacePreview = intval(t3lib_div::_GP('ADMCMD_previewWS'));
+		$previewWS = t3lib_div::_GP('ADMCMD_previewWS');
+		if ($this->beUserLogin && is_object($GLOBALS['BE_USER']) && t3lib_div::testInt($previewWS))	{
+			if ($previewWS>=-1 && ($previewWS==0 || $GLOBALS['BE_USER']->checkWorkspace($previewWS)))	{	// Check Access to workspace. Live (0) is OK to preview for all.
+				$this->workspacePreview = intval($previewWS);
+			} else {
+				$this->workspacePreview = -99;	// No preview, will default to "Live" at the moment
+			}
 		}
 	}
 
@@ -3619,13 +3745,16 @@ if (version == "n3") {
 			$message=t3lib_div::substUrlsInPlainText($message,$urlmode);
 		}
 
+		$encoding = $this->config['config']['notification_email_encoding'] ? $this->config['config']['notification_email_encoding'] : 'quoted-printable';
+		$charset = $this->config['config']['notification_email_charset'] ? $this->config['config']['notification_email_charset'] : ($GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset'] ? $GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset'] : 'ISO-8859-1');
+
 		t3lib_div::plainMailEncoded(
 			$email,
 			$subject,
 			$message,
 			$headers,
-			$this->config['config']['notification_email_encoding'],
-			$this->config['config']['notification_email_charset'] ? $this->config['config']['notification_email_charset'] : 'ISO-8859-1'
+			$encoding,
+			$charset
 		);
 	}
 

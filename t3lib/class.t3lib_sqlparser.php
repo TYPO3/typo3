@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2004-2005 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 2004-2006 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -46,44 +46,44 @@
  *  375:     function parseDELETE($parseString)
  *  413:     function parseEXPLAIN($parseString)
  *  435:     function parseCREATETABLE($parseString)
- *  507:     function parseALTERTABLE($parseString)
- *  576:     function parseDROPTABLE($parseString)
- *  609:     function parseCREATEDATABASE($parseString)
+ *  514:     function parseALTERTABLE($parseString)
+ *  583:     function parseDROPTABLE($parseString)
+ *  616:     function parseCREATEDATABASE($parseString)
  *
  *              SECTION: SQL Parsing, helper functions for parts of queries
- *  663:     function parseFieldList(&$parseString, $stopRegex='')
- *  781:     function parseFromTables(&$parseString, $stopRegex='')
- *  844:     function parseWhereClause(&$parseString, $stopRegex='')
- *  952:     function parseFieldDef(&$parseString, $stopRegex='')
+ *  670:     function parseFieldList(&$parseString, $stopRegex='')
+ *  791:     function parseFromTables(&$parseString, $stopRegex='')
+ *  882:     function parseWhereClause(&$parseString, $stopRegex='')
+ *  990:     function parseFieldDef(&$parseString, $stopRegex='')
  *
  *              SECTION: Parsing: Helper functions
- * 1013:     function nextPart(&$parseString,$regex,$trimAll=FALSE)
- * 1028:     function getValue(&$parseString,$comparator='')
- * 1084:     function getValueInQuotes(&$parseString,$quote)
- * 1110:     function parseStripslashes($str)
- * 1124:     function compileAddslashes($str)
- * 1139:     function parseError($msg,$restQuery)
- * 1153:     function trimSQL($str)
+ * 1053:     function nextPart(&$parseString,$regex,$trimAll=FALSE)
+ * 1068:     function getValue(&$parseString,$comparator='')
+ * 1127:     function getValueInQuotes(&$parseString,$quote)
+ * 1153:     function parseStripslashes($str)
+ * 1167:     function compileAddslashes($str)
+ * 1182:     function parseError($msg,$restQuery)
+ * 1196:     function trimSQL($str)
  *
  *              SECTION: Compiling queries
- * 1182:     function compileSQL($components)
- * 1220:     function compileSELECT($components)
- * 1251:     function compileUPDATE($components)
- * 1279:     function compileINSERT($components)
- * 1319:     function compileDELETE($components)
- * 1339:     function compileCREATETABLE($components)
- * 1370:     function compileALTERTABLE($components)
+ * 1225:     function compileSQL($components)
+ * 1263:     function compileSELECT($components)
+ * 1294:     function compileUPDATE($components)
+ * 1322:     function compileINSERT($components)
+ * 1362:     function compileDELETE($components)
+ * 1382:     function compileCREATETABLE($components)
+ * 1415:     function compileALTERTABLE($components)
  *
  *              SECTION: Compiling queries, helper functions for parts of queries
- * 1423:     function compileFieldList($selectFields)
- * 1465:     function compileFromTables($tablesArray)
- * 1502:     function compileWhereClause($clauseArray)
- * 1556:     function compileFieldCfg($fieldCfg)
+ * 1468:     function compileFieldList($selectFields)
+ * 1510:     function compileFromTables($tablesArray)
+ * 1551:     function compileWhereClause($clauseArray)
+ * 1605:     function compileFieldCfg($fieldCfg)
  *
  *              SECTION: Debugging
- * 1605:     function debug_parseSQLpart($part,$str)
- * 1627:     function debug_parseSQLpartCompare($str,$newStr,$caseInsensitive=FALSE)
- * 1660:     function debug_testSQL($SQLquery)
+ * 1654:     function debug_parseSQLpart($part,$str)
+ * 1679:     function debug_parseSQLpartCompare($str,$newStr,$caseInsensitive=FALSE)
+ * 1712:     function debug_testSQL($SQLquery)
  *
  * TOTAL FUNCTIONS: 35
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -175,7 +175,7 @@ class t3lib_sqlparser {
 				$result = $this->parseCREATEDATABASE($parseString);
 			break;
 			default:
-				return $this->parseError('"'.$keyword.'" is not a keyword',$parseString);
+				$result = $this->parseError('"'.$keyword.'" is not a keyword',$parseString);
 			break;
 		}
 
@@ -449,13 +449,20 @@ class t3lib_sqlparser {
 
 				// While the parseString is not yet empty:
 			while(strlen($parseString)>0)	{
-				if ($key = $this->nextPart($parseString, '^(KEY|PRIMARY KEY)([[:space:]]+|\()'))	{	// Getting key
+				if ($key = $this->nextPart($parseString, '^(KEY|PRIMARY KEY|UNIQUE KEY|UNIQUE)([[:space:]]+|\()'))	{	// Getting key
 					$key = strtoupper(str_replace(array(' ',"\t","\r","\n"),'',$key));
 
 					switch($key)	{
 						case 'PRIMARYKEY':
-							$result['KEYS'][$key] = $this->getValue($parseString,'_LIST');
+							$result['KEYS']['PRIMARYKEY'] = $this->getValue($parseString,'_LIST');
 							if ($this->parse_error)	{ return $this->parse_error; }
+						break;
+						case 'UNIQUE':
+						case 'UNIQUEKEY':
+							if ($keyName = $this->nextPart($parseString, '^([[:alnum:]_]+)([[:space:]]+|\()'))	{
+								$result['KEYS']['UNIQUE'] = array($keyName => $this->getValue($parseString,'_LIST'));
+								if ($this->parse_error)	{ return $this->parse_error; }
+							} else return $this->parseError('No keyname found',$parseString);
 						break;
 						case 'KEY':
 							if ($keyName = $this->nextPart($parseString, '^([[:alnum:]_]+)([[:space:]]+|\()'))	{
@@ -808,7 +815,7 @@ class t3lib_sqlparser {
 			} else return $this->parseError('No table name found as expected in parseFromTables()!',$parseString);
 
 				// Looking for JOIN
-			if ($join = $this->nextPart($parseString,'^(LEFT[[:space:]]+JOIN|JOIN)[[:space:]]+'))	{
+			if ($join = $this->nextPart($parseString,'^(LEFT[[:space:]]+JOIN|LEFT[[:space:]]+OUTER[[:space:]]+JOIN|JOIN)[[:space:]]+'))	{
 				$stack[$pnt]['JOIN']['type'] = $join;
 				if ($stack[$pnt]['JOIN']['withTable'] = $this->nextPart($parseString,'^([[:alnum:]_]+)[[:space:]]+ON[[:space:]]+',1))	{
 					$field1 = $this->nextPart($parseString,'^([[:alnum:]_.]+)[[:space:]]*=[[:space:]]*',1);
@@ -945,7 +952,7 @@ class t3lib_sqlparser {
 					}
 				}
 
-					// Detecting the operator for the next level; support for AND, OR and &&):
+					// Detecting the operator for the next level:
 				$op = $this->nextPart($parseString,'^(AND[[:space:]]+NOT|OR[[:space:]]+NOT|AND|OR)(\(|[[:space:]]+)');
 				if ($op)	{
 					$stack[$level][$pnt[$level]]['operator'] = $op;
@@ -1044,6 +1051,7 @@ class t3lib_sqlparser {
 	 * @return	string		The value of the first parenthesis level of the REGEX.
 	 */
 	function nextPart(&$parseString,$regex,$trimAll=FALSE)	{
+		$reg = array();
 		if (preg_match('/'.$regex.'/i',$parseString.' ', $reg))	{	// Adding space char because [[:space:]]+ is often a requirement in regex's
 			$parseString = ltrim(substr($parseString,strlen($reg[$trimAll?0:1])));
 			return $reg[1];
@@ -1055,9 +1063,11 @@ class t3lib_sqlparser {
 	 *
 	 * @param	string		The parseString, eg. "(0,1,2,3) ..." or "('asdf','qwer') ..." or "1234 ..." or "'My string value here' ..."
 	 * @param	string		The comparator used before. If "NOT IN" or "IN" then the value is expected to be a list of values. Otherwise just an integer (un-quoted) or string (quoted)
-	 * @return	string		The value (string/integer). Otherwise an array with error message in first key (0)
+	 * @return	mixed		The value (string/integer). Otherwise an array with error message in first key (0)
 	 */
 	function getValue(&$parseString,$comparator='')	{
+		$value = '';
+
 		if (t3lib_div::inList('NOTIN,IN,_LIST',strtoupper(str_replace(array(' ',"\n","\r","\t"),'',$comparator))))	{	// List of values:
 			if ($this->nextPart($parseString,'^([(])'))	{
 				$listValues = array();
@@ -1089,19 +1099,21 @@ class t3lib_sqlparser {
 
 			switch($firstChar)	{
 				case '"':
-					return array($this->getValueInQuotes($parseString,'"'),'"');
+					$value = array($this->getValueInQuotes($parseString,'"'),'"');
 				break;
 				case "'":
-					return array($this->getValueInQuotes($parseString,"'"),"'");
+					$value = array($this->getValueInQuotes($parseString,"'"),"'");
 				break;
 				default:
+					$reg = array();
 					if (preg_match('/^([[:alnum:]._-]+)/i',$parseString, $reg))	{
 						$parseString = ltrim(substr($parseString,strlen($reg[0])));
-						return array($reg[1]);
+						$value = array($reg[1]);
 					}
 				break;
 			}
 		}
+		return $value;
 	}
 
 	/**
@@ -1119,10 +1131,10 @@ class t3lib_sqlparser {
 		foreach($parts as $k => $v)	{
 			$buffer.=$v;
 
-			unset($reg);
+			$reg = array();
 			//preg_match('/[\]*$/',$v,$reg); // does not work. what is the *exact* meaning of the next line?
 			ereg('[\]*$',$v,$reg);
-			if (strlen($reg[0])%2)	{
+			if ($reg AND strlen($reg[0])%2)	{
 				$buffer.=$quote;
 			} else {
 				$parseString = ltrim(substr($parseString,strlen($buffer)+2));
@@ -1377,6 +1389,8 @@ return $str;
 		foreach($components['KEYS'] as $kN => $kCfg)	{
 			if ($kN == 'PRIMARYKEY')	{
 				$fieldsKeys[]='PRIMARY KEY ('.implode(',', $kCfg).')';
+			} elseif ($kN == 'UNIQUE')	{
+				$fieldsKeys[]='UNIQUE '.$kN.' ('.implode(',', $kCfg).')';
 			} else {
 				$fieldsKeys[]='KEY '.$kN.' ('.implode(',', $kCfg).')';
 			}
@@ -1515,7 +1529,7 @@ return $str;
 					$outputParts[$k] .= ($v['JOIN']['ON'][0]['table']) ? $v['JOIN']['ON'][0]['table'].'.' : '';
 					$outputParts[$k] .= $v['JOIN']['ON'][0]['field'];
 					$outputParts[$k] .= '=';
-					$outputParts[$k] .= ($v['JOIN']['ON'][1]['table']) ? $v['JOIN']['ON'][0]['table'].'.' : '';
+					$outputParts[$k] .= ($v['JOIN']['ON'][1]['table']) ? $v['JOIN']['ON'][1]['table'].'.' : '';
 					$outputParts[$k] .= $v['JOIN']['ON'][1]['field'];
 				}
 			}
@@ -1638,17 +1652,20 @@ return $str;
 	 * @return	mixed		Returns array with string 1 and 2 if error, otherwise false
 	 */
 	function debug_parseSQLpart($part,$str)	{
+		$retVal = false;
+
 		switch($part)	{
 			case 'SELECT':
-				return $this->debug_parseSQLpartCompare($str,$this->compileFieldList($this->parseFieldList($str)));
+				$retVal = $this->debug_parseSQLpartCompare($str,$this->compileFieldList($this->parseFieldList($str)));
 			break;
 			case 'FROM':
-				return $this->debug_parseSQLpartCompare($str,$this->compileFromTables($this->parseFromTables($str)));
+				$retVal = $this->debug_parseSQLpartCompare($str,$this->compileFromTables($this->parseFromTables($str)));
 			break;
 			case 'WHERE':
-				return $this->debug_parseSQLpartCompare($str,$this->compileWhereClause($this->parseWhereClause($str)));
+				$retVal = $this->debug_parseSQLpartCompare($str,$this->compileWhereClause($this->parseWhereClause($str)));
 			break;
 		}
+		return $retVal;
 	}
 
 	/**

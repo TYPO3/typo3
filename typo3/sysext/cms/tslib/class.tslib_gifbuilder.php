@@ -40,16 +40,16 @@
  *
  *  102: class tslib_gifBuilder extends t3lib_stdGraphic
  *  129:     function start($conf,$data)
- *  299:     function gifBuild()
- *  327:     function make()
+ *  315:     function gifBuild()
+ *  343:     function make()
  *
  *              SECTION: Various helper functions
- *  478:     function checkTextObj($conf)
- *  557:     function calcOffset($string)
- *  606:     function getResource($file,$fileArray)
- *  621:     function checkFile($file)
- *  632:     function fileName($pre)
- *  648:     function extension()
+ *  486:     function checkTextObj($conf)
+ *  566:     function calcOffset($string)
+ *  615:     function getResource($file,$fileArray)
+ *  632:     function checkFile($file)
+ *  643:     function fileName($pre)
+ *  659:     function extension()
  *
  * TOTAL FUNCTIONS: 9
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -132,7 +132,8 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 			$this->setup = $conf;
 			$this->data = $data;
 
-			/* Hook preprocess gifbuilder conf 
+
+			/* Hook preprocess gifbuilder conf
 			 * Added by Julle for 3.8.0
 			 *
 			 * Let's you pre-process the gifbuilder configuration. for
@@ -173,16 +174,19 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 				$cObj->start($this->data);
 				$this->setup['backColor'] = trim($cObj->stdWrap($this->setup['backColor'], $this->setup['backColor.']));
 			}
-			if (!$this->setup['backColor'])	{$this->setup['backColor']='white';}
+			if (!$this->setup['backColor'])	{ $this->setup['backColor']='white'; }
 
-				// Transparent GIFs
-				// not working with reduceColors
-				// there's an option for IM: -transparent colors
 			if ($conf['transparentColor.'] || $conf['transparentColor'])	{
 				$cObj =t3lib_div::makeInstance('tslib_cObj');
 				$cObj->start($this->data);
 				$this->setup['transparentColor_array'] = explode('|', trim($cObj->stdWrap($this->setup['transparentColor'], $this->setup['transparentColor.'])));
 			}
+ 			
+ 				// Transparency does not properly work when, GIFs or 8-bit PNGs are generated or reduceColors is set -- disable truecolor flag so they get generated "natively" in 8-bit.
+ 				// not working with reduceColors and truecolor images
+ 			if (($this->setup['transparentBackground'] || is_array($this->setup['transparentColor_array'])) && ($this->gifExtension=='gif' || !$this->png_truecolor || isset($this->setup['reduceColors'])))	{
+ 				$this->truecolor = false;
+ 			}
 
 				// Set default dimensions
 			if (!$this->setup['XY'])	{$this->setup['XY']='120,50';}
@@ -344,13 +348,14 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 		$XY = $this->XY;
 
 			// Gif-start
-		$this->im = imagecreate($XY[0],$XY[1]);
+		$this->im = $this->imagecreate($XY[0],$XY[1]);
 		$this->w = $XY[0];
 		$this->h = $XY[1];
 
 			// backColor is set
-		$cols=$this->convertColor($this->setup['backColor']);
-		ImageColorAllocate($this->im, $cols[0],$cols[1],$cols[2]);
+		$BGcols = $this->convertColor($this->setup['backColor']);
+		$Bcolor = ImageColorAllocate($this->im, $BGcols[0],$BGcols[1],$BGcols[2]);
+		ImageFilledRectangle($this->im, 0, 0, $XY[0], $XY[1], $Bcolor);
 
 			// Traverse the GIFBUILDER objects an render each one:
 		if (is_array($this->setup))	{
@@ -431,28 +436,20 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 				}
 			}
 		}
-			// Auto transparent background is set
+
+
 		if ($this->setup['transparentBackground'])	{
-			imagecolortransparent($this->im, imagecolorat($this->im, 0, 0));
-		}
-			// TransparentColors are set
-		if (is_array($this->setup['transparentColor_array']))	{
-			reset($this->setup['transparentColor_array']);
-			while(list(,$transparentColor)=each($this->setup['transparentColor_array']))	{
-				$cols=$this->convertColor($transparentColor);
-				if ($this->setup['transparentColor.']['closest'])	{
-					$colIndex = ImageColorClosest ($this->im, $cols[0],$cols[1],$cols[2]);
-				} else {
-					$colIndex = ImageColorExact ($this->im, $cols[0],$cols[1],$cols[2]);
-				}
-				if ($colIndex > -1) {
-					ImageColorTransparent($this->im, $colIndex);
-				} else {
-					ImageColorTransparent($this->im, ImageColorAllocate($this->im, $cols[0],$cols[1],$cols[2]));
-				}
-				break;		// Originally we thought of letting many colors be defined as transparent, but GDlib seems to accept only one definition. Therefore we break here. Maybe in the future this 'break' will be cancelled if a method of truly defining many transparent colors could be found.
+				// Auto transparent background is set
+			$Bcolor = ImageColorExact($this->im, $BGcols[0],$BGcols[1],$BGcols[2]);
+			imagecolortransparent($this->im, $Bcolor);
+		} elseif (is_array($this->setup['transparentColor_array']))	{
+				// Multiple transparent colors are set. This is done via the trick that all transparent colors get converted to one color and then this one gets set as transparent as png/gif can just have one transparent color.
+			$Tcolor = $this->unifyColors($this->im, $this->setup['transparentColor_array'], intval($this->setup['transparentColor.']['closest']));
+			if ($Tcolor>=0)	{
+				imagecolortransparent($this->im, $Tcolor);
 			}
 		}
+
 	}
 
 
@@ -620,7 +617,9 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 	 * @link http://typo3.org/doc.0.html?&tx_extrepmgm_pi1[extUid]=270&tx_extrepmgm_pi1[tocEl]=282&cHash=831a95115d
 	 */
 	function getResource($file,$fileArray)	{
-		$fileArray['ext']= $this->gifExtension;
+		if (!t3lib_div::inList($this->imageFileExt, $fileArray['ext']))	{
+			$fileArray['ext'] = $this->gifExtension;
+		}
 		$cObj =t3lib_div::makeInstance('tslib_cObj');
 		$cObj->start($this->data);
 		return $cObj->getImgResource($file,$fileArray);

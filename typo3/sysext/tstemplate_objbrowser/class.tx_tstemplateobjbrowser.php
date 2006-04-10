@@ -75,6 +75,15 @@ class tx_tstemplateobjbrowser extends t3lib_extobjbase {
 
 		return $modMenu;
 	}
+
+	/**
+	 * [Describe function...]
+	 *
+	 * @param	[type]		$propertyArray: ...
+	 * @param	[type]		$parentType: ...
+	 * @param	[type]		$parentValue: ...
+	 * @return	[type]		...
+	 */
 	function verify_TSobjects($propertyArray,$parentType,$parentValue)	{
 		$TSobjTable = array(
 			"PAGE" => array(
@@ -132,6 +141,14 @@ class tx_tstemplateobjbrowser extends t3lib_extobjbase {
 			return $result;
 		}
 	}
+
+	/**
+	 * [Describe function...]
+	 *
+	 * @param	[type]		$pageId: ...
+	 * @param	[type]		$template_uid: ...
+	 * @return	[type]		...
+	 */
 	function initialize_editor($pageId,$template_uid=0)	{
 			// Initializes the module. Done in this function because we may need to re-initialize if data is submitted!
 		global $tmpl,$tplRow,$theConstants;
@@ -150,6 +167,12 @@ class tx_tstemplateobjbrowser extends t3lib_extobjbase {
 			return 1;
 		}
 	}
+
+	/**
+	 * [Describe function...]
+	 *
+	 * @return	[type]		...
+	 */
 	function main()	{
 		global $SOBE,$BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$CLIENT,$TYPO3_CONF_VARS;
 		global $tmpl,$tplRow,$theConstants;

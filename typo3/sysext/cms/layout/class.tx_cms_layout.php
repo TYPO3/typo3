@@ -43,59 +43,59 @@
  *              SECTION: Renderings
  *  180:     function getTable($table,$id)
  *  240:     function getTable_pages($id)
- *  377:     function getTable_tt_content($id)
- *  737:     function getTable_fe_users($id)
- *  763:     function getTable_sys_note($id)
- *  854:     function getTable_tt_board($id)
- *  934:     function getTable_tt_address($id)
- *  964:     function getTable_tt_links($id)
- *  990:     function getTable_tt_guest($id)
- * 1005:     function getTable_tt_news($id)
- * 1026:     function getTable_tt_calender($id)
- * 1076:     function getTable_tt_products($id)
+ *  378:     function getTable_tt_content($id)
+ *  754:     function getTable_fe_users($id)
+ *  780:     function getTable_sys_note($id)
+ *  873:     function getTable_tt_board($id)
+ *  955:     function getTable_tt_address($id)
+ *  985:     function getTable_tt_links($id)
+ * 1011:     function getTable_tt_guest($id)
+ * 1026:     function getTable_tt_news($id)
+ * 1047:     function getTable_tt_calender($id)
+ * 1097:     function getTable_tt_products($id)
  *
  *              SECTION: Generic listing of items
- * 1122:     function makeOrdinaryList($table, $id, $fList, $icon=0, $addWhere='')
- * 1201:     function dataFields($fieldArr,$table,$row,$out=array())
- * 1252:     function headerFields($fieldArr,$table,$out=array())
+ * 1143:     function makeOrdinaryList($table, $id, $fList, $icon=0, $addWhere='')
+ * 1224:     function dataFields($fieldArr,$table,$row,$out=array())
+ * 1275:     function headerFields($fieldArr,$table,$out=array())
  *
  *              SECTION: Additional functions; Pages
- * 1294:     function pages_getTree($theRows,$pid,$qWhere,$treeIcons,$depth)
- * 1326:     function pages_drawItem($row,$fieldArr)
+ * 1317:     function pages_getTree($theRows,$pid,$qWhere,$treeIcons,$depth)
+ * 1350:     function pages_drawItem($row,$fieldArr)
  *
  *              SECTION: Additional functions; Content Elements
- * 1436:     function tt_content_drawColHeader($colName,$editParams,$newParams)
- * 1488:     function tt_content_drawHeader($row,$space=0,$disableMoveAndNewButtons=FALSE,$langMode=FALSE)
- * 1618:     function tt_content_drawItem($row, $isRTE=FALSE)
- * 1781:     function getNonTranslatedTTcontentUids($defLanguageCount,$id,$lP)
- * 1811:     function newLanguageButton($defLanguageCount,$lP)
- * 1832:     function infoGif($infoArr)
- * 1848:     function newContentElementOnClick($id,$colPos,$sys_language)
- * 1866:     function linkEditContent($str,$row)
- * 1884:     function linkRTEbutton($row)
- * 1905:     function languageSelector($id)
- * 1940:     function getResult($result)
+ * 1461:     function tt_content_drawColHeader($colName,$editParams,$newParams)
+ * 1513:     function tt_content_drawHeader($row,$space=0,$disableMoveAndNewButtons=FALSE,$langMode=FALSE)
+ * 1643:     function tt_content_drawItem($row, $isRTE=FALSE)
+ * 1806:     function getNonTranslatedTTcontentUids($defLanguageCount,$id,$lP)
+ * 1836:     function newLanguageButton($defLanguageCount,$lP)
+ * 1857:     function infoGif($infoArr)
+ * 1873:     function newContentElementOnClick($id,$colPos,$sys_language)
+ * 1891:     function linkEditContent($str,$row)
+ * 1909:     function linkRTEbutton($row)
+ * 1930:     function languageSelector($id)
+ * 1967:     function getResult($result)
  *
  *              SECTION: Additional functions; Message board items (tt_board)
- * 2009:     function tt_board_getTree($theRows,$parent,$pid,$qWhere,$treeIcons)
- * 2044:     function tt_board_drawItem($table,$row,$re)
+ * 2036:     function tt_board_getTree($theRows,$parent,$pid,$qWhere,$treeIcons)
+ * 2071:     function tt_board_drawItem($table,$row,$re)
  *
  *              SECTION: Various helper functions
- * 2091:     function numberOfRecords($table,$pid)
- * 2110:     function renderText($input)
- * 2124:     function getIcon($table,$row)
- * 2147:     function getProcessedValue($table,$fieldList,$row,&$info)
- * 2167:     function isDisabled($table,$row)
- * 2185:     function wordWrapper($content,$max=50,$char=' -')
- * 2202:     function noEditIcon($label='noEditItems')
- * 2211:     function cleanTableNames()
- * 2247:     function isRTEforField($table,$row,$field)
- * 2276:     function getSpecConfForField($table,$row,$field)
+ * 2118:     function numberOfRecords($table,$pid)
+ * 2137:     function renderText($input)
+ * 2151:     function getIcon($table,$row)
+ * 2174:     function getProcessedValue($table,$fieldList,$row,&$info)
+ * 2194:     function isDisabled($table,$row)
+ * 2212:     function wordWrapper($content,$max=50,$char=' -')
+ * 2229:     function noEditIcon($label='noEditItems')
+ * 2238:     function cleanTableNames()
+ * 2274:     function isRTEforField($table,$row,$field)
+ * 2304:     function getSpecConfForField($table,$row,$field)
  *
  *              SECTION: External renderings
- * 2313:     function getPageInfoBox($rec,$edit=0)
- * 2482:     function getTableMenu($id)
- * 2547:     function strip_tags($input, $fillEmptyContent=false)
+ * 2341:     function getPageInfoBox($rec,$edit=0)
+ * 2510:     function getTableMenu($id)
+ * 2575:     function strip_tags($content, $fillEmptyContent=false)
  *
  * TOTAL FUNCTIONS: 43
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -431,7 +431,7 @@ class tx_cms_layout extends recordList {
 
 						// If it turns out that there are not content elements in the column, then display a big button which links directly to the wizard script:
 					if ($this->doEdit && $this->option_showBigButtons && !intval($key) && !$GLOBALS['TYPO3_DB']->sql_num_rows($result))	{
-						$onClick = "document.location='db_new_content_el.php?id=".$id.'&colPos='.intval($key).'&sys_language_uid='.$lP.'&uid_pid='.$id.'&returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))."';";
+						$onClick = "window.location.href='db_new_content_el.php?id=".$id.'&colPos='.intval($key).'&sys_language_uid='.$lP.'&uid_pid='.$id.'&returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))."';";
 						$theNewButton = $GLOBALS['SOBE']->doc->t3Button($onClick,$GLOBALS['LANG']->getLL('newPageContent'));
 						$content[$key].= '<img src="clear.gif" width="1" height="5" alt="" /><br />'.$theNewButton;
 					}
@@ -639,7 +639,7 @@ class tx_cms_layout extends recordList {
 
 						// If it turns out that there are not content elements in the column, then display a big button which links directly to the wizard script:
 					if ($this->doEdit && $this->option_showBigButtons && !intval($key) && !$GLOBALS['TYPO3_DB']->sql_num_rows($result))	{
-						$onClick="document.location='db_new_content_el.php?id=".$id.'&colPos='.intval($key).'&sys_language_uid='.$lP.'&uid_pid='.$id.'&returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))."';";
+						$onClick="window.location.href='db_new_content_el.php?id=".$id.'&colPos='.intval($key).'&sys_language_uid='.$lP.'&uid_pid='.$id.'&returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))."';";
 						$theNewButton=$GLOBALS['SOBE']->doc->t3Button($onClick,$GLOBALS['LANG']->getLL('newPageContent'));
 						$theNewButton='<img src="clear.gif" width="1" height="5" alt="" /><br />'.$theNewButton;
 					} else $theNewButton='';
@@ -726,9 +726,9 @@ class tx_cms_layout extends recordList {
 					$bArray[0]=$GLOBALS['SOBE']->doc->t3Button(t3lib_BEfunc::editOnClick('&edit[pages_language_overlay]['.$languageOverlayRecord['uid']."]=edit",$this->backPath,''),$GLOBALS['LANG']->getLL('editPageProperties_curLang'));
 				}
 			}
-			if ($this->ext_CALC_PERMS&4 || $this->ext_CALC_PERMS&2)	$bArray[1]=$GLOBALS['SOBE']->doc->t3Button("document.location='".$this->backPath."move_el.php?table=pages&uid=".$id.'&returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))."';",$GLOBALS['LANG']->getLL('move_page'));
-			if ($this->ext_CALC_PERMS&8)	$bArray[2]=$GLOBALS['SOBE']->doc->t3Button("document.location='".$this->backPath."db_new.php?id=".$id.'&pagesOnly=1&returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))."';",$GLOBALS['LANG']->getLL('newPage2'));
-			if ($this->doEdit && $this->ext_function==1) $bArray[3]=$GLOBALS['SOBE']->doc->t3Button("document.location='db_new_content_el.php?id=".$id.'&sys_language_uid='.$GLOBALS['SOBE']->current_sys_language.'&returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))."';",$GLOBALS['LANG']->getLL('newPageContent2'));
+			if ($this->ext_CALC_PERMS&4 || $this->ext_CALC_PERMS&2)	$bArray[1]=$GLOBALS['SOBE']->doc->t3Button("window.location.href='".$this->backPath."move_el.php?table=pages&uid=".$id.'&returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))."';",$GLOBALS['LANG']->getLL('move_page'));
+			if ($this->ext_CALC_PERMS&8)	$bArray[2]=$GLOBALS['SOBE']->doc->t3Button("window.location.href='".$this->backPath."db_new.php?id=".$id.'&pagesOnly=1&returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))."';",$GLOBALS['LANG']->getLL('newPage2'));
+			if ($this->doEdit && $this->ext_function==1) $bArray[3]=$GLOBALS['SOBE']->doc->t3Button("window.location.href='db_new_content_el.php?id=".$id.'&sys_language_uid='.$GLOBALS['SOBE']->current_sys_language.'&returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))."';",$GLOBALS['LANG']->getLL('newPageContent2'));
 			$out = '
 				<table border="0" cellpadding="4" cellspacing="0" class="typo3-page-buttons">
 					<tr>
@@ -1558,7 +1558,7 @@ class tx_cms_layout extends recordList {
 				if (!$disableMoveAndNewButtons)	{
 						// New content element:
 					if ($this->option_newWizard)	{
-						$onClick="document.location='db_new_content_el.php?id=".$row['pid'].'&sys_language_uid='.$row['sys_language_uid'].'&colPos='.$row['colPos'].'&uid_pid='.(-$row['uid']).'&returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))."';";
+						$onClick="window.location.href='db_new_content_el.php?id=".$row['pid'].'&sys_language_uid='.$row['sys_language_uid'].'&colPos='.$row['colPos'].'&uid_pid='.(-$row['uid']).'&returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))."';";
 					} else {
 						$params='&edit[tt_content]['.(-$row['uid']).']=new';
 						$onClick = t3lib_BEfunc::editOnClick($params,$this->backPath);
@@ -1842,7 +1842,7 @@ class tx_cms_layout extends recordList {
 			}
 
 				// Copy for language:
-			$onClick = "document.location='".$GLOBALS['SOBE']->doc->issueCommand($params)."'; return false;";
+			$onClick = "window.location.href='".$GLOBALS['SOBE']->doc->issueCommand($params)."'; return false;";
 			$theNewButton = $GLOBALS['SOBE']->doc->t3Button($onClick,$GLOBALS['LANG']->getLL('newPageContent_copyForLang').' ['.count($defLanguageCount).']');
 			return $theNewButton;
 		}
@@ -1872,7 +1872,7 @@ class tx_cms_layout extends recordList {
 	 */
 	function newContentElementOnClick($id,$colPos,$sys_language)	{
 		if ($this->option_newWizard)	{
-			$onClick="document.location='db_new_content_el.php?id=".$id.'&colPos='.$colPos.'&sys_language_uid='.$sys_language.'&uid_pid='.$id.'&returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))."';";
+			$onClick="window.location.href='db_new_content_el.php?id=".$id.'&colPos='.$colPos.'&sys_language_uid='.$sys_language.'&uid_pid='.$id.'&returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))."';";
 		} else {
 			$onClick=t3lib_BEfunc::editOnClick('&edit[tt_content]['.$id.']=new&defVals[tt_content][colPos]='.$colPos.'&defVals[tt_content][sys_language_uid]='.$sys_language,$this->backPath);
 		}
@@ -1913,7 +1913,7 @@ class tx_cms_layout extends recordList {
 		$params['pid'] = $row['pid'];
 		$params['field'] = 'bodytext';
 		$params['returnUrl'] = t3lib_div::linkThisScript();
-		$RTEonClick = "document.location='".$this->backPath."wizard_rte.php?".t3lib_div::implodeArrayForUrl('',array('P'=>$params))."';return false;";
+		$RTEonClick = "window.location.href='".$this->backPath."wizard_rte.php?".t3lib_div::implodeArrayForUrl('',array('P'=>$params))."';return false;";
 		$addButton = $this->option_showBigButtons && $this->doEdit ? $GLOBALS['SOBE']->doc->t3Button($RTEonClick,$GLOBALS['LANG']->getLL('editInRTE')) : '';
 
 		return $addButton;
@@ -1936,8 +1936,10 @@ class tx_cms_layout extends recordList {
 			$langSelItems[0]='
 						<option value="0"></option>';
 			while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
-				$langSelItems[$row['uid']]='
-						<option value="'.$row['uid'].'">'.htmlspecialchars($row['title']).'</option>';
+				if ($GLOBALS['BE_USER']->checkLanguageAccess($row['uid']))	{
+					$langSelItems[$row['uid']]='
+							<option value="'.$row['uid'].'">'.htmlspecialchars($row['title']).'</option>';
+				}
 			}
 
 				// Then, subtract the languages which are already on the page:
@@ -1948,7 +1950,7 @@ class tx_cms_layout extends recordList {
 
 				// If any languages are left, make selector:
 			if (count($langSelItems)>1)		{
-				$onChangeContent = 'document.location=\''.$this->backPath.'alt_doc.php?&edit[pages_language_overlay]['.$id.']=new&overrideVals[pages_language_overlay][sys_language_uid]=\'+this.options[this.selectedIndex].value+\'&returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI')).'\'';
+				$onChangeContent = 'window.location.href=\''.$this->backPath.'alt_doc.php?&edit[pages_language_overlay]['.$id.']=new&overrideVals[pages_language_overlay][sys_language_uid]=\'+this.options[this.selectedIndex].value+\'&returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI')).'\'';
 				return $GLOBALS['LANG']->getLL('new_language',1).': <select name="createNewLanguage" onchange="'.htmlspecialchars($onChangeContent).'">
 						'.implode('',$langSelItems).'
 					</select><br /><br />';
@@ -2273,6 +2275,7 @@ class tx_cms_layout extends recordList {
 		$specConf = $this->getSpecConfForField($table,$row,$field);
 		$p = t3lib_BEfunc::getSpecConfParametersFromArray($specConf['rte_transform']['parameters']);
 		if (isset($specConf['richtext']) && (!$p['flag'] || !$row[$p['flag']]))	{
+			t3lib_BEfunc::fixVersioningPid($table,$row);
 			list($tscPID,$thePidValue) = t3lib_BEfunc::getTSCpid($table,$row['uid'],$row['pid']);
 			if ($thePidValue>=0)	{	// If the pid-value is not negative (that is, a pid could NOT be fetched)
 				$RTEsetup = $GLOBALS['BE_USER']->getTSConfig('RTE',t3lib_BEfunc::getPagesTSconfig($tscPID));

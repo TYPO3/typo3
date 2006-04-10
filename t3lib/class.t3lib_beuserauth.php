@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2005 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2006 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -39,15 +39,15 @@
  *
  *
  *   76: class t3lib_beUserAuth extends t3lib_userAuthGroup
- *  151:     function trackBeUser($flag)
- *  169:     function checkLockToIP()
- *  189:     function backendCheckLogin()
- *  217:     function checkCLIuser()
- *  241:     function backendSetUC()
- *  277:     function overrideUC()
- *  287:     function resetUC()
- *  300:     function emailAtLogin()
- *  352:     function veriCode()
+ *  150:     function trackBeUser($flag)
+ *  168:     function checkLockToIP()
+ *  188:     function backendCheckLogin()
+ *  216:     function checkCLIuser()
+ *  240:     function backendSetUC()
+ *  278:     function overrideUC()
+ *  288:     function resetUC()
+ *  301:     function emailAtLogin()
+ *  353:     function veriCode()
  *
  * TOTAL FUNCTIONS: 9
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -188,7 +188,7 @@ class t3lib_beUserAuth extends t3lib_userAuthGroup {
 	function backendCheckLogin()	{
 		if (!$this->user['uid'])	{
 			if (!defined('TYPO3_PROCEED_IF_NO_USER') || !TYPO3_PROCEED_IF_NO_USER)	{
-				t3lib_BEfunc::typo3PrintError ('Login-error or session timed-out', 'No user logged in! Sorry, I can\'t proceed then!<br /><br />(You must have cookies enabled!)<br /><br />If your session has just timed-out, you may<br /><a href="'.t3lib_div::locationHeaderUrl(t3lib_div::getIndpEnv('TYPO3_SITE_URL').'typo3/index.php'.'" target="_top">click here to re-login</a>.',0));
+				t3lib_BEfunc::typo3PrintError ('Login-error or session timed-out', 'No user logged in! Sorry, I can\'t proceed then!<br /><br />(You must have cookies enabled!)<br /><br />If your session has just timed-out, you may<br /><a href="'.t3lib_div::locationHeaderUrl(t3lib_div::getIndpEnv('TYPO3_SITE_URL').TYPO3_mainDir.'index.php'.'" target="_top">click here to re-login</a>.',0));
 				exit;
 			}
 		} else {	// ...and if that's the case, call these functions
@@ -238,6 +238,7 @@ class t3lib_beUserAuth extends t3lib_userAuthGroup {
 	 * @internal
 	 */
 	function backendSetUC()	{
+		global $TYPO3_CONF_VARS;
 
 			// UC - user configuration is a serialized array inside the userobject
 		$temp_theSavedUC=unserialize($this->user['uc']);		// if there is a saved uc we implement that instead of the default one.

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+	<meta type="array">
+		<description>Labels for User Elements module of htmlArea RTE</description>
+		<type>module</type>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index="noTitle">No title</label>
+			<label index="expand">Expand category</label>
+			<label index="noTextSelection">Error: There was no selected text to wrap.</label>
+			<label index="pixels">Pixels</label>
+			<label index="filesize">Filesize</label>
+		</languageKey>
+	</data>
+	<orig_hash type="array">
+		<languageKey index="default" type="array">
+			<label index="noTitle" type="integer">184697729</label>
+			<label index="expand" type="integer">211276000</label>
+			<label index="noTextSelection" type="integer">183962</label>
+			<label index="pixels" type="integer">205336413</label>
+			<label index="filesize" type="integer">186172059</label>
+		</languageKey>
+	</orig_hash>
+	<orig_text type="array">
+		<languageKey index="default" type="array">
+		</languageKey>
+	</orig_text>
+</T3locallang>

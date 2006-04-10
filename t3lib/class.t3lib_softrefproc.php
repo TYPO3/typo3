@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2003-2005 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 2003-2006 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the Typo3 project. The Typo3 project is
@@ -41,21 +41,21 @@
  *
  *  116: class t3lib_softrefproc
  *  137:     function findRef($table, $field, $uid, $content, $spKey, $spParams, $structurePath='')
- *  209:     function findRef_images($content, $spParams)
- *  276:     function findRef_typolink($content, $spParams)
- *  313:     function findRef_typolink_tag($content, $spParams)
- *  348:     function findRef_TStemplate($content, $spParams)
- *  430:     function findRef_TSconfig($content, $spParams)
- *  453:     function findRef_email($content, $spParams)
- *  493:     function findRef_url($content, $spParams)
- *  535:     function findRef_extension_fileref($content, $spParams)
+ *  213:     function findRef_images($content, $spParams)
+ *  280:     function findRef_typolink($content, $spParams)
+ *  317:     function findRef_typolink_tag($content, $spParams)
+ *  352:     function findRef_TStemplate($content, $spParams)
+ *  434:     function findRef_TSconfig($content, $spParams)
+ *  457:     function findRef_email($content, $spParams)
+ *  497:     function findRef_url($content, $spParams)
+ *  539:     function findRef_extension_fileref($content, $spParams)
  *
  *              SECTION: Helper functions
- *  587:     function fileadminReferences($content, &$elements)
- *  630:     function getTypoLinkParts($typolinkValue)
- *  714:     function setTypoLinkPartsElement($tLP, &$elements, $content, $idx)
- *  825:     function getPageIdFromAlias($link_param)
- *  837:     function makeTokenID($index='')
+ *  591:     function fileadminReferences($content, &$elements)
+ *  634:     function getTypoLinkParts($typolinkValue)
+ *  718:     function setTypoLinkPartsElement($tLP, &$elements, $content, $idx)
+ *  833:     function getPageIdFromAlias($link_param)
+ *  845:     function makeTokenID($index='')
  *
  * TOTAL FUNCTIONS: 14
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -136,6 +136,8 @@ class t3lib_softrefproc {
 	 */
 	function findRef($table, $field, $uid, $content, $spKey, $spParams, $structurePath='')	{
 
+		$retVal = FALSE;
+
 		$this->tokenID_basePrefix = $table.':'.$uid.':'.$field.':'.$structurePath.':'.$spKey;
 
 		switch($spKey)	{
@@ -147,7 +149,7 @@ class t3lib_softrefproc {
 						)
 					)
 				);
-				return $resultArray;
+				$retVal = $resultArray;
 			break;
 			case 'substitute':
 				$tokenID = $this->makeTokenID();
@@ -164,36 +166,38 @@ class t3lib_softrefproc {
 						)
 					)
 				);
-				return $resultArray;
+				$retVal = $resultArray;
 			break;
 			case 'images':
-				return $this->findRef_images($content, $spParams);
+				$retVal = $this->findRef_images($content, $spParams);
 			break;
 			case 'typolink':
-				return $this->findRef_typolink($content, $spParams);
+				$retVal = $this->findRef_typolink($content, $spParams);
 			break;
 			case 'typolink_tag':
-				return $this->findRef_typolink_tag($content, $spParams);
+				$retVal = $this->findRef_typolink_tag($content, $spParams);
 			break;
 			case 'ext_fileref':
-				return $this->findRef_extension_fileref($content, $spParams);
+				$retVal = $this->findRef_extension_fileref($content, $spParams);
 			break;
 			case 'TStemplate':
-				return $this->findRef_TStemplate($content, $spParams);
+				$retVal = $this->findRef_TStemplate($content, $spParams);
 			break;
 			case 'TSconfig':
-				return $this->findRef_TSconfig($content, $spParams);
+				$retVal = $this->findRef_TSconfig($content, $spParams);
 			break;
 			case 'email':
-				return $this->findRef_email($content, $spParams);
+				$retVal = $this->findRef_email($content, $spParams);
 			break;
 			case 'url':
-				return $this->findRef_url($content, $spParams);
+				$retVal = $this->findRef_url($content, $spParams);
 			break;
 			default:
-				return FALSE;
+				$retVal = FALSE;
 			break;
 		}
+
+		return $retVal;
 	}
 
 	/**
@@ -732,7 +736,9 @@ class t3lib_softrefproc {
 			break;
 			case 'url':
 					// Nothing done, only for informational purposes. So return content right away:
-				return $content;
+				{
+					return $content;
+				}
 			break;
 			case 'file':
 					// Process files found in fileadmin directory:
@@ -799,8 +805,10 @@ class t3lib_softrefproc {
 				}
 			break;
 			default:
-				$elements[$tokenID.':'.$idx]['error'] = 'Couldn\t decide typolink mode.';
-				return $content;
+				{
+					$elements[$tokenID.':'.$idx]['error'] = 'Couldn\t decide typolink mode.';
+					return $content;
+				}
 			break;
 		}
 

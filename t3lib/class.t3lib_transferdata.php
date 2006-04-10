@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2005 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2006 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -41,30 +41,30 @@
  *
  *              SECTION: Getting record content, ready for display in TCEforms
  *  137:     function fetchRecord($table,$idList,$operation)
- *  223:     function renderRecord($table, $id, $pid, $row)
- *  267:     function renderRecordRaw($table, $id, $pid, $row, $TSconfig='', $tscPID=0)
- *  325:     function renderRecord_SW($data,$fieldConfig,$TSconfig,$table,$row,$field)
- *  355:     function renderRecord_groupProc($data,$fieldConfig,$TSconfig,$table,$row,$field)
- *  406:     function renderRecord_selectProc($data,$fieldConfig,$TSconfig,$table,$row,$field)
- *  469:     function renderRecord_flexProc($data,$fieldConfig,$TSconfig,$table,$row,$field)
- *  498:     function renderRecord_typesProc($totalRecordContent,$types_fieldConfig,$tscPID,$table,$pid)
+ *  224:     function renderRecord($table, $id, $pid, $row)
+ *  268:     function renderRecordRaw($table, $id, $pid, $row, $TSconfig='', $tscPID=0)
+ *  326:     function renderRecord_SW($data,$fieldConfig,$TSconfig,$table,$row,$field)
+ *  356:     function renderRecord_groupProc($data,$fieldConfig,$TSconfig,$table,$row,$field)
+ *  407:     function renderRecord_selectProc($data,$fieldConfig,$TSconfig,$table,$row,$field)
+ *  470:     function renderRecord_flexProc($data,$fieldConfig,$TSconfig,$table,$row,$field)
+ *  499:     function renderRecord_typesProc($totalRecordContent,$types_fieldConfig,$tscPID,$table,$pid)
  *
  *              SECTION: FlexForm processing functions
- *  554:     function renderRecord_flexProc_procInData($dataPart,$dataStructArray,$pParams)
- *  583:     function renderRecord_flexProc_procInData_travDS(&$dataValues,$DSelements,$pParams)
+ *  555:     function renderRecord_flexProc_procInData($dataPart,$dataStructArray,$pParams)
+ *  584:     function renderRecord_flexProc_procInData_travDS(&$dataValues,$DSelements,$pParams)
  *
  *              SECTION: Selector box processing functions
- *  660:     function selectAddSpecial($dataAcc, $elements, $specialKey)
- *  784:     function selectAddForeign($dataAcc, $elements, $fieldConfig, $field, $TSconfig, $row)
- *  837:     function getDataIdList($elements, $fieldConfig, $row)
- *  860:     function procesItemArray($selItems,$config,$fieldTSConfig,$table,$row,$field)
- *  875:     function addItems($items,$iArray)
- *  897:     function procItems($items,$itemsProcFuncTSconfig,$config,$table,$row,$field)
+ *  661:     function selectAddSpecial($dataAcc, $elements, $specialKey)
+ *  785:     function selectAddForeign($dataAcc, $elements, $fieldConfig, $field, $TSconfig, $row)
+ *  838:     function getDataIdList($elements, $fieldConfig, $row)
+ *  861:     function procesItemArray($selItems,$config,$fieldTSConfig,$table,$row,$field)
+ *  876:     function addItems($items,$iArray)
+ *  898:     function procItems($items,$itemsProcFuncTSconfig,$config,$table,$row,$field)
  *
  *              SECTION: Helper functions
- *  932:     function lockRecord($table, $id, $pid=0)
- *  949:     function regItem($table, $id, $field, $content)
- *  959:     function sL($in)
+ *  933:     function lockRecord($table, $id, $pid=0)
+ *  950:     function regItem($table, $id, $field, $content)
+ *  960:     function sL($in)
  *
  * TOTAL FUNCTIONS: 19
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -75,7 +75,7 @@
 require_once (PATH_t3lib.'class.t3lib_loaddbgroup.php');
 require_once (PATH_t3lib.'class.t3lib_loadmodules.php');
 require_once (PATH_t3lib.'class.t3lib_parsehtml_proc.php');
-
+require_once (PATH_t3lib.'class.t3lib_flexformtools.php');
 
 
 
@@ -196,6 +196,7 @@ class t3lib_transferData {
 							// Fetch database values
 						$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $table, 'uid='.intval($id).t3lib_BEfunc::deleteClause($table));
 						if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
+							t3lib_BEfunc::fixVersioningPid($table,$row);
 							$this->renderRecord($table, $id, $row['pid'], $row);
 							$contentTable = $GLOBALS['TYPO3_CONF_VARS']['SYS']['contentTable'];
 							$this->lockRecord($table, $id, $contentTable==$table?$row['pid']:0);	// Locking the pid if the table edited is the content table.
@@ -419,7 +420,7 @@ class t3lib_transferData {
 				foreach($fieldConfig['config']['items'] as $pvpv)	{
 					foreach($elements as $eKey => $value)	{
 						if (!strcmp($value,$pvpv[1]))	{
-							$dataAcc[$eKey]=rawurlencode($pvpv[1]).'|'.rawurlencode($pvpv[0]);
+							$dataAcc[$eKey]=rawurlencode($pvpv[1]).'|'.rawurlencode($this->sL($pvpv[0]));
 						}
 					}
 				}
@@ -477,7 +478,9 @@ class t3lib_transferData {
 			$dataStructArray = t3lib_BEfunc::getFlexFormDS($fieldConfig['config'],$row,$table);
 			if (is_array($dataStructArray))	{
 				$currentValueArray['data'] = $this->renderRecord_flexProc_procInData($currentValueArray['data'],$dataStructArray,array($data,$fieldConfig,$TSconfig,$table,$row,$field));
-				$data = t3lib_div::array2xml($currentValueArray);
+
+				$flexObj = t3lib_div::makeInstance('t3lib_flexformtools');
+				$data = $flexObj->flexArray2Xml($currentValueArray, TRUE);
 			}
 		}
 
@@ -732,7 +735,7 @@ class t3lib_transferData {
 							foreach($coValue['items'] as $itemKey => $itemCfg)	{
 								foreach($elements as $eKey => $value)	{
 									if (!strcmp($coKey.':'.$itemKey, $value))	{
-										$dataAcc[$eKey] = rawurlencode($value).'|'.rawurlencode($GLOBALS['LANG']->sl($itemCfg[0]));
+										$dataAcc[$eKey] = rawurlencode($value).'|'.rawurlencode($this->sL($itemCfg[0]));
 									}
 								}
 							}

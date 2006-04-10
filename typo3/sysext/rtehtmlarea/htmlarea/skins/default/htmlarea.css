@@ -31,7 +31,7 @@
 .htmlarea .toolbar ul li {
 	float:left;
 	background-color:transparent;
-	font:11px tahoma,verdana,sans-serif;
+	font:11px Tahoma,Verdana,sans-serif;
 	border-style:none;padding:0;
 }
 .htmlarea .toolbar ul.tb-line li {
@@ -103,7 +103,7 @@
 .htmlarea .toolbar .Undo { background-image:url("images/ed_undo.gif");}
 .htmlarea .toolbar .Redo { background-image:url("images/ed_redo.gif");}
 .htmlarea .toolbar .About { background-image:url("images/ed_about.gif");}
-.htmlarea .toolbar .ShowHelp { background-image:url("images/ed_help.gif");}
+.htmlarea .toolbar .ShowHelp { background-image:url("images/TYPO3ViewHelp/module_help.gif");}
 .htmlarea .toolbar .TO-toggle-borders, .htmlarea-context-menu .TO-toggle-borders {background-image:url("images/TableOperations/toggle-borders.gif");}
 .htmlarea .toolbar .TO-table-prop, .htmlarea-context-menu .TO-table-prop {background-image:url("images/TableOperations/table-prop.gif");}
 .htmlarea .toolbar .TO-row-prop, .htmlarea-context-menu .TO-row-prop {background-image:url("images/TableOperations/row-prop.gif");}
@@ -142,7 +142,7 @@
 	border:1px solid ButtonShadow;
 }
 .htmlarea .toolbar button.buttonDisabled {
-	filter: alpha(opacity = 25);
+	filter: alpha(opacity=25);
 	-moz-opacity: 0.25;
 	opacity: 0.25;
 }
@@ -160,11 +160,9 @@
 	margin:0;padding:0px 1px 0px 0px;
 }
 .htmlarea .toolbar select {
-	font:11px Tahoma,Verdana,sans-serif; 
-	margin:2px 2px 0px 2px;
-}
-* html .htmlarea .toolbar select {
-	height:22px;
+	font:11px Tahoma,Verdana,sans-serif;
+	height:18px;
+	margin:0;padding:0;
 }
 .htmlarea .toolbar select, .htmlarea .toolbar select:hover, .htmlarea .toolbar select:active {
 	background-color:#fff;color:ButtonText;
@@ -259,6 +257,7 @@
 	margin-left: -5px; float: left; position: relative; top: -3px; left: -2px; z-index: 0;
 	border: 1px solid black; border-top: none; padding: 2px 10px 3px 10px;
 	-moz-border-radius: 0px 0px 4px 4px;
+	border-radius: 0px 0px 4px 4px;
 }
 .popupwin .tab-current {
 	color: #000; background-color: #ddf;
@@ -295,15 +294,11 @@
 	margin-top:5px;margin-bottom:5px;
 }
 .popupwin fieldset {
-	display:inline;
+	display:block;
 	margin:5px 5px 0 5px;padding:5px;
 }
 .popupwin .floating {
 	float:left;
-}
-/* fieldset is inline only for Opera */
-* html .popupwin fieldset, :root .popupwin fieldset {
-	display:block;
 }
 .popupwin legend {
 	font-weight:bold;padding:0 3px;
@@ -431,7 +426,7 @@
 .htmlarea-context-menu {
 	position:absolute;top:-1000px;left:-1000px;z-index:1000;
 	background-color:#cdf;cursor:default;
-	font:11px tahoma,verdana,sans-serif;
+	font:11px Tahoma,Verdana,sans-serif;
 	list-style:none;
 	border:1px solid #aca899;margin:0;padding:2px;
 }
@@ -441,8 +436,9 @@
 }
 .htmlarea-context-menu li .button {
 	text-align:left;vertical-align:middle;
-	background-color:transparent;background-repeat:no-repeat;background-position:3px 2px;
-	height:21px;
+	background-color:transparent;background-repeat:no-repeat;background-position:2px 2px;
+	font-size:11px;
+	height:20px;
 	border-style:none;margin:0;padding:0 0 0 24px;
 }
 .htmlarea-context-menu li .button img {

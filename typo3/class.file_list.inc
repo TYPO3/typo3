@@ -37,24 +37,25 @@
  *
  *
  *
- *   74: class fileList extends t3lib_recordList
- *  111:     function start($path,$pointer,$sort,$sortRev,$clipBoard=0)
- *  132:     function generateList()
- *  145:     function writeTop($path)
- *  203:     function linkClipboardHeaderIcon($string,$table,$cmd,$warning='')
- *  217:     function getTable($files,$dirs,$rowlist)
- *  305:     function formatDirList($items)
- *  368:     function linkWrapDir($code,$path)
- *  380:     function linkWrapFile($code,$path)
- *  394:     function listURL()
- *  404:     function dirData($theFile)
- *  429:     function formatFileList($items)
- *  503:     function isImage($ext)
- *  515:     function linkWrapSort($code,$path,$col)
- *  533:     function readDirectory($path,$type,$extList='')
- *  587:     function makeClip($theData)
+ *   75: class fileList extends t3lib_recordList
+ *  112:     function start($path,$pointer,$sort,$sortRev,$clipBoard=0)
+ *  133:     function generateList()
+ *  146:     function writeTop($path)
+ *  204:     function linkClipboardHeaderIcon($string,$table,$cmd,$warning='')
+ *  218:     function getTable($files,$dirs,$rowlist)
+ *  306:     function formatDirList($items)
+ *  372:     function linkWrapDir($code,$path)
+ *  391:     function linkWrapFile($code,$path)
+ *  406:     function listURL()
+ *  416:     function dirData($theFile)
+ *  441:     function formatFileList($items)
+ *  518:     function isImage($ext)
+ *  530:     function linkWrapSort($code,$path,$col)
+ *  548:     function readDirectory($path,$type,$extList='')
+ *  602:     function makeClip($theData)
+ *  647:     function makeRef($theData)
  *
- * TOTAL FUNCTIONS: 15
+ * TOTAL FUNCTIONS: 16
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -133,7 +134,7 @@ class fileList extends t3lib_recordList {
 		$this->dirs = $this->readDirectory($this->path,'dir,link');
 		$this->files = $this->readDirectory($this->path,'file');
 		$this->totalItems=count($this->dirs['sorting'])+count($this->files['sorting']);
-		$this->HTMLcode.=$this->getTable($this->files, $this->dirs, 'fileext,tstamp,size,rw');
+		$this->HTMLcode.=$this->getTable($this->files, $this->dirs, 'fileext,tstamp,size,rw,_REF_');
 	}
 
 	/**
@@ -345,6 +346,9 @@ class fileList extends t3lib_recordList {
 							case '_CLIPBOARD_':
 								$theData[$field]=$this->makeClip($theFile);
 							break;
+							case '_REF_':
+								$theData[$field]=$this->makeRef($theFile);
+							break;
 							default:
 								$theData[$field]=t3lib_div::fixed_lgd($theFile[$field],$this->fixedL);
 							break;
@@ -475,6 +479,9 @@ class fileList extends t3lib_recordList {
 							break;
 							case '_CLIPBOARD_':
 								$theData[$field]=$this->makeClip($theFile);
+							break;
+							case '_REF_':
+								$theData[$field]=$this->makeRef($theFile);
 							break;
 							case 'file':
 								$theData[$field] = $this->linkWrapFile($theFile[$field],$theFile['path'].$theFile['file']);
@@ -629,6 +636,41 @@ class fileList extends t3lib_recordList {
 												'.implode('
 												',$cells).'
 											</div>';
+	}
+
+	/**
+	 * Make reference count
+	 *
+	 * @param	array		Array with information about the file/directory for which to make the clipboard panel for the listing.
+	 * @return	string		HTML
+	 */
+	function makeRef($theData)	{
+
+			// First, fit path to match what is stored in the refindex:
+		$fullIdent = $theData['path'].$theData['file'];
+
+		if (t3lib_div::isFirstPartOfStr($fullIdent,PATH_site))	{
+			$fullIdent = substr($fullIdent,strlen(PATH_site));
+		}
+
+			// Look up the path:
+		$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+			'*',
+			'sys_refindex',
+			'ref_table='.$GLOBALS['TYPO3_DB']->fullQuoteStr('_FILE','sys_refindex').
+				' AND ref_string='.$GLOBALS['TYPO3_DB']->fullQuoteStr($fullIdent,'sys_refindex').
+				' AND deleted=0'
+		);
+
+			// Compile information for title tag:
+		$infoData=array();
+		if (is_array($rows)) {
+			foreach($rows as $row)	{
+				$infoData[]=$row['tablename'].':'.$row['recuid'].':'.$row['field'];
+			}
+		}
+
+		return count($infoData) ? '<a href="#" onclick="'.htmlspecialchars('top.launchView(\''.$theData['path'].$theData['file'].'\', \'\'); return false;').'" title="'.htmlspecialchars(t3lib_div::fixed_lgd(implode(' / ',$infoData),100)).'">'.count($infoData).'</a>' : '';
 	}
 }
 

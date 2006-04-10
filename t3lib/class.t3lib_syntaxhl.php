@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2005 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2006 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -39,16 +39,16 @@
  *   84: class t3lib_syntaxhl
  *
  *              SECTION: Markup of Data Structure, <T3DataStructure>
- *  154:     function highLight_DS($str)
- *  181:     function highLight_DS_markUpRecursively($struct,$parent='',$app='')
+ *  156:     function highLight_DS($str)
+ *  183:     function highLight_DS_markUpRecursively($struct,$parent='',$app='')
  *
  *              SECTION: Markup of Data Structure, <T3FlexForms>
- *  266:     function highLight_FF($str)
- *  293:     function highLight_FF_markUpRecursively($struct,$parent='',$app='')
+ *  268:     function highLight_FF($str)
+ *  295:     function highLight_FF_markUpRecursively($struct,$parent='',$app='')
  *
  *              SECTION: Various
- *  374:     function getAllTags($str)
- *  405:     function splitXMLbyTags($tagList,$str)
+ *  376:     function getAllTags($str)
+ *  407:     function splitXMLbyTags($tagList,$str)
  *
  * TOTAL FUNCTIONS: 6
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -113,6 +113,8 @@ class t3lib_syntaxhl {
 		'meta' => array('<span style="font-weight: bold; color: #800080;">','</span>'),
 		'data' => array('<span style="font-weight: bold; color: #800080;">','</span>'),
 		'el' => array('<span style="font-weight: bold; color: #80a000;">','</span>'),
+		'itemType' => array('<span style="font-weight: bold; color: #804000;">','</span>'),
+		'section' => array('<span style="font-weight: bold; color: #604080;">','</span>'),
 		'numIndex' => array('<span style="color: #333333;">','</span>'),
 		'_unknown' => array('<span style="font-style: italic; color: #666666;">','</span>'),
 

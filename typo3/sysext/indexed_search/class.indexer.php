@@ -35,91 +35,94 @@
  *
  *
  *
- *  138: class tx_indexedsearch_indexer
- *  204:     function hook_indexContent(&$pObj)
+ *  141: class tx_indexedsearch_indexer
+ *  207:     function hook_indexContent(&$pObj)
  *
  *              SECTION: Backend API
- *  303:     function backend_initIndexer($id, $type, $sys_language_uid, $MP, $uidRL, $cHash_array=array(), $createCHash=FALSE)
- *  340:     function backend_setFreeIndexUid($freeIndexUid)
- *  357:     function backend_indexAsTYPO3Page($title, $keywords, $description, $content, $charset, $mtime, $crdate=0, $recordUid=0)
+ *  308:     function backend_initIndexer($id, $type, $sys_language_uid, $MP, $uidRL, $cHash_array=array(), $createCHash=FALSE)
+ *  347:     function backend_setFreeIndexUid($freeIndexUid, $freeIndexSetId=0)
+ *  365:     function backend_indexAsTYPO3Page($title, $keywords, $description, $content, $charset, $mtime, $crdate=0, $recordUid=0)
  *
  *              SECTION: Initialization
- *  408:     function init()
- *  459:     function initializeExternalParsers()
+ *  416:     function init()
+ *  468:     function initializeExternalParsers()
  *
  *              SECTION: Indexing; TYPO3 pages (HTML content)
- *  500:     function indexTypo3PageContent()
- *  586:     function splitHTMLContent($content)
- *  632:     function getHTMLcharset($content)
- *  647:     function convertHTMLToUtf8($content,$charset='')
- *  675:     function embracingTags($string,$tagName,&$tagContent,&$stringAfter,&$paramList)
- *  702:     function typoSearchTags(&$body)
- *  731:     function extractLinks($content)
- *  774:     function extractHyperLinks($string)
+ *  509:     function indexTypo3PageContent()
+ *  596:     function splitHTMLContent($content)
+ *  642:     function getHTMLcharset($content)
+ *  657:     function convertHTMLToUtf8($content,$charset='')
+ *  685:     function embracingTags($string,$tagName,&$tagContent,&$stringAfter,&$paramList)
+ *  712:     function typoSearchTags(&$body)
+ *  741:     function extractLinks($content)
+ *  812:     function extractHyperLinks($string)
  *
  *              SECTION: Indexing; external URL
- *  826:     function indexExternalUrl($externalUrl)
- *  857:     function getUrlHeaders($url, $timeout = 2)
+ *  871:     function indexExternalUrl($externalUrl)
+ *  902:     function getUrlHeaders($url)
  *
  *              SECTION: Indexing; external files (PDF, DOC, etc)
- *  917:     function indexRegularDocument($file, $force=FALSE, $contentTmpFile='', $altExtension='')
- * 1023:     function readFileContent($ext,$absFile,$cPKey)
- * 1040:     function fileContentParts($ext,$absFile)
- * 1058:     function splitRegularContent($content)
+ *  948:     function indexRegularDocument($file, $force=FALSE, $contentTmpFile='', $altExtension='')
+ * 1054:     function readFileContent($ext,$absFile,$cPKey)
+ * 1071:     function fileContentParts($ext,$absFile)
+ * 1089:     function splitRegularContent($content)
  *
  *              SECTION: Analysing content, Extracting words
- * 1091:     function charsetEntity2utf8(&$contentArr, $charset)
- * 1114:     function procesWordsInArrays($contentArr)
- * 1137:     function bodyDescription($contentArr)
- * 1159:     function indexAnalyze($content)
- * 1180:     function analyzeHeaderinfo(&$retArr,$content,$key,$offset)
- * 1199:     function analyzeBody(&$retArr,$content)
- * 1219:     function metaphone($word,$retRaw=FALSE)
+ * 1122:     function charsetEntity2utf8(&$contentArr, $charset)
+ * 1145:     function processWordsInArrays($contentArr)
+ * 1170:     function procesWordsInArrays($contentArr)
+ * 1180:     function bodyDescription($contentArr)
+ * 1202:     function indexAnalyze($content)
+ * 1223:     function analyzeHeaderinfo(&$retArr,$content,$key,$offset)
+ * 1242:     function analyzeBody(&$retArr,$content)
+ * 1262:     function metaphone($word,$retRaw=FALSE)
  *
  *              SECTION: SQL; TYPO3 Pages
- * 1261:     function submitPage()
- * 1330:     function submit_grlist($hash,$phash_x)
- * 1350:     function submit_section($hash,$hash_t3)
- * 1368:     function removeOldIndexedPages($phash)
+ * 1304:     function submitPage()
+ * 1378:     function submit_grlist($hash,$phash_x)
+ * 1398:     function submit_section($hash,$hash_t3)
+ * 1416:     function removeOldIndexedPages($phash)
  *
  *              SECTION: SQL; External media
- * 1411:     function submitFilePage($hash,$file,$subinfo,$ext,$mtime,$ctime,$size,$content_md5h,$contentParts)
- * 1473:     function submitFile_grlist($hash)
- * 1487:     function submitFile_section($hash)
- * 1501:     function removeOldIndexedFiles($phash)
+ * 1459:     function submitFilePage($hash,$file,$subinfo,$ext,$mtime,$ctime,$size,$content_md5h,$contentParts)
+ * 1525:     function submitFile_grlist($hash)
+ * 1539:     function submitFile_section($hash)
+ * 1553:     function removeOldIndexedFiles($phash)
  *
  *              SECTION: SQL Helper functions
- * 1537:     function checkMtimeTstamp($mtime,$phash)
- * 1573:     function checkContentHash()
- * 1590:     function checkExternalDocContentHash($hashGr,$content_md5h)
- * 1604:     function is_grlist_set($phash_x)
- * 1617:     function update_grlist($phash,$phash_x)
- * 1632:     function updateTstamp($phash,$mtime=0)
- * 1648:     function updateParsetime($phash,$parsetime)
- * 1661:     function updateRootline()
- * 1676:     function getRootLineFields(&$fieldArr)
- * 1695:     function removeLoginpagesWithContentHash()
+ * 1589:     function checkMtimeTstamp($mtime,$phash)
+ * 1625:     function checkContentHash()
+ * 1642:     function checkExternalDocContentHash($hashGr,$content_md5h)
+ * 1656:     function is_grlist_set($phash_x)
+ * 1669:     function update_grlist($phash,$phash_x)
+ * 1684:     function updateTstamp($phash,$mtime=0)
+ * 1699:     function updateSetId($phash)
+ * 1714:     function updateParsetime($phash,$parsetime)
+ * 1727:     function updateRootline()
+ * 1742:     function getRootLineFields(&$fieldArr)
+ * 1761:     function removeLoginpagesWithContentHash()
+ * 1778:     function includeCrawlerClass()
  *
  *              SECTION: SQL; Submitting words
- * 1730:     function checkWordList($wl)
- * 1767:     function submitWords($wl,$phash)
- * 1791:     function freqMap($freq)
+ * 1805:     function checkWordList($wl)
+ * 1842:     function submitWords($wl,$phash)
+ * 1866:     function freqMap($freq)
  *
  *              SECTION: Hashing
- * 1824:     function setT3Hashes()
- * 1850:     function setExtHashes($file,$subinfo=array())
- * 1874:     function md5inthash($str)
- * 1884:     function makeCHash($paramArray)
+ * 1899:     function setT3Hashes()
+ * 1925:     function setExtHashes($file,$subinfo=array())
+ * 1949:     function md5inthash($str)
+ * 1959:     function makeCHash($paramArray)
  *
  *              SECTION: Internal logging functions
- * 1916:     function log_push($msg,$key)
- * 1925:     function log_pull()
- * 1936:     function log_setTSlogMessage($msg, $errorNum=0)
+ * 1991:     function log_push($msg,$key)
+ * 2000:     function log_pull()
+ * 2011:     function log_setTSlogMessage($msg, $errorNum=0)
  *
  *              SECTION: tslib_fe hooks:
- * 1961:     function fe_headerNoCache(&$params, $ref)
+ * 2036:     function fe_headerNoCache(&$params, $ref)
  *
- * TOTAL FUNCTIONS: 56
+ * TOTAL FUNCTIONS: 59
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -175,7 +178,7 @@ class tx_indexedsearch_indexer {
 	var $externalFileCounter = 0;
 
 	var $conf = array();		// Configuration set internally (see init functions for required keys and their meaning)
-	var $indexerConfig = array();	// Indexer configuration
+	var $indexerConfig = array();	// Indexer configuration, coming from $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['indexed_search']
 	var $hash = array();		// Hash array, contains phash and phash_grouping
 	var $file_phash_arr = array();	// Hash array for files
 	var $contentParts = array();	// Content of TYPO3 page
@@ -227,48 +230,49 @@ class tx_indexedsearch_indexer {
 			if (!$indexerConfig['disableFrontendIndexing'] || $this->crawlerActive)	{
 				if (!$pObj->page['no_search'])	{
 					if (!$pObj->no_cache)	{
+						if (!strcmp($pObj->sys_language_uid,$pObj->sys_language_content))	{
 
-							// Setting up internal configuration from config array:
-						$this->conf = array();
+								// Setting up internal configuration from config array:
+							$this->conf = array();
 
-							// Information about page for which the indexing takes place
-						$this->conf['id'] = $pObj->id;				// Page id
-						$this->conf['type'] = $pObj->type;			// Page type
-						$this->conf['sys_language_uid'] = $pObj->sys_language_uid;	// sys_language UID of the language of the indexing.
-						$this->conf['MP'] = $pObj->MP;				// MP variable, if any (Mount Points)
-						$this->conf['gr_list'] = $pObj->gr_list;	// Group list
+								// Information about page for which the indexing takes place
+							$this->conf['id'] = $pObj->id;				// Page id
+							$this->conf['type'] = $pObj->type;			// Page type
+							$this->conf['sys_language_uid'] = $pObj->sys_language_uid;	// sys_language UID of the language of the indexing.
+							$this->conf['MP'] = $pObj->MP;				// MP variable, if any (Mount Points)
+							$this->conf['gr_list'] = $pObj->gr_list;	// Group list
 
-						$this->conf['cHash'] = $pObj->cHash;					// cHash string for additional parameters
-						$this->conf['cHash_array'] = $pObj->cHash_array;		// Array of the additional parameters
+							$this->conf['cHash'] = $pObj->cHash;					// cHash string for additional parameters
+							$this->conf['cHash_array'] = $pObj->cHash_array;		// Array of the additional parameters
 
-						$this->conf['crdate'] = $pObj->page['crdate'];			// The creation date of the TYPO3 page
-						$this->conf['page_cache_reg1'] = $pObj->page_cache_reg1;	// reg1 of the caching table. Not known what practical use this has.
+							$this->conf['crdate'] = $pObj->page['crdate'];			// The creation date of the TYPO3 page
+							$this->conf['page_cache_reg1'] = $pObj->page_cache_reg1;	// reg1 of the caching table. Not known what practical use this has.
 
-							// Root line uids
-						$this->conf['rootline_uids'] = array();
-						foreach($pObj->config['rootLine'] as $rlkey => $rldat)	{
-							$this->conf['rootline_uids'][$rlkey] = $rldat['uid'];
-						}
+								// Root line uids
+							$this->conf['rootline_uids'] = array();
+							foreach($pObj->config['rootLine'] as $rlkey => $rldat)	{
+								$this->conf['rootline_uids'][$rlkey] = $rldat['uid'];
+							}
 
-							// Content of page:
-						$this->conf['content'] = $pObj->content;					// Content string (HTML of TYPO3 page)
-						$this->conf['indexedDocTitle'] = $pObj->convOutputCharset($pObj->indexedDocTitle);	// Alternative title for indexing
-						$this->conf['metaCharset'] = $pObj->metaCharset;			// Character set of content (will be converted to utf-8 during indexing)
-						$this->conf['mtime'] = $pObj->register['SYS_LASTCHANGED'];	// Most recent modification time (seconds) of the content on the page. Used to evaluate whether it should be re-indexed.
+								// Content of page:
+							$this->conf['content'] = $pObj->content;					// Content string (HTML of TYPO3 page)
+							$this->conf['indexedDocTitle'] = $pObj->convOutputCharset($pObj->indexedDocTitle);	// Alternative title for indexing
+							$this->conf['metaCharset'] = $pObj->metaCharset;			// Character set of content (will be converted to utf-8 during indexing)
+							$this->conf['mtime'] = $pObj->register['SYS_LASTCHANGED'];	// Most recent modification time (seconds) of the content on the page. Used to evaluate whether it should be re-indexed.
 
-							// Configuration of behavior:
-						$this->conf['index_externals'] = $pObj->config['config']['index_externals'];	// Whether to index external documents like PDF, DOC etc. (if possible)
-						$this->conf['index_descrLgd'] = $pObj->config['config']['index_descrLgd'];		// Length of description text (max 250, default 200)
+								// Configuration of behavior:
+							$this->conf['index_externals'] = $pObj->config['config']['index_externals'];	// Whether to index external documents like PDF, DOC etc. (if possible)
+							$this->conf['index_descrLgd'] = $pObj->config['config']['index_descrLgd'];		// Length of description text (max 250, default 200)
 
-							// Set to zero:
-						$this->conf['recordUid'] = 0;
-						$this->conf['freeIndexUid'] = 0;
-						$this->conf['freeIndexSetId'] = 0;
+								// Set to zero:
+							$this->conf['recordUid'] = 0;
+							$this->conf['freeIndexUid'] = 0;
+							$this->conf['freeIndexSetId'] = 0;
 
-							// Init and start indexing:
-						$this->init();
-						$this->indexTypo3PageContent();
-
+								// Init and start indexing:
+							$this->init();
+							$this->indexTypo3PageContent();
+						} else $this->log_setTSlogMessage('Index page? No, ->sys_language_uid was different from sys_language_content which indicates that the page contains fall-back content and that would be falsely indexed as localized content.');
 					} else $this->log_setTSlogMessage('Index page? No, page was set to "no_cache" and so cannot be indexed.');
 				} else $this->log_setTSlogMessage('Index page? No, The "No Search" flag has been set in the page properties!');
 			} else $this->log_setTSlogMessage('Index page? No, Ordinary Frontend indexing during rendering is disabled.');
@@ -337,6 +341,7 @@ class tx_indexedsearch_indexer {
 	 * Sets the free-index uid. Can be called right after backend_initIndexer()
 	 *
 	 * @param	integer		Free index UID
+	 * @param	integer		Set id - an integer identifying the "set" of indexing operations.
 	 * @return	void
 	 */
 	function backend_setFreeIndexUid($freeIndexUid, $freeIndexSetId=0)	{
@@ -541,7 +546,7 @@ class tx_indexedsearch_indexer {
 
 						// Splitting words
 				$this->log_push('Extract words from content','');
-					$splitInWords = $this->procesWordsInArrays($this->contentParts);
+					$splitInWords = $this->processWordsInArrays($this->contentParts);
 				$this->log_pull();
 
 						// Analyse the indexed words.
@@ -705,7 +710,7 @@ class tx_indexedsearch_indexer {
 	 * @return	boolean		Returns true if a TYPOSEARCH_ tag was found, otherwise false.
 	 */
 	function typoSearchTags(&$body) {
-		$expBody = explode('<!--TYPO3SEARCH_',$body);
+		$expBody = preg_split('/\<\!\-\-[\s]?TYPO3SEARCH_/',$body);
 
 		if(count($expBody)>1) {
 			$body = '';
@@ -738,11 +743,20 @@ class tx_indexedsearch_indexer {
 			// Get links:
 		$list = $this->extractHyperLinks($content);
 
+		if ($this->indexerConfig['useCrawlerForExternalFiles'] && t3lib_extMgm::isLoaded('crawler'))	{
+			$this->includeCrawlerClass();
+			$crawler = t3lib_div::makeInstance('tx_crawler_lib');
+		}
+
 			// Traverse links:
 		foreach($list as $linkInfo)	{
 
 				// Decode entities:
-			$linkSource = t3lib_div::htmlspecialchars_decode($linkInfo['href']);
+			if ($linkInfo['localPath'])	{	// localPath means: This file is sent by a download script. While the indexed URL has to point to $linkInfo['href'], the absolute path to the file is specified here!
+				$linkSource = t3lib_div::htmlspecialchars_decode($linkInfo['localPath']);
+			} else {
+				$linkSource = t3lib_div::htmlspecialchars_decode($linkInfo['href']);
+			}
 
 				// Parse URL:
 			$qParts = parse_url($linkSource);
@@ -760,10 +774,44 @@ class tx_indexedsearch_indexer {
 					$this->indexExternalUrl($linkSource);
 				}
 			} elseif (!$qParts['query']) {
-				$localFile = t3lib_div::getFileAbsFileName(PATH_site.$linkSource);
+				if (t3lib_div::isAllowedAbsPath($linkSource))	{
+					$localFile = $linkSource;
+				} else {
+					$localFile = t3lib_div::getFileAbsFileName(PATH_site.$linkSource);
+				}
 				if ($localFile && @is_file($localFile))	{
+
 						// Index local file:
-					$this->indexRegularDocument($linkSource);
+					if ($linkInfo['localPath'])	{
+
+						$fI = pathinfo($linkSource);
+						$ext = strtolower($fI['extension']);
+						if (is_object($crawler))	{
+							$params = array(
+								'document' => $linkSource,
+								'alturl' => $linkInfo['href'],
+								'conf' => $this->conf
+							);
+							unset($params['conf']['content']);
+
+							$crawler->addQueueEntry_callBack(0,$params,'EXT:indexed_search/class.crawler.php:&tx_indexedsearch_files',$this->conf['id']);
+							$this->log_setTSlogMessage('media "'.$params['document'].'" added to "crawler" queue.',1);
+						} else {
+							$this->indexRegularDocument($linkInfo['href'], false, $linkSource, $ext);
+						}
+					} else {
+						if (is_object($crawler))	{
+							$params = array(
+								'document' => $linkSource,
+								'conf' => $this->conf
+							);
+							unset($params['conf']['content']);
+							$crawler->addQueueEntry_callBack(0,$params,'EXT:indexed_search/class.crawler.php:&tx_indexedsearch_files',$this->conf['id']);
+							$this->log_setTSlogMessage('media "'.$params['document'].'" added to "crawler" queue.',1);
+						} else {
+							$this->indexRegularDocument($linkSource);
+						}
+					}
 				}
 			}
 		}
@@ -783,18 +831,25 @@ class tx_indexedsearch_indexer {
 
 		$parts = $this->htmlParser->splitTags('a',$string);
 		$list = array();
-		foreach($parts as $k => $v)	{
+		foreach ($parts as $k => $v)	{
 			if ($k%2)	{
 				$params = $this->htmlParser->get_tag_attributes($v,1);
 				$firstTagName = $this->htmlParser->getFirstTagName($v);	// The 'name' of the first tag
 
-				switch(strtolower($firstTagName))	{
+				switch (strtolower($firstTagName))	{
 					case 'a':
 						$src = $params[0]['href'];
 						if ($src)	{
+								// Check if a local path to that file has been set - useful if you are using a download script.
+							$md5 = t3lib_div::shortMD5($src);
+							if (is_array($indexLocalFiles=$GLOBALS['T3_VAR']['ext']['indexed_search']['indexLocalFiles']))	{
+								$localPath = isset($indexLocalFiles[$md5]) ? $indexLocalFiles[$md5] : '';
+							} else $localPath=false;
+
 							$list[] = array(
 								'tag' => $v,
-								'href' => $params[0]['href']
+								'href' => $params[0]['href'],
+								'localPath' => $localPath
 							);
 						}
 					break;
@@ -859,32 +914,18 @@ class tx_indexedsearch_indexer {
 	 * @param	integer		Timeout (seconds?)
 	 * @return	mixed		If no answer, returns false. Otherwise an array where HTTP headers are keys
 	 */
-	function getUrlHeaders($url, $timeout = 2)	{
-		$url = parse_url($url);
+	function getUrlHeaders($url)	{
+		$content = t3lib_div::getURL($url,2);	// Try to get the headers only
 
-		if(!in_array($url['scheme'],array('','http')))	return FALSE;
-
-		$fp = fsockopen ($url['host'], ($url['port'] > 0 ? $url['port'] : 80), $errno, $errstr, $timeout);
-		if (!$fp)	{
-			return FALSE;
-		} else {
-			$msg = "GET ".$url['path'].($url['query'] ? '?'.$url['query'] : '')." HTTP/1.0\r\nHost: ".$url['host']."\r\n\r\n";
-			fputs ($fp, $msg);
-			$d = '';
-			while (!feof($fp)) {
-				$line = fgets ($fp,2048);
-
-				$d.=$line;
-				if (!strlen(trim($line)))	{
-					break;
-				}
-			}
-			fclose ($fp);
-
+		if (strlen($content))	{
 				// Compile headers:
-			$headers = t3lib_div::trimExplode(chr(10),$d,1);
+			$headers = t3lib_div::trimExplode(chr(10),$content,1);
 			$retVal = array();
 			foreach($headers as $line)	{
+				if (!strlen(trim($line)))	{
+					break;	// Stop at the first empty line (= end of header)
+				}
+
 				list($headKey, $headValue) = explode(':', $line, 2);
 				$retVal[$headKey] = $headValue;
 			}
@@ -938,7 +979,7 @@ class tx_indexedsearch_indexer {
 		}
 
 			// Indexing the document:
-		if ($absFile &&  @is_file($absFile))	{
+		if ($absFile && @is_file($absFile))	{
 			if ($this->external_parsers[$ext])	{
 				$mtime = filemtime($absFile);
 				$cParts = $this->fileContentParts($ext,$absFile);
@@ -976,7 +1017,7 @@ class tx_indexedsearch_indexer {
 
 										// Splitting words
 									$this->log_push('Extract words from content','');
-										$splitInWords = $this->procesWordsInArrays($contentParts);
+										$splitInWords = $this->processWordsInArrays($contentParts);
 									$this->log_pull();
 
 										// Analyse the indexed words.
@@ -1116,7 +1157,7 @@ class tx_indexedsearch_indexer {
 	 * @param	array		Array of content to index, see splitHTMLContent() and splitRegularContent()
 	 * @return	array		Content input array modified so each key is not a unique array of words
 	 */
-	function procesWordsInArrays($contentArr)	{
+	function processWordsInArrays($contentArr)	{
 
 			// split all parts to words
 		reset($contentArr);
@@ -1131,6 +1172,18 @@ class tx_indexedsearch_indexer {
 
 			// Return modified array:
 		return $contentArr;
+	}
+
+	/**
+	 * Processing words in the array from split*Content -functions
+	 * This function is only a wrapper because the function has been removed (see above).
+	 *
+	 * @param	array		Array of content to index, see splitHTMLContent() and splitRegularContent()
+	 * @return	array		Content input array modified so each key is not a unique array of words
+	 * @deprecated
+	 */
+	function procesWordsInArrays($contentArr)	{
+		return $this->processWordsInArrays($contentArr);
 	}
 
 	/**
@@ -1307,6 +1360,9 @@ class tx_indexedsearch_indexer {
 			'phash' => $this->hash['phash'],
 			'fulltextdata' => implode(' ', $this->contentParts)
 		);
+		if ($this->indexerConfig['fullTextDataLength']>0)	{
+			$fields['fulltextdata'] = substr($fields['fulltextdata'],0,$this->indexerConfig['fullTextDataLength']);
+		}
 		$GLOBALS['TYPO3_DB']->exec_INSERTquery('index_fulltext', $fields);
 
 			// PROCESSING index_debug
@@ -1427,7 +1483,7 @@ class tx_indexedsearch_indexer {
 			// Split filename:
 		$fileParts = parse_url($file);
 
-			// setting new
+			// Setting new
 		$fields = array(
 			'phash' => $hash['phash'],
 			'phash_grouping' => $hash['phash_grouping'],
@@ -1455,6 +1511,9 @@ class tx_indexedsearch_indexer {
 			'phash' => $hash['phash'],
 			'fulltextdata' => implode(' ', $contentParts)
 		);
+		if ($this->indexerConfig['fullTextDataLength']>0)	{
+			$fields['fulltextdata'] = substr($fields['fulltextdata'],0,$this->indexerConfig['fullTextDataLength']);
+		}
 		$GLOBALS['TYPO3_DB']->exec_INSERTquery('index_fulltext', $fields);
 
 			// PROCESSING index_debug
@@ -1647,7 +1706,7 @@ class tx_indexedsearch_indexer {
 	}
 
 	/**
-	 * Update SetID
+	 * Update SetID of the index_phash record.
 	 *
 	 * @param	integer		phash value
 	 * @return	void
@@ -1726,7 +1785,16 @@ class tx_indexedsearch_indexer {
 		}
 	}
 
+	/**
+	 * Includes the crawler class
+	 *
+	 * @return	void
+	 */
+	function includeCrawlerClass()	{
+		global $TYPO3_CONF_VARS;
 
+		require_once(t3lib_extMgm::extPath('crawler').'class.tx_crawler_lib.php');
+	}
 
 
 

@@ -38,15 +38,17 @@
  *
  *
  *
- *   97: class SC_tslib_showpic
- *  118:     function init()
- *  166:     function main()
- *  213:     function printContent()
+ *  112: class SC_tslib_showpic
+ *  133:     function init()
+ *  190:     function main()
+ *  237:     function printContent()
  *
  * TOTAL FUNCTIONS: 3
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
+
+
 
 
 // *******************************
@@ -60,13 +62,15 @@ error_reporting (E_ALL ^ E_NOTICE);
 // ***********************
 define('TYPO3_OS', stristr(PHP_OS,'win')&&!stristr(PHP_OS,'darwin')?'WIN':'');
 define('TYPO3_MODE','FE');
-define('PATH_thisScript',str_replace('//','/', str_replace('\\','/', (php_sapi_name()=='cgi'||php_sapi_name()=='isapi' ||php_sapi_name()=='cgi-fcgi')&&($_SERVER['ORIG_PATH_TRANSLATED']?$_SERVER['ORIG_PATH_TRANSLATED']:$_SERVER['PATH_TRANSLATED'])? ($_SERVER['ORIG_PATH_TRANSLATED']?$_SERVER['ORIG_PATH_TRANSLATED']:$_SERVER['PATH_TRANSLATED']):($_SERVER['ORIG_SCRIPT_FILENAME']?$_SERVER['ORIG_SCRIPT_FILENAME']:$_SERVER['SCRIPT_FILENAME']))));
+if (!defined('PATH_thisScript')) 	define('PATH_thisScript',str_replace('//','/', str_replace('\\','/', (php_sapi_name()=='cgi'||php_sapi_name()=='isapi' ||php_sapi_name()=='cgi-fcgi')&&($_SERVER['ORIG_PATH_TRANSLATED']?$_SERVER['ORIG_PATH_TRANSLATED']:$_SERVER['PATH_TRANSLATED'])? ($_SERVER['ORIG_PATH_TRANSLATED']?$_SERVER['ORIG_PATH_TRANSLATED']:$_SERVER['PATH_TRANSLATED']):($_SERVER['ORIG_SCRIPT_FILENAME']?$_SERVER['ORIG_SCRIPT_FILENAME']:$_SERVER['SCRIPT_FILENAME']))));
 
-define('PATH_site', dirname(PATH_thisScript).'/');
-define('PATH_t3lib', PATH_site.'t3lib/');
+if (!defined('PATH_site')) 			define('PATH_site', dirname(PATH_thisScript).'/');
+if (!defined('PATH_t3lib')) 		define('PATH_t3lib', PATH_site.'t3lib/');
 define('PATH_tslib', PATH_site.'tslib/');
 define('PATH_typo3conf', PATH_site.'typo3conf/');
 define('TYPO3_mainDir', 'typo3/');		// This is the directory of the backend administration for the sites of this TYPO3 installation.
+
+if (!@is_dir(PATH_typo3conf))	die('Cannot find configuration. This file is probably executed from the wrong location.');
 
 require_once(PATH_t3lib.'class.t3lib_div.php');
 require_once(PATH_t3lib.'class.t3lib_extmgm.php');
@@ -80,6 +84,17 @@ if (!defined ('TYPO3_db')) 	die ('The configuration file was not included.');
 require_once(PATH_t3lib.'class.t3lib_db.php');
 $TYPO3_DB = t3lib_div::makeInstance('t3lib_DB');
 
+
+
+
+
+
+
+
+# NOTICE: ALL LINES above can be commented out since this script is now used via the ?eID=tx_cms_showpic parameter passed to index.php!
+# For backwards compatibility in extensions using showpic.php directly this is kept for the version 4.0 until 4.5 where it is planned removed!
+
+if (!defined ('PATH_typo3conf')) 	die ('The configuration path was not properly defined!');
 require_once(PATH_t3lib.'class.t3lib_stdgraphic.php');
 
 
@@ -189,11 +204,10 @@ class SC_tslib_showpic {
 
 		if (strstr($this->width.$this->height, 'm')) {$max='m';} else {$max='';}
 
-		$this->height = t3lib_div::intInRange($this->height,0,1000);
-		$this->width = t3lib_div::intInRange($this->width,0,1000);
+		$this->height = t3lib_div::intInRange($this->height,0);
+		$this->width = t3lib_div::intInRange($this->width,0);
 		if ($this->frame)	{$this->frame = intval($this->frame);}
 		$imgInfo = $img->imageMagickConvert($this->file,'web',$this->width.$max,$this->height,$img->IMparams($this->effects),$this->frame,'');
-
 
 			// Create HTML output:
 		$this->content='';

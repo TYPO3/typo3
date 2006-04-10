@@ -10,7 +10,7 @@
 # Table structure for table 'be_groups'
 #
 CREATE TABLE be_groups (
-  uid int(11) unsigned DEFAULT '0' NOT NULL auto_increment,
+  uid int(11) unsigned NOT NULL auto_increment,
   pid int(11) unsigned DEFAULT '0' NOT NULL,
   tstamp int(11) unsigned DEFAULT '0' NOT NULL,
   title varchar(20) DEFAULT '' NOT NULL,
@@ -58,7 +58,7 @@ CREATE TABLE be_sessions (
 # Table structure for table 'be_users'
 #
 CREATE TABLE be_users (
-  uid int(11) unsigned DEFAULT '0' NOT NULL auto_increment,
+  uid int(11) unsigned NOT NULL auto_increment,
   pid int(11) unsigned DEFAULT '0' NOT NULL,
   tstamp int(11) unsigned DEFAULT '0' NOT NULL,
   username varchar(20) DEFAULT '' NOT NULL,
@@ -123,7 +123,7 @@ CREATE TABLE cache_imagesizes (
 # Table structure for table 'pages'
 #
 CREATE TABLE pages (
-  uid int(11) DEFAULT '0' NOT NULL auto_increment,
+  uid int(11) NOT NULL auto_increment,
   pid int(11) DEFAULT '0' NOT NULL,
   t3ver_oid int(11) DEFAULT '0' NOT NULL,
   t3ver_id int(11) DEFAULT '0' NOT NULL,
@@ -162,7 +162,7 @@ CREATE TABLE pages (
 # Table structure for table 'sys_be_shortcuts'
 #
 CREATE TABLE sys_be_shortcuts (
-  uid int(11) unsigned DEFAULT '0' NOT NULL auto_increment,
+  uid int(11) unsigned NOT NULL auto_increment,
   userid int(11) unsigned DEFAULT '0' NOT NULL,
   module_name tinytext NOT NULL,
   url text NOT NULL,
@@ -173,11 +173,24 @@ CREATE TABLE sys_be_shortcuts (
   KEY event (userid)
 );
 
+
+#
+# Table structure for table 'sys_preview'
+#
+CREATE TABLE sys_preview (
+  keyword varchar(32) DEFAULT '' NOT NULL,
+  tstamp int(11) DEFAULT '0' NOT NULL,
+  endtime int(11) DEFAULT '0' NOT NULL,
+  config text NOT NULL,
+  PRIMARY KEY (keyword)
+);
+
+
 #
 # Table structure for table 'sys_filemounts'
 #
 CREATE TABLE sys_filemounts (
-  uid int(11) unsigned DEFAULT '0' NOT NULL auto_increment,
+  uid int(11) unsigned NOT NULL auto_increment,
   pid int(11) unsigned DEFAULT '0' NOT NULL,
   tstamp int(11) unsigned DEFAULT '0' NOT NULL,
   title varchar(30) DEFAULT '' NOT NULL,
@@ -222,7 +235,7 @@ CREATE TABLE sys_workspace (
 # Table structure for table 'sys_history'
 #
 CREATE TABLE sys_history (
-  uid int(11) unsigned DEFAULT '0' NOT NULL auto_increment,
+  uid int(11) unsigned NOT NULL auto_increment,
   sys_log_uid int(11) DEFAULT '0' NOT NULL,
   history_data mediumblob NOT NULL,
   fieldlist blob NOT NULL,
@@ -240,7 +253,7 @@ CREATE TABLE sys_history (
 # Table structure for table 'sys_lockedrecords'
 #
 CREATE TABLE sys_lockedrecords (
-  uid int(11) unsigned DEFAULT '0' NOT NULL auto_increment,
+  uid int(11) unsigned NOT NULL auto_increment,
   userid int(11) unsigned DEFAULT '0' NOT NULL,
   tstamp int(11) unsigned DEFAULT '0' NOT NULL,
   record_table varchar(40) DEFAULT '' NOT NULL,
@@ -263,9 +276,10 @@ CREATE TABLE sys_refindex (
   softref_key varchar(30) DEFAULT '' NOT NULL,
   softref_id varchar(40) DEFAULT '' NOT NULL,
   sorting int(11) DEFAULT '0' NOT NULL,
+  deleted int(11) DEFAULT '0' NOT NULL,
   ref_table varchar(40) DEFAULT '' NOT NULL,
   ref_uid int(11) DEFAULT '0' NOT NULL,
-  ref_string varchar(40) DEFAULT '' NOT NULL,
+  ref_string varchar(200) DEFAULT '' NOT NULL,
 
   PRIMARY KEY (hash),
   KEY lookup_rec (tablename,recuid),
@@ -277,7 +291,7 @@ CREATE TABLE sys_refindex (
 # Table structure for table 'sys_log'
 #
 CREATE TABLE sys_log (
-  uid int(11) unsigned DEFAULT '0' NOT NULL auto_increment,
+  uid int(11) unsigned NOT NULL auto_increment,
   userid int(11) unsigned DEFAULT '0' NOT NULL,
   action tinyint(4) unsigned DEFAULT '0' NOT NULL,
   recuid int(11) unsigned DEFAULT '0' NOT NULL,
@@ -301,7 +315,7 @@ CREATE TABLE sys_log (
 # Table structure for table 'sys_language'
 #
 CREATE TABLE sys_language (
-  uid int(11) unsigned DEFAULT '0' NOT NULL auto_increment,
+  uid int(11) unsigned NOT NULL auto_increment,
   pid int(11) unsigned DEFAULT '0' NOT NULL,
   tstamp int(11) unsigned DEFAULT '0' NOT NULL,
   hidden tinyint(4) unsigned DEFAULT '0' NOT NULL,

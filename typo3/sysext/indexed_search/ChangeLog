@@ -1,3 +1,61 @@
+2006-04-06  Michael Stucki  <michael@typo3.org>
+
+	* Fixed bug #3132: preg_replace() compilation error
+	* Minor fixes to the CSS default style
+
+2006-03-26  Michael Stucki  <michael@typo3.org>
+
+	* Fix missing htmlspecialchars for section indexes
+	* Fix invalid (number-only) anchors when sections are used
+	* Fix some indenting (needed for the change below)
+	* Fixed "bug" #2956: Add a table-less XHTML 1.1-ready template (thanks to Robert Markula)
+
+2006-03-25  Michael Stucki  <michael@typo3.org>
+
+	* Fixed bug #0177: Indexed Search cuts the first letter of domain name in search result
+	* Fixed bug #2666: Preview from searchresult shows rootpage only
+	* Fixed bug #2968: Some hidden fields were missing in the indexed_search form
+	* Fixed bug: Change marker detection in indexer class
+
+2006-03-19  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+
+	* Moved subtype exclude list from "cms"'s tbl_tt_content.php to ext_tables.php
+	* Removed "select_key" and "pages (CODE and Startingpoint) from the plugin UI
+
+2006-03-07  Michael Stucki  <michael@typo3.org>
+
+	* Changed a label key to prevent any problems in case the translation is not updated
+
+2006-03-06  Michael Stucki  <michael@typo3.org>
+
+	* Removed template_traditional.tmpl because it seems not needed
+	* Changes to template_css.tmpl to make it fully XHTML Transitional
+	* Changed the result browser: Use unsorted list instead of a table element
+	* Renamed template_css.tmpl to indexed_search.tmpl
+
+2006-02-15  Michael Stucki  <michael@typo3.org>
+
+	* Added $GLOBALS['T3_VAR']['ext']['indexed_search']['indexLocalFiles'] to the indexed_search. This array may contain key/value pairs of the MD5sum of a download URL (key) and the local path of that document (value).
+	* Added support for indexing Oasis/OpenDocument files
+	* OpenOffice.org/OpenDocument now uses "unzip" to extract content.xml/meta.xml. Should be faster than before, and is easier to configure.
+	* !!! Removed all options for indexing OpenOffice.org/OpenDocument files and replaced them with the above "unzip" option. Affected options are: nativeOOMethod, OOoExtract, ruby
+	* !!! Changed all default paths from /usr/local/bin/ to /usr/bin/
+
+2006-02-08  Michael Stucki  <michael@typo3.org>
+
+	* Added support to index files that contain whitespaces in the path
+	* Cleanup: Removed unused global definitions in modfunc1 script
+
+2005-01-30  Michael Stucki  <michael@typo3.org>
+
+	* Cleanup: Removed the TypoScript property "tableParams" which is not used anymore.
+	* Replaced the function "procesWordsInArray" with its correctly spelled pendant. The old function remains as a wrapper but is going to be removed sooner or later.
+	* Fixed non-working clearing of indexed_search page-hashes when the list of phashes caused an oversized URL
+
+2006-01-18  Michael Stucki  <michael@typo3.org>
+
+	* Fixed bug #1199: htmlspecialchars() called multiple times
+
 2005-10-28  Michael Stucki  <michael@typo3.org>
 
 	* Manual update

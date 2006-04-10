@@ -39,8 +39,8 @@
  *
  *   77: class SC_file_upload
  *  103:     function init()
- *  162:     function main()
- *  235:     function printContent()
+ *  171:     function main()
+ *  241:     function printContent()
  *
  * TOTAL FUNCTIONS: 3
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -153,7 +153,7 @@ class SC_file_upload {
 			function reload(a)	{	//
 				if (!changed || (changed '.$confirm.'))	{
 					var params = "&target="+escape(path)+"&number="+a+"&returnUrl='.htmlspecialchars($this->returnUrl).'";
-					document.location = "file_upload.php?"+params;
+					window.location.href = "file_upload.php?"+params;
 				}
 			}
 			function backToList()	{	//
@@ -231,9 +231,6 @@ class SC_file_upload {
 
 			// Add the HTML as a section:
 		$this->content.= $this->doc->section('',$code);
-
-			// Ending page
-		$this->content.= $this->doc->endPage();
 	}
 
 	/**
@@ -242,7 +239,8 @@ class SC_file_upload {
 	 * @return	void
 	 */
 	function printContent()	{
-
+		$this->content.= $this->doc->endPage();
+		$this->content = $this->doc->insertStylesAndJS($this->content);
 		echo $this->content;
 	}
 }

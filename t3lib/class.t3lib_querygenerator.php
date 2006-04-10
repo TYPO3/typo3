@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2001-2004 Christian Jul Jensen (christian@typo3.com)
+*  (c) 2001-2006 Christian Jul Jensen (christian@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -31,46 +31,49 @@
  *
  * @author	Christian Jul Jensen <christian@typo3.com>
  * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
+ * @coauthor	Jo Hasenau <info@cybercraft.de>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
  *
  *
  *
- *   95: class t3lib_queryGenerator
- *  176:     function makeFieldList()
- *  203:     function init($name,$table,$fieldList='')
- *  292:     function setAndCleanUpExternalLists($name,$list,$force='')
- *  308:     function procesData($qC='')
- *  411:     function cleanUpQueryConfig($queryConfig)
- *  468:     function getFormElements($subLevel=0,$queryConfig='',$parent='')
- *  555:     function printCodeArray($codeArr,$l=0)
- *  578:     function formatQ($str)
- *  591:     function mkOperatorSelect($name,$op,$draw,$submit)
- *  613:     function mkTypeSelect($name,$fieldName,$prepend='FIELD_')
- *  632:     function verifyType($fieldName)
- *  649:     function verifyComparison($comparison,$neg)
- *  668:     function mkFieldToInputSelect($name,$fieldName)
- *  689:     function mkTableSelect($name,$cur)
- *  711:     function mkCompSelect($name,$comparison,$neg)
- *  729:     function getSubscript($arr)
- *  744:     function initUserDef()
- *  753:     function userDef()
- *  762:     function userDefCleanUp($queryConfig)
- *  773:     function getQuery ($queryConfig,$pad='')
- *  803:     function getQuerySingle($conf,$first)
- *  824:     function cleanInputVal($conf,$suffix='')
- *  843:     function getUserDefQuery ($qcArr)
- *  851:     function updateIcon()
- *  860:     function getLabelCol()
- *  872:     function makeSelectorTable($modSettings,$enableList='table,fields,query,group,order,limit')
- *  976:     function getSelectQuery($qString='')
- *  996:     function JSbottom($formname='forms[0]')
- * 1002:     function typo3FormFieldSet(theField, evallist, is_in, checkbox, checkboxValue)
- * 1020:     function typo3FormFieldGet(theField, evallist, is_in, checkbox, checkboxValue, checkbox_off)
+ *   98: class t3lib_queryGenerator
+ *  245:     function makeFieldList()
+ *  273:     function init($name,$table,$fieldList='')
+ *  410:     function setAndCleanUpExternalLists($name,$list,$force='')
+ *  426:     function procesData($qC='')
+ *  529:     function cleanUpQueryConfig($queryConfig)
+ *  586:     function getFormElements($subLevel=0,$queryConfig='',$parent='')
+ *  744:     function makeOptionList($fN, $conf, $table)
+ *  953:     function printCodeArray($codeArr,$l=0)
+ *  976:     function formatQ($str)
+ *  989:     function mkOperatorSelect($name,$op,$draw,$submit)
+ * 1011:     function mkTypeSelect($name,$fieldName,$prepend='FIELD_')
+ * 1032:     function verifyType($fieldName)
+ * 1049:     function verifyComparison($comparison,$neg)
+ * 1068:     function mkFieldToInputSelect($name,$fieldName)
+ * 1091:     function mkTableSelect($name,$cur)
+ * 1113:     function mkCompSelect($name,$comparison,$neg)
+ * 1131:     function getSubscript($arr)
+ * 1146:     function initUserDef()
+ * 1155:     function userDef()
+ * 1164:     function userDefCleanUp($queryConfig)
+ * 1175:     function getQuery ($queryConfig,$pad='')
+ * 1205:     function getQuerySingle($conf,$first)
+ * 1245:     function cleanInputVal($conf,$suffix='')
+ * 1270:     function getUserDefQuery ($qcArr)
+ * 1278:     function updateIcon()
+ * 1287:     function getLabelCol()
+ * 1299:     function makeSelectorTable($modSettings,$enableList='table,fields,query,group,order,limit')
+ * 1431:     function getTreeList($id, $depth, $begin=0, $perms_clause)
+ * 1465:     function getSelectQuery($qString = '', $fN = '')
+ * 1504:     function JSbottom($formname='forms[0]')
+ * 1510:     function typo3FormFieldSet(theField, evallist, is_in, checkbox, checkboxValue)
+ * 1528:     function typo3FormFieldGet(theField, evallist, is_in, checkbox, checkboxValue, checkbox_off)
  *
- * TOTAL FUNCTIONS: 30
- * (This index is automatically created/updated by the extension 'extdeveval')
+ * TOTAL FUNCTIONS: 32
+ * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
 
@@ -106,7 +109,7 @@ class t3lib_queryGenerator	{
 			'5_' => 'does not end with',
 			'6_' => 'equals',
 			'7_' => 'does not equal',
-				 // Type = date,number ,	offset = 32
+				 // Type = number , offset = 32
 			'32_' => 'equals',
 			'33_' => 'does not equal',
 			'34_' => 'is greater than',
@@ -118,7 +121,37 @@ class t3lib_queryGenerator	{
 			'40_' => 'binary AND equals',
 			'41_' => 'binary AND does not equal',
 			'42_' => 'binary OR equals',
-			'43_' => 'binary OR does not equal'
+			'43_' => 'binary OR does not equal',
+				// Type = multiple, relation, files , offset = 64
+			'64_' => 'equals',
+			'65_' => 'does not equal',
+			'66_' => 'contains',
+			'67_' => 'does not contain',
+			'68_' => 'is in list',
+			'69_' => 'is not in list',
+			'70_' => 'binary AND equals',
+			'71_' => 'binary AND does not equal',
+			'72_' => 'binary OR equals',
+			'73_' => 'binary OR does not equal',
+				// Type = date,time  offset = 96
+			'96_' => 'equals',
+			'97_' => 'does not equal',
+			'98_' => 'is greater than',
+			'99_' => 'is less than',
+			'100_' => 'is between',
+			'101_' => 'is not between',
+			'102_' => 'binary AND equals',
+			'103_' => 'binary AND does not equal',
+			'104_' => 'binary OR equals',
+			'105_' => 'binary OR does not equal',
+				// Type = boolean,  offset = 128
+			'128_' => 'is True',
+			'129_' => 'is False',
+				// Type = binary , offset = 160
+			'160_' => 'equals',
+			'161_' => 'does not equal',
+			'162_' => 'contains',
+			'163_' => 'does not contain'
 		)
 	);
 
@@ -132,7 +165,7 @@ class t3lib_queryGenerator	{
 		'5' => "#FIELD# NOT LIKE '%#VALUE#'",
 		'6' => "#FIELD# = '#VALUE#'",
 		'7' => "#FIELD# != '#VALUE#'",
-			// Type = date,number ,	offset = 32
+			// Type = number, offset = 32
 		'32' => "#FIELD# = '#VALUE#'",
 		'33' => "#FIELD# != '#VALUE#'",
 		'34' => '#FIELD# > #VALUE#',
@@ -144,13 +177,49 @@ class t3lib_queryGenerator	{
 		'40' => '(#FIELD# & #VALUE#)=#VALUE#',
 		'41' => '(#FIELD# & #VALUE#)!=#VALUE#',
 		'42' => '(#FIELD# | #VALUE#)=#VALUE#',
-		'43' => '(#FIELD# | #VALUE#)!=#VALUE#'
+		'43' => '(#FIELD# | #VALUE#)!=#VALUE#',
+			// Type = multiple, relation, files , offset = 64
+		'64' => "#FIELD# = '#VALUE#'",
+		'65' => "#FIELD# != '#VALUE#'",
+		'66' => "#FIELD# LIKE '%#VALUE#%' AND #FIELD# LIKE '%#VALUE1#%'",
+		'67' => "(#FIELD# NOT LIKE '%#VALUE#%' OR #FIELD# NOT LIKE '%#VALUE1#%')",
+		'68' => '#FIELD# IN (#VALUE#)',
+		'69' => '#FIELD# NOT IN (#VALUE#)',
+		'70' => '(#FIELD# & #VALUE#)=#VALUE#',
+		'71' => '(#FIELD# & #VALUE#)!=#VALUE#',
+		'72' => '(#FIELD# | #VALUE#)=#VALUE#',
+		'73' => '(#FIELD# | #VALUE#)!=#VALUE#',
+			// Type = date, offset = 32
+		'96' => "#FIELD# = '#VALUE#'",
+		'97' => "#FIELD# != '#VALUE#'",
+		'98' => '#FIELD# > #VALUE#',
+		'99' => '#FIELD# < #VALUE#',
+		'100' => '#FIELD# >= #VALUE# AND #FIELD# <= #VALUE1#',
+		'101' => 'NOT (#FIELD# >= #VALUE# AND #FIELD# <= #VALUE1#)',
+		'102' => '(#FIELD# & #VALUE#)=#VALUE#',
+		'103' => '(#FIELD# & #VALUE#)!=#VALUE#',
+		'104' => '(#FIELD# | #VALUE#)=#VALUE#',
+		'105' => '(#FIELD# | #VALUE#)!=#VALUE#',
+			// Type = boolean, offset = 128
+		'128' => "#FIELD# = '1'",
+		'129' => "#FIELD# != '1'",
+			// Type = binary = 160
+		'160' => "#FIELD# = '#VALUE#'",
+		'161' => "#FIELD# != '#VALUE#'",
+		'162' => '(#FIELD# & #VALUE#)=#VALUE#',
+		'163' => '(#FIELD# & #VALUE#)=0'
 	);
 
 	var $comp_offsets = array(
 		'text' => 0,
 		'number' => 1,
-		'date' => 1
+		'multiple' => 2,
+		'relation' => 2,
+		'files' => 2,
+		'date' => 3,
+		'time' => 3,
+		'boolean' => 4,
+		'binary' => 5
 	);
 	var $noWrap=' nowrap';
 
@@ -184,6 +253,7 @@ class t3lib_queryGenerator	{
 			}
 			$fieldListArr[]='uid';
 			$fieldListArr[]='pid';
+			$fieldListArr[]='deleted';
 			if ($TCA[$this->table]['ctrl']['tstamp'])	$fieldListArr[]=$TCA[$this->table]['ctrl']['tstamp'];
 			if ($TCA[$this->table]['ctrl']['crdate'])	$fieldListArr[]=$TCA[$this->table]['ctrl']['crdate'];
 			if ($TCA[$this->table]['ctrl']['cruser_id'])	$fieldListArr[]=$TCA[$this->table]['ctrl']['cruser_id'];
@@ -214,22 +284,51 @@ class t3lib_queryGenerator	{
 			reset($fieldArr);
 			while(list(,$fN)=each($fieldArr))	{
 				$fC = $TCA[$this->table]['columns'][$fN];
+				$this->fields[$fN] = $fC['config'];
+				$this->fields[$fN]['exclude'] = $fC['exclude'];
 				if (is_array($fC) && $fC['label'])	{
 					$this->fields[$fN]['label'] = ereg_replace(':$','',trim($GLOBALS['LANG']->sL($fC['label'])));
-					switch($fC['config']['type'])	{
+					switch ($this->fields[$fN]['type'])	{
 						case 'input':
-							if (eregi('int|year',$fC['config']['eval']))	{
+							if (eregi('int|year', $this->fields[$fN]['eval']))	{
 								$this->fields[$fN]['type']='number';
-							} elseif (eregi('date|time',$fC['config']['eval']))	{
+							} elseif (eregi('time', $this->fields[$fN]['eval']))	{
+								$this->fields[$fN]['type'] = 'time';
+							} elseif (eregi('date', $this->fields[$fN]['eval']))	{
 								$this->fields[$fN]['type']='date';
 							} else {
 								$this->fields[$fN]['type']='text';
 							}
 						break;
 						case 'check':
-						case 'select':
-							$this->fields[$fN]['type']='number';
+							if (!$this->fields[$fN]['items'])	{
+								$this->fields[$fN]['type'] = 'boolean';
+							} else {
+								$this->fields[$fN]['type'] = 'binary';
+							}
 						break;
+						case 'radio':
+							$this->fields[$fN]['type'] = 'multiple';
+						break;
+						case 'select':
+							$this->fields[$fN]['type'] = 'multiple';
+							if ($this->fields[$fN]['foreign_table'])	{
+								$this->fields[$fN]['type'] = 'relation';
+							}
+							if ($this->fields[$fN]['special'])	{
+								$this->fields[$fN]['type'] = 'text';
+							}
+						break;
+						case 'group':
+							$this->fields[$fN]['type'] = 'files';
+							if ($this->fields[$fN]['internal_type'] == 'db')	{
+								$this->fields[$fN]['type'] = 'relation';
+							}
+						break;
+						case 'user':
+						case 'flex':
+						case 'passthrough':
+						case 'none':
 						case 'text':
 						default:
 							$this->fields[$fN]['type']='text';
@@ -238,7 +337,26 @@ class t3lib_queryGenerator	{
 
 				} else {
 					$this->fields[$fN]['label']='[FIELD: '.$fN.']';
-					$this->fields[$fN]['type']='number';
+					switch ($fN)	{
+						case 'pid':
+							$this->fields[$fN]['type'] = 'relation';
+							$this->fields[$fN]['allowed'] = 'pages';
+						break;
+						case 'cruser_id':
+							$this->fields[$fN]['type'] = 'relation';
+							$this->fields[$fN]['allowed'] = 'be_users';
+						break;
+						case 'tstamp':
+						case 'crdate':
+							$this->fields[$fN]['type'] = 'time';
+						break;
+						case 'deleted':
+							$this->fields[$fN]['type'] = 'boolean';
+						break;
+						default:
+							$this->fields[$fN]['type'] = 'number';
+						break;
+					}
 				}
 			}
 		}
@@ -473,11 +591,12 @@ class t3lib_queryGenerator	{
 		$c=0;
 		$arrCount=0;
 		while(list($key,$conf)=each($queryConfig))	{
-			$subscript = $parent.'[$key]';
+			$subscript = $parent.'['.$key.']';
 			$lineHTML = '';
 			$lineHTML.=$this->mkOperatorSelect($this->name.$subscript,$conf['operator'],$c,($conf['type']!='FIELD_'));
 			if(substr($conf['type'],0,6)=='FIELD_') {
 				$fName = substr($conf['type'],6);
+				$this->fieldName = $fName;
 				$fType = $this->fields[$fName]['type'];
 				if($conf['comparison'] >> 5 != $this->comp_offsets[$fType]) $conf['comparison'] = $this->comp_offsets[$fType] << 5;
 
@@ -491,7 +610,6 @@ class t3lib_queryGenerator	{
 			} else {
 				$fType = 'ignore';
 			}
-//			debug($fType);
 			switch($fType)	{
 				case 'ignore':
 				break;
@@ -503,18 +621,85 @@ class t3lib_queryGenerator	{
 				case 'userdef':
 					 $lineHTML.=$this->userDef($this->name.$subscript,$conf,$fName,$fType);
 				break;
-				default:
+				case 'date':
 					$lineHTML.=$this->mkTypeSelect($this->name.$subscript.'[type]',$fName);
 					$lineHTML.=$this->mkCompSelect($this->name.$subscript.'[comparison]',$conf['comparison'],$conf['negate']?1:0);
-					$lineHTML.='<input type="checkbox" '.($conf['negate']?'checked':'').' name="'.$this->name.$subscript.'[negate]'.'" onClick="submit();">';
+					$lineHTML.='<input type="checkbox"'.($conf['negate']?' checked':'').' name="'.$this->name.$subscript.'[negate]'.'" onClick="submit();">';
 
+					if ($conf['comparison']==100 || $conf['comparison']==101)	{	// between
+						$lineHTML.='<input type="text" name="'.$this->name.$subscript.'[inputValue]_hr'.'" value="'.strftime('%e-%m-%Y', $conf['inputValue']).'" '.$GLOBALS['TBE_TEMPLATE']->formWidth(10).' onChange="typo3FormFieldGet(\''.$this->name.$subscript.'[inputValue]\', \'date\', \'\', 0,0);"><input type="hidden" value="'.htmlspecialchars($conf['inputValue']).'" name="'.$this->name.$subscript.'[inputValue]'.'">';
+						$lineHTML.='<input type="text" name="'.$this->name.$subscript.'[inputValue1]_hr'.'" value="'.strftime('%e-%m-%Y', $conf['inputValue1']).'" '.$GLOBALS['TBE_TEMPLATE']->formWidth(10).' onChange="typo3FormFieldGet(\''.$this->name.$subscript.'[inputValue1]\', \'date\', \'\', 0,0);"><input type="hidden" value="'.htmlspecialchars($conf['inputValue1']).'" name="'.$this->name.$subscript.'[inputValue1]'.'">';
+						$this->extJSCODE.='typo3FormFieldSet("'.$this->name.$subscript.'[inputValue]", '.date.', "", 0,0);';
+						$this->extJSCODE.='typo3FormFieldSet("'.$this->name.$subscript.'[inputValue1]", '.date.', "", 0,0);';
+					} else {
+						$lineHTML.='<input type="text" name="'.$this->name.$subscript.'[inputValue]_hr'.'" value="'.strftime('%e-%m-%Y', $conf['inputValue']).'" '.$GLOBALS['TBE_TEMPLATE']->formWidth(10).' onChange="typo3FormFieldGet(\''.$this->name.$subscript.'[inputValue]\', \'date\', \'\', 0,0);"><input type="hidden" value="'.htmlspecialchars($conf['inputValue']).'" name="'.$this->name.$subscript.'[inputValue]'.'">';
+						$this->extJSCODE.='typo3FormFieldSet("'.$this->name.$subscript.'[inputValue]", '.date.', "", 0,0);';
+					}
+				break;
+				case 'time':
+					$lineHTML.=$this->mkTypeSelect($this->name.$subscript.'[type]', $fName);
+					$lineHTML.=$this->mkCompSelect($this->name.$subscript.'[comparison]', $conf['comparison'], $conf['negate']?1:0);
+
+					$lineHTML.='<input type="checkbox"'.($conf['negate']?' checked':'').' name="'.$this->name.$subscript.'[negate]'.'" onClick="submit();">';
+					if ($conf['comparison']==100 || $conf['comparison']==101)	{	// between:
+						$lineHTML.='<input type="text" name="'.$this->name.$subscript.'[inputValue]_hr'.'" value="'.strftime('%H:%M %e-%m-%Y', $conf['inputValue']).'" '.$GLOBALS['TBE_TEMPLATE']->formWidth(10).' onChange="typo3FormFieldGet(\''.$this->name.$subscript.'[inputValue]\', \'datetime\', \'\', 0,0);"><input type="hidden" value="'.htmlspecialchars($conf['inputValue']).'" name="'.$this->name.$subscript.'[inputValue]'.'">';
+						$lineHTML.='<input type="text" name="'.$this->name.$subscript.'[inputValue1]_hr'.'" value="'.strftime('%H:%M %e-%m-%Y', $conf['inputValue1']).'" '.$GLOBALS['TBE_TEMPLATE']->formWidth(10).' onChange="typo3FormFieldGet(\''.$this->name.$subscript.'[inputValue1]\', \'datetime\', \'\', 0,0);"><input type="hidden" value="'.htmlspecialchars($conf['inputValue1']).'" name="'.$this->name.$subscript.'[inputValue1]'.'">';
+						$this->extJSCODE.='typo3FormFieldSet("'.$this->name.$subscript.'[inputValue]", '.datetime.', "", 0,0);';
+						$this->extJSCODE.='typo3FormFieldSet("'.$this->name.$subscript.'[inputValue1]", '.datetime.', "", 0,0);';
+					} else {
+						$lineHTML.='<input type="text" name="'.$this->name.$subscript.'[inputValue]_hr'.'" value="'.strftime('%H:%M %e-%m-%Y', $conf['inputValue']).'" '.$GLOBALS['TBE_TEMPLATE']->formWidth(10).' onChange="typo3FormFieldGet(\''.$this->name.$subscript.'[inputValue]\', \'datetime\', \'\', 0,0);"><input type="hidden" value="'.htmlspecialchars($conf['inputValue']).'" name="'.$this->name.$subscript.'[inputValue]'.'">';
+						$this->extJSCODE.='typo3FormFieldSet("'.$this->name.$subscript.'[inputValue]", '.datetime.', "", 0,0);';
+					}
+				break;
+				case 'multiple':
+				case 'binary':
+				case 'relation':
+					$lineHTML.=$this->mkTypeSelect($this->name.$subscript.'[type]', $fName);
+					$lineHTML.=$this->mkCompSelect($this->name.$subscript.'[comparison]', $conf['comparison'], $conf['negate']?1:0);
+					$lineHTML.='<input type="checkbox"'.($conf['negate']?' checked':'').' name="'.$this->name.$subscript.'[negate]'.'" onClick="submit();">';
+					if ($conf['comparison']==68 || $conf['comparison']==69 || $conf['comparison']==162 || $conf['comparison']==163)	{
+						$lineHTML.='<select name="'.$this->name.$subscript.'[inputValue]'.'[]" style="vertical-align:top;" size="5" multiple>';
+					} elseif ($conf['comparison']==66 || $conf['comparison']==67)	{
+						if (is_array($conf['inputValue']))	{
+							$conf['inputValue'] = implode(',', $conf['inputValue']);
+						}
+						$lineHTML.= '<input type="text" value="'.htmlspecialchars($conf['inputValue']).'" name="'.$this->name.$subscript.'[inputValue]'.'"'.$GLOBALS['TBE_TEMPLATE']->formWidth(10).'>';
+					} else {
+						$lineHTML.= '<select name="'.$this->name.$subscript.'[inputValue]'.'" style="vertical-align:top;" onChange="submit();">';
+					}
+					if ($conf['comparison']!=66 && $conf['comparison']!=67)	{
+						$lineHTML.= $this->makeOptionList($fName, $conf, $this->table);
+						$lineHTML.= '</select>';
+					}
+				break;
+				case 'files':
+					$lineHTML.= $this->mkTypeSelect($this->name.$subscript.'[type]', $fName);
+					$lineHTML.= $this->mkCompSelect($this->name.$subscript.'[comparison]', $conf['comparison'], $conf['negate']?1:0);
+					$lineHTML.= '<input type="checkbox"'.($conf['negate']?' checked':'').' name="'.$this->name.$subscript.'[negate]'.'" onClick="submit();">';
+					if ($conf['comparison']==68 || $conf['comparison']==69)	{
+						$lineHTML .= '<select name="'.$this->name.$subscript.'[inputValue]'.'[]" style="vertical-align:top;" size="5" multiple>';
+					} else {
+						$lineHTML .= '<select name="'.$this->name.$subscript.'[inputValue]'.'" style="vertical-align:top;" onChange="submit();">';
+					}
+					$lineHTML .= '<option value=""></option>'.$this->makeOptionList($fName, $conf, $this->table);
+					$lineHTML .= '</select>';
+					if ($conf['comparison']==66 || $conf['comparison']==67)	{
+						$lineHTML .= ' + <input type="text" value="'.htmlspecialchars($conf['inputValue1']).'" name="'.$this->name.$subscript.'[inputValue1]'.'"'.$GLOBALS['TBE_TEMPLATE']->formWidth(10).'>';
+					}
+				break;
+				case 'boolean':
+					$lineHTML .= $this->mkTypeSelect($this->name.$subscript.'[type]', $fName);
+					$lineHTML .= $this->mkCompSelect($this->name.$subscript.'[comparison]', $conf['comparison'], $conf['negate']?1:0);
+					$lineHTML .= '<input type="checkbox"'.($conf['negate']?' checked':'').' name="'.$this->name.$subscript.'[negate]'.'" onClick="submit();">';
+					$lineHTML .= '<input type="hidden" value="1" name="'.$this->name.$subscript.'[inputValue]'.'"'.$GLOBALS['TBE_TEMPLATE']->formWidth(10).'>';
+				break;
+				default:
+					$lineHTML .= $this->mkTypeSelect($this->name.$subscript.'[type]', $fName);
+					$lineHTML .= $this->mkCompSelect($this->name.$subscript.'[comparison]', $conf['comparison'], $conf['negate']?1:0);
+					$lineHTML .= '<input type="checkbox"'.($conf['negate']?' checked':'').' name="'.$this->name.$subscript.'[negate]'.'" onClick="submit();">';
 					if ($conf['comparison']==37 || $conf['comparison']==36)	{	// between:
 						$lineHTML.='<input type="text" value="'.htmlspecialchars($conf['inputValue']).'" name="'.$this->name.$subscript.'[inputValue]'.'"'.$GLOBALS['TBE_TEMPLATE']->formWidth(5).'>
-						<input type="text" value="'.htmlspecialchars($conf['inputValue1']).'" name="'.$this->name.$subscript.'[inputValue1]'.'"'.$GLOBALS['TBE_TEMPLATE']->formWidth(5).'>
-						';	// onChange='submit();'
-					} elseif ($fType=='date') {
-						$lineHTML.='<input type="text" name="'.$this->name.$subscript.'[inputValue]_hr'.'"'.$GLOBALS['TBE_TEMPLATE']->formWidth(10).' onChange="typo3FormFieldGet(\''.$this->name.$subscript.'[inputValue]\', \'datetime\', \'\', 0,0);"><input type="hidden" value="'.htmlspecialchars($conf['inputValue']).'" name="'.$this->name.$subscript.'[inputValue]'.'">';
-						$this->extJSCODE.='typo3FormFieldSet("'.$this->name.$subscript.'[inputValue]", "datetime", "", 0,0);';
+						<input type="text" value="'.htmlspecialchars($conf['inputValue1']).'" name="'.$this->name.$subscript.'[inputValue1]'.'"'.$GLOBALS['TBE_TEMPLATE']->formWidth(5).'>';	// onChange='submit();'
 					} else {
 						$lineHTML.='<input type="text" value="'.htmlspecialchars($conf['inputValue']).'" name="'.$this->name.$subscript.'[inputValue]'.'"'.$GLOBALS['TBE_TEMPLATE']->formWidth(10).'>';	// onChange="submit();"
 					}
@@ -522,7 +707,9 @@ class t3lib_queryGenerator	{
 			}
 			if($fType != 'ignore') {
 				$lineHTML .= $this->updateIcon();
-				$lineHTML .= '<input type="image" border="0" src="'.$GLOBALS['BACK_PATH'].'gfx/garbage.gif" class="absmiddle" width="11" height="12" hspace="3" vspace="3" title="Remove condition" name="qG_del'.$subscript.'">';
+				if ($loopcount)	{
+					$lineHTML .= '<input type="image" border="0" src="'.$GLOBALS['BACK_PATH'].'gfx/garbage.gif" class="absmiddle" width="11" height="12" hspace="3" vspace="3" title="Remove condition" name="qG_del'.$subscript.'">';
+				}
 				$lineHTML .= '<input type="image" border="0" src="'.$GLOBALS['BACK_PATH'].'gfx/add.gif" class="absmiddle" width="12" height="12" hspace="3" vspace="3" title="Add condition" name="qG_ins'.$subscript.'">';
 				if($c!=0) $lineHTML.= '<input type="image" border="0" src="'.$GLOBALS['BACK_PATH'].'gfx/pil2up.gif" class="absmiddle" width="12" height="7" hspace="3" vspace="3" title="Move up" name="qG_up'.$subscript.'">';
 
@@ -538,6 +725,7 @@ class t3lib_queryGenerator	{
 				$arrCount++;
 				$c++;
 			}
+			$loopcount = 1;
 		}
 //		$codeArr[$arrCount] .='<input type="hidden" name="CMD" value="displayQuery">';
 		$this->queryConfig = $queryConfig;
@@ -550,12 +738,222 @@ class t3lib_queryGenerator	{
 	 *
 	 * @param	[type]		$codeArr: ...
 	 * @param	[type]		$l: ...
+	 * @param	[type]		$table: ...
 	 * @return	[type]		...
 	 */
+	function makeOptionList($fN, $conf, $table)	{
+		$fieldSetup = $this->fields[$fN];
+		if ($fieldSetup['type']=='files')	{
+			if ($conf['comparison']==66 || $conf['comparison']==67)	{
+				$fileExtArray = explode(',', $fieldSetup['allowed']);
+				natcasesort($fileExtArray);
+				foreach ($fileExtArray as $fileExt)	{
+					if (t3lib_div::inList($conf['inputValue'], $fileExt))	{
+						$out .= '<option value="'.$fileExt.'" selected>.'.$fileExt.'</option>';
+					} else {
+						$out .= '<option value="'.$fileExt.'">.'.$fileExt.'</option>';
+					}
+				}
+			}
+			$d = dir(t3lib_div::getIndpEnv(TYPO3_DOCUMENT_ROOT).'/'.$fieldSetup['uploadfolder']);
+			while (false !== ($entry=$d->read()))	{
+				if ($entry=='.' || $entry=='..')	{
+					continue;
+				}
+				$fileArray[] = $entry;
+			}
+			$d->close();
+			natcasesort($fileArray);
+			foreach ($fileArray as $fileName)	{
+				if (t3lib_div::inList($conf['inputValue'], $fileName))	{
+					$out .= '<option value="'.$fileName.'" selected>'.$fileName.'</option>';
+				} else {
+					$out .= '<option value="'.$fileName.'">'.$fileName.'</option>';
+				}
+			}
+		}
+		if ($fieldSetup['type']=='multiple')	{
+			foreach ($fieldSetup['items'] as $key=>$val)	{
+				if (substr($val[0], 0, 4) == 'LLL:')	{
+					$value = $GLOBALS['LANG']->sL($val[0]);
+				} else {
+					$value = $val[0];
+				}
+				if (t3lib_div::inList($conf['inputValue'], $val[1]))	{
+					$out .= '<option value="'.$val[1].'" selected>'.$value.'</option>';
+				} else {
+					$out .= '<option value="'.$val[1].'">'.$value.'</option>';
+				}
+			}
+		}
+		if ($fieldSetup['type']=='binary')	{
+			foreach ($fieldSetup['items'] as $key=>$val)	{
+				if (substr($val[0], 0, 4)=='LLL:')	{
+					$value = $GLOBALS['LANG']->sL($val[0]);
+				} else {
+					$value = $val[0];
+				}
+				if (t3lib_div::inList($conf['inputValue'], pow(2, $key)))	{
+					$out .= '<option value="'.pow(2, $key).'" selected>'.$value.'</option>';
+				} else {
+					$out .= '<option value="'.pow(2, $key).'">'.$value.'</option>';
+				}
+			}
+		}
+		if ($fieldSetup['type']=='relation')	{
+			if ($fieldSetup['items'])	{
+				foreach ($fieldSetup['items'] as $key=>$val)	{
+					if (substr($val[0], 0, 4) == 'LLL:')	{
+						$value = $GLOBALS['LANG']->sL($val[0]);
+					} else {
+						$value = $val[0];
+					}
+					if (t3lib_div::inList($conf['inputValue'], $val[1]))	{
+						$out .= '<option value="'.$val[1].'" selected>'.$value.'</option>';
+					} else {
+						$out .= '<option value="'.$val[1].'">'.$value.'</option>';
+					}
+				}
+			}
+			global $TCA;
+			if (stristr($fieldSetup['allowed'], ','))	{
+				$from_table_Arr = explode(',', $fieldSetup['allowed']);
+				$useTablePrefix = 1;
+				if (!$fieldSetup['prepend_tname'])	{
+					$checkres = $GLOBALS['TYPO3_DB']->exec_SELECTquery($fN, $table, t3lib_BEfunc::deleteClause($table), $groupBy = '', $orderBy = '', $limit = '');
+					if ($checkres)	{
+						while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($checkres))	{
+							if (stristr($row[$fN], ','))	{
+								$checkContent = explode(',', $row[$fN]);
+								foreach ($checkContent as $singleValue)	{
+									if (!stristr($singleValue, '_'))	{
+										$dontPrefixFirstTable = 1;
+									}
+								}
+							} else {
+								$singleValue = $row[$fN];
+								if (strlen($singleValue) && !stristr($singleValue, '_'))	{
+									$dontPrefixFirstTable = 1;
+								}
+							}
+						}
+					}
+				}
+			} else {
+				$from_table_Arr[0] = $fieldSetup['allowed'];
+			}
+			if ($fieldSetup['prepend_tname'])	{
+				$useTablePrefix = 1;
+			}
+			if ($fieldSetup['foreign_table'])	{
+				$from_table_Arr[0] = $fieldSetup['foreign_table'];
+			}
+			$counter = 0;
+			while (list(, $from_table) = each($from_table_Arr))	{
+				if (($useTablePrefix && !$dontPrefixFirstTable && $counter!=1) || $counter==1)	{
+					$tablePrefix = $from_table.'_';
+				}
+				$counter = 1;
+				if (is_array($TCA[$from_table]))	{
+					t3lib_div::loadTCA($from_table);
+					$labelField = $TCA[$from_table]['ctrl']['label'];
+					$altLabelField = $TCA[$from_table]['ctrl']['label_alt'];
+					if ($TCA[$from_table]['columns'][$labelField]['config']['items'])	{
+						foreach ($TCA[$from_table]['columns'][$labelField]['config']['items'] as $labelArray)	{
+							if (substr($labelArray[0], 0, 4) == 'LLL:')	{
+								$labelFieldSelect[$labelArray[1]] = $GLOBALS['LANG']->sL($labelArray[0]);
+							} else {
+								$labelFieldSelect[$labelArray[1]] = $labelArray[0];
+							}
+						}
+						$useSelectLabels = 1;
+					}
+					if ($TCA[$from_table]['columns'][$altLabelField]['config']['items'])	{
+						foreach ($TCA[$from_table]['columns'][$altLabelField]['config']['items'] as $altLabelArray)	{
+							if (substr($altLabelArray[0], 0, 4) == 'LLL:')	{
+								$altLabelFieldSelect[$altLabelArray[1]] = $GLOBALS['LANG']->sL($altLabelArray[0]);
+							} else {
+								$altLabelFieldSelect[$altLabelArray[1]] = $altLabelArray[0];
+							}
+						}
+						$useAltSelectLabels = 1;
+					}
+					$altLabelFieldSelect = $altLabelField ? ','.$altLabelField : '';
+					$select_fields = 'uid,'.$labelField.$altLabelFieldSelect;
+					if (!$GLOBALS['BE_USER']->isAdmin() && $GLOBALS['TYPO3_CONF_VARS']['BE']['lockBeUserToDBmounts'])	{
+						$webMounts = $GLOBALS['BE_USER']->returnWebmounts();
+						$perms_clause = $GLOBALS['BE_USER']->getPagePermsClause(1);
+						foreach ($webMounts as $key => $val)	{
+							if ($webMountPageTree)	{
+								$webMountPageTreePrefix = ',';
+							}
+							$webMountPageTree .= $webMountPageTreePrefix.$this->getTreeList($val, 999, $begin = 0, $perms_clause);
+						}
+						if ($from_table=='pages')	{
+							$where_clause = 'uid IN ('.$webMountPageTree.') ';
+							if (!$GLOBALS['SOBE']->MOD_SETTINGS['show_deleted'])	{
+								$where_clause .= t3lib_BEfunc::deleteClause($from_table).' AND'.$perms_clause;
+							}
+						} else {
+							$where_clause = 'pid IN ('.$webMountPageTree.') ';
+							if (!$GLOBALS['SOBE']->MOD_SETTINGS['show_deleted'])	{
+								$where_clause .= t3lib_BEfunc::deleteClause($from_table);
+							}
+						}
+					} else {
+						$where_clause = 'uid';
+						if (!$GLOBALS['SOBE']->MOD_SETTINGS['show_deleted'])	{
+    							$where_clause .= t3lib_BEfunc::deleteClause($from_table);
+						}
+					}
+					$orderBy = 'uid';
+					if (!$this->tableArray[$from_table])	{
+						$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($select_fields, $from_table, $where_clause, $groupBy = '', $orderBy, $limit = '');
+					}
+					if ($res)	{
+						while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
+							$this->tableArray[$from_table][] = $row;
+						}
+					}
+					foreach ($this->tableArray[$from_table] as $key=>$val)	{
+						if ($useSelectLabels)	{
+							$outArray[$tablePrefix.$val['uid']] = htmlspecialchars($labelFieldSelect[$val[$labelField]]);
+						} elseif ($val[$labelField])	{
+							$outArray[$tablePrefix.$val['uid']] = htmlspecialchars($val[$labelField]);
+						} elseif ($useAltSelectLabels)	{
+							$outArray[$tablePrefix.$val['uid']] = htmlspecialchars($altLabelFieldSelect[$val[$altLabelField]]);
+						} else {
+							$outArray[$tablePrefix.$val['uid']] = htmlspecialchars($val[$altLabelField]);
+						}
+					}
+					if ($GLOBALS['SOBE']->MOD_SETTINGS['options_sortlabel'] && is_array($outArray))	{
+						natcasesort($outArray);
+					}
+				}
+			}
+			foreach ($outArray as $key2 => $val2)	{
+				if (t3lib_div::inList($conf['inputValue'], $key2))	{
+					$out .= '<option value="'.$key2.'" selected>['.$key2.'] '.$val2.'</option>';
+				} else {
+					$out .= '<option value="'.$key2.'">['.$key2.'] '.$val2.'</option>';
+				}
+			}
+		}
+		return $out;
+	}
+
+
+	 /**
+ * [Describe function...]
+ *
+ * @param	[type]		$codeArr: ...
+ * @param	[type]		$l: ...
+ * @return	[type]		...
+ */
 	function printCodeArray($codeArr,$l=0)	{
 		reset($codeArr);
 		$line='';
-		if ($l)		$indent='<td><img height="1" width="50"></td>';
+		if ($l)		$indent='<td style="vertical-align:top;"><img height="1" width="50"></td>';
 		$lf=$l*30;
 		$bgColor = t3lib_div::modifyHTMLColor($GLOBALS['TBE_TEMPLATE']->bgColor2,$lf,$lf,$lf);
 		while(list($k,$v)=each($codeArr))	{
@@ -615,8 +1013,10 @@ class t3lib_queryGenerator	{
 		$out.='<option value=""></option>';
 		reset($this->fields);
 		while(list($key,)=each($this->fields)) {
-			if ($GLOBALS['BE_USER']->check('non_exclude_fields',$this->table.':'.$key))	{
-				$out.='<option value="'.$prepend.$key.'"'.($key==$fieldName ? ' selected':'').'>'.$this->fields[$key]['label'].'</option>';
+			if (!$fieldValue['exclude'] || $GLOBALS['BE_USER']->check('non_exclude_fields', $this->table.':'.$key)) {
+				$label = $this->fields[$key]['label'];
+				$label_alt = $this->fields[$key]['label_alt'];
+				$out .= '<option value="'.$prepend.$key.'"'.($key==$fieldName ? ' selected' : '').'>'.$label.'</option>';
 			}
 		}
 		$out.='</select>';
@@ -671,8 +1071,10 @@ class t3lib_queryGenerator	{
 		$out.='<BR><select name="_fieldListDummy" size="5" onChange="document.forms[0][\''.$name.'\'].value+=\',\'+this.value">';
 		reset($this->fields);
 		while(list($key,)=each($this->fields)) {
-			if ($GLOBALS['BE_USER']->check('non_exclude_fields',$this->table.':'.$key))	{
-				$out.='<option value="'.$prepend.$key.'"'.($key==$fieldName ? ' selected':'').'>'.$this->fields[$key]['label'].'</option>';
+			if (!$fieldValue['exclude'] || $GLOBALS['BE_USER']->check('non_exclude_fields', $this->table.':'.$key))	{
+				$label = $this->fields[$key]['label'];
+				$label_alt = $this->fields[$key]['label_alt'];
+				$out .= '<option value="'.$key.'"'.($key==$fieldName ? ' selected':'').'>'.$label.'</option>';
 			}
 		}
 		$out.='</select>';
@@ -808,8 +1210,24 @@ class t3lib_queryGenerator	{
 		}
 		$qsTmp = str_replace('#FIELD#', $prefix.trim(substr($conf['type'],6)), $this->compSQL[$conf['comparison']]);
 		$inputVal = $this->cleanInputVal($conf);
+		if ($conf['comparison']==68 || $conf['comparison']==69)	{
+			$inputVal = explode(',', $inputVal);
+			foreach ($inputVal as $key => $fileName)	{
+				$inputVal[$key] = "'".$fileName."'";
+			}
+			$inputVal = implode(',', $inputVal);
+			$qsTmp = str_replace('#VALUE#', $inputVal, $qsTmp);
+		} elseif ($conf['comparison']==162 || $conf['comparison']==163)	{
+			$inputValArray = explode(',', $inputVal);
+			$inputVal = 0;
+			foreach ($inputValArray as $key=>$fileName)	{
+				$inputVal += intval($fileName);
+			}
+			$qsTmp = str_replace('#VALUE#', $inputVal, $qsTmp);
+		} else {
 		$qsTmp = str_replace('#VALUE#', $GLOBALS['TYPO3_DB']->quoteStr($inputVal,$this->table), $qsTmp);
-		if ($conf['comparison']==37 || $conf['comparison']==36)	{	// between:
+		}
+		if ($conf['comparison']==37 || $conf['comparison']==36 || $conf['comparison']==66 || $conf['comparison']==67 || $conf['comparison']==100 || $conf['comparison']==101)	{	// between:
 			$inputVal = $this->cleanInputVal($conf,'1');
 			$qsTmp = str_replace('#VALUE1#', $GLOBALS['TYPO3_DB']->quoteStr($inputVal,$this->table), $qsTmp);
 		}
@@ -825,14 +1243,20 @@ class t3lib_queryGenerator	{
 	 * @return	[type]		...
 	 */
 	function cleanInputVal($conf,$suffix='')	{
-		if(($conf['comparison'] >> 5==0) || ($conf['comparison']==32 || $conf['comparison']==33))	{
+		if(($conf['comparison'] >> 5==0) || ($conf['comparison']==32 || $conf['comparison']==33 || $conf['comparison']==64 || $conf['comparison']==65 || $conf['comparison']==66 || $conf['comparison']==67 || $conf['comparison']==96 || $conf['comparison']==97))	{
 			$inputVal = $conf['inputValue'.$suffix];
-		} else {
-			if ($conf['comparison']==39 || $conf['comparison']==38)	{	// in list:
-				$inputVal = implode(',',t3lib_div::intExplode(',',$conf['inputValue'.$suffix]));
+		} elseif ($conf['comparison']==39 || $conf['comparison']==38) {	// in list:
+			$inputVal = implode(',',t3lib_div::intExplode(',',$conf['inputValue'.$suffix]));
+		} elseif ($conf['comparison']==68 || $conf['comparison']==69 || $conf['comparison']==162 || $conf['comparison']==163) {	// in list:
+			if (is_array($conf['inputValue'.$suffix])) {
+				$inputVal = implode(',', $conf['inputValue'.$suffix]);
+			} elseif ($conf['inputValue'.$suffix]) {
+				$inputVal = $conf['inputValue'.$suffix];
 			} else {
-				$inputVal = doubleval($conf['inputValue'.$suffix]);
+				$inputVal = 0;
 			}
+		} else {
+			$inputVal = doubleval($conf['inputValue'.$suffix]);
 		}
 		return $inputVal;
 	}
@@ -877,7 +1301,7 @@ class t3lib_queryGenerator	{
 			// Make output
 		$TDparams = ' class="bgColor5" nowrap';
 
-		if (in_array('table',$enableArr))	{
+		if (in_array('table',$enableArr) && !$GLOBALS['BE_USER']->userTS['mod.']['dbint.']['disableSelectATable'])	{
 			$out='
 			<tr>
 				<td'.$TDparams.'><strong>Select a table:</strong></td>
@@ -895,6 +1319,12 @@ class t3lib_queryGenerator	{
 			$this->extFieldLists['queryLimit']=$modSettings['queryLimit'];
 			if (!$this->extFieldLists['queryLimit'])	$this->extFieldLists['queryLimit']=100;
 			$parts = t3lib_div::intExplode(',',$this->extFieldLists['queryLimit']);
+			if ($parts[1])	{
+				$this->limitBegin = $parts[0];
+				$this->limitLength = $parts[1];
+			} else {
+				$this->limitLength = $this->extFieldLists['queryLimit'];
+			}
 			$this->extFieldLists['queryLimit'] = implode(',',array_slice($parts,0,2));
 
 				// Insert Descending parts
@@ -919,14 +1349,14 @@ class t3lib_queryGenerator	{
 			$codeArr=$this->getFormElements();
 			$queryCode=$this->printCodeArray($codeArr);
 
-			if (in_array('fields',$enableArr))	{
+			if (in_array('fields',$enableArr) && !$GLOBALS['BE_USER']->userTS['mod.']['dbint.']['disableSelectFields'])	{
 				$out.='
 				<tr>
 					<td'.$TDparams.'><strong>Select fields:</strong></td>
 					<td'.$TDparams.'>'.$this->mkFieldToInputSelect('SET[queryFields]',$this->extFieldLists['queryFields']).'</td>
 				</tr>';
 			}
-			if (in_array('query',$enableArr))	{
+			if (in_array('query',$enableArr) && !$GLOBALS['BE_USER']->userTS['mod.']['dbint.']['disableMakeQuery'])	{
 				$out.='<tr>
 					<td colspan="2"'.$TDparams.'><strong>Make Query:</strong></td>
 				</tr>
@@ -935,13 +1365,13 @@ class t3lib_queryGenerator	{
 				</tr>
 				';
 			}
-			if (in_array('group',$enableArr))	{
+			if (in_array('group',$enableArr) && !$GLOBALS['BE_USER']->userTS['mod.']['dbint.']['disableGroupBy'])	{
 				$out.='<tr>
 					<td'.$TDparams.'><strong>Group By:</strong></td>
 					<td'.$TDparams.'>'.$this->mkTypeSelect('SET[queryGroup]',$this->extFieldLists['queryGroup'],'').'</td>
 				</tr>';
 			}
-			if (in_array('order',$enableArr))	{
+			if (in_array('order',$enableArr) && !$GLOBALS['BE_USER']->userTS['mod.']['dbint.']['disableOrderBy'])	{
 				$orderByArr = explode(',',$this->extFieldLists['queryOrder']);
 		//		debug($orderByArr);
 				$orderBy='';
@@ -956,11 +1386,30 @@ class t3lib_queryGenerator	{
 					<td'.$TDparams.'>'.$orderBy.'</td>
 				</tr>';
 			}
-			if (in_array('limit',$enableArr))	{
-				$limit = '<input type="Text" value="'.htmlspecialchars($this->extFieldLists['queryLimit']).'" name="SET[queryLimit]"'.$GLOBALS['TBE_TEMPLATE']->formWidth(10).'>'.$this->updateIcon();
+			if (in_array('limit',$enableArr) && !$GLOBALS['BE_USER']->userTS['mod.']['dbint.']['disableLimit'])	{
+				$limit = '<input type="Text" value="'.htmlspecialchars($this->extFieldLists['queryLimit']).'" name="SET[queryLimit]" id="queryLimit"'.$GLOBALS['TBE_TEMPLATE']->formWidth(10).'>'.$this->updateIcon();
+
+				$prevLimit = ($this->limitBegin-$this->limitLength) < 0 ? 0 :
+				$this->limitBegin-$this->limitLength;
+				if ($this->limitBegin)	{
+					$prevButton = '<input type="button" value="previous '.$this->limitLength.'" onclick=\'document.getElementById("queryLimit").value="'.$prevLimit.','.$this->limitLength.'";document.forms[0].submit();\'>';
+				}
+				if (!$this->limitLength)	{
+					$this->limitLength = 100;
+				}
+				$nextLimit = $this->limitBegin + $this->limitLength;
+				if ($nextLimit < 0) $nextLimit = 0;
+				if ($nextLimit)	{
+					$nextButton = '<input type="button" value="next '.$this->limitLength.'" onclick=\'document.getElementById("queryLimit").value="'.$nextLimit.','.$this->limitLength.'";document.forms[0].submit();\'>';
+				}
+
+				$numberButtons = '<input type="button" value="10" onclick=\'document.getElementById("queryLimit").value="10";document.forms[0].submit();\'>';
+				$numberButtons .= '<input type="button" value="20" onclick=\'document.getElementById("queryLimit").value="20";document.forms[0].submit();\'>';
+				$numberButtons .= '<input type="button" value="50" onclick=\'document.getElementById("queryLimit").value="50";document.forms[0].submit();\'>';
+				$numberButtons .= '<input type="button" value="100" onclick=\'document.getElementById("queryLimit").value="100";document.forms[0].submit();\'>';
 				$out.='<tr>
 					<td'.$TDparams.'><strong>Limit:</strong></td>
-					<td'.$TDparams.'>'.$limit.'</td>
+					<td'.$TDparams.'>'.$limit.$prevButton.$nextButton.'&nbsp;'.$numberButtons.'</td>
 				</tr>
 				';
 			}
@@ -974,15 +1423,71 @@ class t3lib_queryGenerator	{
 	 * [Describe function...]
 	 *
 	 * @param	[type]		$qString: ...
+	 * @param	[type]		$depth: ...
+	 * @param	[type]		$begin: ...
+	 * @param	[type]		$perms_clause: ...
 	 * @return	[type]		...
 	 */
-	function getSelectQuery($qString='')	{
-		if (!$qString)	$qString=$this->getQuery($this->queryConfig);
+	function getTreeList($id, $depth, $begin=0, $perms_clause)	{
+		$depth = intval($depth);
+		$begin = intval($begin);
+		$id = intval($id);
+		if ($begin==0)	{
+			$theList = $id;
+		} else {
+			$theList = '';
+		}
+		if ($id && $depth > 0)	{
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+				'uid',
+				'pages',
+				'pid='.$id.' '.t3lib_BEfunc::deleteClause('pages').' AND '.$perms_clause
+			);
+			while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
+				if ($begin <= 0)	{
+					$theList .= ','.$row['uid'];
+				}
+				if ($depth > 1)	{
+					$theList .= $this->getTreeList($row['uid'], $depth-1, $begin-1, $perms_clause);
+				}
+			}
+		}
+		return $theList;
+	}
 
+	/**
+	 * [Describe function...]
+	 *
+	 * @param	[type]		$qString: ...
+	 * @param	[type]		$fN: ...
+	 * @return	[type]		...
+	 */
+	function getSelectQuery($qString = '', $fN = '')	{
+		if (!$qString) $qString = $this->getQuery($this->queryConfig);
+			$qString = '('.$qString.')';
+		if (!$GLOBALS['BE_USER']->isAdmin() && $GLOBALS['TYPO3_CONF_VARS']['BE']['lockBeUserToDBmounts']) {
+			$webMounts = $GLOBALS['BE_USER']->returnWebmounts();
+			$perms_clause = $GLOBALS['BE_USER']->getPagePermsClause(1);
+			foreach($webMounts as $key => $val) {
+				if ($webMountPageTree) {
+					$webMountPageTreePrefix = ',';
+					}
+				$webMountPageTree .= $webMountPageTreePrefix.$this->getTreeList($val, 999, $begin = 0, $perms_clause);
+			}
+			if ($this->table == 'pages') {
+				$qString .= ' AND uid IN ('.$webMountPageTree.')';
+			} else {
+				$qString .= ' AND pid IN ('.$webMountPageTree.')';
+			}
+		}
+		$fieldlist = $this->extFieldLists['queryFields'].',pid,deleted';
+		if (!$GLOBALS['SOBE']->MOD_SETTINGS['show_deleted'])	{
+			$qString .= t3lib_BEfunc::deleteClause($this->table);
+		}
 		$query = $GLOBALS['TYPO3_DB']->SELECTquery(
-						$this->extFieldLists['queryFields'],
+						$fieldlist,
 						$this->table,
-						$qString.t3lib_BEfunc::deleteClause($this->table),
+						$qString,
 						trim($this->extFieldLists['queryGroup']),
 						$this->extFieldLists['queryOrder'] ? trim($this->extFieldLists['queryOrder_SQL']) : '',
 						$this->extFieldLists['queryLimit']
@@ -999,7 +1504,7 @@ class t3lib_queryGenerator	{
 	function JSbottom($formname='forms[0]')	{
 		if ($this->extJSCODE)	{
 			$out.='
-			<script language="javascript" type="text/javascript" src="'.$GLOBALS['BACK_PATH'].'t3lib/jsfunc.evalfield.js"></script>
+			<script language="javascript" type="text/javascript" src="'.$GLOBALS['BACK_PATH'].'../t3lib/jsfunc.evalfield.js"></script>
 			<script language="javascript" type="text/javascript">
 				var evalFunc = new evalFunc;
 				function typo3FormFieldSet(theField, evallist, is_in, checkbox, checkboxValue)	{

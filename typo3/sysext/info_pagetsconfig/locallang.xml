@@ -3,28 +3,6 @@
 	<meta type="array">
 		<description>Module labels for the TSconfig viewer in the Info module.</description>
 		<type>module</type>
-		<csh_table></csh_table>
-		<fileId>EXT:info_pagetsconfig/locallang.xml</fileId>
-		<labelContext type="array">
-			<label index="tsconf_title"></label>
-			<label index="tsconf_parts_0"></label>
-			<label index="tsconf_parts_1"></label>
-			<label index="tsconf_parts_1a"></label>
-			<label index="tsconf_parts_1b"></label>
-			<label index="tsconf_parts_1c"></label>
-			<label index="tsconf_parts_1d"></label>
-			<label index="tsconf_parts_1e"></label>
-			<label index="tsconf_parts_1f"></label>
-			<label index="tsconf_parts_1g"></label>
-			<label index="tsconf_configFields"></label>
-			<label index="editThisColumn"></label>
-			<label index="editTSconfig"></label>
-			<label index="editTSconfig_all"></label>
-			<label index="editTSconfig_default"></label>
-			<label index="mod_pagetsconfig"></label>
-		</labelContext>
-		<ext_filename_template>EXT:csh_###LANGKEY###/info_pagetsconfig/###LANGKEY###.locallang.xml</ext_filename_template>
-		<keep_original_text type="integer">1</keep_original_text>
 	</meta>
 	<data type="array">
 		<languageKey index="default" type="array">
@@ -45,47 +23,5 @@
 			<label index="editTSconfig_default">Default Configuration from TYPO3_CONF_VARS</label>
 			<label index="mod_pagetsconfig">Page TSconfig</label>
 		</languageKey>
-		<languageKey index="dk">EXT:csh_dk/info_pagetsconfig/dk.locallang.xml</languageKey>
-		<languageKey index="de">EXT:csh_de/info_pagetsconfig/de.locallang.xml</languageKey>
-		<languageKey index="no">EXT:csh_no/info_pagetsconfig/no.locallang.xml</languageKey>
-		<languageKey index="it">EXT:csh_it/info_pagetsconfig/it.locallang.xml</languageKey>
-		<languageKey index="fr">EXT:csh_fr/info_pagetsconfig/fr.locallang.xml</languageKey>
-		<languageKey index="es">EXT:csh_es/info_pagetsconfig/es.locallang.xml</languageKey>
-		<languageKey index="nl">EXT:csh_nl/info_pagetsconfig/nl.locallang.xml</languageKey>
-		<languageKey index="cz">EXT:csh_cz/info_pagetsconfig/cz.locallang.xml</languageKey>
-		<languageKey index="pl">EXT:csh_pl/info_pagetsconfig/pl.locallang.xml</languageKey>
-		<languageKey index="si">EXT:csh_si/info_pagetsconfig/si.locallang.xml</languageKey>
-		<languageKey index="fi">EXT:csh_fi/info_pagetsconfig/fi.locallang.xml</languageKey>
-		<languageKey index="tr">EXT:csh_tr/info_pagetsconfig/tr.locallang.xml</languageKey>
-		<languageKey index="se">EXT:csh_se/info_pagetsconfig/se.locallang.xml</languageKey>
-		<languageKey index="pt">EXT:csh_pt/info_pagetsconfig/pt.locallang.xml</languageKey>
-		<languageKey index="ru">EXT:csh_ru/info_pagetsconfig/ru.locallang.xml</languageKey>
-		<languageKey index="ro">EXT:csh_ro/info_pagetsconfig/ro.locallang.xml</languageKey>
-		<languageKey index="ch">EXT:csh_ch/info_pagetsconfig/ch.locallang.xml</languageKey>
-		<languageKey index="sk">EXT:csh_sk/info_pagetsconfig/sk.locallang.xml</languageKey>
-		<languageKey index="lt">EXT:csh_lt/info_pagetsconfig/lt.locallang.xml</languageKey>
-		<languageKey index="is">EXT:csh_is/info_pagetsconfig/is.locallang.xml</languageKey>
-		<languageKey index="hr">EXT:csh_hr/info_pagetsconfig/hr.locallang.xml</languageKey>
-		<languageKey index="hu">EXT:csh_hu/info_pagetsconfig/hu.locallang.xml</languageKey>
-		<languageKey index="gl">EXT:csh_gl/info_pagetsconfig/gl.locallang.xml</languageKey>
-		<languageKey index="th">EXT:csh_th/info_pagetsconfig/th.locallang.xml</languageKey>
-		<languageKey index="gr">EXT:csh_gr/info_pagetsconfig/gr.locallang.xml</languageKey>
-		<languageKey index="hk">EXT:csh_hk/info_pagetsconfig/hk.locallang.xml</languageKey>
-		<languageKey index="eu">EXT:csh_eu/info_pagetsconfig/eu.locallang.xml</languageKey>
-		<languageKey index="bg">EXT:csh_bg/info_pagetsconfig/bg.locallang.xml</languageKey>
-		<languageKey index="br">EXT:csh_br/info_pagetsconfig/br.locallang.xml</languageKey>
-		<languageKey index="et">EXT:csh_et/info_pagetsconfig/et.locallang.xml</languageKey>
-		<languageKey index="ar">EXT:csh_ar/info_pagetsconfig/ar.locallang.xml</languageKey>
-		<languageKey index="he">EXT:csh_he/info_pagetsconfig/he.locallang.xml</languageKey>
-		<languageKey index="ua">EXT:csh_ua/info_pagetsconfig/ua.locallang.xml</languageKey>
-		<languageKey index="lv">EXT:csh_lv/info_pagetsconfig/lv.locallang.xml</languageKey>
-		<languageKey index="jp">EXT:csh_jp/info_pagetsconfig/jp.locallang.xml</languageKey>
-		<languageKey index="vn">EXT:csh_vn/info_pagetsconfig/vn.locallang.xml</languageKey>
-		<languageKey index="ca">EXT:csh_ca/info_pagetsconfig/ca.locallang.xml</languageKey>
-		<languageKey index="ba">EXT:csh_ba/info_pagetsconfig/ba.locallang.xml</languageKey>
-		<languageKey index="kr">EXT:csh_kr/info_pagetsconfig/kr.locallang.xml</languageKey>
-		<languageKey index="eo">EXT:csh_eo/info_pagetsconfig/eo.locallang.xml</languageKey>
-		<languageKey index="my">EXT:csh_my/info_pagetsconfig/my.locallang.xml</languageKey>
-		<languageKey index="hi">EXT:csh_hi/info_pagetsconfig/hi.locallang.xml</languageKey>
 	</data>
 </T3locallang>

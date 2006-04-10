@@ -33,7 +33,7 @@ $TYPO3_CONF_VARS = Array(
 		'im_path' => '/usr/X11R6/bin/',			// Path to the IM tools 'convert', 'combine', 'identify'. Version 4.2.9 of ImageMagick is highly recommended due to features and speed!
 		'im_path_lzw' => '/usr/bin/',			// Path to the IM tool 'convert' with LZW enabled! See 'gif_compress'. If your version 4.2.9 of ImageMagick is compiled with LZW you may leave this field blank AND disable the flag 'gif_compress'! Tip: You can call LZW 'convert' with a prefix like 'myver_convert' by setting this path with it, eg. '/usr/bin/myver_' instead of just '/usr/bin/'.
 
-		'im_version_5' => 0,					// String/Boolean. Set this if you're using ImageMagick but not IM 4.x. Setting this value will automatically configure some settings for use with the specified ImageMagick version. Allowed values are: "0" (IM4) or "1" (IM5+). Set "gm" to activate the use of GraphicsMagick instead of ImageMagick.
+		'im_version_5' => '',					// String. Set this if you're using ImageMagick/GraphicsMagick but not IM 4.x. Setting this value will automatically configure some settings for use with the specified program version. Allowed values are: "im4", "im5", "im6" and "gm" (uses GraphicsMagick instead of ImageMagick).
 		'im_negate_mask' => 0,					// Boolean. Indicates if the mask images should be inverted first. This depends of the ImageMagick version. Below ver. 5.1 this should be false. Above ImageMagick version 5.2+ it should be true. Just set the flag if the masks works opposite the intension!
 		'im_imvMaskState' => 0,					// Boolean. If set, the 'im_negate_mask' state is inverted. This is very useful with newer versions of IM5 (at least 5.4.3+) where the 'im_version_5' setting will set 'im_negate_mask' which will eventually be wrong... Halleluja for ImageMagick - have I ever regreted using that package...
 		'im_no_effects' => 0,					// Boolean. This is necessary if using ImageMagick 5+. Approved version for using effects is version 4.2.9. Effects in Imagemagick 5+ tends to render very slowly! Therefore this must be disabled in order not to perform sharpen, blurring and such. (However lately IM5 is allowed for effects again, but syntax has changed!)
@@ -43,24 +43,25 @@ $TYPO3_CONF_VARS = Array(
 		'im_noScaleUp' => 0,					// Boolean. If set, images are not being scaled up if told so (in t3lib/stdgraphics.php)
 		'im_combine_filename' => 'combine',		// String. Latest ImageMagick versions has changed the name of combine to composite. Configure here if needed.
 		'im_noFramePrepended' => 0,				// Boolean. If set, the [x] frame indicator is NOT prepended to filenames in stdgraphic. Some IM5+ version didn't work at all with the typical [0]-prefix, which allow multipage pdf's and animated gif's to be scaled only for the first frame/page and that seriously cuts down rendering time. Set this flag only if your ImageMagick version cannot find the files. Notice that changing this flag causes temporary filenames to change, thus the server will begin scaling images again which were previously cached.
-		'im_jpg_quality' => 70,					// Integer. Default JPEG generation quality
+		'jpg_quality' => 70,					// Integer. Default JPEG generation quality
 		'enable_typo3temp_db_tracking' => 0,	// Boolean. If set, then all files in typo3temp will be logged in a database table. In addition to being a log of the files with original filenames, it also serves to secure that the same image is not rendered simultaneously by two different processes.
 		'TTFLocaleConv' => '',					// String. Enter locale conversion string used to recode input to TrueType functions. Eg. 'cp1250..UTF-8'. Works ONLY if 'recode' is enabled in PHP. Deprecated from ver. 3.6.0 of TYPO3. Set up [BE][forceCharset] as strings are automatically converted from databsae charset to UTF-8.
 		'TTFdpi' => '72',						// Integer. Enter how many dpi the FreeType module uses. Freetype1 should be set to 72. Freetype2 should be set to 96 (otherwise fonts are rendered way bigger than FreeType1). This works as a global scaling factor for Freetype.
+		'png_truecolor' => 0,						// Boolean. If set PNGs will get created as truecolor PNGs. If you use GDlib2 you can create truecolor images if they look not well currently. Note that this results in an increased image size. JPEGs get always created in truecolor now (GDlib2 required)
 	),
 	'SYS' => Array(			// System related concerning both frontend and backend.
 		'sitename' => 'TYPO3',					// Name of the base-site. This title shows up in the root of the tree structure if you're an 'admin' backend user.
-		'compat_version' => '3.8.1',					// Compatibility version. TYPO3 behavior will try to be compatible with the output from the TYPO3 version set here. It is recommended to change this setting with the Upgrade Wizard.
+		'compat_version' => '3.8',					// Compatibility version. TYPO3 behavior will try to be compatible with the output from the TYPO3 version set here. It is recommended to change this setting with the Upgrade Wizard.
 		'encryptionKey' => '',					// This is a "salt" used for various kinds of encryption, CRC checksums and validations. You can enter any rubbish string here but try to keep it secret. You should notice that a change to this value might invalidate temporary information, URLs etc. At least, clear all cache if you change this so any such information can be rebuild with the new key.
-		'cookieDomain' => '',					// When setting the value to ".example.com" (replace example.com with your domain!), login sessions will be shared across subdomains.
+		'cookieDomain' => '',					// When setting the value to ".example.com" (replace example.com with your domain!), login sessions will be shared across subdomains. Alternatively, if you have more than one domain with sub-domains, you can set the value to a regular expression to match against the domain of the HTTP request. The result of the match is used as the domain for the cookie. eg. /\.(example1|example2)\.com$/ or /\.(example1\.com)|(example2\.net)$/
 		'doNotCheckReferer' => 0,				// Boolean. If set, it's NOT checked numerous places that the refering host is the same as the current. This is an option you should set if you have problems with proxies not passing the HTTP_REFERER variable.
 		'recursiveDomainSearch' => 0,			// Boolean. If set, the search for domain records will be done recursively by stripping parts of the host name off until a matching domain record is found.
 		'devIPmask' => '192.168.*,127.0.0.1',	// Defines a list of IP addresses which will allow development-output to display. The debug() function will use this as a filter. See the function t3lib_div::cmpIP() for details on syntax. Setting this to blank value will deny all. Setting to '*' will allow all.
-		'sqlDebug' => FALSE,					// Boolean. If set, then database queries that fails are outputted in browser. For development.
+		'sqlDebug' => 0,					// Boolean. If set, then database queries that fails are outputted in browser. For development.
 		'enable_DLOG' => FALSE,					// Whether the developer log is enabled. See constant "TYPO3_DLOG"
 		'ddmmyy' => 'd-m-y',					// Format of Date-Month-Year - see PHP-function date()
 		'hhmm' => 'H:i',						// Format of Hours-minutes - see PHP-function date()
-		'USdateFormat' => FALSE,				// Boolean. If true, dates entered in the TCEforms of the backend will be formatted mm-dd-yyyy
+		'USdateFormat' => 0,				// Boolean. If true, dates entered in the TCEforms of the backend will be formatted mm-dd-yyyy
 		'loginCopyrightWarrantyProvider' => '',		// String: If you provide warranty for TYPO3 to your customers insert you (company) name here. It will appear in the login-dialog as the warranty provider. (You must also set URL below).
 		'loginCopyrightWarrantyURL' => '',		// String: Add the URL where you explain the extend of the warranty you provide. This URL is displayed in the login dialog as the place where people can learn more about the conditions of your warranty. Must be set (more than 10 chars) in addition with the 'loginCopyrightWarrantyProvider' message.
 		'loginCopyrightShowVersion' => 0,		// Boolean: If set, the current TYPO3 version is shown.
@@ -72,31 +73,35 @@ $TYPO3_CONF_VARS = Array(
 		'textfile_ext' => 'txt,html,htm,css,inc,php,php3,tmpl,js,sql',	// Text file extensions. Those that can be edited. php,php3 cannot be edited in webspace if they are disallowed! Notice:
 		'contentTable' => '',					// This is the page-content table (Normally 'tt_content')
 		'T3instID' => 'N/A',					// A unique installation ID - not used yet. The idea is that a TYPO3 installation can identify itself by this ID string to the Extension Repository on TYPO3.org so that we can keep a realistic count of serious TYPO3 installations.
-		'binPath' => '', 						// String, comma separated list: list of absolute paths where external programs should be searched for
+		'binPath' => '', 						// String: List of absolute paths where external programs should be searched for. Eg. '/usr/local/webbin/,/home/xyz/bin/'. (ImageMagick path have to be configured separately)
+		'binSetup' => '', 						// String (textarea): List of programs (separated by newline or comma). By default programs will be searched in default paths and the special paths defined by 'binPath'. When PHP has openbasedir enabled the programs can not be found and have to be configured here. Example: 'perl=/usr/bin/perl,unzip=/usr/local/bin/unzip'
 		't3lib_cs_convMethod' => '',			// String (values: "iconv", "recode", "mbstring", default is homemade PHP-code). Defines which of these PHP-features to use for various Charset conversing functions in t3lib_cs. Will speed up charset conversion radically.
 		't3lib_cs_utils' => '',					// String (values: "iconv" - PHP 5.0 only!, "mbstring", default is homemade PHP-code). Defines which of these PHP-features to use for various Charset processing functions in t3lib_cs. Will speed up charset functions radically.
 		'no_pconnect' => 0,						// Boolean: If true, "connect" is used instead of "pconnect" when connecting to the database!
 		'multiplyDBfieldSize' => 1,				// Double: 1-5: Amount used to multiply the DB field size when the install tool is evaluating the database size (eg. "2.5"). This is useful if you want to expand the size of fields for utf-8 etc. For western european sites using utf-8 the need should not be for more than twice the normal single-byte size (2) and for chinese / asian languages 3 should suffice.
+		'setDBinit' => '',					// String (textarea): Commands to send to database right after connecting, separated by newline. Ignored by the DBAL extension except for the 'native' type!
 		'setMemoryLimit' => 0,					// Integer, memory_limit in MB: If more than 16, TYPO3 will try to use ini_set() to set the memory limit of PHP to the value. This works only if the function ini_set() is not disabled by your sysadmin.
 		'forceReturnPath' => 0,					// Boolean: Force return path to be applied in mail() calls. If this is set, all calls to mail() done by t3lib_htmlmail will be called with '-f<return_path> as the 5th parameter. This will make the return path correct on almost all Unix systems. There is a known problem with Postfix below version 2: Mails are not sent if this option is set and Postfix is used. On Windows platforms, the return path is set via a call to ini_set. This has no effect if safe_mode in PHP is on.
 		'displayErrors' => -1,					// Integer, -1,0,1,2. 0=Do not display any PHP error messages. 1=Display error messages. 2=Display only if client matches TYPO3_CONF_VARS[SYS][devIPmask]. -1=Default setting. With this option, you can override the PHP setting "display_errors". It is suggested that you set this to "0" and enable the "error_log" option in php.ini instead.
-		'serverTimeZone' => 1					// Integer, GMT offset of servers time (from time()). Default is "1" which is "GMT+1" (central european time). This value can be used in extensions that are GMT aware and wants to convert times to/from other timezones.
+		'serverTimeZone' => 1,					// Integer, GMT offset of servers time (from time()). Default is "1" which is "GMT+1" (central european time). This value can be used in extensions that are GMT aware and wants to convert times to/from other timezones.
+		'systemLog' => '',					// String, semi-colon separated list: Defines one or more logging methods. Possible methods: file,<abs-path-to-file>[,<level>];mail,<to>[/<from>][,<level>];syslog,<facility>,[,<level>];error_log[,,<level>]. "file" logs to a file, "mail" sends the log entries via mail, "syslog" uses the operating system's log, "error_log" uses the PHP error log. The level is the individual logging level (see [SYS][systemLogLevel]. Facility may be one of LOCAL0..LOCAL7, USER (on Windows USER is the only valid type).
+		'systemLogLevel' => 0,					// Integer: Only messages with same or higher severity are logged; 0 is info, 1 is notice, 2 is warning, 3 is error, 4 is fatal error.
+		'maxFileNameLength' => 60,				// Integer, This is the maximum file name length. The value will be taken into account by basic file opertaions like renaming or creation of files and folders.
 	),
 	'EXT' => Array (	// Options related to the Extension Management
 		'noEdit' => 1,							// Boolean: If set, the Extension Manager does NOT allow extension files to be edited! (Otherwise both local and global extensions can be edited.)
 		'allowGlobalInstall' => 0,				// Boolean: If set, global extensions in typo3/ext/ are allowed to be installed, updated and deleted etc.
 		'allowLocalInstall' => 1,				// Boolean: If set, local extensions in typo3conf/ext/ are allowed to be installed, updated and deleted etc.
-		'em_devVerUpdate' => 0,					// If set, developer versions will also appear as red - ready for upgrade
-		'em_alwaysGetOOManual' => 0,			// If set, OO-manuals are always downloaded
-		'em_systemInstall' => 0,				// If set, you can install extensions in the sysext/ dir. Use this to upgrade the 'cms' and 'lang' extensions.
-		'em_TERurls' => array('http://ter.typo3.com/?id=t3_extrep'),
+		'allowSystemInstall' => 0,				// If set, you can install extensions in the sysext/ dir. Use this to upgrade the 'cms' and 'lang' extensions.
+		'em_wsdlURL' => 'http://typo3.org/wsdl/tx_ter_wsdl.php',				// The SOAP URL for uploading extensions to the TER2. Usually doesn't need to be changed.
+		'em_mirrorListURL' => 'http://repositories.typo3.org/mirrors.xml.gz',				// Allows to preset the URL for fetching the extension repository mirror list from. Used in the Extension Manager.
 
-		'requiredExt' => 'cms,lang,sv',			// String list: List of extensions which are REQUIRED and cannot be unloaded by the Extension Manager!
+		'requiredExt' => 'cms,version,lang,sv',			// String list: List of extensions which are REQUIRED and cannot be unloaded by the Extension Manager!
 		'extCache' => 1,						// Int. 0,1,2,3: 0: ext-scripts (ext_localconf.php and ext_tables.php) are NOT cached, but included every time. 1: scripts cached to typo3conf/temp_CACHED_[sitePathHash]* (saves some milliseconds even with PHP accelerators), 2: scripts cached and prefix includes a hash based on the 'extList' string, 3: scripts cached to typo3conf/temp_CACHED_* (no hash included at all...)
 		'extList' => 'tsconfig_help,context_help,extra_page_cm_options,impexp,belog,aboutmodules,setup,install',						// String list: List of extensions which are enabled for this install. Use the Extension Manager (EM) to manage this!
 		'extConf' => array(						// Config-options for extensions, stored as serialized arrays by extension-keys. Handled automatically by the EM.
 //			'--key--' => array()
-		)
+		),
 	),
 	'BE' => Array(		// Backend Configuration.
 		'unzip_path' => '',						// Path to "unzip".
@@ -110,7 +115,7 @@ $TYPO3_CONF_VARS = Array(
 		'userHomePath' => '',					// Path to the directory where TYPO3 backend-users have their home-dirs.  Eg. '/home/typo3/users/'. A home for backend user 2 would be: '/home/typo3/users/2/'. Ending slash required!
 		'groupHomePath' => '',					// Path to the directory where TYPO3 backend-groups have their home-dirs. Remember that the first part of this path must be 'lockRootPath'. Eg. '/home/typo3/groups/'. A home for backend group 1 would be: '/home/typo3/groups/1/'. Ending slash required!
 		'userUploadDir' => '',					// Suffix to the user home dir which is what gets mounted in TYPO3. Eg. if the user dir is "../123_user/" and this value is "/upload" then "../123_user/upload" gets mounted.
-		'fileCreateMask' => '0755',				// File mode mask for Unix file systems (when files are uploaded/created). Execute bit is set since some files installed in extensions might need that.
+		'fileCreateMask' => '0644',				// File mode mask for Unix file systems (when files are uploaded/created).
 		'folderCreateMask' => '0755',			// As above, but for folders.
 		'createGroup' => '',					// Group for newly created files and folders (Unix only). Group ownership can be changed on Unix file systems (see above). Set this if you want to change the group ownership of created files/folders to a specific group. This makes sense in all cases where the webserver is running with a different user/group as you do. Create a new group on your system and add you and the webserver user to the group. Now you can safely set the last bit in fileCreateMask/folderCreateMask to 0 (e.g. 770). Important: The user who is running your webserver needs to be a member of the group you specify here! Otherwise you might get some error messages.
 		'warning_email_addr' => '',				// Email-address that will receive a warning if there has been failed logins 4 times within an hour (all users).
@@ -130,7 +135,7 @@ $TYPO3_CONF_VARS = Array(
 		'forceCharset' => '',					// String. Normally the charset of the backend users language selection is used. If you set this value to a charset found in t3lib/csconvtbl/ (or "utf-8") the backend (and database) will ALWAYS use this charset. Always use a lowercase value.
 		'installToolPassword' => '',			// String. This is the md5-hashed password for the Install Tool. Set this to '' and access will be totally denied. PLEASE consider to externally password protect the typo3/install/ folder, eg. with a .htaccess file.
 		'trackBeUser' => 0,						// Boolean. If set, every invokation of a backend script is logged in sys_trackbeuser. This is used to get a view of the backend users behaviour. Mostly for debugging, support and user interaction analysis. Requires 'beuser_tracking' extension.
- 		'defaultUserTSconfig' => 'options.shortcutFrame=1',			// Enter lines of default backend user/group TSconfig.
+ 		'defaultUserTSconfig' => 'options.shortcutFrame=1',			// String. Enter lines of default backend user/group TSconfig.
 		'defaultPageTSconfig' => '',			// Enter lines of default Page TSconfig.
 		'defaultPermissions' => array (			// Default permissions set for new pages in t3lib/tce_main.php. Keys are 'show,edit,delete,new,editcontent'. Enter as comma-list
 //			'user' => '',				READFILE:			// default in tce_main is 'show,edit,delete,new,editcontent'. If this is set (uncomment), this value is used instead.
@@ -155,11 +160,12 @@ $TYPO3_CONF_VARS = Array(
 		'useOnContextMenuHandler' => 1,			// Boolean. If set, the context menus (clickmenus) in the backend are activated on right-click - although this is not a XHTML attribute!
 		'loginLabels' => 'Username|Password|Interface|Log In|Log Out|Backend,Front End|Administration Login on ###SITENAME###|(Note: Cookies and JavaScript must be enabled!)|Important Messages:|Your login attempt did not succeed. Make sure to spell your username and password correctly, including upper/lowercase characters.',		// Language labels of the login prompt.
 		'loginNews' => array(),						// In this array you can define news-items for the login screen. To this array, add arrays with assoc keys 'date', 'header', 'content' (HTML content) and for those appropriate value pairs
-		'XCLASS' => Array(),					// See 'Inside TYPO3' document for more information.
 		'XLLfile' => Array(),					// For extension/overriding of the arrays in 'locallang' files in the backend. See 'Inside TYPO3' for more information.
 		'notificationPrefix' => '[TYPO3 Note]',
 		'accessListRenderMode' => 'singlebox',	// Can be "singlebox", "checkbox" or blank. Refers to the "renderMode" for the selector boxes in be-groups configuration.
 		'explicitADmode' => 'explicitDeny',	// Sets the general allow/deny mode for selector box values. Value can be either "explicitAllow" or "explicitDeny", nothing else!
+		'XCLASS' => Array(),					// See 'Inside TYPO3' document for more information.
+		'niceFlexFormXMLtags' => TRUE,			// If set, the flexform XML will be stored with meaningful tags which can be validated with DTD/schema. If you rely on custom reading of the XML from pre-4.0 versions you should set this to false if you don't like to change your reader code (internally it is insignificant since t3lib_div::xml2array() doesn't care for the tags if the index-attribute value is set)
 	),
 	'FE' => Array(			// Configuration for the TypoScript frontend (FE). Nothing here relates to the administration backend!
 		'png_to_gif' => 0,						// Boolean. Enables conversion back to gif of all png-files generated in the frontend libraries. Notice that this leaves an increased number of temporary files in typo3temp/
@@ -196,7 +202,6 @@ $TYPO3_CONF_VARS = Array(
 		'defaultTypoScript_editorcfg' => '',		// Enter lines of default TypoScript, editorcfg-field (Backend Editor Configuration)
 		'defaultTypoScript_editorcfg.' => Array(),		// As above, but for Backend Editor Configuration
 		'dontSetCookie' => 0,					// If set, the no cookies is attempted to be set in the front end. Of course no userlogins are possible either...
-		'XCLASS' => Array(),					// See 'Inside TYPO3' document for more information.
 		'IPmaskMountGroups' => array(			// This allows you to specify an array of IPmaskLists/fe_group-uids. If the REMOTE_ADDR of the user matches an IPmaskList, then the given fe_group is add to the gr_list. So this is an automatic mounting of a user-group. But no fe_user is logged in though! This feature is implemented for the default frontend user authentication and might not be implemented for alternative authentication services.
 			// array('IPmaskList_1','fe_group uid'), array('IPmaskList_2','fe_group uid')
 		),
@@ -205,6 +210,9 @@ $TYPO3_CONF_VARS = Array(
 		'enable_mount_pids' => 1,					// If set to "1", the mount_pid feature allowing 'symlinks' in the page tree (for frontend operation) is allowed.
 		'pageOverlayFields' => 'uid,title,subtitle,nav_title,media,keywords,description,abstract,author,author_email',				// List of fields from the table "pages_language_overlay" which should be overlaid on page records. See t3lib_page::getPageOverlay()
 		'hidePagesIfNotTranslatedByDefault' => FALSE,	// If TRUE, pages that has no translation will be hidden by default. Basically this will inverse the effect of the page localization setting "Hide page if no translation for current language exists" to "Show page even if no translation exists"
+		'eID_include' => array(),				// Array of key/value pairs where key is "tx_[ext]_[optional suffix]" and value is relative filename of class to include. Key is used as "?eID=" for index_ts.php to include the code file which renders the page from that point. (Useful for functionality that requires a low initialization footprint, eg. frontend ajax applications)
+		'XCLASS' => Array(),					// See 'Inside TYPO3' document for more information.
+		'pageCacheToExternalFiles' => FALSE		// If set, page cache entries will be stored in typo3temp/cache_pages/ab/ instead of the database. Still, "cache_pages" will be filled in database but the "HTML" field will be empty. When the cache is flushed the files in cache_pages/ab/ will not be flush - you will have to garbage clean manually once in a while.
 	),
 	'MODS' => Array(		// Backend Module Configuration (obsolete, make extension instead)
 	),
@@ -225,7 +233,7 @@ $TYPO3_CONF_VARS = Array(
 				'url' => 't3lib/class.t3lib_softrefproc.php:&t3lib_softrefproc',
 			),
 			'softRefParser_GL' => array()	// Global soft reference parsers
-		)
+		),
 	),
 	'EXTCONF' => Array (		// Here you may add manually set configuration options for your extensions. Eg. $TYPO3_CONF_VARS['EXTCONF']['my_extension_key']['my_option'] = 'my_value';
 //		'--key--' => array()
@@ -239,9 +247,10 @@ $TYPO3_CONF_VARS = Array(
 $T3_VAR = array();	// Initialize.
 
 	// TYPO3 version
-$TYPO_VERSION = '4.0-dev';
+$TYPO_VERSION = '4.0-CVS';
 define('TYPO3_version', $TYPO_VERSION);
 define('TYPO3_branch', '4.0');
+define('TYPO3_copyright_year', '1998-2006');
 
 // Database-variables are cleared!
 $typo_db = '';					// The database name
@@ -252,7 +261,7 @@ $typo_db_tables_script = '';	// The filename of the tables.php script in typo3co
 $typo_db_extTableDef_script = '';	// The filename of an additional script in typo3conf/-folder which is included after tables.php. Code in this script should modify the tables.php-configuration only, and this provides a good way to extend the standard-distributed tables.php file.
 
 	// Include localconf.php. Use this file to configure TYPO3 for your needs and database
-if (!@is_file(PATH_typo3conf.'localconf.php'))	die(PATH_typo3conf.'localconf.php is not found!');
+if (!@is_file(PATH_typo3conf.'localconf.php'))	die('localconf.php is not found!');
 require(PATH_typo3conf.'localconf.php');
 
 	// Defining the database setup as constants
@@ -264,13 +273,14 @@ define('TYPO3_tables_script', $typo_db_tables_script);
 define('TYPO3_extTableDef_script', $typo_db_extTableDef_script);
 
 	// Defining backend system languages
-	// Remember to
-	//		- update 'setup' extension labels (sysext/setup/mod/locallang.xml)
-	//		- pages.lang item array (t3lib/stddb/tbl_be.php)
-	// 		- Kickstarter wizard (ext/kickstarter/class.tx_kickstarter_wizard.php)
-	//		- Add character encoding for lang key in t3lib/class.t3lib_cs.php
-	// 		- Add "csh_[key]" language pack and setup all core ll-XML scripts to point to XML files inside of that. (Kasper: see typo3_l10n/README.prepare_languages.txt)
-define('TYPO3_languages', 'default|dk|de|no|it|fr|es|nl|cz|pl|si|fi|tr|se|pt|ru|ro|ch|sk|lt|is|hr|hu|gl|th|gr|hk|eu|bg|br|et|ar|he|ua|lv|jp|vn|ca|ba|kr|eo|my|hi');
+	// When adding new keys, remember to:
+	//		- Update pages.lang item array (t3lib/stddb/tbl_be.php)
+	//		- Add character encoding for lang. key in t3lib/class.t3lib_cs.php (default for new languages is "utf-8")
+	//		- Add mappings for language in t3lib/class.t3lib_cs.php (TYPO3/ISO, language/script, script/charset)
+	//		- Update 'setup' extension labels (sysext/setup/mod/locallang.xml)
+	//		- Using translation server? Create new user with username = "language key", member of "translator" group, set to "language key" language.
+	// Thats it! Use extension "llxmltranslate" to begin translation. Language pack is automatically created in "typo3conf/l10n/[language key]/"
+define('TYPO3_languages', 'default|dk|de|no|it|fr|es|nl|cz|pl|si|fi|tr|se|pt|ru|ro|ch|sk|lt|is|hr|hu|gl|th|gr|hk|eu|bg|br|et|ar|he|ua|lv|jp|vn|ca|ba|kr|eo|my|hi|fo|fa|sr');
 
 	// Unsetting the configured values. Use of these are deprecated.
 unset($typo_db);
@@ -291,18 +301,28 @@ if (!$GLOBALS['TYPO3_CONF_VARS']['GFX']['im'])	{
 	$GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext']='gif,jpg,jpeg,png';
 	$GLOBALS['TYPO3_CONF_VARS']['GFX']['thumbnails'] = 0;
 }
+if (!strcmp('0', $GLOBALS['TYPO3_CONF_VARS']['GFX']['im_version_5']))	{
+	unset($GLOBALS['TYPO3_CONF_VARS']['GFX']['im_version_5']);	// Make sure that setting "im_version_5" to "0" means IM4
+}
 if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['im_version_5'])	{
 	$GLOBALS['TYPO3_CONF_VARS']['GFX']['im_negate_mask'] = 1;
 	$GLOBALS['TYPO3_CONF_VARS']['GFX']['im_no_effects'] = 1;
 	$GLOBALS['TYPO3_CONF_VARS']['GFX']['im_mask_temp_ext_gif'] = 1;
-}
-if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['im_version_5']==='gm')	{
-	$GLOBALS['TYPO3_CONF_VARS']['GFX']['im_imvMaskState'] = 1;
-	$GLOBALS['TYPO3_CONF_VARS']['GFX']['im_no_effects'] = 1;
-	$GLOBALS['TYPO3_CONF_VARS']['GFX']['im_v5effects'] = -1;
+
+	if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['im_version_5']==='gm')	{
+		$GLOBALS['TYPO3_CONF_VARS']['GFX']['im_negate_mask'] = 0;
+		$GLOBALS['TYPO3_CONF_VARS']['GFX']['im_imvMaskState'] = 0;
+		$GLOBALS['TYPO3_CONF_VARS']['GFX']['im_no_effects'] = 1;
+		$GLOBALS['TYPO3_CONF_VARS']['GFX']['im_v5effects'] = -1;
+	}
 }
 if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['im_imvMaskState'])	{
 	$GLOBALS['TYPO3_CONF_VARS']['GFX']['im_negate_mask']=$GLOBALS['TYPO3_CONF_VARS']['GFX']['im_negate_mask']?0:1;
+}
+
+	// The iconv utility functions are only available in PHP5 and later
+if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['t3lib_cs_utils']==='iconv' && t3lib_div::int_from_ver(phpversion())<5000000)	{
+	$GLOBALS['TYPO3_CONF_VARS']['SYS']['t3lib_cs_utils'] = '';
 }
 
 	// simple debug function which prints output immediately
@@ -335,6 +355,10 @@ function debugEnd() {
 }
 
 
+	// include compatibility functions <PHP5
+if (version_compare(phpversion(), '5.0') < 0) {
+	include_once(PATH_t3lib.'compat_php5.php');
+}
 
 	// Init services array:
 $T3_SERVICES = array();

@@ -42,11 +42,11 @@
  *  123:     function init()
  *  183:     function menuConfig()
  *  214:     function main()
- *  291:     function printContent()
+ *  288:     function printContent()
  *
  *              SECTION: Listing and Form rendering
- *  317:     function doEdit()
- *  454:     function notEdit()
+ *  315:     function doEdit()
+ *  452:     function notEdit()
  *
  *              SECTION: Helper functions
  *  647:     function printCheckBox($checkName,$num)
@@ -140,7 +140,7 @@ class SC_mod_web_perm_index {
 		$this->doc->backPath = $BACK_PATH;
 		$this->doc->docType = 'xhtml_trans';
 		$this->doc->form='<form action="'.$BACK_PATH.'tce_db.php" method="post" name="editform">';
-		$this->doc->JScode = '<script type="text/javascript" src="'.$BACK_PATH.'t3lib/jsfunc.updateform.js"></script>';
+		$this->doc->JScode = '<script type="text/javascript" src="'.$BACK_PATH.'../t3lib/jsfunc.updateform.js"></script>';
 		$this->doc->JScode.= $this->doc->wrapScriptTags('
 			function checkChange(checknames, varname)	{	//
 				var res = 0;
@@ -161,7 +161,7 @@ class SC_mod_web_perm_index {
 				}
 			}
 			function jumpToUrl(URL)	{	//
-				document.location = URL;
+				window.location.href = URL;
 			}
 		');
 
@@ -278,9 +278,6 @@ class SC_mod_web_perm_index {
 			$this->content.=$this->doc->startPage($LANG->getLL('permissions'));
 			$this->content.=$this->doc->header($LANG->getLL('permissions'));
 		}
-
-			// Ending page:
-		$this->content.=$this->doc->endPage();
 	}
 
 	/**
@@ -289,7 +286,8 @@ class SC_mod_web_perm_index {
 	 * @return	void
 	 */
 	function printContent()	{
-
+		$this->content.= $this->doc->endPage();
+		$this->content = $this->doc->insertStylesAndJS($this->content);
 		echo $this->content;
 	}
 
@@ -571,6 +569,7 @@ class SC_mod_web_perm_index {
 					<td'.$bgCol.'><img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/line.gif','width="5" height="16"').' alt="" /></td>';
 
 				if ($BE_USER->user['uid']==$data['row']['perms_userid'])	{$bgCol = ' class="bgColor-20"';} else {$bgCol = $lE_bgCol;}
+// FIXME $owner undefined
 				$cells[]='
 					<td'.$bgCol.' nowrap="nowrap" align="center">'.($data['row']['uid']?$owner.$this->printPerms($BE_USER->calcPerms($data['row'])):'').'</td>
 					'.(!$BE_USER->isAdmin()?'

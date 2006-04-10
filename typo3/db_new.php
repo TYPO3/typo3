@@ -48,13 +48,13 @@
  *
  *  128: class SC_db_new
  *  157:     function init()
- *  217:     function main()
- *  269:     function pagesOnly()
- *  287:     function regularNew()
- *  442:     function printContent()
- *  456:     function linkWrap($code,$table,$pid,$addContentTable=0)
- *  476:     function isTableAllowedForThisPage($pid_row, $checkTable)
- *  506:     function showNewRecLink($table,$allowedNewTables='')
+ *  224:     function main()
+ *  276:     function pagesOnly()
+ *  294:     function regularNew()
+ *  458:     function printContent()
+ *  473:     function linkWrap($code,$table,$pid,$addContentTable=0)
+ *  493:     function isTableAllowedForThisPage($pid_row, $checkTable)
+ *  523:     function showNewRecLink($table,$allowedNewTables='')
  *
  * TOTAL FUNCTIONS: 10
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -160,6 +160,12 @@ class SC_db_new {
 			// page-selection permission clause (reading)
 		$this->perms_clause = $BE_USER->getPagePermsClause(1);
 
+			// this will hide records from display - it has nothing todo with user rights!!
+		if ($pidList = $GLOBALS['BE_USER']->getTSConfigVal('options.hideRecords.pages')) {
+			if ($pidList = $GLOBALS['TYPO3_DB']->cleanIntList($pidList)) {
+				$this->perms_clause .= ' AND pages.uid NOT IN ('.$pidList.')';
+			}
+		}
 			// Setting GPvars:
 		$this->id = intval(t3lib_div::_GP('id'));	// The page id to operate from
 		$this->returnUrl = t3lib_div::_GP('returnUrl');
@@ -451,6 +457,7 @@ class SC_db_new {
 	 */
 	function printContent()	{
 		$this->content.= $this->doc->endPage();
+		$this->content = $this->doc->insertStylesAndJS($this->content);
 		echo $this->content;
 	}
 

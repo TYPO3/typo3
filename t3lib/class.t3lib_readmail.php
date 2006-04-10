@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2005 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2006 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -37,27 +37,23 @@
  *
  *
  *
- *   87: class t3lib_readmail
- *
- *              SECTION: FUNCTIONS for the Dmailer
- *  122:     function find_MIDfromReturnPath($to)
- *  142:     function find_XTypo3MID($content)
+ *   83: class t3lib_readmail
  *
  *              SECTION: General
- *  188:     function getMessage($mailParts)
- *  213:     function getTextContent($content)
- *  228:     function getMailBoundaryParts($boundary,$content)
- *  248:     function getCType($str)
- *  271:     function analyseReturnError($c)
- *  326:     function decodeHeaderString($str)
- *  354:     function extractNameEmail($str)
- *  383:     function getContentTypeData($contentTypeStr)
- *  406:     function makeUnixDate($dateStr)
- *  429:     function getGMToffset($GMT)
- *  443:     function extractMailHeader($content,$limit=0)
- *  474:     function fullParse($content)
+ *  113:     function getMessage($mailParts)
+ *  138:     function getTextContent($content)
+ *  153:     function getMailBoundaryParts($boundary,$content)
+ *  173:     function getCType($str)
+ *  196:     function analyseReturnError($c)
+ *  251:     function decodeHeaderString($str)
+ *  279:     function extractNameEmail($str)
+ *  308:     function getContentTypeData($contentTypeStr)
+ *  331:     function makeUnixDate($dateStr)
+ *  354:     function getGMToffset($GMT)
+ *  368:     function extractMailHeader($content,$limit=0)
+ *  399:     function fullParse($content)
  *
- * TOTAL FUNCTIONS: 14
+ * TOTAL FUNCTIONS: 12
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -100,77 +96,6 @@ class t3lib_readmail {
 		'DEC' => 12
 	);
 	var $serverGMToffsetMinutes = 60;		// = +0100 (CET)
-
-
-
-
-
-
-	/*******************************
-	 *
-	 * FUNCTIONS for the Dmailer
-	 *
-	 ********************************/
-
-	/**
-	 * Returns special TYPO3 Message ID (MID) from input TO header (the return address of the sent mail from Dmailer. Used by Dmailer, return mails)
-	 *
-	 * @param	string		email address, return address string
-	 * @return	mixed		array with 'mid', 'rtbl' and 'rid' keys are returned.
-	 * @internal
-	 */
-	function find_MIDfromReturnPath($to)	{
-		$parts = explode('mid',strtolower($to));
-		$moreParts=explode('_',$parts[1]);
-		$out=array(
-			'mid' => $moreParts[0],
-			'rtbl' => substr($moreParts[1],0,1),
-			'rid' => intval(substr($moreParts[1],1))
-		);
-		if ($out['rtbl']=='p')		$out['rtbl']='P';
-
-		return($out);
-	}
-
-	/**
-	 * Returns special TYPO3 Message ID (MID) from input mail content (used by Dmailer, return mails)
-	 *
-	 * @param	string		Mail (header) content
-	 * @return	mixed		If "X-Typo3MID" header is found and integrity is OK, then an array with 'mid', 'rtbl' and 'rid' keys are returned. Otherwise void.
-	 * @internal
-	 */
-	function find_XTypo3MID($content)	{
-		if (strstr($content,'X-Typo3MID:'))	{
-			$p=explode('X-Typo3MID:',$content,2);
-			$l=explode(chr(10),$p[1],2);
-			list($mid,$hash)=t3lib_div::trimExplode('-',$l[0]);
-			if (md5($mid)==$hash)	{
-				$moreParts=explode('_',substr($mid,3));
-				$out=array(
-					'mid' => $moreParts[0],
-					'rtbl' => substr($moreParts[1],0,1),
-					'rid' => substr($moreParts[1],1)
-				);
-				return($out);
-			}
-		}
-	}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 	/*******************************
 	 *

@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2005 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2006 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -41,13 +41,13 @@
  *   85: class t3lib_iconWorks
  *  100:     function getIconImage($table,$row=array(),$backPath,$params='',$shaded=FALSE)
  *  118:     function getIcon($table,$row=array(),$shaded=FALSE)
- *  254:     function skinImg($backPath,$src,$wHattribs='',$outputMode=0)
+ *  264:     function skinImg($backPath,$src,$wHattribs='',$outputMode=0)
  *
  *              SECTION: Other functions
- *  328:     function makeIcon($iconfile,$mode, $user, $protectSection,$absFile,$iconFileName_stateTagged)
- *  444:     function imagecopyresized(&$im, $cpImg, $Xstart, $Ystart, $cpImgCutX, $cpImgCutY, $w, $h, $w, $h)
- *  477:     function imagecreatefrom($file)
- *  494:     function imagemake($im, $path)
+ *  353:     function makeIcon($iconfile,$mode, $user, $protectSection,$absFile,$iconFileName_stateTagged)
+ *  475:     function imagecopyresized(&$im, $cpImg, $Xstart, $Ystart, $cpImgCutX, $cpImgCutY, $w, $h, $w, $h)
+ *  505:     function imagecreatefrom($file)
+ *  522:     function imagemake($im, $path)
  *
  * TOTAL FUNCTIONS: 7
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -119,8 +119,8 @@ class t3lib_iconWorks	{
 		global $TCA, $PAGES_TYPES, $ICON_TYPES;
 
 			// Flags:
-		$doNotGenerateIcon = $GLOBALS['TYPO3_CONF_VARS']['GFX']['noIconProc'];				// If set, the icon will NOT be generated with GDlib. Rather the icon will be looked for as [iconfilename]_X.[extension]
-		$doNotRenderUserGroupNumber = TRUE;		// If set, then the usergroup number will NOT be printed unto the icon. NOTICE. the icon is generated only if a default icon for groups is not found... So effectively this is ineffective...
+		$doNotGenerateIcon = $GLOBALS['TYPO3_CONF_VARS']['GFX']['noIconProc'];	// If set, the icon will NOT be generated with GDlib. Rather the icon will be looked for as [iconfilename]_X.[extension]
+		$doNotRenderUserGroupNumber = TRUE;	// If set, then the usergroup number will NOT be printed unto the icon. NOTICE. the icon is generated only if a default icon for groups is not found... So effectively this is ineffective...
 
 			// Shadow:
 		if ($TCA[$table]['ctrl']['versioningWS'] && (int)$row['t3ver_state']===1)	{
@@ -132,6 +132,8 @@ class t3lib_iconWorks	{
 
 			// First, find the icon file name. This can depend on configuration in TCA, field values and more:
 		if ($table=='pages')	{
+			if ($row['nav_hide'] && ($row['doktype']==1||$row['doktype']==2))	$row['doktype']=5;	// Workaround to change the icon if "Hide in menu" was set
+
 			if (!$iconfile = $PAGES_TYPES[$row['doktype']]['icon'])	{
 				$iconfile = $PAGES_TYPES['default']['icon'];
 			}
@@ -239,7 +241,7 @@ class t3lib_iconWorks	{
 					return 'gfx/i/no_icon_found.gif';
 				}
 			} else {	// Otherwise, create the icon:
-				$theRes= t3lib_iconWorks::makeIcon($GLOBALS['BACK_PATH'].$iconfile, $string, $user, $protectSection, $absfile, $iconFileName_stateTagged);
+				$theRes = t3lib_iconWorks::makeIcon($GLOBALS['BACK_PATH'].$iconfile, $string, $user, $protectSection, $absfile, $iconFileName_stateTagged);
 				return $theRes;
 			}
 		} else {
@@ -291,18 +293,33 @@ class t3lib_iconWorks	{
 			// DEBUG: This doubles the size of all icons - for testing/debugging:
 #		if (ereg('^width="([0-9]+)" height="([0-9]+)"$',$wHattribs,$reg))	$wHattribs='width="'.($reg[1]*2).'" height="'.($reg[2]*2).'"';
 
+
+			// rendering disabled (greyed) icons using _i (inactive) as name suffix ("_d" is already used)
+		$matches = array();
+		$srcBasename = basename($src);
+		if (preg_match('/(.*)_i(\....)$/', $srcBasename, $matches)) {
+			$temp_path = dirname(PATH_thisScript).'/';
+			if(!@is_file($temp_path.$backPath.$src)) {
+				$srcOrg = preg_replace('/_i'.preg_quote($matches[2]).'$/', $matches[2], $src);
+				$src = t3lib_iconWorks::makeIcon($backPath.$srcOrg, 'disabled', 0, false, $temp_path.$backPath.$srcOrg, $srcBasename);
+			}
+		}
+
+
 			// Return icon source/wHattributes:
+		$output = '';
 		switch($outputMode)	{
 			case 0:
-				return ' src="'.$backPath.$src.'" '.$wHattribs;
+				$output = ' src="'.$backPath.$src.'" '.$wHattribs;
 			break;
 			case 1:
-				return $backPath.$src;
+				$output = $backPath.$src;
 			break;
 			case 2:
-				return $wHattribs;
+				$output = $wHattribs;
 			break;
 		}
+		return $output;
 	}
 
 
@@ -347,16 +364,16 @@ class t3lib_iconWorks	{
 			if (@file_exists($absFile))	{
 				if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib'])	{
 
-						// Create image pointer, if possible:
+						// Create image pointer, if possible
 					$im = t3lib_iconworks::imagecreatefrom($absFile);
 					if ($im<0)	return $iconfile;
 
 						// Converting to gray scale, dimming the icon:
-					if ($mode!='futuretiming' && $mode!='no_icon_found' && !(!$mode && $user))	{
+					if (($mode=='disabled') OR ($mode!='futuretiming' && $mode!='no_icon_found' && !(!$mode && $user)))	{
 						for ($c=0; $c<ImageColorsTotal($im); $c++)	{
 							$cols = ImageColorsForIndex($im,$c);
 							$newcol = round(($cols['red']+$cols['green']+$cols['blue'])/3);
-							$lighten = 2;
+							$lighten = ($mode=='disabled') ? 2.5 : 2;
 							$newcol = round(255-((255-$newcol)/$lighten));
 							ImageColorSet($im,$c,$newcol,$newcol,$newcol);
 						}
@@ -395,13 +412,19 @@ class t3lib_iconWorks	{
 							case 'no_icon_found':
 								$ol_im = t3lib_iconworks::imagecreatefrom($GLOBALS['BACK_PATH'].'gfx/overlay_no_icon_found.gif');
 							break;
+							case 'disabled':
+									// is already greyed - nothing more
+								$ol_im = 0;
+							break;
 							case 'hidden':
 							default:
 								$ol_im = t3lib_iconworks::imagecreatefrom($GLOBALS['BACK_PATH'].'gfx/overlay_hidden.gif');
 							break;
 						}
 						if ($ol_im<0)	return $iconfile;
-						t3lib_iconworks::imagecopyresized($im, $ol_im, 0, 0, 0, 0, imagesx($ol_im), imagesy($ol_im), imagesx($ol_im), imagesy($ol_im));
+						if ($ol_im) {
+							t3lib_iconworks::imagecopyresized($im, $ol_im, 0, 0, 0, 0, imagesx($ol_im), imagesy($ol_im), imagesx($ol_im), imagesy($ol_im));
+						}
 					}
 						// Protect-section icon:
 					if ($protectSection)	{
@@ -426,13 +449,13 @@ class t3lib_iconWorks	{
 
 	/**
 	 * The necessity of using this function for combining two images if GD is version 2 is that
-	 * 	GD2 cannot manage to combine two indexed-color images without totally spoiling everything.
-	 * 	In class.t3lib_stdgraphic this was solved by combining the images onto a first created true color image
-	 * 	However it has turned out that this method will not work if the indexed png-files contains transparency.
-	 * 	So I had to turn my attention to ImageMagick - my 'enemy of death'.
-	 * 	And so it happend - ImageMagick is now used to combine my two indexed-color images with transparency. And that works.
-	 * 	Of course it works only if ImageMagick is able to create valid png-images - which you cannot be sure of with older versions (still 5+)
-	 * 	The only drawback is (apparently) that IM creates true-color png's. The transparency of these will not be shown by MSIE on windows at this time (although it's straight 0%/100% transparency!) and the file size may be larger.
+	 * GD2 cannot manage to combine two indexed-color images without totally spoiling everything.
+	 * In class.t3lib_stdgraphic this was solved by combining the images onto a first created true color image
+	 * However it has turned out that this method will not work if the indexed png-files contains transparency.
+	 * So I had to turn my attention to ImageMagick - my 'enemy of death'.
+	 * And so it happend - ImageMagick is now used to combine my two indexed-color images with transparency. And that works.
+	 * Of course it works only if ImageMagick is able to create valid png-images - which you cannot be sure of with older versions (still 5+)
+	 * The only drawback is (apparently) that IM creates true-color png's. The transparency of these will not be shown by MSIE on windows at this time (although it's straight 0%/100% transparency!) and the file size may be larger.
 	 *
 	 * For parameters, see PHP function "imagecopyresized()"
 	 *

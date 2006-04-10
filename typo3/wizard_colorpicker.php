@@ -42,14 +42,14 @@
  *   75: class SC_wizard_colorpicker
  *  103:     function init()
  *  182:     function main()
- *  234:     function printContent()
- *  245:     function frameSet()
+ *  233:     function printContent()
+ *  246:     function frameSet()
  *
  *              SECTION: Rendering of various color selectors
- *  304:     function colorMatrix()
- *  353:     function colorList()
- *  383:     function colorImage()
- *  416:     function getIndex($im,$x,$y)
+ *  305:     function colorMatrix()
+ *  354:     function colorList()
+ *  384:     function colorImage()
+ *  417:     function getIndex($im,$x,$y)
  *
  * TOTAL FUNCTIONS: 8
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -222,7 +222,6 @@ class SC_wizard_colorpicker {
 
 				// Output:
 			$this->content.=$this->doc->section($LANG->getLL('colorpicker_title'), $content, 0,1);
-			$this->content.=$this->doc->endPage();
 		}
 	}
 
@@ -232,6 +231,8 @@ class SC_wizard_colorpicker {
 	 * @return	void
 	 */
 	function printContent()	{
+		$this->content.= $this->doc->endPage();
+		$this->content = $this->doc->insertStylesAndJS($this->content);
 		echo $this->content;
 	}
 

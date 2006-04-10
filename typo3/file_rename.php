@@ -40,7 +40,7 @@
  *   74: class SC_file_rename
  *   96:     function init()
  *  149:     function main()
- *  194:     function printContent()
+ *  192:     function printContent()
  *
  * TOTAL FUNCTIONS: 3
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -182,8 +182,6 @@ class SC_file_rename {
 			// Add the HTML as a section:
 		$this->content.= $this->doc->section('',$code);
 
-			// Ending page
-		$this->content.= $this->doc->endPage();
 	}
 
 	/**
@@ -192,7 +190,8 @@ class SC_file_rename {
 	 * @return	void
 	 */
 	function printContent()	{
-
+		$this->content.= $this->doc->endPage();
+		$this->content = $this->doc->insertStylesAndJS($this->content);
 		echo $this->content;
 	}
 }

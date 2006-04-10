@@ -42,65 +42,67 @@
  *
  *
  *
- *  143: class tslib_menu
- *  187:     function start(&$tmpl,&$sys_page,$id,$conf,$menuNumber)
- *  313:     function makeMenu()
- *  822:     function includeMakeMenu($conf,$altSortField)
- *  838:     function filterMenuPages(&$data,$banUidArray,$spacer)
- *  894:     function procesItemStates($splitCount)
- * 1082:     function link($key,$altTarget='',$typeOverride='')
- * 1142:     function subMenu($uid)
- * 1184:     function isNext($uid, $MPvar='')
- * 1205:     function isActive($uid, $MPvar='')
- * 1226:     function isCurrent($uid, $MPvar='')
- * 1241:     function isSubMenu($uid)
- * 1266:     function isItemState($kind,$key)
- * 1303:     function accessKey($title)
- * 1329:     function userProcess($mConfKey,$passVar)
- * 1344:     function setATagParts()
- * 1357:     function getPageTitle($title,$nav_title)
- * 1369:     function getMPvar($key)
- * 1384:     function getDoktypeExcludeWhere()
+ *  145: class tslib_menu
+ *  191:     function start(&$tmpl,&$sys_page,$id,$conf,$menuNumber,$objSuffix='')
+ *  324:     function makeMenu()
+ *  865:     function includeMakeMenu($conf,$altSortField)
+ *  881:     function filterMenuPages(&$data,$banUidArray,$spacer)
+ *  937:     function procesItemStates($splitCount)
+ * 1147:     function link($key,$altTarget='',$typeOverride='')
+ * 1212:     function changeLinksForAccessRestrictedPages(&$LD, $page, $mainTarget, $typeOverride)
+ * 1233:     function subMenu($uid, $objSuffix='')
+ * 1278:     function isNext($uid, $MPvar='')
+ * 1299:     function isActive($uid, $MPvar='')
+ * 1320:     function isCurrent($uid, $MPvar='')
+ * 1335:     function isSubMenu($uid)
+ * 1360:     function isItemState($kind,$key)
+ * 1400:     function accessKey($title)
+ * 1426:     function userProcess($mConfKey,$passVar)
+ * 1441:     function setATagParts()
+ * 1454:     function getPageTitle($title,$nav_title)
+ * 1466:     function getMPvar($key)
+ * 1481:     function getDoktypeExcludeWhere()
+ * 1491:     function getBannedUids()
  *
  *
- * 1416: class tslib_tmenu extends tslib_menu
- * 1425:     function generate()
- * 1441:     function writeMenu()
- * 1582:     function getBeforeAfter($pref)
- * 1612:     function addJScolorShiftFunction()
- * 1634:     function extProc_init()
- * 1645:     function extProc_RO($key)
- * 1656:     function extProc_beforeLinking($key)
- * 1668:     function extProc_afterLinking($key)
- * 1685:     function extProc_beforeAllWrap($item,$key)
- * 1696:     function extProc_finish()
+ * 1530: class tslib_tmenu extends tslib_menu
+ * 1539:     function generate()
+ * 1555:     function writeMenu()
+ * 1699:     function getBeforeAfter($pref)
+ * 1729:     function addJScolorShiftFunction()
+ * 1751:     function extProc_init()
+ * 1762:     function extProc_RO($key)
+ * 1773:     function extProc_beforeLinking($key)
+ * 1785:     function extProc_afterLinking($key)
+ * 1802:     function extProc_beforeAllWrap($item,$key)
+ * 1813:     function extProc_finish()
  *
  *
- * 1732: class tslib_gmenu extends tslib_menu
- * 1741:     function generate()
- * 1779:     function makeGifs($conf, $resKey)
- * 1984:     function findLargestDims($conf,$items,$Hobjs,$Wobjs,$minDim,$maxDim)
- * 2056:     function writeMenu()
- * 2173:     function extProc_init()
- * 2184:     function extProc_RO($key)
- * 2195:     function extProc_beforeLinking($key)
- * 2208:     function extProc_afterLinking($key)
- * 2225:     function extProc_beforeAllWrap($item,$key)
- * 2236:     function extProc_finish()
+ * 1849: class tslib_gmenu extends tslib_menu
+ * 1858:     function generate()
+ * 1896:     function makeGifs($conf, $resKey)
+ * 2101:     function findLargestDims($conf,$items,$Hobjs,$Wobjs,$minDim,$maxDim)
+ * 2173:     function writeMenu()
+ * 2294:     function extProc_init()
+ * 2305:     function extProc_RO($key)
+ * 2316:     function extProc_beforeLinking($key)
+ * 2329:     function extProc_afterLinking($key)
+ * 2346:     function extProc_beforeAllWrap($item,$key)
+ * 2357:     function extProc_finish()
  *
  *
- * 2270: class tslib_imgmenu extends tslib_menu
- * 2279:     function generate()
- * 2297:     function makeImageMap($conf)
- * 2480:     function writeMenu()
+ * 2391: class tslib_imgmenu extends tslib_menu
+ * 2400:     function generate()
+ * 2418:     function makeImageMap($conf)
+ * 2604:     function writeMenu()
  *
  *
- * 2523: class tslib_jsmenu extends tslib_menu
- * 2530:     function generate()
- * 2538:     function writeMenu()
- * 2599:     function generate_level($levels,$count,$pid,$menuItemArray='',$MP_array=array())
+ * 2647: class tslib_jsmenu extends tslib_menu
+ * 2654:     function generate()
+ * 2662:     function writeMenu()
+ * 2723:     function generate_level($levels,$count,$pid,$menuItemArray='',$MP_array=array())
  *
- * TOTAL FUNCTIONS: 44
+ * TOTAL FUNCTIONS: 46
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -195,7 +197,7 @@ class tslib_menu {
 		$this->debug=$GLOBALS['TSFE']->debug;
 
 			// In XHTML there is no "name" attribute anymore
-		switch ($GLOBALS['TSFE']->config['config']['doctype'])	{
+		switch ($GLOBALS['TSFE']->xhtmlDoctype)	{
 			case 'xhtml_strict':
 			case 'xhtml_11':
 			case 'xhtml_2':
@@ -371,12 +373,19 @@ class tslib_menu {
 							} else {
 								$iState = $GLOBALS['TSFE']->sys_language_uid==$sUid ? 'ACT' : 'NO';
 							}
+
+							if ($this->conf['addQueryString'])	{
+								$getVars = $this->parent_cObj->getQueryArguments($this->conf['addQueryString.'],array('L'=>$sUid),true);
+							} else {
+								$getVars = '&L='.$sUid;
+							}
+
 								// Adding menu item:
 							$temp[] = array_merge(
 								array_merge($currentPageWithNoOverlay, $lRecs),
 								array(
 									'ITEM_STATE' => $iState,
-									'_ADD_GETVARS' => '&L='.$sUid,
+									'_ADD_GETVARS' => $getVars,
 									'_SAFE' => TRUE
 								)
 							);
@@ -506,7 +515,7 @@ class tslib_menu {
 							break;
 						}
 							// Get
-						$extraWhere = ' AND pages.nav_hide=0'.$this->getDoktypeExcludeWhere();
+						$extraWhere = ($this->conf['includeNotInMenu'] ? '' : ' AND pages.nav_hide=0').$this->getDoktypeExcludeWhere();
 
 						if ($this->conf['special.']['excludeNoSearchPages']) {
 							$extraWhere.= ' AND pages.no_search=0';
@@ -564,7 +573,7 @@ class tslib_menu {
 							$depth=20;
 						}
 						$limit = t3lib_div::intInRange($this->conf['special.']['limit'],0,100);	// max number of items
-						$extraWhere = ' AND pages.uid!='.$value.' AND pages.nav_hide=0'.$this->getDoktypeExcludeWhere();
+						$extraWhere = ' AND pages.uid!='.$value.($this->conf['includeNotInMenu'] ? '' : ' AND pages.nav_hide=0').$this->getDoktypeExcludeWhere();
 						if ($this->conf['special.']['excludeNoSearchPages']) {
 							$extraWhere.= ' AND pages.no_search=0';
 						}
@@ -764,6 +773,7 @@ class tslib_menu {
 						if (is_array($row))	{
 							$temp[$row['uid']]=$basePageRow;
 							$temp[$row['uid']]['title']=$row['header'];
+							$temp[$row['uid']]['nav_title']=$row['header'];
 							$temp[$row['uid']]['subtitle']=$row['subheader'];
 							$temp[$row['uid']]['starttime']=$row['starttime'];
 							$temp[$row['uid']]['endtime']=$row['endtime'];
@@ -788,10 +798,7 @@ class tslib_menu {
 			$maxItems = intval($this->mconf['maxItems'] ? $this->mconf['maxItems'] : $this->conf['maxItems']);
 			$begin = tslib_cObj::calc($this->mconf['begin'] ? $this->mconf['begin'] : $this->conf['begin']);
 
-			$banUidArray=array();
-			if (trim($this->conf['excludeUidList']))	{
-				$banUidArray = t3lib_div::intExplode(',', $this->conf['excludeUidList']);
-			}
+			$banUidArray = $this->getBannedUids();
 
 				// Fill in the menuArr with elements that should go into the menu:
 			$this->menuArr = Array();
@@ -878,7 +885,7 @@ class tslib_menu {
 		$uid = $data['uid'];
 		if ($this->mconf['SPC'] || !$spacer)	{	// If the spacer-function is not enabled, spacers will not enter the $menuArr
 			if (!t3lib_div::inList($this->doktypeExcludeList,$data['doktype']))	{		// Page may not be 'not_in_menu' or 'Backend User Section'
-				if (!$data['nav_hide'])	{	// Not hidden in navigation
+				if (!$data['nav_hide'] || $this->conf['includeNotInMenu'])	{	// Not hidden in navigation
 					if (!t3lib_div::inArray($banUidArray,$uid))	{	// not in banned uid's
 
 							// Checks if the default language version can be shown:
@@ -899,9 +906,9 @@ class tslib_menu {
 
 									// Checking if "&L" should be modified so links to non-accessible pages will not happen.
 								if ($this->conf['protectLvar'])	{
-									$Lvar = intval(t3lib_div::_GP('L'));
-									if (($this->conf['protectLvar']=='all' || t3lib_div::hideIfNotTranslated($data['l18n_cfg'])) && $Lvar!=$GLOBALS['TSFE']->sys_language_uid)	{	// page cannot be access in locaization and Lvar is different than sys_language uid - this means we must check!
-										$olRec = $GLOBALS['TSFE']->sys_page->getPageOverlay($data['uid'], $Lvar);
+									$languageUid = intval($GLOBALS['TSFE']->config['config']['sys_language_uid']);
+									if ($languageUid && ($this->conf['protectLvar']=='all' || t3lib_div::hideIfNotTranslated($data['l18n_cfg'])))	{
+										$olRec = $GLOBALS['TSFE']->sys_page->getPageOverlay($data['uid'], $languageUid);
 										if (!count($olRec))	{
 												// If no pages_language_overlay record then page can NOT be accessed in the language pointed to by "&L" and therefore we protect the link by setting "&L=0"
 											$data['_ADD_GETVARS'].= '&L=0';
@@ -1196,11 +1203,11 @@ class tslib_menu {
 	/**
 	 * Will change $LD (passed by reference) if the page is access restricted
 	 *
-	 * @param	array	$LD, the array from the linkData() function
-	 * @param	array	Page array
-	 * @param	string	Main target value
-	 * @param	string	Type number override if any
-	 * @return	void	($LD passed by reference might be changed.)
+	 * @param	array		$LD, the array from the linkData() function
+	 * @param	array		Page array
+	 * @param	string		Main target value
+	 * @param	string		Type number override if any
+	 * @return	void		($LD passed by reference might be changed.)
 	 */
 	function changeLinksForAccessRestrictedPages(&$LD, $page, $mainTarget, $typeOverride)	{
 
@@ -1335,7 +1342,7 @@ class tslib_menu {
 
 		$recs = $this->sys_page->getMenu($uid,'uid,pid,doktype,mount_pid,mount_pid_ol,nav_hide');
 		foreach($recs as $theRec)	{
-			if (!t3lib_div::inList($this->doktypeExcludeList,$theRec['doktype']) && !$theRec['nav_hide'])	{	// If a menu item seems to be another type than 'Not in menu', then return true (there were items!)
+			if (!t3lib_div::inList($this->doktypeExcludeList,$theRec['doktype']) && (!$theRec['nav_hide'] || $this->conf['includeNotInMenu']))	{	// If a menu item seems to be another type than 'Not in menu', then return true (there were items!)
 				return TRUE;
 			}
 		}
@@ -1475,6 +1482,23 @@ class tslib_menu {
 		return $this->doktypeExcludeList ? ' AND pages.doktype NOT IN ('.$this->doktypeExcludeList.')' : '';
 	}
 
+	/**
+	 * Returns an array of banned UIDs (from excludeUidList)
+	 *
+	 * @return	array		Array of banned UIDs
+	 * @access private
+	 */
+	function getBannedUids() {
+		$banUidArray = array();
+
+		if (trim($this->conf['excludeUidList']))        {
+			$banUidList = str_replace('current', $GLOBALS['TSFE']->page['uid'], $this->conf['excludeUidList']);
+			$banUidArray = t3lib_div::intExplode(',', $banUidList);
+		}
+
+		return $banUidArray;
+	}
+
 }
 
 
@@ -1555,7 +1579,7 @@ class tslib_tmenu extends tslib_menu {
 				$this->I['spacer'] = $this->menuArr[$key]['isSpacer'];
 
 					// Make link tag
-				$this->I['val']['ATagParams'] = $this->I['val']['ATagParams'] ? ' '.$this->I['val']['ATagParams'] : '';
+				$this->I['val']['ATagParams'] = $this->WMcObj->getATagParams($this->I['val'], 0);
 				$this->I['linkHREF'] =  $this->link($key,$this->I['val']['altTarget'],$this->mconf['forceTypeValue']);
 
 					// Title attribute of links:
@@ -1687,7 +1711,7 @@ class tslib_tmenu extends tslib_menu {
 				}
 			}
 			$GLOBALS['TSFE']->imagesOnPage[]=$imgInfo[3];
-			$res='<img src="'.$GLOBALS['TSFE']->absRefPrefix.$imgInfo[3].'" width="'.$imgInfo[0].'" height="'.$imgInfo[1].'"'.$name.($this->I['val'][$pref.'ImgTagParams']?" ".$this->I['val'][$pref.'ImgTagParams']:'').' border="0"';
+			$res='<img src="'.$GLOBALS['TSFE']->absRefPrefix.$imgInfo[3].'" width="'.$imgInfo[0].'" height="'.$imgInfo[1].'"'.$name.($this->I['val'][$pref.'ImgTagParams']?" ".$this->I['val'][$pref.'ImgTagParams']:'').tslib_cObj::getBorderAttr('border="0"');
 			if (!strstr($res,'alt="'))	$res.=' alt=""';	// Adding alt attribute if not set.
 			$res.=' />';
 			if ($this->I['val'][$pref.'ImgLink'])	{$res=$this->I['A1'].$res.$this->I['A2'];}
@@ -2218,7 +2242,7 @@ class tslib_gmenu extends tslib_menu {
 						$this->I['A1'] = '';
 						$this->I['A2'] = '';
 					}
-					$this->I['IMG'] = '<img src="'.$GLOBALS['TSFE']->absRefPrefix.$this->I['val']['output_file'].'" width="'.$this->I['val']['output_w'].'" height="'.$this->I['val']['output_h'].'" border="0" alt="'.htmlspecialchars($this->I['altText']).'"'.$this->I['name'].($this->I['val']['imgParams']?' '.$this->I['val']['imgParams']:'').' />';
+					$this->I['IMG'] = '<img src="'.$GLOBALS['TSFE']->absRefPrefix.$this->I['val']['output_file'].'" width="'.$this->I['val']['output_w'].'" height="'.$this->I['val']['output_h'].'" '.tslib_cObj::getBorderAttr('border="0"').' alt="'.htmlspecialchars($this->I['altText']).'"'.$this->I['name'].($this->I['val']['imgParams']?' '.$this->I['val']['imgParams']:'').' />';
 
 						// Make before, middle and after parts
 					$this->I['parts'] = array();
@@ -2711,10 +2735,7 @@ class tslib_jsmenu extends tslib_menu {
 		$MP_params = $MP_var ? '&MP='.rawurlencode($MP_var) : '';
 
 			// UIDs to ban:
-		$banUidArray=array();
-		if (trim($this->conf['excludeUidList']))	{
-			$banUidArray = t3lib_div::intExplode(',', $this->conf['excludeUidList']);
-		}
+		$banUidArray = $this->getBannedUids();
 
 			// Initializing variables:
 		$var = $this->JSVarName;
@@ -2727,13 +2748,13 @@ class tslib_jsmenu extends tslib_menu {
 		foreach($menuItems as $uid => $data)	{
 			$spacer = (t3lib_div::inList($this->spacerIDList,$data['doktype'])?1:0);		// if item is a spacer, $spacer is set
 			if ($this->mconf['SPC'] || !$spacer)	{	// If the spacer-function is not enabled, spacers will not enter the $menuArr
-				if (!t3lib_div::inList($this->doktypeExcludeList,$data['doktype']) && !$data['nav_hide'] && !t3lib_div::inArray($banUidArray,$uid))	{		// Page may not be 'not_in_menu' or 'Backend User Section' + not in banned uid's
+				if (!t3lib_div::inList($this->doktypeExcludeList,$data['doktype']) && (!$data['nav_hide'] || $this->conf['includeNotInMenu']) && !t3lib_div::inArray($banUidArray,$uid))	{		// Page may not be 'not_in_menu' or 'Backend User Section' + not in banned uid's
 					if ($count<$levels)	{
 						$addLines = $this->generate_level($levels,$count+1,$data['uid'],'',$MP_array);
 					} else {
 						$addLines = '';
 					}
-					$title=rawurlencode($data['title']);
+					$title=$data['title'];
 					$url='';
 					$target='';
 					if ((!$addLines && !$levelConf['noLink']) || $levelConf['alwaysLink']) {
@@ -2742,10 +2763,10 @@ class tslib_jsmenu extends tslib_menu {
 							// If access restricted pages should be shown in menus, change the link of such pages to link to a redirection page:
 						$this->changeLinksForAccessRestrictedPages($LD, $data, $this->mconf['target'], $this->mconf['forceTypeValue']);
 
-						$url = rawurlencode($LD['totalURL']);
-						$target = rawurlencode($LD['target']);
+						$url = $LD['totalURL'];
+						$target = $LD['target'];
 					}
-					$codeLines.="\n".$var.$count."=".$menuName.".add(".$parent.",".$prev.",0,'".$title."','".$GLOBALS['TSFE']->baseUrlWrap($url)."','".$target."');";
+					$codeLines.="\n".$var.$count."=".$menuName.".add(".$parent.",".$prev.",0,".t3lib_div::quoteJSvalue($title, true).",".t3lib_div::quoteJSvalue($GLOBALS['TSFE']->baseUrlWrap($url), true).",".t3lib_div::quoteJSvalue($target, true).");";
 						// If the active one should be chosen...
 					$active = ($levelConf['showActive'] && $data['uid'] == $this->tmpl->rootLine[$count]['uid']);
 						// If the first item should be shown
@@ -2770,7 +2791,7 @@ class tslib_jsmenu extends tslib_menu {
 			$levelConf['firstLabel'] = $this->mconf['firstLabelGeneral'];
 		}
 		if ($levelConf['firstLabel'] && $codeLines)	{
-			$codeLines.="\n".$menuName.".defTopTitle[".$count."] = unescape('".rawurlencode($levelConf['firstLabel'])."');";
+			$codeLines.= chr(10).$menuName.'.defTopTitle['.$count.'] = '.t3lib_div::quoteJSvalue($levelConf['firstLabel'], true).';';
 		}
 		return $codeLines;
 	}

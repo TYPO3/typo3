@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+	<meta type="array">
+		<description>Labels for Quick Tag plugin of htmlArea RTE</description>
+		<type>module</type>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index="Quick Tag Editor">Insert tag</label>
+			<label index="Enter the TAG you want to insert">Enter the TAG you want to insert</label>
+			<label index="You have to select some text">You have to select some text</label>
+			<label index="There are some unclosed quote">There are some unclosed quotes</label>
+			<label index="This attribute already exists in the TAG">This attribute already exists in the TAG</label>
+			<label index="No CSS class avaiable">No CSS classes available</label>
+			<label index="OPTIONS">OPTIONS</label>
+			<label index="ATTRIBUTES">ATTRIBUTES</label>
+			<label index="TAGs">TAGs</label>
+			<label index="Colors">Colors</label>
+			<label index="Ok">Ok</label>
+			<label index="Cancel">Cancel</label>
+		</languageKey>
+	</data>
+	<orig_hash type="array">
+		<languageKey index="default" type="array">
+			<label index="Quick Tag Editor" type="integer">42781729</label>
+			<label index="Enter the TAG you want to insert" type="integer">105221784</label>
+			<label index="You have to select some text" type="integer">71928577</label>
+			<label index="There are some unclosed quote" type="integer">205096681</label>
+			<label index="This attribute already exists in the TAG" type="integer">200900540</label>
+			<label index="No CSS class avaiable" type="integer">241415811</label>
+			<label index="OPTIONS" type="integer">23387490</label>
+			<label index="ATTRIBUTES" type="integer">231553312</label>
+			<label index="TAGs" type="integer">235329720</label>
+			<label index="Colors" type="integer">97847433</label>
+			<label index="Ok" type="integer">174097711</label>
+			<label index="Cancel" type="integer">245659783</label>
+		</languageKey>
+	</orig_hash>
+	<orig_text type="array">
+		<languageKey index="default" type="array">
+		</languageKey>
+	</orig_text>
+</T3locallang>

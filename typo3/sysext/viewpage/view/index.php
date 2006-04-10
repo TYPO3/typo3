@@ -37,9 +37,9 @@
  *
  *
  *   65: class SC_mod_web_view_index
- *   80:     function init()
- *   97:     function main()
- *  122:     function printContent()
+ *   83:     function init()
+ *  101:     function main()
+ *  127:     function printContent()
  *
  * TOTAL FUNCTIONS: 3
  * (This index is automatically created/updated by the extension "extdeveval")

@@ -1,0 +1,40 @@
+/**
+ * typo3-colors.css
+ */
+
+/* Setting alternative background color on some frames: */
+body,
+body#typo3-alt-intro-php,
+body#typo3-alt-menu-sel-php,
+body#typo3-alt-topmenu-dummy-php,
+body#typo3-alt-topmenu-dummy-php-iconmenu,
+body#typo3-alt-clickmenu-php,
+body#typo3-alt-clickmenu-php-notop,
+body#typo3-alt-palette-php {
+	background-color: #EFEFF4;
+}
+
+body#typo3-alt-toplogo-php {
+	background-color: #F8F9FA;
+}
+
+.bgColor2 {
+	border: 1px solid #A2AAB8;
+	background-color: #B8BEC9;
+	background-image: url('../icons/gfx/alt_menu_mainitem_bg.gif');
+	background-repeat: repeat-x;
+	color: #FFFFFF;
+}
+
+.bgColor4 {
+	background-color: #EFEFF4;
+	}
+
+.bgColor4-20 {
+	background-color: #F8F9FA;
+}
+
+
+.bgColor5 {
+	background-color: #D7DBE2;
+	}

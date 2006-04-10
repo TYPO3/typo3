@@ -1,0 +1,138 @@
+/* Login Screen
+
+	 * Warning:
+	 * DO NOT prevent the copyright notice from being shown!
+	 * According to the GPL license an interactive application must show such a notice on start-up ('If the program is interactive, make it output a short notice... ' - see GPL.txt)
+	 * Therefore preventing this notice from being properly shown is a violation of the license, regardless of whether you remove it or use the stylesheet to obstruct the display.
+
+*/
+
+body#typo3-index-php {
+	background-color: #FEFEFE;
+	margin: 0;
+	}
+
+body#typo3-index-php table#wrapper {
+	height: auto;
+	width: 70%;
+	margin-top: 10px;
+	}
+
+body#typo3-index-php table#loginwrapper {
+	width: 500px;
+	height: 100px;
+	text-align: left;
+	margin: 10px 40px 40px 40px;
+	padding: 0;
+	background-color: transparent;
+	}
+
+body#typo3-index-php DIV#copyrightnotice {
+	border-top: 1px solid #f69220;
+	width: 500px;
+	text-align: left;
+	margin-top: 5px;
+	padding-top: 13px;
+	font-weight: normal;
+	color: #838383;
+	}
+
+body#typo3-index-php DIV#copyrightnotice a {
+	color: #838383;
+	font-weight: bold;
+}
+
+body#typo3-index-php DIV#copyrightnotice IMG {
+	visibility: hidden;
+	width: 0px;
+	height: 0px;
+	margin:0;
+	}
+
+body#typo3-index-php DIV#loginimage {
+	text-align: left;
+	width: 500px;
+	height: auto;
+	padding: 0;
+	margin: 0;
+	}
+
+table#logintable {
+	position: static;
+	background-color: transparent;
+	margin: 0 0 10px 30px;
+	width: 300px;
+	height: 150px;
+	}
+
+table#logintable TR TD {
+	padding: 0;
+	margin: 0;
+	}
+
+table#logintable H2 {
+	visibility: hidden;
+	border: 0px;
+	background-color: transparent;
+	font-size: 12px;
+	color: #000000;
+	text-align: left;
+	margin: 0px;
+	padding: 0px;
+	}
+
+table#logintable P {
+	font-size: 10px;
+	font-weight: semibold;
+	color: #000000;
+	}
+
+table#logintable P.c-info {
+	font-size: 10px;
+	font-weight: normal;
+	}
+
+table#logintable P.c-wrong {
+	font-size: 9px;
+	font-weight: normal;
+	width: 275px;
+	border: #DEEAF5 solid 1px;
+	margin: 0px 0px 0px 0px;
+	padding: 5px 5px 5px 5px;
+	}
+
+table#logintable INPUT.c-username,
+table#logintable INPUT.c-password,
+table#logintable SELECT.c-interfaceselector {
+	width: 150px;
+	margin: 0px;
+	}
+
+/***************************************************
+* The old login news (might become obsolete?)
+***************************************************/
+
+div#loginNews {
+	width: 70%;
+	margin-top: 30px;
+	}
+
+div#loginNews H2 {
+	background-color: #E26816;
+	color: black;
+	font-size: 12px;
+	}
+
+div#loginNews table TR TD {
+	padding-right: 10px;
+	padding-left: 10px;
+	}
+
+div#loginNews table TR TD.c-header {
+	font-weight: bold;
+	background-color: #FFD8A9;
+	}
+
+div#loginNews table TR.c-spacer {
+	height: 10px;
+	}

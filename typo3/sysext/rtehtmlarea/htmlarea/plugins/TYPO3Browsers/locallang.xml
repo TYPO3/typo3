@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+	<meta type="array">
+		<description>Labels for TYPO3 Browsers plugin of htmlArea RTE</description>
+		<type>module</type>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index="external_link_altText">Opens external link in current window</label>
+			<label index="external_link_titleText">Opens external link in current window</label>
+			<label index="external_link_new_window_altText">Opens external link in new window</label>
+			<label index="external_link_new_window_titleText">Opens external link in new window</label>
+			<label index="internal_link_altText">Opens internal link in current window</label>
+			<label index="internal_link_titleText">Opens internal link in current window</label>
+			<label index="internal_link_new_window_altText">Opens internal link in new window</label>
+			<label index="internal_link_new_window_titleText">Opens internal link in new window</label>
+			<label index="download_altText">Initiates file download</label>
+			<label index="download_titleText">Initiates file download</label>
+			<label index="mail_altText">Opens window for sending email</label>
+			<label index="mail_titleText">Opens window for sending email</label>
+		</languageKey>
+	</data>
+	<orig_hash type="array">
+		<languageKey index="default" type="array">
+			<label index="external_link_altText" type="integer">127279570</label>
+			<label index="external_link_titleText" type="integer">127279570</label>
+			<label index="external_link_new_window_altText" type="integer">159183899</label>
+			<label index="external_link_new_window_titleText" type="integer">159183899</label>
+			<label index="internal_link_altText" type="integer">7332359</label>
+			<label index="internal_link_titleText" type="integer">7332359</label>
+			<label index="internal_link_new_window_altText" type="integer">198474674</label>
+			<label index="internal_link_new_window_titleText" type="integer">198474674</label>
+			<label index="download_altText" type="integer">27837997</label>
+			<label index="download_titleText" type="integer">27837997</label>
+			<label index="mail_altText" type="integer">210920015</label>
+			<label index="mail_titleText" type="integer">210920015</label>
+		</languageKey>
+	</orig_hash>
+	<orig_text type="array">
+		<languageKey index="default" type="array">
+		</languageKey>
+	</orig_text>
+</T3locallang>

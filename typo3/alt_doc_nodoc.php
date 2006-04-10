@@ -125,12 +125,12 @@ class SC_alt_doc_nodoc {
 			// Finding module images: PAGE
 		$imgFile = $LANG->moduleLabels['tabs_images']['web_layout_tab'];
 		$imgInfo = @getimagesize($imgFile);
-		$img_web_layout = is_array($imgInfo) ? '<img src="../'.substr($imgFile,strlen(PATH_site)).'" '.$image[3].' alt="" />' : '';
+		$img_web_layout = is_array($imgInfo) ? '<img src="../'.substr($imgFile,strlen(PATH_site)).'" '.$imgInfo[3].' alt="" />' : '';
 
 			// Finding module images: LIST
 		$imgFile = $LANG->moduleLabels['tabs_images']['web_list_tab'];
 		$imgInfo = @getimagesize($imgFile);
-		$img_web_list = is_array($imgInfo) ? '<img src="../'.substr($imgFile,strlen(PATH_site)).'" '.$image[3].' alt="" />' : '';
+		$img_web_list = is_array($imgInfo) ? '<img src="../'.substr($imgFile,strlen(PATH_site)).'" '.$imgInfo[3].' alt="" />' : '';
 
 
 			// If either the Web>List OR Web>Page module are active, show the little message with links to those modules:
@@ -166,7 +166,9 @@ class SC_alt_doc_nodoc {
 	 * @return	void
 	 */
 	function printContent()	{
-		echo $this->content.$this->doc->endPage();
+		$this->content.= $this->doc->endPage();
+		$this->content = $this->doc->insertStylesAndJS($this->content);
+		echo $this->content;
 	}
 }
 

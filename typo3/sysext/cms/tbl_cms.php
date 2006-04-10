@@ -547,7 +547,7 @@ $TCA['pages_language_overlay'] = Array (
 		),
 		'author_email' => Array (
 			'exclude' => 1,
-			'label' => $TCA['pages']['columns']['author']['label'],
+			'label' => $TCA['pages']['columns']['author_email']['label'],
 			'config' => Array (
 				'type' => 'input',
 				'size' => '20',
@@ -697,7 +697,7 @@ $TCA['sys_template'] = Array (
 			'config' => Array (
 				'type' => 'group',
 				'internal_type' => 'file',
-				'allowed' => $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'].',html,htm,ttf,pfb,pfm,txt,css,tmpl,inc,ico',
+				'allowed' => $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'].',html,htm,ttf,pfb,pfm,txt,css,tmpl,inc,ico,js',
 				'max_size' => '1000',
 				'uploadfolder' => 'uploads/tf',
 				'show_thumbs' => '1',

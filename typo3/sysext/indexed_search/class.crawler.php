@@ -34,27 +34,34 @@
  *
  *
  *
- *   80: class tx_indexedsearch_crawler
- *   99:     function crawler_init(&$pObj)
- *  197:     function crawler_execute($params,&$pObj)
- *  256:     function crawler_execute_type1($cfgRec,&$session_data,$params,&$pObj)
- *  316:     function crawler_execute_type2($cfgRec,&$session_data,$params,&$pObj)
- *  385:     function crawler_execute_type3($cfgRec,&$session_data,$params,&$pObj)
- *  425:     function cleanUpOldRunningConfigurations()
+ *   87: class tx_indexedsearch_crawler
+ *  106:     function crawler_init(&$pObj)
+ *  219:     function crawler_execute($params,&$pObj)
+ *  285:     function crawler_execute_type1($cfgRec,&$session_data,$params,&$pObj)
+ *  345:     function crawler_execute_type2($cfgRec,&$session_data,$params,&$pObj)
+ *  414:     function crawler_execute_type3($cfgRec,&$session_data,$params,&$pObj)
+ *  458:     function crawler_execute_type4($cfgRec,&$session_data,$params,&$pObj)
+ *  513:     function cleanUpOldRunningConfigurations()
  *
  *              SECTION: Helper functions
- *  491:     function checkUrl($url,$urlLog,$baseUrl)
- *  514:     function indexExtUrl($url, $pageId, $rl, $cfgUid, $setId)
- *  556:     function indexSingleRecord($r,$cfgRec,$rl=NULL)
- *  605:     function loadIndexerClass()
- *  617:     function getUidRootLineForClosestTemplate($id)
- *  650:     function generateNextIndexingTime($cfgRec)
- *  689:     function checkDeniedSuburls($url, $url_deny)
+ *  579:     function checkUrl($url,$urlLog,$baseUrl)
+ *  602:     function indexExtUrl($url, $pageId, $rl, $cfgUid, $setId)
+ *  645:     function indexSingleRecord($r,$cfgRec,$rl=NULL)
+ *  694:     function loadIndexerClass()
+ *  706:     function getUidRootLineForClosestTemplate($id)
+ *  739:     function generateNextIndexingTime($cfgRec)
+ *  778:     function checkDeniedSuburls($url, $url_deny)
+ *  798:     function addQueueEntryForHook($cfgRec, $title)
  *
  *              SECTION: Hook functions for TCEmain (indexing of records)
- *  725:     function processDatamap_afterDatabaseOperations($status, $table, $id, $fieldArray, &$pObj)
+ *  830:     function processDatamap_afterDatabaseOperations($status, $table, $id, $fieldArray, &$pObj)
  *
- * TOTAL FUNCTIONS: 14
+ *
+ *  879: class tx_indexedsearch_files
+ *  888:     function crawler_execute($params,&$pObj)
+ *  913:     function loadIndexerClass()
+ *
+ * TOTAL FUNCTIONS: 18
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -63,7 +70,7 @@
 
 
 # To make sure the backend charset is available:
-require_once(PATH_typo3.'sysext/lang/lang.php');
+require_once(PATH_site.TYPO3_mainDir.'sysext/lang/lang.php');
 if (!is_object($GLOBALS['LANG']))	{
 	$GLOBALS['LANG'] = t3lib_div::makeInstance('language');
 	$GLOBALS['LANG']->init($GLOBALS['BE_USER']->uc['lang']);
@@ -163,6 +170,21 @@ class tx_indexedsearch_crawler {
 
 					$pObj->addQueueEntry_callBack($setId,$params,$this->callBack,$cfgRec['pid']);
 				break;
+				case 4:	// Page tree
+
+						// Parameters:
+					$params = array(
+						'indexConfigUid' => $cfgRec['uid'],		// General
+						'procInstructions' => array('[Index Cfg UID#'.$cfgRec['uid'].']'),	// General
+						'url' => $cfgRec['alternative_source_pid'],	// Partly general... (for URL and file types and page tree (root))
+						'depth' => 0	// Specific for URL and file types and page tree
+					);
+
+					$pObj->addQueueEntry_callBack($setId,$params,$this->callBack,$cfgRec['pid']);
+				break;
+				case 5:	// Meta configuration, nothing to do:
+					# NOOP
+				break;
 				default:
 					if ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['crawler'][$cfgRec['type']])	{
 						$hookObj = &t3lib_div::getUserObj($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['crawler'][$cfgRec['type']]);
@@ -222,6 +244,12 @@ class tx_indexedsearch_crawler {
 					case 3:	// External URL:
 						$this->crawler_execute_type3($cfgRec,$session_data,$params,$pObj);
 					break;
+					case 4:	// Page tree:
+						$this->crawler_execute_type4($cfgRec,$session_data,$params,$pObj);
+					break;
+					case 5:	// Meta
+						# NOOP (should never enter here!)
+					break;
 					default:
 						if ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['crawler'][$cfgRec['type']])	{
 							$hookObj = &t3lib_div::getUserObj($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['crawler'][$cfgRec['type']]);
@@ -249,7 +277,7 @@ class tx_indexedsearch_crawler {
 	 * Indexing records from a table
 	 *
 	 * @param	array		Indexing Configuration Record
-	 * @param	arrar		Session data for the indexing session spread over multiple instances of the script. Passed by reference so changes hereto will be saved for the next call!
+	 * @param	array		Session data for the indexing session spread over multiple instances of the script. Passed by reference so changes hereto will be saved for the next call!
 	 * @param	array		Parameters from the log queue.
 	 * @param	object		Parent object (from "crawler" extension!)
 	 * @return	void
@@ -265,7 +293,7 @@ class tx_indexedsearch_crawler {
 			}
 
 				// Init:
-			$pid = intval($cfgRec['alternative_source_pid']) ? intval($cfgRec['alternative_source_pid']) : $this->pObj->id;
+			$pid = intval($cfgRec['alternative_source_pid']) ? intval($cfgRec['alternative_source_pid']) : $cfgRec['pid'];
 			$numberOfRecords = $cfgRec['recordsbatch'] ? t3lib_div::intInRange($cfgRec['recordsbatch'],1) : 100;
 
 				// Get root line:
@@ -309,7 +337,7 @@ class tx_indexedsearch_crawler {
 	 * Indexing files from fileadmin
 	 *
 	 * @param	array		Indexing Configuration Record
-	 * @param	arrar		Session data for the indexing session spread over multiple instances of the script. Passed by reference so changes hereto will be saved for the next call!
+	 * @param	array		Session data for the indexing session spread over multiple instances of the script. Passed by reference so changes hereto will be saved for the next call!
 	 * @param	array		Parameters from the log queue.
 	 * @param	object		Parent object (from "crawler" extension!)
 	 * @return	void
@@ -318,7 +346,7 @@ class tx_indexedsearch_crawler {
 
 			// Prepare path, making it absolute and checking:
 		$readpath = $params['url'];
-		if (!t3lib_div::isAbsPath($readPath))	{
+		if (!t3lib_div::isAbsPath($readpath))	{
 			$readpath = t3lib_div::getFileAbsFileName($readpath);
 		}
 
@@ -378,7 +406,7 @@ class tx_indexedsearch_crawler {
 	 * Indexing External URLs
 	 *
 	 * @param	array		Indexing Configuration Record
-	 * @param	arrar		Session data for the indexing session spread over multiple instances of the script. Passed by reference so changes hereto will be saved for the next call!
+	 * @param	array		Session data for the indexing session spread over multiple instances of the script. Passed by reference so changes hereto will be saved for the next call!
 	 * @param	array		Parameters from the log queue.
 	 * @param	object		Parent object (from "crawler" extension!)
 	 * @return	void
@@ -413,6 +441,65 @@ class tx_indexedsearch_crawler {
 						);
 						$pObj->addQueueEntry_callBack($cfgRec['set_id'],$nparams,$this->callBack,$cfgRec['pid'],time()+$this->instanceCounter*$this->secondsPerExternalUrl);
 					}
+				}
+			}
+		}
+	}
+
+	/**
+	 * Page tree indexing type
+	 *
+	 * @param	array		Indexing Configuration Record
+	 * @param	array		Session data for the indexing session spread over multiple instances of the script. Passed by reference so changes hereto will be saved for the next call!
+	 * @param	array		Parameters from the log queue.
+	 * @param	object		Parent object (from "crawler" extension!)
+	 * @return	void
+	 */
+	function crawler_execute_type4($cfgRec,&$session_data,$params,&$pObj)	{
+
+			// Base page uid:
+		$pageUid = intval($params['url']);
+
+			// Get array of URLs from page:
+		$pageRow = t3lib_BEfunc::getRecord('pages',$pageUid);
+		$res = $pObj->getUrlsForPageRow($pageRow);
+
+		$duplicateTrack = array();	// Registry for duplicates
+		$downloadUrls = array();	// Dummy.
+
+			// Submit URLs:
+		if (count($res))	{
+			foreach($res as $paramSetKey => $vv)	{
+				$urlList = $pObj->urlListFromUrlArray($vv,$pageRow,time(),30,1,0,$duplicateTrack,$downloadUrls,array('tx_indexedsearch_reindex'));
+			}
+		}
+
+			// Add subpages to log now:
+		if ($params['depth'] < $cfgRec['depth'])	{
+
+				// Subpages selected
+			$recs = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+				'uid,title',
+				'pages',
+				'pid = '.intval($pageUid).
+					t3lib_BEfunc::deleteClause('pages')
+			);
+
+				// Traverse subpages and add to queue:
+			if (count($recs))	{
+				foreach($recs as $r)	{
+					$this->instanceCounter++;
+					$url = 'pages:'.$r['uid'].': '.$r['title'];
+					$session_data['urlLog'][] = $url;
+
+							// Parameters:
+					$nparams = array(
+						'indexConfigUid' => $cfgRec['uid'],
+						'url' => $r['uid'],
+						'procInstructions' => array('[Index Cfg UID#'.$cfgRec['uid'].']'),
+						'depth' => $params['depth']+1
+					);
+					$pObj->addQueueEntry_callBack($cfgRec['set_id'],$nparams,$this->callBack,$cfgRec['pid'],time()+$this->instanceCounter*$this->secondsPerExternalUrl);
 				}
 			}
 		}
@@ -484,7 +571,7 @@ class tx_indexedsearch_crawler {
 	/**
 	 * Check if an input URL are allowed to be indexed. Depends on whether it is already present in the url log.
 	 *
-	 * @param	string		URL
+	 * @param	string		URL string to check
 	 * @param	array		Array of already indexed URLs (input url is looked up here and must not exist already)
 	 * @param	string		Base URL of the indexing process (input URL must be "inside" the base URL!)
 	 * @return	string		Returls the URL if OK, otherwise false
@@ -509,7 +596,7 @@ class tx_indexedsearch_crawler {
 	 * @param	integer		Page id to relate indexing to.
 	 * @param	array		Rootline array to relate indexing to
 	 * @param	integer		Configuration UID
-	 * @param	integer		Set ID
+	 * @param	integer		Set ID value
 	 * @return	array		URLs found on this page
 	 */
 	function indexExtUrl($url, $pageId, $rl, $cfgUid, $setId)	{
@@ -701,7 +788,13 @@ class tx_indexedsearch_crawler {
 		return FALSE;
 	}
 
-
+	/**
+	 * Adding entry in queue for Hook
+	 *
+	 * @param	array		Configuration record
+	 * @param	string		Title/URL
+	 * @return	void
+	 */
 	function addQueueEntryForHook($cfgRec, $title)	{
 
 		$nparams = array(
@@ -770,6 +863,62 @@ class tx_indexedsearch_crawler {
 				}
 			}
 		}
+	}
+}
+
+
+/**
+ * Crawler hook for indexed search. Works with the "crawler" extension
+ * This hook is specifically used to index external files found on pages through the crawler extension.
+ *
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
+ * @package TYPO3
+ * @subpackage tx_indexedsearch
+ * @see tx_indexedsearch_indexer::extractLinks()
+ */
+class tx_indexedsearch_files {
+
+	/**
+	 * Call back function for execution of a log element
+	 *
+	 * @param	array		Params from log element.
+	 * @param	object		Parent object (tx_crawler lib)
+	 * @return	array		Result array
+	 */
+	function crawler_execute($params,&$pObj)	{
+
+			// Load indexer if not yet.
+		$this->loadIndexerClass();
+
+		if (is_array($params['conf']))	{
+
+				// Initialize the indexer class:
+			$indexerObj = &t3lib_div::makeInstance('tx_indexedsearch_indexer');
+			$indexerObj->conf = $params['conf'];
+			$indexerObj->init();
+
+				// Index document:
+			if ($params['alturl'])	{
+				$fI = pathinfo($params['document']);
+				$ext = strtolower($fI['extension']);
+				$indexerObj->indexRegularDocument($params['alturl'], TRUE, $params['document'], $ext);
+			} else {
+				$indexerObj->indexRegularDocument($params['document'], TRUE);
+			}
+
+				// Return OK:
+			return array('content' => array());
+		}
+	}
+
+	/**
+	 * Include indexer class.
+	 *
+	 * @return	void
+	 */
+	function loadIndexerClass()	{
+		global $TYPO3_CONF_VARS;
+		require_once(t3lib_extMgm::extPath('indexed_search').'class.indexer.php');
 	}
 }
 

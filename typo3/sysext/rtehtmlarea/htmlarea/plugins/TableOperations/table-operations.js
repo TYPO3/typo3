@@ -1,13 +1,35 @@
+/***************************************************************
+*  Copyright notice
+*
+*  (c) 2002 interactivetools.com, inc. Authored by Mihai Bazon, sponsored by http://www.bloki.com.
+*  (c) 2005 Xinha, http://xinha.gogo.co.nz/ for the original toggle borders function.
+*  (c) 2004, 2005, 2006 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
+*  All rights reserved
+*
+*  This script is part of the TYPO3 project. The TYPO3 project is
+*  free software; you can redistribute it and/or modify
+*  it under the terms of the GNU General Public License as published by
+*  the Free Software Foundation; either version 2 of the License, or
+*  (at your option) any later version.
+*
+*  The GNU General Public License can be found at
+*  http://www.gnu.org/copyleft/gpl.html.
+*  A copy is found in the textfile GPL.txt and important notices to the license
+*  from the author is found in LICENSE.txt distributed with these scripts.
+*
+*
+*  This script is distributed in the hope that it will be useful,
+*  but WITHOUT ANY WARRANTY; without even the implied warranty of
+*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+*  GNU General Public License for more details.
+*
+*  This script is a modified version of a script published under the htmlArea License.
+*  A copy of the htmlArea License may be found in the textfile HTMLAREA_LICENSE.txt.
+*
+*  This copyright notice MUST APPEAR in all copies of the script!
+***************************************************************/
 /*
  * Table Operations Plugin for TYPO3 htmlArea RTE
- *
- * @author	Mihai Bazon.  Sponsored by http://www.bloki.com
- * @author	Stanislas Rolland. Sponsored by Fructifor Inc.
- * Copyright (c) 2002 interactivetools.com, inc.
- * Copyright (c) 2004-2005 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
- * Copyright (c) 2005 Xinha, http://xinha.gogo.co.nz/ for the original toggle borders function.
- * Distributed under the same terms as HTMLArea itself
- * This notice MUST stay intact for use.
  *
  * TYPO3 CVS ID: $Id$
  */
@@ -46,13 +68,13 @@ TableOperations.I18N = TableOperations_langArray;
  */
 TableOperations._pluginInfo = {
 	name		: "TableOperations",
-	version 	: "3.4",
+	version 	: "3.6",
 	developer 	: "Mihai Bazon & Stanislas Rolland",
 	developer_url 	: "http://www.fructifor.ca/",
 	c_owner 	: "Mihai Bazon & Stanislas Rolland",
 	sponsor 	: "Zapatec Inc. & Fructifor Inc.",
 	sponsor_url 	: "http://www.fructifor.ca/",
-	license 	: "htmlArea"
+	license 	: "GPL"
 };
 
 /*
@@ -180,7 +202,8 @@ TableOperations.tablePropertiesUpdate = function(table) {
 				table.frame = (val != "not set") ? val : "";
 				break;
 			    case "f_rules":
-				table.rules = (val != "not set") ? val : "";
+				if (val != "not set") table.rules = val;
+			    		else table.removeAttribute("rules");
 				break;
 			    case "f_class":
 			    case "f_class_tbody":
@@ -196,16 +219,8 @@ TableOperations.tablePropertiesUpdate = function(table) {
 				break;
 			}
 		}
-		dialog.editor.forceRedraw();
 		dialog.editor.focusEditor();
 		dialog.editor.updateToolbar();
-			// Apparently required to force Mozilla to redraw borders
-		if(HTMLArea.is_gecko) {
-			var save_collapse = table.style.borderCollapse;
-			table.style.borderCollapse = "collapse";
-			table.style.borderCollapse = "separate";
-			table.style.borderCollapse = save_collapse;
-		}
 	});
 };
 
@@ -224,7 +239,7 @@ TableOperations.prototype.dialogRowCellProperties = function(cell) {
 	if(element) {
 		var rowCellPropertiesInitFunctRef = TableOperations.rowCellPropertiesInit(element, cell);
 		var rowCellPropertiesUpdateFunctRef = TableOperations.rowCellPropertiesUpdate(element);
-		var dialog = new PopupWin(this.editor, TableOperations.I18N[cell ? "Cell Properties" : "Row Properties"], rowCellPropertiesUpdateFunctRef, rowCellPropertiesInitFunctRef, 700, 400);
+		var dialog = new PopupWin(this.editor, TableOperations.I18N[cell ? "Cell Properties" : "Row Properties"], rowCellPropertiesUpdateFunctRef, rowCellPropertiesInitFunctRef, 700, 425);
 	}
 };
 
@@ -900,7 +915,7 @@ TableOperations.buildRowGroupFieldset = function(w,doc,editor,el,i18n,content) {
 	TableOperations.insertLegend(doc, i18n, fieldset, "Row group");
 	TableOperations.insertSpace(doc, fieldset);
 	selected = el.parentNode.tagName.toLowerCase();
-	var selectScope = TableOperations.buildSelectField(doc, el, i18n, fieldset, "f_rowgroup", "Row group:", "", "", "Table section", ["Table body", "Table header", "Table footer"], ["tbody", "thead", "tfoot"], new RegExp((selected ? selected : "tbody"), "i"));
+	var selectScope = TableOperations.buildSelectField(doc, el, i18n, fieldset, "f_rowgroup", "Row group:", "fr", "", "Table section", ["Table body", "Table header", "Table footer"], ["tbody", "thead", "tfoot"], new RegExp((selected ? selected : "tbody"), "i"));
 	TableOperations.insertSpace(doc, fieldset);
 	content.appendChild(fieldset);
 };
@@ -908,11 +923,11 @@ TableOperations.buildCellTypeFieldset = function(w,doc,editor,el,i18n,content) {
 	var fieldset = doc.createElement("fieldset");
 	TableOperations.insertLegend(doc, i18n, fieldset, "Cell Type and Scope");
 	TableOperations.insertSpace(doc, fieldset);
-	var selectType = TableOperations.buildSelectField(doc, el, i18n, fieldset, "f_cell_type", "Type of cell", "", "", "Specifies the type of cell", ["Normal", "Header"], ["td", "th"], new RegExp(el.tagName.toLowerCase(), "i"));
+	var selectType = TableOperations.buildSelectField(doc, el, i18n, fieldset, "f_cell_type", "Type of cell", "fr", "", "Specifies the type of cell", ["Normal", "Header"], ["td", "th"], new RegExp(el.tagName.toLowerCase(), "i"));
 	selectType.onchange = function() { TableOperations.setStyleOptions(doc, editor, el, i18n, this); };
 	selected = el.scope.toLowerCase();
 	(selected.match(/([^\s]*)\s/)) && (selected = RegExp.$1);
-	var selectScope = TableOperations.buildSelectField(doc, el, i18n, fieldset, "f_scope", "Scope", "", "", "Scope of header cell", ["Not set", "scope_row", "scope_column", "scope_rowgroup"], ["not set", "row", "col", "rowgroup"], new RegExp((selected ? selected : "not set"), "i"));
+	var selectScope = TableOperations.buildSelectField(doc, el, i18n, fieldset, "f_scope", "Scope", "fr", "", "Scope of header cell", ["Not set", "scope_row", "scope_column", "scope_rowgroup"], ["not set", "row", "col", "rowgroup"], new RegExp((selected ? selected : "not set"), "i"));
 	TableOperations.insertSpace(doc, fieldset);
 	content.appendChild(fieldset);
 };

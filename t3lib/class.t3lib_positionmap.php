@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2005 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2006 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -53,13 +53,13 @@
  *
  *              SECTION: Content element positioning:
  *  404:     function printContentElementColumns($pid,$moveUid,$colPosList,$showHidden,$R_URI)
- *  440:     function printRecordMap($lines,$colPosArray)
- *  478:     function wrapColumnHeader($str,$vv)
- *  492:     function insertPositionIcon($row,$vv,$kk,$moveUid,$pid)
- *  509:     function onClickInsertRecord($row,$vv,$moveUid,$pid,$sys_lang=0)
- *  529:     function wrapRecordHeader($str,$row)
- *  539:     function getRecordHeader($row)
- *  552:     function wrapRecordTitle($str,$row)
+ *  442:     function printRecordMap($lines,$colPosArray)
+ *  480:     function wrapColumnHeader($str,$vv)
+ *  494:     function insertPositionIcon($row,$vv,$kk,$moveUid,$pid)
+ *  511:     function onClickInsertRecord($row,$vv,$moveUid,$pid,$sys_lang=0)
+ *  531:     function wrapRecordHeader($str,$row)
+ *  541:     function getRecordHeader($row)
+ *  554:     function wrapRecordTitle($str,$row)
  *
  * TOTAL FUNCTIONS: 17
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -295,7 +295,7 @@ class t3lib_positionMap {
 
 		if ($TSconfigProp['overrideWithExtension'])	{
 			if (t3lib_extMgm::isLoaded($TSconfigProp['overrideWithExtension']))	{
-				$onclick = "document.location='".t3lib_extMgm::extRelPath($TSconfigProp['overrideWithExtension']).'mod1/index.php?cmd=crPage&positionPid='.$pid."';";
+				$onclick = "window.location.href='".t3lib_extMgm::extRelPath($TSconfigProp['overrideWithExtension']).'mod1/index.php?cmd=crPage&positionPid='.$pid."';";
 				return $onclick;
 			}
 		}
@@ -518,7 +518,7 @@ class t3lib_positionMap {
 //		$location.='&redirect='.rawurlencode($this->R_URI);		// returns to prev. page
 		$location.='&uPT=1&redirect='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'));		// This redraws screen
 
-		return 'document.location=\''.$location.'\';return false;';
+		return 'window.location.href=\''.$location.'\';return false;';
 	}
 
 	/**

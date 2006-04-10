@@ -44,22 +44,22 @@
  *  117:     function wrapRecordTitle($str,$row)
  *  130:     function wrapColumnHeader($str,$vv)
  *  144:     function onClickInsertRecord($row,$vv,$moveUid,$pid)
- *  161:     function wrapRecordHeader($str,$row)
+ *  160:     function wrapRecordHeader($str,$row)
  *
  *
- *  182: class SC_db_layout
- *  231:     function init()
- *  284:     function menuConfig()
- *  366:     function clearCache()
- *  381:     function main()
- *  482:     function renderQuickEdit()
- *  868:     function renderListContent()
- * 1147:     function printContent()
+ *  181: class SC_db_layout
+ *  230:     function init()
+ *  283:     function menuConfig()
+ *  372:     function clearCache()
+ *  387:     function main()
+ *  489:     function renderQuickEdit()
+ *  886:     function renderListContent()
+ * 1165:     function printContent()
  *
  *              SECTION: Other functions
- * 1174:     function getNumberOfHiddenElements()
- * 1187:     function local_linkThisScript($params)
- * 1199:     function exec_languageQuery($id)
+ * 1192:     function getNumberOfHiddenElements()
+ * 1205:     function local_linkThisScript($params)
+ * 1217:     function exec_languageQuery($id)
  *
  * TOTAL FUNCTIONS: 14
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -328,7 +328,9 @@ class SC_db_layout {
 			 // First, select all pages_language_overlay records on the current page. Each represents a possibility for a language on the page. Add these to language selector.
 		$res = $this->exec_languageQuery($this->id);
 		while($lrow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
-			$this->MOD_MENU['language'][$lrow['uid']]=($lrow['hidden']?'('.$lrow['title'].')':$lrow['title']);
+			if ($GLOBALS['BE_USER']->checkLanguageAccess($lrow['uid']))	{
+				$this->MOD_MENU['language'][$lrow['uid']]=($lrow['hidden']?'('.$lrow['title'].')':$lrow['title']);
+			}
 		}
 
 			// Find if there are ANY languages at all (and if not, remove the language option from function menu).
@@ -400,24 +402,24 @@ class SC_db_layout {
 			$this->doc->docType='xhtml_trans';
 
 				// JavaScript:
-			$this->doc->JScode = '<script type="text/javascript" src="'.$BACK_PATH.'t3lib/jsfunc.updateform.js"></script>';
+			$this->doc->JScode = '<script type="text/javascript" src="'.$BACK_PATH.'../t3lib/jsfunc.updateform.js"></script>';
 			$this->doc->JScode.= $this->doc->wrapScriptTags('
 				if (top.fsMod) top.fsMod.recentIds["web"] = '.intval($this->id).';
 				if (top.fsMod) top.fsMod.navFrameHighlightedID["web"] = "pages'.intval($this->id).'_"+top.fsMod.currentBank; '.intval($this->id).';
 				function jumpToUrl(URL,formEl)	{	//
 					if (document.editform && document.TBE_EDITOR_isFormChanged)	{	// Check if the function exists... (works in all browsers?)
 						if (!TBE_EDITOR_isFormChanged())	{	//
-							document.location = URL;
+							window.location.href = URL;
 						} else if (formEl) {
 							if (formEl.type=="checkbox") formEl.checked = formEl.checked ? 0 : 1;
 						}
-					} else document.location = URL;
+					} else window.location.href = URL;
 				}
 			'.($this->popView ? t3lib_BEfunc::viewOnClick($this->id,$BACK_PATH,t3lib_BEfunc::BEgetRootLine($this->id)) : '').'
 
 				function deleteRecord(table,id,url)	{	//
 					if (confirm('.$LANG->JScharCode($LANG->getLL('deleteWarning')).'))	{
-						document.location = "'.$BACK_PATH.'tce_db.php?cmd["+table+"]["+id+"][delete]=1&redirect="+escape(url)+"&vC='.$BE_USER->veriCode().'&prErr=1&uPT=1";
+						window.location.href = "'.$BACK_PATH.'tce_db.php?cmd["+table+"]["+id+"][delete]=1&redirect="+escape(url)+"&vC='.$BE_USER->veriCode().'&prErr=1&uPT=1";
 					}
 					return false;
 				}
@@ -516,8 +518,8 @@ class SC_db_layout {
 				$idListA[] = $cRow['uid'];
 			}
 
-			$jumpUrl = $BACK_PATH.'alt_doc.php?edit[tt_content]['.implode(',',$idListA).']=edit&returnUrl='.rawurlencode($this->local_linkThisScript(array('edit_record'=>'')));
-			header('Location: '.t3lib_div::locationHeaderUrl($jumpUrl));
+			$url = $BACK_PATH.'alt_doc.php?edit[tt_content]['.implode(',',$idListA).']=edit&returnUrl='.rawurlencode($this->local_linkThisScript(array('edit_record'=>'')));
+			header('Location: '.t3lib_div::locationHeaderUrl($url));
 			exit;
 		}
 
@@ -548,11 +550,11 @@ class SC_db_layout {
 			$opt[]='<option value="'.$inValue.'"'.($edit_record==$inValue?' selected="selected"':'').'>[ '.$LANG->getLL('editPageProperties',1).' ]</option>';
 		}
 
-			// Selecting all content elements from this language:
+			// Selecting all content elements from this language and allowed colPos:
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 					'*',
 					'tt_content',
-					'pid='.intval($this->id).' AND sys_language_uid='.intval($this->current_sys_language).
+					'pid='.intval($this->id).' AND sys_language_uid='.intval($this->current_sys_language).' AND colPos IN ('.$this->colPosList.')'.
 							($this->MOD_SETTINGS['tt_content_showHidden'] ? '' : t3lib_BEfunc::BEenableFields('tt_content')).
 							t3lib_Befunc::deleteClause('tt_content').
 							t3lib_BEfunc::versioningPlaceholderClause('tt_content'),
@@ -651,7 +653,7 @@ class SC_db_layout {
 							'<img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/deletedok.gif','width="21" height="16"').' class="c-inputButton" title="'.$LANG->getLL('deleteItem',1).'" alt="" />'.
 							'</a>' : '').
 
-			($undoButton ? '<a href="#" onclick="'.htmlspecialchars('document.location=\''.$BACK_PATH.'show_rechis.php?element='.rawurlencode($eRParts[0].':'.$eRParts[1]).'&revert=ALL_FIELDS&sumUp=-1&returnUrl='.rawurlencode($R_URI).'\'; return false;').'">'.
+			($undoButton ? '<a href="#" onclick="'.htmlspecialchars('window.location.href=\''.$BACK_PATH.'show_rechis.php?element='.rawurlencode($eRParts[0].':'.$eRParts[1]).'&revert=ALL_FIELDS&sumUp=-1&returnUrl='.rawurlencode($R_URI).'\'; return false;').'">'.
 							'<img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/undo.gif','width="21" height="16"').' class="c-inputButton" title="'.htmlspecialchars(sprintf($LANG->getLL('undoLastChange'),t3lib_BEfunc::calcAge(time()-$undoButtonR['tstamp'],$LANG->sL('LLL:EXT:lang/locallang_core.php:labels.minutesHoursDaysYears')))).'" alt="" />'.
 							'</a>' : '');
 

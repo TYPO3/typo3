@@ -117,6 +117,7 @@ $TCA['tt_content'] = Array (
 					Array('LLL:EXT:lang/locallang_general.php:LGL.any_login', -2),
 					Array('LLL:EXT:lang/locallang_general.php:LGL.usergroups', '--div--')
 				),
+				'exclusiveKeys' => '-1,-2',
 				'foreign_table' => 'fe_groups'
 			)
 		),
@@ -602,6 +603,33 @@ $TCA['tt_content'] = Array (
 				'default' => ''
 			)
 		),
+		'altText' => Array (
+			'exclude' => 1,
+			'label' => 'LLL:EXT:cms/locallang_ttc.php:image_altText',
+			'config' => Array (
+				'type' => 'text',
+				'cols' => '30',
+				'rows' => '3'
+			)
+		),
+		'titleText' => Array (
+			'exclude' => 1,
+			'label' => 'LLL:EXT:cms/locallang_ttc.php:image_titleText',
+			'config' => Array (
+				'type' => 'text',
+				'cols' => '30',
+				'rows' => '3'
+			)
+		),
+		'longdescURL' => Array (
+			'exclude' => 1,
+			'label' => 'LLL:EXT:cms/locallang_ttc.php:image_longdescURL',
+			'config' => Array (
+				'type' => 'text',
+				'cols' => '30',
+				'rows' => '3'
+			)
+		),
 		'cols' => Array (
 			'label' => 'LLL:EXT:cms/locallang_ttc.php:cols',
 			'config' => Array (
@@ -892,6 +920,7 @@ $TCA['tt_content'] = Array (
 			)
 		),
 		'pi_flexform' => array(
+			'l10n_display' => 'hideDiff',
 			'label' => 'LLL:EXT:cms/locallang_ttc.php:pi_flexform',
 			'config' => Array (
 				'type' => 'flex',
@@ -933,16 +962,18 @@ $TCA['tt_content'] = Array (
 	'types' => Array (
 		'1' => 	Array('showitem' => 'CType'),
 		'header' => 	Array('showitem' => 'CType;;4;button;1-1-1, header;;3;;2-2-2, subheader;;8'),
-		'text' => 		Array('showitem' => 'CType;;4;button;1-1-1, header;;3;;2-2-2, bodytext;;9;richtext[paste|bold|italic|underline|formatblock|class|left|center|right|orderedlist|unorderedlist|outdent|indent|link|image]:rte_transform[flag=rte_enabled|mode=ts];3-3-3, rte_enabled, text_properties'),
-		'textpic' => 	Array('showitem' => 'CType;;4;button;1-1-1, header;;3;;2-2-2, bodytext;;9;richtext[paste|bold|italic|underline|formatblock|class|left|center|right|orderedlist|unorderedlist|outdent|indent|link|image]:rte_transform[flag=rte_enabled|mode=ts];3-3-3, rte_enabled, text_properties, --div--, image;;;;4-4-4, imageorient;;2, imagewidth;;13,
+		'text' => 		Array('showitem' => 'CType;;4;button;1-1-1, header;;3;;2-2-2, bodytext;;9;richtext:rte_transform[flag=rte_enabled|mode=ts_css];3-3-3, rte_enabled, text_properties'),
+		'textpic' => 	Array('showitem' => 'CType;;4;button;1-1-1, header;;3;;2-2-2, bodytext;;9;richtext:rte_transform[flag=rte_enabled|mode=ts_css];3-3-3, rte_enabled, text_properties, --div--, image;;;;4-4-4, imageorient;;2, imagewidth;;13,
 			--palette--;LLL:EXT:cms/locallang_ttc.php:ALT.imgLinks;7,
 			--palette--;LLL:EXT:cms/locallang_ttc.php:ALT.imgOptions;11,
-			imagecaption;;5'),
+			imagecaption;;5,
+			altText;;;;1-1-1,titleText,longdescURL'),
 		'rte' => 		Array('showitem' => 'CType;;4;button;1-1-1, header;;3;;2-2-2, bodytext;;;nowrap:richtext[*]:rte_transform[mode=ts_images-ts_reglinks];3-3-3'),
 		'image' => 		Array('showitem' => 'CType;;4;button;1-1-1, header;;3;;2-2-2, image;;;;4-4-4, imageorient;;2, imagewidth;;13,
 			--palette--;LLL:EXT:cms/locallang_ttc.php:ALT.imgLinks;7,
 			--palette--;LLL:EXT:cms/locallang_ttc.php:ALT.imgOptions;11,
-			 imagecaption;;5'),
+			 imagecaption;;5,
+			 altText;;;;1-1-1,titleText,longdescURL'),
 		'bullets' => 	Array('showitem' => 'CType;;4;button;1-1-1, header;;3;;2-2-2, layout;;;;3-3-3, bodytext;;9;nowrap, text_properties'),
 		'table' => 		Array('showitem' => 'CType;;4;button;1-1-1, header;;3;;2-2-2, layout;;10;button;3-3-3, cols, bodytext;;9;nowrap:wizards[table], text_properties'),
 		'splash' => 	Array('showitem' => 'CType;;4;button;1-1-1, header;LLL:EXT:lang/locallang_general.php:LGL.name;;;2-2-2, splash_layout, bodytext;;;;3-3-3, image;;6'),
@@ -978,7 +1009,6 @@ $TCA['tt_content'] = Array (
 								'7' => 'layout',
 								'1' => 'layout',
 								'8' => 'layout',
-								'indexed_search' => 'layout',
 								'11' => 'layout',
 								'20' => 'layout',
 								'21' => 'layout'
@@ -989,7 +1019,8 @@ $TCA['tt_content'] = Array (
 			bodytext;LLL:EXT:cms/locallang_ttc.php:bodytext.ALT.html;;nowrap;3-3-3')
 	),
 	'palettes' => Array (
-		'1' => Array('showitem' => 'hidden, starttime, endtime, fe_group'),
+		'1' => Array('showitem' => 'hidden, starttime, endtime'),
+		'15' => Array('showitem' => 'fe_group'),
 		'2' => Array('showitem' => 'imagecols, image_noRows, imageborder'),
 		'3' => Array('showitem' => 'header_position, header_layout, header_link, date'),
 		'4' => Array('showitem' => 'sys_language_uid, l18n_parent, colPos, spaceBefore, spaceAfter, section_frame, sectionIndex, linkToTop'),
