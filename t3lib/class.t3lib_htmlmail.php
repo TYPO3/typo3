@@ -1278,7 +1278,7 @@ class t3lib_htmlmail {
 		if(!$fp) {
 			return false;
 		} else {
-			fputs($fp,'HEAD '.$getAdr.' HTTP/1.0\r\nHost: '.$pathInfo['host'].'\r\n\r\n');
+			fputs($fp,'HEAD '.$getAdr." HTTP/1.0\r\nHost: ".$pathInfo['host']."\r\n\r\n");
 			while(!feof($fp)) {
 				$thePortion= fgets($fp,128);
 				if (eregi("(^Content-Type: )(.*)",trim($thePortion), $reg))	{
