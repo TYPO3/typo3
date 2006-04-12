@@ -1,3 +1,7 @@
+2006-04-12  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
+
+	* Fix bugtracker issue 3172: MIME type determination crashing (HEAD request)
+
 2006-04-10  Michael Stucki  <michael@typo3.org>
 
 	* Merging all changes from TYPO3_4-0 branch back into HEAD
