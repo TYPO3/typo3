@@ -4331,7 +4331,7 @@ class t3lib_div {
 				$file = fopen($destination, 'a');
 				if ($file)     {
 					flock($file, LOCK_EX);  // try locking, but ignore if not available (eg. on NFS and FAT)
-					fwrite($file, date('d/m/Y i:H').$msgLine.char(10));
+					fwrite($file, date('d/m/Y i:H').$msgLine.chr(10));
 					flock($file, LOCK_UN);    // release the lock
 					fclose($file);
 				}

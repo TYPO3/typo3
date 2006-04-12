@@ -3864,7 +3864,7 @@ class tslib_cObj {
 							if ($conf['icon_thumbSize'] || $conf['icon_thumbSize.'])	{ $thumbSize = '&size='.$this->stdWrap($conf['icon_thumbSize'], $conf['icon_thumbSize.']); }
 							$icon = 't3lib/thumbs.php?dummy='.$GLOBALS['EXEC_TIME'].'&file='.rawurlencode('../'.$theFile).$thumbSize;
 						} else {
-							$icon = t3lib_extMgm::siteRelPath('cms').'media/miscicons/notfound_thumb.gif';
+							$icon = t3lib_extMgm::siteRelPath('cms').'tslib/media/miscicons/notfound_thumb.gif';
 						}
 						$icon = '<img src="'.htmlspecialchars($GLOBALS['TSFE']->absRefPrefix.$icon).'"'.$this->getBorderAttr(' border="0"').''.$this->getAltParam($conf).' />';
 					}

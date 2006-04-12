@@ -3405,7 +3405,7 @@ if (version == "n3") {
 	}
 
 	/**
-	 * Substitute the path's to files in the media/ folder like icons used in static_template of TypoScript
+	 * Substitute the path's to files in the fileadmin/ and media/ folder like icons used in static_template of TypoScript
 	 * Works on $this->content
 	 *
 	 * @return	void
@@ -3414,7 +3414,7 @@ if (version == "n3") {
 	 */
 	function setAbsRefPrefix()	{
 		if ($this->absRefPrefix)	{
-			$this->content = str_replace('"media/', '"'.$this->absRefPrefix.'media/', $this->content);
+			$this->content = str_replace('"media/', '"'.t3lib_extMgm::siteRelPath('cms').'tslib/media/', $this->content);
 			$this->content = str_replace('"fileadmin/', '"'.$this->absRefPrefix.'fileadmin/', $this->content);
 		}
 	}
