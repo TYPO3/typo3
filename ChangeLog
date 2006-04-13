@@ -1,6 +1,7 @@
 2006-04-13  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
 	* Fix bugtracker issue 3172: re-write getMimeType in t3lib_htmlmail
+	* Fix bugtracker issue 3051: RTE removes images under special conditions when saving
 
 2006-04-12  Ingmar Schlecht <ingmar@typo3.org>
 
