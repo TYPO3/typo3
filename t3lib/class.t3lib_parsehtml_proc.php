@@ -1280,7 +1280,9 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 				$divSplit[$k] = implode(chr(10),$subLines);
 
 					// If it turns out the line is just blank (containing a &nbsp; possibly) then just make it pure blank:
-				if (trim(strip_tags($divSplit[$k]))=='&nbsp;')		$divSplit[$k]='';
+				if (trim(strip_tags($divSplit[$k]))=='&nbsp;' && !preg_match('/\<(img)(\s[^>]*)?\/?>/si', $divSplit[$k])) {
+					$divSplit[$k]='';
+				}
 			} else {	// outside div:
 					// Remove positions which are outside div/p tags and without content
 				$divSplit[$k]=trim(strip_tags($divSplit[$k],'<'.implode('><',$allowTagsOutside).'>'));
