@@ -1263,32 +1263,21 @@ class t3lib_htmlmail {
 	}
 
 	/**
-	 * [Describe function...]
+	 * This function returns the mime type of the file specified by the url
 	 *
-	 * @param	[type]		$url: ...
-	 * @return	[type]		...
+	 * @param	string		$url: the url
+	 * @return	string		$mimeType: the mime type found in the header
 	 */
-	function getMimeType($url)	{
-			// Opens a connection to the server and returns the mime-type of the file
-			// takes url only
-		$pathInfo = parse_url($url);
-		if (!$pathInfo["scheme"])	{return false;}
-		$getAdr = ($pathInfo["query"])?$pathInfo["path"]."?".$pathInfo["query"]:$pathInfo["path"];
-		$fp = fsockopen($pathInfo['host'], ($pathInfo['port']?$pathInfo['port']:80), $errno, $errstr);
-		if(!$fp) {
-			return false;
-		} else {
-			fputs($fp,'HEAD '.$getAdr." HTTP/1.0\r\nHost: ".$pathInfo['host']."\r\n\r\n");
-			while(!feof($fp)) {
-				$thePortion= fgets($fp,128);
-				if (eregi("(^Content-Type: )(.*)",trim($thePortion), $reg))	{
-					$res = trim($reg[2]);
-					break;
-				}
+	function getMimeType($url) {
+		$mimeType = '';
+		$headers = trim(t3lib_div::getURL($url, 2));
+		if ($headers) {
+			$matches = array();
+			if (preg_match('/(Content-Type:[\s]*)([a-zA-Z_0-9\/\-]*)([\s]|$)/', $headers, $matches)) {
+				$mimeType = trim($matches[2]);
 			}
-			fclose($fp);
 		}
-		return $res;
+		return $mimeType;
 	}
 
 	/**
