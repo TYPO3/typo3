@@ -666,6 +666,12 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 			case 'jpeg':
 				return 'jpg';
 			break;
+			case 'png':
+				return 'png';
+			break;
+			case 'gif':
+				return 'gif';
+			break;
 			default:
 				return $this->gifExtension;
 			break;
