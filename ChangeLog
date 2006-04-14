@@ -1,5 +1,6 @@
 2006-04-14  Bernhard Kraft  <kraftb@kraftb.at>
 
+	* Added a hook in tslib_content for userdefined cObjects
 	* Fixed bug #3232: Use image format set via .format for GIFBUILDER images
 
 2006-04-13  Stanislas Rolland  <stanislas.rolland@fructifor.ca>

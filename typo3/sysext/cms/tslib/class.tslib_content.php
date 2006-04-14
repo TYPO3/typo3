@@ -338,6 +338,7 @@ class tslib_cObj {
 	var $lastTypoLinkTarget=''; 	// DO. link target.
 	var $substMarkerCache=array();	// Caching substituteMarkerArrayCached function
 	var $recordRegister=array();	// Array that registers rendered content elements (or any table) to make sure they are not rendered recursively!
+	var $cObjHookObjectsArr = array();		// Containig hooks for userdefined cObjects
 
 	/**
 	 * Class constructor.
@@ -349,9 +350,15 @@ class tslib_cObj {
 	 * @return	void
 	 */
 	function start($data,$table='')	{
+		global $TYPO3_CONF_VARS;
 		$this->data = $data;
 		$this->currentRecord = $table ? $table.':'.$this->data['uid'] : '';
 		$this->parameters = Array();
+		if (is_array ($TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_content.php']['cObjTypeAndClass'])) {
+			foreach ($TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_content.php']['cObjTypeAndClass'] as $classArr) {
+				$this->cObjHookObjectsArr[$classArr[0]] = &t3lib_div::getUserObj($classArr[1]);
+			}
+		}
 	}
 
 	/**
@@ -461,10 +468,17 @@ class tslib_cObj {
 				$GLOBALS['TT']->decStackPointer();
 			} else {
 
-					// Object TypoScript hook:
-				if(t3lib_extMgm::isLoaded('obts') && isset($GLOBALS['OBTS']['tso_list'][$name])) {
+				$hooked = false;
+					// Application defined cObjects
+				foreach ($this->cObjHookObjectsArr as $cObjName => $hookObj)	{
+					if (($name===$cObjName) && method_exists($hookObj, 'cObjGetSingleExt')) {
+						$content .= $hookObj->cObjGetSingleExt($name, $conf, $TSkey, $this);
+						$hooked = true;
+					}
+				}
+				if (!$hooked && t3lib_extMgm::isLoaded('obts') && isset($GLOBALS['OBTS']['tso_list'][$name])) {
 					$content.= obts_dtutil::renderDatatypeContent($name, $GLOBALS['OBTS']['tso_list'][$name], $conf, $this);
-				} else {
+				} elseif (!$hooked) {
 						// Traditional Content Object branching:
 					switch($name)	{
 						case 'COBJ_ARRAY':
