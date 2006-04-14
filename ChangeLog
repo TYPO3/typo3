@@ -1,3 +1,7 @@
+2006-04-14   Rupert Germann  <rupi@gmx.li>
+
+	* fix for the fix from bug 2868: the adminpanel didn't transfer the page id correctly when realUrl was used
+
 2006-04-14  Bernhard Kraft  <kraftb@kraftb.at>
 
 	* Added a hook in tslib_content for userdefined cObjects
@@ -33,7 +37,6 @@
 	* Minor changes to Indexed Search, see local ChangeLog for details
 	* Prevented path traversal (../) in t3lib_tstemplate::getFileName(). This is was never really a security issue, because it affected only paths set in TypoScript which only full TYPO3 admins have access to anyway. Thanks to Ingmar for providing a fix.
 
-2006-04-06   Rupert Germann  <rupi@gmx.li>
 
 	* Fixed bug #3134: install tool / all text centered in IE and Opera
 	* Fixed bug #3154: Misspelling in instal tool
