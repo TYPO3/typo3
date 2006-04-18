@@ -2027,10 +2027,9 @@ class t3lib_TCEforms	{
 
 			// Data Structure:
 		$dataStructArray = t3lib_BEfunc::getFlexFormDS($PA['fieldConf']['config'],$row,$table);
-#debug($dataStructArray);
+
 			// Get data structure:
 		if (is_array($dataStructArray))	{
-#debug(array(str_replace(' ',chr(160),$PA['itemFormElValue'])));
 
 				// Get data:
 			$xmlData = $PA['itemFormElValue'];
@@ -2042,19 +2041,19 @@ class t3lib_TCEforms	{
 			}
 			$editData=t3lib_div::xml2array($xmlData);
 			if (!is_array($editData))	{	// Must be XML parsing error...
-#debug(array($editData,$xmlData));
 				$editData=array();
+			}
+			else if (isset($editData['meta']) && !is_array($editData['meta'])) {
+			    $editData['meta'] = array();
 			}
 
 				// Find the data structure if sheets are found:
 			$sheet = $editData['meta']['currentSheetId'] ? $editData['meta']['currentSheetId'] : 'sDEF';	// Sheet to display
-#			$item.= '<input type="hidden" name="'.$PA['itemFormElName'].'[meta][currentSheetId]" value="'.$sheet.'">';
 
 				// Create sheet menu:
-			if (is_array($dataStructArray['sheets']))	{
-				#$item.=$this->getSingleField_typeFlex_sheetMenu($dataStructArray['sheets'], $PA['itemFormElName'].'[meta][currentSheetId]', $sheet).'<br />';
-			}
-#debug($editData);
+//			if (is_array($dataStructArray['sheets']))	{
+//				#$item.=$this->getSingleField_typeFlex_sheetMenu($dataStructArray['sheets'], $PA['itemFormElName'].'[meta][currentSheetId]', $sheet).'<br />';
+//			}
 
 				// Create language menu:
 			$langChildren = $dataStructArray['meta']['langChildren'] ? 1 : 0;
