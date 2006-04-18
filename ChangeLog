@@ -1,3 +1,7 @@
+2006-04-18  Dmitry Dulepov <typo3@accio.lv>
+
+	* Fixed bug #3196: PHP warnings in class.t3lib_tceforms.php
+
 2006-04-14   Rupert Germann  <rupi@gmx.li>
 
 	* fix for the fix from bug 2868: the adminpanel didn't transfer the page id correctly when realUrl was used
