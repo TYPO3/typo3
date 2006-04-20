@@ -1,3 +1,7 @@
+2006-04-20  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+
+	* Don't do false SQL query when SYS[setDBinit] is empty. Log error on failure.
+
 2006-04-19  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
 	* Added "Lucida Console" (Windows core font) as default font for monospaced BE form fields
