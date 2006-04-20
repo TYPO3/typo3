@@ -1,10 +1,18 @@
+2006-04-20  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+
+	* Don't do false SQL query when SYS[setDBinit] is empty. Log error on failure.
+
+2006-04-19  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+
+	* Added "Lucida Console" (Windows core font) as default font for monospaced BE form fields
+
 2006-04-18  Dmitry Dulepov <typo3@accio.lv>
 
 	* Fixed bug #3196: PHP warnings in class.t3lib_tceforms.php
 
 2006-04-14   Rupert Germann  <rupi@gmx.li>
 
-	* fix for the fix from bug 2868: the adminpanel didn't transfer the page id correctly when realUrl was used
+	* fix for the fix from bug #2868: the adminpanel didn't transfer the page id correctly when realUrl was used
 
 2006-04-14  Bernhard Kraft  <kraftb@kraftb.at>
 
@@ -12,8 +20,8 @@
 
 2006-04-13  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
-	* Fix bugtracker issue 3172: re-write getMimeType in t3lib_htmlmail
-	* Fix bugtracker issue 3051: RTE removes images under special conditions when saving
+	* Fix bugtracker issue #3172: re-write getMimeType in t3lib_htmlmail
+	* Fix bugtracker issue #3051: RTE removes images under special conditions when saving
 
 2006-04-12  Ingmar Schlecht <ingmar@typo3.org>
 
