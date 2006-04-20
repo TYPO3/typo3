@@ -59,7 +59,7 @@ H4 {
 
 /* Preformatted text - not used so much in TYPO3 */
 PRE {
-	font-family: "Lucida Sans Typewriter", "Bitstream Vera Sans Mono", monospace;
+	font-family: "Lucida Console", "Lucida Sans Typewriter", "Bitstream Vera Sans Mono", monospace;
 	font-size: 11px;
 	margin: 0px;
 }
@@ -526,7 +526,7 @@ TABLE.warningbox TD { padding: 20px 20px 20px 20px; font-weight: bold; }
 DIV.diff-r { background-color: red; color: black; padding: 3px 3px 3px 3px; }
 DIV.diff-g { background-color: green; color: black; padding: 3px 3px 3px 3px; }
 IMG.absmiddle { vertical-align: middle; }
-TEXTAREA.fixed-font { font-family: "Lucida Sans Typewriter", "Bitstream Vera Sans Mono", monospace; font-size: 11px; }
+TEXTAREA.fixed-font { font-family: "Lucida Console", "Lucida Sans Typewriter", "Bitstream Vera Sans Mono", monospace; font-size: 11px; }
 
 .smallCheckboxes { width: 12px; height: 12px; margin: 0px; }
 .uppercase { text-transform: uppercase; }
@@ -562,7 +562,7 @@ IMG.typo3-csh-icon { vertical-align: middle; cursor: help; }
  * TypoScript Highlighting:
  *********************************************/
 
-PRE.ts-hl { font-size: 11px; font-family: "Lucida Sans Typewriter", "Bitsream Vera Sans Mono", monospace; }
+PRE.ts-hl { font-size: 11px; font-family: "Lucida Console", "Lucida Sans Typewriter", "Bitsream Vera Sans Mono", monospace; }
 PRE.ts-hl .ts-prespace {}
 PRE.ts-hl .ts-objstr_postspace {}
 PRE.ts-hl .ts-operator_postspace {}
