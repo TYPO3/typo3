@@ -1,3 +1,7 @@
+2006-04-21  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
+
+	* Fix bugtracker issue #3172: further correction to MIME type determination.
+
 2006-04-20  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
 	* Don't do false SQL query when SYS[setDBinit] is empty. Log error on failure.
