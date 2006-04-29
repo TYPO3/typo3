@@ -1,3 +1,8 @@
+
+2006-04-29  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+
+	* Fixed wrong use of implode in typo3/mod/tools/em/class.em_index.php (lines 1392, 1424; see bug #3302)
+
 2006-04-23  Dmitry Dulepov <typo3@accio.lv>
 
 	* Fixed bugs #3049 and #3176: HTTP status 503 is sent when $TSFE->set_no_cache is called
