@@ -1,3 +1,6 @@
+2006-04-30  Dmitry Dulepov <typo3@accio.lv>
+
+	* Fixed bug #3226: Error in template::clearCacheMenu if user is not admin
 
 2006-04-29  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
