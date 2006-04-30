@@ -1233,7 +1233,7 @@ $str.=$this->docBodyTagBegin().
 			}';
 		$af_content = '<select name="cacheCmd" onchange="'.htmlspecialchars($onChange).'">'.implode('',$opt).'</select>';
 
-		if (count($opt)>2)	{
+		if (count($opt)>1)	{
 			return $af_content;
 		}
 	}
@@ -1572,7 +1572,7 @@ $str.=$this->docBodyTagBegin().
 	 * @param	string		$script is the script to send the &id to, if empty it's automatically found
 	 * @param	string		$addParams is additional parameters to pass to the script.
 	 * @return	string		HTML code for tab menu
-	 * @author	René Fritz <r.fritz@colorcube.de>
+	 * @author	Ren? Fritz <r.fritz@colorcube.de>
 	 */
 	function getTabMenu($mainParams,$elementName,$currentValue,$menuItems,$script='',$addparams='')	{
 		$content='';
