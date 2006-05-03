@@ -1,3 +1,7 @@
+2006-05-03   Rupert Germann  <rupi@gmx.li>
+
+	* Fix: mod.web_list.alternateBgColors=1 did not work in TYPO3 4.0 when no skin is used. Added the missing class to typo3/stylesheet.css
+
 2006-04-30  Dmitry Dulepov <typo3@accio.lv>
 
 	* Fixed bug #3226: Error in template::clearCacheMenu if user is not admin
@@ -61,6 +65,7 @@
 	* Minor changes to Indexed Search, see local ChangeLog for details
 	* Prevented path traversal (../) in t3lib_tstemplate::getFileName(). This is was never really a security issue, because it affected only paths set in TypoScript which only full TYPO3 admins have access to anyway. Thanks to Ingmar for providing a fix.
 
+2006-04-06   Rupert Germann  <rupi@gmx.li>
 
 	* Fixed bug #3134: install tool / all text centered in IE and Opera
 	* Fixed bug #3154: Misspelling in instal tool
