@@ -1389,7 +1389,7 @@ EXTENSION KEYS:
 					$content = '<p>The mirror list was not updated, it could not be fetched from '.$this->MOD_SETTINGS['mirrorListURL'].'. Possible reasons: network problems, allow_url_fopen is off, curl is not enabled in Install tool.</p>';
 				} else {
 					t3lib_div::writeFile($mfile, $mirrorsFile);
-					$mirrors = implode(gzfile($mfile));
+					$mirrors = implode('',gzfile($mfile));
 					t3lib_div::unlink_tempfile($mfile);
 
 					$mirrors = $this->xmlhandler->parseMirrorsXML($mirrors);
@@ -1421,7 +1421,7 @@ EXTENSION KEYS:
 						$content .= '<p>Error: The extension list could not be fetched from '.$extfile.'. Possible reasons: network problems, allow_url_fopen is off, curl is not enabled in Install tool.</p>';
 					} else {
 						t3lib_div::writeFile(PATH_site.'typo3temp/extensions.xml.gz', $extXML);
-						$content .= $this->xmlhandler->parseExtensionsXML(implode(gzfile(PATH_site.'typo3temp/extensions.xml.gz')));
+						$content .= $this->xmlhandler->parseExtensionsXML(implode('',gzfile(PATH_site.'typo3temp/extensions.xml.gz')));
 						$this->xmlhandler->saveExtensionsXML();
 					}
 				}
