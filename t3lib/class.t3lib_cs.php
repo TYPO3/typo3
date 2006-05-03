@@ -667,7 +667,7 @@ class t3lib_cs {
 				$ord=ord($chr);
 				if (isset($this->twoByteSets[$charset]))	{	// If the charset has two bytes per char
 					$ord2 = ord($str{$a+1});
-					$ord = $ord<<8 & $ord2; // assume big endian
+					$ord = $ord<<8 | $ord2; // assume big endian
 
 					if (isset($this->parsedCharsets[$charset]['local'][$ord]))	{	// If the local char-number was found in parsed conv. table then we use that, otherwise 127 (no char?)
 						$outStr.=$this->parsedCharsets[$charset]['local'][$ord];
