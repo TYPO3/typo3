@@ -5548,9 +5548,14 @@ class tslib_cObj {
 		}
 
 		$content = '';
-		foreach ($q_out as $k => $v)	{
-			$content .= '&'.$k.'='.($rawValues ? $v : rawurlencode($v));
+		if ($rawValues)	{
+			foreach ($q_out as $k => $v)	{
+				$content .= '&'.$k.'='.$v;
+			}
+		} else {
+			$content = t3lib_div::implodeArrayForUrl('',$q_out);
 		}
+
 		return $content;
 	}
 

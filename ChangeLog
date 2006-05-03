@@ -1,3 +1,8 @@
+
+2006-05-03  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+
+	* Fix typolink.addQueryString.method=GET (see bug #3241)
+
 2006-05-03   Rupert Germann  <rupi@gmx.li>
 
 	* Fix: mod.web_list.alternateBgColors=1 did not work in TYPO3 4.0 when no skin is used. Added the missing class to typo3/stylesheet.css
