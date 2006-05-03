@@ -2,6 +2,7 @@
 2006-05-03  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
 	* Fix typolink.addQueryString.method=GET (see bug #3241)
+	* Fix problem with 2-byte charsets (eg UTF-16) in t3lib_cs::utf8_encode().
 
 2006-05-03   Rupert Germann  <rupi@gmx.li>
 
