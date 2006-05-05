@@ -208,11 +208,11 @@ RTE.default {
 		## Configuration specific to the table button or TableOperations feature (htmlArea RTE only)
 		## Use the context menu instead of the toolbar for table operations, but keep toggleborders button in toolbar
 	hideTableOperationsInToolbar = 1
-	keepToggleBordersInToolbar = 1
+	buttons.toggleborders.keepInToolbar = 1
 	
 		## Configuration specific to the inserttag button or QuickTag feature (htmlArea RTE only)
 		## Do not allow insertion of the following tags
-	hideTags = font, font (full), underline, strike, table
+	buttons.inserttag.denyTags = font, underline, strike, table
 	
 		## Configuration specific to the spellcheck button or SpellCheck feature (htmlArea RTE only)
 		## Enable the use of personal dictionaries

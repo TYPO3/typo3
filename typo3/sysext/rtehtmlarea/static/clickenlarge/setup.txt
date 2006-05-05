@@ -1,0 +1,23 @@
+#******************************************************
+# Including library for processing of custom tag "clickenlarge"
+#******************************************************
+includeLibs.tx_rtehtmlarea_pi3 = EXT:rtehtmlarea/pi3/class.tx_rtehtmlarea_pi3.php
+
+lib.parseFunc_RTE {
+	tags.img = TEXT
+	tags.img {
+		current = 1
+		postUserFunc = tx_rtehtmlarea_pi3->render_clickenlarge
+		postUserFunc.imageLinkWrap < tt_content.image.20.1.imageLinkWrap
+		postUserFunc.imageLinkWrap {
+			JSwindow.altUrl >
+			enable >
+			enable = 1
+			typolink >
+		}
+	}
+	nonTypoTagStdWrap.HTMLparser.tags.img.fixAttrib {
+		clickenlarge.unset = 1
+		clickenlargesrc.unset = 1
+	}
+}

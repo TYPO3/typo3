@@ -1,3 +1,4 @@
+<html class="popupwin">
 <!-- 
 /***************************************************************
 *  Copyright notice
@@ -34,11 +35,9 @@
  * TYPO3 CVS ID: $Id$
  */
 -->
-<html class="popupwin">
 <head>
 	<title>Quick Tag Editor</title>
 	<meta http-equiv="Content-Style-Type" content="text/css" />
-	<!--<link rel="stylesheet" href="../../../htmlarea.css" />-->
 	<script type="text/javascript" src="../tag-lib.js"></script>
 	<script type="text/javascript" src="../../../popups/popup.js"></script>
 	<script type="text/javascript">
@@ -46,13 +45,12 @@
 		_editor_CSS = window.opener._editor_CSS;
 		__dlg_loadStyle(_editor_CSS);
 		var QuickTag = window.opener.QuickTag;
-		var _quickTag_hideTags = window.opener._quickTag_hideTags;
 		var i18n = QuickTag.I18N;
 		var curTag = 'none';
 		var curTagOpt = false;
 		var CSSEdit = false;
 		var editor = null;
-
+		
 			// simulation of Dialog._return - select_color.html needs it.
 		var Dialog = new Object();
 		Dialog._return = function (val) {
@@ -88,12 +86,12 @@
 			var param = window.dialogArguments;
 			editor = param['editor'];
 			var selectext = param['selectedText']; // sem uso...
-
+			
 			createDropdown("tags");
-  
+			
 			var to = document.getElementById('tagopen');
 			HTMLArea._addEvent(to, "keypress", function(ev) { if(typeof choice_dropdown != "undefined") choice_dropdown(HTMLArea.is_ie ? window.event : ev); });
-
+			
 			document.getElementById('bt_colors').style.display = 'none';
 			document.body.onkeypress = __dlg_key_press;
 			to.focus();
@@ -105,7 +103,7 @@
 		};
 
 		function quoteTest(val) {
-			var er = /^\w+\s*(\w+=\"[^\"]*\"\s*|\w+=\'[^\']*\'\s*)*$/;
+			var er = /^\w+\s*([a-zA-Z_0-9:;]+=\"[^\"]*\"\s*|[a-zA-Z_0-9:;]+=\'[^\']*\'\s*)*$/;
 			return er.test(val);
 		};
 
@@ -154,73 +152,73 @@
 			}
 			return true;
 		};
-
-function selchange() {
-var toadd = document.getElementById('selectag').value; 
-var oldval = document.getElementById('tagopen').value; 
-var text = (oldval+toadd).replace(/^\s*(.+)\s*$/,"$1");
-var atrib = /(\w+)=\"$/.test(toadd) ? toadd.replace(/(\w+)=\"$/, "$1") : null;
-var showcolors = (/color\: ?$/.test(toadd)) ? true : false;
-var noCSSclasses = false;
-var obj = null;
-curTag = text.replace(/(^\w+) ?.*$/, "$1");
-curTagOpt = (tagLib[curTag] == true);
-
-	if(atrib) {
-		var atrer = eval('/'+atrib+'=/ig');
-		if(atrer.test(oldval) && !(/[^=]\"$/.test(toadd))) {
-			alert(i18n['This attribute already exists in the TAG']);
-			return false;
-		}
-		switch(atrib) {
-			case 'style':
-				CSSEdit = true;
-				break;
-			case 'class':
-				if(captureClasses() == 0) noCSSclasses = true;
-				break;
-			case 'color':
-			case 'bgcolor':
-			case 'bordercolor':
-			case 'bordercolorlight':
-			case 'bordercolordark':
-				showcolors = true;
-				break;
-		}
-
-		if(curTagOpt == true) {
-			obj = eval('opAtt_'+curTag.replace(/^h[1-6]$/,"h")+'["'+atrib+'"]');
-		} else { 
-			obj = opAtt_all[atrib];
-		} 
-	} else if(!CSSEdit && (/(^\w+$|\"$)/.test(toadd))) {
-		obj = 'all';
-		if(curTagOpt == true) obj = curTag;
-		toadd += ' ';
-	}
-  
-	if(CSSEdit && quoteTest(text)) CSSEdit = false;
-
-	if(showcolors) document.getElementById('bt_colors').style.display = '';
-
-	if(obj) {
-		createDropdown(obj);
-	} else if(!CSSEdit) {
-		document.getElementById('showselect').style.visibility = 'hidden';
-	}
-
-	if(noCSSclasses) {
-		document.getElementById('showselect').innerHTML = i18n['No CSS class avaiable'];
-		document.getElementById('showselect').style.visibility = 'visible';
-	}
-  
-	addchanges();
-
-	function addchanges() {
-		document.getElementById('tagopen').focus();
-		document.getElementById('tagopen').value += toadd;
-	};
-};
+		
+		function selchange() {
+			var toadd = document.getElementById('selectag').value; 
+			var oldval = document.getElementById('tagopen').value; 
+			var text = (oldval+toadd).replace(/^\s*(.+)\s*$/,"$1");
+			var atrib = /(\w+)=\"$/.test(toadd) ? toadd.replace(/(\w+)=\"$/, "$1") : null;
+			var showcolors = (/color\: ?$/.test(toadd)) ? true : false;
+			var noCSSclasses = false;
+			var obj = null;
+			curTag = text.replace(/(^\w+) ?.*$/, "$1");
+			curTagOpt = (tagLib[curTag] == true);
+			
+			if (atrib) {
+				var atrer = eval('/'+atrib+'=/ig');
+				if(atrer.test(oldval) && !(/[^=]\"$/.test(toadd))) {
+					alert(i18n['This attribute already exists in the TAG']);
+					return false;
+				}
+				switch(atrib) {
+					case 'style':
+						CSSEdit = true;
+						break;
+					case 'class':
+						if(captureClasses() == 0) noCSSclasses = true;
+						break;
+					case 'color':
+					case 'bgcolor':
+					case 'bordercolor':
+					case 'bordercolorlight':
+					case 'bordercolordark':
+						showcolors = true;
+						break;
+				}
+				
+				if(curTagOpt == true) {
+					obj = eval('opAtt_'+curTag.replace(/^h[1-6]$/,"h")+'["'+atrib+'"]');
+				} else {
+					obj = opAtt_all[atrib];
+				} 
+			} else if (!CSSEdit && (/(^\w+$|\"$)/.test(toadd))) {
+				obj = 'all';
+				if (curTagOpt == true) obj = curTag;
+				toadd += ' ';
+			}
+				
+			if (CSSEdit && quoteTest(text)) CSSEdit = false;
+				
+			if (showcolors) document.getElementById('bt_colors').style.display = '';
+				
+			if(obj) {
+				createDropdown(obj, curTag);
+			} else if(!CSSEdit) {
+				document.getElementById('showselect').style.visibility = 'hidden';
+			}
+			
+			if(noCSSclasses) {
+				document.getElementById('showselect').innerHTML = i18n['No CSS class avaiable'];
+				document.getElementById('showselect').style.visibility = 'visible';
+			}
+			
+			addchanges();
+			
+			function addchanges() {
+				document.getElementById('tagopen').focus();
+				document.getElementById('tagopen').value += toadd;
+			};
+		};
 
 		function captureClasses() {
 			var cont = 0;
@@ -240,7 +238,7 @@ curTagOpt = (tagLib[curTag] == true);
 						}
 					}
 				}
-			return cont;
+				return cont;
 			}
 
 			var styleSheet = null;
@@ -265,18 +263,15 @@ curTagOpt = (tagLib[curTag] == true);
 		};
 
 		function choice_dropdown(e) {
-			if (document.all) {
-				var Key = e.keyCode;
-			} else { 
-				var Key = e.charCode;
-			}
-			if(Key != 32) return;
+			if (document.all) var Key = e.keyCode;
+				else var Key = e.charCode;
+			if (Key != 32) return;
 
 			var text = document.getElementById('tagopen').value.replace(/^\s*([^\s]+)\s*$/,"$1");
-			if(CSSEdit && quoteTest(text)) CSSEdit = false;
-			if(CSSEdit) return;
+			if (CSSEdit && quoteTest(text)) CSSEdit = false;
+			if (CSSEdit) return;
 
-			if(curTag == 'none') {
+			if (curTag == 'none') {
 				curTag = text.replace(/(^\w+) ?.*$/, "$1");
 				curTagOpt = tagLib[curTag];
 			}
@@ -288,37 +283,61 @@ curTagOpt = (tagLib[curTag] == true);
 			}
 
 			var att = 'all';
-			if(curTagOpt == true) att = curTag;
-			createDropdown(att);
+			if (curTagOpt == true) att = curTag;
+			createDropdown(att, curTag);
 		};
-
-		function createDropdown(type) {
+		
+		function createDropdown(type,tag) {
 			var _div = document.getElementById('showselect');
 			while(_div.hasChildNodes()) _div.removeChild(_div.firstChild);
 			_div.style.visibility = 'visible';
-    
+			
 			var _sel = document.createElement("select");
 			_sel.id = "selectag";
 			_sel.onchange = function() { selchange(); };
-  
-			if(typeof type == 'object') {
+			
+			if (typeof(type) == 'object') {
 				var obj = type;
 				forObj(i18n["OPTIONS"],'options');
 				_div.appendChild(_sel);
 				return;
 			}
-
-			if(type == 'tags') {
-				var obj = allTags;
+			
+			if (type == 'tags') {
+				var obj = new Object();
+				if (editor.config.buttons["inserttag"] && editor.config.buttons["inserttag"]["denyTags"]) {
+					var denyTags = editor.config.buttons["inserttag"]["denyTags"].split(",").join("|").replace(/ /g, "");
+					var expr = new RegExp("^("+denyTags+")$");
+					for (var i in allTags) {
+						if (!expr.test(i)) obj[i] = allTags[i];
+					}
+				} else {
+					obj = allTags;
+				}
 				forObj(i18n["TAGs"],'tags');
 				_div.appendChild(_sel);
 				return;
 			}
-
-			type = type.replace(/^h[1-6]$/,"h");
-			var topt = eval('opTag_'+type);
-			if(typeof topt == 'object') {
-				var obj = topt;
+			
+			var topt = eval('opTag_'+type.replace(/^h[1-6]$/,"h"));
+			if (typeof(topt) == 'object') {
+				var obj = new Object();
+				var allowedAttribs = "";
+				if (typeof(tag) == 'string' && editor.config.buttons["inserttag"] && (editor.config.buttons["inserttag"]["allowedAttribs"] || (editor.config.buttons["inserttag"]["tags"] && editor.config.buttons["inserttag"]["tags"][tag] && editor.config.buttons["inserttag"]["tags"][tag]["allowedAttribs"]))) {
+					if (editor.config.buttons["inserttag"]["allowedAttribs"]) {
+						allowedAttribs = editor.config.buttons["inserttag"]["allowedAttribs"].split(",").join("|").replace(/ /g, "");
+					}
+					if (editor.config.buttons["inserttag"]["tags"] && editor.config.buttons["inserttag"]["tags"][tag] && editor.config.buttons["inserttag"]["tags"][tag]["allowedAttribs"]) {
+						if (allowedAttribs) allowedAttribs =  allowedAttribs + "|";
+						allowedAttribs += editor.config.buttons["inserttag"]["tags"][tag]["allowedAttribs"].split(",").join("|").replace(/ /g, "");
+					}
+					var expr = new RegExp("^("+allowedAttribs+")$");
+					for (var i in topt) {
+						if (expr.test(i)) obj[i] = topt[i];
+					}
+				} else {
+					obj = topt;
+				}
 			} else {
 				return;
 			}
@@ -326,18 +345,16 @@ curTagOpt = (tagLib[curTag] == true);
 			_div.appendChild(_sel);
 
 			function forObj(first,type) {
-				if(first) {
-					var _op = document.createElement("option");
-					_op.appendChild(document.createTextNode(first));
-					_sel.appendChild(_op);
+				if (first) {
+					var opt = document.createElement("option");
+					opt.appendChild(document.createTextNode(first));
+					_sel.appendChild(opt);
 				}
-				for(var i in obj) {
-					if( type != 'tags' || _quickTag_hideTags.indexOf(i) == -1 ) {
-						var opt = document.createElement("option");
-						opt.appendChild(document.createTextNode(i));
-						opt.value = obj[i];
-						_sel.appendChild(opt);
-					}
+				for (var i in obj) {
+					var opt = document.createElement("option");
+					opt.appendChild(document.createTextNode(i));
+					opt.value = obj[i];
+					_sel.appendChild(opt);
 				}
 			};
 		};

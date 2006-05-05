@@ -225,47 +225,55 @@ PopupWin.prototype.addButtons = function() {
 
 	// Resize the popup and center on screen
 PopupWin.prototype.showAtElement = function() {
-	var self = this;
-	var doc = self.doc;
-	var body = doc.body;
+	var popup = this;
+	var doc = popup.dialogWindow.document;
 		// resize if allowed
-	if (!HTMLArea.is_ie) {
+	if (HTMLArea.is_gecko && !HTMLArea.is_opera && !HTMLArea.is_safari) {
 		setTimeout( function() {
 			try {
-				self.dialogWindow.sizeToContent();
-				self.dialogWindow.innerWidth += 20;
+				popup.dialogWindow.sizeToContent();
+				popup.dialogWindow.innerWidth += 20;
 			} catch(e) { };
 				// center on parent if allowed
-			var x = self._opener.screenX + (self._opener.outerWidth - self.dialogWindow.outerWidth) / 2;
-			var y = self._opener.screenY + (self._opener.outerHeight - self.dialogWindow.outerHeight) / 2;
+			var x = popup._opener.screenX + (popup._opener.outerWidth - popup.dialogWindow.outerWidth) / 2;
+			var y = popup._opener.screenY + (popup._opener.outerHeight - popup.dialogWindow.outerHeight) / 2;
 			try {
-				self.dialogWindow.moveTo(x, y);
+				popup.dialogWindow.moveTo(x, y);
 			} catch(e) { };
 		}, 25);
 	} else {
-		/* Something broken in IE ...
-		var w = body.scrollWidth + 12;
-		if (doc.documentElement && doc.documentElement.clientHeight) var h = doc.documentElement.clientHeight;
-			else var h = body.clientHeight;
-		if(h < body.scrollHeight) var h = body.scrollHeight;
-		if(h < body.offsetHeight) h = body.offsetHeight;
-		*/
-		var h = this.content.offsetHeight + 12;
-		var w = this.content.offsetWidth + 12;
-		
-		self.dialogWindow.resizeTo(w, h);
-		
-		if (doc.documentElement && doc.documentElement.clientHeight) {
-			var ch = doc.documentElement.clientHeight;
-			var cw = doc.documentElement.clientWidth;
-		} else {
-			var ch = body.clientHeight;
-			var cw = body.clientWidth;
+		var innerX,innerY;
+		if (popup.dialogWindow.innerHeight) {
+				// all except Explorer
+			innerX = popup.dialogWindow.innerWidth;
+			innerY = popup.dialogWindow.innerHeight;
+		} else if (doc.documentElement && doc.documentElement.clientHeight) {
+				// Explorer 6 Strict Mode
+			innerX = doc.documentElement.clientWidth;
+			innerY = doc.documentElement.clientHeight;
+		} else if (document.body) {
+				// other Explorers
+			innerX = doc.body.clientWidth;
+			innerY = doc.body.clientHeight;
 		}
-		self.dialogWindow.resizeBy(w - cw, h - ch);
+
+		var pageX,pageY;
+		var test1 = doc.body.scrollHeight;
+		var test2 = doc.body.offsetHeight;
+		if (test1 > test2) {
+				// all but Explorer Mac
+			pageX = doc.body.scrollWidth;
+			pageY = doc.body.scrollHeight;
+		} else {
+				// Explorer Mac
+				//would also work in Explorer 6 Strict, Mozilla and Safari
+			pageX = doc.body.offsetWidth;
+			pageY = doc.body.offsetHeight;
+		}
+		popup.dialogWindow.resizeBy(pageX - innerX, pageY - innerY);
 		
 			// center on parent if allowed
-		self.dialogWindow.moveTo((screen.availWidth - body.offsetWidth)/2,(screen.availHeight - body.offsetHeight)/2);
+		popup.dialogWindow.moveTo((screen.availWidth - doc.body.offsetWidth)/2,(screen.availHeight - doc.body.offsetHeight)/2);
 	}
 };
 

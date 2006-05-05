@@ -33,6 +33,8 @@
  */
 
 require_once(t3lib_extMgm::extPath('rtehtmlarea').'class.tx_rtehtmlarea_base.php');
+require_once(PATH_t3lib.'class.t3lib_parsehtml_proc.php');
+require_once(PATH_t3lib.'class.t3lib_befunc.php');
 
 class tx_rtehtmlarea_pi2 extends tx_rtehtmlarea_base {
 
@@ -118,6 +120,13 @@ class tx_rtehtmlarea_pi2 extends tx_rtehtmlarea_base {
 
 			// Special configuration (line) and default extras:
 		$this->specConf = $specConf;
+		
+		if ($this->thisConfig['forceHTTPS']) {
+			$this->httpTypo3Path = preg_replace('/^(http|https)/', 'https', $this->httpTypo3Path);
+			$this->extHttpPath = preg_replace('/^(http|https)/', 'https', $this->extHttpPath);
+			$this->siteURL = preg_replace('/^(http|https)/', 'https', $this->siteURL);
+			$this->hostURL = preg_replace('/^(http|https)/', 'https', $this->hostURL);
+		}
 		
 			// Language
 		$TSFE->initLLvars();
@@ -273,8 +282,8 @@ class tx_rtehtmlarea_pi2 extends tx_rtehtmlarea_base {
 			// draw the textarea
 		$visibility = 'hidden';
 		$item = $this->triggerField($PA['itemFormElName']).'
-			<div id="pleasewait' . $pObj->RTEcounter . '" class="pleasewait">' . $TSFE->csConvObj->conv($TSFE->getLLL('Please wait',$this->LOCAL_LANG), $this->charset, $TSFE->renderCharset) . '</div>
-			<div id="editorWrap' . $pObj->RTEcounter . '" class="editorWrap" style="visibility:' . $visibility . '; '. htmlspecialchars($this->RTEWrapStyle). '">
+			<div id="pleasewait' . $pObj->RTEcounter . '" class="pleasewait" style="display: none;" >' . $TSFE->csConvObj->conv($TSFE->getLLL('Please wait',$this->LOCAL_LANG), $this->charset, $TSFE->renderCharset) . '</div>
+			<div id="editorWrap' . $pObj->RTEcounter . '" class="editorWrap" style="'. htmlspecialchars($this->RTEWrapStyle). '">
 			<textarea id="RTEarea'.$pObj->RTEcounter.'" name="'.htmlspecialchars($PA['itemFormElName']).'" style="'.htmlspecialchars($this->RTEdivStyle).'">'.t3lib_div::formatForTextarea($value).'</textarea>
 			</div>' . ($TYPO3_CONF_VARS['EXTCONF'][$this->ID]['enableDebugMode'] ? '<div id="HTMLAreaLog"></div>' : '') . '
 			';

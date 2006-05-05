@@ -53,6 +53,8 @@ if (strstr($_EXTCONF['defaultConfiguration'],'Minimal')) {
 	$TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['defaultConfiguration'] = 'Typical';
 }
 $TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['enableImages'] = $_EXTCONF['enableImages'] ? $_EXTCONF['enableImages'] : 0;
+$TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['enableDAMBrowser'] = $_EXTCONF['enableDAMBrowser'] ? $_EXTCONF['enableDAMBrowser'] : 0;
+$TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['enableClickEnlarge'] = $_EXTCONF['enableClickEnlarge'] ? $_EXTCONF['enableClickEnlarge'] : 0;
 $TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['enableMozillaExtension'] = $_EXTCONF['enableMozillaExtension'] ? $_EXTCONF['enableMozillaExtension'] : 0;
 $TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['mozAllowClipboardUrl'] = $_EXTCONF['mozAllowClipboardUrl'] ? $_EXTCONF['mozAllowClipboardUrl'] : 'http://releases.mozilla.org/pub/mozilla.org/extensions/allowclipboard_helper/allowclipboard_helper-0.5.3-fx+mz.xpi';
 $TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['forceCommandMode'] = $_EXTCONF["forceCommandMode"] ? $_EXTCONF["forceCommandMode"] : 0;
@@ -63,8 +65,8 @@ $TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['defaultDictionary'] = $_EXTCONF["defaultD
 $TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['AspellDirectory'] = $_EXTCONF["AspellDirectory"] ? $_EXTCONF["AspellDirectory"] : '/usr/bin/aspell';
 $TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['noSpellCheckLanguages'] = $_EXTCONF["noSpellCheckLanguages"] ? $_EXTCONF["noSpellCheckLanguages"] : 'ja,km,ko,lo,th,zh,b5,gb';
 $TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['HTMLAreaPluginList'] = $_EXTCONF["HTMLAreaPluginList"] ? $_EXTCONF["HTMLAreaPluginList"] : 'TableOperations,SpellChecker,ContextMenu,SelectColor,TYPO3Browsers,InsertSmiley,FindReplace,RemoveFormat,CharacterMap,QuickTag,InlineCSS,DynamicCSS,UserElements,TYPO3HtmlParser';
-$TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['plainImageMaxWidth'] = $_EXTCONF['plainImageMaxWidth'] ? $_EXTCONF['plainImageMaxWidth'] : 640;
-$TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['plainImageMaxHeight'] = $_EXTCONF['plainImageMaxHeight'] ? $_EXTCONF['plainImageMaxHeight'] : 680;
+if ($_EXTCONF['plainImageMaxWidth']) $TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['plainImageMaxWidth'] = intval($_EXTCONF['plainImageMaxWidth']);
+if ($_EXTCONF['plainImageMaxHeight']) $TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['plainImageMaxHeight'] = intval($_EXTCONF['plainImageMaxHeight']);
 
 //$TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['safari_test'] = 0;
 //$TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['opera_test'] = 0;
@@ -75,9 +77,24 @@ t3lib_extMgm::addPageTSConfig('<INCLUDE_TYPOSCRIPT: source="FILE:EXT:' . $_EXTKE
 	// Add default Page TSonfig RTE configuration
 t3lib_extMgm::addPageTSConfig('<INCLUDE_TYPOSCRIPT: source="FILE:EXT:' . $_EXTKEY . '/res/' . strtolower($TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['defaultConfiguration']) . '/pageTSConfig.txt">');
 
-	// Add default Page TSonfig RTE configuration for enabling images with the Typical default configuration
-if (($TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['defaultConfiguration'] == 'Typical') && $TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['enableImages']) {
+	// Add default Page TSonfig RTE configuration for enabling images with the Minimal and Typical default configuration
+if (($TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['defaultConfiguration'] != 'Demo') && $TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['enableImages']) {
 	t3lib_extMgm::addPageTSConfig('<INCLUDE_TYPOSCRIPT: source="FILE:EXT:' . $_EXTKEY . '/res/image/pageTSConfig.txt">');
+}
+
+	// Add default Page TSonfig RTE configuration for enabling links accessibility icons
+if ($TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['enableAccessibilityIcons']) {
+	t3lib_extMgm::addPageTSConfig('<INCLUDE_TYPOSCRIPT: source="FILE:EXT:' . $_EXTKEY . '/res/accessibilityicons/pageTSConfig.txt">');
+}
+
+	// Register DAM element browser rendering
+if (t3lib_extMgm::isLoaded('dam') && $TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['enableDAMBrowser']) {
+	$TYPO3_CONF_VARS['SC_OPTIONS']['typo3/browse_links.php']['browserRendering'][] = 'EXT:'.$_EXTKEY.'/mod4/class.tx_rtehtmlarea_dam_browse_media.php:&tx_rtehtmlarea_dam_browse_media';
+}
+
+	// Add default Page TSonfig RTE configuration for enabling the Click-enlarge feature
+if ($TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['enableClickEnlarge']) {
+	t3lib_extMgm::addPageTSConfig('<INCLUDE_TYPOSCRIPT: source="FILE:EXT:' . $_EXTKEY . '/res/clickenlarge/pageTSConfig.txt">');
 }
 
 	// Add default User TSonfig RTE configuration

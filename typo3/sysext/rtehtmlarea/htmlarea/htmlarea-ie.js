@@ -226,6 +226,10 @@ HTMLArea.prototype.insertNodeAtSelection = function(toBeInserted) {
 HTMLArea.prototype.insertHTML = function(html) {
 	this.focusEditor();
 	var sel = this._getSelection();
+	if (sel.type.toLowerCase() == "control") {
+		sel.clear();
+		sel = this._getSelection();
+	}
 	var range = this._createRange(sel);
 	range.pasteHTML(html);
 };

@@ -45,7 +45,7 @@ Acronym.I18N = Acronym_langArray;
 
 Acronym._pluginInfo = {
 	name		: "Acronym",
-	version		: "1.2",
+	version		: "1.4",
 	developer	: "Stanislas Rolland",
 	developer_url	: "http://www.fructifor.ca/",
 	c_owner		: "Stanislas Rolland",
@@ -63,7 +63,7 @@ Acronym.actionHandler = function(instance) {
 Acronym.prototype.buttonPress = function(editor) {
 	var editorNo = editor._doc._editorNo;
 	var backreturn;
-	var addUrlParams = "?" + conf_RTEtsConfigParams;
-	editor._popupDialog("../../mod1/popup.php" + addUrlParams + "&editorNo=" + editorNo + "&popupname=acronym&srcpath=" + encodeURI(rtePathAcronymFile), null, null, 570, 280);
+	var addUrlParams = "?" + RTEarea[0]["RTEtsConfigParams"];
+	editor._popupDialog(RTEarea[0]["pathAcronymModule"] + addUrlParams + "&editorNo=" + editorNo, null, null, 570, 280);
 	return false;
 };

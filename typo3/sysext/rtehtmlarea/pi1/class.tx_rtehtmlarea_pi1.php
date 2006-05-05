@@ -232,6 +232,7 @@ class tx_rtehtmlarea_pi1 extends tslib_pibase {
 <link rel="stylesheet" type="text/css" media="all" href="spell-check-style.css" />
 <script type="text/javascript">
 /*<![CDATA[*/
+<!--
 ';
 
 				// Getting the input content
@@ -244,7 +245,7 @@ class tx_rtehtmlarea_pi1 extends tslib_pibase {
 			if( !xml_set_element_handler( $parser, 'startHandler', 'endHandler')) echo('Bad xml handler setting');
 			if( !xml_set_character_data_handler ( $parser, 'spellCheckHandler')) echo('Bad xml handler setting');
 			if( !xml_set_default_handler( $parser, 'defaultHandler')) echo('Bad xml handler setting');
-			if(! xml_parse($parser,'<?xml version="1.0" encoding="' . $this->parserCharset . '"?><SPELLCHECKER> ' . mb_ereg_replace('&nbsp;', ' ', $content) . ' </SPELLCHECKER>')) echo('Bad parsing');
+			if(! xml_parse($parser,'<?xml version="1.0" encoding="' . $this->parserCharset . '"?><spellchecker> ' . mb_ereg_replace('&nbsp;', ' ', $content) . ' </spellchecker>')) echo('Bad parsing');
 			if( xml_get_error_code($parser)) {
 				die('Line '.xml_get_current_line_number($parser).': '.xml_error_string(xml_get_error_code($parser)));
 			}
@@ -260,12 +261,13 @@ class tx_rtehtmlarea_pi1 extends tslib_pibase {
 
 				// Insert spellcheck info
 			$this->result .= 'var spellcheck_info = { "Total words":"'.$this->wordCount.'","Misspelled words":"'.sizeof($this->misspelled).'","Total suggestions":"'.$this->suggestionCount.'","Total words suggested":"'.$this->suggestedWordCount.'","Spelling checked in":"'.$time.'" }; 
+// -->
 /*]]>*/
 </script>
 </head>
 ';
 			$this->result .= '<body onload="window.parent.finishedSpellChecking();">';
-			$this->result .= $this->text;
+			$this->result .= preg_replace('/'.preg_quote('<?xml').'.*'.preg_quote('?>').'['.preg_quote(chr(10).chr(13).chr(32)).']*/', '', $this->text);
 			$this->result .= '<div id="HA-spellcheck-dictionaries">'.$dictionaries.'</div>';
 
 				// Closing
@@ -280,7 +282,7 @@ class tx_rtehtmlarea_pi1 extends tslib_pibase {
 
 	function startHandler($xml_parser, $tag, $attributes) {
 		switch($tag) {
-			case 'SPELLCHECKER':
+			case 'spellchecker':
 				break;
 			case 'br':
 			case 'BR':
@@ -309,7 +311,7 @@ class tx_rtehtmlarea_pi1 extends tslib_pibase {
 
 	function endHandler($xml_parser, $tag) {
 		switch($tag) {
-			case 'SPELLCHECKER':
+			case 'spellchecker':
 				break;
 			case 'br':
 			case 'BR':

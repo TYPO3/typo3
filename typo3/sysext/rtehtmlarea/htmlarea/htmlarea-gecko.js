@@ -430,11 +430,12 @@ HTMLArea.prototype._checkInsertP = function() {
 	if(HTMLArea.is_safari) sel.empty();
 		else sel.removeAllRanges();
 	SC = r.startContainer;
+	if (HTMLArea.is_opera && SC.nodeType == 3 && SC.data.length == 0) SC = HTMLArea.getPrevNode(SC);
 	if(!block || /^(td|div)$/i.test(block.tagName)) {
 		left = SC;
 		for (i = SC; i && !HTMLArea.isBlockElement(i); i = HTMLArea.getPrevNode(i)) { left = i; }
 		right = SC;
-		for (i = SC; i && !HTMLArea.isBlockElement(i); i = HTMLArea.getNextNode(i)) { right = i; }
+		if (HTMLArea.is_opera && right.nodeType == 3 && right.data.length == 0) right = HTMLArea.getNextNode(righgt);
 		if(left != body && right != body && !(block && left == block ) && !(block && right == block )) {
 			r2 = r.cloneRange();
 			if (HTMLArea.is_opera) r2.setStart(left,0);
@@ -467,21 +468,15 @@ HTMLArea.prototype._checkInsertP = function() {
 			}
 			block.normalize();
 		} else {
-			if(!block) {
-				r = doc.createRange();
-				r.setStart(body, 0);
-				r.setEnd(body, 0);
-				r.surroundContents(block = doc.createElement('p'));
-				if (!/\S/.test(HTMLArea.getInnerText(block))) block.appendChild(this._doc.createElement('br'));
-			} else {
-				r = doc.createRange();
-				r.setStart(block, 0);
-				r.setEnd(block, 0);
-				r.insertNode(block = doc.createElement('p'));
-				block.appendChild(doc.createElement('br'));
-			}
+			if (!block) block = body;
+			r = doc.createRange();
+			r.setStart(block, 0);
+			r.setEnd(block, 0);
+			r.insertNode(block = doc.createElement('p'));
+			block.appendChild(doc.createElement('br'));
 		}
-		r.selectNodeContents(block);
+		if (HTMLArea.is_opera) r.selectNode(block);
+			else r.selectNodeContents(block);
 	} else {
 		r.setEndAfter(block);
 		var df = r.extractContents(), left_empty = false;
@@ -506,7 +501,8 @@ HTMLArea.prototype._checkInsertP = function() {
 				// Remove any anchor created empty
 			var a = p.previousSibling.lastChild;
 			if (a && /^a$/i.test(a.tagName) && !/\S/.test(a.innerHTML)) HTMLArea.removeFromParent(a);
-			r.selectNodeContents(p);
+			if (HTMLArea.is_opera) r.selectNode(p);
+				else r.selectNodeContents(p);
 		}
 	}
 	r.collapse(true);

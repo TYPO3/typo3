@@ -418,17 +418,20 @@ function finishedSpellChecking() {
 		for (var i = select.length; --i >= 0;) {
 			select.remove(i);
 		}
+		var selectedOptionIndex = 0;
 		for (var i = 0; i < dicts.length; ++i) {
 			var txt = dicts[i];
 			var option = document.createElement("option");
 			if (/^@(.*)$/.test(txt)) {
 				txt = RegExp.$1;
-				option.selected = true;
+				selectedOptionIndex = i;
+				if (HTMLArea.is_ie) option.selected = true;
 				document.getElementById("f_dictionary").value = txt;
 			}
 			option.value = txt;
 			option.appendChild(document.createTextNode(txt));
 			select.appendChild(option);
 		}
+		select.selectedIndex = selectedOptionIndex;
 	}
 };

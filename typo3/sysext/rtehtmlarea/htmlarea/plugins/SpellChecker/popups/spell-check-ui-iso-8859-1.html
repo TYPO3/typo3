@@ -1,3 +1,5 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<html class="popupwin" xmlns="http://www.w3.org/1999/xhtml">
 <!--
 /***************************************************************
 *  Copyright notice
@@ -34,28 +36,32 @@
  * TYPO3 CVS ID: $Id$
  */
 -->
-<?xml version="1.0" encoding="iso-8859-1"?>
-<html class="popupwin" xmlns="http://www.w3.org/1999/xhtml">
 <head>
 	<title>Spell Checker</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 	<script type="text/javascript" src="../spell-check-ui.js"></script>
 	<script type="text/javascript" src="../../../popups/popup.js"></script>
 	<script type="text/javascript">
+		/*<![CDATA[*/
+		<!--
 		HTMLArea = window.opener.HTMLArea;
 		_editor_CSS = window.opener._editor_CSS;
 		__dlg_loadStyle(_editor_CSS);
+		// -->
+		/*]]>*/
 	</script>
 	<style type="text/css">
+		/*<![CDATA[*/
+		<!--
 		iframe { background-color: #fff; color: #000; height: 100%; width: 100%; }
 		.controls { width: 14em; }
-		.controls .sectitle { /* background-color: #736c6c; color: #fff;
-		border-top: 1px solid #000; border-bottom: 1px solid #fff; */
-		text-align: center; font-weight: bold; padding: 2px 4px; }
+		.controls .sectitle { text-align: center; font-weight: bold; padding: 2px 4px; }
 		.controls .secbody { margin-bottom: 10px; }
 		#v_currentWord { color: #f00; font-weight: bold; }
 		#statusbar { padding: 7px 0px 0px 5px; }
 		#status { font-weight: bold; }
+		-->
+		/*]]>*/
 	</style>
 </head>
 <body class="popupwin" onload="initDocument();">

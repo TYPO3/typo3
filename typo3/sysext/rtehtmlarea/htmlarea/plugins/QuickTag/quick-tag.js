@@ -39,11 +39,11 @@ QuickTag = function(editor) {
 	var actionHandlerFunctRef = QuickTag.actionHandler(this);
 	cfg.registerButton({
 		id		: "InsertTag",
-		tooltip	: QuickTag_langArray["Quick Tag Editor"],
+		tooltip		: QuickTag_langArray["Quick Tag Editor"],
 		image		: editor.imgURL("ed_quicktag.gif", "QuickTag"),
 		textMode	: false,
-  		action	: actionHandlerFunctRef,
-		context	: null,
+  		action		: actionHandlerFunctRef,
+		context		: null,
 		hide		: false,
 		selection	: true
 		});
@@ -81,7 +81,7 @@ QuickTag.setTagHandler = function(instance) {
 
 QuickTag._pluginInfo = {
 	name          : "QuickTag",
-	version       : "1.1",
+	version       : "1.2",
 	developer     : "Cau Guanabara & Stanislas Rolland",
 	developer_url : "mailto:caugb@ibest.com.br",
 	c_owner       : "Cau Guanabara & Stanislas Rolland",

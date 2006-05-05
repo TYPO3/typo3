@@ -42,13 +42,12 @@ TableOperations = function(editor) {
 	var cfg = editor.config;
 	var bl = TableOperations.btnList;
 	var actionHandlerFunctRef = TableOperations.actionHandler(this);
-	var hideInToolbar = cfg.hideTableOperationsInToolbar;
-	var hideToggleBorders = hideInToolbar && !cfg.keepToggleBordersInToolbar;
+	var hideToggleBorders = cfg.hideTableOperationsInToolbar && !(cfg.buttons["toggleborders"] && cfg.buttons["toggleborders"]["keepInToolbar"]);
 	for(var i=0;i < bl.length;++i) {
 		var btn = bl[i];
 		var id = "TO-" + btn[0];
 		cfg.registerButton(id, TableOperations_langArray[id], editor.imgURL(btn[0] + ".gif", "TableOperations"), false,
-			actionHandlerFunctRef, btn[1], ((id == "TO-toggle-borders") ? hideToggleBorders : hideInToolbar));
+			actionHandlerFunctRef, btn[1], ((id == "TO-toggle-borders") ? hideToggleBorders : cfg.hideTableOperationsInToolbar));
 	}
 };
 
@@ -729,9 +728,9 @@ TableOperations.prototype.buttonPress = function(editor,button_id) {
 	    case "TO-toggle-borders":
 		var tables = editor._doc.getElementsByTagName("table");
 		if (tables.length != 0) {
-			editor.borders = false;
-			for (var ix=0; ix < tables.length; ix++) editor.borders = editor.borders || /htmlarea-showtableborders/.test(tables[ix].className);
-			for ( ix=0; ix < tables.length; ix++) {
+			editor.borders = true;
+			for (var ix=0; ix < tables.length; ix++) editor.borders = editor.borders && /htmlarea-showtableborders/.test(tables[ix].className);
+			for (ix=0; ix < tables.length; ix++) {
 				if (!editor.borders) HTMLArea._addClass(tables[ix],'htmlarea-showtableborders');
 					else HTMLArea._removeClass(tables[ix],'htmlarea-showtableborders');
 			}
@@ -741,10 +740,6 @@ TableOperations.prototype.buttonPress = function(editor,button_id) {
 		alert("Button [" + button_id + "] not yet implemented");
 	}
 };
-
-//// GENERIC CODE [style of any element; this should be moved into a separate
-//// file as it'll be very useful]
-//// BEGIN GENERIC CODE -----------------------------------------------------
 
 TableOperations.getLength = function(value) {
 	var len = parseInt(value);
@@ -923,11 +918,17 @@ TableOperations.buildCellTypeFieldset = function(w,doc,editor,el,i18n,content) {
 	var fieldset = doc.createElement("fieldset");
 	TableOperations.insertLegend(doc, i18n, fieldset, "Cell Type and Scope");
 	TableOperations.insertSpace(doc, fieldset);
-	var selectType = TableOperations.buildSelectField(doc, el, i18n, fieldset, "f_cell_type", "Type of cell", "fr", "", "Specifies the type of cell", ["Normal", "Header"], ["td", "th"], new RegExp(el.tagName.toLowerCase(), "i"));
+	var ul = doc.createElement("ul");
+	fieldset.appendChild(ul);
+	var li = doc.createElement("li");
+	ul.appendChild(li);
+	var selectType = TableOperations.buildSelectField(doc, el, i18n, li, "f_cell_type", "Type of cell", "fr", "", "Specifies the type of cell", ["Normal", "Header"], ["td", "th"], new RegExp(el.tagName.toLowerCase(), "i"));
 	selectType.onchange = function() { TableOperations.setStyleOptions(doc, editor, el, i18n, this); };
+	var li = doc.createElement("li");
+	ul.appendChild(li);
 	selected = el.scope.toLowerCase();
 	(selected.match(/([^\s]*)\s/)) && (selected = RegExp.$1);
-	var selectScope = TableOperations.buildSelectField(doc, el, i18n, fieldset, "f_scope", "Scope", "fr", "", "Scope of header cell", ["Not set", "scope_row", "scope_column", "scope_rowgroup"], ["not set", "row", "col", "rowgroup"], new RegExp((selected ? selected : "not set"), "i"));
+	var selectScope = TableOperations.buildSelectField(doc, el, i18n, li, "f_scope", "Scope", "fr", "", "Scope of header cell", ["Not set", "scope_row", "scope_column", "scope_rowgroup"], ["not set", "row", "col", "rowgroup"], new RegExp((selected ? selected : "not set"), "i"));
 	TableOperations.insertSpace(doc, fieldset);
 	content.appendChild(fieldset);
 };

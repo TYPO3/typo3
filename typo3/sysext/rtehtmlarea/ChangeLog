@@ -1,3 +1,23 @@
+2006-05-05 Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+	* Version 1.4.0
+	* Adapt popup windows resizing for Opera 9.
+	* Fix to spell checker for Opera 9.
+	* Add error text to troubleshooting log when attempt to load stylesheets fails.
+	* Improved integration of TYPO3Browsers plugin with TYPO3 core element browser.
+	* Move up attributes setting form in link and image insertion dialogs.
+	* Add support for User TSConfig properties options.createFoldersInEB and options.noThumbsInRTEimageSelect.
+	* Add new Page TSConfig properties disableLinkTagetSelector and disableLinkPopupSelector.
+	* Add new Page TSConfig property toggleBordersOnTableCreation.
+	* Fix bugtracker issue 2026: The editor gets the focus on page load in IE.
+	* Allow to enable the use of images in the Minimal default configuration.
+	* Fix issue 3296: RTEarea frontend usage with no-javascript fallback solution.
+	* Add new Page TSConfig properties buttons.inserttag.denyTags, TSConfig properties buttons.inserttag.allowedAttribs and buttons.inserttag.tags.[tagname].allowedAttribs
+	* Add new Page TSConfig properties buttons.image.options.removeItems, buttons.image.options.magic.maxWidth and buttons.image.options.magic.maxHeight
+	* Add extension configuration variable "Enable links accessibility icons"
+	* Fix bugtraker issue 3410: Updating image in IE doesn't work.
+	* Add extension configuration variable "Enable the DAM media browser" and Page TSConfig property buttons.image.title.useDAMColumn.
+	* Fix bugtracker issue 3006: in IE, link properties were not updated when the link was not completely selected.
+
 2006-04-06 Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
 	* Version 1.3.7
 	* Fix bugtracker issue 3120: transforming text in link in Firefox may take excessive time.

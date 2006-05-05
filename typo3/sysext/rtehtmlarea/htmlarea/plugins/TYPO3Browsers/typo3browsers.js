@@ -40,7 +40,7 @@ TYPO3Browsers.I18N = TYPO3Browsers_langArray;
 
 TYPO3Browsers._pluginInfo = {
 	name		: "TYPO3Browsers",
-	version		: "1.6",
+	version		: "1.7",
 	developer	: "Stanislas Rolland",
 	developer_url 	: "http://www.fructifor.ca/",
 	c_owner		: "Stanislas Rolland",
@@ -55,16 +55,16 @@ TYPO3Browsers._pluginInfo = {
 HTMLArea.prototype.renderPopup_image = function() {
 	var editorNumber = this._editorNumber,
 		backreturn,
-		addParams = "?" + conf_RTEtsConfigParams,
+		addParams = "?" + RTEarea[0]["RTEtsConfigParams"],
 		image = this.getParentElement();
-
+		
 	this._selectedImage = null;
 	if (image && image.tagName.toLowerCase() == "img") {
-		addParams = "?act=image" + conf_RTEtsConfigParams;
+		addParams = "?act=image" + RTEarea[0]["RTEtsConfigParams"];
 		this._selectedImage = image;
 	}
-
-	this._popupDialog("../../mod1/popup.php" + addParams + "&editorNo=" + editorNumber + "&popupname=image&srcpath="+encodeURIComponent(rtePathImageFile), null, backreturn, 550, 350);	
+	
+	this._popupDialog(RTEarea[0]["pathImageModule"] + addParams + "&editorNo=" + editorNumber + "&sys_language_content=" + RTEarea[editorNumber]["sys_language_content"], null, backreturn, 550, 350, null, "yes");
 	return false;
 };
 
@@ -85,7 +85,7 @@ HTMLArea.prototype.renderPopup_insertImage = function(image) {
  */
 HTMLArea.prototype.renderPopup_link = function() {
 	var editorNumber = this._editorNumber,
-		addUrlParams = "?" + conf_RTEtsConfigParams,
+		addUrlParams = "?" + RTEarea[0]["RTEtsConfigParams"],
 		backreturn,
 		sel = this.getParentElement();
 
@@ -106,7 +106,7 @@ HTMLArea.prototype.renderPopup_link = function() {
 		if (sel.target) addUrlParams += "&curUrl[target]=" + encodeURIComponent(sel.target);
 		if (sel.className) addUrlParams += "&curUrl[class]=" + encodeURIComponent(sel.className);
 		if (sel.title) addUrlParams += "&curUrl[title]=" + encodeURIComponent(sel.title);
-		addUrlParams += conf_RTEtsConfigParams;
+		addUrlParams += RTEarea[0]["RTEtsConfigParams"];
 	} else if (this.hasSelectedText()) {
 		var text = this.getSelectedHTML();
 		if (text && text != null) {
@@ -116,11 +116,11 @@ HTMLArea.prototype.renderPopup_link = function() {
 				offset = ATagContent.toUpperCase().indexOf(">");
 				ATagContent = ATagContent.substring(0,offset);
 				addUrlParams = "?curUrl[all]=" + encodeURIComponent(ATagContent);
-				addUrlParams +=  conf_RTEtsConfigParams;
+				addUrlParams += RTEarea[0]["RTEtsConfigParams"];
 			}
 		}
 	}
-	this._popupDialog("../../mod1/popup.php" + addUrlParams + "&editorNo=" + editorNumber + "&typo3ContentLanguage=" + RTEarea[editorNumber]["typo3ContentLanguage"] + "&typo3ContentCharset=" + encodeURIComponent(RTEarea[editorNumber]["typo3ContentCharset"]) + "&popupname=link&srcpath=" + encodeURIComponent(rtePathLinkFile), null, backreturn, 550, 350);
+	this._popupDialog(RTEarea[0]["pathLinkModule"] + addUrlParams + "&editorNo=" + editorNumber + "&typo3ContentLanguage=" + RTEarea[editorNumber]["typo3ContentLanguage"] + "&typo3ContentCharset=" + encodeURIComponent(RTEarea[editorNumber]["typo3ContentCharset"]), null, backreturn, 550, 350, null, "yes");
 	return false;
 };
 
@@ -131,18 +131,14 @@ HTMLArea.prototype.renderPopup_link = function() {
 HTMLArea.prototype.renderPopup_addLink = function(theLink,cur_target,cur_class,cur_title) {
 	var a, sel = null, range = null, node = null, imageNode = null;
 	this.focusEditor();
-	
-	if(!HTMLArea.is_ie) {
-		node = this.getParentElement();
-		var el = HTMLArea.getElementObject(node,"a");
-		if (el != null && el.tagName && el.tagName.toLowerCase() == "a") node = el;
-		if (node != null && node.tagName && node.tagName.toLowerCase() == "a") this.selectNode(node);
-	}
+	node = this.getParentElement();
+	var el = HTMLArea.getElementObject(node,"a");
+	if (el != null && el.tagName && el.tagName.toLowerCase() == "a") node = el;
+	if (node != null && node.tagName && node.tagName.toLowerCase() == "a") this.selectNode(node);
 		// Clean images from existing anchors otherwise Mozilla may create nested anchors
 	if (this.classesAnchorSetup) {
 		sel = this._getSelection();
 		range = this._createRange(sel);
-		node = this.getParentElement();
 		this.cleanAllLinks(node, range, true);
 	}
 	
@@ -168,7 +164,9 @@ HTMLArea.prototype.renderPopup_addLink = function(theLink,cur_target,cur_class,c
 			// We may have created multiple links in as many blocks
 		this.setLinkAttributes(node, range, cur_target, cur_class, cur_title, imageNode);
 	}
+	
 	Dialog._modal.close();
+	this.updateToolbar();
 };
 
 /*
@@ -177,13 +175,18 @@ HTMLArea.prototype.renderPopup_addLink = function(theLink,cur_target,cur_class,c
 HTMLArea.prototype.setLinkAttributes = function(node,range,cur_target,cur_class,cur_title,imageNode) {
 	if (node.tagName && node.tagName.toLowerCase() == "a") {
 		var nodeInRange = false;
-		if(HTMLArea.is_gecko) {
-			if(!HTMLArea.is_safari) nodeInRange = range.intersectsNode(node);
+		if (HTMLArea.is_gecko) {
+			if(!HTMLArea.is_safari && !HTMLArea.is_opera) nodeInRange = range.intersectsNode(node);
 				else nodeInRange = true;
 		} else {
-			var nodeRange = this._doc.body.createTextRange();
-			nodeRange.moveToElementText(node);
-			nodeInRange = range.inRange(nodeRange) || (range.compareEndPoints("StartToStart", nodeRange) == 0) || (range.compareEndPoints("EndToEnd", nodeRange) == 0);
+			if (this._getSelection().type.toLowerCase() == "control") {
+					// we assume an image is selected
+				nodeInRange = true;
+			} else {
+				var nodeRange = this._doc.body.createTextRange();
+				nodeRange.moveToElementText(node);
+				nodeInRange = range.inRange(nodeRange) || (range.compareEndPoints("StartToStart", nodeRange) == 0) || (range.compareEndPoints("EndToEnd", nodeRange) == 0);
+			}
 		}
 		if (nodeInRange) {
 			if (imageNode != null) node.insertBefore(imageNode.cloneNode(false), node.firstChild);
@@ -239,21 +242,26 @@ HTMLArea.prototype.cleanClassesAnchorImages = function(node) {
  HTMLArea.prototype.cleanAllLinks = function(node,range,keepLinks) {
 	if (node.tagName && node.tagName.toLowerCase() == "a") {
 		var intersection = false;
-		if(HTMLArea.is_gecko) {
-			if(!HTMLArea.is_safari) intersection = range.intersectsNode(node);
+		if (HTMLArea.is_gecko) {
+			if (!HTMLArea.is_safari && !HTMLArea.is_opera) intersection = range.intersectsNode(node);
 				else intersection = true;
+		} else {
+			if (this._getSelection().type.toLowerCase() == "control") {
+					// we assume an image is selected
+				intersection = true;
 			} else {
 				var nodeRange = this._doc.body.createTextRange();
 				nodeRange.moveToElementText(node);
 				intersection = range.inRange(nodeRange) || ((range.compareEndPoints("StartToStart", nodeRange) > 0) && (range.compareEndPoints("StartToEnd", nodeRange) < 0)) || ((range.compareEndPoints("EndToStart", nodeRange) > 0) && (range.compareEndPoints("EndToEnd", nodeRange) < 0));
 			}
-			if (intersection) {
-				this.cleanClassesAnchorImages(node);
-				if(!keepLinks) {
-					while(node.firstChild) node.parentNode.insertBefore(node.firstChild, node);
-					node.parentNode.removeChild(node);
-				}
+		}
+		if (intersection) {
+			this.cleanClassesAnchorImages(node);
+			if (!keepLinks) {
+				while(node.firstChild) node.parentNode.insertBefore(node.firstChild, node);
+				node.parentNode.removeChild(node);
 			}
+		}
 	} else {
 		for (var i = node.firstChild;i;i = i.nextSibling) {
 			if (i.nodeType == 1 || i.nodeType == 11) this.cleanAllLinks(i, range, keepLinks);
@@ -267,17 +275,20 @@ HTMLArea.prototype.cleanClassesAnchorImages = function(node) {
  */
 HTMLArea.prototype.renderPopup_unLink = function() {
 	this.focusEditor();
-	if(HTMLArea.is_gecko) {
-		sel = this.getParentElement();
-		var el = HTMLArea.getElementObject(sel,"a");
-		if (el != null && el.tagName && el.tagName.toLowerCase() == "a") sel = el;
-		if (sel != null && sel.tagName && sel.tagName.toLowerCase() == "a") this.selectNode(sel);
-	}
-	if(this.classesAnchorSetup) {
+	var node = this.getParentElement();
+	var el = HTMLArea.getElementObject(node,"a");
+	if (el != null && el.tagName && el.tagName.toLowerCase() == "a") node = el;
+	if (node != null && node.tagName && node.tagName.toLowerCase() == "a") this.selectNode(node);
+	if (this.classesAnchorSetup) {
 		var sel = this._getSelection();
 		var range = this._createRange(sel);
-		var node = this.getParentElement();
-		this.cleanAllLinks(node, range, false);
+		if (HTMLArea.is_gecko) {
+			this.cleanAllLinks(node, range, false);
+		} else {
+			this.cleanAllLinks(node, range, true);
+			this._doc.execCommand("Unlink", false, "");
+		}
+			
 	} else {
 		this._doc.execCommand("Unlink", false, "");
 	}

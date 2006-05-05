@@ -15,7 +15,6 @@
 
 var allTags = {
 'a': 'a',
-'a (full)': 'a href="" target=""',
 'abbr': 'abbr',
 'acronym': 'acronym',
 'address': 'address',
@@ -28,7 +27,6 @@ var allTags = {
 'em': 'em',
 'fieldset': 'fieldset',
 'font': 'font',
-'font (full)': 'font face="" size="" color=""',
 'h1': 'h1',
 'h2': 'h2',
 'h3': 'h3',
@@ -54,17 +52,17 @@ var allTags = {
 
 // tags with options
 var tagLib =  {
-'a': true, 
-'div': true, 
-'font': true, 
-'h1': true,
-'h2': true,
-'h3': true,
-'h4': true,
-'h5': true,
-'h6': true,
-'p': true,
-'table': true
+	'a': true,
+	'div': true,
+	'font': true,
+	'h1': true,
+	'h2': true,
+	'h3': true,
+	'h4': true,
+	'h5': true,
+	'h6': true,
+	'p': true,
+	'table': true
 };
 // tags that needs some complement
 var subTagLib = {'table': {'op': '<tbody><tr><td>',
@@ -155,24 +153,25 @@ var opAtt_table = {
 
 // for all tags 
 var opTag_all = {
-'class': 'class="',
-'dir': 'dir="',
-'id': 'id="',
-'lang': 'lang="',
-'onFocus': 'onFocus="',
-'onBlur': 'onBlur="',
-'onClick': 'onClick="',
-'onDblClick': 'onDblClick="',
-'onMouseDown': 'onMouseDown="',
-'onMouseUp': 'onMouseUp="',
-'onMouseOver': 'onMouseOver="',
-'onMouseMove': 'onMouseMove="',
-'onMouseOut': 'onMouseOut="',
-'onKeyPress': 'onKeyPress="',
-'onKeyDown': 'onKeyDown="',
-'onKeyUp': 'onKeyUp="',
-'style': 'style="',
-'title': 'title="'
+	'class': 'class="',
+	'dir': 'dir="',
+	'id': 'id="',
+	'lang': 'lang="',
+	'onFocus': 'onFocus="',
+	'onBlur': 'onBlur="',
+	'onClick': 'onClick="',
+	'onDblClick': 'onDblClick="',
+	'onMouseDown': 'onMouseDown="',
+	'onMouseUp': 'onMouseUp="',
+	'onMouseOver': 'onMouseOver="',
+	'onMouseMove': 'onMouseMove="',
+	'onMouseOut': 'onMouseOut="',
+	'onKeyPress': 'onKeyPress="',
+	'onKeyDown': 'onKeyDown="',
+	'onKeyUp': 'onKeyUp="',
+	'style': 'style="',
+	'title': 'title="',
+	'xml:lang' : 'xml:lang="'
 };
 var opAtt_all = {
 'class': {},
@@ -350,6 +349,7 @@ var opAtt_all = {
           'word-spacing': 'word-spacing: ',
           'z-index': 'z-index: ' }
 };
+opAtt_all["xml:lang"] = opAtt_all["lang"];
 
 // add the common items to all objects
 for(var i in tagLib) {

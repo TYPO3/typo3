@@ -30,6 +30,8 @@
 			<label index="plainImage">New Plain Image</label>
 			<label index="dragDropImage">Drag'n'Drop</label>
 			<label index="currentImage">Current Image</label>
+			<label index="bytes">bytes</label>
+			<label index="pixels">pixels</label>
 		</languageKey>
 	</data>
 	<orig_hash type="array">

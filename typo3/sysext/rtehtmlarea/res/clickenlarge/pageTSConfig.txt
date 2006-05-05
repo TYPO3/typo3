@@ -1,0 +1,18 @@
+# ***************************************************************************************
+# "Click-enlarge" Page TSconfig for htmlArea RTE
+#
+# Sets default Page TSConfig for the Click-enlarge feature.
+#
+# @author	Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
+#
+# TYPO3 CVS ID: $Id$
+# ***************************************************************************************
+
+RTE.default {
+	proc {
+		allowTags := addToList(clickenlarge)
+		entryHTMLparser_db.allowTags := addToList(clickenlarge)
+	}
+	enableWordClean.HTMLparser.allowTags := addToList(clickenlarge)
+}
+

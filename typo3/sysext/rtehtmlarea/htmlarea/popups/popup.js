@@ -62,10 +62,9 @@ __dlg_loadStyle = function(url) {
 }
 
 __dlg_init = function(bottom,noResize) {
-	var body = document.body;
 	window.dialogArguments = window.opener.Dialog._arguments;
 		// resize if allowed
-	if (!HTMLArea.is_ie) {
+	if (HTMLArea.is_gecko && !HTMLArea.is_opera && !HTMLArea.is_safari) {
 		setTimeout( function() {
 			try {
 				if (!noResize) window.sizeToContent();
@@ -78,31 +77,39 @@ __dlg_init = function(bottom,noResize) {
 			} catch(e) { };
 		}, 25);
 	} else {
-		var w = body.scrollWidth +12;
-		if (document.documentElement && document.documentElement.clientHeight) var h = document.documentElement.clientHeight;
-			else var h = document.body.clientHeight;
-		if(h < body.scrollHeight) h = body.scrollHeight;
-		if(h < body.offsetHeight) h = body.offsetHeight;
-		
-			// Sometimes IE is broken here, in those cases we wrap the inside of the body into a div with id = "content"
-			// Then it seems that while the size of the body is wrong, the size of the div is right
-		var content = document.getElementById("content");
-		if(content) {
-			var h = content.offsetHeight + 12;
-			var w = content.offsetWidth + 12;
+		var innerX,innerY;
+		if (self.innerHeight) {
+				// all except Explorer
+			innerX = self.innerWidth;
+			innerY = self.innerHeight;
+		} else if (document.documentElement && document.documentElement.clientHeight) {
+				// Explorer 6 Strict Mode
+			innerX = document.documentElement.clientWidth;
+			innerY = document.documentElement.clientHeight;
+		} else if (document.body) {
+				// other Explorers
+			innerX = document.body.clientWidth;
+			innerY = document.body.clientHeight;
 		}
-		window.resizeTo(w, h);
-		if (document.documentElement && document.documentElement.clientHeight) {
-			var ch = document.documentElement.clientHeight;
-			var cw = document.documentElement.clientWidth;
+
+		var pageX,pageY;
+		var test1 = document.body.scrollHeight;
+		var test2 = document.body.offsetHeight
+		if (test1 > test2) {
+				// all but Explorer Mac
+			pageX = document.body.scrollWidth;
+			pageY = document.body.scrollHeight;
 		} else {
-			var ch = body.clientHeight;
-			var cw = body.clientWidth;
+				// Explorer Mac;
+				//would also work in Explorer 6 Strict, Mozilla and Safari
+			pageX = document.body.offsetWidth;
+			pageY = document.body.offsetHeight;
 		}
-		window.resizeBy(w - cw, h - ch);
+		window.resizeBy(pageX - innerX, pageY - innerY);
+			
 			// center on parent if allowed
-		var W = body.offsetWidth;
-		var H = body.offsetHeight;
+		var W = document.body.offsetWidth;
+		var H = document.body.offsetHeight;
 		var x = (screen.availWidth - W) / 2;
 		var y = (screen.availHeight - H) / 2;
 		window.moveTo(x, y);

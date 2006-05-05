@@ -402,6 +402,13 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 				// Special configuration and default extras:
 			$this->specConf = $specConf;
 			
+			if ($this->thisConfig['forceHTTPS']) {
+				$this->httpTypo3Path = preg_replace('/^(http|https)/', 'https', $this->httpTypo3Path);
+				$this->extHttpPath = preg_replace('/^(http|https)/', 'https', $this->extHttpPath);
+				$this->siteURL = preg_replace('/^(http|https)/', 'https', $this->siteURL);
+				$this->hostURL = preg_replace('/^(http|https)/', 'https', $this->hostURL);
+			}
+			
 			/* =======================================
 			 * LANGUAGES & CHARACTER SETS
 			 * =======================================
@@ -501,10 +508,6 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 				if (ini_get('safe_mode')) {
 					$this->spellCheckerPersonalDicts = false;
 				}
-			}
-
-			if ($this->isPluginEnable('QuickTag') && trim($this->thisConfig['hideTags'])) {
-				$this->quickTagHideTags = implode(',', t3lib_div::trimExplode(',', $this->thisConfig['hideTags'], 1));
 			}
 
 			/* =======================================
@@ -607,8 +610,8 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 				// Draw the textarea
 			$visibility = 'hidden';
 			$item = $this->triggerField($PA['itemFormElName']).'
-				<div id="pleasewait' . $pObj->RTEcounter . '" class="pleasewait">' . $LANG->getLL('Please wait') . '</div>
-				<div id="editorWrap' . $pObj->RTEcounter . '" class="editorWrap" style="visibility:' . $visibility . '; width:' . $editorWrapWidth . '; height:' . $editorWrapHeight . ';">
+				<div id="pleasewait' . $pObj->RTEcounter . '" class="pleasewait" style="display: none;" >' . $LANG->getLL('Please wait') . '</div>
+				<div id="editorWrap' . $pObj->RTEcounter . '" class="editorWrap" style="width:' . $editorWrapWidth . '; height:' . $editorWrapHeight . ';">
 				<textarea id="RTEarea'.$pObj->RTEcounter.'" name="'.htmlspecialchars($PA['itemFormElName']).'" style="'.t3lib_div::deHSCentities(htmlspecialchars($this->RTEdivStyle)).'">'.t3lib_div::formatForTextarea($value).'</textarea>
 				</div>' . ($TYPO3_CONF_VARS['EXTCONF'][$this->ID]['enableDebugMode'] ? '<div id="HTMLAreaLog"></div>' : '') . '
 				';
@@ -631,9 +634,9 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			bar, bold, italic, underline, strikethrough, subscript, superscript,
 			bar, lefttoright, righttoleft, bar, left, center, right, justifyfull,
 			bar, orderedlist, unorderedlist, outdent, indent, bar, textcolor, bgcolor, textindicator,
-			bar, emoticon, insertcharacter, line, link, image, table,' . (trim($this->thisConfig['hideTableOperationsInToolbar'] && trim($this->thisConfig['keepToggleBordersInToolbar'])) ? ' toggleborders,': '') . ' user, acronym, bar, findreplace, spellcheck,
+			bar, emoticon, insertcharacter, line, link, image, table,' . (($this->thisConfig['hideTableOperationsInToolbar'] && is_array($this->thisConfig['buttons.']) && is_array($this->thisConfig['buttons.']['toggleborders.']) && $this->thisConfig['buttons.']['toggleborders.']['keepInToolbar']) ? ' toggleborders,': '') . ' user, acronym, bar, findreplace, spellcheck,
 			bar, chMode, inserttag, removeformat, bar, copy, cut, paste, bar, undo, redo, bar, showhelp, about, linebreak, 
-			' . (trim($this->thisConfig['hideTableOperationsInToolbar']) ? '': 'bar, toggleborders,') . ' bar, tableproperties, bar, rowproperties, rowinsertabove, rowinsertunder, rowdelete, rowsplit, bar,
+			' . ($this->thisConfig['hideTableOperationsInToolbar'] ? '': 'bar, toggleborders,') . ' bar, tableproperties, bar, rowproperties, rowinsertabove, rowinsertunder, rowdelete, rowsplit, bar,
 			columninsertbefore, columninsertafter, columndelete, columnsplit, bar,
 			cellproperties, cellinsertbefore, cellinsertafter, celldelete, cellsplit, cellmerge';
 		
@@ -824,6 +827,12 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 		return '
 		<script type="text/javascript">
 		/*<![CDATA[*/
+			var i=1;
+			while (document.getElementById("pleasewait" + i)) {
+				document.getElementById("pleasewait" + i).style.display = "block";
+				document.getElementById("editorWrap" + i).style.visibility = "hidden";
+				i++;
+			};
 			var RTEarea = new Array();
 			RTEarea[0] = new Array();
 			RTEarea[0]["version"] = "' . $TYPO3_CONF_VARS['EXTCONF'][$this->ID]['version'] . '";
@@ -842,7 +851,6 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			var _spellChecker_lang = "' . $this->spellCheckerLanguage . '";
 			var _spellChecker_charset = "' . $this->spellCheckerCharset . '";
 			var _spellChecker_mode = "' . $this->spellCheckerMode . '";
-			var _quickTag_hideTags = "' . $this->quickTagHideTags . '";
 		/*]]>*/
 		</script>
 		<script type="text/javascript" src="' . $this->buildJSMainLangFile($number) . '"></script>
@@ -868,19 +876,19 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			}
 		}
 		return (!is_object($TSFE) ? '' : '
-		' . '/*<![CDATA[*/') . '
-			var conf_RTEtsConfigParams = "&RTEtsConfigParams=' . rawurlencode($this->RTEtsConfigParams()) . '";
-			var rtePathImageFile = "../mod4/select_image.php";
-			var rtePathLinkFile = "../mod3/browse_links.php";
-			var rtePathUserFile = "../mod5/user.php";
-			var rtePathAcronymFile = "../mod2/acronym.php";
-			var rtePathParseHtmlFile = "' . $this->extHttpPath . 'mod6/parse_html.php";'
+		' . '/*<![CDATA[*/') . (is_object($TSFE) ? '' : '
+			RTEarea[0]["RTEtsConfigParams"] = "&RTEtsConfigParams=' . rawurlencode($this->RTEtsConfigParams()) . '";
+			RTEarea[0]["pathAcronymModule"] = "../../mod2/acronym.php";
+			RTEarea[0]["pathLinkModule"] = "../../mod3/browse_links.php";
+			RTEarea[0]["pathImageModule"] = "../../mod4/select_image.php";
+			RTEarea[0]["pathUserModule"] = "../../mod5/user.php";
+			RTEarea[0]["pathParseHtmlModule"] = "' . $this->extHttpPath . 'mod6/parse_html.php";')
 			. $loadPluginCode .  '
 			HTMLArea.init();' . (!is_object($TSFE) ? '' : '
 		/*]]>*/
 		');
 	}
-
+	
 	/**
 	 * Return the JS-Code for Register the RTE in JS
 	 *
@@ -904,12 +912,13 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			RTEarea['.$number.']["disablePCexamples"] = ' . (trim($this->thisConfig['disablePCexamples'])?'true':'false') . ';
 			RTEarea['.$number.']["statusBar"] = ' . (trim($this->thisConfig['showStatusBar'])?'true':'false') . ';
 			RTEarea['.$number.']["showTagFreeClasses"] = ' . (trim($this->thisConfig['showTagFreeClasses'])?'true':'false') . ';
-			RTEarea['.$number.']["useHTTPS"] = ' . (trim(stristr($this->siteURL, 'https'))?'true':'false') . ';
+			RTEarea['.$number.']["useHTTPS"] = ' . ((trim(stristr($this->siteURL, 'https')) || $this->thisConfig['forceHTTPS'])?'true':'false') . ';
 			RTEarea['.$number.']["enableMozillaExtension"] = ' . (($this->client['BROWSER'] == 'gecko' && $TYPO3_CONF_VARS['EXTCONF'][$this->ID]['enableMozillaExtension'])?'true':'false') . ';';
 		
 			// The following properties apply only to the backend
 		if (!is_object($TSFE)) {
 			$registerRTEinJSString .= '
+			RTEarea['.$number.']["sys_language_content"] = "' . $this->contentLanguageUid . '";
 			RTEarea['.$number.']["typo3ContentLanguage"] = "' . $this->contentTypo3Language . '";
 			RTEarea['.$number.']["typo3ContentCharset"] = "' . $this->contentCharset . '";
 			RTEarea['.$number.']["enablePersonalDicts"] = ' . ($this->spellCheckerPersonalDicts ? 'true' : 'false') . ';
@@ -921,19 +930,109 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			RTEarea['.$number.']["plugin"] = new Array();';
 		
 		$pluginArray = t3lib_div::trimExplode(',', $this->pluginList , 1);
+		reset($pluginArray);
 		while( list(,$plugin) = each($pluginArray) ) {
 			if ($this->isPluginEnable($plugin)) {
 				$registerRTEinJSString .= '
 			RTEarea['.$number.']["plugin"]["'.$plugin.'"] = true;';
 			}
 		}
-
+		
+			// Setting the buttons configuration
+		$registerRTEinJSString .= '
+			RTEarea['.$number.']["buttons"] = new Array();';
+		if (is_array($this->thisConfig['buttons.'])) {
+			reset($this->thisConfig['buttons.']);
+			while( list($buttonIndex,$conf) = each($this->thisConfig['buttons.']) ) {
+				$button = substr($buttonIndex, 0, -1);
+				if (in_array($button,$this->toolBar)) {
+					$indexButton = 0;
+					$registerRTEinJSString .= '
+			RTEarea['.$number.']["buttons"]["'.$button.'"] = {';
+					if (is_array($conf)) {
+						reset($conf);
+						while (list($propertyName,$conf1) = each($conf)) {
+							$property = $propertyName;
+							if ($indexButton) {
+								$registerRTEinJSString .= ', ';
+							}
+							if (is_array($conf1)) {
+								$property = substr($property, 0, -1);
+								$indexProperty = 0;
+								$registerRTEinJSString .= '"'.$property.'" : {';
+								reset($conf1);
+								while (list($property1Name,$conf2) = each($conf1)) {
+									$property1 = $property1Name;
+									if ($indexProperty) {
+										$registerRTEinJSString .= ', ';
+									}
+									if (is_array($conf2)) {
+										$property1 = substr($property1, 0, -1);
+										$indexProperty1 = 0;
+										$registerRTEinJSString .= '"'.$property1.'" : {';
+										reset($conf2);
+										while (list($property2Name,$conf3) = each($conf2)) {
+											$property2 = $property2Name;
+											if ($indexProperty1) {
+												$registerRTEinJSString .= ', ';
+											}
+											if (is_array($conf3)) {
+												$property2 = substr($property2, 0, -1);
+												$indexProperty2 = 0;
+												$registerRTEinJSString .= '"'.$property2.'" : {';
+												reset($conf3);
+												while (list($property3Name,$conf4) = each($conf3)) {
+													$property3 = $property3Name;
+													if ($indexProperty2) {
+														$registerRTEinJSString .= ', ';
+													}
+													if (!is_array($conf4)) {
+														$registerRTEinJSString .= '"'.$property3.'" : '.($conf4?'"'.$conf4.'"':'false');
+													}
+													$indexProperty2++;
+												}
+												$registerRTEinJSString .= '}';
+											} else {
+												$registerRTEinJSString .= '"'.$property2.'" : '.($conf3?'"'.$conf3.'"':'false');												
+											}
+											$indexProperty1++;
+										}
+										$registerRTEinJSString .= '}';
+									} else {
+										$registerRTEinJSString .= '"'.$property1.'" : '.($conf2?'"'.$conf2.'"':'false');
+									}
+									$indexProperty++;
+								}
+								$registerRTEinJSString .= '}';
+							} else {
+								$registerRTEinJSString .= '"'.$property.'" : '.($conf1?'"'.$conf1.'"':'false');
+							}
+							$indexButton++;
+						}
+					}
+					$registerRTEinJSString .= '};';
+				}
+			}
+		}
+		
+			// Deprecated inserttag button configuration
+		if (in_array('inserttag', $this->toolBar) && trim($this->thisConfig['hideTags'])) {
+			if (!is_array($this->thisConfig['buttons.']['inserttag.'])) {
+				$registerRTEinJSString .= '
+			RTEarea['.$number.']["buttons"]["inserttag"] = new Array();
+			RTEarea['.$number.']["buttons"]["inserttag"]["denyTags"] = "'.implode(',', t3lib_div::trimExplode(',', $this->thisConfig['hideTags'], 1)).'";';
+			} elseif (!$this->thisConfig['buttons.']['inserttag.']['denyTags']) {
+				$registerRTEinJSString .= '
+			RTEarea['.$number.']["buttons"]["inserttag"]["denyTags"] = "'.implode(',', t3lib_div::trimExplode(',', $this->thisConfig['hideTags'], 1)).'";';
+			}
+		}
+		
 			// Setting the list of tags to be removed if specified in the RTE config
 		if (trim($this->thisConfig['removeTags']))  {
 			$registerRTEinJSString .= '
 			RTEarea['.$number.']["htmlRemoveTags"] = /^(' . implode('|', t3lib_div::trimExplode(',', $this->thisConfig['removeTags'], 1)) . ')$/i;';
 		}
-
+		
 			// Setting the list of tags to be removed with their contents if specified in the RTE config
 		if (trim($this->thisConfig['removeTagsAndContents']))  {
 			$registerRTEinJSString .= '
@@ -971,12 +1070,22 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 		if ($this->isPluginEnable('TableOperations')) {
 			$registerRTEinJSString .= '
 			RTEarea['.$number.']["hideTableOperationsInToolbar"] = ' . (trim($this->thisConfig['hideTableOperationsInToolbar']) ? 'true' : 'false') . ';
-			RTEarea['.$number.']["keepToggleBordersInToolbar"] = ' . (trim($this->thisConfig['keepToggleBordersInToolbar'])?'true':'false') . ';
 			RTEarea['.$number.']["disableLayoutFieldsetInTableOperations"] = ' . (trim($this->thisConfig['disableLayoutFieldsetInTableOperations'])?'true':'false') . ';
 			RTEarea['.$number.']["disableAlignmentFieldsetInTableOperations"] = ' . (trim($this->thisConfig['disableAlignmentFieldsetInTableOperations'])?'true':'false') . ';
 			RTEarea['.$number.']["disableSpacingFieldsetInTableOperations"] = ' . (trim($this->thisConfig['disableSpacingFieldsetInTableOperations'])?'true':'false') . ';
 			RTEarea['.$number.']["disableBordersFieldsetInTableOperations"] = ' . (trim($this->thisConfig['disableBordersFieldsetInTableOperations'])?'true':'false') . ';
 			RTEarea['.$number.']["disableColorFieldsetInTableOperations"] = ' . (trim($this->thisConfig['disableColorFieldsetInTableOperations'])?'true':'false') . ';';
+				// // Deprecated toggleborders button configuration
+			if (in_array('toggleborders',$this->toolBar) && $this->thisConfig['keepToggleBordersInToolbar']) {
+				if (!is_array($this->thisConfig['buttons.']['toggleborders.'])) {
+					$registerRTEinJSString .= '
+			RTEarea['.$number.']["buttons"]["toggleborders"] = new Array();
+			RTEarea['.$number.']["buttons"]["toggleborders"]["keepInToolbar"] = true;';
+				} elseif (!$this->thisConfig['buttons.']['toggleborders.']['keepInToolbar']) {
+					$registerRTEinJSString .= '
+			RTEarea['.$number.']["buttons"]["toggleborders"]["keepInToolbar"] = true;';
+				}
+			}
 		}
 		
 		if ($this->isPluginEnable('Acronym')) {

@@ -46,7 +46,7 @@ UserElements.I18N = UserElements_langArray;
 
 UserElements._pluginInfo = {
 	name		: "UserElements",
-	version		: "1.3",
+	version		: "1.5",
 	developer	: "Stanislas Rolland",
 	developer_url	: "http://www.fructifor.ca/",
 	c_owner		: "Stanislas Rolland",
@@ -64,7 +64,7 @@ UserElements.actionHandler = function(instance) {
 UserElements.prototype.buttonPress = function(editor) {
 	var editorNo = editor._doc._editorNo;
 	var backreturn;
-	var addUrlParams = "?" + conf_RTEtsConfigParams;
-	editor._popupDialog("../../mod1/popup.php" + addUrlParams + "&editorNo=" + editorNo + "&popupname=user&srcpath=" + encodeURI(rtePathUserFile), null, backreturn, 550, 350);
+	var addUrlParams = "?" + RTEarea[0]["RTEtsConfigParams"];
+	editor._popupDialog(RTEarea[0]["pathUserModule"] + addUrlParams + "&editorNo=" + editorNo, null, backreturn, 550, 350, null, "yes");
 	return false;
 };

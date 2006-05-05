@@ -22,8 +22,17 @@ HTMLAreaPluginList = TableOperations, SpellChecker, ContextMenu, SelectColor, TY
   # cat=basic/enable; type=options[Minimal (Most features disabled. Administrator needs to enable them using TypoScript. For advanced administrators only.),Typical (Most commonly used features are enabled. Select this option if you are unsure which one to use.),Demo (Show-off configuration. Includes pre-configured styles. Not for production environments.)]; label=Default configuration settings
 defaultConfiguration = Typical (Most commonly used features are enabled. Select this option if you are unsure which one to use.)
 
-  # cat=basic/enable; type=boolean; label=Enable images in the RTE: If set, the use of images in the "Typical" default configuration of the RTE will be enabled.
+  # cat=basic/enable; type=boolean; label=Enable images in the RTE: If set, the use of images will be enabled in the Minimal or the Typical default configuration of the RTE.
 enableImages = 0
+
+  # cat=basic/enable; type=boolean; label=Enable links accessibility icons: If set, accessibility icons will be added in front of links.
+enableAccessibilityIcons = 0
+
+  # cat=basic/enable; type=boolean; label=Enable the DAM media browser: If set and if the DAM extension is installed, the DAM media browser will be used by the Insert image dialog.
+enableDAMBrowser = 0
+
+##  # cat=basic/enable; type=boolean; label=EXPERIMENTAL! Enable click-enlarge on images: This feature is EXPERIMENTAL. If set, a click-enlarge property may be set on images inserted in the RTE.
+##enableClickEnlarge = 0
 
   # cat=basic/enable; type=boolean; label=Enable Mozilla/Firefox extension: If set, enables the triggering of installation of a Mozilla/Firefox extension to allow the RTE to access the clipboard.
 enableMozillaExtension = 0
@@ -40,8 +49,8 @@ enableCompressedScripts = 1
   # cat=basic; type=string; label=Url of AllowClipboard Helper: Full absolute Url of the AllowClipboard Helper extension for Mozilla and Firefox.
 mozAllowClipboardUrl = http://releases.mozilla.org/pub/mozilla.org/extensions/allowclipboard_helper/allowclipboard_helper-0.5.3-fx+mz.xpi
 
-  # cat=basic; type=int+; label=Maximum width of plain images: Maximum width in pixels of plain images inserted with the TYPO3 image browser
-plainImageMaxWidth = 640
+  # cat=basic; type=int+; label=Maximum width of plain images: Maximum width in pixels of plain images inserted with the TYPO3 image browser. This variable is DEPRECATED! Use Page TSConfig property buttons.image.options.plain.maxWidth.
+plainImageMaxWidth =
 
-  # cat=basic; type=int+; label=Maximum height of plain images: Maximum height in pixels of plain images inserted with the TYPO3 image browser
-plainImageMaxHeight = 680
+  # cat=basic; type=int+; label=Maximum height of plain images: Maximum height in pixels of plain images inserted with the TYPO3 image browser. This variable is DEPRECATED! Use Page TSConfig property buttons.image.options.plain.maxHeight.
+plainImageMaxHeight =

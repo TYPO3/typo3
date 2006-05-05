@@ -1,0 +1,36 @@
+# ***************************************************************************************
+# Default Page TSconfig for enabling the use of accessibility icons on links
+#
+#
+# TYPO3 CVS ID: $Id$
+# ***************************************************************************************
+
+	## Anchor classes configuration for use by the anchor accessibility feature (htmlArea RTE only)
+	## Add inline icons to the links
+RTE.classesAnchor {
+	externalLink {
+		image = EXT:rtehtmlarea/htmlarea/plugins/TYPO3Browsers/img/external_link.gif
+		altText = LLL:EXT:rtehtmlarea/htmlarea/plugins/TYPO3Browsers/locallang.xml:external_link_altText
+	}
+	externalLinkInNewWindow {
+		image = EXT:rtehtmlarea/htmlarea/plugins/TYPO3Browsers/img/external_link_new_window.gif
+		altText = LLL:EXT:rtehtmlarea/htmlarea/plugins/TYPO3Browsers/locallang.xml:external_link_new_window_altText
+	}
+	internalLink {
+		image = EXT:rtehtmlarea/htmlarea/plugins/TYPO3Browsers/img/internal_link.gif
+		altText = LLL:EXT:rtehtmlarea/htmlarea/plugins/TYPO3Browsers/locallang.xml:internal_link_altText
+	}
+	internalLinkInNewWindow {
+		image = EXT:rtehtmlarea/htmlarea/plugins/TYPO3Browsers/img/internal_link_new_window.gif
+		altText = LLL:EXT:rtehtmlarea/htmlarea/plugins/TYPO3Browsers/locallang.xml:internal_link_new_window_altText
+	}
+	download {
+		image = EXT:rtehtmlarea/htmlarea/plugins/TYPO3Browsers/img/download.gif
+		altText = LLL:EXT:rtehtmlarea/htmlarea/plugins/TYPO3Browsers/locallang.xml:download_altText
+	}
+	mail {
+		image = EXT:rtehtmlarea/htmlarea/plugins/TYPO3Browsers/img/mail.gif
+		altText = LLL:EXT:rtehtmlarea/htmlarea/plugins/TYPO3Browsers/locallang.xml:mail_altText
+	}
+}
+
