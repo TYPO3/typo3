@@ -2016,13 +2016,15 @@
 	 */
 	function checkDataSubmission()	{
 		$ret = '';
-		if ($_POST['formtype_db'] || $_POST['formtype_mail'])	{
+		$formtype_db = isset($_POST['formtype_db']) || isset($_POST['formtype_db_x']);
+		$formtype_mail = isset($_POST['formtype_mail']) || isset($_POST['formtype_mail_x']);
+		if ($formtype_db || $formtype_mail)	{
 			$refInfo = parse_url(t3lib_div::getIndpEnv('HTTP_REFERER'));
 			if (t3lib_div::getIndpEnv('TYPO3_HOST_ONLY')==$refInfo['host'] || $this->TYPO3_CONF_VARS['SYS']['doNotCheckReferer'])	{
 				if ($this->locDataCheck($_POST['locationData']))	{
-					if ($_POST['formtype_mail'])	{
+					if ($formtype_mail)	{
 						$ret = 'email';
-					} elseif ($_POST['formtype_db'] && is_array($_POST['data']))	{
+					} elseif ($formtype_db && is_array($_POST['data']))	{
 						$ret = 'fe_tce';
 					}
 					$GLOBALS['TT']->setTSlogMessage('"Check Data Submission": Return value: '.$ret,0);
@@ -2084,7 +2086,7 @@
 		$EMAIL_VARS = t3lib_div::_POST();
 		$locationData = $EMAIL_VARS['locationData'];
 		unset($EMAIL_VARS['locationData']);
-		unset($EMAIL_VARS['formtype_mail']);
+		unset($EMAIL_VARS['formtype_mail'], $EMAIL_VARS['formtype_mail_x'], $EMAIL_VARS['formtype_mail_y']);
 
 		$integrityCheck = $this->TYPO3_CONF_VARS['FE']['strictFormmail'];
 

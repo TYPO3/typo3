@@ -1,3 +1,6 @@
+2006-05-15  Ingmar Schlecht  <ingmar@typo3.org>
+
+	* Fixed bug #1374: Mailforms didn't work with <input type="image"> submit buttons. (Thanks to Thorsten Kahler and Rupert Germann!)
 
 2006-05-15  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
