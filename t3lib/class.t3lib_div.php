@@ -3266,7 +3266,7 @@ class t3lib_div {
 
 	/**
 	 * Checks for malicious file paths.
-	 * Returns true if no '//', '..' or '\' is in the $theFile
+	 * Returns true if no '//', '\', '/../' is in the $theFile and $theFile doesn't begin with '../'
 	 * This should make sure that the path is not pointing 'backwards' and further doesn't contain double/back slashes.
 	 * So it's compatible with the UNIX style path strings valid for TYPO3 internally.
 	 * Usage: 14
@@ -3276,7 +3276,7 @@ class t3lib_div {
 	 * @todo	Possible improvement: Should it rawurldecode the string first to check if any of these characters is encoded ?
 	 */
 	function validPathStr($theFile)	{
-		if (!strstr($theFile,'//') && !strstr($theFile,'..') && !strstr($theFile,'\\'))	return true;
+		if (!strstr($theFile,'//') && !strstr($theFile,'\\') && !preg_match('|(?:^\.\.|/\.\./|',$theFile)) return true;
 	}
 
 	/**
