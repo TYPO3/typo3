@@ -2,6 +2,7 @@
 2006-05-15  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
 	* Fix bug #3364: Changed t3lib_div::validPathStr() that it rejects files starting with ../ or containing /../, but allows ..
+	* Corrected comment for maxWInText (tslib_content) and simplified calculation
 
 2006-05-05  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
