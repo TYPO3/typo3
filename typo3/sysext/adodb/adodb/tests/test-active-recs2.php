@@ -6,7 +6,7 @@ include('../adodb-active-record.inc.php');
 
 ###########################
 
-
+$ADODB_ACTIVE_CACHESECS = 36;
 
 $DBMS = @$_GET['db'];
 if ($DBMS == 'mysql') {
@@ -59,10 +59,13 @@ $rec->save();
 
 $rec = new ADODB_Active_record('products');
 $rec->productname = 'John ActiveRec';
-$rec->productid=0;
+$rec->notes = 22;
+#$rec->productid=0;
 $rec->discontinued=1;
 $rec->Save();
 $rec->supplierid=33;
+$rec->Save();
+$rec->discontinued=0;
 $rec->Save();
 $rec->Delete();
 

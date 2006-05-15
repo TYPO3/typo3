@@ -1,10 +1,6 @@
-Index: typo3/sysext/adodb/adodb/drivers/adodb-odbc.inc.php
-===================================================================
-RCS file: /cvsroot/typo3/TYPO3core/typo3/sysext/adodb/adodb/drivers/adodb-odbc.inc.php,v
-retrieving revision 1.1.2.1
-diff -u -r1.1.2.1 adodb-odbc.inc.php
---- typo3/sysext/adodb/adodb/drivers/adodb-odbc.inc.php	15 Feb 2006 23:26:46 -0000	1.1.2.1
-+++ typo3/sysext/adodb/adodb/drivers/adodb-odbc.inc.php	16 Mar 2006 19:37:17 -0000
+diff -urw adodb.481/drivers/adodb-odbc.inc.php adodb/drivers/adodb-odbc.inc.php
+--- adodb.481/drivers/adodb-odbc.inc.php	2006-05-03 09:42:44.000000000 +0200
++++ adodb/drivers/adodb-odbc.inc.php	2006-05-15 13:52:08.000000000 +0200
 @@ -513,6 +513,11 @@
  					$this->_errorMsg = odbc_errormsg();
  					$this->_errorCode = odbc_error();

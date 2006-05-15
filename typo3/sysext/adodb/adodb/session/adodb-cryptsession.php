@@ -2,7 +2,7 @@
 
 
 /*
-V4.80 8 Mar 2006  (c) 2000-2006 John Lim (jlim@natsoft.com.my). All rights reserved.
+V4.81 3 May 2006  (c) 2000-2006 John Lim (jlim#natsoft.com.my). All rights reserved.
          Contributed by Ross Smith (adodb@netebb.com). 
   Released under both BSD license and Lesser GPL library license.
   Whenever there is any discrepancy between the two licenses,

@@ -1,6 +1,6 @@
 <?php
 /* 
-V4.80 8 Mar 2006  (c) 2000-2006 John Lim (jlim@natsoft.com.my). All rights reserved.
+V4.80 8 Mar 2006  (c) 2000-2006 John Lim (jlim#natsoft.com.my). All rights reserved.
   Released under both BSD license and Lesser GPL library license. 
   Whenever there is any discrepancy between the two licenses, 
   the BSD license will take precedence. 
@@ -1113,6 +1113,13 @@ END Adodb;
 	
 	if ($rs) print ' No blanks, Steven selected: '. $rs->GetMenu('menu','Steven',false).'<BR>';
 	else print " Fail<BR>";
+	
+	$rs = &$db->CacheExecute(4,"select distinct firstname,lastname from ADOXYZ");
+	
+	if ($rs) print ' 1st line set to **** , Steven selected: '. $rs->GetMenu('menu','Steven','1st:****').'<BR>';
+	else print " Fail<BR>";
+	
+
 	
 	$rs = &$db->CacheExecute(4,"select distinct firstname,lastname from ADOXYZ");
 	if ($rs) print ' Multiple, Alan selected: '. $rs->GetMenu('menu','Alan',false,true).'<BR>';

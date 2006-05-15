@@ -14,7 +14,7 @@
 /**
 	\mainpage 	
 	
-	 @version V4.80 8 Mar 2006  (c) 2000-2006 John Lim (jlim#natsoft.com.my). All rights reserved.
+	 @version V4.81 3 May 2006  (c) 2000-2006 John Lim (jlim#natsoft.com.my). All rights reserved.
 
 	Released under both BSD license and Lesser GPL library license. You can choose which license
 	you prefer.
@@ -171,7 +171,7 @@
 		/**
 		 * ADODB version as a string.
 		 */
-		$ADODB_vers = 'V4.80 8 Mar 2006  (c) 2000-2006 John Lim (jlim#natsoft.com.my). All rights reserved. Released BSD & LGPL.';
+		$ADODB_vers = 'V4.81 3 May 2006  (c) 2000-2006 John Lim (jlim#natsoft.com.my). All rights reserved. Released BSD & LGPL.';
 	
 		/**
 		 * Determines whether recordset->RecordCount() is used. 
@@ -553,6 +553,7 @@
 
 	function q(&$s)
 	{
+		#if (!empty($this->qNull)) if ($s == 'null') return $s;
 		$s = $this->qstr($s,false);
 	}
 	
@@ -864,7 +865,7 @@
 	{
 		if ($this->debug) {
 			global $ADODB_INCLUDED_LIB;
-			if (empty($ADODB_INCLUDED_LIB)) include_once(ADODB_DIR.'/adodb-lib.inc.php');
+			if (empty($ADODB_INCLUDED_LIB)) include(ADODB_DIR.'/adodb-lib.inc.php');
 			$this->_queryID = _adodb_debug_execute($this, $sql,$inputarr);
 		} else {
 			$this->_queryID = @$this->_query($sql,$inputarr);
@@ -1461,7 +1462,7 @@
 	function Replace($table, $fieldArray, $keyCol, $autoQuote=false, $has_autoinc=false)
 	{
 		global $ADODB_INCLUDED_LIB;
-		if (empty($ADODB_INCLUDED_LIB)) include_once(ADODB_DIR.'/adodb-lib.inc.php');
+		if (empty($ADODB_INCLUDED_LIB)) include(ADODB_DIR.'/adodb-lib.inc.php');
 		
 		return _adodb_replace($this, $table, $fieldArray, $keyCol, $autoQuote, $has_autoinc);
 	}
@@ -1528,7 +1529,7 @@
       } 
       
       global $ADODB_INCLUDED_CSV;
-      if (empty($ADODB_INCLUDED_CSV)) include_once(ADODB_DIR.'/adodb-csvlib.inc.php');
+      if (empty($ADODB_INCLUDED_CSV)) include(ADODB_DIR.'/adodb-csvlib.inc.php');
       
       $f = $this->_gencachename($sql.serialize($inputarr),false);
       adodb_write_file($f,''); // is adodb_write_file needed?
@@ -1580,7 +1581,7 @@
 		} 
 		
 		global $ADODB_INCLUDED_CSV;
-		if (empty($ADODB_INCLUDED_CSV)) include_once(ADODB_DIR.'/adodb-csvlib.inc.php');
+		if (empty($ADODB_INCLUDED_CSV)) include(ADODB_DIR.'/adodb-csvlib.inc.php');
 		
 		$f = $this->_gencachename($sql.serialize($inputarr),false);
 		adodb_write_file($f,''); // is adodb_write_file needed?
@@ -1655,7 +1656,7 @@
 			$sqlparam = $sql;
 			
 		global $ADODB_INCLUDED_CSV;
-		if (empty($ADODB_INCLUDED_CSV)) include_once(ADODB_DIR.'/adodb-csvlib.inc.php');
+		if (empty($ADODB_INCLUDED_CSV)) include(ADODB_DIR.'/adodb-csvlib.inc.php');
 		
 		$md5file = $this->_gencachename($sql.serialize($inputarr),true);
 		$err = '';
@@ -1786,7 +1787,7 @@
 		}
 		//********************************************************//
 
-		if (empty($ADODB_INCLUDED_LIB)) include_once(ADODB_DIR.'/adodb-lib.inc.php');
+		if (empty($ADODB_INCLUDED_LIB)) include(ADODB_DIR.'/adodb-lib.inc.php');
 		return _adodb_getupdatesql($this,$rs,$arrFields,$forceUpdate,$magicq,$force);
 	}
 
@@ -1806,7 +1807,7 @@
 			$force = $ADODB_FORCE_TYPE;
 			
 		}
-		if (empty($ADODB_INCLUDED_LIB)) include_once(ADODB_DIR.'/adodb-lib.inc.php');
+		if (empty($ADODB_INCLUDED_LIB)) include(ADODB_DIR.'/adodb-lib.inc.php');
 		return _adodb_getinsertsql($this,$rs,$arrFields,$magicq,$force);
 	}
 	
@@ -1973,7 +1974,7 @@
 		
 		
 		if (!isset($_ADODB_ACTIVE_DBS)) {
-			include_once(ADODB_DIR.'/adodb-active-record.inc.php');
+			include(ADODB_DIR.'/adodb-active-record.inc.php');
 		}	
 		if (!class_exists($class)) {
 			ADOConnection::outp("Unknown class $class in GetActiveRcordsClass()");
@@ -2463,7 +2464,7 @@
 	function &PageExecute($sql, $nrows, $page, $inputarr=false, $secs2cache=0) 
 	{
 		global $ADODB_INCLUDED_LIB;
-		if (empty($ADODB_INCLUDED_LIB)) include_once(ADODB_DIR.'/adodb-lib.inc.php');
+		if (empty($ADODB_INCLUDED_LIB)) include(ADODB_DIR.'/adodb-lib.inc.php');
 		if ($this->pageExecuteCountRows) $rs =& _adodb_pageexecute_all_rows($this, $sql, $nrows, $page, $inputarr, $secs2cache);
 		else $rs =& _adodb_pageexecute_no_last_page($this, $sql, $nrows, $page, $inputarr, $secs2cache);
 		return $rs;
@@ -2535,7 +2536,7 @@
 	//==============================================================================================	
 	// DATE AND TIME FUNCTIONS
 	//==============================================================================================	
-	include_once(ADODB_DIR.'/adodb-time.inc.php');
+	if (!defined('ADODB_DATE_VERSION')) include(ADODB_DIR.'/adodb-time.inc.php');
 	
 	//==============================================================================================	
 	// CLASS ADORecordSet
@@ -2646,7 +2647,7 @@
 			$size=0, $selectAttr='',$compareFields0=true)
 	{
 		global $ADODB_INCLUDED_LIB;
-		if (empty($ADODB_INCLUDED_LIB)) include_once(ADODB_DIR.'/adodb-lib.inc.php');
+		if (empty($ADODB_INCLUDED_LIB)) include(ADODB_DIR.'/adodb-lib.inc.php');
 		return _adodb_getmenu($this, $name,$defstr,$blank1stItem,$multiple,
 			$size, $selectAttr,$compareFields0);
 	}
@@ -2673,7 +2674,7 @@
 			$size=0, $selectAttr='')
 	{
 		global $ADODB_INCLUDED_LIB;
-		if (empty($ADODB_INCLUDED_LIB)) include_once(ADODB_DIR.'/adodb-lib.inc.php');
+		if (empty($ADODB_INCLUDED_LIB)) include(ADODB_DIR.'/adodb-lib.inc.php');
 		return _adodb_getmenu_gp($this, $name,$defstr,$blank1stItem,$multiple,
 			$size, $selectAttr,false);
 	}
@@ -3952,7 +3953,7 @@
 		$path = ADODB_DIR."/datadict/datadict-$drivername.inc.php";
 
 		if (!file_exists($path)) {
-			ADOConnection::outp("Database driver '$path' not available");
+			ADOConnection::outp("Dictionary driver '$path' not available");
 			return $false;
 		}
 		include_once($path);
@@ -3998,7 +3999,7 @@
 	function adodb_backtrace($printOrArr=true,$levels=9999)
 	{
 		global $ADODB_INCLUDED_LIB;
-		if (empty($ADODB_INCLUDED_LIB)) include_once(ADODB_DIR.'/adodb-lib.inc.php');
+		if (empty($ADODB_INCLUDED_LIB)) include(ADODB_DIR.'/adodb-lib.inc.php');
 		return _adodb_backtrace($printOrArr,$levels);
 	}
 

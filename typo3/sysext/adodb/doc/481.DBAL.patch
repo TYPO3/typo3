@@ -1,6 +1,6 @@
-diff -ruw adodb480/adodb-lib.inc.php adodb/adodb-lib.inc.php
---- adodb480/adodb-lib.inc.php	2006-03-10 09:58:57.000000000 +0100
-+++ adodb/adodb-lib.inc.php	2006-03-25 12:49:24.000000000 +0100
+diff -urw adodb.481/adodb-lib.inc.php adodb/adodb-lib.inc.php
+--- adodb.481/adodb-lib.inc.php	2006-05-03 09:42:47.000000000 +0200
++++ adodb/adodb-lib.inc.php	2006-05-15 13:52:14.000000000 +0200
 @@ -783,7 +783,7 @@
  	$values = substr($values, 0, -2);
  
@@ -10,10 +10,9 @@ diff -ruw adodb480/adodb-lib.inc.php adodb/adodb-lib.inc.php
  }
  
  
-Only in adodb: adodb-lib.inc.php.orig
-diff -ruw adodb480/datadict/datadict-oci8.inc.php adodb/datadict/datadict-oci8.inc.php
---- adodb480/datadict/datadict-oci8.inc.php	2006-03-10 09:58:40.000000000 +0100
-+++ adodb/datadict/datadict-oci8.inc.php	2006-03-25 12:49:24.000000000 +0100
+diff -urw adodb.481/datadict/datadict-oci8.inc.php adodb/datadict/datadict-oci8.inc.php
+--- adodb.481/datadict/datadict-oci8.inc.php	2006-05-03 09:42:28.000000000 +0200
++++ adodb/datadict/datadict-oci8.inc.php	2006-05-15 13:52:14.000000000 +0200
 @@ -251,8 +251,8 @@
  		}
  		
@@ -25,9 +24,9 @@ diff -ruw adodb480/datadict/datadict-oci8.inc.php adodb/datadict/datadict-oci8.i
  		
  		if ( isset($idxoptions[$this->upperName]) )
  			$s .= $idxoptions[$this->upperName];
-diff -ruw adodb480/datadict/datadict-postgres.inc.php adodb/datadict/datadict-postgres.inc.php
---- adodb480/datadict/datadict-postgres.inc.php	2006-03-10 09:58:40.000000000 +0100
-+++ adodb/datadict/datadict-postgres.inc.php	2006-03-25 12:49:24.000000000 +0100
+diff -urw adodb.481/datadict/datadict-postgres.inc.php adodb/datadict/datadict-postgres.inc.php
+--- adodb.481/datadict/datadict-postgres.inc.php	2006-05-03 09:42:28.000000000 +0200
++++ adodb/datadict/datadict-postgres.inc.php	2006-05-15 13:52:14.000000000 +0200
 @@ -342,7 +342,7 @@
  		
  		$unique = isset($idxoptions['UNIQUE']) ? ' UNIQUE' : '';
@@ -48,9 +47,9 @@ diff -ruw adodb480/datadict/datadict-postgres.inc.php adodb/datadict/datadict-po
  		$sql[] = $s;
  		
  		return $sql;
-diff -ruw adodb480/drivers/adodb-oci8.inc.php adodb/drivers/adodb-oci8.inc.php
---- adodb480/drivers/adodb-oci8.inc.php	2006-03-10 09:58:53.000000000 +0100
-+++ adodb/drivers/adodb-oci8.inc.php	2006-03-25 12:49:24.000000000 +0100
+diff -urw adodb.481/drivers/adodb-oci8.inc.php adodb/drivers/adodb-oci8.inc.php
+--- adodb.481/drivers/adodb-oci8.inc.php	2006-05-03 09:42:44.000000000 +0200
++++ adodb/drivers/adodb-oci8.inc.php	2006-05-15 13:52:14.000000000 +0200
 @@ -104,7 +104,7 @@
  		$ADODB_FETCH_MODE = ADODB_FETCH_NUM;
  		if ($this->fetchMode !== false) $savem = $this->SetFetchMode(false);
@@ -60,14 +59,3 @@ diff -ruw adodb480/drivers/adodb-oci8.inc.php adodb/drivers/adodb-oci8.inc.php
  		
  		if (isset($savem)) $this->SetFetchMode($savem);
  		$ADODB_FETCH_MODE = $save;
-diff -ruw adodb480/drivers/adodb-postgres64.inc.php adodb/drivers/adodb-postgres64.inc.php
---- adodb480/drivers/adodb-postgres64.inc.php	2006-03-10 09:58:51.000000000 +0100
-+++ adodb/drivers/adodb-postgres64.inc.php	2006-03-25 12:49:24.000000000 +0100
-@@ -464,6 +464,7 @@
- 	{
- 	global $ADODB_FETCH_MODE;
- 	
-+		$ADODB_FETCH_MODE=ADODB_FETCH_NUM;
- 		$schema = false;
- 		$false = false;
- 		$this->_findschema($table,$schema);

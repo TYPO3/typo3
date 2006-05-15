@@ -15,7 +15,7 @@ pre {
 <body bgcolor="#ffffff" text="black">
 
 <h2>ADOdb Library for PHP</h2>
-<p>V4.80 8 Mar 2006 (c) 2000-2006 John Lim (jlim#natsoft.com)</p>
+<p>V4.81 3 May 2006 (c) 2000-2006 John Lim (jlim#natsoft.com)</p>
 <p><font size="1">This software is dual licensed using BSD-Style and LGPL. This 
   means you can use it in compiled proprietary and commercial products.</font></p>
   
@@ -1646,7 +1646,7 @@ See  <a href="#connect_ex">Connection Examples</a> for many examples.
 <p><font>We now perform a rollback on persistent connection for selected databases since 
 	2.21, as advised in the PHP manual. See change log or source code for which 
 	databases are affected. 
-</font></p><p><font>Returns true/false depending on connection. Since 4.23, null is returned if the extension is not loaded.
+</font></p><p><font>Returns true/false depending on connection. Since 4.23, 0 is returned if the extension is not loaded.
 See Connect( ) above for more info.</font></p>
 <p><font>Since ADOdb 2.21, we also support autoRollback. If you set:</font></p>
  
@@ -2682,7 +2682,7 @@ $where)</b></font></p>
 <p><font><b>FetchNextObject<a name="fetchnextobject"></a>($toupper=true)</b></font></p>
 <p><font>Gets the current row as an object and moves to the next
     row automatically. Returns false if at end-of-file. If you set $toupper to
-  true, then the object fields are set to upper-case.</font></p>
+  true, then the object fields are set to upper-case. Note that for some drivers such as mssql, you need to SetFetchMode(ADODB_FETCH_ASSOC) or SetFetchMode(ADODB_FETCH_BOTH).</font></p>
 <pre><font>$rs = $db-&gt;Execute('select firstname,lastname from table');<br>if ($rs) {<br>	while ($o = $rs-&gt;FetchNextObject()) {<br>		print "$o-&gt;FIRSTNAME, $o-&gt;LASTNAME&lt;BR&gt;";<br>	}<br>}<br></font></pre>
 <p><font>There is some trade-off in speed in using FetchNextObject().
 If performance is important, you should access rows with the <code>fields[]</code> array. <b>FetchObj<a name="fetchobj" id="fetchobj"></a>()</b> </font></p>
@@ -2845,10 +2845,16 @@ of MySQL.</font></p>
 
 <h2><font>Change Log<a name="Changes"></a><a name="changes"></a><a name="changelog"></a></font></h2>
 <P>
+<p><a name="4.81"></a><b>4.81 ? 2006</b>
+<p>Fixed variable ref errors in adodb-ado5.inc.php in _query().
+<p>Mysqli setcharset fix using method_exists().
+<p>The adodb-perf.inc.php CreateLogTable() code now works for user-defined table names.
+<p>Error in ibase_blob_open() fixed. See http://phplens.com/lens/lensforum/msgs.php?id=14997
 <p><a name="4.80"></a><b>4.80 8 Mar 2006</b>
 <p>Added activerecord support.
 <p>Added mysql $conn->compat323 = true if you want MySQL 3.23 compat enabled. Fixes GetOne() Select-Limit problems.
 <p>Added adodb-xmlschema03.inc.php to support XML Schema version 3 and updated adodb-datadict.htm docs.
+<p>Better memory management in Execute. Thx Mike Fedyk.
 <p><a name="4.72"></a><b>4.72 21 Feb 2006</b>
 <p>Added 'new' DSN parameter for NConnect().
 <p>Pager now sanitizes $PHP_SELF to protect against XSS. Thx to James Bercegay and others.

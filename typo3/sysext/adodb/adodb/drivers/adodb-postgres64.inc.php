@@ -1,6 +1,6 @@
 <?php
 /*
- V4.80 8 Mar 2006  (c) 2000-2006 John Lim (jlim@natsoft.com.my). All rights reserved.
+ V4.81 3 May 2006  (c) 2000-2006 John Lim (jlim#natsoft.com.my). All rights reserved.
   Released under both BSD license and Lesser GPL library license. 
   Whenever there is any discrepancy between the two licenses, 
   the BSD license will take precedence.
@@ -464,7 +464,6 @@ select viewname,'V' from pg_views where viewname like $mask";
 	{
 	global $ADODB_FETCH_MODE;
 	
-		$ADODB_FETCH_MODE=ADODB_FETCH_NUM;
 		$schema = false;
 		$false = false;
 		$this->_findschema($table,$schema);

@@ -184,6 +184,12 @@ $person2->NAME = 'Lily';
 
 <p>Also see <a href=http://phplens.com/adodb/reference.constants.adodb_assoc_case.html>$ADODB_ASSOC_CASE</a>.
 
+<h3><li>ADOdb_Active_Record::Save</h3>
+<p>
+Saves a record by executing an INSERT or UPDATE SQL statement as appropriate. 
+<p>Returns false on  unsuccessful INSERT, true if successsful INSERT.
+<p>Returns 0 on failed UPDATE, and 1 on UPDATE if data has changed, and -1 if no data was changed, so no UPDATE statement was executed.
+
 <h3><li>ADOdb_Active_Record::Replace</h3>
 <p>
 ADOdb supports replace functionality, whereby the record is inserted if it does not exists, or updated otherwise.
@@ -260,6 +266,8 @@ ADOdb_Active_Record does not require the table to have a primary key. You can in
 	 // or use method
 	$rec->SetPrimaryKeys($pkeys);
 </pre>
+
+
 <h3><li>Retrieval of Auto-incrementing ID</h3>
 When creating a new record, the retrieval of the last auto-incrementing ID is not reliable for databases that do not support the Insert_ID() function call (check $connection->hasInsertID). In this case we perform a <b>SELECT MAX($primarykey) FROM $table</b>, which will not work reliably in a multi-user environment. You can override the ADOdb_Active_Record::LastInsertID() function in this case.
 
@@ -288,6 +296,11 @@ If you have to pass in a primary key called "id" and the 2nd db connection in th
 $rec = new ADOdb_Active_Record("table1",array("id"),$db2);
 </pre>
 
+<h3><li>$ADODB_ACTIVE_CACHESECS</h3>
+<p>You can cache the table metadata (field names, types, and other info such primary keys) in $ADODB_CACHE_DIR (which defaults to /tmp) by setting
+the global variable $ADODB_ACTIVE_CACHESECS to a value greater than 0. This will be the number of seconds to cache.
+ You should set this to a value of 30 seconds or greater for optimal performance.
+
 <h3><li>Active Record Considered Bad?</h3>
 <p>Although the Active Record concept is useful, you have to be aware of some pitfalls when using Active Record. The level of granularity of Active Record is individual records. It encourages code like the following, used to increase the price of all furniture products by 10%:
 <pre>
@@ -303,6 +316,18 @@ Of course a SELECT statement is superior because it's simpler and much more effi
 </pre>
 <p>Another issue is performance. For performance sensitive code, using direct SQL will always be faster than using Active Records due to overhead and the fact that all fields in a row are retrieved (rather than only the subset you need) whenever an Active Record is loaded.
 
+<h3><li>Transactions</h3>
+<p>
+The default transaction mode in ADOdb is autocommit. So that is the default with active record too. 
+The general rules for managing transactions still apply. Active Record to the database is a set of insert/update/delete statements, and the db has no knowledge of active records.
+<p>
+Smart transactions, that does an auto-rollback if an error occurs, is still the best method to multiple activities (inserts/updates/deletes) that need to be treated as a single transaction:
+<pre>
+$conn->StartTrans();
+$parent->save();
+$child->save();
+$conn->CompleteTrans();
+</pre>
 
 <h2>ADOConnection Supplement</h2>
 
@@ -448,6 +473,11 @@ echo "&lt;p>Name first (should be John): ",$person->name_first, "&lt;br>Class = 
  <p>PHP5 specific: Change PHP5 implementation of Active Record to use __get() and __set() for better performance.
 
 <h3> Change Log</h3>
+<p>0.03 <br>
+- Now we only update fields that have changed, using $this->_original.<br>
+- We do not include auto_increment fields in replace(). Thx Travis Cline<br>
+- Added ADODB_ACTIVE_CACHESECS.<br>
+
 <p>0.02 <br>
 - Much better error handling. ErrorMsg() implemented. Throw implemented if adodb-exceptions.inc.php detected.<br>
 - You can now define the primary keys of the view or table you are accessing manually.<br>

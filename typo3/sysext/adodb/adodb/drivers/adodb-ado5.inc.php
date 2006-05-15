@@ -1,6 +1,6 @@
 <?php
 /* 
-V4.80 8 Mar 2006  (c) 2000-2006 John Lim (jlim@natsoft.com.my). All rights reserved.
+V4.81 3 May 2006  (c) 2000-2006 John Lim (jlim#natsoft.com.my). All rights reserved.
   Released under both BSD license and Lesser GPL library license. 
   Whenever there is any discrepancy between the two licenses, 
   the BSD license will take precedence. 
@@ -216,6 +216,9 @@ class ADODB_ado extends ADOConnection {
 		$dbc = $this->_connectionID;
 		
 	//	return rs	
+	
+		$false = false;
+		
 		if ($inputarr) {
 			
 			if (!empty($this->charPage))
@@ -236,22 +239,24 @@ class ADODB_ado extends ADOConnection {
 			$p = false;
 			$rs = $oCmd->Execute();
 			$e = $dbc->Errors;
-			if ($dbc->Errors->Count > 0) return false;
+			if ($dbc->Errors->Count > 0) return $false;
 			return $rs;
 		}
 		
 		$rs = @$dbc->Execute($sql,$this->_affectedRows, $this->_execute_option);
 			
-		if ($dbc->Errors->Count > 0) return false;
-		if (! $rs) return false;
+		if ($dbc->Errors->Count > 0) return $false;
+		if (! $rs) return $false;
 		
-		if ($rs->State == 0) return true; // 0 = adStateClosed means no records returned
-		return $rs;
+		if ($rs->State == 0) {
+			$true = true;
+			return $true; // 0 = adStateClosed means no records returned
+		} return $rs;
 		
 		} catch (exception $e) {
 			
 		}
-		return false;
+		return $false;
 	}
 
 	
@@ -290,7 +295,9 @@ class ADODB_ado extends ADOConnection {
 
 	function ErrorMsg() 
 	{
+		if (!$this->_connectionID) return "No connection established";
 		$errc = $this->_connectionID->Errors;
+		if (!$errc) return "No Errors object found";
 		if ($errc->Count == 0) return '';
 		$err = $errc->Item($errc->Count-1);
 		return $err->Description;

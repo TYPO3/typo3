@@ -1,6 +1,6 @@
 <?php
 /*
-V4.80 8 Mar 2006  (c) 2000-2006 John Lim (jlim@natsoft.com.my). All rights reserved.  
+V4.81 3 May 2006  (c) 2000-2006 John Lim (jlim#natsoft.com.my). All rights reserved.  
   Released under both BSD license and Lesser GPL library license. 
   Whenever there is any discrepancy between the two licenses, 
   the BSD license will take precedence.
@@ -558,7 +558,7 @@ class ADODB_ibase extends ADOConnection {
 	// still used to auto-decode all blob's
 	function _BlobDecode( $blob ) 
 	{
-		$blobid = ibase_blob_open( $blob );
+		$blobid = ibase_blob_open($this->_connectionID, $blob );
 		$realblob = ibase_blob_get( $blobid,$this->maxblobsize); // 2nd param is max size of blob -- Kevin Boillet <kevinboillet@yahoo.fr>
 		while($string = ibase_blob_get($blobid, 8192)){ 
 			$realblob .= $string; 
