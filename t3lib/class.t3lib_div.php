@@ -3272,11 +3272,11 @@ class t3lib_div {
 	 * Usage: 14
 	 *
 	 * @param	string		Filepath to evaluate
-	 * @return	boolean		True, if no '//', '..' or '\' is in the $theFile
+	 * @return	boolean		True, if no '//', '\', '/../' is in the $theFile and $theFile doesn't begin with '../'
 	 * @todo	Possible improvement: Should it rawurldecode the string first to check if any of these characters is encoded ?
 	 */
 	function validPathStr($theFile)	{
-		if (!strstr($theFile,'//') && !strstr($theFile,'..') && !strstr($theFile,'\\'))	return true;
+		if (!strstr($theFile,'//') && !strstr($theFile,'\\') && !preg_match('|(?:^\.\.|/\.\./|',$theFile))	return true;
 	}
 
 	/**
