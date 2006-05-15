@@ -3,6 +3,7 @@
 
 	* * Fix bug #3364: Changed t3lib_div::validPathStr() that it rejects files starting with ../ or containing /../, but allows ..
 	* Corrected comment for maxWInText (tslib_content) and simplified calculation
+	* Fix bug #338: Sanitize path normalization of class.t3lib_userauthgroup.php::addFileMount()
 
 2006-05-03  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 

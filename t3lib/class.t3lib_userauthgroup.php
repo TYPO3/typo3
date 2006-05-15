@@ -1294,6 +1294,10 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 		}
 			// If the path is true and validates as a valid path string:
 		if ($path && t3lib_div::validPathStr($path))	{
+				// normalize path: remove leading '/' and './', and trailing '/' and '/.'
+			$path=trim($path);
+			$path=preg_replace('#^\.?/|/\.?$#','',$path);
+
 				// these lines remove all slashes and dots before and after the path
 			$path=ereg_replace('^[\/\. ]*','',$path);
 			$path=trim(ereg_replace('[\/\. ]*$','',$path));
