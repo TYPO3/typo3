@@ -802,8 +802,8 @@ class tslib_cObj {
 			$maxW = intval($this->stdWrap($conf['maxW'],$conf['maxW.']));
 
 			$maxWInText = intval($this->stdWrap($conf['maxWInText'],$conf['maxWInText.']));
-			if (!$maxWInText)	{	// If maxWInText is not set, it's calculated to the 70 % of the max...
-				$maxWInText = round($maxW/100*50);
+			if (!$maxWInText)	{	// If maxWInText is not set, it's calculated to the 50 % of the max...
+				$maxWInText = round($maxW/2);
 			}
 
 			if ($maxWInText && $contentPosition>=16)	{	// inText
