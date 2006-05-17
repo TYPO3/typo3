@@ -1669,7 +1669,7 @@ class user_feAdmin	{
 						$recCopy = $r;
 						$string='&cmd=setfixed&sFK='.rawurlencode($theKey).'&rU='.$r['uid'];
 						while(list($fieldName,$fieldValue)=each($data))	{
-							$string.='&fD['.$fieldName.']='.rawurlencode($fieldValue);
+							$string.='&fD%5B'.$fieldName.'%5D='.rawurlencode($fieldValue);
 							$recCopy[$fieldName]=$fieldValue;
 						}
 						$string.='&aC='.$this->setfixedHash($recCopy,$data['_FIELDLIST']);
