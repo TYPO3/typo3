@@ -1,3 +1,7 @@
+2006-05-18  Ernesto Baschny  <ernst@cron-it.de>
+
+	* Fixed bug #3138: Alignment of text in css_styled_content's Text w/ images (nowrap) was wrong (Firefox)
+
 2006-05-15  Ingmar Schlecht  <ingmar@typo3.org>
 
 	* Fixed bug #1374: Mailforms didn't work with <input type="image"> submit buttons. (Thanks to Thorsten Kahler and Rupert Germann!)	

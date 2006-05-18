@@ -1308,11 +1308,11 @@ tt_content.image.20 {
 		18.value = <div class="csc-textpic csc-textpic-intext-left###CLASSES###">###IMAGES######TEXT###</div>
 		# intext-right-nowrap
 		25 = TEXT
-		25.value = <div class="csc-textpic csc-textpic-intext-right-nowrap###CLASSES###">###IMAGES###<div style="margin-right:{register:rowwidth}px;">###TEXT###</div></div><div class="csc-textpic-clear"><!-- --></div>
+		25.value = <div class="csc-textpic csc-textpic-intext-right-nowrap###CLASSES###">###IMAGES###<div style="margin-right:{register:rowWidthPlusTextMargin}px;">###TEXT###</div></div><div class="csc-textpic-clear"><!-- --></div>
 		25.insertData = 1
 		# intext-left-nowrap
 		26 = TEXT
-		26.value = <div class="csc-textpic csc-textpic-intext-left-nowrap###CLASSES###">###IMAGES###<div style="margin-left:{register:rowwidth}px;">###TEXT###</div></div><div class="csc-textpic-clear"><!-- --></div>
+		26.value = <div class="csc-textpic csc-textpic-intext-left-nowrap###CLASSES###">###IMAGES###<div style="margin-left:{register:rowWidthPlusTextMargin}px;">###TEXT###</div></div><div class="csc-textpic-clear"><!-- --></div>
 		26.insertData = 1
 	}
 
