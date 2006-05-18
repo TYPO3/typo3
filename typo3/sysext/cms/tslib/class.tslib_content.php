@@ -1722,8 +1722,8 @@ class tslib_cObj {
 							$wrap = $wrap ? ' wrap="'.$wrap.'"' : ' wrap="virtual"';
 						}
 						$default = $this->getFieldDefaultValue($conf['noValueInsert'], $confData['fieldname'], str_replace('\n',chr(10),trim($parts[2])));
-						$fieldCode=sprintf('<textarea name="%s"'.$elementIdAttribute.' cols="%s" rows="%s"%s'.$addParams.'>%s</textarea>',
-							$confData['fieldname'], $cols, $rows, $wrap, t3lib_div::formatForTextarea($default));
+						$fieldCode=sprintf('<textarea name="%s"%s cols="%s" rows="%s"%s%s>%s</textarea>',
+							$confData['fieldname'], $elementIdAttribute, $cols, $rows, $wrap, $addParams, t3lib_div::formatForTextarea($default));
 					break;
 					case 'input':
 					case 'password':
@@ -1740,21 +1740,21 @@ class tslib_cObj {
 						$max=trim($fParts[2]) ? ' maxlength="'.t3lib_div::intInRange($fParts[2],1,1000).'"' : "";
 						$theType = $confData['type']=='input' ? 'text' : 'password';
 
-						$fieldCode=sprintf('<input type="'.$theType.'" name="%s"'.$elementIdAttribute.' size="%s"%s value="%s"'.$addParams.' />',
-							$confData['fieldname'], $size, $max, htmlspecialchars($default));
+						$fieldCode=sprintf('<input type="%s" name="%s"%s size="%s"%s value="%s"%s />',
+							$theType, $confData['fieldname'], $elementIdAttribute, $size, $max, htmlspecialchars($default), $addParams);
 
 					break;
 					case 'file':
 						$size=trim($fParts[1]) ? t3lib_div::intInRange($fParts[1],1,60) : 20;
-						$fieldCode=sprintf('<input type="file" name="%s"'.$elementIdAttribute.' size="%s"'.$addParams.' />',
-							$confData['fieldname'], $size);
+						$fieldCode=sprintf('<input type="file" name="%s"%s size="%s"%s />',
+							$confData['fieldname'], $elementIdAttribute, $size, $addParams);
 					break;
 					case 'check':
 							// alternative default value:
 						$default = $this->getFieldDefaultValue($conf['noValueInsert'], $confData['fieldname'], trim($parts[2]));
 						$checked = $default ? ' checked="checked"' : '';
-						$fieldCode=sprintf('<input type="checkbox" value="%s" name="%s"'.$elementIdAttribute.'%s'.$addParams.' />',
-							1, $confData['fieldname'], $checked);
+						$fieldCode=sprintf('<input type="checkbox" value="%s" name="%s"%s%s%s />',
+							1, $confData['fieldname'], $elementIdAttribute, $checked, $addParams);
 					break;
 					case 'select':
 						$option='';
@@ -1767,7 +1767,8 @@ class tslib_cObj {
 
 						$items=array();		// Where the items will be
 						$defaults=array(); //RTF
-						for($a=0;$a<count($valueParts);$a++)	{
+						$pCount = count($valueParts);
+						for($a=0;$a<$pCount;$a++)	{
 							$valueParts[$a]=trim($valueParts[$a]);
 							if (substr($valueParts[$a],0,1)=='*')	{	// Finding default value
 								$sel='selected';
@@ -1786,13 +1787,14 @@ class tslib_cObj {
 							$defaults[] = $default;
 						} else $defaults=$default;
 							// Create the select-box:
-						for($a=0;$a<count($items);$a++)	{
+						$iCount = count($items);
+						for($a=0;$a<$iCount;$a++)	{
 							$option.='<option value="'.$items[$a][1].'"'.(in_array($items[$a][1],$defaults)?' selected="selected"':'').'>'.trim($items[$a][0]).'</option>'; //RTF
 						}
 
 						if ($multiple)	$confData['fieldname'].='[]';	// The fieldname must be prepended '[]' if multiple select. And the reason why it's prepended is, because the required-field list later must also have [] prepended.
-						$fieldCode=sprintf('<select name="%s"'.$elementIdAttribute.' size="%s"%s'.$addParams.'>%s</select>',
-							$confData['fieldname'], $size, $multiple, $option); //RTF
+						$fieldCode=sprintf('<select name="%s"%s size="%s"%s%s>%s</select>',
+							$confData['fieldname'], $elementIdAttribute, $size, $multiple, $addParams, $option); //RTF
 					break;
 					case 'radio':
 						$option='';
@@ -1802,7 +1804,8 @@ class tslib_cObj {
 						$valueParts = explode(',',$parts[2]);
 						$items=array();		// Where the items will be
 						$default='';
-						for($a=0;$a<count($valueParts);$a++)	{
+						$pCount = count($valueParts);
+						for($a=0;$a<$pCount;$a++)	{
 							$valueParts[$a]=trim($valueParts[$a]);
 							if (substr($valueParts[$a],0,1)=='*')	{
 								$sel='checked';
@@ -1817,14 +1820,15 @@ class tslib_cObj {
 							// alternative default value:
 						$default = $this->getFieldDefaultValue($conf['noValueInsert'], $confData['fieldname'], $default);
 							// Create the select-box:
-						for($a=0;$a<count($items);$a++)	{
+						$iCount = count($items);
+						for($a=0;$a<$iCount;$a++)	{
 							$radioId = $prefix.$fName.$this->cleanFormName($items[$a][0]);
 							if ($conf['accessibility'])	{
 								$radioLabelIdAttribute = ' id="'.$radioId.'"';
 							} else {
 								$radioLabelIdAttribute = '';
 							}
-							$option .= '<input type="radio" name="'.$confData['fieldname'].'"'.$radioLabelIdAttribute.' value="'.$items[$a][1].'"'.(!strcmp($items[$a][1],$default)?' checked="checked"':'').''.$addParams.' />';
+							$option .= '<input type="radio" name="'.$confData['fieldname'].'"'.$radioLabelIdAttribute.' value="'.$items[$a][1].'"'.(!strcmp($items[$a][1],$default)?' checked="checked"':'').$addParams.' />';
 							if ($conf['accessibility'])	{
 								$option .= '<label for="'.$radioId.'">' . $this->stdWrap(trim($items[$a][0]), $conf['radioWrap.']) . '</label>';
 							} else {
@@ -1844,8 +1848,8 @@ class tslib_cObj {
 						if (strlen($value) && t3lib_div::inList('recipient_copy,recipient',$confData['fieldname']))	{
 							$value = $GLOBALS['TSFE']->codeString($value);
 						}
-						$hiddenfields.=sprintf('<input type="hidden" name="%s"'.$elementIdAttribute.' value="%s" />',
-							$confData['fieldname'], htmlspecialchars($value));
+						$hiddenfields.=sprintf('<input type="hidden" name="%s"%s value="%s" />',
+							$confData['fieldname'], $elementIdAttribute, htmlspecialchars($value));
 					break;
 					case 'property':
 						if (t3lib_div::inList('type,locationData,goodMess,badMess,emailMess',$confData['fieldname']))	{
@@ -1863,14 +1867,14 @@ class tslib_cObj {
 						if($image)	{
 							$fieldCode = str_replace('<img','<input type="image"'.$addParams.' name="'.$confData['fieldname'].'"' ,$image);
 						} else	{
-							$fieldCode=sprintf('<input type="submit" name="%s"'.$elementIdAttribute.' value="%s"'.$addParams.' />',
-								$confData['fieldname'], t3lib_div::deHSCentities(htmlspecialchars($value)));
+							$fieldCode=sprintf('<input type="submit" name="%s"%s value="%s"%s />',
+								$confData['fieldname'], $elementIdAttribute, t3lib_div::deHSCentities(htmlspecialchars($value)), $addParams);
 						}
 					break;
 					case 'reset':
 						$value=trim($parts[2]);
-						$fieldCode=sprintf('<input type="reset" name="%s"'.$elementIdAttribute.' value="%s"'.$addParams.' />',
-							$confData['fieldname'], t3lib_div::deHSCentities(htmlspecialchars($value)));
+						$fieldCode=sprintf('<input type="reset" name="%s"%s value="%s"%s />',
+							$confData['fieldname'], $elementIdAttribute, t3lib_div::deHSCentities(htmlspecialchars($value)), $addParams);
 					break;
 					case 'label':
 						$fieldCode = nl2br(htmlspecialchars(trim($parts[2])));
