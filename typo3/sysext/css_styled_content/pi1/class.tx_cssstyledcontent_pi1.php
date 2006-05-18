@@ -645,6 +645,7 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 			// How much space will the image-block occupy?
 		$imageBlockWidth = max($imageRowsFinalWidths)+ $colspacing*($colCount-1) + $colCount*$border*($borderSpace+$borderThickness)*2;
 		$GLOBALS['TSFE']->register['rowwidth'] = $imageBlockWidth;
+		$GLOBALS['TSFE']->register['rowWidthPlusTextMargin'] = $imageBlockWidth + $textMargin;
 
 			// noRows is in fact just one ROW, with the amount of columns specified, where the images are placed in.
 			// noCols is just one COLUMN, each images placed side by side on each row
