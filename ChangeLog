@@ -1,3 +1,7 @@
+2006-05-20  Ernesto Baschny <ernst@cron-it.de>
+
+	* Fixed bug #2874: Current page in navigation tree wasn't being highlighted on IE6
+
 2006-05-20   Rupert Germann  <rupi@gmx.li>
 
 	* Fixed bug #2566: XClass include code was missing in wsol_preview.php.
