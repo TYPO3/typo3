@@ -1,3 +1,7 @@
+2006-05-20   Rupert Germann  <rupi@gmx.li>
+
+	* Fixed bug #2566: XClass include code was missing in wsol_preview.php.
+
 2006-05-18   Rupert Germann  <rupi@gmx.li>
 
 	* Fixed bug #0132: % signs in extra parameters of form contentelements where not handled correctly.

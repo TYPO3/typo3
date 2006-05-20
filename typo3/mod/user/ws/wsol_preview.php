@@ -208,7 +208,9 @@ class wsol_preview {
 	}
 }
 
-
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['typo3/mod/user/ws/wsol_preview.php']) {
+    include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['typo3/mod/user/ws/wsol_preview.php']);
+}
 
 $previewObject = t3lib_div::makeInstance('wsol_preview');
 $previewObject->main();
