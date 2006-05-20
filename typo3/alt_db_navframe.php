@@ -278,14 +278,14 @@ class SC_alt_db_navframe {
 			// Remove old:
 		theObj = document.getElementById(top.fsMod.navFrameHighlightedID[frameSetModule]);
 		if (theObj)	{
-			theObj.setAttribute("class", "");
+			theObj.className = "";
 		}
 
 			// Set new:
 		top.fsMod.navFrameHighlightedID[frameSetModule] = highLightID;
 		theObj = document.getElementById(highLightID);
 		if (theObj)	{
-			theObj.setAttribute("class", "navFrameHL");
+			theObj.className = "navFrameHL";
 		}
 	}
 
