@@ -1,3 +1,8 @@
+
+2006-05-22  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+
+	* Corrected error message for config.baseURL=1
+
 2006-05-20  Ernesto Baschny <ernst@cron-it.de>
 
 	* Fixed bug #2874: Current page in navigation tree wasn't being highlighted on IE6
