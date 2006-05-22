@@ -1,3 +1,8 @@
+
+2006-05-22  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+
+	* Corrected error message for config.baseURL=1
+
 2006-05-20  Ernesto Baschny <ernst@cron-it.de>
 
 	* Fixed bug #2874: Current page in navigation tree wasn't being highlighted on IE6
@@ -21,7 +26,7 @@
 
 2006-05-15  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
-	* * Fix bug #3364: Changed t3lib_div::validPathStr() that it rejects files starting with ../ or containing /../, but allows ..
+	* Fix bug #3364: Changed t3lib_div::validPathStr() that it rejects files starting with ../ or containing /../, but allows ..
 	* Corrected comment for maxWInText (tslib_content) and simplified calculation
 	* Fix bug #338: Sanitize path normalization of class.t3lib_userauthgroup.php::addFileMount()
 
