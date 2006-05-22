@@ -130,7 +130,7 @@ class TSpagegen {
 					// Deprecated property, going to be dropped.
 				$error = 'Unsupported Typoscript property was found in this template: "config.baseURL="1"
 
-This setting has been deprecaced in TYPO 3.8.1 due to security concerns.
+This setting has been deprecated in TYPO 3.8.1 due to security concerns.
 You need to change this value to the URL of your website root, otherwise TYPO3 will not work!
 
 See <a href="http://wiki.typo3.org/index.php/TYPO3_3.8.1" target="_blank">wiki.typo3.org/index.php/TYPO3_3.8.1</a> for more information.';
