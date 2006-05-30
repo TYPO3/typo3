@@ -1,10 +1,6 @@
 
 2006-05-22  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
-	* Added class "checkbox" to "Expand all" checkbox (removes border in IE)
-
-2006-05-22  Martin Kutschker  <martin.t.kutschker@blackbox.net>
-
 	* Corrected error message for config.baseURL=1
 
 2006-05-20  Ernesto Baschny <ernst@cron-it.de>
