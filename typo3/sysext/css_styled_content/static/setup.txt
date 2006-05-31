@@ -368,8 +368,9 @@ tt_content.image.20 {
 			JSwindow.expand = 17,20
 
 			enable.field = image_zoom
-			enable.ifEmpty.field = image_link
-			enable.ifEmpty.listNum.stdWrap.data = register : IMAGE_NUM
+			enable.ifEmpty.typolink.parameter.field = image_link
+			enable.ifEmpty.typolink.parameter.listNum.stdWrap.data = register : IMAGE_NUM
+			enable.ifEmpty.typolink.returnLast = url
 
 			typolink.parameter.field = image_link
 			typolink.parameter.listNum.stdWrap.data = register : IMAGE_NUM
@@ -1485,4 +1486,7 @@ plugin.tx_cssstyledcontent._CSS_DEFAULT_STYLE (
 [END]
 
 
+<<<<<<< setup.txt
 # TYPO3 CVS ID: $Id$
+=======
+# TYPO3 CVS ID: $Id$>>>>>>> 1.7
