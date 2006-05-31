@@ -1,7 +1,7 @@
 
-2006-05-22  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+2006-05-22 Bernhard Kraft  <kraftb@kraftb.at>
 
-	* Added class "checkbox" to "Expand all" checkbox (removes border in IE)
+	* Fix a problem of the EM: "No file uploaded!" when retrying install after a failed dependency check
 
 2006-05-22  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 

@@ -1623,16 +1623,27 @@ EXTENSION KEYS:
 	 */
 	function importExtFromRep($extKey,$version,$loc,$uploadFlag=0,$dontDelete=0,$directInput='')	{
 
+		$uploadSucceed = false;
+		$uploadedTempFile = '';
 		if (is_array($directInput))	{
 			$fetchData = array($directInput,'');
 			$loc = ($loc==='G'||$loc==='S') ? $loc : 'L';
 		} elseif ($uploadFlag)	{
-			if ($_FILES['upload_ext_file']['tmp_name'])	{
+			if (($uploadedTempFile = $this->CMD['alreadyUploaded']) || $_FILES['upload_ext_file']['tmp_name'])	{
 
 					// Read uploaded file:
-				$uploadedTempFile = t3lib_div::upload_to_tempfile($_FILES['upload_ext_file']['tmp_name']);
+				if (!$uploadedTempFile)	{
+					if (!is_uploaded_file($_FILES['upload_ext_file']['tmp_name'])) {
+ 						t3lib_div::sysLog('Possible file upload attack: '.$_FILES['upload_ext_file']['tmp_name'], 'Extension Manager', 3);
+
+						return 'File was not uploaded?!?';
+					}
+
+					$uploadedTempFile = t3lib_div::upload_to_tempfile($_FILES['upload_ext_file']['tmp_name']);
+				}
 				$fileContent = t3lib_div::getUrl($uploadedTempFile);
-				t3lib_div::unlink_tempfile($uploadedTempFile);
+
+				if (!$fileContent)	return 'File is empty!';
 
 					// Decode file data:
 				$fetchData = $this->terConnection->decodeExchangeData($fileContent);
@@ -1674,6 +1685,9 @@ EXTENSION KEYS:
 						$depStatus = $this->checkDependencies($extKey, $EM_CONF, $instExtInfo);
 						if(t3lib_extMgm::isLoaded($extKey) && !$depStatus['returnCode']) {
 							$this->content .= $depStatus['html'];
+							if ($uploadedTempFile)	{
+								$this->content .= '<input type="hidden" name="CMD[alreadyUploaded]" value="'.$uploadedTempFile.'" />';
+							}
 						} else {
 							$res = $this->clearAndMakeExtensionDir($fetchData[0],$loc,$dontDelete);
 							if (is_array($res))	{
@@ -1702,6 +1716,8 @@ EXTENSION KEYS:
 											// No content, no errors. Create success output here:
 										if (!$content)	{
 											$content='SUCCESS: '.$extDirPath.'<br />';
+
+											$uploadSucceed = true;
 
 												// Fix TYPO3_MOD_PATH for backend modules in extension:
 											$modules = t3lib_div::trimExplode(',',$EM_CONF['module'],1);
@@ -1757,6 +1773,10 @@ EXTENSION KEYS:
 		}  else $content = 'Error: Installation is not allowed in this path ('.$this->typePaths[$loc].')';
 
 		$this->content.=$this->doc->section('Extension import results',$content,0,1);
+
+		if ($uploadSucceed && $uploadedTempFile)	{
+			t3lib_div::unlink_tempfile($uploadedTempFile);
+		}
 
 		return false;
 	}
