@@ -368,8 +368,9 @@ tt_content.image.20 {
 			JSwindow.expand = 17,20
 
 			enable.field = image_zoom
-			enable.ifEmpty.field = image_link
-			enable.ifEmpty.listNum.stdWrap.data = register : IMAGE_NUM
+			enable.ifEmpty.typolink.parameter.field = image_link
+			enable.ifEmpty.typolink.parameter.listNum.stdWrap.data = register : IMAGE_NUM
+			enable.ifEmpty.typolink.returnLast = url
 
 			typolink.parameter.field = image_link
 			typolink.parameter.listNum.stdWrap.data = register : IMAGE_NUM
