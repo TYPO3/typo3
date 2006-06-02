@@ -1422,7 +1422,7 @@ class t3lib_TStemplate	{
 		$LD['url'] = $GLOBALS['TSFE']->absRefPrefix.$LD['url'];
 
 			// If the special key 'sectionIndex_uid' (added 'manually' in tslib/menu.php to the page-record) is set, then the link jumps directly to a section on the page.
-		$LD['sectionIndex'] = $page['sectionIndex_uid'] ? '#'.$page['sectionIndex_uid'] : '';
+		$LD['sectionIndex'] = $page['sectionIndex_uid'] ? '#c'.$page['sectionIndex_uid'] : '';
 
 			// Compile the normal total url
 		$LD['totalURL']= $this->removeQueryString($LD['url'].$LD['type'].$LD['no_cache'].$LD['linkVars'].$GLOBALS['TSFE']->getMethodUrlIdToken).$LD['sectionIndex'];
