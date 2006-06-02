@@ -171,7 +171,9 @@ class t3lib_tsfeBeUserAuth extends t3lib_beUserAuth {
 					<input type="hidden" name="TSFE_ADMIN_PANEL[display_top]" value="'.$this->uc['TSFE_adminConfig']['display_top'].'" />'.($this->extNeedUpdate?'<input type="submit" value="'.$this->extGetLL('update').'" />':'').'</td>
 			</tr>';
 
-		$query='';
+		$query = !t3lib_div::_GET('id') ? ('<input type="hidden" name="id" value="'.$GLOBALS['TSFE']->id.'" />'.chr(10)) : '';
+			// the dummy field is needed for Firefix: to force a page reload on submit with must change the form value with Javascript (see "onsubmit" attribute of the "form" element")
+		$query .= '<input type="hidden" name="TSFE_ADMIN_PANEL[DUMMY]" value="">';
 		foreach(t3lib_div::_GET() as $k => $v)	{
 			if ($k != 'TSFE_ADMIN_PANEL')	{
 				if (is_array($v))	{
@@ -181,14 +183,14 @@ class t3lib_tsfeBeUserAuth extends t3lib_beUserAuth {
 				}
 			}
 		}
+
 		$out='
 <!--
 	ADMIN PANEL
 -->
 <a name="TSFE_ADMIN"></a>
-<form name="TSFE_ADMIN_PANEL_FORM" action="'.htmlspecialchars(t3lib_div::getIndpEnv('SCRIPT_NAME')).'#TSFE_ADMIN" method="get" style="margin:0;">'.
-(!t3lib_div::_GET('id')?'<input type="hidden" name="id" value="'.$GLOBALS['TSFE']->id.'" />
-':'').$query.
+<form name="TSFE_ADMIN_PANEL_FORM" action="'.htmlspecialchars(t3lib_div::getIndpEnv('SCRIPT_NAME')).'#TSFE_ADMIN" method="get" style="margin:0;" onsubmit="document.forms.TSFE_ADMIN_PANEL_FORM[\'TSFE_ADMIN_PANEL[DUMMY]\'].value=Math.random().toString().substring(2,8)">'.
+$query.
 '	<table border="0" cellpadding="0" cellspacing="0" class="typo3-adminPanel" style="background-color:#f6f2e6; border: 1px solid black; z-index:0; position:absolute;">'.$header.$out.'
 	</table>
 </form>';
