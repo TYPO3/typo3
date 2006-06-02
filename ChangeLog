@@ -2,6 +2,7 @@
 2006-06-02  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
 	* Fix bug #3612: no c-prefix for URL fragment in menus (section index)
+	* Fix bug #2493: TCE-forms don't skins icons / t3skin lacks undo.gif, csv.gif  and savedoknew.gif (thanks to Clemens Riccabona for the latter)
 
 2006-05-31  Ernesto Baschny <ernst@cron-it.de>
 
