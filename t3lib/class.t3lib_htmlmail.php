@@ -269,11 +269,8 @@ class t3lib_htmlmail {
 		global $TYPO3_CONF_VARS;
 
 			// Sets the message id
-		$host = php_uname('n');
-		if (strpos('.',$host) === FALSE) {
-			$host = gethostbyaddr(gethostbyname($host));
-		}
-		if (!$host || $host == '127.0.0.1' || $host == 'localhost') {
+		$host = t3lib_div::getHostname();
+		if (!$host || $host == '127.0.0.1' || $host == 'localhost' || $host == 'localhost.localdomain') {
 			$host = ($TYPO3_CONF_VARS['SYS']['sitename'] ? preg_replace('/[^A-Za-z0-9_\-]/', '_', $TYPO3_CONF_VARS['SYS']['sitename']) : 'localhost') . '.TYPO3';
 		}
 		$this->messageid = md5(microtime()) . '@' . $host;
