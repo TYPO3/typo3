@@ -1,7 +1,11 @@
 
+2006-06-02  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+
+	* Fix bug #3612: no c-prefix for URL fragment in menus (section index)
+
 2006-05-31  Ernesto Baschny <ernst@cron-it.de>
 
-	* Fixes bug #3522: Linking images to hidden pages results in click-enlarge
+	* Fix bug #3522: Linking images to hidden pages results in click-enlarge
 
 2006-05-31 Bernhard Kraft  <kraftb@kraftb.at>
 
