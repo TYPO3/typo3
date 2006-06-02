@@ -3351,8 +3351,8 @@ class t3lib_TCEforms	{
 			$selIconFile = $this->backPath.$icon;
 			$selIconInfo = @getimagesize(PATH_typo3.$icon);
 		} else {
-			$selIconFile = $this->backPath.'gfx/'.$icon;
-			$selIconInfo = @getimagesize(PATH_t3lib.'gfx/'.$icon);
+			$selIconFile = t3lib_iconWorks::skinImg($this->backPath,'gfx/'.$icon,'',1);
+			$selIconInfo = @getimagesize(PATH_typo3.$selIconFile);
 		}
 		return array($selIconFile,$selIconInfo);
 	}
