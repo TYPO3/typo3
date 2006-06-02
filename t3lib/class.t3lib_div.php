@@ -3202,6 +3202,37 @@ class t3lib_div {
 		return $bInfo;
 	}
 
+	/**
+	 * Get the fully-qualified domain name of the host.
+	 * Usage: 2
+	 *
+	 * @param	boolean		Use request host (when not in CLI mode).
+	 * @return	string		The fully-qualified host name.
+	 */
+	function getHostname($requestHost=TRUE)	{
+		$host = '';
+		if ($requestHost && (!defined('TYPO3_cliMode') || !TYPO3_cliMode))	{
+			$host = $_SERVER['HTTP_HOST'];
+		}
+		if (!$host)	{
+				// will fail for PHP 4.1 and 4.2
+			$host = @php_uname('n');
+				// 'n' is ignored in broken installations
+			if (strpos($host, ' '))	$host = '';
+		}
+			// we have not found a FQDN yet
+		if ($host && strpos('.',$host) === FALSE)	{
+			$ip = gethostbyname($host);
+				// we got an IP address
+			if ($ip != $host)	{
+				$fqdn = gethostbyaddr($ip);
+				if ($ip != $fqdn)	$host = $fqdn;
+			}
+		}
+		if (!$host)	$host = 'localhost.localdomain';
+
+		return $host;
+	}
 
 
 
@@ -4237,18 +4268,11 @@ class t3lib_div {
 
 			// for CLI logging name is <fqdn-hostname>:<TYPO3-path>
 		if (defined('TYPO3_cliMode') && TYPO3_cliMode)	{
-				// find FQDN
-			$host = php_uname('n');
-			if (strpos($host,'.') === FALSE)	{
-				$ip = gethostbyname($host);
-				$fqdn = gethostbyaddr($ip);
-				if ($ip != $fqdn)	$host = $fqdn;
-			}
-			$TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_div.php']['systemLogHost'] = $TYPO3_CONF_VARS['SYS']['systemLogHost'] = $host.':'.PATH_site;
+			$TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_div.php']['systemLogHost'] = t3lib_div::getHostname(FALSE).':'.PATH_site;
 		}
-			// for Web logging name is <protocol>://<request-hostame>
+			// for Web logging name is <protocol>://<request-hostame>/<site-path>
 		else {
-			$TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_div.php']['systemLogHost'] = t3lib_div::getIndpEnv('TYPO3_REQUEST_HOST');
+			$TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_div.php']['systemLogHost'] = t3lib_div::getIndpEnv('TYPO3_SITE_URL');
 		}
 
 			// init custom logging
