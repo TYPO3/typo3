@@ -1,4 +1,8 @@
 
+2006-06-04  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+
+	* unify PHP5 check in config_defaults.php and deprecate $TYPO_VERSION
+
 2006-06-02  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
 	* Fix bug #3612: no c-prefix for URL fragment in menus (section index)
