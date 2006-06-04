@@ -247,7 +247,7 @@ $TYPO3_CONF_VARS = Array(
 $T3_VAR = array();	// Initialize.
 
 	// TYPO3 version
-$TYPO_VERSION = '4.0-CVS';
+$TYPO_VERSION = '4.0-CVS';	// deprecated: use the constants defined below
 define('TYPO3_version', $TYPO_VERSION);
 define('TYPO3_branch', '4.0');
 define('TYPO3_copyright_year', '1998-2006');
@@ -320,10 +320,6 @@ if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['im_imvMaskState'])	{
 	$GLOBALS['TYPO3_CONF_VARS']['GFX']['im_negate_mask']=$GLOBALS['TYPO3_CONF_VARS']['GFX']['im_negate_mask']?0:1;
 }
 
-	// The iconv utility functions are only available in PHP5 and later
-if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['t3lib_cs_utils']==='iconv' && t3lib_div::int_from_ver(phpversion())<5000000)	{
-	$GLOBALS['TYPO3_CONF_VARS']['SYS']['t3lib_cs_utils'] = '';
-}
 
 	// simple debug function which prints output immediately
 function xdebug($var='',$br=0)	{
@@ -355,9 +351,15 @@ function debugEnd() {
 }
 
 
-	// include compatibility functions <PHP5
-if (version_compare(phpversion(), '5.0') < 0) {
+	// PHP5 version check
+if (version_compare(PHP_VERSION, '5.0', '<')) {
+		// include compatibility functions for PHP4
 	include_once(PATH_t3lib.'compat_php5.php');
+
+		// iconv utility functions are only available in PHP5 and later
+	if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['t3lib_cs_utils']==='iconv')	{
+		$GLOBALS['TYPO3_CONF_VARS']['SYS']['t3lib_cs_utils'] = '';
+	}
 }
 
 	// Init services array:
