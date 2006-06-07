@@ -1298,11 +1298,6 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 			$path=trim($path);
 			$path=preg_replace('#^\.?/|/\.?$#','',$path);
 
-				// these lines remove all slashes and dots before and after the path
-			$path=ereg_replace('^[\/\. ]*','',$path);
-			$path=trim(ereg_replace('[\/\. ]*$','',$path));
-
-
 			if ($path)	{	// there must be some chars in the path
 				$fdir=PATH_site.$GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'];	// fileadmin dir, absolute
 				if ($webspace)	{
