@@ -472,7 +472,7 @@ class tslib_cObj {
 					// Application defined cObjects
 				foreach ($this->cObjHookObjectsArr as $cObjName => $hookObj)	{
 					if (($name===$cObjName) && method_exists($hookObj, 'cObjGetSingleExt')) {
-						$content .= $hookObj->cObjGetSingleExt($name, $conf, $TSkey, $this);
+						$content.= $hookObj->cObjGetSingleExt($name, $conf, $TSkey, $this);
 						$hooked = true;
 					}
 				}

@@ -1944,7 +1944,7 @@ class t3lib_div {
 		}
 		return $tagi['ch'];
 	}
-	
+
 	/**
 	 * Turns PHP array into XML. See array2xml()
 	 *
@@ -1956,18 +1956,18 @@ class t3lib_div {
 	 * @see xml2array(),array2xml()
 	 */
 	function array2xml_cs($array,$docTag='phparray',$options=array(),$charset='')	{
-		
+
 			// Figure out charset if not given explicitly:
 		if (!$charset)	{
 			if ($GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset'])	{	// First priority: forceCharset! If set, this will be authoritative!
 				$charset = $GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset'];
 			} elseif (is_object($GLOBALS['LANG']))	{
-				$charset = $GLOBALS['LANG']->charSet;	// If "LANG" is around, that will hold the current charset 
+				$charset = $GLOBALS['LANG']->charSet;	// If "LANG" is around, that will hold the current charset
 			} else {
-				$charset = 'iso-8859-1';	// THIS is just a hopeful guess! 
-			}		
+				$charset = 'iso-8859-1';	// THIS is just a hopeful guess!
+			}
 		}
-		
+
 			// Return XML:
 		return '<?xml version="1.0" encoding="'.htmlspecialchars($charset).'" standalone="yes" ?>'.chr(10).
 				t3lib_div::array2xml($array,'',0,$docTag,0, $options);
@@ -1982,7 +1982,7 @@ class t3lib_div {
 	 * Numeric keys are stored with the default tagname "numIndex" but can be overridden to other formats)
 	 * The function handles input values from the PHP array in a binary-safe way; All characters below 32 (except 9,10,13) will trigger the content to be converted to a base64-string
 	 * The PHP variable type of the data IS preserved as long as the types are strings, arrays, integers and booleans. Strings are the default type unless the "type" attribute is set.
-	 * The output XML has been tested with the PHP XML-parser and parses OK under all tested circumstances with 4.x versions. However, with PHP5 there seems to be the need to add an XML prologue a la <?xml version="1.0" encoding="[charset]" standalone="yes" ?> - otherwise UTF-8 is assumed! Unfortunately, many times the output from this function is used without adding that prologue meaning that non-ASCII characters will break the parsing!! This suchs of course! Effectively it means that the prologue should always be prepended setting the right characterset, alternatively the system should always run as utf-8! 
+	 * The output XML has been tested with the PHP XML-parser and parses OK under all tested circumstances with 4.x versions. However, with PHP5 there seems to be the need to add an XML prologue a la <?xml version="1.0" encoding="[charset]" standalone="yes" ?> - otherwise UTF-8 is assumed! Unfortunately, many times the output from this function is used without adding that prologue meaning that non-ASCII characters will break the parsing!! This suchs of course! Effectively it means that the prologue should always be prepended setting the right characterset, alternatively the system should always run as utf-8!
 	 * However using MSIE to read the XML output didn't always go well: One reason could be that the character encoding is not observed in the PHP data. The other reason may be if the tag-names are invalid in the eyes of MSIE. Also using the namespace feature will make MSIE break parsing. There might be more reasons...
 	 * Usage: 5
 	 *
@@ -4268,7 +4268,7 @@ class t3lib_div {
 
 			// for CLI logging name is <fqdn-hostname>:<TYPO3-path>
 		if (defined('TYPO3_cliMode') && TYPO3_cliMode)	{
-			$TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_div.php']['systemLogHost'] = t3lib_div::getHostname(FALSE).':'.PATH_site;
+			$TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_div.php']['systemLogHost'] = t3lib_div::getHostname($requestHost=FALSE).':'.PATH_site;
 		}
 			// for Web logging name is <protocol>://<request-hostame>/<site-path>
 		else {
@@ -4279,7 +4279,7 @@ class t3lib_div {
 		if (is_array($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_div.php']['systemLog']))	{
 			$params = array('initLog'=>TRUE);
 			$fakeThis = FALSE;
-			foreach($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_div.php']['systemLog'] as $hookMethod)	{
+			foreach ($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_div.php']['systemLog'] as $hookMethod)	{
 				t3lib_div::callUserFunction($hookMethod,$params,$fakeThis);
 			}
 		}

@@ -2042,8 +2042,7 @@ class t3lib_TCEforms	{
 			$editData=t3lib_div::xml2array($xmlData);
 			if (!is_array($editData))	{	// Must be XML parsing error...
 				$editData=array();
-			}
-			else if (isset($editData['meta']) && !is_array($editData['meta'])) {
+			} elseif (isset($editData['meta']) && !is_array($editData['meta']))	{
 			    $editData['meta'] = array();
 			}
 
