@@ -172,9 +172,9 @@ class t3lib_tsfeBeUserAuth extends t3lib_beUserAuth {
 			</tr>';
 
 		$query = !t3lib_div::_GET('id') ? ('<input type="hidden" name="id" value="'.$GLOBALS['TSFE']->id.'" />'.chr(10)) : '';
-			// the dummy field is needed for Firefix: to force a page reload on submit with must change the form value with Javascript (see "onsubmit" attribute of the "form" element")
-		$query .= '<input type="hidden" name="TSFE_ADMIN_PANEL[DUMMY]" value="">';
-		foreach(t3lib_div::_GET() as $k => $v)	{
+			// the dummy field is needed for Firefox: to force a page reload on submit with must change the form value with JavaScript (see "onsubmit" attribute of the "form" element")
+		$query.= '<input type="hidden" name="TSFE_ADMIN_PANEL[DUMMY]" value="">';
+		foreach (t3lib_div::_GET() as $k => $v)	{
 			if ($k != 'TSFE_ADMIN_PANEL')	{
 				if (is_array($v))	{
 					$query.=$this->extPrintFeAdminDialogHiddenFields($k,$v);

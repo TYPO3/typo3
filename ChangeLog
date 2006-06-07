@@ -1,4 +1,3 @@
-
 2006-06-04  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
 	* unify PHP5 check in config_defaults.php and deprecate $TYPO_VERSION
@@ -6,7 +5,7 @@
 2006-06-02  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
 	* Fix bug #3612: no c-prefix for URL fragment in menus (section index)
-	* Fix bug #2493: TCE-forms don't skins icons / t3skin lacks undo.gif, csv.gif  and savedoknew.gif (thanks to Clemens Riccabona for the latter)
+	* Fix bug #2493: TCE-forms don't skins icons / t3skin lacks undo.gif, csv.gif and savedoknew.gif (thanks to Clemens Riccabona for the latter)
 	* Fix bugs #3326 and #3392: problems with php_uname()
 	* "Update" buttons of admin panel did not reload page in Firefox
 

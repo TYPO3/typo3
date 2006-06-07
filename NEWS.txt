@@ -72,7 +72,7 @@ Accessibility
 Configuration
 =============
 
-	* the new := assignment for Typoscript allows now parse time maniplation of TS values (eg "obj.val := appendString(foobar)", "obj.list := addToList(3,5,9)")
+	* the new := assignment for TypoScript allows now parse time maniplation of TS values (eg "obj.val := appendString(foobar)", "obj.list := addToList(3,5,9)")
 	* TypoScript conditions may be combined with OR and AND
 
 API
