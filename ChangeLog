@@ -3,6 +3,7 @@
 
 	* Make t3lib_div::arrayToLogString() accept an empty string as empty list
 	* Add missing icons for be users and admins.
+	* Made Tools > User Admin skinnable
 
 2006-06-04  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
