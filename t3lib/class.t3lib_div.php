@@ -4421,10 +4421,11 @@ class t3lib_div {
 		$str = '';
 		if(is_array($arr)) {
 			if (!is_array($valueList)) {
-				$valueList = explode(',', $valueList);
+				$valueList = $valueList = t3lib_div::trimExplode(',', $valueList, 1);
 			}
+			$valListCnt = count($valueList);
 			foreach($arr as $key => $value) {
-				if (!count($valueList) OR (count($valueList) AND in_array($key, $valueList))) {
+				if (!$valListCnt || in_array($key, $valueList))	{
 					$str .= (string)$key.trim(': '.t3lib_div::fixed_lgd(str_replace("\n",'|',(string)$value), $valueLength)).'; ';
 				}
 			}
