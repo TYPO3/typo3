@@ -7044,7 +7044,7 @@ class tslib_cObj {
 			$GLOBALS['TSFE']->set_no_cache();		// Special content is about to be shown, so the cache must be disabled.
 			$style = $conf['styleAttribute'] ? ' style="'.htmlspecialchars($conf['styleAttribute']).'"' : '';
 			$iconTitle = $this->stdWrap($conf['iconTitle'],$conf['iconTitle.']);
-			$iconImg = $conf['iconImg'] ? $conf['iconImg'] : '<img src="'.TYPO3_mainDir.'gfx/edit_fe.gif" width="11" height="12" border="0" align="top" title="'.t3lib_div::deHSCentities(htmlspecialchars($iconTitle)).'"'.$style.' class="frontEndEditIcons" alt="" title="" />';
+			$iconImg = $conf['iconImg'] ? $conf['iconImg'] : '<img src="'.TYPO3_mainDir.'gfx/edit_fe.gif" width="11" height="12" border="0" align="top" title="'.t3lib_div::deHSCentities(htmlspecialchars($iconTitle)).'"'.$style.' class="frontEndEditIcons" alt="" />';
 			$nV=t3lib_div::_GP('ADMCMD_view')?1:0;
 			$adminURL = t3lib_div::getIndpEnv('TYPO3_SITE_URL').TYPO3_mainDir;
 			$icon = $this->editPanelLinkWrap_doWrap($iconImg, $adminURL.'alt_doc.php?edit['.$rParts[0].']['.$editUid.']=edit&columnsOnly='.rawurlencode($fieldList).'&noView='.$nV.$addUrlParamStr,implode(':',$rParts));

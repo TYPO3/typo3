@@ -2,6 +2,7 @@
 2006-06-08  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
 	* Make t3lib_div::arrayToLogString() accept an empty string as empty list
+	* Fix bug #2938: edit icons have two title attributes, one hardcoded as an empty string
 
 2006-06-04  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
