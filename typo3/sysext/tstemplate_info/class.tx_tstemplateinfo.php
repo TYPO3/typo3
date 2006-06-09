@@ -39,9 +39,9 @@ class tx_tstemplateinfo extends t3lib_extobjbase {
 		);
 	}
 	function tableRow($label,$data,$field)	{
-		$ret='<tr><td bgcolor="#D9D5C9" width="1%">';
+		$ret='<tr><td class="bgColor4" width="1%">';
 		$ret.='<a href="index.php?id='.$this->pObj->id.'&e['.$field.']=1"><img src="'.$GLOBALS["BACK_PATH"].'gfx/edit2.gif" width=11 height=12 hspace=3 border=0 title="Edit field"></a>';
-		$ret.='</td><td bgcolor="#D9D5C9" width="1%"><b>'.$label.'&nbsp;&nbsp;</b></td><td bgcolor="#D9D5C9" width="99%">'.$data.'&nbsp;</td></tr>';
+		$ret.='</td><td class="bgColor4" width="1%"><b>'.$label.'&nbsp;&nbsp;</b></td><td class="bgColor4" width="99%">'.$data.'&nbsp;</td></tr>';
 		return $ret;
 	}
 	function procesResources($resources,$func=0)	{

@@ -449,7 +449,7 @@ class tx_tstemplateobjbrowser extends t3lib_extobjbase {
 					<tr>
 						<td><img src=clear.gif width=4 height=1></td>
 						<td class="bgColor2">
-							<table border=0 cellpadding=0 cellspacing=0 bgcolor="#D9D5C9" width="100%"><tr><td nowrap>'.$tree.'</td></tr></table><img src=clear.gif width=465 height=1></td>
+							<table border=0 cellpadding=0 cellspacing=0 class="bgColor4" width="100%"><tr><td nowrap>'.$tree.'</td></tr></table><img src=clear.gif width=465 height=1></td>
 					</tr>
 				</table>
 			';
@@ -469,7 +469,7 @@ class tx_tstemplateobjbrowser extends t3lib_extobjbase {
 						<tr>
 							<td><img src=clear.gif width=4 height=1></td>
 							<td class="bgColor2">
-								<table border=0 cellpadding=0 cellspacing=0 bgcolor="#D9D5C9">'.$out.'
+								<table border=0 cellpadding=0 cellspacing=0 class="bgColor4">'.$out.'
 								<tr>
 									<td>&nbsp;</td>
 									<td><img src=clear.gif height=10 width=240><BR><input type="Submit" name="Submit" value="Set conditions"><BR></td>
@@ -489,7 +489,7 @@ class tx_tstemplateobjbrowser extends t3lib_extobjbase {
 					<tr>
 						<td><img src=clear.gif width=4 height=1></td>
 						<td class="bgColor2">
-							<table border=0 cellpadding=0 cellspacing=0 bgcolor="#D9D5C9">
+							<table border=0 cellpadding=0 cellspacing=0 class="bgColor4">
 							<tr>
 								<td>&nbsp;Enter search phrase:&nbsp;&nbsp;<input type="Text" name="search_field" value="'.htmlspecialchars($POST["search_field"]).'"'.$GLOBALS["TBE_TEMPLATE"]->formWidth(20).'></td>
 								<td><input type="Submit" name="search" value="Search"></td>
