@@ -40,7 +40,7 @@ class tx_tstemplateinfo extends t3lib_extobjbase {
 	}
 	function tableRow($label,$data,$field)	{
 		$ret='<tr><td class="bgColor4" width="1%">';
-		$ret.='<a href="index.php?id='.$this->pObj->id.'&e['.$field.']=1"><img src="'.$GLOBALS["BACK_PATH"].'gfx/edit2.gif" width=11 height=12 hspace=3 border=0 title="Edit field"></a>';
+		$ret.='<a href="index.php?id='.$this->pObj->id.'&e['.$field.']=1"><img '.t3lib_iconWorks::skinImg($GLOBALS["BACK_PATH"],'gfx/edit2.gif').' width=11 height=12 hspace=3 border=0 title="Edit field"></a>';
 		$ret.='</td><td class="bgColor4" width="1%"><b>'.$label.'&nbsp;&nbsp;</b></td><td class="bgColor4" width="99%">'.$data.'&nbsp;</td></tr>';
 		return $ret;
 	}
@@ -57,7 +57,7 @@ class tx_tstemplateinfo extends t3lib_extobjbase {
 				$functions.='<td'.$bgcol.' nowrap>';
 				$fI=t3lib_div::split_fileref($v);
 				if (t3lib_div::inList($this->pObj->textExtensions,$fI["fileext"]))	{
-					$functions.='<a href="index.php?id='.$this->pObj->id.'&e[file]='.rawurlencode($v).'"><img src="'.$GLOBALS["BACK_PATH"].'gfx/edit2.gif" width=11 height=12 hspace=3 border=0 title="Edit file"></a>';
+					$functions.='<a href="index.php?id='.$this->pObj->id.'&e[file]='.rawurlencode($v).'"><img '.t3lib_iconWorks::skinImg($GLOBALS["BACK_PATH"],'gfx/edit2.gif').' width=11 height=12 hspace=3 border=0 title="Edit file"></a>';
 				}
 				$functions.='</td>';
 			}
@@ -375,7 +375,7 @@ class tx_tstemplateinfo extends t3lib_extobjbase {
 					$params=array();
 					$params["formName"]="editForm";
 					$params["itemName"]="data[config]";
-					$outCode.='<a href="#" onClick="vHWin=window.open(\''.$url.t3lib_div::implodeArrayForUrl("",array("P"=>$params)).'\',\'popUp'.$md5ID.'\',\'height=500,width=780,status=0,menubar=0,scrollbars=1\');vHWin.focus();return false;"><img src="'.$BACK_PATH.'gfx/wizard_tsconfig.gif" width="22" height="27" border="0" title="TSref reference"></a>';
+					$outCode.='<a href="#" onClick="vHWin=window.open(\''.$url.t3lib_div::implodeArrayForUrl("",array("P"=>$params)).'\',\'popUp'.$md5ID.'\',\'height=500,width=780,status=0,menubar=0,scrollbars=1\');vHWin.focus();return false;"><img '.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/wizard_tsconfig.gif').' width="22" height="27" border="0" title="TSref reference"></a>';
 				}
 
 				$outCode.='<input type="Hidden" name="e[config]" value="1">';
