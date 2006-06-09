@@ -151,7 +151,7 @@ class tx_tstemplateanalyzer extends t3lib_extobjbase {
 							<td><img src=clear.gif width=3 height=1></td><td class="bgColor2"><b>'.$tmpl->templateTitles[$cVal].'</b></td></tr>
 						<tr>
 							<td><img src=clear.gif width=3 height=1></td>
-							<td class="bgColor2"><table border=0 cellpadding=0 cellspacing=0 bgcolor="#D9D5C9" width="100%"><tr><td nowrap>'.$tmpl->ext_outputTS(array($val),$this->pObj->MOD_SETTINGS["ts_analyzer_checkLinenum"],$this->pObj->MOD_SETTINGS["ts_analyzer_checkComments"],$this->pObj->MOD_SETTINGS["ts_analyzer_checkCrop"],$this->pObj->MOD_SETTINGS["ts_analyzer_checkSyntax"],$this->pObj->MOD_SETTINGS["ts_analyzer_checkSyntaxBlockmode"]).'</td></tr></table>
+							<td class="bgColor2"><table border=0 cellpadding=0 cellspacing=0 class="bgColor4" width="100%"><tr><td nowrap>'.$tmpl->ext_outputTS(array($val),$this->pObj->MOD_SETTINGS["ts_analyzer_checkLinenum"],$this->pObj->MOD_SETTINGS["ts_analyzer_checkComments"],$this->pObj->MOD_SETTINGS["ts_analyzer_checkCrop"],$this->pObj->MOD_SETTINGS["ts_analyzer_checkSyntax"],$this->pObj->MOD_SETTINGS["ts_analyzer_checkSyntaxBlockmode"]).'</td></tr></table>
 							</td>
 						</tr>
 					';
@@ -187,7 +187,7 @@ class tx_tstemplateanalyzer extends t3lib_extobjbase {
 							<td><img src=clear.gif width=3 height=1></td><td class="bgColor2"><b>'.$tmpl->templateTitles[current($tmpl->clearList_setup)].'</b></td></tr>
 						<tr>
 							<td><img src=clear.gif width=3 height=1></td>
-							<td class="bgColor2"><table border=0 cellpadding=0 cellspacing=0 bgcolor="#D9D5C9" width="100%"><tr><td nowrap>'.$tmpl->ext_outputTS(array($val),$this->pObj->MOD_SETTINGS["ts_analyzer_checkLinenum"],$this->pObj->MOD_SETTINGS["ts_analyzer_checkComments"],$this->pObj->MOD_SETTINGS["ts_analyzer_checkCrop"],$this->pObj->MOD_SETTINGS["ts_analyzer_checkSyntax"],$this->pObj->MOD_SETTINGS["ts_analyzer_checkSyntaxBlockmode"]).'</td></tr></table>
+							<td class="bgColor2"><table border=0 cellpadding=0 cellspacing=0 class="bgColor4" width="100%"><tr><td nowrap>'.$tmpl->ext_outputTS(array($val),$this->pObj->MOD_SETTINGS["ts_analyzer_checkLinenum"],$this->pObj->MOD_SETTINGS["ts_analyzer_checkComments"],$this->pObj->MOD_SETTINGS["ts_analyzer_checkCrop"],$this->pObj->MOD_SETTINGS["ts_analyzer_checkSyntax"],$this->pObj->MOD_SETTINGS["ts_analyzer_checkSyntaxBlockmode"]).'</td></tr></table>
 							</td>
 						</tr>
 					';
