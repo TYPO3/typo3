@@ -2,6 +2,7 @@
 2006-06-08  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
 	* Template tools (Web>Template) had hard-coded background colours
+	* Made Web > Template > Info skinnable
 
 2006-06-08  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
