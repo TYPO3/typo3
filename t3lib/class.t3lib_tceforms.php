@@ -2139,7 +2139,7 @@ class t3lib_TCEforms	{
 				}
 
 				if (is_array($dataStructArray['sheets']))	{
-					$item.= $this->getDynTabMenu($tabParts,'TCEFORMS:flexform:'.$PA['itemFormElName']);
+					$item.= $this->getDynTabMenu($tabParts,'TCEFORMS:flexform:'.$PA['itemFormElName'].$PA['_lang']);
 				} else {
 					$item.= $sheetContent;
 				}
