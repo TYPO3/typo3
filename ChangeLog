@@ -1,6 +1,11 @@
+
+2006-06-20  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+
+	* Fix bug #2839: Missing icons for copy mode and thumnails in clipboard (Web>List)
+
 2006-06-11  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
-	* Fix bugtracker issue 3505: BE multi-language flexforms do not work (t3lib_tceforms)
+	* Fix bug #3505: BE multi-language flexforms do not work (t3lib_tceforms)
 
 2006-06-08  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
