@@ -1,3 +1,8 @@
+
+2006-06-22  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+
+	* Created exclusiveKeys for the TCA field configuration of type "select" [fix from 2006-03-19 was lost, see below]
+
 2006-06-11  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
 	* Fix bugtracker issue 3505: BE multi-language flexforms do not work (t3lib_tceforms)
