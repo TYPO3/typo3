@@ -1732,7 +1732,12 @@ class t3lib_TCEforms	{
 			$selector_itemListStyle = isset($config['itemListStyle']) ? ' style="'.htmlspecialchars($config['itemListStyle']).'"' : ' style="'.$this->defaultMultipleSelectorStyle.'"';
 			$size = intval($config['size']);
 			$size = $config['autoSizeMax'] ? t3lib_div::intInRange(count($itemArray)+1,t3lib_div::intInRange($size,1),$config['autoSizeMax']) : $size;
-			$sOnChange = 'setFormValueFromBrowseWin(\''.$PA['itemFormElName'].'\',this.options[this.selectedIndex].value,this.options[this.selectedIndex].text); '.implode('',$PA['fieldChangeFunc']);
+			if ($config['exclusiveKeys'])	{
+				$sOnChange = 'setFormValueFromBrowseWin(\''.$PA['itemFormElName'].'\',this.options[this.selectedIndex].value,this.options[this.selectedIndex].text,\''.$config['exclusiveKeys'].'\'); ';
+			} else {
+				$sOnChange = 'setFormValueFromBrowseWin(\''.$PA['itemFormElName'].'\',this.options[this.selectedIndex].value,this.options[this.selectedIndex].text); ';
+			}
+			$sOnChange .= implode('',$PA['fieldChangeFunc']);
 			$itemsToSelect = '
 				<select name="'.$PA['itemFormElName'].'_sel"'.
 							$this->insertDefStyle('select').
@@ -4789,24 +4794,40 @@ class t3lib_TCEforms	{
 				browserWin = window.open(url,"Typo3WinBrowser","height=350,width="+(mode=="db"?650:600)+",status=0,menubar=0,resizable=1,scrollbars=1");
 				browserWin.focus();
 			}
-			function setFormValueFromBrowseWin(fName,value,label)	{	//
+			function setFormValueFromBrowseWin(fName,value,label,exclusiveValues)	{	//
 				var formObj = setFormValue_getFObj(fName)
 				if (formObj && value!="--div--")	{
 					fObj = formObj[fName+"_list"];
+					var len = fObj.length;
+						// Clear elements if exclusive values are found
+					if (exclusiveValues)	{
+						var m = new RegExp("(^|,)"+value+"($|,)");
+						if (exclusiveValues.match(m))	{
+								// the new value is exclusive
+							for (a=len-1;a>=0;a--)	fObj[a] = null;
+							len = 0;
+						} else if (len == 1)	{
+							m = new RegExp("(^|,)"+fObj.options[0].value+"($|,)");
+							if (exclusiveValues.match(m))	{
+									// the old value is exclusive
+								fObj[0] = null;
+								len = 0;
+							}
+						}
+					}
 						// Inserting element
-					var l=fObj.length;
-					var setOK=1;
+					var setOK = 1;
 					if (!formObj[fName+"_mul"] || formObj[fName+"_mul"].value==0)	{
-						for (a=0;a<l;a++)	{
+						for (a=0;a<len;a++)	{
 							if (fObj.options[a].value==value)	{
-								setOK=0;
+								setOK = 0;
 							}
 						}
 					}
 					if (setOK)	{
 						fObj.length++;
-						fObj.options[l].value=value;
-						fObj.options[l].text=unescape(label);
+						fObj.options[len].value = value;
+						fObj.options[len].text = unescape(label);
 
 							// Traversing list and set the hidden-field
 						setHiddenFromList(fObj,formObj[fName]);

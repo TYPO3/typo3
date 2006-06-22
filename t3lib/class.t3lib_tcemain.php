@@ -1266,7 +1266,7 @@ class t3lib_TCEmain	{
 
 		list($table,$id,$curValue,$status,$realPid,$recFID) = $PP;
 
-			// Detecting if value send is an array and if so, implode it around a comma:
+			// Detecting if value sent is an array and if so, implode it around a comma:
 		if (is_array($value))	{
 			$value = implode(',',$value);
 		}
@@ -1275,7 +1275,7 @@ class t3lib_TCEmain	{
 			// Anyways, this should NOT disturb anything else:
 		$value = $this->convNumEntityToByteValue($value);
 
-			// When values are send as group or select they come as comma-separated values which are exploded by this function:
+			// When values are sent as group or select they come as comma-separated values which are exploded by this function:
 		$valueArray = $this->checkValue_group_select_explodeSelectGroupValue($value);
 
 			// If not multiple is set, then remove duplicates:
@@ -1283,7 +1283,18 @@ class t3lib_TCEmain	{
 			$valueArray = array_unique($valueArray);
 		}
 
-		// This could be a good spot for parsing the array through a validation-function which checks if the values are allright (except that database references are not in their final form - but that is the point, isn't it?)
+			// If an exclusive key is found, discard all others:
+		if ($tcaFieldConf['type']=='select' && $tcaFieldConf['exclusiveKeys'])	{
+			$exclusiveKeys = t3lib_div::trimExplode(',', $tcaFieldConf['exclusiveKeys']);
+			foreach($valueArray as $kk => $vv)	{
+				if (in_array($vv, $exclusiveKeys))	{	// $vv is the item key!
+					$valueArray = Array($kk => $vv);
+					break;
+				}
+			}
+		}
+
+		// This could be a good spot for parsing the array through a validation-function which checks if the values are alright (except that database references are not in their final form - but that is the point, isn't it?)
 		// NOTE!!! Must check max-items of files before the later check because that check would just leave out filenames if there are too many!!
 
 			// Checking for select / authMode, removing elements from $valueArray if any of them is not allowed!

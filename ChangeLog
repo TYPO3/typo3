@@ -1,4 +1,8 @@
 
+2006-06-22  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+
+	* Created exclusiveKeys for the TCA field configuration of type "select" [fix from 2006-03-19 was lost, see below]
+
 2006-06-20  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
 	* Fix bug #2839: Missing icons for copy mode and thumnails in clipboard (Web>List)
