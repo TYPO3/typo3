@@ -1,3 +1,6 @@
+2006-06-27 Karsten Dambekalns <karsten@typo3.org>
+
+        * typo3/init.php: Fixed bug #2871.
 
 2006-06-22  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
@@ -6,7 +9,7 @@
 2006-06-11  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
 	* Fix bugtracker issue 3505: BE multi-language flexforms do not work (t3lib_tceforms)
-	
+
 2006-06-08  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
 	* Template tools (Web>Template) had hard-coded background colours
@@ -69,7 +72,16 @@
 
 2006-05-05  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
-	* Fixes and features to htmlArea RTE extension (see details in local ChangeLog)
+	* EM: Fixed bug #3017.
+	* t3lib/class.t3lib_befunc.php: Fixed bug (trivial but important) #3106.
+
+2006-04-03  Karsten Dambekalns  <karsten@typo3.org>
+
+	* EM: Fixed bugs #3096, #3097.
+
+2006-04-02  Karsten Dambekalns  <karsten@typo3.org>
+
+	* EM: Fixed bugs #3033, #3039, #2992/#2817.
 
 2006-04-29  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
