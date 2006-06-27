@@ -3287,13 +3287,11 @@ From sub-directory:
 		",-1,1);
 
 
-		// Menu
-
+			// Menu
 		$this->messageFunc_nl2br = 0;
 
 		$sql_files = array_merge(
 			t3lib_div::getFilesInDir(PATH_typo3conf,'sql',1,1),
-#			t3lib_div::getFilesInDir(PATH_t3lib."stddb/",'sql',1,1),
 			array()
 		);
 
@@ -3304,27 +3302,23 @@ From sub-directory:
 		}
 
 		$out='';
-
-
-			$out.='<tr>
+		$out.='<tr>
 				<td nowrap="nowrap"><strong>'.$this->fw('Update required tables').'</strong></td>
 				<td'.($action_type=='cmpFile|CURRENT_TABLES'?' bgcolor="#D9D5C9"':'').'>'.$this->fw('<a href="'.htmlspecialchars($this->action.'&TYPO3_INSTALL[database_type]=cmpFile|CURRENT_TABLES#bottom').'"><strong>COMPARE</strong></a>').'</td>
 				<td>'.$this->fw('&nbsp;').'</td>
 				<td>'.$this->fw('&nbsp;').'</td>
 			</tr>';
 
-			$out.='<tr>
+		$out.='<tr>
 				<td nowrap="nowrap"><strong>'.$this->fw('Dump static data').'</strong></td>
 				<td>'.$this->fw('&nbsp;').'</td>
 				<td nowrap="nowrap"'.($action_type=='import|CURRENT_STATIC'?' bgcolor="#D9D5C9"':'').'>'.$this->fw('<a href="'.htmlspecialchars($this->action.'&TYPO3_INSTALL[database_type]=import|CURRENT_STATIC#bottom').'"><strong>IMPORT</strong></a>').'</td>
 				<td>'.$this->fw('&nbsp;').'</td>
 			</tr>';
 
-			$out.='<tr>
+		$out.='<tr>
 				<td colspan="4">&nbsp;</td>
 			</tr>';
-
-
 
 
 		reset($sql_files);
@@ -3336,10 +3330,6 @@ From sub-directory:
 			$lf=t3lib_div::testInt($k);
 			$fShortName = substr($file,strlen(PATH_site));
 
-			/*
-			$spec1 = (!count($whichTables) && $fShortName==TYPO3_mainDir.'t3lib/install/tables_'.str_replace('.','',$GLOBALS['TYPO_VERSION']).".sql" ? " <font color=#000066>(1)</span>" : "");
-			$spec2 = (count($whichTables) && !$static_template_count && $fShortName==TYPO3_mainDir.'t3lib/install/static_template_'.str_replace('.','',$GLOBALS['TYPO_VERSION'])."+adt.sql" ? " <font color=#000066>(2)</span>" : "");
-			*/
 			$spec1 = $spec2 = '';
 
 			$out.='<tr>
@@ -3391,8 +3381,8 @@ From sub-directory:
 		}
 
 
-	// Install user
-	// clear uc
+			// Install user
+			// clear uc
 		if ($action_type)	{
 			switch($actionParts[0])	{
 				case 'cmpFile':
