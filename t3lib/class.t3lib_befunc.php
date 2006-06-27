@@ -1088,9 +1088,9 @@ class t3lib_BEfunc	{
 	 * IDENTICAL to the function by same name found in t3lib_page:
 	 * Usage: 2
 	 *
-	 * @param	string		Hash key, 32 bytes hex
-	 * @param	string		$data must be serialized before function call
-	 * @param	string		Visual/symbolic identification (informational only)
+	 * @param	string		32 bit hash string (eg. a md5 hash of a serialized array identifying the data being stored)
+	 * @param	string		The data string. If you want to store an array, then just serialize it first.
+	 * @param	string		$ident is just a textual identification in order to inform about the content! May be 20 characters long.
 	 * @return	void
 	 */
 	function storeHash($hash,$data,$ident)	{
