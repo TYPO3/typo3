@@ -3,6 +3,7 @@
         * typo3/init.php: Fixed bug #2871.
 	* t3lib/class.t3lib_befunc.php: Fixed bug #3106, Documentation of function storeHash differs between class befunc and class page
 	* class.em_xmlhandler.php: Small change to the inline code docs
+	* class.tx_install.php: Code cleanup, removed some commented code and cleaned indentation
 
 2006-06-22  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
