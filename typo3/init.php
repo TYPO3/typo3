@@ -76,7 +76,7 @@ define('TYPO3_mainDir', 'typo3/');		// This is the directory of the backend admi
 // *******************************
 // Checking path
 // *******************************
-$temp_path = dirname(PATH_thisScript).'/';
+$temp_path = str_replace('\\','/',dirname(PATH_thisScript).'/');
 $temp_modPath='';
 	// If TYPO3_MOD_PATH is defined we must calculate the modPath since init.php must be included by a module
 if (substr($temp_path,-strlen(TYPO3_mainDir))!=TYPO3_mainDir)	{

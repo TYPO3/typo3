@@ -1,3 +1,6 @@
+2006-06-27 Karsten Dambekalns <karsten@typo3.org>
+
+	* typo3/init.php: Fixed bug #2871.
 
 2006-06-22  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
