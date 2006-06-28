@@ -686,7 +686,7 @@ class t3lib_install {
 		$outStatements=array();
 		foreach($statements as $line => $linecontent)	{
 			$reg = array();
-			if (eregi('^insert[[:space:]]*into[[:space:]]*[`]?([[:alnum:]_]*)[`]?',substr($linecontent,0,100),$reg))	{
+			if (preg_match('/^insert[[:space:]]*into[[:space:]]*[`]?([[:alnum:]_]*)[`]?/i',substr($linecontent,0,100),$reg))	{
 				$nTable = trim($reg[1]);
 				if ($nTable && !strcmp($table,$nTable))	{
 					$outStatements[]=$linecontent;
