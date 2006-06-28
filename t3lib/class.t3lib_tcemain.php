@@ -3302,7 +3302,7 @@ class t3lib_TCEmain	{
 								$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 									't3ver_id',
 									$table,
-									'(t3ver_oid='.$id.' || uid='.$id.')'.$this->deleteClause($table),
+									'(t3ver_oid='.$id.' OR uid='.$id.')'.$this->deleteClause($table),
 									'',
 									't3ver_id DESC',
 									'1'
