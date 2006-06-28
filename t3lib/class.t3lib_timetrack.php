@@ -562,32 +562,29 @@ class t3lib_timeTrack {
 		if ($js)    {
 			echo"alert('".t3lib_div::slashJS($header."\n".$text)."');";
 		} else {
-			echo '
+			echo '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+					"http://www.w3.org/TR/xhtml1/DTD/xhtml11.dtd">
+				<?xml version="1.0" encoding="utf-8"?>
 				<html>
 					<head>
 						'.($baseUrl ? '<base href="'.htmlspecialchars($baseUrl).'" />' : '').'
 						<title>Error!</title>
+						<style type="text/css"><!--/*--><![CDATA[/*><!--*/ 
+							body { font-family: verdana,arial,helvetica; font-size: 90%; text-align: center; }
+							h1 { font-size: 1.2em; margin: 0 0 1em 0; }
+							p { margin: 0; text-align: left; }
+							img { border: 0; margin: 10px 0; }
+							div.center div { margin: 0 auto; }
+							.errorBox { width: 400px; padding: 0.5em; border: 1px solid black; background-color: #F4F0E8; }
+						/*]]>*/--></style>
 					</head>
-					<body bgcolor="white">
-						<div align="center">
-							<table border="0" cellspacing="0" cellpadding="0" width="333" bgcolor="#ffffff">
-								<tr>
-									<td style="text-align:center";><img src="'.TYPO3_mainDir.'gfx/typo3logo.gif" width="123" height="34" vspace="10" border="0" alt="" /></td>
-								</tr>
-								<tr>
-									<td bgcolor="black">
-										<table width="100%" border="0" cellspacing="1" cellpadding="10">
-											<tr>
-												<td bgcolor="#F4F0E8">
-													<font face="verdana,arial,helvetica" size="2">';
-			echo '<b><center><font size="+1">'.$header.'</font></center></b><br />'.$text;
-			echo '                                  </font>
-												</td>
-											</tr>
-										</table>
-									</td>
-								</tr>
-							</table>
+					<body>
+						<div class="center">
+							<img src="'.TYPO3_mainDir.'gfx/typo3logo.gif" width="123" height="34" alt="" />
+							<div class="errorBox">
+								<h1>'.$header.'</h1>
+								<p>'.$text.'</p>
+							</div>
 						</div>
 					</body>
 				</html>';

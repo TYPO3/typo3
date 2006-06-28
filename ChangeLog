@@ -1,3 +1,8 @@
+
+2006-06-28  Ernesto Baschny  <ernst@cron-it.de>
+
+	* Fix bug #3391: HTML-Source in error-pages now valid xhtml (FE)
+
 2006-06-28  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
 	* Fix bug# 3397: FORM submit as image is not valid xhtml
