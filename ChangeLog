@@ -1,3 +1,8 @@
+
+2006-06-28 Bernhard Kraft  <kraftb@kraftb.at>
+
+	* Fix bug #3162: Cropscale fails, if one dimesion has already the right size (thanks to Stefan Geith)
+
 2006-06-28 Karsten Dambekalns <karsten@typo3.org>
 
 	* t3lib_extfilefunc: func_upload() now logs if no file was uploaded.

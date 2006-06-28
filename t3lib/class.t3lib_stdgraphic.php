@@ -2153,7 +2153,7 @@ class t3lib_stdGraphic	{
 					// if no convertion should be performed
 				$wh_noscale = (!$w && !$h) || ($data[0]==$info[0] && $data[1]==$info[1]);		// this flag is true if the width / height does NOT dictate the image to be scaled!! (that is if no w/h is given or if the destination w/h matches the original image-dimensions....
 
-				if ($wh_noscale && !$params && !$frame && $newExt==$info[2] && !$mustCreate) {
+				if ($wh_noscale && !$data['crs'] && !$params && !$frame && $newExt==$info[2] && !$mustCreate) {
 					$info[3] = $imagefile;
 					return $info;
 				}
