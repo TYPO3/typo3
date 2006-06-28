@@ -3,10 +3,11 @@
 
 	* Fix bug# 3397: FORM submit as image is not valid xhtml
 	* Fixed restriction to languages in Frontend editing
+	* Fix bugs #3212 & #1178: empty page is displayed when accessing Web>Versioning
 
 2006-06-28 Bernhard Kraft  <kraftb@kraftb.at>
 
-	* Fix bug #3162: Cropscale fails, if one dimesion has already the right size (thanks to Stefan Geith)
+	* Fix bug #3162: Cropscale fails, if one dimension has already the right size (thanks to Stefan Geith)
 
 2006-06-28 Karsten Dambekalns <karsten@typo3.org>
 
