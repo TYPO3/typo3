@@ -808,7 +808,7 @@ class t3lib_extFileFunctions extends t3lib_basicFileFunctions	{
 					} else $this->writelog(1,1,104,'The uploaded file exceeds the size-limit of %s bytes',Array($this->maxUploadFileSize*1024));
 				} else $this->writelog(1,1,105,'You are not allowed to upload files!','');
 			} else $this->writelog(1,2,106,'The uploaded file did not exist!','');
-		}
+		} else $this->writelog(1,2,106,'No file was uploaded!','');
 	}
 
 	/**
