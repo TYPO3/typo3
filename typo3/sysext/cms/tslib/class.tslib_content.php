@@ -687,7 +687,7 @@ class tslib_cObj {
 	 * @link http://typo3.org/doc.0.html?&tx_extrepmgm_pi1[extUid]=270&tx_extrepmgm_pi1[tocEl]=352&cHash=379c60f8bc
 	 */
 	function FILE($conf)	{
-		$theValue = $this->fileResource($this->stdWrap($conf['file'],$conf['file.']), trim($this->getAltParam($conf)));
+		$theValue = $this->fileResource($this->stdWrap($conf['file'],$conf['file.']), trim($this->getAltParam($conf, false)));
 		if ($conf['linkWrap'])	{
 			$theValue = $this->linkWrap($theValue,$conf['linkWrap']);
 		}
@@ -1861,11 +1861,17 @@ class tslib_cObj {
 					case 'submit':
 						$value=trim($parts[2]);
 						if ($conf['image.'])	{
-							$this->data[$this->currentValKey]=$value;
-							$image=$this->IMAGE($conf['image.']);
-						} else $image='';
-						if($image)	{
-							$fieldCode = str_replace('<img','<input type="image"'.$addParams.' name="'.$confData['fieldname'].'"' ,$image);
+							$this->data[$this->currentValKey] = $value;
+							$image = $this->IMG_RESOURCE($conf['image.']);
+							$params = $conf['image.']['params'] ? ' '.$conf['image.']['params'] : '';
+							$params .= $this->getAltParam($conf['image.'], false);
+							$params .= $addParams;
+						} else {
+							$image = '';
+						}
+						if ($image)	{
+							$fieldCode=sprintf('<input type="image" name="%s"%s src="%s"%s />',
+								$confData['fieldname'], $elementIdAttribute, $image, $params);
 						} else	{
 							$fieldCode=sprintf('<input type="submit" name="%s"%s value="%s"%s />',
 								$confData['fieldname'], $elementIdAttribute, t3lib_div::deHSCentities(htmlspecialchars($value)), $addParams);
@@ -2775,14 +2781,15 @@ class tslib_cObj {
 	}
 
 	/**
-	 * An abstraction method which creates an alt or title parameter for an HTML img tag.
+	 * An abstraction method which creates an alt or title parameter for an HTML img, applet, area or input element and the FILE content element.
 	 * From the $conf array it implements the properties "altText", "titleText" and "longdescURL"
 	 *
 	 * @param	array		TypoScript configuration properties
+	 * @param	boolean		If set, the longdesc attribute will be generated - must only be used for img elements!
 	 * @return	string		Parameter string containing alt and title parameters (if any)
-	 * @see IMGTEXT(), cImage()
+	 * @see IMGTEXT(), FILE(), FORM(), cImage(), filelink()
 	 */
-	function getAltParam($conf)	{
+	function getAltParam($conf, $longDesc=true)	{
 		$altText = trim($this->stdWrap($conf['altText'], $conf['altText.']));
 		$titleText = trim($this->stdWrap($conf['titleText'],$conf['titleText.']));
 		$longDesc = trim($this->stdWrap($conf['longdescURL'],$conf['longdescURL.']));
@@ -6824,7 +6831,7 @@ class tslib_cObj {
 		} else {
 			$lang = -1;
 		}
-		if (!$BE_USER->checkLanguageAccess($GLOBALS['TSFE']->sys_language_uid))	{ return $content; }
+		if (!$BE_USER->checkLanguageAccess($lang)	{ return $content; }
 
 		if (!$conf['onlyCurrentPid'] || $dataArr['pid']==$GLOBALS['TSFE']->id)	{
 				// Permissions:
@@ -7023,7 +7030,7 @@ class tslib_cObj {
 			} else {
 				$lang = -1;
 			}
-			if (!$BE_USER->checkLanguageAccess($GLOBALS['TSFE']->sys_language_uid))	{ $mayEdit = 0; }
+			if (!$BE_USER->checkLanguageAccess($lang)	{ $mayEdit = 0; }
 		}
 
 		if ($GLOBALS['TSFE']->displayFieldEditIcons && $table && $mayEdit && $fieldList)	{
