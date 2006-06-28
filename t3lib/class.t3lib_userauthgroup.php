@@ -1169,7 +1169,7 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 		global $TYPO3_CONF_VARS;
 
 			// Fetching records of the groups in $grList (which are not blocked by lockedToDomain either):
-		$lockToDomain_SQL = ' AND (lockToDomain=\'\' OR lockToDomain=\''.t3lib_div::getIndpEnv('HTTP_HOST').'\')';
+		$lockToDomain_SQL = ' AND (lockToDomain=\'\' OR lockToDomain IS NULL OR lockToDomain=\''.t3lib_div::getIndpEnv('HTTP_HOST').'\')';
 		$whereSQL = 'deleted=0 AND hidden=0 AND pid=0 AND uid IN ('.$grList.')'.$lockToDomain_SQL;
 
 			// Hook for manipulation of the WHERE sql sentence which controls which BE-groups are included
