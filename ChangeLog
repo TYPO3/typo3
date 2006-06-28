@@ -3,6 +3,7 @@
 	* t3lib_extfilefunc: func_upload() now logs if no file was uploaded.
 	* t3lib_tcemain: Made SQL query in versionizeRecord() conform to DBAL (use OR instead of ||).
 	* t3lib_userauthgroup, tx_sv_auth: Made FE group lookups possible when lockToDomain is NULL in DB (e.g. when using Oracle).
+	* t3lib/stddb/tables.sql: Changed be_users.lang to VARCHAR instead of CHAR, as MySQL changes it anyway.
 
 2006-06-27 Karsten Dambekalns <karsten@typo3.org>
 
