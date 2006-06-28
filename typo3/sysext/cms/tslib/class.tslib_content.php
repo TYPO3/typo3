@@ -6831,7 +6831,7 @@ class tslib_cObj {
 		} else {
 			$lang = -1;
 		}
-		if (!$BE_USER->checkLanguageAccess($lang)	{ return $content; }
+		if (!$BE_USER->checkLanguageAccess($lang))	{ return $content; }
 
 		if (!$conf['onlyCurrentPid'] || $dataArr['pid']==$GLOBALS['TSFE']->id)	{
 				// Permissions:
