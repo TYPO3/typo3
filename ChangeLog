@@ -1,6 +1,7 @@
 2006-06-28 Karsten Dambekalns <karsten@typo3.org>
 
 	* t3lib_extfilefunc: func_upload() now logs if no file was uploaded.
+	* t3lib_tcemain: Made SQL query in versionizeRecord() conform to DBAL (use OR instead of ||).
 
 2006-06-27 Karsten Dambekalns <karsten@typo3.org>
 
