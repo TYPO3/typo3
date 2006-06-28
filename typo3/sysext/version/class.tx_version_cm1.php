@@ -64,9 +64,9 @@ class tx_version_cm1 {
 	 */
 	function main(&$backRef,$menuItems,$table,$uid)	{
 		global $BE_USER,$TCA,$LANG;
-
+		
 		$localItems = Array();
-		if (!$backRef->cmLevel)	{
+		if (!$backRef->cmLevel && $uid>0)	{
 
 				// Returns directly, because the clicked item was not from the pages table
 			if (!$TCA[$table] || !$TCA[$table]['ctrl']['versioningWS'])	return $menuItems;

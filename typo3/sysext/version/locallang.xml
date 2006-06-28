@@ -13,6 +13,8 @@
 			<label index="function1">Function #1</label>
 			<label index="function2">Function #2</label>
 			<label index="function3">Function #3</label>
+			<label index="clickAPage_header">Web&gt;Versioning module</label>
+			<label index="clickAPage_content">Please click a page in the pagetree frame to see the versioning module.</label>
 		</languageKey>
 	</data>
 </T3locallang>
