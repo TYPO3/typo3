@@ -14,7 +14,7 @@
 /**
 	\mainpage 	
 	
-	 @version V4.81 3 May 2006  (c) 2000-2006 John Lim (jlim#natsoft.com.my). All rights reserved.
+	 @version V4.90 8 June 2006  (c) 2000-2006 John Lim (jlim#natsoft.com.my). All rights reserved.
 
 	Released under both BSD license and Lesser GPL library license. You can choose which license
 	you prefer.
@@ -171,7 +171,7 @@
 		/**
 		 * ADODB version as a string.
 		 */
-		$ADODB_vers = 'V4.81 3 May 2006  (c) 2000-2006 John Lim (jlim#natsoft.com.my). All rights reserved. Released BSD & LGPL.';
+		$ADODB_vers = 'V4.90 8 June 2006  (c) 2000-2006 John Lim (jlim#natsoft.com.my). All rights reserved. Released BSD & LGPL.';
 	
 		/**
 		 * Determines whether recordset->RecordCount() is used. 
@@ -314,6 +314,7 @@
 	var $_evalAll = false;
 	var $_affected = false;
 	var $_logsql = false;
+	var $_transmode = ''; // transaction mode
 	
 	/**
 	 * Constructor
@@ -823,7 +824,10 @@
 							$sql .= str_replace(',','.',$v); // locales fix so 1.1 does not get converted to 1,1
 						else if ($typ == 'boolean')
 							$sql .= $v ? $this->true : $this->false;
-						else if ($v === null)
+						else if ($typ == 'object') {
+							if (method_exists($v, '__toString')) $sql .= $this->qstr($v->__toString());
+							else $sql .= $this->qstr((string) $v);
+						} else if ($v === null)
 							$sql .= 'NULL';
 						else
 							$sql .= $v;
@@ -1732,15 +1736,16 @@
 	 */
 	function& AutoExecute($table, $fields_values, $mode = 'INSERT', $where = FALSE, $forceUpdate=true, $magicq=false) 
 	{
+		$false = false;
 		$sql = 'SELECT * FROM '.$table;  
 		if ($where!==FALSE) $sql .= ' WHERE '.$where;
 		else if ($mode == 'UPDATE' || $mode == 2 /* DB_AUTOQUERY_UPDATE */) {
 			ADOConnection::outp('AutoExecute: Illegal mode=UPDATE with empty WHERE clause');
-			return false;
+			return $false;
 		}
 
 		$rs =& $this->SelectLimit($sql,1);
-		if (!$rs) return false; // table does not exist
+		if (!$rs) return $false; // table does not exist
 		$rs->tableName = $table;
 		
 		switch((string) $mode) {
@@ -1754,7 +1759,7 @@
 			break;
 		default:
 			ADOConnection::outp("AutoExecute: Unknown mode=$mode");
-			return false;
+			return $false;
 		}
 		$ret = false;
 		if ($sql) $ret = $this->Execute($sql);
@@ -2017,6 +2022,57 @@
 	 */
 	function BeginTrans() {return false;}
 	
+	/* set transaction mode */
+	function SetTransactionMode( $transaction_mode ) 
+	{
+		$transaction_mode = $this->MetaTransaction($transaction_mode, $this->dataProvider);
+		$this->_transmode  = $transaction_mode;
+	}
+/*
+http://msdn2.microsoft.com/en-US/ms173763.aspx
+http://dev.mysql.com/doc/refman/5.0/en/innodb-transaction-isolation.html
+http://www.postgresql.org/docs/8.1/interactive/sql-set-transaction.html
+http://www.stanford.edu/dept/itss/docs/oracle/10g/server.101/b10759/statements_10005.htm
+*/
+	function MetaTransaction($mode,$db)
+	{
+		$mode = strtoupper($mode);
+		$mode = str_replace('ISOLATION LEVEL ','',$mode);
+		
+		switch($mode) {
+
+		case 'READ UNCOMMITTED':
+			switch($db) { 
+			case 'oci8':
+			case 'oracle':
+				return 'ISOLATION LEVEL READ COMMITTED';
+			default:
+				return 'ISOLATION LEVEL READ UNCOMMITTED';
+			}
+			break;
+					
+		case 'READ COMMITTED':
+				return 'ISOLATION LEVEL READ COMMITTED';
+			break;
+			
+		case 'REPEATABLE READ':
+			switch($db) {
+			case 'oci8':
+			case 'oracle':
+				return 'ISOLATION LEVEL SERIALIZABLE';
+			default:
+				return 'ISOLATION LEVEL REPEATABLE READ';
+			}
+			break;
+			
+		case 'SERIALIZABLE':
+				return 'ISOLATION LEVEL SERIALIZABLE';
+			break;
+			
+		default:
+			return $mode;
+		}
+	}
 	
 	/**
 	 * If database does not support transactions, always return true as data always commited
@@ -2208,7 +2264,7 @@
 	 *
 	 * @return  array of column names for current table.
 	 */ 
-	function &MetaColumnNames($table, $numIndexes=false) 
+	function &MetaColumnNames($table, $numIndexes=false,$useattnum=false /* only for postgres */) 
 	{
 		$objarr =& $this->MetaColumns($table);
 		if (!is_array($objarr)) {
@@ -2218,7 +2274,12 @@
 		$arr = array();
 		if ($numIndexes) {
 			$i = 0;
-			foreach($objarr as $v) $arr[$i++] = $v->name;
+			if ($useattnum) {
+				foreach($objarr as $v) 
+					$arr[$v->attnum] = $v->name;
+				
+			} else
+				foreach($objarr as $v) $arr[$i++] = $v->name;
 		} else
 			foreach($objarr as $v) $arr[strtoupper($v->name)] = $v->name;
 		
@@ -2260,6 +2321,22 @@
 		}
 
 		return adodb_date($this->fmtDate,$d);
+	}
+	
+	function BindDate($d)
+	{
+		$d = $this->DBDate($d);
+		if (strncmp($d,"'",1)) return $d;
+		
+		return substr($d,1,strlen($d)-2);
+	}
+	
+	function BindTimeStamp($d)
+	{
+		$d = $this->DBTimeStamp($d);
+		if (strncmp($d,"'",1)) return $d;
+		
+		return substr($d,1,strlen($d)-2);
 	}
 	
 	
@@ -3361,6 +3438,7 @@
 		'BPCHAR' => 'C',
 		'CHARACTER' => 'C',
 		'INTERVAL' => 'C',  # Postgres
+		'MACADDR' => 'C', # postgres
 		##
 		'LONGCHAR' => 'X',
 		'TEXT' => 'X',
@@ -3387,6 +3465,7 @@
 		'DATETIME' => 'T',
 		'TIMESTAMPTZ' => 'T',
 		'T' => 'T',
+		'TIMESTAMP WITHOUT TIME ZONE' => 'T', // postgresql
 		##
 		'BOOL' => 'L',
 		'BOOLEAN' => 'L', 

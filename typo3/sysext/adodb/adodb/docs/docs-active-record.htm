@@ -159,11 +159,24 @@ The code snippet above will change the favorite color to red, and then UPDATE th
 <a name=additional>
 <h2>ADOdb Specific Functionality</h2>
 <h3><li>Setting the Table Name</h3>
-<p>The default behaviour on creating an ADOdb_Active_Record is to "pluralize" the class name and use that as the table name. Often, this is not the case. For example, the Person class could be reading from the "People" table. We provide a constructor parameter to override the default table naming behaviour.
+<p>The default behaviour on creating an ADOdb_Active_Record is to "pluralize" the class name and
+ use that as the table name. Often, this is not the case. For example, the Person class could be reading 
+ from the "People" table. 
+<p>We provide two ways to define your own table:
+<p>1. Use a constructor parameter to override the default table naming behaviour.
 <pre>
 	class Person extends ADOdb_Active_Record{}
 	$person = new Person('People');
 </pre>
+<p>2. Define it in a class declaration:
+<pre>
+	class Person extends ADOdb_Active_Record
+	{
+	var $_table = 'People';
+	}
+	$person = new Person();
+</pre>
+
 <h3><li>$ADODB_ASSOC_CASE</h3>
 <p>This allows you to control the case of field names and properties. For example, all field names in Oracle are upper-case by default. So you 
 can force field names to be lowercase using $ADODB_ASSOC_CASE. Legal values are as follows:
@@ -184,13 +197,13 @@ $person2->NAME = 'Lily';
 
 <p>Also see <a href=http://phplens.com/adodb/reference.constants.adodb_assoc_case.html>$ADODB_ASSOC_CASE</a>.
 
-<h3><li>ADOdb_Active_Record::Save</h3>
+<h3><li>ADOdb_Active_Record::Save()</h3>
 <p>
 Saves a record by executing an INSERT or UPDATE SQL statement as appropriate. 
 <p>Returns false on  unsuccessful INSERT, true if successsful INSERT.
 <p>Returns 0 on failed UPDATE, and 1 on UPDATE if data has changed, and -1 if no data was changed, so no UPDATE statement was executed.
 
-<h3><li>ADOdb_Active_Record::Replace</h3>
+<h3><li>ADOdb_Active_Record::Replace()</h3>
 <p>
 ADOdb supports replace functionality, whereby the record is inserted if it does not exists, or updated otherwise.
 <pre>
@@ -201,7 +214,7 @@ $ok = $rec->replace(); // 0=failure, 1=update, 2=insert
 </pre>
 
 
-<h3><li>ADOdb_Active_Record::Load()</h3>
+<h3><li>ADOdb_Active_Record::Load($where)</h3>
 <p>Sometimes, we want to load a single record into an Active Record. We can do so using:
 <pre>
 $person->load("id=3");
@@ -211,6 +224,17 @@ $person->load("id=3");
 $person->load("id=?", array(3));
 </pre>
 <p>Returns false if an error occurs.
+
+<h3><li>ADOdb_Active_Record::Find($whereOrderBy, $bindarr=false, $pkeyArr=false)</h3>
+<p>We want to retrieve an array of active records based on some search criteria. For example:
+<pre>
+class Person extends ADOdb_Active_Record {
+var $_table = 'people';
+}
+
+$person = new Person();
+peopleArray =& $person->Find("name like ? order by age", array('Sm%'));
+</pre>
 
 <h3><li>Error Handling and Debugging</h3>
 <p>
@@ -473,6 +497,9 @@ echo "&lt;p>Name first (should be John): ",$person->name_first, "&lt;br>Class = 
  <p>PHP5 specific: Change PHP5 implementation of Active Record to use __get() and __set() for better performance.
 
 <h3> Change Log</h3>
+<p>0.04 5 June 2006 <br>
+<p>Added support for declaring table name in $_table in class declaration. Thx Bill Dueber for idea.
+<p>Added find($where,$bindarr=false) method to retrieve an array of active record objects.
 <p>0.03 <br>
 - Now we only update fields that have changed, using $this->_original.<br>
 - We do not include auto_increment fields in replace(). Thx Travis Cline<br>

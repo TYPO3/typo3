@@ -7,7 +7,7 @@ global $ADODB_INCLUDED_LIB;
 $ADODB_INCLUDED_LIB = 1;
 
 /* 
- @version V4.81 3 May 2006 (c) 2000-2006 John Lim (jlim\@natsoft.com.my). All rights reserved.
+ @version V4.90 8 June 2006 (c) 2000-2006 John Lim (jlim\@natsoft.com.my). All rights reserved.
   Released under both BSD license and Lesser GPL library license. 
   Whenever there is any discrepancy between the two licenses, 
   the BSD license will take precedence. See License.txt. 
@@ -325,6 +325,8 @@ function _adodb_getcount(&$zthis, $sql,$inputarr=false,$secs2cache=0)
 		$rewritesql = preg_replace(
 					'/^\s*SELECT\s.*\s+FROM\s/Uis','SELECT COUNT(*) FROM ',$sql);
 
+		
+		
 		// fix by alexander zhukov, alex#unipack.ru, because count(*) and 'order by' fails 
 		// with mssql, access and postgresql. Also a good speedup optimization - skips sorting!
 		// also see http://phplens.com/lens/lensforum/msgs.php?id=12752
@@ -332,10 +334,13 @@ function _adodb_getcount(&$zthis, $sql,$inputarr=false,$secs2cache=0)
 			$rewritesql = preg_replace('/(\sORDER\s+BY\s.*)/is','',$rewritesql);
 		else
 			$rewritesql = preg_replace('/(\sORDER\s+BY\s[^)]*)/is','',$rewritesql);
-		 
 	}
 	
+	
+	
 	if (isset($rewritesql) && $rewritesql != $sql) {
+		if (preg_match('/\sLIMIT\s+[0-9]+/i',$sql,$limitarr)) $rewritesql .= $limitarr[1];
+		 
 		if ($secs2cache) {
 			// we only use half the time of secs2cache because the count can quickly
 			// become inaccurate if new records are added
@@ -354,6 +359,8 @@ function _adodb_getcount(&$zthis, $sql,$inputarr=false,$secs2cache=0)
 	if (preg_match('/\s*UNION\s*/is', $sql)) $rewritesql = $sql;
 	else $rewritesql = preg_replace('/(\sORDER\s+BY\s.*)/is','',$sql); 
 	
+	if (preg_match('/\sLIMIT\s+[0-9]+/i',$sql,$limitarr)) $rewritesql .= $limitarr[0];
+		
 	$rstest = &$zthis->Execute($rewritesql,$inputarr);
 	if (!$rstest) $rstest = $zthis->Execute($sql,$inputarr);
 	
@@ -1017,5 +1024,47 @@ function _adodb_backtrace($printOrArr=true,$levels=9999,$skippy=0)
 	
 	return $s;
 }
+/*
+function _adodb_find_from($sql) 
+{
+
+	$sql = str_replace(array("\n","\r"), ' ', $sql);
+	$charCount = strlen($sql);
+	
+	$inString = false;
+	$quote = '';
+	$parentheseCount = 0;
+	$prevChars = '';
+	$nextChars = '';
+	
+
+	for($i = 0; $i < $charCount; $i++) {
+
+    	$char = substr($sql,$i,1);
+	    $prevChars = substr($sql,0,$i);
+    	$nextChars = substr($sql,$i+1);
+
+		if((($char == "'" || $char == '"' || $char == '`') && substr($prevChars,-1,1) != '\\') && $inString === false) {
+			$quote = $char;
+			$inString = true;
+		}
+
+		elseif((($char == "'" || $char == '"' || $char == '`') && substr($prevChars,-1,1) != '\\') && $inString === true && $quote == $char) {
+			$quote = "";
+			$inString = false;
+		}
+
+		elseif($char == "(" && $inString === false)
+			$parentheseCount++;
+
+		elseif($char == ")" && $inString === false && $parentheseCount > 0)
+			$parentheseCount--;
+
+		elseif($parentheseCount <= 0 && $inString === false && $char == " " && strtoupper(substr($prevChars,-5,5)) == " FROM")
+			return $i;
+
+	}
+}
+*/
 
 ?>

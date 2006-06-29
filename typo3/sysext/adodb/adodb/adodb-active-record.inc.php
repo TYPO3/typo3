@@ -1,7 +1,7 @@
 <?php
 /*
 
-@version V4.81 3 May 2006  (c) 2000-2006 John Lim (jlim#natsoft.com.my). All rights reserved.
+@version V4.90 8 June 2006  (c) 2000-2006 John Lim (jlim#natsoft.com.my). All rights reserved.
   Latest version is available at http://adodb.sourceforge.net
  
   Released under both BSD license and Lesser GPL library license. 
@@ -10,7 +10,7 @@
   
   Active Record implementation. Superset of Zend Framework's.
   
-  Version 0.03
+  Version 0.04
   
   See http://www-128.ibm.com/developerworks/java/library/j-cb03076/?ca=dgr-lnxw01ActiveRecord 
   	for info on Ruby on Rails Active Record implementation
@@ -56,7 +56,7 @@ function ADODB_SetDatabaseAdapter(&$db)
 
 class ADODB_Active_Record {
 	var $_dbat; // associative index pointing to ADODB_Active_DB eg. $ADODB_Active_DBS[_dbat]
-	var $_table; // tablename
+	var $_table; // tablename, if set in class definition then use it as table name
 	var $_tableat; // associative index pointing to ADODB_Active_Table, eg $ADODB_Active_DBS[_dbat]->tables[$this->_tableat]
 	var $_where; // where clause set in Load()
 	var $_saved = false; // indicates whether data is already inserted.
@@ -85,8 +85,10 @@ class ADODB_Active_Record {
 			$pkeyarr = false;
 		}
 		
-		if (!$table) $table = $this->_pluralize(get_class($this));
-		
+		if (!$table) { 
+			if (!empty($this->_table)) $table = $this->_table;
+			else $table = $this->_pluralize(get_class($this));
+		}
 		if ($db) {
 			$this->_dbat = ADODB_Active_Record::SetDatabaseAdapter($db);
 		} else
@@ -455,6 +457,13 @@ class ADODB_Active_Record {
 		$db->Execute($sql);
 	}
 	
+	// returns an array of active record objects
+	function &Find($whereOrderBy,$bindarr=false,$pkeysArr=false)
+	{
+		$db =& $this->DB(); if (!$db || empty($this->_table)) return false;
+		$arr =& $db->GetActiveRecordsClass(get_class($this),$this->_table, $whereOrderBy,$bindarr,$pkeysArr);
+		return $arr;
+	}
 	
 	// returns 0 on error, 1 on update, 2 on insert
 	function Replace()

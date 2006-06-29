@@ -1,3 +1,7 @@
+2006-06-30 Karsten Dambekalns <karsten@typo3.org>
+
+	* t3lib_page: Changed getMultipleGroupsWhereClause() to include a check using IS NULL to make it compatible to Oracle. Made enableFields() call getMultipleGroupsWhereClause() non-statically using $this.
+
 2006-06-29  Ernesto Baschny <ernst@cron-it.de>
 
 	* Fix bug #3522 also in "content (default)": Linking images to hidden pages results in click-enlarge

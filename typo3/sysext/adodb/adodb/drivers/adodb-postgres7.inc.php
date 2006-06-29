@@ -1,6 +1,6 @@
 <?php
 /*
- V4.81 3 May 2006  (c) 2000-2006 John Lim (jlim#natsoft.com.my). All rights reserved.
+ V4.90 8 June 2006  (c) 2000-2006 John Lim (jlim#natsoft.com.my). All rights reserved.
   Released under both BSD license and Lesser GPL library license. 
   Whenever there is any discrepancy between the two licenses, 
   the BSD license will take precedence.
@@ -56,6 +56,7 @@ class ADODB_postgres7 extends ADODB_postgres64 {
 	}
  	*/
 
+
 	// from  Edward Jaramilla, improved version - works on pg 7.4
 	function MetaForeignKeys($table, $owner=false, $upper=false)
 	{
@@ -96,6 +97,7 @@ class ADODB_postgres7 extends ADODB_postgres64 {
 			// We don't have native support for parameterized queries, so let's emulate it at the parent
 			return ADODB_postgres64::_query($sql, $inputarr);
 		}
+		$this->_errorMsg = false;
 		// -- added Cristiano da Cunha Duarte
 		if ($inputarr) {
 			$sqlarr = explode('?',trim($sql));

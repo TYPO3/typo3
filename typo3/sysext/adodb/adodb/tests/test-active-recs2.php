@@ -29,9 +29,11 @@ if  (!$db)  die('failed');
 
 
 
+
 $rec = new ADODB_Active_Record('photos');
 
 $rec = new ADODB_Active_Record('products');
+
 
 adodb_pr($rec->getAttributeNames());
 

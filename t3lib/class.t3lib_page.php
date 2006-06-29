@@ -972,7 +972,7 @@ class t3lib_pageSelect {
 					}
 					if ($ctrl['enablecolumns']['fe_group'] && !$ignore_array['fe_group']) {
 						$field = $table.'.'.$ctrl['enablecolumns']['fe_group'];
-						$query.= t3lib_pageSelect::getMultipleGroupsWhereClause($field, $table);
+						$query.= $this->getMultipleGroupsWhereClause($field, $table);
 					}
 
 					// Call hook functions for additional enableColumns
@@ -1009,6 +1009,7 @@ class t3lib_pageSelect {
 		$memberGroups = t3lib_div::intExplode(',',$GLOBALS['TSFE']->gr_list);
 		$orChecks=array();
 		$orChecks[]=$field.'=\'\'';	// If the field is empty, then OK
+		$orChecks[]=$field.' IS NULL';	// If the field is NULL, then OK
 		$orChecks[]=$field.'=\'0\'';	// If the field contsains zero, then OK
 
 		foreach($memberGroups as $value)	{

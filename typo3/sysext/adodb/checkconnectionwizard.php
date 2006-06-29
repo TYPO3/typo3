@@ -43,7 +43,7 @@
 
  	// Build TYPO3 enviroment:
 $BACK_PATH='../../../typo3/';
-define('TYPO3_MOD_PATH', '../typo3conf/ext/adodb/');
+define('TYPO3_MOD_PATH', 'sysext/adodb/');
 require ($BACK_PATH.'init.php');
 require ($BACK_PATH.'template.php');
 

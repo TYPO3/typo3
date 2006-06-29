@@ -1,15 +1,12 @@
 <?php
 /** 
- * @version V4.81 3 May 2006 (c) 2000-2006 John Lim (jlim#natsoft.com.my). All rights reserved.
+ * @version V4.90 8 June 2006 (c) 2000-2006 John Lim (jlim#natsoft.com.my). All rights reserved.
  * Released under both BSD license and Lesser GPL library license. 
  * Whenever there is any discrepancy between the two licenses, 
  * the BSD license will take precedence. 
  *
  * Set tabs to 4 for best viewing.
  * 
- * Latest version is available at http://php.weblogs.com
- *
- * Requires PHP4.01pl2 or later because it uses include_once
 */
 
 /*
@@ -38,7 +35,7 @@
 	else $hidecnt = false;
 	
 	$iif = strpos($db->databaseType,'access') !== false; 
-		// note - vfp still doesn' work even with IIF enabled || $db->databaseType == 'vfp';
+		// note - vfp 6 still doesn' work even with IIF enabled || $db->databaseType == 'vfp';
 	
 	//$hidecnt = false;
 	
@@ -95,7 +92,12 @@
 	else
 		$sel = substr($sel,0,strlen($sel)-2);
 	
+	
+	// Strip aliases
+	$rowfields = preg_replace('/ AS (\w+)/i', '', $rowfields);
+	
 	$sql = "SELECT $sel \nFROM $tables $where \nGROUP BY $rowfields";
+	
 	return $sql;
  }
 

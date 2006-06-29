@@ -6,13 +6,13 @@ CREATE TABLE tx_dbal_debuglog (
 	uid int(11) unsigned NOT NULL auto_increment,
 	tstamp int(11) unsigned DEFAULT '0',
 	beuser_id int(11) unsigned DEFAULT '0',
-	script varchar(255) NOT NULL,
+	script varchar(255) NOT NULL DEFAULT '',
 	exec_time int(11) unsigned DEFAULT '0',
 	table_join tinytext,
-	serdata BLOB,
+	serdata blob,
 	query text NOT NULL,
 	errorFlag int(11) unsigned DEFAULT '0',
-	
+
 	PRIMARY KEY (uid),
 	KEY tstamp (tstamp)
 );

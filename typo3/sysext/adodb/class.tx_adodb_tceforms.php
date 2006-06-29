@@ -3,6 +3,7 @@
 *  Copyright notice
 *
 *  (c) 2004 Robert Lemke (robert@typo3.org)
+*  (c) 2006 Karsten Dambekalns (karsten@typo3.org)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -24,6 +25,7 @@
 
 /**
  * @author	Robert Lemke <robert@typo3.org>
+ * @author	Karsten Dambekalns <karsten@typo3.org>
  */
 class tx_adodb_tceforms {
 
@@ -32,6 +34,7 @@ class tx_adodb_tceforms {
 		if (is_callable('odbc_error')) $params['items'][] = array ('ODBC', 'odbc');
 		if (is_callable('mysql_error')) $params['items'][] = array ('MySQL', 'mysql');
 		if (is_callable('mssql_connect')) $params['items'][] = array ('MSSQL', 'mssql');
+		if (is_callable('ocilogon')) $params['items'][] = array ('Oracle', 'oci8');
 	}
 }
 

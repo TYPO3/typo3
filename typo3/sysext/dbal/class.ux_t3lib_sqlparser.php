@@ -103,6 +103,11 @@ class ux_t3lib_sqlparser extends t3lib_sqlparser {
 					foreach($fields as $fn => $fd) {
 						$query[$fn] = $components['VALUES_ONLY'][$fc++][0];
 					}
+				} else {
+						// Initialize:
+					foreach($components['FIELDS'] as $fN => $fV)	{
+						$query[$fN]=$fV[0];
+					}
 				}
 				break;
 		}
@@ -143,7 +148,7 @@ class ux_t3lib_sqlparser extends t3lib_sqlparser {
 
 				foreach($components['FIELDS'] as $fN => $fCfg)	{
 						// the backticks get converted to the correct quote char automatically
-					$fieldsKeys[$fN] = '`'.$fN.'` '.$this->compileFieldCfg($fCfg['definition'],$fN);
+					$fieldsKeys[$fN] = $GLOBALS['TYPO3_DB']->handlerInstance[$GLOBALS['TYPO3_DB']->handler_getFromTableList($components['TABLE'])]->DataDictionary->nameQuote('`'.$fN.'`').' '.$this->compileFieldCfg($fCfg['definition']);
 				}
 
 				if(isset($components['KEYS']) && is_array($components['KEYS'])) {
@@ -204,18 +209,19 @@ class ux_t3lib_sqlparser extends t3lib_sqlparser {
 	 * @param	array		Field definition parts
 	 * @return	string		Field definition string
 	 */
-	function compileFieldCfg($fieldCfg,$fN='')	{
+	function compileFieldCfg($fieldCfg)	{
+
 		switch((string)$GLOBALS['TYPO3_DB']->handlerCfg[$GLOBALS['TYPO3_DB']->lastHandlerKey]['type'])	{
 			case 'native':
-				$cfg = parent::compileFieldCfg($fieldCfg,$fN);
+				$cfg = parent::compileFieldCfg($fieldCfg);
 				break;
 			case 'adodb':
-				// Set type:
+					// Set type:
 				$cfg = $GLOBALS['TYPO3_DB']->MySQLMetaType($fieldCfg['fieldType']);
 
 					// Add value, if any:
 				if (strlen($fieldCfg['value']) && (in_array($cfg, array('C','C2'))))	{
-					$cfg.=' '.$fieldCfg['value'];
+					$cfg .= ' '.$fieldCfg['value'];
 				} elseif (!isset($fieldCfg['value']) && (in_array($cfg, array('C','C2')))) {
 					$cfg .= ' 255'; // add 255 as length for varchar without specified length (e.g. coming from tinytext, tinyblob)
 				}
@@ -228,19 +234,15 @@ class ux_t3lib_sqlparser extends t3lib_sqlparser {
 						$fieldCfg['featureIndex']['DEFAULT'] = array('keyword' => 'DEFAULT', 'value' => array('','\''));
 					}
 
-					foreach($fieldCfg['featureIndex'] as $featureDef)	{
-							// unsigned only for mysql, as it is mysql specific
-						if($featureDef['keyword'] == 'unsigned' && !strstr($GLOBALS['TYPO3_DB']->handlerCfg[$GLOBALS['TYPO3_DB']->lastHandlerKey]['config']['driver'],'mysql')) {
+					foreach($fieldCfg['featureIndex'] as $feature => $featureDef)	{
+						switch(true) {
+								// unsigned only for mysql, as it is mysql specific
+							case ($feature == 'UNSIGNED' && !$GLOBALS['TYPO3_DB']->runningNative()) :
+								// auto_increment is removed, it is handled by (emulated) sequences
+							case ($feature == 'AUTO_INCREMENT') :
+								// never add NOT NULL as it is useless in TYPO3 and breaks most databases other than MySQL
+							case ($feature == 'NOTNULL') :
 							continue;
-						}
-							// auto_increment is removed, it is handled by (emulated) sequences
-						if($featureDef['keyword'] == 'auto_increment') {
-							continue;
-						}
-							// NOT NULL only if there is no default value, as this conflicts
-						if($featureDef['keyword'] == 'NOT NULL') {
-							if($this->checkEmptyDefaultValue($fieldCfg['featureIndex'])) continue; // we do not have a default value or it is an empty string
-							else $cfg.=' NOTNULL';
 						}
 
 						$cfg.=' '.$featureDef['keyword'];
