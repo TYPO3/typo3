@@ -1298,7 +1298,58 @@
 			}
 			exit;
 		} elseif (strlen($code)) {
-			header('Location: '.t3lib_div::locationHeaderUrl($code));
+			// Check if URL is relative
+			$url_parts = parse_url($code);
+			if ($url_parts['host'] == '') {
+				$url_parts['host'] = t3lib_div::getIndpEnv('HTTP_HOST');
+				$code = t3lib_div::getIndpEnv('TYPO3_REQUEST_HOST') . $code;
+				$checkBaseTag = false;
+			}
+			else {
+				$checkBaseTag = true;
+			}
+			// Prepare headers
+			$headers = array(
+				'User-agent: ' . t3lib_div::getIndpEnv('HTTP_USER_AGENT'),
+				'Referer: ' . t3lib_div::getIndpEnv('TYPO3_REQUEST_URL')
+			);
+			$content = t3lib_div::getURL($code, 0, $headers);
+			if (false === $content) {
+				// Last chance -- redirect
+				header('Location: '.t3lib_div::locationHeaderUrl($code));
+			}
+			else {
+				// Put <base> if necesary
+				if ($checkBaseTag) {
+					   // If content already has <base> tag, we do not need to do anything
+					if (false === stristr($content, '<base ')) {
+						// Generate href for base tag
+						$base = $url_parts['scheme'] . '://';
+						if ($url_parts['user'] != '') {
+							$base .= $url_parts['user'];
+							if ($url_parts['pass'] != '') {
+								$base .= ':' . $url_parts['pass'];	
+							}
+							$base .= '@';
+						}
+						$base .= $url_parts['host'];
+
+						// Add path portion skipping possible file name
+						$base .= preg_replace('/(.*\/)[^\/]*/', '\1', $url_parts['path']);
+
+						// Put it into content (generate also <head> if necessary)
+						$replacement = chr(10) . '<base href="' . htmlentities($base) . '" />' . chr(10);
+						if (stristr($content, '<head>')) {
+							$content = preg_replace('/(<head>)/i', '\1' . $replacement, $content);
+						}
+						else {
+							$content = preg_replace('/(<html[^>]*>)/i', '\1<head>' . $replacement . '</head>', $content);
+						}
+				   }
+				}
+				// Output it
+				echo $content;
+			}
 			exit;
 		} else {
 			$this->printError('Error.'.($reason ? ' Reason: '.htmlspecialchars($reason) : ''));

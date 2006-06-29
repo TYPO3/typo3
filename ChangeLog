@@ -1,3 +1,6 @@
+2006-06-29  Dmitry Dulepov  <typo3@accio.lv>
+
+	* pageNotFound_handling HTTP status fix when external URL is specified as 404 page
 
 2006-06-28  Ernesto Baschny  <ernst@cron-it.de>
 
