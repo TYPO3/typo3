@@ -1,0 +1,88 @@
+diff -urNw adodb490/adodb-lib.inc.php adodb/adodb-lib.inc.php
+--- adodb490/adodb-lib.inc.php	2006-06-08 08:20:17.000000000 +0200
++++ adodb/adodb-lib.inc.php	2006-06-26 16:52:28.000000000 +0200
+@@ -790,7 +790,7 @@
+ 	$values = substr($values, 0, -2);
+ 
+ 	// Append the fields and their values to the insert query.
+-	return 'INSERT INTO '.$tableName.' ( '.$fields.' ) VALUES ( '.$values.' )';
++	return 'INSERT INTO '.$zthis->nameQuote.$tableName.$zthis->nameQuote.' ( '.$fields.' ) VALUES ( '.$values.' )';
+ }
+ 
+ 
+diff -urNw adodb490/datadict/datadict-oci8.inc.php adodb/datadict/datadict-oci8.inc.php
+--- adodb490/datadict/datadict-oci8.inc.php	2006-06-08 08:19:58.000000000 +0200
++++ adodb/datadict/datadict-oci8.inc.php	2006-06-26 16:52:28.000000000 +0200
+@@ -251,8 +251,8 @@
+ 		}
+ 		
+ 		if ( is_array($flds) )
+-			$flds = implode(', ',$flds);
+-		$s = 'CREATE' . $unique . ' INDEX ' . $idxname . ' ON ' . $tabname . ' (' . $flds . ')';
++			$flds = implode('", "',$flds);
++		$s = 'CREATE' . $unique . ' INDEX "' . $idxname . '" ON "' .$tabname . '" ("' . $flds . '")';
+ 		
+ 		if ( isset($idxoptions[$this->upperName]) )
+ 			$s .= $idxoptions[$this->upperName];
+diff -urNw adodb490/datadict/datadict-postgres.inc.php adodb/datadict/datadict-postgres.inc.php
+--- adodb490/datadict/datadict-postgres.inc.php	2006-06-08 08:19:57.000000000 +0200
++++ adodb/datadict/datadict-postgres.inc.php	2006-06-26 16:52:28.000000000 +0200
+@@ -342,7 +342,7 @@
+ 		
+ 		$unique = isset($idxoptions['UNIQUE']) ? ' UNIQUE' : '';
+ 		
+-		$s = 'CREATE' . $unique . ' INDEX ' . $idxname . ' ON ' . $tabname . ' ';
++		$s = 'CREATE' . $unique . ' INDEX "' . $idxname . '" ON "' . $tabname . '" ';
+ 		
+ 		if (isset($idxoptions['HASH']))
+ 			$s .= 'USING HASH ';
+@@ -351,8 +351,8 @@
+ 			$s .= $idxoptions[$this->upperName];
+ 		
+ 		if ( is_array($flds) )
+-			$flds = implode(', ',$flds);
+-		$s .= '(' . $flds . ')';
++			$flds = implode('", "',$flds);
++		$s .= '("' . $flds . '")';
+ 		$sql[] = $s;
+ 		
+ 		return $sql;
+diff -urNw adodb490/drivers/adodb-oci8.inc.php adodb/drivers/adodb-oci8.inc.php
+--- adodb490/drivers/adodb-oci8.inc.php	2006-06-08 08:20:15.000000000 +0200
++++ adodb/drivers/adodb-oci8.inc.php	2006-06-26 16:52:28.000000000 +0200
+@@ -104,7 +104,7 @@
+ 		$ADODB_FETCH_MODE = ADODB_FETCH_NUM;
+ 		if ($this->fetchMode !== false) $savem = $this->SetFetchMode(false);
+ 		
+-		$rs = $this->Execute(sprintf($this->metaColumnsSQL,strtoupper($table)));
++		$rs = $this->Execute(sprintf($this->metaColumnsSQL,$table));
+ 		
+ 		if (isset($savem)) $this->SetFetchMode($savem);
+ q		$ADODB_FETCH_MODE = $save;
+diff -urNw adodb/datadict/datadict-oci8.inc.php adodb490/datadict/datadict-oci8.inc.php
+--- adodb490/datadict/datadict-oci8.inc.php	2006-06-26 17:05:13.000000000 +0200
++++ adodb/datadict/datadict-oci8.inc.php	2006-06-26 17:15:52.000000000 +0200
+@@ -109,7 +109,6 @@
+ 
+ 	function AddColumnSQL($tabname, $flds)
+ 	{
++		$tabname = $this->TableName ($tabname);
+ 		$f = array();
+ 		list($lines,$pkey) = $this->_GenFields($flds);
+ 		$s = "ALTER TABLE $tabname ADD (";
+@@ -124,7 +123,6 @@
+ 
+ 	function AlterColumnSQL($tabname, $flds)
+ 	{
++		$tabname = $this->TableName ($tabname);
+ 		$f = array();
+ 		list($lines,$pkey) = $this->_GenFields($flds);
+ 		$s = "ALTER TABLE $tabname MODIFY(";
+@@ -138,7 +136,6 @@
+ 
+ 	function DropColumnSQL($tabname, $flds)
+ 	{
++		$tabname = $this->TableName ($tabname);
+ 		if (!is_array($flds)) $flds = explode(',',$flds);
+ 		foreach ($flds as $k => $v) $flds[$k] = $this->NameQuote($v);
+ 
