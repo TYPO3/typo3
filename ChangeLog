@@ -1,3 +1,7 @@
+2006-06-29  Ernesto Baschny <ernst@cron-it.de>
+
+	* Fix bug #3522 also in "content (default)": Linking images to hidden pages results in click-enlarge
+
 2006-06-29  Dmitry Dulepov  <typo3@accio.lv>
 
 	* pageNotFound_handling HTTP status fix when external URL is specified as 404 page
