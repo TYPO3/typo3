@@ -1,3 +1,10 @@
+2006-06-16  Karsten Dambekalns <karsten@typo3.org>
+
+	* Implemented support for t3lib_div::sysLog() on connection failure
+	* DBAL now honours the no_pconnect setting
+	* XCLASSed t3lib_pageSelect to fix fe_group check on Oracle, using IS NULL
+	* For handlers in native mode the setDBinit queries are executed upon connection
+
 2006-01-19  Karsten Dambekalns <karsten@typo3.org>
 
 	* Changes to connection handling, detecting failed connections.
@@ -55,7 +62,7 @@
 	* Fixed a bug in t3lib_page, getMultipleGroupsWhereClause()
 	where double quotes were used to quote a literal for use in
 	SQL. THIS IS MYSQL-ONLY! NEVER DO THIS! ALWAYS USE SINGLE
-	QUOTES!	
+	QUOTES!
 
 2005-06-07  Karsten Dambekalns <karsten@typo3.org>
 
