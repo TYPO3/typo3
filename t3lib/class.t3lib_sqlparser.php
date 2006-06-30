@@ -712,7 +712,7 @@ class t3lib_sqlparser {
 			} else {	// Outside parenthesis, looking for next field:
 
 					// Looking for a known function (only known functions supported)
-				$func = $this->nextPart($parseString,'^(count|max|min|floor|sum|avg|concat|year|from_unixtime|lcase|left|unix_timestamp)[[:space:]]*\(');
+				$func = $this->nextPart($parseString,'^(count|max|min|floor|sum|avg)[[:space:]]*\(');
 				if ($func)	{
 					$parseString = trim(substr($parseString,1));	// Strip of "("
 					$stack[$pnt]['type'] = 'function';
@@ -804,14 +804,14 @@ class t3lib_sqlparser {
 				// Looking for the table:
 			if ($stack[$pnt]['table'] = $this->nextPart($parseString,'^([[:alnum:]_]+)(,|[[:space:]]+)'))	{
 					// Looking for stop-keywords before fetching potential table alias:
-				if ($stopRegex && ($this->lastStopKeyWord = $this->nextPart($parseString, $stopRegex)))	{
-					$this->lastStopKeyWord = strtoupper(str_replace(array(' ',"\t","\r","\n"),'',$this->lastStopKeyWord));
-					return $stack;
-				}
-				if(!preg_match('/^(LEFT|JOIN)[[:space:]]+/i',$parseString)) {
-					$stack[$pnt]['as_keyword'] = $this->nextPart($parseString,'^(AS[[:space:]]+)');
-					$stack[$pnt]['as'] = $this->nextPart($parseString,'^([[:alnum:]_]+)[[:space:]]*');
-				}
+					if ($stopRegex && ($this->lastStopKeyWord = $this->nextPart($parseString, $stopRegex)))	{
+						$this->lastStopKeyWord = strtoupper(str_replace(array(' ',"\t","\r","\n"),'',$this->lastStopKeyWord));
+						return $stack;
+					}
+					if(!preg_match('/^(LEFT|JOIN)[[:space:]]+/i',$parseString)) {
+						$stack[$pnt]['as_keyword'] = $this->nextPart($parseString,'^(AS[[:space:]]+)');
+			    $stack[$pnt]['as'] = $this->nextPart($parseString,'^([[:alnum:]_]+)[[:space:]]*');
+					}
 			} else return $this->parseError('No table name found as expected in parseFromTables()!',$parseString);
 
 				// Looking for JOIN
@@ -905,18 +905,9 @@ class t3lib_sqlparser {
 					// Find "modifyer", eg. "NOT or !"
 				$stack[$level][$pnt[$level]]['modifier'] = trim($this->nextPart($parseString,'^(!|NOT[[:space:]]+)'));
 
-				if($fieldName = $this->nextFunction($parseString)) {	// SQL functions
-					if($parseString{0}=='(') {
-						$parseString = ltrim(substr($parseString,1));
-						$arg = $this->getValue($parseString);
-						$fieldName .= '('.$arg[0].')';
-						$parseString = ltrim(substr($parseString,1));
-					}
-					$stack[$level][$pnt[$level]]['table'] = '';
-					$stack[$level][$pnt[$level]]['field'] = $fieldName;
-				}
-						// Fieldname:
-				elseif ($fieldName = $this->nextPart($parseString,'^([[:alnum:]._]+)([[:space:]]+|&|<=|>=|<|>|=|!=|IS)'))	{
+					// Fieldname:
+				if ($fieldName = $this->nextPart($parseString,'^([[:alnum:]._]+)([[:space:]]+|&|<=|>=|<|>|=|!=|IS)'))	{
+
 						// Parse field name into field and table:
 					$tableField = explode('.',$fieldName,2);
 					if (count($tableField)==2)	{
@@ -938,7 +929,7 @@ class t3lib_sqlparser {
 				}
 
 					// Find "comparator":
-				$stack[$level][$pnt[$level]]['comparator'] = $this->nextPart($parseString,'^(<=|>=|<|>|=|!=|NOT[[:space:]]+IN|IN|NOT[[:space:]]+LIKE|LIKE|IS NOT|IS)');
+				$stack[$level][$pnt[$level]]['comparator'] = $this->nextPart($parseString,'^(<=|>=|<|>|=|!=|NOT[[:space:]]+IN|IN|NOT[[:space:]]+LIKE|LIKE|IS)');
 				if (strlen($stack[$level][$pnt[$level]]['comparator']))	{
 						// Finding value for comparator:
 					$stack[$level][$pnt[$level]]['value'] = $this->getValue($parseString,$stack[$level][$pnt[$level]]['comparator']);
@@ -1005,7 +996,7 @@ class t3lib_sqlparser {
 		$result = array();
 
 			// Field type:
-		if ($result['fieldType'] =  $this->nextPart($parseString,'^(int|smallint|tinyint|mediumint|bigint|double|numeric|decimal|float|varchar|char|text|tinytext|mediumtext|longtext|blob|tinyblob|mediumblob|longblob)([[:space:],]+|\()'))	{
+		if ($result['fieldType'] =  $this->nextPart($parseString,'^(int|smallint|tinyint|mediumint|bigint|double|numeric|decimal|varchar|char|text|tinytext|mediumtext|longtext|blob|tinyblob|mediumblob|longblob)([[:space:],]+|\()'))	{
 
 				// Looking for value:
 			if (substr($parseString,0,1)=='(')	{
@@ -1074,7 +1065,7 @@ class t3lib_sqlparser {
 	 * @param	string		The comparator used before. If "NOT IN" or "IN" then the value is expected to be a list of values. Otherwise just an integer (un-quoted) or string (quoted)
 	 * @return	mixed		The value (string/integer). Otherwise an array with error message in first key (0)
 	 */
-	function getValue(&$parseString,$comparator='',$extraRegexpChars='')	{
+	function getValue(&$parseString,$comparator='')	{
 		$value = '';
 
 		if (t3lib_div::inList('NOTIN,IN,_LIST',strtoupper(str_replace(array(' ',"\n","\r","\t"),'',$comparator))))	{	// List of values:
@@ -1101,23 +1092,11 @@ class t3lib_sqlparser {
 				} else return array($this->parseError('No ) parenthesis in list',$parseString));
 			} else return array($this->parseError('No ( parenthesis starting the list',$parseString));
 
-		} elseif($function = $this->nextFunction($parseString)) {	// SQL functions
-			if($parseString{0}=='(') {
-				$parseString = ltrim(substr($parseString,1));
-				$arg = $this->getValue($parseString,'',','); // extraRegexpChars for stuff like LEFT(tx_dam.title,1)
-				if(count($arg)==2)
-					$function .= '('.$arg[1].$arg[0].$arg[1].')';
-				else
-					$function .= '('.$arg[0].')';
-				$parseString = ltrim(substr($parseString,1));
-			} elseif($function=='BETWEEN') {
-
-			}
-			return array($function);
 		} else {	// Just plain string value, in quotes or not:
 
 				// Quote?
 			$firstChar = substr($parseString,0,1);
+
 			switch($firstChar)	{
 				case '"':
 					$value = array($this->getValueInQuotes($parseString,'"'),'"');
@@ -1127,7 +1106,7 @@ class t3lib_sqlparser {
 				break;
 				default:
 					$reg = array();
-					if (preg_match('/^([[:alnum:]'.$extraRegexpChars.'._-]+)/i',$parseString, $reg))	{
+					if (preg_match('/^([[:alnum:]._-]+)/i',$parseString, $reg))	{
 						$parseString = ltrim(substr($parseString,strlen($reg[0])));
 						$value = array($reg[1]);
 					}
@@ -1135,10 +1114,6 @@ class t3lib_sqlparser {
 			}
 		}
 		return $value;
-	}
-
-	function nextFunction(&$parseString) {
-		return $this->nextPart($parseString,'^(count|max|min|floor|sum|avg|concat|year|from_unixtime|lcase|left|unix_timestamp)([[:space:]]*\()');
 	}
 
 	/**
