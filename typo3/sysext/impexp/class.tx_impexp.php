@@ -2266,18 +2266,20 @@ class tx_impexp {
 			// getting header data
 		$initStr = fread($fd, $initStrLen);
 		$initStrDat = explode(':',$initStr);
-		if (!strcmp($initStrDat[3],''))	{
-			$datString = fread($fd,intval($initStrDat[2]));
-			fread($fd,1);
-			if (!strcmp(md5($datString), $initStrDat[0]))	{
-				if ($initStrDat[1])	{
-					if ($this->compress)	{
-						$datString = gzuncompress($datString);
-					} else $this->error('Content read error: This file requires decompression, but this server does not offer gzcompress()/gzuncompress() functions.',1);
-				}
-				return $unserialize ? unserialize($datString) : $datString;
-			} else $this->error('MD5 check failed ('.$name.')');
-		} else $this->error('File read error: InitString had a wrong length. ('.$name.')');
+		if (strstr($initStrDat[0],'Warning') == FALSE)	{
+			if (!strcmp($initStrDat[3],''))	{
+				$datString = fread($fd,intval($initStrDat[2]));
+				fread($fd,1);
+				if (!strcmp(md5($datString), $initStrDat[0]))	{
+					if ($initStrDat[1])	{
+						if ($this->compress)	{
+							$datString = gzuncompress($datString);
+						} else $this->error('Content read error: This file requires decompression, but this server does not offer gzcompress()/gzuncompress() functions.',1);
+					}
+					return $unserialize ? unserialize($datString) : $datString;
+				} else $this->error('MD5 check failed ('.$name.')');
+			} else $this->error('File read error: InitString had a wrong length. ('.$name.')');
+		} else $this->error('File read error: Warning message in file. ('.$initStr.fgets($fd).')');
 	}
 
 	/**
