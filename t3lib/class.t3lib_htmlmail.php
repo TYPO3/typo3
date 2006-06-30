@@ -274,26 +274,30 @@ class t3lib_htmlmail {
 			$host = ($TYPO3_CONF_VARS['SYS']['sitename'] ? preg_replace('/[^A-Za-z0-9_\-]/', '_', $TYPO3_CONF_VARS['SYS']['sitename']) : 'localhost') . '.TYPO3';
 		}
 		$this->messageid = md5(microtime()) . '@' . $host;
-
+		
 			// Default line break for Unix systems.
 		$this->linebreak = chr(10);
 			// Line break for Windows. This is needed because PHP on Windows systems send mails via SMTP instead of using sendmail, and thus the linebreak needs to be \r\n.
 		if (TYPO3_OS=='WIN')	{
 			$this->linebreak = chr(13).chr(10);
 		}
-
-		$charset = $this->defaultCharset;
-		if (is_object($GLOBALS['TSFE']) && $GLOBALS['TSFE']->config['metaCharset'])	{
-			$charset = $GLOBALS['TSFE']->config['metaCharset'];
-		} elseif ($GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset'])	{
-			$charset = $GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset'];
+		
+		if (!$this->charset) {
+			if (is_object($GLOBALS['TSFE']) && $GLOBALS['TSFE']->renderCharset) {
+				$this->charset = $GLOBALS['TSFE']->renderCharset;
+			} elseif (is_object($GLOBALS['LANG']) && $GLOBALS['LANG']->charSet) {
+				$this->charset = $GLOBALS['LANG']->charSet;
+			} elseif ($GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset']) {
+				$this->charset = $GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset'];
+			} else {
+				$this->charset = $this->defaultCharset;
+			}
 		}
-		$this->charset = $charset;
-
+		
 			// Use quoted-printable headers by default
 		$this->useQuotedPrintable();
 	}
-
+	
 	/**
 	 * [Describe function...]
 	 *
