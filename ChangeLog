@@ -1,6 +1,7 @@
 2006-06-30 Karsten Dambekalns <karsten@typo3.org>
 
 	* t3lib_page: Changed getMultipleGroupsWhereClause() to include a check using IS NULL to make it compatible to Oracle.
+	* sysext/adodb/: Update to upstream version 4.90, fixes to connection wizard, some code cleanup (closes: ##3755).
 
 2006-06-29  Ernesto Baschny <ernst@cron-it.de>
 
