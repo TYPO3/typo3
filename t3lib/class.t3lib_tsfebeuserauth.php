@@ -1065,7 +1065,7 @@ $query.
 										'pid='.intval($row['pid']).
 											' AND '.$sortField.$op.intval($row[$sortField]).
 											$copyAfterFieldsQuery.
-											t3lib_pageSelect::enableFields($table,'',$ignore),
+											$GLOBALS['TSFE']->sys_page->enableFields($table,'',$ignore),
 										'',
 										$sortField.$desc,
 										'2'
