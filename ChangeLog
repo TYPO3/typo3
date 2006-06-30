@@ -1,4 +1,3 @@
-
 2006-06-30  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
 	* t3lib_htmlmail: auto-detect charset (using FE or BE settings) with manual override
@@ -8,6 +7,7 @@
 	* t3lib_page: Changed getMultipleGroupsWhereClause() to include a check using IS NULL to make it compatible to Oracle.
 	* sysext/adodb/: Update to upstream version 4.90, fixes to connection wizard, some code cleanup (closes: ##3755).
 	* t3lib_sqlparser: Clean up indentation a little bit, fix bug #2991, make the parser understand "IS NOT [NULL]" an addition to just "IS [NULL]".
+	* t3lib_tsfebeuserauth: Changed static call to enableFields()
 
 2006-06-29  Ernesto Baschny <ernst@cron-it.de>
 
