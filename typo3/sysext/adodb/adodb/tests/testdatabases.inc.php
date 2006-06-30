@@ -1,7 +1,7 @@
 <?php
   
 /*
-V4.80 8 Mar 2006  (c) 2000-2006 John Lim (jlim@natsoft.com.my). All rights reserved.
+V4.80 8 Mar 2006  (c) 2000-2006 John Lim (jlim#natsoft.com.my). All rights reserved.
   Released under both BSD license and Lesser GPL library license. 
   Whenever there is any discrepancy between the two licenses, 
   the BSD license will take precedence.
@@ -314,17 +314,28 @@ if (false && !empty($testoracle)) {
 
 }
 
-ADOLoadCode("db2"); // no longer supported
-if (!empty($testdb2)) { 
-	$db = ADONewConnection();
-	print "<h1>Connecting $db->databaseType...</h1>";
-	
-	$dsn = "db2_sample";
-	$dsn = "driver={IBM db2 odbc DRIVER};Database=sample;hostname=localhost;port=50000;protocol=TCPIP; uid=root; pwd=natsoft";
-	if ($db->Connect($dsn)) {
-	//	testdb($db,"create table ADOXYZ (id int, firstname varchar(24), lastname varchar(24),created date)");
-	} else print "ERROR: DB2 test requires an server setup with odbc data source db2_sample".'<BR>'.$db->ErrorMsg();
-
+ADOLoadCode("odbc_db2"); // no longer supported
+if (!empty($testdb2)) {
+	if (PHP_VERSION>=5.1) {
+		$db = ADONewConnection("db2");
+		print "<h1>Connecting $db->databaseType...</h1>";
+		
+		#$db->curMode = SQL_CUR_USE_ODBC;
+		#$dsn = "driver={IBM db2 odbc DRIVER};Database=test;hostname=localhost;port=50000;protocol=TCPIP; uid=natsoft; pwd=guest";
+		if ($db->Connect('localhost','natsoft','guest','test')) {
+			testdb($db,"create table ADOXYZ (id int, firstname varchar(24), lastname varchar(24),created date)");
+		} else print "ERROR: DB2 test requires an server setup with odbc data source db2_sample".'<BR>'.$db->ErrorMsg();
+	} else { 
+		$db = ADONewConnection("odbc_db2");
+		print "<h1>Connecting $db->databaseType...</h1>";
+		
+		$dsn = "db2test";
+		#$db->curMode = SQL_CUR_USE_ODBC;
+		#$dsn = "driver={IBM db2 odbc DRIVER};Database=test;hostname=localhost;port=50000;protocol=TCPIP; uid=natsoft; pwd=guest";
+		if ($db->Connect($dsn)) {
+			testdb($db,"create table ADOXYZ (id int, firstname varchar(24), lastname varchar(24),created date)");
+		} else print "ERROR: DB2 test requires an server setup with odbc data source db2_sample".'<BR>'.$db->ErrorMsg();
+	}
 echo "<hr />";
 flush();
 	$dsn = "driver={IBM db2 odbc DRIVER};Database=sample;hostname=localhost;port=50000;protocol=TCPIP; uid=root; pwd=natsoft";

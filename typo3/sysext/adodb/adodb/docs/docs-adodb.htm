@@ -15,7 +15,7 @@ pre {
 <body bgcolor="#ffffff" text="black">
 
 <h2>ADOdb Library for PHP</h2>
-<p>V4.80 8 Mar 2006 (c) 2000-2006 John Lim (jlim#natsoft.com)</p>
+<p>V4.90 8 June 2006 (c) 2000-2006 John Lim (jlim#natsoft.com)</p>
 <p><font size="1">This software is dual licensed using BSD-Style and LGPL. This 
   means you can use it in compiled proprietary and commercial products.</font></p>
   
@@ -81,6 +81,7 @@ pre {
   <a href="#concat">Concat</a> <a href="#ifnull">IfNull</a> <a href="#length">length</a> <a href="#random">random</a> <a href="#substr">substr</a> 
   <a href="#qstr">qstr</a> <a href="#param">Param</a>  <a href="#OffsetDate">OffsetDate</a> <a href="#SQLDate">SQLDate</a> 
   <a href="#dbdate">DBDate</a>  <a href="#dbtimestamp">DBTimeStamp</a>
+  <a href="#binddate">BindDate</a>  <a href="#bindtimestamp">BindTimeStamp</a>
   <br>
   Blobs: <a href="#updateblob">UpdateBlob</a> <a href="#updateclob">UpdateClob</a> 
   <a href="#updateblobfile">UpdateBlobFile</a> <a href="#blobencode">BlobEncode</a> 
@@ -90,10 +91,11 @@ pre {
   Transactions: <a href="#starttrans">StartTrans</a> <a href="#completetrans">CompleteTrans</a> 
   <a href="#failtrans">FailTrans</a> <a href="#hasfailedtrans">HasFailedTrans</a> 
   <a href="#begintrans">BeginTrans</a> <a href="#committrans">CommitTrans</a> 
-  <a href="#rollbacktrans">RollbackTrans</a> <br>
+  <a href="#rollbacktrans">RollbackTrans</a> <a href=#SetTransactionMode>SetTransactionMode</a><br>
   Fetching Data: </font> <font size="2"><a href="#setfetchmode">SetFetchMode</a><br>
   Strings: <a href="#concat">concat</a> <a href="#length">length</a>  <a href="#qstr">qstr</a> <a href="#quote">quote</a> <a href="#substr">substr</a><br>
   Dates: <a href="#dbdate">DBDate</a> <a href="#dbtimestamp">DBTimeStamp</a> <a href="#unixdate">UnixDate</a> 
+  <a href="#binddate">BindDate</a>  <a href="#bindtimestamp">BindTimeStamp</a>
   <a href="#unixtimestamp">UnixTimeStamp</a> <a href="#OffsetDate">OffsetDate</a> 
   <a href="#SQLDate">SQLDate</a> <br>
   Row Management: <a href="#affected_rows">Affected_Rows</a> <a href="#inserted_id">Insert_ID</a>  <a href="#rowlock">RowLock</a>
@@ -126,7 +128,7 @@ pre {
   Menu generation:<a href="#getmenu">GetMenu</a> <a href="#getmenu2">GetMenu2</a><br>
   Dates:<a href="#userdate">UserDate</a> <a href="#usertimestamp">UserTimeStamp</a> 
   <a href="#unixdate">UnixDate</a> <a href="#unixtimestamp">UnixTimeStamp<br>
-  </a>Recordset Info:<a href="#recordcount">RecordCount</a> <a href="#po_recordcount">PO_RecordSet</a> 
+  </a>Recordset Info:<a href="#recordcount">RecordCount</a> <a href="#po_recordcount">PO_RecordCount</a> 
   <a href="#nextrecordset">NextRecordSet</a><br>
   Field Info:<a href="#fieldcount">FieldCount</a> <a href="#fetchfield">FetchField</a> 
   <a href="#metatype">MetaType</a><br>
@@ -1646,7 +1648,7 @@ See  <a href="#connect_ex">Connection Examples</a> for many examples.
 <p><font>We now perform a rollback on persistent connection for selected databases since 
 	2.21, as advised in the PHP manual. See change log or source code for which 
 	databases are affected. 
-</font></p><p><font>Returns true/false depending on connection. Since 4.23, null is returned if the extension is not loaded.
+</font></p><p><font>Returns true/false depending on connection. Since 4.23, 0 is returned if the extension is not loaded.
 See Connect( ) above for more info.</font></p>
 <p><font>Since ADOdb 2.21, we also support autoRollback. If you set:</font></p>
  
@@ -2026,8 +2028,36 @@ useful if you are calling black-box functions in which SQL queries might be exec
 <p><font>End a transaction, rollback all changes. Returns true if successful. If the 
   database does not support transactions, will return false as data is never rollbacked. 
 </font></p>
-<font> 
-</font><p><font><b>GetAssoc<a name="getassoc1"></a>($sql,$inputarr=false,$force_array=false,$first2cols=false)</b></font></p>
+ 
+<p><font><b>SetTransactionMode<a name="SetTransactionMode"></a>($mode )</b></font></p>
+<p>SetTransactionMode allows you to pass in the transaction mode to use for all subsequent transactions. 
+Note: if you have persistent connections and using mssql or mysql, you might have to explicitly reset your transaction mode at the beginning of each page request. 
+This is only supported in postgresql, mssql, mysql with InnoDB and oci8 currently. For example:
+<pre>
+$db->SetTransactionMode("SERIALIZABLE");
+$db->BeginTrans();
+$db->Execute(...); $db->Execute(...);
+$db->CommiTrans();
+
+$db->SetTransactionMode(""); // restore to default
+$db->StartTrans();
+$db->Execute(...); $db->Execute(...);
+$db->CompleteTrans();
+</pre>
+
+<p>Supported values to pass in:
+<ul>
+<li>READ UNCOMMITTED (allows dirty reads, but fastest)
+<li>READ COMMITTED (default postgres, mssql and oci8)
+<li>REPEATABLE READ (default mysql)
+<li>SERIALIZABLE (slowest and most restrictive)
+</ul>
+<p>You can also pass in database specific values such as 'SNAPSHOT' for mssql or 'READ ONLY' for oci8/postgres.
+<p>See transaction levels for <a href=http://www.postgresql.org/docs/8.1/interactive/sql-set-transaction.html>PostgreSQL</a>,
+<a href=http://www.stanford.edu/dept/itss/docs/oracle/10g/server.101/b10759/statements_10005.htm>Oracle</a>,
+<a href=http://dev.mysql.com/doc/refman/5.0/en/set-transaction.html>MySQL</a>, and
+<a href=http://msdn2.microsoft.com/en-US/ms173763.aspx>MS SQL Server</a>.
+<p><font><b>GetAssoc<a name="getassoc1"></a>($sql,$inputarr=false,$force_array=false,$first2cols=false)</b></font></p>
 <p><font>Returns an associative array for the given query $sql with optional bind parameters 
   in $inputarr. If the number of columns returned is greater to two, a 2-dimensional 
   array is returned, with the first column of the recordset becomes the keys 
@@ -2356,12 +2386,38 @@ function CountCachedExecs($db, $secs2cache, $sql, $inputarray)
   Y-m-d. Uses the fmtDate field, which holds the format to use. If null or false 
   or '' is passed in, it will be converted to an SQL null.</font></p>
 <p><font>Returns the date as a quoted string.</font></p>
+<pre>
+	$sql = "select * from atable where created > ".$db->DBDate("$year-$month-$day");
+	$db->Execute($sql);
+</pre>
+<p><font><b>BindDate<a name="binddate"></a>($date)</b></font></p>
+<p><font>Format the $<b>date</b> in the bind format the database accepts. Normally
+ this means that the date string is not quoted, unlike DBDate, which quotes the string.
+<pre>
+	$sql = "select * from atable where created > ".$db->Param('0');
+	// or
+	$sql = "select * from atable where created > ?";
+	$db->Execute($sql,array($db->BindDate("$year-$month-$day"));
+</pre>
 <p><font><b>DBTimeStamp<a name="dbtimestamp"></a>($ts)</b></font></p>
 <p><font>Format the timestamp $<b>ts</b> in the format the database accepts; this can 
   be a Unix integer timestamp or an ISO format Y-m-d H:i:s. Uses the fmtTimeStamp 
   field, which holds the format to use. If null or false or '' is passed in, it 
   will be converted to an SQL null.</font></p>
 <p><font>Returns the timestamp as a quoted string.</font></p>
+<pre>
+	$sql = "select * from atable where created > ".$db->DBTimeStamp("$year-$month-$day $hr:$min:$secs");
+	$db->Execute($sql);
+</pre>
+<p><font><b>BindTimeStamp<a name="bindtimestamp"></a>($ts)</b></font></p>
+<p><font>Format the timestamp $<b>ts</b> in the bind format the database accepts. Normally
+ this means that the timestamp string is not quoted, unlike DBTimeStamp, which quotes the string.
+<pre>
+	$sql = "select * from atable where created > ".$db->Param('0');
+	// or
+	$sql = "select * from atable where created > ?";
+	$db->Execute($sql,array($db->BindTimeStamp("$year-$month-$day $hr:$min:$secs"));
+</pre>
 <p><font><b>qstr<a name="qstr"></a>($s,[$magic_quotes_enabled</b>=false]<b>)</b></font></p>
 <p><font>Quotes a string to be sent to the database. The $<b>magic_quotes_enabled</b> 
   parameter may look funny, but the idea is if you are quoting a string extracted 
@@ -2682,7 +2738,7 @@ $where)</b></font></p>
 <p><font><b>FetchNextObject<a name="fetchnextobject"></a>($toupper=true)</b></font></p>
 <p><font>Gets the current row as an object and moves to the next
     row automatically. Returns false if at end-of-file. If you set $toupper to
-  true, then the object fields are set to upper-case.</font></p>
+  true, then the object fields are set to upper-case. Note that for some drivers such as mssql, you need to SetFetchMode(ADODB_FETCH_ASSOC) or SetFetchMode(ADODB_FETCH_BOTH).</font></p>
 <pre><font>$rs = $db-&gt;Execute('select firstname,lastname from table');<br>if ($rs) {<br>	while ($o = $rs-&gt;FetchNextObject()) {<br>		print "$o-&gt;FIRSTNAME, $o-&gt;LASTNAME&lt;BR&gt;";<br>	}<br>}<br></font></pre>
 <p><font>There is some trade-off in speed in using FetchNextObject().
 If performance is important, you should access rows with the <code>fields[]</code> array. <b>FetchObj<a name="fetchobj" id="fetchobj"></a>()</b> </font></p>
@@ -2844,11 +2900,35 @@ of MySQL.</font></p>
   PHP</a>. </font></p>
 
 <h2><font>Change Log<a name="Changes"></a><a name="changes"></a><a name="changelog"></a></font></h2>
-<P>
+<p><a name="4.90"></a><b>4.90 8 June 2006</b>
+<p>Changed adodb_countrec() in adodb-lib.inc.php to allow LIMIT to be used as a speedup to reduce no of records counted.
+<p>Added support for transaction modes for postgres and oci8 with SetTransactionMode(). 
+These transaction modes affect all subsequent transactions of that connection.
+<p>Thanks to Halmai Csongor for suggestion.
+<p>Removed $off = $fieldOffset - 1 line in db2 driver, FetchField(). Tx Larry Menard.
+<p>Added support for PHP5 objects as Execute() bind parameters using __toString (eg. Simple-XML). Thx Carl-Christian Salvesen.
+<p>Rounding in tohtml.inc.php did not work properly. Fixed.
+<p>MetaIndexes in postgres fails when fields are deleted then added in again because the attnum has gaps in it. 
+See http://sourceforge.net/tracker/index.php?func=detail&aid=1451245&group_id=42718&atid=433976. Fixed.
+<p>MetaForeignkeys in mysql and mysqli did not work when fetchMode==ADODB_FETCH_ASSOC used. Fixed.
+<p>Reference error in AutoExecute() fixed.
+<p>Added macaddr postgres type to MetaType. Maps to 'C'.
+<p>Added to _connect() in adodb-ado5.inc.php support for $database and $dataProvider parameters.  Thx Larry Menard.
+<p>Added support for sequences in adodb-ado_mssql.inc.php. Thx Larry Menard.
+<p>Added ADODB_SESSION_READONLY.
+<p>Added session expiryref support to crc32 mode, and in LOB code.
+<p>Clear _errorMsg in postgres7 driver, so that ErrorMsg() displays properly when no error occurs.
+<p>Added BindDate and BindTimeStamp
+<p><a name="4.81"></a><b>4.81 3 May 2006</b>
+<p>Fixed variable ref errors in adodb-ado5.inc.php in _query().
+<p>Mysqli setcharset fix using method_exists().
+<p>The adodb-perf.inc.php CreateLogTable() code now works for user-defined table names.
+<p>Error in ibase_blob_open() fixed. See http://phplens.com/lens/lensforum/msgs.php?id=14997
 <p><a name="4.80"></a><b>4.80 8 Mar 2006</b>
 <p>Added activerecord support.
 <p>Added mysql $conn->compat323 = true if you want MySQL 3.23 compat enabled. Fixes GetOne() Select-Limit problems.
 <p>Added adodb-xmlschema03.inc.php to support XML Schema version 3 and updated adodb-datadict.htm docs.
+<p>Better memory management in Execute. Thx Mike Fedyk.
 <p><a name="4.72"></a><b>4.72 21 Feb 2006</b>
 <p>Added 'new' DSN parameter for NConnect().
 <p>Pager now sanitizes $PHP_SELF to protect against XSS. Thx to James Bercegay and others.

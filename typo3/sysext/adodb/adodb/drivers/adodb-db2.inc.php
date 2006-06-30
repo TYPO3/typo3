@@ -1,6 +1,6 @@
 <?php
 /* 
-  V4.80 8 Mar 2006  (c) 2006 John Lim (jlim@natsoft.com.my). All rights reserved.
+  V4.90 8 June 2006  (c) 2006 John Lim (jlim#natsoft.com.my). All rights reserved.
 
 This is a version of the ADODB driver for DB2.  It uses the 'ibm_db2' PECL extension for PHP
   (http://pecl.php.net/package/ibm_db2), which in turn requires DB2 V8.2.2.
@@ -25,7 +25,14 @@ if (!defined('ADODB_DIR')) die();
 class ADODB_db2 extends ADOConnection {
 	var $databaseType = "db2";	
 	var $fmtDate = "'Y-m-d'";
-	var $fmtTimeStamp = "'Y-m-d, h:i:sA'";
+	var $concat_operator = '||';
+	
+	var $sysTime = 'CURRENT TIME';
+	var $sysDate = 'CURRENT DATE';
+	var $sysTimeStamp = 'CURRENT TIMESTAMP';
+	
+	var $fmtTimeStamp = "'Y-m-d-H.i.s'";
+	#var $fmtTimeStamp = "'Y-m-d, h:i:sA'";
 	var $replaceQuote = "''"; // string to use to replace quotes
 	var $dataProvider = "db2";
 	var $hasAffectedRows = true;
@@ -40,6 +47,12 @@ class ADODB_db2 extends ADOConnection {
 	var $_haserrorfunctions = true;
 	var $_lastAffectedRows = 0;
 	var $uCaseTables = true; // for meta* functions, uppercase table names
+	var $hasInsertID = true;
+	
+    function _insertid()
+    {
+        return ADOConnection::GetOne('VALUES IDENTITY_VAL_LOCAL()');
+    }
 	
 	function ADODB_db2() 
 	{ 	
@@ -103,6 +116,61 @@ class ADODB_db2 extends ADOConnection {
 		return $this->_connectionID != false;
 	}
 
+	
+	// Format date column in sql string given an input format that understands Y M D
+	function SQLDate($fmt, $col=false)
+	{	
+	// use right() and replace() ?
+		if (!$col) $col = $this->sysDate;
+		$s = '';
+		
+		$len = strlen($fmt);
+		for ($i=0; $i < $len; $i++) {
+			if ($s) $s .= $this->concat_operator;
+			$ch = $fmt[$i];
+			switch($ch) {
+			case 'Y':
+			case 'y':
+				$s .= "char(year($col))";
+				break;
+			case 'M':
+				$s .= "substr(monthname($col),1,3)";
+				break;
+			case 'm':
+				$s .= "right(digits(month($col)),2)";
+				break;
+			case 'D':
+			case 'd':
+				$s .= "right(digits(day($col)),2)";
+				break;
+			case 'H':
+			case 'h':
+				if ($col != $this->sysDate) $s .= "right(digits(hour($col)),2)";	
+				else $s .= "''";
+				break;
+			case 'i':
+			case 'I':
+				if ($col != $this->sysDate)
+					$s .= "right(digits(minute($col)),2)";
+					else $s .= "''";
+				break;
+			case 'S':
+			case 's':
+				if ($col != $this->sysDate)
+					$s .= "right(digits(second($col)),2)";
+				else $s .= "''";
+				break;
+			default:
+				if ($ch == '\\') {
+					$i++;
+					$ch = substr($fmt,$i,1);
+				}
+				$s .= $this->qstr($ch);
+			}
+		}
+		return $s;
+	} 
+ 
 	
 	function ServerInfo()
 	{
@@ -575,15 +643,12 @@ class ADORecordSet_db2 extends ADORecordSet {
 
 
 	// returns the field object
-	function &FetchField($fieldOffset = -1) 
+	function &FetchField($offset = -1) 
 	{
-		
-		$off=$fieldOffset+1; // offsets begin at 1
-		
 		$o= new ADOFieldObject();
-		$o->name = @db2_field_name($this->_queryID,$off);
-		$o->type = @db2_field_type($this->_queryID,$off);
-		$o->max_length = db2_field_width($this->_queryID,$off);
+		$o->name = @db2_field_name($this->_queryID,$offset);
+		$o->type = @db2_field_type($this->_queryID,$offset);
+		$o->max_length = db2_field_width($this->_queryID,$offset);
 		if (ADODB_ASSOC_CASE == 0) $o->name = strtolower($o->name);
 		else if (ADODB_ASSOC_CASE == 1) $o->name = strtoupper($o->name);
 		return $o;

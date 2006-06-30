@@ -21,7 +21,7 @@ font-size: 8pt;
 <body style="background-color: rgb(255, 255, 255);">
 <h3>ADODB Session Management Manual</h3>
 <p>
-V4.80 8 Mar 2006 (c) 2000-2006 John Lim (jlim#natsoft.com.my)
+V4.90 8 June 2006 (c) 2000-2006 John Lim (jlim#natsoft.com.my)
 </p>
 <p> <font size="1">This software is dual licensed using BSD-Style and
 LGPL. This means you can use it in compiled proprietary and commercial
@@ -123,11 +123,23 @@ including adodb-cryptsession.inc.php instead of adodb-session.inc.php. </li>
  <pre>  <font
  color="#004040"><br>    include('adodb/adodb.inc.php');<br>    <br><b>    $ADODB_SESSION_DRIVER='mysql';<br>    $ADODB_SESSION_CONNECT='localhost';<br>    $ADODB_SESSION_USER ='scott';<br>    $ADODB_SESSION_PWD ='tiger';<br>    $ADODB_SESSION_DB ='sessiondb';<br>    <br>    include('adodb/session/adodb-session-clob.php');</b><br>    session_start();</font>
  </pre>
- <h4>Installation</h4>
-<p>1. Create this table in your database (syntax might vary depending on your db):
-<p><pre> <a
- name="sessiontab"></a> <font color="#004040"><br>  create table sessions (<br>       SESSKEY char(32) not null,<br>       EXPIRY int(11) unsigned not null,<br>       EXPIREREF varchar(64),<br>       DATA text not null,<br>      primary key (sesskey)<br>  );</font><br> 
+ <p>An alternative way to set persistant or non-persistent connections is to call the following function before session_start() is called.
+ <pre>
+ 	ADODB_Session::persist('P'); # 'C' for non-persistent connections
  </pre>
+ <h4>Installation</h4>
+<p>1. Create this table in your database (MySQL syntax):
+<p><pre> <a
+ name="sessiontab"></a> <font color="#004040">
+   create table sessions (
+       SESSKEY char(32) not null,
+       EXPIRY int(11) unsigned not null,
+       EXPIREREF varchar(64),
+	   DATA text not null,
+	   primary key (sesskey)
+	   );</font>
+ </pre>
+
  <p>You may want to rename the 'data' field to 'session_data' as
 	'data' appears to be a reserved word for one or more of the following:
 	<ul>
@@ -169,8 +181,8 @@ adodb's garbage collection function, which can be setup to do notification.
 the userid of the session. Later when the session has expired,  just before the record is deleted,
 we reload the EXPIREREF field and call the notification function with the value of EXPIREREF, which 
 is the userid of the person being logged off.
-<p>ADOdb use a global variable $ADODB_SESSION_EXPIRE_NOTIFY that you must predefine before session
-start to store the notification configuratioin. 
+<p>ADOdb uses a global variable $ADODB_SESSION_EXPIRE_NOTIFY that you must predefine before session
+start to store the notification configuration. 
 $ADODB_SESSION_EXPIRE_NOTIFY is an array with 2 elements, the
 first being the name of the session variable you would like to store in
 the EXPIREREF field, and the 2nd is the notification function's name. </p>
@@ -179,19 +191,30 @@ based on the userid. When the user logs in, we store the id in the global sessio
 $USERID. The function name is 'NotifyFn'. 
 <p>
 So we define (before session_start() is called): </p>
-<pre> <font color="#004040"><br>        $ADODB_SESSION_EXPIRE_NOTIFY = array('USERID','NotifyFn');<br>    </font></pre>
+<pre> <font color="#004040">
+	$ADODB_SESSION_EXPIRE_NOTIFY = array('USERID','NotifyFn');
+</font></pre>
 And when the NotifyFn is called (when the session expires), the
 $USERID is passed in as the first parameter, eg. NotifyFn($userid, $sesskey). The
 session key (which is the primary key of the record in the sessions
 table) is the 2nd parameter.
 <p> Here is an example of a Notification function that deletes some
 records in the database and temporary files: </p>
-<pre><font color="#004040"><br>        function NotifyFn($expireref, $sesskey)<br>        {<br>        global $ADODB_SESS_CONN; # the session connection object<br><br>          $user = $ADODB_SESS_CONN-&gt;qstr($expireref);<br>          $ADODB_SESS_CONN-&gt;Execute("delete from shopping_cart where user=$user");<br>          system("rm /work/tmpfiles/$expireref/*");<br>        }</font><br>    </pre>
+<pre><font color="#004040">
+	function NotifyFn($expireref, $sesskey)
+	{
+		global $ADODB_SESS_CONN; # the session connection object
+		$user = $ADODB_SESS_CONN-&gt;qstr($expireref);
+		
+		$ADODB_SESS_CONN-&gt;Execute("delete from shopping_cart where user=$user");          
+		system("rm /work/tmpfiles/$expireref/*");
+	}</font>  
+			  </pre>
 <p> NOTE 1: If you have register_globals disabled in php.ini, then you
 will have to manually set the EXPIREREF. E.g. </p>
 <pre> <font color="#004040">
-    $GLOBALS['USERID'] = GetUserID();
-    $ADODB_SESSION_EXPIRE_NOTIFY = array('USERID','NotifyFn');</font>
+$GLOBALS['USERID'] = GetUserID();
+$ADODB_SESSION_EXPIRE_NOTIFY = array('USERID','NotifyFn');</font>
 </pre>
 <p> NOTE 2: If you want to change the EXPIREREF after the session
 record has been created, you will need to modify any session variable
@@ -211,6 +234,38 @@ site.
 <p>3. You can scan the sessions table to ensure no user
 can be logged in twice. Useful for security reasons.
 </p>
+<h3>Using Oracle CLOBs</h3>
+<p>Suppose you are storing the DATA field in a CLOB:
+ <pre><font color="#004040">
+   CREATE TABLE sessions (
+       SESSKEY VARCHAR(32) NOT NULL,
+       EXPIRY NUMBER(16)  NOT NULL,
+       EXPIREREF VARCHAR(64),
+       DATA CLOB,
+      PRIMARY KEY (sesskey)
+  );</font>
+ </pre> 
+ <p>Then your PHP code could look like this:
+	 <pre>
+	ADODB_SESSION_DRIVER='oci8';
+	$ADODB_SESSION_CONNECT=$tnsname;
+	$ADODB_SESSION_USER ='scott';
+	$ADODB_SESSION_PWD = 'tiger';
+	$ADODB_SESSION_DB ='';
+	
+	$ADODB_SESSION_USE_LOBS = 'clob';
+	$ADODB_SESSION_TBL = 'sessions';
+	
+	$ADODB_SESS_DEBUG=0;
+	
+	include(ADODB_DIR.'/session/adodb-session.php');
+	
+	ADODB_Session::persist('P'); # use 'C' for non-persistent connects
+	
+	session_start();
+ </pre>
+ <p>Note that you can set persistance using ADODB_Session::persist('P').
+ 
 <h3>Compression/Encryption Schemes</h3>
 Since ADOdb 4.05, thanks to Ross Smith, multiple encryption and
 compression schemes are supported. Currently, supported are:
@@ -238,7 +293,8 @@ on the theory behind this feature. Usage:
 	# This is extremely simplistic example, better 
 	# to regenerate only when the user logs in or changes
 	# user privilege levels.
-	if ((rand()%10) == 0) adodb_session_regenerate_id(); </pre>
+	if ((rand()%10) == 0) adodb_session_regenerate_id(); 
+</pre>
 <p>This function calls session_regenerate_id() internally or simulates it if the function does not exist.
 <h2>More Info</h2>
 <p>Also see the <a href="docs-adodb.htm">core ADOdb documentation</a>.
