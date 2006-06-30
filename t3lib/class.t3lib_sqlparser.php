@@ -804,14 +804,14 @@ class t3lib_sqlparser {
 				// Looking for the table:
 			if ($stack[$pnt]['table'] = $this->nextPart($parseString,'^([[:alnum:]_]+)(,|[[:space:]]+)'))	{
 					// Looking for stop-keywords before fetching potential table alias:
-					if ($stopRegex && ($this->lastStopKeyWord = $this->nextPart($parseString, $stopRegex)))	{
-						$this->lastStopKeyWord = strtoupper(str_replace(array(' ',"\t","\r","\n"),'',$this->lastStopKeyWord));
-						return $stack;
-					}
-					if(!preg_match('/^(LEFT|JOIN)[[:space:]]+/i',$parseString)) {
-						$stack[$pnt]['as_keyword'] = $this->nextPart($parseString,'^(AS[[:space:]]+)');
-			    $stack[$pnt]['as'] = $this->nextPart($parseString,'^([[:alnum:]_]+)[[:space:]]*');
-					}
+				if ($stopRegex && ($this->lastStopKeyWord = $this->nextPart($parseString, $stopRegex)))	{
+					$this->lastStopKeyWord = strtoupper(str_replace(array(' ',"\t","\r","\n"),'',$this->lastStopKeyWord));
+					return $stack;
+				}
+				if(!preg_match('/^(LEFT|JOIN)[[:space:]]+/i',$parseString)) {
+					$stack[$pnt]['as_keyword'] = $this->nextPart($parseString,'^(AS[[:space:]]+)');
+					$stack[$pnt]['as'] = $this->nextPart($parseString,'^([[:alnum:]_]+)[[:space:]]*');
+				}
 			} else return $this->parseError('No table name found as expected in parseFromTables()!',$parseString);
 
 				// Looking for JOIN
@@ -929,7 +929,7 @@ class t3lib_sqlparser {
 				}
 
 					// Find "comparator":
-				$stack[$level][$pnt[$level]]['comparator'] = $this->nextPart($parseString,'^(<=|>=|<|>|=|!=|NOT[[:space:]]+IN|IN|NOT[[:space:]]+LIKE|LIKE|IS)');
+				$stack[$level][$pnt[$level]]['comparator'] = $this->nextPart($parseString,'^(<=|>=|<|>|=|!=|NOT[[:space:]]+IN|IN|NOT[[:space:]]+LIKE|LIKE|IS[[:space:]]+NOT|IS)');
 				if (strlen($stack[$level][$pnt[$level]]['comparator']))	{
 						// Finding value for comparator:
 					$stack[$level][$pnt[$level]]['value'] = $this->getValue($parseString,$stack[$level][$pnt[$level]]['comparator']);
@@ -996,7 +996,7 @@ class t3lib_sqlparser {
 		$result = array();
 
 			// Field type:
-		if ($result['fieldType'] =  $this->nextPart($parseString,'^(int|smallint|tinyint|mediumint|bigint|double|numeric|decimal|varchar|char|text|tinytext|mediumtext|longtext|blob|tinyblob|mediumblob|longblob)([[:space:],]+|\()'))	{
+		if ($result['fieldType'] =  $this->nextPart($parseString,'^(int|smallint|tinyint|mediumint|bigint|double|numeric|decimal|float|varchar|char|text|tinytext|mediumtext|longtext|blob|tinyblob|mediumblob|longblob)([[:space:],]+|\()'))	{
 
 				// Looking for value:
 			if (substr($parseString,0,1)=='(')	{
@@ -1096,7 +1096,6 @@ class t3lib_sqlparser {
 
 				// Quote?
 			$firstChar = substr($parseString,0,1);
-
 			switch($firstChar)	{
 				case '"':
 					$value = array($this->getValueInQuotes($parseString,'"'),'"');
