@@ -1,3 +1,7 @@
+2006-06-30  Franz Holzinger <kontakt@fholzinger.com>
+
+	* Fix bug #3725: empty and invalid flexform meta data are checked. impexp echos warning message found inside T3D import.
+
 2006-06-30  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
 	* t3lib_htmlmail: auto-detect charset (using FE or BE settings) with manual override

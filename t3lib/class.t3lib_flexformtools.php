@@ -138,6 +138,10 @@ class t3lib_flexformtools {
 			$langChildren = $dataStructArray['meta']['langChildren'] ? 1 : 0;
 			$langDisabled = $dataStructArray['meta']['langDisable'] ? 1 : 0;
 
+			   // empty or invalid <meta>
+			if (!is_array($editData['meta']))	{
+			   $editData['meta'] = array();
+			}
 			$editData['meta']['currentLangId'] = array();
 			$languages = $this->getAvailableLanguages();
 
