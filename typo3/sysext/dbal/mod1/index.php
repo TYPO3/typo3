@@ -145,6 +145,7 @@ function updateQryForm(s) {
 	document.getElementById(\'tx-dbal-result\').style.display = \'none\';
 	switch(s) {
 	case \'SELECT\':
+		document.getElementById(\'tx-dbal-qryupdate\').style.display = \'none\';
 		document.getElementById(\'tx-dbal-qryfields\').style.display = \'table-row\';
 		document.getElementById(\'tx-dbal-qryinsertvalues\').style.display = \'none\';
 		document.getElementById(\'tx-dbal-qryupdatevalues\').style.display = \'none\';
@@ -156,6 +157,7 @@ function updateQryForm(s) {
 		document.getElementById(\'tx-dbal-qrylimit\').style.display = \'table-row\';
 	break;
 	case \'INSERT\':
+		document.getElementById(\'tx-dbal-qryupdate\').style.display = \'none\';
 		document.getElementById(\'tx-dbal-qryfields\').style.display = \'none\';
 		document.getElementById(\'tx-dbal-qryinsertvalues\').style.display = \'table-row\';
 		document.getElementById(\'tx-dbal-qryupdatevalues\').style.display = \'none\';
@@ -167,6 +169,7 @@ function updateQryForm(s) {
 		document.getElementById(\'tx-dbal-qrylimit\').style.display = \'table-row\';
 	break;
 	case \'UPDATE\':
+		document.getElementById(\'tx-dbal-qryupdate\').style.display = \'table-row\';
 		document.getElementById(\'tx-dbal-qryfields\').style.display = \'none\';
 		document.getElementById(\'tx-dbal-qryinsertvalues\').style.display = \'none\';
 		document.getElementById(\'tx-dbal-qryupdatevalues\').style.display = \'table-row\';
@@ -179,6 +182,7 @@ function updateQryForm(s) {
 		document.getElementById(\'tx-dbal-qrylimit\').style.display = \'none\';
 	break;
 	case \'DELETE\':
+		document.getElementById(\'tx-dbal-qryupdate\').style.display = \'none\';
 		document.getElementById(\'tx-dbal-qryfields\').style.display = \'none\';
 		document.getElementById(\'tx-dbal-qryinsertvalues\').style.display = \'none\';
 		document.getElementById(\'tx-dbal-qryupdatevalues\').style.display = \'none\';
@@ -200,7 +204,7 @@ function updateQryForm(s) {
 	     <option value="SELECT" '.($input['QUERY']=='SELECT'? 'selected="selected"' : '').'>SELECT</option>
 	     <option value="INSERT" '.($input['QUERY']=='INSERT'? 'selected="selected"' : '').'>INSERT</option>
 	     <option value="UPDATE" '.($input['QUERY']=='UPDATE'? 'selected="selected"' : '').'>UPDATE</option>
-	     <option value="DELETE" '.($input['QUERY']=='DELETE' ? 'selected="selected"' : '').'">DELETE</option>
+	     <option value="DELETE" '.($input['QUERY']=='DELETE' ? 'selected="selected"' : '').'>DELETE</option>
 	    </select>
 	    </td></tr>
  	    <tr id="tx-dbal-qryupdate" style="display:none;"><td></td><td><input name="tx_dbal[UPDATE]" value="'.$input['UPDATE'].'" type="text" size="30" maxsize="100" /></td></tr>

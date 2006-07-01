@@ -1881,7 +1881,7 @@ class ux_t3lib_DB extends t3lib_DB {
 
 		if (is_array($parsedQuery))	{
 
-			// Process query based on type:
+				// Process query based on type:
 			switch($parsedQuery['type'])	{
 				case 'CREATETABLE':
 				case 'ALTERTABLE':
@@ -1900,16 +1900,19 @@ class ux_t3lib_DB extends t3lib_DB {
 					break;
 			}
 
-			// Setting query array (for other applications to access if needed)
+				// Setting query array (for other applications to access if needed)
 			$this->lastParsedAndMappedQueryArray = $parsedQuery;
 
-			// Execute query (based on handler derived from the TABLE name which we actually know for once!)
+				// Execute query (based on handler derived from the TABLE name which we actually know for once!)
 			$this->lastHandlerKey = $this->handler_getFromTableList($ORIG_table);
 			switch((string)$this->handlerCfg[$this->lastHandlerKey]['type'])	{
 				case 'native':
 						// Compiling query:
 					$compiledQuery =  $this->SQLparser->compileSQL($this->lastParsedAndMappedQueryArray);
 
+					if($this->lastParsedAndMappedQueryArray['type']=='INSERT') {
+						return mysql_query($compiledQuery, $this->link);
+					}
 					return mysql_query($compiledQuery[0], $this->link);
 					break;
 				case 'adodb':
@@ -2063,7 +2066,11 @@ class ux_t3lib_DB extends t3lib_DB {
 					} else {
 						$this->handlerInstance[$handlerKey]->DataDictionary  = NewDataDictionary($this->handlerInstance[$handlerKey]);
 						$this->handlerInstance[$handlerKey]->last_insert_id = 0;
-						$this->handlerInstance[$handlerKey]->sequenceStart = $cfgArray['config']['sequenceStart'];
+						if(isset($cfgArray['config']['sequenceStart'])) {
+							$this->handlerInstance[$handlerKey]->sequenceStart = $cfgArray['config']['sequenceStart'];
+						} else {
+							$this->handlerInstance[$handlerKey]->sequenceStart = 1;
+						}
 					}
 					break;
 				case 'userdefined':

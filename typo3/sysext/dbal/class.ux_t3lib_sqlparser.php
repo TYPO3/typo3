@@ -217,12 +217,13 @@ class ux_t3lib_sqlparser extends t3lib_sqlparser {
 				break;
 			case 'adodb':
 					// Set type:
-				$cfg = $GLOBALS['TYPO3_DB']->MySQLMetaType($fieldCfg['fieldType']);
+				$type = $GLOBALS['TYPO3_DB']->MySQLMetaType($fieldCfg['fieldType']);
+				$cfg = $type;
 
 					// Add value, if any:
-				if (strlen($fieldCfg['value']) && (in_array($cfg, array('C','C2'))))	{
+				if (strlen($fieldCfg['value']) && (in_array($type, array('C','C2'))))	{
 					$cfg .= ' '.$fieldCfg['value'];
-				} elseif (!isset($fieldCfg['value']) && (in_array($cfg, array('C','C2')))) {
+				} elseif (!isset($fieldCfg['value']) && (in_array($type, array('C','C2')))) {
 					$cfg .= ' 255'; // add 255 as length for varchar without specified length (e.g. coming from tinytext, tinyblob)
 				}
 
@@ -230,26 +231,38 @@ class ux_t3lib_sqlparser extends t3lib_sqlparser {
 				if (is_array($fieldCfg['featureIndex']))	{
 
 						// MySQL assigns DEFAULT value automatically if NOT NULL, fake this here
+						// numeric fields get 0 as default, other fields an empty string
 					if(isset($fieldCfg['featureIndex']['NOTNULL']) && !isset($fieldCfg['featureIndex']['DEFAULT']) && !isset($fieldCfg['featureIndex']['AUTO_INCREMENT'])) {
-						$fieldCfg['featureIndex']['DEFAULT'] = array('keyword' => 'DEFAULT', 'value' => array('','\''));
+						switch($type) {
+							case 'I8':
+							case 'F':
+							case 'N':
+								$fieldCfg['featureIndex']['DEFAULT'] = array('keyword' => 'DEFAULT', 'value' => array('0',''));
+								break;
+							default:
+								$fieldCfg['featureIndex']['DEFAULT'] = array('keyword' => 'DEFAULT', 'value' => array('','\''));
+						}
 					}
 
 					foreach($fieldCfg['featureIndex'] as $feature => $featureDef)	{
 						switch(true) {
 								// unsigned only for mysql, as it is mysql specific
-							case ($feature == 'UNSIGNED' && !$GLOBALS['TYPO3_DB']->runningNative()) :
+							case ($feature == 'UNSIGNED' && !$GLOBALS['TYPO3_DB']->runningADOdbDriver('mysql')) :
 								// auto_increment is removed, it is handled by (emulated) sequences
 							case ($feature == 'AUTO_INCREMENT') :
-								// never add NOT NULL as it is useless in TYPO3 and breaks most databases other than MySQL
+								// never add NOT NULL if running on Oracle and we have an empty string as default
+							case ($feature == 'NOTNULL' && $GLOBALS['TYPO3_DB']->runningADOdbDriver('oci8')) :
+								continue;
 							case ($feature == 'NOTNULL') :
-							continue;
+							$cfg.=' NOTNULL';
+								break;
+							default :
+							$cfg.=' '.$featureDef['keyword'];
 						}
-
-						$cfg.=' '.$featureDef['keyword'];
 
 							// Add value if found:
 						if (is_array($featureDef['value']))	{
-							if(!is_numeric($featureDef['value'][0]) && empty($featureDef['value'][0])) {
+							if($featureDef['value'][0]==='') {
 								$cfg .= ' "\'\'"';
 							} else {
 								$cfg.=' '.$featureDef['value'][1].$this->compileAddslashes($featureDef['value'][0]).$featureDef['value'][1];

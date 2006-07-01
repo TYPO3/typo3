@@ -94,7 +94,7 @@ class ux_t3lib_sqlengine extends t3lib_sqlengine {
 	function compileINSERT($components)	{
 		switch((string)$GLOBALS['TYPO3_DB']->handlerCfg[$GLOBALS['TYPO3_DB']->lastHandlerKey]['type'])	{
 			case 'native':
-				parent::compileINSERT($components);
+				$query = parent::compileINSERT($components);
 				break;
 			case 'adodb':
 				if(isset($components['VALUES_ONLY']) && is_array($components['VALUES_ONLY'])) {
@@ -217,12 +217,13 @@ class ux_t3lib_sqlengine extends t3lib_sqlengine {
 				break;
 			case 'adodb':
 					// Set type:
-				$cfg = $GLOBALS['TYPO3_DB']->MySQLMetaType($fieldCfg['fieldType']);
+				$type = $GLOBALS['TYPO3_DB']->MySQLMetaType($fieldCfg['fieldType']);
+				$cfg = $type;
 
 					// Add value, if any:
-				if (strlen($fieldCfg['value']) && (in_array($cfg, array('C','C2'))))	{
+				if (strlen($fieldCfg['value']) && (in_array($type, array('C','C2'))))	{
 					$cfg .= ' '.$fieldCfg['value'];
-				} elseif (!isset($fieldCfg['value']) && (in_array($cfg, array('C','C2')))) {
+				} elseif (!isset($fieldCfg['value']) && (in_array($type, array('C','C2')))) {
 					$cfg .= ' 255'; // add 255 as length for varchar without specified length (e.g. coming from tinytext, tinyblob)
 				}
 
@@ -232,7 +233,7 @@ class ux_t3lib_sqlengine extends t3lib_sqlengine {
 						// MySQL assigns DEFAULT value automatically if NOT NULL, fake this here
 						// numeric fields get 0 as default, other fields an empty string
 					if(isset($fieldCfg['featureIndex']['NOTNULL']) && !isset($fieldCfg['featureIndex']['DEFAULT']) && !isset($fieldCfg['featureIndex']['AUTO_INCREMENT'])) {
-						switch(true) {
+						switch($type) {
 							case 'I8':
 							case 'F':
 							case 'N':
@@ -250,11 +251,14 @@ class ux_t3lib_sqlengine extends t3lib_sqlengine {
 								// auto_increment is removed, it is handled by (emulated) sequences
 							case ($feature == 'AUTO_INCREMENT') :
 								// never add NOT NULL if running on Oracle and we have an empty string as default
-							case ($feature == 'NOTNULL' && !$GLOBALS['TYPO3_DB']->runningADOdbDriver('oci8') && $fieldCfg['featureIndex']['DEFAULT']['value'][0]==='') :
-							continue;
+							case ($feature == 'NOTNULL' && $GLOBALS['TYPO3_DB']->runningADOdbDriver('oci8')) :
+								continue;
+							case ($feature == 'NOTNULL') :
+							$cfg.=' NOTNULL';
+								break;
+							default :
+							$cfg.=' '.$featureDef['keyword'];
 						}
-
-						$cfg.=' '.$featureDef['keyword'];
 
 							// Add value if found:
 						if (is_array($featureDef['value']))	{
