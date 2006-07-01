@@ -98,14 +98,14 @@ class tx_dbal_module1 extends t3lib_SCbase {
 			// Debug log:
 		switch($this->MOD_SETTINGS['function']) {
 			case 'info':
-			$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('Cached_info'), $this->printCachedInfo());
-			break;
+				$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('Cached_info'), $this->printCachedInfo());
+				break;
 			case 'sqlcheck':
-			$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('SQL_check'), $this->printSqlCheck());
-			break;
+				$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('SQL_check'), $this->printSqlCheck());
+				break;
 			case 0:
-			$this->content.= $this->doc->section($GLOBALS['LANG']->getLL('Debug_log'), $this->printLogMgm());
-			break;
+				$this->content.= $this->doc->section($GLOBALS['LANG']->getLL('Debug_log'), $this->printLogMgm());
+				break;
 		}
 
 			// ShortCut
@@ -145,6 +145,7 @@ function updateQryForm(s) {
 	document.getElementById(\'tx-dbal-result\').style.display = \'none\';
 	switch(s) {
 	case \'SELECT\':
+		document.getElementById(\'tx-dbal-qryupdate\').style.display = \'none\';
 		document.getElementById(\'tx-dbal-qryfields\').style.display = \'table-row\';
 		document.getElementById(\'tx-dbal-qryinsertvalues\').style.display = \'none\';
 		document.getElementById(\'tx-dbal-qryupdatevalues\').style.display = \'none\';
@@ -156,6 +157,7 @@ function updateQryForm(s) {
 		document.getElementById(\'tx-dbal-qrylimit\').style.display = \'table-row\';
 	break;
 	case \'INSERT\':
+		document.getElementById(\'tx-dbal-qryupdate\').style.display = \'none\';
 		document.getElementById(\'tx-dbal-qryfields\').style.display = \'none\';
 		document.getElementById(\'tx-dbal-qryinsertvalues\').style.display = \'table-row\';
 		document.getElementById(\'tx-dbal-qryupdatevalues\').style.display = \'none\';
@@ -167,6 +169,7 @@ function updateQryForm(s) {
 		document.getElementById(\'tx-dbal-qrylimit\').style.display = \'table-row\';
 	break;
 	case \'UPDATE\':
+		document.getElementById(\'tx-dbal-qryupdate\').style.display = \'table-row\';
 		document.getElementById(\'tx-dbal-qryfields\').style.display = \'none\';
 		document.getElementById(\'tx-dbal-qryinsertvalues\').style.display = \'none\';
 		document.getElementById(\'tx-dbal-qryupdatevalues\').style.display = \'table-row\';
@@ -179,6 +182,7 @@ function updateQryForm(s) {
 		document.getElementById(\'tx-dbal-qrylimit\').style.display = \'none\';
 	break;
 	case \'DELETE\':
+		document.getElementById(\'tx-dbal-qryupdate\').style.display = \'none\';
 		document.getElementById(\'tx-dbal-qryfields\').style.display = \'none\';
 		document.getElementById(\'tx-dbal-qryinsertvalues\').style.display = \'none\';
 		document.getElementById(\'tx-dbal-qryupdatevalues\').style.display = \'none\';
@@ -200,7 +204,7 @@ function updateQryForm(s) {
 	     <option value="SELECT" '.($input['QUERY']=='SELECT'? 'selected="selected"' : '').'>SELECT</option>
 	     <option value="INSERT" '.($input['QUERY']=='INSERT'? 'selected="selected"' : '').'>INSERT</option>
 	     <option value="UPDATE" '.($input['QUERY']=='UPDATE'? 'selected="selected"' : '').'>UPDATE</option>
-	     <option value="DELETE" '.($input['QUERY']=='DELETE' ? 'selected="selected"' : '').'">DELETE</option>
+	     <option value="DELETE" '.($input['QUERY']=='DELETE' ? 'selected="selected"' : '').'>DELETE</option>
 	    </select>
 	    </td></tr>
  	    <tr id="tx-dbal-qryupdate" style="display:none;"><td></td><td><input name="tx_dbal[UPDATE]" value="'.$input['UPDATE'].'" type="text" size="30" maxsize="100" /></td></tr>
@@ -224,17 +228,17 @@ updateQryForm(\''.$input['QUERY'].'\');
 		$out .= '<tr id="tx-dbal-result" class="bgColor4"><th>Result:</th><td>';
 		switch($input['QUERY']) {
 			case 'SELECT':
-			$qry = $GLOBALS['TYPO3_DB']->SELECTquery($input['FIELDS'],$input['FROM'],$input['WHERE'],$input['GROUP'],$input['ORDER'],$input['LIMIT']);
-			break;
+				$qry = $GLOBALS['TYPO3_DB']->SELECTquery($input['FIELDS'],$input['FROM'],$input['WHERE'],$input['GROUP'],$input['ORDER'],$input['LIMIT']);
+				break;
 			case 'INSERT':
-			$qry = $GLOBALS['TYPO3_DB']->INSERTquery($input['INTO'],$this->createFieldsValuesArray($input['INSERTVALUES']));
-			break;
+				$qry = $GLOBALS['TYPO3_DB']->INSERTquery($input['INTO'],$this->createFieldsValuesArray($input['INSERTVALUES']));
+				break;
 			case 'UPDATE':
-			$qry = $GLOBALS['TYPO3_DB']->UPDATEquery($input['UPDATE'],$input['WHERE'],$this->createFieldsValuesArray($input['UPDATEVALUES']));
-			break;
+				$qry = $GLOBALS['TYPO3_DB']->UPDATEquery($input['UPDATE'],$input['WHERE'],$this->createFieldsValuesArray($input['UPDATEVALUES']));
+				break;
 			case 'DELETE':
-			$qry = $GLOBALS['TYPO3_DB']->DELETEquery($input['FROM'],$input['WHERE']);
-			break;
+				$qry = $GLOBALS['TYPO3_DB']->DELETEquery($input['FROM'],$input['WHERE']);
+				break;
 		}
 		$out .= '<pre>'.htmlspecialchars($qry).'</pre></td></tr>';
 
@@ -355,19 +359,17 @@ updateQryForm(\''.$input['QUERY'].'\');
 		$cmd = (string)t3lib_div::_GP('cmd');
 		switch($cmd)	{
 			case 'flush':
-			$res = $GLOBALS['TYPO3_DB']->exec_DELETEquery('tx_dbal_debuglog','');
-			$res = $GLOBALS['TYPO3_DB']->exec_DELETEquery('tx_dbal_debuglog_where','');
-			$outStr = 'Log FLUSHED!';
-			break;
+				$res = $GLOBALS['TYPO3_DB']->exec_DELETEquery('tx_dbal_debuglog','');
+				$res = $GLOBALS['TYPO3_DB']->exec_DELETEquery('tx_dbal_debuglog_where','');
+				$outStr = 'Log FLUSHED!';
+				break;
 			case 'joins':
+				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('table_join,exec_time,query,script','tx_dbal_debuglog','table_join!=\'\'', 'table_join,script,exec_time,query');
 
-				// Query:
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('table_join,exec_time,query,script','tx_dbal_debuglog','table_join!=\'\'', 'table_join,script,exec_time,query');
-
-				// Init vars in which to pick up the query result:
-			$tableIndex = array();
-			$tRows = array();
-			$tRows[] = '
+					// Init vars in which to pick up the query result:
+				$tableIndex = array();
+				$tRows = array();
+				$tRows[] = '
 					<tr>
 						<td>Execution time</td>
 						<td>Table joins</td>
@@ -375,57 +377,56 @@ updateQryForm(\''.$input['QUERY'].'\');
 						<td>Query</td>
 					</tr>';
 
-			while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
-				$tableArray = $GLOBALS['TYPO3_DB']->SQLparser->parseFromTables($row['table_join']);
+				while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
+					$tableArray = $GLOBALS['TYPO3_DB']->SQLparser->parseFromTables($row['table_join']);
 
-				// Create table name index:
-				foreach($tableArray as $a)	{
-					foreach($tableArray as $b)	{
-						if ($b['table']!=$a['table'])	{
-							$tableIndex[$a['table']][$b['table']]=1;
+						// Create table name index:
+					foreach($tableArray as $a)	{
+						foreach($tableArray as $b)	{
+							if ($b['table']!=$a['table'])	{
+								$tableIndex[$a['table']][$b['table']]=1;
+							}
 						}
 					}
-				}
 
-					// Create output row
-				$tRows[] = '
+						// Create output row
+					$tRows[] = '
 						<tr>
 							<td>'.htmlspecialchars($row['exec_time']).'</td>
 							<td>'.htmlspecialchars($row['table_join']).'</td>
 							<td>'.htmlspecialchars($row['script']).'</td>
 							<td>'.htmlspecialchars($row['query']).'</td>
 						</tr>';
-			}
+				}
 
-				// Printing direct joins:
-			$outStr.= '<h4>Direct joins:</h4>'.t3lib_div::view_array($tableIndex);
+					// Printing direct joins:
+				$outStr.= '<h4>Direct joins:</h4>'.t3lib_div::view_array($tableIndex);
 
 
-				// Printing total dependencies:
-			foreach($tableIndex as $priTable => $a)	{
-				foreach($tableIndex as $tableN => $v)	{
-					foreach($v as $tableP => $vv)	{
-						if ($tableP == $priTable)	{
-							$tableIndex[$priTable] = array_merge($v, $a);
+					// Printing total dependencies:
+				foreach($tableIndex as $priTable => $a)	{
+					foreach($tableIndex as $tableN => $v)	{
+						foreach($v as $tableP => $vv)	{
+							if ($tableP == $priTable)	{
+								$tableIndex[$priTable] = array_merge($v, $a);
+							}
 						}
 					}
 				}
-			}
-			$outStr.= '<h4>Total dependencies:</h4>'.t3lib_div::view_array($tableIndex);
+				$outStr.= '<h4>Total dependencies:</h4>'.t3lib_div::view_array($tableIndex);
 
-				// Printing data rows:
-			$outStr.= '
+					// Printing data rows:
+				$outStr.= '
 					<table border="1" cellspacing="0">'.implode('',$tRows).'
 					</table>';
-			break;
+				break;
 			case 'errors':
 
-				// Query:
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('serdata,exec_time,query,script','tx_dbal_debuglog','errorFlag>0','','tstamp DESC');
+				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('serdata,exec_time,query,script','tx_dbal_debuglog','errorFlag>0','','tstamp DESC');
 
 				// Init vars in which to pick up the query result:
-			$tRows = array();
-			$tRows[] = '
+				$tRows = array();
+				$tRows[] = '
 					<tr>
 						<td>Execution time</td>
 						<td>Error data</td>
@@ -433,71 +434,71 @@ updateQryForm(\''.$input['QUERY'].'\');
 						<td>Query</td>
 					</tr>';
 
-			while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
+				while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
 					// Create output row
-				$tRows[] = '
+					$tRows[] = '
 						<tr>
 							<td>'.htmlspecialchars($row['exec_time']).'</td>
 							<td>'.t3lib_div::view_array(unserialize($row['serdata'])).'</td>
 							<td>'.htmlspecialchars($row['script']).'</td>
 							<td>'.htmlspecialchars($row['query']).'</td>
 						</tr>';
-			}
+				}
 
 				// Printing data rows:
-			$outStr.= '
+				$outStr.= '
 					<table border="1" cellspacing="0">'.implode('',$tRows).'
 					</table>';
-			break;
+				break;
 			case 'parsing':
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('query,serdata','tx_dbal_debuglog','errorFlag&2=2');
-			$tRows = array();
-			while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
+				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('query,serdata','tx_dbal_debuglog','errorFlag&2=2');
+				$tRows = array();
+				while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
 					// Create output row
-				$tRows[] = '
+					$tRows[] = '
 						<tr>
 							<td>'.htmlspecialchars($row['query']).'</td>
 						</tr>';
-			}
+				}
 
 				// Printing data rows:
-			$outStr.= '
+				$outStr.= '
 					<table border="1" cellspacing="0">'.implode('',$tRows).'
 					</table>';
-			break;
+				break;
 			case 'where':
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('tstamp,script,tablename,whereclause','tx_dbal_debuglog_where','','','tstamp DESC');
-			$tRows = array();
-			$tRows[] = '
+				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('tstamp,script,tablename,whereclause','tx_dbal_debuglog_where','','','tstamp DESC');
+				$tRows = array();
+				$tRows[] = '
 					<tr>
 						<td>Time</td>
 						<td>Script</td>
 						<td>Table</td>
 						<td>WHERE clause</td>
 					</tr>';
-			while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
-				$tRows[] = '
+				while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
+					$tRows[] = '
 						<tr>
 							<td>'.t3lib_BEfunc::datetime($row['tstamp']).'</td>
 							<td>'.htmlspecialchars($row['script']).'</td>
 							<td>'.htmlspecialchars($row['tablename']).'</td>
-							<td>'.str_replace(array('\'\'','""'), array('<span style="background-color:#ff0000;color:#ffffff;padding:2px;font-weight:bold;">\'\'</span>','<span style="background-color:#ff0000;color:#ffffff;padding:2px;font-weight:bold;">""</span>'), htmlspecialchars($row['whereclause'])).'</td>
+								<td>'.str_replace(array('\'\'','""','IS NULL','IS NOT NULL'), array('<span style="background-color:#ff0000;color:#ffffff;padding:2px;font-weight:bold;">\'\'</span>','<span style="background-color:#ff0000;color:#ffffff;padding:2px;font-weight:bold;">""</span>','<span style="background-color:#00ff00;color:#ffffff;padding:2px;font-weight:bold;">IS NULL</span>','<span style="background-color:#00ff00;color:#ffffff;padding:2px;font-weight:bold;">IS NOT NULL</span>'), htmlspecialchars($row['whereclause'])).'</td>
 						</tr>';
-			}
+				}
 
-			$outStr = '
+				$outStr = '
 					<table border="1" cellspacing="0">'.implode('',$tRows).'
 					</table>';
-			break;
+				break;
 			default:
 
 				// Look for request to view specific script exec:
-			$specTime = t3lib_div::_GP('specTime');
+				$specTime = t3lib_div::_GP('specTime');
 
-			if ($specTime)	{
-				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*','tx_dbal_debuglog','tstamp='.intval($specTime));
-				$tRows = array();
-				$tRows[] = '
+				if ($specTime)	{
+					$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*','tx_dbal_debuglog','tstamp='.intval($specTime));
+					$tRows = array();
+					$tRows[] = '
 						<tr>
 							<td>Execution time</td>
 							<td>Error</td>
@@ -505,20 +506,20 @@ updateQryForm(\''.$input['QUERY'].'\');
 							<td>Data</td>
 							<td>Query</td>
 						</tr>';
-				while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
-					$tRows[] = '
+					while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
+						$tRows[] = '
 							<tr>
 								<td>'.htmlspecialchars($row['exec_time']).'</td>
 								<td>'.($row['errorFlag'] ? 1 : 0).'</td>
 								<td>'.htmlspecialchars($row['table_join']).'</td>
 								<td>'.t3lib_div::view_array(unserialize($row['serdata'])).'</td>
-								<td>'.htmlspecialchars($row['query']).'</td>
+								<td>'.str_replace(array('\'\'','""','IS NULL','IS NOT NULL'), array('<span style="background-color:#ff0000;color:#ffffff;padding:2px;font-weight:bold;">\'\'</span>','<span style="background-color:#ff0000;color:#ffffff;padding:2px;font-weight:bold;">""</span>','<span style="background-color:#00ff00;color:#ffffff;padding:2px;font-weight:bold;">IS NULL</span>','<span style="background-color:#00ff00;color:#ffffff;padding:2px;font-weight:bold;">IS NOT NULL</span>'), htmlspecialchars($row['query'])).'</td>
 							</tr>';
-				}
-			} else {
-				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('tstamp,script, SUM(exec_time) as calc_sum, count(*) AS qrycount, MAX(errorFlag) as error','tx_dbal_debuglog','','tstamp,script','tstamp DESC');
-				$tRows = array();
-				$tRows[] = '
+					}
+				} else {
+					$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('tstamp,script, SUM(exec_time) as calc_sum, count(*) AS qrycount, MAX(errorFlag) as error','tx_dbal_debuglog','','tstamp,script','tstamp DESC');
+					$tRows = array();
+					$tRows[] = '
 						<tr>
 							<td>Time</td>
 							<td># of queries</td>
@@ -526,8 +527,8 @@ updateQryForm(\''.$input['QUERY'].'\');
 							<td>Time (ms)</td>
 							<td>Script</td>
 						</tr>';
-				while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
-					$tRows[] = '
+					while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
+						$tRows[] = '
 							<tr>
 								<td>'.t3lib_BEfunc::datetime($row['tstamp']).'</td>
 								<td>'.htmlspecialchars($row['qrycount']).'</td>
@@ -535,13 +536,13 @@ updateQryForm(\''.$input['QUERY'].'\');
 								<td>'.htmlspecialchars($row['calc_sum']).'</td>
 								<td><a href="index.php?specTime='.intval($row['tstamp']).'">'.htmlspecialchars($row['script']).'</a></td>
 							</tr>';
+					}
 				}
-			}
-			$outStr = '
+				$outStr = '
 					<table border="1" cellspacing="0">'.implode('',$tRows).'
 					</table>';
 
-			break;
+				break;
 		}
 
 		$menu = '
