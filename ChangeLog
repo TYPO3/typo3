@@ -1,21 +1,26 @@
+
+2006-07-01  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+
+	* Fix bug #3427: config.spamProtectEmailAddresses may garble mail link
+
 2006-07-01  Karsten Dambekalns <karsten@typo3.org>
 
 	* DBAL update (sysext):
-            * this update closes bugs #3638, #2106, #2866, #3754 (for Firefox, broken in MSIE) and maybe a few more
-	    * Implemented support for sysLog() on connection failure
-            * DBAL now honours the no_pconnect setting
-	    * For handlers in native mode the setDBinit queries are executed upon connection
-            * The initial value for generated sequences can be configured per handler, to avoid duplicate key errors after having imported data
-	    * BLOB fields are handled correctly now during INSERT and UPDATE
-            * Setting $store_lastBuiltQuery acts like in t3lib_db now (fill $debug_lastBuiltQuery)
-	    * For the native handler quoting methods directly return the input for speedup, as no quoting is needed in that case
-            * Added support for native and userdefined handler to MetaType()
-	    * Changed mapping of types to always use the largest possible integer, map tinytext to varchar instead of text
-            * admin_get_tables() skips tables whose names match /BIN\$/ (coming from the recycle bin on Oracle)
-	    * Importing dumps using the install tool now works, see manual for tips
-            * Changed the way NOT NULL and DEFAULT are handled when setting up tables, see manual for the rules that now apply
-	    * Code cleanup (indentation, documentation)
-            * Updated the manual and added new content
+	 - this update closes bugs #3638, #2106, #2866, #3754 (for Firefox, broken in MSIE) and maybe a few more
+	 - Implemented support for sysLog() on connection failure
+	 - DBAL now honours the no_pconnect setting
+	 - For handlers in native mode the setDBinit queries are executed upon connection
+	 - The initial value for generated sequences can be configured per handler, to avoid duplicate key errors after having imported data
+	 - BLOB fields are handled correctly now during INSERT and UPDATE
+	 - Setting $store_lastBuiltQuery acts like in t3lib_db now (fill $debug_lastBuiltQuery)
+	 - For the native handler quoting methods directly return the input for speedup, as no quoting is needed in that case
+	 - Added support for native and userdefined handler to MetaType()
+	 - Changed mapping of types to always use the largest possible integer, map tinytext to varchar instead of text
+	 - admin_get_tables() skips tables whose names match /BIN\$/ (coming from the recycle bin on Oracle)
+	 - Importing dumps using the install tool now works, see manual for tips
+	 - Changed the way NOT NULL and DEFAULT are handled when setting up tables, see manual for the rules that now apply
+	 - Code cleanup (indentation, documentation)
+	 - Updated the manual and added new content
 
 2006-06-30  Franz Holzinger <kontakt@fholzinger.com>
 

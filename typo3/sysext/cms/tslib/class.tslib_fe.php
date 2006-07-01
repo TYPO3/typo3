@@ -3360,6 +3360,26 @@ if (version == "n3") {
 	}
 
 	/**
+	 * Encryption (or decryption) of a single character.
+	 * Within the given range the character is shifted with the supplied offset.
+	 *
+	 * @param	int		Ordinal of input character
+	 * @param	int		Start of range
+	 * @param	int		End of range
+	 * @param	int		Offset
+	 * @return	string		encoded/decoded version of character
+	 */
+	function encryptCharcode($n,$start,$end,$offset)	{
+		$n = $n + $offset;
+		if ($offset > 0 && $n > $end)	{
+			$n = $start + ($n - $end - 1);
+		} else if ($offset < 0 && $n < $start)	{
+			$n = $end - ($start - $n - 1);
+		}
+		return chr($n);
+	}
+
+	/**
 	 * Encryption of email addresses for <A>-tags See the spam protection setup in TS 'config.'
 	 *
 	 * @param	string		Input string to en/decode: "mailto:blabla@bla.com"
@@ -3374,10 +3394,20 @@ if (version == "n3") {
 				$out .= '&#'.ord(substr($string, $a, 1)).';';
 			}
 		} else	{
-			for ($a=0; $a<strlen($string); $a++)	{
-				$charValue = ord(substr($string,$a,1));
-				$charValue+= intval($this->spamProtectEmailAddresses)*($back?-1:1);
-				$out.= chr($charValue);
+				// like str_rot13() but with a variable offset and a wider character range
+			$len = strlen($string);
+			$offset = intval($this->spamProtectEmailAddresses)*($back?-1:1);
+			for ($i=0; $i<$len; $i++)	{
+				$charValue = ord($string{$i});
+				if ($charValue >= 0x2B && $charValue <= 0x3A)	{	// 0-9 . , - + / :
+					$out .= $this->encryptCharcode($charValue,0x2B,0x3A,$offset);
+				} elseif ($charValue >= 0x40 && $charValue <= 0x5A)	{	// A-Z @
+					$out .= $this->encryptCharcode($charValue,0x40,0x5A,$offset);
+				} else if ($charValue >= 0x61 && $charValue <= 0x7A)	{	// a-z
+					$out .= $this->encryptCharcode($charValue,0x61,0x7A,$offset);
+				} else {
+					$out .= $string{$i};
+				}
 			}
 		}
 		return $out;
