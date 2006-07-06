@@ -44,6 +44,7 @@
 2006-06-29  Ernesto Baschny <ernst@cron-it.de>
 
 	* Fix bug #3522 also in "content (default)": Linking images to hidden pages results in click-enlarge
+	* Fix bug #3085: broken option frame (palettes) in IE
 
 2006-06-29  Dmitry Dulepov  <typo3@accio.lv>
 

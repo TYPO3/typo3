@@ -4305,7 +4305,7 @@ class t3lib_TCEforms	{
 		} else {
 				// Detects fields with no CSH and outputs dummy line to insert into CSH locallang file:
 			#debug(array("'".$field.".description' => '[FILL IN] ".$table."->".$field."',"),$table);
-			return '&nbsp;';
+			return '<span class="nbsp">&nbsp;</span>';
 		}
 	}
 
