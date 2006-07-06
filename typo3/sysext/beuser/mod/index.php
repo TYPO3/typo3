@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2005 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2006 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -315,7 +315,7 @@ class printAllPageTree_perms extends printAllPageTree {
 				<td nowrap="nowrap">'.$be_group_Array[$row['perms_groupid']]['title'].' &nbsp;</td>
 				<td nowrap="nowrap">'.$this->ext_printPerms($row['perms_group']).' &nbsp;</td>
 				<td nowrap="nowrap" align="center" '.$col1.'>'.$this->ext_printPerms($row['perms_everybody']).' &nbsp;</td>
-				<td nowrap="nowrap" align="center">'.($row['editlock'] ? '<img src="'.$this->backPath.'gfx/recordlock_warning2.gif" width="22" height="16" title="Edit lock prevents all editing" alt="" />' : $this->ext_printPerms($this->BE_USER->calcPerms($row))).' &nbsp;</td>
+				<td nowrap="nowrap" align="center">'.($row['editlock'] ? '<img '.t3lib_iconWorks::skinImg($this->backPath,'gfx/recordlock_warning2.gif').' title="Edit lock prevents all editing" alt="" />' : $this->ext_printPerms($this->BE_USER->calcPerms($row))).' &nbsp;</td>
 				<td nowrap="nowrap" align="center">'.$this->ext_printPerms($this->ext_groupPerms($row,$be_group_Array[$this->BE_USER->firstMainGroup])).' &nbsp;</td>
 			</tr>';
 		}
@@ -775,7 +775,7 @@ class local_beUserAuth extends t3lib_beUserAuth {
 							if (isset($nef[$iCfg[1]]))	{
 								unset($nef[$iCfg[1]]);
 								if (strlen($iCfg[2]))	{
-									$icon = '<img src="'.$GLOBALS['BACK_PATH'].'gfx/'.$iCfg[2].'" class="absmiddle" style="margin-right: 5px;" alt="" />';
+									$icon = '<img '.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/'.$iCfg[2]).' class="absmiddle" style="margin-right: 5px;" alt="" />';
 								} else {
 									$icon = '';
 								}
@@ -1336,7 +1336,7 @@ class SC_mod_tools_be_user_index {
 			reset($options);
 
 			$link_createNewUser='<a href="#" onclick="'.htmlspecialchars(t3lib_BEfunc::editOnClick('&edit[be_users][0]=new',$this->doc->backPath,-1)).'">'.
-				'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/new_el.gif','width="11" height="12"').' title="'.$GLOBALS['LANG']->getLL('new',1).'" alt="" />'.
+				'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/new_el.gif').' title="'.$GLOBALS['LANG']->getLL('new',1).'" alt="" />'.
 				'</a>';
 
 			$allCells['USERS'] = '<table border="0" cellspacing="0" cellpadding="0" width="100%"><td><b>Usernames:</b></td><td width="12">'.$link_createNewUser.'</td></tr></table>';
@@ -1356,8 +1356,8 @@ class SC_mod_tools_be_user_index {
 				reset($dat['users']);
 				while(list(,$uDat)=each($dat['users']))	{
 					$uListArr[] = '<tr><td width="130">'.t3lib_iconWorks::getIconImage('be_users',$uDat,$GLOBALS['BACK_PATH'],'align="top" title="'.$uDat['uid'].'"').$this->linkuser($uDat['username'],$uDat).'&nbsp;&nbsp;</td><td nowrap="nowrap">'.$this->elementLinks('be_users',$uDat).
-						'<a href="'.t3lib_div::linkThisScript(array('SwitchUser'=>$uDat['uid'])).'" target="_top"><img src="'.$GLOBALS['BACK_PATH'].'gfx/su.gif" width="18" height="11" border="0" align="top" title="'.htmlspecialchars('Switch User to: '.$uDat['username']).'" alt="" /></a>'.
-						'<a href="'.t3lib_div::linkThisScript(array('SwitchUser'=>$uDat['uid'], 'switchBackUser' => 1)).'" target="_top"><img src="'.$GLOBALS['BACK_PATH'].'gfx/su.gif" width="18" height="11" border="0" align="top" title="'.htmlspecialchars('Switch User to: '.$uDat['username']).' [SU-mode]" alt="" style="background-color:red;" /></a>'.
+						'<a href="'.t3lib_div::linkThisScript(array('SwitchUser'=>$uDat['uid'])).'" target="_top"><img '.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/su.gif').' border="0" align="top" title="'.htmlspecialchars('Switch user to: '.$uDat['username']).' [change-to mode]" alt="" /></a>'.
+						'<a href="'.t3lib_div::linkThisScript(array('SwitchUser'=>$uDat['uid'], 'switchBackUser' => 1)).'" target="_top"><img '.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/su_back.gif').' border="0" align="top" title="'.htmlspecialchars('Switch user to: '.$uDat['username']).' [switch-back mode]" alt="" /></a>'.
 						'</td></tr>';
 				}
 				$allCells['USERS'] = '<table border="0" cellspacing="0" cellpadding="0" width="100%">'.implode('',$uListArr).'</table>';
@@ -1409,25 +1409,25 @@ class SC_mod_tools_be_user_index {
 	function elementLinks($table,$row)	{
 		global $TCA;
 			// Info:
-		$cells[]='<a href="#" onclick="top.launchView(\''.$table.'\', \''.$row['uid'].'\',\''.$GLOBALS['BACK_PATH'].'\'); return false;"><img src="'.$GLOBALS['BACK_PATH'].'gfx/zoom2.gif" width="12" height="12" border="0" align="top" title="Show information" alt="" /></a>';
+		$cells[]='<a href="#" onclick="top.launchView(\''.$table.'\', \''.$row['uid'].'\',\''.$GLOBALS['BACK_PATH'].'\'); return false;"><img '.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/zoom2.gif').' border="0" align="top" title="Show information" alt="" /></a>';
 
 			// Edit:
 		$params='&edit['.$table.']['.$row['uid'].']=edit';
-		$cells[]='<a href="#" onclick="'.t3lib_BEfunc::editOnClick($params,$GLOBALS['BACK_PATH'],'').'"><img src="'.$GLOBALS['BACK_PATH'].'gfx/edit2.gif" width="11" height="12" border="0" align="top" title="Edit" alt="" /></a>';
+		$cells[]='<a href="#" onclick="'.t3lib_BEfunc::editOnClick($params,$GLOBALS['BACK_PATH'],'').'"><img '.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/edit2.gif').' border="0" align="top" title="Edit" alt="" /></a>';
 
 			// Hide:
 		$hiddenField = $TCA[$table]['ctrl']['enablecolumns']['disabled'];
 		if ($row[$hiddenField])	{
 			$params='&data['.$table.']['.$row['uid'].']['.$hiddenField.']=0';
-			$cells[]='<a href="'.$this->doc->issueCommand($params).'"><img src="'.$GLOBALS['BACK_PATH'].'gfx/button_unhide.gif" width="11" height="10" border="0" title="Disable" align="top" alt="" /></a>';
+			$cells[]='<a href="'.$this->doc->issueCommand($params).'"><img '.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/button_unhide.gif').' border="0" title="Enable" align="top" alt="" /></a>';
 		} else {
 			$params='&data['.$table.']['.$row['uid'].']['.$hiddenField.']=1';
-			$cells[]='<a href="'.$this->doc->issueCommand($params).'"><img src="'.$GLOBALS['BACK_PATH'].'gfx/button_hide.gif" width="11" height="10" border="0" title="Disable" align="top" alt="" /></a>';
+			$cells[]='<a href="'.$this->doc->issueCommand($params).'"><img '.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/button_hide.gif').' border="0" title="Disable" align="top" alt="" /></a>';
 		}
 
 			// Delete
 		$params='&cmd['.$table.']['.$row['uid'].'][delete]=1';
-		$cells[]='<a href="'.$this->doc->issueCommand($params).'" onclick="return confirm(unescape(\''.rawurlencode('Are you sure you want to delete this element?').'\'));"><img src="'.$GLOBALS['BACK_PATH'].'gfx/garbage.gif" width="11" height="12" border="0" align="top" title="Delete(!)" alt="" /></a>';
+		$cells[]='<a href="'.$this->doc->issueCommand($params).'" onclick="return confirm(unescape(\''.rawurlencode('Are you sure you want to delete this element?').'\'));"><img '.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/garbage.gif').' border="0" align="top" title="Delete(!)" alt="" /></a>';
 
 		return implode('',$cells);
 	}
