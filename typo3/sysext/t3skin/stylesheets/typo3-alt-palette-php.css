@@ -3,13 +3,13 @@
  */
 
 body#typo3-alt-palette-php {
-	background-image: url('../icons/gfx/topmenu_background.jpg');
+	background-image: url('../icons/gfx/topmenu_background_palette.jpg');
 }
 
-body#typo3-alt-palette-php table {
+body#typo3-alt-palette-php table#typo3-TCEforms-palette {
 	height: 20px;
 	position: absolute;
-	bottom: 1px;
+	bottom: 1px; /* Masi */
 }
 
 body#typo3-alt-palette-php table td {
@@ -27,3 +27,13 @@ body#typo3-alt-palette-php table img {
 table#typo3-TCEforms-palette td.c-label {
 	color: #FFFFFF;
 }
+
+body#typo3-alt-palette-php table td.c-csh input.checkbox {
+	margin: 0px 3px 0 0;
+	background-color: transparent;
+}
+
+body#typo3-alt-palette-php span.nbsp {
+	display: none;
+}
+

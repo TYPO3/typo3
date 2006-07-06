@@ -2,6 +2,7 @@
 2006-07-06  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
 	* Fix bug #3779: edit form on page broken
+	* Fix bug #3085: broken option frame (palettes) in IE
 
 2006-07-01  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
