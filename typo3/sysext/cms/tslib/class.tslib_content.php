@@ -7073,7 +7073,7 @@ class tslib_cObj {
 	 * @see editPanel(), editIcons(), t3lib_tsfeBeUserAuth::extEditAction()
 	 */
 	function editPanelLinkWrap($string,$formName,$cmd,$currentRecord='',$confirm='',$nPid='')	{
-		$eFONPage = $GLOBALS['BE_USER']->uc['TSFE_adminConfig']['edit_editFormsOnPage'] &&  $BE_USER->workspace===0;	// Editing forms on page only supported in Live workspace (because of incomplete implementation)
+		$eFONPage = $GLOBALS['BE_USER']->uc['TSFE_adminConfig']['edit_editFormsOnPage'] && $GLOBALS['BE_USER']->workspace===0;	// Editing forms on page only supported in Live workspace (because of incomplete implementation)
 		$nV=t3lib_div::_GP('ADMCMD_view')?1:0;
 		$adminURL = t3lib_div::getIndpEnv('TYPO3_SITE_URL').TYPO3_mainDir;
 
