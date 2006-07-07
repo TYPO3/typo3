@@ -1486,7 +1486,4 @@ plugin.tx_cssstyledcontent._CSS_DEFAULT_STYLE (
 [END]
 
 
-<<<<<<< setup.txt
 # TYPO3 CVS ID: $Id$
-=======
-# TYPO3 CVS ID: $Id$>>>>>>> 1.7

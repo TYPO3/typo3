@@ -1,3 +1,12 @@
+2006-07-07  Michael Stucki  <michael@typo3.org>
+
+	* Changed version numbers in t3lib/config_default.php
+	* Minor corrections to CVSreadme.txt
+	* Install Tool displayed TYPO3_version instead of TYPO3_branch
+	* Fixed bug #2462: typo3temp/ subdirectories were not created automatically
+	* Fixed bug #3362: Windows systems print phpinfo under some circumstances
+	* Fixed bug #1153 again: Adding parameters to showpic.php is not always expected: Add a new property to skip adding these parameters (JSwindow.altUrl_noDefaultParams)
+
 2006-07-06  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
 	* Fix bug #3779: edit form on page broken
@@ -7,7 +16,7 @@
 
 	* Fix bug #3427: config.spamProtectEmailAddresses may garble mail link
 
-2006-07-01  Karsten Dambekalns <karsten@typo3.org>
+2006-07-01  Karsten Dambekalns  <karsten@typo3.org>
 
 	* DBAL update (sysext):
 		- this update closes bugs #3638, #2106, #2866, #3754 (for Firefox, broken in MSIE) and maybe a few more
@@ -85,7 +94,7 @@
 
 2006-06-11  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
-	* Fix bugtracker issue 3505: BE multi-language flexforms do not work (t3lib_tceforms)
+	* Fix bug #3505: BE multi-language flexforms do not work (t3lib_tceforms)
 
 2006-06-08  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
@@ -175,7 +184,7 @@
 
 2006-04-29  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
-	* Fixed wrong use of implode in typo3/mod/tools/em/class.em_index.php (lines 1392, 1424)
+	* Fixed wrong use of implode in typo3/mod/tools/em/class.em_index.php (lines 1392, 1424; see bug #3302)
 
 2006-04-23  Dmitry Dulepov <typo3@accio.lv>
 

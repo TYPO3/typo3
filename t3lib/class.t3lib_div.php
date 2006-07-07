@@ -2300,17 +2300,17 @@ class t3lib_div {
 	 *
 	 * @param	string		Filepath/URL to read
 	 * @param	integer		Whether the HTTP header should be fetched or not. 0=disable, 1=fetch header+content, 2=fetch header only
-	 * @param  array		HTTP headers to be used in the request
+	 * @param	array		HTTP headers to be used in the request
 	 * @return	string		The content from the resource given as input.
 	 */
 	function getURL($url, $includeHeader = 0, $requestHeaders = false)	{
 		$content = false;
 
 			// (Proxy support implemented by Arco <arco@appeltaart.mine.nu>)
-		if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['curlUse'] == '1' && preg_match('/^https?:\/\//', $url)) {
-			// External URL without error checking.
+		if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['curlUse'] == '1' && preg_match('/^https?:\/\//', $url))	{
+				// External URL without error checking.
 			$ch = curl_init();
-			if (!$ch) {
+			if (!$ch)	{
 				return false;
 			}
 
@@ -2319,73 +2319,76 @@ class t3lib_div {
 			curl_setopt($ch, CURLOPT_NOBODY, $includeHeader == 2 ? 1 : 0);
 			curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-			if (is_array($requestHeaders)) {
+			if (is_array($requestHeaders))	{
 				curl_setopt($ch, CURLOPT_HTTPHEADER, $requestHeaders);
 			}
 
-			if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyServer']) {
-				curl_setopt ($ch, CURLOPT_PROXY, $GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyServer']);
+			if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyServer'])	{
+				curl_setopt($ch, CURLOPT_PROXY, $GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyServer']);
 
-				// I don't know if it will be needed
-				if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyTunnel']) {
-					curl_setopt ($ch, CURLOPT_HTTPPROXYTUNNEL, $GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyTunnel'] );
+					// Not sure if this is needed
+				if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyTunnel'])	{
+					curl_setopt($ch, CURLOPT_HTTPPROXYTUNNEL, $GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyTunnel']);
 				}
-				if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyUserPass']) {
-					curl_setopt ($ch, CURLOPT_PROXYUSERPWD, $GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyUserPass'] );
+				if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyUserPass'])	{
+					curl_setopt($ch, CURLOPT_PROXYUSERPWD, $GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyUserPass']);
 				}
 			}
 			$content = curl_exec($ch);
 			curl_close($ch);
-		} elseif ($includeHeader) {
+
+		} elseif ($includeHeader)	{
 			$parsedURL = parse_url($url);
-			if (!t3lib_div::inList('ftp,ftps,http,https,gopher,telnet', $parsedURL['scheme'])) {
+			if (!t3lib_div::inList('ftp,ftps,http,https,gopher,telnet', $parsedURL['scheme']))	{
 				return false;
 			}
 
 			$fp = @fsockopen($parsedURL['host'], ($parsedURL['port'] > 0 ? $parsedURL['port'] : 80), $errno, $errstr, 2.0);
-			if (!$fp) {
+			if (!$fp)	{
 				return false;
 			}
 
 			$msg = 'GET ' . $parsedURL['path'] .
 					($parsedURL['query'] ? '?' . $parsedURL['query'] : '') .
-					' HTTP/1.0' . chr(13) . chr(10) . 'Host: ' .
-					$parsedURL['host']  . chr(13) . chr(10) . chr(13) . chr(10);
+					' HTTP/1.0' . "\r\n" . 'Host: ' .
+					$parsedURL['host'] . "\r\n\r\n";
 			fputs($fp, $msg);
 			while (!feof($fp))	{
 				$line = fgets($fp, 2048);
-				$content .= $line;
-				if ($includeHeader == 2 && !strlen(trim($line))) {
-					// Stop at the first empty line (= end of header)
-					break;
+				$content.= $line;
+				if ($includeHeader == 2 && !strlen(trim($line)))	{
+					break;	// Stop at the first empty line (= end of header)
 				}
 			}
 			fclose($fp);
-		} elseif (is_array($requestHeaders) && function_exists('stream_context_create')) {
+
+		} elseif (is_array($requestHeaders) && function_exists('stream_context_create'))	{
+
 			$ctx = stream_context_create(array(
-							'http' => array(
-								'header' => implode(chr(13) . chr(10), $requestHeaders)
-							)
+						'http' => array(
+							'header' => implode("\r\n", $requestHeaders)
 						)
-				   );
-			if (function_exists('file_get_contents')) {
+					)
+				);
+
+			if (function_exists('file_get_contents'))	{
 				$content = @file_get_contents($url, $ctx);
 			}
-			elseif (false !== ($fd = @fopen($url, 'rb', false, $ctx))) {
+			elseif (false !== ($fd = @fopen($url, 'rb', false, $ctx)))	{
 				$content = '';
 				while (!feof($fd))	{
-					$content .= fread($fd, 4096);
+					$content.= fread($fd, 4096);
 				}
 				fclose($fd);
 			}
 		}
-		elseif (function_exists('file_get_contents')) {
+		elseif (function_exists('file_get_contents'))	{
 			$content = @file_get_contents($url);
 		}
-		elseif (false !== ($fd = @fopen($url, 'rb'))) {
+		elseif (false !== ($fd = @fopen($url, 'rb')))	{
 			$content = '';
-			while (!feof($fd))  {
-				$content .= fread($fd, 4096);
+			while (!feof($fd))	{
+				$content.= fread($fd, 4096);
 			}
 			fclose($fd);
 		}
@@ -2487,7 +2490,7 @@ class t3lib_div {
 	 * @return	boolean		TRUE if @mkdir went well!
 	 */
 	function mkdir($theNewFolder)	{
-		$theNewFolder = ereg_replace('\/$','',$theNewFolder);
+		$theNewFolder = preg_replace('|/$|','',$theNewFolder);
 		if (mkdir($theNewFolder, octdec($GLOBALS['TYPO3_CONF_VARS']['BE']['folderCreateMask']))){
 			chmod($theNewFolder, octdec($GLOBALS['TYPO3_CONF_VARS']['BE']['folderCreateMask'])); //added this line, because the mode at 'mkdir' has a strange behaviour sometimes
 
@@ -4365,7 +4368,7 @@ class t3lib_div {
 				$params['backTrace'] = debug_backtrace();
 			}
 			$fakeThis = FALSE;
-			foreach($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_div.php']['systemLog'] as $hookMethod)	{
+			foreach ($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_div.php']['systemLog'] as $hookMethod)	{
 				t3lib_div::callUserFunction($hookMethod,$params,$fakeThis);
 			}
 		}
@@ -4451,12 +4454,12 @@ class t3lib_div {
 	 */
 	function arrayToLogString($arr, $valueList=array(), $valueLength=20) {
 		$str = '';
-		if(is_array($arr)) {
-			if (!is_array($valueList)) {
+		if (is_array($arr))	{
+			if (!is_array($valueList))	{
 				$valueList = $valueList = t3lib_div::trimExplode(',', $valueList, 1);
 			}
 			$valListCnt = count($valueList);
-			foreach($arr as $key => $value) {
+			foreach ($arr as $key => $value)	{
 				if (!$valListCnt || in_array($key, $valueList))	{
 					$str .= (string)$key.trim(': '.t3lib_div::fixed_lgd(str_replace("\n",'|',(string)$value), $valueLength)).'; ';
 				}

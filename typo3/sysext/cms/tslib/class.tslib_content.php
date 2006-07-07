@@ -1878,8 +1878,8 @@ class tslib_cObj {
 							$this->data[$this->currentValKey] = $value;
 							$image = $this->IMG_RESOURCE($conf['image.']);
 							$params = $conf['image.']['params'] ? ' '.$conf['image.']['params'] : '';
-							$params .= $this->getAltParam($conf['image.'], false);
-							$params .= $addParams;
+							$params.= $this->getAltParam($conf['image.'], false);
+							$params.= $addParams;
 						} else {
 							$image = '';
 						}
@@ -2698,7 +2698,7 @@ class tslib_cObj {
 				if ($conf['JSwindow.']['altUrl'] || $conf['JSwindow.']['altUrl.'])	{
 					$altUrl = $this->stdWrap($conf['JSwindow.']['altUrl'], $conf['JSwindow.']['altUrl.']);
 					if ($altUrl)	{
-						$url=$altUrl.'?file='.rawurlencode($imageFile).$params;
+						$url = $altUrl . ($conf['JSwindow.']['altUrl_noDefaultParams'] ? '' : '?file='.rawurlencode($imageFile).$params);
 					}
 				}
 

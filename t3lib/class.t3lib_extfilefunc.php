@@ -142,6 +142,8 @@ class t3lib_extFileFunctions extends t3lib_basicFileFunctions	{
 	var $lastError = '';
 
 
+
+
 	/**
 	 * Initialization of the class
 	 *
