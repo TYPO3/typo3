@@ -274,14 +274,14 @@ class t3lib_htmlmail {
 			$host = ($TYPO3_CONF_VARS['SYS']['sitename'] ? preg_replace('/[^A-Za-z0-9_\-]/', '_', $TYPO3_CONF_VARS['SYS']['sitename']) : 'localhost') . '.TYPO3';
 		}
 		$this->messageid = md5(microtime()) . '@' . $host;
-		
+
 			// Default line break for Unix systems.
 		$this->linebreak = chr(10);
 			// Line break for Windows. This is needed because PHP on Windows systems send mails via SMTP instead of using sendmail, and thus the linebreak needs to be \r\n.
 		if (TYPO3_OS=='WIN')	{
 			$this->linebreak = chr(13).chr(10);
 		}
-		
+
 		if (!$this->charset) {
 			if (is_object($GLOBALS['TSFE']) && $GLOBALS['TSFE']->renderCharset) {
 				$this->charset = $GLOBALS['TSFE']->renderCharset;
@@ -293,11 +293,11 @@ class t3lib_htmlmail {
 				$this->charset = $this->defaultCharset;
 			}
 		}
-		
+
 			// Use quoted-printable headers by default
 		$this->useQuotedPrintable();
 	}
-	
+
 	/**
 	 * [Describe function...]
 	 *
@@ -1422,7 +1422,7 @@ class t3lib_htmlmail {
 	 *
 	 * @param	[type]		$name: ...
 	 * @return	[type]		...
-	 * @obsolete
+	 * @deprecated
 	 */
 	function convertName($name)	{
 		return $name;

@@ -288,8 +288,7 @@ class tx_version_cm1 extends t3lib_SCbase {
 		} else {
 				// If no access or id value, create empty document:
 			$this->content.=$this->doc->startPage($LANG->getLL('title'));
-			$this->content.=$this->doc->section($LANG->getLL('clickAPage_header'),$LANG->getLL('clickAPage_content'
-),0,1);
+			$this->content.=$this->doc->section($LANG->getLL('clickAPage_header'),$LANG->getLL('clickAPage_content'),0,1);
 		}
 	}
 

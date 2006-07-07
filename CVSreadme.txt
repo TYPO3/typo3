@@ -1,37 +1,6 @@
-Post-CVS checkout instructions:
-
-If you check out the module "TYPO3core" from SourceForce CVS you will have to make a few symlinks in the
-checked out source before it will work for you. Follow these guidelines:
-
-
-- Go to the module directory (default is "TYPO3core")
-- Create symlink for tslib:
-	ln -s typo3/sysext/cms/tslib
-- Go to typo3/ folder:
-	cd typo3/
-- Create symlinks for t3lib/ and other things:
-	ln -s ../t3lib
-	ln -s ../t3lib/thumbs.php
-	ln -s ../t3lib/gfx
-- Finally, go to the t3lib/fonts/ dir:
-	cd t3lib/fonts/
-- Create two symlinks to fonts:
-	ln -s vera.ttf verdana.ttf
-	ln -s nimbus.ttf arial.ttf
-
-OR
-
-- Go to the module directory (default is "TYPO3core")
-- Run the create-symlinks.sh shell script.
-
-
-Thats all. This procedure is only needed when you check out the source for the first time ever.
-
-
 ABOUT GLOBAL EXTENSIONS:
-Notice that the "typo3/ext/" folder is NOT a part of the TYPO3 core CVS.
-From version 3.7.0 of TYPO3 this directory is considered locally composed and maintained.
-This means you can put a custom collection of extensions here which you will have to maintain independantly of TYPO3 core.
+Starting with version 4.0 of TYPO3 the directory typo3/ext/ is considered locally composed and maintained.
+This means you can put a custom collection of extensions here which you will have to maintain independently of TYPO3core.
 Some of the old global extensions have been moved to be system extensions for your convenience.
 Notice that individual extensions might infact have their own CVS project somewhere, like on
 SourceForge.net, project "TYPO3 Extension Development Platform" (typo3xdev).
@@ -47,8 +16,7 @@ Follow this list IMMEDIATELY after updating sources from CVS (both core and exte
 
 
 COMMITING CHANGES TO THE CORE:
-This is only allowed for members of the core team (http://typo3.org/projects/teams-and-projects/#team_10) who is also having "developer" status on SourceForge (http://sourceforge.net/project/memberlist.php?group_id=20391)
-There is defined a set of rules and conditions under which to commit to the core CVS.
-These are found in "misc/core_cvs_rules.txt
+This is only allowed for members of the core team (http://typo3.org/teams/core/) who is also having "developer" status on SourceForge (http://sourceforge.net/project/memberlist.php?group_id=20391).
+There is defined a set of rules and conditions under which to commit to the core CVS. These are found in "misc/core_cvs_rules.txt
 
 - kasper

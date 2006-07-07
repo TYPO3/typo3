@@ -981,7 +981,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 		$sVar['CONST: TYPO3_OS']=TYPO3_OS;
 		$sVar['CONST: PATH_thisScript']=PATH_thisScript;
 		$sVar['CONST: php_sapi_name()']=php_sapi_name();
-		$sVar['OTHER: TYPO3_VERSION']=$GLOBALS['TYPO_VERSION'];
+		$sVar['OTHER: TYPO3_VERSION']=TYPO3_version;
 		$sVar['OTHER: PHP_VERSION']=phpversion();
 		$sVar['imagecreatefromgif()']=function_exists('imagecreatefromgif');
 		$sVar['imagecreatefrompng()']=function_exists('imagecreatefrompng');
@@ -1712,11 +1712,17 @@ From sub-directory:
 		);
 
 		foreach ($checkWrite as $relpath => $descr)	{
+
 				// Check typo3temp/
 			$general_message = $descr[0];
+
+			if (!@is_dir(PATH_site.$relpath))	{	// If the directory is missing, try to create it
+				t3lib_div::mkdir(PATH_site.$relpath);
+			}
+
 			if (!@is_dir(PATH_site.$relpath))	{
 				if ($descr[1])	{	// required...
-					$this->message($ext, $relpath.' directory does not exist','
+					$this->message($ext, $relpath.' directory does not exist and could not be created','
 					<em>Full path: '.PATH_site.$relpath.'</em>
 					'.$general_message.'
 
@@ -4803,7 +4809,7 @@ a:hover {color: #006; text-decoration:underline:}
 				<table width="100%" border="0" cellspacing="1" cellpadding="10">
 					<tr>
 						<td bgcolor="#F4F0E8">
-						<div align="center"><span class="size4text"><strong>TYPO3 '.$GLOBALS['TYPO_VERSION'].' Install Tool</strong></span></div>
+						<div align="center"><span class="size4text"><strong>TYPO3 '.TYPO3_branch.' Install Tool</strong></span></div>
 						<div align="center"><span style="color:navy;"><strong>Site: '.$GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'].'</strong></span></div><br />
 
 '.($this->step?$this->stepHeader():$this->menu()).$content.'<hr />'.$this->note123().$this->endNotes().'

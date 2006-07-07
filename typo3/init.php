@@ -96,6 +96,15 @@ if (substr($temp_path,-strlen(TYPO3_mainDir))!=TYPO3_mainDir)	{
 
 // OUTPUT error message and exit if there are problems with the path. Otherwise define constants and continue.
 if (!$temp_path || substr($temp_path,-strlen(TYPO3_mainDir))!=TYPO3_mainDir)	{	// This must be the case in order to proceed
+	if (TYPO3_OS=='WIN')	{
+		$thisPath_base = basename(substr($temp_path,-strlen(TYPO3_mainDir)));
+		$mainPath_base = basename(TYPO3_mainDir);
+		if (strtolower($thisPath) == strtolower($mainPath))	{	// Seems like the requested URL is not case-specific. This may happen on Windows only. -case. Otherwise, redirect to the correct URL. TYPO3_mainDir must be lower-case!!
+			header('Location: '.str_replace($thisPath_base, $mainPath_base, t3lib_div::getIndpEnv('SCRIPT_NAME')));
+			exit;
+		}
+	}
+
 	echo ('Error in init.php: Path to TYPO3 main dir could not be resolved correctly. <br /><br />
 		This happens if the last '.strlen(TYPO3_mainDir).' characters of this path, '.$temp_path.', (\$temp_path) is NOT "'.TYPO3_mainDir.'" for some reason. <br />
 		You may have a strange server configuration.

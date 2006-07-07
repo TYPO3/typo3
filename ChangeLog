@@ -1,3 +1,12 @@
+2006-07-07  Michael Stucki  <michael@typo3.org>
+
+	* Changed version numbers in t3lib/config_default.php
+	* Minor corrections to CVSreadme.txt
+	* Install Tool displayed TYPO3_version instead of TYPO3_branch
+	* Fixed bug #2462: typo3temp/ subdirectories were not created automatically
+	* Fixed bug #3362: Windows systems print phpinfo under some circumstances
+	* Fixed bug #1153 again: Adding parameters to showpic.php is not always expected: Add a new property to skip adding these parameters (JSwindow.altUrl_noDefaultParams)
+
 2006-07-06  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
 	* Fix bug #3779: edit form on page broken
@@ -112,11 +121,11 @@
 	* Fix bugs #3326 and #3392: problems with php_uname()
 	* "Update" buttons of admin panel did not reload page in Firefox
 
-2006-05-31  Ernesto Baschny <ernst@cron-it.de>
+2006-05-31  Ernesto Baschny  <ernst@cron-it.de>
 
 	* Fix bug #3522: Linking images to hidden pages results in click-enlarge
 
-2006-05-31 Bernhard Kraft  <kraftb@kraftb.at>
+2006-05-31  Bernhard Kraft  <kraftb@kraftb.at>
 
 	* Fix a problem of the EM: "No file uploaded!" when retrying install after a failed dependency check
 
@@ -124,15 +133,15 @@
 
 	* Corrected error message for config.baseURL=1
 
-2006-05-20  Ernesto Baschny <ernst@cron-it.de>
+2006-05-20  Ernesto Baschny  <ernst@cron-it.de>
 
 	* Fixed bug #2874: Current page in navigation tree wasn't being highlighted on IE6
 
-2006-05-20   Rupert Germann  <rupi@gmx.li>
+2006-05-20  Rupert Germann  <rupi@gmx.li>
 
 	* Fixed bug #2566: XClass include code was missing in wsol_preview.php.
 
-2006-05-18   Rupert Germann  <rupi@gmx.li>
+2006-05-18  Rupert Germann  <rupi@gmx.li>
 
 	* Fixed bug #0132: % signs in extra parameters of form contentelements where not handled correctly.
 
@@ -208,7 +217,7 @@
 
 2006-04-12  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
-	* Fix bugtracker issue 3172: MIME type determination crashing (HEAD request)
+	* Fix bugtracker issue #3172: MIME type determination crashing (HEAD request)
 
 2006-04-07  Michael Stucki  <michael@typo3.org>
 

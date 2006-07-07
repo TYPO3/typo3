@@ -1009,7 +1009,7 @@ class t3lib_pageSelect {
 		$memberGroups = t3lib_div::intExplode(',',$GLOBALS['TSFE']->gr_list);
 		$orChecks=array();
 		$orChecks[]=$field.'=\'\'';	// If the field is empty, then OK
-		$orChecks[]=$field.' IS NULL';  // If the field is NULL, then OK
+		$orChecks[]=$field.' IS NULL';	// If the field is NULL, then OK
 		$orChecks[]=$field.'=\'0\'';	// If the field contsains zero, then OK
 
 		foreach($memberGroups as $value)	{
