@@ -569,8 +569,8 @@ class t3lib_timeTrack {
 					<head>
 						'.($baseUrl ? '<base href="'.htmlspecialchars($baseUrl).'" />' : '').'
 						<title>Error!</title>
-						<style type="text/css"><!--/*--><![CDATA[/*><!--*/ 
-							body { font-family: verdana,arial,helvetica; font-size: 90%; text-align: center; }
+						<style type="text/css"><!--/*--><![CDATA[/*><!--*/
+							body { font-family: verdana,arial,helvetica; font-size: 90%; text-align: center; background-color: #ffffff; }
 							h1 { font-size: 1.2em; margin: 0 0 1em 0; }
 							p { margin: 0; text-align: left; }
 							img { border: 0; margin: 10px 0; }

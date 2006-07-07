@@ -1,3 +1,7 @@
+2006-07-07  Karsten Dambekalns  <karsten@typo3.org>
+
+	* Added background color to TYPO3 error pages.
+
 2006-07-07  Michael Stucki  <michael@typo3.org>
 
 	* Changed version numbers in t3lib/config_default.php
