@@ -369,11 +369,11 @@ tt_content.image.20 {
 
 			enable.field = image_zoom
 			enable.ifEmpty.typolink.parameter.field = image_link
-			enable.ifEmpty.typolink.parameter.listNum.stdWrap.data = register : IMAGE_NUM
+			enable.ifEmpty.typolink.parameter.listNum.stdWrap.data = register : IMAGE_NUM_CURRENT
 			enable.ifEmpty.typolink.returnLast = url
 
 			typolink.parameter.field = image_link
-			typolink.parameter.listNum.stdWrap.data = register : IMAGE_NUM
+			typolink.parameter.listNum.stdWrap.data = register : IMAGE_NUM_CURRENT
 			typolink.target = {$styles.content.links.target}
 			typolink.extTarget = {$styles.content.links.extTarget}
 		}
@@ -383,7 +383,7 @@ tt_content.image.20 {
 			field = altText
 			split.token.char = 10
 			split.token.if.isTrue = {$styles.content.imgtext.imageTextSplit}
-			split.returnKey.data = register : IMAGE_NUM
+			split.returnKey.data = register : IMAGE_NUM_CURRENT
 		}
 
 		titleText < .altText
@@ -423,7 +423,7 @@ tt_content.image.20 {
 			wrapAlign.field = imagecaption_position
 			split.token.char = 10
 			split.token.if.isPositive = {$styles.content.imgtext.imageTextSplit} + {$styles.content.imgtext.captionSplit}
-			split.returnKey.data = register : IMAGE_NUM
+			split.returnKey.data = register : IMAGE_NUM_CURRENT
 		}
 	}
 	# captionSplit is deprecated, use imageTextSplit instead
