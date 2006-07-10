@@ -1,3 +1,9 @@
+2006-07-10  Ernesto Baschny <ernst@cron-it.de>
+
+	* Fixed bug #3005: captionSplit.cObject functionality in IMGTEXT is back as documented. But marked as "deprecated".
+	* Fixed bug #3258: rendering issues in CSS styled IMGTEXT with noRows setting fixed.
+	* Fixed bug #3416: first caption was being doubled with "renderMethod=table".
+
 2006-07-10 Dmitry Dulepov <typo3@accio.lv>
 
 	* Bug: "Publish time" label appeared where "Unpublish time" should appear
