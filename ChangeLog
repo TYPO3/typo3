@@ -1,3 +1,7 @@
+2006-07-10 Dmitry Dulepov <typo3@accio.lv>
+
+	* Bug: "Publish time" label appeared where "Unpublish time" should appear
+
 2006-07-07  Karsten Dambekalns  <karsten@typo3.org>
 
 	* Added background color to TYPO3 error pages.
