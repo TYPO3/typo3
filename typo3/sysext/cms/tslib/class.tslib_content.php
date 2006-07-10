@@ -768,8 +768,18 @@ class tslib_cObj {
 
 				// initialisation
 			$caption='';
+			$captionArray = array();
 			if (!$conf['captionSplit'] && !$conf['imageTextSplit'] && is_array($conf['caption.']))	{
 				$caption = $this->stdWrap($this->cObjGet($conf['caption.'], 'caption.'),$conf['caption.']);	// global caption, no splitting
+			}
+			if ($conf['captionSplit'] && $conf['captionSplit.']['cObject'])	{
+				$legacyCaptionSplit = 1;
+				$capSplit = $this->stdWrap($conf['captionSplit.']['token'], $conf['captionSplit.']['token.']);
+				if (!$capSplit) {$capSplit=chr(10);}
+				$captionArray = explode($capSplit, $this->cObjGetSingle($conf['captionSplit.']['cObject'], $conf['captionSplit.']['cObject.'], 'captionSplit.cObject'));
+				while (list($ca_key, $ca_val) = each($captionArray))	{
+					$captionArray[$ca_key] = $this->stdWrap(trim($captionArray[$ca_key]), $conf['captionSplit.']['stdWrap.']);
+				}
 			}
 
 			$tablecode='';
@@ -883,6 +893,7 @@ class tslib_cObj {
 			$origImages=array();
 			for($a=0;$a<$imgCount;$a++)	{
 				$GLOBALS['TSFE']->register['IMAGE_NUM'] = $a;
+				$GLOBALS['TSFE']->register['IMAGE_NUM_CURRENT'] = $a;
 
 				$imgKey = $a+$imgStart;
 				$totalImagePath = $imgPath.$imgs[$imgKey];
@@ -1054,11 +1065,14 @@ class tslib_cObj {
 					for ($a=0;$a<$rowCount_temp;$a++)	{	// Looping through the rows IF "noRows" is set. "noRows"  means that the rows of images is not rendered by physical table rows but images are all in one column and spaced apart with clear-gifs. This loop is only one time if "noRows" is not set.
 						$GLOBALS['TSFE']->register['IMAGE_NUM'] = $imgIndex;	// register previous imgIndex
 						$imgIndex = $index+$a*$colCount_temp;
+						$GLOBALS['TSFE']->register['IMAGE_NUM_CURRENT'] = $imgIndex;
 						if ($imgsTag[$imgIndex])	{
 							if ($rowspacing && $noRows && $a) {		// Puts distance between the images IF "noRows" is set and this is the first iteration of the loop
 								$tablecode.= '<img src="'.$GLOBALS['TSFE']->absRefPrefix.'clear.gif" width="1" height="'.$rowspacing.'" alt="" title="" /><br />';
 							}
-							if ($conf['captionSplit'] || $conf['imageTextSplit'])	{
+							if ($legacyCaptionSplit)	{
+								$thisCaption = $captionArray[$imgIndex];
+							} else if ($conf['captionSplit'] || $conf['imageTextSplit'])	{
 								$thisCaption = $this->stdWrap($this->cObjGet($conf['caption.'], 'caption.'), $conf['caption.']);
 							}
 							$imageHTML = $imgsTag[$imgIndex].'<br />';

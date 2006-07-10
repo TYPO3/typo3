@@ -555,6 +555,7 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 			$totalImagePath = $imgPath.$imgs[$imgKey];
 
 			$GLOBALS['TSFE']->register['IMAGE_NUM'] = $a;
+			$GLOBALS['TSFE']->register['IMAGE_NUM_CURRENT'] = $a;
 			$GLOBALS['TSFE']->register['ORIG_FILENAME'] = $totalImagePath;
 
 			$this->cObj->data[$this->cObj->currentValKey] = $totalImagePath;
@@ -687,12 +688,14 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 		$images = '';
 		for ($c = 0; $c < $imageWrapCols; $c++)	{
 			$tmpColspacing = $colspacing;
-			if (($c==$imageWrapCols-1 && $imagePosition==2) || ($c==0 && $imagePosition==1)) {
+			if (($c==$imageWrapCols-1 && $imagePosition==2) || ($c==0 && ($imagePosition==1||$imagePosition==0))) {
+					// Do not add spacing after column if we are first column (left) or last column (center/right)
 				$tmpColspacing = 0;
 			}
-			$GLOBALS['TSFE']->register['columnwidth'] = $columnWidths[$c] + $tmpColspacing + $border*($borderSpace+$borderThickness)*2;
+
 			$thisImages = '';
 			$allRows = '';
+			$maxImageSpace = 0;
 			for ($i = $c; $i<count($imgsTag); $i=$i+$imageWrapCols)	{
 				$colPos = $i%$colCount;
 				if ($separateRows && $colPos == 0) {
@@ -700,12 +703,16 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 				}
 
 					// Render one image
+				$imageSpace = $origImages[$i][0] + $border*($borderSpace+$borderThickness)*2;
 				$GLOBALS['TSFE']->register['IMAGE_NUM'] = $i;
+				$GLOBALS['TSFE']->register['IMAGE_NUM_CURRENT'] = $i;
 				$GLOBALS['TSFE']->register['ORIG_FILENAME'] = $origImages[$i]['origFile'];
 				$GLOBALS['TSFE']->register['imagewidth'] = $origImages[$i][0];
-				$GLOBALS['TSFE']->register['imagespace'] = $origImages[$i][0] + $border*($borderSpace+$borderThickness)*2;
+				$GLOBALS['TSFE']->register['imagespace'] = $imageSpace;
 				$GLOBALS['TSFE']->register['imageheight'] = $origImages[$i][1];
-
+				if ($imageSpace > $maxImageSpace)	{
+					$maxImageSpace = $imageSpace;
+				}
 				$thisImage = '';
 				$thisImage .= $this->cObj->stdWrap($imgsTag[$i], $conf['imgTagStdWrap.']);
 
@@ -730,6 +737,7 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 				} else {
 					$allRows .= $thisImage;
 				}
+				$GLOBALS['TSFE']->register['columnwidth'] = $maxImageSpace + $tmpColspacing;
 				if ($separateRows && ($colPos == ($colCount-1) || $i+1==count($imgsTag)))	{
 					// Close this row at the end (colCount), or the last row at the final end
 					$allRows .= $this->cObj->stdWrap($thisRow, $conf['imageRowStdWrap.']);
