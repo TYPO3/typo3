@@ -1495,7 +1495,7 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 				'<td class="ver-wl-details">' . $LANG->getLL($wksp['freeze'] ? 'workspace_list_label_frozen_yes' : 'workspace_list_label_frozen_no') . '</td></tr>' .
 				'<tr><td class="ver-wl-details-label"><b>' . $LANG->getLL('workspace_list_label_publish_date') . '</b></td>' .
 				'<td class="ver-wl-details">' . ($wksp['publish_time'] == 0 ? '&nbsp;&ndash;' : t3lib_BEfunc::datetime($wksp['publish_time'])) . '</td></tr>' .
-				'<tr><td class="ver-wl-details-label"><b>' . $LANG->getLL('workspace_list_label_publish_date') . '</b></td>' .
+				'<tr><td class="ver-wl-details-label"><b>' . $LANG->getLL('workspace_list_label_unpublish_date') . '</b></td>' .
 				'<td class="ver-wl-details">' . ($wksp['unpublish_time'] == 0 ? '&nbsp;&ndash;' : t3lib_BEfunc::datetime($wksp['unpublish_time'])) . '</td></tr>' .
 				'<tr><td class="ver-wl-details-label"><b>' . $LANG->getLL('workspace_list_label_your_access') . '</b></td>' .
 				'<td class="ver-wl-details">' . $LANG->getLL('workspace_list_access_' . $wksp['_ACCESS']) . '</td></tr>' .
