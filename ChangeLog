@@ -1,4 +1,8 @@
-2006-07-10 Dmitry Dulepov <typo3@accio.lv>
+2006-07-11  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+
+	* t3lib_cs: trim the charset for normalization
+
+2006-07-11 Dmitry Dulepov <typo3@accio.lv>
 
 	* Fixed bug: missing check for PHP version in t3lib_div::getUrl()
 

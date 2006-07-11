@@ -525,7 +525,7 @@ class t3lib_cs {
 	 * @author	Martin Kutschker <martin.t.kutschker@blackbox.net>
 	 */
 	function parse_charset($charset)	{
-		$charset = strtolower($charset);
+		$charset = trim(strtolower($charset));
 		if (isset($this->synonyms[$charset]))	$charset = $this->synonyms[$charset];
 
 		return $charset;
