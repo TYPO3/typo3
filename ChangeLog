@@ -1,3 +1,7 @@
+2006-07-10 Dmitry Dulepov <typo3@accio.lv>
+
+	* Fixed bug: missing check for PHP version in t3lib_div::getUrl()
+
 2006-07-10  Ernesto Baschny <ernst@cron-it.de>
 
 	* Fixed bug #3005: captionSplit.cObject functionality in IMGTEXT is back as documented. But marked as "deprecated".
