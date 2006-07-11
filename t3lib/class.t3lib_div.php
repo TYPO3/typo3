@@ -2371,13 +2371,13 @@ class t3lib_div {
 					)
 				);
 
-			if (function_exists('file_get_contents'))	{
-				$content = @file_get_contents($url, $ctx);
+			if (function_exists('file_get_contents') && version_compare(phpversion(), '5.0', '>=')) {
+				$content = @file_get_contents($url, false, $ctx);
 			}
 			elseif (false !== ($fd = @fopen($url, 'rb', false, $ctx)))	{
 				$content = '';
 				while (!feof($fd))	{
-					$content.= fread($fd, 4096);
+					$content .= fread($fd, 4096);
 				}
 				fclose($fd);
 			}
@@ -2388,7 +2388,7 @@ class t3lib_div {
 		elseif (false !== ($fd = @fopen($url, 'rb')))	{
 			$content = '';
 			while (!feof($fd))	{
-				$content.= fread($fd, 4096);
+				$content .= fread($fd, 4096);
 			}
 			fclose($fd);
 		}
