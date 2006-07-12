@@ -2070,6 +2070,7 @@ class tslib_gmenu extends tslib_menu {
 			$this->result[$resKey][$key]['imgParams']=$conf[$key]['imgParams'];
 			$this->result[$resKey][$key]['ATagTitle'] = $conf[$key]['ATagTitle'];
 			$this->result[$resKey][$key]['ATagTitle.'] = $conf[$key]['ATagTitle.'];
+			$this->result[$resKey][$key]['ATagParams'] = $conf[$key]['ATagParams'];
 			$this->result[$resKey][$key]['wrap'] = $conf[$key]['wrap'];
 			$this->result[$resKey][$key]['allWrap'] = $conf[$key]['allWrap'];
 			$this->result[$resKey][$key]['allWrap.'] = $conf[$key]['allWrap.'];

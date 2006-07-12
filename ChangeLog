@@ -1,3 +1,7 @@
+2006-07-12 Wolfgang Klinger <wk@plan2.net>
+
+	* Fix bug/feature request #3811: Adding "ATagParams" to GMENU
+
 2006-07-12  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
 	* Fix bug #3600: config.formMailCharset is not honoured
