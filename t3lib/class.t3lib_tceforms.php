@@ -2240,7 +2240,7 @@ class t3lib_TCEforms	{
 								$opt=array();
 								$opt[]='<option value=""></option>';
 								foreach($value['el'] as $kk => $vv)	{
-									$opt[]='<option value="'.$kk.'">'.htmlspecialchars('NEW "'.$value['el'][$kk]['tx_templavoila']['title'].'"').'</option>';
+									$opt[]='<option value="'.$kk.'">'.htmlspecialchars('NEW "'.$this->sL($value['el'][$kk]['tx_templavoila']['title']).'"').'</option>';
 								}
 								$rowCells['formEl']='<select name="flexFormsCmdData'.$formPrefix.'['.$key.'][value]">'.implode('',$opt).'</select>';
 							}
