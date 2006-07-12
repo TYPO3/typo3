@@ -93,24 +93,35 @@ class t3lib_formmail extends t3lib_htmlmail {
 	 * @return	void
 	 */
 	function start($V,$base64=false)	{
+		$convCharset = FALSE;	// do we need to convert form data?
+
+		if ($GLOBALS['TSFE']->metaCharset != $GLOBALS['TSFE']->renderCharset)	{	// Use metaCharset for mail if different from renderCharset
+			$this->charset = $GLOBALS['TSFE']->metaCharset;
+			$convCharset = TRUE;
+		}
+
+ 		if ($GLOBALS['TSFE']->config['config']['formMailCharset'])	{	// Respect formMailCharset if it was set
+			$this->charset = $GLOBALS['TSFE']->csConvObj->parse_charset($GLOBALS['TSFE']->config['config']['formMailCharset']);
+			$convCharset = TRUE;
+		}
+
 		parent::start();
 
 		if ($base64 || $V['use_base64'])	{ $this->useBase64(); }
 
-		if ($GLOBALS['TSFE']->config['config']['formMailCharset'])	{	// Respect formMailCharset if it was set
-			$this->charset = trim($GLOBALS['TSFE']->config['config']['formMailCharset']);
-		}
-
 		if (isset($V['recipient']))	{
-				// Sets the message id
-			$this->messageid = md5(microtime()).'@domain.tld';
+				// convert form data from renderCharset to mail charset
+			$val = ($V['subject']) ? $V['subject'] : 'Formmail on '.t3lib_div::getIndpEnv('HTTP_HOST');
+			$this->subject = ($convCharset && strlen($val)) ? $GLOBALS['TSFE']->csConvObj->conv($val,$GLOBALS['TSFE']->renderCharset,$this->charset) : $val;
+			$val = ($V['from_name']) ? $V['from_name'] : (($V['name'])?$V['name']:'');
+			$this->from_name = ($convCharset && strlen($val)) ? $GLOBALS['TSFE']->csConvObj->conv($val,$GLOBALS['TSFE']->renderCharset,$this->charset) : $val;
+			$val = ($V['replyto_name']) ? $V['replyto_name'] : $this->from_name;
+			$this->replyto_name = ($convCharset && strlen($val)) ? $GLOBALS['TSFE']->csConvObj->conv($val,$GLOBALS['TSFE']->renderCharset,$this->charset) : $val;
+			$val = ($V['organisation']) ? $V['organisation'] : '';
+			$this->organisation = ($convCharset && strlen($val)) ? $GLOBALS['TSFE']->csConvObj->conv($val,$GLOBALS['TSFE']->renderCharset,$this->charset) : $val;
 
-			$this->subject = ($V['subject']) ? $V['subject'] : 'Formmail on '.t3lib_div::getIndpEnv('HTTP_HOST');
 			$this->from_email = ($V['from_email']) ? $V['from_email'] : (($V['email'])?$V['email']:'');
-			$this->from_name = ($V['from_name']) ? $V['from_name'] : (($V['name'])?$V['name']:'');
 			$this->replyto_email = ($V['replyto_email']) ? $V['replyto_email'] : $this->from_email;
-			$this->replyto_name = ($V['replyto_name']) ? $V['replyto_name'] : $this->from_name;
-			$this->organisation = ($V['organisation']) ? $V['organisation'] : '';
 			$this->priority = ($V['priority']) ? t3lib_div::intInRange($V['priority'],1,5) : 3;
 
 				// Auto responder.
@@ -126,13 +137,17 @@ class t3lib_formmail extends t3lib_htmlmail {
 					if (!t3lib_div::inList($this->reserved_names,$key))	{
  						$space = (strlen($val)>60)?chr(10):'';
 						$val = (is_array($val) ? implode($val,chr(10)) : $val);
-						$Plain_content.= strtoupper($key).':  '.$space.$val."\n".$space;
-						$HTML_content.='<tr><td bgcolor="#eeeeee"><font face="Verdana" size="1"><b>'.strtoupper($key).'</b></font></td><td bgcolor="#eeeeee"><font face="Verdana" size="1">'.nl2br(HTMLSpecialChars($val)).'&nbsp;</font></td></tr>';
+
+							// convert form data from renderCharset to mail charset (HTML may use entities)
+						$Plain_val = ($convCharset && strlen($val)) ? $GLOBALS['TSFE']->csConvObj->conv($val,$GLOBALS['TSFE']->renderCharset,$this->charset,0) : $val;
+						$HTML_val = ($convCharset && strlen($val)) ? $GLOBALS['TSFE']->csConvObj->conv(htmlspecialchars($val),$GLOBALS['TSFE']->renderCharset,$this->charset,1) : htmlspecialchars($val);
+
+						$Plain_content.= strtoupper($key).':  '.$space.$Plain_val."\n".$space;
+						$HTML_content.='<tr><td bgcolor="#eeeeee"><font face="Verdana" size="1"><b>'.strtoupper($key).'</b></font></td><td bgcolor="#eeeeee"><font face="Verdana" size="1">'.nl2br($HTML_val).'&nbsp;</font></td></tr>';
 					}
 				}
 			}
 			$HTML_content.= '</table>';
-
 
 			if ($V['html_enabled'])	{
 				$this->setHTML($this->encodeMsg($HTML_content));
