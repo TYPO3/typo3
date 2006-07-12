@@ -316,10 +316,6 @@
 		* Corrected language drop down in BE.
 	* Fixed restriction to languages in Frontend editing
 
-2006-04-04  Karsten Dambekalns  <karsten@typo3.org>
-
-	* Fixed bug #3097: EM leaves mirror* files on failure
-
 2006-04-04  Dmitry Dulepov  <typo3@accio.lv>
 
 	* Fix to workspace forms
@@ -328,6 +324,14 @@
 
 	* New function t3lib_div::array2xml_cs() that respects character sets
 	* Change default value of $TYPO3_CONF_VARS[FE][pageCacheToExternalFiles] to false (feature was enabled by default, which was a mistake of course)
+
+2006-04-03  Karsten Dambekalns  <karsten@typo3.org>
+
+	* EM: Fixed bugs #3096 (EM does not work if allow_url_open = off), #3097 (EM leaves mirror* files on failure).
+
+2006-04-02  Karsten Dambekalns  <karsten@typo3.org>
+
+	* EM: Fixed bugs #3033 (Invalid argument supplied for foreach) , #3039 (TYPO3 version is higher than allowed), #2992/#2817 (shy extensions).
 
 2006-03-29  Franz Holzinger <kontakt@fholzinger.com>
 
@@ -969,7 +973,7 @@
 	* Changes in t3lib_div::plainMailEncoded(): By default, emails will be encoded to quoted-printable.
 	* Email linebreaks are now "\n" except on Windows, where they are "\r\n". Thanks to Stanislas and Martin for their feedback.
 	* t3lib_formmail now encodes emails as quoted-printable. base64 needs to be enabled explicitely.
-	* Install Tool now uses t3lib_div::plainMailEncoded() instead of mail() to send plain test mails.
+	* Install Tool now uses t3lib_div::plainMailEncoded() instead of mail() to send plain text mails.
 	* Install Tool now displays warning messages using t3lib_div::debug() instead of debug() which does not work in all cases.
 	* Marked t3lib_htmlmail->convertName() as deprecated because header lines are now encoded automatically.
 
