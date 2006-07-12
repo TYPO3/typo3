@@ -1,3 +1,6 @@
+2006-07-12 Dmitry Dulepov <typo3@accio.lv>
+
+	* Fixed bug #3594: No lang resolution for title in <tx_templavoila> element
 
 2006-07-11  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
