@@ -189,11 +189,11 @@
 
 2006-04-03  Karsten Dambekalns  <karsten@typo3.org>
 
-	* EM: Fixed bugs #3096, #3097.
+	* EM: Fixed bugs #3096 (EM does not work if allow_url_open = off), #3097 (EM leaves mirror* files on failure).
 
 2006-04-02  Karsten Dambekalns  <karsten@typo3.org>
 
-	* EM: Fixed bugs #3033, #3039, #2992/#2817.
+	* EM: Fixed bugs #3033 (Invalid argument supplied for foreach) , #3039 (TYPO3 version is higher than allowed), #2992/#2817 (shy extensions).
 
 2006-04-29  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
