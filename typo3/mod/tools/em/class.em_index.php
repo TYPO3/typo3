@@ -3013,6 +3013,21 @@ EXTENSION KEYS:
 			$emConf['dependencies'] = $this->depToString($emConf['constraints']);
 			$emConf['conflicts'] = $this->depToString($emConf['constraints'], 'conflicts');
 		}
+
+			// sanity check for version numbers, intentionally only checks php and typo3
+		if(isset($emConf['constraints']['depends']) && isset($emConf['constraints']['depends']['php'])) {
+			$versionRange = $this->splitVersionRange($emConf['constraints']['depends']['php']);
+			if(version_compare($versionRange[0],'3.0.0','<')) $versionRange[0] = '3.0.0';
+			if(version_compare($versionRange[1],'3.0.0','<')) $versionRange[1] = '';
+			$emConf['constraints']['depends']['php'] = implode('-',$versionRange);
+		}
+		if(isset($emConf['constraints']['depends']) && isset($emConf['constraints']['depends']['typo3'])) {
+			$versionRange = $this->splitVersionRange($emConf['constraints']['depends']['typo3']);
+			if(version_compare($versionRange[0],'3.5.0','<')) $versionRange[0] = '3.0.0';
+			if(version_compare($versionRange[1],'3.5.0','<')) $versionRange[1] = '';
+			$emConf['constraints']['depends']['typo3'] = implode('-',$versionRange);
+		}
+
 		unset($emConf['private']);
 		unset($emConf['download_password']);
 		unset($emConf['TYPO3_version']);
