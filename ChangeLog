@@ -1,3 +1,7 @@
+2006-07-13 Karsten Dambekalns <karsten@typo3.org>
+
+	* EM: Fixed bug #3299 (Language pack installation cannot handle spaces in filenames)
+
 2006-07-13 Wolfgang Klinger <wk@plan2.net>
 
 	* Fixing some missing is_array checks
