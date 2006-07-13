@@ -1294,7 +1294,7 @@ EXTENSION KEYS:
 	function unzip($file, $path) {
 		if(strlen($GLOBALS['TYPO3_CONF_VARS']['BE']['unzip_path'])) {
 			chdir($path);
-			$cmd = $GLOBALS['TYPO3_CONF_VARS']['BE']['unzip_path'].' -o '.$file;
+			$cmd = $GLOBALS['TYPO3_CONF_VARS']['BE']['unzip_path'].' -o '.escapeshellarg($file);
 			exec($cmd, $list, $ret);
 			return ($ret === 0);
 		} else {

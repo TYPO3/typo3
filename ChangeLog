@@ -1,3 +1,7 @@
+2006-07-13 Karsten Dambekalns <karsten@typo3.org>
+
+	* EM: Fixed bug #3299 (Language pack installation cannot handle spaces in filenames).
+
 2006-07-12  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
 	* Fix bug #3600: config.formMailCharset is not honoured
