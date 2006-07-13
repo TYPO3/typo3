@@ -1,3 +1,7 @@
+2006-07-13 Wolfgang Klinger <wk@plan2.net>
+
+	* Fixing some missing is_array checks
+
 2006-07-12 Wolfgang Klinger <wk@plan2.net>
 
 	* Fix bug/feature request #3811: Adding "ATagParams" to GMENU

@@ -293,6 +293,7 @@ class t3lib_install {
 	function getFieldDefinitions_sqlContent($sqlContent)	{
 		$lines = t3lib_div::trimExplode(chr(10), $sqlContent,1);
 		$isTable = '';
+		$total = Array();
 
 		foreach($lines as $value)	{
 			if ($value[0]!='#')	{
@@ -365,35 +366,37 @@ class t3lib_install {
 				// Init SQL parser:
 			$sqlParser = t3lib_div::makeInstance('t3lib_sqlparser');
 			foreach($total as $table => $cfg)	{
-				foreach($cfg['fields'] as $fN => $fType)	{
-					$orig_fType = $fType;
-					$fInfo = $sqlParser->parseFieldDef($fType);
+				if (is_array($cfg['fields'])) {
+					foreach($cfg['fields'] as $fN => $fType)	{
+						$orig_fType = $fType;
+						$fInfo = $sqlParser->parseFieldDef($fType);
 
-					switch($fInfo['fieldType'])	{
-						case 'char':
-						case 'varchar':
-							$newSize = round($fInfo['value']*$mSize);
+						switch($fInfo['fieldType'])	{
+							case 'char':
+							case 'varchar':
+								$newSize = round($fInfo['value']*$mSize);
 
-							if ($newSize <= 255)	{
-								$fInfo['value'] = $newSize;
-							} else {
-								$fInfo = array(
-									'fieldType' => 'text',
-									'featureIndex' => array(
-										'NOTNULL' => array(
-											'keyword' => 'NOT NULL'
+								if ($newSize <= 255)	{
+									$fInfo['value'] = $newSize;
+								} else {
+									$fInfo = array(
+										'fieldType' => 'text',
+										'featureIndex' => array(
+											'NOTNULL' => array(
+												'keyword' => 'NOT NULL'
+											)
 										)
-									)
-								);
-							}
-						break;
-						case 'tinytext':
-							$fInfo['fieldType'] = 'text';
-						break;
-					}
+									);
+								}
+							break;
+							case 'tinytext':
+								$fInfo['fieldType'] = 'text';
+							break;
+						}
 
-					$total[$table]['fields'][$fN] = $sqlParser->compileFieldCfg($fInfo);
-					if ($sqlParser->parse_error)	die($sqlParser->parse_error);
+						$total[$table]['fields'][$fN] = $sqlParser->compileFieldCfg($fInfo);
+						if ($sqlParser->parse_error)	die($sqlParser->parse_error);
+					}
 				}
 			}
 		}
