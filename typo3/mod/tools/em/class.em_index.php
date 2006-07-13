@@ -375,7 +375,7 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 		$this->terConnection->wsdlURL = $TYPO3_CONF_VARS['EXT']['em_wsdlURL'];
 		$this->xmlhandler = t3lib_div::makeInstance('SC_mod_tools_em_xmlhandler');
 		$this->xmlhandler->emObj =& $this;
-		$this->xmlhandler->useUnsupported = $this->MOD_SETTINGS['display_unsupported'];
+		$this->xmlhandler->useUnchecked = $this->MOD_SETTINGS['display_unchecked'];
 		$this->xmlhandler->useObsolete = $this->MOD_SETTINGS['display_obsolete'];
 
 			// Initialize Document Template object:
@@ -459,7 +459,7 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 			),
 			'display_shy' => '',
 			'display_own' => '',
-			'display_unsupported' => '',
+			'display_unchecked' => '',
 			'display_obsolete' => '',
 
 			'singleDetails' => array(
@@ -873,7 +873,7 @@ EXTENSION KEYS:
 			$content.= t3lib_BEfunc::cshItem('_MOD_tools_em', 'import', $GLOBALS['BACK_PATH'],'|<br/>');
 
 			$onsubmit = "window.location.href='index.php?ter_connect=1&ter_search='+escape(this.elements['_lookUp'].value);return false;";
-			$content.= '</form><form action="index.php" method="post" onsubmit="'.htmlspecialchars($onsubmit).'">List or look up extensions<br />
+			$content.= '</form><form action="index.php" method="post" onsubmit="'.htmlspecialchars($onsubmit).'">List or look up <strong'.($this->MOD_SETTINGS['display_unchecked']?' style="color:#900;">all':' style="color:#090;">reviewed').'</strong> extensions<br />
 			<input type="text" name="_lookUp" value="" /> <input type="submit" value="Look up" /><br /><br />';
 
 			if ($this->CMD['fetchMetaData'])	{	// fetches mirror/extension data from online rep.
@@ -925,11 +925,11 @@ EXTENSION KEYS:
 			<fieldset><legend>Security Settings</legend>
 			<table border="0" cellpadding="2" cellspacing="2">
 				<tr class="bgColor4">
-					<td>Enable unsupported extensions:</td>
-					<td>'.t3lib_BEfunc::getFuncCheck(0,'SET[display_unsupported]',$this->MOD_SETTINGS['display_unsupported']).'</td>
+					<td>Enable extensions without review (basic security check):</td>
+					<td>'.t3lib_BEfunc::getFuncCheck(0,'SET[display_unchecked]',$this->MOD_SETTINGS['display_unchecked']).'</td>
 				</tr>
 			</table>
-			<strong>Notice:</strong> Make sure you know what consequences enabling this checkbox might have. Check the information on typo3.org about security reviewing!
+			<strong>Notice:</strong> Make sure you know what consequences enabling this checkbox might have. Check the <a href="http://typo3.org/extensions/what-are-reviews/" target="_blank">information on typo3.org about security reviewing</a>!
 			</fieldset>
 			<br />
 			<br />
