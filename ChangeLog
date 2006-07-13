@@ -2,6 +2,7 @@
 
 	* EM: Fixed bug #3299 (Language pack installation cannot handle spaces in filenames).
 	* EM: Added extra sanity check when cleaning up version numbers in constraints, solves bogus warnings when installing extensions.
+	* EM: The label for enabling unreviewed extensions is more clear now. The search scope (all/reviewed) is shown on the import extensions page.
 
 2006-07-13 Wolfgang Klinger <wk@plan2.net>
 
