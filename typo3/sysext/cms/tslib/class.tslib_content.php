@@ -5110,7 +5110,7 @@ class tslib_cObj {
 			$pU = parse_url($link_param);
 
 				// Detecting kind of link:
-			if(strstr($link_param,'@') && !$pU['scheme'])	{		// If it's a mail address:
+			if(strstr($link_param,'@') && (!$pU['scheme'] || $pU['scheme']=='mailto'))	{		// If it's a mail address:
 				$link_param = eregi_replace('^mailto:','',$link_param);
 				list($this->lastTypoLinkUrl,$linktxt) = $this->getMailTo($link_param,$linktxt,$initP);
 				$finalTagParts['url']=$this->lastTypoLinkUrl;
