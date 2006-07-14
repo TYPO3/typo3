@@ -1,3 +1,7 @@
+2006-07-14  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+
+	* mailto: links were not handled as mailto: links if protocol was present in link
+
 2006-07-13 Karsten Dambekalns <karsten@typo3.org>
 
 	* EM: Fixed bug #3299 (Language pack installation cannot handle spaces in filenames).
