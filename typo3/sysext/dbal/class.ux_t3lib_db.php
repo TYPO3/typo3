@@ -255,16 +255,18 @@ class ux_t3lib_DB extends t3lib_DB {
 	 */
 	function analyzeFields($parsedExtSQL) {
 		foreach($parsedExtSQL as $table => $tdef) {
-			foreach($tdef['fields'] as $field => $fdef) {
-				$fdef = $this->SQLparser->parseFieldDef($fdef);
-				$this->cache_fieldType[$table][$field]['type'] = $fdef['fieldType'];
-				$this->cache_fieldType[$table][$field]['metaType'] = $this->MySQLMetaType($fdef['fieldType']);
-				$this->cache_fieldType[$table][$field]['notnull'] = (isset($fdef['featureIndex']['NOTNULL']) && !$this->SQLparser->checkEmptyDefaultValue($fdef['featureIndex'])) ? 1 : 0;
-				if(isset($fdef['featureIndex']['AUTO_INCREMENT'])) {
-					$this->cache_autoIncFields[$table] = $field;
-				}
-				if(isset($tdef['keys']['PRIMARY'])) {
-					$this->cache_primaryKeys[$table] = substr($tdef['keys']['PRIMARY'], 13, -1);
+			if (is_array($tdef['fields'])) {
+				foreach($tdef['fields'] as $field => $fdef) {
+					$fdef = $this->SQLparser->parseFieldDef($fdef);
+					$this->cache_fieldType[$table][$field]['type'] = $fdef['fieldType'];
+					$this->cache_fieldType[$table][$field]['metaType'] = $this->MySQLMetaType($fdef['fieldType']);
+					$this->cache_fieldType[$table][$field]['notnull'] = (isset($fdef['featureIndex']['NOTNULL']) && !$this->SQLparser->checkEmptyDefaultValue($fdef['featureIndex'])) ? 1 : 0;
+					if(isset($fdef['featureIndex']['AUTO_INCREMENT'])) {
+						$this->cache_autoIncFields[$table] = $field;
+					}
+					if(isset($tdef['keys']['PRIMARY'])) {
+						$this->cache_primaryKeys[$table] = substr($tdef['keys']['PRIMARY'], 13, -1);
+					}
 				}
 			}
 		}
