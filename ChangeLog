@@ -1,3 +1,9 @@
+2006-07-17  Michael Stucki  <michael@typo3.org>
+
+	* Fix bug #3308: Check for deleted records when displaying language overlays
+	* Removed hardcoded rowSpace value in CSS Styled Content
+	* Minor cleanup in CSS Styled Content constants.txt + setup.txt
+
 2006-07-14  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
 	* mailto: links were not handled as mailto: links if protocol was present in link

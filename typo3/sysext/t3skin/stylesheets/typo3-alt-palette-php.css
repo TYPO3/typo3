@@ -9,7 +9,7 @@ body#typo3-alt-palette-php {
 body#typo3-alt-palette-php table#typo3-TCEforms-palette {
 	height: 20px;
 	position: absolute;
-	bottom: 1px; /* Masi */
+	bottom: 1px;
 }
 
 body#typo3-alt-palette-php table td {

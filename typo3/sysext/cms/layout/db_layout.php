@@ -1215,8 +1215,8 @@ class SC_db_layout {
 	 * @return	string		Return query string.
 	 */
 	function exec_languageQuery($id)	{
-		$exQ = $GLOBALS['BE_USER']->isAdmin() ? '' : ' AND sys_language.hidden=0';
 		if ($id)	{
+			$exQ = t3lib_BEfunc::deleteClause('pages_language_overlay') . ($GLOBALS['BE_USER']->isAdmin()?'':' AND sys_language.hidden=0');
 			return $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 							'sys_language.*',
 							'pages_language_overlay,sys_language',
