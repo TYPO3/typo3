@@ -1,3 +1,7 @@
+2006-07-17 Dmitry Dulepov <typo3@accio.lv>
+
+	* t3lib_tceforms: now using "labels.new" from locallang instead of hard-coded "NEW"
+
 2006-07-17  Michael Stucki  <michael@typo3.org>
 
 	* Fix bug #3308: Check for deleted records when displaying language overlays
