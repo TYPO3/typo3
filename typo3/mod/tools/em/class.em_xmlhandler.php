@@ -76,7 +76,7 @@ class SC_mod_tools_em_xmlhandler {
 			}
 
 			if(!strlen($owner)) {
-				$this->checkReviewState($this->extensionsXML[$extkey]['versions']); // if showing only own extensions, never hide unreviewed
+				$this->checkReviewState($this->extensionsXML[$extkey]['versions']);	// if showing only own extensions, never hide unreviewed
 			}
 			$this->removeObsolete($this->extensionsXML[$extkey]['versions']);
 
@@ -192,13 +192,13 @@ class SC_mod_tools_em_xmlhandler {
 	 * @return	void
 	 */
 	function checkReviewState(&$extensions) {
-		if($this->useUnchecked) return;
+		if ($this->useUnchecked) return;
 
 		reset($extensions);
-			while (list($version, $data) = each($extensions)) {
-				if($data['reviewstate']<1)
-					unset($extensions[$version]);
-			}
+		while (list($version, $data) = each($extensions))	{
+			if($data['reviewstate']<1)
+				unset($extensions[$version]);
+		}
 	}
 
 	/**

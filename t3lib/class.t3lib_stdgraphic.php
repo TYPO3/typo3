@@ -2014,7 +2014,7 @@ class t3lib_stdGraphic	{
 
 	/**
 	 * Split a string into an array of individual characters
-	 * The function will look at  $this->nativeCharset and if that is set, the input string is expected to be UTF-8 encoded, possibly with entities in it. Otherwise the string is supposed to be a single-byte charset which is just splitted by a for-loop.
+	 * The function will look at $this->nativeCharset and if that is set, the input string is expected to be UTF-8 encoded, possibly with entities in it. Otherwise the string is supposed to be a single-byte charset which is just splitted by a for-loop.
 	 *
 	 * @param	string		The text string to split
 	 * @param	boolean		Return Unicode numbers instead of chars.

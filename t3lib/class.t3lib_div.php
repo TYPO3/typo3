@@ -4456,7 +4456,7 @@ class t3lib_div {
 		$str = '';
 		if (is_array($arr))	{
 			if (!is_array($valueList))	{
-				$valueList = $valueList = t3lib_div::trimExplode(',', $valueList, 1);
+				$valueList = t3lib_div::trimExplode(',', $valueList, 1);
 			}
 			$valListCnt = count($valueList);
 			foreach ($arr as $key => $value)	{

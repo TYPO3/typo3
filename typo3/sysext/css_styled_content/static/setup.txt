@@ -1427,8 +1427,8 @@ plugin.tx_cssstyledcontent._CSS_DEFAULT_STYLE (
 	DIV.csc-textpic DIV.csc-textpic-imagewrap .csc-textpic-image IMG { margin: 0; }
 
 	/* Space below each image (also in-between rows) */
-	DIV.csc-textpic DIV.csc-textpic-imagewrap .csc-textpic-image { margin-bottom: 5px; }
-	DIV.csc-textpic-equalheight DIV.csc-textpic-imagerow { margin-bottom: 5px; display: block; }
+	DIV.csc-textpic DIV.csc-textpic-imagewrap .csc-textpic-image { margin-bottom: {$styles.content.imgtext.rowSpace}px; }
+	DIV.csc-textpic-equalheight DIV.csc-textpic-imagerow { margin-bottom: {$styles.content.imgtext.rowSpace}px; display: block; }
 	DIV.csc-textpic DIV.csc-textpic-imagerow { clear: both; }
 
 	/* No margins around the whole image-block */

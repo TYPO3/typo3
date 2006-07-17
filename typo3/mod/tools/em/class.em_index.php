@@ -3,7 +3,7 @@
 *  Copyright notice
 *
 *  (c) 1999-2005 Kasper Skaarhoj (kasperYYYY@typo3.com)
- * (c) 2005-2006 Karsten Dambekalns <karsten@typo3.org>
+*  (c) 2005-2006 Karsten Dambekalns <karsten@typo3.org>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -857,7 +857,7 @@ EXTENSION KEYS:
 						$this->content.=$this->doc->section('Extensions found only on this server',$content,0,1);
 					}
 				}
-			}	else {
+			} else {
 				$content.= t3lib_BEfunc::cshItem('_MOD_tools_em', 'import_ter', $GLOBALS['BACK_PATH'],'|<br/>');
 				$onsubmit = "window.location.href='index.php?ter_connect=1&ter_search='+escape(this.elements['_lookUp'].value);return false;";
 				$content.= '</form><form action="index.php" method="post" onsubmit="'.htmlspecialchars($onsubmit).'">List or look up extensions<br />
