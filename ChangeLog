@@ -48,7 +48,7 @@
 
 2006-07-10 Dmitry Dulepov <typo3@accio.lv>
 
-	* Bug: "Publish time" label appeared where "Unpublish time" should appear
+	* Fixed bug: "Publish time" label appeared where "Unpublish time" should appear
 
 2006-07-07  Karsten Dambekalns  <karsten@typo3.org>
 
@@ -294,8 +294,8 @@
 
 2006-04-06  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
-	* rtehtmlarea: fix bugtracker issue 3120: transforming text in link in Firefox may take excessive time.
-	* rtehtmlarea: fix bugtracker issue 3060: RTE includes a page from the Frontent after paste a text
+	* rtehtmlarea: fix bugtracker issue #3120: transforming text in link in Firefox may take excessive time.
+	* rtehtmlarea: fix bugtracker issue #3060: RTE includes a page from the Frontent after paste a text
 
 2006-04-05  Peter Niederlag  <peter@niederlag.de>
 

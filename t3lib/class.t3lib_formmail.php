@@ -149,7 +149,6 @@ class t3lib_formmail extends t3lib_htmlmail {
 			}
 			$HTML_content.= '</table>';
 
-
 			if ($V['html_enabled'])	{
 				$this->setHTML($this->encodeMsg($HTML_content));
 			}

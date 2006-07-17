@@ -3342,7 +3342,7 @@ class t3lib_div {
 	 * @todo	Possible improvement: Should it rawurldecode the string first to check if any of these characters is encoded ?
 	 */
 	function validPathStr($theFile)	{
-		if (!strstr($theFile,'//') && !strstr($theFile,'\\') && !preg_match('#(?:^\.\.|/\.\./)#',$theFile)) return true;
+		if (!strstr($theFile,'//') && !strstr($theFile,'\\') && !preg_match('#(?:^\.\.|/\.\./)#',$theFile))	return true;
 	}
 
 	/**
@@ -4303,7 +4303,7 @@ class t3lib_div {
 
 			// for CLI logging name is <fqdn-hostname>:<TYPO3-path>
 		if (defined('TYPO3_cliMode') && TYPO3_cliMode)	{
-			$TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_div.php']['systemLogHost'] = t3lib_div::getHostname(FALSE).':'.PATH_site;
+			$TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_div.php']['systemLogHost'] = t3lib_div::getHostname($requestHost=FALSE).':'.PATH_site;
 		}
 			// for Web logging name is <protocol>://<request-hostame>/<site-path>
 		else {
