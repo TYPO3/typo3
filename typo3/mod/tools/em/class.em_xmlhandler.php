@@ -46,7 +46,7 @@ class SC_mod_tools_em_xmlhandler {
 	var $extXMLResult = array();
 	var $extensionsXML = array();
 	var $reviewStates = null;
-	var $useUnsupported = false;
+	var $useUnchecked = false;
 	var $useObsolete = false;
 
 	/**
@@ -192,7 +192,7 @@ class SC_mod_tools_em_xmlhandler {
 	 * @return	void
 	 */
 	function checkReviewState(&$extensions) {
-		if($this->useUnsupported) return;
+		if($this->useUnchecked) return;
 
 		reset($extensions);
 			while (list($version, $data) = each($extensions)) {
@@ -207,7 +207,7 @@ class SC_mod_tools_em_xmlhandler {
 	 * @return	void
 	 */
 	function checkReviewStateGlobal() {
-		if($this->useUnsupported) return;
+		if($this->useUnchecked) return;
 
 		reset($this->extensionsXML);
 		while (list($extkey, $data) = each($this->extensionsXML)) {
