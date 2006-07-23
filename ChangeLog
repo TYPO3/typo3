@@ -1,3 +1,7 @@
+2006-07-23 Karsten Dambekalns <karsten@typo3.org>
+
+	* t3lib/class.t3lib_div.php: Added a clarifying note to the comment for loadTCA(), thanks to Johannes Konert.
+
 2006-07-17 Dmitry Dulepov <typo3@accio.lv>
 
 	* t3lib_tceforms: now using "labels.new" from locallang instead of hard-coded "NEW"
