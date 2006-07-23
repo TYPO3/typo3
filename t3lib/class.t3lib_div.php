@@ -3732,6 +3732,10 @@ class t3lib_div {
 	 * 1) must be configured table (the ctrl-section configured),
 	 * 2) columns must not be an array (which it is always if whole table loaded), and
 	 * 3) there is a value for dynamicConfigFile (filename in typo3conf)
+	 *
+	 * Note: For the frontend this loads only 'ctrl' and 'feInterface' parts.
+	 * For complete TCA use $GLOBALS['TSFE']->includeTCA() instead.
+	 *
 	 * Usage: 84
 	 *
 	 * @param	string		Table name for which to load the full TCA array part into the global $TCA
