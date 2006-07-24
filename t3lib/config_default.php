@@ -367,7 +367,7 @@ $T3_SERVICES = array();
 
 
 	// Turn error logging on/off.
-if($displayErrors=intval($TYPO3_CONF_VARS['SYS']['displayErrors']!='-1'))	{
+if(($displayErrors=intval($TYPO3_CONF_VARS['SYS']['displayErrors']))!='-1')	{
 	if($displayErrors==2)	{	// Special value "2" enables this feature only if $TYPO3_CONF_VARS[SYS][devIPmask] matches
 		if (t3lib_div::cmpIP(t3lib_div::getIndpEnv('REMOTE_ADDR'), $GLOBALS['TYPO3_CONF_VARS']['SYS']['devIPmask']))	{
 			$displayErrors=1;
