@@ -2251,7 +2251,7 @@ class t3lib_TCEmain	{
 
 				$nonFields = array_unique(t3lib_div::trimExplode(',','uid,perms_userid,perms_groupid,perms_user,perms_group,perms_everybody,t3ver_oid,t3ver_wsid,t3ver_id,t3ver_label,t3ver_state,t3ver_swapmode,t3ver_count,t3ver_stage,t3ver_tstamp,'.$excludeFields,1));
 
-				#$row = $this->recordInfo($table,$uid,'*');
+				// $row = $this->recordInfo($table,$uid,'*');
 				$row = t3lib_BEfunc::getRecordWSOL($table,$uid);	// So it copies (and localized) content from workspace...
 				if (is_array($row))	{
 
@@ -2268,7 +2268,7 @@ class t3lib_TCEmain	{
 					$copyAfterFields = $destPid<0 ? $this->fixCopyAfterDuplFields($table,$uid,abs($destPid),0) : array();
 
 						// Page TSconfig related:
-					$tscPID = t3lib_BEfunc::getTSconfig_pidValue($table,$uid,$destPid);	// NOT using t3lib_BEfunc::getTSCpid() because we need the real pid - not the id of a page, if the input is a page...
+					$tscPID = t3lib_BEfunc::getTSconfig_pidValue($table,$uid,$destPid);	// NOT using t3lib_BEfunc::getTSCpid() because we need the real pid - not the ID of a page, if the input is a page...
 					$TSConfig = $this->getTCEMAIN_TSconfig($tscPID);
 					$tE = $this->getTableEntries($table,$TSConfig);
 

@@ -152,7 +152,7 @@ See <a href="http://wiki.typo3.org/index.php/TYPO3_3.8.1" target="_blank">wiki.t
 			$GLOBALS['TSFE']->spamProtectEmailAddresses = t3lib_div::intInRange($GLOBALS['TSFE']->config['config']['spamProtectEmailAddresses'],-10,10,0);
 			if ($GLOBALS['TSFE']->spamProtectEmailAddresses)	{
 				$GLOBALS['TSFE']->additionalJavaScript['UnCryptMailto()']='
-  // decrypt helper function 
+  // decrypt helper function
 function decryptCharcode(n,start,end,offset) {
 	n = n + offset;
 	if (offset > 0 && n > end)	{
@@ -802,11 +802,11 @@ $GLOBALS['TSFE']->content.='
 
 		// Div-sections
 		if ($GLOBALS['TSFE']->divSection)	{
-			$GLOBALS['TSFE']->content.=	chr(10).$GLOBALS['TSFE']->divSection;
+			$GLOBALS['TSFE']->content.= chr(10).$GLOBALS['TSFE']->divSection;
 		}
 
 		// Page content
-		$GLOBALS['TSFE']->content.=chr(10).$pageContent;
+		$GLOBALS['TSFE']->content.= chr(10).$pageContent;
 
 		// Ending page
 		$GLOBALS['TSFE']->content.= chr(10).'</body>';
