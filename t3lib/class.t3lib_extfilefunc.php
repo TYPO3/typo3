@@ -745,7 +745,7 @@ class t3lib_extFileFunctions extends t3lib_basicFileFunctions	{
 	}
 
 	/**
-	 * Editing textfiles or foldes (action=9)
+	 * Editing textfiles or folders (action=9)
 	 *
 	 * @param	array		$cmds['data'] is the new content. $cmds['target'] is the target (file or dir)
 	 * @return	boolean		Returns true on success

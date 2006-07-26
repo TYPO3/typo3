@@ -367,8 +367,8 @@ $T3_SERVICES = array();
 
 
 	// Turn error logging on/off.
-if(($displayErrors=intval($TYPO3_CONF_VARS['SYS']['displayErrors']))!='-1')	{
-	if($displayErrors==2)	{	// Special value "2" enables this feature only if $TYPO3_CONF_VARS[SYS][devIPmask] matches
+if (($displayErrors=intval($TYPO3_CONF_VARS['SYS']['displayErrors']))!='-1')	{
+	if ($displayErrors==2)	{	// Special value "2" enables this feature only if $TYPO3_CONF_VARS[SYS][devIPmask] matches
 		if (t3lib_div::cmpIP(t3lib_div::getIndpEnv('REMOTE_ADDR'), $GLOBALS['TYPO3_CONF_VARS']['SYS']['devIPmask']))	{
 			$displayErrors=1;
 		} else {
@@ -377,7 +377,6 @@ if(($displayErrors=intval($TYPO3_CONF_VARS['SYS']['displayErrors']))!='-1')	{
 	}
 	@ini_set('display_errors', $displayErrors);
 }
-
 
 	// Set PHP memory limit depending on value of $TYPO3_CONF_VARS["SYS"]["setMemoryLimit"]
 if(intval($TYPO3_CONF_VARS["SYS"]["setMemoryLimit"])>16) {

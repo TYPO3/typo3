@@ -303,7 +303,7 @@ class t3lib_stdGraphic	{
 
 			$this->cmds['jpg'] = $this->cmds['jpeg'] = '-colorspace RGB -quality '.$this->jpegQuality;
 		}
-			// ... but if 'im_v5effects' is set, dont care about 'im_no_effects'
+			// ... but if 'im_v5effects' is set, don't care about 'im_no_effects'
 		if ($gfxConf['im_v5effects'])	{
 			$this->NO_IM_EFFECTS = 0;
 			$this->V5_EFFECTS = 1;
@@ -2186,7 +2186,8 @@ class t3lib_stdGraphic	{
 					// Register temporary filename:
 				$GLOBALS['TEMP_IMAGES_ON_PAGE'][] = $output;
 
-				if ($data['crs']) {
+					// Cropscaling:
+				if ($data['crs'])	{
 					if ($this->dontCheckForExistingTempFile || !$this->file_exists_typo3temp_file($output, $imagefile))	{
 						$crsOutput = str_replace('pics/', 'pics/crs-', $output);
 						$this->imageMagickExec($imagefile.$frame, $crsOutput, $command);

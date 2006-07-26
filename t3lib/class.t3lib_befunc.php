@@ -2781,12 +2781,12 @@ class t3lib_BEfunc	{
 
 	/**
 	 * Find the real PID of the record (with $uid from $table). This MAY be impossible if the pid is set as a reference to the former record or a page (if two records are created at one time).
-	 * NOTICE: Make sure that the input PID is never negativ because the record was an offline version! Therefore, you should always use t3lib_BEfunc::fixVersioningPid($table,$row); on the data you input before calling this function!
+	 * NOTICE: Make sure that the input PID is never negative because the record was an offline version! Therefore, you should always use t3lib_BEfunc::fixVersioningPid($table,$row); on the data you input before calling this function!
 	 * Usage: 2
 	 *
 	 * @param	string		Table name
 	 * @param	integer		Record uid
-	 * @param	integer		Record pid, could be negative then pointing to a record from same table whos pid to find and return.
+	 * @param	integer		Record pid, could be negative then pointing to a record from same table whose pid to find and return.
 	 * @return	integer
 	 * @internal
 	 * @see t3lib_TCEmain::copyRecord(), getTSCpid()

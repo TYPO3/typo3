@@ -2080,6 +2080,7 @@ class tslib_cObj {
 			$hiddenfields.$content,
 			'</form>'
 		);
+
 		if ($conf['arrayReturnMode'])	{
 			$content['validateForm']=$validateForm;
 			$content['formname']=$formname;

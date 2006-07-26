@@ -1634,7 +1634,7 @@ class tslib_tmenu extends tslib_menu {
 					$this->I['A2'] = '';
 				}
 
-					// ATAGBeforeWrap processing:
+					// ATagBeforeWrap processing:
 				if ($this->I['val']['ATagBeforeWrap'])	{
 					$wrapPartsBefore = explode('|',$this->I['val']['linkWrap']);
 					$wrapPartsAfter = array('','');
