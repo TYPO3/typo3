@@ -1,96 +1,52 @@
 ************************************************************************
-CHANGES & IMPROVEMENTS in TYPO3 4.0
+CHANGES & IMPROVEMENTS between TYPO3 4.0 and 4.1
 (for technical details see ChangeLog)
 ************************************************************************
+
+Compatibility
+=============
+
+	* captionSplit.cObject had been removed in version 4.0. For compatibility reasons, it has been added again, though it remains deprecated and should not be used anymore (bug #3005)
+	* In TYPO3 4.0, showpic.php automatically adds default parameters to custom URLs. Some extensions did not like this feature because they want to generate all parameters by themselves. Enabling JSwindow.altUrl_noDefaultParams will now solve this problem for them (bug #1153)
+	* FORM submit buttons with images are now valid xhtml (bug #3397)
 
 Installation/Upgrade
 ====================
 
-	* TYPO3 4.0 ships with an empty typo3/ext folder. Sites which depend on them must reinstall this extensions.
-	* TYPO3 4.0 uses a new localization scheme (typo3conf/l10n/). To install language packs use the extension managers function for translation handling. (Exensions csh_<language> are obsolete!)
-	* TYPO3 4.0  doesn't need symbolic links anymore (on Unix systems); no more duplicate files (on Windows systems)
-	* Existing symbolic links from index.php to <TYPO3_root>/tslib/index_ts.php must be changed to <TYPO3_src>/index.php (Unix).
-	* The symbolic links from nimbus.ttf and vera.ttf to arial.ttf and verdana.ttf have been removed. If you need those fonts create the symbolic links manually (Unix) or copy the fonts (Windows).
+	* The update wizard has been slightly reworded to make the functionality more easy to understand (bug #3943)
+	* typo3temp/ subdirectories were not created automatically (bug #2462)
 
-New features
+DBAL
+====
+
+	* Improved support for Oracle
+	* ADOdb has been updated to version 4.90
+	* DBAL now honours the no_pconnect setting
+	* Importing dumps using the install tool now works, see manual for tips
+	* Code cleanup
+	* Updates to the documentation manual
+
+Backend skin
 ============
 
-	* Workspaces: this new system extension brings offline editing to TYPO3 (using the built-in versioning) - add/change content in a "draft" workspace and publish the changes into the "live" workspace
-	* DBAL 1.0: this new system extension offers database independence (currently working with Oracle and PostgreSQL)
-	* The 1-2-3 quick install has been enhanced
-	* a new update wizard of the installer handles compatibility issues
-	* the new default RTE (rtehtmlarea) is compatible with more browsers and operating systems (Firefox, Opera; Linux, BSD, Mac OS X)
-	* "sliding" of content elements similar to TypoScript's getText level* feature (integration of extension "kb_cont_slide" by Bernhard Kraft)
-	* User admin module: switch back to admin user after user switch (SU-mode), "create new user" link
-	* System log (eg DB errors; configured via $CONF_VARS['SYS']['systemLog']
-	* Sharing of sessions between subdomains (configured via $CONF_VARS['SYS']['domainCookie'])
+	* Template modules have been changed to support skins (especially t3skin)
+	* The BE admin module has been changed to support skins (especially t3skin)
+	* Current page was not highlighted in navigation tree on IE6 (bug #2874)
 
-Improvements
-============
+Important bugfixes
+==================
 
-	* the undo and history feature has been enhanced: rollback/preview on page and record level; history includes now inserts and deletes
-	* improved indexed search (template support, faster) - many thanks to Udo von Eynern for implementing the template support!
-	* The import/export tool now automatically resolves extension dependencies of T3D files (.t3d)
-	* the page type "external link" supports HTTPS (thanks to Marc Bastian Heinrichs)
-	* the extension manager has been overhauled and benefits from new enhancements of TER 2.0
-	* the GIFBUILDER objects may create true colour images (PNG and JPEG)
-	* typolinks and HMENUs (type "language") may preserve the query parameters
-
-Usability
-=========
-
-	* pages can be moved by drag and drop within the page tree (thanks to Stephane Schitter)
-	* faster context menues (implemented with AJAX)
-	* fixed fonts are used in BE configuration fields for increased readability
-	* tab indenting in BE configuration fields for enhanced layout
-	* files can be created or uploaded with buttons in the Web>List content frame
-	* improved content element wizard (eg empty categories are removed)
-	* RTE wizard has now a save-and-close button
-	* the admin panel uses HTTP GET instead of POST (no more browser warnings when reloading a previewed page)
-
-Access Control
-==============
-
-	* FE-groups may now be nested (integration of extension "fenestgrp" by Glenn Gibb)
-	* pages and content elements can have more than one group assigned (integration of extension "ingmar_accessctrl" by Ingmar Schlecht)
-
-Security
-=========
-
-	* New option for lockSSL: get redirected to standard http after BE login with SSL
-
-Accessibility
-=============
-
-	* TYPO3's output is now valid XHTML (the conforming DTD is configurable)
-	* the overall DTD and the XHTML-DTD may be set indepenently (config.docytpe and config.xhtmlDoctype)
-	* output of CSS styled content is now accessible by default (mailforms, menus, sitemaps) - many thanks to Ernesto Baschny, kudos also to Sebastian Kurfuerst and Michael Stucki
-	* images have accessibility features (integration of extension "cron_cssstyledimgtext" by Ernesto Baschny)
-	* the "table" content element has now limited accessibility support (integration of extension "accessible_tables" by Rupert Germann)
-	* indexed search comes with an additional template without any HTML tables - thanks to Robert Markula and Michael Stucki
-
-Configuration
-=============
-
-	* the new := assignment for TypoScript allows now parse time maniplation of TS values (eg "obj.val := appendString(foobar)", "obj.list := addToList(3,5,9)")
-	* TypoScript conditions may be combined with OR and AND
-
-API
-===
-
-	* loading of scripts into the default URL with index.php?eID=<key> (using this feature showpic.php has been removed from the TYPO3 root directory)
-	* TCA form fields may have custom PHP and Javascript evaluation (thanks to Thomas Hempel)
-	* TCA form fields may be set to readonly (HTML attribute)
-	* TCA fields of type "none" have new rendering options (date and other formats)
-	* Direct mail has been removed from the core (t3lib/class.t3lib_dmailer.php)
-	* the currenty XHTML-DTD setting may be queried via $GLOBALS['TSFE']->xhtmlDoctype
-	* t3lib_div::sysLog() may be used to log errors
-
-Notable Bugfixes
-================
-
-	* versioning works with all MySQL versions (3.23.x and higher)
-	* the relogin popup on session timeout in BE won't appear again after clicking "No"
-	* when copying a file into the same folder in the "Filelist" module, it is automatically renamed
-	* JSMENU, editPanel and feAdmin works now with multi-byte character sets (eg UTF-8)
-
+	* Windows systems print phpinfo under some circumstances (bug #3362)
+	* HTTP status was incorrect for pageNotFound_handling when external URL is specified as 404 page
+	* Mail forms did not work with <input type="image"> submit buttons (bug #1374)
+	* FE editing: edit form on page did not work in 4.0
+	* Several issues of "text with image" for "CSS styled content" have been resolved
+	* Linking images to hidden pages resulted in click-enlarge (bug #3522)
+	* Wrong HTTP status 503 was sent when $TSFE->set_no_cache() was called from a plugin (bugs #3049 and #3176)
+	* config.formMailCharset did not work (bug #3600)
+	* Some broken references to media/ have been fixed (bug #3233)
+	* Fixed RTE bug: images were removed under some special conditions when saving (bug #3051)
+	* Various enhancements to CSS styles content (bugs #3138, #3258, #3416)
+	* config.spamProtectEmailAddresses returned garbled links sometimes (bug #3427)
+	* Localized flexforms did not work properly (bug #3505)
+	* Extension manager: The label for enabling unreviewed extensions is more clear now. The search scope (all/reviewed) is displayed on the import extensions page.
