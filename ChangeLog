@@ -1,3 +1,7 @@
+2006-07-31  Michael Stucki  <michael@typo3.org>
+
+	* Updates to NEWS.txt (thanks to Martin Kutschker)
+
 2006-07-30  Michael Stucki  <michael@typo3.org>
 
 	* Fix bug #3362 (again): Bugfix used t3lib_div which is missing at that point
@@ -9,7 +13,7 @@
 
 2006-07-24  Karsten Dambekalns  <karsten@typo3.org>
 
-        * t3lib/cconfig_default.php: Fixed bug #3246 - error in t3lib/config_default.php on setting display_errors.
+        * t3lib/config_default.php: Fixed bug #3246 - error in t3lib/config_default.php on setting display_errors.
 
 2006-07-23  Karsten Dambekalns  <karsten@typo3.org>
 
@@ -47,7 +51,7 @@
 
 	* Fix bug #3600: config.formMailCharset is not honoured
 	* t3lib_formmail: do charset conversion for mails when config.formMailCharset is set or config.metaCharset different from config.renderCharset
-	* t3lib_formmail: use $this->messageid of base class 
+	* t3lib_formmail: use $this->messageid of base class
 
 2006-07-12 Dmitry Dulepov <typo3@accio.lv>
 
