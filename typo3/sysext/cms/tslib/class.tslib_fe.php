@@ -1748,10 +1748,10 @@
 					}
 
 						// set default values for removeDefaultJS and inlineStyle2TempFile so CSS and JS are externalized if compatversion is higher than 4.0
-					if(!isset($this->config['config']['removeDefaultJS']) && t3lib_div::compat_version('4.0.0')) {
+					if (!isset($this->config['config']['removeDefaultJS']) && t3lib_div::compat_version('4.0'))	{
 						$this->config['config']['removeDefaultJS'] = 'external';
 					}
-					if(!isset($this->config['config']['inlineStyle2TempFile']) && t3lib_div::compat_version('4.0.0')) {
+					if (!isset($this->config['config']['inlineStyle2TempFile']) && t3lib_div::compat_version('4.0'))	{
 						$this->config['config']['inlineStyle2TempFile'] = 1;
 					}
 
@@ -3322,7 +3322,7 @@ if (version == "n3") {
 	 * @return	void
 	 */
 	function setSimulReplacementChar() {
-		$replacement = $defChar = t3lib_div::compat_version('4.0.0') ? '-' : '_';
+		$replacement = $defChar = t3lib_div::compat_version('4.0') ? '-' : '_';
 		if (isset($this->config['config']['simulateStaticDocuments_replacementChar'])) {
 			$replacement = trim($this->config['config']['simulateStaticDocuments_replacementChar']);
 			if (urlencode($replacement) != $replacement) {

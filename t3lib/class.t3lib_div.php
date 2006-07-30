@@ -927,13 +927,15 @@ class t3lib_div {
 
 	/**
 	 * Returns true if the current TYPO3 version (or compatibility version) is compatible to the input version
+	 * Notice that this function compares branches, not versions (4.0.1 would be > 4.0.0 although they use the same compat_version)
 	 *
-	 * @param	string		Minimum version number required (format x.y.z)
-	 * @return	boolean		true or false
+	 * @param	string		Minimum branch number required (format x.y / e.g. "4.0" NOT "4.0.0"!)
+	 * @return	boolean		Returns true if this setup is compatible with the provided version number
+	 * @todo	Still needs a function to convert versions to branches
 	 */
 	function compat_version($verNumberStr)	{
 		global $TYPO3_CONF_VARS;
-		$currVersionStr = $TYPO3_CONF_VARS['SYS']['compat_version']?$TYPO3_CONF_VARS['SYS']['compat_version']:TYPO3_version;
+		$currVersionStr = $TYPO3_CONF_VARS['SYS']['compat_version'] ? $TYPO3_CONF_VARS['SYS']['compat_version'] : TYPO3_branch;
 
 		if (t3lib_div::int_from_ver($currVersionStr) < t3lib_div::int_from_ver($verNumberStr))	{
 			return FALSE;

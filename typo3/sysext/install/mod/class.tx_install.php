@@ -678,7 +678,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 					   		   '.$this->fontTag1.'<br />
 							   <input type="hidden" name="step" value="2">
 							   <input type="hidden" name="TYPO3_INSTALL[localconf.php][encryptionKey]" value="'.md5(uniqid(rand(),true)).'">
-								 <input type="hidden" name="TYPO3_INSTALL[localconf.php][compat_version]" value="'.TYPO3_version.'">
+								 <input type="hidden" name="TYPO3_INSTALL[localconf.php][compat_version]" value="'.TYPO3_branch.'">
 					   		   <input type="submit" value="Continue"><br /><br /><strong>NOTICE: </strong>By clicking this button, typo3conf/localconf.php is updated with new values for the parameters listed above!</span><br />
 					   		</td>
 					   	</tr>
@@ -3895,6 +3895,7 @@ From sub-directory:
 		$this->updateWizard_parts($action);
 		echo $this->outputWrapper($this->printAll());
 	}
+
 	/**
 	 * Implements the steps for the update wizard
 	 *
@@ -3905,7 +3906,7 @@ From sub-directory:
 		$content = '';
 		switch ($action)	{
 			case 'checkForUpdate':	// first step - check for updates available
-				$title = 'Update wizards';
+				$title = 'Step 1 - Introduction';
 				$updateWizardBoxes = '';
 				if (!$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'])	{
 					$content = '<strong>No updates registered!</strong>';
@@ -3918,13 +3919,12 @@ From sub-directory:
 					if (method_exists($tmpObj,'checkForUpdate'))	{
 						$explanation = '';
 						if ($tmpObj->checkForUpdate($explanation))	{
-							$updateWizardBoxes .= '
-								<div style="border: 1px solid; padding: 10px; margin: 10px; padding-top:0px;">
+							$updateWizardBoxes.= '
+								<div style="border: 1px solid; padding: 10px; margin: 10px; padding-top: 0px; width: 400px;">
 									<h3>'.$identifier.'</h3>
 									<p>'.str_replace(chr(10),'<br />',$explanation).'</p>
-									<input type="submit" name="TYPO3_INSTALL[update]['.$identifier.']" id="TYPO3_INSTALL[update]['.$identifier.']" value="'.$identifier.'" />
-								</div>
-							';
+									<input type="submit" name="TYPO3_INSTALL[update]['.$identifier.']" id="TYPO3_INSTALL[update]['.$identifier.']" value="Next" />
+								</div>';
 						}
 					}
 				}
@@ -3934,16 +3934,14 @@ From sub-directory:
 					$content = '
 						<form action="'.$this->action.'#bottom" method="post">
 							<input type="hidden" name="TYPO3_INSTALL[database_type]" value="'.htmlspecialchars('getUserInput').'">
-							'.$updateWizardBoxes.'<br />
-						</form>
-					';
+							'.$updateWizardBoxes.'</form>';
 				} else {
 					$content = '<strong>No updates to perform!</strong>';
 				}
 			break;
 			case 'getUserInput':	// second step - get user input and ask for final confirmation
-				$title = '2 - configuration of updates';
-				$formContent = '<strong>The following updates will be performed:</strong>';
+				$title = 'Step 2 - Configuration of updates';
+				$formContent = '<p style="width:400px;"><strong>The following updates will be performed:</strong></p>';
 				if (!$this->INSTALL['update'])	{
 					$content = '<strong>No updates selected!</strong>';
 					break;
@@ -3958,13 +3956,13 @@ From sub-directory:
 					if (method_exists($tmpObj,'getUserInput'))	{
 						$formContent .= $tmpObj->getUserInput('TYPO3_INSTALL[update]['.$identifier.']');
 					}
-					$formContent .= '</p><hr />';
+					$formContent.= '</p>';
 				}
-				$formContent .= '<p><input type="checkbox" name="TYPO3_INSTALL[update][showDatabaseQueries]" id="TYPO3_INSTALL[update][showDatabaseQueries]" value="1" /> <label for="TYPO3_INSTALL[update][showDatabaseQueries]">Show database queries performed</label></p>';
-				$content = $this->getUpdateDbFormWrap('performUpdate', $formContent,'3 -Perform updates!');
+				$formContent.= '<input type="checkbox" name="TYPO3_INSTALL[update][showDatabaseQueries]" id="TYPO3_INSTALL[update][showDatabaseQueries]" value="1" /> <label for="TYPO3_INSTALL[update][showDatabaseQueries]">Show database queries performed</label><br />';
+				$content = $this->getUpdateDbFormWrap('performUpdate', $formContent,'Perform updates!');
 			break;
 			case 'performUpdate':	// third step - perform update
-				$title = '3 - perform updates';
+				$title = 'Step 3 - Perform updates';
 				if (!$this->INSTALL['update']['extList'])	{ break; }
 
 				$GLOBALS['TYPO3_DB']->store_lastBuiltQuery = TRUE;
@@ -3973,13 +3971,13 @@ From sub-directory:
 
 					$tmpObj = &$this->getUpgradeObjInstance($className, $identifier);
 
-					$content = '<p><strong>'.$identifier.'</strong><br />';
+					$content = '<p style="width: 400px;"><strong>'.$identifier.'</strong></p>';
 						// check user input if testing method is available
 					if (method_exists($tmpObj,'checkUserInput'))	{
 						$customOutput = '';
 						if (!$tmpObj->checkUserInput($customOutput))	{
-							$content .= '<strong>'.($customOutput?$customOutput:'Something went wrong').'</strong>';
-							$content .= '<br /><a href="javascript:history.back()">Go back to update configuration</a>';
+							$content.= ($customOutput?$customOutput:'Something went wrong').'<br /><br />';
+							$content.= '<a href="javascript:history.back()">Go back to update configuration</a>';
 							break;
 						}
 					}
@@ -3990,17 +3988,17 @@ From sub-directory:
 						if ($tmpObj->performUpdate($dbQueries, $customOutput))	{
 							$content .= '<strong>Update successful!</strong>';
 						} else {
-							$content .= '<strong>FAILURE!</strong>';
+							$content.= '<strong>Update FAILED!</strong>';
 						}
 						if ($this->INSTALL['update']['showDatabaseQueries'])	{
 							$content .= '<br />' . implode('<br />',$dbQueries);
 						}
-						$content .= '<br />' . $customOutput;
-
+						if (strlen($customOutput))	{
+							$content.= '<br />' . $customOutput;
+						}
 					} else {
 						$content .= '<strong>No update method available!</strong>';
 					}
-					$content .= '</p><hr />';
 				}
 				$GLOBALS['TYPO3_DB']->store_lastBuiltQuery = FALSE;
 			break;

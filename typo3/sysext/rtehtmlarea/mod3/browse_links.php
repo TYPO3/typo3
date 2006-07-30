@@ -156,7 +156,7 @@ class TBE_browser_recordList extends localRecordList {
 	 * @return	string		Query-string for URL
 	 */
 	function listURL($altId='',$table=-1,$exclList='')	{
-		return $BACK_PATH . t3lib_extMgm::extRelPath('rtehtmlarea') . 'mod3/' . $this->script .
+		return $GLOBALS['BACK_PATH'] . t3lib_extMgm::extRelPath('rtehtmlarea') . 'mod3/' . $this->script .
 			'?id='.(strcmp($altId,'')?$altId:$this->id).
 			'&table='.rawurlencode($table==-1?$this->table:$table).
 			($this->thumbs?'&imagemode='.$this->thumbs:'').
@@ -1634,7 +1634,7 @@ class tx_rtehtmlarea_browse_links {
 			$titleLen=intval($GLOBALS['BE_USER']->uc['titleLen']);
 			$mainPageRec = t3lib_BEfunc::getRecord('pages',$expPageId);
 			$picon=t3lib_iconWorks::getIconImage('pages',$mainPageRec,$BACK_PATH,'');
-			if($his->typoVersion >= 3007000 ) {
+			if($this->typoVersion >= 3007000 ) {
 				$picon.= htmlspecialchars(t3lib_div::fixed_lgd_cs($mainPageRec['title'],$titleLen));
 			} else {
 				$picon.= htmlspecialchars(t3lib_div::fixed_lgd($mainPageRec['title'],$titleLen));
@@ -1662,7 +1662,7 @@ class tx_rtehtmlarea_browse_links {
 					$arrCol='';
 				}
 					// Putting list element HTML together:
-				if($his->typoVersion >= 3007000 ) {
+				if($this->typoVersion >= 3007000 ) {
 					$out.='<img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/ol/join'.($c==$cc?'bottom':'').'.gif','width="18" height="16"').' alt="" />'.
 						$arrCol.
 						'<a href="#" onclick="return link_typo3Page(\''.$expPageId.'\',\'#'.$row['uid'].'\');">'.
