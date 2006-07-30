@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2005 Sebastian Kurfuerst (sebastian@garbage-group.de)
+*  (c) 1999-2006 Sebastian Kurfuerst (sebastian@garbage-group.de)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -33,9 +33,11 @@ class tx_coreupdates_notinmenu {
 	var $versionNumber;	// version number coming from t3lib_div::int_from_ver()
 	var $pObj;	// parent object (tx_install)
 	var $userInput;	// user input
+
 	function checkForUpdate(&$description)	{
-		$description = 'Removes the doctype "not in menu" which is deprecated and sets instead the page flag "not in menu".';
-		if($this->versionNumber >= 3009000)	{
+		$description = 'Removes the doctype "Not in menu" which is deprecated and sets the successing page flag "Not in menu" instead.';
+
+		if ($this->versionNumber >= 3009000)	{
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid','pages','doktype=5');
 			if($GLOBALS['TYPO3_DB']->sql_num_rows($res))	{
 				return 1;
@@ -59,11 +61,12 @@ class tx_coreupdates_notinmenu {
 			);
 
 			$res = $GLOBALS['TYPO3_DB']->exec_UPDATEquery('pages', 'doktype=5', $updateArray);
-			$dbQueries[] = $GLOBALS['TYPO3_DB']->debug_lastBuiltQuery;
-			if ($GLOBALS['TYPO3_DB']->sql_affected_rows($res))	{
-				return 1;
+			$dbQueries[] = str_replace(chr(10), ' ', $GLOBALS['TYPO3_DB']->debug_lastBuiltQuery);
+
+			if ($GLOBALS['TYPO3_DB']->sql_error())	{
+				return 0;	// something went wrong
 			}
-			return 0;	// zero rows affected, maybe error
+			return 1;
 		}
 	}
 }

@@ -133,7 +133,7 @@
 2006-01-08  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
 	* Version 1.1.1
 	* Correction to path settings affecting image drag & drop and file/image upload.
-	
+
 2006-01-06  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
 	* Version 1.1.0
 	* Convert all locallang files to xml.
@@ -232,7 +232,7 @@
 	* Revised About window. Skins need to be upgraded. Custom skins need to be updated.
 	* New anchor accessibility feature.
 	* Correction: erratic behaviors in Mozilla/Firefox when automatically detecting links and when backspacing.
-	* Correction: PHP Fatal error when SpellChecker is enabled under PHP5. See http://bugs.typo3.org/view.php?id=1470 
+	* Correction: PHP Fatal error when SpellChecker is enabled under PHP5. See http://bugs.typo3.org/view.php?id=1470
 	* Update to the Dutch and German translations.
 	* Correction for IE (and maybe other cases, see http://bugs.typo3.org/view.php?id=1425): When an unforgiving browser refuses to parse the content coming from the database, a popup window will inform the user that the HTML document is not well-formed, and the editor will be started in textmode so that the user can edit the error in the HTML source.
 	* Correction: nested lists were not compliant with XHTML.

@@ -3489,9 +3489,9 @@ class t3lib_BEfunc	{
 			}
 
 				// check if there are still updates to perform
-			if (!t3lib_div::compat_version(TYPO3_version))	{
+			if (!t3lib_div::compat_version(TYPO3_branch))	{
 				$url = 'install/index.php?redirect_url=index.php'.urlencode('?TYPO3_INSTALL[type]=update');
-				$warnings[] = 'This installation is not configured for the TYPO3 version it is running. Please visit the <a href="'.$url.'" target="_blank">Update Wizard</a> in the Install Tool.';
+				$warnings[] = 'This installation is not configured for the TYPO3 version it is running. You probably did so by intention, in this case you can safely ignore this message. If unsure, visit the <a href="'.$url.'" target="_blank">Update Wizard</a> in the Install Tool to see which changes would be affected.';
 			}
 
 				// check if sys_refindex is empty

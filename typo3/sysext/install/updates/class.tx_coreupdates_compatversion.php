@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2005 Sebastian Kurfuerst (sebastian@garbage-group.de)
+*  (c) 1999-2006 Sebastian Kurfuerst (sebastian@garbage-group.de)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -42,8 +42,9 @@ class tx_coreupdates_compatversion {
 	 */
 	function checkForUpdate(&$description)	{
 		global $TYPO3_CONF_VARS;
+
 		if ($this->compatVersionIsCurrent())	{
-			$description = '<b>If you do not use the wizard, your current TYPO3 installation is configured to use all the features included in the current release '.TYPO3_version.'.</b>
+			$description = '<strong>Up to date!</strong><br />If you do not use the wizard, your current TYPO3 installation is configured to use all the features included in the current release '.TYPO3_version.'.<br />
 			There are two possibilities that you see this screen:<ol><li><b>You just updated from a previous version of TYPO3:</b>
 			Because of some new features, the frontend output of your site might have changed. To emulate the "old" frontend behavior, change the compatibility version by continuing to step 2.
 			This is <b>recommended</b> after every update to make sure the frontend output is not altered. When re-running the wizard, you will see the changes needed for using the new features.
@@ -57,10 +58,10 @@ class tx_coreupdates_compatversion {
 				The compatibility version has been set to the current TYPO3 version. This is a stamp and has no impact for your installation.';
 			}
 		} else {
-			$description = 'Your current TYPO3 installation is configured to <b>behave like version '.$TYPO3_CONF_VARS['SYS']['compat_version'].'</b> of TYPO3. If you just upgraded from this version, you most likely want to <b>use new features</b> as well. In the next step, you will see the things that need to be adjusted to make your installation compatible with the new features.';
+			$description = 'Your current TYPO3 installation is configured to <b>behave like version '.$TYPO3_CONF_VARS['SYS']['compat_version'].'</b> of TYPO3. If you just upgraded from this version, you most likely want to <b>use new features</b> as well.</p><p>In the next step, you will see the things that need to be adjusted to make your installation compatible with the new features.';
 		}
 
-		return 1;
+		return 1;	// Return 1 in any case so user has possibility to switch back to a previous compat_version.
 	}
 
 	/**
@@ -72,7 +73,7 @@ class tx_coreupdates_compatversion {
 	function getUserInput($inputPrefix)	{
 		global $TYPO3_CONF_VARS;
 		if ($this->compatVersionIsCurrent())	{
-			$content = '<b>You updated from an older version of TYPO3</b>:<br>
+			$content = '<strong>You updated from an older version of TYPO3</strong>:<br />
 			<label for="'.$inputPrefix.'[version]">Select the version where you have upgraded from:</label> <select name="'.$inputPrefix.'[version]" id="'.$inputPrefix.'[version]">';
 			$versions = array(
 				'3.8' => '<= 3.8'
@@ -83,11 +84,11 @@ class tx_coreupdates_compatversion {
 			$content .= '</select>';
 		} else {
 			$content = 'TYPO3 output is currently compatible to version '.$TYPO3_CONF_VARS['SYS']['compat_version'].'. To use all the new features in the current TYPO3 version, make sure you follow the guidelines below to upgrade without problems.<br />
-			<b>Follow the steps below carefully and confirm every step!</b> You will see this list again after you performed the update.';
+			<p><strong>Follow the steps below carefully and confirm every step!</strong><br />You will see this list again after you performed the update.</p>';
 
 			$content .= $this->showChangesNeeded($inputPrefix);
 
-			$content .= '<br /><input type="checkbox" name="'.$inputPrefix.'[compatVersion][all]" id="'.$inputPrefix.'[compatVersion][all]" value="1"> <b><label for="'.$inputPrefix.'[compatVersion][all]">ignore selection above - WARNING: this might break the output of your website.</label></b>';
+			$content.= '<p><input type="checkbox" name="'.$inputPrefix.'[compatVersion][all]" id="'.$inputPrefix.'[compatVersion][all]" value="1">&nbsp;<strong><label for="'.$inputPrefix.'[compatVersion][all]">Check all (ignore selection above)<br />WARNING: this might break the output of your website.</label></strong></p><hr />';
 		}
 		return $content;
 	}
@@ -100,6 +101,7 @@ class tx_coreupdates_compatversion {
 	 */
 	function checkUserInput(&$customMessages)	{
 		global $TYPO3_CONF_VARS;
+
 		if ($this->compatVersionIsCurrent())	{
 			return 1;
 		} else {
@@ -108,7 +110,8 @@ class tx_coreupdates_compatversion {
 			} else {
 				$performUpdate = 1;
 				$oldVersion = t3lib_div::int_from_ver($TYPO3_CONF_VARS['SYS']['compat_version']);
-				$currentVersion = t3lib_div::int_from_ver(TYPO3_version);
+				$currentVersion = t3lib_div::int_from_ver(TYPO3_branch);
+
 				foreach ($TYPO3_CONF_VARS['SC_OPTIONS']['ext/install']['compat_version'] as $internalName => $details)	{
 					if ($details['version'] > $oldVersion && $details['version'] <= $currentVersion)	{
 						if (!$this->userInput['compatVersion'][$internalName])	{
@@ -139,12 +142,10 @@ class tx_coreupdates_compatversion {
 		}
 
 		$linesArr = $this->pObj->writeToLocalconf_control();
-		$version = $this->userInput['version']?$this->userInput['version']:TYPO3_version;
+		$version = $this->userInput['version'] ? $this->userInput['version'] : TYPO3_branch;
 		$this->pObj->setValueInLocalconfFile($linesArr, '$TYPO3_CONF_VARS["SYS"]["compat_version"]', $version);
 		$this->pObj->writeToLocalconf_control($linesArr,0);
-		$customMessages .= '
-		The compatibility version has been set to '.$version.'.';
-		$customMessages .= $this->showChangesNeeded();
+		$customMessages.= '<br />The compatibility version has been set to '.$version.'.';
 
 		return 1;
 	}
@@ -162,7 +163,7 @@ class tx_coreupdates_compatversion {
 	 */
 	function compatVersionIsCurrent()	{
 		global $TYPO3_CONF_VARS;
-		if ($TYPO3_CONF_VARS['SYS']['compat_version'] && t3lib_div::int_from_ver(TYPO3_version) != t3lib_div::int_from_ver($TYPO3_CONF_VARS['SYS']['compat_version']))	{
+		if (TYPO3_branch != $TYPO3_CONF_VARS['SYS']['compat_version'])	{
 			return 0;
 		} else {
 			return 1;
@@ -178,19 +179,29 @@ class tx_coreupdates_compatversion {
 	function showChangesNeeded($inputPrefix = '')	{
 		global $TYPO3_CONF_VARS;
 		$oldVersion = t3lib_div::int_from_ver($TYPO3_CONF_VARS['SYS']['compat_version']);
-		$currentVersion = t3lib_div::int_from_ver(TYPO3_version);
+		$currentVersion = t3lib_div::int_from_ver(TYPO3_branch);
 
 		$tableContents = '';
+
 		if (is_array($TYPO3_CONF_VARS['SC_OPTIONS']['ext/install']['compat_version'])) {
+			$updateWizardBoxes = '';
 			foreach ($TYPO3_CONF_VARS['SC_OPTIONS']['ext/install']['compat_version'] as $internalName => $details)	{
 				if ($details['version'] > $oldVersion && $details['version'] <= $currentVersion)	{
-					$tableContents .= '<tr><td colspan="2"><hr /></td></tr>
-					<tr><td valign="bottom">'.($inputPrefix?'<input type="checkbox" name="'.$inputPrefix.'[compatVersion]['.$internalName.']" id="'.$inputPrefix.'[compatVersion]['.$internalName.']" value="1">':'&nbsp;').'</td><td>'.str_replace(chr(10),'<br />',$details['description']).($inputPrefix?'<br /><b><label for="'.$inputPrefix.'[compatVersion]['.$internalName.']">'.$details['description_acknowledge'].'</label></b>':'').'</td></tr>';
+					$description = str_replace(chr(10),'<br />',$details['description']);
+					$description_acknowledge = (isset($details['description_acknowledge']) ? str_replace(chr(10),'<br />',$details['description_acknowledge']) : '');
+
+					$updateWizardBoxes.= '
+						<div style="border: 1px solid; padding: 10px; margin: 10px; padding-top: 0px; width: 500px;">
+							<h3>'.(isset($details['title'])?$details['title']:$internalName).'</h3>
+							<p>'.$description.'</p>'.
+							(strlen($description_acknowledge) ? '<p>'.$description_acknowledge.'</p>' : '').
+							(strlen($inputPrefix) ? '<p><input type="checkbox" name="'.$inputPrefix.'[compatVersion]['.$internalName.']" id="'.$inputPrefix.'[compatVersion]['.$internalName.']" value="1">&nbsp;<strong><label for="'.$inputPrefix.'[compatVersion]['.$internalName.']">Acknowledged</label></strong></p>' : '').'
+						</div>';
 				}
 			}
 		}
-		if (strlen($tableContents))	{
-			return '<table>'.$tableContents.'</table>';
+		if (strlen($updateWizardBoxes))	{
+			return '<table><tr><td>'.$updateWizardBoxes.'</td></tr></table>';
 		}
 		return '';
 	}
