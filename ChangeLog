@@ -5,6 +5,7 @@
 2006-07-31  Michael Stucki  <michael@typo3.org>
 
 	* Updates to NEWS.txt (thanks to Martin Kutschker)
+	* Changed version requirements for t3skin (problems in combination with TYPO3 4.0.1)
 
 2006-07-30  Michael Stucki  <michael@typo3.org>
 
