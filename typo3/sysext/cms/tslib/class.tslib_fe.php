@@ -1276,7 +1276,6 @@
 			// Create response:
 		if (gettype($code)=='boolean' || !strcmp($code,1))	{	// Simply boolean; Just shows TYPO3 error page with reason:
 			$this->printError('The page did not exist or was inaccessible.'.($reason ? ' Reason: '.htmlspecialchars($reason) : ''));
-			exit;
 		} elseif (t3lib_div::isFirstPartOfStr($code,'USER_FUNCTION:')) {
 			$funcRef = trim(substr($code,14));
 			$params = array(
@@ -1285,7 +1284,6 @@
 				'pageAccessFailureReasons' => $this->getPageAccessFailureReasons()
 			);
 			echo t3lib_div::callUserFunction($funcRef,$params,$this);
-			exit;
 		} elseif (t3lib_div::isFirstPartOfStr($code,'READFILE:')) {
 			$readFile = t3lib_div::getFileAbsFileName(trim(substr($code,9)));
 			if (@is_file($readFile))	{
@@ -1296,7 +1294,6 @@
 			} else {
 				$this->printError('Configuration Error: 404 page "'.$readFile.'" could not be found.');
 			}
-			exit;
 		} elseif (strlen($code))	{
 				// Check if URL is relative
 			$url_parts = parse_url($code);
@@ -1307,6 +1304,17 @@
 			} else {
 				$checkBaseTag = true;
 			}
+
+				// Check recursion
+			if ($code == t3lib_div::getIndpEnv('TYPO3_REQUEST_URL')) {
+				if ($reason == '') {
+					$reason = 'Page cannot be found.';
+				}
+				$reason .= chr(10) . chr(10) . 'Additionally ' . $code . ' was not found while trying to retrieve the error document.';
+				$this->printError('Reason: '.nl2br(htmlspecialchars($reason)));
+				exit();
+			}
+
 				// Prepare headers
 			$headers = array(
 				'User-agent: ' . t3lib_div::getIndpEnv('HTTP_USER_AGENT'),
@@ -1348,11 +1356,10 @@
 				}
 				echo $content;	// Output the content
 			}
-			exit;
 		} else {
-			$this->printError('Error.'.($reason ? ' Reason: '.htmlspecialchars($reason) : ''));
-			exit;
+			$this->printError($reason ? 'Reason: '.htmlspecialchars($reason) : 'Page cannot be found.');
 		}
+		exit();
 	}
 
 	/**
