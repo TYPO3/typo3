@@ -40,11 +40,10 @@ Important bugfixes
 
 	* Windows systems print phpinfo under some circumstances (bug #3362)
 	* HTTP status was incorrect for pageNotFound_handling when external URL is specified as 404 page
+	* Wrong HTTP status 503 was sent when $TSFE->set_no_cache() was called from a plugin (bugs #3049 and #3176)
 	* Mail forms did not work with <input type="image"> submit buttons (bug #1374)
 	* FE editing: edit form on page did not work in 4.0
-	* Several issues of "text with image" for "CSS styled content" have been resolved
 	* Linking images to hidden pages resulted in click-enlarge (bug #3522)
-	* Wrong HTTP status 503 was sent when $TSFE->set_no_cache() was called from a plugin (bugs #3049 and #3176)
 	* config.formMailCharset did not work (bug #3600)
 	* Some broken references to media/ have been fixed (bug #3233)
 	* Fixed RTE bug: images were removed under some special conditions when saving (bug #3051)
