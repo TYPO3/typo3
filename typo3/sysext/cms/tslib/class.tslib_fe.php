@@ -1310,7 +1310,7 @@
 				if ($reason == '') {
 					$reason = 'Page cannot be found.';
 				}
-				$reason .= chr(10) . chr(10) . 'Additionally ' . $code . ' was not found while trying to retrieve the error document.';
+				$reason.= chr(10) . chr(10) . 'Additionally, ' . $code . ' was not found while trying to retrieve the error document.';
 				$this->printError('Reason: '.nl2br(htmlspecialchars($reason)));
 				exit();
 			}
