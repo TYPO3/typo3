@@ -1,11 +1,12 @@
+2006-07-31  Michael Stucki  <michael@typo3.org>
+
+	* Release of TYPO3 4.0.1
+	* Updates to NEWS.txt (thanks to Martin Kutschker)
+	* Changed version requirements for t3skin (problems in combination with TYPO3 4.0.1)
+
 2006-07-31  Dmitry Dulepov  <typo3@accio.lv>
 
 	* Fixed endless page retrieval if pageNotFound_handling is set to URL of a local non existing page
-
-2006-07-31  Michael Stucki  <michael@typo3.org>
-
-	* Updates to NEWS.txt (thanks to Martin Kutschker)
-	* Changed version requirements for t3skin (problems in combination with TYPO3 4.0.1)
 
 2006-07-30  Michael Stucki  <michael@typo3.org>
 
