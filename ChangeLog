@@ -1,3 +1,7 @@
+2006-08-04 Wolfgang Klinger <wk@plan2.net>
+
+	* Fix bug #3160: IFSUB is not true if the parent page is a shortcut page
+
 2006-07-31  Dmitry Dulepov  <typo3@accio.lv>
 
 	* Fixed endless page retrieval if pageNotFound_handling is set to URL of a local non existing page

@@ -1340,7 +1340,7 @@ class tslib_menu {
 			$uid = $mount_info['mount_pid'];
 		}
 
-		$recs = $this->sys_page->getMenu($uid,'uid,pid,doktype,mount_pid,mount_pid_ol,nav_hide');
+		$recs = $this->sys_page->getMenu($uid,'uid,pid,doktype,mount_pid,mount_pid_ol,nav_hide,shortcut,shortcut_mode');
 		foreach($recs as $theRec)	{
 			if (!t3lib_div::inList($this->doktypeExcludeList,$theRec['doktype']) && (!$theRec['nav_hide'] || $this->conf['includeNotInMenu']))	{	// If a menu item seems to be another type than 'Not in menu', then return true (there were items!)
 				return TRUE;
