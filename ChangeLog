@@ -1,3 +1,7 @@
+2006-08-04 Wolfgang Klinger <wk@plan2.net>
+
+	* Fix bug #3160: IFSUB is not true if the parent page is a shortcut page
+
 2006-07-31  Michael Stucki  <michael@typo3.org>
 
 	* Release of TYPO3 4.0.1
