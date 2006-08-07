@@ -93,7 +93,7 @@ class t3lib_matchCondition {
 		global $TYPO3_CONF_VARS;
 
 		// Usage (ext_localconf.php):
-		// $TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_matchcondition.php']['matchConditionClass'] =
+		// $TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_matchcondition.php']['matchConditionClass'][] =
 		// 'EXT:my_ext/class.browserinfo.php:MyBrowserInfoClass';
 		if (is_array($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_matchcondition.php']['matchConditionClass'])) {
 			foreach ($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_matchcondition.php']['matchConditionClass'] as $classRef) {
