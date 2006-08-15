@@ -54,6 +54,7 @@ if (strstr($_EXTCONF['defaultConfiguration'],'Minimal')) {
 }
 $TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['enableImages'] = $_EXTCONF['enableImages'] ? $_EXTCONF['enableImages'] : 0;
 $TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['enableDAMBrowser'] = $_EXTCONF['enableDAMBrowser'] ? $_EXTCONF['enableDAMBrowser'] : 0;
+$TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['enableAccessibilityIcons'] = $_EXTCONF['enableAccessibilityIcons'] ? $_EXTCONF['enableAccessibilityIcons'] : 0;
 $TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['enableClickEnlarge'] = $_EXTCONF['enableClickEnlarge'] ? $_EXTCONF['enableClickEnlarge'] : 0;
 $TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['enableMozillaExtension'] = $_EXTCONF['enableMozillaExtension'] ? $_EXTCONF['enableMozillaExtension'] : 0;
 $TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['mozAllowClipboardUrl'] = $_EXTCONF['mozAllowClipboardUrl'] ? $_EXTCONF['mozAllowClipboardUrl'] : 'http://releases.mozilla.org/pub/mozilla.org/extensions/allowclipboard_helper/allowclipboard_helper-0.5.3-fx+mz.xpi';
@@ -69,7 +70,7 @@ if ($_EXTCONF['plainImageMaxWidth']) $TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['plai
 if ($_EXTCONF['plainImageMaxHeight']) $TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['plainImageMaxHeight'] = intval($_EXTCONF['plainImageMaxHeight']);
 
 //$TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['safari_test'] = 0;
-//$TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['opera_test'] = 0;
+$TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['enableInOpera9'] = $_EXTCONF['enableInOpera9'] ? $_EXTCONF['enableInOpera9'] : 0;
 
 	// Add default RTE transformation configuration
 t3lib_extMgm::addPageTSConfig('<INCLUDE_TYPOSCRIPT: source="FILE:EXT:' . $_EXTKEY . '/res/proc/pageTSConfig.txt">');
@@ -78,7 +79,7 @@ t3lib_extMgm::addPageTSConfig('<INCLUDE_TYPOSCRIPT: source="FILE:EXT:' . $_EXTKE
 t3lib_extMgm::addPageTSConfig('<INCLUDE_TYPOSCRIPT: source="FILE:EXT:' . $_EXTKEY . '/res/' . strtolower($TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['defaultConfiguration']) . '/pageTSConfig.txt">');
 
 	// Add default Page TSonfig RTE configuration for enabling images with the Minimal and Typical default configuration
-if (($TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['defaultConfiguration'] != 'Demo') && $TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['enableImages']) {
+if ($TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['enableImages']) {
 	t3lib_extMgm::addPageTSConfig('<INCLUDE_TYPOSCRIPT: source="FILE:EXT:' . $_EXTKEY . '/res/image/pageTSConfig.txt">');
 }
 

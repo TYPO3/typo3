@@ -146,7 +146,7 @@ TableOperations.tablePropertiesInit = function(table) {
 		var obj = dialog.editor.config.customSelects["DynamicCSS-class"];
 		if (obj && obj.loaded) TableOperations.buildStylingFieldset(doc, table, i18n, content, obj.cssArray);
 		if (!dialog.editor.config.disableLayoutFieldsetInTableOperations) TableOperations.buildLayoutFieldset(doc, table, i18n, content);
-		if (!dialog.editor.config.disableAlignmentFieldsetInTableOperations) TableOperations.buildAlignmentFieldset(doc, table, i18n, content, (HTMLArea.is_opera?"":"floating"));
+		if (!dialog.editor.config.disableAlignmentFieldsetInTableOperations) TableOperations.buildAlignmentFieldset(doc, table, i18n, content, "floating");
 		if (!dialog.editor.config.disableSpacingFieldsetInTableOperations) TableOperations.buildSpacingFieldset(doc, table, i18n, content);
 		if (!dialog.editor.config.disableBordersFieldsetInTableOperations) TableOperations.buildBordersFieldset(dialog.dialogWindow, doc, dialog.editor, table, i18n, content);
 		if (!dialog.editor.config.disableColorFieldsetInTableOperations) TableOperations.buildColorsFieldset(dialog.dialogWindow, doc, dialog.editor, table, i18n, content);

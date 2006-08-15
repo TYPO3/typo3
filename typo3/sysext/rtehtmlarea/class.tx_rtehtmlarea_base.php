@@ -60,8 +60,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			),
 			'opera' => array (
 				1 => array (
-					'version' => 9,
-					'system' => 'win'
+					'version' => 9
 				)
 			)
 		);
@@ -81,8 +80,6 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 	
 		// Hide these toolbar buttons not implemented in Opera
 	var $conf_toolbar_opera_hide = array (
-		'textstyle',
-		'blockstyle',
 		'copy',
 		'cut',
 		'paste',
@@ -294,11 +291,14 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 	 */
 	
 	function isAvailable()	{
+		global $TYPO3_CONF_VARS;
+		
 		$this->client = $this->clientInfo();
 		$this->errorLog = array();
 		if (!$this->debugMode)	{	// If debug-mode, let any browser through
 			$rteIsAvailable = 0;
 			$rteConfBrowser = $this->conf_supported_browser;
+			if (!$TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['enableInOpera9']) unset($rteConfBrowser['opera']);
 			if (is_array($rteConfBrowser)) {
 				reset($rteConfBrowser);
 				while(list ($browser, $browserConf) = each($rteConfBrowser)){
@@ -422,7 +422,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			$this->contentTypo3Language = $this->language;
 			
 			$this->contentLanguageUid = ($row['sys_language_uid'] > 0) ? $row['sys_language_uid'] : 0;
-			if (t3lib_extMgm::isLoaded('sr_static_info')) {
+			if (t3lib_extMgm::isLoaded('static_info_tables')) {
 				if ($this->contentLanguageUid) {
 					$tableA = 'sys_language';
 					$tableB = 'static_languages';
@@ -468,11 +468,12 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 				// htmlArea plugins list
 			$this->pluginEnableArray = array_intersect(t3lib_div::trimExplode(',', $this->pluginList , 1), t3lib_div::trimExplode(',', $TYPO3_CONF_VARS['EXTCONF'][$this->ID]['HTMLAreaPluginList'], 1));
 			$hidePlugins = array();
-			if(!t3lib_extMgm::isLoaded('sr_static_info') || in_array($this->language, t3lib_div::trimExplode(',', $TYPO3_CONF_VARS['EXTCONF'][$this->ID]['noSpellCheckLanguages']))) $hidePlugins[] = 'SpellChecker';
+			if(!t3lib_extMgm::isLoaded('static_info_tables') || in_array($this->language, t3lib_div::trimExplode(',', $TYPO3_CONF_VARS['EXTCONF'][$this->ID]['noSpellCheckLanguages']))) $hidePlugins[] = 'SpellChecker';
 			if ($this->client['BROWSER'] == 'msie') $hidePlugins[] = 'Acronym';
 			if ($this->client['BROWSER'] == 'opera') {
 				$hidePlugins[] = 'ContextMenu';
 				$this->thisConfig['hideTableOperationsInToolbar'] = 0;
+				$this->thisConfig['disableEnterParagraphs'] = 1;
 			}
 			$this->pluginEnableArray = array_diff($this->pluginEnableArray, $hidePlugins);
 			$this->pluginEnableArrayMultiple = $this->pluginEnableArray;
@@ -672,7 +673,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 		if ($pList != '*') {	// If not all
 			$show = is_array($this->specConf['richtext']['parameters']) ? $this->specConf['richtext']['parameters'] : array();
 			if ($this->thisConfig['showButtons'])	{
-				if ($this->thisConfig['showButtons'] != '*') {
+				if (!t3lib_div::inList($this->thisConfig['showButtons'],'*')) {
 					$show = array_unique(array_merge($show,t3lib_div::trimExplode(',',$this->thisConfig['showButtons'],1)));
 				} else {
 					$show = array_unique(array_merge($show, $toolbarOrder));
@@ -773,7 +774,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 		if($this->thisConfig['disableSelectColor']) $hidePlugins[] = 'SelectColor';
 		if($this->thisConfig['disableTYPO3Browsers']) $hidePlugins[] = 'TYPO3Browsers';
 		if(!$this->thisConfig['enableWordClean'] || !is_array($this->thisConfig['enableWordClean.'])) $hidePlugins[] = 'TYPO3HtmlParser';
-		if(!t3lib_extMgm::isLoaded('sr_static_info') || in_array($this->language, t3lib_div::trimExplode(',', $TYPO3_CONF_VARS['EXTCONF'][$this->ID]['noSpellCheckLanguages']))) $hidePlugins[] = 'SpellChecker';
+		if(!t3lib_extMgm::isLoaded('static_info_tables') || in_array($this->language, t3lib_div::trimExplode(',', $TYPO3_CONF_VARS['EXTCONF'][$this->ID]['noSpellCheckLanguages']))) $hidePlugins[] = 'SpellChecker';
 		
 		$this->pluginEnableArray = array_diff($this->pluginEnableArray, $hidePlugins);
 		
@@ -1379,7 +1380,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			$addElementCode = '';
 			reset($mainElements);
 			while(list($elListName,$elValue)=each($mainElements))   {
-				$addElementCode .= strToLower($elListName) . ' {' . $elValue . '}\n';
+				$addElementCode .= strToLower($elListName) . ' {' . $elValue . '}' . chr(10);
 			}
 			
 			$stylesheet = $this->thisConfig['mainStyleOverride'] ? $this->thisConfig['mainStyleOverride'] : chr(10) .
@@ -1650,7 +1651,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 	 
 	function writeJSFileToTypo3tempDir($JSFile,$label,$compressed=FALSE,$ext='js') {
 		global $TYPO3_CONF_VARS;
-
+		
 		$source = t3lib_div::getFileAbsFileName($JSFile);
 		$relFilename = 'typo3temp/' . $this->ID . '_' . $label . '_' . md5($JSFile . $TYPO3_CONF_VARS['EXTCONF'][$this->ID]['version']) . ($compressed ? '-compressed' : '') . '.' . $ext;
 		$destination = PATH_site . $relFilename;
@@ -1658,7 +1659,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			@copy($source,$destination);
 			t3lib_div::fixPermissions($destination);
 		}
-		return $this->httpTypo3Path . $relFilename;
+		return ($this->thisConfig['forceHTTPS']?$this->siteURL:$this->httpTypo3Path) . $relFilename;
 	}
 	
 	/**
@@ -1865,7 +1866,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			// Which browser?
 		if (strstr($useragent,'Konqueror'))	{
 			$bInfo['BROWSER']= 'konqu';
-		} elseif (strstr($useragent,'Opera') &&  $TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['opera_test'] == 1)	{
+		} elseif (strstr($useragent,'Opera'))	{
 			$bInfo['BROWSER']= 'opera';
 		} elseif (strstr($useragent,'MSIE'))	{
 			$bInfo['BROWSER']= 'msie';

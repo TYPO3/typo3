@@ -212,7 +212,8 @@ HTMLArea.prototype._activeElement = function(sel) {
 HTMLArea.prototype._selectionEmpty = function(sel) {
 	if (!sel) return true;
 	if (typeof(sel.isCollapsed) != 'undefined') {
-		return sel.isCollapsed;
+		if (HTMLArea.is_opera) this._createRange(sel).collapsed;
+			else sel.isCollapsed;
 	} else {
 		return true;
 	}
@@ -421,21 +422,21 @@ HTMLArea.prototype._checkInsertP = function() {
 		body  = doc.body;
 
 	for (i = 0; i < p.length; ++i) {
-		if (HTMLArea.isBlockElement(p[i]) && !/body|html|table|tbody|tr/i.test(p[i].tagName)) {
+		if (HTMLArea.isBlockElement(p[i]) && !/html|body|table|tbody|tr/i.test(p[i].tagName)) {
 			block = p[i];
 			break;
 		}
 	}
-	if(!r.collapsed) r.deleteContents();
-	if(HTMLArea.is_safari) sel.empty();
+	if (!r.collapsed) r.deleteContents();
+	if (HTMLArea.is_safari) sel.empty();
 		else sel.removeAllRanges();
 	SC = r.startContainer;
 	if (HTMLArea.is_opera && SC.nodeType == 3 && SC.data.length == 0) SC = HTMLArea.getPrevNode(SC);
-	if(!block || /^(td|div)$/i.test(block.tagName)) {
+	if (!block || /^(td|div)$/i.test(block.tagName)) {
 		left = SC;
 		for (i = SC; i && !HTMLArea.isBlockElement(i); i = HTMLArea.getPrevNode(i)) { left = i; }
 		right = SC;
-		if (HTMLArea.is_opera && right.nodeType == 3 && right.data.length == 0) right = HTMLArea.getNextNode(righgt);
+		if (HTMLArea.is_opera && right.nodeType == 3 && right.data.length == 0) right = HTMLArea.getNextNode(right);
 		if(left != body && right != body && !(block && left == block ) && !(block && right == block )) {
 			r2 = r.cloneRange();
 			if (HTMLArea.is_opera) r2.setStart(left,0);
@@ -478,9 +479,9 @@ HTMLArea.prototype._checkInsertP = function() {
 		if (HTMLArea.is_opera) r.selectNode(block);
 			else r.selectNodeContents(block);
 	} else {
-		r.setEndAfter(block);
+		if (!HTMLArea.is_opera || /\S/.test(HTMLArea.getInnerText(block))) r.setEndAfter(block);
 		var df = r.extractContents(), left_empty = false;
-		if(!/\S/.test(block.innerHTML)) {
+		if(!/\S/.test(HTMLArea.getInnerText(block))) {
 			block.innerHTML = "<br />";
 			left_empty = true;
 		}

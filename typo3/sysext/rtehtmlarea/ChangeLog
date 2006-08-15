@@ -1,3 +1,16 @@
+2006-08-14 Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+	* Version 1.4.2
+	* For compatibility with := addToList syntax, show all buttons when * is found in the list RTE.default.showButtons.
+	* Correction to generated stylesheet file. Thanks to Ingmar Schlecht.
+	* Update to the manual.
+	* Correction for Netscape 8.l: useCSS setting not honored.
+	* Remove dependency of Spell Checker on Static Info Library (sr_static_info). Requires Static Info Tables version 2.0.0+.
+
+2006-05-08 Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+	* Version 1.4.1
+	* Correction: path setting in class.tx_rtehtmlarea_browse_links.php and class.tx_rtehtmlarea_select_image.php
+	* Correction: configuration variable enableAccessibilityIcons was not set.
+
 2006-05-05 Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
 	* Version 1.4.0
 	* Adapt popup windows resizing for Opera 9.
@@ -133,7 +146,7 @@
 2006-01-08  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
 	* Version 1.1.1
 	* Correction to path settings affecting image drag & drop and file/image upload.
-
+	
 2006-01-06  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
 	* Version 1.1.0
 	* Convert all locallang files to xml.
@@ -232,7 +245,7 @@
 	* Revised About window. Skins need to be upgraded. Custom skins need to be updated.
 	* New anchor accessibility feature.
 	* Correction: erratic behaviors in Mozilla/Firefox when automatically detecting links and when backspacing.
-	* Correction: PHP Fatal error when SpellChecker is enabled under PHP5. See http://bugs.typo3.org/view.php?id=1470
+	* Correction: PHP Fatal error when SpellChecker is enabled under PHP5. See http://bugs.typo3.org/view.php?id=1470 
 	* Update to the Dutch and German translations.
 	* Correction for IE (and maybe other cases, see http://bugs.typo3.org/view.php?id=1425): When an unforgiving browser refuses to parse the content coming from the database, a popup window will inform the user that the HTML document is not well-formed, and the editor will be started in textmode so that the user can edit the error in the HTML source.
 	* Correction: nested lists were not compliant with XHTML.

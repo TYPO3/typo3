@@ -25,7 +25,7 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 /**
- * Render custom tag clickenlarge
+ * Render custom attribute clickenlarge
  *
  * @author Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
  *

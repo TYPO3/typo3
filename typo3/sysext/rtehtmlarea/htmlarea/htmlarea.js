@@ -125,8 +125,8 @@ HTMLArea._scriptLoaded = [];
 HTMLArea._request = [];
 HTMLArea.loadScript = function(url, plugin) {
 	if (plugin) url = _editor_url + "/plugins/" + plugin + '/' + url;
-	if(HTMLArea.is_opera) url = _typo3_host_url + url;
-	if(HTMLArea._compressedScripts && url.indexOf("compressed") == -1) url = url.replace(/\.js$/gi, "-compressed.js");
+	if (HTMLArea.is_opera) url = _typo3_host_url + url;
+	if (HTMLArea._compressedScripts && url.indexOf("compressed") == -1) url = url.replace(/\.js$/gi, "-compressed.js");
 	HTMLArea._scripts.push(url);
 };
 HTMLArea.loadScript(RTEarea[0]["popupwin"] ? RTEarea[0]["popupwin"] : _editor_url + "popupwin.js");
@@ -268,8 +268,6 @@ HTMLArea.Config = function () {
 	this.useHTTPS = false;
 		// for Mozilla
 	this.useCSS = false;
-	this.styleWithCSS = false;
-	if (HTMLArea.is_gecko && !HTMLArea.is_safari && !HTMLArea.is_opera && navigator.productSub >= 20051107) this.styleWithCSS = true;
 	this.enableMozillaExtension = true;
 	this.disableEnterParagraphs = false;
 	this.removeTrailingBR = false;
@@ -615,7 +613,6 @@ HTMLArea.prototype.createButton = function (txt,tb_line,first_cell_on_line,label
 	}
 	if(!newObj["created"] && btn) {
 		newObj["el"] = document.createElement("button");
-		if (HTMLArea.is_opera) newObj["el"].outerHTML = '<button type="button"></button>';
 		newObj["el"].title = btn[0];
 		newObj["el"].className = "button";
 		newObj["el"].id = this._editorNumber + "-" + txt;
@@ -768,12 +765,10 @@ HTMLArea.toolBarButtonHandler = function(ev) {
 				}
 				break;
 			case "mousedown":
-				if(!HTMLArea.is_opera) {
 				HTMLArea._addClass(target, "buttonActive");
 				HTMLArea._addClass(target.parentNode, "buttonActive");
 				HTMLArea._removeClass(target, "buttonPressed");
 				HTMLArea._removeClass(target.parentNode, "buttonPressed");
-				}
 				HTMLArea._stopEvent(ev);
 				break;
 			case "click":
@@ -1006,23 +1001,22 @@ HTMLArea.prototype.stylesLoaded = function() {
 	var docWellFormed = true;
 	
 		// check if the stylesheets have been loaded
-	if (!HTMLArea.is_opera) {
-		if (this._stylesLoadedTimer) window.clearTimeout(this._stylesLoadedTimer);
-		var stylesAreLoaded = true;
-		var errorText = '';
-		var rules;
-		for (var rule = 0; rule < doc.styleSheets.length; rule++) {
-			if (HTMLArea.is_gecko) try { rules = doc.styleSheets[rule].cssRules; } catch(e) { stylesAreLoaded = false; errorText = e; }
-			if (HTMLArea.is_ie) try { rules = doc.styleSheets[rule].rules; } catch(e) { stylesAreLoaded = false; errorText = e; }
-			if (HTMLArea.is_ie) try { rules = doc.styleSheets[rule].imports; } catch(e) { stylesAreLoaded = false; errorText = e; }
-		}
-		if (!stylesAreLoaded && !HTMLArea.is_wamcom) {
-			HTMLArea._appendToLog("[HTMLArea::initIframe]: Failed attempt at loading stylesheets: " + errorText + " Retrying...");
-			this._stylesLoadedTimer = window.setTimeout("HTMLArea.stylesLoaded(" + this._editorNumber + ");", 100);
-			return false;
-		}
-		HTMLArea._appendToLog("[HTMLArea::initIframe]: Stylesheets successfully loaded.");
+	
+	if (this._stylesLoadedTimer) window.clearTimeout(this._stylesLoadedTimer);
+	var stylesAreLoaded = true;
+	var errorText = '';
+	var rules;
+	for (var rule = 0; rule < doc.styleSheets.length; rule++) {
+		if (HTMLArea.is_gecko) try { rules = doc.styleSheets[rule].cssRules; } catch(e) { stylesAreLoaded = false; errorText = e; }
+		if (HTMLArea.is_ie) try { rules = doc.styleSheets[rule].rules; } catch(e) { stylesAreLoaded = false; errorText = e; }
+		if (HTMLArea.is_ie) try { rules = doc.styleSheets[rule].imports; } catch(e) { stylesAreLoaded = false; errorText = e; }
 	}
+	if (!stylesAreLoaded && !HTMLArea.is_wamcom) {
+		HTMLArea._appendToLog("[HTMLArea::initIframe]: Failed attempt at loading stylesheets: " + errorText + " Retrying...");
+		this._stylesLoadedTimer = window.setTimeout("HTMLArea.stylesLoaded(" + this._editorNumber + ");", 100);
+		return false;
+	}
+	HTMLArea._appendToLog("[HTMLArea::initIframe]: Stylesheets successfully loaded.");
 	
 	if (!this.config.fullPage) {
 		doc.body.style.borderWidth = "0px";
@@ -1051,20 +1045,20 @@ HTMLArea.prototype.stylesLoaded = function() {
 		this.setMode("docnotwellformedmode");
 		HTMLArea._appendToLog("[HTMLArea::initIframe]: Design mode could not be set.");
 	}
-
+	
 		// set editor number in iframe and document for retrieval in event handlers
 	doc._editorNo = this._editorNumber;
 	if (HTMLArea.is_ie) doc.documentElement._editorNo = this._editorNumber;
-
+	
 		// intercept events for updating the toolbar & for keyboard handlers
 	HTMLArea._addEvents((HTMLArea.is_ie ? doc.body : doc), ["keydown","keypress","mousedown","mouseup","drag"], HTMLArea._editorEvent, true);
 	
 		// add unload handler
 	HTMLArea._addEvent((this._iframe.contentWindow ? this._iframe.contentWindow : this._iframe.contentDocument), "unload", HTMLArea.removeEditorEvents);
-
+	
 		// set cleanWordOnPaste and intercept paste, dragdrop and drop events for wordClean
 	if (this.config.cleanWordOnPaste) HTMLArea._addEvents((HTMLArea.is_ie ? doc.body : doc), ["paste","dragdrop","drop"], HTMLArea.cleanWordOnPaste, true);
-
+	
 	window.setTimeout("HTMLArea.generatePlugins(" + this._editorNumber + ");", 100);
 };
 
@@ -1156,7 +1150,7 @@ HTMLArea.prototype.setMode = function(mode) {
 			this._editMode = "textmode";
 			break;
 		case "wysiwyg":
-			if(HTMLArea.is_gecko && !HTMLArea.is_safari) this._doc.designMode = "off";
+			if(HTMLArea.is_gecko && !HTMLArea.is_safari && !HTMLArea.is_opera) this._doc.designMode = "off";
 			try {
 				if(!this.config.fullPage) this._doc.body.innerHTML = this.getHTML();
 					else this.setFullHTML(this.getHTML());
@@ -1166,7 +1160,7 @@ HTMLArea.prototype.setMode = function(mode) {
 			}
 			this._textArea.style.display = "none";
 			this._iframe.style.display = "block";
-			if(HTMLArea.is_gecko && !HTMLArea.is_safari) this._doc.designMode = "on";
+			if(HTMLArea.is_gecko && !HTMLArea.is_safari && !HTMLArea.is_opera) this._doc.designMode = "on";
 			if(this.config.statusBar) {
 				this._statusBar.innerHTML = "";
 				this._statusBar.appendChild(this._statusBarTree);
@@ -1408,7 +1402,7 @@ HTMLArea.prototype.focusEditor = function() {
 	switch (this._editMode) {
 		case "wysiwyg" :
 			try { 
-				if(HTMLArea.is_safari) this._doc.focus();
+				if (HTMLArea.is_safari || HTMLArea.is_opera) this._doc.focus();
 					else this._iframe.contentWindow.focus();
 			} catch(e) { };
 			break;
@@ -1533,7 +1527,6 @@ HTMLArea.prototype.updateToolbar = function(noStatus) {
 					HTMLArea._addEvents(a, ["mousedown", "click"], HTMLArea.statusBarHandler);
 				}
 				txt = el.tagName.toLowerCase();
-				if (!HTMLArea.is_opera) a.title = el.style.cssText;
 				a.title = el.style.cssText;
 				if (el.id) { txt += "#" + el.id; }
 				if (el.className) {
@@ -1676,6 +1669,7 @@ HTMLArea.prototype.updateToolbar = function(noStatus) {
 		    default: break;
 		}
 	}
+	
 	if (this._customUndo) this._undoTakeSnapshot();
 	for (i in this.plugins) {
 		var plugin = this.plugins[i].instance;
@@ -1806,20 +1800,21 @@ HTMLArea.createLinkDialog = function(editor,link) {
 	return (function(param) {
 		if (!param || typeof(param.f_href) == "undefined") return false;
 		var a = link;
-		if(!a) try {
-			editor._doc.execCommand("CreateLink",false,param.f_href);
-			a = editor.getParentElement();
-			var sel = editor._getSelection();
-			var range = editor._createRange(sel);
-			if (!HTMLArea.is_ie) {
-				a = range.startContainer;
-				if (!/^a$/i.test(a.tagName)) {
-					a = a.nextSibling;
-					if(a == null) a = range.startContainer.parentNode;
+		if(!a) {
+			try {
+				editor._doc.execCommand("CreateLink",false,param.f_href);
+				a = editor.getParentElement();
+				var sel = editor._getSelection();
+				var range = editor._createRange(sel);
+				if (!HTMLArea.is_ie) {
+					a = range.startContainer;
+					if (!/^a$/i.test(a.tagName)) {
+						a = a.nextSibling;
+						if(a == null) a = range.startContainer.parentNode;
+					}
 				}
-			}
-		} catch(e) {}
-		else {
+			} catch(e) {}
+		} else {
 			var href = param.f_href.trim();
 			editor.selectNodeContents(a);
 			if (href == "") {
@@ -2012,6 +2007,7 @@ HTMLArea.insertTableDialog = function(editor, sel, range) {
 			for (var j = param["f_cols"]; j > 0; j--) {
 				var td = doc.createElement("td");
 				if (cellwidth) td.style.width = cellwidth + "%";
+				if (HTMLArea.is_opera) { td.innerHTML = '&nbsp;'; }
 				tr.appendChild(td);
 			}
 		}
@@ -2053,9 +2049,9 @@ HTMLArea.selectColorDialog = function(editor,cmdID) {
  */
 HTMLArea.prototype.execCommand = function(cmdID, UI, param) {
 	this.focusEditor();
-	if (HTMLArea.is_gecko && !this.config.useCSS && !HTMLArea.is_safari && !HTMLArea.is_opera) {
-		try { this._doc.execCommand((this.config.styleWithCSS ? "styleWithCSS" : "useCSS"), false, (this.config.styleWithCSS ? false : true)); }
-			catch (e) {};
+	if (HTMLArea.is_gecko) {
+		try { this._doc.execCommand("useCSS", false, !this.config.useCSS); } catch (e) {};
+		try { this._doc.execCommand("styleWithCSS", false, this.config.useCSS); } catch (e) {};
 	}
 	switch (cmdID) {
 	    case "HtmlMode"	: this.setMode(); break;
@@ -2155,7 +2151,7 @@ HTMLArea._editorEvent = function(ev) {
 	var editor = RTEarea[owner._editorNo]["editor"];
 	var keyEvent = ((HTMLArea.is_ie || HTMLArea.is_safari) && ev.type == "keydown") || (!HTMLArea.is_ie && ev.type == "keypress");
 	editor.focusEditor();
-	
+
 	if(keyEvent) {
 		if(editor._hasPluginWithOnKeyPressHandler) {
 			for (var i in editor.plugins) {

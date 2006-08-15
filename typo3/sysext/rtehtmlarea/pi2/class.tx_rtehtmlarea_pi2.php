@@ -149,8 +149,9 @@ class tx_rtehtmlarea_pi2 extends tx_rtehtmlarea_base {
 		if ($this->client['BROWSER'] == 'opera') {
 			$hidePlugins[] = 'ContextMenu';
 			$this->thisConfig['hideTableOperationsInToolbar'] = 0;
+			$this->thisConfig['disableEnterParagraphs'] = 1;
 		}
-		if(!t3lib_extMgm::isLoaded('sr_static_info') || in_array($this->language, t3lib_div::trimExplode(',', $TYPO3_CONF_VARS['EXTCONF'][$this->ID]['noSpellCheckLanguages']))) $hidePlugins[] = 'SpellChecker';
+		if(!t3lib_extMgm::isLoaded('static_info_tables') || in_array($this->language, t3lib_div::trimExplode(',', $TYPO3_CONF_VARS['EXTCONF'][$this->ID]['noSpellCheckLanguages']))) $hidePlugins[] = 'SpellChecker';
 		$this->pluginEnableArray = array_diff($this->pluginEnableArray, $hidePlugins);
 		$this->pluginEnableArrayMultiple = $this->pluginEnableArray;
 

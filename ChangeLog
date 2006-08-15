@@ -1,3 +1,7 @@
+2006-08-14  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
+
+	* Corrections/adjustments to the htmlArea RTE extension (see details in local ChangeLog)
+
 2006-08-04 Wolfgang Klinger <wk@plan2.net>
 
 	* Fix bug #3160: IFSUB is not true if the parent page is a shortcut page

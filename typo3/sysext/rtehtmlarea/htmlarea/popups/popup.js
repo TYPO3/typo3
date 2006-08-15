@@ -64,17 +64,20 @@ __dlg_loadStyle = function(url) {
 __dlg_init = function(bottom,noResize) {
 	window.dialogArguments = window.opener.Dialog._arguments;
 		// resize if allowed
-	if (HTMLArea.is_gecko && !HTMLArea.is_opera && !HTMLArea.is_safari) {
+	var content = document.getElementById("content");
+	if ((HTMLArea.is_gecko && !HTMLArea.is_opera && !HTMLArea.is_safari) || (HTMLArea.is_opera && content)) {
 		setTimeout( function() {
 			try {
 				if (!noResize) window.sizeToContent();
-			} catch(e) { };
+			} catch(e) {
+				__dlg_resizeWindow(content);
+			}
 				// center on parent if allowed
 			var x = window.opener.screenX + (window.opener.outerWidth - window.outerWidth) / 2;
 			var y = window.opener.screenY + (window.opener.outerHeight - window.outerHeight) / 2;
 			try {
 				window.moveTo(x, y);
-			} catch(e) { };
+			} catch(e) { }
 		}, 25);
 	} else {
 		var innerX,innerY;
@@ -116,6 +119,23 @@ __dlg_init = function(bottom,noResize) {
 	}
 		// capture escape events
 	HTMLArea._addEvent(document, "keypress", __dlg_close_on_esc);
+};
+
+	// Resize to content for Opera, based on size of content div
+__dlg_resizeWindow = function(content) {
+	var win = window;
+	var doc = win.document;
+	var docElement = doc.documentElement;
+	var body = doc.body;
+	var myW = 0, myH = 0;
+	
+	var contentWidth = content.offsetWidth;
+	var contentHeight = content.offsetHeight;
+	win.resizeTo( contentWidth + 200, contentHeight + 200 );
+	if (win.innerWidth) { myW = win.innerWidth; myH = win.innerHeight; }
+		else if (docElement && docElement.clientWidth) { myW = docElement.clientWidth; myH = docElement.clientHeight; }
+		else if (body && body.clientWidth) { myW = body.clientWidth; myH = body.clientHeight; }
+	win.resizeTo( contentWidth + ( ( contentWidth + 200 ) - myW ), contentHeight + ( (contentHeight + 200 ) - (myH - 16) ) );
 };
 
 __dlg_translate = function(i18n) {

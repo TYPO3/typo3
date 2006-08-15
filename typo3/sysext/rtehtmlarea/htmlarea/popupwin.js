@@ -228,18 +228,20 @@ PopupWin.prototype.showAtElement = function() {
 	var popup = this;
 	var doc = popup.dialogWindow.document;
 		// resize if allowed
-	if (HTMLArea.is_gecko && !HTMLArea.is_opera && !HTMLArea.is_safari) {
+	if (HTMLArea.is_gecko && !HTMLArea.is_safari) {
 		setTimeout( function() {
 			try {
 				popup.dialogWindow.sizeToContent();
 				popup.dialogWindow.innerWidth += 20;
-			} catch(e) { };
+			} catch(e) {
+				popup.resizeWindow();
+			}
 				// center on parent if allowed
 			var x = popup._opener.screenX + (popup._opener.outerWidth - popup.dialogWindow.outerWidth) / 2;
 			var y = popup._opener.screenY + (popup._opener.outerHeight - popup.dialogWindow.outerHeight) / 2;
 			try {
 				popup.dialogWindow.moveTo(x, y);
-			} catch(e) { };
+			} catch(e) { }
 		}, 25);
 	} else {
 		var innerX,innerY;
@@ -271,9 +273,26 @@ PopupWin.prototype.showAtElement = function() {
 			pageY = doc.body.offsetHeight;
 		}
 		popup.dialogWindow.resizeBy(pageX - innerX, pageY - innerY);
+		if (HTMLArea.is_opera) this.resizeWindow();
 		
 			// center on parent if allowed
 		popup.dialogWindow.moveTo((screen.availWidth - doc.body.offsetWidth)/2,(screen.availHeight - doc.body.offsetHeight)/2);
 	}
+};
+	// Resize to content for Opera, based on size of content div
+PopupWin.prototype.resizeWindow = function() {
+	var win = this.dialogWindow;
+	var doc = win.document;
+	var docElement = doc.documentElement;
+	var body = doc.body;
+	var myW = 0, myH = 0;
+	
+	var contentWidth = this.content.offsetWidth;
+	var contentHeight = this.content.offsetHeight;
+	win.resizeTo( contentWidth + 200, contentHeight + 200 );
+	if (win.innerWidth) { myW = win.innerWidth; myH = win.innerHeight; }
+		else if (docElement && docElement.clientWidth) { myW = docElement.clientWidth; myH = docElement.clientHeight; }
+		else if (body && body.clientWidth) { myW = body.clientWidth; myH = body.clientHeight; }
+	win.resizeTo( contentWidth + ( ( contentWidth + 200 ) - myW ), contentHeight + ( (contentHeight + 200 ) - (myH - 16) ) );
 };
 
