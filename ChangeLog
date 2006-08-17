@@ -1,3 +1,7 @@
+2006-08-17 Ingmar Schlecht  <ingmar@typo3.org>
+
+	* Added text to Update Wizard informing about the change of the default values of "config.inlineStyle2TempFile" and "config.removeDefaultJS" depending on compatVersion >= 4.0
+
 2006-08-04 Wolfgang Klinger <wk@plan2.net>
 
 	* Fix bug #3160: IFSUB is not true if the parent page is a shortcut page
