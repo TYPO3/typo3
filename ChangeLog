@@ -1,3 +1,7 @@
+2006-08-17 Ingmar Schlecht  <ingmar@typo3.org>
+
+	* Added text to Update Wizard informing about the change of the default values of "config.inlineStyle2TempFile" and "config.removeDefaultJS" depending on compatVersion >= 4.0
+
 2006-08-14  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
 	* Corrections/adjustments to the htmlArea RTE extension (see details in local ChangeLog)
