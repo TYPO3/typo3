@@ -319,7 +319,11 @@ class localRecordList extends recordList {
 		if ($this->localizationView && $l10nEnabled)	{
 			$this->fieldArray[] = '_LOCALIZATION_';
 			$this->fieldArray[] = '_LOCALIZATION_b';
-			$addWhere.=' AND '.$TCA[$table]['ctrl']['languageField'].'<=0';
+			$addWhere.=' AND (
+				'.$TCA[$table]['ctrl']['languageField'].'<=0
+				OR 
+				'.$TCA[$table]['ctrl']['transOrigPointerField'].' = 0
+			)';
 		}
 		if (!t3lib_div::inList($rowlist,'_CONTROL_'))	{
 			$this->fieldArray[] = '_CONTROL_';
