@@ -1,3 +1,7 @@
+2006-08-19 Ingmar Schlecht  <ingmar@typo3.org>
+
+	* Parly fixed #4013: New records in non-default language are displayed in list-module in localization view too now even if they don't have a parent record in the default language.
+
 2006-08-17 Ingmar Schlecht  <ingmar@typo3.org>
 
 	* Added text to Update Wizard informing about the change of the default values of "config.inlineStyle2TempFile" and "config.removeDefaultJS" depending on compatVersion >= 4.0
