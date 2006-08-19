@@ -1183,7 +1183,7 @@
 		if (!$this->id)	{
 			list($theAlias) = explode('&',t3lib_div::getIndpEnv('QUERY_STRING'));
 			$theAlias = trim($theAlias);
-			$this->id = $theAlias ? $theAlias : 0;
+			$this->id = ($theAlias != '' && strpos($theAlias, '=') === false) ? $theAlias : 0;
 		}
 	}
 
