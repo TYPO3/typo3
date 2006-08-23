@@ -356,9 +356,9 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 
 		// Setting GPvars:
 		$this->CMD = t3lib_div::_GP('CMD');
-		$this->lookUpStr = t3lib_div::_GP('_lookUp');
+		$this->lookUpStr = trim(t3lib_div::_GP('_lookUp'));
 		$this->listRemote = t3lib_div::_GP('ter_connect');
-		$this->listRemote_search = t3lib_div::_GP('ter_search');
+		$this->listRemote_search = trim(t3lib_div::_GP('ter_search'));
 
 
 			// Configure menu
