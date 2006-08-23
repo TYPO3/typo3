@@ -1,23 +1,13 @@
-The files gmenu_layers and tmenu_layers should be exactly the same except
-these differences:
-
-
-
-
-
---- gmenu_layers.php	2005-03-27 23:23:20.000000000 +0200
-+++ tmenu_layers.php	2005-03-27 23:23:13.000000000 +0200
-@@ -25,9 +25,9 @@
+# The files gmenu_layers and tmenu_layers should be exactly the same except
+# these differences:
+--- gmenu_layers.php	2006-07-04 19:44:39.000000000 +0200
++++ tmenu_layers.php	2006-07-04 19:44:39.000000000 +0200
+@@ -25,5 +25,5 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
  /**
 - * Contains the GMENU_LAYERS extension class, tslib_gmenu_layers
 + * Contains the TMENU_LAYERS extension class, tslib_tmenu_layers
-  *
-- * $Id$
-+ * $Id$
-  * Revised for TYPO3 3.6 June/2003 by Kasper Skaarhoj
-  * XHTML compliant
   *
 @@ -38,7 +38,7 @@
   *
@@ -29,8 +19,8 @@ these differences:
   *  134:     function extProc_RO($key)
   *  150:     function extProc_beforeLinking($key)
 @@ -72,8 +72,8 @@
-
-
+ 
+ 
  /**
 - * Class extending tslib_gmenu for the creation of DHTML menus
 - * NOTICE: The contents of this class is made so that it can be copied EXACTLY AS IS to the tmenu_layers class! See notes in class (for BEGIN/END) and also "diff.xmenu_layers.txt"
@@ -45,27 +35,27 @@ these differences:
   */
 -class tslib_gmenu_layers extends tslib_gmenu {
 +class tslib_tmenu_layers extends tslib_tmenu {
-
+ 
 -// FULL DUPLICATE TO tmenu_layers BEGIN:
 +// FULL DUPLICATE FROM gmenu_layers BEGIN:
-
+ 
  	var $GMENU_fixKey='layers';
  	var $divLayers=Array();
 @@ -460,13 +460,13 @@
  	}
  }
-
+ 
 -// FULL DUPLICATE TO tmenu_layers END:
 +// FULL DUPLICATE FROM gmenu_layers END:
-
-
+ 
+ 
 -$GLOBALS['TSFE']->tmpl->menuclasses.=',gmenu_layers';
 +$GLOBALS['TSFE']->tmpl->menuclasses.=',tmenu_layers';
-
+ 
 -if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['media/scripts/gmenu_layers.php'])	{
 -	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['media/scripts/gmenu_layers.php']);
 +if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['media/scripts/tmenu_layers.php'])	{
 +	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['media/scripts/tmenu_layers.php']);
  }
-
+ 
  ?>
