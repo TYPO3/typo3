@@ -727,13 +727,13 @@ $GLOBALS['TSFE']->content.='
 				// Storing the JSCode and JSImgCode vars...
 			$GLOBALS['TSFE']->additionalHeaderData['JSCode'] = $GLOBALS['TSFE']->JSCode;
 			$GLOBALS['TSFE']->additionalHeaderData['JSImgCode'] = $GLOBALS['TSFE']->JSImgCode;
-			$GLOBALS['TSFE']->config['INTincScript_ext']['divKey']= $GLOBALS['TSFE']->uniqueHash();
-			$GLOBALS['TSFE']->config['INTincScript_ext']['additionalHeaderData']	= $GLOBALS['TSFE']->additionalHeaderData;	// Storing the header-data array
-			$GLOBALS['TSFE']->config['INTincScript_ext']['additionalJavaScript']	= $GLOBALS['TSFE']->additionalJavaScript;	// Storing the JS-data array
-			$GLOBALS['TSFE']->config['INTincScript_ext']['additionalCSS']	= $GLOBALS['TSFE']->additionalCSS;	// Storing the Style-data array
+			$GLOBALS['TSFE']->config['INTincScript_ext']['divKey'] = $GLOBALS['TSFE']->uniqueHash();
+			$GLOBALS['TSFE']->config['INTincScript_ext']['additionalHeaderData'] = $GLOBALS['TSFE']->additionalHeaderData;	// Storing the header-data array
+			$GLOBALS['TSFE']->config['INTincScript_ext']['additionalJavaScript'] = $GLOBALS['TSFE']->additionalJavaScript;	// Storing the JS-data array
+			$GLOBALS['TSFE']->config['INTincScript_ext']['additionalCSS'] = $GLOBALS['TSFE']->additionalCSS;	// Storing the Style-data array
 
-			$GLOBALS['TSFE']->additionalHeaderData=array('<!--HD_'.$GLOBALS['TSFE']->config['INTincScript_ext']['divKey'].'-->');	// Clearing the array
-			$GLOBALS['TSFE']->divSection.='<!--TDS_'.$GLOBALS['TSFE']->config['INTincScript_ext']['divKey'].'-->';
+			$GLOBALS['TSFE']->additionalHeaderData = array('<!--HD_'.$GLOBALS['TSFE']->config['INTincScript_ext']['divKey'].'-->');	// Clearing the array
+			$GLOBALS['TSFE']->divSection.= '<!--TDS_'.$GLOBALS['TSFE']->config['INTincScript_ext']['divKey'].'-->';
 		} else {
 			$GLOBALS['TSFE']->INTincScript_loadJSCode();
 		}
@@ -761,15 +761,15 @@ $GLOBALS['TSFE']->content.='
 		/*]]>*/
 	</script>';
 		} elseif ($GLOBALS['TSFE']->config['config']['removeDefaultJS']==='external')	{
-			$GLOBALS['TSFE']->content.=TSpagegen::inline2TempFile($_scriptCode, 'js');
+			$GLOBALS['TSFE']->content.= TSpagegen::inline2TempFile($_scriptCode, 'js');
 		}
 
-		$GLOBALS['TSFE']->content.=chr(10).implode($GLOBALS['TSFE']->additionalHeaderData,chr(10)).'
+		$GLOBALS['TSFE']->content.= chr(10).implode($GLOBALS['TSFE']->additionalHeaderData,chr(10)).'
 '.$JSef[0].'
 </head>';
 		if ($GLOBALS['TSFE']->pSetup['frameSet.'])	{
 			$fs = t3lib_div::makeInstance('tslib_frameset');
-			$GLOBALS['TSFE']->content.=$fs->make($GLOBALS['TSFE']->pSetup['frameSet.']);
+			$GLOBALS['TSFE']->content.= $fs->make($GLOBALS['TSFE']->pSetup['frameSet.']);
 			$GLOBALS['TSFE']->content.= chr(10).'<noframes>'.chr(10);
 		}
 
