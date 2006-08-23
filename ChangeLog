@@ -1,3 +1,9 @@
+2006-08-23  Michael Stucki  <michael@typo3.org>
+
+	* Fixed bug #3960: Display correct version number in Install Tool (only when authenticated)
+	* Fixed bug #4073: Extension manager doesn't find extensions if the search string contains a trailing space
+	* Fixed bug #3990: $BE_USER property "disableTabInTextarea" is not respected
+
 2006-08-19  Dmitry Dulepov  <typo3@accio.lv>
 
 	* Fix bug 4037: Link from Google AdWords fails due to wrong alias handling
