@@ -1264,7 +1264,7 @@
 	 * Page not found handler.
 	 * Exits.
 	 *
-	 * @param	mixed		Which type of handling; If a true PHP-boolean and TRUE then a ->printError message is outputted. If integer an error message with that number is shown. Otherwise the $code value is expected to be a "Location:" header value.
+	 * @param	mixed		Which type of handling; If a true PHP-boolean or TRUE then a ->printError message is outputted. If integer an error message with that number is shown. Otherwise the $code value is expected to be a "Location:" header value.
 	 * @param	string		If set, this is passed directly to the PHP function, header()
 	 * @param	string		If set, error messages will also mention this as the reason for the page-not-found.
 	 * @return	void		(The function exits!)
@@ -1272,6 +1272,10 @@
 	function pageNotFoundHandler($code, $header='', $reason='')	{
 			// Issue header in any case:
 		if ($header)	{header($header);}
+
+			// Convert $code in case it was written as a string (e.g. if edited in Install Tool)
+			// TODO: Once the Install Tool handles such data types correctly, this workaround should be removed again...
+		if (!strcasecmp($code,'TRUE'))	{ $code=TRUE; }
 
 			// Create response:
 		if (gettype($code)=='boolean' || !strcmp($code,1))	{	// Simply boolean; Just shows TYPO3 error page with reason:
