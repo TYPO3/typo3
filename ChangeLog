@@ -1,6 +1,5 @@
 2006-08-24  Michael Stucki  <michael@typo3.org>
 
-	* Changed default value of $TYPO3_CONF_VARS[SYS][devIPmask] to "127.0.0.1,::1"
 	* Fixed bug #1236: 404 error while using the new content wizard
 	* Fixed bug #3909: TYPO3_SSL does not detect valid SSL session
 	* Fixed bug #3973: pageNotFound_handling=TRUE is interpreted as URL
