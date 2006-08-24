@@ -363,8 +363,10 @@ class SC_db_new {
 								// If mod.web_list.newContentWiz.overrideWithExtension is set, use that extension's wizard instead:
 							$overrideExt = $this->web_list_modTSconfig['properties']['newContentWiz.']['overrideWithExtension'];
 							$pathToWizard = (t3lib_extMgm::isLoaded($overrideExt)) ? (t3lib_extMgm::extRelPath($overrideExt).'mod1/db_new_content_el.php') : 'sysext/cms/layout/db_new_content_el.php';
+								// Fix the backpath for the returnUrl of this wizard:
+							$R_URI = preg_replace('|[^/]+|','..',dirname($pathToWizard)) . '/' . $this->R_URI;
 
-							$href = $pathToWizard.'?id='.$this->id.'&returnUrl='.rawurlencode($this->R_URI);
+							$href = $pathToWizard.'?id='.$this->id.'&returnUrl='.rawurlencode($R_URI);
 							$rowContent.= '<br /><img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/ol/line.gif','width="18" height="16"').' alt="" />'.
 										'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/ol/joinbottom.gif','width="18" height="16"').' alt="" />'.
 										'<a href="'.htmlspecialchars($href).'"><img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/new_record.gif','width="16" height="12"').' alt="" /> '.
