@@ -1,3 +1,7 @@
+2006-08-25  Michael Stucki  <michael@typo3.org>
+
+	* Fixed bug #4076: Skin creates invalid HTML markup
+
 2006-08-24  Michael Stucki  <michael@typo3.org>
 
 	* Fixed bug #1236: 404 error while using the new content wizard
