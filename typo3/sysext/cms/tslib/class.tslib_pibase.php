@@ -770,12 +770,20 @@ class tslib_pibase {
 	 * Returns the class-attribute with the correctly prefixed classname
 	 * Using pi_getClassName()
 	 *
-	 * @param	string		The class name (suffix)
+	 * @param	string		The class name(s) (suffix) - separate multiple classes with commas
+	 * @param	string		Additional class names which should not be prefixed - separate multiple classes with commas
 	 * @return	string		A "class" attribute with value and a single space char before it.
 	 * @see pi_getClassName()
 	 */
-	function pi_classParam($class)	{
-		return ' class="'.$this->pi_getClassName($class).'"';
+	function pi_classParam($class, $addClasses='')	{
+		$output = '';
+		foreach (t3lib_div::trimExplode(',',$class) as $v)	{
+			$output.= ' '.$this->pi_getClassName($v);
+		}
+		foreach (t3lib_div::trimExplode(',',$addClasses) as $v)	{
+			$output.= ' '.$v;
+		}
+		return ' class="'.trim($output).'"';
 	}
 
 	/**

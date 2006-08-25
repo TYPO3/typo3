@@ -136,9 +136,9 @@ class t3lib_userAuth {
 
 	var $auth_include = '';			// this is the name of the include-file containing the login form. If not set, login CAN be anonymous. If set login IS needed.
 
-	var $auth_timeout_field = 0;		// if > 0 : session-timeout in seconds. if string: The string is fieldname from the usertable where the timeout can be found.
-	var $lifetime = 0;			// 0 = Session-cookies. If session-cookies, the browser will stop session when the browser is closed. Else it keeps the session for $lifetime seconds.
-	var $gc_time = 24;			// GarbageCollection. Purge all session data older than $gc_time hours.
+	var $auth_timeout_field = 0;		// Server session lifetime. If > 0: session-timeout in seconds. If false or <0: no timeout. If string: The string is a fieldname from the usertable where the timeout can be found.
+	var $lifetime = 0;			// Client session lifetime. 0 = Session-cookies. If session-cookies, the browser will stop the session when the browser is closed. Otherwise this specifies the lifetime of a cookie that keeps the session.
+	var $gc_time = 0;			// GarbageCollection. Purge all server session data older than $gc_time seconds. 0 = default to $this->timeout or use 86400 seconds (1 day) if $this->lifetime is 0
 	var $gc_probability = 1;		// Possibility (in percent) for GarbageCollection to be run.
 	var $writeStdLog = FALSE;		// Decides if the writelog() function is called at login and logout
 	var $writeAttemptLog = FALSE;		// If the writelog() functions is called if a login-attempt has be tried without success
@@ -314,8 +314,13 @@ class t3lib_userAuth {
 			header('Pragma: no-cache');
 		}
 
+			// Set $this->gc_time if not explicitely specified
+		if ($this->gc_time==0)	{
+			$this->gc_time = ($this->auth_timeout_field==0 ? 86400 : $this->auth_timeout_field);	// Default to 1 day if $this->auth_timeout_field is 0
+		}
+
 			// If we're lucky we'll get to clean up old sessions....
-		if ((rand()%100) <= $this->gc_probability) {
+		if ((rand()%100) <= $this->gc_probability)	{
 			$this->gc();
 		}
 	}
@@ -1050,7 +1055,7 @@ class t3lib_userAuth {
 	function gc() {
 		$GLOBALS['TYPO3_DB']->exec_DELETEquery(
 					$this->session_table,
-					'ses_tstamp < '.intval(time()-($this->gc_time*60*60)).'
+					'ses_tstamp < '.intval(time()-($this->gc_time)).'
 						AND ses_name = '.$GLOBALS['TYPO3_DB']->fullQuoteStr($this->name, $this->session_table)
 				);
 	}

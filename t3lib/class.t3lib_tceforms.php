@@ -505,7 +505,7 @@ class t3lib_TCEforms	{
 									$this->palettesRendered[$this->renderDepth][$table][$parts[2]] = 1;
 								}
 								$sField = $this->getSingleField($table,$theField,$row,$parts[1],0,$parts[3],$parts[2]);
-								if ($sField)	$sField.=$sFieldPal;
+								if ($sField)	{ $sField.= $sFieldPal; }
 
 								$out_array[$out_sheet][$out_pointer].= $sField;
 							} elseif ($theField=='--div--')	{
@@ -574,13 +574,12 @@ class t3lib_TCEforms	{
 			}
 		}
 
-
 			// Return the imploded $out_array:
 		if ($out_sheet>0)	{	// There were --div-- dividers around...
 
 				// Create parts array for the tab menu:
 			$parts = array();
-			foreach($out_array as $idx => $sheetContent)	{
+			foreach ($out_array as $idx => $sheetContent)	{
 				$parts[] = array(
 					'label' => $out_array_meta[$idx]['title'],
 					'content' => '<table border="0" cellspacing="0" cellpadding="0" width="100%">'.
@@ -618,8 +617,8 @@ class t3lib_TCEforms	{
 			$GLOBALS['LANG']->loadSingleTableDescription($table);
 		}
 
-		$out='';
-		$types_fieldConfig=t3lib_BEfunc::getTCAtypes($table,$row,1);
+		$out = '';
+		$types_fieldConfig = t3lib_BEfunc::getTCAtypes($table,$row,1);
 
 		$editFieldList=array_unique(t3lib_div::trimExplode(',',$list,1));
 		foreach($editFieldList as $theFieldC)	{
@@ -628,15 +627,16 @@ class t3lib_TCEforms	{
 			$palFields = trim($palFields);
 			if ($TCA[$table]['columns'][$theField])	{
 				$parts = t3lib_div::trimExplode(';',$types_fieldConfig[$theField]['origString']);
-				$sField= $this->getSingleField($table,$theField,$row,$parts[1],0,$parts[3],0);	// Don't sent palette pointer - there are no options anyways for a field-list.
+				$sField = $this->getSingleField($table,$theField,$row,$parts[1],0,$parts[3],0);	// Don't sent palette pointer - there are no options anyways for a field-list.
 				$out.= $sField;
 			} elseif($theField=='--div--')	{
-				$out.=$this->getDivider();
+				$out.= $this->getDivider();
 			}
 			if ($palFields)	{
-				$out.=$this->getPaletteFields($table,$row,'','',implode(',',t3lib_div::trimExplode('|',$palFields,1)));
+				$out.= $this->getPaletteFields($table,$row,'','',implode(',',t3lib_div::trimExplode('|',$palFields,1)));
 			}
 		}
+
 		return $out;
 	}
 
@@ -656,7 +656,7 @@ class t3lib_TCEforms	{
 		if (!$this->doPrintPalette)	return '';
 
 		$out='';
-		$palParts=array();
+		$palParts = array();
 		t3lib_div::loadTCA($table);
 
 			// Getting excludeElements, if any.
@@ -680,9 +680,9 @@ class t3lib_TCEforms	{
 							$this->hiddenFieldListArr[] = $theField;
 						}
 
-						$part=$this->getSingleField($table,$theField,$row,$parts[1],1,'',$parts[2]);
+						$part = $this->getSingleField($table,$theField,$row,$parts[1],1,'',$parts[2]);
 						if (is_array($part))	{
-							$palParts[]=$part;
+							$palParts[] = $part;
 						}
 					}
 				}
@@ -691,13 +691,13 @@ class t3lib_TCEforms	{
 			// Put palette together if there are fields in it:
 		if (count($palParts))	{
 			if ($header)	{
-				$out.=	$this->intoTemplate(array(
+				$out.= $this->intoTemplate(array(
 								'HEADER' => htmlspecialchars($header)
 							),
 							$this->palFieldTemplateHeader
 						);
 			}
-			$out.=	$this->intoTemplate(array(
+			$out.= $this->intoTemplate(array(
 							'PALETTE' => $this->printPalette($palParts)
 						),
 						$this->palFieldTemplate
@@ -705,13 +705,14 @@ class t3lib_TCEforms	{
 		}
 			// If a palette is collapsed (not shown in form, but in top frame instead) AND a collapse header string is given, then make that string a link to activate the palette.
 		if ($this->isPalettesCollapsed($table,$palette) && $collapsedHeader)	{
-			$pC=	$this->intoTemplate(array(
+			$pC = $this->intoTemplate(array(
 							'PALETTE' => $this->wrapOpenPalette('<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/options.gif','width="18" height="16"').' border="0" title="'.htmlspecialchars($this->getLL('l_moreOptions')).'" align="top" alt="" /><strong>'.$collapsedHeader.'</strong>',$table,$row,$palette),
 						),
 						$this->palFieldTemplate
 					);
-			$out.=$pC;
+			$out.= $pC;
 		}
+
 		return $out;
 	}
 
@@ -815,7 +816,6 @@ class t3lib_TCEforms	{
 						// Based on the type of the item, call a render function:
 					$item = $this->getSingleField_SW($table,$field,$row,$PA);
 
-
 						// Add language + diff
 					if ($PA['fieldConf']['l10n_display'] && (t3lib_div::inList($PA['fieldConf']['l10n_display'], 'hideDiff') || t3lib_div::inList($PA['fieldConf']['l10n_display'], 'defaultAsReadonly'))) {
 						$renderLanguageDiff = false;
@@ -827,6 +827,7 @@ class t3lib_TCEforms	{
 						$item = $this->renderDefaultLanguageContent($table,$field,$row,$item);
 						$item = $this->renderDefaultLanguageDiff($table,$field,$row,$item);
 					}
+
 						// If the record has been saved and the "linkTitleToSelf" is set, we make the field name into a link, which will load ONLY this field in alt_doc.php
 					$PA['label'] = t3lib_div::deHSCentities(htmlspecialchars($PA['label']));
 					if (t3lib_div::testInt($row['uid']) && $PA['fieldTSConfig']['linkTitleToSelf'])	{
@@ -1123,13 +1124,21 @@ class t3lib_TCEforms	{
 				if ($specConf['fixed-font'])	{ $classes[] = 'fixed-font'; }
 				if ($specConf['enable-tab'])	{ $classes[] = 'enable-tab'; }
 
+				$formWidthText = $this->formWidthText($cols,$wrap);
+
+					// Extract class attributes from $formWidthText (otherwise it would be added twice to the output)
+				if (preg_match('/ class="(.+?)"/',$formWidthText,$res))	{
+					$formWidthText = str_replace(' class="'.$res[1].'"','',$formWidthText);
+					$classes = array_merge($classes, explode(' ',$res[1]));
+				}
+
 				if (count($classes))	{
 					$class = ' class="'.implode(' ',$classes).'"';
 				} else $class='';
 
 				$iOnChange = implode('',$PA['fieldChangeFunc']);
 				$item.= '
-							<textarea name="'.$PA['itemFormElName'].'"'.$this->formWidthText($cols,$wrap).$class.' rows="'.$rows.'" wrap="'.$wrap.'" onchange="'.htmlspecialchars($iOnChange).'"'.$PA['onFocus'].'>'.
+							<textarea name="'.$PA['itemFormElName'].'"'.$formWidthText.$class.' rows="'.$rows.'" wrap="'.$wrap.'" onchange="'.htmlspecialchars($iOnChange).'"'.$PA['onFocus'].'>'.
 							t3lib_div::formatForTextarea($PA['itemFormElValue']).
 							'</textarea>';
 				$item = $this->renderWizards(array($item,$altItem),$config['wizards'],$table,$row,$field,$PA,$PA['itemFormElName'],$specConf,$RTEwouldHaveBeenLoaded);
@@ -2100,13 +2109,13 @@ class t3lib_TCEforms	{
 				$tabsToTraverse = array($sheet);
 			}
 
-			foreach($rotateLang as $lKey)	{
+			foreach ($rotateLang as $lKey)	{
 				if (!$langChildren && !$langDisabled)	{
 					$item.= '<b>'.$lKey.':</b>';
 				}
 
 				$tabParts = array();
-				foreach($tabsToTraverse as $sheet)	{
+				foreach ($tabsToTraverse as $sheet)	{
 					$sheetCfg = $dataStructArray['sheets'][$sheet];
 					list ($dataStruct, $sheet) = t3lib_div::resolveSheetDefInDS($dataStructArray,$sheet);
 
@@ -2253,7 +2262,7 @@ class t3lib_TCEforms	{
 
 							$cc=0;
 							if (is_array($editData[$key]['el']))	{
-								foreach($editData[$key]['el'] as $k3 => $v3)	{
+								foreach ($editData[$key]['el'] as $k3 => $v3)	{
 									$cc=$k3;
 									$theType = key($v3);
 									$theDat = $v3[$theType];
@@ -3507,7 +3516,7 @@ class t3lib_TCEforms	{
 	 * @param	boolean		If this is for a text area.
 	 * @return	string		Either a "style" attribute string or "cols"/"size" attribute string.
 	 */
-	function formWidth($size=48,$textarea=0) {
+	function formWidth($size=48,$textarea=0)	{
 			// Input or text-field attribute (size or cols)
 		if ($this->docLarge)	$size = round($size*$this->form_largeComp);
 		$wAttrib = $textarea?'cols':'size';
@@ -3534,11 +3543,11 @@ class t3lib_TCEforms	{
 	 * @return	string		The "cols" attribute string (or style from formWidth())
 	 * @see formWidth()
 	 */
-	function formWidthText($size=48,$wrap='') {
+	function formWidthText($size=48,$wrap='')	{
 		$wTags = $this->formWidth($size,1);
 			// Netscape 6+ seems to have this ODD problem where there WILL ALWAYS be wrapping with the cols-attribute set and NEVER without the col-attribute...
 		if (strtolower(trim($wrap))!='off' && $GLOBALS['CLIENT']['BROWSER']=='net' && $GLOBALS['CLIENT']['VERSION']>=5)	{
-			$wTags.=' cols="'.$size.'"';
+			$wTags.= ' cols="'.$size.'"';
 		}
 		return $wTags;
 	}
@@ -3582,10 +3591,12 @@ class t3lib_TCEforms	{
 
 			// Check class prefixed:
 		if (substr($style,0,6)=='CLASS:')	{
-			return $class ? trim(substr($style,6)) : '';
+			$out = $class ? trim(substr($style,6)) : '';
 		} else {
-			return !$class ? $style : '';
+			$out = !$class ? $style : '';
 		}
+
+		return $out;
 	}
 
 	/**

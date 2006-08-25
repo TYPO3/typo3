@@ -101,9 +101,9 @@ class tslib_feUserAuth extends t3lib_userAuth {
 
 	var $auth_include = '';						// this is the name of the include-file containing the login form. If not set, login CAN be anonymous. If set login IS needed.
 
-	var $auth_timeout_field = 6000;				// if > 0 : session-timeout in seconds. if false/<0 : no timeout. if string: The string is fieldname from the usertable where the timeout can be found.
+	var $auth_timeout_field = 6000;				// Server session lifetime. If > 0: session-timeout in seconds. If false or <0: no timeout. If string: The string is a fieldname from the usertable where the timeout can be found.
 
-	var $lifetime = 0;                  		// 0 = Session-cookies. If session-cookies, the browser will stop session when the browser is closed. Else it keeps the session for $lifetime seconds.
+	var $lifetime = 0;				// Client session lifetime. 0 = Session-cookies. If session-cookies, the browser will stop the session when the browser is closed. Otherwise this specifies the lifetime of a cookie that keeps the session.
 	var $sendNoCacheHeaders = 0;
 	var $getFallBack = 1;						// If this is set, authentication is also accepted by the _GET. Notice that the identification is NOT 128bit MD5 hash but reduced. This is done in order to minimize the size for mobile-devices, such as WAP-phones
 	var $hash_length = 10;
@@ -133,6 +133,21 @@ class tslib_feUserAuth extends t3lib_userAuth {
 	var $sesData_change = 0;
 	var $userData_change = 0;
 
+
+	/**
+	 * Starts a user session
+	 *
+	 * @return	void
+	 * @see t3lib_userAuth::start()
+	 */
+	function start() {
+		if (intval($this->auth_timeout_field)>0 && intval($this->auth_timeout_field) < $this->lifetime)	{
+				// If server session timeout is non-zero but less than client session timeout: Copy this value instead.
+			$this->auth_timeout_field = $this->lifetime;
+		}
+
+		parent::start();
+	}
 
 	/**
 	 * Will select all fe_groups records that the current fe_user is member of - and which groups are also allowed in the current domain.
