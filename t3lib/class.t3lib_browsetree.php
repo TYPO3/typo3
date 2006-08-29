@@ -42,14 +42,14 @@
  *   83:     function init($clause='')
  *  116:     function getTitleAttrib($row)
  *  128:     function wrapIcon($icon,$row)
+ *  150:     function getTitleStr($row,$titleLen=30)
  *
- * TOTAL FUNCTIONS: 3
+ * TOTAL FUNCTIONS: 4
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
 
 require_once (PATH_t3lib.'class.t3lib_treeview.php');
-
 
 
 
@@ -102,7 +102,7 @@ class t3lib_browseTree extends t3lib_treeView {
 
 		$this->fieldArray = array_merge($this->fieldArray,array('doktype','php_tree_stop','t3ver_id','t3ver_state','t3ver_wsid','t3ver_swapmode'));
 		if (t3lib_extMgm::isLoaded('cms'))	{
-			$this->fieldArray = array_merge($this->fieldArray,array('hidden','starttime','endtime','fe_group','module','extendToSubpages'));
+			$this->fieldArray = array_merge($this->fieldArray,array('hidden','starttime','endtime','fe_group','module','extendToSubpages', 'is_siteroot'));
 		}
 	}
 
@@ -137,6 +137,26 @@ class t3lib_browseTree extends t3lib_treeView {
 			$theIcon='<a href="#" onclick="'.htmlspecialchars($aOnClick).'">'.$theIcon.'</a>';
 		}
 		return $theIcon;
+	}
+
+	/**
+	 * Returns the title for the input record. If blank, a "no title" labele (localized) will be returned.
+	 * Do NOT htmlspecialchar the string from this function - has already been done.
+	 *
+	 * @param	array		The input row array (where the key "title" is used for the title)
+	 * @param	integer		Title length (30)
+	 * @return	string		The title.
+	 */
+	function getTitleStr($row,$titleLen=30)	{
+		$title = (!strcmp(trim($row['title']),'')) ? '<em>['.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.no_title',1).']</em>' : htmlspecialchars(t3lib_div::fixed_lgd_cs($row['title'],$titleLen));
+		if (isset($row['is_siteroot']) && $row['is_siteroot'] != 0 && $GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.showDomainNameWithTitle')) {
+			$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('domainName,sorting', 'sys_domain',
+						'pid=' . $GLOBALS['TYPO3_DB']->quoteStr($row['uid'], 'sys_domain'), '', 'sorting', 1);
+			if (is_array($rows) && count($rows) > 0) {
+				$title = sprintf('%s [%s]', $title, $rows[0]['domainName']);
+			}
+		}
+		return $title;
 	}
 }
 
