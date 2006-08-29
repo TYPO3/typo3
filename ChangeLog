@@ -1,3 +1,7 @@
+2006-08-29  Dmitry Dulepov  <typo3@accio.lv>
+
+	* Performance enhancement in t3lib/class.t3lib_tstemplate.php: use UPDATE/INSERT_on_update_fail instead of DELETE/INSERT for cache_pagesection.
+
 2006-08-25  Michael Stucki  <michael@typo3.org>
 
 	* Fixed bug #4076: Skin creates invalid HTML markup

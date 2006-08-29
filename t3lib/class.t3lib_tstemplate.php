@@ -356,15 +356,17 @@ class t3lib_TStemplate	{
 			$GLOBALS['TSFE']->all=$cc;
 
 			if (!$this->simulationHiddenOrTime)	{	// Only save currentPageData, if we're not simulating by hidden/starttime/endtime
-				$insertFields = array(
-					'page_id' => intval($GLOBALS['TSFE']->id),
-					'mpvar_hash' => t3lib_div::md5int($GLOBALS['TSFE']->MP),
+				$dbFields = array(
 					'content' => serialize($cc),
 					'tstamp' => $GLOBALS['EXEC_TIME']
 				);
-				$GLOBALS['TYPO3_DB']->exec_DELETEquery('cache_pagesection', 'page_id='.intval($GLOBALS['TSFE']->id).' AND mpvar_hash='.t3lib_div::md5int($GLOBALS['TSFE']->MP));
-
-				$GLOBALS['TYPO3_DB']->exec_INSERTquery('cache_pagesection', $insertFields);
+				$mpvar_hash = t3lib_div::md5int($GLOBALS['TSFE']->MP);
+				$GLOBALS['TYPO3_DB']->exec_UPDATEquery('cache_pagesection', 'page_id=' . intval($GLOBALS['TSFE']->id) . ' AND mpvar_hash=' . $mpvar_hash, $dbFields);
+				if ($GLOBALS['TYPO3_DB']->sql_affected_rows() == 0) {
+					$dbFields['page_id'] = intval($GLOBALS['TSFE']->id);
+					$dbFields['mpvar_hash'] = $mpvar_hash;
+					$GLOBALS['TYPO3_DB']->exec_INSERTquery('cache_pagesection', $dbFields);
+				}
 			}
 				// If everything OK.
 			if ($this->rootId && $this->rootLine && $this->setup)	{
