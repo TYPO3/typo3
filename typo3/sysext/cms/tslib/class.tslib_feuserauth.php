@@ -97,6 +97,7 @@ class tslib_feUserAuth extends t3lib_userAuth {
 	var $formfield_uident = 'pass'; 			// formfield with password
 	var $formfield_chalvalue = 'challenge';		// formfield with a unique value which is used to encrypt the password and username
 	var $formfield_status = 'logintype'; 		// formfield with status: *'login', 'logout'
+	var $formfield_permanent = 'permalogin';	// formfield with 0 or 1 // 1 = permanent login enabled // 0 = session is valid for a browser session only
 	var $security_level = '';					// sets the level of security. *'normal' = clear-text. 'challenged' = hashed password/username from form in $formfield_uident. 'superchallenged' = hashed password hashed again with username.
 
 	var $auth_include = '';						// this is the name of the include-file containing the login form. If not set, login CAN be anonymous. If set login IS needed.
@@ -147,6 +148,70 @@ class tslib_feUserAuth extends t3lib_userAuth {
 		}
 
 		parent::start();
+	}
+ 
+	/**
+	 * Returns a new session record for the current user for insertion into the DB.
+	 *
+	 * @return	array		user session record
+	 */
+	function getNewSessionRecord($tempuser) {
+		$insertFields = parent::getNewSessionRecord($tempuser);
+		$insertFields['ses_permanent'] = $this->is_permanent;
+
+		return $insertFields;
+	}
+
+	/**
+	 * Determins whether a session cookie needs to be set (lifetime=0)
+	 *
+	 * @return	boolean
+	 * @internal
+	 */
+	function isSetSessionCookie() {
+		$retVal = ($this->newSessionID || $this->forceSetCookie) && ($this->lifetime==0 || !$this->user['ses_permanent']);
+		return $retVal;
+	}
+
+	/**
+	 * Determins whether a non-session cookie needs to be set (lifetime>0)
+	 *
+	 * @return	boolean
+	 * @internal
+	 */
+	function isRefreshTimeBasedCookie() {
+		return $this->lifetime > 0 && $this->user['ses_permanent'];
+	}
+
+	/**
+	 * Returns an info array with Login/Logout data submitted by a form or params
+	 *
+	 * @return	array
+	 * @see t3lib_userAuth::getLoginFormData()
+	 */
+	function getLoginFormData() {
+		$loginData = parent::getLoginFormData();
+		if($GLOBALS['TYPO3_CONF_VARS']['FE']['permalogin'] == 0 || $GLOBALS['TYPO3_CONF_VARS']['FE']['permalogin'] == 1) {
+			if ($this->getMethodEnabled)	{
+				$isPermanent = t3lib_div::_GP($this->formfield_permanent);
+			} else {
+				$isPermanent = t3lib_div::_POST($this->formfield_permanent);
+			}
+			if(strlen($isPermanent) != 1) {
+				$isPermanent = $GLOBALS['TYPO3_CONF_VARS']['FE']['permalogin'];
+			} elseif(!$isPermanent) {
+				$this->forceSetCookie = true; // To make sure the user gets a session cookie and doesn't keep a possibly existing time based cookie, we need to force seeting the session cookie here
+			}
+			$isPermanent = $isPermanent?1:0;
+		} elseif($GLOBALS['TYPO3_CONF_VARS']['FE']['permalogin'] == 2) {
+			$isPermanent = 1;
+		} else {
+			$isPermanent = 0;
+		}
+		$loginData['permanent'] = $isPermanent;
+		$this->is_permanent = $isPermanent;
+
+		return $loginData;
 	}
 
 	/**

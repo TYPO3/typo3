@@ -243,6 +243,18 @@ class t3lib_userAuth {
 			// Make certain that NO user is set initially
 		$this->user = '';
 
+			// Check to see if anyone has submitted login-information and if so register the user with the session. $this->user[uid] may be used to write log...
+		$this->checkAuthentication();
+
+			// Make certain that NO user is set initially. ->check_authentication may have set a session-record which will provide us with a user record in the next section:
+		unset($this->user);
+
+			// re-read user session
+		$this->user = $this->fetchUserSession();
+
+		if ($this->writeDevLog AND is_array($this->user)) 	t3lib_div::devLog('User session finally read: '.t3lib_div::arrayToLogString($this->user, array($this->userid_column,$this->username_column)), 't3lib_userAuth', -1);
+		if ($this->writeDevLog AND !is_array($this->user)) t3lib_div::devLog('No user session found.', 't3lib_userAuth', 2);
+
 			// Setting cookies
 		if ($TYPO3_CONF_VARS['SYS']['cookieDomain'])	{
 			if ($TYPO3_CONF_VARS['SYS']['cookieDomain']{0} == '/')	{
@@ -258,7 +270,7 @@ class t3lib_userAuth {
 		}
 
 			// If new session and the cookie is a sessioncookie, we need to set it only once!
-		if (($this->newSessionID || $this->forceSetCookie) && $this->lifetime==0 )	{
+		if ($this->isSetSessionCookie())	{
 			if (!$this->dontSetCookie)	{
 				if ($cookieDomain)	{
 					SetCookie($this->name, $id, 0, '/', $cookieDomain);
@@ -270,7 +282,7 @@ class t3lib_userAuth {
 		}
 
 			// If it is NOT a session-cookie, we need to refresh it.
-		if ($this->lifetime > 0)	{
+		if ($this->isRefreshTimeBasedCookie())	{
 			if (!$this->dontSetCookie)	{
 				if ($cookieDomain)	{
 					SetCookie($this->name, $id, time()+$this->lifetime, '/', $cookieDomain);
@@ -280,18 +292,6 @@ class t3lib_userAuth {
 				if ($this->writeDevLog) 	t3lib_div::devLog('Update Cookie: '.$id.($cookieDomain ? ', '.$cookieDomain : ''), 't3lib_userAuth');
 			}
 		}
-
-			// Check to see if anyone has submitted login-information and if so register the user with the session. $this->user[uid] may be used to write log...
-		$this->checkAuthentication();
-
-			// Make certain that NO user is set initially. ->check_authentication may have set a session-record which will provide us with a user record in the next section:
-		unset($this->user);
-
-			// re-read user session
-		$this->user = $this->fetchUserSession();
-
-		if ($this->writeDevLog AND is_array($this->user)) 	t3lib_div::devLog('User session finally read: '.t3lib_div::arrayToLogString($this->user, array($this->userid_column,$this->username_column)), 't3lib_userAuth', -1);
-		if ($this->writeDevLog AND !is_array($this->user)) t3lib_div::devLog('No user session found.', 't3lib_userAuth', 2);
 
 			// Hook for alternative ways of filling the $this->user array (is used by the "timtaw" extension)
 		if (is_array($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_userauth.php']['postUserLookUp']))	{
@@ -323,6 +323,26 @@ class t3lib_userAuth {
 		if ((rand()%100) <= $this->gc_probability)	{
 			$this->gc();
 		}
+	}
+
+	/**
+	 * Determins whether a session cookie needs to be set (lifetime=0)
+	 *
+	 * @return	boolean
+	 * @internal
+	 */
+	function isSetSessionCookie() {
+		return ($this->newSessionID || $this->forceSetCookie) && $this->lifetime==0;
+	}
+
+	/**
+	 * Determins whether a non-session cookie needs to be set (lifetime>0)
+	 *
+	 * @return	boolean
+	 * @internal
+	 */
+	function isRefreshTimeBasedCookie() {
+		return $this->lifetime > 0;
 	}
 
 	/**
@@ -583,14 +603,7 @@ class t3lib_userAuth {
 				);
 
 			// re-create session entry
-		$insertFields = array(
-			'ses_id' => $this->id,
-			'ses_name' => $this->name,
-			'ses_iplock' => $tempuser['disableIPlock'] ? '[DISABLED]' : $this->ipLockClause_remoteIPNumber($this->lockIP),
-			'ses_hashlock' => $this->hashLockClause_getHashInt(),
-			'ses_userid' => $tempuser[$this->userid_column],
-			'ses_tstamp' => $GLOBALS['EXEC_TIME']
-		);
+		$insertFields = $this->getNewSessionRecord($tempuser);
 		$GLOBALS['TYPO3_DB']->exec_INSERTquery($this->session_table, $insertFields);
 
 			// Updating lastLogin_column carrying information about last login.
@@ -601,6 +614,23 @@ class t3lib_userAuth {
 									array($this->lastLogin_column => $GLOBALS['EXEC_TIME'])
 								);
 		}
+	}
+
+	/**
+	 * Returns a new session record for the current user for insertion into the DB.
+	 * This function is mainly there as a wrapper for inheriting classes to override it.
+	 *
+	 * @return	array		user session record
+	 */
+	function getNewSessionRecord($tempuser) {
+		return array(
+			'ses_id' => $this->id,
+			'ses_name' => $this->name,
+			'ses_iplock' => $tempuser['disableIPlock'] ? '[DISABLED]' : $this->ipLockClause_remoteIPNumber($this->lockIP),
+			'ses_hashlock' => $this->hashLockClause_getHashInt(),
+			'ses_userid' => $tempuser[$this->userid_column],
+			'ses_tstamp' => $GLOBALS['EXEC_TIME']
+		);
 	}
 
 	/**

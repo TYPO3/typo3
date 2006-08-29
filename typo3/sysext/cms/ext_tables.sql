@@ -115,6 +115,7 @@ CREATE TABLE fe_sessions (
   ses_userid int(11) unsigned DEFAULT '0' NOT NULL,
   ses_tstamp int(11) unsigned DEFAULT '0' NOT NULL,
   ses_data blob NOT NULL,
+  ses_permanent tinyint(1) unsigned DEFAULT '0' NOT NULL,
   PRIMARY KEY (ses_id,ses_name)
 );
 

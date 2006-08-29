@@ -1,3 +1,7 @@
+2006-08-29  Ingmar Schlecht  <ingmar@typo3.org>
+
+	* Made it possible to give FE users the choice to "stay logged in". See new install tool option $TYPO3_CONF_VARS[FE][permalogin]. You'll need the latest newloginbox version from the typo3xdev Subversion repository.
+
 2006-08-29  Dmitry Dulepov  <typo3@accio.lv>
 
 	* Performance enhancement in t3lib/class.t3lib_tstemplate.php: use UPDATE/INSERT_on_update_fail instead of DELETE/INSERT for cache_pagesection.
