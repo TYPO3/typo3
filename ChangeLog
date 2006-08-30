@@ -1,10 +1,15 @@
+
+2006-08-30  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+
+	* Add and update icons for the new skin
+
 2006-08-29  Ingmar Schlecht  <ingmar@typo3.org>
 
 	* Made it possible to give FE users the choice to "stay logged in". See new install tool option $TYPO3_CONF_VARS[FE][permalogin]. You'll need the latest newloginbox version from the typo3xdev Subversion repository.
 
 2006-08-29  Dmitry Dulepov  <typo3@accio.lv>
 
-	* Performance enhancement in t3lib/class.t3lib_tstemplate.php: use UPDATE/INSERT_on_update_fail instead of DELETE/INSERT for cache_pagesection.
+	* Performance enhancement in t3lib/class.t3lib_tstemplate.php: use UPDATE/INSERT (if no records have been updated) instead of DELETE/INSERT for cache_pagesection.
 	* Show domain name in the page tree if is_siteroot is set for page and "options.pageTree.showDomainNameWithTitle" is set in user TSConfig
 
 2006-08-25  Michael Stucki  <michael@typo3.org>
@@ -33,7 +38,7 @@
 
 2006-08-19 Ingmar Schlecht  <ingmar@typo3.org>
 
-	* Parly fixed #4013: New records in non-default language are displayed in list-module in localization view too now even if they don't have a parent record in the default language.
+	* Partly fixed #4013: New records in non-default language are displayed in list-module in localization view too now even if they don't have a parent record in the default language.
 
 2006-08-17 Ingmar Schlecht  <ingmar@typo3.org>
 
