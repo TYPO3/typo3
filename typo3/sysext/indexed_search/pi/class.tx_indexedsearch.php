@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2001-2005 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 2001-2006 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -1958,7 +1958,7 @@ class tx_indexedsearch extends tslib_pibase {
 	/**
 	 * Marks up the search words from $this->sWarr in the $str with a color.
 	 *
-	 * @param	string		text in which to find and mark up search words. This text is assumed to be UTF-8 like the search words internally is.
+	 * @param	string		Text in which to find and mark up search words. This text is assumed to be UTF-8 like the search words internally is.
 	 * @return	string		Processed content.
 	 */
 	function markupSWpartsOfString($str)	{
@@ -1970,13 +1970,13 @@ class tx_indexedsearch extends tslib_pibase {
 
 			// Prepare search words for regex:
 		foreach ($this->sWArr as $d)	{
-			$swForReg[] = quotemeta($d['sword']);
+			$swForReg[] = preg_quote($d['sword'],'/');
 		}
 		$regExString = '('.implode('|',$swForReg).')';
 
 			// Split and combine:
 		$parts = preg_split('/'.$regExString.'/i', ' '.$str.' ', 20000, PREG_SPLIT_DELIM_CAPTURE);
-#debug($parts,$regExString);
+// debug($parts,$regExString);
 			// Constants:
 		$summaryMax = 300;
 		$postPreLgd = 60;

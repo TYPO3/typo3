@@ -335,10 +335,11 @@ class t3lib_install {
 						if ($parts[0]!='PRIMARY' && $parts[0]!='KEY' && $parts[0]!='UNIQUE')	{
 							$key = str_replace('`', '', $parts[0]);
 							$total[$isTable]['fields'][$key] = $parts[1];
-						} else {
+						} else {	// Process keys
 							$newParts = explode(' ',$parts[1],2);
 							$key = str_replace('`', '', ($parts[0]=='PRIMARY'?$parts[0]:$newParts[0]));
-							$total[$isTable]['keys'][$key] = str_replace('`', '', $lineV);
+							$lineV = str_replace('`', '', $lineV);
+							$total[$isTable]['keys'][$key] = $lineV;
 						}
 					}
 				}
@@ -425,7 +426,19 @@ class t3lib_install {
 			$keyInformation = $GLOBALS['TYPO3_DB']->admin_get_keys($tableName);
 			foreach($keyInformation as $kN => $keyRow)	{
 				$tempKeys[$tableName][$keyRow['Key_name']][$keyRow['Seq_in_index']] = $keyRow['Column_name'];
-				$tempKeysPrefix[$tableName][$keyRow['Key_name']]= ($keyRow['Key_name']=='PRIMARY'?'PRIMARY KEY':($keyRow['Non_unique']?'KEY':'UNIQUE').' '.$keyRow['Key_name']);
+				if ($keyRow['Sub_part'])	{
+					$tempKeys[$tableName][$keyRow['Key_name']][$keyRow['Seq_in_index']].= '('.$keyRow['Sub_part'].')';
+				}
+				if ($keyRow['Key_name']=='PRIMARY')	{
+					$tempKeysPrefix[$tableName][$keyRow['Key_name']] = 'PRIMARY KEY';
+				} else {
+					if ($keyRow['Non_unique'])	{
+						$tempKeysPrefix[$tableName][$keyRow['Key_name']] = 'KEY';
+					} else {
+						$tempKeysPrefix[$tableName][$keyRow['Key_name']] = 'UNIQUE';
+					}
+					$tempKeysPrefix[$tableName][$keyRow['Key_name']].= ' '.$keyRow['Key_name'];
+				}
 			}
 		}
 

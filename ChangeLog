@@ -1,3 +1,9 @@
+2006-09-01  Michael Stucki  <michael@typo3.org>
+
+	* Fixed bug: Creation of sys_refindex table was not possible if $TYPO3_CONF_VARS[SYS][multiplyDBfieldSize] was set.
+	* Indexed Search: Fixed bug #3994: OpenOffice.org files cannot be indexed by class.external_parser.php
+	* Indexed Search: Fixed bug #4093: PHP warning if indexed_search search word contains a front slash
+
 2006-08-31  Ernesto Baschny <ernst@cron-it.de>
 
 	* Fixed bug #4035/3971: Error message when uploading one or two files in file-browser (BE)

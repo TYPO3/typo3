@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2001-2005 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 2001-2006 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -365,6 +365,7 @@ class tx_indexed_search_extparse {
 					$cmd = $this->app['pdfinfo'].' "'.$absFile.'"';
 					exec($cmd,$res);
 					$pdfInfo = $this->splitPdfInfo($res);
+					unset($res);
 					if (intval($pdfInfo['pages']))	{
 						list($low,$high) = explode('-',$cPKey);
 
@@ -372,7 +373,7 @@ class tx_indexed_search_extparse {
 						$tempFileName = t3lib_div::tempnam('Typo3_indexer');		// Create temporary name
 						@unlink ($tempFileName);	// Delete if exists, just to be safe.
 						$cmd = $this->app['pdftotext'].' -f '.$low.' -l '.$high.' -enc UTF-8 -q "'.$absFile.'" '.$tempFileName;
-						exec($cmd,$res);
+						exec($cmd);
 						if (@is_file($tempFileName))	{
 							$content = t3lib_div::getUrl($tempFileName);
 							unlink($tempFileName);
@@ -390,6 +391,7 @@ class tx_indexed_search_extparse {
 					$cmd = $this->app['catdoc'].' -d utf-8 "'.$absFile.'"';
 					exec($cmd,$res);
 					$content = implode(chr(10),$res);
+					unset($res);
 					$contentArr = $this->pObj->splitRegularContent($this->removeEndJunk($content));
 				}
 			break;
@@ -399,6 +401,7 @@ class tx_indexed_search_extparse {
 					$cmd = $this->app['ppthtml'].' "'.$absFile.'"';
 					exec($cmd,$res);
 					$content = implode(chr(10),$res);
+					unset($res);
 					$content = $this->pObj->convertHTMLToUtf8($content);
 					$contentArr = $this->pObj->splitHTMLContent($this->removeEndJunk($content));
 					$contentArr['title'] = basename($absFile);	// Make sure the title doesn't expose the absolute path!
@@ -409,6 +412,7 @@ class tx_indexed_search_extparse {
 					$cmd = $this->app['xlhtml'].' -nc -te "'.$absFile.'"';
 					exec($cmd,$res);
 					$content = implode(chr(10),$res);
+					unset($res);
 					$content = $this->pObj->convertHTMLToUtf8($content);
 					$contentArr = $this->pObj->splitHTMLContent($this->removeEndJunk($content));
 					$contentArr['title'] = basename($absFile);	// Make sure the title doesn't expose the absolute path!
@@ -422,14 +426,16 @@ class tx_indexed_search_extparse {
 			case 'odt':
 				if ($this->app['unzip'])	{
 						// Read content.xml:
-					$cmd = $this->app['unzip'].' -p '.$absFile.' content.xml';
-					exec($cmd,$out);
-					$content_xml = implode(chr(10),$out);
+					$cmd = $this->app['unzip'].' -p "'.$absFile.'" content.xml';
+					exec($cmd,$res);
+					$content_xml = implode(chr(10),$res);
+					unset($res);
 
 						// Read meta.xml:
-					$cmd = $this->app['unzip'].' -p '.$absFile.' meta.xml';
-					exec($cmd, $out);
-					$meta_xml = implode(chr(10),$out);
+					$cmd = $this->app['unzip'].' -p "'.$absFile.'" meta.xml';
+					exec($cmd, $res);
+					$meta_xml = implode(chr(10),$res);
+					unset($res);
 
 					$utf8_content = trim(strip_tags(str_replace('<',' <',$content_xml)));
 					$contentArr = $this->pObj->splitRegularContent($utf8_content);
@@ -456,6 +462,7 @@ class tx_indexed_search_extparse {
 					$cmd = $this->app['unrtf'].' "'.$absFile.'"';
 					exec($cmd,$res);
 					$fileContent = implode(chr(10),$res);
+					unset($res);
 					$fileContent = $this->pObj->convertHTMLToUtf8($fileContent);
 					$contentArr = $this->pObj->splitHTMLContent($fileContent);
 				}
@@ -526,6 +533,7 @@ class tx_indexed_search_extparse {
 				$cmd = $this->app['pdfinfo'].' "'.$absFile.'"';
 				exec($cmd,$res);
 				$pdfInfo = $this->splitPdfInfo($res);
+				unset($res);
 
 				if (intval($pdfInfo['pages']))	{
 					$cParts = array();
