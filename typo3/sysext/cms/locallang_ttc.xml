@@ -117,8 +117,8 @@
 			<label index="image_frames.I.6">Frame 6</label>
 			<label index="image_frames.I.7">Frame 7</label>
 			<label index="image_frames.I.8">Frame 8</label>
-			<label index="image_compression">Quality:</label>
-			<label index="image_compression.I.1">Dont change!</label>
+			<label index="image_compression">Image quality/processing:</label>
+			<label index="image_compression.I.1">None (ignores all other options!)</label>
 			<label index="image_compression.I.15">JPG/Very High</label>
 			<label index="image_compression.I.16">JPG/High</label>
 			<label index="image_compression.I.17">JPG/Medium</label>
