@@ -1,3 +1,7 @@
+2006-08-31  Dmitry Dulepov  <typo3@accio.lv>
+
+	* Performance enhancement for BE: (1) caching images in typo3/gfx and typo3/sysext; (2) caching CSS files in typo3/sysext/t3skin/stylesheets
+
 2006-08-31  Ernesto Baschny <ernst@cron-it.de>
 
 	* Feature #4131: Respects label_alt setting in some more places (especially labels pointing to MM tables)
