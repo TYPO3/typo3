@@ -2947,7 +2947,7 @@ class t3lib_TCEforms	{
 					while(list(,$pp)=each($itemArray))	{
 						$pRec = t3lib_BEfunc::getRecordWSOL($pp['table'],$pp['id']);
 						if (is_array($pRec))	{
-							$pTitle = t3lib_div::fixed_lgd_cs($this->noTitle($pRec[$GLOBALS['TCA'][$pp['table']]['ctrl']['label']]),$this->titleLen);
+							$pTitle = t3lib_div::fixed_lgd_cs($this->noTitle(t3lib_BEfunc::getRecordTitle($pp['table'], $pRec)),$this->titleLen);
 							$pUid = $pp['table'].'_'.$pp['id'];
 							$uidList[]=$pUid;
 							$opt[]='<option value="'.htmlspecialchars($pUid).'">'.htmlspecialchars($pTitle).'</option>';

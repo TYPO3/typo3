@@ -310,6 +310,9 @@ class t3lib_loadDBGroup	{
 						if ($GLOBALS['TCA'][$key]['ctrl']['label'])	{
 							$from.= ','.$GLOBALS['TCA'][$key]['ctrl']['label'];	// Titel
 						}
+						if ($GLOBALS['TCA'][$key]['ctrl']['label_alt'])	{
+							$from.= ','.$GLOBALS['TCA'][$key]['ctrl']['label_alt']; // Alternative Title-Fields
+						}
 						if ($GLOBALS['TCA'][$key]['ctrl']['thumbnail'])	{
 							$from.= ','.$GLOBALS['TCA'][$key]['ctrl']['thumbnail'];	// Thumbnail
 						}
@@ -342,7 +345,7 @@ class t3lib_loadDBGroup	{
 		foreach($this->itemArray as $key => $val)	{
 			$theRow = $this->results[$val['table']][$val['id']];
 			if ($theRow && is_array($TCA[$val['table']]))	{
-				$label = t3lib_div::fixed_lgd_cs(strip_tags($theRow[$TCA[$val['table']]['ctrl']['label']]),$titleLen);
+				$label = t3lib_div::fixed_lgd_cs(strip_tags(t3lib_BEfunc::getRecordTitle($val['table'], $theRow)),$titleLen);
 				$label = ($label)?$label:'[...]';
 				$output[]=str_replace(',','',$val['table'].'_'.$val['id'].'|'.rawurlencode($label));
 			}
