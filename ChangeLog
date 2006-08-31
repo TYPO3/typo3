@@ -1,3 +1,7 @@
+2006-08-31  Ernesto Baschny <ernst@cron-it.de>
+
+	* Fixed bug #4035/3971: Error message when uploading one or two files in file-browser (BE)
+
 2006-08-31  Dmitry Dulepov  <typo3@accio.lv>
 
 	* Performance enhancement for BE: (1) caching images in typo3/gfx and typo3/sysext; (2) caching CSS files in typo3/sysext/t3skin/stylesheets
