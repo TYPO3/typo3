@@ -1,3 +1,7 @@
+2006-08-31  Wolfgang Klinger <wolfgang@stufenlos.net>
+
+	* Feature #3026: Text change for the 'Quality' label
+
 2006-08-25  Michael Stucki  <michael@typo3.org>
 
 	* Fixed bug #4076: Skin creates invalid HTML markup
