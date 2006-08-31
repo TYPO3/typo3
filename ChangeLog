@@ -1,5 +1,9 @@
 2006-08-31  Ernesto Baschny <ernst@cron-it.de>
 
+	* Fixed bug #4035/3971: Error message when uploading one or two files in file-browser (BE)
+
+2006-08-31  Ernesto Baschny <ernst@cron-it.de>
+
 	* Feature #4131: Respects label_alt setting in some more places (especially labels pointing to MM tables)
 
 2006-08-31  Wolfgang Klinger <wolfgang@stufenlos.net>
