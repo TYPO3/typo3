@@ -1,3 +1,7 @@
+2006-08-31  Dmitry Dulepov  <typo3@accio.lv>
+
+	* Removed earlier "Performance enhancement for BE" due to request from Michael Stucki
+
 2006-09-01  Michael Stucki  <michael@typo3.org>
 
 	* Fixed bug: Creation of sys_refindex table was not possible if $TYPO3_CONF_VARS[SYS][multiplyDBfieldSize] was set.
