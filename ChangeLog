@@ -1,3 +1,7 @@
+2006-09-01 Ingmar Schlecht  <ingmar@typo3.org>
+
+	* Fixed #529: Committed new TSConfig Help data. Thanks a lot to Stephane Schitter for extracting the new data from the references!
+
 2006-09-01  Michael Stucki  <michael@typo3.org>
 
 	* Fixed bug: Creation of sys_refindex table was not possible if $TYPO3_CONF_VARS[SYS][multiplyDBfieldSize] was set.
