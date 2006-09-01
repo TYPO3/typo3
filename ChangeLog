@@ -1,6 +1,6 @@
 2006-08-31  Dmitry Dulepov  <typo3@accio.lv>
 
-	* Removed earlier "Performance enhancement for BE" due to request from Michael Stucki
+	* Reverted earlier "Performance enhancement for BE" (did not qualify as bugfix)
 
 2006-09-01  Michael Stucki  <michael@typo3.org>
 
