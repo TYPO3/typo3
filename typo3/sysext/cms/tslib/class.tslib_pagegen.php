@@ -168,7 +168,7 @@ function decryptString(enc,offset) {
 	var len = enc.length;
 	for(var i=0; i < len; i++)	{
 		var n = enc.charCodeAt(i);
-		if (n >= 0x2B && n <= 0x39)	{
+		if (n >= 0x2B && n <= 0x3A)	{
 			dec += decryptCharcode(n,0x2B,0x3A,offset);	// 0-9 . , - + / :
 		} else if (n >= 0x40 && n <= 0x5A)	{
 			dec += decryptCharcode(n,0x40,0x5A,offset);	// A-Z @
