@@ -2,6 +2,7 @@
 2006-09-02  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
 	* Fixed #4141: config.spamProtectEmailAddresses does not encrypt "9" digits correctly
+	* Web>List localization view did not handle "edit marked" for translation records
 
 2006-09-01 Ingmar Schlecht  <ingmar@typo3.org>
 
