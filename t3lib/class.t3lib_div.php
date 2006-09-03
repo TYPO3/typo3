@@ -4056,7 +4056,7 @@ class t3lib_div {
 
 	/**
 	 * Simple substitute for the PHP function mail() which allows you to specify encoding and character set
-	 * The fifth parameter, $enc, will allow you to specify 'base64' encryption for the output (set $enc=base64)
+	 * The fifth parameter ($encoding) will allow you to specify 'base64' encryption for the output (set $encoding=base64)
 	 * Further the output has the charset set to ISO-8859-1 by default.
 	 * Usage: 4
 	 *
@@ -4065,11 +4065,11 @@ class t3lib_div {
 	 * @param	string		Message content, non-encoded. (see PHP function mail())
 	 * @param	string		Headers, separated by chr(10)
 	 * @param	string		Encoding type: "base64", "quoted-printable", "8bit". Default value is "quoted-printable".
-	 * @param	string		Charset used in encoding-headers (only if $enc is set to a valid value which produces such a header)
+	 * @param	string		Charset used in encoding-headers (only if $encoding is set to a valid value which produces such a header)
 	 * @param	boolean		If set, the header content will not be encoded.
 	 * @return	void
 	 */
-	function plainMailEncoded($email,$subject,$message,$headers='',$enc='',$charset='',$dontEncodeHeader=false)	{
+	function plainMailEncoded($email,$subject,$message,$headers='',$encoding='quoted-printable',$charset='',$dontEncodeHeader=false)	{
 		if (!$charset)	{
 			$charset = $GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset'] ? $GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset'] : 'ISO-8859-1';
 		}
@@ -4080,7 +4080,7 @@ class t3lib_div {
 			foreach (explode(chr(10),$headers) as $line)	{	// Split the header in lines and convert each line separately
 				$parts = explode(': ',$line,2);	// Field tags must not be encoded
 				if (count($parts)==2)	{
-					$parts[1] = t3lib_div::encodeHeader($parts[1],$enc,$charset);
+					$parts[1] = t3lib_div::encodeHeader($parts[1],$encoding,$charset);
 					$newHeaders[] = implode(': ',$parts);
 				} else {
 					$newHeaders[] = $line;	// Should never happen - is such a mail header valid? Anyway, just add the unchanged line...
@@ -4089,11 +4089,11 @@ class t3lib_div {
 			$headers = implode(chr(10),$newHeaders);
 			unset($newHeaders);
 
-			$email = t3lib_div::encodeHeader($email,$enc,$charset);		// Email address must not be encoded, but it could be appended by a name which should be so (e.g. "Kasper Skårhøj <kasperYYYY@typo3.com>")
-			$subject = t3lib_div::encodeHeader($subject,$enc,$charset);
+			$email = t3lib_div::encodeHeader($email,$encoding,$charset);		// Email address must not be encoded, but it could be appended by a name which should be so (e.g. "Kasper Skårhøj <kasperYYYY@typo3.com>")
+			$subject = t3lib_div::encodeHeader($subject,$encoding,$charset);
 		}
 
-		switch ((string)$enc)	{
+		switch ((string)$encoding)	{
 			case 'base64':
 				$headers=trim($headers).chr(10).
 				'Mime-Version: 1.0'.chr(10).
@@ -4186,7 +4186,7 @@ class t3lib_div {
 	 * @param	string		Charset used for encoding
 	 * @return	string		The encoded string
 	 */
-	function encodeHeader($line,$enc='',$charset='ISO-8859-1')	{
+	function encodeHeader($line,$enc='quoted-printable',$charset='ISO-8859-1')	{
 			// Avoid problems if "###" is found in $line (would conflict with the placeholder which is used below)
 		if (strstr($line,'###'))	return $line;
 
@@ -4210,6 +4210,7 @@ class t3lib_div {
 						$qpValue = str_replace(' ','_',$qpValue);	// Encoded words in the header should not contain non-encoded spaces. "_" is a shortcut for "=20". See RFC 2047 for details.
 						$part = '=?'.$charset.'?Q?'.$qpValue.'?=';
 					}
+				break;
 			}
 			$line = str_replace($oldPart, $part, $line);
 		}

@@ -95,13 +95,12 @@ class t3lib_formmail extends t3lib_htmlmail {
 	function start($V,$base64=false)	{
 		$convCharset = FALSE;	// do we need to convert form data?
 
-		if ($GLOBALS['TSFE']->metaCharset != $GLOBALS['TSFE']->renderCharset)	{	// Use metaCharset for mail if different from renderCharset
-			$this->charset = $GLOBALS['TSFE']->metaCharset;
-			$convCharset = TRUE;
-		}
-
  		if ($GLOBALS['TSFE']->config['config']['formMailCharset'])	{	// Respect formMailCharset if it was set
 			$this->charset = $GLOBALS['TSFE']->csConvObj->parse_charset($GLOBALS['TSFE']->config['config']['formMailCharset']);
+			$convCharset = TRUE;
+
+		} elseif ($GLOBALS['TSFE']->metaCharset != $GLOBALS['TSFE']->renderCharset)	{	// Use metaCharset for mail if different from renderCharset
+			$this->charset = $GLOBALS['TSFE']->metaCharset;
 			$convCharset = TRUE;
 		}
 
@@ -143,7 +142,7 @@ class t3lib_formmail extends t3lib_htmlmail {
 						$HTML_val = ($convCharset && strlen($val)) ? $GLOBALS['TSFE']->csConvObj->conv(htmlspecialchars($val),$GLOBALS['TSFE']->renderCharset,$this->charset,1) : htmlspecialchars($val);
 
 						$Plain_content.= strtoupper($key).':  '.$space.$Plain_val."\n".$space;
-						$HTML_content.='<tr><td bgcolor="#eeeeee"><font face="Verdana" size="1"><b>'.strtoupper($key).'</b></font></td><td bgcolor="#eeeeee"><font face="Verdana" size="1">'.nl2br($HTML_val).'&nbsp;</font></td></tr>';
+						$HTML_content.= '<tr><td bgcolor="#eeeeee"><font face="Verdana" size="1"><b>'.strtoupper($key).'</b></font></td><td bgcolor="#eeeeee"><font face="Verdana" size="1">'.nl2br($HTML_val).'&nbsp;</font></td></tr>';
 					}
 				}
 			}
