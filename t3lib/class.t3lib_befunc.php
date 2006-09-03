@@ -1862,23 +1862,23 @@ class t3lib_BEfunc	{
 				break;
 				case 'select':
 					if ($theColConf['MM'])	{
-							// Display the title of MM related records in lists
-							if ($noRecordLookup)	{
-								$MMfield = $theColConf['foreign_table'].'.uid';
-							} else	{
-								$MMfields = array($theColConf['foreign_table'].'.'.$TCA[$theColConf['foreign_table']]['ctrl']['label']);
-								foreach (t3lib_div::trimExplode(',', $TCA[$theColConf['foreign_table']]['ctrl']['label_alt'], 1) as $f)	{
-									$MMfields[] = $theColConf['foreign_table'].'.'.$f;
-								}
-								$MMfield = join(',',$MMfields);
+						// Display the title of MM related records in lists
+						if ($noRecordLookup)	{
+							$MMfield = $theColConf['foreign_table'].'.uid';
+						} else	{
+							$MMfields = array($theColConf['foreign_table'].'.'.$TCA[$theColConf['foreign_table']]['ctrl']['label']);
+							foreach (t3lib_div::trimExplode(',', $TCA[$theColConf['foreign_table']]['ctrl']['label_alt'], 1) as $f)	{
+								$MMfields[] = $theColConf['foreign_table'].'.'.$f;
 							}
-							$MMres = $GLOBALS['TYPO3_DB']->exec_SELECT_mm_query(
-								$MMfield,
-								($table!=$theColConf['foreign_table']?$table:''),
-								$theColConf['MM'],
-								$theColConf['foreign_table'],
-								'AND '.$theColConf['MM'].'.uid_local ='.intval($uid).t3lib_BEfunc::deleteClause($theColConf['foreign_table'])
-							);
+							$MMfield = join(',',$MMfields);
+						}
+						$MMres = $GLOBALS['TYPO3_DB']->exec_SELECT_mm_query(
+							$MMfield,
+							($table!=$theColConf['foreign_table']?$table:''),
+							$theColConf['MM'],
+							$theColConf['foreign_table'],
+							'AND '.$theColConf['MM'].'.uid_local ='.intval($uid).t3lib_BEfunc::deleteClause($theColConf['foreign_table'])
+						);
 						if ($MMres) {
 							while($MMrow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($MMres))	{
 								$mmlA[] = ($noRecordLookup?$MMrow['uid']:t3lib_BEfunc::getRecordTitle($theColConf['foreign_table'], $MMrow));
