@@ -1,3 +1,6 @@
+2006-09-03  Wolfgang Klinger <wk@plan2.net>
+
+	* Changed call_user_func to call_user_func_array in t3lib_div to allow passing parameters by reference to t3lib_div::callUserFunction
 
 2006-09-02  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 

@@ -3830,11 +3830,10 @@ class t3lib_div {
 
 			// Check persistent object and if found, call directly and exit.
 		if (is_array($GLOBALS['T3_VAR']['callUserFunction'][$funcName]))	{
-			return call_user_func(
+			return call_user_func_array(
 						array(&$GLOBALS['T3_VAR']['callUserFunction'][$funcName]['obj'],
 							$GLOBALS['T3_VAR']['callUserFunction'][$funcName]['method']),
-						$params,
-						$ref
+						array(&$params, &$ref)
 					);
 		}
 
@@ -3891,10 +3890,9 @@ class t3lib_div {
 						);
 					}
 						// Call method:
-					$content = call_user_func(
+					$content = call_user_func_array(
 						array(&$classObj, $parts[1]),
-						$params,
-						$ref
+						array(&$params, &$ref)
 					);
 				} else {
 					if (!$silent)	debug("<strong>ERROR:</strong> No method name '".$parts[1]."' in class ".$parts[0],1);
@@ -3904,7 +3902,7 @@ class t3lib_div {
 			}
 		} else {	// Function
 			if (function_exists($funcRef))	{
-			 	$content = call_user_func($funcRef, $params, $ref);
+			 	$content = call_user_func_array($funcRef, array(&$params, &$ref));
 			} else {
 				if (!$silent)	debug("<strong>ERROR:</strong> No function named: ".$funcRef,1);
 			}
