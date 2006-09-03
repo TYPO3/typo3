@@ -3839,7 +3839,26 @@ if (version == "n3") {
 		}
 
 		$encoding = $this->config['config']['notification_email_encoding'] ? $this->config['config']['notification_email_encoding'] : 'quoted-printable';
-		$charset = $this->config['config']['notification_email_charset'] ? $this->config['config']['notification_email_charset'] : ($GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset'] ? $GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset'] : 'ISO-8859-1');
+		$charset = $this->renderCharset;
+
+		$convCharset = FALSE;	// do we need to convert mail data?
+		if ($this->config['config']['notification_email_charset'])	{	// Respect config.notification_email_charset if it was set
+			$charset = $this->csConvObj->parse_charset($this->config['config']['notification_email_charset']);
+			if ($charset != $this->renderCharset)	{
+				$convCharset = TRUE;
+			}
+
+		} elseif ($this->metaCharset != $this->renderCharset)	{	// Use metaCharset for mail if different from renderCharset
+			$charset = $this->metaCharset;
+			$convCharset = TRUE;
+		}
+
+		if ($convCharset)	{
+			$email = $this->csConvObj->conv($email,$this->renderCharset,$charset);
+			$subject = $this->csConvObj->conv($subject,$this->renderCharset,$charset);
+			$message = $this->csConvObj->conv($message,$this->renderCharset,$charset);
+			$headers = $this->csConvObj->conv($headers,$this->renderCharset,$charset);
+		}
 
 		t3lib_div::plainMailEncoded(
 			$email,
