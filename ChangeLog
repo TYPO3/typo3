@@ -1,3 +1,7 @@
+2006-09-03  Sebastian Kurfuerst  <sebastian@garbage-group.de>
+
+	* Added su_back.gif image again to gfx
+
 2006-09-03  Wolfgang Klinger <wk@plan2.net>
 
 	* Changed call_user_func to call_user_func_array in t3lib_div to allow passing parameters by reference to t3lib_div::callUserFunction
