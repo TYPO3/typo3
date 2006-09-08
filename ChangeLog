@@ -14,7 +14,7 @@
 
 2006-09-01 Ingmar Schlecht  <ingmar@typo3.org>
 
-	* Fixed #529: Filled static_tsconfig_help with new content of core documents! Thanks a lot to Stephane Schitter for extracting the new data from the references!
+	* Feature #529: Filled static_tsconfig_help with new content of core documents! Thanks a lot to Stephane Schitter for extracting the new data from the references!
 
 2006-09-01  Michael Stucki  <michael@typo3.org>
 
@@ -87,7 +87,7 @@
 
 2006-07-24  Karsten Dambekalns  <karsten@typo3.org>
 
-        * t3lib/config_default.php: Fixed bug #3246 - error in t3lib/config_default.php on setting display_errors.
+	* t3lib/config_default.php: Fixed bug #3246 - error in t3lib/config_default.php on setting display_errors.
 
 2006-07-23  Karsten Dambekalns  <karsten@typo3.org>
 
