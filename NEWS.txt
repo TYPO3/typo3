@@ -1,53 +1,15 @@
 ************************************************************************
-CHANGES & IMPROVEMENTS between TYPO3 4.0 and 4.0.1
+CHANGES & IMPROVEMENTS between TYPO3 4.0.1 and 4.0.2
 (for technical details see ChangeLog)
 ************************************************************************
 
 This is a maintenance release, it does not contain any feature enhancements.
 
-Compatibility
-=============
+Interesting changes
+===================
 
-	* captionSplit.cObject had been removed in version 4.0. For compatibility reasons, it has been added again, though it remains deprecated and should not be used anymore (bug #3005)
-	* In TYPO3 4.0, showpic.php automatically adds default parameters to custom URLs. Some extensions did not like this feature because they want to generate all parameters by themselves. Enabling JSwindow.altUrl_noDefaultParams will now solve this problem for them (bug #1153)
-	* FORM submit buttons with images are now valid xhtml (bug #3397)
-
-Installation/Upgrade
-====================
-
-	* The update wizard has been slightly reworded to make the functionality more easy to understand (bug #3943)
-	* typo3temp/ subdirectories were not created automatically (bug #2462)
-
-DBAL
-====
-
-	* Improved support for Oracle
-	* ADOdb has been updated to version 4.90
-	* DBAL now honours the no_pconnect setting
-	* Importing dumps using the install tool now works, see manual for tips
-	* Code cleanup
-	* Updates to the documentation manual
-
-Backend skin
-============
-
-	* Template modules have been changed to support skins (especially t3skin)
-	* The BE admin module has been changed to support skins (especially t3skin)
-	* Current page was not highlighted in navigation tree on IE6 (bug #2874)
-
-Important bugfixes
-==================
-
-	* Windows systems print phpinfo under some circumstances (bug #3362)
-	* HTTP status was incorrect for pageNotFound_handling when external URL is specified as 404 page
-	* Wrong HTTP status 503 was sent when $TSFE->set_no_cache() was called from a plugin (bugs #3049 and #3176)
-	* Mail forms did not work with <input type="image"> submit buttons (bug #1374)
-	* FE editing: edit form on page did not work in 4.0
-	* Linking images to hidden pages resulted in click-enlarge (bug #3522)
-	* config.formMailCharset did not work (bug #3600)
-	* Some broken references to media/ have been fixed (bug #3233)
-	* Fixed RTE bug: images were removed under some special conditions when saving (bug #3051)
-	* Various enhancements to CSS styles content (bugs #3138, #3258, #3416)
-	* config.spamProtectEmailAddresses returned garbled links sometimes (bug #3427)
-	* Localized flexforms did not work properly (bug #3505)
-	* Extension manager: The label for enabling unreviewed extensions is more clear now. The search scope (all/reviewed) is displayed on the import extensions page.
+	* Various fixes to indexed_search extension
+	* Small fixes to localization view in BE Web->List module (bug #4013)
+	* Mails sent by $TSFE->plainMailEncoded were still not encoded correctly (bug #1268)
+	* Fixed a bug to make tabbing with new skin possible in textareas (bug #4076)
+	* Filled static_tsconfig_help with new content of core documents! Thanks a lot to Stephane Schitter for extracting the new data from the references! (bug #529)

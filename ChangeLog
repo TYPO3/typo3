@@ -1,3 +1,8 @@
+2006-09-08  Michael Stucki  <michael@typo3.org>
+
+	* Updates to NEWS.txt
+	* Fixed #4165: Link to TSconfig and TSref not working. Thanks to Andreas Wolf for providing a patch!
+
 2006-09-04  Michael Stucki  <michael@typo3.org>
 
 	* Fixed bug #1268: plainMailEncoded not working with charset conversion
@@ -9,11 +14,7 @@
 
 2006-09-01 Ingmar Schlecht  <ingmar@typo3.org>
 
-	* Fixed #529: TSConfig Help was empty. Thanks a lot to Stephane Schitter for extracting the new data from the references!
-
-2006-08-31  Dmitry Dulepov  <typo3@accio.lv>
-
-	* Reverted earlier "Performance enhancement for BE" (did not qualify as bugfix)
+	* Fixed #529: Filled static_tsconfig_help with new content of core documents! Thanks a lot to Stephane Schitter for extracting the new data from the references!
 
 2006-09-01  Michael Stucki  <michael@typo3.org>
 
@@ -24,10 +25,6 @@
 2006-08-31  Ernesto Baschny <ernst@cron-it.de>
 
 	* Fixed bug #4035/3971: Error message when uploading one or two files in file-browser (BE)
-
-2006-08-31  Dmitry Dulepov  <typo3@accio.lv>
-
-	* Performance enhancement for BE: (1) caching images in typo3/gfx and typo3/sysext; (2) caching CSS files in typo3/sysext/t3skin/stylesheets
 
 2006-08-31  Ernesto Baschny <ernst@cron-it.de>
 
@@ -59,7 +56,7 @@
 
 2006-08-19 Ingmar Schlecht  <ingmar@typo3.org>
 
-	* Parly fixed #4013: New records in non-default language are displayed in list-module in localization view too now even if they don't have a parent record in the default language.
+	* Partly fixed #4013: New records in non-default language are displayed in list-module in localization view too now even if they don't have a parent record in the default language.
 
 2006-08-17 Ingmar Schlecht  <ingmar@typo3.org>
 
