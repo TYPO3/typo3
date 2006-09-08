@@ -1,3 +1,8 @@
+2006-09-08  Michael Stucki  <michael@typo3.org>
+
+	* Updates to NEWS.txt
+	* Fixed #4165: Link to TSconfig and TSref not working. Thanks to Andreas Wolf for providing a patch!
+
 2006-09-04  Michael Stucki  <michael@typo3.org>
 
 	* Fixed bug #1268: plainMailEncoded not working with charset conversion
@@ -17,7 +22,7 @@
 
 2006-09-01 Ingmar Schlecht  <ingmar@typo3.org>
 
-	* Fixed #529: Committed new TSConfig Help data. Thanks a lot to Stephane Schitter for extracting the new data from the references!
+	* Feature #529: Filled static_tsconfig_help with new content of core documents! Thanks a lot to Stephane Schitter for extracting the new data from the references!
 
 2006-09-01  Michael Stucki  <michael@typo3.org>
 
@@ -40,7 +45,7 @@
 
 2006-08-31  Dmitry Dulepov  <typo3@accio.lv>
 
-	* Performance enhancement for BE: (1) caching images in typo3/gfx and typo3/sysext; (2) caching CSS files in typo3/sysext/t3skin/stylesheets
+	* Performance enhancement for BE: 1) caching images in typo3/gfx and typo3/sysext; 2) caching CSS files in typo3/sysext/t3skin/stylesheets
 
 2006-08-30  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
@@ -224,7 +229,8 @@
 
 2006-06-30  Karsten Dambekalns  <karsten@typo3.org>
 
-	* t3lib_page: Changed getMultipleGroupsWhereClause() to include a check using IS NULL to make it compatible to Oracle. Made enableFields() call getMultipleGroupsWhereClause() non-statically using $this.
+	* t3lib_page: Changed getMultipleGroupsWhereClause() to include a check using IS NULL to make it compatible to Oracle.
+	* t3lib_page: Made enableFields() call getMultipleGroupsWhereClause() non-statically using $this.
 	* sysext/adodb/: Update to upstream version 4.90, fixes to connection wizard, some code cleanup (closes: ##3755).
 	* t3lib_sqlparser: Clean up indentation a little bit, fix bug #2991, make the parser understand "IS NOT [NULL]" an addition to just "IS [NULL]".
 	* t3lib_tsfebeuserauth: Changed static call to enableFields()
@@ -254,7 +260,8 @@
 
 2006-06-28  Karsten Dambekalns  <karsten@typo3.org>
 
-	* t3lib_extfilefunc: func_upload() now logs if no file was uploaded. The last error message encountered is stored in the member variable $lastError
+	* t3lib_extfilefunc: func_upload() now logs if no file was uploaded.
+	* t3lib_extfilefunc: The last error message encountered is stored in the member variable $lastError
 	* t3lib_tcemain: Made SQL query in versionizeRecord() conform to DBAL (use OR instead of ||).
 	* t3lib_userauthgroup, tx_sv_auth: Made FE group lookups possible when lockToDomain is NULL in DB (e.g. when using Oracle).
 	* t3lib/stddb/tables.sql: Changed be_users.lang to VARCHAR instead of CHAR, as MySQL changes it anyway.
