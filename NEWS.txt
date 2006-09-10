@@ -32,7 +32,9 @@ DBAL
 Frontend features
 =================
 
-	* TODO Ingmar: explain Permalogin
+	* Autologin for Frontend users is now possible!
+	  -> Users can decide on their own whether they want to "Stay logged in" using a checkbox. The latest version of the "newloginbox" extension is required for that.
+	  -> Needs to be configured in the Install Tool ("All Configuration" -> "permalogin" and "lifetime")
 
 Backend skin
 ============
