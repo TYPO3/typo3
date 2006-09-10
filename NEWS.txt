@@ -9,6 +9,7 @@ Interesting changes
 ===================
 
 	* Various fixes to indexed_search extension
+	* Fixed a bug in database parser which made it impossible to create sys_refindex through Install Tool if $TYPO3_CONF_VARS[SYS][multiplyDBfieldSize] in localconf.php was > 1. If you use it, please run "Compare" in Install Tool Database Analyzer again.
 	* Small fixes to localization view in BE Web->List module (bug #4013)
 	* Mails sent by $TSFE->plainMailEncoded were still not encoded correctly (bug #1268)
 	* Fixed a bug to make tabbing with new skin possible in textareas (bug #4076)
