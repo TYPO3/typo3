@@ -1578,12 +1578,19 @@ class tslib_tmenu extends tslib_menu {
 				$this->I['pid'] = $this->menuArr[$key]['pid'];
 				$this->I['spacer'] = $this->menuArr[$key]['isSpacer'];
 
+					// Set access key
+				if ($this->mconf['accessKey'])	{
+					$this->I['accessKey'] = $this->accessKey($this->I['title']);
+				} else {
+					$this->I['accessKey'] = Array();
+				}
+
 					// Make link tag
 				$this->I['val']['ATagParams'] = $this->WMcObj->getATagParams($this->I['val'], 0);
 				$this->I['linkHREF'] =  $this->link($key,$this->I['val']['altTarget'],$this->mconf['forceTypeValue']);
 
 					// Title attribute of links:
-				$titleAttrValue = $this->WMcObj->stdWrap($this->I['val']['ATagTitle'],$this->I['val']['ATagTitle.']);
+				$titleAttrValue = $this->WMcObj->stdWrap($this->I['val']['ATagTitle'],$this->I['val']['ATagTitle.']).$this->I['accessKey']['alt'];
 				if (strlen($titleAttrValue))	{
 					$this->I['linkHREF']['title'] = $titleAttrValue;
 				}
@@ -2202,7 +2209,7 @@ class tslib_gmenu extends tslib_menu {
 					if ($this->mconf['accessKey'])	{
 						$this->I['accessKey'] = $this->accessKey($this->I['title']);
 					} else {
-						$this->I['accessKey']=Array();
+						$this->I['accessKey'] = Array();
 					}
 
 						// Get link.
