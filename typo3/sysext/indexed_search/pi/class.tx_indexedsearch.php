@@ -1333,7 +1333,7 @@ class tx_indexedsearch extends tslib_pibase {
 		foreach (t3lib_div::trimExplode(',',$this->hiddenFieldList) as $fieldName)	{
 			$hiddenFieldMarkerArray = array();
 			$hiddenFieldMarkerArray['###HIDDEN_FIELDNAME###'] = $this->prefixId.'['.$fieldName.']';
-			$hiddenFieldMarkerArray['###HIDDEN_VALUE###'] = (string)$this->piVars[$fieldName];
+			$hiddenFieldMarkerArray['###HIDDEN_VALUE###'] = htmlspecialchars((string)$this->piVars[$fieldName]);
 
 			$hiddenFieldArr[$fieldName] = $this->cObj->substituteMarkerArrayCached($hiddenFieldCode, $hiddenFieldMarkerArray, array(), array());
 		}

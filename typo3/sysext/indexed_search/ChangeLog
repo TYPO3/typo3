@@ -1,3 +1,7 @@
+2006-09-11  Michael Stucki  <michael@typo3.org>
+
+	* Fixed a tiny security problem: Search word was not escaped correctly. For details, see http://typo3.org/teams/security/security-bulletins/typo3-20060911-1/
+
 2006-09-01  Michael Stucki  <michael@typo3.org>
 
 	* Fixed bug #3994: OpenOffice.org files cannot be indexed by class.external_parser.php
