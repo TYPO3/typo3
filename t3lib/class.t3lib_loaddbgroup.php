@@ -83,8 +83,13 @@ class t3lib_loadDBGroup	{
 	var $dbPaths=Array();
 	var $firstTable = '';				// Will contain the first table name in the $tablelist (for positive ids)
 	var $secondTable = '';				// Will contain the second table name in the $tablelist (for negative ids)
-
-
+		// private
+	var $MM_is_foreign = 0;		// boolean - if 1, uid_local and uid_foreign are switched, and the current table is inserted as tablename - this means you display a foreign relation "from the opposite side"
+	var $MM_oppositeField = '';	// field name at the "local" side of the MM relation
+	var $MM_oppositeTable = ''; // only set if MM_is_foreign is set
+	var $MM_oppositeFieldConf = ''; // only set if MM_is_foreign is set
+	var $MM_isMultiTableRelationship = 0;	// is empty by default; if MM_is_foreign is set and there is more than one table allowed (on the "local" side), then it contains the first table (as a fallback)
+	var $currentTable;	// current table => Only needed for reverse relations
 
 
 	/**
@@ -94,9 +99,35 @@ class t3lib_loadDBGroup	{
 	 * @param	string		Comma list of tables, first table takes priority if no table is set for an entry in the list.
 	 * @param	string		Name of a MM table.
 	 * @param	integer		Local UID for MM lookup
+	 * @param	string		current table name
+	 * @param	integer		TCA configuration for current field
 	 * @return	void
 	 */
-	function start($itemlist,$tablelist, $MMtable='',$MMuid=0)	{
+	function start($itemlist, $tablelist, $MMtable='', $MMuid=0, $currentTable='', $conf=array())	{
+			// SECTION: MM reverse relations
+		$this->MM_is_foreign = ($conf['MM_opposite_field']?1:0);
+		$this->MM_oppositeField = $conf['MM_opposite_field'];
+		$this->currentTable = $currentTable;
+		if ($this->MM_is_foreign)	{
+			$tmp = ($conf['type']==='group'?$conf['allowed']:$conf['foreign_table']);
+				// normally, $conf['allowed'] can contain a list of tables, but as we are looking at a MM relation from the foreign side, it only makes sense to allow one one table in $conf['allowed']
+			$tmp = t3lib_div::trimExplode(',', $tmp);
+			$this->MM_oppositeTable = $tmp[0];
+			unset($tmp);
+
+				// only add the current table name if there is more than one allowed field
+			$this->MM_oppositeFieldConf = $GLOBALS['TCA'][$this->MM_oppositeTable]['columns'][$this->MM_oppositeField]['config'];
+
+			if ($this->MM_oppositeFieldConf['allowed'])	{
+				$oppositeFieldConf_allowed = explode(',', $this->MM_oppositeFieldConf['allowed']);
+				if (count($oppositeFieldConf_allowed) > 1)	{
+					$this->MM_isMultiTableRelationship = $oppositeFieldConf_allowed[0];
+				}
+			}
+		}
+
+			// SECTION:	normal MM relations
+
 			// If the table list is "*" then all tables are used in the list:
 		if (!strcmp(trim($tablelist),'*'))	{
 			$tablelist = implode(',',array_keys($GLOBALS['TCA']));
@@ -185,19 +216,41 @@ class t3lib_loadDBGroup	{
 	 */
 	function readMM($tableName,$uid)	{
 		$key=0;
+		if ($this->MM_is_foreign)	{	// in case of a reverse relation
+			$uidLocal_field = 'uid_foreign';
+			$uidForeign_field = 'uid_local';
+			$sorting_field = 'sorting_foreign';
+
+			if ($this->MM_isMultiTableRelationship)	{
+				$additionalWhere = ' AND ( tablenames="'.$this->currentTable.'"';
+				if ($this->currentTable == $this->MM_isMultiTableRelationship)	{	// be backwards compatible! When allowing more than one table after having previously allowed only one table, this case applies.
+					$additionalWhere .= ' OR tablenames=""';
+				}
+				$additionalWhere .= ' ) ';
+			}
+			$theTable = $this->MM_oppositeTable;
+		} else {	// default
+			$uidLocal_field = 'uid_local';
+			$uidForeign_field = 'uid_foreign';
+			$additionalWhere = '';
+			$sorting_field = 'sorting';
+		}
 
 			// Select all MM relations:
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $tableName, 'uid_local='.intval($uid), '', 'sorting');
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $tableName, $uidLocal_field.'='.intval($uid).$additionalWhere, '', $sorting_field);
 		while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
-			$theTable = $row['tablenames'] ? $row['tablenames'] : $this->firstTable;		// If tablesnames columns exists and contain a name, then this value is the table, else it's the firstTable...
-			if (($row['uid_foreign'] || $theTable=='pages') && $theTable && isset($this->tableArray[$theTable]))	{
-				$this->itemArray[$key]['id'] = $row['uid_foreign'];
+			if (!$this->MM_is_foreign) {	// default
+				$theTable = $row['tablenames'] ? $row['tablenames'] : $this->firstTable;		// If tablesnames columns exists and contain a name, then this value is the table, else it's the firstTable...
+			}
+			if (($row[$uidForeign_field] || $theTable=='pages') && $theTable && isset($this->tableArray[$theTable]))	{
+
+				$this->itemArray[$key]['id'] = $row[$uidForeign_field];
 				$this->itemArray[$key]['table'] = $theTable;
-				$this->tableArray[$theTable][]= $row['uid_foreign'];
+				$this->tableArray[$theTable][]= $row[$uidForeign_field];
 			} elseif ($this->registerNonTableValues)	{
-				$this->itemArray[$key]['id'] = $row['uid_foreign'];
+				$this->itemArray[$key]['id'] = $row[$uidForeign_field];
 				$this->itemArray[$key]['table'] = '_NO_TABLE';
-				$this->nonTableArray[] = $row['uid_foreign'];
+				$this->nonTableArray[] = $row[$uidForeign_field];
 			}
 			$key++;
 		}
@@ -214,31 +267,69 @@ class t3lib_loadDBGroup	{
 	 */
 	function writeMM($tableName,$uid,$prependTableName=0)	{
 
-			// Delete all relations:
-		$GLOBALS['TYPO3_DB']->exec_DELETEquery($tableName, 'uid_local='.intval($uid));
+		if ($this->MM_is_foreign)	{	// in case of a reverse relation
+			$uidLocal_field = 'uid_foreign';
+			$uidForeign_field = 'uid_local';
+			$sorting_field = 'sorting_foreign';
+		} else {	// default
+			$uidLocal_field = 'uid_local';
+			$uidForeign_field = 'uid_foreign';
+			$sorting_field = 'sorting';
+		}	// TODO: SORTING!
 
 			// If there are tables...
 		$tableC = count($this->tableArray);
 		if ($tableC)	{
-			$prep = ($tableC>1||$prependTableName) ? 1 : 0;
+			$prep = ($tableC>1||$prependTableName||$this->MM_isMultiTableRelationship) ? 1 : 0;	// boolean: does the field "tablename" need to be filled?
 			$c=0;
-			$tName=array();
+
+			$additionalWhere_tablenames = '';
+			if ($this->MM_is_foreign && $prep)	{
+				$additionalWhere_tablenames = ' AND tablenames="'.$this->currentTable.'"';
+			}
+			$existingMMs = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows($uidForeign_field, $tableName, $uidLocal_field.'='.$uid.$additionalWhere_tablenames, '', '', '', $uidForeign_field);
+
 
 				// For each item, insert it:
+			$uidList = array();
 			foreach($this->itemArray as $val)	{
 				$c++;
 
-				$insertFields = array(
-					'uid_local' => $uid,
-					'uid_foreign' => $val['id'],
-					'sorting' => $c
-				);
+				$uidList[] = $val['id'];
+
 				if ($prep || $val['table']=='_NO_TABLE')	{
-					$insertFields['tablenames'] = $val['table'];
+					if ($this->MM_is_foreign)	{	// insert current table if needed
+						$tablename = $this->currentTable;
+					} else {
+						$tablename = $val['table'];
+					}
+				} else {
+					$tablename = '';
 				}
 
-				$GLOBALS['TYPO3_DB']->exec_INSERTquery($tableName, $insertFields);
+				if (isset($existingMMs[$val['id']]))	{
+					$whereClause = $uidLocal_field.'='.$uid.' AND '.$uidForeign_field.'='.$val['id'];
+					if ($tablename)
+						$whereClause .= ' AND tablenames="'.$tablename.'"';
+					$GLOBALS['TYPO3_DB']->exec_UPDATEquery($tableName, $whereClause, array($sorting_field => $c));
+				} else {
+					$GLOBALS['TYPO3_DB']->exec_INSERTquery($tableName, array(
+						$uidLocal_field => $uid,
+						$uidForeign_field => $val['id'],
+						$sorting_field => $c,
+						'tablenames' => $tablename
+					));
+				}
 			}
+
+				// Delete all not-used relations:
+			$additionalWhere = '';
+			if (count($uidList))	{
+				$additionalWhere = ' AND '.$uidForeign_field.' NOT IN ( '.implode(',', $uidList).' ) ';
+			}
+
+			$GLOBALS['TYPO3_DB']->exec_DELETEquery($tableName, $uidLocal_field.'='.intval($uid).$additionalWhere.$additionalWhere_tablenames);
+
 		}
 	}
 

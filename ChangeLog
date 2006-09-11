@@ -1,3 +1,7 @@
+2006-09-11 Ingmar Schlecht  <ingmar@typo3.org>
+
+	* New feature: Bidirectional MM relations. You can now edit mm-relations from both sides of the relation in the Backend TCE-Forms. Thanks to Sebastian (for writing the patch together with me) and René (for the first version of this feature)
+
 2006-09-11  Michael Stucki  <michael@typo3.org>
 
 	* Fixed a tiny security problem in indexed search (for details, see http://typo3.org/teams/security/security-bulletins/typo3-20060911-1/)

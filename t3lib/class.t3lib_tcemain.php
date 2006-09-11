@@ -579,7 +579,7 @@ class t3lib_TCEmain	{
 							$fieldArray = $this->newFieldArray($table);	// Get a fieldArray with default values
 							if (isset($incomingFieldArray['pid']))	{	// A pid must be set for new records.
 									// $value = the pid
-		 						$pid_value = $incomingFieldArray['pid'];
+								$pid_value = $incomingFieldArray['pid'];
 
 									// Checking and finding numerical pid, it may be a string-reference to another value
 								$OK = 1;
@@ -1328,13 +1328,13 @@ class t3lib_TCEmain	{
 					);
 				break;
 				case 'db':
-					$valueArray = $this->checkValue_group_select_processDBdata($valueArray,$tcaFieldConf,$id,$status,'group');
+					$valueArray = $this->checkValue_group_select_processDBdata($valueArray,$tcaFieldConf,$id,$status,'group', $table);
 				break;
 			}
 		}
 			// For select types which has a foreign table attached:
 		if ($tcaFieldConf['type']=='select' && $tcaFieldConf['foreign_table'])	{
-			$valueArray = $this->checkValue_group_select_processDBdata($valueArray,$tcaFieldConf,$id,$status,'select');
+			$valueArray = $this->checkValue_group_select_processDBdata($valueArray,$tcaFieldConf,$id,$status,'select', $table);
 		}
 
 // BTW, checking for min and max items here does NOT make any sense when MM is used because the above function calls will just return an array with a single item (the count) if MM is used... Why didn't I perform the check before? Probably because we could not evaluate the validity of record uids etc... Hmm...
@@ -1845,15 +1845,16 @@ class t3lib_TCEmain	{
 	 * @param	integer		Record id, used for look-up of MM relations (local_uid)
 	 * @param	string		Status string ('update' or 'new')
 	 * @param	string		The type, either 'select' or 'group'
+	 * @param	string		Table name, needs to be passed to t3lib_loadDBGroup
 	 * @return	array		Modified value array
 	 */
-	function checkValue_group_select_processDBdata($valueArray,$tcaFieldConf,$id,$status,$type)	{
+	function checkValue_group_select_processDBdata($valueArray,$tcaFieldConf,$id,$status,$type,$currentTable)	{
 		$tables = $type=='group'?$tcaFieldConf['allowed']:$tcaFieldConf['foreign_table'].','.$tcaFieldConf['neg_foreign_table'];
 		$prep = $type=='group'?$tcaFieldConf['prepend_tname']:$tcaFieldConf['neg_foreign_table'];
 
 		$dbAnalysis = t3lib_div::makeInstance('t3lib_loadDBGroup');
 		$dbAnalysis->registerNonTableValues=$tcaFieldConf['allowNonIdValues'] ? 1 : 0;
-		$dbAnalysis->start(implode(',',$valueArray),$tables);
+		$dbAnalysis->start(implode(',',$valueArray),$tables, '', 0, $currentTable, $tcaFieldConf);
 
 		if ($tcaFieldConf['MM'])	{
 			if ($status=='update')	{
@@ -2591,7 +2592,7 @@ class t3lib_TCEmain	{
 			$prependName = $conf['type']=='group' ? $conf['prepend_tname'] : $conf['neg_foreign_table'];
 			if ($conf['MM'])	{
 				$dbAnalysis = t3lib_div::makeInstance('t3lib_loadDBGroup');
-				$dbAnalysis->start('',$allowedTables,$conf['MM'],$uid);
+				$dbAnalysis->start('', $allowedTables, $conf['MM'], $uid, $table, $conf);
 				$value = implode(',',$dbAnalysis->getValueArray($prependName));
 			}
 			if ($value)	{	// Setting the value in this array will notify the remapListedDBRecords() function that this field MAY need references to be corrected
@@ -3427,7 +3428,7 @@ class t3lib_TCEmain	{
 
 		/*
 		Version ID swapping principles:
-		  - Version from archive (future/past, called "swap version") will get the uid of the "t3ver_oid", the official element with uid = "t3ver_oid" will get the new versions old uid. PIDs are swapped also
+			- Version from archive (future/past, called "swap version") will get the uid of the "t3ver_oid", the official element with uid = "t3ver_oid" will get the new versions old uid. PIDs are swapped also
 
 			uid		pid			uid		t3ver_oid	pid
 		1:	13		123	 -->	-13		247			123		(Original has negated UID, and sets t3ver_oid to the final UID (which is nice to know for recovery). PID is unchanged at this point)
@@ -3691,7 +3692,7 @@ $this->log($table,$id,6,0,0,'Stage raised...',30,array('comment'=>$comment,'stag
 						switch($conf['type'])	{
 							case 'group':
 							case 'select':
-								$vArray = $this->remapListedDBRecords_procDBRefs($conf, $value, $theUidToUpdate);
+								$vArray = $this->remapListedDBRecords_procDBRefs($conf, $value, $theUidToUpdate, $table);
 								if (is_array($vArray))	{
 									$newData[$fieldName] = implode(',',$vArray);
 								}
@@ -3757,7 +3758,7 @@ $this->log($table,$id,6,0,0,'Stage raised...',30,array('comment'=>$comment,'stag
 
 			// If references are set for this field, set flag so they can be corrected later:
 		if ($this->isReferenceField($dsConf) && strlen($dataValue)) {
-			$vArray = $this->remapListedDBRecords_procDBRefs($dsConf, $dataValue, $uid);
+			$vArray = $this->remapListedDBRecords_procDBRefs($dsConf, $dataValue, $uid, $table);
 			if (is_array($vArray))	{
 				$dataValue = implode(',',$vArray);
 			}
@@ -3773,10 +3774,11 @@ $this->log($table,$id,6,0,0,'Stage raised...',30,array('comment'=>$comment,'stag
 	 * @param	array		TCA field config
 	 * @param	string		Field value
 	 * @param	integer		UID of local record (for MM relations - might need to change if support for FlexForms should be done!)
+	 * @param	string		Table name
 	 * @return	array		Returns array of items ready to implode for field content.
 	 * @see remapListedDBRecords()
 	 */
-	function remapListedDBRecords_procDBRefs($conf, $value, $MM_localUid)	{
+	function remapListedDBRecords_procDBRefs($conf, $value, $MM_localUid, $table)	{
 
 			// Initialize variables
 		$set = FALSE;	// Will be set true if an upgrade should be done...
@@ -3787,7 +3789,7 @@ $this->log($table,$id,6,0,0,'Stage raised...',30,array('comment'=>$comment,'stag
 			// Convert value to list of references:
 		$dbAnalysis = t3lib_div::makeInstance('t3lib_loadDBGroup');
 		$dbAnalysis->registerNonTableValues = ($conf['type']=='select' && $conf['allowNonIdValues']) ? 1 : 0;
-		$dbAnalysis->start($value, $allowedTables, $conf['MM'], $MM_localUid);
+		$dbAnalysis->start($value, $allowedTables, $conf['MM'], $MM_localUid, $table, $conf);
 
 			// Traverse those references and map IDs:
 		foreach($dbAnalysis->itemArray as $k => $v)	{
@@ -4964,17 +4966,17 @@ $this->log($table,$id,6,0,0,'Stage raised...',30,array('comment'=>$comment,'stag
 	function int_pageTreeInfo($CPtable,$pid,$counter, $rootID)	{
 		if ($counter)	{
 			$addW =  !$this->admin ? ' AND '.$this->BE_USER->getPagePermsClause($this->pMap['show']) : '';
-	 		$mres = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', 'pages', 'pid='.intval($pid).$this->deleteClause('pages').$addW, '', 'sorting DESC');
-	 		while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($mres))	{
+			$mres = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', 'pages', 'pid='.intval($pid).$this->deleteClause('pages').$addW, '', 'sorting DESC');
+			while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($mres))	{
 				if ($row['uid']!=$rootID)	{
-		 			$CPtable[$row['uid']] = $pid;
-		 			if ($counter-1)	{	// If the uid is NOT the rootID of the copyaction and if we are supposed to walk further down
-		 				$CPtable = $this->int_pageTreeInfo($CPtable,$row['uid'],$counter-1, $rootID);
-		 			}
+					$CPtable[$row['uid']] = $pid;
+					if ($counter-1)	{	// If the uid is NOT the rootID of the copyaction and if we are supposed to walk further down
+						$CPtable = $this->int_pageTreeInfo($CPtable,$row['uid'],$counter-1, $rootID);
+					}
 				}
-	 		}
+			}
 		}
-	 	return $CPtable;
+		return $CPtable;
 	}
 
 	/**
@@ -5310,7 +5312,7 @@ $this->log($table,$id,6,0,0,'Stage raised...',30,array('comment'=>$comment,'stag
 						case 0:
 							$emails = $this->notifyStageChange_getEmails($workspaceRec['members']);
 						break;
- 						default:
+						default:
 							$emails = $this->notifyStageChange_getEmails($workspaceRec['adminusers'], TRUE);
 						break;
 					}

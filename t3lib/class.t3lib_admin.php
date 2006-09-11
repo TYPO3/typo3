@@ -535,7 +535,7 @@ class t3lib_admin {
 									if ($fieldConf['internal_type']=='db')	{
 										// dbs - group
 										$dbAnalysis = t3lib_div::makeInstance('t3lib_loadDBGroup');
-										$dbAnalysis->start($row[$field],$fieldConf['allowed'],$fieldConf['MM'],$row['uid']);
+										$dbAnalysis->start($row[$field],$fieldConf['allowed'],$fieldConf['MM'],$row['uid'], $table, $fieldConf);
 										reset($dbAnalysis->itemArray);
 										while (list(,$tempArr)=each($dbAnalysis->itemArray))	{
 											$this->checkGroupDBRefs[$tempArr['table']][$tempArr['id']]+=1;
@@ -545,7 +545,7 @@ class t3lib_admin {
 								if ($fieldConf['type']=='select' && $fieldConf['foreign_table'])	{
 									// dbs - select
 									$dbAnalysis = t3lib_div::makeInstance('t3lib_loadDBGroup');
-									$dbAnalysis->start($row[$field],$fieldConf['foreign_table'],$fieldConf['MM'],$row['uid']);
+									$dbAnalysis->start($row[$field],$fieldConf['foreign_table'],$fieldConf['MM'],$row['uid'], $table, $fieldConf);
 									reset($dbAnalysis->itemArray);
 									while (list(,$tempArr)=each($dbAnalysis->itemArray))	{
 										if ($tempArr['id']>0)	{
@@ -673,7 +673,7 @@ class t3lib_admin {
 				$allowedTables = ($fieldConf['type']=='group') ? $fieldConf['allowed'] : $fieldConf['foreign_table'];
 
 				$dbAnalysis = t3lib_div::makeInstance('t3lib_loadDBGroup');
-				$dbAnalysis->start($row[$field],$allowedTables,$fieldConf['MM'],$row['uid']);
+				$dbAnalysis->start($row[$field],$allowedTables,$fieldConf['MM'],$row['uid'], $table, $fieldConf);
 				reset($dbAnalysis->itemArray);
 				while (list(,$tempArr)=each($dbAnalysis->itemArray))	{
 					if ($tempArr['table']==$searchTable && $tempArr['id']==$id)	{

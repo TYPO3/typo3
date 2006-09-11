@@ -484,7 +484,7 @@ class SC_mod_user_ws_workspaceForms extends t3lib_SCbase {
 		$config = &$GLOBALS['TCA']['sys_workspace']['columns']['adminusers']['config'];
 		// Notice: $config['MM'] is not set in the current version of $TCA but
 		// we still pass it to ensure compatibility with feature versions!
-		$loadDB->start($GLOBALS['BE_USER']->user['uid'], $config['allowed'], $config['MM'], $uid);
+		$loadDB->start($GLOBALS['BE_USER']->user['uid'], $config['allowed'], $config['MM'], $uid, 'sys_workspace', $config);
 		$loadDB->getFromDB();
 		return $loadDB->readyForInterface();
 	}

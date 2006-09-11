@@ -171,6 +171,8 @@
  *
  */
 
+require_once (PATH_t3lib.'class.t3lib_loaddbgroup.php');
+
 
 /**
  * Standard functions available for the TYPO3 backend.
@@ -1872,14 +1874,17 @@ class t3lib_BEfunc	{
 							}
 							$MMfield = join(',',$MMfields);
 						}
-						$MMres = $GLOBALS['TYPO3_DB']->exec_SELECT_mm_query(
-							$MMfield,
-							($table!=$theColConf['foreign_table']?$table:''),
-							$theColConf['MM'],
-							$theColConf['foreign_table'],
-							'AND '.$theColConf['MM'].'.uid_local ='.intval($uid).t3lib_BEfunc::deleteClause($theColConf['foreign_table'])
-						);
-						if ($MMres) {
+
+						$dbGroup = t3lib_div::makeInstance('t3lib_loadDBGroup');
+						$dbGroup->start($value, $theColConf['foreign_table'], $theColConf['MM'], $uid, $table, $theColConf);
+						$selectUids = $dbGroup->tableArray[$theColConf['foreign_table']];
+
+						if (is_array($selectUids) && count($selectUids)>0) {
+							$MMres = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+								'uid, '.$MMfield,
+								$theColConf['foreign_table'],
+								'uid IN ('.implode(',', $selectUids).')'
+							);
 							while($MMrow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($MMres))	{
 								$mmlA[] = ($noRecordLookup?$MMrow['uid']:t3lib_BEfunc::getRecordTitle($theColConf['foreign_table'], $MMrow));
 							}

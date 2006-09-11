@@ -382,7 +382,7 @@ class t3lib_transferData {
 			break;
 			case 'db':
 				$loadDB = t3lib_div::makeInstance('t3lib_loadDBGroup');
-				$loadDB->start($data, $fieldConfig['config']['allowed'], $fieldConfig['config']['MM'], $row['uid']);
+				$loadDB->start($data, $fieldConfig['config']['allowed'], $fieldConfig['config']['MM'], $row['uid'], $table, $fieldConfig['config']);
 				$loadDB->getFromDB();
 				$data = $loadDB->readyForInterface();
 			break;
@@ -433,7 +433,7 @@ class t3lib_transferData {
 
 				// Add "foreign table" stuff:
 			if ($TCA[$fieldConfig['config']['foreign_table']])	{
-				$dataAcc = $this->selectAddForeign($dataAcc, $elements, $fieldConfig, $field, $TSconfig, $row);
+				$dataAcc = $this->selectAddForeign($dataAcc, $elements, $fieldConfig, $field, $TSconfig, $row, $table);
 			}
 
 				// Always keep the native order for display in interface:
@@ -441,7 +441,7 @@ class t3lib_transferData {
 		} else {	// Normal, <= 1 -> value without title on it
 			if ($TCA[$fieldConfig['config']['foreign_table']])	{
 				// Getting the data
-				$dataIds = $this->getDataIdList($elements, $fieldConfig, $row);
+				$dataIds = $this->getDataIdList($elements, $fieldConfig, $row, $table);
 
 				if (!count($dataIds))	$dataIds = array(0);
 				$dataAcc[]=$dataIds[0];
@@ -780,11 +780,12 @@ class t3lib_transferData {
 	 * @param	string		The field name
 	 * @param	array		TSconfig for the record
 	 * @param	array		The record
+	 * @param	array		The current table
 	 * @return	array		Modified $dataAcc array
 	 * @access private
 	 * @see renderRecord_selectProc()
 	 */
-	function selectAddForeign($dataAcc, $elements, $fieldConfig, $field, $TSconfig, $row)	{
+	function selectAddForeign($dataAcc, $elements, $fieldConfig, $field, $TSconfig, $row, $table)	{
 		global $TCA;
 
 			// Init:
@@ -806,7 +807,7 @@ class t3lib_transferData {
 
 			// At this point all records that CAN be selected is found in $recordList
 			// Now, get the data from loadDBgroup based on the input list of values.
-		$dataIds = $this->getDataIdList($elements, $fieldConfig, $row);
+		$dataIds = $this->getDataIdList($elements, $fieldConfig, $row, $table);
 		if ($fieldConfig['config']['MM'])	$dataAcc=array();	// Reset, if MM (which cannot bear anything but real relations!)
 
 			// After this we can traverse the loadDBgroup values and match values with the list of possible values in $recordList:
@@ -834,13 +835,20 @@ class t3lib_transferData {
 	 * @param	array		The array of original elements - basically the field value exploded by ","
 	 * @param	array		Field configuration from TCA
 	 * @param	array		The data array, currently. Used to set the "local_uid" for selecting MM relation records.
+	 * @param	string		Current table name. passed on to t3lib_loadDBGroup
 	 * @return	array		An array with ids of the records from the input elements array.
 	 * @access private
 	 */
-	function getDataIdList($elements, $fieldConfig, $row)	{
+	function getDataIdList($elements, $fieldConfig, $row, $table)	{
 		$loadDB = t3lib_div::makeInstance('t3lib_loadDBGroup');
 		$loadDB->registerNonTableValues=$fieldConfig['config']['allowNonIdValues'] ? 1 : 0;
-		$loadDB->start(implode(',',$elements), $fieldConfig['config']['foreign_table'].','.$fieldConfig['config']['neg_foreign_table'], $fieldConfig['config']['MM'], $row['uid']);
+		$loadDB->start(implode(',',$elements),
+			$fieldConfig['config']['foreign_table'].','.$fieldConfig['config']['neg_foreign_table'],
+			$fieldConfig['config']['MM'],
+			$row['uid'],
+			$table,
+			$fieldConfig['config']
+		);
 
 		$idList = $loadDB->convertPosNeg($loadDB->getValueArray(),$fieldConfig['config']['foreign_table'],$fieldConfig['config']['neg_foreign_table']);
 

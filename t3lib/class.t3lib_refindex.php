@@ -570,6 +570,10 @@ class t3lib_refindex {
 			$allowedTables = $conf['type']=='group' ? $conf['allowed'] : $conf['foreign_table'].','.$conf['neg_foreign_table'];
 			$prependName = $conf['type']=='group' ? $conf['prepend_tname'] : $conf['neg_foreign_table'];
 
+			if($conf['MM_opposite_field']) {
+				return array();
+			}
+
 			$dbAnalysis = t3lib_div::makeInstance('t3lib_loadDBGroup');
 			$dbAnalysis->start($value,$allowedTables,$conf['MM'],$uid);
 
