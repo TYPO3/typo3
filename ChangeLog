@@ -1,3 +1,4 @@
+
 2006-09-11  Wolfgang Klinger <wk@plan2.net>
 
 	* Feature request #4133: accesskey for TMENU
@@ -17,7 +18,7 @@
 
 2006-09-04  Michael Stucki  <michael@typo3.org>
 
-	* Fixed bug #1268: plainMailEncoded not working with charset conversion
+	* Fixed bug #1268: plainMailEncoded not working with charset conversion.
 
 2006-09-03  Sebastian Kurfuerst  <sebastian@garbage-group.de>
 
