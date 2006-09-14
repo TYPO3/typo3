@@ -260,7 +260,7 @@ class t3lib_TSparser {
 										case 'prependString':
 											$newValue = $tsFuncArg . $currentValue;
 										break;
-										case 'apppendString':
+										case 'appendString':
 											$newValue = $currentValue . $tsFuncArg;
 										break;
 										case 'removeString':

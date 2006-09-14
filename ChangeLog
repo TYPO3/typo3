@@ -1,3 +1,6 @@
+2006-09-14  Michael Stucki  <michael@typo3.org>
+
+	* Fixed bug #4219: := appendString() did not work because the check was made for "apppendString" (typo)
 
 2006-09-11  Wolfgang Klinger <wk@plan2.net>
 
