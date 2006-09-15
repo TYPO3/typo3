@@ -1,3 +1,7 @@
+2006-09-15  Sebastian Kurfuerst  <sebastian@garbage-group.de>
+
+	* Fixed bug #3862: Tools>User Admin allows switching to disabled user
+
 2006-09-14  Michael Stucki  <michael@typo3.org>
 
 	* Fixed bug #4219: := appendString() did not work because the check was made for "apppendString" (typo)
