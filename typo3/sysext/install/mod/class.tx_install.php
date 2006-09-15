@@ -909,13 +909,17 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 			}
 		}
 
-
 			// Filelist:
 		$typo3conf_files = t3lib_div::getFilesInDir($EDIT_path,'',1,1);
 		reset($typo3conf_files);
 		$lines=array();
 		$fileFound = 0;
 		while(list($k,$file)=each($typo3conf_files))	{
+				// Delete temp_CACHED files if option is set
+			if ( $this->INSTALL['delTempCached'] && preg_match('|/temp_CACHED_[a-z0-9_]+\.php|', $file))	{
+				unlink($file);
+				continue;
+			}
 			if ($this->INSTALL['typo3conf_files'] && !strcmp($this->INSTALL['typo3conf_files'],$file))	{
 				$wrap=array('<strong><span style="color:navy;">','</span></strong>');
 				$fileFound = 1;
@@ -930,6 +934,9 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 			'.PATH_site.'<input type="text" name="TYPO3_INSTALL[FILE][EDIT_path]" value="'.$this->INSTALL['FILE']['EDIT_path'].'"><input type="submit" name="" value="Set">
 			</form>';
 		}
+
+			// create link for deleting temp_CACHED files
+		$fileList .= '<br /><br /><a href="'.$this->action.'&TYPO3_INSTALL[delTempCached]=1">Delete temp_CACHED* files</a>';
 
 		if ($fileFound && @is_file($this->INSTALL['typo3conf_files']))	{
 			$this->headerStyle = '
