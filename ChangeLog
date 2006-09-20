@@ -1,3 +1,7 @@
+2006-09-15  Bernhard Kraft  <kraftb@kraftb.at>
+
+	* Fixed a missing space in typo3/template.php
+
 2006-09-15  Sebastian Kurfuerst  <sebastian@garbage-group.de>
 
 	* Fixed bug #3862: Tools>User Admin allows switching to disabled user
