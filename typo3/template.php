@@ -1707,7 +1707,7 @@ $str.=$this->docBodyTagBegin().
 
 				$isActive = strcmp($def['content'],'');
 
-				$mouseOverOut = 'onmouseover="DTM_mouseOver(this);" onmouseout="DTM_mouseOut(this);"';
+				$mouseOverOut = ' onmouseover="DTM_mouseOver(this);" onmouseout="DTM_mouseOut(this);"';
 
 				if (!$foldout)	{
 						// Create TAB cell:
