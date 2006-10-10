@@ -272,10 +272,10 @@ class SC_t3lib_thumbs {
 			// Creates the basis for the error image
 		if ($TYPO3_CONF_VARS['GFX']['gdlib_png'])	{
 			Header('Content-type: image/png');
-			$im = imagecreatefrompng(PATH_t3lib.'gfx/notfound_thumb.png');
+			$im = imagecreatefrompng(TYPO3_mainDir.'gfx/notfound_thumb.png');
 		} else {
 			Header('Content-type: image/gif');
-			$im = imagecreatefromgif(PATH_t3lib.'gfx/notfound_thumb.gif');
+			$im = imagecreatefromgif(TYPO3_mainDir.'gfx/notfound_thumb.gif');
 		}
 			// Sets background color and print color.
 	    $white = ImageColorAllocate($im, 0,0,0);
