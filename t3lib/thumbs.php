@@ -69,6 +69,8 @@ if(!defined('PATH_site'))  		define('PATH_site', ereg_replace('[^/]*.[^/]*$','',
 if(!defined('PATH_t3lib')) 		define('PATH_t3lib', PATH_site.'t3lib/');
 define('PATH_typo3conf', PATH_site.'typo3conf/');
 define('TYPO3_mainDir', 'typo3/');		// This is the directory of the backend administration for the sites of this TYPO3 installation.
+define('PATH_typo3', PATH_site.TYPO3_mainDir);
+
 
 // ******************
 // Including config
@@ -272,10 +274,10 @@ class SC_t3lib_thumbs {
 			// Creates the basis for the error image
 		if ($TYPO3_CONF_VARS['GFX']['gdlib_png'])	{
 			Header('Content-type: image/png');
-			$im = imagecreatefrompng(PATH_site.'typo3/gfx/notfound_thumb.png');
+			$im = imagecreatefrompng(PATH_typo3.'gfx/notfound_thumb.png');
 		} else {
 			Header('Content-type: image/gif');
-			$im = imagecreatefromgif(PATH_site.'typo3/gfx/notfound_thumb.gif');
+			$im = imagecreatefromgif(PATH_typo3.'gfx/notfound_thumb.gif');
 		}
 			// Sets background color and print color.
 	    $white = ImageColorAllocate($im, 0,0,0);
