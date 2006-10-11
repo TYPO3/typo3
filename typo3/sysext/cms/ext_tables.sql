@@ -282,7 +282,7 @@ CREATE TABLE sys_template (
   tx_impexp_origuid int(11) DEFAULT '0' NOT NULL,
   PRIMARY KEY (uid),
   KEY t3ver_oid (t3ver_oid,t3ver_wsid),
-  KEY parent (pid)
+  KEY parent (pid,sorting)
 );
 
 

@@ -1,5 +1,9 @@
 
-2006-09-10  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+2006-10-11  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+
+	* Changed index "parent" of sys_template to (pid,sorting)
+
+2006-10-10  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
 	* Fixed bug #3777: thumbs.php looks for file in t3lib/gfx instead of typo3/gfx
 
