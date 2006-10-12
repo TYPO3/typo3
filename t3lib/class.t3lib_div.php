@@ -494,6 +494,7 @@ class t3lib_div {
 	 * @param	integer		must be an integer with an absolute value of at least 4. if negative the string is cropped from the right end.
 	 * @param	string		String to append to the output if it is truncated, default is '...'
 	 * @return	string		new string
+	 * @deprecated
 	 * @see fixed_lgd_pre()
 	 */
 	function fixed_lgd($string,$origChars,$preStr='...')	{
@@ -519,6 +520,7 @@ class t3lib_div {
 	 * @param	string		string to truncate
 	 * @param	integer		must be an integer of at least 4
 	 * @return	string		new string
+	 * @deprecated
 	 * @see fixed_lgd()
 	 */
 	function fixed_lgd_pre($string,$chars)	{
@@ -550,13 +552,14 @@ class t3lib_div {
 	 * @param	string		The string to break up
 	 * @param	string		The string to implode the broken lines with (default/typically \n)
 	 * @param	integer		The line length
+	 * @deprecated		Use PHP function wordwrap()
 	 * @return	string
 	 */
 	function breakTextForEmail($str,$implChar="\n",$charWidth=76)	{
 		$lines = explode(chr(10),$str);
 		$outArr=array();
 		while(list(,$lStr)=each($lines))	{
-			$outArr = array_merge($outArr,t3lib_div::breakLinesForEmail($lStr,$implChar,$charWidth));
+			$outArr[] = t3lib_div::breakLinesForEmail($lStr,$implChar,$charWidth);
 		}
 		return implode(chr(10),$outArr);
 	}

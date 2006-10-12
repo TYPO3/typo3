@@ -1,5 +1,9 @@
 
-2006-09-10  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+2006-10-12  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+
+	* Fixed bug #4021: array_merge error with PHP 5.0
+
+2006-10-10  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
 	* Fixed bug #3777: thumbs.php looks for file in t3lib/gfx instead of typo3/gfx
 
