@@ -1,4 +1,9 @@
 
+2006-10-12  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+
+	* Fixed bug #4021: array_merge error with PHP 5.0
+	* Changed occurences of PATH_site.'typo3conf/' to PATH_typo3conf and PATH_site.TYPO3_mainDir to PATH_typo3
+
 2006-10-11  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
 	* Changed index "parent" of sys_template to (pid,sorting)
