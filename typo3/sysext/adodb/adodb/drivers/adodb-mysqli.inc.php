@@ -1,6 +1,6 @@
 <?php
 /*
-V4.90 8 June 2006  (c) 2000-2006 John Lim (jlim#natsoft.com.my). All rights reserved.
+V4.93 10 Oct 2006  (c) 2000-2006 John Lim (jlim#natsoft.com.my). All rights reserved.
   Released under both BSD license and Lesser GPL library license. 
   Whenever there is any discrepancy between the two licenses, 
   the BSD license will take precedence.
@@ -14,7 +14,7 @@ Based on adodb 3.40
 */ 
 
 // security - hide paths
-//if (!defined('ADODB_DIR')) die();
+if (!defined('ADODB_DIR')) die();
 
 if (! defined("_ADODB_MYSQLI_LAYER")) {
  define("_ADODB_MYSQLI_LAYER", 1 );
@@ -32,7 +32,7 @@ class ADODB_mysqli extends ADOConnection {
 	var $hasInsertID = true;
 	var $hasAffectedRows = true;	
 	var $metaTablesSQL = "SHOW TABLES";	
-	var $metaColumnsSQL = "SHOW COLUMNS FROM %s";
+	var $metaColumnsSQL = "SHOW COLUMNS FROM `%s`";
 	var $fmtTimeStamp = "'Y-m-d H:i:s'";
 	var $hasLimit = true;
 	var $hasMoveFirst = true;
@@ -430,9 +430,12 @@ class ADODB_mysqli extends ADOConnection {
 	// dayFraction is a day in floating point
 	function OffsetDate($dayFraction,$date=false)
 	{		
-		if (!$date) 
-		  $date = $this->sysDate;
-		return "from_unixtime(unix_timestamp($date)+($dayFraction)*24*3600)";
+		if (!$date) $date = $this->sysDate;
+		
+		$fraction = $dayFraction * 24 * 3600;
+		return $date . ' + INTERVAL ' .	 $fraction.' SECOND';
+		
+//		return "from_unixtime(unix_timestamp($date)+$fraction)";
 	}
 	
 	function &MetaTables($ttype=false,$showSchema=false,$mask=false) 

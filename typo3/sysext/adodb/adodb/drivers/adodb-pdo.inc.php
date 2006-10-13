@@ -1,6 +1,6 @@
 <?php
 /* 
-V4.90 8 June 2006  (c) 2000-2006 John Lim (jlim#natsoft.com.my). All rights reserved.
+V4.93 10 Oct 2006  (c) 2000-2006 John Lim (jlim#natsoft.com.my). All rights reserved.
   Released under both BSD license and Lesser GPL library license. 
   Whenever there is any discrepancy between the two licenses, 
   the BSD license will take precedence. 
@@ -325,7 +325,8 @@ class ADODB_pdo extends ADOConnection {
 		$obj = new ADOPDOStatement($stmt,$this);
 		return $obj;
 	}
-
+	
+	
 	/* returns queryID or false */
 	function _query($sql,$inputarr=false) 
 	{
@@ -334,7 +335,8 @@ class ADODB_pdo extends ADOConnection {
 		} else {
 			$stmt = $this->_connectionID->prepare($sql);
 		}
-		
+		#adodb_backtrace();
+		#var_dump($this->_bindInputArray);
 		if ($stmt) {
 			$this->_driver->debug = $this->debug;
 			if ($inputarr) $ok = $stmt->execute($inputarr);
@@ -515,7 +517,7 @@ class ADORecordSet_pdo extends ADORecordSet {
 		}
 		//adodb_pr($arr);
 		$o->name = $arr['name'];
-		if (isset($arr['native_type'])) $o->type = $arr['native_type'];
+		if (isset($arr['native_type']) && $arr['native_type'] <> "null") $o->type = $arr['native_type'];
 		else $o->type = adodb_pdo_type($arr['pdo_type']);
 		$o->max_length = $arr['len'];
 		$o->precision = $arr['precision'];

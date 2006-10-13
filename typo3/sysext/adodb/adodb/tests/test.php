@@ -75,6 +75,8 @@ function testdb(&$db,$createtab="create table ADOXYZ (id int, firstname char(24)
 {
 GLOBAL $ADODB_vers,$ADODB_CACHE_DIR,$ADODB_FETCH_MODE,$ADODB_COUNTRECS;
 
+	//adodb_pr($db);
+	
 ?>	<form method=GET>
 	</p>
 	<table width=100% ><tr><td bgcolor=beige>&nbsp;</td></tr></table>
