@@ -45,8 +45,8 @@
 	 */
 	
 	$person = new Person();
-	$person->nameFirst = 'Andi';
-	$person->nameLast  = 'Gutmans';
+	$person->name_first = 'Andi';
+	$person->name_last  = 'Gutmans';
 	$person->save(); // this save() will fail on INSERT as favorite_color is a must fill...
 	
 	

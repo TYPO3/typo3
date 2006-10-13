@@ -14,5 +14,14 @@
 			<label index="table">Table name</label>
 			<label index="checkconnectionwizard">Check connection to database with configuration entered below</label>
 		</languageKey>
+		<languageKey index="dk" type="array">
+			<label index="checkconnectionwizard">Check forbindelsen til databasen med den konfiguration som er indtastet herunder</label>
+			<label index="dbtype">Databasetype</label>
+			<label index="host">Host eller DSN</label>
+			<label index="dbname">Databasenavn</label>
+			<label index="username">Brugernavn</label>
+			<label index="password">Password</label>
+			<label index="table">Tabelnavn</label>
+		</languageKey>
 	</data>
 </T3locallang>
