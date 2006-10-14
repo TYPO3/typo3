@@ -313,6 +313,7 @@ class t3lib_DB {
 				while($output[] = $this->sql_fetch_assoc($res));
 				array_pop($output);
 			}
+			$this->sql_free_result($res);
 		}
 		return $output;
 	}
