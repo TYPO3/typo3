@@ -1,3 +1,7 @@
+2006-10-17  Ernesto Baschny  <ernst@cron-it.de>
+
+	* Fix: no more "ERR" or "Unpacking the language pack failed" in the translation handling with curl enabled.
+
 2006-10-14  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Fix: t3lib_db::exec_SELECTgetRows() did not free recordset
