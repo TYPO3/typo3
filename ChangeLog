@@ -1,6 +1,7 @@
 2006-10-17  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Fixed bug 3199: SUing to myself?
+	* Fixed bug 3720: Multilanguage Flexforms don't work after migrating a site from one language to more languages
 
 2006-10-17  Ernesto Baschny  <ernst@cron-it.de>
 
