@@ -1992,7 +1992,7 @@ class t3lib_div {
 	 * @param	string		tag-prefix, eg. a namespace prefix like "T3:"
 	 * @param	integer		Current recursion level. Don't change, stay at zero!
 	 * @param	string		Alternative document tag. Default is "phparray".
-	 * @param	integer		If set, the number of spaces corresponding to this number is used for indenting, otherwise a single chr(9) (TAB) is used
+	 * @param	integer		If greater then zero, than number of spaces corresponding to this number is used for indenting, if less than zero - no indentation, if zero - a single chr(9) (TAB) is used
 	 * @param	array		Options for the compilation. Key "useNindex" => 0/1 (boolean: whether to use "n0, n1, n2" for num. indexes); Key "useIndexTagForNum" => "[tag for numerical indexes]"; Key "useIndexTagForAssoc" => "[tag for associative indexes"; Key "parentTagMap" => array('parentTag' => 'thisLevelTag')
 	 * @param	string		Stack data. Don't touch.
 	 * @return	string		An XML string made from the input content in the array.
@@ -2007,6 +2007,7 @@ class t3lib_div {
 			// Set indenting mode:
 		$indentChar = $spaceInd ? ' ' : chr(9);
 		$indentN = $spaceInd>0 ? $spaceInd : 1;
+		$nl = ($spaceInd >= 0 ? chr(10) : '');
 
 			// Init output variable:
 		$output='';
@@ -2057,7 +2058,7 @@ class t3lib_div {
 						$clearStackPath = FALSE;
 					}
 
-					$content = chr(10).
+					$content = $nl .
 								t3lib_div::array2xml(
 									$v,
 									$NSprefix,
@@ -2071,7 +2072,7 @@ class t3lib_div {
 										'path' => $clearStackPath ? '' : $stackData['path'].'/'.$tagName,
 									)
 								).
-								str_pad('',($level+1)*$indentN,$indentChar);
+								($spaceInd >= 0 ? str_pad('',($level+1)*$indentN,$indentChar) : '');
 					if ((int)$options['disableTypeAttrib']!=2)	{	// Do not set "type = array". Makes prettier XML but means that empty arrays are not restored with xml2array
 						$attr.=' type="array"';
 					}
@@ -2080,7 +2081,7 @@ class t3lib_div {
 						// Look for binary chars:
 					if (strcspn($v,$binaryChars) != strlen($v))	{	// Go for base64 encoding if the initial segment NOT matching any binary char has the same length as the whole string!
 							// If the value contained binary chars then we base64-encode it an set an attribute to notify this situation:
-						$content = chr(10).chunk_split(base64_encode($v));
+						$content = $nl.chunk_split(base64_encode($v));
 						$attr.=' base64="1"';
 					} else {
 							// Otherwise, just htmlspecialchar the stuff:
@@ -2091,14 +2092,14 @@ class t3lib_div {
 				}
 
 					// Add the element to the output string:
-				$output.=str_pad('',($level+1)*$indentN,$indentChar).'<'.$NSprefix.$tagName.$attr.'>'.$content.'</'.$NSprefix.$tagName.'>'.chr(10);
+				$output.=($spaceInd >= 0 ? str_pad('',($level+1)*$indentN,$indentChar) : '').'<'.$NSprefix.$tagName.$attr.'>'.$content.'</'.$NSprefix.$tagName.'>'.$nl;
 			}
 		}
 
 			// If we are at the outer-most level, then we finally wrap it all in the document tags and return that as the value:
 		if (!$level)	{
 			$output =
-				'<'.$docTag.'>'.chr(10).
+				'<'.$docTag.'>'.$nl.
 				$output.
 				'</'.$docTag.'>';
 		}
