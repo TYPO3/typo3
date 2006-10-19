@@ -1,5 +1,6 @@
 2006-10-14  Dmitry Dulepov  <dmitry@typo3.org>
 
+	* Fixed bug 3199: SUing to myself?
 	* Fixed bug 4358: Add an option to t3lib_div::xml2array to remove all unnecessary spaces
 
 2006-10-17  Ernesto Baschny  <ernst@cron-it.de>
