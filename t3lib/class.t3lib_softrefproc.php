@@ -488,7 +488,7 @@ class t3lib_softrefproc {
 	}
 
 	/**
-	 * Finding URLs in content, but only to notify about their existence. No substitution (could be done later via a parameter)
+	 * Finding URLs in content
 	 *
 	 * @param	string		The input content to analyse
 	 * @param	array		Parameters set for the softref parser key in TCA/columns
@@ -725,7 +725,8 @@ class t3lib_softrefproc {
 			// Based on link type, maybe do more:
 		switch ((string)$tLP['LINK_TYPE'])	{
 			case 'mailto':
-					// Mail addresses can be substituted manually:
+			case 'url':
+					// Mail addresses and URLs can be substituted manually:
 				$elements[$tokenID.':'.$idx]['subst'] = array(
 					'type' => 'string',
 					'tokenID' => $tokenID,
@@ -733,12 +734,6 @@ class t3lib_softrefproc {
 				);
 					// Output content will be the token instead:
 				$content = '{softref:'.$tokenID.'}';
-			break;
-			case 'url':
-					// Nothing done, only for informational purposes. So return content right away:
-				{
-					return $content;
-				}
 			break;
 			case 'file':
 					// Process files found in fileadmin directory:

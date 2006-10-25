@@ -958,6 +958,7 @@ class t3lib_BEfunc	{
 
 	/**
 	 * Finds the Data Structure for a FlexForm field
+	 * NOTE ON data structures for deleted records: This function may fail to deliver the data structure for a record for a few reasons: a) The data structure could be deleted (either with deleted-flagged or hard-deleted), b) the data structure is fetched using the ds_pointerField_searchParent in which case any deleted record on the route to the final location of the DS will make it fail. In theory, we can solve the problem in the case where records that are deleted-flagged keeps us from finding the DS - this is done at the markers ###NOTE_A### where we make sure to also select deleted records. However, we generally want the DS lookup to fail for deleted records since for the working website we expect a deleted-flagged record to be as inaccessible as one that is completely deleted from the DB. Any way we look at it, this may lead to integrity problems of the reference index and even lost files if attached. However, that is not really important considering that a single change to a data structure can instantly invalidate large amounts of the reference index which we do accept as a cost for the flexform features. Other than requiring a reference index update, deletion of/changes in data structure or the failure to look them up when completely deleting records may lead to lost files in the uploads/ folders since those are now without a proper reference.
 	 * Usage: 5
 	 *
 	 * @param	array		Field config array
@@ -965,10 +966,11 @@ class t3lib_BEfunc	{
 	 * @param	string		The table name
 	 * @param	string		Optional fieldname passed to hook object
 	 * @param	boolean		Boolean; If set, workspace overlay is applied to records. This is correct behaviour for all presentation and export, but NOT if you want a true reflection of how things are in the live workspace.
+	 * @param	integer		SPECIAL CASES: Use this, if the DataStructure may come from a parent record and the INPUT row doesn't have a uid yet (hence, the pid cannot be looked up). Then it is necessary to supply a PID value to search recursively in for the DS (used from TCEmain)
 	 * @return	mixed		If array, the data structure was found and returned as an array. Otherwise (string) it is an error message.
 	 * @see t3lib_TCEforms::getSingleField_typeFlex()
 	 */
-	function getFlexFormDS($conf,$row,$table,$fieldName='',$WSOL=TRUE)	{
+	function getFlexFormDS($conf,$row,$table,$fieldName='',$WSOL=TRUE,$newRecordPidValue=0)	{
 		global $TYPO3_CONF_VARS;
 
 			// Get pointer field etc from TCA-config:
@@ -1002,7 +1004,7 @@ class t3lib_BEfunc	{
 
 				// Searching recursively back if 'ds_pointerField_searchParent' is defined (typ. a page rootline, or maybe a tree-table):
 			if ($ds_searchParentField && !$srcPointer)	{
-				$rr = t3lib_BEfunc::getRecord($table,$row['uid'],'uid,'.$ds_searchParentField);	// Get the "pid" field - we cannot know that it is in the input record!
+				$rr = t3lib_BEfunc::getRecord($table,$row['uid'],'uid,'.$ds_searchParentField);	// Get the "pid" field - we cannot know that it is in the input record! ###NOTE_A###
 				if ($WSOL)	{
 					t3lib_BEfunc::workspaceOL($table,$rr);
 					t3lib_BEfunc::fixVersioningPid($table,$rr,TRUE);	// Added "TRUE" 23/03/06 before 4.0. (Also to similar call below!).  Reason: When t3lib_refindex is scanning the system in Live workspace all Pages with FlexForms will not find their inherited datastructure. Thus all references from workspaces are removed! Setting TRUE means that versioning PID doesn't check workspace of the record. I can't see that this should give problems anywhere. See more information inside t3lib_refindex!
@@ -1010,11 +1012,13 @@ class t3lib_BEfunc	{
 				$uidAcc=array();	// Used to avoid looping, if any should happen.
 				$subFieldPointer = $conf['ds_pointerField_searchParent_subField'];
 				while(!$srcPointer)		{
+
 					$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 									'uid,'.$ds_pointerField.','.$ds_searchParentField.($subFieldPointer?','.$subFieldPointer:''),
 									$table,
-									'uid='.intval($rr[$ds_searchParentField]).t3lib_BEfunc::deleteClause($table)
+									'uid='.intval($newRecordPidValue ? $newRecordPidValue : $rr[$ds_searchParentField]).t3lib_BEfunc::deleteClause($table)	###NOTE_A###
 								);
+					$newRecordPidValue = 0;
 					$rr = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
 
 						// break if no result from SQL db or if looping...
@@ -2035,11 +2039,11 @@ class t3lib_BEfunc	{
 	 *
 	 * @param	string		Table name, present in TCA
 	 * @param	string		Table prefix
+	 * @param	array		Preset fields (must include prefix if that is used)
 	 * @return	string		List of fields.
 	 */
-	function getCommonSelectFields($table,$prefix='')	{
+	function getCommonSelectFields($table,$prefix='',$fields = array())	{
 		global $TCA;
-		$fields = array();
 		$fields[] = $prefix.'uid';
 		$fields[] = $prefix.$TCA[$table]['ctrl']['label'];
 
@@ -2346,7 +2350,10 @@ class t3lib_BEfunc	{
 			}
 			$mainParams = t3lib_div::implodeArrayForUrl('',$mainParams);
 
-			if (!$script) { $script=basename(PATH_thisScript); }
+			if (!$script) { 
+				$script = basename(PATH_thisScript);
+				$mainParams.= (t3lib_div::_GET('M') ? '&M='.rawurlencode(t3lib_div::_GET('M')) : '');
+			}
 
 			$options = array();
 			foreach($menuItems as $value => $label)	{
@@ -2564,7 +2571,7 @@ class t3lib_BEfunc	{
 
 	/**
 	 * Set preview keyword, eg:
-	 * 	$previewUrl = t3lib_div::getIndpEnv('TYPO3_SITE_URL').'?ADMCMD_prev='.t3lib_BEfunc::compilePreviewKeyword('id='.$pageId.'&L='.$language.'&ADMCMD_view=1&ADMCMD_editIcons=1&ADMCMD_previewWS='.$this->workspace, $GLOBALS['BE_USER']->user['uid'], 120);
+	 * 	$previewUrl = t3lib_div::getIndpEnv('TYPO3_SITE_URL').'index.php?ADMCMD_prev='.t3lib_BEfunc::compilePreviewKeyword('id='.$pageId.'&L='.$language.'&ADMCMD_view=1&ADMCMD_editIcons=1&ADMCMD_previewWS='.$this->workspace, $GLOBALS['BE_USER']->user['uid'], 120);
 	 *
 	 * todo for sys_preview:
 	 * - Add a comment which can be shown to previewer in frontend in some way (plus maybe ability to write back, take other action?)
@@ -3120,9 +3127,10 @@ class t3lib_BEfunc	{
 	 * @param	integer		Record uid for which to find versions.
 	 * @param	string		Field list to select
 	 * @param	integer		Workspace ID, if zero all versions regardless of workspace is found.
+	 * @param	boolean		If set, deleted-flagged versions are included! (Only for clean-up script!)
 	 * @return	array		Array of versions of table/uid
 	 */
-	function selectVersionsOfRecord($table, $uid, $fields='*', $workspace=0)	{
+	function selectVersionsOfRecord($table, $uid, $fields='*', $workspace=0, $includeDeletedRecords=FALSE)	{
 		global $TCA;
 
 		if ($TCA[$table] && $TCA[$table]['ctrl']['versioningWS'])	{
@@ -3132,7 +3140,7 @@ class t3lib_BEfunc	{
 				$fields,
 				$table,
 				'((t3ver_oid='.intval($uid).($workspace!=0?' AND t3ver_wsid='.intval($workspace):'').') OR uid='.intval($uid).')'.
-					t3lib_BEfunc::deleteClause($table),
+					($includeDeletedRecords ? '' : t3lib_BEfunc::deleteClause($table)),
 				'',
 				't3ver_id DESC'
 			);

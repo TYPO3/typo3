@@ -103,6 +103,7 @@ class alt_menu_functions {
 		$final='';
 		$menuCode='';
 		$descrCode='';
+		$collection=array();
 		$menuCode_sub='';
 		$selectItems=array();
 		$mIcons=array();
@@ -177,12 +178,19 @@ class alt_menu_functions {
 			$moduleKey = $moduleName.'_tab';
 			$moduleCSSId = 'ID_'.t3lib_div::md5int($moduleName);
 
+			$collection[$moduleKey] = array(
+				'moduleName' => $moduleName,
+				'title' => $LANG->moduleLabels['tabs'][$moduleKey],
+				'onclick' => 'top.goToModule(\''.$moduleName.'\');',
+			);
+
 				// Creating image icon
 			$image = @getimagesize($this->mIconFile($LANG->moduleLabels['tabs_images'][$moduleKey],$backPath));
 			$imageCode='';
 			$descr3_title = $LANG->moduleLabels['tabs'][$moduleKey].' ';
 			if ($image)	{
 				$Ifilename = $this->mIconFilename($LANG->moduleLabels['tabs_images'][$moduleKey],$backPath);
+				$collection[$moduleKey]['icon'] = array($Ifilename, $image[3]); 
 				$imageCode = '<img src="'.$Ifilename.'" '.$image[3].' alt="" />';
 				$descr3_imageCode = '<img src="'.$Ifilename.'" '.$image[3].' title="'.htmlspecialchars($descr3_title).'" alt="" />';
 			} else {
@@ -237,6 +245,7 @@ class alt_menu_functions {
 			$subCode='';
 			if (is_array($moduleInfo['sub']))	{
 				reset($moduleInfo['sub']);
+				$collection[$moduleKey]['subitems'] = array();
 				$c=0;
 				while(list($subName,$subInfo)=each($moduleInfo['sub']))	{
 					if ($c==0)		{
@@ -256,12 +265,19 @@ class alt_menu_functions {
 					$subKey = $moduleName.'_'.$subName.'_tab';
 					$moduleCSSId = 'ID_'.t3lib_div::md5int($moduleName.'_'.$subName);
 
+					$collection[$moduleKey]['subitems'][$subKey] = array(
+						'moduleName' => $moduleName.'_'.$subName,
+						'title' => $LANG->moduleLabels['tabs'][$subKey],
+						'onclick' => 'top.goToModule(\''.$moduleName.'_'.$subName.'\');',
+					);
+
 						// Creating image icon
 					$image = @getimagesize($this->mIconFile($LANG->moduleLabels['tabs_images'][$subKey],$backPath));
 					$imageCode='';
 					$descr3_title = $LANG->moduleLabels['tabs'][$subKey].': '.$LANG->moduleLabels['labels'][$subKey.'label'];
 					if ($image)	{
 						$Ifilename = $this->mIconFilename($LANG->moduleLabels['tabs_images'][$subKey],$backPath);
+						$collection[$moduleKey]['subitems'][$subKey]['icon'] = array($Ifilename, $image[3]); 
 						$imageCode = '<img src="'.$Ifilename.'" '.$image[3].' title="'.htmlspecialchars($LANG->moduleLabels['labels'][$subKey.'label']).'" alt="" />';
 						$descr3_imageCode = '<img src="'.$Ifilename.'" '.$image[3].' title="'.htmlspecialchars($descr3_title).'" alt="" />';
 					} else {
@@ -459,6 +475,11 @@ class alt_menu_functions {
 			$final = chr(10).implode(chr(10),$mJScmds).chr(10);
 		}
 
+			// Output for TOPMENU BAR drop downs (but basically this is an array with which you can do many interesting things...)
+		if ($descr==5)	{
+			$final = $collection;
+		}
+
 			// Return result:
 		return $final;
 	}
@@ -569,6 +590,7 @@ class alt_menu_functions {
 		if ($TYPO3_CONF_VARS['EXT']['extCache'])	{
 			$title = $LANG->sL('LLL:EXT:lang/locallang_core.php:rm.clearCache_allTypo3Conf');
 			$functions[]=array(
+				'id' => 'temp_CACHED',
 				'title' => $title,
 				'href' => $backPath.'tce_db.php?vC='.$BE_USER->veriCode().'&redirect='.rawurlencode(t3lib_div::getIndpEnv('TYPO3_REQUEST_SCRIPT')).'&cacheCmd=temp_CACHED',
 				'icon' => '<img'.t3lib_iconWorks::skinImg($backPath,'gfx/clear_cache_files_in_typo3c.gif','width="21" height="18"').' title="'.htmlspecialchars($title).'" alt="" />'
@@ -578,6 +600,7 @@ class alt_menu_functions {
 			// Clear all page cache
 		$title = $LANG->sL('LLL:EXT:lang/locallang_core.php:rm.clearCache_all');
 		$functions[]=array(
+			'id' => 'all',
 			'title' => $title,
 			'href' => $backPath.'tce_db.php?vC='.$BE_USER->veriCode().'&redirect='.rawurlencode(t3lib_div::getIndpEnv('TYPO3_REQUEST_SCRIPT')).'&cacheCmd=all',
 			'icon' => '<img'.t3lib_iconWorks::skinImg($backPath,'gfx/clear_all_cache.gif','width="21" height="18"').' title="'.htmlspecialchars($title).'" alt="" />'

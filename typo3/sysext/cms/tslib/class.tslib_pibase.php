@@ -108,17 +108,6 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 /**
  * Base class for frontend plugins
  * Most modern frontend plugins are extension classes of this one.

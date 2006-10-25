@@ -34,6 +34,7 @@
 			<label index="_unpublish_time.seeAlso">sys_workspace:publish_time,sys_workspace:swap_modes</label>
 			<label index="freeze.description">If set, no editing is allowed inside workspace.</label>
 			<label index="live_edit.description">If set, records from tables where versioning is not enabled can still be edited &quot;live&quot; inside the workspace.</label>
+			<label index="review_stage_edit.description">If set, records raised to Review stage can still be edited by workspace members. This allows late changes to be made while waiting for the review. Only when the stage is raised to Publish the record is completely locked for editing for members and reviewers.</label>
 			<label index="disable_autocreate.description">If set, records are not automatically created as new versions when edited in the workspace. A new version must be manually created first.</label>
 			<label index="swap_modes.description">Defines modes for publishing as a &quot;swap&quot; action where the online content is moved into the workspace in exchange for the workspace content.</label>
 			<label index="swap_modes.details">By default swapping is allowed. Thereby two versions can be published &quot;in and out&quot; of a workspace multiple times, always substituting each other. If this is not desired, it can be disabled with &quot;Disable Swap-Into-Workspace&quot;.

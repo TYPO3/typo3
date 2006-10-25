@@ -100,10 +100,10 @@
  *
  */
 
-unset($MCONF);
-require ('conf.php');
-require ($BACK_PATH.'init.php');
-require ($BACK_PATH.'template.php');
+#unset($MCONF);
+#require ('conf.php');
+#require ($BACK_PATH.'init.php');
+#require ($BACK_PATH.'template.php');
 require_once (PATH_t3lib.'class.t3lib_basicfilefunc.php');
 require_once (PATH_t3lib.'class.t3lib_browsetree.php');
 require_once (PATH_t3lib.'class.t3lib_foldertree.php');
@@ -1268,7 +1268,7 @@ class SC_mod_tools_be_user_index {
 			$outTable = '<table border="0" cellpadding="1" cellspacing="1"><tr class="bgColor5"><td>'.t3lib_iconWorks::getIconImage('be_users',$tempBE_USER->user,$GLOBALS['BACK_PATH'],'class="absmiddle" title="'.$tempBE_USER->user['uid'].'"').$tempBE_USER->user['username'].'</td>';
 			$outTable.= '<td>'.$tempBE_USER->user['realName'].($tempBE_USER->user['email'] ? ', <a href="mailto:'.$tempBE_USER->user['email'].'">'.$tempBE_USER->user['email'].'</a>' : '').'</td>';
 			$outTable.= '<td>'.$this->elementLinks('be_users',$tempBE_USER->user).'</td></tr></table>';
-			$outTable.= '<strong><a href="index.php">&lt; Back to overview</a></strong><br />';
+			$outTable.= '<strong><a href="'.htmlspecialchars($MCONF['_']).'">&lt; Back to overview</a></strong><br />';
 
 			$outTable.= '<br /><table border="0" cellpadding="2" cellspacing="1">'.implode('',$lines).'</table>';
 			$content.= $this->doc->section('User info',$outTable,0,1);
@@ -1400,7 +1400,7 @@ class SC_mod_tools_be_user_index {
 	 * @return	[type]		...
 	 */
 	function linkUser($str,$rec)	{
-		return '<a href="index.php?be_user_uid='.$rec['uid'].'">'.$str.'</a>';
+		return '<a href="'.htmlspecialchars($MCONF['_']).'&be_user_uid='.$rec['uid'].'">'.$str.'</a>';
 	}
 
 	/**

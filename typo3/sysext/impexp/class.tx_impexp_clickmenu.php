@@ -84,7 +84,7 @@ class tx_impexp_clickmenu {
 
 			$LL = $this->includeLL();
 
-			$url = t3lib_extMgm::extRelPath('impexp').'app/index.php?tx_impexp[action]=export';
+			$url = 'mod.php?M=xMOD_tximpexp&tx_impexp[action]=export';
 			if ($table=='pages')	{
 				$url.='&tx_impexp[pagetree][id]='.$uid;
 				$url.='&tx_impexp[pagetree][levels]=0';
@@ -101,7 +101,7 @@ class tx_impexp_clickmenu {
 			);
 
 			if ($table=='pages')	{
-				$url = t3lib_extMgm::extRelPath('impexp').'app/index.php?id='.$uid.'&table='.$table.'&tx_impexp[action]=import';
+				$url = 'mod.php?M=xMOD_tximpexp&id='.$uid.'&table='.$table.'&tx_impexp[action]=import';
 				$localItems[] = $backRef->linkItem(
 					$GLOBALS['LANG']->makeEntities($GLOBALS['LANG']->getLLL('import',$LL)),
 					$backRef->excludeIcon('<img'.t3lib_iconWorks::skinImg($backRef->backPath,t3lib_extMgm::extRelPath('impexp').'import.gif','width="18" height="16"').' alt="" />'),

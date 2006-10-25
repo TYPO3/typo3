@@ -1,3 +1,10 @@
+2006-10-25  Kasper Skårhøj	<kasper2006@typo3.com>
+	* Added "alt_main_new.php" including various modifications around to support this.
+	* Added clean-up functions in extension "lowlevel" plus modified t3lib_refindex and t3lib_tcemain accordingly
+	* Added word index to sys_refindex.
+	* Added feature to workspace records so an element can still be edited even when passed to "review"; This allows an editor to notify that the element is ready but still make changes. Of course no more changes can be made as soon as the reviewer has pushed it to the next level.
+	* Added "mod.php" which is a module dispatch script that can potentially help us to get rid of the problem with local vs global extensions and their backend modules having different conf.php files. Documentation remains to be added to "Inside TYPO3".
+
 2006-10-14  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Fixed bug 3199: SUing to myself?

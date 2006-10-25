@@ -882,7 +882,7 @@ $str.=$this->docBodyTagBegin().
 	 * @return	string		HTML body tag
 	 */
 	function docBodyTagBegin()	{
-		$bodyContent = 'body '.trim($this->bodyTagAdditions.($this->bodyTagId ? ' id="'.$this->bodyTagId.'"' : ''));
+		$bodyContent = 'body onclick="if (top.menuReset) top.menuReset();" '.trim($this->bodyTagAdditions.($this->bodyTagId ? ' id="'.$this->bodyTagId.'"' : ''));
 		return '<'.trim($bodyContent).'>';
 	}
 

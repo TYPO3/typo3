@@ -157,6 +157,38 @@ $CLIENT = t3lib_div::clientInfo();					// $CLIENT includes information about the
 $PARSETIME_START = t3lib_div::milliseconds();		// Is set to the system time in milliseconds. This could be used to output script parsetime in the end of the script
 
 
+
+
+// *************************
+// CLI dispatch processing
+// *************************
+if (defined('TYPO3_cliMode') && TYPO3_cliMode´&& basename(PATH_thisScript)=='cli_dispatch.phpsh')	{
+		// First, take out the first argument (cli-key)
+	$temp_cliScriptPath = array_shift($_SERVER['argv']);
+	$temp_cliKey = array_shift($_SERVER['argv']);
+	array_unshift($_SERVER['argv'],$temp_cliScriptPath);
+
+		// If cli_key was found in configuration, then set up the cliInclude path and module name:
+	if ($temp_cliKey)	{
+		if (is_array($TYPO3_CONF_VARS['SC_OPTIONS']['GLOBAL']['cliKeys'][$temp_cliKey]))	{
+			define('TYPO3_cliInclude', t3lib_div::getFileAbsFileName($TYPO3_CONF_VARS['SC_OPTIONS']['GLOBAL']['cliKeys'][$temp_cliKey][0]));
+			$MCONF['name'] = $TYPO3_CONF_VARS['SC_OPTIONS']['GLOBAL']['cliKeys'][$temp_cliKey][1];
+		} else {
+			echo "The supplied 'cliKey' was not valid. Please use one of the available from this list:\n\n";
+			print_r(array_keys($TYPO3_CONF_VARS['SC_OPTIONS']['GLOBAL']['cliKeys']));
+			echo "\n";
+			exit;
+		}
+	} else {
+		echo "Please supply a 'cliKey' as first argument. The following are available:\n\n";
+		print_r($TYPO3_CONF_VARS['SC_OPTIONS']['GLOBAL']['cliKeys']);
+		echo "\n";
+		exit;
+	}
+}
+
+
+
 // *********************
 // Libraries included
 // *********************
@@ -278,6 +310,8 @@ if ($TYPO3_LOADED_EXT['_CACHEFILE'])	{
 if (TYPO3_extTableDef_script)	{
 	include (PATH_typo3conf.TYPO3_extTableDef_script);
 }
+
+
 
 // *******************************
 // BackEnd User authentication

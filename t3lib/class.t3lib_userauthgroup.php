@@ -250,6 +250,13 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 	function isInWebMount($id,$readPerms='',$exitOnError=0)	{
 		if (!$GLOBALS['TYPO3_CONF_VARS']['BE']['lockBeUserToDBmounts'] || $this->isAdmin())	return 1;
 		$id = intval($id);
+		
+			// Check if input id is an offline version page in which case we will map id to the online version:
+		$checkRec = t3lib_beFUnc::getRecord('pages',$id,'pid,t3ver_oid');
+		if ($checkRec['pid']==-1)	{
+			$id = intval($checkRec['t3ver_oid']);
+		}
+		
 		if (!$readPerms)	$readPerms = $this->getPagePermsClause(1);
 		if ($id>0)	{
 			$wM = $this->returnWebmounts();
@@ -765,6 +772,7 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 	 * Checks if an element stage allows access for the user in the current workspace
 	 * In workspaces 0 (Live) and -1 (Default draft) access is always granted for any stage.
 	 * Admins are always allowed.
+	 * An option for custom workspaces allows members to also edit when the stage is "Review"
 	 *
 	 * @param	integer		Stage id from an element: -1,0 = editing, 1 = reviewer, >1 = owner
 	 * @return	boolean		TRUE if user is allowed access
@@ -774,7 +782,8 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 
 		if ($this->workspace>0)	{
 			$stat = $this->checkWorkspaceCurrent();
-			if (($stage<=0 && $stat['_ACCESS']==='member') ||
+			$memberStageLimit = $this->workspaceRec['review_stage_edit'] ? 1 : 0;
+			if (($stage<=$memberStageLimit && $stat['_ACCESS']==='member') ||
 				($stage<=1 && $stat['_ACCESS']==='reviewer') ||
 				($stat['_ACCESS']==='owner')) {
 					return TRUE;	// OK for these criteria

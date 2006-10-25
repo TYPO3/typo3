@@ -822,6 +822,13 @@ $TCA['sys_workspace'] = Array (
 				'default' => '0'
 			)
 		),
+		'review_stage_edit' => Array (
+			'label' => 'Allow members to edit records in "Review" stage',
+			'config' => Array (
+				'type' => 'check',
+				'default' => '0'
+			)
+		),
 		'disable_autocreate' => Array (
 			'label' => 'Disable auto-versioning when editing',
 			'config' => Array (
@@ -841,7 +848,7 @@ $TCA['sys_workspace'] = Array (
 			)
 		),
 		'vtypes' => Array (
-			'label' => 'Disable Versioning Types (not for admins and owners):',
+			'label' => 'Disable Versioning Types for members and reviewers:',
 			'config' => Array (
 				'type' => 'check',
 				'items' => Array (
@@ -874,7 +881,7 @@ $TCA['sys_workspace'] = Array (
 		),
 	),
 	'types' => Array (
-		'0' => Array('showitem' => 'title,description,--div--;Users,adminusers,members,reviewers,stagechg_notification,--div--;Mountpoints,db_mountpoints,file_mountpoints,--div--;Publishing,publish_time,unpublish_time,--div--;Other,freeze,live_edit,disable_autocreate,swap_modes,vtypes,publish_access')
+		'0' => Array('showitem' => 'title,description,--div--;Users,adminusers,members,reviewers,stagechg_notification,--div--;Mountpoints,db_mountpoints,file_mountpoints,--div--;Publishing,publish_time,unpublish_time,--div--;Other,freeze,live_edit,review_stage_edit,disable_autocreate,swap_modes,vtypes,publish_access')
 	)
 );
 

@@ -371,6 +371,41 @@ class t3lib_extMgm {
 	}
 
 	/**
+	 * Adds a module path to TBE_MODULES for used with the module dispatcher, mod.php
+	 * Used only for modules that are not placed in the main/sub menu hierarchy by the traditional mechanism of addModule()
+	 * Examples for this is context menu functionality (like import/export) which runs as an independent module through mod.php
+	 * FOR USE IN ext_tables.php FILES
+	 * Example:  t3lib_extMgm::addModulePath('xMOD_tximpexp',t3lib_extMgm::extPath($_EXTKEY).'app/');
+	 *
+	 * @param	string		$name is the name of the module, refer to conf.php of the module.
+	 * @param	string		$path is the absolute path to the module directory inside of which "index.php" and "conf.php" is found.
+	 * @return	void
+	 */
+	function addModulePath($name,$path)	{
+		global $TBE_MODULES;
+
+		$TBE_MODULES['_PATHS'][$name] = $path;
+	}
+
+	/**
+	 * Adding an application for the top menu. These are regular modules but is required to respond with Ajax content in case of certain parameters sent to them.
+	 *
+	 * @param	string		$name is the name of the module, refer to conf.php of the module.
+	 * @param	string		$path is the absolute path to the module directory inside of which "index.php" and "conf.php" is found.
+	 * @param	boolean		If set, the application is placed in the shortcut bar below the menu bar.
+	 * @param	array		Options
+	 * @return	void
+	 */
+	function addTopApp($name,$path,$iconPane=FALSE,$options=array())	{
+		global $TBE_MODULES,$TYPO3_CONF_VARS;
+
+		$TYPO3_CONF_VARS['SC_OPTIONS']['GLOBAL']['topApps'][$iconPane?'icons':'menu'][$name] = $options;
+
+			// Set path for TBE-modules:
+		$TBE_MODULES['_PATHS'][$name] = $path;
+	}
+
+	/**
 	 * Adds a "Function menu module" ('third level module') to an existing function menu for some other backend module
 	 * The arguments values are generally determined by which function menu this is supposed to interact with
 	 * See Inside TYPO3 for information on how to use this function.

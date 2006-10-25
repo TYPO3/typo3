@@ -6,6 +6,7 @@ if (TYPO3_MODE=='BE')	{
 		'name' => 'tx_impexp_clickmenu',
 		'path' => t3lib_extMgm::extPath($_EXTKEY).'class.tx_impexp_clickmenu.php'
 	);
+	t3lib_extMgm::addModulePath('xMOD_tximpexp',t3lib_extMgm::extPath($_EXTKEY).'app/');
 
 	t3lib_extMgm::insertModuleFunction(
 		'user_task',

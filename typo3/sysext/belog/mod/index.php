@@ -33,10 +33,10 @@
  */
 
 
-unset($MCONF);
-require ('conf.php');
-require ($BACK_PATH.'init.php');
-require ($BACK_PATH.'template.php');
+#unset($MCONF);
+#require ('conf.php');
+#require ($BACK_PATH.'init.php');
+#require ($BACK_PATH.'template.php');
 $LANG->includeLLFile('EXT:belog/mod/locallang.php');
 require_once (PATH_t3lib.'class.t3lib_bedisplaylog.php');
 require_once (PATH_t3lib.'class.t3lib_pagetree.php');

@@ -435,7 +435,9 @@ class t3lib_loadModules {
 				}
 
 					// Default script setup
-				if ($MCONF['script'] && @file_exists($path.'/'.$MCONF['script']))	{
+				if ($MCONF['script']==='_DISPATCH')	{
+					$modconf['script'] = 'mod.php?M='.rawurlencode($name);
+				} elseif ($MCONF['script'] && @file_exists($path.'/'.$MCONF['script']))	{
 					$modconf['script'] = $this->getRelativePath(PATH_typo3,$fullpath.'/'.$MCONF['script']);
 				} else {
 					$modconf['script'] = 'dummy.php';

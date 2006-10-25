@@ -1684,8 +1684,8 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 				else {
 					$tag0 = $tag1 = '';
 				}
-				$content_array[] = t3lib_iconWorks::getIconImage('be_users', $uid, $GLOBALS['BACK_PATH'], ' align="middle" alt="UID: ' . $uid . '"') .
-									$tag0 . $user['username'] . $tag1;
+				$content_array[] = $this->doc->wrapClickMenuOnIcon(t3lib_iconWorks::getIconImage('be_users', $uid, $GLOBALS['BACK_PATH'], ' align="middle" alt="UID: ' . $uid . '"'), 'be_users', $uid, 2).
+					$tag0 . $user['username'] . $tag1;
 			}
 		}
 		return implode('<br />', $content_array);
@@ -1723,7 +1723,7 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 						else {
 							$tag0 = $tag1 = '';
 						}
-						$content_array[] = t3lib_iconWorks::getIconImage($table, $this->be_user_Array[$id], $GLOBALS['BACK_PATH'], ' align="middle" alt="UID: ' . $id . '"') .
+						$content_array[] = $this->doc->wrapClickMenuOnIcon(t3lib_iconWorks::getIconImage($table, $this->be_user_Array[$id], $GLOBALS['BACK_PATH'], ' align="middle" alt="UID: ' . $id . '"'), $table, $id, 2) .
 											$tag0 . $this->be_user_Array_full[$id]['username'] . $tag1;
 					}
 					else {
@@ -1731,7 +1731,7 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 						if (false === $groups) {
 							$groups = t3lib_BEfunc::getGroupNames();
 						}
-						$content_array[] = t3lib_iconWorks::getIconImage($table, $groups[$id], $GLOBALS['BACK_PATH'], ' align="middle" alt="UID: ' . $id . '"') .
+						$content_array[] = $this->doc->wrapClickMenuOnIcon(t3lib_iconWorks::getIconImage($table, $groups[$id], $GLOBALS['BACK_PATH'], ' align="middle" alt="UID: ' . $id . '"'), $table, $id, 2) .
 											$groups[$id]['title'];
 					}
 				}

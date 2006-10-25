@@ -34,30 +34,30 @@
  *
  *
  *
- *   71: class tx_lowlevel_cleaner_core
- *
- *              SECTION: Analyse functions
- *   94:     function missing_files_analyze()
- *  161:     function missing_relations_analyze($filter='')
- *  258:     function double_files_analyze()
- *  348:     function RTEmagic_files_analyze()
- *  437:     function clean_lost_files_analyze()
- *  525:     function orphan_records_analyze()
- *
- *              SECTION: Helper functions
- *  572:     function html_printInfo($header,$res,$silent=FALSE,$detailLevel=0)
+ *   71: class tx_lowlevel_cleaner_core extends t3lib_cli
+ *   88:     function tx_lowlevel_cleaner_core()
  *
  *              SECTION: CLI functionality
- *  642:     function cli_main($argv)
- *  693:     function cli_printInfo($header,$res,$silent=FALSE,$detailLevel=0)
+ *  134:     function cli_main($argv)
+ *  193:     function cli_referenceIndexCheck()
+ *  228:     function cli_noExecutionCheck($matchString)
+ *  251:     function cli_printInfo($header,$res)
  *
- * TOTAL FUNCTIONS: 9
+ *              SECTION: Page tree traversal
+ *  331:     function genTree($rootID,$depth=1000,$echoLevel=0,$callBack='')
+ *  369:     function genTree_traverse($rootID,$depth,$echoLevel=0,$callBack='',$versionSwapmode='',$rootIsVersion=0,$accumulatedPath='')
+ *
+ *              SECTION: Helper functions
+ *  554:     function infoStr($rec)
+ *
+ * TOTAL FUNCTIONS: 8
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
 
 
 require_once(PATH_t3lib.'class.t3lib_admin.php');
+require_once(PATH_t3lib.'class.t3lib_cli.php');
 
 
 
@@ -68,556 +68,48 @@ require_once(PATH_t3lib.'class.t3lib_admin.php');
  * @package TYPO3
  * @subpackage tx_lowlevel
  */
-class tx_lowlevel_cleaner_core {
+class tx_lowlevel_cleaner_core extends t3lib_cli {
+
+	var $genTree_traverseDeleted = TRUE;
+	var $genTree_traverseVersions = TRUE;
+
+
 
 	var $label_infoString = 'The list of records is organized as [table]:[uid]:[field]:[flexpointer]:[softref_key]';
+	var $pagetreePlugins = array();
+	var $cleanerModules = array();
 
-
-
-
-
-
-
-
-
-	/**************************
-	 *
-	 * Analyse functions
-	 *
-	 *************************/
 
 	/**
-	 * Find missing files
-	 *
-	 * @return	array
-	 */
-	function missing_files_analyze() {
-		global $TYPO3_DB;
-
-		$listExplain = ' Shows the relative filename of missing file as header and under a list of record fields in which the references are found. '.$this->label_infoString;
-
-			// Initialize result array:
-		$resultArray = array(
-			'message' => '
-Objective: Find all file references from non-deleted records pointing to a missing (non-existing) file.
-
-Assumptions:
-- a perfect integrity of the reference index table (always update the reference index table before using this tool!)
-- relevant soft reference parsers applied everywhere file references are used inline
-
-Files may be missing for these reasons (except software bugs):
-- someone manually deleted the file inside fileadmin/ or another user maintained folder. If the reference was a soft reference (opposite to a TCEmain managed file relation from "group" type fields), technically it is not an error although it might be a mistake that someone did so.
-- someone manually deleted the file inside the uploads/ folder (typically containing managed files) which is an error since no user interaction should take place there.
-
-NOTICE: Uses the Reference Index Table (sys_refindex) for analysis. Update it before use!',
-			'headers' => array(
-				'managedFilesMissing' => array('List of missing files managed by TCEmain', $listExplain, 3),
-				'softrefFilesMissing' => array('List of missing files registered as a soft reference', $listExplain, 3),
-				'warnings' => array('Warnings, if any','',2)
-			),
-			'managedFilesMissing' => array(),
-			'softrefFilesMissing' => array(),
-			'warnings' => array()
-		);
-
-			// Select all files in the reference table
-		$recs = $TYPO3_DB->exec_SELECTgetRows(
-			'*',
-			'sys_refindex',
-			'ref_table='.$TYPO3_DB->fullQuoteStr('_FILE', 'sys_refindex').
-				' AND deleted=0'	// Check only for records which are not deleted (we don't care about missing files in deleted-flagged records)
-		);
-
-			// Traverse the files and put into a large table:
-		if (is_array($recs)) {
-			foreach($recs as $rec)	{
-
-					// Compile info string for location of reference:
-				$infoString = $rec['tablename'].':'.$rec['recuid'].':'.$rec['field'].':'.$rec['flexpointer'].':'.$rec['softref_key'];
-
-					// Handle missing file:
-				if (!@is_file(PATH_site.$rec['ref_string']))	{
-
-					if ((string)$rec['softref_key']=='')	{
-						$resultArrayIndex = 'managedFilesMissing';
-					} else {
-						$resultArrayIndex = 'softrefFilesMissing';
-					}
-
-					$resultArray[$resultArrayIndex][$rec['ref_string']][$rec['hash']] = $infoString;
-				}
-			}
-		}
-
-		return $resultArray;
-	}
-
-	/**
-	 * Missing relations to database records
-	 *
-	 * @param	string		Filter selection, options: "softref", "managed", "" (all)
-	 * @return	array
-	 */
-	function missing_relations_analyze($filter='') {
-		global $TYPO3_DB;
-
-		$listExplain = ' Shows the missing record as header and underneath a list of record fields in which the references are found. '.$this->label_infoString;
-
-			// Initialize result array:
-		$resultArray = array(
-			'message' => '
-Objective: Find all record references pointing to a missing (non-existing or deleted-flagged) record.
-Assumptions:
-- a perfect integrity of the reference index table (always update the reference index table before using this tool!)
-- all database references to check are integers greater than zero
-- does not check if a referenced record is inside an offline branch, another workspace etc. which could make the reference useless in reality or otherwise question integrity
-Records may be missing for these reasons (except software bugs):
-- someone deleted the record which is technically not an error although it might be a mistake that someone did so.
-- after flushing published versions and/or deleted-flagged records a number of new missing references might appear; those were pointing to records just flushed.
-NOTICE: Uses the Reference Index Table (sys_refindex) for analysis. Update it before use!',
-			'headers' => array(
-				'offlineVersionRecords' => array('Offline version records','These records are offline versions having a pid=-1 and references should never occur directly to their uids.'.$listExplain,3),
-				'deletedRecords' => array('Deleted-flagged records','These records are deleted with a flag but references are still pointing at them. Keeping the references is useful if you undelete the referenced records later, otherwise the references are lost completely when the deleted records are flushed at some point.'.$listExplain,2),
-				'nonExistingRecords' => array('Non-existing records to which there are references','These references can safely be removed since there is no record found in the database at all.'.$listExplain,3),	// 3 = error
-				'uniqueReferencesToTables' => array('Unique references to various tables','For each listed table, this shows how many different records had references pointing to them. More references to the same record counts only 1, hence it is the number of unique referenced records you see. The count includes both valid and invalid references.',1), // 1 = info
-				'warnings' => array('Warnings picked up','',2)		// 2 = warning
-			),
-			'offlineVersionRecords' => array(),
-			'deletedRecords' => array(),
-			'nonExistingRecords' => array(),
-			'uniqueReferencesToTables' => array(),
-			'warnings' => array()
-		);
-
-			// Create clause to filter by:
-		$filterClause = '';
-		if ($filter==='softref') {
-			$filterClause = ' AND softref_key!='.$TYPO3_DB->fullQuoteStr('', 'sys_refindex');
-		}
-		if ($filter==='managed') {
-			$filterClause = ' AND softref_key='.$TYPO3_DB->fullQuoteStr('', 'sys_refindex');
-		}
-
-			// Select all files in the reference table not found by a soft reference parser (thus TCA configured)
-		$recs = $TYPO3_DB->exec_SELECTgetRows(
-			'*',
-			'sys_refindex',
-			'ref_table!='.$TYPO3_DB->fullQuoteStr('_FILE', 'sys_refindex').	// Assuming that any other key will be a table name!
-			' AND ref_uid>0'.
-			$filterClause.
-			' AND deleted=0'	// Check only for records which are not deleted (we don't care about missing relations in deleted-flagged records)
-		);
-
-			// Traverse the files and put into a large table:
-		$tempExists = array();
-		if (is_array($recs)) {
-			foreach($recs as $rec)	{
-				$idx = $rec['ref_table'].':'.$rec['ref_uid'];
-
-				if (!isset($tempExists[$idx]))	{
-
-						// Select all files in the reference table not found by a soft reference parser (thus TCA configured)
-					if (isset($GLOBALS['TCA'][$rec['ref_table']]))	{
-						$recs = $TYPO3_DB->exec_SELECTgetRows(
-							'uid,pid'.($GLOBALS['TCA'][$rec['ref_table']]['ctrl']['delete'] ? ','.$GLOBALS['TCA'][$rec['ref_table']]['ctrl']['delete'] : ''),
-							$rec['ref_table'],
-							'uid='.intval($rec['ref_uid'])
-						);
-
-						$tempExists[$idx] = count($recs) ? TRUE : FALSE;
-					} else {
-						$tempExists[$idx] = FALSE;
-					}
-					$resultArray['uniqueReferencesToTables'][$rec['ref_table']]++;
-				}
-
-					// Compile info string for location of reference:
-				$infoString = $rec['tablename'].':'.$rec['recuid'].':'.$rec['field'].':'.$rec['flexpointer'].':'.$rec['softref_key'];
-
-					// Handle missing file:
-				if ($tempExists[$idx])	{
-					if ($recs[0]['pid']==-1)	{
-						$resultArray['offlineVersionRecords'][$idx][$rec['hash']] = $infoString;
-					} elseif ($GLOBALS['TCA'][$rec['ref_table']]['ctrl']['delete'] && $recs[0][$GLOBALS['TCA'][$rec['ref_table']]['ctrl']['delete']])	{
-						$resultArray['deletedRecords'][$idx][$rec['hash']] = $infoString;
-					}
-				} else {
-					$resultArray['nonExistingRecords'][$idx][$rec['hash']] = $infoString;
-				}
-			}
-		}
-
-		return $resultArray;
-	}
-
-	/**
-	 * Find managed files which are referred to more than one time
-	 *
-	 * @return	array
-	 */
-	function double_files_analyze()	{
-		global $TYPO3_DB;
-
-			// Initialize result array:
-		$resultArray = array(
-			'message' => '
-Objective: Looking for files from TYPO3 managed records which are referenced more than one time (only one time allowed)
-Assumptions:
-- a perfect integrity of the reference index table (always update the reference index table before using this tool!)
-- files found in deleted records are included (otherwise you would see a false list of lost files)
-' .
-		'Files attached to records in TYPO3 using a "group" type configuration in TCA or FlexForm DataStructure are managed exclusively by the system and there must always exist a 1-1 reference between the file and the reference in the record.' .
-		'This tool will expose when such files are referenced from multiple locations which is considered an integrity error. ' .
-		'If a multi-reference is found it was typically created because the record was copied or modified outside of TCEmain which will otherwise maintain the relations correctly. ' .
-		'Multi-references should be resolved to 1-1 references as soon as possible. The danger of keeping multi-references is that if the file is removed from one of the refering records it will actually be deleted in the file system, leaving missing files for the remaining referers!
-
-NOTICE: Uses the Reference Index Table (sys_refindex) for analysis. Update it before use!',
-			'headers' => array(
-				'multipleReferencesList_count' => array('Number of multi-reference files','(See below)',1),
-				'singleReferencesList_count' => array('Number of files correctly referenced','The amount of correct 1-1 references',1),
-				'multipleReferencesList' => array('Entries with files having multiple references','These are serious problems that should be resolved ASAP to prevent data loss! '.$this->label_infoString,3),
-				'dirname_registry' => array('Registry of directories in which files are found.','Registry includes which table/field pairs store files in them plus how many files their store.',1),
-				'missingFiles' => array('Tracking missing files','(Extra feature, not related to tracking of double references. Further, the list may include more files than found in the missing_files()-test because this list includes missing files from deleted records.)',0),
-				'warnings' => array('Warnings picked up','',2)
-			),
-			'multipleReferencesList_count' => 0,
-			'singleReferencesList_count' => 0,
-			'multipleReferencesList' => array(),
-			'dirname_registry' => array(),
-			'missingFiles' => array(),
-			'warnings' => array()
-		);
-
-			// Select all files in the reference table not found by a soft reference parser (thus TCA configured)
-		$recs = $TYPO3_DB->exec_SELECTgetRows(
-			'*',
-			'sys_refindex',
-			'ref_table='.$TYPO3_DB->fullQuoteStr('_FILE', 'sys_refindex').
-				' AND softref_key='.$TYPO3_DB->fullQuoteStr('', 'sys_refindex')
-		);
-
-			// Traverse the files and put into a large table:
-		$tempCount = array();
-		if (is_array($recs)) {
-			foreach($recs as $rec)	{
-
-					// Compile info string for location of reference:
-				$infoString = $rec['tablename'].':'.$rec['recuid'].':'.$rec['field'].':'.$rec['flexpointer'].':';
-
-					// Registering occurencies in directories:
-				$resultArray['dirname_registry'][dirname($rec['ref_string'])][$rec['tablename'].':'.$rec['field']]++;
-
-					// Handle missing file:
-				if (!@is_file(PATH_site.$rec['ref_string']))	{
-					$resultArray['missingFiles'][$rec['ref_string']][$rec['hash']] = $infoString;
-				}
-
-					// Add entry if file has multiple references pointing to it:
-				if (isset($tempCount[$rec['ref_string']]))	{
-					if (!is_array($resultArray['multipleReferencesList'][$rec['ref_string']]))	{
-						$resultArray['multipleReferencesList'][$rec['ref_string']] = array();
-						$resultArray['multipleReferencesList'][$rec['ref_string']][$tempCount[$rec['ref_string']][1]] = $tempCount[$rec['ref_string']][0];
-					}
-					$resultArray['multipleReferencesList'][$rec['ref_string']][$rec['hash']] = $infoString;
-				} else {
-					$tempCount[$rec['ref_string']] = array($infoString,$rec['hash']);
-				}
-			}
-		}
-
-			// Add count for multi-references:
-		$resultArray['multipleReferencesList_count'] = count($resultArray['multipleReferencesList']);
-		$resultArray['singleReferencesList_count'] = count($tempCount) - $resultArray['multipleReferencesList_count'];
-
-			// Sort dirname registry and add warnings for directories outside uploads/
-		ksort($resultArray['dirname_registry']);
-		foreach($resultArray['dirname_registry'] as $dir => $temp)	{
-			if (!t3lib_div::isFirstPartOfStr($dir,'uploads/'))	{
-				$resultArray['warnings'][] = 'Directory "'.$dir.'" was outside uploads/ which is unusual practice in TYPO3 although not forbidden. Directory used by the following table:field pairs: '.implode(',',array_keys($temp));
-			}
-		}
-
-		return $resultArray;
-	}
-
-	/**
-	 * Analyse situation with RTE magic images.
-	 *
-	 * @return	array
-	 */
-	function RTEmagic_files_analyze()	{
-		global $TYPO3_DB;
-
-			// Initialize result array:
-		$resultArray = array(
-			'message' => '
-Objective: Looking up all occurencies of RTEmagic images in the database and check existence of parent and copy files on the file system plus report possibly lost files of this type.
-Assumptions:
-- a perfect integrity of the reference index table (always update the reference index table before using this tool!)
-- that all RTEmagic image files in the database are registered with the soft reference parser "images"
-- images found in deleted records are included (means that you might find lost RTEmagic images after flushing deleted records)
-The assumptions are not requirements by the TYPO3 API but reflects the de facto implementation of most TYPO3 installations. ' .
-		'However, many custom fields using an RTE will probably not have the "images" soft reference parser registered and so the index will be incomplete and not listing all RTEmagic image files. ' .
-		'The consequence of this limitation is that you should be careful if you wish to delete lost RTEmagic images - they could be referenced from a field not parsed by the "images" soft reference parser!' .
-		'Another limitation: In theory a RTEmagic image should be used from only one record, however TCEmain does not support this (unfortunately!) so when a record is copied or versionized no new version will be produced. This leads to a usage count of more than one for many RTEmagic images which is also shown in the overview. At this point in time its not considered a bug and there is no fix for it.
-
-NOTICE: Uses the Reference Index Table (sys_refindex) for analysis. Update it before use!',
-			'headers' => array(
-				'completeFileList' => array('Complete list of used RTEmagic files','Both parent and copy are listed here including usage count (which should in theory all be "1")',1),
-				'RTEmagicFilePairs' => array('Statistical info about RTEmagic files','(copy used as index)',0),
-				'missingFiles' => array('Missing RTEmagic image files','Have either their parent or copy missing (look that up in RTEmagicFilePairs)',3),
-				'lostFiles' => array('Lost RTEmagic files from uploads/','These files you might be able to deleted but only if _all_ RTEmagic images are found by the soft reference parser. If you are using the RTE in third-party extensions it is likely that the soft reference parser is not applied correctly to their RTE and thus these "lost" files actually represent valid RTEmagic images, just not registered.',2),
-				'warnings' => array('Warnings picked up','',2)
-			),
-			'RTEmagicFilePairs' => array(),
-			'completeFileList' => array(),
-			'missingFiles' => array(),
-			'lostFiles' => array(),
-			'warnings' => array()
-		);
-
-			// Select all RTEmagic files in the reference table (only from soft references of course)
-		$recs = $TYPO3_DB->exec_SELECTgetRows(
-			'*',
-			'sys_refindex',
-			'ref_table='.$TYPO3_DB->fullQuoteStr('_FILE', 'sys_refindex').
-				' AND ref_string LIKE '.$TYPO3_DB->fullQuoteStr('%/RTEmagic%', 'sys_refindex').
-				' AND softref_key='.$TYPO3_DB->fullQuoteStr('images', 'sys_refindex')
-		);
-
-			// Traverse the files and put into a large table:
-		if (is_array($recs)) {
-			foreach($recs as $rec)	{
-				$filename = basename($rec['ref_string']);
-				if (t3lib_div::isFirstPartOfStr($filename,'RTEmagicC_'))	{
-					$original = 'RTEmagicP_'.ereg_replace('\.[[:alnum:]]+$','',substr($filename,10));
-					$infoString = $rec['tablename'].':'.$rec['recuid'].':'.$rec['field'].':'.$rec['flexpointer'].':'.$rec['softref_key'];
-
-						// Build index:
-					$resultArray['RTEmagicFilePairs'][$rec['ref_string']]['exists'] = @is_file(PATH_site.$rec['ref_string']);
-					$resultArray['RTEmagicFilePairs'][$rec['ref_string']]['original'] = substr($rec['ref_string'],0,-strlen($filename)).$original;
-					$resultArray['RTEmagicFilePairs'][$rec['ref_string']]['original_exists'] = @is_file(PATH_site.$resultArray['RTEmagicFilePairs'][$rec['ref_string']]['original']);
-					$resultArray['RTEmagicFilePairs'][$rec['ref_string']]['count']++;
-					$resultArray['RTEmagicFilePairs'][$rec['ref_string']]['usedIn'][$rec['hash']] = $infoString;
-
-					$resultArray['completeFileList'][$resultArray['RTEmagicFilePairs'][$rec['ref_string']]['original']]++;
-					$resultArray['completeFileList'][$rec['ref_string']]++;
-
-						// Missing files:
-					if (!$resultArray['RTEmagicFilePairs'][$rec['ref_string']]['exists'] || !$resultArray['RTEmagicFilePairs'][$rec['ref_string']]['original_exists'])	{
-						$resultArray['missingFiles'][$rec['ref_string']] = $rec['ref_string'];
-					}
-				}
-			}
-		}
-
-			// Now, ask for RTEmagic files inside uploads/ folder:
-		$resLostFiles = $this->clean_lost_files_analyze();
-
-		if (is_array($resLostFiles['RTEmagicFiles']))	{
-			foreach($resLostFiles['RTEmagicFiles'] as $fileName) {
-				if (!isset($resultArray['completeFileList'][$fileName])) 	{
-					$resultArray['lostFiles'][] = $fileName;
-				}
-			}
-		}
-
-		return $resultArray;
-	}
-
-	/**
-	 * Find lost files in uploads/ folder
-	 *
-	 * TODO: Add parameter to exclude filepath
-	 * TODO: Add parameter to list more file names/patterns to ignore
-	 * TODO: Add parameter to include RTEmagic images
+	 * Constructor
 	 *
 	 * @return	void
 	 */
-	function clean_lost_files_analyze()	{
-		global $TYPO3_DB;
+	function tx_lowlevel_cleaner_core()	{
 
-			// Initialize result array:
-		$resultArray = array(
-			'message' => '
-Objective: Looking for files in the uploads/ folder which does not have a reference in TYPO3 managed records.
-Assumptions:
-- a perfect integrity of the reference index table (always update the reference index table before using this tool!)
-- that all contents in the uploads folder are files attached to TCA records and exclusively managed by TCEmain through "group" type fields
-- exceptions are: index.html and .htaccess files (ignored)
-- exceptions are: RTEmagic* image files (ignored)
-- files found in deleted records are included (otherwise you would see a false list of lost files)
-The assumptions are not requirements by the TYPO3 API but reflects the de facto implementation of most TYPO3 installations and therefore a practical approach to cleaning up the uploads/ folder. ' .
-		'Therefore, if all "group" type fields in TCA and flexforms are positioned inside the uploads/ folder and if no files inside are managed manually it should be safe to clean out files with no relations found in the system. ' .
-		'Under such circumstances there should theoretically be no lost files in the uploads/ folder since TCEmain should have managed relations automatically including adding and deleting files. ' .
-		'However, there is at least one reason known to why files might be found lost and that is when FlexForms are used. In such a case a change in the data structure used for the flexform could leave lost files behind. ' .
-		'Another scenario could of course be de-installation of extensions which managed files in the uploads/ folders.
+			// Running parent class constructor
+		parent::t3lib_cli();
 
-NOTICE: Uses the Reference Index Table (sys_refindex) for analysis. Update it before use!',
-			'headers' => array(
-				'managedFiles' => array('Files related to TYPO3 records and managed by TCEmain','These files you definitely want to keep.',0),
-				'ignoredFiles' => array('Ignored files (index.html, .htaccess etc.)','These files are allowed in uploads/ folder',0),
-				'RTEmagicFiles' => array('RTE magic images - those found (and ignored)','These files are also allowed in some uploads/ folders as RTEmagic images.',0),
-				'lostFiles' => array('Lost files - those you can delete','You can delete these files!',3),
-				'warnings' => array('Warnings picked up','',2)
-			),
-			'managedFiles' => array(),
-			'ignoredFiles' => array(),
-			'RTEmagicFiles' => array(),
-			'lostFiles' => array(),
-			'warnings' => array()
-		);
+		$this->cleanerModules = (array)$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['lowlevel']['cleanerModules'];
 
-			// Get all files:
-		$fileArr = array();
-		$fileArr = t3lib_div::getAllFilesAndFoldersInPath($fileArr,PATH_site.'uploads/');
-		$fileArr = t3lib_div::removePrefixPathFromList($fileArr,PATH_site);
+			// Adding options to help archive:
+		$this->cli_options[] = array('-r', 'Execute this tool, otherwise help is shown');
+		$this->cli_options[] = array('-v level', 'Verbosity level 0-3', "The value of level can be:\n  0 = all output\n  1 = info and greater (default)\n  2 = warnings and greater\n  3 = errors");
+		$this->cli_options[] = array('--refindex mode', 'Mode for reference index handling for operations that require a clean reference index ("update"/"ignore")', 'Options are "check" (default), "update" and "ignore". By default, the reference index is checked before running analysis that require a clean index. If the check fails, the analysis is not run. You can choose to bypass this completely (using value "ignore") or ask to have the index updated right away before the analysis (using value "update")');
+		$this->cli_options[] = array('--AUTOFIX', 'Repairs errors that can be automatically fixed.', 'Only add this option after having run the test without it so you know what will happen when you add this option!');
+		$this->cli_options[] = array('--dryrun', 'With --AUTOFIX it will only simulate a repair process','You may like to use this to see what the --AUTOFIX option will be doing. It will output the whole process like if a fix really occurred but nothing is in fact happening');
+		$this->cli_options[] = array('--YES', 'Implicit YES to all questions','Use this with EXTREME care. The option "-i" is not affected by this option.');
+		$this->cli_options[] = array('-i', 'Interactive','Will ask you before running the AUTOFIX on each element.');
+		$this->cli_options[] = array('--filterRegex expr', 'Define an expression for preg_match() that must match the element ID in order to auto repair it','The element ID is the string in quotation marks when the text \'Cleaning ... in "ELEMENT ID"\'. "expr" is the expression for preg_match(). To match for example "Nature3.JPG" and "Holiday3.JPG" you can use "/.*3.JPG/". To match for example "Image.jpg" and "Image.JPG" you can use "/.*.jpg/i". Try a --dryrun first to see what the matches are!');
+		$this->cli_options[] = array('--showhowto', 'Displays HOWTO file for cleaner script.');
 
-			// Traverse files and for each, look up if its found in the reference index.
-		foreach($fileArr as $key => $value) {
-
-				// First, allow "index.html", ".htaccess" files since they are often used for good reasons
-			if (substr($value,-11) == '/index.html' || substr($value,-10) == '/.htaccess')	{
-				unset($fileArr[$key])	;
-				$resultArray['ignoredFiles'][] = $value;
-			} else {
-					// Looking for a reference from a field which is NOT a soft reference (thus, only fields with a proper TCA/Flexform configuration)
-				$recs = $TYPO3_DB->exec_SELECTgetRows(
-					'*',
-					'sys_refindex',
-					'ref_table='.$TYPO3_DB->fullQuoteStr('_FILE', 'sys_refindex').
-						' AND ref_string='.$TYPO3_DB->fullQuoteStr($value, 'sys_refindex').
-						' AND softref_key='.$TYPO3_DB->fullQuoteStr('', 'sys_refindex')
-				);
-
-					// If found, unset entry:
-				if (count($recs))		{
-					unset($fileArr[$key])	;
-					$resultArray['managedFiles'][] = $value;
-					if (count($recs)>1)	{
-						$resultArray['warnings'][]='Warning: File "'.$value.'" had '.count($recs).' references from group-fields, should have only one!';
-					}
-				} else {
-						// When here it means the file was not found. So we test if it has a RTEmagic-image name and if so, we allow it:
-					if (ereg('^RTEmagic[P|C]_',basename($value)))	{
-						unset($fileArr[$key])	;
-						$resultArray['RTEmagicFiles'][] = $value;
-					} else {
-							// We conclude that the file is lost...:
-						unset($fileArr[$key])	;
-						$resultArray['lostFiles'][] = $value;
-					}
-				}
-			}
-		}
-
-		// $fileArr variable should now be empty with all contents transferred to the result array keys.
-
-		return $resultArray;
+			// Setting help texts:
+		$this->cli_help['name'] = 'lowlevel_cleaner -- Analysis and clean-up tools for TYPO3 installations';
+		$this->cli_help['synopsis'] = 'toolkey ###OPTIONS###';
+		$this->cli_help['description'] = "Dispatches to various analysis and clean-up tools which can plug into the API of this script. Typically you can run tests that will take longer than the usual max execution time of PHP. Such tasks could be checking for orphan records in the page tree or flushing all published versions in the system. For the complete list of options, please explore each of the 'toolkey' keywords below:\n\n  ".implode("\n  ",array_keys($this->cleanerModules));
+		$this->cli_help['examples'] = "/.../cli_dispatch.phpsh lowlevel_cleaner missing_files -s -r\nThis will show you missing files in the TYPO3 system and only report back if errors were found.";
+		$this->cli_help['author'] = "Kasper Skaarhoej, (c) 2006";
 	}
-
-	/**
-	 * Find orphan records
-	 * VERY CPU and memory intensive since it will look up the whole page tree!
-	 *
-	 * @return	void
-	 */
-	function orphan_records_analyze()	{
-		global $TYPO3_DB;
-
-		$adminObj = t3lib_div::makeInstance('t3lib_admin');
-
-		$adminObj->genTree_includeDeleted = TRUE;		// if set, genTree() includes deleted pages. This is default.
-		$adminObj->genTree_includeVersions = TRUE;		// if set, genTree() includes verisonized pages/records. This is default.
-		$adminObj->genTree_includeRecords = TRUE;		// if set, genTree() includes records from pages.
-		$adminObj->perms_clause = '';					// extra where-clauses for the tree-selection
-		$adminObj->genTree_makeHTML = 0;				// if set, genTree() generates HTML, that visualizes the tree.
-
-$pt = t3lib_div::milliseconds();
-		$adminObj->genTree(1,'');
-
-print_r($adminObj->recStats);
-		echo strlen(serialize($adminObj->recStats)).chr(10);
-		echo (t3lib_div::milliseconds()-$pt).' milliseconds';
-exit;
-
-		return $resultArray;
-	}
-
-
-
-
-
-
-
-
-
-
-
-	/**************************
-	 *
-	 * Helper functions
-	 *
-	 *************************/
-
-	/**
-	 * Formats a result array from a test so it fits HTML output
-	 *
-	 * @param	string		name of the test (eg. function name)
-	 * @param	array		Result array from an analyze function
-	 * @param	boolean		Silent flag, if set, will only output when the result array contains data in arrays.
-	 * @param	integer		Detail level: 0=all, 1=info and greater, 2=warnings and greater, 3=errors
-	 * @return	string		HTML
-	 */
-	function html_printInfo($header,$res,$silent=FALSE,$detailLevel=0)	{
-
-		if (!$silent) {
-				// Name:
-			$output.= '<h3>'.htmlspecialchars($header).'</h3>';
-
-				// Message:
-			$output.= nl2br(htmlspecialchars(trim($res['message']))).'<hr/>';
-		}
-
-			// Traverse headers for output:
-		if (is_array($res['headers'])) {
-			foreach($res['headers'] as $key => $value)	{
-
-				if ($detailLevel <= intval($value[2]))	{
-					if (!$silent || (is_array($res[$key]) && count($res[$key]))) {
-							// Header and explanaion:
-						$output.= '<b>'.
-								($silent ? '<i>'.htmlspecialchars($header).'</i><br/>' : '').
-								(is_array($res[$key]) && count($res[$key]) ? $GLOBALS['SOBE']->doc->icons($value[2]) : '').
-								htmlspecialchars($value[0]).
-								'</b><br/>';
-						if (trim($value[1]))	{
-							$output.= '<em>'.htmlspecialchars(trim($value[1])).'</em><br/>';
-						}
-						$output.='<br/>';
-					}
-
-						// Content:
-					if (is_array($res[$key]))	{
-						if (count($res[$key]))	{
-							$output.= t3lib_div::view_array($res[$key]).'<br/><br/>';
-						} else {
-							if (!$silent) $output.= '(None)'.'<br/><br/>';
-						}
-					} else {
-						if (!$silent) $output.= htmlspecialchars($res[$key]).'<br/><br/>';
-					}
-				}
-			}
-		}
-
-		return $output;
-	}
-
-
-
-
-
 
 
 
@@ -641,44 +133,112 @@ exit;
 	 */
 	function cli_main($argv) {
 
-		if (in_array('-h',$argv))	{
-			echo "
-		Options:
-		-h = This help screen.
-		";
+			// Force user to admin state and set workspace to "Live":
+		$GLOBALS['BE_USER']->user['admin'] = 1;
+		$GLOBALS['BE_USER']->setWorkspace(0);
+
+			// Print Howto:
+		if ($this->cli_isArg('--showhowto'))	{
+			$howto = t3lib_div::getUrl(t3lib_extMgm::extPath('lowlevel').'HOWTO_clean_up_TYPO3_installations.txt');
+			echo wordwrap($howto,120).chr(10);
 			exit;
 		}
 
+			// Print help
+		$analysisType = (string)$this->cli_args['_DEFAULT'][1];
+		if (!$analysisType)	{
+			$this->cli_validateArgs();
+			$this->cli_help();
+			exit;
+		}
 
-#		$silentFlag = TRUE;
-		$filter = 1;
+			// Analysis type:
+		switch((string)$analysisType)    {
+			default:
+				if (is_array($this->cleanerModules[$analysisType]))	{
+					$cleanerMode = &t3lib_div::getUserObj($this->cleanerModules[$analysisType][0]);
+					$cleanerMode->cli_validateArgs();
 
-			// Missing files:
-#		$res = $this->missing_files_analyze();
-#		$this->cli_printInfo('missing_files_analyze()', $res, $silentFlag, $filter);
+					if ($this->cli_isArg('-r'))	{	// Run it...
+						if (!$cleanerMode->checkRefIndex || $this->cli_referenceIndexCheck())	{
+							$res = $cleanerMode->main();
+							$this->cli_printInfo($analysisType, $res);
 
-			// Missing relations:
-#		$res = $this->missing_relations_analyze();
-#		$this->cli_printInfo('missing_relations_analyze()', $res, $silentFlag, $filter);
+								// Autofix...
+							if ($this->cli_isArg('--AUTOFIX'))	{
+								if ($this->cli_isArg('--YES') || $this->cli_keyboardInput_yes("\n\nNOW Running --AUTOFIX on result. OK?".($this->cli_isArg('--dryrun')?' (--dryrun simulation)':'')))	{
+									$cleanerMode->main_autofix($res);
+								} else {
+									$this->cli_echo("ABORTING AutoFix...\n",1);
+								}
+							}
+						}
+					} else {	// Help only...
+						$cleanerMode->cli_help();
+						exit;
+					}
+				} else {
+					$this->cli_echo("ERROR: Analysis Type '".$analysisType."' is unknown.\n",1);
+					exit;
+				}
+			break;
+		}
+	}
 
-			// Double references
-#		$res = $this->double_files_analyze();
-#		$this->cli_printInfo('double_files_analyze()', $res, $silentFlag, $filter);
+	/**
+	 * Checks reference index
+	 *
+	 * @return	boolean		TRUE if reference index was OK (either OK, updated or ignored)
+	 */
+	function cli_referenceIndexCheck()	{
 
-			// RTE images
-#		$res = $this->RTEmagic_files_analyze();
-#		$this->cli_printInfo('RTEmagic_files_analyze()', $res, $silentFlag, $filter);
+			// Reference index option:
+		$refIndexMode = isset($this->cli_args['--refindex']) ? $this->cli_args['--refindex'][0] : 'check';
+		if (!t3lib_div::inList('update,ignore,check', $refIndexMode))	{
+			$this->cli_echo("ERROR: Wrong value for --refindex argument.\n",1);
+			exit;
+		}
 
-			// Lost files:
-#		$res = $this->clean_lost_files_analyze();
-#		$this->cli_printInfo('clean_lost_files_analyze()', $res, $silentFlag, $filter);
+		switch($refIndexMode)	{
+			case 'check':
+			case 'update':
+				$refIndexObj = t3lib_div::makeInstance('t3lib_refindex');
+				list($headerContent,$bodyContent,$errorCount) = $refIndexObj->updateIndex($refIndexMode=='check',$this->cli_echo());
 
-		$res = $this->orphan_records_analyze();
-		$this->cli_printInfo('orphan_records_analyze()', $res, $silentFlag, $filter);
+				if ($errorCount && $refIndexMode=='check')	{
+					$ok = FALSE;
+					$this->cli_echo("ERROR: Reference Index Check failed! (run with '--refindex update' to fix)\n",1);
+				} else {
+					$ok = TRUE;
+				}
+			break;
+			case 'ignore':
+				$this->cli_echo("Reference Index Check: Bypassing reference index check...\n");
+				$ok = TRUE;
+			break;
+		}
 
-#			ob_start();
-#			$output.= ob_get_contents().chr(10);
-#			ob_end_clean();
+		return $ok;
+	}
+
+	/**
+	 * @param	[type]		$matchString: ...
+	 * @return	string		If string, it's the reason for not executing. Returning FALSE means it should execute.
+	 */
+	function cli_noExecutionCheck($matchString)	{
+
+			// Check for filter:
+		if ($this->cli_isArg('--filterRegex') && $regex = $this->cli_argValue('--filterRegex',0))	{
+			if (!preg_match($regex,$matchString))	return 'BYPASS: Filter Regex "'.$regex.'" did not match string "'.$matchString.'"';
+		}
+			// Check for interactive mode
+		if ($this->cli_isArg('-i'))	{
+			if (!$this->cli_keyboardInput_yes(' EXECUTE?'))	{
+				return 'BYPASS...';
+			}
+		}
+			// Check for
+		if ($this->cli_isArg('--dryrun'))	return 'BYPASS: --dryrun set';
 	}
 
 	/**
@@ -686,18 +246,27 @@ exit;
 	 *
 	 * @param	string		name of the test (eg. function name)
 	 * @param	array		Result array from an analyze function
-	 * @param	boolean		Silent flag, if set, will only output when the result array contains data in arrays.
-	 * @param	integer		Detail level: 0=all, 1=info and greater, 2=warnings and greater, 3=errors
 	 * @return	void		Outputs with echo - capture content with output buffer if needed.
 	 */
-	function cli_printInfo($header,$res,$silent=FALSE,$detailLevel=0)	{
+	function cli_printInfo($header,$res)	{
 
-		if (!$silent) {
-				// Name:
-			echo chr(10).'*********************************************'.chr(10).$header.chr(10).'*********************************************'.chr(10);
+		$detailLevel = t3lib_div::intInRange($this->cli_isArg('-v') ? $this->cli_argValue('-v') : 1,0,3);
+		$silent = !$this->cli_echo();
 
-				// Message:
-			echo trim($res['message']).chr(10).chr(10);
+		$severity = array(
+			0 => 'MESSAGE',
+			1 => 'INFO',
+			2 => 'WARNING',
+			3 => 'ERROR',
+		);
+
+			// Header output:
+		if ($detailLevel <= 1)	{
+			$this->cli_echo(
+				"*********************************************\n".
+				$header."\n".
+				"*********************************************\n");
+			$this->cli_echo(wordwrap(trim($res['message'])).chr(10).chr(10));
 		}
 
 			// Traverse headers for output:
@@ -705,30 +274,292 @@ exit;
 			foreach($res['headers'] as $key => $value)	{
 
 				if ($detailLevel <= intval($value[2]))	{
-					if (!$silent || (is_array($res[$key]) && count($res[$key]))) {
+					if (is_array($res[$key]) && (count($res[$key]) || !$silent)) {
+
 							// Header and explanaion:
-						echo '---------------------------------------------'.chr(10).
-								($silent ? '['.$header.']'.chr(10) : '').
-								$value[0].' ['.$value[2].']'.chr(10).
-								'---------------------------------------------'.chr(10);
+						$this->cli_echo('---------------------------------------------'.chr(10),1);
+						$this->cli_echo('['.$header.']'.chr(10),1);
+						$this->cli_echo($value[0].' ['.$severity[$value[2]].']'.chr(10),1);
+						$this->cli_echo('---------------------------------------------'.chr(10),1);
 						if (trim($value[1]))	{
-							echo '[Explanation: '.trim($value[1]).']'.chr(10);
+							$this->cli_echo('Explanation: '.wordwrap(trim($value[1])).chr(10).chr(10),1);
 						}
 					}
 
 						// Content:
 					if (is_array($res[$key]))	{
 						if (count($res[$key]))	{
-							print_r($res[$key]);
+							if ($this->cli_echo('',1)) { print_r($res[$key]); }
 						} else {
-							if (!$silent) echo '(None)'.chr(10).chr(10);
+							$this->cli_echo('(None)'.chr(10).chr(10));
 						}
 					} else {
-						if (!$silent) echo $res[$key].chr(10).chr(10);
+						$this->cli_echo($res[$key].chr(10).chr(10));
 					}
 				}
 			}
 		}
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+	/**************************
+	 *
+	 * Page tree traversal
+	 *
+	 *************************/
+
+	/**
+	 * Traverses the FULL/part of page tree, mainly to register ALL validly connected records (to find orphans) but also to register deleted records, versions etc.
+	 * Output (in $this->recStats) can be useful for multiple purposes.
+	 *
+	 * @param	integer		Root page id from where to start traversal. Use "0" (zero) to have full page tree (necessary when spotting orphans, otherwise you can run it on parts only)
+	 * @param	integer		Depth to traverse. zero is do not traverse at all. 1 = 1 sublevel, 1000= 1000 sublevels (all...)
+	 * @param	boolean		If >0, will echo information about the traversal process.
+	 * @param	string		Call back function (from this class or subclass)
+	 * @return	void
+	 */
+	function genTree($rootID,$depth=1000,$echoLevel=0,$callBack='')	{
+
+			// Initialize:
+		$this->workspaceIndex = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid,title','sys_workspace','1=1'.t3lib_BEfunc::deleteClause('sys_workspace'),'','','','uid');
+		$this->workspaceIndex[-1] = TRUE;
+		$this->workspaceIndex[0] = TRUE;
+
+		$this->recStats = array(
+			'all' => array(),									// All records connected in tree including versions (the reverse are orphans). All Info and Warning categories below are included here (and therefore safe if you delete the reverse of the list)
+			'deleted' => array(),								// Subset of "alL" that are deleted-flagged [Info]
+			'versions' => array(),								// Subset of "all" which are offline versions (pid=-1). [Info]
+			'versions_published' => array(),					// Subset of "versions" that is a count of 1 or more (has been published) [Info]
+			'versions_liveWS' => array(),						// Subset of "versions" that exists in live workspace [Info]
+			'versions_lost_workspace' => array(),				// Subset of "versions" that doesn't belong to an existing workspace [Warning: Fix by move to live workspace]
+			'versions_inside_versioned_page' => array(),		// Subset of "versions" This is versions of elements found inside an already versioned branch / page. In real life this can work out, but is confusing and the backend should prevent this from happening to people. [Warning: Fix by deleting those versions (or publishing them)]
+			'illegal_record_under_versioned_page' => array(),	// If a page is "element" or "page" version and records are found attached to it, they might be illegally attached, so this will tell you. [Error: Fix by deleting orphans since they are not registered in "all" category]
+			'misplaced_at_rootlevel' => array(),				// Subset of "all": Those that should not be at root level but are. [Warning: Fix by moving record into page tree]
+			'misplaced_inside_tree' => array(),					// Subset of "all": Those that are inside page tree but should be at root level [Warning: Fix by setting PID to zero]
+		);
+
+			// Start traversal:
+		$this->genTree_traverse($rootID,$depth,$echoLevel,$callBack);
+
+		if ($echoLevel>0)	echo chr(10).chr(10);
+	}
+
+	/**
+	 * Recursive traversal of page tree:
+	 *
+	 * @param	integer		Page root id (must be online, valid page record - or zero for page tree root)
+	 * @param	integer		Depth
+	 * @param	integer		Echo Level
+	 * @param	string		Call back function (from this class or subclass)
+	 * @param	string		DON'T set from outside, internal. (indicates we are inside a version of a page)
+	 * @param	integer		DON'T set from outside, internal. (1: Indicates that rootID is a version of a page, 2: ...that it is even a version of a version (which triggers a warning!)
+	 * @param	string		Internal string that accumulates the path
+	 * @return	void
+	 * @access private
+	 */
+	function genTree_traverse($rootID,$depth,$echoLevel=0,$callBack='',$versionSwapmode='',$rootIsVersion=0,$accumulatedPath='')	{
+
+			// Register page:
+		$this->recStats['all']['pages'][$rootID] = $rootID;
+		$pageRecord = t3lib_BEfunc::getRecordRaw('pages','uid='.intval($rootID),'deleted,title,t3ver_count,t3ver_wsid');
+		$accumulatedPath.='/'.$pageRecord['title'];
+
+			// Register if page is deleted:
+		if ($pageRecord['deleted'])	{
+			$this->recStats['deleted']['pages'][$rootID] = $rootID;
+		}
+			// If rootIsVersion is set it means that the input rootID is that of a version of a page. See below where the recursive call is made.
+		if ($rootIsVersion)	{
+			$this->recStats['versions']['pages'][$rootID] = $rootID;
+			if ($pageRecord['t3ver_count']>=1 && $pageRecord['t3ver_wsid']==0)	{	// If it has been published and is in archive now...
+				$this->recStats['versions_published']['pages'][$rootID] = $rootID;
+			}
+			if ($pageRecord['t3ver_wsid']==0)	{	// If it has been published and is in archive now...
+				$this->recStats['versions_liveWS']['pages'][$rootID] = $rootID;
+			}
+			if (!isset($this->workspaceIndex[$pageRecord['t3ver_wsid']]))	{	// If it doesn't belong to a workspace...
+				$this->recStats['versions_lost_workspace']['pages'][$rootID] = $rootID;
+			}
+			if ($rootIsVersion==2)	{	// In case the rootID is a version inside a versioned page
+				$this->recStats['versions_inside_versioned_page']['pages'][$rootID] = $rootID;
+			}
+		}
+
+		if ($echoLevel>0)
+			echo chr(10).$accumulatedPath.' ['.$rootID.']'.
+				($pageRecord['deleted'] ? ' (DELETED)':'').
+				($this->recStats['versions_published']['pages'][$rootID] ? ' (PUBLISHED)':'')
+				;
+		if ($echoLevel>1 && $this->recStats['versions_lost_workspace']['pages'][$rootID])
+			echo chr(10).'	ERROR! This version belongs to non-existing workspace ('.$pageRecord['t3ver_wsid'].')!';
+		if ($echoLevel>1 && $this->recStats['versions_inside_versioned_page']['pages'][$rootID])
+			echo chr(10).'	WARNING! This version is inside an already versioned page or branch!';
+
+			// Call back:
+		if ($callBack)	{
+			$this->$callBack('pages',$rootID,$echoLevel,$versionSwapmode,$rootIsVersion);
+		}
+
+			// Traverse tables of records that belongs to page:
+		foreach($GLOBALS['TCA'] as $tableName => $cfg)	{
+			if ($tableName!='pages') {
+
+					// Select all records belonging to page:
+				$resSub = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+					'uid'.($GLOBALS['TCA'][$tableName]['ctrl']['delete']?','.$GLOBALS['TCA'][$tableName]['ctrl']['delete']:''),
+					$tableName,
+					'pid='.intval($rootID).
+						($this->genTree_traverseDeleted ? '' : t3lib_BEfunc::deleteClause($tableName))
+				);
+
+				$count = $GLOBALS['TYPO3_DB']->sql_num_rows($resSub);
+				if ($count)	{
+					if ($echoLevel==2)	echo chr(10).'	\-'.$tableName.' ('.$count.')';
+				}
+
+				while ($rowSub = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($resSub))	{
+					if ($echoLevel==3)	echo chr(10).'	\-'.$tableName.':'.$rowSub['uid'];
+
+						// If the rootID represents an "element" or "page" version type, we must check if the record from this table is allowed to belong to this:
+					if ($versionSwapmode=='SWAPMODE:-1' || ($versionSwapmode=='SWAPMODE:0' && !$GLOBALS['TCA'][$tableName]['ctrl']['versioning_followPages']))	{
+							// This is illegal records under a versioned page - therefore not registered in $this->recStats['all'] so they should be orphaned:
+						$this->recStats['illegal_record_under_versioned_page'][$tableName][$rowSub['uid']] = $rowSub['uid'];
+						if ($echoLevel>1)	echo chr(10).'		ERROR! Illegal record ('.$tableName.':'.$rowSub['uid'].') under versioned page!';
+					} else {
+						$this->recStats['all'][$tableName][$rowSub['uid']] = $rowSub['uid'];
+
+							// Register deleted:
+						if ($GLOBALS['TCA'][$tableName]['ctrl']['delete'] && $rowSub[$GLOBALS['TCA'][$tableName]['ctrl']['delete']])	{
+							$this->recStats['deleted'][$tableName][$rowSub['uid']] = $rowSub['uid'];
+							if ($echoLevel==3)	echo ' (DELETED)';
+						}
+
+							// Check location of records regarding tree root:
+						if (!$GLOBALS['TCA'][$tableName]['ctrl']['rootLevel'] && $rootID==0) {
+							$this->recStats['misplaced_at_rootlevel'][$tableName][$rowSub['uid']] = $rowSub['uid'];
+							if ($echoLevel>1)	echo chr(10).'		ERROR! Misplaced record ('.$tableName.':'.$rowSub['uid'].') on rootlevel!';
+						}
+						if ($GLOBALS['TCA'][$tableName]['ctrl']['rootLevel']==1 && $rootID>0) {
+							$this->recStats['misplaced_inside_tree'][$tableName][$rowSub['uid']] = $rowSub['uid'];
+							if ($echoLevel>1)	echo chr(10).'		ERROR! Misplaced record ('.$tableName.':'.$rowSub['uid'].') inside page tree!';
+						}
+
+							// Traverse plugins:
+						if ($callBack)	{
+							$this->$callBack($tableName,$rowSub['uid'],$echoLevel,$versionSwapmode,$rootIsVersion);
+						}
+
+							// Add any versions of those records:
+						if ($this->genTree_traverseVersions)	{
+							$versions = t3lib_BEfunc::selectVersionsOfRecord($tableName, $rowSub['uid'], 'uid,t3ver_wsid,t3ver_count'.($GLOBALS['TCA'][$tableName]['ctrl']['delete']?','.$GLOBALS['TCA'][$tableName]['ctrl']['delete']:''), 0, TRUE);
+							if (is_array($versions))	{
+								foreach($versions as $verRec)	{
+									if (!$verRec['_CURRENT_VERSION'])	{
+										if ($echoLevel==3)	echo chr(10).'		\-[#OFFLINE VERSION: WS#'.$verRec['t3ver_wsid'].'/Cnt:'.$verRec['t3ver_count'].'] '.$tableName.':'.$verRec['uid'].')';
+										$this->recStats['all'][$tableName][$verRec['uid']] = $verRec['uid'];
+
+											// Register deleted:
+										if ($GLOBALS['TCA'][$tableName]['ctrl']['delete'] && $verRec[$GLOBALS['TCA'][$tableName]['ctrl']['delete']])	{
+											$this->recStats['deleted'][$tableName][$verRec['uid']] = $verRec['uid'];
+											if ($echoLevel==3)	echo ' (DELETED)';
+										}
+
+											// Register version:
+										$this->recStats['versions'][$tableName][$verRec['uid']] = $verRec['uid'];
+										if ($verRec['t3ver_count']>=1 && $verRec['t3ver_wsid']==0)	{	// Only register published versions in LIVE workspace (published versions in draft workspaces are allowed)
+											$this->recStats['versions_published'][$tableName][$verRec['uid']] = $verRec['uid'];
+											if ($echoLevel==3)	echo ' (PUBLISHED)';
+										}
+										if ($verRec['t3ver_wsid']==0)	{
+											$this->recStats['versions_liveWS'][$tableName][$verRec['uid']] = $verRec['uid'];
+										}
+										if (!isset($this->workspaceIndex[$verRec['t3ver_wsid']]))	{
+											$this->recStats['versions_lost_workspace'][$tableName][$verRec['uid']] = $verRec['uid'];
+											if ($echoLevel>1)	echo chr(10).'		ERROR! Version ('.$tableName.':'.$verRec['uid'].') belongs to non-existing workspace ('.$verRec['t3ver_wsid'].')!';
+										}
+										if ($versionSwapmode)	{	// In case we are inside a versioned branch, there should not exists versions inside that "branch".
+											$this->recStats['versions_inside_versioned_page'][$tableName][$verRec['uid']] = $verRec['uid'];
+											if ($echoLevel>1)	echo chr(10).'		ERROR! This version ('.$tableName.':'.$verRec['uid'].') is inside an already versioned page or branch!';
+										}
+
+											// Traverse plugins:
+										if ($callBack)	{
+											$this->$callBack($tableName,$verRec['uid'],$echoLevel,$versionSwapmode,$rootIsVersion);
+										}
+									}
+								}
+							}
+							unset($versions);
+						}
+					}
+				}
+			}
+		}
+		unset($resSub);
+		unset($rowSub);
+
+			// Find subpages to root ID and traverse (only when rootID is not a version or is a branch-version):
+		if (!$versionSwapmode || $versionSwapmode=='SWAPMODE:1')	{
+			if ($depth>0)	{
+				$depth--;
+				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+					'uid',
+					'pages',
+					'pid='.intval($rootID).
+						($this->genTree_traverseDeleted ? '' : t3lib_BEfunc::deleteClause('pages')),
+					'',
+					'sorting'
+				);
+				while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
+					$this->genTree_traverse($row['uid'],$depth,$echoLevel,$callBack,$versionSwapmode,0,$accumulatedPath);
+				}
+			}
+
+				// Add any versions of pages
+			if ($rootID>0 && $this->genTree_traverseVersions)	{
+				$versions = t3lib_BEfunc::selectVersionsOfRecord('pages', $rootID, 'uid,t3ver_oid,t3ver_wsid,t3ver_count,t3ver_swapmode', 0, TRUE);
+				if (is_array($versions))	{
+					foreach($versions as $verRec)	{
+						if (!$verRec['_CURRENT_VERSION'])	{
+							$this->genTree_traverse($verRec['uid'],$depth,$echoLevel,$callBack,'SWAPMODE:'.t3lib_div::intInRange($verRec['t3ver_swapmode'],-1,1),$versionSwapmode?2:1,$accumulatedPath.' [#OFFLINE VERSION: WS#'.$verRec['t3ver_wsid'].'/Cnt:'.$verRec['t3ver_count'].']');
+						}
+					}
+				}
+			}
+		}
+	}
+
+
+
+
+
+
+
+
+	/**************************
+	 *
+	 * Helper functions
+	 *
+	 *************************/
+
+	/**
+	 * Compile info-string
+	 *
+	 * @param	array		Input record from sys_refindex
+	 * @return	string		String identifying the main record of the reference
+	 */
+	function infoStr($rec)	{
+		return $rec['tablename'].':'.$rec['recuid'].':'.$rec['field'].':'.$rec['flexpointer'].':'.$rec['softref_key'].($rec['deleted'] ? ' (DELETED)':'');
 	}
 }
 

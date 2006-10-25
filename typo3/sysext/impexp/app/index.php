@@ -108,10 +108,10 @@
  */
 
 
-unset($MCONF);
-require ('conf.php');
-require ($BACK_PATH.'init.php');
-require ($BACK_PATH.'template.php');
+#unset($MCONF);
+#require ('conf.php');
+#require ($BACK_PATH.'init.php');
+#require ($BACK_PATH.'template.php');
 $LANG->includeLLFile('EXT:impexp/app/locallang.php');
 require_once (PATH_t3lib.'class.t3lib_scbase.php');
 require_once (t3lib_extMgm::extPath('impexp').'class.tx_impexp.php');
@@ -309,7 +309,7 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 			script_ended = 1;
 			if (top.fsMod) top.fsMod.recentIds["web"] = '.intval($this->id).';
 		');
-		$this->doc->form = '<form action="index.php" method="post" enctype="'.$GLOBALS['TYPO3_CONF_VARS']['SYS']['form_enctype'].'"><input type="hidden" name="id" value="'.$this->id.'" />';
+		$this->doc->form = '<form action="'.htmlspecialchars($GLOBALS['MCONF']['_']).'" method="post" enctype="'.$GLOBALS['TYPO3_CONF_VARS']['SYS']['form_enctype'].'"><input type="hidden" name="id" value="'.$this->id.'" />';
 
 		$this->content.= $this->doc->startPage($LANG->getLL('title'));
 		$this->content.= $this->doc->header($LANG->getLL('title'));
@@ -1257,7 +1257,7 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 						unset($passParams['import_mode']);
 						unset($passParams['import_file']);
 
-						$thisScriptUrl = t3lib_div::getIndpEnv('REQUEST_URI').'?id='.$this->id.t3lib_div::implodeArrayForUrl('tx_impexp',$passParams);
+						$thisScriptUrl = t3lib_div::getIndpEnv('REQUEST_URI').'?M=xMOD_tximpexp&id='.$this->id.t3lib_div::implodeArrayForUrl('tx_impexp',$passParams);
 						$emURL = $this->doc->backPath.'mod/tools/em/index.php?CMD[requestInstallExtensions]='.implode(',',$extKeysToInstall).'&returnUrl='.rawurlencode($thisScriptUrl);
 						$extensionInstallationMessage = 'Before you can install this T3D file you need to install the extensions "'.implode('", "',$extKeysToInstall).'". Clicking Import will first take you to the Extension Manager so these dependencies can be resolved.';
 					} 

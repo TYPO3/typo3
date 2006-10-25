@@ -48,8 +48,9 @@
 
 require_once(PATH_t3lib.'class.t3lib_extobjbase.php');
 require_once(t3lib_extMgm::extPath('lowlevel').'class.tx_lowlevel_cleaner_core.php');
+require_once (PATH_t3lib.'class.t3lib_refindex.php');
 
-
+die('Not developed...');
 
 
 
@@ -115,6 +116,7 @@ class tx_lowlevel_cleaner extends t3lib_extobjbase {
 			$content.= $this->pObj->doc->spacer(5);
 			$content.= $this->createMenu().'<hr/>';
 			$content.= $this->moduleContent();
+			$content.= $this->quickDBlookUp();
 		} else {
 			$content.= $this->pObj->doc->spacer(5);
 			$content.= 'Only access for admin users, sorry.';
@@ -179,6 +181,60 @@ $contentTreeData = $apiObj->getContentTree('pages', t3lib_BEfunc::getRecordWSOL(
 debug($contentTreeData);
 */
 		return $output;
+	}
+	
+	function quickDBlookUp()	{
+		$output = 'Enter [table]:[uid]:[fieldlist (optional)] <input name="table_uid" value="'.htmlspecialchars(t3lib_div::_POST('table_uid')).'" />';
+		$output.='<input type="submit" name="_" value="REFRESH" /><br/>';
+		
+			// Show record:
+		if (t3lib_div::_POST('table_uid'))	{
+			list($table,$uid,$fieldName) = t3lib_div::trimExplode(':',t3lib_div::_POST('table_uid'),1);
+			if ($GLOBALS['TCA'][$table])	{
+				$rec = t3lib_BEfunc::getRecordRaw($table,'uid='.intval($uid),$fieldName?$fieldName:'*');
+
+				if (count($rec))	{
+					if (t3lib_div::_POST('_EDIT'))	{
+						$output.='<hr/>Edit:<br/><br/>';
+						foreach($rec as $field => $value)	{
+							$output.= htmlspecialchars($field).'<br/><input name="record['.$table.']['.$uid.']['.$field.']" value="'.htmlspecialchars($value).'" /><br/>';
+						}
+						$output.='<input type="submit" name="_SAVE" value="SAVE" />';
+					} elseif (t3lib_div::_POST('_SAVE'))	{
+						$incomingData = t3lib_div::_POST('record');
+						$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table,'uid='.intval($uid),$incomingData[$table][$uid]);
+						$output.='<br/>Updated '.$table.':'.$uid.'...';
+						$this->updateRefIndex($table,$uid);
+					} else if (t3lib_div::_POST('_DELETE'))	{
+						$GLOBALS['TYPO3_DB']->exec_DELETEquery($table,'uid='.intval($uid));
+						$output.='<br/>Deleted '.$table.':'.$uid.'...';
+						$this->updateRefIndex($table,$uid);
+					} else {
+						$output.='<input type="submit" name="_EDIT" value="EDIT" />';
+						$output.='<input type="submit" name="_DELETE" value="DELETE" onclick="return confirm(\'Are you sure you wish to delete?\');" />';
+						$output.=t3lib_div::view_array($rec);
+						$output.=md5(implode($rec));
+					}
+				} else {
+					$output.='No record existed!';
+				}
+			}
+		}
+				
+		return $output;
+	}
+
+
+	/**
+	 * Update Reference Index (sys_refindex) for a record
+	 *
+	 * @param	string		Table name
+	 * @param	integer		Record UID
+	 * @return	void
+	 */
+	function updateRefIndex($table,$id)	{
+		$refIndexObj = t3lib_div::makeInstance('t3lib_refindex');
+		$result = $refIndexObj->updateRefIndexTable($table,$id);
 	}
 }
 

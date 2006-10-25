@@ -36,43 +36,50 @@
  *
  *
  *
- *   76: class t3lib_refindex
- *   94:     function updateRefIndexTable($table,$uid,$testOnly=FALSE)
- *  165:     function generateRefIndexData($table,$uid)
- *  242:     function createEntryData($table,$uid,$field,$flexpointer,$deleted,$ref_table,$ref_uid,$ref_string='',$sort=-1,$softref_key='',$softref_id='')
- *  269:     function createEntryData_dbRels($table,$uid,$fieldname,$flexpointer,$deleted,$items)
- *  286:     function createEntryData_fileRels($table,$uid,$fieldname,$flexpointer,$deleted,$items)
- *  307:     function createEntryData_softreferences($table,$uid,$fieldname,$flexpointer,$deleted,$keys)
+ *   89: class t3lib_refindex
+ *  107:     function updateRefIndexTable($table,$uid,$testOnly=FALSE)
+ *  178:     function generateRefIndexData($table,$uid)
+ *  255:     function createEntryData($table,$uid,$field,$flexpointer,$deleted,$ref_table,$ref_uid,$ref_string='',$sort=-1,$softref_key='',$softref_id='')
+ *  282:     function createEntryData_dbRels($table,$uid,$fieldname,$flexpointer,$deleted,$items)
+ *  299:     function createEntryData_fileRels($table,$uid,$fieldname,$flexpointer,$deleted,$items)
+ *  320:     function createEntryData_softreferences($table,$uid,$fieldname,$flexpointer,$deleted,$keys)
  *
  *              SECTION: Get relations from table row
- *  362:     function getRelations($table,$row)
- *  459:     function getRelations_flexFormCallBack($dsArr, $dataValue, $PA, $structurePath, &$pObj)
- *  509:     function getRelations_procFiles($value, $conf, $uid)
- *  559:     function getRelations_procDB($value, $conf, $uid)
+ *  376:     function getRelations($table,$row,$onlyField='')
+ *  473:     function getRelations_flexFormCallBack($dsArr, $dataValue, $PA, $structurePath, &$pObj)
+ *  523:     function getRelations_procFiles($value, $conf, $uid)
+ *  573:     function getRelations_procDB($value, $conf, $uid)
+ *
+ *              SECTION: Setting values
+ *  616:     function setReferenceValue($hash,$newValue,$returnDataArray=FALSE)
+ *  699:     function setReferenceValue_dbRels($refRec,$itemArray,$newValue,&$dataArray,$flexpointer='')
+ *  737:     function setReferenceValue_fileRels($refRec,$itemArray,$newValue,&$dataArray,$flexpointer='')
+ *  775:     function setReferenceValue_softreferences($refRec,$softref,$newValue,&$dataArray,$flexpointer='')
  *
  *              SECTION: Helper functions
- *  596:     function isReferenceField($conf)
- *  606:     function destPathFromUploadFolder($folder)
- *  616:     function error($msg)
- *  627:     function updateIndex($testOnly,$cli_echo=FALSE)
+ *  822:     function isReferenceField($conf)
+ *  832:     function destPathFromUploadFolder($folder)
+ *  842:     function error($msg)
+ *  853:     function updateIndex($testOnly,$cli_echo=FALSE)
  *
- * TOTAL FUNCTIONS: 14
+ * TOTAL FUNCTIONS: 18
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
 
 require_once(PATH_t3lib.'class.t3lib_tcemain.php');
 require_once(PATH_t3lib.'class.t3lib_flexformtools.php');
+require_once(PATH_typo3.'sysext/indexed_search/class.lexer.php');
 
 
 
 /**
  * Reference index processing and relation extraction
  *
- * NOTICE: When the reference index is updated for an offline version the results may not be correct. 
+ * NOTICE: When the reference index is updated for an offline version the results may not be correct.
  * First, lets assumed that the reference update happens in LIVE workspace (ALWAYS update from Live workspace if you analyse whole database!)
  * Secondly, lets assume that in a Draft workspace you have changed the data structure of a parent page record - this is (in TemplaVoila) inherited by subpages.
- * When in the LIVE workspace the data structure for the records/pages in the offline workspace will not be evaluated to the right one simply because the data structure is taken from a rootline traversal and in the Live workspace that will NOT include the changed DataSTructure! Thus the evaluation will be based on the Data Structure set in the Live workspace! 
+ * When in the LIVE workspace the data structure for the records/pages in the offline workspace will not be evaluated to the right one simply because the data structure is taken from a rootline traversal and in the Live workspace that will NOT include the changed DataSTructure! Thus the evaluation will be based on the Data Structure set in the Live workspace!
  * Somehow this scenario is rarely going to happen. Yet, it is an inconsistency and I see now practical way to handle it - other than simply ignoring maintaining the index for workspace records. Or we can say that the index is precise for all Live elements while glitches might happen in an offline workspace?
  * Anyway, I just wanted to document this finding - I don't think we can find a solution for it. And its very TemplaVoila specific.
  *
@@ -86,16 +93,20 @@ class t3lib_refindex {
 	var $errorLog = array();
 	var $WSOL = FALSE;
 	var $relations = array();
+
+	var $words_strings = array();
+	var $words = array();
+	
 	var $hashVersion = 1;	// Number which we can increase if a change in the code means we will have to force a re-generation of the index.
 
 
 	/**
-	 * Call this function to update the sys_refindex table for a record.
+	 * Call this function to update the sys_refindex table for a record (even one just deleted)
 	 * NOTICE: Currently, references updated for a deleted-flagged record will not include those from within flexform fields in some cases where the data structure is defined by another record since the resolving process ignores deleted records! This will also result in bad cleaning up in tcemain I think... Anyway, thats the story of flexforms; as long as the DS can change, lots of references can get lost in no time.
 	 *
 	 * @param	string		Table name
 	 * @param	integer		UID of record
-	 * @param	boolean		If set, nothing will be written to the index but the result value will still report statistics on what as added, deleted and kept. Can be used for mere analysis.
+	 * @param	boolean		If set, nothing will be written to the index but the result value will still report statistics on what is added, deleted and kept. Can be used for mere analysis.
 	 * @return	array		Array with statistics about how many index records were added, deleted and not altered plus the complete reference set for the record.
 	 */
 	function updateRefIndexTable($table,$uid,$testOnly=FALSE)	{
@@ -119,7 +130,7 @@ class t3lib_refindex {
 			'','','','hash'
 		);
 
-			// First, test to see if the record exists (being deleted also means it doesn't exist!)
+			// First, test to see if the record exists (including deleted-flagged)
 		if (t3lib_BEfunc::getRecordRaw($table,'uid='.intval($uid),'uid'))	{
 
 				// Then, get relations:
@@ -146,6 +157,9 @@ class t3lib_refindex {
 
 				$result['relations'] = $relations;
 			} else return FALSE;	// Weird mistake I would say...
+			
+				// Words:
+			if (!$testOnly)	$this->wordIndexing($table,$uid);
 		}
 
 			// If any old are left, remove them:
@@ -177,6 +191,10 @@ class t3lib_refindex {
 			list($record) = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*',$table,'uid='.intval($uid));
 
 			if (is_array($record))	{
+				
+					// Initialize:
+				$this->words_strings = array();
+				$this->words = array();
 
 					// Deleted:
 				$deleted = $TCA[$table]['ctrl']['delete'] ? ($record[$TCA[$table]['ctrl']['delete']]?1:0) : 0;
@@ -222,6 +240,14 @@ class t3lib_refindex {
  					if (is_array($dat['softrefs']))	{
  						$this->createEntryData_softreferences($table,$uid,$fieldname,'',$deleted,$dat['softrefs']['keys']);
  					}
+				}
+
+					// Word indexing:
+				t3lib_div::loadTCA($table);
+				foreach($TCA[$table]['columns'] as $field => $conf)	{
+					if (t3lib_div::inList('input,text',$conf['config']['type']) && strcmp($record[$field],'') && !t3lib_div::testInt($record[$field])) {
+						$this->words_strings[$field] = $record[$field];
+					}
 				}
 
 				return $this->relations;
@@ -363,10 +389,11 @@ class t3lib_refindex {
 	 *
 	 * @param	string		Table name
 	 * @param	array		Row from table
+	 * @param	string		Specific field to fetch for.
 	 * @return	array		Array with information about relations
 	 * @see export_addRecord()
 	 */
-	function getRelations($table,$row)	{
+	function getRelations($table,$row,$onlyField='')	{
 		global $TCA;
 
 			// Load full table description
@@ -378,7 +405,7 @@ class t3lib_refindex {
 
 		$outRow = array();
 		foreach($row as $field => $value)	{
-			if (!in_array($field,$nonFields) && is_array($TCA[$table]['columns'][$field]))	{
+			if (!in_array($field,$nonFields) && is_array($TCA[$table]['columns'][$field]) && (!$onlyField || $onlyField===$field))	{
 				$conf = $TCA[$table]['columns'][$field]['config'];
 
 					// Add files
@@ -403,6 +430,7 @@ class t3lib_refindex {
 				if ($conf['type']=='flex')	{
 
 						// Get current value array:
+						// NOTICE: failure to resolve Data Structures can lead to integrity problems with the reference index. Please look up the note in the JavaDoc documentation for the function t3lib_BEfunc::getFlexFormDS() 
 					$dataStructArray = t3lib_BEfunc::getFlexFormDS($conf, $row, $table,'',$this->WSOL);
 					$currentValueArray = t3lib_div::xml2array($value);
 
@@ -541,13 +569,13 @@ class t3lib_refindex {
 			foreach($theFileValues as $file)	{
 				if (trim($file))	{
 					$realFile = $dest.'/'.trim($file);
-					if (@is_file($realFile))	{
+#					if (@is_file($realFile))	{		// Now, the refernece index should NOT look if files exist - just faithfully include them if they are in the records!
 						$newValueFiles[] = array(
 							'filename' => $file,
 							'ID' => md5($realFile),
 							'ID_absFile' => $realFile
 						);	// the order should be preserved here because.. (?)
-					} else $this->error('Missing file: '.$realFile);
+#					} else $this->error('Missing file: '.$realFile);
 				}
 			}
 
@@ -585,6 +613,336 @@ class t3lib_refindex {
 
 
 
+
+
+
+
+
+
+
+	/*******************************
+	 *
+	 * Setting values
+	 *
+	 *******************************/
+
+	/**
+	 * Setting the value of a reference or removing it completely.
+	 * Usage: For lowlevel clean up operations!
+	 * WARNING: With this you can set values that are not allowed in the database since it will bypass all checks for validity! Hence it is targetted at clean-up operations. Please use TCEmain in the usual ways if you wish to manipulate references.
+	 * Since this interface allows updates to soft reference values (which TCEmain does not directly) you may like to use it for that as an exception to the warning above.
+	 * Notice; If you want to remove multiple references from the same field, you MUST start with the one having the highest sorting number. If you don't the removal of a reference with a lower number will recreate an index in which the remaining references in that field has new hash-keys due to new sorting numbers - and you will get errors for the remaining operations which cannot find the hash you feed it!
+	 * To ensure proper working only admin-BE_USERS in live workspace should use this function
+	 *
+	 * @param	string		32-byte hash string identifying the record from sys_refindex which you wish to change the value for
+	 * @param	mixed		Value you wish to set for reference. If NULL, the reference is removed (unless a soft-reference in which case it can only be set to a blank string). If you wish to set a database reference, use the format "[table]:[uid]". Any other case, the input value is set as-is
+	 * @param	boolean		Return $dataArray only, do not submit it to database.
+	 * @return	string		If a return string, that carries an error message, otherwise false (=OK) (except if $returnDataArray is set!)
+	 */
+	function setReferenceValue($hash,$newValue,$returnDataArray=FALSE)	{
+		
+		if ($GLOBALS['BE_USER']->workspace===0 && $GLOBALS['BE_USER']->isAdmin())	{
+
+				// Get current index from Database:
+			list($refRec) = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+				'*',
+				'sys_refindex',
+				'hash='.$GLOBALS['TYPO3_DB']->fullQuoteStr($hash,'sys_refindex')
+			);
+
+				// Check if reference existed.
+			if (is_array($refRec))	{
+				if ($GLOBALS['TCA'][$refRec['tablename']])	{
+
+						// Get that record from database:
+					list($record) = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*',$refRec['tablename'],'uid='.intval($refRec['recuid']));
+
+					if (is_array($record))	{
+
+							// Get all relations from record, filter with fieldname:
+						$dbrels = $this->getRelations($refRec['tablename'],$record,$refRec['field']);
+						if ($dat = $dbrels[$refRec['field']])	{
+
+								// Initialize data array that is to be sent to TCEmain afterwards:
+							$dataArray = array();
+
+		 						// Based on type,
+		 					switch((string)$dat['type'])	{
+		 						case 'db':
+		 							$error = $this->setReferenceValue_dbRels($refRec,$dat['itemArray'],$newValue,$dataArray);
+									if ($error)	return $error;
+		 						break;
+		 						case 'file':
+		 							$this->setReferenceValue_fileRels($refRec,$dat['newValueFiles'],$newValue,$dataArray);
+									if ($error)	return $error;
+		 						break;
+		 						case 'flex':
+										// DB references:
+									if (is_array($dat['flexFormRels']['db'][$refRec['flexpointer']]))	{
+			 							$error = $this->setReferenceValue_dbRels($refRec,$dat['flexFormRels']['db'][$refRec['flexpointer']],$newValue,$dataArray,$refRec['flexpointer']);
+										if ($error)	return $error;
+									}
+										// File references
+									if (is_array($dat['flexFormRels']['file'][$refRec['flexpointer']]))	{
+			 							$this->setReferenceValue_fileRels($refRec,$dat['flexFormRels']['file'][$refRec['flexpointer']],$newValue,$dataArray,$refRec['flexpointer']);
+										if ($error)	return $error;
+									}
+										// Soft references in flexforms
+									if ($refRec['softref_key'] && is_array($dat['flexFormRels']['softrefs'][$refRec['flexpointer']]['keys'][$refRec['softref_key']]))	{
+			 							$error = $this->setReferenceValue_softreferences($refRec,$dat['flexFormRels']['softrefs'][$refRec['flexpointer']],$newValue,$dataArray,$refRec['flexpointer']);
+										if ($error)	return $error;
+									}
+		 						break;
+		 					}
+
+		 						// Softreferences in the field:
+		 					if ($refRec['softref_key'] && is_array($dat['softrefs']['keys'][$refRec['softref_key']]))	{
+	 							$error = $this->setReferenceValue_softreferences($refRec,$dat['softrefs'],$newValue,$dataArray);
+								if ($error)	return $error;
+
+		 					}
+
+								// Data Array, now ready to sent to TCEmain
+							if ($returnDataArray)	{
+								return $dataArray;
+							} else {
+									// Execute CMD array:
+								$tce = t3lib_div::makeInstance('t3lib_TCEmain');
+								$tce->stripslashes_values = FALSE;
+								$tce->dontProcessTransformations = TRUE;
+								$tce->bypassWorkspaceRestrictions = TRUE;
+								$tce->bypassFileHandling = TRUE;
+								$tce->bypassAccessCheckForRecords = TRUE;	// Otherwise this cannot update things in deleted records...
+							
+								$tce->start($dataArray,array());	// check has been done previously that there is a backend user which is Admin and also in live workspace
+								$tce->process_datamap();
+	
+									// Return errors if any:
+								if (count($tce->errorLog))	{
+									return chr(10).'TCEmain:'.implode(chr(10).'TCEmain:',$tce->errorLog);
+								}
+							}
+						}
+					}
+				} else return 'ERROR: Tablename "'.$refRec['tablename'].'" was not in TCA!';
+			} else return 'ERROR: No reference record with hash="'.$hash.'" was found!';
+		} else return 'ERROR: BE_USER object is not admin OR not in workspace 0 (Live)';
+	}
+
+	/**
+	 * Setting a value for a reference for a DB field:
+	 *
+	 * @param	array		sys_refindex record
+	 * @param	array		Array of references from that field
+	 * @param	string		Value to substitute current value with (or NULL to unset it)
+	 * @param	array		data array in which the new value is set (passed by reference)
+	 * @param	string		Flexform pointer, if in a flex form field.
+	 * @return	string		Error message if any, otherwise false = OK
+	 */
+	function setReferenceValue_dbRels($refRec,$itemArray,$newValue,&$dataArray,$flexpointer='')	{
+		if (!strcmp($itemArray[$refRec['sorting']]['id'],$refRec['ref_uid']) && !strcmp($itemArray[$refRec['sorting']]['table'],$refRec['ref_table']))	{
+
+				// Setting or removing value:
+			if ($newValue===NULL)	{	// Remove value:
+				unset($itemArray[$refRec['sorting']]);
+			} else {
+				list($itemArray[$refRec['sorting']]['table'],$itemArray[$refRec['sorting']]['id']) = explode(':',$newValue);
+			}
+
+				// Traverse and compile new list of records:
+			$saveValue = array();
+			foreach($itemArray as $pair)	{
+				$saveValue[] = $pair['table'].'_'.$pair['id'];
+			}
+
+				// Set in data array:
+			if ($flexpointer)	{
+				$flexToolObj = t3lib_div::makeInstance('t3lib_flexformtools');
+				$dataArray[$refRec['tablename']][$refRec['recuid']][$refRec['field']]['data'] = array();
+				$flexToolObj->setArrayValueByPath(substr($flexpointer,0,-1),$dataArray[$refRec['tablename']][$refRec['recuid']][$refRec['field']]['data'],implode(',',$saveValue));
+			} else {
+				$dataArray[$refRec['tablename']][$refRec['recuid']][$refRec['field']] = implode(',',$saveValue);
+			}
+
+		} else return 'ERROR: table:id pair "'.$refRec['ref_table'].':'.$refRec['ref_uid'].'" did not match that of the record ("'.$itemArray[$refRec['sorting']]['table'].':'.$itemArray[$refRec['sorting']]['id'].'") in sorting index "'.$refRec['sorting'].'"';
+	}
+
+	/**
+	 * Setting a value for a reference for a FILE field:
+	 *
+	 * @param	array		sys_refindex record
+	 * @param	array		Array of references from that field
+	 * @param	string		Value to substitute current value with (or NULL to unset it)
+	 * @param	array		data array in which the new value is set (passed by reference)
+	 * @param	string		Flexform pointer, if in a flex form field.
+	 * @return	string		Error message if any, otherwise false = OK
+	 */
+	function setReferenceValue_fileRels($refRec,$itemArray,$newValue,&$dataArray,$flexpointer='')	{
+		if (!strcmp(substr($itemArray[$refRec['sorting']]['ID_absFile'],strlen(PATH_site)),$refRec['ref_string']) && !strcmp('_FILE',$refRec['ref_table']))	{
+
+				// Setting or removing value:
+			if ($newValue===NULL)	{	// Remove value:
+				unset($itemArray[$refRec['sorting']]);
+			} else {
+				$itemArray[$refRec['sorting']]['filename'] = $newValue;
+			}
+
+				// Traverse and compile new list of records:
+			$saveValue = array();
+			foreach($itemArray as $fileInfo)	{
+				$saveValue[] = $fileInfo['filename'];
+			}
+
+				// Set in data array:
+			if ($flexpointer)	{
+				$flexToolObj = t3lib_div::makeInstance('t3lib_flexformtools');
+				$dataArray[$refRec['tablename']][$refRec['recuid']][$refRec['field']]['data'] = array();
+				$flexToolObj->setArrayValueByPath(substr($flexpointer,0,-1),$dataArray[$refRec['tablename']][$refRec['recuid']][$refRec['field']]['data'],implode(',',$saveValue));
+			} else {
+				$dataArray[$refRec['tablename']][$refRec['recuid']][$refRec['field']] = implode(',',$saveValue);
+			}
+
+		} else return 'ERROR: either "'.$refRec['ref_table'].'" was not "_FILE" or file PATH_site+"'.$refRec['ref_string'].'" did not match that of the record ("'.$itemArray[$refRec['sorting']]['ID_absFile'].'") in sorting index "'.$refRec['sorting'].'"';
+	}
+
+	/**
+	 * Setting a value for a soft reference token
+	 *
+	 * @param	array		sys_refindex record
+	 * @param	array		Array of soft reference occurencies
+	 * @param	string		Value to substitute current value with
+	 * @param	array		data array in which the new value is set (passed by reference)
+	 * @param	string		Flexform pointer, if in a flex form field.
+	 * @return	string		Error message if any, otherwise false = OK
+	 */
+	function setReferenceValue_softreferences($refRec,$softref,$newValue,&$dataArray,$flexpointer='')	{
+		if (is_array($softref['keys'][$refRec['softref_key']][$refRec['softref_id']]))	{
+
+				// Set new value:
+			$softref['keys'][$refRec['softref_key']][$refRec['softref_id']]['subst']['tokenValue'] = ''.$newValue;
+
+				// Traverse softreferences and replace in tokenized content to rebuild it with new value inside:
+			foreach($softref['keys'] as $sfIndexes)	{
+				foreach($sfIndexes as $data)	{
+					$softref['tokenizedContent'] = str_replace('{softref:'.$data['subst']['tokenID'].'}', $data['subst']['tokenValue'], $softref['tokenizedContent']);
+				}
+			}
+
+				// Set in data array:
+			if (!strstr($softref['tokenizedContent'],'{softref:'))	{
+				if ($flexpointer)	{
+					$flexToolObj = t3lib_div::makeInstance('t3lib_flexformtools');
+					$dataArray[$refRec['tablename']][$refRec['recuid']][$refRec['field']]['data'] = array();
+					$flexToolObj->setArrayValueByPath(substr($flexpointer,0,-1),$dataArray[$refRec['tablename']][$refRec['recuid']][$refRec['field']]['data'],$softref['tokenizedContent']);
+				} else {
+					$dataArray[$refRec['tablename']][$refRec['recuid']][$refRec['field']] = $softref['tokenizedContent'];
+				}
+			} else return 'ERROR: After substituting all found soft references there were still soft reference tokens in the text. (theoretically this does not have to be an error if the string "{softref:" happens to be in the field for another reason.)';
+		} else return 'ERROR: Soft reference parser key "'.$refRec['softref_key'].'" or the index "'.$refRec['softref_id'].'" was not found.';
+	}
+
+
+
+
+
+
+
+
+
+
+	/*******************************
+	 *
+	 * Indexing words
+	 *
+	 *******************************/
+	
+	/**
+	 *
+	 */
+	function wordIndexing($table,$uid)	{
+	
+		$lexer = t3lib_div::makeInstance('tx_indexedsearch_lexer');
+		$words = $lexer->split2Words(implode(' ',$this->words_strings));
+		foreach($words as $w) {
+			$words[]=substr($w,0,3);
+		}
+		$words = array_unique($words);
+		$this->updateWordIndex($words,$table,$uid);
+	}
+
+	/**
+	 * Update/Create word index for record
+	 *
+	 * @param	array		Word list array (words are values in array)
+	 * @param	string		Table
+	 * @param	integer		Rec uid
+	 * @return	void
+	 */
+	function updateWordIndex($words,$table,$uid) {
+
+			// Submit words to 
+		$this->submitWords($words);
+		
+			// Result id and remove relations:
+		$rid = t3lib_div::md5int($table.':'.$uid);
+		$GLOBALS['TYPO3_DB']->exec_DELETEquery('sys_refindex_rel', 'rid='.intval($rid));
+
+			// Add relations:
+		foreach($words as $w)	{
+			$insertFields = array(
+				'rid' => $rid,
+				'wid' => t3lib_div::md5int($w)
+			);
+
+			$GLOBALS['TYPO3_DB']->exec_INSERTquery('sys_refindex_rel', $insertFields);
+		}
+
+			// Add result record:
+		$GLOBALS['TYPO3_DB']->exec_DELETEquery('sys_refindex_res', 'rid='.intval($rid));
+		$insertFields = array(
+			'rid' => $rid,
+			'tablename' => $table,
+			'recuid' => $uid
+		);
+		$GLOBALS['TYPO3_DB']->exec_INSERTquery('sys_refindex_res', $insertFields);
+	}
+
+	/**
+	 * Adds new words to db
+	 *
+	 * @param	array		Word List array (where each word has information about position etc).
+	 * @return	void
+	 */
+	function submitWords($wl) {
+
+		$hashArr = array();
+		foreach($wl as $w)	{
+			$hashArr[] = t3lib_div::md5int($w);	
+		}
+		$wl = array_flip($wl);
+
+		if (count($hashArr))	{
+			$cwl = implode(',',$hashArr);
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('baseword', 'sys_refindex_words', 'wid IN ('.$cwl.')');
+
+			if($GLOBALS['TYPO3_DB']->sql_num_rows($res)!=count($wl)) {
+				while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+					unset($wl[$row['baseword']]);
+				}
+
+				reset($wl);
+				while(list($key,$val)=each($wl)) {
+					$insertFields = array(
+						'wid' => t3lib_div::md5int($key),
+						'baseword' => $key
+					);
+
+						// A duplicate-key error will occur here if a word is NOT unset in the unset() line. However as long as the words in $wl are NOT longer as 60 chars (the baseword varchar is 60 characters...) this is not a problem.
+					$GLOBALS['TYPO3_DB']->exec_INSERTquery('sys_refindex_words', $insertFields);
+				}
+			}
+		}
+	}
 
 
 
@@ -643,7 +1001,7 @@ class t3lib_refindex {
 		$recCount=0;
 		$tableCount=0;
 
-		$headerContent = $testOnly ? 'Reference Index TESTED (nothing written)' : 'Reference Index Updated';
+		$headerContent = $testOnly ? 'Reference Index being TESTED (nothing written)' : 'Reference Index being Updated';
 		if ($cli_echo) echo
 						'*******************************************'.chr(10).
 						$headerContent.chr(10).
@@ -654,7 +1012,7 @@ class t3lib_refindex {
 			$tableNames[] = $tableName;
 			$tableCount++;
 
-				// Traverse all non-deleted records in tables:
+				// Traverse all records in tables, including deleted records:
 			$allRecs = $TYPO3_DB->exec_SELECTgetRows('uid',$tableName,'1=1');	//.t3lib_BEfunc::deleteClause($tableName)
 			$uidList = array(0);
 			foreach ($allRecs as $recdat)	{
@@ -697,7 +1055,7 @@ class t3lib_refindex {
 		$bodyContent = $testedHowMuch.(count($errors)?implode(chr(10),$errors):'Index Integrity was perfect!');
 		if ($cli_echo) echo $testedHowMuch.(count($errors)?'Updates: '.count($errors):'Index Integrity was perfect!').chr(10);
 
-		return array($headerContent,$bodyContent);
+		return array($headerContent,$bodyContent,count($errors));
 	}
 }
 

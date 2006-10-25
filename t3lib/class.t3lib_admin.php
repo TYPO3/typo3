@@ -289,14 +289,14 @@ class t3lib_admin {
 	 *
 	 * @return	[type]		...
 	 */
-	function genTreeStatus() {
+	function genTreeStatus($root=0) {
 		$this->genTree_includeDeleted = TRUE;		// if set, genTree() includes deleted pages. This is default.
 		$this->genTree_includeVersions = TRUE;		// if set, genTree() includes verisonized pages/records. This is default.
 		$this->genTree_includeRecords = TRUE;		// if set, genTree() includes records from pages.
 		$this->perms_clause = '';					// extra where-clauses for the tree-selection
 		$this->genTree_makeHTML = 0;				// if set, genTree() generates HTML, that visualizes the tree.
 
-		$this->genTree(537,'');
+		$this->genTree($root,'');
 
 		return $this->recStats;
 	}

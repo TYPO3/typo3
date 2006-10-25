@@ -215,7 +215,7 @@ class SC_alt_main {
 	function launchView(table,uid,bP)	{	//
 		var backPath= bP ? bP : "";
 		var thePreviewWindow="";
-		thePreviewWindow = window.open(TS.PATH_typo3+"show_item.php?table="+escape(table)+"&uid="+escape(uid),"ShowItem"+TS.uniqueID,"height=300,width=410,status=0,menubar=0,resizable=0,location=0,directories=0,scrollbars=1,toolbar=0");
+		thePreviewWindow = window.open(TS.PATH_typo3+"show_item.php?table="+escape(table)+"&uid="+escape(uid),"ShowItem"+TS.uniqueID,"height=400,width=550,status=0,menubar=0,resizable=0,location=0,directories=0,scrollbars=1,toolbar=0");
 		if (thePreviewWindow && thePreviewWindow.focus)	{
 			thePreviewWindow.focus();
 		}

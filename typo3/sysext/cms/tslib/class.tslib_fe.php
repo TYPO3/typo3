@@ -1441,7 +1441,7 @@
 	/**
 	 * Looking for a ADMCMD_prev code, looks it up if found and returns configuration data.
 	 * Background: From the backend a request to the frontend to show a page, possibly with workspace preview can be "recorded" and associated with a keyword. When the frontend is requested with this keyword the associated request parameters are restored from the database AND the backend user is loaded - only for that request.
-	 * The main point is that a special URL valid for a limited time, eg. http://localhost/typo3site/?ADMCMD_prev=035d9bf938bd23cb657735f68a8cedbf will open up for a preview that doesn't require login. Thus its useful for sending an email.
+	 * The main point is that a special URL valid for a limited time, eg. http://localhost/typo3site/index.php?ADMCMD_prev=035d9bf938bd23cb657735f68a8cedbf will open up for a preview that doesn't require login. Thus its useful for sending an email.
 	 * This can also be used to generate previews of hidden pages, start/endtimes, usergroups and those other settings from the Admin Panel - just not implemented yet.
 	 *
 	 * @return	array		Preview configuration array from sys_preview record.
@@ -1464,7 +1464,7 @@
 				// - Make sure to remove fe/be cookies (temporarily); BE already done in ADMCMD_preview_postInit()
 			if (is_array($previewData))	{
 				if (!count(t3lib_div::_POST()))	{
-					if (t3lib_div::getIndpEnv('TYPO3_SITE_URL').'?ADMCMD_prev='.$inputCode === t3lib_div::getIndpEnv('TYPO3_REQUEST_URL'))	{
+					if (t3lib_div::getIndpEnv('TYPO3_SITE_URL').'index.php?ADMCMD_prev='.$inputCode === t3lib_div::getIndpEnv('TYPO3_REQUEST_URL'))	{
 
 							// Unserialize configuration:
 						$previewConfig = unserialize($previewData['config']);
@@ -1476,7 +1476,7 @@
 
 							// Return preview keyword configuration:
 						return $previewConfig;
-					} else die(htmlspecialchars('Request URL did not match "'.t3lib_div::getIndpEnv('TYPO3_SITE_URL').'?ADMCMD_prev='.$inputCode.'"'));	// This check is to prevent people from setting additional GET vars via realurl or other URL path based ways of passing parameters.
+					} else die(htmlspecialchars('Request URL did not match "'.t3lib_div::getIndpEnv('TYPO3_SITE_URL').'index.php?ADMCMD_prev='.$inputCode.'"'));	// This check is to prevent people from setting additional GET vars via realurl or other URL path based ways of passing parameters.
 				} else die('POST requests are incompatible with keyword preview.');
 			} else die('ADMCMD command could not be executed! (No keyword configuration found)');
 		}

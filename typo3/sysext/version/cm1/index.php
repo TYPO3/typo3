@@ -118,6 +118,7 @@ class tx_version_cm1 extends t3lib_SCbase {
 	var $publishAccess = FALSE;
 	var $be_user_Array = array();
 	var $stageIndex = array();
+	var $recIndex = array();
 
 
 
@@ -177,6 +178,8 @@ class tx_version_cm1 extends t3lib_SCbase {
 
 			// Setting module configuration:
 		$this->MCONF = $GLOBALS['MCONF'];
+		
+		$this->REQUEST_URI = str_replace('&sendToReview=1','',t3lib_div::getIndpEnv('REQUEST_URI'));
 
 			// Draw the header.
 		$this->doc = t3lib_div::makeInstance('mediumDoc');
@@ -385,7 +388,7 @@ class tx_version_cm1 extends t3lib_SCbase {
 			// Display versions:
 		$content.='
 			'.$recordIcon.$recTitle.'
-			<form action="'.t3lib_div::getIndpEnv('REQUEST_URI').'" method="post">
+			<form name="theform" action="'.str_replace('&sendToReview=1','',$this->REQUEST_URI).'" method="post">
 			<table border="0" cellspacing="1" cellpadding="1">';
 			$content.='
 				<tr class="bgColor5 tableheader">
@@ -467,7 +470,7 @@ class tx_version_cm1 extends t3lib_SCbase {
 			</select>' : '').'
 			<br/><input type="hidden" name="cmd['.$this->table.']['.$this->uid.'][version][action]" value="new" />
 			<input type="hidden" name="prErr" value="1" />
-			<input type="hidden" name="redirect" value="'.t3lib_div::getIndpEnv('REQUEST_URI').'" />
+			<input type="hidden" name="redirect" value="'.htmlspecialchars($this->REQUEST_URI).'" />
 			<input type="submit" name="_" value="Create new version" />
 
 			</form>
@@ -672,7 +675,7 @@ class tx_version_cm1 extends t3lib_SCbase {
 
 		if (t3lib_div::_POST('_previewLink'))	{
 			$params = 'id='.$this->id.'&ADMCMD_view=1&ADMCMD_editIcons=1&ADMCMD_previewWS='.$GLOBALS['BE_USER']->workspace;
-			$previewUrl = t3lib_div::getIndpEnv('TYPO3_SITE_URL').'?ADMCMD_prev='.t3lib_BEfunc::compilePreviewKeyword($params, $GLOBALS['BE_USER']->user['uid']);
+			$previewUrl = t3lib_div::getIndpEnv('TYPO3_SITE_URL').'index.php?ADMCMD_prev='.t3lib_BEfunc::compilePreviewKeyword($params, $GLOBALS['BE_USER']->user['uid']);
 
 			$this->content.= $this->doc->section('Preview Url:','You can preview this page from the workspace using this link for the next 48 hours (does not require backend login):<br/><br/><a target="_blank" href="'.htmlspecialchars($previewUrl).'">'.$previewUrl.'</a>',0,1);
 		}
@@ -857,7 +860,7 @@ class tx_version_cm1 extends t3lib_SCbase {
 						$multipleWarning = (!$mainCell && $GLOBALS['BE_USER']->workspace!==0? '<br/>'.$this->doc->icons(3).'<b>Multiple versions in same workspace!</b>' : '');
 						$verWarning = $warnAboutVersions || ($warnAboutVersions_nonPages && $GLOBALS['TCA'][$table]['ctrl']['versioning_followPages'])? '<br/>'.$this->doc->icons(3).'<b>Version inside version!</b>' : '';
 						$verElement = $icon.
-							(!$this->details ? '<a href="'.htmlspecialchars($this->doc->backPath.t3lib_extMgm::extRelPath('version').'cm1/index.php?id='.($table==='pages'?$rec_on['uid']:$rec_on['pid']).'&details='.rawurlencode($table.':'.$rec_off['uid']).'&returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))).'">' : '').
+							(!$this->details ? '<a href="'.htmlspecialchars($this->doc->backPath.t3lib_extMgm::extRelPath('version').'cm1/index.php?id='.($table==='pages'?$rec_on['uid']:$rec_on['pid']).'&details='.rawurlencode($table.':'.$rec_off['uid']).'&returnUrl='.rawurlencode($this->REQUEST_URI)).'">' : '').
 							t3lib_BEfunc::getRecordTitle($table,$rec_off,TRUE).
 							(!$this->details ? '</a>' : '').
 							$versionsInOtherWSWarning.
@@ -939,32 +942,73 @@ class tx_version_cm1 extends t3lib_SCbase {
 	 */
 	function displayWorkspaceOverview_allStageCmd()	{
 
-		if (count($this->stageIndex[1]))	{	// Review:
-			$sId = 1;
-			$color = '#666666';
-			$label = 'Comment for Reviewer:';
-			$titleAttrib = 'Send all to Review';
-		} elseif(count($this->stageIndex[10]))  {	// Publish:
-			$sId = 10;
-			$color = '#6666cc';
-			$label = 'Comment for Publisher:';
-			$titleAttrib = 'Approve all for Publishing';
+		$table = t3lib_div::_GP('table');
+		if ($table && $table!='pages')	{
+			$uid = t3lib_div::_GP('uid');
+			if ($rec_off = t3lib_BEfunc::getRecordWSOL($table,$uid)) {
+				$uid = $rec_off['_ORIG_uid'];
+			}
+		} else $table = '';
+
+		if ($table)	{
+			if ($uid && $this->recIndex[$table][$uid])	{
+				$sId = $this->recIndex[$table][$uid];
+				switch($sId)	{
+					case 1:
+						$label = 'Comment for Reviewer:';
+					break;
+					case 10:
+						$label = 'Comment for Publisher:';
+					break;
+				}
+			} else $sId = 0;
 		} else {
-			$sId = 0;
+			if (count($this->stageIndex[1]))	{	// Review:
+				$sId = 1;
+				$color = '#666666';
+				$label = 'Sending %s item(s) to review. Comment for Reviewer:';
+				$titleAttrib = 'Send all to Review';
+			} elseif(count($this->stageIndex[10]))  {	// Publish:
+				$sId = 10;
+				$color = '#6666cc';
+				$label = 'Approving %s item(s) to publishing. Comment for Publisher:';
+				$titleAttrib = 'Approve all for Publishing';
+			} else {
+				$sId = 0;
+			}
 		}
 
 		if ($sId>0)	{
 			$issueCmd = '';
-			foreach($this->stageIndex[$sId] as $table => $uidArray)	{
-				$issueCmd.='&cmd['.$table.']['.implode(',',$uidArray).'][version][action]=setStage';
-				$issueCmd.='&cmd['.$table.']['.implode(',',$uidArray).'][version][stageId]='.$sId;
+			$itemCount = 0;
+
+			if ($table && $uid && $this->recIndex[$table][$uid])	{
+				$issueCmd.='&cmd['.$table.']['.$uid.'][version][action]=setStage';
+				$issueCmd.='&cmd['.$table.']['.$uid.'][version][stageId]='.$this->recIndex[$table][$uid];
+			} else {
+				foreach($this->stageIndex[$sId] as $table => $uidArray)	{
+					$issueCmd.='&cmd['.$table.']['.implode(',',$uidArray).'][version][action]=setStage';
+					$issueCmd.='&cmd['.$table.']['.implode(',',$uidArray).'][version][stageId]='.$sId;
+					$itemCount+=count($uidArray);
+				}
 			}
 
-			$onClick = 'var commentTxt=window.prompt("'.$label.'","");
-							if (commentTxt!=null) {window.location.href="'.$this->doc->issueCommand($issueCmd).'&generalComment="+escape(commentTxt);}'.
-							' return false;';
+			$onClick = 'var commentTxt=window.prompt("'.sprintf($label,$itemCount).'","");
+							if (commentTxt!=null) {window.location.href="'.$this->doc->issueCommand($issueCmd,$this->REQUEST_URI).'&generalComment="+escape(commentTxt);}';
+
+			if (t3lib_div::_GP('sendToReview'))	{
+				$onClick.= ' else {window.location.href = "'.$this->REQUEST_URI.'"}';
+				$actionLinks.=
+					$this->doc->wrapScriptTags($onClick);
+			} else {
+				$onClick.= ' return false;';
+				$actionLinks.=
+					'<input type="submit" name="_" value="'.htmlspecialchars($titleAttrib).'" onclick="'.htmlspecialchars($onClick).'" />';
+			}	
+		} elseif (t3lib_div::_GP('sendToReview'))	{
+			$onClick = 'window.location.href = "'.$this->REQUEST_URI.'";';
 			$actionLinks.=
-				'<input type="submit" name="_" value="'.htmlspecialchars($titleAttrib).'" onclick="'.htmlspecialchars($onClick).'" />';
+				$this->doc->wrapScriptTags($onClick);
 		} else $actionLinks = '';
 
 		return $actionLinks;
@@ -1119,7 +1163,7 @@ class tx_version_cm1 extends t3lib_SCbase {
 		}
 
 		return count($entry) ? '<span onmouseover="document.getElementById(\'log_'.$table.$id.'\').style.visibility = \'visible\';" onmouseout="document.getElementById(\'log_'.$table.$id.'\').style.visibility = \'hidden\';">'.$stageCommands.' ('.count($entry).')</span>'.
-				'<div class="logLayer" style="visibility: hidden; position: absolute;" id="log_'.$table.$id.'">'.implode('<hr/>',$entry).'</div>' : $stageCommands;
+				'<div class="logLayer" style="visibility: hidden; position: absolute;" id="log_'.$table.$id.'">'.implode('<hr/>',array_reverse($entry)).'</div>' : $stageCommands;
 	}
 
 	/**
@@ -1137,7 +1181,7 @@ class tx_version_cm1 extends t3lib_SCbase {
 			return '<br/>
 					<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/ol/joinbottom.gif','width="18" height="16"').' align="top" alt="" title="" />'.
 					($origId ?
-						'<a href="'.htmlspecialchars($this->doc->backPath.t3lib_extMgm::extRelPath('version').'cm1/index.php?id='.$uid.'&details='.rawurlencode('pages:'.$uid).'&returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))).'">'.
+						'<a href="'.htmlspecialchars($this->doc->backPath.t3lib_extMgm::extRelPath('version').'cm1/index.php?id='.$uid.'&details='.rawurlencode('pages:'.$uid).'&returnUrl='.rawurlencode($this->REQUEST_URI)).'">'.
 						'<span class="typo3-dimmed"><em>[Sub elements, click for details]</em><span></a>' :
 						'<span class="typo3-dimmed"><em>[Sub elements]</em><span>');
 		} else {	// For an offline workspace, show sub elements:
@@ -1544,6 +1588,7 @@ class tx_version_cm1 extends t3lib_SCbase {
 					'</a>';
 
 				$this->stageIndex[$sId][$table][] = $rec_off['uid'];
+				$this->recIndex[$table][$rec_off['uid']] = $sId;
 			}
 		}
 		return $actionLinks;
@@ -1604,7 +1649,7 @@ class tx_version_cm1 extends t3lib_SCbase {
 
 			// History/Log
 		$actionLinks.=
-			'<a href="'.htmlspecialchars($this->doc->backPath.'show_rechis.php?element='.rawurlencode($table.':'.$rec_off['uid']).'&returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))).'">'.
+			'<a href="'.htmlspecialchars($this->doc->backPath.'show_rechis.php?element='.rawurlencode($table.':'.$rec_off['uid']).'&returnUrl='.rawurlencode($this->REQUEST_URI)).'">'.
 			'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/history2.gif','width="13" height="12"').' title="Show Log" alt="" />'.
 			'</a>';
 
@@ -1649,7 +1694,7 @@ class tx_version_cm1 extends t3lib_SCbase {
 
 				// History/Log
 			$actionLinks.=
-				'<a href="'.htmlspecialchars($this->doc->backPath.'show_rechis.php?element='.rawurlencode($table.':'.$uid).'&returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))).'">'.
+				'<a href="'.htmlspecialchars($this->doc->backPath.'show_rechis.php?element='.rawurlencode($table.':'.$uid).'&returnUrl='.rawurlencode($this->REQUEST_URI)).'">'.
 				'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/history2.gif','width="13" height="12"').' title="Show Log" alt="" />'.
 				'</a>';
 		}

@@ -409,11 +409,12 @@ class clickMenu {
 	 * @param	string		The URL relative to TYPO3_mainDir
 	 * @param	string		The return_url-parameter
 	 * @param	boolean		If set, the "hideCM()" will be called
+	 * @param	string		If set, gives alternative location to load in (for example top frame or somewhere else)
 	 * @return	string		JavaScript for an onClick event.
 	 */
-	function urlRefForCM($url,$retUrl='',$hideCM=1)	{
+	function urlRefForCM($url,$retUrl='',$hideCM=1,$overrideLoc='')	{
 		$loc='top.content'.($this->listFrame && !$this->alwaysContentFrame ?'.list_frame':'');
-		$editOnClick='var docRef=(top.content.list_frame)?top.content.list_frame:'.$loc.'; docRef.location.href=top.TS.PATH_typo3+\''.$url.'\''.
+		$editOnClick= ($overrideLoc ? 'var docRef='.$overrideLoc : 'var docRef=(top.content.list_frame)?top.content.list_frame:'.$loc).'; docRef.location.href=top.TS.PATH_typo3+\''.$url.'\''.
 			($retUrl?"+'&".$retUrl."='+top.rawurlencode(".$this->frameLocation('docRef.document').')':'').';'.
 			($hideCM?'return hideCM();':'');
 		return $editOnClick;
