@@ -1,0 +1,41 @@
+#! /usr/bin/php -q
+<?php
+
+// *****************************************
+// CLI module dispatcher.
+// This script can take a "cliKey" as first argument and uses that to look up the path of the script to include in the end.
+// See configuration of this feature in $TYPO3_CONF_VARS['SC_OPTIONS']['GLOBAL']['cliKeys']
+// The point is to have only ONE script dealing with the environment initialization while the actual processing is all a developer should care for.
+// *****************************************
+
+	// Defining circumstances for CLI mode:
+define('TYPO3_cliMode', TRUE);
+
+	// Defining PATH_thisScript here: Must be the ABSOLUTE path of this script in the right context:
+	// This will work as long as the script is called by it's absolute path!
+$temp_PATH_thisScript = isset($_ENV['_']) ? $_ENV['_'] : $_SERVER['_'];
+$BACK_PATH = '';
+
+	// Alternatively, in some environments, we might be able to figure out the absolute path (with no "../" and "./" in) from environment variables...
+if ($temp_PATH_thisScript{0}!='/')	{
+	$temp_CURRENT_DIR = $_SERVER['PWD'].'/';
+	$temp_PATH_thisScript = $temp_CURRENT_DIR.ereg_replace('\.\/','',$temp_PATH_thisScript);
+	if (!@is_file($temp_PATH_thisScript))	{
+		die(wordwrap('ERROR: '.$temp_PATH_thisScript.' was not a file. Maybe your environment does not support running this script with a relative path? Try to run the script with its absolute path and you should be fine.'.chr(10).chr(10)));
+	}
+}
+define('PATH_thisScript',$temp_PATH_thisScript);
+
+	// First argument is a key that 
+define('TYPO3_cliKey', $_SERVER["argv"][0]);
+
+	// Include init file:
+require(dirname(PATH_thisScript).'/'.$BACK_PATH.'init.php');
+
+if (defined('TYPO3_cliInclude'))	{
+	include(TYPO3_cliInclude);
+} else {
+	echo 'ERROR: Nothing to include.'.chr(10);
+	exit;
+}
+?>
