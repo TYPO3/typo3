@@ -2931,13 +2931,13 @@ EXTENSION KEYS:
 		$list = array();
 		$cat = $this->defaultCategories;
 
-		$path = PATH_site.TYPO3_mainDir.'sysext/';
+		$path = PATH_typo3.'sysext/';
 		$this->getInstExtList($path,$list,$cat,'S');
 
-		$path = PATH_site.TYPO3_mainDir.'ext/';
+		$path = PATH_typo3.'ext/';
 		$this->getInstExtList($path,$list,$cat,'G');
 
-		$path = PATH_site.'typo3conf/ext/';
+		$path = PATH_typo3conf.'ext/';
 		$this->getInstExtList($path,$list,$cat,'L');
 
 		return array($list,$cat);

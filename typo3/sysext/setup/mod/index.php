@@ -285,7 +285,7 @@ class SC_mod_user_setup_index {
 		foreach($theLanguages as $val)	{
 			if ($val!='default')	{
 				$localLabel = '  -  ['.htmlspecialchars($GLOBALS['LOCAL_LANG']['default']['lang_'.$val]).']';
-				$unavailable = $val!='default' && !@is_dir(PATH_site.'typo3conf/l10n/'.$val) ? '1' : '';
+				$unavailable = $val!='default' && !@is_dir(PATH_typo3conf.'l10n/'.$val) ? '1' : '';
 				$opt[$GLOBALS['LOCAL_LANG']['default']['lang_'.$val].'--'.$val]='
 					<option value="'.$val.'"'.($BE_USER->uc['lang']==$val?' selected="selected"':'').($unavailable ? ' class="c-na"' : '').'>'.$LANG->getLL('lang_'.$val,1).$localLabel.'</option>';
 			}
@@ -296,7 +296,7 @@ class SC_mod_user_setup_index {
 					implode('',$opt).'
 				</select>'.
 				t3lib_BEfunc::cshItem('_MOD_user_setup', 'language', $GLOBALS['BACK_PATH'],'|');
-				if ($BE_USER->uc['lang'] && !@is_dir(PATH_site.'typo3conf/l10n/'.$BE_USER->uc['lang']))	{
+				if ($BE_USER->uc['lang'] && !@is_dir(PATH_typo3conf.'l10n/'.$BE_USER->uc['lang']))	{
 					$code.= '<table border="0" cellpadding="0" cellspacing="0" class="warningbox"><tr><td>'.
 								$this->doc->icons(3).
 								'The selected language is not available before the language pack is installed.<br />'.

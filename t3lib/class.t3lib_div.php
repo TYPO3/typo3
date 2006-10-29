@@ -487,13 +487,13 @@ class t3lib_div {
 	 * Truncate string
 	 * Returns a new string of max. $chars length.
 	 * If the string is longer, it will be truncated and appended with '...'.
-	 * DEPRECATED. Works ONLY for single-byte charsets! USE t3lib_div::fixed_lgd_cs() instead
 	 * Usage: 39
 	 *
 	 * @param	string		string to truncate
 	 * @param	integer		must be an integer with an absolute value of at least 4. if negative the string is cropped from the right end.
 	 * @param	string		String to append to the output if it is truncated, default is '...'
 	 * @return	string		new string
+	 * @deprecated		Works ONLY for single-byte charsets! USE t3lib_div::fixed_lgd_cs() instead
 	 * @see fixed_lgd_pre()
 	 */
 	function fixed_lgd($string,$origChars,$preStr='...')	{
@@ -513,12 +513,12 @@ class t3lib_div {
 	 * Returns a new string of max. $chars length.
 	 * If the string is longer, it will be truncated and prepended with '...'.
 	 * This works like fixed_lgd, but is truncated in the start of the string instead of the end
-	 * DEPRECATED. Use either fixed_lgd() or fixed_lgd_cs() (with negative input value for $chars)
 	 * Usage: 6
 	 *
 	 * @param	string		string to truncate
 	 * @param	integer		must be an integer of at least 4
 	 * @return	string		new string
+	 * @deprecated		Use either fixed_lgd() or fixed_lgd_cs() (with negative input value for $chars)
 	 * @see fixed_lgd()
 	 */
 	function fixed_lgd_pre($string,$chars)	{
@@ -550,13 +550,14 @@ class t3lib_div {
 	 * @param	string		The string to break up
 	 * @param	string		The string to implode the broken lines with (default/typically \n)
 	 * @param	integer		The line length
+	 * @deprecated		Use PHP function wordwrap()
 	 * @return	string
 	 */
 	function breakTextForEmail($str,$implChar="\n",$charWidth=76)	{
 		$lines = explode(chr(10),$str);
 		$outArr=array();
 		while(list(,$lStr)=each($lines))	{
-			$outArr = array_merge($outArr,t3lib_div::breakLinesForEmail($lStr,$implChar,$charWidth));
+			$outArr[] = t3lib_div::breakLinesForEmail($lStr,$implChar,$charWidth);
 		}
 		return implode(chr(10),$outArr);
 	}
@@ -1082,11 +1083,11 @@ class t3lib_div {
 
 	/**
 	 * strtoupper which converts danish (and other characters) characters as well
-	 * (DEPRECATED, use t3lib_cs::conv_case() instead or for HTML output, wrap your content in <span class="uppercase">...</span>)
 	 * Usage: 0
 	 *
 	 * @param	string		String to process
 	 * @return	string
+	 * @deprecated		Use t3lib_cs::conv_case() instead or for HTML output, wrap your content in <span class="uppercase">...</span>)
 	 * @ignore
 	 */
 	function danish_strtoupper($string)	{
@@ -1097,11 +1098,11 @@ class t3lib_div {
 	/**
 	 * Change umlaut characters to plain ASCII with normally two character target
 	 * Only known characters will be converted, so don't expect a result for any character.
-	 * (DEPRECATED: Works only for western europe single-byte charsets! Use t3lib_cs::specCharsToASCII() instead!)
 	 *
 	 * ä => ae, Ö => Oe
 	 *
 	 * @param	string		String to convert.
+	 * @deprecated		Works only for western europe single-byte charsets! Use t3lib_cs::specCharsToASCII() instead!
 	 * @return	string
 	 */
 	function convUmlauts($str)	{
@@ -1463,13 +1464,12 @@ class t3lib_div {
 
 	/**
 	 * Remove duplicate values from an array
-	 * This function is deprecated, use the PHP function array_unique instead
 	 * Usage: 0
 	 *
 	 * @param	array		Array of values to make unique
 	 * @return	array
 	 * @ignore
-	 * @deprecated
+	 * @deprecated		Use the PHP function array_unique instead
 	 */
 	function uniqueArray($valueArray)	{
 		return array_unique($valueArray);
@@ -3698,16 +3698,15 @@ class t3lib_div {
 	 * @return	string		Returns the filename reference for the language unless error occured (or local mode is used) in which case it will be NULL
 	 */
 	function llXmlAutoFileName($fileRef,$language)	{
-
 			// Analyse file reference:
 		$location = 'typo3conf/l10n/'.$language.'/';	// Default location of translations
-		if (t3lib_div::isFirstPartOfStr($fileRef,PATH_site.TYPO3_mainDir.'sysext/'))	{	// Is system:
-			$validatedPrefix = PATH_site.TYPO3_mainDir.'sysext/';
+		if (t3lib_div::isFirstPartOfStr($fileRef,PATH_typo3.'sysext/'))	{	// Is system:
+			$validatedPrefix = PATH_typo3.'sysext/';
 			#$location = 'EXT:csh_'.$language.'/';	// For system extensions translations are found in "csh_*" extensions (language packs)
-		} elseif (t3lib_div::isFirstPartOfStr($fileRef,PATH_site.TYPO3_mainDir.'ext/'))	{	// Is global:
-			$validatedPrefix = PATH_site.TYPO3_mainDir.'ext/';
-		} elseif (t3lib_div::isFirstPartOfStr($fileRef,PATH_site.'typo3conf/ext/'))	{	// Is local:
-			$validatedPrefix = PATH_site.'typo3conf/ext/';
+		} elseif (t3lib_div::isFirstPartOfStr($fileRef,PATH_typo3.'ext/'))	{	// Is global:
+			$validatedPrefix = PATH_typo3.'ext/';
+		} elseif (t3lib_div::isFirstPartOfStr($fileRef,PATH_typo3conf.'ext/'))	{	// Is local:
+			$validatedPrefix = PATH_typo3conf.'ext/';
 		} else {
 			$validatedPrefix = '';
 		}
