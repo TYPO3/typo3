@@ -1188,32 +1188,35 @@ EXTENSION KEYS:
 					$translationStatusArr = $this->terConnection->fetchTranslationStatus($extKey,$mirrorURL);
 
 					echo ('<tr class="bgColor4"><td>'.$extKey.'</td>');
-					foreach($selectedLanguages as $lang) {
-							// remote unknown -> no l10n available
-						if(!isset($translationStatusArr[$lang])) {
-							echo ('<td title="No translation available">N/A</td>');
-							continue;
-						}
-						// determine local md5 from zip
-						if(is_file(PATH_site.'typo3temp/'.$extKey.'-l10n-'.$lang.'.zip')) {
-							$localmd5 = md5_file(PATH_site.'typo3temp/'.$extKey.'-l10n-'.$lang.'.zip');
-						} else {
-							$localmd5 = 'zzz';
-						}
-						// local!=remote or not installed -> needs update
-						if($localmd5 != $translationStatusArr[$lang]['md5']) {
-							$ret = $this->updateTranslation($extKey, $lang, $mirrorURL);
-							if($ret === true) {
-								echo ('<td title="Has been updated" style="background-color:#69a550">UPD</td>');
-							} else {
-								echo ('<td title="'.htmlspecialchars($ret).'" style="background-color:#cb3352">ERR</td>');
+					if(is_array($translationStatusArr)) {
+						foreach($selectedLanguages as $lang) {
+								// remote unknown -> no l10n available
+							if(!isset($translationStatusArr[$lang])) {
+								echo ('<td title="No translation available">N/A</td>');
+								continue;
 							}
-							continue;
+								// determine local md5 from zip
+							if(is_file(PATH_site.'typo3temp/'.$extKey.'-l10n-'.$lang.'.zip')) {
+								$localmd5 = md5_file(PATH_site.'typo3temp/'.$extKey.'-l10n-'.$lang.'.zip');
+							} else {
+								$localmd5 = 'zzz';
+							}
+								// local!=remote or not installed -> needs update
+							if($localmd5 != $translationStatusArr[$lang]['md5']) {
+								$ret = $this->updateTranslation($extKey, $lang, $mirrorURL);
+								if($ret === true) {
+									echo ('<td title="Has been updated" style="background-color:#69a550">UPD</td>');
+								} else {
+									echo ('<td title="'.htmlspecialchars($ret).'" style="background-color:#cb3352">ERR</td>');
+								}
+								continue;
+							}
+							echo ('<td title="Is up to date" style="background-color:#69a550">OK</td>');
 						}
-						echo ('<td title="Is up to date" style="background-color:#69a550">OK</td>');
+					} else {
+						echo ('<td colspan="'.count($selectedLanguages).'" title="Possible reasons: network problems, allow_url_fopen off, curl not enabled in Install tool.">Could not fetch translation status</td>');
 					}
 					echo ('</tr>');
-
 					$counter++;
 				}
 				echo '</table>
