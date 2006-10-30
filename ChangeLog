@@ -1,3 +1,6 @@
+2006-10-30  Karsten Dambekalns	<karsten@typo3.org>
+
+	* Applied patch adding security hints to typo3/mod/tools/em/class.em_index.php
 
 2006-10-29  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
