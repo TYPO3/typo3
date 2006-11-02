@@ -1,5 +1,6 @@
 2006-11-02  Michael Stucki  <michael@typo3.org>
 
+	* Fixed bug #1655: t3lib_div::substUrlsInPlainText() did not support HTTPS links
 	* Fixed bug #1236 again: 404 error while using the new content wizard
 	* Fixed bug #4443: Items in CE "Insert Records" don't have edit options in context menu any longer
 	* Add security hints in typo3/mod/tools/em/class.em_index.php

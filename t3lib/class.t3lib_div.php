@@ -3029,15 +3029,16 @@ class t3lib_div {
 				SCRIPT_FILENAME	=	Absolute filename of script		(Differs between windows/unix). On windows 'C:\\blabla\\blabl\\' will be converted to 'C:/blabla/blabl/'
 
 			Special extras:
-				TYPO3_HOST_ONLY	=		[host]			= 192.168.1.4
-				TYPO3_PORT		=		[port]			= 8080 (blank if 80, taken from host value)
+				TYPO3_HOST_ONLY =		[host] = 192.168.1.4
+				TYPO3_PORT =			[port] = 8080 (blank if 80, taken from host value)
 				TYPO3_REQUEST_HOST = 	[scheme]://[host][:[port]]
-				TYPO3_REQUEST_URL =		[scheme]://[host][:[port]][path]?[query]	(sheme will by default be 'http' until we can detect if it's https -
+				TYPO3_REQUEST_URL =		[scheme]://[host][:[port]][path]?[query] (scheme will by default be "http" until we can detect something different)
 				TYPO3_REQUEST_SCRIPT =  [scheme]://[host][:[port]][path_script]
 				TYPO3_REQUEST_DIR =		[scheme]://[host][:[port]][path_dir]
 				TYPO3_SITE_URL = 		[scheme]://[host][:[port]][path_dir] of the TYPO3 website frontend
 				TYPO3_SITE_SCRIPT = 	[script / Speaking URL] of the TYPO3 website
-				TYPO3_DOCUMENT_ROOT	=	Absolute path of root of documents:	TYPO3_DOCUMENT_ROOT.SCRIPT_NAME = SCRIPT_FILENAME (typically)
+				TYPO3_DOCUMENT_ROOT =	Absolute path of root of documents: TYPO3_DOCUMENT_ROOT.SCRIPT_NAME = SCRIPT_FILENAME (typically)
+				TYPO3_SSL = 			Returns TRUE if this session uses SSL (HTTPS)
 
 			Notice: [fragment] is apparently NEVER available to the script!
 
@@ -3053,7 +3054,7 @@ class t3lib_div {
 
 		$retVal = '';
 
-		switch((string)$getEnvName)	{
+		switch ((string)$getEnvName)	{
 			case 'SCRIPT_NAME':
 				$retVal = (php_sapi_name()=='cgi'||php_sapi_name()=='cgi-fcgi')&&($_SERVER['ORIG_PATH_INFO']?$_SERVER['ORIG_PATH_INFO']:$_SERVER['PATH_INFO']) ? ($_SERVER['ORIG_PATH_INFO']?$_SERVER['ORIG_PATH_INFO']:$_SERVER['PATH_INFO']) : ($_SERVER['ORIG_SCRIPT_NAME']?$_SERVER['ORIG_SCRIPT_NAME']:$_SERVER['SCRIPT_NAME']);
 			break;
@@ -3624,7 +3625,7 @@ class t3lib_div {
 						// If no entry is found for the language key, then force a value depending on meta-data setting. By default an automated filename will be used:
 					if (!isset($xmlContent['data'][$langKey]))	{
 						$LOCAL_LANG[$langKey] = t3lib_div::llXmlAutoFileName($fileRef, $langKey);
- 					} else {
+					} else {
 						$LOCAL_LANG[$langKey] = $xmlContent['data'][$langKey];
 					}
 
@@ -4237,25 +4238,28 @@ class t3lib_div {
 	 */
 	function substUrlsInPlainText($message,$urlmode='76',$index_script_url='')	{
 			// Substitute URLs with shorter links:
-		$urlSplit=explode('http://',$message);
-		reset($urlSplit);
-		while(list($c,$v)=each($urlSplit))	{
-			if ($c)	{
-				$newParts = preg_split('/\s|[<>"{}|\\\^`()\']/', $v, 2);
-				$newURL='http://'.$newParts[0];
-					switch((string)$urlmode)	{
+		foreach (array('http','https') as $protocol)	{
+			$urlSplit = explode($protocol.'://',$message);
+			reset($urlSplit);
+			while (list($c,$v) = each($urlSplit))	{
+				if ($c)	{
+					$newParts = preg_split('/\s|[<>"{}|\\\^`()\']/', $v, 2);
+					$newURL = $protocol.'://'.$newParts[0];
+
+					switch ((string)$urlmode)	{
 						case 'all':
-							$newURL=t3lib_div::makeRedirectUrl($newURL,0,$index_script_url);
+							$newURL = t3lib_div::makeRedirectUrl($newURL,0,$index_script_url);
 						break;
 						case '76':
-							$newURL=t3lib_div::makeRedirectUrl($newURL,76,$index_script_url);
+							$newURL = t3lib_div::makeRedirectUrl($newURL,76,$index_script_url);
 						break;
 					}
-				$urlSplit[$c]=$newURL.substr($v,strlen($newParts[0]));
+					$urlSplit[$c] = $newURL . substr($v,strlen($newParts[0]));
+				}
 			}
+			$message = implode('',$urlSplit);
 		}
 
-		$message=implode('',$urlSplit);
 		return $message;
 	}
 
@@ -4286,6 +4290,7 @@ class t3lib_div {
 			$inUrl=($index_script_url ? $index_script_url : t3lib_div::getIndpEnv('TYPO3_REQUEST_DIR').'index.php').
 				'?RDCT='.$md5;
 		}
+
 		return $inUrl;
 	}
 
