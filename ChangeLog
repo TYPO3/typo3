@@ -1,6 +1,12 @@
+2006-11-02  Michael Stucki  <michael@typo3.org>
+
+	* Fixed bug #1236 again: 404 error while using the new content wizard
+	* Fixed bug #4443: Items in CE "Insert Records" don't have edit options in context menu any longer
+	* Small EM change: Annotate if all or only reviewed extensions should be searched
+
 2006-10-30  Karsten Dambekalns	<karsten@typo3.org>
 
-	* Applied patch adding security hints to typo3/mod/tools/em/class.em_index.php
+	* Add security hints in typo3/mod/tools/em/class.em_index.php
 	* Fixed bug #3637 in EM (translation handling)
 
 2006-10-29  Martin Kutschker  <martin.t.kutschker@blackbox.net>
@@ -9,6 +15,7 @@
 	* Changed occurences of PATH_site.'typo3conf/' to PATH_typo3conf and PATH_site.TYPO3_mainDir to PATH_typo3
 
 2006-10-25  Kasper Skårhøj	<kasper2006@typo3.com>
+
 	* Added "alt_main_new.php" including various modifications around to support this.
 	* Added clean-up functions in extension "lowlevel" plus modified t3lib_refindex and t3lib_tcemain accordingly
 	* Added word index to sys_refindex.
@@ -17,9 +24,9 @@
 
 2006-10-14  Dmitry Dulepov  <dmitry@typo3.org>
 
-	* Fixed bug 3199: SUing to myself?
-	* Fixed bug 3720: Multilanguage Flexforms don't work after migrating a site from one language to more languages
-	* Fixed bug 4358: Add an option to t3lib_div::xml2array to remove all unnecessary spaces
+	* Fixed bug #3199: SUing to myself?
+	* Fixed bug #3720: Multilanguage Flexforms don't work after migrating a site from one language to more languages
+	* Fixed bug #4358: Add an option to t3lib_div::xml2array to remove all unnecessary spaces
 
 2006-10-17  Ernesto Baschny  <ernst@cron-it.de>
 

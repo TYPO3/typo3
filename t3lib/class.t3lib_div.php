@@ -1992,7 +1992,7 @@ class t3lib_div {
 	 * @param	string		tag-prefix, eg. a namespace prefix like "T3:"
 	 * @param	integer		Current recursion level. Don't change, stay at zero!
 	 * @param	string		Alternative document tag. Default is "phparray".
-	 * @param	integer		If greater then zero, than number of spaces corresponding to this number is used for indenting, if less than zero - no indentation, if zero - a single chr(9) (TAB) is used
+	 * @param	integer		If greater than zero, then the number of spaces corresponding to this number is used for indenting, if less than zero - no indentation, if zero - a single chr(9) (TAB) is used
 	 * @param	array		Options for the compilation. Key "useNindex" => 0/1 (boolean: whether to use "n0, n1, n2" for num. indexes); Key "useIndexTagForNum" => "[tag for numerical indexes]"; Key "useIndexTagForAssoc" => "[tag for associative indexes"; Key "parentTagMap" => array('parentTag' => 'thisLevelTag')
 	 * @param	string		Stack data. Don't touch.
 	 * @return	string		An XML string made from the input content in the array.
