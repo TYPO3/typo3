@@ -1,3 +1,7 @@
+2006-11-02 Ingmar Schlecht  <ingmar@typo3.org>
+
+	* Fixed bug with bidirectional mm-relations: "group" fields with more than one table allowed didn't work properly any more
+
 2006-11-02  Michael Stucki  <michael@typo3.org>
 
 	* Fixed bug #1655: t3lib_div::substUrlsInPlainText() did not support HTTPS links

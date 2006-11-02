@@ -275,7 +275,7 @@ class t3lib_loadDBGroup	{
 			$uidLocal_field = 'uid_local';
 			$uidForeign_field = 'uid_foreign';
 			$sorting_field = 'sorting';
-		}	// TODO: SORTING!
+		}
 
 			// If there are tables...
 		$tableC = count($this->tableArray);
@@ -287,15 +287,20 @@ class t3lib_loadDBGroup	{
 			if ($this->MM_is_foreign && $prep)	{
 				$additionalWhere_tablenames = ' AND tablenames="'.$this->currentTable.'"';
 			}
-			$existingMMs = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows($uidForeign_field, $tableName, $uidLocal_field.'='.$uid.$additionalWhere_tablenames, '', '', '', $uidForeign_field);
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($uidForeign_field.($prep?', tablenames':''), $tableName, $uidLocal_field.'='.$uid.$additionalWhere_tablenames);
 
+			$oldMMs = array();
+			while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+				if (!$this->MM_is_foreign && $prep)	{
+					$oldMMs[] = array($row['tablenames'], $row[$uidForeign_field]);
+				} else {
+					$oldMMs[] = $row[$uidForeign_field];
+				}
+			}
 
 				// For each item, insert it:
-			$uidList = array();
 			foreach($this->itemArray as $val)	{
 				$c++;
-
-				$uidList[] = $val['id'];
 
 				if ($prep || $val['table']=='_NO_TABLE')	{
 					if ($this->MM_is_foreign)	{	// insert current table if needed
@@ -307,10 +312,19 @@ class t3lib_loadDBGroup	{
 					$tablename = '';
 				}
 
-				if (isset($existingMMs[$val['id']]))	{
+				if(!$this->MM_is_foreign && $prep) {
+					$item = array($val['table'], $val['id']);
+				} else {
+					$item = $val['id'];
+				}
+
+				if (in_array($item, $oldMMs))	{
+					unset($oldMMs[array_search($item, $oldMMs)]);	// remove the item from the $oldMMs array so after this foreach loop only the ones that need to be deleted are in there.
+
 					$whereClause = $uidLocal_field.'='.$uid.' AND '.$uidForeign_field.'='.$val['id'];
-					if ($tablename)
+					if ($tablename) {
 						$whereClause .= ' AND tablenames="'.$tablename.'"';
+					}
 					$GLOBALS['TYPO3_DB']->exec_UPDATEquery($tableName, $whereClause, array($sorting_field => $c));
 				} else {
 					$GLOBALS['TYPO3_DB']->exec_INSERTquery($tableName, array(
@@ -323,13 +337,18 @@ class t3lib_loadDBGroup	{
 			}
 
 				// Delete all not-used relations:
-			$additionalWhere = '';
-			if (count($uidList))	{
-				$additionalWhere = ' AND '.$uidForeign_field.' NOT IN ( '.implode(',', $uidList).' ) ';
+			if(is_array($oldMMs) && count($oldMMs) > 0) {
+				$removeClauses = array();
+				foreach($oldMMs as $mmItem) {
+					if(is_array($mmItem)) {
+						$removeClauses[] = 'tablenames="'.$mmItem[0].'" AND '.$uidForeign_field.'='.$mmItem[1];
+					} else {
+						$removeClauses[] = $uidForeign_field.'='.$mmItem;
+					}
+				}
+				$additionalWhere = ' AND ('.implode(' OR ', $removeClauses).')';
+				$GLOBALS['TYPO3_DB']->exec_DELETEquery($tableName, $uidLocal_field.'='.intval($uid).$additionalWhere.$additionalWhere_tablenames);
 			}
-
-			$GLOBALS['TYPO3_DB']->exec_DELETEquery($tableName, $uidLocal_field.'='.intval($uid).$additionalWhere.$additionalWhere_tablenames);
-
 		}
 	}
 
