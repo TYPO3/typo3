@@ -297,7 +297,7 @@ class template {
 	 */
 	function wrapClickMenuOnIcon($str,$table,$uid='',$listFr=1,$addParams='',$enDisItems='', $returnOnClick=FALSE)	{
 		$backPath = rawurlencode($this->backPath).'|'.t3lib_div::shortMD5($this->backPath.'|'.$GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']);
-		$onClick = 'showClickmenu("'.$table.'","'.$uid.'","'.$listFr.'","'.$enDisItems.'","'.str_replace('&','&amp;',addcslashes($backPath,'"')).'","'.str_replace('&','&amp;',addcslashes($addParams,'"')).'");return false;';
+		$onClick = 'showClickmenu("'.$table.'","'.$uid.'","'.$listFr.'","'.str_replace('+','%2B',$enDisItems).'","'.str_replace('&','&amp;',addcslashes($backPath,'"')).'","'.str_replace('&','&amp;',addcslashes($addParams,'"')).'");return false;';
 		return $returnOnClick ? $onClick : '<a href="#" onclick="'.htmlspecialchars($onClick).'"'.($GLOBALS['TYPO3_CONF_VARS']['BE']['useOnContextMenuHandler'] ? ' oncontextmenu="'.htmlspecialchars($onClick).'"' : '').'>'.$str.'</a>';
 	}
 

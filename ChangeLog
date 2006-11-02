@@ -1,11 +1,17 @@
+2006-11-02  Michael Stucki  <michael@typo3.org>
+
+	* Fixed bug #1236 again: 404 error while using the new content wizard
+	* Fixed bug #4443: Items in CE "Insert Records" don't have edit options in context menu any longer
+	* Add security hints in typo3/mod/tools/em/class.em_index.php
+
 2006-10-30  Karsten Dambekalns  <karsten@typo3.org>
 
-        * Fixed bug #3637 in EM (translation handling)
+	* Fixed bug #3637 in EM (translation handling)
 
 2006-10-17  Dmitry Dulepov  <dmitry@typo3.org>
 
-	* Fixed bug 3199: SUing to myself?
-	* Fixed bug 3720: Multilanguage Flexforms don't work after migrating a site from one language to more languages
+	* Fixed bug #3199: SUing to myself?
+	* Fixed bug #3720: Multilanguage Flexforms don't work after migrating a site from one language to more languages
 
 2006-10-17  Ernesto Baschny  <ernst@cron-it.de>
 

@@ -298,6 +298,7 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 	);
 
 	var $privacyNotice = 'When you interact with the online repository, server information may be sent and stored in the repository for statistics.';
+	var $securityHint = '<strong>Found a security problem? Please get in touch with us!</strong><br />If you think you have found a security issue in TYPO3 or an extension, please contact the <a href="http://typo3.org/teams/security/" target="_blank">TYPO3 security team</a>! Thank you!';
 	var $editTextExtensions = 'html,htm,txt,css,tmpl,inc,php,sql,conf,cnf,pl,pm,sh,xml,ChangeLog';
 	var $nameSpaceExceptions = 'beuser_tracking,design_components,impexp,static_file_edit,cms,freesite,quickhelp,classic_welcome,indexed_search,sys_action,sys_workflows,sys_todos,sys_messages,direct_mail,sys_stat,tt_address,tt_board,tt_calender,tt_guest,tt_links,tt_news,tt_poll,tt_rating,tt_products,setup,taskcenter,tsconfig_help,context_help,sys_note,tstemplate,lowlevel,install,belog,beuser,phpmyadmin,aboutmodules,imagelist,setup,taskcenter,sys_notepad,viewpage,adodb';
 
@@ -737,6 +738,7 @@ EXTENSION KEYS:
 						Installed extensions can also be removed again - just click the remove button '.$this->removeButton().' .<br /><br />';
 
 			$content.= 'Look up: <input type="text" name="_lookUp" value="'.htmlspecialchars($this->lookUpStr).'" /><input type="submit" value="Search"/><br/><br/>';
+			$content.= $this->securityHint.'<br /><br />';
 
 			$content.= '<table border="0" cellpadding="2" cellspacing="1">'.implode('',$lines).'</table>';
 
@@ -822,13 +824,14 @@ EXTENSION KEYS:
 						// CSH:
 					$content.= t3lib_BEfunc::cshItem('_MOD_tools_em', 'import_ter', $GLOBALS['BACK_PATH'],'|<br/>');
 					$onsubmit = "window.location.href='index.php?ter_connect=1&ter_search='+escape(this.elements['_lookUp'].value);return false;";
-					$content.= '</form><form action="index.php" method="post" onsubmit="'.htmlspecialchars($onsubmit).'">List or look up extensions<br />
+					$content.= '</form><form action="index.php" method="post" onsubmit="'.htmlspecialchars($onsubmit).'">List or look up <strong'.($this->MOD_SETTINGS['display_unchecked']?' style="color:#900;">all':' style="color:#090;">reviewed').'</strong> extensions<br />
 							<input type="text" name="_lookUp" value="'.htmlspecialchars($this->listRemote_search).'" /> <input type="submit" value="Look up" /><br /><br />';
 
 					$content.= '
 
 					<!-- TER Extensions list -->
 					<table border="0" cellpadding="2" cellspacing="1">'.implode(chr(10),$lines).'</table>';
+					$content.= '<br /><br />'.$this->securityHint;
 					$content.= '<br /><br /><strong>PRIVACY NOTICE:</strong><br /> '.$this->privacyNotice;
 
 					$this->content.=$this->doc->section('Extensions in TYPO3 Extension Repository (online) - Grouped by: '.$this->MOD_MENU['listOrder'][$this->MOD_SETTINGS['listOrder']],$content,0,1);
@@ -849,7 +852,7 @@ EXTENSION KEYS:
 						}
 					}
 					if(count($lines)) {
-						$content.= 'This is the list of extensions which are available locally, but not in the repository.<br />The might be user-defined and should be prepended user_ then.<br /><br />';
+						$content.= 'This is the list of extensions which are available locally, but not in the repository.<br />They might be user-defined and should be prepended user_ then.<br /><br />';
 						$content.= '<table border="0" cellpadding="2" cellspacing="1">'.
 							$this->extensionListRowHeader(' class="bgColor5"',array('<td><img src="clear.gif" width="18" height="1" alt="" /></td>')).
 							implode('',$lines).'</table>';
@@ -860,7 +863,7 @@ EXTENSION KEYS:
 			} else {
 				$content.= t3lib_BEfunc::cshItem('_MOD_tools_em', 'import_ter', $GLOBALS['BACK_PATH'],'|<br/>');
 				$onsubmit = "window.location.href='index.php?ter_connect=1&ter_search='+escape(this.elements['_lookUp'].value);return false;";
-				$content.= '</form><form action="index.php" method="post" onsubmit="'.htmlspecialchars($onsubmit).'">List or look up extensions<br />
+				$content.= '</form><form action="index.php" method="post" onsubmit="'.htmlspecialchars($onsubmit).'">List or look up <strong'.($this->MOD_SETTINGS['display_unchecked']?' style="color:#900;">all':' style="color:#090;">reviewed').'</strong> extensions<br />
 					<input type="text" name="_lookUp" value="'.htmlspecialchars($this->listRemote_search).'" /> <input type="submit" value="Look up" /><br /><br />';
 
 				$content.= '<p><strong>No matching extensions found.</strong></p>';
@@ -886,8 +889,8 @@ EXTENSION KEYS:
 					$content .= ' (last update: '.date('Y-m-d H:i',filemtime(PATH_site.'typo3temp/extensions.bin')).')';
 				}
 			}
-
-			$content .= '<br /><br /><strong>PRIVACY NOTICE:</strong><br />'.$this->privacyNotice;
+			$content.= '<br /><br />'.$this->securityHint;
+			$content.= '<br /><br /><strong>PRIVACY NOTICE:</strong><br />'.$this->privacyNotice;
 
 			$this->content.=$this->doc->section('Extensions in TYPO3 Extension Repository',$content,0,1);
 		}
