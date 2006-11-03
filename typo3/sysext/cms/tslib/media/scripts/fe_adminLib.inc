@@ -188,6 +188,11 @@ class user_feAdmin	{
 		$this->preview = (string)t3lib_div::_GP('preview');
 			// backURL is a given URL to return to when login is performed
 		$this->backURL = t3lib_div::_GP('backURL');
+		if (strstr($this->backURL, '"') || strstr($this->backURL, "'") || preg_match('/(javascript|vbscript):/i', $this->backURL)  || stristr($this->backURL, "fromcharcode") || strstr($this->backURL, "<") || strstr($this->backURL, ">"))	{
+			$this->backURL = '';	// Clear backURL if it seems to contain XSS code - only URLs are allowed
+		}
+			// Remove host from URL: Make sure that $this->backURL maps to the current site
+		$this->backURL = preg_replace('|[A-Za-z]+://[^/]+|', '', $this->backURL);
 			// Uid to edit:
 		$this->recUid = t3lib_div::_GP('rU');
 			// Authentication code:

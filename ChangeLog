@@ -1,3 +1,8 @@
+2006-11-03  Michael Stucki  <michael@typo3.org>
+
+	* Fixed bug #4425: Garble code in adodb extension
+	* Fixed Cross Site Scripting issue in fe_adminLib.inc. For details, see http://typo3.org/teams/security/security-bulletins/typo3-20061010-1/ - thanks to Andriu Isenring Ritsch for discovering and reporting this issue.
+
 2006-11-02 Ingmar Schlecht  <ingmar@typo3.org>
 
 	* Fixed bug with bidirectional mm-relations: "group" fields with more than one table allowed didn't work properly any more
