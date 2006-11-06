@@ -1,3 +1,7 @@
+2006-11-06  Michael Stucki  <michael@typo3.org>
+
+	* Fix bug #3495: Endless recursion with some MySQL versions
+
 2006-11-03  Michael Stucki  <michael@typo3.org>
 
 	* Fixed bug #4425: Garble code in adodb extension
