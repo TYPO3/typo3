@@ -756,7 +756,13 @@ class t3lib_treeView {
 			$a++;
 			$crazyRecursionLimiter--;
 
-			$newID =$row['uid'];
+			$newID = $row['uid'];
+
+			if ($newID==0)	{
+				t3lib_BEfunc::typo3PrintError ('Endless recursion detected', 'TYPO3 has detected an error in the database. Please fix it manually (e.g. using phpMyAdmin) and change the UID of '.$this->table.':0 to a new value.<br /><br />See <a href="http://bugs.typo3.org/view.php?id=3495" target="_blank">bugs.typo3.org/view.php?id=3495</a> to get more information about a possible cause.',0);
+				exit;
+			}
+
 			$this->tree[]=array();		// Reserve space.
 			end($this->tree);
 			$treeKey = key($this->tree);	// Get the key for this space
@@ -891,7 +897,7 @@ class t3lib_treeView {
 	 * For arrays: This will return key to the ->dataLookup array
 	 *
 	 * @param	integer		parent item id
-	 * @param	string		Class for sub-elements. 
+	 * @param	string		Class for sub-elements.
 	 * @return	mixed		data handle (Tables: An sql-resource, arrays: A parentId integer. -1 is returned if there were NO subLevel.)
 	 * @access private
 	 */
@@ -944,7 +950,7 @@ class t3lib_treeView {
 	 * @access private
 	 * @see getDataInit()
 	 */
-	function getDataNext(&$res,$subCSSclass=''){
+	function getDataNext(&$res,$subCSSclass='')	{
 		if (is_array($this->data)) {
 			if ($res<0) {
 				$row=FALSE;
