@@ -1,3 +1,7 @@
+2006-11-07  Michael Stucki  <michael@typo3.org>
+
+	* Fixed bug #4348: Wrong time format in syslog output
+
 2006-11-06  Michael Stucki  <michael@typo3.org>
 
 	* Fix bug #3495: Endless recursion with some MySQL versions
