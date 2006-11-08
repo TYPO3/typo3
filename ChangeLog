@@ -1,3 +1,7 @@
+2006-11-08  Dmitry Dulepov  <dmitry@typo3.org>
+
+	* Enable creation of compact flexforms
+
 2006-11-07  Michael Stucki  <michael@typo3.org>
 
 	* Fixed bug #4348: Wrong time format in syslog output

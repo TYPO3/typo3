@@ -438,7 +438,8 @@ class t3lib_flexformtools {
 	function flexArray2Xml($array, $addPrologue=FALSE)	{
 
 		$options = $GLOBALS['TYPO3_CONF_VARS']['BE']['niceFlexFormXMLtags'] ? $this->flexArray2Xml_options : array();
-		$output = t3lib_div::array2xml($array,'',0,'T3FlexForms',4, $options);
+		$spaceInd = ($GLOBALS['TYPO3_CONF_VARS']['BE']['compactFlexFormXML'] ? -1 : 4);
+		$output = t3lib_div::array2xml($array,'',0,'T3FlexForms', $spaceInd, $options);
 
 		if ($addPrologue)	{
 			$output = '<?xml version="1.0" encoding="'.$GLOBALS['LANG']->charSet.'" standalone="yes" ?>'.chr(10).$output;

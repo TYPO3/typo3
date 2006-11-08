@@ -166,6 +166,7 @@ $TYPO3_CONF_VARS = Array(
 		'explicitADmode' => 'explicitDeny',	// Sets the general allow/deny mode for selector box values. Value can be either "explicitAllow" or "explicitDeny", nothing else!
 		'XCLASS' => Array(),					// See 'Inside TYPO3' document for more information.
 		'niceFlexFormXMLtags' => TRUE,			// If set, the flexform XML will be stored with meaningful tags which can be validated with DTD/schema. If you rely on custom reading of the XML from pre-4.0 versions you should set this to false if you don't like to change your reader code (internally it is insignificant since t3lib_div::xml2array() doesn't care for the tags if the index-attribute value is set)
+		'compactFlexFormXML' => 0,				// If set, the flexform XML will not contain indentation spaces making XML more compact
 	),
 	'FE' => Array(			// Configuration for the TypoScript frontend (FE). Nothing here relates to the administration backend!
 		'png_to_gif' => 0,						// Boolean. Enables conversion back to gif of all png-files generated in the frontend libraries. Notice that this leaves an increased number of temporary files in typo3temp/
