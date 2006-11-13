@@ -1,3 +1,7 @@
+2006-11-13  Bernhard Kraft  <kraftb@kraftb.at>
+
+	* Fixed a bug: Normal labels rendered by class.db_list_extra.inc didn't get passed through t3lib_BEfunc::getProcessedValueExtra when alt_label fields are set.
+
 2006-11-08  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Enable creation of compact flexforms
