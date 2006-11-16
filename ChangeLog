@@ -1,3 +1,8 @@
+
+2006-11-16  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+
+	* Added freeIndexSetId GROUP BY in tx_indexedsearch->execFinalQuery() to make SELECT work on DBs other than Mysql
+
 2006-11-07  Michael Stucki  <michael@typo3.org>
 
 	* Fixed bug #4348: Wrong time format in syslog output
