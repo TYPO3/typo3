@@ -1,3 +1,7 @@
+2006-11-16  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+
+	* Added freeIndexSetId GROUP BY in tx_indexedsearch->execFinalQuery() to make SELECT work on DBs other than Mysql
+
 2006-11-13  Bernhard Kraft  <kraftb@kraftb.at>
 
 	* Fixed a bug: Normal labels rendered by class.db_list_extra.inc didn't get passed through t3lib_BEfunc::getProcessedValueExtra when alt_label fields are set.
