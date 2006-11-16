@@ -388,6 +388,19 @@ class t3lib_install {
 											)
 										)
 									);
+										// Change key definition if necessary (must use "prefix" on TEXT columns)
+									foreach ($cfg['keys'] as $kN => $kType) {
+										$match = array();
+										preg_match('/^([^(]*)\(([^)]+)\)(.*)/', $kType, $match);
+										$keys = array();
+										foreach (t3lib_div::trimExplode(',',$match[2]) as $kfN) {
+											if ($fN == $kfN)	{
+												$kfN .= '('.$newSize.')';
+											}
+											$keys[] = $kfN;
+										}
+										$total[$table]['keys'][$kN] = $match[1].'('.join(',',$keys).')'.$match[3];
+									}
 								}
 							break;
 							case 'tinytext':
