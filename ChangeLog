@@ -1,9 +1,9 @@
 2006-11-17  Michael Stucki  <michael@typo3.org>
 
-	* Fixed bug #4059: options.hideRecords.pages doesn't work for mounted pages
-	* Fixed bug #4379: pageNotFound_handling ignores forceCharset setting
+	* Fixed bug #4059: options.hideRecords.pages doesn't work for mounted pages - Thanks to Marc Bastian Heinrichs for providing a fix!
+ 	* Fixed bug #4379: pageNotFound_handling ignores forceCharset setting
 	* Fixed bug #3115: JavaScript error on clickmenu in filelist module
-	* Fixed bug #4515: Input field with settings eval "date" and readOnly shows 01-01-1970 if the value is empty
+	* Fixed bug #4515: Input field with settings eval "date" and readOnly shows 01-01-1970 if the value is empty - Thanks to Marc Bastian Heinrichs for providing a fix!
 
 2006-11-17  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
