@@ -1260,15 +1260,15 @@ $str.=$this->docBodyTagBegin().
 				}
 					// switch - either forwards call to ajax or does the request in the top frame
 				function showClickmenu_raw(url)	{';
-		if($this->isCMlayers()) { // ajax
-			$content .= '
+		if ($this->isCMlayers())	{ // AJAX
+			$content.= '
 					url += "&ajax=1";
 					ajax_doRequest(url);';
-		} else { // no ajax
-			$content .= '
+		} else { // no AJAX
+			$content.= '
 					showClickmenu_noajax(url);';
 		}
-		$content .= '
+		$content.= '
 				}
 
 	/**
@@ -1281,7 +1281,7 @@ $str.=$this->docBodyTagBegin().
 					top.loadTopMenu(url);
 				}';
 		if ($this->isCMlayers())	{
-			$content .= t3lib_ajax::getJScode('showClickmenu_ajax', 'showClickmenu_noajax');
+			$content.= t3lib_ajax::getJScode('showClickmenu_ajax', 'showClickmenu_noajax');
 			$content.='
 					// opens the clickmenu, is called from ajax_doRequest
 				function showClickmenu_ajax(t3ajax)	{
