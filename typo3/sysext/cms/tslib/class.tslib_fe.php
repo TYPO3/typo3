@@ -1270,8 +1270,14 @@
 	 * @return	void		(The function exits!)
 	 */
 	function pageNotFoundHandler($code, $header='', $reason='')	{
+
 			// Issue header in any case:
-		if ($header)	{header($header);}
+		if ($header)	{
+			$headerArr = preg_split('/\r|\n/',$header,-1,PREG_SPLIT_NO_EMPTY);
+			foreach ($headerArr as $header)	{
+				header ($header);
+			}
+		}
 
 			// Convert $code in case it was written as a string (e.g. if edited in Install Tool)
 			// TODO: Once the Install Tool handles such data types correctly, this workaround should be removed again...
@@ -1320,15 +1326,33 @@
 			}
 
 				// Prepare headers
-			$headers = array(
+			$headerArr = array(
 				'User-agent: ' . t3lib_div::getIndpEnv('HTTP_USER_AGENT'),
 				'Referer: ' . t3lib_div::getIndpEnv('TYPO3_REQUEST_URL')
 			);
-			$content = t3lib_div::getURL($code, 0, $headers);
+			$res = t3lib_div::getURL($code, 1, $headerArr);
+
+				// Header and content are separated by an empty line
+			list($header,$content) = split("\r\n\r\n", $res, 2);
+			$content.= "\r\n";
+
 			if (false === $content) {
 					// Last chance -- redirect
 				header('Location: '.t3lib_div::locationHeaderUrl($code));
 			} else {
+
+				$forwardHeaders = array(	// Forward these response headers to the client
+					'Content-Type:',
+				);
+				$headerArr = preg_split('/\r|\n/',$header,-1,PREG_SPLIT_NO_EMPTY);
+				foreach ($headerArr as $header)	{
+					foreach ($forwardHeaders as $h)	{
+						$h = preg_quote($h,'/');
+						if (preg_match('/^'.$h.'/', $header))	{
+							header ($header);
+						}
+					}
+				}
 					// Put <base> if necesary
 				if ($checkBaseTag)	{
 

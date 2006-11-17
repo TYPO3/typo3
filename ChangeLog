@@ -1,3 +1,7 @@
+2006-11-17  Michael Stucki  <michael@typo3.org>
+
+	* Fixed bug #4059: options.hideRecords.pages doesn't work for mounted pages
+	* Fixed bug #4379: pageNotFound_handling ignores forceCharset setting
 
 2006-11-16  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
