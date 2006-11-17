@@ -3,6 +3,7 @@
 	* Fixed bug #4059: options.hideRecords.pages doesn't work for mounted pages
 	* Fixed bug #4379: pageNotFound_handling ignores forceCharset setting
 	* Fixed bug #3115: JavaScript error on clickmenu in filelist module
+	* Fixed bug #4515: Input field with settings eval "date" and readOnly shows 01-01-1970 if the value is empty
 
 2006-11-16  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
