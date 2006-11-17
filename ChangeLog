@@ -2,6 +2,7 @@
 
 	* Fixed bug #4059: options.hideRecords.pages doesn't work for mounted pages
 	* Fixed bug #4379: pageNotFound_handling ignores forceCharset setting
+	* Fixed bug #3115: JavaScript error on clickmenu in filelist module
 
 2006-11-17  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 

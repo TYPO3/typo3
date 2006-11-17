@@ -1591,7 +1591,7 @@ class SC_alt_clickmenu {
 		}
 
 			// Initialize template object
-		if(!$this->ajax)	{
+		if (!$this->ajax)	{
 			$this->doc = t3lib_div::makeInstance('template');
 			$this->doc->docType='xhtml_trans';
 			$this->doc->backPath = $BACK_PATH;
@@ -1686,7 +1686,7 @@ class SC_alt_clickmenu {
 
 			// Start page
 		if(!$this->ajax)	{
-			$this->content.=$this->doc->startPage('Context Sensitive Menu');
+			$this->content.= $this->doc->startPage('Context Sensitive Menu');
 		}
 			// Set content of the clickmenu with the incoming var, "item"
 		$this->content.= $clickMenu->init();
@@ -1698,11 +1698,12 @@ class SC_alt_clickmenu {
 	 * @return	void
 	 */
 	function printContent()	{
-		if(!$this->ajax)	{
+		if (!$this->ajax)	{
 			$this->content.= $this->doc->endPage();
 			$this->content = $this->doc->insertStylesAndJS($this->content);
 			echo $this->content;
 		} else {
+			$this->content = $GLOBALS['LANG']->csConvObj->utf8_encode($this->content,$GLOBALS['LANG']->charSet);
 			t3lib_ajax::outputXMLreply($this->content);
 		}
 	}
