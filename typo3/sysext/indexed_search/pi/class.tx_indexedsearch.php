@@ -682,7 +682,7 @@ class tx_indexedsearch extends tslib_pibase {
 			// Print a message telling which words we searched for, and in which sections etc.
 		$what = $this->tellUsWhatIsSeachedFor($sWArr).
 				(substr($this->piVars['sections'],0,2)=='rl'?' '.$this->pi_getLL('inSection','',1).' "'.substr($this->getPathFromPageId(substr($this->piVars['sections'],4)),1).'"':'');
-		$what = '<div'.$this->pi_classParam('whatis').'><p>'.$what.'</p></div>';
+		$what = '<div'.$this->pi_classParam('whatis').'>'.$this->cObj->stdWrap($what, $this->conf['whatis_stdWrap.']).'</div>';
 		$content = $what.$content;
 
 			// Return content:

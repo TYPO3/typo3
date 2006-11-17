@@ -1,6 +1,11 @@
+2006-11-17  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+
+	* Indexed Search: Added stdWrap around the search word in the output (tx_indexedsearch_pi[whatis]): tx_indexedsearch_pi.whatis_stdWrap
+	* Indexed Search: Removed superfluos <P> tag around search word
+
 2006-11-16  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
-	* Added freeIndexSetId GROUP BY in tx_indexedsearch->execFinalQuery() to make SELECT work on DBs other than Mysql
+	* Indexed Search: Added freeIndexSetId GROUP BY in tx_indexedsearch->execFinalQuery() to make SELECT work on DBs other than Mysql
 	* Add an index prefix to Mysql key definitions when (var)chars are changed to text when multiplyDBfieldSize is set
 	* Reverted change to key of sys_refindex on 2006-09-01 (key prefix is set now automatically)
 
