@@ -2467,15 +2467,19 @@ class t3lib_TCEforms	{
 		$format = trim($config['format']);
 		switch($format)	{
 			case 'date':
-				$option = trim($config['format.']['option']);
-				if ($option)	{
-					if ($config['format.']['strftime'])	{
-						$value = strftime($option,$itemValue);
+				if ($itemValue)	{
+					$option = trim($config['format.']['option']);
+					if ($option)	{
+						if ($config['format.']['strftime'])	{
+							$value = strftime($option,$itemValue);
+						} else {
+							$value = date($option,$itemValue);
+						}
 					} else {
-						$value = date($option,$itemValue);
+						$value = date('d-m-Y',$itemValue);
 					}
 				} else {
-					$value = date('d-m-Y',$itemValue);
+					$value = '';
 				}
 				if ($config['format.']['appendAge'])	{
 					$value .= ' ('.t3lib_BEfunc::calcAge((time()-$itemValue), $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.minutesHoursDaysYears')).')';
