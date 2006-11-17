@@ -1,3 +1,8 @@
+2006-11-17  Michael Stucki  <michael@typo3.org>
+
+	* Fixed bug #4059: options.hideRecords.pages doesn't work for mounted pages
+	* Fixed bug #4379: pageNotFound_handling ignores forceCharset setting
+
 2006-11-17  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
 	* Indexed Search: Added stdWrap around the search word in the output (tx_indexedsearch_pi[whatis]): tx_indexedsearch_pi.whatis_stdWrap
