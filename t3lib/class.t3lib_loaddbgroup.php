@@ -37,17 +37,21 @@
  *
  *
  *
- *   72: class t3lib_loadDBGroup
- *   99:     function start($itemlist,$tablelist, $MMtable='',$MMuid=0)
- *  140:     function readList($itemlist)
- *  186:     function readMM($tableName,$uid)
- *  215:     function writeMM($tableName,$uid,$prependTableName=0)
- *  251:     function getValueArray($prependTableName='')
- *  279:     function convertPosNeg($valueArray,$fTable,$nfTable)
- *  301:     function getFromDB()
- *  333:     function readyForInterface()
+ *   76: class t3lib_loadDBGroup
+ *  111:     function start($itemlist, $tablelist, $MMtable='', $MMuid=0, $currentTable='', $conf=array())
+ *  179:     function readList($itemlist)
+ *  225:     function readMM($tableName,$uid)
+ *  276:     function writeMM($tableName,$uid,$prependTableName=0)
+ *  352:     function readForeignField($uid, $conf)
+ *  435:     function writeForeignField($conf, $parentUid, $updateToUid=0)
+ *  510:     function getValueArray($prependTableName='')
+ *  538:     function convertPosNeg($valueArray,$fTable,$nfTable)
+ *  560:     function getFromDB()
+ *  595:     function readyForInterface()
+ *  621:     function countItems($returnAsArray = true)
+ *  636:     function updateRefIndex($table,$id)
  *
- * TOTAL FUNCTIONS: 8
+ * TOTAL FUNCTIONS: 12
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -90,6 +94,7 @@ class t3lib_loadDBGroup	{
 	var $MM_oppositeFieldConf = ''; // only set if MM_is_foreign is set
 	var $MM_isMultiTableRelationship = 0;	// is empty by default; if MM_is_foreign is set and there is more than one table allowed (on the "local" side), then it contains the first table (as a fallback)
 	var $currentTable;	// current table => Only needed for reverse relations
+	var $undeleteRecord;		// if a record should be undeleted (so do not use the $useDeleteClause on t3lib_BEfunc)
 
 
 	/**
@@ -156,6 +161,9 @@ class t3lib_loadDBGroup	{
 			// Now, populate the internal itemArray and tableArray arrays:
 		if ($MMtable)	{	// If MM, then call this function to do that:
 			$this->readMM($MMtable,$MMuid);
+		} elseif ($MMuid && $conf['foreign_field']) {
+				// If not MM but foreign_field, the read the records by the foreign_field
+			$this->readForeignField($MMuid, $conf);
 		} else {
 				// If not MM, then explode the itemlist by "," and traverse the list:
 			$this->readList($itemlist);
@@ -353,6 +361,166 @@ class t3lib_loadDBGroup	{
 	}
 
 	/**
+	 * Reads items from a foreign_table, that has a foreign_field (uid of the parent record) and
+	 * stores the parts in the internal array itemArray and tableArray.
+	 *
+	 * @param	integer		$uid: The uid of the parent record (this value is also on the foreign_table in the foreign_field)
+	 * @param	array		$conf: TCA configuration for current field
+	 * @return	void
+	 */
+	function readForeignField($uid, $conf) {
+		$key = 0;
+		$uid = intval($uid);
+		$foreign_table = $conf['foreign_table'];
+		$useDeleteClause = $this->undeleteRecord ? false : true;
+
+		if ($conf['foreign_sortby'])										// specific sortby for data handled by this field
+			$sortby = $conf['foreign_sortby'];
+		elseif ($GLOBALS['TCA'][$foreign_table]['ctrl']['sortby'])			// specific sortby for all table records
+			$sortby = $GLOBALS['TCA'][$foreign_table]['ctrl']['sortby'];
+		elseif ($GLOBALS['TCA'][$foreign_table]['ctrl']['default_sortby'])	// default sortby for all table records
+			$sortby = $GLOBALS['TCA'][$foreign_table]['ctrl']['default_sortby'];
+
+			// strip a possible "ORDER BY" in front of the $sortby value
+		$sortby = $GLOBALS['TYPO3_DB']->stripOrderBy($sortby);
+
+			// get the rows from storage
+		$rows = t3lib_BEfunc::getRecordsByField($foreign_table,$conf['foreign_field'],$uid,'','',$sortby,'',$useDeleteClause);
+
+			// Handle symmetric relations
+		if ($conf['symmetric_field']) {
+			$symSortby = $conf['symmetric_sortby'] ? $conf['symmetric_sortby'] : $sortby;
+			$symRows = t3lib_BEfunc::getRecordsByField($foreign_table,$conf['symmetric_field'],$uid,'','',$symSortby,'',$useDeleteClause);
+
+			if (count($symRows)) {
+					// if there are rows and symRows, we have to merge them, but keeping the sorting order
+				if (count($rows)) {
+					$newRows = array();
+					reset($rows);
+					reset($symRows);
+
+					$row = current($rows);
+					$symRow = current($symRows);
+
+					while (is_array($row)) {
+							// if the sorting value of the symRow is lower than the row sorting value, insert symRow before
+						while (is_array($symRow) && $symRow[$symSortby] <= $row[$sortby]) {
+							$newRows[] = $symRow;
+							$symRow = next($symRows);
+						}
+
+							// all better sorted symRows have been processed, now add the row itself
+						$newRows[] = $row;
+						$row = next($rows);
+
+							// if there are no more rows, paste all remaining symRows
+						if ($row == false && $symRow != false) {
+							while (is_array($symRow)) {
+								$newRows[] = $symRow;
+								$symRow = next($symRows);
+							}
+						}
+					}
+
+						// set the rows value to the new ordered array
+					$rows = $newRows;
+
+					// there are no rows, just symRows, so we use them - sorting comes from database
+				} else {
+					$rows = $symRows;
+
+				}
+			}
+		}
+
+		if (count($rows)) {
+			foreach ($rows as $row) {
+				$this->itemArray[$key]['id'] = $row['uid'];
+				$this->itemArray[$key]['table'] = $conf['foreign_table'];
+				$this->tableArray[$theTable][]= $row['uid'];
+				$key++;
+			}
+		}
+	}
+
+	/**
+	 * Write the sorting values to a foreign_table, that has a foreign_field (uid of the parent record)
+	 *
+	 * @param	array		$conf: TCA configuration for current field
+	 * @param	integer		$parentUid: The uid of the parent record
+	 * @param	boolean		$updateForeignField: Whether to update the foreign field with the $parentUid (on Copy)
+	 * @return	void
+	 */
+	function writeForeignField($conf, $parentUid, $updateToUid=0) {
+		$c = 0;
+		$foreign_table = $conf['foreign_table'];
+		$foreign_field = $conf['foreign_field'];
+		$symmetric_field = $conf['symmetric_field'];
+
+			// if there are table items and we have a proper $parentUid
+		if (t3lib_div::testInt($parentUid) && count($this->tableArray)) {
+				// if updateToUid is not a positive integer, set it to '0', so it will be ignored
+			if (!(t3lib_div::testInt($updateToUid) && $updateToUid > 0)) $updateToUid = 0;
+			$fields = 'uid,'.$foreign_field.($symmetric_field ? ','.$symmetric_field : '');
+
+				// update all items
+			foreach ($this->itemArray as $val) {
+				$uid = $val['id'];
+				$table = $val['table'];
+
+					// fetch the current (not overwritten) relation record if we should handle symmetric relations
+				if ($conf['symmetric_field']) {
+					$row = t3lib_BEfunc::getRecord($table,$uid,$fields,'',false);
+					$isOnSymmetricSide = self::isOnSymmetricSide($parentUid, $conf, $row);
+				}
+
+				$updateValues = array();
+
+					// no update to a foreign_field/symmetric_field pointer is requested -> just sorting
+				if (!$updateToUid) {
+						// Always add the pointer to the parent uid
+					if ($isOnSymmetricSide) {
+						$updateValues[$symmetric_field] = $parentUid;
+					} else {
+						$updateValues[$foreign_field] = $parentUid;
+					}
+
+						// specific sortby for data handled by this field
+					if ($conf['foreign_sortby']) {
+						$sortby = $conf['foreign_sortby'];
+					} elseif ($GLOBALS['TCA'][$foreign_table]['ctrl']['sortby']) { // specific sortby for all table records
+						$sortby = $GLOBALS['TCA'][$foreign_table]['ctrl']['sortby'];
+					}
+						// strip a possible "ORDER BY" in front of the $sortby value
+					$sortby = $GLOBALS['TYPO3_DB']->stripOrderBy($sortby);
+					$symSortby = $conf['symmetric_sortby'];
+
+						// set the sorting on the right side, it depends on who created the relation, so what uid is in the symmetric_field
+					if ($isOnSymmetricSide && $symSortby) {
+						$updateValues[$symSortby] = ++$c;
+					} elseif ($sortby) {
+						$updateValues[$sortby] = ++$c;
+					}
+
+					// update to a foreign_field/symmetric_field pointer is requested, normally used on record copies
+					// only update the fields, if the old uid is found somewhere - for select fields, TCEmain is doing this already!
+				} else {
+					if ($isOnSymmetricSide) {
+						$updateValues[$symmetric_field] = $updateToUid;
+					} else {
+						$updateValues[$foreign_field] = $updateToUid;
+					}
+				}
+
+				if (count($updateValues)) {
+					$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table, "uid='$uid'", $updateValues);
+					$this->updateRefIndex($table, $uid);
+				}
+			}
+		}
+	}
+
+	/**
 	 * After initialization you can extract an array of the elements from the object. Use this function for that.
 	 *
 	 * @param	boolean		If set, then table names will ALWAYS be prepended (unless its a _NO_TABLE value)
@@ -461,6 +629,46 @@ class t3lib_loadDBGroup	{
 			}
 		}
 		return implode(',',$output);
+	}
+
+	/**
+	 * Counts the items in $this->itemArray and puts this value in an array by default.
+	 *
+	 * @param	boolean		Whether to put the count value in an array
+	 * @return	mixed		The plain count as integer or the same inside an array
+	 */
+	function countItems($returnAsArray = true) {
+		$count = count($this->itemArray);
+		if ($returnAsArray) $count = array($count);
+		return $count;
+	}
+
+	/**
+	 * Update Reference Index (sys_refindex) for a record
+	 * Should be called any almost any update to a record which could affect references inside the record.
+	 * (copied from TCEmain)
+	 *
+	 * @param	string		Table name
+	 * @param	integer		Record UID
+	 * @return	void
+	 */
+	function updateRefIndex($table,$id)	{
+		$refIndexObj = t3lib_div::makeInstance('t3lib_refindex');
+		$result = $refIndexObj->updateRefIndexTable($table,$id);
+	}
+
+	/**
+	 * Checks, if we're looking from the "other" side, the symmetric side, to a symmetric relation.
+	 *
+	 * @param	string		$parentUid: The uid of the parent record
+	 * @param	array		$parentConf: The TCA configuration of the parent field embedding the child records
+	 * @param	array		$childRec: The record row of the child record
+	 * @return	boolean		Returns true if looking from the symmetric ("other") side to the relation.
+	 */
+	static function isOnSymmetricSide($parentUid, $parentConf, $childRec) {
+		return t3lib_div::testInt($childRec['uid']) && $parentConf['symmetric_field'] && $parentUid == $childRec[$parentConf['symmetric_field']]
+			? true
+			: false;
 	}
 }
 

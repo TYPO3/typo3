@@ -25,13 +25,6 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 /**
- * Reference index processing
- *
- * $Id$
- *
- * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
- */
-/**
  * [CLASS/FUNCTION INDEX of SCRIPT]
  *
  *
@@ -209,7 +202,11 @@ class t3lib_refindex {
  						// Based on type,
  					switch((string)$dat['type'])	{
  						case 'db':
+ 						case 'select':
  							$this->createEntryData_dbRels($table,$uid,$fieldname,'',$deleted,$dat['itemArray']);
+ 						break;
+ 						case 'inline':
+ 							$this->createEntryData_inlineRels($table,$uid,$fieldname,'',$deleted,$dat['itemArray']);
  						break;
  						case 'file':
  							$this->createEntryData_fileRels($table,$uid,$fieldname,'',$deleted,$dat['newValueFiles']);
@@ -418,7 +415,7 @@ class t3lib_refindex {
 				}
 
 					// Add DB:
-				if ($result = $this->getRelations_procDB($value, $conf, $uid))	{
+				if ($result = $this->getRelations_procDB($value, $conf, $uid, $table))	{
 						// Create an entry for the field with all DB relations:
 					$outRow[$field] = array(
 						'type' => 'db',
@@ -589,9 +586,10 @@ class t3lib_refindex {
 	 * @param	string		Field value
 	 * @param	array		Field configuration array of type "TCA/columns"
 	 * @param	integer		Field uid
+	 * @param	string		Table name
 	 * @return	array		If field type is OK it will return an array with the database relations. Else false
 	 */
-	function getRelations_procDB($value, $conf, $uid)	{
+	function getRelations_procDB($value, $conf, $uid, $table = '')	{
 
 			// DB record lists:
 		if ($this->isReferenceField($conf))	{
@@ -603,7 +601,7 @@ class t3lib_refindex {
 			}
 
 			$dbAnalysis = t3lib_div::makeInstance('t3lib_loadDBGroup');
-			$dbAnalysis->start($value,$allowedTables,$conf['MM'],$uid);
+			$dbAnalysis->start($value,$allowedTables,$conf['MM'],$uid,$table,$conf);
 
 			return $dbAnalysis->itemArray;
 		}
@@ -963,7 +961,7 @@ class t3lib_refindex {
 	 * @return	boolean		True if DB reference field (group/db or select with foreign-table)
 	 */
 	function isReferenceField($conf)	{
-		return ($conf['type']=='group' && $conf['internal_type']=='db') ||	($conf['type']=='select' && $conf['foreign_table']);
+		return ($conf['type']=='group' && $conf['internal_type']=='db') || (($conf['type']=='select' || $conf['type']=='inline') && $conf['foreign_table']);
 	}
 
 	/**

@@ -1156,9 +1156,8 @@ Element.Methods = {
 
   scrollTo: function(element) {
     element = $(element);
-    var x = element.x ? element.x : element.offsetLeft,
-        y = element.y ? element.y : element.offsetTop;
-    window.scrollTo(x, y);
+    var pos = Position.cumulativeOffset(element);
+    window.scrollTo(pos[0], pos[1]);
     return element;
   },
 

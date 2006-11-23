@@ -2716,7 +2716,9 @@ HTMLArea._postback = function(url, data, handler, addParams, charset) {
 	
 	if(req) {
 		var content = '';
-		for (var i in data) content += (content.length ? '&' : '') + i + '=' + encodeURIComponent(data[i]);
+		for (var i in data) {
+			content += (content.length ? '&' : '') + i + '=' + encodeURIComponent(data[i]);
+		}
 		content += (content.length ? '&' : '') + 'charset=' + charset;
 		if (typeof(addParams) != "undefined") content += addParams;
 		if (url.substring(0,1) == '/') {

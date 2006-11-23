@@ -46,7 +46,7 @@ DynamicCSS = function(editor,args) {
 		action			: null,
 		refresh			: null,
 		context			: "*",
-		cssArray		: new Array(),
+		cssArray		: new Object(),
 		parseCount		: 1,
 		loaded			: false,
 		timeout			: null,
@@ -81,7 +81,7 @@ DynamicCSS.I18N = DynamicCSS_langArray;
 DynamicCSS.parseStyleSheet = function(editor) {
 	var obj = editor.config.customSelects["DynamicCSS-class"];
 	var iframe = editor._iframe.contentWindow ? editor._iframe.contentWindow.document : editor._iframe.contentDocument;
-	var newCssArray = new Array();
+	var newCssArray = new Object();
 	obj.loaded = true;
 	for (var i = 0; i < iframe.styleSheets.length; i++) {
 			// Mozilla
@@ -102,7 +102,7 @@ DynamicCSS.parseStyleSheet = function(editor) {
 DynamicCSS.applyCSSRule=function(editor,i18n,cssRules,cssArray){
 	var cssElements = new Array(),
 		cssElement = new Array(),
-		newCssArray = new Array(),
+		newCssArray = new Object(),
 		classParts = new Array(),
 		tagName, className, rule, k,
 		obj = editor.config.customSelects["DynamicCSS-class"];
@@ -123,7 +123,7 @@ DynamicCSS.applyCSSRule=function(editor,i18n,cssRules,cssArray){
 						className = classParts[0];
 					}
 					if (!HTMLArea.reservedClassNames.test(className) && ((tagName == "all" && obj["showTagFreeClasses"] == true) || (tagName != "all" && (!obj["classesTag"] || !obj["classesTag"][tagName])) || (tagName != "all" && obj["classesTag"][tagName].indexOf(className) != -1)) ) {
-						if (!newCssArray[tagName]) newCssArray[tagName] = new Array();
+						if (!newCssArray[tagName]) newCssArray[tagName] = new Object();
 						if (className) {
 							cssName = className;
 							if (HTMLArea.classesLabels) cssName = HTMLArea.classesLabels[className] ? HTMLArea.classesLabels[className] : cssName ;
@@ -147,7 +147,7 @@ DynamicCSS.applyCSSRule=function(editor,i18n,cssRules,cssArray){
 };
 
 DynamicCSS.applyCSSIEImport = function(editor,i18n,cssIEImport,cssArray){
-	var newCssArray = new Array();
+	var newCssArray = new Object();
 	newCssArray = cssArray;
 	for(var i=0;i<cssIEImport.length;i++){
 		if(cssIEImport[i].imports){

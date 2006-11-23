@@ -420,8 +420,8 @@ TABLE.typo3-dblist-overview TD.c-tableDescription IMG { margin-right: 10px; }
 TABLE#typo3-versionSelector { background-color: #ABBBB4; margin-top: 5px; margin-bottom: 5px; }
 TABLE#typo3-versionSelector TD { padding-left: 2px; padding-right: 2px; }
 
-DIV#typo3-newRecordLink { margin: 5px 0px 5px 0px; font-weight: bold; }
-DIV#typo3-newRecordLink IMG { margin-right: 5px; vertical-align: middle; }
+DIV#typo3-newRecordLink, DIV.typo3-newRecordLink { margin: 5px 0px 5px 0px; font-weight: bold; }
+DIV#typo3-newRecordLink IMG, DIV.typo3-newRecordLink IMG { margin-right: 5px; vertical-align: middle; }
 
 INPUT.smallCheckboxes { vertical-align: middle; margin: 0px; padding: 0px; width: 12px; height: 12px; }
 DIV#typo3-listOptions { margin: 10px 0px 10px 0px; }

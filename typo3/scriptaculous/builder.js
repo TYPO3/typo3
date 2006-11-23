@@ -1,8 +1,9 @@
-// script.aculo.us builder.js v1.6.4, Wed Sep 06 11:30:58 CEST 2006
+// script.aculo.us builder.js v1.6.5, Wed Nov 08 14:17:49 CET 2006
 
-// Copyright (c) 2005 Thomas Fuchs (http://script.aculo.us, http://mir.aculo.us)
+// Copyright (c) 2005, 2006 Thomas Fuchs (http://script.aculo.us, http://mir.aculo.us)
 //
-// See scriptaculous.js for full license.
+// script.aculo.us is freely distributable under the terms of an MIT-style license.
+// For details, see the script.aculo.us web site: http://script.aculo.us/
 
 var Builder = {
   NODEMAP: {
@@ -77,10 +78,16 @@ var Builder = {
   _text: function(text) {
      return document.createTextNode(text);
   },
+
+  ATTR_MAP: {
+    'className': 'class',
+    'htmlFor': 'for'
+  },
+
   _attributes: function(attributes) {
     var attrs = [];
     for(attribute in attributes)
-      attrs.push((attribute=='className' ? 'class' : attribute) +
+      attrs.push((attribute in this.ATTR_MAP ? this.ATTR_MAP[attribute] : attribute) +
           '="' + attributes[attribute].toString().escapeHTML() + '"');
     return attrs.join(" ");
   },
@@ -99,6 +106,11 @@ var Builder = {
   },
   _isStringOrNumber: function(param) {
     return(typeof param=='string' || typeof param=='number');
+  },
+  build: function(html) {
+    var element = this.node('div');
+    $(element).update(html.strip());
+    return element.down();
   },
   dump: function(scope) { 
     if(typeof scope != 'object' && typeof scope != 'function') scope = window; //global scope 

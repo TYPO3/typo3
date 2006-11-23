@@ -78,6 +78,18 @@ TABLE.typo3-TCEforms .class-main52 {
 	background-repeat: repeat-x;
 }
 
+TABLE.typo3-TCEforms TABLE.wrapperAttention .class-main2,
+TABLE.typo3-TCEforms TABLE.wrapperAttention .class-main12,
+TABLE.typo3-TCEforms TABLE.wrapperAttention .class-main22,
+TABLE.typo3-TCEforms TABLE.wrapperAttention .class-main32,
+TABLE.typo3-TCEforms TABLE.wrapperAttention .class-main42,
+TABLE.typo3-TCEforms TABLE.wrapperAttention .class-main52 {
+	background-color: #A30904;
+	background-image: none;
+	background-position: top left;
+	background-repeat: repeat-x;
+}
+
 TABLE.typo3-TCEforms .class-main3,
 TABLE.typo3-TCEforms .class-main13,
 TABLE.typo3-TCEforms .class-main23,
@@ -122,4 +134,13 @@ TABLE.typo3-TCEforms .wrapperTable4,
 TABLE.typo3-TCEforms .wrapperTable5 {
 	border: 1px solid #A2AAB8;
 	margin: 0 0 5px 0;
+	}
+
+TABLE.typo3-TCEforms TABLE.wrapperAttention .wrapperTable,
+TABLE.typo3-TCEforms TABLE.wrapperAttention .wrapperTable1,
+TABLE.typo3-TCEforms TABLE.wrapperAttention .wrapperTable2,
+TABLE.typo3-TCEforms TABLE.wrapperAttention .wrapperTable3,
+TABLE.typo3-TCEforms TABLE.wrapperAttention .wrapperTable4,
+TABLE.typo3-TCEforms TABLE.wrapperAttention .wrapperTable5 {
+	border: 1px solid #A30904;
 	}

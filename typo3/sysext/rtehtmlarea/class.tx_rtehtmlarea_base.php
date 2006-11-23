@@ -835,7 +835,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 				i++;
 			};
 			var RTEarea = new Array();
-			RTEarea[0] = new Array();
+			RTEarea[0] = new Object();
 			RTEarea[0]["version"] = "' . $TYPO3_CONF_VARS['EXTCONF'][$this->ID]['version'] . '";
 			RTEarea[0]["popupwin"] = "' . $this->writeJSFileToTypo3tempDir('EXT:' . $this->ID . '/htmlarea/popupwin' . ($TYPO3_CONF_VARS['EXTCONF'][$this->ID]['enableCompressedScripts']?'-compressed':'') .'.js', "popupwin", $TYPO3_CONF_VARS['EXTCONF'][$this->ID]['enableCompressedScripts'])  . '";
 			RTEarea[0]["htmlarea-gecko"] = "' . $this->writeJSFileToTypo3tempDir('EXT:' . $this->ID . '/htmlarea/htmlarea-gecko' . ($TYPO3_CONF_VARS['EXTCONF'][$this->ID]['enableCompressedScripts']?'-compressed':'') .'.js', "htmlarea-gecko", $TYPO3_CONF_VARS['EXTCONF'][$this->ID]['enableCompressedScripts'])  . '";
@@ -901,7 +901,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 		
 		$registerRTEinJSString = (!is_object($TSFE) ? '' : '
 			' . '/*<![CDATA[*/') . '
-			RTEarea['.$number.'] = new Array();
+			RTEarea['.$number.'] = new Object();
 			RTEarea['.$number.']["number"] = '.$number.';
 			RTEarea['.$number.']["id"] = "RTEarea'.$number.'";
 			RTEarea['.$number.']["enableWordClean"] = ' . (trim($this->thisConfig['enableWordClean'])?'true':'false') . ';
@@ -928,7 +928,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 		
 			// Setting the plugin flags
 		$registerRTEinJSString .= '
-			RTEarea['.$number.']["plugin"] = new Array();';
+			RTEarea['.$number.']["plugin"] = new Object();';
 		
 		$pluginArray = t3lib_div::trimExplode(',', $this->pluginList , 1);
 		reset($pluginArray);
@@ -941,7 +941,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 		
 			// Setting the buttons configuration
 		$registerRTEinJSString .= '
-			RTEarea['.$number.']["buttons"] = new Array();';
+			RTEarea['.$number.']["buttons"] = new Object();';
 		if (is_array($this->thisConfig['buttons.'])) {
 			reset($this->thisConfig['buttons.']);
 			while( list($buttonIndex,$conf) = each($this->thisConfig['buttons.']) ) {
@@ -1020,7 +1020,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 		if (in_array('inserttag', $this->toolBar) && trim($this->thisConfig['hideTags'])) {
 			if (!is_array($this->thisConfig['buttons.']['inserttag.'])) {
 				$registerRTEinJSString .= '
-			RTEarea['.$number.']["buttons"]["inserttag"] = new Array();
+			RTEarea['.$number.']["buttons"]["inserttag"] = new Object();
 			RTEarea['.$number.']["buttons"]["inserttag"]["denyTags"] = "'.implode(',', t3lib_div::trimExplode(',', $this->thisConfig['hideTags'], 1)).'";';
 			} elseif (!$this->thisConfig['buttons.']['inserttag.']['denyTags']) {
 				$registerRTEinJSString .= '
@@ -1080,7 +1080,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			if (in_array('toggleborders',$this->toolBar) && $this->thisConfig['keepToggleBordersInToolbar']) {
 				if (!is_array($this->thisConfig['buttons.']['toggleborders.'])) {
 					$registerRTEinJSString .= '
-			RTEarea['.$number.']["buttons"]["toggleborders"] = new Array();
+			RTEarea['.$number.']["buttons"]["toggleborders"] = new Object();
 			RTEarea['.$number.']["buttons"]["toggleborders"]["keepInToolbar"] = true;';
 				} elseif (!$this->thisConfig['buttons.']['toggleborders.']['keepInToolbar']) {
 					$registerRTEinJSString .= '
@@ -1418,7 +1418,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 		$classesTagConvert = array( 'classesCharacter' => 'span', 'classesParagraph' => 'p', 'classesImage' => 'img', 'classesTable' => 'table', 'classesLinks' => 'a', 'classesTD' => 'td');
 		$classesTagArray = t3lib_div::trimExplode(',' , $classesTagList);
 		$registerRTEinJSString = '
-			RTEarea['.$number.']["classesTag"] = new Array();';
+			RTEarea['.$number.']["classesTag"] = new Object();';
 		while( list(,$classesTagName) = each($classesTagArray)) {
 			$HTMLAreaJSClasses = ($this->thisConfig[$classesTagName])?('"' . $this->cleanList($this->thisConfig[$classesTagName]) . '";'):'null;';
 			$registerRTEinJSString .= '
@@ -1487,7 +1487,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 		global $TSFE, $LANG, $TYPO3_CONF_VARS;
 		
 		$linebreak = $TYPO3_CONF_VARS['EXTCONF'][$this->ID]['enableCompressedScripts'] ? '' : chr(10);
-		$JSLanguageArray .= 'var HTMLArea_langArray = new Array();' . $linebreak;
+		$JSLanguageArray .= 'var HTMLArea_langArray = new Object();' . $linebreak;
 		$JSLanguageArray .= 'HTMLArea_langArray = { ' . $linebreak;
 		if(is_object($TSFE)) {
 			$JSLanguageArray = $TSFE->csConvObj->conv($JSLanguageArray, 'iso-8859-1', $this->OutputCharset);
@@ -1705,7 +1705,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			$LOCAL_LANG[$this->language] = $LOCAL_LANG['default'];
 		}
 		
-		$JSLanguageArray .= 'var ' . $plugin . '_langArray = new Array();' . $linebreak;
+		$JSLanguageArray .= 'var ' . $plugin . '_langArray = new Object();' . $linebreak;
 		$JSLanguageArray .= $plugin . '_langArray = {' . $linebreak;
 		if(is_object($TSFE)) {
 			$JSLanguageArray = $TSFE->csConvObj->conv($JSLanguageArray, 'iso-8859-1', $this->OutputCharset);

@@ -42,7 +42,7 @@ InlineCSS = function(editor,args) {
 		action			: null,
 		refresh			: null,
 		context			: "*",
-		cssArray		: new Array(),
+		cssArray		: new Object(),
 		parseCount		: 1,
 		loaded			: false,
 		timeout			: null,
@@ -78,7 +78,7 @@ InlineCSS.I18N = InlineCSS_langArray;
 InlineCSS.parseStyleSheet = function(editor){
 	var obj = editor.config.customSelects["InlineCSS-class"];
 	var iframe = editor._iframe.contentWindow ? editor._iframe.contentWindow.document : editor._iframe.contentDocument;
-	var newCssArray = new Array();
+	var newCssArray = new Object();
 	obj.loaded = true;
 	for(var i=0;i<iframe.styleSheets.length;i++){
 			// Mozilla
@@ -103,7 +103,7 @@ InlineCSS.parseStyleSheet = function(editor){
 InlineCSS.applyCSSRule = function(editor,i18n,cssRules,cssArray){
 	var cssElements = new Array();
 	var cssElement = new Array();
-	var newCssArray = new Array();
+	var newCssArray = new Object();
 	var tagName, className, rule, k;
 	var obj = editor.config.customSelects["InlineCSS-class"];
 	newCssArray = cssArray;
@@ -120,7 +120,7 @@ InlineCSS.applyCSSRule = function(editor,i18n,cssRules,cssArray){
 					if(!tagName) tagName = 'all';
 					className = cssElement[1];
 					if( (!obj["classesCharacter"] && (tagName == 'span')) || ((tagName != "all" || obj["showTagFreeClasses"] == true) && obj["classesCharacter"] && obj["classesCharacter"].indexOf(className) != -1)) {
-						if(!newCssArray[tagName]) newCssArray[tagName] = new Array();
+						if(!newCssArray[tagName]) newCssArray[tagName] = new Object();
 						if(className){
 							cssName = className;
 							if (HTMLArea.classesLabels) cssName = HTMLArea.classesLabels[className] ? HTMLArea.classesLabels[className] : cssName ;
@@ -144,7 +144,7 @@ InlineCSS.applyCSSRule = function(editor,i18n,cssRules,cssArray){
 };
 
 InlineCSS.applyCSSIEImport=function(editor,i18n,cssIEImport,cssArray){
-	var newCssArray = new Array();
+	var newCssArray = new Object();
 	newCssArray = cssArray;
 
 	for(var i=0;i<cssIEImport.length;i++){

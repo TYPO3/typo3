@@ -67,6 +67,7 @@ Do you want to continue WITHOUT saving?</label>
 			<label index="labels.move_up">Move selected items upwards</label>
 			<label index="labels.move_down">Move selected items downwards</label>
 			<label index="labels.move_to_bottom">Move selected items to bottom</label>
+			<label index="labels.move">Move this item</label>
 			<label index="labels.browse_file">Browse for files</label>
 			<label index="labels.browse_db">Browse for records</label>
 			<label index="labels.clipInsert_file">Insert %s file(s) from the clipboard</label>
@@ -182,6 +183,7 @@ Would you like to save now in order to refresh the display?</label>
 			<label index="cm.movePage_after">Move page after</label>
 			<label index="cm.copyFolder_into">Copy folder into</label>
 			<label index="cm.moveFolder_into">Move folder into</label>
+			<label index="cm.createNewRelation">Create new relation</label>
 		</languageKey>
 	</data>
 </T3locallang>
