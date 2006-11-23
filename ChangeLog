@@ -1,6 +1,7 @@
 2006-11-21  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
 	* New Feature: List users online (aka who is online) for BE users in Tools > User Manager
+	* New Feature: Allow UTF-8 file names (to enable set BE[forceCharset]='utf-8' and SYS[UTF8filesystem]=1)
 
 2006-11-23  Ingmar Schlecht  <ingmar@typo3.org>
 

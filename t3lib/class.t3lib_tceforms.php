@@ -1874,20 +1874,21 @@ class t3lib_TCEforms	{
 					$imgs = array();
 					foreach($itemArray as $imgRead)	{
 						$imgP = explode('|',$imgRead);
+						$imgPath = rawurldecode($imgP[0]);
 
 						$rowCopy = array();
-						$rowCopy[$field] = $imgP[0];
+						$rowCopy[$field] = $imgPath;
 
 							// Icon + clickmenu:
-						$absFilePath = t3lib_div::getFileAbsFileName($config['uploadfolder'].'/'.$imgP[0]);
+						$absFilePath = t3lib_div::getFileAbsFileName($config['uploadfolder'].'/'.$imgPath);
 
-						$fI = pathinfo($imgP[0]);
+						$fI = pathinfo($imgPath);
 						$fileIcon = t3lib_BEfunc::getFileIcon(strtolower($fI['extension']));
 						$fileIcon = '<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/fileicons/'.$fileIcon,'width="18" height="16"').' class="absmiddle" title="'.htmlspecialchars($fI['basename'].($absFilePath && @is_file($absFilePath) ? ' ('.t3lib_div::formatSize(filesize($absFilePath)).'bytes)' : ' - FILE NOT FOUND!')).'" alt="" />';
 
 						$imgs[] = '<span class="nobr">'.t3lib_BEfunc::thumbCode($rowCopy,$table,$field,$this->backPath,'thumbs.php',$config['uploadfolder'],0,' align="middle"').
 									($absFilePath ? $this->getClickMenu($fileIcon, $absFilePath) : $fileIcon).
-									$imgP[0].
+									$imgPath.
 									'</span>';
 					}
 					$thumbsnail = implode('<br />',$imgs);

@@ -1848,7 +1848,7 @@ class browse_links {
 					$eMsg = $LANG->JScharCode(sprintf($LANG->getLL('invalidChar'),', |'));
 					$ATag = $ATag_alt = "<a href=\"#\" onclick=\"alert(".$eMsg.");return false;\">";
 				} else {	// If filename is OK, just add it:
-					$ATag = "<a href=\"#\" onclick=\"return insertElement('','".t3lib_div::shortMD5($filepath)."', 'file', '".rawurlencode($fI['basename'])."', unescape('".rawurlencode($filepath)."'), '".$fI['extension']."', '".$ficon."');\">";
+					$ATag = "<a href=\"#\" onclick=\"return insertElement('','".t3lib_div::shortMD5($filepath)."', 'file', ".t3lib_div::quoteJSvalue($fI['basename']).", ".t3lib_div::quoteJSvalue($filepath).", '".$fI['extension']."', '".$ficon."');\">";
 					$ATag_alt = substr($ATag,0,-4).",'',1);\">";
 				}
 				$ATag_e='</a>';

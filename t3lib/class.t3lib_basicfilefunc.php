@@ -444,6 +444,12 @@ class t3lib_basicFileFunctions	{
 	 * @return	string		Output string with any characters not matching [.a-zA-Z0-9_-] is substituted by '_'
 	 */
 	function cleanFileName($fileName,$charset='')	{
+			// handle UTF-8 characters
+		if ($GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset'] == 'utf-8' && $GLOBALS['TYPO3_CONF_VARS']['SYS']['UTF8filesystem'])	{
+				// allow ".", "-", 0-9, a-z, A-Z and everything beyond U+C0 (latin capital letter a with grave)
+			return preg_replace('/[\x00-\x2C\/\x3A-\x3F\x5B-\x60\x7B-\xBF]/u','_',trim($fileName));
+		}
+
 		if (!is_object($this->csConvObj))	{
 			if (TYPO3_MODE=='FE')	{
 				$this->csConvObj = &$GLOBALS['TSFE']->csConvObj;

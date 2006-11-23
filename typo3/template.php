@@ -1249,7 +1249,7 @@ $str.=$this->docBodyTagBegin().
 			/*<![CDATA[*/
 					// is called from most clickmenu links
 				function showClickmenu(table, uid, listFr, enDisItems, backPath, addParams)	{
-					var url = "'.$this->backPath.'alt_clickmenu.php?table=" + table
+					var url = "'.$this->backPath.'alt_clickmenu.php?table=" + encodeURIComponent(table)
 					          + "&uid=" + uid
 										+ "&listFr=" + listFr
 										+ "&enDisItems=" + enDisItems
@@ -1271,12 +1271,6 @@ $str.=$this->docBodyTagBegin().
 		$content.= '
 				}
 
-	/**
-	 * [Describe function...]
-	 *
-	 * @param	[type]		$url: ...
-	 * @return	[type]		...
-	 */
 				function showClickmenu_noajax(url)	{
 					top.loadTopMenu(url);
 				}';

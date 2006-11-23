@@ -1,4 +1,8 @@
-2006-08-14 Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+2006-11-23	Martin Kutschker	<martin.t.kutschker@blackbox.net>
+	* Version 1.5.0
+	* Allow UTF-8 file names for images
+
+2006-08-14	Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
 	* Version 1.4.2
 	* For compatibility with := addToList syntax, show all buttons when * is found in the list RTE.default.showButtons.
 	* Correction to generated stylesheet file. Thanks to Ingmar Schlecht.
