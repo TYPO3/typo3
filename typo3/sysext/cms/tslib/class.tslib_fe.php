@@ -1347,7 +1347,6 @@
 				$headerArr = preg_split('/\r|\n/',$header,-1,PREG_SPLIT_NO_EMPTY);
 				foreach ($headerArr as $header)	{
 					foreach ($forwardHeaders as $h)	{
-						$h = preg_quote($h,'/');
 						if (preg_match('/^'.$h.'/', $header))	{
 							header ($header);
 						}
