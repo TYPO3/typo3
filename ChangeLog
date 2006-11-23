@@ -1,3 +1,8 @@
+
+2006-11-21  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+
+	* Fix a problem with PHP4 and UTF-8 byte order marks (BOM) in t3lib_div::xml2array()
+
 2006-11-17  Michael Stucki  <michael@typo3.org>
 
 	* Fixed bug #4059: options.hideRecords.pages doesn't work for mounted pages - Thanks to Marc Bastian Heinrichs for providing a fix!
