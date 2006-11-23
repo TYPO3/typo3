@@ -1,3 +1,7 @@
+2006-11-21  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+
+	* New Feature: List users online (aka who is online) for BE users in Tools > User Manager
+
 2006-11-23  Ingmar Schlecht  <ingmar@typo3.org>
 
 	* New Feature: Inline Relational Record Editing (IRRE). See http://wiki.typo3.org/index.php/Inline_Relational_Record_Editing for details. Thanks a lot to Oliver Hader who programmed this as his diploma thesis and to Sebastian who reviewed the code together with me!

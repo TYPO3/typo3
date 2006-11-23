@@ -100,10 +100,6 @@
  *
  */
 
-#unset($MCONF);
-#require ('conf.php');
-#require ($BACK_PATH.'init.php');
-#require ($BACK_PATH.'template.php');
 require_once (PATH_t3lib.'class.t3lib_basicfilefunc.php');
 require_once (PATH_t3lib.'class.t3lib_browsetree.php');
 require_once (PATH_t3lib.'class.t3lib_foldertree.php');
@@ -1036,8 +1032,6 @@ class local_beUserAuth extends t3lib_beUserAuth {
 	 * @return	[type]		...
 	 */
 	function ext_workspaceMembership()	{
-		global $TYPO3_DB;
-
 			// Create accessible workspace arrays:
 		$options = array();
 		if ($this->checkWorkspace(array('uid' => 0)))	{
@@ -1048,7 +1042,7 @@ class local_beUserAuth extends t3lib_beUserAuth {
 		}
 
 			// Add custom workspaces (selecting all, filtering by BE_USER check):
-		$workspaces = $TYPO3_DB->exec_SELECTgetRows('uid,title,adminusers,members,reviewers,db_mountpoints','sys_workspace','pid=0'.t3lib_BEfunc::deleteClause('sys_workspace'),'','title');
+		$workspaces = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid,title,adminusers,members,reviewers,db_mountpoints','sys_workspace','pid=0'.t3lib_BEfunc::deleteClause('sys_workspace'),'','title');
 		if (count($workspaces))	{
 			foreach ($workspaces as $rec)	{
 				if ($this->checkWorkspace($rec))	{
@@ -1102,7 +1096,6 @@ class SC_mod_tools_be_user_index {
 	 * @return	[type]		...
 	 */
 	function init()	{
-		global $BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$CLIENT,$TYPO3_CONF_VARS;
 		$this->MCONF = $GLOBALS['MCONF'];
 
 		$this->menuConfig();
@@ -1114,7 +1107,7 @@ class SC_mod_tools_be_user_index {
 		// **************************
 		$this->doc = t3lib_div::makeInstance('noDoc');
 		$this->doc->form='<form action="" method="POST">';
-		$this->doc->backPath = $BACK_PATH;
+		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 				// JavaScript
 		$this->doc->JScode = $this->doc->wrapScriptTags('
 			script_ended = 0;
@@ -1130,18 +1123,17 @@ class SC_mod_tools_be_user_index {
 	 * @return	[type]		...
 	 */
 	function menuConfig()	{
-		global $BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$CLIENT,$TYPO3_CONF_VARS;
-
 		// MENU-ITEMS:
 			// If array, then it's a selector box menu
 			// If empty string it's just a variable, that'll be saved.
 			// Values NOT in this array will not be saved in the settings-array for the module.
 		$this->MOD_MENU = array(
 			'function' => array(
-				'compare' => 'Compare User Settings'
+				'compare' => 'Compare User Settings',
+				'whoisonline' => 'List Users Online'
 			)
 		);
-			// CLEANSE SETTINGS
+			// CLEAN SETTINGS
 		$this->MOD_SETTINGS = t3lib_BEfunc::getModuleData($this->MOD_MENU, t3lib_div::_GP('SET'), $this->MCONF['name'], 'ses');
 	}
 
@@ -1151,8 +1143,6 @@ class SC_mod_tools_be_user_index {
 	 * @return	[type]		...
 	 */
 	function main()	{
-		global $BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$CLIENT,$TYPO3_CONF_VARS;
-
 		$this->content='';
 		$this->content.=$this->doc->startPage('Backend User Administration');
 
@@ -1166,16 +1156,19 @@ class SC_mod_tools_be_user_index {
 			case 'compare':
 				if (t3lib_div::_GP('ads'))	{
 					$compareFlags = t3lib_div::_GP('compareFlags');
-					$BE_USER->pushModuleData('tools_beuser/index.php/compare',$compareFlags);
+					$GLOBALS['BE_USER']->pushModuleData('tools_beuser/index.php/compare',$compareFlags);
 				} else {
-					$compareFlags = $BE_USER->getModuleData('tools_beuser/index.php/compare','ses');
+					$compareFlags = $GLOBALS['BE_USER']->getModuleData('tools_beuser/index.php/compare','ses');
 				}
 				$this->content.=$this->compareUsers($compareFlags);
+			break;
+			case 'whoisonline':
+				$this->content.=$this->whoIsOnline();
 			break;
 		}
 
 
-		if ($BE_USER->mayMakeShortcut())	{
+		if ($GLOBALS['BE_USER']->mayMakeShortcut())	{
 			$this->content.=$this->doc->spacer(20).
 						$this->doc->section('',$this->doc->makeShortcutIcon('be_user_uid,compareFlags','function',$this->MCONF['name']));
 		}
@@ -1209,7 +1202,6 @@ class SC_mod_tools_be_user_index {
 	 * @return	[type]		...
 	 */
 	function compareUsers($compareFlags)	{
-		global $SOBE;
 			// Menu:
 		$options = array(
 			'filemounts' => 'Filemounts',
@@ -1286,7 +1278,6 @@ class SC_mod_tools_be_user_index {
 				// Traverse all users
 			$users = t3lib_BEfunc::getUserNames();
 			$comparation=array();
-	//		debug($users);
 			reset($users);
 			$counter=0;
 
@@ -1356,7 +1347,7 @@ class SC_mod_tools_be_user_index {
 				$uListArr=array();
 				reset($dat['users']);
 				while(list(,$uDat)=each($dat['users']))	{
-					$uItem = '<tr><td width="130">'.t3lib_iconWorks::getIconImage('be_users',$uDat,$GLOBALS['BACK_PATH'],'align="top" title="'.$uDat['uid'].'"').$this->linkuser($uDat['username'],$uDat).'&nbsp;&nbsp;</td><td nowrap="nowrap">'.$this->elementLinks('be_users',$uDat);
+					$uItem = '<tr><td width="130">'.t3lib_iconWorks::getIconImage('be_users',$uDat,$GLOBALS['BACK_PATH'],'align="top" title="'.$uDat['uid'].'"').$this->linkUser($uDat['username'],$uDat).'&nbsp;&nbsp;</td><td nowrap="nowrap">'.$this->elementLinks('be_users',$uDat);
 					if ($curUid != $uDat['uid'] && !$uDat['disable'] && ($uDat['starttime'] == 0 || $uDat['starttime'] < time()) && ($uDat['endtime'] == 0 || $uDat['endtime'] > time()))	{
 						$uItem .= '<a href="'.t3lib_div::linkThisScript(array('SwitchUser'=>$uDat['uid'])).'" target="_top"><img '.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/su.gif').' border="0" align="top" title="'.htmlspecialchars('Switch user to: '.$uDat['username']).' [change-to mode]" alt="" /></a>'.
 							'<a href="'.t3lib_div::linkThisScript(array('SwitchUser'=>$uDat['uid'], 'switchBackUser' => 1)).'" target="_top"><img '.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/su_back.gif').' border="0" align="top" title="'.htmlspecialchars('Switch user to: '.$uDat['username']).' [switch-back mode]" alt="" /></a>';
@@ -1411,7 +1402,6 @@ class SC_mod_tools_be_user_index {
 	 * @return	[type]		...
 	 */
 	function elementLinks($table,$row)	{
-		global $TCA;
 			// Info:
 		$cells[]='<a href="#" onclick="top.launchView(\''.$table.'\', \''.$row['uid'].'\',\''.$GLOBALS['BACK_PATH'].'\'); return false;"><img '.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/zoom2.gif').' border="0" align="top" title="Show information" alt="" /></a>';
 
@@ -1420,7 +1410,7 @@ class SC_mod_tools_be_user_index {
 		$cells[]='<a href="#" onclick="'.t3lib_BEfunc::editOnClick($params,$GLOBALS['BACK_PATH'],'').'"><img '.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/edit2.gif').' border="0" align="top" title="Edit" alt="" /></a>';
 
 			// Hide:
-		$hiddenField = $TCA[$table]['ctrl']['enablecolumns']['disabled'];
+		$hiddenField = $GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['disabled'];
 		if ($row[$hiddenField])	{
 			$params='&data['.$table.']['.$row['uid'].']['.$hiddenField.']=0';
 			$cells[]='<a href="'.$this->doc->issueCommand($params).'"><img '.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/button_unhide.gif').' border="0" title="Enable" align="top" alt="" /></a>';
@@ -1444,7 +1434,6 @@ class SC_mod_tools_be_user_index {
 	function initUsers()	{
 			// Initializing all users in order to generate the usergroup_cached_list
 		$users = t3lib_BEfunc::getUserNames();
-		//debug($users);
 		reset($users);
 		while(list(,$r)=each($users))	{
 				// This is used to test with other users. Development ONLY!
@@ -1487,6 +1476,81 @@ class SC_mod_tools_be_user_index {
 			exit;
 		}
 	}
+
+	/***************************
+	 *
+	 * "WHO IS ONLINE" FUNCTIONS:
+	 *
+	 ***************************/
+
+	/**
+	 * @author Martin Kutschker
+	 */
+	function whoIsOnline()	{
+		$select_fields = 'ses_id, ses_tstamp, ses_iplock, u.uid,u.username, u.admin, u.realName, u.disable, u.starttime, u.endtime, u.deleted, bu.uid AS bu_uid,bu.username AS bu_username, bu.realName AS bu_realName';
+		$from_table = '(be_sessions, be_users u) LEFT OUTER JOIN be_users bu ON (ses_backuserid=bu.uid)';
+		$where_clause = 'ses_userid=u.uid';
+		$orderBy = 'u.username';
+
+		if (is_string($GLOBALS['TYPO3_CONF_VARS']['BE']['sessionTimeout']))	{
+				$where_clause .= ' AND '.$GLOBALS['EXEC_TIME'].'<(ses_tstamp+u.'.$GLOBALS['TYPO3_CONF_VARS']['BE']['sessionTimeout'].')';
+		} else {
+			$timeout = intval($GLOBALS['TYPO3_CONF_VARS']['BE']['sessionTimeout']);
+			if ($timeout > 0)	{
+				$where_clause .= ' AND '.$GLOBALS['EXEC_TIME'].'<(ses_tstamp+'.$timeout.')';
+			}
+		}
+		$sessions = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows($select_fields,$from_table,$where_clause,'',$orderBy);
+		$outTable = '
+	<table border="0" cellpadding="2" cellspacing="2">
+		<tr class="bgColor5">
+			<td valign="top"><b>Timestamp:</b></td>
+			<td valign="top"><b>Host:</b></td>
+			<td valign="top"><b>Username:</b></td>
+			</td>
+		</tr>
+		<tr class="bgColor4">
+			<td>
+				<table border="0" cellspacing="0" cellpadding="0">';
+		foreach ($sessions as $session)	{
+			$outTable .= '<tr>'.
+				'<td nowrap="nowrap" height="17" valign="top">'.
+					date($GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'].' '.$GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'],$session['ses_tstamp']).
+				'</td></tr>';
+		}
+		$outTable .= '</table>
+			</td>
+			<td>
+				<table border="0" cellspacing="0" cellpadding="0">';
+		foreach ($sessions as $session)	{
+			$outTable .= '<tr>'.
+				'<td nowrap="nowrap" height="17" valign="top"><span title="'.gethostbyaddr($session['ses_iplock']).'">'.$session['ses_iplock'].'</span></td></tr>';
+		}
+		$outTable .= '</table>
+			</td>
+			<td valign="top">
+				<table border="0" cellspacing="0" cellpadding="0">';
+		foreach ($sessions as $session)	{
+			$outTable .= '
+					<tr>'.
+				'<td width="130" height="17">'.
+				t3lib_iconWorks::getIconImage('be_users',$session,$GLOBALS['BACK_PATH'],'align="top" title="'.$session['uid'].'"').htmlspecialchars($session['username']).'&nbsp;</td>'.
+				'<td nowrap="nowrap">'.htmlspecialchars($session['realName']).'&nbsp;&nbsp;</td>'.
+				'<td nowrap="nowrap">'.$this->elementLinks('be_users',$session).'</td>'.
+				'<td nowrap="nowrap" valign="top">'.($session['bu_username'] ? '&nbsp;SU from: ' : '').htmlspecialchars($session['bu_username']).'&nbsp;</td>'.
+				'<td nowrap="nowrap" valign="top">&nbsp;'.htmlspecialchars($session['bu_realName']).'</td>'.
+				'</tr>';
+		}
+		$outTable .= '
+				</table>
+			</td>
+		</tr>
+	</table>';
+
+		$content.= $this->doc->section('Who Is Online',$outTable,0,1);
+		return $content;
+	}
+
 }
 
 // Include extension?
@@ -1510,4 +1574,5 @@ $SOBE = t3lib_div::makeInstance('SC_mod_tools_be_user_index');
 $SOBE->init();
 $SOBE->main();
 $SOBE->printContent();
+
 ?>
