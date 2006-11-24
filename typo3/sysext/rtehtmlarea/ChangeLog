@@ -1,8 +1,10 @@
-2006-11-23	Martin Kutschker	<martin.t.kutschker@blackbox.net>
+2006-11-23  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+
 	* Version 1.5.0
 	* Allow UTF-8 file names for images
 
-2006-08-14	Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+2006-08-14  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+
 	* Version 1.4.2
 	* For compatibility with := addToList syntax, show all buttons when * is found in the list RTE.default.showButtons.
 	* Correction to generated stylesheet file. Thanks to Ingmar Schlecht.
@@ -10,12 +12,14 @@
 	* Correction for Netscape 8.l: useCSS setting not honored.
 	* Remove dependency of Spell Checker on Static Info Library (sr_static_info). Requires Static Info Tables version 2.0.0+.
 
-2006-05-08 Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+2006-05-08  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+
 	* Version 1.4.1
 	* Correction: path setting in class.tx_rtehtmlarea_browse_links.php and class.tx_rtehtmlarea_select_image.php
 	* Correction: configuration variable enableAccessibilityIcons was not set.
 
-2006-05-05 Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+2006-05-05  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+
 	* Version 1.4.0
 	* Adapt popup windows resizing for Opera 9.
 	* Fix to spell checker for Opera 9.
@@ -35,22 +39,26 @@
 	* Add extension configuration variable "Enable the DAM media browser" and Page TSConfig property buttons.image.title.useDAMColumn.
 	* Fix bugtracker issue 3006: in IE, link properties were not updated when the link was not completely selected.
 
-2006-04-06 Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+2006-04-06  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+
 	* Version 1.3.7
 	* Fix bugtracker issue 3120: transforming text in link in Firefox may take excessive time.
 	* Small workaround for empty selection test in Opera 9.
 	* Fix bugtracker issue 3060: RTE includes a page from the Frontent when pasting text with enableCleanWord configured with server-based parsing.
 
-2006-03-24 Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+2006-03-24  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+
 	* Version 1.3.6
 	* Correction to RemoveFormat plugin.
 
-2006-03-21 Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+2006-03-21  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+
 	* Version 1.3.5
 	* Fix bugtracker issue 2530.
 	* Further adjustments for Opera 9.
 
-2006-03-19 Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+2006-03-19  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+
 	* Version 1.3.4
 	* Correction to configuration of enableWordClean. See bugtracker issue 2530.
 	* Correction to XMLHttpRequest post request to set the charset of content. See issue 2530.
@@ -58,7 +66,8 @@
 	* Adjustments for compatibility with t3skin_40
 	* Update to manual.
 
-2006-03-13 Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+2006-03-13  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+
 	* Version 1.3.1
 	* Correction to default value of $RTEWrapStyle variable in frontend plugin
 	* A few small corrections in htmlarea.js for Opera 9
@@ -71,44 +80,54 @@
 	* Update to manual.
 	* Fix bugtracker issue 2820.
 
-2006-03-05 Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+2006-03-05  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+
 	* Version 1.3 (requires TYPO3 4.0)
 	* Use new ts parsing := in cumulative sets of configuration defaults.
 
-2006-03-04 Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+2006-03-04  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+
 	* Add $RTEWrapStyle variable to frontend plugin class.tx_rtehtmlarea_pi2.php (bugtracker issue 2760).
 
-2006-03-03 Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+2006-03-03  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+
 	* Version 1.2.0
 	* Update to manual
 
-2006-02-23 Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+2006-02-23  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+
 	* Fix bugtracker issue 2656
 
-2006-02-21 Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+2006-02-21  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+
 	* Path setting correction in SpellChecker plugin.
 
-2006-02-17 Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+2006-02-17  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+
 	* Remove Word 2003 o:p tags on paste with enableWordClean and/or save.
 
-2006-02-16 Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+2006-02-16  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+
 	* Version 1.1.8
 	* Correction: RemoveFormat plugin was removing too many tags and attributes.
 	* Remove conflicts with obsolete extensions deleted from TER.
 
-2006-02-13 Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+2006-02-13  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+
 	* Version 1.1.7
 	* Correction: incorrect default styles were assigned to links other than internal.
 	* Allow style attribute on span tag in the Demo default settings.
 
-2006-02-08 Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+2006-02-08  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+
 	* Version 1.1.6
 	* Correct default processing configuration for the case of center, font, strike and u tags when encountered outside paragraphs.
 	* Remove title field from link creation window when TYPO3 version is smaller than 3.8.2.
 	* Replace true linebreaks with space inside block tags and after hr tags (see bugtracker issue 2365).
 	* Plugin InlineCSS was not honoring property showTagFreeClasses.
 
-2006-02-02 Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+2006-02-02  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+
 	* Version 1.1.5
 	* Automatic update of the extension version number in the About window.
 	* Enable use of RTE in IE 7.
@@ -116,6 +135,7 @@
 	* Change names of default settings.
 
 2006-01-27  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+
 	* Version 1.1.4
 	* Correction to the behaviour of popups.
 	* Correction to the QuickTag plugin (hx tags).
@@ -125,11 +145,13 @@
 	* Adjust opening height of SpellChecker window.
 
 2006-01-26  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+
 	* Code cleanup.
 	* Improved link auto-detect in Mozilla/Firefox.
 	* Fix issue 2358.
 
 2006-01-19  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+
 	* Version 1.1.3
 	* Remove TYPO3HtmlParser plugin when the editor is used in the frontend.
 	* Correct height, margins and padding of toolbar select fields in all editor skins.
@@ -139,6 +161,7 @@
 	* Cleaning code and adding hook in TYPO3HtmlParser plugin (mod6/parse_html.php).
 
 2006-01-12  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+
 	* Version 1.1.2
 	* Correction to path settings affecting CSS files when TYPO3 is installed in a subdirectory.
 	* Cache the main JS files in typo3temp directory with hashed name including the extension version number.
@@ -148,37 +171,45 @@
 	* Enable the link button in the tool bar if some text is selected or if the cursor is positioned inside a link.
 
 2006-01-08  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+
 	* Version 1.1.1
 	* Correction to path settings affecting image drag & drop and file/image upload.
-	
+
 2006-01-06  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+
 	* Version 1.1.0
 	* Convert all locallang files to xml.
 	* Revise all licence notices in order to publish under GPL.
 
 2006-01-05  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+
 	* Allow align attribute on p and div tags in Demo Page TSConfig settings.
 	* Restructure extension modules and resources folders.
 	* Make extension conflict with rte_conf.
 	* Reconfigure for new version of extension Lorem Ipsum.
 
 2006-01-03  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+
 	* Modify conf and module scripts so that the extension may be run as system, global or local extension.
 	* Convert some files to UNIX linebreaks.
 	* Recompress some JS scripts.
 	* Restore Demo and Typical Page TSConfig default settings.
 
 2005-12-29  Michael Stucki  <michael@typo3.org>
+
 	* Solved problems with wrong backPath when installed as system extension in TYPO3 4.0 beta1.
 
 2005-12-24  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+
 	* Extend t3lib_parsehtml_proc only if TYPO3_VERSION is smaller than 4.0
 	* Cleanup images folders.
 
 2005-12-23  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+
 	* Update to language files.
 
 2005-12-22  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+
 	* Update to Proc, Demo and Typical Page TSConfig.
 	* Correction for No font and No size elements if font and size selectors.
 	* Add support for thead and tfoot in TableOperations plugin.
@@ -189,6 +220,7 @@
 	* Correction to the extraction of class selectors from some css rules.
 
 2005-12-20  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+
 	* New FAQ about style selector boxes in IE.
 	* Numerous adjustments for eventual Opera support. Waiting for Opera Software to correct reported problems.
 	* Add non-breaking space to the palette of the insertcharacter palette. Add hotkety ctrl+space to insert a non-breaking space.
@@ -211,6 +243,7 @@
 	* Cleaning Mozilla folder.
 
 2005-11-20  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+
 	* Version 1.0.0
 	* Extension of system class t3lib_parsehtml_proc : move any style attribute of an a-tag to a wrapping span-tag, so that the link may be transformed into a typolink, if no other attribute prevents its transformation. Thanks to Dimitrij Denissenko for this idea and its implementation.
 	* Correction: updating the properties of an image was broken in version 0.7.6.
@@ -218,6 +251,7 @@
 	* Method HTMLcleaner_db of class t3lib_parsehtml_proc is modified to honor Page TSConfig setting RTE.default.proc.HTMLparser_db.xhtml_cleaning = 1. See section Known problems.
 
 2005-11-10  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+
 	* Version 0.7.6:
 	* Two new extension configuration variables allow to specify the maximum resolution of plain images inserted with the TYPO3 image browser.
 	* Correction for TYPO3 3.8 on Windows server: the path to the locallang file of the spell checker was incorrectly set.
@@ -229,6 +263,7 @@
 	* Correction: possible incorrect character set conversion of default titleText (set in language file through anchor accessibility feature configuration) when backend is utf-8.
 
 2005-10-17  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+
 	* Version 0.7.4
 	* Correction for Mozilla/Firefox: when the editor was loaded in a hidden tab, the size of the editing area would be incorrect when the tab becomes visible.
 	* Update to Finnish and Italian translations.
@@ -239,6 +274,7 @@
 	* Correction to the character set used by the xml parser and Aspell when invoked by the spell checker with iso-8859-1 content.
 
 2005-10-05  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+
 	* Version 0.7.2
 	* Correction: incorrect display of the toolbar in some configurations.
 	* Correction: incorrect update of some table properties.
@@ -249,7 +285,7 @@
 	* Revised About window. Skins need to be upgraded. Custom skins need to be updated.
 	* New anchor accessibility feature.
 	* Correction: erratic behaviors in Mozilla/Firefox when automatically detecting links and when backspacing.
-	* Correction: PHP Fatal error when SpellChecker is enabled under PHP5. See http://bugs.typo3.org/view.php?id=1470 
+	* Correction: PHP Fatal error when SpellChecker is enabled under PHP5. See http://bugs.typo3.org/view.php?id=1470
 	* Update to the Dutch and German translations.
 	* Correction for IE (and maybe other cases, see http://bugs.typo3.org/view.php?id=1425): When an unforgiving browser refuses to parse the content coming from the database, a popup window will inform the user that the HTML document is not well-formed, and the editor will be started in textmode so that the user can edit the error in the HTML source.
 	* Correction: nested lists were not compliant with XHTML.
@@ -257,6 +293,7 @@
 	* Correction for IE: the paragraph style selector box was disabled.
 
 2005-08-29  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+
 	* Version 0.7.0
 	* Correction: the  editor failed to initialize correctly when Page TSConfig property hideTableOperationsInToolbar was set to 1.
 	* Addition of Toggle borders in the context memu.
@@ -266,6 +303,7 @@
 	* Update to Finnish and Norwegian translations.
 
 2005-08-16  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+
 	* Version 0.6.2
 	* Correction: the  image update popup dialog was broken in the previous version.
 	* Update to the recommended server configuration for png images.
@@ -274,6 +312,7 @@
 	* Adjustments to the default skin. Custom skins may need to be adjusted.
 
 2005-08-09  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+
 	* Version 0.6.1
 	* Added documentation section on server configuration.
 	* Correction: the compressed version of plugin scripts were not used.
@@ -282,6 +321,7 @@
 	* Update to Finnish and Norwegian translations.
 
 2005-08-05  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+
 	* Version 0.5.9
 	* Correction: the MS Word Formatting option of the RemoveFormat button was broken in version 0.5.5.
 	* Url of AllowClipboard Helper is added as an extension configuration variable.
@@ -299,6 +339,7 @@
 	* For IE: an error message will be displayed if execution of ActiveX controls is not enabled.
 
 2005-07-23  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+
 	* Version 0.5.5
 	* The size of the back end editor area may be configured in User TSConfig. See the configuration section. Thanks to Peter Enzenberger.
 	* In Mozilla/Firefox, url's and email's are automatically transformed into links as soon as they are followed by a space; hitting escape or ctrl-z before any other key unlinks the text. Thanks to Xinha.
@@ -311,6 +352,7 @@
 	* In Mozilla/Firefox, an exception will be raised only when performing a paste with the tool bar button. Pasting with ctrl-v key will not raise any exception. Thanks to Guillaume Crico.
 
 2005-07-06  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+
 	* Version 0.5.4
 	* Correction: one label of plugin RemoveFormat was not localized.
 	* Correction: custom skins prevented correct loading of the RTE.
@@ -321,6 +363,7 @@
 	* Correction for IE: incorrect behavior of the InlineCSS text style selector when Arabic text was selected.
 
 2005-06-14  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+
 	* Version 0.5.3
 	* Correction for IE: when the collapsed borders attribute was set on a table, the table properties popup dialog did not reflect the set attribute: the checkbox was not checked.
 	* Correction: when TYPO3 is not installed in the web server's root path, the dynamiccss.css file was not properly included. Thanks to Johannes Bornhold for this correction.
@@ -336,10 +379,12 @@
 	* Transform abbr tags into acronym tags when IE is used.
 
 2005-05-23  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+
 	* Version 0.5.1
 	* Correction to the behavior of the style selection lists.
 
 2005-05-21  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+
 	* Version 0.5.0
 	* Using TYPO3 classes to access language files.
 	* Correcting character set conversion for the front end editor in some configurations.
@@ -359,6 +404,7 @@
 	* New toggleborders button to show table borders. Imported from Xinha.
 
 2005-04-18  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+
 	* Version 0.4.70
 	* Correction to problem in method TS_transfrom_db.
 	* Correction for Mozilla/Firefox and TCA feature dividers2Tabs.
@@ -372,6 +418,7 @@
 	* Correcting the spell checker style sheet in IE for the front end editor.
 
 2005-04-01  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+
 	* Version 0.4.64
 	* Move minimal and full default Page TsConfig to external files.
 	* Generate Javascript localization files in typo3temp folder so that they can be cached by the browser.
@@ -381,6 +428,7 @@
 	* Produce xhtml-strict-compliant img tags when editing with Mozilla/Firefox. In editing mode, IE sets all names of style properties to upper case.
 
 2005-03-21  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+
 	* Version 0.4.60
 	* Further adjustments to width of editor components.
 	* Correction to incorrect behavior in IE when selecting an image or a table and when the textstyle toolbar element is shown.
@@ -395,11 +443,13 @@
 	* Allow setting image alternate text independently of the title attribute.
 
 2005-03-13  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+
 	* Version 0.4.55
 	* Adjust default skin, width, height.
 	* Clean up some code.
 
 2005-03-12  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+
 	* Version 0.4.54
 	* Eliminate superfluous line break before and after edited content.
 	* Eliminate extension conflict with clasical RTE extension.
@@ -417,6 +467,7 @@
 	* Correcting target and class setting on links.
 
 2005-02-26  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+
 	* Version 0.4.45
 	* Correcting path setting warning in insert link and insert image dialogs on some server configurations.
 	* Correction for Mozilla/Firefox: when "Save and preview" was clicked, the editor was grabbing the focus away from the preview popup window.
@@ -426,21 +477,25 @@
 	* Further internal structure changes and event handlers release.
 
 2005-02-23  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+
 	* Version 0.4.44
 	* Internal structure changes for improved memory management, garbage collection, event handlers removal, etc.
 
 2005-02-21  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+
 	* Version 0.4.43
 	* Enable the context menu when right-clicking on items of the status bar.
 	* Setting class attribute in Insert/Modify link and Insert/Modify image dialogs. Add RTE configuration properties: classesAnchor and classesImage.
 	* Setting special toolbarOrder defaults, for narrow and wide document background, in order to workaround  wrapping  bug in float style property in Mozilla 1.3.1 (for Mac OS 9).
 
 2005-02-19  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+
 	* Version 0.4.41
 	* RTE was not loading in Mozilla 1.3.1 (wamcom release ) for Mac OS 9 (last Mozilla release for this platform).
 	* Improved undo/redo operations.
 
 2005-02-17  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+
 	* Version 0.4.39
 	* Added q, cite, abbr and acronym as allowed tags when "Enable all editor options" is checked.
 	* Added q, cite and tt tags to the tags supported by the QuickTag plugin (inserttag button).
@@ -451,6 +506,7 @@
 	* Correction: The TYPO3 back end form containing a text field edited with htmlArea RTE was submitted regardless of errors that should have been raised on the other fields of the form.
 
 2005-02-15  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+
 	* Version 0.4.37
 	* Correction to the generated Mozilla/Firefox extension.
 	* Correction to table operations: the current vertical alignment property of tables, rows and cell was incorrectly displayed.
@@ -462,6 +518,7 @@
 	* Added tt as allowed tags when "Enable all editor options" is checked.
 
 2005-02-09  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+
 	* Version 0.4.35
 	* Browser recognition.
 	* HTTPS in Mozilla/Firefox.
@@ -469,6 +526,7 @@
 	* Vertical align display.
 
 2005-02-05  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+
 	* Version 0.4.33
 	* Generation of Mozilla/Firefox extension.
 	* Addition of Archive_Zip package (PEAR).
@@ -477,45 +535,55 @@
 	* Fixing CGI detection.
 
 2005-02-01  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+
 	* Version 0.4.32
 	* The editor was not loading in Mozilla/Firefox in some configurations.
 	* Replacement of inline styles.
 	* Resizing of fullscreen editor.
 
 2005-01-28  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+
 	* Insert column after last corrected in IE.
 	* Italian translation.
 
 2005-01-18  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+
 	* Last row, column, cell deletion in tables.
 	* CGI detection corrected.
 	* Character conversion corrected.
 
 2005-01-14  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+
 	* Toolbar configuration.
 	* Fullpage plugin deletion.
 
 2005-01-12  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+
 	* Add float property on images
 	* Correct CharacterMap initialization
 	* Do not grab focus on generate
 
 2005-01-11  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+
 	* Revision of table operations popups
 	* Language files from typo3.org
 
 2004-12-22  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+
 	* Strip value="0" attribute reported by IE on all li tags
 	* Cleanup code in RemoveFormat and QuickTag plugins
 
 2004-12-20  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+
 	* Revision of initial dimensions setting of all popup windows
 
 2004-12-18  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+
 	* Correction to textarea width
 	* Addition of InlineCSS plugin
 
 2004-12-13  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+
 	* Correction to link update
 	* Correction to interface between SelectColor and QuickTag plugins
 	* New showStatusBar property
@@ -523,18 +591,22 @@
 	* Documentation of version 0.4.10
 
 2004-12-12  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+
 	* New QuickTag plugin and hideTags config property
 	* Documentation of version 0.4.9
 
 2004-12-10  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+
 	* Correcting color formatting in gecko browsers
 	* New useCSS RTE property
 
 2004-12-08  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+
 	* Correcting the default language labels
 	* Making initialization DOM only.
 
 2004-12-04  Stanislas Rolland  <stanislas.rolland(arobas)fructifor.ca>
+
 	* Cleaning up
 	* German translation
 
