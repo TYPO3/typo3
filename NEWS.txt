@@ -3,6 +3,20 @@ CHANGES & IMPROVEMENTS between TYPO3 4.0 and 4.1
 (for technical details see ChangeLog)
 ************************************************************************
 
+Backend
+==================
+
+	* Inline Relational Record Editing (IRRE)
+	  -> It's now possible to create and edit child records of a record as subforms inside of the form view in the backend
+	  -> Therefore, the new TCA field type "inline" has been introduced
+	  -> See http://wiki.typo3.org/index.php/Inline_Relational_Record_Editing for details
+	* Bidirectional MM relations: It's now possible to configure MM relations from both sides of the relation.
+		-> E.g. an employment relation could now be edited from both the "person" as well as the "company" side. ("employers" of "persons" and "employees" of "companies")
+	* BE who-is-online
+		-> The Tools->Useradmin module now displays which BE users are currently online.
+	* UTF-8 for filenames
+		-> You need to set $TYPO3_CONF_VARS['SYS']['UTF8filesystem'] to TRUE to enable this feature.
+
 Compatibility
 =============
 
