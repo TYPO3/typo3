@@ -86,7 +86,8 @@ $TYPO3_CONF_VARS = Array(
 		'serverTimeZone' => 1,					// Integer, GMT offset of servers time (from time()). Default is "1" which is "GMT+1" (central european time). This value can be used in extensions that are GMT aware and wants to convert times to/from other timezones.
 		'systemLog' => '',					// String, semi-colon separated list: Defines one or more logging methods. Possible methods: file,<abs-path-to-file>[,<level>];mail,<to>[/<from>][,<level>];syslog,<facility>,[,<level>];error_log[,,<level>]. "file" logs to a file, "mail" sends the log entries via mail, "syslog" uses the operating system's log, "error_log" uses the PHP error log. The level is the individual logging level (see [SYS][systemLogLevel]. Facility may be one of LOCAL0..LOCAL7, USER (on Windows USER is the only valid type).
 		'systemLogLevel' => 0,					// Integer: Only messages with same or higher severity are logged; 0 is info, 1 is notice, 2 is warning, 3 is error, 4 is fatal error.
-		'maxFileNameLength' => 60,				// Integer, This is the maximum file name length. The value will be taken into account by basic file opertaions like renaming or creation of files and folders.
+		'maxFileNameLength' => 60,				// Integer, This is the maximum file name length. The value will be taken into account by basic file operations like renaming or creation of files and folders.
+		'UTF8filesystem' => 0,					// Boolean: If true and [BE][forceCharset] is set to utf-8, then TYPO3 uses utf-8 to store file names. This allows for accented Latin letters as well as any other non-latin characters like Cyrillic and Chinese.
 	),
 	'EXT' => Array (	// Options related to the Extension Management
 		'noEdit' => 1,							// Boolean: If set, the Extension Manager does NOT allow extension files to be edited! (Otherwise both local and global extensions can be edited.)
