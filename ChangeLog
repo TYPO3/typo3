@@ -1,3 +1,7 @@
+2006-11-26  Michael Stucki  <michael@typo3.org>
+
+	* Fixed bug #4556: PHP4 compatibility issues
+
 2006-11-21  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
 	* New Feature: List users online (aka who is online) for BE users in Tools > User Manager

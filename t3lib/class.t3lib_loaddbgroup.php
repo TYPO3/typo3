@@ -471,7 +471,7 @@ class t3lib_loadDBGroup	{
 					// fetch the current (not overwritten) relation record if we should handle symmetric relations
 				if ($conf['symmetric_field']) {
 					$row = t3lib_BEfunc::getRecord($table,$uid,$fields,'',false);
-					$isOnSymmetricSide = self::isOnSymmetricSide($parentUid, $conf, $row);
+					$isOnSymmetricSide = t3lib_loadDBGroup::isOnSymmetricSide($parentUid, $conf, $row);
 				}
 
 				$updateValues = array();
@@ -665,7 +665,7 @@ class t3lib_loadDBGroup	{
 	 * @param	array		$childRec: The record row of the child record
 	 * @return	boolean		Returns true if looking from the symmetric ("other") side to the relation.
 	 */
-	static function isOnSymmetricSide($parentUid, $parentConf, $childRec) {
+	function isOnSymmetricSide($parentUid, $parentConf, $childRec) {
 		return t3lib_div::testInt($childRec['uid']) && $parentConf['symmetric_field'] && $parentUid == $childRec[$parentConf['symmetric_field']]
 			? true
 			: false;
