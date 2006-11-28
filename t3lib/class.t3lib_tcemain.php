@@ -3138,6 +3138,7 @@ class t3lib_TCEmain	{
 
 	/**
 	 * Localizes a record to another system language
+	 * In reality it only works if transOrigPointerTable is not set. And it doesn't work for "pages" table either.
 	 *
 	 * @param	string		Table name
 	 * @param	integer		Record uid (to be localized)
@@ -3152,7 +3153,7 @@ class t3lib_TCEmain	{
 		if ($TCA[$table] && $uid)	{
 			t3lib_div::loadTCA($table);
 
-			if ($TCA[$table]['ctrl']['languageField'] && $TCA[$table]['ctrl']['transOrigPointerField'])	{
+			if ($TCA[$table]['ctrl']['languageField'] && $TCA[$table]['ctrl']['transOrigPointerField'] && !$TCA[$table]['ctrl']['transOrigPointerTable'])	{
 				if ($langRec = t3lib_BEfunc::getRecord('sys_language',intval($language),'uid,title'))	{
 					if ($this->doesRecordExist($table,$uid,'show'))	{
 

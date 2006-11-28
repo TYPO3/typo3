@@ -41,7 +41,7 @@
 // **************************************************************************
 
 	// This checks for my own IP at home. You can just remove the if-statement.
-if (1==0 || (substr($_SERVER['REMOTE_ADDR'],0,7)!='192.168' && $_SERVER['REMOTE_ADDR']!='127.0.0.1'))	{
+if (1==0 || (substr($_SERVER['REMOTE_ADDR'],0,7)!='192.168' && $_SERVER['REMOTE_ADDR']!='127.0.0.1' && $_SERVER['REMOTE_ADDR']!='::1'))	{
 	die("In the source distribution of TYPO3, the install script is disabled by a die() function call.<br/><b>Fix:</b> Open the file typo3/install/index.php and remove/out-comment the line that outputs this message!");
 }
 

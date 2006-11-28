@@ -2767,7 +2767,11 @@ class t3lib_div {
 			}
 			$result.= '</table>';
 		} else	{
-			$result  = false;
+			$result  = '<table border="1" cellpadding="1" cellspacing="0" bgcolor="white">
+				<tr>
+					<td><font face="Verdana,Arial" size="1" color="red">'.nl2br(htmlspecialchars((string)$array_in)).'<br /></font></td>
+				</tr>
+			</table>';	// Output it as a string.
 		}
 		return $result;
 	}
@@ -3847,7 +3851,7 @@ class t3lib_div {
 		if (strstr($funcName,':'))	{
 			list($file,$funcRef) = t3lib_div::revExplode(':',$funcName,2);
 			$requireFile = t3lib_div::getFileAbsFileName($file);
-			if ($requireFile) require_once($requireFile);
+			if ($requireFile) t3lib_div::requireOnce($requireFile);
 		} else {
 			$funcRef = $funcName;
 		}
@@ -3938,7 +3942,7 @@ class t3lib_div {
 			if (strstr($classRef,':'))	{
 				list($file,$class) = t3lib_div::revExplode(':',$classRef,2);
 				$requireFile = t3lib_div::getFileAbsFileName($file);
-				if ($requireFile)	require_once($requireFile);
+				if ($requireFile)	t3lib_div::requireOnce($requireFile);
 			} else {
 				$class = $classRef;
 			}
@@ -3986,6 +3990,15 @@ class t3lib_div {
 	 * @return	object		The object
 	 */
 	function &makeInstance($className)	{
+
+			// Load class file if not found:
+		if (!class_exists($className))	{
+			if (substr($className,0,6)=='t3lib_')	{
+				t3lib_div::requireOnce(PATH_t3lib.'class.'.$className.'.php');
+			}
+		}
+		
+			// Return object.
 		return class_exists('ux_'.$className) ? t3lib_div::makeInstance('ux_'.$className) : new $className;
 	}
 
@@ -4031,7 +4044,7 @@ class t3lib_div {
 			} else {
 				$requireFile = t3lib_div::getFileAbsFileName($info['classFile']);
 				if (@is_file($requireFile)) {
-					require_once ($requireFile);
+					t3lib_div::requireOnce ($requireFile);
 					$obj = t3lib_div::makeInstance($info['className']);
 					if (is_object($obj)) {
 						if(!@is_callable(array($obj,'init')))	{
@@ -4059,6 +4072,16 @@ class t3lib_div {
 		}
 		return $error;
 	}
+	
+	/**
+	 * Require a class for TYPO3
+	 * Useful to require classes from inside other classes (not global scope). A limited set of global variables are available (see function)
+	 */
+	function requireOnce($requireFile)	{
+		global $T3_SERVICES, $T3_VAR, $TYPO3_CONF_VARS;
+		
+		require_once ($requireFile);
+	}	
 
 	/**
 	 * Simple substitute for the PHP function mail() which allows you to specify encoding and character set

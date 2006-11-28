@@ -87,6 +87,7 @@ if (TYPO3_MODE=='BE')	{
 
 	// Adding default value columns:
 	$TCA['pages']['ctrl']['useColumnsForDefaultValues'].=',fe_group,hidden';
+	$TCA['pages']['ctrl']['transForeignTable'] = 'pages_language_overlay';
 
 	// Adding new columns:
 	$TCA['pages']['columns'] = array_merge($TCA['pages']['columns'],Array(

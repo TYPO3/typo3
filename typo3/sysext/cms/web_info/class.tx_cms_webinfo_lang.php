@@ -415,7 +415,7 @@ class tx_cms_webinfo_lang extends t3lib_extobjbase {
 
 $info.='[<b>'.$TCA[$table]['ctrl']['languageField'].'</b>]';
 $info.='[<b>'.$TCA[$table]['ctrl']['transOrigPointerField'].'</b>]';
-$info.='[<b>'.$TCA[$table]['ctrl']['transOrigDiffSourceField'].'</b>]';
+$info.='[<b>'.$TCA[$table]['ctrl']['transOrigDiffSourceField'].'</b>]<br/>';
 
 							// Now, for each record, look for localization:
 						$translationsUids = array(0);

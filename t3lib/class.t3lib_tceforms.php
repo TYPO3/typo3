@@ -203,6 +203,8 @@ class t3lib_TCEforms	{
 	var $defStyle = ''; // 'font-family:Verdana;font-size:10px;';
 	var $cachedTSconfig = array();
 	var $cachedTSconfig_fieldLevel = array();
+	var $cachedLanguageFlag = array();
+	var $cachedAdditionalPreviewLanguages = NULL;
 	var $transformedRow = array();
 	var $extJSCODE = '';
 	var $printNeededJS = array();
@@ -214,6 +216,7 @@ class t3lib_TCEforms	{
 	var $titleLen=15; 					// $BE_USER->uc['titleLen'] but what is default??
 	var $defaultLanguageData = array();	// Array where records in the default language is stored. (processed by transferdata)
 	var $defaultLanguageData_diff = array();	// Array where records in the default language is stored (raw without any processing. used for making diff)
+	var $additionalPreviewLanguageData = array();
 
 
 		// EXTERNAL, static
@@ -2142,7 +2145,7 @@ class t3lib_TCEforms	{
 
 			foreach ($rotateLang as $lKey)	{
 				if (!$langChildren && !$langDisabled)	{
-					$item.= '<b>'.$lKey.':</b>';
+					$item.= '<b>'.$this->getLanguageIcon($table,$row,'v'.$lKey).$lKey.':</b>';
 				}
 
 				$tabParts = array();
@@ -2421,14 +2424,21 @@ class t3lib_TCEforms	{
 								$rowCells['title']= htmlspecialchars($fakePA['fieldConf']['label']);
 
 								if (!in_array('DEF',$rotateLang))	{
-									$defInfo = '<div class="typo3-TCEforms-originalLanguageValue">'.nl2br(htmlspecialchars($editData[$key]['vDEF'])).'&nbsp;</div>';
+									$defInfo = '<div class="typo3-TCEforms-originalLanguageValue">'.$this->getLanguageIcon($table,$row,0).$this->previewFieldValue($editData[$key]['vDEF'], $fakePA['fieldConf']).'&nbsp;</div>';
 								} else {
 									$defInfo = '';
+								}
+								
+								if (!$PA['_noEditDEF'])	{
+									$prLang = $this->getAdditionalPreviewLanguages();
+									foreach($prLang as $prL)	{
+										$defInfo.= '<div class="typo3-TCEforms-originalLanguageValue">'.$this->getLanguageIcon($table,$row,'v'.$prL['ISOcode']).$this->previewFieldValue($editData[$key]['v'.$prL['ISOcode']], $fakePA['fieldConf']).'&nbsp;</div>';
+									}
 								}
 
 									// Put row together
 								$tRows[]='<tr>
-									<td nowrap="nowrap" valign="top" class="bgColor5">'.$rowCells['title'].($vDEFkey=='vDEF' ? '' : ' ('.$vDEFkey.')').'</td>
+									<td nowrap="nowrap" valign="top" class="bgColor5">'.($vDEFkey=='vDEF' ? '' : $this->getLanguageIcon($table,$row,$vDEFkey)).$rowCells['title'].'</td>
 									<td class="bgColor4">'.$rowCells['formEl'].$defInfo.'</td>
 								</tr>';
 							}
@@ -2836,6 +2846,16 @@ class t3lib_TCEforms	{
 			if ($TCA[$table]['ctrl']['transOrigDiffSourceField'])	{
 				$this->defaultLanguageData_diff[$table.':'.$rec['uid']] = unserialize($rec[$TCA[$table]['ctrl']['transOrigDiffSourceField']]);
 			}
+
+				// If there are additional preview languages, load information for them also:
+			$prLang = $this->getAdditionalPreviewLanguages();
+			foreach($prLang as $prL)	{
+				$t8Tools = t3lib_div::makeInstance('t3lib_transl8tools');
+				$tInfo = $t8Tools->translationInfo($lookUpTable,intval($rec[$TCA[$table]['ctrl']['transOrigPointerField']]),$prL['uid']);
+				if (is_array($tInfo['translations'][$prL['uid']]))	{
+					$this->additionalPreviewLanguageData[$table.':'.$rec['uid']][$prL['uid']] = t3lib_BEfunc::getRecordWSOL($lookUpTable, intval($tInfo['translations'][$prL['uid']]['uid']));
+				}
+			}
 		}
 	}
 
@@ -2881,10 +2901,18 @@ class t3lib_TCEforms	{
 	function renderDefaultLanguageContent($table,$field,$row,$item)	{
 		if (is_array($this->defaultLanguageData[$table.':'.$row['uid']]))	{
 			$dLVal = t3lib_BEfunc::getProcessedValue($table,$field,$this->defaultLanguageData[$table.':'.$row['uid']][$field],0,1);
+			$fCfg = $GLOBALS['TCA'][$table]['columns'][$field];
 
 			if (strcmp($dLVal,''))	{
-				$item.='<div class="typo3-TCEforms-originalLanguageValue">'.nl2br(htmlspecialchars($dLVal)).'&nbsp;</div>';
+				$item.='<div class="typo3-TCEforms-originalLanguageValue">'.$this->getLanguageIcon($table,$row,0).$this->previewFieldValue($dLVal,$fCfg).'&nbsp;</div>';
 			}
+			
+			$prLang = $this->getAdditionalPreviewLanguages();
+			foreach($prLang as $prL)	{
+				$dlVal = t3lib_BEfunc::getProcessedValue($table,$field,$this->additionalPreviewLanguageData[$table.':'.$row['uid']][$prL['uid']][$field],0,1);
+				$item.= '<div class="typo3-TCEforms-originalLanguageValue">'.$this->getLanguageIcon($table,$row,'v'.$prL['ISOcode']).$this->previewFieldValue($dlVal, $fCfg).'&nbsp;</div>';
+			}
+			
 		}
 
 		return $item;
@@ -5403,6 +5431,116 @@ class t3lib_TCEforms	{
 			if ($onlyIsoCoded && !$output[$row['uid']]['ISOcode'])	unset($output[$row['uid']]);
 		}
 		return $output;
+	}
+	
+	/**
+	 * Initializes language icons etc.
+	 *
+	 * param	string	Table name
+	 * param	array	Record
+	 * param	string	Sys language uid OR ISO language code prefixed with "v", eg. "vDA" 
+	 * @return	void
+	 */
+	function getLanguageIcon($table,$row,$sys_language_uid)	{
+		global $TCA,$LANG;
+
+		$mainKey = $table.':'.$row['uid'];
+
+		if (!isset($this->cachedLanguageFlag[$mainKey]))	{
+			t3lib_BEfunc::fixVersioningPid($table,$row);
+			list($tscPID,$thePidValue) = $this->getTSCpid($table,$row['uid'],$row['pid']);
+
+			$t8Tools = t3lib_div::makeInstance('t3lib_transl8tools');
+			$this->cachedLanguageFlag[$mainKey] = $t8Tools->getSystemLanguages($tscPID, $this->backPath);
+		}
+
+			// Convert sys_language_uid to sys_language_uid if input was in fact a string (ISO code expected then)
+		if (!t3lib_div::testInt($sys_language_uid))	{
+			foreach($this->cachedLanguageFlag[$mainKey] as $rUid => $cD)	{
+				if ('v'.$cD['ISOcode']===$sys_language_uid)	{
+					$sys_language_uid = $rUid;
+				}
+			}
+		}
+
+		return ($this->cachedLanguageFlag[$mainKey][$sys_language_uid]['flagIcon'] ? '<img src="'.$this->cachedLanguageFlag[$mainKey][$sys_language_uid]['flagIcon'].'" class="absmiddle" alt="" />' : ($this->cachedLanguageFlag[$mainKey][$sys_language_uid]['title'] ? '['.$this->cachedLanguageFlag[$mainKey][$sys_language_uid]['title'].']' : '[LangCode: '.$sys_language_uid.' ?]')).'&nbsp;';
+	}
+
+	/**
+	 * Rendering preview output of a field value which is not shown as a form field but just outputted.
+	 *
+	 * @param	string		The value to output
+	 * @param	array		Configuration for field.
+	 * @return 	string		HTML formatted output
+	 */
+	function previewFieldValue($value, $config)	{
+		if ($config['config']['type']==='group' && $config['config']['internal_type'] === 'file')	{
+			$show_thumbs = TRUE;
+			$table = 'tt_content';
+
+				// Making the array of file items:
+			$itemArray = t3lib_div::trimExplode(',',$value,1);
+
+				// Showing thumbnails:
+			$thumbsnail = '';
+			if ($show_thumbs)	{
+				$imgs = array();
+				foreach($itemArray as $imgRead)	{
+					$imgP = explode('|',$imgRead);
+					$imgPath = rawurldecode($imgP[0]);
+
+					$rowCopy = array();
+					$rowCopy[$field] = $imgPath;
+
+						// Icon + clickmenu:
+					$absFilePath = t3lib_div::getFileAbsFileName($config['config']['uploadfolder'].'/'.$imgPath);
+
+					$fI = pathinfo($imgPath);
+					$fileIcon = t3lib_BEfunc::getFileIcon(strtolower($fI['extension']));
+					$fileIcon = '<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/fileicons/'.$fileIcon,'width="18" height="16"').' class="absmiddle" title="'.htmlspecialchars($fI['basename'].($absFilePath && @is_file($absFilePath) ? ' ('.t3lib_div::formatSize(filesize($absFilePath)).'bytes)' : ' - FILE NOT FOUND!')).'" alt="" />';
+
+					$imgs[] = '<span class="nobr">'.t3lib_BEfunc::thumbCode($rowCopy,$table,$field,$this->backPath,'thumbs.php',$config['config']['uploadfolder'],0,' align="middle"').
+								($absFilePath ? $this->getClickMenu($fileIcon, $absFilePath) : $fileIcon).
+								$imgPath.
+								'</span>';
+				}
+				$thumbsnail = implode('<br />',$imgs);
+			}
+
+			return $thumbsnail;
+		} else {
+			return nl2br(htmlspecialchars($value));
+		}
+	}
+
+	/**
+	 * Generates and return information about which languages the current user should see in preview, configured by options.additionalPreviewLanguages
+	 *
+	 * return array	Array of additional languages to preview
+	 */
+	function getAdditionalPreviewLanguages()	{
+		if (!isset($this->cachedAdditionalPreviewLanguages)) 	{
+			if ($GLOBALS['BE_USER']->getTSConfigVal('options.additionalPreviewLanguages'))	{
+				$uids = t3lib_div::intExplode(',',$GLOBALS['BE_USER']->getTSConfigVal('options.additionalPreviewLanguages'));
+				foreach($uids as $uid)	{
+					if ($sys_language_rec = t3lib_BEfunc::getRecord('sys_language',$uid))	{
+						$this->cachedAdditionalPreviewLanguages[$uid] = array('uid' => $uid);
+
+						if ($sys_language_rec['static_lang_isocode'] && t3lib_extMgm::isLoaded('static_info_tables'))	{
+							$staticLangRow = t3lib_BEfunc::getRecord('static_languages',$sys_language_rec['static_lang_isocode'],'lg_iso_2');
+							if ($staticLangRow['lg_iso_2']) {
+								$this->cachedAdditionalPreviewLanguages[$uid]['uid'] = $uid;
+								$this->cachedAdditionalPreviewLanguages[$uid]['ISOcode'] = $staticLangRow['lg_iso_2'];
+							}
+						}
+					}
+				}
+			} else {
+					// None:
+				$this->cachedAdditionalPreviewLanguages = array();
+			}
+		}
+		return $this->cachedAdditionalPreviewLanguages;
 	}
 }
 
