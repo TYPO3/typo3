@@ -1,3 +1,10 @@
+2006-11-28	Kasper Skårhøj	<kasper2006@typo3.com>
+
+	* Added "option.additionalPreviewLanguages" which enables to add other languages than the "default" to the list of those that a translator will see along with his own language
+	* Added new class, "class.t3lib_transl8tools.php" with general stuff for working with languages and translation. More to come...
+	* Added the t3lib_div::view_array() will also display a string input
+	* Added, that "t3lib_div::makeInstance()" will call "require_once()" for "t3lib_*" if the class name is not found; this is essentially an "auto-loader" feature that can come it pretty handing since something like 90% of all instantiations in the core is of t3lib_-classes; now we don't need to add "require_once()" statements in the top. And oh, btw. there is a function, "t3lib_div::requireOnce()" for "require_once()" which I suggest you use so that inclusions have some globals set (like TYPO3_CONF_VARS) and also cannot change local scope variables.
+
 2006-11-26  Michael Stucki  <michael@typo3.org>
 
 	* Fixed bug #4556: PHP4 compatibility issues
