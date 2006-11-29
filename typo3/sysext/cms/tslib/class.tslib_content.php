@@ -5316,7 +5316,7 @@ class tslib_cObj {
 			}
 
 			if ($forceTitle)	{$title=$forceTitle;}
-
+debug($finalTagParts);
 			if ($JSwindowParams)	{
 
 					// Create TARGET-attribute only if the right doctype is used
