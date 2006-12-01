@@ -1,3 +1,13 @@
+2006-12-01	Kasper Skårhøj	<kasper2006@typo3.com>
+
+	* Additionsl to FlexFormTools
+	* Improved localization in tcemain
+	* Changed pages_languages_overlay to NOT be hidden by default
+	* Introduced REDIRECT: prefix to pagenot found handling (for backwards compatibility since someone changed to read the file instead of redirecting).
+	* Added "linkHandler" hook for typolink. TSref is updated.
+	* Modified Web >Info > Localization tools to not show details. 
+	* Removed redundant directory, clmods.
+
 2006-11-28	Kasper Skårhøj	<kasper2006@typo3.com>
 
 	* Added "option.additionalPreviewLanguages" which enables to add other languages than the "default" to the list of those that a translator will see along with his own language

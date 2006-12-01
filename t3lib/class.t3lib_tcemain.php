@@ -924,6 +924,8 @@ class t3lib_TCEmain	{
 			}
 		} else {
 			$currentRecord = $checkValueRecord = $this->recordInfo($table,$id,'*');	// We must use the current values as basis for this!
+			
+			t3lib_BEfunc::fixVersioningPid($table,$currentRecord);	// This is done to make the pid positive for offline versions; Necessary to have diff-view for pages_language_overlay in workspaces.
 
 				// Get original language record if available:
 			if (is_array($currentRecord)
@@ -3138,7 +3140,7 @@ class t3lib_TCEmain	{
 
 	/**
 	 * Localizes a record to another system language
-	 * In reality it only works if transOrigPointerTable is not set. And it doesn't work for "pages" table either.
+	 * In reality it only works if transOrigPointerTable is not set. For "pages" the implementation is hardcoded
 	 *
 	 * @param	string		Table name
 	 * @param	integer		Record uid (to be localized)
@@ -3153,26 +3155,35 @@ class t3lib_TCEmain	{
 		if ($TCA[$table] && $uid)	{
 			t3lib_div::loadTCA($table);
 
-			if ($TCA[$table]['ctrl']['languageField'] && $TCA[$table]['ctrl']['transOrigPointerField'] && !$TCA[$table]['ctrl']['transOrigPointerTable'])	{
+			if (($TCA[$table]['ctrl']['languageField'] && $TCA[$table]['ctrl']['transOrigPointerField'] && !$TCA[$table]['ctrl']['transOrigPointerTable']) || $table==='pages')	{
 				if ($langRec = t3lib_BEfunc::getRecord('sys_language',intval($language),'uid,title'))	{
 					if ($this->doesRecordExist($table,$uid,'show'))	{
 
 						$row = t3lib_BEfunc::getRecordWSOL($table,$uid);	// Getting workspace overlay if possible - this will localize versions in workspace if any
 						if (is_array($row))	{
-							if ($row[$TCA[$table]['ctrl']['languageField']] <= 0)	{
-								if ($row[$TCA[$table]['ctrl']['transOrigPointerField']] == 0)	{
-									if (!t3lib_BEfunc::getRecordsByField($table,$TCA[$table]['ctrl']['transOrigPointerField'],$uid,'AND pid='.intval($row['pid']).' AND '.$TCA[$table]['ctrl']['languageField'].'='.intval($langRec['uid'])))	{
+							if ($row[$TCA[$table]['ctrl']['languageField']] <= 0 || $table==='pages')	{
+								if ($row[$TCA[$table]['ctrl']['transOrigPointerField']] == 0 || $table==='pages')	{
+									if ($table==='pages')	{
+										$pass = $TCA[$table]['ctrl']['transForeignTable']==='pages_language_overlay' && !t3lib_BEfunc::getRecordsByField('pages_language_overlay','pid',$uid,' AND '.$TCA['pages_language_overlay']['ctrl']['languageField'].'='.intval($langRec['uid']));
+										$Ttable = 'pages_language_overlay';
+										t3lib_div::loadTCA($Ttable);
+									} else {
+										$pass = !t3lib_BEfunc::getRecordsByField($table,$TCA[$table]['ctrl']['transOrigPointerField'],$uid,'AND pid='.intval($row['pid']).' AND '.$TCA[$table]['ctrl']['languageField'].'='.intval($langRec['uid']));
+										$Ttable = $table;
+									}
+									
+									if ($pass)	{
 
 											// Initialize:
 										$overrideValues = array();
 										$excludeFields = array();
 
 											// Set override values:
-										$overrideValues[$TCA[$table]['ctrl']['languageField']] = $langRec['uid'];
-										$overrideValues[$TCA[$table]['ctrl']['transOrigPointerField']] = $uid;
+										$overrideValues[$TCA[$Ttable]['ctrl']['languageField']] = $langRec['uid'];
+										$overrideValues[$TCA[$Ttable]['ctrl']['transOrigPointerField']] = $uid;
 
 											// Set exclude Fields:
-										foreach($TCA[$table]['columns'] as $fN => $fCfg)	{
+										foreach($TCA[$Ttable]['columns'] as $fN => $fCfg)	{
 											if ($fCfg['l10n_mode']=='prefixLangTitle')	{	// Check if we are just prefixing:
 												if (($fCfg['config']['type']=='text' || $fCfg['config']['type']=='input') && strlen($row[$fN]))	{
 													list($tscPID) = t3lib_BEfunc::getTSCpid($table,$uid,'');
@@ -3187,12 +3198,33 @@ class t3lib_TCEmain	{
 
 													$overrideValues[$fN] = '['.$translateToMsg.'] '.$row[$fN];
 												}
-											} elseif (t3lib_div::inList('exclude,noCopy,mergeIfNotBlank',$fCfg['l10n_mode']) && $fN!=$TCA[$table]['ctrl']['languageField'] && $fN!=$TCA[$table]['ctrl']['transOrigPointerField']) {	 // Otherwise, do not copy field (unless it is the language field or pointer to the original language)
+											} elseif (t3lib_div::inList('exclude,noCopy,mergeIfNotBlank',$fCfg['l10n_mode']) && $fN!=$TCA[$Ttable]['ctrl']['languageField'] && $fN!=$TCA[$Ttable]['ctrl']['transOrigPointerField']) {	 // Otherwise, do not copy field (unless it is the language field or pointer to the original language)
 												$excludeFields[] = $fN;
 											}
 										}
-											// Execute the copy:
-										$this->copyRecord($table,$uid,-$uid,1,$overrideValues,implode(',',$excludeFields));
+										
+										if ($Ttable === $table)	{
+										
+												// Execute the copy:
+											$this->copyRecord($table,$uid,-$uid,1,$overrideValues,implode(',',$excludeFields));
+										} else {
+											
+												// Create new record:
+											$copyTCE = t3lib_div::makeInstance('t3lib_TCEmain');
+											$copyTCE->stripslashes_values = 0;
+											$copyTCE->cachedTSconfig = $this->cachedTSconfig;	// Copy forth the cached TSconfig
+											$copyTCE->dontProcessTransformations=1;		// Transformations should NOT be carried out during copy
+
+											$copyTCE->start(array($Ttable=>array('NEW'=>$overrideValues)),'',$this->BE_USER);
+											$copyTCE->process_datamap();
+
+												// Getting the new UID as if it had been copied:
+											$theNewSQLID = $copyTCE->substNEWwithIDs['NEW'];
+											if ($theNewSQLID)	{
+													// If is by design that $Ttable is used and not $table! See "l10nmgr" extension. Could be debated, but this is what I chose for this "pseudo case"
+												$this->copyMappingArray[$Ttable][$uid] = $theNewSQLID;
+											}
+										}
 									} else $this->newlog('Localization failed; There already was a localization for this language of the record!',1);
 								} else $this->newlog('Localization failed; Source record contained a reference to an original default record (which is strange)!',1);
 							} else $this->newlog('Localization failed; Source record had another language than "Default" or "All" defined!',1);

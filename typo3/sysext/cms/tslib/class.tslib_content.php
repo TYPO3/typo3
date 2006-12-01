@@ -5087,6 +5087,14 @@ class tslib_cObj {
 		$this->lastTypoLinkTarget = '';
 		if ($link_param)	{
 			$link_paramA = t3lib_div::unQuoteFilenames($link_param,true);
+			
+				// Check for link-handler keyword:
+			list($linkHandlerKeyword,$linkHandlerValue) = explode(':',trim($link_paramA[0]),2);
+			if ($TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_content.php']['typolinkLinkHandler'][$linkHandlerKeyword] && strcmp($linkHandlerValue,"")) {
+				$linkHandlerObj = &t3lib_div::getUserObj($TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_content.php']['typolinkLinkHandler'][$linkHandlerKeyword]);
+				return $linkHandlerObj->main($linktxt, $conf, $linkHandlerKeyword, $linkHandlerValue, $link_param, $this);
+			}
+			
 			$link_param = trim($link_paramA[0]);	// Link parameter value
 			$linkClass = trim($link_paramA[2]);		// Link class
 			if ($linkClass=='-')	$linkClass = '';	// The '-' character means 'no class'. Necessary in order to specify a title as fourth parameter without setting the target or class!
@@ -5316,7 +5324,7 @@ class tslib_cObj {
 			}
 
 			if ($forceTitle)	{$title=$forceTitle;}
-debug($finalTagParts);
+
 			if ($JSwindowParams)	{
 
 					// Create TARGET-attribute only if the right doctype is used
@@ -7533,9 +7541,6 @@ class tslib_controlTable	{
 		}
 	}
 }
-
-
-
 
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['tslib/class.tslib_content.php'])	{

@@ -1304,6 +1304,9 @@
 			} else {
 				$this->printError('Configuration Error: 404 page "'.$readFile.'" could not be found.');
 			}
+		} elseif (t3lib_div::isFirstPartOfStr($code,'REDIRECT:')) {
+			header('Location: '.t3lib_div::locationHeaderUrl(substr($code,9)));
+			exit;
 		} elseif (strlen($code))	{
 				// Check if URL is relative
 			$url_parts = parse_url($code);

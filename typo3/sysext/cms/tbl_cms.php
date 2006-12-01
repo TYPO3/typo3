@@ -445,7 +445,7 @@ $TCA['pages_language_overlay'] = Array (
 			'label' => 'LLL:EXT:lang/locallang_general.php:LGL.hidden',
 			'config' => Array (
 				'type' => 'check',
-				'default' => '1'
+				'default' => '0'
 			)
 		),
 		'starttime' => Array (
@@ -476,6 +476,7 @@ $TCA['pages_language_overlay'] = Array (
 			)
 		),
 		'title' => Array (
+			'l10n_mode' => 'prefixLangTitle',
 			'label' => $TCA['pages']['columns']['title']['label'],
 			'l10n_cat' => 'text',
 			'config' => Array (

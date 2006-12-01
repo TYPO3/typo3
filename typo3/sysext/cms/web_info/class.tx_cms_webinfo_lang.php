@@ -75,11 +75,11 @@ class tx_cms_webinfo_lang extends t3lib_extobjbase {
 
 		$menuArray = array (
 			'depth' => array(
+				0 => $LANG->getLL('depth_0'),
 				1 => $LANG->getLL('depth_1'),
 				2 => $LANG->getLL('depth_2'),
 				3 => $LANG->getLL('depth_3')
 			),
-			'details' => ''
 		);
 
 			// Languages:
@@ -108,7 +108,6 @@ class tx_cms_webinfo_lang extends t3lib_extobjbase {
 				// Depth selector:
 			$h_func = t3lib_BEfunc::getFuncMenu($this->pObj->id,'SET[depth]',$this->pObj->MOD_SETTINGS['depth'],$this->pObj->MOD_MENU['depth'],'index.php');
 			$h_func.= t3lib_BEfunc::getFuncMenu($this->pObj->id,'SET[lang]',$this->pObj->MOD_SETTINGS['lang'],$this->pObj->MOD_MENU['lang'],'index.php');
-			$h_func.= t3lib_BEfunc::getFuncCheck($this->pObj->id,'SET[details]',$this->pObj->MOD_SETTINGS['details'],'index.php').' Details';
 			$theOutput.= $h_func;
 
 				// Add CSH:
@@ -133,7 +132,7 @@ class tx_cms_webinfo_lang extends t3lib_extobjbase {
 			);
 
 				// Create the tree from starting point:
-			$tree->getTree($treeStartingPoint, $depth, '');
+			if ($depth)	$tree->getTree($treeStartingPoint, $depth, '');
 			#debug($tree->tree);
 
 				// Add CSS needed:
@@ -242,7 +241,6 @@ class tx_cms_webinfo_lang extends t3lib_extobjbase {
 									($row['_COUNT']>1 ? '<div>'.$LANG->getLL('lang_renderl10n_badThingThereAre','1').'</div>':'');
 						$tCells[] = '<td class="'.$status.' c-leftLine">'.
 										$info.
-										($this->pObj->MOD_SETTINGS['details'] ? $this->getLocalizedElementInfo($data['row']['uid'],$langRow['uid']) : '').
 										'</td>';
 
 							// Edit whole record:
@@ -381,84 +379,6 @@ class tx_cms_webinfo_lang extends t3lib_extobjbase {
 		}
 
 		return $row;
-	}
-
-	/**
-	 * Counting content elements for a single language on a page.
-	 *
-	 * @param	integer		Page id to select for.
-	 * @param	integer		Sys language uid
-	 * @return	integer		Number of content elements from the PID where the language is set to a certain value.
-	 */
-	function getLocalizedElementInfo($pageId,$sysLang)	{
-		global $TCA;
-
-		$info = '<hr/>';
-		foreach($TCA as $table => $cfg)	{
-			if ($table!='pages' && $TCA[$table]['ctrl']['languageField'] && $TCA[$table]['ctrl']['transOrigPointerField'])	{
-#			$info.='<h3>'.$table.'</h3>';
-				if ($TCA[$table]['ctrl']['transOrigPointerTable'])	{
-					#$info.='Table "'.$table.'" is skipped because it had a transOrigPointerTable set which is not supported - yet.';
-				} else {
-
-						// First, select all records that are default language OR international:
-					$allRows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
-						'*',
-						$table,
-						'pid='.intval($pageId).
-							' AND '.$TCA[$table]['ctrl']['languageField'].'<=0'.
-							t3lib_BEfunc::deleteClause($table).
-							t3lib_BEfunc::versioningPlaceholderClause($table)
-					);
-					if (count($allRows))	{
-			$info.='<h3>'.$table.'</h3>';
-
-$info.='[<b>'.$TCA[$table]['ctrl']['languageField'].'</b>]';
-$info.='[<b>'.$TCA[$table]['ctrl']['transOrigPointerField'].'</b>]';
-$info.='[<b>'.$TCA[$table]['ctrl']['transOrigDiffSourceField'].'</b>]<br/>';
-
-							// Now, for each record, look for localization:
-						$translationsUids = array(0);
-						foreach($allRows as $row)	{
-							$info.='UID:'.$row['uid'].'/lang:'.$row[$TCA[$table]['ctrl']['languageField']].' has translations:';
-							$translations = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
-								'*',
-								$table,
-								'pid='.intval($pageId).
-									' AND '.$TCA[$table]['ctrl']['languageField'].'='.intval($sysLang).
-									' AND '.$TCA[$table]['ctrl']['transOrigPointerField'].'='.intval($row['uid']).
-									t3lib_BEfunc::deleteClause($table).
-									t3lib_BEfunc::versioningPlaceholderClause($table)
-							);
-
-							foreach($translations as $c => $tr)	{
-								$info.=($c>0 ? 'UPS!!':'').'['.$tr['uid'].'],';
-								$translationsUids[] = $tr['uid'];
-							}
-
-
-
-							$info.='<br/>';
-						}
-
-							// Look for "lost" translations
-						$lostTranslations = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
-							'uid',
-							$table,
-							'pid='.intval($pageId).
-								' AND '.$TCA[$table]['ctrl']['languageField'].'='.intval($sysLang).
-								' AND uid NOT IN ('.implode(',',$translationsUids).')'.
-								t3lib_BEfunc::deleteClause($table).
-								t3lib_BEfunc::versioningPlaceholderClause($table)
-						);
-						if (count($lostTranslations))	{
-							$info.=t3lib_div::view_array($lostTranslations);
-						}
-					}
-				}
-			}
-		}
-		return $info;
 	}
 
 	/**

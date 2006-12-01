@@ -72,6 +72,9 @@ class t3lib_flexformtools {
 
 	var $convertCharset = FALSE;		// If set, the charset of data XML is converted to system charset.
 	var $reNumberIndexesOfSectionData = FALSE;	// If set, section indexes are re-numbered before processing
+	
+	var $traverseFlexFormXMLData_DS = array();	// Contains data structure when traversing flexform
+	var $traverseFlexFormXMLData_Data = array();	// Contains data array when traversing flexform
 
 		// Options for array2xml() for flexform. This will map the weird keys from the internal array to tags that could potentially be checked with a DTD/schema
 	var $flexArray2Xml_options = array(
@@ -181,6 +184,9 @@ class t3lib_flexformtools {
 						$PA['table'] = $table;
 						$PA['field'] = $field;
 						$PA['uid'] = $row['uid'];
+
+						$this->traverseFlexFormXMLData_DS = &$dataStruct;
+						$this->traverseFlexFormXMLData_Data = &$editData;
 
 							// Render flexform:
 						$this->traverseFlexFormXMLData_recurse(

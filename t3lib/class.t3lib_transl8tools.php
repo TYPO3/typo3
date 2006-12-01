@@ -54,7 +54,9 @@
  */
 class t3lib_transl8tools	{
 	
-	
+	/**
+	 *
+	 */
 	function getSystemLanguages($page_id=0,$backPath='')	{
 		global $TCA,$LANG;
 
@@ -156,7 +158,7 @@ class t3lib_transl8tools	{
 			} else return 'Record "'.$table.'_'.$uid.'" was not found';
 		} else return 'No table "'.$table.'" or no UID value';
 	}
-	
+		
 	/**
 	 *  Returns the table in which translations for input table is found.
 	 */
