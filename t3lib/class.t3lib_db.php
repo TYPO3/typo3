@@ -1106,8 +1106,8 @@ class t3lib_DB {
 	/**
 	 * Checks if recordset is valid and writes debugging inormation into devLog if not.
 	 * 
-	 * @param resource $res Recordset
-	 * @return boolean <code>false</code> if recordset is not valid
+	 * @param	resource	$res	Recordset
+	 * @return	boolean	<code>false</code> if recordset is not valid
 	 */
 	function debug_check_recordset($res) {
 		if (!$res) {
