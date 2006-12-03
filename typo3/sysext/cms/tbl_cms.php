@@ -305,7 +305,7 @@ $TCA['fe_groups'] = Array (
 			'config' => Array (
 				'type' => 'input',
 				'size' => '20',
-				'max' => '20',
+				'max' => '50',
 				'eval' => 'trim,required'
 			)
 		),

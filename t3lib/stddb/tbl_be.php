@@ -53,7 +53,7 @@ $TCA['be_users'] = Array (
 			'config' => Array (
 				'type' => 'input',
 				'size' => '20',
-				'max' => '20',
+				'max' => '50',
 				'eval' => 'nospace,lower,unique,required'
 			)
 		),
@@ -402,7 +402,7 @@ $TCA['be_groups'] = Array (
 			'config' => Array (
 				'type' => 'input',
 				'size' => '25',
-				'max' => '20',
+				'max' => '50',
 				'eval' => 'trim,required'
 			)
 		),

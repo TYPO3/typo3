@@ -81,7 +81,7 @@ CREATE TABLE fe_groups (
   uid int(11) unsigned NOT NULL auto_increment,
   pid int(11) unsigned DEFAULT '0' NOT NULL,
   tstamp int(11) unsigned DEFAULT '0' NOT NULL,
-  title varchar(20) DEFAULT '' NOT NULL,
+  title varchar(50) DEFAULT '' NOT NULL,
   hidden tinyint(3) unsigned DEFAULT '0' NOT NULL,
   lockToDomain varchar(50) DEFAULT '' NOT NULL,
   deleted tinyint(3) unsigned DEFAULT '0' NOT NULL,

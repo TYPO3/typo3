@@ -1,6 +1,7 @@
 2006-12-03  Ingmar Schlecht  <ingmar@typo3.org>
 
 	* Use <label> tags in tceforms where appropriate to enhance usability (Thanks to Ingo Renner for writing the patch!)
+	* Increase length for titles of be_users, be_groups, and fe_groups (Thanks to Ingo Renner for writing the patch!)
 
 2006-12-02  Dmitry Dulepov  <dmitry@typo3.org>
 
