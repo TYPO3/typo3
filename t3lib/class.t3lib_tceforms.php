@@ -779,6 +779,7 @@ class t3lib_TCEforms	{
 				$PA['itemFormElName']=$this->prependFormFieldNames.'['.$table.']['.$row['uid'].']['.$field.']';		// Form field name
 				$PA['itemFormElName_file']=$this->prependFormFieldNames_file.'['.$table.']['.$row['uid'].']['.$field.']';	// Form field name, in case of file uploads
 				$PA['itemFormElValue']=$row[$field];		// The value to show in the form field.
+				$PA['itemFormElID']=$this->prependFormFieldNames.'_'.$table.'_'.$row['uid'].'_'.$field;
 
 					// set field to read-only if configured for translated records to show default language content as readonly
 				if ($PA['fieldConf']['l10n_display'] AND t3lib_div::inList($PA['fieldConf']['l10n_display'], 'defaultAsReadonly') AND $row[$TCA[$table]['ctrl']['languageField']]) {
@@ -1203,9 +1204,10 @@ class t3lib_TCEforms	{
 				if(!($c%$cols))	{ $item.='<tr>'; }
 				$cBP = $this->checkBoxParams($PA['itemFormElName'],$thisValue,$c,count($selItems),implode('',$PA['fieldChangeFunc']));
 				$cBName = $PA['itemFormElName'].'_'.$c;
+				$cBID = $PA['itemFormElID'].'_'.$c;
 				$item.= '<td nowrap="nowrap">'.
-						'<input type="checkbox"'.$this->insertDefStyle('check').' value="1" name="'.$cBName.'"'.$cBP.$disabled.' />'.
-						$this->wrapLabels(htmlspecialchars($p[0]).'&nbsp;').
+						'<input type="checkbox"'.$this->insertDefStyle('check').' value="1" name="'.$cBName.'"'.$cBP.$disabled.' id="'.$cBID.'" />'.
+						$this->wrapLabels('<label for="'.$cBID.'">'.htmlspecialchars($p[0]).'</label>&nbsp;').
 						'</td>';
 				if(($c%$cols)+1==$cols)	{$item.='</tr>';}
 			}
@@ -1222,8 +1224,9 @@ class t3lib_TCEforms	{
 				$p = $selItems[$c];
 				$cBP = $this->checkBoxParams($PA['itemFormElName'],$thisValue,$c,count($selItems),implode('',$PA['fieldChangeFunc']));
 				$cBName = $PA['itemFormElName'].'_'.$c;
+				$cBID = $PA['itemFormElID'].'_'.$c;
 				$item.= ($c>0?'<br />':'').
-						'<input type="checkbox"'.$this->insertDefStyle('check').' value="1" name="'.$cBName.'"'.$cBP.$PA['onFocus'].$disabled.' />'.
+						'<input type="checkbox"'.$this->insertDefStyle('check').' value="1" name="'.$cBName.'"'.$cBP.$PA['onFocus'].$disabled.' id="'.$cBID.'" />'.
 						htmlspecialchars($p[0]);
 			}
 		}
@@ -1259,11 +1262,12 @@ class t3lib_TCEforms	{
 			// Traverse the items, making the form elements:
 		for ($c=0;$c<count($selItems);$c++) {
 			$p = $selItems[$c];
+			$rID = $PA['itemFormElID'].'_'.$c;
 			$rOnClick = implode('',$PA['fieldChangeFunc']);
 			$rChecked = (!strcmp($p[1],$PA['itemFormElValue'])?' checked="checked"':'');
-			$item.= '<input type="radio"'.$this->insertDefStyle('radio').' name="'.$PA['itemFormElName'].'" value="'.htmlspecialchars($p[1]).'" onclick="'.htmlspecialchars($rOnClick).'"'.$rChecked.$PA['onFocus'].$disabled.' />'.
-					htmlspecialchars($p[0]).
-					'<br />';
+			$item.= '<input type="radio"'.$this->insertDefStyle('radio').' name="'.$PA['itemFormElName'].'" value="'.htmlspecialchars($p[1]).'" onclick="'.htmlspecialchars($rOnClick).'"'.$rChecked.$PA['onFocus'].$disabled.' id="'.$rID.'" />
+					<label for="'.$rID.'">'.htmlspecialchars($p[0]).'</label>
+					<br />';
 		}
 
 		return $item;
