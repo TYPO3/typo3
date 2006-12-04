@@ -1111,7 +1111,6 @@ class t3lib_DB {
 	 */
 	function debug_check_recordset($res) {
 		if (!$res) {
-			t3lib_div::sysLog('Invalid database recordset detected. Install and enable devLog extension to get a full stack trace!', 'Core', 3);
 			$trace = FALSE;
 			$msg = 'Invalid database result resource detected';
 			if (version_compare(phpversion(), '4.3.0', '>=')) {
