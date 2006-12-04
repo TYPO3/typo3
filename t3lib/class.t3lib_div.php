@@ -3511,7 +3511,7 @@ class t3lib_div {
 	 * Used to create the cHash value
 	 *
 	 * @param	string		Query-parameters: "&xxx=yyy&zzz=uuu"
-	 * @return	array		Array with key/value pairs of query-parameters WITHOUT a certain list of variable names (like id, type, no_cache etc) and WITH a variable, encryptionKey, specific for this server/installation
+	 * @return	array		Array with key/value pairs of query-parameters WITHOUT a certain list of variable names (like id, type, no_cache etc.) and WITH a variable, encryptionKey, specific for this server/installation
 	 * @see tslib_fe::makeCacheHash(), tslib_cObj::typoLink()
 	 */
 	function cHashParams($addQueryParams) {
