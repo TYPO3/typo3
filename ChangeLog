@@ -1,7 +1,8 @@
 
 2006-11-21  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
-	* Allow strftime-syntax for config.stat_apache_logfile (Thanks to Francois Suter and Michael Stucki)
+	* Allow strftime-syntax for config.stat_apache_logfile (Thanks to Francois Suter and Michael Stucki).
+	* Enhanced message for recordset warning (see change at 2006-12-02) and removed serializing of objects in the backtrace (devlog).
 
 2006-12-03  Ingmar Schlecht  <ingmar@typo3.org>
 

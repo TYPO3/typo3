@@ -1112,15 +1112,24 @@ class t3lib_DB {
 	function debug_check_recordset($res) {
 		if (!$res) {
 			t3lib_div::sysLog('Invalid database recordset detected. Install and enable devLog extension to get a full stack trace!', 'Core', 3);
-			$trace = false;
+			$trace = FALSE;
+			$msg = 'Invalid database result resource detected';
 			if (version_compare(phpversion(), '4.3.0', '>=')) {
-				$trace = debug_backtrace();
+  				$trace = debug_backtrace();
 				array_shift($trace);
+				$cnt = count($trace);
+				for ($i=0; $i<$cnt; $i++)	{
+						// complete objects are too large for the log
+					if (isset($trace['object']))	unset($trace['object']);
+				}
+				$msg .= ': function t3lib_DB->' . $trace[0]['function'] . ' called from file ' . substr($trace[0]['file'],strlen(PATH_site)+2) . ' in line ' . $trace[0]['line'];
 			}
-			t3lib_div::devLog('Invalid recordset detected', 'Core/t3lib_db', 3, $trace);
-			return false;
+			t3lib_div::sysLog($msg.'. Use a devLog extension to get more details.', 'Core/t3lib_db', 3);
+			t3lib_div::devLog($msg.'.', 'Core/t3lib_db', 3, $trace);
+
+			return FALSE;
 		}
-		return true;
+		return TRUE;
 	}
 
 }
