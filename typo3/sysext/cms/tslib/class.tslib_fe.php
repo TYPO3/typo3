@@ -1797,7 +1797,7 @@
 					$this->config['mainScript'] = trim($this->config['config']['mainScript']) ? trim($this->config['config']['mainScript']) : 'index.php';
 
 						// STAT:
-					$theLogFile = $this->TYPO3_CONF_VARS['FE']['logfile_dir'].$this->config['config']['stat_apache_logfile'];
+					$theLogFile = $this->TYPO3_CONF_VARS['FE']['logfile_dir'].strftime($this->config['config']['stat_apache_logfile']);
 						// Add PATH_site left to $theLogFile if the path is not absolute yet
 					if (!t3lib_div::isAbsPath($theLogFile)) $theLogFile = PATH_site.$theLogFile;
 
