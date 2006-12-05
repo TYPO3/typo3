@@ -1608,8 +1608,8 @@ class t3lib_BEfunc	{
 					// use the original image if it's size fits to the thumbnail size
 				if ($max && $max<=(count($sizeParts)&&max($sizeParts)?max($sizeParts):56))	{
 					$theFile = $url = ($abs?'':'../').($uploaddir?$uploaddir.'/':'').trim($theFile);
-					$onClick='top.launchView(\''.$theFile.'\',\'\',\''.$backPath.'\');return false;';
-					$thumbData.='<a href="#" onclick="'.htmlspecialchars($onClick).'"><img src="'.$backPath.$url.'" '.$imgInfo[3].' hspace="2" border="0" title="'.trim($url).'"'.$tparams.' alt="" /></a> ';
+					$onClick = 'top.launchView(\''.$theFile.'\',\'\',\''.$backPath.'\');return false;';
+					$thumbData.= '<a href="#" onclick="'.htmlspecialchars($onClick).'"><img src="'.$backPath.$url.'" '.$imgInfo[3].' hspace="2" border="0" title="'.trim($url).'"'.$tparams.' alt="" /></a> ';
 						// New 190201 stop
 				} elseif ($ext=='ttf' || t3lib_div::inList($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'],$ext)) {
 					$theFile_abs = PATH_site.($uploaddir?$uploaddir.'/':'').trim($theFile);
@@ -1617,16 +1617,16 @@ class t3lib_BEfunc	{
 
 					$check = basename($theFile_abs).':'.filemtime($theFile_abs).':'.$GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'];
 					$params = '&file='.rawurlencode($theFile);
-					$params .= $size?'&size='.$size:'';
+					$params.= $size?'&size='.$size:'';
 					$params.= '&md5sum='.t3lib_div::shortMD5($check);
 
 					$url = $thumbScript.'?&dummy='.$GLOBALS['EXEC_TIME'].$params;
-					$onClick='top.launchView(\''.$theFile.'\',\'\',\''.$backPath.'\');return false;';
-					$thumbData.='<a href="#" onclick="'.htmlspecialchars($onClick).'"><img src="'.htmlspecialchars($backPath.$url).'" hspace="2" border="0" title="'.trim($theFile).'"'.$tparams.' alt="" /></a> ';
+					$onClick = 'top.launchView(\''.$theFile.'\',\'\',\''.$backPath.'\');return false;';
+					$thumbData.= '<a href="#" onclick="'.htmlspecialchars($onClick).'"><img src="'.htmlspecialchars($backPath.$url).'" hspace="2" border="0" title="'.trim($theFile).'"'.$tparams.' alt="" /></a> ';
 				} else {
 					$icon = t3lib_BEfunc::getFileIcon($ext);
 					$url = 'gfx/fileicons/'.$icon;
-					$thumbData.='<img src="'.$backPath.$url.'" hspace="2" border="0" title="'.trim($theFile).'"'.$tparams.' alt="" /> ';
+					$thumbData.= '<img src="'.$backPath.$url.'" hspace="2" border="0" title="'.trim($theFile).'"'.$tparams.' alt="" /> ';
 				}
 			}
 		}
@@ -1646,7 +1646,7 @@ class t3lib_BEfunc	{
 	function getThumbNail($thumbScript,$theFile,$tparams='',$size='')	{
 		$check = basename($theFile).':'.filemtime($theFile).':'.$GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'];
 		$params = '&file='.rawurlencode($theFile);
-		$params .= trim($size)?'&size='.trim($size):'';
+		$params.= trim($size)?'&size='.trim($size):'';
 		$params.= '&md5sum='.t3lib_div::shortMD5($check);
 
 		$url = $thumbScript.'?&dummy='.$GLOBALS['EXEC_TIME'].$params;

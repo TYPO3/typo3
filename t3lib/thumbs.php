@@ -111,13 +111,13 @@ if (!$TYPO3_CONF_VARS['GFX']['image_processing'])	die ('ImageProcessing was disa
  * @subpackage t3lib
  */
 class SC_t3lib_thumbs {
-	var $include_once=array();
+	var $include_once = array();
 
 	var $outdir = 'typo3temp/';		// The output directory of temporary files in PATH_site
 	var $output = '';
 	var $sizeDefault='56x56';
 
-	var $imageList;	// Coming from $TYPO3_CONF_VARS['GFX']['imagefile_ext']
+	var $imageList;		// Coming from $TYPO3_CONF_VARS['GFX']['imagefile_ext']
 	var $input;		// Contains the absolute path to the file for which to make a thumbnail (after init())
 
 		// Internal, static: GPvar:
@@ -143,7 +143,7 @@ class SC_t3lib_thumbs {
 			// Image extension list is set:
 		$this->imageList = $TYPO3_CONF_VARS['GFX']['imagefile_ext'];			// valid extensions. OBS: No spaces in the list, all lowercase...
 
-			// if the filereference $this->file is relative, we correct the path
+			// If the filereference $this->file is relative, we correct the path
 		if (substr($file,0,3)=='../')	{
 			$file = PATH_site.substr($file,3);
 		}
@@ -242,7 +242,7 @@ class SC_t3lib_thumbs {
 				}
 					// The thumbnail is read and output to the browser
 				if($fd = @fopen($this->output,'rb'))	{
-					Header('Content-type: image/'.$outext);
+					header('Content-type: image/'.$outext);
 					while (!feof($fd))	{
 						echo fread($fd, 10000);
 					}
@@ -289,30 +289,30 @@ class SC_t3lib_thumbs {
 
 			// Creates the basis for the error image
 		if ($TYPO3_CONF_VARS['GFX']['gdlib_png'])	{
-			Header('Content-type: image/png');
+			header('Content-type: image/png');
 			$im = imagecreatefrompng(PATH_typo3.'gfx/notfound_thumb.png');
 		} else {
-			Header('Content-type: image/gif');
+			header('Content-type: image/gif');
 			$im = imagecreatefromgif(PATH_typo3.'gfx/notfound_thumb.gif');
 		}
 			// Sets background color and print color.
-	    $white = ImageColorAllocate($im, 0,0,0);
-	    $black = ImageColorAllocate($im, 255,255,0);
+		$white = imageColorAllocate($im, 0,0,0);
+		$black = imageColorAllocate($im, 255,255,0);
 
 			// Prints the text strings with the build-in font functions of GD
 		$x=0;
 		$font=0;
 		if ($l1)	{
 			imagefilledrectangle($im, $x, 9, 56, 16, $black);
-	    	ImageString($im,$font,$x,9,$l1,$white);
+			imageString($im,$font,$x,9,$l1,$white);
 		}
 		if ($l2)	{
 			imagefilledrectangle($im, $x, 19, 56, 26, $black);
-	    	ImageString($im,$font,$x,19,$l2,$white);
+			imageString($im,$font,$x,19,$l2,$white);
 		}
 		if ($l3)	{
 			imagefilledrectangle($im, $x, 29, 56, 36, $black);
-	    	ImageString($im,$font,$x,29,substr($l3,-14),$white);
+			imageString($im,$font,$x,29,substr($l3,-14),$white);
 		}
 
 			// Outputting the image stream and exit
@@ -340,9 +340,9 @@ class SC_t3lib_thumbs {
 		if (!$TYPO3_CONF_VARS['GFX']['gdlib'])	die('');
 
 			// Create image and set background color to white.
-		$im = ImageCreate(250,76);
-	    $white = ImageColorAllocate($im, 255,255,255);
-	    $col = ImageColorAllocate($im, 0,0,0);
+		$im = imageCreate(250,76);
+		$white = imageColorAllocate($im, 255,255,255);
+		$col = imageColorAllocate($im, 0,0,0);
 
 			// The test string and offset in x-axis.
 		$string = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz∆Êÿ¯≈Âƒ‰÷ˆ‹¸ﬂ';
@@ -364,10 +364,10 @@ class SC_t3lib_thumbs {
 
 			// Output PNG or GIF based on $TYPO3_CONF_VARS['GFX']['gdlib_png']
 		if ($TYPO3_CONF_VARS['GFX']['gdlib_png'])	{
-			Header('Content-type: image/png');
+			header('Content-type: image/png');
 			imagePng($im);
 		} else {
-			Header('Content-type: image/gif');
+			header('Content-type: image/gif');
 			imageGif($im);
 		}
 		imagedestroy($im);

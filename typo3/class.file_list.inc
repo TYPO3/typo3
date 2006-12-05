@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2005 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2006 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -491,13 +491,13 @@ class fileList extends t3lib_recordList {
 							break;
 						}
 					}
-					$out.=$this->addelement(1,$theIcon,$theData);
+					$out.= $this->addelement(1,$theIcon,$theData);
 
 						// Thumbsnails?
 					if ($this->thumbs && $this->isImage($theFile['fileext']))	{
-						$thumbData=Array();
+						$thumbData = array();
 						$theFile_R = rawurlencode($theFile['path'].$theFile['file']);
-						$titleCol=$this->fieldArray[0];
+						$titleCol = $this->fieldArray[0];
 
 						$theFile_abs = $theFile['path'].$theFile['file'];
 						$check = basename($theFile_abs).':'.filemtime($theFile_abs).':'.$GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'];
@@ -506,7 +506,7 @@ class fileList extends t3lib_recordList {
 						$href = $this->backPath.$this->thumbScript.'?&dummy='.$GLOBALS['EXEC_TIME'].$params;
 
 						$thumbData[$titleCol]='<img src="'.htmlspecialchars($href).'" hspace="2" title="'.htmlspecialchars(trim($theFile['file'])).'" alt="" />';
-						$out.=$this->addelement(4,'',$thumbData);
+						$out.= $this->addelement(4,'',$thumbData);
 					}
 				}
 				$this->eCounter++;

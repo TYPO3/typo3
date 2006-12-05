@@ -2385,7 +2385,7 @@ class t3lib_div {
 			elseif (false !== ($fd = @fopen($url, 'rb', false, $ctx)))	{
 				$content = '';
 				while (!feof($fd))	{
-					$content .= fread($fd, 4096);
+					$content.= fread($fd, 4096);
 				}
 				fclose($fd);
 			}
@@ -2396,7 +2396,7 @@ class t3lib_div {
 		elseif (false !== ($fd = @fopen($url, 'rb')))	{
 			$content = '';
 			while (!feof($fd))	{
-				$content .= fread($fd, 4096);
+				$content.= fread($fd, 4096);
 			}
 			fclose($fd);
 		}

@@ -1458,7 +1458,7 @@ class browse_links {
 		} else {
 			$thumbNailCheck='';
 		}
-		$noThumbs = $noThumbs?$noThumbs:!$_MOD_SETTINGS['displayThumbs'];
+		$noThumbs = $noThumbs ? $noThumbs : !$_MOD_SETTINGS['displayThumbs'];
 
 			// Create folder tree:
 		$foldertree = t3lib_div::makeInstance('TBE_FolderTree');
@@ -1487,7 +1487,7 @@ class browse_links {
 				</tr>
 			</table>
 			';
-		$content.=$thumbNailCheck;
+		$content.= $thumbNailCheck;
 
 			// Adding create folder + upload forms if applicable:
 		if (!$BE_USER->getTSConfigVal('options.uploadFieldsInTopOfEB'))	$content.=$uploadForm;

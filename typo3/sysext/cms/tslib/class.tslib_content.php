@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2005 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2006 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -2579,14 +2579,14 @@ class tslib_cObj {
 	function netprintApplication_offsiteLinkWrap($str,$imgConf,$conf)	{
 		if ($conf['url'] && @is_file($imgConf['origFile']))	{
 			$thisUrl = $conf['thisUrl'] ? $conf['thisUrl'] : t3lib_div::getIndpEnv('TYPO3_REQUEST_DIR');
-			$origFile=$thisUrl.$imgConf['origFile'];
+			$origFile = $thisUrl.$imgConf['origFile'];
 				// Original file dimensions:
 			$gifCreator = t3lib_div::makeInstance('tslib_gifbuilder');
 			$gifCreator->init();
 			$origDim = $gifCreator->getImageDimensions($imgConf['origFile']);
 			if (!$conf['linkOnlyPixelsAbove'] || $origDim[0]*$origDim[1]>$conf['linkOnlyPixelsAbove'])	{
 					// Set parameters
-				$thumbFile=$thisUrl.$imgConf['3'].'|'.$imgConf[0].'x'.$imgConf[1].'|'.$origDim[0].'x'.$origDim[1].'|'.filesize($imgConf['origFile']).'|'.filemtime($imgConf['origFile']);
+				$thumbFile = $thisUrl.$imgConf['3'].'|'.$imgConf[0].'x'.$imgConf[1].'|'.$origDim[0].'x'.$origDim[1].'|'.filesize($imgConf['origFile']).'|'.filemtime($imgConf['origFile']);
 					// Set url:
 				$url = $conf['url']
 					.'&NP[offsite][1]='.rawurlencode($origFile)
