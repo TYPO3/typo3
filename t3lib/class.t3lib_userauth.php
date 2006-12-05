@@ -378,6 +378,11 @@ class t3lib_userAuth {
 					// delete old user session if any
 				$this->logoff();
 			}
+
+				// Refuse login for _CLI users (used by commandline scripts)
+			if ((strtoupper(substr($loginData['uname'],0,5))=='_CLI_') && (!defined('TYPO3_cliMode') || !TYPO3_cliMode))	{	// although TYPO3_cliMode should never be set when using active login...
+				die('Error: You have tried to login using a CLI user. Access prohibited!');
+			}
 		}
 
 

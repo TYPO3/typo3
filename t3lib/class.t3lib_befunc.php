@@ -1599,9 +1599,14 @@ class t3lib_BEfunc	{
 					$thumbData.='<a href="#" onclick="'.htmlspecialchars($onClick).'"><img src="'.$backPath.$url.'" '.$imgInfo[3].' hspace="2" border="0" title="'.trim($url).'"'.$tparams.' alt="" /></a> ';
 						// New 190201 stop
 				} elseif ($ext=='ttf' || t3lib_div::inList($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'],$ext)) {
+					$theFile_abs = PATH_site.($uploaddir?$uploaddir.'/':'').trim($theFile);
 					$theFile = ($abs?'':'../').($uploaddir?$uploaddir.'/':'').trim($theFile);
+
+					$check = basename($theFile_abs).':'.filemtime($theFile_abs).':'.$GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'];
 					$params = '&file='.rawurlencode($theFile);
 					$params .= $size?'&size='.$size:'';
+					$params.= '&md5sum='.t3lib_div::shortMD5($check);
+
 					$url = $thumbScript.'?&dummy='.$GLOBALS['EXEC_TIME'].$params;
 					$onClick='top.launchView(\''.$theFile.'\',\'\',\''.$backPath.'\');return false;';
 					$thumbData.='<a href="#" onclick="'.htmlspecialchars($onClick).'"><img src="'.htmlspecialchars($backPath.$url).'" hspace="2" border="0" title="'.trim($theFile).'"'.$tparams.' alt="" /></a> ';
@@ -1626,8 +1631,11 @@ class t3lib_BEfunc	{
 	 * @return	string		Image tag
 	 */
 	function getThumbNail($thumbScript,$theFile,$tparams='',$size='')	{
+		$check = basename($theFile).':'.filemtime($theFile).':'.$GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'];
 		$params = '&file='.rawurlencode($theFile);
 		$params .= trim($size)?'&size='.trim($size):'';
+		$params.= '&md5sum='.t3lib_div::shortMD5($check);
+
 		$url = $thumbScript.'?&dummy='.$GLOBALS['EXEC_TIME'].$params;
 		$th='<img src="'.htmlspecialchars($url).'" title="'.trim(basename($theFile)).'"'.($tparams?" ".$tparams:"").' alt="" />';
 		return $th;

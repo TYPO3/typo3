@@ -81,8 +81,6 @@ require(PATH_t3lib.'config_default.php');
 if (!defined ('TYPO3_db')) 	die ('The configuration file was not included.');
 if (!$TYPO3_CONF_VARS['GFX']['image_processing'])	die ('ImageProcessing was disabled!');
 
-require_once(PATH_t3lib.'class.t3lib_db.php');		// The database library
-$TYPO3_DB = t3lib_div::makeInstance('t3lib_DB');
 
 
 
@@ -124,6 +122,7 @@ class SC_t3lib_thumbs {
 		// Internal, static: GPvar:
 	var $file;		// Holds the input filename (GET: file)
 	var $size;		// Holds the input size (GET: size)
+	var $mtime = 0;		// Last modification time of the supplied file
 
 
 	/**
@@ -136,23 +135,41 @@ class SC_t3lib_thumbs {
 		global $TYPO3_CONF_VARS;
 
 			// Setting GPvars:
-		$this->file = t3lib_div::_GP('file');
-		$this->size = t3lib_div::_GP('size');
+		$file = t3lib_div::_GP('file');
+		$size = t3lib_div::_GP('size');
+		$md5sum = t3lib_div::_GP('md5sum');
 
 			// Image extension list is set:
 		$this->imageList = $TYPO3_CONF_VARS['GFX']['imagefile_ext'];			// valid extensions. OBS: No spaces in the list, all lowercase...
 
 			// if the filereference $this->file is relative, we correct the path
-		if (substr($this->file,0,3)=='../')	{
-			$this->input = PATH_site.substr($this->file,3);
-		} else {
-			$this->input = $this->file;
+		if (substr($file,0,3)=='../')	{
+			$file = PATH_site.substr($file,3);
 		}
 
 			// Now the path is absolute.
 			// Checking for backpath and double slashes + the thumbnail can be made from files which are in the PATH_site OR the lockRootPath only!
-		if (!t3lib_div::isAllowedAbsPath($this->input))	{
-			$this->input='';
+		if (t3lib_div::isAllowedAbsPath($file))	{
+			$mtime = filemtime($file);
+		}
+
+			// Do an MD5 check to prevent viewing of images without permission
+		$OK = FALSE;
+		if ($mtime)	{
+				// Always use the absolute path for this check!
+			$check = basename($file).':'.$mtime.':'.$GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'];
+			$md5_real = t3lib_div::shortMD5($check);
+			if (!strcmp($md5_real,$md5sum))	{
+				$OK = TRUE;
+			}
+		}
+
+		if ($OK)	{
+			$this->input = $file;
+			$this->size = $size;
+			$this->mtime = $mtime;
+		} else {
+			die('Error: Image does not exist and/or MD5 checksum did not match.');
 		}
 	}
 
@@ -183,7 +200,7 @@ class SC_t3lib_thumbs {
 			}
 
 				// ... so we passed the extension test meaning that we are going to make a thumbnail here:
-			$this->size = $this->size ? $this->size : $this->sizeDefault;	// default
+			if (!$this->size) 	$this->size = $this->sizeDefault;	// default
 
 				// I added extra check, so that the size input option could not be fooled to pass other values. That means the value is exploded, evaluated to an integer and the imploded to [value]x[value]. Furthermore you can specify: size=340 and it'll be translated to 340x340.
 			$sizeParts = explode('x', $this->size.'x'.$this->size);	// explodes the input size (and if no "x" is found this will add size again so it is the same for both dimensions)
@@ -192,7 +209,6 @@ class SC_t3lib_thumbs {
 			$sizeMax = max($sizeParts);	// Getting max value
 
 				// Init
-			$mtime = filemtime($this->input);
 			$outpath = PATH_site.$this->outdir;
 
 				// Should be - ? 'png' : 'gif' - , but doesn't work (ImageMagick prob.?)
@@ -200,7 +216,7 @@ class SC_t3lib_thumbs {
 			$thmMode = t3lib_div::intInRange($TYPO3_CONF_VARS['GFX']['thumbnails_png'],0);
 			$outext = ($ext!='jpg' || ($thmMode & 2)) ? ($thmMode & 1 ? 'png' : 'gif') : 'jpg';
 
-			$outfile = 'tmb_'.substr(md5($this->input.$mtime.$this->size),0,10).'.'.$outext;
+			$outfile = 'tmb_'.substr(md5($this->input.$this->mtime.$this->size),0,10).'.'.$outext;
 			$this->output = $outpath.$outfile;
 
 			if ($TYPO3_CONF_VARS['GFX']['im'])	{
