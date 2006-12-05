@@ -498,7 +498,13 @@ class fileList extends t3lib_recordList {
 						$thumbData=Array();
 						$theFile_R = rawurlencode($theFile['path'].$theFile['file']);
 						$titleCol=$this->fieldArray[0];
-						$href = $this->backPath.$this->thumbScript.'?&dummy='.$GLOBALS['EXEC_TIME'].'&file='.$theFile_R;
+
+						$theFile_abs = $theFile['path'].$theFile['file'];
+						$check = basename($theFile_abs).':'.filemtime($theFile_abs).':'.$GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'];
+						$params = '&file='.$theFile_R;
+						$params.= '&md5sum='.t3lib_div::shortMD5($check);
+						$href = $this->backPath.$this->thumbScript.'?&dummy='.$GLOBALS['EXEC_TIME'].$params;
+
 						$thumbData[$titleCol]='<img src="'.htmlspecialchars($href).'" hspace="2" title="'.htmlspecialchars(trim($theFile['file'])).'" alt="" />';
 						$out.=$this->addelement(4,'',$thumbData);
 					}
