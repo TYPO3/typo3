@@ -185,7 +185,8 @@ class tslib_feTCE	{
 	 * @access private
 	 */
 	function checkDoublePostExist($table,$doublePostField,$key)	{
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('count(*)', $table, $doublePostField.'='.intval($key));
+		$where = $doublePostField.'='.$key;
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('count(*)', $table, $where);
 		$row = $GLOBALS['TYPO3_DB']->sql_fetch_row($res);
 		return $row[0];
 	}

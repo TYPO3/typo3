@@ -1,3 +1,7 @@
+2006-12-07  Franz Holzinger  <kontakt@fholzinger.com>
+
+	* Fix bug #4555: double posts in tt_board did not get detected because of unintended conversion into a negative integer
+
 2006-12-07  Ingmar Schlecht  <ingmar@typo3.org>
 
 	* Disabled typo3/alt_main_new.php as it's not fully working yet. Will be ready for TYPO3 4.2 probably, but not for 4.1.
