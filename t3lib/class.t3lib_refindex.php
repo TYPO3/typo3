@@ -62,7 +62,7 @@
 
 require_once(PATH_t3lib.'class.t3lib_tcemain.php');
 require_once(PATH_t3lib.'class.t3lib_flexformtools.php');
-require_once(PATH_typo3.'sysext/indexed_search/class.lexer.php');
+//require_once(PATH_typo3.'sysext/indexed_search/class.lexer.php'); // Disabled until Kasper finishes this feature. Apart from that, t3lib classes should never require stuff from extensions.
 
 
 
@@ -858,7 +858,8 @@ class t3lib_refindex {
 	 *
 	 */
 	function wordIndexing($table,$uid)	{
-	
+		return; // Disabled until Kasper finishes this feature.
+
 		$lexer = t3lib_div::makeInstance('tx_indexedsearch_lexer');
 		$words = $lexer->split2Words(implode(' ',$this->words_strings));
 		foreach($words as $w) {

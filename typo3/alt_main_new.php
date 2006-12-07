@@ -52,6 +52,8 @@
  *
  */
 
+die(); // Disabled until Kasper finishes this feature.
+
 require ('init.php');
 require ('template.php');
 require_once (PATH_t3lib.'class.t3lib_loadmodules.php');
