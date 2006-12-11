@@ -1165,6 +1165,11 @@ class tx_cms_layout extends recordList {
 				// Header line is drawn
 			$theData = array();
 			$theData = $this->headerFields($this->fieldArray,$table,$theData);
+			if ($this->doEdit)	{
+				$theData['__cmds__'] = '<a href="#" onclick="'.htmlspecialchars(t3lib_BEfunc::editOnClick('&edit['.$table.']['.$this->id.']=new',$this->backPath)).'">'.
+					'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/new_el.gif').' title="'.$GLOBALS['LANG']->getLL('new',1).'" alt="" />'.
+					'</a>';
+			}
 			$out.= $this->addelement(1,'',$theData,' class="c-headLine"',15);
 
 				// Render Items
