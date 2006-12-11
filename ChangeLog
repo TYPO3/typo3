@@ -1,3 +1,8 @@
+
+2006-12-11  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+
+	* Add page tree update to publish button of module Web>Versioning
+
 2006-12-07  Franz Holzinger  <kontakt@fholzinger.com>
 
 	* Fix bug #4555: double posts in tt_board did not get detected because of unintended conversion into a negative integer
@@ -9,7 +14,7 @@
 
 2006-12-05  Michael Stucki  <michael@typo3.org>
 
-        * Updated font-copyright information in t3lib/fonts/readme.txt - many thanks to Christian Welzel for taking care of this!
+	* Updated font-copyright information in t3lib/fonts/readme.txt - many thanks to Christian Welzel for taking care of this!
 	* Security enhancement: Prevent image access through thumbs.php. For details, see http://typo3.org/teams/security/security-bulletins/typo3-20061205-1/ - thanks to Marc Bastian Heinrichs for discovering and reporting this issue.
 	* Security enhancement: Refuse BE logins of usernames starting with "_CLI_" (they are only used by real CLI scripts)
 
