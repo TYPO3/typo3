@@ -343,7 +343,7 @@ class tx_cms_webinfo_lang extends t3lib_extobjbase {
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 			'*',
 			'sys_language',
-			'1'.t3lib_BEfunc::deleteClause('sys_language')
+			'1=1'.t3lib_BEfunc::deleteClause('sys_language')
 		);
 
 		$outputArray = array();
