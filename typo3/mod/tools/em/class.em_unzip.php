@@ -507,6 +507,7 @@ class em_unzip {
 		$v_result=1;
 
 		// Read the file header
+		$v_header = '';
 		if (($v_result = $this->_readFileHeader($v_header)) != 1)
 		{
 			// Return

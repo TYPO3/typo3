@@ -201,6 +201,8 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 	var $maxUploadSize = 31457280;		// Max size in bytes of extension upload to repository
 	var $kbMax = 500;					// Max size in kilobytes for files to be edited.
 	var $doPrintContent = true;			// If set (default), the function printContent() will echo the content which was collected in $this->content. You can set this to FALSE in order to echo content from elsewhere, fx. when using outbut buffering
+	var $listingLimit = 500;		// List that many extension maximally at one time (fixing memory problems)
+	var $listingLimitAuthor = 250;		// List that many extension maximally at one time (fixing memory problems)
 
 	/**
 	 * Internal variable loaded with extension categories (for display/listing). Should reflect $categories above
@@ -763,18 +765,25 @@ EXTENSION KEYS:
 			$this->detailCols[1]+=6;
 
 				// see if we have an extensionlist at all
-			$this->xmlhandler->loadExtensionsXML();
-			if (!count($this->xmlhandler->extensionsXML))	{
+			$this->extensionCount = $this->xmlhandler->countExtensions();
+			if (!$this->extensionCount)	{
 				$content .= $this->fetchMetaData('extensions');
 			}
 
+			if($this->MOD_SETTINGS['listOrder']=='author_company') {
+				$this->listingLimit = $this->listingLimitAuthor;
+			}
+
+			$this->pointer = intval(t3lib_div::_GP('pointer'));
+			$offset = $this->listingLimit*$this->pointer;
+
 			if($this->MOD_SETTINGS['display_own'] && strlen($this->fe_user['username'])) {
-				$this->xmlhandler->searchExtensionsXML($this->listRemote_search, $this->fe_user['username']);
+				$this->xmlhandler->searchExtensionsXML($this->listRemote_search, $this->fe_user['username'], $this->MOD_SETTINGS['listOrder']);
 			} else {
-				$this->xmlhandler->searchExtensionsXML($this->listRemote_search);
+				$this->xmlhandler->searchExtensionsXML($this->listRemote_search, '', $this->MOD_SETTINGS['listOrder'], false, false, $offset, $this->listingLimit);
 			}
 			if (count($this->xmlhandler->extensionsXML))	{
-				list($list,$cat) = $this->prepareImportExtList();
+				list($list,$cat) = $this->prepareImportExtList(true);
 
 					// Available extensions
 				if (is_array($cat[$this->MOD_SETTINGS['listOrder']]))	{
@@ -817,9 +826,11 @@ EXTENSION KEYS:
 								}
 
 								$lines[]=$this->extensionListRow($extKey,$ext,array('<td class="bgColor">'.$loadUnloadLink.'</td>'),$theRowClass,$inst_list,1,'index.php?CMD[importExtInfo]='.rawurlencode($extKey));
+								unset($list[$extKey]);
 							}
 						}
 					}
+					unset($list);
 
 						// CSH:
 					$content.= t3lib_BEfunc::cshItem('_MOD_tools_em', 'import_ter', $GLOBALS['BACK_PATH'],'|<br/>');
@@ -827,10 +838,13 @@ EXTENSION KEYS:
 					$content.= '</form><form action="index.php" method="post" onsubmit="'.htmlspecialchars($onsubmit).'">List or look up <strong'.($this->MOD_SETTINGS['display_unchecked']?' style="color:#900;">all':' style="color:#090;">reviewed').'</strong> extensions<br />
 							<input type="text" name="_lookUp" value="'.htmlspecialchars($this->listRemote_search).'" /> <input type="submit" value="Look up" /><br /><br />';
 
+ 					$content .= $this->browseLinks();
+
 					$content.= '
 
 					<!-- TER Extensions list -->
 					<table border="0" cellpadding="2" cellspacing="1">'.implode(chr(10),$lines).'</table>';
+ 					$content .= '<br />'.$this->browseLinks();
 					$content.= '<br /><br />'.$this->securityHint;
 					$content.= '<br /><br /><strong>PRIVACY NOTICE:</strong><br /> '.$this->privacyNotice;
 
@@ -886,7 +900,7 @@ EXTENSION KEYS:
 				$content.= 'Connect to the current mirror and retrieve the current list of available plugins from the TYPO3 Extension Repository.<br />
 				<input type="submit" value="Retrieve/Update" onclick="'.htmlspecialchars($onCLick).'" />';
 				if(is_file(PATH_site.'typo3temp/extensions.bin')) {
-					$content .= ' (last update: '.date('Y-m-d H:i',filemtime(PATH_site.'typo3temp/extensions.bin')).')';
+					$content .= ' (last update: '.date('Y-m-d H:i',filemtime(PATH_site.'typo3temp/extensions.xml.gz')).')';
 				}
 			}
 			$content.= '<br /><br />'.$this->securityHint;
@@ -913,6 +927,29 @@ EXTENSION KEYS:
 
 		$this->content.=$this->doc->spacer(20);
 		$this->content.=$this->doc->section('Upload extension file directly (.t3x):',$content,0,1);
+	}
+	
+	/**
+	 * Generates a link to the next page of extensions
+	 *
+	 * @return	void
+	 */
+	function browseLinks()	{
+		$content = '';
+		if ($this->pointer)	{
+			$content .= '<a href="'.t3lib_div::linkThisScript(array('pointer' => $this->pointer-1)).'" class="typo3-prevPage"><img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/pilleft_n.gif','width="14" height="14"').' alt="Prev page" /> Prev page</a>';
+		}
+		if ($content) $content .= '&nbsp;&nbsp;&nbsp;';
+		if (intval($this->xmlhandler->matchingCount/$this->listingLimit)>$this->pointer)	{
+			$content .= '<a href="'.t3lib_div::linkThisScript(array('pointer' => $this->pointer+1)).'" class="typo3-nextPage"><img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/pilright_n.gif','width="14" height="14"').' alt="Next page" /> Next page</a>';
+		}
+		$upper = (($this->pointer+1)*$this->listingLimit);
+		if ($upper>$this->xmlhandler->matchingCount)	{
+			$upper = $this->xmlhandler->matchingCount;
+		}
+		if ($content) $content .= '<br /><br />Showing extensions <strong>'.($this->pointer*$this->listingLimit+1).'</strong> to <strong>'.$upper.'</strong>';
+		if ($content) $content .= '<br /><br />';
+		return $content;
 	}
 
 	/**
@@ -1334,9 +1371,8 @@ EXTENSION KEYS:
 		$content = '';
 
 			// Fetch remote data:
-		$this->xmlhandler->loadExtensionsXML();
-		$this->xmlhandler->extensionsXML = array($extKey => $this->xmlhandler->extensionsXML[$extKey]);
-		list($fetchData,) = $this->prepareImportExtList();
+		$this->xmlhandler->searchExtensionsXML($extKey, '', '', true, true);
+		list($fetchData,) = $this->prepareImportExtList(true);
 
 		$versions = array_keys($fetchData[$extKey]['versions']);
 		$version = ($version == '') ? end($versions) : $version;
@@ -1427,8 +1463,7 @@ EXTENSION KEYS:
 						$content .= '<p>Error: The extension list could not be fetched from '.$extfile.'. Possible reasons: network problems, allow_url_fopen is off, curl is not enabled in Install tool.</p>';
 					} else {
 						t3lib_div::writeFile(PATH_site.'typo3temp/extensions.xml.gz', $extXML);
-						$content .= $this->xmlhandler->parseExtensionsXML(implode('',gzfile(PATH_site.'typo3temp/extensions.xml.gz')));
-						$this->xmlhandler->saveExtensionsXML();
+						$content .= $this->xmlhandler->parseExtensionsXML(PATH_site.'typo3temp/extensions.xml.gz');
 					}
 				}
 				break;
@@ -1543,10 +1578,10 @@ EXTENSION KEYS:
 			// at this point we know we need to import (a matching version of) the extension from TER2
 
 			// see if we have an extensionlist at all
-		$this->xmlhandler->loadExtensionsXML();
-		if (!count($this->xmlhandler->extensionsXML))	{
+		if (!$this->xmlhandler->countExtensions())	{
 			$this->fetchMetaData('extensions');
 		}
+		$this->xmlhandler->searchExtensionsXML($extKey, '', '', true);
 
 			// check if extension can be fetched
 		if(isset($this->xmlhandler->extensionsXML[$extKey])) {
@@ -1668,7 +1703,7 @@ EXTENSION KEYS:
 				} else return 'Wrong file format. No data recognized, '.$fetchData;
 			} else return 'No file uploaded! Probably the file was too large for PHPs internal limit for uploadable files.';
 		} else {
-			$this->xmlhandler->loadExtensionsXML();
+			$this->xmlhandler->searchExtensionsXML($extKey, '', '', true);
 
 				// Fetch extension from TER:
 			if(!strlen($version)) {
@@ -3065,9 +3100,10 @@ EXTENSION KEYS:
 	/**
 	 * Maps remote extensions information into $cat/$list arrays for listing
 	 *
+	 * @param	boolean		If set the info in the internal extensionsXML array will be unset before returning the result.
 	 * @return	array		List array and category index as key 0 / 1 in an array.
 	 */
-	function prepareImportExtList()	{
+	function prepareImportExtList($unsetProc = false)	{
 		$list = array();
 		$cat = $this->defaultCategories;
 		$filepath = $this->getMirrorURL();
@@ -3098,6 +3134,9 @@ EXTENSION KEYS:
 				);
 			}
 			$this->setCat($cat, $list[$extKey]['versions'][$version], $extKey);
+			if ($unsetProc)	{
+				unset($this->xmlhandler->extensionsXML[$extKey]);
+			}
 		}
 
 		return array($list,$cat);
@@ -4920,7 +4959,7 @@ $EM_CONF[$_EXTKEY] = '.$this->arrayToCode($EM_CONF, 0).';
 
 		$res = array();
 		$res['version'] = $parts[0].'.'.$parts[1].'.'.$parts[2];
-		$res['version_int'] = intval(str_pad($parts[0],3,'0',STR_PAD_LEFT).str_pad($parts[1],3,'0',STR_PAD_LEFT).str_pad($parts[2],3,'0',STR_PAD_LEFT));
+		$res['version_int'] = intval($parts[0]*1000000+$parts[1]*1000+$parts[2]);
 		$res['version_main'] = $parts[0];
 		$res['version_sub'] = $parts[1];
 		$res['version_dev'] = $parts[2];

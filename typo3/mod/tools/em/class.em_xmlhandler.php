@@ -56,51 +56,86 @@ class SC_mod_tools_em_xmlhandler {
 	 * @param	boolean		$latest If true, only the latest version is kept in the list
 	 * @return	[type]		...
 	 */
-	function searchExtensionsXML($search, $owner='') {
-		if(!count($this->extensionsXML)) $this->loadExtensionsXML();
-
-		reset($this->extensionsXML);
-		while (list($extkey, $data) = each($this->extensionsXML)) {
-
-				// Unset extension key in installed keys array (for tracking)
-			if(isset($this->emObj->inst_keys[$extkey])) unset($this->emObj->inst_keys[$extkey]);
-
-			if(strlen($search) && !stristr($extkey,$search)) {
-				unset($this->extensionsXML[$extkey]);
-				continue;
-			}
-
-			if(strlen($owner) && !$this->checkOwner($extkey, $owner)) {
-				unset($this->extensionsXML[$extkey]);
-				continue;
-			}
-
-			if(!strlen($owner)) {
-				$this->checkReviewState($this->extensionsXML[$extkey]['versions']);	// if showing only own extensions, never hide unreviewed
-			}
-			$this->removeObsolete($this->extensionsXML[$extkey]['versions']);
-
-			uksort($data['versions'], array($this->emObj, 'versionDifference')); // needed? or will the extensions always be sorted in the XML anyway? Robert?
-
-			if(!count($this->extensionsXML[$extkey]['versions'])) {
-				unset($this->extensionsXML[$extkey]);
+	function searchExtensionsXML($search, $owner='', $order = '', $allExt = false, $allVer = false, $offset = 0, $limit = 500) {
+		$where = '1=1';
+		if ($search)	{
+			$where .= ' AND extkey LIKE \'%'.$GLOBALS['TYPO3_DB']->quoteStr($GLOBALS['TYPO3_DB']->escapeStrForLike($search, 'cache_extensions'), 'cache_extensions').'%\'';
+		}
+		if ($owner)	{
+			$where .= ' AND ownerusername='.$GLOBALS['TYPO3_DB']->fullQuoteStr($owner, 'cache_extensions');
+		}
+		if(!(strlen($owner) || $this->useUnchecked || $allExt))	{
+			$where .= ' AND reviewstate>0';
+		}
+		if(!($this->useObsolete || $allExt))	{
+			$where .= ' AND state!=5';		// 5 == obsolete
+		}
+		switch ($order)	{
+			case 'author_company':
+				$forder = 'authorname, authorcompany';
+			break;
+			case 'state':
+				$forder = 'state';
+			break;
+			case 'cat':
+			default:
+				$forder = 'category';
+			break;
+		}
+		$order = $forder.', title';			
+		if (!$allVer)	{
+			if ($this->useUnchecked)	{
+				$where .= ' AND lastversion>0';
+			} else	{
+				$where .= ' AND lastreviewedversion>0';
 			}
 		}
-	}
-
-	/**
-	 * Checks whether at least one of the extension versions is owned by the given username
-	 *
-	 * @param	string		$extkey
-	 * @param	string		$owner
-	 * @return	boolean
-	 */
-	function checkOwner($extkey, $owner) {
-		foreach($this->extensionsXML[$extkey]['versions'] as $ext) {
-			if($ext['ownerusername'] == $owner) return true;
+		$this->catArr = array();
+		$idx = 0;
+		foreach ($this->emObj->defaultCategories['cat'] as $catKey => $tmp)	{
+			$this->catArr[$idx] = $catKey;
+			$idx++;
 		}
-		return false;
-	}
+		$this->stateArr = array();
+		$idx = 0;
+		foreach ($this->emObj->states as $state => $tmp)	{
+			$this->stateArr[$idx] = $state;
+			$idx++;
+		}
+
+			// Fetch count
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('count(*) as cnt', 'cache_extensions', $where, '', $order);
+		$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
+		$this->matchingCount = $row['cnt'];
+		$GLOBALS['TYPO3_DB']->sql_free_result($res);
+
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('count(*) as cnt', 'cache_extensions', $where, '', $order);
+
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'cache_extensions', $where, '', $order, $offset.','.$limit);
+		$this->extensionsXML = array();
+		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
+			$row['category'] = $this->catArr[$row['category']];
+			$row['state'] = $this->stateArr[$row['state']];
+
+			if (!is_array($this->extensionsXML[$row['extkey']]))	{
+				$this->extensionsXML[$row['extkey']] = array();
+				$this->extensionsXML[$row['extkey']]['downloadcounter'] = $row['alldownloadcounter'];
+			}
+			if (!is_array($this->extensionsXML[$row['extkey']]['versions']))	{
+				$this->extensionsXML[$row['extkey']]['versions'] = array();
+ 			}
+			$row['dependencies'] = unserialize($row['dependencies']);
+			$this->extensionsXML[$row['extkey']]['versions'][$row['version']] = $row;
+ 		}
+		$GLOBALS['TYPO3_DB']->sql_free_result($res);
+ 	}
+
+	function countExtensions() {
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('extkey', 'cache_extensions', '1=1', 'extkey');
+		$cnt = $GLOBALS['TYPO3_DB']->sql_num_rows($res);
+		$GLOBALS['TYPO3_DB']->sql_free_result($res);
+		return $cnt;
+ 	}
 
 	/**
 	 * Loads the pre-parsed extension list
@@ -108,38 +143,7 @@ class SC_mod_tools_em_xmlhandler {
 	 * @return	boolean		true on success, false on error
 	 */
 	function loadExtensionsXML() {
-		if(is_file(PATH_site.'typo3temp/extensions.bin')) {
-			$this->extensionsXML = unserialize(gzuncompress(t3lib_div::getURL(PATH_site.'typo3temp/extensions.bin')));
-			return true;
-		} else {
-			$this->extensionsXML = array();
-			return false;
-		}
-	}
-
-	/**
-	 * Loads the pre-parsed extension list
-	 *
-	 * @return	boolean		true on success, false on error
-	 */
-	function loadReviewStates() {
-		if(is_file(PATH_site.'typo3temp/reviewstates.bin')) {
-			$this->reviewStates = unserialize(gzuncompress(t3lib_div::getURL(PATH_site.'typo3temp/reviewstates.bin')));
-			return true;
-		} else {
-			$this->reviewStates = array();
-			return false;
-		}
-	}
-
-	/**
-	 * Enter description here...
-	 *
-	 * @return	[type]		...
-	 */
-	function saveExtensionsXML() {
-		t3lib_div::writeFile(PATH_site.'typo3temp/extensions.bin',gzcompress(serialize($this->extXMLResult)));
-		t3lib_div::writeFile(PATH_site.'typo3temp/reviewstates.bin',gzcompress(serialize($this->reviewStates)));
+		$this->searchExtensionsXML('', '', '', true);
 	}
 
 	/**
@@ -169,20 +173,20 @@ class SC_mod_tools_em_xmlhandler {
 	}
 
 	/**
-	 * Enter description here...
++	 * Returns the reviewstate of a specific extension-key/version
 	 *
 	 * @param	string		$extKey
 	 * @param	string		$version: ...
 	 * @return	integer		Review state, if none is set 0 is returned as default.
 	 */
 	function getReviewState($extKey, $version) {
-		if(!is_array($this->reviewStates)) $this->loadReviewStates();
-
-		if(isset($this->reviewStates[$extKey])) {
-			return (int)$this->reviewStates[$extKey][$version];
-		} else {
-			return 0;
-		}
+		$where = 'extkey='.$GLOBALS['TYPO3_DB']->fullQuoteStr($extKey, 'cache_extensions').' AND version='.$GLOBALS['TYPO3_DB']->fullQuoteStr($version, 'cache_extensions');
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('reviewstate', 'cache_extensions', $where);
+		if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
+			return $row['reviewstate'];
+ 		}
+		$GLOBALS['TYPO3_DB']->sql_free_result($res);
+		return 0;
 	}
 
 	/**
@@ -195,7 +199,7 @@ class SC_mod_tools_em_xmlhandler {
 		if ($this->useUnchecked) return;
 
 		reset($extensions);
-		while (list($version, $data) = each($extensions))	{
+		while (list($version, $data) = each($extensions)) {
 			if($data['reviewstate']<1)
 				unset($extensions[$version]);
 		}
@@ -301,34 +305,158 @@ class SC_mod_tools_em_xmlhandler {
 	 * @param	string		XML data file to parse
 	 * @return	string		HTLML output informing about result
 	 */
-	function parseExtensionsXML($string) {
-		global $TYPO3_CONF_VARS;
+	function parseExtensionsXML($filename) {
 
 		$parser = xml_parser_create();
 		xml_parser_set_option($parser, XML_OPTION_CASE_FOLDING, 0);
 		xml_parser_set_option($parser, XML_OPTION_SKIP_WHITE, 0);
+		xml_parser_set_option($parser, XML_OPTION_TARGET_ENCODING, 'utf-8');
 		xml_set_element_handler($parser, array(&$this,'startElement'), array(&$this,'endElement'));
 		xml_set_character_data_handler($parser, array(&$this,'characterData'));
 
-		if ((double)phpversion()>=5)	{
-			$preg_result = array();
-			preg_match('/^[[:space:]]*<\?xml[^>]*encoding[[:space:]]*=[[:space:]]*"([^"]*)"/',substr($string,0,200),$preg_result);
-			$theCharset = $preg_result[1] ? $preg_result[1] : ($TYPO3_CONF_VARS['BE']['forceCharset'] ? $TYPO3_CONF_VARS['BE']['forceCharset'] : 'iso-8859-1');
-			xml_parser_set_option($parser, XML_OPTION_TARGET_ENCODING, $theCharset);  // us-ascii / utf-8 / iso-8859-1
+		$fp = gzopen($filename, 'rb');
+		if (!$fp)	{
+			$content.= 'Error opening XML extension file "'.$filename.'"';
+			return $content;
+		}
+		$string = gzread($fp, 0xffff);	// Read 64KB
+
+		$this->revCatArr = array();
+		$idx = 0;
+		foreach ($this->emObj->defaultCategories['cat'] as $catKey => $tmp)	{
+			$this->revCatArr[$catKey] = $idx++;
 		}
 
-		// Parse content:
-		if (!xml_parse($parser, $string)) {
-			$content.= 'Error in XML parser while decoding extensions XML file. Line '.xml_get_current_line_number($parser).': '.xml_error_string(xml_get_error_code($parser));
-			$error = true;
+		$this->revStateArr = array();
+		$idx = 0;
+		foreach ($this->emObj->states as $state => $tmp)	{
+			$this->revStateArr[$state] = $idx++;
 		}
+
+		$GLOBALS['TYPO3_DB']->exec_DELETEquery('cache_extensions', '1=1');
+
+		$extcount = 0;
+		@ini_set('pcre.backtrack_limit', 500000);
+		do	{
+			if (preg_match('/.*(<extension\s+extensionkey="[^"]+">.*<\/extension>)/suU', $string, $match))	{
+				// Parse content:
+				if (!xml_parse($parser, $match[0], 0)) {
+					$content.= 'Error in XML parser while decoding extensions XML file. Line '.xml_get_current_line_number($parser).': '.xml_error_string(xml_get_error_code($parser));
+					$error = true;
+					break;
+				}
+				$this->storeXMLResult();
+				$this->extXMLResult = array();
+				$extcount++;
+				$string = substr($string, strlen($match[0]));
+			} elseif(function_exists('preg_last_error') && preg_last_error())	{
+				$errorcodes = array(
+					0 => 'PREG_NO_ERROR',
+					1 => 'PREG_INTERNAL_ERROR',
+					2 => 'PREG_BACKTRACK_LIMIT_ERROR',
+					3 => 'PREG_RECURSION_LIMIT_ERROR',
+					4 => 'PREG_BAD_UTF8_ERROR'
+				);
+				$content.= 'Error in regular expression matching, code: '.$errorcodes[preg_last_error()].'<br />See <a href="http://www.php.net/manual/en/function.preg-last-error.php" target="_blank">http://www.php.net/manual/en/function.preg-last-error.php</a>';
+				$error = true;
+				break;
+			} else	{
+				if(gzeof($fp)) break; // Nothing more can be read
+				$string .= gzread($fp, 0xffff);	// Read another 64KB
+			}
+		} while (true);
+
 		xml_parser_free($parser);
+		gzclose($fp);
 
 		if(!$error) {
-			$content.= '<p>The extensions list has been updated and now contains '.count($this->extXMLResult).' extension entries.</p>';
+			$content.= '<p>The extensions list has been updated and now contains '.$extcount.' extension entries.</p>';
 		}
 
 		return $content;
+	}
+
+ 	function storeXMLResult()	{
+		foreach ($this->extXMLResult as $extkey => $extArr)	{
+			$max = -1;
+			$maxrev = -1;
+			$last = '';
+			$lastrev = '';
+			$usecat = '';
+			$usetitle = '';
+			$usestate = '';
+			$useauthorcompany = '';
+			$useauthorname = '';
+			$verArr = array();
+			foreach ($extArr['versions'] as $version => $vArr)	{
+				$iv = $this->emObj->makeVersion($version, 'int');
+				if ($vArr['title']&&!$usetitle)	{
+					$usetitle = $vArr['title'];
+				}
+				if ($vArr['state']&&!$usestate)	{
+					$usestate = $vArr['state'];
+				}
+				if ($vArr['authorcompany']&&!$useauthorcompany)	{
+					$useauthorcompany = $vArr['authorcompany'];
+				}
+				if ($vArr['authorname']&&!$useauthorname)	{
+					$useauthorname = $vArr['authorname'];
+				}
+				$verArr[$version] = $iv;
+				if ($iv>$max)	{
+					$max = $iv;
+					$last = $version;
+					if ($vArr['title'])	{
+						$usetitle = $vArr['title'];
+					}
+					if ($vArr['state'])	{
+						$usestate = $vArr['state'];
+					}
+					if ($vArr['authorcompany'])	{
+						$useauthorcompany = $vArr['authorcompany'];
+					}
+					if ($vArr['authorname'])	{
+						$useauthorname = $vArr['authorname'];
+					}
+					$usecat = $vArr['category'];
+				}
+				if ($vArr['reviewstate'] && ($iv>$maxrev))	{
+					$maxrev = $iv;
+					$lastrev = $version;
+				}
+			}
+			if (!strlen($usecat))	{
+				$usecat = 4;		// Extensions without a category end up in "misc"
+			} else	{
+				if (isset($this->revCatArr[$usecat]))	{
+					$usecat = $this->revCatArr[$usecat];
+				} else	{
+					$usecat = 4;		// Extensions without a category end up in "misc"
+				}
+			}
+			if (isset($this->revStateArr[$usestate]))	{
+				$usestate = $this->revCatArr[$usestate];
+			} else	{
+				$usestate = 999;		// Extensions without a category end up in "misc"
+			}
+			foreach ($extArr['versions'] as $version => $vArr)	{
+				$vArr['version'] = $version;
+				$vArr['intversion'] = $verArr[$version];
+				$vArr['extkey'] = $extkey;
+				$vArr['alldownloadcounter'] = $extArr['downloadcounter'];
+				$vArr['dependencies'] = serialize($vArr['dependencies']);
+				$vArr['category'] = $usecat;
+				$vArr['title'] = $usetitle;
+				if ($version==$last)	{
+					$vArr['lastversion'] = 1;
+				}
+				if ($version==$lastrev)	{
+					$vArr['lastreviewedversion'] = 1;
+				}
+				$vArr['state'] = isset($this->revStateArr[$vArr['state']])?$this->revStateArr[$vArr['state']]:$usestate;	// 999 = not set category
+				$GLOBALS['TYPO3_DB']->exec_INSERTquery('cache_extensions', $vArr);
+			}
+		}
 	}
 
 	/**
