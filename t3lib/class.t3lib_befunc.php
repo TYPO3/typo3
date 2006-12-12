@@ -1816,26 +1816,43 @@ class t3lib_BEfunc	{
 	 * @param	string		Table name, present in TCA
 	 * @param	array		Row from table
 	 * @param	boolean		If set, result is prepared for output: The output is cropped to a limited lenght (depending on BE_USER->uc['titleLen']) and if no value is found for the title, '<em>[No title]</em>' is returned (localized). Further, the output is htmlspecialchars()'ed
+	 * @param	boolean		If set, the function always returns an output. If no value is found for the title, '[No title]' is returned (localized).
 	 * @return	string
 	 */
-	function getRecordTitle($table,$row,$prep=0)	{
+	function getRecordTitle($table,$row,$prep=FALSE,$forceResult=TRUE)	{
 		global $TCA;
-		if (is_array($TCA[$table]))	{
-			$t = $row[$TCA[$table]['ctrl']['label']];
-			if ($TCA[$table]['ctrl']['label_alt'] && ($TCA[$table]['ctrl']['label_alt_force'] || !strcmp($t,'')))	{
-				$altFields=t3lib_div::trimExplode(',',$TCA[$table]['ctrl']['label_alt'],1);
-				$tA=array();
-				$tA[]=$t;
-				while(list(,$fN)=each($altFields))	{
-					$t = $tA[] = trim(strip_tags($row[$fN]));
-					if (strcmp($t,'') && !$TCA[$table]['ctrl']['label_alt_force'])	break;
+		if (is_array($TCA[$table]))	{			
+
+				// If configured, call userFunc
+			if ($TCA[$table]['ctrl']['label_userFunc'])	{
+				$params['table'] = $table;
+				$params['row'] = $row;
+				$params['title'] = '';
+
+				t3lib_div::callUserFunction($TCA[$table]['ctrl']['label_userFunc'],$params,$this);
+				$t = $params['title'];
+			} else {
+
+					// No userFunc: Build label
+				$t = $row[$TCA[$table]['ctrl']['label']];
+				if ($TCA[$table]['ctrl']['label_alt'] && ($TCA[$table]['ctrl']['label_alt_force'] || !strcmp($t,'')))	{
+					$altFields=t3lib_div::trimExplode(',',$TCA[$table]['ctrl']['label_alt'],1);
+					$tA=array();
+					$tA[]=$t;
+					foreach ($altFields as $fN)	{
+						$t = $tA[] = trim(strip_tags($row[$fN]));
+						if (strcmp($t,'') && !$TCA[$table]['ctrl']['label_alt_force'])	break;
+					}
+					if ($TCA[$table]['ctrl']['label_alt_force'])	$t=implode(', ',$tA);
 				}
-				if ($TCA[$table]['ctrl']['label_alt_force'])	$t=implode(', ',$tA);
 			}
-			if ($prep) 	{
-				$t = htmlspecialchars(t3lib_div::fixed_lgd_cs($t,$GLOBALS['BE_USER']->uc['titleLen']));
-				if (!strcmp(trim($t),''))	$t='<em>['.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.no_title',1).']</em>';
+
+				// If the current result is empty, set it to '[No title]' (localized) and prepare for output if requested
+			if ($prep || $forceResult)	{
+				if (!strcmp(trim($t),''))	$t='['.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.no_title',1).']';
+				if ($prep)	$t = '<em>'.htmlspecialchars(t3lib_div::fixed_lgd_cs($t,$GLOBALS['BE_USER']->uc['titleLen'])).'</em>';				
 			}
+
 			return $t;
 		}
 	}

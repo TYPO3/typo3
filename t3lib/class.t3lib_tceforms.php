@@ -213,7 +213,7 @@ class t3lib_TCEforms	{
 	var $loadMD5_JS=1;
 	var $prevBorderStyle='[nothing here...]';	// Something unique...
 	var $allowUpload=0; 				// If set direct upload fields will be shown
-	var $titleLen=15; 					// $BE_USER->uc['titleLen'] but what is default??
+	var $titleLen=15; 					// @deprecated: $BE_USER->uc['titleLen'] but what is default??
 	var $defaultLanguageData = array();	// Array where records in the default language is stored. (processed by transferdata)
 	var $defaultLanguageData_diff = array();	// Array where records in the default language is stored (raw without any processing. used for making diff)
 	var $additionalPreviewLanguageData = array();
@@ -347,7 +347,7 @@ class t3lib_TCEforms	{
 		$this->edit_showFieldHelp = $BE_USER->uc['edit_showFieldHelp'];
 
 		$this->edit_docModuleUpload = $BE_USER->uc['edit_docModuleUpload'];
-		$this->titleLen = $BE_USER->uc['titleLen'];
+		$this->titleLen = $BE_USER->uc['titleLen'];		// @deprecated
 
 		$this->inline->init($this);
 	}
@@ -1953,7 +1953,7 @@ class t3lib_TCEforms	{
 						$imgs[] = '<span class="nobr">'.
 								$this->getClickMenu(t3lib_iconWorks::getIconImage($this_table,$rr,$this->backPath,'align="top" title="'.htmlspecialchars(t3lib_BEfunc::getRecordPath($rr['pid'],$perms_clause,15)).' [UID: '.$rr['uid'].']"'),$this_table, $this_uid).
 								'&nbsp;'.
-								htmlspecialchars(t3lib_div::fixed_lgd_cs($this->noTitle($rr[$GLOBALS['TCA'][$this_table]['ctrl']['label']],array('<em>','</em>')),$this->titleLen)).' <span class="typo3-dimmed"><em>['.$rr['uid'].']</em></span>'.
+								t3lib_BEfunc::getRecordTitle($this_table,$rr,TRUE).' <span class="typo3-dimmed"><em>['.$rr['uid'].']</em></span>'.
 								'</span>';
 					}
 				}
@@ -3014,7 +3014,7 @@ class t3lib_TCEforms	{
 					while(list(,$pp)=each($itemArray))	{
 						$pRec = t3lib_BEfunc::getRecordWSOL($pp['table'],$pp['id']);
 						if (is_array($pRec))	{
-							$pTitle = t3lib_div::fixed_lgd_cs($this->noTitle(t3lib_BEfunc::getRecordTitle($pp['table'], $pRec)),$this->titleLen);
+							$pTitle = t3lib_BEfunc::getRecordTitle($pp['table'], $pRec, FALSE, TRUE);
 							$pUid = $pp['table'].'_'.$pp['id'];
 							$uidList[]=$pUid;
 							$opt[]='<option value="'.htmlspecialchars($pUid).'">'.htmlspecialchars($pTitle).'</option>';
@@ -3526,9 +3526,12 @@ class t3lib_TCEforms	{
 	/**
 	 * Returns the "No title" string if the input $str is empty.
 	 *
+	 * DEPRECATED: Use t3lib_BEfunc::getRecordTitle with the $forceResult flag set.
+	 *
 	 * @param	string		The string which - if empty - will become the no-title string.
 	 * @param	array		Array with wrappin parts for the no-title output (in keys [0]/[1])
 	 * @return	string
+	 * @deprecated
 	 */
 	function noTitle($str,$wrapParts=array())	{
 		return strcmp($str,'') ? $str : $wrapParts[0].'['.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.no_title').']'.$wrapParts[1];
@@ -4073,7 +4076,7 @@ class t3lib_TCEforms	{
 
 				// Add the item:
 			$items[] = array(
-				t3lib_div::fixed_lgd_cs($lPrefix.strip_tags(t3lib_BEfunc::getRecordTitle($f_table,$row)),$this->titleLen),
+				$lPrefix.strip_tags(t3lib_BEfunc::getRecordTitle($f_table,$row)),
 				$uidPre.$row['uid'],
 				$icon
 			);

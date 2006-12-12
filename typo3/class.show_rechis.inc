@@ -781,9 +781,7 @@ class recordHistory {
 		$out = $table.':'.$uid;
 		if ($labelField = $TCA[$table]['ctrl']['label'])	{
 			$record = t3lib_BEfunc::getRecordRaw($table, 'uid='.intval($uid));
-			if (strlen(trim($record[$labelField])))	{
-				$out .= ' ('.htmlspecialchars($record[$labelField]).')';
-			}
+			$out .= ' ('.t3lib_BEfunc::getRecordTitle($table, $record, TRUE).')';
 		}
 		return $out;
 	}

@@ -218,7 +218,7 @@ class TBE_browser_recordList extends localRecordList {
 			$code = htmlspecialchars(t3lib_div::fixed_lgd_cs($code,$this->fixedL));
 		}
 
-		$title = t3lib_BEfunc::getRecordTitle($table,$row);
+		$title = t3lib_BEfunc::getRecordTitle($table,$row,FALSE,TRUE);
 		$ficon = t3lib_iconWorks::getIcon($table,$row);
 		$aOnClick = "return insertElement('".$table."', '".$row['uid']."', 'db', ".t3lib_div::quoteJSvalue($title).", '', '', '".$ficon."');";
 		$ATag = '<a href="#" onclick="'.$aOnClick.'">';

@@ -291,7 +291,7 @@ class SC_move_el {
 
 				// Headerline: Icon, record title:
 			$hline = t3lib_iconWorks::getIconImage($this->table,$elRow,$BACK_PATH,' id="c-recIcon" title="'.htmlspecialchars(t3lib_BEfunc::getRecordIconAltText($elRow,$this->table)).'"');
-			$hline.= t3lib_BEfunc::getRecordTitle($this->table,$elRow,1);
+			$hline.= t3lib_BEfunc::getRecordTitle($this->table,$elRow,TRUE);
 
 				// Make-copy checkbox (clicking this will reload the page with the GET var makeCopy set differently):
 			$onClick = 'window.location.href=\''.t3lib_div::linkThisScript(array('makeCopy'=>!$this->makeCopy)).'\';';
@@ -322,11 +322,11 @@ class SC_move_el {
 							if ($BE_USER->isInWebMount($pidPageInfo['pid'],$this->perms_clause))	{
 								$code.= '<a href="'.htmlspecialchars(t3lib_div::linkThisScript(array('uid'=>intval($pageinfo['pid']),'moveUid'=>$this->moveUid))).'">'.
 									'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/i/pages_up.gif','width="18" height="16"').' alt="" />'.
-									t3lib_BEfunc::getRecordTitle('pages',$pidPageInfo,1).
+									t3lib_BEfunc::getRecordTitle('pages',$pidPageInfo,TRUE).
 									'</a><br />';
 							} else {
 								$code.= t3lib_iconWorks::getIconImage('pages',$pidPageInfo,$BACK_PATH,'').
-									t3lib_BEfunc::getRecordTitle('pages',$pidPageInfo,1).
+									t3lib_BEfunc::getRecordTitle('pages',$pidPageInfo,TRUE).
 									'<br />';
 							}
 						}
@@ -360,7 +360,7 @@ class SC_move_el {
 
 						// Headerline for the parent page: Icon, record title:
 					$hline = t3lib_iconWorks::getIconImage('pages',$pageinfo,$BACK_PATH,' title="'.htmlspecialchars(t3lib_BEfunc::getRecordIconAltText($pageinfo,'pages')).'"');
-					$hline.= t3lib_BEfunc::getRecordTitle('pages',$pageinfo,1);
+					$hline.= t3lib_BEfunc::getRecordTitle('pages',$pageinfo,TRUE);
 
 						// Load SHARED page-TSconfig settings and retrieve column list from there, if applicable:
 					$modTSconfig_SHARED = t3lib_BEfunc::getModTSconfig($this->page_id,'mod.SHARED');		// SHARED page-TSconfig settings.
@@ -380,11 +380,11 @@ class SC_move_el {
 							if ($BE_USER->isInWebMount($pidPageInfo['pid'],$this->perms_clause))	{
 								$code.= '<a href="'.htmlspecialchars(t3lib_div::linkThisScript(array('uid'=>intval($pageinfo['pid']),'moveUid'=>$this->moveUid))).'">'.
 									'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/i/pages_up.gif','width="18" height="16"').' alt="" />'.
-									t3lib_BEfunc::getRecordTitle('pages',$pidPageInfo,1).
+									t3lib_BEfunc::getRecordTitle('pages',$pidPageInfo,TRUE).
 									'</a><br />';
 							} else {
 								$code.= t3lib_iconWorks::getIconImage('pages',$pidPageInfo,$BACK_PATH,'').
-									t3lib_BEfunc::getRecordTitle('pages',$pidPageInfo,1).
+									t3lib_BEfunc::getRecordTitle('pages',$pidPageInfo,TRUE).
 									'<br />';
 							}
 						}

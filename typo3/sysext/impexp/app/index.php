@@ -785,7 +785,7 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 				<tr class="bgColor4">
 					<td><strong>'.$LANG->getLL('makeconfig_record',1).'</strong></td>
 					<td>'.t3lib_iconworks::getIconImage($tName,$rec,$GLOBALS['BACK_PATH'],' align="top"').
-						t3lib_BEfunc::getRecordTitle($tName,$rec,1).
+						t3lib_BEfunc::getRecordTitle($tName,$rec,TRUE).
 						'<input type="hidden" name="tx_impexp[record][]" value="'.htmlspecialchars($tName.':'.$rUid).'" /></td>
 				</tr>';
 			}
@@ -806,7 +806,7 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 				if ($GLOBALS['BE_USER']->check('tables_select',$tName))	{
 					$rec = t3lib_BEfunc::getRecordWSOL('pages', $rParts[1]);
 					$tblList.='Table "'.$tName.'" from '.t3lib_iconworks::getIconImage('pages',$rec,$GLOBALS['BACK_PATH'],' align="top"').
-					t3lib_BEfunc::getRecordTitle('pages',$rec,1).
+					t3lib_BEfunc::getRecordTitle('pages',$rec,TRUE).
 					'<input type="hidden" name="tx_impexp[list][]" value="'.htmlspecialchars($ref).'" /><br/>';
 				}
 			}

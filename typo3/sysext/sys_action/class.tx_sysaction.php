@@ -224,7 +224,7 @@ class tx_sysaction extends mod_user_task {
 								<td nowrap class="bgColor4">'.
 									'<a href="'.$this->backPath.'alt_doc.php?returnUrl='.rawurlencode(t3lib_div::getIndpEnv("REQUEST_URI")).'&edit['.$el["table"].']['.$el["id"].']=edit">'.
 									t3lib_iconworks::getIconImage($el["table"],$dbAnalysis->results[$el["table"]][$el["id"]],$this->backPath,'hspace="2" align="top" title="'.htmlspecialchars($path).'"').
-									t3lib_BEfunc::getRecordTitle($el["table"],$dbAnalysis->results[$el["table"]][$el["id"]],1).'</a></td>
+									t3lib_BEfunc::getRecordTitle($el["table"],$dbAnalysis->results[$el["table"]][$el["id"]],TRUE).'</a></td>
 								</tr>';
 						}
 						$actionContent = '<table border=0 cellpadding=0 cellspacing=2>'.implode("",$lines).'</table>';

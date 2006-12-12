@@ -384,7 +384,7 @@ class tx_cms_layout extends recordList {
 		$RTE = $GLOBALS['BE_USER']->isRTE();
 		$lMarg=1;
 		$showHidden = $this->tt_contentConfig['showHidden']?'':t3lib_BEfunc::BEenableFields('tt_content');
-		$pageTitleParamForAltDoc='&recTitle='.rawurlencode(t3lib_BEfunc::getRecordTitle('pages',t3lib_BEfunc::getRecordWSOL('pages',$id),1));
+		$pageTitleParamForAltDoc='&recTitle='.rawurlencode(t3lib_BEfunc::getRecordTitle('pages',t3lib_BEfunc::getRecordWSOL('pages',$id),TRUE));
 
 			// Get labels for CTypes and tt_content element fields in general:
 		$this->CType_labels =array();

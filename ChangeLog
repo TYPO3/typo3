@@ -1,3 +1,6 @@
+2006-12-12  Ingmar Schlecht  <ingmar@typo3.org>
+
+	* Better getRecordTitle() function introducing label_userFunc (Thanks to David Brühlmeier for this patch! See http://lists.netfielders.de/pipermail/typo3-team-core/2006-December/006521.html for details.)
 
 2006-12-11  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 

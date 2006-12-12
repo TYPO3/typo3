@@ -248,7 +248,7 @@ class SC_db_new_content_el {
 
 			$elRow = t3lib_BEfunc::getRecordWSOL('pages',$this->id);
 			$hline = t3lib_iconWorks::getIconImage('pages',$elRow,$BACK_PATH,' title="'.htmlspecialchars(t3lib_BEfunc::getRecordIconAltText($elRow,'pages')).'" align="top"');
-			$hline.= t3lib_BEfunc::getRecordTitle('pages',$elRow,1);
+			$hline.= t3lib_BEfunc::getRecordTitle('pages',$elRow,TRUE);
 			$this->content.=$this->doc->section('',$hline,0,1);
 			$this->content.=$this->doc->spacer(10);
 

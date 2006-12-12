@@ -709,7 +709,7 @@ class SC_alt_doc {
 										// Setting visual path / title of form:
 									$this->generalPathOfForm = $this->tceforms->getRecordPath($table,$rec);
 									if (!$this->storeTitle)	{
-										$this->storeTitle = $this->recTitle ? htmlspecialchars($this->recTitle) : t3lib_BEfunc::getRecordTitle($table,$rec,1);
+										$this->storeTitle = $this->recTitle ? htmlspecialchars($this->recTitle) : t3lib_BEfunc::getRecordTitle($table,$rec,TRUE);
 									}
 
 										// Setting variables in TCEforms object:

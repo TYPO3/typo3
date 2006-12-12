@@ -540,7 +540,7 @@ class t3lib_positionMap {
 	 */
 	function getRecordHeader($row)	{
 		$line = t3lib_iconWorks::getIconImage('tt_content',$row,$this->backPath,' align="top" title="'.htmlspecialchars(t3lib_BEfunc::getRecordIconAltText($row,'tt_content')).'"');
-		$line.= t3lib_BEfunc::getRecordTitle('tt_content',$row,1);
+		$line.= t3lib_BEfunc::getRecordTitle('tt_content',$row,TRUE);
 		return $this->wrapRecordTitle($line,$row);
 	}
 

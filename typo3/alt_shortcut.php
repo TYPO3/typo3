@@ -394,7 +394,7 @@ class SC_alt_shortcut {
 		if (!$this->editLoaded && t3lib_extMgm::isLoaded('cms'))	{
 				$editIdCode = '<td nowrap="nowrap">'.$LANG->getLL('shortcut_editID',1).': <input type="text" value="'.($this->editError?htmlspecialchars($this->editPage):'').'" name="editPage"'.$this->doc->formWidth(15).' onchange="submitEditPage(this.value);" />'.
 					($this->editError?'&nbsp;<strong><span class="typo3-red">'.htmlspecialchars($this->editError).'</span></strong>':'').
-					(is_array($this->theEditRec)?'&nbsp;<strong>'.$LANG->getLL('shortcut_loadEdit',1).' \''.t3lib_BEfunc::getRecordTitle('pages',$this->theEditRec,1).'\'</strong> ('.htmlspecialchars($this->editPath).')':'').
+					(is_array($this->theEditRec)?'&nbsp;<strong>'.$LANG->getLL('shortcut_loadEdit',1).' \''.t3lib_BEfunc::getRecordTitle('pages',$this->theEditRec,TRUE).'\'</strong> ('.htmlspecialchars($this->editPath).')':'').
 					($this->searchFor?'&nbsp;'.$LANG->getLL('shortcut_searchFor',1).' <strong>\''.htmlspecialchars($this->searchFor).'\'</strong>':'').
 					'</td>';
 		} else $editIdCode = '';

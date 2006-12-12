@@ -580,14 +580,11 @@ class localRecordList extends recordList {
 			// Overriding with versions background color if any:
 		$row_bgColor = $row['_CSSCLASS'] ? ' class="'.$row['_CSSCLASS'].'"' : $row_bgColor;
 
-			// Initialization
-		$alttext = t3lib_BEfunc::getRecordIconAltText($row,$table);
-		$recTitle = t3lib_BEfunc::getRecordTitle($table,$row);
-
 			// Incr. counter.
 		$this->counter++;
 
 			// The icon with link
+		$alttext = t3lib_BEfunc::getRecordIconAltText($row,$table);
 		$iconImg = t3lib_iconWorks::getIconImage($table,$row,$this->backPath,'title="'.htmlspecialchars($alttext).'"'.($indent ? ' style="margin-left: '.$indent.'px;"' : ''));
 		$theIcon = $this->clickMenuEnabled ? $GLOBALS['SOBE']->doc->wrapClickMenuOnIcon($iconImg,$table,$row['uid']) : $iconImg;
 
@@ -595,21 +592,7 @@ class localRecordList extends recordList {
 		$theData = Array();
 		foreach($this->fieldArray as $fCol)	{
 			if ($fCol==$titleCol)	{
-				if ($GLOBALS['TCA'][$table]['ctrl']['label_alt'] && ($GLOBALS['TCA'][$table]['ctrl']['label_alt_force'] || !strcmp($row[$fCol],'')))	{
-					$altFields=t3lib_div::trimExplode(',',$GLOBALS['TCA'][$table]['ctrl']['label_alt'],1);
-					$tA=array();
-					if ($row[$fCol])	{
-						$tA[] = t3lib_BEfunc::getProcessedValueExtra($table,$fCol,$row[$fCol],$GLOBALS['BE_USER']->uc['titleLen'],$row['uid']);
-					}
-					while(list(,$fN)=each($altFields))	{
-						$t = t3lib_BEfunc::getProcessedValueExtra($table,$fN,$row[$fN],$GLOBALS['BE_USER']->uc['titleLen'],$row['uid']);
-						if($t)	{ $tA[] = $t; }
-					}
-					if ($GLOBALS['TCA'][$table]['ctrl']['label_alt_force'])	{ $t=implode(', ',$tA); }
-					if ($t)	{ $recTitle = $t; }
-				} else {
-					$recTitle = t3lib_BEfunc::getProcessedValueExtra($table,$fCol,$row[$fCol],$GLOBALS['BE_USER']->uc['titleLen'],$row['uid']);
-				}
+				$recTitle = t3lib_BEfunc::getRecordTitle($table,$row,FALSE,TRUE);
 				$theData[$fCol] = $this->linkWrapItems($table,$row['uid'],$recTitle,$row);
 			} elseif ($fCol=='pid') {
 				$theData[$fCol]=$row[$fCol];
