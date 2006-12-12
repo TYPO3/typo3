@@ -8,13 +8,16 @@
 // The point is to have only ONE script dealing with the environment initialization while the actual processing is all a developer should care for.
 // *****************************************
 
+if (PHP_SAPI!='cli')	{
+	die('ERROR: Not called from a command line interface (eg. a shell or scheduler).'.chr(10));
+}
+
 	// Defining circumstances for CLI mode:
 define('TYPO3_cliMode', TRUE);
 
 	// Defining PATH_thisScript here: Must be the ABSOLUTE path of this script in the right context:
 	// This will work as long as the script is called by it's absolute path!
-$temp_PATH_thisScript = isset($_ENV['_']) ? $_ENV['_'] : $_SERVER['_'];
-$BACK_PATH = '';
+$temp_PATH_thisScript = isset($_SERVER['argv'][0]) ? $_SERVER['argv'][0] : (isset($_ENV['_']) ? $_ENV['_'] : $_SERVER['_']);
 
 	// Alternatively, in some environments, we might be able to figure out the absolute path (with no "../" and "./" in) from environment variables...
 if ($temp_PATH_thisScript{0}!='/')	{
@@ -26,11 +29,11 @@ if ($temp_PATH_thisScript{0}!='/')	{
 }
 define('PATH_thisScript',$temp_PATH_thisScript);
 
-	// First argument is a key that 
-define('TYPO3_cliKey', $_SERVER["argv"][0]);
+	// First argument is a key that points to the script configuration
+define('TYPO3_cliKey', $_SERVER['argv'][1]);
 
 	// Include init file:
-require(dirname(PATH_thisScript).'/'.$BACK_PATH.'init.php');
+require(dirname(PATH_thisScript).'/init.php');
 
 if (defined('TYPO3_cliInclude'))	{
 	include(TYPO3_cliInclude);
