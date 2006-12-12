@@ -2,6 +2,7 @@
 2006-12-12  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
 	* Made cli_dispatch.phpsh work when called as "php cli_dispatch.phpsh" and protect from being called on a non CLI
+	* Make TYPO3 log page paths in UTF-8 if config.stat_apache_niceTitle = utf-8
 
 2006-12-12  Karsten Dambekalns  <karsten@typo3.org>
 

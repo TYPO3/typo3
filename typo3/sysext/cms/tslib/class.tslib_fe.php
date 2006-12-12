@@ -1830,14 +1830,25 @@
 			// Initialize charset settings etc.
 		$this->initLLvars();
 
-			// We want nice names, so we need to know the charset
+			// We want nice names, so we need to handle the charset
 		if ($setStatPageName)	{
-			if ($this->config['config']['stat_apache_niceTitle'])   {
+				// Make life easier and accept variants for utf-8
+			if (preg_match('/utf-?8/i', $this->config['config']['stat_apache_niceTitle']))	{
+				$this->config['config']['stat_apache_niceTitle'] = 'utf-8';
+			}
+			if ($this->config['config']['stat_apache_niceTitle'] == 'utf-8')	{
+				$shortTitle = $this->csConvObj->utf8_encode($this->page['title'],$this->renderCharset);
+			} elseif ($this->config['config']['stat_apache_niceTitle'])	{
 				$shortTitle = $this->csConvObj->specCharsToASCII($this->renderCharset,$this->page['title']);
 			} else {
 				$shortTitle = $this->page['title'];
 			}
-			$shortTitle = substr(preg_replace('/[^.[:alnum:]_-]/','_',$shortTitle),0,30);
+			$len = t3lib_div::intInRange($this->config['config']['stat_apache_pageLen'],1,100,30);
+			if ($this->config['config']['stat_apache_niceTitle'] == 'utf-8')	{
+				$shortTitle = rawurlencode($this->csConvObj->substr('utf-8',$shortTitle,0,$len));
+			} else {
+				$shortTitle = substr(preg_replace('/[^.[:alnum:]_-]/','_',$shortTitle),0,$len);
+			}
 			$pageName = $this->config['config']['stat_apache_pagenames'] ? $this->config['config']['stat_apache_pagenames'] : '[path][title]--[uid].html';
 			$pageName = str_replace('[title]', $shortTitle ,$pageName);
 			$pageName = str_replace('[uid]',$this->page['uid'],$pageName);
@@ -1849,12 +1860,25 @@
 				array_shift($temp);
 			}
 			$len = t3lib_div::intInRange($this->config['config']['stat_titleLen'],1,100,20);
-			if ($this->config['config']['stat_apache_niceTitle'])   {
+			if ($this->config['config']['stat_apache_niceTitle'] == 'utf-8')	{
+				$path = '';
+				$c = count($temp);
+				for ($i=0; $i<$c; $i++)	{
+					if ($temp[$i]['uid'])	{
+						$p = $this->csConvObj->crop('utf-8',$this->csConvObj->utf8_encode($temp[$i]['title'],$this->renderCharset),$len,"\xE2\x80\xA6");	// U+2026; HORIZONTAL ELLIPSIS 
+						$path .= '/' . rawurlencode($p);
+					}
+				}
+			} elseif ($this->config['config']['stat_apache_niceTitle'])	{
 				$path = $this->csConvObj->specCharsToASCII($this->renderCharset,$this->sys_page->getPathFromRootline($temp,$len));
 			} else {
 				$path = $this->sys_page->getPathFromRootline($temp,$len);
 			}
-			$this->config['stat_vars']['pageName'] = str_replace('[path]', preg_replace('/[^.[:alnum:]\/_-]/','_',$path.'/'), $pageName);
+			if ($this->config['config']['stat_apache_niceTitle'] == 'utf-8')	{
+				$this->config['stat_vars']['pageName'] = str_replace('[path]', $path.'/', $pageName);
+			} else {
+				$this->config['stat_vars']['pageName'] = str_replace('[path]', preg_replace('/[^.[:alnum:]\/_-]/','_',$path.'/'), $pageName);
+			}
 		}
 
 			// No cache
