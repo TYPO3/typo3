@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2005 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2006 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -101,6 +101,7 @@ $BE_USER->modAccess($MCONF,1);
 
 	// Include libraries of various kinds used inside:
 $LANG->includeLLFile('EXT:lang/locallang_mod_user_ws.xml');
+$LANG->includeLLFile('EXT:lang/locallang_misc.xml');
 require_once(PATH_t3lib.'class.t3lib_scbase.php');
 require_once(PATH_typo3.'mod/user/ws/class.wslib.php');
 require_once(PATH_t3lib.'class.t3lib_diff.php');
@@ -169,9 +170,9 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 				0 => $LANG->getLL('filter_all'),
 			),
 			'display' => array(
-				0 => '[Live workspace]',
-				-98 => 'Draft Workspaces',
-				-99 => 'All',
+				0 => '['.$LANG->getLL('shortcut_onlineWS').']',
+				-98 => $LANG->getLL('label_offlineWSes'),
+				-99 => $LANG->getLL('label_allWSes'),
 				-1 => '[Default Draft]'
 			),
 			'diff' => array(
@@ -365,7 +366,7 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 		}
 		$menu.= t3lib_BEfunc::getFuncMenu(0,'SET[diff]',$this->MOD_SETTINGS['diff'],$this->MOD_MENU['diff']);
 		if ($GLOBALS['BE_USER']->workspace!==0)	{
-			$menu.= t3lib_BEfunc::getFuncCheck(0,'SET[expandSubElements]',$this->MOD_SETTINGS['expandSubElements']).' Show sub-elements - ';
+			$menu.= t3lib_BEfunc::getFuncCheck(0,'SET[expandSubElements]',$this->MOD_SETTINGS['expandSubElements']).' '.$LANG->getLL('label_showsubelements').' ';
 		}
 
 			// Create header:
@@ -373,11 +374,11 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 		$description = '';
 		switch($GLOBALS['BE_USER']->workspace)	{
 			case 0:
-				$title = t3lib_iconWorks::getIconImage('sys_workspace', array(), $this->doc->backPath, ' align="top"').'[LIVE workspace]';
+				$title = t3lib_iconWorks::getIconImage('sys_workspace', array(), $this->doc->backPath, ' align="top"').'['.$LANG->getLL('shortcut_onlineWS').']';
 				$description = $LANG->getLL('workspace_description_live');
 			break;
 			case -1:
-				$title = t3lib_iconWorks::getIconImage('sys_workspace', array(), $this->doc->backPath, ' align="top"').'[Draft workspace]';
+				$title = t3lib_iconWorks::getIconImage('sys_workspace', array(), $this->doc->backPath, ' align="top"').'['.$LANG->getLL('shortcut_offlineWS').']';
 				$description = $LANG->getLL('workspace_description_draft');
 			break;
 			case -99:
@@ -425,7 +426,7 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 			</tr>
 			<tr>
 				<td class="bgColor2" nowrap="nowrap"><b>' . $LANG->getLL('label_status') . '</b>&nbsp;</td>
-				<td class="bgColor4">Access level: ' . $GLOBALS['LANG']->getLL('workspace_list_access_' . $wsAccess['_ACCESS']) . '</td>
+				<td class="bgColor4">'.$LANG->getLL('label_accesslevel').' ' . $GLOBALS['LANG']->getLL('workspace_list_access_' . $wsAccess['_ACCESS']) . '</td>
 			</tr>' : '').'
 		</table>
 		<br/>
@@ -536,7 +537,7 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 	 * @return	array		Table rows, see displayWorkspaceOverview()
 	 */
 	function displayWorkspaceOverview_list($pArray, $tableRows=array(), $c=0, $warnAboutVersions=FALSE)	{
-		global $TCA;
+		global $TCA, $LANG;
 
 			// Initialize:
 		$fullColSpan = ($this->showWorkspaceCol?9:8);
@@ -614,7 +615,7 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 										$diffCode = '';
 										list($diffHTML,$diffPct) = $this->createDiffView($table, $rec_off, $rec_on);
 										if ($rec_on['t3ver_state']==1)	{	// New record:
-											$diffCode.= $this->doc->icons(1).'New element<br/>';	// TODO Localize?
+											$diffCode.= $this->doc->icons(1).$LANG->getLL('label_newrecord').'<br/>';
 											$diffCode.= $diffHTML;
 										} elseif ($rec_off['t3ver_state']==2)	{
 											$diffCode.= $this->doc->icons(2).'Deleted element<br/>';
@@ -638,17 +639,17 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 
 									switch($vType) {
 										case 'element':
-											$swapLabel = ' [Element]';	// TODO Localize?
+											$swapLabel = ' ['.$LANG->getLL('label_element').']';
 											$swapClass = 'ver-element';	// Do not translate!
 											$warnAboutVersions_nonPages = $warnAboutVersions_page;	// Setting this if sub elements are found with a page+content (must be rendered prior to this of course!)
 										break;
 										case 'page':
-											$swapLabel = ' [Page]';	// TODO Localize?
+											$swapLabel = ' ['.$LANG->getLL('label_page').']';
 											$swapClass = 'ver-page';	// Do not translate!
 											$warnAboutVersions_page = !$this->showWorkspaceCol;		// This value is true only if multiple workspaces are shown and we need the opposite here.
 										break;
 										case 'branch':
-											$swapLabel = ' [Branch]';	// TODO Localize?
+											$swapLabel = ' ['.$LANG->getLL('label_branch').']';	
 											$swapClass = 'ver-branch';	// Do not translate!
 											$warnAboutVersions_next = !$this->showWorkspaceCol;		// This value is true only if multiple workspaces are shown and we need the opposite here.
 										break;
@@ -664,7 +665,7 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 
 										// Create version element:
 									$versionsInOtherWS = $this->versionsInOtherWS($table, $rec_on['uid']);
-									$versionsInOtherWSWarning = $versionsInOtherWS && $GLOBALS['BE_USER']->workspace!==0 ? '<br/>'.$this->doc->icons(2).'Other version(s) in workspace '.$versionsInOtherWS : '';
+									$versionsInOtherWSWarning = $versionsInOtherWS && $GLOBALS['BE_USER']->workspace!==0 ? '<br/>'.$this->doc->icons(2).$LANG->getLL('label_otherversions').' '.$versionsInOtherWS : '';
 									$multipleWarning = (!$mainCell && $GLOBALS['BE_USER']->workspace!==0? '<br/>'.$this->doc->icons(3).'<b>Multiple versions in same workspace!</b>' : '');
 									$verWarning = $warnAboutVersions || ($warnAboutVersions_nonPages && $GLOBALS['TCA'][$table]['ctrl']['versioning_followPages'])? '<br/>'.$this->doc->icons(3).'<b>Version inside version!</b>' : '';
 									$verElement = $icon.
@@ -744,35 +745,36 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 	 * @return	string		HTML content, mainly link tags and images.
 	 */
 	function displayWorkspaceOverview_stageCmd($table,&$rec_off)	{
-#debug($rec_off['t3ver_stage']);
+		global $LANG;
+
 		switch((int)$rec_off['t3ver_stage'])	{
 			case 0:
 				$sId = 1;
-				$sLabel = 'Editing';	// TODO Localize
+				$sLabel = $LANG->getLL('stage_editing');
 				$color = '#666666';	// TODO Use CSS?
- 				$label = 'Comment for Reviewer:';	// TODO Localize
-				$titleAttrib = 'Send to Review';	// TODO Localize
+ 				$label = $LANG->getLL('label_commentforreviewer');
+				$titleAttrib = $LANG->getLL('label_sendtoreview');
 			break;
 			case 1:
 				$sId = 10;
-				$sLabel = 'Review';	// TODO Localize
+				$sLabel = $LANG->getLL('label_review');
 				$color = '#6666cc';	// TODO Use CSS?
-				$label = 'Comment for Publisher:';	// TODO Localize
-				$titleAttrib = 'Approve for Publishing';	// TODO Localize
+				$label = $LANG->getLL('label_commentforpublisher');
+				$titleAttrib = $LANG->getLL('label_approveforpublishing');
 			break;
 			case 10:
-				$sLabel = 'Publish';	// TODO Localize
+				$sLabel = $LANG->getLL('label_publish');
 				$color = '#66cc66';	// TODO Use CSS?
 			break;
 			case -1:
-				$sLabel = $this->doc->icons(2).'Rejected';	// TODO Localize
+				$sLabel = $this->doc->icons(2).$LANG->getLL('rejected');
 				$sId = 0;
 				$color = '#ff0000';	// TODO Use CSS?
-				$label = 'Comment:';	// TODO Localize
-				$titleAttrib = 'Reset stage';	// TODO Localize
+				$label = $LANG->getLL('stage_label_user_comment');
+				$titleAttrib = $LANG->getLL('label_resetstage');
 			break;
 			default:
-				$sLabel = 'Undefined';	// TODO Localize
+				$sLabel = $LANG->getLL('label_undefined');
 				$sId = 0;
 				$color = '';
 			break;
@@ -782,8 +784,7 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 		$raiseOk = !$GLOBALS['BE_USER']->workspaceCannotEditOfflineVersion($table,$rec_off);
 
 		if ($raiseOk && $rec_off['t3ver_stage']!=-1)	{
-			// TODO Localize
-			$onClick = 'var commentTxt=window.prompt("Please explain why you reject:","");
+			$onClick = 'var commentTxt=window.prompt("'.$LANG->getLL('explain_reject').'","");
 							if (commentTxt!=null) {window.location.href="'.$this->doc->issueCommand(
 							'&cmd['.$table.']['.$rec_off['uid'].'][version][action]=setStage'.
 							'&cmd['.$table.']['.$rec_off['uid'].'][version][stageId]=-1'
@@ -792,7 +793,7 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 				// Reject:
 			$actionLinks.=
 				'<a href="#" onclick="'.htmlspecialchars($onClick).'">'.
-				'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/down.gif','width="14" height="14"').' alt="" align="top" title="Reject" />'.
+				'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/down.gif','width="14" height="14"').' alt="" align="top" title="'.$LANG->getLL('label_reject').'" />'.
 				'</a>';
 		} else {
 				// Reject:
@@ -972,7 +973,8 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 
 		$pArray[$pUid] = $cEl['title'];
 		array_shift($rlArr);
-
+		
+		
 			// If there are elements left in the root line, call this function recursively (to build $pArray in depth)
 		if (count($rlArr))	{
 			if (!isset($pArray[$pUid.'.']))	$pArray[$pUid.'.'] = array();
@@ -991,15 +993,15 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 	 * @return	string		HTML content.
 	 */
 	function subElements($uid,$treeLevel,$origId=0)	{
-		global $TCA;
+		global $TCA, $LANG;
 
 		if ($GLOBALS['BE_USER']->workspace===0 || !$this->MOD_SETTINGS['expandSubElements'])	{	// In online workspace we have a reduced view because otherwise it will bloat the listing:
 			return '<br/>
 					<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/ol/joinbottom.gif','width="18" height="16"').' align="top" alt="" title="" />'.
 					($origId ?
 						'<a href="'.htmlspecialchars($this->doc->backPath.t3lib_extMgm::extRelPath('version').'cm1/index.php?id='.$uid.'&details='.rawurlencode('pages:'.$uid).'&returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))).'">'.
-						'<span class="typo3-dimmed"><em>[Sub elements, click for details]</em><span></a>' :
-						'<span class="typo3-dimmed"><em>[Sub elements]</em><span>');
+						'<span class="typo3-dimmed"><em>['.$LANG->getLL('label_subelementsdetails').']</em><span></a>' :
+						'<span class="typo3-dimmed"><em>['.$LANG->getLL('label_subelements').']</em><span>');
 		} else {	// For an offline workspace, show sub elements:
 
 			$tCell = array();
@@ -1832,17 +1834,15 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 	 * @return	array		Generated record (see <code>sys_workspaces</code> for structure)
 	 */
 	function workspaceList_createFakeWorkspaceRecord($uid)	{
-		global	$BE_USER;
+		global	$BE_USER, $LANG;
 
 		$record = array(
 			'uid' => $uid,
 			'pid' => 0,				// always 0!
 			'tstamp' => 0,			// does not really matter
 			'deleted' => 0,
-			// TODO Localize all strings below
-			'title' => ($uid == 0 ? '[Live workspace]' : '[Draft workspace]'),		// TODO Localize this!
-			// TODO Localize all strings below
-			'description' => ($uid == 0 ? 'Live workspace' : 'Draft workspace'),	// TODO Localize this!
+			'title' => ($uid == 0 ? '['.$LANG->getLL('shortcut_onlineWS').']' : '['.$LANG->getLL('shortcut_offlineWS').']'),
+			'description' => ($uid == 0 ? $LANG->getLL('shortcut_onlineWS') : $LANG->getLL('shortcut_offlineWS')),	
 			'adminusers' => '',
 			'members' => '',
 			'reviewers' => '',

@@ -100,6 +100,30 @@
 			<label index="workspace_list_db_mount_point_live">Mount points from user profile are used.</label>
 			<label index="workspace_list_db_mount_point_draft">Mount points from user profile are used.</label>
 			<label index="workspace_list_db_mount_point_custom">Mount points from user profile are used.</label>
+			<label index="label_reject">Reject</label>
+			<label index="label_review">Review</label>
+			<label index="label_sendtoreview">Send to review</label>
+			<label index="label_approveforpublishing">Approve for publishing</label>
+			<label index="stage_editing">Editing</label>
+			<label index="stage_review">Review</label>
+			<label index="stage_publish">Publish</label>
+			<label index="label_subelements">Sub elements</label>
+			<label index="label_subelementsdetails">Sub elements, click for details</label>
+			<label index="label_commentforreviewer">Comment for Reviewer:</label>
+			<label index="label_commentforpublisher">Comment for Publisher:</label>
+			<label index="label_resetstage">Reset stage</label>
+			<label index="label_undefined">Undefined</label>
+			<label index="explain_reject">Please explain why you reject:</label>
+			<label index="label_element">Element</label>
+			<label index="label_page">Page</label>
+			<label index="label_branch">Branch</label>
+			<label index="label_newrecord">New element</label>
+			<label index="label_otherversions">Other version(s) in workspace</label>
+			<label index="label_rejected">Rejected</label>
+			<label index="label_showsubelements">Show sub elements</label>
+			<label index="label_onlymychanges">Show only my changes</label>
+			<label index="label_offlineWSes">Draft workspaces</label>
+			<label index="label_allWSes">All workspaces</label>
 		</languageKey>
 	</data>
 </T3locallang>
