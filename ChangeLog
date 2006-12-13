@@ -1,4 +1,8 @@
 
+2006-12-13  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+
+	* Fix bug #2935: invalid HTML in Web>Versioning (quotes)
+
 2006-12-11  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
 	* Add page tree update to publish button of module Web>Versioning

@@ -396,7 +396,7 @@ class tx_version_cm1 extends t3lib_SCbase {
 					<td title="t3ver_oid - Reference to live version UID">oid</td>
 					<td title="t3ver_id - Version number, incremental integer">id</td>
 					<td title="t3ver_wsid - Workspace ID. There can be only one version of an element per ID (except ID zero).">wsid</td>
-					<td title="t3ver_state - Special states of a version: 1=Placeholder for "New". 2=Marked deleted.">state</td>
+					<td title="t3ver_state - Special states of a version: 1=Placeholder for &quot;New&quot;. 2=Marked deleted.">state</td>
 					<td title="t3ver_stage - Publishing stage: Editing (0), review (1), publish (10), rejected (-1).">stage</td>
 					<td title="t3ver_count - Life cycle counter. Incremented each time element is unpublished.">count</td>
 					<td>pid</td>
