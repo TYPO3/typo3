@@ -281,13 +281,15 @@ class t3lib_BEfunc	{
 	 * @param	string		Table name (not necessarily in TCA)
 	 * @param	string		WHERE clause
 	 * @param	string		$fields is a list of fields to select, default is '*'
-	 * @return	array		First row found, if any
+	 * @return	array		First row found, if any, FALSE otherwise
 	 */
 	function getRecordRaw($table,$where='',$fields='*')	{
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($fields, $table, $where);
-		if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
-			return $row;
+		$row = FALSE;
+		if (FALSE !== ($res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($fields, $table, $where, '', '', '1')))	{
+			$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
+			$GLOBALS['TYPO3_DB']->sql_free_result($res);
 		}
+		return $row;
 	}
 
 	/**
