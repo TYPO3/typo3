@@ -1,3 +1,11 @@
+2006-12-14  Ingmar Schlecht  <ingmar@typo3.org>
+
+	* Committed a bunch of bugfixes and new features related to IRRE (Thanks to Oliver Hader!):
+		- Automatic sorting by a "sortby" field (e.g. the title)
+		- The possibility to have relations from different parent pages to a child table
+		- Expanded/collapsed states are saved in uc now
+		- Bugfixes to #4616 and #4617 concerning IRRE relation to the same table
+		- Bugfix for using RTEs in IRRE records (works even inside of nested tabs now)
 
 2006-12-13  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 

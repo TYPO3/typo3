@@ -881,14 +881,22 @@ HTMLArea.prototype.generate = function () {
  * Size the iframe according to user's prefs or initial textarea
  */
 HTMLArea.prototype.sizeIframe = function(diff) {
+	var i;
 	var height = (this.config.height == "auto" ? (this._textArea.style.height) : this.config.height);
 	var textareaHeight = height;
+
+	var inlineObject = RTEarea[this._editorNumber].tceformsInlineObject;
+	var parentElements = RTEarea[this._editorNumber].tceformsDynTabs.split(',');
+	if (inlineObject) parentElements.push(inlineObject);
+
+	var dimensions = this.accessParentElements(parentElements, 'this.getDimensions()');
+			
 	if(height.indexOf("%") == -1) {
 		height = parseInt(height) - diff;		
 		if (this.config.sizeIncludesToolbar) {
-			this._initialToolbarOffsetHeight = this._toolbar.offsetHeight;
-			height -= this._toolbar.offsetHeight;
-			height -= this._statusBar.offsetHeight;
+			this._initialToolbarOffsetHeight = dimensions.toolbar.height;
+			height -= dimensions.toolbar.height;
+			height -= dimensions.statusbar.height;
 		}
 		if (height < 0) height = 0;
 		textareaHeight = (height - 4);
@@ -904,11 +912,64 @@ HTMLArea.prototype.sizeIframe = function(diff) {
 		iframeWidth = parseInt(textareaWidth) + "px";
 		textareaWidth = parseInt(textareaWidth) - diff;
 		if (textareaWidth < 0) textareaWidth = 0;
-		textareaWidth += "px";
+		textareaWidth += 'px';
 	}
 	this._iframe.style.width = "100%";
 	if (HTMLArea.is_opera) this._iframe.style.width = iframeWidth;
 	this._textArea.style.width = textareaWidth;
+};
+
+/**
+ * Get the dimensions of the toolbar and statusbar.
+ *
+ * @return	object		An object with width/height pairs for statusbar and toolbar.
+ * @author	Oliver Hader <oh@inpublica.de>
+ */
+HTMLArea.prototype.getDimensions = function() {
+	return {
+		toolbar: {width: this._toolbar.offsetWidth, height: this._toolbar.offsetHeight},
+		statusbar: {width: this._statusBar.offsetWidth, height: this._statusBar.offsetHeight}
+	};
+};
+
+/**
+ * Access an inline relational element and make it "accesible".
+ * If a parent object has the style "display: none", offsetWidth & offsetHeight are '0'.
+ *
+ * @params	object		callbackFunc: A function to be called, when the embedded objects are "accessible".
+ * @return	object		An object returned by the callbackFunc.
+ * @author	Oliver Hader <oh@inpublica.de>
+ */
+HTMLArea.prototype.accessParentElements = function(parentElements, callbackFunc) {
+	var result = {};
+	
+	if (parentElements.length) {
+		var currentElement = parentElements.pop();
+		var elementStyle = document.getElementById(currentElement).style;
+		var actionRequired = elementStyle.display == 'none';
+		
+		if (actionRequired) {
+			var originalVisibility = elementStyle.visibility;
+			var originalPosition = elementStyle.position;
+			elementStyle.visibility = 'hidden';
+			elementStyle.position = 'absolute';
+			elementStyle.display = '';
+		}
+		
+		result = this.accessParentElements(parentElements, callbackFunc);
+		
+		if (actionRequired) {
+			elementStyle.display = 'none';
+			elementStyle.position = originalPosition;
+			elementStyle.visibility = originalVisibility;
+		}
+		
+	} else {
+		result = eval(callbackFunc);		
+
+	}
+	
+	return result;
 };
 
 /*

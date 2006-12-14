@@ -120,7 +120,8 @@ class SC_alt_doc {
 	var $disableRTE;		// GPvar (for processing only) : If set, the rich text editor is disabled in the forms.
 	var $returnNewPageId;	// GPvar (for processing only) : Boolean: If set, then the GET var "&id=" will be added to the retUrl string so that the NEW id of something is returned to the script calling the form.
 	var $vC;				// GPvar (for processing only) : Verification code, internal stuff.
-
+	var $uc;				// GPvar : update BE_USER->uc
+	
 	var $popViewId;			// GPvar (module) : ID for displaying the page in the frontend (used for SAVE/VIEW operations)
 	var $popViewId_addParams;	// GPvar (module) : Additional GET vars for the link, eg. "&L=xxx"
 	var $viewUrl;			// GPvar (module) : Alternative URL for viewing the frontend pages.
@@ -193,6 +194,7 @@ class SC_alt_doc {
 		$this->doSave = t3lib_div::_GP('doSave');
 		$this->returnEditConf = t3lib_div::_GP('returnEditConf');
 		$this->localizationMode = t3lib_div::_GP('localizationMode');
+		$this->uc = t3lib_div::_GP('uc');
 
 
 			// Setting override values as default if defVals does not exist.
@@ -302,17 +304,22 @@ class SC_alt_doc {
 
 				// If there was saved any new items, load them:
 			if (count($tce->substNEWwithIDs_table))	{
+					// save the expanded/collapsed states for new inline records, if any
+				t3lib_TCEforms_inline::updateInlineView($this->uc, $tce);
 
 				foreach($this->editconf as $tableName => $tableCmds) {
 					$keys = array_keys($tce->substNEWwithIDs_table, $tableName);
 					if(count($keys) > 0) {
 						foreach($keys as $key) {
 							$editId = $tce->substNEWwithIDs[$key];
-								// translate new id to the workspace version:
-							if ($versionRec = t3lib_BEfunc::getWorkspaceVersionOfRecord($GLOBALS['BE_USER']->workspace, $nTable, $editId,'uid'))	{
-								$editId = $versionRec['uid'];
+								// check if the $editId isn't a child record of an IRRE action
+							if (!(is_array($tce->newRelatedIDs[$tableName]) && in_array($editId, $tce->newRelatedIDs[$tableName]))) {
+									// translate new id to the workspace version:
+								if ($versionRec = t3lib_BEfunc::getWorkspaceVersionOfRecord($GLOBALS['BE_USER']->workspace, $nTable, $editId,'uid'))	{
+									$editId = $versionRec['uid'];
+								}
+								$newEditConf[$tableName][$editId] = 'edit';
 							}
-							$newEditConf[$tableName][$editId] = 'edit';
 	
 								// Traverse all new records and forge the content of ->editconf so we can continue to EDIT these records!
 							if ($tableName=='pages' && $this->retUrl!='dummy.php' && $this->returnNewPageId)	{

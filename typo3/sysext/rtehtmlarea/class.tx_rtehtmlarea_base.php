@@ -355,6 +355,8 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 		global $BE_USER,$LANG, $TYPO3_DB, $TYPO3_CONF_VARS;
 
 		$this->TCEform = $pObj;
+		$inline =& $this->TCEform->inline;
+		
 		$LANG->includeLLFile('EXT:' . $this->ID . '/locallang.xml');
 		$this->client = $this->clientInfo();
 		$this->typoVersion = t3lib_div::int_from_ver(TYPO3_version);
@@ -428,11 +430,11 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 					$tableB = 'static_languages';
 					$languagesUidsList = $this->contentLanguageUid;
 					$selectFields = $tableA . '.uid,' . $tableB . '.lg_iso_2,' . $tableB . '.lg_country_iso_2,' . $tableB . '.lg_typo3';
-					$table = $tableA . ' LEFT JOIN ' . $tableB . ' ON ' . $tableA . '.static_lang_isocode=' . $tableB . '.uid';
+					$tableAB = $tableA . ' LEFT JOIN ' . $tableB . ' ON ' . $tableA . '.static_lang_isocode=' . $tableB . '.uid';
 					$whereClause = $tableA . '.uid IN (' . $languagesUidsList . ') ';
 					$whereClause .= t3lib_BEfunc::BEenableFields($tableA);
 					$whereClause .= t3lib_BEfunc::deleteClause($tableA);
-					$res = $TYPO3_DB->exec_SELECTquery($selectFields, $table, $whereClause);
+					$res = $TYPO3_DB->exec_SELECTquery($selectFields, $tableAB, $whereClause);
 					while($languageRow = $TYPO3_DB->sql_fetch_assoc($res)) {
 						$this->contentISOLanguage = strtolower(trim($languageRow['lg_iso_2']).(trim($languageRow['lg_country_iso_2'])?'_'.trim($languageRow['lg_country_iso_2']):''));
 						$this->contentTypo3Language = strtolower(trim($languageRow['lg_typo3']));
@@ -440,9 +442,9 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 				} else {
 					$this->contentISOLanguage = trim($TYPO3_CONF_VARS['EXTCONF'][$this->ID]['defaultDictionary']) ? trim($TYPO3_CONF_VARS['EXTCONF'][$this->ID]['defaultDictionary']) : 'en';
 					$selectFields = 'lg_iso_2, lg_typo3';
-					$table = 'static_languages';
-					$whereClause = 'lg_iso_2 = ' . $TYPO3_DB->fullQuoteStr(strtoupper($this->contentISOLanguage), $table);
-					$res = $TYPO3_DB->exec_SELECTquery($selectFields, $table, $whereClause);
+					$tableAB = 'static_languages';
+					$whereClause = 'lg_iso_2 = ' . $TYPO3_DB->fullQuoteStr(strtoupper($this->contentISOLanguage), $tableAB);
+					$res = $TYPO3_DB->exec_SELECTquery($selectFields, $tableAB, $whereClause);
 					while($languageRow = $TYPO3_DB->sql_fetch_assoc($res)) {
 						$this->contentTypo3Language = strtolower(trim($languageRow['lg_typo3']));
 					}
@@ -519,6 +521,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			$RTEWidth = isset($BE_USER->userTS['options.']['RTESmallWidth']) ? $BE_USER->userTS['options.']['RTESmallWidth'] : '530';
 			$RTEHeight = isset($BE_USER->userTS['options.']['RTESmallHeight']) ? $BE_USER->userTS['options.']['RTESmallHeight'] : '380';
 			$RTEWidth  = $RTEWidth + ($pObj->docLarge ? (isset($BE_USER->userTS['options.']['RTELargeWidthIncrement']) ? $BE_USER->userTS['options.']['RTELargeWidthIncrement'] : '150') : 0);
+			$RTEWidth -= ($inline->inlineCount > 0 ? ($inline->inlineCount+1)*$inline->inlineStyles['margin-right'] : 0);
 			$RTEHeight = $RTEHeight + ($pObj->docLarge ?  (isset($BE_USER->userTS['options.']['RTELargeHeightIncrement']) ? $BE_USER->userTS['options.']['RTELargeHeightIncrement'] : 0) : 0);
 			$editorWrapWidth = $RTEWidth . 'px';
 			$editorWrapHeight = $RTEHeight . 'px';
@@ -603,7 +606,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			}
 
 				// Register RTE in JS:
-			$pObj->additionalJS_post[] = $this->registerRTEinJS($pObj->RTEcounter);
+			$pObj->additionalJS_post[] = $this->registerRTEinJS($pObj->RTEcounter, $table, $row['uid'], $field);
 
 				// Set the save option for the RTE:
 			$pObj->additionalJS_submit[] = $this->setSaveRTE($pObj->RTEcounter, $pObj->formName, htmlspecialchars($PA['itemFormElName']));
@@ -892,12 +895,22 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 	
 	/**
 	 * Return the JS-Code for Register the RTE in JS
+	 * 
+	 * @param	integer		$number: The index number of the RTE.
+	 * @param	string		$table: The table that includes this RTE (optional, necessary for IRRE).
+	 * @param	string		$uid: The uid of that table that includes this RTE (optional, necessary for IRRE).
+	 * @param	string		$field: The field of that record that includes this RTE (optional).
 	 *
 	 * @return string		the JS-Code for Register the RTE in JS
 	 */
 	
-	function registerRTEinJS($number) {
+	function registerRTEinJS($number, $table='', $uid='', $field='') {
 		global $TSFE, $TYPO3_CONF_VARS;
+
+			// if this RTE is shown inline of an IRRE record, the JS functions need to know about that
+		if ($this->TCEform->inline->inlineNames['object']) {
+			$tceformsInlineObject = $this->TCEform->inline->inlineNames['object'].'['.$table.']['.$uid.']_fields';
+		}
 		
 		$registerRTEinJSString = (!is_object($TSFE) ? '' : '
 			' . '/*<![CDATA[*/') . '
@@ -914,7 +927,9 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			RTEarea['.$number.']["statusBar"] = ' . (trim($this->thisConfig['showStatusBar'])?'true':'false') . ';
 			RTEarea['.$number.']["showTagFreeClasses"] = ' . (trim($this->thisConfig['showTagFreeClasses'])?'true':'false') . ';
 			RTEarea['.$number.']["useHTTPS"] = ' . ((trim(stristr($this->siteURL, 'https')) || $this->thisConfig['forceHTTPS'])?'true':'false') . ';
-			RTEarea['.$number.']["enableMozillaExtension"] = ' . (($this->client['BROWSER'] == 'gecko' && $TYPO3_CONF_VARS['EXTCONF'][$this->ID]['enableMozillaExtension'])?'true':'false') . ';';
+			RTEarea['.$number.']["enableMozillaExtension"] = ' . (($this->client['BROWSER'] == 'gecko' && $TYPO3_CONF_VARS['EXTCONF'][$this->ID]['enableMozillaExtension'])?'true':'false') . ';
+			RTEarea['.$number.']["tceformsInlineObject"] = "' . $tceformsInlineObject . '";
+			RTEarea['.$number.']["tceformsDynTabs"] = "' . $this->TCEform->getDynTabLevelState('-DIV') . '";';
 		
 			// The following properties apply only to the backend
 		if (!is_object($TSFE)) {

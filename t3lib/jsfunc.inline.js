@@ -46,28 +46,61 @@ var inline = {
 	},
 	
 	expandCollapseRecord: function(objectId, expandSingle) {
+		var currentUid = this.parseFormElementName('none', objectId, 1);
+		var objectPrefix = this.parseFormElementName('full', objectId, 0, 1);
+		
+		var currentState = '';
+		var collapse = new Array();
+		var expand = new Array();
+
 			// if only a single record should be visibly for that set of records
 			// and the record clicked itself is no visible, collapse all others
-		if (expandSingle && !Element.visible(objectId+'_fields')) this.collapseAllRecords(objectId);
+		if (expandSingle && !Element.visible(objectId+'_fields'))
+			collapse = this.collapseAllRecords(objectId, objectPrefix, currentUid);
+
 		Element.toggle(objectId+'_fields');
+		currentState = Element.visible(objectId+'_fields') ? 1 : 0
+		
+		if (this.isNewRecord(objectId))
+			this.updateExpandedCollapsedStateLocally(objectId, currentState);
+		else if (currentState)
+			expand.push(currentUid);
+		else if (!currentState)
+			collapse.push(currentUid);
+
+		this.setExpandedCollapsedState(objectId, expand.join(','), collapse.join(','));
+		
 		return false;
 	},
-	
-	collapseAllRecords: function(objectId) {
+
+	collapseAllRecords: function(objectId, objectPrefix, callingUid) {
 			// get the form field, where all records are stored
 		var objectName = this.prependFormFieldNames+this.parseFormElementName('parts', objectId, 3, 2);
 		var formObj = document.getElementsByName(objectName);
+		var collapse = [];
 
 		if (formObj.length) {
 				// the uid of the calling object (last part in objectId)
-			var callingUid = this.parseFormElementName('none', objectId, 1);
-			var objectPrefix = this.parseFormElementName('full', objectId, 0 , 1);
+			var recObjectId = '';
 
 			var records = formObj[0].value.split(',');
 			for (var i=0; i<records.length; i++) {
-				if (records[i] != callingUid) Element.hide(objectPrefix+'['+records[i]+']_fields');
+				recObjectId = objectPrefix+'['+records[i]+']';
+				if (records[i] != callingUid && Element.visible(recObjectId+'_fields')) {
+					Element.hide(recObjectId+'_fields');
+					if (this.isNewRecord(recObjectId)) this.updateExpandedCollapsedStateLocally(recObjectId, 0);
+					else collapse.push(records[i]);
+				}
 			}
 		}
+		
+		return collapse;
+	},
+	
+	updateExpandedCollapsedStateLocally: function(objectId, value) {
+		var ucName = 'uc'+this.parseFormElementName('parts', objectId, 3, 2);
+		var ucFormObj = document.getElementsByName(ucName);
+		if (ucFormObj.length) ucFormObj[0].value = value;
 	},
 	
 	createNewRecord: function(objectId,prevRecordUid) {
@@ -76,6 +109,11 @@ var inline = {
 		return false;
 	},
 
+	setExpandedCollapsedState: function(objectId, expand, collapse) {
+		// alert(objectId+': '+expand+', '+collapse);
+		this.makeAjaxCall('setExpandedCollapsedState', objectId, expand, collapse);
+	},
+	
 	makeAjaxCall: function() {
 		if (arguments.length > 1) {
 			var params = '';
@@ -403,7 +441,7 @@ var inline = {
 		if (this.data.unique && this.data.unique[objectPrefix]) this.revertUnique(objectPrefix, elName, recordUid);
 
 			// if the record is new and was never saved before, just remove it from DOM
-		if ($(objectId+'_div') && $(objectId+'_div').hasClassName('inlineIsNewRecord')) {
+		if (this.isNewRecord(objectId)) {
 			new Effect.Fade(objectId+'_div', { afterFinish: function() { Element.remove(objectId+'_div'); }	});
 			// if the record already exists in storage, mark it to be deleted on clicking the save button
 		} else {
@@ -570,6 +608,12 @@ var inline = {
 		var optOut = { duration:0.5, transition:Effect.Transitions.linear, from:1.00, to:0.50 };
 		optOut.afterFinish = function() { new Effect.Opacity(objectId, optIn); };
 		new Effect.Opacity(objectId, optOut);
+	},
+	
+	isNewRecord: function(objectId) {
+		return $(objectId+'_div') && $(objectId+'_div').hasClassName('inlineIsNewRecord')
+			? true
+			: false;
 	}
 }
 

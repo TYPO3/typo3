@@ -277,6 +277,7 @@ class t3lib_TCEmain	{
 	var $autoVersionIdMap = Array();			// Contains mapping of auto-versionized records.
 	var $substNEWwithIDs = Array();				// When new elements are created, this array contains a map between their "NEW..." string IDs and the eventual UID they got when stored in database
 	var $substNEWwithIDs_table = Array();		// Like $substNEWwithIDs, but where each old "NEW..." id is mapped to the table it was from.
+	var $newRelatedIDs = Array();				// Holds the tables and there the ids of newly created child records from IRRE
 	var $copyMappingArray_merged = Array();		// This array is the sum of all copying operations in this class. May be READ from outside, thus partly public.
 	var $copiedFileMap = Array();				// A map between input file name and final destination for files being attached to records.
 	var	$errorLog = Array();					// Errors are collected in this variable.
@@ -330,7 +331,8 @@ class t3lib_TCEmain	{
 	var $copyMappingArray = Array();			// Used by the copy action to track the ids of new pages so subpages are correctly inserted! THIS is internally cleared for each executed copy operation! DO NOT USE THIS FROM OUTSIDE! Read from copyMappingArray_merged instead which is accumulating this information.
 	var $remapStack = array();					// array used for remapping uids and values at the end of process_datamap
 	var $updateRefIndexStack = array();			// array used for additional calls to $this->updateRefIndex
-
+	var $callFromImpExp = false;				// tells, that this TCEmain was called from tx_impext - this variable is set by tx_impexp
+	
 		// Various
 	var $fileFunc;								// For "singleTon" file-manipulation object
 	var $checkValue_currentRecord=array();		// Set to "currentRecord" during checking of values.
@@ -839,7 +841,10 @@ class t3lib_TCEmain	{
 				if(is_array($valueArray)) {
 					foreach($valueArray as $key => $value) {
 						if(strpos($value, 'NEW') !== false) {
+								// fetch the proper uid as integer for the NEW...-ID
 							$valueArray[$key] = $this->substNEWwithIDs[$value];
+								// set a hint that this was a new child record
+							$this->newRelatedIDs[$table][] = $valueArray[$key];
 						}
 					}
 					$remapAction['args'][$remapAction['pos']['valueArray']] = $valueArray;
@@ -2012,8 +2017,10 @@ class t3lib_TCEmain	{
 			$valueArray = $dbAnalysis->countItems();
 		} elseif ($type == 'inline') {
 			if ($tcaFieldConf['foreign_field']) {
-					// update sorting
-				$dbAnalysis->writeForeignField($tcaFieldConf, $id);
+					// if the record was imported, sorting was also imported, so skip this
+				$skipSorting = $this->callFromImpExp ? true : false;
+					// update record in intermediate table (sorting & pointer uid to parent record)
+				$dbAnalysis->writeForeignField($tcaFieldConf, $id, 0, $skipSorting);
 				$valueArray = $dbAnalysis->countItems();
 			} else {
 				$valueArray = $dbAnalysis->getValueArray($prep);

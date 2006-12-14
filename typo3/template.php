@@ -1683,7 +1683,7 @@ $str.=$this->docBodyTagBegin().
 			$options = array(array());
 			$divs = array();
 			$JSinit = array();
-			$id = 'DTM-'.t3lib_div::shortMD5($identString);
+			$id = $this->getDynTabMenuId($identString);
 			$noWrap = $noWrap ? ' nowrap="nowrap"' : '';
 
 				// Traverse menu items
@@ -1792,6 +1792,17 @@ $str.=$this->docBodyTagBegin().
 
 		}
 		return $content;
+	}
+	
+	/**
+	 * Creates the id for dynTabMenus.
+	 *
+	 * @param	string		$identString: Identification string. This should be unique for every instance of a dynamic menu!
+	 * @return	string		The id with a short MD5 of $identString and prefixed "DTM-", like "DTM-2e8791854a"
+	 */
+	function getDynTabMenuId($identString) {
+		$id = 'DTM-'.t3lib_div::shortMD5($identString);
+		return $id;
 	}
 
 	/**

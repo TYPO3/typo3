@@ -202,11 +202,7 @@ class t3lib_refindex {
  						// Based on type,
  					switch((string)$dat['type'])	{
  						case 'db':
- 						case 'select':
  							$this->createEntryData_dbRels($table,$uid,$fieldname,'',$deleted,$dat['itemArray']);
- 						break;
- 						case 'inline':
- 							$this->createEntryData_inlineRels($table,$uid,$fieldname,'',$deleted,$dat['itemArray']);
  						break;
  						case 'file':
  							$this->createEntryData_fileRels($table,$uid,$fieldname,'',$deleted,$dat['newValueFiles']);

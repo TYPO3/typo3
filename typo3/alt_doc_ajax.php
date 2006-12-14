@@ -116,7 +116,7 @@ class SC_alt_doc_ajax {
 	 * @return	void
 	 */
 	function main() {
-		header('Expires: Fri, 27 Nov 1981 09:43:00 GMT');
+		header('Expires: Fri, 27 Nov 1981 09:04:00 GMT');
 		header('Last-Modified: '.gmdate("D, d M Y H:i:s").' GMT');
 		header('Cache-Control: no-cache, must-revalidate');
 		header('Pragma: no-cache');
@@ -128,7 +128,7 @@ class SC_alt_doc_ajax {
 			$method = array_shift($this->ajax);
 
 				// Security check
-			if(!in_array($method, array('createNewRecord'))) return false;
+			if(!in_array($method, array('createNewRecord', 'setExpandedCollapsedState'))) return false;
 
 			$this->content = call_user_func_array(
 				array(&$this->tceforms->inline, $method),

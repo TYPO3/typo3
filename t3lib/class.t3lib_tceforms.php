@@ -284,6 +284,7 @@ class t3lib_TCEforms	{
 	var $requiredElements=array();				// Used to register the min and max number of elements for selectorboxes where that apply (in the "group" type for instance)
 	var $renderDepth=0;							// Keeps track of the rendering depth of nested records.
 	var $savedSchemes=array();					// Color scheme buffer.
+	var $dynTabLevelStack = array();			// holds tab dividers which were cascaded, required for RTE&IRRE
 
 		// Internal, registers for user defined functions etc.
 	var $additionalCode_pre = array();			// Additional HTML code, printed before the form.
@@ -471,6 +472,12 @@ class t3lib_TCEforms	{
 			if ($TCA[$table]['types'][$typeNum])	{
 				$itemList = $TCA[$table]['types'][$typeNum]['showitem'];
 				if ($itemList)	{	// If such a list existed...
+						// if TCEforms will render a tab menu in the next step, push the name to the tab stack
+					if (strstr($itemList, '--div--') !== false && $this->enableTabMenu && $TCA[$table]['ctrl']['dividers2tabs']) {
+						$tabIdentString = 'TCEforms:'.$table.':'.$row['uid'];
+						$tabIdentStringMD5 = $GLOBALS['TBE_TEMPLATE']->getDynTabMenuId('TCEforms:'.$table.':'.$row['uid']);
+						$this->dynTabLevelStack[$tabIdentStringMD5] = 1;
+					}
 
 						// Explode the field list and possibly rearrange the order of the fields, if configured for
 					$fields = t3lib_div::trimExplode(',',$itemList,1);
@@ -524,6 +531,8 @@ class t3lib_TCEforms	{
 									if ($this->enableTabMenu && $TCA[$table]['ctrl']['dividers2tabs'])	{
 										$this->wrapBorder($out_array[$out_sheet],$out_pointer);
 										$out_sheet++;
+											// remember what sheet we're currently in
+										$this->dynTabLevelStack[$tabIdentStringMD5] = $out_sheet+1;
 										$out_array[$out_sheet] = array();
 										$out_array_meta[$out_sheet]['title'] = $this->sL($parts[1]);
 									}
@@ -597,10 +606,13 @@ class t3lib_TCEforms	{
 				);
 			}
 
+				// unset the current level of tab menus
+			unset($this->dynTabLevelStack[$tabIdentStringMD5]);
+
 			return '
 				<tr>
 					<td colspan="2">
-					'.$this->getDynTabMenu($parts, 'TCEforms:'.$table.':'.$row['uid']).'
+					'.$this->getDynTabMenu($parts, $tabIdentString).'
 					</td>
 				</tr>';
 		} else {	// Only one, so just implode:
@@ -5548,6 +5560,21 @@ class t3lib_TCEforms	{
 			}
 		}
 		return $this->cachedAdditionalPreviewLanguages;
+	}
+	
+	/**
+	 * Get a list, depending on $this->dynTabLevelStack, that has the information
+	 * in which tab (--div--) fields are inserted.
+	 *
+	 * @param	string		$appendString: String to append for each item
+	 * @return	string		A list of cascaded tab divs, like "DTM-2e8791854a-1,DTM-f3c79a0523-4"
+	 */
+	function getDynTabLevelState($appendString = '') {
+		$levels = array();
+		foreach ($this->dynTabLevelStack as $tabIdent => $divId) {
+			$levels[] = $tabIdent.'-'.$divId.$appendString;
+		}
+		return implode(',', $levels);
 	}
 }
 
