@@ -2561,9 +2561,10 @@ class t3lib_div {
 	 * @param	string		$extensionList is the comma list of extensions to read only (blank = all)
 	 * @param	boolean		If set, then the path is prepended the filenames. Otherwise only the filenames are returned in the array
 	 * @param	string		$order is sorting: 1= sort alphabetically, 'mtime' = sort by modification time.
+	 * @param	string		A comma seperated list of filenames to exclude, no wildcards
 	 * @return	array		Array of the files found
 	 */
-	function getFilesInDir($path,$extensionList='',$prependPath=0,$order='')	{
+	function getFilesInDir($path,$extensionList='',$prependPath=0,$order='',$excludePattern='')	{
 
 			// Initialize variabels:
 		$filearray = array();
@@ -2579,9 +2580,9 @@ class t3lib_div {
 					if (@is_file($path.'/'.$entry))	{
 						$fI = pathinfo($entry);
 						$key = md5($path.'/'.$entry);	// Don't change this ever - extensions may depend on the fact that the hash is an md5 of the path! (import/export extension)
-						if (!$extensionList || t3lib_div::inList($extensionList,strtolower($fI['extension'])))	{
+						if ((!strlen($extensionList) || t3lib_div::inList($extensionList,strtolower($fI['extension']))) && (!strlen($excludePattern) || !preg_match('/^'.$excludePattern.'$/',$entry)))	{
 						    $filearray[$key]=($prependPath?$path.'/':'').$entry;
-							if ($order=='mtime') {$sortarray[$key]=filemtime($path.'/'.$entry);}
+								if ($order=='mtime') {$sortarray[$key]=filemtime($path.'/'.$entry);}
 								elseif ($order)	{$sortarray[$key]=$entry;}
 						}
 					}
@@ -2615,17 +2616,18 @@ class t3lib_div {
 	 * @param	string		$extList: Comma list of file extensions: Only files with extensions in this list (if applicable) will be selected.
 	 * @param	boolean		$regDirs: If set, directories are also included in output.
 	 * @param	integer		$recursivityLevels: The number of levels to dig down...
+	 * @param string		$excludePattern: regex pattern of files/directories to exclude
 	 * @return	array		An array with the found files/directories.
 	 */
-	function getAllFilesAndFoldersInPath($fileArr,$path,$extList='',$regDirs=0,$recursivityLevels=99)	{
+	function getAllFilesAndFoldersInPath($fileArr,$path,$extList='',$regDirs=0,$recursivityLevels=99,$excludePattern='')	{
 		if ($regDirs)	$fileArr[] = $path;
-		$fileArr = array_merge($fileArr, t3lib_div::getFilesInDir($path,$extList,1,1));
+		$fileArr = array_merge($fileArr, t3lib_div::getFilesInDir($path,$extList,1,1,$excludePattern));
 
 		$dirs = t3lib_div::get_dirs($path);
 		if (is_array($dirs) && $recursivityLevels>0)	{
 			foreach ($dirs as $subdirs)	{
-				if ((string)$subdirs!='')	{
-					$fileArr = t3lib_div::getAllFilesAndFoldersInPath($fileArr,$path.$subdirs.'/',$extList,$regDirs,$recursivityLevels-1);
+				if ((string)$subdirs!='' && (!strlen($excludePattern) || !preg_match('/^'.$excludePattern.'$/',$subdirs)))	{
+					$fileArr = t3lib_div::getAllFilesAndFoldersInPath($fileArr,$path.$subdirs.'/',$extList,$regDirs,$recursivityLevels-1,$excludePattern);
 				}
 			}
 		}

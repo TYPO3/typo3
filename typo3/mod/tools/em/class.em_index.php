@@ -342,7 +342,7 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 	function init()	{
 		global $BE_USER,$LANG,$BACK_PATH,$TYPO3_CONF_VARS;
 
-		// Setting paths of install scopes:
+			// Setting paths of install scopes:
 		$this->typePaths = Array (
 			'S' => TYPO3_mainDir.'sysext/',
 			'G' => TYPO3_mainDir.'ext/',
@@ -354,10 +354,12 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 			'L' => '../../../../'.TYPO3_mainDir
 		);
 
-		// Setting module configuration:
+		$this->excludeForPackaging = $GLOBALS['TYPO3_CONF_VARS']['EXT']['excludeForPackaging'];
+
+			// Setting module configuration:
 		$this->MCONF = $GLOBALS['MCONF'];
 
-		// Setting GPvars:
+			// Setting GPvars:
 		$this->CMD = t3lib_div::_GP('CMD');
 		$this->lookUpStr = trim(t3lib_div::_GP('_lookUp'));
 		$this->listRemote = t3lib_div::_GP('ter_connect');
@@ -2307,7 +2309,7 @@ EXTENSION KEYS:
 		if ($extPath)	{
 			// Read files:
 			$fileArr = array();
-			$fileArr = t3lib_div::getAllFilesAndFoldersInPath($fileArr,$extPath);
+			$fileArr = t3lib_div::getAllFilesAndFoldersInPath($fileArr,$extPath,'',0,99,$this->excludeForPackaging);
 
 			// Start table:
 			$lines = array();
@@ -3010,7 +3012,7 @@ EXTENSION KEYS:
 							$list[$extKey]['doubleInstall'].= $type;
 							$list[$extKey]['type'] = $type;
 							$list[$extKey]['EM_CONF'] = $emConf;
-							$list[$extKey]['files'] = t3lib_div::getFilesInDir($path.$extKey);
+							$list[$extKey]['files'] = t3lib_div::getFilesInDir($path.$extKey, '', 0, '', $this->excludeForPackaging);
 
 							$this->setCat($cat,$list[$extKey], $extKey);
 						}
@@ -3383,7 +3385,7 @@ EXTENSION KEYS:
 	 * @see makeDetailedExtensionAnalysis()
 	 */
 	function getClassIndexLocallangFiles($absPath,$table_class_prefix,$extKey)	{
-		$filesInside = t3lib_div::removePrefixPathFromList(t3lib_div::getAllFilesAndFoldersInPath(array(),$absPath,'php,inc'),$absPath);
+		$filesInside = t3lib_div::removePrefixPathFromList(t3lib_div::getAllFilesAndFoldersInPath(array(),$absPath,'php,inc',0,99,$this->excludeForPackaging),$absPath);
 		$out = array();
 
 		foreach($filesInside as $fileName)	{
@@ -3928,7 +3930,7 @@ $EM_CONF[$_EXTKEY] = '.$this->arrayToCode($EM_CONF, 0).';
 
 			// Get files for extension:
 			$fileArr = array();
-			$fileArr = t3lib_div::getAllFilesAndFoldersInPath($fileArr,$extPath);
+			$fileArr = t3lib_div::getAllFilesAndFoldersInPath($fileArr,$extPath,'',0,99,$this->excludeForPackaging);
 
 			// Calculate the total size of those files:
 			$totalSize = 0;
