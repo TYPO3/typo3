@@ -315,7 +315,7 @@ class SC_alt_doc {
 								// check if the $editId isn't a child record of an IRRE action
 							if (!(is_array($tce->newRelatedIDs[$tableName]) && in_array($editId, $tce->newRelatedIDs[$tableName]))) {
 									// translate new id to the workspace version:
-								if ($versionRec = t3lib_BEfunc::getWorkspaceVersionOfRecord($GLOBALS['BE_USER']->workspace, $nTable, $editId,'uid'))	{
+								if ($versionRec = t3lib_BEfunc::getWorkspaceVersionOfRecord($GLOBALS['BE_USER']->workspace, $tableName, $editId,'uid'))	{
 									$editId = $versionRec['uid'];
 								}
 								$newEditConf[$tableName][$editId] = 'edit';
