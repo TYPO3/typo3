@@ -1303,6 +1303,7 @@ $str.=$this->docBodyTagBegin().
 					//browsercheck...
 				function GL_checkBrowser(){	//
 					this.dom= (document.getElementById);
+					this.safari =  (navigator.userAgent.indexOf("Safari")>-1);
 					this.op=  (navigator.userAgent.indexOf("Opera")>-1);
 					this.op7=  this.op && (navigator.appVersion.indexOf("7")>-1);  // check for Opera version 7
 					this.konq=  (navigator.userAgent.indexOf("Konq")>-1);
@@ -1341,9 +1342,15 @@ $str.=$this->docBodyTagBegin().
 
 						GLV_xRel = event.clientX-2;
 						GLV_yRel = event.clientY-2;
-						GLV_x = GLV_xRel + (document.documentElement.scrollLeft ? document.documentElement.scrollLeft : document.body.scrollLeft);
-						GLV_y = GLV_yRel + (document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop);
-
+						
+						GLV_x = GLV_xRel;
+						GLV_y = GLV_yRel;
+						
+						if (this.safari)	{
+							GLV_x = GLV_xRel + (document.documentElement.scrollLeft ? document.documentElement.scrollLeft : document.body.scrollLeft);
+							GLV_y = GLV_yRel + (document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop);
+						}
+						
 					//	status = (GLV_x+GLV_gap-GLV_curLayerX[0]) + " | " + (GLV_y+GLV_gap-GLV_curLayerY[0]);
 						if (GLV_isVisible[1])	{
 							if (outsideLayer(1))	hideSpecific(1);

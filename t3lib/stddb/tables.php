@@ -148,8 +148,7 @@ $TCA['pages'] = Array (
 		'prependAtCopy' => 'LLL:EXT:lang/locallang_general.php:LGL.prependAtCopy',
 		'cruser_id' => 'cruser_id',
 		'editlock' => 'editlock',
-		'useColumnsForDefaultValues' => 'doktype',
-		'shadowColumnsForNewPlaceholders' => 'doktype,title',
+		'useColumnsForDefaultValues' => 'doktype'
 	),
 	'interface' => Array (
 		'showRecordFieldList' => 'doktype,title',

@@ -3996,7 +3996,7 @@ class t3lib_div {
 			// Load class file if not found:
 		if (!class_exists($className))	{
 			if (substr($className,0,6)=='t3lib_')	{
-				t3lib_div::requireOnce(PATH_t3lib.'class.'.$className.'.php');
+				t3lib_div::requireOnce(PATH_t3lib.'class.'.strtolower($className).'.php');
 			}
 		}
 		

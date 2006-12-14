@@ -1,4 +1,9 @@
+2006-12-14  Kasper Skårhøj
 
+	* Modified t3lib_div::makeInstance() to require filenames in lowercase
+	* Added some fields ("languageField", "transOrigPointerField", "type", "header") as default "shadowColumnsForNewPlaceholders" fields (tcemain "localize" command related)
+	* Fixed Safari context menu bug
+	
 2006-12-13  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
 	* Improved t3lib_BEfunc::getRecordRaw() (error checking, freeing result set)

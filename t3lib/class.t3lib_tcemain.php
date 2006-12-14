@@ -871,14 +871,21 @@ class t3lib_TCEmain	{
 	function placeholderShadowing($table,$id)	{
 		global $TCA;
 
+		t3lib_div::loadTCA($table);
 		if ($liveRec = t3lib_BEfunc::getLiveVersionOfRecord($table,$id,'*'))	{
 			if ((int)$liveRec['t3ver_state']===1)	{
 				$justStoredRecord = t3lib_BEfunc::getRecord($table,$id);
 				$newRecord = array();
 
-				$shadowColumns = t3lib_div::trimExplode(',', $TCA[$table]['ctrl']['shadowColumnsForNewPlaceholders'],1);
+				$shadowCols = $TCA[$table]['ctrl']['shadowColumnsForNewPlaceholders'];
+				$shadowCols.= ','.$TCA[$table]['ctrl']['languageField'];
+				$shadowCols.= ','.$TCA[$table]['ctrl']['transOrigPointerField'];
+				$shadowCols.= ','.$TCA[$table]['ctrl']['type'];
+				$shadowCols.= ','.$TCA[$table]['ctrl']['label'];
+
+				$shadowColumns = array_unique(t3lib_div::trimExplode(',', $shadowCols,1));
 				foreach($shadowColumns as $fieldName)	{
-					if (strcmp($justStoredRecord[$fieldName],$liveRec[$fieldName]))	{
+					if (strcmp($justStoredRecord[$fieldName],$liveRec[$fieldName]) && isset($TCA[$table]['columns'][$fieldName]) && $fieldName!=='uid' && $fieldName!=='pid')	{
 						$newRecord[$fieldName] = $justStoredRecord[$fieldName];
 					}
 				}
