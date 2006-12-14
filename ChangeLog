@@ -1,4 +1,9 @@
-2006-12-14  Kasper SkŒrh¿j
+
+2006-12-13  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+
+	* More localization of User>Workspaces (thanks to Marc Wöhlken)
+
+2006-12-14  Kasper Skaarhoj
 
 	* Modified t3lib_div::makeInstance() to require filenames in lowercase
 	* Added some fields ("languageField", "transOrigPointerField", "type", "header") as default "shadowColumnsForNewPlaceholders" fields (tcemain "localize" command related)
@@ -60,7 +65,7 @@
 
 2006-12-01  Kasper Skaarhoj  <kasper2006@typo3.com>
 
-	* Additionsl to FlexFormTools
+	* Additions to FlexFormTools
 	* Improved localization in tcemain
 	* Changed pages_languages_overlay to NOT be hidden by default
 	* Introduced REDIRECT: prefix to pageNotFound_handling (for backwards compatibility since someone changed to read the file instead of redirecting).
@@ -78,6 +83,10 @@
 2006-11-26  Michael Stucki  <michael@typo3.org>
 
 	* Fixed bug #4556: PHP4 compatibility issues
+
+2006-11-24  Michael Stucki  <michael@typo3.org>
+
+	* Release of TYPO3 4.1beta1
 
 2006-11-21  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 

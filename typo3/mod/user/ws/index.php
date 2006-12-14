@@ -173,7 +173,7 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 				0 => '['.$LANG->getLL('shortcut_onlineWS').']',
 				-98 => $LANG->getLL('label_offlineWSes'),
 				-99 => $LANG->getLL('label_allWSes'),
-				-1 => '[Default Draft]'
+				-1 => '['.$LANG->getLL('shortcut_offlineWS').']'
 			),
 			'diff' => array(
 				0 => $LANG->getLL('diff_no_diff'),
@@ -382,13 +382,13 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 				$description = $LANG->getLL('workspace_description_draft');
 			break;
 			case -99:
-				$title = $this->doc->icons(3).'[NONE]';
+				$title = $this->doc->icons(3).'[' . $LANG->getLL('shortcut_noWSfound') . ']';
 				$description = $LANG->getLL('workspace_description_no_access');
 			break;
 			default:
 				$title = t3lib_iconWorks::getIconImage('sys_workspace', $GLOBALS['BE_USER']->workspaceRec, $this->doc->backPath, ' align="top"').
 							'['.$GLOBALS['BE_USER']->workspace.'] '.t3lib_BEfunc::getRecordTitle('sys_workspace',$GLOBALS['BE_USER']->workspaceRec,TRUE);
-				$description = ($GLOBALS['BE_USER']->workspaceRec['description'] ? htmlspecialchars($GLOBALS['BE_USER']->workspaceRec['description']) : '<em>[None]</em>');
+				$description = ($GLOBALS['BE_USER']->workspaceRec['description'] ? htmlspecialchars($GLOBALS['BE_USER']->workspaceRec['description']) : '<em>[' . $LANG->getLL('shortcut_noWSfound') . ']</em>');
 			break;
 		}
 
@@ -426,7 +426,7 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 			</tr>
 			<tr>
 				<td class="bgColor2" nowrap="nowrap"><b>' . $LANG->getLL('label_status') . '</b>&nbsp;</td>
-				<td class="bgColor4">'.$LANG->getLL('label_accesslevel').' ' . $GLOBALS['LANG']->getLL('workspace_list_access_' . $wsAccess['_ACCESS']) . '</td>
+				<td class="bgColor4">'.$LANG->getLL('label_access_level').' ' . $GLOBALS['LANG']->getLL('workspace_list_access_' . $wsAccess['_ACCESS']) . '</td>
 			</tr>' : '').'
 		</table>
 		<br/>
@@ -619,8 +619,10 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 											$diffCode.= $diffHTML;
 										} elseif ($rec_off['t3ver_state']==2)	{
 											$diffCode.= $this->doc->icons(2).'Deleted element<br/>';
+											$diffCode.= $this->doc->icons(2).$LANG->getLL('label_deletedrecord').'<br/>';
 										} else {
 											$diffCode.= ($diffPct<0 ? 'N/A' : ($diffPct ? $diffPct.'% change:' : ''));
+											$diffCode.= ($diffPct<0 ? $LANG->getLL('label_notapplicable') : ($diffPct ? sprintf($LANG->getLL('label_percentchange'), $diffPct) : ''));
 											$diffCode.= $diffHTML;
 										}
 
@@ -666,8 +668,8 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 										// Create version element:
 									$versionsInOtherWS = $this->versionsInOtherWS($table, $rec_on['uid']);
 									$versionsInOtherWSWarning = $versionsInOtherWS && $GLOBALS['BE_USER']->workspace!==0 ? '<br/>'.$this->doc->icons(2).$LANG->getLL('label_otherversions').' '.$versionsInOtherWS : '';
-									$multipleWarning = (!$mainCell && $GLOBALS['BE_USER']->workspace!==0? '<br/>'.$this->doc->icons(3).'<b>Multiple versions in same workspace!</b>' : '');
-									$verWarning = $warnAboutVersions || ($warnAboutVersions_nonPages && $GLOBALS['TCA'][$table]['ctrl']['versioning_followPages'])? '<br/>'.$this->doc->icons(3).'<b>Version inside version!</b>' : '';
+									$multipleWarning = (!$mainCell && $GLOBALS['BE_USER']->workspace!==0? '<br/>'.$this->doc->icons(3).'<b>'.$LANG->getLL('label_multipleversions').'</b>' : '');
+									$verWarning = $warnAboutVersions || ($warnAboutVersions_nonPages && $GLOBALS['TCA'][$table]['ctrl']['versioning_followPages'])? '<br/>'.$this->doc->icons(3).'<b>'.$LANG->getLL('label_nestedversions').'</b>' : '';
 									$verElement = $icon.
 										'<a href="'.htmlspecialchars($this->doc->backPath.t3lib_extMgm::extRelPath('version').'cm1/index.php?id='.($table==='pages'?$rec_on['uid']:$rec_on['pid']).'&details='.rawurlencode($table.':'.$rec_off['uid']).'&returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))).'">'.
 										t3lib_BEfunc::getRecordTitle($table,$rec_off,TRUE).
@@ -767,7 +769,7 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 				$color = '#66cc66';	// TODO Use CSS?
 			break;
 			case -1:
-				$sLabel = $this->doc->icons(2).$LANG->getLL('rejected');
+				$sLabel = $this->doc->icons(2).$LANG->getLL('label_rejected');
 				$sId = 0;
 				$color = '#ff0000';	// TODO Use CSS?
 				$label = $LANG->getLL('stage_label_user_comment');

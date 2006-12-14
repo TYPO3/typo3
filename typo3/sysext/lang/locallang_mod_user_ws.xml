@@ -41,6 +41,7 @@
 			<label index="label_stage">Stage:</label>
 			<label index="label_publish">Publish:</label>
 			<label index="label_lifecycle">Lifecycle:</label>
+			<label index="label_access_level">Access level:</label>
 			<label index="img_title_publish">Publish</label>
 			<label index="img_title_swap">Swap</label>
 			<label index="remove_from_ws_confirmation">Remove from workspace?</label>
@@ -118,12 +119,17 @@
 			<label index="label_page">Page</label>
 			<label index="label_branch">Branch</label>
 			<label index="label_newrecord">New element</label>
-			<label index="label_otherversions">Other version(s) in workspace</label>
+			<label index="label_deletedrecord">Deleted element</label>
+			<label index="label_otherversions">Other version(s) in workspace(s):</label>
+			<label index="label_multipleversions">Multiple versions in same workspace!</label>
+			<label index="label_nestedversions">Version inside version!</label>
 			<label index="label_rejected">Rejected</label>
 			<label index="label_showsubelements">Show sub elements</label>
 			<label index="label_onlymychanges">Show only my changes</label>
 			<label index="label_offlineWSes">Draft workspaces</label>
 			<label index="label_allWSes">All workspaces</label>
+			<label index="label_notapplicable">n/a</label>
+			<label index="label_percentchange">%%% change:</label>
 		</languageKey>
 	</data>
 </T3locallang>
