@@ -119,7 +119,7 @@ CREATE TABLE cache_extensions (
   intversion int(11) NOT NULL default '0',
   lastversion int(3) NOT NULL default '0',
   lastreviewedversion int(3) NOT NULL default '0',
-  PRIMARY KEY  (extkey,version)
+  PRIMARY KEY (extkey,version)
 );
 
 #
