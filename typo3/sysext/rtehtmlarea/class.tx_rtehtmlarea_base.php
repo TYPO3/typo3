@@ -521,7 +521,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			$RTEWidth = isset($BE_USER->userTS['options.']['RTESmallWidth']) ? $BE_USER->userTS['options.']['RTESmallWidth'] : '530';
 			$RTEHeight = isset($BE_USER->userTS['options.']['RTESmallHeight']) ? $BE_USER->userTS['options.']['RTESmallHeight'] : '380';
 			$RTEWidth  = $RTEWidth + ($pObj->docLarge ? (isset($BE_USER->userTS['options.']['RTELargeWidthIncrement']) ? $BE_USER->userTS['options.']['RTELargeWidthIncrement'] : '150') : 0);
-			$RTEWidth -= ($inline->inlineCount > 0 ? ($inline->inlineCount+1)*$inline->inlineStyles['margin-right'] : 0);
+			$RTEWidth -= ($inline->getStructureDepth() > 0 ? ($inline->getStructureDepth()+1)*$inline->getLevelMargin() : 0);
 			$RTEHeight = $RTEHeight + ($pObj->docLarge ?  (isset($BE_USER->userTS['options.']['RTELargeHeightIncrement']) ? $BE_USER->userTS['options.']['RTELargeHeightIncrement'] : 0) : 0);
 			$editorWrapWidth = $RTEWidth . 'px';
 			$editorWrapHeight = $RTEHeight . 'px';

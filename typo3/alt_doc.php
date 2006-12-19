@@ -307,6 +307,8 @@ class SC_alt_doc {
 					// save the expanded/collapsed states for new inline records, if any
 				t3lib_TCEforms_inline::updateInlineView($this->uc, $tce);
 
+				$newEditConf = array();
+
 				foreach($this->editconf as $tableName => $tableCmds) {
 					$keys = array_keys($tce->substNEWwithIDs_table, $tableName);
 					if(count($keys) > 0) {
@@ -331,9 +333,11 @@ class SC_alt_doc {
 					}
 				}
 
-					// Resetting editconf:
-				$this->editconf = $newEditConf;
-
+					// Resetting editconf if newEditConf has values:
+				if (count($newEditConf)) {
+					$this->editconf = $newEditConf;
+				}
+				
 					// Finally, set the editconf array in the "getvars" so they will be passed along in URLs as needed.
 				$this->R_URL_getvars['edit']=$this->editconf;
 
