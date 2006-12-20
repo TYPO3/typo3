@@ -84,6 +84,37 @@
 	$GLOBALS['TSFE']->tmpl->getFileName_backPath = PATH_site;
 	$GLOBALS['TSFE']->forceTemplateParsing = 1;
 	$GLOBALS['TSFE']->getConfigArray();
+
+	// *********
+	// initialize a BE_USER if applicable
+	// *********
+	$BE_USER='';
+	if ($_COOKIE['be_typo_user'])	{	// If the backend cookie is set, we proceed and checks if a backend user is logged in.
+		$TYPO3_MISC['microtime_BE_USER_start'] = microtime();
+		$TT->push('Back End user initialized','');
+		require_once (PATH_t3lib.'class.t3lib_befunc.php');
+		require_once (PATH_t3lib.'class.t3lib_userauthgroup.php');
+		require_once (PATH_t3lib.'class.t3lib_beuserauth.php');
+		require_once (PATH_t3lib.'class.t3lib_tsfebeuserauth.php');
+
+			// the value this->formfield_status is set to empty in order to disable login-attempts to the backend account through this script
+		$BE_USER = t3lib_div::makeInstance('t3lib_tsfeBeUserAuth');	// New backend user object
+		$BE_USER->OS = TYPO3_OS;
+		$BE_USER->lockIP = $TYPO3_CONF_VARS['BE']['lockIP'];
+		$BE_USER->start();	// Object is initialized
+		$BE_USER->unpack_uc('');
+		if ($BE_USER->user['uid'])	{
+			$BE_USER->fetchGroupData();
+			$TSFE->beUserLogin = 1;
+		}
+			// Now we need to do some additional checks for IP/SSL
+		if (!$BE_USER->checkLockToIP() || !$BE_USER->checkBackendAccessSettingsFromInitPhp())	{
+				// Unset the user initialization.
+			$BE_USER='';
+			$TSFE->beUserLogin=0;
+		}
+	}
+
 	$spellChecker = t3lib_div::makeInstance('tx_rtehtmlarea_pi1');
 	$spellChecker->cObj = t3lib_div::makeInstance('tslib_cObj');
 	$conf = $GLOBALS['TSFE']->tmpl->setup['plugin.'][$spellChecker->prefixId.'.'];

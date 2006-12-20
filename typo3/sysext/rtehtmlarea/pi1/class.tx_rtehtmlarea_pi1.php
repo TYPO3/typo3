@@ -67,7 +67,7 @@ class tx_rtehtmlarea_pi1 extends tslib_pibase {
 	 */
 	function main($conf) {
 		global $TYPO3_CONF_VARS, $TYPO3_DB;
-		
+
 		$this->conf = $conf;
 		$this->tslib_pibase();
 		$this->pi_setPiVarDefaults();
@@ -86,7 +86,7 @@ class tx_rtehtmlarea_pi1 extends tslib_pibase {
 			$AspellVersion = substr( $AspellVersionString[1], 0, 4);
 			if( doubleval($AspellVersion) < doubleval('0.5') && (!$this->pspell_is_available || $this->forceCommandMode)) echo('Configuration problem: Aspell version ' . $AspellVersion . ' too old. Spell checking cannot be performed in command mode');
 		}
-		
+
 			// Setting the list of dictionaries
 		if(!$safe_mode_is_enabled && (!$this->pspell_is_available || $this->forceCommandMode)) {
 			$dictionaryList = shell_exec( $this->AspellDirectory.' dump dicts');
@@ -142,6 +142,8 @@ class tx_rtehtmlarea_pi1 extends tslib_pibase {
 
 			// Setting the pspell suggestion mode
 		$this->pspellMode = t3lib_div::_POST('pspell_mode')?t3lib_div::_POST('pspell_mode'): $this->pspellMode;
+			// Now sanitize $this->pspellMode
+		$this->pspellMode = t3lib_div::inList('ultra,fast,normal,bad-spellers',$this->pspellMode)?$this->pspellMode:'normal';
 		switch($this->pspellMode) {
 			case 'ultra':
 			case 'fast':
@@ -155,7 +157,7 @@ class tx_rtehtmlarea_pi1 extends tslib_pibase {
 				$pspellModeFlag = PSPELL_NORMAL;
 				break;
 		}
-		
+
 			// Setting the charset
 		if( t3lib_div::_POST('pspell_charset') ) $this->charset = trim(t3lib_div::_POST('pspell_charset'));
 		if(strtolower($this->charset) == 'iso-8859-1') $this->parserCharset = strtolower($this->charset);
@@ -165,21 +167,24 @@ class tx_rtehtmlarea_pi1 extends tslib_pibase {
 		if($this->pspell_is_available && !$this->forceCommandMode) {
 			$this->pspell_link = pspell_new($this->dictionary, '', '', $this->parserCharset, $pspellModeFlag);
 		}
-		
+
 			// Setting the path to user personal dicts, if any
-		if (t3lib_div::_POST('enablePersonalDicts') == 'true') {
-			$this->userUid = t3lib_div::_POST('userUid');
+		if (t3lib_div::_POST('enablePersonalDicts') == 'true' && $GLOBALS['TSFE']->beUserLogin)	{
+			$this->userUid = 'BE_' . $GLOBALS['BE_USER']->user['uid'];
 			if ($this->userUid) {
 				$this->personalDictPath = t3lib_div::getFileAbsFileName($this->uploadFolder . $this->userUid);
 				if (!is_dir($this->personalDictPath)) {
 					t3lib_div::mkdir($this->personalDictPath);
 				}
-				$this->personalDictsArg = ' --home-dir=' . $this->personalDictPath;
+					// escape here for later use
+				$this->personalDictsArg = ' --home-dir=' . escapeshellarg($this->personalDictPath);
 			}
 		}
-		
+
 		$cmd = t3lib_div::_POST('cmd');
 		if ($cmd == 'learn' && !$safe_mode_is_enabled) {
+				// Only availble for BE_USERS, die silently if someone has gotten here by accident
+			if(!$GLOBALS['TSFE']->beUserLogin) die('');
 				// Updating the personal word list
 			$to_p_dict = t3lib_div::_POST('to_p_dict');
 			$to_p_dict = $to_p_dict ? $to_p_dict : array();
@@ -205,7 +210,8 @@ class tx_rtehtmlarea_pi1 extends tslib_pibase {
 					echo $cmd;
 					fwrite($filehandle, $cmd, strlen($cmd));
 					fclose($filehandle);
-					$AspellCommand = 'cat ' . $tmpFileName . ' | ' . $this->AspellDirectory . ' -a --mode=none' . $this->personalDictsArg . ' --lang=' .$this->dictionary . ' --encoding=' . $this->parserCharset . ' 2>&1';
+						// $this->personalDictsArg has already been escapeshellarg()'ed above, it is an optional paramter and might be empty here
+					$AspellCommand = 'cat ' . escapeshellarg($tmpFileName) . ' | ' . $this->AspellDirectory . ' -a --mode=none' . $this->personalDictsArg . ' --lang=' . escapeshellarg($this->dictionary) . ' --encoding=' . escapeshellarg($this->parserCharset) . ' 2>&1';
 					print $AspellCommand . "\n";
 					print shell_exec($AspellCommand);
 					t3lib_div::unlink_tempfile($tmpFileName);
@@ -260,7 +266,7 @@ class tx_rtehtmlarea_pi1 extends tslib_pibase {
 			$time = number_format(microtime(true) - $time_start, 2, ',', ' ');
 
 				// Insert spellcheck info
-			$this->result .= 'var spellcheck_info = { "Total words":"'.$this->wordCount.'","Misspelled words":"'.sizeof($this->misspelled).'","Total suggestions":"'.$this->suggestionCount.'","Total words suggested":"'.$this->suggestedWordCount.'","Spelling checked in":"'.$time.'" }; 
+			$this->result .= 'var spellcheck_info = { "Total words":"'.$this->wordCount.'","Misspelled words":"'.sizeof($this->misspelled).'","Total suggestions":"'.$this->suggestionCount.'","Total words suggested":"'.$this->suggestedWordCount.'","Spelling checked in":"'.$time.'" };
 // -->
 /*]]>*/
 </script>
@@ -364,7 +370,7 @@ class tx_rtehtmlarea_pi1 extends tslib_pibase {
 					if(!$filehandle = fopen($tmpFileName,'wb')) echo('SpellChecker tempfile open error');
 					if(!fwrite($filehandle, $word)) echo('SpellChecker tempfile write error');
 					if(!fclose($filehandle)) echo('SpellChecker tempfile close error');
-					$AspellCommand = 'cat ' . $tmpFileName . ' | ' . $this->AspellDirectory . ' -a check --mode=none --sug-mode=' . $this->pspellMode . $this->personalDictsArg . ' --lang=' .$this->dictionary . ' --encoding=' . $this->parserCharset . ' 2>&1';
+					$AspellCommand = 'cat ' . escapeshellarg($tmpFileName) . ' | ' . $this->AspellDirectory . ' -a check --mode=none --sug-mode=' . escapeshellarg($this->pspellMode) . $this->personalDictsArg . ' --lang=' . escapeshellarg($this->dictionary) . ' --encoding=' . escapeshellarg($this->parserCharset) . ' 2>&1';
 					$AspellAnswer = shell_exec($AspellCommand);
 					$AspellResultLines = array();
 					$AspellResultLines = t3lib_div::trimExplode(chr(10), $AspellAnswer, 1);
