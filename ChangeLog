@@ -1,6 +1,10 @@
-2006-12-21	Dmitry Dulepov	<dmitry@typo3.org>
+2006-12-21  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* List module did not use BACK_PATH in many calls to TYPO3 functions, which made imposible to reuse List module classes in extensions
+
+2006-12-20  Michael Stucki  <michael@typo3.org>
+
+	* Release of TYPO3 4.0.4
 
 2006-12-20  Peter Niederlag  <peter@niederlag.de>
 
