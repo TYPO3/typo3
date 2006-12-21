@@ -66,8 +66,8 @@ require_once (PATH_t3lib.'class.t3lib_page.php');
 require_once (PATH_t3lib.'class.t3lib_pagetree.php');
 require_once (PATH_t3lib.'class.t3lib_recordlist.php');
 require_once (PATH_t3lib.'class.t3lib_clipboard.php');
-require_once ('class.db_list.inc');
-require_once ('class.db_list_extra.inc');
+require_once ($BACK_PATH.'class.db_list.inc');
+require_once ($BACK_PATH.'class.db_list_extra.inc');
 $BE_USER->modAccess($MCONF,1);
 
 t3lib_BEfunc::lockRecords();
@@ -414,7 +414,7 @@ class SC_db_list {
 						Link for creating a new record:
 					-->
 					<div id="typo3-newRecordLink">
-					<a href="'.htmlspecialchars('db_new.php?id='.$this->id.'&returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))).'">'.
+					<a href="'.htmlspecialchars($this->doc->backPath . 'db_new.php?id='.$this->id.'&returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))).'">'.
 								'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/new_el.gif','width="11" height="12"').' alt="" />'.
 								$LANG->getLL('newRecordGeneral',1).
 								'</a>

@@ -575,7 +575,7 @@ class recordList extends t3lib_recordList {
 					// "Edit" link: ( Only if permissions to edit the page-record of the content of the parent page ($this->id)
 				if ($permsEdit)	{
 					$params='&edit['.$table.']['.$row['uid'].']=edit';
-					$code = '<a href="#" onclick="'.htmlspecialchars(t3lib_BEfunc::editOnClick($params,'',-1)).'" title="'.$LANG->getLL('edit',1).'">'.
+					$code = '<a href="#" onclick="'.htmlspecialchars(t3lib_BEfunc::editOnClick($params,$this->backPath,-1)).'" title="'.$LANG->getLL('edit',1).'">'.
 							$code.
 							'</a>';
 				}
