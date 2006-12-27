@@ -162,7 +162,7 @@ $PARSETIME_START = t3lib_div::milliseconds();		// Is set to the system time in m
 // *************************
 // CLI dispatch processing
 // *************************
-if (defined('TYPO3_cliMode') && TYPO3_cliMode´&& basename(PATH_thisScript)=='cli_dispatch.phpsh')	{
+if (defined('TYPO3_cliMode') && TYPO3_cliMode && basename(PATH_thisScript)=='cli_dispatch.phpsh')	{
 		// First, take out the first argument (cli-key)
 	$temp_cliScriptPath = array_shift($_SERVER['argv']);
 	$temp_cliKey = array_shift($_SERVER['argv']);
