@@ -1364,7 +1364,7 @@ class t3lib_TStemplate	{
 
 			// typeNum
 		$typeNum = $this->setup[$LD['target'].'.']['typeNum'];
-		if (!$typeOverride && intval($GLOBALS['TSFE']->config['config']['forceTypeValue']))	{
+		if ( !t3lib_div::testInt($typeOverride) && intval($GLOBALS['TSFE']->config['config']['forceTypeValue']))	{
 			$typeOverride = intval($GLOBALS['TSFE']->config['config']['forceTypeValue']);
 		}
 		if (strcmp($typeOverride,''))	{ $typeNum = $typeOverride; }	// Override...
