@@ -1,3 +1,7 @@
+2006-01-03  Dmitry Dulepov  <dmitry@typo3.org>
+
+	* Fixed bugs 3254, 3872, 4345: hide workspace selector if (1) no access to workspace module, or (2) only one workspace is available to user
+
 2006-12-27  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Removed garbage characters in typo3/init.php

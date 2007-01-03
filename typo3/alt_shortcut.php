@@ -418,9 +418,12 @@ class SC_alt_shortcut {
 							</tr>
 						</table>
 					</td>
-					<td align="right">
-						'.$this->workspaceSelector().
-							t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'workspaceSelector', $GLOBALS['BACK_PATH'],'',TRUE).'
+					<td align="right">';
+		if ($this->hasWorkspaceAccess()) {
+			$this->content .= $this->workspaceSelector() .
+								t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'workspaceSelector', $GLOBALS['BACK_PATH'],'',TRUE);
+		}
+		$this->content .= '
 					</td>
 				</tr>
 			</table>
@@ -658,8 +661,10 @@ class SC_alt_shortcut {
 
 		$selector.= '<a href="mod/user/ws/index.php" target="content">'.
 					t3lib_iconWorks::getIconImage('sys_workspace',array(),$this->doc->backPath,'align="top"').
-					'</a>'.
-					'<select name="_workspaceSelector" onchange="changeWorkspace(this.options[this.selectedIndex].value);">'.implode('',$options).'</select>';
+					'</a>';
+		if (count($options) > 1) {
+			$selector .= '<select name="_workspaceSelector" onchange="changeWorkspace(this.options[this.selectedIndex].value);">'.implode('',$options).'</select>';
+		}
 
 		return $selector;
 	}
@@ -747,6 +752,17 @@ class SC_alt_shortcut {
 	 */
 	function getLinkedPageId($url)	{
 		return preg_replace('/.*[\?&]id=([^&]+).*/', '$1', $url);
+	}
+
+	/**
+	 * Checks if user has access to Workspace module.
+	 * 
+	 * @return	boolean	<code>true</code> if user has access to workspace module.
+	 */
+	function hasWorkspaceAccess() {
+		$MCONF = array();
+		include('mod/user/ws/conf.php');
+		return $GLOBALS['BE_USER']->modAccess($MCONF, false);
 	}
 }
 
