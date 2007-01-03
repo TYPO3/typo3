@@ -83,9 +83,6 @@
  * 1964:     function versionsInOtherWS($table,$uid)
  * 1994:     function showStageChangeLog($table,$id,$stageCommands)
  *
- *              SECTION: Processing
- * 2055:     function publishAction()
- *
  * TOTAL FUNCTIONS: 37
  * (This index is automatically created/updated by the extension "extdeveval")
  *
@@ -291,9 +288,6 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 			$this->content .= $this->doc->wrapScriptTags('top.location.href="' . $BACK_PATH . 'alt_main.php";');
 		}
 		else {
-				// Perform workspace publishing action if buttons are pressed:
-			$errors = $this->publishAction();
-
 				// Starting page:
 			$this->content.=$this->doc->startPage($LANG->getLL('title'));
 			$this->content.=$this->doc->header($LANG->getLL('title'));
@@ -303,7 +297,7 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 			$menuItems = array();
 			$menuItems[] = array(
 				'label' => $LANG->getLL('menuitem_review'),
-				'content' => (count($errors) ? '<h3>' . $LANG->getLL('label_errors') . '</h3><br/>'.implode('<br/>',$errors).'<hr/>' : '').$this->moduleContent_publish()
+				'content' => $this->moduleContent_publish()
 			);
 			$menuItems[] = array(
 				'label' => $LANG->getLL('menuitem_workspaces'),
@@ -397,10 +391,10 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 		if ($GLOBALS['BE_USER']->workspace!==0)	{
 			if ($this->publishAccess)	{
 				$confirmation = $LANG->JScharCode($LANG->getLL(($GLOBALS['BE_USER']->workspaceRec['publish_access'] & 1) ? 'submit_publish_workspace_confirmation_1' :  'submit_publish_workspace_confirmation_2'));
-				$actionLinks.= '<input type="submit" name="_publish" value="' . $LANG->getLL('submit_publish_workspace') . '" onclick="return confirm(' . $confirmation . ');"/>';
+				$actionLinks.= '<input type="submit" name="_publish" value="' . $LANG->getLL('submit_publish_workspace') . '" onclick="if (confirm(' . $confirmation . ')) window.location.href=\'publish.php?swap=0\';return false"/>';
 				if ($GLOBALS['BE_USER']->workspaceSwapAccess())	{
 					$confirmation = $LANG->JScharCode($LANG->getLL(($GLOBALS['BE_USER']->workspaceRec['publish_access'] & 1) ? 'submit_swap_workspace_confirmation_1' :  'submit_swap_workspace_confirmation_2'));
-					$actionLinks.= '<input type="submit" name="_swap" value="' . $LANG->getLL('submit_swap_workspace') . '" onclick="return confirm(' . $confirmation . ');" />';
+					$actionLinks.= '<input type="submit" name="_swap" value="' . $LANG->getLL('submit_swap_workspace') . '" onclick="if (confirm(' . $confirmation . ')) window.location.href=\'publish.php?swap=1\';return false ;" />';
 				}
 			} else {
 				$actionLinks.= $this->doc->icons(1) . $LANG->getLL('no_publish_permission');
@@ -2042,36 +2036,6 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 
 
 
-
-	/**********************************
-	 *
-	 * Processing
-	 *
-	 **********************************/
-
-	/**
-	 * Will publish workspace if buttons are pressed
-	 *
-	 * @return	void
-	 */
-	function publishAction()	{
-
-			// If "Publish" or "Swap" buttons are pressed:
-		if (t3lib_div::_POST('_publish') || t3lib_div::_POST('_swap'))	{
-
-				// Initialize workspace object and request all pending versions:
-			$wslibObj = t3lib_div::makeInstance('wslib');
-			$cmd = $wslibObj->getCmdArrayForPublishWS($GLOBALS['BE_USER']->workspace, t3lib_div::_POST('_swap'));
-
-				// Execute the commands:
-			$tce = t3lib_div::makeInstance('t3lib_TCEmain');
-			$tce->stripslashes_values = 0;
-			$tce->start(array(), $cmd);
-			$tce->process_cmdmap();
-
-			return $tce->errorLog;
-		}
-	}
 }
 
 // Include extension?
