@@ -1,3 +1,6 @@
+2006-01-03  Thorsten Kahler  <thorsten.kahler@dkd.de>
+	* Fixed bug 931: Typolink to a page with certain type doesn't work if type is zero
+
 2006-12-21  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* List module did not use BACK_PATH in many calls to TYPO3 functions, which made imposible to reuse List module classes in extensions
