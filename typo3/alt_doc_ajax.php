@@ -27,6 +27,8 @@
 /**
  * Main form rendering script for AJAX calls only.
  *
+ * $Id$
+ *
  * @author	Oliver Hader <oh@inpublica.de>
  */
 /**

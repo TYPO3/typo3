@@ -1,7 +1,8 @@
-2006-01-03  Thorsten Kahler  <thorsten.kahler@dkd.de>
+2007-01-03  Thorsten Kahler  <thorsten.kahler@dkd.de>
+
 	* Fixed bug 931: Typolink to a page with certain type doesn't work if type is zero
 
-2006-01-03  Dmitry Dulepov  <dmitry@typo3.org>
+2007-01-03  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Fixed bugs 3254, 3872, 4345: hide workspace selector if (1) no access to workspace module, or (2) only one workspace is available to user
 	* Fixed: publishing many records may cause PHP timeout and leave workspace in half-published state

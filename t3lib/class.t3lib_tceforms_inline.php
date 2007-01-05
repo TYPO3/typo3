@@ -27,6 +27,8 @@
 /**
  * The Inline-Relational-Record-Editing (IRRE) functions as part of the TCEforms.
  *
+ * $Id$
+ *
  * @author	Oliver Hader <oh@inpublica.de>
  */
 /**
