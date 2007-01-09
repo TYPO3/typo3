@@ -361,13 +361,17 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 	 * @param	[type]		$depthData: ...
 	 * @param	[type]		$parentType: ...
 	 * @param	[type]		$parentValue: ...
+	 * @param	boolean		$alphaSort sorts the array keys / tree by alphabet when set to 1
 	 * @return	[type]		...
 	 */
-	function ext_getObjTree($arr, $depth_in, $depthData, $parentType="",$parentValue="")	{
+	function ext_getObjTree($arr, $depth_in, $depthData, $parentType='',$parentValue='', $alphaSort='0')	{
 		$HTML="";
 		$a=0;
 
 		reset($arr);
+		if($alphaSort == '1')	{
+			ksort($arr);
+		}
 		$keyArr_num=array();
 		$keyArr_alpha=array();
 		while (list($key,)=each($arr))	{
@@ -447,7 +451,7 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 				$HTML.="<br />";
 
 				if ($deeper)	{
-					$HTML.=$this->ext_getObjTree($arr[$key."."], $depth, $depthData.'<img src="'.$GLOBALS["BACK_PATH"].'gfx/ol/'.$LN.'.gif" width="18" height="16" align="top" alt="" />', '' /* not used: $validate_info[$key] */, $arr[$key]);
+					$HTML.=$this->ext_getObjTree($arr[$key."."], $depth, $depthData.'<img src="'.$GLOBALS["BACK_PATH"].'gfx/ol/'.$LN.'.gif" width="18" height="16" align="top" alt="" />', '' /* not used: $validate_info[$key] */, $arr[$key], $alphaSort);
 				}
 			}
 		}

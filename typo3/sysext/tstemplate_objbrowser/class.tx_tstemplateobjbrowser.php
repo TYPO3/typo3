@@ -53,6 +53,7 @@ class tx_tstemplateobjbrowser extends t3lib_extobjbase {
 			"ts_browser_regexsearch" => "",
 			"ts_browser_fixedLgd" => "1",
 			"ts_browser_linkObjects" => "1",
+			'ts_browser_alphaSort' => '1',
 		);
 
 		foreach(array('setup','const') as $bType)	{
@@ -412,7 +413,7 @@ class tx_tstemplateobjbrowser extends t3lib_extobjbase {
 			$theKey=$this->pObj->MOD_SETTINGS["ts_browser_toplevel_".$bType];
 			if (!$theKey || !str_replace("-","",$theKey))	{$theKey="";}
 			list($theSetup,$theSetupValue) = $tmpl->ext_getSetup($theSetup, ($this->pObj->MOD_SETTINGS['ts_browser_toplevel_'.$bType]?$this->pObj->MOD_SETTINGS['ts_browser_toplevel_'.$bType]:''));
-			$tree = $tmpl->ext_getObjTree($theSetup, $theKey, "", "", $theSetupValue);
+			$tree = $tmpl->ext_getObjTree($theSetup, $theKey, '', '', $theSetupValue, $this->pObj->MOD_SETTINGS['ts_browser_alphaSort']);
 			$tree = $tmpl->substituteCMarkers($tree);
 
 
@@ -506,10 +507,11 @@ class tx_tstemplateobjbrowser extends t3lib_extobjbase {
 			';
 
 				// Menu in the bottom:
-			$menu= "Crop lines".t3lib_BEfunc::getFuncCheck($this->pObj->id,"SET[ts_browser_fixedLgd]",$this->pObj->MOD_SETTINGS["ts_browser_fixedLgd"]);
+			$menu = "Crop lines: ".t3lib_BEfunc::getFuncCheck($this->pObj->id,"SET[ts_browser_fixedLgd]",$this->pObj->MOD_SETTINGS["ts_browser_fixedLgd"]);
 			#$menu.= "&nbsp;&nbsp;Enable object links".t3lib_BEfunc::getFuncCheck($this->pObj->id,"SET[ts_browser_linkObjects]",$this->pObj->MOD_SETTINGS["ts_browser_linkObjects"]);
+			$menu .= "<br />Sort alphabetically: ".t3lib_BEfunc::getFuncCheck($this->pObj->id,'SET[ts_browser_alphaSort]',$this->pObj->MOD_SETTINGS['ts_browser_alphaSort']);
 			if ($bType=="setup" && !$this->pObj->MOD_SETTINGS["ts_browser_fixedLgd"])	{
-				$menu.= "<BR>Constants display: ".t3lib_BEfunc::getFuncMenu($this->pObj->id,"SET[ts_browser_const]",$this->pObj->MOD_SETTINGS["ts_browser_const"],$this->pObj->MOD_MENU["ts_browser_const"]);
+				$menu.= "<br />Constants display: ".t3lib_BEfunc::getFuncMenu($this->pObj->id,"SET[ts_browser_const]",$this->pObj->MOD_SETTINGS["ts_browser_const"],$this->pObj->MOD_MENU["ts_browser_const"]);
 			}
 			$theOutput.=$this->pObj->doc->section("",'<NOBR>'.$menu.'</NOBR>');
 

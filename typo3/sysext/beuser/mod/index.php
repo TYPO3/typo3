@@ -710,7 +710,7 @@ class local_beUserAuth extends t3lib_beUserAuth {
 						$tmpl->bType='';
 						$tmpl->ext_expandAllNotes=1;
 						$tmpl->ext_noPMicons=1;
-						$out[$k] = $tmpl->ext_getObjTree($v,'','');
+						$out[$k] = $tmpl->ext_getObjTree($v,'','','','','1');
 					break;
 					case 'userTS_hl':
 						$tsparser = t3lib_div::makeInstance('t3lib_TSparser');

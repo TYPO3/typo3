@@ -1,3 +1,7 @@
+2007-01-09  Ingmar Schlecht  <ingmar@typo3.org>
+
+	* Alphabetically sorted TS tree in TS Object Browser (Thanks to Ingo Renner)
+
 2007-01-09  Sebastian Kurfuerst  <sebastian@typo3.org> (Thanks to Oliver Hader)
 
 	* rewrote TBE_EDITOR Javascript functions to use JS "objects" and outsourced them to an external file

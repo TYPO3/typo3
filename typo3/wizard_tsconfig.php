@@ -394,7 +394,7 @@ class SC_wizard_tsconfig {
 			-->
 				<table border="0" cellpadding="0" cellspacing="0" id="typo3-objtree">
 					<tr>
-						<td nowrap="nowrap">'.$tmpl->ext_getObjTree($this->removePointerObjects($objTree[$mode.'.']),'','').'</td>
+						<td nowrap="nowrap">'.$tmpl->ext_getObjTree($this->removePointerObjects($objTree[$mode.'.']),'','','','','1').'</td>
 					</tr>
 				</table>';
 		}

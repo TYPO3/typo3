@@ -99,7 +99,8 @@ class tx_infopagetsconfig_webinfo extends t3lib_extobjbase {
 				3 => 'TSFE.',
 				4 => 'user.',
 				99 => $LANG->getLL('tsconf_configFields')
-			)
+			),
+			'tsconf_alphaSort' => '1',
 		);
 
 		if (!$GLOBALS['BE_USER']->isAdmin())	unset($modMenuAdd['tsconf_parts'][99]);
@@ -115,6 +116,8 @@ class tx_infopagetsconfig_webinfo extends t3lib_extobjbase {
 		global $LANG;
 
 		$menu = t3lib_BEfunc::getFuncMenu($this->pObj->id,'SET[tsconf_parts]',$this->pObj->MOD_SETTINGS['tsconf_parts'],$this->pObj->MOD_MENU['tsconf_parts']);
+		$menu .= "<br />Sort alphabetically: ".t3lib_BEfunc::getFuncCheck($this->pObj->id,'SET[tsconf_alphaSort]',$this->pObj->MOD_SETTINGS['tsconf_alphaSort']);
+		$menu .= '<br /><br />';
 
 		if ($this->pObj->MOD_SETTINGS['tsconf_parts']==99)	{
 			$TSparts = t3lib_BEfunc::getPagesTSconfig($this->pObj->id,'',1);
@@ -240,7 +243,7 @@ class tx_infopagetsconfig_webinfo extends t3lib_extobjbase {
 					<!-- Page TSconfig Tree: -->
 					<table border="0" cellpadding="0" cellspacing="0">
 						<tr>
-							<td nowrap="nowrap">'.$tmpl->ext_getObjTree($modTSconfig,'','').'</td>
+							<td nowrap="nowrap">'.$tmpl->ext_getObjTree($modTSconfig,'','','','',$this->pObj->MOD_SETTINGS['tsconf_alphaSort']).'</td>
 						</tr>
 					</table>',
 				0,
