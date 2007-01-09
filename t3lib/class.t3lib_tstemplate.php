@@ -362,7 +362,9 @@ class t3lib_TStemplate	{
 				);
 				$mpvar_hash = t3lib_div::md5int($GLOBALS['TSFE']->MP);
 				$GLOBALS['TYPO3_DB']->exec_UPDATEquery('cache_pagesection', 'page_id=' . intval($GLOBALS['TSFE']->id) . ' AND mpvar_hash=' . $mpvar_hash, $dbFields);
-				if ($GLOBALS['TYPO3_DB']->sql_affected_rows() == 0) {
+					// get some information about the last performed SQL query
+				$sql_info = $GLOBALS['TYPO3_DB']->sql_info();
+				if ($sql_info['rowsmatched'] == 0) {
 					$dbFields['page_id'] = intval($GLOBALS['TSFE']->id);
 					$dbFields['mpvar_hash'] = $mpvar_hash;
 					$GLOBALS['TYPO3_DB']->exec_INSERTquery('cache_pagesection', $dbFields);

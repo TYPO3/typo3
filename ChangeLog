@@ -1,3 +1,9 @@
+2007-01-09  Sebastian Kurfuerst  <sebastian@typo3.org> (Thanks to Oliver Hader)
+
+	* rewrote TBE_EDITOR Javascript functions to use JS "objects" and outsourced them to an external file
+	* !!! Removed the variables TBE_EDITOR_isChanged and TBE_EDITOR_loadTime in TBE_EDITOR javascript
+	* change in getRecordTitle: a too long title is wrapped in a <span title="..."> tag to show a tooltip
+
 2007-01-03  Thorsten Kahler  <thorsten.kahler@dkd.de>
 
 	* Fixed bug 931: Typolink to a page with certain type doesn't work if type is zero

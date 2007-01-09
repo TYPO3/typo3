@@ -1212,9 +1212,9 @@ $str.=$this->docBodyTagBegin().
 		$opt=array();
 		if ($addSaveOptions)	{
 			$opt[]='<option value="">'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:rm.menu',1).'</option>';
-			$opt[]='<option value="TBE_EDITOR_checkAndDoSubmit(1);">'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:rm.saveDoc',1).'</option>';
-			$opt[]='<option value="document.editform.closeDoc.value=-2; TBE_EDITOR_checkAndDoSubmit(1);">'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:rm.saveCloseDoc',1).'</option>';
-			if ($BE_USER->uc['allSaveFunctions'])	$opt[]='<option value="document.editform.closeDoc.value=-3; TBE_EDITOR_checkAndDoSubmit(1);">'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:rm.saveCloseAllDocs',1).'</option>';
+			$opt[]='<option value="TBE_EDITOR.checkAndDoSubmit(1);">'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:rm.saveDoc',1).'</option>';
+			$opt[]='<option value="document.editform.closeDoc.value=-2; TBE_EDITOR.checkAndDoSubmit(1);">'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:rm.saveCloseDoc',1).'</option>';
+			if ($BE_USER->uc['allSaveFunctions'])	$opt[]='<option value="document.editform.closeDoc.value=-3; TBE_EDITOR.checkAndDoSubmit(1);">'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:rm.saveCloseAllDocs',1).'</option>';
 			$opt[]='<option value="document.editform.closeDoc.value=2; document.editform.submit();">'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:rm.closeDoc',1).'</option>';
 			$opt[]='<option value="document.editform.closeDoc.value=3; document.editform.submit();">'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:rm.closeAllDocs',1).'</option>';
 			$opt[]='<option value=""></option>';

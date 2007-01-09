@@ -627,13 +627,13 @@ class t3lib_queryGenerator	{
 					$lineHTML.='<input type="checkbox"'.($conf['negate']?' checked':'').' name="'.$this->name.$subscript.'[negate]'.'" onClick="submit();">';
 
 					if ($conf['comparison']==100 || $conf['comparison']==101)	{	// between
-						$lineHTML.='<input type="text" name="'.$this->name.$subscript.'[inputValue]_hr'.'" value="'.strftime('%e-%m-%Y', $conf['inputValue']).'" '.$GLOBALS['TBE_TEMPLATE']->formWidth(10).' onChange="typo3FormFieldGet(\''.$this->name.$subscript.'[inputValue]\', \'date\', \'\', 0,0);"><input type="hidden" value="'.htmlspecialchars($conf['inputValue']).'" name="'.$this->name.$subscript.'[inputValue]'.'">';
-						$lineHTML.='<input type="text" name="'.$this->name.$subscript.'[inputValue1]_hr'.'" value="'.strftime('%e-%m-%Y', $conf['inputValue1']).'" '.$GLOBALS['TBE_TEMPLATE']->formWidth(10).' onChange="typo3FormFieldGet(\''.$this->name.$subscript.'[inputValue1]\', \'date\', \'\', 0,0);"><input type="hidden" value="'.htmlspecialchars($conf['inputValue1']).'" name="'.$this->name.$subscript.'[inputValue1]'.'">';
-						$this->extJSCODE.='typo3FormFieldSet("'.$this->name.$subscript.'[inputValue]", '.date.', "", 0,0);';
-						$this->extJSCODE.='typo3FormFieldSet("'.$this->name.$subscript.'[inputValue1]", '.date.', "", 0,0);';
+						$lineHTML.='<input type="text" name="'.$this->name.$subscript.'[inputValue]_hr'.'" value="'.strftime('%e-%m-%Y', $conf['inputValue']).'" '.$GLOBALS['TBE_TEMPLATE']->formWidth(10).' onChange="typo3form.fieldGet(\''.$this->name.$subscript.'[inputValue]\', \'date\', \'\', 0,0);"><input type="hidden" value="'.htmlspecialchars($conf['inputValue']).'" name="'.$this->name.$subscript.'[inputValue]'.'">';
+						$lineHTML.='<input type="text" name="'.$this->name.$subscript.'[inputValue1]_hr'.'" value="'.strftime('%e-%m-%Y', $conf['inputValue1']).'" '.$GLOBALS['TBE_TEMPLATE']->formWidth(10).' onChange="typo3form.fieldGet(\''.$this->name.$subscript.'[inputValue1]\', \'date\', \'\', 0,0);"><input type="hidden" value="'.htmlspecialchars($conf['inputValue1']).'" name="'.$this->name.$subscript.'[inputValue1]'.'">';
+						$this->extJSCODE.='typo3form.fieldSet("'.$this->name.$subscript.'[inputValue]", '.date.', "", 0,0);';
+						$this->extJSCODE.='typo3form.fieldSet("'.$this->name.$subscript.'[inputValue1]", '.date.', "", 0,0);';
 					} else {
-						$lineHTML.='<input type="text" name="'.$this->name.$subscript.'[inputValue]_hr'.'" value="'.strftime('%e-%m-%Y', $conf['inputValue']).'" '.$GLOBALS['TBE_TEMPLATE']->formWidth(10).' onChange="typo3FormFieldGet(\''.$this->name.$subscript.'[inputValue]\', \'date\', \'\', 0,0);"><input type="hidden" value="'.htmlspecialchars($conf['inputValue']).'" name="'.$this->name.$subscript.'[inputValue]'.'">';
-						$this->extJSCODE.='typo3FormFieldSet("'.$this->name.$subscript.'[inputValue]", '.date.', "", 0,0);';
+						$lineHTML.='<input type="text" name="'.$this->name.$subscript.'[inputValue]_hr'.'" value="'.strftime('%e-%m-%Y', $conf['inputValue']).'" '.$GLOBALS['TBE_TEMPLATE']->formWidth(10).' onChange="typo3form.fieldGet(\''.$this->name.$subscript.'[inputValue]\', \'date\', \'\', 0,0);"><input type="hidden" value="'.htmlspecialchars($conf['inputValue']).'" name="'.$this->name.$subscript.'[inputValue]'.'">';
+						$this->extJSCODE.='typo3form.fieldSet("'.$this->name.$subscript.'[inputValue]", '.date.', "", 0,0);';
 					}
 				break;
 				case 'time':
@@ -642,13 +642,13 @@ class t3lib_queryGenerator	{
 
 					$lineHTML.='<input type="checkbox"'.($conf['negate']?' checked':'').' name="'.$this->name.$subscript.'[negate]'.'" onClick="submit();">';
 					if ($conf['comparison']==100 || $conf['comparison']==101)	{	// between:
-						$lineHTML.='<input type="text" name="'.$this->name.$subscript.'[inputValue]_hr'.'" value="'.strftime('%H:%M %e-%m-%Y', $conf['inputValue']).'" '.$GLOBALS['TBE_TEMPLATE']->formWidth(10).' onChange="typo3FormFieldGet(\''.$this->name.$subscript.'[inputValue]\', \'datetime\', \'\', 0,0);"><input type="hidden" value="'.htmlspecialchars($conf['inputValue']).'" name="'.$this->name.$subscript.'[inputValue]'.'">';
-						$lineHTML.='<input type="text" name="'.$this->name.$subscript.'[inputValue1]_hr'.'" value="'.strftime('%H:%M %e-%m-%Y', $conf['inputValue1']).'" '.$GLOBALS['TBE_TEMPLATE']->formWidth(10).' onChange="typo3FormFieldGet(\''.$this->name.$subscript.'[inputValue1]\', \'datetime\', \'\', 0,0);"><input type="hidden" value="'.htmlspecialchars($conf['inputValue1']).'" name="'.$this->name.$subscript.'[inputValue1]'.'">';
-						$this->extJSCODE.='typo3FormFieldSet("'.$this->name.$subscript.'[inputValue]", '.datetime.', "", 0,0);';
-						$this->extJSCODE.='typo3FormFieldSet("'.$this->name.$subscript.'[inputValue1]", '.datetime.', "", 0,0);';
+						$lineHTML.='<input type="text" name="'.$this->name.$subscript.'[inputValue]_hr'.'" value="'.strftime('%H:%M %e-%m-%Y', $conf['inputValue']).'" '.$GLOBALS['TBE_TEMPLATE']->formWidth(10).' onChange="typo3form.fieldGet(\''.$this->name.$subscript.'[inputValue]\', \'datetime\', \'\', 0,0);"><input type="hidden" value="'.htmlspecialchars($conf['inputValue']).'" name="'.$this->name.$subscript.'[inputValue]'.'">';
+						$lineHTML.='<input type="text" name="'.$this->name.$subscript.'[inputValue1]_hr'.'" value="'.strftime('%H:%M %e-%m-%Y', $conf['inputValue1']).'" '.$GLOBALS['TBE_TEMPLATE']->formWidth(10).' onChange="typo3form.fieldGet(\''.$this->name.$subscript.'[inputValue1]\', \'datetime\', \'\', 0,0);"><input type="hidden" value="'.htmlspecialchars($conf['inputValue1']).'" name="'.$this->name.$subscript.'[inputValue1]'.'">';
+						$this->extJSCODE.='typo3form.fieldSet("'.$this->name.$subscript.'[inputValue]", '.datetime.', "", 0,0);';
+						$this->extJSCODE.='typo3form.fieldSet("'.$this->name.$subscript.'[inputValue1]", '.datetime.', "", 0,0);';
 					} else {
-						$lineHTML.='<input type="text" name="'.$this->name.$subscript.'[inputValue]_hr'.'" value="'.strftime('%H:%M %e-%m-%Y', $conf['inputValue']).'" '.$GLOBALS['TBE_TEMPLATE']->formWidth(10).' onChange="typo3FormFieldGet(\''.$this->name.$subscript.'[inputValue]\', \'datetime\', \'\', 0,0);"><input type="hidden" value="'.htmlspecialchars($conf['inputValue']).'" name="'.$this->name.$subscript.'[inputValue]'.'">';
-						$this->extJSCODE.='typo3FormFieldSet("'.$this->name.$subscript.'[inputValue]", '.datetime.', "", 0,0);';
+						$lineHTML.='<input type="text" name="'.$this->name.$subscript.'[inputValue]_hr'.'" value="'.strftime('%H:%M %e-%m-%Y', $conf['inputValue']).'" '.$GLOBALS['TBE_TEMPLATE']->formWidth(10).' onChange="typo3form.fieldGet(\''.$this->name.$subscript.'[inputValue]\', \'datetime\', \'\', 0,0);"><input type="hidden" value="'.htmlspecialchars($conf['inputValue']).'" name="'.$this->name.$subscript.'[inputValue]'.'">';
+						$this->extJSCODE.='typo3form.fieldSet("'.$this->name.$subscript.'[inputValue]", '.datetime.', "", 0,0);';
 					}
 				break;
 				case 'multiple':
@@ -1505,36 +1505,7 @@ class t3lib_queryGenerator	{
 		if ($this->extJSCODE)	{
 			$out.='
 			<script language="javascript" type="text/javascript" src="'.$GLOBALS['BACK_PATH'].'../t3lib/jsfunc.evalfield.js"></script>
-			<script language="javascript" type="text/javascript">
-				var evalFunc = new evalFunc;
-				function typo3FormFieldSet(theField, evallist, is_in, checkbox, checkboxValue)	{
-					var theFObj = new evalFunc_dummy (evallist,is_in, checkbox, checkboxValue);
-					var theValue = document.'.$formname.'[theField].value;
-					if (checkbox && theValue==checkboxValue)	{
-						document.'.$formname.'[theField+"_hr"].value="";
-						if (document.'.$formname.'[theField+"_cb"])	document.'.$formname.'[theField+"_cb"].checked = "";
-					} else {
-						document.'.$formname.'[theField+"_hr"].value = evalFunc.outputObjValue(theFObj, theValue);
-						if (document.'.$formname.'[theField+"_cb"])	document.'.$formname.'[theField+"_cb"].checked = "on";
-					}
-				}
-
-	/**
-	 * [Describe function...]
-	 *
-	 * @param	[type]		$theField, evallist, is_in, checkbox, checkboxValue, checkbox_off: ...
-	 * @return	[type]		...
-	 */
-				function typo3FormFieldGet(theField, evallist, is_in, checkbox, checkboxValue, checkbox_off)	{
-					var theFObj = new evalFunc_dummy (evallist,is_in, checkbox, checkboxValue);
-					if (checkbox_off)	{
-						document.'.$formname.'[theField].value=checkboxValue;
-					}else{
-						document.'.$formname.'[theField].value = evalFunc.evalObjValue(theFObj, document.'.$formname.'[theField+"_hr"].value);
-					}
-					typo3FormFieldSet(theField, evallist, is_in, checkbox, checkboxValue);
-				}
-			</script>
+			<script language="javascript" type="text/javascript" src="'.$GLOBALS['BACK_PATH'].'jsfunc.tbe_editor.js"></script>
 			<script language="javascript" type="text/javascript">'.$this->extJSCODE.'</script>';
 			return $out;
 		}

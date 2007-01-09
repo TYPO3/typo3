@@ -854,6 +854,26 @@ class t3lib_DB {
 	}
 
 	/**
+	 * Returns some information about actions that were performed
+	 * after an UPDATE or DELETE query was sent to the database.
+	 * All keys of the array are lowercased and whitspaces are removed.
+	 * The returned array looks like this:
+	 * Array('rowsmatched' => 1, 'changed' => 1, 'warnings' => 0)
+	 *
+	 * @return	array		And accociative array with information about the performed actions.
+	 */
+	function sql_info() {
+		$info = array();
+		$sql_info = strtolower(mysql_info($this->link));
+		while (preg_match('/(\w[\w\s]+):\s+(\d+)\s*/', $sql_info, $matches)) {
+			$sql_info = str_replace($matches[0], '', $sql_info);
+			$matches[1] = str_replace(' ', '', $matches[1]);
+			$info[$matches[1]] = $matches[2];
+		}
+		return $info;
+	}
+
+	/**
 	 * Move internal result pointer
 	 * mysql_data_seek() wrapper function
 	 * Usage count/core: 3

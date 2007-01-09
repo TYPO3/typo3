@@ -115,7 +115,6 @@ class t3lib_TCEforms_inline {
 		$this->backPath =& $tceForms->backPath;
 		$this->prependFormFieldNames =& $this->fObj->prependFormFieldNames;
 		$this->prependCmdFieldNames =& $this->fObj->prependCmdFieldNames;
-		
 		$this->inlineStyles['margin-right'] = '5';
 	}
 
@@ -141,10 +140,12 @@ class t3lib_TCEforms_inline {
 		$config = $PA['fieldConf']['config'];
 		$foreign_table = $config['foreign_table'];
 
-		// @TODO: Minitems müssen unterstüzt werden und intInRange mit maxitems immer mindestens minItems
 		$minitems = t3lib_div::intInRange($config['minitems'],0);
 		$maxitems = t3lib_div::intInRange($config['maxitems'],0);
 		if (!$maxitems)	$maxitems=100000;
+
+			// Register the required number of elements:
+		$this->fObj->requiredElements[$PA['itemFormElName']] = array($minitems,$maxitems,'imgName'=>$table.'_'.$row['uid'].'_'.$field);
 
 			// remember the page id (pid of record) where inline editing started first
 			// we need that pid for ajax calls, so that they would know where the action takes place on the page structure
@@ -219,9 +220,9 @@ class t3lib_TCEforms_inline {
 		$item .= '<div id="'.$nameObject.'">';
 
 			// define how to show the "Create new record" link - if there are more than maxitems, hide it
-		if (count($recordList) >= $maxitems || ($uniqueMax > 0 && count($recordList) >= $uniqueMax))
+		if (count($recordList) >= $maxitems || ($uniqueMax > 0 && count($recordList) >= $uniqueMax)) {
 			$config['inline']['inlineNewButtonStyle'] = 'display: none;';
-
+		}
 			// add the "Create new record" link before all child records
 		if ($config['appearance']['newRecordLinkPosition'] != 'bottom') {
 			$item .= $this->getNewRecordLink($nameObject.'['.$foreign_table.']', $config);
@@ -246,7 +247,7 @@ class t3lib_TCEforms_inline {
 		if (count($relationList) > 1 && $config['appearance']['useSortable'])
 			$this->addJavaScriptSortable($nameObject.'_records');
 			// publish the uids of the child records in the given order to the browser
-		$item .= '<input type="hidden" name="'.$nameForm.'" value="'.implode(',', $relationList).'" />';
+		$item .= '<input type="hidden" name="'.$nameForm.'" value="'.implode(',', $relationList).'" class="inlineRecord" />';
 			// close the wrap for all inline fields (container)
 		$item .= '</div>';
 
@@ -319,7 +320,6 @@ class t3lib_TCEforms_inline {
 				// set additional field for processing for saving
 			$fields .= '<input type="hidden" name="'.$this->prependCmdFieldNames.$appendFormFieldNames.'[delete]" value="1" disabled="disabled" />';
 		}
-		
 			// if this record should be shown collapsed
 		if (!$isExpanded) $appearanceStyleFields = ' style="display: none;"';
 
@@ -353,9 +353,7 @@ class t3lib_TCEforms_inline {
 		$isOnSymmetricSide = t3lib_loadDBGroup::isOnSymmetricSide($parentUid, $config, $rec);
 		$hasForeignLabel = !$isOnSymmetricSide && $config['foreign_label'] ? true : false;
 		$hasSymmetricLabel = $isOnSymmetricSide && $config['symmetric_label'] ? true : false;
-		
 			// Get the record title/label for a record:
-			
 			// render using a self-defined user function
 		if ($GLOBALS['TCA'][$foreign_table]['ctrl']['label_userFunc']) {
 			$params = array(
@@ -367,14 +365,12 @@ class t3lib_TCEforms_inline {
 			$null = null;	// callUserFunction requires a third parameter, but we don't want to give $this as reference!
 			t3lib_div::callUserFunction($GLOBALS['TCA'][$foreign_table]['ctrl']['label_userFunc'], $params, $null);
 			$recTitle = $params['title'];
-			
 			// render the special alternative title
 		} elseif ($hasForeignLabel || $hasSymmetricLabel) {
 			$titleCol = $hasForeignLabel ? $config['foreign_label'] : $config['symmetric_label'];
 			$recTitle = t3lib_BEfunc::getProcessedValueExtra($foreign_table, $titleCol, $rec[$titleCol]);
 			$recTitle = t3lib_BEfunc::getRecordTitlePrep($recTitle);
 			$recTitle = $this->fObj->noTitle($recTitle);
-			
 			// render the standard
 		} else {
 			$recTitle = t3lib_BEfunc::getRecordTitle($foreign_table, $rec, true);
@@ -422,11 +418,11 @@ class t3lib_TCEforms_inline {
 
 		$tcaTableCtrl =& $GLOBALS['TCA'][$foreign_table]['ctrl'];
 		$tcaTableCols =& $GLOBALS['TCA'][$foreign_table]['columns'];
-		
+
 		$isPagesTable = $foreign_table == 'pages' ? true : false;
 		$isOnSymmetricSide = t3lib_loadDBGroup::isOnSymmetricSide($parentUid, $config, $rec);
 		$enableManualSorting = $tcaTableCtrl['sortby'] || $config['MM'] || (!$isOnSymmetricSide && $config['foreign_sortby']) || ($isOnSymmetricSide && $config['symmetric_sortby']) ? true : false;
-		
+
 		$nameObjectFt = $this->inlineNames['object'].'['.$foreign_table.']';
 		$nameObjectFtId = $nameObjectFt.'['.$rec['uid'].']';
 
@@ -464,7 +460,8 @@ class t3lib_TCEforms_inline {
 					)	{
 					if ($showNewRecLink)	{
 						$onClick = "return inline.createNewRecord('".$nameObjectFt."','".$rec['uid']."')";
-						$cells[]='<a href="#" onclick="'.htmlspecialchars($onClick).'" class="inlineNewButton"'.$config['inline']['inlineNewButtonStyle'].'>'.
+						if ($config['inline']['inlineNewButtonStyle']) $style = ' style="'.$config['inline']['inlineNewButtonStyle'].'"';
+						$cells[]='<a href="#" onclick="'.htmlspecialchars($onClick).'" class="inlineNewButton"'.$style.'>'.
 								'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/new_'.($isPagesTable?'page':'el').'.gif','width="'.($isPagesTable?13:11).'" height="12"').' title="'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_web_list.xml:new'.($isPagesTable?'Page':'Record'),1).'" alt="" />'.
 								'</a>';
 					}
@@ -652,17 +649,17 @@ class t3lib_TCEforms_inline {
 
 		return $itemsToSelect;
 	}
-	
+
 
 	/**
 	 * Creates a link/button to create new records
 	 *
 	 * @param	string		$objectPrefix: The "path" to the child record to create (e.g. '[parten_table][parent_uid][parent_field][child_table]')
-	 * @param	string		$style: If a style should be added to the link (e.g. 'display: none;')
+	 * @param	array		$conf: TCA configuration of the parent(!) field
 	 * @return	string		The HTML code for the new record link
 	 */
 	function getNewRecordLink($objectPrefix, $conf = array()) {
-		if ($conf['inline']['inlineNewButtonStyle']) $style = ' style="'.$style.'"';
+		if ($conf['inline']['inlineNewButtonStyle']) $style = ' style="'.$conf['inline']['inlineNewButtonStyle'].'"';
 
 		$onClick = "return inline.createNewRecord('$objectPrefix')";
 		$title = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:cm.createnew',1);
@@ -679,25 +676,7 @@ class t3lib_TCEforms_inline {
 				</div>';
 		return $out;
 	}
-	
-	
-	/**
-	 * Get the <script type="text/javascript" src="..."> tags of:
-	 * - prototype.js
-	 * - script.acolo.us
-	 *
-	 * @return	string		The HTML code of the <script type="text/javascript" src="..."> tags
-	 */
-	function addJavaScript() {
-		$jsCode = array(
-			'<script src="prototype.js" type="text/javascript"></script>',
-			'<script src="scriptaculous/scriptaculous.js" type="text/javascript"></script>',
-			'<script src="../t3lib/jsfunc.inline.js" type="text/javascript"></script>',
-		);
 
-		return implode("\n", $jsCode);
-	}
-	
 
 	/**
 	 * Add Sortable functionality using script.acolo.us "Sortable".
@@ -789,9 +768,8 @@ class t3lib_TCEforms_inline {
 			);
 		}
 
-			// if a new level of child records (child of children) was created, send the JSON array
-		if (count($this->inlineData))
-			$jsonArray['scriptCall'][] = 'inline.addToDataArray('.$this->getJSON($this->inlineData).');';
+			// add the JavaScript data that would have been added at the bottom of a regular TCEforms calls
+		$jsonArray['scriptCall'][] = $this->fObj->JSbottom($this->fObj->formName, true);
 			// if script.aculo.us Sortable is used, update the Observer to know the the record
 		if ($config['appearance']['useSortable'])
 			$jsonArray['scriptCall'][] = "inline.createDragAndDropSorting('".$this->inlineNames['object']."_records');";
@@ -812,7 +790,8 @@ class t3lib_TCEforms_inline {
 	 * Save the expanded/collapsed state of a child record in the BE_USER->uc.
 	 *
 	 * @param	string		$domObjectId: The calling object in hierarchy, that requested a new record.
-	 * @param	integer		$expanded: Whether this record is expanded or collapsed.
+	 * @param	string		$expand: Whether this record is expanded.
+	 * @param	string		$collapse: Whether this record is collapsed.
 	 * @return	void
 	 */
 	function setExpandedCollapsedState($domObjectId, $expand, $collapse) {
@@ -827,19 +806,19 @@ class t3lib_TCEforms_inline {
 		if (t3lib_div::testInt($top['uid'])) {
 			$inlineView = unserialize($GLOBALS['BE_USER']->uc['inlineView']);
 			$inlineViewCurrent =& $inlineView[$top['table']][$top['uid']];
-			
-			$expandUid = t3lib_div::trimExplode(',', $expand);
-			$collapseUid = t3lib_div::trimExplode(',', $collapse);
-			
+
+			$expandUids = t3lib_div::trimExplode(',', $expand);
+			$collapseUids = t3lib_div::trimExplode(',', $collapse);
+
 				// set records to be expanded
-			foreach ($expandUid as $uid) {
+			foreach ($expandUids as $uid) {
 				$inlineViewCurrent[$current['table']][] = $uid;
 			}
 				// set records to be collapsed
-			foreach ($collapseUid as $uid) {
+			foreach ($collapseUids as $uid) {
 				$inlineViewCurrent[$current['table']] = $this->removeFromArray($uid, $inlineViewCurrent[$current['table']]);
 			}
-			
+
 				// save states back to database
 			if (is_array($inlineViewCurrent[$current['table']])) {
 				$GLOBALS['BE_USER']->uc['inlineView'] = serialize($inlineView);
@@ -847,7 +826,7 @@ class t3lib_TCEforms_inline {
 			}
 		}
 	}
-	
+
 
 	/*******************************************************
 	 *
@@ -1420,14 +1399,15 @@ class t3lib_TCEforms_inline {
 			? true
 			: false;
 	}
-	
+
 
 	/**
 	 * Remove an element from an array.
 	 *
-	 * @param	mixed	$needle: The element to be removed.
-	 * @param	array	$haystack: The array the element should be removed from.
-	 * @return	mixed	$strict: Search elements strictly.
+	 * @param	mixed		$needle: The element to be removed.
+	 * @param	array		$haystack: The array the element should be removed from.
+	 * @param	mixed		$strict: Search elements strictly.
+	 * @return	array		The array $haystack without the $needle
 	 */
 	function removeFromArray($needle, $haystack, $strict=null) {
 		$pos = array_search($needle, $haystack, $strict);
@@ -1450,7 +1430,6 @@ class t3lib_TCEforms_inline {
 			foreach ($possibleRecords as $record) $flat[$record[1]] = $record[0];
 		return $flat;
 	}
-
 
 
 	/**
@@ -1510,8 +1489,8 @@ class t3lib_TCEforms_inline {
 
 		return $skipThisField;
 	}
-	
-	
+
+
 	/**
 	 * Creates recursively a JSON literal from a mulidimensional associative array.
 	 * Uses Services_JSON (http://mike.teczno.com/JSON/doc/)
@@ -1527,7 +1506,7 @@ class t3lib_TCEforms_inline {
 		return $GLOBALS['JSON']->encode($jsonArray);
 	}
 
-	
+
 	/**
 	 * Checks if a uid of a child table is in the inline view settings.
 	 *
@@ -1541,8 +1520,8 @@ class t3lib_TCEforms_inline {
 		}
 		return false;
 	}
-	
-	
+
+
 	/**
 	 * Update expanded/collapsed states on new inline records if any.
 	 *
@@ -1553,7 +1532,7 @@ class t3lib_TCEforms_inline {
 	function updateInlineView(&$uc, &$tce) {
 		if (is_array($uc) && $uc['inlineView']) {
 			$inlineView = unserialize($GLOBALS['BE_USER']->uc['inlineView']);
-			
+
 			foreach ($uc['inlineView'] as $topTable => $topRecords) {
 				foreach ($topRecords as $topUid => $childElements) {
 					foreach ($childElements as $childTable => $childRecords) {
@@ -1569,11 +1548,12 @@ class t3lib_TCEforms_inline {
 					}
 				}
 			}
-			
+
 			$GLOBALS['BE_USER']->uc['inlineView'] = serialize($inlineView);
 			$GLOBALS['BE_USER']->writeUC();
 		}
 	}
+
 
 	/**
 	 * Returns the the margin in pixels, that is used for each new inline level.

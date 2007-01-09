@@ -407,8 +407,8 @@ class SC_db_layout {
 				if (top.fsMod) top.fsMod.recentIds["web"] = '.intval($this->id).';
 				if (top.fsMod) top.fsMod.navFrameHighlightedID["web"] = "pages'.intval($this->id).'_"+top.fsMod.currentBank; '.intval($this->id).';
 				function jumpToUrl(URL,formEl)	{	//
-					if (document.editform && document.TBE_EDITOR_isFormChanged)	{	// Check if the function exists... (works in all browsers?)
-						if (!TBE_EDITOR_isFormChanged())	{	//
+					if (document.editform && document.TBE_EDITOR.isFormChanged)	{	// Check if the function exists... (works in all browsers?)
+						if (!TBE_EDITOR.isFormChanged())	{	//
 							window.location.href = URL;
 						} else if (formEl) {
 							if (formEl.type=="checkbox") formEl.checked = formEl.checked ? 0 : 1;
@@ -490,7 +490,7 @@ class SC_db_layout {
 		global $LANG,$BE_USER,$BACK_PATH;
 
 			// Alternative form tag; Quick Edit submits its content to tce_db.php.
-		$this->doc->form='<form action="'.htmlspecialchars($BACK_PATH.'tce_db.php?&prErr=1&uPT=1').'" method="post" enctype="'.$GLOBALS['TYPO3_CONF_VARS']['SYS']['form_enctype'].'" name="editform" onsubmit="return TBE_EDITOR_checkSubmit(1);">';
+		$this->doc->form='<form action="'.htmlspecialchars($BACK_PATH.'tce_db.php?&prErr=1&uPT=1').'" method="post" enctype="'.$GLOBALS['TYPO3_CONF_VARS']['SYS']['form_enctype'].'" name="editform" onsubmit="return TBE_EDITOR.checkSubmit(1);">';
 
 			// Setting up the context sensitive menu:
 		$CMparts = $this->doc->getContextMenuCode();
@@ -641,7 +641,7 @@ class SC_db_layout {
 
 			'<input class="c-inputButton" type="image" name="savedok"'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/savedok.gif','').' title="'.$LANG->sL('LLL:EXT:lang/locallang_core.php:rm.saveDoc',1).'" alt="" />'.
 
-			'<a href="#" onclick="'.htmlspecialchars('document.editform.redirect.value+=\'&popView=1\'; TBE_EDITOR_checkAndDoSubmit(1); return false;').'">'.
+			'<a href="#" onclick="'.htmlspecialchars('document.editform.redirect.value+=\'&popView=1\'; TBE_EDITOR.checkAndDoSubmit(1); return false;').'">'.
 				'<img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/savedokshow.gif','width="21" height="16"').' class="c-inputButton" title="'.$LANG->sL('LLL:EXT:lang/locallang_core.php:rm.saveDocShow',1).'" alt="" />'.
 				'</a>'.
 

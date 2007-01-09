@@ -435,11 +435,11 @@ class SC_alt_doc {
 		$this->doc->backPath = $BACK_PATH;
 		$this->doc->docType = 'xhtml_trans';
 
-		$this->doc->form='<form action="'.htmlspecialchars($this->R_URI).'" method="post" enctype="'.$GLOBALS['TYPO3_CONF_VARS']['SYS']['form_enctype'].'" name="editform" onsubmit="return TBE_EDITOR_checkSubmit(1);">';
+		$this->doc->form='<form action="'.htmlspecialchars($this->R_URI).'" method="post" enctype="'.$GLOBALS['TYPO3_CONF_VARS']['SYS']['form_enctype'].'" name="editform" onsubmit="return TBE_EDITOR.checkSubmit(1);">';
 
 		$this->doc->JScode = $this->doc->wrapScriptTags('
 			function jumpToUrl(URL,formEl)	{	//
-				if (!TBE_EDITOR_isFormChanged())	{
+				if (!TBE_EDITOR.isFormChanged())	{
 					window.location.href = URL;
 				} else if (formEl && formEl.type=="checkbox") {
 					formEl.checked = formEl.checked ? 0 : 1;
@@ -896,7 +896,7 @@ class SC_alt_doc {
 				}
 
 					// Compile the selector box finally:
-				$onChange = 'if(this.options[this.selectedIndex].value && !TBE_EDITOR_isFormChanged()){window.location.href=(this.options[this.selectedIndex].value);}';
+				$onChange = 'if(this.options[this.selectedIndex].value && !TBE_EDITOR.isFormChanged()){window.location.href=(this.options[this.selectedIndex].value);}';
 				$docSel='<select name="_docSelector" onchange="'.htmlspecialchars($onChange).'">'.implode('',$opt).'</select>';
 
 					// Add CSH:

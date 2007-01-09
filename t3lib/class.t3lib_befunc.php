@@ -1851,12 +1851,32 @@ class t3lib_BEfunc	{
 
 				// If the current result is empty, set it to '[No title]' (localized) and prepare for output if requested
 			if ($prep || $forceResult)	{
-				if (!strcmp(trim($t),''))	$t='['.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.no_title',1).']';
-				if ($prep)	$t = '<em>'.htmlspecialchars(t3lib_div::fixed_lgd_cs($t,$GLOBALS['BE_USER']->uc['titleLen'])).'</em>';				
+				if ($prep) {
+					$tOrig = htmlspecialchars($t);
+					$t = htmlspecialchars(t3lib_div::fixed_lgd_cs($t,$GLOBALS['BE_USER']->uc['titleLen']));
+					if ($tOrig != $t) {
+						$t = '<span title="'.$tOrig.'">'.$t.'</span>';
+					}
+				}
+				if (!strcmp(trim($t),'')) {
+					$t = t3lib_BEfunc::getNoRecordTitle($prep);
+				}
 			}
 
 			return $t;
 		}
+	}
+
+	/**
+	 * Get a localized [No title] string, wrapped in <em>|</em> if $prep is true.
+	 *
+	 * @param	boolean		$prep: Wrap result in <em>|</em>
+	 * @return	string		Localized [No title] string
+	 */
+	function getNoRecordTitle($prep=FALSE) {
+		$noTitle = '['.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.no_title',1).']';
+		if ($prep) $noTitle = '<em>'.$noTitle.'</em>';
+		return $noTitle;
 	}
 
 	/**

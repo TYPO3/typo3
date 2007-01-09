@@ -110,7 +110,7 @@ class SC_wizard_rte {
 		$this->doc = t3lib_div::makeInstance('mediumDoc');
 		$this->doc->docType = 'xhtml_trans';
 		$this->doc->divClass = '';	// Need to NOT have the page wrapped in DIV since if we do that we destroy the feature that the RTE spans the whole height of the page!!!
-		$this->doc->form='<form action="tce_db.php" method="post" enctype="'.$GLOBALS['TYPO3_CONF_VARS']['SYS']['form_enctype'].'" name="editform" onsubmit="return TBE_EDITOR_checkSubmit(1);">';
+		$this->doc->form='<form action="tce_db.php" method="post" enctype="'.$GLOBALS['TYPO3_CONF_VARS']['SYS']['form_enctype'].'" name="editform" onsubmit="return TBE_EDITOR.checkSubmit(1);">';
 		$this->doc->backPath = $BACK_PATH;
 
 	}
@@ -139,7 +139,7 @@ class SC_wizard_rte {
 			$this->doc->JScode = $this->doc->wrapScriptTags('
 					function jumpToUrl(URL,formEl)	{	//
 						if (document.editform)	{
-							if (!TBE_EDITOR_isFormChanged())	{
+							if (!TBE_EDITOR.isFormChanged())	{
 								window.location.href = URL;
 							} else if (formEl) {
 								if (formEl.type=="checkbox") formEl.checked = formEl.checked ? 0 : 1;
@@ -201,19 +201,19 @@ class SC_wizard_rte {
 
 				// Save:
 			$toolBarButtons[]=
-				'<a href="#" onclick="TBE_EDITOR_checkAndDoSubmit(1); return false;">'.
+				'<a href="#" onclick="TBE_EDITOR.checkAndDoSubmit(1); return false;">'.
 				'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/savedok.gif','width="21" height="16"').' class="c-inputButton" title="'.$LANG->sL('LLL:EXT:lang/locallang_core.php:rm.saveDoc',1).'" alt="" />'.
 				'</a>';
 
 				// Save/View:
 			if (t3lib_extMgm::isLoaded('cms'))	{
 				$toolBarButtons[]=
-					'<a href="#" onclick="'.htmlspecialchars('document.editform.redirect.value+=\'&popView=1\'; TBE_EDITOR_checkAndDoSubmit(1); return false;').'">'.
+					'<a href="#" onclick="'.htmlspecialchars('document.editform.redirect.value+=\'&popView=1\'; TBE_EDITOR.checkAndDoSubmit(1); return false;').'">'.
 					'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/savedokshow.gif','width="21" height="16"').' class="c-inputButton" title="'.$LANG->sL('LLL:EXT:lang/locallang_core.php:rm.saveDocShow',1).'" alt="" />'.
 					'</a>';
 			}
 				// Save/Close:
-			$toolBarButtons[] = '<input type="image" class="c-inputButton" onclick="'.htmlspecialchars('document.editform.redirect.value=\''.$closeUrl.'\'; TBE_EDITOR_checkAndDoSubmit(1); return false;').'" name="_saveandclosedok"'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/saveandclosedok.gif','').' title="'.$LANG->sL('LLL:EXT:lang/locallang_core.php:rm.saveCloseDoc',1).'" />';
+			$toolBarButtons[] = '<input type="image" class="c-inputButton" onclick="'.htmlspecialchars('document.editform.redirect.value=\''.$closeUrl.'\'; TBE_EDITOR.checkAndDoSubmit(1); return false;').'" name="_saveandclosedok"'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/saveandclosedok.gif','').' title="'.$LANG->sL('LLL:EXT:lang/locallang_core.php:rm.saveCloseDoc',1).'" />';
 				// Close:
 			$toolBarButtons[]=
 					'<a href="#" onclick="'.htmlspecialchars('jumpToUrl(unescape(\''.rawurlencode($closeUrl).'\')); return false;').'">'.

@@ -6899,7 +6899,7 @@ class tslib_cObj {
 		if ($GLOBALS['TSFE']->displayEditIcons && $table && $mayEdit)	{
 			$GLOBALS['TSFE']->set_no_cache();		// Special content is about to be shown, so the cache must be disabled.
 			$formName = 'TSFE_EDIT_FORM_'.substr($GLOBALS['TSFE']->uniqueHash(),0,4);
-			$formTag = '<form name="'.$formName.'" action="'.htmlspecialchars(t3lib_div::getIndpEnv('REQUEST_URI')).'" method="post" enctype="'.$GLOBALS['TYPO3_CONF_VARS']['SYS']['form_enctype'].'" onsubmit="return TBE_EDITOR_checkSubmit(1);" style="margin: 0 0 0 0;">';
+			$formTag = '<form name="'.$formName.'" action="'.htmlspecialchars(t3lib_div::getIndpEnv('REQUEST_URI')).'" method="post" enctype="'.$GLOBALS['TYPO3_CONF_VARS']['SYS']['form_enctype'].'" onsubmit="return TBE_EDITOR.checkSubmit(1);" style="margin: 0 0 0 0;">';
 			$sortField = $TCA[$table]['ctrl']['sortby'];
 			$labelField = $TCA[$table]['ctrl']['label'];
 			$hideField = $TCA[$table]['ctrl']['enablecolumns']['disabled'];
