@@ -736,8 +736,8 @@ class tslib_cObj {
 	 * @see getImgResource()
 	 */
 	function IMG_RESOURCE($conf)	{
-		$imgArray = $this->getImgResource($conf['file'],$conf['file.']);
-		return $this->stdWrap($imgArray[3],$conf['stdWrap.']);
+		$GLOBALS['TSFE']->lastImgResourceInfo = $this->getImgResource($conf['file'],$conf['file.']);
+		return $this->stdWrap($GLOBALS['TSFE']->lastImgResourceInfo[3],$conf['stdWrap.']);
 	}
 
 	/**
