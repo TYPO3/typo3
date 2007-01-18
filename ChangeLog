@@ -1,3 +1,7 @@
+2007-01-19  Michael Stucki  <michael@typo3.org>
+
+	* Reverting patch for bug #4581 which was committed by mistake. The solution works well, but it depends on 4.3.0 currently...
+
 2007-01-18  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
 	* Added PATH_typo3 to index_ts.php (see related change on 2006-10-29)
