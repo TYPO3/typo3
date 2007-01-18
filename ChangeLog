@@ -1,3 +1,7 @@
+2007-01-18  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+
+	* Added PATH_typo3 to index_ts.php (see related change on 2006-10-29)
+
 2007-01-03  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Fixed bug 4006: Load $GLOBALS['TSFE'] with image dimensions when IMG_RESOURCE is used (feature request!)

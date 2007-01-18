@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2005 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2006 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -55,8 +55,9 @@ if (!defined('PATH_thisScript')) 	define('PATH_thisScript',str_replace('//','/',
 if (!defined('PATH_site')) 			define('PATH_site', dirname(PATH_thisScript).'/');
 if (!defined('PATH_t3lib')) 		define('PATH_t3lib', PATH_site.'t3lib/');
 
-define('PATH_typo3conf', PATH_site.'typo3conf/');
 define('TYPO3_mainDir', 'typo3/');		// This is the directory of the backend administration for the sites of this TYPO3 installation.
+define('PATH_typo3', PATH_site.TYPO3_mainDir);
+define('PATH_typo3conf', PATH_site.'typo3conf/');
 
 if (!defined('PATH_tslib')) {
 	if (@is_dir(PATH_site.TYPO3_mainDir.'sysext/cms/tslib/')) {
