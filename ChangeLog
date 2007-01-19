@@ -1,6 +1,7 @@
 2007-01-19  Ingmar Schlecht  <ingmar@typo3.org>
 
-	* Committed AJAX pagetree and filetree by Benjamin Mack <bmack@xnos.org>! (Thanks also to Franz Holzinger and Stefan Regniet for their help)
+	* AJAX pagetree and filetree by Benjamin Mack <bmack@xnos.org>! (Thanks also to Franz Holzinger and Stefan Regniet for their help)
+	* Patch by René Fritz regarding bidirectional mm-relations: It's now possible to save different relations to the same mm-table by means of so called "matchFields". This is used by DAM.
 
 2007-01-19  Andreas Otto  <andreas.otto@dkd.de>
 
