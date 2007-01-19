@@ -277,6 +277,10 @@ tt_content.stdWrap {
 
 	dataWrap = <a id="c{field:uid}"></a> |
 
+	prepend = TEXT
+	prepend.dataWrap = <a id="c{field:_LOCALIZED_UID}"></a>
+	prepend.if.isTrue.field = _LOCALIZED_UID
+
 	editPanel = 1
 	editPanel {
 		allow = move,new,edit,hide,delete

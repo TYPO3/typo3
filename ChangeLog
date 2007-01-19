@@ -1,3 +1,7 @@
+2007-01-19  Dmitry Dulepov  <dmitry@typo3.org>
+
+	* !!! Added 'prepend' to tt_content.stdWrap in css_styled_content to display anchor to localized content elements in addition to anchor to the default language version
+
 2007-01-19  Michael Stucki  <michael@typo3.org>
 
 	* Reverting patch for bug #4581 which was committed by mistake. The solution works well, but it depends on 4.3.0 currently...
