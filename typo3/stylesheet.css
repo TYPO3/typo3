@@ -265,7 +265,7 @@ ul.tree ul ul	{ padding-left: 17px; }
 ul.tree ul li	{ list-style: none; margin: 0; padding: 0; line-height: 10px; white-space: nowrap; }
 ul.tree ul li.expanded ul	{ background: transparent url('gfx/ol/line.gif') repeat-y top left; }
 ul.tree ul li.last		{ background: transparent url('gfx/ol/joinbottom.gif') no-repeat top left; } 
-ul.tree ul li.last ul	{ background: none; }
+ul.tree ul li.last > ul	{ background: none; }
 ul.tree ul li.active	{ background-color: #ebebeb !important; }
 ul.tree ul li.active ul	{ background-color: #f7f3ef; }
 #dragIcon { z-index: 1; position: absolute; visibility: hidden; filter: alpha(opacity=50); -moz-opacity:0.5; opacity:0.5; white-space: nowrap; }

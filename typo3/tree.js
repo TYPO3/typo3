@@ -42,6 +42,7 @@ var Tree = {
 
 	// reloads a part of the page tree (useful when "expand" / "collapse")
 	load: function(params, isExpand, obj) {
+		$(obj).style.cursor = 'wait';
 		new Ajax.Request(this.thisScript, {
 			method: 'get',
 			parameters: 'ajax=1&PM=' + params,
