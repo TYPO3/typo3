@@ -16,6 +16,13 @@ Backend
 		-> The Tools->Useradmin module now displays which BE users are currently online.
 	* UTF-8 for filenames
 		-> You need to set $TYPO3_CONF_VARS['SYS']['UTF8filesystem'] to TRUE to enable this feature.
+	* Improved Extension Manager
+		-> Requires less memory
+		-> The EM now stores the list of extensions from TER in the database,
+		-> see http://bugs.typo3.org/view.php?id=2615
+	* Two nice usability enhancements
+		-> Using <label> tags in tceforms where appropriate to enhance usability in the Backend forms
+		-> Increase length for titles of be_users, be_groups, and fe_groups
 
 Compatibility
 =============
@@ -28,10 +35,13 @@ Speed improvements
 	* TODO Dmitry: explain cache_pagesection speedup
 	* TODO Dmitry: explain speedup using .htaccess
 
-Installation/Upgrade
+Development
 ====================
 
-	* ...
+	* Better getRecordTitle() function
+		-> It's now possible to define a "label_userFunc"
+		-> This makes it possible to e.g. define the label of a "persons" table as displayed in the list module to be like "Lastname, Firstname". Until now you could only define one field to be the "labelfield".
+	* Inline Relational Record Editing (see "Backend" section above)
 
 Database changes
 ================
@@ -49,6 +59,8 @@ Frontend features
 	* Autologin for Frontend users is now possible!
 	  -> Users can decide on their own whether they want to "Stay logged in" using a checkbox. The latest version of the "newloginbox" extension is required for that.
 	  -> Needs to be configured in the Install Tool ("All Configuration" -> "permalogin" and "lifetime")
+	* UTF-8 for log files
+	  -> TYPO3 now logs page paths in UTF-8 if config.stat_apache_niceTitle is set to "utf-8" in the TypoScript template Setup.
 
 Backend skin
 ============

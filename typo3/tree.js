@@ -19,6 +19,9 @@
 *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 *
 *  This copyright notice MUST APPEAR in all copies of this script
+*
+*  TYPO3 SVN ID: $Id$
+*
 ***************************************************************/
 
 	// Call this function, refresh_nav(), from another script in the backend if you want
@@ -84,7 +87,8 @@ var Tree = {
 
 		// Set the new item
 		top.fsMod.navFrameHighlightedID[frameSetModule] = highlightID;
-		if ($(highlightID)) Element.addClassName(highlightID, 'active');	}
+		if ($(highlightID)) Element.addClassName(highlightID, 'active');
+	}
 
 }
 
