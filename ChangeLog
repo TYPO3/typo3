@@ -1,3 +1,7 @@
+2007-01-19 Andreas Otto <andreas.otto@dkd.de>
+
+	* Fixed feature request 4656: The feature config.sys_language_softMergeIfNotBlank sets the "mergeIfNotBlank" for a field in the frontend context through TypoScript. It can be useful to have the same for "exclude" localization mode so a field is always overlaid in the frontend output. This patch simply copies the code from "softMergeIfNotBlank" and does the same for "exclude".
+
 2007-01-19  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* !!! Added 'prepend' to tt_content.stdWrap in css_styled_content to display anchor to localized content elements in addition to anchor to the default language version

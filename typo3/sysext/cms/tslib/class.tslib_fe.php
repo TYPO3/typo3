@@ -2092,6 +2092,13 @@
 			list($tN,$fN) = explode(':',$TF);
 			$this->TCAcachedExtras[$tN]['l10n_mode'][$fN] = 'mergeIfNotBlank';
 		}
+
+			// Setting softExclude:
+		$table_fields = t3lib_div::trimExplode(',', $this->config['config']['sys_language_softExclude'],1);
+		foreach($table_fields as $TF)	{
+			list($tN,$fN) = explode(':',$TF);
+			$this->TCAcachedExtras[$tN]['l10n_mode'][$fN] = 'exclude';
+		}
 	}
 
 	/**
