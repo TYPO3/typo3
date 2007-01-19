@@ -756,8 +756,8 @@ class SC_alt_shortcut {
 
 	/**
 	 * Checks if user has access to Workspace module.
-	 * 
-	 * @return	boolean	<code>true</code> if user has access to workspace module.
+	 *
+	 * @return	boolean		Returns true if user has access to workspace module.
 	 */
 	function hasWorkspaceAccess() {
 		$MCONF = array();
