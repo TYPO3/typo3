@@ -37,14 +37,6 @@
  * [CLASS/FUNCTION INDEX of SCRIPT]
  *
  *
- *
- *   78: class localPageTree extends t3lib_browseTree
- *   88:     function localPageTree()
- *   99:     function wrapIcon($icon,&$row)
- *  142:     function wrapStop($str,$row)
- *  158:     function wrapTitle($title,$row,$bank=0)
- *
- *
  *  192: class SC_alt_db_navframe
  *  210:     function init()
  *  313:     function main()
@@ -60,126 +52,10 @@
  */
 
 
-$BACK_PATH='';
+$BACK_PATH = '';
 require('init.php');
 require('template.php');
-require_once(PATH_t3lib.'class.t3lib_browsetree.php');
-
-
-
-/**
- * Extension class for the t3lib_browsetree class, specially made for browsing pages in the Web module
- *
- * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
- * @package TYPO3
- * @subpackage core
- * @see class t3lib_browseTree
- */
-class localPageTree extends t3lib_browseTree {
-
-	var $ext_showPageId;
-	var $ext_IconMode;
-
-	/**
-	 * Calls init functions
-	 *
-	 * @return	void
-	 */
-	function localPageTree() {
-		$this->init();
-	}
-
-	/**
-	 * Wrapping icon in browse tree
-	 *
-	 * @param	string		Icon IMG code
-	 * @param	array		Data row for element.
-	 * @return	string		Page icon
-	 */
-	function wrapIcon($icon,&$row)	{
-			// If the record is locked, present a warning sign.
-		if ($lockInfo=t3lib_BEfunc::isRecordLocked('pages',$row['uid']))	{
-			$aOnClick = 'alert('.$GLOBALS['LANG']->JScharCode($lockInfo['msg']).');return false;';
-			$lockIcon='<a href="#" onclick="'.htmlspecialchars($aOnClick).'">'.
-				'<img'.t3lib_iconWorks::skinImg('','gfx/recordlock_warning3.gif','width="17" height="12"').' title="'.htmlspecialchars($lockInfo['msg']).'" alt="" />'.
-				'</a>';
-		} else $lockIcon = '';
-
-			// Add title attribute to input icon tag
-		$thePageIcon = $this->addTagAttributes($icon, $this->titleAttrib.'="'.$this->getTitleAttrib($row).'"');
-
-			// Wrap icon in click-menu link.
-		if (!$this->ext_IconMode)	{
-			$thePageIcon = $GLOBALS['TBE_TEMPLATE']->wrapClickMenuOnIcon($thePageIcon,'pages',$row['uid'],0,'&bank='.$this->bank);
-		} elseif (!strcmp($this->ext_IconMode,'titlelink'))	{
-			$aOnClick = 'return jumpTo(\''.$this->getJumpToParam($row).'\',this,\''.$this->treeName.'\');';
-			$thePageIcon='<a href="#" onclick="'.htmlspecialchars($aOnClick).'">'.$thePageIcon.'</a>';
-		}
-
-			// Wrap icon in a drag/drop span.
-		$spanOnDrag = htmlspecialchars('return dragElement("'.$row['uid'].'")');
-		$spanOnDrop = htmlspecialchars('return dropElement("'.$row['uid'].'")');
-		$dragDropIcon = '<span id="dragIconID_'.$row['uid'].'" ondragstart="'.$spanOnDrag.'" onmousedown="'.$spanOnDrag.'" onmouseup="'.$spanOnDrop.'">'.$thePageIcon.'</span>';
-
-			// Add Page ID:
-		if ($this->ext_showPageId)	{
-			$pageIdStr = '['.$row['uid'].']&nbsp;';
-		} else {
-			$pageIdStr = '';
-		}
-
-		return $dragDropIcon.$lockIcon.$pageIdStr;
-	}
-
-	/**
-	 * Adds a red "+" to the input string, $str, if the field "php_tree_stop" in the $row (pages) is set
-	 *
-	 * @param	string		Input string, like a page title for the tree
-	 * @param	array		record row with "php_tree_stop" field
-	 * @return	string		Modified string
-	 * @access private
-	 */
-	function wrapStop($str,$row)	{
-		if ($row['php_tree_stop'])	{
-			$str.='<a href="'.htmlspecialchars(t3lib_div::linkThisScript(array('setTempDBmount' => $row['uid']))).'" class="typo3-red">+</a> ';
-		}
-		return $str;
-	}
-
-	/**
-	 * Wrapping $title in a-tags.
-	 *
-	 * @param	string		Title string
-	 * @param	string		Item record
-	 * @param	integer		Bank pointer (which mount point number)
-	 * @return	string
-	 * @access private
-	 */
-	function wrapTitle($title,$row,$bank=0)	{
-		$aOnClick = 'return jumpTo(\''.$this->getJumpToParam($row).'\',this,\''.$this->domIdPrefix.$this->getId($row).'\','.$bank.');';
-		$CSM = '';
-		if ($GLOBALS['TYPO3_CONF_VARS']['BE']['useOnContextMenuHandler'])	{
-			$CSM = ' oncontextmenu="'.htmlspecialchars($GLOBALS['TBE_TEMPLATE']->wrapClickMenuOnIcon('','pages',$row['uid'],0,'&bank='.$this->bank,'',TRUE)).'"';
-		}
-		$thePageTitle='<a href="#" onclick="'.htmlspecialchars($aOnClick).'"'.$CSM.'>'.$title.'</a>';
-
-			// Wrap title in a drag/drop span.
-		$spanOnDrag = htmlspecialchars('return dragElement("'.$row['uid'].'")');
-		$spanOnDrop = htmlspecialchars('return dropElement("'.$row['uid'].'")');
-		$dragDropTitle = '<span id="dragTitleID_'.$row['uid'].'" ondragstart="'.$spanOnDrag.'" onmousedown="'.$spanOnDrag.'" onmouseup="'.$spanOnDrop.'">'.$thePageTitle.'</span>';
-		return $dragDropTitle;
-	}
-}
-
-
-
-
-
-
-
-
-
-
+require_once('class.webpagetree.php');
 
 
 /**
@@ -210,13 +86,15 @@ class SC_alt_db_navframe {
 	function init()	{
 		global $BE_USER,$BACK_PATH;
 
+
 			// Setting GPvars:
 		$this->currentSubScript = t3lib_div::_GP('currentSubScript');
 		$this->cMR = t3lib_div::_GP('cMR');
 		$this->setTempDBmount = t3lib_div::_GP('setTempDBmount');
 
+
 			// Create page tree object:
-		$this->pagetree = t3lib_div::makeInstance('localPageTree');
+		$this->pagetree = t3lib_div::makeInstance('webPageTree');
 		$this->pagetree->ext_IconMode = $BE_USER->getTSConfigVal('options.pageTree.disableIconLinkToContextmenu');
 		$this->pagetree->ext_showPageId = $BE_USER->getTSConfigVal('options.pageTree.showPageIdWithTitle');
 		$this->pagetree->thisScript = 'alt_db_navframe.php';
@@ -228,7 +106,8 @@ class SC_alt_db_navframe {
 		$this->pagetree->addField('nav_hide');
 		$this->pagetree->addField('url');
 
-#		$this->settingTemporaryMountPoint(11);
+
+		// $this->settingTemporaryMountPoint(11);
 			// Temporary DB mounts:
 		$this->initializeTemporaryDBmount();
 
@@ -237,59 +116,38 @@ class SC_alt_db_navframe {
 
 			// Create template object:
 		$this->doc = t3lib_div::makeInstance('template');
-		$this->doc->docType='xhtml_trans';
+		$this->doc->docType = 'xhtml_trans';
 
 			// Setting backPath
 		$this->doc->backPath = $BACK_PATH;
 
-			// Setting JavaScript for menu.
-		$this->doc->JScode=$this->doc->wrapScriptTags(
-	($this->currentSubScript?'top.currentSubScript=unescape("'.rawurlencode($this->currentSubScript).'");':'').'
+
+			// Adding javascript code for AJAX (prototype), drag&drop and the pagetree
+		$this->doc->JScode  = '
+		<script type="text/javascript" src="prototype.js"></script>
+		<script type="text/javascript" src="tree.js"></script>'."\n";
+
+		$this->doc->JScode .= $this->doc->wrapScriptTags(
+		($this->currentSubScript?'top.currentSubScript=unescape("'.rawurlencode($this->currentSubScript).'");':'').'
+		// setting prefs for pagetree and drag & drop
+		Tree.thisScript    = "'.$this->pagetree->thisScript.'";
+		DragDrop.changeURL = "'.$this->backPath.'alt_clickmenu.php";
+		DragDrop.backPath  = "'.t3lib_div::shortMD5(''.'|'.$GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']).'";
+		DragDrop.table     = "pages";
 
 		// Function, loading the list frame from navigation tree:
-	function jumpTo(id,linkObj,highLightID,bank)	{	//
-		var theUrl = top.TS.PATH_typo3+top.currentSubScript+"?id="+id;
-		top.fsMod.currentBank = bank;
+		function jumpTo(id, linkObj, highlightID, bank)	{ //
+			var theUrl = top.TS.PATH_typo3 + top.currentSubScript + "?id=" + id;
+			top.fsMod.currentBank = bank;
 
-		if (top.condensedMode)	{
-			top.content.location.href=theUrl;
-		} else {
-			parent.list_frame.location.href=theUrl;
+			if (top.condensedMode) top.content.location.href = theUrl;
+			else                   parent.list_frame.location.href=theUrl;
+
+			'.($this->doHighlight ? 'Tree.highlightActiveItem("web", highlightID + "_" + bank);' : '').'
+			'.(!$GLOBALS['CLIENT']['FORMSTYLE'] ? '' : 'if (linkObj) linkObj.blur(); ').'
+			return false;
 		}
-
-		'.($this->doHighlight?'hilight_row("web",highLightID+"_"+bank);':'').'
-
-		'.(!$GLOBALS['CLIENT']['FORMSTYLE'] ? '' : 'if (linkObj) {linkObj.blur();}').'
-		return false;
-	}
-
-		// Call this function, refresh_nav(), from another script in the backend if you want to refresh the navigation frame (eg. after having changed a page title or moved pages etc.)
-		// See t3lib_BEfunc::getSetUpdateSignal()
-	function refresh_nav()	{	//
-		window.setTimeout("_refresh_nav();",0);
-	}
-	function _refresh_nav()	{	//
-		window.location.href="'.$this->pagetree->thisScript.'?unique='.time().'";
-	}
-
-		// Highlighting rows in the page tree:
-	function hilight_row(frameSetModule,highLightID) {	//
-
-			// Remove old:
-		theObj = document.getElementById(top.fsMod.navFrameHighlightedID[frameSetModule]);
-		if (theObj)	{
-			theObj.className = "";
-		}
-
-			// Set new:
-		top.fsMod.navFrameHighlightedID[frameSetModule] = highLightID;
-		theObj = document.getElementById(highLightID);
-		if (theObj)	{
-			theObj.className = "navFrameHL";
-		}
-	}
-
-	'.($this->cMR?"jumpTo(top.fsMod.recentIds['web'],'');":'').';
+		'.($this->cMR?"jumpTo(top.fsMod.recentIds['web'],'');":'').'
 		');
 
 			// Click menu code is added:
@@ -297,13 +155,8 @@ class SC_alt_db_navframe {
 		$this->doc->bodyTagAdditions = $CMparts[1];
 		$this->doc->JScode.= $CMparts[0];
 		$this->doc->postCode.= $CMparts[2];
-
-			// Drag and Drop code is added:
-		$DDparts=$this->doc->getDragDropCode('pages');
-		// ignore the $DDparts[1] for now
-		$this->doc->JScode.= $DDparts[0];
-		$this->doc->postCode.= $DDparts[2];
 	}
+
 
 	/**
 	 * Main function, rendering the browsable page tree
@@ -316,10 +169,15 @@ class SC_alt_db_navframe {
 			// Produce browse-tree:
 		$tree = $this->pagetree->getBrowsableTree();
 
-			// Start page:
-		$this->content = '';
-		$this->content.= $this->doc->startPage('Page tree');
+			// output only the tree if this is an ajax call
+		if (t3lib_div::_GP('ajax')) {
+			$this->content = $tree;
+			return;
+		}
 
+			// Start page:
+		$this->content = $this->doc->startPage('TYPO3 Page Tree');
+		
 			// Outputting workspace info
 		if ($GLOBALS['BE_USER']->workspace!==0 || $GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.onlineWorkspaceInfo'))	{
 			switch($GLOBALS['BE_USER']->workspace)	{
@@ -360,23 +218,24 @@ class SC_alt_db_navframe {
 		$this->content.= $tree;
 
 			// Outputting refresh-link
-		$refreshUrl = t3lib_div::getIndpEnv('REQUEST_URI');
 		$this->content.= '
 			<p class="c-refresh">
-				<a href="'.htmlspecialchars($refreshUrl).'">'.
+				<a href="'.htmlspecialchars(t3lib_div::getIndpEnv('REQUEST_URI')).'">'.
 				'<img'.t3lib_iconWorks::skinImg('','gfx/refresh_n.gif','width="14" height="14"').' title="'.$LANG->sL('LLL:EXT:lang/locallang_core.php:labels.refresh',1).'" alt="" />'.
-				'</a><a href="'.htmlspecialchars($refreshUrl).'">'.
 				$LANG->sL('LLL:EXT:lang/locallang_core.php:labels.refresh',1).'</a>
 			</p>
 			<br />';
 
+
 			// CSH icon:
 		$this->content.= t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'pagetree', $GLOBALS['BACK_PATH']);
 
-			// Adding highlight - JavaScript
-		if ($this->doHighlight)	$this->content .=$this->doc->wrapScriptTags('
-			hilight_row("",top.fsMod.navFrameHighlightedID["web"]);
-		');
+
+			// Adding javascript for drag & drop activation and highlighting
+		$this->content .=$this->doc->wrapScriptTags('
+			'.($this->doHighlight ? 'Tree.highlightActiveItem("",top.fsMod.navFrameHighlightedID["web"]);' : '').'
+			'.(!$this->doc->isCMlayers() ? 'Tree.activateDragDrop = false;' : 'Tree.registerDragDropHandlers();')
+		);
 	}
 
 	/**
@@ -385,17 +244,12 @@ class SC_alt_db_navframe {
 	 * @return	void
 	 */
 	function printContent()	{
-		$this->content.= $this->doc->endPage();
-		$this->content = $this->doc->insertStylesAndJS($this->content);
+		if (!t3lib_div::_GP('ajax')) {
+			$this->content.= $this->doc->endPage();
+			$this->content = $this->doc->insertStylesAndJS($this->content);
+		}
 		echo $this->content;
 	}
-
-
-
-
-
-
-
 
 
 
@@ -440,6 +294,7 @@ class SC_alt_db_navframe {
 		}
 	}
 
+
 	/**
 	 * Setting temporary page id as DB mount
 	 *
@@ -454,17 +309,11 @@ class SC_alt_db_navframe {
 	}
 }
 
+
 // Include extension?
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['typo3/alt_db_navframe.php'])	{
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['typo3/alt_db_navframe.php']);
 }
-
-
-
-
-
-
-
 
 
 
