@@ -1,3 +1,7 @@
+2007-01-21  Michael Stucki  <michael@typo3.org>
+
+	* Update copyright information (just the year, of course) in t3lib/config_default.php
+
 2007-01-19  Ingmar Schlecht  <ingmar@typo3.org>
 
 	* AJAX pagetree and filetree by Benjamin Mack <bmack@xnos.org>! (Thanks also to Franz Holzinger and Stefan Regniet for their help)
