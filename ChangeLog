@@ -1,5 +1,6 @@
-2007-01-21  Michael Stucki  <michael@typo3.org>
+2007-01-20  Michael Stucki  <michael@typo3.org>
 
+	* Release of TYPO3 4.1beta3
 	* Update copyright information (just the year, of course) in t3lib/config_default.php
 
 2007-01-19  Ingmar Schlecht  <ingmar@typo3.org>
