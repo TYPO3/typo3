@@ -1,6 +1,7 @@
 2007-01-23  Michael Stucki  <michael@typo3.org>
 
 	* Slightly changed the check for IE browsers in t3lib_div::clientInfo()
+	* !!! Removed function "netPrintApplication_offsiteLinkWrap" and TypoScript property "netprintApplicationLink" for IMGTEXT elements which were only used by one extension which is obsolete meanwhile...
 
 2007-01-20  Michael Stucki  <michael@typo3.org>
 

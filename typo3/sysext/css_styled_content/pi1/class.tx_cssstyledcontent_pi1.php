@@ -722,9 +722,6 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 				if ($editIconsHTML)	{
 					$thisImage .= $this->cObj->stdWrap($editIconsHTML, $conf['editIconsStdWrap.']);
 				}
-				if ($conf['netprintApplicationLink'])	{
-					$thisImage .= $this->cObj->netprintApplication_offsiteLinkWrap($thisImage, $origImages[$i], $conf['netprintApplicationLink.']);
-				}
 				$thisImage = $this->cObj->stdWrap($thisImage, $conf['oneImageStdWrap.']);
 				$classes = '';
 				if ($addClassesImageConf[$colPos]['addClassesImage'])	{

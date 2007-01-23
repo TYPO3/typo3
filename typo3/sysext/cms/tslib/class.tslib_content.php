@@ -80,7 +80,6 @@
  *
  *              SECTION: Various helper functions for content objects:
  * 2509:     function getSlidePids($pidList, $pidConf)
- * 2541:     function netprintApplication_offsiteLinkWrap($str,$imgConf,$conf)
  * 2582:     function getFieldDefaultValue($noValueInsert, $fieldName, $defaultVal)
  * 2600:     function cImage($file,$conf)
  * 2628:     function getBorderAttr($borderAttr)
@@ -1076,10 +1075,10 @@ class tslib_cObj {
 								$thisCaption = $this->stdWrap($this->cObjGet($conf['caption.'], 'caption.'), $conf['caption.']);
 							}
 							$imageHTML = $imgsTag[$imgIndex].'<br />';
-							$Talign = (!trim($thisCaption) && !$noRows && !$conf['netprintApplicationLink']) ? ' align="left"' : '';  // this is necessary if the tablerows are supposed to space properly together! "noRows" is excluded because else the images "layer" together.
+							$Talign = (!trim($thisCaption) && !$noRows) ? ' align="left"' : '';  // this is necessary if the tablerows are supposed to space properly together! "noRows" is excluded because else the images "layer" together.
 							if ($border)	{$imageHTML='<table border="0" cellpadding="'.$borderThickness.'" cellspacing="0" bgcolor="'.$borderColor.'"'.$Talign.'><tr><td>'.$imageHTML.'</td></tr></table>';}		// break-tag added 160301  , ($noRows?'':' align="left"')  removed 160301, break tag removed 160301 (later...)
-							$imageHTML.=$editIconsHTML;		$editIconsHTML='';
-							if ($conf['netprintApplicationLink'])	{$imageHTML = $this->netprintApplication_offsiteLinkWrap($imageHTML,$origImages[$imgIndex],$conf['netprintApplicationLink.']);}
+							$imageHTML.=$editIconsHTML;
+							$editIconsHTML='';
 							$imageHTML.=$thisCaption;	// Adds caption.
 							if ($noCols)	{$imageHTML='<td valign="top">'.$imageHTML.'</td>';}		// If noCols, put in table cell.
 							$tablecode.=$imageHTML;
@@ -2565,48 +2564,6 @@ class tslib_cObj {
 		return implode(',', $pidList);
 	}
 
-
-	/**
-	 * Creates a link to a netprint application on another website (where the "netprint" extension is running")
-	 * Related to the extension "netprint"
-	 *
-	 * @param	string		The input string to add the link to.
-	 * @param	array		Array with information about the image.
-	 * @param	array		TypoScript properties for the netprint application.
-	 * @return	string		The input string possibly with the netprint link before/after
-	 * @access private
-	 */
-	function netprintApplication_offsiteLinkWrap($str,$imgConf,$conf)	{
-		if ($conf['url'] && @is_file($imgConf['origFile']))	{
-			$thisUrl = $conf['thisUrl'] ? $conf['thisUrl'] : t3lib_div::getIndpEnv('TYPO3_REQUEST_DIR');
-			$origFile = $thisUrl.$imgConf['origFile'];
-				// Original file dimensions:
-			$gifCreator = t3lib_div::makeInstance('tslib_gifbuilder');
-			$gifCreator->init();
-			$origDim = $gifCreator->getImageDimensions($imgConf['origFile']);
-			if (!$conf['linkOnlyPixelsAbove'] || $origDim[0]*$origDim[1]>$conf['linkOnlyPixelsAbove'])	{
-					// Set parameters
-				$thumbFile = $thisUrl.$imgConf['3'].'|'.$imgConf[0].'x'.$imgConf[1].'|'.$origDim[0].'x'.$origDim[1].'|'.filesize($imgConf['origFile']).'|'.filemtime($imgConf['origFile']);
-					// Set url:
-				$url = $conf['url']
-					.'&NP[offsite][1]='.rawurlencode($origFile)
-					.'&NP[offsite_thumb][1]='.rawurlencode($thumbFile);
-				$linkCObject = $this->cObjGetSingle($conf['cObject'],$conf['cObject.']);
-				if ($linkCObject)	{
-					$ATagParams = $this->getATagParams($conf, 0);
-					$linkCObject='<a href="'.htmlspecialchars($url).'"'.$ATagParams.'>'.$linkCObject.'</a>';
-					$linkCObject=$this->stdWrap($linkCObject,$conf['outerStdWrap.']);
-					if ($conf['before'])	{
-						$str=$linkCObject.$str;
-					} else {
-						$str=$str.$linkCObject;
-					}
-				}
-			}
-		}
-		return $str;
-	}
-
 	/**
 	 * Returns a default value for a form field in the FORM cObject.
 	 * Page CANNOT be cached because that would include the inserted value for the current user.
@@ -2657,6 +2614,7 @@ class tslib_cObj {
 			return $this->wrap($theValue,$conf['wrap']);
 		}
 	}
+
 	/**
 	 * Returns the 'border' attribute for an <img> tag only if the doctype is not xhtml_strict,xhtml_11 or xhtml_2 or if the config parameter 'disableImgBorderAttr' is not set.
 	 *
@@ -5089,14 +5047,14 @@ class tslib_cObj {
 		$this->lastTypoLinkTarget = '';
 		if ($link_param)	{
 			$link_paramA = t3lib_div::unQuoteFilenames($link_param,true);
-			
+
 				// Check for link-handler keyword:
 			list($linkHandlerKeyword,$linkHandlerValue) = explode(':',trim($link_paramA[0]),2);
 			if ($TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_content.php']['typolinkLinkHandler'][$linkHandlerKeyword] && strcmp($linkHandlerValue,"")) {
 				$linkHandlerObj = &t3lib_div::getUserObj($TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_content.php']['typolinkLinkHandler'][$linkHandlerKeyword]);
 				return $linkHandlerObj->main($linktxt, $conf, $linkHandlerKeyword, $linkHandlerValue, $link_param, $this);
 			}
-			
+
 			$link_param = trim($link_paramA[0]);	// Link parameter value
 			$linkClass = trim($link_paramA[2]);		// Link class
 			if ($linkClass=='-')	$linkClass = '';	// The '-' character means 'no class'. Necessary in order to specify a title as fourth parameter without setting the target or class!
