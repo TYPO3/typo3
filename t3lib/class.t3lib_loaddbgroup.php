@@ -405,7 +405,9 @@ class t3lib_loadDBGroup	{
 					$insertFields[$uidLocal_field] = $uid;
 					$insertFields[$uidForeign_field] = $val['id'];
 					$insertFields[$sorting_field] = $c;
-					$insertFields['tablenames'] = $tablename;
+					if($tablename)	{
+						$insertFields['tablenames'] = $tablename;
+					}
 
 					$GLOBALS['TYPO3_DB']->exec_INSERTquery($tableName, $insertFields);
 				}

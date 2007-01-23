@@ -1,3 +1,7 @@
+2007-01-23  Ingmar Schlecht  <ingmar@typo3.org>
+
+	* Bugfix to mm-relation handling: writeMM() tried to set the "tablenames" field even for simple two-table relationships which then failed
+
 2007-01-23  Michael Stucki  <michael@typo3.org>
 
 	* Slightly changed the check for IE browsers in t3lib_div::clientInfo()
