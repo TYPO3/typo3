@@ -2,6 +2,7 @@
 
 	* Slightly changed the check for IE browsers in t3lib_div::clientInfo()
 	* !!! Removed function "netPrintApplication_offsiteLinkWrap" and TypoScript property "netprintApplicationLink" for IMGTEXT elements which were only used by one extension which is obsolete meanwhile...
+	* Fixed bug #4830: Right click in CM did not work anymore
 
 2007-01-20  Michael Stucki  <michael@typo3.org>
 
