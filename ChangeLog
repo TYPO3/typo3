@@ -1,3 +1,7 @@
+2007-01-23  Michael Stucki  <michael@typo3.org>
+
+	* Slightly changed the check for IE browsers in t3lib_div::clientInfo()
+
 2007-01-20  Michael Stucki  <michael@typo3.org>
 
 	* Release of TYPO3 4.1beta3
