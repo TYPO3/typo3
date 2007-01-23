@@ -187,7 +187,7 @@ class t3lib_install {
 
 			// Checking write state of localconf.php:
 		if (!$this->allowUpdateLocalConf)	{
-			die("->allowUpdateLocalConf flag in the install object is not set and therefore 'localconf.php' cannot be altered.");
+			die('->allowUpdateLocalConf flag in the install object is not set and therefore "localconf.php" cannot be altered.');
 		}
 		if (!@is_writable($writeToLocalconf_dat['file']))	{
 			die($writeToLocalconf_dat['file'].' is not writable!');
@@ -227,7 +227,7 @@ class t3lib_install {
 					$success = TRUE;
 					$msg = 'Configuration written to typo3conf/localconf.php';
 				}
-				$this->messages[]= $msg;
+				$this->messages[] = $msg;
 
 				if ($success)	{
 					return 'continue';

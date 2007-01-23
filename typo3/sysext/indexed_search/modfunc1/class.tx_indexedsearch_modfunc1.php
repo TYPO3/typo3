@@ -535,7 +535,7 @@ class tx_indexedsearch_modfunc1 extends t3lib_extobjbase {
 				$lines[] = '<td bgcolor="red">'.$this->printRemoveIndexed('ALL','Clear ALL phash-rows below!').'</td>';
 
 				$lines[] = '<td>pHash</td>';
-				$lines[] = '<td>cHash</td>';
+				$lines[] = '<td>contentHash</td>';
 				$lines[] = '<td>&amp;id</td>';
 				$lines[] = '<td>&amp;type</td>';
 				$lines[] = '<td>&amp;L</td>';

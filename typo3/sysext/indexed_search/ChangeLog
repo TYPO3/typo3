@@ -1,3 +1,7 @@
+2007-01-23  Michael Stucki  <michael@typo3.org>
+
+	* Rename "cHash" column to "contentHash" in modfunc1 (avoid confusion with real cHash)
+
 2006-11-17  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
 	* Added stdWrap around the search word in the output (tx_indexedsearch_pi[whatis]): tx_indexedsearch_pi.whatis_stdWrap

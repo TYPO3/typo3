@@ -7,7 +7,7 @@
   # cat=basic; type=string; label=No spell checking languages: The list of languages for which Aspell does not provide spell checking (see http://aspell.net/man-html/Unsupported.html#Unsupported) and for which the htmlArea SpellChecker plugin will therefore be disabled.
 noSpellCheckLanguages = ja,km,ko,lo,th,zh,b5,gb
 
-  # cat=basic; type=string; label=Aspell directory: The server directory in which Aspell is installed.
+  # cat=basic; type=string; label=Aspell path: The server path where Aspell is installed.
 AspellDirectory = /usr/bin/aspell
 
   # cat=basic; type=string; label=Default Aspell dictionary: The default dictionary to be used by the htmlArea SpellChecker plugin. This should be set to the default language of the site.

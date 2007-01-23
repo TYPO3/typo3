@@ -820,23 +820,23 @@ class tx_indexedsearch extends tslib_pibase {
 
 				// Perform search for word:
 			switch($theType)	{
-				case '1':
+				case '1':	// Part of word
 					$wSel = "IW.baseword LIKE '%".$GLOBALS['TYPO3_DB']->quoteStr($sWord, 'index_words')."%'";
 					$res = $this->execPHashListQuery($wSel,' AND is_stopword=0');
 				break;
-				case '2':
+				case '2':	// First part of word
 					$wSel = "IW.baseword LIKE '".$GLOBALS['TYPO3_DB']->quoteStr($sWord, 'index_words')."%'";
 					$res = $this->execPHashListQuery($wSel,' AND is_stopword=0');
 				break;
-				case '3':
+				case '3':	// Last part of word
 					$wSel = "IW.baseword LIKE '%".$GLOBALS['TYPO3_DB']->quoteStr($sWord, 'index_words')."'";
 					$res = $this->execPHashListQuery($wSel,' AND is_stopword=0');
 				break;
-				case '10':
+				case '10':	// Sounds like
 					$wSel = 'IW.metaphone = '.$this->indexerObj->metaphone($sWord);
 					$res = $this->execPHashListQuery($wSel,' AND is_stopword=0');
 				break;
-				case '20':
+				case '20':	// Sentence
 					$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 								'ISEC.phash',
 								'index_section ISEC, index_fulltext IFT',
@@ -849,7 +849,7 @@ class tx_indexedsearch extends tslib_pibase {
 
 					if ($this->piVars['type']==20)	$this->piVars['order'] = 'mtime';		// If there is a fulltext search for a sentence there is a likeliness that sorting cannot be done by the rankings from the rel-table (because no relations will exist for the sentence in the word-table). So therefore mtime is used instaed. It is not required, but otherwise some hits may be left out.
 				break;
-				default:
+				default:	// Distinct word
 					$wSel = 'IW.wid = '.$hash = $this->indexerObj->md5inthash($sWord);
 					$res = $this->execPHashListQuery($wSel,' AND is_stopword=0');
 				break;

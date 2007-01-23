@@ -431,9 +431,7 @@ class tslib_pibase {
 	 * disabledLinkWrap, inactiveLinkWrap, activeLinkWrap, browseLinksWrap, showResultsWrap, showResultsNumbersWrap, browseBoxWrap.
 	 *
 	 * If $wrapArr['showResultsNumbersWrap'] is set, the formatting string is expected to hold template markers (###FROM###, ###TO###, ###OUT_OF###, ###FROM_TO###, ###CURRENT_PAGE###, ###TOTAL_PAGES###)
-	 * otherwise the formatting sting is expected to hold sprintf-markers (%s) for from, to, outof (in that sequence)
-	 *
-	 * 										otherwise wrapping is totally controlled/modified by this array
+	 * otherwise the formatting string is expected to hold sprintf-markers (%s) for from, to, outof (in that sequence)
 	 *
 	 * @param	integer		determines how the results of the pagerowser will be shown. See description below
 	 * @param	string		Attributes for the table tag which is wrapped around the table cells containing the browse links
@@ -442,7 +440,7 @@ class tslib_pibase {
 	 * @param	boolean		enable htmlspecialchars() for the pi_getLL function (set this to FALSE if you want f.e use images instead of text for links like 'previous' and 'next').
 	 * @return	string		Output HTML-Table, wrapped in <div>-tags with a class attribute (if $wrapArr is not passed,
 	 */
-	function pi_list_browseresults($showResultCount=1,$tableParams='',$wrapArr=array(), $pointerName = 'pointer', $hscText = TRUE)	{
+	function pi_list_browseresults($showResultCount=1, $tableParams='', $wrapArr=array(), $pointerName='pointer', $hscText=TRUE)	{
 
 		// example $wrapArr-array how it could be traversed from an extension
 		/* $wrapArr = array(

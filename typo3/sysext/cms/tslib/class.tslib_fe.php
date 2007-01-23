@@ -3379,8 +3379,8 @@ if (version == "n3") {
 	 * @see makeSimulFileName(), publish.php
 	 */
 	function getSimulFileName()	{
-		$url='';
-		$url.=$this->makeSimulFileName($this->page['title'], $this->page['alias']?$this->page['alias']:$this->id, $this->type).'.html';
+		$url = '';
+		$url.= $this->makeSimulFileName($this->page['title'], $this->page['alias']?$this->page['alias']:$this->id, $this->type).'.html';
 		return $url;
 	}
 
@@ -3412,14 +3412,14 @@ if (version == "n3") {
 	function fileNameASCIIPrefix($inTitle,$titleChars,$mergeChar='.')	{
 		$out = $this->csConvObj->specCharsToASCII($this->renderCharset, $inTitle);
 			// Get replacement character
-		$replacementChar = &$this->config['config']['simulateStaticDocuments_replacementChar'];
+		$replacementChar = $this->config['config']['simulateStaticDocuments_replacementChar'];
 		$replacementChars = '_\-' . ($replacementChar != '_' && $replacementChar != '-' ? $replacementChar : '');
 		$out = preg_replace('/[^A-Za-z0-9_-]/', $replacementChar, trim(substr($out, 0, $titleChars)));
 		$out = preg_replace('/([' . $replacementChars . ']){2,}/', '\1', $out);
 		$out = preg_replace('/[' . $replacementChars . ']?$/', '', $out);
 		$out = preg_replace('/^[' . $replacementChars . ']?/', '', $out);
 		if (strlen($out)) {
-			$out .= $mergeChar;
+			$out.= $mergeChar;
 		}
 
 		return $out;

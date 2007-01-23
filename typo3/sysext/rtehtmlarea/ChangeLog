@@ -1,3 +1,7 @@
+2007-01-23  Michael Stucki  <michael@typo3.org>
+
+	* Change label of EM setting "AspellDirectory": The value must be a path, not a directory. The description should make this clear now...
+
 2006-12-20  Peter Niederlag  <peter@niederlag.de>
 
 	* Version 1.5.1dev

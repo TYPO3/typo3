@@ -30,7 +30,7 @@
  * $Id$
  *
  * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
- * @author	Ingmar Schlecht <ingmars@web.de>
+ * @author	Ingmar Schlecht <ingmar@typo3.org>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
@@ -155,7 +155,7 @@ require_once (PATH_t3lib.'class.t3lib_stdgraphic.php');
  * Install Tool module
  *
  * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
- * @author	Ingmar Schlecht <ingmars@web.de>
+ * @author	Ingmar Schlecht <ingmar@typo3.org>
  * @package TYPO3
  * @subpackage tx_install
  */
@@ -1320,16 +1320,16 @@ From sub-directory:
 						$isTextarea = preg_match('/^string \(textarea\)/i',$description) ? TRUE : FALSE;
 
 						if (!is_array($value) && ($this->checkForBadString($value) || $isTextarea))	{
-							$k2='['.$vk.']';
-							$msg=$description.'<br /><br /><em>'.$ext.$k2.' = '.htmlspecialchars(t3lib_div::fixed_lgd($value,60)).'</em><br />';
+							$k2 = '['.$vk.']';
+							$msg = $description.'<br /><br /><em>'.$ext.$k2.' = '.htmlspecialchars(t3lib_div::fixed_lgd($value,60)).'</em><br />';
 
 							if ($isTextarea)	{
-								$form='<textarea name="TYPO3_INSTALL[extConfig]['.$k.']['.$vk.']" cols="60" rows="5" wrap="off">'.htmlspecialchars($value).'</textarea>';
+								$form = '<textarea name="TYPO3_INSTALL[extConfig]['.$k.']['.$vk.']" cols="60" rows="5" wrap="off">'.htmlspecialchars($value).'</textarea>';
 							} elseif (preg_match('/^boolean/i',$description)) {
-								$form='<input type="hidden" name="TYPO3_INSTALL[extConfig]['.$k.']['.$vk.']" value="0">';
-								$form.='<input type="checkbox" name="TYPO3_INSTALL[extConfig]['.$k.']['.$vk.']"'.($value?' checked="checked"':'').' value="'.($value&&strcmp($value,'0')?htmlspecialchars($value):1).'">';
+								$form = '<input type="hidden" name="TYPO3_INSTALL[extConfig]['.$k.']['.$vk.']" value="0">';
+								$form.= '<input type="checkbox" name="TYPO3_INSTALL[extConfig]['.$k.']['.$vk.']"'.($value?' checked="checked"':'').' value="'.($value&&strcmp($value,'0')?htmlspecialchars($value):1).'">';
 							} else {
-								$form='<input type="text" size="40" name="TYPO3_INSTALL[extConfig]['.$k.']['.$vk.']" value="'.htmlspecialchars($value).'">';
+								$form = '<input type="text" size="40" name="TYPO3_INSTALL[extConfig]['.$k.']['.$vk.']" value="'.htmlspecialchars($value).'">';
 							}
 							$this->message($ext, $k2,$msg.$form);
 						}
@@ -2180,13 +2180,14 @@ From sub-directory:
 	}
 
 	/**
-	 * [Describe function...]
+	 * Writes or returns lines from localconf.php
 	 *
-	 * @param	[type]		$lines: ...
-	 * @param	[type]		$showOutput: ...
-	 * @return	[type]		...
+	 * @param	array		Array of lines to write back to localconf.php. Possibly
+	 * @param	boolean		If TRUE then print what has been done.
+	 * @return	mixed		If $lines is not an array it will return an array with the lines from localconf.php. Otherwise it will return a status string, either "continue" (updated) or "nochange" (not updated)
+	 * @see parent::writeToLocalconf_control()
 	 */
-	function writeToLocalconf_control($lines="", $showOutput=1)	{
+	function writeToLocalconf_control($lines='', $showOutput=TRUE)	{
 		$returnVal = parent::writeToLocalconf_control($lines);
 
 		if ($showOutput)	{

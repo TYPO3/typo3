@@ -89,7 +89,7 @@ class t3lib_refindex {
 
 	var $words_strings = array();
 	var $words = array();
-	
+
 	var $hashVersion = 1;	// Number which we can increase if a change in the code means we will have to force a re-generation of the index.
 
 
@@ -150,7 +150,7 @@ class t3lib_refindex {
 
 				$result['relations'] = $relations;
 			} else return FALSE;	// Weird mistake I would say...
-			
+
 				// Words:
 			if (!$testOnly)	$this->wordIndexing($table,$uid);
 		}
@@ -184,7 +184,7 @@ class t3lib_refindex {
 			list($record) = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*',$table,'uid='.intval($uid));
 
 			if (is_array($record))	{
-				
+
 					// Initialize:
 				$this->words_strings = array();
 				$this->words = array();
@@ -423,7 +423,7 @@ class t3lib_refindex {
 				if ($conf['type']=='flex')	{
 
 						// Get current value array:
-						// NOTICE: failure to resolve Data Structures can lead to integrity problems with the reference index. Please look up the note in the JavaDoc documentation for the function t3lib_BEfunc::getFlexFormDS() 
+						// NOTICE: failure to resolve Data Structures can lead to integrity problems with the reference index. Please look up the note in the JavaDoc documentation for the function t3lib_BEfunc::getFlexFormDS()
 					$dataStructArray = t3lib_BEfunc::getFlexFormDS($conf, $row, $table,'',$this->WSOL);
 					$currentValueArray = t3lib_div::xml2array($value);
 
@@ -634,7 +634,7 @@ class t3lib_refindex {
 	 * @return	string		If a return string, that carries an error message, otherwise false (=OK) (except if $returnDataArray is set!)
 	 */
 	function setReferenceValue($hash,$newValue,$returnDataArray=FALSE)	{
-		
+
 		if ($GLOBALS['BE_USER']->workspace===0 && $GLOBALS['BE_USER']->isAdmin())	{
 
 				// Get current index from Database:
@@ -707,10 +707,10 @@ class t3lib_refindex {
 								$tce->bypassWorkspaceRestrictions = TRUE;
 								$tce->bypassFileHandling = TRUE;
 								$tce->bypassAccessCheckForRecords = TRUE;	// Otherwise this cannot update things in deleted records...
-							
+
 								$tce->start($dataArray,array());	// check has been done previously that there is a backend user which is Admin and also in live workspace
 								$tce->process_datamap();
-	
+
 									// Return errors if any:
 								if (count($tce->errorLog))	{
 									return chr(10).'TCEmain:'.implode(chr(10).'TCEmain:',$tce->errorLog);
@@ -849,7 +849,7 @@ class t3lib_refindex {
 	 * Indexing words
 	 *
 	 *******************************/
-	
+
 	/**
 	 *
 	 */
@@ -875,9 +875,9 @@ class t3lib_refindex {
 	 */
 	function updateWordIndex($words,$table,$uid) {
 
-			// Submit words to 
+			// Submit words to
 		$this->submitWords($words);
-		
+
 			// Result id and remove relations:
 		$rid = t3lib_div::md5int($table.':'.$uid);
 		$GLOBALS['TYPO3_DB']->exec_DELETEquery('sys_refindex_rel', 'rid='.intval($rid));
@@ -912,7 +912,7 @@ class t3lib_refindex {
 
 		$hashArr = array();
 		foreach($wl as $w)	{
-			$hashArr[] = t3lib_div::md5int($w);	
+			$hashArr[] = t3lib_div::md5int($w);
 		}
 		$wl = array_flip($wl);
 
@@ -996,7 +996,7 @@ class t3lib_refindex {
 		$recCount=0;
 		$tableCount=0;
 
-		$headerContent = $testOnly ? 'Reference Index being TESTED (nothing written)' : 'Reference Index being Updated';
+		$headerContent = $testOnly ? 'Reference Index being TESTED (nothing written, use "-e" to update)' : 'Reference Index being Updated';
 		if ($cli_echo) echo
 						'*******************************************'.chr(10).
 						$headerContent.chr(10).
