@@ -1,3 +1,7 @@
+2007-01-24  Dmitry Dulepov  <dmitry@typo3.org>
+
+	* Fixed bug 4846: EM: inconsistent line ending
+
 2007-01-23  Michael Stucki  <michael@typo3.org>
 
 	* Fixed bug #4643: File Upload did not recognize BE-User option "defaultFileUploads" (thanks to Benjamin Mack)
