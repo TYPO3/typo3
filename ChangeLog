@@ -4,6 +4,7 @@
 	* Fixed feature request 4790: typolink.addQueryString - enable usage of merged POST and GET data
 	* Fixed bug 4824: typo3 not defined in jsfunc.tbe_editor.js
 	* Fixed bug 4809: require() in class.t3lib_tceforms_inline.php fails
+	* Fixed feature request 4780: TypoScript - add stdWrap to TMENU/GMENU
 
 2007-01-23  Ingmar Schlecht  <ingmar@typo3.org>
 

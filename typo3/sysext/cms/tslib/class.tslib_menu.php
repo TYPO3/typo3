@@ -1818,6 +1818,10 @@ class tslib_tmenu extends tslib_menu {
 	 * @see writeMenu(), tslib_tmenu_layers::extProc_finish()
 	 */
 	function extProc_finish()	{
+			// stdWrap:
+		if (is_array($this->mconf['stdWrap.'])) {
+			$this->WMresult = $this->WMcObj->stdWrap($this->WMresult,$this->mconf['stdWrap.']);
+		}
 		return $this->tmpl->wrap($this->WMresult,$this->mconf['wrap']).$this->WMextraScript;
 	}
 }
@@ -2363,6 +2367,10 @@ class tslib_gmenu extends tslib_menu {
 	 * @see writeMenu(), tslib_gmenu_layers::extProc_finish()
 	 */
 	function extProc_finish()	{
+			// stdWrap:
+		if (is_array($this->mconf['stdWrap.'])) {
+			$this->WMresult = $this->WMcObj->stdWrap($this->WMresult,$this->mconf['stdWrap.']);
+		}
 		return $this->tmpl->wrap($this->WMresult,$this->mconf['wrap']).$this->WMextraScript;
 	}
 }
