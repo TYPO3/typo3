@@ -9,6 +9,7 @@
 	* Fixed bug 4824: typo3 not defined in jsfunc.tbe_editor.js
 	* Fixed bug 4809: require() in class.t3lib_tceforms_inline.php fails
 	* Fixed feature request 4780: TypoScript - add stdWrap to TMENU/GMENU
+	* Fixed bug 4827: Call to undefined method t3lib_BEfunc::getrecordtitleprep()
 
 2007-01-23  Ingmar Schlecht  <ingmar@typo3.org>
 

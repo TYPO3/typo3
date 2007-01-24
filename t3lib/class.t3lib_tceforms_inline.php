@@ -368,9 +368,11 @@ class t3lib_TCEforms_inline {
 			// render the special alternative title
 		} elseif ($hasForeignLabel || $hasSymmetricLabel) {
 			$titleCol = $hasForeignLabel ? $config['foreign_label'] : $config['symmetric_label'];
-			$recTitle = t3lib_BEfunc::getProcessedValueExtra($foreign_table, $titleCol, $rec[$titleCol]);
+			$recTitle = t3lib_BEfunc::getProcessedValueExtra($foreign_table, $titleCol, $rec[$titleCol], 0, 0, false);
 			$recTitle = t3lib_BEfunc::getRecordTitlePrep($recTitle);
-			$recTitle = $this->fObj->noTitle($recTitle);
+			if (!strcmp(trim($recTitle),'')) {
+				$recTitle = t3lib_BEfunc::getNoRecordTitle(true);
+			}
 			// render the standard
 		} else {
 			$recTitle = t3lib_BEfunc::getRecordTitle($foreign_table, $rec, true);

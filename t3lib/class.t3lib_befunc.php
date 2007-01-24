@@ -1852,11 +1852,7 @@ class t3lib_BEfunc	{
 				// If the current result is empty, set it to '[No title]' (localized) and prepare for output if requested
 			if ($prep || $forceResult)	{
 				if ($prep) {
-					$tOrig = htmlspecialchars($t);
-					$t = htmlspecialchars(t3lib_div::fixed_lgd_cs($t,$GLOBALS['BE_USER']->uc['titleLen']));
-					if ($tOrig != $t) {
-						$t = '<span title="'.$tOrig.'">'.$t.'</span>';
-					}
+					$t = t3lib_BEfunc::getRecordTitlePrep($t);
 				}
 				if (!strcmp(trim($t),'')) {
 					$t = t3lib_BEfunc::getNoRecordTitle($prep);
@@ -1865,6 +1861,28 @@ class t3lib_BEfunc	{
 
 			return $t;
 		}
+	}
+
+	/**
+	 * Crops a title string to a limited lenght and if it really was cropped, wrap it in a <span title="...">|</span>,
+	 * which offers a tooltip with the original title when moving mouse over it.
+	 *
+	 * @param	string		$title: The title string to be cropped
+	 * @param	integer		$titleLength: Crop title after this length - if not set, BE_USER->uc['titleLen'] is used
+	 * @return	string		The processed title string, wrapped in <span title="...">|</span> if cropped
+	 */
+	function getRecordTitlePrep($title, $titleLength=0) {
+			// If $titleLength is not a valid positive integer, use BE_USER->uc['titleLen']: 
+		if (!$titleLength || !t3lib_div::testInt($titleLength) || $titleLength < 0) {
+			$titleLength = $GLOBALS['BE_USER']->uc['titleLen'];
+		}
+		$titleOrig = htmlspecialchars($title);
+		$title = htmlspecialchars(t3lib_div::fixed_lgd_cs($title, $titleLength));
+			// If title was cropped, offer a tooltip:
+		if ($titleOrig != $title) {
+			$title = '<span title="'.$titleOrig.'">'.$title.'</span>';
+		}
+		return $title;
 	}
 
 	/**
@@ -1893,9 +1911,10 @@ class t3lib_BEfunc	{
 	 * @param	boolean		$defaultPassthrough flag means that values for columns that has no conversion will just be pass through directly (otherwise cropped to 200 chars or returned as "N/A")
 	 * @param	boolean		If set, no records will be looked up, UIDs are just shown.
 	 * @param	integer		uid of the current record
+	 * @param	boolean		If t3lib_BEfunc::getRecordTitle is used to process the value, this parameter is forwarded.
 	 * @return	string
 	 */
-	function getProcessedValue($table,$col,$value,$fixed_lgd_chars=0,$defaultPassthrough=0,$noRecordLookup=FALSE,$uid=0)	{
+	function getProcessedValue($table,$col,$value,$fixed_lgd_chars=0,$defaultPassthrough=0,$noRecordLookup=FALSE,$uid=0,$forceResult=TRUE)	{
 		global $TCA;
 		global $TYPO3_CONF_VARS;
 			// Load full TCA for $table
@@ -1944,7 +1963,7 @@ class t3lib_BEfunc	{
 								'uid IN ('.implode(',', $selectUids).')'
 							);
 							while($MMrow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($MMres))	{
-								$mmlA[] = ($noRecordLookup?$MMrow['uid']:t3lib_BEfunc::getRecordTitle($theColConf['foreign_table'], $MMrow));
+								$mmlA[] = ($noRecordLookup?$MMrow['uid']:t3lib_BEfunc::getRecordTitle($theColConf['foreign_table'], $MMrow, FALSE, $forceResult));
 							}
 							if (is_array($mmlA)) {
 								$l=implode('; ',$mmlA);
@@ -1972,7 +1991,7 @@ class t3lib_BEfunc	{
 										$r=t3lib_BEfunc::getRecordWSOL($theColConf['neg_foreign_table'],-$rVal);
 									}
 									if (is_array($r))	{
-										$lA[]=$GLOBALS['LANG']->sL($rVal>0?$theColConf['foreign_table_prefix']:$theColConf['neg_foreign_table_prefix']).t3lib_BEfunc::getRecordTitle($rVal>0?$theColConf['foreign_table']:$theColConf['neg_foreign_table'],$r);
+										$lA[]=$GLOBALS['LANG']->sL($rVal>0?$theColConf['foreign_table_prefix']:$theColConf['neg_foreign_table_prefix']).t3lib_BEfunc::getRecordTitle($rVal>0?$theColConf['foreign_table']:$theColConf['neg_foreign_table'],$r,FALSE,$forceResult);
 									} else {
 										$lA[]=$rVal?'['.$rVal.'!]':'';
 									}
@@ -2054,12 +2073,13 @@ class t3lib_BEfunc	{
 	 * @param	string		Field value
 	 * @param	integer		$fixed_lgd_chars is the max amount of characters the value may occupy
 	 * @param	integer		uid of the current record
+	 * @param	boolean		If t3lib_BEfunc::getRecordTitle is used to process the value, this parameter is forwarded.
 	 * @return	string
 	 * @see getProcessedValue()
 	 */
-	function getProcessedValueExtra($table,$fN,$fV,$fixed_lgd_chars=0,$uid=0)	{
+	function getProcessedValueExtra($table,$fN,$fV,$fixed_lgd_chars=0,$uid=0,$forceResult=TRUE)	{
 		global $TCA;
-		$fVnew = t3lib_BEfunc::getProcessedValue($table,$fN,$fV,$fixed_lgd_chars,0,0,$uid);
+		$fVnew = t3lib_BEfunc::getProcessedValue($table,$fN,$fV,$fixed_lgd_chars,0,0,$uid,$forceResult);
 		if (!isset($fVnew))	{
 			if (is_array($TCA[$table]))	{
 				if ($fN==$TCA[$table]['ctrl']['tstamp'] || $fN==$TCA[$table]['ctrl']['crdate'])	{
