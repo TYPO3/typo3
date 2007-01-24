@@ -1,3 +1,7 @@
+2007-01-24  Dmitry Dulepov  <dmitry@typo3.org>
+
+	* Fixed bug 4846: EM: inconsistent line ending
+
 2007-01-24  Oliver Hader  <oh@inpublica.de>
 
 	* Fixed bug 4820: IRRE - Wrong character encoding in AJAX response

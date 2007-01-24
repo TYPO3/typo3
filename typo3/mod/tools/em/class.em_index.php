@@ -3832,9 +3832,9 @@ EXTENSION KEYS:
 		$extInfo['EM_CONF']['_md5_values_when_last_written'] = serialize($this->serverExtensionMD5Array($extKey,$extInfo));
 		$emConfFileContent = $this->construct_ext_emconf_file($extKey,$extInfo['EM_CONF']);
 
+		$absPath = $this->getExtPath($extKey,$extInfo['type']);
+		$emConfFileName = $absPath.'ext_emconf.php';
 		if($emConfFileContent)	{
-			$absPath = $this->getExtPath($extKey,$extInfo['type']);
-			$emConfFileName = $absPath.'ext_emconf.php';
 
 			if(@is_file($emConfFileName))	{
 				if(t3lib_div::writeFile($emConfFileName,$emConfFileContent) === true) {
@@ -3876,7 +3876,7 @@ EXTENSION KEYS:
 		$vDat = $this->renderVersion($EM_CONF['version']);
 		$EM_CONF['version']=$vDat['version'];
 
-		return '<?php
+		$code = '<?php
 
 ########################################################################
 # Extension Manager/Repository config file for ext: "'.$extKey.'"
@@ -3891,6 +3891,7 @@ EXTENSION KEYS:
 $EM_CONF[$_EXTKEY] = '.$this->arrayToCode($EM_CONF, 0).';
 
 ?>';
+		return str_replace(chr(13), '', $code);
 	}
 
 	/**
