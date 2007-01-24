@@ -1,3 +1,7 @@
+2007-01-24  Oliver Hader  <oh@inpublica.de>
+
+	* Fixed bug 4820: IRRE - Wrong character encoding in AJAX response
+
 2007-01-23  Ingmar Schlecht  <ingmar@typo3.org>
 
 	* Bugfix to mm-relation handling: writeMM() tried to set the "tablenames" field even for simple two-table relationships which then failed

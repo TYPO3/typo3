@@ -748,6 +748,9 @@ class t3lib_TCEforms_inline {
 			return $this->getJSON($jsonArray);
 		}
 
+			// Encode TCEforms AJAX response with utf-8:
+		$item = $GLOBALS['LANG']->csConvObj->utf8_encode($item, $GLOBALS['LANG']->charSet);
+
 		if (!$current['uid']) {
 			$jsonArray = array(
 				'data'	=> $item,

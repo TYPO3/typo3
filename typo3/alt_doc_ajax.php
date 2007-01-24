@@ -122,6 +122,7 @@ class SC_alt_doc_ajax {
 		header('Last-Modified: '.gmdate("D, d M Y H:i:s").' GMT');
 		header('Cache-Control: no-cache, must-revalidate');
 		header('Pragma: no-cache');
+		header('Content-type: text/javascript; charset=utf-8');
 
 		$this->content = '';
 
