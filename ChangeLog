@@ -1,6 +1,7 @@
 2007-01-24  Oliver Hader  <oh@inpublica.de>
 
 	* Fixed bug 4820: IRRE - Wrong character encoding in AJAX response
+	* Fixed feature request 4790: typolink.addQueryString - enable usage of merged POST and GET data
 
 2007-01-23  Ingmar Schlecht  <ingmar@typo3.org>
 

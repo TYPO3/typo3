@@ -5520,6 +5520,12 @@ class tslib_cObj {
 			case 'POST':
 				$q_in = t3lib_div::_POST();
 			break;
+			case 'GET,POST':
+				$q_in = array_merge(t3lib_div::_GET(), t3lib_div::_POST());
+			break;
+			case 'POST,GET':
+				$q_in = array_merge(t3lib_div::_POST(), t3lib_div::_GET());
+			break;
 			default:
 					// shortcut (no further processing necessary)
 				if (!$conf['exclude'])	return '&'.t3lib_div::getIndpEnv('QUERY_STRING');
