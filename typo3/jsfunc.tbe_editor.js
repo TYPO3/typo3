@@ -437,7 +437,7 @@ var typo3form = {
 			}else{
 				document[TBE_EDITOR.formname][theField].value = evalFunc.evalObjValue(theFObj, document[TBE_EDITOR.formname][theField+"_hr"].value);
 			}
-			typo3.formFieldSet(theField, evallist, is_in, checkbox, checkboxValue);
+			typo3form.fieldSet(theField, evallist, is_in, checkbox, checkboxValue);
 		}
 	}
 };

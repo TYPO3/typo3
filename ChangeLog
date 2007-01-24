@@ -2,6 +2,7 @@
 
 	* Fixed bug 4820: IRRE - Wrong character encoding in AJAX response
 	* Fixed feature request 4790: typolink.addQueryString - enable usage of merged POST and GET data
+	* Fixed bug 4824: typo3 not defined in jsfunc.tbe_editor.js
 
 2007-01-23  Ingmar Schlecht  <ingmar@typo3.org>
 
