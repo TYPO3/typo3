@@ -1,3 +1,9 @@
+2007-01-24  Michael Stucki  <michael@typo3.org>
+
+	* Install Tool: Network 192.168.0.0/255.255.0.0 was allowed to enter the Install Tool regardless of the die() presence in typo3/install/index.php. This exception has been removed, only 127.0.0.1 may now enter the Install Tool regardless of any other conditions.
+	* !!! Install Tool: Instead of modifying typo3/install/index.php to enable the Install Tool, a new file "typo3conf/ENABLE_INSTALL_TOOL" can be created to enable it. Shared hosting servers: If you want to turn this off, you have to change the condition in typo3/install/index.php, line 50. See comment above.
+	* Removed access for 192.168.0.0/255.255.0.0 in misc/phpcheck/incfile.php
+
 2007-01-24  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Fixed bug 4846: EM: inconsistent line ending

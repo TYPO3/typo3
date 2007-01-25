@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2005 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2007 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -40,9 +40,15 @@
 // Insert some security here, if you don't trust the Install Tool Password:
 // **************************************************************************
 
-	// This checks for my own IP at home. You can just remove the if-statement.
-if (1==0 || (substr($_SERVER['REMOTE_ADDR'],0,7)!='192.168' && $_SERVER['REMOTE_ADDR']!='127.0.0.1' && $_SERVER['REMOTE_ADDR']!='::1'))	{
-	die("In the source distribution of TYPO3, the install script is disabled by a die() function call.<br/><b>Fix:</b> Open the file typo3/install/index.php and remove/out-comment the line that outputs this message!");
+error_reporting (E_ALL ^ E_NOTICE);
+$PATH_thisScript = str_replace('//','/', str_replace('\\','/', (php_sapi_name()=='cgi'||php_sapi_name()=='isapi' ||php_sapi_name()=='cgi-fcgi')&&($_SERVER['ORIG_PATH_TRANSLATED']?$_SERVER['ORIG_PATH_TRANSLATED']:$_SERVER['PATH_TRANSLATED'])? ($_SERVER['ORIG_PATH_TRANSLATED']?$_SERVER['ORIG_PATH_TRANSLATED']:$_SERVER['PATH_TRANSLATED']):($_SERVER['ORIG_SCRIPT_FILENAME']?$_SERVER['ORIG_SCRIPT_FILENAME']:$_SERVER['SCRIPT_FILENAME'])));
+
+	// Only allow Install Tool access if the file "typo3conf/ENABLE_INSTALL_TOOL" is found
+$enableInstallToolFile = dirname(dirname(dirname($PATH_thisScript))).'/typo3conf/ENABLE_INSTALL_TOOL';
+
+	// Change 1==2 to 1==1 if you want to lock the Install Tool regardless of the file ENABLE_INSTALL_TOOL
+if (1==2 || ($_SERVER['REMOTE_ADDR']!='127.0.0.1' && !@is_file($enableInstallToolFile)))	{
+	die('The Install Tool is locked.<br /><br /><strong>Fix:</strong> Create a file typo3conf/ENABLE_INSTALL_TOOL<br />This file may simply be empty.<br /><br />For security reasons, it is highly recommended to rename<br />or delete the file after the operation is finished.');
 }
 
 
