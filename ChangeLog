@@ -1,3 +1,7 @@
+2007-01-25  Ingmar Schlecht  <ingmar@typo3.org>
+
+	* Added backwards compatibility to Pagetree for non AJAX-capable browsers (by Benjamin Mack)
+
 2007-01-24  Michael Stucki  <michael@typo3.org>
 
 	* Install Tool: Network 192.168.0.0/255.255.0.0 was allowed to enter the Install Tool regardless of the die() presence in typo3/install/index.php. This exception has been removed, only 127.0.0.1 may now enter the Install Tool regardless of any other conditions.

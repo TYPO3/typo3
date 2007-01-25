@@ -42,6 +42,11 @@ var Tree = {
 
 	// reloads a part of the page tree (useful when "expand" / "collapse")
 	load: function(params, isExpand, obj) {
+			// fallback if AJAX is not possible (e.g. IE < 6)
+		if (!Ajax.getTransport()) {
+			window.location.href = this.thisScript + '?PM=' + params;
+			return;
+		}
 		$(obj).style.cursor = 'wait';
 		new Ajax.Request(this.thisScript, {
 			method: 'get',
@@ -49,9 +54,9 @@ var Tree = {
 			onComplete: function(xhr) {
 					// the parent node needs to be overwritten, not the object
 				$(obj.parentNode).replace(xhr.responseText);
-				Tree.registerDragDropHandlers();
-				Tree.reSelectActiveItem();
-			}
+				this.registerDragDropHandlers();
+				this.reSelectActiveItem();
+			}.bind(this)
 		});
 	},
 
