@@ -1505,7 +1505,7 @@ class t3lib_TCEforms_inline {
 	 */
 	function getJSON($jsonArray) {
 		if (!$GLOBALS['JSON']) {
-			require_once(PATH_typo3.'json.php');
+			require_once(PATH_typo3.'contrib/json.php');
 			$GLOBALS['JSON'] = t3lib_div::makeInstance('Services_JSON');
 		}
 		return $GLOBALS['JSON']->encode($jsonArray);

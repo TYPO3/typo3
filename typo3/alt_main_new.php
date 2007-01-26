@@ -498,8 +498,8 @@ class SC_alt_main {
 		//Add styles
 		$this->content.='
 		
-		<script src="prototype.js" language="JavaScript" type="text/javascript"></script>
-		<script src="scriptaculous/scriptaculous.js" language="JavaScript" type="text/javascript"></script>
+		<script src="contrib/prototype.js" language="JavaScript" type="text/javascript"></script>
+		<script src="contrib/scriptaculous/scriptaculous.js" language="JavaScript" type="text/javascript"></script>
 		<script type="text/javascript" language="JavaScript">
 			function getElementContent(placeholderId, frequency, url) {
 				if (!url)	{

@@ -1,6 +1,13 @@
 2007-01-26  Oliver Hader  <oh@inpublica.de>
 
 	* Fixed bug 4814: Umlauts error in AJAX Pagetree
+	* Updated prototype.js to version 1.5.0
+	* Updated script.aculo.us to version 1.7.0
+	* Created new directory for external contributions typo3/contrib/ and moved files:
+		- typo3/prototype.js	-> typo3/contrib/prototype/prototype.js
+		- typo3/scriptaculous/*	-> typo3/contrib/scriptaculous/*
+		- typo3/json.php		-> typo3/contrib/json.php
+	* Changed paths to typo3/contrib in affected core files
 
 2007-01-25  Ingmar Schlecht  <ingmar@typo3.org>
 

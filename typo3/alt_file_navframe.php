@@ -114,7 +114,7 @@ class SC_alt_file_navframe {
 
 				// Adding javascript code for AJAX (prototype), drag&drop and the pagetree
 			$this->doc->JScode  = '
-			<script type="text/javascript" src="'.$this->backPath.'prototype.js"></script>
+			<script type="text/javascript" src="'.$this->backPath.'contrib/prototype.js"></script>
 			<script type="text/javascript" src="'.$this->backPath.'tree.js"></script>'."\n";
 
 				// Setting JavaScript for menu.
