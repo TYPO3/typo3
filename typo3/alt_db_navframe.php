@@ -72,8 +72,10 @@ class SC_alt_db_navframe {
 	var $pagetree;
 	var $doc;
 	var $active_tempMountPoint = 0;		// Temporary mount point (record), if any
+	var $backPath;
 
 		// Internal, static: GPvar:
+	var $ajax;							// Is set, if an AJAX call should be handled.
 	var $currentSubScript;
 	var $cMR;
 	var $setTempDBmount;			// If not '' (blank) then it will clear (0) or set (>0) Temporary DB mount.
@@ -86,12 +88,15 @@ class SC_alt_db_navframe {
 	function init()	{
 		global $BE_USER,$BACK_PATH;
 
+			// Setting backPath
+		$this->backPath = $BACK_PATH;
+		$this->doc->backPath = $BACK_PATH;
 
 			// Setting GPvars:
-		$this->currentSubScript = t3lib_div::_GP('currentSubScript');
+		$this->ajax = t3lib_div::_GP('ajax');
 		$this->cMR = t3lib_div::_GP('cMR');
+		$this->currentSubScript = t3lib_div::_GP('currentSubScript');
 		$this->setTempDBmount = t3lib_div::_GP('setTempDBmount');
-
 
 			// Create page tree object:
 		$this->pagetree = t3lib_div::makeInstance('webPageTree');
@@ -106,55 +111,52 @@ class SC_alt_db_navframe {
 		$this->pagetree->addField('nav_hide');
 		$this->pagetree->addField('url');
 
-
-		// $this->settingTemporaryMountPoint(11);
 			// Temporary DB mounts:
 		$this->initializeTemporaryDBmount();
 
-			// Setting highlight mode:
-		$this->doHighlight = !$BE_USER->getTSConfigVal('options.pageTree.disableTitleHighlight') && $BE_USER->workspace===0;
+			// Use template rendering only if this is a non-AJAX call:
+		if (!$this->ajax) {
+				// Setting highlight mode:
+			$this->doHighlight = !$BE_USER->getTSConfigVal('options.pageTree.disableTitleHighlight') && $BE_USER->workspace===0;
 
-			// Create template object:
-		$this->doc = t3lib_div::makeInstance('template');
-		$this->doc->docType = 'xhtml_trans';
+				// Create template object:
+			$this->doc = t3lib_div::makeInstance('template');
+			$this->doc->docType = 'xhtml_trans';
 
-			// Setting backPath
-		$this->doc->backPath = $BACK_PATH;
+				// Adding javascript code for AJAX (prototype), drag&drop and the pagetree
+			$this->doc->JScode  = '
+			<script type="text/javascript" src="'.$this->backPath.'prototype.js"></script>
+			<script type="text/javascript" src="'.$this->backPath.'tree.js"></script>'."\n";
 
+			$this->doc->JScode .= $this->doc->wrapScriptTags(
+			($this->currentSubScript?'top.currentSubScript=unescape("'.rawurlencode($this->currentSubScript).'");':'').'
+			// setting prefs for pagetree and drag & drop
+			Tree.thisScript    = "'.$this->pagetree->thisScript.'";
+			DragDrop.changeURL = "'.$this->backPath.'alt_clickmenu.php";
+			DragDrop.backPath  = "'.t3lib_div::shortMD5(''.'|'.$GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']).'";
+			DragDrop.table     = "pages";
 
-			// Adding javascript code for AJAX (prototype), drag&drop and the pagetree
-		$this->doc->JScode  = '
-		<script type="text/javascript" src="prototype.js"></script>
-		<script type="text/javascript" src="tree.js"></script>'."\n";
+			// Function, loading the list frame from navigation tree:
+			function jumpTo(id, linkObj, highlightID, bank)	{ //
+				var theUrl = top.TS.PATH_typo3 + top.currentSubScript + "?id=" + id;
+				top.fsMod.currentBank = bank;
 
-		$this->doc->JScode .= $this->doc->wrapScriptTags(
-		($this->currentSubScript?'top.currentSubScript=unescape("'.rawurlencode($this->currentSubScript).'");':'').'
-		// setting prefs for pagetree and drag & drop
-		Tree.thisScript    = "'.$this->pagetree->thisScript.'";
-		DragDrop.changeURL = "'.$this->backPath.'alt_clickmenu.php";
-		DragDrop.backPath  = "'.t3lib_div::shortMD5(''.'|'.$GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']).'";
-		DragDrop.table     = "pages";
+				if (top.condensedMode) top.content.location.href = theUrl;
+				else                   parent.list_frame.location.href=theUrl;
 
-		// Function, loading the list frame from navigation tree:
-		function jumpTo(id, linkObj, highlightID, bank)	{ //
-			var theUrl = top.TS.PATH_typo3 + top.currentSubScript + "?id=" + id;
-			top.fsMod.currentBank = bank;
+				'.($this->doHighlight ? 'Tree.highlightActiveItem("web", highlightID + "_" + bank);' : '').'
+				'.(!$GLOBALS['CLIENT']['FORMSTYLE'] ? '' : 'if (linkObj) linkObj.blur(); ').'
+				return false;
+			}
+			'.($this->cMR?"jumpTo(top.fsMod.recentIds['web'],'');":'').'
+			');
 
-			if (top.condensedMode) top.content.location.href = theUrl;
-			else                   parent.list_frame.location.href=theUrl;
-
-			'.($this->doHighlight ? 'Tree.highlightActiveItem("web", highlightID + "_" + bank);' : '').'
-			'.(!$GLOBALS['CLIENT']['FORMSTYLE'] ? '' : 'if (linkObj) linkObj.blur(); ').'
-			return false;
+				// Click menu code is added:
+			$CMparts=$this->doc->getContextMenuCode();
+			$this->doc->bodyTagAdditions = $CMparts[1];
+			$this->doc->JScode.= $CMparts[0];
+			$this->doc->postCode.= $CMparts[2];
 		}
-		'.($this->cMR?"jumpTo(top.fsMod.recentIds['web'],'');":'').'
-		');
-
-			// Click menu code is added:
-		$CMparts=$this->doc->getContextMenuCode();
-		$this->doc->bodyTagAdditions = $CMparts[1];
-		$this->doc->JScode.= $CMparts[0];
-		$this->doc->postCode.= $CMparts[2];
 	}
 
 
@@ -169,9 +171,9 @@ class SC_alt_db_navframe {
 			// Produce browse-tree:
 		$tree = $this->pagetree->getBrowsableTree();
 
-			// output only the tree if this is an ajax call
-		if (t3lib_div::_GP('ajax')) {
-			$this->content = $tree;
+			// Output only the tree if this is an AJAX call:
+		if ($this->ajax) {
+			$this->content = $LANG->csConvObj->utf8_encode($tree, $LANG->charSet);
 			return;
 		}
 
@@ -226,10 +228,8 @@ class SC_alt_db_navframe {
 			</p>
 			<br />';
 
-
 			// CSH icon:
 		$this->content.= t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'pagetree', $GLOBALS['BACK_PATH']);
-
 
 			// Adding javascript for drag & drop activation and highlighting
 		$this->content .=$this->doc->wrapScriptTags('
@@ -244,7 +244,11 @@ class SC_alt_db_navframe {
 	 * @return	void
 	 */
 	function printContent()	{
-		if (!t3lib_div::_GP('ajax')) {
+			// If we handle an AJAX call, send headers:
+		if ($this->ajax) {
+			header('Content-type: text/html; charset=utf-8');
+			// If it's the regular call to fully output the tree:
+		} else {
 			$this->content.= $this->doc->endPage();
 			$this->content = $this->doc->insertStylesAndJS($this->content);
 		}

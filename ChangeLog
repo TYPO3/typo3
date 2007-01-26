@@ -1,3 +1,7 @@
+2007-01-26  Oliver Hader  <oh@inpublica.de>
+
+	* Fixed bug 4814: Umlauts error in AJAX Pagetree
+
 2007-01-25  Ingmar Schlecht  <ingmar@typo3.org>
 
 	* Added backwards compatibility to Pagetree for non AJAX-capable browsers (by Benjamin Mack)
