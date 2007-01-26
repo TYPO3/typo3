@@ -4588,7 +4588,7 @@ class t3lib_TCEforms	{
 				$jsFile[] =	'<script type="text/javascript" src="'.$this->backPath.'md5.js"></script>';
 			}
 
-			$jsFile[] = '<script type="text/javascript" src="'.$this->backPath.'contrib/prototype.js"></script>';
+			$jsFile[] = '<script type="text/javascript" src="'.$this->backPath.'contrib/prototype/prototype.js"></script>';
 			$jsFile[] =	'<script type="text/javascript" src="'.$this->backPath.'../t3lib/jsfunc.evalfield.js"></script>';
 			$jsFile[] =	'<script type="text/javascript" src="'.$this->backPath.'jsfunc.tbe_editor.js"></script>';
 
