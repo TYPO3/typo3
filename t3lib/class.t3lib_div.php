@@ -2087,7 +2087,14 @@ class t3lib_div {
 							// Otherwise, just htmlspecialchar the stuff:
 						$content = htmlspecialchars($v);
 						$dType = gettype($v);
-						if ($dType!='string' && !$options['disableTypeAttrib'])	{ $attr.=' type="'.$dType.'"'; }
+						if ($dType == 'string') {
+							if ($options['useCDATA'] && $content != $v) {
+								$content = '<![CDATA[' . $v . ']]>';
+							}
+						}
+						elseif (!$options['disableTypeAttrib']) {
+								$attr.=' type="'.$dType.'"';
+						}
 					}
 				}
 

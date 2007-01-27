@@ -1,3 +1,7 @@
+2007-01-24  Dmitry Dulepov  <dmitry@typo3.org>
+
+	* Added `useCDATA` to a list of t3lib_div::array2xml() options to produce CDATA instead of entities
+
 2007-01-26  Oliver Hader  <oh@inpublica.de>
 
 	* Fixed bug 4814: Umlauts error in AJAX Pagetree
