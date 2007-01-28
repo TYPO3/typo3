@@ -1,5 +1,5 @@
 
-2007-01-18  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+2007-01-28  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
 	* Added "html { height: 100% }" to stylesheet to make RTE wizard work in IE7
 
