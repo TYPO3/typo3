@@ -16,6 +16,10 @@ TYPO3 CVS ID: $Id$
  * MAIN STYLES:
  *********************************************/
 
+HTML {
+	height: 100%;
+}
+
 SELECT, TEXTAREA, INPUT, TD, BODY, .defstyle, P, DIV {
 	font-family: Verdana, Arial, Helvetica, sans-serif;
 	font-size: 10px;
