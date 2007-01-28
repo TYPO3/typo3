@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2006 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2007 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -2377,35 +2377,26 @@ class t3lib_div {
 			}
 			fclose($fp);
 
-		} elseif (is_array($requestHeaders) && function_exists('stream_context_create'))	{
-
+		} elseif (is_array($requestHeaders))	{
 			$ctx = stream_context_create(array(
 						'http' => array(
 							'header' => implode("\r\n", $requestHeaders)
 						)
 					)
 				);
-
-			if (function_exists('file_get_contents') && version_compare(phpversion(), '5.0', '>=')) {
+			if (version_compare(phpversion(), '5.0', '>=')) {
 				$content = @file_get_contents($url, false, $ctx);
 			}
 			elseif (false !== ($fd = @fopen($url, 'rb', false, $ctx)))	{
 				$content = '';
 				while (!feof($fd))	{
-					$content.= fread($fd, 4096);
+					$content.= @fread($fd, 4096);
 				}
 				fclose($fd);
 			}
 		}
-		elseif (function_exists('file_get_contents'))	{
+		else	{
 			$content = @file_get_contents($url);
-		}
-		elseif (false !== ($fd = @fopen($url, 'rb')))	{
-			$content = '';
-			while (!feof($fd))	{
-				$content.= fread($fd, 4096);
-			}
-			fclose($fd);
 		}
 
 		return $content;
@@ -2841,18 +2832,16 @@ class t3lib_div {
 	 * @return	string
 	 */
 	function debug_trail()	{
-		if (function_exists('debug_backtrace'))	{
-			$trail = debug_backtrace();
-			$trail = array_reverse($trail);
-			array_pop($trail);
+		$trail = debug_backtrace();
+		$trail = array_reverse($trail);
+		array_pop($trail);
 
-			$path = array();
-			foreach($trail as $dat)	{
-				$path[] = $dat['class'].$dat['type'].$dat['function'];
-			}
+		$path = array();
+		foreach($trail as $dat)	{
+			$path[] = $dat['class'].$dat['type'].$dat['function'];
+		}
 
-			return implode(' // ',$path);
-		} else return 'N/A';
+		return implode(' // ',$path);
 	}
 
 	/**
@@ -4410,10 +4399,7 @@ class t3lib_div {
 
 			// do custom logging
 		if (is_array($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_div.php']['systemLog']))	{
-			$params = array('msg'=>$msg, 'extKey'=>$extKey);
-			if (function_exists('debug_backtrace'))	{
-				$params['backTrace'] = debug_backtrace();
-			}
+			$params = array('msg'=>$msg, 'extKey'=>$extKey, 'backTrace'=>debug_backtrace());
 			$fakeThis = FALSE;
 			foreach ($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_div.php']['systemLog'] as $hookMethod)	{
 				t3lib_div::callUserFunction($hookMethod,$params,$fakeThis);

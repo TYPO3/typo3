@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2006 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2007 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -242,10 +242,8 @@ class SC_t3lib_thumbs {
 					// The thumbnail is read and output to the browser
 				if($fd = @fopen($this->output,'rb'))	{
 					header('Content-type: image/'.$outext);
-					while (!feof($fd))	{
-						echo fread($fd, 10000);
-					}
-					fclose( $fd );
+					fpassthru($fd);
+					fclose($fd);
 				} else {
 					$this->errorGif('Read problem!','',$this->output);
 				}

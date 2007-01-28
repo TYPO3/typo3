@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2005 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2007 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the Typo3 project. The Typo3 project is
@@ -448,14 +448,9 @@ class t3lib_svbase {
 	function readFile ($absFile, $length=0)	{
 		$out = FALSE;
 
-		if ($this->checkInputFile ($absFile)) {
-			if ($fd = fopen ($absFile, 'rb')) {
-				$length = intval($length) ? intval($length) : filesize ($absFile);
-				if ($length > 0) {
-					$out = fread ($fd, $length);
-				}
-				fclose ($fd);
-			} else {
+		if ($this->checkInputFile($absFile)) {
+			$out = file_get_contents($absFile);
+			if ($out===FALSE)	{
 				$this->errorPush(T3_ERR_SV_FILE_READ, 'Can not read from file: '.$absFile);
 			}
 		}

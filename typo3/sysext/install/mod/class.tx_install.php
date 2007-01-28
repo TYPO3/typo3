@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2005 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2007 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -2504,9 +2504,7 @@ From sub-directory:
 	 * @return	[type]		...
 	 */
 	function ImageTypes()	{
-		if (phpversion()!='4.1.2')	{
-			return imagetypes();
-		} else return IMG_GIF+IMG_JPG+IMG_PNG; // all...
+		return imagetypes();
 	}
 
 	/**

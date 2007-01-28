@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2004-2006 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 2004-2007 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -551,11 +551,7 @@ class t3lib_DB {
 	 * @see quoteStr()
 	 */
 	function fullQuoteStr($str, $table)	{
-		if (function_exists('mysql_real_escape_string'))	{
-			return '\''.mysql_real_escape_string($str, $this->link).'\'';
-		} else {
-			return '\''.mysql_escape_string($str).'\'';
-		}
+		return '\''.mysql_real_escape_string($str, $this->link).'\'';
 	}
 
 	/**
@@ -595,11 +591,7 @@ class t3lib_DB {
 	 * @see quoteStr()
 	 */
 	function quoteStr($str, $table)	{
-		if (function_exists('mysql_real_escape_string'))	{
-			return mysql_real_escape_string($str, $this->link);
-		} else {
-			return mysql_escape_string($str);
-		}
+		return mysql_real_escape_string($str, $this->link);
 	}
 
 	/**
@@ -1113,16 +1105,14 @@ class t3lib_DB {
 		if (!$res) {
 			$trace = FALSE;
 			$msg = 'Invalid database result resource detected';
-			if (version_compare(phpversion(), '4.3.0', '>=')) {
-  				$trace = debug_backtrace();
-				array_shift($trace);
-				$cnt = count($trace);
-				for ($i=0; $i<$cnt; $i++)	{
-						// complete objects are too large for the log
-					if (isset($trace['object']))	unset($trace['object']);
-				}
-				$msg .= ': function t3lib_DB->' . $trace[0]['function'] . ' called from file ' . substr($trace[0]['file'],strlen(PATH_site)+2) . ' in line ' . $trace[0]['line'];
+  			$trace = debug_backtrace();
+			array_shift($trace);
+			$cnt = count($trace);
+			for ($i=0; $i<$cnt; $i++)	{
+					// complete objects are too large for the log
+				if (isset($trace['object']))	unset($trace['object']);
 			}
+			$msg .= ': function t3lib_DB->' . $trace[0]['function'] . ' called from file ' . substr($trace[0]['file'],strlen(PATH_site)+2) . ' in line ' . $trace[0]['line'];
 			t3lib_div::sysLog($msg.'. Use a devLog extension to get more details.', 'Core/t3lib_db', 3);
 			t3lib_div::devLog($msg.'.', 'Core/t3lib_db', 3, $trace);
 

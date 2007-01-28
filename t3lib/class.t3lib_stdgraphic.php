@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2006 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2007 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -2267,11 +2267,7 @@ class t3lib_stdGraphic	{
 	function cacheImageDimensions($identifyResult)	{
 		global $TYPO3_DB;
 			// Create a md5 hash of the filename
-		if (function_exists('md5_file')) {
-			$md5Hash = md5_file($identifyResult[3]);
-		} else {
-			$md5Hash = md5 (t3lib_div::getURL($identifyResult[3]));
-		}
+		$md5Hash = md5_file($identifyResult[3]);
 		if ($md5Hash) {
 			$fieldArr = array (
 				'md5hash' => $md5Hash,
@@ -2299,11 +2295,7 @@ class t3lib_stdGraphic	{
 	function getCachedImageDimensions($imageFile)	{
 		global $TYPO3_DB;
 			// Create a md5 hash of the filename
-		if(function_exists('md5_file')) {
-			$md5Hash = md5_file($imageFile);
-		} else {
-			$md5Hash = md5(t3lib_div::getURL ($imageFile));
-		}
+		$md5Hash = md5_file($imageFile);
 		ereg('([^\.]*)$',$imageFile,$reg);
 		$res = $TYPO3_DB->exec_SELECTquery ('md5hash, imagewidth, imageheight', 'cache_imagesizes', 'md5filename='.$TYPO3_DB->fullQuoteStr(md5($imageFile),'cache_imagesizes'));
 		if ($res) {

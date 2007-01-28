@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2006 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2007 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -1223,7 +1223,7 @@ class t3lib_TStemplate	{
 
 	/**
 	 * Reads the fileContent of $fName and returns it.
-	 * The same as t3lib_div::getUrl()
+	 * Similar to t3lib_div::getUrl()
 	 *
 	 * @param	string		Absolute filepath to record
 	 * @return	string		The content returned
@@ -1231,13 +1231,8 @@ class t3lib_TStemplate	{
 	 */
 	function fileContent($fName)	{
 		$incFile = $this->getFileName($fName);
-		if ($incFile && $fd=fopen($incFile,'rb'))	{
-			$content = '';
-			while (!feof($fd))	{
-				$content.=fread($fd, 5000);
-			}
-			fclose( $fd );
-			return $content;
+		if ($incFile)	{
+			return @file_get_contents($incFile);
 		}
 	}
 
