@@ -1,3 +1,8 @@
+
+2007-01-18  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+
+	* Added "html { height: 100% }" to stylesheet to make RTE wizard work in IE7
+
 2007-01-24  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Added `useCDATA` to a list of t3lib_div::array2xml() options to produce CDATA instead of entities
