@@ -2,6 +2,7 @@
 2006-01-28  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
 	* Added "html { height: 100% }" to stylesheet to make RTE wizard work in IE7
+	* Make the EM work with PHP 4.1 (checking for md5_file())
 
 2007-01-24  Dmitry Dulepov  <dmitry@typo3.org>
 

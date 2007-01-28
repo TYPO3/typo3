@@ -3,7 +3,7 @@
 *  Copyright notice
 *
 *  (c) 1999-2005 Kasper Skaarhoj (kasperYYYY@typo3.com)
-*  (c) 2005-2006 Karsten Dambekalns <karsten@typo3.org>
+*  (c) 2005-2007 Karsten Dambekalns <karsten@typo3.org>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -1120,7 +1120,7 @@ EXTENSION KEYS:
 						}
 							// determine local md5 from zip
 						if(is_file(PATH_site.'typo3temp/'.$extKey.'-l10n-'.$lang.'.zip')) {
-							$localmd5 = md5_file(PATH_site.'typo3temp/'.$extKey.'-l10n-'.$lang.'.zip');
+							$localmd5 = $this->md5_file(PATH_site.'typo3temp/'.$extKey.'-l10n-'.$lang.'.zip');
 						} else {
 							echo ('<td title="Not installed / Unknown" style="background-color:#ff0">???</td>');
 							continue;
@@ -1200,7 +1200,7 @@ EXTENSION KEYS:
 							}
 								// determine local md5 from zip
 							if(is_file(PATH_site.'typo3temp/'.$extKey.'-l10n-'.$lang.'.zip')) {
-								$localmd5 = md5_file(PATH_site.'typo3temp/'.$extKey.'-l10n-'.$lang.'.zip');
+								$localmd5 = $this->md5_file(PATH_site.'typo3temp/'.$extKey.'-l10n-'.$lang.'.zip');
 							} else {
 								$localmd5 = 'zzz';
 							}
@@ -1415,7 +1415,7 @@ EXTENSION KEYS:
 				$mirror = $this->getMirrorURL();
 				$extfile = $mirror.'extensions.xml.gz';
 				$extmd5 = t3lib_div::getURL($mirror.'extensions.md5');
-				if(is_file(PATH_site.'typo3temp/extensions.xml.gz')) $localmd5 = md5_file(PATH_site.'typo3temp/extensions.xml.gz');
+				if(is_file(PATH_site.'typo3temp/extensions.xml.gz')) $localmd5 = $this->md5_file(PATH_site.'typo3temp/extensions.xml.gz');
 
 				if($extmd5 === false) {
 					$content .= '<p>Error: The extension MD5 sum could not be fetched from '.$mirror.'extensions.md5. Possible reasons: network problems, allow_url_fopen is off, curl is not enabled in Install tool.</p>';
@@ -5054,6 +5054,21 @@ $EM_CONF[$_EXTKEY] = '.$this->arrayToCode($EM_CONF, 0).';
 			);
 		} else return true;
 	}
+
+	/**
+	 * Calculate a MD5 hash of a file
+	 *
+	 * @param	string		File name
+	 * @return	boolean		MD5 hash of file contents
+	 */
+	function md5_file($filename) {
+		if (function_exists('md5_file')) {
+			return md5_file($filename);
+		} else {
+			return md5(t3lib_div::getURL($filename));
+		}
+	}
+
 }
 
 // Include extension?
