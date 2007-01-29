@@ -15,8 +15,8 @@
 			<label index="filter_drafts">Drafts</label>
 			<label index="filter_archive">Archive</label>
 			<label index="filter_all">All</label>
-			<label index="diff_no_diff">No diff.</label>
-			<label index="diff_show_inline">Show diff. inline</label>
+			<label index="diff_no_diff">Do not show differences</label>
+			<label index="diff_show_inline">Show differences inline</label>
 			<label index="diff_show_popup">Show diff. popups (branches)</label>
 			<label index="label_errors">Errors:</label>
 			<label index="workspace_description_live">The LIVE workspace allows changes to take effect immediately on the website. However versioning can be applied inside the live workspace and this overview shows you draft and archive versions from the various workspaces, including the LIVE workspace.</label>

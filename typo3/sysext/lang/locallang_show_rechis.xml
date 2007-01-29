@@ -34,7 +34,7 @@
 			<label index="maxSteps">Show entries:</label>
 			<label index="maxSteps_all">ALL</label>
 			<label index="maxSteps_marked">marked</label>
-			<label index="showDiff">Show diff:</label>
+			<label index="showDiff">Show differences:</label>
 			<label index="showDiff_no">No</label>
 			<label index="showDiff_inline">Inline</label>
 			<label index="showSubElements">Show sub elements:</label>
