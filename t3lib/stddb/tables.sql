@@ -131,7 +131,7 @@ CREATE TABLE cache_hash (
   tstamp int(11) unsigned DEFAULT '0' NOT NULL,
   ident varchar(20) DEFAULT '' NOT NULL,
   PRIMARY KEY (hash)
-);
+) ENGINE=InnoDB;
 
 #
 # Table structure for table 'cache_imagesizes'
@@ -144,7 +144,7 @@ CREATE TABLE cache_imagesizes (
   imagewidth mediumint(11) unsigned DEFAULT '0' NOT NULL,
   imageheight mediumint(11) unsigned DEFAULT '0' NOT NULL,
   PRIMARY KEY (md5filename)
-);
+) ENGINE=InnoDB;
 
 #
 # Table structure for table 'pages'
@@ -274,7 +274,8 @@ CREATE TABLE sys_history (
   snapshot tinyint(4) DEFAULT '0' NOT NULL,
   PRIMARY KEY (uid),
   KEY recordident (tablename,recuid),
-  KEY sys_log_uid (sys_log_uid)
+  KEY sys_log_uid (sys_log_uid),
+  KEY recordidentAS (tablename,recuid,tstamp)
 );
 
 #
@@ -365,8 +366,9 @@ CREATE TABLE sys_log (
   workspace int(11) DEFAULT '0' NOT NULL,
   NEWid varchar(20) DEFAULT '' NOT NULL,
   PRIMARY KEY (uid),
-  KEY event (userid,event_pid)
-);
+  KEY event (userid,event_pid),
+  KEY recuidIdx (recuid,uid)
+) ENGINE=InnoDB;
 
 #
 # Table structure for table 'sys_language'

@@ -1,3 +1,7 @@
+2007-01-29  Dmitry Dulepov  <dmitry@typo3.org>
+
+	* !!! Changed MySQL engine type for several database tables to InnoDB
+	* Added several new indexes
 
 2007-01-28  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 

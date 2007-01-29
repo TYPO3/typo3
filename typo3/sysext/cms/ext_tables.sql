@@ -21,7 +21,7 @@ CREATE TABLE cache_pages (
   KEY page_id (page_id),
   KEY sel (hash,page_id),
   PRIMARY KEY (id)
-);
+) ENGINE=InnoDB;
 
 
 #
@@ -33,7 +33,7 @@ CREATE TABLE cache_pagesection (
   content blob NOT NULL,
   tstamp int(11) unsigned DEFAULT '0' NOT NULL,
   PRIMARY KEY (page_id,mpvar_hash)
-);
+) ENGINE=InnoDB;
 
 
 #
@@ -45,7 +45,7 @@ CREATE TABLE cache_typo3temp_log (
   filename tinytext NOT NULL,
   orig_filename tinytext NOT NULL,
   PRIMARY KEY (md5hash)
-);
+) ENGINE=InnoDB;
 
 
 #
@@ -57,7 +57,7 @@ CREATE TABLE cache_md5params (
   type tinyint(3) DEFAULT '0' NOT NULL,
   params text NOT NULL,
   PRIMARY KEY (md5hash)
-);
+) ENGINE=InnoDB;
 
 
 #
@@ -71,7 +71,7 @@ CREATE TABLE cache_imagesizes (
   imagewidth mediumint(11) unsigned DEFAULT '0' NOT NULL,
   imageheight mediumint(11) unsigned DEFAULT '0' NOT NULL,
   PRIMARY KEY (md5filename)
-);
+) ENGINE=InnoDB;
 
 
 #
@@ -101,7 +101,7 @@ CREATE TABLE fe_session_data (
   content mediumblob NOT NULL,
   tstamp int(11) unsigned DEFAULT '0' NOT NULL,
   PRIMARY KEY (hash)
-);
+) ENGINE=InnoDB;
 
 
 #
@@ -117,7 +117,7 @@ CREATE TABLE fe_sessions (
   ses_data blob NOT NULL,
   ses_permanent tinyint(1) unsigned DEFAULT '0' NOT NULL,
   PRIMARY KEY (ses_id,ses_name)
-);
+) ENGINE=InnoDb;
 
 
 #
@@ -369,7 +369,7 @@ CREATE TABLE tt_content (
 
   PRIMARY KEY (uid),
   KEY t3ver_oid (t3ver_oid,t3ver_wsid),
-  KEY parent (pid)
+  KEY parent (pid, sorting)
 );
 
 
@@ -410,5 +410,6 @@ CREATE TABLE pages (
   alias varchar(32) DEFAULT '' NOT NULL,
   l18n_cfg tinyint(4) DEFAULT '0' NOT NULL,
   fe_login_mode tinyint(4) DEFAULT '0' NOT NULL,
-  KEY alias (alias)
+  KEY alias (alias),
+  KEY parent (pid, sorting)
 );

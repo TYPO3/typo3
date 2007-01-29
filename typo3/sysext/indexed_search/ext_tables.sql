@@ -36,7 +36,7 @@ CREATE TABLE index_phash (
   PRIMARY KEY (phash),
   KEY phash_grouping (phash_grouping),
   KEY freeIndexUid (freeIndexUid)
-);
+) ENGINE=InnoDB;
 
 #
 # Table structure for table 'index_fulltext'
@@ -45,7 +45,7 @@ CREATE TABLE index_fulltext (
   phash int(11) DEFAULT '0' NOT NULL,
   fulltextdata mediumtext NOT NULL,
   PRIMARY KEY (phash)
-);
+) ENGINE=InnoDB;
 
 #
 # Table structure for table 'index_rel'
@@ -59,7 +59,7 @@ CREATE TABLE index_rel (
   flags tinyint(3) unsigned DEFAULT '0' NOT NULL,
   PRIMARY KEY (phash,wid),
   KEY wid (wid,phash)
-);
+) ENGINE=InnoDB;
 
 #
 # Table structure for table 'index_words'
@@ -72,7 +72,7 @@ CREATE TABLE index_words (
   PRIMARY KEY (wid),
   KEY baseword (baseword,wid),
   KEY metaphone (metaphone,wid)
-);
+) ENGINE=InnoDB;
 
 #
 # Table structure for table 'index_section'
@@ -91,7 +91,7 @@ CREATE TABLE index_section (
   KEY page_id (page_id),
   KEY rl0 (rl0,rl1,phash),
   KEY rl0_2 (rl0,phash)
-);
+) ENGINE=InnoDB;
 
 #
 # Table structure for table 'index_grlist'
@@ -105,7 +105,7 @@ CREATE TABLE index_grlist (
   PRIMARY KEY (uniqid),
   KEY joinkey (phash,hash_gr_list),
   KEY phash_grouping (phash_x,hash_gr_list)
-);
+) ENGINE=InnoDB;
 
 #
 # Table structure for table 'index_stat_search'
@@ -120,7 +120,7 @@ CREATE TABLE index_stat_search (
   IP tinytext NOT NULL,
   hits int(11) DEFAULT '0' NOT NULL,
   PRIMARY KEY (uid)
-);
+) ENGINE=InnoDB;
 
 
 #
@@ -133,7 +133,7 @@ CREATE TABLE index_stat_word (
   tstamp int(11) DEFAULT '0' NOT NULL,
   PRIMARY KEY (uid),
   KEY tstamp (tstamp,word)
-);
+) ENGINE=InnoDB;
 
 #
 # Table structure for table 'index_debug'
@@ -196,4 +196,4 @@ CREATE TABLE index_stat_word (
   pageid int(11) DEFAULT '0' NOT NULL,
   PRIMARY KEY (uid),
   KEY tstamp (tstamp,word)
-);
+) ENGINE=InnoDB;
