@@ -273,9 +273,8 @@ CREATE TABLE sys_history (
   history_files mediumtext NOT NULL,
   snapshot tinyint(4) DEFAULT '0' NOT NULL,
   PRIMARY KEY (uid),
-  KEY recordident (tablename,recuid),
+  KEY recordident (tablename,recuid,tstamp),
   KEY sys_log_uid (sys_log_uid),
-  KEY recordidentAS (tablename,recuid,tstamp)
 );
 
 #
