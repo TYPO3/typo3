@@ -4,6 +4,7 @@
 	* Fixing oddities in recursive stdWraps (bugs #4312 and #4871)
 	* Fix bug #4678: t3lib_div::array2xml() may crash with PHP 5.2.0
 	* Fix bug #3648: ease use of tslib_cObj::getTreeList()
+	* Added SYS[requestURIvar] to get original value of REQUEST_URI (needed by some URL writers for IIS)
 
 2007-01-30  Dmitry Dulepov  <dmitry@typo3.org>
 
