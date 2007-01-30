@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2006 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2007 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -2081,7 +2081,8 @@ class t3lib_div {
 				} else {	// Just a value:
 
 						// Look for binary chars:
-					if (strcspn($v,$binaryChars) != strlen($v))	{	// Go for base64 encoding if the initial segment NOT matching any binary char has the same length as the whole string!
+					$vLen = strlen($v);	// check for length, because PHP 5.2.0 may crash when first argument of strcspn is empty
+					if ($vLen && strcspn($v,$binaryChars) != $vLen)	{	// Go for base64 encoding if the initial segment NOT matching any binary char has the same length as the whole string!
 							// If the value contained binary chars then we base64-encode it an set an attribute to notify this situation:
 						$content = chr(10).chunk_split(base64_encode($v));
 						$attr.=' base64="1"';
