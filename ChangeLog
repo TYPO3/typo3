@@ -2,6 +2,7 @@
 2007-01-30  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
 	* Fixing oddities in recursive stdWraps (bugs #4312 and #4871)
+	* Fix bug #4678: t3lib_div::array2xml() may crash with PHP 5.2.0
 
 2007-01-30  Dmitry Dulepov  <dmitry@typo3.org>
 
