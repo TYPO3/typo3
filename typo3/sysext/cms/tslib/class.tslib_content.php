@@ -6367,7 +6367,7 @@ class tslib_cObj {
 
 				// Select sublevel:
 			if ($depth>0)	{
-				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($allFields, 'pages', 'pid='.intval($id).' AND deleted=0'.$moreWhereClauses, '' ,'sorting');
+				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($allFields, 'pages', 'pid='.intval($id).' AND deleted=0 '.$moreWhereClauses, '' ,'sorting');
 				while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
 					$GLOBALS['TSFE']->sys_page->versionOL('pages',$row);
 
@@ -6380,7 +6380,7 @@ class tslib_cObj {
 							// Overlay mode:
 						if (is_array($mount_info) && $mount_info['overlay'])	{
 							$next_id = $mount_info['mount_pid'];
-							$res2 = $GLOBALS['TYPO3_DB']->exec_SELECTquery($allFields, 'pages', 'uid='.intval($next_id).' AND deleted=0'.$moreWhereClauses, '' ,'sorting');
+							$res2 = $GLOBALS['TYPO3_DB']->exec_SELECTquery($allFields, 'pages', 'uid='.intval($next_id).' AND deleted=0 '.$moreWhereClauses, '' ,'sorting');
 							$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res2);
 							$GLOBALS['TSFE']->sys_page->versionOL('pages',$row);
 
