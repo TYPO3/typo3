@@ -369,7 +369,7 @@ CREATE TABLE tt_content (
 
   PRIMARY KEY (uid),
   KEY t3ver_oid (t3ver_oid,t3ver_wsid),
-  KEY parent (pid, sorting)
+  KEY parent (pid,sorting)
 );
 
 
@@ -411,5 +411,5 @@ CREATE TABLE pages (
   l18n_cfg tinyint(4) DEFAULT '0' NOT NULL,
   fe_login_mode tinyint(4) DEFAULT '0' NOT NULL,
   KEY alias (alias),
-  KEY parent (pid, sorting)
+  KEY parent (pid,sorting)
 );

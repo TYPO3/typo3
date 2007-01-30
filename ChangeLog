@@ -1,5 +1,9 @@
 2007-01-29  Dmitry Dulepov  <dmitry@typo3.org>
 
+	* Fixed never disappearing proposal to update database structure in Install>Database>COMPARE
+
+2007-01-29  Dmitry Dulepov  <dmitry@typo3.org>
+
 	* !!! Changed MySQL engine type for several database tables to InnoDB
 	* Added several new indexes
 

@@ -68,7 +68,7 @@ CREATE TABLE be_users (
   disable tinyint(1) unsigned DEFAULT '0' NOT NULL,
   starttime int(11) unsigned DEFAULT '0' NOT NULL,
   endtime int(11) unsigned DEFAULT '0' NOT NULL,
-  lang varchar(2) DEFAULT '' NOT NULL,
+  lang char(2) DEFAULT '' NOT NULL,
   email varchar(80) DEFAULT '' NOT NULL,
   db_mountpoints varchar(40) DEFAULT '' NOT NULL,
   options tinyint(4) unsigned DEFAULT '0' NOT NULL,
@@ -182,7 +182,7 @@ CREATE TABLE pages (
   tx_impexp_origuid int(11) DEFAULT '0' NOT NULL,
   PRIMARY KEY (uid),
   KEY t3ver_oid (t3ver_oid,t3ver_wsid),
-  KEY parent (pid)
+  KEY parent (pid,sorting)
 );
 
 #
