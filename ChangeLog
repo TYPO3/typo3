@@ -1,4 +1,9 @@
-2007-01-29  Dmitry Dulepov  <dmitry@typo3.org>
+
+2007-01-30  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+
+	* Fixing oddities in recursive stdWraps (bugs #4312 and #4871)
+
+2007-01-30  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Fixed never disappearing proposal to update database structure in Install>Database>COMPARE
 
@@ -9,7 +14,8 @@
 
 2007-01-28  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
-	* Added "html { height: 100% }" to stylesheet to make RTE wizard work in IE7
+	* Added "html { height: 100% }" to stylesheet to make RTE wizard (rteHTMLarea) work in IE7
+	* Remove checks for PHP version earlier than 4.3
 
 2007-01-24  Dmitry Dulepov  <dmitry@typo3.org>
 
@@ -28,7 +34,7 @@
 
 2007-01-25  Ingmar Schlecht  <ingmar@typo3.org>
 
-	* Added backwards compatibility to Pagetree for non AJAX-capable browsers (by Benjamin Mack)
+	* Added backwards compatibility to pagetree for non AJAX-capable browsers (by Benjamin Mack)
 
 2007-01-24  Michael Stucki  <michael@typo3.org>
 

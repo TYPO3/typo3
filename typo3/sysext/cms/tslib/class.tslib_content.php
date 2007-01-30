@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2006 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2007 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -3173,7 +3173,7 @@ class tslib_cObj {
 			if ($conf['trim'])	{ $content=trim($content); }
 
 				// Call stdWrap recursively
-			if ($conf['stdWrap'])	{ $content=$this->stdWrap($content,$conf['stdWrap.']); }
+			if ($conf['stdWrap.'])	{ $content=$this->stdWrap($content,$conf['stdWrap.']); }
 
 			if (   ($conf['required'] && (string)$content=='') || ($conf['if.'] && !$this->checkIf($conf['if.'])) || ($conf['fieldRequired'] && !trim($this->data[$conf['fieldRequired']]))    ){
 				$content = '';
