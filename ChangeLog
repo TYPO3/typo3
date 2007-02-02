@@ -1,7 +1,7 @@
 
 2007-02-30  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
-	* Changed t3lib_cipboard to use new mod.php?M=xMOD_tximpexp (instead old impexp/app/index.php)
+	* Changed class.t3lib_cipboard.php and class.db_list_extra.inc to use new mod.php?M=xMOD_tximpexp (instead old impexp/app/index.php)
 
 2007-01-30  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
