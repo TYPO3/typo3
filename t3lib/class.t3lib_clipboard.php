@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2006 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2007 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -325,7 +325,7 @@ class t3lib_clipboard {
 		$opt[]='<option value="" selected="selected">'.$this->clLabel('menu','rm').'</option>';
 				// Import / Export link:
 		if ($elCount && t3lib_extMgm::isLoaded('impexp'))	{
-			$opt[] = '<option value="'.htmlspecialchars("window.location.href='".$this->backPath.t3lib_extMgm::extRelPath('impexp').'app/index.php'.$this->exportClipElementParameters().'\';').'">'.$this->clLabel('export','rm').'</option>';
+			$opt[] = '<option value="'.htmlspecialchars("window.location.href='".$this->backPath.'mod.php?M=xMOD_tximpexp'.$this->exportClipElementParameters().'\';').'">'.$this->clLabel('export','rm').'</option>';
 		}
 				// Edit:
 		if (!$this->fileMode && $elCount)	{
@@ -714,7 +714,7 @@ class t3lib_clipboard {
 			}
 		}
 
-		return '?'.implode('&', $params);
+		return '&'.implode('&', $params);
 	}
 
 
