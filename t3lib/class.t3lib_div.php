@@ -1707,6 +1707,28 @@ class t3lib_div {
 		return $str;
 	}
 
+	/**
+	 * Removes dots "." from end of a key identifier of TypoScript styled array.
+	 * array('key.' => array('property.' => 'value')) --> array('key' => array('property' => 'value'))
+	 *
+	 * @param	array	$ts: TypoScript configuration array
+	 * @return	array	TypoScript configuration array without dots and the end of all keys 
+	 */
+	function removeDotsFromTS($ts) {
+		$out = array();
+		if (is_array($ts)) {
+			foreach ($ts as $key => $value) {
+				if (is_array($value)) {
+					$key = rtrim($key, '.');
+					$out[$key] = t3lib_div::removeDotsFromTS($value);
+				} else {
+					$out[$key] = $value;
+				}
+			}
+		}
+		return $out;
+	}
+
 
 
 

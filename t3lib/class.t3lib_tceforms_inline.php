@@ -1125,6 +1125,16 @@ class t3lib_TCEforms_inline {
 					if ($loadConfig) {
 						t3lib_div::loadTCA($unstable['table']);
 						$unstable['config'] = $GLOBALS['TCA'][$unstable['table']]['columns'][$unstable['field']]['config'];
+							// Fetch TSconfig:
+						$TSconfig = $this->fObj->setTSconfig(
+							$unstable['table'],
+							array('uid' => $unstable['uid'], 'pid' => $this->inlineFirstPid),
+							$unstable['field']
+						);
+							// Override TCA field config by TSconfig:
+						if (!$TSconfig['disabled']) {
+							$unstable['config'] = $this->fObj->overrideFieldConf($unstable['config'], $TSconfig);
+						}
 					}
 					$this->inlineStructure['stable'][] = $unstable;
 					$unstable = array();
