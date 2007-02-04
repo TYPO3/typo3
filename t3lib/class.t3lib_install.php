@@ -151,7 +151,7 @@ class t3lib_install {
 					$mainparts = explode($variable,$v,2);
 					if (count($mainparts)==2)	{	// should ALWAYS be....
 						$subparts = explode('//',$mainparts[1],2);
-						$line_array[$k] = $mainparts[0].$variable." = '".$this->slashValueForSingleDashes($value)."';       ".('//'.$comment.str_replace($comment,'',$subparts[1]));
+						$line_array[$k] = $mainparts[0].$variable." = '".$this->slashValueForSingleDashes($value)."';	".('//'.$comment.str_replace($comment,'',$subparts[1]));
 						$this->touchedLine = count($line_array)-$k-1;
 						$found = 1;
 						break;
