@@ -1712,7 +1712,7 @@ class t3lib_div {
 	 * array('key.' => array('property.' => 'value')) --> array('key' => array('property' => 'value'))
 	 *
 	 * @param	array	$ts: TypoScript configuration array
-	 * @return	array	TypoScript configuration array without dots and the end of all keys
+	 * @return	array	TypoScript configuration array without dots at the end of all keys
 	 */
 	function removeDotsFromTS($ts) {
 		$out = array();
