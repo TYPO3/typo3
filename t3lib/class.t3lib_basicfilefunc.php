@@ -152,7 +152,7 @@ class t3lib_basicFileFunctions	{
 	function getTotalFileInfo($wholePath)	{
 		$theuser = getmyuid();
 		$info = t3lib_div::split_fileref($wholePath);
-		$info['tstamp'] = @filectime($wholePath);
+		$info['tstamp'] = @filemtime($wholePath);
 		$info['size'] = @filesize($wholePath);
 		$info['type'] = @filetype($wholePath);
 		$info['owner'] = @fileowner($wholePath);
