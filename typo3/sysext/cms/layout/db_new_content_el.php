@@ -261,7 +261,7 @@ class SC_db_new_content_el {
 				// Traverse items for the wizard.
 				// An item is either a header or an item rendered with a radio button and title/description and icon:
 			$cc=0;
-			foreach($wizardItems as $k => $wInfo)	{
+			foreach ($wizardItems as $k => $wInfo)	{
 				if ($wInfo['header'])	{
 					if ($cc>0) $lines[]='
 						<tr>
@@ -307,7 +307,7 @@ class SC_db_new_content_el {
 				<table border="0" cellpadding="1" cellspacing="2" id="typo3-ceWizardTable">
 					'.implode('',$lines).'
 				</table>';
-			$this->content.=$this->doc->section(!$onClickEvent?$LANG->getLL('1_selectType'):'',$code,0,1);
+			$this->content.= $this->doc->section(!$onClickEvent?$LANG->getLL('1_selectType'):'',$code,0,1);
 
 
 
@@ -315,11 +315,11 @@ class SC_db_new_content_el {
 			if (!$onClickEvent)	{
 
 					// Add anchor "sel2"
-				$this->content.=$this->doc->section('','<a name="sel2"></a>');
-				$this->content.=$this->doc->spacer(20);
+				$this->content.= $this->doc->section('','<a name="sel2"></a>');
+				$this->content.= $this->doc->spacer(20);
 
 					// Select position
-				$code=$LANG->getLL('sel2',1).'<br /><br />';
+				$code = $LANG->getLL('sel2',1).'<br /><br />';
 
 					// Load SHARED page-TSconfig settings and retrieve column list from there, if applicable:
 				$modTSconfig_SHARED = t3lib_BEfunc::getModTSconfig($this->id,'mod.SHARED');
@@ -327,27 +327,27 @@ class SC_db_new_content_el {
 				$colPosList = implode(',',array_unique(t3lib_div::intExplode(',',$colPosList)));		// Removing duplicates, if any
 
 					// Finally, add the content of the column selector to the content:
-				$code.=$posMap->printContentElementColumns($this->id,0,$colPosList,1,$this->R_URI);
-				$this->content.=$this->doc->section($LANG->getLL('2_selectPosition'),$code,0,1);
+				$code.= $posMap->printContentElementColumns($this->id,0,$colPosList,1,$this->R_URI);
+				$this->content.= $this->doc->section($LANG->getLL('2_selectPosition'),$code,0,1);
 			}
 
 				// IF there is a return-url set, then print a go-back link:
 			if ($this->R_URI)	{
 				$code='<br /><br /><a href="'.htmlspecialchars($this->R_URI).'" class="typo3-goBack"><img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/goback.gif','width="14" height="14"').' alt="" />'.$LANG->getLL('goBack',1).'</a>';
-				$this->content.=$this->doc->section('',$code,0,1);
+				$this->content.= $this->doc->section('',$code,0,1);
 			}
 
 				// Add CSH:
 			$this->content.= $this->doc->section('',t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'new_ce', $GLOBALS['BACK_PATH'],'<br/>'),0,1);
 
 				// Add a very high clear-gif, 700 px (so that the link to the anchor "sel2" shows this part in top for sure...)
-			$this->content.=$this->doc->section('','<img src="clear.gif" width="1" height="700" alt="" />',0,1);
+			$this->content.= $this->doc->section('','<img src="clear.gif" width="1" height="700" alt="" />',0,1);
 
 		} else {		// In case of no access:
-			$this->content='';
-			$this->content.=$this->doc->startPage($LANG->getLL('newContentElement'));
-			$this->content.=$this->doc->header($LANG->getLL('newContentElement'));
-			$this->content.=$this->doc->spacer(5);
+			$this->content = '';
+			$this->content.= $this->doc->startPage($LANG->getLL('newContentElement'));
+			$this->content.= $this->doc->header($LANG->getLL('newContentElement'));
+			$this->content.= $this->doc->spacer(5);
 		}
 	}
 
@@ -556,7 +556,7 @@ Contact me: | tv=check | 1
 		$row = array('pid'=>$this->id);
 		$TCEFORM_TSconfig = t3lib_BEfunc::getTCEFORM_TSconfig('tt_content',$row);
 		$removeItems = t3lib_div::trimExplode(',',$TCEFORM_TSconfig['CType']['removeItems'],1);
-		
+
 		$headersUsed = Array();
 			// Traverse wizard items:
 		foreach($wizardItems as $key => $cfg)	{

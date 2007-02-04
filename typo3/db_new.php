@@ -244,9 +244,9 @@ class SC_db_new {
 
 
 				// Set header-HTML and return_url
-			$this->code=$this->doc->getHeader('pages',$this->pageinfo,$this->pageinfo['_thePath']).'<br />
+			$this->code = $this->doc->getHeader('pages',$this->pageinfo,$this->pageinfo['_thePath']).'<br />
 			';
-			$this->R_URI=$this->returnUrl;
+			$this->R_URI = $this->returnUrl;
 
 				// GENERATE the HTML-output depending on mode (pagesOnly is the page wizard)
 			if (!$this->pagesOnly)	{	// Regular new element:

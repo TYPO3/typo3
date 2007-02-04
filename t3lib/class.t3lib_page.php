@@ -761,8 +761,8 @@ class t3lib_pageSelect {
 	 */
 	function checkRecord($table,$uid,$checkPage=0)	{
 		global $TCA;
-		$uid=intval($uid);
-		if (is_array($TCA[$table])) {
+		$uid = intval($uid);
+		if (is_array($TCA[$table]))	{
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $table, 'uid='.intval($uid).$this->enableFields($table));
 			if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
 				$this->versionOL($table,$row);

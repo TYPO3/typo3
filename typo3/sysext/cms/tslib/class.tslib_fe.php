@@ -939,7 +939,7 @@
 			}
 		}
 
-		// spacer is not accessible in frontend
+			// Spacer is not accessible in frontend
 		if ($this->page['doktype'] == 199)	{
 			if ($this->TYPO3_CONF_VARS['FE']['pageNotFound_handling'])	{
 				$this->pageNotFoundAndExit('The requested page does not exist!');
@@ -1784,7 +1784,7 @@
 						$this->setSimulReplacementChar();
 					}
 
-						// set default values for removeDefaultJS and inlineStyle2TempFile so CSS and JS are externalized if compatversion is higher than 4.0
+						// Set default values for removeDefaultJS and inlineStyle2TempFile so CSS and JS are externalized if compatversion is higher than 4.0
 					if (!isset($this->config['config']['removeDefaultJS']) && t3lib_div::compat_version('4.0'))	{
 						$this->config['config']['removeDefaultJS'] = 'external';
 					}
@@ -2129,7 +2129,7 @@
 	/**
 	 * Checks if any email-submissions or submission via the fe_tce
 	 *
-	 * @return	string		'email' if a formmail has been sent, 'fe_tce' if front-end data submission (like forums, guestbooks) is sent. '' if none.
+	 * @return	string		"email" if a formmail has been sent, "fe_tce" if front-end data submission (like forums, guestbooks) is sent. "" if none.
 	 */
 	function checkDataSubmission()	{
 		$ret = '';
@@ -2207,10 +2207,10 @@
 
 		$integrityCheck = $this->TYPO3_CONF_VARS['FE']['strictFormmail'];
 
-		if(!$this->TYPO3_CONF_VARS['FE']['secureFormmail']) {
+		if (!$this->TYPO3_CONF_VARS['FE']['secureFormmail'])	{
 				// Check recipient field:
 			$encodedFields = explode(',','recipient,recipient_copy');	// These two fields are the ones which contain recipient addresses that can be misused to send mail from foreign servers.
-			foreach($encodedFields as $fieldKey)	{
+			foreach ($encodedFields as $fieldKey)	{
 				if (strlen($EMAIL_VARS[$fieldKey]))	{
 					if ($res = $this->codeString($EMAIL_VARS[$fieldKey], TRUE))	{	// Decode...
 						$EMAIL_VARS[$fieldKey] = $res;	// Set value if OK
@@ -2305,9 +2305,9 @@
 						if (@is_file($this->jumpurl))	{
 							$mimeType = t3lib_div::_GP('mimeType');
 							$mimeType = $mimeType ? $mimeType : 'application/octet-stream';
-							Header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
-							Header('Content-Type: '.$mimeType);
-							Header('Content-Disposition: attachment; filename='.basename($this->jumpurl));
+							header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+							header('Content-Type: '.$mimeType);
+							header('Content-Disposition: attachment; filename='.basename($this->jumpurl));
 							readfile($this->jumpurl);
 							exit;
 						} else die('jumpurl Secure: "'.$this->jumpurl.'" was not a valid file!');
@@ -2318,9 +2318,9 @@
 				if ($TSConf['TSFE.']['jumpUrl_transferSession'])	{
 					$uParts = parse_url($this->jumpurl);
 					$params = '&FE_SESSION_KEY='.rawurlencode($this->fe_user->id.'-'.md5($this->fe_user->id.'/'.$this->TYPO3_CONF_VARS['SYS']['encryptionKey']));
-					$this->jumpurl.=($uParts['query']?'':'?').$params;	// Add the session parameter ...
+					$this->jumpurl.= ($uParts['query']?'':'?').$params;	// Add the session parameter ...
 				}
-				Header('Location: '.$this->jumpurl);
+				header('Location: '.$this->jumpurl);
 				exit;
 			}
 		}
@@ -3241,9 +3241,9 @@ if (version == "n3") {
 				$label = !$this->beUserLogin ? $this->config['config']['beLoginLinkIPList_login'] : $this->config['config']['beLoginLinkIPList_logout'];
 				if ($label)	{
 					if (!$this->beUserLogin)	{
-						$link = '<a href="'.htmlspecialchars(TYPO3_mainDir.'index.php?redirect_url='.rawurlencode(t3lib_div::getIndpEnv("REQUEST_URI"))).'">'.$label.'</a>';
+						$link = '<a href="'.htmlspecialchars(TYPO3_mainDir.'index.php?redirect_url='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))).'">'.$label.'</a>';
 					} else {
-						$link = '<a href="'.htmlspecialchars(TYPO3_mainDir.'index.php?L=OUT&redirect_url='.rawurlencode(t3lib_div::getIndpEnv("REQUEST_URI"))).'">'.$label.'</a>';
+						$link = '<a href="'.htmlspecialchars(TYPO3_mainDir.'index.php?L=OUT&redirect_url='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))).'">'.$label.'</a>';
 					}
 					return $link;
 				}
@@ -3302,7 +3302,7 @@ if (version == "n3") {
 	 * @return	string		The body of the filename.
 	 * @see getSimulFileName(), t3lib_tstemplate::linkData(), tslib_frameset::frameParams()
 	 */
-	function makeSimulFileName($inTitle,$page,$type,$addParams='',$no_cache='')	{
+	function makeSimulFileName($inTitle,$page,$type,$addParams='',$no_cache=false)	{
 		$titleChars = intval($this->config['config']['simulateStaticDocuments_addTitle']);
 			// Default value is 30 but values > 1 will be override this
 		if($titleChars==1)	{ $titleChars = 30; }
@@ -3490,7 +3490,7 @@ if (version == "n3") {
 	 */
 	function codeString($string, $decode=FALSE)	{
 
-		if ($decode) {
+		if ($decode)	{
 			list($md5Hash, $str) = explode(':',$string,2);
 			$newHash = substr(md5($this->TYPO3_CONF_VARS['SYS']['encryptionKey'].':'.$str),0,10);
 			if (!strcmp($md5Hash, $newHash))	{

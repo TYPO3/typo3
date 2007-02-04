@@ -618,7 +618,7 @@ class tx_indexedsearch_crawler {
 		$list = $indexerObj->extractHyperLinks($indexerObj->indexExternalUrl_content);
 
 						// Traverse links:
-		foreach($list as $count => $linkInfo)	{
+		foreach ($list as $count => $linkInfo)	{
 
 				// Decode entities:
 			$subUrl = t3lib_div::htmlspecialchars_decode($linkInfo['href']);

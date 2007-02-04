@@ -1401,7 +1401,7 @@ class t3lib_TStemplate	{
 							$page['alias'] ? $page['alias'] : $page['uid'],
 							intval($typeNum),
 							$LD['linkVars'],
-							$LD['no_cache']?1:0
+							$LD['no_cache'] ? true : false
 						);
 
 			if ($flag_simulateStaticDocuments_pEnc)	{
@@ -1431,7 +1431,7 @@ class t3lib_TStemplate	{
 							'args' => array('page'=>$page, 'oTarget'=>$oTarget, 'no_cache'=>$no_cache, 'script'=>$script, 'overrideArray'=>$overrideArray, 'addParams'=>$addParams, 'typeOverride'=>$typeOverride),
 							'typeNum' => $typeNum
 						);
-			foreach($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tstemplate.php']['linkData-PostProc'] as $_funcRef)	{
+			foreach ($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tstemplate.php']['linkData-PostProc'] as $_funcRef)	{
 				t3lib_div::callUserFunction($_funcRef,$_params,$this);
 			}
 		}

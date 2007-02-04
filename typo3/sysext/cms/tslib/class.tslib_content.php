@@ -1482,9 +1482,9 @@ class tslib_cObj {
 					}
 				}
 			}
-			$content='<tr>'.$content.'</tr>';
-			$content='<table'.$tableParams.'>'.$content.'</table>';
-			$content.=$this->cObjGetSingle($conf['after'],$conf['after.'], 'after');
+			$content = '<tr>'.$content.'</tr>';
+			$content = '<table'.$tableParams.'>'.$content.'</table>';
+			$content.= $this->cObjGetSingle($conf['after'],$conf['after.'], 'after');
 			if ($conf['stdWrap.'])	{
 				$content = $this->stdWrap($content,$conf['stdWrap.']);
 			}
@@ -1605,7 +1605,7 @@ class tslib_cObj {
 				// Adding the new dataArray config form:
 			if (is_array($conf['dataArray.'])) {	// dataArray is supplied
 				$sKeyArray = t3lib_TStemplate::sortedKeyList($conf['dataArray.'], TRUE);
-				foreach($sKeyArray as $theKey)	{
+				foreach ($sKeyArray as $theKey)	{
 					$dAA = $conf['dataArray.'][$theKey.'.'];
 					if (is_array($dAA))	{
 						$temp=array();
@@ -1663,7 +1663,7 @@ class tslib_cObj {
 			$prefix = $formname;
 		}
 
-		foreach($dataArr as $val)	{
+		foreach ($dataArr as $val)	{
 
 			$cc++;
 			$confData=Array();
@@ -1717,7 +1717,7 @@ class tslib_cObj {
 					if (is_array($conf['params.']) && isset($conf['params.'][$confData['type']]))	{
 						$addParams=trim($conf['params.'][$confData['type']]);
 					}
-					if (strcmp('',$addParams))	$addParams=' '.$addParams;
+					if (strcmp('',$addParams))	{ $addParams=' '.$addParams; }
 				} else $addParams='';
 
 				if ($conf['dontMd5FieldNames']) {
@@ -1734,7 +1734,7 @@ class tslib_cObj {
 				}
 
 					// Create form field based on configuration/type:
-				switch($confData['type'])	{
+				switch ($confData['type'])	{
 					case 'textarea':
 						$cols=trim($fParts[1]) ? intval($fParts[1]) : 20;
 						$compWidth = doubleval($conf['compensateFieldWidth'] ? $conf['compensateFieldWidth'] : $GLOBALS['TSFE']->compensateFieldWidth);
@@ -1869,13 +1869,13 @@ class tslib_cObj {
 					break;
 					case 'hidden':
 						$value = trim($parts[2]);
-						if(strlen($value) && t3lib_div::inList('recipient_copy,recipient',$confData['fieldname']) && $GLOBALS['TYPO3_CONF_VARS']['FE']['secureFormmail']) {
+						if (strlen($value) && t3lib_div::inList('recipient_copy,recipient',$confData['fieldname']) && $GLOBALS['TYPO3_CONF_VARS']['FE']['secureFormmail'])	{
 							break;
 						}
 						if (strlen($value) && t3lib_div::inList('recipient_copy,recipient',$confData['fieldname']))	{
 							$value = $GLOBALS['TSFE']->codeString($value);
 						}
-						$hiddenfields.=sprintf('<input type="hidden" name="%s"%s value="%s" />',
+						$hiddenfields.= sprintf('<input type="hidden" name="%s"%s value="%s" />',
 							$confData['fieldname'], $elementIdAttribute, htmlspecialchars($value));
 					break;
 					case 'property':
@@ -1927,7 +1927,7 @@ class tslib_cObj {
 					}
 
 						// Adding evaluation based on settings:
-					switch((string)$modeParameters[0])	{
+					switch ((string)$modeParameters[0])	{
 						case 'EREG':
 							$fieldlist[] = '_EREG';
 							$fieldlist[] = rawurlencode($modeParameters[1]);
@@ -1989,7 +1989,7 @@ class tslib_cObj {
 				}
 			}
 		}
-		if ($conf['stdWrap.']) $content=$this->stdWrap($content, $conf['stdWrap.']);
+		if ($conf['stdWrap.'])	{ $content = $this->stdWrap($content, $conf['stdWrap.']); }
 
 
 			// redirect (external: where to go afterwards. internal: where to submit to)
@@ -1997,10 +1997,10 @@ class tslib_cObj {
 		$page = $GLOBALS['TSFE']->page;
 		if (!$theRedirect)	{		// Internal: Just submit to current page
 			$LD = $GLOBALS['TSFE']->tmpl->linkData($page, $conf['target'], $conf['no_cache'],'index.php', '', $this->getClosestMPvalueForPage($page['uid']));
-		} elseif (t3lib_div::testInt($theRedirect))	{		// Internal: Submit to page with id $theRedirect
+		} elseif (t3lib_div::testInt($theRedirect))	{		// Internal: Submit to page with ID $theRedirect
 			$page = $GLOBALS['TSFE']->sys_page->getPage_noCheck($theRedirect);
 			$LD = $GLOBALS['TSFE']->tmpl->linkData($page, $conf['target'], $conf['no_cache'],'index.php', '', $this->getClosestMPvalueForPage($page['uid']));
-		} else {	// External url, redirect-hidden field is rendered!
+		} else {	// External URL, redirect-hidden field is rendered!
 			$LD = $GLOBALS['TSFE']->tmpl->linkData($page, $conf['target'], $conf['no_cache'],'', '', $this->getClosestMPvalueForPage($page['uid']));
 			$LD['totalURL'] = $theRedirect;
 			$hiddenfields.= '<input type="hidden" name="redirect" value="'.htmlspecialchars($LD['totalURL']).'" />';		// 18-09-00 added
@@ -2012,13 +2012,13 @@ class tslib_cObj {
 			$page = $GLOBALS['TSFE']->sys_page->getPage_noCheck($formtype);
 			$LD_A = $GLOBALS['TSFE']->tmpl->linkData($page, $conf['target'], $conf['no_cache'], '', '', $this->getClosestMPvalueForPage($page['uid']));
 			$action = $LD_A['totalURL'];
-		} elseif ($formtype){		// Submit to external script
+		} elseif ($formtype)	{	// Submit to external script
 			$LD_A = $LD;
 			$action = $formtype;
-		} elseif (t3lib_div::testInt($theRedirect)) {
+		} elseif (t3lib_div::testInt($theRedirect))	{
 			$LD_A = $LD;
 			$action = $LD_A['totalURL'];
-		} else {		// Submit to 'nothing' - which is current page
+		} else {		// Submit to "nothing" - which is current page
 			$LD_A = $GLOBALS['TSFE']->tmpl->linkData($GLOBALS['TSFE']->page, $conf['target'], $conf['no_cache'], '', '', $this->getClosestMPvalueForPage($page['uid']));
 			$action = $LD_A['totalURL'];
 		}
@@ -2027,7 +2027,7 @@ class tslib_cObj {
 		$theEmail = $this->stdWrap($conf['recipient'], $conf['recipient.']);
 		if ($theEmail && !$GLOBALS['TYPO3_CONF_VARS']['FE']['secureFormmail'])	{
 			$theEmail = $GLOBALS['TSFE']->codeString($theEmail);
-			$hiddenfields.='<input type="hidden" name="recipient" value="'.htmlspecialchars($theEmail).'" />';
+			$hiddenfields.= '<input type="hidden" name="recipient" value="'.htmlspecialchars($theEmail).'" />';
 		}
 
 			// location data:
@@ -2043,16 +2043,16 @@ class tslib_cObj {
 			// hidden fields:
 		if (is_array($conf['hiddenFields.']))	{
 			reset($conf['hiddenFields.']);
-			while(list($hF_key,$hF_conf) = each($conf['hiddenFields.']))	{
+			while (list($hF_key,$hF_conf) = each($conf['hiddenFields.']))	{
 				if (substr($hF_key,-1)!='.')	{
 					$hF_value = $this->cObjGetSingle($hF_conf,$conf['hiddenFields.'][$hF_key.'.'],'hiddenfields');
 					if (strlen($hF_value) && t3lib_div::inList('recipient_copy,recipient',$hF_key))	{
-						if($GLOBALS['TYPO3_CONF_VARS']['FE']['secureFormmail'])	{
+						if ($GLOBALS['TYPO3_CONF_VARS']['FE']['secureFormmail'])	{
 							continue;
 						}
 						$hF_value = $GLOBALS['TSFE']->codeString($hF_value);
 					}
-					$hiddenfields.='<input type="hidden" name="'.$hF_key.'" value="'.htmlspecialchars($hF_value).'" />';
+					$hiddenfields.= '<input type="hidden" name="'.$hF_key.'" value="'.htmlspecialchars($hF_value).'" />';
 				}
 			}
 		}
@@ -2067,7 +2067,7 @@ class tslib_cObj {
 
 			// Create form tag:
 		$theTarget = ($theRedirect?$LD['target']:$LD_A['target']);
-		$content = Array(
+		$content = array(
 			'<form'.
 				' action="'.htmlspecialchars($action).'"'.
 				' id="'.$formname.'"'.($xhtmlStrict ? '' : ' name="'.$formname.'"').
@@ -5213,14 +5213,14 @@ class tslib_cObj {
 							// This checks if the linked id is in the rootline of this site and if not it will find the domain for that ID and prefix it:
 							$tCR_rootline = $GLOBALS['TSFE']->sys_page->getRootLine($page['uid']);	// Gets rootline of linked-to page
 							$tCR_flag = 0;
-							foreach($tCR_rootline as $tCR_data)	{
+							foreach ($tCR_rootline as $tCR_data)	{
 								if ($tCR_data['uid']==$GLOBALS['TSFE']->tmpl->rootLine[0]['uid'])	{
 									$tCR_flag = 1;	// OK, it was in rootline!
 									break;
 								}
 							}
 							if (!$tCR_flag)	{
-								foreach($tCR_rootline as $tCR_data)	{
+								foreach ($tCR_rootline as $tCR_data)	{
 									$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'sys_domain', 'pid='.intval($tCR_data['uid']).' AND redirectTo=\'\''.$this->enableFields('sys_domain'), '', 'sorting');
 									if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
 										$tCR_domain = preg_replace('/\/$/','',$row['domainName']);
