@@ -291,7 +291,7 @@ if ($GLOBALS['TYPO3_DB']->sql_pconnect(TYPO3_db_host, TYPO3_db_username, TYPO3_d
 // Checks for proper browser
 // *******************************
 if (!$CLIENT['BROWSER'] && !(defined('TYPO3_cliMode') && TYPO3_cliMode))	{
-	t3lib_BEfunc::typo3PrintError ('Browser error','You must use 4+ browsers with TYPO3!',0);
+	t3lib_BEfunc::typo3PrintError ('Browser error','Your browser version looks incompatible with this TYPO3 version!',0);
 	exit;
 }
 

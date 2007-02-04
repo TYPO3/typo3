@@ -3242,7 +3242,8 @@ class t3lib_div {
 			switch($bInfo['BROWSER'])	{
 				case 'net':
 					$bInfo['VERSION']= doubleval(substr($useragent,8));
-					if (strstr($useragent,'Netscape6/')) {$bInfo['VERSION']=doubleval(substr(strstr($useragent,'Netscape6/'),10));}
+					if (strstr($useragent,'Netscape6/')) {$bInfo['VERSION'] = doubleval(substr(strstr($useragent,'Netscape6/'),10));}	// Will we ever know if this was a typo or intention...?! :-(
+					if (strstr($useragent,'Netscape/6')) {$bInfo['VERSION'] = doubleval(substr(strstr($useragent,'Netscape/6'),10));}
 					if (strstr($useragent,'Netscape/7')) {$bInfo['VERSION']=doubleval(substr(strstr($useragent,'Netscape/7'),9));}
 				break;
 				case 'msie':
