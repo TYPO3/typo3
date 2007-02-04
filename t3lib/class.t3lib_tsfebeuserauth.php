@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2006 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2007 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -607,7 +607,7 @@ $query.
 		$perms = $GLOBALS['BE_USER']->calcPerms($GLOBALS['TSFE']->page);
 		$langAllowed = $GLOBALS['BE_USER']->checkLanguageAccess($GLOBALS['TSFE']->sys_language_uid);
 
-		$toolBar='';
+		$toolBar = '';
 		$id = $GLOBALS['TSFE']->id;
 		$toolBar.='<a href="'.htmlspecialchars(TYPO3_mainDir.'show_rechis.php?element='.rawurlencode('pages:'.$id).'&returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))).'#latest">'.
 					'<img src="'.TYPO3_mainDir.'gfx/history2.gif" width="13" height="12" hspace="2" border="0" align="top" title="'.$this->extGetLL('edit_recordHistory').'" alt="" /></a>';
@@ -630,6 +630,20 @@ $query.
 			$params='&edit[pages]['.$id.']=edit';
 			$toolBar.='<a href="'.htmlspecialchars(TYPO3_mainDir.'alt_doc.php?'.$params.'&noView=1&returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))).'">'.
 					'<img src="'.TYPO3_mainDir.'gfx/edit2.gif" width="11" height="12" hspace="2" border="0" align="top" title="'.$this->extGetLL('edit_editPageProperties').'" alt="" /></a>';
+
+			if ($GLOBALS['TSFE']->sys_language_uid && $langAllowed)	{
+				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+					'uid,pid,t3ver_state',	'pages_language_overlay',
+					'pid='.intval($id).' AND sys_language_uid='.$GLOBALS['TSFE']->sys_language_uid.$GLOBALS['TSFE']->sys_page->enableFields('pages_language_overlay'),
+					'', '', '1');
+				$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
+				$GLOBALS['TSFE']->sys_page->versionOL('pages_language_overlay',$row);
+				if (is_array($row))	{
+					$params='&edit[pages_language_overlay]['.$row['uid'].']=edit';
+					$toolBar.='<a href="'.htmlspecialchars(TYPO3_mainDir.'alt_doc.php?'.$params.'&noView=1&returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))).'">'.
+							'<img src="'.TYPO3_mainDir.'gfx/edit3.gif" width="11" height="12" hspace="2" border="0" align="top" title="'.$this->extGetLL('edit_editPageOverlay').'" alt="" /></a>';
+				}
+			}
 		}
 		if ($this->check('modules','web_list'))	{
 			$toolBar.='<a href="'.htmlspecialchars(TYPO3_mainDir.'db_list.php?id='.$id.'&returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))).'">'.
