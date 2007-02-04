@@ -421,7 +421,6 @@ class SC_wizard_tsconfig {
 	 * @access private
 	 */
 	function getObjTree()	{
-		$hash = md5('WIZARD_TSCONFIG-objTree');
 		$objTree=array();
 
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,obj_string,title', 'static_tsconfig_help', '');
