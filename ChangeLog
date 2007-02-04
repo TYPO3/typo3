@@ -1,6 +1,7 @@
 2007-02-04  Michael Stucki  <michael@typo3.org>
 
 	* Extended db_mountpoint and file_mountpoint fields into to 255 bytes size
+	* Fixed bug #3069: Extension manager crashed because of some PHP bug with version_compare() (thanks to Rainer Haertlein who discovered the solution to this problem)
 
 2007-02-04  Oliver Hader  <oh@inpublica.de>
 

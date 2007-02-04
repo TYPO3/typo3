@@ -930,7 +930,7 @@ EXTENSION KEYS:
 		$this->content.=$this->doc->spacer(20);
 		$this->content.=$this->doc->section('Upload extension file directly (.t3x):',$content,0,1);
 	}
-	
+
 	/**
 	 * Generates a link to the next page of extensions
 	 *
@@ -1530,17 +1530,17 @@ EXTENSION KEYS:
 				} else {
 					switch($mode) {
 						case EM_INSTALL_VERSION_STRICT:
-							if($currentVersion == $version) {
+							if ($currentVersion == $version)	{
 								return array(true, 'Extension already installed and loaded.');
 							}
 							break;
 						case EM_INSTALL_VERSION_MIN:
-							if(version_compare($currentVersion, $version, '>=')) {
+							if (version_compare($currentVersion, $version, '>='))	{
 								return array(true, 'Extension already installed and loaded.');
 							}
 							break;
 						case EM_INSTALL_VERSION_MAX:
-							if(version_compare($currentVersion, $version, '<=')) {
+							if (version_compare($currentVersion, $version, '<='))	{
 								return array(true, 'Extension already installed and loaded.');
 							}
 							break;
@@ -1553,17 +1553,17 @@ EXTENSION KEYS:
 				$newExtList = -1;
 				switch($mode) {
 					case EM_INSTALL_VERSION_STRICT:
-						if($currentVersion == $version) {
+						if ($currentVersion == $version)	{
 							$newExtList = $this->addExtToList($extKey, $inst_list);
 						}
 						break;
 					case EM_INSTALL_VERSION_MIN:
-						if(version_compare($currentVersion, $version, '>=')) {
+						if (version_compare($currentVersion, $version, '>='))	{
 							$newExtList = $this->addExtToList($extKey, $inst_list);
 						}
 						break;
 					case EM_INSTALL_VERSION_MAX:
-						if(version_compare($currentVersion, $version, '<=')) {
+						if (version_compare($currentVersion, $version, '<='))	{
 							$newExtList = $this->addExtToList($extKey, $inst_list);
 						}
 						break;
@@ -1596,15 +1596,18 @@ EXTENSION KEYS:
 					}
 					break;
 				case EM_INSTALL_VERSION_MIN:
-					if(version_compare($latestVersion, $version, '>=')) {
+					if (version_compare($latestVersion, $version, '>='))	{
 						$version = $latestVersion;
 					} else {
 						return array(false, 'Extension not available in matching version');
 					}
 					break;
 				case EM_INSTALL_VERSION_MAX:
-					while(($v = array_pop($versions)) && version_compare($v, $version, '>=')) {}
-					if($v !== null && version_compare($v, $version, '<=')) {
+					while (($v = array_pop($versions)) && version_compare($v, $version, '>='))	{
+						// Loop until a version is found
+					}
+
+					if ($v !== null && version_compare($v, $version, '<='))	{
 						$version = $v;
 					} else {
 						return array(false, 'Extension not available in matching version');
@@ -3034,14 +3037,14 @@ EXTENSION KEYS:
 				$emConf['constraints']['depends'] = $this->stringToDep($emConf['dependencies']);
 				if(strlen($emConf['PHP_version'])) {
 					$versionRange = $this->splitVersionRange($emConf['PHP_version']);
-					if(version_compare($versionRange[0],'3.0.0','<')) $versionRange[0] = '3.0.0';
-					if(version_compare($versionRange[1],'3.0.0','<')) $versionRange[1] = '';
+					if (version_compare($versionRange[0],'3.0.0','<')) $versionRange[0] = '3.0.0';
+					if (version_compare($versionRange[1],'3.0.0','<')) $versionRange[1] = '0.0.0';
 					$emConf['constraints']['depends']['php'] = implode('-',$versionRange);
 				}
 				if(strlen($emConf['TYPO3_version'])) {
 					$versionRange = $this->splitVersionRange($emConf['TYPO3_version']);
-					if(version_compare($versionRange[0],'3.5.0','<')) $versionRange[0] = '3.5.0';
-					if(version_compare($versionRange[1],'3.5.0','<')) $versionRange[1] = '';
+					if (version_compare($versionRange[0],'3.5.0','<')) $versionRange[0] = '3.5.0';
+					if (version_compare($versionRange[1],'3.5.0','<')) $versionRange[1] = '0.0.0';
 					$emConf['constraints']['depends']['typo3'] = implode('-',$versionRange);
 				}
 			}
@@ -3060,14 +3063,14 @@ EXTENSION KEYS:
 			// sanity check for version numbers, intentionally only checks php and typo3
 		if(isset($emConf['constraints']['depends']) && isset($emConf['constraints']['depends']['php'])) {
 			$versionRange = $this->splitVersionRange($emConf['constraints']['depends']['php']);
-			if(version_compare($versionRange[0],'3.0.0','<')) $versionRange[0] = '3.0.0';
-			if(version_compare($versionRange[1],'3.0.0','<')) $versionRange[1] = '';
+			if (version_compare($versionRange[0],'3.0.0','<')) $versionRange[0] = '3.0.0';
+			if (version_compare($versionRange[1],'3.0.0','<')) $versionRange[1] = '0.0.0';
 			$emConf['constraints']['depends']['php'] = implode('-',$versionRange);
 		}
 		if(isset($emConf['constraints']['depends']) && isset($emConf['constraints']['depends']['typo3'])) {
 			$versionRange = $this->splitVersionRange($emConf['constraints']['depends']['typo3']);
-			if(version_compare($versionRange[0],'3.5.0','<')) $versionRange[0] = '3.0.0';
-			if(version_compare($versionRange[1],'3.5.0','<')) $versionRange[1] = '';
+			if (version_compare($versionRange[0],'3.5.0','<')) $versionRange[0] = '3.5.0';
+			if (version_compare($versionRange[1],'3.5.0','<')) $versionRange[1] = '0.0.0';
 			$emConf['constraints']['depends']['typo3'] = implode('-',$versionRange);
 		}
 
@@ -3088,13 +3091,17 @@ EXTENSION KEYS:
 	 * @param	string		$ver A string with a version range.
 	 * @return	array
 	 */
-	function splitVersionRange($ver) {
+	function splitVersionRange($ver)	{
 		$versionRange = array();
-		if(strstr($ver, '-')) $versionRange = explode('-', $ver, 2);
-		else {
+		if (strstr($ver, '-'))	{
+			$versionRange = explode('-', $ver, 2);
+		} else {
 			$versionRange[0] = $ver;
 			$versionRange[1] = '';
 		}
+
+		if (!$versionRange[0])	{ $versionRange[0] = '0.0.0'; }
+		if (!$versionRange[1])	{ $versionRange[1] = '0.0.0'; }
 
 		return $versionRange;
 	}
@@ -4076,32 +4083,34 @@ $EM_CONF[$_EXTKEY] = '.$this->arrayToCode($EM_CONF, 0).';
 				if(!$depV) continue;
 				$versionRange = $this->splitVersionRange($depV);
 				$phpv = strstr(PHP_VERSION,'-') ? substr(PHP_VERSION,0,strpos(PHP_VERSION,'-')) : PHP_VERSION; // Linux distributors like to add suffixes, like in 5.1.2-1. Those must be ignored!
-				if($versionRange[0] && version_compare($phpv,$versionRange[0],'<')) {
+				if ($versionRange[0] && version_compare($phpv,$versionRange[0],'<'))	{
 					$msg[] = '<br />The running PHP version ('.$phpv.') is lower than required ('.$versionRange[0].')';
 					$msg[] = '&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" value="1" name="depsolver[ignore]['.$depK.']" /> Ignore this version requirement';
 					$depError = true;
 					continue;
-				} elseif($versionRange[1] && version_compare($phpv,$versionRange[1],'>')) {
+				} elseif ($versionRange[1] && version_compare($phpv,$versionRange[1],'>'))	{
 					$msg[] = '<br />The running PHP version ('.$phpv.') is higher than allowed ('.$versionRange[1].')';
 					$msg[] = '&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" value="1" name="depsolver[ignore]['.$depK.']" /> Ignore this version requirement';
 					$depError = true;
 					continue;
 				}
-			} elseif($depK == 'typo3') {
-				if(!$depV) continue;
+
+			} elseif ($depK == 'typo3')	{
+				if (!$depV) continue;
+
 				$versionRange = $this->splitVersionRange($depV);
-				if($versionRange[0] && version_compare(TYPO3_version,$versionRange[0],'<')) {
+				if ($versionRange[0] && version_compare(TYPO3_version,$versionRange[0],'<'))	{
 					$msg[] = '<br />The running TYPO3 version ('.TYPO3_version.') is lower than required ('.$versionRange[0].')';
 					$msg[] = '&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" value="1" name="depsolver[ignore]['.$depK.']" /> Ignore this version requirement';
 					$depError = true;
 					continue;
-				} elseif($versionRange[1] && version_compare(TYPO3_version,$versionRange[1],'>')) {
+				} elseif ($versionRange[1] && version_compare(TYPO3_version,$versionRange[1],'>'))	{
 					$msg[] = '<br />The running TYPO3 version ('.TYPO3_version.') is higher than allowed ('.$versionRange[1].')';
 					$msg[] = '&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" value="1" name="depsolver[ignore]['.$depK.']" /> Ignore this version requirement';
 					$depError = true;
 					continue;
 				}
-			} elseif (strlen($depK) && !t3lib_extMgm::isLoaded($depK))	{ // strlen check for braindead empty dependencies coming from extensions...
+			} elseif (strlen($depK) && !t3lib_extMgm::isLoaded($depK))	{	// strlen check for braindead empty dependencies coming from extensions...
 				if(!isset($instExtInfo[$depK]))	{
 					$msg[] = '<br />Extension "'.$depK.'" was not available in the system. Please import it from the TYPO3 Extension Repository.';
 					$msg[] = '&nbsp;&nbsp;&nbsp;&nbsp;<img src="'.$GLOBALS['BACK_PATH'].'gfx/import.gif" width="12" height="12" title="Import this extension to \'local\' dir typo3conf/ext/ from online repository." alt="" />&nbsp;<a href="index.php?CMD[importExt]='.$depK.'&CMD[loc]=L&CMD[standAlone]=1" target="_blank">Import now (opens a new window)</a>';
@@ -4114,12 +4123,12 @@ $EM_CONF[$_EXTKEY] = '.$this->arrayToCode($EM_CONF, 0).';
 				$depError = true;
 			} else {
 				$versionRange = $this->splitVersionRange($depV);
-				if($versionRange[0] && version_compare($instExtInfo[$depK]['EM_CONF']['version'],$versionRange[0],'<')) {
+				if ($versionRange[0] && version_compare($instExtInfo[$depK]['EM_CONF']['version'],$versionRange[0],'<'))	{
 					$msg[] = '<br />The running version of extension "'.$depK.'" ('.$instExtInfo[$depK]['EM_CONF']['version'].') is lower than required ('.$versionRange[0].')';
 					$msg[] = '&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" value="1" name="depsolver[ignore]['.$depK.']" /> Ignore this version requirement';
 					$depError = true;
 					continue;
-				} elseif($versionRange[1] && version_compare($instExtInfo[$depK]['EM_CONF']['version'],$versionRange[1],'>')) {
+				} elseif ($versionRange[1] && version_compare($instExtInfo[$depK]['EM_CONF']['version'],$versionRange[1],'>'))	{
 					$msg[] = '<br />The running version of extension "'.$depK.'" ('.$instExtInfo[$depK]['EM_CONF']['version'].') is higher than allowed ('.$versionRange[1].')';
 					$msg[] = '&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" value="1" name="depsolver[ignore]['.$depK.']" /> Ignore this version requirement';
 					$depError = true;
@@ -4128,7 +4137,7 @@ $EM_CONF[$_EXTKEY] = '.$this->arrayToCode($EM_CONF, 0).';
 			}
 		}
 		if($depError) {
-			$content .= $this->doc->section('Dependency Error',implode('<br />',$msg),0,1,2);
+			$content.= $this->doc->section('Dependency Error',implode('<br />',$msg),0,1,2);
 		}
 
 			// Check conflicts with other extensions:
@@ -4148,7 +4157,7 @@ $EM_CONF[$_EXTKEY] = '.$this->arrayToCode($EM_CONF, 0).';
 			}
 		}
 		if($conflictError) {
-			$content .= $this->doc->section('Conflict Error',implode('<br />',$msg),0,1,2);
+			$content.= $this->doc->section('Conflict Error',implode('<br />',$msg),0,1,2);
 		}
 
 			// Check suggests on other extensions:
