@@ -1,3 +1,11 @@
+2007-02-04  Oliver Hader  <oh@inpublica.de>
+
+	* Features & bugfixes for Inline Relational Record Editing (IRRE)
+		- Feature: hide new record link by appearance property
+		- Feature #4838: enabled element browser to be used as selector
+		- Bugfix #4839: use "size" parameter of parent table for record selector
+		- Bugfix: changed handling of required fields on nested child records
+
 2007-02-04  Ingmar Schlecht  <ingmar@typo3.org>
 
 	* Instant collapsing for pagetree: The pagetree now doesn't wait for the AJAX response any more when collapsing

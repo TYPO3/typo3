@@ -706,10 +706,14 @@ class browse_links {
 	 * Example value: "data[pages][39][bodytext]|||tt_content|" or "data[tt_content][NEW3fba56fde763d][image]|||gif,jpg,jpeg,tif,bmp,pcx,tga,png,pdf,ai|"
 	 *
 	 * Values:
-	 * 0: form field name reference
+	 * 0: form field name reference, eg. "data[tt_content][123][image]"
 	 * 1: old/unused?
 	 * 2: old/unused?
 	 * 3: allowed types. Eg. "tt_content" or "gif,jpg,jpeg,tif,bmp,pcx,tga,png,pdf,ai"
+	 * 4: IRRE uniqueness: target level object-id to perform actions/checks on, eg. "data[79][tt_address][1][<field>][<foreign_table>]"
+	 * 5: IRRE uniqueness: name of function in opener window that checks if element is already used, eg. "inline.checkUniqueElement"
+	 * 6: IRRE uniqueness: name of function in opener window that performs some additional(!) action, eg. "inline.setUniqueElement"
+	 * 7: IRRE uniqueness: name of function in opener window that performs action instead of using addElement/insertElement, eg. "inline.importElement"
 	 *
 	 * $pArr = explode('|',$this->bparams);
 	 * $formFieldName = $pArr[0];
@@ -946,9 +950,70 @@ class browse_links {
 		';
 
 
-			// This is JavaScript especially for the TBE Element Browser!
+		/**
+		 * Splits parts of $this->bparams
+		 * @see $bparams
+		 */
 		$pArr = explode('|',$this->bparams);
+
+			// This is JavaScript especially for the TBE Element Browser!
 		$formFieldName = 'data['.$pArr[0].']['.$pArr[1].']['.$pArr[2].']';
+		
+			// insertElement - Call check function (e.g. for uniqueness handling):
+		if ($pArr[4] && $pArr[5]) {
+			$JScodeCheck = '
+					// Call a check function in the opener window (e.g. for uniqueness handling):
+				if (parent.window.opener) {
+					var res = parent.window.opener.'.$pArr[5].'("'.addslashes($pArr[4]).'",table,uid,type);
+					if (!res.passed) {
+						if (res.message) alert(res.message);
+						performAction = false;
+					}
+				} else {
+					alert("Error - reference to main window is not set properly!");
+					parent.close();
+				}
+			';
+		}
+			// insertElement - Call helper function:
+		if ($pArr[4] && $pArr[6]) {
+			$JScodeHelper = '
+						// Call helper function to manage data in the opener window:
+					if (parent.window.opener) {
+						parent.window.opener.'.$pArr[6].'("'.addslashes($pArr[4]).'",table,uid,type,"'.addslashes($pArr[0]).'");
+					} else {
+						alert("Error - reference to main window is not set properly!");
+						parent.close();
+					}
+			';
+		}
+			// insertElement - perform action commands:
+		if ($pArr[4] && $pArr[7]) {
+				// Call user defined action function:
+			$JScodeAction = '
+					if (parent.window.opener) {
+						parent.window.opener.'.$pArr[7].'("'.addslashes($pArr[4]).'",table,uid,type);
+						focusOpenerAndClose(close);
+					} else {
+						alert("Error - reference to main window is not set properly!");
+						parent.close();
+					}
+			';
+		} else if ($pArr[0] && !$pArr[1] && !$pArr[2]) {
+			$JScodeAction = '
+					addElement(filename,table+"_"+uid,fp,close);
+			';
+		} else {
+			$JScodeAction = '
+					if (setReferences()) {
+						parent.window.opener.group_change("add","'.$pArr[0].'","'.$pArr[1].'","'.$pArr[2].'",elRef,targetDoc);
+					} else {
+						alert("Error - reference to main window is not set properly!");
+					}
+					focusOpenerAndClose(close);
+			';
+		}
+		
 		$JScode.='
 			var elRef="";
 			var targetDoc="";
@@ -974,30 +1039,26 @@ class browse_links {
 				}
 			}
 			function insertElement(table, uid, type, filename,fp,filetype,imagefile,action, close)	{	//
-				if (1=='.($pArr[0]&&!$pArr[1]&&!$pArr[2] ? 1 : 0).')	{
-					addElement(filename,table+"_"+uid,fp,close);
-				} else {
-					if (setReferences())	{
-						parent.window.opener.group_change("add","'.$pArr[0].'","'.$pArr[1].'","'.$pArr[2].'",elRef,targetDoc);
-					} else {
-						alert("Error - reference to main window is not set properly!");
-					}
-					if (close)	{
-						parent.window.opener.focus();
-						parent.close();
-					}
+				var performAction = true;
+				'.$JScodeCheck.'
+					// Call performing function and finish this action:
+				if (performAction) {
+						'.$JScodeHelper.$JScodeAction.'
 				}
 				return false;
 			}
 			function addElement(elName,elValue,altElValue,close)	{	//
 				if (parent.window.opener && parent.window.opener.setFormValueFromBrowseWin)	{
 					parent.window.opener.setFormValueFromBrowseWin("'.$pArr[0].'",altElValue?altElValue:elValue,elName);
-					if (close)	{
-						parent.window.opener.focus();
-						parent.close();
-					}
+					focusOpenerAndClose(close);
 				} else {
 					alert("Error - reference to main window is not set properly!");
+					parent.close();
+				}
+			}
+			function focusOpenerAndClose(close)	{	//
+				if (close)	{
+					parent.window.opener.focus();
 					parent.close();
 				}
 			}
@@ -1378,7 +1439,7 @@ class browse_links {
 	function main_db()	{
 
 			// Starting content:
-		$content=$this->doc->startPage('TBE file selector');
+		$content=$this->doc->startPage('TBE record selector');
 
 			// Init variable:
 		$pArr = explode('|',$this->bparams);

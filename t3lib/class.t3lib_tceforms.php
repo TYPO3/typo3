@@ -1995,7 +1995,7 @@ class t3lib_TCEforms	{
 					'thumbnails' => $thumbsnail,
 					'readOnly' => $disabled
 				);
-				$item.= $this->dbFileIcons($PA['itemFormElName'],'db',implode(',',$tempFT),$itemArray,'',$params,$PA['onFocus']);
+				$item.= $this->dbFileIcons($PA['itemFormElName'],'db',implode(',',$tempFT),$itemArray,'',$params,$PA['onFocus'],$table,$field,$row['uid']);
 
 			break;
 		}
@@ -3040,9 +3040,12 @@ class t3lib_TCEforms	{
 	 * @param	string		Alternative selector box.
 	 * @param	array		An array of additional parameters, eg: "size", "info", "headers" (array with "selector" and "items"), "noBrowser", "thumbnails"
 	 * @param	string		On focus attribute string
+	 * @param	string		$table: (optional) Table name processing for
+	 * @param	string		$field: (optional) Field of table name processing for
+	 * @param	string		$uid:	(optional) uid of table record processing for
 	 * @return	string		The form fields for the selection.
 	 */
-	function dbFileIcons($fName,$mode,$allowed,$itemArray,$selector='',$params=array(),$onFocus='')	{
+	function dbFileIcons($fName,$mode,$allowed,$itemArray,$selector='',$params=array(),$onFocus='',$table='',$field='',$uid='')	{
 
 
 		$disabled = '';
@@ -3105,7 +3108,16 @@ class t3lib_TCEforms	{
 		);
 		if (!$params['readOnly']) {
 			if (!$params['noBrowser'])	{
-				$aOnClick='setFormValueOpenBrowser(\''.$mode.'\',\''.($fName.'|||'.$allowed.'|').'\'); return false;';
+					// check against inline uniqueness
+				$inlineParent = $this->inline->getStructureLevel(-1);
+				if(is_array($inlineParent) && $inlineParent['uid']) {
+					if ($inlineParent['config']['foreign_table'] == $table && $inlineParent['config']['foreign_unique'] == $field) {
+						$objectPrefix = $this->inline->inlineNames['object'].'['.$table.']';
+						$aOnClickInline = $objectPrefix.'|inline.checkUniqueElement|inline.setUniqueElement';
+						$rOnClickInline = 'inline.revertUnique(\''.$objectPrefix.'\',null,\''.$uid.'\');';
+					}
+				}
+				$aOnClick='setFormValueOpenBrowser(\''.$mode.'\',\''.($fName.'|||'.$allowed.'|'.$aOnClickInline).'\'); return false;';
 				$icons['R'][]='<a href="#" onclick="'.htmlspecialchars($aOnClick).'">'.
 						'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/insert3.gif','width="14" height="14"').' border="0" '.t3lib_BEfunc::titleAltAttrib($this->getLL('l_browse_'.($mode=='file'?'file':'db'))).' />'.
 						'</a>';
@@ -3151,7 +3163,8 @@ class t3lib_TCEforms	{
 						'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/insert5.png','width="14" height="14"').' border="0" '.t3lib_BEfunc::titleAltAttrib(sprintf($this->getLL('l_clipInsert_'.($mode=='file'?'file':'db')),count($clipElements))).' />'.
 						'</a>';
 			}
-			$icons['L'][]='<a href="#" onclick="setFormValueManipulate(\''.$fName.'\',\'Remove\'); return false;">'.
+			$rOnClick = $rOnClickInline.'setFormValueManipulate(\''.$fName.'\',\'Remove\'); return false';
+			$icons['L'][]='<a href="#" onclick="'.htmlspecialchars($rOnClick).'">'.
 					'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/group_clear.gif','width="14" height="14"').' border="0" '.t3lib_BEfunc::titleAltAttrib($this->getLL('l_remove_selected')).' />'.
 					'</a>';
 		}
