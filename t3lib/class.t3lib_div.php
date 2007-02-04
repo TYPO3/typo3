@@ -2114,9 +2114,8 @@ class t3lib_div {
 							if ($options['useCDATA'] && $content != $v) {
 								$content = '<![CDATA[' . $v . ']]>';
 							}
-						}
-						elseif (!$options['disableTypeAttrib']) {
-								$attr.=' type="'.$dType.'"';
+						} elseif (!$options['disableTypeAttrib']) {
+							$attr.= ' type="'.$dType.'"';
 						}
 					}
 				}
