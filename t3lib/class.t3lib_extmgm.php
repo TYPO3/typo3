@@ -517,9 +517,9 @@ class t3lib_extMgm {
 		// even not available services will be included to make it possible to give the admin a feedback of non-available services.
 		// but maybe it's better to move non-available services to a different array??
 
-		if ($serviceType AND
-			!t3lib_div::isFirstPartOfStr($serviceType, 'tx_') AND
-			(t3lib_div::isFirstPartOfStr($serviceKey, 'tx_') OR t3lib_div::isFirstPartOfStr($serviceKey, 'user_')) AND
+		if ($serviceType &&
+			!t3lib_div::isFirstPartOfStr($serviceType, 'tx_') &&
+			(t3lib_div::isFirstPartOfStr($serviceKey, 'tx_') || t3lib_div::isFirstPartOfStr($serviceKey, 'user_')) &&
 			is_array($info))	{
 
 			$info['priority'] = max(0,min(100,$info['priority']));
@@ -549,7 +549,7 @@ class t3lib_extMgm {
 
 				// OS check
 				// empty $os means 'not limited to one OS', therefore a check is not needed
-			if ($T3_SERVICES[$serviceType][$serviceKey]['available'] AND $T3_SERVICES[$serviceType][$serviceKey]['os']!='') {
+			if ($T3_SERVICES[$serviceType][$serviceKey]['available'] && $T3_SERVICES[$serviceType][$serviceKey]['os']!='') {
 
 					// TYPO3_OS is not yet defined
 				$os_type = stristr(PHP_OS,'win')&&!stristr(PHP_OS,'darwin')?'WIN':'UNIX';
@@ -605,10 +605,10 @@ class t3lib_extMgm {
 				}
 
 					// this matches empty subtype too
-				if( $info['available'] AND ($info['subtype']==$serviceSubType OR $info['serviceSubTypes'][$serviceSubType]) AND $info['priority']>=$priority ) {
+				if ($info['available'] && ($info['subtype']==$serviceSubType || $info['serviceSubTypes'][$serviceSubType]) && $info['priority']>=$priority )	{
 
 						// has a lower quality than the already found, therefore we skip this service
-					if($info['priority']==$priority AND $info['quality']<$quality) {
+					if($info['priority']==$priority && $info['quality']<$quality) {
 						continue;
 					}
 

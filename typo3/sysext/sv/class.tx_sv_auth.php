@@ -64,7 +64,7 @@ class tx_sv_auth extends tx_sv_authbase 	{
 	function getUser()	{
 		$user = false;
 
-		if ($this->login['status']=='login' AND $this->login['uident'])	{
+		if ($this->login['status']=='login' && $this->login['uident'])	{
 
 			$user = $this->fetchUserRecord($this->login['uname']);
 

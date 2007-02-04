@@ -252,8 +252,8 @@ class t3lib_userAuth {
 			// re-read user session
 		$this->user = $this->fetchUserSession();
 
-		if ($this->writeDevLog AND is_array($this->user)) 	t3lib_div::devLog('User session finally read: '.t3lib_div::arrayToLogString($this->user, array($this->userid_column,$this->username_column)), 't3lib_userAuth', -1);
-		if ($this->writeDevLog AND !is_array($this->user)) t3lib_div::devLog('No user session found.', 't3lib_userAuth', 2);
+		if ($this->writeDevLog && is_array($this->user)) 	t3lib_div::devLog('User session finally read: '.t3lib_div::arrayToLogString($this->user, array($this->userid_column,$this->username_column)), 't3lib_userAuth', -1);
+		if ($this->writeDevLog && !is_array($this->user)) t3lib_div::devLog('No user session found.', 't3lib_userAuth', 2);
 
 			// Setting cookies
 		if ($TYPO3_CONF_VARS['SYS']['cookieDomain'])	{
@@ -392,7 +392,7 @@ class t3lib_userAuth {
 			if ($this->writeDevLog) 	t3lib_div::devLog('Active login (eg. with login form)', 't3lib_userAuth');
 
 				// check referer for submitted login values
-			if($this->formfield_status && $loginData['uident'] && $loginData['uname']) 	{
+			if ($this->formfield_status && $loginData['uident'] && $loginData['uname'])	{
 				$httpHost = t3lib_div::getIndpEnv('TYPO3_HOST_ONLY');
 				if (!$this->getMethodEnabled && ($httpHost!=$authInfo['refInfo']['host'] && !$GLOBALS['TYPO3_CONF_VARS']['SYS']['doNotCheckReferer']))	{
 					die('Error: This host address ("'.$httpHost.'") and the referer host ("'.$authInfo['refInfo']['host'].'") mismatches!<br />
@@ -417,14 +417,17 @@ class t3lib_userAuth {
 		$authInfo['userSession'] = $this->fetchUserSession();
 		$haveSession = is_array($authInfo['userSession']) ? TRUE : FALSE;
 
-		if ($this->writeDevLog AND $haveSession) 	t3lib_div::devLog('User session found: '.t3lib_div::arrayToLogString($authInfo['userSession'], array($this->userid_column,$this->username_column)), 't3lib_userAuth', 0);
-		if ($this->writeDevLog) 	t3lib_div::devLog('SV setup: '.t3lib_div::arrayToLogString($this->svConfig['setup']), 't3lib_userAuth', 0);
-
+		if ($this->writeDevLog)	{
+			if ($haveSession)	{
+				t3lib_div::devLog('User session found: '.t3lib_div::arrayToLogString($authInfo['userSession'], array($this->userid_column,$this->username_column)), 't3lib_userAuth', 0);
+			}
+			t3lib_div::devLog('SV setup: '.t3lib_div::arrayToLogString($this->svConfig['setup']), 't3lib_userAuth', 0);
+		}
 
 			// fetch user if ...
-		if ( $activeLogin
-				OR (!$haveSession AND $this->svConfig['setup'][$this->loginType.'_fetchUserIfNoSession'])
-				OR $this->svConfig['setup'][$this->loginType.'_alwaysFetchUser']) {
+		if ($activeLogin
+				|| (!$haveSession && $this->svConfig['setup'][$this->loginType.'_fetchUserIfNoSession'])
+				|| $this->svConfig['setup'][$this->loginType.'_alwaysFetchUser']) {
 
 				// use 'auth' service to find the user
 				// first found user will be used
@@ -447,15 +450,15 @@ class t3lib_userAuth {
 			}
 			unset($serviceObj);
 
-			if ($this->writeDevLog AND $this->svConfig['setup'][$this->loginType.'_alwaysFetchUser']) 	t3lib_div::devLog($this->loginType.'_alwaysFetchUser option is enabled', 't3lib_userAuth');
-			if ($this->writeDevLog AND $serviceChain) 	t3lib_div::devLog($subType.' auth services called: '.$serviceChain, 't3lib_userAuth');
-			if ($this->writeDevLog AND !count($tempuserArr)) 	t3lib_div::devLog('No user found by services', 't3lib_userAuth');
-			if ($this->writeDevLog AND count($tempuserArr)) 	t3lib_div::devLog(count($tempuserArr).' user records found by services', 't3lib_userAuth');
+			if ($this->writeDevLog && $this->svConfig['setup'][$this->loginType.'_alwaysFetchUser']) 	t3lib_div::devLog($this->loginType.'_alwaysFetchUser option is enabled', 't3lib_userAuth');
+			if ($this->writeDevLog && $serviceChain) 	t3lib_div::devLog($subType.' auth services called: '.$serviceChain, 't3lib_userAuth');
+			if ($this->writeDevLog && !count($tempuserArr)) 	t3lib_div::devLog('No user found by services', 't3lib_userAuth');
+			if ($this->writeDevLog && count($tempuserArr)) 	t3lib_div::devLog(count($tempuserArr).' user records found by services', 't3lib_userAuth');
 		}
 
 
 			// If no new user was set we use the already found user session
-		if (!count($tempuserArr) AND $haveSession)	{
+		if (!count($tempuserArr) && $haveSession)	{
 			$tempuserArr[] = $authInfo['userSession'];
 			$tempuser = $authInfo['userSession'];
 				// User is authenticated because we found a user session
@@ -473,9 +476,9 @@ class t3lib_userAuth {
 
 
 			// Authenticate the user if needed
-		if(count($tempuserArr) AND !$authenticated) {
+		if (count($tempuserArr) && !$authenticated)	{
 
-			foreach($tempuserArr as $tempuser) {
+			foreach ($tempuserArr as $tempuser)	{
 
 				// use 'auth' service to authenticate the user
 				// if one service returns FALSE then authentication failed
@@ -508,7 +511,7 @@ class t3lib_userAuth {
 				}
 				unset($serviceObj);
 
-				if ($this->writeDevLog AND $serviceChain) 	t3lib_div::devLog($subType.' auth services called: '.$serviceChain, 't3lib_userAuth');
+				if ($this->writeDevLog && $serviceChain) 	t3lib_div::devLog($subType.' auth services called: '.$serviceChain, 't3lib_userAuth');
 
 				if($authenticated) {
 						// leave foreach() because a user is authenticated
@@ -517,7 +520,6 @@ class t3lib_userAuth {
 			}
 		}
 
-
 			// If user is authenticated a valid user is in $tempuser
 		if ($authenticated)	{
 				// reset failure flag
@@ -525,8 +527,8 @@ class t3lib_userAuth {
 
 
 				// Insert session record if needed:
-			if (!($haveSession AND (
-				$tempuser['ses_id']==$this->id OR 	// check if the tempuser has the current session id
+			if (!($haveSession && (
+				$tempuser['ses_id']==$this->id || 	// check if the tempuser has the current session id
 				$tempuser['uid']==$authInfo['userSession']['ses_userid'] 	// check if the tempuser has the uid of the fetched session user
 				))) {
 				$this->createUserSession($tempuser);
@@ -556,16 +558,16 @@ class t3lib_userAuth {
 				}
 			}
 
-		} elseif ($activeLogin OR count($tempuserArr)) {
+		} elseif ($activeLogin || count($tempuserArr)) {
 			$this->loginFailure = TRUE;
 
-			if ($this->writeDevLog AND !count($tempuserArr) AND $activeLogin) 	t3lib_div::devLog('Login failed: '.t3lib_div::arrayToLogString($loginData), 't3lib_userAuth', 2);
-			if ($this->writeDevLog AND count($tempuserArr)) 	t3lib_div::devLog('Login failed: '.t3lib_div::arrayToLogString($tempuser, array($this->userid_column,$this->username_column)), 't3lib_userAuth', 2);
+			if ($this->writeDevLog && !count($tempuserArr) && $activeLogin) 	t3lib_div::devLog('Login failed: '.t3lib_div::arrayToLogString($loginData), 't3lib_userAuth', 2);
+			if ($this->writeDevLog && count($tempuserArr)) 	t3lib_div::devLog('Login failed: '.t3lib_div::arrayToLogString($tempuser, array($this->userid_column,$this->username_column)), 't3lib_userAuth', 2);
 		}
 
 
 			// If there were a login failure, check to see if a warning email should be sent:
-		if ($this->loginFailure AND $activeLogin)	{
+		if ($this->loginFailure && $activeLogin)	{
 			if ($this->writeDevLog) 	t3lib_div::devLog('Call checkLogFailures: '.t3lib_div::arrayToLogString(array('warningEmail'=>$this->warningEmail,'warningPeriod'=>$this->warningPeriod,'warningMax'=>$this->warningMax,)), 't3lib_userAuth', -1);
 
 			$this->checkLogFailures($this->warningEmail, $this->warningPeriod, $this->warningMax);
@@ -1230,7 +1232,7 @@ class t3lib_userAuth {
 
 		$usernameClause = $username ? ($dbUser['username_column'].'='.$GLOBALS['TYPO3_DB']->fullQuoteStr($username, $dbUser['table'])) : '';
 
-		if ($username OR $extraWhere)	{
+		if ($username || $extraWhere)	{
 
 				// Look up the user by the username and/or extraWhere:
 			$dbres = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
