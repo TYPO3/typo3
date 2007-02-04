@@ -431,25 +431,25 @@ $TT->pull();
 
 
 // ********************************
-// $GLOBALS['TSFE']->config['INTincScript']
+// $TSFE->config['INTincScript']
 // *******************************
 if ($TSFE->isINTincScript())		{
 	$TT->push('Non-cached objects','');
-		$INTiS_config = $GLOBALS['TSFE']->config['INTincScript'];
+		$INTiS_config = $TSFE->config['INTincScript'];
 
 			// Special feature: Include libraries
 		$TT->push('Include libraries');
 		foreach($INTiS_config as $INTiS_cPart)	{
 			if ($INTiS_cPart['conf']['includeLibs'])	{
 				$INTiS_resourceList = t3lib_div::trimExplode(',',$INTiS_cPart['conf']['includeLibs'],1);
-				$GLOBALS['TT']->setTSlogMessage('Files for inclusion: "'.implode(', ',$INTiS_resourceList).'"');
+				$TT->setTSlogMessage('Files for inclusion: "'.implode(', ',$INTiS_resourceList).'"');
 
 				foreach($INTiS_resourceList as $INTiS_theLib)	{
-					$INTiS_incFile = $GLOBALS['TSFE']->tmpl->getFileName($INTiS_theLib);
+					$INTiS_incFile = $TSFE->tmpl->getFileName($INTiS_theLib);
 					if ($INTiS_incFile)	{
 						require_once('./'.$INTiS_incFile);
 					} else {
-						$GLOBALS['TT']->setTSlogMessage('Include file "'.$INTiS_theLib.'" did not exist!',2);
+						$TT->setTSlogMessage('Include file "'.$INTiS_theLib.'" did not exist!',2);
 					}
 				}
 			}
@@ -472,22 +472,22 @@ if ($TSFE->isOutputting())	{
 	if ($TSFE->isEXTincScript())	{
 		$TT->push('External PHP-script','');
 				// Important global variables here are $EXTiS_*, they must not be overridden in include-scripts!!!
-			$EXTiS_config = $GLOBALS['TSFE']->config['EXTincScript'];
-			$EXTiS_splitC = explode('<!--EXT_SCRIPT.',$GLOBALS['TSFE']->content);			// Splits content with the key.
+			$EXTiS_config = $TSFE->config['EXTincScript'];
+			$EXTiS_splitC = explode('<!--EXT_SCRIPT.',$TSFE->content);			// Splits content with the key.
 
 				// Special feature: Include libraries
 			reset($EXTiS_config);
 			while(list(,$EXTiS_cPart)=each($EXTiS_config))	{
 				if ($EXTiS_cPart['conf']['includeLibs'])	{
 					$EXTiS_resourceList = t3lib_div::trimExplode(',',$EXTiS_cPart['conf']['includeLibs'],1);
-					$GLOBALS['TT']->setTSlogMessage('Files for inclusion: "'.implode(', ',$EXTiS_resourceList).'"');
+					$TT->setTSlogMessage('Files for inclusion: "'.implode(', ',$EXTiS_resourceList).'"');
 					reset($EXTiS_resourceList);
-					while(list(,$EXTiS_theLib)=each($EXTiS_resourceList))	{
-						$EXTiS_incFile=$GLOBALS['TSFE']->tmpl->getFileName($EXTiS_theLib);
+					while(list(,$EXTiS_theLib) = each($EXTiS_resourceList))	{
+						$EXTiS_incFile = $TSFE->tmpl->getFileName($EXTiS_theLib);
 						if ($EXTiS_incFile)	{
 							require_once($EXTiS_incFile);
 						} else {
-							$GLOBALS['TT']->setTSlogMessage('Include file "'.$EXTiS_theLib.'" did not exist!',2);
+							$TT->setTSlogMessage('Include file "'.$EXTiS_theLib.'" did not exist!',2);
 						}
 					}
 				}
@@ -512,7 +512,7 @@ if ($TSFE->isOutputting())	{
 
 		$TT->pull();
 	} else {
-		echo $GLOBALS['TSFE']->content;
+		echo $TSFE->content;
 	}
 	$TT->pull();
 }
@@ -573,17 +573,17 @@ $TT->pull();
 // ******************
 // beLoginLinkIPList
 // ******************
-echo $GLOBALS['TSFE']->beLoginLinkIPList();
+echo $TSFE->beLoginLinkIPList();
 
 
 // *************
 // Admin panel
 // *************
 if (is_object($BE_USER)
-	&& $GLOBALS['TSFE']->beUserLogin
-	&& $GLOBALS['TSFE']->config['config']['admPanel']
+	&& $TSFE->beUserLogin
+	&& $TSFE->config['config']['admPanel']
 	&& $BE_USER->extAdmEnabled
-//	&& $BE_USER->extPageReadAccess($GLOBALS['TSFE']->page)	// This is already done, if there is a BE_USER object at this point!
+//	&& $BE_USER->extPageReadAccess($TSFE->page)	// This is already done, if there is a BE_USER object at this point!
 	&& !$BE_USER->extAdminConfig['hide'])	{
 		echo $BE_USER->extPrintFeAdminDialog();
 }
@@ -602,7 +602,7 @@ if (TYPO3_DLOG)	t3lib_div::devLog('END of FRONTEND session','',0,array('_FLUSH'=
 // Compressions
 // *************
 if ($TYPO3_CONF_VARS['FE']['compressionLevel'])	{
-	new gzip_encode($TYPO3_CONF_VARS['FE']['compressionLevel'], false, $GLOBALS['TYPO3_CONF_VARS']['FE']['compressionDebugInfo']);
+	new gzip_encode($TYPO3_CONF_VARS['FE']['compressionLevel'], false, $TYPO3_CONF_VARS['FE']['compressionDebugInfo']);
 }
 
 ?>
