@@ -1,3 +1,7 @@
+2007-02-04  Ingmar Schlecht  <ingmar@typo3.org>
+
+	* Instant collapsing for pagetree: The pagetree now doesn't wait for the AJAX response any more when collapsing
+
 2007-02-03  Oliver Hader  <oh@inpublica.de>
 
 	* Fixed feature request: TCEforms/IRRE - Allow TSconfig to override TCA field configuration

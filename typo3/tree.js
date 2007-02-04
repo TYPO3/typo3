@@ -47,7 +47,17 @@ var Tree = {
 			window.location.href = this.thisScript + '?PM=' + params;
 			return;
 		}
-		$(obj).style.cursor = 'wait';
+
+		// immediately collapse the subtree and change the plus to a minus when collapsing
+		// without waiting for the response
+		if (!isExpand) {
+			$(obj.parentNode.getElementsByTagName('ul')[0]).remove();
+			var pm = $(obj.parentNode).getElementsByClassName('pm')[0].firstChild;
+			pm.src = pm.src.replace('minus', 'plus');
+		} else {
+			obj.style.cursor = 'wait';
+		}
+
 		new Ajax.Request(this.thisScript, {
 			method: 'get',
 			parameters: 'ajax=1&PM=' + params,
