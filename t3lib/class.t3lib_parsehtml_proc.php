@@ -1497,7 +1497,7 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 		} else {
 			$curURL = $this->siteUrl(); 	// 100502, removed this: 'http://'.t3lib_div::getThisUrl(); Reason: The url returned had typo3/ in the end - should be only the site's url as far as I see...
 			for($a=0;$a<strlen($url);$a++)	{
-				if ($url[$a]!=$curURL[$a])	{
+				if ($url{$a}!=$curURL{$a})	{
 					break;
 				}
 			}
