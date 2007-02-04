@@ -1,6 +1,7 @@
 2007-02-04  Michael Stucki  <michael@typo3.org>
 
 	* Fixed bug #3069: Extension manager crashed because of some PHP bug with version_compare() (thanks to Rainer Haertlein who discovered the solution to this problem)
+	* Changed t3lib_basicFileFunctions to use filemtime() instead of filectime()
 
 2006-01-30  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
