@@ -1,4 +1,3 @@
-
 2007-02-04  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
 	* Added icon to edit record of page overlay for a translated page
@@ -9,6 +8,7 @@
 	* Fixed bug #3069: Extension manager crashed because of some PHP bug with version_compare() (thanks to Rainer Haertlein who discovered the solution to this problem)
 	* Changed t3lib_basicFileFunctions to use filemtime() instead of filectime()
 	* Fixed bug #4526: Add td-<number> to last table elements in CSS styled content (thanks to Dimitriy Simakov)
+	* !!! Enable $TYPO3_CONF_VARS[FE][pageNotFoundOnCHashError] by default. This should usually do no harm at all as long as the encryptionKey is not changed.
 
 2007-02-04  Oliver Hader  <oh@inpublica.de>
 
