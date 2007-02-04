@@ -1461,7 +1461,9 @@ From sub-directory:
 				However if you cannot enable fileupload for some reason alternatively you change the default form encoding value with \$TYPO3_CONF_VARS[SYS][form_enctype].
 			",3);
 		} else $this->message($ext, 'File uploads allowed',"",-1);
+
 		$upload_max_filesize = $this->convertByteSize(ini_get('upload_max_filesize'));
+		$post_max_size = $this->convertByteSize(ini_get('post_max_size'));
 		if ($upload_max_filesize<10000*1024)	{
 			$this->message($ext, 'Max Upload filesize too small?',"
 				<i>upload_max_filesize=".ini_get('upload_max_filesize')."</i>
@@ -1469,6 +1471,12 @@ From sub-directory:
 				Your current value is below this, so at this point, PHP sets the limits for uploaded filesizes and not TYPO3.
 				<strong>Notice:</strong> The limits for filesizes attached to database records are set in the tables.php configuration file (\$TCA) for each group/file field.
 			",1);
+		}
+		if ($upload_max_filesize > $post_max_size)	{
+			$this->message($ext, 'Max size for POST requests is smaller than max upload filesize','
+				<i>upload_max_filesize='.ini_get('upload_max_filesize').', post_max_size='.ini_get('post_max_size').'</i>
+				You have defined a maximum size for file uploads which exceeds the allowed size for POST requests. Therefore the file uploads can not be larger than '.ini_get('post_max_size').'
+			',1);
 		}
 
 			// *****************

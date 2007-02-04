@@ -9,6 +9,7 @@
 	* Changed t3lib_basicFileFunctions to use filemtime() instead of filectime()
 	* Fixed bug #4526: Add td-<number> to last table elements in CSS styled content (thanks to Dimitriy Simakov)
 	* !!! Enable $TYPO3_CONF_VARS[FE][pageNotFoundOnCHashError] by default. This should usually do no harm at all as long as the encryptionKey is not changed.
+	* Trigger a warning if the PHP setting "post_max_size" is lower than "max_upload_size"
 
 2007-02-04  Oliver Hader  <oh@inpublica.de>
 
