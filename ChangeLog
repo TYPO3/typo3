@@ -1,3 +1,7 @@
+2007-02-04  Michael Stucki  <michael@typo3.org>
+
+	* Extended db_mountpoint and file_mountpoint fields into to 255 bytes size
+
 2007-02-04  Oliver Hader  <oh@inpublica.de>
 
 	* Features & bugfixes for Inline Relational Record Editing (IRRE)
@@ -42,7 +46,7 @@
 
 2007-01-24  Dmitry Dulepov  <dmitry@typo3.org>
 
-	* Added `useCDATA` to a list of t3lib_div::array2xml() options to produce CDATA instead of entities
+	* Added "useCDATA" to a list of t3lib_div::array2xml() options to produce CDATA instead of entities
 
 2007-01-26  Oliver Hader  <oh@inpublica.de>
 
