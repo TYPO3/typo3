@@ -1712,7 +1712,7 @@ class t3lib_div {
 	 * array('key.' => array('property.' => 'value')) --> array('key' => array('property' => 'value'))
 	 *
 	 * @param	array	$ts: TypoScript configuration array
-	 * @return	array	TypoScript configuration array without dots and the end of all keys 
+	 * @return	array	TypoScript configuration array without dots and the end of all keys
 	 */
 	function removeDotsFromTS($ts) {
 		$out = array();
@@ -4021,7 +4021,7 @@ class t3lib_div {
 				t3lib_div::requireOnce(PATH_t3lib.'class.'.strtolower($className).'.php');
 			}
 		}
-		
+
 			// Return object.
 		return class_exists('ux_'.$className) ? t3lib_div::makeInstance('ux_'.$className) : new $className;
 	}
@@ -4096,16 +4096,16 @@ class t3lib_div {
 		}
 		return $error;
 	}
-	
+
 	/**
 	 * Require a class for TYPO3
 	 * Useful to require classes from inside other classes (not global scope). A limited set of global variables are available (see function)
 	 */
 	function requireOnce($requireFile)	{
 		global $T3_SERVICES, $T3_VAR, $TYPO3_CONF_VARS;
-		
+
 		require_once ($requireFile);
-	}	
+	}
 
 	/**
 	 * Simple substitute for the PHP function mail() which allows you to specify encoding and character set
