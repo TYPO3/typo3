@@ -151,7 +151,7 @@ class tslib_menu {
 	var $imgNamePrefix = 'img';
 	var $imgNameNotRandom=0;
 	var $debug = 0;
-	var $parent_cObj ='';				// Loaded with the parent cObj-object when a new HMENU is made
+	var $parent_cObj;				// Loaded with the parent cObj-object when a new HMENU is made
 	var $GMENU_fixKey='gmenu';
 	var $MP_array=array();				// accumulation of mount point data
 
@@ -1172,6 +1172,13 @@ class tslib_menu {
 			$LD = $this->tmpl->linkData($this->menuArr[$key],$mainTarget,'','',$overrideArray, $this->mconf['addParams'].$MP_params.$this->menuArr[$key]['_ADD_GETVARS'], $typeOverride);
 		}
 
+			// Override URL if using "External URL" as doktype with a valid e-mail address:
+		if ($this->menuArr[$key]['doktype'] == 3 && $this->menuArr[$key]['urltype'] == 3 && t3lib_div::validEmail($this->menuArr[$key]['url'])) {
+				// Create mailto-link using tslib_cObj::typolink (concerning spamProtectEmailAddresses):
+			$LD['totalURL'] = $this->parent_cObj->typoLink_URL(array('parameter' => $this->menuArr[$key]['url']));
+			$LD['target'] = '';
+		}
+
 			// Manipulation in case of access restricted pages:
 		$this->changeLinksForAccessRestrictedPages($LD,$this->menuArr[$key],$mainTarget,$typeOverride);
 
@@ -1252,6 +1259,7 @@ class tslib_menu {
 			}
 
 				// especially scripts that build the submenu needs the parent data
+			$submenu->parent_cObj = &$this->parent_cObj;
 			$submenu->parentMenuArr = $this->menuArr;
 
 				// Setting alternativeMenuTempArray (will be effective only if an array)

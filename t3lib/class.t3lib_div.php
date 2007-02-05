@@ -4011,7 +4011,7 @@ class t3lib_div {
 	 * Usage: 447
 	 *
 	 * @param	string		Class name to instantiate
-	 * @return	object		The object
+	 * @return	object		A reference to the object
 	 */
 	function &makeInstance($className)	{
 
