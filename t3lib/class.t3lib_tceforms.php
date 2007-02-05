@@ -334,9 +334,12 @@ class t3lib_TCEforms	{
 
 			// Define whitelist that allows TCA field configuration to be overridden by TSconfig, @see overrideFieldConf():
 		$this->allowOverrideMatrix = array(
-			'select' => array('minitems', 'maxitems', 'size'),
-			'group' => array('minitems', 'maxitems', 'size'),
-			'inline' => array('minitems', 'maxitems', 'size', 'foreign_selector', 'foreign_unique', 'appearance'),
+			'input' => array('size', 'max'),
+			'text' => array('cols', 'rows', 'wrap'),
+			'check' => array('cols', 'showIfRTE'),
+			'select' => array('size', 'autoSizeMax', 'maxitems', 'minitems'),
+			'group' => array('size', 'autoSizeMax', 'max_size', 'show_thumbs', 'maxitems', 'minitems'),
+			'inline' => array('appearance', 'foreign_label', 'foreign_selector', 'foreign_unique', 'maxitems', 'minitems', 'size', 'autoSizeMax', 'symmetric_label'),
 		);
 
 		$this->inline = t3lib_div::makeInstance('t3lib_TCEforms_inline');
@@ -2809,7 +2812,7 @@ class t3lib_TCEforms	{
 		if (is_array($TSconfig)) {
 			$TSconfig = t3lib_div::removeDotsFromTS($TSconfig);
 			$type = $fieldConfig['type'];
-			if (is_array($this->allowOverrideMatrix[$type])) {
+			if (is_array($TSconfig['config']) && is_array($this->allowOverrideMatrix[$type])) {
 					// Check if the keys in TSconfig['config'] are allowed to override TCA field config:			
 				foreach (array_keys($TSconfig['config']) as $key) {
 					if (!in_array($key, $this->allowOverrideMatrix[$type], true)) {
