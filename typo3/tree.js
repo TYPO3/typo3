@@ -52,8 +52,9 @@ var Tree = {
 		// without waiting for the response
 		if (!isExpand) {
 			$(obj.parentNode.getElementsByTagName('ul')[0]).remove();
-			var pm = $(obj.parentNode).getElementsByClassName('pm')[0].firstChild;
-			pm.src = pm.src.replace('minus', 'plus');
+			var pm = $(obj.parentNode).getElementsByClassName('pm')[0];
+			pm.onclick = function() {};
+			pm.firstChild.src = pm.firstChild.src.replace('minus', 'plus');
 		} else {
 			obj.style.cursor = 'wait';
 		}
