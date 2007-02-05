@@ -960,8 +960,8 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 				'.($this->allowFileEditOutsite_typo3conf_dir?'<input type="hidden" name="TYPO3_INSTALL[FILE][EDIT_path]" value="'.$this->INSTALL['FILE']['EDIT_path'].'">':'').'
 				<input type="hidden" name="TYPO3_INSTALL[FILE][prevMD5]" value="'.md5($fileContent).'">
 				<textarea rows="30" name="TYPO3_INSTALL[FILE]['.md5($this->INSTALL['typo3conf_files']).']" wrap="off"'.$this->formWidthText(48,'width:98%;height:80%','off').' class="fixed-font enable-tab">'.t3lib_div::formatForTextarea($fileContent).'</textarea><br />
-				<input type="checkbox" name="TYPO3_INSTALL[FILE][win_to_unix_br]" value="1"'.(TYPO3_OS=='WIN'?'':' checked="checked"').'> Convert Windows linebreaks (13-10) to Unix (10)<br />
-				<input type="checkbox" name="TYPO3_INSTALL[FILE][backup]" value="1"'.(@is_file($backupFile) ? ' checked="checked"' : '').'> Make backup copy (rename to '.basename($backupFile).')<br />
+				<input type="checkbox" name="TYPO3_INSTALL[FILE][win_to_unix_br]" id="win_to_unix_br" value="1"'.(TYPO3_OS=='WIN'?'':' checked="checked"').'> <label for="win_to_unix_br">Convert Windows linebreaks (13-10) to Unix (10)</label><br />
+				<input type="checkbox" name="TYPO3_INSTALL[FILE][backup]" id="backup" value="1"'.(@is_file($backupFile) ? ' checked="checked"' : '').'> <label for="backup">Make backup copy (rename to '.basename($backupFile).')</label><br />
 				'.
 			'</form>';
 		}
@@ -1598,7 +1598,7 @@ From sub-directory:
 			case 'get_form':
 				$out='
 				You can check the mail() function by entering your email address here and press the button. You should then receive a testmail from test@test.test.<br /> Since almost all mails in TYPO3 are sent using the t3lib_htmlmail class, sending with this class can be tested by checking the box <strong>Test t3lib_htmlmail</strong> below. The return-path of the mail is set to null@'.t3lib_div::getIndpEnv('HTTP_HOST').'. Some mail servers won\'t send the mail if the host of the return-path is not resolved correctly.
-				<form action="'.$this->action.'" method="post"><input type="text" name="TYPO3_INSTALL[check_mail]"><br /><input type="checkbox" name="TYPO3_INSTALL[use_htmlmail]" >Test t3lib_htmlmail.
+				<form action="'.$this->action.'" method="post"><input type="text" name="TYPO3_INSTALL[check_mail]"><br /><input type="checkbox" name="TYPO3_INSTALL[use_htmlmail]" id="use_htmlmail" ><label for="use_htmlmail">Test t3lib_htmlmail.</label>
 					<input type="submit" value="Send test mail"></form>';
 			break;
 			default:
@@ -1847,7 +1847,7 @@ From sub-directory:
 		}
 		$this->message($ext, 'Search for ImageMagick:','
 			<form action="'.$this->action.'" method="post">
-				<input type="checkbox" name="TYPO3_INSTALL[checkIM][lzw]" value="1"'.($this->INSTALL['checkIM']['lzw']?' checked="checked"':'').'> Check LZW capabilities.
+				<input type="checkbox" name="TYPO3_INSTALL[checkIM][lzw]" id="checkImLzw" value="1"'.($this->INSTALL['checkIM']['lzw']?' checked="checked"':'').'> <label for="checkImLzw">Check LZW capabilities.</label>
 
 				Check this path for ImageMagick installation:
 				<input type="text" name="TYPO3_INSTALL[checkIM][path]" value="'.htmlspecialchars($this->INSTALL['checkIM']['path']).'">
@@ -3684,8 +3684,8 @@ From sub-directory:
 								while(list($table,$definition)=each($statements_table))	{
 									$exist=isset($whichTables[$table]);
 									$out.='<tr>
-										<td><input type="checkbox" name="TYPO3_INSTALL[database_import]['.$table.']" value="'.md5($definition).'"></td>
-										<td><strong>'.$this->fw($table).'</strong></td>
+										<td><input type="checkbox" name="TYPO3_INSTALL[database_import]['.$table.']" id="database_import_'.$table.'" value="'.md5($definition).'"></td>
+										<td><label for="database_import_'.$table.'"><strong>'.$this->fw($table).'</strong></label></td>
 										<td><img src="clear.gif" width="10" height="1"></td>
 										<td nowrap="nowrap">'.$this->fw($insertCount[$table]?"Rows: ".$insertCount[$table]:"").'</td>
 										<td><img src="clear.gif" width="10" height="1"></td>
@@ -3699,7 +3699,7 @@ From sub-directory:
 									<hr />
 									';
 								}
-								$content.='<input type="checkbox" name="TYPO3_INSTALL[database_import_all]" value="1"'.($this->mode=="123"||t3lib_div::_GP('presetWholeTable')?' checked="checked"':'').'>'.$this->fw("Import the whole file '".basename($actionParts[1])."' directly (ignores selections above):").'<br />
+								$content.='<input type="checkbox" name="TYPO3_INSTALL[database_import_all]" id="database_import_all" value="1"'.($this->mode=="123"||t3lib_div::_GP('presetWholeTable')?' checked="checked"':'').'> <label for="database_import_all">'.$this->fw("Import the whole file '".basename($actionParts[1])."' directly (ignores selections above)").'</label><br />
 
 								';
 								$form = $this->getUpdateDbFormWrap($action_type, $content);
@@ -3795,7 +3795,7 @@ From sub-directory:
 							$this->message($headCode,'Clearing be_users.uc','Done.',1);
 						}
 						$content = '
-						<input type="checkbox" name="TYPO3_INSTALL[database_UC]" value="1" checked="checked"> Clear be_users preferences ("uc" field)
+						<input type="checkbox" name="TYPO3_INSTALL[database_UC]" id="database_UC" value="1" checked="checked"> <label for="database_UC">Clear be_users preferences ("uc" field)</label>
 						';
 						$form = $this->getUpdateDbFormWrap($action_type, $content);
 						$this->message($headCode,'Clear user preferences',"

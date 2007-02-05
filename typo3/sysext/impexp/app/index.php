@@ -843,7 +843,7 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 				<tr class="bgColor4">
 					<td><strong>'.$LANG->getLL('makeconfig_useStaticRelationsFor',1).'</strong>'.t3lib_BEfunc::cshItem('xMOD_tx_impexp', 'staticRelations', $GLOBALS['BACK_PATH'],'').'</td>
 					<td>'.$this->tableSelector('tx_impexp[external_static][tables]',$inData['external_static']['tables']).'<br/>
-						'.$LANG->getLL('makeconfig_showStaticRelations',1).' <input type="checkbox" name="tx_impexp[showStaticRelations]" value="1"'.($inData['showStaticRelations'] ? ' checked="checked"' : '').' />
+						<label for="checkShowStaticRelations">'.$LANG->getLL('makeconfig_showStaticRelations',1).'</label> <input type="checkbox" name="tx_impexp[showStaticRelations]" id="checkShowStaticRelations" value="1"'.($inData['showStaticRelations'] ? ' checked="checked"' : '').' />
 						</td>
 				</tr>';
 
@@ -858,7 +858,7 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 				<tr class="bgColor4">
 					<td><strong>'.$LANG->getLL('makeconfig_excludeElements',1).'</strong>'.t3lib_BEfunc::cshItem('xMOD_tx_impexp', 'excludedElements', $GLOBALS['BACK_PATH'],'').'</td>
 					<td>'.$excludeHiddenFields.'
-					'.(count($inData['exclude']) ? '<em>'.implode(', ',array_keys($inData['exclude'])).'</em><hr/>'.$LANG->getLL('makeconfig_clearAllExclusions',1).' <input type="checkbox" name="tx_impexp[exclude]" value="1" />' : $LANG->getLL('makeconfig_noExcludedElementsYet',1)).'
+					'.(count($inData['exclude']) ? '<em>'.implode(', ',array_keys($inData['exclude'])).'</em><hr/><label for="checkExclude">'.$LANG->getLL('makeconfig_clearAllExclusions',1).'</label> <input type="checkbox" name="tx_impexp[exclude]" id="checkExclude" value="1" />' : $LANG->getLL('makeconfig_noExcludedElementsYet',1)).'
 					</td>
 				</tr>';
 
@@ -892,8 +892,8 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 			</tr>';
 		$row[] = '
 				<tr class="bgColor4">
-					<td><strong>'.$LANG->getLL('makeadvanc_excludeHtmlCssFile',1).'</strong>'.t3lib_BEfunc::cshItem('xMOD_tx_impexp', 'htmlCssResources', $GLOBALS['BACK_PATH'],'').'</td>
-					<td><input type="checkbox" name="tx_impexp[excludeHTMLfileResources]" value="1"'.($inData['excludeHTMLfileResources'] ? ' checked="checked"' : '').' /></td>
+					<td><label for="checkExcludeHTMLfileResources"><strong>'.$LANG->getLL('makeadvanc_excludeHtmlCssFile',1).'</strong></label>'.t3lib_BEfunc::cshItem('xMOD_tx_impexp', 'htmlCssResources', $GLOBALS['BACK_PATH'],'').'</td>
+					<td><input type="checkbox" name="tx_impexp[excludeHTMLfileResources]" id="checkExcludeHTMLfileResources" value="1"'.($inData['excludeHTMLfileResources'] ? ' checked="checked"' : '').' /></td>
 				</tr>';
 
 
@@ -969,8 +969,8 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 						<br/>
 						'.$LANG->getLL('makesavefo_titleOfNewPreset',1).'
 						<input type="text" name="tx_impexp[preset][title]" value="'.htmlspecialchars($inData['preset']['title']).'"'.$this->doc->formWidth(30).' /><br/>
-						'.$LANG->getLL('makesavefo_public',1).'
-						<input type="checkbox" name="tx_impexp[preset][public]" value="1"'.($inData['preset']['public'] ? ' checked="checked"' : '').' /><br/>
+						<label for="checkPresetPublic">'.$LANG->getLL('makesavefo_public',1).'</label>
+						<input type="checkbox" name="tx_impexp[preset][public]" id="checkPresetPublic" value="1"'.($inData['preset']['public'] ? ' checked="checked"' : '').' /><br/>
 					</td>
 				</tr>';
 
@@ -1133,13 +1133,13 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 			$row[] = '<tr class="bgColor4">
 				<td><strong>'.$LANG->getLL('importdata_update',1).'</strong>'.t3lib_BEfunc::cshItem('xMOD_tx_impexp', 'update', $GLOBALS['BACK_PATH'],'').'</td>
 				<td>
-					<input type="checkbox" name="tx_impexp[do_update]" value="1"'.($inData['do_update'] ? ' checked="checked"' : '').' />
-					'.$LANG->getLL('importdata_updateRecords',1).'<br/>
+					<input type="checkbox" name="tx_impexp[do_update]" id="checkDo_update" value="1"'.($inData['do_update'] ? ' checked="checked"' : '').' />
+					<label for="checkDo_update">'.$LANG->getLL('importdata_updateRecords',1).'</label><br/>
 				<em>('.$LANG->getLL('importdata_thisOptionRequiresThat',1).')</em>'.
 				($inData['do_update'] ?
 				'	<hr/>
-					<input type="checkbox" name="tx_impexp[global_ignore_pid]" value="1"'.($inData['global_ignore_pid'] ? ' checked="checked"' : '').' />
-					'.$LANG->getLL('importdata_ignorePidDifferencesGlobally',1).'<br/>
+					<input type="checkbox" name="tx_impexp[global_ignore_pid]" id="checkGlobal_ignore_pid" value="1"'.($inData['global_ignore_pid'] ? ' checked="checked"' : '').' />
+					<label for="checkGlobal_ignore_pid">'.$LANG->getLL('importdata_ignorePidDifferencesGlobally',1).'</label><br/>
 					<em>('.$LANG->getLL('importdata_ifYouSetThis',1).')</em>
 					' : ''
 				).'</td>
@@ -1148,19 +1148,19 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 			$row[] = '<tr class="bgColor4">
 				<td><strong>'.$LANG->getLL('importdata_options',1).'</strong>'.t3lib_BEfunc::cshItem('xMOD_tx_impexp', 'options', $GLOBALS['BACK_PATH'],'').'</td>
 				<td>
-					<input type="checkbox" name="tx_impexp[notShowDiff]" value="1"'.($inData['notShowDiff'] ? ' checked="checked"' : '').' />
-					'.$LANG->getLL('importdata_doNotShowDifferences',1).'<br/>
+					<input type="checkbox" name="tx_impexp[notShowDiff]" id="checkNotShowDiff" value="1"'.($inData['notShowDiff'] ? ' checked="checked"' : '').' />
+					<label for="checkNotShowDiff">'.$LANG->getLL('importdata_doNotShowDifferences',1).'</label><br/>
 					<em>('.$LANG->getLL('importdata_greenValuesAreFrom',1).')</em>
 					<br/><br/>
 
 					'.($GLOBALS['BE_USER']->isAdmin() ? '
-					<input type="checkbox" name="tx_impexp[allowPHPScripts]" value="1"'.($inData['allowPHPScripts'] ? ' checked="checked"' : '').' />
-					'.$LANG->getLL('importdata_allowToWriteBanned',1).'<br/>' : '').
+					<input type="checkbox" name="tx_impexp[allowPHPScripts]" id="checkAllowPHPScripts" value="1"'.($inData['allowPHPScripts'] ? ' checked="checked"' : '').' />
+					<label for="checkAllowPHPScripts">'.$LANG->getLL('importdata_allowToWriteBanned',1).'</label><br/>' : '').
 
 					(!$inData['do_update'] && $GLOBALS['BE_USER']->isAdmin() ? '
 					<br/>
-					<input type="checkbox" name="tx_impexp[force_all_UIDS]" value="1"'.($inData['force_all_UIDS'] ? ' checked="checked"' : '').' />
-					<span class="typo3-red">'.$LANG->getLL('importdata_force_all_UIDS',1).'</span><br/>
+					<input type="checkbox" name="tx_impexp[force_all_UIDS]" id="checkForce_all_UIDS" value="1"'.($inData['force_all_UIDS'] ? ' checked="checked"' : '').' />
+					<label for="checkForce_all_UIDS"><span class="typo3-red">'.$LANG->getLL('importdata_force_all_UIDS',1).'</span></label><br/>
 					<em>('.$LANG->getLL('importdata_force_all_UIDS_descr',1).')</em>' : '').
 					'
 				</td>
@@ -1176,8 +1176,8 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 			$row[] = '<tr class="bgColor4">
 				<td><strong>'.$LANG->getLL('importdata_enableLogging',1).'</strong>'.t3lib_BEfunc::cshItem('xMOD_tx_impexp', 'enableLogging', $GLOBALS['BACK_PATH'],'').'</td>
 				<td>
-					<input type="checkbox" name="tx_impexp[enableLogging]" value="1"'.($inData['enableLogging'] ? ' checked="checked"' : '').' />
-					'.$LANG->getLL('importdata_writeIndividualDbActions',1).'<br/>
+					<input type="checkbox" name="tx_impexp[enableLogging]" id="checkEnableLogging" value="1"'.($inData['enableLogging'] ? ' checked="checked"' : '').' />
+					<label for="checkEnableLogging">'.$LANG->getLL('importdata_writeIndividualDbActions',1).'</label><br/>
 					<em>('.$LANG->getLL('importdata_thisIsDisabledBy',1).')</em>
 				</td>
 				</tr>';
@@ -1210,7 +1210,7 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 								<input type="hidden" name="file[upload][1][data]" value="1" /><br />
 
 								<input type="submit" name="_upload" value="'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:file_upload.php.submit',1).'" />
-								<input type="checkbox" name="overwriteExistingFiles" value="1" checked="checked" /> '.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_misc.php:overwriteExistingFiles',1).'
+								<input type="checkbox" name="overwriteExistingFiles" id="checkOverwriteExistingFiles" value="1" checked="checked" /> <label for="checkOverwriteExistingFiles">'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_misc.php:overwriteExistingFiles',1).'</label>
 						</td>
 					</tr>';
 

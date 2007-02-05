@@ -436,8 +436,8 @@ class SC_wizard_table {
 			<div id="c-inputMode">
 				'.
 				'<input type="hidden" name="TABLE[textFields]" value="0" />'.
-				'<input type="checkbox" name="TABLE[textFields]" value="1"'.($this->inputStyle?' checked="checked"':'').' /> '.
-				$LANG->getLL('table_smallFields').'
+				'<input type="checkbox" name="TABLE[textFields]" id="textFields" value="1"'.($this->inputStyle?' checked="checked"':'').' /> <label for="textFields">'.
+				$LANG->getLL('table_smallFields').'</label>
 			</div>
 
 			<br /><br />

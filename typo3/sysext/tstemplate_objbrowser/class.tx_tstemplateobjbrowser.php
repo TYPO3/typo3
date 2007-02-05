@@ -463,7 +463,7 @@ class tx_tstemplateobjbrowser extends t3lib_extobjbase {
 				$out="";
 				reset($tmpl->sections);
 				while(list($key,$val)=each($tmpl->sections))	{
-					$out.='<tr><td><input type="Checkbox" name="conditions['.$key.']" value="'.htmlspecialchars($val).'"'.($this->pObj->MOD_SETTINGS["tsbrowser_conditions"][$key]?" checked":"").'></td><td nowrap>'.$tmpl->substituteCMarkers(htmlspecialchars($val)).'&nbsp;&nbsp;</td></tr>';
+					$out.='<tr><td><input type="Checkbox" name="conditions['.$key.']" id="check'.$key.'" value="'.htmlspecialchars($val).'"'.($this->pObj->MOD_SETTINGS["tsbrowser_conditions"][$key]?" checked":"").'></td><td nowrap><label for="check'.$key.'">'.$tmpl->substituteCMarkers(htmlspecialchars($val)).'</label>&nbsp;&nbsp;</td></tr>';
 				}
 				$theOutput.='
 					<table border=0 cellpadding=1 cellspacing=0>
@@ -496,7 +496,7 @@ class tx_tstemplateobjbrowser extends t3lib_extobjbase {
 								<td><input type="Submit" name="search" value="Search"></td>
 							</tr>
 							<tr>
-								<td>&nbsp;Use ereg(), not stristr():&nbsp;&nbsp;'.t3lib_BEfunc::getFuncCheck($this->pObj->id,"SET[ts_browser_regexsearch]",$this->pObj->MOD_SETTINGS["ts_browser_regexsearch"]).'</td>
+								<td>&nbsp;<label for="checkTs_browser_regexsearch">Use ereg(), not stristr():</label>&nbsp;&nbsp;'.t3lib_BEfunc::getFuncCheck($this->pObj->id,"SET[ts_browser_regexsearch]",$this->pObj->MOD_SETTINGS["ts_browser_regexsearch"],'','','id="checkTs_browser_regexsearch"').'</td>
 								<td>&nbsp;</td>
 							</tr>
 							</table>
@@ -507,9 +507,9 @@ class tx_tstemplateobjbrowser extends t3lib_extobjbase {
 			';
 
 				// Menu in the bottom:
-			$menu = "Crop lines: ".t3lib_BEfunc::getFuncCheck($this->pObj->id,"SET[ts_browser_fixedLgd]",$this->pObj->MOD_SETTINGS["ts_browser_fixedLgd"]);
+			$menu = '<label for="checkTs_browser_fixedLgd">Crop lines:</label> '.t3lib_BEfunc::getFuncCheck($this->pObj->id,"SET[ts_browser_fixedLgd]",$this->pObj->MOD_SETTINGS["ts_browser_fixedLgd"],'','','id="checkTs_browser_fixedLgd"');
 			#$menu.= "&nbsp;&nbsp;Enable object links".t3lib_BEfunc::getFuncCheck($this->pObj->id,"SET[ts_browser_linkObjects]",$this->pObj->MOD_SETTINGS["ts_browser_linkObjects"]);
-			$menu .= "<br />Sort alphabetically: ".t3lib_BEfunc::getFuncCheck($this->pObj->id,'SET[ts_browser_alphaSort]',$this->pObj->MOD_SETTINGS['ts_browser_alphaSort']);
+			$menu .= '<br /><label for="checkTs_browser_alphaSort">Sort alphabetically:</label> '.t3lib_BEfunc::getFuncCheck($this->pObj->id,'SET[ts_browser_alphaSort]',$this->pObj->MOD_SETTINGS['ts_browser_alphaSort'],'','','id="checkTs_browser_alphaSort"');
 			if ($bType=="setup" && !$this->pObj->MOD_SETTINGS["ts_browser_fixedLgd"])	{
 				$menu.= "<br />Constants display: ".t3lib_BEfunc::getFuncMenu($this->pObj->id,"SET[ts_browser_const]",$this->pObj->MOD_SETTINGS["ts_browser_const"],$this->pObj->MOD_MENU["ts_browser_const"]);
 			}

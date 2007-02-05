@@ -151,7 +151,7 @@ class SC_mod_tools_config_index {
 		$arrayBrowser = t3lib_div::makeInstance('t3lib_arrayBrowser');
 
 		$menu = $LANG->sL('LLL:EXT:lang/locallang_core.php:labels.menu').' '.t3lib_BEfunc::getFuncMenu(0,'SET[function]',$this->MOD_SETTINGS['function'],$this->MOD_MENU['function']).
-					'&nbsp;&nbsp;Crop lines:&nbsp;&nbsp;'.t3lib_BEfunc::getFuncCheck(0,'SET[fixedLgd]',$this->MOD_SETTINGS['fixedLgd']);
+					'&nbsp;&nbsp;<label for="checkFixedLgd">Crop lines:</label>&nbsp;&nbsp;'.t3lib_BEfunc::getFuncCheck(0,'SET[fixedLgd]',$this->MOD_SETTINGS['fixedLgd'],'','','id="checkFixedLgd"');
 		$this->content.=$this->doc->section('','<nobr>'.$menu.'</nobr>');
 
 		switch($this->MOD_SETTINGS['function'])	{
@@ -245,7 +245,7 @@ class SC_mod_tools_config_index {
 							<td><input type="submit" name="search" value="Search" /></td>
 						</tr>
 						<tr>
-							<td>&nbsp;Use ereg(), not stristr():&nbsp;&nbsp;'.t3lib_BEfunc::getFuncCheck(0,'SET[regexsearch]',$this->MOD_SETTINGS['regexsearch']).'</td>
+							<td>&nbsp;<label for="checkRegexsearch">Use ereg(), not stristr():</label>&nbsp;&nbsp;'.t3lib_BEfunc::getFuncCheck(0,'SET[regexsearch]',$this->MOD_SETTINGS['regexsearch'],'','','id="checkRegexsearch"').'</td>
 							<td>&nbsp;</td>
 						</tr>
 						</table>

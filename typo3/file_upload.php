@@ -200,7 +200,7 @@ class SC_file_upload {
 			// Make checkbox for "overwrite"
 		$code.='
 			<div id="c-override">
-				<input type="checkbox" name="overwriteExistingFiles" value="1" /> '.$LANG->getLL('overwriteExistingFiles',1).'
+				<input type="checkbox" name="overwriteExistingFiles" id="overwriteExistingFiles" value="1" /> <label for="overwriteExistingFiles">'.$LANG->getLL('overwriteExistingFiles',1).'</label>
 			</div>
 			';
 

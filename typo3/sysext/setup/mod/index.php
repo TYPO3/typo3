@@ -385,7 +385,7 @@ class SC_mod_user_setup_index {
 		$this->content.=$this->doc->spacer(20);
 		$this->content.=$this->doc->section('','
 			<input type="submit" name="submit" value="'.$LANG->getLL('save').'" />
-			 &nbsp; <b>'.$LANG->getLL('setToStandard').': </b><input type="checkbox" name="data[setValuesToDefault]" />'.
+			 &nbsp; <label for="setValuesToDefault"><b>'.$LANG->getLL('setToStandard').':</b></label> <input type="checkbox" name="data[setValuesToDefault]" id="setValuesToDefault" />'.
 			 t3lib_BEfunc::cshItem('_MOD_user_setup', 'reset', $GLOBALS['BACK_PATH'],'|').'
 			<input type="hidden" name="simUser" value="'.$this->simUser.'" />');
 

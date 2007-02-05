@@ -356,11 +356,11 @@ class SC_mod_tools_dbint_index {
 			$menu2 .= t3lib_BEfunc::getFuncMenu(0, 'SET[search_query_makeQuery]', $this->MOD_SETTINGS['search_query_makeQuery'], $this->MOD_MENU['search_query_makeQuery']). '<br />';
 		}
 		if (!$GLOBALS['BE_USER']->userTS['mod.']['dbint.']['disableTopCheckboxes'] && $this->MOD_SETTINGS['search']=='query')	{
-			$menu2 .= t3lib_BEfunc::getFuncCheck($GLOBALS['SOBE']->id, 'SET[search_query_smallparts]', $this->MOD_SETTINGS['search_query_smallparts']).'&nbsp;Show SQL parts<br />';
-			$menu2 .= t3lib_BEfunc::getFuncCheck($GLOBALS['SOBE']->id, 'SET[search_result_labels]', $this->MOD_SETTINGS['search_result_labels']).'&nbsp;Use formatted strings, labels and dates instead of original values for results<br />';
-			$menu2 .= t3lib_BEfunc::getFuncCheck($GLOBALS['SOBE']->id, 'SET[labels_noprefix]', $this->MOD_SETTINGS['labels_noprefix']).'&nbsp;Don\'t use original values in brackets as prefix for labelled results<br />';
-			$menu2 .= t3lib_BEfunc::getFuncCheck($GLOBALS['SOBE']->id, 'SET[options_sortlabel]', $this->MOD_SETTINGS['options_sortlabel']).'&nbsp;Sort selectbox options for relations by label and not by value<br />';
-			$menu2 .= t3lib_BEfunc::getFuncCheck($GLOBALS['SOBE']->id, 'SET[show_deleted]', $this->MOD_SETTINGS['show_deleted']).'&nbsp;Show even deleted entries (with undelete buttons)';
+			$menu2 .= t3lib_BEfunc::getFuncCheck($GLOBALS['SOBE']->id, 'SET[search_query_smallparts]', $this->MOD_SETTINGS['search_query_smallparts'],'','','id="checkSearch_query_smallparts"').'&nbsp;<label for="checkSearch_query_smallparts">Show SQL parts</label><br />';
+			$menu2 .= t3lib_BEfunc::getFuncCheck($GLOBALS['SOBE']->id, 'SET[search_result_labels]', $this->MOD_SETTINGS['search_result_labels'],'','','id="checkSearch_result_labels"').'&nbsp;<label for="checkSearch_result_labels">Use formatted strings, labels and dates instead of original values for results</label><br />';
+			$menu2 .= t3lib_BEfunc::getFuncCheck($GLOBALS['SOBE']->id, 'SET[labels_noprefix]', $this->MOD_SETTINGS['labels_noprefix'],'','','id="checkLabels_noprefix"').'&nbsp;<label for="checkLabels_noprefix">Don\'t use original values in brackets as prefix for labelled results</label><br />';
+			$menu2 .= t3lib_BEfunc::getFuncCheck($GLOBALS['SOBE']->id, 'SET[options_sortlabel]', $this->MOD_SETTINGS['options_sortlabel'],'','','id="checkOptions_sortlabel"').'&nbsp;<label for="checkOptions_sortlabel">Sort selectbox options for relations by label and not by value</label><br />';
+			$menu2 .= t3lib_BEfunc::getFuncCheck($GLOBALS['SOBE']->id, 'SET[show_deleted]', $this->MOD_SETTINGS['show_deleted'],'','','id="checkShow_deleted"').'&nbsp;<label for="checkShow_deleted">Show even deleted entries (with undelete buttons)</label>';
 		}
 
 		$this->content.= $this->doc->section('',$this->menu);//$this->doc->divider(5);

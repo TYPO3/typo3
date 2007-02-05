@@ -1009,16 +1009,16 @@ class SC_alt_doc {
 		$funcMenus = '';
 
 			// Show palettes:
-		$funcMenus.= '<br /><br />'.t3lib_BEfunc::getFuncCheck('','SET[showPalettes]',$this->MOD_SETTINGS['showPalettes'],'alt_doc.php',t3lib_div::implodeArrayForUrl('',array_merge($this->R_URL_getvars,array('SET'=>'')))).$LANG->sL('LLL:EXT:lang/locallang_core.php:labels.showPalettes',1);
+		$funcMenus.= '<br /><br />'.t3lib_BEfunc::getFuncCheck('','SET[showPalettes]',$this->MOD_SETTINGS['showPalettes'],'alt_doc.php',t3lib_div::implodeArrayForUrl('',array_merge($this->R_URL_getvars,array('SET'=>''))),'id="checkShowPalettes"').'<label for="checkShowPalettes">'.$LANG->sL('LLL:EXT:lang/locallang_core.php:labels.showPalettes',1).'</label>';
 
 			// Show descriptions/help texts:
 		if ($BE_USER->uc['edit_showFieldHelp']!='text') {
-			$funcMenus.= '<br />'.t3lib_BEfunc::getFuncCheck('','SET[showDescriptions]',$this->MOD_SETTINGS['showDescriptions'],'alt_doc.php',t3lib_div::implodeArrayForUrl('',array_merge($this->R_URL_getvars,array('SET'=>'')))).$LANG->sL('LLL:EXT:lang/locallang_core.php:labels.showDescriptions',1);
+			$funcMenus.= '<br />'.t3lib_BEfunc::getFuncCheck('','SET[showDescriptions]',$this->MOD_SETTINGS['showDescriptions'],'alt_doc.php',t3lib_div::implodeArrayForUrl('',array_merge($this->R_URL_getvars,array('SET'=>''))),'id="checkShowDescriptions"').'<label for="checkShowDescriptions">'.$LANG->sL('LLL:EXT:lang/locallang_core.php:labels.showDescriptions',1).'</label>';
 		}
 
 			// Show disable RTE checkbox:
 		if ($BE_USER->isRTE())	{
-			$funcMenus.= '<br />'.t3lib_BEfunc::getFuncCheck('','SET[disableRTE]',$this->MOD_SETTINGS['disableRTE'],'alt_doc.php',t3lib_div::implodeArrayForUrl('',array_merge($this->R_URL_getvars,array('SET'=>'')))).$LANG->sL('LLL:EXT:lang/locallang_core.php:labels.disableRTE',1);
+			$funcMenus.= '<br />'.t3lib_BEfunc::getFuncCheck('','SET[disableRTE]',$this->MOD_SETTINGS['disableRTE'],'alt_doc.php',t3lib_div::implodeArrayForUrl('',array_merge($this->R_URL_getvars,array('SET'=>''))),'id="checkDisableRTE"').'<label for="checkDisableRTE">'.$LANG->sL('LLL:EXT:lang/locallang_core.php:labels.disableRTE',1).'</label>';
 		}
 
 		return '

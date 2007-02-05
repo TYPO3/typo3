@@ -263,8 +263,7 @@ class tx_cms_webinfo_lang extends t3lib_extobjbase {
 						$tCells[] = '<td class="'.$status.' c-leftLine">&nbsp;</td>';
 						$tCells[] = '<td class="'.$status.'">&nbsp;</td>';
 
-						$info = '';
-						$info.= '<input type="checkbox" name="newOL['.$langRow['uid'].']['.$data['row']['uid'].']" value="1" />';
+						$info = '<input type="checkbox" name="newOL['.$langRow['uid'].']['.$data['row']['uid'].']" value="1" />';
 						$newOL_js[$langRow['uid']].= '
 							+(document.webinfoForm[\'newOL['.$langRow['uid'].']['.$data['row']['uid'].']\'].checked ? \'&edit[pages_language_overlay]['.$data['row']['uid'].']=new\' : \'\')
 						';

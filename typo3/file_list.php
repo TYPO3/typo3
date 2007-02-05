@@ -287,10 +287,10 @@ class SC_file_list {
 				';
 
 					// Add "display thumbnails" checkbox:
-				$this->content.=t3lib_BEfunc::getFuncCheck($this->id,'SET[displayThumbs]',$this->MOD_SETTINGS['displayThumbs'],'file_list.php','').' '.$LANG->getLL('displayThumbs',1).'<br />';
+				$this->content.=t3lib_BEfunc::getFuncCheck($this->id,'SET[displayThumbs]',$this->MOD_SETTINGS['displayThumbs'],'file_list.php','','id="checkDisplayThumbs"').' <label for="checkDisplayThumbs">'.$LANG->getLL('displayThumbs',1).'</label><br />';
 
 					// Add clipboard button
-				$this->content.=t3lib_BEfunc::getFuncCheck($this->id,'SET[clipBoard]',$this->MOD_SETTINGS['clipBoard'],'file_list.php','').' '.$LANG->getLL('clipBoard',1);
+				$this->content.=t3lib_BEfunc::getFuncCheck($this->id,'SET[clipBoard]',$this->MOD_SETTINGS['clipBoard'],'file_list.php','','id="checkClipBoard"').' <label for="checkClipBoard">'.$LANG->getLL('clipBoard',1).'</label>';
 
 				$this->content.='
 					</div>

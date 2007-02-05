@@ -360,7 +360,7 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 		}
 		$menu.= t3lib_BEfunc::getFuncMenu(0,'SET[diff]',$this->MOD_SETTINGS['diff'],$this->MOD_MENU['diff']);
 		if ($GLOBALS['BE_USER']->workspace!==0)	{
-			$menu.= t3lib_BEfunc::getFuncCheck(0,'SET[expandSubElements]',$this->MOD_SETTINGS['expandSubElements']).' '.$LANG->getLL('label_showsubelements').' ';
+			$menu.= t3lib_BEfunc::getFuncCheck(0,'SET[expandSubElements]',$this->MOD_SETTINGS['expandSubElements'],'','','id="checkExpandSubElements"').' <label for="checkExpandSubElements">'.$LANG->getLL('label_showsubelements').'</label> ';
 		}
 
 			// Create header:

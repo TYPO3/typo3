@@ -120,13 +120,13 @@ class tx_tstemplateanalyzer extends t3lib_extobjbase {
 		$theOutput.=$this->pObj->doc->spacer(25);
 		$theOutput.=$this->pObj->doc->divider(0);
 		$theOutput.=$this->pObj->doc->section("",
-			"Linenumbers".t3lib_BEfunc::getFuncCheck($this->pObj->id,"SET[ts_analyzer_checkLinenum]",$this->pObj->MOD_SETTINGS["ts_analyzer_checkLinenum"]).
-			"&nbsp;&nbsp;&nbsp;Syntax HL".t3lib_BEfunc::getFuncCheck($this->pObj->id,"SET[ts_analyzer_checkSyntax]",$this->pObj->MOD_SETTINGS["ts_analyzer_checkSyntax"]).
+			'<label for="checkTs_analyzer_checkLinenum">Linenumbers</label> '.t3lib_BEfunc::getFuncCheck($this->pObj->id,"SET[ts_analyzer_checkLinenum]",$this->pObj->MOD_SETTINGS["ts_analyzer_checkLinenum"],'','','id="checkTs_analyzer_checkLinenum"').
+			'&nbsp;&nbsp;&nbsp;<label for="checkTs_analyzer_checkSyntax">Syntax HL</label> '.t3lib_BEfunc::getFuncCheck($this->pObj->id,"SET[ts_analyzer_checkSyntax]",$this->pObj->MOD_SETTINGS["ts_analyzer_checkSyntax"],'','','id="checkTs_analyzer_checkSyntax"').
 			(!$this->pObj->MOD_SETTINGS["ts_analyzer_checkSyntax"] ?
-				"&nbsp;&nbsp;&nbsp;Comments".t3lib_BEfunc::getFuncCheck($this->pObj->id,"SET[ts_analyzer_checkComments]",$this->pObj->MOD_SETTINGS["ts_analyzer_checkComments"]).
-				"&nbsp;&nbsp;&nbsp;Crop lines".t3lib_BEfunc::getFuncCheck($this->pObj->id,"SET[ts_analyzer_checkCrop]",$this->pObj->MOD_SETTINGS["ts_analyzer_checkCrop"])
+				'&nbsp;&nbsp;&nbsp;<label for="checkTs_analyzer_checkComments">Comments</label> '.t3lib_BEfunc::getFuncCheck($this->pObj->id,"SET[ts_analyzer_checkComments]",$this->pObj->MOD_SETTINGS["ts_analyzer_checkComments"],'','','id="checkTs_analyzer_checkComments"').
+				'&nbsp;&nbsp;&nbsp;<label for="checkTs_analyzer_checkCrop">Crop lines</label> '.t3lib_BEfunc::getFuncCheck($this->pObj->id,"SET[ts_analyzer_checkCrop]",$this->pObj->MOD_SETTINGS["ts_analyzer_checkCrop"],'','','id="checkTs_analyzer_checkCrop"')
 				:
-				"&nbsp;&nbsp;&nbsp;Block mode".t3lib_BEfunc::getFuncCheck($this->pObj->id,"SET[ts_analyzer_checkSyntaxBlockmode]",$this->pObj->MOD_SETTINGS["ts_analyzer_checkSyntaxBlockmode"])
+				'&nbsp;&nbsp;&nbsp;<label for="checkTs_analyzer_checkSyntaxBlockmode">Block mode</label> '.t3lib_BEfunc::getFuncCheck($this->pObj->id,"SET[ts_analyzer_checkSyntaxBlockmode]",$this->pObj->MOD_SETTINGS["ts_analyzer_checkSyntaxBlockmode"],'','','id="checkTs_analyzer_checkSyntaxBlockmode"')
 			)
 		);
 		$theOutput.=$this->pObj->doc->divider(2);

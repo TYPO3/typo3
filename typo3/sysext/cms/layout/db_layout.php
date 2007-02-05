@@ -811,23 +811,23 @@ class SC_db_layout {
 
 			// Bottom controls (function menus):
 		$q_count = $this->getNumberOfHiddenElements();
-		$h_func_b= t3lib_BEfunc::getFuncCheck($this->id,'SET[tt_content_showHidden]',$this->MOD_SETTINGS['tt_content_showHidden'],'db_layout.php','').
-					(!$q_count?$GLOBALS['TBE_TEMPLATE']->dfw($LANG->getLL('hiddenCE',1)):$LANG->getLL('hiddenCE',1).' ('.$q_count.')');
+		$h_func_b= t3lib_BEfunc::getFuncCheck($this->id,'SET[tt_content_showHidden]',$this->MOD_SETTINGS['tt_content_showHidden'],'db_layout.php','','id="checkTt_content_showHidden"').
+					'<label for="checkTt_content_showHidden">'.(!$q_count?$GLOBALS['TBE_TEMPLATE']->dfw($LANG->getLL('hiddenCE',1)):$LANG->getLL('hiddenCE',1).' ('.$q_count.')').'</label>';
 
 		$h_func_b.= '<br />'.
-					t3lib_BEfunc::getFuncCheck($this->id,'SET[showPalettes]',$this->MOD_SETTINGS['showPalettes'],'db_layout.php','').
-					$LANG->sL('LLL:EXT:lang/locallang_core.php:labels.showPalettes',1);
+					t3lib_BEfunc::getFuncCheck($this->id,'SET[showPalettes]',$this->MOD_SETTINGS['showPalettes'],'db_layout.php','','id="checkShowPalettes"').
+					'<label for="checkShowPalettes">'.$LANG->sL('LLL:EXT:lang/locallang_core.php:labels.showPalettes',1).'</label>';
 
 		if (t3lib_extMgm::isLoaded('context_help') && $BE_USER->uc['edit_showFieldHelp']!='text') {
 			$h_func_b.= '<br />'.
-						t3lib_BEfunc::getFuncCheck($this->id,'SET[showDescriptions]',$this->MOD_SETTINGS['showDescriptions'],'db_layout.php','').
-						$LANG->sL('LLL:EXT:lang/locallang_core.php:labels.showDescriptions',1);
+						t3lib_BEfunc::getFuncCheck($this->id,'SET[showDescriptions]',$this->MOD_SETTINGS['showDescriptions'],'db_layout.php','','id="checkShowDescriptions"').
+						'<label for="checkShowDescriptions">'.$LANG->sL('LLL:EXT:lang/locallang_core.php:labels.showDescriptions',1).'</label>';
 		}
 
 		if ($BE_USER->isRTE())	{
 			$h_func_b.= '<br />'.
-						t3lib_BEfunc::getFuncCheck($this->id,'SET[disableRTE]',$this->MOD_SETTINGS['disableRTE'],'db_layout.php','').
-						$LANG->sL('LLL:EXT:lang/locallang_core.php:labels.disableRTE',1);
+						t3lib_BEfunc::getFuncCheck($this->id,'SET[disableRTE]',$this->MOD_SETTINGS['disableRTE'],'db_layout.php','','id="checkDisableRTE"').
+						'<label for="checkDisableRTE">'.$LANG->sL('LLL:EXT:lang/locallang_core.php:labels.disableRTE',1).'</label>';
 		}
 
 			// Add the function menus to bottom:
@@ -952,7 +952,7 @@ class SC_db_layout {
 					break;
 					case 'tt_content':
 						$q_count = $this->getNumberOfHiddenElements();
-						$h_func_b= t3lib_BEfunc::getFuncCheck($this->id,'SET[tt_content_showHidden]',$this->MOD_SETTINGS['tt_content_showHidden'],'db_layout.php','').(!$q_count?$GLOBALS['TBE_TEMPLATE']->dfw($LANG->getLL('hiddenCE')):$LANG->getLL('hiddenCE').' ('.$q_count.')');
+						$h_func_b= t3lib_BEfunc::getFuncCheck($this->id,'SET[tt_content_showHidden]',$this->MOD_SETTINGS['tt_content_showHidden'],'db_layout.php','','id="checkTt_content_showHidden"').'<label for="checkTt_content_showHidden">'.(!$q_count?$GLOBALS['TBE_TEMPLATE']->dfw($LANG->getLL('hiddenCE')):$LANG->getLL('hiddenCE').' ('.$q_count.')').'</label>';
 
 						$dblist->tt_contentConfig['showCommands'] = 1;	// Boolean: Display up/down arrows and edit icons for tt_content records
 						$dblist->tt_contentConfig['showInfo'] = 1;		// Boolean: Display info-marks or not

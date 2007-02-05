@@ -1268,7 +1268,7 @@ class SC_mod_tools_be_user_index {
 			reset($options);
 			$menu=array();
 			while(list($kk,$vv)=each($options))	{
-				$menu[]='<input type="checkbox" value="1" name="compareFlags['.$kk.']"'.($compareFlags[$kk]?' checked="checked"':'').'>'.htmlspecialchars($vv);
+				$menu[]='<input type="checkbox" value="1" name="compareFlags['.$kk.']" id="checkCompare_'.$kk.'"'.($compareFlags[$kk]?' checked="checked"':'').'> <label for="checkCompare_'.$kk.'">'.htmlspecialchars($vv).'</label>';
 			}
 			$outCode = 'Group by:<br />'.implode('<br />',$menu);
 			$outCode.='<br /><input type="submit" name="ads" value="Update">';

@@ -2956,7 +2956,7 @@ class tx_impexp {
 		global $LANG;
 
 		if ($this->mode==='export')	{
-			return ($r['type']=='record' ? '<input type="checkbox" name="tx_impexp[exclude]['.$r['ref'].']" value="1" /> '.$LANG->getLL('impexpcore_singlereco_exclude',1) :
+			return ($r['type']=='record' ? '<input type="checkbox" name="tx_impexp[exclude]['.$r['ref'].']" id="checkExclude'.$r['ref'].'" value="1" /> <label for="checkExclude'.$r['ref'].'">'.$LANG->getLL('impexpcore_singlereco_exclude',1).'</label>' :
 								($r['type']=='softref' ? $this->softrefSelector($r['_softRefInfo']) : ''));
 		} else {	// During import
 

@@ -550,13 +550,13 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 				'&nbsp;&nbsp;Show:&nbsp;'.t3lib_BEfunc::getFuncMenu(0,'SET[display_details]',$this->MOD_SETTINGS['display_details'],$this->MOD_MENU['display_details']).'<br />';
 			}
 			if (t3lib_div::inList('0,1',$this->MOD_SETTINGS['function']))	{
-				$menu.='Display shy extensions:&nbsp;&nbsp;'.t3lib_BEfunc::getFuncCheck(0,'SET[display_shy]',$this->MOD_SETTINGS['display_shy']);
+				$menu.='<label for="checkDisplayShy">Display shy extensions:</label>&nbsp;&nbsp;'.t3lib_BEfunc::getFuncCheck(0,'SET[display_shy]',$this->MOD_SETTINGS['display_shy'],'','','id="checkDisplayShy"');
 			}
 			if (t3lib_div::inList('2',$this->MOD_SETTINGS['function']) && strlen($this->fe_user['username']))	{
-				$menu.='Only my extensions:&nbsp;&nbsp;'.t3lib_BEfunc::getFuncCheck(0,'SET[display_own]',$this->MOD_SETTINGS['display_own']);
+				$menu.='<label for="checkDisplayOwn">Only my extensions:</label>&nbsp;&nbsp;'.t3lib_BEfunc::getFuncCheck(0,'SET[display_own]',$this->MOD_SETTINGS['display_own'],'','','id="checkDisplayOwn"');
 			}
 			if (t3lib_div::inList('0,1,2',$this->MOD_SETTINGS['function']))	{
-				$menu.='&nbsp;&nbsp;Show obsolete:&nbsp;&nbsp;'.t3lib_BEfunc::getFuncCheck(0,'SET[display_obsolete]',$this->MOD_SETTINGS['display_obsolete']);
+				$menu.='&nbsp;&nbsp;<label for="checkDisplayObsolete">Show obsolete:</label>&nbsp;&nbsp;'.t3lib_BEfunc::getFuncCheck(0,'SET[display_obsolete]',$this->MOD_SETTINGS['display_obsolete'],'','','id="checkDisplayObsolete"');
 			}
 
 			$this->content.=$this->doc->section('','<span class="nobr">'.$menu.'</span>');
@@ -922,7 +922,7 @@ EXTENSION KEYS:
 			if ($this->importAsType('G'))	$content.='<option value="G">Global (typo3/ext/)</option>';
 			if ($this->importAsType('S'))	$content.='<option value="S">System (typo3/sysext/)</option>';
 			$content.='</select><br />
-	<input type="checkbox" value="1" name="CMD[uploadOverwrite]" /> Overwrite any existing extension!<br />
+	<input type="checkbox" value="1" name="CMD[uploadOverwrite]" id="checkUploadOverwrite" /> <label for="checkUploadOverwrite">Overwrite any existing extension!</label><br />
 	<input type="submit" name="CMD[uploadExt]" value="Upload extension file" /><br />
 			';
 		} else $content=$this->noImportMsg();
@@ -967,8 +967,8 @@ EXTENSION KEYS:
 			<fieldset><legend>Security Settings</legend>
 			<table border="0" cellpadding="2" cellspacing="2">
 				<tr class="bgColor4">
-					<td>Enable extensions without review (basic security check):</td>
-					<td>'.t3lib_BEfunc::getFuncCheck(0,'SET[display_unchecked]',$this->MOD_SETTINGS['display_unchecked']).'</td>
+					<td><label for="display_unchecked">Enable extensions without review (basic security check):</label></td>
+					<td>'.t3lib_BEfunc::getFuncCheck(0,'SET[display_unchecked]',$this->MOD_SETTINGS['display_unchecked'],'','','id="display_unchecked"').'</td>
 				</tr>
 			</table>
 			<strong>Notice:</strong> Make sure you know what consequences enabling this checkbox might have. Check the <a href="http://typo3.org/extensions/what-are-reviews/" target="_blank">information on typo3.org about security reviewing</a>!
@@ -1023,7 +1023,7 @@ EXTENSION KEYS:
 				}
 				$selected = ($this->MOD_SETTINGS['selectedMirror']==$k) ? 'checked="checked"' : '';
 				$content.='<tr class="bgColor4">
-			<td><input type="radio" name="SET[selectedMirror]" value="'.$k.'" '.$selected.'/></td><td>'.htmlspecialchars($v['title']).'</td><td>'.htmlspecialchars($v['host'].$v['path']).'</td><td>'.$v['country'].'</td><td>'.$sponsor.'</td></tr>';
+			<td><input type="radio" name="SET[selectedMirror]" id="selectedMirror'.$k.'" value="'.$k.'" '.$selected.'/></td><td><label for="selectedMirror'.$k.'">'.htmlspecialchars($v['title']).'</label></td><td>'.htmlspecialchars($v['host'].$v['path']).'</td><td>'.$v['country'].'</td><td>'.$sponsor.'</td></tr>';
 			}
 		}
 		$content.= '
@@ -2153,8 +2153,8 @@ EXTENSION KEYS:
 			if (!t3lib_extMgm::isLoaded($extKey))	{
 				$outputRow[] = '
 				<tr class="bgColor4">
-					<td><input type="checkbox" name="'.htmlspecialchars('installOrImportExtension['.$extKey.']').'" value="1" checked="checked" /></td>
-					<td>'.htmlspecialchars($extKey).'</td>
+					<td><input type="checkbox" name="'.htmlspecialchars('installOrImportExtension['.$extKey.']').'" value="1" checked="checked" id="check_'.$extKey.'" /></td>
+					<td><label for="check_'.$extKey.'">'.htmlspecialchars($extKey).'</label></td>
 				</tr>
 				';
 			}
@@ -2619,11 +2619,11 @@ EXTENSION KEYS:
 				<tr class="bgColor4">
 					<td>Upload command:</td>
 					<td nowrap="nowrap">
-						<input type="radio" name="em[upload][mode]" value="new_dev" checked="checked" /> New development version (latest x.x.<strong>'.$GLOBALS['TBE_TEMPLATE']->rfw('x+1').'</strong>)<br />
-						<input type="radio" name="em[upload][mode]" value="latest" /> Override <em>this</em> development version ('.$extInfo['EM_CONF']['version'].')<br />
-						<input type="radio" name="em[upload][mode]" value="new_sub" /> New sub version (latest x.<strong>'.$GLOBALS['TBE_TEMPLATE']->rfw('x+1').'</strong>.0)<br />
-						<input type="radio" name="em[upload][mode]" value="new_main" /> New main version (latest <strong>'.$GLOBALS['TBE_TEMPLATE']->rfw('x+1').'</strong>.0.0)<br />
-						<input type="radio" name="em[upload][mode]" value="custom" /> This version: <input type="text" name="em[upload][version]" /><br />
+						<input type="radio" name="em[upload][mode]" id="new_dev" value="new_dev" checked="checked" /> <label for="new_dev">New development version (latest x.x.<strong>'.$GLOBALS['TBE_TEMPLATE']->rfw('x+1').'</strong>)</label><br />
+						<input type="radio" name="em[upload][mode]" id="latest" value="latest" /> <label for="latest">Override <em>this</em> development version ('.$extInfo['EM_CONF']['version'].')</label><br />
+						<input type="radio" name="em[upload][mode]" id="new_sub" value="new_sub" /> <label for="new_sub">New sub version (latest x.<strong>'.$GLOBALS['TBE_TEMPLATE']->rfw('x+1').'</strong>.0)</label><br />
+						<input type="radio" name="em[upload][mode]" id="new_main" value="new_main" /> <label for="new_main">New main version (latest <strong>'.$GLOBALS['TBE_TEMPLATE']->rfw('x+1').'</strong>.0.0)</label><br />
+						<input type="radio" name="em[upload][mode]" id="custom" value="custom" /> <label for="custom">This version: <input type="text" name="em[upload][version]" /></label><br />
 					</td>
 				</tr>
 				<tr class="bgColor4">
@@ -4085,12 +4085,12 @@ $EM_CONF[$_EXTKEY] = '.$this->arrayToCode($EM_CONF, 0).';
 				$phpv = strstr(PHP_VERSION,'-') ? substr(PHP_VERSION,0,strpos(PHP_VERSION,'-')) : PHP_VERSION; // Linux distributors like to add suffixes, like in 5.1.2-1. Those must be ignored!
 				if ($versionRange[0] && version_compare($phpv,$versionRange[0],'<'))	{
 					$msg[] = '<br />The running PHP version ('.$phpv.') is lower than required ('.$versionRange[0].')';
-					$msg[] = '&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" value="1" name="depsolver[ignore]['.$depK.']" /> Ignore this version requirement';
+					$msg[] = '&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" value="1" name="depsolver[ignore]['.$depK.']" id="checkIgnore_'.$depK.'" /> <label for="checkIgnore_'.$depK.'">Ignore this version requirement</label>';
 					$depError = true;
 					continue;
 				} elseif ($versionRange[1] && version_compare($phpv,$versionRange[1],'>'))	{
 					$msg[] = '<br />The running PHP version ('.$phpv.') is higher than allowed ('.$versionRange[1].')';
-					$msg[] = '&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" value="1" name="depsolver[ignore]['.$depK.']" /> Ignore this version requirement';
+					$msg[] = '&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" value="1" name="depsolver[ignore]['.$depK.']" id="checkIgnore_'.$depK.'" /> <label for="checkIgnore_'.$depK.'">Ignore this version requirement</label>';
 					$depError = true;
 					continue;
 				}
@@ -4101,12 +4101,12 @@ $EM_CONF[$_EXTKEY] = '.$this->arrayToCode($EM_CONF, 0).';
 				$versionRange = $this->splitVersionRange($depV);
 				if ($versionRange[0] && version_compare(TYPO3_version,$versionRange[0],'<'))	{
 					$msg[] = '<br />The running TYPO3 version ('.TYPO3_version.') is lower than required ('.$versionRange[0].')';
-					$msg[] = '&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" value="1" name="depsolver[ignore]['.$depK.']" /> Ignore this version requirement';
+					$msg[] = '&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" value="1" name="depsolver[ignore]['.$depK.']" id="checkIgnore_'.$depK.'" /> <label for="checkIgnore_'.$depK.'">Ignore this version requirement</label>';
 					$depError = true;
 					continue;
 				} elseif ($versionRange[1] && version_compare(TYPO3_version,$versionRange[1],'>'))	{
 					$msg[] = '<br />The running TYPO3 version ('.TYPO3_version.') is higher than allowed ('.$versionRange[1].')';
-					$msg[] = '&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" value="1" name="depsolver[ignore]['.$depK.']" /> Ignore this version requirement';
+					$msg[] = '&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" value="1" name="depsolver[ignore]['.$depK.']" id="checkIgnore_'.$depK.'" /> <label for="checkIgnore_'.$depK.'">Ignore this version requirement</label>';
 					$depError = true;
 					continue;
 				}
@@ -4114,23 +4114,23 @@ $EM_CONF[$_EXTKEY] = '.$this->arrayToCode($EM_CONF, 0).';
 				if(!isset($instExtInfo[$depK]))	{
 					$msg[] = '<br />Extension "'.$depK.'" was not available in the system. Please import it from the TYPO3 Extension Repository.';
 					$msg[] = '&nbsp;&nbsp;&nbsp;&nbsp;<img src="'.$GLOBALS['BACK_PATH'].'gfx/import.gif" width="12" height="12" title="Import this extension to \'local\' dir typo3conf/ext/ from online repository." alt="" />&nbsp;<a href="index.php?CMD[importExt]='.$depK.'&CMD[loc]=L&CMD[standAlone]=1" target="_blank">Import now (opens a new window)</a>';
-					$msg[] = '&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" value="1" name="depsolver[ignore]['.$depK.']" /> Ignore this extension requirement';
+					$msg[] = '&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" value="1" name="depsolver[ignore]['.$depK.']" id="checkIgnore_'.$depK.'" /> <label for="checkIgnore_'.$depK.'">Ignore this extension requirement</label>';
 				} else {
 					$msg[] = '<br />Extension "'.$depK.'" ('.$instExtInfo[$depK]['EM_CONF']['title'].') was not installed. Please install it first.';
 					$msg[] = '&nbsp;&nbsp;&nbsp;&nbsp;'.$this->installButton().'&nbsp;<a href="'.htmlspecialchars('index.php?CMD[showExt]='.$depK.'&CMD[load]=1&CMD[clrCmd]=1&CMD[standAlone]=1&SET[singleDetails]=info').'" target="_blank">Install now (opens a new window)</a>';
-					$msg[] = '&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" value="1" name="depsolver[ignore]['.$depK.']" /> Ignore this extension requirement';
+					$msg[] = '&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" value="1" name="depsolver[ignore]['.$depK.']" id="checkIgnore_'.$depK.'" /> <label for="checkIgnore_'.$depK.'">Ignore this extension requirement</label>';
 				}
 				$depError = true;
 			} else {
 				$versionRange = $this->splitVersionRange($depV);
 				if ($versionRange[0] && version_compare($instExtInfo[$depK]['EM_CONF']['version'],$versionRange[0],'<'))	{
 					$msg[] = '<br />The running version of extension "'.$depK.'" ('.$instExtInfo[$depK]['EM_CONF']['version'].') is lower than required ('.$versionRange[0].')';
-					$msg[] = '&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" value="1" name="depsolver[ignore]['.$depK.']" /> Ignore this version requirement';
+					$msg[] = '&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" value="1" name="depsolver[ignore]['.$depK.']" id="checkIgnore_'.$depK.'" /> <label for="checkIgnore_'.$depK.'">Ignore this version requirement</label>';
 					$depError = true;
 					continue;
 				} elseif ($versionRange[1] && version_compare($instExtInfo[$depK]['EM_CONF']['version'],$versionRange[1],'>'))	{
 					$msg[] = '<br />The running version of extension "'.$depK.'" ('.$instExtInfo[$depK]['EM_CONF']['version'].') is higher than allowed ('.$versionRange[1].')';
-					$msg[] = '&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" value="1" name="depsolver[ignore]['.$depK.']" /> Ignore this version requirement';
+					$msg[] = '&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" value="1" name="depsolver[ignore]['.$depK.']" id="checkIgnore_'.$depK.'" /> <label for="checkIgnore_'.$depK.'">Ignore this version requirement</label>';
 					$depError = true;
 					continue;
 				}
@@ -4152,7 +4152,7 @@ $EM_CONF[$_EXTKEY] = '.$this->arrayToCode($EM_CONF, 0).';
 			if (t3lib_extMgm::isLoaded($conflictK))	{
 				$msg[] = 'The extensions "'.$extKey.'" and "'.$conflictK.'" ('.$instExtInfo[$conflictK]['EM_CONF']['title'].') will conflict with each other. Please remove "'.$conflictK.'" if you want to install "'.$extKey.'".';
 				$msg[] = '&nbsp;&nbsp;&nbsp;&nbsp;'.$this->removeButton().'&nbsp;<a href="'.htmlspecialchars('index.php?CMD[showExt]='.$conflictK.'&CMD[remove]=1&CMD[clrCmd]=1&CMD[standAlone]=1&SET[singleDetails]=info').'" target="_blank">Remove now (opens a new window)</a>';
-				$msg[] = '&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" value="1" name="depsolver[ignore]['.$conflictK.']" /> Ignore this conflict error';
+				$msg[] = '&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" value="1" name="depsolver[ignore]['.$conflictK.']" id="checkIgnore_'.$conflictK.'" /> <label for="checkIgnore_'.$conflictK.'">Ignore this conflict error</label>';
 				$conflictError = true;
 			}
 		}
@@ -4174,11 +4174,11 @@ $EM_CONF[$_EXTKEY] = '.$this->arrayToCode($EM_CONF, 0).';
 					if (!isset($instExtInfo[$suggestK]))	{
 						$msg[] = 'Extension "'.$suggestK.'" was not available in the system. You may want to import it from the TYPO3 Extension Repository.';
 						$msg[] = '&nbsp;&nbsp;&nbsp;&nbsp;<img src="'.$GLOBALS['BACK_PATH'].'gfx/import.gif" width="12" height="12" title="Import this extension to \'local\' dir typo3conf/ext/ from online repository." alt="" />&nbsp;<a href="index.php?CMD[importExt]='.$depK.'&CMD[loc]=L&CMD[standAlone]=1" target="_blank">Import now (opens a new window)</a>';
-						$msg[] = '&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" value="1" name="depsolver[ignore]['.$suggestK.']" /> Ignore this suggestion';
+						$msg[] = '&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" value="1" name="depsolver[ignore]['.$suggestK.']" id="checkIgnore_'.$suggestK.'" /> <label for="checkIgnore_'.$suggestK.'">Ignore this suggestion</label>';
 					} else {
 						$msg[] = 'Extension "'.$suggestK.'" ('.$instExtInfo[$suggestK]['EM_CONF']['title'].') was not installed. You may want to install it.';
 						$msg[] = '&nbsp;&nbsp;&nbsp;&nbsp;'.$this->installButton().'&nbsp;<a href="'.htmlspecialchars('index.php?CMD[showExt]='.$suggestK.'&CMD[load]=1&CMD[clrCmd]=1&CMD[standAlone]=1&SET[singleDetails]=info').'" target="_blank">Install now (opens a new window)</a>';
-						$msg[] = '&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" value="1" name="depsolver[ignore]['.$suggestK.']" /> Ignore this suggestion';
+						$msg[] = '&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" value="1" name="depsolver[ignore]['.$suggestK.']" id="checkIgnore_'.$suggestK.'" /> <label for="checkIgnore_'.$suggestK.'">Ignore this suggestion</label>';
 					}
 					$suggestion = true;
 				}
@@ -4325,7 +4325,7 @@ $EM_CONF[$_EXTKEY] = '.$this->arrayToCode($EM_CONF, 0).';
 					<br />
 					<h3>Clear cache</h3>
 					<p>This extension requests the cache to be cleared when it is installed/removed.<br />
-						Clear all cache: <input type="checkbox" name="_clear_all_cache" checked="checked" value="1" /><br />
+						<label for="check_clear_all_cache">Clear all cache:</label> <input type="checkbox" name="_clear_all_cache" id="check_clear_all_cache" checked="checked" value="1" /><br />
 						</p>
 				';
 			}
@@ -4359,7 +4359,7 @@ $EM_CONF[$_EXTKEY] = '.$this->arrayToCode($EM_CONF, 0).';
 				$content.='
 					<br /><h3>Create upload folder</h3>
 					<p>The extension requires the upload folder "'.$this->ulFolder($extKey).'" to exist.<br />
-				Create directory "'.$this->ulFolder($extKey).'": <input type="checkbox" name="_uploadfolder" checked="checked" value="1" /><br />
+				<label for="check_uploadfolder">Create directory "'.$this->ulFolder($extKey).'":</label> <input type="checkbox" name="_uploadfolder" id="check_uploadfolder" checked="checked" value="1" /><br />
 				</p>
 				';
 			}
@@ -4400,11 +4400,12 @@ $EM_CONF[$_EXTKEY] = '.$this->arrayToCode($EM_CONF, 0).';
 							t3lib_div::writeFile($finalDir.'index.html',$indexContent);
 						}
 					} else {	// Show checkbox / HTML for creation:
+						$md5CrDir = md5($crDir);
 						$content.='
 							<br />
 							<h3>Create folder</h3>
 							<p>The extension requires the folder "'.$crDir.'" to exist.<br />
-						Create directory "'.$crDir.'": <input type="checkbox" name="_createDir_'.md5($crDir).'" checked="checked" value="1" /><br />
+						<label for="check_createDir_'.$md5CrDir.'">Create directory "'.$crDir.'":</label> <input type="checkbox" name="_createDir_'.$md5CrDir.'" id="check_createDir_'.$md5CrDir.'" checked="checked" value="1" /><br />
 						</p>
 						';
 					}

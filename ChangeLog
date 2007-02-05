@@ -1,3 +1,7 @@
+2007-02-05  Ingmar Schlecht  <ingmar@typo3.org>
+
+	* Lots of <label> tags added to checkbox labels throughout the core (Thanks to Ingo Renner for this big patch!)
+
 2007-02-05  Oliver Hader  <oh@inpublica.de>
 
 	* Bugfix for TSconfig overriding TCA field configuration

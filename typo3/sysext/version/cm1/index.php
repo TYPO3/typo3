@@ -640,7 +640,7 @@ class tx_version_cm1 extends t3lib_SCbase {
 			$menu.= t3lib_BEfunc::getFuncMenu($this->id,'SET[display]',$this->MOD_SETTINGS['display'],$this->MOD_MENU['display']);
 		}
 		if (!$this->details && $GLOBALS['BE_USER']->workspace && !$this->diffOnly)	{
-			$menu.= t3lib_BEfunc::getFuncCheck($this->id,'SET[diff]',$this->MOD_SETTINGS['diff']).' Show difference view';
+			$menu.= t3lib_BEfunc::getFuncCheck($this->id,'SET[diff]',$this->MOD_SETTINGS['diff'],'','','id="checkDiff"').' <label for="checkDiff">Show difference view</label>';
 		}
 
 		if ($menu)	{

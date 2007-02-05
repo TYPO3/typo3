@@ -164,9 +164,9 @@ class tx_wizardcrpages_webfunc_2 extends t3lib_extobjbase {
 
 				$theCode.= '<b>'.$LANG->getLL('wiz_newPages').':</b><br /><br />'.implode('<br />',$lines).
 				'<br /><br />
-				<input type="checkbox" name="createInListEnd" value="1" />'.$LANG->getLL('wiz_newPages_listEnd').'<br />
-				<input type="checkbox" name="hidePages" value="1" />'.$LANG->getLL('wiz_newPages_hidePages').'<br />
-				<input type="submit" name="create" value="'.$LANG->getLL('wiz_newPages_lCreate').'" onclick="return confirm('.$GLOBALS['LANG']->JScharCode($GLOBALS['LANG']->getLL('wiz_newPages_lCreate_msg1')).')"> <input type="reset" value="'.$LANG->getLL('wiz_newPages_lReset').'" />';
+				<input type="checkbox" name="createInListEnd" id="createInListEnd" value="1" /> <label for="createInListEnd">'.$LANG->getLL('wiz_newPages_listEnd').'</label><br />
+				<input type="checkbox" name="hidePages" id="hidePages" value="1" /> <label for="hidePages">'.$LANG->getLL('wiz_newPages_hidePages').'</label><br /><br />
+				<input type="submit" name="create" value="'.$LANG->getLL('wiz_newPages_lCreate').'" onclick="return confirm('.$GLOBALS['LANG']->JScharCode($GLOBALS['LANG']->getLL('wiz_newPages_lCreate_msg1')).')"> <input type="reset" value="'.$LANG->getLL('wiz_newPages_lReset').'" /><br />';
 			}
 		} else {
 			$theCode.=$GLOBALS['TBE_TEMPLATE']->rfw($LANG->getLL('wiz_newPages_errorMsg1'));

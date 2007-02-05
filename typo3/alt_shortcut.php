@@ -519,7 +519,7 @@ class SC_alt_shortcut {
 
 		if (count($this->lines))	{
 			if (!$BE_USER->getTSConfigVal('options.mayNotCreateEditShortcuts'))	{
-				$this->lines=array_merge(array('<td><input type="checkbox" id="editShortcut_check" name="editShortcut_check" value="1"'.($this->editSC?' checked="checked"':'').' /><label for="editShortcut_check">'.$LANG->getLL('shortcut_edit',1).'</label>&nbsp;</td>'),$this->lines);
+				$this->lines=array_merge(array('<td><input type="checkbox" id="editShortcut_check" name="editShortcut_check" value="1"'.($this->editSC?' checked="checked"':'').' /> <label for="editShortcut_check">'.$LANG->getLL('shortcut_edit',1).'</label>&nbsp;</td>'),$this->lines);
 				$this->lines[]='<td>'.$manageForm.'</td>';
 			}
 			$this->lines[]='<td><img src="clear.gif" width="10" height="1" alt="" /></td>';
@@ -656,7 +656,7 @@ class SC_alt_shortcut {
 		$selector = '';
 			// Preview:
 		if ($BE_USER->workspace!==0)	{
-			$selector.= 'Frontend Preview: <input type="checkbox" onclick="changeWorkspacePreview('.($BE_USER->user['workspace_preview'] ? 0 : 1).')"; '.($BE_USER->user['workspace_preview'] ? 'checked="checked"' : '').'/>&nbsp;';
+			$selector.= '<label for="workspacePreview">Frontend Preview:</label> <input type="checkbox" name="workspacePreview" id="workspacePreview" onclick="changeWorkspacePreview('.($BE_USER->user['workspace_preview'] ? 0 : 1).')"; '.($BE_USER->user['workspace_preview'] ? 'checked="checked"' : '').'/>&nbsp;';
 		}
 
 		$selector.= '<a href="mod/user/ws/index.php" target="content">'.

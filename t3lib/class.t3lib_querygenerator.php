@@ -1376,10 +1376,10 @@ class t3lib_queryGenerator	{
 		//		debug($orderByArr);
 				$orderBy='';
 				$orderBy.=$this->mkTypeSelect('SET[queryOrder]',$orderByArr[0],'').
-				'&nbsp;'.t3lib_BEfunc::getFuncCheck($GLOBALS['SOBE']->id,'SET[queryOrderDesc]',$modSettings['queryOrderDesc']).'&nbsp;Descending';
+				'&nbsp;'.t3lib_BEfunc::getFuncCheck($GLOBALS['SOBE']->id,'SET[queryOrderDesc]',$modSettings['queryOrderDesc'],'','','id="checkQueryOrderDesc"').'&nbsp;<label for="checkQueryOrderDesc">Descending</label>';
 				if ($orderByArr[0])	{
 					$orderBy.= '<BR>'.$this->mkTypeSelect('SET[queryOrder2]',$orderByArr[1],'').
-					'&nbsp;'.t3lib_BEfunc::getFuncCheck($GLOBALS['SOBE']->id,'SET[queryOrder2Desc]',$modSettings['queryOrder2Desc']).'&nbsp;Descending';
+					'&nbsp;'.t3lib_BEfunc::getFuncCheck($GLOBALS['SOBE']->id,'SET[queryOrder2Desc]',$modSettings['queryOrder2Desc'],'','','id="checkQueryOrder2Desc"').'&nbsp;<label for="checkQueryOrder2Desc">Descending</label>';
 				}
 				$out.='<tr>
 					<td'.$TDparams.'><strong>Order By:</strong></td>
