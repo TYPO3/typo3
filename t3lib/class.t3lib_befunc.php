@@ -1823,7 +1823,7 @@ class t3lib_BEfunc	{
 	 */
 	function getRecordTitle($table,$row,$prep=FALSE,$forceResult=TRUE)	{
 		global $TCA;
-		if (is_array($TCA[$table]))	{			
+		if (is_array($TCA[$table]))	{
 
 				// If configured, call userFunc
 			if ($TCA[$table]['ctrl']['label_userFunc'])	{
@@ -1872,7 +1872,7 @@ class t3lib_BEfunc	{
 	 * @return	string		The processed title string, wrapped in <span title="...">|</span> if cropped
 	 */
 	function getRecordTitlePrep($title, $titleLength=0) {
-			// If $titleLength is not a valid positive integer, use BE_USER->uc['titleLen']: 
+			// If $titleLength is not a valid positive integer, use BE_USER->uc['titleLen']:
 		if (!$titleLength || !t3lib_div::testInt($titleLength) || $titleLength < 0) {
 			$titleLength = $GLOBALS['BE_USER']->uc['titleLen'];
 		}
@@ -2424,7 +2424,7 @@ class t3lib_BEfunc	{
 			}
 			$mainParams = t3lib_div::implodeArrayForUrl('',$mainParams);
 
-			if (!$script) { 
+			if (!$script) {
 				$script = basename(PATH_thisScript);
 				$mainParams.= (t3lib_div::_GET('M') ? '&M='.rawurlencode(t3lib_div::_GET('M')) : '');
 			}
@@ -2895,10 +2895,21 @@ class t3lib_BEfunc	{
 			}
 			// ... else the pos/zero pid is just returned here.
 		} else {	// No integer pid and we are forced to look up the $pid
-			$rr = t3lib_BEfunc::getRecord($table,$uid,'pid');	// Try to fetch the record pid from uid. If the uid is 'NEW...' then this will of course return nothing...
+			$rr = t3lib_BEfunc::getRecord($table,$uid);	// Try to fetch the record pid from uid. If the uid is 'NEW...' then this will of course return nothing...
+
 			if (is_array($rr))	{
-				$thePidValue = $rr['pid'];	// Returning the 'pid' of the record
-			} else $thePidValue=-1;	// Returns -1 if the record with the pid was not found.
+					// First check if the pid is -1 which means it is a workspaced element. Get the "real" record:
+				if ($rr['pid']=='-1')	{
+					$rr = t3lib_BEfunc::getRecord($table,$rr['t3ver_oid'],'pid');
+					if (is_array($rr))	{
+						$thePidValue = $rr['pid'];
+					}
+				} else {
+					$thePidValue = $rr['pid'];	// Returning the "pid" of the record
+				}
+			}
+
+			if (!$thePidValue)	$thePidValue = -1;	// Returns -1 if the record with this pid was not found.
 		}
 
 		return $thePidValue;

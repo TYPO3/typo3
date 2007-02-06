@@ -11,6 +11,7 @@
 	* Fixed bug #3069 again: Ignore version check if no requirements are specified
 	* indexed_search: Turn off maxAge setting as this "feature" seems to make no sense at all
 	* Fixed bug #4689: Error in t3lib_tcemain while entering a number like 50 or 50.00 into a double2 field
+	* Fixed bug #3544: RTE-config in PageTS-config not loaded when in draft-workspace
 
 2007-02-05  Ingmar Schlecht  <ingmar@typo3.org>
 
