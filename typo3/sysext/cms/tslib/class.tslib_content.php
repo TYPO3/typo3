@@ -5475,6 +5475,7 @@ class tslib_cObj {
 	 */
 	function getMailTo($mailAddress,$linktxt,$initP='?') {
 		if(!strcmp($linktxt,''))	{ $linktxt = $mailAddress; }
+		$linktxtIsMailAddress = ($linktxt == $mailAddress ? true : false);
 
 		$mailToUrl = 'mailto:'.$mailAddress;
 
@@ -5488,12 +5489,16 @@ class tslib_cObj {
 				if ($GLOBALS['TSFE']->config['config']['spamProtectEmailAddresses_atSubst']) {
 					$atLabel = trim($GLOBALS['TSFE']->config['config']['spamProtectEmailAddresses_atSubst']);
 				}
-				$linktxt = str_replace('@',$atLabel?$atLabel:'(at)',$linktxt);
+				if ($linktxtIsMailAddress) {
+					$linktxt = str_replace('@',$atLabel?$atLabel:'(at)',$linktxt);
+				}
 
 				if ($GLOBALS['TSFE']->config['config']['spamProtectEmailAddresses_lastDotSubst']) {
 					$lastDotLabel = trim($GLOBALS['TSFE']->config['config']['spamProtectEmailAddresses_lastDotSubst']);
 					$lastDotLabel = $lastDotLabel ? $lastDotLabel : '(dot)';
-					$linktxt = preg_replace('/\.([^\.]+)$/', $lastDotLabel.'$1', $linktxt);
+					if ($linktxtIsMailAddress) {
+						$linktxt = preg_replace('/\.([^\.]+)$/', $lastDotLabel.'$1', $linktxt);
+					}
 				}
 			}
 		} else {

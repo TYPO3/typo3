@@ -1,3 +1,7 @@
+2007-02-06  Oliver Hader  <oh@inpublica.de>
+
+	* Fixed bug 3985: Wrong substitution for spamProtectEmailAddresses_atSubst/spamProtectEmailAddresses_lastDotSubst
+
 2007-02-06  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
 	* Fixed bug #4742: link to user on User Admin page is following to wrong URL
