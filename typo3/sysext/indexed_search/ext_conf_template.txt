@@ -31,8 +31,8 @@ disableFrontendIndexing = 0
   # cat=basic; type=int; label=Min TTL (hours) for indexed page: The time in hours that must pass before an indexed page can be indexed again regardless of changes on the page.
 minAge = 24
 
-  # cat=basic; type=int; label=Max TTL (hours) for indexed page: The time in hours that is the maximum age of an indexed page before it will get indexed again.
-maxAge = 168
+  # cat=basic; type=int; label=Deprecated! Max TTL (hours) for indexed page: The time in hours that is the maximum age of an indexed page before it will get indexed again. Usually the index is kept consistent, therefore you won't need this feature.
+maxAge = 0
 
   # cat=basic; type=int; label=Max external files to index: When external files are found on a page this number indicates how many may be indexed at that point. This prevents pages with links to many external documents to take the server down - but it may also prevent documents from being indexed.
 maxExternalFiles = 5

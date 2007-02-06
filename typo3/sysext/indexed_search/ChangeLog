@@ -1,3 +1,7 @@
+2007-02-06  Michael Stucki  <michael@typo3.org>
+
+	* Turn off maxAge setting as this "feature" seems to make no sense at all
+
 2007-01-23  Michael Stucki  <michael@typo3.org>
 
 	* Rename "cHash" column to "contentHash" in modfunc1 (avoid confusion with real cHash)
