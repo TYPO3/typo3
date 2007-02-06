@@ -1616,17 +1616,20 @@
 	 * @return	void
 	 */
 	function getFromCache()	{
-		$this->tmpl->getCurrentPageData();
-		$cc = Array();
-		if (is_array($this->tmpl->currentPageData))	{
-				// BE CAREFULL to change the content of the cc-array. This array is serialized and an md5-hash based on this is used for caching the page.
-				// If this hash is not the same in here in this section and after page-generation the page will not be properly cached!
+		if (!$this->no_cache)	{
+			$this->tmpl->getCurrentPageData();
 
-			$cc['all'] = $this->tmpl->currentPageData['all'];
-			$cc['rowSum'] = $this->tmpl->currentPageData['rowSum'];
-			$cc['rootLine'] = $this->tmpl->currentPageData['rootLine'];		// This rootline is used with templates only (matching()-function)
-			$this->all = $this->tmpl->matching($cc);	// This array is an identification of the template. If $this->all is empty it's because the template-data is not cached, which it must be.
-			ksort($this->all);
+			$cc = Array();
+			if (is_array($this->tmpl->currentPageData))	{
+					// BE CAREFULL to change the content of the cc-array. This array is serialized and an md5-hash based on this is used for caching the page.
+					// If this hash is not the same in here in this section and after page-generation the page will not be properly cached!
+
+				$cc['all'] = $this->tmpl->currentPageData['all'];
+				$cc['rowSum'] = $this->tmpl->currentPageData['rowSum'];
+				$cc['rootLine'] = $this->tmpl->currentPageData['rootLine'];		// This rootline is used with templates only (matching()-function)
+				$this->all = $this->tmpl->matching($cc);	// This array is an identification of the template. If $this->all is empty it's because the template-data is not cached, which it must be.
+				ksort($this->all);
+			}
 		}
 
 		$this->content='';	// clearing the content-variable, which will hold the pagecontent
@@ -1660,7 +1663,7 @@
 	}
 
 	/**
-	 * Returning the cached version of page with hash ->newHash
+	 * Returning the cached version of page with hash = newHash
 	 *
 	 * @return	array		Cached row, if any. Otherwise void.
 	 */

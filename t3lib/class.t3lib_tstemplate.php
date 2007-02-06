@@ -244,7 +244,7 @@ class t3lib_TStemplate	{
 	 * So if a template is hidden or times out, it'll not be discovered unless the page is regenerated - at least the this->start function must be called, because this will make a new portion of data in currentPageData string
 	 *
 	 * @return	mixed		The array $this->currentPageData if found cached in "cache_pagesection". If the string "none" was returned it means the array must be generated and stored in the cache-table
-	 * @see start(), t3lib_fe::getFromCache()
+	 * @see start(), tslib_fe::getFromCache()
 	 */
 	function getCurrentPageData()	{
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('content', 'cache_pagesection', 'page_id='.intval($GLOBALS['TSFE']->id).' AND mpvar_hash='.t3lib_div::md5int($GLOBALS['TSFE']->MP));
@@ -261,7 +261,7 @@ class t3lib_TStemplate	{
 	 *
 	 * @param	array		An array with three keys, "all", "rowSum" and "rootLine" - all coming from the $this->currentPageData array
 	 * @return	array		The input array but with a new key added, "match" which contains the items from the "all" key which when passed to tslib_matchCondition returned true.
-	 * @see t3lib_matchCondition, t3lib_fe::getFromCache()
+	 * @see t3lib_matchCondition, tslib_fe::getFromCache()
 	 */
 	function matching($cc)	{
 		if (is_array($cc['all']))	{
@@ -295,7 +295,7 @@ class t3lib_TStemplate	{
 			$this->runThroughTemplates($theRootLine);
 
 				// Getting the currentPageData if not already found
-			if (!$this->currentPageData)	{
+			if (!$this->currentPageData && !$GLOBALS['TSFE']->no_cache)	{
 				$this->getCurrentPageData();
 			}
 
@@ -355,7 +355,7 @@ class t3lib_TStemplate	{
 				// Make global and save.
 			$GLOBALS['TSFE']->all=$cc;
 
-			if (!$this->simulationHiddenOrTime)	{	// Only save currentPageData, if we're not simulating by hidden/starttime/endtime
+			if (!$this->simulationHiddenOrTime && !$GLOBALS['TSFE']->no_cache)	{	// Only save currentPageData, if we're not simulating by hidden/starttime/endtime
 				$dbFields = array(
 					'content' => serialize($cc),
 					'tstamp' => $GLOBALS['EXEC_TIME']
