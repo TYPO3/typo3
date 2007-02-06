@@ -194,22 +194,41 @@ See <a href="http://wiki.typo3.org/index.php/TYPO3_3.8.1" target="_blank">wiki.t
 		}
 
 			// linkVars
-		$GLOBALS['TSFE']->linkVars = ''.$GLOBALS['TSFE']->config['config']['linkVars'];
-		if ($GLOBALS['TSFE']->linkVars)	{
-			$linkVarArr = explode(',',$GLOBALS['TSFE']->linkVars);
+		$linkVars = (string)$GLOBALS['TSFE']->config['config']['linkVars'];
+		if ($linkVars)	{
+			$linkVarArr = explode(',',$linkVars);
+
 			$GLOBALS['TSFE']->linkVars='';
-			reset($linkVarArr);
-			while(list(,$val)=each($linkVarArr))	{
-				$val=trim($val);
-				$GET = t3lib_div::_GET();
+			$GET = t3lib_div::_GET();
+
+			foreach ($linkVarArr as $val)	{
+				$val = trim($val);
+
+				if (preg_match('/^(.*)\((.+)\)$/',$val,$match))	{
+					$val = trim($match[1]);
+					$test = trim($match[2]);
+				} else unset($test);
+
 				if ($val && isset($GET[$val]))	{
 					if (!is_array($GET[$val]))	{
-						$GLOBALS['TSFE']->linkVars.='&'.$val.'='.rawurlencode($GET[$val]);
+						$tmpVal = rawurlencode($GET[$val]);
+
+						if ($test && !TSpagegen::isAllowedLinkVarValue($tmpVal,$test))	{
+							continue;	// Error: This value was not allowed for this key
+						}
+
+						$value = '&'.$val.'='.$tmpVal;
 					} else {
-						$GLOBALS['TSFE']->linkVars.=t3lib_div::implodeArrayForUrl($val,$GET[$val]);
+						if ($test && strcmp('array',$test))	{
+							continue;	// Error: This key must not be an array!
+						}
+						$value = t3lib_div::implodeArrayForUrl($val,$GET[$val]);
 					}
-				}
+				} else continue;
+
+				$GLOBALS['TSFE']->linkVars.= $value;
 			}
+			unset($GET);
 		} else {
 			$GLOBALS['TSFE']->linkVars='';
 		}
@@ -869,6 +888,51 @@ $GLOBALS['TSFE']->content.='
 		}
 
 		return $output;
+	}
+
+	/**
+	 * Checks if the value defined in "config.linkVars" contains an allowed value. Otherwise, return false which means the value will not be added to any links.
+	 *
+	 * @param	string		The string in which to find $needle
+	 * @param	string		The string to find in $haystack
+	 * @return	boolean		Returns true if $needle matches or is found in $haystack
+	 */
+	function isAllowedLinkVarValue($haystack,$needle)	{
+		$OK = false;
+
+		if ($needle=='int' || $needle=='integer')	{	// Integer
+
+			if (t3lib_div::testInt($haystack))	{
+				$OK = true;
+			}
+
+		} elseif (preg_match('/^\/.+\/[imsxeADSUXu]*$/', $needle))	{	// Regular expression, only "//" is allowed as delimiter
+
+			if (@preg_match($needle, $haystack))	{
+				$OK = true;
+			}
+
+		} elseif (strstr($needle,'-'))	{	// Range
+
+			if (t3lib_div::testInt($haystack))	{
+				$range = explode('-',$needle);
+				if ($range[0] <= $haystack && $range[1] >= $haystack)	{
+					$OK = true;
+				}
+			}
+
+		} elseif (strstr($needle,'|'))	{	// List
+
+			$haystack = str_replace(' ','',$haystack);	// Trim the input
+			if (strstr('|'.$needle.'|', '|'.$haystack.'|'))	{
+				$OK = true;
+			}
+
+		} elseif (!strcmp($needle,$haystack))	{	// String comparison
+			$OK = true;
+		}
+
+		return $OK;
 	}
 }
 

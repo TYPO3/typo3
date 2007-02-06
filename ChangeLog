@@ -1,3 +1,7 @@
+2007-02-07  Michael Stucki  <michael@typo3.org>
+
+        * Added feature #4476: Allow limitation of config.linkVars
+
 2007-02-06  Oliver Hader  <oh@inpublica.de>
 
 	* Fixed bug 3985: Wrong substitution for spamProtectEmailAddresses_atSubst/spamProtectEmailAddresses_lastDotSubst
