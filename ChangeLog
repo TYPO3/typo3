@@ -1,6 +1,7 @@
 2007-02-06  Michael Stucki  <michael@typo3.org>
 
 	* Fixed bug #3069 again: Ignore version check if no requirements are specified
+	* Fixed bug #4689: Error while entering a numbers like 50 or 50.00 into a double2 field
 
 2007-02-04  Michael Stucki  <michael@typo3.org>
 
