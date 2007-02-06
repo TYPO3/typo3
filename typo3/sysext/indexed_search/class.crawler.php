@@ -805,6 +805,29 @@ class tx_indexedsearch_crawler {
 		$this->pObj->addQueueEntry_callBack($cfgRec['set_id'],$nparams,$this->callBack,$cfgRec['pid']);
 	}
 
+	/**
+	 * Deletes all data stored by indexed search for a given page
+	 *
+	 * @param	integer		Uid of the page to delete all pHash
+	 * @return	void
+	 */
+	function deleteFromIndex($id)	{
+
+			// Lookup old phash rows:
+		$oldPhashRows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('phash','index_section', 'page_id='.intval($id));
+
+		$pHashesToDelete = array();
+		foreach ($oldPhashRows as $pHashRow)	{
+			$pHashesToDelete[] = $pHashRow['phash'];
+		}
+
+		$where_clause = 'phash IN ('.implode(',',$GLOBALS['TYPO3_DB']->cleanIntArray($pHashesToDelete)).')';
+		$tables = explode(',', 'index_debug,index_fulltext,index_grlist,index_phash,index_rel,index_section');
+		foreach ($tables as $table)	{
+			$GLOBALS['TYPO3_DB']->exec_DELETEquery($table, $where_clause);
+		}
+	}
+
 
 
 
@@ -816,6 +839,24 @@ class tx_indexedsearch_crawler {
 	 * Hook functions for TCEmain (indexing of records)
 	 *
 	 *************************/
+
+	/**
+	 * TCEmain hook function for on-the-fly indexing of database records
+	 *
+	 * @param	string		TCEmain command
+	 * @param	string		Table name
+	 * @param	string		Record ID. If new record its a string pointing to index inside t3lib_tcemain::substNEWwithIDs
+	 * @param	mixed		Target value (ignored)
+	 * @param	object		Reference to tcemain calling object
+	 * @return	void
+	 */
+	function processCmdmap_preProcess($command, $table, $id, $value, &$pObj)	{
+
+			// Clean up the index
+		if ($command=='delete' && $table == 'pages')	{
+			$this->deleteFromIndex($id);
+		}
+	}
 
 	/**
 	 * TCEmain hook function for on-the-fly indexing of database records
@@ -835,6 +876,11 @@ class tx_indexedsearch_crawler {
 				// Translate new ids.
 			if ($status=='new')	{
 				$id = $pObj->substNEWwithIDs[$id];
+
+			} elseif ($table=='pages' && $status=='update' && ((array_key_exists('hidden',$fieldArray) && $fieldArray['hidden']==1) || (array_key_exists('no_search',$fieldArray) && $fieldArray['no_search']==1)))	{
+
+					// If the page should be hidden or not indexed after update, delete index for this page
+				$this->deleteFromIndex($id);
 			}
 
 				// Get full record and if exists, search for indexing configurations:
