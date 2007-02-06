@@ -4085,12 +4085,12 @@ $EM_CONF[$_EXTKEY] = '.$this->arrayToCode($EM_CONF, 0).';
 				if(!$depV) continue;
 				$versionRange = $this->splitVersionRange($depV);
 				$phpv = strstr(PHP_VERSION,'-') ? substr(PHP_VERSION,0,strpos(PHP_VERSION,'-')) : PHP_VERSION; // Linux distributors like to add suffixes, like in 5.1.2-1. Those must be ignored!
-				if ($versionRange[0] && version_compare($phpv,$versionRange[0],'<'))	{
+				if ($versionRange[0]!='0.0.0' && version_compare($phpv,$versionRange[0],'<'))	{
 					$msg[] = '<br />The running PHP version ('.$phpv.') is lower than required ('.$versionRange[0].')';
 					$msg[] = '&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" value="1" name="depsolver[ignore]['.$depK.']" id="checkIgnore_'.$depK.'" /> <label for="checkIgnore_'.$depK.'">Ignore this version requirement</label>';
 					$depError = true;
 					continue;
-				} elseif ($versionRange[1] && version_compare($phpv,$versionRange[1],'>'))	{
+				} elseif ($versionRange[1]!='0.0.0' && version_compare($phpv,$versionRange[1],'>'))	{
 					$msg[] = '<br />The running PHP version ('.$phpv.') is higher than allowed ('.$versionRange[1].')';
 					$msg[] = '&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" value="1" name="depsolver[ignore]['.$depK.']" id="checkIgnore_'.$depK.'" /> <label for="checkIgnore_'.$depK.'">Ignore this version requirement</label>';
 					$depError = true;
@@ -4101,12 +4101,12 @@ $EM_CONF[$_EXTKEY] = '.$this->arrayToCode($EM_CONF, 0).';
 				if (!$depV) continue;
 
 				$versionRange = $this->splitVersionRange($depV);
-				if ($versionRange[0] && version_compare(TYPO3_version,$versionRange[0],'<'))	{
+				if ($versionRange[0]!='0.0.0' && version_compare(TYPO3_version,$versionRange[0],'<'))	{
 					$msg[] = '<br />The running TYPO3 version ('.TYPO3_version.') is lower than required ('.$versionRange[0].')';
 					$msg[] = '&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" value="1" name="depsolver[ignore]['.$depK.']" id="checkIgnore_'.$depK.'" /> <label for="checkIgnore_'.$depK.'">Ignore this version requirement</label>';
 					$depError = true;
 					continue;
-				} elseif ($versionRange[1] && version_compare(TYPO3_version,$versionRange[1],'>'))	{
+				} elseif ($versionRange[1]!='0.0.0' && version_compare(TYPO3_version,$versionRange[1],'>'))	{
 					$msg[] = '<br />The running TYPO3 version ('.TYPO3_version.') is higher than allowed ('.$versionRange[1].')';
 					$msg[] = '&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" value="1" name="depsolver[ignore]['.$depK.']" id="checkIgnore_'.$depK.'" /> <label for="checkIgnore_'.$depK.'">Ignore this version requirement</label>';
 					$depError = true;
@@ -4125,12 +4125,12 @@ $EM_CONF[$_EXTKEY] = '.$this->arrayToCode($EM_CONF, 0).';
 				$depError = true;
 			} else {
 				$versionRange = $this->splitVersionRange($depV);
-				if ($versionRange[0] && version_compare($instExtInfo[$depK]['EM_CONF']['version'],$versionRange[0],'<'))	{
+				if ($versionRange[0]!='0.0.0' && version_compare($instExtInfo[$depK]['EM_CONF']['version'],$versionRange[0],'<'))	{
 					$msg[] = '<br />The running version of extension "'.$depK.'" ('.$instExtInfo[$depK]['EM_CONF']['version'].') is lower than required ('.$versionRange[0].')';
 					$msg[] = '&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" value="1" name="depsolver[ignore]['.$depK.']" id="checkIgnore_'.$depK.'" /> <label for="checkIgnore_'.$depK.'">Ignore this version requirement</label>';
 					$depError = true;
 					continue;
-				} elseif ($versionRange[1] && version_compare($instExtInfo[$depK]['EM_CONF']['version'],$versionRange[1],'>'))	{
+				} elseif ($versionRange[1]!='0.0.0' && version_compare($instExtInfo[$depK]['EM_CONF']['version'],$versionRange[1],'>'))	{
 					$msg[] = '<br />The running version of extension "'.$depK.'" ('.$instExtInfo[$depK]['EM_CONF']['version'].') is higher than allowed ('.$versionRange[1].')';
 					$msg[] = '&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" value="1" name="depsolver[ignore]['.$depK.']" id="checkIgnore_'.$depK.'" /> <label for="checkIgnore_'.$depK.'">Ignore this version requirement</label>';
 					$depError = true;
