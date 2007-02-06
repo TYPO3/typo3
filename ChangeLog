@@ -3,6 +3,7 @@
 	* Added feature #4592: Keep indexed_search tables consistent when deleting/hiding pages (Thanks to Michael Fritz)
 	* Fixed bug #4666: Use TYPO3 settings when formatting dates
 	* Fixed bug #4581: Duplicate entry on cache_pagesection on reloading twice. See bugtracker entry for details about this change.
+	* Added feature #4536: Add new property "additionalParams" to GMENU items / Cleanup in tslib_menu
 
 2007-02-05  Ingmar Schlecht  <ingmar@typo3.org>
 

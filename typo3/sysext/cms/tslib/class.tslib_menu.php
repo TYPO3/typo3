@@ -646,69 +646,69 @@ class tslib_menu {
 							$value=$GLOBALS['TSFE']->page['uid'];
 						}
 						if ($value!=$this->tmpl->rootLine[0]['uid'])	{	// Will not work out of rootline
-		 					$recArr=array();
-		 					$value_rec=$this->sys_page->getPage($value);	// The page record of the 'value'.
-		 					if ($value_rec['pid'])	{	// 'up' page cannot be outside rootline
-		 						$recArr['up']=$this->sys_page->getPage($value_rec['pid']);	// The page record of 'up'.
-		 					}
-		 					if ($recArr['up']['pid'] && $value_rec['pid']!=$this->tmpl->rootLine[0]['uid'])	{	// If the 'up' item was NOT level 0 in rootline...
-		 						$recArr['index']=$this->sys_page->getPage($recArr['up']['pid']);	// The page record of "index".
-		 					}
+							$recArr=array();
+							$value_rec=$this->sys_page->getPage($value);	// The page record of the 'value'.
+							if ($value_rec['pid'])	{	// 'up' page cannot be outside rootline
+								$recArr['up']=$this->sys_page->getPage($value_rec['pid']);	// The page record of 'up'.
+							}
+							if ($recArr['up']['pid'] && $value_rec['pid']!=$this->tmpl->rootLine[0]['uid'])	{	// If the 'up' item was NOT level 0 in rootline...
+								$recArr['index']=$this->sys_page->getPage($recArr['up']['pid']);	// The page record of "index".
+							}
 
-		 						// prev / next is found
-		 					$prevnext_menu = $this->sys_page->getMenu($value_rec['pid'],'*',$altSortField);
-		 					$lastKey=0;
-		 					$nextActive=0;
-		 					reset($prevnext_menu);
-		 					while(list($k_b,$v_b)=each($prevnext_menu))	{
-		 						if ($nextActive)	{
-		 							$recArr['next']=$v_b;
-		 							$nextActive=0;
+								// prev / next is found
+							$prevnext_menu = $this->sys_page->getMenu($value_rec['pid'],'*',$altSortField);
+							$lastKey=0;
+							$nextActive=0;
+							reset($prevnext_menu);
+							while(list($k_b,$v_b)=each($prevnext_menu))	{
+								if ($nextActive)	{
+									$recArr['next']=$v_b;
+									$nextActive=0;
 								}
-		 						if ($v_b['uid']==$value)	{
-		 							if ($lastKey)	{
-		 								$recArr['prev']=$prevnext_menu[$lastKey];
-		 							}
-		 							$nextActive=1;
+								if ($v_b['uid']==$value)	{
+									if ($lastKey)	{
+										$recArr['prev']=$prevnext_menu[$lastKey];
+									}
+									$nextActive=1;
 								}
-		 						$lastKey=$k_b;
-		 					}
-		 					reset($prevnext_menu);
+								$lastKey=$k_b;
+							}
+							reset($prevnext_menu);
 							$recArr['first']=pos($prevnext_menu);
 							end($prevnext_menu);
 							$recArr['last']=pos($prevnext_menu);
 
-		 						// prevsection / nextsection is found
+								// prevsection / nextsection is found
 							if (is_array($recArr['index']))	{	// You can only do this, if there is a valid page two levels up!
-			 					$prevnextsection_menu = $this->sys_page->getMenu($recArr['index']['uid'],'*',$altSortField);
-			 					$lastKey=0;
-			 					$nextActive=0;
-			 					reset($prevnextsection_menu);
-			 					while(list($k_b,$v_b)=each($prevnextsection_menu))	{
-			 						if ($nextActive)	{
+								$prevnextsection_menu = $this->sys_page->getMenu($recArr['index']['uid'],'*',$altSortField);
+								$lastKey=0;
+								$nextActive=0;
+								reset($prevnextsection_menu);
+								while(list($k_b,$v_b)=each($prevnextsection_menu))	{
+									if ($nextActive)	{
 										$sectionRec_temp = $this->sys_page->getMenu($v_b['uid'],'*',$altSortField);
 										if (count($sectionRec_temp))	{
 											reset($sectionRec_temp);
-				 							$recArr['nextsection']=pos($sectionRec_temp);
+											$recArr['nextsection']=pos($sectionRec_temp);
 											end ($sectionRec_temp);
-				 							$recArr['nextsection_last']=pos($sectionRec_temp);
-				 							$nextActive=0;
+											$recArr['nextsection_last']=pos($sectionRec_temp);
+											$nextActive=0;
 										}
 									}
-			 						if ($v_b['uid']==$value_rec['pid'])	{
-			 							if ($lastKey)	{
+									if ($v_b['uid']==$value_rec['pid'])	{
+										if ($lastKey)	{
 											$sectionRec_temp = $this->sys_page->getMenu($prevnextsection_menu[$lastKey]['uid'],'*',$altSortField);
 											if (count($sectionRec_temp))	{
 												reset($sectionRec_temp);
-					 							$recArr['prevsection']=pos($sectionRec_temp);
+												$recArr['prevsection']=pos($sectionRec_temp);
 												end ($sectionRec_temp);
-					 							$recArr['prevsection_last']=pos($sectionRec_temp);
+												$recArr['prevsection_last']=pos($sectionRec_temp);
 											}
-			 							}
-			 							$nextActive=1;
+										}
+										$nextActive=1;
 									}
-			 						$lastKey=$k_b;
-			 					}
+									$lastKey=$k_b;
+								}
 							}
 							if ($this->conf['special.']['items.']['prevnextToSection'])	{
 								if (!is_array($recArr['prev']) && is_array($recArr['prevsection_last']))	{
@@ -719,15 +719,15 @@ class tslib_menu {
 								}
 							}
 
-		 					$items = explode('|',$this->conf['special.']['items']);
+							$items = explode('|',$this->conf['special.']['items']);
 							$c=0;
-		 					while(list($k_b,$v_b)=each($items))	{
-		 						$v_b=strtolower(trim($v_b));
+							while(list($k_b,$v_b)=each($items))	{
+								$v_b=strtolower(trim($v_b));
 								if (intval($this->conf['special.'][$v_b.'.']['uid']))	{
 									$recArr[$v_b] = $this->sys_page->getPage(intval($this->conf['special.'][$v_b.'.']['uid']));	// fetches the page in case of a hardcoded pid in template
 								}
-		 						if (is_array($recArr[$v_b]))	{
-		 							$temp[$c]=$recArr[$v_b];
+								if (is_array($recArr[$v_b]))	{
+									$temp[$c]=$recArr[$v_b];
 									if ($this->conf['special.'][$v_b.'.']['target'])	{
 										$temp[$c]['target']=$this->conf['special.'][$v_b.'.']['target'];
 									}
@@ -739,7 +739,7 @@ class tslib_menu {
 									}
 									$c++;
 								}
-		 					}
+							}
 						}
 					break;
 				}
@@ -771,20 +771,20 @@ class tslib_menu {
 						$GLOBALS['TSFE']->sys_page->versionOL('tt_content',$row);
 
 						if (is_array($row))	{
-							$temp[$row['uid']]=$basePageRow;
-							$temp[$row['uid']]['title']=$row['header'];
-							$temp[$row['uid']]['nav_title']=$row['header'];
-							$temp[$row['uid']]['subtitle']=$row['subheader'];
-							$temp[$row['uid']]['starttime']=$row['starttime'];
-							$temp[$row['uid']]['endtime']=$row['endtime'];
-							$temp[$row['uid']]['fe_group']=$row['fe_group'];
-							$temp[$row['uid']]['media']=$row['media'];
+							$temp[$row['uid']] = $basePageRow;
+							$temp[$row['uid']]['title'] = $row['header'];
+							$temp[$row['uid']]['nav_title'] = $row['header'];
+							$temp[$row['uid']]['subtitle'] = $row['subheader'];
+							$temp[$row['uid']]['starttime'] = $row['starttime'];
+							$temp[$row['uid']]['endtime'] = $row['endtime'];
+							$temp[$row['uid']]['fe_group'] = $row['fe_group'];
+							$temp[$row['uid']]['media'] = $row['media'];
 
-							$temp[$row['uid']]['header_layout']=$row['header_layout'];
-							$temp[$row['uid']]['bodytext']=$row['bodytext'];
-							$temp[$row['uid']]['image']=$row['image'];
+							$temp[$row['uid']]['header_layout'] = $row['header_layout'];
+							$temp[$row['uid']]['bodytext'] = $row['bodytext'];
+							$temp[$row['uid']]['image'] = $row['image'];
 
-							$temp[$row['uid']]['sectionIndex_uid']=$row['uid'];
+							$temp[$row['uid']]['sectionIndex_uid'] = $row['uid'];
 						}
 					}
 				}
@@ -841,7 +841,7 @@ class tslib_menu {
 				$this->generate();
 				$this->sys_page->storeHash($this->hash, serialize($this->result),'MENUDATA');
 			} else {
-				$this->result=unserialize($serData);
+				$this->result = unserialize($serData);
 			}
 
 				// End showAccessRestrictedPages
@@ -1169,7 +1169,7 @@ class tslib_menu {
 			$thePage = $this->sys_page->getPage($this->menuArr[$key]['pid']);
 			$LD = $this->tmpl->linkData($thePage,$mainTarget,'','',$overrideArray, $this->mconf['addParams'].$MP_params.$this->menuArr[$key]['_ADD_GETVARS'], $typeOverride);
 		} else {
-			$LD = $this->tmpl->linkData($this->menuArr[$key],$mainTarget,'','',$overrideArray, $this->mconf['addParams'].$MP_params.$this->menuArr[$key]['_ADD_GETVARS'], $typeOverride);
+			$LD = $this->tmpl->linkData($this->menuArr[$key],$mainTarget,'','',$overrideArray, $this->mconf['addParams'].$MP_params.$this->I['val']['additionalParams'].$this->menuArr[$key]['_ADD_GETVARS'], $typeOverride);
 		}
 
 			// Override URL if using "External URL" as doktype with a valid e-mail address:
@@ -1219,7 +1219,7 @@ class tslib_menu {
 	function changeLinksForAccessRestrictedPages(&$LD, $page, $mainTarget, $typeOverride)	{
 
 			// If access restricted pages should be shown in menus, change the link of such pages to link to a redirection page:
-		if ($this->mconf['showAccessRestrictedPages'] && $this->mconf['showAccessRestrictedPages']!=='NONE' && !$GLOBALS['TSFE']->checkPageGroupAccess($page))		{
+		if ($this->mconf['showAccessRestrictedPages'] && $this->mconf['showAccessRestrictedPages']!=='NONE' && !$GLOBALS['TSFE']->checkPageGroupAccess($page))	{
 			$thePage = $this->sys_page->getPage($this->mconf['showAccessRestrictedPages']);
 
 			$addParams = $this->mconf['showAccessRestrictedPages.']['addParams'];
@@ -1447,7 +1447,7 @@ class tslib_menu {
 	 * @access private
 	 */
 	function setATagParts()	{
-		$this->I['A1'] = '<a '.t3lib_div::implodeAttributes($this->I['linkHREF'],1).$this->I['val']['ATagParams'].$this->I['addATagParams'].$this->I['accessKey']['code'].'>';
+		$this->I['A1'] = '<a '.t3lib_div::implodeAttributes($this->I['linkHREF'],1).' '.$this->I['val']['ATagParams'].$this->I['accessKey']['code'].'>';
 		$this->I['A2'] = '</a>';
 	}
 
@@ -1562,8 +1562,8 @@ class tslib_tmenu extends tslib_menu {
 	 */
 	function writeMenu()	{
 		if (is_array($this->result) && count($this->result))	{
-			$this->WMcObj =t3lib_div::makeInstance('tslib_cObj');	// Create new tslib_cObj for our use
-			$this->WMresult='';
+			$this->WMcObj = t3lib_div::makeInstance('tslib_cObj');	// Create new tslib_cObj for our use
+			$this->WMresult = '';
 			$this->INPfixMD5 = substr(md5(microtime().'tmenu'),0,4);
 			$this->WMmenuItems = count($this->result);
 
@@ -1575,10 +1575,11 @@ class tslib_tmenu extends tslib_menu {
 				$GLOBALS['TSFE']->register['count_HMENU_MENUOBJ']++;
 				$GLOBALS['TSFE']->register['count_MENUOBJ']++;
 
-				$this->I=array();
 				$this->WMcObj->start($this->menuArr[$key],'pages');		// Initialize the cObj with the page record of the menu item
+
+				$this->I = array();
 				$this->I['key'] = $key;
-				$this->I['INPfix']= $this->imgNameNotRandom?'':'_'.$this->INPfixMD5.'_'.$key;
+				$this->I['INPfix'] = $this->imgNameNotRandom?'':'_'.$this->INPfixMD5.'_'.$key;
 				$this->I['val'] = $val;
 				$this->I['title'] = $this->WMcObj->stdWrap($this->getPageTitle($this->menuArr[$key]['title'],$this->menuArr[$key]['nav_title']),$this->I['val']['stdWrap.']);
 				$this->I['uid'] = $this->menuArr[$key]['uid'];
@@ -1594,8 +1595,9 @@ class tslib_tmenu extends tslib_menu {
 				}
 
 					// Make link tag
-				$this->I['val']['ATagParams'] = $this->WMcObj->getATagParams($this->I['val'], 0);
-				$this->I['linkHREF'] =  $this->link($key,$this->I['val']['altTarget'],$this->mconf['forceTypeValue']);
+				$this->I['val']['ATagParams'] = $this->WMcObj->getATagParams($this->I['val']);
+				$this->I['val']['additionalParams'] = $this->WMcObj->stdWrap($this->I['val']['additionalParams'],$this->I['val']['additionalParams.']);
+				$this->I['linkHREF'] = $this->link($key,$this->I['val']['altTarget'],$this->mconf['forceTypeValue']);
 
 					// Title attribute of links:
 				$titleAttrValue = $this->WMcObj->stdWrap($this->I['val']['ATagTitle'],$this->I['val']['ATagTitle.']).$this->I['accessKey']['alt'];
@@ -2069,12 +2071,14 @@ class tslib_gmenu extends tslib_menu {
 				$gifFileName = $gifCreator->fileName('menu/');
 			}
 
+			$this->result[$resKey][$key] = $conf[$key];
+
 				// Generation of image file:
 			if (@file_exists($gifFileName))	{		// File exists
 				$info = @getimagesize($gifFileName);
 				$this->result[$resKey][$key]['output_w']=intval($info[0]);
 				$this->result[$resKey][$key]['output_h']=intval($info[1]);
-				$this->result[$resKey][$key]['output_file']=$gifFileName;
+				$this->result[$resKey][$key]['output_file'] = $gifFileName;
 			} elseif ($isGD) {		// file is generated
 				$gifCreator->make();
 				$this->result[$resKey][$key]['output_w']=$gifCreator->w;
@@ -2083,23 +2087,13 @@ class tslib_gmenu extends tslib_menu {
 				$gifCreator->output($this->result[$resKey][$key]['output_file']);
 				$gifCreator->destroy();
 			}
+
 			$this->result[$resKey][$key]['output_file'] = t3lib_div::png_to_gif_by_imagemagick($this->result[$resKey][$key]['output_file']);
-			$this->result[$resKey][$key]['noLink']=$conf[$key]['noLink'];
-			$this->result[$resKey][$key]['altTarget']=$conf[$key]['altTarget'];
-			$this->result[$resKey][$key]['imgParams']=$conf[$key]['imgParams'];
-			$this->result[$resKey][$key]['ATagTitle'] = $conf[$key]['ATagTitle'];
-			$this->result[$resKey][$key]['ATagTitle.'] = $conf[$key]['ATagTitle.'];
-			$this->result[$resKey][$key]['ATagParams'] = $conf[$key]['ATagParams'];
-			$this->result[$resKey][$key]['wrap'] = $conf[$key]['wrap'];
-			$this->result[$resKey][$key]['allWrap'] = $conf[$key]['allWrap'];
-			$this->result[$resKey][$key]['allWrap.'] = $conf[$key]['allWrap.'];
-			$this->result[$resKey][$key]['subst_elementUid'] = $conf[$key]['subst_elementUid'];
-			$this->result[$resKey][$key]['allStdWrap.'] = $conf[$key]['allStdWrap.'];
 
 			$Hcounter+=$this->result[$resKey][$key]['output_h'];		// counter is increased
 			$Wcounter+=$this->result[$resKey][$key]['output_w'];		// counter is increased
 
-			if ($maxFlag){break;}
+			if ($maxFlag)	break;
 		}
 	}
 
@@ -2193,7 +2187,7 @@ class tslib_gmenu extends tslib_menu {
 	function writeMenu()	{
 		if (is_array($this->menuArr) && is_array($this->result) && count($this->result) && is_array($this->result['NO']))	{
 			$this->WMcObj = t3lib_div::makeInstance('tslib_cObj');	// Create new tslib_cObj for our use
-			$this->WMresult='';
+			$this->WMresult = '';
 			$this->INPfixMD5 = substr(md5(microtime().$this->GMENU_fixKey),0,4);
 			$this->WMmenuItems = count($this->result['NO']);
 
@@ -2204,7 +2198,7 @@ class tslib_gmenu extends tslib_menu {
 				if ($this->result['NO'][$key]['output_file'])	{
 					$this->WMcObj->start($this->menuArr[$key],'pages');		// Initialize the cObj with the page record of the menu item
 
-					$this->I =array();
+					$this->I = array();
 					$this->I['key'] = $key;
 					$this->I['INPfix']= $this->imgNameNotRandom?'':'_'.$this->INPfixMD5.'_'.$key;
 					$this->I['val'] = $this->result['NO'][$key];
@@ -2215,17 +2209,20 @@ class tslib_gmenu extends tslib_menu {
 					$this->I['spacer'] = $this->menuArr[$key]['isSpacer'];
 					if (!$this->I['uid'] && !$this->menuArr[$key]['_OVERRIDE_HREF']) {$this->I['spacer']=1;}
 					$this->I['noLink'] = ($this->I['spacer'] || $this->I['val']['noLink'] || !count($this->menuArr[$key]));		// !count($this->menuArr[$key]) means that this item is a dummyItem
-					$this->I['name']='';
+					$this->I['name'] = '';
 
 						// Set access key
 					if ($this->mconf['accessKey'])	{
 						$this->I['accessKey'] = $this->accessKey($this->I['title']);
 					} else {
-						$this->I['accessKey'] = Array();
+						$this->I['accessKey'] = array();
 					}
 
-						// Get link.
+						// Make link tag
+					$this->I['val']['ATagParams'] = $this->WMcObj->getATagParams($this->I['val']);
+					$this->I['val']['additionalParams'] = $this->WMcObj->stdWrap($this->I['val']['additionalParams'],$this->I['val']['additionalParams.']);
 					$this->I['linkHREF'] = $this->link($key,$this->I['val']['altTarget'],$this->mconf['forceTypeValue']);
+
 						// Title attribute of links:
 					$titleAttrValue = $this->WMcObj->stdWrap($this->I['val']['ATagTitle'],$this->I['val']['ATagTitle.']).$this->I['accessKey']['alt'];
 					if (strlen($titleAttrValue))	{
@@ -2627,7 +2624,7 @@ class tslib_imgmenu extends tslib_menu {
 	 */
 	function writeMenu()	{
 		if ($this->result)	{
-			$res = $this->result;
+			$res = &$this->result;
 			$menuName = 'menu_'.t3lib_div::shortMD5($res['imgMap']);	// shortMD5 260900
 			$result = '<img src="'.$GLOBALS['TSFE']->absRefPrefix.$res['output_file'].'" width="'.$res['output_w'].'" height="'.$res['output_h'].'" usemap="#'.$menuName.'" border="0" '.$this->mconf['params'];
 			if (!strstr($result,'alt="'))	$result.=' alt="Menu Image Map"';	// Adding alt attribute if not set.
