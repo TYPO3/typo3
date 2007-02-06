@@ -1,4 +1,3 @@
-
 2007-02-06  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
 	* Fixed bug #4742: link to user on User Admin page is following to wrong URL
@@ -11,6 +10,7 @@
 	* Added feature #4536: Add new property "additionalParams" to GMENU items / Cleanup in tslib_menu
 	* Fixed bug #3069 again: Ignore version check if no requirements are specified
 	* indexed_search: Turn off maxAge setting as this "feature" seems to make no sense at all
+	* Fixed bug #4689: Error in t3lib_tcemain while entering a number like 50 or 50.00 into a double2 field
 
 2007-02-05  Ingmar Schlecht  <ingmar@typo3.org>
 
