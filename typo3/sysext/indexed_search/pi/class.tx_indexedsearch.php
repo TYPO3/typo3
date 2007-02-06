@@ -2066,9 +2066,12 @@ class tx_indexedsearch extends tslib_pibase {
 	 * @return	array		Modified template array
 	 */
 	function makeInfo($row,$tmplArray)	{
+		$dateFormat = $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'];
+		$timeFormat = $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'];
+
 		$tmplArray['size'] = t3lib_div::formatSize($row['item_size']);
-		$tmplArray['created'] = date('d-m-y',$row['item_crdate']);
-		$tmplArray['modified'] = date('d-m-y H:i',$row['item_mtime']);
+		$tmplArray['created'] = date($dateFormat, $row['item_crdate']);
+		$tmplArray['modified'] = date($dateFormat.' '.$timeFormat, $row['item_mtime']);
 
 		$pathId = $row['data_page_id']?$row['data_page_id']:$row['page_id'];
 		$pathMP = $row['data_page_id']?$row['data_page_mp']:'';

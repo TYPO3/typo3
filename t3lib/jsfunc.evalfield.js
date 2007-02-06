@@ -1,6 +1,6 @@
 /***************************************************************
 *
-*  Evaluation of Typo3 form field content
+*  Evaluation of TYPO3 form field content
 *
 * $Id$
 *
@@ -8,13 +8,13 @@
 *
 *  Copyright notice
 *
-*  (c) 1998-2003 Kasper Skaarhoj
+*  (c) 1998-2007 Kasper Skaarhoj
 *  All rights reserved
 *
 *  This script is part of the TYPO3 t3lib/ library provided by
 *  Kasper Skaarhoj <kasper@typo3.com> together with TYPO3
 *
-*  Released under GNU/GPL (see license file in tslib/)
+*  Released under GNU/GPL (see license file in typo3/sysext/cms/tslib/)
 *
 *  This script is distributed in the hope that it will be useful,
 *  but WITHOUT ANY WARRANTY; without even the implied warranty of

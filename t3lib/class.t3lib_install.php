@@ -200,13 +200,14 @@ class t3lib_install {
 			// Checking if "updated" line was set by this tool - if so remove old line.
 		$updatedLine = array_pop($lines);
 		$writeToLocalconf_dat['updatedText'] = '// Updated by '.$this->updateIdentity.' ';
+
 		if (!strstr($updatedLine, $writeToLocalconf_dat['updatedText']))	{
 			array_push($lines,$updatedLine);
 		}
 
 		if (is_array($inlines))	{	// Setting a line and write:
 				// Setting configuration
-			$updatedLine = $writeToLocalconf_dat['updatedText'].date('d-m-Y H:i:s');
+			$updatedLine = $writeToLocalconf_dat['updatedText'].date($GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'].' H:i:s');
 			array_push($inlines,$updatedLine);
 			array_push($inlines,$writeToLocalconf_dat['endLine']);
 

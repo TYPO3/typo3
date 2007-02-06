@@ -758,15 +758,7 @@ class tx_indexedsearch_crawler {
 		$nextTime = $lastSureOffset + $frequencyBlocksUntilNextTime*$frequencySeconds;
 
 		return $nextTime;
-/*		echo print_r(array(
-			$cfgRec['timer_offset'],
-			$frequencySeconds,
-			date('d-m-Y H:i:s',$currentTime),
-			date('d-m-Y H:i:s',$aMidNight),
-			date('d-m-Y H:i:s',$lastSureOffset),
-			date('d-m-Y H:i:s',$nextTime)
-		));
-*/	}
+	}
 
 	/**
 	 * Checks if $url has any of the URls in the $url_deny "list" in it and if so, returns true.

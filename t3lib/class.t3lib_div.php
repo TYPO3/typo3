@@ -4435,6 +4435,9 @@ class t3lib_div {
 			// TYPO3 logging enabled?
 		if (!$TYPO3_CONF_VARS['SYS']['systemLog'])	return;
 
+		$dateFormat = $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'];
+		$timeFormat = $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'];
+
 			// use all configured logging options
 		foreach (explode(';',$TYPO3_CONF_VARS['SYS']['systemLog'],2) as $log)	{
 			list($type,$destination,$level) = explode(',',$log,4);
@@ -4449,7 +4452,7 @@ class t3lib_div {
 				$file = fopen($destination, 'a');
 				if ($file)     {
 					flock($file, LOCK_EX);  // try locking, but ignore if not available (eg. on NFS and FAT)
-					fwrite($file, date('d/m/Y H:i').$msgLine.chr(10));
+					fwrite($file, date($dateFormat.' '.$timeFormat).$msgLine.chr(10));
 					flock($file, LOCK_UN);    // release the lock
 					fclose($file);
 				}

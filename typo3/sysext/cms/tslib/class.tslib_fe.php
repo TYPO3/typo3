@@ -1648,7 +1648,10 @@
 					$this->cacheExpires = $row['expires'];
 
 					if ($this->TYPO3_CONF_VARS['FE']['debug'] || $this->config['config']['debug'])	{
-						$this->content.=chr(10).'<!-- Cached page generated '.Date('d/m Y H:i', $row['tstamp']).'. Expires '.Date('d/m Y H:i', $row['expires']).' -->';
+						$dateFormat = $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'];
+						$timeFormat = $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'];
+
+						$this->content.=chr(10).'<!-- Cached page generated '.date($dateFormat.' '.$timeFormat, $row['tstamp']).'. Expires '.Date($dateFormat.' '.$timeFormat, $row['expires']).' -->';
 					}
 
 				}

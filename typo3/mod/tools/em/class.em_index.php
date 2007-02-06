@@ -901,8 +901,10 @@ EXTENSION KEYS:
 				$onCLick = "window.location.href='index.php?CMD[fetchMetaData]=extensions';return false;";
 				$content.= 'Connect to the current mirror and retrieve the current list of available plugins from the TYPO3 Extension Repository.<br />
 				<input type="submit" value="Retrieve/Update" onclick="'.htmlspecialchars($onCLick).'" />';
-				if(is_file(PATH_site.'typo3temp/extensions.bin')) {
-					$content .= ' (last update: '.date('Y-m-d H:i',filemtime(PATH_site.'typo3temp/extensions.xml.gz')).')';
+				if (is_file(PATH_site.'typo3temp/extensions.bin'))	{
+					$dateFormat = $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'];
+					$timeFormat = $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'];
+					$content.= ' (last update: '.date($dateFormat.' '.$timeFormat,filemtime(PATH_site.'typo3temp/extensions.xml.gz')).')';
 				}
 			}
 			$content.= '<br /><br />'.$this->securityHint;

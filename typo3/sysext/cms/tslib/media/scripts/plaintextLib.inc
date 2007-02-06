@@ -320,7 +320,9 @@ class user_plaintext {
 				$blanks = t3lib_div::intInRange($tConf['preLineBlanks'],0,1000);
 				if ($blanks)	{$lines[]=str_pad('', $blanks-1, chr(10));}
 
-				if ($this->cObj->data['date'])		{$lines[] = $this->getString($hConf['datePrefix']).date($hConf['date']?$hConf['date']:'d-m-Y',$this->cObj->data['date']);}
+				if ($this->cObj->data['date'])	{
+					$lines[] = $this->getString($hConf['datePrefix']).date($hConf['date']?$hConf['date']:$GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'],$this->cObj->data['date']);
+				}
 				$prefix='';
 				$str=$this->getString($tConf['prefix']).$str;
 				if ($tConf['autonumber'])	$str=$this->cObj->parentRecordNumber.$str;

@@ -1685,13 +1685,13 @@ This is a dump of the failures:
 ';
 				while($testRows = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
 					$theData = unserialize($testRows['log_data']);
-					$email_body.=date($GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'].' H:i',$testRows['tstamp']).':  '.@sprintf($testRows['details'],''.$theData[0],''.$theData[1],''.$theData[2]);
-					$email_body.=chr(10);
+					$email_body.= date($GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'].' '.$GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'],$testRows['tstamp']).':  '.@sprintf($testRows['details'],''.$theData[0],''.$theData[1],''.$theData[2]);
+					$email_body.= chr(10);
 				}
 				mail(	$email,
-						$subject,
-						$email_body,
-						'From: TYPO3 Login WARNING<>'
+					$subject,
+					$email_body,
+					'From: TYPO3 Login WARNING<>'
 				);
 				$this->writelog(255,4,0,3,'Failure warning (%s failures within %s seconds) sent by email to %s',Array($GLOBALS['TYPO3_DB']->sql_num_rows($res),$secondsBack,$email));	// Logout written to log
 			}
