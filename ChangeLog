@@ -1,6 +1,7 @@
 2007-02-07  Michael Stucki  <michael@typo3.org>
 
-        * Added feature #4476: Allow limitation of config.linkVars
+	* Added feature #4476: Allow limitation of config.linkVars
+	* Fixed bug #4917: Wrong links inside mounted page with overlay (thanks to Melanie Meyer / Franz Ripfel)
 
 2007-02-06  Oliver Hader  <oh@inpublica.de>
 

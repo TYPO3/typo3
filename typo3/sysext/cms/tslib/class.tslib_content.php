@@ -5440,6 +5440,11 @@ class tslib_cObj {
 				foreach($tCR_rootline as $tCR_data)	{
 					foreach($inverseTmplRootline as $rlKey => $invTmplRLRec)	{
 
+							// Force accumulating when in overlay mode: Links to this page have to stay within the current branch
+						if ($invTmplRLRec['_MOUNT_OL'] && ($tCR_data['uid']==$invTmplRLRec['uid']))	{
+							$startMPaccu = TRUE;
+						}
+
 							// Accumulate MP data:
 						if ($startMPaccu && $invTmplRLRec['_MP_PARAM'])	{
 							$rl_mpArray[] = $invTmplRLRec['_MP_PARAM'];
