@@ -1,3 +1,7 @@
+2007-02-07  Michael Stucki  <michael@typo3.org>
+
+	* Fixed bug #4883: mod_rewrite rules rewrite missing favicon.ico to index.php (thanks to Stefan Geith for this hint - notice that manual modification of existing .htaccess files might be neccessary)
+
 2007-02-06  Michael Stucki  <michael@typo3.org>
 
 	* Fixed bug #3069 again: Ignore version check if no requirements are specified
