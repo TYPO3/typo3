@@ -1,39 +1,39 @@
 #####
-#
+# 
 # Example .htaccess file
-#
+# 
 # This file contains a collection of almost everything you will need
 # for optimising TYPO3:
-#
+# 
 # - mod_rewrite (used for SimulateStaticDocuments, RealUrl, etc.)
 # - PHP optimisation
-#
+# 
 # If you want to use it, you'll need to rename this file to '.htaccess'.
 # (To make this work you will need to adjust the 'AllowOverride'
 # directive in your Apache configuration file.)
-#
+# 
 # IMPORTANT: You may need to change this file depending on your TYPO3
 # installation!
-#
+# 
 # You should change every occurance of TYPO3root/ to the location where you
 # have your website in. For example:
 # If you have your website located at http://mysite.com/
 # then your TYPO3root/ is just empty (remove 'TYPO3root/')
 # If you have your website located at http://mysite.com/some/path/
 # then your TYPO3root/ is some/path/ (search and replace)
-#
+# 
 # If you have problems with this file, try using the minimal
 # mod_rewrite.htaccess which is located in the typo3_src/misc/
 # directory of this installation.
-#
+# 
 # You can also use this configuration in your httpd.conf, but you'll have
 # to modify some lines, see the comments (search for 'httpd.conf')
-#
+# 
 # Using rewriting in your httpd.conf is much faster, btw.
-#
+# 
 # Questions about this file go to the matching Install mailing list,
 # see http://typo3.org/documentation/mailing-lists/
-#
+# 
 ####
 
 ### Begin: Rewrite stuff ###
@@ -50,7 +50,7 @@ RewriteEngine On
 # If you use the RealUrl extension, then you'll have to enable the next line.
 # You will have to change this path if your TYPO3 installation is located
 # in a subdirectory of the website root.
-#
+# 
 # If you place this in httpd.conf, you cannot use this directive in any case!
 #RewriteBase /
 
@@ -121,6 +121,23 @@ RewriteRule .* index.php [L]
 #php_value variables_order GPCS
 
 ### End: PHP optimisation ###
+
+### Begin: Miscellaneous ###
+
+# Make sure that directory listings are disabled
+#Options -Indexes
+
+# There is a problem with Internet Explorer and mod_gzip on Apache servers.
+# For more information, see
+# http://typo3.org/documentation/document-library/rtehtmlarea/Tutorial-79/
+#mod_gzip_item_exclude file \.css$
+#mod_gzip_item_exclude file \.png$
+#mod_gzip_item_exclude file \.gif$
+#mod_gzip_item_exclude file \.jpg$
+#mod_gzip_item_exclude file \.jpeg$
+#mod_gzip_item_exclude file \.js$
+
+### End: Miscellaneous ###
 
 # Add your own rules here
 # ...
