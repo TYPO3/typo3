@@ -804,7 +804,12 @@ class t3lib_TCEmain	{
 								}
 							}
 
-								// Hook: processDatamap_afterDatabaseOperations
+								/*
+								 * Hook: processDatamap_afterDatabaseOperations
+								 *
+								 * Note: When using the hook after INSERT operations, you will only get the temporary NEW... id passed to your hook as $id,
+								 *		 but you can easily translate it to the real uid of the inserted record using the $this->substNEWwithIDs array.
+								 */
 							foreach($hookObjectsArr as $hookObj)	{
 								if (method_exists($hookObj, 'processDatamap_afterDatabaseOperations')) {
 									$hookObj->processDatamap_afterDatabaseOperations($status, $table, $id, $fieldArray, $this);
