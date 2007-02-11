@@ -1,3 +1,6 @@
+2007-02-11  Thomas Hempel  <thomas@work.de>
+
+	* Fix bug #4943: Redundant comma in label_alt_force
 
 2007-02-11  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 

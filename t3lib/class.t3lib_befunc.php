@@ -1841,11 +1841,13 @@ class t3lib_BEfunc	{
 					$altFields=t3lib_div::trimExplode(',',$TCA[$table]['ctrl']['label_alt'],1);
 					$tA=array();
 					$tA[]=$t;
-					foreach ($altFields as $fN)	{
-						$t = $tA[] = trim(strip_tags($row[$fN]));
-						if (strcmp($t,'') && !$TCA[$table]['ctrl']['label_alt_force'])	break;
+					if ($TCA[$table]['ctrl']['label_alt_force'])	{
+						foreach ($altFields as $fN)	{
+							$t = trim(strip_tags($row[$fN]));
+							if (!empty($t))	$tA[] = $t;
+						}
+						$t=implode(', ',$tA);
 					}
-					if ($TCA[$table]['ctrl']['label_alt_force'])	$t=implode(', ',$tA);
 				}
 			}
 
