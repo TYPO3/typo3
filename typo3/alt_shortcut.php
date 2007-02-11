@@ -538,7 +538,7 @@ class SC_alt_shortcut {
 		if (!t3lib_extMgm::isLoaded('cms'))	return;
 
 			// EDIT page:
-		$this->editPage = trim(strtolower($this->editPage));
+		$this->editPage = trim($LANG->csConvObj->conv_case($LANG->charSet,$this->editPage,'toLower'));
 		$this->editError = '';
 		$this->theEditRec = '';
 		$this->searchFor = '';
