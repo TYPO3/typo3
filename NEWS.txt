@@ -63,6 +63,8 @@ Development
 
 	* Inline Relational Record Editing (see "Backend" section above)
 
+	* It is possible to reuse List module classes in extensions (see record editing in TemplaVoila Page module, for example)
+
 Database changes
 ================
 
