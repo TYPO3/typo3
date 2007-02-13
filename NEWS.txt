@@ -44,7 +44,9 @@ Speed improvements
 
 	* Many TYPO3 tables (cache_*, index_*, tt_content, pages and others) are modified to use new indexes. This speeds up common queries on these pages a lot
 
-	* Some tables are changed to use InnoDB engine type for MySQL. Unlike MyISAM, which was default in previous versions, InnoDB does not lock tables for reading when another request tries to write something to table. InnoDB makes possible many reads along with many writes, while MyISAM prevents reads and writes until every single write completes. This gives huge improvement cache_*, sys_stat and index_* tables during peak visiting hours
+	* Some tables are changed to use InnoDB engine type for MySQL. Unlike MyISAM, which was default in previous versions, InnoDB does not lock tables for reading when another request tries to write something to table. InnoDB makes possible many reads along with many writes, while MyISAM prevents reads and writes until every single write completes. This gives huge improvement cache_*, sys_stat and index_* tables during peak visiting hours.
+	  InnoDB is more stable than MyISAM and prevents database corruption at peaks when there are too many requests come to MySQL.
+	  If InnoDB is not configured (not enabled), MySQL will ignore these settings use MyISAM. TYPO3 users need not to change anything if they do not use InnoDB but if InnoDB is available, it will be used by default
 
 	* TYPO3 now includes several .htaccess files in t3lib/ and typo3/ subdirectories to speed up loading of static (non-changing) images. Prior to version 4.1 all images were reloaded each time when backend user accessed any module, navigation frame, file or page tree. This used a lot of bandwidth and slowed servers down with HTTP requests for static (non-changing) images (for example, imagine how many additional requests will web server get when you use List module in extended mode and how much data it needs to transfer!).
 	  Using this feature requires certain Apache configuration. Main Apache configuration file should have "AllowOverride Indexes" directive for typo3-based web site (note that there can be also other values in AllowOverride" but "Indexes" is mandatory). It is safe and usually enabled by default by web server administrator. However if it is disabled and you cannot enable it for any reason (shared hosting, etc), you need to rename or delete several .htaccess files to prevent error messages from web server. Here is a list of these files:
@@ -94,7 +96,7 @@ Frontend features
 Backend skin
 ============
 
-	* ...
+	* Stylesheets are cached using mod_expires to speed up access (see "Speed improvements" section)
 
 Important bugfixes
 ==================
