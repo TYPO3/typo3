@@ -34,7 +34,7 @@ Backend
 		-> Using <label> tags in tceforms where appropriate to enhance usability in the Backend forms
 		-> Increase length for titles of be_users, be_groups, and fe_groups
 
-	* Workspace publishing is improved. Now publishing works with a limited number of records and publishes workspaces in several passes. This prevents PHP timeouts while publishing too many changes.
+	* Workspace publishing is improved. Now publishing works with a limited number of records and publishes workspaces in several passes. This prevents PHP timeouts while publishing too many changes
 
 Compatibility
 =============
@@ -56,7 +56,7 @@ Speed improvements
 		typo3/mod/user/ws/.htaccess
 		typo3/sysext/.htaccess
 		typo3/sysext/t3skin/stylesheets/.htaccess
-	  This feature requires mod_expires to be installed for Apache. If mod_expires is not installed, images will not be cahced and TYPO3 will work as in previous versions. .htaccess files will detect if mod_expires is installed and use it automatically
+	  This feature requires mod_expires to be installed for Apache. If mod_expires is not installed, images will not be cached and TYPO3 will work as in previous versions. .htaccess files will detect if mod_expires is installed and use it automatically
 
 Development
 ====================
@@ -73,6 +73,8 @@ Database changes
 ================
 
 	* Changed many BLOB fields from int/varchar/whatever to tinyint(1) - this is the field type which is actually intended by MySQL for BLOBs
+
+	* Changed VARCHAR(2) fields to CHAR(2) to prevent never disappearing prompt to correct those fields (MySQL always silently converts VARCHAR(2) to CHAR(2), TYPO3 tries to make them VARCHAR(2) again, gets CHAR(2) back and complains again)
 
 DBAL
 ====
