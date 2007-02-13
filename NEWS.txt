@@ -34,6 +34,8 @@ Backend
 		-> Using <label> tags in tceforms where appropriate to enhance usability in the Backend forms
 		-> Increase length for titles of be_users, be_groups, and fe_groups
 
+	* Workspace publishing is improved. Now publishing works with a limited number of records and publishes workspaces in several passes. This prevents PHP timeouts while publishing too many changes.
+
 Compatibility
 =============
 
