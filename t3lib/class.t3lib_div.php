@@ -3522,7 +3522,7 @@ class t3lib_div {
 		$pA = array();
 		foreach($params as $theP)	{
 			$pKV = explode('=', $theP);	// Splitting single param by '=' sign
-			if (!t3lib_div::inList('id,type,no_cache,cHash,MP,ftu',$pKV[0]))	{
+			if (!t3lib_div::inList('id,type,no_cache,cHash,MP,ftu',$pKV[0]) && !preg_match('/TSFE_ADMIN_PANEL\[.*?\]/',$pKV[0]))	{
 				$pA[rawurldecode($pKV[0])] = (string)rawurldecode($pKV[1]);
 			}
 		}

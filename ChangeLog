@@ -1,5 +1,8 @@
+2007-02-14  Rupert Germann  <rupi@gmx.li>
 
-2006-02-11  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+	* Fix: Excluded the adminPanel GETvars from t3lib_div::cHashParams to prevent a cHash mismatch
+
+2007-02-11  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
 	* Fix bug #4423: BE search doesn't work with UTF-8 chars (thanks to John Angel)
 
@@ -17,13 +20,13 @@
 	* Fixed bug #3069: Extension manager crashed because of some PHP bug with version_compare() (thanks to Rainer Haertlein who discovered the solution to this problem)
 	* Changed t3lib_basicFileFunctions to use filemtime() instead of filectime()
 
-2006-01-30  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+2007-01-30  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
 	* Fixing oddities in recursive stdWraps (bugs #4312 and #4871)
 	* Fix bug #4678: t3lib_div::array2xml() may crash with PHP 5.2.0
 	* Fix bug #3648: ease use of tslib_cObj::getTreeList()
 
-2006-01-28  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+2007-01-28  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
 	* Added "html { height: 100% }" to stylesheet to make RTE wizard work in IE7
 	* Make the EM work again with PHP 4.1 (checking for md5_file())
@@ -40,7 +43,7 @@
 
 	* Update copyright information (just the year, of course) in t3lib/config_default.php
 
-2006-01-03  Thorsten Kahler  <thorsten.kahler@dkd.de>
+2007-01-03  Thorsten Kahler  <thorsten.kahler@dkd.de>
 
 	* Fixed bug 931: Typolink to a page with certain type doesn't work if type is zero
 
