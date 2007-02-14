@@ -956,6 +956,11 @@ class SC_alt_doc {
 		if ($langSelector) {
 			$langSelector ='<div id="typo3-altdoc-lang-selector">'.$langSelector.'</div>';
 		}
+
+		if (is_array($this->tceforms->extraFormHeaders))	{
+			$formContent .= implode(chr(10), $this->tceforms->extraFormHeaders);
+		}
+
 		$pagePath = '<div id="typo3-altdoc-page-path">'.$LANG->sL('LLL:EXT:lang/locallang_core.php:labels.path',1).': '.htmlspecialchars($this->generalPathOfForm).'</div>';
 
 		$formContent.='

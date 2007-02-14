@@ -294,6 +294,9 @@ class t3lib_TCEforms	{
 	var $additionalJS_submit = array();			// Additional JavaScript executed on submit; If you set "OK" variable it will raise an error about RTEs not being loaded and offer to block further submission.
 
 	var $inline;								// Instance of t3lib_tceforms_inline
+	var $hookObjectsMainFields = array();			// Array containing hook class instances called once for a form
+	var $hookObjectsSingleField = array();			// Array containing hook class instances called for each field
+	var $extraFormHeaders = array();			// Rows gettings inserted into the alt_doc headers (when called from alt_doc.php)
 
 
 
@@ -305,7 +308,7 @@ class t3lib_TCEforms	{
 	 * @return	void
 	 */
 	function t3lib_TCEforms()	{
-		global $CLIENT;
+		global $CLIENT, $TYPO3_CONF_VARS;
 
 		$this->clientInfo = t3lib_div::clientInfo();
 
@@ -343,6 +346,21 @@ class t3lib_TCEforms	{
 		);
 
 		$this->inline = t3lib_div::makeInstance('t3lib_TCEforms_inline');
+
+			// Prepare user defined objects (if any) for hooks which extend this function:
+		$this->hookObjectsMainFields = array();
+		if (is_array ($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tceforms.php']['getMainFieldsClass']))	{
+			foreach ($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tceforms.php']['getMainFieldsClass'] as $classRef)	{
+				$this->hookObjectsMainFields[] = &t3lib_div::getUserObj($classRef);
+			}
+		}
+		$this->hookObjectsSingleField = array();
+		if (is_array ($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tceforms.php']['getSingleFieldClass']))	{
+			foreach ($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tceforms.php']['getSingleFieldClass'] as $classRef)	{
+				$this->hookObjectsSingleField[] = &t3lib_div::getUserObj($classRef);
+			}
+		}
+
 	}
 
 	/**
@@ -452,16 +470,8 @@ class t3lib_TCEforms	{
 		$this->palettesRendered=array();
 		$this->palettesRendered[$this->renderDepth][$table]=array();
 
-			// First prepare user defined objects (if any) for hooks which extend this function:
-		$hookObjectsArr = array();
-		if (is_array ($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tceforms.php']['getMainFieldsClass']))	{
-			foreach ($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tceforms.php']['getMainFieldsClass'] as $classRef)	{
-				$hookObjectsArr[] = &t3lib_div::getUserObj($classRef);
-			}
-		}
-
 			// Hook: getMainFields_preProcess (requested by Thomas Hempel for use with the "dynaflex" extension)
-		foreach ($hookObjectsArr as $hookObj)	{
+		foreach ($this->hookObjectsMainFields as $hookObj)	{
 			if (method_exists($hookObj,'getMainFields_preProcess'))	{
 				$hookObj->getMainFields_preProcess($table,$row,$this);
 			}
@@ -570,7 +580,7 @@ class t3lib_TCEforms	{
 		}
 
 			// Hook: getMainFields_postProcess (requested by Thomas Hempel for use with the "dynaflex" extension)
-		foreach ($hookObjectsArr as $hookObj)	{
+		foreach ($this->hookObjectsMainFields as $hookObj)	{
 			if (method_exists($hookObj,'getMainFields_postProcess'))	{
 				$hookObj->getMainFields_postProcess($table,$row,$this);
 			}
@@ -763,6 +773,13 @@ class t3lib_TCEforms	{
 	function getSingleField($table,$field,$row,$altName='',$palette=0,$extra='',$pal=0)	{
 		global $TCA,$BE_USER;
 
+			// Hook: getSingleField_preProcess
+		foreach ($this->hookObjectsSingleField as $hookObj)	{
+			if (method_exists($hookObj,'getSingleField_preProcess'))	{
+				$hookObj->getSingleField_preProcess($table, $field, $row, $altName, $palette, $extra, $pal, $this);
+			}
+		}
+
 		$out = '';
 		$PA = array();
 		$PA['altName'] = $altName;
@@ -910,6 +927,12 @@ class t3lib_TCEforms	{
 					}
 				}
 			} else $this->commentMessages[]=$this->prependFormFieldNames.'['.$table.']['.$row['uid'].']['.$field.']: Disabled by TSconfig';
+		}
+			// Hook: getSingleField_postProcess
+		foreach ($this->hookObjectsSingleField as $hookObj)	{
+			if (method_exists($hookObj,'getSingleField_postProcess'))	{
+				$hookObj->getSingleField_postProcess($table, $field, $row, $out, $PA, $this);
+			}
 		}
 			// Return value (string or array)
 		return $out;
