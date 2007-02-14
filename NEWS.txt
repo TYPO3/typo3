@@ -72,7 +72,7 @@ Development
 Database changes
 ================
 
-	* Changed many BLOB fields from int/varchar/whatever to tinyint(1) - this is the field type which is actually intended by MySQL for BLOBs
+	* Changed many BLOB fields to TEXT because they always contain textual data (comma-separated values or serialized PHP objects)
 
 	* Changed VARCHAR(2) fields to CHAR(2) to prevent never disappearing prompt to correct those fields (MySQL always silently converts VARCHAR(2) to CHAR(2), TYPO3 tries to make them VARCHAR(2) again, gets CHAR(2) back and complains again)
 
