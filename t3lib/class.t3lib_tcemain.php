@@ -1776,7 +1776,7 @@ class t3lib_TCEmain	{
 						}
 					}
 					$theDec = ereg_replace('[^0-9]','',$theDec).'00';
-					$value = (float)(intval(str_replace(' ','',$value)).'.'.substr($theDec,0,2));
+					$value = intval(str_replace(' ','',$value)).'.'.substr($theDec,0,2);
 				break;
 				case 'md5':
 					if (strlen($value)!=32){$set=false;}
