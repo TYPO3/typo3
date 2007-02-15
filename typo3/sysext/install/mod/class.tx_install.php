@@ -1321,7 +1321,7 @@ From sub-directory:
 
 						if (!is_array($value) && ($this->checkForBadString($value) || $isTextarea))	{
 							$k2 = '['.$vk.']';
-							$msg = $description.'<br /><br /><em>'.$ext.$k2.' = '.htmlspecialchars(t3lib_div::fixed_lgd($value,60)).'</em><br />';
+							$msg = htmlspecialchars($description).'<br /><br /><em>'.$ext.$k2.' = '.htmlspecialchars(t3lib_div::fixed_lgd($value,60)).'</em><br />';
 
 							if ($isTextarea)	{
 								$form = '<textarea name="TYPO3_INSTALL[extConfig]['.$k.']['.$vk.']" cols="60" rows="5" wrap="off">'.htmlspecialchars($value).'</textarea>';
