@@ -1,3 +1,8 @@
+
+2007-02-15  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+
+	* Fix bug #4947: SQL error with DBAL/PostgreSQL when listing or looking up reviewed extensions
+
 2007-02-15  Thorsten Kahler  <thorsten.kahler@dkd.de>
 
 	* Fix: Display description of options in install tool correctly
