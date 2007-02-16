@@ -40,6 +40,9 @@ Compatibility
 =============
 
 	* Changed the default value of $TYPO3_CONF_VARS[SYS][devIPmask]
+	* Exported TBE_EDITOR functions from t3lib_TCEforms to a separate file typo3/jsfunc_tbe_editor.js
+		* Changed all occurrences of TBE_EDITOR_<function> to TBE_EDITOR.<function> in the Core (e.g. TBE_EDITOR_loginRefreshed -> TBE_EDITOR.loginRefreshed)
+		* Changed all occurrences of typo3Form<function> to typo3form.<function> in the Core (e.g. typo3FormFieldSet -> typo3form.fieldSet)
 
 Speed improvements
 ==================
