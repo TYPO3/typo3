@@ -338,7 +338,7 @@ class t3lib_TSparser {
 										} else {
 											$res = $this->getVal($theVal,$this->setup);
 										}
-										$this->setVal($objStrName,$setup,unserialize(serialize($res)),1);
+										$this->setVal($objStrName,$setup,unserialize(serialize($res)),1);	// unserialize(serialize(...)) may look stupid but is needed because of some reference issues. See Kaspers reply to "[TYPO3-core] good question" from December 15 2005.
 									break;
 									case '>':
 										if ($this->syntaxHighLight)	$this->regHighLight("value_unset", $lineP, strlen(ltrim(substr($line,1)))-strlen(trim(substr($line,1))));
