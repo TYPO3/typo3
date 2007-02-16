@@ -858,7 +858,8 @@ EXTENSION KEYS:
 					if (count($this->inst_keys))	{
 						reset($this->inst_keys);
 						while(list($extKey)=each($this->inst_keys))	{
-							if(strlen($this->listRemote_search) && !stristr($extKey,$this->listRemote_search)) continue;
+ 							$this->xmlhandler->searchExtensionsXML($extKey, '', '', true);
+							if((strlen($this->listRemote_search) && !stristr($extKey,$this->listRemote_search)) || isset($this->xmlhandler->extensionsXML[$extKey])) continue;	
 
 							$loadUnloadLink = t3lib_extMgm::isLoaded($extKey)?
 							'<a href="'.htmlspecialchars('index.php?CMD[showExt]='.$extKey.'&CMD[remove]=1&CMD[clrCmd]=1&SET[singleDetails]=info').'">'.$this->removeButton().'</a>':
