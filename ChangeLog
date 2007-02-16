@@ -1,3 +1,7 @@
+2007-02-16  Michael Stucki  <michael@typo3.org>
+
+	* Fixed bug #4973: Check if array is empty before looping over it (thanks to Thomas Oppelt)
+
 2007-02-16  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Fixed bug 4962: .htaccess in sysext fails in some Apache configurations

@@ -808,15 +808,17 @@ class tx_indexedsearch_crawler {
 			// Lookup old phash rows:
 		$oldPhashRows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('phash','index_section', 'page_id='.intval($id));
 
-		$pHashesToDelete = array();
-		foreach ($oldPhashRows as $pHashRow)	{
-			$pHashesToDelete[] = $pHashRow['phash'];
-		}
+		if (count($oldPhashRows))	{
+			$pHashesToDelete = array();
+			foreach ($oldPhashRows as $pHashRow)	{
+				$pHashesToDelete[] = $pHashRow['phash'];
+			}
 
-		$where_clause = 'phash IN ('.implode(',',$GLOBALS['TYPO3_DB']->cleanIntArray($pHashesToDelete)).')';
-		$tables = explode(',', 'index_debug,index_fulltext,index_grlist,index_phash,index_rel,index_section');
-		foreach ($tables as $table)	{
-			$GLOBALS['TYPO3_DB']->exec_DELETEquery($table, $where_clause);
+			$where_clause = 'phash IN ('.implode(',',$GLOBALS['TYPO3_DB']->cleanIntArray($pHashesToDelete)).')';
+			$tables = explode(',', 'index_debug,index_fulltext,index_grlist,index_phash,index_rel,index_section');
+			foreach ($tables as $table)	{
+				$GLOBALS['TYPO3_DB']->exec_DELETEquery($table, $where_clause);
+			}
 		}
 	}
 
