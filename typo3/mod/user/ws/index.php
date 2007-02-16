@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2006 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2007 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -485,16 +485,28 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 
 			// Traverse versions and build page-display array:
 		$pArray = array();
+		$wmArray = array();	// is page in web mount?
+		$rlArray = array();	// root line of page
+		$pagePermsClause = $GLOBALS['BE_USER']->getPagePermsClause(1);
 		foreach($versions as $table => $records)	{
 			if (is_array($records)) {
 				foreach($records as $rec)	{
 					$pageIdField = $table==='pages' ? 't3ver_oid' : 'realpid';
-					$this->displayWorkspaceOverview_setInPageArray(
-						$pArray,
-						t3lib_BEfunc::BEgetRootLine($rec[$pageIdField], 'AND 1=1'),
-						$table,
-						$rec
-					);
+					$pageId = $rec[$pageIdField];
+					if (!isset($wmArray[$pageId]))	{
+						$wmArray[$pageId] = $GLOBALS['BE_USER']->isInWebMount($pageId,$pagePermsClause);
+					}
+					if ($wmArray[$pageId])	{
+						if (!isset($rlArray[$pageId]))	{
+							$rlArray[$pageId] = t3lib_BEfunc::BEgetRootLine($pageId, 'AND 1=1');
+						}
+						$this->displayWorkspaceOverview_setInPageArray(
+							$pArray,
+							$rlArray[$pageId],
+							$table,
+							$rec
+						);
+					}
 				}
 			}
 		}
