@@ -117,7 +117,13 @@ class SC_alt_db_navframe {
 			// Use template rendering only if this is a non-AJAX call:
 		if (!$this->ajax) {
 				// Setting highlight mode:
-			$this->doHighlight = !$BE_USER->getTSConfigVal('options.pageTree.disableTitleHighlight') && $BE_USER->workspace===0;
+			$this->doHighlight = !$BE_USER->getTSConfigVal('options.pageTree.disableTitleHighlight');
+
+				// If highlighting is active, define the CSS class for the active item depending on the workspace
+			if ($this->doHighlight) {
+				if ($BE_USER->workspace === 0) $hlClass = 'active';
+				else $hlClass = 'active active-ws wsver'.$BE_USER->workspace; 
+			}
 
 				// Create template object:
 			$this->doc = t3lib_div::makeInstance('template');
@@ -132,6 +138,8 @@ class SC_alt_db_navframe {
 			($this->currentSubScript?'top.currentSubScript=unescape("'.rawurlencode($this->currentSubScript).'");':'').'
 			// setting prefs for pagetree and drag & drop
 			Tree.thisScript    = "'.$this->pagetree->thisScript.'";
+			'.($this->doHighlight ? 'Tree.highlightClass = "'.$hlClass.'";' : '').'
+
 			DragDrop.changeURL = "'.$this->backPath.'alt_clickmenu.php";
 			DragDrop.backPath  = "'.t3lib_div::shortMD5(''.'|'.$GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']).'";
 			DragDrop.table     = "pages";

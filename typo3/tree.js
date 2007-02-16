@@ -39,6 +39,7 @@ var Tree = {
 	thisScript: null,
 	frameSetModule: null,
 	activateDragDrop: true,
+	highlightClass: 'active',
 
 	// reloads a part of the page tree (useful when "expand" / "collapse")
 	load: function(params, isExpand, obj) {
@@ -90,7 +91,7 @@ var Tree = {
 	// selects the activated item again, in case it collapsed and got expanded again
 	reSelectActiveItem: function() {
 		obj = $(top.fsMod.navFrameHighlightedID[this.frameSetModule]);
-		if (obj) Element.addClassName(obj, 'active');
+		if (obj) Element.addClassName(obj, this.highlightClass);
 	},
 
 	// highlights an active list item in the page tree and registers it to the top-frame
@@ -100,11 +101,11 @@ var Tree = {
 
 		// Remove all items that are already highlighted
 		obj = $(top.fsMod.navFrameHighlightedID[frameSetModule]);
-		if (obj) Element.removeClassName(obj, 'active');
+		if (obj) Element.removeClassName(obj, this.highlightClass);
 
 		// Set the new item
 		top.fsMod.navFrameHighlightedID[frameSetModule] = highlightID;
-		if ($(highlightID)) Element.addClassName(highlightID, 'active');
+		if ($(highlightID)) Element.addClassName(highlightID, this.highlightClass);
 	}
 
 }
