@@ -332,7 +332,7 @@ class t3lib_TCEmain	{
 	var $remapStack = array();					// array used for remapping uids and values at the end of process_datamap
 	var $updateRefIndexStack = array();			// array used for additional calls to $this->updateRefIndex
 	var $callFromImpExp = false;				// tells, that this TCEmain was called from tx_impext - this variable is set by tx_impexp
-	
+
 		// Various
 	var $fileFunc;								// For "singleTon" file-manipulation object
 	var $checkValue_currentRecord=array();		// Set to "currentRecord" during checking of values.
@@ -941,7 +941,7 @@ class t3lib_TCEmain	{
 			}
 		} else {
 			$currentRecord = $checkValueRecord = $this->recordInfo($table,$id,'*');	// We must use the current values as basis for this!
-			
+
 			t3lib_BEfunc::fixVersioningPid($table,$currentRecord);	// This is done to make the pid positive for offline versions; Necessary to have diff-view for pages_language_overlay in workspaces.
 
 				// Get original language record if available:
@@ -1453,7 +1453,7 @@ class t3lib_TCEmain	{
 	function checkValue_group_select_file($valueArray,$tcaFieldConf,$curValue,$uploadedFileArray,$status,$table,$id,$recFID)	{
 
 		if (!$this->bypassFileHandling)	{	// If filehandling should NOT be bypassed, do processing:
-			
+
 				// If any files are uploaded, add them to value array
 			if (is_array($uploadedFileArray) &&
 				$uploadedFileArray['name'] &&
@@ -1589,7 +1589,7 @@ class t3lib_TCEmain	{
 					}
 				}
 			}
-			
+
 				// If MM relations for the files, we will set the relations as MM records and change the valuearray to contain a single entry with a count of the number of files!
 			if ($tcaFieldConf['MM'])	{
 				$dbAnalysis = t3lib_div::makeInstance('t3lib_loadDBGroup');
@@ -3190,7 +3190,7 @@ class t3lib_TCEmain	{
 										$pass = !t3lib_BEfunc::getRecordsByField($table,$TCA[$table]['ctrl']['transOrigPointerField'],$uid,'AND pid='.intval($row['pid']).' AND '.$TCA[$table]['ctrl']['languageField'].'='.intval($langRec['uid']));
 										$Ttable = $table;
 									}
-									
+
 									if ($pass)	{
 
 											// Initialize:
@@ -3221,13 +3221,13 @@ class t3lib_TCEmain	{
 												$excludeFields[] = $fN;
 											}
 										}
-										
+
 										if ($Ttable === $table)	{
-										
+
 												// Execute the copy:
 											$this->copyRecord($table,$uid,-$uid,1,$overrideValues,implode(',',$excludeFields));
 										} else {
-											
+
 												// Create new record:
 											$copyTCE = t3lib_div::makeInstance('t3lib_TCEmain');
 											$copyTCE->stripslashes_values = 0;
@@ -3335,7 +3335,7 @@ class t3lib_TCEmain	{
 			$this->deleteRecord($table, $uid, $noRecordCheck, $forceHardDelete);
 		}
 	}
-	
+
 	/**
 	 * Delete versions for element from any table
 	 *
@@ -3441,7 +3441,7 @@ class t3lib_TCEmain	{
 							$this->log($table,$uid,3,0,100,'Delete: Zero rows in result when trying to read filenames from record which should be deleted');
 						}
 					}
-						
+
 						// Delete the hard way...:
 					$GLOBALS['TYPO3_DB']->exec_DELETEquery($table, 'uid='.intval($uid));
 				}
@@ -3485,16 +3485,16 @@ class t3lib_TCEmain	{
 			} else $this->log($table,$uid,3,0,1,'Attempt to delete record without delete-permissions');
 		}
 	}
-	
+
 	/**
 	 * Call back function for deleting file relations for flexform fields in records which are being completely deleted.
 	 */
 	function deleteRecord_flexFormCallBack($dsArr, $dataValue, $PA, $structurePath, &$pObj)	{
-		
+
 			// Use reference index object to find files in fields:
 		$refIndexObj = t3lib_div::makeInstance('t3lib_refindex');
 		$files = $refIndexObj->getRelations_procFiles($dataValue, $dsArr['TCEforms']['config'], $PA['uid']);
-		
+
 			// Traverse files and delete them:
 		if (is_array($files))	{
 			foreach($files as $dat)	{
@@ -4418,7 +4418,7 @@ $this->log($table,$id,6,0,0,'Stage raised...',30,array('comment'=>$comment,'stag
 	 */
 	function doesRecordExist($table,$id,$perms)	{
 		global $TCA;
-		
+
 		if ($this->bypassAccessCheckForRecords)	{
 			return is_array(t3lib_BEfunc::getRecordRaw($table,'uid='.intval($id),'uid'));
 		}

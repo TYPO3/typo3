@@ -250,13 +250,13 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 	function isInWebMount($id,$readPerms='',$exitOnError=0)	{
 		if (!$GLOBALS['TYPO3_CONF_VARS']['BE']['lockBeUserToDBmounts'] || $this->isAdmin())	return 1;
 		$id = intval($id);
-		
+
 			// Check if input id is an offline version page in which case we will map id to the online version:
 		$checkRec = t3lib_beFUnc::getRecord('pages',$id,'pid,t3ver_oid');
 		if ($checkRec['pid']==-1)	{
 			$id = intval($checkRec['t3ver_oid']);
 		}
-		
+
 		if (!$readPerms)	$readPerms = $this->getPagePermsClause(1);
 		if ($id>0)	{
 			$wM = $this->returnWebmounts();
@@ -320,14 +320,14 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 
 	/**
 	 * Returns a WHERE-clause for the pages-table where user permissions according to input argument, $perms, is validated.
-	 * $perms is the 'mask' used to select. Fx. if $perms is 1 then you'll get all pages that a user can actually see!
+	 * $perms is the "mask" used to select. Fx. if $perms is 1 then you'll get all pages that a user can actually see!
 	 * 	 	2^0 = show (1)
 	 * 		2^1 = edit (2)
 	 * 		2^2 = delete (4)
 	 * 		2^3 = new (8)
 	 * If the user is 'admin' " 1=1" is returned (no effect)
 	 * If the user is not set at all (->user is not an array), then " 1=0" is returned (will cause no selection results at all)
-	 * The 95% use of this function is "->getPagePermsClause(1)" which will return WHERE clauses for *selecting* pages in backend listings - in other words will this check read permissions.
+	 * The 95% use of this function is "->getPagePermsClause(1)" which will return WHERE clauses for *selecting* pages in backend listings - in other words this will check read permissions.
 	 *
 	 * @param	integer		Permission mask to use, see function description
 	 * @return	string		Part of where clause. Prefix " AND " to this.
@@ -343,7 +343,9 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 			$str= ' ('.
 				'(pages.perms_everybody & '.$perms.' = '.$perms.')'.	// Everybody
 				'OR(pages.perms_userid = '.$this->user['uid'].' AND pages.perms_user & '.$perms.' = '.$perms.')';	// User
-			if ($this->groupList){$str.='OR(pages.perms_groupid in ('.$this->groupList.') AND pages.perms_group & '.$perms.' = '.$perms.')';}	// Group (if any is set)
+			if ($this->groupList)	{
+				$str.= 'OR(pages.perms_groupid in ('.$this->groupList.') AND pages.perms_group & '.$perms.' = '.$perms.')';	// Group (if any is set)
+			}
 			$str.=')';
 
 			// ****************

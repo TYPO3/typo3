@@ -5335,10 +5335,9 @@ class tslib_cObj {
 	/**
 	 * Based on the input "TypoLink" TypoScript configuration this will return the generated URL
 	 *
-	 * 	 ' @see typoLink()
-	 *
 	 * @param	array		TypoScript properties for "typolink"
 	 * @return	string		The URL of the link-tag that typolink() would by itself return
+	 * @see typoLink()
 	 */
 	function typoLink_URL($conf)	{
 		$this->typolink('|',$conf);

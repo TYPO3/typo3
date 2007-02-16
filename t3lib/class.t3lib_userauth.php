@@ -513,7 +513,7 @@ class t3lib_userAuth {
 
 				if ($this->writeDevLog && $serviceChain) 	t3lib_div::devLog($subType.' auth services called: '.$serviceChain, 't3lib_userAuth');
 
-				if($authenticated) {
+				if ($authenticated) {
 						// leave foreach() because a user is authenticated
 					break;
 				}
@@ -1071,12 +1071,12 @@ class t3lib_userAuth {
 
 				if ((string)$loginData['uident'] === (string)md5($user[$this->username_column].':'.$user[$this->userident_column].':'.$loginData['chalvalue']))	{
 					$OK = TRUE;
-				};
+				}
 			break;
 			default:	// normal
 				if ((string)$loginData['uident'] === (string)$user[$this->userident_column])	{
 					$OK = TRUE;
-				};
+				}
 			break;
 		}
 

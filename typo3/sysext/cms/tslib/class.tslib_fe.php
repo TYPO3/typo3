@@ -1871,7 +1871,7 @@
 				$c = count($temp);
 				for ($i=0; $i<$c; $i++)	{
 					if ($temp[$i]['uid'])	{
-						$p = $this->csConvObj->crop('utf-8',$this->csConvObj->utf8_encode($temp[$i]['title'],$this->renderCharset),$len,"\xE2\x80\xA6");	// U+2026; HORIZONTAL ELLIPSIS 
+						$p = $this->csConvObj->crop('utf-8',$this->csConvObj->utf8_encode($temp[$i]['title'],$this->renderCharset),$len,"\xE2\x80\xA6");	// U+2026; HORIZONTAL ELLIPSIS
 						$path .= '/' . rawurlencode($p);
 					}
 				}

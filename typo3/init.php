@@ -273,11 +273,11 @@ if (defined('TYPO3_enterInstallScript') && TYPO3_enterInstallScript)	{
 // *************************
 // Connect to the database
 // *************************
-if ($GLOBALS['TYPO3_DB']->sql_pconnect(TYPO3_db_host, TYPO3_db_username, TYPO3_db_password))	{
+if ($TYPO3_DB->sql_pconnect(TYPO3_db_host, TYPO3_db_username, TYPO3_db_password))	{
 	if (!TYPO3_db)	{
 		t3lib_BEfunc::typo3PrintError ('No database selected','Database Error');
 		exit;
-	} elseif (!$GLOBALS['TYPO3_DB']->sql_select_db(TYPO3_db))	{
+	} elseif (!$TYPO3_DB->sql_select_db(TYPO3_db))	{
 		t3lib_BEfunc::typo3PrintError ('Cannot connect to the current database, "'.TYPO3_db.'"','Database Error');
 		exit;
 	}

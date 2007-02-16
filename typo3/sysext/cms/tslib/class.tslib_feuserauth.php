@@ -149,7 +149,7 @@ class tslib_feUserAuth extends t3lib_userAuth {
 
 		parent::start();
 	}
- 
+
 	/**
 	 * Returns a new session record for the current user for insertion into the DB.
 	 *
