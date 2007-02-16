@@ -2924,7 +2924,7 @@ class tslib_cObj {
 	 * @see substituteSubpart(), substituteMarker(), substituteMarkerInObject(), TEMPLATE()
 	 */
 	function substituteMarkerArrayCached($content,$markContentArray=array(),$subpartContentArray=array(),$wrappedSubpartContentArray=array())	{
-		$GLOBALS['TT']->push('/substituteMarkerArray/');
+		$GLOBALS['TT']->push('substituteMarkerArray');
 
 			// If not arrays then set them
 		if (!is_array($markContentArray))	$markContentArray=array();	// Plain markers
