@@ -254,6 +254,7 @@ class SC_alt_db_navframe {
 	function printContent()	{
 			// If we handle an AJAX call, send headers:
 		if ($this->ajax) {
+			header('X-JSON: ('.($this->pagetree->ajaxStatus?'true':'false').')');
 			header('Content-type: text/html; charset=utf-8');
 			// If it's the regular call to fully output the tree:
 		} else {

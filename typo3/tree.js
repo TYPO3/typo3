@@ -27,12 +27,7 @@
 	// Call this function, refresh_nav(), from another script in the backend if you want
 	// to refresh the navigation frame (eg. after having changed a page title or moved pages etc.)
 	//		See t3lib_BEfunc::getSetUpdateSignal()
-function refresh_nav() { window.setTimeout('_refresh_nav();',0); }
-function _refresh_nav()	{
-	var r = new Date();
-	// randNum is useful so pagetree does not get cached in browser cache when refreshing
-	window.location.href = Tree.thisScript + '?randNum=' + r.getTime();
-}
+function refresh_nav() { window.setTimeout('Tree.refresh();',0); }
 
 
 var Tree = {
@@ -63,13 +58,23 @@ var Tree = {
 		new Ajax.Request(this.thisScript, {
 			method: 'get',
 			parameters: 'ajax=1&PM=' + params,
-			onComplete: function(xhr) {
-					// the parent node needs to be overwritten, not the object
+			onComplete: function(xhr, status) { 
+				// if this is not a valid ajax response, the whole page gets refreshed 
+				if (!status) return this.refresh();
+
+				// the parent node needs to be overwritten, not the object
 				$(obj.parentNode).replace(xhr.responseText);
 				this.registerDragDropHandlers();
 				this.reSelectActiveItem();
 			}.bind(this)
 		});
+	},
+
+	// does the complete page refresh (previously known as "_refresh_nav()")
+	refresh: function() {
+		var r = new Date();
+		// randNum is useful so pagetree does not get cached in browser cache when refreshing
+		window.location.href = this.thisScript + '?randNum=' + r.getTime();
 	},
 
 	// attaches the events to the elements needed for the drag and drop (for the titles and the icons)

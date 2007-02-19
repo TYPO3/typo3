@@ -1,5 +1,6 @@
 2007-02-19  Ingmar Schlecht  <ingmar@typo3.org>
 
+	* Fixed bug: AJAX navtree erroneously showed whole tree inside of the expanded branch on errors such as pages deleted in the meantime (thanks to Benjamin Mack)
 	* Fixed bug #4993: AJAX navtree does not expand in Konqueror (fixed by Benjamin Mack)
 
 2007-02-16  Martin Kutschker  <martin.t.kutschker@blackbox.net>

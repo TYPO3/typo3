@@ -73,6 +73,7 @@ class webPageTree extends t3lib_browseTree {
 
 	var $ext_showPageId;
 	var $ext_IconMode;
+	var $ajaxStatus = false; // Indicates, whether the ajax call was successful, i.e. the requested page has been found
 
 	/**
 	 * Calls init functions
@@ -232,7 +233,10 @@ class webPageTree extends t3lib_browseTree {
 			}
 
 			// ajax request: collapse
-			if($doCollapse && $collapsedPageUid == $uid) { return $itemHTML; }
+			if($doCollapse && $collapsedPageUid == $uid) {
+				$this->ajaxStatus = true;
+				return $itemHTML;
+			}
 
 			// ajax request: expand
 			if($doExpand && $expandedPageUid == $uid) {
@@ -242,6 +246,7 @@ class webPageTree extends t3lib_browseTree {
 				if($v['invertedDepth'] < $invertedDepthOfAjaxRequestedItem) {
 					$ajaxOutput .= $itemHTML;
 				} else {
+					$this->ajaxStatus = true;
 					return $ajaxOutput;
 				}
 			}
@@ -249,7 +254,10 @@ class webPageTree extends t3lib_browseTree {
 			$out .= $itemHTML;
 		}
 
-		if($ajaxOutput) { return $ajaxOutput; }
+		if($ajaxOutput) {
+			$this->ajaxStatus = true;
+			return $ajaxOutput;
+		}
 
 		// finally close the first ul
 		$out .= '</ul>';

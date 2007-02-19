@@ -67,6 +67,7 @@ require_once (PATH_t3lib.'class.t3lib_foldertree.php');
 class filelistFolderTree extends t3lib_folderTree {
 
 	var $ext_IconMode;
+	var $ajaxStatus = false; // Indicates, whether the ajax call was successful, i.e. the requested page has been found
 
 	/**
 	 * Calls init functions
@@ -203,7 +204,10 @@ class filelistFolderTree extends t3lib_folderTree {
 			}
 
 			// ajax request: collapse
-			if($doCollapse && $expandedFolderUid == $uid) { return $itemHTML; }
+			if($doCollapse && $expandedFolderUid == $uid) {
+				$this->ajaxStatus = true;
+				return $itemHTML;
+			}
 
 			// ajax request: expand
 			if($doExpand && $expandedFolderUid == $uid) {
@@ -213,6 +217,7 @@ class filelistFolderTree extends t3lib_folderTree {
 				if($v['invertedDepth'] < $invertedDepthOfAjaxRequestedItem) {
 					$ajaxOutput .= $itemHTML;
 				} else {
+					$this->ajaxStatus = true;
 					return $ajaxOutput;
 				}
 			}
@@ -220,7 +225,10 @@ class filelistFolderTree extends t3lib_folderTree {
 			$out .= $itemHTML;
 		}
 
-		if($ajaxOutput) { return $ajaxOutput; }
+		if($ajaxOutput) {
+			$this->ajaxStatus = true;
+			return $ajaxOutput;
+		}
 
 		// finally close the first ul
 		$out .= "</ul>\n";
