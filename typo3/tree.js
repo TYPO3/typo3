@@ -52,9 +52,9 @@ var Tree = {
 		// immediately collapse the subtree and change the plus to a minus when collapsing
 		// without waiting for the response
 		if (!isExpand) {
-			$(obj.parentNode.getElementsByTagName('ul')[0]).remove();
-			var pm = $(obj.parentNode).getElementsByClassName('pm')[0];
-			pm.onclick = function() {};
+			obj.parentNode.getElementsByTagName('ul')[0].remove();
+			var pm = document.getElementsByClassName('pm', obj.parentNode)[0];
+			pm.onclick = null;
 			pm.firstChild.src = pm.firstChild.src.replace('minus', 'plus');
 		} else {
 			obj.style.cursor = 'wait';
