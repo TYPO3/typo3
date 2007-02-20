@@ -400,7 +400,7 @@ if (TYPO3_MODE=='BE')	{
 				'type' => 'group',
 				'internal_type' => 'file',
 				'allowed' => $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'].',html,htm,ttf,txt,css',
-				'max_size' => '2000',
+				'max_size' => $GLOBALS['TYPO3_CONF_VARS']['BE']['maxFileSize'],
 				'uploadfolder' => 'uploads/media',
 				'show_thumbs' => '1',
 				'size' => '3',
