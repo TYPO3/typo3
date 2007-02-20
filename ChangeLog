@@ -4,6 +4,7 @@
 	* Fixed a typo in class.em_xmlhandler.php
 	* Fixed a typo in typo3/sysext/install/mod/class.tx_install.php
 	* Changed another bug in the EM: Last update of extensions.xml.gz was not displayed
+	* Fixed bug #4951: SQL error when editing BE User
 
 2007-02-20  Oliver Hader  <oh@inpublica.de>
 

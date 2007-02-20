@@ -319,12 +319,19 @@ class t3lib_admin {
 		if ($pid_list)	{
 			while (list($table)=each($TCA))	{
 				t3lib_div::loadTCA($table);
-			 	$garbage = $GLOBALS['TYPO3_DB']->exec_SELECTquery (
+
+				$pid_list_tmp = $pid_list;
+				if (!isset($TCA[$table]['ctrl']['versioningWS']) || !$TCA[$table]['ctrl']['versioningWS'])	{
+						// Remove preceding "-1," for non-versioned tables
+					$pid_list_tmp = preg_replace('/^\-1,/','',$pid_list_tmp);
+				}
+
+				$garbage = $GLOBALS['TYPO3_DB']->exec_SELECTquery (
 								'uid,pid,'.$TCA[$table]['ctrl']['label'],
 								$table,
-								'pid NOT IN ('.$pid_list.')'
+								'pid NOT IN ('.$pid_list_tmp.')'
 							);
-				$lostIdList=Array();
+				$lostIdList = array();
 				while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($garbage))	{
 					$this->lRecords[$table][$row['uid']]=Array('uid'=>$row['uid'], 'pid'=>$row['pid'], 'title'=> strip_tags($row[$TCA[$table]['ctrl']['label']]) );
 					$lostIdList[]=$row['uid'];
@@ -372,12 +379,19 @@ class t3lib_admin {
 		if ($pid_list)	{
 			while (list($table)=each($TCA))	{
 				t3lib_div::loadTCA($table);
-				$count = $GLOBALS['TYPO3_DB']->exec_SELECTquery('count(*)', $table, 'pid IN ('.$pid_list.')');
+
+				$pid_list_tmp = $pid_list;
+				if (!isset($TCA[$table]['ctrl']['versioningWS']) || !$TCA[$table]['ctrl']['versioningWS'])	{
+						// Remove preceding "-1," for non-versioned tables
+					$pid_list_tmp = preg_replace('/^\-1,/','',$pid_list_tmp);
+				}
+
+				$count = $GLOBALS['TYPO3_DB']->exec_SELECTquery('count(*)', $table, 'pid IN ('.$pid_list_tmp.')');
 				if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_row($count))	{
 					$list[$table]=$row[0];
 				}
 
-				$count = $GLOBALS['TYPO3_DB']->exec_SELECTquery('count(*)', $table, 'pid IN ('.$pid_list.')'.t3lib_BEfunc::deleteClause($table));
+				$count = $GLOBALS['TYPO3_DB']->exec_SELECTquery('count(*)', $table, 'pid IN ('.$pid_list_tmp.')'.t3lib_BEfunc::deleteClause($table));
 				if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_row($count))	{
 					$list_n[$table]=$row[0];
 				}
