@@ -106,7 +106,7 @@ CREATE TABLE cache_extensions (
   title varchar(150) NOT NULL default '',
   description mediumtext NOT NULL,
   state int(4) NOT NULL default '0',
-  reviewstate int(4) unsigned NOT NULL default '0',
+  reviewstate int(4) NOT NULL default '0',
   category int(4) NOT NULL default '0',
   lastuploaddate int(11) unsigned NOT NULL default '0',
   dependencies mediumtext NOT NULL,

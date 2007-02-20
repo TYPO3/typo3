@@ -52,23 +52,32 @@ class SC_mod_tools_em_xmlhandler {
 	/**
 	 * Reduces the entries in $this->extensionsXML to the latest version per extension and removes entries not matching the search parameter
 	 *
-	 * @param	string		$search The list of extensions is reduced to entries matching this. If empty, the full list is returned.
-	 * @param	boolean		$latest If true, only the latest version is kept in the list
-	 * @return	[type]		...
+	 * @param	string		$search	The list of extensions is reduced to entries matching this. If empty, the full list is returned.
+	 * @param	string		$owner	If set only extensions of that user are fetched
+	 * @param	string		$order	A field to order the result by
+	 * @param	boolean		$allExt	If set also unreviewed and obsolete extensions are shown
+	 * @param	boolean		$allVer	If set returns all version of an extension, otherwise only the last
+	 * @param	integer		$offset	Offset to return result from (goes into LIMIT clause)
+	 * @param	integer		$limit	Maximum number of entries to return (goes into LIMIT clause)
+	 * @return	void
 	 */
-	function searchExtensionsXML($search, $owner='', $order = '', $allExt = false, $allVer = false, $offset = 0, $limit = 500) {
+	function searchExtensionsXML($search, $owner='', $order='', $allExt=false, $allVer=false, $offset=0, $limit=500)	{
 		$where = '1=1';
 		if ($search)	{
-			$where .= ' AND extkey LIKE \'%'.$GLOBALS['TYPO3_DB']->quoteStr($GLOBALS['TYPO3_DB']->escapeStrForLike($search, 'cache_extensions'), 'cache_extensions').'%\'';
+			$where.= ' AND extkey LIKE \'%'.$GLOBALS['TYPO3_DB']->quoteStr($GLOBALS['TYPO3_DB']->escapeStrForLike($search, 'cache_extensions'), 'cache_extensions').'%\'';
 		}
 		if ($owner)	{
-			$where .= ' AND ownerusername='.$GLOBALS['TYPO3_DB']->fullQuoteStr($owner, 'cache_extensions');
+			$where.= ' AND ownerusername='.$GLOBALS['TYPO3_DB']->fullQuoteStr($owner, 'cache_extensions');
 		}
-		if(!(strlen($owner) || $this->useUnchecked || $allExt))	{
-			$where .= ' AND reviewstate>0';
+		if (strlen($owner) || $this->useUnchecked || $allExt)	{
+					// do never show extensions marked as insecure
+			$where.= ' AND NOT reviewstate < 0';
+		} else {
+				// show extensions without review or that have passed review
+			$where.= ' AND reviewstate > 0';
 		}
-		if(!($this->useObsolete || $allExt))	{
-			$where .= ' AND state!=5';		// 5 == obsolete
+		if (!$this->useObsolete && !$allExt)	{
+			$where.= ' AND state!=5';		// 5 == obsolete
 		}
 		switch ($order)	{
 			case 'author_company':
@@ -82,7 +91,7 @@ class SC_mod_tools_em_xmlhandler {
 				$forder = 'category';
 			break;
 		}
-		$order = $forder.', title';			
+		$order = $forder.', title';
 		if (!$allVer)	{
 			if ($this->useUnchecked)	{
 				$where .= ' AND lastversion>0';
@@ -171,7 +180,7 @@ class SC_mod_tools_em_xmlhandler {
 	}
 
 	/**
-+	 * Returns the reviewstate of a specific extension-key/version
+	 * Returns the reviewstate of a specific extension-key/version
 	 *
 	 * @param	string		$extKey
 	 * @param	string		$version: ...

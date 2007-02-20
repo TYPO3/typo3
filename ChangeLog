@@ -1,3 +1,8 @@
+2007-02-20  Michael Stucki  <michael@typo3.org>
+
+	* Fixed bug in EM: Insecure extensions were still displayed (patch by Karsten Dambekalns)
+	* Fixed a typo in class.em_xmlhandler.php
+
 2007-02-20  Oliver Hader  <oh@inpublica.de>
 
 	* Fixed bug #4202: be_groups - fields restricted by a low maxitems value
