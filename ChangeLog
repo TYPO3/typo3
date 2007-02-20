@@ -6,6 +6,10 @@
 	* Changed another bug in the EM: Last update of extensions.xml.gz was not displayed
 	* Fixed bug #4951: SQL error when editing BE User
 	* Fixed bug #3412: Changed default size limits for various BE upload fields to 10M (this default can be defined through $TYPO3_CONF_VARS[BE][maxFileSize] or individually per field through $TCA)
+	* Various changes to t3skin (by Thomas Murphy):
+		- folder icon got more contrast
+		- navtree: darker color for hover & active states
+		- font-weight: bold; for active state
 
 2007-02-20  Oliver Hader  <oh@inpublica.de>
 

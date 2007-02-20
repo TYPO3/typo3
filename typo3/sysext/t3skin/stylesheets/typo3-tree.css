@@ -10,5 +10,7 @@ table#typo3-browsetree {
 ul.tree ul li.expanded ul { background: transparent url('../icons/gfx/ol/line.gif') top left repeat-y; }
 ul.tree ul li.last    	  { background: transparent url('../icons/gfx/ol/joinbottom.gif') no-repeat top left; } 
 ul.tree ul li.last > ul   { background: none; }
-ul.tree ul li.active      { background-color: #f7f3ef !important; }
-ul.tree ul li.active ul   { background-color: #efeff4; }
+ul.tree ul li.active      { background-color: #D7DBE2 !important; }
+ul.tree ul li.active span a { font-weight: bold; }
+ul.tree ul li.active ul   { background-color: #EFEFF4; }
+ul.tree ul li.active ul span a { font-weight: normal; }

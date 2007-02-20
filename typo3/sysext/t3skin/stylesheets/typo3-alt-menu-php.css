@@ -47,12 +47,13 @@ table#typo3-vmenu td.c-subitem-label a {
 }
 
 table#typo3-vmenu tr.c-subitem-row-HL {
-	background-color: #F8F9FA;
+	background-color: #D7DBE2;
+	font-weight: bold;
 }
 
 table#typo3-vmenu tr.c-subitem-row:hover,
 table#typo3-vmenu td.c-subitem-label a:hover {
-	background-color: #F8F9FA;
+	background-color: #D7DBE2;
 }
 
 
