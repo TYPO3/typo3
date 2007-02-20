@@ -192,12 +192,11 @@ class SC_mod_tools_em_xmlhandler {
 	 * @return	void
 	 */
 	function checkReviewState(&$extensions) {
-		if ($this->useUnchecked) return;
-
 		reset($extensions);
 		while (list($version, $data) = each($extensions))	{
-			if($data['reviewstate']<1)
+			if($data['reviewstate']<0 || (!$this->useUnchecked && $data['reviewstate']<1)) {
 				unset($extensions[$version]);
+			}
 		}
 	}
 
@@ -207,12 +206,12 @@ class SC_mod_tools_em_xmlhandler {
 	 * @return	void
 	 */
 	function checkReviewStateGlobal() {
-		if($this->useUnchecked) return;
-
 		reset($this->extensionsXML);
 		while (list($extkey, $data) = each($this->extensionsXML)) {
 			while (list($version, $vdata) = each($data['versions'])) {
-				if($vdata['reviewstate']<1) unset($this->extensionsXML[$extkey]['versions'][$version]);
+				if($vdata['reviewstate']<0 || (!$this->useUnchecked && $vdata['reviewstate']<1)) {
+					unset($this->extensionsXML[$extkey]['versions'][$version]);
+				}
 			}
 			if(!count($this->extensionsXML[$extkey]['versions'])) unset($this->extensionsXML[$extkey]);
 		}
