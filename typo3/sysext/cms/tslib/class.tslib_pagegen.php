@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2005 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2007 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -303,22 +303,18 @@ See <a href="http://wiki.typo3.org/index.php/TYPO3_3.8.1" target="_blank">wiki.t
 	 * @return	array		Array with a) a JavaScript section with event handlers and variables set and b) an array with attributes for the body tag.
 	 */
 	function JSeventFunctions()	{
-		$functions=array();
-		$setEvents=array();
-		$setBody=array();
+		$functions = array();
+		$setEvents = array();
+		$setBody = array();
 
-		if (is_array($GLOBALS['TSFE']->JSeventFuncCalls['onmousemove']) && count($GLOBALS['TSFE']->JSeventFuncCalls['onmousemove']))	{
-			$functions[]='	function T3_onmousemoveWrapper(e)	{	'.implode('   ',$GLOBALS['TSFE']->JSeventFuncCalls['onmousemove']).'	}';
-			$setEvents[]='	document.onmousemove=T3_onmousemoveWrapper;';
-		}
-		if (is_array($GLOBALS['TSFE']->JSeventFuncCalls['onmouseup']) && count($GLOBALS['TSFE']->JSeventFuncCalls['onmouseup']))	{
-			$functions[]='	function T3_onmouseupWrapper(e)	{	'.implode('   ',$GLOBALS['TSFE']->JSeventFuncCalls['onmouseup']).'	}';
-			$setEvents[]='	document.onmouseup=T3_onmouseupWrapper;';
-		}
-		if (is_array($GLOBALS['TSFE']->JSeventFuncCalls['onload']) && count($GLOBALS['TSFE']->JSeventFuncCalls['onload']))	{
-			$functions[]='	function T3_onloadWrapper()	{	'.implode('   ',$GLOBALS['TSFE']->JSeventFuncCalls['onload']).'	}';
-			$setEvents[]='	document.onload=T3_onloadWrapper;';
-			$setBody[]='onload="T3_onloadWrapper();"';
+		foreach ($GLOBALS['TSFE']->JSeventFuncCalls as $event => $handlers)	{
+			if (count($handlers))	{
+				$functions[] = '	function T3_'.$event.'Wrapper(e)	{	'.implode('   ',$handlers).'	}';
+				$setEvents[] = '	document.'.$event.'=T3_'.$event.'Wrapper;';
+				if ($event == 'onload')	{
+					$setBody[]='onload="T3_onloadWrapper();"';	// dubiuos double setting breaks on some browser - do we need it?
+				}
+			}
 		}
 
 		return Array(count($functions)?'

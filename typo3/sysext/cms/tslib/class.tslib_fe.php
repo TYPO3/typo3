@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2005 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2007 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -284,7 +284,12 @@
 	var $JSeventFuncCalls = array(		// you can add JavaScript functions to each entry in these arrays. Please see how this is done in the GMENU_LAYERS script. The point is that many applications on a page can set handlers for onload, onmouseover and onmouseup
 		'onmousemove' => array(),
 		'onmouseup' => array(),
+		'onmousemove' => array(),
+		'onkeydown' => array(),
+		'onkeyup' => array(),
+		'onkeypress' => array(),
 		'onload' => array(),
+		'onunload' => array(),
 	);
 	var $JSCode='';						// Deprecated, use additionalJavaScript instead.
 	var $JSImgCode='';					// Used to accumulate JavaScript loaded images (by menus)
