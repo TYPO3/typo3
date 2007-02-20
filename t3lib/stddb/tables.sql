@@ -24,7 +24,7 @@ CREATE TABLE be_groups (
   tables_modify text NOT NULL,
   crdate int(11) unsigned DEFAULT '0' NOT NULL,
   cruser_id int(11) unsigned DEFAULT '0' NOT NULL,
-  groupMods tinytext NOT NULL,
+  groupMods text NOT NULL,
   file_mountpoints varchar(255) DEFAULT '' NOT NULL,
   hidden tinyint(1) unsigned DEFAULT '0' NOT NULL,
   inc_access_lists tinyint(3) unsigned DEFAULT '0' NOT NULL,

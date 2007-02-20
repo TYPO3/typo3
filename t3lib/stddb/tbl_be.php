@@ -413,7 +413,7 @@ $TCA['be_groups'] = Array (
 				'internal_type' => 'db',
 					'allowed' => 'pages',
 				'size' => '3',
-				'maxitems' => '20',
+				'maxitems' => 20,
 				'autoSizeMax' => 10,
 				'show_thumbs' => '1'
 			)
@@ -425,7 +425,7 @@ $TCA['be_groups'] = Array (
 				'foreign_table' => 'sys_filemounts',
 				'foreign_table_where' => ' AND sys_filemounts.pid=0 ORDER BY sys_filemounts.title',
 				'size' => '3',
-				'maxitems' => '20',
+				'maxitems' => 20,
 				'autoSizeMax' => 10,
 				'renderMode' => $GLOBALS['TYPO3_CONF_VARS']['BE']['accessListRenderMode'],
 				'iconsInOptionTags' => 1,
@@ -495,7 +495,7 @@ $TCA['be_groups'] = Array (
 				'special' => 'tables',
 				'size' => '5',
 				'autoSizeMax' => 50,
-				'maxitems' => 20,
+				'maxitems' => 100,
 				'renderMode' => $GLOBALS['TYPO3_CONF_VARS']['BE']['accessListRenderMode'],
 				'iconsInOptionTags' => 1,
 			)
@@ -507,7 +507,7 @@ $TCA['be_groups'] = Array (
 				'special' => 'tables',
 				'size' => '5',
 				'autoSizeMax' => 50,
-				'maxitems' => 20,
+				'maxitems' => 100,
 				'renderMode' => $GLOBALS['TYPO3_CONF_VARS']['BE']['accessListRenderMode'],
 				'iconsInOptionTags' => 1,
 			)
@@ -518,7 +518,7 @@ $TCA['be_groups'] = Array (
 				'type' => 'select',
 				'special' => 'exclude',
 				'size' => '25',
-				'maxitems' => '300',
+				'maxitems' => 1000,
 				'autoSizeMax' => 50,
 				'renderMode' => $GLOBALS['TYPO3_CONF_VARS']['BE']['accessListRenderMode'],
 			)
@@ -528,7 +528,7 @@ $TCA['be_groups'] = Array (
 			'config' => Array (
 				'type' => 'select',
 				'special' => 'explicitValues',
-				'maxitems' => '1000',
+				'maxitems' => 1000,
 				'renderMode' => 'checkbox',
 			)
 		),
@@ -537,7 +537,7 @@ $TCA['be_groups'] = Array (
 			'config' => Array (
 				'type' => 'select',
 				'special' => 'languages',
-				'maxitems' => '1000',
+				'maxitems' => 1000,
 				'renderMode' => 'checkbox',
 			)
 		),
@@ -546,7 +546,7 @@ $TCA['be_groups'] = Array (
 			'config' => Array (
 				'type' => 'select',
 				'special' => 'custom',
-				'maxitems' => '1000',
+				'maxitems' => 1000,
 				'renderMode' => 'checkbox',
 			)
 		),
@@ -575,7 +575,7 @@ $TCA['be_groups'] = Array (
 				'special' => 'modListGroup',
 				'size' => '5',
 				'autoSizeMax' => 50,
-				'maxitems' => '100',
+				'maxitems' => 100,
 				'renderMode' => $GLOBALS['TYPO3_CONF_VARS']['BE']['accessListRenderMode'],
 				'iconsInOptionTags' => 1,
 			)
