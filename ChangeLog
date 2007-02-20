@@ -24,7 +24,7 @@
 
 2007-02-16  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
-	* Fixed bug #4207: User>Workspaces shows users pages they have no acces to
+	* Fixed bug #4207: User>Workspaces shows users pages they have no access to
 
 2007-02-16  Karsten Dambekalns  <karsten@typo3.org>
 
