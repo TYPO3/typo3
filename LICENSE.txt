@@ -1,6 +1,6 @@
 ---------------------------------
  The TYPO3 licensing conditions
- 2003-2006, Kasper Skårhøj (kasperYYYY@typo3.com)
+ 2003-2007, Kasper Skårhøj (kasperYYYY@typo3.com)
  Document version 2.02, 03-2006
 ---------------------------------
 

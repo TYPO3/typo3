@@ -58,8 +58,8 @@ var Tree = {
 		new Ajax.Request(this.thisScript, {
 			method: 'get',
 			parameters: 'ajax=1&PM=' + params,
-			onComplete: function(xhr, status) { 
-				// if this is not a valid ajax response, the whole page gets refreshed 
+			onComplete: function(xhr, status) {
+				// if this is not a valid ajax response, the whole page gets refreshed
 				if (!status) return this.refresh();
 
 				// the parent node needs to be overwritten, not the object
@@ -117,7 +117,7 @@ var Tree = {
 
 
 
-// new object-oriented drag and drop - code, 
+// new object-oriented drag and drop - code,
 // tested in IE 6, Firefox 2, Opera 9
 var DragDrop = {
 	dragID: null,
