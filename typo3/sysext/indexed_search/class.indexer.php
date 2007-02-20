@@ -1595,11 +1595,11 @@ class tx_indexedsearch_indexer {
 
 	/**
 	 * Check the mtime / tstamp of the currently indexed page/file (based on phash)
-	 * Return positive integer if the page needs to being indexed!
+	 * Return positive integer if the page needs to be indexed
 	 *
-	 * @param	integer		mtime value to test against limits and indexed page.
+	 * @param	integer		mtime value to test against limits and indexed page (usually this is the mtime of the cached document)
 	 * @param	integer		"phash" used to select any already indexed page to see what its mtime is.
-	 * @return	integer		Result integer: Generally: <0 = No indexing, >0 = Do indexing (see $this->reasons): -2) Min age was NOT exceed and so indexing cannot occur.  -1) Mtimes matched so no need to reindex page. 0) N/A   1) Max age exceeded, page must be indexed again.   2) mtime of indexed page doesn't match mtime given for current content and we must index page.  3) No mtime was set, so we will index...  4) No indexed page found, so of course we will index.
+	 * @return	integer		Result integer: Generally: <0 = No indexing, >0 = Do indexing (see $this->reasons): -2) Min age was NOT exceeded and so indexing cannot occur.  -1) mtime matched so no need to reindex page. 0) N/A   1) Max age exceeded, page must be indexed again.   2) mtime of indexed page doesn't match mtime given for current content and we must index page.  3) No mtime was set, so we will index...  4) No indexed page found, so of course we will index.
 	 */
 	function checkMtimeTstamp($mtime,$phash)	{
 
@@ -1609,7 +1609,7 @@ class tx_indexedsearch_indexer {
 
 			// If there was an indexing of the page...:
 		if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
-			if ($this->tstamp_maxAge && ($row['tstamp']+$this->tstamp_maxAge) < time())	{		// If max age is exceeded, index the page
+			if ($this->tstamp_maxAge && ($row['tstamp']+$this->tstamp_maxAge) < time())	{	// If max age is exceeded, index the page
 				$out = 1;		// The configured max-age was exceeded for the document and thus it's indexed.
 			} else {
 				if (!$this->tstamp_minAge || ($row['tstamp']+$this->tstamp_minAge)<time())	{	// if minAge is not set or if minAge is exceeded, consider at mtime
@@ -1619,10 +1619,10 @@ class tx_indexedsearch_indexer {
 						} else {
 							$out = -1;		// mtime matched the document, so no changes detected and no content updated
 							if ($this->tstamp_maxAge)	{
-								$this->log_setTSlogMessage('Mtime matched, timestamp NOT updated because a maxAge is set ('.($row['tstamp'] + $this->tstamp_maxAge - time()).' seconds to expire time).',1);
+								$this->log_setTSlogMessage('mtime matched, timestamp NOT updated because a maxAge is set ('.($row['tstamp'] + $this->tstamp_maxAge - time()).' seconds to expire time).',1);
 							} else {
 								$this->updateTstamp($phash);	// Update the timestatmp
-								$this->log_setTSlogMessage('Mtime matched, timestamp updated.',1);
+								$this->log_setTSlogMessage('mtime matched, timestamp updated.',1);
 							}
 						}
 					} else {$out = 3;	}	// The minimum age was exceed, but mtime was not set, so the page was indexed.

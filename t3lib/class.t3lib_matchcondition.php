@@ -409,7 +409,7 @@ class t3lib_matchCondition {
 	 */
 	function matchWild($haystack,$needle)	{
 		if ($needle && $haystack)	{
-			if (preg_match('/^\/.+\/$/', $needle))	{	// Looks like a regular expression
+			if (preg_match('/^\/.+\/$/', $needle))	{	// Regular expression, only "//" is allowed as delimiter
 				$regex = $needle;
 			} else {
 				$needle = str_replace(array('*','?'), array('###MANY###','###ONE###'), $needle);

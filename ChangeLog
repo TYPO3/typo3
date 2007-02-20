@@ -1,6 +1,6 @@
-2007-02-20  Dmitry Dulepov	<dmitry@typo3.org>
+2007-02-20  Dmitry Dulepov  <dmitry@typo3.org>
 
-	* Fixed bug 5032: [LocalLang: 0?]DEF is shows sometimes for content elements
+	* Fixed bug #5032: [LocalLang: 0?]DEF is sometimes displayed for content elements
 
 2007-02-19  Ingmar Schlecht  <ingmar@typo3.org>
 
