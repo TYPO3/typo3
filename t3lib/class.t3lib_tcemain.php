@@ -2469,7 +2469,7 @@ class t3lib_TCEmain	{
 									$value = $this->getCopyHeader($table,$this->resolvePid($table,$destPid),$field,$this->clearPrefixFromValue($table,$value),0);
 								}
 									// Processing based on the TCA config field type (files, references, flexforms...)
-								$value = $this->copyRecord_procBasedOnFieldType($table,$uid,$field,$value,$row,$conf);
+								$value = $this->copyRecord_procBasedOnFieldType($table,$uid,$field,$value,$row,$conf,$tscPID);
 							}
 
 								// Add value to array.
@@ -2636,7 +2636,7 @@ class t3lib_TCEmain	{
 							$conf = $TCA[$table]['columns'][$field]['config'];
 							if (is_array($conf))	{
 									// Processing based on the TCA config field type (files, references, flexforms...)
-								$value = $this->copyRecord_procBasedOnFieldType($table,$uid,$field,$value,$row,$conf);
+								$value = $this->copyRecord_procBasedOnFieldType($table,$uid,$field,$value,$row,$conf,$pid);
 							}
 
 								// Add value to array.
@@ -2745,11 +2745,12 @@ class t3lib_TCEmain	{
 	 * @param	string		Input value to be processed.
 	 * @param	array		Record array
 	 * @param	array		TCA field configuration
+	 * @param	integer		Real page id (pid) the record is copied to
 	 * @return	mixed		Processed value. Normally a string/integer, but can be an array for flexforms!
 	 * @access private
 	 * @see copyRecord()
 	 */
-	function copyRecord_procBasedOnFieldType($table,$uid,$field,$value,$row,$conf)	{
+	function copyRecord_procBasedOnFieldType($table,$uid,$field,$value,$row,$conf,$realDestPid)	{
 		global $TCA;
 
 			// Process references and files, currently that means only the files, prepending absolute paths (so the TCEmain engine will detect the file as new and one that should be made into a copy)
@@ -2776,7 +2777,15 @@ class t3lib_TCEmain	{
 
 				// walk through the items, copy them and remember the new id
 			foreach ($dbAnalysis->itemArray as $k => $v) {
-				$newId = $this->copyRecord($v['table'], $v['id'], -$v['id']);
+					// Take the real positive integer if available:
+				if (t3lib_div::testInt($realDestPid) && $realDestPid >= 0) {
+					$childDestPid = $realDestPid;
+					// If the $realDestPid is not a valid integer or negative (e.g. workspaces):
+					// @TODO: Check again concerning workspaces
+				} else {
+					$childDestPid = -$v['id'];
+				}
+				$newId = $this->copyRecord($v['table'], $v['id'], $childDestPid);
 				$dbAnalysis->itemArray[$k]['id'] = $newId;
 			}
 
