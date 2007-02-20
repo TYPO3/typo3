@@ -73,7 +73,7 @@ class t3lib_transl8tools	{
 			'uid' => 0,
 			'title' => strlen ($modSharedTSconfig['properties']['defaultLanguageLabel']) ? $modSharedTSconfig['properties']['defaultLanguageLabel'].' ('.$LANG->getLL('defaultLanguage').')' : $LANG->getLL('defaultLanguage'),
 			'ISOcode' => 'DEF',
-			'flagIcon' => strlen($modSharedTSconfig['properties']['defaultLanguageFlag']) && @is_file($flagAbsPath.$modSharedTSconfig['properties']['defaultLanguageFlag']) ? $flagIconPath.$modSharedTSconfig['properties']['defaultLanguageFlag'] : null,
+			'flagIcon' => strlen($modSharedTSconfig['properties']['defaultLanguageFlag']) && @is_file($flagAbsPath.$modSharedTSconfig['properties']['defaultLanguageFlag']) ? $flagIconPath.$modSharedTSconfig['properties']['defaultLanguageFlag'] : $flagIconPath.'unknown.gif',
 		);
 
 			// Set "All" language:
