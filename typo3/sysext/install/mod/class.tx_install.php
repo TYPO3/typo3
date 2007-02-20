@@ -3842,7 +3842,7 @@ From sub-directory:
 						'cache_pages' => 'Pages',
 						'cache_pagesection' => 'TS template related information',
 						'cache_hash' => 'Multipurpose md5-hash cache',
-+						'cache_imagesizes' => 'Cached image sizes',
+						'cache_imagesizes' => 'Cached image sizes',
 						'sys_log' => 'Backend action logging',
 						'sys_stat' => 'Page hit statistics',
 						'sys_history' => 'Addendum to the sys_log which tracks ALL changes to content through TCE. May become huge by time. Is used for rollback (undo) and the WorkFlow engine.',

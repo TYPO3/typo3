@@ -2,6 +2,7 @@
 
 	* Fixed bug in EM: Insecure extensions were still displayed (patch by Karsten Dambekalns)
 	* Fixed a typo in class.em_xmlhandler.php
+	* Fixed a typo in typo3/sysext/install/mod/class.tx_install.php
 	* Changed another bug in the EM: Last update of extensions.xml.gz was not displayed
 
 2007-02-20  Oliver Hader  <oh@inpublica.de>
