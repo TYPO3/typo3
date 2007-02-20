@@ -41,8 +41,8 @@ Compatibility
 
 	* Changed the default value of $TYPO3_CONF_VARS[SYS][devIPmask]
 	* Exported TBE_EDITOR functions from t3lib_TCEforms to a separate file typo3/jsfunc_tbe_editor.js
-		* Changed all occurrences of TBE_EDITOR_<function> to TBE_EDITOR.<function> in the Core (e.g. TBE_EDITOR_loginRefreshed -> TBE_EDITOR.loginRefreshed)
-		* Changed all occurrences of typo3Form<function> to typo3form.<function> in the Core (e.g. typo3FormFieldSet -> typo3form.fieldSet)
+		-> Changed all occurrences of TBE_EDITOR_<function> to TBE_EDITOR.<function> in the Core (e.g. TBE_EDITOR_loginRefreshed -> TBE_EDITOR.loginRefreshed)
+		-> Changed all occurrences of typo3Form<function> to typo3form.<function> in the Core (e.g. typo3FormFieldSet -> typo3form.fieldSet)
 
 Speed improvements
 ==================
@@ -109,3 +109,11 @@ Important bugfixes
 ==================
 
 	* ...
+
+Currently unsupported
+=====================
+
+	* Missing features concerning the disposal of Inline Relational Record Editing (IRRE)
+		-> Workspaces and Versioning are currently not supported
+		-> FlexForms using the TCA type 'inline' are currently not supported/tested
+		-> Import/Export (sysext tx_impexp) might not work correctly in special cases
