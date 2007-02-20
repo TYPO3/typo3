@@ -39,7 +39,7 @@ var Tree = {
 	// reloads a part of the page tree (useful when "expand" / "collapse")
 	load: function(params, isExpand, obj) {
 			// fallback if AJAX is not possible (e.g. IE < 6)
-		if (!Ajax.getTransport()) {
+		if (typeof Ajax.getTransport() != 'object') {
 			window.location.href = this.thisScript + '?PM=' + params;
 			return;
 		}
@@ -47,10 +47,14 @@ var Tree = {
 		// immediately collapse the subtree and change the plus to a minus when collapsing
 		// without waiting for the response
 		if (!isExpand) {
-			obj.parentNode.getElementsByTagName('ul')[0].remove();
-			var pm = document.getElementsByClassName('pm', obj.parentNode)[0];
-			pm.onclick = null;
-			pm.firstChild.src = pm.firstChild.src.replace('minus', 'plus');
+			var ul = obj.parentNode.getElementsByTagName('ul')[0];
+			obj.parentNode.removeChild(ul); // no remove() directly because of IE 5.5
+			var pm = Selector.findChildElements(obj.parentNode, ['.pm'])[0]; // Getting pm object by CSS selector (because document.getElementsByClassName() doesn't seem to work on Konqueror)
+			if (pm) {
+				pm.onclick = null;
+				Element.cleanWhitespace(pm);
+				pm.firstChild.src = pm.firstChild.src.replace('minus', 'plus');
+			}
 		} else {
 			obj.style.cursor = 'wait';
 		}
@@ -85,7 +89,7 @@ var Tree = {
 	},
 
 	_registerDragDropHandlers: function(className) {
-		var elements = document.getElementsByClassName(className, $('tree'));
+		var elements = Selector.findChildElements($('tree'), ['.'+className]); // using Selector because document.getElementsByClassName() doesn't seem to work on Konqueror
 		for (var i = 0; i < elements.length; i++) {
 			Event.observe(elements[i], 'mousedown', function(event) { DragDrop.dragElement(event); }, true);
 			Event.observe(elements[i], 'dragstart', function(event) { DragDrop.dragElement(event); }, false);
