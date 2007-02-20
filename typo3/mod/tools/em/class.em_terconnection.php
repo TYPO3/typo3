@@ -275,7 +275,7 @@ class SC_mod_tools_em_terconnection {
 				'codingGuidelinesCompliance' => utf8_encode($uArr['EM_CONF']['CGLcompliance']),
 				'codingGuidelinesComplianceNotes' => utf8_encode($uArr['EM_CONF']['CGLcompliance_note']),
 				'uploadComment' => utf8_encode($em['upload']['comment']),
-				'techInfo' => unserialize($uArr['techInfo']),
+				'techInfo' => $uArr['techInfo'],
 			),
 		);
 

@@ -10,6 +10,7 @@
 2007-02-20  Oliver Hader  <oh@inpublica.de>
 
 	* Fixed bug #4202: be_groups - fields restricted by a low maxitems value
+	* Fixed bug #4873: EM - Warning on uploading extension to TER (unserialize)
 
 2007-02-20  Ingmar Schlecht  <ingmar@typo3.org>
 
