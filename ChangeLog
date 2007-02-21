@@ -1,3 +1,7 @@
+2007-02-21  Michael Stucki  <michael@typo3.org>
+
+	* Security fix: Email injection vulnerability in t3lib_formmail (reported and fixed by Andreas Otto and Thorsten Kahler)
+
 2007-02-20  Michael Stucki  <michael@typo3.org>
 
 	* Fixed bug in EM: Insecure extensions were still displayed (patch by Karsten Dambekalns)
