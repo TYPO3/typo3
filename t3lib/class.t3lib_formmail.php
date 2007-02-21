@@ -68,6 +68,7 @@
  */
 class t3lib_formmail extends t3lib_htmlmail {
 	var $reserved_names = 'recipient,recipient_copy,auto_respond_msg,redirect,subject,attachment,from_email,from_name,replyto_email,replyto_name,organisation,priority,html_enabled,quoted_printable,submit_x,submit_y';
+	var $dirtyHeaders = array();	// collection of suspicious header data, used for logging
 
 
 	/**
@@ -113,19 +114,28 @@ class t3lib_formmail extends t3lib_htmlmail {
 				// convert form data from renderCharset to mail charset
 			$val = ($V['subject']) ? $V['subject'] : 'Formmail on '.t3lib_div::getIndpEnv('HTTP_HOST');
 			$this->subject = ($convCharset && strlen($val)) ? $GLOBALS['TSFE']->csConvObj->conv($val,$GLOBALS['TSFE']->renderCharset,$this->charset) : $val;
+			$this->subject = $this->sanitizeHeaderString($this->subject);
 			$val = ($V['from_name']) ? $V['from_name'] : (($V['name'])?$V['name']:'');
 			$this->from_name = ($convCharset && strlen($val)) ? $GLOBALS['TSFE']->csConvObj->conv($val,$GLOBALS['TSFE']->renderCharset,$this->charset) : $val;
+			$this->from_name = $this->sanitizeHeaderString($this->from_name);
+			$this->from_name = preg_match( '/\s|,/', $this->from_name ) >= 1 ? '"'.$this->from_name.'"' : $this->from_name;
 			$val = ($V['replyto_name']) ? $V['replyto_name'] : $this->from_name;
 			$this->replyto_name = ($convCharset && strlen($val)) ? $GLOBALS['TSFE']->csConvObj->conv($val,$GLOBALS['TSFE']->renderCharset,$this->charset) : $val;
+			$this->replyto_name = $this->sanitizeHeaderString($this->replyto_name);
+			$this->replyto_name = preg_match( '/\s|,/', $this->replyto_name ) > 1 ? '"'.$this->replyto_name.'"' : $this->replyto_name;
 			$val = ($V['organisation']) ? $V['organisation'] : '';
 			$this->organisation = ($convCharset && strlen($val)) ? $GLOBALS['TSFE']->csConvObj->conv($val,$GLOBALS['TSFE']->renderCharset,$this->charset) : $val;
+			$this->organisation = $this->sanitizeHeaderString($this->organisation);
 
 			$this->from_email = ($V['from_email']) ? $V['from_email'] : (($V['email'])?$V['email']:'');
+			$this->from_email = t3lib_div::validEmail($this->from_email) ? $this->from_email : '';
 			$this->replyto_email = ($V['replyto_email']) ? $V['replyto_email'] : $this->from_email;
+			$this->replyto_email = t3lib_div::validEmail($this->replyto_email) ? $this->replyto_email : '';
 			$this->priority = ($V['priority']) ? t3lib_div::intInRange($V['priority'],1,5) : 3;
 
 				// Auto responder.
 			$this->auto_respond_msg = (trim($V['auto_respond_msg']) && $this->from_email) ? trim($V['auto_respond_msg']) : '';
+			$this->auto_respond_msg = $this->sanitizeHeaderString($this->auto_respond_msg);
 
 			$Plain_content = '';
 			$HTML_content = '<table border="0" cellpadding="2" cellspacing="2">';
@@ -173,6 +183,13 @@ class t3lib_formmail extends t3lib_htmlmail {
 			if ($V['recipient_copy'])	{
 				$this->recipient_copy = trim($V['recipient_copy']);
 			}
+				// log dirty header lines
+			if ($this->dirtyHeaders)	{
+				t3lib_div::sysLog( 'Possible misuse of t3lib_formmail: see TYPO3 devLog', 'Core', 3 );
+				if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['enable_DLOG'])	{
+					t3lib_div::devLog( 't3lib_formmail: '. t3lib_div::arrayToLogString($this->dirtyHeaders, '', 200 ), 'Core', 3 );
+				}
+			}
 		}
 	}
 
@@ -200,6 +217,22 @@ class t3lib_formmail extends t3lib_htmlmail {
 			$this->theParts['attach'][]=$theArr;
 			return true;
 		} else { return false;}
+	}
+
+
+	/**
+	 * Checks string for suspicious characters
+	 *
+	 * @param	string	String to check
+	 * @return	string	Valid or empty string
+	 */
+	function sanitizeHeaderString ($string)	{
+		$pattern = '/[\r\n\f\e]/';
+		if (preg_match($pattern, $string) > 0)	{
+			$this->dirtyHeaders[] = $string;
+			$string = '';
+		}
+		return $string;
 	}
 }
 
