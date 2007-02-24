@@ -1,3 +1,7 @@
+2007-02-24  Ernesto Baschny  <ernst@cron-it.de>
+
+	* Fix for bug fix #2677: Highlighting of current page in workspaces was not de-highlighting previous one
+
 2007-02-21  Ingmar Schlecht  <ingmar@typo3.org>
 
 	* Release of TYPO3 4.1RC2

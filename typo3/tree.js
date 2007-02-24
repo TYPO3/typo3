@@ -110,7 +110,11 @@ var Tree = {
 
 		// Remove all items that are already highlighted
 		obj = $(top.fsMod.navFrameHighlightedID[frameSetModule]);
-		if (obj) Element.removeClassName(obj, this.highlightClass);
+		if (obj) {
+			var classes = $w(this.highlightClass);
+			for (var i = 0; i < classes.length; i++)
+				Element.removeClassName(obj, classes[i]);
+		}
 
 		// Set the new item
 		top.fsMod.navFrameHighlightedID[frameSetModule] = highlightID;
