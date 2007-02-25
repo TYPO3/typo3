@@ -70,10 +70,10 @@ class SC_mod_tools_em_xmlhandler {
 			$where.= ' AND ownerusername='.$GLOBALS['TYPO3_DB']->fullQuoteStr($owner, 'cache_extensions');
 		}
 		if (strlen($owner) || $this->useUnchecked || $allExt)	{
-					// do never show extensions marked as insecure
-			$where.= ' AND NOT reviewstate < 0';
-		} else {
 				// show extensions without review or that have passed review
+			$where.= ' AND reviewstate >= 0';
+		} else {
+				// only display extensions that have passed review
 			$where.= ' AND reviewstate > 0';
 		}
 		if (!$this->useObsolete && !$allExt)	{
