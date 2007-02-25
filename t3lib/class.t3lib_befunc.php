@@ -1705,12 +1705,16 @@ class t3lib_BEfunc	{
 		if ($row['starttime'])	$parts[] = $LANG->sL($TCA['pages']['columns']['starttime']['label']).' '.t3lib_BEfunc::dateTimeAge($row['starttime'],-1,'date');
 		if ($row['endtime'])	$parts[] = $LANG->sL($TCA['pages']['columns']['endtime']['label']).' '.t3lib_BEfunc::dateTimeAge($row['endtime'],-1,'date');
 		if ($row['fe_group'])	{
-			if ($row['fe_group']<0)	{
-				$label = $LANG->sL(t3lib_BEfunc::getLabelFromItemlist('pages','fe_group',$row['fe_group']));
-			} else {
-				$lRec = t3lib_BEfunc::getRecordWSOL('fe_groups',$row['fe_group'],'title');
-				$label = $lRec['title'];
+			$fe_groups = array();
+			foreach (t3lib_div::intExplode(',',$row['fe_group']) as $fe_group)	{
+				if ($fe_group<0)	{
+					$fe_groups[] = $LANG->sL(t3lib_BEfunc::getLabelFromItemlist('pages','fe_group',$fe_group));
+				} else {
+					$lRec = t3lib_BEfunc::getRecordWSOL('fe_groups',$fe_group,'title');
+					$fe_groups[] = $lRec['title'];
+				}
 			}
+			$label = implode(', ',$fe_groups);
 			$parts[] = $LANG->sL($TCA['pages']['columns']['fe_group']['label']).' '.$label;
 		}
 		$out = htmlspecialchars(implode(' - ',$parts));
