@@ -233,6 +233,7 @@ class tx_belog_webinfo extends t3lib_extobjbase {
 		} else {
 			$where_part.=' AND userid='.$GLOBALS['BE_USER']->user['uid'];	// Self user
 		}
+		$lF->be_user_Array = &$this->pObj->be_user_Array;
 
 		if ($GLOBALS['BE_USER']->workspace!==0)	{
 			$where_part.=' AND workspace='.intval($GLOBALS['BE_USER']->workspace);
