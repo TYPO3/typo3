@@ -1493,59 +1493,46 @@ class SC_mod_tools_be_user_index {
 		$orderBy = 'u.username';
 
 		if (is_string($GLOBALS['TYPO3_CONF_VARS']['BE']['sessionTimeout']))	{
-				$where_clause .= ' AND '.$GLOBALS['EXEC_TIME'].'<(ses_tstamp+u.'.$GLOBALS['TYPO3_CONF_VARS']['BE']['sessionTimeout'].')';
+				$where_clause .= ' AND '.$GLOBALS['EXEC_TIME'].'<(ses_tstamp+.'.$GLOBALS['TYPO3_CONF_VARS']['BE']['sessionTimeout'].')';
 		} else {
 			$timeout = intval($GLOBALS['TYPO3_CONF_VARS']['BE']['sessionTimeout']);
 			if ($timeout > 0)	{
 				$where_clause .= ' AND '.$GLOBALS['EXEC_TIME'].'<(ses_tstamp+'.$timeout.')';
 			}
 		}
+			// Fetch active sessions of other users from storage:
 		$sessions = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows($select_fields,$from_table,$where_clause,'',$orderBy);
+			// Process and visualized each active session as a table row:
+		if (is_array($sessions)) {
+			foreach ($sessions as $session) {
+				$hostName = ($session['ses_iplock'] != '[DISABLED]' ? gethostbyaddr($session['ses_iplock']) : '[DISABLED]');
+				$outTable .= '
+					<tr class="bgColor4" height="17" valign="top">' .
+						'<td nowrap="nowrap">' .
+							date($GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'].' '.$GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'], $session['ses_tstamp']) .
+						'</td>' .
+						'<td nowrap="nowrap">' .
+							'<span title="'.$hostName.'">'.$session['ses_iplock'].'</span>' .
+						'</td>' .
+						'<td width="130">' .
+							t3lib_iconWorks::getIconImage('be_users',$session,$GLOBALS['BACK_PATH'],'align="top" title="'.$session['uid'].'"').htmlspecialchars($session['username']).'&nbsp;' .
+						'</td>' .
+						'<td nowrap="nowrap">'.htmlspecialchars($session['realName']).'&nbsp;&nbsp;</td>' .
+						'<td nowrap="nowrap">'.$this->elementLinks('be_users',$session).'</td>' .
+						'<td nowrap="nowrap" valign="top">'.($session['bu_username'] ? '&nbsp;SU from: ' : '').htmlspecialchars($session['bu_username']).'&nbsp;</td>' .
+						'<td nowrap="nowrap" valign="top">&nbsp;'.htmlspecialchars($session['bu_realName']).'</td>' .
+					'</tr>';
+			}
+		}
+			// Wrap <table> tag around the rows:
 		$outTable = '
-	<table border="0" cellpadding="2" cellspacing="2">
-		<tr class="bgColor5">
-			<td valign="top"><b>Timestamp:</b></td>
-			<td valign="top"><b>Host:</b></td>
-			<td valign="top"><b>Username:</b></td>
-			</td>
-		</tr>
-		<tr class="bgColor4">
-			<td>
-				<table border="0" cellspacing="0" cellpadding="0">';
-		foreach ($sessions as $session)	{
-			$outTable .= '<tr>'.
-				'<td nowrap="nowrap" height="17" valign="top">'.
-					date($GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'].' '.$GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'],$session['ses_tstamp']).
-				'</td></tr>';
-		}
-		$outTable .= '</table>
-			</td>
-			<td>
-				<table border="0" cellspacing="0" cellpadding="0">';
-		foreach ($sessions as $session)	{
-			$outTable .= '<tr>'.
-				'<td nowrap="nowrap" height="17" valign="top"><span title="'.gethostbyaddr($session['ses_iplock']).'">'.$session['ses_iplock'].'</span></td></tr>';
-		}
-		$outTable .= '</table>
-			</td>
-			<td valign="top">
-				<table border="0" cellspacing="0" cellpadding="0">';
-		foreach ($sessions as $session)	{
-			$outTable .= '
-					<tr>'.
-				'<td width="130" height="17">'.
-				t3lib_iconWorks::getIconImage('be_users',$session,$GLOBALS['BACK_PATH'],'align="top" title="'.$session['uid'].'"').htmlspecialchars($session['username']).'&nbsp;</td>'.
-				'<td nowrap="nowrap">'.htmlspecialchars($session['realName']).'&nbsp;&nbsp;</td>'.
-				'<td nowrap="nowrap">'.$this->elementLinks('be_users',$session).'</td>'.
-				'<td nowrap="nowrap" valign="top">'.($session['bu_username'] ? '&nbsp;SU from: ' : '').htmlspecialchars($session['bu_username']).'&nbsp;</td>'.
-				'<td nowrap="nowrap" valign="top">&nbsp;'.htmlspecialchars($session['bu_realName']).'</td>'.
-				'</tr>';
-		}
-		$outTable .= '
-				</table>
-			</td>
-		</tr>
-	</table>';
+		<table border="0" cellpadding="2" cellspacing="2">
+			<tr class="bgColor5">
+				<td valign="top"><b>Timestamp:</b></td>
+				<td valign="top"><b>Host:</b></td>
+				<td valign="top" colspan="5"><b>Username:</b></td>
+			</tr>'.$outTable.'
+		</table>';
 
 		$content.= $this->doc->section('Who Is Online',$outTable,0,1);
 		return $content;
