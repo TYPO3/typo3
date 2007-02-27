@@ -703,7 +703,7 @@ class SC_mod_web_perm_index {
 		$tree->getTree($id,$this->getLevels,'');
 
 			// If there are a hierarchy of page ids, then...
-		if ($GLOBALS['BE_USER']->user['uid'] && count($tree->ids_hierarchy))	{
+		if ($GLOBALS['BE_USER']->user['uid'] && count($tree->orig_ids_hierarchy))	{
 
 				// Init:
 			$label_recur = $GLOBALS['LANG']->getLL('recursive');
@@ -715,8 +715,8 @@ class SC_mod_web_perm_index {
 
 				// Traverse the number of levels we want to allow recursive setting of permissions for:
 			for ($a=$this->getLevels;$a>0;$a--)	{
-				if (is_array($tree->ids_hierarchy[$a]))	{
-					foreach($tree->ids_hierarchy[$a] as $theId)	{
+				if (is_array($tree->orig_ids_hierarchy[$a]))	{
+					foreach($tree->orig_ids_hierarchy[$a] as $theId)	{
 						if ($GLOBALS['BE_USER']->isAdmin() || $GLOBALS['BE_USER']->user['uid']==$tree->recs[$theId]['perms_userid'])	{
 							$theIdListArr[]=$theId;
 						}

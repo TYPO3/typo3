@@ -238,6 +238,7 @@ class t3lib_treeView {
 		// For record trees:
 	var $ids = Array();				// one-dim array of the uid's selected.
 	var $ids_hierarchy = array();	// The hierarchy of element uids
+	var $orig_ids_hierarchy = array();	// The hierarchy of versioned element uids
 	var $buffer_idH = array();		// Temporary, internal array
 
 		// For FOLDER trees:
@@ -322,7 +323,7 @@ class t3lib_treeView {
 
 
 	/**
-	 * Resets the tree, recs, ids, and ids_hierarchy internal variables. Use it if you need it.
+	 * Resets the tree, recs, ids, ids_hierarchy and orig_ids_hierarchy internal variables. Use it if you need it.
 	 *
 	 * @return	void
 	 */
@@ -331,6 +332,7 @@ class t3lib_treeView {
 		$this->recs = array();
 		$this->ids = array();
 		$this->ids_hierarchy = array();
+		$this->orig_ids_hierarchy = array();
 	}
 
 
@@ -741,7 +743,6 @@ class t3lib_treeView {
 			// Buffer for id hierarchy is reset:
 		$this->buffer_idH=array();
 
-
 			// Init vars
 		$depth=intval($depth);
 		$HTML='';
@@ -774,8 +775,9 @@ class t3lib_treeView {
 			}
 
 				// Accumulate the id of the element in the internal arrays
-			$this->ids[]=$idH[$row['uid']]['uid'] = $row['uid'];
+			$this->ids[] = $idH[$row['uid']]['uid'] = $row['uid'];
 			$this->ids_hierarchy[$depth][] = $row['uid'];
+			$this->orig_ids_hierarchy[$depth][] = $row['_ORIG_uid'] ? $row['_ORIG_uid'] : $row['uid'];
 
 				// Make a recursive call to the next level
 			$HTML_depthData = $depthData.'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/ol/'.$LN.'.gif','width="18" height="16"').' alt="" />';
