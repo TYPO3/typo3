@@ -1,3 +1,7 @@
+2007-02-28  Ingmar Schlecht  <ingmar@typo3.org>
+
+	* New login image for t3skin by Ture Andersen
+
 2007-02-27  Oliver Hader  <oh@inpublica.de>
 
 	* Fixed bug: #5052: Form action URL is not htmlspecialchared (patch by Michael Stucki)
