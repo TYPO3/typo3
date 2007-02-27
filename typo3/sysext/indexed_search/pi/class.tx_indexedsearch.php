@@ -1324,7 +1324,7 @@ class tx_indexedsearch extends tslib_pibase {
 			$html = $this->cObj->substituteSubpart($html, '###ADDITONAL_KEYWORD###', '');
 		}
 
-		$markerArray['###ACTION_URL###'] = $this->pi_getPageLink($GLOBALS['TSFE']->id, $GLOBALS['TSFE']->sPre);
+		$markerArray['###ACTION_URL###'] = htmlspecialchars($this->pi_getPageLink($GLOBALS['TSFE']->id, $GLOBALS['TSFE']->sPre));
 
 		$hiddenFieldCode = $this->cObj->getSubpart($this->templateCode, '###HIDDEN_FIELDS###');
 		$hiddenFieldCode = preg_replace('/^\n\t(.+)/ms', '$1', $hiddenFieldCode);		// Remove first newline and tab (cosmetical issue)
