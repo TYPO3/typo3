@@ -542,6 +542,10 @@ class t3lib_BEfunc	{
 	 * @return	array		Root line array, all the way to the page tree root (or as far as $clause allows!)
 	 */
 	function BEgetRootLine($uid,$clause='',$workspaceOL=FALSE)	{
+		if (is_array($GLOBALS['T3_VAR']['BEgetRootLine_cache'][$uid][$clause][$workspaceOL?1:0]))	{
+			return $GLOBALS['T3_VAR']['BEgetRootLine_cache'][$uid][$clause][$workspaceOL?1:0];
+		}
+		$pid = $uid;
 		$loopCheck = 100;
 		$theRowArray = Array();
 		$output = Array();
@@ -586,6 +590,7 @@ class t3lib_BEfunc	{
 				$output[$c]['t3ver_stage'] = $val['t3ver_stage'];
 			}
 		}
+		$GLOBALS['T3_VAR']['BEgetRootLine_cache'][$pid][$clause][$workspaceOL?1:0] = $output;
 
 		return $output;
 	}

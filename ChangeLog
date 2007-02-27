@@ -7,6 +7,7 @@
 2007-02-27  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
 	* Fixed bug #3666: permissions of versioned pages are not changed in draft workspace (patch by Andreas Wolf)
+	* Added rootline cache to speed up tree renderings in the BE
 
 2007-02-27  Ingo Renner  <typo3@ingo-renner.com>
 
