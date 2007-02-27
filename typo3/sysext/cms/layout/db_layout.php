@@ -407,7 +407,7 @@ class SC_db_layout {
 				if (top.fsMod) top.fsMod.recentIds["web"] = '.intval($this->id).';
 				if (top.fsMod) top.fsMod.navFrameHighlightedID["web"] = "pages'.intval($this->id).'_"+top.fsMod.currentBank; '.intval($this->id).';
 				function jumpToUrl(URL,formEl)	{	//
-					if (document.editform && document.TBE_EDITOR.isFormChanged)	{	// Check if the function exists... (works in all browsers?)
+					if (document.editform && TBE_EDITOR.isFormChanged)	{	// Check if the function exists... (works in all browsers?)
 						if (!TBE_EDITOR.isFormChanged())	{	//
 							window.location.href = URL;
 						} else if (formEl) {
