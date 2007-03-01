@@ -164,7 +164,7 @@ CREATE TABLE index_config (
     type varchar(30) DEFAULT '' NOT NULL,
     depth int(11) unsigned DEFAULT '0' NOT NULL,
     table2index tinytext NOT NULL,
-    alternative_source_pid blob NOT NULL,
+    alternative_source_pid int(11) unsigned DEFAULT '0' NOT NULL,
     get_params tinytext NOT NULL,
     fieldlist tinytext NOT NULL,
 	externalUrl tinytext NOT NULL,
