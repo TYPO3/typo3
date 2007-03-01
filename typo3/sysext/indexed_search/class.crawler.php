@@ -176,7 +176,7 @@ class tx_indexedsearch_crawler {
 					$params = array(
 						'indexConfigUid' => $cfgRec['uid'],		// General
 						'procInstructions' => array('[Index Cfg UID#'.$cfgRec['uid'].']'),	// General
-						'url' => $cfgRec['alternative_source_pid'],	// Partly general... (for URL and file types and page tree (root))
+						'url' => intval($cfgRec['alternative_source_pid']),	// Partly general... (for URL and file types and page tree (root))
 						'depth' => 0	// Specific for URL and file types and page tree
 					);
 
@@ -891,8 +891,8 @@ class tx_indexedsearch_crawler {
 						AND type=1
 						AND table2index='.$GLOBALS['TYPO3_DB']->fullQuoteStr($table,'index_config').'
 						AND (
-								(alternative_source_pid='.$GLOBALS['TYPO3_DB']->fullQuoteStr('','index_config').' AND pid='.intval($currentRecord['pid']).')
-								OR (alternative_source_pid='.$GLOBALS['TYPO3_DB']->fullQuoteStr($currentRecord['pid'],'index_config').')
+								(alternative_source_pid=0 AND pid='.intval($currentRecord['pid']).')
+								OR (alternative_source_pid='.intval($currentRecord['pid']).')
 							)
 						AND records_indexonchange=1
 						'.t3lib_BEfunc::deleteClause('index_config')
