@@ -1492,8 +1492,8 @@ class SC_mod_tools_be_user_index {
 		$where_clause = 'ses_userid=u.uid';
 		$orderBy = 'u.username';
 
-		if (is_string($GLOBALS['TYPO3_CONF_VARS']['BE']['sessionTimeout']))	{
-				$where_clause .= ' AND '.$GLOBALS['EXEC_TIME'].'<(ses_tstamp+.'.$GLOBALS['TYPO3_CONF_VARS']['BE']['sessionTimeout'].')';
+		if (t3lib_div::testInt($GLOBALS['TYPO3_CONF_VARS']['BE']['sessionTimeout']))	{
+			$where_clause .= ' AND '.$GLOBALS['EXEC_TIME'].'<(ses_tstamp+'.$GLOBALS['TYPO3_CONF_VARS']['BE']['sessionTimeout'].')';
 		} else {
 			$timeout = intval($GLOBALS['TYPO3_CONF_VARS']['BE']['sessionTimeout']);
 			if ($timeout > 0)	{

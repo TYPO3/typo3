@@ -1,6 +1,7 @@
 2007-03-01  Oliver Hader  <oh@inpublica.de>
 
 	* Fixed bug: #5069: TSconfig mod.web_list.allowedNewTables used in t3lib_TCEforms_inline
+	* Fixed bug: #5092: Typo in Who is online
 
 2007-03-01  Karsten Dambekalns <karsten@typo3.org>
 
