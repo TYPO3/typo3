@@ -454,11 +454,6 @@ class t3lib_TCEforms_inline {
 			t3lib_BEfunc::readPageAccess($rec['pid'], $GLOBALS['BE_USER']->getPagePermsClause(1))
 		);
 
-			// FIXME: Put these calls somewhere else... possibly they arn't needed here
-		$web_list_modTSconfig = t3lib_BEfunc::getModTSconfig($rec['pid'],'mod.web_list');
-		$allowedNewTables = t3lib_div::trimExplode(',',$this->fObj->web_list_modTSconfig['properties']['allowedNewTables'],1);
-		$showNewRecLink = !count($allowedNewTables) || in_array($foreign_table, $allowedNewTables);
-
 			// If the listed table is 'pages' we have to request the permission settings for each page:
 		if ($isPagesTable)	{
 			$localCalcPerms = $GLOBALS['BE_USER']->calcPerms(t3lib_BEfunc::getRecord('pages',$rec['uid']));
@@ -482,13 +477,13 @@ class t3lib_TCEforms_inline {
 					(!$isPagesTable && ($calcPerms&16)) || 	// For NON-pages, must have permission to edit content on this parent page
 					($isPagesTable && ($calcPerms&8))		// For pages, must have permission to create new pages here.
 					)	{
-					if ($showNewRecLink)	{
-						$onClick = "return inline.createNewRecord('".$nameObjectFt."','".$rec['uid']."')";
-						if ($config['inline']['inlineNewButtonStyle']) $style = ' style="'.$config['inline']['inlineNewButtonStyle'].'"';
-						$cells[]='<a href="#" onclick="'.htmlspecialchars($onClick).'" class="inlineNewButton"'.$style.'>'.
-								'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/new_'.($isPagesTable?'page':'el').'.gif','width="'.($isPagesTable?13:11).'" height="12"').' title="'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_web_list.xml:new'.($isPagesTable?'Page':'Record'),1).'" alt="" />'.
-								'</a>';
+					$onClick = "return inline.createNewRecord('".$nameObjectFt."','".$rec['uid']."')";
+					if ($config['inline']['inlineNewButtonStyle']) {
+						$style = ' style="'.$config['inline']['inlineNewButtonStyle'].'"';
 					}
+					$cells[]='<a href="#" onclick="'.htmlspecialchars($onClick).'" class="inlineNewButton"'.$style.'>'.
+							'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/new_'.($isPagesTable?'page':'el').'.gif','width="'.($isPagesTable?13:11).'" height="12"').' title="'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_web_list.xml:new'.($isPagesTable?'Page':'Record'),1).'" alt="" />'.
+							'</a>';
 				}
 			}
 
