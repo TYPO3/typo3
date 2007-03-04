@@ -1159,9 +1159,9 @@ th { font-family: verdana,arial, helvetica, sans-serif; font-size: 10pt; font-we
 			'day' => 'Last access more than a day ago',
 			'week' => 'Last access more than a week ago',
 			'month' => 'Last access more than a month ago',
-			'10' => 'Filesize greater than 10 kb',
-			'50' => 'Filesize greater than 50 kb',
-			'100' => 'Filesize greater than 100 kb'
+			'10' => 'Filesize greater than 10KB',
+			'50' => 'Filesize greater than 50KB',
+			'100' => 'Filesize greater than 100KB'
 		);
 
 		$actionType=array(
@@ -1443,11 +1443,11 @@ From sub-directory:
 			// Includepath
 		$incPaths = t3lib_div::trimExplode(TYPO3_OS=='WIN'?';':':', ini_get('include_path'));
 		if (!in_array('.',$incPaths))	{
-			$this->message($ext, 'Current dir (./) is not in include path!',"
+			$this->message($ext, 'Current directory (./) is not in include path!',"
 				<i>include_path=".ini_get('include_path')."</i>
-				Normally the current path, '.', is included in the include_path of PHP. Although TYPO3 is made to work around this it is an unusual setting that may introduce problems.
+				Normally the current path, '.', is included in the include_path of PHP. Although TYPO3 does not rely on this, it is an unusual setting that may introduce problems for some extensions.
 			",1);
-		} else $this->message($ext, 'Current dir in include path',"",-1);
+		} else $this->message($ext, 'Current directory in include path',"",-1);
 
 			// *****************
 			// File uploads
@@ -1464,16 +1464,16 @@ From sub-directory:
 
 		$upload_max_filesize = $this->convertByteSize(ini_get('upload_max_filesize'));
 		$post_max_size = $this->convertByteSize(ini_get('post_max_size'));
-		if ($upload_max_filesize<10000*1024)	{
-			$this->message($ext, 'Max Upload filesize too small?',"
+		if ($upload_max_filesize<1024*1024*10)	{
+			$this->message($ext, 'Maximum upload filesize too small?',"
 				<i>upload_max_filesize=".ini_get('upload_max_filesize')."</i>
-				By default TYPO3 supports uploading, copying and moving files of sizes up to 10000 kb (10 MB) (You can alter the TYPO3 defaults by the config option TYPO3_CONF_VARS[BE][maxFileSize]).
+				By default TYPO3 supports uploading, copying and moving files of sizes up to 10MB (You can alter the TYPO3 defaults by the config option TYPO3_CONF_VARS[BE][maxFileSize]).
 				Your current value is below this, so at this point, PHP sets the limits for uploaded filesizes and not TYPO3.
-				<strong>Notice:</strong> The limits for filesizes attached to database records are set in the tables.php configuration file (\$TCA) for each group/file field.
+				<strong>Notice:</strong> The limits for filesizes attached to database records are set in the tables.php configuration files (\$TCA) for each group/file field. You may override these values in localconf.php or by page TSconfig settings.
 			",1);
 		}
 		if ($upload_max_filesize > $post_max_size)	{
-			$this->message($ext, 'Max size for POST requests is smaller than max upload filesize','
+			$this->message($ext, 'Maximum size for POST requests is smaller than max. upload filesize','
 				<i>upload_max_filesize='.ini_get('upload_max_filesize').', post_max_size='.ini_get('post_max_size').'</i>
 				You have defined a maximum size for file uploads which exceeds the allowed size for POST requests. Therefore the file uploads can not be larger than '.ini_get('post_max_size').'
 			',1);
@@ -1484,24 +1484,24 @@ From sub-directory:
 			// *****************
 		$memory_limit_value = $this->convertByteSize(ini_get('memory_limit'));
 		if ($memory_limit_value && $memory_limit_value < 16*1024*1024)	{
-			$this->message($ext, 'Memory Limit below 16 MB',"
+			$this->message($ext, 'Memory limit below 16 MB',"
 				<i>memory_limit=".ini_get('memory_limit')."</i>
 				Your system is configured to enforce a memory limit of PHP scripts lower than 16 MB. The Extension Manager needs to include more PHP-classes than will fit into this memory space. There is nothing else to do than raise the limit. To be safe, ask the system administrator of the webserver to raise the limit to over 25 MB.
 			",3);
 		} elseif(!$memory_limit_value) {
-			$this->message($ext, 'Memory Limit',"<i>No Memory Limit in effect.</i>",-1);
-		} else $this->message($ext, 'Memory Limit',"<i>memory_limit=".ini_get('memory_limit')."</i>",-1);
+			$this->message($ext, 'Memory limit',"<i>No memory limit in effect.</i>",-1);
+		} else $this->message($ext, 'Memory limit',"<i>memory_limit=".ini_get('memory_limit')."</i>",-1);
 		if (ini_get('max_execution_time')<30)	{
-			$this->message($ext, 'Max Execution Time below default 30 seconds',"
+			$this->message($ext, 'Maximum execution time below 30 seconds',"
 				<i>max_execution_time=".ini_get('max_execution_time')."</i>
 				May impose problems if too low.
 			",1);
-		} else $this->message($ext, 'Max Execution Time',"<i>max_execution_time=".ini_get('max_execution_time')."</i>",-1);
+		} else $this->message($ext, 'Maximum execution time',"<i>max_execution_time=".ini_get('max_execution_time')."</i>",-1);
 		if (ini_get('disable_functions'))	{
 			$this->message($ext, 'Functions disabled!',"
 				<i>disable_functions=".ini_get('disable_functions')."</i>
 				The above list of functions are disabled. If TYPO3 use any of these there might be trouble.
-				TYPO3 is designed to use the default set of PHP4.0.6+ functions plus the functions from GDLib.
+				TYPO3 is designed to use the default set of PHP4.3.0+ functions plus the functions of GDLib.
 				Possibly these functions are disabled due to security risks and most likely the list would include a function like <i>exec()</i> which is use by TYPO3 to access ImageMagick.
 			",2);
 		} else $this->message($ext, 'Functions disabled: none',"",-1);
@@ -1523,7 +1523,7 @@ From sub-directory:
 				} else {
 					$this->message($ext, 'Sendmail OK',"
 						<i>sendmail_path=".ini_get('sendmail_path').'</i>
-						You may check the mail() function by entering your emailaddress here:
+						You may check the mail() function by entering your email address here:
 					'.$this->check_mail('get_form'),-1);
 				}
 			}
@@ -1675,7 +1675,7 @@ From sub-directory:
 					It looks like the FreeType library is not compiled into GDLib. This is required when TYPO3 uses GDLib and you'll most likely get errors like 'ImageTTFBBox is not a function' or 'ImageTTFText is not a function'.
 				", 2);
 			} else {
-				$this->message($ext, 'FreeType Quick-test ('.($this->isGIF()?'as GIF':'as PNG').')', '<img src="'.htmlspecialchars(t3lib_div::getIndpEnv('REQUEST_URI').'&testingTrueTypeSupport=1').'" alt=""><br />(If the text is exceeding the image borders you are using Freetype 2 and need to set TYPO3_CONF_VARS[GFX][TTFdpi]=96.<br />If there is no image at all Freetype is most likely NOT available and you can just as well disable GDlib for TYPO3...)', -1);
+				$this->message($ext, 'FreeType quick-test ('.($this->isGIF()?'as GIF':'as PNG').')', '<img src="'.htmlspecialchars(t3lib_div::getIndpEnv('REQUEST_URI').'&testingTrueTypeSupport=1').'" alt=""><br />(If the text is exceeding the image borders you are using Freetype 2 and need to set TYPO3_CONF_VARS[GFX][TTFdpi]=96.<br />If there is no image at all Freetype is most likely NOT available and you can just as well disable GDlib for TYPO3...)', -1);
 				$this->config_array['freetype']=1;
 			}
 		} else {
@@ -1708,7 +1708,7 @@ From sub-directory:
 			//  2 = required, has to be writable
 
 		$checkWrite=array(
-			'typo3temp/' => array('This folder is used by both the frontend (FE) and backend (BE) interface for image manipulated files.',2,'dir_typo3temp'),
+			'typo3temp/' => array('This folder is used by both the frontend (FE) and backend (BE) interface for all kind of temporary and cached files.',2,'dir_typo3temp'),
 			'typo3temp/pics/' => array('This folder is part of the typo3temp/ section. It needs to be writable, too.',2,'dir_typo3temp'),
 			'typo3temp/temp/' => array('This folder is part of the typo3temp/ section. It needs to be writable, too.',2,'dir_typo3temp'),
 			'typo3temp/llxml/' => array('This folder is part of the typo3temp/ section. It needs to be writable, too.',2,'dir_typo3temp'),
@@ -1718,7 +1718,7 @@ From sub-directory:
 			'typo3conf/ext/' => array('Location for local extensions. Must be writable if the Extension Manager is supposed to install extensions for this website.',0),
 			'typo3conf/l10n/' => array('Location for translations. Must be writable if the Extension Manager is supposed to install translations for extensions.',0),
 			TYPO3_mainDir.'ext/' => array('Location for global extensions. Must be writable if the Extension Manager is supposed to install extensions globally in the source.',-1),
-			'uploads/' => array('Location for uploaded files from RTE + in the subdirs for tables.',2),
+			'uploads/' => array('Location for uploaded files from RTE, in the subdirectories for uploaded files of content elements.',2),
 			'uploads/pics/' => array('Typical location for uploaded files (images especially).',0),
 			'uploads/media/' => array('Typical location for uploaded files (non-images especially).',0),
 			'uploads/tf/' => array('Typical location for uploaded files (TS template resources).',0),
@@ -1830,7 +1830,7 @@ From sub-directory:
 		}
 		$this->config_array['im_versions']=$index;
 		if (!$this->config_array['im'])	{
-			$this->message($ext, 'No ImageMagick install available',"
+			$this->message($ext, 'No ImageMagick installation available',"
 			It seems that there is no adequate ImageMagick installation available at the checked locations (".implode($paths, ', ').")
 			An 'adequate' installation for requires 'convert', 'combine'/'composite' and 'identify' to be available
 			",2);
@@ -1851,7 +1851,7 @@ From sub-directory:
 
 				Check this path for ImageMagick installation:
 				<input type="text" name="TYPO3_INSTALL[checkIM][path]" value="'.htmlspecialchars($this->INSTALL['checkIM']['path']).'">
-				(Eg. "D:\wwwroot\im537\ImageMagick\" for windows or "/usr/bin/" for Unix)<br />
+				(Eg. "D:\wwwroot\im537\ImageMagick\" for Windows or "/usr/bin/" for Unix)<br />
 
 				<input type="submit" value="Send">
 			</form>
