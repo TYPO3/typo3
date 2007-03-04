@@ -193,7 +193,7 @@ class t3lib_TCEforms_inline {
 
 			// if relations are required to be unique, get the uids that have already been used on the foreign side of the relation
 		if ($config['foreign_unique']) {
-				// If unique *and* selector, the should both be the same - get config:
+				// If uniqueness *and* selector are set, they should point to the same field - so, get the configuration of one:
 			$selConfig = $this->getPossibleRecordsSelectorConfig($config, $config['foreign_unique']);
 				// Get the used unique ids:
 			$uniqueIds = $this->getUniqueIds($recordList, $config, $selConfig['type']=='groupdb');
@@ -206,7 +206,7 @@ class t3lib_TCEforms_inline {
 				'table' => $config['foreign_table'],
 				'elTable' => $selConfig['table'], // element/record table (one step down in hierarchy)
 				'field' => $config['foreign_unique'],
-				'selector' => $selConfig['PA'] && $selConfig['type'] ? $selConfig['type'] : false,
+				'selector' => $selConfig['selector'],
 				'possible' => $this->getPossibleRecordsFlat($possibleRecords),
 			);
 		}
@@ -1559,6 +1559,7 @@ class t3lib_TCEforms_inline {
 		$PA = false;
 		$type = false;
 		$table = false;
+		$selector = false;
 		
 		if ($field) {
 			$PA = array();
@@ -1570,12 +1571,17 @@ class t3lib_TCEforms_inline {
 			$type = $this->getPossibleRecordsSelectorType($config);
 				// Return table on this level:
 			$table = $type == 'select' ? $config['foreign_table'] : $config['allowed'];
+				// Return type of the selector if foreign_selector is defined and points to the same field as in $field:
+			if ($foreign_selector && $foreign_selector == $field && $type) {
+				$selector = $type;
+			}
 		}
 		
 		return array(
 			'PA' => $PA,
 			'type' => $type,
-			'table' => $table
+			'table' => $table,
+			'selector' => $selector,
 		);
 	}
 	
