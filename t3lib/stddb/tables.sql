@@ -274,7 +274,7 @@ CREATE TABLE sys_history (
   snapshot tinyint(4) DEFAULT '0' NOT NULL,
   PRIMARY KEY (uid),
   KEY recordident (tablename,recuid,tstamp),
-  KEY sys_log_uid (sys_log_uid),
+  KEY sys_log_uid (sys_log_uid)
 );
 
 #

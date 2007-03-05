@@ -631,8 +631,8 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 		switch(strtolower($this->step))	{
 			case 1:
 				$msg='
-<br />
-<br />
+					<br />
+					<br />
 					<table border="0">
 					   <form action="'.$this->action.'" method="post">
 					   	<tr>
@@ -684,9 +684,8 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 					   	</tr>
 					   </form>
 					</table>
-<br />
-<br />
-				';
+					<br />
+					<br />';
 			break;
 			case 2:
 				if ($result = $GLOBALS['TYPO3_DB']->sql_pconnect(TYPO3_db_host, TYPO3_db_username, TYPO3_db_password))	{
@@ -773,8 +772,8 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 						$content='
 							'.$this->fontTag2.'Please select a database dump:</span><br />
 							<input type="hidden" name="TYPO3_INSTALL[database_import_all]" value=1>
-						   <input type="hidden" name="step" value="">
-						   <input type="hidden" name="goto_step" value="go">
+							<input type="hidden" name="step" value="">
+							<input type="hidden" name="goto_step" value="go">
 							<select name="TYPO3_INSTALL[database_type]">'.$opt.'</select><br />';
 
 						$content = $this->getUpdateDbFormWrap('import', $content, 'Import database');
@@ -821,8 +820,6 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 				} else {
 					$msg=$error_missingConnect;
 				}
-			break;
-			default:
 			break;
 		}
 		return $msg;
@@ -3401,8 +3398,6 @@ From sub-directory:
 		}
 
 
-			// Install user
-			// clear uc
 		if ($action_type)	{
 			switch($actionParts[0])	{
 				case 'cmpFile':
@@ -3736,7 +3731,7 @@ From sub-directory:
 						$this->message($tLabel,'Content of '.basename($actionParts[1]),$out,1);
 					}
 				break;
-				case 'adminUser':
+				case 'adminUser':	// Create admin user
 					if ($whichTables['be_users'])	{
 						if (is_array($this->INSTALL['database_adminUser']))	{
 							$username = ereg_replace('[^[:alnum:]_-]','',trim($this->INSTALL['database_adminUser']['username']));
@@ -3788,7 +3783,7 @@ From sub-directory:
 						",3,1);
 					}
 				break;
-				case 'UC':
+				case 'UC':	// clear uc
 					if ($whichTables['be_users'])	{
 						if (!strcmp($this->INSTALL['database_UC'],1))	{
 							$GLOBALS['TYPO3_DB']->exec_UPDATEquery('be_users', '', array('uc' => ''));
