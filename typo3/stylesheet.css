@@ -267,7 +267,7 @@ UL.tree IMG		{ vertical-align: middle; }
 UL.tree UL		{ list-style: none; margin: 0; padding: 0; padding-left: 17px; }
 UL.tree UL LI	{ list-style: none; margin: 0; padding: 0; line-height: 10px; white-space: nowrap; }
 UL.tree UL LI.expanded UL	{ background: transparent url('gfx/ol/line.gif') repeat-y top left; }
-UL.tree UL LI.last		{ background: transparent url('gfx/ol/joinbottom.gif') no-repeat top left; } 
+UL.tree UL LI.last		{ background: transparent url('gfx/ol/joinbottom.gif') no-repeat top left; }
 UL.tree UL LI.last > UL	{ background: none; }
 UL.tree UL LI.active	{ background-color: #ebebeb !important; }
 UL.tree UL LI.active UL	{ background-color: #f7f3ef; }
@@ -355,7 +355,7 @@ DIV#typo3-altdoc-lang-selector { text-align: right; }
 */
 BODY#typo3-index-php { background-color: white; margin: 0; padding: 0; }
 BODY#typo3-index-php TABLE#wrapper { width: 100%; margin-top: 30px; }
-BODY#typo3-index-php TABLE#loginwrapper { width: 100%; background-color: #A69E8D; text-align: left; }
+BODY#typo3-index-php TABLE#loginwrapper { width: 100%; background-color: #7A9FCF; text-align: left; }
 BODY#typo3-index-php DIV#copyrightnotice { width: 70%; text-align: left; margin-top: 10px; }
 BODY#typo3-index-php DIV#copyrightnotice IMG { margin-right: 5px; margin-bottom: 5px; }
 BODY#typo3-index-php DIV#loginimage { text-align: right; padding-right: 30px; margin-bottom: 5px; height: 43px; }

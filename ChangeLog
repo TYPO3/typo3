@@ -1,3 +1,7 @@
+2007-03-05  Ingmar Schlecht  <ingmar@typo3.org>
+
+	* New login image (if no skin is used) by Ture Andersen
+
 2007-03-04  Oliver Hader  <oh@inpublica.de>
 
 	* Fixed bug: #5098: IRRE - foreign_unique without foreign_selector doesn't work

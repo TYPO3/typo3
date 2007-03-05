@@ -604,8 +604,14 @@ class SC_index {
 				}
 			}
 		} else {	// If no rotation folder configured, print default image:
-			$loginImage = 'loginbox_image_400.png';
-			$imagecopy = $loginImage=='loginbox_image_dev.png' ? 'You are running the CVS version of TYPO3 '.$GLOBALS['TYPO_VERSION'] : 'Photo: &copy; 2006 Kasper Sk&#229;rh&#248;j';	// Directly outputted in image attributes...
+
+			if (strstr(TYPO3_version,'-dev'))	{	// development version
+				$loginImage = 'loginbox_image_dev.png';
+				$imagecopy = 'You are running a development version of TYPO3 '.TYPO3_branch;
+			} else {
+				$loginImage = 'loginbox_image.jpg';
+				$imagecopy = 'Photo by Ture Andersen (www.tureandersen.dk)';
+			}
 			$loginboxImage = '<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/'.$loginImage,'width="200" height="133"').' id="loginbox-image" alt="'.$imagecopy.'" title="'.$imagecopy.'" />';
 		}
 
