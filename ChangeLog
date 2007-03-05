@@ -1,6 +1,8 @@
-2007-03-05  Ingmar Schlecht  <ingmar@typo3.org>
+2007-03-05  Michael Stucki  <michael@typo3.org>
 
 	* New login image (if no skin is used) by Ture Andersen
+	* Added a warning for admins if typo3conf/ENABLE_INSTALL_TOOL exists (which means that the Install Tool is currently enabled)
+	* Changed layout of admin warnings (use <li> instead of plain breaks)
 
 2007-03-04  Oliver Hader  <oh@inpublica.de>
 

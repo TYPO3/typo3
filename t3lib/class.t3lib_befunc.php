@@ -3584,11 +3584,11 @@ class t3lib_BEfunc	{
 	 * @return	void
 	 */
 	function displayWarningMessages()	{
-		if($GLOBALS['BE_USER']->isAdmin())	{
+		if ($GLOBALS['BE_USER']->isAdmin())	{
 			$warnings = array();
 
 				// Check if the Install Tool Password is still default: joh316
-			if($GLOBALS['TYPO3_CONF_VARS']['BE']['installToolPassword']==md5('joh316'))	{
+			if ($GLOBALS['TYPO3_CONF_VARS']['BE']['installToolPassword']==md5('joh316'))	{
 				$warnings[] = 'The password of your Install Tool is still using the default value "joh316"';
 			}
 
@@ -3599,30 +3599,35 @@ class t3lib_BEfunc	{
 				$warnings[] = 'The backend user "admin" with password "password" is still existing';
 			}
 
+				// Check if the Install Tool is enabled
+			$enableInstallToolFile = PATH_site.'typo3conf/ENABLE_INSTALL_TOOL';
+			if (@is_file($enableInstallToolFile))	{
+				$warnings[] = 'The Install Tool is enabled. Make sure to delete the file "'.$enableInstallToolFile.'" when you have finished setting up TYPO3';
+			}
+
 				// Check if the encryption key is empty
 			if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] == '')	{
 				$url = 'install/index.php?redirect_url=index.php'.urlencode('?TYPO3_INSTALL[type]=config#set_encryptionKey');
 				$warnings[] = 'The encryption key is not set! Set it in <a href="'.$url.'">$TYPO3_CONF_VARS[SYS][encryptionKey]</a>';
 			}
 
-				// check if there are still updates to perform
+				// Check if there are still updates to perform
 			if (!t3lib_div::compat_version(TYPO3_branch))	{
 				$url = 'install/index.php?redirect_url=index.php'.urlencode('?TYPO3_INSTALL[type]=update');
 				$warnings[] = 'This installation is not configured for the TYPO3 version it is running. You probably did so by intention, in this case you can safely ignore this message. If unsure, visit the <a href="'.$url.'" target="_blank">Update Wizard</a> in the Install Tool to see which changes would be affected.';
 			}
 
-				// check if sys_refindex is empty
-			if (is_object($GLOBALS['TYPO3_DB']))	{
-				list($count) = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('count(*) as rcount','sys_refindex','1=1');
-				if (!$count['rcount'])	{
-					$warnings[] = 'The Reference Index table is empty which is likely to be the case because you just upgraded your TYPO3 source. Please go to Tools>DB Check and update the reference index.';
-				}
+				// Check if sys_refindex is empty
+			list($count) = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('count(*) as rcount','sys_refindex','1=1');
+			if (!$count['rcount'])	{
+				$warnings[] = 'The Reference Index table is empty which is likely to be the case because you just upgraded your TYPO3 source. Please go to Tools>DB Check and update the reference index.';
 			}
 
-			if(count($warnings))	{
+			if (count($warnings))	{
+				$style = ' style="margin-bottom:10px;"';
 				$content = '<table border="0" cellpadding="0" cellspacing="0" class="warningbox"><tr><td>'.
-					$GLOBALS['TBE_TEMPLATE']->icons(3).'Important notice!<br />'.
-					'- '.implode('<br />- ', $warnings).'<br /><br />'.
+					$GLOBALS['TBE_TEMPLATE']->icons(3).'Important notice!<br /><ul><li'.$style.'>'.
+					implode('</li><li'.$style.'>', $warnings).'</li></ul>'.
 					'It is highly recommended that you change this immediately.'.
 					'</td></tr></table>';
 
