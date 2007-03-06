@@ -1,5 +1,6 @@
 2007-03-06  Michael Stucki  <michael@typo3.org>
 
+	* Release of TYPO3 4.1
 	* Remove typo3/sysext/topapps/ and typo3/alt_main_new.php (they are not used in version 4.1)
 
 2007-03-06  Ingmar Schlecht  <ingmar@typo3.org>
