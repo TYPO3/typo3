@@ -1,3 +1,7 @@
+2007-03-06  Ingmar Schlecht  <ingmar@typo3.org>
+
+	* Setting default value of pageNotFoundOnCHashError back to "false" (= reverting Stucki's patch) as some extensions had problems with the new default value
+
 2007-03-05  Michael Stucki  <michael@typo3.org>
 
 	* New login image (if no skin is used) by Ture Andersen

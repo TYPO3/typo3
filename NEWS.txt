@@ -94,12 +94,6 @@ Frontend features
 	* UTF-8 for log files
 		-> TYPO3 now logs page paths in UTF-8 if config.stat_apache_niceTitle is set to "utf-8" in the TypoScript template Setup.
 
-	* Enable $TYPO3_CONF_VARS[FE][pageNotFoundOnCHashError] by default
-		-> URLs (especially plugins) can contain the &cHash parameter. It contains a checksum of the whole paramter set and is very useful for caching.
-		-> In the past, a wrong cHash caused the website to be recreated with caching turned off.
-		-> With the new behaviour, a wrong cHash will instead trigger an error message since this usually should never happen!
-		-> Usually, the cHash is only wrong if a) someone has changed the encryptionKey (bad!) or b) someone has manually modified the requested URL
-
 Backend skin
 ============
 
