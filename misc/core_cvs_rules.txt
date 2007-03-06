@@ -1,5 +1,5 @@
 *******************************************************
-Rules and Conditions for contributions to Core CVS
+Rules and Conditions for contributions to Core SVN
 (Core + System Extensions)
 *******************************************************
 
@@ -9,7 +9,7 @@ Rules and Conditions for contributions to Core CVS
 - The Core Team Leader (Kasper) is ultimately in charge.
 Note: This makes it possible for many to work together while maintaining control and tracking responsibility more easily. Also it offers boths modes of development: Group and solo.
 
-[B] Committing changes to Core CVS
+[B] Committing changes to Core SVN
 - As long as changes follow the "General Rules of core development" (see below), the mode of commits is determined by the person responsible for that particular part.
 - Examples:
 	- A developer of a certain class might want to maintain it all alone and not accept any commits by others.
@@ -20,7 +20,7 @@ Note: This makes it possible for many to work together while maintaining control
 - 1: CGL Adherance.
 	Code in the core must follow the Coding Guidelines for TYPO3 to appear as a unity and good examples. This includes (but is not limited to) code formatting, XHTML compliance and full inline code documentation.
 - 2: Pursue Stability.
-	"Rather a stable bug than an unstable system". TYPO3 is known for being stable (even in beta versions and CVS) and we want it to stay that way. Give priority to stability, organize quality assurance, create unit-tests for mission critical parts of your code.
+	"Rather a stable bug than an unstable system". TYPO3 is known for being stable (even in beta versions and SVN) and we want it to stay that way. Give priority to stability, organize quality assurance, create unit-tests for mission critical parts of your code.
 - 3: Backwards Compatibility
 	We aim at being very backwards compatible so even old websites can easily upgrade to most recent TYPO3 core source. Contrary to general extensions where people can easily choose to keep running an old version, all system extensions in the core (and the core code itself) has to respect that they are not (easily) downgradable. Hence they must respect backwards compatibility for the larger parts.
 - 4: No loose ends
@@ -33,7 +33,7 @@ Note: This makes it possible for many to work together while maintaining control
 	You may NOT add or remove scripts to the core without asking Kasper first (unless inside a directory totally controlled by you, like for instance a system extension of course).
 
 
-[D] Rules of CVS Commits to Kaspers Core parts:
+[D] Rules of SVN Commits to Kaspers Core parts:
 Now, here comes the rules for commits to my parts of the core (which is everything you are not sure belongs to someone else.)
 These rules take offset in the presupposition that I'm the bottleneck and we all want to cut down my administration time as much as possible. Effectively it may mean that the "command-chain" for you as a contributer is getting longer and more cumbersome. If you disagree with this presupposition, just tell me why.
 
@@ -47,7 +47,7 @@ Rule #1: Ask me first!
 		- a) My code overview is typically larger and I may see implications that were not clear to you. This prevents bugs and bad implementations.
 		- b) Maybe another similar concept is planned. In that case we should wait for that.
 	- 4) Balance is important. Juggling with a big project like TYPO3 is an act of balance and some changes/fixes will (potentially) disturb the balance. If I judge that to be the case, I will reject the suggestion with reference to my 6th sense... :-)
-	- 5) I'm itchy; With CVS I have already experienced that commits meant that I was forced into bugfixing others code for a long time... This is very bad experience! I will do anything to avoid that.
+	- 5) I'm itchy; With SVN I have already experienced that commits meant that I was forced into bugfixing others code for a long time... This is very bad experience! I will do anything to avoid that.
 
 Rule #2: Reference Documentation instantly!
 	- This is General Rules #5 emphasized! I'm very, very serious about this point. I really hate to preview some code and see that a new feature was added but not called to my notice! I'm not talking about writing 5 pages, I'm talking about making a small bulletlist with [option] - [description] and sending it to me so we don't forget it!
@@ -58,17 +58,17 @@ Rule #2: Reference Documentation instantly!
 
 Rule #3: No loose ends
 	- This is General Rules #4 emphasized! Before you begin core work, make sure you have allocated the time to finish it to an acceptable standard (by the measures given in this text)
-	- It needs to be said although it should be obvious: Any code committed to CVS must be tested properly. Parsing errors in particular are not acceptable!
+	- It needs to be said although it should be obvious: Any code committed to SVN must be tested properly. Parsing errors in particular are not acceptable!
 
 SUMMARY:
 - General request for my opinion
 - If OK, sending an actual Patch-diff to me for approval
 - If approval,
 	- send any necessary documentation to me
-	- commit code to CVS
+	- commit code to SVN
 
 
-[E] Rules of CVS Commits for parts of the core NOT maintained by Kasper
+[E] Rules of SVN Commits for parts of the core NOT maintained by Kasper
 ... (yet to be filled in from other contributers, like Rene Fritz who is in charge of eg. Services)
 
 
@@ -77,7 +77,7 @@ Versioning scheme:
  - major.minor.patch[alpha/beta/RC][-dev]
 	- major and minor: Incremented based on the extend of new features (in HEAD branch)
 	- patch: incremented only for important bugfixes in a release branch.
-	- dev is always used for intermediate CVS stuff.
+	- dev is always used for intermediate SVN stuff.
 	- [alpha/beta/RC] is used only for major releases where this procedure is necessary. These releases have always a trailing number, counting from 1 to n.
  - HEAD branch is the continuous development of TYPO3. We use only this branch for new development of the Core.
  - Each time we have a Release Candidate which is so stable we believe it to be the final release we will make a "release branch" tagged "TYPO3_[major]-[minor]". The Quality Ensurance team / Package team represented by Ingmar Schlecht and Michael Stucki are in charge of managing the release branches, make new patch releases, tag and merge bugfixes in the release branches.
