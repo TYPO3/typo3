@@ -10,7 +10,7 @@ CREATE TABLE sys_note (
   cruser int(11) unsigned DEFAULT '0' NOT NULL,
   author varchar(80) DEFAULT '' NOT NULL,
   email varchar(80) DEFAULT '' NOT NULL,
-  subject tinytext NOT NULL,
+  subject varchar(255) DEFAULT '' NOT NULL,
   message text NOT NULL,
   personal tinyint(3) unsigned DEFAULT '0' NOT NULL,
   category tinyint(3) unsigned DEFAULT '0' NOT NULL,

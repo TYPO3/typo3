@@ -1,8 +1,6 @@
-# TYPO3 Extension Manager dump 1.0
 #
-# Host: TYPO3_host    Database: t3_testsite
-#--------------------------------------------------------
 # TYPO3 CVS ID: $Id$
+#
 
 
 #
@@ -42,8 +40,8 @@ CREATE TABLE cache_pagesection (
 CREATE TABLE cache_typo3temp_log (
   md5hash varchar(32) DEFAULT '' NOT NULL,
   tstamp int(11) DEFAULT '0' NOT NULL,
-  filename tinytext NOT NULL,
-  orig_filename tinytext NOT NULL,
+  filename varchar(255) DEFAULT '' NOT NULL,
+  orig_filename varchar(255) NOT NULL,
   PRIMARY KEY (md5hash)
 ) ENGINE=InnoDB;
 
@@ -67,7 +65,7 @@ CREATE TABLE cache_imagesizes (
   md5hash varchar(32) DEFAULT '' NOT NULL,
   md5filename varchar(32) DEFAULT '' NOT NULL,
   tstamp int(11) DEFAULT '0' NOT NULL,
-  filename tinytext NOT NULL,
+  filename varchar(255) DEFAULT '' NOT NULL,
   imagewidth mediumint(11) unsigned DEFAULT '0' NOT NULL,
   imageheight mediumint(11) unsigned DEFAULT '0' NOT NULL,
   PRIMARY KEY (md5filename)
@@ -134,7 +132,7 @@ CREATE TABLE fe_users (
   starttime int(11) unsigned DEFAULT '0' NOT NULL,
   endtime int(11) unsigned DEFAULT '0' NOT NULL,
   name varchar(80) DEFAULT '' NOT NULL,
-  address tinytext NOT NULL,
+  address varchar(255) DEFAULT '' NOT NULL,
   telephone varchar(20) DEFAULT '' NOT NULL,
   fax varchar(20) DEFAULT '' NOT NULL,
   email varchar(80) DEFAULT '' NOT NULL,
@@ -155,10 +153,9 @@ CREATE TABLE fe_users (
   lastlogin int(10) unsigned DEFAULT '0' NOT NULL,
   is_online int(10) unsigned DEFAULT '0' NOT NULL,
   PRIMARY KEY (uid),
-  KEY parent (pid),
+  KEY parent (pid,username),
   KEY username (username),
   KEY is_online (is_online),
-  KEY pid (pid,username)
 );
 
 
@@ -181,18 +178,18 @@ CREATE TABLE pages_language_overlay (
   crdate int(11) unsigned DEFAULT '0' NOT NULL,
   cruser_id int(11) unsigned DEFAULT '0' NOT NULL,
   sys_language_uid int(11) unsigned DEFAULT '0' NOT NULL,
-  title tinytext NOT NULL,
+  title varchar(255) DEFAULT '' NOT NULL,
   hidden tinyint(4) unsigned DEFAULT '0' NOT NULL,
   starttime int(11) unsigned DEFAULT '0' NOT NULL,
   endtime int(11) unsigned DEFAULT '0' NOT NULL,
   deleted tinyint(3) unsigned DEFAULT '0' NOT NULL,
-  subtitle tinytext NOT NULL,
-  nav_title tinytext NOT NULL,
+  subtitle varchar(255) DEFAULT '' NOT NULL,
+  nav_title varchar(255) DEFAULT '' NOT NULL,
   media tinyblob NOT NULL,
   keywords text NOT NULL,
   description text NOT NULL,
   abstract text NOT NULL,
-  author tinytext NOT NULL,
+  author varchar(255) DEFAULT '' NOT NULL,
   author_email varchar(80) DEFAULT '' NOT NULL,
   tx_impexp_origuid int(11) DEFAULT '0' NOT NULL,
   l18n_diffsource mediumblob NOT NULL,
@@ -211,7 +208,7 @@ CREATE TABLE static_template (
   pid int(11) unsigned DEFAULT '0' NOT NULL,
   tstamp int(11) unsigned DEFAULT '0' NOT NULL,
   crdate int(11) unsigned DEFAULT '0' NOT NULL,
-  title tinytext NOT NULL,
+  title varchar(255) DEFAULT '' NOT NULL,
   include_static tinyblob NOT NULL,
   constants blob NOT NULL,
   config blob NOT NULL,
@@ -260,8 +257,8 @@ CREATE TABLE sys_template (
   sorting int(11) unsigned DEFAULT '0' NOT NULL,
   crdate int(11) unsigned DEFAULT '0' NOT NULL,
   cruser_id int(11) unsigned DEFAULT '0' NOT NULL,
-  title tinytext NOT NULL,
-  sitetitle tinytext NOT NULL,
+  title varchar(255) DEFAULT '' NOT NULL,
+  sitetitle varchar(255) DEFAULT '' NOT NULL,
   hidden tinyint(4) unsigned DEFAULT '0' NOT NULL,
   starttime int(11) unsigned DEFAULT '0' NOT NULL,
   endtime int(11) unsigned DEFAULT '0' NOT NULL,
@@ -305,7 +302,7 @@ CREATE TABLE tt_content (
   hidden tinyint(4) unsigned DEFAULT '0' NOT NULL,
   sorting int(11) unsigned DEFAULT '0' NOT NULL,
   CType varchar(30) DEFAULT '' NOT NULL,
-  header tinytext NOT NULL,
+  header varchar(255) DEFAULT '' NOT NULL,
   header_position varchar(6) DEFAULT '' NOT NULL,
   bodytext mediumtext NOT NULL,
   image blob NOT NULL,
@@ -323,13 +320,13 @@ CREATE TABLE tt_content (
   starttime int(11) unsigned DEFAULT '0' NOT NULL,
   endtime int(11) unsigned DEFAULT '0' NOT NULL,
   colPos tinyint(3) unsigned DEFAULT '0' NOT NULL,
-  subheader tinytext NOT NULL,
+  subheader varchar(255) DEFAULT '' NOT NULL,
   spaceBefore tinyint(4) unsigned DEFAULT '0' NOT NULL,
   spaceAfter tinyint(4) unsigned DEFAULT '0' NOT NULL,
   fe_group varchar(100) DEFAULT '0' NOT NULL,
-  header_link tinytext NOT NULL,
+  header_link varchar(255) DEFAULT '' NOT NULL,
   imagecaption_position varchar(6) DEFAULT '' NOT NULL,
-  image_link tinytext NOT NULL,
+  image_link varchar(255) DEFAULT '' NOT NULL,
   image_zoom tinyint(3) unsigned DEFAULT '0' NOT NULL,
   image_noRows tinyint(3) unsigned DEFAULT '0' NOT NULL,
   image_effects tinyint(3) unsigned DEFAULT '0' NOT NULL,
@@ -377,7 +374,7 @@ CREATE TABLE tt_content (
 # Table structure for table 'pages'
 #
 CREATE TABLE pages (
-  url tinytext NOT NULL,
+  url varchar(255) DEFAULT '' NOT NULL,
   hidden tinyint(4) unsigned DEFAULT '0' NOT NULL,
   starttime int(11) unsigned DEFAULT '0' NOT NULL,
   endtime int(11) unsigned DEFAULT '0' NOT NULL,
@@ -386,7 +383,7 @@ CREATE TABLE pages (
   shortcut_mode int(10) unsigned DEFAULT '0' NOT NULL,
   no_cache int(10) unsigned DEFAULT '0' NOT NULL,
   fe_group varchar(100) DEFAULT '0' NOT NULL,
-  subtitle tinytext NOT NULL,
+  subtitle varchar(255) DEFAULT '' NOT NULL,
   layout tinyint(3) unsigned DEFAULT '0' NOT NULL,
   target varchar(20) DEFAULT '' NOT NULL,
   media blob NOT NULL,
@@ -400,9 +397,9 @@ CREATE TABLE pages (
   abstract text NOT NULL,
   module varchar(10) DEFAULT '' NOT NULL,
   extendToSubpages tinyint(3) unsigned DEFAULT '0' NOT NULL,
-  author tinytext NOT NULL,
+  author varchar(255) DEFAULT '' NOT NULL,
   author_email varchar(80) DEFAULT '' NOT NULL,
-  nav_title tinytext NOT NULL,
+  nav_title varchar(255) DEFAULT '' NOT NULL,
   nav_hide tinyint(4) DEFAULT '0' NOT NULL,
   content_from_pid int(10) unsigned DEFAULT '0' NOT NULL,
   mount_pid int(10) unsigned DEFAULT '0' NOT NULL,

@@ -1,9 +1,3 @@
-# TYPO3 Extension Manager dump 1.0
-#
-# Host: TYPO3_host    Database: t3_testsite
-#--------------------------------------------------------
-
-
 
 #
 # Table structure for table 'index_phash'
@@ -12,15 +6,15 @@ CREATE TABLE index_phash (
   phash int(11) DEFAULT '0' NOT NULL,
   phash_grouping int(11) DEFAULT '0' NOT NULL,
   cHashParams tinyblob NOT NULL,
-  data_filename tinytext NOT NULL,
+  data_filename varchar(255) DEFAULT '' NOT NULL,
   data_page_id int(11) unsigned DEFAULT '0' NOT NULL,
   data_page_reg1 int(11) unsigned DEFAULT '0' NOT NULL,
   data_page_type tinyint(3) unsigned DEFAULT '0' NOT NULL,
-  data_page_mp tinytext NOT NULL,
-  gr_list tinytext NOT NULL,
+  data_page_mp varchar(255) DEFAULT '' NOT NULL,
+  gr_list varchar(255) DEFAULT '' NOT NULL,
   item_type varchar(5) DEFAULT '' NOT NULL,
-  item_title tinytext NOT NULL,
-  item_description tinytext NOT NULL,
+  item_title varchar(255) DEFAULT '' NOT NULL,
+  item_description varchar(255) DEFAULT '' NOT NULL,
   item_mtime int(11) DEFAULT '0' NOT NULL,
   tstamp int(11) unsigned DEFAULT '0' NOT NULL,
   item_size int(11) DEFAULT '0' NOT NULL,
@@ -100,7 +94,7 @@ CREATE TABLE index_grlist (
   phash int(11) DEFAULT '0' NOT NULL,
   phash_x int(11) DEFAULT '0' NOT NULL,
   hash_gr_list int(11) DEFAULT '0' NOT NULL,
-  gr_list tinytext NOT NULL,
+  gr_list varchar(255) DEFAULT '' NOT NULL,
   uniqid int(11) NOT NULL auto_increment,
   PRIMARY KEY (uniqid),
   KEY joinkey (phash,hash_gr_list),
@@ -112,12 +106,12 @@ CREATE TABLE index_grlist (
 #
 CREATE TABLE index_stat_search (
   uid int(11) NOT NULL auto_increment,
-  searchstring tinytext NOT NULL,
+  searchstring varchar(255) DEFAULT '' NOT NULL,
   searchoptions blob NOT NULL,
   tstamp int(11) DEFAULT '0' NOT NULL,
   feuser_id int(11) unsigned DEFAULT '0' NOT NULL,
   cookie varchar(10) DEFAULT '' NOT NULL,
-  IP tinytext NOT NULL,
+  IP varchar(255) DEFAULT '' NOT NULL,
   hits int(11) DEFAULT '0' NOT NULL,
   PRIMARY KEY (uid)
 ) ENGINE=InnoDB;
@@ -148,40 +142,40 @@ CREATE TABLE index_debug (
 # Table structure for table 'index_config'
 #
 CREATE TABLE index_config (
-    uid int(11) NOT NULL auto_increment,
-    pid int(11) DEFAULT '0' NOT NULL,
-    tstamp int(11) DEFAULT '0' NOT NULL,
-    crdate int(11) DEFAULT '0' NOT NULL,
-    cruser_id int(11) DEFAULT '0' NOT NULL,
-    hidden tinyint(4) DEFAULT '0' NOT NULL,
-    starttime int(11) DEFAULT '0' NOT NULL,
+  uid int(11) NOT NULL auto_increment,
+  pid int(11) DEFAULT '0' NOT NULL,
+  tstamp int(11) DEFAULT '0' NOT NULL,
+  crdate int(11) DEFAULT '0' NOT NULL,
+  cruser_id int(11) DEFAULT '0' NOT NULL,
+  hidden tinyint(4) DEFAULT '0' NOT NULL,
+  starttime int(11) DEFAULT '0' NOT NULL,
 
-    set_id int(11) DEFAULT '0' NOT NULL,
-    session_data mediumtext NOT NULL,
+  set_id int(11) DEFAULT '0' NOT NULL,
+  session_data mediumtext NOT NULL,
 
-    title tinytext NOT NULL,
-    description text NOT NULL,
-    type varchar(30) DEFAULT '' NOT NULL,
-    depth int(11) unsigned DEFAULT '0' NOT NULL,
-    table2index tinytext NOT NULL,
-    alternative_source_pid int(11) unsigned DEFAULT '0' NOT NULL,
-    get_params tinytext NOT NULL,
-    fieldlist tinytext NOT NULL,
-	externalUrl tinytext NOT NULL,
-	indexcfgs text NOT NULL,
-    chashcalc tinyint(3) unsigned DEFAULT '0' NOT NULL,
-    filepath tinytext NOT NULL,
-    extensions tinytext NOT NULL,
+  title varchar(255) DEFAULT '' NOT NULL,
+  description text NOT NULL,
+  type varchar(30) DEFAULT '' NOT NULL,
+  depth int(11) unsigned DEFAULT '0' NOT NULL,
+  table2index varchar(255) DEFAULT '' NOT NULL,
+  alternative_source_pid int(11) unsigned DEFAULT '0' NOT NULL,
+  get_params varchar(255) DEFAULT '' NOT NULL,
+  fieldlist varchar(255) DEFAULT '' NOT NULL,
+  externalUrl varchar(255) DEFAULT '' NOT NULL,
+  indexcfgs text NOT NULL,
+  chashcalc tinyint(3) unsigned DEFAULT '0' NOT NULL,
+  filepath varchar(255) DEFAULT '' NOT NULL,
+  extensions varchar(255) DEFAULT '' NOT NULL,
 
-	timer_next_indexing int(11) DEFAULT '0' NOT NULL,
-	timer_frequency int(11) DEFAULT '0' NOT NULL,
-	timer_offset int(11) DEFAULT '0' NOT NULL,
-	url_deny text NOT NULL,
-	recordsbatch int(11) DEFAULT '0' NOT NULL,
-	records_indexonchange tinyint(4) DEFAULT '0' NOT NULL,
+  timer_next_indexing int(11) DEFAULT '0' NOT NULL,
+  timer_frequency int(11) DEFAULT '0' NOT NULL,
+  timer_offset int(11) DEFAULT '0' NOT NULL,
+  url_deny text NOT NULL,
+  recordsbatch int(11) DEFAULT '0' NOT NULL,
+  records_indexonchange tinyint(4) DEFAULT '0' NOT NULL,
 
-    PRIMARY KEY (uid),
-    KEY parent (pid)
+  PRIMARY KEY (uid),
+  KEY parent (pid)
 );
 
 

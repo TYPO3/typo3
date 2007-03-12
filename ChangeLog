@@ -1,3 +1,9 @@
+
+2007-03-12  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+
+	* Replace all TINYTEXT columns with VARCHAR(255)
+	* Change index "parent" of fe_user to (pid,username) and drop the index "pid"
+
 2007-03-06  Michael Stucki  <michael@typo3.org>
 
 	* Release of TYPO3 4.1 / create branch "TYPO3_4-1" for 4.1.x development
