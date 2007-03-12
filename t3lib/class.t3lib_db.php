@@ -983,7 +983,7 @@ class t3lib_DB {
 	function admin_get_fields($tableName)	{
 		$output = array();
 
-		$columns_res = mysql_query('SHOW columns FROM '.$tableName, $this->link);
+		$columns_res = mysql_query('SHOW columns FROM `'.$tableName.'`', $this->link);
 		while($fieldRow = mysql_fetch_assoc($columns_res))	{
 			$output[$fieldRow['Field']] = $fieldRow;
 		}
@@ -1001,7 +1001,7 @@ class t3lib_DB {
 	function admin_get_keys($tableName)	{
 		$output = array();
 
-		$keyRes = mysql_query('SHOW keys FROM '.$tableName, $this->link);
+		$keyRes = mysql_query('SHOW keys FROM `'.$tableName.'`', $this->link);
 		while($keyRow = mysql_fetch_assoc($keyRes))	{
 			$output[] = $keyRow;
 		}

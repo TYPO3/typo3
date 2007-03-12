@@ -3,6 +3,7 @@
 
 	* Replace all TINYTEXT columns with VARCHAR(255)
 	* Change index "parent" of fe_user to (pid,username) and drop the index "pid"
+	* Quote table names in admin_get_XXX() functions of t3lib_db
 
 2007-03-06  Michael Stucki  <michael@typo3.org>
 
