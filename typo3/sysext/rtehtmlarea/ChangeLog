@@ -1,3 +1,7 @@
+2007-03-12  Michael Stucki  <michael@typo3.org>
+
+	* Update version information in ext_emconf.php to 1.5.2dev
+
 2007-01-23  Michael Stucki  <michael@typo3.org>
 
 	* Change label of EM setting "AspellDirectory": The value must be a path, not a directory. The description should make this clear now...
