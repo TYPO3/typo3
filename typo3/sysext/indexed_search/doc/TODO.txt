@@ -14,7 +14,7 @@ Bugs / Issues:
 - Seems that external media / languages are implemented buggy. See mail from Gert Thiel <GertThiel@gmx.net>, 24/2 2005
 
 Errors encountered after spidering, maybe check:
-- testsite: "message appears" - viste external media som IKKE var indekseret!?
+- testsite: "message appears" - showed external media that was NOT indexed!?
 - typo3site_live: Warning: phash-row "114682730" didn't have a representation in the index_section table! on references page!
 
 Search test:
@@ -22,12 +22,12 @@ Search test:
 - external media on multiple pages with DIFFERENT languages?
 
 Templating / Display in plugin:
-- Support for FE visning af resultater i extra niveaer (ud over niv. 1,2 som er hardcoded)?
+- Support for FE display of results in additional levels (more than level 1,2 which are hardcoded)?
 - Configurable language parameter (hardcoded to "L" now)
 
 Indexing configurations:
-	- Tabelvælger som en del af sektionsvælgeren i frontend
-	Config i backend through flexforms:
+	- Tabel selector as a part of the section selector in the frontend.
+	Config in backend through flexforms:
 		- baseUrl for external files?
 		- language setting for files and external URLs?
 
