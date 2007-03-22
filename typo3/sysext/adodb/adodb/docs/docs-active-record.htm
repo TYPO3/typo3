@@ -14,7 +14,7 @@ font-family: Arial, Helvetica, sans-serif ;
 <title>ADOdb Active Record</title>
 <body>
 <h1>ADOdb Active Record</h1>
-<p> (c) 2000-2006 John Lim (jlim#natsoft.com)</p>
+<p> (c) 2000-2007 John Lim (jlim#natsoft.com)</p>
 <p><font size="1">This software is dual licensed using BSD-Style and LGPL. This 
   means you can use it in compiled proprietary and commercial products.</font></p>
 <p><hr>
@@ -414,6 +414,10 @@ $activeRecArr = $db->GetActiveRecordsClass($className,$tableName, 'name LIKE ?',
 
 </ol>
 
+<h3><li>ADOConnection::ErrorMsg()</h3>
+<p>Returns last error message.
+<h3><li>ADOConnection::ErrorNo()</h3>
+<p>Returns last error number.
 <h2>Code Sample</h2>
 <p>The following works with PHP4 and PHP5
 <pre>
@@ -497,6 +501,14 @@ echo "&lt;p>Name first (should be John): ",$person->name_first, "&lt;br>Class = 
  <p>PHP5 specific: Change PHP5 implementation of Active Record to use __get() and __set() for better performance.
 
 <h3> Change Log</h3>
+<p>0.07
+<p>$ADODB_ASSOC_CASE=2 did not work properly. Fixed.
+<p>Added === check in ADODB_SetDatabaseAdapter for $db, adodb-active-record.inc.php. Thx Christian Affolter.
+
+<p>0.06
+<p>Added ErrorNo().
+<p>Fixed php 5.2.0 compat issues.
+ 
 <p>0.05
 <p>If inserting a record and the value of a primary key field is null, then we do not insert that field in as
 we assume it is an auto-increment field. Needed by mssql.

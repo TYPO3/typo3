@@ -1,3 +1,7 @@
+2007-03-22  Karsten Dambekalns  <karsten@typo3.org>
+
+	* typo3/sysext/adodb: Update to upstream version 4.94.
+
 2007-03-12  Michael Stucki  <michael@typo3.org>
 
 	* Change copyright information in typo3/index.php (no real change, just replace the hardcoded years with the "TYPO3_copyright_year" constant)
