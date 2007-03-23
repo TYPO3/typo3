@@ -1,3 +1,8 @@
+2007-03-23	Dmitry Dulepov	<dmitry@typo3.org>
+
+	* Fixed bug 5269: wsol_preview.php does not scroll to content element
+	* Fixed bug 4953: Preview in Workspaces Module for Contentelements
+
 2007-03-12  Michael Stucki  <michael@typo3.org>
 
 	* Change copyright information in typo3/index.php (no real change, just replace the hardcoded years with the "TYPO3_copyright_year" constant)
