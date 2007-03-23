@@ -1,3 +1,8 @@
+2007-03-23	Dmitry Dulepov	<dmitry@typo3.org>
+
+	* Fixed bug 5269: wsol_preview.php does not scroll to content element
+	* Fixed bug 4953: Preview in Workspaces Module for Contentelements
+
 2007-03-22  Karsten Dambekalns  <karsten@typo3.org>
 
 	* typo3/sysext/adodb: Update to upstream version 4.94.
