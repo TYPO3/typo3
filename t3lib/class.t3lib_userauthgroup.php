@@ -611,6 +611,20 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 				// Checking record permissions
 			// THIS is where we can include a check for "perms_" fields for other records than pages...
 
+				// Process any hooks
+			if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauthgroup.php']['recordEditAccessInternals']))	{
+				foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauthgroup.php']['recordEditAccessInternals'] as $funcRef)	{
+					$params = array(
+						'table' => $table,
+						'idOrRow' => $idOrRow,
+						'newRecord' => $newRecord
+					);
+					if (!t3lib_div::callUserFunction($funcRef, $params, $this)) {
+						return FALSE;
+					}
+				}
+			}
+
 				// Finally, return true if all is well.
 			return TRUE;
 		}
