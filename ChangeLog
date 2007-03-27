@@ -1,3 +1,7 @@
+2007-03-27	Dmitry Dulepov	<dmitry@typo3.org>
+
+	* Added hook to class.t3lib_userauthgroup.php, function recordEditAccessInternals
+
 2007-03-23	Dmitry Dulepov	<dmitry@typo3.org>
 
 	* Fixed bug 5269: wsol_preview.php does not scroll to content element
