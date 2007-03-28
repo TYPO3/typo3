@@ -1,3 +1,7 @@
+2007-03-28  Ingmar Schlecht  <ingmar@typo3.org>
+
+	* Adding page tree backwards compatibility for JavaScript function hilight_row() to tree.js (by Benjamin Mack)
+
 2007-03-28  Patrick Broens  <patrick@patrickbroens.nl>
 
 	* Fixed bug #5266: WamCom browser check in htmlarea.js conflicted with FF 2.0.0.3

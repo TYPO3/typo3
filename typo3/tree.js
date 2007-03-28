@@ -27,7 +27,12 @@
 	// Call this function, refresh_nav(), from another script in the backend if you want
 	// to refresh the navigation frame (eg. after having changed a page title or moved pages etc.)
 	//		See t3lib_BEfunc::getSetUpdateSignal()
+	// please use the function in the "Tree" object for future implementations
 function refresh_nav() { window.setTimeout('Tree.refresh();',0); }
+
+	// Another js function, for highlighting rows in the page tree, kept alive for backwards compatibility
+	// please use the function in the "Tree" object for future implementations
+function hilight_row(frameSetModule, highLightID) { Tree.highlightActiveItem(frameSetModule, highlightID); }
 
 
 var Tree = {
