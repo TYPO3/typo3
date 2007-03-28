@@ -1,3 +1,7 @@
+2007-03-28  Oliver Hader  <oh@inpublica.de>
+
+	* Fixed bug 5288: Missing parameter in recursion of t3lib_div::array_merge_recursive_overrule
+
 2007-03-28  Ingmar Schlecht  <ingmar@typo3.org>
 
 	* Adding page tree backwards compatibility for JavaScript function hilight_row() to tree.js (by Benjamin Mack)

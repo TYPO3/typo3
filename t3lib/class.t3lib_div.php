@@ -1646,7 +1646,7 @@ class t3lib_div {
 	 * @param	array		First array
 	 * @param	array		Second array, overruling the first array
 	 * @param	boolean		If set, keys that are NOT found in $arr0 (first array) will not be set. Thus only existing value can/will be overruled from second array.
-	 * @param	boolean		If set, values from $arr1 will overrule if they are empty. Default: true
+	 * @param	boolean		If set, values from $arr1 will overrule if they are empty or zero. Default: true
 	 * @return	array		Resulting array where $arr1 values has overruled $arr0 values
 	 */
 	function array_merge_recursive_overrule($arr0,$arr1,$notAddKeys=0,$includeEmtpyValues=true) {
@@ -1654,17 +1654,17 @@ class t3lib_div {
 		while(list($key,$val) = each($arr1)) {
 			if(is_array($arr0[$key])) {
 				if (is_array($arr1[$key]))	{
-					$arr0[$key] = t3lib_div::array_merge_recursive_overrule($arr0[$key],$arr1[$key],$notAddKeys);
+					$arr0[$key] = t3lib_div::array_merge_recursive_overrule($arr0[$key],$arr1[$key],$notAddKeys,$includeEmtpyValues);
 				}
 			} else {
 				if ($notAddKeys) {
 					if (isset($arr0[$key])) {
-						if ($includeEmtpyValues OR $val) {
+						if ($includeEmtpyValues || $val) {
 							$arr0[$key] = $val;
 						}
 					}
 				} else {
-					if ($includeEmtpyValues OR $val) {
+					if ($includeEmtpyValues || $val) {
 						$arr0[$key] = $val;
 					}
 				}
