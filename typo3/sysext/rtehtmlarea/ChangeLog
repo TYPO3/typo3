@@ -1,3 +1,8 @@
+2007-03-28  Patrick Broens  <patrick@patrickbroens.nl>
+
+	* Version 1.5.2dev
+	* Fix issue 5266: WamCom browser check was conflicting with FF 2.0.0.3
+
 2007-01-23  Michael Stucki  <michael@typo3.org>
 
 	* Change label of EM setting "AspellDirectory": The value must be a path, not a directory. The description should make this clear now...
