@@ -1095,6 +1095,8 @@ class t3lib_TCEforms_inline {
 			'config' => $config,
 		);
 		$this->updateStructureNames();
+			// Put the current level also to the dynNestedStack of TCEforms:
+		$this->fObj->pushToDynNestedStack('inline', $this->inlineNames['object']);
 	}
 
 
@@ -1108,6 +1110,8 @@ class t3lib_TCEforms_inline {
 			$popItem = array_pop($this->inlineStructure['stable']);
 			$this->updateStructureNames();
 		}
+			// Remove the current level also from the dynNestedStack of TCEforms:
+		$this->fObj->popFromDynNestedStack();
 		return $popItem;
 	}
 
@@ -1732,7 +1736,7 @@ class t3lib_TCEforms_inline {
 	 * @return	integer		A pixel value for the margin of each new inline level.
 	 */
 	function getLevelMargin() {
-		$margin = $this->inlineStyles['margin-right'];
+		$margin = ($this->inlineStyles['margin-right']+1)*2;
 		return $margin;
 	}
  }

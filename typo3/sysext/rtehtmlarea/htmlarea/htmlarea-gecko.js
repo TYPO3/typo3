@@ -43,25 +43,23 @@
 HTMLArea.prototype._initEditMode = function () {
 		// We can't set designMode when we are in a hidden TYPO3 tab
 		// Then we will set it when the tab comes in the front.
-	var inTYPO3Tab = false;
-	var DTMDiv = this._textArea;
-	while (DTMDiv && (DTMDiv.nodeType == 1) && (DTMDiv.tagName.toLowerCase() != "body")) {
-		if (DTMDiv.tagName.toLowerCase() == "div" && DTMDiv.id.indexOf("DTM-") != -1 && DTMDiv.id.indexOf("-DIV") != -1 && DTMDiv.className == "c-tablayer") {
-			inTYPO3Tab = true;
-			break;
-		} else {
-			DTMDiv = DTMDiv.parentNode;
-		}
+	var isNested = false;
+	var allDisplayed = true;
+
+	if (this.nested.sorted && this.nested.sorted.length) {
+		isNested = true;
+		allDisplayed = HTMLArea.allElementsAreDisplayed(this.nested.sorted);
 	}
+
 	if (!HTMLArea.is_wamcom) {
 		try {
-			if (!(inTYPO3Tab && DTMDiv.style.display == "none")) this._doc.designMode = "on";
+			if (!isNested || allDisplayed) this._doc.designMode = "on";
 		} catch(e) { }
 	} else {
 		try { 
 			this._doc.designMode = "on"; 
 		} catch(e) {
-			if (!(inTYPO3Tab && DTMDiv.style.display == "none")) {
+			if (!isNested || allDisplayed) {
 				this._doc.open();
 				this._doc.close();
 				this._initIframeTimer = window.setTimeout("HTMLArea.initIframe(" + this._editorNumber + ");", 500);
@@ -72,7 +70,15 @@ HTMLArea.prototype._initEditMode = function () {
 		// When the TYPO3 TCA feature div2tab is used, the editor iframe may become hidden with style.display = "none"
 		// This breaks the editor in Mozilla/Firefox browsers: the designMode attribute needs to be resetted after the style.display of the containing div is resetted to "block"
 		// Here we rely on TYPO3 naming conventions for the div id and class name
-	if (inTYPO3Tab) HTMLArea._addEvent(DTMDiv, "DOMAttrModified", HTMLArea.DTMDivHandler(this, DTMDiv));
+	if (this.nested.sorted && this.nested.sorted.length) {
+		var nestedObj, listenerFunction;
+		for (var i=0, length=this.nested.sorted.length; i < length; i++) {
+			nestedObj = document.getElementById(this.nested.sorted[i]);
+			listenerFunction = HTMLArea.NestedListener(this, nestedObj, false);
+			HTMLArea._addEvent(nestedObj, 'DOMAttrModified', listenerFunction);
+		}
+	}
+
 	return true;
 };
 
@@ -282,26 +288,44 @@ HTMLArea.prototype.insertHTML = function(html) {
  ***************************************************/
 
 /*
- * TYPO3 hidden tab handler
+ * TYPO3 hidden tab and inline event listener (gets event calls)
  */
-HTMLArea.DTMDivHandler = function (editor,DTMDiv) {
+HTMLArea.NestedListener = function (editor,nestedObj,noOpenCloseAction) {
 	return (function(ev) {
 		if(!ev) var ev = window.event;
+		HTMLArea.NestedHandler(ev,editor,nestedObj,noOpenCloseAction);
+	});
+};
+
+/*
+ * TYPO3 hidden tab and inline event handler (performs actions on event calls)
+ */
+HTMLArea.NestedHandler = function(ev,editor,nestedObj,noOpenCloseAction) {
+	window.setTimeout(function() {
 		var target = (ev.target) ? ev.target : ev.srcElement;
-		if(target == DTMDiv && editor._editMode == "wysiwyg" && DTMDiv.style.display == "block") {
-			window.setTimeout( function() {
-				try { 
-					editor._doc.designMode = "on";
-					if (editor.config.sizeIncludesToolbar && editor._initialToolbarOffsetHeight != editor._toolbar.offsetHeight) editor.sizeIframe(-2);
-				} catch(e) {
-					editor._doc.open();
-					editor._doc.close();
-					editor.initIframe();
-				}
-			}, 20);
+		if(target == nestedObj && editor._editMode == "wysiwyg" && ev.attrName=='style' && (target.style.display == '' || target.style.display == 'block')) {
+				// Check if all affected nested elements are displayed (style.display!='none'):
+			if (HTMLArea.allElementsAreDisplayed(editor.nested.sorted)) {
+				window.setTimeout(function() {
+					try { 
+						editor._doc.designMode = "on";
+						if (editor.config.sizeIncludesToolbar && editor._initialToolbarOffsetHeight != editor._toolbar.offsetHeight) {
+							editor.sizeIframe(-2);
+						}
+					} catch(e) {
+							// If an event of a parent tab ("nested tabs") is triggered, the following lines should not be
+							// processed, because this causes some trouble on all event handlers...
+						if (!noOpenCloseAction) {
+							editor._doc.open();
+							editor._doc.close();
+						}
+						editor.initIframe();
+					}
+				}, 50);
+			}
 			HTMLArea._stopEvent(ev);
 		}
-	});
+	}, 50);
 };
 
 /*
@@ -538,7 +562,7 @@ HTMLArea.prototype._detectURL = function(ev) {
 			editor._unLink = null;
 			editor._unlinkOnUndo = false;
 		};
-		
+
 		editor._unlinkOnUndo = true;
 		return a;
 	};

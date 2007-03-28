@@ -1,6 +1,7 @@
 2007-03-28  Oliver Hader  <oh@inpublica.de>
 
 	* Fixed bug 5288: Missing parameter in recursion of t3lib_div::array_merge_recursive_overrule (thanks to Simon Tuck)
+	* Fixed bug 5177: RTEhtmlarea not correctly displayed in IRRE child form-fields and tabs
 
 2007-03-28  Ingmar Schlecht  <ingmar@typo3.org>
 

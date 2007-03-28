@@ -285,7 +285,7 @@ class t3lib_TCEforms	{
 	var $requiredElements=array();				// Used to register the min and max number of elements for selectorboxes where that apply (in the "group" type for instance)
 	var $renderDepth=0;							// Keeps track of the rendering depth of nested records.
 	var $savedSchemes=array();					// Color scheme buffer.
-	var $dynTabLevelStack = array();			// holds tab dividers which were cascaded, required for RTE&IRRE
+	var $dynNestedStack = array();				// holds the path an element is nested in (e.g. required for RTEhtmlarea)
 
 		// Internal, registers for user defined functions etc.
 	var $additionalCode_pre = array();			// Additional HTML code, printed before the form.
@@ -497,7 +497,6 @@ class t3lib_TCEforms	{
 					if (strstr($itemList, '--div--') !== false && $this->enableTabMenu && $TCA[$table]['ctrl']['dividers2tabs']) {
 						$tabIdentString = 'TCEforms:'.$table.':'.$row['uid'];
 						$tabIdentStringMD5 = $GLOBALS['TBE_TEMPLATE']->getDynTabMenuId('TCEforms:'.$table.':'.$row['uid']);
-						$this->dynTabLevelStack[$tabIdentStringMD5] = 1;
 					}
 
 						// Explode the field list and possibly rearrange the order of the fields, if configured for
@@ -551,14 +550,21 @@ class t3lib_TCEforms	{
 
 									if ($this->enableTabMenu && $TCA[$table]['ctrl']['dividers2tabs'])	{
 										$this->wrapBorder($out_array[$out_sheet],$out_pointer);
+											// Remove last tab entry from the dynNestedStack:
 										$out_sheet++;
-											// remember what sheet we're currently in
-										$this->dynTabLevelStack[$tabIdentStringMD5] = $out_sheet+1;
+											// Remove the previous sheet from stack (if any):
+										$this->popFromDynNestedStack('tab', $tabIdentStringMD5.'-'.($out_sheet));
+											// Remember on which sheet we're currently working:
+										$this->pushToDynNestedStack('tab', $tabIdentStringMD5.'-'.($out_sheet+1));
 										$out_array[$out_sheet] = array();
 										$out_array_meta[$out_sheet]['title'] = $this->sL($parts[1]);
 									}
 								} else {	// Setting alternative title for "General" tab if "--div--" is the very first element.
 									$out_array_meta[$out_sheet]['title'] = $this->sL($parts[1]);
+										// Only add the first tab to the dynNestedStack if there are more tabs:
+									if (strpos($itemList, '--div--', strlen($fieldInfo))) {
+										$this->pushToDynNestedStack('tab', $tabIdentStringMD5.'-1');
+									}
 								}
 							} elseif($theField=='--palette--')	{
 								if ($parts[2] && !isset($this->palettesRendered[$this->renderDepth][$table][$parts[2]]))	{
@@ -627,8 +633,8 @@ class t3lib_TCEforms	{
 				);
 			}
 
-				// unset the current level of tab menus
-			unset($this->dynTabLevelStack[$tabIdentStringMD5]);
+				// Unset the current level of tab menus:
+			$this->popFromDynNestedStack('tab', $tabIdentStringMD5.'-'.($out_sheet+1));
 
 			return '
 				<tr>
@@ -5428,18 +5434,69 @@ class t3lib_TCEforms	{
 	}
 	
 	/**
-	 * Get a list, depending on $this->dynTabLevelStack, that has the information
-	 * in which tab (--div--) fields are inserted.
+	 * Push a new element to the dynNestedStack. Thus, every object know, if it's
+	 * nested in a tab or IRRE level and in which order this was processed.
 	 *
-	 * @param	string		$appendString: String to append for each item
-	 * @return	string		A list of cascaded tab divs, like "DTM-2e8791854a-1,DTM-f3c79a0523-4"
+	 * @param	string		$type: Type of the level, e.g. "tab" or "inline"
+	 * @param	string		$ident: Identifier of the level
+	 * @return	void
 	 */
-	function getDynTabLevelState($appendString = '') {
-		$levels = array();
-		foreach ($this->dynTabLevelStack as $tabIdent => $divId) {
-			$levels[] = $tabIdent.'-'.$divId.$appendString;
+	function pushToDynNestedStack($type, $ident) {
+		$this->dynNestedStack[] = array($type, $ident);
+	}
+
+	/**
+	 * Remove an element from the dynNestedStack. If $type and $ident
+	 * are set, the last element will only be removed, if it matches
+	 * what is expected to be removed.
+	 * 
+	 * @param	string		$type: Type of the level, e.g. "tab" or "inline"
+	 * @param	string		$ident: Identifier of the level
+	 * @return	void
+	 */
+	function popFromDynNestedStack($type=null, $ident=null) {
+		if ($type!=null && $ident!=null) {
+			$last = end($this->dynNestedStack);
+			if ($type==$last[0] && $ident==$last[1]) {
+				array_pop($this->dynNestedStack);
+			}
+		} else {
+			array_pop($this->dynNestedStack);
 		}
-		return implode(',', $levels);
+	}
+
+	/**
+	 * Get the dynNestedStack as associative array.
+	 * It has the keys raw, tab, inline and sorted.
+	 * The key "sorted" contains the levels in the sorting order they have been applied.
+	 *
+	 * @param	boolean		$json: Return a JSON string instead of an array
+	 * @param	string		$tabSuffix: Add a suffix (e.g. "-DIV") to each tab level
+	 * @param	string		$tabSuffix: Add a suffix to each inline level
+	 * @return	mixed		Returns an associative array (default), if $json is true, it will be returned as JSON string.
+	 */
+	function getDynNestedStack($json=false, $tabSuffix='', $inlineSuffix='') {
+		$tab = array();
+		$inline = array();
+		$sorted = array();
+		foreach ($this->dynNestedStack as $level) {
+			if ($level[0]=='tab') {
+				$tab[] = $level[1].$tabSuffix;
+				$sorted[] = $level[1].$tabSuffix;
+			} elseif ($level[0]=='inline') {
+				$inline[] = $level[1].$inlineSuffix;
+				$sorted[] = $level[1].$inlineSuffix;
+			}
+		}
+		$result = array(
+			// 'raw' => $this->dynNestedStack,
+			'tab' => $tab,
+			'inline' => $inline,
+			'sorted' => $sorted,
+			// 'tabSuffix' => $tabSuffix,
+			// 'inlineSuffix' => $inlineSuffix,
+		);
+		return ($json ? $this->inline->getJSON($result) : $result);
 	}
 }
 

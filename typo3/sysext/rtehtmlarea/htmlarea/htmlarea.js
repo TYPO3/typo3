@@ -37,7 +37,7 @@
 /***************************************************
  *  EDITOR INITIALIZATION AND CONFIGURATION
  ***************************************************/
- 
+
 /*
  * Set some basic paths
  */
@@ -638,7 +638,7 @@ HTMLArea.prototype.createButton = function (txt,tb_line,first_cell_on_line,label
 			newObj["labelUsed"] = true;
 		}
 		HTMLArea._addEvents(newObj["el"],["mouseover", "mouseout", "mousedown", "click"], HTMLArea.toolBarButtonHandler);
-		
+
 		if (typeof(btn[1]) != "string" && HTMLArea.is_ie) {
 			var btnImgContainer = document.createElement("div");
 			btnImgContainer.className = "buttonImgContainer";
@@ -734,7 +734,7 @@ HTMLArea.prototype._createToolbar = function () {
 			}
 		}
 	}
-	
+
 	tb_line = HTMLArea.newLine(toolbar);
 	this._htmlArea.appendChild(toolbar);
 };
@@ -882,19 +882,15 @@ HTMLArea.prototype.generate = function () {
  * Size the iframe according to user's prefs or initial textarea
  */
 HTMLArea.prototype.sizeIframe = function(diff) {
-	var i;
 	var height = (this.config.height == "auto" ? (this._textArea.style.height) : this.config.height);
 	var textareaHeight = height;
-
-	var inlineObject = RTEarea[this._editorNumber].tceformsInlineObject;
-	var dynTabs = RTEarea[this._editorNumber].tceformsDynTabs;
-
-	var parentElements = new Array();
-	if (dynTabs) parentElements = dynTabs.split(',');
-	if (inlineObject) parentElements.push(inlineObject);
-
+		// All nested tabs and inline levels in the sorting order they were applied:
+	this.nested = RTEarea[this._editorNumber].tceformsNested;
+		// Clone the array instead of using a reference (this.accessParentElements will change the array):
+	var parentElements = (this.nested.sorted && this.nested.sorted.length ? [].concat(this.nested.sorted) : []);
+		// Walk through all nested tabs and inline levels to make a correct positioning:
 	var dimensions = this.accessParentElements(parentElements, 'this.getDimensions()');
-			
+
 	if(height.indexOf("%") == -1) {
 		height = parseInt(height) - diff;		
 		if (this.config.sizeIncludesToolbar) {
@@ -937,7 +933,7 @@ HTMLArea.prototype.getDimensions = function() {
 };
 
 /**
- * Access an inline relational element and make it "accesible".
+ * Access an inline relational element or tab menu and make it "accesible".
  * If a parent object has the style "display: none", offsetWidth & offsetHeight are '0'.
  *
  * @params	object		callbackFunc: A function to be called, when the embedded objects are "accessible".
@@ -946,12 +942,12 @@ HTMLArea.prototype.getDimensions = function() {
  */
 HTMLArea.prototype.accessParentElements = function(parentElements, callbackFunc) {
 	var result = {};
-	
+
 	if (parentElements.length) {
 		var currentElement = parentElements.pop();
 		var elementStyle = document.getElementById(currentElement).style;
-		var actionRequired = elementStyle.display == 'none';
-		
+		var actionRequired = (elementStyle.display == 'none' ? true : false);
+
 		if (actionRequired) {
 			var originalVisibility = elementStyle.visibility;
 			var originalPosition = elementStyle.position;
@@ -959,20 +955,20 @@ HTMLArea.prototype.accessParentElements = function(parentElements, callbackFunc)
 			elementStyle.position = 'absolute';
 			elementStyle.display = '';
 		}
-		
+
 		result = this.accessParentElements(parentElements, callbackFunc);
-		
+
 		if (actionRequired) {
 			elementStyle.display = 'none';
 			elementStyle.position = originalPosition;
 			elementStyle.visibility = originalVisibility;
 		}
-		
+
 	} else {
 		result = eval(callbackFunc);		
 
 	}
-	
+
 	return result;
 };
 
@@ -1064,9 +1060,9 @@ HTMLArea.stylesLoaded = function(editorNumber) {
 HTMLArea.prototype.stylesLoaded = function() {
 	var doc = this._doc;
 	var docWellFormed = true;
-	
+
 		// check if the stylesheets have been loaded
-	
+
 	if (this._stylesLoadedTimer) window.clearTimeout(this._stylesLoadedTimer);
 	var stylesAreLoaded = true;
 	var errorText = '';
@@ -1082,7 +1078,7 @@ HTMLArea.prototype.stylesLoaded = function() {
 		return false;
 	}
 	HTMLArea._appendToLog("[HTMLArea::initIframe]: Stylesheets successfully loaded.");
-	
+
 	if (!this.config.fullPage) {
 		doc.body.style.borderWidth = "0px";
 		doc.body.className = "htmlarea-content-body";
@@ -1110,20 +1106,23 @@ HTMLArea.prototype.stylesLoaded = function() {
 		this.setMode("docnotwellformedmode");
 		HTMLArea._appendToLog("[HTMLArea::initIframe]: Design mode could not be set.");
 	}
-	
+
 		// set editor number in iframe and document for retrieval in event handlers
 	doc._editorNo = this._editorNumber;
 	if (HTMLArea.is_ie) doc.documentElement._editorNo = this._editorNumber;
-	
+
 		// intercept events for updating the toolbar & for keyboard handlers
 	HTMLArea._addEvents((HTMLArea.is_ie ? doc.body : doc), ["keydown","keypress","mousedown","mouseup","drag"], HTMLArea._editorEvent, true);
-	
+
 		// add unload handler
-	HTMLArea._addEvent((this._iframe.contentWindow ? this._iframe.contentWindow : this._iframe.contentDocument), "unload", HTMLArea.removeEditorEvents);
-	
+	if (!HTMLArea.hasUnloadHandler) {
+		HTMLArea.hasUnloadHandler = true;
+		HTMLArea._addEvent((this._iframe.contentWindow ? this._iframe.contentWindow : this._iframe.contentDocument), "unload", HTMLArea.removeEditorEvents);
+	}
+
 		// set cleanWordOnPaste and intercept paste, dragdrop and drop events for wordClean
 	if (this.config.cleanWordOnPaste) HTMLArea._addEvents((HTMLArea.is_ie ? doc.body : doc), ["paste","dragdrop","drop"], HTMLArea.cleanWordOnPaste, true);
-	
+
 	window.setTimeout("HTMLArea.generatePlugins(" + this._editorNumber + ");", 100);
 };
 
@@ -1187,10 +1186,10 @@ HTMLArea.removeEditorEvents = function(ev) {
 			window.clearInterval(editor._timerUndo);
 			editor._undoQueue = null;
 				// release events
-			if (HTMLArea._eventCache && !HTMLArea.is_opera) HTMLArea._eventCache.flush();
 			if (HTMLArea.is_ie) HTMLArea._cleanup(editor);
 		}
 	}
+	if (HTMLArea._eventCache && !HTMLArea.is_opera) HTMLArea._eventCache.flush();
 };
 
 /*
@@ -1611,7 +1610,7 @@ HTMLArea.prototype.updateToolbar = function(noStatus) {
 	for (i in this._toolbarObjects) {
 		var btn = this._toolbarObjects[i];
 		cmd = i;
-		
+
 			// Determine if the button should be enabled
 		inContext = true;
 		if (btn.context && !text) {
@@ -1644,7 +1643,7 @@ HTMLArea.prototype.updateToolbar = function(noStatus) {
 		}
 		if (cmd == "CreateLink") btn.state("enabled", (!text || btn.text) && (inContext || selection));
 			else btn.state("enabled", (!text || btn.text) && inContext && (selection || !btn.selection));
-		
+
 		if (typeof(cmd) == "function") { continue; };
 			// look-it-up in the custom dropdown boxes
 		var dropdown = this.config.customSelects[cmd];
@@ -1734,7 +1733,7 @@ HTMLArea.prototype.updateToolbar = function(noStatus) {
 		    default: break;
 		}
 	}
-	
+
 	if (this._customUndo) this._undoTakeSnapshot();
 	for (i in this.plugins) {
 		var plugin = this.plugins[i].instance;
@@ -2514,7 +2513,7 @@ HTMLArea._removeClass = function(el, removeClassName) {
 	if (ar.length == 0) {
 		if (!HTMLArea.is_opera) el.removeAttribute(HTMLArea.is_gecko ? "class" : "className");
 			else el.className = '';
-		
+
 	} else el.className = ar.join(" ");
 };
 
@@ -2778,7 +2777,7 @@ HTMLArea._postback = function(url, data, handler, addParams, charset) {
 				} catch (e) { }
 			}
 		}
-	
+
 	if(req) {
 		var content = '';
 		for (var i in data) {
@@ -2791,7 +2790,7 @@ HTMLArea._postback = function(url, data, handler, addParams, charset) {
 		} else {
 			var postUrl = _typo3_host_url + _editor_url + url;
 		}
-		
+
 		function callBack() {
 			if(req.readyState == 4) {
 				if (req.status == 200) {
@@ -2807,7 +2806,7 @@ HTMLArea._postback = function(url, data, handler, addParams, charset) {
 			HTMLArea._appendToLog("[HTMLArea::_postback]: Request: " + content);
 			req.send(content);
 		}
-		
+
 		req.open('POST', postUrl, true);
 		req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
 		window.setTimeout(sendRequest, 500);
@@ -2828,12 +2827,12 @@ Dialog = function(url, action, init, width, height, opener, editor, scrollbars) 
  * Open modal popup window
  */
 Dialog._open = function(url, action, init, width, height, _opener, editor, scrollbars) {
-	
+
 	if (typeof(Dialog._modal) == "object" && typeof(Dialog._modal.close) == "function") {
 		Dialog._modal.close();
 		Dialog._modal = null;
 	}
-	
+
 	var dlg = window.open(url, 'hadialog', "toolbar=no,location=no,directories=no,menubar=no,width=" + width + ",height=" + height + ",scrollbars=" + scrollbars + ",resizable=yes,modal=yes,dependent=yes,top=100,left=100");
 	var obj = new Object();
 	obj.dialogWindow = dlg;
@@ -2841,7 +2840,7 @@ Dialog._open = function(url, action, init, width, height, _opener, editor, scrol
 	Dialog._modal = dlg;
 	Dialog._arguments = null;
 	if (typeof(init) != "undefined") { Dialog._arguments = init; }
-	
+
 				// Capture focus events
 	function capwin(w) {
 		if (HTMLArea.is_gecko) { w.addEventListener("focus", function(ev) { Dialog._parentEvent(ev); }, false); }
@@ -2849,7 +2848,7 @@ Dialog._open = function(url, action, init, width, height, _opener, editor, scrol
 		for (var i=0;i < w.frames.length;i++) { capwin(w.frames[i]); }
 	}
 	capwin(window);
-	
+
 		// Close dialog window
 	function closeDialog() {
 		if (Dialog._dialog && Dialog._dialog.dialogWindow) {
@@ -2974,21 +2973,21 @@ HTMLArea.initEditor = function(editorNumber) {
 		} else {
 			var RTE = RTEarea[editorNumber];
 			var config = new HTMLArea.Config();
-			
+
 				// Get the toolbar config
 			config.toolbar = RTE["toolbar"];
-			
+
 				// create an editor for the textarea
 			RTE["editor"] = new HTMLArea(RTE["id"], config);
 			var editor = RTE["editor"];
-			
+
 				// Save the editornumber in the object
 			editor._typo3EditerNumber = editorNumber;
 			editor._editorNumber = editorNumber;
 			config = editor.config;
-			
+
 			config.buttons = RTE["buttons"];
-			
+
 			config.hideTableOperationsInToolbar = RTE["hideTableOperationsInToolbar"] ? RTE["hideTableOperationsInToolbar"] : false;
 			config.disableLayoutFieldsetInTableOperations = RTE["disableLayoutFieldsetInTableOperations"] ? RTE["disableLayoutFieldsetInTableOperations"] : false;
 			config.disableAlignmentFieldsetInTableOperations = RTE["disableAlignmentFieldsetInTableOperations"] ? RTE["disableAlignmentFieldsetInTableOperations"] : false;
@@ -2996,11 +2995,11 @@ HTMLArea.initEditor = function(editorNumber) {
 			config.disableBordersFieldsetInTableOperations = RTE["disableBordersFieldsetInTableOperations"] ? RTE["disableBordersFieldsetInTableOperations"] : false;
 			config.disableColorFieldsetInTableOperations = RTE["disableColorFieldsetInTableOperations"] ? RTE["disableColorFieldsetInTableOperations"] : false;
 			config.disablePCexamples = RTE["disablePCexamples"] ? RTE["disablePCexamples"] : false;
-			
+
 			for (var plugin in RTE["plugin"]) {
 				if(RTE["plugin"][plugin]) { editor.registerPlugin(plugin); }
 			}
-			
+
 			if(RTE["defaultPageStyle"]) config.defaultPageStyle = RTE["defaultPageStyle"];
 			if(RTE["pageStyle"]) config.pageStyle = RTE["pageStyle"];
 			if(RTE["fontname"]) config.FontName = RTE["fontname"];
@@ -3023,9 +3022,9 @@ HTMLArea.initEditor = function(editorNumber) {
 			config.htmlRemoveTags = RTE["htmlRemoveTags"] ? RTE["htmlRemoveTags"] : null;
 			config.htmlRemoveTagsAndContents = RTE["htmlRemoveTagsAndContents"] ? RTE["htmlRemoveTagsAndContents"] : null;
 			config.htmlRemoveComments = RTE["htmlRemoveComments"] ? true : false;
-			
+
 			editor.onGenerate = HTMLArea.onGenerateHandler(editorNumber);
-			
+
 			editor.generate();
 			return false;
 		} 
@@ -3033,4 +3032,13 @@ HTMLArea.initEditor = function(editorNumber) {
 		document.getElementById('pleasewait' + editorNumber).style.display = 'none';
 		document.getElementById('editorWrap' + editorNumber).style.visibility = 'visible';
 	}
+};
+
+HTMLArea.allElementsAreDisplayed = function(elements) {
+	for (var i=0, length=elements.length; i < length; i++) {
+		if (document.getElementById(elements[i]).style.display == 'none') {
+			return false;
+		}
+	}
+	return true;
 };

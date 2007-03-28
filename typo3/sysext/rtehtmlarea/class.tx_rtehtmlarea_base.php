@@ -525,7 +525,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			$RTEHeight = $RTEHeight + ($pObj->docLarge ?  (isset($BE_USER->userTS['options.']['RTELargeHeightIncrement']) ? $BE_USER->userTS['options.']['RTELargeHeightIncrement'] : 0) : 0);
 			$editorWrapWidth = $RTEWidth . 'px';
 			$editorWrapHeight = $RTEHeight . 'px';
-			$this->RTEdivStyle = $this->RTEdivStyle ? $this->RTEdivStyle : 'position:relative; left:0px; top:0px; height:' . $RTEHeight . 'px; width:'.$RTEWidth.'px; border: 1px solid black; padding: 2px 0px 2px 2px;';
+			$this->RTEdivStyle = 'position:relative; left:0px; top:0px; height:' . $RTEHeight . 'px; width:'.$RTEWidth.'px; border: 1px solid black; padding: 2px 0px 2px 2px;';
 			$this->toolbar_level_size = $RTEWidth;
 
 			/* =======================================
@@ -907,10 +907,9 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 	function registerRTEinJS($number, $table='', $uid='', $field='') {
 		global $TSFE, $TYPO3_CONF_VARS;
 
-			// if this RTE is shown inline of an IRRE record, the JS functions need to know about that
-		if ($this->TCEform->inline->inlineNames['object']) {
-			$tceformsInlineObject = $this->TCEform->inline->inlineNames['object'].'['.$table.']['.$uid.']_fields';
-		}
+			// if this RTE is shown inline of an IRRE record or a Tab sheet, the JS functions need to know about that
+		$tabSuffix = '-DIV';
+		$inlineSuffix = '['.$table.']['.$uid.']_fields';
 		
 		$registerRTEinJSString = (!is_object($TSFE) ? '' : '
 			' . '/*<![CDATA[*/') . '
@@ -928,9 +927,8 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			RTEarea['.$number.']["showTagFreeClasses"] = ' . (trim($this->thisConfig['showTagFreeClasses'])?'true':'false') . ';
 			RTEarea['.$number.']["useHTTPS"] = ' . ((trim(stristr($this->siteURL, 'https')) || $this->thisConfig['forceHTTPS'])?'true':'false') . ';
 			RTEarea['.$number.']["enableMozillaExtension"] = ' . (($this->client['BROWSER'] == 'gecko' && $TYPO3_CONF_VARS['EXTCONF'][$this->ID]['enableMozillaExtension'])?'true':'false') . ';
-			RTEarea['.$number.']["tceformsInlineObject"] = "' . $tceformsInlineObject . '";
-			RTEarea['.$number.']["tceformsDynTabs"] = "' . $this->TCEform->getDynTabLevelState('-DIV') . '";';
-		
+			RTEarea['.$number.']["tceformsNested"] = ' . (is_object($this->TCEform) && method_exists($this->TCEform, 'getDynNestedStack') ? $this->TCEform->getDynNestedStack(true, $tabSuffix, $inlineSuffix) : '[]') . ';';
+
 			// The following properties apply only to the backend
 		if (!is_object($TSFE)) {
 			$registerRTEinJSString .= '
@@ -940,7 +938,6 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			RTEarea['.$number.']["enablePersonalDicts"] = ' . ($this->spellCheckerPersonalDicts ? 'true' : 'false') . ';
 			RTEarea['.$number.']["userUid"] = "' . $this->userUid . '";';
 		}
-		
 			// Setting the plugin flags
 		$registerRTEinJSString .= '
 			RTEarea['.$number.']["plugin"] = new Object();';
