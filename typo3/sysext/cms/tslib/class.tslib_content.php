@@ -7245,45 +7245,30 @@ class tslib_frameset {
 	}
 
 	/**
-	 * Creates the attributes for at <frame> tag based on a $conf array and the type number
+	 * Creates the attributes for a <frame> tag based on a $conf array and the type number
 	 *
 	 * @param	array		Configuration for the parameter generation for the FRAME set. See link
 	 * @param	integer		The typenumber to use for the link.
 	 * @return	string		String with attributes for the frame-tag. With a prefixed space character.
 	 * @access private
-	 * @link http://typo3.org/doc.0.html?&tx_extrepmgm_pi1[extUid]=270&tx_extrepmgm_pi1[tocEl]=344&cHash=63ae959c9a
+	 * @link http://typo3.org/documentation/document-library/references/doc_core_tsref/current/view/7/9/
 	 * @see make(), t3lib_TStemplate::linkData()
 	 */
 	function frameParams($setup, $typeNum)	{
 		$paramStr = '';
 		$name = $setup['obj'];
 
-		/*
-		if ($GLOBALS['TSFE']->config['config']['simulateStaticDocuments'])	{
-			$theCompURL='';
-			$theCompURL.=$GLOBALS['TSFE']->makeSimulFileName($GLOBALS['TSFE']->page['title'],
-				($GLOBALS['TSFE']->page['alias'] ? $GLOBALS['TSFE']->page['alias'] : $GLOBALS['TSFE']->page['uid']),
-				intval($typeNum));
-			if ($GLOBALS['TSFE']->config['config']['simulateStaticDocuments']=='PATH_INFO')	{
-				$theCompURL = str_replace('.','/',$theCompURL);
-				$theCompURL = 'index.php/'.$theCompURL.'/?';
-			} else {
-				$theCompURL.='.html?';
+		if ($setup['src'] || $setup['src.']) {
+			$src = $setup['src'];
+			if (is_array($setup['src.'])) {
+				$src = $GLOBALS['TSFE']->cObj->stdWrap($src, $setup['src.']);
 			}
+			$paramStr.=' src="'.htmlspecialchars($src).'"';
 		} else {
-			$theCompURL = $GLOBALS['TSFE']->config['mainScript'].'?id='.$GLOBALS['TSFE']->page['uid'].'&type='.intval($typeNum);
+			$LD = $GLOBALS['TSFE']->tmpl->linkData($GLOBALS['TSFE']->page,'',$GLOBALS['TSFE']->no_cache,'','',($setup['options']?'&'.$setup['options']:'').$GLOBALS['TSFE']->cObj->getClosestMPvalueForPage($GLOBALS['TSFE']->page['uid']), intval($typeNum));
+			$finalURL = $LD['totalURL'];
+			$paramStr.=' src="'.htmlspecialchars($finalURL).'"';
 		}
-			// Add absRefPrefix if exists.
-		$finalURL = $GLOBALS['TSFE']->absRefPrefix.$theCompURL.($setup['options']?'&'.$setup['options']:'').$GLOBALS['TSFE']->linkVars.$GLOBALS['TSFE']->getMethodUrlIdToken.($GLOBALS['TSFE']->no_cache?'&no_cache=1':'');
-		$finalURL = $GLOBALS['TSFE']->tmpl->removeQueryString($finalURL);
-		*/
-
-			// From 3.6.0, use "linkData" for ALL links:
-		$LD = $GLOBALS['TSFE']->tmpl->linkData($GLOBALS['TSFE']->page,'',$GLOBALS['TSFE']->no_cache,'','',($setup['options']?'&'.$setup['options']:'').$GLOBALS['TSFE']->cObj->getClosestMPvalueForPage($GLOBALS['TSFE']->page['uid']), intval($typeNum));
-		$finalURL = $LD['totalURL'];
-
-
-		if ($setup['src']) {$paramStr.=' src="'.htmlspecialchars($setup['src']).'"';} else {$paramStr.=' src="'.htmlspecialchars($finalURL).'"';}
 		if ($setup['name']) {$paramStr.=' name="'.$setup['name'].'"';} else {$paramStr.=' name="'.$name.'"';}
 		if ($setup['params']) {$paramStr.=' '.$setup['params'];}
 		return $paramStr;

@@ -1,3 +1,7 @@
+2007-03-28  Ernesto Baschny  <ernst@cron-it.de>
+
+	* Added +stdWrap for the .src parameter of "FRAME"
+
 2007-03-27	Dmitry Dulepov	<dmitry@typo3.org>
 
 	* Added hook to class.t3lib_userauthgroup.php, function recordEditAccessInternals
