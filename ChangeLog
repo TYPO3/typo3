@@ -1,6 +1,6 @@
 2007-03-28  Oliver Hader  <oh@inpublica.de>
 
-	* Fixed bug 5288: Missing parameter in recursion of t3lib_div::array_merge_recursive_overrule
+	* Fixed bug 5288: Missing parameter in recursion of t3lib_div::array_merge_recursive_overrule (thanks to Simon Tuck)
 
 2007-03-28  Ingmar Schlecht  <ingmar@typo3.org>
 
@@ -14,11 +14,11 @@
 
 	* Added +stdWrap for the .src parameter of "FRAME"
 
-2007-03-27	Dmitry Dulepov	<dmitry@typo3.org>
+2007-03-27  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Added hook to class.t3lib_userauthgroup.php, function recordEditAccessInternals
 
-2007-03-23	Dmitry Dulepov	<dmitry@typo3.org>
+2007-03-23  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Fixed bug 5269: wsol_preview.php does not scroll to content element
 	* Fixed bug 4953: Preview in Workspaces Module for Contentelements
