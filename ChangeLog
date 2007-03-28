@@ -1,3 +1,7 @@
+2007-03-28  Patrick Broens  <patrick@patrickbroens.nl>
+
+	* Fixed bug #5266: WamCom browser check in htmlarea.js conflicted with FF 2.0.0.3
+
 2007-03-28  Ernesto Baschny  <ernst@cron-it.de>
 
 	* Added +stdWrap for the .src parameter of "FRAME"
