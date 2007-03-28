@@ -1,3 +1,7 @@
+2007-03-28  Patrick Broens  <patrick@patrickbroens.nl>
+
+	* Fixed bug #5266: WamCom browser check in htmlarea.js conflicted with FF 2.0.0.3
+
 2007-03-27	Dmitry Dulepov	<dmitry@typo3.org>
 
 	* Added hook to class.t3lib_userauthgroup.php, function recordEditAccessInternals
