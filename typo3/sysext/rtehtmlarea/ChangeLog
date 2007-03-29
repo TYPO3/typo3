@@ -1,7 +1,7 @@
 2007-03-28  Patrick Broens  <patrick@patrickbroens.nl>
 
 	* Version 1.5.2dev
-	* Fix issue 5266: WamCom browser check was conflicting with FF 2.0.0.3
+	* Fix issue 5266: WamCom browser check was conflicting with Firefox 2.0.0.3
 
 2007-01-23  Michael Stucki  <michael@typo3.org>
 

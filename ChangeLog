@@ -1,6 +1,6 @@
 2007-03-28  Oliver Hader  <oh@inpublica.de>
 
-	* Fixed bug 5288: Missing parameter in recursion of t3lib_div::array_merge_recursive_overrule (thanks to Simon Tuck)
+	* Fixed bug #5288: Missing parameter in recursion of t3lib_div::array_merge_recursive_overrule (thanks to Simon Tuck)
 
 2007-03-28  Ingmar Schlecht  <ingmar@typo3.org>
 
@@ -8,7 +8,7 @@
 
 2007-03-28  Patrick Broens  <patrick@patrickbroens.nl>
 
-	* Fixed bug #5266: WamCom browser check in htmlarea.js conflicted with FF 2.0.0.3
+	* Fixed bug #5266: WamCom browser check in htmlarea.js conflicted with Firefox 2.0.0.3
 
 2007-03-27  Dmitry Dulepov  <dmitry@typo3.org>
 
@@ -16,8 +16,8 @@
 
 2007-03-23  Dmitry Dulepov  <dmitry@typo3.org>
 
-	* Fixed bug 5269: wsol_preview.php does not scroll to content element
-	* Fixed bug 4953: Preview in Workspaces Module for Contentelements
+	* Fixed bug #5269: wsol_preview.php does not scroll to content element
+	* Fixed bug #4953: Preview in Workspaces Module for content elements
 
 2007-03-12  Michael Stucki  <michael@typo3.org>
 
