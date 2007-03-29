@@ -1,6 +1,6 @@
 2007-03-28  Patrick Broens  <patrick@patrickbroens.nl>
 
-	* Fixed bug #5266: WamCom browser check in htmlarea.js conflicted with FF 2.0.0.3
+	* Fixed bug #5266: WamCom browser check in htmlarea.js conflicted with Firefox 2.0.0.3
 
 2007-03-01  Karsten Dambekalns <karsten@typo3.org>
 
