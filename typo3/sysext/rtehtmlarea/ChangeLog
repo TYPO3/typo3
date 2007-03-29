@@ -1,7 +1,7 @@
 2007-03-28  Patrick Broens  <patrick@patrickbroens.nl>
 
 	* Update version information in ext_emconf.php to 1.6.1dev for 4.2 branch
-	* Bugfix 5266: Check on WamCom browser conflicted with FF 2.0.0.3
+	* Bugfix 5266: Check on WamCom browser conflicted with Firefox 2.0.0.3
 
 2007-03-12  Michael Stucki  <michael@typo3.org>
 

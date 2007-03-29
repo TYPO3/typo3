@@ -30,8 +30,8 @@
 	// please use the function in the "Tree" object for future implementations
 function refresh_nav() { window.setTimeout('Tree.refresh();',0); }
 
-	// Another js function, for highlighting rows in the page tree, kept alive for backwards compatibility
-	// please use the function in the "Tree" object for future implementations
+	// Deprecated! Another JS function, for highlighting rows in the page tree, kept alive for backwards
+	// compatibility. Please use the function in the "Tree" object for future implementations.
 function hilight_row(frameSetModule, highLightID) { Tree.highlightActiveItem(frameSetModule, highlightID); }
 
 
