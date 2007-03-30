@@ -911,7 +911,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 		if ($this->TCEform->inline->inlineNames['object']) {
 			$tceformsInlineObject = $this->TCEform->inline->inlineNames['object'].'['.$table.']['.$uid.']_fields';
 		}
-		
+
 		$registerRTEinJSString = (!is_object($TSFE) ? '' : '
 			' . '/*<![CDATA[*/') . '
 			RTEarea['.$number.'] = new Object();
@@ -929,8 +929,8 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			RTEarea['.$number.']["useHTTPS"] = ' . ((trim(stristr($this->siteURL, 'https')) || $this->thisConfig['forceHTTPS'])?'true':'false') . ';
 			RTEarea['.$number.']["enableMozillaExtension"] = ' . (($this->client['BROWSER'] == 'gecko' && $TYPO3_CONF_VARS['EXTCONF'][$this->ID]['enableMozillaExtension'])?'true':'false') . ';
 			RTEarea['.$number.']["tceformsInlineObject"] = "' . $tceformsInlineObject . '";
-			RTEarea['.$number.']["tceformsDynTabs"] = "' . $this->TCEform->getDynTabLevelState('-DIV') . '";';
-		
+			RTEarea['.$number.']["tceformsDynTabs"] = "' . (is_object($this->TCEform) && method_exists($this->TCEform, 'getDynTabLevelState') ? $this->TCEform->getDynTabLevelState('-DIV') : '') . '";';
+
 			// The following properties apply only to the backend
 		if (!is_object($TSFE)) {
 			$registerRTEinJSString .= '
