@@ -4976,8 +4976,8 @@ class t3lib_TCEforms	{
 	function printNeededJSFunctions()	{
 			// JS evaluation:
 		$out = $this->JSbottom($this->formName);
-			//
-		if ($this->printNeededJS['dbFileIcons'])	{
+			// Integrate JS functions for the element browser if such fields or IRRE fields were processed:
+		if ($this->printNeededJS['dbFileIcons'] || $this->inline->inlineCount)	{
 			$out.= '
 
 
