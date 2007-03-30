@@ -1711,7 +1711,7 @@ EXTENSION KEYS:
 				} else return 'Wrong file format. No data recognized, '.$fetchData;
 			} else return 'No file uploaded! Probably the file was too large for PHPs internal limit for uploadable files.';
 		} else {
-			$this->xmlhandler->searchExtensionsXML($extKey, '', '', true);
+			$this->xmlhandler->searchExtensionsXML($extKey, '', '', true, true);
 
 				// Fetch extension from TER:
 			if(!strlen($version)) {
