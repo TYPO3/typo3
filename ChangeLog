@@ -1,3 +1,7 @@
+2007-03-30  Franz Holzinger  <kontakt@fholzinger.com>
+
+	* Fixed bug #4725: Add parameter $allVer to function call of searchExtensionsXML in order to fetch the extension data also for older versions of an extension.
+
 2007-03-28  Oliver Hader  <oh@inpublica.de>
 
 	* Fixed bug #5288: Missing parameter in recursion of t3lib_div::array_merge_recursive_overrule (thanks to Simon Tuck)
