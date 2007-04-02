@@ -1,3 +1,7 @@
+2007-04-02	Dmitry Dulepov	<dmitry@typo3.org>
+
+	* Fixed bug #4447: 'Clear FE cache' doesn't clear 'typo3temp/cache_pages' directory
+
 2007-03-30  Oliver Hader  <oh@inpublica.de>
 
 	* Fixed bug #5105: Extensions crash when using HTMLArea in FE (will be replaced with bugfix #5177 from Trunk end of April 2007)
