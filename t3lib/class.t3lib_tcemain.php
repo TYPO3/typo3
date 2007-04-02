@@ -6203,7 +6203,7 @@ State was change by %s (username: %s)
 		if (t3lib_extMgm::isLoaded('cms'))	{
 			if ($GLOBALS['TYPO3_CONF_VARS']['FE']['pageCacheToExternalFiles']) {
 				$cacheDir = PATH_site.'typo3temp/cache_pages';
-				// Alternatively use t3lib_div::rmdir!
+					// TODO: Replace with t3lib_div::rmdir() when available
 				if (@is_dir($cacheDir) && false !== ($topDir = @opendir($cacheDir))) {
 					while (false !== ($dir = @readdir($topDir))) {
 						$curDirName = $cacheDir . '/' . $dir;

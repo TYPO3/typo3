@@ -1,6 +1,10 @@
-2007-04-02	Dmitry Dulepov	<dmitry@typo3.org>
+2007-04-02  Michael Stucki  <michael@typo3.org>
 
-	* Fixed bug #4447: 'Clear FE cache' doesn't clear 'typo3temp/cache_pages' directory
+	* Fixed bug #5088: Cache is not saved properly because of charset conflict in the database. Changing the field type of cache_hash.content from mediumtext to mediumblob. To make this work, you need to compare your database in the Install Tool.
+
+2007-04-02  Dmitry Dulepov  <dmitry@typo3.org>
+
+	* Fixed bug #4447: "Clear FE cache" doesn't clear "typo3temp/cache_pages" directory
 
 2007-03-30  Oliver Hader  <oh@inpublica.de>
 
@@ -8,7 +12,7 @@
 
 2007-03-30  Franz Holzinger  <kontakt@fholzinger.com>
 
-	* Fixed bug #4725: Add parameter $allVer to function call of searchExtensionsXML in order to fetch the extension data also for older versions of an extension.
+	* Fixed bug #4725: EM: Include older versions when fetching data using searchExtensionsXML()
 
 2007-03-28  Oliver Hader  <oh@inpublica.de>
 
