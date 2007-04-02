@@ -127,7 +127,7 @@ CREATE TABLE cache_extensions (
 #
 CREATE TABLE cache_hash (
   hash varchar(32) DEFAULT '' NOT NULL,
-  content mediumtext NOT NULL,
+  content mediumblob NOT NULL,
   tstamp int(11) unsigned DEFAULT '0' NOT NULL,
   ident varchar(20) DEFAULT '' NOT NULL,
   PRIMARY KEY (hash)
