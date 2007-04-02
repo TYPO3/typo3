@@ -1,3 +1,7 @@
+2007-04-02	Dmitry Dulepov	<dmitry@typo3.org>
+
+	* Fixed bug #4447: 'Clear FE cache' doesn't clear 'typo3temp/cache_pages' directory
+
 2007-03-30  Oliver Hader  <oh@inpublica.de>
 
 	* Fixed bug #5248: IRRE - Element browser cannot be used on new child records of a new parent record
