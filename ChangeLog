@@ -1,3 +1,7 @@
+2007-04-03 Andreas Otto <andreas.otto@dkd.de>
+
+	* Implemented feature request #4914: Adding to new conditions to class.t3lib_matchcondition.php.
+
 2007-04-03  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Workspaces: added configurable synchronious stage change and publishing
