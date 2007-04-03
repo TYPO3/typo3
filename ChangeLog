@@ -1,3 +1,7 @@
+2007-04-03  Dmitry Dulepov  <dmitry@typo3.org>
+
+	* Workspaces: added configurable synchronious stage change and publishing
+
 2007-04-02  Michael Stucki  <michael@typo3.org>
 
 	* Fixed bug #5088: Cache is not saved properly because of charset conflict in the database. Changing the field type of cache_hash.content from mediumtext to mediumblob. To make this work, you need to compare your database in the Install Tool.

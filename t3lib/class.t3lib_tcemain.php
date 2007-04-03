@@ -2339,15 +2339,51 @@ class t3lib_TCEmain	{
 										}
 									break;
 									case 'swap':
-										$this->version_swap($table,$id,$value['swapWith'],$value['swapIntoWS']);
+										$swapMode = $GLOBALS['BE_USER']->getTSConfigVal('options.workspaces.swapMode');
+										if ($swapMode == 'any' || $swapMode == 'page') {
+											$elementList = $this->findPageElementsForVersionSwap($table, $id, $value['swapWith']);
+										}
+										else {
+											$elementList[$table][] = array($id, $value['swapWith']);
+										}
+										foreach ($elementList as $tbl => $idList) {
+											foreach ($idList as $id) {
+												$this->version_swap($tbl,$id[0],$id[1],$value['swapIntoWS']);
+											}
+										}
 									break;
 									case 'clearWSID':
 										$this->version_clearWSID($table,$id);
 									break;
 									case 'setStage':
-										$idList = t3lib_div::trimExplode(',',$id,1);
-										foreach($idList as $id)	{
-											$this->version_setStage($table,$id,$value['stageId'],$value['comment']?$value['comment']:$this->generalComment);
+										$idList = $elementList[$table] = t3lib_div::trimExplode(',',$id,1);
+										$setStageMode = $GLOBALS['BE_USER']->getTSConfigVal('options.workspaces.changeStageMode');
+										if ($setStageMode == 'any' || $setStageMode == 'page') {
+											if (count($idList) == 1) {
+												$rec = t3lib_BEfunc::getRecord($table, $idList[0], 't3ver_wsid');
+												$workspaceId = $rec['t3ver_wsid'];
+											}
+											else {
+												$workspaceId = $GLOBALS['BE_USER']->workspace;
+											}
+											if ($table !== 'pages') {
+												if ($setStageMode == 'any') {
+													// (1) Find page to change stage and (2) find other elements from the same ws to change stage
+													$pageIdList = array();
+													$this->findPageIdsForVersionStateChange($table, $idList, $workspaceId, $pageIdList, $elementList);
+													$this->findPageElementsForVersionStageChange($pageIdList, $workspaceId, $elementList);
+												}
+											}
+											else {
+												// Find all elements from the same ws to change stage
+												$this->findRealPageIds($idList);
+												$this->findPageElementsForVersionStageChange($idList, $workspaceId, $elementList);
+											}
+										}
+										foreach ($elementList as $tbl => $elementIdList) {
+											foreach($elementIdList as $id)	{
+												$this->version_setStage($tbl,$id,$value['stageId'],$value['comment']?$value['comment']:$this->generalComment);
+											}
 										}
 									break;
 								}
@@ -6224,6 +6260,144 @@ State was change by %s (username: %s)
 			$GLOBALS['TYPO3_DB']->exec_DELETEquery('cache_pages','');
 		}
 	}
+
+	/**
+	 * Finds page UIDs for the element from table <code>$table</code> with UIDs from <code>$idList</code>
+	 *
+	 * @param	array	$table	Table to search
+	 * @param	array	$idList	List of records' UIDs
+	 * @param	int	$workspaceId	Workspace ID. We need this parameter because user can be in LIVE but he still can publisg DRAFT from ws module!
+	 * @param	array	$pageIdList	List of found page UIDs
+	 * @param	array	$elementList	List of found element UIDs. Key is table name, value is list of UIDs
+	 * @return	void
+	 */
+	function findPageIdsForVersionStateChange($table, $idList, $workspaceId, &$pageIdList, &$elementList) {
+		if ($workspaceId != 0) {
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('DISTINCT(B.pid)',
+				$table . ' A,' . $table . ' B',
+				'A.pid=-1' .		// Offline version
+				' AND A.t3ver_wsid=' . $workspaceId .
+				' AND A.uid IN (' . implode(',', $idList) . ') AND A.t3ver_oid=B.uid' .
+				t3lib_BEfunc::deleteClause($table,'A').
+				t3lib_BEfunc::deleteClause($table,'B')
+			);
+			while (false !== ($row = $GLOBALS['TYPO3_DB']->sql_fetch_row($res))) {
+				$pageIdList[] = $row[0];
+				// Find ws version
+				$rec = t3lib_BEfunc::getRecord('pages', $row[0]);
+				t3lib_BEfunc::workspaceOL('pages', $rec, $workspaceId);	// Note: cannot use t3lib_BEfunc::getRecordWSOL() here because it does not accept workspace id!
+				if ($rec['_ORIG_uid']) {
+					$elementList['pages'][$row[0]] = $rec['_ORIG_uid'];
+				}
+			}
+			$GLOBALS['TYPO3_DB']->sql_free_result($res);
+			// The line below is necessary even with DISTINCT because several elements can be passed by caller
+			$pageIdList = array_unique($pageIdList);
+		}
+	}
+
+	/**
+	 * Searches for all elements from all tables on the given pages in the same workspace.
+	 *
+	 * @param	array	$pageIdList	List of PIDs to search
+	 * @param	int	$workspaceId	Workspace ID
+	 * @param	array	$elementList	List of found elements. Key is table name, value is array of element UIDs
+	 * @return	void
+	 */
+	function findPageElementsForVersionStageChange($pageIdList, $workspaceId, &$elementList) {
+		global $TCA;
+
+		if ($workspaceId != 0) {
+			// Traversing all tables supporting versioning:
+			foreach($TCA as $table => $cfg)	{
+				if ($TCA[$table]['ctrl']['versioningWS'] && $table != 'pages')	{
+					// Using SELECTquery for better debugging
+					$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('DISTINCT(A.uid)',
+						$table . ' A,' . $table . ' B',
+						'A.pid=-1' .		// Offline version
+						' AND A.t3ver_wsid=' . $workspaceId .
+						' AND B.pid IN (' . implode(',', $pageIdList) . ') AND A.t3ver_oid=B.uid' .
+						t3lib_BEfunc::deleteClause($table,'A').
+						t3lib_BEfunc::deleteClause($table,'B')
+					);
+					while (false !== ($row = $GLOBALS['TYPO3_DB']->sql_fetch_row($res))) {
+						$elementList[$table][] = $row[0];
+					}
+					$GLOBALS['TYPO3_DB']->sql_free_result($res);
+					if (is_array($elementList[$table])) {
+						// Yes, it is possible to get non-unique array even with DISTINCT above! It happens because several UIDs are passed in the array already.
+						$elementList[$table] = array_unique($elementList[$table]);
+					}
+				}
+			}
+		}
+	}
+	
+	/**
+	 * Finds real page IDs for state change.
+	 *
+	 * @param	array	$idList	List of page UIDs, possibly versioned
+	 * @return	void
+	 */
+	function findRealPageIds(&$idList) {
+		foreach ($idList as $key => $id) {
+			$rec = t3lib_BEfunc::getRecord('pages', $id, 't3ver_oid');
+			if ($rec['t3ver_oid'] > 0) {
+				$idList[$key] = $rec['t3ver_oid'];
+			}
+		}
+	}
+	
+	/**
+	 * Finds all elements for swapping versions in workspace
+	 *
+	 * @param 	string	$table	Table name of the original element to swap
+	 * @param	int	$id	UID of the original element to swap (online)
+	 * @param	int	$offlineId As above but offline
+	 * @return	array	Element data. Key is table name, values are array with first element as online UID, second - offline UID
+	 */
+	function findPageElementsForVersionSwap($table, $id, $offlineId) {
+		global	$TCA;
+
+		$rec = t3lib_BEfunc::getRecord($table, $offlineId, 't3ver_wsid');
+		$workspaceId = $rec['t3ver_wsid'];
+
+		$elementData = array();
+		if ($workspaceId != 0) {
+			// Get page UID for LIVE and workspace
+			if ($table != 'pages') {
+				$rec = t3lib_BEfunc::getRecord($table, $id, 'pid');
+				$pageId = $rec['pid'];
+				$rec = t3lib_BEfunc::getRecord('pages', $pageId);
+				t3lib_BEfunc::workspaceOL('pages', $rec, $workspaceId);
+				$offlinePageId = $rec['_ORIG_uid'];
+			}
+			else {
+				$pageId = $id;
+				$offlinePageId = $offlineId;
+			}
+
+			// Traversing all tables supporting versioning:
+			foreach($TCA as $table => $cfg)	{
+				if ($TCA[$table]['ctrl']['versioningWS'] && $table != 'pages')	{
+					$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('A.uid AS offlineUid, B.uid AS uid',
+							$table . ' A,' . $table . ' B',
+							'A.pid=-1 AND B.pid=' . $pageId . ' AND A.t3ver_wsid=' . $workspaceId .
+							' AND B.uid=A.t3ver_oid' .
+							t3lib_BEfunc::deleteClause($table, 'A') . t3lib_BEfunc::deleteClause($table, 'B'));
+					while (false != ($row = $GLOBALS['TYPO3_DB']->sql_fetch_row($res))) {
+						$elementData[$table][] = array($row[1], $row[0]);
+					}
+					$GLOBALS['TYPO3_DB']->sql_free_result($res);
+				}
+			}
+			if ($offlinePageId != $pageId) {
+				$elementData['pages'][] = array($pageId, $offlinePageId);
+			}
+		}
+		return $elementData;
+	}
+
 }
 
 
