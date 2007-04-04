@@ -6219,7 +6219,7 @@ State was change by %s (username: %s)
 							@rmdir($curDirName);
 						}
 					}
-					closedir($cacheDir);
+					closedir($topDir);
 				}
 			}
 		}
