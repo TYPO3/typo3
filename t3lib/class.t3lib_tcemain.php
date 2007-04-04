@@ -6254,7 +6254,7 @@ State was change by %s (username: %s)
 							@rmdir($curDirName);
 						}
 					}
-					closedir($cacheDir);
+					closedir($topDir);
 				}
 			}
 			$GLOBALS['TYPO3_DB']->exec_DELETEquery('cache_pages','');
