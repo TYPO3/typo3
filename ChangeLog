@@ -1,6 +1,11 @@
+
+2007-04-05  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+
+	* Made debug logging of user-supplied SQL queries possible in t3lib_db.
+
 2007-04-04 Andreas Otto <andreas.otto@dkd.de>
 
-        * Related to bug #4447: A directory handle was not correclty used.
+	* Related to bug #4447: A directory handle was not correclty used.
 
 2007-04-03  Michael Stucki  <michael@typo3.org>
 
