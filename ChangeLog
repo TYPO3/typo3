@@ -2,6 +2,7 @@
 2007-04-05  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
 	* Renamed Typoscript condition julianday to dayofyear (see change from 2007-04-03)
+	* Made debug logging of user-supplied SQL queries possible in t3lib_db.
 
 2007-04-04 Andreas Otto <andreas.otto@dkd.de>
 
@@ -13,7 +14,7 @@
 
 2007-04-03  Dmitry Dulepov  <dmitry@typo3.org>
 
-	* Workspaces: added configurable synchronious stage change and publishing
+	* Workspaces: added configurable synchronous stage change and publishing
 
 2007-04-02  Michael Stucki  <michael@typo3.org>
 

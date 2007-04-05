@@ -741,7 +741,7 @@ class t3lib_DB {
 	 */
 	function sql($db,$query)	{
 		$res = mysql_query($query, $this->link);
-		if ($this->debugOutput)	$this->debug('sql');
+		if ($this->debugOutput)	$this->debug('sql',$query);
 		return $res;
 	}
 
@@ -755,7 +755,7 @@ class t3lib_DB {
 	 */
 	function sql_query($query)	{
 		$res = mysql_query($query, $this->link);
-		if ($this->debugOutput)	$this->debug('sql_query');
+		if ($this->debugOutput)	$this->debug('sql_query',$query);
 		return $res;
 	}
 
@@ -1018,7 +1018,7 @@ class t3lib_DB {
 	 */
 	function admin_query($query)	{
 		$res = mysql_query($query, $this->link);
-		if ($this->debugOutput)	$this->debug('admin_query');
+		if ($this->debugOutput)	$this->debug('admin_query',$query);
 		return $res;
 	}
 
@@ -1080,16 +1080,17 @@ class t3lib_DB {
 	 * Debug function: Outputs error if any
 	 *
 	 * @param	string		Function calling debug()
+	 * @param	string		Last query if not last built query
 	 * @return	void
 	 */
-	function debug($func)	{
+	function debug($func, $query='')	{
 
 		$error = $this->sql_error();
-		if ($error)		{
+		if ($error)	{
 			echo t3lib_div::view_array(array(
 				'caller' => 't3lib_DB::'.$func,
 				'ERROR' => $error,
-				'lastBuiltQuery' => $this->debug_lastBuiltQuery,
+				'lastBuiltQuery' => ($query ? $query : $this->debug_lastBuiltQuery),
 				'debug_backtrace' => t3lib_div::debug_trail()
 			));
 		}
