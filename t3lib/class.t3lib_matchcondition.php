@@ -254,20 +254,20 @@ class t3lib_matchCondition {
 				// hour, minute, dayofweek, dayofmonth, month, year, julianday
 			case 'hour':
 			case 'minute':
-			case 'dayofweek':
-			case 'dayofmonth':
 			case 'month':
 			case 'year':
-			case 'julianday':
+			case 'dayofweek':
+			case 'dayofmonth':
+			case 'dayofyear':
 				$theEvalTime = $GLOBALS['SIM_EXEC_TIME'];	// In order to simulate time properly in templates.
 				switch($key) {
 					case 'hour':		$theTestValue = date('H',$theEvalTime);	break;
 					case 'minute':		$theTestValue = date('i',$theEvalTime);	break;
-					case 'dayofweek':	$theTestValue = date('w',$theEvalTime);	break;
-					case 'dayofmonth':	$theTestValue = date('d',$theEvalTime);	break;
 					case 'month':		$theTestValue = date('m',$theEvalTime);	break;
 					case 'year':		$theTestValue = date('Y',$theEvalTime);	break;
-					case 'julianday':		$theTestValue = date('z',$theEvalTime);	break;
+					case 'dayofweek':	$theTestValue = date('w',$theEvalTime);	break;
+					case 'dayofmonth':	$theTestValue = date('d',$theEvalTime);	break;
+					case 'dayofyear':	$theTestValue = date('z',$theEvalTime);	break;
 				}
 				$theTestValue = intval($theTestValue);
 					// comp

@@ -1,10 +1,15 @@
+
+2007-04-05  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+
+	* Renamed Typoscript condition julianday to dayofyear (see change from 2007-04-03)
+
 2007-04-04 Andreas Otto <andreas.otto@dkd.de>
 
 	* Related to bug #4447: A directory handle was not correclty used.
 
 2007-04-03 Andreas Otto <andreas.otto@dkd.de>
 
-	* Implemented feature request #4914: Adding to new conditions to class.t3lib_matchcondition.php.
+	* Implemented feature request #4914: Adding to new conditions (year and julianday) to class.t3lib_matchcondition.php.
 
 2007-04-03  Dmitry Dulepov  <dmitry@typo3.org>
 
