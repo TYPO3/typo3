@@ -1,3 +1,6 @@
+2007-04-14  Dmitry Dulepov  <dmitry@typo3.org>
+
+	* Workspaces: added class.wslib_gui.php to allow using WS GUI from extensions
 
 2007-04-05  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
