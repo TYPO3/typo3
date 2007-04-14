@@ -29,8 +29,8 @@
 <!-- ###TEMPLATE_CREATE### begin
 	Form til at oprette en ny bruger.
 -->
+	<form name="tt_address_form" method="post" action="###FORM_URL###">
       <table width="90%" border="0" cellspacing="2" cellpadding="0">
-			<FORM name="tt_address_form" method="post" action="###FORM_URL###">
         <tr> 
           <td><font size="1" face="Verdana, Arial, Helvetica, sans-serif"><font size="3" color="#666666">Tilmeld mig til nyhedsbrev</font></font></td>
         </tr>
@@ -80,8 +80,8 @@
 			###HIDDENFIELDS###
           </td>
         </tr>
-			</FORM>
       </table>
+	</form>
 <!-- ###TEMPLATE_CREATE### end-->
 
 
@@ -178,7 +178,7 @@
           <td> 
 		  <font face="Verdana, Arial, Helvetica, sans-serif" size="1">Der er nu sendt en mail til dig hvori der er et link, som giver dig adgang til at ændre dine data.<br>
 		  <br>
-		  <a href="###BACK_URL###"><strong>Tilbage ></strong></a>
+		  <a href="###BACK_URL###"><strong>Tilbage &gt;</strong></a>
 		  </font><br>
           </td>
         </tr>
@@ -245,8 +245,8 @@ But the most obvious reason would be that the record has been updated in the mea
 -->
 
 
+	<form name="tt_address_form" method="post" action="###BACK_URL###">
       <table width="90%" border="0" cellspacing="2" cellpadding="0">
-			<FORM name="tt_address_form" method="post" action="###BACK_URL###">
         <tr> 
           <td><font size="1" face="Verdana, Arial, Helvetica, sans-serif"><font size="3" color="#666666">Tilmelding til nyhedsbrev</font></font></td>
         </tr>
@@ -272,8 +272,8 @@ But the most obvious reason would be that the record has been updated in the mea
 		  </font>
           </td>
         </tr>
-		</form>
       </table>
+	</form>
 <!-- ###TEMPLATE_CREATE_SAVED### end-->
 
 
@@ -330,7 +330,7 @@ Her er dine stamdata:
 
 ###FIELD_name###
 
-http://markus.oh-my-god.dk/typo3/dev/barneguiden/index.php?id=3&cmd=edit&aC=###SYS_AUTHCODE###&rU=###FIELD_uid###
+http://markus.oh-my-god.dk/typo3/dev/barneguiden/index.php?id=3&amp;cmd=edit&aC=###SYS_AUTHCODE###&rU=###FIELD_uid###
 
 
 <!--###SUB_RECORD###-->
