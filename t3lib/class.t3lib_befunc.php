@@ -234,7 +234,9 @@ class t3lib_BEfunc	{
 				$table,
 				'uid='.intval($uid).($useDeleteClause ? t3lib_BEfunc::deleteClause($table) : '').$where
 			);
-			if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
+			$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
+			$GLOBALS['TYPO3_DB']->sql_free_result($res);
+			if ($row) {
 				return $row;
 			}
 		}

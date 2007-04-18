@@ -1,3 +1,6 @@
+2007-04-18  Dmitry Dulepov  <dmitry@typo3.org>
+
+	* Fixed: t3lib_BEfunc::getRecord() did not free recordset. This can cause memory leaks if persistent mysql connections are used
 
 2007-04-05  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
