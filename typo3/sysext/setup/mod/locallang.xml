@@ -64,7 +64,7 @@
 			<label index="noMenuMode_def">Left frame menu (default)</label>
 			<label index="noMenuMode_sel">Selectorbox in top frame</label>
 			<label index="noMenuMode_icons">Icons in top frame</label>
-			<label index="startInTaskCenter">Start up in the module 'Task Center'</label>
+			<label index="startModule">Start up in the following module</label>
 			<label index="emailMeAtLogin">Notify me by email, when somebody logs in &lt;br /&gt;from my account</label>
 			<label index="helpText">Show help text when applicable</label>
 			<label index="maxTitleLen">Max. Title Length</label>

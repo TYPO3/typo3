@@ -62,6 +62,7 @@ unset($MCONF);
 require('conf.php');
 require($BACK_PATH.'init.php');
 require_once(PATH_t3lib.'class.t3lib_tcemain.php');
+require_once(PATH_t3lib.'class.t3lib_loadmodules.php');
 
 
 
@@ -130,7 +131,7 @@ class SC_mod_user_setup_index {
 				// Startup
 			$BE_USER->uc['condensedMode'] = $d['condensedMode'];
 			$BE_USER->uc['noMenuMode'] = $d['noMenuMode'];
-			if (t3lib_extMgm::isLoaded('taskcenter'))	$BE_USER->uc['startInTaskCenter'] = $d['startInTaskCenter'];
+			$BE_USER->uc['startModule'] = $d['startModule'];
 			$BE_USER->uc['thumbnailsByDefault'] = $d['thumbnailsByDefault'];
 			$BE_USER->uc['helpText'] = $d['helpText'];
 			$BE_USER->uc['titleLen'] = intval($d['titleLen']);
@@ -246,13 +247,18 @@ class SC_mod_user_setup_index {
 	 * @return	void
 	 */
 	function main()	{
-		global $BE_USER,$LANG,$BACK_PATH;
+		global $BE_USER,$LANG,$BACK_PATH,$TBE_MODULES;;
 
 			// Start page:
 		$this->doc->JScode.= '<script language="javascript" type="text/javascript" src="'.$BACK_PATH.'md5.js"></script>';
 		$this->content.= $this->doc->startPage($LANG->getLL('UserSettings'));
 		$this->content.= $this->doc->header($LANG->getLL('UserSettings').' - ['.$BE_USER->user['username'].']');
-
+		
+			// Load available backend modules
+		$this->loadModules = t3lib_div::makeInstance('t3lib_loadModules');
+		$this->loadModules->observeWorkspaces = TRUE;
+		$this->loadModules->load($TBE_MODULES);
+		
 			// CSH general:
 		$this->content.= t3lib_BEfunc::cshItem('_MOD_user_setup', '', $GLOBALS['BACK_PATH'],'|');
 
@@ -317,10 +323,25 @@ class SC_mod_user_setup_index {
 			<option value="1"'.($BE_USER->uc['noMenuMode'] && (string)$BE_USER->uc['noMenuMode']!="icons"?' selected="selected"':'').'>'.$this->setLabel('noMenuMode_sel').'</option>
 			<option value="icons"'.((string)$BE_USER->uc['noMenuMode']=='icons'?' selected="selected"':'').'>'.$this->setLabel('noMenuMode_icons').'</option>
 		</select>';
-		if (t3lib_extMgm::isLoaded('taskcenter'))	{
-			$code[4][1] = $this->setLabel('startInTaskCenter','startInTaskCenter');
-			$code[4][2] = '<input type="checkbox" name="data[startInTaskCenter]"'.($BE_USER->uc['startInTaskCenter']?' checked="checked"':'').' />';
+		$code[4][1] = $this->setLabel('startModule','startModule');
+		$modSelect = '<select name="data[startModule]">';
+		$modSelect .= '<option value=""></option>';
+		if (empty($BE_USER->uc['startModule']))	{
+			$BE_USER->uc['startModule'] = $BE_USER->uc_default['startModule'];
 		}
+		foreach ($this->loadModules->modules as $mainMod => $modData)	{
+			if (isset($modData['sub']) && is_array($modData['sub']))	{
+				$modSelect .= '<option disabled="disabled">'.$LANG->moduleLabels['tabs'][$mainMod.'_tab'].'</option>';
+				foreach ($modData['sub'] as $subKey => $subData)	{
+					$modName = $subData['name'];
+					$modSelect .= '<option value="'.$modName.'"'.($BE_USER->uc['startModule']==$modName?' selected="selected"':'').'>';
+					$modSelect .= ' - '.$LANG->moduleLabels['tabs'][$modName.'_tab'].'</option>';
+				}
+			}
+		}
+		$modSelect .= '</select>';
+		$code[4][2] = $modSelect;
+
 		$code[5][1] = $this->setLabel('showThumbs','thumbnailsByDefault');
 		$code[5][2] = '<input type="checkbox" name="data[thumbnailsByDefault]"'.($BE_USER->uc['thumbnailsByDefault']?' checked="checked"':'').' />';
 		$code[6][1] = $this->setLabel('helpText');

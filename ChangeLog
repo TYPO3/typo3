@@ -1,3 +1,7 @@
+2007-04-19	Thomas Hempel	<thomas@work.de>
+	
+	* Implemented feature request #3894: Open module on startup
+
 2007-04-18  Ernesto Baschny  <ernst@cron-it.de>
 
 	* Fixed bug #3729: Roll-over (RO) on a GMENU in IE didn't work with xhtml_strict
@@ -377,7 +381,7 @@
 2007-01-19  Ingmar Schlecht  <ingmar@typo3.org>
 
 	* AJAX pagetree and filetree by Benjamin Mack <bmack@xnos.org>! (Thanks also to Franz Holzinger and Stefan Regniet for their help)
-	* Patch by René Fritz regarding bidirectional mm-relations: It's now possible to save different relations to the same mm-table by means of so called "matchFields". This is used by DAM.
+	* Patch by Renï¿½ Fritz regarding bidirectional mm-relations: It's now possible to save different relations to the same mm-table by means of so called "matchFields". This is used by DAM.
 
 2007-01-19  Andreas Otto  <andreas.otto@dkd.de>
 
@@ -446,7 +450,7 @@
 
 2006-12-13  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
-	* More localization of User>Workspaces (thanks to Marc Wöhlken)
+	* More localization of User>Workspaces (thanks to Marc Wï¿½hlken)
 
 2006-12-14  Kasper Skaarhoj
 
@@ -472,7 +476,7 @@
 
 2006-12-12  Ingmar Schlecht  <ingmar@typo3.org>
 
-	* Better getRecordTitle() function introducing label_userFunc (Thanks to David Brühlmeier for this patch! See http://lists.netfielders.de/pipermail/typo3-team-core/2006-December/006521.html for details.)
+	* Better getRecordTitle() function introducing label_userFunc (Thanks to David Brï¿½hlmeier for this patch! See http://lists.netfielders.de/pipermail/typo3-team-core/2006-December/006521.html for details.)
 
 2006-12-11  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
@@ -659,7 +663,7 @@
 
 2006-09-11  Ingmar Schlecht  <ingmar@typo3.org>
 
-	* New feature: Bidirectional MM relations. You can now edit mm-relations from both sides of the relation in the Backend TCE-Forms. Thanks to Sebastian (for writing the patch together with me) and René (for the first version of this feature)
+	* New feature: Bidirectional MM relations. You can now edit mm-relations from both sides of the relation in the Backend TCE-Forms. Thanks to Sebastian (for writing the patch together with me) and Renï¿½ (for the first version of this feature)
 
 2006-09-11  Michael Stucki  <michael@typo3.org>
 

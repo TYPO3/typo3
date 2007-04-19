@@ -42,6 +42,9 @@ This option shows all menu items in the top frame as a horizontal list of icons.
 EXT:setup/cshimages/setup2.png</label>
 			<label index="option_noMenuMode.image_descr">The &quot;Selectorbox&quot; menu. Selecting an item makes the backend jump to that module.
 The &quot;Icons&quot; menu. As you can see you will need to know the icons by heart. You can also position the mouse over the icon and the tool-tip text will reveal the module name.</label>
+			<label index="option_startModule.alttitle">Start module</label>
+			<label index="option_startModule.description">Let you select the module that is called when you login in the Backend
+The default module is &quot;About Modules&quot;.</label>
 			<label index="option_showThumbs.alttitle">Show Thumbnails by default</label>
 			<label index="option_showThumbs.description">In modules like the &quot;Web &gt; List&quot; and &quot;File &gt; Filelist&quot; you can enable the display of thumbnails of files (images/fonts) and records (if images are attached) with a checkbox. Setting this option will enable the display by default.</label>
 			<label index="_option_showThumbs.image">EXT:setup/cshimages/setup5.png</label>

@@ -125,7 +125,7 @@ class t3lib_beUserAuth extends t3lib_userAuthGroup {
 		'emailMeAtLogin' => 0,
 		'condensedMode' => 0,
 		'noMenuMode' => 0,
-		'startInTaskCenter' => 0,
+		'startModule' => 'help_aboutmodules',
 		'hideSubmoduleIcons' => 0,
 		'helpText' => 1,
 		'titleLen' => 30,

@@ -437,8 +437,13 @@ class SC_alt_main {
 	function startModule() {
 		global $BE_USER;
 		$module = preg_replace('/[^[:alnum:]_]/','',t3lib_div::_GET('module'));
-		if (!$module && $BE_USER->uc['startInTaskCenter']) {
-			$module = 'user_task';
+		
+		if (!$module)	{
+			if ($BE_USER->uc['startModule'])	{
+				$module = $BE_USER->uc['startModule'];
+			} elseif ($BE_USER->uc['startInTaskCenter'])	{
+				$module = 'user_task';
+			}
 		}
 
 		$params = t3lib_div::_GET('modParams');
