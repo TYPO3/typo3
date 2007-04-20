@@ -1,3 +1,7 @@
+2007-04-18  Dmitry Dulepov  <dmitry@typo3.org>
+
+	* Fixed bug #1839: Broken Rootline when a Editor view a Page that is not online
+
 2007-04-19	Thomas Hempel	<thomas@work.de>
 	
 	* Implemented feature request #3894: Open module on startup

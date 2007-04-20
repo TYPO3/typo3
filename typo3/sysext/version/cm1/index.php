@@ -800,8 +800,22 @@ class tx_version_cm1 extends t3lib_SCbase {
 
 							// Get the offline version record and icon:
 						$rec_off = t3lib_BEfunc::getRecord($table,$rec['uid']);
+
+						// Prepare swap-mode values:
+						if ($table==='pages' && $rec_off['t3ver_swapmode']!=-1)	{
+							if ($rec_off['t3ver_swapmode']>0)	{
+								$vType = 'branch';
+							} else {
+								$vType = 'page';
+							}
+						} else {
+							$vType = 'element';
+						}
+						
+						// Get icon
 						$icon = t3lib_iconWorks::getIconImage($table, $rec_off, $this->doc->backPath, ' align="top" title="'.t3lib_BEfunc::getRecordIconAltText($rec_off,$table).'"');
-						$icon = $this->doc->wrapClickMenuOnIcon($icon, $table, $rec_off['uid'], 1, '', '+edit,view,info,delete');
+						$tempUid = ($table != 'pages' || $vType==='branch' || $GLOBALS['BE_USER']->workspace===0 ? $rec_off['uid'] : $rec_on['uid']);
+						$icon = $this->doc->wrapClickMenuOnIcon($icon, $table, $tempUid, 1, '', '+edit,' . ($table == 'pages' ? 'view,info,' : '') . 'delete');
 
 							// Prepare diff-code:
 						if ($this->MOD_SETTINGS['diff'] || $this->diffOnly)	{
@@ -817,17 +831,6 @@ class tx_version_cm1 extends t3lib_SCbase {
 								$diffCode.= $diffHTML;
 							}
 						} else $diffCode = '';
-
-							// Prepare swap-mode values:
-						if ($table==='pages' && $rec_off['t3ver_swapmode']!=-1)	{
-							if ($rec_off['t3ver_swapmode']>0)	{
-								$vType = 'branch';
-							} else {
-								$vType = 'page';
-							}
-						} else {
-							$vType = 'element';
-						}
 
 						switch($vType) {
 							case 'element':

@@ -381,10 +381,24 @@ class wslib_gui {
 								// Traverse the versions of the element
 								foreach($recs as $rec)	{
 
-									// Get the offline version record and icon:
+									// Get the offline version record:
 									$rec_off = t3lib_BEfunc::getRecord($table,$rec['uid']);
+
+									// Prepare swap-mode values:
+									if ($table==='pages' && $rec_off['t3ver_swapmode']!=-1)	{
+										if ($rec_off['t3ver_swapmode']>0)	{
+											$vType = 'branch';	// Do not translate!
+										} else {
+											$vType = 'page';	// Do not translate!
+										}
+									} else {
+										$vType = 'element';	// Do not translate!
+									}
+
+									// Get icon:
 									$icon = t3lib_iconWorks::getIconImage($table, $rec_off, $this->doc->backPath, ' align="top" title="'.t3lib_BEfunc::getRecordIconAltText($rec_off,$table).'"');
-									$icon = $this->doc->wrapClickMenuOnIcon($icon, $table, $rec_off['uid'], 2, '', '+edit,view,info,delete');
+									$tempUid = ($table != 'pages' || $vType==='branch' || $GLOBALS['BE_USER']->workspace == 0 ? $rec_off['uid'] : $rec_on['uid']);
+									$icon = $this->doc->wrapClickMenuOnIcon($icon, $table, $tempUid, 2, '', '+edit,' . ($table == 'pages' ? 'view,info,' : '') . 'delete');
 
 									// Prepare diff-code:
 									if ($this->diff)	{
@@ -403,17 +417,6 @@ class wslib_gui {
 										}
 
 									} else $diffCode = '';
-
-									// Prepare swap-mode values:
-									if ($table==='pages' && $rec_off['t3ver_swapmode']!=-1)	{
-										if ($rec_off['t3ver_swapmode']>0)	{
-											$vType = 'branch';	// Do not translate!
-										} else {
-											$vType = 'page';	// Do not translate!
-										}
-									} else {
-										$vType = 'element';	// Do not translate!
-									}
 
 									switch($vType) {
 										case 'element':
@@ -447,12 +450,12 @@ class wslib_gui {
 									$multipleWarning = (!$mainCell && $GLOBALS['BE_USER']->workspace!==0? '<br/>'.$this->doc->icons(3).'<b>'.$LANG->getLL('label_multipleversions').'</b>' : '');
 									$verWarning = $warnAboutVersions || ($warnAboutVersions_nonPages && $GLOBALS['TCA'][$table]['ctrl']['versioning_followPages'])? '<br/>'.$this->doc->icons(3).'<b>'.$LANG->getLL('label_nestedversions').'</b>' : '';
 									$verElement = $icon.
-									'<a href="'.htmlspecialchars($this->doc->backPath.t3lib_extMgm::extRelPath('version').'cm1/index.php?id='.($table==='pages'?$rec_on['uid']:$rec_on['pid']).'&details='.rawurlencode($table.':'.$rec_off['uid']).'&returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))).'">'.
-									t3lib_BEfunc::getRecordTitle($table,$rec_off,TRUE).
-									'</a>'.
-									$versionsInOtherWSWarning.
-									$multipleWarning.
-									$verWarning;
+										'<a href="'.htmlspecialchars($this->doc->backPath.t3lib_extMgm::extRelPath('version').'cm1/index.php?id='.($table==='pages'?$rec_on['uid']:$rec_on['pid']).'&details='.rawurlencode($table.':'.$rec_off['uid']).'&returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))).'">'.
+										t3lib_BEfunc::getRecordTitle($table,$rec_off,TRUE).
+										'</a>'.
+										$versionsInOtherWSWarning.
+										$multipleWarning.
+										$verWarning;
 									if ($diffCode)	{
 										$verElement = '
 										<table border="0" cellpadding="0" cellspacing="0" class="ver-verElement">
