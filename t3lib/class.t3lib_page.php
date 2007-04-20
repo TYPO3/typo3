@@ -115,7 +115,7 @@ class t3lib_pageSelect {
 		// Versioning preview related:
 	var $versioningPreview = FALSE;		// If true, preview of other record versions is allowed. THIS MUST ONLY BE SET IF the page is not cached and truely previewed by a backend user!!!
 	var $versioningWorkspaceId = 0;		// Workspace ID for preview
-
+	var	$workspaceCache = array();
 
 
 		// Internal, dynamic:
@@ -799,7 +799,9 @@ class t3lib_pageSelect {
 		$uid = intval($uid);
 		if (is_array($TCA[$table]) || $table=='pages') {	// Excluding pages here so we can ask the function BEFORE TCA gets initialized. Support for this is followed up in deleteClause()...
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($fields, $table, 'uid='.intval($uid).$this->deleteClause($table));
-			if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
+			$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
+			$GLOBALS['TYPO3_DB']->sql_free_result($res);
+			if ($row) {
 				if (!$noWSOL)	{
 					$this->versionOL($table,$row);
 				}
@@ -1068,8 +1070,8 @@ class t3lib_pageSelect {
 				}
 			}
 
-				// If workspace ids matches and ID of current online version is found, look up the PID value of that:
-			if ($oid && !strcmp((int)$wsid,$this->versioningWorkspaceId))	{
+			// If workspace ids matches and ID of current online version is found, look up the PID value of that:
+			if ($oid && (($this->versioningWorkspaceId == 0 && $this->checkWorkspaceAccess($wsid)) || !strcmp((int)$wsid,$this->versioningWorkspaceId)))	{
 				$oidRec = $this->getRawRecord($table,$oid,'pid',TRUE);
 
 				if (is_array($oidRec))	{
@@ -1198,6 +1200,38 @@ class t3lib_pageSelect {
 		}
 
 		return FALSE;	// No look up in database because versioning not enabled / or workspace not offline
+	}
+
+	/**
+	 * Checks if user has access to workspace.
+	 * 
+	 * @param	int	$wsid	Workspace ID
+	 * @return	boolean	<code>true</code> if has access
+	 */
+	function checkWorkspaceAccess($wsid) {
+		if (!$GLOBALS['BE_USER']) {
+			return false;
+		}
+		if (isset($this->workspaceCache[$wsid])) {
+			$ws = $this->workspaceCache[$wsid];
+		}
+		else {
+			if ($wsid > 0) {
+				$ws = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', 'sys_workspace', 'uid='.intval($wsid).' AND deleted=0'); // No $TCA yet!
+				if (count($ws)) {
+					$ws = $ws[0];
+				}
+				else {
+					return false;
+				}
+			}
+			else {
+				$ws = $wsid;
+			}
+			$ws = $GLOBALS['BE_USER']->checkWorkspace($ws);
+			$this->workspaceCache[$wsid] = $ws;
+		}
+		return ($ws['_ACCESS'] != '');
 	}
 }
 

@@ -966,10 +966,19 @@
 
 			// If not rootline we're off...
 		if (!count($this->rootLine))	{
-			$this->printError('The requested page didn\'t have a proper connection to the tree-root! <br /><br />('.$this->sys_page->error_getRootLine.')');
-			exit;
+			$ws = $this->whichWorkspace();
+			if ($this->sys_page->error_getRootLine_failPid==-1 && $ws) {
+				$this->sys_page->versioningPreview = TRUE;
+				$this->versioningWorkspaceId = $ws;
+				$this->rootLine = $this->sys_page->getRootLine($this->id,$this->MP);
+			}
+			if (!count($this->rootLine))	{
+				$this->printError('The requested page didn\'t have a proper connection to the tree-root! <br /><br />('.$this->sys_page->error_getRootLine.')');
+				exit;
+			}
+			$this->fePreview = 1;
 		}
-
+				
 			// Checking for include section regarding the hidden/starttime/endtime/fe_user (that is access control of a whole subbranch!)
 		if ($this->checkRootlineForIncludeSection())	{
 			if (!count($this->rootLine))	{

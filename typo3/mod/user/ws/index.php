@@ -611,12 +611,26 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 									// Traverse the versions of the element
 								foreach($recs as $rec)	{
 
-										// Get the offline version record and icon:
+									// Get the offline version record:
 									$rec_off = t3lib_BEfunc::getRecord($table,$rec['uid']);
-									$icon = t3lib_iconWorks::getIconImage($table, $rec_off, $this->doc->backPath, ' align="top" title="'.t3lib_BEfunc::getRecordIconAltText($rec_off,$table).'"');
-									$icon = $this->doc->wrapClickMenuOnIcon($icon, $table, $rec_off['uid'], 2, '', '+edit,view,info,delete');
 
-										// Prepare diff-code:
+									// Prepare swap-mode values:
+									if ($table==='pages' && $rec_off['t3ver_swapmode']!=-1)	{
+										if ($rec_off['t3ver_swapmode']>0)	{
+											$vType = 'branch';	// Do not translate!
+										} else {
+											$vType = 'page';	// Do not translate!
+										}
+									} else {
+										$vType = 'element';	// Do not translate!
+									}
+
+									// Get icon:
+									$icon = t3lib_iconWorks::getIconImage($table, $rec_off, $this->doc->backPath, ' align="top" title="'.t3lib_BEfunc::getRecordIconAltText($rec_off,$table).'"');
+									$tempUid = ($table != 'pages' || $vType==='branch' || $GLOBALS['BE_USER']->workspace == 0 ? $rec_off['uid'] : $rec_on['uid']);
+									$icon = $this->doc->wrapClickMenuOnIcon($icon, $table, $tempUid, 2, '', '+edit,' . ($table == 'pages' ? 'view,info,' : '') . 'delete');
+
+									// Prepare diff-code:
 									if ($this->MOD_SETTINGS['diff'])	{
 										$diffCode = '';
 										list($diffHTML,$diffPct) = $this->createDiffView($table, $rec_off, $rec_on);
@@ -633,17 +647,6 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 										}
 
 									} else $diffCode = '';
-
-										// Prepare swap-mode values:
-									if ($table==='pages' && $rec_off['t3ver_swapmode']!=-1)	{
-										if ($rec_off['t3ver_swapmode']>0)	{
-											$vType = 'branch';	// Do not translate!
-										} else {
-											$vType = 'page';	// Do not translate!
-										}
-									} else {
-										$vType = 'element';	// Do not translate!
-									}
 
 									switch($vType) {
 										case 'element':

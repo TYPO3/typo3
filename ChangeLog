@@ -1,3 +1,7 @@
+2007-04-18  Dmitry Dulepov  <dmitry@typo3.org>
+
+	* Fixed bug #1839: Broken Rootline when a Editor view a Page that is not online
+
 2007-04-18  Ernesto Baschny  <ernst@cron-it.de>
 
 	* Fixed bug #3729: Roll-over (RO) on a GMENU in IE didn't work with xhtml_strict
