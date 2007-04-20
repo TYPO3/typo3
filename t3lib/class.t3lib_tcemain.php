@@ -2347,8 +2347,8 @@ class t3lib_TCEmain	{
 											$elementList[$table][] = array($id, $value['swapWith']);
 										}
 										foreach ($elementList as $tbl => $idList) {
-											foreach ($idList as $id) {
-												$this->version_swap($tbl,$id[0],$id[1],$value['swapIntoWS']);
+											foreach ($idList as $idSet) {
+												$this->version_swap($tbl,$idSet[0],$idSet[1],$value['swapIntoWS']);
 											}
 										}
 									break;
@@ -3147,7 +3147,7 @@ class t3lib_TCEmain	{
 					$this->log($table,$uid,4,0,1,"Attempt to move record '%s' (%s) without having permissions to do so",14,array($propArr['header'],$table.':'.$uid),$propArr['event_pid']);
 				}
 			} else {
-				$this->newlog("Move attempt failed due to workspace restrictions: ".implode(' ',$workspaceAccessBlocked),1);
+				$this->newlog("Move attempt failed due to workspace restrictions: ".implode(' / ',$workspaceAccessBlocked),1);
 			}
 		}
 	}
@@ -3780,6 +3780,7 @@ class t3lib_TCEmain	{
 									'1'
 								);
 								list($highestVerNumber) = $GLOBALS['TYPO3_DB']->sql_fetch_row($res);
+								$GLOBALS['TYPO3_DB']->sql_free_result($res);
 
 									// Look for version number of the current:
 								$subVer = $row['t3ver_id'].'.'.($highestVerNumber+1);
@@ -6391,7 +6392,7 @@ State was change by %s (username: %s)
 					$GLOBALS['TYPO3_DB']->sql_free_result($res);
 				}
 			}
-			if ($offlinePageId != $pageId) {
+			if ($offlinePageId && $offlinePageId != $pageId) {
 				$elementData['pages'][] = array($pageId, $offlinePageId);
 			}
 		}

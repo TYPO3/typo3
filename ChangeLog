@@ -1,6 +1,8 @@
 2007-04-18  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Fixed bug #1839: Broken Rootline when a Editor view a Page that is not online
+	* Changed loop variable name in TCEMain because it could corrupt information passed to post-processing hook
+	* Fixed workspace publishing error that may happen when "Element" versioning type is used
 
 2007-04-19	Thomas Hempel	<thomas@work.de>
 	
