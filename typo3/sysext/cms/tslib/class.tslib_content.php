@@ -3847,7 +3847,6 @@ class tslib_cObj {
 			$theSize = filesize($theFile);
 			$fI = t3lib_div::split_fileref($theFile);
 			if ($conf['icon'])	{
-// TODO the path should be configurable (see bug #1378)
 				$iconP = t3lib_extMgm::siteRelPath('cms').'tslib/media/fileicons/';
 				$icon = @is_file($iconP.$fI['fileext'].'.gif') ? $iconP.$fI['fileext'].'.gif' : $iconP.'default.gif';
 					// Checking for images: If image, then return link to thumbnail.
