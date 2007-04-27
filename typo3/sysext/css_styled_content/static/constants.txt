@@ -25,6 +25,10 @@ styles.content.links {
   target = {$PAGE_TARGET}
   allowTags = b,i,u,a,img,br,div,center,pre,font,hr,sub,sup,p,strong,em,li,ul,ol,blockquote,strike,span,h1,h2,h3,h4,h5,h6
 }
+[compatVersion = 4.2.0]
+styles.content.links.allowTags := addToList(address)
+[global]
+
 
 styles.content.imgtext {
     # TIP! if register[maxImageWidth] is set, this will override maxW

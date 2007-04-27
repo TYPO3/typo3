@@ -2,6 +2,7 @@
 2007-04-27  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
 	* Change default date formatting of CE header to be localized (needs compat version of 4.2)
+	* Add "address" to the list of allowed tags of parseFuncs (needs compat version of 4.2)
 
 2007-04-27  Michael Stucki  <michael@typo3.org>
 
