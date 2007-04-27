@@ -1,3 +1,7 @@
+2007-04-28  Michael Stucki  <michael@typo3.org>
+
+	* Fix bug in TypoScript object browser: New keys were not added when pressing the return key in the update form instead of clicking the submit button.
+
 2007-04-18  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Fixed bug #1839: Broken Rootline when a Editor view a Page that is not online
