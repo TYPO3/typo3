@@ -220,9 +220,13 @@ class tx_tstemplateobjbrowser extends t3lib_extobjbase {
 				$line="";
 		//		debug($POST);
 				if (is_array($POST["data"]))	{
+					$name = key($POST["data"]);
+					if ($POST['data'][$name]['name']!=='') {
+							// Workaround for this special case: User adds a key and submits by pressing the return key. The form however will use "add_property" which is the name of the first submit button in this form.
+						unset($POST['update_value']);
+						$POST['add_property'] = 'Add';
+					}
 					if ($POST["add_property"])	{
-						reset($POST["data"]);
-						$name = key($POST["data"]);
 						$property = trim($POST["data"][$name]["name"]);
 						if (ereg_replace("[^a-zA-Z0-9_\.]*","",$property)!=$property)	{
 							$theOutput.=$this->pObj->doc->spacer(10);
@@ -234,17 +238,13 @@ class tx_tstemplateobjbrowser extends t3lib_extobjbase {
 							$line.=chr(10).$pline;
 						}
 					}
-					if ($POST["update_value"])	{
-						reset($POST["data"]);
-						$name = key($POST["data"]);
+					elseif ($POST['update_value']) {
 						$pline= $name." = ".trim($POST["data"][$name]["value"]);
 						$theOutput.=$this->pObj->doc->spacer(10);
 						$theOutput.=$this->pObj->doc->section($GLOBALS["TBE_TEMPLATE"]->rfw("VALUE UPDATED"),htmlspecialchars($pline),0,0,0,1);
 						$line.=chr(10).$pline;
 					}
-					if ($POST["clear_object"])	{
-						reset($POST["data"]);
-						$name = key($POST["data"]);
+					elseif ($POST['clear_object']) {
 						if ($POST["data"][$name]["clearValue"])	{
 							$pline= $name." >";
 							$theOutput.=$this->pObj->doc->spacer(10);
@@ -326,8 +326,8 @@ class tx_tstemplateobjbrowser extends t3lib_extobjbase {
 			$theOutput.=$this->pObj->doc->divider(5);
 			if ($existTemplate)	{
 					// Value
-				$out="";
-				$out=$this->pObj->sObj." =<BR>";
+				$out = '';
+				$out.= $this->pObj->sObj.' =<br />';
 				$out.='<input type="Text" name="data['.$this->pObj->sObj.'][value]" value="'.htmlspecialchars($theSetupValue).'"'.$GLOBALS["TBE_TEMPLATE"]->formWidth(40).'>';
 				$out.='<input type="Submit" name="update_value" value="Update">';
 				$theOutput.=$this->pObj->doc->section("Edit object/property value:",$out,0,0);

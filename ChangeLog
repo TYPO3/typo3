@@ -14,6 +14,7 @@
 		- Set new default values: Check several fields, e.g. "block mode", "syntax highlighting", etc. by default
 		- Define default values properly in each class instead of setting them globally
 		- Use the TSparser and display comments nicely in the object browser
+		- Fix bug: New keys were not added by the object browser when pressing the return key in the update form instead of clicking the submit button. The fix is a workaround, the real problem is that the form contains two submit buttons with different actions...
 
 2007-04-27  Ingo Renner  <typo3@ingo-renner.com>
 
