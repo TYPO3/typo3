@@ -2618,13 +2618,13 @@ class t3lib_BEfunc	{
 					if (is_array($var) && (!$dontValidateList || !t3lib_div::inList($dontValidateList,$key)))	{
 							// If the setting is an array or not present in the menu-array, MOD_MENU, then the default value is inserted.
 						if (is_array($settings[$key]) || !isset($MOD_MENU[$key][$settings[$key]]))	{
-							$settings[$key]=(string)key($var);
+							$settings[$key] = (string)key($var);
 							$changed=1;
 						}
 					}
 					if ($setDefaultList && !is_array($var))	{	// Sets default values (only strings/checkboxes, not menus)
 						if (t3lib_div::inList($setDefaultList,$key) && !isset($settings[$key]))	{
-							$settings[$key]=$var;
+							$settings[$key] = (string)$var;
 						}
 					}
 				}

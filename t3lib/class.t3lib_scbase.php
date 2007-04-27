@@ -275,7 +275,6 @@ class t3lib_SCbase {
 		#debug($this->MOD_MENU['function'],$this->MCONF['name']);
 		#debug($this->modTSconfig['properties']);
 
-			// CLEANSE 'function' SETTINGS
 		$this->MOD_SETTINGS = t3lib_BEfunc::getModuleData($this->MOD_MENU, t3lib_div::_GP('SET'), $this->MCONF['name'], $this->modMenu_type, $this->modMenu_dontValidateList, $this->modMenu_setDefaultList);
 	}
 
@@ -351,7 +350,7 @@ class t3lib_SCbase {
 			$this->extObj = t3lib_div::makeInstance($this->extClassConf['name']);
 			$this->extObj->init($this,$this->extClassConf);
 				// Re-write:
-			$this->MOD_SETTINGS = t3lib_BEfunc::getModuleData($this->MOD_MENU, t3lib_div::_GP('SET'), $this->MCONF['name']);
+			$this->MOD_SETTINGS = t3lib_BEfunc::getModuleData($this->MOD_MENU, t3lib_div::_GP('SET'), $this->MCONF['name'], $this->modMenu_type, $this->modMenu_dontValidateList, $this->modMenu_setDefaultList);
 		}
 	}
 

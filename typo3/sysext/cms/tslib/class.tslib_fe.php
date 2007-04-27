@@ -929,7 +929,7 @@
 					$c--;
 					$this->id = $this->rootLine[$c]['uid'];
 					$this->page = $this->sys_page->getPage($this->id);
-					if (count($this->page)){ break; }
+					if (count($this->page)) { break; }
 				}
 			}
 				// If still no page...

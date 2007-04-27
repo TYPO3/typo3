@@ -31,6 +31,13 @@
 require_once(PATH_t3lib."class.t3lib_extobjbase.php");
 
 class tx_tstemplateobjbrowser extends t3lib_extobjbase {
+	function init(&$pObj,$conf)	{
+		parent::init($pObj,$conf);
+
+		$this->pObj->modMenu_dontValidateList.= ',ts_browser_toplevel_setup,ts_browser_toplevel_const,ts_browser_TLKeys_setup,ts_browser_TLKeys_const';
+		$this->pObj->modMenu_setDefaultList.= ',ts_browser_fixedLgd,ts_browser_showComments';
+	}
+
 	function modMenu()	{
 		global $LANG;
 
@@ -50,9 +57,9 @@ class tx_tstemplateobjbrowser extends t3lib_extobjbase {
 				"subst" => "Substituted constants in green",
 				"const" => "UN-substituted constants in green"
 			),
-			"ts_browser_regexsearch" => "",
-			"ts_browser_fixedLgd" => "1",
-			"ts_browser_linkObjects" => "1",
+			'ts_browser_regexsearch' => '1',
+			'ts_browser_fixedLgd' => '1',
+			'ts_browser_showComments' => '1',
 			'ts_browser_alphaSort' => '1',
 		);
 
@@ -291,9 +298,9 @@ class tx_tstemplateobjbrowser extends t3lib_extobjbase {
 
 		$tmpl->regexMode = $this->pObj->MOD_SETTINGS["ts_browser_regexsearch"];
 		$tmpl->fixedLgd=$this->pObj->MOD_SETTINGS["ts_browser_fixedLgd"];
-#		$tmpl->linkObjects=$this->pObj->MOD_SETTINGS["ts_browser_linkObjects"];
 		$tmpl->linkObjects = TRUE;
 		$tmpl->ext_regLinenumbers = TRUE;
+		$tmpl->ext_regComments = $this->pObj->MOD_SETTINGS['ts_browser_showComments'];;
 		$tmpl->bType=$bType;
 		$tmpl->resourceCheck=1;
 		$tmpl->uplPath = PATH_site.$tmpl->uplPath;
@@ -508,7 +515,7 @@ class tx_tstemplateobjbrowser extends t3lib_extobjbase {
 
 				// Menu in the bottom:
 			$menu = '<label for="checkTs_browser_fixedLgd">Crop lines:</label> '.t3lib_BEfunc::getFuncCheck($this->pObj->id,"SET[ts_browser_fixedLgd]",$this->pObj->MOD_SETTINGS["ts_browser_fixedLgd"],'','','id="checkTs_browser_fixedLgd"');
-			#$menu.= "&nbsp;&nbsp;Enable object links".t3lib_BEfunc::getFuncCheck($this->pObj->id,"SET[ts_browser_linkObjects]",$this->pObj->MOD_SETTINGS["ts_browser_linkObjects"]);
+			$menu .= '<br /><label for="checkTs_browser_showComments">Display comments:</label> '.t3lib_BEfunc::getFuncCheck($this->pObj->id,'SET[ts_browser_showComments]',$this->pObj->MOD_SETTINGS['ts_browser_showComments']);
 			$menu .= '<br /><label for="checkTs_browser_alphaSort">Sort alphabetically:</label> '.t3lib_BEfunc::getFuncCheck($this->pObj->id,'SET[ts_browser_alphaSort]',$this->pObj->MOD_SETTINGS['ts_browser_alphaSort'],'','','id="checkTs_browser_alphaSort"');
 			if ($bType=="setup" && !$this->pObj->MOD_SETTINGS["ts_browser_fixedLgd"])	{
 				$menu.= "<br />Constants display: ".t3lib_BEfunc::getFuncMenu($this->pObj->id,"SET[ts_browser_const]",$this->pObj->MOD_SETTINGS["ts_browser_const"],$this->pObj->MOD_MENU["ts_browser_const"]);

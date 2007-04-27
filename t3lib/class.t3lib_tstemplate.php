@@ -123,7 +123,8 @@ class t3lib_TStemplate	{
 	var $ext_constants_BRP=0;
 	var $ext_config_BRP=0;
 	var $ext_editorcfg_BRP=0;
-	var $ext_regLinenumbers=FALSE;
+	var $ext_regLinenumbers=false;
+	var $ext_regComments=false;
 
 		// Constants:
 	var $uplPath = 'uploads/tf/';
@@ -773,6 +774,7 @@ class t3lib_TStemplate	{
 		$config = t3lib_div::makeInstance('t3lib_TSparser');
 		$config->breakPointLN = intval($this->ext_config_BRP);
 		$config->regLinenumbers = $this->ext_regLinenumbers;
+		$config->regComments = $this->ext_regComments;
 		$config->setup = $this->setup;
 
 			// Transfer information about conditions found in "Constants" and which of them returned true.

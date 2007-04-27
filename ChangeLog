@@ -4,6 +4,11 @@
 	* Add new function t3lib_div::rmdir() to remove directories recursively
 	* Modify filelist module to make use of the t3lib_div::rmdir()
 	* Modify internal_clearPageCache() in t3lib_tcemain and make use of t3lib_div::rmdir() as well
+	* Various enhancements to the TS object browser and TS analyzer:
+		- Add spaces left and right of the "=" mark in the object browser overview
+		- Set new default values: Check several fields, e.g. "block mode", "syntax highlighting", etc. by default
+		- Define default values properly in each class instead of setting them globally
+		- Use the TSparser and display comments nicely in the object browser
 
 2007-04-27  Ingo Renner  <typo3@ingo-renner.com>
 

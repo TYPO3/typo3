@@ -25,23 +25,29 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 /**
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  */
 
 require_once(PATH_t3lib."class.t3lib_extobjbase.php");
 
 class tx_tstemplateanalyzer extends t3lib_extobjbase {
+	function init(&$pObj,$conf)	{
+		parent::init($pObj,$conf);
+
+		$this->pObj->modMenu_setDefaultList.= ',ts_analyzer_checkLinenum,ts_analyzer_checkSyntax,ts_analyzer_checkSyntaxBlockmode';
+	}
+
 	function modMenu()	{
 		global $LANG;
 
-		return Array (
-			"ts_analyzer_checkSetup" => "",
-			"ts_analyzer_checkConst" => "",
-			"ts_analyzer_checkLinenum" => "",
-			"ts_analyzer_checkComments" => "",
-			"ts_analyzer_checkCrop" => "",
-			"ts_analyzer_checkSyntax" => "",
-			"ts_analyzer_checkSyntaxBlockmode" => "",
+		return array (
+			'ts_analyzer_checkSetup' => '1',
+			'ts_analyzer_checkConst' => '1',
+			'ts_analyzer_checkLinenum' => '1',
+			'ts_analyzer_checkComments' => '1',
+			'ts_analyzer_checkCrop' => '1',
+			'ts_analyzer_checkSyntax' => '1',
+			'ts_analyzer_checkSyntaxBlockmode' => '1',
 		);
 	}
 

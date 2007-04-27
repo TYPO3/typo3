@@ -31,7 +31,7 @@
  * 	$TYPO3_CONF_VARS["MODS"]["web_ts"]["onlineResourceDir"]  = Directory of default resources. Eg. "fileadmin/res/" or so.
  *
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  */
 
 
@@ -59,9 +59,9 @@ class SC_mod_web_ts_index extends t3lib_SCbase {
 	var $edit;
 	var $textExtensions = 'html,htm,txt,css,tmpl,inc,js';
 
-	var $modMenu_type = "";
-	var $modMenu_dontValidateList = "ts_browser_toplevel_setup,ts_browser_toplevel_const,ts_browser_TLKeys_setup,ts_browser_TLKeys_const";
-	var $modMenu_setDefaultList = "ts_browser_linkObjects,ts_browser_fixedLgd";
+	var $modMenu_type = '';
+	var $modMenu_dontValidateList = '';
+	var $modMenu_setDefaultList = '';
 
 	function init()	{
 		global $BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$CLIENT,$TYPO3_CONF_VARS;
@@ -126,6 +126,7 @@ class SC_mod_web_ts_index extends t3lib_SCbase {
 
 			$this->doc->inDocStylesArray[] = '
 				TABLE#typo3-objectBrowser A { text-decoration: none; }
+				TABLE#typo3-objectBrowser .comment { color: maroon; font-weight: bold; }
 			';
 
 
@@ -313,7 +314,7 @@ class SC_mod_web_ts_index extends t3lib_SCbase {
 			}
 		}
 
-		$this->MOD_SETTINGS = t3lib_BEfunc::getModuleData($this->MOD_MENU, t3lib_div::_GP('SET'), $this->MCONF['name']);
+		$this->MOD_SETTINGS = t3lib_BEfunc::getModuleData($this->MOD_MENU, t3lib_div::_GP('SET'), $this->MCONF['name'], $this->modMenu_type, $this->modMenu_dontValidateList, $this->modMenu_setDefaultList);
 		$menu = t3lib_BEfunc::getFuncMenu($this->id,'SET[templatesOnPage]',$this->MOD_SETTINGS['templatesOnPage'],$this->MOD_MENU['templatesOnPage']);
 
 		return $menu;

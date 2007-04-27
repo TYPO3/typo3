@@ -279,16 +279,15 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 	}
 
 	/**
-	 * [Describe function...]
+	 * Parses the constants in $this->const with respect to the constant-editor in this module.
+	 * In particular comments in the code are registered and the edit_divider is taken into account.
 	 *
 	 * @return	[type]		...
 	 */
 	function generateConfig_constants()	{
-			// Parses the constants in $this->const with respect to the constant-editor in this module.
-			// In particular comments in the code are registered and the edit_divider is taken into account.
 			// These vars are also set lateron...
-		$this->setup["resources"]= $this->resources;
-		$this->setup["sitetitle"]= $this->sitetitle;
+		$this->setup['resources'] = $this->resources;
+		$this->setup['sitetitle'] = $this->sitetitle;
 
 			// parse constants
 		$constants = t3lib_div::makeInstance("t3lib_TSparser");
@@ -443,9 +442,16 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 						$theValue = $this->ext_fixed_lgd($theValue,$lgdChars);
 					}
 					if ($this->tsbrowser_searchKeys[$depth] & 2)	{	// The value has matched the search string
-						$HTML.='=<b><font color="red">'.$this->makeHtmlspecialchars($theValue).'</font></b>';
+						$HTML.='&nbsp;=&nbsp;<b><font color="red">'.$this->makeHtmlspecialchars($theValue).'</font></b>';
 					} else {
-						$HTML.="=<b>".$this->makeHtmlspecialchars($theValue)."</b>";
+						$HTML.="&nbsp;=&nbsp;<b>".$this->makeHtmlspecialchars($theValue)."</b>";
+					}
+					if ($this->ext_regComments && isset($arr[$key.'..']))	{
+						$comment = $arr[$key.'..'];
+						$comment = preg_replace('/[\r\n]/', ' ', $comment);	// Remove linebreaks, replace with " "
+						$comment = preg_replace('/[#\*]{2,}/', '', $comment);	// Remove # and * if more than twice in a row
+						$comment = preg_replace('/^[#\*\s]+/', '# ', $comment);	// Replace leading # (just if it exists) and add it again. Result: Every comment should be prefixed by a "#".
+						$HTML.= ' <span class="comment">'.trim($comment).'</span>';
 					}
 				}
 				$HTML.="<br />";
