@@ -1292,10 +1292,6 @@
 			}
 		}
 
-			// Convert $code in case it was written as a string (e.g. if edited in Install Tool)
-			// TODO: Once the Install Tool handles such data types correctly, this workaround should be removed again...
-		if (!strcasecmp($code,'TRUE'))	{ $code=TRUE; }
-
 			// Create response:
 		if (gettype($code)=='boolean' || !strcmp($code,1))	{	// Simply boolean; Just shows TYPO3 error page with reason:
 			$this->printError('The page did not exist or was inaccessible.'.($reason ? ' Reason: '.htmlspecialchars($reason) : ''));

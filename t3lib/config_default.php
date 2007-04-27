@@ -328,6 +328,13 @@ if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['im_imvMaskState'])	{
 }
 
 
+	// Convert type of "pageNotFound_handling" setting in case it was written as a string (e.g. if edited in Install Tool)
+	// TODO: Once the Install Tool handles such data types correctly, this workaround should be removed again...
+if (!strcasecmp($TYPO3_CONF_VARS['FE']['pageNotFound_handling'],'TRUE'))	{
+	$TYPO3_CONF_VARS['FE']['pageNotFound_handling'] = TRUE;
+}
+
+
 	// simple debug function which prints output immediately
 function xdebug($var='',$br=0)	{
 		// If you wish to use the debug()-function, and it does not output something, please edit the IP mask in TYPO3_CONF_VARS

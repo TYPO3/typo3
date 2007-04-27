@@ -1,6 +1,6 @@
 2007-04-27  Michael Stucki  <michael@typo3.org>
 
-	* Release of TYPO3 4.2.0snapshot-20070427
+	* Move type conversion of $TYPO3_CONF_VARS['FE']['pageNotFound_handling']='true' (string) into t3lib/config_default.php
 
 2007-04-27  Ingo Renner  <typo3@ingo-renner.com>
 
