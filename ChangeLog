@@ -2,9 +2,9 @@
 
 	* Release of TYPO3 4.2.0snapshot-20070427
 
-2007-04-27  Ingo Renner <typo3@ingo-renner.com>
+2007-04-27  Ingo Renner  <typo3@ingo-renner.com>
 
-	* removed partial t3lib_div in misc/phpcheck/incfile.php and included the real t3lib_div instead, PDT for Eclipse had problems determining the actual t3lib_div because of this
+	* Removed partial t3lib_div in misc/phpcheck/incfile.php and included the real t3lib_div instead, PDT for Eclipse had problems determining the actual t3lib_div because of this
 
 2007-04-18  Dmitry Dulepov  <dmitry@typo3.org>
 
@@ -12,7 +12,7 @@
 	* Changed loop variable name in TCEMain because it could corrupt information passed to post-processing hook
 	* Fixed workspace publishing error that may happen when "Element" versioning type is used
 
-2007-04-19	Thomas Hempel	<thomas@work.de>
+2007-04-19  Thomas Hempel  <thomas@work.de>
 	
 	* Implemented feature request #3894: Open module on startup
 
@@ -34,11 +34,11 @@
 	* Renamed Typoscript condition julianday to dayofyear (see change from 2007-04-03)
 	* Made debug logging of user-supplied SQL queries possible in t3lib_db.
 
-2007-04-04 Andreas Otto <andreas.otto@dkd.de>
+2007-04-04  Andreas Otto  <andreas.otto@dkd.de>
 
 	* Related to bug #4447: A directory handle was not correclty used.
 
-2007-04-03 Andreas Otto <andreas.otto@dkd.de>
+2007-04-03  Andreas Otto  <andreas.otto@dkd.de>
 
 	* Implemented feature request #4914: Adding to new conditions (year and julianday) to class.t3lib_matchcondition.php.
 
