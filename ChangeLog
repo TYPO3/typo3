@@ -1,6 +1,9 @@
 2007-04-27  Michael Stucki  <michael@typo3.org>
 
 	* Move type conversion of $TYPO3_CONF_VARS['FE']['pageNotFound_handling']='true' (string) into t3lib/config_default.php
+	* Add new function t3lib_div::rmdir() to remove directories recursively
+	* Modify filelist module to make use of the t3lib_div::rmdir()
+	* Modify internal_clearPageCache() in t3lib_tcemain and make use of t3lib_div::rmdir() as well
 
 2007-04-27  Ingo Renner  <typo3@ingo-renner.com>
 

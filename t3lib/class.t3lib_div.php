@@ -2551,6 +2551,40 @@ class t3lib_div {
 	}
 
 	/**
+	 * Wrapper function for rmdir, allowing recursive deletion of folders and files
+	 *
+	 * @param	string		Absolute path to folder, see PHP rmdir() function. Removes trailing slash internally.
+	 * @param	boolean		Allow deletion of non-empty directories
+	 * @return	boolean		true if @rmdir went well!
+	 */
+	function rmdir($path,$removeNonEmpty=false)	{
+		$OK = false;
+		$path = preg_replace('|/$|','',$path);	// Remove trailing slash
+
+		if (file_exists($path))	{
+			$OK = true;
+
+			if (is_dir($path))	{
+				if ($removeNonEmpty==true && $handle = opendir($path))	{
+					while ($OK && false !== ($file = readdir($handle)))	{
+						if ($file=='.' || $file=='..') continue;
+						$OK = t3lib_div::rmdir($path.'/'.$file,$removeNonEmpty);
+					}
+					closedir($handle);
+				}
+				if ($OK)	{ $OK = rmdir($path); }
+
+			} else {	// If $dirname is a file, simply remove it
+				$OK = unlink($path);
+			}
+
+			clearstatcache();
+		}
+
+		return $OK;
+	}
+
+	/**
 	 * Returns an array with the names of folders in a specific path
 	 * Will return 'error' (string) if there were an error with reading directory content.
 	 * Usage: 11

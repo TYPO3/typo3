@@ -6240,22 +6240,9 @@ State was change by %s (username: %s)
 		if (t3lib_extMgm::isLoaded('cms'))	{
 			if ($GLOBALS['TYPO3_CONF_VARS']['FE']['pageCacheToExternalFiles']) {
 				$cacheDir = PATH_site.'typo3temp/cache_pages';
-					// TODO: Replace with t3lib_div::rmdir() when available
-				if (@is_dir($cacheDir) && false !== ($topDir = @opendir($cacheDir))) {
-					while (false !== ($dir = @readdir($topDir))) {
-						$curDirName = $cacheDir . '/' . $dir;
-						if (@is_dir($curDirName) && $curDirName{0} != '.' && false !== ($curDir = @opendir($curDirName))) {
-							while (false != ($fname = @readdir($curDir))) {
-								$curFName = $curDirName . '/' . $fname;
-								if (@is_file($curFName)) {
-									@unlink($curFName);
-								}
-							}
-							closedir($curDir);
-							@rmdir($curDirName);
-						}
-					}
-					closedir($topDir);
+				$retVal = t3lib_div::rmdir($cacheDir,true);
+				if (!$retVal) {
+					t3lib_div::sysLog('Could not remove page cache files in "'.$cacheDir.'"','Core/t3lib_tcemain',2);
 				}
 			}
 			$GLOBALS['TYPO3_DB']->exec_DELETEquery('cache_pages','');
