@@ -1,3 +1,7 @@
+2007-04-27  Ingo Renner <typo3@ingo-renner.com>
+
+	* removed partial t3lib_div in misc/phpcheck/incfile.php and included the real t3lib_div instead, PDT for Eclipse had problems determining the actual t3lib_div because of this
+
 2007-04-18  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Fixed bug #1839: Broken Rootline when a Editor view a Page that is not online

@@ -6,262 +6,9 @@ if (1==0 || ($_SERVER['REMOTE_ADDR']!='127.0.0.1'))	{
 
 SetCookie('test_script_cookie', 'Cookie Value!', 0, '/');
 
+include('../../t3lib/class.t3lib_div.php');
 
-class t3lib_div {
-	function trimExplode($delim, $string, $onlyNonEmptyValues=0)	{
-		// This explodes a comma-list into an array where the values are parsed through trim();
-		$temp = explode($delim,$string);
-		$newtemp=array();
-		while(list($key,$val)=each($temp))	{
-			if (!$onlyNonEmptyValues || strcmp("",trim($val)))	{
-				$newtemp[]=trim($val);
-			}
-		}
-		reset($newtemp);
-		return $newtemp;
-	}
-	function dirname($path)	{
-		$p=t3lib_div::revExplode("/",$path,2);
-		return count($p)==2?$p[0]:"";
-	}
-	function revExplode($delim, $string, $count=0)	{
-		$temp = explode($delim,strrev($string),$count);
-		while(list($key,$val)=each($temp))	{
-			$temp[$key]=strrev($val);
-		}
-		$temp=array_reverse($temp);
-		reset($temp);
-		return $temp;
-	}
-
-	/**
-	 * Abstraction method which returns System Environment Variables regardless of server OS, CGI/MODULE version etc. Basically this is SERVER variables for most of them.
-	 * This should be used instead of getEnv() and HTTP_SERVER_VARS/ENV_VARS to get reliable values for all situations.
-	 *
-	 * Usage: 226
-	 *
-	 * @param	string		Name of the "environment variable"/"server variable" you wish to use. Valid values are SCRIPT_NAME, SCRIPT_FILENAME, REQUEST_URI, PATH_INFO, REMOTE_ADDR, REMOTE_HOST, HTTP_REFERER, HTTP_HOST, HTTP_USER_AGENT, HTTP_ACCEPT_LANGUAGE, QUERY_STRING, TYPO3_DOCUMENT_ROOT, TYPO3_HOST_ONLY, TYPO3_HOST_ONLY, TYPO3_REQUEST_HOST, TYPO3_REQUEST_URL, TYPO3_REQUEST_SCRIPT, TYPO3_REQUEST_DIR, TYPO3_SITE_URL, _ARRAY
-	 * @return	string		Value based on the input key, independent of server/os environment.
-	 */
-	function getIndpEnv($getEnvName)	{
-		global $HTTP_SERVER_VARS;
-		/*
-			Conventions:
-			output from parse_url():
-			URL:	http://username:password@192.168.1.4:8080/typo3/32/temp/phpcheck/index.php/arg1/arg2/arg3/?arg1,arg2,arg3&p1=parameter1&p2[key]=value#link1
-			    [scheme] => 'http'
-			    [user] => 'username'
-			    [pass] => 'password'
-			    [host] => '192.168.1.4'
-				[port] => '8080'
-			    [path] => '/typo3/32/temp/phpcheck/index.php/arg1/arg2/arg3/'
-			    [query] => 'arg1,arg2,arg3&p1=parameter1&p2[key]=value'
-			    [fragment] => 'link1'
-
-				Further definition: [path_script] = '/typo3/32/temp/phpcheck/index.php'
-									[path_dir] = '/typo3/32/temp/phpcheck/'
-									[path_info] = '/arg1/arg2/arg3/'
-									[path] = [path_script/path_dir][path_info]
-
-
-			Keys supported:
-
-			URI______:
-				REQUEST_URI		=	[path]?[query]		= /typo3/32/temp/phpcheck/index.php/arg1/arg2/arg3/?arg1,arg2,arg3&p1=parameter1&p2[key]=value
-				HTTP_HOST		=	[host][:[port]]		= 192.168.1.4:8080
-				SCRIPT_NAME		=	[path_script]++		= /typo3/32/temp/phpcheck/index.php		// NOTICE THAT SCRIPT_NAME will return the php-script name ALSO. [path_script] may not do that (eg. '/somedir/' may result in SCRIPT_NAME '/somedir/index.php')!
-				PATH_INFO		=	[path_info]			= /arg1/arg2/arg3/
-				QUERY_STRING	=	[query]				= arg1,arg2,arg3&p1=parameter1&p2[key]=value
-				HTTP_REFERER	=	[scheme]://[host][:[port]][path]	= http://192.168.1.4:8080/typo3/32/temp/phpcheck/index.php/arg1/arg2/arg3/?arg1,arg2,arg3&p1=parameter1&p2[key]=value
-										(Notice: NO username/password + NO fragment)
-
-			CLIENT____:
-				REMOTE_ADDR		=	(client IP)
-				REMOTE_HOST		=	(client host)
-				HTTP_USER_AGENT	=	(client user agent)
-				HTTP_ACCEPT_LANGUAGE	= (client accept language)
-
-			SERVER____:
-				SCRIPT_FILENAME	=	Absolute filename of script		(Differs between windows/unix). On windows 'C:\\blabla\\blabl\\' will be converted to 'C:/blabla/blabl/'
-
-			Special extras:
-				TYPO3_HOST_ONLY	=		[host]			= 192.168.1.4
-				TYPO3_PORT		=		[port]			= 8080 (blank if 80, taken from host value)
-				TYPO3_REQUEST_HOST = 	[scheme]://[host][:[port]]
-				TYPO3_REQUEST_URL =		[scheme]://[host][:[port]][path]?[query]	(sheme will by default be 'http' until we can detect if it's https -
-				TYPO3_REQUEST_SCRIPT =  [scheme]://[host][:[port]][path_script]
-				TYPO3_REQUEST_DIR =		[scheme]://[host][:[port]][path_dir]
-				TYPO3_SITE_URL = 		[scheme]://[host][:[port]][path_dir] of the TYPO3 website
-				TYPO3_DOCUMENT_ROOT	=	Absolute path of root of documents:	TYPO3_DOCUMENT_ROOT.SCRIPT_NAME = SCRIPT_FILENAME (typically)
-
-			Notice: [fragment] is apparently NEVER available to the script!
-
-
-			Testing suggestions:
-			- Output all the values.
-			- In the script, make a link to the script it self, maybe add some parameters and click the link a few times so HTTP_REFERER is seen
-			- ALSO TRY the script from the ROOT of a site (like 'http://www.mytest.com/' and not 'http://www.mytest.com/test/' !!)
-
-		*/
-
-#		if ($getEnvName=='HTTP_REFERER')	return '';
-		switch((string)$getEnvName)	{
-			case 'SCRIPT_NAME':
-				return php_sapi_name()=='cgi' ? $HTTP_SERVER_VARS['PATH_INFO'] : $HTTP_SERVER_VARS['SCRIPT_NAME'];
-			break;
-			case 'SCRIPT_FILENAME':
-				return str_replace('//','/', str_replace('\\','/', php_sapi_name()=='cgi'||php_sapi_name()=='isapi' ? $HTTP_SERVER_VARS['PATH_TRANSLATED']:$HTTP_SERVER_VARS['SCRIPT_FILENAME']));
-			break;
-			case 'REQUEST_URI':
-				// Typical application of REQUEST_URI is return urls, forms submitting to itselt etc. Eg:	returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))
-				if (!$HTTP_SERVER_VARS['REQUEST_URI'])	{	// This is for ISS/CGI which does not have the REQUEST_URI available.
-					return '/'.ereg_replace('^/','',t3lib_div::getIndpEnv('SCRIPT_NAME')).
-						($HTTP_SERVER_VARS['QUERY_STRING']?'?'.$HTTP_SERVER_VARS['QUERY_STRING']:'');
-				} else return $HTTP_SERVER_VARS['REQUEST_URI'];
-			break;
-			case 'PATH_INFO':
-					// $HTTP_SERVER_VARS['PATH_INFO']!=$HTTP_SERVER_VARS['SCRIPT_NAME'] is necessary because some servers (Windows/CGI) are seen to set PATH_INFO equal to script_name
-					// Further, there must be at least one '/' in the path - else the PATH_INFO value does not make sense.
-					// IF 'PATH_INFO' never works for our purpose in TYPO3 with CGI-servers, then 'php_sapi_name()=='cgi'' might be a better check. Right now strcmp($HTTP_SERVER_VARS['PATH_INFO'],t3lib_div::getIndpEnv('SCRIPT_NAME')) will always return false for CGI-versions, but that is only as long as SCRIPT_NAME is set equal to PATH_INFO because of php_sapi_name()=='cgi' (see above)
-//				if (strcmp($HTTP_SERVER_VARS['PATH_INFO'],t3lib_div::getIndpEnv('SCRIPT_NAME')) && count(explode('/',$HTTP_SERVER_VARS['PATH_INFO']))>1)	{
-				if (php_sapi_name()!='cgi')	{
-					return $HTTP_SERVER_VARS['PATH_INFO'];
-				} else return '';
-			break;
-				// These are let through without modification
-			case 'REMOTE_ADDR':
-			case 'REMOTE_HOST':
-			case 'HTTP_REFERER':
-			case 'HTTP_HOST':
-			case 'HTTP_USER_AGENT':
-			case 'HTTP_ACCEPT_LANGUAGE':
-			case 'QUERY_STRING':
-				return $HTTP_SERVER_VARS[$getEnvName];
-			break;
-			case 'TYPO3_DOCUMENT_ROOT':
-				// Some CGI-versions (LA13CGI) and mod-rewrite rules on MODULE versions will deliver a 'wrong' DOCUMENT_ROOT (according to our description). Further various aliases/mod_rewrite rules can disturb this as well.
-				// Therefore the DOCUMENT_ROOT is now always calculated as the SCRIPT_FILENAME minus the end part shared with SCRIPT_NAME.
-				$SFN = t3lib_div::getIndpEnv('SCRIPT_FILENAME');
-				$SN_A = explode('/',strrev(t3lib_div::getIndpEnv('SCRIPT_NAME')));
-				$SFN_A = explode('/',strrev($SFN));
-				$acc=array();
-				while(list($kk,$vv)=each($SN_A))	{
-					if (!strcmp($SFN_A[$kk],$vv))	{
-						$acc[]=$vv;
-					} else break;
-				}
-				$commonEnd=strrev(implode('/',$acc));
-				if (strcmp($commonEnd,''))		$DR = substr($SFN,0,-(strlen($commonEnd)+1));
-				return $DR;
-			break;
-			case 'TYPO3_HOST_ONLY':
-				$p=explode(':',$HTTP_SERVER_VARS['HTTP_HOST']);
-				return $p[0];
-			break;
-			case 'TYPO3_PORT':
-				$p=explode(':',$HTTP_SERVER_VARS['HTTP_HOST']);
-				return $p[1];
-			break;
-			case 'TYPO3_REQUEST_HOST':
-				return 'http'.($HTTP_SERVER_VARS['SSL_SESSION_ID']?'s':'').'://'.	// I hope this: ($HTTP_SERVER_VARS['SSL_SESSION_ID']?'s':'') - is sufficient to detect https...
-					$HTTP_SERVER_VARS['HTTP_HOST'];
-			break;
-			case 'TYPO3_REQUEST_URL':
-				return t3lib_div::getIndpEnv('TYPO3_REQUEST_HOST').t3lib_div::getIndpEnv('REQUEST_URI');
-			break;
-			case 'TYPO3_REQUEST_SCRIPT':
-				return t3lib_div::getIndpEnv('TYPO3_REQUEST_HOST').t3lib_div::getIndpEnv('SCRIPT_NAME');
-			break;
-			case 'TYPO3_REQUEST_DIR':
-				return t3lib_div::getIndpEnv('TYPO3_REQUEST_HOST').t3lib_div::dirname(t3lib_div::getIndpEnv('SCRIPT_NAME')).'/';
-			break;
-			case 'TYPO3_SITE_URL':
-				if (defined('PATH_thisScript') && defined('PATH_site'))	{
-					$lPath = substr(dirname(PATH_thisScript),strlen(PATH_site)).'/';
-					$url = t3lib_div::getIndpEnv('TYPO3_REQUEST_DIR');
-					$siteUrl = substr($url,0,-strlen($lPath));
-					if (substr($siteUrl,-1)!='/')	$siteUrl.='/';
-					return $siteUrl;
-				} else return '';
-
-			break;
-			case '_ARRAY':
-				$out=array();
-					// Here, list ALL possible keys to this function for debug display.
-				$envTestVars = t3lib_div::trimExplode(',','
-					HTTP_HOST,
-					TYPO3_HOST_ONLY,
-					TYPO3_PORT,
-					PATH_INFO,
-					QUERY_STRING,
-					REQUEST_URI,
-					HTTP_REFERER,
-					TYPO3_REQUEST_HOST,
-					TYPO3_REQUEST_URL,
-					TYPO3_REQUEST_SCRIPT,
-					TYPO3_REQUEST_DIR,
-					TYPO3_SITE_URL,
-					SCRIPT_NAME,
-					TYPO3_DOCUMENT_ROOT,
-					SCRIPT_FILENAME,
-					REMOTE_ADDR,
-					REMOTE_HOST,
-					HTTP_USER_AGENT,
-					HTTP_ACCEPT_LANGUAGE',1);
-				reset($envTestVars);
-				while(list(,$v)=each($envTestVars))	{
-					$out[$v]=t3lib_div::getIndpEnv($v);
-				}
-				reset($out);
-				return $out;
-			break;
-		}
-	}
-
-}
-
-	function view_array($array_in)	{
-		// Returns HTML-code, which is a visual representation of a multidimensional array
-		// use t3lib_div::print_array() in order to print an array
-		// Returns false if $array_in is not an array
-		if (is_array($array_in))	{
-			$result='<table border=1 cellpadding=1 cellspacing=0 bgcolor=white>';
-			if (!count($array_in))	{$result.= '<tr><td><font face="Verdana,Arial" size="1"><b>'.HTMLSpecialChars("EMPTY!").'</b></font></td></tr>';}
-			while (list($key,$val)=each($array_in))	{
-				$result.= '<tr><td><font face="Verdana,Arial" size="1">'.HTMLSpecialChars($key).'</font></td><td>';
-				if (is_array($array_in[$key]))	{
-					$result.=t3lib_div::view_array($array_in[$key]);
-				} else
-					$result.= '<font face="Verdana,Arial" size="1" color=red>'.nl2br(HTMLSpecialChars($val)).'<BR></font>';
-				$result.= '</td></tr>';
-			}
-			$result.= '</table>';
-		} else	{
-			$result  = false;
-		}
-		return $result;
-	}
-	function debug($array_in)	{
-		// Prints an array
-		echo view_array($array_in);
-	}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-	error_reporting (E_ALL ^ E_NOTICE);
+error_reporting (E_ALL ^ E_NOTICE);
 
 define("TYPO3_OS", stristr(PHP_OS,"win")&&!stristr(PHP_OS,"darwin")?"WIN":"");
 /*
@@ -272,16 +19,17 @@ define("PATH_thisScript",
 );
 	*/
 
-define("PATH_thisScript",str_replace('//','/', str_replace('\\','/', php_sapi_name()=="cgi"||php_sapi_name()=="isapi" ? $HTTP_SERVER_VARS["PATH_TRANSLATED"]:$HTTP_SERVER_VARS["SCRIPT_FILENAME"])));
+define("PATH_thisScript", str_replace('//','/', str_replace('\\','/', php_sapi_name()=="cgi"||php_sapi_name()=="isapi" ? $HTTP_SERVER_VARS["PATH_TRANSLATED"]:$HTTP_SERVER_VARS["SCRIPT_FILENAME"])));
 define('PATH_site', dirname(PATH_thisScript).'/');
+
 
 
 if (count($_GET) || $_SERVER["HTTP_REFERER"])	{
 	# KOMPENSATED:
 	echo "<H3>t3lib_div::getIndpEnv()</H3><p>These are 'system variables' returned from t3lib_div::getIndpEnv() and should be universal for any server configuration:</p>";
-	debug(t3lib_div::getIndpEnv("_ARRAY"));
+	t3lib_div::debug(t3lib_div::getIndpEnv("_ARRAY"));
 
-	debug(array(
+	t3lib_div::debug(array(
 		"PHP_OS"=>PHP_OS,
 		"TYPO3_OS"=>TYPO3_OS,
 		"PATH_thisScript"=>PATH_thisScript,
@@ -291,7 +39,7 @@ if (count($_GET) || $_SERVER["HTTP_REFERER"])	{
 
 
 
-	##debug(parse_url("http://admin:palindrom@192.168.1.4:8080/typo3/32/temp/phpcheck/index.php/arg1/arg2/arg3/index.php?arg1,arg2,arg3&p1=parameter1&p2[key]=value#link1"));
+	##t3lib_div::debug(parse_url("http://admin:palindrom@192.168.1.4:8080/typo3/32/temp/phpcheck/index.php/arg1/arg2/arg3/index.php?arg1,arg2,arg3&p1=parameter1&p2[key]=value#link1"));
 
 
 	echo "<H3>Raw values</H3><p>These are the raw 'system variables' returned from getenv(), HTTP_SERVER_VARS, HTTP_ENV_VARS etc. These are displayed here so we can find the right values via this testscript to map to with t3lib_div::getIndpEnv()</p>";
