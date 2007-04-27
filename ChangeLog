@@ -1,3 +1,7 @@
+2007-04-27  Michael Stucki  <michael@typo3.org>
+
+	* Release of TYPO3 4.2.0snapshot-20070427
+
 2007-04-27  Ingo Renner <typo3@ingo-renner.com>
 
 	* removed partial t3lib_div in misc/phpcheck/incfile.php and included the real t3lib_div instead, PDT for Eclipse had problems determining the actual t3lib_div because of this
