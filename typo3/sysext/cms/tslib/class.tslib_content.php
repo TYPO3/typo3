@@ -1589,17 +1589,17 @@ class tslib_cObj {
 	 * @return	string		Output
 	 * @link http://typo3.org/doc.0.html?&tx_extrepmgm_pi1[extUid]=270&tx_extrepmgm_pi1[tocEl]=367&cHash=bbc518d930
 	 */
-	function FORM($conf,$formData='')    {
+	function FORM($conf,$formData='') {
 		$content='';
-		if (is_array($formData))	{
+		if (is_array($formData)) {
 			$dataArr = $formData;
 		} else {
-			$data=$this->stdWrap($conf['data'],$conf['data.']);
+			$data = $this->stdWrap($conf['data'],$conf['data.']);
 				// Clearing dataArr
-			$dataArr=array();
+			$dataArr = array();
 				// Getting the original config
 			if (trim($data))	{
-				$data = ereg_replace(chr(10),'||',$data);
+				$data = str_replace(chr(10),'||',$data);
 				$dataArr = explode('||',$data);
 			}
 				// Adding the new dataArray config form:
@@ -1608,16 +1608,18 @@ class tslib_cObj {
 				foreach ($sKeyArray as $theKey)	{
 					$dAA = $conf['dataArray.'][$theKey.'.'];
 					if (is_array($dAA))	{
-						$temp=array();
-						list($temp[0])= explode('|',$dAA['label.'] ? $this->stdWrap($dAA['label'],$dAA['label.']) : $dAA['label']);
-						list($temp[1])= explode('|',$dAA['type']);
-						if ($dAA['required'])	{$temp[1]='*'.$temp[1];}
-						list($temp[2])= explode('|',$dAA['value.'] ? $this->stdWrap($dAA['value'],$dAA['value.']) : $dAA['value']);
+						$temp = array();
+						list($temp[0]) = explode('|',$dAA['label.'] ? $this->stdWrap($dAA['label'],$dAA['label.']) : $dAA['label']);
+						list($temp[1]) = explode('|',$dAA['type']);
+						if ($dAA['required']) {
+							$temp[1] = '*'.$temp[1];
+						}
+						list($temp[2]) = explode('|',$dAA['value.'] ? $this->stdWrap($dAA['value'],$dAA['value.']) : $dAA['value']);
 							// If value Array is set, then implode those values.
-						if (is_array($dAA['valueArray.']))	{
+						if (is_array($dAA['valueArray.'])) {
 							reset($dAA['valueArray.']);
 							$temp_accum = array();
-							while(list($dAKey_vA,$dAA_vA)=each($dAA['valueArray.']))	{
+							while (list($dAKey_vA,$dAA_vA) = each($dAA['valueArray.']))	{
 								if (is_array($dAA_vA) && !strcmp(intval($dAKey_vA).'.',$dAKey_vA))	{
 									$temp_vA=array();
 									list($temp_vA[0])= explode('=',$dAA_vA['label.'] ? $this->stdWrap($dAA_vA['label'],$dAA_vA['label.']) : $dAA_vA['label']);
@@ -1628,7 +1630,7 @@ class tslib_cObj {
 							}
 							$temp[2] = implode(',',$temp_accum);
 						}
-						list($temp[3])= explode('|',$dAA['specialEval.'] ? $this->stdWrap($dAA['specialEval'],$dAA['specialEval.']) : $dAA['specialEval']);
+						list($temp[3]) = explode('|',$dAA['specialEval.'] ? $this->stdWrap($dAA['specialEval'],$dAA['specialEval.']) : $dAA['specialEval']);
 
 							// adding the form entry to the dataArray
 						$dataArr[] = implode('|',$temp);
@@ -1646,15 +1648,15 @@ class tslib_cObj {
 
 		$xhtmlStrict = t3lib_div::inList('xhtml_strict,xhtml_11,xhtml_2',$GLOBALS['TSFE']->xhtmlDoctype);
 			// Formname
-		if ($conf['formName'])	{
+		if ($conf['formName']) {
 			$formname = $this->cleanFormName($conf['formName']);
 		} else {
 			$formname = $GLOBALS['TSFE']->uniqueHash();
 			$formname = 'a'.$formname;	// form name has to start with a letter to reach XHTML compliance
 		}
 
-		if (isset($conf['fieldPrefix']))	{
-			if ($conf['fieldPrefix'])	{
+		if (isset($conf['fieldPrefix'])) {
+			if ($conf['fieldPrefix']) {
 				$prefix = $this->cleanFormName($conf['fieldPrefix']);
 			} else {
 				$prefix = '';
