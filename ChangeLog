@@ -1,3 +1,8 @@
+
+2007-04-27  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+
+	* Change default date formatting of CE header to be localized (needs compat version of 4.2)
+
 2007-04-27  Michael Stucki  <michael@typo3.org>
 
 	* Move type conversion of $TYPO3_CONF_VARS['FE']['pageNotFound_handling']='true' (string) into t3lib/config_default.php

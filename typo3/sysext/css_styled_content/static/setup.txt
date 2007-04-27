@@ -210,6 +210,11 @@ lib.stdheader {
 	stdWrap.prefixComment = 2 | Header:
 }
 
+[compatVersion = 4.2.0]
+lib.stdheader.5.date >
+lib.stdheader.5.strftime = %x
+[end]
+
 
 
 
