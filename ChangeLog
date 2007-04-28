@@ -1,3 +1,8 @@
+2007-04-28  Ernesto Baschny  <ernst@cron-it.de>
+
+	* Fixed bug #4957: CSV export stop exporting a field when there is a linebreak. Thanks for Oliver Klee for the idea and solution.
+	* !!! t3lib_div::cvsValues now exports like RFC 4180 (embedded line-breaks allowed)
+
 2007-04-28  Andreas Otto  <andreas.otto@dkd.de>
 
 	* Fixed bug #3649: Call to a member function formWidth() on object $GLOBALS['TBE_TEMPLATE'] instead on $GLOBALS['SOBE']. Thanks to Chi Hoang for supplying a patch.
@@ -17,7 +22,7 @@
 
 2007-04-28  Oliver Hader  <oh@inpublica.de>
 
-	* Fixed bug #5519: EM - Some input fields don't have real labels yet (thanks to Oliver Klee)
+	* Fixed bug #5519: EM - Some input fields don't have real labels yet (patch by Oliver Klee)
 
 2007-04-27  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 

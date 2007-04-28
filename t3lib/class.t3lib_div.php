@@ -1698,10 +1698,8 @@ class t3lib_div {
 	function csvValues($row,$delim=',',$quote='"')	{
 		reset($row);
 		$out=array();
-		while(list(,$value)=each($row))	{
-			list($valPart) = explode(chr(10),$value);
-			$valPart = trim($valPart);
-			$out[]=str_replace($quote,$quote.$quote,$valPart);
+		foreach ($row as $value) {
+			$out[] = str_replace($quote, $quote.$quote, $value);
 		}
 		$str = $quote.implode($quote.$delim.$quote,$out).$quote;
 		return $str;
