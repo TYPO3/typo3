@@ -1,11 +1,14 @@
-2007-04-28	Andreas Otto <andreas.otto@dkd.de>
+2007-04-28  Andreas Otto  <andreas.otto@dkd.de>
+
 	* Fixed bug #3649: Call to a member function formWidth() on object $GLOBALS['TBE_TEMPLATE'] instead on $GLOBALS['SOBE']. Thanks to Chi Hoang for supplying a patch.
+
 2007-04-28  Ingo Renner  <typo3@ingo-renner.com>
-	* fixed bug #1290: TCEFORM.table.field.linkTitleToSelf-Option could be confusing
-	* !!! removed option ->TCEFORM_confObj:linkTitleToSelf.returnUrl = 1 as it seemed unlogical not to use it
-	* fixed bug 3993: Missing error message for big uploaded files - A message is there but it wasn't useful, changed it to something more understandable
-	* added a link to typo3.org/community and a list of the authors from installed extensions to the the about page (Help->About)
-	* fixed bug 2516: Constants and Setup are switched in select field in TS object browser
+
+	* Fixed bug #1290: TCEFORM.table.field.linkTitleToSelf-Option could be confusing
+	* !!! Removed option ->TCEFORM_confObj:linkTitleToSelf.returnUrl = 1 as it seemed unlogical not to use it
+	* Fixed bug #3993: Missing error message for big uploaded files - A message is there but it wasn't useful, changed it to something more understandable
+	* Added a link to typo3.org/community and a list of the authors from installed extensions to the the about page (Help->About)
+	* Fixed bug #2516: Constants and Setup are switched in select field in TS object browser
 
 2007-04-28  Michael Stucki  <michael@typo3.org>
 
