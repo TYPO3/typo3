@@ -25,7 +25,7 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 /**
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author	Kasper Skï¿½rhï¿½j <kasperYYYY@typo3.com>
  */
 
 require_once(PATH_t3lib."class.t3lib_extobjbase.php");
@@ -43,8 +43,8 @@ class tx_tstemplateobjbrowser extends t3lib_extobjbase {
 
 		$modMenu = array (
 			"ts_browser_type" => array(
-				"setup" => "Setup",
-				"const" => "Constants"
+				"const" => "Constants",
+				"setup" => "Setup"
 			),
 			"ts_browser_toplevel_setup" => array(
 				"0" => "ALL"

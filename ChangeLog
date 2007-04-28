@@ -3,6 +3,7 @@
 	* !!! removed option ->TCEFORM_confObj:linkTitleToSelf.returnUrl = 1 as it seemed unlogical not to use it
 	* fixed bug 3993: Missing error message for big uploaded files - A message is there but it wasn't useful, changed it to something more understandable
 	* added a link to typo3.org/community and a list of the authors from installed extensions to the the about page (Help->About)
+	* fixed bug 2516: Constants and Setup are switched in select field in TS object browser
 
 2007-04-28  Michael Stucki  <michael@typo3.org>
 
