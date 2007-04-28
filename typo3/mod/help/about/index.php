@@ -106,10 +106,21 @@ class SC_mod_help_about_index {
 		$content='
 			<div id="typo3-mod-help-about-index-php-outer">
 				<img src="'.$BACK_PATH.'gfx/typo3logo.gif" width="123" height="34" vspace="10" alt="TYPO3 logo" />
-				<div id="typo3-mod-help-about-index-php-inner">
+				<div class="typo3-mod-help-about-index-php-inner">
 					<h2>TYPO3 Information</h2>
 					<h3>'.$LANG->getLL('welcome',1).'</h3>
 					<p>'.$minorText.'</p>
+				</div>
+
+				<div class="typo3-mod-help-about-index-php-inner">
+					<h2>Community Credits</h2>
+					<p>Visit <a href="http://typo3.org/community/">typo3.org/community</a> if you want to know why TYPO3 rocks.</p>
+				</div>
+
+				<div class="typo3-mod-help-about-index-php-inner">
+					<h2>Extension Authors</h2>
+					<p>This is a list of the people who contributed to the extensions you\'re using in your installation.</p>
+					<p><br />'.$this->getExtensionAuthors().'</p>
 				</div>
 			</div>
 		';
@@ -124,6 +135,32 @@ class SC_mod_help_about_index {
 	 */
 	function printContent()	{
 		echo $this->content;
+	}
+	
+	/**
+	 * gets the author names from the installed extensions
+	 * 
+	 * @return	string	list of extensions authors and their e-mail
+	 */
+	function getExtensionAuthors() {
+		$content = '<table border="0" cellspacing="2" cellpadding="1"><tr><th>Extension</th><th>Author</th></tr>';
+		
+		$loadedExtensions = $GLOBALS['TYPO3_LOADED_EXT'];
+		foreach ($loadedExtensions as $extensionKey => $extension) {
+			if (is_array($extension) && $extension['type'] != 'S') {
+				$emconfPath = PATH_site.$extension['siteRelPath'].'ext_emconf.php';
+				include($emconfPath);
+								
+				$emconf = $EM_CONF['']; // ext key is not set when loading the ext_emconf.php directly
+				
+				$content.= '<tr><td>'.$emconf['title'].' ('.$extensionKey.')</td>'.
+						 		'<td><a href="mailto:'.$emconf['author_email'].'?subject='.rawurlencode('Thanks for your '.$emconf['title'].' extension').'">'.$emconf['author'].'</a></td></tr>';
+			}		
+		}
+
+		$content.= '</table>';
+
+		return $content;
 	}
 }
 
