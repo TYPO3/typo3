@@ -1,3 +1,7 @@
+2007-04-28  Ingo Renner  <typo3@ingo-renner.com>
+	* fixed bug #1290: TCEFORM.table.field.linkTitleToSelf-Option could be confusing
+	* !!! removed option ->TCEFORM_confObj:linkTitleToSelf.returnUrl = 1 as it seemed unlogical not to use it
+
 2007-04-28  Michael Stucki  <michael@typo3.org>
 
 	* Fixed bug in class.em_terconnection.php: Need to base64_encode upload data for some NuSOAP implementations (patch by Karsten Dambekalns)
