@@ -13,6 +13,7 @@
 2007-04-28  Michael Stucki  <michael@typo3.org>
 
 	* Fixed bug in class.em_terconnection.php: Need to base64_encode upload data for some NuSOAP implementations (patch by Karsten Dambekalns)
+	* Fixed bug #1474: Check if session_support is enabled in PHP or output a warning message in the Install Tool (patch by Ingo Schmitt)
 
 2007-04-28  Oliver Hader  <oh@inpublica.de>
 

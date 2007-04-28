@@ -1582,6 +1582,19 @@ From sub-directory:
 //	????			If this option was set falsely you probably didn't see this page in the first place, but this option <strong>may spoil this configuration test</strong> when checking for such as ImageMagick executables.
 		} else $this->message($ext, 'open_basedir: off',"",-1);
 
+			// Check availability of PHP session support
+			// No check possible if session support is availiable, instead check if session name is set, if not raise error as its likely to have no session support
+		if (ini_get('session.name')) {
+			$this->message($ext, 'PHP sessions availiable','
+				<i>PHP Sessions availiabe</i>
+				PHP is compiled with session support and session support is available.
+			',-1);
+		} else {
+			$this->message($ext, 'PHP Sessions not availiabe','
+				PHP is not compiled with session support, or session support is disabled in php.ini.
+				TYPO3 needs session support
+			',3);
+		}
 	}
 
 	/**
@@ -4642,7 +4655,7 @@ $out="
 	 * @param	string		Section header
 	 * @param	string		A short description
 	 * @param	string		A long (more detailed) description
-	 * @param	integer		-1=OK sign, 0=message, 1=notification, 2=warning , 3=error
+	 * @param	integer		-1=OK sign, 0=message, 1=notification, 2=warning, 3=error
 	 * @param	boolean		Print message also in "Advanced" mode (not only in 1-2-3 mode)
 	 * @return	void
 	 */
