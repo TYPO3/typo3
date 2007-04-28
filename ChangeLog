@@ -3,6 +3,7 @@
 
 	* Change default date formatting of CE header to be localized (needs compat version of 4.2)
 	* Add "address" to the list of allowed tags of parseFuncs (needs compat version of 4.2)
+	* Fixed bug #5522: 1-2-3 wizard does not accept host name with socket option
 
 2007-04-27  Michael Stucki  <michael@typo3.org>
 
