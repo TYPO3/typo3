@@ -1,6 +1,7 @@
 2007-04-28  Ingo Renner  <typo3@ingo-renner.com>
 	* fixed bug #1290: TCEFORM.table.field.linkTitleToSelf-Option could be confusing
 	* !!! removed option ->TCEFORM_confObj:linkTitleToSelf.returnUrl = 1 as it seemed unlogical not to use it
+	* fixed bug 3993: Missing error message for big uploaded files - A message is there but it wasn't useful, changed it to something more understandable
 
 2007-04-28  Michael Stucki  <michael@typo3.org>
 
