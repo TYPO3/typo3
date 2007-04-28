@@ -281,7 +281,7 @@ class SC_mod_tools_em_terconnection {
 
 		$filesData = array();
 		foreach ($uArr['FILES'] as $filename => $infoArr) {
-			$content = version_compare(phpversion(), '5.1.0', '<') ? base64_encode($infoArr['content']) : $infoArr['content']; // bug in 5.0.x and NuSOAP - no automatic encoding
+			$content = (!defined('SOAP_1_2') && class_exists('soapclient')) ? base64_encode($infoArr['content']) : $infoArr['content']; // bug in NuSOAP - no automatic encoding
 			$filesData['fileData'][] = array (
 				'name' => utf8_encode($infoArr['name']),
 				'size' => intval($infoArr['size']),

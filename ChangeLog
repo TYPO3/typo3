@@ -4,7 +4,8 @@
 
 2007-04-28  Michael Stucki  <michael@typo3.org>
 
-	* Fix bug in TypoScript object browser: New keys were not added when pressing the return key in the update form instead of clicking the submit button.
+	* Fixed bug in TypoScript object browser: New keys were not added when pressing the return key in the update form instead of clicking the submit button.
+	* Fixed bug in class.em_terconnection.php: Need to base64_encode upload data for some NuSOAP implementations (patch by Karsten Dambekalns)
 
 2007-04-18  Dmitry Dulepov  <dmitry@typo3.org>
 
