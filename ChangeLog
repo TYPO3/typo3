@@ -1,3 +1,5 @@
+2007-04-28	Andreas Otto <andreas.otto@dkd.de>
+	* Fixed bug #3649: Call to a member function formWidth() on object $GLOBALS['TBE_TEMPLATE'] instead on $GLOBALS['SOBE'].
 2007-04-28  Ingo Renner  <typo3@ingo-renner.com>
 	* fixed bug #1290: TCEFORM.table.field.linkTitleToSelf-Option could be confusing
 	* !!! removed option ->TCEFORM_confObj:linkTitleToSelf.returnUrl = 1 as it seemed unlogical not to use it
@@ -43,7 +45,7 @@
 	* Fixed workspace publishing error that may happen when "Element" versioning type is used
 
 2007-04-19  Thomas Hempel  <thomas@work.de>
-	
+
 	* Implemented feature request #3894: Open module on startup
 
 2007-04-18  Ernesto Baschny  <ernst@cron-it.de>
