@@ -1,3 +1,6 @@
+2007-04-28  Oliver Hader  <oh@inpublica.de>
+
+	* Fixed bug #5519: EM - Some input fields don't have real labels yet (thanks to Oliver Klee)
 
 2007-04-27  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 

@@ -667,7 +667,7 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 
 		$content.= t3lib_BEfunc::cshItem('_MOD_tools_em', 'loaded', $GLOBALS['BACK_PATH'],'');
 
-		$content.= 'Look up: <input type="text" name="_lookUp" value="'.htmlspecialchars($this->lookUpStr).'" /><input type="submit" value="Search"/><br/><br/>';
+		$content.= '<label for="_lookUp">Look up:</label> <input type="text" id="_lookUp" name="_lookUp" value="'.htmlspecialchars($this->lookUpStr).'" /><input type="submit" value="Search"/><br/><br/>';
 
 		$content.= '
 
@@ -741,7 +741,7 @@ EXTENSION KEYS:
 			$content.= 'If you want to use an extension in TYPO3, you should simply click the "plus" button '.$this->installButton().' . <br />
 						Installed extensions can also be removed again - just click the remove button '.$this->removeButton().' .<br /><br />';
 
-			$content.= 'Look up: <input type="text" name="_lookUp" value="'.htmlspecialchars($this->lookUpStr).'" /><input type="submit" value="Search"/><br/><br/>';
+			$content.= '<label for="_lookUp">Look up:</label> <input type="text" id="_lookUp" name="_lookUp" value="'.htmlspecialchars($this->lookUpStr).'" /><input type="submit" value="Search"/><br/><br/>';
 			$content.= $this->securityHint.'<br /><br />';
 
 			$content.= '<table border="0" cellpadding="2" cellspacing="1">'.implode('',$lines).'</table>';
@@ -837,8 +837,8 @@ EXTENSION KEYS:
 						// CSH:
 					$content.= t3lib_BEfunc::cshItem('_MOD_tools_em', 'import_ter', $GLOBALS['BACK_PATH'],'|<br/>');
 					$onsubmit = "window.location.href='index.php?ter_connect=1&ter_search='+escape(this.elements['_lookUp'].value);return false;";
-					$content.= '</form><form action="index.php" method="post" onsubmit="'.htmlspecialchars($onsubmit).'">List or look up <strong'.($this->MOD_SETTINGS['display_unchecked']?' style="color:#900;">all':' style="color:#090;">reviewed').'</strong> extensions<br />
-							<input type="text" name="_lookUp" value="'.htmlspecialchars($this->listRemote_search).'" /> <input type="submit" value="Look up" /><br /><br />';
+					$content.= '</form><form action="index.php" method="post" onsubmit="'.htmlspecialchars($onsubmit).'"><label for="_lookUp">List or look up <strong'.($this->MOD_SETTINGS['display_unchecked']?' style="color:#900;">all':' style="color:#090;">reviewed').'</strong> extensions</label><br />
+							<input type="text" id="_lookUp" name="_lookUp" value="'.htmlspecialchars($this->listRemote_search).'" /> <input type="submit" value="Look up" /><br /><br />';
 
  					$content .= $this->browseLinks();
 
@@ -880,8 +880,8 @@ EXTENSION KEYS:
 			} else {
 				$content.= t3lib_BEfunc::cshItem('_MOD_tools_em', 'import_ter', $GLOBALS['BACK_PATH'],'|<br/>');
 				$onsubmit = "window.location.href='index.php?ter_connect=1&ter_search='+escape(this.elements['_lookUp'].value);return false;";
-				$content.= '</form><form action="index.php" method="post" onsubmit="'.htmlspecialchars($onsubmit).'">List or look up <strong'.($this->MOD_SETTINGS['display_unchecked']?' style="color:#900;">all':' style="color:#090;">reviewed').'</strong> extensions<br />
-					<input type="text" name="_lookUp" value="'.htmlspecialchars($this->listRemote_search).'" /> <input type="submit" value="Look up" /><br /><br />';
+				$content.= '</form><form action="index.php" method="post" onsubmit="'.htmlspecialchars($onsubmit).'"><label for="_lookUp">List or look up <strong'.($this->MOD_SETTINGS['display_unchecked']?' style="color:#900;">all':' style="color:#090;">reviewed').'</strong> extensions</label><br />
+					<input type="text" id="_lookUp" name="_lookUp" value="'.htmlspecialchars($this->listRemote_search).'" /> <input type="submit" value="Look up" /><br /><br />';
 
 				$content.= '<p><strong>No matching extensions found.</strong></p>';
 
@@ -893,8 +893,8 @@ EXTENSION KEYS:
 			$content.= t3lib_BEfunc::cshItem('_MOD_tools_em', 'import', $GLOBALS['BACK_PATH'],'|<br/>');
 
 			$onsubmit = "window.location.href='index.php?ter_connect=1&ter_search='+escape(this.elements['_lookUp'].value);return false;";
-			$content.= '</form><form action="index.php" method="post" onsubmit="'.htmlspecialchars($onsubmit).'">List or look up <strong'.($this->MOD_SETTINGS['display_unchecked']?' style="color:#900;">all':' style="color:#090;">reviewed').'</strong> extensions<br />
-			<input type="text" name="_lookUp" value="" /> <input type="submit" value="Look up" /><br /><br />';
+			$content.= '</form><form action="index.php" method="post" onsubmit="'.htmlspecialchars($onsubmit).'"><label for="_lookUp">List or look up <strong'.($this->MOD_SETTINGS['display_unchecked']?' style="color:#900;">all':' style="color:#090;">reviewed').'</strong> extensions</label><br />
+			<input type="text" id="_lookUp" name="_lookUp" value="" /> <input type="submit" value="Look up" /><br /><br />';
 
 			if ($this->CMD['fetchMetaData'])	{	// fetches mirror/extension data from online rep.
 				$content .= $this->fetchMetaData($this->CMD['fetchMetaData']);
@@ -917,8 +917,8 @@ EXTENSION KEYS:
 			// Upload:
 		if ($this->importAtAll())	{
 			$content= '</form><form action="index.php" enctype="'.$GLOBALS['TYPO3_CONF_VARS']['SYS']['form_enctype'].'" method="post">
-			Upload extension file (.t3x):<br />
-				<input type="file" size="60" name="upload_ext_file" /><br />
+			<label for="upload_ext_file">Upload extension file (.t3x):</label><br />
+				<input type="file" size="60" id="upload_ext_file" name="upload_ext_file" /><br />
 				... to location:<br />
 				<select name="CMD[loc]">';
 			if ($this->importAsType('L'))	$content.='<option value="L">Local (../typo3conf/ext/)</option>';
@@ -981,12 +981,12 @@ EXTENSION KEYS:
 			<fieldset><legend>User Settings</legend>
 			<table border="0" cellpadding="2" cellspacing="2">
 				<tr class="bgColor4">
-					<td>Enter repository username:</td>
-					<td><input type="text" name="SET[fe_u]" value="'.htmlspecialchars($this->MOD_SETTINGS['fe_u']).'" /></td>
+					<td><label for="set_fe_u">Enter repository username:</label></td>
+					<td><input type="text" id="set_fe_u" name="SET[fe_u]" value="'.htmlspecialchars($this->MOD_SETTINGS['fe_u']).'" /></td>
 				</tr>
 				<tr class="bgColor4">
-					<td>Enter repository password:</td>
-					<td><input type="password" name="SET[fe_p]" value="'.htmlspecialchars($this->MOD_SETTINGS['fe_p']).'" /></td>
+					<td><label for="set_fe_p">Enter repository password:</label></td>
+					<td><input type="password" id="set_fe_p" name="SET[fe_p]" value="'.htmlspecialchars($this->MOD_SETTINGS['fe_p']).'" /></td>
 				</tr>
 			</table>
 			<strong>Notice:</strong> This is <em>not</em> your password to the TYPO3 backend! This user information is what is needed to log in at typo3.org with your account there!
@@ -996,8 +996,8 @@ EXTENSION KEYS:
 			<fieldset><legend>Mirror selection</legend>
 			<table border="0" cellpadding="2" cellspacing="2">
 				<tr class="bgColor4">
-					<td>Enter mirror list URL:</td>
-					<td><input type="text" size="50" name="SET[mirrorListURL]" value="'.htmlspecialchars($this->MOD_SETTINGS['mirrorListURL']).'" /></td>
+					<td><label for="set_mirror_list_url">Enter mirror list URL:</label></a></td>
+					<td><input type="text" size="50" id="set_mirror_list_url" name="SET[mirrorListURL]" value="'.htmlspecialchars($this->MOD_SETTINGS['mirrorListURL']).'" /></td>
 				</tr>
 			</table>
 			<br />
@@ -1035,8 +1035,8 @@ EXTENSION KEYS:
 			<br />
 			<table border="0" cellpadding="2" cellspacing="2">
 				<tr class="bgColor4">
-					<td>Enter repository URL:</td>
-					<td><input type="text" size="50" name="SET[rep_url]" value="'.htmlspecialchars($this->MOD_SETTINGS['rep_url']).'" /></td>
+					<td><label for="set_rep_url">Enter repository URL:</label></td>
+					<td><input type="text" size="50" id="set_rep_url" name="SET[rep_url]" value="'.htmlspecialchars($this->MOD_SETTINGS['rep_url']).'" /></td>
 				</tr>
 			</table>
 
