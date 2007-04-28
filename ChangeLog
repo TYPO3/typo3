@@ -1,3 +1,7 @@
+2007-04-28  Michael Stucki  <michael@typo3.org>
+
+	* Fixed bug in class.em_terconnection.php: Need to base64_encode upload data for some NuSOAP implementations (patch by Karsten Dambekalns)
+
 2007-04-28  Oliver Hader  <oh@inpublica.de>
 
 	* Fixed bug #5519: EM - Some input fields don't have real labels yet (thanks to Oliver Klee)
