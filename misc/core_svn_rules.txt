@@ -9,6 +9,7 @@ Rules and Conditions for contributions to Core SVN
 - The Core Team Leader (Kasper) is ultimately in charge.
 Note: This makes it possible for many to work together while maintaining control and tracking responsibility more easily. Also it offers boths modes of development: Group and solo.
 
+
 [B] Committing changes to Core SVN
 - As long as changes follow the "General Rules of core development" (see below), the mode of commits is determined by the person responsible for that particular part.
 - Examples:

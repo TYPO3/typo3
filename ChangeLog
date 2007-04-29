@@ -1,7 +1,7 @@
 2007-04-28  Ernesto Baschny  <ernst@cron-it.de>
 
 	* Fixed bug #4957: CSV export stop exporting a field when there is a linebreak. Thanks for Oliver Klee for the idea and solution.
-	* !!! t3lib_div::cvsValues now exports like RFC 4180 (embedded line-breaks allowed)
+	* !!! t3lib_div::cvsValues() now exports like RFC 4180 (embedded line-breaks allowed)
 
 2007-04-28  Andreas Otto  <andreas.otto@dkd.de>
 

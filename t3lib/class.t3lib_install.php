@@ -456,7 +456,7 @@ class t3lib_install {
 			}
 		}
 
-			// Compile information:
+			// Compile key information:
 		if (is_array($tempKeys))	{
 			foreach($tempKeys as $table => $keyInf) {
 				foreach($keyInf as $kName => $index) {
