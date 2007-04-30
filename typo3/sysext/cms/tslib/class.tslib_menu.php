@@ -836,7 +836,13 @@ class tslib_menu {
 			}
 			$this->hash = md5(serialize($this->menuArr).serialize($this->mconf).serialize($this->tmpl->rootLine).serialize($this->MP_array));
 
-			$serData = $this->sys_page->getHash($this->hash, 60*60*24);
+				// Get the cache timeout:
+			if ($this->conf['cache_period']) {
+				$cacheTimeout = $this->conf['cache_period'];
+			} else {
+				$cacheTimeout = $GLOBALS['TSFE']->get_cache_timeout();
+			}
+			$serData = $this->sys_page->getHash($this->hash, $cacheTimeout);
 			if (!$serData)	{
 				$this->generate();
 				$this->sys_page->storeHash($this->hash, serialize($this->result),'MENUDATA');

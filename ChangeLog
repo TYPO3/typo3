@@ -1,3 +1,7 @@
+2007-04-30  Oliver Hader  <oh@inpublica.de>
+
+	* Fixed feature request #5424: Menu cache expire time should be configurable
+
 2007-04-28  Ernesto Baschny  <ernst@cron-it.de>
 
 	* Fixed bug #4957: CSV export stop exporting a field when there is a linebreak. Thanks for Oliver Klee for the idea and solution.

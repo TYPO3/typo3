@@ -2458,7 +2458,7 @@
 	 * @return	void
 	 */
 	function realPageCacheContent()	{
-		$cache_timeout = $this->page['cache_timeout'] ? $this->page['cache_timeout'] : ($this->cacheTimeOutDefault ? $this->cacheTimeOutDefault : 60*60*24);		// seconds until a cached page is too old
+		$cache_timeout = $this->get_cache_timeout();		// seconds until a cached page is too old
 		$timeOutTime = $GLOBALS['EXEC_TIME']+$cache_timeout;
 		if ($this->config['config']['cache_clearAtMidnight'])	{
 			$midnightTime = mktime (0,0,0,date('m',$timeOutTime),date('d',$timeOutTime),date('Y',$timeOutTime));
@@ -3889,6 +3889,25 @@ if (version == "n3") {
 	 */
 	function set_cache_timeout_default($seconds)	{
 		$this->cacheTimeOutDefault = intval($seconds);
+	}
+
+	/**
+	 * Get the cache timeout for the current page.
+	 *
+	 * @return	integer		The cache timeout for the current page.
+	 */
+	function get_cache_timeout() {
+			// Cache period was set for the page:
+		if ($this->page['cache_timeout']) {
+			$cacheTimeout = $this->page['cache_timeout'];
+			// Cache period was set for the whole site:
+		} elseif ($this->cacheTimeOutDefault) {
+			$cacheTimeout = $this->cacheTimeOutDefault;
+			// No cache period set at all, so we take one day (60*60*24 seconds = 86400 seconds):
+		} else {
+			$cacheTimeout = 86400;
+		}
+		return $cacheTimeout;
 	}
 
 	/**
