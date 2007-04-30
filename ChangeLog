@@ -1,4 +1,5 @@
-2007-04-28	Andreas Otto <andreas.otto@dkd.de>
+2007-04-28  Andreas Otto  <andreas.otto@dkd.de>
+
 	* Fixed bug #3649: Call to a member function formWidth() on object $GLOBALS['TBE_TEMPLATE'] instead on $GLOBALS['SOBE'].
 
 2007-04-03  Michael Stucki  <michael@typo3.org>
