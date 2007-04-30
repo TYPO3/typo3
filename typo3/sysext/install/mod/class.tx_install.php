@@ -1583,8 +1583,7 @@ From sub-directory:
 		} else $this->message($ext, 'open_basedir: off',"",-1);
 
 			// Check availability of PHP session support
-			// No check possible if session support is availiable, instead check if session name is set, if not raise error as its likely to have no session support
-		if (ini_get('session.name')) {
+		if (extension_loaded('session')) {
 			$this->message($ext, 'PHP sessions availiable','
 				<i>PHP Sessions availiabe</i>
 				PHP is compiled with session support and session support is available.

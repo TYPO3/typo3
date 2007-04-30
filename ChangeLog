@@ -1,3 +1,7 @@
+2007-04-30  Michael Stucki  <michael@typo3.org>
+
+	* Improve the check for session support in Install Tool (see #1474). Thanks to Martin Kutschker!
+
 2007-04-30  Oliver Hader  <oh@inpublica.de>
 
 	* Fixed feature request #5424: Menu cache expire time should be configurable
