@@ -1,3 +1,8 @@
+
+2007-05-01  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+
+	* Fixed bug #2515: jsfunc.validateform.js does not verify password fields
+
 2007-04-30  Michael Stucki  <michael@typo3.org>
 
 	* Improve the check for session support in Install Tool (see #1474). Thanks to Martin Kutschker!
