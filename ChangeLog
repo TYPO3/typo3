@@ -1,7 +1,7 @@
 
 2007-05-01  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
-	* Fixed bug #2515: jsfunc.validateform.js does not verify password fields
+	* Fixed bug #2515: jsfunc.validateform.js does not verify password fields (thanks to Joerg Wagner)
 
 2007-04-30  Michael Stucki  <michael@typo3.org>
 
