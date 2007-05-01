@@ -85,7 +85,7 @@
 
 2007-04-04  Andreas Otto  <andreas.otto@dkd.de>
 
-	* Related to bug #4447: A directory handle was not correclty used.
+	* Fix bug #5411: A directory handle was not correclty used.
 
 2007-04-03  Andreas Otto  <andreas.otto@dkd.de>
 
