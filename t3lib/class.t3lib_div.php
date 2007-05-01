@@ -4152,7 +4152,7 @@ class t3lib_div {
 	 * @param	string		Encoding type: "base64", "quoted-printable", "8bit". Default value is "quoted-printable".
 	 * @param	string		Charset used in encoding-headers (only if $encoding is set to a valid value which produces such a header)
 	 * @param	boolean		If set, the header content will not be encoded.
-	 * @return	void
+	 * @return	boolean		True if mail was accepted for delivery, false otherwise
 	 */
 	function plainMailEncoded($email,$subject,$message,$headers='',$encoding='quoted-printable',$charset='',$dontEncodeHeader=false)	{
 		if (!$charset)	{
@@ -4211,7 +4211,11 @@ class t3lib_div {
 
 		$headers=trim(implode($linebreak,t3lib_div::trimExplode(chr(10),$headers,1)));	// Make sure no empty lines are there.
 
-		mail($email,$subject,$message,$headers);
+		$ret = @mail($email,$subject,$message,$headers);
+		if (!$ret)	{
+			t3lib_div::sysLog('Mail to "'.$email.'" could not be sent (Subject: "'.$subject.'").', 'Core', 3);
+		}
+		return $ret;
 	}
 
 	/**
