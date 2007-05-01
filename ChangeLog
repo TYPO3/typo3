@@ -1,3 +1,8 @@
+
+2007-05-01  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+
+	* Fixed bug #2515: jsfunc.validateform.js does not verify password fields
+
 2007-04-28  Andreas Otto  <andreas.otto@dkd.de>
 
 	* Fixed bug #3649: Call to a member function formWidth() on object $GLOBALS['TBE_TEMPLATE'] instead on $GLOBALS['SOBE'].
