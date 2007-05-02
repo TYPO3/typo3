@@ -95,6 +95,7 @@ class SC_mod_user_setup_index {
 	var $content;
 	var $overrideConf;
 	var $OLD_BE_USER;
+	var $languageUpdate;
 
 
 
@@ -125,6 +126,10 @@ class SC_mod_user_setup_index {
 
 				// PUT SETTINGS into the ->uc array:
 
+				// reload left frame when switching BE language
+			if (isset($d['lang']) && ($d['lang'] != $BE_USER->uc['lang'])) {
+				$this->languageUpdate = true;
+			}
 				// Language
 			$BE_USER->uc['lang'] = $d['lang'];
 
@@ -247,7 +252,16 @@ class SC_mod_user_setup_index {
 	 * @return	void
 	 */
 	function main()	{
-		global $BE_USER,$LANG,$BACK_PATH,$TBE_MODULES;;
+		global $BE_USER,$LANG,$BACK_PATH,$TBE_MODULES;
+		
+		if ($this->languageUpdate) {
+			$this->doc->JScode.= '<script language="javascript" type="text/javascript">
+	top.menu.refreshMenu();
+	if(top.shortcutFrame) {
+		top.shortcutFrame.refreshShortcuts();
+	}
+</script>';
+		}
 
 			// Start page:
 		$this->doc->JScode.= '<script language="javascript" type="text/javascript" src="'.$BACK_PATH.'md5.js"></script>';

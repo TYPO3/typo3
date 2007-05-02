@@ -262,6 +262,9 @@ class SC_alt_shortcut {
 			function changeWorkspacePreview(newstate)	{	//
 				window.location.href="alt_shortcut.php?changeWorkspacePreview="+newstate;
 			}
+			function refreshShortcuts() { 
+				window.location.href = document.URL;
+			}
 
 			');
 		$this->content.=$this->doc->startPage('Shortcut frame');

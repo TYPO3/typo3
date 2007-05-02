@@ -32,7 +32,7 @@
  * XHTML-trans compliant
  *
  * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
- * @co-author Sebastian Kurfürst <sebastian@garbage-group.de>
+ * @co-author Sebastian Kurfuerst <sebastian@garbage-group.de>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
@@ -73,7 +73,7 @@ require_once ('class.alt_menu_functions.inc');
  * Script Class for rendering the vertical menu in the left side of the backend frameset
  *
  * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
- * @co-author Sebastian Kurfürst <sebastian@garbage-group.de>
+ * @co-author Sebastian Kurfuerst <sebastian@garbage-group.de>
  * @package TYPO3
  * @subpackage core
  */
@@ -111,6 +111,11 @@ class SC_alt_menu {
 		$TBE_TEMPLATE->docType='xhtml_trans';
 		$TBE_TEMPLATE->divClass='vertical-menu';
 		$TBE_TEMPLATE->bodyTagAdditions = 'onload="top.restoreHighlightedModuleMenuItem()"';
+		$TBE_TEMPLATE->JScodeArray[] = '
+		function refreshMenu() { 
+			window.location.href = document.URL;
+		}
+';
 		$this->content.=$TBE_TEMPLATE->startPage('Vertical Backend Menu');
 		$backPath = $GLOBALS['BACK_PATH'];
 

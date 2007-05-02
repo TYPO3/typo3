@@ -1,3 +1,7 @@
+2007-05-02  Ingo Renner  <typo3@ingo-renner.com>
+
+	* fixed bug 584: Changing language in user setup do not reload left frame (menu).
+
 2007-05-02  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Fixed: IRRE does not work with workspaces (fix only for CSV & foreign field cases)
