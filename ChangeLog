@@ -1,6 +1,7 @@
 2007-05-02  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Fixed: IRRE does not work with workspaces (fix only for CSV & foreign field cases)
+	* Fixed: isses with previous fix discovered my Michael Stucki
 
 2007-05-01  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 

@@ -517,7 +517,7 @@ class t3lib_loadDBGroup	{
 			// if there are table items and we have a proper $parentUid
 		if (t3lib_div::testInt($parentUid) && count($this->tableArray)) {
 				// if updateToUid is not a positive integer, set it to '0', so it will be ignored
-			if (!t3lib_div::testInt($updateToUid) && $updateToUid > 0) {
+			if (!(t3lib_div::testInt($updateToUid) && $updateToUid > 0)) {
 				$updateToUid = 0;
 			}
 			$fields = 'uid,'.$foreign_field.($symmetric_field ? ','.$symmetric_field : '');
