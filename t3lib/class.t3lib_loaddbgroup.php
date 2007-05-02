@@ -503,7 +503,7 @@ class t3lib_loadDBGroup	{
 	 *
 	 * @param	array		$conf: TCA configuration for current field
 	 * @param	integer		$parentUid: The uid of the parent record
-	 * @param	boolean		$updateForeignField: Whether to update the foreign field with the $parentUid (on Copy)
+	 * @param	boolean		$updateToUid: Whether to update the foreign field with the $parentUid (on Copy)
 	 * @param 	boolean		$skipSorting: Do not update the sorting columns, this could happen for imported values
 	 * @return	void
 	 */
@@ -517,7 +517,9 @@ class t3lib_loadDBGroup	{
 			// if there are table items and we have a proper $parentUid
 		if (t3lib_div::testInt($parentUid) && count($this->tableArray)) {
 				// if updateToUid is not a positive integer, set it to '0', so it will be ignored
-			if (!(t3lib_div::testInt($updateToUid) && $updateToUid > 0)) $updateToUid = 0;
+			if (!t3lib_div::testInt($updateToUid) && $updateToUid > 0) {
+				$updateToUid = 0;
+			}
 			$fields = 'uid,'.$foreign_field.($symmetric_field ? ','.$symmetric_field : '');
 
 				// update all items
@@ -579,7 +581,7 @@ class t3lib_loadDBGroup	{
 				}
 
 				if (count($updateValues)) {
-					$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table, "uid='$uid'", $updateValues);
+					$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table, 'uid=' . intval($uid), $updateValues);
 					$this->updateRefIndex($table, $uid);
 				}
 			}

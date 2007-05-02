@@ -548,8 +548,23 @@ class t3lib_transferData {
 			// Initialize:
 		$elements = t3lib_div::trimExplode(',',$data);	// Current data set.
 		$dataAcc=array();	// New data set, ready for interface (list of values, rawurlencoded)
-	
-		$dataAcc = $this->selectAddForeign($dataAcc, $elements, $fieldConfig, $field, $TSconfig, $row, $table);
+
+			// At this point all records that CAN be selected is found in $recordList
+			// Now, get the data from loadDBgroup based on the input list of values.
+		$dataIds = $this->getDataIdList($elements, $fieldConfig, $row, $table);
+
+			// After this we can traverse the loadDBgroup values and match values with the list of possible values in $recordList:
+		foreach($dataIds as $theId)	{
+			if ($fieldConfig['config']['MM'] || $fieldConfig['config']['foreign_field'])	{
+				$dataAcc[]=$theId;
+			} else {
+				foreach($elements as $eKey => $value)	{
+					if (!strcmp($theId,$value))	{
+						$dataAcc[$eKey]=$theId;
+					}
+				}
+			}
+		}
 		
 		return implode(',',$dataAcc);
 	}

@@ -137,7 +137,7 @@ class wslib {
 
 					// Select all records from this table in the database from the workspace
 					// This joins the online version with the offline version as tables A and B
-				$output[$table] = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows (
+				$recs = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows (
 					'A.uid, A.t3ver_oid,'.($table==='pages' ? ' A.t3ver_swapmode,':'').' B.pid AS realpid',
 					$table.' A,'.$table.' B',
 					'A.pid=-1'.	// Table A is the offline version and pid=-1 defines offline
@@ -152,6 +152,9 @@ class wslib {
 					'',
 					'B.uid'		// Order by UID, mostly to have a sorting in the backend overview module which doesn't "jump around" when swapping.
 				);
+				if (count($recs)) {
+					$output[$table] = $recs;
+				}
 			}
 		}
 

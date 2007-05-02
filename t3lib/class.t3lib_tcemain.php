@@ -527,6 +527,8 @@ class t3lib_TCEmain	{
 	 */
 	function process_datamap() {
 		global $TCA, $TYPO3_CONF_VARS;
+			// Keep versionized(!) relations here locally:
+		$registerDBList = array();
 
 			// Editing frozen:
 		if ($this->BE_USER->workspace!==0 && $this->BE_USER->workspaceRec['freeze'])	{
@@ -688,8 +690,20 @@ class t3lib_TCEmain	{
 										$resetRejected = TRUE;
 									}
 
+									// Use the new id of the versionized record we're trying to write to:
+										// (This record is a child record of a parent and has already been versionized.)
+									if ($this->autoVersionIdMap[$table][$id]) {
+											// For the reason that creating a new version of this record, automatically
+											// created related child records (e.g. "IRRE"), update the accordant field:
+										$this->getVersionizedIncomingFieldArray($table, $id, $incomingFieldArray, $registerDBList);
+
+											// Use the new id of the copied/versionized record:
+										$id = $this->autoVersionIdMap[$table][$id];
+										$recordAccess = TRUE;
+										$this->autoVersioningUpdate = TRUE;
+										
 										// Checking access in case of offline workspace:
-									if (!$this->bypassWorkspaceRestrictions && $errorCode = $this->BE_USER->workspaceCannotEditRecord($table,$tempdata))	{
+									} elseif (!$this->bypassWorkspaceRestrictions && $errorCode = $this->BE_USER->workspaceCannotEditRecord($table,$tempdata)) {
 										$recordAccess = FALSE;		// Versioning is required and it must be offline version!
 
 											// Auto-creation of version: In offline workspace, test if versioning is enabled and look for workspace version of input record. If there is no versionized record found we will create one and save to that.
@@ -708,9 +722,23 @@ class t3lib_TCEmain	{
 											$tce->process_cmdmap();
 											$this->errorLog = array_merge($this->errorLog,$tce->errorLog);
 
+												// If copying was successful, share the new uids (also of related children):
 											if ($tce->copyMappingArray[$table][$id])	{
-												$this->uploadedFileArray[$table][$tce->copyMappingArray[$table][$id]] = $this->uploadedFileArray[$table][$id];
-												$id = $this->autoVersionIdMap[$table][$id] = $tce->copyMappingArray[$table][$id];
+												foreach ($tce->copyMappingArray as $origTable => $origIdArray) {
+													foreach ($origIdArray as $origId => $newId) {
+														$this->uploadedFileArray[$origTable][$newId] = $this->uploadedFileArray[$origTable][$origId];
+														$this->autoVersionIdMap[$origTable][$origId] = $newId;
+													}
+												}
+
+													// Update registerDBList, that holds the copied relations to child records:
+												$registerDBList = array_merge($registerDBList, $tce->registerDBList);
+													// For the reason that creating a new version of this record, automatically
+													// created related child records (e.g. "IRRE"), update the accordant field:
+												$this->getVersionizedIncomingFieldArray($table, $id, $incomingFieldArray, $registerDBList);
+												
+													// Use the new id of the copied/versionized record:
+												$id = $this->autoVersionIdMap[$table][$id];
 												$recordAccess = TRUE;
 												$this->autoVersioningUpdate = TRUE;
 											} else $this->newlog("Could not be edited in offline workspace in the branch where found (failure state: '".$errorCode."'). Auto-creation of version failed!",1);
@@ -798,6 +826,8 @@ class t3lib_TCEmain	{
 											$phShadowId = $this->insertDB($table,$id,$fieldArray,TRUE,0,TRUE);	// When inserted, $this->substNEWwithIDs[$id] will be changed to the uid of THIS version and so the interface will pick it up just nice!
 											if ($phShadowId)	{
 												$this->placeholderShadowing($table,$phShadowId);
+													// Hold auto-versionized ids of placeholders:
+												$this->autoVersionIdMap[$table][$this->substNEWwithIDs[$id]] = $phShadowId;
 											}
 										} else $this->newlog('Versioning type "'.$versioningType.'" was not allowed, so could not create new record.',1);
 									} else {
@@ -826,51 +856,8 @@ class t3lib_TCEmain	{
 			}
 		}
 
-		// call_user_func_array
-
 			// Process the stack of relations to remap/correct
-		if(is_array($this->remapStack)) {
-			foreach($this->remapStack as $remapAction) {
-					// if no position index for the arguments was set, skip this remap action
-				if (!is_array($remapAction['pos'])) continue;
-
-					// load values from the argument array in remapAction
-				$field = $remapAction['field'];
-				$id = $remapAction['args'][$remapAction['pos']['id']];
-				$table = $remapAction['args'][$remapAction['pos']['table']];
-				$valueArray = $remapAction['args'][$remapAction['pos']['valueArray']];
-				$tcaFieldConf = $remapAction['args'][$remapAction['pos']['tcaFieldConf']];
-
-					// Replace NEW... IDs with real uids.
-				if(strpos($id, 'NEW') !== false) {
-					$id = $this->substNEWwithIDs[$id];
-					$remapAction['args'][$remapAction['pos']['id']] = $id;
-				}
-
-					// Replace relations to NEW...-IDs in values
-				if(is_array($valueArray)) {
-					foreach($valueArray as $key => $value) {
-						if(strpos($value, 'NEW') !== false) {
-								// fetch the proper uid as integer for the NEW...-ID
-							$valueArray[$key] = $this->substNEWwithIDs[$value];
-								// set a hint that this was a new child record
-							$this->newRelatedIDs[$table][] = $valueArray[$key];
-						}
-					}
-					$remapAction['args'][$remapAction['pos']['valueArray']] = $valueArray;
-				}
-
-				// process the arguments with the defined function
-				$remapAction['args'][$remapAction['pos']['valueArray']] = call_user_func_array(
-					array($this, $remapAction['func']),
-					$remapAction['args']
-				);
-
-				// @TODO: Add option to disable count-field
-				$newVal = $this->checkValue_checkMax($tcaFieldConf, $remapAction['args'][$remapAction['pos']['valueArray']]);
-				$this->updateDB($table,$id,array($field => implode(',', $newVal)));
-			}
-		}
+		$this->processRemapStack();
 
 		$this->dbAnalysisStoreExec();
 		$this->removeRegisteredFiles();
@@ -2080,11 +2067,9 @@ class t3lib_TCEmain	{
 	 * @see checkValue_flex_procInData_travDS()
 	 */
 	function checkValue_flex_procInData($dataPart,$dataPart_current,$uploadedFiles,$dataStructArray,$pParams,$callBackFunc='')	{
-#debug(array($dataPart,$dataPart_current,$dataStructArray));
 		if (is_array($dataPart))	{
 			foreach($dataPart as $sKey => $sheetDef)	{
 				list ($dataStruct,$actualSheet) = t3lib_div::resolveSheetDefInDS($dataStructArray,$sKey);
-#debug(array($dataStruct,$actualSheet,$sheetDef,$actualSheet,$sKey));
 				if (is_array($dataStruct) && $actualSheet==$sKey && is_array($sheetDef))	{
 					foreach($sheetDef as $lKey => $lData)	{
 						$this->checkValue_flex_procInData_travDS(
@@ -2340,14 +2325,18 @@ class t3lib_TCEmain	{
 									break;
 									case 'swap':
 										$swapMode = $GLOBALS['BE_USER']->getTSConfigVal('options.workspaces.swapMode');
-										if ($swapMode == 'any' || $swapMode == 'page') {
-											$elementList = $this->findPageElementsForVersionSwap($table, $id, $value['swapWith']);
+										$elementList = array();
+										if ($swapMode == 'any' || ($swapMode == 'page' && $table == 'pages')) {
+											// check if we are allowed to do synchronios publish. We must have a single element in the cmdmap to be allowed
+											if (count($this->cmdmap) == 1 && count($this->cmdmap[$table]) == 1) {
+												$elementList = $this->findPageElementsForVersionSwap($table, $id, $value['swapWith']);
+											}
 										}
-										else {
+										if (count($elementList) == 0) {
 											$elementList[$table][] = array($id, $value['swapWith']);
 										}
 										foreach ($elementList as $tbl => $idList) {
-											foreach ($idList as $idSet) {
+											foreach ($idList as $idKey => $idSet) {
 												$this->version_swap($tbl,$idSet[0],$idSet[1],$value['swapIntoWS']);
 											}
 										}
@@ -2722,7 +2711,11 @@ class t3lib_TCEmain	{
 				if ($table && is_array($TCA[$table]) && $table!='pages')	{	// all records under the page is copied.
 					$mres = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', $table, 'pid='.intval($old_pid).$this->deleteClause($table));
 					while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($mres))	{
-						$this->copyRecord_raw($table,$row['uid'],$new_pid);	// Copying each of the underlying records (method RAW)
+							// Check, if this record has already been copied by a parent record as relation:
+						if (!$this->copyMappingArray[$table][$row['uid']]) {
+								// Copying each of the underlying records (method RAW)
+							$this->copyRecord_raw($table,$row['uid'],$new_pid);
+						}
 					}
 				}
 			}
@@ -2771,6 +2764,8 @@ class t3lib_TCEmain	{
 
 			// Finally, insert record:
 		$this->insertDB($table,$id,$fieldArray, TRUE);
+			// Process the remap stack in case we dealed with relations:
+		$this->processRemapStack();
 
 			// Return new id:
 		return $this->substNEWwithIDs[$id];
@@ -2790,7 +2785,7 @@ class t3lib_TCEmain	{
 	 * @access private
 	 * @see copyRecord()
 	 */
-	function copyRecord_procBasedOnFieldType($table,$uid,$field,$value,$row,$conf,$realDestPid)	{
+	function copyRecord_procBasedOnFieldType($table,$uid,$field,$value,$row,$conf,$realDestPid) {
 		global $TCA;
 
 			// Process references and files, currently that means only the files, prepending absolute paths (so the TCEmain engine will detect the file as new and one that should be made into a copy)
@@ -2817,15 +2812,13 @@ class t3lib_TCEmain	{
 
 				// walk through the items, copy them and remember the new id
 			foreach ($dbAnalysis->itemArray as $k => $v) {
-					// Take the real positive integer if available:
-				if (t3lib_div::testInt($realDestPid) && $realDestPid >= 0) {
-					$childDestPid = $realDestPid;
-					// If the $realDestPid is not a valid integer or negative (e.g. workspaces):
-					// @TODO: Check again concerning workspaces
+				if (!t3lib_div::testInt($realDestPid)) {
+					$newId = $this->copyRecord($v['table'], $v['id'], -$v['id']);
+				} elseif ($realDestPid == -1) {
+					$newId = $this->versionizeRecord($v['table'], $v['id'], 'Auto-created for WS #'.$this->BE_USER->workspace);
 				} else {
-					$childDestPid = -$v['id'];
+					$newId = $this->copyRecord_raw($v['table'], $v['id'], $realDestPid);
 				}
-				$newId = $this->copyRecord($v['table'], $v['id'], $childDestPid);
 				$dbAnalysis->itemArray[$k]['id'] = $newId;
 			}
 
@@ -3178,8 +3171,8 @@ class t3lib_TCEmain	{
 	 * @param	string		$destPid: Position to move to
 	 * @param	string		$field: Record field
 	 * @param	string		$value: Record field value
-	 * @param	array		$conf: TCA configuration on current field
-	 * @return	[type]		...
+	 * @param	array		$conf: TCA configuration of current field
+	 * @return	void
 	 */
 	function moveRecord_procBasedOnFieldType($table,$uid,$destPid,$field,$value,$conf) {
 		$moveTable = '';
@@ -3689,7 +3682,7 @@ class t3lib_TCEmain	{
 	 * @param	string		$uid: Record UID
 	 * @param	string		$field: Record field
 	 * @param	string		$value: Record field value
-	 * @param	array		$conf: TCA configuration on current field
+	 * @param	array		$conf: TCA configuration of current field
 	 * @param	boolean		$undeleteRecord: If a record should be undeleted (e.g. from history/undo)
 	 * @return	void
 	 * @see 	deleteRecord()
@@ -3814,10 +3807,10 @@ class t3lib_TCEmain	{
 
 										// Create raw-copy and return result:
 									return $this->copyRecord_raw($table,$id,-1,$overrideArray);
-								} else $this->newlog('Record you wanted to versionize was already a version in the workspace (wsid='.$this->BE_USER->workspace.')!',1);
+								} else $this->newlog('Record "'.$table.':'.$id.'" you wanted to versionize was already a version in the workspace (wsid='.$this->BE_USER->workspace.')!',1);
 							} else $this->newlog('Record cannot be deleted: '.$this->cannotDeleteRecord($table,$id),1);
-						} else $this->newlog('Record you wanted to versionize was already a version in archive (pid=-1)!',1);
-					} else $this->newlog('Record you wanted to versionize did not exist!',1);
+						} else $this->newlog('Record "'.$table.':'.$id.'" you wanted to versionize was already a version in archive (pid=-1)!',1);
+					} else $this->newlog('Record "'.$table.':'.$id.'" you wanted to versionize did not exist!',1);
 				} else $this->newlog('The versioning type '.$versionizeTree.' mode you requested was not allowed',1);
 			} else $this->newlog('You didnt have correct permissions to make a new version (copy) of this record "'.$table.'" / '.$id,1);
 		} else $this->newlog('Versioning is not supported for this table "'.$table.'" / '.$id,1);
@@ -3971,13 +3964,22 @@ class t3lib_TCEmain	{
 
 											// Modify offline version to become online:
 										$tmp_wsid = $swapVersion['t3ver_wsid'];
-										unset($swapVersion['uid']);
 										$swapVersion['pid'] = intval($curVersion['pid']);	// Set pid for ONLINE
 										$swapVersion['t3ver_oid'] = intval($id);
 										$swapVersion['t3ver_wsid'] = $swapIntoWS ? intval($curVersion['t3ver_wsid']) : 0;
 										$swapVersion['t3ver_tstamp'] = time();
 										$swapVersion['t3ver_stage'] = $swapVersion['t3ver_state'] = 0;
 
+											// Take care of relations in each field (e.g. IRRE):
+										if (is_array($GLOBALS['TCA'][$table]['columns'])) {
+											foreach ($GLOBALS['TCA'][$table]['columns'] as $field => $fieldConf) {
+												$this->version_swap_procBasedOnFieldType(
+													$table, $field, $fieldConf['config'], $curVersion, $swapVersion
+												);
+											}
+										}
+										unset($swapVersion['uid']);
+										
 											// Modify online version to become offline:
 										unset($curVersion['uid']);
 										$curVersion['pid'] = -1;	// Set pid for OFFLINE
@@ -4122,6 +4124,39 @@ $this->log($table,$id,6,0,0,'Stage raised...',30,array('comment'=>$comment,'stag
 		} else $this->newlog('Attempt to set stage for record failed because you do not have edit access',1);
 	}
 
+	/**
+	 * Update relations on version/workspace swapping.
+	 *
+	 * @param	string		$table: Record Table
+	 * @param	string		$field: Record field
+	 * @param	array		$conf: TCA configuration of current field
+	 * @param	string		$curVersion: Reference to the current (original) record
+	 * @param	string		$swapVersion: Reference to the record (workspace/versionized) to publish in or swap with
+	 * @return 	void
+	 */
+	function version_swap_procBasedOnFieldType($table,$field,$conf,&$curVersion,&$swapVersion) {
+		$inlineType = $this->getInlineFieldType($conf);
+		
+			// Process pointer fields on normalized database:
+		if ($inlineType == 'field') {
+				// Read relations that point to the current record (e.g. live record):
+			$dbAnalysisCur = t3lib_div::makeInstance('t3lib_loadDBGroup');
+			$dbAnalysisCur->start('', $conf['foreign_table'], '', $curVersion['uid'], $table, $conf);
+				// Read relations that point to the record to be swapped with e.g. draft record):
+			$dbAnalysisSwap = t3lib_div::makeInstance('t3lib_loadDBGroup');
+			$dbAnalysisSwap->start('', $conf['foreign_table'], '', $swapVersion['uid'], $table, $conf);
+				// Update relations for both (workspace/versioning) sites:
+			$dbAnalysisCur->writeForeignField($conf,$curVersion['uid'],$swapVersion['uid']);
+			$dbAnalysisSwap->writeForeignField($conf,$swapVersion['uid'],$curVersion['uid']);
+			
+			// Swap field values (CSV):
+			// BUT: These values will be swapped back in the next steps, when the *CHILD RECORD ITSELF* is swapped!
+		} elseif ($inlineType == 'list') {
+			$tempValue = $curVersion[$field];
+			$curVersion[$field] = $swapVersion[$field];
+			$swapVersion[$field] = $tempValue;
+		}
+	}
 
 
 
@@ -4316,11 +4351,104 @@ $this->log($table,$id,6,0,0,'Stage raised...',30,array('comment'=>$comment,'stag
 		}
 	}
 
+	/**
+	 * Processes the $this->remapStack at the end of copying, inserting, etc. actions.
+	 * The remapStack takes care about the correct mapping of new and old uids in case of relational data.
+	 *
+	 * @return	void
+	 */
+	function processRemapStack() {
+		if(is_array($this->remapStack)) {
+			foreach($this->remapStack as $remapAction) {
+					// if no position index for the arguments was set, skip this remap action
+				if (!is_array($remapAction['pos'])) continue;
 
+					// load values from the argument array in remapAction
+				$field = $remapAction['field'];
+				$id = $remapAction['args'][$remapAction['pos']['id']];
+				$table = $remapAction['args'][$remapAction['pos']['table']];
+				$valueArray = $remapAction['args'][$remapAction['pos']['valueArray']];
+				$tcaFieldConf = $remapAction['args'][$remapAction['pos']['tcaFieldConf']];
 
+					// The record is new and has one or more new ids (in case of versioning/workspaces):
+				if(strpos($id, 'NEW') !== false) {
+						// Replace NEW...-ID with real uid:
+					$id = $this->substNEWwithIDs[$id];
 
+						// If the new parent record is on a non-live workspace or versionized, it has another new id:
+					if (isset($this->autoVersionIdMap[$table][$id])) {
+						$id = $this->autoVersionIdMap[$table][$id];
+					}
+					$remapAction['args'][$remapAction['pos']['id']] = $id;
+				}
 
+					// Replace relations to NEW...-IDs in field value (uids of child records):
+				if(is_array($valueArray)) {
+					$foreign_table = $tcaFieldConf['foreign_table'];
+					foreach($valueArray as $key => $value) {
+						if(strpos($value, 'NEW') !== false) {
+							$value = $this->substNEWwithIDs[$value];
+								// The record is new, but was also auto-versionized and has another new id:
+							if (isset($this->autoVersionIdMap[$foreign_table][$value])) {
+								$value = $this->autoVersionIdMap[$foreign_table][$value];
+							}
+								// Set a hint that this was a new child record:
+							$this->newRelatedIDs[$table][] = $value;
+							$valueArray[$key] = $value;
+						}
+					}
+					$remapAction['args'][$remapAction['pos']['valueArray']] = $valueArray;
+				}
 
+					// process the arguments with the defined function
+				$remapAction['args'][$remapAction['pos']['valueArray']] = call_user_func_array(
+					array($this, $remapAction['func']),
+					$remapAction['args']
+				);
+
+					// @TODO: Add option to disable count-field
+				$newVal = $this->checkValue_checkMax($tcaFieldConf, $remapAction['args'][$remapAction['pos']['valueArray']]);
+				$this->updateDB($table,$id,array($field => implode(',', $newVal)));
+			}
+		}
+			// Reset:
+		$this->remapStack = array();
+	}
+
+	/**
+	 * If a parent record was versionized on a workspace in $this->process_datamap,
+	 * it might be possible, that child records (e.g. on using IRRE) were affected.
+	 * This function finds these relations and updates their uids in the $incomingFieldArray.
+	 * The $incomingFieldArray is updated by reference!
+	 *
+	 * @param	string		$table: Table name of the parent record
+	 * @param	integer		$id: Uid of the parent record
+	 * @param	array		$incomingFieldArray: Reference to the incominfFieldArray of process_datamap
+	 * @param	array		$registerDBList: Reference to the $registerDBList array that was created/updated by versionizing calls to TCEmain in process_datamap.
+	 * @return 	void
+	 */
+	function getVersionizedIncomingFieldArray($table, $id, &$incomingFieldArray, &$registerDBList) {
+		if (is_array($registerDBList[$table][$id])) {
+			foreach ($incomingFieldArray as $field => $value) {
+				$fieldConf = $GLOBALS['TCA'][$table]['columns'][$field]['config'];
+				if ($registerDBList[$table][$id][$field] && $foreignTable = $fieldConf['foreign_table']) {
+					$newValueArray = array();
+					$origValueArray = explode(',', $value);
+						// Update the uids of the copied records, but also take care about new records:
+					foreach ($origValueArray as $childId) {
+						$newValueArray[] = $this->autoVersionIdMap[$foreignTable][$childId]
+							? $this->autoVersionIdMap[$foreignTable][$childId]
+							: $childId;
+					}
+						// Set the changed value to the $incomingFieldArray
+					$incomingFieldArray[$field] = implode(',', $newValueArray);
+				}
+			}
+				// Clean up the $registerDBList array:
+			unset($registerDBList[$table][$id]);
+			if (!count($registerDBList[$table])) unset($registerDBList[$table]);
+		}												
+	}
 
 
 
@@ -4836,7 +4964,9 @@ $this->log($table,$id,6,0,0,'Stage raised...',30,array('comment'=>$comment,'stag
 
 			if (count($fieldArray))	{
 
-					// Execute the UPDATE query:
+				$fieldArray = $this->insertUpdateDB_preprocessBasedOnFieldType($table, $fieldArray);
+
+				// Execute the UPDATE query:
 				$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table, 'uid='.intval($id), $fieldArray);
 
 					// If succees, do...:
@@ -4901,6 +5031,8 @@ $this->log($table,$id,6,0,0,'Stage raised...',30,array('comment'=>$comment,'stag
 					}
 					$fieldArray['uid'] = $suggestedUid;
 				}
+
+				$fieldArray = $this->insertUpdateDB_preprocessBasedOnFieldType($table, $fieldArray);
 
 					// Execute the INSERT query:
 				$GLOBALS['TYPO3_DB']->exec_INSERTquery($table, $fieldArray);
@@ -6386,6 +6518,32 @@ State was change by %s (username: %s)
 		return $elementData;
 	}
 
+	/**
+	 * Proprocesses field array based on field type. Some fields must be adjusted
+	 * before going to database. This is done on the copy of the field array because
+	 * original values are used in remap action later.
+	 *
+	 * @param	string	$table	Table name
+	 * @param	array	$fieldArray	Field array to check
+	 * @return	array	Updated field array
+	 */
+	function insertUpdateDB_preprocessBasedOnFieldType($table, $fieldArray) {
+		global	$TCA;
+
+		$result = $fieldArray;
+		foreach ($fieldArray as $field => $value) {
+			switch ($TCA[$table]['columns'][$field]['config']['type']) {
+				case 'inline':
+					if ($TCA[$table]['columns'][$field]['config']['foreign_field']) {
+						if (!t3lib_div::testInt($value)) {
+							$result[$field] = count(t3lib_div::trimExplode(',', true));
+						}
+					}
+					break;
+			}
+		}
+		return $result;
+	}
 }
 
 
