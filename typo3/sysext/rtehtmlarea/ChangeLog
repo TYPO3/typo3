@@ -1,3 +1,8 @@
+2007-05-03  Oliver Hader  <oh@inpublica.de>
+
+	* Raised version from 1.5.2 to 1.5.3 for TYPO3 4.1.2
+	* Fixed bug #5177: RTEhtmlarea not correctly displayed in IRRE child form-fields and tabs
+
 2007-03-28  Patrick Broens  <patrick@patrickbroens.nl>
 
 	* Version 1.5.2dev

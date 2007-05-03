@@ -60,7 +60,7 @@
 		HTMLArea._eventCache.flush = null;
 		HTMLArea._eventCache = null;
 	}
-				
+
 		// cleaning plugin handlers
 	for (var i in editor.plugins) {
 		var plugin = editor.plugins[i].instance;
@@ -70,7 +70,7 @@
 		plugin.onSelect = null;
 		plugin.onUpdateTolbar = null;
 	}
-				
+
 		// cleaning the toolbar elements
 	var obj;
 	for (var txt in editor._toolbarObjects) {
@@ -78,7 +78,7 @@
 		obj["state"] = null;
 		document.getElementById(obj["elementId"])._obj = null;
 	}
-				
+
 		// cleaning the statusbar elements
 	if(editor._statusBarTree.hasChildNodes()) {
 		for (var i = editor._statusBarTree.firstChild; i; i = i.nextSibling) {
@@ -233,7 +233,7 @@ HTMLArea.prototype.insertHTML = function(html) {
 	var range = this._createRange(sel);
 	range.pasteHTML(html);
 };
- 
+
 /***************************************************
  *  EVENT HANDLERS
  ***************************************************/

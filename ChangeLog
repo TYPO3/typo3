@@ -1,3 +1,6 @@
+2007-05-03  Oliver Hader  <oh@inpublica.de>
+
+	* Fixed bug #5177: RTEhtmlarea not correctly displayed in IRRE child form-fields and tabs
 
 2007-05-01  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
