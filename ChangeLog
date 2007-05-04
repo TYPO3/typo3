@@ -1,4 +1,8 @@
-2007-05-02  Dmitry Dulepov  <dmitry@typo3.org>
+2007-05-04  Ingo Renner  <typo3@ingo-renner.com>
+
+	* added swedish and latvian flags to media/flags folder
+
+2007-05-04  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Updated compatibility version for t3skin
 
