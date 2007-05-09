@@ -3458,12 +3458,12 @@ class t3lib_TCEforms	{
 						$dim = t3lib_div::intExplode('x',$wConf['dim']);
 						$dX = t3lib_div::intInRange($dim[0],1,200,20);
 						$dY = t3lib_div::intInRange($dim[1],1,200,20);
-						$color = $row[$field] ? ' bgcolor="'.htmlspecialchars($row[$field]).'"' : '';
+						$color = $PA['itemFormElValue'] ? ' bgcolor="'.htmlspecialchars($PA['itemFormElValue']).'"' : '';
 						$outArr[] = '<table border="0" cellpadding="0" cellspacing="0" id="'.$md5ID.'"'.$color.' style="'.htmlspecialchars($wConf['tableStyle']).'">
 									<tr>
 										<td>'.
 											$colorBoxLinks[0].
-											'<img src="clear.gif" width="'.$dX.'" height="'.$dY.'"'.t3lib_BEfunc::titleAltAttrib(trim($iTitle.' '.$row[$field])).' border="0" />'.
+											'<img src="clear.gif" width="'.$dX.'" height="'.$dY.'"'.t3lib_BEfunc::titleAltAttrib(trim($iTitle.' '.$PA['itemFormElValue'])).' border="0" />'.
 											$colorBoxLinks[1].
 											'</td>
 									</tr>
