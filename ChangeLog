@@ -1,3 +1,7 @@
+2007-05-10  Thorsten Kahler  <thorsten.kahler@dkd.de>
+
+	* fixed bug #209: require field URL in page-type "External URL"
+
 2007-05-09  Andreas Otto  <andreas.otto@dkd.de>
 
 	* Fixed bug #2052: Color picker does not work properly in flex forms. Thanks to David Bruehlmeier for providing a patch and a testcase.
