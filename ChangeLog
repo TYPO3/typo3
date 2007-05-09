@@ -1,3 +1,7 @@
+2007-05-09  Andreas Otto  <andreas.otto@dkd.de>
+
+	* Fixed bug #2052: Color picker does not work properly in flex forms. Thanks to David Bruehlmeier for providing a patch and a testcase.
+
 2007-04-28  Andreas Otto  <andreas.otto@dkd.de>
 
 	* Fixed bug #3649: Call to a member function formWidth() on object $GLOBALS['TBE_TEMPLATE'] instead on $GLOBALS['SOBE'].
