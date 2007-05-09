@@ -218,7 +218,7 @@ if (TYPO3_MODE=='BE')	{
 				'type' => 'input',
 				'size' => '25',
 				'max' => '256',
-				'eval' => 'trim',
+				'eval' => 'trim,required',
 				'softref' => 'url'
 			)
 		),
@@ -300,7 +300,7 @@ if (TYPO3_MODE=='BE')	{
 			'config' => Array (
 				'type' => 'group',
 				'internal_type' => 'db',
-					'allowed' => 'pages',
+				'allowed' => 'pages',
 				'size' => '3',
 				'maxitems' => '1',
 				'minitems' => '0',
