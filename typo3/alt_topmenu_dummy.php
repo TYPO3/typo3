@@ -120,6 +120,8 @@ class SC_alt_topmenu_dummy {
 				// Start page
 			$TBE_TEMPLATE->docType = 'xhtml_trans';
 			$TBE_TEMPLATE->bodyTagId.= '-iconmenu';
+			$TBE_TEMPLATE->JScodeArray[] = $alt_menuObj->generateMenuJScode($loadModules->modules);
+
 			$this->content.=$TBE_TEMPLATE->startPage('Top frame icon menu');
 
 			if ($iconMenuMode)	{

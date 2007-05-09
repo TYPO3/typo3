@@ -318,7 +318,8 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 	var $inst_keys = array();			// Storage of installed extensions
 	var $gzcompress = 0;				// Is set true, if system support compression.
 
-	var $terConnection;			// instance of TER connection handler
+	var $terConnection;					// instance of TER connection handler
+	var $JScode;						// JavaScript code to be forwared to $this->doc->JScode
 
 		// GPvars:
 	var $CMD = array();					// CMD array
@@ -395,6 +396,12 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 				window.location.href = URL;
 			}
 		');
+
+			// Reload left frame menu
+		if ($this->CMD['refreshMenu']) {
+			$this->doc->JScode .= $this->doc->wrapScriptTags('top.refreshMenu();');
+		}
+
 		$this->doc->form = '<form action="index.php" method="post" name="pageform">';
 
 		// Descriptions:
@@ -1936,6 +1943,11 @@ EXTENSION KEYS:
 							if($this->CMD['standAlone'] || t3lib_div::_GP('standAlone')) {
 								$this->content .= 'Extension has been '.($this->CMD['load'] ? 'installed' : 'removed').'.<br /><br /><a href="javascript:opener.top.content.document.forms[0].submit();window.close();">Close window and recheck dependencies</a>';
 							} else {
+									// Determine if new modules were installed:
+								$techInfo = $this->makeDetailedExtensionAnalysis($extKey, $list[$extKey]);
+								if (($this->CMD['load'] || $this->CMD['remove']) && is_array($techInfo['flags']) && in_array('Module', $techInfo['flags'], true)) {									
+									$vA['CMD']['refreshMenu'] = 1;
+								}
 								header('Location: '.t3lib_div::linkThisScript($vA));
 							}
 						}

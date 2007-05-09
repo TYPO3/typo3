@@ -81,6 +81,7 @@ class SC_alt_menu {
 
 		// Internal, Static: GPvar
 	var $_clearCacheFiles;
+	var $alt_menuObj;		// Menu functions object.
 
 	/**
 	 * Initialize
@@ -89,7 +90,7 @@ class SC_alt_menu {
 	 * @return	void
 	 */
 	function init()	{
-		global $TBE_MODULES;
+		global $TBE_MODULES, $TBE_TEMPLATE;
 
 			// Setting GPvars:
 		$this->_clearCacheFiles = t3lib_div::_GP('_clearCacheFiles');
@@ -98,6 +99,11 @@ class SC_alt_menu {
 		$this->loadModules = t3lib_div::makeInstance('t3lib_loadModules');
 		$this->loadModules->observeWorkspaces = TRUE;
 		$this->loadModules->load($TBE_MODULES);
+
+			// Instantiates the menu object which will generate some JavaScript for the goToModule() JS function in this frame.
+		$this->alt_menuObj = t3lib_div::makeInstance('alt_menu_functions');
+
+		$TBE_TEMPLATE->JScodeArray[] = $this->alt_menuObj->generateMenuJScode($this->loadModules->modules);
 	}
 
 	/**
@@ -111,11 +117,7 @@ class SC_alt_menu {
 		$TBE_TEMPLATE->docType='xhtml_trans';
 		$TBE_TEMPLATE->divClass='vertical-menu';
 		$TBE_TEMPLATE->bodyTagAdditions = 'onload="top.restoreHighlightedModuleMenuItem()"';
-		$TBE_TEMPLATE->JScodeArray[] = '
-		function refreshMenu() { 
-			window.location.href = document.URL;
-		}
-';
+
 		$this->content.=$TBE_TEMPLATE->startPage('Vertical Backend Menu');
 		$backPath = $GLOBALS['BACK_PATH'];
 

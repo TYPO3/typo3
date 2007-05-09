@@ -1,3 +1,7 @@
+2007-05-09  Ingo Renner  <typo3@ingo-renner.com>
+
+	* fixed bugs 1642 and 4886: when installing an extension with new BE modules, the modules do not appear
+
 2007-05-09  Andreas Otto  <andreas.otto@dkd.de>
 
 	* Fixed bug #2052: Color picker does not work properly in flex forms. Thanks to David Bruehlmeier for providing a patch and a testcase.

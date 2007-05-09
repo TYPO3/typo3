@@ -256,7 +256,7 @@ class SC_mod_user_setup_index {
 		
 		if ($this->languageUpdate) {
 			$this->doc->JScode.= '<script language="javascript" type="text/javascript">
-	top.menu.refreshMenu();
+	top.refreshMenu();
 	if(top.shortcutFrame) {
 		top.shortcutFrame.refreshShortcuts();
 	}

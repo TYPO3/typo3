@@ -95,12 +95,12 @@ class SC_alt_main {
 		$this->loadModules = t3lib_div::makeInstance('t3lib_loadModules');
 		$this->loadModules->load($TBE_MODULES);
 
-			// Instantiates thee menu object which will generate some JavaScript for the goToModule() JS function in this frameset.
+			// Instantiates the menu object which will generate some JavaScript for the goToModule() JS function in this frameset.
 		$this->alt_menuObj = t3lib_div::makeInstance('alt_menu_functions');
 
 			// Check for distances defined in the styles array:
 		if ($TBE_STYLES['dims']['leftMenuFrameW'])		$this->leftMenuFrameW = $TBE_STYLES['dims']['leftMenuFrameW'];
-		if ($TBE_STYLES['dims']['topFrameH'])		$this->topFrameH = $TBE_STYLES['dims']['topFrameH'];
+		if ($TBE_STYLES['dims']['topFrameH'])			$this->topFrameH = $TBE_STYLES['dims']['topFrameH'];
 		if ($TBE_STYLES['dims']['shortcutFrameH'])		$this->shortcutFrameH = $TBE_STYLES['dims']['shortcutFrameH'];
 		if ($TBE_STYLES['dims']['selMenuFrame'])		$this->selMenuFrame = $TBE_STYLES['dims']['selMenuFrame'];
 	}
@@ -120,6 +120,11 @@ class SC_alt_main {
 			// If another page module was specified, replace the default Page module with the new one
 		$newPageModule = trim($GLOBALS['BE_USER']->getTSConfigVal('options.overridePageModule'));
 		$pageModule = t3lib_BEfunc::isModuleSetInTBE_MODULES($newPageModule) ? $newPageModule : 'web_layout';
+
+		$menuFrameName = 'menu';
+		if ($GLOBALS['BE_USER']->uc['noMenuMode'] == 'icons') {
+			$menuFrameName = 'topmenuFrame';
+		}
 
 		$this->mainJScode='
 	/**
@@ -330,20 +335,19 @@ class SC_alt_main {
 	}
 
 	/**
-	 * Function used to switch switch module.
+	 * Wrapper for the actual goToModule function in the menu frame
 	 */
 	var currentModuleLoaded = "";
-	function goToModule(modName,cMR_flag,addGetVars)	{	//
-		var additionalGetVariables = "";
-		if (addGetVars)	additionalGetVariables = addGetVars;
-
-		var cMR = 0;
-		if (cMR_flag)	cMR = 1;
-
+	function goToModule(modName, cMR_flag, addGetVars)	{	//
 		currentModuleLoaded = modName;
+		top.'.$menuFrameName.'.goToModule(modName, cMR_flag, addGetVars);
+	}
 
-		switch(modName)	{'.$goToModule_switch.'
-		}
+	/**
+	 * reloads the menu frame
+	 */
+	function refreshMenu() {
+		top.'.$menuFrameName.'.location.href = top.'.$menuFrameName.'.document.URL
 	}
 
 	/**
@@ -450,7 +454,7 @@ class SC_alt_main {
 		if ($module) {
 			$this->mainJScode.='
 		// open in module:
-	window.setTimeout("top.goToModule(\''.$module.'\',false,\''.$params.'\');",500);
+	window.setTimeout("top.goToModule(\''.$module.'\',false,\''.$params.'\');",1000);
 			';
 		}
 	}

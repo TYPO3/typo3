@@ -621,6 +621,37 @@ class alt_menu_functions {
 			return $link.'?';
 		} else return $link;
 	}
+	
+	/**
+	 * Generates some JavaScript code for the frame.
+	 *
+	 * @return	string	goToModule javascript function
+	 */
+	function generateMenuJScode($loadedModules, $menuType = 4)	{
+		global $TBE_TEMPLATE;
+		
+		$goToModuleSwitch = $this->topMenu($loadedModules, 0, '', $menuType);
+
+		$jsCode = '
+	/**
+	 * Function used to switch switch module.
+	 */
+	var currentModuleLoaded = "";
+	function goToModule(modName,cMR_flag,addGetVars)	{	//
+		var additionalGetVariables = "";
+		if (addGetVars)	additionalGetVariables = addGetVars;
+
+		var cMR = 0;
+		if (cMR_flag)	cMR = 1;
+
+		currentModuleLoaded = modName;
+
+		switch(modName)	{'.$goToModuleSwitch.'
+		}
+	}';
+		
+		return $jsCode;
+	}
 }
 
 
