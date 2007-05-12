@@ -335,6 +335,7 @@ class t3lib_TCEmain	{
 	var $registerDBList=array();				// Used for tracking references that might need correction after operations
 	var $copyMappingArray = Array();			// Used by the copy action to track the ids of new pages so subpages are correctly inserted! THIS is internally cleared for each executed copy operation! DO NOT USE THIS FROM OUTSIDE! Read from copyMappingArray_merged instead which is accumulating this information.
 	var $remapStack = array();					// array used for remapping uids and values at the end of process_datamap
+	var $remapStackRecords = array();			// array used for remapping uids and values at the end of process_datamap (e.g. $remapStackRecords[<table>][<uid>] = <index in $remapStack>)
 	var $updateRefIndexStack = array();			// array used for additional calls to $this->updateRefIndex
 	var $callFromImpExp = false;				// tells, that this TCEmain was called from tx_impext - this variable is set by tx_impexp
 
@@ -499,6 +500,57 @@ class t3lib_TCEmain	{
 		}
 	}
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	/*********************************************
+	 *
+	 * HOOKS
+	 *
+	 *********************************************/
+
+	/**
+	 * Hook: processDatamap_afterDatabaseOperations
+	 * (calls $hookObj->processDatamap_afterDatabaseOperations($status, $table, $id, $fieldArray, $this);)
+	 *
+	 * Note: When using the hook after INSERT operations, you will only get the temporary NEW... id passed to your hook as $id,
+	 *		 but you can easily translate it to the real uid of the inserted record using the $this->substNEWwithIDs array.
+	 * 
+	 * @param	object		$hookObjectsArr: (reference) Array with hook objects
+	 * @param	string		$status: (reference) Status of the current operation, 'new' or 'update
+	 * @param	string		$table: (refrence) The table currently processing data for
+	 * @param	string		$id: (reference) The record uid currently processing data for, [integer] or [string] (like 'NEW...')
+	 * @param	array		$fieldArray: (reference) The field array of a record
+	 * @return	void
+	 */
+	function hook_processDatamap_afterDatabaseOperations(&$hookObjectsArr, &$status, &$table, &$id, &$fieldArray) {
+			// Process hook directly:
+		if (!isset($this->remapStackRecords[$table][$id])) {
+			foreach($hookObjectsArr as $hookObj)	{
+				if (method_exists($hookObj, 'processDatamap_afterDatabaseOperations')) {
+					$hookObj->processDatamap_afterDatabaseOperations($status, $table, $id, $fieldArray, $this);
+				}
+			}
+			// If this record is in remapStack (e.g. when using IRRE), values will be updated/remapped later on. So the hook will also be called later:
+		} else {
+			$this->remapStackRecords[$table][$id]['processDatamap_afterDatabaseOperations'] = array(
+				'status' => $status,
+				'fieldArray' => $fieldArray,
+				'hookObjectsArr' => $hookObjectsArr,
+			);
+		}
+	}
 
 
 
@@ -845,11 +897,7 @@ class t3lib_TCEmain	{
 								 * Note: When using the hook after INSERT operations, you will only get the temporary NEW... id passed to your hook as $id,
 								 *		 but you can easily translate it to the real uid of the inserted record using the $this->substNEWwithIDs array.
 								 */
-							foreach($hookObjectsArr as $hookObj)	{
-								if (method_exists($hookObj, 'processDatamap_afterDatabaseOperations')) {
-									$hookObj->processDatamap_afterDatabaseOperations($status, $table, $id, $fieldArray, $this);
-								}
-							}
+							$this->hook_processDatamap_afterDatabaseOperations($hookObjectsArr, $status, $table, $id, $fieldArray);
 						}	// if ($recordAccess)	{
 					}	// if (is_array($incomingFieldArray))	{
 				}
@@ -1406,6 +1454,7 @@ class t3lib_TCEmain	{
 		if ($tcaFieldConf['type']=='select' && $tcaFieldConf['foreign_table'])	{
 				// check, if there is a NEW... id in the value, that should be substituded later
 			if (strpos($value, 'NEW') !== false) {
+				$this->remapStackRecords[$table][$id] = array('remapStackIndex' => count($this->remapStack));
 				$this->remapStack[] = array(
 					'func' => 'checkValue_group_select_processDBdata',
 					'args' => array($valueArray,$tcaFieldConf,$id,$status,'select',$table),
@@ -1784,6 +1833,7 @@ class t3lib_TCEmain	{
 			// $value = 45,NEW4555fdf59d154,12,123
 			// We need to decide whether we use the stack or can save the relation directly.
 		if(strpos($value, 'NEW') !== false || !t3lib_div::testInt($id)) {
+			$this->remapStackRecords[$table][$id] = array('remapStackIndex' => count($this->remapStack));
 			$this->remapStack[] = array(
 				'func' => 'checkValue_group_select_processDBdata',
 				'args' => array($valueArray,$tcaFieldConf,$id,$status,'inline',$table),
@@ -4360,10 +4410,10 @@ $this->log($table,$id,6,0,0,'Stage raised...',30,array('comment'=>$comment,'stag
 	function processRemapStack() {
 		if(is_array($this->remapStack)) {
 			foreach($this->remapStack as $remapAction) {
-					// if no position index for the arguments was set, skip this remap action
+					// If no position index for the arguments was set, skip this remap action:
 				if (!is_array($remapAction['pos'])) continue;
 
-					// load values from the argument array in remapAction
+					// Load values from the argument array in remapAction:
 				$field = $remapAction['field'];
 				$id = $remapAction['args'][$remapAction['pos']['id']];
 				$table = $remapAction['args'][$remapAction['pos']['table']];
@@ -4400,7 +4450,7 @@ $this->log($table,$id,6,0,0,'Stage raised...',30,array('comment'=>$comment,'stag
 					$remapAction['args'][$remapAction['pos']['valueArray']] = $valueArray;
 				}
 
-					// process the arguments with the defined function
+					// Process the arguments with the defined function:
 				$remapAction['args'][$remapAction['pos']['valueArray']] = call_user_func_array(
 					array($this, $remapAction['func']),
 					$remapAction['args']
@@ -4409,10 +4459,25 @@ $this->log($table,$id,6,0,0,'Stage raised...',30,array('comment'=>$comment,'stag
 					// @TODO: Add option to disable count-field
 				$newVal = $this->checkValue_checkMax($tcaFieldConf, $remapAction['args'][$remapAction['pos']['valueArray']]);
 				$this->updateDB($table,$id,array($field => implode(',', $newVal)));
+
+					// Process waiting Hook: processDatamap_afterDatabaseOperations:
+				if (isset($this->remapStackRecords[$table][$rawId]['processDatamap_afterDatabaseOperations'])) {
+					$hookArgs = $this->remapStackRecords[$table][$rawId]['processDatamap_afterDatabaseOperations'];
+						// Update field with remapped data:
+					$hookArgs['fieldArray'][$field] = implode(',', $newVal);
+						// Process waiting hook objects:
+					$hookObjectsArr = $hookArgs['hookObjectsArr'];
+					foreach($hookObjectsArr as $hookObj)	{
+						if (method_exists($hookObj, 'processDatamap_afterDatabaseOperations')) {
+							$hookObj->processDatamap_afterDatabaseOperations($hookArgs['status'], $table, $rawId, $hookArgs['fieldArray'], $this);
+						}
+					}
+				}
 			}
 		}
 			// Reset:
 		$this->remapStack = array();
+		$this->remapStackRecords = array();
 	}
 
 	/**
