@@ -4416,6 +4416,7 @@ $this->log($table,$id,6,0,0,'Stage raised...',30,array('comment'=>$comment,'stag
 					// Load values from the argument array in remapAction:
 				$field = $remapAction['field'];
 				$id = $remapAction['args'][$remapAction['pos']['id']];
+				$rawId = $id;
 				$table = $remapAction['args'][$remapAction['pos']['table']];
 				$valueArray = $remapAction['args'][$remapAction['pos']['valueArray']];
 				$tcaFieldConf = $remapAction['args'][$remapAction['pos']['tcaFieldConf']];
