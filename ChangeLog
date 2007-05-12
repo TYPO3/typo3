@@ -1,3 +1,7 @@
+2007-05-12  Oliver Hader  <oh@inpublica.de>
+
+	* Fixed bug #5074: IRRE - Hook processDatamap_afterDatabaseOperations executed early
+
 2007-05-10  Thorsten Kahler  <thorsten.kahler@dkd.de>
 
 	* fixed bug #209: require field URL in page-type "External URL"
