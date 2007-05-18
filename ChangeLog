@@ -3,6 +3,7 @@
 2007-05-18  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
 	* Fixed bug #5645: Missing Slovenian flag
+	* Fixed bug #5628: Missing Slovak flag
 
 2007-05-17 Andreas Otto <andreas.otto@dkd.de>
 	* Feature request: If TYPO3 is configured to send a notification email about install tool logins this email discloses the used password if the login fails. Since this behaviour might not be wanted only the last 5 characters of the md5 hash of the used password are disclosed.
