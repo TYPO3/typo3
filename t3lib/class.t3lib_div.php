@@ -3089,8 +3089,8 @@ class t3lib_div {
 			break;
 			case 'REQUEST_URI':
 					// Typical application of REQUEST_URI is return urls, forms submitting to itself etc. Example: returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))
-				if ($GLOBALS['TYPO3_CONF_VAR']['SYS']['requestURIvar'])	{	// This is for URL rewriters that store the original URI in a server variable (eg ISAPI_Rewriter for IIS: HTTP_X_REWRITE_URL)
-					list($v,$n) = explode('|',$GLOBALS['TYPO3_CONF_VAR']['SYS']['requestURIvar']);
+				if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['requestURIvar'])	{	// This is for URL rewriters that store the original URI in a server variable (eg ISAPI_Rewriter for IIS: HTTP_X_REWRITE_URL)
+					list($v,$n) = explode('|',$GLOBALS['TYPO3_CONF_VARS']['SYS']['requestURIvar']);
 					$retVal = $GLOBALS[$v][$n];
 				} elseif (!$_SERVER['REQUEST_URI'])	{	// This is for ISS/CGI which does not have the REQUEST_URI available.
 					$retVal = '/'.ereg_replace('^/','',t3lib_div::getIndpEnv('SCRIPT_NAME')).
