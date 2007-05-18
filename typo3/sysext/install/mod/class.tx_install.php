@@ -340,8 +340,8 @@ BTW: This Install Tool will only work if cookies are accepted by your web browse
 				$wEmail = $GLOBALS['TYPO3_CONF_VARS']['BE']['warning_email_addr'];
 				if ($wEmail)	{
 					$subject="Install Tool Login ATTEMPT at '".$GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']."'";
-					$email_body="There has been a Install Tool login attempt at TYPO3 site '".$GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']."' (".t3lib_div::getIndpEnv('HTTP_HOST').").
-Password tried was '".$p."'
+					$email_body="There has been an Install Tool login attempt at TYPO3 site '".$GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']."' (".t3lib_div::getIndpEnv('HTTP_HOST').").
+The md5 hash of the last 5 characters of the password tried was '".substr(md5($p), -5)."'
 REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndpEnv('REMOTE_HOST').')';
 					mail($wEmail,
 						$subject,

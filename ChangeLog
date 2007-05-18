@@ -1,3 +1,6 @@
+2007-05-17 Andreas Otto <andreas.otto@dkd.de>
+	* Feature request: If TYPO3 is configured to send a notification email about install tool logins this email discloses the used password if the login fails. Since this behaviour might not be wanted only the last 5 characters of the md5 hash of the used password are disclosed.
+
 2007-05-12  Oliver Hader  <oh@inpublica.de>
 
 	* Fixed bug #5074: IRRE - Hook processDatamap_afterDatabaseOperations executed early
