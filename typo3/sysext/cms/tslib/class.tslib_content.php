@@ -1945,7 +1945,7 @@ class tslib_cObj {
 							$confData['required'] = 1;	// Setting this so "required" layout is used.
 						break;
 						default:
-							if ($confData['required'] && $confData['type']!='check')	{
+							if ($confData['required'])	{
 								$fieldlist[] = rawurlencode($confData['fieldname']);
 								$fieldlist[] = rawurlencode($confData['label']);
 							}

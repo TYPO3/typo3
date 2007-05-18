@@ -87,6 +87,7 @@ function validateForm(theFormname,theFieldlist,goodMess,badMess,emailMess)	{
 						}
 					break;
 					case "radio":
+					case "checkbox":
 						var len=fObj.length;
 						if (len)	{
 							for (a=0;a<len;a++)	{
