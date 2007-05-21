@@ -1,3 +1,6 @@
+2007-05-04  Dmitry Dulepov  <dmitry@typo3.org>
+
+	* Added $GLOBALS['TYPO3_DB']->sql_free_result() to TCEmain::recordInfo() to avoid resource waste
 
 2007-05-01  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 

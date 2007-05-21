@@ -4785,7 +4785,9 @@ $this->log($table,$id,6,0,0,'Stage raised...',30,array('comment'=>$comment,'stag
 		if (is_array($TCA[$table]))	{
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($fieldList, $table, 'uid='.intval($id));
 			if ($GLOBALS['TYPO3_DB']->sql_num_rows($res))	{
-				return $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
+				$result = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
+				$GLOBALS['TYPO3_DB']->sql_free_result($res);
+				return $result;
 			}
 		}
 	}
