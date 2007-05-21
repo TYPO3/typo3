@@ -1,3 +1,6 @@
+2007-05-04  Dmitry Dulepov  <dmitry@typo3.org>
+
+	* Fixed bug 5550: 'lower' TCA specification may fail with non-ascii characters
 
 2007-05-18  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 

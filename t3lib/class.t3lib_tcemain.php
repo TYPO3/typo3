@@ -231,7 +231,7 @@ require_once (PATH_t3lib.'class.t3lib_flexformtools.php');
  *
  * Dependencies:
  * - $GLOBALS['TCA'] must exist
- * - $GLOBALS['LANG'] (languageobject) may be preferred, but not fatal.
+ * - $GLOBALS['LANG'] must exist
  *
  * tce_db.php for further comments and SYNTAX! Also see document 'TYPO3 Core API' for details.
  *
@@ -753,7 +753,7 @@ class t3lib_TCEmain	{
 										$id = $this->autoVersionIdMap[$table][$id];
 										$recordAccess = TRUE;
 										$this->autoVersioningUpdate = TRUE;
-										
+
 										// Checking access in case of offline workspace:
 									} elseif (!$this->bypassWorkspaceRestrictions && $errorCode = $this->BE_USER->workspaceCannotEditRecord($table,$tempdata)) {
 										$recordAccess = FALSE;		// Versioning is required and it must be offline version!
@@ -788,7 +788,7 @@ class t3lib_TCEmain	{
 													// For the reason that creating a new version of this record, automatically
 													// created related child records (e.g. "IRRE"), update the accordant field:
 												$this->getVersionizedIncomingFieldArray($table, $id, $incomingFieldArray, $registerDBList);
-												
+
 													// Use the new id of the copied/versionized record:
 												$id = $this->autoVersionIdMap[$table][$id];
 												$recordAccess = TRUE;
@@ -1983,12 +1983,10 @@ class t3lib_TCEmain	{
 					$value = trim($value);
 				break;
 				case 'upper':
-					$value = strtoupper($value);
-#					$value = strtr($value, '', '');	// WILL make trouble with other charsets than ISO-8859-1, so what do we do here? PHP-function which can handle this for other charsets? Currently the browsers JavaScript will fix it.
+					$value = $GLOBALS['LANG']->csConvObj->conv_case($GLOBALS['LANG']->charSet, $value, 'toUpper');
 				break;
 				case 'lower':
-					$value = strtolower($value);
-#					$value = strtr($value, '', '');	// WILL make trouble with other charsets than ISO-8859-1, so what do we do here? PHP-function which can handle this for other charsets? Currently the browsers JavaScript will fix it.
+					$value = $GLOBALS['LANG']->csConvObj->conv_case($GLOBALS['LANG']->charSet, $value, 'toLower');
 				break;
 				case 'required':
 					if (!$value)	{$set=0;}
@@ -4029,7 +4027,7 @@ class t3lib_TCEmain	{
 											}
 										}
 										unset($swapVersion['uid']);
-										
+
 											// Modify online version to become offline:
 										unset($curVersion['uid']);
 										$curVersion['pid'] = -1;	// Set pid for OFFLINE
@@ -4186,7 +4184,7 @@ $this->log($table,$id,6,0,0,'Stage raised...',30,array('comment'=>$comment,'stag
 	 */
 	function version_swap_procBasedOnFieldType($table,$field,$conf,&$curVersion,&$swapVersion) {
 		$inlineType = $this->getInlineFieldType($conf);
-		
+
 			// Process pointer fields on normalized database:
 		if ($inlineType == 'field') {
 				// Read relations that point to the current record (e.g. live record):
@@ -4198,7 +4196,7 @@ $this->log($table,$id,6,0,0,'Stage raised...',30,array('comment'=>$comment,'stag
 				// Update relations for both (workspace/versioning) sites:
 			$dbAnalysisCur->writeForeignField($conf,$curVersion['uid'],$swapVersion['uid']);
 			$dbAnalysisSwap->writeForeignField($conf,$swapVersion['uid'],$curVersion['uid']);
-			
+
 			// Swap field values (CSV):
 			// BUT: These values will be swapped back in the next steps, when the *CHILD RECORD ITSELF* is swapped!
 		} elseif ($inlineType == 'list') {
@@ -4513,7 +4511,7 @@ $this->log($table,$id,6,0,0,'Stage raised...',30,array('comment'=>$comment,'stag
 				// Clean up the $registerDBList array:
 			unset($registerDBList[$table][$id]);
 			if (!count($registerDBList[$table])) unset($registerDBList[$table]);
-		}												
+		}
 	}
 
 
@@ -6518,7 +6516,7 @@ State was change by %s (username: %s)
 			}
 		}
 	}
-	
+
 	/**
 	 * Finds real page IDs for state change.
 	 *
@@ -6533,7 +6531,7 @@ State was change by %s (username: %s)
 			}
 		}
 	}
-	
+
 	/**
 	 * Finds all elements for swapping versions in workspace
 	 *
