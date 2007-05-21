@@ -1,6 +1,7 @@
 2007-05-04  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Fixed bug 5550: 'lower' TCA specification may fail with non-ascii characters
+	* Added $GLOBALS['TYPO3_DB']->sql_free_result() to TCEmain::recordInfo() to avoid resource waste
 
 2007-05-18  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 

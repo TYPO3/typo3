@@ -526,7 +526,7 @@ class t3lib_TCEmain	{
 	 *
 	 * Note: When using the hook after INSERT operations, you will only get the temporary NEW... id passed to your hook as $id,
 	 *		 but you can easily translate it to the real uid of the inserted record using the $this->substNEWwithIDs array.
-	 * 
+	 *
 	 * @param	object		$hookObjectsArr: (reference) Array with hook objects
 	 * @param	string		$status: (reference) Status of the current operation, 'new' or 'update
 	 * @param	string		$table: (refrence) The table currently processing data for
@@ -4945,7 +4945,9 @@ $this->log($table,$id,6,0,0,'Stage raised...',30,array('comment'=>$comment,'stag
 		if (is_array($TCA[$table]))	{
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($fieldList, $table, 'uid='.intval($id));
 			if ($GLOBALS['TYPO3_DB']->sql_num_rows($res))	{
-				return $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
+				$result = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
+				$GLOBALS['TYPO3_DB']->sql_free_result($res);
+				return $result;
 			}
 		}
 	}
