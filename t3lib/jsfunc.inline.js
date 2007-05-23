@@ -9,7 +9,7 @@
 *
 *  Copyright notice
 *
-*  (c) 2006 Oliver Hader <oh@inpublica.de>
+*  (c) 2006-2007 Oliver Hader <oh@inpublica.de>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -207,13 +207,15 @@ var inline = {
 					var values = $H(unique.used).values();
 
 					if (fieldObj.length) {
-							// remove all before used items from the new select-item
+							// remove all items from the new select-item which are already used in other children
 						for (var i=0; i<values.length; i++) this.removeSelectOption(fieldObj[0], values[i]);
-							// set the selected item automatically to the first of the remaining items
-						selectedValue = fieldObj[0].options[0].value;
-						fieldObj[0].options[0].selected = true;
-						this.updateUnique(fieldObj[0], objectId, formName, recordUid);
-						this.handleChangedField(fieldObj[0], objectId+'['+recordUid+']');
+							// set the selected item automatically to the first of the remaining items if no selector is used
+						if (!unique.selector) {
+							selectedValue = fieldObj[0].options[0].value;
+							fieldObj[0].options[0].selected = true;
+							this.updateUnique(fieldObj[0], objectId, formName, recordUid);
+							this.handleChangedField(fieldObj[0], objectId+'['+recordUid+']');
+						}
 						if (typeof this.data.unique[objectId].used.length != 'undefined') {
 							this.data.unique[objectId].used = {};
 						}
