@@ -122,7 +122,7 @@ class SC_alt_main {
 		$pageModule = t3lib_BEfunc::isModuleSetInTBE_MODULES($newPageModule) ? $newPageModule : 'web_layout';
 
 		$menuFrameName = 'menu';
-		if ($GLOBALS['BE_USER']->uc['noMenuMode'] == 'icons') {
+		if ($GLOBALS['BE_USER']->uc['noMenuMode'] === 'icons') {
 			$menuFrameName = 'topmenuFrame';
 		}
 
@@ -339,8 +339,12 @@ class SC_alt_main {
 	 */
 	var currentModuleLoaded = "";
 	function goToModule(modName, cMR_flag, addGetVars)	{	//
-		currentModuleLoaded = modName;
-		top.'.$menuFrameName.'.goToModule(modName, cMR_flag, addGetVars);
+		if (top.'.$menuFrameName.' && top.'.$menuFrameName.'.goToModule) {
+			currentModuleLoaded = modName;
+			top.'.$menuFrameName.'.goToModule(modName, cMR_flag, addGetVars);
+		} else {
+			window.setTimeout(function() { top.goToModule(modName, cMR_flag, addGetVars); }, 500);
+		}
 	}
 
 	/**
@@ -454,7 +458,7 @@ class SC_alt_main {
 		if ($module) {
 			$this->mainJScode.='
 		// open in module:
-	window.setTimeout("top.goToModule(\''.$module.'\',false,\''.$params.'\');",1000);
+	top.goToModule(\''.$module.'\',false,\''.$params.'\');
 			';
 		}
 	}

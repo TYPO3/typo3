@@ -1,3 +1,7 @@
+2007-05-25  Oliver Hader  <oh@inpublica.de>
+
+	* Fixed bug #5655: TYPO3 back-end was blocked on new installations because of a bug in RFCs #1642/#4886
+
 2007-05-23  Oliver Hader  <oh@inpublica.de>
 
 	* Fixed bug #5564: IRRE - foreign_selector/foreign_unique on click issue
