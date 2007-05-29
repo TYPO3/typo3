@@ -937,14 +937,8 @@ class ux_t3lib_DB extends t3lib_DB {
 				$select_fields[$k]['as'] = $this->handlerInstance[$this->lastHandlerKey]->nameQuote.$select_fields[$k]['as'].$this->handlerInstance[$this->lastHandlerKey]->nameQuote;
 			}
 			if(isset($select_fields[$k]['func_content.']) && $select_fields[$k]['func_content.'][0]['func_content'] != '*'){
-				if(strstr($select_fields[$k]['func_content.'][0]['func_content'],'.')) {
-					$select_fields[$k]['func_content.'][0]['func_content'] = $this->quoteFieldNames($select_fields[$k]['func_content.'][0]['func_content']);
-					$select_fields[$k]['func_content'] = $this->quoteFieldNames($select_fields[$k]['func_content']);
-				}
-				else {
-					$select_fields[$k]['func_content.'][0]['func_content'] = $this->handlerInstance[$this->lastHandlerKey]->nameQuote.$select_fields[$k]['func_content.'][0]['func_content'].$this->handlerInstance[$this->lastHandlerKey]->nameQuote;
-					$select_fields[$k]['func_content'] = $this->handlerInstance[$this->lastHandlerKey]->nameQuote.$select_fields[$k]['func_content'].$this->handlerInstance[$this->lastHandlerKey]->nameQuote;
-				}
+				$select_fields[$k]['func_content.'][0]['func_content'] = $this->quoteFieldNames($select_fields[$k]['func_content.'][0]['func_content']);
+				$select_fields[$k]['func_content'] = $this->quoteFieldNames($select_fields[$k]['func_content']);
 			}
 		}
 
