@@ -1,3 +1,14 @@
+2007-05-29  Karsten Dambekalns <karsten@typo3.org>
+
+	* Closes bug #4462: creates tables without OIDs on PostgreSQL now
+	* Closes bugs #4494, #3759: & is translated to BITAND() on Oracle now
+	* Large text fields are CLOB fields now; for Oracle LIKE comparisons against such fields are translated to dbms_lob.instr() calls. This should fix e.g. bug #5535 as well as issues with TV data that cannot be unserialized (see comments on bug #4638)
+	* Updates to the manual
+
+2006-07-19  Karsten Dambekalns <karsten@typo3.org>
+
+	* Fixes SQL issues when searching in list view or with the global search box on the bottom of the BE page
+
 2006-06-30  Karsten Dambekalns <karsten@typo3.org>
 
 	* this update closes bugs #3638, #2106, #2866, #3754 (for Firefox, broken in MSIE) and maybe a few more

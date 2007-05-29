@@ -3,6 +3,7 @@
 *  Copyright notice
 *
 *  (c) 2004-2006 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 2004-2007 Karsten Dambekalns <karsten@typo3.org>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -126,22 +127,22 @@ require_once(PATH_t3lib.'class.t3lib_install.php');
 class ux_t3lib_DB extends t3lib_DB {
 
 	// Internal, static:
-	var $printErrors = false;		// Enable output of SQL errors after query executions. Set through TYPO3_CONF_VARS, see init()
+	var $printErrors = false;	// Enable output of SQL errors after query executions. Set through TYPO3_CONF_VARS, see init()
 	var $debug = false;			// Enable debug mode. Set through TYPO3_CONF_VARS, see init()
-	var $conf = array();			// Configuration array, copied from TYPO3_CONF_VARS in constructor.
+	var $conf = array();		// Configuration array, copied from TYPO3_CONF_VARS in constructor.
 
-	var $mapping = array();			// See manual.
+	var $mapping = array();		// See manual.
 	var $table2handlerKeys = array();	// See manual.
-	var $handlerCfg = array (		// See manual.
+	var $handlerCfg = array (	// See manual.
 	    '_DEFAULT' => array (
 				'type' => 'native',
 				'config' => array(
-				    'username' => '',		// Set by default (overridden)
-				    'password' => '',		// Set by default (overridden)
-				    'host' => '',		// Set by default (overridden)
-				    'database' => '',		// Set by default (overridden)
-				    'driver' => '',		// ONLY "adodb" type; eg. "mysql"
-				    'sequenceStart' => 1 // ONLY "adodb", first number in sequences/serials/...
+				    'username' => '',	// Set by default (overridden)
+				    'password' => '',	// Set by default (overridden)
+				    'host' => '',	// Set by default (overridden)
+				    'database' => '',	// Set by default (overridden)
+				    'driver' => '',	// ONLY "adodb" type; eg. "mysql"
+				    'sequenceStart' => 1	// ONLY "adodb", first number in sequences/serials/...
 				)
 	    ),
 	);
@@ -388,24 +389,47 @@ class ux_t3lib_DB extends t3lib_DB {
 					$sqlResult = $this->handlerInstance[$this->lastHandlerKey]->_query($this->lastQuery,false);
 				} else {
 					$this->handlerInstance[$this->lastHandlerKey]->StartTrans();
-					if(strlen($this->lastQuery[0]))
+					if(strlen($this->lastQuery[0])) {
 						$sqlResult = $this->handlerInstance[$this->lastHandlerKey]->_query($this->lastQuery[0],false);
-					foreach($this->lastQuery[1] as $field => $content) {
-						if(empty($content)) continue;
+					}
+					if(is_array($this->lastQuery[1])) {
+						foreach($this->lastQuery[1] as $field => $content) {
+							if(empty($content)) continue;
 
-						if(isset($this->cache_autoIncFields[$table]) && isset($new_id)) {
-							$this->handlerInstance[$this->lastHandlerKey]->UpdateBlob($this->quoteFromTables($table),$field,$content,$this->quoteWhereClause($this->cache_autoIncFields[$table].'='.$new_id));
-						} elseif(isset($this->cache_primaryKeys[$table])) {
-							$pks = explode(',', $this->cache_primaryKeys[$table]);
-							foreach ($pks as $pk) {
-								if(isset($fields_values[$pk]))
-								$where .= $pk.'='.$this->fullQuoteStr($fields_values[$pk], $table).' AND ';
+							if(isset($this->cache_autoIncFields[$table]) && isset($new_id)) {
+								$this->handlerInstance[$this->lastHandlerKey]->UpdateBlob($this->quoteFromTables($table),$field,$content,$this->quoteWhereClause($this->cache_autoIncFields[$table].'='.$new_id));
+							} elseif(isset($this->cache_primaryKeys[$table])) {
+								$pks = explode(',', $this->cache_primaryKeys[$table]);
+								foreach ($pks as $pk) {
+									if(isset($fields_values[$pk]))
+									$where .= $pk.'='.$this->fullQuoteStr($fields_values[$pk], $table).' AND ';
+								}
+								$where = $this->quoteWhereClause($where.'1=1');
+								$this->handlerInstance[$this->lastHandlerKey]->UpdateBlob($this->quoteFromTables($table),$field,$content,$where);
+							} else {
+								$this->handlerInstance[$this->lastHandlerKey]->CompleteTrans(false);
+								die('Could not update BLOB >>>> no WHERE clause found!'); // should never ever happen
 							}
-							$where = $this->quoteWhereClause($where.'1=1');
-							$this->handlerInstance[$this->lastHandlerKey]->UpdateBlob($this->quoteFromTables($table),$field,$content,$where);
-						} else {
-							$this->handlerInstance[$this->lastHandlerKey]->CompleteTrans(false);
-							die('Could not update BLOB >>>> no WHERE clause found!'); // should never ever happen
+						}
+					}
+					if(is_array($this->lastQuery[2])) {
+						foreach($this->lastQuery[2] as $field => $content) {
+							if(empty($content)) continue;
+
+							if(isset($this->cache_autoIncFields[$table]) && isset($new_id)) {
+								$this->handlerInstance[$this->lastHandlerKey]->UpdateClob($this->quoteFromTables($table),$field,$content,$this->quoteWhereClause($this->cache_autoIncFields[$table].'='.$new_id));
+							} elseif(isset($this->cache_primaryKeys[$table])) {
+								$pks = explode(',', $this->cache_primaryKeys[$table]);
+								foreach ($pks as $pk) {
+									if(isset($fields_values[$pk]))
+									$where .= $pk.'='.$this->fullQuoteStr($fields_values[$pk], $table).' AND ';
+								}
+								$where = $this->quoteWhereClause($where.'1=1');
+								$this->handlerInstance[$this->lastHandlerKey]->UpdateClob($this->quoteFromTables($table),$field,$content,$where);
+							} else {
+								$this->handlerInstance[$this->lastHandlerKey]->CompleteTrans(false);
+								die('Could not update CLOB >>>> no WHERE clause found!'); // should never ever happen
+							}
 						}
 					}
 					$this->handlerInstance[$this->lastHandlerKey]->CompleteTrans();
@@ -458,7 +482,7 @@ class ux_t3lib_DB extends t3lib_DB {
 			// Where clause table and field mapping:
 			$whereParts = $this->SQLparser->parseWhereClause($where);
 			$this->map_sqlParts($whereParts,$tableArray[0]['table']);
-			$where = $this->SQLparser->compileWhereClause($whereParts);
+			$where = $this->SQLparser->compileWhereClause($whereParts, false);
 
 			// Table name:
 			if ($this->mapping[$table]['mapTableName'])	{
@@ -487,10 +511,18 @@ class ux_t3lib_DB extends t3lib_DB {
 					$sqlResult = $this->handlerInstance[$this->lastHandlerKey]->_query($this->lastQuery,false);
 				} else {
 					$this->handlerInstance[$this->lastHandlerKey]->StartTrans();
-					if(strlen($this->lastQuery[0]))
+					if(strlen($this->lastQuery[0])) {
 						$sqlResult = $this->handlerInstance[$this->lastHandlerKey]->_query($this->lastQuery[0],false);
-					foreach($this->lastQuery[1] as $field => $content) {
-						$this->handlerInstance[$this->lastHandlerKey]->UpdateBlob($this->quoteFromTables($table),$field,$content,$this->quoteWhereClause($where));
+					}
+					if(is_array($this->lastQuery[1])) {
+						foreach($this->lastQuery[1] as $field => $content) {
+							$this->handlerInstance[$this->lastHandlerKey]->UpdateBlob($this->quoteFromTables($table),$field,$content,$this->quoteWhereClause($where));
+						}
+					}
+					if(is_array($this->lastQuery[2])) {
+						foreach($this->lastQuery[2] as $field => $content) {
+							$this->handlerInstance[$this->lastHandlerKey]->UpdateClob($this->quoteFromTables($table),$field,$content,$this->quoteWhereClause($where));
+						}
 					}
 					$this->handlerInstance[$this->lastHandlerKey]->CompleteTrans();
 				}
@@ -538,7 +570,7 @@ class ux_t3lib_DB extends t3lib_DB {
 				// Where clause:
 			$whereParts = $this->SQLparser->parseWhereClause($where);
 			$this->map_sqlParts($whereParts,$tableArray[0]['table']);
-			$where = $this->SQLparser->compileWhereClause($whereParts);
+			$where = $this->SQLparser->compileWhereClause($whereParts, false);
 
 				// Table name:
 			if ($this->mapping[$table]['mapTableName'])	{
@@ -606,16 +638,16 @@ class ux_t3lib_DB extends t3lib_DB {
 			// Get handler key and select API:
 		$this->lastHandlerKey = $this->handler_getFromTableList($ORIG_tableName);
 		$hType = (string)$this->handlerCfg[$this->lastHandlerKey]['type'];
-		switch($hType)	{
+		switch($hType) {
 			case 'native':
 				$this->lastQuery = $this->SELECTquery($select_fields,$from_table,$where_clause,$groupBy,$orderBy,$limit);
 				$sqlResult = mysql_query($this->lastQuery, $this->handlerInstance[$this->lastHandlerKey]['link']);
 				$this->resourceIdToTableNameMap[(string)$sqlResult] = $ORIG_tableName;
 				break;
 			case 'adodb':
-				if ($limit!='')	{
+				if ($limit!='') {
 					$splitLimit = t3lib_div::intExplode(',',$limit);		// Splitting the limit values:
-					if ($splitLimit[1])	{	// If there are two parameters, do mapping differently than otherwise:
+					if ($splitLimit[1]) {	// If there are two parameters, do mapping differently than otherwise:
 						$numrows = $splitLimit[1];
 						$offset = $splitLimit[0];
 					} else {
@@ -629,6 +661,7 @@ class ux_t3lib_DB extends t3lib_DB {
 					$this->lastQuery = $this->SELECTquery($select_fields,$from_table,$where_clause,$groupBy,$orderBy);
 					$sqlResult = $this->handlerInstance[$this->lastHandlerKey]->_Execute($this->lastQuery);
 				}
+
 				$sqlResult->TYPO3_DBAL_handlerType = 'adodb';	// Setting handler type in result object (for later recognition!)
 				$sqlResult->TYPO3_DBAL_tableList = $ORIG_tableName;
 				break;
@@ -695,8 +728,10 @@ class ux_t3lib_DB extends t3lib_DB {
 				if(!$this->runningNative() && $this->sql_field_metatype($table,$k) == 'B') {
 						// we skip the field in the regular INSERT statement, it is only in blobfields
 					$blobfields[$this->quoteFieldNames($k)] = $v;
-				}
-				else {
+				} elseif(!$this->runningNative() && $this->sql_field_metatype($table,$k) == 'XL') {
+						// we skip the field in the regular INSERT statement, it is only in clobfields
+					$clobfields[$this->quoteFieldNames($k)] = $v;
+				} else {
 					// Add slashes old-school:
 					// cast numerical values
 					$mt = $this->sql_field_metatype($table,$k);
@@ -705,7 +740,8 @@ class ux_t3lib_DB extends t3lib_DB {
 					$nArr[$this->quoteFieldNames($k)] = (!in_array($k,$no_quote_fields)) ? $this->fullQuoteStr($v, $table) : $v;
 				}
 			}
-			if(count($blobfields)) {
+
+			if(count($blobfields) || count($clobfields)) {
 				if(count($nArr)) {
 					$query[0] = 'INSERT INTO '.$this->quoteFromTables($table).'
 					(
@@ -716,10 +752,10 @@ class ux_t3lib_DB extends t3lib_DB {
 						',$nArr).'
 					)';
 				}
-				$query[1] = $blobfields;
+				if(count($blobfields)) $query[1] = $blobfields;
+				if(count($clobfields)) $query[2] = $clobfields;
 				if ($this->debugOutput || $this->store_lastBuiltQuery) $this->debug_lastBuiltQuery = $query[0];
-			}
-			else {
+			} else {
 				$query = 'INSERT INTO '.$this->quoteFromTables($table).'
 				(
 					'.implode(',
@@ -764,8 +800,10 @@ class ux_t3lib_DB extends t3lib_DB {
 					if(!$this->runningNative() && $this->sql_field_metatype($table,$k) == 'B') {
 							// we skip the field in the regular UPDATE statement, it is only in blobfields
 						$blobfields[$this->quoteFieldNames($k)] = $v;
-					}
-					else {
+					} elseif(!$this->runningNative() && $this->sql_field_metatype($table,$k) == 'XL') {
+								// we skip the field in the regular UPDATE statement, it is only in clobfields
+							$clobfields[$this->quoteFieldNames($k)] = $v;
+					} else {
 							// Add slashes old-school:
 							// cast numeric values
 						$mt = $this->sql_field_metatype($table,$k);
@@ -774,7 +812,7 @@ class ux_t3lib_DB extends t3lib_DB {
 					}
 				}
 
-				if(count($blobfields)) {
+				if(count($blobfields) || count($clobfields)) {
 					if(count($nArr)) {
 						$query[0] = 'UPDATE '.$this->quoteFromTables($table).'
 						SET
@@ -784,10 +822,10 @@ class ux_t3lib_DB extends t3lib_DB {
 						WHERE
 							'.$this->quoteWhereClause($where) : '');
 					}
-					$query[1] = $blobfields;
+					if(count($blobfields)) $query[1] = $blobfields;
+					if(count($clobfields)) $query[2] = $clobfields;
 					if ($this->debugOutput || $this->store_lastBuiltQuery) $this->debug_lastBuiltQuery = $query[0];
-				}
-				else {
+				} else {
 					$query = 'UPDATE '.$this->quoteFromTables($table).'
 					SET
 						'.implode(',
@@ -801,8 +839,7 @@ class ux_t3lib_DB extends t3lib_DB {
 
 				return $query;
 			}
-		}
-		else {
+		} else {
 			die('<strong>TYPO3 Fatal Error:</strong> "Where" clause argument for UPDATE query was not a string in $this->UPDATEquery() !');
 		}
 	}
@@ -1126,7 +1163,7 @@ class ux_t3lib_DB extends t3lib_DB {
 
 			case 'TEXT':
 			case 'LONGTEXT':
-			case 'MEDIUMTEXT': return 'X';
+			case 'MEDIUMTEXT': return 'XL';
 
 			case 'IMAGE':
 			case 'LONGBLOB':
@@ -2242,7 +2279,7 @@ class ux_t3lib_DB extends t3lib_DB {
 			// Where clause:
 		$whereParts = $this->SQLparser->parseWhereClause($where_clause);
 		$this->map_sqlParts($whereParts,$defaultTable);
-		$where_clause = $this->SQLparser->compileWhereClause($whereParts);
+		$where_clause = $this->SQLparser->compileWhereClause($whereParts, false);
 
 			// Select fields:
 		$expFields = $this->SQLparser->parseFieldList($select_fields);
@@ -2414,8 +2451,7 @@ class ux_t3lib_DB extends t3lib_DB {
 			// we don't want to log our own log/debug SQL
 		$script = substr(PATH_thisScript,strlen(PATH_site));
 
-		if (substr($script,-strlen('dbal/mod1/index.php'))!='dbal/mod1/index.php' &&
-		!strstr($inData['args'][0], 'tx_dbal_debuglog'))	{
+		if (substr($script,-strlen('dbal/mod1/index.php'))!='dbal/mod1/index.php' && !strstr($inData['args'][0], 'tx_dbal_debuglog'))	{
 			$data = array();
 			$errorFlag = 0;
 			$joinTable = '';
@@ -2510,6 +2546,17 @@ class ux_t3lib_DB extends t3lib_DB {
 	 * @return	void
 	 */
 	function debug_log($query,$ms,$data,$join,$errorFlag, $script='')	{
+		if(is_array($query)) {
+			$queryToLog = $query[0].' --  ';
+			if(count($query[1])) {
+				$queryToLog .= count($query[1]).' BLOB FIELDS: '.implode(', ',array_keys($query[1]));
+			}
+			if(count($query[2])) {
+				$queryToLog .= count($query[2]).' CLOB FIELDS: '.implode(', ',array_keys($query[2]));
+			}
+		} else {
+			$queryToLog = $query;
+		}
 		$insertArray = array (
 		'tstamp' => $GLOBALS['EXEC_TIME'],
 		'beuser_id' => intval($GLOBALS['BE_USER']->user['uid']),
@@ -2517,7 +2564,7 @@ class ux_t3lib_DB extends t3lib_DB {
 		'exec_time' => $ms,
 		'table_join' => $join,
 		'serdata' => serialize($data),
-		'query' => (is_array($query) ? $query[0].' WITH '.count($query[1]).' BLOB FIELDS: '.implode(', ',array_keys($query[1])) : $query),
+		'query' => $queryToLog,
 		'errorFlag' => $errorFlag
 		);
 
