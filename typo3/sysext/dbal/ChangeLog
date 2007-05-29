@@ -4,6 +4,7 @@
 	* Closes bugs #4494, #3759: & is translated to BITAND() on Oracle now
 	* Large text fields are CLOB fields now; for Oracle LIKE comparisons against such fields are translated to dbms_lob.instr() calls. This should fix e.g. bug #5535 as well as issues with TV data that cannot be unserialized (see comments on bug #4638)
 	* Updates to the manual
+	* A fix for bug #5481, field mapping not working on the right side of a comparison in WHERE clauses
 
 2006-07-19  Karsten Dambekalns <karsten@typo3.org>
 

@@ -2324,6 +2324,17 @@ class ux_t3lib_DB extends t3lib_DB {
 						$sqlPartArray[$k]['field'] = $this->mapping[$t]['mapFieldNames'][$sqlPartArray[$k]['field']];
 					}
 
+						// do we have a field name in the value?
+						// this is a very simplistic check, beware
+					if(is_array($this->mapping[$t]['mapFieldNames']) && (!is_numeric($sqlPartArray[$k]['value'][0]) && !isset($sqlPartArray[$k]['value'][1]))) {
+						$fieldArray = explode('.', $sqlPartArray[$k]['value'][0]);
+						if(count($fieldArray)==1 && isset($this->mapping[$t]['mapFieldNames'][$fieldArray[0]])) {
+							$sqlPartArray[$k]['value'][0] = $this->mapping[$t]['mapFieldNames'][$fieldArray[0]];
+						} elseif(count($fieldArray)==2 && isset($this->mapping[$t]['mapFieldNames'][$fieldArray[1]])) {
+							$sqlPartArray[$k]['value'][0] = $fieldArray[0].'.'.$this->mapping[$t]['mapFieldNames'][$fieldArray[1]];							
+						}
+					}
+
 						// Map table?
 					if ($sqlPartArray[$k]['table'] && $this->mapping[$sqlPartArray[$k]['table']]['mapTableName'])	{
 						$sqlPartArray[$k]['table'] = $this->mapping[$sqlPartArray[$k]['table']]['mapTableName'];
