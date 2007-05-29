@@ -3,7 +3,7 @@
 *  Copyright notice
 *
 *  (c) 2004, 2005 Kasper Skaarhoj (kasperYYYY@typo3.com)
-*  (c) 2004, 2005 Karsten Dambekalns (karsten@typo3.org)
+*  (c) 2004-2007 Karsten Dambekalns (karsten@typo3.org)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -496,7 +496,7 @@ updateQryForm(\''.$input['QUERY'].'\');
 				$specTime = t3lib_div::_GP('specTime');
 
 				if ($specTime)	{
-					$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*','tx_dbal_debuglog','tstamp='.intval($specTime));
+					$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('exec_time,errorFlag,table_join,serdata,query','tx_dbal_debuglog','tstamp='.(int)$specTime);
 					$tRows = array();
 					$tRows[] = '
 						<tr>
@@ -506,7 +506,7 @@ updateQryForm(\''.$input['QUERY'].'\');
 							<td>Data</td>
 							<td>Query</td>
 						</tr>';
-					while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
+					while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 						$tRows[] = '
 							<tr>
 								<td>'.htmlspecialchars($row['exec_time']).'</td>

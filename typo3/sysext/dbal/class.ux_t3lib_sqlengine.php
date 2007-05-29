@@ -3,7 +3,7 @@
 *  Copyright notice
 *
 *  (c) 2004 Kasper Skaarhoj (kasperYYYY@typo3.com)
-*  (c) 2004-2006 Karsten Dambekalns <karsten@typo3.org>
+*  (c) 2004-2007 Karsten Dambekalns <karsten@typo3.org>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -167,8 +167,11 @@ class ux_t3lib_sqlengine extends t3lib_sqlengine {
 					}
 				}
 
+					// generally create without OID on PostgreSQL
+				$tableOptions = array('postgres' => 'WITHOUT OIDS');
+
 					// Fetch table/index generation query:
-				$query = array_merge($GLOBALS['TYPO3_DB']->handlerInstance[$GLOBALS['TYPO3_DB']->lastHandlerKey]->DataDictionary->CreateTableSQL('`'.$components['TABLE'].'`',implode(','.chr(10), $fieldsKeys)), $indexKeys);
+				$query = array_merge($GLOBALS['TYPO3_DB']->handlerInstance[$GLOBALS['TYPO3_DB']->lastHandlerKey]->DataDictionary->CreateTableSQL('`'.$components['TABLE'].'`',implode(','.chr(10), $fieldsKeys), $tableOptions), $indexKeys);
 				break;
 		}
 
@@ -287,6 +290,90 @@ class ux_t3lib_sqlengine extends t3lib_sqlengine {
 			}
 		}
 		return true;
+	}
+
+	/**
+	 * Implodes an array of WHERE clause configuration into a WHERE clause.
+	 *
+	 * DBAL-specific: The only(!) handled "calc" operator supported by parseWhereClause() is the bitwise
+	 * logical and (&), and only this one is supported here!
+	 *
+	 * @param	array		WHERE clause configuration
+	 * @return	string		WHERE clause as string.
+	 * @see	t3lib_sqlparser::parseWhereClause()
+	 */
+	function compileWhereClause($clauseArray, $functionMapping = true)	 {
+		switch((string)$GLOBALS['TYPO3_DB']->handlerCfg[$GLOBALS['TYPO3_DB']->lastHandlerKey]['type'])	{
+			case 'native':
+				$output = parent::compileWhereClause($clauseArray);
+				break;
+			case 'adodb':
+				// Prepare buffer variable:
+				$output='';
+
+				// Traverse clause array:
+				if (is_array($clauseArray))	{
+					foreach($clauseArray as $k => $v)	{
+
+						// Set operator:
+						$output.=$v['operator'] ? ' '.$v['operator'] : '';
+
+						// Look for sublevel:
+						if (is_array($v['sub']))	{
+							$output.=' ('.trim($this->compileWhereClause($v['sub'], $functionMapping)).')';
+						} else {
+
+							// Set field/table with modifying prefix if any:
+							$output.=' '.trim($v['modifier']).' ';
+
+							// DBAL-specific: Set calculation, if any:
+							if ($v['calc'] && $functionMapping)	{
+								switch(true) {
+									case $GLOBALS['TYPO3_DB']->runningADOdbDriver('oci8'):
+											// Oracle only knows BITAND(x,y) - sigh
+										$output.='BITAND('.trim(($v['table']?$v['table'].'.':'').$v['field']).','.$v['calc_value'][1].$this->compileAddslashes($v['calc_value'][0]).$v['calc_value'][1].')';
+										break;
+									default:
+											// MySQL, MS SQL Server, PostgreSQL support the &-syntax
+										$output.=trim(($v['table']?$v['table'].'.':'').$v['field']).$v['calc'].$v['calc_value'][1].$this->compileAddslashes($v['calc_value'][0]).$v['calc_value'][1];
+										break;
+								}
+							} elseif ($v['calc'])	{
+								$output.=trim(($v['table']?$v['table'].'.':'').$v['field']).$v['calc'].$v['calc_value'][1].$this->compileAddslashes($v['calc_value'][0]).$v['calc_value'][1];
+							} elseif(!($GLOBALS['TYPO3_DB']->runningADOdbDriver('oci8') && $v['comparator']==='LIKE' && $functionMapping)) {
+								$output.=trim(($v['table']?$v['table'].'.':'').$v['field']);
+							}
+
+							// Set comparator:
+							if ($v['comparator'])	{
+								switch(true) {
+									case ($GLOBALS['TYPO3_DB']->runningADOdbDriver('oci8') && $v['comparator']==='LIKE' && $functionMapping):
+											// Oracle cannot handle LIKE on CLOB fields - sigh
+											$output .= '(dbms_lob.instr('.trim(($v['table']?$v['table'].'.':'').$v['field']).', '.$v['value'][1].$this->compileAddslashes(trim($v['value'][0], '%')).$v['value'][1].',1,1) > 0)';
+										break;
+									default:
+										$output.=' '.$v['comparator'];
+
+										// Detecting value type; list or plain:
+										if (t3lib_div::inList('NOTIN,IN',strtoupper(str_replace(array(' ',"\t","\r","\n"),'',$v['comparator']))))	{
+											$valueBuffer = array();
+											foreach($v['value'] as $realValue)	{
+												$valueBuffer[]=$realValue[1].$this->compileAddslashes($realValue[0]).$realValue[1];
+											}
+											$output.=' ('.trim(implode(',',$valueBuffer)).')';
+										} else {
+											$output.=' '.$v['value'][1].$this->compileAddslashes($v['value'][0]).$v['value'][1];
+										}
+										break;
+								}
+							}
+						}
+					}
+				}
+				break;
+		}
+
+		return $output;
 	}
 }
 
