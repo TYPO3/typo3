@@ -1,6 +1,10 @@
 2007-05-30  Karsten Dambekalns <karsten@typo3.org>
 
 	* Added default values and some usability improvements to cached info display in debug module (closes bug #3750)
+	* EXPLAIN PLAN support for Oracle (closes bug #3850)
+	* Fixed a warning when using admin_get_fields() on a non-existent table
+	* Fixed a bug causing inserts with more than one affected CLOB field to fail
+	* quoteWhereClause() now die()s when the input cannot be parsed by parseWhereClause()
 
 2007-05-29  Karsten Dambekalns <karsten@typo3.org>
 
