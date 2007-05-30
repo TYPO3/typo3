@@ -262,6 +262,13 @@ class ux_t3lib_DB extends t3lib_DB {
 					$this->cache_fieldType[$table][$field]['type'] = $fdef['fieldType'];
 					$this->cache_fieldType[$table][$field]['metaType'] = $this->MySQLMetaType($fdef['fieldType']);
 					$this->cache_fieldType[$table][$field]['notnull'] = (isset($fdef['featureIndex']['NOTNULL']) && !$this->SQLparser->checkEmptyDefaultValue($fdef['featureIndex'])) ? 1 : 0;
+					if(isset($fdef['featureIndex']['DEFAULT'])) {
+						$default = $fdef['featureIndex']['DEFAULT']['value'][0];
+						if(isset($fdef['featureIndex']['DEFAULT']['value'][1])) {
+							$default = $fdef['featureIndex']['DEFAULT']['value'][1].$default.$fdef['featureIndex']['DEFAULT']['value'][1];
+						}
+						$this->cache_fieldType[$table][$field]['default'] = $default;
+					}
 					if(isset($fdef['featureIndex']['AUTO_INCREMENT'])) {
 						$this->cache_autoIncFields[$table] = $field;
 					}
@@ -399,6 +406,7 @@ class ux_t3lib_DB extends t3lib_DB {
 							if(isset($this->cache_autoIncFields[$table]) && isset($new_id)) {
 								$this->handlerInstance[$this->lastHandlerKey]->UpdateBlob($this->quoteFromTables($table),$field,$content,$this->quoteWhereClause($this->cache_autoIncFields[$table].'='.$new_id));
 							} elseif(isset($this->cache_primaryKeys[$table])) {
+								$where = '';
 								$pks = explode(',', $this->cache_primaryKeys[$table]);
 								foreach ($pks as $pk) {
 									if(isset($fields_values[$pk]))
@@ -419,6 +427,7 @@ class ux_t3lib_DB extends t3lib_DB {
 							if(isset($this->cache_autoIncFields[$table]) && isset($new_id)) {
 								$this->handlerInstance[$this->lastHandlerKey]->UpdateClob($this->quoteFromTables($table),$field,$content,$this->quoteWhereClause($this->cache_autoIncFields[$table].'='.$new_id));
 							} elseif(isset($this->cache_primaryKeys[$table])) {
+								$where = '';
 								$pks = explode(',', $this->cache_primaryKeys[$table]);
 								foreach ($pks as $pk) {
 									if(isset($fields_values[$pk]))
@@ -979,21 +988,25 @@ class ux_t3lib_DB extends t3lib_DB {
 	 * @return	string		Usable where clause with quoted field/table names
 	 */
 	function quoteWhereClause($where_clause) {
-		if($where_clause == '') return '';
-		if($this->runningNative()) return $where_clause;
+		if($where_clause == '' || $this->runningNative()) return $where_clause;
 
 		$where_clause = $this->SQLparser->parseWhereClause($where_clause);
-		$where_clause = $this->_quoteWhereClause($where_clause);
-		$where_clause = $this->SQLparser->compileWhereClause($where_clause);
+		if(is_array($where_clause)) {
+			$where_clause = $this->_quoteWhereClause($where_clause);
+			$where_clause = $this->SQLparser->compileWhereClause($where_clause);
+		} else {
+			die('Could not parse where clause in '.__FILE__.' : '.__LINE__);
+		}
 
 		return $where_clause;
 	}
 
 	/**
-	 * [Describe function...]
+	 * Quotes field names in a SQL WHERE clause acccording to DB rules
 	 *
-	 * @param	[type]		$$groupBy: ...
-	 * @return	[type]		...
+	 * @param	array		$where_clause The parsed WHERE clause to quote
+	 * @return	array
+	 * @see quoteWhereClause()
 	 */
 	function _quoteWhereClause($where_clause) {
 		foreach($where_clause as $k => $v)	{
@@ -1759,17 +1772,19 @@ class ux_t3lib_DB extends t3lib_DB {
 				break;
 			case 'adodb':
 				$fieldRows = $this->handlerInstance[$this->lastHandlerKey]->MetaColumns($tableName, false);
-				foreach($fieldRows as $k => $fieldRow) {
-					settype($fieldRow, 'array');
-					$fieldRow['Field'] = $fieldRow['name'];
-					$ntype = $this->MySQLActualType($this->MetaType($fieldRow['type'],$tableName));
-					$ntype .= (($fieldRow['max_length'] != -1) ? (($ntype == 'INT') ? '(11)' :'('.$fieldRow['max_length'].')') : '');
-					$fieldRow['Type'] = strtolower($ntype);
-					$fieldRow['Null'] = '';
-					$fieldRow['Key'] = '';
-					$fieldRow['Default'] = $fieldRow['default_value'];
-					$fieldRow['Extra'] = '';
-					$output[$fieldRow['name']] = $fieldRow;
+				if(is_array($fieldRows)) {
+					foreach($fieldRows as $k => $fieldRow) {
+						settype($fieldRow, 'array');
+						$fieldRow['Field'] = $fieldRow['name'];
+						$ntype = $this->MySQLActualType($this->MetaType($fieldRow['type'],$tableName));
+						$ntype .= (($fieldRow['max_length'] != -1) ? (($ntype == 'INT') ? '(11)' :'('.$fieldRow['max_length'].')') : '');
+						$fieldRow['Type'] = strtolower($ntype);
+						$fieldRow['Null'] = '';
+						$fieldRow['Key'] = '';
+						$fieldRow['Default'] = $fieldRow['default_value'];
+						$fieldRow['Extra'] = '';
+						$output[$fieldRow['name']] = $fieldRow;
+					}
 				}
 				break;
 			case 'userdefined':
@@ -2513,7 +2528,7 @@ class ux_t3lib_DB extends t3lib_DB {
 						// Logging it:
 					$this->debug_log($query,$execTime,$data,$joinTable,$errorFlag, $script);
 					if(!empty($inData['args'][2]))
-					$this->debug_WHERE($inData['args'][0], $inData['args'][2], $script);
+						$this->debug_WHERE($inData['args'][0], $inData['args'][2], $script);
 					break;
 			}
 		}
@@ -2529,11 +2544,11 @@ class ux_t3lib_DB extends t3lib_DB {
    */
 	function debug_WHERE($table,$where, $script='')	{
 		$insertArray = array (
-		'tstamp' => $GLOBALS['EXEC_TIME'],
-		'beuser_id' => intval($GLOBALS['BE_USER']->user['uid']),
-		'script' => $script,
-		'tablename' => $table,
-		'whereclause' => $where
+			'tstamp' => $GLOBALS['EXEC_TIME'],
+			'beuser_id' => intval($GLOBALS['BE_USER']->user['uid']),
+			'script' => $script,
+			'tablename' => $table,
+			'whereclause' => $where
 		);
 
 		$this->exec_INSERTquery('tx_dbal_debuglog_where', $insertArray);
@@ -2563,14 +2578,14 @@ class ux_t3lib_DB extends t3lib_DB {
 			$queryToLog = $query;
 		}
 		$insertArray = array (
-		'tstamp' => $GLOBALS['EXEC_TIME'],
-		'beuser_id' => intval($GLOBALS['BE_USER']->user['uid']),
-		'script' => $script,
-		'exec_time' => $ms,
-		'table_join' => $join,
-		'serdata' => serialize($data),
-		'query' => $queryToLog,
-		'errorFlag' => $errorFlag
+			'tstamp' => $GLOBALS['EXEC_TIME'],
+			'beuser_id' => intval($GLOBALS['BE_USER']->user['uid']),
+			'script' => $script,
+			'exec_time' => $ms,
+			'table_join' => $join,
+			'serdata' => serialize($data),
+			'query' => $queryToLog,
+			'errorFlag' => $errorFlag
 		);
 
 		$this->exec_INSERTquery('tx_dbal_debuglog', $insertArray);
@@ -2584,12 +2599,31 @@ class ux_t3lib_DB extends t3lib_DB {
 	 * @todo	Not supporting other than the default handler? And what about DBMS of other kinds than MySQL - support for EXPLAIN?
 	 */
 	function debug_explain($query)	{
-		$res = $this->sql_query('EXPLAIN '.$query);
-
 		$output = array();
-		while($row = $this->sql_fetch_assoc($res))	{
-			$output[] = $row;
+		$hType = (string)$this->handlerCfg[$this->lastHandlerKey]['type'];
+		switch($hType) {
+			case 'native':
+				$res = $this->sql_query('EXPLAIN '.$query);
+				while($row = $this->sql_fetch_assoc($res))	{
+					$output[] = $row;
+				}
+				break;
+			case 'adodb':
+				switch($this->handlerCfg['_DEFAULT']['config']['driver']) {
+					case 'oci8':
+						$res = $this->sql_query('EXPLAIN PLAN '.$query);
+						$output[] = 'EXPLAIN PLAN data logged to default PLAN_TABLE';
+						break;
+					default:
+						$res = $this->sql_query('EXPLAIN '.$query);
+						while($row = $this->sql_fetch_assoc($res))	{
+							$output[] = $row;
+						}
+						break;
+				}
+			break;
 		}
+
 		return $output;
 	}
 }
