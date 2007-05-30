@@ -5,6 +5,7 @@
 	* Fixed a warning when using admin_get_fields() on a non-existent table
 	* Fixed a bug causing inserts with more than one affected CLOB field to fail
 	* quoteWhereClause() now die()s when the input cannot be parsed by parseWhereClause()
+	* PHP backtraces can be logged with the queries now (closes bug #3856)
 
 2007-05-29  Karsten Dambekalns <karsten@typo3.org>
 
