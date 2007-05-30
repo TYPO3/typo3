@@ -1,3 +1,7 @@
+2007-05-30  Karsten Dambekalns <karsten@typo3.org>
+
+	* Added default values and some usability improvements to cached info display in debug module (closes bug #3750)
+
 2007-05-29  Karsten Dambekalns <karsten@typo3.org>
 
 	* Closes bug #4462: creates tables without OIDs on PostgreSQL now
