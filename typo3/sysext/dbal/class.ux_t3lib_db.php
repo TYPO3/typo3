@@ -2486,7 +2486,13 @@ class ux_t3lib_DB extends t3lib_DB {
 				$query = implode(' ',$inData['args']);
 			else
 				$query = $this->lastQuery;
-
+				
+			if($this->conf['debugOptions']['backtrace']) {
+				$backtrace = debug_backtrace();
+				unset($backtrace[0]); // skip this very method :)
+				$data['backtrace'] = array_slice($backtrace, 0, $this->conf['debugOptions']['backtrace']);
+			}
+			
 			switch($function)	{
 				case 'exec_INSERTquery':
 				case 'exec_UPDATEquery':
