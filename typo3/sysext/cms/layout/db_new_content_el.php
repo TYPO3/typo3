@@ -583,7 +583,7 @@ Contact me: | tv=check | 1
 						$config = &$TCA['tt_content']['columns'][$fN]['config'];
 						$authModeDeny = $config['type']=='select' && $config['authMode'] && !$GLOBALS['BE_USER']->checkAuthMode('tt_content',$fN,$fV,$config['authMode']);
 
-						if ($authModeDeny || in_array($fV,$removeItems))	{
+						if ($authModeDeny || ($fN=='CType' && in_array($fV,$removeItems)))	{
 								// Remove element all together:
 							unset($wizardItems[$key]);
 							break;
