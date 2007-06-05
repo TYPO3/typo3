@@ -1,3 +1,7 @@
+2007-06-05  Oliver Hader  <oh@inpublica.de>
+
+	* Fixed bug #4226: New content elements wizard removes CE from array if tt_content_defValues property is zero
+
 2007-05-23  Oliver Hader  <oh@inpublica.de>
 
 	* Fixed bug #5564: IRRE - foreign_selector/foreign_unique on click issue
