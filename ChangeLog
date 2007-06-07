@@ -50,7 +50,7 @@
 
 2007-04-18  Dmitry Dulepov  <dmitry@typo3.org>
 
-	* Fixed bug #1839: Broken Rootline when a Editor view a Page that is not online
+	* Fixed bug #1893: Broken Rootline when a Editor view a Page that is not online
 
 2007-04-18  Ernesto Baschny  <ernst@cron-it.de>
 
