@@ -1,3 +1,7 @@
+2007-06-08  Oliver Hader  <oh@inpublica.de>
+
+	* Fixed bug #5755: XCLASS inclusion part for class.t3lib_tceforms_inline.php is missing
+
 2007-06-05  Oliver Hader  <oh@inpublica.de>
 
 	* Fixed bug #4226: New content elements wizard removes CE from array if tt_content_defValues property is zero
