@@ -1,3 +1,7 @@
+2007-06-13  Oliver Hader  <oh@inpublica.de>
+
+	* Fixed bug #5778: Missleading comment in TCEmain::copyRecord_procBasedOnFieldType()
+
 2007-06-08  Oliver Hader  <oh@inpublica.de>
 
 	* Fixed bug #5755: XCLASS inclusion part for class.t3lib_tceforms_inline.php is missing

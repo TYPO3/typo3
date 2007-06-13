@@ -2853,10 +2853,10 @@ class t3lib_TCEmain	{
 				$this->registerDBList[$table][$uid][$field] = $value;
 			}
 
-			// if another inline subtype is used (foreign_field, mm with attributes or simply item list)
+			// If another inline subtype is used (comma-separated-values or the foreign_field property):
 		} elseif ($inlineSubType !== false) {
 			$dbAnalysis = t3lib_div::makeInstance('t3lib_loadDBGroup');
-			$dbAnalysis->start($value, $conf['foreign_table'], $conf['MM'], $uid, $table, $conf);
+			$dbAnalysis->start($value, $conf['foreign_table'], '', $uid, $table, $conf);
 
 				// walk through the items, copy them and remember the new id
 			foreach ($dbAnalysis->itemArray as $k => $v) {
