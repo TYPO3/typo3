@@ -439,7 +439,7 @@
 					</script>';
 				exit;
 			} elseif (!$GLOBALS['TYPO3_DB']->sql_select_db(TYPO3_db))	{
-				header( 'http/1.0 503 Service Temporarily Unavailable' );
+				header( 'HTTP/1.0 503 Service Temporarily Unavailable' );
 				$this->printError('Cannot connect to the current database, "'.TYPO3_db.'"','Database Error');
 				exit;
 			}
@@ -453,7 +453,7 @@
 					</script>';
 				exit;
 			}
-			header( 'http/1.0 503 Service Temporarily Unavailable' );
+			header( 'HTTP/1.0 503 Service Temporarily Unavailable' );
 			$this->printError('The current username, password or host was not accepted when the connection to the database was attempted to be established!','Database Error');
 			exit;
 		}
@@ -867,7 +867,7 @@
 				if ($theFirstPage)	{
 					$this->id = $theFirstPage['uid'];
 				} else {
-					header( 'http/1.0 503 Service Temporarily Unavailable' );
+					header( 'HTTP/1.0 503 Service Temporarily Unavailable' );
 					t3lib_div::sysLog('No pages are found on the rootlevel!', 'cms', 3);
 					$this->printError('No pages are found on the rootlevel!');
 					exit;
@@ -941,7 +941,7 @@
 				if ($this->TYPO3_CONF_VARS['FE']['pageNotFound_handling'])	{
 					$this->pageNotFoundAndExit('The requested page does not exist!');
 				} else {
-					header( 'http/1.0 404 Page Not Found' );
+					header( 'HTTP/1.0 404 Page Not Found' );
 					t3lib_div::sysLog('The requested page does not exist!', 'cms', 3);
 					$this->printError('The requested page does not exist!');
 					exit;
@@ -954,7 +954,7 @@
 			if ($this->TYPO3_CONF_VARS['FE']['pageNotFound_handling'])	{
 				$this->pageNotFoundAndExit('The requested page does not exist!');
 			} else {
-				header( 'http/1.0 404 Page Not Found' );
+				header( 'HTTP/1.0 404 Page Not Found' );
 				t3lib_div::sysLog('The requested page does not exist!', 'cms', 3);
 				$this->printError('The requested page does not exist!');
 				exit;
@@ -980,7 +980,7 @@
 				$this->rootLine = $this->sys_page->getRootLine($this->id,$this->MP);
 			}
 			if (!count($this->rootLine))	{
-				header( 'http/1.0 503 Service Temporarily Unavailable' );
+				header( 'HTTP/1.0 503 Service Temporarily Unavailable' );
 				t3lib_div::sysLog('The requested page didn\'t have a proper connection to the tree-root! ('.$this->sys_page->error_getRootLine.')', 'cms', 3);
 				$this->printError('The requested page didn\'t have a proper connection to the tree-root! <br /><br />('.$this->sys_page->error_getRootLine.')');
 				exit;
@@ -991,7 +991,7 @@
 			// Checking for include section regarding the hidden/starttime/endtime/fe_user (that is access control of a whole subbranch!)
 		if ($this->checkRootlineForIncludeSection())	{
 			if (!count($this->rootLine))	{
-				header( 'http/1.0 503 Service Temporarily Unavailable' );
+				header( 'HTTP/1.0 503 Service Temporarily Unavailable' );
 				t3lib_div::sysLog('The requested page was not accessible!', 'cms', 3);
 				$this->printError('The requested page was not accessible!');
 				exit;
@@ -1052,7 +1052,7 @@
 				$page = $this->getPageShortcut($page['shortcut'],$page['shortcut_mode'],$page['uid'],$itera-1,$pageLog);
 			} else {
 				$pageLog[] = $page['uid'];
-				header( 'http/1.0 500 Internal Server Error' );
+				header( 'HTTP/1.0 500 Internal Server Error' );
 				t3lib_div::sysLog('Page shortcuts were looping in uids '.implode(',',$pageLog).'...!', 'cms', 3);
 				$this->printError('Page shortcuts were looping in uids '.implode(',',$pageLog).'...!');
 				exit;
@@ -1789,7 +1789,7 @@
 				$this->pSetup = $this->tmpl->setup[$this->sPre.'.'];
 
 				if (!is_array($this->pSetup))	{
-					header( 'http/1.0 503 Service Temporarily Unavailable' );
+					header( 'HTTP/1.0 503 Service Temporarily Unavailable' );
 					t3lib_div::sysLog('The page is not configured! [type= '.$this->type.']['.$this->sPre.']', 'cms', 3);
 					$this->printError('The page is not configured! [type= '.$this->type.']['.$this->sPre.']');
 					exit;
@@ -1853,7 +1853,7 @@
 				}
 				$GLOBALS['TT']->pull();
 			} else {
-				header( 'http/1.0 503 Service Temporarily Unavailable' );
+				header( 'HTTP/1.0 503 Service Temporarily Unavailable' );
 				t3lib_div::sysLog('No template found!', 'cms', 3);
 				$this->printError('No template found!');
 				exit;
@@ -1921,7 +1921,7 @@
 		if ($this->absRefPrefix_force && strcmp($this->config['config']['simulateStaticDocuments'],'PATH_INFO'))	{
 			$redirectUrl = t3lib_div::getIndpEnv('TYPO3_REQUEST_DIR').'index.php?id='.$this->id.'&type='.$this->type;
 			if ($this->config['config']['simulateStaticDocuments_dontRedirectPathInfoError'])	{
-				header( 'http/1.0 503 Service Temporarily Unavailable' );
+				header( 'HTTP/1.0 503 Service Temporarily Unavailable' );
 				t3lib_div::sysLog('PATH_INFO was not configured for this website, and the URL tries to find the page by PATH_INFO!', 'cms', 3);
 				$this->printError('PATH_INFO was not configured for this website, and the URL tries to find the page by PATH_INFO!<br /><br /><a href="'.htmlspecialchars($redirectUrl).'">Click here to get to the right page.</a>','Error: PATH_INFO not configured');
 			} else {
