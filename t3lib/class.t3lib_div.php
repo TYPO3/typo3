@@ -2903,9 +2903,10 @@ class t3lib_div {
 	 *
 	 * @param	array		Array of arrays with similar keys
 	 * @param	string		Table header
+	 * @param	boolean		If TRUE, will return content instead of echo'ing out.
 	 * @return	void		Outputs to browser.
 	 */
-	function debugRows($rows,$header='')	{
+	function debugRows($rows,$header='',$returnHTML=FALSE)	{
 		if (is_array($rows))	{
 			reset($rows);
 			$firstEl = current($rows);
@@ -2929,7 +2930,7 @@ class t3lib_div {
 					$tCells = array();
 					foreach($headerColumns as $key)	{
 						$tCells[] = '
-							<td><font face="Verdana,Arial" size="1">'.htmlspecialchars($singleRow[$key]).'</font></td>';
+							<td><font face="Verdana,Arial" size="1">'.(is_array($singleRow[$key]) ? t3lib_div::debugRows($singleRow[$key],'',TRUE) : htmlspecialchars($singleRow[$key])).'</font></td>';
 					}
 					$tRows[] = '
 						<tr>'.implode('',$tCells).'
@@ -2939,7 +2940,7 @@ class t3lib_div {
 				$table = '
 					<table border="1" cellpadding="1" cellspacing="0" bgcolor="white">'.implode('',$tRows).'
 					</table>';
-				echo $table;
+				if ($returnHTML)	return $table; else echo $table;
 			} else debug('Empty array of rows',$header);
 		} else debug('No array of rows',$header);
 	}
