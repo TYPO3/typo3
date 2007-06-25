@@ -851,11 +851,15 @@ class t3lib_refindex {
 	 *******************************/
 
 	/**
-	 *
+	 * Indexing words from table records. Can be useful for quick backend look ups in records across the system.
 	 */
 	function wordIndexing($table,$uid)	{
-		return; // Disabled until Kasper finishes this feature.
-
+		return; // Disabled until Kasper finishes this feature. If someone else needs it in the meantime you are welcome to complete it. Below my todo list.
+		
+		// TODO:
+		// - Flag to disable indexing
+		// - Clean-up to remove words not used anymore  and indexes for records not in the system anymore.
+		// - UTF-8 compliant substr()
 		$lexer = t3lib_div::makeInstance('tx_indexedsearch_lexer');
 		$words = $lexer->split2Words(implode(' ',$this->words_strings));
 		foreach($words as $w) {
