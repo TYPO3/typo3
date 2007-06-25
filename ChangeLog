@@ -1,3 +1,7 @@
+2007-05-04  Dmitry Dulepov  <dmitry@typo3.org>
+
+	* Added $GLOBALS['TYPO3_DB']->sql_free_result() to TCEmain::rawCopyPageContent() to avoid resource waste
+
 2007-06-13  Andreas Otto <andreas.otto@dkd.de>
 
 	* Added status headers: In class.tslib_fe.php status header were set when an error occurs after which TYPO3 throws an exit() statement. In addition to that t3lib_div::syslog() is called to write an entry to the syslog.

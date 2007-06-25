@@ -2765,6 +2765,7 @@ class t3lib_TCEmain	{
 							$this->copyRecord_raw($table,$row['uid'],$new_pid);
 						}
 					}
+					$GLOBALS['TYPO3_DB']->sql_free_result($mres);
 				}
 			}
 		}
