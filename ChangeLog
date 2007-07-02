@@ -1,6 +1,7 @@
 2007-07-02  Oliver Hader  <oh@inpublica.de>
 
 	* Fixed bug #4623: Content encoding with x-gzip not possible in IE7
+	* Fixed bug #5789: JS error in new content element wizard with a single item
 
 2007-06-13  Oliver Hader  <oh@inpublica.de>
 

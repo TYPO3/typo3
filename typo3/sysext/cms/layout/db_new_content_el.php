@@ -279,7 +279,7 @@ class SC_db_new_content_el {
 					$tL[]='<input type="radio" name="tempB" value="'.htmlspecialchars($k).'" onclick="'.htmlspecialchars($this->doc->thisBlur().$oC).'" />';
 
 						// Onclick action for icon/title:
-					$aOnClick = 'document.editForm.tempB['.$cc.'].checked=1;'.$this->doc->thisBlur().$oC.'return false;';
+					$aOnClick = 'document.getElementsByName(\'tempB\')['.$cc.'].checked=1;'.$this->doc->thisBlur().$oC.'return false;';
 
 						// Icon:
 					$iInfo = @getimagesize($wInfo['icon']);
