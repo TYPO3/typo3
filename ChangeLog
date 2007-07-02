@@ -3,7 +3,7 @@
 	* Fixed bug #4623: Content encoding with x-gzip not possible in IE7
 	* Fixed bug #5789: JS error in new content element wizard with a single item
 
-2007-05-04  Dmitry Dulepov  <dmitry@typo3.org>
+2007-06-25  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Added $GLOBALS['TYPO3_DB']->sql_free_result() to TCEmain::rawCopyPageContent() to avoid resource waste
 
@@ -31,7 +31,7 @@
 
 	* Fixed bug #5564: IRRE - foreign_selector/foreign_unique on click issue
 
-2007-05-04  Dmitry Dulepov  <dmitry@typo3.org>
+2007-05-21  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Fixed bug 5550: 'lower' TCA specification may fail with non-ascii characters
 	* Added $GLOBALS['TYPO3_DB']->sql_free_result() to TCEmain::recordInfo() to avoid resource waste
@@ -43,24 +43,25 @@
 	* Fixed bug #5578: config setting SYS[requestURIvar] doesn't work
 	* Fixed bug #4509/3925: jsfunc.validateform.js does not verify checkbox fields (thanks to Jascha Schubert and Eicke Godehardt)
 
-2007-05-17 Andreas Otto <andreas.otto@dkd.de>
+2007-05-18  Andreas Otto  <andreas.otto@dkd.de>
+
 	* Feature request: If TYPO3 is configured to send a notification email about install tool logins this email discloses the used password if the login fails. Since this behaviour might not be wanted only the last 5 characters of the md5 hash of the used password are disclosed.
 
 2007-05-12  Oliver Hader  <oh@inpublica.de>
 
 	* Fixed bug #5074: IRRE - Hook processDatamap_afterDatabaseOperations executed early
 
-2007-05-09  Ingo Renner  <typo3@ingo-renner.com>
+2007-05-11  Ingo Renner  <typo3@ingo-renner.com>
 
-	* fixed bug 5047: mp3 icon is missing
+	* Fixed bug 5047: mp3 icon is missing
 
 2007-05-10  Thorsten Kahler  <thorsten.kahler@dkd.de>
 
-	* fixed bug #209: require field URL in page-type "External URL"
+	* Fixed bug #209: require field URL in page-type "External URL"
 
 2007-05-09  Ingo Renner  <typo3@ingo-renner.com>
 
-	* fixed bugs 1642 and 4886: when installing an extension with new BE modules, the modules do not appear
+	* Fixed bugs 1642 and 4886: when installing an extension with new BE modules, the modules do not appear
 
 2007-05-09  Andreas Otto  <andreas.otto@dkd.de>
 
@@ -68,7 +69,7 @@
 
 2007-05-04  Ingo Renner  <typo3@ingo-renner.com>
 
-	* added swedish and latvian flags to media/flags folder
+	* Added swedish and latvian flags to media/flags folder
 
 2007-05-04  Dmitry Dulepov  <dmitry@typo3.org>
 
@@ -76,11 +77,11 @@
 
 2007-05-03  Ingo Renner  <typo3@ingo-renner.com>
 
-	* fixed bug 5310: Missing Swedish flag
+	* Fixed bug 5310: Missing Swedish flag
 
 2007-05-02  Ingo Renner  <typo3@ingo-renner.com>
 
-	* fixed bug 584: Changing language in user setup do not reload left frame (menu).
+	* Fixed bug 584: Changing language in user setup do not reload left frame (menu).
 
 2007-05-02  Dmitry Dulepov  <dmitry@typo3.org>
 
