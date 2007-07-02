@@ -3088,6 +3088,7 @@ class t3lib_div {
 			case 'HTTP_REFERER':
 			case 'HTTP_HOST':
 			case 'HTTP_USER_AGENT':
+			case 'HTTP_ACCEPT_ENCODING':
 			case 'HTTP_ACCEPT_LANGUAGE':
 			case 'QUERY_STRING':
 				$retVal = $_SERVER[$getEnvName];
