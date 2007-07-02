@@ -19,11 +19,11 @@
 
 	* Fixed bug #5564: IRRE - foreign_selector/foreign_unique on click issue
 
-2007-05-04  Dmitry Dulepov  <dmitry@typo3.org>
+2007-05-21  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Added $GLOBALS['TYPO3_DB']->sql_free_result() to TCEmain::recordInfo() to avoid resource waste
 
-2007-05-01  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+2007-05-18  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
 	* Fixed bug #5578: config setting SYS[requestURIvar] doesn't work
 
@@ -33,7 +33,7 @@
 
 2007-05-10  Thorsten Kahler  <thorsten.kahler@dkd.de>
 
-	* fixed bug #209: require field URL in page-type "External URL"
+	* Fixed bug #209: require field URL in page-type "External URL"
 
 2007-05-09  Andreas Otto  <andreas.otto@dkd.de>
 
