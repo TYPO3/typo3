@@ -1,3 +1,7 @@
+2007-07-02  Oliver Hader  <oh@inpublica.de>
+
+	* Fixed bug #4623: Content encoding with x-gzip not possible in IE7
+
 2007-05-04  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Added $GLOBALS['TYPO3_DB']->sql_free_result() to TCEmain::rawCopyPageContent() to avoid resource waste
