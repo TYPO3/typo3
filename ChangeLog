@@ -1,3 +1,7 @@
+2007-07-02  Oliver Hader  <oh@inpublica.de>
+
+	* Fixed bug #4623: Content encoding with x-gzip not possible in IE7
+
 2007-06-13  Oliver Hader  <oh@inpublica.de>
 
 	* Fixed bug #5778: Missleading comment in TCEmain::copyRecord_procBasedOnFieldType()
