@@ -1,3 +1,7 @@
+2007-07-06  Michael Stucki  <michael@typo3.org>
+
+	* Fixed bug #3544: RTE-config in PageTS-config not loaded when in draft-workspace
+
 2007-07-02  Oliver Hader  <oh@inpublica.de>
 
 	* Fixed bug #4623: Content encoding with x-gzip not possible in IE7

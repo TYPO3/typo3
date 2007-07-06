@@ -2817,10 +2817,21 @@ class t3lib_BEfunc	{
 			}
 			// ... else the pos/zero pid is just returned here.
 		} else {	// No integer pid and we are forced to look up the $pid
-			$rr = t3lib_BEfunc::getRecord($table,$uid,'pid');	// Try to fetch the record pid from uid. If the uid is 'NEW...' then this will of course return nothing...
+			$rr = t3lib_BEfunc::getRecord($table,$uid);	// Try to fetch the record pid from uid. If the uid is 'NEW...' then this will of course return nothing...
+
 			if (is_array($rr))	{
-				$thePidValue = $rr['pid'];	// Returning the 'pid' of the record
-			} else $thePidValue=-1;	// Returns -1 if the record with the pid was not found.
+					// First check if the pid is -1 which means it is a workspaced element. Get the "real" record:
+				if ($rr['pid']=='-1')	{
+					$rr = t3lib_BEfunc::getRecord($table,$rr['t3ver_oid'],'pid');
+					if (is_array($rr))	{
+						$thePidValue = $rr['pid'];
+					}
+				} else {
+					$thePidValue = $rr['pid'];	// Returning the "pid" of the record
+				}
+			}
+
+			if (!$thePidValue)	$thePidValue = -1;	// Returns -1 if the record with this pid was not found.
 		}
 
 		return $thePidValue;
