@@ -5169,8 +5169,14 @@ class tslib_cObj {
 						$link_param = $GLOBALS['TSFE']->sys_page->getPageIdFromAlias($link_param);
 					}
 
+						// Link to page even if access is missing?
+					if (strlen($conf['linkAccessRestrictedPages'])) {
+						$disableGroupAccessCheck = ($conf['linkAccessRestrictedPages'] ? TRUE : FALSE);
+					} else {
+						$disableGroupAccessCheck = ($GLOBALS['TSFE']->config['config']['typolinkLinkAccessRestrictedPages'] ? TRUE : FALSE);
+					}
+
 						// Looking up the page record to verify its existence:
-					$disableGroupAccessCheck = $GLOBALS['TSFE']->config['config']['typolinkLinkAccessRestrictedPages'] ? TRUE : FALSE;
 					$page = $GLOBALS['TSFE']->sys_page->getPage($link_param,$disableGroupAccessCheck);
 
 					if (count($page))	{
