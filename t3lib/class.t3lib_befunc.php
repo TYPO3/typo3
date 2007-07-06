@@ -1851,12 +1851,18 @@ class t3lib_BEfunc	{
 				if ($TCA[$table]['ctrl']['label_alt'] && ($TCA[$table]['ctrl']['label_alt_force'] || !strcmp($t,'')))	{
 					$altFields=t3lib_div::trimExplode(',',$TCA[$table]['ctrl']['label_alt'],1);
 					$tA=array();
-					$tA[]=$t;
-					if ($TCA[$table]['ctrl']['label_alt_force'])	{
-						foreach ($altFields as $fN)	{
-							$t = trim(strip_tags($row[$fN]));
-							if (!empty($t))	$tA[] = $t;
+					if (!empty($t))	$tA[] = $t;
+					foreach ($altFields as $fN)	{
+						$t = trim(strip_tags($row[$fN]));
+						if (strcmp($t,''))	{
+							$t = t3lib_BEfunc::getProcessedValue($table,$fN,$t);
+							if (!$TCA[$table]['ctrl']['label_alt_force'])	{
+								break;
+							}
+							$tA[] = $t;
 						}
+					}
+					if ($TCA[$table]['ctrl']['label_alt_force'])	{
 						$t=implode(', ',$tA);
 					}
 				}
