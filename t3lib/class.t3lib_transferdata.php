@@ -164,6 +164,18 @@ class t3lib_transferData {
 							}
 						}
 
+						$pageTS = t3lib_beFunc::getPagesTSconfig($id, true);
+						if (isset($pageTS['TCAdefaults.'])) {
+							$TCAPageTSOverride  = $pageTS['TCAdefaults.'];
+							if (is_array($TCAPageTSOverride[$table.'.']))	{
+								foreach($TCAPageTSOverride[$table.'.'] as $theF => $theV)	{
+									if (isset($TCA[$table]['columns'][$theF]))	{
+										$newRow[$theF]=$theV;
+									}
+								}
+							}
+						}
+
 							// Default values as submitted:
 						if (is_array($this->defVals[$table]))	{
 							foreach($this->defVals[$table] as $theF => $theV)	{
