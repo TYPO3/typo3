@@ -12,7 +12,7 @@
 
 	* Added $GLOBALS['TYPO3_DB']->sql_free_result() to TCEmain::rawCopyPageContent() to avoid resource waste
 
-2007-06-13  Andreas Otto <andreas.otto@dkd.de>
+2007-06-13  Andreas Otto  <andreas.otto@dkd.de>
 
 	* Added status headers: In class.tslib_fe.php status header were set when an error occurs after which TYPO3 throws an exit() statement. In addition to that t3lib_div::syslog() is called to write an entry to the syslog.
 
@@ -38,7 +38,7 @@
 
 2007-05-21  Dmitry Dulepov  <dmitry@typo3.org>
 
-	* Fixed bug 5550: 'lower' TCA specification may fail with non-ascii characters
+	* Fixed bug #5550: 'lower' TCA specification may fail with non-ascii characters
 	* Added $GLOBALS['TYPO3_DB']->sql_free_result() to TCEmain::recordInfo() to avoid resource waste
 
 2007-05-18  Martin Kutschker  <martin.t.kutschker@blackbox.net>
@@ -58,7 +58,7 @@
 
 2007-05-11  Ingo Renner  <typo3@ingo-renner.com>
 
-	* Fixed bug 5047: mp3 icon is missing
+	* Fixed bug #5047: MP3 icon is missing
 
 2007-05-10  Thorsten Kahler  <thorsten.kahler@dkd.de>
 
@@ -82,11 +82,11 @@
 
 2007-05-03  Ingo Renner  <typo3@ingo-renner.com>
 
-	* Fixed bug 5310: Missing Swedish flag
+	* Fixed bug #5310: Missing Swedish flag
 
 2007-05-02  Ingo Renner  <typo3@ingo-renner.com>
 
-	* Fixed bug 584: Changing language in user setup do not reload left frame (menu).
+	* Fixed bug #584: Changing language in user setup do not reload left frame (menu).
 
 2007-05-02  Dmitry Dulepov  <dmitry@typo3.org>
 
@@ -367,7 +367,7 @@
 
 2007-02-16  Dmitry Dulepov  <dmitry@typo3.org>
 
-	* Fixed bug 4962: .htaccess in sysext fails in some Apache configurations
+	* Fixed bug #4962: .htaccess in sysext fails in some Apache configurations
 
 2007-02-15  Michael Stucki  <michael@typo3.org>
 
@@ -2618,7 +2618,7 @@
 2005-09-13  Karsten Dambekalns  <karsten@typo3.org>
 
 	* Fixed the page is being generated page refreshing to the wrong page when query parameters are used.
-	* Fixed (part of) bug 1312 (showpic.php).
+	* Fixed (part of) bug #1312 (showpic.php).
 
 2005-08-22  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 

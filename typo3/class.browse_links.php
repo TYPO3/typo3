@@ -958,7 +958,7 @@ class browse_links {
 
 			// This is JavaScript especially for the TBE Element Browser!
 		$formFieldName = 'data['.$pArr[0].']['.$pArr[1].']['.$pArr[2].']';
-		
+
 			// insertElement - Call check function (e.g. for uniqueness handling):
 		if ($pArr[4] && $pArr[5]) {
 			$JScodeCheck = '
@@ -1013,7 +1013,7 @@ class browse_links {
 					focusOpenerAndClose(close);
 			';
 		}
-		
+
 		$JScode.='
 			var elRef="";
 			var targetDoc="";

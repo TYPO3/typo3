@@ -320,7 +320,7 @@ class localRecordList extends recordList {
 			$this->fieldArray[] = '_LOCALIZATION_b';
 			$addWhere.=' AND (
 				'.$TCA[$table]['ctrl']['languageField'].'<=0
-				OR 
+				OR
 				'.$TCA[$table]['ctrl']['transOrigPointerField'].' = 0
 			)';
 		}
@@ -1090,7 +1090,7 @@ class localRecordList extends recordList {
 			0 => '',
 			1 => '',
 		);
-		
+
 		$t8Tools = t3lib_div::makeInstance('t3lib_transl8tools');
 		$translations = $t8Tools->translationInfo($table,$row['uid']);
 
@@ -1114,12 +1114,12 @@ class localRecordList extends recordList {
 					$lNew.=$lC;
 				}
 			}
-			
+
 			if ($lNew)	$out[1].= $lNew;
 		} else {
 			$out[0] = '&nbsp;&nbsp;&nbsp;&nbsp;'.$out[0];
 		}
-		
+
 
 		return $out;
 	}
