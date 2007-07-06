@@ -6,6 +6,7 @@
 
 	* Fix in indexed search: List of indexed pages could be broken if mutli-byte chars are cut in the middle (patch by Karsten Dambekalns)
 	* Make field selection work in browse_links.php popup (patch by Christian Jul Jensen)
+	* Fixed bug #5094: Record alt_label was not processed (patch by Volker Graubaum and Thomas Hempel)
 
 2007-07-02  Oliver Hader  <oh@inpublica.de>
 
