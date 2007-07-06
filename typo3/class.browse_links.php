@@ -234,14 +234,14 @@ class TBE_browser_recordList extends localRecordList {
 	}
 
 	/**
-	 * Returns the title (based on $code) of a table ($table) without a link
+	 * Local version that sets allFields to true to support userFieldSelect
 	 *
-	 * @param	string		Table name
-	 * @param	string		Table label
-	 * @return	string		The linked table label
+	 * @return	void
+	 * @see fieldSelectBox
 	 */
-	function linkWrapTable($table,$code)	{
-		return $code;
+	function generateList() {
+		$this->allFields = true;
+		parent::generateList();
 	}
 }
 
@@ -1735,6 +1735,12 @@ class browse_links {
 
 				//	Add the HTML for the record list to output variable:
 			$out.=$dblist->HTMLcode;
+
+			 	// Add support for fieldselectbox in singleTableMode
+			if ($dblist->table) {
+				$out.= $dblist->fieldSelectBox($dblist->table);
+			}
+
 			$out.=$dblist->getSearchBox();
 		}
 
