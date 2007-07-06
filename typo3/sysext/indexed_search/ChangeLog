@@ -1,3 +1,7 @@
+2007-07-06  Michael Stucki  <michael@typo3.org>
+
+	* Fix: List of indexed pages could be broken if mutli-byte chars are cut in the middle (patch by Karsten Dambekalns)
+
 2007-02-06  Michael Stucki  <michael@typo3.org>
 
 	* Turn off maxAge setting as this "feature" seems to make no sense at all

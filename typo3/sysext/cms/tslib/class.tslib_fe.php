@@ -978,7 +978,7 @@
 			}
 			$this->fePreview = 1;
 		}
-				
+
 			// Checking for include section regarding the hidden/starttime/endtime/fe_user (that is access control of a whole subbranch!)
 		if ($this->checkRootlineForIncludeSection())	{
 			if (!count($this->rootLine))	{
