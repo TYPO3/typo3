@@ -1,3 +1,7 @@
+2007-07-07  Michael Stucki  <michael@typo3.org>
+
+	* Added new static_tsconfig_help data based on TYPO3 4.1 CoreDocs. Kudos to Stephane Schitter and Francois Suter for rewriting a backend module that allows to update this data again! (This functionality was broken after switching to TER2.)
+
 2007-07-06  Wolfgang Klinger <wk@plan2.net>
 
 	* Implemented feature request #1919: TCAdefaults setting in page TS
