@@ -1,6 +1,6 @@
 2007-07-07  Oliver Hader  <oh@inpublica.de>
 
-	* Fixed bug #5053: imgNameNotRandom on TMENU/GMENU could break rollover behaviour
+	* Fixed bug #5053: imgNameNotRandom on TMENU/GMENU could break rollover behaviour (thanks to Ralf Hettinger)
 
 2007-07-07  Wolfgang Klinger <wk@plan2.net>
 
