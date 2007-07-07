@@ -108,9 +108,10 @@ function JSactivate(level) {
 			this.entry[this.entry[entryID].parent].openID = entryID;
 		}
 		if (this.entry[entryID].url)	{
-			if (document.getElementsByTagName("base").size && document.getElementsByTagName("base")[0].href != "") {
-				if (this.entry[entryID].url.substr(0,7) != "http://")	{
-					this.entry[entryID].url = document.getElementsByTagName("base")[0].href + this.entry[entryID].url;
+			var baseURLs = document.getElementsByTagName('base');
+			if (baseURLs.length && baseURLs[0].href.length > 0) {
+				if (this.entry[entryID].url.search(/^http[s]?:\/\//))	{
+					this.entry[entryID].url = baseURLs[0].href + this.entry[entryID].url;
 				}
 			}
 			if (!this.entry[entryID].target || this.entry[entryID].target=="_self")	{

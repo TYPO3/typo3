@@ -1,6 +1,7 @@
 2007-07-07  Oliver Hader  <oh@inpublica.de>
 
 	* Fixed bug #5053: imgNameNotRandom on TMENU/GMENU could break rollover behaviour (thanks to Ralf Hettinger)
+	* Fixed bug #5048: JSMENU produces error if using baseurls (thanks to Jens Koester)
 
 2007-07-06  Michael Stucki  <michael@typo3.org>
 
