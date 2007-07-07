@@ -1,3 +1,7 @@
+2007-07-07  Oliver Hader  <oh@inpublica.de>
+
+	* Fixed bug #5053: imgNameNotRandom on TMENU/GMENU could break rollover behaviour
+
 2007-07-06  Michael Stucki  <michael@typo3.org>
 
 	* Fix in indexed search: List of indexed pages could be broken if mutli-byte chars are cut in the middle (patch by Karsten Dambekalns)
