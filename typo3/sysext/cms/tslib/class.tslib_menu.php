@@ -1585,7 +1585,7 @@ class tslib_tmenu extends tslib_menu {
 
 				$this->I = array();
 				$this->I['key'] = $key;
-				$this->I['INPfix'] = $this->imgNameNotRandom?'':'_'.$this->INPfixMD5.'_'.$key;
+				$this->I['INPfix'] = ($this->imgNameNotRandom ? '' : '_'.$this->INPfixMD5).'_'.$key;
 				$this->I['val'] = $val;
 				$this->I['title'] = $this->WMcObj->stdWrap($this->getPageTitle($this->menuArr[$key]['title'],$this->menuArr[$key]['nav_title']),$this->I['val']['stdWrap.']);
 				$this->I['uid'] = $this->menuArr[$key]['uid'];
@@ -2206,7 +2206,7 @@ class tslib_gmenu extends tslib_menu {
 
 					$this->I = array();
 					$this->I['key'] = $key;
-					$this->I['INPfix']= $this->imgNameNotRandom?'':'_'.$this->INPfixMD5.'_'.$key;
+					$this->I['INPfix']= ($this->imgNameNotRandom ? '' : '_'.$this->INPfixMD5).'_'.$key;
 					$this->I['val'] = $this->result['NO'][$key];
 					$this->I['title'] = $this->getPageTitle($this->menuArr[$key]['title'],$this->menuArr[$key]['nav_title']);
 					$this->I['uid'] = $this->menuArr[$key]['uid'];

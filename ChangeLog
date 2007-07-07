@@ -1,3 +1,7 @@
+2007-07-07  Oliver Hader  <oh@inpublica.de>
+
+	* Fixed bug #5053: imgNameNotRandom on TMENU/GMENU could break rollover behaviour
+
 2007-07-07  Wolfgang Klinger <wk@plan2.net>
 
 	* Changed back references \1 to ${1} in regular expressions in tslib_fe where necessary
