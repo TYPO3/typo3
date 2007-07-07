@@ -1,3 +1,7 @@
+2007-07-07  Wolfgang Klinger <wk@plan2.net>
+
+	* Changed back references \1 to ${1} in regular expressions in tslib_fe where necessary
+
 2007-07-07  Michael Stucki  <michael@typo3.org>
 
 	* Added new static_tsconfig_help data based on TYPO3 4.1 CoreDocs. Kudos to Stephane Schitter and Francois Suter for rewriting a backend module that allows to update this data again! (This functionality was broken after switching to TER2.)
