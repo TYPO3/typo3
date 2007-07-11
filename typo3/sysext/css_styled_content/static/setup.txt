@@ -1328,7 +1328,10 @@ tt_content.image.20 {
 			oneImageStdWrap.dataWrap = <dl class="csc-textpic-image###CLASSES###" style="width:{register:imagespace}px;"> | </dl>
 			imgTagStdWrap.wrap = <dt> | </dt>
 			editIconsStdWrap.wrap = <dd> | </dd>
-			caption.wrap = <dd class="csc-textpic-caption"> | </dd>
+			caption {
+				required = 1
+				wrap = <dd class="csc-textpic-caption"> | </dd>
+			}
 		}
 		ul {
 			imageRowStdWrap.dataWrap = <div class="csc-textpic-imagerow" style="width:{register:rowwidth}px;"><ul> | </ul></div>
