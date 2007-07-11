@@ -233,7 +233,7 @@ class tx_rtehtmlarea_user {
 										$script = trim($v[$k2i.'.']['submitToScript']);
 										if (substr($script,0,4)!='http') $script = $this->siteUrl.$script;
 										if ($script)	{
-											$onClickEvent='processSelection(' . $LANG->JScharCode($script) . ';';
+											$onClickEvent='processSelection(' . $LANG->JScharCode($script) . ');';
 										}
 									break;
 									case 'insert':

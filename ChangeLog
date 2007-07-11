@@ -1,6 +1,7 @@
 2007-07-11  Oliver Hader  <oh@inpublica.de>
 
 	* Fixed bug #5331: Remove the caption wrap on images if no caption is set (thanks to Georg Ringer)
+	* Fixed bug #5945: Missing right parenthesis in RTEhtmlarea user element module (thanks to Markus Lange)
 
 2007-07-07  Oliver Hader  <oh@inpublica.de>
 
