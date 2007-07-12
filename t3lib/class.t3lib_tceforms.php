@@ -2340,9 +2340,14 @@ class t3lib_TCEforms	{
 								$opt=array();
 								$opt[]='<option value=""></option>';
 								foreach($value['el'] as $kk => $vv)	{
-									$opt[]='<option value="'.$kk.'">'.htmlspecialchars($this->getLL('l_new') . ' "'.$this->sL($value['el'][$kk]['tx_templavoila']['title']).'"').'</option>';
+									$opt[]='<option value="'.$kk.'">'.htmlspecialchars($this->sL($value['el'][$kk]['tx_templavoila']['title'])).'</option>';
 								}
-								$rowCells['formEl']='<select name="flexFormsCmdData'.$formPrefix.'['.$key.'][value]">'.implode('',$opt).'</select>';
+								$rowCells['formEl']=$this->getLL('l_new_section') . ' <select name="flexFormsCmdData'.$formPrefix.'['.$key.'][value]">'.implode('',$opt).'</select> ';
+								$rowCells['formEl'].=$this->getLL('l_count') . ' <select name="flexFormsCmdData'.$formPrefix.'['.$key.'][count]">';
+								for ($i = 1; $i <= 10; $i++) {
+									$rowCells['formEl'].='<option value="' . $i . '">' . $i . '</option>';
+								}
+								$rowCells['formEl'].='</select>';
 							}
 
 								// Put row together
@@ -2375,24 +2380,25 @@ class t3lib_TCEforms	{
 								}
 							}
 
-
-
 								// New form?
 							if ($cmdData[$key]['value'])	{
 								$newSectionEl = $value['el'][$cmdData[$key]['value']];
 								if (is_array($newSectionEl))	{
-									$tRows = $this->getSingleField_typeFlex_draw(
-										array($cmdData[$key]['value'] => $newSectionEl),
-										array(),
-										array(),
-										$table,
-										$field,
-										$row,
-										$PA,
-										$formPrefix.'['.$key.'][el]['.($cc+1).']',
-										$level+1,
-										$tRows
-									);
+									$newElCount = max(1, intval($cmdData[$key]['count']));
+									for ($newElNum = 0; $newElNum < $newElCount; $newElNum++) {
+										$tRows = $this->getSingleField_typeFlex_draw(
+											array($cmdData[$key]['value'] => $newSectionEl),
+											array(),
+											array(),
+											$table,
+											$field,
+											$row,
+											$PA,
+											$formPrefix.'['.$key.'][el]['.($cc+1+$newElNum).']',
+											$level+1,
+											$tRows
+										);
+									}
 								}
 							}
 						} else {

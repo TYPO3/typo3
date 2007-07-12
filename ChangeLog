@@ -1,3 +1,7 @@
+2007-07-12  Dmitry Dulepov  <dmitry@typo3.org>
+
+	* TCEForms: allow to create many sections at once
+
 2007-07-11  Oliver Hader  <oh@inpublica.de>
 
 	* Fixed bug #5331: Remove the caption wrap on images if no caption is set (thanks to Georg Ringer)

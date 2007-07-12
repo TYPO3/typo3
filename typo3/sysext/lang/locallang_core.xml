@@ -87,6 +87,8 @@ Do you want to continue WITHOUT saving?</label>
 			<label index="labels.setAllCheckboxes">Select All Checkboxes</label>
 			<label index="labels.changeInOrig">Changed in original translation</label>
 			<label index="labels.expandAll">Expand all</label>
+ 			<label index="labels.new_section">Create new:</label>
+ 			<label index="labels.count">Quantity:</label>
 			<label index="ver.online">ONLINE</label>
 			<label index="ver.mgm">Version Management</label>
 			<label index="ver.selVer">Select version:</label>
