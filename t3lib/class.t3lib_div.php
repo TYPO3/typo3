@@ -3812,13 +3812,20 @@ class t3lib_div {
 	 * @return	void
 	 */
 	function loadTCA($table)	{
-		global $TCA,$LANG_GENERAL_LABELS;
-		if (isset($TCA[$table]) && !is_array($TCA[$table]['columns']) && $TCA[$table]['ctrl']['dynamicConfigFile'])	{
-			if (!strcmp(substr($TCA[$table]['ctrl']['dynamicConfigFile'],0,6),'T3LIB:'))	{
-				include(PATH_t3lib.'stddb/'.substr($TCA[$table]['ctrl']['dynamicConfigFile'],6));
-			} elseif (t3lib_div::isAbsPath($TCA[$table]['ctrl']['dynamicConfigFile']) && @is_file($TCA[$table]['ctrl']['dynamicConfigFile']))	{	// Absolute path...
-				include($TCA[$table]['ctrl']['dynamicConfigFile']);
-			} else include(PATH_typo3conf.$TCA[$table]['ctrl']['dynamicConfigFile']);
+		global $TCA;
+
+		if (isset($TCA[$table])) {
+			$tca = &$TCA[$table];
+			if (!$tca['columns']) {
+				$dcf = $tca['ctrl']['dynamicConfigFile'];
+				if ($dcf) {
+					if (!strcmp(substr($dcf,0,6),'T3LIB:'))	{
+						include(PATH_t3lib.'stddb/'.substr($dcf,6));
+					} elseif (t3lib_div::isAbsPath($dcf) && @is_file($dcf))	{	// Absolute path...
+						include($dcf);
+					} else include(PATH_typo3conf.$dcf);
+				}
+			}
 		}
 	}
 
