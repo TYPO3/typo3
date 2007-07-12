@@ -255,41 +255,47 @@ class t3lib_extMgm {
 		$insert=count($position);
 
 		t3lib_div::loadTCA($table);
-		if (trim($str) && is_array($TCA[$table]) && is_array($TCA[$table]['types']))	{
+		$str = trim($str);
+		if ($str && is_array($TCA[$table]) && is_array($TCA[$table]['types']))	{
 			foreach($TCA[$table]['types'] as $k => $v)	{
 				if (!$specificTypesList || t3lib_div::inList($specificTypesList,$k))	{
 					if ($insert)	{
-						$append=true;
-						$showItem = t3lib_div::trimExplode(',',$TCA[$table]['types'][$k]['showitem'],1);
-						foreach($showItem as $key => $fieldInfo)	{
-
-							$parts = explode(';',$fieldInfo);
-							$theField = trim($parts[0]);
-							$palette = trim($parts[0]).';;'.trim($parts[2]);
-
-								// insert before: find exact field name or palette with number
-							if (in_array($theField, $positionArr) || in_array($palette, $positionArr) || in_array('before:'.$theField, $positionArr) || in_array('before:'.$palette, $positionArr))	{
-								$showItem[$key]=trim($str).', '.$fieldInfo;
-								$append=false;
-								break;
+						if (count($positionArr)) {
+							$append=true;
+							$showItem = t3lib_div::trimExplode(',',$TCA[$table]['types'][$k]['showitem'],1);
+							foreach($showItem as $key => $fieldInfo)	{
+	
+								$parts = explode(';',$fieldInfo);
+								$theField = trim($parts[0]);
+								$palette = trim($parts[0]).';;'.trim($parts[2]);
+	
+									// insert before: find exact field name or palette with number
+								if (in_array($theField, $positionArr) || in_array($palette, $positionArr) || in_array('before:'.$theField, $positionArr) || in_array('before:'.$palette, $positionArr))	{
+									$showItem[$key]=$str.', '.$fieldInfo;
+									$append=false;
+									break;
+								}
+									// insert after
+								if (in_array('after:'.$theField, $positionArr) || in_array('after:'.$palette, $positionArr))	{
+									$showItem[$key]=$fieldInfo.', '.$str;
+									$append=false;
+									break;
+								}
 							}
-								// insert after
-							if (in_array('after:'.$theField, $positionArr) || in_array('after:'.$palette, $positionArr))	{
-								$showItem[$key]=$fieldInfo.', '.trim($str);
-								$append=false;
-								break;
+	
+								// Not found? Then append.
+							if($append) {
+								$showItem[]=$str;
 							}
+	
+							$TCA[$table]['types'][$k]['showitem']=implode(', ', $showItem);
 						}
-
-							// Not found? Then append.
-						if($append) {
-							$showItem[]=trim($str);
+						else {
+							$TCA[$table]['types'][$k]['showitem'] .= ', ' . $str;
 						}
-
-						$TCA[$table]['types'][$k]['showitem']=implode(', ', $showItem);
 
 					} else {
-						$TCA[$table]['types'][$k]['showitem'].=', '.trim($str);
+						$TCA[$table]['types'][$k]['showitem'].=', ' . $str;
 					}
 				}
 			}

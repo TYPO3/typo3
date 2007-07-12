@@ -1,6 +1,7 @@
 2007-07-12  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* TCEForms: allow to create many sections at once
+	* Performance enhancement in t3lib/class.t3lib_extmgm.php in function addToAllTCAtypes
 
 2007-07-11  Oliver Hader  <oh@inpublica.de>
 
