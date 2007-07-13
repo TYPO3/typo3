@@ -493,12 +493,6 @@ class t3lib_TCEforms	{
 			if ($TCA[$table]['types'][$typeNum])	{
 				$itemList = $TCA[$table]['types'][$typeNum]['showitem'];
 				if ($itemList)	{	// If such a list existed...
-						// if TCEforms will render a tab menu in the next step, push the name to the tab stack
-					if (strstr($itemList, '--div--') !== false && $this->enableTabMenu && $TCA[$table]['ctrl']['dividers2tabs']) {
-						$tabIdentString = 'TCEforms:'.$table.':'.$row['uid'];
-						$tabIdentStringMD5 = $GLOBALS['TBE_TEMPLATE']->getDynTabMenuId('TCEforms:'.$table.':'.$row['uid']);
-					}
-
 						// Explode the field list and possibly rearrange the order of the fields, if configured for
 					$fields = t3lib_div::trimExplode(',',$itemList,1);
 					if ($this->fieldOrder)	{
@@ -508,6 +502,16 @@ class t3lib_TCEforms	{
 						// Get excluded fields, added fiels and put it together:
 					$excludeElements = $this->excludeElements = $this->getExcludeElements($table,$row,$typeNum);
 					$fields = $this->mergeFieldsWithAddedFields($fields,$this->getFieldsToAdd($table,$row,$typeNum));
+
+						// If TCEforms will render a tab menu in the next step, push the name to the tab stack:
+					if (strstr($itemList, '--div--') !== false && $this->enableTabMenu && $TCA[$table]['ctrl']['dividers2tabs']) {
+						$tabIdentString = 'TCEforms:'.$table.':'.$row['uid'];
+						$tabIdentStringMD5 = $GLOBALS['TBE_TEMPLATE']->getDynTabMenuId('TCEforms:'.$table.':'.$row['uid']);
+							// Remember that were currently working on the general tab:
+						if (isset($fields[0]) && strpos($fields[0], '--div--') !== 0) {
+							$this->pushToDynNestedStack('tab', $tabIdentStringMD5.'-1');
+						}
+					}
 
 						// Traverse the fields to render:
 					$cc=0;
@@ -5472,35 +5476,17 @@ class t3lib_TCEforms	{
 
 	/**
 	 * Get the dynNestedStack as associative array.
-	 * It has the keys raw, tab, inline and sorted.
-	 * The key "sorted" contains the levels in the sorting order they have been applied.
+	 * The result is e.g. ['tab','DTM-ABCD-1'], ['inline','data[13][table][uid][field]'], ['tab','DTM-DEFG-2'], ...
 	 *
-	 * @param	boolean		$json: Return a JSON string instead of an array
-	 * @param	string		$tabSuffix: Add a suffix (e.g. "-DIV") to each tab level
-	 * @param	string		$tabSuffix: Add a suffix to each inline level
-	 * @return	mixed		Returns an associative array (default), if $json is true, it will be returned as JSON string.
+	 * @param	boolean		$json: Return a JSON string instead of an array - default: false
+	 * @param	boolean		$skipFirst: Skip the first element in the dynNestedStack - default: false
+	 * @return	mixed		Returns an associative array by default. If $json is true, it will be returned as JSON string.
 	 */
-	function getDynNestedStack($json=false, $tabSuffix='', $inlineSuffix='') {
-		$tab = array();
-		$inline = array();
-		$sorted = array();
-		foreach ($this->dynNestedStack as $level) {
-			if ($level[0]=='tab') {
-				$tab[] = $level[1].$tabSuffix;
-				$sorted[] = $level[1].$tabSuffix;
-			} elseif ($level[0]=='inline') {
-				$inline[] = $level[1].$inlineSuffix;
-				$sorted[] = $level[1].$inlineSuffix;
-			}
+	function getDynNestedStack($json=false, $skipFirst=false) {
+		$result = $this->dynNestedStack;
+		if ($skipFirst) {
+			array_shift($result);
 		}
-		$result = array(
-			// 'raw' => $this->dynNestedStack,
-			'tab' => $tab,
-			'inline' => $inline,
-			'sorted' => $sorted,
-			// 'tabSuffix' => $tabSuffix,
-			// 'inlineSuffix' => $inlineSuffix,
-		);
 		return ($json ? $this->inline->getJSON($result) : $result);
 	}
 }

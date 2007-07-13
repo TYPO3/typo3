@@ -1,3 +1,7 @@
+2007-07-13  Oliver Hader  <oh@inpublica.de>
+
+	* Fixed bug #5913: RTEhtmlarea not correctly displayed in IRRE child form-fields and tabs (continuance of bug #5177)
+
 2007-07-12  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* TCEForms: allow to create many sections at once
