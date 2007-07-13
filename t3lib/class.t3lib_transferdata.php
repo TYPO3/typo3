@@ -577,7 +577,7 @@ class t3lib_transferData {
 				}
 			}
 		}
-		
+
 		return implode(',',$dataAcc);
 	}
 
@@ -672,7 +672,7 @@ class t3lib_transferData {
 
 								// $data,$fieldConfig,$TSconfig,$table,$row,$field
 							list(,,$CVTSconfig,$CVtable,$CVrow,$CVfield) = $pParams;
-;
+
 								// Set default value:
 							if (!isset($dataValues[$key][$vKey]))	{
 								$dataValues[$key][$vKey] = $dsConf['TCEforms']['config']['default'];
