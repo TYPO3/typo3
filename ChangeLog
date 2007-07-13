@@ -1,3 +1,8 @@
+
+2007-07-14  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+
+	* Fixed bug #3834: possible abuse of t3lib_formmail
+
 2007-07-13  Oliver Hader  <oh@inpublica.de>
 
 	* Fixed bug #5913: RTEhtmlarea not correctly displayed in IRRE child form-fields and tabs (continuance of bug #5177)
