@@ -886,7 +886,9 @@ HTMLArea.prototype.sizeIframe = function(diff) {
 	var height = (this.config.height == "auto" ? (this._textArea.style.height) : this.config.height);
 	var textareaHeight = height;
 		// All nested tabs and inline levels in the sorting order they were applied:
-	this.nested = RTEarea[this._editorNumber].tceformsNested;
+	this.nested = {};
+	this.nested.all = RTEarea[this._editorNumber].tceformsNested;
+	this.nested.sorted = HTMLArea.simplifyNested(this.nested.all);
 		// Clone the array instead of using a reference (this.accessParentElements will change the array):
 	var parentElements = (this.nested.sorted && this.nested.sorted.length ? [].concat(this.nested.sorted) : []);
 		// Walk through all nested tabs and inline levels to make a correct positioning:
@@ -971,6 +973,32 @@ HTMLArea.prototype.accessParentElements = function(parentElements, callbackFunc)
 	}
 
 	return result;
+};
+
+/**
+ * Simplify the array of nested levels. Create an indexed array with the correct names of the elements.
+ *
+ * @param	object		nested: The array with the nested levels
+ * @return	object		The simplified array
+ * @author	Oliver Hader <oh@inpublica.de>
+ */
+HTMLArea.simplifyNested = function(nested) {
+	var i, type, level, max, simplifiedNested=[];
+	if (nested && nested.length) {
+		if (nested[0][0]=='inline') {
+			nested = inline.findContinuedNestedLevel(nested, nested[0][1]);
+		}
+		for (i=0, max=nested.length; i<max; i++) {
+			type = nested[i][0];
+			level = nested[i][1];
+			if (type=='tab') {
+				simplifiedNested.push(level+'-DIV');
+			} else if (type=='inline') {
+				simplifiedNested.push(level+'_fields');
+			}
+		}
+	}
+	return simplifiedNested;
 };
 
 /*

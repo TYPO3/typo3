@@ -356,7 +356,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 
 		$this->TCEform = $pObj;
 		$inline =& $this->TCEform->inline;
-		
+
 		$LANG->includeLLFile('EXT:' . $this->ID . '/locallang.xml');
 		$this->client = $this->clientInfo();
 		$this->typoVersion = t3lib_div::int_from_ver(TYPO3_version);
@@ -907,10 +907,6 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 	function registerRTEinJS($number, $table='', $uid='', $field='') {
 		global $TSFE, $TYPO3_CONF_VARS;
 
-			// if this RTE is shown inline of an IRRE record or a Tab sheet, the JS functions need to know about that
-		$tabSuffix = '-DIV';
-		$inlineSuffix = '['.$table.']['.$uid.']_fields';
-
 		$registerRTEinJSString = (!is_object($TSFE) ? '' : '
 			' . '/*<![CDATA[*/') . '
 			RTEarea['.$number.'] = new Object();
@@ -927,7 +923,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			RTEarea['.$number.']["showTagFreeClasses"] = ' . (trim($this->thisConfig['showTagFreeClasses'])?'true':'false') . ';
 			RTEarea['.$number.']["useHTTPS"] = ' . ((trim(stristr($this->siteURL, 'https')) || $this->thisConfig['forceHTTPS'])?'true':'false') . ';
 			RTEarea['.$number.']["enableMozillaExtension"] = ' . (($this->client['BROWSER'] == 'gecko' && $TYPO3_CONF_VARS['EXTCONF'][$this->ID]['enableMozillaExtension'])?'true':'false') . ';
-			RTEarea['.$number.']["tceformsNested"] = ' . (is_object($this->TCEform) && method_exists($this->TCEform, 'getDynNestedStack') ? $this->TCEform->getDynNestedStack(true, $tabSuffix, $inlineSuffix) : '[]') . ';';
+			RTEarea['.$number.']["tceformsNested"] = ' . (is_object($this->TCEform) && method_exists($this->TCEform, 'getDynNestedStack') ? $this->TCEform->getDynNestedStack(true) : '[]') . ';';
 
 			// The following properties apply only to the backend
 		if (!is_object($TSFE)) {

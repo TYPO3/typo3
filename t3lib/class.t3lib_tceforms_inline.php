@@ -91,6 +91,7 @@ class t3lib_TCEforms_inline {
 	var $fObj;								// Reference to the calling TCEforms instance
 	var $backPath;							// Reference to $fObj->backPath
 
+	var $isAjaxCall = false;				// Indicates if a field is rendered upon an AJAX call
 	var $inlineStructure = array();			// the structure/hierarchy where working in, e.g. cascading inline tables
 	var $inlineFirstPid;					// the first call of an inline type appeared on this page (pid of record)
 	var $inlineNames = array();				// keys: form, object -> hold the name/id for each of them
@@ -178,7 +179,7 @@ class t3lib_TCEforms_inline {
 		$config['inline']['first'] = $recordList[0]['uid'];
 		$config['inline']['last'] = $recordList[count($recordList)-1]['uid'];
 
-			// tell the browser what we have (using JSON later)
+			// Tell the browser what we have (using JSON later):
 		$top = $this->getStructureLevel(0);
 		$this->inlineData['config'][$nameObject] = array('table' => $foreign_table);
 		$this->inlineData['config'][$nameObject.'['.$foreign_table.']'] = array(
@@ -190,6 +191,8 @@ class t3lib_TCEforms_inline {
 				'uid'	=> $top['uid'],
 			),
 		);
+			// Set a hint for nested IRRE and tab elements:
+		$this->inlineData['nested'][$nameObject] = $this->fObj->getDynNestedStack(false, $this->isAjaxCall);
 
 			// if relations are required to be unique, get the uids that have already been used on the foreign side of the relation
 		if ($config['foreign_unique']) {
@@ -308,6 +311,8 @@ class t3lib_TCEforms_inline {
 		$nameObject = $this->inlineNames['object'];
 		$appendFormFieldNames = '['.$foreign_table.']['.$rec['uid'].']';
 		$formFieldNames = $nameObject.$appendFormFieldNames;
+			// Put the current level also to the dynNestedStack of TCEforms:
+		$this->fObj->pushToDynNestedStack('inline', $this->inlineNames['object'].$appendFormFieldNames);
 
 		$header = $this->renderForeignRecordHeader($parentUid, $foreign_table, $rec, $config);
 		$combination = $this->renderCombinationTable($rec, $appendFormFieldNames, $config);
@@ -339,6 +344,9 @@ class t3lib_TCEforms_inline {
 		$out .= '<div id="'.$formFieldNames.'_fields"'.$appearanceStyleFields.'>'.$fields.$combination.'</div>';
 			// wrap the header, fields and combination part of a child record with a div container
 		$out = '<div id="'.$formFieldNames.'_div"'.($isNewRecord ? ' class="inlineIsNewRecord"' : '').'>' . $out . '</div>';
+
+			// Remove the current level also from the dynNestedStack of TCEforms:
+		$this->fObj->popFromDynNestedStack();
 
 		return $out;
 	}
@@ -781,6 +789,7 @@ class t3lib_TCEforms_inline {
 	 * @return	string		A JSON string
 	 */
 	function createNewRecord($domObjectId, $foreignUid = 0) {
+		$this->isAjaxCall = true;
 			// parse the DOM identifier (string), add the levels to the structure stack (array) and load the TCA config
 		$this->parseStructureString($domObjectId, true);
 			// the current table - for this table we should add/import records
@@ -789,7 +798,10 @@ class t3lib_TCEforms_inline {
 		$parent = $this->getStructureLevel(-1);
 			// get TCA 'config' of the parent table
 		$config = $parent['config'];
-		
+
+			// Put the current level also to the dynNestedStack of TCEforms:
+		$this->fObj->pushToDynNestedStack('inline', $this->inlineNames['object']);
+
 			// dynamically create a new record using t3lib_transferData
 		if (!$foreignUid || !t3lib_div::testInt($foreignUid) || $config['foreign_selector']) {
 			$record = $this->getNewRecord($this->inlineFirstPid, $current['table']);
@@ -860,6 +872,9 @@ class t3lib_TCEforms_inline {
 		$jsonArray['scriptCall'][] = "Element.scrollTo('".$objectId."_div');";
 			// fade out and fade in the new record in the browser view to catch the user's eye
 		$jsonArray['scriptCall'][] = "inline.fadeOutFadeIn('".$objectId."_div');";
+
+			// Remove the current level also from the dynNestedStack of TCEforms:
+		$this->fObj->popFromDynNestedStack();
 
 			// return the JSON string
 		return $this->getJSON($jsonArray);
@@ -1095,8 +1110,6 @@ class t3lib_TCEforms_inline {
 			'config' => $config,
 		);
 		$this->updateStructureNames();
-			// Put the current level also to the dynNestedStack of TCEforms:
-		$this->fObj->pushToDynNestedStack('inline', $this->inlineNames['object']);
 	}
 
 
@@ -1110,8 +1123,6 @@ class t3lib_TCEforms_inline {
 			$popItem = array_pop($this->inlineStructure['stable']);
 			$this->updateStructureNames();
 		}
-			// Remove the current level also from the dynNestedStack of TCEforms:
-		$this->fObj->popFromDynNestedStack();
 		return $popItem;
 	}
 

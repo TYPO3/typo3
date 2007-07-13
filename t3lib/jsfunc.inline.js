@@ -691,6 +691,18 @@ var inline = {
 		return $(objectId+'_div') && $(objectId+'_div').hasClassName('inlineIsNewRecord')
 			? true
 			: false;
+	},
+
+		// Find and fix nested of inline and tab levels if a new element was created dynamically (it doesn't know about its nesting):
+	findContinuedNestedLevel: function(nested, objectId) {
+		if (this.data.nested && this.data.nested[objectId]) {
+				// Remove the first element from the new nested stack, it's just a hint:
+			nested.shift();
+			nested = this.data.nested[objectId].concat(nested);
+			return nested;
+		} else {
+			return nested;
+		}
 	}
 }
 
