@@ -4314,12 +4314,13 @@ $this->log($table,$id,6,0,0,'Stage raised...',30,array('comment'=>$comment,'stag
 
 					// Replace relations to NEW...-IDs in values:
 				if(is_array($valueArray)) {
+					$foreign_table = $tcaFieldConf['foreign_table'];
 					foreach($valueArray as $key => $value) {
 						if(strpos($value, 'NEW') !== false) {
 								// fetch the proper uid as integer for the NEW...-ID
 							$valueArray[$key] = $this->substNEWwithIDs[$value];
-								// set a hint that this was a new child record
-							$this->newRelatedIDs[$table][] = $valueArray[$key];
+								// Set a hint that this was a new child record:
+							$this->newRelatedIDs[$foreign_table][] = $valueArray[$key];
 						}
 					}
 					$remapAction['args'][$remapAction['pos']['valueArray']] = $valueArray;
