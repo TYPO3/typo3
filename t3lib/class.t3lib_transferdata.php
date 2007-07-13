@@ -548,9 +548,9 @@ class t3lib_transferData {
 			// Initialize:
 		$elements = t3lib_div::trimExplode(',',$data);	// Current data set.
 		$dataAcc=array();	// New data set, ready for interface (list of values, rawurlencoded)
-	
+
 		$dataAcc = $this->selectAddForeign($dataAcc, $elements, $fieldConfig, $field, $TSconfig, $row, $table);
-		
+
 		return implode(',',$dataAcc);
 	}
 
@@ -645,7 +645,7 @@ class t3lib_transferData {
 
 								// $data,$fieldConfig,$TSconfig,$table,$row,$field
 							list(,,$CVTSconfig,$CVtable,$CVrow,$CVfield) = $pParams;
-;
+
 								// Set default value:
 							if (!isset($dataValues[$key][$vKey]))	{
 								$dataValues[$key][$vKey] = $dsConf['TCEforms']['config']['default'];
