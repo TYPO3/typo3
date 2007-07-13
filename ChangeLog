@@ -1,6 +1,7 @@
 2007-07-13  Oliver Hader  <oh@inpublica.de>
 
 	* Fixed bug #5913: RTEhtmlarea not correctly displayed in IRRE child form-fields and tabs (continuance of bug #5177)
+	* Fixed bug #5948: IRRE - Parent record is not shown after saving the first time to a table on a TYPO3 system
 
 2007-07-12  Dmitry Dulepov  <dmitry@typo3.org>
 

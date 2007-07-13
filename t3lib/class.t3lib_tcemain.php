@@ -4443,7 +4443,7 @@ $this->log($table,$id,6,0,0,'Stage raised...',30,array('comment'=>$comment,'stag
 								$value = $this->autoVersionIdMap[$foreign_table][$value];
 							}
 								// Set a hint that this was a new child record:
-							$this->newRelatedIDs[$table][] = $value;
+							$this->newRelatedIDs[$foreign_table][] = $value;
 							$valueArray[$key] = $value;
 						}
 					}
