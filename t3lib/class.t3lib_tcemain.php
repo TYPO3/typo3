@@ -2482,7 +2482,8 @@ class t3lib_TCEmain	{
 		global $TCA;
 
 		$uid = $origUid = intval($uid);
-		if ($TCA[$table] && $uid)	{
+			// Only copy if the table is defined in TCA, a uid is given and the record wasn't copied before:
+		if ($TCA[$table] && $uid && !$this->isRecordCopied($table, $uid))	{
 			t3lib_div::loadTCA($table);
 /*
 				// In case the record to be moved turns out to be an offline version, we have to find the live version and work on that one (this case happens for pages with "branch" versioning type)
@@ -2692,7 +2693,8 @@ class t3lib_TCEmain	{
 		global $TCA;
 
 		$uid = intval($uid);
-		if ($TCA[$table] && $uid)	{
+			// Only copy if the table is defined in TCA, a uid is given and the record wasn't copied before:
+		if ($TCA[$table] && $uid && !$this->isRecordCopied($table, $uid))	{
 			t3lib_div::loadTCA($table);
 			if ($this->doesRecordExist($table,$uid,'show'))	{
 
@@ -6137,6 +6139,24 @@ State was change by %s (username: %s)
 			}
 		}
 		return $emails;
+	}
+
+	/**
+	 * Determine if a record was copied or if a record is the result of a copy action.
+	 *
+	 * @param	string		$table: The tablename of the record
+	 * @param	integer		$uid: The uid of the record
+	 * @return	boolean		Returns true if the record is copied or is the result of a copy action
+	 */
+	function isRecordCopied($table, $uid) {
+			// If the record was copied:
+		if (isset($this->copyMappingArray[$table][$uid])) {
+			return true;
+			// If the record is the result of a copy action:
+		} elseif (isset($this->copyMappingArray[$table]) && in_array($uid, array_values($this->copyMappingArray[$table]))) {
+			return true;
+		}
+		return false;
 	}
 
 
