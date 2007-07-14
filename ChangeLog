@@ -2,6 +2,7 @@
 
 	* Fixed bug #5704: IRRE - Children on the table pages get the pid of the parent page in pagetree
 	* Fixed bug #5718: IRRE - Copying a page with related child records leads to duplicates of each children
+	* Fixed bug #5907: RTE-Plugins: Use record specific RTEtsConfigParams
 
 2007-07-13  Oliver Hader  <oh@inpublica.de>
 

@@ -910,6 +910,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 		$registerRTEinJSString = (!is_object($TSFE) ? '' : '
 			' . '/*<![CDATA[*/') . '
 			RTEarea['.$number.'] = new Object();
+			RTEarea['.$number.']["RTEtsConfigParams"] = "&RTEtsConfigParams=' . rawurlencode($this->RTEtsConfigParams()) . '";
 			RTEarea['.$number.']["number"] = '.$number.';
 			RTEarea['.$number.']["id"] = "RTEarea'.$number.'";
 			RTEarea['.$number.']["enableWordClean"] = ' . (trim($this->thisConfig['enableWordClean'])?'true':'false') . ';
