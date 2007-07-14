@@ -55,12 +55,12 @@ TYPO3Browsers._pluginInfo = {
 HTMLArea.prototype.renderPopup_image = function() {
 	var editorNumber = this._editorNumber,
 		backreturn,
-		addParams = "?" + RTEarea[0]["RTEtsConfigParams"],
+		addParams = "?" + RTEarea[editorNumber]["RTEtsConfigParams"],
 		image = this.getParentElement();
 		
 	this._selectedImage = null;
 	if (image && image.tagName.toLowerCase() == "img") {
-		addParams = "?act=image" + RTEarea[0]["RTEtsConfigParams"];
+		addParams = "?act=image" + RTEarea[editorNumber]["RTEtsConfigParams"];
 		this._selectedImage = image;
 	}
 	
@@ -85,7 +85,7 @@ HTMLArea.prototype.renderPopup_insertImage = function(image) {
  */
 HTMLArea.prototype.renderPopup_link = function() {
 	var editorNumber = this._editorNumber,
-		addUrlParams = "?" + RTEarea[0]["RTEtsConfigParams"],
+		addUrlParams = "?" + RTEarea[editorNumber]["RTEtsConfigParams"],
 		backreturn,
 		sel = this.getParentElement();
 
@@ -106,7 +106,7 @@ HTMLArea.prototype.renderPopup_link = function() {
 		if (sel.target) addUrlParams += "&curUrl[target]=" + encodeURIComponent(sel.target);
 		if (sel.className) addUrlParams += "&curUrl[class]=" + encodeURIComponent(sel.className);
 		if (sel.title) addUrlParams += "&curUrl[title]=" + encodeURIComponent(sel.title);
-		addUrlParams += RTEarea[0]["RTEtsConfigParams"];
+		addUrlParams += RTEarea[editorNumber]["RTEtsConfigParams"];
 	} else if (this.hasSelectedText()) {
 		var text = this.getSelectedHTML();
 		if (text && text != null) {
@@ -116,7 +116,7 @@ HTMLArea.prototype.renderPopup_link = function() {
 				offset = ATagContent.toUpperCase().indexOf(">");
 				ATagContent = ATagContent.substring(0,offset);
 				addUrlParams = "?curUrl[all]=" + encodeURIComponent(ATagContent);
-				addUrlParams += RTEarea[0]["RTEtsConfigParams"];
+				addUrlParams += RTEarea[editorNumber]["RTEtsConfigParams"];
 			}
 		}
 	}

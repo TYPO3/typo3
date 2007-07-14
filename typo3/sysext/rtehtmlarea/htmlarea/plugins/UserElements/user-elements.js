@@ -64,7 +64,7 @@ UserElements.actionHandler = function(instance) {
 UserElements.prototype.buttonPress = function(editor) {
 	var editorNo = editor._doc._editorNo;
 	var backreturn;
-	var addUrlParams = "?" + RTEarea[0]["RTEtsConfigParams"];
+	var addUrlParams = "?" + RTEarea[editorNo]["RTEtsConfigParams"];
 	editor._popupDialog(RTEarea[0]["pathUserModule"] + addUrlParams + "&editorNo=" + editorNo, null, backreturn, 550, 350, null, "yes");
 	return false;
 };

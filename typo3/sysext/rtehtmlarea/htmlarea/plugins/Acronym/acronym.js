@@ -63,7 +63,7 @@ Acronym.actionHandler = function(instance) {
 Acronym.prototype.buttonPress = function(editor) {
 	var editorNo = editor._doc._editorNo;
 	var backreturn;
-	var addUrlParams = "?" + RTEarea[0]["RTEtsConfigParams"];
+	var addUrlParams = "?" + RTEarea[editorNo]["RTEtsConfigParams"];
 	editor._popupDialog(RTEarea[0]["pathAcronymModule"] + addUrlParams + "&editorNo=" + editorNo, null, null, 570, 280);
 	return false;
 };
