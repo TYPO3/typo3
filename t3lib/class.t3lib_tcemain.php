@@ -333,6 +333,7 @@ class t3lib_TCEmain	{
 	var $removeFilesStore=array();				// For accumulation of files which must be deleted after processing of all input content
 	var $uploadedFileArray = array();			// Uploaded files, set by process_uploads()
 	var $registerDBList=array();				// Used for tracking references that might need correction after operations
+	var $registerDBPids=array();				// Used for tracking references that might need correction in pid field after operations (e.g. IRRE)
 	var $copyMappingArray = Array();			// Used by the copy action to track the ids of new pages so subpages are correctly inserted! THIS is internally cleared for each executed copy operation! DO NOT USE THIS FROM OUTSIDE! Read from copyMappingArray_merged instead which is accumulating this information.
 	var $remapStack = array();					// array used for remapping uids and values at the end of process_datamap
 	var $remapStackRecords = array();			// array used for remapping uids and values at the end of process_datamap (e.g. $remapStackRecords[<table>][<uid>] = <index in $remapStack>)
@@ -2796,6 +2797,15 @@ class t3lib_TCEmain	{
 				} else {
 					$childDestPid = -$v['id'];
 				}
+
+					// If the current field is set on a page record, update the pid of related child records:
+				if ($table == 'pages') {
+					$this->registerDBPids[$v['table']][$v['id']] = $uid;
+					// If the current field has ancestors that have a field on a page record, update the pid of related child records:
+				} elseif (isset($this->registerDBPids[$table][$uid])) {
+					$this->registerDBPids[$v['table']][$v['id']] = $this->registerDBPids[$table][$uid];
+				}
+
 				$newId = $this->copyRecord($v['table'], $v['id'], $childDestPid);
 				$dbAnalysis->itemArray[$k]['id'] = $newId;
 			}
@@ -4267,7 +4277,7 @@ $this->log($table,$id,6,0,0,'Stage raised...',30,array('comment'=>$comment,'stag
 	 * @param	string		$value: Field value
 	 * @param	integer		$uid: The uid of the ORIGINAL record
 	 * @param	string		$table: Table name
-	 * @return	string		The value to be updated on the table field in the database
+	 * @return	void
 	 */
 	function remapListedDBRecords_procInline($conf, $value, $uid, $table) {
 		$theUidToUpdate = $this->copyMappingArray_merged[$table][$uid];
@@ -4275,13 +4285,36 @@ $this->log($table,$id,6,0,0,'Stage raised...',30,array('comment'=>$comment,'stag
 		if ($conf['foreign_table']) {
 			$inlineType = $this->getInlineFieldType($conf);
 
-			if ($inlineType == 'field') {
-				$dbAnalysis = t3lib_div::makeInstance('t3lib_loadDBGroup');
-				$dbAnalysis->start($value, $conf['foreign_table'], $conf['MM'], 0, $table, $conf);
+			if ($inlineType == 'mm') {
+				$this->remapListedDBRecords_procDBRefs($conf, $value, $theUidToUpdate, $table);
 
-				$dbAnalysis->writeForeignField($conf, $uid, $theUidToUpdate);
-			} elseif ($inlineType == 'mm') {
-				$vArray = $this->remapListedDBRecords_procDBRefs($conf, $value, $theUidToUpdate, $table);
+			} elseif ($inlineType !== false) {
+				$dbAnalysis = t3lib_div::makeInstance('t3lib_loadDBGroup');
+				$dbAnalysis->start($value, $conf['foreign_table'], '', 0, $table, $conf);
+
+					// If the current field is set on a page record, update the pid of related child records:
+				if ($table == 'pages') {
+					$thePidToUpdate = $theUidToUpdate;
+					// If the current field has ancestors that have a field on a page record, update the pid of related child records:
+				} elseif (isset($this->registerDBPids[$table][$uid])) {
+					$thePidToUpdate = $this->registerDBPids[$table][$uid];
+					$thePidToUpdate = $this->copyMappingArray_merged['pages'][$thePidToUpdate];
+				}
+
+					// Update child records if using pointer fields ('foreign_field'):
+				if ($inlineType == 'field') {
+					$dbAnalysis->writeForeignField($conf, $uid, $theUidToUpdate);
+				}
+
+					// Update child records if change to pid is required: 
+				if ($thePidToUpdate) {
+					$updateValues = array('pid' => $thePidToUpdate);
+					foreach ($dbAnalysis->itemArray as $v) {
+						if ($v['id'] && $v['table']) {
+							$GLOBALS['TYPO3_DB']->exec_UPDATEquery($v['table'], 'uid='.intval($v['id']), $updateValues);
+						}
+					}
+				}
 			}
 		}
 	}

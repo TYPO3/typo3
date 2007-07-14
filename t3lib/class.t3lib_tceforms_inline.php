@@ -158,11 +158,14 @@ class t3lib_TCEforms_inline {
 				$inlineView = unserialize($GLOBALS['BE_USER']->uc['inlineView']);
 				$this->inlineView = $inlineView[$table][$row['uid']];
 			}
-				// if pid is negative, fetch the previous record and take its pid
-			if ($row['pid'] < 0) {
+				// If the parent is a page, use the uid(!) of the (new?) page as pid for the child records:
+			if ($table == 'pages') {
+				$this->inlineFirstPid = $row['uid'];
+				// If pid is negative, fetch the previous record and take its pid:
+			} elseif ($row['pid'] < 0) {
 				$prevRec = t3lib_BEfunc::getRecord($table, abs($row['pid']));
 				$this->inlineFirstPid = $prevRec['pid'];
-				// take the pid as it is
+				// Take the pid as it is:
 			} else {
 				$this->inlineFirstPid = $row['pid'];
 			}
@@ -1305,15 +1308,22 @@ class t3lib_TCEforms_inline {
 
 			// If the command is to create a NEW record...:
 		if ($cmd=='new') {
-			$calcPRec = t3lib_BEfunc::getRecord('pages',$this->inlineFirstPid);
-			if(!is_array($calcPRec)) {
-				return false;
-			}
-			$CALC_PERMS = $GLOBALS['BE_USER']->calcPerms($calcPRec);	// Permissions for the parent page
-			if ($table=='pages')	{	// If pages:
-				$hasAccess = $CALC_PERMS&8 ? 1 : 0; // Are we allowed to create new subpages?
+				// If the pid is numerical, check if it's possible to write to this page:
+			if (t3lib_div::testInt($this->inlineFirstPid)) {
+				$calcPRec = t3lib_BEfunc::getRecord('pages', $this->inlineFirstPid);
+				if(!is_array($calcPRec)) {
+					return false;
+				}
+				$CALC_PERMS = $GLOBALS['BE_USER']->calcPerms($calcPRec);	// Permissions for the parent page
+				if ($table=='pages')	{	// If pages:
+					$hasAccess = $CALC_PERMS&8 ? 1 : 0; // Are we allowed to create new subpages?
+				} else {
+					$hasAccess = $CALC_PERMS&16 ? 1 : 0; // Are we allowed to edit content on this page?
+				}
+				// If the pid is a NEW... value, the access will be checked on creating the page:
+				// (if the page with the same NEW... value could be created in TCEmain, this child record can neither)
 			} else {
-				$hasAccess = $CALC_PERMS&16 ? 1 : 0; // Are we allowed to edit content on this page?
+				$hasAccess = 1;
 			}
 		} else {	// Edit:
 			$calcPRec = t3lib_BEfunc::getRecord($table,$theUid);

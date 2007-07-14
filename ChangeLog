@@ -1,3 +1,7 @@
+2007-07-14  Oliver Hader  <oh@inpublica.de>
+
+	* Fixed bug #5704: IRRE - Children on the table pages get the pid of the parent page in pagetree
+
 2007-07-13  Oliver Hader  <oh@inpublica.de>
 
 	* Fixed bug #5913: RTEhtmlarea not correctly displayed in IRRE child form-fields and tabs (continuance of bug #5177)
