@@ -1,3 +1,6 @@
+2007-07-14  Oliver Hader  <oh@inpublica.de>
+
+	* Fixed bug #5704: IRRE - Children on the table pages get the pid of the parent page in pagetree
 
 2007-07-14  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
