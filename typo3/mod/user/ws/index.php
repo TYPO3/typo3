@@ -2036,7 +2036,7 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 				break;
 			}
 			$text = t3lib_BEfunc::datetime($dat['tstamp']).': ' . sprintf($text, $username);
-			$text.= ($data['comment']?'<br/>' . $LANG->getLL('stage_label_user_comment'). ' <em>'.$data['comment'].'</em>':'');
+			$text.= ($data['comment']?'<br/>' . $LANG->getLL('stage_label_user_comment'). ' <em>'.htmlspecialchars($data['comment']).'</em>':'');
 
 			$entry[] = $text;
 		}
