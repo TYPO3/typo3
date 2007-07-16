@@ -131,8 +131,12 @@ class SC_alt_doc_ajax {
 			$method = array_shift($this->ajax);
 
 				// Security check
-			if(!in_array($method, array('createNewRecord', 'setExpandedCollapsedState'))) return false;
+			if (!in_array($method, array('createNewRecord', 'setExpandedCollapsedState'))) {
+				return false;
+			}
 
+				// Perform the requested action:
+			$this->tceforms->inline->initForAJAX($method, $this->ajax);
 			$this->content = call_user_func_array(
 				array(&$this->tceforms->inline, $method),
 				$this->ajax

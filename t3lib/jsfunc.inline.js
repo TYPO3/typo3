@@ -32,6 +32,7 @@
 var inline = {
 	prependFormFieldNames: 'data',
 	noTitleString: '[No title]',
+	lockedAjaxMethod: {},
 	data: {},
 
 	addToDataArray: function(object) { for (var i in object) { this.data[i] = $H(this.data[i]).merge(object[i]); } },
@@ -97,38 +98,61 @@ var inline = {
 	},
 
 	createNewRecord: function(objectId,prevRecordUid) {
-		if (this.isBelowMax(objectId)) this.makeAjaxCall('createNewRecord', objectId+(prevRecordUid ? '['+prevRecordUid+']' : ''));
-		else alert('There are no more relations possible at this moment!');
+		if (this.isBelowMax(objectId)) {
+			if (prevRecordUid) {
+				objectId += '['+prevRecordUid+']';
+			}
+			this.makeAjaxCall('createNewRecord', [this.getNumberOfRTE(), objectId], true);
+		} else {
+			alert('There are no more relations possible at this moment!');
+		}
 		return false;
 	},
 
 	setExpandedCollapsedState: function(objectId, expand, collapse) {
-		this.makeAjaxCall('setExpandedCollapsedState', objectId, expand, collapse);
+		this.makeAjaxCall('setExpandedCollapsedState', [objectId, expand, collapse]);
 	},
 
-	makeAjaxCall: function() {
-		if (arguments.length > 1) {
-			var params = '';
-			for (var i=0; i<arguments.length; i++) params += '&ajax['+i+']='+arguments[i];
-
-			var url = 'alt_doc_ajax.php';
-			var options = {
+	makeAjaxCall: function(method, params, lock) {
+		var max, url='', urlParams='', options={};
+		if (method && params && params.length && this.lockAjaxMethod(method, lock)) {
+			url = 'alt_doc_ajax.php';
+			urlParams += '&ajax[0]='+method;
+			for (var i=0, max=params.length; i<max; i++) {
+				urlParams += '&ajax['+(i+1)+']='+params[i];
+			}
+			options = {
 				method:		'post',
-				parameters:	params,
-				onSuccess:	inline.processAjaxResponse,
-				onFailure:	inline.showAjaxFailure
+				parameters:	urlParams,
+				onSuccess:	function(xhr) { inline.processAjaxResponse(method, xhr); },
+				onFailure:	function(xhr) { inline.showAjaxFailure(method, xhr); }
 			};
 
 			new Ajax.Request(url, options);
 		}
 	},
 
-	processAjaxResponse: function(xhr) {
+	lockAjaxMethod: function(method, lock) {
+		if (!lock || !inline.lockedAjaxMethod[method]) {
+			inline.lockedAjaxMethod[method] = true;
+			return true;
+		} else {
+			return false;
+		}
+	},
+
+	unlockAjaxMethod: function(method) {
+		inline.lockedAjaxMethod[method] = false;
+	},
+
+	processAjaxResponse: function(method, xhr) {
+		inline.unlockAjaxMethod(method);
 		var json = eval('('+xhr.responseText+')');
 		for (var i in json.scriptCall) eval(json.scriptCall[i]);
 	},
 
-	showAjaxFailure: function(xhr) {
+	showAjaxFailure: function(method, xhr) {
+		inline.unlockAjaxMethod(method);
 		alert('Error: '+xhr.status+"\n"+xhr.statusText);
 	},
 
@@ -140,7 +164,7 @@ var inline = {
 			if (!this.data.unique || !this.data.unique[objectId]) {
 				selector.options[selector.selectedIndex].selected = false;
 			}
-			this.makeAjaxCall('createNewRecord', objectId, selectedValue);
+			this.makeAjaxCall('createNewRecord', [this.getNumberOfRTE(), objectId, selectedValue], true);
 		}
 		return false;
 	},
@@ -149,7 +173,7 @@ var inline = {
 	importElement: function(objectId, table, uid, type) {
 		window.setTimeout(
 			function() {
-				inline.makeAjaxCall('createNewRecord', objectId, uid);
+				inline.makeAjaxCall('createNewRecord', [this.getNumberOfRTE(), objectId, uid], true);
 			},
 			10
 		);
@@ -173,7 +197,7 @@ var inline = {
 				// for select: only the uid is stored
 			if (unique['type'] == 'select') {
 				if (values.indexOf(uid) != -1) return true;
-				
+
 				// for group/db: table and uid is stored in a assoc array
 			} else if (unique.type == 'groupdb') {
 				for (var i=values.length-1; i>=0; i--) {
@@ -293,7 +317,7 @@ var inline = {
 			var checked = new Array();
 			var order = Sortable.sequence(element);
 			var records = formObj[0].value.split(',');
-			
+
 				// check if ordered uid is really part of the records
 				// virtually deleted items might still be there but ordering shouldn't saved at all on them
 			for (var i=0; i<order.length; i++) {
@@ -445,7 +469,7 @@ var inline = {
 		if (unique.type == 'select') {
 			if (fieldObj && fieldObj.length) {
 				delete(this.data.unique[objectPrefix].used[recordUid])
-				
+
 				if (unique.selector == 'select') {
 					if (!isNaN(fieldObj[0].value)) {
 						var selector = $(objectPrefix+'_selector');
@@ -703,7 +727,15 @@ var inline = {
 		} else {
 			return nested;
 		}
-	}
+	},
+
+	getNumberOfRTE: function() {
+		var number = 0;
+		if (typeof RTEarea != 'undefined' && RTEarea.length > 0) {
+			number = RTEarea.length-1;
+		}
+		return number;
+  	}
 }
 
 Object.extend(Array.prototype, {
