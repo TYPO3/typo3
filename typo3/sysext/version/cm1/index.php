@@ -1113,7 +1113,7 @@ class tx_version_cm1 extends t3lib_SCbase {
 				break;
 			}
 			$text = t3lib_BEfunc::dateTime($dat['tstamp']).': "'.$username.'" '.$text;
-			$text.= ($data['comment']?'<br/>User Comment: <em>'.$data['comment'].'</em>':'');
+			$text.= ($data['comment']?'<br/>User Comment: <em>'.htmlspecialchars($data['comment']).'</em>':'');
 
 			$entry[] = $text;
 		}

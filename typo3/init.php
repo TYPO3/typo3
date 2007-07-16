@@ -106,15 +106,24 @@ if (!$temp_path || substr($temp_path,-strlen(TYPO3_mainDir))!=TYPO3_mainDir)	{	/
 		}
 	}
 
-	echo ('Error in init.php: Path to TYPO3 main dir could not be resolved correctly. <br /><br />
-		This happens if the last '.strlen(TYPO3_mainDir).' characters of this path, '.$temp_path.', (\$temp_path) is NOT "'.TYPO3_mainDir.'" for some reason. <br />
+	echo 'Error in init.php: Path to TYPO3 main dir could not be resolved correctly. <br /><br />';
+
+	echo '<font color="red"><strong>';
+	if (strstr($temp_path,'typo3_src')) {
+		echo 'It seems you are trying to run the TYPO3 source libraries DIRECTLY! You cannot do that.<br />
+		Please read the installation documents for more information.';
+	} else {
+		echo 'This happens if the last '.strlen(TYPO3_mainDir).' characters of this path, '.$temp_path.' ($temp_path), is NOT "'.TYPO3_mainDir.'" for some reason.<br />
 		You may have a strange server configuration.
-		Or maybe you didn\'t set constant TYPO3_MOD_PATH in your module?');
-	echo '<br /><strong>If you expect any help from anybody on this issue, you should save this page as an html document and send it along with your request for help!</strong>';
-	if (strstr($temp_path,'typo3_src'))	{
-		echo '<br /><font color="red"><strong> It seems you are trying to run the TYPO3 source libraries DIRECTLY! You cannot do that. Please read the installation documents for more information.<br />
-		However here is a little tip for now: Download one of the zip-file "packages", eg the "testsite" or "dummy" package.</strong></font>';
+		Or maybe you didn\'t set constant TYPO3_MOD_PATH in your module?';
 	}
+	echo '</strong></font>';
+
+	echo '<br /><br />If you want to debug this issue, please edit typo3/init.php of your TYPO3 source and search for the die() call right after this line (search for this text to find)...';
+
+// Remove this line if you want to debug this problem a little more...
+die();
+	echo '<br /><br /><strong>If you expect any help from anybody on this issue, you should save this page as an html document and send it along with your request for help!</strong>';
 	echo '<HR><pre>';
 	print_r(array(
 		'TYPO3_OS'=>TYPO3_OS,
