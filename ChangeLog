@@ -6,6 +6,7 @@
 2007-07-16  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
 	* Fixed bug #3834: possible abuse of t3lib_formmail
+	* IPmaskList check is triggered in CLI mode (thanks to Tobias Rohrle)
 
 2007-07-06  Michael Stucki  <michael@typo3.org>
 
