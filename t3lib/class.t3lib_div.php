@@ -4289,7 +4289,7 @@ class t3lib_div {
 		if (strstr($line,'###'))	return $line;
 
 			// Check if any non-ASCII characters are found - otherwise encoding is not needed
-		if (!preg_match('/[^'.chr(32).'-'.chr(127).']/',$line) && ($enc=='base64' || strpos($line,'=?')===FALSE))	return $line;
+		if (!preg_match('/[^'.chr(32).'-'.chr(127).']/',$line))	return $line;
 
 			// Wrap email addresses in a special marker
 		$line = preg_replace('/([^ ]+@[^ ]+)/', '###$1###', $line);
@@ -4457,6 +4457,7 @@ class t3lib_div {
 	 */
 	function sysLog($msg, $extKey, $severity=0) {
 		global $TYPO3_CONF_VARS;
+
 		$severity = t3lib_div::intInRange($severity,0,4);
 
 			// is message worth logging?
