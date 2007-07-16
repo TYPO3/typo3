@@ -1,3 +1,8 @@
+2007-07-16  Michael Stucki  <michael@typo3.org>
+
+	* Fixed possible XSS in workspace/version modules (requires valid BE login / patch by Christian Kuhn)
+	* Removed possible display of phpinfo() (requires bug in extension to be unveiled)
+
 2007-07-16  Oliver Hader  <oh@inpublica.de>
 
 	* Fixed bug #5556: IRRE - RTE in child elements overwrites field in parent element
