@@ -3285,7 +3285,7 @@ class t3lib_div {
 	function getHostname($requestHost=TRUE)	{
 		$host = '';
 		if ($requestHost && (!defined('TYPO3_cliMode') || !TYPO3_cliMode))	{
-			$host = $_SERVER['HTTP_HOST'];
+			$host = t3lib_div::getIndpEnv('HTTP_HOST');
 		}
 		if (!$host)	{
 				// will fail for PHP 4.1 and 4.2

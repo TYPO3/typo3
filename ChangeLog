@@ -2,6 +2,7 @@
 2007-07-16  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
 	* Fixed bug #3834: possible abuse of t3lib_formmail
+	* t3lib_div::getHostname() used $_SERVER instead of t3lib_div::getIndpEnv()
 
 2007-07-14  Oliver Hader  <oh@inpublica.de>
 
