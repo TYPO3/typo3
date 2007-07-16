@@ -1,3 +1,8 @@
+
+2007-07-16  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+
+	* Fixed bug #3834: possible abuse of t3lib_formmail
+
 2007-07-06  Michael Stucki  <michael@typo3.org>
 
 	* Fixed bug #3544: RTE-config in PageTS-config not loaded when in draft-workspace

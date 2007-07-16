@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2006 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2007 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -76,13 +76,13 @@ class t3lib_formmail extends t3lib_htmlmail {
 	 * This class is able to generate a mail in formmail-style from the data in $V
 	 * Fields:
 	 *
-	 * [recipient]:		email-adress of the one to receive the mail. If array, then all values are expected to be recipients
+	 * [recipient]:			email-adress of the one to receive the mail. If array, then all values are expected to be recipients
 	 * [attachment]:		....
 	 *
 	 * [subject]:			The subject of the mail
 	 * [from_email]:		Sender email. If not set, [email] is used
-	 * [from_name]:		Sender name. If not set, [name] is used
-	 * [replyto_email]:	Reply-to email. If not set [from_email] is used
+	 * [from_name]:			Sender name. If not set, [name] is used
+	 * [replyto_email]:		Reply-to email. If not set [from_email] is used
 	 * [replyto_name]:		Reply-to name. If not set [from_name] is used
 	 * [organisation]:		Organisation (header)
 	 * [priority]:			Priority, 1-5, default 3
@@ -166,6 +166,10 @@ class t3lib_formmail extends t3lib_htmlmail {
 
 			for ($a=0;$a<10;$a++)	{
 				$varname = 'attachment'.(($a)?$a:'');
+				if (!is_uploaded_file($_FILES[$varname]['tmp_name']))	{
+					t3lib_div::sysLog('Possible abuse of t3lib_formmail: temporary file "'.$_FILES[$varname]['tmp_name'].'" ("'.$_FILES[$varname]['name'].'") was not an uploaded file.', 'Core', 3);
+					continue;
+				}
 				$theFile = t3lib_div::upload_to_tempfile($_FILES[$varname]['tmp_name']);
 				$theName = $_FILES[$varname]['name'];
 
