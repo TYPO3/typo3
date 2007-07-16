@@ -784,6 +784,21 @@ class t3lib_TCEforms_inline {
 
 
 	/**
+	 * Initialize environment for AJAX calls
+	 *
+	 * @param	string		$method: Name of the method to be called
+	 * @param	array		$arguments: Arguments to be delivered to the method
+	 * @return	void
+	 */
+	function initForAJAX($method, &$arguments) {
+			// Set t3lib_TCEforms::$RTEcounter to the given value:
+		if ($method == 'createNewRecord') {
+			$this->fObj->RTEcounter = intval(array_shift($arguments));
+		}
+	}
+
+
+	/**
 	 * Handle AJAX calls to show a new inline-record of the given table.
 	 * Normally this method is never called from inside TYPO3. Always from outside by AJAX.
 	 *

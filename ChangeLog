@@ -1,3 +1,6 @@
+2007-07-16  Oliver Hader  <oh@inpublica.de>
+
+	* Fixed bug #5556: IRRE - RTE in child elements overwrites field in parent element
 
 2007-07-16  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
