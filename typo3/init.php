@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2005 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2007 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -220,7 +220,7 @@ if ($TYPO3_CONF_VARS['BE']['adminOnly'] < 0)	{
 // **********************
 // Check IP
 // **********************
-if (trim($TYPO3_CONF_VARS['BE']['IPmaskList']))	{
+if (trim($TYPO3_CONF_VARS['BE']['IPmaskList']) && !(defined('TYPO3_cliMode') && TYPO3_cliMode))	{
 	if (!t3lib_div::cmpIP(t3lib_div::getIndpEnv('REMOTE_ADDR'), $TYPO3_CONF_VARS['BE']['IPmaskList']))	{
 		header('Status: 404 Not Found');	// Send Not Found header - if the webserver can make use of it...
 		header('Location: http://');	// Just point us away from here...

@@ -11,6 +11,7 @@
 
 	* Fixed bug #3834: possible abuse of t3lib_formmail
 	* t3lib_div::getHostname() used $_SERVER instead of t3lib_div::getIndpEnv()
+	* IPmaskList check is triggered in CLI mode (thanks to Tobias Rohrle)
 
 2007-07-14  Oliver Hader  <oh@inpublica.de>
 
