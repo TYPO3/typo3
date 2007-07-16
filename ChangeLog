@@ -9,7 +9,8 @@
 
 2007-07-16  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
-	* t3lib_div::getHostname used $_SERVER instead of t3lib_div::getIndpEnv()
+	* t3lib_div::getHostname() used $_SERVER instead of t3lib_div::getIndpEnv()
+	* IPmaskList check is triggered in CLI mode (thanks to Tobias Rohrle)
 
 2007-07-14  Oliver Hader  <oh@inpublica.de>
 
