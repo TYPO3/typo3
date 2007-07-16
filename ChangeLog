@@ -1,6 +1,5 @@
 2007-07-16  Michael Stucki  <michael@typo3.org>
 
-	* Release of TYPO3 4.1.2
 	* Fixed possible XSS in workspace/version modules (requires valid BE login / patch by Christian Kuhn)
 	* Removed possible display of phpinfo() (requires bug in extension to be unveiled)
 
