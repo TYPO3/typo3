@@ -1,3 +1,8 @@
+
+2007-08-06  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+
+	* Fixed bug #5941: Log reason of failure on DB connect
+
 2007-07-16  Michael Stucki  <michael@typo3.org>
 
 	* Release of TYPO3 4.1.2
