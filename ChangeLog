@@ -1,3 +1,8 @@
+
+2007-08-06  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+
+	* Fixed bug #5941: Log reason of failure on DB connect
+
 2007-08-06  Ernesto Baschny  <ernst@cron-it.de
 
 	* Fixed bug #6017: Better transliteration for hebrew (lower-cased latin letters)
