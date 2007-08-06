@@ -1,3 +1,7 @@
+2007-08-06  Ernesto Baschny  <ernst@cron-it.de
+
+	* Fixed bug #6017: Better transliteration for hebrew (lower-cased latin letters)
+
 2007-07-16  Michael Stucki  <michael@typo3.org>
 
 	* Fixed possible XSS in workspace/version modules (requires valid BE login / patch by Christian Kuhn)
