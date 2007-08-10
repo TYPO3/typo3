@@ -285,7 +285,7 @@ class t3lib_TCEmain	{
 	var $newRelatedIDs = Array();				// Holds the tables and there the ids of newly created child records from IRRE
 	var $copyMappingArray_merged = Array();		// This array is the sum of all copying operations in this class. May be READ from outside, thus partly public.
 	var $copiedFileMap = Array();				// A map between input file name and final destination for files being attached to records.
-	var	$errorLog = Array();					// Errors are collected in this variable.
+	var $errorLog = Array();					// Errors are collected in this variable.
 
 
 
@@ -1083,7 +1083,6 @@ class t3lib_TCEmain	{
 				}	// Checking language.
 			}	// Check exclude fields / disabled fields...
 		}
-
 			// Add diff-storage information:
 		if ($diffStorageFlag && !isset($fieldArray[$TCA[$table]['ctrl']['transOrigDiffSourceField']]))	{	// If the field is set it would probably be because of an undo-operation - in which case we should not update the field of course...
 			 $fieldArray[$TCA[$table]['ctrl']['transOrigDiffSourceField']] = serialize($originalLanguage_diffStorage);
