@@ -898,7 +898,7 @@ class t3lib_DB {
 		ini_restore('html_errors');
 
 		if (!$this->link) {
-			t3lib_div::sysLog('Could not connect to Mysql server '.$TYPO3_db_host.' with user '.$TYPO3_db_username.': '.$error_msg,'Core',4);
+			t3lib_div::sysLog('Could not connect to MySQL server '.$TYPO3_db_host.' with user '.$TYPO3_db_username.': '.$error_msg,'Core',4);
 		} else {
 			$setDBinit = t3lib_div::trimExplode(chr(10), $GLOBALS['TYPO3_CONF_VARS']['SYS']['setDBinit'],TRUE);
 			foreach ($setDBinit as $v)	{
@@ -922,7 +922,7 @@ class t3lib_DB {
 	function sql_select_db($TYPO3_db)	{
 		$ret = @mysql_select_db($TYPO3_db, $this->link);
 		if (!$ret) {
-			t3lib_div::sysLog('Could not select Mysql database '.$TYPO3_db.': '.mysql_error(),'Core',4);
+			t3lib_div::sysLog('Could not select MySQL database '.$TYPO3_db.': '.mysql_error(),'Core',4);
 	}
 		return $ret;
 	}
@@ -1106,7 +1106,7 @@ class t3lib_DB {
 
 	/**
 	 * Checks if recordset is valid and writes debugging inormation into devLog if not.
-	 * 
+	 *
 	 * @param	resource	$res	Recordset
 	 * @return	boolean	<code>false</code> if recordset is not valid
 	 */
