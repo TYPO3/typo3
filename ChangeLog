@@ -1,3 +1,14 @@
+2007-08-10  Michael Stucki  <michael@typo3org>
+
+	* Various improvements to the admin panel:
+		- Lots of alignment definitions. Alignments are now hardcoded to avoid conflicts with stylesheets that contain something like "html, body { text-align: center; }"
+		- Replace all font-tags (deprecated) with valid markup
+		- Add a clear.gif spacer to make the "details" column wider if the text is longer than 30 characters. Appears to be useful if this column is too narrow and the text is wrapped inside. (Using a clear.gif is a workaround solution, it should probably be improved later...)
+		- New highlight feature: You can define a time limit for operations which are measured by $TT. Whenever this limit is exceeded, the corresponding row will be highlighted in the admin panel. (Currently this limit needs to be hardcoded in class.t3lib_timetrack.php)
+		- Lots of code cleanup and consolidation
+		- Fix code display of links that break the website layout if they are too large (links are now splitted after every 100 characters)
+		- For more information and screenshots, see http://lists.netfielders.de/pipermail/typo3-team-core/2007-July/008648.html
+
 2007-08-06  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
 	* Fixed bug #5941: Log reason of failure on DB connect

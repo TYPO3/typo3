@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2006 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2007 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -100,29 +100,22 @@ class t3lib_timeTrack {
 		'allTime' => 0,
 		'keyLgd' => 40,
 		'factor' => 10,
-		'col' => '#D9D5C9'
+		'col' => '#D9D5C9',
+		'highlight_col' => '#FF9933'
 	);
 
-	var $wrapError =array(
-		0 => array('',''),
-		1 => array('<b>','</b>'),
-		2 => array('<b><font color="#ff6600">','</font></b>'),
-		3 => array('<b><font color="#ff0000">','</font></b>')
-	);
-	var $wrapIcon =array(
-		0 => '',
-		1 => '<img src="typo3/gfx/icon_note.gif" width="18" height="16" align="absmiddle" alt="" />',
-		2 => '<img src="typo3/gfx/icon_warning.gif" width="18" height="16" align="absmiddle" alt="" />',
-		3 => '<img src="typo3/gfx/icon_fatalerror.gif" width="18" height="16" align="absmiddle" alt="" />'
-	);
-
-	var $uniqueCounter=0;
+	var $wrapError = array();
+	var $wrapIcon = array();
+	var $uniqueCounter = 0;
 	var $tsStack = array(array());
 	var $tsStackLevel = 0;
-	var $tsStackLevelMax=array();
+	var $tsStackLevelMax = array();
 	var $tsStackLog = array();
-	var $tsStackPointer=0;
-	var $currentHashPointer=array();
+	var $tsStackPointer = 0;
+	var $currentHashPointer = array();
+
+	var $highlightLongerThan = 0;	// Log entries that take than this number of milliseconds (own time) will be highlighted during log display. Set 0 to disable highlighting.
+
 
 
 
@@ -142,15 +135,22 @@ class t3lib_timeTrack {
 	 * @return	void
 	 */
 	function start()    {
-		$this->wrapIcon =array(
+		$this->wrapError = array(
+			0 => array('',''),
+			1 => array('<strong>','</strong>'),
+			2 => array('<strong style="color:#ff6600;">','</strong>'),
+			3 => array('<strong style="color:#ff0000;">','</strong>')
+		);
+
+		$this->wrapIcon = array(
 			0 => '',
 			1 => '<img src="'.TYPO3_mainDir.'gfx/icon_note.gif" width="18" height="16" align="absmiddle" alt="" />',
 			2 => '<img src="'.TYPO3_mainDir.'gfx/icon_warning.gif" width="18" height="16" align="absmiddle" alt="" />',
 			3 => '<img src="'.TYPO3_mainDir.'gfx/icon_fatalerror.gif" width="18" height="16" align="absmiddle" alt="" />'
 		);
 
-		$this->starttime=0;
-		$this->starttime=$this->mtime();
+		$this->starttime = 0;
+		$this->starttime = $this->mtime();
 	}
 
 	/**
@@ -208,7 +208,10 @@ class t3lib_timeTrack {
 		end($this->currentHashPointer);
 		$k = current($this->currentHashPointer);
 
-		$this->tsStackLog[$k]['message'][] = $this->wrapIcon[$num].$this->wrapError[$num][0].htmlspecialchars($content).$this->wrapError[$num][1];
+		if (strlen($content)>30) {	// Enlarge the "details" column by adding a wide clear.gif
+			$placeholder = '<br /><img src="'.TYPO3_mainDir.'clear.gif" width="300" height="1" alt="" />';
+		}
+		$this->tsStackLog[$k]['message'][] = $this->wrapIcon[$num].$this->wrapError[$num][0].htmlspecialchars($content).$this->wrapError[$num][1].$placeholder;
 	}
 
 	/**
@@ -295,10 +298,10 @@ class t3lib_timeTrack {
 	 * @return	string		HTML table with the information about parsing times.
 	 * @see t3lib_tsfeBeUserAuth::extGetCategory_tsdebug()
 	 */
-	function printTSlog()   {
+	function printTSlog() {
 			// Calculate times and keys for the tsStackLog
-		$preEndtime=0;
-		foreach($this->tsStackLog as $uniqueId=>$data)	{
+		$preEndtime = 0;
+		foreach($this->tsStackLog as $uniqueId=>$data) {
 			$this->tsStackLog[$uniqueId]['endtime'] = $this->convertMicrotime($this->tsStackLog[$uniqueId]['endtime'])-$this->starttime;
 			$this->tsStackLog[$uniqueId]['starttime'] = $this->convertMicrotime($this->tsStackLog[$uniqueId]['starttime'])-$this->starttime;
 			$this->tsStackLog[$uniqueId]['deltatime'] = $this->tsStackLog[$uniqueId]['endtime']-$this->tsStackLog[$uniqueId]['starttime'];
@@ -309,7 +312,7 @@ class t3lib_timeTrack {
 			// Create hierarchical array of keys pointing to the stack
 		$arr = array();
 		reset($this->tsStackLog);
-		while(list($uniqueId,$data)=each($this->tsStackLog))    {
+		while(list($uniqueId,$data)=each($this->tsStackLog)) {
 			$this->createHierarchyArray($arr,$data['level'], $uniqueId);
 		}
 			// Parsing the registeret content and create icon-html for the tree
@@ -317,120 +320,133 @@ class t3lib_timeTrack {
 
 			// Displaying the tree:
 		reset($this->tsStackLog);
-		$out='<tr>
-			<td bgcolor="#ABBBB4" align="center"><b>'.$this->fw('TypoScript Key').'</b></td>
-			<td bgcolor="#ABBBB4" align="center"><b>'.$this->fw('Value').'</b></td>';
-		if ($this->printConf['allTime'])    {
-			$out.='
-			<td bgcolor="#ABBBB4" align="center"><b>'.$this->fw('Time').'</b></td>
-			<td bgcolor="#ABBBB4" align="center"><b>'.$this->fw('Own').'</b></td>
-			<td bgcolor="#ABBBB4" align="center"><b>'.$this->fw('Sub').'</b></td>
-			<td bgcolor="#ABBBB4" align="center"><b>'.$this->fw('Total').'</b></td>';
+
+		$outputArr = array();
+		$outputArr[] = $this->fw('TypoScript Key');
+		$outputArr[] = $this->fw('Value');
+
+		if ($this->printConf['allTime']) {
+			$outputArr[] = $this->fw('Time');
+			$outputArr[] = $this->fw('Own');
+			$outputArr[] = $this->fw('Sub');
+			$outputArr[] = $this->fw('Total');
 		} else {
-			$out.='
-			<td bgcolor="#ABBBB4" align="center"><b>'.$this->fw('Own').'</b></td>';
+			$outputArr[] = $this->fw('Own');
 		}
 
-		$out.='
-			<td bgcolor="#ABBBB4" align="center"><b>'.$this->fw('Details').'</b></td>
-			</tr>';
+		$outputArr[] = $this->fw('Details');
 
+		$out = '';
+		foreach ($outputArr as $row) {
+			$out.= '
+				<th style="text-align:center; background:#ABBBB4;"><strong>'.$row.'</strong></th>';
+		}
+		$out = '<tr>'.$out.'</tr>';
 
-
-		$flag_tree=$this->printConf['flag_tree'];
-		$flag_messages=$this->printConf['flag_messages'];
-		$flag_content=$this->printConf['flag_content'];
-		$flag_queries=$this->printConf['flag_queries'];
-		$keyLgd=$this->printConf['keyLgd'];
-		$factor=$this->printConf['factor'];
-		$col=$this->printConf['col'];
+		$flag_tree = $this->printConf['flag_tree'];
+		$flag_messages = $this->printConf['flag_messages'];
+		$flag_content = $this->printConf['flag_content'];
+		$flag_queries = $this->printConf['flag_queries'];
+		$keyLgd = $this->printConf['keyLgd'];
+		$factor = $this->printConf['factor'];
+		$col = $this->printConf['col'];
+		$highlight_col = $this->printConf['highlight_col'];
 
 		$c=0;
-		while(list($uniqueId,$data)=each($this->tsStackLog))    {
-			$bgColor = ' bgcolor="'.($c%2 ? t3lib_div::modifyHTMLColor($col,$factor,$factor,$factor) : $col).'"';
-			$item='';
-			if (!$c)    {   // If first...
-				$data['icons']='';
-				$data['key']= 'Script Start';
+		while(list($uniqueId,$data)=each($this->tsStackLog)) {
+			$bgColor = ' background-color:'.($c%2 ? t3lib_div::modifyHTMLColor($col,$factor,$factor,$factor) : $col).';';
+			if ($this->highlightLongerThan && intval($data['owntime']) > intval($this->highlightLongerThan)) {
+				$bgColor = ' background-color:'.$highlight_col.';';
+			}
+
+			$item = '';
+			if (!$c) {	// If first...
+				$data['icons'] = '';
+				$data['key'] = 'Script Start';
 				$data['value'] = '';
 			}
 
 
 				// key label:
-			$keyLabel='';
-			if (!$flag_tree && $data['stackPointer'])   {
-				$temp=array();
+			$keyLabel = '';
+			if (!$flag_tree && $data['stackPointer']) {
+				$temp = array();
 				reset($data['tsStack']);
-				while(list($k,$v)=each($data['tsStack']))   {
-					$temp[]=t3lib_div::fixed_lgd_pre(implode($v,$k?'.':'/'),$keyLgd);
+				while(list($k,$v)=each($data['tsStack'])) {
+					$temp[] = t3lib_div::fixed_lgd_pre(implode($v,$k?'.':'/'),$keyLgd);
 				}
 				array_pop($temp);
 				$temp = array_reverse($temp);
 				array_pop($temp);
-				if (count($temp))   {
-					$keyLabel='<br /><font color="#999999">'.implode($temp,'<br />').'</font>';
+				if (count($temp)) {
+					$keyLabel = '<br /><span style="color:#999999;">'.implode($temp,'<br />').'</span>';
 				}
 			}
-			if ($flag_tree)	{
+			if ($flag_tree) {
 				$tmp = t3lib_div::trimExplode('.',$data['key'],1);
 				$theLabel = end($tmp);
 			} else {
 				$theLabel = $data['key'];
 			}
 			$theLabel = t3lib_div::fixed_lgd_pre($theLabel, $keyLgd);
-			$theLabel = $data['stackPointer'] ? '<font color="maroon">'.$theLabel.'</font>' : $theLabel;
-			$keyLabel=$theLabel.$keyLabel;
-			$item.='<td valign="top" nowrap="nowrap"'.$bgColor.'>'.($flag_tree?$data['icons']:'').$this->fw($keyLabel).'</td>';
+			$theLabel = $data['stackPointer'] ? '<span style="color:maroon;">'.$theLabel.'</span>' : $theLabel;
+			$keyLabel = $theLabel.$keyLabel;
+			$item.= '<td valign="top" style="text-align:left; white-space:nowrap; padding-left:2px;'.$bgColor.'">'.($flag_tree?$data['icons']:'').$this->fw($keyLabel).'</td>';
 
 				// key value:
-			$keyValue=$data['value'];
-			$item.='<td valign="top" nowrap="nowrap"'.$bgColor.'>'.$this->fw(htmlspecialchars($keyValue)).'</td>';
+			$keyValue = $data['value'];
+			$item.= '<td valign="top" style="text-align:left; white-space:nowrap;'.$bgColor.'">'.$this->fw(htmlspecialchars($keyValue)).'</td>';
 
-			if ($this->printConf['allTime'])    {
-					// deltatime:
-				$item.='<td valign="top" align="right" nowrap="nowrap"'.$bgColor.'>'.$this->fw($data['starttime']).'</td>';
-				$item.='<td valign="top" align="right" nowrap="nowrap"'.$bgColor.'>'.$this->fw($data['owntime']).'</td>';
-				$item.='<td valign="top" align="right" nowrap="nowrap"'.$bgColor.'>'.$this->fw($data['subtime'] ? '+'.$data['subtime'] : '').'</td>';
-				$item.='<td valign="top" align="right" nowrap="nowrap"'.$bgColor.'>'.$this->fw($data['subtime'] ? '='.$data['deltatime'] : '').'</td>';
+			if ($this->printConf['allTime']) {
+				$item.= '<td valign="top" style="text-align:right; white-space:nowrap;'.$bgColor.'"> '.$this->fw($data['starttime']).'</td>';
+				$item.= '<td valign="top" style="text-align:right; white-space:nowrap;'.$bgColor.'"> '.$this->fw($data['owntime']).'</td>';
+				$item.= '<td valign="top" style="text-align:left; white-space:nowrap;'.$bgColor.'"> '.$this->fw($data['subtime'] ? '+'.$data['subtime'] : '').'</td>';
+				$item.= '<td valign="top" style="text-align:left; white-space:nowrap;'.$bgColor.'"> '.$this->fw($data['subtime'] ? '='.$data['deltatime'] : '').'</td>';
 			} else {
-					// deltatime:
-				$item.='<td valign="top" align="right" nowrap="nowrap"'.$bgColor.'>'.$this->fw($data['owntime']).'</td>';
+				$item.= '<td valign="top" style="text-align:right; white-space:nowrap;'.$bgColor.'"> '.$this->fw($data['owntime']).'</td>';
 			}
 
 
 				// messages:
-			$msgArr=array();
-			$msg='';
-			if ($flag_messages && is_array($data['message']))   {
+			$msgArr = array();
+			$msg = '';
+			if ($flag_messages && is_array($data['message'])) {
 				reset($data['message']);
 				while(list(,$v)=each($data['message'])) {
-					$msgArr[]=nl2br($v);
+					$msgArr[] = nl2br($v);
 				}
 			}
-			if ($flag_queries && is_array($data['selectQuery']))    {
+			if ($flag_queries && is_array($data['selectQuery'])) {
 				reset($data['selectQuery']);
 				while(list(,$v)=each($data['selectQuery'])) {
 					$res = $GLOBALS['TYPO3_DB']->sql_query('EXPLAIN '.$v['query']);
 					$v['mysql_error'] = $GLOBALS['TYPO3_DB']->sql_error();
 					if (!$GLOBALS['TYPO3_DB']->sql_error()) {
-						while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))   {
+						while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 							$v['explain'][]=$row;
 						}
 					}
-					$msgArr[]=t3lib_div::view_array($v);
+					$msgArr[] = t3lib_div::view_array($v);
 				}
 			}
-			if ($flag_content && strcmp($data['content'],''))   {
-				$msgArr[]='<font color="#000066">'.nl2br($data['content']).'</font>';
+			if ($flag_content && strcmp($data['content'],'')) {
+				$maxlen = 120;
+				if (preg_match_all('/(\S{'.$maxlen.',})/', $data['content'], $reg)) {	// Break lines which are too longer than $maxlen chars (can happen if content contains long paths...)
+					foreach ($reg[1] as $key=>$match) {
+						$match = preg_replace('/(.{'.$maxlen.'})/', '$1 ', $match);
+						$data['content'] = str_replace($reg[0][$key], $match, $data['content']);
+					}
+				}
+				$msgArr[] = '<span style="color:#000066;">'.nl2br($data['content']).'</span>';
 			}
 			if (count($msgArr)) {
-				$msg=implode($msgArr,'<hr />');
+				$msg = implode($msgArr,'<hr />');
 			}
-			$item.='<td valign="top"'.$bgColor.'>'.$this->fw($msg).'</td>';
-			$out.='<tr>'.$item.'</tr>';
+			$item.= '<td valign="top" style="text-align:left;'.$bgColor.'">'.$this->fw($msg).'</td>';
+			$out.= '<tr>'.$item.'</tr>';
 			$c++;
 		}
-		$out='<table border="0" cellpadding="0" cellspacing="0">'.$out.'</table>';
+		$out = '<table border="0" cellpadding="0" cellspacing="0">'.$out.'</table>';
 		return $out;
 	}
 
@@ -449,7 +465,7 @@ class t3lib_timeTrack {
 		$c=0;
 			// First, find number of entries
 		reset($arr);
-		while(list($k,$v)=each($arr))   {
+		while(list($k,$v)=each($arr)) {
 			if (t3lib_div::testInt($k)) {
 				$ac++;
 			}
@@ -457,7 +473,7 @@ class t3lib_timeTrack {
 			// Traverse through entries
 		$subtime=0;
 		reset($arr);
-		while(list($k,$v)=each($arr))   {
+		while(list($k,$v)=each($arr)) {
 			if (t3lib_div::testInt($k)) {
 				$c++;
 
@@ -466,34 +482,34 @@ class t3lib_timeTrack {
 				$LN = ($ac==$c)?'blank':'line';
 				$BTM = ($ac==$c)?'bottom':'';
 				$PM = is_array($arr[$k.'.']) ? ($deeper ? 'minus':'plus') : 'join';
-				$this->tsStackLog[$v]['icons']=$depthData.($first?'':'<img src="'.TYPO3_mainDir.'gfx/ol/'.$PM.$BTM.'.gif" width="18" height="16" align="top" border="0" alt="" />');
+				$this->tsStackLog[$v]['icons'] = $depthData.($first?'':'<img src="'.TYPO3_mainDir.'gfx/ol/'.$PM.$BTM.'.gif" width="18" height="16" valign="top" border="0" alt="" />');
 
-				if (strlen($this->tsStackLog[$v]['content']))   {
+				if (strlen($this->tsStackLog[$v]['content'])) {
 					$content = str_replace($this->tsStackLog[$v]['content'],$v, $content);
 				}
 				if (is_array($arr[$k.'.'])) {
-					$this->tsStackLog[$v]['content'] = $this->fixContent($arr[$k.'.'], $this->tsStackLog[$v]['content'], $depthData.($first?'':'<img src="'.TYPO3_mainDir.'gfx/ol/'.$LN.'.gif" width="18" height="16" align="top" border="0" alt="" />'), 0, $v);
+					$this->tsStackLog[$v]['content'] = $this->fixContent($arr[$k.'.'], $this->tsStackLog[$v]['content'], $depthData.($first?'':'<img src="'.TYPO3_mainDir.'gfx/ol/'.$LN.'.gif" width="18" height="16" valign="top" border="0" alt="" />'), 0, $v);
 				} else {
 					$this->tsStackLog[$v]['content'] = $this->fixCLen($this->tsStackLog[$v]['content'], $this->tsStackLog[$v]['value']);
-					$this->tsStackLog[$v]['subtime']='';
-					$this->tsStackLog[$v]['owntime']=$this->tsStackLog[$v]['deltatime'];
+					$this->tsStackLog[$v]['subtime'] = '';
+					$this->tsStackLog[$v]['owntime'] = $this->tsStackLog[$v]['deltatime'];
 				}
-				$subtime+=$this->tsStackLog[$v]['deltatime'];
+				$subtime+= $this->tsStackLog[$v]['deltatime'];
 			}
 		}
 			// Set content with special chars
-		if (isset($this->tsStackLog[$vKey]))    {
-			$this->tsStackLog[$vKey]['subtime']=$subtime;
-			$this->tsStackLog[$vKey]['owntime']=$this->tsStackLog[$vKey]['deltatime']-$subtime;
+		if (isset($this->tsStackLog[$vKey])) {
+			$this->tsStackLog[$vKey]['subtime'] = $subtime;
+			$this->tsStackLog[$vKey]['owntime'] = $this->tsStackLog[$vKey]['deltatime']-$subtime;
 		}
 		$content=$this->fixCLen($content, $this->tsStackLog[$vKey]['value']);
 
 			// Traverse array again, this time substitute the unique hash with the red key
 		reset($arr);
-		while(list($k,$v)=each($arr))   {
+		while(list($k,$v)=each($arr)) {
 			if (t3lib_div::testInt($k)) {
-				if (strlen($this->tsStackLog[$v]['content']))   {
-					$content = str_replace($v, '<font color="red"><b>['.$this->tsStackLog[$v]['key'].']</b></font>', $content);
+				if (strlen($this->tsStackLog[$v]['content'])) {
+					$content = str_replace($v, '<strong style="color:red;">['.$this->tsStackLog[$v]['key'].']</strong>', $content);
 				}
 			}
 		}
@@ -502,7 +518,7 @@ class t3lib_timeTrack {
 	}
 
 	/**
-	 * Wraps the input content string in green colored font-tags IF the length o fthe input string exceeds $this->printConf['contentLength'] (or $this->printConf['contentLength_FILE'] if $v == "FILE"
+	 * Wraps the input content string in green colored span-tags IF the length o fthe input string exceeds $this->printConf['contentLength'] (or $this->printConf['contentLength_FILE'] if $v == "FILE"
 	 *
 	 * @param	string		The content string
 	 * @param	string		Command: If "FILE" then $this->printConf['contentLength_FILE'] is used for content length comparison, otherwise $this->printConf['contentLength']
@@ -510,22 +526,22 @@ class t3lib_timeTrack {
 	 */
 	function fixCLen($c,$v) {
 		$len = $v=='FILE'?$this->printConf['contentLength_FILE']:$this->printConf['contentLength'];
-		if (strlen($c)>$len)    {
-			$c='<font color="green">'.htmlspecialchars(t3lib_div::fixed_lgd($c,$len)).'</font>';
+		if (strlen($c)>$len) {
+			$c = '<span style="color:green;">'.htmlspecialchars(t3lib_div::fixed_lgd($c,$len)).'</span>';
 		} else {
-			$c=htmlspecialchars($c);
+			$c = htmlspecialchars($c);
 		}
 		return $c;
 	}
 
 	/**
-	 * Wraps input string in a <font> tag with verdana, black and size 1
+	 * Wraps input string in a <span> tag with black verdana font
 	 *
 	 * @param	string		The string to be wrapped
 	 * @return	string
 	 */
-	function fw($str)   {
-		return '<font face="verdana" color="black" size="1" style="color:black;">'.$str.'&nbsp;</font>';
+	function fw($str) {
+		return '<span style="font-family:Verdana,Arial,Helvetica,sans-serif; font-size:0.6em; color:black; vertical-align:top;">'.$str.'&nbsp;</span>';
 	}
 
 	/**
@@ -539,10 +555,12 @@ class t3lib_timeTrack {
 	 * @see printTSlog()
 	 */
 	function createHierarchyArray(&$arr,$pointer,$uniqueId) {
-		if (!is_array($arr))    $arr=array();
+		if (!is_array($arr)) {
+			$arr = array();
+		}
 		if ($pointer>0) {
 			end($arr);
-			$k=key($arr);
+			$k = key($arr);
 			$this->createHierarchyArray($arr[intval($k).'.'],$pointer-1,$uniqueId);
 		} else {
 			$arr[] = $uniqueId;
@@ -558,9 +576,9 @@ class t3lib_timeTrack {
 	 * @param	string		URL for the <base> tag (if you want it)
 	 * @return	string
 	 */
-	function debug_typo3PrintError($header,$text,$js,$baseUrl='')   {
-		if ($js)    {
-			echo"alert('".t3lib_div::slashJS($header."\n".$text)."');";
+	function debug_typo3PrintError($header,$text,$js,$baseUrl='') {
+		if ($js) {
+			echo "alert('".t3lib_div::slashJS($header."\n".$text)."');";
 		} else {
 			echo '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
 					"http://www.w3.org/TR/xhtml1/DTD/xhtml11.dtd">
@@ -570,7 +588,7 @@ class t3lib_timeTrack {
 						'.($baseUrl ? '<base href="'.htmlspecialchars($baseUrl).'" />' : '').'
 						<title>Error!</title>
 						<style type="text/css"><!--/*--><![CDATA[/*><!--*/
-							body { font-family: verdana,arial,helvetica; font-size: 90%; text-align: center; background-color: #ffffff; }
+							body { font-family:Verdana,Arial,Helvetica,sans-serif; font-size: 90%; text-align: center; background-color: #ffffff; }
 							h1 { font-size: 1.2em; margin: 0 0 1em 0; }
 							p { margin: 0; text-align: left; }
 							img { border: 0; margin: 10px 0; }
@@ -591,4 +609,7 @@ class t3lib_timeTrack {
 		}
 	}
 }
+
+// XCLASSing is not possible for this class
+
 ?>
