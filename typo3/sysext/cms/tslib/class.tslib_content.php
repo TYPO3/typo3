@@ -1507,7 +1507,6 @@ class tslib_cObj {
 		$tableWidth = $conf['tableWidth'] ? $conf['tableWidth'] : '99%';
 		$content='';
 
-// DIFF: This is the HRULER cObject
 		$content.='<table border="0" cellspacing="0" cellpadding="0" width="'.htmlspecialchars($tableWidth).'" summary=""><tr>';
 		if ($spaceBefore)	{$content.='<td width="1"><img src="'.$GLOBALS['TSFE']->absRefPrefix.'clear.gif" width="'.$spaceBefore.'" height="1" alt="" title="" /></td>'; }
 		$content.='<td bgcolor="'.$lineColor.'"><img src="'.$GLOBALS['TSFE']->absRefPrefix.'clear.gif" width="1" height="'.$lineThickness.'" alt="" title="" /></td>';
