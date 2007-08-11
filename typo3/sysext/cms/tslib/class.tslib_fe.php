@@ -3231,7 +3231,7 @@ if (version == "n3") {
 				$stdMsg = '
 				<br />
 				<div align="center">
-					<table border="3" bordercolor="black" cellpadding="2" bgcolor="red">
+					<table border="3" bordercolor="black" cellpadding="2" bgcolor="red" summary="">
 						<tr>
 							<td>&nbsp;&nbsp;<font face="Verdana" size="1"><b>'.htmlspecialchars($text).'</b></font>&nbsp;&nbsp;</td>
 						</tr>

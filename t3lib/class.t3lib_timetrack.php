@@ -446,7 +446,7 @@ class t3lib_timeTrack {
 			$out.= '<tr>'.$item.'</tr>';
 			$c++;
 		}
-		$out = '<table border="0" cellpadding="0" cellspacing="0">'.$out.'</table>';
+		$out = '<table border="0" cellpadding="0" cellspacing="0" summary="">'.$out.'</table>';
 		return $out;
 	}
 
@@ -482,13 +482,13 @@ class t3lib_timeTrack {
 				$LN = ($ac==$c)?'blank':'line';
 				$BTM = ($ac==$c)?'bottom':'';
 				$PM = is_array($arr[$k.'.']) ? ($deeper ? 'minus':'plus') : 'join';
-				$this->tsStackLog[$v]['icons'] = $depthData.($first?'':'<img src="'.TYPO3_mainDir.'gfx/ol/'.$PM.$BTM.'.gif" width="18" height="16" valign="top" border="0" alt="" />');
+				$this->tsStackLog[$v]['icons'] = $depthData.($first?'':'<img src="'.TYPO3_mainDir.'gfx/ol/'.$PM.$BTM.'.gif" width="18" height="16" align="top" border="0" alt="" />');
 
 				if (strlen($this->tsStackLog[$v]['content'])) {
 					$content = str_replace($this->tsStackLog[$v]['content'],$v, $content);
 				}
 				if (is_array($arr[$k.'.'])) {
-					$this->tsStackLog[$v]['content'] = $this->fixContent($arr[$k.'.'], $this->tsStackLog[$v]['content'], $depthData.($first?'':'<img src="'.TYPO3_mainDir.'gfx/ol/'.$LN.'.gif" width="18" height="16" valign="top" border="0" alt="" />'), 0, $v);
+					$this->tsStackLog[$v]['content'] = $this->fixContent($arr[$k.'.'], $this->tsStackLog[$v]['content'], $depthData.($first?'':'<img src="'.TYPO3_mainDir.'gfx/ol/'.$LN.'.gif" width="18" height="16" align="top" border="0" alt="" />'), 0, $v);
 				} else {
 					$this->tsStackLog[$v]['content'] = $this->fixCLen($this->tsStackLog[$v]['content'], $this->tsStackLog[$v]['value']);
 					$this->tsStackLog[$v]['subtime'] = '';

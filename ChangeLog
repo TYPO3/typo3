@@ -1,3 +1,11 @@
+2007-08-11  Michael Stucki  <michael@typo3org>
+
+	* More admin panel fixes:
+		- Hardcode some alignments
+		- Adding empty "summary" attribute to some tables of the admin panel
+		- Removing superfluous table around the config checkboxes of the tsdebug section
+		- Removing superfluous "title" attributes for some images in tslib_content->editPanel()
+
 2007-08-10  Michael Stucki  <michael@typo3org>
 
 	* Various improvements to the admin panel:
