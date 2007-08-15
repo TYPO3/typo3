@@ -4105,66 +4105,68 @@ $EM_CONF[$_EXTKEY] = '.$this->arrayToCode($EM_CONF, 0).';
 		$msg = array();
 		$depsolver = t3lib_div::_POST('depsolver');
 
-		foreach($conf['constraints']['depends'] as $depK => $depV)	{
-			if($depsolver['ignore'][$depK]) {
-				$msg[] = '<br />Dependency on '.$depK.' ignored as requested.
-				<input type="hidden" value="1" name="depsolver[ignore]['.$depK.']" />';
-				continue;
-			}
-			if($depK == 'php') {
-				if(!$depV) continue;
-				$versionRange = $this->splitVersionRange($depV);
-				$phpv = strstr(PHP_VERSION,'-') ? substr(PHP_VERSION,0,strpos(PHP_VERSION,'-')) : PHP_VERSION; // Linux distributors like to add suffixes, like in 5.1.2-1. Those must be ignored!
-				if ($versionRange[0]!='0.0.0' && version_compare($phpv,$versionRange[0],'<'))	{
-					$msg[] = '<br />The running PHP version ('.$phpv.') is lower than required ('.$versionRange[0].')';
-					$msg[] = '&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" value="1" name="depsolver[ignore]['.$depK.']" id="checkIgnore_'.$depK.'" /> <label for="checkIgnore_'.$depK.'">Ignore this version requirement</label>';
-					$depError = true;
-					continue;
-				} elseif ($versionRange[1]!='0.0.0' && version_compare($phpv,$versionRange[1],'>'))	{
-					$msg[] = '<br />The running PHP version ('.$phpv.') is higher than allowed ('.$versionRange[1].')';
-					$msg[] = '&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" value="1" name="depsolver[ignore]['.$depK.']" id="checkIgnore_'.$depK.'" /> <label for="checkIgnore_'.$depK.'">Ignore this version requirement</label>';
-					$depError = true;
+		if (isset($conf['constraints']['depends']) && is_array($conf['constraints']['depends'])) {
+			foreach($conf['constraints']['depends'] as $depK => $depV)	{
+				if($depsolver['ignore'][$depK]) {
+					$msg[] = '<br />Dependency on '.$depK.' ignored as requested.
+						<input type="hidden" value="1" name="depsolver[ignore]['.$depK.']" />';
 					continue;
 				}
+				if($depK == 'php') {
+					if(!$depV) continue;
+					$versionRange = $this->splitVersionRange($depV);
+					$phpv = strstr(PHP_VERSION,'-') ? substr(PHP_VERSION,0,strpos(PHP_VERSION,'-')) : PHP_VERSION; // Linux distributors like to add suffixes, like in 5.1.2-1. Those must be ignored!
+					if ($versionRange[0]!='0.0.0' && version_compare($phpv,$versionRange[0],'<'))	{
+						$msg[] = '<br />The running PHP version ('.$phpv.') is lower than required ('.$versionRange[0].')';
+						$msg[] = '&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" value="1" name="depsolver[ignore]['.$depK.']" id="checkIgnore_'.$depK.'" /> <label for="checkIgnore_'.$depK.'">Ignore this version requirement</label>';
+						$depError = true;
+						continue;
+					} elseif ($versionRange[1]!='0.0.0' && version_compare($phpv,$versionRange[1],'>'))	{
+						$msg[] = '<br />The running PHP version ('.$phpv.') is higher than allowed ('.$versionRange[1].')';
+						$msg[] = '&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" value="1" name="depsolver[ignore]['.$depK.']" id="checkIgnore_'.$depK.'" /> <label for="checkIgnore_'.$depK.'">Ignore this version requirement</label>';
+						$depError = true;
+						continue;
+					}
 
-			} elseif ($depK == 'typo3')	{
-				if (!$depV) continue;
+				} elseif ($depK == 'typo3')	{
+					if (!$depV) continue;
 
-				$versionRange = $this->splitVersionRange($depV);
-				if ($versionRange[0]!='0.0.0' && version_compare(TYPO3_version,$versionRange[0],'<'))	{
-					$msg[] = '<br />The running TYPO3 version ('.TYPO3_version.') is lower than required ('.$versionRange[0].')';
-					$msg[] = '&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" value="1" name="depsolver[ignore]['.$depK.']" id="checkIgnore_'.$depK.'" /> <label for="checkIgnore_'.$depK.'">Ignore this version requirement</label>';
+					$versionRange = $this->splitVersionRange($depV);
+					if ($versionRange[0]!='0.0.0' && version_compare(TYPO3_version,$versionRange[0],'<'))	{
+						$msg[] = '<br />The running TYPO3 version ('.TYPO3_version.') is lower than required ('.$versionRange[0].')';
+						$msg[] = '&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" value="1" name="depsolver[ignore]['.$depK.']" id="checkIgnore_'.$depK.'" /> <label for="checkIgnore_'.$depK.'">Ignore this version requirement</label>';
+						$depError = true;
+						continue;
+					} elseif ($versionRange[1]!='0.0.0' && version_compare(TYPO3_version,$versionRange[1],'>'))	{
+						$msg[] = '<br />The running TYPO3 version ('.TYPO3_version.') is higher than allowed ('.$versionRange[1].')';
+						$msg[] = '&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" value="1" name="depsolver[ignore]['.$depK.']" id="checkIgnore_'.$depK.'" /> <label for="checkIgnore_'.$depK.'">Ignore this version requirement</label>';
+						$depError = true;
+						continue;
+					}
+				} elseif (strlen($depK) && !t3lib_extMgm::isLoaded($depK))	{	// strlen check for braindead empty dependencies coming from extensions...
+					if(!isset($instExtInfo[$depK]))	{
+						$msg[] = '<br />Extension "'.$depK.'" was not available in the system. Please import it from the TYPO3 Extension Repository.';
+						$msg[] = '&nbsp;&nbsp;&nbsp;&nbsp;<img src="'.$GLOBALS['BACK_PATH'].'gfx/import.gif" width="12" height="12" title="Import this extension to \'local\' dir typo3conf/ext/ from online repository." alt="" />&nbsp;<a href="index.php?CMD[importExt]='.$depK.'&CMD[loc]=L&CMD[standAlone]=1" target="_blank">Import now (opens a new window)</a>';
+						$msg[] = '&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" value="1" name="depsolver[ignore]['.$depK.']" id="checkIgnore_'.$depK.'" /> <label for="checkIgnore_'.$depK.'">Ignore this extension requirement</label>';
+					} else {
+						$msg[] = '<br />Extension "'.$depK.'" ('.$instExtInfo[$depK]['EM_CONF']['title'].') was not installed. Please install it first.';
+						$msg[] = '&nbsp;&nbsp;&nbsp;&nbsp;'.$this->installButton().'&nbsp;<a href="'.htmlspecialchars('index.php?CMD[showExt]='.$depK.'&CMD[load]=1&CMD[clrCmd]=1&CMD[standAlone]=1&SET[singleDetails]=info').'" target="_blank">Install now (opens a new window)</a>';
+						$msg[] = '&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" value="1" name="depsolver[ignore]['.$depK.']" id="checkIgnore_'.$depK.'" /> <label for="checkIgnore_'.$depK.'">Ignore this extension requirement</label>';
+					}
 					$depError = true;
-					continue;
-				} elseif ($versionRange[1]!='0.0.0' && version_compare(TYPO3_version,$versionRange[1],'>'))	{
-					$msg[] = '<br />The running TYPO3 version ('.TYPO3_version.') is higher than allowed ('.$versionRange[1].')';
-					$msg[] = '&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" value="1" name="depsolver[ignore]['.$depK.']" id="checkIgnore_'.$depK.'" /> <label for="checkIgnore_'.$depK.'">Ignore this version requirement</label>';
-					$depError = true;
-					continue;
-				}
-			} elseif (strlen($depK) && !t3lib_extMgm::isLoaded($depK))	{	// strlen check for braindead empty dependencies coming from extensions...
-				if(!isset($instExtInfo[$depK]))	{
-					$msg[] = '<br />Extension "'.$depK.'" was not available in the system. Please import it from the TYPO3 Extension Repository.';
-					$msg[] = '&nbsp;&nbsp;&nbsp;&nbsp;<img src="'.$GLOBALS['BACK_PATH'].'gfx/import.gif" width="12" height="12" title="Import this extension to \'local\' dir typo3conf/ext/ from online repository." alt="" />&nbsp;<a href="index.php?CMD[importExt]='.$depK.'&CMD[loc]=L&CMD[standAlone]=1" target="_blank">Import now (opens a new window)</a>';
-					$msg[] = '&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" value="1" name="depsolver[ignore]['.$depK.']" id="checkIgnore_'.$depK.'" /> <label for="checkIgnore_'.$depK.'">Ignore this extension requirement</label>';
 				} else {
-					$msg[] = '<br />Extension "'.$depK.'" ('.$instExtInfo[$depK]['EM_CONF']['title'].') was not installed. Please install it first.';
-					$msg[] = '&nbsp;&nbsp;&nbsp;&nbsp;'.$this->installButton().'&nbsp;<a href="'.htmlspecialchars('index.php?CMD[showExt]='.$depK.'&CMD[load]=1&CMD[clrCmd]=1&CMD[standAlone]=1&SET[singleDetails]=info').'" target="_blank">Install now (opens a new window)</a>';
-					$msg[] = '&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" value="1" name="depsolver[ignore]['.$depK.']" id="checkIgnore_'.$depK.'" /> <label for="checkIgnore_'.$depK.'">Ignore this extension requirement</label>';
-				}
-				$depError = true;
-			} else {
-				$versionRange = $this->splitVersionRange($depV);
-				if ($versionRange[0]!='0.0.0' && version_compare($instExtInfo[$depK]['EM_CONF']['version'],$versionRange[0],'<'))	{
-					$msg[] = '<br />The running version of extension "'.$depK.'" ('.$instExtInfo[$depK]['EM_CONF']['version'].') is lower than required ('.$versionRange[0].')';
-					$msg[] = '&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" value="1" name="depsolver[ignore]['.$depK.']" id="checkIgnore_'.$depK.'" /> <label for="checkIgnore_'.$depK.'">Ignore this version requirement</label>';
-					$depError = true;
-					continue;
-				} elseif ($versionRange[1]!='0.0.0' && version_compare($instExtInfo[$depK]['EM_CONF']['version'],$versionRange[1],'>'))	{
-					$msg[] = '<br />The running version of extension "'.$depK.'" ('.$instExtInfo[$depK]['EM_CONF']['version'].') is higher than allowed ('.$versionRange[1].')';
-					$msg[] = '&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" value="1" name="depsolver[ignore]['.$depK.']" id="checkIgnore_'.$depK.'" /> <label for="checkIgnore_'.$depK.'">Ignore this version requirement</label>';
-					$depError = true;
-					continue;
+					$versionRange = $this->splitVersionRange($depV);
+					if ($versionRange[0]!='0.0.0' && version_compare($instExtInfo[$depK]['EM_CONF']['version'],$versionRange[0],'<'))	{
+						$msg[] = '<br />The running version of extension "'.$depK.'" ('.$instExtInfo[$depK]['EM_CONF']['version'].') is lower than required ('.$versionRange[0].')';
+						$msg[] = '&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" value="1" name="depsolver[ignore]['.$depK.']" id="checkIgnore_'.$depK.'" /> <label for="checkIgnore_'.$depK.'">Ignore this version requirement</label>';
+						$depError = true;
+						continue;
+					} elseif ($versionRange[1]!='0.0.0' && version_compare($instExtInfo[$depK]['EM_CONF']['version'],$versionRange[1],'>'))	{
+						$msg[] = '<br />The running version of extension "'.$depK.'" ('.$instExtInfo[$depK]['EM_CONF']['version'].') is higher than allowed ('.$versionRange[1].')';
+						$msg[] = '&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" value="1" name="depsolver[ignore]['.$depK.']" id="checkIgnore_'.$depK.'" /> <label for="checkIgnore_'.$depK.'">Ignore this version requirement</label>';
+						$depError = true;
+						continue;
+					}
 				}
 			}
 		}
@@ -4175,17 +4177,20 @@ $EM_CONF[$_EXTKEY] = '.$this->arrayToCode($EM_CONF, 0).';
 			// Check conflicts with other extensions:
 		$conflictError = false;
 		$msg = array();
-		foreach((array)$conf['constraints']['conflicts'] as $conflictK => $conflictV)	{
-			if($depsolver['ignore'][$conflictK]) {
-				$msg[] = '<br />Conflict with '.$conflictK.' ignored as requested.
-				<input type="hidden" value="1" name="depsolver[ignore]['.$conflictK.']" />';
-				continue;
-			}
-			if (t3lib_extMgm::isLoaded($conflictK))	{
-				$msg[] = 'The extensions "'.$extKey.'" and "'.$conflictK.'" ('.$instExtInfo[$conflictK]['EM_CONF']['title'].') will conflict with each other. Please remove "'.$conflictK.'" if you want to install "'.$extKey.'".';
-				$msg[] = '&nbsp;&nbsp;&nbsp;&nbsp;'.$this->removeButton().'&nbsp;<a href="'.htmlspecialchars('index.php?CMD[showExt]='.$conflictK.'&CMD[remove]=1&CMD[clrCmd]=1&CMD[standAlone]=1&SET[singleDetails]=info').'" target="_blank">Remove now (opens a new window)</a>';
-				$msg[] = '&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" value="1" name="depsolver[ignore]['.$conflictK.']" id="checkIgnore_'.$conflictK.'" /> <label for="checkIgnore_'.$conflictK.'">Ignore this conflict error</label>';
-				$conflictError = true;
+
+		if (isset($conf['constraints']['conflicts']) && is_array($conf['constraints']['conflicts'])) {
+			foreach((array)$conf['constraints']['conflicts'] as $conflictK => $conflictV)	{
+				if($depsolver['ignore'][$conflictK]) {
+					$msg[] = '<br />Conflict with '.$conflictK.' ignored as requested.
+						<input type="hidden" value="1" name="depsolver[ignore]['.$conflictK.']" />';
+					continue;
+				}
+				if (t3lib_extMgm::isLoaded($conflictK))	{
+					$msg[] = 'The extensions "'.$extKey.'" and "'.$conflictK.'" ('.$instExtInfo[$conflictK]['EM_CONF']['title'].') will conflict with each other. Please remove "'.$conflictK.'" if you want to install "'.$extKey.'".';
+					$msg[] = '&nbsp;&nbsp;&nbsp;&nbsp;'.$this->removeButton().'&nbsp;<a href="'.htmlspecialchars('index.php?CMD[showExt]='.$conflictK.'&CMD[remove]=1&CMD[clrCmd]=1&CMD[standAlone]=1&SET[singleDetails]=info').'" target="_blank">Remove now (opens a new window)</a>';
+					$msg[] = '&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" value="1" name="depsolver[ignore]['.$conflictK.']" id="checkIgnore_'.$conflictK.'" /> <label for="checkIgnore_'.$conflictK.'">Ignore this conflict error</label>';
+					$conflictError = true;
+				}
 			}
 		}
 		if($conflictError) {
@@ -4193,7 +4198,7 @@ $EM_CONF[$_EXTKEY] = '.$this->arrayToCode($EM_CONF, 0).';
 		}
 
 			// Check suggests on other extensions:
-		if(is_array($conf['constraints']['suggests'])) {
+		if(isset($conf['constraints']['suggests']) && is_array($conf['constraints']['suggests'])) {
 			$suggestion = false;
 			$msg = array();
 			foreach($conf['constraints']['suggests'] as $suggestK => $suggestV)	{

@@ -1,3 +1,7 @@
+2007-08-15  Wolfgang Klinger  <wk@plan2.net>
+
+	* (trivial) Added is_array checks in extension manager code
+
 2007-08-15  Ingo Renner  <ingo@typo3org>
 
 	* did some serious formatting cleanup in typo3/sysext/taskcenter/task/index.php
