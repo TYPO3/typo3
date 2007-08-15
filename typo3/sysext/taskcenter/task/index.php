@@ -32,7 +32,6 @@
 *     Revision for TYPO3 3.8.0 / Native Workflow System
 */
 
-
 unset($MCONF);
 require ('conf.php');
 require ($BACK_PATH.'init.php');
@@ -98,7 +97,7 @@ class SC_mod_user_task_index extends t3lib_SCbase {
 		$this->doc->JScode = '  <script language="javascript" type="text/javascript">
 			script_ended = 0;
 			function jumpToUrl(URL) {
-			window.location.href = URL;
+				window.location.href = URL;
 			}
 			'.(is_object($this->extObj)?$this->extObj->JScode():"").'
 			</script>
@@ -106,18 +105,17 @@ class SC_mod_user_task_index extends t3lib_SCbase {
 		$this->doc->JScode .= $this->doc->getDynTabMenuJScode();
 		$this->doc->JScode .= '<script language="javascript" type="text/javascript">
 		function resizeIframe(frame,max) {
-		try {
-					innerDoc = (frame.contentDocument) ? frame.contentDocument : frame.contentWindow.document;
-						if(max==0) {
-						frame.height = innerDoc.body.scrollHeight + 30;
-						} else {
-						frame.height = Math.max(innerDoc.body.scrollHeight + 30,document.body.scrollHeight);
-						}
-		}
-		catch (e) {
-			window.status = e.message;
-		}
-
+			try {
+				innerDoc = (frame.contentDocument) ? frame.contentDocument : frame.contentWindow.document;
+				if(max==0) {
+					frame.height = innerDoc.body.scrollHeight + 30;
+				} else {
+					frame.height = Math.max(innerDoc.body.scrollHeight + 30,document.body.scrollHeight);
+				}
+			}
+			catch (e) {
+				window.status = e.message;
+			}
 		}
 </script>';
 
@@ -166,7 +164,6 @@ class SC_mod_user_task_index extends t3lib_SCbase {
 		$name = $GLOBALS['BE_USER']->user['realName']?$GLOBALS['BE_USER']->user['realName']:
 		$GLOBALS['BE_USER']->user['username'];
 		return '<h1>TYPO3 taskcenter <br />'.$name.'</h1>';
-
 	}
 
 	/**
@@ -214,4 +211,5 @@ $SOBE->checkExtObj(); // Checking for first level external objects
 
 $SOBE->main();
 $SOBE->printContent();
+
 ?>
