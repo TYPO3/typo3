@@ -76,8 +76,20 @@ class SC_alt_main {
 		// Internal, dynamic:
 	var $content;
 	var $mainJScode;
-	var $loadModules;		// Load modules-object
-	var $alt_menuObj;		// Menu functions object.
+
+	/**
+	 * Object for backend modules, load modules-object
+	 *
+	 * @var t3lib_loadModules
+	 */
+	var $loadModules;
+
+	/**
+	 * Menu functions object
+	 *
+	 * @var alt_menu_functions
+	 */
+	var $alt_menuObj;
 
 		// Internal, static:
 	var $leftMenuFrameW = 130;

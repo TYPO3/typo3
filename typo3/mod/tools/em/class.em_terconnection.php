@@ -45,6 +45,12 @@ require_once('class.em_soap.php');
  */
 class SC_mod_tools_em_terconnection {
 	var $wsdlURL;
+
+	/**
+	 * Extension manager module
+	 *
+	 * @var SC_mod_tools_em_index
+	 */
 	var $emObj;
 
 	/**

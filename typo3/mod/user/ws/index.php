@@ -104,7 +104,13 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 	var $MCONF = array();				// Module configuration
 	var $MOD_MENU = array();			// Module menu items
 	var $MOD_SETTINGS = array();		// Module session settings
-	var $doc;							// Document Template Object
+
+	/**
+	 * Document Template Object
+	 *
+	 * @var noDoc
+	 */
+	var $doc;
 	var $content;						// Accumulated content
 
 

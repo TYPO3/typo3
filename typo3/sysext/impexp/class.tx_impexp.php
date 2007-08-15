@@ -241,7 +241,13 @@ class tx_impexp {
 
 	var $compress = 0;					// Set internally if the gzcompress function exists
 	var $dat = array();					// Internal import/export memory
-	var $fileProcObj = '';				// File processing object
+
+	/**
+	 * File processing object
+	 *
+	 * @var t3lib_extFileFunctions
+	 */
+	var $fileProcObj = '';
 
 
 

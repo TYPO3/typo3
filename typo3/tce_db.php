@@ -93,7 +93,13 @@ class SC_tce_db {
 
 		// Internal, dynamic:
 	var $include_once=array();		// Files to include after init() function is called:
-	var $tce;						// TCEmain object
+
+	/**
+	 * TYPO3 Core Engine
+	 *
+	 * @var t3lib_TCEmain
+	 */
+	var $tce;
 
 
 

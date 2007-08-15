@@ -88,7 +88,13 @@
  *
  */
 class t3lib_TCEforms_inline {
-	var $fObj;								// Reference to the calling TCEforms instance
+
+	/**
+	 * Reference to the calling TCEforms instance
+	 *
+	 * @var t3lib_TCEforms
+	 */
+	var $fObj;
 	var $backPath;							// Reference to $fObj->backPath
 
 	var $isAjaxCall = false;				// Indicates if a field is rendered upon an AJAX call
@@ -108,7 +114,7 @@ class t3lib_TCEforms_inline {
 	/**
 	 * Intialize an instance of t3lib_TCEforms_inline
 	 *
-	 * @param	object		$tceForms: Reference to an TCEforms instance
+	 * @param	t3lib_TCEforms		$tceForms: Reference to an TCEforms instance
 	 * @return	void
 	 */
 	function init(&$tceForms) {

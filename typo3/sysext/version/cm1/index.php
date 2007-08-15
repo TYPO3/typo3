@@ -105,7 +105,13 @@ class tx_version_cm1 extends t3lib_SCbase {
 	var $MCONF = array();				// Module configuration
 	var $MOD_MENU = array();			// Module menu items
 	var $MOD_SETTINGS = array();		// Module session settings
-	var $doc;							// Document Template Object
+
+	/**
+	 * document template object
+	 *
+	 * @var mediumDoc
+	 */
+	var $doc;
 	var $content;						// Accumulated content
 
 

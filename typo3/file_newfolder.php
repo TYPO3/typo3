@@ -77,8 +77,19 @@ class SC_file_newfolder {
 	var $folderNumber=10;
 
 		// Internal, static:
-	var $doc;			// Template object.
-	var $basicff;		// Instance of "t3lib_basicFileFunctions"
+	/**
+	 * document template object
+	 *
+	 * @var smallDoc
+	 */
+	var $doc;
+
+	/**
+	 * File processing object
+	 *
+	 * @var t3lib_basicFileFunctions
+	 */
+	var $basicff;
 	var $icon;			// Will be set to the proper icon for the $target value.
 	var $shortPath;		// Relative path to current found filemount
 	var $title;			// Name of the filemount

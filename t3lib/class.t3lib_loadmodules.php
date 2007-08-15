@@ -83,7 +83,12 @@ class t3lib_loadModules {
 	var $modListGroup = Array();		// this array will hold the elements that should go into the select-list of modules for groups...
 	var $modListUser = Array();		// this array will hold the elements that should go into the select-list of modules for users...
 
-	var $BE_USER = '';	// The backend user for use internally
+	/**
+	 * The backend user for use internally
+	 *
+	 * @var t3lib_beUserAuth
+	 */
+	var $BE_USER = '';
 	var $observeWorkspaces = FALSE;		// If set true, workspace "permissions" will be observed so non-allowed modules will not be included in the array of modules.
 
 

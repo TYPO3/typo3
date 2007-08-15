@@ -73,6 +73,12 @@ $LANG->includeLLFile('EXT:lang/locallang_alt_intro.xml');
  * @subpackage core
  */
 class SC_alt_intro {
+
+	/**
+	 * Object for backend modules.
+	 *
+	 * @var t3lib_loadModules
+	 */
 	var $loadModules;
 	var $content;
 

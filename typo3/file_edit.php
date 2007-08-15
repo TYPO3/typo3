@@ -73,11 +73,23 @@ require_once(PATH_t3lib.'class.t3lib_basicfilefunc.php');
  */
 class SC_file_edit {
 	var $content;		// Module content accumulated.
-	var $basicff;		// File processing object loaded here.
+
+	/**
+	 * File processing object
+	 *
+	 * @var t3lib_basicFileFunctions
+	 */
+	var $basicff;
 	var $shortPath;
 	var $title;
 	var $icon;
-	var $doc;			// Document template object
+
+	/**
+	 * Document template object
+	 *
+	 * @var template
+	 */
+	var $doc;
 
 		// Internal, static: GPvar
 	var $origTarget;		// Original input target

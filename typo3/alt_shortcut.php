@@ -96,12 +96,23 @@ class SC_alt_shortcut {
 	var $whichItem;
 
 		// Internal, static:
-	var $loadModules;		// Modules object
-	var $doc;			// Document template object
+	/**
+	 * Object for backend modules, load modules-object
+	 *
+	 * @var t3lib_loadModules
+	 */
+	var $loadModules;
+
+	/**
+	 * Document template object
+	 *
+	 * @var template
+	 */
+	var $doc;
 
 		// Internal, dynamic:
 	var $content;			// Accumulation of output HTML (string)
-	var $lines;			// Accumulation of table cells (array)
+	var $lines;				// Accumulation of table cells (array)
 
 	var $editLoaded;		// Flag for defining whether we are editing
 	var $editError;			// Can contain edit error message

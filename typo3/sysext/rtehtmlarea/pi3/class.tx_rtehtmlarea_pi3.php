@@ -41,6 +41,12 @@ class tx_rtehtmlarea_pi3 extends tslib_pibase {
 	var $scriptRelPath = 'pi3/class.tx_rtehtmlarea_pi3.php';	// Path to this script relative to the extension dir.
 	var $extKey = 'rtehtmlarea';		// The extension key.
 	var $conf = array();
+
+	/**
+	 * cObj object
+	 *
+	 * @var tslib_cObj
+	 */
 	var $cObj;
 
 	/**

@@ -199,7 +199,13 @@ class SC_db_layout {
 	var $perms_clause;			// Page select perms clause
 	var $modTSconfig;			// Module TSconfig
 	var $pageinfo;				// Current ids page record
-	var $doc;					// Document template object
+
+	/**
+	 * Document template object
+	 *
+	 * @var mediumDoc
+	 */
+	var $doc;
 	var $backPath;				// Back path of the module
 
 	var $descrTable;			// "Pseudo" Description -table name

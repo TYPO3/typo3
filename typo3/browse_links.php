@@ -97,9 +97,14 @@ class SC_browse_links {
 	 *
 	 * @var browse_links
 	 */
-	
 	var $browser;
 
+	/**
+	 * document template object
+	 *
+	 * @var template
+	 */
+	var $doc;
 
 	/**
 	 * not really needed but for backwards compatibility ...

@@ -127,6 +127,13 @@ $BE_USER->modAccess($MCONF,1);
 	var $expandAll=0;
 
 	/**
+	 * Local backend user (not the GLOBALS[] backend user!!)
+	 *
+	 * @var t3lib_beUserAuth
+	 */
+	var $BE_USER;
+
+	/**
 	 * Constructor for the local page tree.
 	 *
 	 * @param	object		Local backend user (not the GLOBALS[] backend user!!)
@@ -373,6 +380,13 @@ class printAllPageTree_perms extends printAllPageTree {
  class localFolderTree extends t3lib_folderTree {
 	var $expandFirst=0;
 	var $expandAll=0;
+
+	/**
+	 * Local backend user (not the GLOBALS[] backend user!!)
+	 *
+	 * @var t3lib_beUserAuth
+	 */
+	var $BE_USER;
 
 	/**
 	 * Constructor for the local folder tree.
@@ -1087,6 +1101,12 @@ class SC_mod_tools_be_user_index {
 	var $MCONF=array();
 	var $MOD_MENU=array();
 	var $MOD_SETTINGS=array();
+
+	/**
+	 * document emplate object
+	 *
+	 * @var noDoc
+	 */
 	var $doc;
 
 	var $include_once=array();

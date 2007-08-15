@@ -76,7 +76,12 @@ class tx_indexedsearch_lexer {
 	var $debug = FALSE;		// If set, the debugString is filled with HTML output highlighting search / non-search words (for backend display)
 	var $debugString = '';
 
-	var $csObj;		// Charset class object , t3lib_cs
+	/**
+	 * Charset class object
+	 *
+	 * @var t3lib_cs
+	 */
+	var $csObj;
 
 
 		// Configuration of the lexer:

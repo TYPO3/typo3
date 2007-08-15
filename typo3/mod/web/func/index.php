@@ -74,6 +74,13 @@ class SC_mod_web_func_index extends t3lib_SCbase {
 	var $pageinfo;
 	var $fileProcessor;
 
+	/**
+	 * Document Template Object
+	 *
+	 * @var mediumDoc
+	 */
+	var $doc;
+
 
 
 	/**

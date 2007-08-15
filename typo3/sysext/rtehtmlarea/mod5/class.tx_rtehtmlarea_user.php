@@ -38,6 +38,12 @@ class tx_rtehtmlarea_user {
 	var $content;
 	var $modData;
 	var $siteUrl;
+
+	/**
+	 * document template object
+	 *
+	 * @var template
+	 */
 	var $doc;
 	var $editorNo;
 

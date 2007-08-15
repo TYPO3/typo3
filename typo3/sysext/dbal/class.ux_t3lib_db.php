@@ -163,6 +163,19 @@ class ux_t3lib_DB extends t3lib_DB {
 	var $cache_fieldType = array(); // field types for tables/fields
 	var $cache_primaryKeys = array(); // primary keys
 
+	/**
+	 * SQL parser
+	 * 
+	 * @var t3lib_sqlengine
+	 */
+	var $SQLparser;
+
+	/**
+	 * Installer
+	 *
+	 * @var t3lib_install
+	 */
+	var $Installer;
 
 
 	/**

@@ -1,6 +1,7 @@
 2007-08-15  Ingo Renner  <ingo@typo3org>
 
 	* did some serious formatting cleanup in typo3/sysext/taskcenter/task/index.php
+	* added @var phpDoc comments to various variables
 
 2007-08-11  Michael Stucki  <michael@typo3org>
 

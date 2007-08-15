@@ -90,10 +90,22 @@ class SC_mod_user_setup_index {
 	var $MCONF = array();
 	var $MOD_MENU = array();
 	var $MOD_SETTINGS = array();
+
+	/**
+	 * document template object
+	 *
+	 * @var mediumDoc
+	 */
 	var $doc;
 
 	var $content;
 	var $overrideConf;
+
+	/**
+	 * backend user object, set during simulate-user operation
+	 *
+	 * @var t3lib_beUserAuth
+	 */
 	var $OLD_BE_USER;
 	var $languageUpdate;
 

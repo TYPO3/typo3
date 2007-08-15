@@ -76,6 +76,13 @@ class SC_mod_user_ws_publish extends t3lib_SCbase {
 	var	$recordCount;
 
 	/**
+	 * Document Template Object
+	 *
+	 * @var mediumDoc
+	 */
+	var $doc;
+
+	/**
 	 * Initializes the module. See <code>t3lib_SCbase::init()</code> for more information.
 	 *
 	 * @return	void

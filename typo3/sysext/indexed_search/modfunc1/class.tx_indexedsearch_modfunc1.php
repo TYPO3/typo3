@@ -109,7 +109,13 @@ class tx_indexedsearch_modfunc1 extends t3lib_extobjbase {
 	var $allPhashListed = array();		// phash values accumulations for link to clear all
 	var $external_parsers = array();	// External content parsers - objects set here with file extensions as keys.
 	var $iconFileNameCache = array();	// File extensions - icon map/cache.
-	var $indexerObj;					// Indexer object
+
+	/**
+	 * Indexer object
+	 *
+	 * @var tx_indexedsearch_indexer
+	 */
+	var $indexerObj;
 
 
 	/**

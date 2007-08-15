@@ -81,7 +81,12 @@ t3lib_BEfunc::lockRecords();
 class SC_wizard_rte {
 
 		// Internal, dynamic:
-	var $doc;					// Document template object
+	/**
+	 * document template object
+	 *
+	 * @var mediumDoc
+	 */
+	var $doc;
 	var $content;				// Content accumulation for the module.
 
 		// Internal, static: GPvars

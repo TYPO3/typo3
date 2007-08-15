@@ -223,6 +223,8 @@ class t3lib_SCbase {
 
 	/**
 	 * Generally used to hold an instance of the 'template' class from typo3/template.php
+	 * 
+	 * @var template
 	 */
 	var $doc;
 

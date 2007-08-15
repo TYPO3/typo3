@@ -235,7 +235,12 @@ class SC_move_el {
 	var $moveUid;
 	var $makeCopy;
 
-	var $doc;				// Backend template object.
+	/**
+	 * Document template object
+	 *
+	 * @var mediumDoc
+	 */
+	var $doc;
 	var $perms_clause;		// Pages-select clause
 
 		// Internal, dynamic:

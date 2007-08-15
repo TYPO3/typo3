@@ -219,7 +219,11 @@ class t3lib_stdGraphic	{
 		'white' => Array(255,255,255)
 	);
 
-		// Charset conversion object:
+	/**
+	 * Charset conversion object:
+	 *
+	 * @var t3lib_cs
+	 */
 	var $csConvObj;
 	var $nativeCharset='';		// Is set to the native character set of the input strings.
 

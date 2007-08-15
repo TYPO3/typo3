@@ -31,7 +31,13 @@
  */
 class tx_coreupdates_notinmenu {
 	var $versionNumber;	// version number coming from t3lib_div::int_from_ver()
-	var $pObj;	// parent object (tx_install)
+
+	/**
+	 * parent object
+	 *
+	 * @var tx_install
+	 */
+	var $pObj;
 	var $userInput;	// user input
 
 	function checkForUpdate(&$description)	{

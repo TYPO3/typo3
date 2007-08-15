@@ -151,15 +151,33 @@ class tslib_menu {
 	var $imgNamePrefix = 'img';
 	var $imgNameNotRandom=0;
 	var $debug = 0;
-	var $parent_cObj;				// Loaded with the parent cObj-object when a new HMENU is made
+
+	/**
+	 * Loaded with the parent cObj-object when a new HMENU is made
+	 *
+	 * @var tslib_cObj
+	 */
+	var $parent_cObj;
 	var $GMENU_fixKey='gmenu';
 	var $MP_array=array();				// accumulation of mount point data
 
 		// internal
 	var $conf = Array();				// HMENU configuration
 	var $mconf = Array();				// xMENU configuration (TMENU, GMENU etc)
-	var $tmpl;		// template-object
-	var $sys_page;	// sys_page-object
+
+	/**
+	 * template-object
+	 *
+	 * @var t3lib_TStemplate
+	 */
+	var $tmpl;
+
+	/**
+	 * sys_page-object, pagefunctions
+	 *
+	 * @var t3lib_pageSelect
+	 */
+	var $sys_page;
 	var $id;							// The base page-id of the menu.
 	var $nextActive;					// Holds the page uid of the NEXT page in the root line from the page pointed to by entryLevel; Used to expand the menu automatically if in a certain root line.
 	var $menuArr;	// The array of menuItems which is built

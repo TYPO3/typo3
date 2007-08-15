@@ -72,9 +72,21 @@ if (t3lib_extMgm::isLoaded('taskcenter') && t3lib_extMgm::isLoaded('taskcenter_r
 class SC_alt_doc_nodoc {
 
 		// Internal:
-	var $doc;			// Document template object
 	var $content;		// Content accumulation
-	var $loadModules;	// Object for backend modules.
+
+	/**
+	 * Document template object
+	 *
+	 * @var mediumDoc
+	 */
+	var $doc;
+
+	/**
+	 * Object for backend modules.
+	 *
+	 * @var t3lib_loadModules
+	 */
+	var $loadModules;
 
 	/**
 	 * Constructor, initialize.

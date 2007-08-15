@@ -294,7 +294,12 @@ class t3lib_TCEmain	{
 		// *********************
 
 		// Variables set in init() function:
-	var $BE_USER;		// The user-object the script uses. If not set from outside, this is set to the current global $BE_USER.
+	/**
+	 * The user-object the script uses. If not set from outside, this is set to the current global $BE_USER.
+	 *
+	 * @var t3lib_beUserAuth
+	 */
+	var $BE_USER;
 	var $userid;		// will be set to uid of be_user executing this script
 	var $username;		// will be set to username of be_user executing this script
 	var $admin;			// will be set if user is admin

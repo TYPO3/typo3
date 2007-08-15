@@ -56,6 +56,12 @@ class em_soap {
 	 *                  'array'     PHP arrays, default
 	 */
 	var $options  = array();
+
+	/**
+	 * SOAP client depending on the available implementations, preferably the PHP SOAP class
+	 *
+	 * @var unknown_type
+	 */
 	var $client   = false;
 	var $error    = false;
 

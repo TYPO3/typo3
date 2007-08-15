@@ -74,6 +74,12 @@ class SC_mod_tools_config_index {
 	var $MCONF = array();
 	var $MOD_MENU = array();
 	var $MOD_SETTINGS = array();
+
+	/**
+	 * document template object
+	 *
+	 * @var noDoc
+	 */
 	var $doc;
 
 	var $include_once = array();

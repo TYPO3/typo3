@@ -75,6 +75,13 @@ class SC_mod_web_info_index extends t3lib_SCbase {
 	var $pageinfo;
 
 	/**
+	 * Document Template Object
+	 *
+	 * @var mediumDoc
+	 */
+	var $doc;
+
+	/**
 	 * Initialize module header etc and call extObjContent function
 	 *
 	 * @return	void

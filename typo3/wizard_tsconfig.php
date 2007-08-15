@@ -127,7 +127,12 @@ class ext_TSparser extends t3lib_tsparser_ext {
 class SC_wizard_tsconfig {
 
 		// Internal, dynamic:
-	var $doc;					// Document template object
+	/**
+	 * document template object
+	 *
+	 * @var mediumDoc
+	 */
+	var $doc;
 	var $content;				// Content accumulation for the module.
 
 		// Internal, static: GPvars

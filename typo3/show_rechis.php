@@ -77,6 +77,12 @@ class SC_show_rechis {
 
 		// Internal:
 	var $content;
+
+	/**
+	 * Document template object
+	 *
+	 * @var mediumDoc
+	 */
 	var $doc;
 
 	/**

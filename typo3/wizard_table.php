@@ -84,7 +84,12 @@ $LANG->includeLLFile('EXT:lang/locallang_wizards.xml');
 class SC_wizard_table {
 
 			// Internal, dynamic:
-	var $doc;					// Document template object
+	/**
+	 * document template object
+	 *
+	 * @var mediumDoc
+	 */
+	var $doc;
 	var $content;				// Content accumulation for the module.
 	var $include_once=array();	// List of files to include.
 	var $inputStyle=0;			// True, then <input> fields are shown, not textareas.

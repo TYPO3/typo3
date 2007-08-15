@@ -32,7 +32,13 @@
 require_once(PATH_tslib.'class.tslib_pibase.php');
 
 class tx_rtehtmlarea_pi1 extends tslib_pibase {
-	var $cObj;  // The backReference to the mother cObj object set at call time
+
+	/**
+	 * back reference to the mother cObj object set at call time
+	 *
+	 * @var tslib_cObj
+	 */
+	var $cObj;
 	var $prefixId = 'tx_rtehtmlarea_pi1';  // Same as class name
 	var $scriptRelPath = 'pi1/class.tx_rtehtmlarea_pi1.php';  // Path to this script relative to the extension dir.
 	var $extKey = 'rtehtmlarea'; // The extension key.

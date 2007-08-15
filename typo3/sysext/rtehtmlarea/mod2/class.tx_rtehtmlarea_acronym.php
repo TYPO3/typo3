@@ -35,6 +35,12 @@
 class tx_rtehtmlarea_acronym {
 	var $content;
 	var $modData;
+
+	/**
+	 * document template object
+	 *
+	 * @var template
+	 */
 	var $doc;
 
 	/**

@@ -128,6 +128,8 @@ class t3lib_treeView {
 	/**
 	 * Needs to be initialized with $GLOBALS['BE_USER']
 	 * Done by default in init()
+	 * 
+	 * @var t3lib_beUserAuth
 	 */
 	var $BE_USER='';
 

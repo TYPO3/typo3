@@ -108,7 +108,12 @@ class localRecordList extends recordList {
 	var $csvLines=array();					// Used to accumulate CSV lines in for CSV export.
 	var $csvOutput=FALSE;					// If set, the listing is returned as CSV instead.
 
-	var $clipObj;							// Clipboard object
+	/**
+	 * Clipboard object
+	 *
+	 * @var t3lib_clipboard
+	 */
+	var $clipObj;
 	var $CBnames=array();					// Tracking names of elements (for clipboard use)
 	var $duplicateStack=array();			// Used to track which elements has duplicates and how many
 

@@ -226,10 +226,16 @@ class t3lib_TCEforms	{
 	var $palettesCollapsed=0;			// Can be set true/false to whether palettes (secondary options) are in the topframe or in form. True means they are NOT IN-form. So a collapsed palette is one, which is shown in the top frame, not in the page.
 	var $disableRTE=0;					// If set, the RTE is disabled (from form display, eg. by checkbox in the bottom of the page!)
 	var $globalShowHelp=1;				// If false, then all CSH will be disabled, regardless of settings in $this->edit_showFieldHelp
-	var $localizationMode='';		// If true, the forms are rendering only localization relevant fields of the records.
+	var $localizationMode='';			// If true, the forms are rendering only localization relevant fields of the records.
 	var $fieldOrder='';					// Overrule the field order set in TCA[types][showitem], eg for tt_content this value, 'bodytext,image', would make first the 'bodytext' field, then the 'image' field (if set for display)... and then the rest in the old order.
 	var $doPrintPalette=1;				// If set to false, palettes will NEVER be rendered.
-	var $clipObj=FALSE;					// Set to initialized clipboard object; Then the element browser will offer a link to paste in records from clipboard.
+
+	/**
+	 * Set to initialized clipboard object; Then the element browser will offer a link to paste in records from clipboard.
+	 *
+	 * @var t3lib_clipboard
+	 */
+	var $clipObj=FALSE;
 	var $enableClickMenu=FALSE;			// Enable click menu on reference icons.
 	var $enableTabMenu = FALSE;			// Enable Tab Menus. If set to true, the JavaScript content from template::getDynTabMenuJScode() must be included in the document.
 	var $renderReadonly = FALSE; 		// When enabled all fields are rendered non-editable.
@@ -293,7 +299,12 @@ class t3lib_TCEforms	{
 	var $additionalJS_post = array();			// Additional JavaScript printed after the form
 	var $additionalJS_submit = array();			// Additional JavaScript executed on submit; If you set "OK" variable it will raise an error about RTEs not being loaded and offer to block further submission.
 
-	var $inline;								// Instance of t3lib_tceforms_inline
+	/**
+	 * Instance of t3lib_tceforms_inline
+	 *
+	 * @var t3lib_TCEforms_inline
+	 */
+	var $inline;
 	var $hookObjectsMainFields = array();			// Array containing hook class instances called once for a form
 	var $hookObjectsSingleField = array();			// Array containing hook class instances called for each field
 	var $extraFormHeaders = array();			// Rows gettings inserted into the alt_doc headers (when called from alt_doc.php)

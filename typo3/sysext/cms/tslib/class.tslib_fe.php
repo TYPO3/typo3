@@ -221,7 +221,13 @@
 	var $rootLine='';					// The rootLine (all the way to tree root, not only the current site!) (array)
 	var $page='';						// The pagerecord (array)
 	var $contentPid=0;					// This will normally point to the same value as id, but can be changed to point to another page from which content will then be displayed instead.
-	var $sys_page='';					// The object with pagefunctions (object)
+
+	/**
+	 * sys_page-object, pagefunctions
+	 *
+	 * @var t3lib_pageSelect
+	 */
+	var $sys_page='';
 	var $jumpurl='';
 	var $pageNotFound=0;				// Is set to 1 if a pageNotFound handler could have been called.
 	var $domainStartPage=0;				// Domain start page
@@ -232,7 +238,13 @@
 	var $siteScript='';					// Contains the value of the current script path that activated the frontend. Typically "index.php" but by rewrite rules it could be something else! Used for Speaking Urls / Simulate Static Documents.
 
 		// USER
-	var $fe_user='';					// The user (object)
+
+	/**
+	 * The FE user
+	 *
+	 * @var tslib_feUserAuth
+	 */
+	var $fe_user='';
 	var $loginUser='';					// Global flag indicating that a front-end user is logged in. This is set only if a user really IS logged in. The group-list may show other groups (like added by IP filter or so) even though there is no user.
 	var $gr_list='';					// (RO=readonly) The group list, sorted numerically. Group '0,-1' is the default group, but other groups may be added by other means than a user being logged in though...
 	var $beUserLogin='';				// Flag that indicates if a Backend user is logged in!
@@ -252,7 +264,13 @@
 	var $TCAcachedExtras=array();		// Array of cached information from TCA. This is NOT TCA itself!
 
 		// TEMPLATE / CACHE
-	var $tmpl='';						// The TypoScript template object. Used to parse the TypoScript template
+
+	/**
+	 * The TypoScript template object. Used to parse the TypoScript template
+	 *
+	 * @var t3lib_TStemplate
+	 */
+	var $tmpl='';
 	var $cacheTimeOutDefault='';		// Is set to the time-to-live time of cached pages. If false, default is 60*60*24, which is 24 hours.
 	var $cacheContentFlag='';			// Set internally if cached content is fetched from the database
 	var $cacheExpires=0;				// Set to the expire time of cached content
@@ -337,8 +355,12 @@
 	var $baseUrl='';					// The base URL set for the page header.
 	var $anchorPrefix='';				// The proper anchor prefix needed when using speaking urls. (only set if baseUrl is set)
 
-		// Page content render object
-	var $cObj ='';						// is instantiated object of tslib_cObj
+	/**
+	 * Page content render object
+	 *
+	 * @var tslib_cObj
+	 */
+	var $cObj ='';
 
 		// CONTENT accumulation
 	var $content='';					// All page content is accumulated in this variable. See pagegen.php
@@ -349,7 +371,13 @@
 	var $TCAloaded = 0;					// Set ONLY if the full TCA is loaded
 
 		// Character set (charset) conversion object:
-	var $csConvObj;						// An instance of the "t3lib_cs" class. May be used by any application.
+
+	/**
+	 * charset conversion class. May be used by any application.
+	 *
+	 * @var t3lib_cs
+	 */
+	var $csConvObj;
 	var $defaultCharSet = 'iso-8859-1';	// The default charset used in the frontend if nothing else is set.
 	var $renderCharset='';				// Internal charset of the frontend during rendering: Defaults to "forceCharset" and if that is not set, to ->defaultCharSet
 	var $metaCharset='';				// Output charset of the websites content. This is the charset found in the header, meta tag etc. If different from $renderCharset a conversion happens before output to browser. Defaults to ->renderCharset if not set.

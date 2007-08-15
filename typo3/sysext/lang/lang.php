@@ -114,7 +114,13 @@ class language {
 
 		// Internal charset conversion:
 	var $origCharSet='';		// If set, then it means that the this->charSet is set to a forced, common value for the WHOLE backend regardless of user language. And THIS variable will contain the original charset for the language labels. With ->csConvObj we must then convert the original charset to the charset used in the backend from now on.
-	var $csConvObj;				// An instance of the "t3lib_cs" class. May be used by any application.
+
+	/**
+	 * instance of the "t3lib_cs" class. May be used by any application.
+	 *
+	 * @var t3lib_cs
+	 */
+	var $csConvObj;
 
 
 

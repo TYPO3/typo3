@@ -72,7 +72,13 @@ class SC_alt_file_navframe {
 		// Internal, dynamic:
 	var $content;		// Content accumulates in this variable.
 	var $foldertree;	// Folder tree object.
-	var $doc;			// Template object.
+
+	/**
+	 * document template object
+	 *
+	 * @var template
+	 */
+	var $doc;
 	var $backPath;
 
 		// Internal, static: GPvar:
@@ -91,7 +97,6 @@ class SC_alt_file_navframe {
 
 			// Setting backPath
 		$this->backPath = $BACK_PATH;
-		$this->doc->backPath = $BACK_PATH;
 
 			// Setting GPvars:
 		$this->ajax = t3lib_div::_GP('ajax');
@@ -110,6 +115,7 @@ class SC_alt_file_navframe {
 
 				// Create template object:
 			$this->doc = t3lib_div::makeInstance('template');
+			$this->doc->backPath = $BACK_PATH;
 			$this->doc->docType = 'xhtml_trans';
 
 				// Adding javascript code for AJAX (prototype), drag&drop and the pagetree

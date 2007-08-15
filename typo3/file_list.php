@@ -82,8 +82,20 @@ class SC_file_list {
 
 		// Internal:
 	var $content;	// Accumulated HTML output
-	var $basicFF;	// File operation object (t3lib_basicFileFunctions)
-	var $doc;		// Template object
+
+	/**
+	 * File processing object
+	 *
+	 * @var t3lib_basicFileFunctions
+	 */
+	var $basicFF;
+
+	/**
+	 * Document template object
+	 *
+	 * @var template
+	 */
+	var $doc;
 
 		// Internal, static: GPvars:
 	var $id;		// "id" -> the path to list.

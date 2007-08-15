@@ -134,7 +134,12 @@ class SC_alt_doc {
 
 
 		// Internal, static:
-	var $doc;				// Document template object
+	/**
+	 * document template object
+	 *
+	 * @var mediumDoc
+	 */
+	var $doc;
 	var $content;			// Content accumulation
 
 	var $retUrl;			// Return URL script, processed. This contains the script (if any) that we should RETURN TO from the alt_doc.php script IF we press the close button. Thus this variable is normally passed along from the calling script so we can properly return if needed.
@@ -159,7 +164,13 @@ class SC_alt_doc {
 	var $viewId;			// Is set to the pid value of the last shown record - thus indicating which page to show when clicking the SAVE/VIEW button
 	var $viewId_addParams;	// Is set to additional parameters (like "&L=xxx") if the record supports it.
 	var $modTSconfig;		// Module TSconfig, loaded from main() based on the page id value of viewId
-	var $tceforms;			// Contains the instance of TCEforms class.
+
+	/**
+	 * instance of TCEforms class
+	 *
+	 * @var t3lib_TCEforms
+	 */
+	var $tceforms;
 	var $generalPathOfForm;	// Contains the root-line path of the currently edited record(s) - for display.
 
 

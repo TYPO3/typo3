@@ -41,6 +41,12 @@ class mod_user_task extends t3lib_extobjbase {
 	var $perms_clause = '';
 
 	var $backPath;
+
+	/**
+	 * BE user
+	 *
+	 * @var t3lib_beUserAuth
+	 */
 	var $BE_USER;
 
 	function JScode() {

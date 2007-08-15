@@ -106,7 +106,13 @@ class SC_db_list {
 	var $perms_clause;			// Page select perms clause
 	var $modTSconfig;			// Module TSconfig
 	var $pageinfo;				// Current ids page record
-	var $doc;					// Document template object
+
+	/**
+	 * Document template object
+	 *
+	 * @var template
+	 */
+	var $doc;
 
 	var $MCONF=array();			// Module configuration
 	var $MOD_MENU=array();		// Menu configuration

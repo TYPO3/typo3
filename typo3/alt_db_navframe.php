@@ -70,6 +70,12 @@ class SC_alt_db_navframe {
 		// Internal:
 	var $content;
 	var $pagetree;
+
+	/**
+	 * document template object
+	 *
+	 * @var template
+	 */
 	var $doc;
 	var $active_tempMountPoint = 0;		// Temporary mount point (record), if any
 	var $backPath;
@@ -90,7 +96,6 @@ class SC_alt_db_navframe {
 
 			// Setting backPath
 		$this->backPath = $BACK_PATH;
-		$this->doc->backPath = $BACK_PATH;
 
 			// Setting GPvars:
 		$this->ajax = t3lib_div::_GP('ajax');
@@ -127,6 +132,7 @@ class SC_alt_db_navframe {
 
 				// Create template object:
 			$this->doc = t3lib_div::makeInstance('template');
+			$this->doc->backPath = $BACK_PATH;
 			$this->doc->docType = 'xhtml_trans';
 
 				// Adding javascript code for AJAX (prototype), drag&drop and the pagetree

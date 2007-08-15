@@ -57,6 +57,12 @@ class SC_mod_tools_log_index {
 	var $MCONF=array();
 	var $MOD_MENU=array();
 	var $MOD_SETTINGS=array();
+
+	/**
+	 * Document templat eobject
+	 *
+	 * @var noDoc
+	 */
 	var $doc;
 
 	var $content;

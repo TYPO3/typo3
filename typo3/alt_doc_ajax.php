@@ -70,7 +70,13 @@ class SC_alt_doc_ajax {
 	var $R_URL_parts;			// Contains the parts of the REQUEST_URI (current url). By parts we mean the result of resolving REQUEST_URI (current url) by the parse_url() function. The result is an array where eg. "path" is the script path and "query" is the parameters...
 	var $R_URL_getvars;			// Contains the current GET vars array; More specifically this array is the foundation for creating the R_URI internal var (which becomes the "url of this script" to which we submit the forms etc.)
 	var $R_URI;					// Set to the URL of this script including variables which is needed to re-display the form. See main()
-	var $tceforms;				// Contains the instance of TCEforms class.
+
+	/**
+	 * instance of TCEforms class
+	 *
+	 * @var t3lib_TCEforms
+	 */
+	var $tceforms;
 	var $localizationMode;		// GP var, localization mode for TCEforms (eg. "text")
 	var $ajax = array();		// the AJAX paramerts from get/post
 

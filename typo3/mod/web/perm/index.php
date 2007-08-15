@@ -93,7 +93,13 @@ class SC_mod_web_perm_index {
 
 		// Internal, static:
 	var $MCONF=array();			// Module config
-	var $doc;					// Document template object
+
+	/**
+	 * Document Template Object
+	 *
+	 * @var mediumDoc
+	 */
+	var $doc;
 	var $content;				// Content accumulation
 
 	var $MOD_MENU=array();		// Module menu

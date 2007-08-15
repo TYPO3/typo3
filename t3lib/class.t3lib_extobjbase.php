@@ -145,7 +145,9 @@
 class t3lib_extobjbase {
 
 	/**
-	 * Contains a reference to the parent object.
+	 * Contains a reference to the parent (calling) object (which is probably an instance of an extension class to t3lib_SCbase)
+	 * 
+	 * @var t3lib_SCbase
 	 * @see init()
 	 */
 	var $pObj;	// parent SC object

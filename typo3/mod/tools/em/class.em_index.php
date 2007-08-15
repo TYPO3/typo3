@@ -312,13 +312,30 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 	var $MCONF = array();				// Module configuration
 	var $MOD_MENU = array();			// Module menu items
 	var $MOD_SETTINGS = array();		// Module session settings
-	var $doc;							// Document Template Object
+	/**
+	 * Document Template Object
+	 *
+	 * @var noDoc
+	 */
+	var $doc;
 	var $content;						// Accumulated content
 
 	var $inst_keys = array();			// Storage of installed extensions
 	var $gzcompress = 0;				// Is set true, if system support compression.
 
-	var $terConnection;					// instance of TER connection handler
+	/**
+	 * instance of TER connection handler
+	 *
+	 * @var SC_mod_tools_em_terconnection
+	 */
+	var $terConnection;
+
+	/**
+	 * XML handling class for the TYPO3 Extension Manager
+	 *
+	 * @var SC_mod_tools_em_xmlhandler
+	 */
+	var $xmlhandler;
 	var $JScode;						// JavaScript code to be forwared to $this->doc->JScode
 
 		// GPvars:

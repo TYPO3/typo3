@@ -259,6 +259,12 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 
 		// For the editor
 	var $client;
+
+	/**
+	 * Reference to parent object, which is an instance of the TCEforms
+	 *
+	 * @var t3lib_TCEforms
+	 */
 	var $TCEform;
 	var $elementId;
 	var $elementParts;

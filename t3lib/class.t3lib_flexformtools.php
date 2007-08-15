@@ -92,7 +92,10 @@ class t3lib_flexformtools {
 		);
 
 		// Internal:
-	var $callBackObj = NULL;		// Reference to object called
+	/**
+	 * Reference to object called
+	 */
+	var $callBackObj = NULL;
 	var $cleanFlexFormXML = array();		// Used for accumulation of clean XML
 
 	/**

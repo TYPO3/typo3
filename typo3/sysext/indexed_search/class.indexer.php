@@ -192,9 +192,26 @@ class tx_indexedsearch_indexer {
 	var $freqMax = 0.1;
 
 		// Objects:
-	var $csObj;				// Charset class object , t3lib_cs
-	var $metaphoneObj;		// Metaphone object, if any
-	var $lexerObj;			// Lexer object for word splitting
+	/**
+	 * Charset class object
+	 *
+	 * @var t3lib_cs
+	 */
+	var $csObj;
+
+	/**
+	 * Metaphone object, if any
+	 *
+	 * @var user_DoubleMetaPhone
+	 */
+	var $metaphoneObj;
+
+	/**
+	 * Lexer object for word splitting
+	 *
+	 * @var tx_indexedsearch_lexer
+	 */
+	var $lexerObj;
 
 
 

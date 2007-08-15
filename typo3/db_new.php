@@ -145,7 +145,13 @@ class SC_db_new {
 
 		// Internal
 	var $perms_clause;	// see init()
-	var $doc;			// see init()
+
+	/**
+	 * Document template object
+	 *
+	 * @var mediumDoc
+	 */
+	var $doc;
 	var $content;		// Accumulated HTML output
 
 

@@ -154,7 +154,20 @@ class tx_indexedsearch extends tslib_pibase {
 	var $resultSections = array();		// Page tree sections for search result.
 	var $external_parsers = array();	// External parser objects
 	var $iconFileNameCache = array();	// Storage of icons....
-	var $lexerObj;				// Lexer object
+
+	/**
+	 * Lexer object
+	 *
+	 * @var tx_indexedsearch_lexer
+	 */
+	var $lexerObj;
+
+	/**
+	 * Indexer object
+	 *
+	 * @var tx_indexedsearch_indexer
+	 */
+	var $indexerObj;
 	var $templateCode;			// Will hold the content of $conf['templateFile']
 	var $hiddenFieldList = 'ext, type, defOp, media, order, group, lang, desc, results';
 

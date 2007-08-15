@@ -81,7 +81,13 @@ class SC_alt_menu {
 
 		// Internal, Static: GPvar
 	var $_clearCacheFiles;
-	var $alt_menuObj;		// Menu functions object.
+
+	/**
+	 * Menu functions object
+	 *
+	 * @var alt_menu_functions
+	 */
+	var $alt_menuObj;
 
 	/**
 	 * Initialize

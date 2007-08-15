@@ -161,7 +161,13 @@ class SC_db_new_content_el {
 
 		// Internal, static:
 	var $modTSconfig=array();	// Module TSconfig.
-	var $doc;					// Internal backend template object
+
+	/**
+	 * Internal backend template object
+	 *
+	 * @var mediumDoc
+	 */
+	var $doc;
 
 		// Internal, dynamic:
 	var $include_once = array();	// Includes a list of files to include between init() and main() - see init()

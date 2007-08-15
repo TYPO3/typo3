@@ -96,13 +96,25 @@ class SC_mod_user_ws_workspaceForms extends t3lib_SCbase {
 	var $MCONF = array();				// Module configuration
 	var $MOD_MENU = array();			// Module menu items
 	var $MOD_SETTINGS = array();		// Module session settings
-	var $doc;							// Document Template Object
+
+	/**
+	 * Document Template Object
+	 *
+	 * @var mediumDoc
+	 */
+	var $doc;
 	var $content;						// Accumulated content
 
 	// internal variables
 	var	$isEditAction = false;			// true if about to edit workspace
 	var $workspaceId;					// ID of the workspace that we will edit. Set only if $isEditAction is true.
-	var $tceforms;						// An instance of t3lib_TCEForms
+
+	/**
+	 * An instance of t3lib_TCEForms
+	 *
+	 * @var t3lib_TCEforms
+	 */
+	var $tceforms;
 
 
 

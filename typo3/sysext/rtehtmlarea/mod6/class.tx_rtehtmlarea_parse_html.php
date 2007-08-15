@@ -37,6 +37,12 @@ require_once (PATH_t3lib.'class.t3lib_parsehtml.php');
 class tx_rtehtmlarea_parse_html {
 	var $content;
 	var $modData;
+
+	/**
+	 * document template object
+	 *
+	 * @var template
+	 */
 	var $doc;
 	var $extKey = 'rtehtmlarea';
 	var $prefixId = 'TYPO3HtmlParser';

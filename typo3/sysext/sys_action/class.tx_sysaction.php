@@ -39,6 +39,12 @@ class tx_sysaction extends mod_user_task {
 	var $todoTypesCache = array();
 	var $insCounter=0;
 	var $xCol;
+
+	/**
+	 * TCEforms instance
+	 *
+	 * @var t3lib_TCEforms
+	 */
 	var $t3lib_TCEforms;
 
 	function overview_main()	{

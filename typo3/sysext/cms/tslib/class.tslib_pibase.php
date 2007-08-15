@@ -121,7 +121,12 @@
 class tslib_pibase {
 
 		// Reserved variables:
-	var $cObj;		// The backReference to the mother cObj object set at call time
+	/**
+	 * The backReference to the mother cObj object set at call time
+	 *
+	 * @var tslib_cObj
+	 */
+	var $cObj;
 	var $prefixId;		// Should be same as classname of the plugin, used for CSS classes, variables
 	var $scriptRelPath;	// Path to the plugin class script relative to extension directory, eg. 'pi1/class.tx_newfaq_pi1.php'
 	var $extKey;		// Extension key.

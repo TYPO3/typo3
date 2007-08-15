@@ -36,13 +36,20 @@
  * @subpackage EM
  */
 class SC_mod_tools_em_xmlhandler {
+
+	/**
+	 * Enxtension Manager module
+	 *
+	 * @var SC_mod_tools_em_index
+	 */
+	var $emObj;
+
 	/**
 	 * Holds the parsed XML from extensions.xml.gz
 	 * @see parseExtensionsXML()
 	 *
 	 * @var array
 	 */
-	var $emObj;
 	var $extXMLResult = array();
 	var $extensionsXML = array();
 	var $reviewStates = null;
