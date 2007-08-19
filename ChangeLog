@@ -1,3 +1,7 @@
+2007-08-19  Oliver Hader  <oh@inpublica.de>
+
+	* (trivial) Fixed bug #6170: CSC - File locallang.php used in static template instead of locallang.xml
+
 2007-08-15  Wolfgang Klinger  <wk@plan2.net>
 
 	* (trivial) Added is_array checks in extension manager code

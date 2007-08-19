@@ -37,7 +37,7 @@ styles.content.editPanelPage {
 	10 = EDITPANEL
 	10 {
 		allow = toolbar,move,hide
-		label.data = LLL:EXT:css_styled_content/pi1/locallang.php:eIcon.page
+		label.data = LLL:EXT:css_styled_content/pi1/locallang.xml:eIcon.page
 		label.wrap = |&nbsp;<b>%s</b>
 	}
 }
@@ -204,7 +204,7 @@ lib.stdheader {
 
 	stdWrap.editIcons = tt_content : header, [header_layout | header_position], [header_link|date]
 	stdWrap.editIcons.beforeLastTag = 1
-	stdWrap.editIcons.iconTitle.data = LLL:EXT:css_styled_content/pi1/locallang.php:eIcon.header
+	stdWrap.editIcons.iconTitle.data = LLL:EXT:css_styled_content/pi1/locallang.xml:eIcon.header
 
 	stdWrap.dataWrap = <div class="csc-header csc-header-n{cObj:parentRecordNumber}">|</div>
 	stdWrap.prefixComment = 2 | Header:
@@ -276,7 +276,7 @@ tt_content.stdWrap {
 		21.value = <div class="csc-frame csc-frame-frame2">|</div>
 	}
 
-	innerWrap2 = | <p class="csc-linkToTop"><a href="#">{LLL:EXT:css_styled_content/pi1/locallang.php:label.toTop}</a></p>
+	innerWrap2 = | <p class="csc-linkToTop"><a href="#">{LLL:EXT:css_styled_content/pi1/locallang.xml:label.toTop}</a></p>
 	innerWrap2.insertData = 1
 	innerWrap2.fieldRequired = linkToTop
 
@@ -318,7 +318,7 @@ tt_content.header {
 
 		editIcons = tt_content:subheader,layout
 		editIcons.beforeLastTag = 1
-		editIcons.iconTitle.data = LLL:EXT:css_styled_content/pi1/locallang.php:eIcon.subheader
+		editIcons.iconTitle.data = LLL:EXT:css_styled_content/pi1/locallang.xml:eIcon.subheader
 
 		prefixComment = 2 | Subheader:
 	}
@@ -341,7 +341,7 @@ tt_content.text {
 
 		editIcons = tt_content:bodytext, rte_enabled
 		editIcons.beforeLastTag = 1
-		editIcons.iconTitle.data = LLL:EXT:css_styled_content/pi1/locallang.php:eIcon.bodytext
+		editIcons.iconTitle.data = LLL:EXT:css_styled_content/pi1/locallang.xml:eIcon.bodytext
 
 		prefixComment = 2 | Text:
 	}
@@ -447,11 +447,11 @@ tt_content.image.20 {
 	textMargin = {$styles.content.imgtext.textMargin}
 
 	editIcons = tt_content : image [imageorient|imagewidth|imageheight], [imagecols|image_noRows|imageborder],[image_link|image_zoom],[image_compression|image_effects|image_frames],imagecaption[imagecaption_position]
-	editIcons.iconTitle.data = LLL:EXT:css_styled_content/pi1/locallang.php:eIcon.images
+	editIcons.iconTitle.data = LLL:EXT:css_styled_content/pi1/locallang.xml:eIcon.images
 
 	caption.editIcons = tt_content : imagecaption[imagecaption_position]
 	caption.editIcons.beforeLastTag=1
-	caption.editIcons.iconTitle.data = LLL:EXT:css_styled_content/pi1/locallang.php:eIcon.caption
+	caption.editIcons.iconTitle.data = LLL:EXT:css_styled_content/pi1/locallang.xml:eIcon.caption
 
 	stdWrap.prefixComment = 2 | Image block:
 }
@@ -495,7 +495,7 @@ tt_content.bullets {
 	20.stdWrap {
 		editIcons = tt_content: bodytext, [layout]
 		editIcons.beforeLastTag = 1
-		editIcons.iconTitle.data = LLL:EXT:css_styled_content/pi1/locallang.php:eIcon.bullets
+		editIcons.iconTitle.data = LLL:EXT:css_styled_content/pi1/locallang.xml:eIcon.bullets
 
 		prefixComment = 2 | Bullet list:
 	}
@@ -544,7 +544,7 @@ tt_content.table {
 	20.stdWrap {
 		editIcons = tt_content: cols, bodytext, [layout], [table_bgColor|table_border|table_cellspacing|table_cellpadding]
 		editIcons.beforeLastTag = 1
-		editIcons.iconTitle.data = LLL:EXT:css_styled_content/pi1/locallang.php:eIcon.table
+		editIcons.iconTitle.data = LLL:EXT:css_styled_content/pi1/locallang.xml:eIcon.table
 
 		prefixComment = 2 | Table:
 	}
@@ -602,7 +602,7 @@ tt_content.uploads {
 
 	20.stdWrap {
 		editIcons = tt_content: media, layout [table_bgColor|table_border|table_cellspacing|table_cellpadding], filelink_size, imagecaption
-		editIcons.iconTitle.data = LLL:EXT:css_styled_content/pi1/locallang.php:eIcon.filelist
+		editIcons.iconTitle.data = LLL:EXT:css_styled_content/pi1/locallang.xml:eIcon.filelist
 
 		prefixComment = 2 | File list:
 	}
@@ -624,7 +624,7 @@ tt_content.multimedia {
 
 	20.stdWrap {
 		editIcons = tt_content: multimedia, bodytext
-		editIcons.iconTitle.data = LLL:EXT:css_styled_content/pi1/locallang.php:eIcon.multimedia
+		editIcons.iconTitle.data = LLL:EXT:css_styled_content/pi1/locallang.xml:eIcon.multimedia
 
 		prefixComment = 2 | Multimedia element:
 	}
@@ -657,7 +657,7 @@ tt_content.mailform.20 {
 	stdWrap.wrap = <table border="0" cellspacing="1" cellpadding="1" class="csc-mailform">  | </table>
 	stdWrap {
 		editIcons = tt_content: bodytext, pages, subheader
-		editIcons.iconTitle.data = LLL:EXT:css_styled_content/pi1/locallang.php:eIcon.form
+		editIcons.iconTitle.data = LLL:EXT:css_styled_content/pi1/locallang.xml:eIcon.form
 
 		prefixComment = 2 | Mail form inserted:
 	}
@@ -706,7 +706,7 @@ tt_content.search.20 {
 		wrap = <table border="0" cellspacing="0" cellpadding="2" class="csc-searchResultInfo"><tr> | </tr></table> ###RESULT###
 
 		10 = TEXT
-		10.data = LLL:EXT:css_styled_content/pi1/locallang.php:search.resultRange
+		10.data = LLL:EXT:css_styled_content/pi1/locallang.xml:search.resultRange
 		10.wrap = <td class="csc-searchResultRange"><p>|</p></td>
 
 		20 = TEXT
@@ -717,15 +717,15 @@ tt_content.search.20 {
 	noResultObj = COA
 	noResultObj {
 		10 = TEXT
-		10.data = LLL:EXT:css_styled_content/pi1/locallang.php:search.emptySearch
+		10.data = LLL:EXT:css_styled_content/pi1/locallang.xml:search.emptySearch
 		10.wrap = <h3 class="csc-noSearchResultMsg">|</h3>
 	}
 
 	next = TEXT
-	next.data = LLL:EXT:css_styled_content/pi1/locallang.php:search.searchResultNext
+	next.data = LLL:EXT:css_styled_content/pi1/locallang.xml:search.searchResultNext
 
 	prev = TEXT
-	prev.data = LLL:EXT:css_styled_content/pi1/locallang.php:search.searchResultPrev
+	prev.data = LLL:EXT:css_styled_content/pi1/locallang.xml:search.searchResultPrev
 
 	target = {$styles.content.searchresult.target}
 	range = 20
@@ -741,20 +741,20 @@ tt_content.search.30 {
 	recipient >
 	data >
 	dataArray {
-		10.label.data = LLL:EXT:css_styled_content/pi1/locallang.php:search.searchWord
+		10.label.data = LLL:EXT:css_styled_content/pi1/locallang.xml:search.searchWord
 		10.type = sword=input
-		20.label.data = LLL:EXT:css_styled_content/pi1/locallang.php:search.searchIn
+		20.label.data = LLL:EXT:css_styled_content/pi1/locallang.xml:search.searchIn
 		20.type = scols=select
 		20.valueArray {
-			10.label.data = LLL:EXT:css_styled_content/pi1/locallang.php:search.headersKeywords
+			10.label.data = LLL:EXT:css_styled_content/pi1/locallang.xml:search.headersKeywords
 			10.value = pages.title-subtitle-keywords-description:tt_content.header
-			20.label.data = LLL:EXT:css_styled_content/pi1/locallang.php:search.pageContent
+			20.label.data = LLL:EXT:css_styled_content/pi1/locallang.xml:search.pageContent
 			20.value = tt_content.header-bodytext-imagecaption
 		}
 		30.type = stype=hidden
 		30.value = L0
 		40.type = submit=submit
-		40.value.data = LLL:EXT:css_styled_content/pi1/locallang.php:search.searchButton
+		40.value.data = LLL:EXT:css_styled_content/pi1/locallang.xml:search.searchButton
 	}
 	type.field = pages
 	type.listNum = 0
@@ -763,7 +763,7 @@ tt_content.search.30 {
 
 	stdWrap.wrap = <table border="0" cellspacing="1" cellpadding="1" class="csc-searchform">  | </table>
 	stdWrap {
-		editIcons.iconTitle.data = LLL:EXT:css_styled_content/pi1/locallang.php:eIcon.search
+		editIcons.iconTitle.data = LLL:EXT:css_styled_content/pi1/locallang.xml:eIcon.search
 
 		prefixComment = 2 | Search form inserted:
 	}
@@ -781,14 +781,14 @@ tt_content.login.20 {
 	recipient >
 	data >
 	dataArray {
-		10.label.data = LLL:EXT:css_styled_content/pi1/locallang.php:login.username
+		10.label.data = LLL:EXT:css_styled_content/pi1/locallang.xml:login.username
 		10.type = *user=input
-		20.label.data = LLL:EXT:css_styled_content/pi1/locallang.php:login.password
+		20.label.data = LLL:EXT:css_styled_content/pi1/locallang.xml:login.password
 		20.type = *pass=password
 		30.type = logintype=hidden
 		30.value = login
 		40.type = submit=submit
-		40.value.data = LLL:EXT:css_styled_content/pi1/locallang.php:login.login
+		40.value.data = LLL:EXT:css_styled_content/pi1/locallang.xml:login.login
 	}
 	type.field = pages
 	type.listNum = 0
@@ -803,7 +803,7 @@ tt_content.login.20 {
 
 	stdWrap.wrap = <table border="0" cellspacing="1" cellpadding="1" class="csc-loginform">  | </table>
 	stdWrap {
-		editIcons.iconTitle.data = LLL:EXT:css_styled_content/pi1/locallang.php:eIcon.login
+		editIcons.iconTitle.data = LLL:EXT:css_styled_content/pi1/locallang.xml:eIcon.login
 
 		prefixComment = 2 | Login/Logout form:
 	}
@@ -812,12 +812,12 @@ tt_content.login.20 {
 tt_content.login.20 {
 	dataArray >
 	dataArray {
-		10.label.data = LLL:EXT:css_styled_content/pi1/locallang.php:login.username
+		10.label.data = LLL:EXT:css_styled_content/pi1/locallang.xml:login.username
 		10.label.wrap = |&nbsp;<!--###USERNAME###-->
 		30.type = logintype=hidden
 		30.value = logout
 		40.type = submit=submit
-		40.value.data = LLL:EXT:css_styled_content/pi1/locallang.php:login.logout
+		40.value.data = LLL:EXT:css_styled_content/pi1/locallang.xml:login.logout
 	}
 }
 [global]
@@ -988,7 +988,7 @@ tt_content.menu {
 
 	20.stdWrap {
 		editIcons = tt_content: menu_type, pages
-		editIcons.iconTitle.data = LLL:EXT:css_styled_content/pi1/locallang.php:eIcon.menuSitemap
+		editIcons.iconTitle.data = LLL:EXT:css_styled_content/pi1/locallang.xml:eIcon.menuSitemap
 
 		prefixComment = 2 | Menu/Sitemap element:
 	}
@@ -1029,7 +1029,7 @@ tt_content.shortcut {
 
 	20.stdWrap {
 		editIcons = tt_content: records
-		editIcons.iconTitle.data = LLL:EXT:css_styled_content/pi1/locallang.php:eIcon.recordList
+		editIcons.iconTitle.data = LLL:EXT:css_styled_content/pi1/locallang.xml:eIcon.recordList
 
 		prefixComment = 2 | Inclusion of other records (by reference):
 	}
@@ -1093,7 +1093,7 @@ tt_content.list {
 
 	20.stdWrap {
 		editIcons = tt_content: list_type, layout, select_key, pages [recursive]
-		editIcons.iconTitle.data = LLL:EXT:css_styled_content/pi1/locallang.php:eIcon.plugin
+		editIcons.iconTitle.data = LLL:EXT:css_styled_content/pi1/locallang.xml:eIcon.plugin
 
 		prefixComment = 2 | Plugin inserted:
 	}
@@ -1132,7 +1132,7 @@ tt_content.html {
 	field = bodytext
 
 	editIcons = tt_content: pages
-	editIcons.iconTitle.data = LLL:EXT:css_styled_content/pi1/locallang.php:eIcon.html
+	editIcons.iconTitle.data = LLL:EXT:css_styled_content/pi1/locallang.xml:eIcon.html
 
 	prefixComment = 2 | Raw HTML content:
 }
