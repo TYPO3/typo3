@@ -280,6 +280,7 @@ class tx_indexedsearch_indexer {
 								// Configuration of behavior:
 							$this->conf['index_externals'] = $pObj->config['config']['index_externals'];	// Whether to index external documents like PDF, DOC etc. (if possible)
 							$this->conf['index_descrLgd'] = $pObj->config['config']['index_descrLgd'];		// Length of description text (max 250, default 200)
+							$this->conf['index_metatags'] = isset($pObj->config['config']['index_metatags']) ? $pObj->config['config']['index_metatags'] : true;
 
 								// Set to zero:
 							$this->conf['recordUid'] = 0;
@@ -623,11 +624,13 @@ class tx_indexedsearch_indexer {
 		$contentArr['title'] = trim(isset($titleParts[1]) ? $titleParts[1] : $titleParts[0]);
 
 			// get keywords and description metatags
-		for($i=0;$this->embracingTags($headPart,'meta',$dummy,$headPart,$meta[$i]);$i++) { /*nothing*/ }
-		for($i=0;isset($meta[$i]);$i++) {
-			$meta[$i] = t3lib_div::get_tag_attributes($meta[$i]);
-			if(stristr($meta[$i]['name'],'keywords')) $contentArr['keywords'].=','.$meta[$i]['content'];
-			if(stristr($meta[$i]['name'],'description')) $contentArr['description'].=','.$meta[$i]['content'];
+		if($this->conf['index_metatags']) {
+			for($i=0;$this->embracingTags($headPart,'meta',$dummy,$headPart,$meta[$i]);$i++) { /*nothing*/ }
+			for($i=0;isset($meta[$i]);$i++) {
+				$meta[$i] = t3lib_div::get_tag_attributes($meta[$i]);
+				if(stristr($meta[$i]['name'],'keywords')) $contentArr['keywords'].=','.$meta[$i]['content'];
+				if(stristr($meta[$i]['name'],'description')) $contentArr['description'].=','.$meta[$i]['content'];
+			}
 		}
 
 			// Process <!--TYPO3SEARCH_begin--> or <!--TYPO3SEARCH_end--> tags:

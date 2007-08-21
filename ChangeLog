@@ -1,3 +1,7 @@
+2007-08-21 Andreas Otto <andreas.otto@dkd.de>
+
+	* Feature request #5748: Introduced a new TS option that makes indexing of metatags configurable. Adapted code to make use of the new TS option.
+
 2007-08-19  Oliver Hader  <oh@inpublica.de>
 
 	* (trivial) Fixed bug #6170: CSC - File locallang.php used in static template instead of locallang.xml
