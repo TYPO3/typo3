@@ -137,7 +137,7 @@ var DragDrop = {
 	dragIconCSS: null,
 
 	// options needed for doing the changes when dropping
-	table: null, // can be "pages" or "folders"
+	table: null,	// can be "pages" or "folders"
 	changeURL: null,
 	backPath: null,
 
