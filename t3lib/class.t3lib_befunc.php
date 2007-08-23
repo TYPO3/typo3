@@ -3014,7 +3014,9 @@ class t3lib_BEfunc	{
 				AND (sys_domain.domainName='.$GLOBALS['TYPO3_DB']->fullQuoteStr($domain, 'sys_domain').' or sys_domain.domainName='.$GLOBALS['TYPO3_DB']->fullQuoteStr($domain.'/', 'sys_domain').')'.
 				t3lib_BEfunc::deleteClause('pages'),
 				'', '', '1');
-			return $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
+			$result = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
+			$GLOBALS['TYPO3_DB']->sql_free_result($res);
+			return $result;
 		}
 	}
 
