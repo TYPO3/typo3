@@ -34,6 +34,43 @@ function refresh_nav() { window.setTimeout('Tree.refresh();',0); }
 	// compatibility. Please use the function in the "Tree" object for future implementations.
 function hilight_row(frameSetModule, highLightID) { Tree.highlightActiveItem(frameSetModule, highlightID); }
 
+	// Filters the tree by setting a class on items not matching search input string
+function filter(strToDim)	{
+	filterTraverse($("bodyTag").getElementsByClassName("tree")[0],strToDim);
+}
+
+
+	// returns the inner content of an item, this is need because gecko does not know the innerText property
+function getInnerText(el)	{
+	if (el.innerText)	{
+		return el.innerText;
+	} else {
+		return el.textContent;
+	}
+}
+
+function filterTraverse (eUL,strToDim)	{
+	var searchRegex = new RegExp(strToDim, "i");
+	eUL.immediateDescendants().each(function(item) {
+		item.immediateDescendants().each(function(eLI) {
+			if (eLI.nodeName=="UL")	{
+				filterTraverse(eLI,strToDim);
+			};
+			if (eLI.nodeName=="SPAN")	{
+				if (strToDim)	{
+					if (getInnerText(eLI).search(searchRegex) != -1) {
+						eLI.removeClassName("not-found");
+					} else {
+						eLI.addClassName("not-found");
+					}
+				} else {
+					eLI.removeClassName("not-found");
+				}
+			}
+		});
+	});
+}
+
 
 var Tree = {
 	thisScript: null,
@@ -75,6 +112,7 @@ var Tree = {
 				$(obj.parentNode).replace(xhr.responseText);
 				this.registerDragDropHandlers();
 				this.reSelectActiveItem();
+				filter($('_livesearch').value);
 			}.bind(this)
 		});
 	},
@@ -125,7 +163,6 @@ var Tree = {
 		top.fsMod.navFrameHighlightedID[frameSetModule] = highlightID;
 		if ($(highlightID)) Element.addClassName(highlightID, this.highlightClass);
 	}
-
 }
 
 

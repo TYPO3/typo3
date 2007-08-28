@@ -170,6 +170,20 @@ class wslib_gui {
 			}
 		}
 
+			// Page-browser:
+		$resultsPerPage = 50;
+		$pointer = t3lib_div::_GP('browsePointer');
+		$browseStat = $this->cropWorkspaceOverview_list($pArray,$pointer,$resultsPerPage);
+		$browse = '';
+		$browse.='Showing '.$browseStat['begin'].' to '.($browseStat['end'] ? $browseStat['end'].' out of '.$browseStat['allItems'] : $browseStat['allItems']).' versions:<br/>';
+		if (!($browseStat['begin']==1 && !$browseStat['end']))	{
+			for($a=0;$a<ceil($browseStat['allItems']/$resultsPerPage);$a++)	{
+				$browse.=($a==(int)$pointer?'<b>':'').'<a href="'.htmlspecialchars('index.php?browsePointer='.rawurlencode($a)).'">['.($a+1).']</a>'.($a==(int)$pointer?'</b>':'').' ';
+			}
+			$browse.='<br/>';
+		}
+		$browse.='<br/>';
+		
 		$workspaceOverviewList = $this->displayWorkspaceOverview_list($pArray);
 		if ($workspaceOverviewList || $this->alwaysDisplayHeader) {
 			// Make header of overview:
@@ -211,7 +225,7 @@ class wslib_gui {
 				') . $table;
 			}
 
-			return $table . $this->markupNewOriginals();
+			return $browse . $table . $this->markupNewOriginals();
 		}
 		return '';
 	}
@@ -503,6 +517,71 @@ class wslib_gui {
 	}
 
 	/**
+	 * Filtering out items in pArray according to pointer and result-per-page setting
+	 * 
+	 * @param	array		Hierarchical storage of the elements to display (see displayWorkspaceOverview() / displayWorkspaceOverview_setInPageArray())
+	 * @return	array		Returns statistics about the pointer state.
+	 */
+	function cropWorkspaceOverview_list(&$pArray,$pointer=0,$resPerPage=50,$stat=array())	{
+
+			// Traverse $pArray
+		if (is_array($pArray))	{
+			foreach($pArray as $k => $v)	{
+				if (t3lib_div::testInt($k))	{
+
+					if (is_array($pArray[$k.'_']))	{
+						foreach($pArray[$k.'_'] as $table => $oidArray)	{
+							foreach($oidArray as $oid => $recs)	{
+									
+									// Check, if the item count has reached the point where we want to set the in-point.	
+								$beginWasSet = FALSE;
+								if (!isset($stat['begin']) && (int)$stat['allItems'] >= $pointer*$resPerPage)	{
+									$stat['begin']=(int)$stat['allItems']+1;
+									$beginWasSet = TRUE;
+								}
+								
+									// If in-point is not set, unset the previous items.
+								if (!isset($stat['begin']))	{
+									unset($pArray[$k.'_'][$table][$oid]);
+								}
+
+									// Increase counter:
+								$stat['allItems']+=count($recs);
+
+									// Check if end-point is reached:
+								if (!$beginWasSet && !isset($stat['end']) && $stat['allItems'] > ($pointer+1)*$resPerPage)	{
+									$stat['end']=$stat['allItems']-1;
+								}
+
+									// If end-point is reached, unset following items.
+								if (isset($stat['end']))	{
+									unset($pArray[$k.'_'][$table][$oid]);
+								}
+							}
+							
+								// Clean-up if no more items:
+							if (!count($pArray[$k.'_'][$table]))	{
+								unset($pArray[$k.'_'][$table]);
+							}
+						}
+
+							// Clean-up if no more items:
+						if (!count($pArray[$k.'_']))	{
+							unset($pArray[$k.'_']);
+						}
+					}
+					
+						// Call recursively for sub-rows:
+					if (is_array($pArray[$k.'.']))	{
+						$stat = $this->cropWorkspaceOverview_list($pArray[$k.'.'],$pointer,$resPerPage,$stat);
+					}
+				}
+			}
+		}
+		return $stat;
+	}
+
+	/**
 	 * Create indentation, icon and title for the page tree identification for the list.
 	 *
 	 * @param	integer		Page UID (record will be looked up again)
@@ -774,7 +853,7 @@ class wslib_gui {
 				)).'">'.
 				'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/insert1.gif','width="14" height="14"').' alt="" align="top" title="' . $LANG->getLL('img_title_publish') . '" />'.
 				'</a>';
-			if ($GLOBALS['BE_USER']->workspaceSwapAccess() && (int)$rec_on['t3ver_state']!==1 && (int)$rec_off['t3ver_state']!==2)	{
+			if ($GLOBALS['BE_USER']->workspaceSwapAccess())	{		//  && (int)$rec_on['t3ver_state']!==1 && (int)$rec_off['t3ver_state']!==2
 				$actionLinks.=
 					'<a href="'.htmlspecialchars($this->doc->issueCommand(
 					'&cmd['.$table.']['.$rec_on['uid'].'][version][action]=swap'.

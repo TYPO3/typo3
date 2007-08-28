@@ -172,7 +172,7 @@ class t3lib_cli {
 				foreach($argSplit as $i => $v)	{
 					$ii=$i;
 					if ($i>0)	{
-						if (!isset($cli_args_copy[$argSplit[0]][$i-1]))	{
+						if (!isset($cli_args_copy[$argSplit[0]][$i-1]) && $v{0}!='[')	{	// Using "[]" around a paramter makes it optional
 							echo 'ERROR: Option "'.$argSplit[0].'" requires a value ("'.$v.'") on position '.$i.chr(10);
 							exit;
 						}

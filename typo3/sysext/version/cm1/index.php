@@ -680,7 +680,7 @@ class tx_version_cm1 extends t3lib_SCbase {
 		}
 
 		if (t3lib_div::_POST('_previewLink'))	{
-			$params = 'id='.$this->id.'&ADMCMD_view=1&ADMCMD_editIcons=1&ADMCMD_previewWS='.$GLOBALS['BE_USER']->workspace;
+			$params = 'id='.$this->id.'&ADMCMD_previewWS='.$GLOBALS['BE_USER']->workspace;
 			$previewUrl = t3lib_div::getIndpEnv('TYPO3_SITE_URL').'index.php?ADMCMD_prev='.t3lib_BEfunc::compilePreviewKeyword($params, $GLOBALS['BE_USER']->user['uid']);
 
 			$this->content.= $this->doc->section('Preview Url:','You can preview this page from the workspace using this link for the next 48 hours (does not require backend login):<br/><br/><a target="_blank" href="'.htmlspecialchars($previewUrl).'">'.$previewUrl.'</a>',0,1);
@@ -743,7 +743,7 @@ class tx_version_cm1 extends t3lib_SCbase {
 			$tableRows[] = '
 				<tr class="bgColor5 tableheader">
 					'.($this->diffOnly?'':'<td nowrap="nowrap" colspan="2">Live Version:</td>').'
-					<td nowrap="nowrap" colspan="2">Draft Versions:</td>
+					<td nowrap="nowrap" colspan="2">Workspace Versions:</td>
 					<td nowrap="nowrap"'.($this->diffOnly?' colspan="2"':' colspan="4"').'>Controls:</td>
 				</tr>';
 
@@ -832,6 +832,10 @@ class tx_version_cm1 extends t3lib_SCbase {
 								$diffCode.= $diffHTML;
 							} elseif ($rec_off['t3ver_state']==2)	{
 								$diffCode.= $this->doc->icons(2).'Deleted element<br/>';
+							} elseif ($rec_on['t3ver_state']==3)	{
+								$diffCode.= $this->doc->icons(1).'Move-to placeholder (destination)<br/>';
+							} elseif ($rec_off['t3ver_state']==4)	{
+								$diffCode.= $this->doc->icons(1).'Move-to pointer (source)<br/>';
 							} else {
 								$diffCode.= ($diffPct<0 ? 'N/A' : ($diffPct ? $diffPct.'% change:' : ''));
 								$diffCode.= $diffHTML;
@@ -1621,7 +1625,7 @@ class tx_version_cm1 extends t3lib_SCbase {
 						)).'">'.
 				'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/insert1.gif','width="14" height="14"').' alt="" align="top" title="Publish" />'.
 				'</a>';
-			if ($GLOBALS['BE_USER']->workspaceSwapAccess() && (int)$rec_on['t3ver_state']!==1 && (int)$rec_off['t3ver_state']!==2)	{
+			if ($GLOBALS['BE_USER']->workspaceSwapAccess())	{		//  && (int)$rec_on['t3ver_state']!==1 && (int)$rec_off['t3ver_state']!==2
 				$actionLinks.=
 					'<a href="'.htmlspecialchars($this->doc->issueCommand(
 							'&cmd['.$table.']['.$rec_on['uid'].'][version][action]=swap'.

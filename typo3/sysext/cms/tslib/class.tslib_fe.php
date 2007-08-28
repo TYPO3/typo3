@@ -1526,7 +1526,23 @@
 	 */
 	function ADMCMD_preview(){
 		$inputCode = t3lib_div::_GP('ADMCMD_prev');
+		$cookieTTL = 60*60;
 
+			// If cookie is set, see what to do:
+		if ($_COOKIE['ADMCMD_prev'])	{
+			
+				// If no input code is given by GET method, lets look it up in a cookie (for workspace previews not only tied to the page) and update the cookie time:
+			if (!$inputCode)	{
+				$inputCode = $_COOKIE['ADMCMD_prev'];
+				SetCookie('ADMCMD_prev', $inputCode, time()+$cookieTTL);
+				echo "1";
+			} else {	// Otherwise "log out":
+				SetCookie('ADMCMD_prev', '', 0);
+				die("You logged out from Workspace preview mode. Reload the browser to log in again.");
+			}
+		}
+
+			// If inputcode now, look up the settings:
 		if ($inputCode)	{
 
 				// Look for keyword configuration record:
@@ -1541,10 +1557,20 @@
 				// - Make sure to remove fe/be cookies (temporarily); BE already done in ADMCMD_preview_postInit()
 			if (is_array($previewData))	{
 				if (!count(t3lib_div::_POST()))	{
-					if (t3lib_div::getIndpEnv('TYPO3_SITE_URL').'index.php?ADMCMD_prev='.$inputCode === t3lib_div::getIndpEnv('TYPO3_REQUEST_URL'))	{
+						// Unserialize configuration:
+					$previewConfig = unserialize($previewData['config']);
 
-							// Unserialize configuration:
-						$previewConfig = unserialize($previewData['config']);
+					if ($previewConfig['fullWorkspace']) {	// For full workspace preview we only ADD a get variable to set the preview of the workspace - so all other Get vars are accepted. Hope this is not a security problem. Still posting is not allowed and even if a backend user get initialized it shouldn't lead to situations where users can use those credentials.
+					
+							// Set the workspace preview value:
+						t3lib_div::_GETset($previewConfig['fullWorkspace'],'ADMCMD_previewWS');
+						
+							// If ADMCMD_prev is set the $inputCode value cannot come from a cookie and we set that cookie here. Next time it will be found from the cookie if ADMCMD_prev is not set again...
+						if (t3lib_div::_GP('ADMCMD_prev'))	{
+							SetCookie('ADMCMD_prev', t3lib_div::_GP('ADMCMD_prev'), time()+$cookieTTL);	// Lifetime is 1 hour, does it matter much? Requires the user to click the link from their email again if it expires.
+						}
+						return $previewConfig;
+					} elseif (t3lib_div::getIndpEnv('TYPO3_SITE_URL').'index.php?ADMCMD_prev='.$inputCode === t3lib_div::getIndpEnv('TYPO3_REQUEST_URL'))	{
 
 							// Set GET variables:
 						$GET_VARS = '';

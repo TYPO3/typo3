@@ -18,8 +18,15 @@ table#typo3-versionSelector td {
 	color: #FFFFFF;
 }
 
-.ver-element { background-color: #D7DBE2; }
-.ver-page { background-color: #ccccff; }
-.ver-branch { background-color: #ffcccc; }
-.ver-branchpoint { background-color: #ff9999; }
-.ver-versions { background-color: #ffffaa; }
+.ver-element, UL.tree UL LI.ver-element { background-color: #D7DBE2; }
+.ver-page, UL.tree UL LI.ver-page { background-color: #ccccff; }
+.ver-branch, UL.tree UL LI.ver-branch { background-color: #ffcccc; }
+.ver-branchpoint, UL.tree UL LI.ver-branchpoint { background-color: #ff9999; }
+.ver-versions, UL.tree UL LI.ver-versions { background-color: #ffffaa; }
+
+UL.tree UL LI.ver-element UL { background-color: #efeff4; }
+UL.tree UL LI.ver-page UL { background-color: #efeff4; }
+UL.tree UL LI.ver-branch UL { background-color: #efeff4; }
+UL.tree UL LI.ver-branchpoint UL { background-color: #efeff4; }
+UL.tree UL LI.ver-versions UL { background-color: #efeff4; }
+

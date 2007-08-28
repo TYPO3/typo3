@@ -631,11 +631,12 @@ class t3lib_refindex {
 	 * @param	string		32-byte hash string identifying the record from sys_refindex which you wish to change the value for
 	 * @param	mixed		Value you wish to set for reference. If NULL, the reference is removed (unless a soft-reference in which case it can only be set to a blank string). If you wish to set a database reference, use the format "[table]:[uid]". Any other case, the input value is set as-is
 	 * @param	boolean		Return $dataArray only, do not submit it to database.
+	 * @param	boolean		If set, it will bypass check for workspace-zero and admin user
 	 * @return	string		If a return string, that carries an error message, otherwise false (=OK) (except if $returnDataArray is set!)
 	 */
-	function setReferenceValue($hash,$newValue,$returnDataArray=FALSE)	{
+	function setReferenceValue($hash,$newValue,$returnDataArray=FALSE,$bypassWorkspaceAdminCheck=FALSE)	{
 
-		if ($GLOBALS['BE_USER']->workspace===0 && $GLOBALS['BE_USER']->isAdmin())	{
+		if (($GLOBALS['BE_USER']->workspace===0 && $GLOBALS['BE_USER']->isAdmin()) || $bypassWorkspaceAdminCheck)	{
 
 				// Get current index from Database:
 			list($refRec) = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
@@ -700,6 +701,7 @@ class t3lib_refindex {
 							if ($returnDataArray)	{
 								return $dataArray;
 							} else {
+		
 									// Execute CMD array:
 								$tce = t3lib_div::makeInstance('t3lib_TCEmain');
 								$tce->stripslashes_values = FALSE;

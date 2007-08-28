@@ -709,7 +709,7 @@ $TCA['sys_workspace'] = Array (
 				'type' => 'input',
 				'size' => '20',
 				'max' => '30',
-				'eval' => 'required,trim'
+				'eval' => 'required,trim,unique'
 			)
 		),
 		'description' => Array (

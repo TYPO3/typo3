@@ -367,6 +367,14 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 			} else {
 				$actionLinks.= $this->doc->icons(1) . $LANG->getLL('no_publish_permission');
 			}
+			
+				// Preview of workspace link
+			if (t3lib_div::_POST('_previewLink'))	{
+				$previewUrl = t3lib_div::getIndpEnv('TYPO3_SITE_URL').'index.php?ADMCMD_prev='.t3lib_BEfunc::compilePreviewKeyword('', $GLOBALS['BE_USER']->user['uid'],60*60*24*2,$GLOBALS['BE_USER']->workspace);
+				$actionLinks.=  '<br/>Any user can browse the workspace frontend using this link for the next 48 hours (does not require backend login):<br/><br/><a target="_blank" href="'.htmlspecialchars($previewUrl).'">'.$previewUrl.'</a>';
+			} else {
+				$actionLinks.= '<input type="submit" name="_previewLink" value="Generate Workspace Preview Link" />';
+			}
 		}
 
 		$wsAccess = $GLOBALS['BE_USER']->checkWorkspace($GLOBALS['BE_USER']->workspaceRec);

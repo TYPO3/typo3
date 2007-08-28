@@ -86,19 +86,20 @@ NIGHTLY REPORTS OF PROBLEMS IN THE SYSTEM:
 If you wish to scan your TYPO3 installations for problems with a cronjob or so, a shell script that outputs a report could look like this:
 
 	#!/bin/sh
-	/[WEBROOT_ABS_PATH]/typo3/cli_dispatch.phpsh lowlevel_cleaner missing_files -r -v 2 -s --refindex check
-	/[WEBROOT_ABS_PATH]/typo3/cli_dispatch.phpsh lowlevel_cleaner double_files -r -v 2 -s --refindex ignore
-	/[WEBROOT_ABS_PATH]/typo3/cli_dispatch.phpsh lowlevel_cleaner lost_files -r -v 2 -s --refindex ignore
-	/[WEBROOT_ABS_PATH]/typo3/cli_dispatch.phpsh lowlevel_cleaner orphan_records -r -v 2 -s
-	/[WEBROOT_ABS_PATH]/typo3/cli_dispatch.phpsh lowlevel_cleaner versions -r -v 2 -s
-	/[WEBROOT_ABS_PATH]/typo3/cli_dispatch.phpsh lowlevel_cleaner deleted -r -v 1 -s
-	/[WEBROOT_ABS_PATH]/typo3/cli_dispatch.phpsh lowlevel_cleaner missing_relations -r -v 2 -s --refindex ignore
-	/[WEBROOT_ABS_PATH]/typo3/cli_dispatch.phpsh lowlevel_cleaner cleanflexform -r -v 2 -s
-	/[WEBROOT_ABS_PATH]/typo3/cli_dispatch.phpsh lowlevel_cleaner rte_images -r -v 2 -s --refindex ignore
+	/[WEBROOT_ABS_PATH]/typo3/dummy_4.0/typo3/cli_dispatch.phpsh lowlevel_cleaner orphan_records -r -v 2 -s
+	/[WEBROOT_ABS_PATH]/typo3/dummy_4.0/typo3/cli_dispatch.phpsh lowlevel_cleaner versions -r -v 2 -s
+	/[WEBROOT_ABS_PATH]/typo3/dummy_4.0/typo3/cli_dispatch.phpsh lowlevel_cleaner tx_templavoila_unusedce -r --refindex update -v 2 -s
+	/[WEBROOT_ABS_PATH]/typo3/dummy_4.0/typo3/cli_dispatch.phpsh lowlevel_cleaner double_files -r --refindex update -v 2 -s
+	/[WEBROOT_ABS_PATH]/typo3/dummy_4.0/typo3/cli_dispatch.phpsh lowlevel_cleaner deleted -r -v 1 -s
+	/[WEBROOT_ABS_PATH]/typo3/dummy_4.0/typo3/cli_dispatch.phpsh lowlevel_cleaner missing_relations -r --refindex update -v 2 -s
+	/[WEBROOT_ABS_PATH]/typo3/dummy_4.0/typo3/cli_dispatch.phpsh lowlevel_cleaner cleanflexform -r -v 2 -s
+	/[WEBROOT_ABS_PATH]/typo3/dummy_4.0/typo3/cli_dispatch.phpsh lowlevel_cleaner rte_images -r --refindex update -v 2 -s
+	/[WEBROOT_ABS_PATH]/typo3/dummy_4.0/typo3/cli_dispatch.phpsh lowlevel_cleaner missing_files -r --refindex update -v 2 -s 
+	/[WEBROOT_ABS_PATH]/typo3/dummy_4.0/typo3/cli_dispatch.phpsh lowlevel_cleaner lost_files -r --refindex update -v 2 -s	
 
 You may wish to set the verbosity level (-v) to "3" instead of "2" as in the case above, depending on how important you consider the warnings.
 You might also wish to disable tests like "deleted" which would report deleted records - something that might not warrant a warning, frankly speaking...
-
+If you append "--AUTOFIX --YES" to each test it will actually perform clean up operations after checking, however it is NOT RECOMMENDED to do that as a nightly cron-job! In addition you should study what repair operations each test does to your system before using it!
 
 
 ADDING YOUR OWN TOOLS TO THE TEST:

@@ -235,17 +235,19 @@ class t3lib_flexformtools {
 								}
 
 								foreach($editData[$key]['el'] as $k3 => $v3)	{
-									$cc=$k3;
-									$theType = key($v3);
-									$theDat = $v3[$theType];
-									$newSectionEl = $value['el'][$theType];
-									if (is_array($newSectionEl))	{
-										$this->traverseFlexFormXMLData_recurse(
-											array($theType => $newSectionEl),
-											array($theType => $theDat),
-											$PA,
-											$path.'/'.$key.'/el/'.$cc
-										);
+									if (is_array($v3))	{
+										$cc=$k3;
+										$theType = key($v3);
+										$theDat = $v3[$theType];
+										$newSectionEl = $value['el'][$theType];
+										if (is_array($newSectionEl))	{
+											$this->traverseFlexFormXMLData_recurse(
+												array($theType => $newSectionEl),
+												array($theType => $theDat),
+												$PA,
+												$path.'/'.$key.'/el/'.$cc
+											);
+										}
 									}
 								}
 							}

@@ -107,6 +107,8 @@ class SC_alt_db_navframe {
 		$this->pagetree = t3lib_div::makeInstance('webPageTree');
 		$this->pagetree->ext_IconMode = $BE_USER->getTSConfigVal('options.pageTree.disableIconLinkToContextmenu');
 		$this->pagetree->ext_showPageId = $BE_USER->getTSConfigVal('options.pageTree.showPageIdWithTitle');
+		$this->pagetree->ext_dontSeparateNotinmenuPages = $BE_USER->getTSConfigVal('options.pageTree.dontSeparateNotinmenuPages');
+		$this->pagetree->ext_dontAlphasortNotinmenuPages = $BE_USER->getTSConfigVal('options.pageTree.dontAlphasortNotinmenuPages');
 		$this->pagetree->thisScript = 'alt_db_navframe.php';
 		$this->pagetree->addField('alias');
 		$this->pagetree->addField('shortcut');
@@ -168,6 +170,7 @@ class SC_alt_db_navframe {
 				// Click menu code is added:
 			$CMparts=$this->doc->getContextMenuCode();
 			$this->doc->bodyTagAdditions = $CMparts[1];
+			$this->doc->bodyTagId = 'bodyTag';
 			$this->doc->JScode.= $CMparts[0];
 			$this->doc->postCode.= $CMparts[2];
 		}
@@ -214,6 +217,14 @@ class SC_alt_db_navframe {
 					'<img'.t3lib_iconWorks::skinImg('','gfx/i/sys_workspace.png','width="18" height="16"').' align="top" alt="" />'.
 					'</a>'.$wsTitle.'
 				</div>
+			';
+		}
+
+		if (!$GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.hideFilter'))	{
+			$this->content.= '
+					<div class="bgColor4">
+						Filter: <input type="text" value="" name="_livesearch" id="_livesearch" onkeyup="filter(this.value);"/>
+					</div><br>
 			';
 		}
 

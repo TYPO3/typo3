@@ -285,8 +285,9 @@ class t3lib_TCEmain	{
 	var $newRelatedIDs = Array();				// Holds the tables and there the ids of newly created child records from IRRE
 	var $copyMappingArray_merged = Array();		// This array is the sum of all copying operations in this class. May be READ from outside, thus partly public.
 	var $copiedFileMap = Array();				// A map between input file name and final destination for files being attached to records.
-	var $errorLog = Array();					// Errors are collected in this variable.
-
+	var $RTEmagic_copyIndex = Array();			// Contains [table][id][field] of fiels where RTEmagic images was copied. Holds old filename as key and new filename as value.
+	var	$errorLog = Array();					// Errors are collected in this variable.
+	
 
 
 		// *********************
@@ -773,7 +774,7 @@ class t3lib_TCEmain	{
 											$cmd = array();
 											$cmd[$table][$id]['version'] = array(
 												'action' => 'new',
-												'treeLevels' => -1,	// Default is to create a version of the individual records...
+												'treeLevels' => -1,	// Default is to create a version of the individual records... element versioning that is.
 												'label' => 'Auto-created for WS #'.$this->BE_USER->workspace
 											);
 											$tce->start(array(),$cmd);
@@ -786,6 +787,7 @@ class t3lib_TCEmain	{
 													foreach ($origIdArray as $origId => $newId) {
 														$this->uploadedFileArray[$origTable][$newId] = $this->uploadedFileArray[$origTable][$origId];
 														$this->autoVersionIdMap[$origTable][$origId] = $newId;
+														$this->RTEmagic_copyIndex = t3lib_div::array_merge_recursive_overrule($this->RTEmagic_copyIndex, $tce->RTEmagic_copyIndex);		// See where RTEmagic_copyIndex is used inside fillInFieldArray() for more information...
 													}
 												}
 
@@ -959,13 +961,13 @@ class t3lib_TCEmain	{
 	 * $this->exclude_array is used to filter fields if needed.
 	 *
 	 * @param	string		Table name
-	 * @param	[type]		$id: ...
+	 * @param	integer		Record ID
 	 * @param	array		Default values, Preset $fieldArray with 'pid' maybe (pid and uid will be not be overridden anyway)
 	 * @param	array		$incomingFieldArray is which fields/values you want to set. There are processed and put into $fieldArray if OK
 	 * @param	integer		The real PID value of the record. For updates, this is just the pid of the record. For new records this is the PID of the page where it is inserted.
 	 * @param	string		$status = 'new' or 'update'
-	 * @param	[type]		$tscPID: ...
-	 * @return	[type]		...
+	 * @param	integer		$tscPID: TSconfig PID
+	 * @return	array		Field Array
 	 */
 	function fillInFieldArray($table,$id,$fieldArray,$incomingFieldArray,$realPid,$status,$tscPID)	{
 		global $TCA;
@@ -1080,6 +1082,20 @@ class t3lib_TCEmain	{
 										$diffStorageFlag = TRUE;
 									}
 								}
+								
+
+									// If autoversioning is happening we need to perform a nasty hack. The case is parallel to a similar hack inside checkValue_group_select_file().
+									// When a copy or version is made of a record, a search is made for any RTEmagic* images in fields having the "images" soft reference parser applied. That should be true for RTE fields. If any are found they are duplicated to new names and the file reference in the bodytext is updated accordingly.
+									// However, with auto-versioning the submitted content of the field will just overwrite the corrected values. This leaves a) lost RTEmagic files and b) creates a double reference to the old files.
+									// The only solution I can come up with is detecting when auto versioning happens, then see if any RTEmagic images was copied and if so make a stupid string-replace of the content ! 
+								if ($this->autoVersioningUpdate===TRUE)	{
+									if (is_array($this->RTEmagic_copyIndex[$table][$id][$field]))	{
+										foreach($this->RTEmagic_copyIndex[$table][$id][$field] as $oldRTEmagicName => $newRTEmagicName)	{
+											$fieldArray[$field] = str_replace(' src="'.$oldRTEmagicName.'"',' src="'.$newRTEmagicName.'"',$fieldArray[$field]);
+										}
+									}
+								}
+								
 							} elseif ($TCA[$table]['ctrl']['origUid']===$field) {	// Allow value for original UID to pass by...
 								$fieldArray[$field] = $fieldValue;
 							}
@@ -1539,7 +1555,7 @@ class t3lib_TCEmain	{
 						// Actually, the same problem applies to database references in case auto-versioning would include sub-records since in such a case references are remapped - and they would be overridden due to the same principle then.
 						// Illustration of the problem comes here:
 						// We have a record 123 with a file logo.gif. We open and edit the files header in a workspace. So a new version is automatically made.
-						// The versions uid is 456 and the file is copied to "logo_01.gif". But the form data that we sents was based on uid 123 and hence contains the filename "logo.gif" from the original.
+						// The versions uid is 456 and the file is copied to "logo_01.gif". But the form data that we sent was based on uid 123 and hence contains the filename "logo.gif" from the original.
 						// The file management code below will do two things: First it will blindly accept "logo.gif" as a file attached to the record (thus creating a double reference) and secondly it will find that "logo_01.gif" was not in the incoming filelist and therefore should be deleted.
 						// If we prefix the incoming file "logo.gif" with its absolute path it will be seen as a new file added. Thus it will be copied to "logo_02.gif". "logo_01.gif" will still be deleted but since the files are the same the difference is zero - only more processing and file copying for no reason. But it will work.
 					if ($this->autoVersioningUpdate===TRUE)	{
@@ -1786,25 +1802,40 @@ class t3lib_TCEmain	{
 
 				// Only execute the first move command:
 			list ($key, $value) = each ($moveCMDS);
-
+			
 			if (is_array($moveCMDS[$key]))	{
 				$this->_MOVE_FLEX_FORMdata($valueArrayToMoveIn[$key],$moveCMDS[$key], $direction);
 			} else {
-				switch ($direction) {
-					case 'up':
-						if ($key > 1) {
-							$tmpArr = $valueArrayToMoveIn[$key];
-							$valueArrayToMoveIn[$key] = $valueArrayToMoveIn[$key-1];
-							$valueArrayToMoveIn[$key-1] = $tmpArr;
-						}
-					break;
-					case 'down':
-						if ($key < count($valueArrayToMoveIn)) {
-							$tmpArr = $valueArrayToMoveIn[$key];
-							$valueArrayToMoveIn[$key] = $valueArrayToMoveIn[$key+1];
-							$valueArrayToMoveIn[$key+1] = $tmpArr;
-						}
-					break;
+
+					// Keys may not be arranged in numerical order and there could be gaps. Therefore we create a nice index first:
+				$keyOrder = array();
+				$keyIndex = 0;
+				$c=0;
+				foreach($valueArrayToMoveIn as $kk => $vv)	{
+					if (is_array($vv))	{	// Sections are expected to be arrays and if not, it's gotta be an error in the XML data.
+						$c++;
+						$keyOrder[$c] = $kk;
+						if ($kk===$key)	$keyIndex=$c;
+					}
+				}
+
+				if ($keyIndex>0)	{
+					switch ($direction) {
+						case 'up':
+							if (isset($keyOrder[$keyIndex-1])) {
+								$tmpArr = $valueArrayToMoveIn[$keyOrder[$keyIndex]];
+								$valueArrayToMoveIn[$keyOrder[$keyIndex]] = $valueArrayToMoveIn[$keyOrder[$keyIndex-1]];
+								$valueArrayToMoveIn[$keyOrder[$keyIndex-1]] = $tmpArr;
+							}
+						break;
+						case 'down':
+							if (isset($keyOrder[$keyIndex+1])) {
+								$tmpArr = $valueArrayToMoveIn[$keyOrder[$keyIndex]];
+								$valueArrayToMoveIn[$keyOrder[$keyIndex]] = $valueArrayToMoveIn[$keyOrder[$keyIndex+1]];
+								$valueArrayToMoveIn[$keyOrder[$keyIndex+1]] = $tmpArr;
+							}
+						break;
+					}
 				}
 			}
 		}
@@ -2518,7 +2549,6 @@ class t3lib_TCEmain	{
 					$defaultData = $this->newFieldArray($table);
 
 						// Getting "copy-after" fields if applicable:
-						// origDestPid is retrieve before it may possibly be converted to resolvePid if the table is not sorted anyway. In this way, copying records to after another records which are not sorted still lets you use this function in order to copy fields from the one before.
 					$copyAfterFields = $destPid<0 ? $this->fixCopyAfterDuplFields($table,$uid,abs($destPid),0) : array();
 
 						// Page TSconfig related:
@@ -2583,6 +2613,7 @@ class t3lib_TCEmain	{
 						// Getting the new UID:
 					$theNewSQLID = $copyTCE->substNEWwithIDs[$theNewID];
 					if ($theNewSQLID)	{
+						$this->copyRecord_fixRTEmagicImages($table,t3lib_BEfunc::wsMapId($table,$theNewSQLID));
 						$this->copyMappingArray[$table][$origUid] = $theNewSQLID;
 					}
 
@@ -2741,6 +2772,7 @@ class t3lib_TCEmain	{
 					if ($theNewSQLID)	{
 						$this->dbAnalysisStoreExec();
 						$this->dbAnalysisStore = array();
+						$this->copyRecord_fixRTEmagicImages($table,t3lib_BEfunc::wsMapId($table,$theNewSQLID));
 						return $this->copyMappingArray[$table][$uid] = $theNewSQLID;
 					}
 				} else $this->log($table,$uid,3,0,1,'Attempt to rawcopy/versionize record that did not exist!');
@@ -2996,6 +3028,93 @@ class t3lib_TCEmain	{
 
 			// Return the new value:
 		return $value;
+	}
+
+	/**
+	 * Copies any "RTEmagic" image files found in record with table/id to new names.
+	 * Usage: After copying a record this function should be called to search for "RTEmagic"-images inside the record. If such are found they should be duplicated to new names so all records have a 1-1 relation to them.
+	 * Reason for copying RTEmagic files: a) if you remove an RTEmagic image from a record it will remove the file - any other record using it will have a lost reference! b) RTEmagic images keeps an original and a copy. The copy always is re-calculated to have the correct physical measures as the HTML tag inserting it defines. This is calculated from the original. Two records using the same image could have difference HTML-width/heights for the image and the copy could only comply with one of them. If you don't want a 1-1 relation you should NOT use RTEmagic files but just insert it as a normal file reference to a file inside fileadmin/ folder
+	 * 
+	 * @param	string		Table name
+	 * @param	integer		Record UID
+	 * @return	void
+	 */
+	function copyRecord_fixRTEmagicImages($table,$theNewSQLID)	{
+		global $TYPO3_DB;
+
+			// Creating fileFunc object.
+		if (!$this->fileFunc)	{
+			$this->fileFunc = t3lib_div::makeInstance('t3lib_basicFileFunctions');
+			$this->include_filefunctions=1;
+		}
+				
+			// Select all RTEmagic files in the reference table from the table/ID
+		$recs = $TYPO3_DB->exec_SELECTgetRows(
+			'*',
+			'sys_refindex',
+			'ref_table='.$TYPO3_DB->fullQuoteStr('_FILE', 'sys_refindex').
+				' AND ref_string LIKE '.$TYPO3_DB->fullQuoteStr('%/RTEmagic%', 'sys_refindex').
+				' AND softref_key='.$TYPO3_DB->fullQuoteStr('images', 'sys_refindex').
+				' AND tablename='.$TYPO3_DB->fullQuoteStr($table, 'sys_refindex').
+				' AND recuid='.intval($theNewSQLID),
+			'',
+			'sorting DESC'
+		);	
+		
+
+			// Traverse the files found and copy them:
+		if (is_array($recs)) {
+			foreach($recs as $rec)	{
+				$filename = basename($rec['ref_string']);
+				$fileInfo = array();
+				if (t3lib_div::isFirstPartOfStr($filename,'RTEmagicC_'))	{
+
+					$fileInfo['exists'] = @is_file(PATH_site.$rec['ref_string']);
+					$fileInfo['original'] = substr($rec['ref_string'],0,-strlen($filename)).'RTEmagicP_'.ereg_replace('\.[[:alnum:]]+$','',substr($filename,10));
+					$fileInfo['original_exists'] = @is_file(PATH_site.$fileInfo['original']);
+
+					// CODE from tx_impexp and class.rte_images.php adapted for use here:
+
+					if ($fileInfo['exists'] && $fileInfo['original_exists'])	{
+
+							// Initialize; Get directory prefix for file and set the original name:
+						$dirPrefix = dirname($rec['ref_string']).'/';
+						$rteOrigName = basename($fileInfo['original']);
+
+							// If filename looks like an RTE file, and the directory is in "uploads/", then process as a RTE file!
+						if ($rteOrigName && t3lib_div::isFirstPartOfStr($dirPrefix,'uploads/') && @is_dir(PATH_site.$dirPrefix))	{	// RTE:
+
+								// From the "original" RTE filename, produce a new "original" destination filename which is unused. 
+							$origDestName = $this->fileFunc->getUniqueName($rteOrigName, PATH_site.$dirPrefix);
+							
+								// Create copy file name:
+							$pI = pathinfo($rec['ref_string']);
+							$copyDestName = dirname($origDestName).'/RTEmagicC_'.substr(basename($origDestName),10).'.'.$pI['extension'];
+							if (!@is_file($copyDestName) && !@is_file($origDestName)
+								&& $origDestName===t3lib_div::getFileAbsFileName($origDestName) && $copyDestName===t3lib_div::getFileAbsFileName($copyDestName))	{
+
+									// Making copies:
+								t3lib_div::upload_copy_move(PATH_site.$fileInfo['original'],$origDestName);
+								t3lib_div::upload_copy_move(PATH_site.$rec['ref_string'],$copyDestName);
+								clearstatcache();
+
+									// Register this:
+								$this->RTEmagic_copyIndex[$rec['tablename']][$rec['recuid']][$rec['field']][$rec['ref_string']] = substr($copyDestName,strlen(PATH_site));
+
+									// Check and update the record using the t3lib_refindex class:
+								if (@is_file($copyDestName))	{
+									$sysRefObj = t3lib_div::makeInstance('t3lib_refindex');
+									$error = $sysRefObj->setReferenceValue($rec['hash'],substr($copyDestName,strlen(PATH_site)),FALSE,TRUE);
+									if ($error)	{
+										echo $this->newlog('t3lib_refindex::setReferenceValue(): '.$error,1);
+									} 
+								} else $this->newlog('File "'.$copyDestName.'" was not created!',1);
+							} else $this->newlog('Could not construct new unique names for file!',1);
+						} else $this->newlog('Maybe directory of file was not within "uploads/"?',1);
+					} else $this->newlog('Trying to copy RTEmagic files ('.$rec['ref_string'].' / '.$fileInfo['original'].') but one or both were missing',1);
+				}
+			}
+		}
 	}
 
 

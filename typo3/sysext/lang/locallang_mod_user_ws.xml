@@ -37,7 +37,7 @@
 			<label index="label_status">Status:</label>
 			<label index="label_pagetree">Pagetree:</label>
 			<label index="label_live_version">Live Version:</label>
-			<label index="label_draft_versions">Draft Versions:</label>
+			<label index="label_draft_versions">Workspace Versions:</label>
 			<label index="label_stage">Stage:</label>
 			<label index="label_publish">Publish:</label>
 			<label index="label_lifecycle">Lifecycle:</label>

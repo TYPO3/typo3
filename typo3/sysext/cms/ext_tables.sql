@@ -41,7 +41,7 @@ CREATE TABLE cache_typo3temp_log (
   md5hash varchar(32) DEFAULT '' NOT NULL,
   tstamp int(11) DEFAULT '0' NOT NULL,
   filename varchar(255) DEFAULT '' NOT NULL,
-  orig_filename varchar(255) NOT NULL,
+  orig_filename varchar(255) DEFAULT '' NOT NULL,
   PRIMARY KEY (md5hash)
 ) ENGINE=InnoDB;
 
@@ -196,7 +196,7 @@ CREATE TABLE pages_language_overlay (
 
   PRIMARY KEY (uid),
   KEY t3ver_oid (t3ver_oid,t3ver_wsid),
-  KEY parent (pid)
+  KEY parent (pid,sys_language_uid)
 );
 
 
@@ -279,7 +279,7 @@ CREATE TABLE sys_template (
   tx_impexp_origuid int(11) DEFAULT '0' NOT NULL,
   PRIMARY KEY (uid),
   KEY t3ver_oid (t3ver_oid,t3ver_wsid),
-  KEY parent (pid,sorting)
+  KEY parent (pid,sorting,deleted,hidden)
 );
 
 
@@ -408,5 +408,5 @@ CREATE TABLE pages (
   l18n_cfg tinyint(4) DEFAULT '0' NOT NULL,
   fe_login_mode tinyint(4) DEFAULT '0' NOT NULL,
   KEY alias (alias),
-  KEY parent (pid,sorting)
+  KEY parent (pid,sorting,deleted,hidden)
 );

@@ -118,6 +118,7 @@ class SC_file_upload {
 		$this->number = t3lib_div::_GP('number');
 		$this->target = t3lib_div::_GP('target');
 		$this->returnUrl = t3lib_div::_GP('returnUrl');
+		$this->returnUrl = $this->returnUrl ? $this->returnUrl : t3lib_div::getIndpEnv('TYPO3_SITE_URL').TYPO3_mainDir.'file_list.php?id='.rawurlencode($this->target);
 
 		if (empty($this->number))	{
 			$defaultFileUploads = $GLOBALS['BE_USER']->getTSConfigVal('options.defaultFileUploads');

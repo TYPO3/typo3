@@ -110,8 +110,8 @@ This will check the system for double files relations.';
 				'missingFiles' => array('Tracking missing files','(Extra feature, not related to tracking of double references. Further, the list may include more files than found in the missing_files()-test because this list includes missing files from deleted records.)',0),
 				'warnings' => array('Warnings picked up','',2)
 			),
-			'multipleReferencesList_count' => 0,
-			'singleReferencesList_count' => 0,
+			'multipleReferencesList_count' => array('count' => 0),
+			'singleReferencesList_count' => array('count' => 0),
 			'multipleReferencesList' => array(),
 			'dirname_registry' => array(),
 			'missingFiles' => array(),
@@ -158,8 +158,8 @@ This will check the system for double files relations.';
 		}
 
 			// Add count for multi-references:
-		$resultArray['multipleReferencesList_count'] = count($resultArray['multipleReferencesList']);
-		$resultArray['singleReferencesList_count'] = count($tempCount) - $resultArray['multipleReferencesList_count'];
+		$resultArray['multipleReferencesList_count']['count'] = count($resultArray['multipleReferencesList']);
+		$resultArray['singleReferencesList_count']['count'] = count($tempCount) - $resultArray['multipleReferencesList_count']['count'];
 
 			// Sort dirname registry and add warnings for directories outside uploads/
 		ksort($resultArray['dirname_registry']);

@@ -1,3 +1,22 @@
+2007-08-28 Kasper Skaarhoj <kasper2007@typo3.com>
+
+	* Improvements as announced in June on the core list (except workspace moving)
+		- Dual-preview for workspaces are only used now if the checkbox "Frontend Preview" is not checked.
+		- Whole workspaces can be previewed now for users with no backend login by a simple link you can email. Same functionality as the preview link for individual pages available from the Web>Versioning module. The function is found in User>Workspace (Workspace manager)
+		- In the t3lib_cli class, optional parameters to CLI script options are supported (optional parameters are configured with [] brackets)
+		- The "lowlevel" cleaner scripts are updated to allow fixing of double-references to RTEmagic images (by duplicating them). Also the script allows to remove all "lost" RTEmagic images found inside uploads/ folder.
+		- Moving elements in FlexForms up and down is now fixed so it works even if indexes of elements in sections are not ordered numerically (bugfix)
+		- Workspace titles are required to be unique now.
+		- File upload in the Web>File module will always result in redirection to the Filelist view of the target folder. This is a usability enhancement for people who were puzzled that it could redirect to other locations or a blank page (namely the previously shown page).
+		- The navigation page tree now has a nifty searchbox that uses JavaScript and the prototype library to search and highly/dim elements in the tree. Very handy for quickly finding your way in huge page trees. (I think there is a stylesheet problem with Firefox on PC which doesn't dim elements). TSconfig options exists to disable this behaviour.
+		- The navigation page tree is organized so that all pages shown in the menu are grouped in their normal order while pages not in menu and sysFolders and ordered alphabetically below. TSconfig options exists to configure/disable this behaviour.
+		- User > Workspace module now has a browser-functionality so only 50 versions are shown at a time and you can browse the list.
+		- Changed label "Draft versions" to "Workspace versions" - some found it more intuitive.
+		- Change in t3lib_refindex so setReferenceValue() can be run without being admin (by special parameter)
+		- Fixed bug in t3lib_BEfunc::selectVersionsOfRecord(): now offline versions are not only selected by their t3ver_oid but also pid=-1 which is the correct thing to do. This actually resulted in dataloss in some known cases with the lowlevel cleaner CLI script.
+		- Added fields to indexes on pages, sys_template and pages_language_uid.
+		- RTEmagic images are now duplicated when records are copied/versioned in tcemain. This is a long awaited feature that solves the bug that RTE magic images shared between too records would result in both disappearing if the one was deleted. So its in fact a critical fix for workspaces.
+
 2007-08-23 Dmitry Dulepov <dmitry@typo3.org>
 
 	* Fixed: hanging recordset in t3lib_BEfunc

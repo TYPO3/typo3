@@ -2388,7 +2388,7 @@ class t3lib_BEfunc	{
 			$url = $altUrl;
 		} else {
 
-			if ($GLOBALS['BE_USER']->workspace!=0)	{
+			if ($GLOBALS['BE_USER']->workspace!=0 && !$GLOBALS['BE_USER']->user['workspace_preview'])	{
 				$url = t3lib_div::getIndpEnv('TYPO3_SITE_URL').TYPO3_mainDir.'mod/user/ws/wsol_preview.php?id='.$id.$addGetVars.$anchor;
 			} else {
 				if ($rootLine)	{
@@ -2673,14 +2673,16 @@ class t3lib_BEfunc	{
 	 * @param	string		Get variables to preview, eg. 'id=1150&L=0&ADMCMD_view=1&ADMCMD_editIcons=1&ADMCMD_previewWS=8'
 	 * @param	string		32 byte MD5 hash keyword for the URL: "?ADMCMD_prev=[keyword]"
 	 * @param	integer		Time-To-Live for keyword
+	 * @param	integer		Which workspace to preview. Workspace UID, -1 or >0. If set, the getVars is ignored in the frontend, so that string can be empty
 	 * @return	string		Returns keyword to use in URL for ADMCMD_prev=
 	 */
-	function compilePreviewKeyword($getVarsStr, $beUserUid, $ttl=172800)	{
+	function compilePreviewKeyword($getVarsStr, $beUserUid, $ttl=172800,$fullWorkspace=NULL)	{
 		$field_array = array(
 			'keyword' => md5(uniqid(microtime())),
 			'tstamp' => time(),
 			'endtime' => time()+$ttl,
 			'config' => serialize(array(
+				'fullWorkspace' => $fullWorkspace,
 				'getVars' => $getVarsStr,
 				'BEUSER_uid' => $beUserUid
 			))
@@ -3288,7 +3290,7 @@ class t3lib_BEfunc	{
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 				$fields,
 				$table,
-				'((t3ver_oid='.intval($uid).($workspace!=0?' AND t3ver_wsid='.intval($workspace):'').') OR uid='.intval($uid).')'.
+				'((pid=-1 AND t3ver_oid='.intval($uid).($workspace!=0?' AND t3ver_wsid='.intval($workspace):'').') OR uid='.intval($uid).')'.
 					($includeDeletedRecords ? '' : t3lib_BEfunc::deleteClause($table)),
 				'',
 				't3ver_id DESC'
@@ -3360,9 +3362,10 @@ class t3lib_BEfunc	{
 	 * Workspace Preview Overlay
 	 * Generally ALWAYS used when records are selected based on uid or pid. If records are selected on other fields than uid or pid (eg. "email = ....") then usage might produce undesired results and that should be evaluated on individual basis.
 	 * Principle; Record online! => Find offline?
+	 * Recently, this function has been modified so it MAY set $row to FALSE. This happens if a version overlay with the move-id pointer is found in which case we would like a backend preview. In other words, you should check if the input record is still an array afterwards when using this function.
 	 *
 	 * @param	string		Table name
-	 * @param	array		Record array passed by reference. As minimum, the "uid", "pid" and "t3ver_swapmode" (pages) fields must exist! Fake fields cannot exist since the fields in the array is used as field names in the SQL look up.
+	 * @param	array		Record array passed by reference. As minimum, the "uid", "pid" and "t3ver_swapmode" (pages) fields must exist! Fake fields cannot exist since the fields in the array is used as field names in the SQL look up. It would be nice to have fields like "t3ver_state" and "t3ver_mode_id" as well to avoid a new lookup inside movePlhOL(). 
 	 * @param	integer		Workspace ID, if not specified will use $GLOBALS['BE_USER']->workspace
 	 * @return	void		(Passed by ref).
 	 * @see fixVersioningPid()

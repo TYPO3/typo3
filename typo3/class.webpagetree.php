@@ -73,6 +73,8 @@ class webPageTree extends t3lib_browseTree {
 
 	var $ext_showPageId;
 	var $ext_IconMode;
+	var $ext_dontSeparateNotinmenuPages;
+	var $ext_dontAlphasortNotinmenuPages;
 	var $ajaxStatus = false; // Indicates, whether the ajax call was successful, i.e. the requested page has been found
 
 	/**
@@ -394,10 +396,43 @@ class webPageTree extends t3lib_browseTree {
 		$c = $this->getDataCount($res);
 		$crazyRecursionLimiter = 999;
 
-			// Traverse the records:
+		$inMenuPages = array();
+		$outOfMenuPages = array();
+		$outOfMenuPagesTextIndex = array();
 		while ($crazyRecursionLimiter > 0 && $row = $this->getDataNext($res,$subCSSclass))	{
-			$a++;
 			$crazyRecursionLimiter--;
+	
+				// Not in menu:
+			if (!$this->ext_dontSeparateNotinmenuPages && (t3lib_div::inList('5,6',$row['doktype']) || $row['doktype']>=200 || $row['nav_hide']))	{
+				$outOfMenuPages[] = $row;
+				$outOfMenuPagesTextIndex[] = ($row['doktype']>=200 ? 'zzz'.$row['doktype'].'_' : '').$row['title'];
+			} else {
+				$inMenuPages[] = $row;
+			}
+		}
+
+		$label_shownAlphabetically = "";
+		if (count($outOfMenuPages))	{
+				// Sort out-of-menu pages:
+			$outOfMenuPages_alphabetic = array();
+			if (!$this->ext_dontAlphasortNotinmenuPages)	{
+				asort($outOfMenuPagesTextIndex);
+				$label_shownAlphabetically = " (alphabetic)";
+			} 
+			foreach($outOfMenuPagesTextIndex as $idx => $txt)	{
+				$outOfMenuPages_alphabetic[] = $outOfMenuPages[$idx];
+			}
+	
+				// Merge:
+			$outOfMenuPages_alphabetic[0]['_FIRST_NOT_IN_MENU']=TRUE;
+			$allRows = array_merge($inMenuPages,$outOfMenuPages_alphabetic);
+		} else {
+			$allRows = $inMenuPages;
+		}
+
+			// Traverse the records:
+		foreach ($allRows as $row)	{
+			$a++;
 			
 			$newID = $row['uid'];
 			$this->tree[]=array();	  // Reserve space.
@@ -429,7 +464,13 @@ class webPageTree extends t3lib_browseTree {
 
 				// Set HTML-icons, if any:
 			if ($this->makeHTML)	{
-				$HTML = $this->PMicon($row,$a,$c,$nextCount,$exp);
+				if ($row['_FIRST_NOT_IN_MENU'])	{
+					$HTML = '<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/ol/line.gif').' alt="" /><br/><img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/ol/line.gif').' alt="" /><i>Not shown in menu'.$label_shownAlphabetically.':</i><br>';
+				} else {
+					$HTML = '';
+				}
+				
+				$HTML.= $this->PMicon($row,$a,$c,$nextCount,$exp);
 				$HTML.= $this->wrapStop($this->getIcon($row),$row);
 			}
 

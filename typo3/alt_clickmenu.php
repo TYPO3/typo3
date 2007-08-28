@@ -839,7 +839,7 @@ class clickMenu {
 				// rename
 			if (!in_array('rename',$this->disabledItems))	$menuItems['rename']=$this->FILE_launch($path,'file_rename.php','rename','rename.gif');
 				// upload
-			if (!in_array('upload',$this->disabledItems) && is_dir($path)) $menuItems['upload']=$this->FILE_launch($path,'file_upload.php','upload','upload.gif');
+			if (!in_array('upload',$this->disabledItems) && is_dir($path)) $menuItems['upload']=$this->FILE_launch($path,'file_upload.php','upload','upload.gif',TRUE);
 				// new
 			if (!in_array('new',$this->disabledItems) && is_dir($path)) $menuItems['new']=$this->FILE_launch($path,'file_newfolder.php','new','new_file.gif');
 				// info
@@ -900,13 +900,14 @@ class clickMenu {
 	 * @param	string		Script (eg. file_edit.php) to pass &target= to
 	 * @param	string		"type" is the code which fetches the correct label for the element from "cm."
 	 * @param	string		icon image-filename from "gfx/" (12x12 icon)
+	 * @param	boolean		If set, the return URL parameter will not be set in the link
 	 * @return	array		Item array, element in $menuItems
 	 * @internal
 	 */
-	function FILE_launch($path,$script,$type,$image)	{
+	function FILE_launch($path,$script,$type,$image,$noReturnUrl=FALSE)	{
 		$loc='top.content'.(!$this->alwaysContentFrame?'.list_frame':'');
 
-		$editOnClick='if('.$loc.'){'.$loc.".location.href=top.TS.PATH_typo3+'".$script.'?target='.rawurlencode($path)."&returnUrl='+top.rawurlencode(".$this->frameLocation($loc.'.document').");}";
+		$editOnClick='if('.$loc.'){'.$loc.".location.href=top.TS.PATH_typo3+'".$script.'?target='.rawurlencode($path).($noReturnUrl ? "'" : "&returnUrl='+top.rawurlencode(".$this->frameLocation($loc.'.document').")").";}";
 
 		return $this->linkItem(
 			$this->label($type),

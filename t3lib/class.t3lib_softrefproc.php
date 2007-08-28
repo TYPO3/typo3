@@ -640,7 +640,7 @@ class t3lib_softrefproc {
 		if (strlen($cssClass))	$finalTagParts['class'] = $cssClass;
 
 			// Parse URL:
-		$pU = parse_url($link_param);
+		$pU = @parse_url($link_param);
 
 			// Detecting the kind of reference:
 		if(strstr($link_param,'@') && !$pU['scheme'])	{		// If it's a mail address:

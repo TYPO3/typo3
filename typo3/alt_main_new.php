@@ -621,7 +621,7 @@ class SC_alt_main {
 				}
 				Element.setStyle(menyLayerObj,{top: \''.$this->topMenu.'px\'}); 
 				
-				Effect.Appear(menyLayerObj,{duration: 0.4});
+				Effect.Appear(menyLayerObj,{duration: 0.2});
 			}	
 			
 			function menuOpenSub(el)	{
@@ -632,7 +632,7 @@ class SC_alt_main {
 					if (node.nodeType==1)	{	// This type seems to represent tags, not CDATA (which for some reason stops JS execution!)
 						//debugObj(node);
 						if (Element.hasClassName(node,"menulayer") && !Element.visible(node))	{
-							Effect.Appear(node,{duration: 0.4});
+							Effect.Appear(node,{duration: 0.2});
 							Element.setStyle(node,{left: ($(el).offsetLeft + Element.getDimensions(el).width - 5) +\'px\'}); 
 							
 							if (el.id && menuItemObjects[""+el.id])	{
