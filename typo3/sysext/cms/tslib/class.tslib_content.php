@@ -1203,7 +1203,7 @@ class tslib_cObj {
 					while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 
 							// Versioning preview:
-						$GLOBALS['TSFE']->sys_page->versionOL($conf['table'],$row);
+						$GLOBALS['TSFE']->sys_page->versionOL($conf['table'],$row,TRUE);
 
 							// Language Overlay:
 						if (is_array($row) && $GLOBALS['TSFE']->sys_language_contentOL) {
@@ -6387,7 +6387,7 @@ class tslib_cObj {
 				while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
 					$GLOBALS['TSFE']->sys_page->versionOL('pages',$row);
 
-					if ($row['doktype']==255 || $row['doktype']==6 || $row['t3ver_state']==1)	{ unset($row); }	// Doing this after the overlay to make sure changes in the overlay are respected.
+					if ($row['doktype']==255 || $row['doktype']==6 || $row['t3ver_state']>0)	{ unset($row); }	// Doing this after the overlay to make sure changes in the overlay are respected.
 
 					if (is_array($row))	{
 							// Find mount point if any:
@@ -6400,7 +6400,7 @@ class tslib_cObj {
 							$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res2);
 							$GLOBALS['TSFE']->sys_page->versionOL('pages',$row);
 
-							if ($row['doktype']==255 || $row['doktype']==6 || $row['t3ver_state']==1)	{ unset($row); }	// Doing this after the overlay to make sure changes in the overlay are respected.
+							if ($row['doktype']==255 || $row['doktype']==6 || $row['t3ver_state']>0)	{ unset($row); }	// Doing this after the overlay to make sure changes in the overlay are respected.
 						}
 							// Add record:
 						if (is_array($row) && ($dontCheckEnableFields || $GLOBALS['TSFE']->checkPagerecordForIncludeSection($row)))	{

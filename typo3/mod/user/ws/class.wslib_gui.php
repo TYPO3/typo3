@@ -195,6 +195,17 @@ class wslib_gui {
 					<td nowrap="nowrap" colspan="2">' . $LANG->getLL('label_draft_versions') . '</td>
 					<td nowrap="nowrap">' . $LANG->getLL('label_stage') . '</td>
 					<td nowrap="nowrap">' . $LANG->getLL('label_publish') . '</td>
+					<td><select name="_with_selected_do" onchange="if (confirm(\'Sure you want to perform this action with selected elements?\')) {document.forms[0].submit();}">
+						<option value="_">Do:</option>
+						<option value="publish">Publish</option>
+						<option value="swap">Swap</option>
+						<option value="release">Release</option>
+						<option value="stage_-1">Stage: Reject</option>
+						<option value="stage_0">Stage: Editing</option>
+						<option value="stage_1">Stage: Review</option>
+						<option value="stage_10">Stage: Publish</option>
+						<option value="flush">Flush (Delete)</option>
+					</select></td>
 					<td>' . $LANG->getLL('label_lifecycle') . '</td>
 					'.($this->showWorkspaceCol ? '<td>' . $LANG->getLL('label_workspace') . '</td>' : '').'
 				</tr>';
@@ -330,7 +341,7 @@ class wslib_gui {
 		global $TCA, $LANG;
 
 		// Initialize:
-		$fullColSpan = $this->showWorkspaceCol ? 9 : 8;
+		$fullColSpan = $this->showWorkspaceCol ? 10 : 9;
 
 		// Traverse $pArray
 		if (is_array($pArray))	{
@@ -424,6 +435,10 @@ class wslib_gui {
 										} elseif ($rec_off['t3ver_state']==2)	{
 											$diffCode.= $this->doc->icons(2).'Deleted element<br/>';
 											$diffCode.= $this->doc->icons(2).$LANG->getLL('label_deletedrecord').'<br/>';
+										} elseif ($rec_on['t3ver_state']==3)	{
+											$diffCode.= $this->doc->icons(1).'Move-to placeholder (destination)<br/>';
+										} elseif ($rec_off['t3ver_state']==4)	{
+											$diffCode.= $this->doc->icons(1).'Move-to pointer (source)<br/>';
 										} else {
 											$diffCode.= ($diffPct<0 ? 'N/A' : ($diffPct ? $diffPct.'% change:' : ''));
 											$diffCode.= ($diffPct<0 ? $LANG->getLL('label_notapplicable') : ($diffPct ? sprintf($LANG->getLL('label_percentchange'), $diffPct) : ''));
@@ -497,6 +512,7 @@ class wslib_gui {
 									$this->displayWorkspaceOverview_commandLinks($table,$rec_on,$rec_off,$vType).
 									htmlspecialchars($swapLabel).
 									'</td>
+											<td nowrap="nowrap" align="center"><input type="checkbox" name="items['.$table.':'.$rec_off['uid'].']" id="items['.$table.':'.$rec_off['uid'].']" value="1"/></td>
 											<td nowrap="nowrap">'.htmlspecialchars($this->formatCount($rec_off['t3ver_count'])).'</td>'.		// Lifecycle
 									($this->showWorkspaceCol ? '
 											<td nowrap="nowrap">'.htmlspecialchars($this->formatWorkspace($rec_off['t3ver_wsid'])).'</td>' : '').'

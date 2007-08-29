@@ -424,8 +424,10 @@ class t3lib_positionMap {
 			$lines[$kk][]=$this->insertPositionIcon('',$vv,$kk,$moveUid,$pid);
 			while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))		{
 				t3lib_BEfunc::workspaceOL('tt_content',$row);
-				$lines[$kk][]=$this->wrapRecordHeader($this->getRecordHeader($row),$row);
-				$lines[$kk][]=$this->insertPositionIcon($row,$vv,$kk,$moveUid,$pid);
+				if (is_array($row))	{
+					$lines[$kk][]=$this->wrapRecordHeader($this->getRecordHeader($row),$row);
+					$lines[$kk][]=$this->insertPositionIcon($row,$vv,$kk,$moveUid,$pid);
+				}
 			}
 			$GLOBALS['TYPO3_DB']->sql_free_result($res);
 		}

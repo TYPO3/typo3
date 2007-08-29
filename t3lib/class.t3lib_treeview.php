@@ -968,8 +968,10 @@ class t3lib_treeView {
 			}
 			return $row;
 		} else {
-			$row = @$GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
-			t3lib_BEfunc::workspaceOL($this->table, $row, $this->BE_USER->workspace);
+			while($row = @$GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
+				t3lib_BEfunc::workspaceOL($this->table, $row, $this->BE_USER->workspace, TRUE);
+				if (is_array($row))	break;
+			}
 
 				// Passing on default <td> class for subelements:
 			if (is_array($row) && $subCSSclass!=='')	{

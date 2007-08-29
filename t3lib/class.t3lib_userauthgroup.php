@@ -860,11 +860,17 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 	function workspaceVersioningTypeAccess($type)	{
 		$retVal = FALSE;
 
+		$type = t3lib_div::intInRange($type,-1);
+		
+			// Check if only element versioning is allowed:
+		if ($GLOBALS['TYPO3_CONF_VARS']['BE']['elementVersioningOnly'] && $type!=-1)	{
+			return FALSE;
+		}
+		
 		if ($this->workspace>0 && !$this->isAdmin())	{
 			$stat = $this->checkWorkspaceCurrent();
 			if ($stat['_ACCESS']!=='owner')	{
 
-				$type = t3lib_div::intInRange($type,-1);
 				switch((int)$type)	{
 					case -1:
 						$retVal = $this->workspaceRec['vtypes']&1 ? FALSE : TRUE;

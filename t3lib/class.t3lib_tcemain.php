@@ -787,9 +787,9 @@ class t3lib_TCEmain	{
 													foreach ($origIdArray as $origId => $newId) {
 														$this->uploadedFileArray[$origTable][$newId] = $this->uploadedFileArray[$origTable][$origId];
 														$this->autoVersionIdMap[$origTable][$origId] = $newId;
-														$this->RTEmagic_copyIndex = t3lib_div::array_merge_recursive_overrule($this->RTEmagic_copyIndex, $tce->RTEmagic_copyIndex);		// See where RTEmagic_copyIndex is used inside fillInFieldArray() for more information...
 													}
 												}
+												$this->RTEmagic_copyIndex = t3lib_div::array_merge_recursive_overrule($this->RTEmagic_copyIndex, $tce->RTEmagic_copyIndex);		// See where RTEmagic_copyIndex is used inside fillInFieldArray() for more information...
 
 													// Update registerDBList, that holds the copied relations to child records:
 												$registerDBList = array_merge($registerDBList, $tce->registerDBList);
@@ -931,7 +931,7 @@ class t3lib_TCEmain	{
 
 		t3lib_div::loadTCA($table);
 		if ($liveRec = t3lib_BEfunc::getLiveVersionOfRecord($table,$id,'*'))	{
-			if ((int)$liveRec['t3ver_state']===1)	{
+			if ((int)$liveRec['t3ver_state']>0)	{
 				$justStoredRecord = t3lib_BEfunc::getRecord($table,$id);
 				$newRecord = array();
 
@@ -2349,7 +2349,7 @@ class t3lib_TCEmain	{
 				$hookObjectsArr[] = &t3lib_div::getUserObj($classRef);
 			}
 		}
-
+#debug($this->cmdmap);
 			// Traverse command map:
 		reset($this->cmdmap);
 		while(list($table,) = each($this->cmdmap))	{
@@ -2427,6 +2427,9 @@ class t3lib_TCEmain	{
 									break;
 									case 'clearWSID':
 										$this->version_clearWSID($table,$id);
+									break;
+									case 'flush':
+										$this->version_clearWSID($table,$id,TRUE);
 									break;
 									case 'setStage':
 										$idList = $elementList[$table] = t3lib_div::trimExplode(',',$id,1);
@@ -3144,30 +3147,17 @@ class t3lib_TCEmain	{
 	 * @return	void
 	 */
 	function moveRecord($table,$uid,$destPid)	{
-		global $TCA, $TYPO3_CONF_VARS;
+		global $TCA;
 
 		if ($TCA[$table])	{
-
-				// Prepare user defined objects (if any) for hooks which extend this function:
-			$hookObjectsArr = array();
-			if (is_array ($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['moveRecordClass'])) {
-				foreach ($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['moveRecordClass'] as $classRef) {
-					$hookObjectsArr[] = &t3lib_div::getUserObj($classRef);
-				}
-			}
 
 				// In case the record to be moved turns out to be an offline version, we have to find the live version and work on that one (this case happens for pages with "branch" versioning type)
 			if ($lookForLiveVersion = t3lib_BEfunc::getLiveVersionOfRecord($table,$uid,'uid'))	{
 				$uid = $lookForLiveVersion['uid'];
 			}
 
-				// Get workspace version of the source record, if any:
-			$WSversion = t3lib_BEfunc::getWorkspaceVersionOfRecord($this->BE_USER->workspace, $table, $uid, 'uid,t3ver_oid');
-
 				// Initialize:
-			$sortRow = $TCA[$table]['ctrl']['sortby'];
 			$destPid = intval($destPid);
-			$origDestPid = $destPid;
 
 			$propArr = $this->getRecordProperties($table,$uid);	// Get this before we change the pid (for logging)
 			$moveRec = $this->getRecordProperties($table,$uid,TRUE);
@@ -3188,143 +3178,249 @@ class t3lib_TCEmain	{
 				$mayInsertAccess = $this->checkRecordUpdateAccess($table,$uid);
 			}
 
-				// Check workspace permissions:
-			$workspaceAccessBlocked = array();
-			$recIsNewVersion = !strcmp($moveRec['_ORIG_pid'],'') && (int)$moveRec['t3ver_state']==1;	// Element was an online version AND it was in "New state" so it can be moved...
-			$destRes = $this->BE_USER->workspaceAllowLiveRecordsInPID($resolvedPid,$table);
-				// Workspace source check:
-			if ($errorCode = $this->BE_USER->workspaceCannotEditRecord($table, $WSversion['uid'] ? $WSversion['uid'] : $uid))	{
-				$workspaceAccessBlocked['src1']='Record could not be edited in workspace: '.$errorCode.' ';
-			} else {
-				if (!$recIsNewVersion && $this->BE_USER->workspaceAllowLiveRecordsInPID($moveRec['pid'],$table)<=0)	{
-					$workspaceAccessBlocked['src2']='Could not remove record from table "'.$table.'" from its page "'.$moveRec['pid'].'" ';
-				}
-			}
-				// Workspace destination check:
-			if (!($destRes>0 || ($recIsNewVersion && !$destRes)))	{	// All records can be inserted if $destRes is greater than zero. Only new versions can be inserted if $destRes is false. NO RECORDS can be inserted if $destRes is negative which indicates a stage not allowed for use.
-				$workspaceAccessBlocked['dest1']='Could not insert record from table "'.$table.'" in destination PID "'.$resolvedPid.'" ';
-			} elseif ($destRes==1 && $WSversion['uid'])	{
-				$workspaceAccessBlocked['dest2']='Could not insert other versions in destination PID ';
-			}
+				// If moving is allowed, begin the processing:
+			if ($mayMoveAccess)	{
+				if ($mayInsertAccess)	{
 
-				// Checking if the pid is negative, but no sorting row is defined. In that case, find the correct pid. Basically this check make the error message 4-13 meaning less... But you can always remove this check if you prefer the error instead of a no-good action (which is to move the record to its own page...)
-			if (($destPid<0 && !$sortRow) || $destPid>=0)	{	// $destPid>=0 because we must correct pid in case of versioning "page" types.
-				$destPid = $resolvedPid;
-			}
+					if ($this->BE_USER->workspace!==0)	{	// Draft workspace...:
+							// Get workspace version of the source record, if any:
+						$WSversion = t3lib_BEfunc::getWorkspaceVersionOfRecord($this->BE_USER->workspace, $table, $uid, 'uid,t3ver_oid');
 
-				// Timestamp field:
-			$updateFields = array();
-			if ($TCA[$table]['ctrl']['tstamp'])	{
-				$updateFields[$TCA[$table]['ctrl']['tstamp']] = time();
-			}
+							// If no version exists and versioningWS is in version 2, a new placeholder is made automatically:
+						if (!$WSversion['uid'] && (int)$TCA[$table]['ctrl']['versioningWS']>=2 && (int)$moveRec['t3ver_state']!=3)	{
+							$this->versionizeRecord($table,$uid,'Placeholder version for moving record');
+							$WSversion = t3lib_BEfunc::getWorkspaceVersionOfRecord($this->BE_USER->workspace, $table, $uid, 'uid,t3ver_oid');	// Will not create new versions in live workspace though...
+						}
 
-					// If moving is allowed, begin the processing:
-			if (!count($workspaceAccessBlocked))	{
-				if ($mayMoveAccess)	{
-					if ($destPid>=0)	{	// insert as first element on page (where uid = $destPid)
-						if ($mayInsertAccess)	{
-							if ($table!='pages' || $this->destNotInsideSelf($destPid,$uid))	{
-								$this->clear_cache($table,$uid);	// clear cache before moving
+							// Check workspace permissions:
+						$workspaceAccessBlocked = array();
+						$recIsNewVersion = (int)$moveRec['t3ver_state']>0;	// Element was in "New/Deleted/Moved" so it can be moved...
+						$destRes = $this->BE_USER->workspaceAllowLiveRecordsInPID($resolvedPid,$table);
+						$canMoveRecord = $recIsNewVersion || (int)$TCA[$table]['ctrl']['versioningWS']>=2;
 
-								$updateFields['pid'] = $destPid;	// Setting PID
-
-									// table is sorted by 'sortby'
-								if ($sortRow)	{
-									$sortNumber = $this->getSortNumber($table,$uid,$destPid);
-									$updateFields[$sortRow] = $sortNumber;
-								}
-
-									// check for child records that have also to be moved
-								$this->moveRecord_procFields($table,$uid,$destPid);
-									// Create query for update:
-								$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table, 'uid='.intval($uid), $updateFields);
-
-									// Call post processing hooks:
-								foreach($hookObjectsArr as $hookObj) {
-									if (method_exists($hookObj, 'moveRecord_firstElementPostProcess')) {
-										$hookObj->moveRecord_firstElementPostProcess($table, $uid, $destPid, $moveRec, $updateFields, $this);
-									}
-								}
-
-									// Logging...
-								$newPropArr = $this->getRecordProperties($table,$uid);
-								$oldpagePropArr = $this->getRecordProperties('pages',$propArr['pid']);
-								$newpagePropArr = $this->getRecordProperties('pages',$destPid);
-
-								if ($destPid!=$propArr['pid'])	{
-									$this->log($table,$uid,4,$destPid,0,"Moved record '%s' (%s) to page '%s' (%s)",2,array($propArr['header'],$table.':'.$uid, $newpagePropArr['header'], $newPropArr['pid']),$propArr['pid']);	// Logged to old page
-									$this->log($table,$uid,4,$destPid,0,"Moved record '%s' (%s) from page '%s' (%s)",3,array($propArr['header'],$table.':'.$uid, $oldpagePropArr['header'], $propArr['pid']),$destPid);	// Logged to new page
-								} else {
-									$this->log($table,$uid,4,$destPid,0,"Moved record '%s' (%s) on page '%s' (%s)",4,array($propArr['header'],$table.':'.$uid, $oldpagePropArr['header'], $propArr['pid']),$destPid);	// Logged to new page
-								}
-								$this->clear_cache($table,$uid);	// clear cache after moving
-								$this->fixUniqueInPid($table,$uid);
-									// fixCopyAfterDuplFields
-								if ($origDestPid<0)	{$this->fixCopyAfterDuplFields($table,$uid,abs($origDestPid),1);}	// origDestPid is retrieve before it may possibly be converted to resolvePid if the table is not sorted anyway. In this way, copying records to after another records which are not sorted still lets you use this function in order to copy fields from the one before.
+							// Workspace source check:
+						if (!$recIsNewVersion)	{
+							if ($errorCode = $this->BE_USER->workspaceCannotEditRecord($table, $WSversion['uid'] ? $WSversion['uid'] : $uid))	{
+								$workspaceAccessBlocked['src1']='Record could not be edited in workspace: '.$errorCode.' ';
 							} else {
-								$destPropArr = $this->getRecordProperties('pages',$destPid);
-								$this->log($table,$uid,4,0,1,"Attempt to move page '%s' (%s) to inside of its own rootline (at page '%s' (%s))",10,array($propArr['header'],$uid, $destPropArr['header'], $destPid),$propArr['pid']);
+								if (!$canMoveRecord && $this->BE_USER->workspaceAllowLiveRecordsInPID($moveRec['pid'],$table)<=0)	{
+									$workspaceAccessBlocked['src2']='Could not remove record from table "'.$table.'" from its page "'.$moveRec['pid'].'" ';
+								}
 							}
 						}
-					} else {	// Put after another record
-						if ($sortRow)	{	// table is being sorted
-							$sortInfo = $this->getSortNumber($table,$uid,$destPid);
-							$destPid = $sortInfo['pid'];	// Setting the destPid to the new pid of the record.
-							if (is_array($sortInfo))	{	// If not an array, there was an error (which is already logged)
-								if ($mayInsertAccess)	{
-									if ($table!='pages' || $this->destNotInsideSelf($destPid,$uid))	{
-										$this->clear_cache($table,$uid);	// clear cache before moving
+					
+							// Workspace destination check:
+						if (!($destRes>0 || ($canMoveRecord && !$destRes)))	{	// All records can be inserted if $destRes is greater than zero. Only new versions can be inserted if $destRes is false. NO RECORDS can be inserted if $destRes is negative which indicates a stage not allowed for use. If "versioningWS" is version 2, moving can take place of versions.
+							$workspaceAccessBlocked['dest1']='Could not insert record from table "'.$table.'" in destination PID "'.$resolvedPid.'" ';
+						} elseif ($destRes==1 && $WSversion['uid'])	{
+							$workspaceAccessBlocked['dest2']='Could not insert other versions in destination PID ';
+						}
 
-											// We now update the pid and sortnumber
-										$updateFields['pid'] = $destPid;
-										$updateFields[$sortRow] = $sortInfo['sortNumber'];
-
-											// check for child records that have also to be moved
-										$this->moveRecord_procFields($table,$uid,$destPid);
-											// Create query for update:
-										$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table, 'uid='.intval($uid), $updateFields);
-
-											// Call post processing hooks:
-										foreach($hookObjectsArr as $hookObj) {
-											if (method_exists($hookObj, 'moveRecord_afterAnotherElementPostProcess')) {
-												$hookObj->moveRecord_afterAnotherElementPostProcess($table, $uid, $destPid, $origDestPid, $moveRec, $updateFields, $this);
-											}
-										}
-
-											// Logging...
-										$newPropArr = $this->getRecordProperties($table,$uid);
-										$oldpagePropArr = $this->getRecordProperties('pages',$propArr['pid']);
-										if ($destPid!=$propArr['pid'])	{
-											$newpagePropArr = $this->getRecordProperties('pages',$destPid);
-											$this->log($table,$uid,4,0,0,"Moved record '%s' (%s) to page '%s' (%s)",2,array($propArr['header'],$table.':'.$uid, $newpagePropArr['header'], $newPropArr['pid']),$propArr['pid']);	// Logged to old page
-											$this->log($table,$uid,4,0,0,"Moved record '%s' (%s) from page '%s' (%s)",3,array($propArr['header'],$table.':'.$uid, $oldpagePropArr['header'], $propArr['pid']),$destPid);	// Logged to new page
-										} else {
-											$this->log($table,$uid,4,0,0,"Moved record '%s' (%s) on page '%s' (%s)",4,array($propArr['header'],$table.':'.$uid, $oldpagePropArr['header'], $propArr['pid']),$destPid);	// Logged to new page
-										}
-
-											// clear cache after moving
-										$this->clear_cache($table,$uid);
-
-											// fixUniqueInPid
-										$this->fixUniqueInPid($table,$uid);
-
-											// fixCopyAfterDuplFields
-										if ($origDestPid<0)	{$this->fixCopyAfterDuplFields($table,$uid,abs($origDestPid),1);}
-									} else {
-										$destPropArr = $this->getRecordProperties('pages',$destPid);
-										$this->log($table,$uid,4,0,1,"Attempt to move page '%s' (%s) to inside of its own rootline (at page '%s' (%s))",10,array($propArr['header'],$uid, $destPropArr['header'], $destPid),$propArr['pid']);
-									}
-								}
+						if (!count($workspaceAccessBlocked))	{
+							if ($WSversion['uid'] && !$recIsNewVersion && (int)$TCA[$table]['ctrl']['versioningWS']>=2)	{ // If the move operation is done on a versioned record, which is NOT new/deletd placeholder and versioningWS is in version 2, then...
+								$this->moveRecord_wsPlaceholders($table,$uid,$destPid,$WSversion['uid']);
+							} else {
+								$this->moveRecord_raw($table,$uid,$destPid);
 							}
 						} else {
-							$this->log($table,$uid,4,0,1,"Attempt to move record '%s' (%s) to after another record, although the table has no sorting row.",13,array($propArr['header'],$table.':'.$uid),$propArr['event_pid']);
+							$this->newlog("Move attempt failed due to workspace restrictions: ".implode(' // ',$workspaceAccessBlocked),1);
 						}
+					} else {	// Live workspace - move it!
+						$this->moveRecord_raw($table,$uid,$destPid);
 					}
 				} else {
-					$this->log($table,$uid,4,0,1,"Attempt to move record '%s' (%s) without having permissions to do so",14,array($propArr['header'],$table.':'.$uid),$propArr['event_pid']);
+					$this->log($table,$uid,4,0,1,"Attempt to move record '%s' (%s) without having permissions to insert",14,array($propArr['header'],$table.':'.$uid),$propArr['event_pid']);
 				}
 			} else {
-				$this->newlog("Move attempt failed due to workspace restrictions: ".implode(' / ',$workspaceAccessBlocked),1);
+				$this->log($table,$uid,4,0,1,"Attempt to move record '%s' (%s) without having permissions to do so",14,array($propArr['header'],$table.':'.$uid),$propArr['event_pid']);
+			}
+		}
+	}
+
+	/**
+	 * Creates a move placeholder for workspaces.
+	 * USE ONLY INTERNALLY 
+	 * Moving placeholder: Can be done because the system sees it as a placeholder for NEW elements like t3ver_state=1
+	 * Moving original: Will either create the placeholder if it doesn't exist or move existing placeholder in workspace.
+	 *
+	 * @param	string		Table name to move
+	 * @param	integer		Record uid to move (online record)
+	 * @param	integer		Position to move to: $destPid: >=0 then it points to a page-id on which to insert the record (as the first element). <0 then it points to a uid from its own table after which to insert it (works if
+	 * @param	integer		UID of offline version of online record 
+	 * @return	void
+	 * @see moveRecord()
+	 */
+	function moveRecord_wsPlaceholders($table,$uid,$destPid,$wsUid)	{
+		global $TCA;
+
+		if ($plh = t3lib_BEfunc::getMovePlaceholder($table,$uid,'uid'))	{
+				// If already a placeholder exists, move it:
+			$this->moveRecord_raw($table,$plh['uid'],$destPid);
+		} else {
+				// First, we create a placeholder record in the Live workspace that represents the position to where the record is eventually moved to.
+			$newVersion_placeholderFieldArray = array();
+			if ($TCA[$table]['ctrl']['crdate'])	{
+				$newVersion_placeholderFieldArray[$TCA[$table]['ctrl']['crdate']] = time();
+			}
+			if ($TCA[$table]['ctrl']['cruser_id'])	{
+				$newVersion_placeholderFieldArray[$TCA[$table]['ctrl']['cruser_id']] = $this->userid;
+			}
+			if ($TCA[$table]['ctrl']['tstamp'] && count($fieldArray))	{
+				$newVersion_placeholderFieldArray[$TCA[$table]['ctrl']['tstamp']] = time();
+			}
+
+			$newVersion_placeholderFieldArray['t3ver_label'] = 'MOVE-TO PLACEHOLDER for #'.$uid;
+			$newVersion_placeholderFieldArray['t3ver_move_id'] = $uid;
+			$newVersion_placeholderFieldArray['t3ver_state'] = 3;	// Setting placeholder state value for temporary record
+			$newVersion_placeholderFieldArray['t3ver_wsid'] = $this->BE_USER->workspace;	// Setting workspace - only so display of place holders can filter out those from other workspaces.
+			$newVersion_placeholderFieldArray[$TCA[$table]['ctrl']['label']] = '[MOVE-TO PLACEHOLDER for #'.$uid.', WS#'.$this->BE_USER->workspace.']';
+
+			$newVersion_placeholderFieldArray['pid'] = 0;	// Initially, create at root level.
+			$id = 'NEW_MOVE_PLH';
+			$this->insertDB($table,$id,$newVersion_placeholderFieldArray,FALSE);	// Saving placeholder as 'original'
+
+				// Move the new placeholder from temporary root-level to location:
+			$this->moveRecord_raw($table,$this->substNEWwithIDs[$id],$destPid);
+
+				// Move the workspace-version of the original to be the version of the move-to-placeholder:
+			$updateFields = array();
+			$updateFields['t3ver_state'] = 4;	// Setting placeholder state value for version (so it can know it is currently a new version...)
+			$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table, 'uid='.intval($wsUid), $updateFields);
+		}
+	}
+
+	/**
+	 * Moves a record without checking security of any sort.
+	 * USE ONLY INTERNALLY 
+	 *
+	 * @param	string		Table name to move
+	 * @param	integer		Record uid to move
+	 * @param	integer		Position to move to: $destPid: >=0 then it points to a page-id on which to insert the record (as the first element). <0 then it points to a uid from its own table after which to insert it (works if
+	 * @return	void
+	 * @see moveRecord()
+	 */
+	function moveRecord_raw($table,$uid,$destPid)	{
+		global $TCA, $TYPO3_CONF_VARS;
+
+		$sortRow = $TCA[$table]['ctrl']['sortby'];
+		$origDestPid = $destPid;
+		$resolvedPid = $this->resolvePid($table,$destPid);	// This is the actual pid of the moving to destination
+
+			// Checking if the pid is negative, but no sorting row is defined. In that case, find the correct pid. Basically this check make the error message 4-13 meaning less... But you can always remove this check if you prefer the error instead of a no-good action (which is to move the record to its own page...)
+		if (($destPid<0 && !$sortRow) || $destPid>=0)	{	// $destPid>=0 because we must correct pid in case of versioning "page" types.
+			$destPid = $resolvedPid;
+		}
+
+		$propArr = $this->getRecordProperties($table,$uid);	// Get this before we change the pid (for logging)
+		$moveRec = $this->getRecordProperties($table,$uid,TRUE);
+
+			// Prepare user defined objects (if any) for hooks which extend this function:
+		$hookObjectsArr = array();
+		if (is_array ($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['moveRecordClass'])) {
+			foreach ($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['moveRecordClass'] as $classRef) {
+				$hookObjectsArr[] = &t3lib_div::getUserObj($classRef);
+			}
+		}
+		
+			// Timestamp field:
+		$updateFields = array();
+		if ($TCA[$table]['ctrl']['tstamp'])	{
+			$updateFields[$TCA[$table]['ctrl']['tstamp']] = time();
+		}
+
+		if ($destPid>=0)	{	// insert as first element on page (where uid = $destPid)
+			if ($table!='pages' || $this->destNotInsideSelf($destPid,$uid))	{
+				$this->clear_cache($table,$uid);	// clear cache before moving
+
+				$updateFields['pid'] = $destPid;	// Setting PID
+
+					// table is sorted by 'sortby'
+				if ($sortRow)	{
+					$sortNumber = $this->getSortNumber($table,$uid,$destPid);
+					$updateFields[$sortRow] = $sortNumber;
+				}
+
+					// check for child records that have also to be moved
+				$this->moveRecord_procFields($table,$uid,$destPid);
+					// Create query for update:
+				$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table, 'uid='.intval($uid), $updateFields);
+
+					// Call post processing hooks:
+				foreach($hookObjectsArr as $hookObj) {
+					if (method_exists($hookObj, 'moveRecord_firstElementPostProcess')) {
+						$hookObj->moveRecord_firstElementPostProcess($table, $uid, $destPid, $moveRec, $updateFields, $this);
+					}
+				}
+
+					// Logging...
+				$newPropArr = $this->getRecordProperties($table,$uid);
+				$oldpagePropArr = $this->getRecordProperties('pages',$propArr['pid']);
+				$newpagePropArr = $this->getRecordProperties('pages',$destPid);
+
+				if ($destPid!=$propArr['pid'])	{
+					$this->log($table,$uid,4,$destPid,0,"Moved record '%s' (%s) to page '%s' (%s)",2,array($propArr['header'],$table.':'.$uid, $newpagePropArr['header'], $newPropArr['pid']),$propArr['pid']);	// Logged to old page
+					$this->log($table,$uid,4,$destPid,0,"Moved record '%s' (%s) from page '%s' (%s)",3,array($propArr['header'],$table.':'.$uid, $oldpagePropArr['header'], $propArr['pid']),$destPid);	// Logged to new page
+				} else {
+					$this->log($table,$uid,4,$destPid,0,"Moved record '%s' (%s) on page '%s' (%s)",4,array($propArr['header'],$table.':'.$uid, $oldpagePropArr['header'], $propArr['pid']),$destPid);	// Logged to new page
+				}
+				$this->clear_cache($table,$uid);	// clear cache after moving
+				$this->fixUniqueInPid($table,$uid);
+					// fixCopyAfterDuplFields
+				if ($origDestPid<0)	{$this->fixCopyAfterDuplFields($table,$uid,abs($origDestPid),1);}	// origDestPid is retrieve before it may possibly be converted to resolvePid if the table is not sorted anyway. In this way, copying records to after another records which are not sorted still lets you use this function in order to copy fields from the one before.
+			} else {
+				$destPropArr = $this->getRecordProperties('pages',$destPid);
+				$this->log($table,$uid,4,0,1,"Attempt to move page '%s' (%s) to inside of its own rootline (at page '%s' (%s))",10,array($propArr['header'],$uid, $destPropArr['header'], $destPid),$propArr['pid']);
+			}
+		} else {	// Put after another record
+			if ($sortRow)	{	// table is being sorted
+				$sortInfo = $this->getSortNumber($table,$uid,$destPid);
+				$destPid = $sortInfo['pid'];	// Setting the destPid to the new pid of the record.
+				if (is_array($sortInfo))	{	// If not an array, there was an error (which is already logged)
+					if ($table!='pages' || $this->destNotInsideSelf($destPid,$uid))	{
+						$this->clear_cache($table,$uid);	// clear cache before moving
+
+							// We now update the pid and sortnumber
+						$updateFields['pid'] = $destPid;
+						$updateFields[$sortRow] = $sortInfo['sortNumber'];
+
+							// check for child records that have also to be moved
+						$this->moveRecord_procFields($table,$uid,$destPid);
+							// Create query for update:
+						$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table, 'uid='.intval($uid), $updateFields);
+
+							// Call post processing hooks:
+						foreach($hookObjectsArr as $hookObj) {
+							if (method_exists($hookObj, 'moveRecord_afterAnotherElementPostProcess')) {
+								$hookObj->moveRecord_afterAnotherElementPostProcess($table, $uid, $destPid, $origDestPid, $moveRec, $updateFields, $this);
+							}
+						}
+
+							// Logging...
+						$newPropArr = $this->getRecordProperties($table,$uid);
+						$oldpagePropArr = $this->getRecordProperties('pages',$propArr['pid']);
+						if ($destPid!=$propArr['pid'])	{
+							$newpagePropArr = $this->getRecordProperties('pages',$destPid);
+							$this->log($table,$uid,4,0,0,"Moved record '%s' (%s) to page '%s' (%s)",2,array($propArr['header'],$table.':'.$uid, $newpagePropArr['header'], $newPropArr['pid']),$propArr['pid']);	// Logged to old page
+							$this->log($table,$uid,4,0,0,"Moved record '%s' (%s) from page '%s' (%s)",3,array($propArr['header'],$table.':'.$uid, $oldpagePropArr['header'], $propArr['pid']),$destPid);	// Logged to new page
+						} else {
+							$this->log($table,$uid,4,0,0,"Moved record '%s' (%s) on page '%s' (%s)",4,array($propArr['header'],$table.':'.$uid, $oldpagePropArr['header'], $propArr['pid']),$destPid);	// Logged to new page
+						}
+
+							// clear cache after moving
+						$this->clear_cache($table,$uid);
+
+							// fixUniqueInPid
+						$this->fixUniqueInPid($table,$uid);
+
+							// fixCopyAfterDuplFields
+						if ($origDestPid<0)	{$this->fixCopyAfterDuplFields($table,$uid,abs($origDestPid),1);}
+					} else {
+						$destPropArr = $this->getRecordProperties('pages',$destPid);
+						$this->log($table,$uid,4,0,1,"Attempt to move page '%s' (%s) to inside of its own rootline (at page '%s' (%s))",10,array($propArr['header'],$uid, $destPropArr['header'], $destPid),$propArr['pid']);
+					}
+				}
+			} else {
+				$this->log($table,$uid,4,0,1,"Attempt to move record '%s' (%s) to after another record, although the table has no sorting row.",13,array($propArr['header'],$table.':'.$uid),$propArr['event_pid']);
 			}
 		}
 	}
@@ -3336,14 +3432,16 @@ class t3lib_TCEmain	{
 	 * @param	string		$table: Record Table
 	 * @param	string		$uid: Record UID
 	 * @param	string		$destPid: Position to move to
-	 * @return	[type]		...
+	 * @return	void
 	 */
 	function moveRecord_procFields($table,$uid,$destPid) {
 		t3lib_div::loadTCA($table);
 		$conf = $GLOBALS['TCA'][$table]['columns'];
 		$row = t3lib_BEfunc::getRecordWSOL($table,$uid);
-		foreach ($row as $field => $value) {
-			$this->moveRecord_procBasedOnFieldType($table,$uid,$destPid,$field,$value,$conf[$field]['config']);
+		if (is_array($row))	{
+			foreach ($row as $field => $value) {
+				$this->moveRecord_procBasedOnFieldType($table,$uid,$destPid,$field,$value,$conf[$field]['config']);
+			}
 		}
 	}
 
@@ -3526,9 +3624,9 @@ class t3lib_TCEmain	{
 					if ($this->BE_USER->workspace==0 || (int)$delRec['t3ver_wsid']==$this->BE_USER->workspace)	{	// In Live workspace, delete any. In other workspaces there must be match.
 						$liveRec = t3lib_BEfunc::getLiveVersionOfRecord($table,$id,'uid,t3ver_state');
 
-						if ($delRec['t3ver_wsid']==0 || (int)$liveRec['t3ver_state']!==1)	{	// Delete those in WS 0 + if their live records state was not "Placeholder".
+						if ($delRec['t3ver_wsid']==0 || (int)$liveRec['t3ver_state']<=0)	{	// Delete those in WS 0 + if their live records state was not "Placeholder".
 							$this->deleteEl($table, $id);
-						} else {	// If live record was placeholder, rather clear it from workspace (because it clears both version and placeholder).
+						} else {	// If live record was placeholder (new/deleted), rather clear it from workspace (because it clears both version and placeholder).
 							$this->version_clearWSID($table,$id);
 						}
 					} else $this->newlog('Tried to delete record from another workspace',1);
@@ -3537,8 +3635,18 @@ class t3lib_TCEmain	{
 				if ($res>0)	{
 					$this->deleteEl($table, $id);
 				} else $this->newlog('Stage of root point did not allow for deletion',1);
+			} elseif ((int)$delRec['t3ver_state']===3) {	// Placeholders for moving operations are deletable directly.
+				
+					// Get record which its a placeholder for and reset the t3ver_state of that:
+				if ($wsRec = t3lib_BEfunc::getWorkspaceVersionOfRecord($delRec['t3ver_wsid'], $table, $delRec['t3ver_move_id'], 'uid'))	{
+						// clear the state flag of the workspace version of the 
+					$updateFields = array();
+					$updateFields['t3ver_state'] = 0;	// Setting placeholder state value for version (so it can know it is currently a new version...)
+					$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table, 'uid='.intval($wsRec['uid']), $updateFields);
+				}
+				$this->deleteEl($table, $id);
 			} else {
-				// Otherwise, try to delete by versionization:
+				// Otherwise, try to delete by versioning:
 				$this->versionizeRecord($table,$id,'DELETED!',TRUE);
 			}
 		}
@@ -3942,57 +4050,59 @@ class t3lib_TCEmain	{
 				if ($this->BE_USER->workspaceVersioningTypeAccess($versionizeTree))	{
 
 						// Select main record:
-					$row = $this->recordInfo($table,$id,'pid,t3ver_id');
+					$row = $this->recordInfo($table,$id,'pid,t3ver_id,t3ver_state');
 					if (is_array($row))	{
 						if ($row['pid']>=0)	{	// record must be online record
-							if (!$delete || !$this->cannotDeleteRecord($table,$id)) {
+							if ($row['t3ver_state']!=3)	{	// record must not be placeholder for moving.
+								if (!$delete || !$this->cannotDeleteRecord($table,$id)) {
 
-									// Look for next version number:
-								$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-									't3ver_id',
-									$table,
-									'(t3ver_oid='.$id.' OR uid='.$id.')'.$this->deleteClause($table),
-									'',
-									't3ver_id DESC',
-									'1'
-								);
-								list($highestVerNumber) = $GLOBALS['TYPO3_DB']->sql_fetch_row($res);
-								$GLOBALS['TYPO3_DB']->sql_free_result($res);
+										// Look for next version number:
+									$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+										't3ver_id',
+										$table,
+										'((pid=-1 && t3ver_oid='.$id.') OR uid='.$id.')'.$this->deleteClause($table),
+										'',
+										't3ver_id DESC',
+										'1'
+									);
+									list($highestVerNumber) = $GLOBALS['TYPO3_DB']->sql_fetch_row($res);
+									$GLOBALS['TYPO3_DB']->sql_free_result($res);
 
-									// Look for version number of the current:
-								$subVer = $row['t3ver_id'].'.'.($highestVerNumber+1);
+										// Look for version number of the current:
+									$subVer = $row['t3ver_id'].'.'.($highestVerNumber+1);
 
-									// Set up the values to override when making a raw-copy:
-								$overrideArray = array(
-									't3ver_id' => $highestVerNumber+1,
-									't3ver_oid' => $id,
-									't3ver_label' => ($label ? $label : $subVer.' / '.date('d-m-Y H:m:s')),
-									't3ver_wsid' => $this->BE_USER->workspace,
-									't3ver_state' => $delete ? 2 : 0,
-									't3ver_count' => 0,
-									't3ver_stage' => 0,
-									't3ver_tstamp' => 0
-								);
-								if ($TCA[$table]['ctrl']['editlock'])	{
-									$overrideArray[$TCA[$table]['ctrl']['editlock']] = 0;
-								}
-								if ($table==='pages')	{
-									$overrideArray['t3ver_swapmode'] = $versionizeTree;
-								}
+										// Set up the values to override when making a raw-copy:
+									$overrideArray = array(
+										't3ver_id' => $highestVerNumber+1,
+										't3ver_oid' => $id,
+										't3ver_label' => ($label ? $label : $subVer.' / '.date('d-m-Y H:m:s')),
+										't3ver_wsid' => $this->BE_USER->workspace,
+										't3ver_state' => $delete ? 2 : 0,
+										't3ver_count' => 0,
+										't3ver_stage' => 0,
+										't3ver_tstamp' => 0
+									);
+									if ($TCA[$table]['ctrl']['editlock'])	{
+										$overrideArray[$TCA[$table]['ctrl']['editlock']] = 0;
+									}
+									if ($table==='pages')	{
+										$overrideArray['t3ver_swapmode'] = $versionizeTree;
+									}
 
-									// Checking if the record already has a version in the current workspace of the backend user
-								$workspaceCheck = TRUE;
-								if ($this->BE_USER->workspace!==0)	{
-										// Look for version already in workspace:
-									$workspaceCheck = t3lib_BEfunc::getWorkspaceVersionOfRecord($this->BE_USER->workspace,$table,$id,'uid') ? FALSE : TRUE;
-								}
+										// Checking if the record already has a version in the current workspace of the backend user
+									$workspaceCheck = TRUE;
+									if ($this->BE_USER->workspace!==0)	{
+											// Look for version already in workspace:
+										$workspaceCheck = t3lib_BEfunc::getWorkspaceVersionOfRecord($this->BE_USER->workspace,$table,$id,'uid') ? FALSE : TRUE;
+									}
 
-								if ($workspaceCheck)	{
+									if ($workspaceCheck)	{
 
-										// Create raw-copy and return result:
-									return $this->copyRecord_raw($table,$id,-1,$overrideArray);
-								} else $this->newlog('Record "'.$table.':'.$id.'" you wanted to versionize was already a version in the workspace (wsid='.$this->BE_USER->workspace.')!',1);
-							} else $this->newlog('Record cannot be deleted: '.$this->cannotDeleteRecord($table,$id),1);
+											// Create raw-copy and return result:
+										return $this->copyRecord_raw($table,$id,-1,$overrideArray);
+									} else $this->newlog('Record "'.$table.':'.$id.'" you wanted to versionize was already a version in the workspace (wsid='.$this->BE_USER->workspace.')!',1);
+								} else $this->newlog('Record cannot be deleted: '.$this->cannotDeleteRecord($table,$id),1);
+							} else $this->newlog('Record cannot be versioned because it is a placeholder for a moving operation',1);
 						} else $this->newlog('Record "'.$table.':'.$id.'" you wanted to versionize was already a version in archive (pid=-1)!',1);
 					} else $this->newlog('Record "'.$table.':'.$id.'" you wanted to versionize did not exist!',1);
 				} else $this->newlog('The versioning type '.$versionizeTree.' mode you requested was not allowed',1);
@@ -4075,35 +4185,14 @@ class t3lib_TCEmain	{
 	function version_swap($table,$id,$swapWith,$swapIntoWS=0)	{
 		global $TCA;
 
-		/*
-		Version ID swapping principles:
-			- Version from archive (future/past, called "swap version") will get the uid of the "t3ver_oid", the official element with uid = "t3ver_oid" will get the new versions old uid. PIDs are swapped also
-
-			uid		pid			uid		t3ver_oid	pid
-		1:	13		123	 -->	-13		247			123		(Original has negated UID, and sets t3ver_oid to the final UID (which is nice to know for recovery). PID is unchanged at this point)
-		2:	247		-1	 -->	13		13			123		(Swap version gets original UID, correct t3ver_oid (not required for online version) and is moved to the final PID (123))
-		3:	-13		123	 -->	247		13			-1		(Original gets the swap versions old UID, has t3ver_oid set correctly (important) and the ver. repository PID set right.)
-
-			13 is online UID,
-			247 is specific versions UID
-			123 is the PID of the original record
-			-1 is the versioning repository PID
-
-			Recovery Process:
-				Search for negative UID (here "-13"):
-					YES: Step 1 completed, but at least step 3 didn't.
-						Search for the negativ UIDs positive (here: "13")
-							YES: Step 2 completed: Rollback: "t3ver_oid" of the -uid record shows the original UID of the swap record. Use that to change back UID and pid to -1. After that, proceed with recovery for step 1 (see below)
-							NO: Only Step 1 completed! Rollback: Just change uid "-13" to "13" and "t3ver_oid" to "13" (not important)
-					NO: No problems.
-		*/
-
 			// First, check if we may actually edit the online record
 		if ($this->checkRecordUpdateAccess($table,$id))	{
 
 				// Select the two versions:
 			$curVersion = t3lib_BEfunc::getRecord($table,$id,'*');
 			$swapVersion = t3lib_BEfunc::getRecord($table,$swapWith,'*');
+			$movePlh = array();
+			$movePlhID = 0;
 
 			if (is_array($curVersion) && is_array($swapVersion))	{
 				if ($this->BE_USER->workspacePublishAccess($swapVersion['t3ver_wsid']))	{
@@ -4149,10 +4238,28 @@ class t3lib_TCEmain	{
 											// Modify offline version to become online:
 										$tmp_wsid = $swapVersion['t3ver_wsid'];
 										$swapVersion['pid'] = intval($curVersion['pid']);	// Set pid for ONLINE
-										$swapVersion['t3ver_oid'] = intval($id);
-										$swapVersion['t3ver_wsid'] = $swapIntoWS ? intval($curVersion['t3ver_wsid']) : 0;
+										$swapVersion['t3ver_oid'] = 0;	// We clear this because t3ver_oid only make sense for offline versions and we want to prevent unintentional misuse of this value for online records.
+										$swapVersion['t3ver_wsid'] = $swapIntoWS ? ($t3ver_state['swapVersion']>0 ? $this->BE_USER->workspace : intval($curVersion['t3ver_wsid'])) : 0;	// In case of swapping and the offline record has a state (like 2 or 4 for deleting or move-pointer) we set the current workspace ID so the record is not deselected in the interface by t3lib_BEfunc::versioningPlaceholderClause()
 										$swapVersion['t3ver_tstamp'] = time();
-										$swapVersion['t3ver_stage'] = $swapVersion['t3ver_state'] = 0;
+										$swapVersion['t3ver_stage'] = 0;
+										if (!$swapIntoWS)	$swapVersion['t3ver_state'] = 0;
+
+											// Moving element.
+										if ((int)$TCA[$table]['ctrl']['versioningWS']>=2)	{		//  && $t3ver_state['swapVersion']==4   // Maybe we don't need this? 
+											if ($plhRec = t3lib_BEfunc::getMovePlaceholder($table,$id,'t3ver_state,pid,uid'.($TCA[$table]['ctrl']['sortby']?','.$TCA[$table]['ctrl']['sortby']:'')))	{
+												$movePlhID = $plhRec['uid'];
+												$movePlh['pid'] = $swapVersion['pid'];
+												$swapVersion['pid'] = intval($plhRec['pid']);
+
+												$curVersion['t3ver_state'] = intval($swapVersion['t3ver_state']);
+												$swapVersion['t3ver_state'] = 0;
+
+												if ($TCA[$table]['ctrl']['sortby'])	{
+													$movePlh[$TCA[$table]['ctrl']['sortby']] = $swapVersion[$TCA[$table]['ctrl']['sortby']];	// sortby is a "keepFields" which is why this will work...
+													$swapVersion[$TCA[$table]['ctrl']['sortby']] = $plhRec[$TCA[$table]['ctrl']['sortby']];
+												}
+											}
+										}
 
 											// Take care of relations in each field (e.g. IRRE):
 										if (is_array($GLOBALS['TCA'][$table]['columns'])) {
@@ -4171,7 +4278,8 @@ class t3lib_TCEmain	{
 										$curVersion['t3ver_wsid'] = $swapIntoWS ? intval($tmp_wsid) : 0;
 										$curVersion['t3ver_tstamp'] = time();
 										$curVersion['t3ver_count'] = $curVersion['t3ver_count']+1;	// Increment lifecycle counter
-										$curVersion['t3ver_stage'] = $curVersion['t3ver_state'] = 0;
+										$curVersion['t3ver_stage'] = 0;
+										if (!$swapIntoWS)	$curVersion['t3ver_state'] = 0;
 
 										if ($table==='pages') {		// Keeping the swapmode state
 												$curVersion['t3ver_swapmode'] = $swapVersion['t3ver_swapmode'];
@@ -4190,11 +4298,22 @@ class t3lib_TCEmain	{
 												unlink($lockFileName);
 											}
 										}
+										
 
 										if (!count($sqlErrors))	{
+											
+												// If a moving operation took place...:
+											if ($movePlhID)	{
+												if (!$swapIntoWS)	{	// Remove, if normal publishing:
+													$this->deleteEl($table, $movePlhID, TRUE, TRUE); 	// For delete + completely delete!
+												} else {	// Otherwise update the movePlaceholder:
+													$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table,'uid='.intval($movePlhID),$movePlh);
+													$this->updateRefIndex($table,$movePlhID);
+												}
+											}
 
 												// Checking for delete:
-											if ($t3ver_state['swapVersion']==2)	{
+											if (!$swapIntoWS && ((int)$t3ver_state['swapVersion']===1 || (int)$t3ver_state['swapVersion']===2))	{	// Delete only if new/deleted placeholders are there.
 												$this->deleteEl($table,$id,TRUE);	// Force delete
 											}
 
@@ -4231,7 +4350,7 @@ class t3lib_TCEmain	{
 											$this->clear_cache($table,$id);
 
 												// Checking for "new-placeholder" and if found, delete it (BUT FIRST after swapping!):
-											if ($t3ver_state['curVersion']==1)	{
+											if (!$swapIntoWS && $t3ver_state['curVersion']>0)	{
 												$this->deleteEl($table, $swapWith, TRUE, TRUE); 	// For delete + completely delete!
 											}
 										} else $this->newlog('During Swapping: SQL errors happend: '.implode('; ',$sqlErrors),2);
@@ -4250,9 +4369,12 @@ class t3lib_TCEmain	{
 	 *
 	 * @param	string		Table name
 	 * @param	integer		Record UID
+ 	 * @param	boolean		If set, will completely delete element
 	 * @return	void
 	 */
-	function version_clearWSID($table,$id)	{
+	function version_clearWSID($table,$id,$flush=FALSE)	{
+		global $TCA;
+		
 		if ($errorCode = $this->BE_USER->workspaceCannotEditOfflineVersion($table, $id))	{
 			$this->newlog('Attempt to reset workspace for record failed: '.$errorCode,1);
 		} elseif ($this->checkRecordUpdateAccess($table,$id)) {
@@ -4263,15 +4385,22 @@ class t3lib_TCEmain	{
 				$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table,'uid='.intval($id),$sArray);
 
 					// Clear workspace ID for live version AND DELETE IT as well because it is a new record!
-				if ((int)$liveRec['t3ver_state']===1)	{
+				if ((int)$liveRec['t3ver_state']==1 || (int)$liveRec['t3ver_state']==2)	{
 					$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table,'uid='.intval($liveRec['uid']),$sArray);
 					$this->deleteEl($table, $liveRec['uid'], TRUE);	// THIS assumes that the record was placeholder ONLY for ONE record (namely $id)
 				}
 
 					// If "deleted" flag is set for the version that got released it doesn't make sense to keep that "placeholder" anymore and we delete it completly.
 				$wsRec = t3lib_BEfunc::getRecord($table,$id);
-				if ((int)$wsRec['t3ver_state']===2)	{
+				if ($flush || ((int)$wsRec['t3ver_state']==1 || (int)$wsRec['t3ver_state']==2))	{
 					$this->deleteEl($table, $id, TRUE, TRUE);
+				}
+				
+					// Remove the move-placeholder if found for live record.
+				if ((int)$TCA[$table]['ctrl']['versioningWS']>=2)	{
+					if ($plhRec = t3lib_BEfunc::getMovePlaceholder($table,$liveRec['uid'],'uid'))	{
+						$this->deleteEl($table, $plhRec['uid'], TRUE, TRUE);
+					}
 				}
 			}
 		} else $this->newlog('Attempt to reset workspace for record failed because you do not have edit access',1);

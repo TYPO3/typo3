@@ -4184,20 +4184,23 @@ class t3lib_TCEforms	{
 			// Traverse the selected rows to add them:
 		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
 			t3lib_BEfunc::workspaceOL($f_table, $row);
-				// Prepare the icon if available:
-			if ($iField && $iPath && $row[$iField])	{
-				$iParts = t3lib_div::trimExplode(',',$row[$iField],1);
-				$icon = '../'.$iPath.'/'.trim($iParts[0]);
-			} elseif (t3lib_div::inList('singlebox,checkbox',$fieldValue['config']['renderMode'])) {
-				$icon = '../'.TYPO3_mainDir.t3lib_iconWorks::skinImg($this->backPath,t3lib_iconWorks::getIcon($f_table, $row),'',1);
-			} else $icon = '';
+			
+			if (is_array($row))	{
+					// Prepare the icon if available:
+				if ($iField && $iPath && $row[$iField])	{
+					$iParts = t3lib_div::trimExplode(',',$row[$iField],1);
+					$icon = '../'.$iPath.'/'.trim($iParts[0]);
+				} elseif (t3lib_div::inList('singlebox,checkbox',$fieldValue['config']['renderMode'])) {
+					$icon = '../'.TYPO3_mainDir.t3lib_iconWorks::skinImg($this->backPath,t3lib_iconWorks::getIcon($f_table, $row),'',1);
+				} else $icon = '';
 
-				// Add the item:
-			$items[] = array(
-				$lPrefix.strip_tags(t3lib_BEfunc::getRecordTitle($f_table,$row)),
-				$uidPre.$row['uid'],
-				$icon
-			);
+					// Add the item:
+				$items[] = array(
+					$lPrefix.strip_tags(t3lib_BEfunc::getRecordTitle($f_table,$row)),
+					$uidPre.$row['uid'],
+					$icon
+				);
+			}
 		}
 		return $items;
 	}

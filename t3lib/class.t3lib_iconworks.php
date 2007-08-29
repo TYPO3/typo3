@@ -123,11 +123,21 @@ class t3lib_iconWorks	{
 		$doNotRenderUserGroupNumber = TRUE;	// If set, then the usergroup number will NOT be printed unto the icon. NOTICE. the icon is generated only if a default icon for groups is not found... So effectively this is ineffective...
 
 			// Shadow:
-		if ($TCA[$table]['ctrl']['versioningWS'] && (int)$row['t3ver_state']===1)	{
-			return 'gfx/i/shadow_hide.png';
-		}
-		if ($TCA[$table]['ctrl']['versioningWS'] && (int)$row['t3ver_state']===2)	{
-			return 'gfx/i/shadow_delete.png';
+		if ($TCA[$table]['ctrl']['versioningWS'])	{
+			switch((int)$row['t3ver_state'])	{
+				case 1:
+					return 'gfx/i/shadow_hide.png';
+				break;
+				case 2:
+					return 'gfx/i/shadow_delete.png';
+				break;
+				case 3:
+					return 'gfx/i/shadow_moveto_plh.png';
+				break;
+				case 4:
+					return 'gfx/i/shadow_moveto_pointer.png';
+				break;
+			}
 		}
 
 			// First, find the icon file name. This can depend on configuration in TCA, field values and more:

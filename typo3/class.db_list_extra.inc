@@ -460,16 +460,22 @@ class localRecordList extends recordList {
 				$prevPrevUid = 0;
 				$accRows = array();	// Accumulate rows here
 				while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($result))	{
-					$accRows[] = $row;
-					$currentIdList[] = $row['uid'];
-					if ($doSort)	{
-						if ($prevUid)	{
-							$this->currentTable['prev'][$row['uid']] = $prevPrevUid;
-							$this->currentTable['next'][$prevUid] = '-'.$row['uid'];
-							$this->currentTable['prevUid'][$row['uid']] = $prevUid;
+					
+						// In offline workspace, look for alternative record:
+					t3lib_BEfunc::workspaceOL($table, $row, $GLOBALS['BE_USER']->workspace, TRUE);
+					
+					if (is_array($row))	{
+						$accRows[] = $row;
+						$currentIdList[] = $row['uid'];
+						if ($doSort)	{
+							if ($prevUid)	{
+								$this->currentTable['prev'][$row['uid']] = $prevPrevUid;
+								$this->currentTable['next'][$prevUid] = '-'.$row['uid'];
+								$this->currentTable['prevUid'][$row['uid']] = $prevUid;
+							}
+							$prevPrevUid = isset($this->currentTable['prev'][$row['uid']]) ? -$prevUid : $row['pid'];
+							$prevUid=$row['uid'];
 						}
-						$prevPrevUid = isset($this->currentTable['prev'][$row['uid']]) ? -$prevUid : $row['pid'];
-						$prevUid=$row['uid'];
 					}
 				}
 				$GLOBALS['TYPO3_DB']->sql_free_result($result);
@@ -512,7 +518,10 @@ class localRecordList extends recordList {
 								// For each available translation, render the record:
 							if (is_array($translations)) {
 								foreach($translations as $lRow)	{
-									if ($GLOBALS['BE_USER']->checkLanguageAccess($lRow[$TCA[$table]['ctrl']['languageField']]))	{
+										// In offline workspace, look for alternative record:
+									t3lib_BEfunc::workspaceOL($table, $lRow, $GLOBALS['BE_USER']->workspace);
+									
+									if (is_array($lRow) && $GLOBALS['BE_USER']->checkLanguageAccess($lRow[$TCA[$table]['ctrl']['languageField']]))	{
 										$currentIdList[] = $lRow['uid'];
 										$iOut.=$this->renderListRow($table,$lRow,$cc,$titleCol,$thumbsCol,18);
 									}
@@ -573,72 +582,72 @@ class localRecordList extends recordList {
 			$this->id = $row['pid'];
 		}
 
-			// In offline workspace, look for alternative record:
-		t3lib_BEfunc::workspaceOL($table, $row, $GLOBALS['BE_USER']->workspace);
+		if (is_array($row))	{
 
-			// Background color, if any:
-		$row_bgColor=
-			$this->alternateBgColors ?
-			(($cc%2)?'' :' class="db_list_alt"') :
-			'';
+				// Background color, if any:
+			$row_bgColor=
+				$this->alternateBgColors ?
+				(($cc%2)?'' :' class="db_list_alt"') :
+				'';
 
-			// Overriding with versions background color if any:
-		$row_bgColor = $row['_CSSCLASS'] ? ' class="'.$row['_CSSCLASS'].'"' : $row_bgColor;
+				// Overriding with versions background color if any:
+			$row_bgColor = $row['_CSSCLASS'] ? ' class="'.$row['_CSSCLASS'].'"' : $row_bgColor;
 
-			// Incr. counter.
-		$this->counter++;
+				// Incr. counter.
+			$this->counter++;
 
-			// The icon with link
-		$alttext = t3lib_BEfunc::getRecordIconAltText($row,$table);
-		$iconImg = t3lib_iconWorks::getIconImage($table,$row,$this->backPath,'title="'.htmlspecialchars($alttext).'"'.($indent ? ' style="margin-left: '.$indent.'px;"' : ''));
-		$theIcon = $this->clickMenuEnabled ? $GLOBALS['SOBE']->doc->wrapClickMenuOnIcon($iconImg,$table,$row['uid']) : $iconImg;
+				// The icon with link
+			$alttext = t3lib_BEfunc::getRecordIconAltText($row,$table);
+			$iconImg = t3lib_iconWorks::getIconImage($table,$row,$this->backPath,'title="'.htmlspecialchars($alttext).'"'.($indent ? ' style="margin-left: '.$indent.'px;"' : ''));
+			$theIcon = $this->clickMenuEnabled ? $GLOBALS['SOBE']->doc->wrapClickMenuOnIcon($iconImg,$table,$row['uid']) : $iconImg;
 
-			// Preparing and getting the data-array
-		$theData = Array();
-		foreach($this->fieldArray as $fCol)	{
-			if ($fCol==$titleCol)	{
-				$recTitle = t3lib_BEfunc::getRecordTitle($table,$row,FALSE,TRUE);
-				$theData[$fCol] = $this->linkWrapItems($table,$row['uid'],$recTitle,$row);
-			} elseif ($fCol=='pid') {
-				$theData[$fCol]=$row[$fCol];
-			} elseif ($fCol=='_PATH_') {
-				$theData[$fCol]=$this->recPath($row['pid']);
-			} elseif ($fCol=='_REF_') {
-				$theData[$fCol]=$this->makeRef($table,$row['uid']);
-			} elseif ($fCol=='_CONTROL_') {
-				$theData[$fCol]=$this->makeControl($table,$row);
-			} elseif ($fCol=='_CLIPBOARD_') {
-				$theData[$fCol]=$this->makeClip($table,$row);
-#				$t3lib_transl8tools = new t3lib_transl8tools;
-#				$theData[$fCol].=t3lib_div::view_array($t3lib_transl8tools->translationInfo($table,$row['uid']));
-			} elseif ($fCol=='_LOCALIZATION_') {
-				list($lC1, $lC2) = $this->makeLocalizationPanel($table,$row);
-				$theData[$fCol] = $lC1;
-				$theData[$fCol.'b'] = $lC2;
-			} elseif ($fCol=='_LOCALIZATION_b') {
-				// Do nothing, has been done above.
-			} else {
-				$theData[$fCol] = $this->linkUrlMail(htmlspecialchars(t3lib_BEfunc::getProcessedValueExtra($table,$fCol,$row[$fCol],100,$row['uid'])),$row[$fCol]);
+				// Preparing and getting the data-array
+			$theData = Array();
+			foreach($this->fieldArray as $fCol)	{
+				if ($fCol==$titleCol)	{
+					$recTitle = t3lib_BEfunc::getRecordTitle($table,$row,FALSE,TRUE);
+					$theData[$fCol] = $this->linkWrapItems($table,$row['uid'],$recTitle,$row);
+				} elseif ($fCol=='pid') {
+					$theData[$fCol]=$row[$fCol];
+				} elseif ($fCol=='_PATH_') {
+					$theData[$fCol]=$this->recPath($row['pid']);
+				} elseif ($fCol=='_REF_') {
+					$theData[$fCol]=$this->makeRef($table,$row['uid']);
+				} elseif ($fCol=='_CONTROL_') {
+					$theData[$fCol]=$this->makeControl($table,$row);
+				} elseif ($fCol=='_CLIPBOARD_') {
+					$theData[$fCol]=$this->makeClip($table,$row);
+	#				$t3lib_transl8tools = new t3lib_transl8tools;
+	#				$theData[$fCol].=t3lib_div::view_array($t3lib_transl8tools->translationInfo($table,$row['uid']));
+				} elseif ($fCol=='_LOCALIZATION_') {
+					list($lC1, $lC2) = $this->makeLocalizationPanel($table,$row);
+					$theData[$fCol] = $lC1;
+					$theData[$fCol.'b'] = $lC2;
+				} elseif ($fCol=='_LOCALIZATION_b') {
+					// Do nothing, has been done above.
+				} else {
+					$theData[$fCol] = $this->linkUrlMail(htmlspecialchars(t3lib_BEfunc::getProcessedValueExtra($table,$fCol,$row[$fCol],100,$row['uid'])),$row[$fCol]);
+				}
 			}
+
+			if (strlen($this->searchString))	{	// Reset the ID if it was overwritten
+				$this->id = $id_orig;
+			}
+
+				// Add row to CSV list:
+			if ($this->csvOutput) $this->addToCSV($row,$table);
+
+				// Create element in table cells:
+			$iOut.=$this->addelement(1,$theIcon,$theData,$row_bgColor);
+
+				// Render thumbsnails if a thumbnail column exists and there is content in it:
+			if ($this->thumbs && trim($row[$thumbsCol]))	{
+				$iOut.=$this->addelement(4,'', Array($titleCol=>$this->thumbCode($row,$table,$thumbsCol)),$row_bgColor);
+			}
+
+				// Finally, return table row element:
+			return $iOut;
 		}
-
-		if (strlen($this->searchString))	{	// Reset the ID if it was overwritten
-			$this->id = $id_orig;
-		}
-
-			// Add row to CSV list:
-		if ($this->csvOutput) $this->addToCSV($row,$table);
-
-			// Create element in table cells:
-		$iOut.=$this->addelement(1,$theIcon,$theData,$row_bgColor);
-
-			// Render thumbsnails if a thumbnail column exists and there is content in it:
-		if ($this->thumbs && trim($row[$thumbsCol]))	{
-			$iOut.=$this->addelement(4,'', Array($titleCol=>$this->thumbCode($row,$table,$thumbsCol)),$row_bgColor);
-		}
-
-			// Finally, return table row element:
-		return $iOut;
 	}
 
 	/**
@@ -885,7 +894,7 @@ class localRecordList extends recordList {
 						($table=='pages' && ($this->calcPerms&8))		// For pages, must have permission to create new pages here.
 						)	{
 						if ($this->showNewRecLink($table))	{
-							$params='&edit['.$table.']['.(-$row['uid']).']=new';
+							$params='&edit['.$table.']['.(-($row['_MOVE_PLH']?$row['_MOVE_PLH_uid']:$row['uid'])).']=new';
 							$cells[]='<a href="#" onclick="'.htmlspecialchars(t3lib_BEfunc::editOnClick($params,$this->backPath,-1)).'">'.
 									'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/new_'.($table=='pages'?'page':'el').'.gif','width="'.($table=='pages'?13:11).'" height="12"').' title="'.$LANG->getLL('new'.($table=='pages'?'Page':'Record'),1).'" alt="" />'.
 									'</a>';

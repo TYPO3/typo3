@@ -172,6 +172,72 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 			// CLEANSE SETTINGS
 		$this->MOD_SETTINGS = t3lib_BEfunc::getModuleData($this->MOD_MENU, t3lib_div::_GP('SET'), $this->MCONF['name'], 'ses');
 	}
+	
+	/**
+	 * Executes action for selected elements, if any is sent:
+	 */
+	function execute()	{
+		$post = t3lib_div::_POST();
+
+#		debug($post);
+
+		if ($post['_with_selected_do'])	{
+			if (is_array($post['items']) && count($post['items']))	{
+				$cmdArray = array();
+				
+				foreach($post['items'] as $item => $v)	{
+					list($table,$uid) = explode(':',$item,2);
+					
+					if ($GLOBALS['TCA'][$table] && t3lib_div::testInt($uid))	{
+						switch($post['_with_selected_do'])	{
+							case "stage_-1":
+								$cmdArray[$table][$uid]['version']['action'] = 'setStage';
+								$cmdArray[$table][$uid]['version']['stageId'] = -1;
+							break;
+							case "stage_0":
+								$cmdArray[$table][$uid]['version']['action'] = 'setStage';
+								$cmdArray[$table][$uid]['version']['stageId'] = 0;
+							break;
+							case "stage_1":
+								$cmdArray[$table][$uid]['version']['action'] = 'setStage';
+								$cmdArray[$table][$uid]['version']['stageId'] = 1;
+							break;
+							case "stage_10":
+								$cmdArray[$table][$uid]['version']['action'] = 'setStage';
+								$cmdArray[$table][$uid]['version']['stageId'] = 10;
+							break;
+							case "publish":
+								if ($onlineRec = t3lib_BEfunc::getLiveVersionOfRecord($table,$uid,'uid'))	{
+									$cmdArray[$table][$onlineRec['uid']]['version']['action'] = 'swap';
+									$cmdArray[$table][$onlineRec['uid']]['version']['swapWith'] = $uid;
+								}
+							break;
+							case "swap":
+							if ($onlineRec = t3lib_BEfunc::getLiveVersionOfRecord($table,$uid,'uid'))	{
+								$cmdArray[$table][$onlineRec['uid']]['version']['action'] = 'swap';
+								$cmdArray[$table][$onlineRec['uid']]['version']['swapWith'] = $uid;
+								$cmdArray[$table][$onlineRec['uid']]['version']['swapIntoWS'] = 1;
+							}
+							break;
+							case "release":
+								$cmdArray[$table][$uid]['version']['action'] = 'clearWSID';
+							break;
+							case "flush":
+								$cmdArray[$table][$uid]['version']['action'] = 'flush';
+							break;
+						}
+					}
+				}
+
+		#		debug($cmdArray);
+
+				$tce = t3lib_div::makeInstance('t3lib_TCEmain');
+				$tce->stripslashes_values = 0;
+				$tce->start(array(), $cmdArray);
+				$tce->process_cmdmap();
+			}
+		}
+	}
 
 	/**
 	 * Standard init function of a module.
@@ -1034,6 +1100,7 @@ if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['typo3/mod/u
 
 // Make instance:
 $SOBE = t3lib_div::makeInstance('SC_mod_user_ws_index');
+$SOBE->execute();
 $SOBE->init();
 $SOBE->main();
 $SOBE->printContent();

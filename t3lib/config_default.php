@@ -169,6 +169,7 @@ $TYPO3_CONF_VARS = Array(
 		'XCLASS' => Array(),					// See 'Inside TYPO3' document for more information.
 		'niceFlexFormXMLtags' => TRUE,			// If set, the flexform XML will be stored with meaningful tags which can be validated with DTD/schema. If you rely on custom reading of the XML from pre-4.0 versions you should set this to false if you don't like to change your reader code (internally it is insignificant since t3lib_div::xml2array() doesn't care for the tags if the index-attribute value is set)
 		'compactFlexFormXML' => 0,				// If set, the flexform XML will not contain indentation spaces making XML more compact
+		'elementVersioningOnly' => FALSE,		// If true, only element versioning is allowed in the backend. This is recommended for new installations of TYPO3 4.2+ since "page" and "branch" versioning types are known for the drawbacks of loosing ids and "element" type versions supports moving now.
 	),
 	'FE' => Array(			// Configuration for the TypoScript frontend (FE). Nothing here relates to the administration backend!
 		'png_to_gif' => 0,						// Boolean. Enables conversion back to gif of all png-files generated in the frontend libraries. Notice that this leaves an increased number of temporary files in typo3temp/

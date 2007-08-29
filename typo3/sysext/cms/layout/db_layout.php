@@ -572,21 +572,24 @@ class SC_db_layout {
 		$prev=$this->id;	// Page is the pid if no record to put this after.
 		while($cRow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
 			t3lib_BEfunc::workspaceOL('tt_content', $cRow);
-			if ($first)	{
-				if (!$edit_record)	{
-					$edit_record='tt_content:'.$cRow['uid'];
+			
+			if (is_array($cRow)) 	{
+				if ($first)	{
+					if (!$edit_record)	{
+						$edit_record='tt_content:'.$cRow['uid'];
+					}
+					$first = 0;
 				}
-				$first = 0;
+				if (strcmp($cRow['colPos'],$colPos))	{
+					$colPos=$cRow['colPos'];
+					$opt[]='<option value=""></option>';
+					$opt[]='<option value="_EDIT_COL:'.$colPos.'">__'.$LANG->sL(t3lib_BEfunc::getLabelFromItemlist('tt_content','colPos',$colPos),1).':__</option>';
+				}
+				$inValue = 'tt_content:'.$cRow['uid'];
+				$is_selected+=intval($edit_record==$inValue);
+				$opt[]='<option value="'.$inValue.'"'.($edit_record==$inValue?' selected="selected"':'').'>'.htmlspecialchars(t3lib_div::fixed_lgd_cs($cRow['header']?$cRow['header']:'['.$LANG->sL('LLL:EXT:lang/locallang_core.php:labels.no_title').'] '.strip_tags($cRow['bodytext']),$BE_USER->uc['titleLen'])).'</option>';
+				$prev=-$cRow['uid'];
 			}
-			if (strcmp($cRow['colPos'],$colPos))	{
-				$colPos=$cRow['colPos'];
-				$opt[]='<option value=""></option>';
-				$opt[]='<option value="_EDIT_COL:'.$colPos.'">__'.$LANG->sL(t3lib_BEfunc::getLabelFromItemlist('tt_content','colPos',$colPos),1).':__</option>';
-			}
-			$inValue = 'tt_content:'.$cRow['uid'];
-			$is_selected+=intval($edit_record==$inValue);
-			$opt[]='<option value="'.$inValue.'"'.($edit_record==$inValue?' selected="selected"':'').'>'.htmlspecialchars(t3lib_div::fixed_lgd_cs($cRow['header']?$cRow['header']:'['.$LANG->sL('LLL:EXT:lang/locallang_core.php:labels.no_title').'] '.strip_tags($cRow['bodytext']),$BE_USER->uc['titleLen'])).'</option>';
-			$prev=-$cRow['uid'];
 		}
 
 			// If edit_record is not set (meaning, no content elements was found for this language) we simply set it to create a new element:

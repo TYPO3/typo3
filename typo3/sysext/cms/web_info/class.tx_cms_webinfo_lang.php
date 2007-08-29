@@ -369,8 +369,8 @@ class tx_cms_webinfo_lang extends t3lib_extobjbase {
 		);
 
 		$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
+		t3lib_BEfunc::workspaceOL('pages_language_overlay',$row);
 		if (is_array($row))	{
-			t3lib_BEfunc::workspaceOL('pages_language_overlay',$row);
 			$row['_COUNT'] = $GLOBALS['TYPO3_DB']->sql_num_rows($res);
 			$row['_HIDDEN'] = $row['hidden'] ||
 							(intval($row['endtime']) > 0 && intval($row['endtime']) < time()) ||

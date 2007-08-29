@@ -139,9 +139,9 @@ class t3lib_pageSelect {
 		}
 		$this->where_hid_del.= 'AND (pages.starttime<='.$GLOBALS['SIM_EXEC_TIME'].') AND (pages.endtime=0 OR pages.endtime>'.$GLOBALS['SIM_EXEC_TIME'].') ';
 
-			// Filter out new place-holder pages in case we are NOT in a versioning preview (that means we are online!)
+			// Filter out new/deleted place-holder pages in case we are NOT in a versioning preview (that means we are online!)
 		if (!$this->versioningPreview)	{
-			$this->where_hid_del.= ' AND NOT(pages.t3ver_state=1)';
+			$this->where_hid_del.= ' AND NOT(pages.t3ver_state>0)';
 		} else {
 				// For version previewing, make sure that enable-fields are not de-selecting hidden pages - we need versionOL() to unset them only if the overlay record instructs us to.
 			$this->versioningPreview_where_hid_del = $this->where_hid_del;	// Copy where_hid_del to other variable (used in relation to versionOL())
@@ -415,8 +415,7 @@ class t3lib_pageSelect {
 		$output = Array();
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($fields, 'pages', 'pid='.intval($uid).$this->where_hid_del.$this->where_groupAccess.' '.$addWhere, '', $sortField);
 		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
-			$this->versionOL('pages',$row);
-
+			$this->versionOL('pages',$row,TRUE);
 			if (is_array($row))	{
 					// Keep mount point:
 				$origUid = $row['uid'];
@@ -954,7 +953,7 @@ class t3lib_pageSelect {
 
 				// Filter out new place-holder records in case we are NOT in a versioning preview (that means we are online!)
 			if ($ctrl['versioningWS'] && !$this->versioningPreview)	{
-				$query.=' AND '.$table.'.t3ver_state!=1';	// Shadow state for new items MUST be ignored!
+				$query.=' AND '.$table.'.t3ver_state<=0';	// Shadow state for new items MUST be ignored!
 			}
 
 				// Enable fields:
@@ -1081,6 +1080,11 @@ class t3lib_pageSelect {
 				}
 			}
 		}
+		
+			// changing PID in case of moving pointer:
+		if ($movePlhRec = $this->getMovePlaceholder($table,$rr['uid'],'pid'))	{
+			$rr['pid'] = $movePlhRec['pid'];
+		}
 	}
 
 	/**
@@ -1091,13 +1095,15 @@ class t3lib_pageSelect {
 	 *
 	 * @param	string		Table name
 	 * @param	array		Record array passed by reference. As minimum, the "uid", "pid" and "t3ver_state" fields must exist! The record MAY be set to FALSE in which case the calling function should act as if the record is forbidden to access!
+	 * @param	boolean		If set, the $row is cleared in case it is a move-pointer. This is only for preview of moved records (to remove the record from the original location so it appears only in the new location)
 	 * @return	void		(Passed by ref).
 	 * @see fixVersioningPid(), t3lib_BEfunc::workspaceOL()
 	 */
-	function versionOL($table,&$row)	{
+	function versionOL($table,&$row,$unsetMovePointers=FALSE)	{
 		global $TCA;
-
+		
 		if ($this->versioningPreview && is_array($row))	{
+			$movePldSwap = $this->movePlhOL($table,$row);	// will overlay any movePlhOL found with the real record, which in turn will be overlaid with its workspace version if any. 
 			if ($wsAlt = $this->getWorkspaceVersionOfRecord($this->versioningWorkspaceId, $table, $row['uid'], implode(',',array_keys($row))))	{	// implode(',',array_keys($row)) = Using fields from original record to make sure no additional fields are selected. This is best for eg. getPageOverlay()
 				if (is_array($wsAlt))	{
 
@@ -1125,20 +1131,93 @@ class t3lib_pageSelect {
 						// Changing input record to the workspace version alternative:
 					$row = $wsAlt;
 
-						// Check if it is deleted in workspace:
-					if ((int)$row['t3ver_state']===2)	{
+						// Check if it is deleted/new
+					if ((int)$row['t3ver_state']===1 || (int)$row['t3ver_state']===2)	{
+						$row = FALSE;	// Unset record if it turned out to be deleted in workspace
+					}
+
+						// Check if move-pointer in workspace (unless if a move-placeholder is the reason why it appears!):
+						// You have to specifically set $unsetMovePointers in order to clear these because it is normally a display issue if it should be shown or not.
+					if ((int)$row['t3ver_state']===4 && !$movePldSwap && $unsetMovePointers)	{
 						$row = FALSE;	// Unset record if it turned out to be deleted in workspace
 					}
 				} else {
 						// No version found, then check if t3ver_state =1 (online version is dummy-representation)
-					if ($wsAlt==-1 || (int)$row['t3ver_state']===1)	{
+					if ($wsAlt==-1 || (int)$row['t3ver_state']>0)	{
 						$row = FALSE;	// Unset record if it turned out to be "hidden"
 					}
 				}
 			}
 		}
 	}
+	
+	/**
+	 * Checks if record is a move-placeholder (t3ver_state==3) and if so it will set $row to be the pointed-to live record (and return TRUE)
+	 * Used from versionOL
+	 *
+	 * @param	string		Table name
+	 * @param	array		Row (passed by reference) - only online records...
+	 * @return	boolean		True if overlay is made.
+	 * @see t3lib_BEfunc::movePlhOl()
+	 */
+	function movePlhOL($table,&$row)	{
+		global $TCA;
 
+		if (($table=='pages' || (int)$TCA[$table]['ctrl']['versioningWS']>=2) && (int)$row['t3ver_state']===3)	{	// Only for WS ver 2... (moving)
+
+				// If t3ver_move_id is not found, then find it... (but we like best if it is here...)
+			if (!isset($row['t3ver_move_id']))	{
+				$moveIDRec = $this->getRawRecord($table,$row['uid'],'t3ver_move_id',TRUE);
+				$moveID = $moveIDRec['t3ver_move_id'];
+			} else {
+				$moveID = $row['t3ver_move_id'];
+			}
+		
+				// Find pointed-to record.
+			if ($moveID)	{
+				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(implode(',',array_keys($row)), $table, 'uid='.intval($moveID).$this->enableFields($table));
+				if ($origRow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
+					$row = $origRow;
+					return TRUE;
+				}
+			}
+		}
+		return FALSE;
+	}
+
+	/**
+	 * Returns move placeholder of online (live) version
+	 *
+	 * @param	string		Table name
+	 * @param	integer		Record UID of online version
+	 * @param	string		Field list, default is *
+	 * @return	array		If found, the record, otherwise nothing.
+	 * @see t3lib_BEfunc::getMovePlaceholder()
+	 */
+	function getMovePlaceholder($table,$uid,$fields='*')	{
+		global $TCA;
+
+		if ($this->versioningPreview)	{
+			$workspace = (int)$this->versioningWorkspaceId;
+			if (($table=='pages' || (int)$TCA[$table]['ctrl']['versioningWS']>=2) && $workspace!==0)	{
+
+					// Select workspace version of record:
+				$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+					$fields,
+					$table,
+					'pid!=-1 AND
+					 t3ver_state=3 AND
+					 t3ver_move_id='.intval($uid).' AND
+					 t3ver_wsid='.intval($workspace).
+						$this->deleteClause($table)
+				);
+
+				if (is_array($rows[0]))	return $rows[0];
+			}
+		}
+		return FALSE;
+	}
+	
 	/**
 	 * Select the version of a record for a workspace
 	 *
