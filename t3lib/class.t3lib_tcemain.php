@@ -527,7 +527,7 @@ class t3lib_TCEmain	{
 	 *
 	 * Note: When using the hook after INSERT operations, you will only get the temporary NEW... id passed to your hook as $id,
 	 *		 but you can easily translate it to the real uid of the inserted record using the $this->substNEWwithIDs array.
-	 * 
+	 *
 	 * @param	object		$hookObjectsArr: (reference) Array with hook objects
 	 * @param	string		$status: (reference) Status of the current operation, 'new' or 'update
 	 * @param	string		$table: (refrence) The table currently processing data for
@@ -4308,7 +4308,7 @@ $this->log($table,$id,6,0,0,'Stage raised...',30,array('comment'=>$comment,'stag
 					$dbAnalysis->writeForeignField($conf, $uid, $theUidToUpdate);
 				}
 
-					// Update child records if change to pid is required: 
+					// Update child records if change to pid is required:
 				if ($thePidToUpdate) {
 					$updateValues = array('pid' => $thePidToUpdate);
 					foreach ($dbAnalysis->itemArray as $v) {
@@ -4324,7 +4324,7 @@ $this->log($table,$id,6,0,0,'Stage raised...',30,array('comment'=>$comment,'stag
 	/**
 	 * Processes the $this->remapStack at the end of copying, inserting, etc. actions.
 	 * The remapStack takes care about the correct mapping of new and old uids in case of relational data.
-	 * 
+	 *
 	 * @return	void
 	 */
 	function processRemapStack() {
@@ -5060,7 +5060,7 @@ $this->log($table,$id,6,0,0,'Stage raised...',30,array('comment'=>$comment,'stag
 	 * @param	integer		Log entry ID, important for linking between log and history views
 	 * @return	void
 	 */
-	function setHistory($table,$id,$logId)		{
+	function setHistory($table,$id,$logId)	{
 		if (isset($this->historyRecords[$table.':'.$id]))	{
 
 				// Initialize settings:
@@ -5074,17 +5074,17 @@ $this->log($table,$id,6,0,0,'Stage raised...',30,array('comment'=>$comment,'stag
 			$this->clearHistory($maxAgeSeconds, $table);
 
 				// Set history data:
-				$fields_values = array();
-				$fields_values['history_data'] = serialize($this->historyRecords[$table.':'.$id]);
-				$fields_values['fieldlist'] = implode(',',array_keys($this->historyRecords[$table.':'.$id]['newRecord']));
-				$fields_values['tstamp'] = time();
-				$fields_values['tablename'] = $table;
-				$fields_values['recuid'] = $id;
-				$fields_values['sys_log_uid'] = $logId;
+			$fields_values = array();
+			$fields_values['history_data'] = serialize($this->historyRecords[$table.':'.$id]);
+			$fields_values['fieldlist'] = implode(',',array_keys($this->historyRecords[$table.':'.$id]['newRecord']));
+			$fields_values['tstamp'] = time();
+			$fields_values['tablename'] = $table;
+			$fields_values['recuid'] = $id;
+			$fields_values['sys_log_uid'] = $logId;
 
-				$GLOBALS['TYPO3_DB']->exec_INSERTquery('sys_history', $fields_values);
-			}
+			$GLOBALS['TYPO3_DB']->exec_INSERTquery('sys_history', $fields_values);
 		}
+	}
 
 	/**
 	 * Clearing sys_history table from older entries that are expired.
