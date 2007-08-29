@@ -1,3 +1,7 @@
+2007-08-15  Wolfgang Klinger  <wk@plan2.net>
+
+	* (trivial) Added is_array checks in extension manager code (committed by Stucki)
+
 2007-08-23  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Fixed: hanging recordset in t3lib_BEfunc
