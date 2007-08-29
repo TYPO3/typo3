@@ -286,6 +286,7 @@ $TCA['be_users'] = Array (
 				'type' => 'select',
 				'items' => Array (
 					Array('English', ''),
+					Array('Albanian', 'sq'),
 					Array('Arabic', 'ar'),
 					Array('Basque', 'eu'),
 					Array('Bosnian', 'ba'),

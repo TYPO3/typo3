@@ -287,6 +287,7 @@ class t3lib_cs {
 		'sl' => 'east_european',	// Slovenian
 		'sr' => 'cyrillic',		// Serbian
 		'sv' => 'west_european',	// Swedish
+		'sq' => 'albanian', // Albanian
 		'th' => 'thai',
 		'uk' => 'cyrillic',		// Ukranian
 		'vi' => 'vietnamese',
@@ -345,10 +346,12 @@ class t3lib_cs {
 		'esm' => 'west_european',	// Spanish (Mexican)
 		'esn' => 'west_european',	// Spanish (internat. sort)
 		'sve' => 'west_european',	// Swedish
+		'sqi' => 'albanian',		// Albanian
 		'tha' => 'thai',
 		'trk' => 'turkish',
 		'ukr' => 'cyrillic',	// Ukrainian
 			// English language names
+		'albanian' => 'albanian',
 		'arabic' => 'arabic',
 		'basque' => 'west_european',
 		'bosnian' => 'east_european',
@@ -414,6 +417,7 @@ class t3lib_cs {
 		'trad_chinese' => 'big5',
 		'vietnamese' => '',
 		'unicode' => 'utf-8',
+		'albanian' => 'utf-8'
 	);
 
 		// mapping of language (family) names to charsets on Windows
@@ -435,6 +439,7 @@ class t3lib_cs {
 		'japanese' => 'shift_jis',
 		'simpl_chinese' => 'gb2312',
 		'trad_chinese' => 'big5',
+		'albanian' => 'windows-1250'
 	);
 
 		// mapping of locale names to charsets
@@ -495,7 +500,8 @@ class t3lib_cs {
 		'hi' => 'utf-8',
 		'fo' => 'utf-8',
 		'fa' => 'utf-8',
-		'sr' => 'utf-8'
+		'sr' => 'utf-8',
+		'sq' => 'utf-8'
 	);
 
 		// TYPO3 specific: Array with the iso names used for each system language in TYPO3:

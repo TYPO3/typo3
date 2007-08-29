@@ -54,6 +54,7 @@
 			<label index="lang_fo">Faroese</label>
 			<label index="lang_fa">Persian</label>
 			<label index="lang_sr">Serbian</label>
+			<label index="lang_sq">Albanian</label>
 			<label index="default">Default</label>
 			<label index="simulate">Simulate backend user</label>
 			<label index="opening">Startup</label>
