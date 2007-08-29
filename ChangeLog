@@ -1,6 +1,6 @@
-2007-08-23 Andreas Otto <andreas.otto@dkd.de>
+2007-08-23  Andreas Otto  <andreas.otto@dkd.de>
 
-        * (trivial) Fixed bug #4888:  Invalid argument supplied for foreach().
+        * (trivial) Fixed bug #4888: Invalid argument supplied for foreach()
 
 2007-07-16  Michael Stucki  <michael@typo3.org>
 
