@@ -869,7 +869,7 @@ class wslib_gui {
 				)).'">'.
 				'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/insert1.gif','width="14" height="14"').' alt="" align="top" title="' . $LANG->getLL('img_title_publish') . '" />'.
 				'</a>';
-			if ($GLOBALS['BE_USER']->workspaceSwapAccess())	{		//  && (int)$rec_on['t3ver_state']!==1 && (int)$rec_off['t3ver_state']!==2
+			if ($GLOBALS['BE_USER']->workspaceSwapAccess())	{
 				$actionLinks.=
 					'<a href="'.htmlspecialchars($this->doc->issueCommand(
 					'&cmd['.$table.']['.$rec_on['uid'].'][version][action]=swap'.

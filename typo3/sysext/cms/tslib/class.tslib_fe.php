@@ -1535,7 +1535,6 @@
 			if (!$inputCode)	{
 				$inputCode = $_COOKIE['ADMCMD_prev'];
 				SetCookie('ADMCMD_prev', $inputCode, time()+$cookieTTL);
-				echo "1";
 			} else {	// Otherwise "log out":
 				SetCookie('ADMCMD_prev', '', 0);
 				die("You logged out from Workspace preview mode. Reload the browser to log in again.");
