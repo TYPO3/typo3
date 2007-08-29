@@ -390,7 +390,7 @@ class t3lib_install {
 										)
 									);
 										// Change key definition if necessary (must use "prefix" on TEXT columns)
-									if ( is_array($cfg['keys']) ) {
+									if (is_array($cfg['keys'])) {
 										foreach ($cfg['keys'] as $kN => $kType) {
 											$match = array();
 											preg_match('/^([^(]*)\(([^)]+)\)(.*)/', $kType, $match);

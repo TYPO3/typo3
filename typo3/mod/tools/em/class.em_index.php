@@ -1962,7 +1962,7 @@ EXTENSION KEYS:
 							} else {
 									// Determine if new modules were installed:
 								$techInfo = $this->makeDetailedExtensionAnalysis($extKey, $list[$extKey]);
-								if (($this->CMD['load'] || $this->CMD['remove']) && is_array($techInfo['flags']) && in_array('Module', $techInfo['flags'], true)) {									
+								if (($this->CMD['load'] || $this->CMD['remove']) && is_array($techInfo['flags']) && in_array('Module', $techInfo['flags'], true)) {
 									$vA['CMD']['refreshMenu'] = 1;
 								}
 								header('Location: '.t3lib_div::linkThisScript($vA));

@@ -286,8 +286,8 @@ class t3lib_TCEmain	{
 	var $copyMappingArray_merged = Array();		// This array is the sum of all copying operations in this class. May be READ from outside, thus partly public.
 	var $copiedFileMap = Array();				// A map between input file name and final destination for files being attached to records.
 	var $RTEmagic_copyIndex = Array();			// Contains [table][id][field] of fiels where RTEmagic images was copied. Holds old filename as key and new filename as value.
-	var	$errorLog = Array();					// Errors are collected in this variable.
-	
+	var $errorLog = Array();					// Errors are collected in this variable.
+
 
 
 		// *********************
@@ -1082,12 +1082,12 @@ class t3lib_TCEmain	{
 										$diffStorageFlag = TRUE;
 									}
 								}
-								
+
 
 									// If autoversioning is happening we need to perform a nasty hack. The case is parallel to a similar hack inside checkValue_group_select_file().
 									// When a copy or version is made of a record, a search is made for any RTEmagic* images in fields having the "images" soft reference parser applied. That should be true for RTE fields. If any are found they are duplicated to new names and the file reference in the bodytext is updated accordingly.
 									// However, with auto-versioning the submitted content of the field will just overwrite the corrected values. This leaves a) lost RTEmagic files and b) creates a double reference to the old files.
-									// The only solution I can come up with is detecting when auto versioning happens, then see if any RTEmagic images was copied and if so make a stupid string-replace of the content ! 
+									// The only solution I can come up with is detecting when auto versioning happens, then see if any RTEmagic images was copied and if so make a stupid string-replace of the content !
 								if ($this->autoVersioningUpdate===TRUE)	{
 									if (is_array($this->RTEmagic_copyIndex[$table][$id][$field]))	{
 										foreach($this->RTEmagic_copyIndex[$table][$id][$field] as $oldRTEmagicName => $newRTEmagicName)	{
@@ -1095,7 +1095,7 @@ class t3lib_TCEmain	{
 										}
 									}
 								}
-								
+
 							} elseif ($TCA[$table]['ctrl']['origUid']===$field) {	// Allow value for original UID to pass by...
 								$fieldArray[$field] = $fieldValue;
 							}
@@ -1802,7 +1802,7 @@ class t3lib_TCEmain	{
 
 				// Only execute the first move command:
 			list ($key, $value) = each ($moveCMDS);
-			
+
 			if (is_array($moveCMDS[$key]))	{
 				$this->_MOVE_FLEX_FORMdata($valueArrayToMoveIn[$key],$moveCMDS[$key], $direction);
 			} else {
@@ -3034,7 +3034,7 @@ class t3lib_TCEmain	{
 	 * Copies any "RTEmagic" image files found in record with table/id to new names.
 	 * Usage: After copying a record this function should be called to search for "RTEmagic"-images inside the record. If such are found they should be duplicated to new names so all records have a 1-1 relation to them.
 	 * Reason for copying RTEmagic files: a) if you remove an RTEmagic image from a record it will remove the file - any other record using it will have a lost reference! b) RTEmagic images keeps an original and a copy. The copy always is re-calculated to have the correct physical measures as the HTML tag inserting it defines. This is calculated from the original. Two records using the same image could have difference HTML-width/heights for the image and the copy could only comply with one of them. If you don't want a 1-1 relation you should NOT use RTEmagic files but just insert it as a normal file reference to a file inside fileadmin/ folder
-	 * 
+	 *
 	 * @param	string		Table name
 	 * @param	integer		Record UID
 	 * @return	void
@@ -3047,7 +3047,7 @@ class t3lib_TCEmain	{
 			$this->fileFunc = t3lib_div::makeInstance('t3lib_basicFileFunctions');
 			$this->include_filefunctions=1;
 		}
-				
+
 			// Select all RTEmagic files in the reference table from the table/ID
 		$recs = $TYPO3_DB->exec_SELECTgetRows(
 			'*',
@@ -3059,8 +3059,8 @@ class t3lib_TCEmain	{
 				' AND recuid='.intval($theNewSQLID),
 			'',
 			'sorting DESC'
-		);	
-		
+		);
+
 
 			// Traverse the files found and copy them:
 		if (is_array($recs)) {
@@ -3084,9 +3084,9 @@ class t3lib_TCEmain	{
 							// If filename looks like an RTE file, and the directory is in "uploads/", then process as a RTE file!
 						if ($rteOrigName && t3lib_div::isFirstPartOfStr($dirPrefix,'uploads/') && @is_dir(PATH_site.$dirPrefix))	{	// RTE:
 
-								// From the "original" RTE filename, produce a new "original" destination filename which is unused. 
+								// From the "original" RTE filename, produce a new "original" destination filename which is unused.
 							$origDestName = $this->fileFunc->getUniqueName($rteOrigName, PATH_site.$dirPrefix);
-							
+
 								// Create copy file name:
 							$pI = pathinfo($rec['ref_string']);
 							$copyDestName = dirname($origDestName).'/RTEmagicC_'.substr(basename($origDestName),10).'.'.$pI['extension'];
@@ -3107,7 +3107,7 @@ class t3lib_TCEmain	{
 									$error = $sysRefObj->setReferenceValue($rec['hash'],substr($copyDestName,strlen(PATH_site)),FALSE,TRUE);
 									if ($error)	{
 										echo $this->newlog('t3lib_refindex::setReferenceValue(): '.$error,1);
-									} 
+									}
 								} else $this->newlog('File "'.$copyDestName.'" was not created!',1);
 							} else $this->newlog('Could not construct new unique names for file!',1);
 						} else $this->newlog('Maybe directory of file was not within "uploads/"?',1);
@@ -4545,7 +4545,7 @@ $this->log($table,$id,6,0,0,'Stage raised...',30,array('comment'=>$comment,'stag
 					$dbAnalysis->writeForeignField($conf, $uid, $theUidToUpdate);
 				}
 
-					// Update child records if change to pid is required: 
+					// Update child records if change to pid is required:
 				if ($thePidToUpdate) {
 					$updateValues = array('pid' => $thePidToUpdate);
 					foreach ($dbAnalysis->itemArray as $v) {
@@ -4554,7 +4554,7 @@ $this->log($table,$id,6,0,0,'Stage raised...',30,array('comment'=>$comment,'stag
 						}
 					}
 				}
-			}			
+			}
 		}
 	}
 
@@ -5347,7 +5347,7 @@ $this->log($table,$id,6,0,0,'Stage raised...',30,array('comment'=>$comment,'stag
 	 * @param	integer		Log entry ID, important for linking between log and history views
 	 * @return	void
 	 */
-	function setHistory($table,$id,$logId)		{
+	function setHistory($table,$id,$logId)	{
 		if (isset($this->historyRecords[$table.':'.$id]))	{
 
 				// Initialize settings:
@@ -5361,17 +5361,17 @@ $this->log($table,$id,6,0,0,'Stage raised...',30,array('comment'=>$comment,'stag
 			$this->clearHistory($maxAgeSeconds, $table);
 
 				// Set history data:
-				$fields_values = array();
-				$fields_values['history_data'] = serialize($this->historyRecords[$table.':'.$id]);
-				$fields_values['fieldlist'] = implode(',',array_keys($this->historyRecords[$table.':'.$id]['newRecord']));
-				$fields_values['tstamp'] = time();
-				$fields_values['tablename'] = $table;
-				$fields_values['recuid'] = $id;
-				$fields_values['sys_log_uid'] = $logId;
+			$fields_values = array();
+			$fields_values['history_data'] = serialize($this->historyRecords[$table.':'.$id]);
+			$fields_values['fieldlist'] = implode(',',array_keys($this->historyRecords[$table.':'.$id]['newRecord']));
+			$fields_values['tstamp'] = time();
+			$fields_values['tablename'] = $table;
+			$fields_values['recuid'] = $id;
+			$fields_values['sys_log_uid'] = $logId;
 
-				$GLOBALS['TYPO3_DB']->exec_INSERTquery('sys_history', $fields_values);
-			}
+			$GLOBALS['TYPO3_DB']->exec_INSERTquery('sys_history', $fields_values);
 		}
+	}
 
 	/**
 	 * Clearing sys_history table from older entries that are expired.

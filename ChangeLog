@@ -1,4 +1,4 @@
-2007-08-28 Kasper Skaarhoj <kasper2007@typo3.com>
+2007-08-28  Kasper Skaarhoj  <kasper2007@typo3.com>
 
 	* Improvements as announced in June on the core list (except workspace moving)
 		- Dual-preview for workspaces are only used now if the checkbox "Frontend Preview" is not checked.
@@ -15,17 +15,17 @@
 		- Change in t3lib_refindex so setReferenceValue() can be run without being admin (by special parameter)
 		- Fixed bug in t3lib_BEfunc::selectVersionsOfRecord(): now offline versions are not only selected by their t3ver_oid but also pid=-1 which is the correct thing to do. This actually resulted in dataloss in some known cases with the lowlevel cleaner CLI script.
 		- Added fields to indexes on pages, sys_template and pages_language_uid.
-		- RTEmagic images are now duplicated when records are copied/versioned in tcemain. This is a long awaited feature that solves the bug that RTE magic images shared between too records would result in both disappearing if the one was deleted. So its in fact a critical fix for workspaces.
+		- RTEmagic images are now duplicated when records are copied/versioned in tcemain. This is a long awaited feature that solves the bug that RTE magic images shared between two records would result in both disappearing if the one was deleted. So its in fact a critical fix for workspaces.
 
-2007-08-23 Dmitry Dulepov <dmitry@typo3.org>
+2007-08-23  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Fixed: hanging recordset in t3lib_BEfunc
 
-2007-08-23 Andreas Otto <andreas.otto@dkd.de>
+2007-08-23  Andreas Otto  <andreas.otto@dkd.de>
 
-	* (trivial) Fixed bug #4888:  Invalid argument supplied for foreach().
+	* (trivial) Fixed bug #4888:  Invalid argument supplied for foreach()
 
-2007-08-21 Andreas Otto <andreas.otto@dkd.de>
+2007-08-21  Andreas Otto  <andreas.otto@dkd.de>
 
 	* Feature request #5748: Introduced a new TS option that makes indexing of metatags configurable. Adapted code to make use of the new TS option.
 
@@ -315,7 +315,7 @@
 
 2007-04-04  Andreas Otto  <andreas.otto@dkd.de>
 
-	* Fix bug #5411: A directory handle was not correclty used.
+	* Fix bug #5411: A directory handle was not correctly used.
 
 2007-04-03  Andreas Otto  <andreas.otto@dkd.de>
 
