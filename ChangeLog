@@ -1,3 +1,7 @@
+2007-08-30  Ernesto Baschny  <ernst@cron-it.de>
+
+	* (feature) Feature request #6237: Added hook to Web>Page "columns" view, allowing plugins to display "additional info" instead of "CODE:"
+
 2007-08-30  Wolfgang Klinger  <wk@plan2.net>
 
 	* (trivial) Extended the Workspace module access check with the User module access check

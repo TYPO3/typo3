@@ -1767,8 +1767,24 @@ class tx_cms_layout extends recordList {
 				$out.=	$this->infoGif($infoArr).
 						$GLOBALS['LANG']->sL(t3lib_BEfunc::getItemLabel('tt_content','list_type'),1).' '.
 						$GLOBALS['LANG']->sL(t3lib_BEfunc::getLabelFromItemlist('tt_content','list_type',$row['list_type']),1).'<br />';
-
-				$out.=	$GLOBALS['LANG']->sL(t3lib_BEfunc::getItemLabel('tt_content','select_key'),1).' '.$row['select_key'].'<br />';
+				$hookArr = array();
+				$hookOut = '';
+				if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/class.tx_cms_layout.php']['list_type_Info'][$row['list_type']]))	{
+					$hookArr = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/class.tx_cms_layout.php']['list_type_Info'][$row['list_type']];
+				} elseif (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/class.tx_cms_layout.php']['list_type_Info']['_DEFAULT']))	{
+					$hookArr = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/class.tx_cms_layout.php']['list_type_Info']['_DEFAULT'];
+				}
+				if (count($hookArr) > 0)	{
+					$_params = array('pObj' => &$this, 'row' => $row, 'infoArr' => $infoArr);
+					foreach ($hookArr as $_funcRef)	{
+						$hookOut .= t3lib_div::callUserFunction($_funcRef, $_params, $this);
+					}
+				}
+				if (strcmp($hookOut, ''))	{
+					$out .= $hookOut;
+				} else	{
+					$out.=	$GLOBALS['LANG']->sL(t3lib_BEfunc::getItemLabel('tt_content','select_key'),1).' '.$row['select_key'].'<br />';
+				}
 
 				$infoArr=Array();
 				$this->getProcessedValue('tt_content','recursive',$row,$infoArr);
