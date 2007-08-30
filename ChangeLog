@@ -1,6 +1,6 @@
-2007-08-23  Dmitry Dulepov  <dmitry@typo3.org>
+2007-08-30  Wolfgang Klinger  <wk@plan2.net>
 
-	* Added Albanian language to TYPO3
+	* (trivial) Extended the Workspace module access check with the User module access check
 
 2007-08-28  Kasper Skaarhoj  <kasper2007@typo3.com>
 
@@ -32,6 +32,10 @@
 		- Fixed bug in t3lib_BEfunc::selectVersionsOfRecord(): now offline versions are not only selected by their t3ver_oid but also pid=-1 which is the correct thing to do. This actually resulted in dataloss in some known cases with the lowlevel cleaner CLI script.
 		- Added fields to indexes on pages, sys_template and pages_language_uid.
 		- RTEmagic images are now duplicated when records are copied/versioned in tcemain. This is a long awaited feature that solves the bug that RTE magic images shared between two records would result in both disappearing if the one was deleted. So its in fact a critical fix for workspaces.
+
+2007-08-23  Dmitry Dulepov  <dmitry@typo3.org>
+
+	* Added Albanian language to TYPO3
 
 2007-08-23  Dmitry Dulepov  <dmitry@typo3.org>
 
