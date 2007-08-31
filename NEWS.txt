@@ -6,7 +6,8 @@ CHANGES & IMPROVEMENTS between TYPO3 4.0 and 4.1
 General
 ==================
 
-	* ...
+	* New PHP version requirement: You need to have at least PHP 5.2.0 in order to run TYPO3 4.2
+	* Workspaces allow moving of elements (for details, see Inside TYPO3, Core API, and this video: http://castor.t3o.punkt.de/files/moving_in_workspaces2.mp4 (/.mov for better quality)
 
 Backend
 ==================
