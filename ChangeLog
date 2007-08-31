@@ -1,6 +1,7 @@
 2007-08-31  Michael Stucki  <michael@typo3.org>
 
 	* (trivial) Cleanup of NEWS.txt
+	* Add feature #4470: Add new property "search.exactCount" to indexed_search
 
 2007-08-30  Ernesto Baschny  <ernst@cron-it.de>
 

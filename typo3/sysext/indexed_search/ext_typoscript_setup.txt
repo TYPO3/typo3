@@ -42,6 +42,7 @@ plugin.tx_indexedsearch {
 		page_links = 10
 		detect_sys_domain_records = 0
 		defaultFreeIndexUidList =
+		exactCount = 0
 	}
 
 	result_link_target =

@@ -577,8 +577,10 @@ class tx_indexedsearch extends tslib_pibase {
 			$c = 0;	// Result pointer: Counts up the position in the current search-result
 			$grouping_phashes = array();	// Used to filter out duplicates.
 			$grouping_chashes = array();	// Used to filter out duplicates BASED ON cHash.
-			$firstRow = Array();	// Will hold the first row in result - used to calculate relative hit-ratings.
-			$resultRows = Array();	// Will hold the results rows for display.
+			$firstRow = array();	// Will hold the first row in result - used to calculate relative hit-ratings.
+			$resultRows = array();	// Will hold the results rows for display.
+
+			$exactCount = $this->conf['search.']['exactCount'];	// Continue counting and checking of results even if we are sure they are not displayed in this request. This will slow down your page rendering, but it allows precise search result counters.
 
 				// Now, traverse result and put the rows to be displayed into an array
 				// Each row should contain the fields from 'ISEC.*, IP.*' combined + artificial fields "show_resume" (boolean) and "result_number" (counter)
@@ -606,8 +608,8 @@ class tx_indexedsearch extends tslib_pibase {
 						if ($c > $pointer * $this->piVars['results'])	{
 							$row['result_number'] = $c;
 							$resultRows[] = $row;
-								// This may lead to a problem: If the result check is not stopped here, the search will take longer. However the result counter will not filter out grouped cHashes/pHashes that were not processed yet.
-							if (($c+1) > ($pointer+1)*$this->piVars['results'])	break;
+								// This may lead to a problem: If the result check is not stopped here, the search will take longer. However the result counter will not filter out grouped cHashes/pHashes that were not processed yet. You can change this behavior using the "search.exactCount" property (see above).
+							if (!$exactCount && (($c+1) > ($pointer+1)*$this->piVars['results']))	{ break; }
 						}
 					} else {
 						$count--;	// Skip this row if the user cannot view it (missing permission)

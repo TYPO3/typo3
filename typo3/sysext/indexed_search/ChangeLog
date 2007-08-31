@@ -1,4 +1,8 @@
-2007-08-21 Andreas Otto <andreas.otto@dkd.de>
+2007-08-31  Michael Stucki  <michael@typo3.org>
+
+	* Add new property "search.exactCount" to allow exact counting of matches. See documentation for more information.
+
+2007-08-21  Andreas Otto  <andreas.otto@dkd.de>
 
 	* Feature request #5748: Introduced a new TS option that makes indexing of metatags configurable. Adapted code to make use of the new TS option.
 
