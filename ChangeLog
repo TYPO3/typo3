@@ -1,3 +1,7 @@
+2007-08-31  Michael Stucki  <michael@typo3.org>
+
+	* (trivial) Cleanup of NEWS.txt
+
 2007-08-30  Ernesto Baschny  <ernst@cron-it.de>
 
 	* (feature) Feature request #6237: Added hook to Web>Page "columns" view, allowing plugins to display "additional info" instead of "CODE:"
@@ -13,14 +17,11 @@
 		- Workspace "swapping" for "New"-placeholders and "Deleted"-Markers is now supported. Previously, both types would be published, not swapped. The change also means that effectively the difference between the value of "t3ver_state" being 1 or 2 is only cosmetic and the semantic depends on whether the field is set for a record being online or offline. TYPO3 core API is updated on the issue.
 		- Refactored function for moving elements (t3lib_tcemain::moveRecord())
 		- t3lib_BEfunc::workspaceOL() may now set the input variable $row (which is passed by reference) to false. The consequence is that code calling workspaceOL() should check if $row is still an array after calling the function. False is used if a version overlay with the move-id pointer is found in which case we would like a backend preview.
-		- Added switch in TYPO3_CONF_VARS['BE']['elementVersioningOnly'] which allows to completely turn off page and branch versioning (which are depricated for TYPO3 4.2+)
+		- Added switch in TYPO3_CONF_VARS['BE']['elementVersioningOnly'] which allows to completely turn off page and branch versioning (which are deprecated for TYPO3 4.2+)
 		- Added more tests for version integrity (centering around moving)
 		- Added checkboxes and an action selector in the Workspace module for batch processing of elements.
-		- Added "flush" command to TCEmain api for versions so versions can be completely deleted and not only released from a workspace.
-
-2007-08-28 Kasper Skaarhoj <kasper2007@typo3.com>
-
-	* Improvements as announced in June on the core list (except workspace moving)
+		- Added "flush" command to TCEmain API for versions so versions can be completely deleted and not only released from a workspace.
+	* Improvements as announced in June on the core list
 		- Dual-preview for workspaces are only used now if the checkbox "Frontend Preview" is not checked.
 		- Whole workspaces can be previewed now for users with no backend login by a simple link you can email. Same functionality as the preview link for individual pages available from the Web>Versioning module. The function is found in User>Workspace (Workspace manager)
 		- In the t3lib_cli class, optional parameters to CLI script options are supported (optional parameters are configured with [] brackets)

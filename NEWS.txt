@@ -6,78 +6,32 @@ CHANGES & IMPROVEMENTS between TYPO3 4.0 and 4.1
 General
 ==================
 
-	* New PHP version requirement: You need to have at least PHP 4.3.0 in order to run TYPO3 4.1
+	* ...
 
 Backend
 ==================
 
-	* Inline Relational Record Editing (IRRE)
-		-> It's now possible to create and edit child records of a record as subforms inside of the form view in the backend
-		-> Therefore, the new TCA field type "inline" has been introduced
-		-> See http://wiki.typo3.org/index.php/Inline_Relational_Record_Editing for details
-
-	* Bidirectional MM relations: It's now possible to configure MM relations from both sides of the relation.
-		-> E.g. an employment relation could now be edited from both the "person" as well as the "company" side. ("employers" of "persons" and "employees" of "companies")
-
-	* BE who-is-online
-		-> The Tools->Useradmin module now displays which BE users are currently online.
-
-	* UTF-8 for filenames
-		-> You need to set $TYPO3_CONF_VARS['SYS']['UTF8filesystem'] to TRUE to enable this feature.
-
-	* Improved Extension Manager
-		-> Requires less memory
-		-> The EM now stores the list of extensions from TER in the database,
-		-> see http://bugs.typo3.org/view.php?id=2615
-
-	* Two nice usability enhancements
-		-> Using <label> tags in tceforms where appropriate to enhance usability in the Backend forms
-		-> Increase length for titles of be_users, be_groups, and fe_groups
-
-	* Workspace publishing is improved. Now publishing works with a limited number of records and publishes workspaces in several passes. This prevents PHP timeouts while publishing too many changes
+	* ...
 
 Compatibility
 =============
 
-	* Changed the default value of $TYPO3_CONF_VARS[SYS][devIPmask]
-	* Exported TBE_EDITOR functions from t3lib_TCEforms to a separate file typo3/jsfunc_tbe_editor.js
-		-> Changed all occurrences of TBE_EDITOR_<function> to TBE_EDITOR.<function> in the Core (e.g. TBE_EDITOR_loginRefreshed -> TBE_EDITOR.loginRefreshed)
-		-> Changed all occurrences of typo3Form<function> to typo3form.<function> in the Core (e.g. typo3FormFieldSet -> typo3form.fieldSet)
+	* ...
 
 Speed improvements
 ==================
 
-	* Many TYPO3 tables (cache_*, index_*, tt_content, pages and others) are modified to use new indexes. This speeds up common queries on these pages a lot
-
-	* Some tables are changed to use InnoDB engine type for MySQL. Unlike MyISAM, which was default in previous versions, InnoDB does not lock tables for reading when another request tries to write something to table. InnoDB makes possible many reads along with many writes, while MyISAM prevents reads and writes until every single write completes. This gives huge improvement cache_*, sys_stat and index_* tables during peak visiting hours.
-	  InnoDB is more stable than MyISAM and prevents database corruption at peaks when there are too many requests come to MySQL.
-	  If InnoDB is not configured (not enabled), MySQL will ignore these settings use MyISAM. TYPO3 users need not to change anything if they do not use InnoDB but if InnoDB is available, it will be used by default
-
-	* TYPO3 now includes several sample .htaccess files in t3lib/ and typo3/ subdirectories to speed up loading of static (non-changing) images. Without those files all images will be reloaded each time when backend user accessed any module, navigation frame, file or page tree. This uses a lot of bandwidth and slowed servers down with HTTP requests for static (non-changing) images (for example, imagine how many additional requests will web server get when you use List module in extended mode and how much data it needs to transfer!).
-	  Using this feature requires certain Apache configuration. Main Apache configuration file should have "AllowOverride Indexes" directive for typo3-based web site (note that there can be also other values in AllowOverride" but "Indexes" is mandatory). To enable this functionality you need to rename _.htaccess files from the list below to .htaccess:
-		typo3/gfx/_.htaccess
-		typo3/mod/user/ws/_.htaccess
-		typo3/sysext/_.htaccess
-		typo3/sysext/t3skin/stylesheets/_.htaccess
-	  Note: this feature requires mod_expires to be installed for Apache. If mod_expires is not installed, images will not be cached and TYPO3 will work as in previous versions. .htaccess files will detect if mod_expires is installed and use it automatically
+	* ...
 
 Development
 ====================
 
-	* Better getRecordTitle() function
-		-> It's now possible to define a "label_userFunc"
-		-> This makes it possible to e.g. define the label of a "persons" table as displayed in the list module to be like "Lastname, Firstname". Until now you could only define one field to be the "labelfield".
-
-	* Inline Relational Record Editing (see "Backend" section above)
-
-	* It is possible to reuse List module classes in extensions (see record editing in TemplaVoila Page module, for example)
+	* ...
 
 Database changes
 ================
 
-	* Changed many BLOB fields to TEXT because they always contain textual data (comma-separated values or serialized PHP objects)
-
-	* Changed VARCHAR(2) fields to CHAR(2) to prevent never disappearing prompt to correct those fields (MySQL always silently converts VARCHAR(2) to CHAR(2), TYPO3 tries to make them VARCHAR(2) again, gets CHAR(2) back and complains again)
+	* ...
 
 DBAL
 ====
@@ -87,17 +41,12 @@ DBAL
 Frontend features
 =================
 
-	* Autologin for Frontend users is now possible!
-		-> Users can decide on their own whether they want to "Stay logged in" using a checkbox. The latest version of the "newloginbox" extension is required for that.
-		-> Needs to be configured in the Install Tool ("All Configuration" -> "permalogin" and "lifetime")
-
-	* UTF-8 for log files
-		-> TYPO3 now logs page paths in UTF-8 if config.stat_apache_niceTitle is set to "utf-8" in the TypoScript template Setup.
+	* ...
 
 Backend skin
 ============
 
-	* Stylesheets are cached using mod_expires to speed up access (see "Speed improvements" section)
+	* ...
 
 Important bugfixes
 ==================

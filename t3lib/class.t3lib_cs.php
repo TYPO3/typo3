@@ -287,7 +287,7 @@ class t3lib_cs {
 		'sl' => 'east_european',	// Slovenian
 		'sr' => 'cyrillic',		// Serbian
 		'sv' => 'west_european',	// Swedish
-		'sq' => 'albanian', // Albanian
+		'sq' => 'albanian',		// Albanian
 		'th' => 'thai',
 		'uk' => 'cyrillic',		// Ukranian
 		'vi' => 'vietnamese',
