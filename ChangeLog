@@ -3,6 +3,7 @@
 	* (trivial) Moving t3lib_TCEforms_inline::getJSON() to t3lib_div::array2json()
 	* (feature) Added feature #2830: imgResource doesn't support stdWrap on minW and minH
 	* (minor) Fixed bug #6104: IRRE - IE7: Strange behaviour with hover event of nested Tabs/IRRE-levels with relative positioned HTML elements
+	* (minor) Fixed bug #5906: IRRE - Default values defined in TCA are not used for children (thanks to Joscha Feth and Jeff Segars)
 
 2007-08-31  Michael Stucki  <michael@typo3.org>
 
