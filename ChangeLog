@@ -1,3 +1,7 @@
+2007-09-03  Oliver Hader  <oh@inpublica.de>
+
+	* (minor) Fixed bug #6104: IRRE - IE7: Strange behaviour with hover event of nested Tabs/IRRE-levels with relative positioned HTML elements
+
 2007-08-15  Wolfgang Klinger  <wk@plan2.net>
 
 	* (trivial) Added is_array checks in extension manager code (committed by Stucki)

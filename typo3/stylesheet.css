@@ -290,6 +290,9 @@ TABLE.typo3-TCEforms DIV.typo3-TCEforms-originalLanguageValue { background-color
 TABLE.typo3-TCEforms DIV.typo3-TCEforms-diffBox { background-color: white; border: 1px solid black; }
 TABLE.typo3-TCEforms DIV.typo3-TCEforms-diffBox-header { background-color: red; font-weight: bold; }
 
+/* TCEforms Inline-Relational-Record-Editing */
+.typo3-TCEforms DIV.inlineDiv { display: inline-block; }
+
 /* Element Browser / RTE link selection: */
 TABLE#typo3-curUrl { font-weight: bold; width: 100%; margin-bottom: 2px; }
 TABLE#typo3-RTElinkMenu TR TD { text-align: center; white-space: nowrap; width: 15%; font-weight: bold; }

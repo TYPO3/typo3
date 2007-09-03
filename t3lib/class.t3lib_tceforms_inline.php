@@ -346,7 +346,7 @@ class t3lib_TCEforms_inline {
 		$out = '<div id="'.$formFieldNames.'_header">'.$header.'</div>';
 		$out .= '<div id="'.$formFieldNames.'_fields"'.$appearanceStyleFields.'>'.$fields.$combination.'</div>';
 			// wrap the header, fields and combination part of a child record with a div container
-		$out = '<div id="'.$formFieldNames.'_div"'.($isNewRecord ? ' class="inlineIsNewRecord"' : '').'>' . $out . '</div>';
+		$out = '<div id="'.$formFieldNames.'_div" class="inlineDiv'.($isNewRecord ? ' inlineIsNewRecord' : '').'">' . $out . '</div>';
 
 			// Remove the current level also from the dynNestedStack of TCEforms:
 		$this->fObj->popFromDynNestedStack();
