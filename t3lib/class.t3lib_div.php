@@ -1705,6 +1705,21 @@ class t3lib_div {
 		return $str;
 	}
 
+ 	/**
+	 * Creates recursively a JSON literal from a mulidimensional associative array.
+	 * Uses Services_JSON (http://mike.teczno.com/JSON/doc/)
+	 *
+	 * @param	array		$jsonArray: The array to be transformed to JSON
+	 * @return	string		JSON string
+	 */
+	function array2json($jsonArray) {
+		if (!$GLOBALS['JSON']) {
+			require_once(PATH_typo3.'contrib/json.php');
+			$GLOBALS['JSON'] = t3lib_div::makeInstance('Services_JSON');
+		}
+		return $GLOBALS['JSON']->encode($jsonArray);
+	}
+
 	/**
 	 * Removes dots "." from end of a key identifier of TypoScript styled array.
 	 * array('key.' => array('property.' => 'value')) --> array('key' => array('property' => 'value'))

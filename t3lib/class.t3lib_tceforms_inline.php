@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2006 Oliver Hader <oh@inpublica.de>
+*  (c) 2006-2007 Oliver Hader <oh@inpublica.de>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -858,7 +858,7 @@ class t3lib_TCEforms_inline {
 					"alert('Access denied');",
 				)
 			);
-			return $this->getJSON($jsonArray);
+			return t3lib_div::array2json($jsonArray);
 		}
 
 			// Encode TCEforms AJAX response with utf-8:
@@ -901,7 +901,7 @@ class t3lib_TCEforms_inline {
 		$this->fObj->popFromDynNestedStack();
 
 			// return the JSON string
-		return $this->getJSON($jsonArray);
+		return t3lib_div::array2json($jsonArray);
 	}
 
 
@@ -1714,13 +1714,10 @@ class t3lib_TCEforms_inline {
 	 *
 	 * @param	array		$jsonArray: The array (or part of) to be transformed to JSON
 	 * @return	string		If $level>0: part of JSON literal; if $level==0: whole JSON literal wrapped with <script> tags
+	 * @deprecated			Since TYPO3 4.2: Moved to t3lib_div::array2json
 	 */
 	function getJSON($jsonArray) {
-		if (!$GLOBALS['JSON']) {
-			require_once(PATH_typo3.'contrib/json.php');
-			$GLOBALS['JSON'] = t3lib_div::makeInstance('Services_JSON');
-		}
-		return $GLOBALS['JSON']->encode($jsonArray);
+		return t3lib_div::array2json($jsonArray);
 	}
 
 

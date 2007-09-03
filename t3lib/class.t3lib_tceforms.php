@@ -4737,13 +4737,13 @@ class t3lib_TCEforms	{
 			// add JS required for inline fields
 		if (count($this->inline->inlineData)) {
 			$out .=	'
-			inline.addToDataArray('.$this->inline->getJSON($this->inline->inlineData).');
+			inline.addToDataArray('.t3lib_div::array2json($this->inline->inlineData).');
 			';
 		}
 			// elements which are required or have a range definition:
 		if (count($elements)) {
 			$out .= '
-			TBE_EDITOR.addElements('.$this->inline->getJSON($elements).');
+			TBE_EDITOR.addElements('.t3lib_div::array2json($elements).');
 			TBE_EDITOR.initRequired()
 			';
 		}
@@ -5501,7 +5501,7 @@ class t3lib_TCEforms	{
 		if ($skipFirst) {
 			array_shift($result);
 		}
-		return ($json ? $this->inline->getJSON($result) : $result);
+		return ($json ? t3lib_div::array2json($result) : $result);
 	}
 }
 
