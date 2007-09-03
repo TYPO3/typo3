@@ -4577,8 +4577,8 @@ class tslib_cObj {
 						$fileArray['ext']= $this->stdWrap($fileArray['ext'],$fileArray['ext.']);
 						$fileArray['maxW']= intval($this->stdWrap($fileArray['maxW'],$fileArray['maxW.']));
 						$fileArray['maxH']= intval($this->stdWrap($fileArray['maxH'],$fileArray['maxH.']));
-						$fileArray['minW']= intval($fileArray['minW']);
-						$fileArray['minH']= intval($fileArray['minH']);
+						$fileArray['minW']= intval($this->stdWrap($fileArray['minW'],$fileArray['minW.']));
+						$fileArray['minH']= intval($this->stdWrap($fileArray['minH'],$fileArray['minH.']));
 						$maskArray=	$fileArray['m.'];
 						$maskImages=array();
 						if (is_array($fileArray['m.']))	{	// Must render mask images and include in hash-calculating - else we cannot be sure the filename is unique for the setup!

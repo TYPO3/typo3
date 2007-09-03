@@ -1,6 +1,7 @@
 2007-09-03  Oliver Hader  <oh@inpublica.de>
 
 	* (trivial) Moving t3lib_TCEforms_inline::getJSON() to t3lib_div::array2json()
+	* (feature) Added feature #2830: imgResource doesn't support stdWrap on minW and minH
 
 2007-08-31  Michael Stucki  <michael@typo3.org>
 
