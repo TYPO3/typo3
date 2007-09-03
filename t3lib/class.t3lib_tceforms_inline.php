@@ -1070,7 +1070,7 @@ class t3lib_TCEforms_inline {
 	 *
 	 * @param	integer		$pid: The pid of the page the record should be stored (only relevant for NEW records)
 	 * @param	string		$table: The table to fetch data from (= foreign_table)
-	 * @param	string		$uid: The uid of the record to fetch, or empty if a new one should be created
+	 * @param	string		$uid: The uid of the record to fetch, or the pid if a new record should be created
 	 * @param	string		$cmd: The command to perform, empty or 'new'
 	 * @return	array		A record row from the database post-processed by t3lib_transferData
 	 */
@@ -1099,7 +1099,7 @@ class t3lib_TCEforms_inline {
 	 * @return	array		A record row from the database post-processed by t3lib_transferData
 	 */
 	function getNewRecord($pid, $table) {
-		return $this->getRecord($pid, $table, '', 'new');
+		return $this->getRecord($pid, $table, $pid, 'new');
 	}
 
 
