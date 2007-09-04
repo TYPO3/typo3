@@ -1074,8 +1074,24 @@ class t3lib_TCEforms	{
 			return $this->getSingleField_typeNone_render($config, $itemFormElValue);
 		}
 
-		if (in_array('required',$evalList))	{
-			$this->requiredFields[$table.'_'.$row['uid'].'_'.$field]=$PA['itemFormElName'];
+		foreach ($evalList as $func) {
+			switch ($func) {
+				case 'required':
+					$this->requiredFields[$table.'_'.$row['uid'].'_'.$field]=$PA['itemFormElName'];
+					break;
+				default:
+					if (substr($func, 0, 3) == 'tx_')	{
+						// Pair hook to the one in t3lib_TCEmain::checkValue_input_Eval()
+						$evalObj = t3lib_div::getUserObj($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tce']['formevals'][$func].':&'.$func);
+						if (is_object($evalObj) && method_exists($evalObj, 'deevaluateFieldValue'))	{
+							$_params = array(
+								'value' => $PA['itemFormElValue']
+							);
+							$PA['itemFormElValue'] = $evalObj->deevaluateFieldValue($_params);
+						}
+					}
+					break;
+			}
 		}
 
 		$paramsList = "'".$PA['itemFormElName']."','".implode(',',$evalList)."','".trim($config['is_in'])."',".(isset($config['checkbox'])?1:0).",'".$config['checkbox']."'";
@@ -2506,7 +2522,7 @@ class t3lib_TCEforms	{
 								} else {
 									$defInfo = '';
 								}
-								
+
 								if (!$PA['_noEditDEF'])	{
 									$prLang = $this->getAdditionalPreviewLanguages();
 									foreach($prLang as $prL)	{
@@ -2849,7 +2865,7 @@ class t3lib_TCEforms	{
 
 	/**
 	 * Overrides the TCA field configuration by TSconfig settings.
-	 * 
+	 *
 	 * Example TSconfig: TCEform.<table>.<field>.config.appearance.useSortable = 1
 	 * This overrides the setting in $TCA[<table>]['columns'][<field>]['config']['appearance']['useSortable'].
 	 *
@@ -2862,7 +2878,7 @@ class t3lib_TCEforms	{
 			$TSconfig = t3lib_div::removeDotsFromTS($TSconfig);
 			$type = $fieldConfig['type'];
 			if (is_array($TSconfig['config']) && is_array($this->allowOverrideMatrix[$type])) {
-					// Check if the keys in TSconfig['config'] are allowed to override TCA field config:			
+					// Check if the keys in TSconfig['config'] are allowed to override TCA field config:
 				foreach (array_keys($TSconfig['config']) as $key) {
 					if (!in_array($key, $this->allowOverrideMatrix[$type], true)) {
 						unset($TSconfig['config'][$key]);
@@ -3015,13 +3031,13 @@ class t3lib_TCEforms	{
 			if (strcmp($dLVal,''))	{
 				$item.='<div class="typo3-TCEforms-originalLanguageValue">'.$this->getLanguageIcon($table,$row,0).$this->previewFieldValue($dLVal,$fCfg).'&nbsp;</div>';
 			}
-			
+
 			$prLang = $this->getAdditionalPreviewLanguages();
 			foreach($prLang as $prL)	{
 				$dlVal = t3lib_BEfunc::getProcessedValue($table,$field,$this->additionalPreviewLanguageData[$table.':'.$row['uid']][$prL['uid']][$field],0,1);
 				$item.= '<div class="typo3-TCEforms-originalLanguageValue">'.$this->getLanguageIcon($table,$row,'v'.$prL['ISOcode']).$this->previewFieldValue($dlVal, $fCfg).'&nbsp;</div>';
 			}
-			
+
 		}
 
 		return $item;
@@ -5345,13 +5361,13 @@ class t3lib_TCEforms	{
 		}
 		return $output;
 	}
-	
+
 	/**
 	 * Initializes language icons etc.
 	 *
 	 * param	string	Table name
 	 * param	array	Record
-	 * param	string	Sys language uid OR ISO language code prefixed with "v", eg. "vDA" 
+	 * param	string	Sys language uid OR ISO language code prefixed with "v", eg. "vDA"
 	 * @return	void
 	 */
 	function getLanguageIcon($table,$row,$sys_language_uid)	{
@@ -5455,7 +5471,7 @@ class t3lib_TCEforms	{
 		}
 		return $this->cachedAdditionalPreviewLanguages;
 	}
-	
+
 	/**
 	 * Push a new element to the dynNestedStack. Thus, every object know, if it's
 	 * nested in a tab or IRRE level and in which order this was processed.
@@ -5472,7 +5488,7 @@ class t3lib_TCEforms	{
 	 * Remove an element from the dynNestedStack. If $type and $ident
 	 * are set, the last element will only be removed, if it matches
 	 * what is expected to be removed.
-	 * 
+	 *
 	 * @param	string		$type: Type of the level, e.g. "tab" or "inline"
 	 * @param	string		$ident: Identifier of the level
 	 * @return	void
