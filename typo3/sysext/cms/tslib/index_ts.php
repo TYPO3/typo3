@@ -232,50 +232,6 @@ if ($_COOKIE['be_typo_user']) {		// If the backend cookie is set, we proceed and
 		}
 		if ($BE_USER->checkLockToIP() && $BE_USER->checkBackendAccessSettingsFromInitPhp())	{
 			$BE_USER->extInitFeAdmin();
-			if ($BE_USER->extAdmEnabled)	{
-				require_once(t3lib_extMgm::extPath('lang').'lang.php');
-				$LANG = t3lib_div::makeInstance('language');
-				$LANG->init($BE_USER->uc['lang']);
-
-				$BE_USER->extSaveFeAdminConfig();
-					// Setting some values based on the admin panel
-				$TSFE->forceTemplateParsing = $BE_USER->extGetFeAdminValue('tsdebug', 'forceTemplateParsing');
-				$TSFE->displayEditIcons = $BE_USER->extGetFeAdminValue('edit', 'displayIcons');
-				$TSFE->displayFieldEditIcons = $BE_USER->extGetFeAdminValue('edit', 'displayFieldIcons');
-
-				if (t3lib_div::_GP('ADMCMD_editIcons'))	{
-					$TSFE->displayFieldEditIcons=1;
-					$BE_USER->uc['TSFE_adminConfig']['edit_editNoPopup']=1;
-				}
-				if (t3lib_div::_GP('ADMCMD_simUser'))	{
-					$BE_USER->uc['TSFE_adminConfig']['preview_simulateUserGroup']=intval(t3lib_div::_GP('ADMCMD_simUser'));
-					$BE_USER->ext_forcePreview=1;
-				}
-				if (t3lib_div::_GP('ADMCMD_simTime'))	{
-					$BE_USER->uc['TSFE_adminConfig']['preview_simulateDate']=intval(t3lib_div::_GP('ADMCMD_simTime'));
-					$BE_USER->ext_forcePreview=1;
-				}
-
-					// Include classes for editing IF editing module in Admin Panel is open
-				if (($BE_USER->extAdmModuleEnabled('edit') && $BE_USER->extIsAdmMenuOpen('edit')) || $TSFE->displayEditIcons == 1)	{
-					$TSFE->includeTCA();
-					if ($BE_USER->extIsEditAction())	{
-						require_once (PATH_t3lib.'class.t3lib_tcemain.php');
-						$BE_USER->extEditAction();
-					}
-					if ($BE_USER->extIsFormShown())	{
-						require_once(PATH_t3lib.'class.t3lib_tceforms.php');
-						require_once(PATH_t3lib.'class.t3lib_iconworks.php');
-						require_once(PATH_t3lib.'class.t3lib_loaddbgroup.php');
-						require_once(PATH_t3lib.'class.t3lib_transferdata.php');
-					}
-				}
-
-				if ($TSFE->forceTemplateParsing || $TSFE->displayEditIcons || $TSFE->displayFieldEditIcons)	{ $TSFE->set_no_cache(); }
-			}
-
-	//		$WEBMOUNTS = (string)($BE_USER->groupData['webmounts'])!='' ? explode(',',$BE_USER->groupData['webmounts']) : Array();
-	//		$FILEMOUNTS = $BE_USER->groupData['filemounts'];
 		} else {	// Unset the user initialization.
 			$BE_USER='';
 			$TSFE->beUserLogin=0;
@@ -310,7 +266,7 @@ $TSFE->workspacePreviewInit();
 
 
 // *****************************************
-// Proces the ID, type and other parameters
+// Process the ID, type and other parameters
 // After this point we have an array, $page in TSFE, which is the page-record of the current page, $id
 // *****************************************
 $TT->push('Process ID','');
@@ -332,6 +288,53 @@ $TT->push('Process ID','');
 	}
 	$TSFE->makeCacheHash();
 $TT->pull();
+
+
+// *****************************************
+// Frontend editing
+// *****************************************
+if ($TSFE->beUserLogin && $BE_USER->extAdmEnabled)	{
+	require_once(t3lib_extMgm::extPath('lang').'lang.php');
+	$LANG = t3lib_div::makeInstance('language');
+	$LANG->init($BE_USER->uc['lang']);
+
+	$BE_USER->extSaveFeAdminConfig();
+
+		// Setting some values based on the admin panel
+	$TSFE->forceTemplateParsing = $BE_USER->extGetFeAdminValue('tsdebug', 'forceTemplateParsing');
+	$TSFE->displayEditIcons = $BE_USER->extGetFeAdminValue('edit', 'displayIcons');
+	$TSFE->displayFieldEditIcons = $BE_USER->extGetFeAdminValue('edit', 'displayFieldIcons');
+
+	if (t3lib_div::_GP('ADMCMD_editIcons'))	{
+		$TSFE->displayFieldEditIcons=1;
+		$BE_USER->uc['TSFE_adminConfig']['edit_editNoPopup']=1;
+	}
+	if (t3lib_div::_GP('ADMCMD_simUser'))	{
+		$BE_USER->uc['TSFE_adminConfig']['preview_simulateUserGroup']=intval(t3lib_div::_GP('ADMCMD_simUser'));
+		$BE_USER->ext_forcePreview=1;
+	}
+	if (t3lib_div::_GP('ADMCMD_simTime'))	{
+		$BE_USER->uc['TSFE_adminConfig']['preview_simulateDate']=intval(t3lib_div::_GP('ADMCMD_simTime'));
+		$BE_USER->ext_forcePreview=1;
+	}
+
+	// Include classes for editing IF editing module in Admin Panel is open
+	if (($BE_USER->extAdmModuleEnabled('edit') && $BE_USER->extIsAdmMenuOpen('edit')) || $TSFE->displayEditIcons == 1)	{
+		$TSFE->includeTCA();
+		if ($BE_USER->extIsEditAction())	{
+			require_once (PATH_t3lib.'class.t3lib_tcemain.php');
+			$BE_USER->extEditAction();
+		}
+		if ($BE_USER->extIsFormShown())	{
+			require_once(PATH_t3lib.'class.t3lib_tceforms.php');
+			require_once(PATH_t3lib.'class.t3lib_iconworks.php');
+			require_once(PATH_t3lib.'class.t3lib_loaddbgroup.php');
+			require_once(PATH_t3lib.'class.t3lib_transferdata.php');
+		}
+	}
+
+	if ($TSFE->forceTemplateParsing || $TSFE->displayEditIcons || $TSFE->displayFieldEditIcons)	{ $TSFE->set_no_cache(); }
+}
 
 
 // *******************************************
