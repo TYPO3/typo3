@@ -1,6 +1,7 @@
 2007-09-05  Thorsten Kahler  <thorsten.kahler@dkd.de>
 
 	* Fixed bug #4160: Moving content elements in frontent editing mode causes crash
+	* Disable versioning in clickMenu if BE user doesn't have access to the versioning module
 
 2007-09-05  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 

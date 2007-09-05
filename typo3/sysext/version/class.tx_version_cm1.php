@@ -66,7 +66,7 @@ class tx_version_cm1 {
 		global $BE_USER,$TCA,$LANG;
 		
 		$localItems = Array();
-		if (!$backRef->cmLevel && $uid>0)	{
+		if (!$backRef->cmLevel && $uid>0 && $BE_USER->check('modules','txversionM1'))	{
 
 				// Returns directly, because the clicked item was not from the pages table
 			if (!$TCA[$table] || !$TCA[$table]['ctrl']['versioningWS'])	return $menuItems;
