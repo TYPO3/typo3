@@ -265,6 +265,7 @@ class t3lib_cs {
 		'fo' => 'west_european',	// Faroese
 		'fr' => 'west_european',	// French
 		'gr' => 'greek',
+		'ge' => 'unicode',		// Georgian
 		'he' => 'hebrew',		// Hebrew (since 1998)
 		'hi' => 'unicode',		// Hindi
 		'hr' => 'east_european',	// Croatian
@@ -317,6 +318,7 @@ class t3lib_cs {
 		'frb' => 'west_european',	// French (Belgian)
 		'frc' => 'west_european',	// French (Canadian)
 		'frs' => 'west_european',	// French (Swiss)
+		'geo' => 'unicode',			// Georgian
 		'ell' => 'greek',
 		'heb' => 'hebrew',
 		'hin' => 'unicode',	// Hindi
@@ -369,6 +371,7 @@ class t3lib_cs {
 		'finnish' => 'west_european',
 		'french' => 'west_european',
 		'galician' => 'west_european',
+		'georgian' => 'unicode',
 		'german' => 'west_european',
 		'greek' => 'greek',
 		'greenlandic' => 'west_european',
@@ -439,7 +442,8 @@ class t3lib_cs {
 		'japanese' => 'shift_jis',
 		'simpl_chinese' => 'gb2312',
 		'trad_chinese' => 'big5',
-		'albanian' => 'windows-1250'
+		'albanian' => 'windows-1250',
+		'unicode' => 'utf-8'
 	);
 
 		// mapping of locale names to charsets
@@ -501,7 +505,8 @@ class t3lib_cs {
 		'fo' => 'utf-8',
 		'fa' => 'utf-8',
 		'sr' => 'utf-8',
-		'sq' => 'utf-8'
+		'sq' => 'utf-8',
+		'ge' => 'utf-8'
 	);
 
 		// TYPO3 specific: Array with the iso names used for each system language in TYPO3:

@@ -304,6 +304,7 @@ $TCA['be_users'] = Array (
 					Array('Faroese', 'fo'),
 					Array('Finnish', 'fi'),
 					Array('French', 'fr'),
+					Array('Georgian', 'ge'),
 					Array('German', 'de'),
 					Array('Greek', 'gr'),
 					Array('Greenlandic', 'gl'),
