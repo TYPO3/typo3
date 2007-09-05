@@ -1,3 +1,8 @@
+
+2007-09-05  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+
+	* Feature #2883: improve t3lib_div::trimExplode()
+
 2007-09-05  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Added Georgian language to TYPO3

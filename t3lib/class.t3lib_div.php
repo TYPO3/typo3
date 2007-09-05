@@ -1451,15 +1451,21 @@ class t3lib_div {
 	 * @return	array		Exploded values
 	 */
 	function trimExplode($delim, $string, $onlyNonEmptyValues=0)	{
-		$temp = explode($delim,$string);
-		$newtemp=array();
-		while(list($key,$val)=each($temp))	{
-			if (!$onlyNonEmptyValues || strcmp('',trim($val)))	{
-				$newtemp[]=trim($val);
+		$array = explode($delim, $string);
+		if ($onlyNonEmptyValues) {
+			foreach($array as $index => &$value) {
+				$value = trim($value);
+				if ($value == '') {
+					unset($array[$index]);
+				}
+			}
+			$array = array_merge($array);
+		} else {
+			foreach($array as $key => &$value) {
+				$value = trim($value);
 			}
 		}
-		reset($newtemp);
-		return $newtemp;
+		return $array;
 	}
 
 	/**
