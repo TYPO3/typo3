@@ -1231,6 +1231,7 @@ class t3lib_TCEforms	{
 				$formWidthText = $this->formWidthText($cols,$wrap);
 
 					// Extract class attributes from $formWidthText (otherwise it would be added twice to the output)
+				$res = array();
 				if (preg_match('/ class="(.+?)"/',$formWidthText,$res))	{
 					$formWidthText = str_replace(' class="'.$res[1].'"','',$formWidthText);
 					$classes = array_merge($classes, explode(' ',$res[1]));
@@ -4689,6 +4690,7 @@ class t3lib_TCEforms	{
 
 			// required:
 		foreach ($this->requiredFields as $itemImgName => $itemName) {
+			$match = array();
 			if (preg_match('/^(.+)\[((\w|\d|_)+)\]$/', $itemName, $match)) {
 				$record = $match[1];
 				$field = $match[2];
