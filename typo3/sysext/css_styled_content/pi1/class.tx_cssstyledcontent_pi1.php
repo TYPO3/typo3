@@ -680,7 +680,7 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 			// Apply optionSplit to the list of classes that we want to add to each image
 		$addClassesImage = $conf['addClassesImage'];
 		if ($conf['addClassesImage.'])	{
-			$addClassesImage = $this->cObj->stdWrap($addClassesImageConf, $conf['addClassesImage.']);
+			$addClassesImage = $this->cObj->stdWrap($addClassesImage, $conf['addClassesImage.']);
 		}
 		$addClassesImageConf = $GLOBALS['TSFE']->tmpl->splitConfArray(array('addClassesImage' => $addClassesImage), $colCount);
 

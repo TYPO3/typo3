@@ -2,6 +2,7 @@
 
 	* Bugfix: Highlight root page in pagetree
 	* Added .php6 and .php7 as denied file extensions in config_default.php to be future proof
+	* Fixing uninitialized variables in class.t3lib_tceforms.php and class.tx_cssstyledcontent_pi1.php
 
 2007-09-05  Thorsten Kahler  <thorsten.kahler@dkd.de>
 
