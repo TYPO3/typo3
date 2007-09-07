@@ -56,6 +56,7 @@
 			<label index="lang_sr">Serbian</label>
 			<label index="lang_sq">Albanian</label>
 			<label index="lang_ge">Georgian</label>
+			<label index="lang_ga">Galician</label>
 			<label index="default">Default</label>
 			<label index="simulate">Simulate backend user</label>
 			<label index="opening">Startup</label>
