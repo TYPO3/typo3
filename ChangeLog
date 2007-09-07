@@ -1,6 +1,7 @@
 2007-09-07  Ingmar Schlecht  <ingmar@typo3.org>
 
 	* Bugfix: Highlight root page in pagetree
+	* Added .php6 and .php7 as denied file extensions in config_default.php to be future proof
 
 2007-09-05  Thorsten Kahler  <thorsten.kahler@dkd.de>
 

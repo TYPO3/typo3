@@ -153,7 +153,7 @@ $TYPO3_CONF_VARS = Array(
 			// If no fileextension, true is returned if 'allow' is '*', false if 'deny' is '*' and true if none of these matches
 			// This configuration below accepts everything in ftpspace and everything in webspace except php3 or php files
 		'fileExtensions' => array (
-			'webspace' => array('allow'=>'', 'deny'=>'php,php3,php4,php5'),
+			'webspace' => array('allow'=>'', 'deny'=>'php,php3,php4,php5,php6,php7'),
 			'ftpspace' => array('allow'=>'*', 'deny'=>'')
 		),
 		'customPermOptions' => array(),			// Array with sets of custom permission options. Syntax is; 'key' => array('header' => 'header string, language splitted', 'items' => array('key' => array('label, language splitted', 'icon reference', 'Description text, language splitted'))). Keys cannot contain ":|," characters.
