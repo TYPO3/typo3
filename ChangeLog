@@ -1,3 +1,7 @@
+2007-09-07  Ingmar Schlecht  <ingmar@typo3.org>
+
+	* Bugfix: Highlight root page in pagetree
+
 2007-09-05  Thorsten Kahler  <thorsten.kahler@dkd.de>
 
 	* Fixed bug #4160: Moving content elements in frontent editing mode causes crash
