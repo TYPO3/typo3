@@ -1452,6 +1452,9 @@ class t3lib_div {
 	 */
 	function trimExplode($delim, $string, $onlyNonEmptyValues=0)	{
 		$array = explode($delim, $string);
+			// for two perfomance reasons the loop is duplicated
+			//  a) avoid check for $onlyNonEmptyValues in foreach loop
+			//  b) avoid unnecessary code when $onlyNonEmptyValues is not set
 		if ($onlyNonEmptyValues) {
 			foreach($array as $index => &$value) {
 				$value = trim($value);
