@@ -111,7 +111,7 @@ $TT->pull();
 // *******************************
 // Checking environment
 // *******************************
-if (t3lib_div::int_from_ver(phpversion())<4003000)	die ('TYPO3 requires PHP 4.3.0 or higher.');
+if (t3lib_div::int_from_ver(phpversion())<5001000)	die ('TYPO3 requires PHP 5.1.0 or higher.');
 
 if (isset($_POST['GLOBALS']) || isset($_GET['GLOBALS']))	die('You cannot set the GLOBALS-array from outside the script.');
 if (!get_magic_quotes_gpc())	{

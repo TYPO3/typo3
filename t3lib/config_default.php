@@ -366,17 +366,6 @@ function debugEnd() {
 }
 
 
-	// PHP5 version check
-if (version_compare(PHP_VERSION, '5.0', '<')) {
-		// include compatibility functions for PHP4
-	include_once(PATH_t3lib.'compat_php5.php');
-
-		// iconv utility functions are only available in PHP5 and later
-	if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['t3lib_cs_utils']==='iconv')	{
-		$GLOBALS['TYPO3_CONF_VARS']['SYS']['t3lib_cs_utils'] = '';
-	}
-}
-
 	// Init services array:
 $T3_SERVICES = array();
 

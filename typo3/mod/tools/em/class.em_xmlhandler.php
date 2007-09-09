@@ -2,7 +2,7 @@
 /* **************************************************************
 *  Copyright notice
 *
-*  (c) 2006 Karsten Dambekalns <karsten@typo3.org>
+*  (c) 2006-2007 Karsten Dambekalns <karsten@typo3.org>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -490,12 +490,10 @@ class SC_mod_tools_em_xmlhandler {
 		xml_parser_set_option($parser, XML_OPTION_CASE_FOLDING, 0);
 		xml_parser_set_option($parser, XML_OPTION_SKIP_WHITE, 0);
 
-		if ((double)phpversion()>=5)	{
-			$preg_result = array();
-			preg_match('/^[[:space:]]*<\?xml[^>]*encoding[[:space:]]*=[[:space:]]*"([^"]*)"/',substr($string,0,200),$preg_result);
-			$theCharset = $preg_result[1] ? $preg_result[1] : ($TYPO3_CONF_VARS['BE']['forceCharset'] ? $TYPO3_CONF_VARS['BE']['forceCharset'] : 'iso-8859-1');
-			xml_parser_set_option($parser, XML_OPTION_TARGET_ENCODING, $theCharset);  // us-ascii / utf-8 / iso-8859-1
-		}
+		$preg_result = array();
+		preg_match('/^[[:space:]]*<\?xml[^>]*encoding[[:space:]]*=[[:space:]]*"([^"]*)"/',substr($string,0,200),$preg_result);
+		$theCharset = $preg_result[1] ? $preg_result[1] : ($TYPO3_CONF_VARS['BE']['forceCharset'] ? $TYPO3_CONF_VARS['BE']['forceCharset'] : 'iso-8859-1');
+		xml_parser_set_option($parser, XML_OPTION_TARGET_ENCODING, $theCharset);  // us-ascii / utf-8 / iso-8859-1
 
 		// Parse content:
 		xml_parse_into_struct($parser, $string, $vals, $index);

@@ -2180,20 +2180,12 @@ class t3lib_div {
 		xml_parser_set_option($parser, XML_OPTION_CASE_FOLDING, 0);
 		xml_parser_set_option($parser, XML_OPTION_SKIP_WHITE, 0);
 
-			//  PHP4 doesn't like Unicode byte order marks (BOM), so we have to check for them
-			// The BOM check comes first, so that the PHP5 preg_match() below doesn't have to check for it
-		if(substr($string,0,3)=="\xEF\xBB\xBF")	{
-			xml_parser_set_option($parser, XML_OPTION_TARGET_ENCODING, 'utf-8');
-		}
-			// PHP 4.x: output charset is the same as the input charset, charsets are handled transparently if not specified in xml_parser_create()
 			// PHP 5.0.0 & 5.0.1: default output charset is ISO-8859-1, only ASCII, ISO-8859-1 and UTF-8 are supported!!!
 			// PHP 5.0.2+: default output charset is UTF-8	, only ASCII, ISO-8859-1 and UTF-8 are supported!!!
-		elseif ((double)phpversion()>=5)	{
-			$match = array();
-			preg_match('/^[[:space:]]*<\?xml[^>]*encoding[[:space:]]*=[[:space:]]*"([^"]*)"/',substr($string,0,200),$match);
-			$theCharset = $match[1] ? $match[1] : ($TYPO3_CONF_VARS['BE']['forceCharset'] ? $TYPO3_CONF_VARS['BE']['forceCharset'] : 'iso-8859-1');
-			xml_parser_set_option($parser, XML_OPTION_TARGET_ENCODING, $theCharset);  // us-ascii / utf-8 / iso-8859-1
-		}
+		$match = array();
+		preg_match('/^[[:space:]]*<\?xml[^>]*encoding[[:space:]]*=[[:space:]]*"([^"]*)"/',substr($string,0,200),$match);
+		$theCharset = $match[1] ? $match[1] : ($TYPO3_CONF_VARS['BE']['forceCharset'] ? $TYPO3_CONF_VARS['BE']['forceCharset'] : 'iso-8859-1');
+		xml_parser_set_option($parser, XML_OPTION_TARGET_ENCODING, $theCharset);  // us-ascii / utf-8 / iso-8859-1
 
 			// Parse content:
 		xml_parse_into_struct($parser, $string, $vals, $index);
@@ -2428,16 +2420,7 @@ class t3lib_div {
 						)
 					)
 				);
-			if (version_compare(phpversion(), '5.0', '>=')) {
-				$content = @file_get_contents($url, false, $ctx);
-			}
-			elseif (false !== ($fd = @fopen($url, 'rb', false, $ctx)))	{
-				$content = '';
-				while (!feof($fd))	{
-					$content.= @fread($fd, 4096);
-				}
-				fclose($fd);
-			}
+			$content = @file_get_contents($url, false, $ctx);
 		}
 		else	{
 			$content = @file_get_contents($url);
