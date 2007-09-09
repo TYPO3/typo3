@@ -255,7 +255,7 @@ if (intval($TYPO3_CONF_VARS['BE']['lockSSL']) && !(defined('TYPO3_cliMode') && T
 // *******************************
 // Checking environment
 // *******************************
-if (t3lib_div::int_from_ver(phpversion())<4001000)	die ('TYPO3 runs with PHP4.1.0+ only');
+if (t3lib_div::int_from_ver(phpversion())<4003000)	die ('TYPO3 requires PHP 4.3.0 or higher.');
 if (isset($_POST['GLOBALS']) || isset($_GET['GLOBALS']))	die('You cannot set the GLOBALS-array from outside the script.');
 if (!get_magic_quotes_gpc())	{
 	t3lib_div::addSlashesOnArray($_GET);
