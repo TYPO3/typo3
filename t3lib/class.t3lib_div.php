@@ -1463,15 +1463,13 @@ class t3lib_div {
 					$new_array[] = $value;
 				}
 			}
+				// direct return for perfomance reasons
 			return $new_array;
-		} else {
-			foreach($array as $key => &$value) {
-				$value = trim($value);
-			}
-			return $array;
 		}
-			// never reached
-		return array();
+		foreach($array as $key => &$value) {
+			$value = trim($value);
+		}
+		return $array;
 	}
 
 	/**
