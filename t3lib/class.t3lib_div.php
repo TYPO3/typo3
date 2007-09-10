@@ -1457,7 +1457,7 @@ class t3lib_div {
 			//  b) avoid unnecessary code when $onlyNonEmptyValues is not set
 		if ($onlyNonEmptyValues) {
 			$new_array = array();
-			foreach($array as $index => $value) {
+			foreach($array as $value) {
 				$value = trim($value);
 				if ($value != '') {
 					$new_array[] = $value;
@@ -1466,7 +1466,7 @@ class t3lib_div {
 				// direct return for perfomance reasons
 			return $new_array;
 		}
-		foreach($array as $key => &$value) {
+		foreach($array as &$value) {
 			$value = trim($value);
 		}
 		return $array;
