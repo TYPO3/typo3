@@ -1456,19 +1456,22 @@ class t3lib_div {
 			//  a) avoid check for $onlyNonEmptyValues in foreach loop
 			//  b) avoid unnecessary code when $onlyNonEmptyValues is not set
 		if ($onlyNonEmptyValues) {
-			foreach($array as $index => &$value) {
+			$new_array = array();
+			foreach($array as $index => $value) {
 				$value = trim($value);
-				if ($value == '') {
-					unset($array[$index]);
+				if ($value != '') {
+					$new_array[] = $value;
 				}
 			}
-			$array = array_merge($array);
+			return $new_array;
 		} else {
 			foreach($array as $key => &$value) {
 				$value = trim($value);
 			}
+			return $array;
 		}
-		return $array;
+			// never reached
+		return array();
 	}
 
 	/**
