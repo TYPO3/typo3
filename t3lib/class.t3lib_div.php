@@ -1466,9 +1466,11 @@ class t3lib_div {
 				// direct return for perfomance reasons
 			return $new_array;
 		}
+
 		foreach($array as &$value) {
 			$value = trim($value);
 		}
+
 		return $array;
 	}
 
