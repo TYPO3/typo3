@@ -300,6 +300,8 @@ CREATE TABLE tt_content (
   t3ver_move_id int(11) DEFAULT '0' NOT NULL,
   t3_origuid int(11) DEFAULT '0' NOT NULL,
   tstamp int(11) unsigned DEFAULT '0' NOT NULL,
+  crdate int(11) unsigned DEFAULT '0' NOT NULL,
+  cruser_id int(11) unsigned DEFAULT '0' NOT NULL,
   hidden tinyint(4) unsigned DEFAULT '0' NOT NULL,
   sorting int(11) unsigned DEFAULT '0' NOT NULL,
   CType varchar(30) DEFAULT '' NOT NULL,
