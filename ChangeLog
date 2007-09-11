@@ -1,7 +1,7 @@
 2007-09-11  Ingo Renner  <ingo@typo3.org>
 
 	* added romainian flag, fixes bug 6000
-	* added field crdate and cruser_id to tt_content
+	* added fields crdate and cruser_id to tt_content
 
 2007-09-10  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
