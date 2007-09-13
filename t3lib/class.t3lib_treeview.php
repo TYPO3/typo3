@@ -667,7 +667,7 @@ class t3lib_treeView {
 
 
 	/**
-	 * Returns the title for the input record. If blank, a "no title" labele (localized) will be returned.
+	 * Returns the title for the input record. If blank, a "no title" label (localized) will be returned.
 	 * Do NOT htmlspecialchar the string from this function - has already been done.
 	 *
 	 * @param	array		The input row array (where the key "title" is used for the title)
@@ -675,7 +675,16 @@ class t3lib_treeView {
 	 * @return	string		The title.
 	 */
 	function getTitleStr($row,$titleLen=30)	{
-		$title = (!strcmp(trim($row['title']),'')) ? '<em>['.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.no_title',1).']</em>' : htmlspecialchars(t3lib_div::fixed_lgd_cs($row['title'],$titleLen));
+		if ($this->ext_showNavTitle && strlen(trim($row['nav_title'])) > 0)	{
+			$title = '<span title="'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_tca.xml:title',1).' '.htmlspecialchars(trim($row['title'])).'">'.htmlspecialchars(t3lib_div::fixed_lgd_cs($row['nav_title'],$titleLen)).'</span>';
+		} else {
+			$title = htmlspecialchars(t3lib_div::fixed_lgd_cs($row['title'],$titleLen));
+			if (strlen(trim($row['nav_title'])) > 0)	{
+				$title = '<span title="'.$GLOBALS['LANG']->sL('LLL:EXT:cms/locallang_tca.xml:pages.nav_title',1).' '.htmlspecialchars(trim($row['nav_title'])).'">'.$title.'</span>';
+			} 
+			$title = (strlen(trim($row['title'])) == 0) ? '<em>['.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.no_title',1).']</em>' : $title;
+		}
+		
 		return $title;
 	}
 

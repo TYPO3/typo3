@@ -146,7 +146,7 @@ class t3lib_browseTree extends t3lib_treeView {
 	}
 
 	/**
-	 * Returns the title for the input record. If blank, a "no title" labele (localized) will be returned.
+	 * Returns the title for the input record. If blank, a "no title" label (localized) will be returned.
 	 * Do NOT htmlspecialchar the string from this function - has already been done.
 	 *
 	 * @param	array		The input row array (where the key "title" is used for the title)
@@ -154,7 +154,8 @@ class t3lib_browseTree extends t3lib_treeView {
 	 * @return	string		The title.
 	 */
 	function getTitleStr($row,$titleLen=30)	{
-		$title = (!strcmp(trim($row['title']),'')) ? '<em>['.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.no_title',1).']</em>' : htmlspecialchars(t3lib_div::fixed_lgd_cs($row['title'],$titleLen));
+			// get the basic title from the parent implementation in t3lib_treeview
+		$title = parent::getTitleStr($row,$titleLen);
 		if (isset($row['is_siteroot']) && $row['is_siteroot'] != 0 && $GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.showDomainNameWithTitle')) {
 			$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('domainName,sorting', 'sys_domain',
 						'pid=' . $GLOBALS['TYPO3_DB']->quoteStr($row['uid'], 'sys_domain'), '', 'sorting', 1);

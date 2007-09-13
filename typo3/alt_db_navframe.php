@@ -107,6 +107,7 @@ class SC_alt_db_navframe {
 		$this->pagetree = t3lib_div::makeInstance('webPageTree');
 		$this->pagetree->ext_IconMode = $BE_USER->getTSConfigVal('options.pageTree.disableIconLinkToContextmenu');
 		$this->pagetree->ext_showPageId = $BE_USER->getTSConfigVal('options.pageTree.showPageIdWithTitle');
+		$this->pagetree->ext_showNavTitle = $BE_USER->getTSConfigVal('options.pageTree.showNavTitle');
 		$this->pagetree->ext_dontSeparateNotinmenuPages = $BE_USER->getTSConfigVal('options.pageTree.dontSeparateNotinmenuPages');
 		$this->pagetree->ext_dontAlphasortNotinmenuPages = $BE_USER->getTSConfigVal('options.pageTree.dontAlphasortNotinmenuPages');
 		$this->pagetree->thisScript = 'alt_db_navframe.php';
@@ -116,6 +117,7 @@ class SC_alt_db_navframe {
 		$this->pagetree->addField('mount_pid');
 		$this->pagetree->addField('mount_pid_ol');
 		$this->pagetree->addField('nav_hide');
+		$this->pagetree->addField('nav_title');
 		$this->pagetree->addField('url');
 
 			// Temporary DB mounts:

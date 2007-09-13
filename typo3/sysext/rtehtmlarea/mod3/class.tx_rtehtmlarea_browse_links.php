@@ -785,6 +785,8 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 				$content.=$this->addAttributesForm();
 				
 				$pagetree = t3lib_div::makeInstance('tx_rtehtmlarea_pageTree');
+				$pagetree->ext_showNavTitle = $GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.showNavTitle');
+				$pagetree->addField('nav_title');
 				$tree=$pagetree->getBrowsableTree();
 				$cElements = $this->expandPage();
 				$content.= '
