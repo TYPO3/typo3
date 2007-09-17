@@ -1,3 +1,6 @@
+2007-09-09  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+
+	* fixed bug 5701: linkHandler Hook Not Initialized Properly , patch supplied by Jeff Segars
 
 2007-09-09  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
