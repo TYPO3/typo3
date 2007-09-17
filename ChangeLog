@@ -1,7 +1,11 @@
+2007-09-13  Ingo Renner  <ingo@typo3.org>
+
+	* Fixed bug 5701: linkHandler Hook Not Initialized Properly, patch supplied by Jeff Segars
+
 2007-09-13	Thomas Hempel	<thomas@typo3-unleashed.net>
 
 	* Feature #4064: Navigation title in tree view
-	
+
 2007-09-11  Ingo Renner  <ingo@typo3.org>
 
 	* added romainian flag, fixes bug 6000
