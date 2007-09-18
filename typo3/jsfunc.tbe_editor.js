@@ -379,7 +379,21 @@ var TBE_EDITOR = {
 		}
 		output+=''+input.substr(pointer);
 		return output;
-	}
+	},
+	toggle_display_states: function(id, state_1, state_2) {
+		var node = document.getElementById(id);
+		if (node) {	
+			switch (node.style.display) {
+				case state_1:
+					node.style.display = state_2;
+					break;
+				case state_2:
+					node.style.display = state_1; 
+					break;
+			}
+		}
+		return false;
+	}	
 };
 
 function typoSetup	() {

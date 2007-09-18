@@ -739,10 +739,6 @@ class t3lib_TCEforms	{
 
 					if (!in_array($theField,$this->excludeElements) && $TCA[$table]['columns'][$theField])	{
 						$this->palFieldArr[$palette][] = $theField;
-						if ($this->isPalettesCollapsed($table,$palette))	{
-							$this->hiddenFieldListArr[] = $theField;
-						}
-
 						$part = $this->getSingleField($table,$theField,$row,$parts[1],1,'',$parts[2]);
 						if (is_array($part))	{
 							$palParts[] = $part;
@@ -751,6 +747,7 @@ class t3lib_TCEforms	{
 				}
 			}
 		}
+		
 			// Put palette together if there are fields in it:
 		if (count($palParts))	{
 			if ($header)	{
@@ -760,20 +757,12 @@ class t3lib_TCEforms	{
 							$this->palFieldTemplateHeader
 						);
 			}
+			$collapsed = $this->isPalettesCollapsed($table,$palette);
 			$out.= $this->intoTemplate(array(
-							'PALETTE' => $this->printPalette($palParts)
+							'PALETTE' => $this->wrapPaletteField($this->printPalette($palParts), $table, $row ,$palette, $collapsed)
 						),
 						$this->palFieldTemplate
 					);
-		}
-			// If a palette is collapsed (not shown in form, but in top frame instead) AND a collapse header string is given, then make that string a link to activate the palette.
-		if ($this->isPalettesCollapsed($table,$palette) && $collapsedHeader)	{
-			$pC = $this->intoTemplate(array(
-							'PALETTE' => $this->wrapOpenPalette('<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/options.gif','width="18" height="16"').' border="0" title="'.htmlspecialchars($this->getLL('l_moreOptions')).'" align="top" alt="" /><strong>'.$collapsedHeader.'</strong>',$table,$row,$palette),
-						),
-						$this->palFieldTemplate
-					);
-			$out.= $pC;
 		}
 
 		return $out;
@@ -3611,23 +3600,28 @@ class t3lib_TCEforms	{
 	 *
 	 * @param	string		The string to wrap in an A-tag
 	 * @param	string		The table name for which to open the palette.
-	 * @param	array		The record array
-	 * @param	integer		The palette pointer.
-	 * @param	boolean		Determines the output type of the function.
-	 * @return	mixed		If $retFunc is set, then returns an array with icon code and palette JavaScript function. Otherwise just the icon code.
+	 * @param	array		The palette pointer.
+	 * @param	integer		The record array
 	 */
-	function wrapOpenPalette($header,$table,$row,$palette,$retFunc=0)	{
-		$fieldL=array();
-		if (!is_array($this->palFieldArr[$palette]))	{$this->palFieldArr[$palette]=array();}
-		$palFieldN = is_array($this->palFieldArr[$palette]) ? count($this->palFieldArr[$palette]) : 0;
-		$palJSFunc = 'TBE_EDITOR.palUrl(\''.($table.':'.$row['uid'].':'.$palette).'\',\''.implode(',',$this->palFieldArr[$palette]).'\','.$palFieldN.',\''.$table.'\',\''.$row['uid'].'\',1);';
+	function wrapOpenPalette ( $header, $table,$row , $palette ,$retFunc){
+		$id  = 'TCEFORMS_'.$table.'_'.$palette.'_'.$row['uid'];
+		$res = '<a href="#" onclick="TBE_EDITOR.toggle_display_states(\''.$id.'\',\'block\',\'none\'); return false;" >'.$header.'</a>';
+		return array($res,'');
+	}
 
-		$aOnClick = $this->blur().substr($palJSFunc,0,-3).'0);return false;';
-
-		$iconCode = '<a href="#" onclick="'.htmlspecialchars($aOnClick).'" title="'.htmlspecialchars($table).'">'.
-					$header.
-					'</a>';
-		return $retFunc ? array($iconCode,$palJSFunc) : $iconCode;
+ 	/**
+	 * add the id and the style property to the field palette
+	 * @param	string		Palette Code
+	 * @param	string		The table name for which to open the palette.
+	 * @param	string		Palette ID
+	 * @param	string		The record array
+	 * @return	boolean		is collapsed 
+	 */
+	function wrapPaletteField ( $code, $table, $row, $palette, $collapsed ){
+		$display = $collapsed ? 'none' : 'block';
+		$id = 'TCEFORMS_'.$table.'_'.$palette.'_'.$row['uid'];
+		$code = '<div id="'.$id.'" style="display:'.$display.';" >'.$code.'</div>'; 
+		return $code;
 	}
 
 	/**
@@ -4264,12 +4258,12 @@ class t3lib_TCEforms	{
 		$this->totalWrap='
 		<table border="0" cellspacing="0" cellpadding="0" width="'.($this->docLarge ? 440+150 : 440).'" class="typo3-TCEforms">'.
 			'<tr class="bgColor2">
-				<td>&nbsp;</td>
+				<td><!-- --></td>
 				<td>###RECORD_ICON### <span class="typo3-TCEforms-recHeader">###TABLE_TITLE###</span> ###ID_NEW_INDICATOR### - ###RECORD_LABEL###</td>
 			</tr>'.
 			'|'.
 			'<tr>
-				<td>&nbsp;</td>
+				<td><!-- --></td>
 				<td><img src="clear.gif" width="'.($this->docLarge ? 440+150 : 440).'" height="1" alt="" /></td>
 			</tr>
 		</table>';
@@ -4287,12 +4281,12 @@ class t3lib_TCEforms	{
 
 		$this->palFieldTemplate='
 			<tr ###BGCOLOR######CLASSATTR_1###>
-				<td>&nbsp;</td>
+				<td></td> 
 				<td nowrap="nowrap" valign="top">###FIELD_PALETTE###</td>
 			</tr>';
 		$this->palFieldTemplateHeader='
 			<tr ###BGCOLOR_HEAD######CLASSATTR_2###>
-				<td>&nbsp;</td>
+				<td><!-- --></td>
 				<td nowrap="nowrap" valign="top"><strong>###FIELD_HEADER###</strong></td>
 			</tr>';
 
