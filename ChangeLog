@@ -1,3 +1,7 @@
+2007-09-18  Oliver Hader  <oh@inpublica.de>
+
+	* (minor) Fixed bug #65: Thumbnails in Element Browser are only displayed if fileSuffix is lowercase
+
 2007-09-18	Bernhard Kraft  <kraftb@kraftb.at>
 
 	* Hide empty dynTabs in tceforms
