@@ -1,3 +1,7 @@
+2007-09-18  Oliver Hader  <oh@inpublica.de>
+
+	* (minor) Fixed bug #65: Thumbnails in Element Browser are only displayed if fileSuffix is lowercase
+
 2007-09-09  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
 	* fixed bug 5701: linkHandler Hook Not Initialized Properly , patch supplied by Jeff Segars

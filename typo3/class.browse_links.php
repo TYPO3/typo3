@@ -1890,7 +1890,7 @@ class browse_links {
 				$fI=pathinfo($filepath);
 
 					// Thumbnail/size generation:
-				if (t3lib_div::inList($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'],$fI['extension']) && !$noThumbs)	{
+				if (t3lib_div::inList(strtolower($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext']),strtolower($fI['extension'])) && !$noThumbs)	{
 					$imgInfo = $imgObj->getImageDimensions($filepath);
 					$pDim = $imgInfo[0].'x'.$imgInfo[1].' pixels';
 					$clickIcon = t3lib_BEfunc::getThumbNail($BACK_PATH.'thumbs.php',$filepath,'hspace="5" vspace="5" border="1"');
