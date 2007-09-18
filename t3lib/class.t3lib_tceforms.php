@@ -640,26 +640,41 @@ class t3lib_TCEforms	{
 				// Create parts array for the tab menu:
 			$parts = array();
 			foreach ($out_array as $idx => $sheetContent)	{
-				$parts[] = array(
-					'label' => $out_array_meta[$idx]['title'],
-					'content' => '<table border="0" cellspacing="0" cellpadding="0" width="100%">'.
-							implode('',$sheetContent).
-						'</table>'
-				);
+				$resstr = implode('', $sheetContent);
+				if ($resstr) {
+					$parts[] = array(
+						'label' => $out_array_meta[$idx]['title'],
+						'content' => '<table border="0" cellspacing="0" cellpadding="0" width="100%">'.
+								$resstr.
+							'</table>'
+					);
+				}
 			}
 
-				// Unset the current level of tab menus:
-			$this->popFromDynNestedStack('tab', $tabIdentStringMD5.'-'.($out_sheet+1));
+			if (count($parts) > 1) {
+					// Unset the current level of tab menus:
+				$this->popFromDynNestedStack('tab', $tabIdentStringMD5.'-'.($out_sheet+1));
 
-			return '
+				$output = $this->getDynTabMenu($parts, $tabIdentString);
+
+			} else {
+					// If there is only one tab/part there is no need to wrap it into the dynTab code
+				$output = isset($parts[0]) ? trim($parts[0]['content']) : '';
+			}
+
+			$output = '
 				<tr>
 					<td colspan="2">
-					'.$this->getDynTabMenu($parts, $tabIdentString).'
+					'.$output.'
 					</td>
 				</tr>';
-		} else {	// Only one, so just implode:
-			return implode('',$out_array[$out_sheet]);
+
+		} else {
+				// Only one, so just implode:
+			$output = implode('',$out_array[$out_sheet]);
 		}
+
+		return $output;
 	}
 
 	/**

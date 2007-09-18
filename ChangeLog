@@ -1,3 +1,7 @@
+2007-09-18	Bernhard Kraft  <kraftb@kraftb.at>
+
+	* Hide empty dynTabs in tceforms
+
 2007-09-18	Thomas Hempel	<thomas@typo3-unleashed.net>
 
 	* Feature #5690: TCEforms: add inline editing of secondary options (thanks to Martin Ficzel)

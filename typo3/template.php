@@ -1704,33 +1704,34 @@ $str.=$this->docBodyTagBegin().
 					$onclick = 'this.blur(); DTM_activate("'.$id.'","'.$index.'", '.($toggle<0?1:0).'); return false;';
 				}
 
-				$isActive = strcmp($def['content'],'');
+				$isActive = strcmp(trim($def['content']),'');
 
-				$mouseOverOut = ' onmouseover="DTM_mouseOver(this);" onmouseout="DTM_mouseOut(this);"';
+				if ($isActive) {
 
-				if (!$foldout)	{
-						// Create TAB cell:
-					$options[$tabRows][] = '
-							<td class="'.($isActive ? 'tab' : 'disabled').'" id="'.$id.'-'.$index.'-MENU"'.$noWrap.$mouseOverOut.'>'.
-							($isActive ? '<a href="#" onclick="'.htmlspecialchars($onclick).'"'.($def['linkTitle'] ? ' title="'.htmlspecialchars($def['linkTitle']).'"':'').'>' : '').
-							$def['icon'].
-							($def['label'] ? htmlspecialchars($def['label']) : '&nbsp;').
-							$this->icons($def['stateIcon'],'margin-left: 10px;').
-							($isActive ? '</a>' :'').
-							'</td>';
-					$titleLenCount+= strlen($def['label']);
-				} else {
-						// Create DIV layer for content:
-					$divs[] = '
-						<div class="'.($isActive ? 'tab' : 'disabled').'" id="'.$id.'-'.$index.'-MENU"'.$mouseOverOut.'>'.
-							($isActive ? '<a href="#" onclick="'.htmlspecialchars($onclick).'"'.($def['linkTitle'] ? ' title="'.htmlspecialchars($def['linkTitle']).'"':'').'>' : '').
-							$def['icon'].
-							($def['label'] ? htmlspecialchars($def['label']) : '&nbsp;').
-							($isActive ? '</a>' : '').
-							'</div>';
-				}
+					$mouseOverOut = ' onmouseover="DTM_mouseOver(this);" onmouseout="DTM_mouseOut(this);"';
 
-				if ($isActive)	{
+					if (!$foldout)	{
+							// Create TAB cell:
+						$options[$tabRows][] = '
+								<td class="'.($isActive ? 'tab' : 'disabled').'" id="'.$id.'-'.$index.'-MENU"'.$noWrap.$mouseOverOut.'>'.
+								($isActive ? '<a href="#" onclick="'.htmlspecialchars($onclick).'"'.($def['linkTitle'] ? ' title="'.htmlspecialchars($def['linkTitle']).'"':'').'>' : '').
+								$def['icon'].
+								($def['label'] ? htmlspecialchars($def['label']) : '&nbsp;').
+								$this->icons($def['stateIcon'],'margin-left: 10px;').
+								($isActive ? '</a>' :'').
+								'</td>';
+						$titleLenCount+= strlen($def['label']);
+					} else {
+							// Create DIV layer for content:
+						$divs[] = '
+							<div class="'.($isActive ? 'tab' : 'disabled').'" id="'.$id.'-'.$index.'-MENU"'.$mouseOverOut.'>'.
+								($isActive ? '<a href="#" onclick="'.htmlspecialchars($onclick).'"'.($def['linkTitle'] ? ' title="'.htmlspecialchars($def['linkTitle']).'"':'').'>' : '').
+								$def['icon'].
+								($def['label'] ? htmlspecialchars($def['label']) : '&nbsp;').
+								($isActive ? '</a>' : '').
+								'</div>';
+					}
+
 						// Create DIV layer for content:
 					$divs[] = '
 							<div style="display: none;" id="'.$id.'-'.$index.'-DIV" class="c-tablayer">'.
