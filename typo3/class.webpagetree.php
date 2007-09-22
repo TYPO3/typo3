@@ -120,7 +120,16 @@ class webPageTree extends t3lib_browseTree {
 		$pageIdStr = '';
 		if ($this->ext_showPageId) { $pageIdStr = '['.$row['uid'].']&nbsp;'; }
 
-		return $dragDropIcon.$lockIcon.$pageIdStr;
+			// Call stats information hook
+		$stat = '';
+		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['recStatInfoHooks']))	{
+			$_params = array('pages',$row['uid']);
+			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['recStatInfoHooks'] as $_funcRef)	{
+				$stat.=t3lib_div::callUserFunction($_funcRef,$_params,$this);
+			}
+		}
+
+		return $dragDropIcon.$lockIcon.$pageIdStr.$stat;
 	}
 
 	/**

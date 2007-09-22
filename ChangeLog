@@ -1,3 +1,11 @@
+2007-09-18  Kasper Skårhøj  <kasperYYYY@typo3.com>
+
+	* Fixed t3lib_cli that negative numbers (like "-2") is not seen as a parameter
+	* New option, $GLOBALS['TYPO3_CONF_VARS']['BE']['flexFormXMLincludeDiffBase'], means that flexforms will allow a new index extending all "vXX" fields to "vXX.vDEFbase" with a value holding the "vDEF" value when the "vXX" value was changed. Effectively this is a memory of the value you translated from. Used for diff'ing.
+	* Introduced a new global hook, $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['recStatInfoHooks'], with which you can insert HTML before a records icon in the page tree, web>List and Web>Page modules (and possibly more places where makes sense). Used in l10nmgr for adding a small localization icon.
+	* Added "limit to languages" to "Admin" accounts (although it will not limit languages but merely decide what statuses you see in the page tree)
+	* List sys_log table entries in cleaner output!
+
 2007-09-18  Oliver Hader  <oh@inpublica.de>
 
 	* (minor) Fixed bug #65: Thumbnails in Element Browser are only displayed if fileSuffix is lowercase

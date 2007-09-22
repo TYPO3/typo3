@@ -364,6 +364,14 @@ class t3lib_flexformtools {
 		#debug(array($dsArr, $data, $PA),$path);
 			// Just setting value in our own result array, basically replicating the structure:
 		$pObj->setArrayValueByPath($path,$this->cleanFlexFormXML,$data);
+
+			// Looking if an "extension" called ".vDEFbase" is found and if so, accept that too:
+		if ($GLOBALS['TYPO3_CONF_VARS']['BE']['flexFormXMLincludeDiffBase'])	{
+			$vDEFbase = $pObj->getArrayValueByPath($path.'.vDEFbase',$pObj->traverseFlexFormXMLData_Data);
+			if (isset($vDEFbase))	{
+				$pObj->setArrayValueByPath($path.'.vDEFbase',$this->cleanFlexFormXML,$vDEFbase);
+			}
+		}
 	}
 
 

@@ -34,6 +34,18 @@
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
  *
+ *
+ *
+ *   67: class t3lib_transl8tools
+ *   74:     function getSystemLanguages($page_id=0,$backPath='')
+ *  132:     function translationInfo($table,$uid,$sys_language_uid=0)
+ *  187:     function getTranslationTable($table)
+ *  197:     function isTranslationInOwnTable($table)
+ *  209:     function foreignTranslationTable($table)
+ *
+ * TOTAL FUNCTIONS: 5
+ * (This index is automatically created/updated by the extension "extdeveval")
+ *
  */
 
 
@@ -53,9 +65,12 @@
  * @subpackage t3lib
  */
 class t3lib_transl8tools	{
-	
+
 	/**
-	 *
+	 * Returns array of system languages
+	 * @param	integer		page id (only used to get TSconfig configuration setting flag and label for default language)
+	 * @param	string		Backpath for flags
+	 * @return	array		
 	 */
 	function getSystemLanguages($page_id=0,$backPath='')	{
 		global $TCA,$LANG;
@@ -102,17 +117,23 @@ class t3lib_transl8tools	{
 			if (strlen ($row['flag'])) {
 				$languageIconTitles[$row['uid']]['flagIcon'] = @is_file($flagAbsPath.$row['flag']) ? $flagIconPath.$row['flag'] : '';
 			}
-		}		
-		
+		}
+
 		return $languageIconTitles;
 	}
 
 	/**
-	 * Initialization of the class.
+	 * Information about translation for an element
+	 * Will overlay workspace version of record too!
+	 *
+	 * @param	string		Table name
+	 * @param	integer		Record uid
+	 * @param	integer		Language uid. If zero, then all languages are selected.
+	 * @return	array		Array with information. Errors will return string with message.
 	 */
 	function translationInfo($table,$uid,$sys_language_uid=0)	{
 		global $TCA;
-		
+
 		if ($TCA[$table] && $uid)	{
 			t3lib_div::loadTCA($table);
 
@@ -133,7 +154,7 @@ class t3lib_transl8tools	{
 									t3lib_BEfunc::deleteClause($trTable).
 									t3lib_BEfunc::versioningPlaceholderClause($trTable)
 							);
-							
+
 							$translations = array();
 							$translations_errors = array();
 							foreach($translationsTemp as $r)	{
@@ -158,29 +179,38 @@ class t3lib_transl8tools	{
 			} else return 'Record "'.$table.'_'.$uid.'" was not found';
 		} else return 'No table "'.$table.'" or no UID value';
 	}
-		
+
 	/**
-	 *  Returns the table in which translations for input table is found.
+	 * Returns the table in which translations for input table is found.
+	 *
+	 * @param	[type]		$table: ...
+	 * @return	[type]		...
 	 */
 	function getTranslationTable($table) {
 		return $this->isTranslationInOwnTable($table) ? $table : $this->foreignTranslationTable($table);
 	}
-	
+
 	/**
-	 *  Returns true, if the input table has localization enabled and done so with records from the same table
+	 * Returns true, if the input table has localization enabled and done so with records from the same table
+	 *
+	 * @param	[type]		$table: ...
+	 * @return	[type]		...
 	 */
 	function isTranslationInOwnTable($table) {
 		global $TCA;
 
 		return $TCA[$table]['ctrl']['languageField'] && $TCA[$table]['ctrl']['transOrigPointerField'] && !$TCA[$table]['ctrl']['transOrigPointerTable'];
 	}
-	
+
 	/**
-	 *  Returns foreign translation table, if any
+	 * Returns foreign translation table, if any
+	 *
+	 * @param	[type]		$table: ...
+	 * @return	[type]		...
 	 */
 	function foreignTranslationTable($table) {
 		global $TCA;
-		
+
 		$trTable = $TCA[$table]['ctrl']['transForeignTable'];
 
 		if ($trTable && $TCA[$trTable] && $TCA[$trTable]['ctrl']['languageField'] && $TCA[$trTable]['ctrl']['transOrigPointerField'] && $TCA[$trTable]['ctrl']['transOrigPointerTable']===$table)	{

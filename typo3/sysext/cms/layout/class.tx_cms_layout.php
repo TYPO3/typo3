@@ -1533,10 +1533,20 @@ class tx_cms_layout extends recordList {
 						'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/recordlock_warning3.gif','width="17" height="12"').' title="'.htmlspecialchars($lockInfo['msg']).'" alt="" />'.
 						'</a>';
 		} else $lockIcon='';
+		
+			// Call stats information hook
+		$stat = '';
+		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['recStatInfoHooks']))	{
+			$_params = array('tt_content',$row['uid']);
+			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['recStatInfoHooks'] as $_funcRef)	{
+				$stat.=t3lib_div::callUserFunction($_funcRef,$_params,$this);
+			}
+		}
 
 			// Create header with icon/lock-icon/title:
 		$header = $this->getIcon('tt_content',$row).
 				$lockIcon.
+				$stat.
 				($langMode ? $this->languageFlag($row['sys_language_uid']) : '').
 				'&nbsp;<b>'.htmlspecialchars($this->CType_labels[$row['CType']]).'</b>';
 		$out = '
