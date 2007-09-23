@@ -1,3 +1,7 @@
+2007-09-23  Oliver Hader  <oh@inpublica.de>
+
+	* (minor) Fixed hanging recordset in tslib_cObj
+	
 2007-09-23  Michael Stucki  <michael@typo3.org>
 
 	* (minor) Fixed hanging recordset in t3lib_BEfunc

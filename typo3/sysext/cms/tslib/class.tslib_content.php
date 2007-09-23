@@ -1222,6 +1222,7 @@ class tslib_cObj {
 							}# else debug($GLOBALS['TSFE']->recordRegister,'CONTENT');
 						}
 					}
+					$GLOBALS['TYPO3_DB']->sql_free_result($res);
 				}
 				if ($slideCollectReverse) {
 					$theValue = $cobjValue.$theValue;
