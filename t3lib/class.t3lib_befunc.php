@@ -1133,8 +1133,9 @@ class t3lib_BEfunc	{
 	}
 
 	/**
-	 * Retrieves the string content stored with hash key, $hash, in cache_hash
-	 * IDENTICAL to the function by same name found in t3lib_page:
+	 * Returns string value stored for the hash string in the table "cache_hash"
+	 * Can be used to retrieved a cached value
+	 * IDENTICAL to the function by same name found in t3lib_page
 	 * Usage: 2
 	 *
 	 * @param	string		Hash key, 32 bytes hex
@@ -1144,13 +1145,14 @@ class t3lib_BEfunc	{
 	function getHash($hash,$expTime=0)	{
 			// if expTime is not set, the hash will never expire
 		$expTime = intval($expTime);
-		if ($expTime)	{
+		if ($expTime) {
 			$whereAdd = ' AND tstamp > '.(time()-$expTime);
 		}
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('content', 'cache_hash', 'hash='.$GLOBALS['TYPO3_DB']->fullQuoteStr($hash, 'cache_hash').$whereAdd);
-		if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
-			return $row['content'];
-		}
+		$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
+		$GLOBALS['TYPO3_DB']->sql_free_result($res);
+
+		return is_array($row) ? $row['content'] : '';
 	}
 
 
@@ -3093,7 +3095,7 @@ class t3lib_BEfunc	{
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('sys_domain.*', 'pages,sys_domain', '
 				pages.uid=sys_domain.pid
 				AND sys_domain.hidden=0
-				AND (sys_domain.domainName='.$GLOBALS['TYPO3_DB']->fullQuoteStr($domain, 'sys_domain').' or sys_domain.domainName='.$GLOBALS['TYPO3_DB']->fullQuoteStr($domain.'/', 'sys_domain').')'.
+				AND (sys_domain.domainName='.$GLOBALS['TYPO3_DB']->fullQuoteStr($domain, 'sys_domain').' OR sys_domain.domainName='.$GLOBALS['TYPO3_DB']->fullQuoteStr($domain.'/', 'sys_domain').')'.
 				t3lib_BEfunc::deleteClause('pages'),
 				'', '', '1');
 			$result = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
@@ -3402,14 +3404,14 @@ class t3lib_BEfunc	{
 	 * Recently, this function has been modified so it MAY set $row to FALSE. This happens if a version overlay with the move-id pointer is found in which case we would like a backend preview. In other words, you should check if the input record is still an array afterwards when using this function.
 	 *
 	 * @param	string		Table name
-	 * @param	array		Record array passed by reference. As minimum, the "uid", "pid" and "t3ver_swapmode" (pages) fields must exist! Fake fields cannot exist since the fields in the array is used as field names in the SQL look up. It would be nice to have fields like "t3ver_state" and "t3ver_mode_id" as well to avoid a new lookup inside movePlhOL(). 
+	 * @param	array		Record array passed by reference. As minimum, the "uid", "pid" and "t3ver_swapmode" (pages) fields must exist! Fake fields cannot exist since the fields in the array is used as field names in the SQL look up. It would be nice to have fields like "t3ver_state" and "t3ver_mode_id" as well to avoid a new lookup inside movePlhOL().
 	 * @param	integer		Workspace ID, if not specified will use $GLOBALS['BE_USER']->workspace
 	 * @return	void		(Passed by ref).
 	 * @see fixVersioningPid()
 	 */
 	function workspaceOL($table,&$row,$wsid=-99,$unsetMovePointers=FALSE)	{
 		global $TCA;
-		
+
 		$previewMovePlaceholders = TRUE;		// If this is false the placeholder is shown raw in the backend. I don't know if this move can be useful for users to toggle. Technically it can help debugging...
 
 			// Initialize workspace ID:
@@ -3417,7 +3419,7 @@ class t3lib_BEfunc	{
 
 			// Check if workspace is different from zero and record is set:
 		if ($wsid!==0 && is_array($row))	{
-			
+
 				// Check if input record is a move-placeholder and if so, find the pointed-to live record:
 			if ($previewMovePlaceholders)	{
 				$orig_uid = $row['uid'];
@@ -3472,8 +3474,8 @@ class t3lib_BEfunc	{
 					// Changing input record to the workspace version alternative:
 				$row = $wsAlt;
 			}
-			
-				// If the original record was a move placeholder, the uid and pid of that is preserved here: 
+
+				// If the original record was a move placeholder, the uid and pid of that is preserved here:
 			if ($movePldSwap)	{
 				$row['_MOVE_PLH']=TRUE;
 				$row['_MOVE_PLH_uid'] = $orig_uid;
@@ -3482,7 +3484,7 @@ class t3lib_BEfunc	{
 			}
 		}
 	}
-	
+
 	/**
 	 * Checks if record is a move-placeholder (t3ver_state==3) and if so it will set $row to be the pointed-to live record (and return TRUE)
 	 *
@@ -3516,7 +3518,7 @@ class t3lib_BEfunc	{
 		}
 		return FALSE;
 	}
-	
+
 	/**
 	 * Select the workspace version of a record, if exists
 	 *
@@ -3667,7 +3669,7 @@ class t3lib_BEfunc	{
 	 */
 	function getMovePlaceholder($table,$uid,$fields='*')	{
 		global $TCA;
-		
+
 		$workspace = $GLOBALS['BE_USER']->workspace;
 		if ($workspace!==0 && $TCA[$table] && (int)$TCA[$table]['ctrl']['versioningWS']>=2)	{
 

@@ -1,4 +1,8 @@
-2007-09-18  Kasper Skårhøj  <kasperYYYY@typo3.com>
+2007-09-23  Michael Stucki  <michael@typo3.org>
+
+	* (minor) Fixed hanging recordset in t3lib_BEfunc
+
+2007-09-22  Kasper Skaarhoj  <kasper2007@typo3.com>
 
 	* Fixed t3lib_cli that negative numbers (like "-2") is not seen as a parameter
 	* New option, $GLOBALS['TYPO3_CONF_VARS']['BE']['flexFormXMLincludeDiffBase'], means that flexforms will allow a new index extending all "vXX" fields to "vXX.vDEFbase" with a value holding the "vDEF" value when the "vXX" value was changed. Effectively this is a memory of the value you translated from. Used for diff'ing.

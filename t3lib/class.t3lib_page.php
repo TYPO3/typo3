@@ -866,7 +866,7 @@ class t3lib_pageSelect {
 	/**
 	 * Returns string value stored for the hash string in the table "cache_hash"
 	 * Can be used to retrieved a cached value
-	 * Can be used from your frontend plugins if you like. Is also used to store the parsed TypoScript template structures. You can call it directly like t3lib_pageSelect::getHash()
+	 * Can be used from your frontend plugins if you like. It is also used to store the parsed TypoScript template structures. You can call it directly like t3lib_pageSelect::getHash()
 	 *
 	 * @param	string		The hash-string which was used to store the data value
 	 * @param	integer		Allowed expiretime in seconds. Basically a record is selected only if it is not older than this value in seconds. If expTime is not set, the hashed value will never expire.
@@ -874,13 +874,13 @@ class t3lib_pageSelect {
 	 * @see tslib_TStemplate::start(), storeHash()
 	 */
 	function getHash($hash,$expTime=0)	{
-			//
+			// if expTime is not set, the hash will never expire
 		$expTime = intval($expTime);
-		if ($expTime)	{
+		if ($expTime) {
 			$whereAdd = ' AND tstamp > '.(time()-$expTime);
 		}
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('content', 'cache_hash', 'hash='.$GLOBALS['TYPO3_DB']->fullQuoteStr($hash, 'cache_hash').$whereAdd);
-		if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
+		if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 			$GLOBALS['TYPO3_DB']->sql_free_result($res);
 			return $row['content'];
 		}
