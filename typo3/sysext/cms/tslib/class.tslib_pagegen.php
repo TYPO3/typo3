@@ -317,14 +317,7 @@ See <a href="http://wiki.typo3.org/index.php/TYPO3_3.8.1" target="_blank">wiki.t
 			}
 		}
 
-		return Array(count($functions)?'
-<script type="text/javascript">
-	/*<![CDATA[*/
-'.implode(chr(10),$functions).'
-'.implode(chr(10),$setEvents).'
-	/*]]>*/
-</script>
-			':'',$setBody);
+		return array(count($functions)? implode(chr(10), $functions) . chr(10) . implode(chr(10), $setEvents) : '', $setBody);
 	}
 
 	/**
@@ -473,7 +466,7 @@ See <a href="http://wiki.typo3.org/index.php/TYPO3_3.8.1" target="_blank">wiki.t
 		$GLOBALS['TSFE']->content.='
 	<meta http-equiv="Content-Type" content="text/html; charset='.$theCharset.'" />';
 
-$GLOBALS['TSFE']->content.='
+		$GLOBALS['TSFE']->content.='
 
 <!-- '.($customContent?$customContent.chr(10):'').'
 	This website is powered by TYPO3 - inspiring people to share!
@@ -729,7 +722,7 @@ $GLOBALS['TSFE']->content.='
 		function blurLink(theObject)	{	//
 			if (msie4)	{theObject.blur();}
 		}
-		';
+		' . $JSef[0];
 
 		if ($GLOBALS['TSFE']->spamProtectEmailAddresses && $GLOBALS['TSFE']->spamProtectEmailAddresses !== 'ascii') {
 			$_scriptCode.= '
@@ -768,8 +761,15 @@ $GLOBALS['TSFE']->content.='
 		';
 		}
 
+		// Should minify?
+		if ($GLOBALS['TSFE']->config['config']['minifyJS']) {
+			$minifyError = '';
+			$_scriptCode = t3lib_div::minifyJavaScript($_scriptCode,$minifyError);
+			if ($minifyError) {
+				$GLOBALS['TT']->setTSlogMessage($minifyError, 3);
+			}
+		}
 		if (!$GLOBALS['TSFE']->config['config']['removeDefaultJS']) {
-				// NOTICE: The following code must be kept synchronized with "tslib/default.js"!!!
 			$GLOBALS['TSFE']->content.='
 	<script type="text/javascript">
 		/*<![CDATA[*/
@@ -782,7 +782,6 @@ $GLOBALS['TSFE']->content.='
 		}
 
 		$GLOBALS['TSFE']->content.= chr(10).implode($GLOBALS['TSFE']->additionalHeaderData,chr(10)).'
-'.$JSef[0].'
 </head>';
 		if ($GLOBALS['TSFE']->pSetup['frameSet.'])	{
 			$fs = t3lib_div::makeInstance('tslib_frameset');

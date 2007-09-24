@@ -2330,8 +2330,26 @@ class t3lib_div {
 		}
 	}
 
-
-
+	/**
+	 * Minifies JavaScript
+	 *
+	 * @param	string	$script	Script to minify
+	 * @param	string	$error	Error message (if any)
+	 * @return	string	Minified script or source string if error happened
+	 */
+	function minifyJavaScript($script, &$error = '') {
+		require_once(PATH_typo3 . 'contrib/jsmin/jsmin.php');
+		try {
+			$error = '';
+			$script = trim(JSMin::minify(str_replace(chr(13), '', $script)));
+		}
+		catch(JSMinException $e) {
+			$error = 'Error while minifying JavaScript: ' . $e->getMessage();
+			t3lib_div::devLog($error, 't3lib_div', 2,
+				array('JavaScript' => $script, 'Stack trace' => $e->getTrace()));
+		}
+		return $script;
+	}
 
 
 
