@@ -496,7 +496,12 @@ class tx_indexed_search_extparse {
 			case 'jpg':		// PHP EXIF
 			case 'jpeg':	// PHP EXIF
 			case 'tif':		// PHP EXIF
-				$exif = exif_read_data($absFile, 'IFD0');
+				if (function_exists('exif_read_data'))	{
+					$exif = exif_read_data($absFile, 'IFD0');
+				} else {
+					$exif = FALSE;
+				}
+
 				if ($exif)	{
 					$comment = trim($exif['COMMENT'][0].' '.$exif['ImageDescription']);	// The comments in JPEG files are utf-8, while in Tif files they are 7-bit ascii.
 				} else {

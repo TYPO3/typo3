@@ -1,3 +1,7 @@
+2007-09-24 Andreas Otto <andreas.otto@dkd.de>
+
+	* Fixed bug #1471: Check if exif functions are available before using them.
+
 2007-08-31  Michael Stucki  <michael@typo3.org>
 
 	* Add new property "search.exactCount" to allow exact counting of matches. See documentation for more information.
