@@ -1,3 +1,7 @@
+2007-09-24 Andreas Otto <andreas.otto@dkd.de>
+
+	* Fixed bug #1471: Check if exif functions are available before using them.
+
 2007-09-18  Oliver Hader  <oh@inpublica.de>
 
 	* (minor) Fixed bug #65: Thumbnails in Element Browser are only displayed if fileSuffix is lowercase
@@ -8,7 +12,7 @@
 
 2007-09-09  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
-	* Require PHP 4.3 explicitely in init.php 
+	* Require PHP 4.3 explicitely in init.php
 
 2007-09-07  Ingmar Schlecht  <ingmar@typo3.org>
 

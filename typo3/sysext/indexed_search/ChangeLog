@@ -1,3 +1,7 @@
+2007-09-24 Andreas Otto <andreas.otto@dkd.de>
+
+	* Fixed bug #1471: Check if exif functions are available before using them.
+
 2007-07-06  Michael Stucki  <michael@typo3.org>
 
 	* Fix: List of indexed pages could be broken if mutli-byte chars are cut in the middle (patch by Karsten Dambekalns)
