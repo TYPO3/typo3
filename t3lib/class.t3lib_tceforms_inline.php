@@ -388,7 +388,11 @@ class t3lib_TCEforms_inline {
 				'table' => $foreign_table,
 				'row'	=> $rec,
 				'title'	=> '',
-				'isOnSymmetricSide' => $isOnSymmetricSide
+				'isOnSymmetricSide' => $isOnSymmetricSide,
+				'parent' => array(
+					'uid' => $parentUid,
+					'config' => $config,
+				),
 			);
 			$null = null;	// callUserFunction requires a third parameter, but we don't want to give $this as reference!
 			t3lib_div::callUserFunction($GLOBALS['TCA'][$foreign_table]['ctrl']['label_userFunc'], $params, $null);

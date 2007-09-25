@@ -1,6 +1,7 @@
 2007-09-25  Oliver Hader  <oh@inpublica.de>
 
 	* (tweak) Created new directory for Services_JSON typo3/contrib/json/ and moved file from typo3/contrib/json.php to typo3/contrib/json/json.php
+	* (feature) Added feature #6359: IRRE - Add config of parent record for label_userFunc used on a child record
 
 2007-09-24 Andreas Otto <andreas.otto@dkd.de>
 
