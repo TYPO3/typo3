@@ -1726,7 +1726,7 @@ class t3lib_div {
 	 */
 	function array2json($jsonArray) {
 		if (!$GLOBALS['JSON']) {
-			require_once(PATH_typo3.'contrib/json.php');
+			require_once(PATH_typo3.'contrib/json/json.php');
 			$GLOBALS['JSON'] = t3lib_div::makeInstance('Services_JSON');
 		}
 		return $GLOBALS['JSON']->encode($jsonArray);
