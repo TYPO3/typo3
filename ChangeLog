@@ -2,6 +2,7 @@
 
 	* (tweak) Created new directory for Services_JSON typo3/contrib/json/ and moved file from typo3/contrib/json.php to typo3/contrib/json/json.php
 	* (feature) Added feature #6359: IRRE - Add config of parent record for label_userFunc used on a child record
+	* (minor) Fixed bug: Page TSconfig isn't parsed correctly anymore after cleanup in Trunk
 
 2007-09-24 Andreas Otto <andreas.otto@dkd.de>
 

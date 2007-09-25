@@ -1152,7 +1152,7 @@ class t3lib_BEfunc	{
 		$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
 		$GLOBALS['TYPO3_DB']->sql_free_result($res);
 
-		return is_array($row) ? $row['content'] : '';
+		return (is_array($row) ? $row['content'] : null);
 	}
 
 
