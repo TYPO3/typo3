@@ -1,3 +1,7 @@
+2007-09-25  Oliver Hader  <oh@inpublica.de>
+
+	* (tweak) Created new directory for Services_JSON typo3/contrib/json/ and moved file from typo3/contrib/json.php to typo3/contrib/json/json.php
+
 2007-09-24 Andreas Otto <andreas.otto@dkd.de>
 
 	* Fixed bug #1471: Check if exif functions are available before using them.
