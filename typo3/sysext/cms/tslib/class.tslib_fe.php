@@ -1530,7 +1530,7 @@
 
 			// If cookie is set, see what to do:
 		if ($_COOKIE['ADMCMD_prev'])	{
-			
+
 				// If no input code is given by GET method, lets look it up in a cookie (for workspace previews not only tied to the page) and update the cookie time:
 			if (!$inputCode)	{
 				$inputCode = $_COOKIE['ADMCMD_prev'];
@@ -1560,10 +1560,10 @@
 					$previewConfig = unserialize($previewData['config']);
 
 					if ($previewConfig['fullWorkspace']) {	// For full workspace preview we only ADD a get variable to set the preview of the workspace - so all other Get vars are accepted. Hope this is not a security problem. Still posting is not allowed and even if a backend user get initialized it shouldn't lead to situations where users can use those credentials.
-					
+
 							// Set the workspace preview value:
 						t3lib_div::_GETset($previewConfig['fullWorkspace'],'ADMCMD_previewWS');
-						
+
 							// If ADMCMD_prev is set the $inputCode value cannot come from a cookie and we set that cookie here. Next time it will be found from the cookie if ADMCMD_prev is not set again...
 						if (t3lib_div::_GP('ADMCMD_prev'))	{
 							SetCookie('ADMCMD_prev', t3lib_div::_GP('ADMCMD_prev'), time()+$cookieTTL);	// Lifetime is 1 hour, does it matter much? Requires the user to click the link from their email again if it expires.
@@ -1868,12 +1868,17 @@
 						$this->setSimulReplacementChar();
 					}
 
-						// Set default values for removeDefaultJS and inlineStyle2TempFile so CSS and JS are externalized if compatversion is higher than 4.0
-					if (!isset($this->config['config']['removeDefaultJS']) && t3lib_div::compat_version('4.0'))	{
-						$this->config['config']['removeDefaultJS'] = 'external';
-					}
-					if (!isset($this->config['config']['inlineStyle2TempFile']) && t3lib_div::compat_version('4.0'))	{
-						$this->config['config']['inlineStyle2TempFile'] = 1;
+						// Set default values for removeDefaultJS, inlineStyle2TempFile and minifyJS so CSS and JS are externalized/minified if compatversion is higher than 4.0
+					if (t3lib_div::compat_version('4.0')) {
+						if (!isset($this->config['config']['removeDefaultJS'])) {
+							$this->config['config']['removeDefaultJS'] = 'external';
+						}
+						if (!isset($this->config['config']['inlineStyle2TempFile'])) {
+							$this->config['config']['inlineStyle2TempFile'] = 1;
+						}
+						if (!isset($this->config['config']['minifyJS'])) {
+							$this->config['config']['minifyJS'] = 1;
+						}
 					}
 
 							// Processing for the config_array:
