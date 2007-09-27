@@ -183,7 +183,9 @@ class t3lib_pageSelect {
 	 */
 	function getPage($uid, $disableGroupAccessCheck=FALSE)	{
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'pages', 'uid='.intval($uid).$this->where_hid_del.($disableGroupAccessCheck ? '' : $this->where_groupAccess));
-		if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
+		$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
+		$GLOBALS['TYPO3_DB']->sql_free_result($res);
+		if ($row) {
 			$this->versionOL('pages',$row);
 			if (is_array($row))		return $this->getPageOverlay($row);
 		}
@@ -1080,7 +1082,7 @@ class t3lib_pageSelect {
 				}
 			}
 		}
-		
+
 			// changing PID in case of moving pointer:
 		if ($movePlhRec = $this->getMovePlaceholder($table,$rr['uid'],'pid'))	{
 			$rr['pid'] = $movePlhRec['pid'];
@@ -1101,9 +1103,9 @@ class t3lib_pageSelect {
 	 */
 	function versionOL($table,&$row,$unsetMovePointers=FALSE)	{
 		global $TCA;
-		
+
 		if ($this->versioningPreview && is_array($row))	{
-			$movePldSwap = $this->movePlhOL($table,$row);	// will overlay any movePlhOL found with the real record, which in turn will be overlaid with its workspace version if any. 
+			$movePldSwap = $this->movePlhOL($table,$row);	// will overlay any movePlhOL found with the real record, which in turn will be overlaid with its workspace version if any.
 			if ($wsAlt = $this->getWorkspaceVersionOfRecord($this->versioningWorkspaceId, $table, $row['uid'], implode(',',array_keys($row))))	{	// implode(',',array_keys($row)) = Using fields from original record to make sure no additional fields are selected. This is best for eg. getPageOverlay()
 				if (is_array($wsAlt))	{
 
@@ -1150,7 +1152,7 @@ class t3lib_pageSelect {
 			}
 		}
 	}
-	
+
 	/**
 	 * Checks if record is a move-placeholder (t3ver_state==3) and if so it will set $row to be the pointed-to live record (and return TRUE)
 	 * Used from versionOL
@@ -1172,7 +1174,7 @@ class t3lib_pageSelect {
 			} else {
 				$moveID = $row['t3ver_move_id'];
 			}
-		
+
 				// Find pointed-to record.
 			if ($moveID)	{
 				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(implode(',',array_keys($row)), $table, 'uid='.intval($moveID).$this->enableFields($table));
@@ -1217,7 +1219,7 @@ class t3lib_pageSelect {
 		}
 		return FALSE;
 	}
-	
+
 	/**
 	 * Select the version of a record for a workspace
 	 *
@@ -1283,7 +1285,7 @@ class t3lib_pageSelect {
 
 	/**
 	 * Checks if user has access to workspace.
-	 * 
+	 *
 	 * @param	int	$wsid	Workspace ID
 	 * @return	boolean	<code>true</code> if has access
 	 */

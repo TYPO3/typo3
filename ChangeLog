@@ -1,3 +1,7 @@
+2007-09-27	Dmitry Dulepov	<dmitry@typo3.org>
+
+	* Another hanging recordset fixed
+
 2007-09-26	Dmitry Dulepov	<dmitry@typo3.org>
 
 	* JavaScript minification is enabled in FE by default (config.minifyJS=1)
