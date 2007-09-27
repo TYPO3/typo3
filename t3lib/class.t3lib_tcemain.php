@@ -347,6 +347,7 @@ class t3lib_TCEmain	{
 	var $callFromImpExp = false;				// tells, that this TCEmain was called from tx_impext - this variable is set by tx_impexp
 
 		// Various
+	/** @var t3lib_basicFileFunctions */
 	var $fileFunc;								// For "singleTon" file-manipulation object
 	var $checkValue_currentRecord=array();		// Set to "currentRecord" during checking of values.
 	var $autoVersioningUpdate = FALSE;			// A signal flag used to tell file processing that autoversioning has happend and hence certain action should be applied.
@@ -768,6 +769,7 @@ class t3lib_TCEmain	{
 											// Auto-creation of version: In offline workspace, test if versioning is enabled and look for workspace version of input record. If there is no versionized record found we will create one and save to that.
 										if ($this->BE_USER->workspaceAllowAutoCreation($table,$id,$theRealPid))	{
 											$tce = t3lib_div::makeInstance('t3lib_TCEmain');
+											/* @var $tce t3lib_TCEmain  */
 											$tce->stripslashes_values = 0;
 
 												// Setting up command for creating a new version of the record:
@@ -1147,6 +1149,7 @@ class t3lib_TCEmain	{
 					$mixedRec = array_merge($currentRecord,$fieldArray);
 					$SW_fileContent = t3lib_div::getUrl($eFile['editFile']);
 					$parseHTML = t3lib_div::makeInstance('t3lib_parsehtml_proc');
+					/* @var $parseHTML t3lib_parsehtml_proc */
 					$parseHTML->init('','');
 
 					$eFileMarker = $eFile['markerField']&&trim($mixedRec[$eFile['markerField']]) ? trim($mixedRec[$eFile['markerField']]) : '###TYPO3_STATICFILE_EDIT###';
@@ -1570,6 +1573,7 @@ class t3lib_TCEmain	{
 					$theFileValues=array();
 					if ($tcaFieldConf['MM'])	{	// If MM relations for the files also!
 						$dbAnalysis = t3lib_div::makeInstance('t3lib_loadDBGroup');
+						/* @var $dbAnalysis t3lib_loadDBGroup */
 						$dbAnalysis->start('','files',$tcaFieldConf['MM'],$id);
 						reset($dbAnalysis->itemArray);
 						while (list($somekey,$someval)=each($dbAnalysis->itemArray))	{
@@ -1655,6 +1659,7 @@ class t3lib_TCEmain	{
 				// If MM relations for the files, we will set the relations as MM records and change the valuearray to contain a single entry with a count of the number of files!
 			if ($tcaFieldConf['MM'])	{
 				$dbAnalysis = t3lib_div::makeInstance('t3lib_loadDBGroup');
+				/* @var $dbAnalysis t3lib_loadDBGroup */
 				$dbAnalysis->tableArray['files']=array();	// dummy
 
 				reset($valueArray);
@@ -1765,6 +1770,7 @@ class t3lib_TCEmain	{
 	 */
 	function checkValue_flexArray2Xml($array, $addPrologue=FALSE)	{
 		$flexObj = t3lib_div::makeInstance('t3lib_flexformtools');
+		/* @var $flexObj t3lib_flexformtools */
 		return $flexObj->flexArray2Xml($array, $addPrologue);
 	}
 
@@ -2085,6 +2091,7 @@ class t3lib_TCEmain	{
 		$prep = $type=='group'?$tcaFieldConf['prepend_tname']:$tcaFieldConf['neg_foreign_table'];
 
 		$dbAnalysis = t3lib_div::makeInstance('t3lib_loadDBGroup');
+		/* @var $dbAnalysis t3lib_loadDBGroup */
 		$dbAnalysis->registerNonTableValues=$tcaFieldConf['allowNonIdValues'] ? 1 : 0;
 		$dbAnalysis->start(implode(',',$valueArray),$tables, '', 0, $currentTable, $tcaFieldConf);
 
@@ -2299,7 +2306,7 @@ class t3lib_TCEmain	{
 								$dataValues[$key][$vKey] = $res['value'];
 							}
 
-								// Finally, check if new and old values are different (or no .vDEFbase value is found) and if so, we record the vDEF value for diff'ing. 
+								// Finally, check if new and old values are different (or no .vDEFbase value is found) and if so, we record the vDEF value for diff'ing.
 								// We do this after $dataValues has been updated since I expect that $dataValues_current holds evaluated values from database (so this must be the right value to compare with).
 							if ($GLOBALS['TYPO3_CONF_VARS']['BE']['flexFormXMLincludeDiffBase'] && $vKey!=='vDEF' && (strcmp($dataValues[$key][$vKey],$dataValues_current[$key][$vKey]) || !isset($dataValues_current[$key][$vKey.'.vDEFbase'])))	{
 									// Now, check if a vDEF value is submitted in the input data, if so we expect this has been processed prior to this operation (normally the case since those fields are higher in the form) and we can use that:
@@ -2618,6 +2625,7 @@ class t3lib_TCEmain	{
 
 						// Do the copy by simply submitting the array through TCEmain:
 					$copyTCE = t3lib_div::makeInstance('t3lib_TCEmain');
+					/* @var $copyTCE t3lib_TCEmain  */
 					$copyTCE->stripslashes_values = 0;
 					$copyTCE->copyTree = $this->copyTree;
 					$copyTCE->cachedTSconfig = $this->cachedTSconfig;	// Copy forth the cached TSconfig
@@ -2902,6 +2910,7 @@ class t3lib_TCEmain	{
 			$prependName = $conf['type']=='group' ? $conf['prepend_tname'] : $conf['neg_foreign_table'];
 			if ($conf['MM'])	{
 				$dbAnalysis = t3lib_div::makeInstance('t3lib_loadDBGroup');
+				/* @var $dbAnalysis t3lib_loadDBGroup */
 				$dbAnalysis->start('', $allowedTables, $conf['MM'], $uid, $table, $conf);
 				$value = implode(',',$dbAnalysis->getValueArray($prependName));
 			}
@@ -2912,6 +2921,7 @@ class t3lib_TCEmain	{
 			// If another inline subtype is used (comma-separated-values or the foreign_field property):
 		} elseif ($inlineSubType !== false) {
 			$dbAnalysis = t3lib_div::makeInstance('t3lib_loadDBGroup');
+			/* @var $dbAnalysis t3lib_loadDBGroup */
 			$dbAnalysis->start($value, $conf['foreign_table'], '', $uid, $table, $conf);
 
 				// walk through the items, copy them and remember the new id
@@ -3013,6 +3023,7 @@ class t3lib_TCEmain	{
 				$theFileValues = array();
 
 				$dbAnalysis = t3lib_div::makeInstance('t3lib_loadDBGroup');
+				/* @var $dbAnalysis t3lib_loadDBGroup */
 				$dbAnalysis->start('', 'files', $conf['MM'], $uid);
 
 				foreach($dbAnalysis->itemArray as $somekey => $someval)	{
@@ -3065,6 +3076,7 @@ class t3lib_TCEmain	{
 		}
 
 			// Select all RTEmagic files in the reference table from the table/ID
+		/* @var $TYPO3_DB t3lib_DB */
 		$recs = $TYPO3_DB->exec_SELECTgetRows(
 			'*',
 			'sys_refindex',
@@ -3221,7 +3233,7 @@ class t3lib_TCEmain	{
 								}
 							}
 						}
-					
+
 							// Workspace destination check:
 						if (!($destRes>0 || ($canMoveRecord && !$destRes)))	{	// All records can be inserted if $destRes is greater than zero. Only new versions can be inserted if $destRes is false. NO RECORDS can be inserted if $destRes is negative which indicates a stage not allowed for use. If "versioningWS" is version 2, moving can take place of versions.
 							$workspaceAccessBlocked['dest1']='Could not insert record from table "'.$table.'" in destination PID "'.$resolvedPid.'" ';
@@ -3252,14 +3264,14 @@ class t3lib_TCEmain	{
 
 	/**
 	 * Creates a move placeholder for workspaces.
-	 * USE ONLY INTERNALLY 
+	 * USE ONLY INTERNALLY
 	 * Moving placeholder: Can be done because the system sees it as a placeholder for NEW elements like t3ver_state=1
 	 * Moving original: Will either create the placeholder if it doesn't exist or move existing placeholder in workspace.
 	 *
 	 * @param	string		Table name to move
 	 * @param	integer		Record uid to move (online record)
 	 * @param	integer		Position to move to: $destPid: >=0 then it points to a page-id on which to insert the record (as the first element). <0 then it points to a uid from its own table after which to insert it (works if
-	 * @param	integer		UID of offline version of online record 
+	 * @param	integer		UID of offline version of online record
 	 * @return	void
 	 * @see moveRecord()
 	 */
@@ -3304,7 +3316,7 @@ class t3lib_TCEmain	{
 
 	/**
 	 * Moves a record without checking security of any sort.
-	 * USE ONLY INTERNALLY 
+	 * USE ONLY INTERNALLY
 	 *
 	 * @param	string		Table name to move
 	 * @param	integer		Record uid to move
@@ -3334,7 +3346,7 @@ class t3lib_TCEmain	{
 				$hookObjectsArr[] = &t3lib_div::getUserObj($classRef);
 			}
 		}
-		
+
 			// Timestamp field:
 		$updateFields = array();
 		if ($TCA[$table]['ctrl']['tstamp'])	{
@@ -3567,6 +3579,7 @@ class t3lib_TCEmain	{
 
 												// Create new record:
 											$copyTCE = t3lib_div::makeInstance('t3lib_TCEmain');
+											/* @var $copyTCE t3lib_TCEmain  */
 											$copyTCE->stripslashes_values = 0;
 											$copyTCE->cachedTSconfig = $this->cachedTSconfig;	// Copy forth the cached TSconfig
 											$copyTCE->dontProcessTransformations=1;		// Transformations should NOT be carried out during copy
@@ -3649,10 +3662,10 @@ class t3lib_TCEmain	{
 					$this->deleteEl($table, $id);
 				} else $this->newlog('Stage of root point did not allow for deletion',1);
 			} elseif ((int)$delRec['t3ver_state']===3) {	// Placeholders for moving operations are deletable directly.
-				
+
 					// Get record which its a placeholder for and reset the t3ver_state of that:
 				if ($wsRec = t3lib_BEfunc::getWorkspaceVersionOfRecord($delRec['t3ver_wsid'], $table, $delRec['t3ver_move_id'], 'uid'))	{
-						// clear the state flag of the workspace version of the 
+						// clear the state flag of the workspace version of the
 					$updateFields = array();
 					$updateFields['t3ver_state'] = 0;	// Setting placeholder state value for version (so it can know it is currently a new version...)
 					$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table, 'uid='.intval($wsRec['uid']), $updateFields);
@@ -4258,7 +4271,7 @@ class t3lib_TCEmain	{
 										if (!$swapIntoWS)	$swapVersion['t3ver_state'] = 0;
 
 											// Moving element.
-										if ((int)$TCA[$table]['ctrl']['versioningWS']>=2)	{		//  && $t3ver_state['swapVersion']==4   // Maybe we don't need this? 
+										if ((int)$TCA[$table]['ctrl']['versioningWS']>=2)	{		//  && $t3ver_state['swapVersion']==4   // Maybe we don't need this?
 											if ($plhRec = t3lib_BEfunc::getMovePlaceholder($table,$id,'t3ver_state,pid,uid'.($TCA[$table]['ctrl']['sortby']?','.$TCA[$table]['ctrl']['sortby']:'')))	{
 												$movePlhID = $plhRec['uid'];
 												$movePlh['pid'] = $swapVersion['pid'];
@@ -4311,10 +4324,10 @@ class t3lib_TCEmain	{
 												unlink($lockFileName);
 											}
 										}
-										
+
 
 										if (!count($sqlErrors))	{
-											
+
 												// If a moving operation took place...:
 											if ($movePlhID)	{
 												if (!$swapIntoWS)	{	// Remove, if normal publishing:
@@ -4387,7 +4400,7 @@ class t3lib_TCEmain	{
 	 */
 	function version_clearWSID($table,$id,$flush=FALSE)	{
 		global $TCA;
-		
+
 		if ($errorCode = $this->BE_USER->workspaceCannotEditOfflineVersion($table, $id))	{
 			$this->newlog('Attempt to reset workspace for record failed: '.$errorCode,1);
 		} elseif ($this->checkRecordUpdateAccess($table,$id)) {
@@ -4408,7 +4421,7 @@ class t3lib_TCEmain	{
 				if ($flush || ((int)$wsRec['t3ver_state']==1 || (int)$wsRec['t3ver_state']==2))	{
 					$this->deleteEl($table, $id, TRUE, TRUE);
 				}
-				
+
 					// Remove the move-placeholder if found for live record.
 				if ((int)$TCA[$table]['ctrl']['versioningWS']>=2)	{
 					if ($plhRec = t3lib_BEfunc::getMovePlaceholder($table,$liveRec['uid'],'uid'))	{

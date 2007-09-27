@@ -1,6 +1,7 @@
 2007-09-27	Dmitry Dulepov	<dmitry@typo3.org>
 
 	* Another hanging recordset fixed
+	* Added "@var"s to t3lib_TCEmain to simplify debugging with IDEs
 
 2007-09-26	Dmitry Dulepov	<dmitry@typo3.org>
 
