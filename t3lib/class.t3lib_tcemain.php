@@ -347,7 +347,11 @@ class t3lib_TCEmain	{
 	var $callFromImpExp = false;				// tells, that this TCEmain was called from tx_impext - this variable is set by tx_impexp
 
 		// Various
-	/** @var t3lib_basicFileFunctions */
+	/**
+	 * basicFileFunctions object
+	 *
+	 * @var t3lib_basicFileFunctions
+	 */
 	var $fileFunc;								// For "singleTon" file-manipulation object
 	var $checkValue_currentRecord=array();		// Set to "currentRecord" during checking of values.
 	var $autoVersioningUpdate = FALSE;			// A signal flag used to tell file processing that autoversioning has happend and hence certain action should be applied.
@@ -3665,7 +3669,7 @@ class t3lib_TCEmain	{
 
 					// Get record which its a placeholder for and reset the t3ver_state of that:
 				if ($wsRec = t3lib_BEfunc::getWorkspaceVersionOfRecord($delRec['t3ver_wsid'], $table, $delRec['t3ver_move_id'], 'uid'))	{
-						// clear the state flag of the workspace version of the
+						// Clear the state flag of the workspace version of the record
 					$updateFields = array();
 					$updateFields['t3ver_state'] = 0;	// Setting placeholder state value for version (so it can know it is currently a new version...)
 					$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table, 'uid='.intval($wsRec['uid']), $updateFields);

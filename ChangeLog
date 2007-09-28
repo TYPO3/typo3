@@ -2,12 +2,12 @@
 
 	* (feature) Added feature #6367: Integrate possibility in Element Browser to select all files of a folder (thanks to fotobuch.de AG for sponsoring)
 
-2007-09-27	Dmitry Dulepov	<dmitry@typo3.org>
+2007-09-27  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Another hanging recordset fixed
 	* Added "@var"s to t3lib_TCEmain to simplify debugging with IDEs
 
-2007-09-26	Dmitry Dulepov	<dmitry@typo3.org>
+2007-09-26  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* JavaScript minification is enabled in FE by default (config.minifyJS=1)
 
@@ -21,7 +21,7 @@
 
 	* Fixed bug #1471: Check if exif functions are available before using them.
 
-2007-09-24	Dmitry Dulepov	<dmitry@typo3.org>
+2007-09-24  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Added JavaScript minification feature (new function t3lib_div::minifyJavaScript)
 	* Added minification of FE javascripts (including default js and onload handlers) if config.minifyJS is enabled
@@ -46,11 +46,11 @@
 
 	* (minor) Fixed bug #65: Thumbnails in Element Browser are only displayed if fileSuffix is lowercase
 
-2007-09-18	Bernhard Kraft  <kraftb@kraftb.at>
+2007-09-18  Bernhard Kraft  <kraftb@kraftb.at>
 
 	* Hide empty dynTabs in tceforms
 
-2007-09-18	Thomas Hempel	<thomas@typo3-unleashed.net>
+2007-09-18  Thomas Hempel  <thomas@typo3-unleashed.net>
 
 	* Feature #5690: TCEforms: add inline editing of secondary options (thanks to Martin Ficzel)
 
@@ -58,14 +58,14 @@
 
 	* Fixed bug 5701: linkHandler Hook Not Initialized Properly, patch supplied by Jeff Segars
 
-2007-09-13	Thomas Hempel	<thomas@typo3-unleashed.net>
+2007-09-13  Thomas Hempel  <thomas@typo3-unleashed.net>
 
 	* Feature #4064: Navigation title in tree view
 
 2007-09-11  Ingo Renner  <ingo@typo3.org>
 
-	* added romainian flag, fixes bug 6000
-	* added fields crdate and cruser_id to tt_content
+	* Added Romanian flag, fixes bug #6000
+	* Added fields "crdate" and "cruser_id" to tt_content
 
 2007-09-10  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 

@@ -762,7 +762,7 @@ class t3lib_TCEforms	{
 				}
 			}
 		}
-		
+
 			// Put palette together if there are fields in it:
 		if (count($palParts))	{
 			if ($header)	{
@@ -3643,24 +3643,25 @@ class t3lib_TCEforms	{
 	 * @param	array		The palette pointer.
 	 * @param	integer		The record array
 	 */
-	function wrapOpenPalette ( $header, $table,$row , $palette ,$retFunc){
+	function wrapOpenPalette($header,$table,$row,$palette,$retFunc)	{
 		$id  = 'TCEFORMS_'.$table.'_'.$palette.'_'.$row['uid'];
 		$res = '<a href="#" onclick="TBE_EDITOR.toggle_display_states(\''.$id.'\',\'block\',\'none\'); return false;" >'.$header.'</a>';
 		return array($res,'');
 	}
 
  	/**
-	 * add the id and the style property to the field palette
+	 * Add the id and the style property to the field palette
+	 *
 	 * @param	string		Palette Code
 	 * @param	string		The table name for which to open the palette.
 	 * @param	string		Palette ID
 	 * @param	string		The record array
-	 * @return	boolean		is collapsed 
+	 * @return	boolean		is collapsed
 	 */
-	function wrapPaletteField ( $code, $table, $row, $palette, $collapsed ){
+	function wrapPaletteField($code,$table,$row,$palette,$collapsed )	{
 		$display = $collapsed ? 'none' : 'block';
 		$id = 'TCEFORMS_'.$table.'_'.$palette.'_'.$row['uid'];
-		$code = '<div id="'.$id.'" style="display:'.$display.';" >'.$code.'</div>'; 
+		$code = '<div id="'.$id.'" style="display:'.$display.';" >'.$code.'</div>';
 		return $code;
 	}
 
@@ -4235,7 +4236,7 @@ class t3lib_TCEforms	{
 			// Traverse the selected rows to add them:
 		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
 			t3lib_BEfunc::workspaceOL($f_table, $row);
-			
+
 			if (is_array($row))	{
 					// Prepare the icon if available:
 				if ($iField && $iPath && $row[$iField])	{
@@ -4321,7 +4322,7 @@ class t3lib_TCEforms	{
 
 		$this->palFieldTemplate='
 			<tr ###BGCOLOR######CLASSATTR_1###>
-				<td></td> 
+				<td></td>
 				<td nowrap="nowrap" valign="top">###FIELD_PALETTE###</td>
 			</tr>';
 		$this->palFieldTemplateHeader='

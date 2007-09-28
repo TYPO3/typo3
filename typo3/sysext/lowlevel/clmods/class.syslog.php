@@ -28,7 +28,7 @@
  * Cleaner module: syslog
  * User function called from tx_lowlevel_cleaner_core configured in ext_localconf.php
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
@@ -50,7 +50,7 @@
 /**
  * syslog
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage tx_lowlevel
  */
@@ -90,7 +90,7 @@ Showing last 25 hour entries from the syslog. More features pending. This is the
 			'listing' => array(),
 			'allDetails' => array()
 		);
-		
+
 		$rows = $TYPO3_DB->exec_SELECTgetRows(
 				'*',
 				'sys_log',
