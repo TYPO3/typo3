@@ -1,3 +1,7 @@
+2007-09-28  Oliver Hader  <oh@inpublica.de>
+
+	* (feature) Added feature #6367: Integrate possibility in Element Browser to select all files of a folder (thanks to fotobuch.de AG for sponsoring)
+
 2007-09-27	Dmitry Dulepov	<dmitry@typo3.org>
 
 	* Another hanging recordset fixed

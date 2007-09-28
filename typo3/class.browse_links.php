@@ -663,6 +663,7 @@ class browse_links {
 	var $setTarget;			// Target (RTE specific)
 	var $setTitle;      		// title (RTE specific)
 	var $doc;				// Backend template object
+	var $elements = array();	// Holds information about files
 
 		// GPvars:	(Input variables from outside)
 	/**
@@ -1057,15 +1058,14 @@ class browse_links {
 				}
 			}
 			function focusOpenerAndClose(close)	{	//
-				if (close)	{
-					parent.window.opener.focus();
-					parent.close();
-				}
+				BrowseLinks.focusOpenerAndClose(close);
 			}
 		';
 
 			// Finally, add the accumulated JavaScript to the template object:
-		$this->doc->JScode = $this->doc->wrapScriptTags($JScode);
+		$this->doc->JScode = '<script type="text/javascript" src="contrib/prototype/prototype.js"></script>'."\n";
+		$this->doc->JScode.= '<script type="text/javascript" src="js/browse_links.js"></script>'."\n";
+		$this->doc->JScode.= $this->doc->wrapScriptTags($JScode);
 
 			// Debugging:
 		if (FALSE) debug(array(
@@ -1559,6 +1559,8 @@ class browse_links {
 			// Add some space
 		$content.='<br /><br />';
 
+			// Setup indexed elements:
+		$this->doc->JScode.= $this->doc->wrapScriptTags('BrowseLinks.addElements('.t3lib_div::array2json($this->elements).');');
 			// Ending page, returning content:
 		$content.= $this->doc->endPage();
 		$content = $this->doc->insertStylesAndJS($content);
@@ -1875,7 +1877,9 @@ class browse_links {
 		if (is_array($files))	{
 
 				// Create headline (showing number of files):
-			$out.=$this->barheader(sprintf($GLOBALS['LANG']->getLL('files').' (%s):',count($files)));
+			$filesCount = count($files);
+			$out.=$this->barheader(sprintf($GLOBALS['LANG']->getLL('files').' (%s):', $filesCount));
+			$out.=$this->getBulkSelector($filesCount);
 
 			$titleLen=intval($GLOBALS['BE_USER']->uc['titleLen']);
 
@@ -1916,9 +1920,20 @@ class browse_links {
 				if (strstr($filepath,',') || strstr($filepath,'|'))	{	// In case an invalid character is in the filepath, display error message:
 					$eMsg = $LANG->JScharCode(sprintf($LANG->getLL('invalidChar'),', |'));
 					$ATag = $ATag_alt = "<a href=\"#\" onclick=\"alert(".$eMsg.");return false;\">";
+					$bulkCheckBox = '';
 				} else {	// If filename is OK, just add it:
-					$ATag = "<a href=\"#\" onclick=\"return insertElement('','".t3lib_div::shortMD5($filepath)."', 'file', ".t3lib_div::quoteJSvalue($fI['basename']).", ".t3lib_div::quoteJSvalue($filepath).", '".$fI['extension']."', '".$ficon."');\">";
-					$ATag_alt = substr($ATag,0,-4).",'',1);\">";
+					$filesIndex = count($this->elements);
+					$this->elements['file_'.$filesIndex] = array(
+						'md5' => t3lib_div::shortMD5($filepath),
+						'type' => 'file',
+						'fileName' => $fI['basename'],
+						'filePath' => $filepath,
+						'fileExt' => $fI['extension'],
+						'fileIcon' => $ficon,
+					);
+					$ATag = "<a href=\"#\" onclick=\"return BrowseLinks.File.insertElement('file_$filesIndex');\">";
+					$ATag_alt = substr($ATag,0,-4).",1);\">";
+					$bulkCheckBox = '<input type="checkbox" class="typo3-bulk-item" name="file_'.$filesIndex.'" value="0" /> ';
 				}
 				$ATag_e='</a>';
 
@@ -1928,7 +1943,7 @@ class browse_links {
 				$ATag2_e='</a>';
 
 					// Combine the stuff:
-					$filenameAndIcon=$ATag_alt.$icon.htmlspecialchars(t3lib_div::fixed_lgd_cs(basename($filepath),$titleLen)).$ATag_e;
+				$filenameAndIcon=$bulkCheckBox.$ATag_alt.$icon.htmlspecialchars(t3lib_div::fixed_lgd_cs(basename($filepath),$titleLen)).$ATag_e;
 
 					// Show element:
 				if ($pDim)	{		// Image...
@@ -1970,7 +1985,6 @@ class browse_links {
 					'.implode('',$lines).'
 				</table>';
 		}
-
 			// Return accumulated content for filelisting:
 		return $out;
 	}
@@ -2346,6 +2360,29 @@ class browse_links {
 			</form>';
 
 		return $code;
+	}
+
+	/**
+	 * Get the HTML data required for a bulk selection of files of the TYPO3 Element Browser.
+	 *
+	 * @param	integer		$filesCount: Number of files currently displayed
+	 * @return	string		HTML data required for a bulk selection of files - if $filesCount is 0, nothing is returned
+	 */
+	function getBulkSelector($filesCount) {
+		if ($filesCount) {
+			$labelToggleSelection = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_browse_links.php:toggleSelection',1);
+			$labelImportSelection = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_browse_links.php:importSelection',1);
+
+			$out = $this->doc->spacer(15).'<div>' .
+					'<a href="#" onclick="BrowseLinks.Selector.toggle()">' .
+						'<img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/clip_select.gif','width="12" height="12"').' title="'.$labelToggleSelection.'" alt="" /> ' .
+						$labelToggleSelection.'</a>'.$this->doc->spacer(5) .
+					'<a href="#" onclick="BrowseLinks.Selector.handle()">' .
+						'<img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/import.gif','width="12" height="12"').' title="'.$labelImportSelection.'" alt="" /> ' .
+						$labelImportSelection.'</a>' .
+				'</div>'.$this->doc->spacer(15);
+		}
+		return $out;
 	}
 }
 
