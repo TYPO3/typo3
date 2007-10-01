@@ -642,7 +642,7 @@ class t3lib_TCEforms	{
 			foreach ($out_array as $idx => $sheetContent)	{
 				$resstr = implode('', $sheetContent);
 				if ($resstr) {
-					$parts[] = array(
+					$parts[$idx] = array(
 						'label' => $out_array_meta[$idx]['title'],
 						'content' => '<table border="0" cellspacing="0" cellpadding="0" width="100%">'.
 								$resstr.
