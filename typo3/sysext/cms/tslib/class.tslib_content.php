@@ -1219,7 +1219,7 @@ class tslib_cObj {
 								$cObj->start($row,$conf['table']);
 								$tmpValue = $cObj->cObjGetSingle($renderObjName, $renderObjConf, $renderObjKey);
 								$cobjValue .= $tmpValue;
-							}# else debug($GLOBALS['TSFE']->recordRegister,'CONTENT');
+							}
 						}
 					}
 					$GLOBALS['TYPO3_DB']->sql_free_result($res);
@@ -3299,13 +3299,14 @@ class tslib_cObj {
 	 * Implements the stdWrap "numRows" property
 	 *
 	 * @param	array		TypoScript properties for the property (see link to "numRows")
-	 * @return	integer		The number of rows found by the select
+	 * @return	integer		The number of rows found by the select (FALSE on error)
 	 * @access private
 	 * @link http://typo3.org/doc.0.html?&tx_extrepmgm_pi1[extUid]=270&tx_extrepmgm_pi1[tocEl]=317&cHash=e28e53e634
 	 * @link http://typo3.org/doc.0.html?&tx_extrepmgm_pi1[extUid]=270&tx_extrepmgm_pi1[tocEl]=318&cHash=a98cb4e7e6
 	 * @see stdWrap()
 	 */
 	function numRows($conf)	{
+		$result = FALSE;
 		$conf['select.']['selectFields'] = 'count(*)';
 
 		$res = $this->exec_getQuery($conf['table'],$conf['select.']);
@@ -3314,8 +3315,10 @@ class tslib_cObj {
 			$GLOBALS['TT']->setTSlogMessage($error,3);
 		} else {
 			$row = $GLOBALS['TYPO3_DB']->sql_fetch_row($res);
-			return intval($row[0]);
+			$result = intval($row[0]);
 		}
+		$GLOBALS['TYPO3_DB']->sql_free_result($res);
+		return $result;
 	}
 
 	/**
@@ -5232,8 +5235,10 @@ class tslib_cObj {
 							}
 							if (!$tCR_flag)	{
 								foreach ($tCR_rootline as $tCR_data)	{
-									$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'sys_domain', 'pid='.intval($tCR_data['uid']).' AND redirectTo=\'\''.$this->enableFields('sys_domain'), '', 'sorting');
-									if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
+									$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', 'sys_domain', 'pid='.intval($tCR_data['uid']).' AND redirectTo=\'\''.$this->enableFields('sys_domain'), '', 'sorting');
+									$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
+									$GLOBALS['TYPO3_DB']->sql_free_result($res);
+									if ($row)	{
 										$tCR_domain = preg_replace('/\/$/','',$row['domainName']);
 										break;
 									}
@@ -6402,6 +6407,7 @@ class tslib_cObj {
 							$next_id = $mount_info['mount_pid'];
 							$res2 = $GLOBALS['TYPO3_DB']->exec_SELECTquery($allFields, 'pages', 'uid='.intval($next_id).' AND deleted=0 '.$moreWhereClauses, '' ,'sorting');
 							$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res2);
+							$GLOBALS['TYPO3_DB']->sql_free_result($res2);
 							$GLOBALS['TSFE']->sys_page->versionOL('pages',$row);
 
 							if ($row['doktype']==255 || $row['doktype']==6 || $row['t3ver_state']>0)	{ unset($row); }	// Doing this after the overlay to make sure changes in the overlay are respected.
@@ -6428,6 +6434,7 @@ class tslib_cObj {
 						}
 					}
 				}
+				$GLOBALS['TYPO3_DB']->sql_free_result($res);
 			}
 		}
 			// If first run, check if the ID should be returned:
@@ -6591,14 +6598,15 @@ class tslib_cObj {
 
 				// Finding the total number of records, if used:
 			if (strstr(strtolower($conf['begin'].$conf['max']),'total'))	{
-				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', $table, $queryParts['WHERE'], $queryParts['GROUPBY']);
+				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('count(*)', $table, $queryParts['WHERE'], $queryParts['GROUPBY']);
 				if ($error = $GLOBALS['TYPO3_DB']->sql_error())	{
 					$GLOBALS['TT']->setTSlogMessage($error);
 				} else {
-					$total = $GLOBALS['TYPO3_DB']->sql_num_rows($res);
-					$conf['max'] = eregi_replace('total', (string)$total, $conf['max']);
-					$conf['begin'] = eregi_replace('total', (string)$total, $conf['begin']);
+					$row = $GLOBALS['TYPO3_DB']->sql_fetch_row($res);
+					$conf['max'] = eregi_replace('total', $row[0], $conf['max']);
+					$conf['begin'] = eregi_replace('total', $row[0], $conf['begin']);
 				}
+				$GLOBALS['TYPO3_DB']->sql_free_result($res);
 			}
 			if (!$error)	{
 				$conf['begin'] = t3lib_div::intInRange(ceil($this->calc($conf['begin'])),0);
@@ -6758,6 +6766,7 @@ class tslib_cObj {
 					$outArr[] = $row['uid'];
 				}
 			}
+			$GLOBALS['TYPO3_DB']->sql_free_result($res);
 		}
 		return $outArr;
 	}
@@ -6779,6 +6788,7 @@ class tslib_cObj {
 			} else {
 				$this->checkPid_cache[$uid] = 0;
 			}
+			$GLOBALS['TYPO3_DB']->sql_free_result($res);
 		}
 		return $this->checkPid_cache[$uid];
 	}

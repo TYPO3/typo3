@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2006 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2007 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -185,9 +185,11 @@ class t3lib_pageSelect {
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'pages', 'uid='.intval($uid).$this->where_hid_del.($disableGroupAccessCheck ? '' : $this->where_groupAccess));
 		$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
 		$GLOBALS['TYPO3_DB']->sql_free_result($res);
-		if ($row) {
+		if ($row)	{
 			$this->versionOL('pages',$row);
-			if (is_array($row))		return $this->getPageOverlay($row);
+			if (is_array($row))	{
+				return $this->getPageOverlay($row);
+			}
 		}
 		return Array();
 	}
@@ -201,9 +203,13 @@ class t3lib_pageSelect {
 	 */
 	function getPage_noCheck($uid)	{
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'pages', 'uid='.intval($uid).$this->deleteClause('pages'));
-		if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
+		$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
+		$GLOBALS['TYPO3_DB']->sql_free_result($res);
+		if ($row)	{
 			$this->versionOL('pages',$row);
-			if (is_array($row))		return $this->getPageOverlay($row);
+			if (is_array($row))	{
+				return $this->getPageOverlay($row);
+			}
 		}
 		return Array();
 	}
@@ -218,9 +224,13 @@ class t3lib_pageSelect {
 	function getFirstWebPage($uid)	{
 		$output = '';
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'pages', 'pid='.intval($uid).$this->where_hid_del.$this->where_groupAccess, '', 'sorting', '1');
-		if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
+		$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
+		$GLOBALS['TYPO3_DB']->sql_free_result($res);
+		if ($row)	{
 			$this->versionOL('pages',$row);
-			if (is_array($row))		$output = $this->getPageOverlay($row);
+			if (is_array($row))	{
+				$output = $this->getPageOverlay($row);
+			}
 		}
 		$GLOBALS['TYPO3_DB']->sql_free_result($res);
 		return $output;
@@ -236,7 +246,9 @@ class t3lib_pageSelect {
 	function getPageIdFromAlias($alias)	{
 		$alias = strtolower($alias);
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', 'pages', 'alias='.$GLOBALS['TYPO3_DB']->fullQuoteStr($alias, 'pages').' AND pid>=0 AND pages.deleted=0');	// "AND pid>=0" because of versioning (means that aliases sent MUST be online!)
-		if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
+		$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
+		$GLOBALS['TYPO3_DB']->sql_free_result($res);
+		if ($row)	{
 			return $row['uid'];
 		}
 		return 0;
@@ -284,6 +296,7 @@ class t3lib_pageSelect {
 							'1'
 						);
 				$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
+				$GLOBALS['TYPO3_DB']->sql_free_result($res);
 				$this->versionOL('pages_language_overlay',$row);
 
 				if (is_array($row))	{
@@ -339,9 +352,9 @@ class t3lib_pageSelect {
 								'1'
 							);
 							$olrow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
+							$GLOBALS['TYPO3_DB']->sql_free_result($res);
 							$this->versionOL($table,$olrow);
-	#debug($row);
-	#debug($olrow);
+
 								// Merge record content by traversing all fields:
 							if (is_array($olrow))	{
 								foreach($row as $fN => $fV)	{
@@ -456,6 +469,7 @@ class t3lib_pageSelect {
 				}
 			}
 		}
+		$GLOBALS['TYPO3_DB']->sql_free_result($res);
 		return $output;
 	}
 
@@ -489,7 +503,9 @@ class t3lib_pageSelect {
 					'',
 					1
 				);
-		if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
+		$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
+		$GLOBALS['TYPO3_DB']->sql_free_result($res);
+		if ($row)	{
 			if ($row['redirectTo'])	{
 				$rURL = $row['redirectTo'];
 				if ($row['prepend_params'])	{
@@ -540,7 +556,9 @@ class t3lib_pageSelect {
 
 		while ($uid!=0 && $loopCheck<20)	{	// Max 20 levels in the page tree.
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($selFields, 'pages', 'uid='.intval($uid).' AND pages.deleted=0 AND pages.doktype!=255');
-			if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
+			$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
+			$GLOBALS['TYPO3_DB']->sql_free_result($res);
+			if ($row)	{
 				$this->versionOL('pages',$row);
 				$this->fixVersioningPid('pages',$row);
 
@@ -563,6 +581,7 @@ class t3lib_pageSelect {
 							array_pop($MPA);
 							$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($selFields, 'pages', 'uid='.intval($curMP[1]).' AND pages.deleted=0 AND pages.doktype!=255');
 							$mp_row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
+							$GLOBALS['TYPO3_DB']->sql_free_result($res);
 
 							$this->versionOL('pages',$mp_row);
 							$this->fixVersioningPid('pages',$mp_row);
@@ -690,11 +709,14 @@ class t3lib_pageSelect {
 			if (!is_array($pageRec))	{
 				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,pid,doktype,mount_pid,mount_pid_ol,t3ver_state', 'pages', 'uid='.intval($pageId).' AND pages.deleted=0 AND pages.doktype!=255');
 				$pageRec = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
+				$GLOBALS['TYPO3_DB']->sql_free_result($res);
 				$this->versionOL('pages',$pageRec);		// Only look for version overlay if page record is not supplied; This assumes that the input record is overlaid with preview version, if any!
 			}
 
 				// Set first Page uid:
-			if (!$firstPageUid)	$firstPageUid = $pageRec['uid'];
+			if (!$firstPageUid)	{
+				$firstPageUid = $pageRec['uid'];
+			}
 
 				// Look for mount pid value plus other required circumstances:
 			$mount_pid = intval($pageRec['mount_pid']);
@@ -702,13 +724,14 @@ class t3lib_pageSelect {
 
 					// Get the mount point record (to verify its general existence):
 				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,pid,doktype,mount_pid,mount_pid_ol,t3ver_state', 'pages', 'uid='.$mount_pid.' AND pages.deleted=0 AND pages.doktype!=255');
-				$mount_rec = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
-				$this->versionOL('pages',$mount_rec);
+				$mountRec = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
+				$GLOBALS['TYPO3_DB']->sql_free_result($res);
+				$this->versionOL('pages',$mountRec);
 
-				if (is_array($mount_rec))	{
+				if (is_array($mountRec))	{
 						// Look for recursive mount point:
 					$prevMountPids[] = $mount_pid;
-					$recursiveMountPid = $this->getMountPointInfo($mount_pid, $mount_rec, $prevMountPids, $firstPageUid);
+					$recursiveMountPid = $this->getMountPointInfo($mount_pid, $mountRec, $prevMountPids, $firstPageUid);
 
 						// Return mount point information:
 					return $recursiveMountPid ?
@@ -718,7 +741,7 @@ class t3lib_pageSelect {
 									'overlay' => $pageRec['mount_pid_ol'],
 									'MPvar' => $mount_pid.'-'.$firstPageUid,
 									'mount_point_rec' => $pageRec,
-									'mount_pid_rec' => $mount_rec,
+									'mount_pid_rec' => $mountRec,
 								);
 				} else {
 					return -1;	// Means, there SHOULD have been a mount point, but there was none!
@@ -765,14 +788,18 @@ class t3lib_pageSelect {
 		$uid = intval($uid);
 		if (is_array($TCA[$table]))	{
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $table, 'uid='.intval($uid).$this->enableFields($table));
-			if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
+			$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
+			$GLOBALS['TYPO3_DB']->sql_free_result($res);
+			if ($row)	{
 				$this->versionOL($table,$row);
 				$GLOBALS['TYPO3_DB']->sql_free_result($res);
 
 				if (is_array($row))	{
 					if ($checkPage)	{
 						$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', 'pages', 'uid='.intval($row['pid']).$this->enableFields('pages'));
-						if ($GLOBALS['TYPO3_DB']->sql_num_rows($res))	{
+						$numRows = $GLOBALS['TYPO3_DB']->sql_num_rows($res);
+						$GLOBALS['TYPO3_DB']->sql_free_result($res);
+						if ($numRows>0)	{
 							return $row;
 						} else {
 							return 0;
@@ -806,7 +833,9 @@ class t3lib_pageSelect {
 				if (!$noWSOL)	{
 					$this->versionOL($table,$row);
 				}
-				if (is_array($row))	return $row;
+				if (is_array($row))	{
+					return $row;
+				}
 			}
 		}
 	}
@@ -821,7 +850,7 @@ class t3lib_pageSelect {
 	 * @param	string		Optional GROUP BY field(s), if none, supply blank string.
 	 * @param	string		Optional ORDER BY field(s), if none, supply blank string.
 	 * @param	string		Optional LIMIT value ([begin,]max), if none, supply blank string.
-	 * @return	mixed		Returns array (the record) if found, otherwise blank/0 (zero)
+	 * @return	mixed		Returns array (the record) if found, otherwise nothing (void)
 	 */
 	function getRecordsByField($theTable,$theField,$theValue,$whereClause='',$groupBy='',$orderBy='',$limit='')	{
 		global $TCA;
@@ -842,7 +871,9 @@ class t3lib_pageSelect {
 				if (is_array($row)) $rows[] = $row;
 			}
 			$GLOBALS['TYPO3_DB']->sql_free_result($res);
-			if (count($rows))	return $rows;
+			if (count($rows))	{
+				return $rows;
+			}
 		}
 	}
 
@@ -882,8 +913,9 @@ class t3lib_pageSelect {
 			$whereAdd = ' AND tstamp > '.(time()-$expTime);
 		}
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('content', 'cache_hash', 'hash='.$GLOBALS['TYPO3_DB']->fullQuoteStr($hash, 'cache_hash').$whereAdd);
-		if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-			$GLOBALS['TYPO3_DB']->sql_free_result($res);
+		$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
+		$GLOBALS['TYPO3_DB']->sql_free_result($res);
+		if ($row)	{
 			return $row['content'];
 		}
 	}
@@ -1178,7 +1210,9 @@ class t3lib_pageSelect {
 				// Find pointed-to record.
 			if ($moveID)	{
 				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(implode(',',array_keys($row)), $table, 'uid='.intval($moveID).$this->enableFields($table));
-				if ($origRow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
+				$origRow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
+				$GLOBALS['TYPO3_DB']->sql_free_result($res);
+				if ($origRow)	{
 					$row = $origRow;
 					return TRUE;
 				}
@@ -1211,10 +1245,12 @@ class t3lib_pageSelect {
 					 t3ver_state=3 AND
 					 t3ver_move_id='.intval($uid).' AND
 					 t3ver_wsid='.intval($workspace).
-						$this->deleteClause($table)
+					$this->deleteClause($table)
 				);
 
-				if (is_array($rows[0]))	return $rows[0];
+				if (is_array($rows[0]))	{
+					return $rows[0];
+				}
 			}
 		}
 		return FALSE;
