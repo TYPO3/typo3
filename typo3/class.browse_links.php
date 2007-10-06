@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2005 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2007 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -2010,7 +2010,7 @@ class browse_links {
 						$iurl = $this->siteURL.t3lib_div::rawurlencodeFP(substr($filepath,strlen(PATH_site)));
 
 							// Show only web-images
-						if (t3lib_div::inList('gif,jpeg,jpg,png',$fI['extension']))	{
+						if (t3lib_div::inList('gif,jpeg,jpg,png',strtolower($fI['extension'])))	{
 							$imgInfo = @getimagesize($filepath);
 							$pDim = $imgInfo[0].'x'.$imgInfo[1].' pixels';
 

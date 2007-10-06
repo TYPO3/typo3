@@ -3,6 +3,7 @@
 
 	* Fixed bug #6462: Wrong default locale charset on Windows
 	* Fixed bug #6252: rteHTMLarea acronyms are not DBAL compatible
+	* Fixed bug #5189: images with uppercase file extension aren't displayed in drag-n-drop listing
 
 2007-09-24 Andreas Otto <andreas.otto@dkd.de>
 
