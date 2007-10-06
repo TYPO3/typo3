@@ -2,6 +2,7 @@
 2007-10-06  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
 	* Fixed bug #6462: Wrong default locale charset on Windows
+	* Fixed bug #6252: rteHTMLarea acronyms are not DBAL compatible
 
 2007-09-24 Andreas Otto <andreas.otto@dkd.de>
 
