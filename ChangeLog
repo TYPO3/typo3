@@ -1,3 +1,8 @@
+
+2007-10-06  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+
+	* Fixed bug #6462: Wrong default locale charset on Windows
+
 2007-09-24 Andreas Otto <andreas.otto@dkd.de>
 
 	* Fixed bug #1471: Check if exif functions are available before using them.
