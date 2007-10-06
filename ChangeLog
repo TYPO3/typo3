@@ -3,6 +3,7 @@
 
 	* Fixed bug #6462: Wrong default locale charset on Windows
 	* Fixed bug #6032: Freeing SQL result sets
+	* Fixed bug #6252: rteHTMLarea acronyms are not DBAL compatible
 
 2007-10-01  Bernhard Kraft  <kraftb@kraftb.at>
 

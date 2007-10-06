@@ -1563,9 +1563,9 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 		$JSAbbreviationArray .= 'abbreviations = { ' . $linebreak;
 		$table = 'tx_rtehtmlarea_acronym';
 		if($this->contentLanguageUid > -1) {
-			$whereClause = '(sys_language_uid="'.$this->contentLanguageUid . '" OR sys_language_uid="-1")';
+			$whereClause = '(sys_language_uid='.$this->contentLanguageUid . ' OR sys_language_uid=-1)';
 		} else {
-			$whereClause = '1 = 1';
+			$whereClause = '1=1';
 		}
 		$whereClause .= t3lib_BEfunc::BEenableFields($table);
 		$whereClause .= t3lib_BEfunc::deleteClause($table);
