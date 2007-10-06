@@ -1,3 +1,8 @@
+
+2007-10-06  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+
+	* Fixed bug #6462: Wrong default locale charset on Windows
+
 2007-10-01  Bernhard Kraft  <kraftb@kraftb.at>
 
 	* Bugfix for: Hide empty dynTabs in tceforms (missing array key broke RTE after hidden Tabs)

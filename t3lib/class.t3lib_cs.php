@@ -578,7 +578,7 @@ class t3lib_cs {
 		if (isset($this->lang_to_script[$language]))	$script = $this->lang_to_script[$language];
 
 		if (TYPO3_OS == 'WIN')	{
-			$cs = $this->script_to_charset_windows[$script] ? $this->script_to_charset_windows[$script] : 'window-1252';
+			$cs = $this->script_to_charset_windows[$script] ? $this->script_to_charset_windows[$script] : 'windows-1252';
 		} else {
 			$cs = $this->script_to_charset_unix[$script] ? $this->script_to_charset_unix[$script] : 'iso-8859-1';
 		}
