@@ -1,4 +1,12 @@
 
+2007-10-08  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+
+	* Fix bug #6420: access key generation wrong with HTML tags in menu titles (TMENU)
+
+2007-10-07  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+
+	* Fixed bug #5911: GIFBUILDER setting quality not honoured
+
 2007-10-06  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
 	* Fixed bug #6462: Wrong default locale charset on Windows
