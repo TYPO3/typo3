@@ -791,8 +791,6 @@ class t3lib_pageSelect {
 			$GLOBALS['TYPO3_DB']->sql_free_result($res);
 			if ($row)	{
 				$this->versionOL($table,$row);
-				$GLOBALS['TYPO3_DB']->sql_free_result($res);
-
 				if (is_array($row))	{
 					if ($checkPage)	{
 						$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', 'pages', 'uid='.intval($row['pid']).$this->enableFields('pages'));
