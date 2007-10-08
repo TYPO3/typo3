@@ -1,3 +1,9 @@
+
+2007-10-08  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+
+	* Fix minor glitch with menu access keys
+	* Pass on access key of menu items to IProcFunc
+
 2007-10-08  Oliver Hader  <oh@inpublica.de>
 
 	* (minor) Fixed bug #6032: Freeing SQL result sets (post patch)

@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2005 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2007 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -1433,13 +1433,15 @@ class tslib_menu {
 			// The global array ACCESSKEY is used to globally control if letters are already used!!
 		$result = Array();
 
+		$title = trim($title);
 		$titleLen = strlen($title);
 		for ($a=0;$a<$titleLen;$a++)	{
-			$key = strtoupper(trim(substr($title,$a,1)));
-			if (preg_match('/[a-zA-Z]/', $key) && !isset($GLOBALS['TSFE']->accessKey[$key]))	{
-				$GLOBALS['TSFE']->accessKey[$key]=1;
+			$key = strtoupper(substr($title,$a,1));
+			if (preg_match('/[A-Z]/', $key) && !isset($GLOBALS['TSFE']->accessKey[$key]))	{
+				$GLOBALS['TSFE']->accessKey[$key] = 1;
 				$result['code'] = ' accesskey="'.$key.'"';
 				$result['alt'] = ' (ALT+'.$key.')';
+				$result['key'] = $key;
 				break;
 			}
 		}
