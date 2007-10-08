@@ -232,7 +232,6 @@ class t3lib_pageSelect {
 				$output = $this->getPageOverlay($row);
 			}
 		}
-		$GLOBALS['TYPO3_DB']->sql_free_result($res);
 		return $output;
 	}
 

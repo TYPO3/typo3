@@ -1,3 +1,6 @@
+2007-10-08  Oliver Hader  <oh@inpublica.de>
+
+	* (minor) Fixed bug #6032: Freeing SQL result sets (post patch)
 
 2007-10-07  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
