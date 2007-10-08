@@ -1,7 +1,7 @@
 
 2007-10-08  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
-	* Fix minor glitch with menu access keys
+	* Fixed bug #6420: access key generation wrong with HTML tags in menu titles (TMENU)
 	* Pass on access key of menu items to IProcFunc
 
 2007-10-08  Oliver Hader  <oh@inpublica.de>

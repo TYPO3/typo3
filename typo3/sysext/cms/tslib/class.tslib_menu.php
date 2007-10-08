@@ -1423,7 +1423,7 @@ class tslib_menu {
 	}
 
 	/**
-	 * Creates an access-key for a GMENU menu item based on the menu item titles first letter
+	 * Creates an access-key for a TMENU/GMENU menu item based on the menu item titles first letter
 	 *
 	 * @param	string		Menu item title.
 	 * @return	array		Returns an array with keys "code" ("accesskey" attribute for the img-tag) and "alt" (text-addition to the "alt" attribute) if an access key was defined. Otherwise array was empty
@@ -1433,7 +1433,7 @@ class tslib_menu {
 			// The global array ACCESSKEY is used to globally control if letters are already used!!
 		$result = Array();
 
-		$title = trim($title);
+		$title = trim(strip_tags($title));
 		$titleLen = strlen($title);
 		for ($a=0;$a<$titleLen;$a++)	{
 			$key = strtoupper(substr($title,$a,1));
