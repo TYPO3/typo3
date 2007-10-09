@@ -623,10 +623,33 @@ class t3lib_parsehtml	{
 		$c = 1;
 		$tagRegister = array();
 		$tagStack = array();
+		$inComment = false; $skipTag = false;
 		while(list(,$tok)=each($tokArr))	{
+			if ($inComment) {
+				if (($eocPos = strpos($tok, '-->')) === false) {
+					// End of comment is not found in the token. Go futher until end of comment is found in other tokens.
+					$newContent[$c++] = '<' . $tok;
+					continue;
+				}
+				// Comment ends in the middle of the token: add comment and proceed with rest of the token
+				$newContent[$c++] = '<' . substr($tok, 0, $eocPos + 3);
+				$tok = substr($tok, $eocPos + 3);
+				$inComment = false; $skipTag = true;
+			}
+			elseif (substr($tok, 0, 3) == '!--') {
+				if (($eocPos = strpos($tok, '-->')) === false) {
+					// Comment started in this token but it does end in the same token. Set a flag to skip till the end of comment
+					$newContent[$c++] = '<' . $tok;
+					$inComment = true;
+					continue;
+				}
+				// Start and end of comment are both in the current token. Add comment and proceed with rest of the token
+				$newContent[$c++] = '<' . substr($tok, 0, $eocPos + 3);
+				$tok = substr($tok, $eocPos + 3);
+				$skipTag = true;
+			}
 			$firstChar = substr($tok,0,1);
-#			if (strcmp(trim($firstChar),''))	{		// It is a tag...
-			if (preg_match('/[[:alnum:]\/]/',$firstChar)==1)	{		// It is a tag... (first char is a-z0-9 or /) (fixed 19/01 2004). This also avoids triggering on <?xml..> and <!DOCTYPE..>
+			if (!$skipTag && preg_match('/[[:alnum:]\/]/',$firstChar)==1)	{		// It is a tag... (first char is a-z0-9 or /) (fixed 19/01 2004). This also avoids triggering on <?xml..> and <!DOCTYPE..>
 				$tagEnd = strpos($tok,'>');
 				if ($tagEnd)	{	// If there is and end-bracket...	tagEnd can't be 0 as the first character can't be a >
 					$endTag = $firstChar=='/' ? 1 : 0;
@@ -790,7 +813,8 @@ class t3lib_parsehtml	{
 					$newContent[$c++]=$this->processContent('<'.$tok,$hSC,$addConfig);	// There were not end-bracket, so no tag...
 				}
 			} else {
-				$newContent[$c++]=$this->processContent('<'.$tok,$hSC,$addConfig);	// It was not a tag anyways
+				$newContent[$c++]=$this->processContent(($skipTag ? '' : '<') . $tok, $hSC, $addConfig);	// It was not a tag anyways
+				$skipTag = false;
 			}
 		}
 

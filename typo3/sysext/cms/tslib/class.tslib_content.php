@@ -4706,6 +4706,7 @@ class tslib_cObj {
 		$theImage = $GLOBALS['TSFE']->tmpl->getFileName($file);
 		if ($theImage)	{
 			$gifCreator = t3lib_div::makeInstance('tslib_gifbuilder');
+			/* @var $gifCreator tslib_gifbuilder */
 			$gifCreator->init();
 			$info= $gifCreator->imageMagickConvert($theImage,'WEB','','','','','');
 			$info['origFile'] = $theImage;

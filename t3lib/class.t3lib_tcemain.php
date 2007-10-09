@@ -5555,6 +5555,7 @@ $this->log($table,$id,6,0,0,'Stage raised...',30,array('comment'=>$comment,'stag
 	 */
 	function updateRefIndex($table,$id)	{
 		$refIndexObj = t3lib_div::makeInstance('t3lib_refindex');
+		/* @var $refIndexObj t3lib_refindex */
 		$result = $refIndexObj->updateRefIndexTable($table,$id);
 	}
 

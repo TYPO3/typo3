@@ -397,6 +397,7 @@ class t3lib_transferData {
 			break;
 			case 'db':
 				$loadDB = t3lib_div::makeInstance('t3lib_loadDBGroup');
+				/* @var $loadDB t3lib_loadDBGroup */
 				$loadDB->start($data, $fieldConfig['config']['allowed'], $fieldConfig['config']['MM'], $row['uid'], $table, $fieldConfig['config']);
 				$loadDB->getFromDB();
 				$data = $loadDB->readyForInterface();

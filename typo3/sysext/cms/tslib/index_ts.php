@@ -195,6 +195,7 @@ if ($TYPO3_CONF_VARS['FE']['compressionLevel'])	{
 // FE_USER
 // *********
 $TT->push('Front End user initialized','');
+	/* @var $TSFE tslib_fe */
 	$TSFE->initFEuser();
 $TT->pull();
 
