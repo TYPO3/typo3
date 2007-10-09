@@ -1,5 +1,9 @@
 2007-10-09  Benjamin Mack  <mack@xnos.org>
 
+	* (minor) indexed_search - Added info where additional doc. can be found
+
+2007-10-09  Benjamin Mack  <mack@xnos.org>
+
         * (tweak) No selection for TCEForms groups with max. one option needed
 
 2007-10-09  Dmitry Dulepov  <dmitry@typo3.org>
