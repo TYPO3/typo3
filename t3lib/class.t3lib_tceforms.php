@@ -4903,7 +4903,7 @@ class t3lib_TCEforms	{
 					var fObjSel = formObj[fName+"_list"];
 					var l=fObjSel.length;
 					var c=0;
-					if (type=="Remove" || type=="Top" || type=="Bottom")	{
+					if ((type=="Remove" && fObjSel.size > 1) || type=="Top" || type=="Bottom")	{
 						if (type=="Top")	{
 							for (a=0;a<l;a++)	{
 								if (fObjSel.options[a].selected==1)	{

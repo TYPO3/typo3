@@ -1,3 +1,7 @@
+2007-10-09  Benjamin Mack  <mack@xnos.org>
+
+        * (tweak) No selection for TCEForms groups with max. one option needed
+
 2007-10-09  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Added flag for Galician language
