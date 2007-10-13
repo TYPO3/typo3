@@ -13,7 +13,7 @@
 			<label index="pages.doktype.I.3">Not in menu</label>
 			<label index="pages.doktype.I.4">Backend User Section</label>
 			<label index="pages.doktype.I.5">Mount Point</label>
-			<label index="pages.doktype.I.7">Visual Menu Separator</label>
+			<label index="pages.doktype.I.7">Visual menu separator</label>
 			<label index="pages.doktype.I.8">Link to external URL</label>
 			<label index="pages.doktype.div.page">Page</label>
 			<label index="pages.doktype.div.link">Link</label>

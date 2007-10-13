@@ -168,7 +168,7 @@ $TCA['pages'] = Array (
 				),
 				'default' => '1',
 				'iconsInOptionTags' => 1,
-				'noIconsBelowSelect' => 1
+				'noIconsBelowSelect' => 1,
 			)
 		),
 		'title' => Array (
