@@ -65,16 +65,28 @@ if (TYPO3_MODE=='BE')	{
 		$TCA['pages']['columns']['doktype']['config']['items'],
 		1,
 		0,
-		Array(
-			Array('LLL:EXT:cms/locallang_tca.php:pages.doktype.I.0', '2'),
-			Array('LLL:EXT:lang/locallang_general.php:LGL.external', '3'),
-			Array('LLL:EXT:cms/locallang_tca.php:pages.doktype.I.2', '4'),
-			Array('LLL:EXT:cms/locallang_tca.php:pages.doktype.I.3', '5'),
-			Array('LLL:EXT:cms/locallang_tca.php:pages.doktype.I.4', '6'),
-			Array('LLL:EXT:cms/locallang_tca.php:pages.doktype.I.5', '7'),
-			Array('-----', '--div--'),
-			Array('LLL:EXT:cms/locallang_tca.php:pages.doktype.I.7', '199')
+		array(
+			array('LLL:EXT:cms/locallang_tca.php:pages.doktype.I.0', '2', 'i/pages.gif'),
+			array('LLL:EXT:cms/locallang_tca.php:pages.doktype.I.3', '5', 'i/pages_notinmenu.gif'),
+			array('LLL:EXT:cms/locallang_tca.php:pages.doktype.I.4', '6', 'i/be_users_section.gif'),
+			array('LLL:EXT:cms/locallang_tca.php:pages.doktype.div.link', '--div--'),
+			array('LLL:EXT:cms/locallang_tca.php:pages.doktype.I.2', '4', 'i/pages_shortcut.gif'),
+			array('LLL:EXT:cms/locallang_tca.php:pages.doktype.I.5', '7', 'i/pages_mountpoint.gif'),
+			array('LLL:EXT:cms/locallang_tca.php:pages.doktype.I.8', '3', 'i/pages_link.gif'),
+			array('LLL:EXT:cms/locallang_tca.php:pages.doktype.div.special', '--div--')
 		)
+	);
+	array_splice(
+		$TCA['pages']['columns']['doktype']['config']['items'],
+		10,
+		0,
+		array(
+			array('LLL:EXT:cms/locallang_tca.php:pages.doktype.I.7', '199', 'i/spacer_icon.gif')
+		)
+	);
+	array_unshift(
+		$TCA['pages']['columns']['doktype']['config']['items'],
+		array('LLL:EXT:cms/locallang_tca.php:pages.doktype.div.page', '--div--')
 	);
 
 	// Setting enablecolumns:

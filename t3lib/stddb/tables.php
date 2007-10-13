@@ -162,11 +162,13 @@ $TCA['pages'] = Array (
 			'config' => Array (
 				'type' => 'select',
 				'items' => Array (
-					Array('LLL:EXT:lang/locallang_tca.php:doktype.I.0', '1'),
-					Array('LLL:EXT:lang/locallang_tca.php:doktype.I.1', '254'),
-					Array('LLL:EXT:lang/locallang_tca.php:doktype.I.2', '255')
+					array('LLL:EXT:lang/locallang_tca.php:doktype.I.0', '1', 'i/pages.gif'),
+					array('LLL:EXT:lang/locallang_tca.php:doktype.I.1', '254', 'i/sysf.gif'),
+					array('LLL:EXT:lang/locallang_tca.php:doktype.I.2', '255', 'i/recycler.gif')
 				),
-				'default' => '1'
+				'default' => '1',
+				'iconsInOptionTags' => 1,
+				'noIconsBelowSelect' => 1
 			)
 		),
 		'title' => Array (

@@ -1546,7 +1546,7 @@ class t3lib_TCEforms	{
 		$item.= '</select>';
 
 			// Create icon table:
-		if (count($selicons))	{
+		if (count($selicons) && !$config['noIconsBelowSelect'])	{
 			$item.='<table border="0" cellpadding="0" cellspacing="0" class="typo3-TCEforms-selectIcons">';
 			$selicon_cols = intval($config['selicon_cols']);
 			if (!$selicon_cols)	$selicon_cols=count($selicons);

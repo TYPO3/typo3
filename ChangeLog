@@ -1,3 +1,7 @@
+2007-10-13  Ingo Renner  <ingo@typo3.org>
+
+	* Fixed bug 6517: Add icons and grouping to the page type selector
+
 2007-10-09  Benjamin Mack  <mack@xnos.org>
 
 	* (minor) indexed_search - Added info where additional doc. can be found
