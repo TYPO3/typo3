@@ -2859,7 +2859,7 @@ class t3lib_div {
 				if (is_array($array_in[$key]))	{
 					$result.=t3lib_div::view_array($array_in[$key]);
 				} elseif (is_object($array_in[$key])) {
-					$result.= '[Object]';
+					$result.= '<font face="Verdana,Arial" size="1">[Object '.get_class($array_in[$key]).']</font>';
 				} else {
 					$result.= '<font face="Verdana,Arial" size="1" color="red">'.nl2br(htmlspecialchars((string)$val)).'<br /></font>';
 				}
