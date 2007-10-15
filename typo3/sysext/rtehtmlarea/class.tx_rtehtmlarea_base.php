@@ -851,7 +851,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			var _typo3_host_url = "' . $this->hostURL . '";
 			var _editor_debug_mode = ' . ($TYPO3_CONF_VARS['EXTCONF'][$this->ID]['enableDebugMode'] ? 'true' : 'false') . ';
 			var _editor_compressed_scripts = ' . ($TYPO3_CONF_VARS['EXTCONF'][$this->ID]['enableCompressedScripts'] ? 'true' : 'false') . ';
-			var _editor_mozAllowClipboard_url = "' . ($TYPO3_CONF_VARS['EXTCONF'][$this->ID]['mozAllowClipboardUrl'] ? $TYPO3_CONF_VARS['EXTCONF'][$this->ID]['mozAllowClipboardUrl'] : '') . '";
+			var _editor_mozAllowClipboard_url = "' . ($TYPO3_CONF_VARS['EXTCONF'][$this->ID]['mozAllowClipboardURL'] ? $TYPO3_CONF_VARS['EXTCONF'][$this->ID]['mozAllowClipboardURL'] : '') . '";
 			var _spellChecker_lang = "' . $this->spellCheckerLanguage . '";
 			var _spellChecker_charset = "' . $this->spellCheckerCharset . '";
 			var _spellChecker_mode = "' . $this->spellCheckerMode . '";
