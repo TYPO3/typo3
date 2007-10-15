@@ -358,6 +358,21 @@ class t3lib_div {
 		return $mergedA;
 	}
 
+	/**
+	 * Wrapper for the RemoveXSS function.
+	 * Removes potential XSS code from an input string.
+	 *
+	 * Using an external class by Travis Puderbaugh <kallahar@quickwired.com>
+	 *
+	 * @param	string		Input string
+	 * @return	string		Input string with potential XSS code removed
+	 */
+	public function removeXSS($string)	{
+		require_once(PATH_typo3.'contrib/RemoveXSS/RemoveXSS.php');
+		$string = RemoveXSS::RemoveXSS($string);
+		return $string;
+	}
+
 
 
 
