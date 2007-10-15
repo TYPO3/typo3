@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2005-2006 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
+*  (c) 2005-2007 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -57,7 +57,7 @@ $TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['enableDAMBrowser'] = $_EXTCONF['enableDAM
 $TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['enableAccessibilityIcons'] = $_EXTCONF['enableAccessibilityIcons'] ? $_EXTCONF['enableAccessibilityIcons'] : 0;
 $TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['enableClickEnlarge'] = $_EXTCONF['enableClickEnlarge'] ? $_EXTCONF['enableClickEnlarge'] : 0;
 $TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['enableMozillaExtension'] = $_EXTCONF['enableMozillaExtension'] ? $_EXTCONF['enableMozillaExtension'] : 0;
-$TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['mozAllowClipboardUrl'] = $_EXTCONF['mozAllowClipboardUrl'] ? $_EXTCONF['mozAllowClipboardUrl'] : 'http://releases.mozilla.org/pub/mozilla.org/extensions/allowclipboard_helper/allowclipboard_helper-0.5.3-fx+mz.xpi';
+$TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['mozAllowClipboardUrl'] = $_EXTCONF['mozAllowClipboardUrl'] ? $_EXTCONF['mozAllowClipboardUrl'] : 'https://addons.mozilla.org/firefox/downloads/file/4175/allowclipboard_helper/allowclipboard_helper-0.5.5-fx+mz.xpi';
 $TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['forceCommandMode'] = $_EXTCONF["forceCommandMode"] ? $_EXTCONF["forceCommandMode"] : 0;
 $TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['enableDebugMode'] = $_EXTCONF['enableDebugMode'] ? $_EXTCONF['enableDebugMode'] : 0;
 $TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['enableCompressedScripts'] = $_EXTCONF['enableCompressedScripts'] ? $_EXTCONF['enableCompressedScripts'] : 0;

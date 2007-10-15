@@ -1,11 +1,18 @@
+2007-10-15  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
+
+	* Fixed bug 5855: Missing unlink icon in htmlArea RTE
+	* Fixed bug 5839: In htmlArea RTE, paragraph & text dropdown boxes inactive when using @media clause in stylesheet
+	* Fixed bug 6152: AllowClipboard helper offered by htmlArea RTE doesn't work with 2.0.0.x Firefox
+
+2007-05-03  Oliver Hader  <oh@inpublica.de>
+
+	* Raised version from 1.5.2 to 1.5.3 for TYPO3 4.1.2
+	* Fixed bug #5177: RTEhtmlarea not correctly displayed in IRRE child form-fields and tabs
+
 2007-03-28  Patrick Broens  <patrick@patrickbroens.nl>
 
-	* Update version information in ext_emconf.php to 1.6.1dev for 4.2 branch
-	* Bugfix 5266: Check on WamCom browser conflicted with Firefox 2.0.0.3
-
-2007-03-12  Michael Stucki  <michael@typo3.org>
-
-	* Update version information in ext_emconf.php to 1.5.2dev
+	* Version 1.5.2dev
+	* Fix issue 5266: WamCom browser check was conflicting with Firefox 2.0.0.3
 
 2007-01-23  Michael Stucki  <michael@typo3.org>
 
