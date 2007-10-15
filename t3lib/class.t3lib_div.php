@@ -2860,8 +2860,9 @@ class t3lib_div {
 					$result.=t3lib_div::view_array($array_in[$key]);
 				} elseif (is_object($array_in[$key])) {
 					$result.= '[Object]';
-				} else
+				} else {
 					$result.= '<font face="Verdana,Arial" size="1" color="red">'.nl2br(htmlspecialchars((string)$val)).'<br /></font>';
+				}
 				$result.= '</td></tr>';
 			}
 			$result.= '</table>';
