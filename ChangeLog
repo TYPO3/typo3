@@ -3,6 +3,7 @@
 	* Fixed bug 5855: Missing unlink icon in htmlArea RTE
 	* Fixed bug 5839: In htmlArea RTE, paragraph & text dropdown boxes inactive when using @media clause in stylesheet
 	* Fixed bug 6152: AllowClipboard helper offered by htmlArea RTE doesn't work with 2.0.0.x Firefox
+	* Fixed bug 6340: rtehtmlarea not working with "Editforms on page" option
 
 2007-10-08  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
