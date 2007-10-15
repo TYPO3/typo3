@@ -1,6 +1,7 @@
 2007-10-15  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
-	* Fixed bug  5855: Missing unlink icon in htmlArea RTE
+	* Fixed bug 5855: Missing unlink icon in htmlArea RTE
+	* Fixed bug 5839: In htmlArea RTE, paragraph & text dropdown boxes inactive when using @media clause in stylesheet
 
 2007-10-15  Michael Stucki  <michael@typo3.org>
 

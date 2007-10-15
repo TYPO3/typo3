@@ -134,10 +134,15 @@ InlineCSS.applyCSSRule = function(editor,i18n,cssRules,cssArray){
 					}
 				}
 			}
-		}
-			// ImportRule (Mozilla)
-		else if(cssRules[rule].styleSheet){
-			newCssArray = InlineCSS.applyCSSRule(editor,i18n,cssRules[rule].styleSheet.cssRules,newCssArray);
+		} else {
+				// ImportRule (Mozilla)
+			if (cssRules[rule].styleSheet) {
+				newCssArray = InlineCSS.applyCSSRule(editor, i18n, cssRules[rule].styleSheet.cssRules, newCssArray);
+			}
+				// MediaRule (Mozilla)
+			if (cssRules[rule].cssRules) {
+				newCssArray = InlineCSS.applyCSSRule(editor, i18n, cssRules[rule].cssRules, newCssArray);
+			}
 		}
 	}
 	return newCssArray;

@@ -107,6 +107,7 @@ DynamicCSS.applyCSSRule=function(editor,i18n,cssRules,cssArray){
 		tagName, className, rule, k,
 		obj = editor.config.customSelects["DynamicCSS-class"];
 	newCssArray = cssArray;
+	
 	for (rule = 0; rule < cssRules.length; rule++) {
 			// StyleRule
 		if (cssRules[rule].selectorText) {
@@ -137,10 +138,15 @@ DynamicCSS.applyCSSRule=function(editor,i18n,cssRules,cssArray){
 					}
 				}
 			}
-		}
-			// ImportRule (Mozilla)
-		else if (cssRules[rule].styleSheet){
-			newCssArray = DynamicCSS.applyCSSRule(editor, i18n, cssRules[rule].styleSheet.cssRules, newCssArray);
+		} else {
+				// ImportRule (Mozilla)
+			if (cssRules[rule].styleSheet) {
+				newCssArray = DynamicCSS.applyCSSRule(editor, i18n, cssRules[rule].styleSheet.cssRules, newCssArray);
+			}
+				// MediaRule (Mozilla)
+			if (cssRules[rule].cssRules) {
+				newCssArray = DynamicCSS.applyCSSRule(editor, i18n, cssRules[rule].cssRules, newCssArray);
+			}
 		}
 	}
 	return newCssArray;
