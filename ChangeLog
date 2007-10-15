@@ -1,3 +1,7 @@
+2007-10-15  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
+
+	* Fixed bug  5855: Missing unlink icon in htmlArea RTE
+
 2007-10-15  Michael Stucki  <michael@typo3.org>
 
 	* (feature) Add new external library "RemoveXSS" for easily filtering potential Cross Site Scripting (XSS) attacks. Can be used by any script. Usage: $filtered_string = t3lib_div::removeXSS($input_string); Thanks to Travis Puderbaugh <kallahar@quickwired.com> for providing this nice piece of code!
