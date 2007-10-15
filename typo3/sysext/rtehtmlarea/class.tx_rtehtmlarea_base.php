@@ -4,7 +4,7 @@
 *
 *  (c) 2004 Kasper Skaarhoj (kasper@typo3.com)
 *  (c) 2004 Philipp Borgmann <philipp.borgmann@gmx.de>
-*  (c) 2004, 2005, 2006 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
+*  (c) 2004-2007 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -259,12 +259,6 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 
 		// For the editor
 	var $client;
-
-	/**
-	 * Reference to parent object, which is an instance of the TCEforms
-	 *
-	 * @var t3lib_TCEforms
-	 */
 	var $TCEform;
 	var $elementId;
 	var $elementParts;
@@ -885,8 +879,8 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			HTMLArea.loadPlugin("' . $plugin . '", true, "' . $this->writeJSFileToTypo3tempDir('EXT:' . $this->ID . '/htmlarea/plugins/' . $plugin . '/' . strtolower(preg_replace('/([a-z])([A-Z])([a-z])/', "$1".'-'."$2"."$3", $plugin)) . ($TYPO3_CONF_VARS['EXTCONF'][$this->ID]['enableCompressedScripts']?'-compressed':'') .'.js', $plugin, $TYPO3_CONF_VARS['EXTCONF'][$this->ID]['enableCompressedScripts']) . '");';
 			}
 		}
-		return (!is_object($TSFE) ? '' : '
-		' . '/*<![CDATA[*/') . (is_object($TSFE) ? '' : '
+		return (!$this->is_FE() ? '' : '
+		' . '/*<![CDATA[*/') . ($this->is_FE() ? '' : '
 			RTEarea[0]["RTEtsConfigParams"] = "&RTEtsConfigParams=' . rawurlencode($this->RTEtsConfigParams()) . '";
 			RTEarea[0]["pathAcronymModule"] = "../../mod2/acronym.php";
 			RTEarea[0]["pathLinkModule"] = "../../mod3/browse_links.php";
@@ -894,7 +888,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			RTEarea[0]["pathUserModule"] = "../../mod5/user.php";
 			RTEarea[0]["pathParseHtmlModule"] = "' . $this->extHttpPath . 'mod6/parse_html.php";')
 			. $loadPluginCode .  '
-			HTMLArea.init();' . (!is_object($TSFE) ? '' : '
+			HTMLArea.init();' . (!$this->is_FE() ? '' : '
 		/*]]>*/
 		');
 	}
@@ -913,7 +907,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 	function registerRTEinJS($number, $table='', $uid='', $field='') {
 		global $TSFE, $TYPO3_CONF_VARS;
 
-		$registerRTEinJSString = (!is_object($TSFE) ? '' : '
+		$registerRTEinJSString = (!$this->is_FE() ? '' : '
 			' . '/*<![CDATA[*/') . '
 			RTEarea['.$number.'] = new Object();
 			RTEarea['.$number.']["RTEtsConfigParams"] = "&RTEtsConfigParams=' . rawurlencode($this->RTEtsConfigParams()) . '";
@@ -933,7 +927,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			RTEarea['.$number.']["tceformsNested"] = ' . (is_object($this->TCEform) && method_exists($this->TCEform, 'getDynNestedStack') ? $this->TCEform->getDynNestedStack(true) : '[]') . ';';
 
 			// The following properties apply only to the backend
-		if (!is_object($TSFE)) {
+		if (!$this->is_FE()) {
 			$registerRTEinJSString .= '
 			RTEarea['.$number.']["sys_language_content"] = "' . $this->contentLanguageUid . '";
 			RTEarea['.$number.']["typo3ContentLanguage"] = "' . $this->contentTypo3Language . '";
@@ -944,7 +938,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			// Setting the plugin flags
 		$registerRTEinJSString .= '
 			RTEarea['.$number.']["plugin"] = new Object();';
-		
+
 		$pluginArray = t3lib_div::trimExplode(',', $this->pluginList , 1);
 		reset($pluginArray);
 		while( list(,$plugin) = each($pluginArray) ) {
@@ -1115,7 +1109,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 		
 		$registerRTEinJSString .= '
 			RTEarea['.$number.']["toolbar"] = '.$this->getJSToolbarArray().';
-			HTMLArea.initEditor('.$number.');' . (!is_object($TSFE) ? '' : '
+			HTMLArea.initEditor('.$number.');' . (!$this->is_FE() ? '' : '
 			/*]]>*/');
 		return $registerRTEinJSString;
 	}
@@ -1142,7 +1136,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 		
 			// Builing JS array of default font sizes
 		$HTMLAreaFontSizes = array();
-		if (is_object($TSFE)) {
+		if ($this->is_FE()) {
 			$HTMLAreaFontSizes[0] = $TSFE->csConvObj->conv($TSFE->getLLL('No size',$this->LOCAL_LANG), $TSFE->labelsCharset, $TSFE->renderCharset);
 		} else {
 			$HTMLAreaFontSizes[0] = $LANG->getLL('No size');
@@ -1213,7 +1207,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 				if($HTMLAreaParagraphIndex) { 
 					$HTMLAreaJSParagraph .= ',';
 				}
-				if (is_object($TSFE)) {
+				if ($this->is_FE()) {
 					$HTMLAreaJSParagraph .= '
 				"' . $TSFE->csConvObj->conv($TSFE->getLLL($PStyleLabel,$this->LOCAL_LANG), $TSFE->labelsCharset, $TSFE->renderCharset) . '" : "' . $PStyleItem . '"';
 
@@ -1239,7 +1233,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 	function buildJSFontfacesConfig($number) {
 		global $TSFE, $LANG;
 		
-		if (is_object($TSFE)) {
+		if ($this->is_FE()) {
 			$RTEProperties = $this->RTEsetup;
 		} else {
 			$RTEProperties = $this->RTEsetup['properties'];
@@ -1252,7 +1246,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 		$HTMLAreaFontname['nofont'] = '
 				"' . $fontName . '" : "' . $this->cleanList($fontValue) . '"';
 		$defaultFontFacesList = 'nofont,';
-		if (is_object($TSFE)) {
+		if ($this->is_FE()) {
 			$HTMLAreaFontname['nofont'] = '
 				"' . $TSFE->csConvObj->conv($TSFE->getLLL('No font',$this->LOCAL_LANG), $TSFE->labelsCharset, $TSFE->renderCharset) . '" : ""';
 		} else {
@@ -1279,7 +1273,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			reset($RTEProperties['fonts.']);
 			while(list($fontName,$conf)=each($RTEProperties['fonts.'])) {
 				$fontName=substr($fontName,0,-1);
-				if (is_object($TSFE)) {
+				if ($this->is_FE()) {
 					$string = $TSFE->sL($conf['name']);
 				} else {
 					$string = $LANG->sL($conf['name']);
@@ -1317,7 +1311,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 	function buildJSColorsConfig($number) {
 		global $TSFE, $LANG;
 		
-		if (is_object($TSFE)) {
+		if ($this->is_FE()) {
 			$RTEProperties = $this->RTEsetup;
 		} else {
 			$RTEProperties = $this->RTEsetup['properties'];
@@ -1339,7 +1333,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			reset($RTEProperties['colors.']);
 			while(list($colorName,$conf)=each($RTEProperties['colors.']))      {
 				$colorName=substr($colorName,0,-1);
-				if (is_object($TSFE)) {
+				if ($this->is_FE()) {
 					$string = $TSFE->csConvObj->conv($TSFE->sL(trim($conf['name'])), $TSFE->renderCharset, $TSFE->metaCharset);
 					$string = str_replace('"', '\"', str_replace('\\\'', '\'', $string));
 					$string = $this->feJScharCode($string);
@@ -1455,7 +1449,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 	function buildJSClassesArray() {
 		global $TSFE, $LANG, $TYPO3_CONF_VARS;
 		
-		if (is_object($TSFE)) {
+		if ($this->is_FE()) {
 			$RTEProperties = $this->RTEsetup;
 		} else {
 			$RTEProperties = $this->RTEsetup['properties'];
@@ -1473,7 +1467,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			reset($RTEProperties['classes.']);
 			while(list($className,$conf)=each($RTEProperties['classes.'])) {
 				$className = substr($className,0,-1);
-				if (is_object($TSFE)) {
+				if ($this->is_FE()) {
 					$string = $TSFE->csConvObj->conv($TSFE->sL(trim($conf['name'])), $TSFE->renderCharset, $TSFE->metaCharset);
 					$string = str_replace('"', '\"', str_replace('\\\'', '\'', $string));
 					$string = $this->feJScharCode($string);
@@ -1504,7 +1498,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 		$linebreak = $TYPO3_CONF_VARS['EXTCONF'][$this->ID]['enableCompressedScripts'] ? '' : chr(10);
 		$JSLanguageArray .= 'var HTMLArea_langArray = new Object();' . $linebreak;
 		$JSLanguageArray .= 'HTMLArea_langArray = { ' . $linebreak;
-		if(is_object($TSFE)) {
+		if($this->is_FE()) {
 			$JSLanguageArray = $TSFE->csConvObj->conv($JSLanguageArray, 'iso-8859-1', $this->OutputCharset);
 		} else {
 			$JSLanguageArray = $LANG->csConvObj->conv($JSLanguageArray, 'iso-8859-1', $this->OutputCharset);
@@ -1514,7 +1508,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 		$subArraysIndex = 0;
 		foreach($subArrays as $labels) {
 			$JSLanguageArray .= (($subArraysIndex++)?',':'') . $labels . ': {' . $linebreak;
-			if(is_object($TSFE)) {
+			if($this->is_FE()) {
 				$LOCAL_LANG = $TSFE->readLLfile(t3lib_extMgm::extPath($this->ID).'htmlarea/locallang_' . $labels . '.xml', $this->language);
 				$TSFE->csConvObj->convArray($LOCAL_LANG['default'], 'iso-8859-1', $this->OutputCharset);
 				if(!empty($LOCAL_LANG[$this->language])) $TSFE->csConvObj->convArray($LOCAL_LANG[$this->language], $this->charset, $this->OutputCharset);
@@ -1532,14 +1526,14 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			foreach ( $LOCAL_LANG[$this->language] as $labelKey => $labelValue ) {
 				$JSLanguageArray .=  (($index++)?',':'') . '"' . $labelKey . '":"' . str_replace('"', '\"', $labelValue) . '"' . $linebreak;
 			}
-			if(is_object($TSFE)) {
+			if($this->is_FE()) {
 				$JSLanguageArray .= $TSFE->csConvObj->conv(' }' . chr(10), 'iso-8859-1', $this->OutputCharset);
 			} else {
 				$JSLanguageArray .= $LANG->csConvObj->conv(' }' . chr(10), 'iso-8859-1', $this->OutputCharset);
 			}
 		}
 
-		if(is_object($TSFE)) {
+		if($this->is_FE()) {
 			$JSLanguageArray .= $TSFE->csConvObj->conv(' }' . chr(10), 'iso-8859-1', $this->OutputCharset);
 		} else {
 			$JSLanguageArray .= $LANG->csConvObj->conv(' }' . chr(10), 'iso-8859-1', $this->OutputCharset);
@@ -1565,7 +1559,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 		if($this->contentLanguageUid > -1) {
 			$whereClause = '(sys_language_uid='.$this->contentLanguageUid . ' OR sys_language_uid=-1)';
 		} else {
-			$whereClause = '1=1';
+			$whereClause = '1 = 1';
 		}
 		$whereClause .= t3lib_BEfunc::BEenableFields($table);
 		$whereClause .= t3lib_BEfunc::deleteClause($table);
@@ -1588,7 +1582,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 	function buildJSClassesAnchorConfig($number) {
 		global $TSFE;
 		
-		if (is_object($TSFE)) {
+		if ($this->is_FE()) {
 			$RTEProperties = $this->RTEsetup;
 		} else {
 			$RTEProperties = $this->RTEsetup['properties'];
@@ -1704,7 +1698,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 		global $TSFE, $LANG, $TYPO3_CONF_VARS;
 		
 		$linebreak = $TYPO3_CONF_VARS['EXTCONF'][$this->ID]['enableCompressedScripts'] ? '' : chr(10);
-		if(is_object($TSFE)) {
+		if($this->is_FE()) {
 			$LOCAL_LANG = $TSFE->readLLfile(t3lib_extMgm::extPath($this->ID).'htmlarea/plugins/' . $plugin . '/locallang.xml', $this->language);
 			if(!empty($LOCAL_LANG['default'])) $TSFE->csConvObj->convArray($LOCAL_LANG['default'], 'iso-8859-1', $this->OutputCharset);
 			if(!empty($LOCAL_LANG[$this->language])) $TSFE->csConvObj->convArray($LOCAL_LANG[$this->language], $this->charset, $this->OutputCharset);
@@ -1722,7 +1716,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 		
 		$JSLanguageArray .= 'var ' . $plugin . '_langArray = new Object();' . $linebreak;
 		$JSLanguageArray .= $plugin . '_langArray = {' . $linebreak;
-		if(is_object($TSFE)) {
+		if($this->is_FE()) {
 			$JSLanguageArray = $TSFE->csConvObj->conv($JSLanguageArray, 'iso-8859-1', $this->OutputCharset);
 		} else {
 			$JSLanguageArray = $LANG->csConvObj->conv($JSLanguageArray, 'iso-8859-1', $this->OutputCharset);
@@ -1733,7 +1727,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			$JSLanguageArray .=  (($index++)?',':'') . '"' . $labelKey . '":"' . str_replace('"', '\"', $labelValue) . '"' . $linebreak;
 		}
 		
-		if(is_object($TSFE)) {
+		if($this->is_FE()) {
 			$JSLanguageArray .= $TSFE->csConvObj->conv(' }' . chr(10), 'iso-8859-1', $this->OutputCharset);
 		} else {
 			$JSLanguageArray .= $LANG->csConvObj->conv(' }' . chr(10), 'iso-8859-1', $this->OutputCharset);
@@ -1862,7 +1856,18 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 		}
 		';
 	}
-
+	
+	/**
+	 * Return true if we are in the FE, but not in the FE editing feature of BE.
+	 *
+	 * @return boolean
+	 */
+	 
+	function is_FE() {
+		global $TSFE;
+		return is_object($TSFE) && !strstr($this->elementId,'TSFE_EDIT');
+	}
+	
 	/**
 	 * Client Browser Information
 	 *
@@ -1950,7 +1955,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 
 	function RTEtsConfigParams()	{
 		global $TSFE;
-		if(is_object($TSFE)) {
+		if($this->is_FE()) {
 			return '';
 		} else {
 			$p = t3lib_BEfunc::getSpecConfParametersFromArray($this->specConf['rte_transform']['parameters']);

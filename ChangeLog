@@ -3,10 +3,39 @@
 	* Fixed bug 5855: Missing unlink icon in htmlArea RTE
 	* Fixed bug 5839: In htmlArea RTE, paragraph & text dropdown boxes inactive when using @media clause in stylesheet
 	* Fixed bug 6152: AllowClipboard helper offered by htmlArea RTE doesn't work with 2.0.0.x Firefox
+	* Fixed bug 6340: rtehtmlarea not working with "Editforms on page" option
+
+2007-10-15  Michael Stucki  <michael@typo3.org>
+
+	* (feature) Add new external library "RemoveXSS" for easily filtering potential Cross Site Scripting (XSS) attacks. Can be used by any script. Usage: $filtered_string = t3lib_div::removeXSS($input_string); Thanks to Travis Puderbaugh <kallahar@quickwired.com> for providing this nice piece of code!
+	* (minor) Fixed bug #6138: Prevent recursive inclusion of external TypoScript files (patch by Martin Ficzel)
+	* (minor) Don't output objects in t3lib_div::debug() - send a plaintext placeholder instead
+
+2007-10-13  Ingo Renner  <ingo@typo3.org>
+
+	* Fixed bug 6517: Add icons and grouping to the page type selector
+
+2007-10-09  Benjamin Mack  <mack@xnos.org>
+
+	* (minor) indexed_search - Added info where additional doc. can be found
+
+2007-10-09  Benjamin Mack  <mack@xnos.org>
+
+        * (tweak) No selection for TCEForms groups with max. one option needed
+
+2007-10-09  Dmitry Dulepov  <dmitry@typo3.org>
+
+	* Added flag for Galician language
+	* Added more @var
 
 2007-10-08  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
-	* Fix bug #6420: access key generation wrong with HTML tags in menu titles (TMENU)
+	* Fixed bug #6420: access key generation wrong with HTML tags in menu titles (TMENU)
+	* Pass on access key of menu items to IProcFunc
+
+2007-10-08  Oliver Hader  <oh@inpublica.de>
+
+	* (minor) Fixed bug #6032: Freeing SQL result sets (post patch)
 
 2007-10-07  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
@@ -15,42 +44,173 @@
 2007-10-06  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
 	* Fixed bug #6462: Wrong default locale charset on Windows
+	* Fixed bug #6032: Freeing SQL result sets
 	* Fixed bug #6252: rteHTMLarea acronyms are not DBAL compatible
 	* Fixed bug #5189: images with uppercase file extension aren't displayed in drag-n-drop listing
+
+2007-10-01  Bernhard Kraft  <kraftb@kraftb.at>
+
+	* Bugfix for: Hide empty dynTabs in tceforms (missing array key broke RTE after hidden Tabs)
+
+2007-09-28  Oliver Hader  <oh@inpublica.de>
+
+	* (feature) Added feature #6367: Integrate possibility in Element Browser to select all files of a folder (thanks to fotobuch.de AG for sponsoring)
+
+2007-09-27  Dmitry Dulepov  <dmitry@typo3.org>
+
+	* Another hanging recordset fixed
+	* Added "@var"s to t3lib_TCEmain to simplify debugging with IDEs
+
+2007-09-26  Dmitry Dulepov  <dmitry@typo3.org>
+
+	* JavaScript minification is enabled in FE by default (config.minifyJS=1)
+
+2007-09-25  Oliver Hader  <oh@inpublica.de>
+
+	* (tweak) Created new directory for Services_JSON typo3/contrib/json/ and moved file from typo3/contrib/json.php to typo3/contrib/json/json.php
+	* (feature) Added feature #6359: IRRE - Add config of parent record for label_userFunc used on a child record
+	* (minor) Fixed bug: Page TSconfig isn't parsed correctly anymore after cleanup in Trunk
 
 2007-09-24 Andreas Otto <andreas.otto@dkd.de>
 
 	* Fixed bug #1471: Check if exif functions are available before using them.
 
+2007-09-24  Dmitry Dulepov  <dmitry@typo3.org>
+
+	* Added JavaScript minification feature (new function t3lib_div::minifyJavaScript)
+	* Added minification of FE javascripts (including default js and onload handlers) if config.minifyJS is enabled
+
+2007-09-23  Oliver Hader  <oh@inpublica.de>
+
+	* (minor) Fixed hanging recordset in tslib_cObj
+
+2007-09-23  Michael Stucki  <michael@typo3.org>
+
+	* (minor) Fixed hanging recordset in t3lib_BEfunc
+
+2007-09-22  Kasper Skaarhoj  <kasper2007@typo3.com>
+
+	* Fixed t3lib_cli that negative numbers (like "-2") is not seen as a parameter
+	* New option, $GLOBALS['TYPO3_CONF_VARS']['BE']['flexFormXMLincludeDiffBase'], means that flexforms will allow a new index extending all "vXX" fields to "vXX.vDEFbase" with a value holding the "vDEF" value when the "vXX" value was changed. Effectively this is a memory of the value you translated from. Used for diff'ing.
+	* Introduced a new global hook, $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['recStatInfoHooks'], with which you can insert HTML before a records icon in the page tree, web>List and Web>Page modules (and possibly more places where makes sense). Used in l10nmgr for adding a small localization icon.
+	* Added "limit to languages" to "Admin" accounts (although it will not limit languages but merely decide what statuses you see in the page tree)
+	* List sys_log table entries in cleaner output!
+
 2007-09-18  Oliver Hader  <oh@inpublica.de>
 
 	* (minor) Fixed bug #65: Thumbnails in Element Browser are only displayed if fileSuffix is lowercase
 
+2007-09-18  Bernhard Kraft  <kraftb@kraftb.at>
+
+	* Hide empty dynTabs in tceforms
+
+2007-09-18  Thomas Hempel  <thomas@typo3-unleashed.net>
+
+	* Feature #5690: TCEforms: add inline editing of secondary options (thanks to Martin Ficzel)
+
+2007-09-13  Ingo Renner  <ingo@typo3.org>
+
+	* Fixed bug 5701: linkHandler Hook Not Initialized Properly, patch supplied by Jeff Segars
+
+2007-09-13  Thomas Hempel  <thomas@typo3-unleashed.net>
+
+	* Feature #4064: Navigation title in tree view
+
+2007-09-11  Ingo Renner  <ingo@typo3.org>
+
+	* Added Romanian flag, fixes bug #6000
+	* Added fields "crdate" and "cruser_id" to tt_content
+
+2007-09-10  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+
+	* Fix problem with new t3lib_div::trimExplode()
+
 2007-09-09  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
-	* fixed bug 5701: linkHandler Hook Not Initialized Properly , patch supplied by Jeff Segars
+	* Require PHP 5.1
 
-2007-09-09  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+2007-09-05  Dmitry Dulepov  <dmitry@typo3.org>
 
-	* Require PHP 4.3 explicitely in init.php
+	* Added Galician language to TYPO3
+
+2007-09-06  Ingo Renner  <ingo@typo3.org>
+
+	* Release of TYPO3 4.2.0alpha1
 
 2007-09-07  Ingmar Schlecht  <ingmar@typo3.org>
 
 	* Bugfix: Highlight root page in pagetree
+	* Added .php6 and .php7 as denied file extensions in config_default.php to be future proof
+	* Fixing uninitialized variables in class.t3lib_tceforms.php and class.tx_cssstyledcontent_pi1.php
 
 2007-09-05  Thorsten Kahler  <thorsten.kahler@dkd.de>
 
 	* Fixed bug #4160: Moving content elements in frontent editing mode causes crash
 	* Disable versioning in clickMenu if BE user doesn't have access to the versioning module
 
+2007-09-05  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+
+	* Feature #2883: improve t3lib_div::trimExplode()
+
+2007-09-05  Dmitry Dulepov  <dmitry@typo3.org>
+
+	* Added Georgian language to TYPO3
+
+2007-09-04  Dmitry Dulepov  <dmitry@typo3.org>
+
+	* Added a hook to TCEforms to enable custom evaluations for input fields
+
 2007-09-03  Oliver Hader  <oh@inpublica.de>
 
+	* (trivial) Moving t3lib_TCEforms_inline::getJSON() to t3lib_div::array2json()
+	* (feature) Added feature #2830: imgResource doesn't support stdWrap on minW and minH
 	* (minor) Fixed bug #6104: IRRE - IE7: Strange behaviour with hover event of nested Tabs/IRRE-levels with relative positioned HTML elements
 	* (minor) Fixed bug #5906: IRRE - Default values defined in TCA are not used for children (thanks to Joscha Feth and Jeff Segars)
 
-2007-08-15  Wolfgang Klinger  <wk@plan2.net>
+2007-08-31  Michael Stucki  <michael@typo3.org>
 
-	* (trivial) Added is_array checks in extension manager code (committed by Stucki)
+	* (trivial) Cleanup of NEWS.txt
+	* Add feature #4470: Add new property "search.exactCount" to indexed_search
+
+2007-08-30  Ernesto Baschny  <ernst@cron-it.de>
+
+	* (feature) Feature request #6237: Added hook to Web>Page "columns" view, allowing plugins to display "additional info" instead of "CODE:"
+
+2007-08-30  Wolfgang Klinger  <wk@plan2.net>
+
+	* (trivial) Extended the Workspace module access check with the User module access check
+
+2007-08-28  Kasper Skaarhoj  <kasper2007@typo3.com>
+
+	* Moving in workspaces + collateral
+		- Implemented moving for elements ("Element" versions) in workspaces. Updated "Inside TYPO3" and "TYPO3 Core API". GENEROUS DONATIONS TO FINANCE THIS WORK ARE WELCOME since many of you need this feature!
+		- Workspace "swapping" for "New"-placeholders and "Deleted"-Markers is now supported. Previously, both types would be published, not swapped. The change also means that effectively the difference between the value of "t3ver_state" being 1 or 2 is only cosmetic and the semantic depends on whether the field is set for a record being online or offline. TYPO3 core API is updated on the issue.
+		- Refactored function for moving elements (t3lib_tcemain::moveRecord())
+		- t3lib_BEfunc::workspaceOL() may now set the input variable $row (which is passed by reference) to false. The consequence is that code calling workspaceOL() should check if $row is still an array after calling the function. False is used if a version overlay with the move-id pointer is found in which case we would like a backend preview.
+		- Added switch in TYPO3_CONF_VARS['BE']['elementVersioningOnly'] which allows to completely turn off page and branch versioning (which are deprecated for TYPO3 4.2+)
+		- Added more tests for version integrity (centering around moving)
+		- Added checkboxes and an action selector in the Workspace module for batch processing of elements.
+		- Added "flush" command to TCEmain API for versions so versions can be completely deleted and not only released from a workspace.
+	* Improvements as announced in June on the core list
+		- Dual-preview for workspaces are only used now if the checkbox "Frontend Preview" is not checked.
+		- Whole workspaces can be previewed now for users with no backend login by a simple link you can email. Same functionality as the preview link for individual pages available from the Web>Versioning module. The function is found in User>Workspace (Workspace manager)
+		- In the t3lib_cli class, optional parameters to CLI script options are supported (optional parameters are configured with [] brackets)
+		- The "lowlevel" cleaner scripts are updated to allow fixing of double-references to RTEmagic images (by duplicating them). Also the script allows to remove all "lost" RTEmagic images found inside uploads/ folder.
+		- Moving elements in FlexForms up and down is now fixed so it works even if indexes of elements in sections are not ordered numerically (bugfix)
+		- Workspace titles are required to be unique now.
+		- File upload in the Web>File module will always result in redirection to the Filelist view of the target folder. This is a usability enhancement for people who were puzzled that it could redirect to other locations or a blank page (namely the previously shown page).
+		- The navigation page tree now has a nifty searchbox that uses JavaScript and the prototype library to search and highly/dim elements in the tree. Very handy for quickly finding your way in huge page trees. (I think there is a stylesheet problem with Firefox on PC which doesn't dim elements). TSconfig options exists to disable this behaviour.
+		- The navigation page tree is organized so that all pages shown in the menu are grouped in their normal order while pages not in menu and sysFolders and ordered alphabetically below. TSconfig options exists to configure/disable this behaviour.
+		- User > Workspace module now has a browser-functionality so only 50 versions are shown at a time and you can browse the list.
+		- Changed label "Draft versions" to "Workspace versions" - some found it more intuitive.
+		- Change in t3lib_refindex so setReferenceValue() can be run without being admin (by special parameter)
+		- Fixed bug in t3lib_BEfunc::selectVersionsOfRecord(): now offline versions are not only selected by their t3ver_oid but also pid=-1 which is the correct thing to do. This actually resulted in dataloss in some known cases with the lowlevel cleaner CLI script.
+		- Added fields to indexes on pages, sys_template and pages_language_uid.
+		- RTEmagic images are now duplicated when records are copied/versioned in tcemain. This is a long awaited feature that solves the bug that RTE magic images shared between two records would result in both disappearing if the one was deleted. So its in fact a critical fix for workspaces.
+
+2007-08-23  Dmitry Dulepov  <dmitry@typo3.org>
+
+	* Added Albanian language to TYPO3
 
 2007-08-23  Dmitry Dulepov  <dmitry@typo3.org>
 
@@ -58,15 +218,54 @@
 
 2007-08-23  Andreas Otto  <andreas.otto@dkd.de>
 
-	* (trivial) Fixed bug #4888: Invalid argument supplied for foreach()
+	* (trivial) Fixed bug #4888:  Invalid argument supplied for foreach()
+
+2007-08-21  Andreas Otto  <andreas.otto@dkd.de>
+
+	* Feature request #5748: Introduced a new TS option that makes indexing of metatags configurable. Adapted code to make use of the new TS option.
+
+2007-08-19  Oliver Hader  <oh@inpublica.de>
+
+	* (trivial) Fixed bug #6170: CSC - File locallang.php used in static template instead of locallang.xml
+
+2007-08-15  Wolfgang Klinger  <wk@plan2.net>
+
+	* (trivial) Added is_array checks in extension manager code
+
+2007-08-15  Ingo Renner  <ingo@typo3org>
+
+	* did some serious formatting cleanup in typo3/sysext/taskcenter/task/index.php
+	* added @var phpDoc comments to various variables
+
+2007-08-11  Michael Stucki  <michael@typo3org>
+
+	* More admin panel fixes:
+		- Hardcode some alignments
+		- Adding empty "summary" attribute to some tables of the admin panel
+		- Removing superfluous table around the config checkboxes of the tsdebug section
+		- Removing superfluous "title" attributes for some images in tslib_content->editPanel()
+
+2007-08-10  Michael Stucki  <michael@typo3org>
+
+	* Various improvements to the admin panel:
+		- Lots of alignment definitions. Alignments are now hardcoded to avoid conflicts with stylesheets that contain something like "html, body { text-align: center; }"
+		- Replace all font-tags (deprecated) with valid markup
+		- Add a clear.gif spacer to make the "details" column wider if the text is longer than 30 characters. Appears to be useful if this column is too narrow and the text is wrapped inside. (Using a clear.gif is a workaround solution, it should probably be improved later...)
+		- New highlight feature: You can define a time limit for operations which are measured by $TT. Whenever this limit is exceeded, the corresponding row will be highlighted in the admin panel. (Currently this limit needs to be hardcoded in class.t3lib_timetrack.php)
+		- Lots of code cleanup and consolidation
+		- Fix code display of links that break the website layout if they are too large (links are now splitted after every 100 characters)
+		- For more information and screenshots, see http://lists.netfielders.de/pipermail/typo3-team-core/2007-July/008648.html
 
 2007-08-06  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
 	* Fixed bug #5941: Log reason of failure on DB connect
 
+2007-08-06  Ernesto Baschny  <ernst@cron-it.de>
+
+	* Fixed bug #6017: Better transliteration for hebrew (lower-cased latin letters)
+
 2007-07-16  Michael Stucki  <michael@typo3.org>
 
-	* Release of TYPO3 4.1.2
 	* Fixed possible XSS in workspace/version modules (requires valid BE login / patch by Christian Kuhn)
 	* Removed possible display of phpinfo() (requires bug in extension to be unveiled)
 
@@ -76,7 +275,6 @@
 
 2007-07-16  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
-	* Fixed bug #3834: possible abuse of t3lib_formmail
 	* t3lib_div::getHostname() used $_SERVER instead of t3lib_div::getIndpEnv()
 	* IPmaskList check is triggered in CLI mode (thanks to Tobias Rohrle)
 
@@ -86,10 +284,20 @@
 	* Fixed bug #5718: IRRE - Copying a page with related child records leads to duplicates of each children
 	* Fixed bug #5907: RTE-Plugins: Use record specific RTEtsConfigParams
 
+2007-07-14  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+
+	* Fixed bug #3834: possible abuse of t3lib_formmail
+
 2007-07-13  Oliver Hader  <oh@inpublica.de>
 
 	* Fixed bug #5913: RTEhtmlarea not correctly displayed in IRRE child form-fields and tabs (continuance of bug #5177)
 	* Fixed bug #5948: IRRE - Parent record is not shown after saving the first time to a table on a TYPO3 system
+
+2007-07-12  Dmitry Dulepov  <dmitry@typo3.org>
+
+	* TCEForms: allow to create many sections at once
+	* Performance enhancement in t3lib/class.t3lib_extmgm.php in function addToAllTCAtypes
+	* Performance enhancement in t3lib/class.t3lib_div.php in function loadTCA
 
 2007-07-11  Oliver Hader  <oh@inpublica.de>
 
@@ -101,15 +309,37 @@
 	* Fixed bug #5053: imgNameNotRandom on TMENU/GMENU could break rollover behaviour (thanks to Ralf Hettinger)
 	* Fixed bug #5048: JSMENU produces error if using baseurls (thanks to Jens Koester)
 
+2007-07-07  Wolfgang Klinger <wk@plan2.net>
+
+	* Changed back references \1 to ${1} in regular expressions in tslib_fe where necessary
+
+2007-07-07  Michael Stucki  <michael@typo3.org>
+
+	* Added new static_tsconfig_help data based on TYPO3 4.1 CoreDocs. Kudos to Stephane Schitter and Francois Suter for rewriting a backend module that allows to update this data again! (This functionality was broken after switching to TER2.)
+
+2007-07-06  Wolfgang Klinger <wk@plan2.net>
+
+	* Implemented feature request #1919: TCAdefaults setting in page TS
+
 2007-07-06  Michael Stucki  <michael@typo3.org>
 
 	* Fix in indexed search: List of indexed pages could be broken if mutli-byte chars are cut in the middle (patch by Karsten Dambekalns)
+	* Make field selection work in browse_links.php popup (patch by Christian Jul Jensen)
 	* Fixed bug #5094: Record alt_label was not processed (patch by Volker Graubaum and Thomas Hempel)
+	* Added feature #5588: Add "linkAccessRestrictedPages" property to typolink function (patch by Franz Holzinger)
 
 2007-07-02  Oliver Hader  <oh@inpublica.de>
 
 	* Fixed bug #4623: Content encoding with x-gzip not possible in IE7
 	* Fixed bug #5789: JS error in new content element wizard with a single item
+
+2007-06-25  Dmitry Dulepov  <dmitry@typo3.org>
+
+	* Added $GLOBALS['TYPO3_DB']->sql_free_result() to TCEmain::rawCopyPageContent() to avoid resource waste
+
+2007-06-13  Andreas Otto  <andreas.otto@dkd.de>
+
+	* Added status headers: In class.tslib_fe.php status header were set when an error occurs after which TYPO3 throws an exit() statement. In addition to that t3lib_div::syslog() is called to write an entry to the syslog.
 
 2007-06-13  Oliver Hader  <oh@inpublica.de>
 
@@ -123,55 +353,142 @@
 
 	* Fixed bug #4226: New content elements wizard removes CE from array if tt_content_defValues property is zero
 
+2007-05-25  Oliver Hader  <oh@inpublica.de>
+
+	* Fixed bug #5655: TYPO3 back-end was blocked on new installations because of a bug in RFCs #1642/#4886
+
 2007-05-23  Oliver Hader  <oh@inpublica.de>
 
 	* Fixed bug #5564: IRRE - foreign_selector/foreign_unique on click issue
 
 2007-05-21  Dmitry Dulepov  <dmitry@typo3.org>
 
+	* Fixed bug #5550: 'lower' TCA specification may fail with non-ascii characters
 	* Added $GLOBALS['TYPO3_DB']->sql_free_result() to TCEmain::recordInfo() to avoid resource waste
 
 2007-05-18  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
+	* Fixed bug #5645: Missing Slovenian flag
+	* Fixed bug #5628: Missing Slovak flag
 	* Fixed bug #5578: config setting SYS[requestURIvar] doesn't work
+	* Fixed bug #4509/3925: jsfunc.validateform.js does not verify checkbox fields (thanks to Jascha Schubert and Eicke Godehardt)
+
+2007-05-18  Andreas Otto  <andreas.otto@dkd.de>
+
+	* Feature request: If TYPO3 is configured to send a notification email about install tool logins this email discloses the used password if the login fails. Since this behaviour might not be wanted only the last 5 characters of the md5 hash of the used password are disclosed.
 
 2007-05-12  Oliver Hader  <oh@inpublica.de>
 
 	* Fixed bug #5074: IRRE - Hook processDatamap_afterDatabaseOperations executed early
 
+2007-05-11  Ingo Renner  <typo3@ingo-renner.com>
+
+	* Fixed bug #5047: MP3 icon is missing
+
 2007-05-10  Thorsten Kahler  <thorsten.kahler@dkd.de>
 
 	* Fixed bug #209: require field URL in page-type "External URL"
+
+2007-05-09  Ingo Renner  <typo3@ingo-renner.com>
+
+	* Fixed bugs 1642 and 4886: when installing an extension with new BE modules, the modules do not appear
 
 2007-05-09  Andreas Otto  <andreas.otto@dkd.de>
 
 	* Fixed bug #2052: Color picker does not work properly in flex forms. Thanks to David Bruehlmeier for providing a patch and a testcase.
 
-2007-05-03  Oliver Hader  <oh@inpublica.de>
+2007-05-04  Ingo Renner  <typo3@ingo-renner.com>
 
-	* Fixed bug #5177: RTEhtmlarea not correctly displayed in IRRE child form-fields and tabs
+	* Added swedish and latvian flags to media/flags folder
+
+2007-05-04  Dmitry Dulepov  <dmitry@typo3.org>
+
+	* Updated compatibility version for t3skin
+
+2007-05-03  Ingo Renner  <typo3@ingo-renner.com>
+
+	* Fixed bug #5310: Missing Swedish flag
+
+2007-05-02  Ingo Renner  <typo3@ingo-renner.com>
+
+	* Fixed bug #584: Changing language in user setup do not reload left frame (menu).
+
+2007-05-02  Dmitry Dulepov  <dmitry@typo3.org>
+
+	* Fixed: IRRE does not work with workspaces (fix only for CSV & foreign field cases)
+	* Fixed: isses with previous fix discovered my Michael Stucki
 
 2007-05-01  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
 	* Fixed bug #2515: jsfunc.validateform.js does not verify password fields (thanks to Joerg Wagner)
-	* Fixed bug #5522: 1-2-3 wizard does not accept host name with socket option
+	* Fixed bug #5158: log failed mailings of t3lib_div::plainMailEncoded()
+
+2007-04-30  Michael Stucki  <michael@typo3.org>
+
+	* Improve the check for session support in Install Tool (see #1474). Thanks to Martin Kutschker!
+
+2007-04-30  Oliver Hader  <oh@inpublica.de>
+
+	* Fixed feature request #5424: Menu cache expire time should be configurable
+
+2007-04-28  Ernesto Baschny  <ernst@cron-it.de>
+
+	* Fixed bug #4957: CSV export stop exporting a field when there is a linebreak. Thanks for Oliver Klee for the idea and solution.
+	* !!! t3lib_div::cvsValues() now exports like RFC 4180 (embedded line-breaks allowed)
 
 2007-04-28  Andreas Otto  <andreas.otto@dkd.de>
 
-	* Fixed bug #3649: Call to a member function formWidth() on object $GLOBALS['TBE_TEMPLATE'] instead on $GLOBALS['SOBE'].
+	* Fixed bug #3649: Call to a member function formWidth() on object $GLOBALS['TBE_TEMPLATE'] instead on $GLOBALS['SOBE']. Thanks to Chi Hoang for supplying a patch.
 
-2007-04-28  Oliver Hader  <oh@inpublica.de>
+2007-04-28  Ingo Renner  <typo3@ingo-renner.com>
 
-	* Fixed bug #5519: EM - Some input fields don't have real labels yet (thanks to Oliver Klee)
+	* Fixed bug #1290: TCEFORM.table.field.linkTitleToSelf-Option could be confusing
+	* !!! Removed option ->TCEFORM_confObj:linkTitleToSelf.returnUrl = 1 as it seemed unlogical not to use it
+	* Fixed bug #3993: Missing error message for big uploaded files - A message is there but it wasn't useful, changed it to something more understandable
+	* Added a link to typo3.org/community and a list of the authors from installed extensions to the the about page (Help->About)
+	* Fixed bug #2516: Constants and Setup are switched in select field in TS object browser
 
 2007-04-28  Michael Stucki  <michael@typo3.org>
 
-	* Fixed bug in TypoScript object browser: New keys were not added when pressing the return key in the update form instead of clicking the submit button.
 	* Fixed bug in class.em_terconnection.php: Need to base64_encode upload data for some NuSOAP implementations (patch by Karsten Dambekalns)
+	* Fixed bug #1474: Check if session_support is enabled in PHP or output a warning message in the Install Tool (patch by Ingo Schmitt)
+
+2007-04-28  Oliver Hader  <oh@inpublica.de>
+
+	* Fixed bug #5519: EM - Some input fields don't have real labels yet (patch by Oliver Klee)
+
+2007-04-27  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+
+	* Change default date formatting of CE header to be localized (needs compat version of 4.2)
+	* Add "address" to the list of allowed tags of parseFuncs (needs compat version of 4.2)
+	* Fixed bug #5522: 1-2-3 wizard does not accept host name with socket option
+
+2007-04-27  Michael Stucki  <michael@typo3.org>
+
+	* Move type conversion of $TYPO3_CONF_VARS['FE']['pageNotFound_handling']='true' (string) into t3lib/config_default.php
+	* Add new function t3lib_div::rmdir() to remove directories recursively
+	* Modify filelist module to make use of the t3lib_div::rmdir()
+	* Modify internal_clearPageCache() in t3lib_tcemain and make use of t3lib_div::rmdir() as well
+	* Various enhancements to the TS object browser and TS analyzer:
+		- Add spaces left and right of the "=" mark in the object browser overview
+		- Set new default values: Check several fields, e.g. "block mode", "syntax highlighting", etc. by default
+		- Define default values properly in each class instead of setting them globally
+		- Use the TSparser and display comments nicely in the object browser
+		- Fix bug: New keys were not added by the object browser when pressing the return key in the update form instead of clicking the submit button. The fix is a workaround, the real problem is that the form contains two submit buttons with different actions...
+
+2007-04-27  Ingo Renner  <typo3@ingo-renner.com>
+
+	* Removed partial t3lib_div in misc/phpcheck/incfile.php and included the real t3lib_div instead, PDT for Eclipse had problems determining the actual t3lib_div because of this
 
 2007-04-18  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Fixed bug #1893: Broken Rootline when a Editor view a Page that is not online
+	* Changed loop variable name in TCEMain because it could corrupt information passed to post-processing hook
+	* Fixed workspace publishing error that may happen when "Element" versioning type is used
+
+2007-04-19  Thomas Hempel  <thomas@work.de>
+
+	* Implemented feature request #3894: Open module on startup
 
 2007-04-18  Ernesto Baschny  <ernst@cron-it.de>
 
@@ -181,17 +498,27 @@
 
 	* Fixed: t3lib_BEfunc::getRecord() did not free recordset. This can cause memory leaks if persistent mysql connections are used
 
+2007-04-14  Dmitry Dulepov  <dmitry@typo3.org>
+
+	* Workspaces: added class.wslib_gui.php to allow using WS GUI from extensions
+	* Fixed HTML syntax errors with some old html files
+
 2007-04-05  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
+	* Renamed Typoscript condition julianday to dayofyear (see change from 2007-04-03)
 	* Made debug logging of user-supplied SQL queries possible in t3lib_db.
 
-2007-04-04 Andreas Otto <andreas.otto@dkd.de>
+2007-04-04  Andreas Otto  <andreas.otto@dkd.de>
 
-	* Fixed bug #5411: A directory handle was not correctly used.
+	* Fix bug #5411: A directory handle was not correctly used.
 
-2007-04-03  Michael Stucki  <michael@typo3.org>
+2007-04-03  Andreas Otto  <andreas.otto@dkd.de>
 
-	* Release of TYPO3 4.1.1
+	* Implemented feature request #4914: Adding to new conditions (year and julianday) to class.t3lib_matchcondition.php.
+
+2007-04-03  Dmitry Dulepov  <dmitry@typo3.org>
+
+	* Workspaces: added configurable synchronous stage change and publishing
 
 2007-04-02  Michael Stucki  <michael@typo3.org>
 
@@ -203,7 +530,6 @@
 
 2007-03-30  Oliver Hader  <oh@inpublica.de>
 
-	* Fixed bug #5105: Extensions crash when using HTMLArea in FE (will be replaced with bugfix #5177 from Trunk end of April 2007)
 	* Fixed bug #5248: IRRE - Element browser cannot be used on new child records of a new parent record
 
 2007-03-30  Franz Holzinger  <kontakt@fholzinger.com>
@@ -213,6 +539,7 @@
 2007-03-28  Oliver Hader  <oh@inpublica.de>
 
 	* Fixed bug #5288: Missing parameter in recursion of t3lib_div::array_merge_recursive_overrule (thanks to Simon Tuck)
+	* Fixed bug #5177: RTEhtmlarea not correctly displayed in IRRE child form-fields and tabs
 
 2007-03-28  Ingmar Schlecht  <ingmar@typo3.org>
 
@@ -221,6 +548,10 @@
 2007-03-28  Patrick Broens  <patrick@patrickbroens.nl>
 
 	* Fixed bug #5266: WamCom browser check in htmlarea.js conflicted with Firefox 2.0.0.3
+
+2007-03-28  Ernesto Baschny  <ernst@cron-it.de>
+
+	* Added +stdWrap for the .src parameter of "FRAME"
 
 2007-03-27  Dmitry Dulepov  <dmitry@typo3.org>
 
@@ -231,14 +562,23 @@
 	* Fixed bug #5269: wsol_preview.php does not scroll to content element
 	* Fixed bug #4953: Preview in Workspaces Module for content elements
 
+2007-03-22  Karsten Dambekalns  <karsten@typo3.org>
+
+	* typo3/sysext/adodb: Update to upstream version 4.94.
+
 2007-03-12  Michael Stucki  <michael@typo3.org>
 
 	* Change copyright information in typo3/index.php (no real change, just replace the hardcoded years with the "TYPO3_copyright_year" constant)
 
+2007-03-12  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+
+	* Replace all TINYTEXT columns with VARCHAR(255)
+	* Change index "parent" of fe_user to (pid,username) and drop the index "pid"
+	* Quote table names in admin_get_XXX() functions of t3lib_db
+
 2007-03-06  Michael Stucki  <michael@typo3.org>
 
-	* Release of TYPO3 4.1
-	* Remove typo3/sysext/topapps/ and typo3/alt_main_new.php (they are not used in version 4.1)
+	* Release of TYPO3 4.1 / create branch "TYPO3_4-1" for 4.1.x development
 
 2007-03-06  Ingmar Schlecht  <ingmar@typo3.org>
 
@@ -352,7 +692,7 @@
 
 2007-02-16  Dmitry Dulepov  <dmitry@typo3.org>
 
-	* Fixed bug 4962: .htaccess in sysext fails in some Apache configurations
+	* Fixed bug #4962: .htaccess in sysext fails in some Apache configurations
 
 2007-02-15  Michael Stucki  <michael@typo3.org>
 
@@ -529,7 +869,7 @@
 2007-01-19  Ingmar Schlecht  <ingmar@typo3.org>
 
 	* AJAX pagetree and filetree by Benjamin Mack <bmack@xnos.org>! (Thanks also to Franz Holzinger and Stefan Regniet for their help)
-	* Patch by René Fritz regarding bidirectional mm-relations: It's now possible to save different relations to the same mm-table by means of so called "matchFields". This is used by DAM.
+	* Patch by RenÃ© Fritz regarding bidirectional mm-relations: It's now possible to save different relations to the same mm-table by means of so called "matchFields". This is used by DAM.
 
 2007-01-19  Andreas Otto  <andreas.otto@dkd.de>
 
@@ -598,7 +938,7 @@
 
 2006-12-13  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
-	* More localization of User>Workspaces (thanks to Marc Wöhlken)
+	* More localization of User>Workspaces (thanks to Marc WÃ¶hlken)
 
 2006-12-14  Kasper Skaarhoj
 
@@ -624,7 +964,7 @@
 
 2006-12-12  Ingmar Schlecht  <ingmar@typo3.org>
 
-	* Better getRecordTitle() function introducing label_userFunc (Thanks to David Brühlmeier for this patch! See http://lists.netfielders.de/pipermail/typo3-team-core/2006-December/006521.html for details.)
+	* Better getRecordTitle() function introducing label_userFunc (Thanks to David BrÃ¼hlmeier for this patch! See http://lists.netfielders.de/pipermail/typo3-team-core/2006-December/006521.html for details.)
 
 2006-12-11  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
@@ -811,7 +1151,7 @@
 
 2006-09-11  Ingmar Schlecht  <ingmar@typo3.org>
 
-	* New feature: Bidirectional MM relations. You can now edit mm-relations from both sides of the relation in the Backend TCE-Forms. Thanks to Sebastian (for writing the patch together with me) and René (for the first version of this feature)
+	* New feature: Bidirectional MM relations. You can now edit mm-relations from both sides of the relation in the Backend TCE-Forms. Thanks to Sebastian (for writing the patch together with me) and RenÃ© (for the first version of this feature)
 
 2006-09-11  Michael Stucki  <michael@typo3.org>
 
@@ -2603,7 +2943,7 @@
 2005-09-13  Karsten Dambekalns  <karsten@typo3.org>
 
 	* Fixed the page is being generated page refreshing to the wrong page when query parameters are used.
-	* Fixed (part of) bug 1312 (showpic.php).
+	* Fixed (part of) bug #1312 (showpic.php).
 
 2005-08-22  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
