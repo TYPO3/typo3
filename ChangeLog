@@ -1,3 +1,6 @@
+2007-10-15  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
+
+	* Fix bug  5855: Missing unlink icon in htmlArea RTE
 
 2007-10-08  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
