@@ -2858,6 +2858,8 @@ class t3lib_div {
 				$result.= '<tr><td valign="top"><font face="Verdana,Arial" size="1">'.htmlspecialchars((string)$key).'</font></td><td>';
 				if (is_array($array_in[$key]))	{
 					$result.=t3lib_div::view_array($array_in[$key]);
+				} elseif (is_object($array_in[$key])) {
+					$result.= '[Object]';
 				} else
 					$result.= '<font face="Verdana,Arial" size="1" color="red">'.nl2br(htmlspecialchars((string)$val)).'<br /></font>';
 				$result.= '</td></tr>';
@@ -2897,7 +2899,7 @@ class t3lib_div {
 	 * @param	mixed		If the parameter is a string it will be used as header. Otherwise number of break tags to apply after (positive integer) or before (negative integer) the output.
 	 * @return	void
 	 */
-	function debug($var="",$brOrHeader=0)	{
+	function debug($var='',$brOrHeader=0)	{
 		if ($brOrHeader && !t3lib_div::testInt($brOrHeader))	{
 			echo '<table class="typo3-debug" border="0" cellpadding="0" cellspacing="0" bgcolor="white" style="border:0px; margin-top:3px; margin-bottom:3px;"><tr><td style="background-color:#bbbbbb; font-family: verdana,arial; font-weight: bold; font-size: 10px;">'.htmlspecialchars((string)$brOrHeader).'</td></tr><tr><td>';
 		} elseif ($brOrHeader<0)	{
