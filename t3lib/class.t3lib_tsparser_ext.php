@@ -448,10 +448,12 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 					}
 					if ($this->ext_regComments && isset($arr[$key.'..']))	{
 						$comment = $arr[$key.'..'];
-						$comment = preg_replace('/[\r\n]/', ' ', $comment);	// Remove linebreaks, replace with " "
-						$comment = preg_replace('/[#\*]{2,}/', '', $comment);	// Remove # and * if more than twice in a row
-						$comment = preg_replace('/^[#\*\s]+/', '# ', $comment);	// Replace leading # (just if it exists) and add it again. Result: Every comment should be prefixed by a "#".
-						$HTML.= ' <span class="comment">'.trim($comment).'</span>';
+						if (!preg_match('/### <INCLUDE_TYPOSCRIPT:.*/', $comment)) {	// Skip INCLUDE_TYPOSCRIPT comments, they are almost useless
+							$comment = preg_replace('/[\r\n]/', ' ', $comment);	// Remove linebreaks, replace with " "
+							$comment = preg_replace('/[#\*]{2,}/', '', $comment);	// Remove # and * if more than twice in a row
+							$comment = preg_replace('/^[#\*\s]+/', '# ', $comment);	// Replace leading # (just if it exists) and add it again. Result: Every comment should be prefixed by a "#".
+							$HTML.= ' <span class="comment">'.trim($comment).'</span>';
+						}
 					}
 				}
 				$HTML.="<br />";
