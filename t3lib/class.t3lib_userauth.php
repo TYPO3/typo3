@@ -326,7 +326,7 @@ class t3lib_userAuth {
 	}
 
 	/**
-	 * Determins whether a session cookie needs to be set (lifetime=0)
+	 * Determine whether a session cookie needs to be set (lifetime=0)
 	 *
 	 * @return	boolean
 	 * @internal
@@ -336,7 +336,7 @@ class t3lib_userAuth {
 	}
 
 	/**
-	 * Determins whether a non-session cookie needs to be set (lifetime>0)
+	 * Determine whether a non-session cookie needs to be set (lifetime>0)
 	 *
 	 * @return	boolean
 	 * @internal
