@@ -2757,17 +2757,21 @@ class t3lib_stdGraphic	{
 	 *
 	 * @param	pointer		The GDlib image resource pointer
 	 * @param	string		The filename to write to
+	 * @param	integer		The image quality (for JPEGs)
 	 * @return	mixed		The output of either imageGif, imagePng or imageJpeg based on the filename to write
 	 * @see maskImageOntoImage(), scale(), output()
 	 */
-	function ImageWrite($destImg, $theImage)	{
+	function ImageWrite($destImg, $theImage, $quality=0)	{
 		imageinterlace ($destImg,0);
  		$ext = strtolower(substr($theImage, strrpos($theImage, '.')+1));
  		switch ($ext)	{
  			case 'jpg':
  			case 'jpeg':
  				if (function_exists('imageJpeg'))	{
- 					return imageJpeg($destImg, $theImage, $this->jpegQuality);
+					if ($quality == 0)	{
+						$quality = $this->jpegQuality;
+					}
+ 					return imageJpeg($destImg, $theImage, $quality);
  				}
  			break;
  			case 'gif':
