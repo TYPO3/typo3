@@ -1,6 +1,7 @@
 2007-10-16  Michael Stucki  <michael@typo3.org>
 
 	* Fixed bug #3552: Fatal error during backend edit
+	* Fixed bug #6193: Object copied in t3lib_div::makeInstance()
 
 2007-10-16  Thorsten Kahler  <thorsten.kahler@dkd.de>
 

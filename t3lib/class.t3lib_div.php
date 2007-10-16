@@ -4109,8 +4109,11 @@ class t3lib_div {
 			}
 		}
 
+			// Get final classname
+		$className =  t3lib_div::makeInstanceClassName($className);
+
 			// Return object.
-		return class_exists('ux_'.$className) ? t3lib_div::makeInstance('ux_'.$className) : new $className;
+		return new $className;
 	}
 
 	/**
