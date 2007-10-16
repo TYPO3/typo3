@@ -1,3 +1,7 @@
+2007-10-16  Michael Stucki  <michael@typo3.org>
+
+	* Fixed bug #3552: Fatal error during backend edit
+
 2007-10-16  Thorsten Kahler  <thorsten.kahler@dkd.de>
 
 	* (minor) Fixed bug #6138: Prevent recursive inclusion of external TypoScript files (patch by Martin Ficzel) - Fixed problems in patch from 2007-10-15

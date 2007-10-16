@@ -2210,7 +2210,11 @@ class t3lib_TCEmain	{
 						if ($DSelements[$key]['section'])	{
 							foreach($dataValues[$key]['el'] as $ik => $el)	{
 								$theKey = key($el);
-								if (is_array($dataValues[$key]['el'][$ik][$theKey]['el']))	{
+
+									// It may happen that an element exists in $dataValues but is missing in $dataValues_current. In this case, just skip the element...
+								$elExists = is_array($dataValues_current[$key]['el'][$ik]);
+
+								if ($elExists && is_array($dataValues[$key]['el'][$ik][$theKey]['el']))	{
 									$this->checkValue_flex_procInData_travDS(
 											$dataValues[$key]['el'][$ik][$theKey]['el'],
 											$dataValues_current[$key]['el'][$ik][$theKey]['el'],
