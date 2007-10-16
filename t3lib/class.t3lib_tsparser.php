@@ -96,7 +96,6 @@ class t3lib_TSparser {
 	var $syntaxHighLight = 0;		// If set, then syntax highlight mode is on; Call the function syntaxHighlight() to use this function
 	var $highLightData=array();		// Syntax highlight data is accumulated in this array. Used by syntaxHighlight_print() to construct the output.
 	var $highLightData_bracelevel = array();	// Syntax highlight data keeping track of the curly brace level for each line
-	var $includedFiles = array();	// Keeps track of the TypoScript files that were included by e.g. <INCLUDE_TYPOSCRIPT: source="FILE:include.ts">
 
 		// Debugging, analysis:
 	var $regComments = 0;			// DO NOT register the comments. This is default for the ordinary sitetemplate!
@@ -493,9 +492,15 @@ class t3lib_TSparser {
 	 * Use: t3lib_TSparser::checkIncludeLines()
 	 *
 	 * @param	string		Unparsed TypoScript
+	 * @param	integer		Counter for detecting endless loops
 	 * @return	string		Complete TypoScript with includes added.
+	 * @static
 	 */
-	function checkIncludeLines($string)	{
+	function checkIncludeLines($string, $cycle_counter=1)	{
+		if ($cycle_counter>100) {
+			t3lib_div::sysLog('It appears like TypoScript code is looping over itself. Check your templates for "&lt;INCLUDE_TYPOSCRIPT: ..." tags','Core',2);
+			return '';
+		}
 		$splitStr='<INCLUDE_TYPOSCRIPT:';
 		if (strstr($string,$splitStr))	{
 			$newString='';
@@ -515,17 +520,12 @@ class t3lib_TSparser {
 							switch(strtolower(trim($sourceParts[0])))	{
 								case 'file':
 									$filename = t3lib_div::getFileAbsFileName(trim($sourceParts[1]));
-									if (!isset($this->includedFiles[$filename])) {
-										if (strcmp($filename,''))	{	// Must exist and must not contain '..' and must be relative
-											if (@is_file($filename) && filesize($filename)<100000)	{	// Max. 100 KB include files!
-												$this->includedFiles[$filename] = 1;
-													// check for includes in included text
-												$included_text = t3lib_TSparser::checkIncludeLines(t3lib_div::getUrl($filename));
-												$newString.= $included_text.chr(10);
-											}
+									if (strcmp($filename,''))	{	// Must exist and must not contain '..' and must be relative
+										if (@is_file($filename) && filesize($filename)<100000)	{	// Max. 100 KB include files!
+												// check for includes in included text
+											$included_text = self::checkIncludeLines(t3lib_div::getUrl($filename),$cycle_counter+1);
+											$newString.= $included_text.chr(10);
 										}
-									} else {
-										t3lib_div::sysLog('It appears like TypoScript code is looping over itself. Check your templates for "'.htmlspecialchars('<INCLUDE_TYPOSCRIPT:'.$subparts[0].'>').'"','Core',2);
 									}
 								break;
 							}
