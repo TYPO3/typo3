@@ -1,6 +1,7 @@
 2007-10-16  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
 	* Fixed bug 4183: Incorrect display in htmlArea RTE of utf-8 labels for colors, classes and fonts defined in PageTSConfig
+	* Fixed bug 4525: In htmlArea RTE, disabling personal dictionaries in UserTSConfig not honored
 
 2007-10-15  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
