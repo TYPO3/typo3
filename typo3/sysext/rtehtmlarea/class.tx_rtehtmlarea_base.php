@@ -1272,14 +1272,10 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 		if (is_array($RTEProperties['fonts.'])) {
 			reset($RTEProperties['fonts.']);
 			while(list($fontName,$conf)=each($RTEProperties['fonts.'])) {
-				$fontName=substr($fontName,0,-1);
-				if ($this->is_FE()) {
-					$string = $TSFE->sL($conf['name']);
-				} else {
-					$string = $LANG->sL($conf['name']);
-				}
+				$fontName = substr($fontName,0,-1);
+				$fontLabel = $this->getPageConfigLabel($conf['name'],0);
 				$HTMLAreaFontname[$fontName] = '
-				"' . str_replace('"', '\"', str_replace('\\\'', '\'', $string)) . '" : "' . $this->cleanList($conf['value']) . '"';
+				"' . $fontLabel . '" : "' . $this->cleanList($conf['value']) . '"';
 			}
 		}
 		
@@ -1333,15 +1329,9 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			reset($RTEProperties['colors.']);
 			while(list($colorName,$conf)=each($RTEProperties['colors.']))      {
 				$colorName=substr($colorName,0,-1);
-				if ($this->is_FE()) {
-					$string = $TSFE->csConvObj->conv($TSFE->sL(trim($conf['name'])), $TSFE->renderCharset, $TSFE->metaCharset);
-					$string = str_replace('"', '\"', str_replace('\\\'', '\'', $string));
-					$string = $this->feJScharCode($string);
-				} else {
-					$string = $this->getLLContent(trim($conf['name']));
-				}
+				$colorLabel = $this->getPageConfigLabel($conf['name']);
 				$HTMLAreaColorname[$colorName] = '
-				[' . $string . ' , "' . $conf['value'] . '"]';
+				[' . $colorLabel . ' , "' . $conf['value'] . '"]';
 			}
 		}
 		
@@ -1467,14 +1457,8 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			reset($RTEProperties['classes.']);
 			while(list($className,$conf)=each($RTEProperties['classes.'])) {
 				$className = substr($className,0,-1);
-				if ($this->is_FE()) {
-					$string = $TSFE->csConvObj->conv($TSFE->sL(trim($conf['name'])), $TSFE->renderCharset, $TSFE->metaCharset);
-					$string = str_replace('"', '\"', str_replace('\\\'', '\'', $string));
-					$string = $this->feJScharCode($string);
-				} else {
-					$string = $this->getLLContent(trim($conf['name']));
-				}
-				$JSClassesLabelsArray .= (($index)?',':'') . '"' . $className . '": ' . $string . $linebreak;
+				$classLabel = $this->getPageConfigLabel($conf['name']);
+				$JSClassesLabelsArray .= (($index)?',':'') . '"' . $className . '": ' . $classLabel . $linebreak;
 				$JSClassesValuesArray .= (($index)?',':'') . '"' . $className . '":"' . str_replace('"', '\"', str_replace('\\\'', '\'', $conf['value'])) . '"' . $linebreak;
 				$JSClassesNoShowArray .= (($index)?',':'') . '"' . $className . '":' . ($conf['noShow']?'true':'false') . $linebreak;
 				$index++;
@@ -1812,6 +1796,25 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 		$LANG->origCharSet = $BE_origCharset;
 		$LANG->charSet = $BE_charSet;
 		return $LLString;
+	}
+	
+	function getPageConfigLabel($string,$JScharCode=1) {
+		global $LANG, $TSFE;
+		
+		if ($this->is_FE()) {
+			$label = $TSFE->csConvObj->conv($TSFE->sL(trim($string)), $TSFE->renderCharset, $TSFE->metaCharset);
+			$label = str_replace('"', '\"', str_replace('\\\'', '\'', $label));
+			$label = $JScharCode ? $this->feJScharCode($label) : $label;
+		} else {
+			if (strcmp(substr($string,0,4),'LLL:')) {
+				$label = $string;
+			} else {
+				$label = $LANG->sL(trim($string));
+			}
+			$label = str_replace('"', '\"', str_replace('\\\'', '\'', $label));
+			$label = $JScharCode ? $LANG->JScharCode($label): $label;
+		}
+		return $label;
 	}
 	
 	function feJScharCode($str) {
