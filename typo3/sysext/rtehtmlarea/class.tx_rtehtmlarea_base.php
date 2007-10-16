@@ -513,7 +513,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 				}
 				
 					// Set the use of personal dictionary
-				$this->spellCheckerPersonalDicts = $this->thisConfig['enablePersonalDicts'] ? (isset($BE_USER->userTS['options.']['enablePersonalDicts']) ? true : false) : false;
+				$this->spellCheckerPersonalDicts = $this->thisConfig['enablePersonalDicts'] ? ((isset($BE_USER->userTS['options.']['enablePersonalDicts']) && $BE_USER->userTS['options.']['enablePersonalDicts']) ? true : false) : false;
 				if (ini_get('safe_mode')) {
 					$this->spellCheckerPersonalDicts = false;
 				}
