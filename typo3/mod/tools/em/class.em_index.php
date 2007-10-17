@@ -2651,11 +2651,9 @@ EXTENSION KEYS:
 				<tr class="bgColor4">
 					<td>Upload command:</td>
 					<td nowrap="nowrap">
-						<input type="radio" name="em[upload][mode]" id="new_dev" value="new_dev" checked="checked" /> <label for="new_dev">New development version (latest x.x.<strong>'.$GLOBALS['TBE_TEMPLATE']->rfw('x+1').'</strong>)</label><br />
-						<input type="radio" name="em[upload][mode]" id="latest" value="latest" /> <label for="latest">Override <em>this</em> development version ('.$extInfo['EM_CONF']['version'].')</label><br />
+						<input type="radio" name="em[upload][mode]" id="new_dev" value="new_dev" checked="checked" /> <label for="new_dev">New bugfix version (latest x.x.<strong>'.$GLOBALS['TBE_TEMPLATE']->rfw('x+1').'</strong>)</label><br />
 						<input type="radio" name="em[upload][mode]" id="new_sub" value="new_sub" /> <label for="new_sub">New sub version (latest x.<strong>'.$GLOBALS['TBE_TEMPLATE']->rfw('x+1').'</strong>.0)</label><br />
 						<input type="radio" name="em[upload][mode]" id="new_main" value="new_main" /> <label for="new_main">New main version (latest <strong>'.$GLOBALS['TBE_TEMPLATE']->rfw('x+1').'</strong>.0.0)</label><br />
-						<input type="radio" name="em[upload][mode]" id="custom" value="custom" /> <label for="custom">This version: <input type="text" name="em[upload][version]" /></label><br />
 					</td>
 				</tr>
 				<tr class="bgColor4">
