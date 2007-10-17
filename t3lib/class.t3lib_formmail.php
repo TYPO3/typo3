@@ -114,14 +114,14 @@ class t3lib_formmail extends t3lib_htmlmail {
 			$val = ($V['subject']) ? $V['subject'] : 'Formmail on '.t3lib_div::getIndpEnv('HTTP_HOST');
 			$this->subject = ($convCharset && strlen($val)) ? $GLOBALS['TSFE']->csConvObj->conv($val,$GLOBALS['TSFE']->renderCharset,$this->charset) : $val;
 			$this->subject = $this->sanitizeHeaderString($this->subject);
-			$val = ($V['from_name']) ? $V['from_name'] : (($V['name'])?$V['name']:'');
+			$val = ($V['from_name']) ? $V['from_name'] : (($V['name'])?$V['name']:'');	// Be careful when changing $val! It is used again as the fallback value for replyto_name
 			$this->from_name = ($convCharset && strlen($val)) ? $GLOBALS['TSFE']->csConvObj->conv($val,$GLOBALS['TSFE']->renderCharset,$this->charset) : $val;
 			$this->from_name = $this->sanitizeHeaderString($this->from_name);
 			$this->from_name = preg_match( '/\s|,/', $this->from_name ) >= 1 ? '"'.$this->from_name.'"' : $this->from_name;
-			$val = ($V['replyto_name']) ? $V['replyto_name'] : $this->from_name;
+			$val = ($V['replyto_name']) ? $V['replyto_name'] : $val;
 			$this->replyto_name = ($convCharset && strlen($val)) ? $GLOBALS['TSFE']->csConvObj->conv($val,$GLOBALS['TSFE']->renderCharset,$this->charset) : $val;
 			$this->replyto_name = $this->sanitizeHeaderString($this->replyto_name);
-			$this->replyto_name = preg_match( '/\s|,/', $this->replyto_name ) > 1 ? '"'.$this->replyto_name.'"' : $this->replyto_name;
+			$this->replyto_name = preg_match( '/\s|,/', $this->replyto_name ) >= 1 ? '"'.$this->replyto_name.'"' : $this->replyto_name;
 			$val = ($V['organisation']) ? $V['organisation'] : '';
 			$this->organisation = ($convCharset && strlen($val)) ? $GLOBALS['TSFE']->csConvObj->conv($val,$GLOBALS['TSFE']->renderCharset,$this->charset) : $val;
 			$this->organisation = $this->sanitizeHeaderString($this->organisation);
