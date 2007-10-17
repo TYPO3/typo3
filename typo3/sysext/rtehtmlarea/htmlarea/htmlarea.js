@@ -1258,6 +1258,11 @@ HTMLArea.prototype.setMode = function(mode) {
 				this._statusBar.appendChild(this._statusBarTree);
 			}
 			this._editMode = "wysiwyg";
+					//set gecko options
+			if (HTMLArea.is_gecko) {
+				try { this._doc.execCommand("useCSS", false, !this.config.useCSS); } catch (e) {};
+				try { this._doc.execCommand("styleWithCSS", false, this.config.useCSS); } catch (e) {};
+			}
 			break;
 		default:
 			return false;
@@ -2141,10 +2146,6 @@ HTMLArea.selectColorDialog = function(editor,cmdID) {
  */
 HTMLArea.prototype.execCommand = function(cmdID, UI, param) {
 	this.focusEditor();
-	if (HTMLArea.is_gecko) {
-		try { this._doc.execCommand("useCSS", false, !this.config.useCSS); } catch (e) {};
-		try { this._doc.execCommand("styleWithCSS", false, this.config.useCSS); } catch (e) {};
-	}
 	switch (cmdID) {
 	    case "HtmlMode"	: this.setMode(); break;
 	    case "SplitBlock"	: this._doc.execCommand('FormatBlock',false,((HTMLArea.is_ie || HTMLArea.is_safari) ? "<div>" : "div")); break;

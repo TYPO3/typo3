@@ -1,3 +1,7 @@
+2007-10-17  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
+
+	* Move styleWithCSS setting to the initialization phase of the htmlArea editor
+
 2007-10-16  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
 	* Fixed bug 4183: Incorrect display in htmlArea RTE of utf-8 labels for colors, classes and fonts defined in PageTSConfig
