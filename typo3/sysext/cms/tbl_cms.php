@@ -44,7 +44,7 @@
 $TCA['fe_users'] = Array (
 	'ctrl' => $TCA['fe_users']['ctrl'],
 	'interface' => Array (
-		'showRecordFieldList' => 'username,password,usergroup,lockToDomain,name,title,address,zip,city,country,email,www,telephone,fax,disable,starttime,endtime'
+		'showRecordFieldList' => 'username,password,usergroup,lockToDomain,name,title,company,address,zip,city,country,email,www,telephone,fax,disable,starttime,endtime'
 	),
 	'feInterface' => $TCA['fe_users']['feInterface'],
 	'columns' => Array (
