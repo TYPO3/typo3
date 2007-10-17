@@ -1,3 +1,7 @@
+2007-10-17  Michael Stucki  <michael@typo3.org>
+
+	* Fixed bug #6121: Reply-To field in formmails can contain invalid characters if formMailCharset different from site charset (patch by Wolfgang Zenker)
+
 2007-10-17  Sebastian Kurfuerst  <sebastian@typo3.org>
 
 	* Fixed bug #6202: Company field is missing for table fe_users in "View Item" (Thanks to Christian Kuhn)
