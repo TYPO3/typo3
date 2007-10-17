@@ -24,6 +24,10 @@
 			<label index="CType.I.15">Script</label>
 			<label index="CType.I.16">Divider</label>
 			<label index="CType.I.17">HTML</label>
+			<label index="CType.div.standard">Standard</label>
+			<label index="CType.div.lists">Lists</label>
+			<label index="CType.div.forms">Forms</label>
+			<label index="CType.div.special">Special</label>
 			<label index="layout.I.1">Layout 1</label>
 			<label index="layout.I.2">Layout 2</label>
 			<label index="layout.I.3">Layout 3</label>

@@ -1,3 +1,7 @@
+2007-10-13  Ingo Renner  <ingo@typo3.org>
+
+	* Fixed bug 6540: add icons and grouping to the content element selector
+
 2007-10-17  Michael Stucki  <michael@typo3.org>
 
 	* Fixed bug #6121: Reply-To field in formmails can contain invalid characters if formMailCharset different from site charset (patch by Wolfgang Zenker)
