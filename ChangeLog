@@ -1,3 +1,7 @@
+2007-10-18  Ingo Renner  <ingo@typo3.org>
+
+	* Fixed bug 6526: Update prototype and scriptacolous
+
 2007-10-17  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
 	* Move styleWithCSS setting to the initialization phase of the htmlArea editor
