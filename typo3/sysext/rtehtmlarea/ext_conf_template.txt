@@ -16,9 +16,6 @@ defaultDictionary = en
   # cat=basic; type=string; label=List of Aspell dictionaries: The list of dictionaries available to the htmlArea SpellChecker plugin. This list is used only if safe_mode is enabled. If safe_mode is not enabled, the list is automatically obtained from Aspell.
 dictionaryList  = en
 
-  # cat=basic; type=string; label=List of htmlArea RTE plugins: The list of htmlArea RTE plugins that may be enabled.
-HTMLAreaPluginList = TableOperations, SpellChecker, ContextMenu, SelectColor, TYPO3Browsers, InsertSmiley, FindReplace, RemoveFormat, CharacterMap, QuickTag, InlineCSS, DynamicCSS, UserElements, Acronym, TYPO3HtmlParser
-
   # cat=basic/enable/01; type=options[Minimal (Most features disabled. Administrator needs to enable them using TypoScript. For advanced administrators only.),Typical (Most commonly used features are enabled. Select this option if you are unsure which one to use.),Demo (Show-off configuration. Includes pre-configured styles. Not for production environments.)]; label=Default configuration settings
 defaultConfiguration = Typical (Most commonly used features are enabled. Select this option if you are unsure which one to use.)
 

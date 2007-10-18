@@ -237,6 +237,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 						cellproperties, cellinsertbefore, cellinsertafter, celldelete, cellsplit, cellmerge',
 		'UserElements'		=> 'user',
 		'Acronym'		=> 'acronym',
+		'SelectColor'		=> 'textcolor,bgcolor',
 		);
 
 	var $pluginLabel = array(
@@ -288,6 +289,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 	var $toolbarOrderArray = array();
 	var $pluginEnableList;
 	var $pluginEnableArray = array();
+	var $pluginEnableArrayMultiple = array();
 
 	/**
 	 * Returns true if the RTE is available. Here you check if the browser requirements are met.
@@ -474,7 +476,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			 */
 
 				// htmlArea plugins list
-			$this->pluginEnableArray = array_intersect(t3lib_div::trimExplode(',', $this->pluginList , 1), t3lib_div::trimExplode(',', $TYPO3_CONF_VARS['EXTCONF'][$this->ID]['HTMLAreaPluginList'], 1));
+			$this->pluginEnableArray = t3lib_div::trimExplode(',', $this->pluginList, 1);
 			$hidePlugins = array();
 			if(!t3lib_extMgm::isLoaded('static_info_tables') || in_array($this->language, t3lib_div::trimExplode(',', $TYPO3_CONF_VARS['EXTCONF'][$this->ID]['noSpellCheckLanguages']))) $hidePlugins[] = 'SpellChecker';
 			if ($this->client['BROWSER'] == 'msie') $hidePlugins[] = 'Acronym';
@@ -484,13 +486,16 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 				$this->thisConfig['disableEnterParagraphs'] = 1;
 			}
 			$this->pluginEnableArray = array_diff($this->pluginEnableArray, $hidePlugins);
-			$this->pluginEnableArrayMultiple = $this->pluginEnableArray;
 
 				// Toolbar
 			$this->setToolBar();
 
 				// Check if some plugins need to be disabled
 			$this->setPlugins();
+			
+				// Merge the list of enabled plugins with the lists from the previous RTE editing areas on the same form
+			$this->pluginEnableArrayMultiple[$pObj->RTEcounter] = $this->pluginEnableArray;
+			if ($pObj->RTEcounter > 1) $this->pluginEnableArrayMultiple[$pObj->RTEcounter] = array_unique(array_values(array_merge($this->pluginEnableArray,$this->pluginEnableArrayMultiple[$pObj->RTEcounter-1])));
 
 			/* =======================================
 			 * PLUGIN-SPECIFIC CONFIGURATION
@@ -771,12 +776,11 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 		reset($this->pluginButton);
 		while(list($plugin, $buttonList) = each($this->pluginButton) ) {
 			$buttonArray = t3lib_div::trimExplode(',',$buttonList,1);
-			if(!in_array($buttonArray[0],$this->toolBar)) {
-				$hidePlugins[] = $plugin;
-				foreach($buttonArray as $button) {
-					$hideButtons[] = $button;
-				}
+			$showPlugin = false;
+			while(list(,$button) = each($buttonArray) ) {
+				if (in_array($button,$this->toolBar)) $showPlugin = true;
 			}
+			if (!$showPlugin) $hidePlugins[] = $plugin;
 		}
 		
 		if($this->thisConfig['disableContextMenu'] || $this->thisConfig['disableRightClick']) $hidePlugins[] = 'ContextMenu';
@@ -846,9 +850,11 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			var RTEarea = new Array();
 			RTEarea[0] = new Object();
 			RTEarea[0]["version"] = "' . $TYPO3_CONF_VARS['EXTCONF'][$this->ID]['version'] . '";
-			RTEarea[0]["popupwin"] = "' . $this->writeJSFileToTypo3tempDir('EXT:' . $this->ID . '/htmlarea/popupwin' . ($TYPO3_CONF_VARS['EXTCONF'][$this->ID]['enableCompressedScripts']?'-compressed':'') .'.js', "popupwin", $TYPO3_CONF_VARS['EXTCONF'][$this->ID]['enableCompressedScripts'])  . '";
-			RTEarea[0]["htmlarea-gecko"] = "' . $this->writeJSFileToTypo3tempDir('EXT:' . $this->ID . '/htmlarea/htmlarea-gecko' . ($TYPO3_CONF_VARS['EXTCONF'][$this->ID]['enableCompressedScripts']?'-compressed':'') .'.js', "htmlarea-gecko", $TYPO3_CONF_VARS['EXTCONF'][$this->ID]['enableCompressedScripts'])  . '";
-			RTEarea[0]["htmlarea-ie"] = "' . $this->writeJSFileToTypo3tempDir('EXT:' . $this->ID . '/htmlarea/htmlarea-ie' . ($TYPO3_CONF_VARS['EXTCONF'][$this->ID]['enableCompressedScripts']?'-compressed':'') .'.js', "htmlarea-ie", $TYPO3_CONF_VARS['EXTCONF'][$this->ID]['enableCompressedScripts'])  . '";
+			RTEarea[0]["popupwin"] = "' . $this->writeJSFileToTypo3tempDir('EXT:' . $this->ID . '/htmlarea/popupwin' . ($TYPO3_CONF_VARS['EXTCONF'][$this->ID]['enableCompressedScripts']?'-compressed':'') .'.js', "popupwin", $TYPO3_CONF_VARS['EXTCONF'][$this->ID]['enableCompressedScripts'])  . '";'
+			. (($this->client['BROWSER'] == 'msie') ? ('
+			RTEarea[0]["htmlarea-ie"] = "' . $this->writeJSFileToTypo3tempDir('EXT:' . $this->ID . '/htmlarea/htmlarea-ie' . ($TYPO3_CONF_VARS['EXTCONF'][$this->ID]['enableCompressedScripts']?'-compressed':'') .'.js', "htmlarea-ie", $TYPO3_CONF_VARS['EXTCONF'][$this->ID]['enableCompressedScripts'])  . '";')
+			: ('
+			RTEarea[0]["htmlarea-gecko"] = "' . $this->writeJSFileToTypo3tempDir('EXT:' . $this->ID . '/htmlarea/htmlarea-gecko' . ($TYPO3_CONF_VARS['EXTCONF'][$this->ID]['enableCompressedScripts']?'-compressed':'') .'.js', "htmlarea-gecko", $TYPO3_CONF_VARS['EXTCONF'][$this->ID]['enableCompressedScripts'])  . '";')) . '
 			var _editor_url = "' . $this->extHttpPath . 'htmlarea";
 			var _editor_lang = "' . $this->language . '";
 			var _editor_CSS = "' . $this->editorCSS . '";
@@ -856,8 +862,10 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			var _editor_edited_content_CSS = "' .  $this->editedContentCSS  . '";
 			var _typo3_host_url = "' . $this->hostURL . '";
 			var _editor_debug_mode = ' . ($TYPO3_CONF_VARS['EXTCONF'][$this->ID]['enableDebugMode'] ? 'true' : 'false') . ';
-			var _editor_compressed_scripts = ' . ($TYPO3_CONF_VARS['EXTCONF'][$this->ID]['enableCompressedScripts'] ? 'true' : 'false') . ';
-			var _editor_mozAllowClipboard_url = "' . ($TYPO3_CONF_VARS['EXTCONF'][$this->ID]['mozAllowClipboardURL'] ? $TYPO3_CONF_VARS['EXTCONF'][$this->ID]['mozAllowClipboardURL'] : '') . '";
+			var _editor_compressed_scripts = ' . ($TYPO3_CONF_VARS['EXTCONF'][$this->ID]['enableCompressedScripts'] ? 'true' : 'false') . ';'
+			. (($this->client['BROWSER'] == 'gecko') ? ('
+			var _editor_mozAllowClipboard_url = "' . ($TYPO3_CONF_VARS['EXTCONF'][$this->ID]['mozAllowClipboardURL'] ? $TYPO3_CONF_VARS['EXTCONF'][$this->ID]['mozAllowClipboardURL'] : '') . '";')
+			: '') . '
 			var _spellChecker_lang = "' . $this->spellCheckerLanguage . '";
 			var _spellChecker_charset = "' . $this->spellCheckerCharset . '";
 			var _spellChecker_mode = "' . $this->spellCheckerMode . '";
@@ -880,7 +888,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 		$loadPluginCode = '';
 		$pluginArray = t3lib_div::trimExplode(',', $this->pluginList , 1);
 		while( list(,$plugin) = each($pluginArray) ) {
-			if ($this->isPluginEnable($plugin) || (intval($number) > 1 && in_array($plugin, $this->pluginEnableArrayMultiple))) {
+			if (in_array($plugin, $this->pluginEnableArrayMultiple[$number])) {
 				$loadPluginCode .= '
 			HTMLArea.loadPlugin("' . $plugin . '", true, "' . $this->writeJSFileToTypo3tempDir('EXT:' . $this->ID . '/htmlarea/plugins/' . $plugin . '/' . strtolower(preg_replace('/([a-z])([A-Z])([a-z])/', "$1".'-'."$2"."$3", $plugin)) . ($TYPO3_CONF_VARS['EXTCONF'][$this->ID]['enableCompressedScripts']?'-compressed':'') .'.js', $plugin, $TYPO3_CONF_VARS['EXTCONF'][$this->ID]['enableCompressedScripts']) . '");';
 			}
@@ -1075,13 +1083,19 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 		}
 		
 			// Process font faces configuration
-		$registerRTEinJSString .= $this->buildJSFontFacesConfig($number);
+		if (in_array('fontstyle',$this->toolBar)) {
+			$registerRTEinJSString .= $this->buildJSFontFacesConfig($number);
+		}
 		
 			// Process paragraphs configuration
-		$registerRTEinJSString .= $this->buildJSParagraphsConfig($number);
+		if (in_array('formatblock',$this->toolBar)) {
+			$registerRTEinJSString .= $this->buildJSParagraphsConfig($number);
+		}
 		
 			// Process font sizes configuration
-		$registerRTEinJSString .= $this->buildJSFontSizesConfig($number);
+		if (in_array('fontsize',$this->toolBar)) {
+			$registerRTEinJSString .= $this->buildJSFontSizesConfig($number);
+		}
 		
 		if ($this->isPluginEnable('TableOperations')) {
 			$registerRTEinJSString .= '
@@ -1671,7 +1685,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 		$contents = $this->buildJSMainLangArray() . chr(10);
 		$pluginArray = t3lib_div::trimExplode(',', $this->pluginList , 1);
 		while( list(,$plugin) = each($pluginArray) ) {
-			if ($this->isPluginEnable($plugin)  || (intval($number) > 1 && in_array($plugin, $this->pluginEnableArrayMultiple))) {
+			if (in_array($plugin, $this->pluginEnableArrayMultiple[$number])) {
 				$contents .= $this->buildJSLangArray($plugin) . chr(10);
 			}
 		}
