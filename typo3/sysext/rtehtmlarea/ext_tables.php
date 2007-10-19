@@ -25,5 +25,4 @@ if ($TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['enableClickEnlarge']) {
 	);
 	 
 	t3lib_extMgm::allowTableOnStandardPages('tx_rtehtmlarea_acronym');
-	t3lib_extMgm::addToInsertRecords('tx_rtehtmlarea_acronym');
 ?>
