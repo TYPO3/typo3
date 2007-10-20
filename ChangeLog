@@ -1,3 +1,8 @@
+
+2007-10-20  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+
+	* Fixed bug #6559: Spelling error in Object Browser
+
 2007-10-20  Ingmar Schlecht  <ingmar@typo3.org>
 
 	* Fixed bug #5949: BE-Shortcut to Tools->User Admin returns error (Thanks to Oliver Hader)

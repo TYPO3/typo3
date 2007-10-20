@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2006 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2007 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -345,7 +345,7 @@ class t3lib_TSparser {
 										$this->setVal($objStrName,$setup,'UNSET');
 									break;
 									default:
-										$this->error('Line '.($this->lineNumberOffset+$this->rawP-1).': Object Name String, "'.htmlspecialchars($objStrName).'" was not preceeded by any operator, =<>({');
+										$this->error('Line '.($this->lineNumberOffset+$this->rawP-1).': Object Name String, "'.htmlspecialchars($objStrName).'" was not preceded by any operator, =<>({');
 									break;
 								}
 							}
