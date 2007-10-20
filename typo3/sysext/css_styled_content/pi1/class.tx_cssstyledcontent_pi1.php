@@ -430,7 +430,7 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 		$imgCount = count($imgs) - $imgStart;
 		$imgMax = intval($this->cObj->stdWrap($conf['imgMax'], $conf['imgMax.']));
 		if ($imgMax)	{
-			$imgCount = t3lib_div::intInRange($imgCount, 0, $conf['imgMax']);	// reduce the number of images.
+			$imgCount = t3lib_div::intInRange($imgCount, 0, $imgMax);	// reduce the number of images.
 		}
 
 		$imgPath = $this->cObj->stdWrap($conf['imgPath'], $conf['imgPath.']);
