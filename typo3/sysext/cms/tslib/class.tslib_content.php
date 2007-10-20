@@ -760,7 +760,7 @@ class tslib_cObj {
 
 			$imgMax = intval($this->stdWrap($conf['imgMax'],$conf['imgMax.']));
 			if ($imgMax)	{
-				$imgCount = t3lib_div::intInRange($imgCount,0,$conf['imgMax']);	// reduces the number of images.
+				$imgCount = t3lib_div::intInRange($imgCount,0,$imgMax);	// reduces the number of images.
 			}
 
 			$imgPath = $this->stdWrap($conf['imgPath'],$conf['imgPath.']);

@@ -1,8 +1,9 @@
 2007-10-20  Ingmar Schlecht  <ingmar@typo3.org>
 
-	* Fixed bug #5949: BE-Shortcut to Tools->User Admin returns error (Thanks to Oliver Hader and Christian Kuhn)
-	* Fixed bug #6210: UserTSConfig value "options.moduleMenuCollapsable=0" does not work. (Thanks to Christian Kuhn)
+	* Fixed bug #5949: BE-Shortcut to Tools->User Admin returns error (Thanks to Oliver Hader)
+	* Fixed bug #6210: UserTSConfig value "options.moduleMenuCollapsable=0" does not work.
 	* Fixed bug #6071: Switch to User does not work from context menu in List Module. (Thanks to Christian Kuhn all patches above!)
+	* Fixed bug: stdWrap for imgMax is not taken into account. (Thanks to Helmut Hummel)
 
 2007-10-19  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
