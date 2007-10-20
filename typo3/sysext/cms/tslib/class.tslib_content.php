@@ -2782,7 +2782,7 @@ class tslib_cObj {
 		$longDesc = trim($this->stdWrap($conf['longdescURL'],$conf['longdescURL.']));
 
 			// "alt":
-		$altParam = ' alt="'.htmlspecialchars(strip_tags($altText)).'"';
+		$altParam = ' alt="'.htmlspecialchars($altText).'"';
 
 			// "title":
 		$emptyTitleHandling = 'useAlt';
@@ -2791,9 +2791,9 @@ class tslib_cObj {
 			$emptyTitleHandling = $conf['emptyTitleHandling'];
 		}
 		if ($titleText || $emptyTitleHandling == 'keepEmpty')	{
-			$altParam.= ' title="'.htmlspecialchars(strip_tags($titleText)).'"';
+			$altParam.= ' title="'.htmlspecialchars($titleText).'"';
 		} elseif (!$titleText && $emptyTitleHandling == 'useAlt')	{
-			$altParam.= ' title="'.htmlspecialchars(strip_tags($altText)).'"';
+			$altParam.= ' title="'.htmlspecialchars($altText).'"';
 		}
 
 			// "longDesc" URL
