@@ -1,6 +1,7 @@
 2007-10-20  Ingmar Schlecht  <ingmar@typo3.org>
 
 	* Fixed bug #5949: BE-Shortcut to Tools->User Admin returns error (Thanks to Oliver Hader and Christian Kuhn)
+	* Fixed bug #6210: UserTSConfig value "options.moduleMenuCollapsable=0" does not work. (Thanks to Christian Kuhn)
 
 2007-10-19  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 

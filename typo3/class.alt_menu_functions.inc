@@ -96,7 +96,7 @@ class alt_menu_functions {
 
 			// By default module sections are collapsable, only if they are explicitly turned off via TSconfig, they are not:
 		$tmpArr = $BE_USER->getTSConfig('options.moduleMenuCollapsable');
-		$collapsable = ($tmpArr['value'] ? 0 : 1);
+		$collapsable = (isset($tmpArr['value']) && $tmpArr['value']==0) ? 0 : 1;
 		unset($tmpArr);
 
 			// Initialize vars:
