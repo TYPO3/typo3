@@ -1,3 +1,7 @@
+2007-10-20  Ingmar Schlecht  <ingmar@typo3.org>
+
+	* Fixed bug #5949: BE-Shortcut to Tools->User Admin returns error (Thanks to Oliver Hader and Christian Kuhn)
+
 2007-10-19  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
 	* Fixed bug 6546: Remove htmlArea RTE acronym from Insert-Record object

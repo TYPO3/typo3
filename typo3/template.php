@@ -436,6 +436,11 @@ class template {
 		$storeUrl=$this->makeShortcutUrl($gvList,$setList);
 		$pathInfo = parse_url(t3lib_div::getIndpEnv('REQUEST_URI'));
 
+ 			// Add the module identifier automatically if typo3/mod.php is used:
+ 		if (ereg('typo3/mod\.php$', $pathInfo['path']) && isset($GLOBALS['TBE_MODULES']['_PATHS'][$modName])) {
+ 			$storeUrl = '&M='.$modName.$storeUrl;
+ 		}
+ 
 		if (!strcmp($motherModName,'1'))	{
 			$mMN="&motherModName='+top.currentModuleLoaded+'";
 		} elseif ($motherModName)	{
