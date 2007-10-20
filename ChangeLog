@@ -8,6 +8,7 @@
 	* Fixed bug #5949: BE-Shortcut to Tools->User Admin returns error (Thanks to Oliver Hader)
 	* Fixed bug #6210: UserTSConfig value "options.moduleMenuCollapsable=0" does not work.
 	* Fixed bug #6071: Switch to User does not work from context menu in List Module. (Thanks to Christian Kuhn all patches above!)
+	* Fixed bug #6553: Remove hardcoded strip_tags() from image altText and replacing it with TS stripHtml = 1 (Thanks to Georg Ringer)
 	* Fixed bug: stdWrap for imgMax is not taken into account. (Thanks to Helmut Hummel)
 
 2007-10-19  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
