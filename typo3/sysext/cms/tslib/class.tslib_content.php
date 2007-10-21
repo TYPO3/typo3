@@ -6072,18 +6072,19 @@ class tslib_cObj {
 	function getUpdateJS($dataArray, $formName, $arrPrefix, $fieldList)	{
 		$JSPart='';
 		$updateValues=t3lib_div::trimExplode(',',$fieldList);
+		reset($updateValues);
 		while(list(,$fKey)=each($updateValues))	{
 			$value = $dataArray[$fKey];
 			if (is_array($value))	{
 				reset($value);
 				while(list(,$Nvalue)=each($value))	{
 					$JSPart.="
-	updateForm('".$formName."','".$arrPrefix."[".$fKey."][]',".t3lib_div::quoteJSvalue($Nvalue, true).")";
+	updateForm('".$formName."','".$arrPrefix."[".$fKey."][]',".t3lib_div::quoteJSvalue($Nvalue, true).");";
 				}
 
 			} else {
 				$JSPart.="
-	updateForm('".$formName."','".$arrPrefix."[".$fKey."]',".t3lib_div::quoteJSvalue($value, true).")";
+	updateForm('".$formName."','".$arrPrefix."[".$fKey."]',".t3lib_div::quoteJSvalue($value, true).");";
 			}
 		}
 		$JSPart='<script type="text/javascript">

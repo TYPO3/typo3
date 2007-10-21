@@ -1,4 +1,8 @@
-
+2007-10-21	Thomas Hempel <thomas@typo3-unleashed.net>
+	
+	* Fixed bug: #6531: Function getUpdateJS doesn't work properly (Thanks to Philip Almeida)
+	* Fixed bug: #434: function getUpdateJS produce JS error messages
+	
 2007-10-20  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
 	* Fixed bug #6559: Spelling error in Object Browser
