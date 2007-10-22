@@ -140,9 +140,8 @@ class SC_alt_db_navframe {
 			$this->doc->docType = 'xhtml_trans';
 
 				// Adding javascript code for AJAX (prototype), drag&drop and the pagetree
-			$this->doc->JScode  = '
-			<script type="text/javascript" src="'.$this->backPath.'contrib/prototype/prototype.js"></script>
-			<script type="text/javascript" src="'.$this->backPath.'tree.js"></script>'."\n";
+			$this->doc->loadJavascriptLib('contrib/prototype/prototype.js');
+			$this->doc->loadJavascriptLib('tree.js');
 
 			$this->doc->JScode .= $this->doc->wrapScriptTags(
 			($this->currentSubScript?'top.currentSubScript=unescape("'.rawurlencode($this->currentSubScript).'");':'').'

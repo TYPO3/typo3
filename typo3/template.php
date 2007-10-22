@@ -171,6 +171,7 @@ class template {
 		// Vars you typically might want to/should set from outside after making instance of this class:
 	var $backPath = '';				// 'backPath' pointing back to the PATH_typo3
 	var $form='';					// This can be set to the HTML-code for a formtag. Useful when you need a form to span the whole page; Inserted exactly after the body-tag.
+	var $JScodeLibArray = array();		// Similar to $JScode (see below) but used as an associative array to prevent double inclusion of JS code. This is used to include certain external Javascript libraries before the inline JS code. <script>-Tags are not wrapped around automatically
 	var $JScode='';					// Additional header code (eg. a JavaScript section) could be accommulated in this var. It will be directly outputted in the header.
 	var $JScodeArray = array();		// Similar to $JScode but for use as array with associative keys to prevent double inclusion of JS code. a <script> tag is automatically wrapped around.
 	var $postCode='';				// Additional 'page-end' code could be accommulated in this var. It will be outputted at the end of page before </body> and some other internal page-end code.
@@ -661,12 +662,14 @@ class template {
 	'.$generator.'
 	<title>'.htmlspecialchars($title).'</title>
 	'.$this->docStyle().'
+	'.implode("\n", $this->JScodeLibArray).'
 	'.$this->JScode.'
 	'.$tabJScode.'
 	'.$this->wrapScriptTags(implode("\n", $this->JScodeArray)).'
 	<!--###POSTJSMARKER###-->
 </head>
 ';
+		$this->JScodeLibArray=array();
 		$this->JScode='';
 		$this->JScodeArray=array();
 
@@ -1242,6 +1245,22 @@ $str.=$this->docBodyTagBegin().
 			return $af_content;
 		}
 	}
+
+
+ 	/**
+	 * Includes a javascript library that exists in the core /typo3/ directory. The 
+	 * backpath is automatically applied
+	 *
+	 * @param	string		$lib: Library name. Call it with the full path
+	 * 				like "contrib/prototype/prototype.js" to load it
+	 * @return	void
+	 */
+	function loadJavascriptLib($lib)	{
+		if (!isset($this->JScodeLibArray[$lib]))	{
+			$this->JScodeLibArray[$lib] = '<script language="text/javascript" src="'.$this->backPath.$lib.'"></script>';
+		}
+	}
+
 
 	/**
 	 * Returns an array with parts (JavaScript, init-functions, <div>-layers) for use on pages which displays the clickmenu layers (context sensitive menus)
