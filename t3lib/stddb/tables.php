@@ -176,7 +176,7 @@ $TCA['pages'] = Array (
 			'config' => Array (
 				'type' => 'input',
 				'size' => '30',
-				'max' => '256',
+				'max' => '255',
 				'eval' => 'required'
 			)
 		),

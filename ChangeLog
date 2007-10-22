@@ -1,3 +1,7 @@
+2007-10-22	Thomas Hempel  <thomas@typo3-unleashed.net>
+
+	* Fixed bug: #1575: Page-Title maxlength does not fit into database-field tinytext (Thanks to Georg Ringer)
+
 2007-10-21  Benjamin Mack  <mack@xnos.org>
 
 	* (minor) indexed_search - Added more info where the manual can be found

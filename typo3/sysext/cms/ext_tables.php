@@ -181,7 +181,7 @@ if (TYPO3_MODE=='BE')	{
 			'config' => Array (
 				'type' => 'input',
 				'size' => '30',
-				'max' => '256',
+				'max' => '255',
 				'checkbox' => '',
 				'eval' => 'trim'
 			)
@@ -199,7 +199,7 @@ if (TYPO3_MODE=='BE')	{
 			'config' => Array (
 				'type' => 'input',
 				'size' => '30',
-				'max' => '256',
+				'max' => '255',
 				'eval' => ''
 			)
 		),
@@ -230,7 +230,7 @@ if (TYPO3_MODE=='BE')	{
 			'config' => Array (
 				'type' => 'input',
 				'size' => '25',
-				'max' => '256',
+				'max' => '255',
 				'eval' => 'trim,required',
 				'softref' => 'url'
 			)
