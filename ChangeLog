@@ -1,4 +1,8 @@
-2007-10-22	Thomas Hempel  <thomas@typo3-unleashed.net>
+2007-10-22  Andreas Otto  <andreas.otto@dkd.de>
+
+	* Fixed bug #6340: JS errors with dividers2tabs and rtehtmlarea
+
+2007-10-22  Thomas Hempel  <thomas@typo3-unleashed.net>
 
 	* Fixed bug: #1575: Page-Title maxlength does not fit into database-field tinytext (Thanks to Georg Ringer)
 
