@@ -504,9 +504,11 @@ class t3lib_TCEforms	{
 					$fields = $this->mergeFieldsWithAddedFields($fields,$this->getFieldsToAdd($table,$row,$typeNum));
 
 						// If TCEforms will render a tab menu in the next step, push the name to the tab stack:
+					$tabIdentString = '';
+					$tabIdentStringMD5 = '';
 					if (strstr($itemList, '--div--') !== false && $this->enableTabMenu && $TCA[$table]['ctrl']['dividers2tabs']) {
 						$tabIdentString = 'TCEforms:'.$table.':'.$row['uid'];
-						$tabIdentStringMD5 = $GLOBALS['TBE_TEMPLATE']->getDynTabMenuId('TCEforms:'.$table.':'.$row['uid']);
+						$tabIdentStringMD5 = $GLOBALS['TBE_TEMPLATE']->getDynTabMenuId($tabIdentString);
 							// Remember that were currently working on the general tab:
 						if (isset($fields[0]) && strpos($fields[0], '--div--') !== 0) {
 							$this->pushToDynNestedStack('tab', $tabIdentStringMD5.'-1');
@@ -566,7 +568,7 @@ class t3lib_TCEforms	{
 								} else {	// Setting alternative title for "General" tab if "--div--" is the very first element.
 									$out_array_meta[$out_sheet]['title'] = $this->sL($parts[1]);
 										// Only add the first tab to the dynNestedStack if there are more tabs:
-									if (strpos($itemList, '--div--', strlen($fieldInfo))) {
+									if ($tabIdentString && strpos($itemList, '--div--', strlen($fieldInfo))) {
 										$this->pushToDynNestedStack('tab', $tabIdentStringMD5.'-1');
 									}
 								}
