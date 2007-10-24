@@ -1257,7 +1257,7 @@ $str.=$this->docBodyTagBegin().
 	 */
 	function loadJavascriptLib($lib)	{
 		if (!isset($this->JScodeLibArray[$lib]))	{
-			$this->JScodeLibArray[$lib] = '<script language="text/javascript" src="'.$this->backPath.$lib.'"></script>';
+			$this->JScodeLibArray[$lib] = '<script type="text/javascript" src="'.$this->backPath.$lib.'"></script>';
 		}
 	}
 
