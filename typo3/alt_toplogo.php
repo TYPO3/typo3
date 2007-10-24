@@ -52,6 +52,7 @@
 
 require ('init.php');
 require ('template.php');
+require ('classes/class.typo3logo.php');
 
 
 
@@ -80,18 +81,8 @@ class SC_alt_toplogo {
 		$this->content.=$TBE_TEMPLATE->startPage('Logo frame');
 
 			// Set logo:
-		if ($TBE_STYLES['logo'])	{
-			if (substr($TBE_STYLES['logo'],0,3)=='../')	{
-				$imgInfo = @getimagesize(PATH_site.substr($TBE_STYLES['logo'],3));
-			}
-			$this->content.='<a href="http://www.typo3.com/" target="_blank" onclick="'.$TBE_TEMPLATE->thisBlur().'">'.
-				'<img src="'.$TBE_STYLES['logo'].'" '.$imgInfo[3].' title="TYPO3 Content Management Framework" alt="" />'.
-				'</a>';
-		} else {
-			$this->content.='<a href="http://www.typo3.com/" target="_blank" onclick="'.$TBE_TEMPLATE->thisBlur().'">'.
-				'<img'.t3lib_iconWorks::skinImg('','gfx/alt_backend_logo.gif','width="117" height="32"').' title="TYPO3 Content Management Framework" alt="" />'.
-				'</a>';
-		}
+		$logo = t3lib_div::makeInstance('TYPO3logo');
+		$this->content .= $logo->render();
 
 			// End page:
 		$this->content.=$TBE_TEMPLATE->endPage();

@@ -1,0 +1,69 @@
+<?php
+/***************************************************************
+*  Copyright notice
+*
+*  (c) 2007 Ingo Renner <ingo@typo3.org>
+*  All rights reserved
+*
+*  This script is part of the TYPO3 project. The TYPO3 project is
+*  free software; you can redistribute it and/or modify
+*  it under the terms of the GNU General Public License as published by
+*  the Free Software Foundation; either version 2 of the License, or
+*  (at your option) any later version.
+*
+*  The GNU General Public License can be found at
+*  http://www.gnu.org/copyleft/gpl.html.
+*  A copy is found in the textfile GPL.txt and important notices to the license
+*  from the author is found in LICENSE.txt distributed with these scripts.
+*
+*
+*  This script is distributed in the hope that it will be useful,
+*  but WITHOUT ANY WARRANTY; without even the implied warranty of
+*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+*  GNU General Public License for more details.
+*
+*  This copyright notice MUST APPEAR in all copies of the script!
+***************************************************************/
+
+
+/**
+ * class to render the TYPO3 logo in the backend
+ *
+ * @author	Ingo Renner <ingo@typo3.org>
+ * @package TYPO3
+ * @subpackage core
+ */
+class TYPO3Logo {
+
+	/**
+	 * renders the actual logo code
+	 *
+	 * @return	string	logo html code snippet to use in the backend
+	 */
+	public function render() {
+		$logo = '<a href="http://www.typo3.com/" target="_blank" onclick="'.$GLOBALS['TBE_TEMPLATE']->thisBlur().'">'.
+				'<img'.t3lib_iconWorks::skinImg('','gfx/alt_backend_logo.gif','width="117" height="32"').' title="TYPO3 Content Management Framework" alt="" />'.
+				'</a>';
+
+			// overwrite with custom logo
+		if($GLOBALS['TBE_STYLES']['logo'])	{
+			if(substr($GLOBALS['TBE_STYLES']['logo'], 0, 3) == '../')	{
+				$imgInfo = @getimagesize(PATH_site.substr($GLOBALS['TBE_STYLES']['logo'], 3));
+			}
+
+			$logo = '<a href="http://www.typo3.com/" target="_blank" onclick="'.$GLOBALS['TBE_TEMPLATE']->thisBlur().'">'.
+				'<img src="'.$GLOBALS['TBE_STYLES']['logo'].'" '.$imgInfo[3].' title="TYPO3 Content Management Framework" alt="" />'.
+				'</a>';
+		}
+
+		return $logo;
+	}
+
+}
+
+
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['typo3/classes/class.typo3logo.php'])	{
+	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['typo3/classes/class.typo3logo.php']);
+}
+
+?>

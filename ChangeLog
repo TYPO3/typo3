@@ -1,3 +1,7 @@
+2007-10-24  Ingo Renner  <ingo@typo3.org>
+
+	* Fixed bug 6539: Move the BE logo generation code into a separate method so it can be used from other classes
+
 2007-10-24  Benjamin Mack  <mack@xnos.org>
 
 	* Fixed Bug #6582: Deprecated use of language="text/javascript" in function loadJavascriptLib in template.php (thanks to Christian Kuhn)
@@ -23,10 +27,10 @@
 	* (minor) indexed_search - Added more info where the manual can be found
 
 2007-10-21  Thomas Hempel <thomas@typo3-unleashed.net>
-	
+
 	* Fixed bug: #6531: Function getUpdateJS doesn't work properly (Thanks to Philip Almeida)
 	* Fixed bug: #434: function getUpdateJS produce JS error messages
-	
+
 2007-10-20  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
 	* Fixed bug #6559: Spelling error in Object Browser
