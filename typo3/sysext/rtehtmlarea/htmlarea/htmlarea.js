@@ -3,7 +3,7 @@
 *
 *  (c) 2002-2004, interactivetools.com, inc.
 *  (c) 2003-2004 dynarch.com
-*  (c) 2004, 2005, 2006 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
+*  (c) 2004-2007 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -2569,8 +2569,8 @@ HTMLArea._hasClass = function(el, className) {
 
 HTMLArea.RE_blockTags = /^(body|p|h1|h2|h3|h4|h5|h6|ul|ol|pre|dl|div|noscript|blockquote|form|hr|table|fieldset|address|td|tr|th|li|tbody|thead|tfoot|iframe|object)$/;
 HTMLArea.isBlockElement = function(el) { return el && el.nodeType == 1 && HTMLArea.RE_blockTags.test(el.nodeName.toLowerCase()); };
-HTMLArea.RE_closingTags = /^(p|span|a|li|ol|ul|dl|dt|td|th|tr|tbody|thead|tfoot|caption|table|div|em|i|strong|b|code|cite|blockquote|q|dfn|abbr|acronym|font|center|object|embed|tt|style|script|title|head|clickenlarge)$/;
-HTMLArea.RE_noClosingTag = /^(img|br|hr|input|area|base|link|meta|param)$/;
+HTMLArea.RE_closingTags = /^(p|span|a|li|ol|ul|dl|dt|td|th|tr|tbody|thead|tfoot|caption|colgroup|table|div|em|i|strong|b|code|cite|blockquote|q|dfn|abbr|acronym|font|center|object|embed|tt|style|script|title|head|clickenlarge)$/;
+HTMLArea.RE_noClosingTag = /^(img|br|hr|col|input|area|base|link|meta|param)$/;
 HTMLArea.needsClosingTag = function(el) { return el && el.nodeType == 1 && !HTMLArea.RE_noClosingTag.test(el.tagName.toLowerCase()); };
 
 /*

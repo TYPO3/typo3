@@ -1,3 +1,7 @@
+2007-10-26  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
+
+	* Fixed bug 5031: htmlArea RTE incorrectly processes col tags and default proc options disallow col and colgroup tags
+
 2007-10-24  Ingo Renner  <ingo@typo3.org>
 
 	* Fixed bug 6539: Move the BE logo generation code into a separate method so it can be used from other classes
