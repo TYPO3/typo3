@@ -1,3 +1,7 @@
+2007-10-26  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
+
+	* Fixed bug 5031: htmlArea RTE incorrectly processes col tags and default proc options disallow col and colgroup tags
+
 2007-10-19  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
 	* Fixed bug 6546: Remove htmlArea RTE acronym from Insert-Record object
