@@ -162,7 +162,7 @@ class localRecordList extends recordList {
 
 				// Adding "New record" icon:
 			if (!$GLOBALS['SOBE']->modTSconfig['properties']['noCreateRecordsLink']) 	{
-				$theCtrlPanel[]='<a href="#" onclick="'.htmlspecialchars('return jumpExt(\'' . htmlspecialchars($this->backPath . 'db_new.php?id='.$this->id).'\');').'">'.
+				$theCtrlPanel[]='<a href="#" onclick="'.htmlspecialchars('return jumpExt(\''.$this->backPath.'db_new.php?id='.$this->id.'\');').'">'.
 								'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/new_el.gif','width="11" height="12"').' title="'.$LANG->getLL('newRecordGeneral',1).'" alt="" />'.
 								'</a>';
 			}
