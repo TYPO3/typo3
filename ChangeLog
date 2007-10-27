@@ -2,6 +2,7 @@
 
 	* Fixed bug #1940: "OPEN DOCUMENTS" causes 404 error (Thanks to Christian Trabold)
 	* Fixed bug #5082: Clean up a nested htmlspecialchars() in class.db_list_extra.inc (Thanks to Christian Kuhn)
+	* Fixed bug #6561: imgMax and imgStart (IMGTEXT) not working properly (Thanks to Helmut Hummel)
 
 2007-10-26  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
