@@ -1,6 +1,7 @@
 2007-10-27  Ingmar Schlecht  <ingmar@typo3.org>
 
 	* Fixed bug #1940: "OPEN DOCUMENTS" causes 404 error (Thanks to Christian Trabold)
+	* Feature #6258: Change config.uniqueLinkVars to 1 (Thanks to Georg Ringer)
 
 2007-10-26  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 

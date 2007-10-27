@@ -154,7 +154,8 @@ class t3lib_TStemplate	{
 		'config.' => Array (
 			'extTarget' => '_top',
 			'stat' => 1,
-			'stat_typeNumList' => '0,1'
+			'stat_typeNumList' => '0,1',
+			'uniqueLinkVars' => 1
 		)
 	);
 	var $flatSetup = Array (
