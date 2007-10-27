@@ -898,7 +898,7 @@ class SC_alt_doc {
 			$docSel='';
 			if (is_array($this->docHandler))	{
 				$opt = array();
-				$opt[] = '<option>[ '.$LANG->getLL('openDocs',1).': ]</option>';
+				$opt[] = '<option value="">[ '.$LANG->getLL('openDocs',1).': ]</option>';
 
 					// Traverse the list of open documents:
 				foreach($this->docHandler as $md5k => $setupArr)	{

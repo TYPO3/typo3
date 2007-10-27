@@ -1,3 +1,7 @@
+2007-10-27  Ingmar Schlecht  <ingmar@typo3.org>
+
+	* Fixed bug #1940: "OPEN DOCUMENTS" causes 404 error (Thanks to Christian Trabold)
+
 2007-10-26  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
 	* Fixed bug 5031: htmlArea RTE incorrectly processes col tags and default proc options disallow col and colgroup tags
