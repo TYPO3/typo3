@@ -548,7 +548,7 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 		$splitArr = $GLOBALS['TSFE']->tmpl->splitConfArray($splitArr, $imgCount);
 
 		$imageRowsFinalWidths = Array();	// contains the width of every image row
-		$imgsTag = array();
+		$imgsTag = array();		// array index 0 will be the first shown image
 		$origImages = array();
 		for ($a=0; $a<$imgCount; $a++)	{
 			$imgKey = $a+$imgStart;
@@ -632,14 +632,14 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 						$imgConf['emptyTitleHandling'] = 'removeAttr';
 					}
 				}
-				$imgsTag[$imgKey] = $this->cObj->IMAGE($imgConf);
+				$imgsTag[$a] = $this->cObj->IMAGE($imgConf);
 			} else {
-				$imgsTag[$imgKey] = $this->cObj->IMAGE(Array('file' => $totalImagePath)); 	// currentValKey !!!
+				$imgsTag[$a] = $this->cObj->IMAGE(Array('file' => $totalImagePath)); 	// currentValKey !!!
 			}
 				// Restore our ATagParams
 			$GLOBALS['TSFE']->ATagParams = $oldATagParms;
 				// Store the original filepath
-			$origImages[$imgKey] = $GLOBALS['TSFE']->lastImageInfo;
+			$origImages[$a] = $GLOBALS['TSFE']->lastImageInfo;
 
 			$imageRowsFinalWidths[floor($a/$colCount)] += $GLOBALS['TSFE']->lastImageInfo[0];
 		}
