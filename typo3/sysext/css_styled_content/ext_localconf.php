@@ -24,6 +24,11 @@ $TYPO3_CONF_VARS['SC_OPTIONS']['ext/install']['compat_version']['tx_cssstyledcon
 				<li><b>CSS based "image" and "text with image"</b><br />As the extension cron_cssstyledimgtext has been merged into the core, rendering of the content elements "image" and "text with image" has been changed to be CSS instead of table based. Read the <a href="http://wiki.typo3.org/index.php/TYPO3_4.0" target="_blank">4.0 release notes</a> for further information.</li></ul>',
 	'description_acknowledge' => 'You will have to update your stylesheets to comply with these changes.'
 );
+$TYPO3_CONF_VARS['SC_OPTIONS']['ext/install']['compat_version']['tx_cssstyledcontent_pagetargets'] = array(
+	'title' => 'CSS Styled Content: Default targets for non-frame pages',
+	'version' => 4002000,
+	'description' => '<p>The default page target is empty (so no target is generated). If you use frames, you have to set target to "page" in Constants.</p>'
+);
 
 
 ?>

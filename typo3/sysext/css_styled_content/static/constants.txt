@@ -97,6 +97,15 @@ styles.content.searchresult {
   # cat=advanced/links; type=small; label= Target for internal links: Should match the name of the content PAGE-object in TypoScript when used with frames. Most cases: Set to "page" if you have frames in the template. If not, set to "" (empty)
 PAGE_TARGET = page
 
+[compatVersion = 4.2.0]
+  
+  # cat=advanced/links; type=small; label= Target for internal links: Should match the name of the content PAGE-object in TypoScript when used with frames. Most cases: set to "" (empty). If you have frames in the template set to "page" 
+PAGE_TARGET =
+
+content.pageFrameObj >
+[end]
+
+
 [compatVersion = 3.9.0]
 
 styles.content.imgtext >

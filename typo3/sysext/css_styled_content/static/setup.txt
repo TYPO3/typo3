@@ -995,6 +995,11 @@ tt_content.menu {
 	}
 }
 
+# Match TYPO3 4.2.0 and later
+[compatVersion = 4.2.0]
+tt_content.menu.20.default.1.target = {$PAGE_TARGET}
+tt_content.menu.20.2.1.target = {$PAGE_TARGET}
+[end]
 
 # ****************
 # CType: shortcut

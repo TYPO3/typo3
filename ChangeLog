@@ -1,3 +1,7 @@
+2007-10-27  Benjamin Mack  <mack@xnos.org>
+
+	* Fixed Bug #4662: New default behaviour for PAGE_TARGET (Thanks to Steffen Kemper)
+
 2007-10-27  Ingmar Schlecht  <ingmar@typo3.org>
 
 	* Fixed bug #1940: "OPEN DOCUMENTS" causes 404 error (Thanks to Christian Trabold)
