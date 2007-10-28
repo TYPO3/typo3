@@ -2,6 +2,7 @@
 	
 	* - Reverting IRRE related changes in t3lib_BEfunc done for workspaces by Dmitry. They were faulty.
 	* - Modified rendering of FlexForms in t3lib_TCEforms and also processing in t3lib_tcemain so that flexforms are now fully dynamic in their nature; This is particularly the case when flexforms have sections and containers within (see the original movie-list example for instance). DHTML is used to reorganize flexform elements, delete and add new. No ajax though (not necessary). It means we finally have a permanent implementation for what was before "_DELETE_FLEX_FORM" etc buttons... Used scriptaculous and prototype for the work.
+	* - In alt-doc, the script now preserves the scroll position when clicking save. Also, the button panel in top flows with form. This is preliminary and Jens will implement a better way... If it takes too long we can make it configurable.
 	
 
 2007-10-28  Martin Kutschker  <martin.t.kutschker@blackbox.net>

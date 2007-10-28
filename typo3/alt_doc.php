@@ -446,7 +446,7 @@ class SC_alt_doc {
 		$this->doc->backPath = $BACK_PATH;
 		$this->doc->docType = 'xhtml_trans';
 
-		$this->doc->form='<form action="'.htmlspecialchars($this->R_URI).'" method="post" enctype="'.$GLOBALS['TYPO3_CONF_VARS']['SYS']['form_enctype'].'" name="editform" onsubmit="return TBE_EDITOR.checkSubmit(1);">';
+		$this->doc->form='<form action="'.htmlspecialchars($this->R_URI).'" method="post" enctype="'.$GLOBALS['TYPO3_CONF_VARS']['SYS']['form_enctype'].'" name="editform" onsubmit="document.editform._scrollPosition.value=(document.documentElement.scrollTop || document.body.scrollTop); return TBE_EDITOR.checkSubmit(1);">';
 
 		$this->doc->JScode = $this->doc->wrapScriptTags('
 			function jumpToUrl(URL,formEl)	{	//
@@ -492,7 +492,7 @@ class SC_alt_doc {
 			// Setting up the context sensitive menu:
 		$CMparts = $this->doc->getContextMenuCode();
 		$this->doc->JScode.= $CMparts[0];
-		$this->doc->bodyTagAdditions = $CMparts[1];
+		$this->doc->bodyTagAdditions = str_replace('onload="','onload="window.scrollTo(0,'.t3lib_div::intInRange(t3lib_div::_GP('_scrollPosition'),0,10000).');',$CMparts[1]);
 		$this->doc->postCode.= $CMparts[2];
 	}
 
@@ -960,7 +960,7 @@ class SC_alt_doc {
 			-->
 			<table border="0" cellpadding="0" cellspacing="1" width="470" id="typo3-altdoc-header">
 				<tr>
-					<td nowrap="nowrap" valign="top">'.$panel.'</td>
+					<td nowrap="nowrap" valign="top"><div class="bgColor4" style="position:fixed; padding: 5px 5px 5px 5px; border: 1px solid black;">'.$panel.'</div></td>
 					<td nowrap="nowrap" valign="top" align="right">'.$docSel.$cMenu.'</td>
 				</tr>';
 
@@ -1010,6 +1010,7 @@ class SC_alt_doc {
 		$formContent.='<input type="hidden" name="doSave" value="0" />';
 		$formContent.='<input type="hidden" name="_serialNumber" value="'.md5(microtime()).'" />';
 		$formContent.='<input type="hidden" name="_disableRTE" value="'.$this->tceforms->disableRTE.'" />';
+		$formContent.='<input type="hidden" name="_scrollPosition" value="" />';
 
 		return $formContent;
 	}
