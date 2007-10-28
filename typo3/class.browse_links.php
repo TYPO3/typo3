@@ -756,8 +756,8 @@ class browse_links {
 
 
 
-
-
+	var	$readOnly = FALSE;	// If set, all operations that changes something should be disabled. This is used for alternativeBrowsing file mounts (see options like "options.folderTree.altElementBrowserMountPoints" in browse_links.php).
+	
 
 	/**
 	 * Constructor:
@@ -1499,7 +1499,7 @@ class browse_links {
 		if (!$path || !@is_dir($path))	{
 			$path = $fileProcessor->findTempFolder().'/';	// The closest TEMP-path is found
 		}
-		if ($path!='/' && @is_dir($path))	{
+		if ($path!='/' && @is_dir($path) && !$this->readOnly && count($GLOBALS['FILEMOUNTS']))	{
 			$uploadForm=$this->uploadForm($path);
 			$createFolder=$this->createFolder($path);
 		} else {

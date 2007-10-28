@@ -162,6 +162,36 @@ class SC_browse_links {
 			list($modData, $store) = $this->browser->processSessionData($modData);
 			$BE_USER->pushModuleData('browse_links.php',$modData);
 
+
+				// Output the correct content according to $this->mode
+			switch((string)$this->mode)	{
+				case 'rte':
+				case 'db':
+				case 'wizard':
+						// Setting alternative browsing mounts (ONLY local to browse_links.php this script so they stay "read-only")
+					$altMountPoints = trim($GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.altElementBrowserMountPoints'));
+					if ($altMountPoints)	{
+						$BE_USER->groupData['webmounts'] = implode(',',array_unique(t3lib_div::intExplode(',',$altMountPoints)));
+						$GLOBALS['WEBMOUNTS'] = $BE_USER->returnWebmounts();
+						$this->browser->readOnly = TRUE;
+					}
+				break;
+				case 'file':
+				case 'filedrag':
+						// Setting alternative browsing mounts (ONLY local to browse_links.php this script so they stay "read-only")
+					$altMountPoints = trim($GLOBALS['BE_USER']->getTSConfigVal('options.folderTree.altElementBrowserMountPoints'));
+					if ($altMountPoints)	{
+						$altMountPoints = t3lib_div::trimExplode(',',$altMountPoints);
+						foreach($altMountPoints as $filePathRelativeToFileadmindir)	{
+							$BE_USER->addFileMount('', $filePathRelativeToFileadmindir, $filePathRelativeToFileadmindir, 1,0);
+						}
+						$GLOBALS['FILEMOUNTS'] = $BE_USER->returnFilemounts();
+						$this->browser->readOnly = TRUE;
+					}
+				break;
+			}
+			
+
 				// Output the correct content according to $this->mode
 			switch((string)$this->mode)	{
 				case 'rte':
