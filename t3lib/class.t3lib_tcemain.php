@@ -345,6 +345,7 @@ class t3lib_TCEmain	{
 	var $remapStackRecords = array();			// array used for remapping uids and values at the end of process_datamap (e.g. $remapStackRecords[<table>][<uid>] = <index in $remapStack>)
 	var $updateRefIndexStack = array();			// array used for additional calls to $this->updateRefIndex
 	var $callFromImpExp = false;				// tells, that this TCEmain was called from tx_impext - this variable is set by tx_impexp
+	var $newIndexMap = array();					// Array for new flexform index mapping
 
 		// Various
 	/**
@@ -1730,28 +1731,12 @@ class t3lib_TCEmain	{
 				$arrValue = t3lib_div::array_merge_recursive_overrule($currentValueArray,$arrValue);
 				$xmlValue = $this->checkValue_flexArray2Xml($arrValue,TRUE);
 			}
-
-				// Temporary fix to delete flex form elements:
-			$deleteCMDs = t3lib_div::_GP('_DELETE_FLEX_FORMdata');
-			if (is_array($deleteCMDs[$table][$id][$field]['data']))	{
+		
+				// Action commands (sorting order and removals of elements)
+			$actionCMDs = t3lib_div::_GP('_ACTION_FLEX_FORMdata');
+			if (is_array($actionCMDs[$table][$id][$field]['data']))	{
 				$arrValue = t3lib_div::xml2array($xmlValue);
-				$this->_DELETE_FLEX_FORMdata($arrValue['data'],$deleteCMDs[$table][$id][$field]['data']);
-				$xmlValue = $this->checkValue_flexArray2Xml($arrValue,TRUE);
-			}
-
-				// Temporary fix to move flex form elements up:
-			$moveCMDs = t3lib_div::_GP('_MOVEUP_FLEX_FORMdata');
-			if (is_array($moveCMDs[$table][$id][$field]['data']))	{
-				$arrValue = t3lib_div::xml2array($xmlValue);
-				$this->_MOVE_FLEX_FORMdata($arrValue['data'],$moveCMDs[$table][$id][$field]['data'], 'up');
-				$xmlValue = $this->checkValue_flexArray2Xml($arrValue,TRUE);
-			}
-
-				// Temporary fix to move flex form elements down:
-			$moveCMDs = t3lib_div::_GP('_MOVEDOWN_FLEX_FORMdata');
-			if (is_array($moveCMDs[$table][$id][$field]['data']))	{
-				$arrValue = t3lib_div::xml2array($xmlValue);
-				$this->_MOVE_FLEX_FORMdata($arrValue['data'],$moveCMDs[$table][$id][$field]['data'], 'down');
+				$this->_ACTION_FLEX_FORMdata($arrValue['data'],$actionCMDs[$table][$id][$field]['data']);
 				$xmlValue = $this->checkValue_flexArray2Xml($arrValue,TRUE);
 			}
 
@@ -1779,73 +1764,33 @@ class t3lib_TCEmain	{
 	}
 
 	/**
-	 * Deletes a flex form element
+	 * Actions for flex form element (move, delete)
 	 *
 	 * @param	array		&$valueArrayToRemoveFrom: by reference
 	 * @param	array		$deleteCMDS: ...	 *
 	 * @return	void
 	 */
-	function _DELETE_FLEX_FORMdata(&$valueArrayToRemoveFrom,$deleteCMDS)	{
-		if (is_array($valueArrayToRemoveFrom) && is_array($deleteCMDS))	{
-			foreach($deleteCMDS as $key => $value)	{
-				if (is_array($deleteCMDS[$key]))	{
-					$this->_DELETE_FLEX_FORMdata($valueArrayToRemoveFrom[$key],$deleteCMDS[$key]);
-				} else {
-					unset($valueArrayToRemoveFrom[$key]);
-				}
-			}
-		}
-	}
-
-	/**
-	 * Deletes a flex form element
-	 *
-	 * TODO: Like _DELETE_FLEX_FORMdata, this is only a temporary solution!
-	 *
-	 * @param	array		&$valueArrayToMoveIn: by reference
-	 * @param	array		$moveCMDS: ...	 *
-	 * @param	string		$direction: 'up' or 'down'
-	 * @return	void
-	 */
-	function _MOVE_FLEX_FORMdata(&$valueArrayToMoveIn, $moveCMDS, $direction)	{
-		if (is_array($valueArrayToMoveIn) && is_array($moveCMDS))	{
-
-				// Only execute the first move command:
-			list ($key, $value) = each ($moveCMDS);
-
-			if (is_array($moveCMDS[$key]))	{
-				$this->_MOVE_FLEX_FORMdata($valueArrayToMoveIn[$key],$moveCMDS[$key], $direction);
-			} else {
-
-					// Keys may not be arranged in numerical order and there could be gaps. Therefore we create a nice index first:
-				$keyOrder = array();
-				$keyIndex = 0;
-				$c=0;
-				foreach($valueArrayToMoveIn as $kk => $vv)	{
-					if (is_array($vv))	{	// Sections are expected to be arrays and if not, it's gotta be an error in the XML data.
-						$c++;
-						$keyOrder[$c] = $kk;
-						if ($kk===$key)	$keyIndex=$c;
-					}
-				}
-
-				if ($keyIndex>0)	{
-					switch ($direction) {
-						case 'up':
-							if (isset($keyOrder[$keyIndex-1])) {
-								$tmpArr = $valueArrayToMoveIn[$keyOrder[$keyIndex]];
-								$valueArrayToMoveIn[$keyOrder[$keyIndex]] = $valueArrayToMoveIn[$keyOrder[$keyIndex-1]];
-								$valueArrayToMoveIn[$keyOrder[$keyIndex-1]] = $tmpArr;
+	function _ACTION_FLEX_FORMdata(&$valueArray,$actionCMDs)	{
+		if (is_array($valueArray) && is_array($actionCMDs))	{
+			foreach($actionCMDs as $key => $value)	{
+				if ($key=='_ACTION')	{
+						// First, check if there are "commands":
+					if (current($actionCMDs[$key])!=="")	{
+						asort($actionCMDs[$key]);
+						$newValueArray = array();
+						foreach($actionCMDs[$key] as $idx => $order)	{
+							if (substr($idx,0,3)=="ID-")	{
+								$idx = $this->newIndexMap[$idx];
 							}
-						break;
-						case 'down':
-							if (isset($keyOrder[$keyIndex+1])) {
-								$tmpArr = $valueArrayToMoveIn[$keyOrder[$keyIndex]];
-								$valueArrayToMoveIn[$keyOrder[$keyIndex]] = $valueArrayToMoveIn[$keyOrder[$keyIndex+1]];
-								$valueArrayToMoveIn[$keyOrder[$keyIndex+1]] = $tmpArr;
+							if ($order!="DELETE")	{	// Just one reflection here: It is clear that when removing elements from a flexform, then we will get lost files unless we act on this delete operation by traversing and deleting files that were referred to.
+								$newValueArray[$idx] = $valueArray[$idx];
 							}
-						break;
+							unset($valueArray[$idx]);
+						}
+						$valueArray = t3lib_div::array_merge($newValueArray,$valueArray);
 					}
+				} elseif (is_array($actionCMDs[$key]) && isset($valueArray[$key]))	{
+					$this->_ACTION_FLEX_FORMdata($valueArray[$key],$actionCMDs[$key]);
 				}
 			}
 		}
@@ -2208,7 +2153,9 @@ class t3lib_TCEmain	{
 				if ($DSelements[$key]['type']=='array')	{
 					if (is_array($dataValues[$key]['el']))	{
 						if ($DSelements[$key]['section'])	{
+							$newIndexCounter=0;
 							foreach($dataValues[$key]['el'] as $ik => $el)	{
+								if (!is_array($dataValues_current[$key]['el']))	$dataValues_current[$key]['el']=array();
 								$theKey = key($el);
 
 									// It may happen that an element exists in $dataValues but is missing in $dataValues_current. In this case, just skip the element...
@@ -2224,6 +2171,15 @@ class t3lib_TCEmain	{
 											$callBackFunc,
 											$structurePath.$key.'/el/'.$ik.'/'.$theKey.'/el/'
 										);
+										
+										// If element is added dynamically in the flexform of TCEforms, we map the ID-string to the next numerical index we can have in that particular section of elements:
+										// The fact that the order changes is not important since order is controlled by a separately submitted index.
+									if (substr($ik,0,3)=="ID-")	{
+										$newIndexCounter++;
+										$this->newIndexMap[$ik] = (is_array($dataValues_current[$key]['el'])&&count($dataValues_current[$key]['el'])?max(array_keys($dataValues_current[$key]['el'])):0)+$newIndexCounter;	// Set mapping index
+										$dataValues[$key]['el'][$this->newIndexMap[$ik]] = $dataValues[$key]['el'][$ik];	// Transfer values
+										unset($dataValues[$key]['el'][$ik]);	// Unset original
+									}
 								}
 							}
 						} else {

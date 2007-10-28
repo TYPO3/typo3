@@ -649,13 +649,15 @@ class t3lib_transferData {
 					if (is_array($dataValues[$key]['el']))	{
 						if ($DSelements[$key]['section'])	{
 							foreach($dataValues[$key]['el'] as $ik => $el)	{
-								$theKey = key($el);
-								if (is_array($dataValues[$key]['el'][$ik][$theKey]['el']))	{
-									$this->renderRecord_flexProc_procInData_travDS(
-											$dataValues[$key]['el'][$ik][$theKey]['el'],
-											$DSelements[$key]['el'][$theKey]['el'],
-											$pParams
-										);
+								if (is_array($el))	{
+									$theKey = key($el);
+									if (is_array($dataValues[$key]['el'][$ik][$theKey]['el']))	{
+										$this->renderRecord_flexProc_procInData_travDS(
+												$dataValues[$key]['el'][$ik][$theKey]['el'],
+												$DSelements[$key]['el'][$theKey]['el'],
+												$pParams
+											);
+									}
 								}
 							}
 						} else {
