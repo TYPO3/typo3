@@ -2841,25 +2841,13 @@ class t3lib_BEfunc	{
 		$fTWHERE = str_replace('###PAGE_TSCONFIG_IDLIST###',$GLOBALS['TYPO3_DB']->cleanIntList($TSconfig[$field]['PAGE_TSCONFIG_IDLIST']),$fTWHERE);
 		$fTWHERE = str_replace('###PAGE_TSCONFIG_STR###',$GLOBALS['TYPO3_DB']->quoteStr($TSconfig[$field]['PAGE_TSCONFIG_STR'], $foreign_table),$fTWHERE);
 
-		// Determine workspace ID. Rules:
-		//	- if table is not versioned, wsid is always 0
-		//	- otherwise if row is provided, use row's workspace
-		//	- otherwise use current user's workspace
-		// This is a typical algorithm used in TYPO3
-		$wsid = intval(
-					!$TCA[$foreign_table]['ctrl']['versioningWS'] ? 0 :
-						(isset($TSconfig['_THIS_ROW']) ? $TSconfig['_THIS_ROW']['t3ver_wsid'] :
-							$GLOBALS['BE_USER']->workspace)
-				);
-
 			// rootLevel = -1 is not handled 'properly' here - it goes as if it was rootLevel = 1 (that is pid=0)
 		$wgolParts = $GLOBALS['TYPO3_DB']->splitGroupOrderLimit($fTWHERE);
 		if ($rootLevel)	{
-			// No versioning for these records!
 			$queryParts = array(
 				'SELECT' => t3lib_BEfunc::getCommonSelectFields($foreign_table,$foreign_table.'.'),
 				'FROM' => $foreign_table,
-				'WHERE' => $foreign_table.'.pid=0 ' .
+				'WHERE' => $foreign_table.'.pid=0 '.
 							t3lib_BEfunc::deleteClause($foreign_table).' '.
 							$wgolParts['WHERE'],
 				'GROUPBY' => $wgolParts['GROUPBY'],
@@ -2869,58 +2857,29 @@ class t3lib_BEfunc	{
 		} else {
 			$pageClause = $GLOBALS['BE_USER']->getPagePermsClause(1);
 			if ($foreign_table!='pages')	{
-				if ($wsid == 0) {
-					$queryParts = array(
-						'SELECT' => t3lib_BEfunc::getCommonSelectFields($foreign_table,$foreign_table.'.'),
-						'FROM' => $foreign_table.',pages',
-						'WHERE' => 'pages.uid='.$foreign_table.'.pid' .
-									t3lib_BEfunc::deleteClause('pages').
-									t3lib_BEfunc::deleteClause($foreign_table).
-									($pageClause != ' 1=1' ? ' AND ' . $pageClause : '') .
-									' ' . $wgolParts['WHERE'],
-						'GROUPBY' => $wgolParts['GROUPBY'],
-						'ORDERBY' => $wgolParts['ORDERBY'],
-						'LIMIT' => $wgolParts['LIMIT']
-					);
-				}
-				else {
-					$queryParts = array(
-						'SELECT' => t3lib_BEfunc::getCommonSelectFields($foreign_table,$foreign_table.'.'),
-						'FROM' => $foreign_table,
-						'WHERE' => $foreign_table . '.pid=-1 AND ' .
-									$foreign_table . '.t3ver_wsid=' . $wsid .
-									t3lib_BEfunc::deleteClause($foreign_table).
-									$wgolParts['WHERE'],
-						'GROUPBY' => $wgolParts['GROUPBY'],
-						'ORDERBY' => $wgolParts['ORDERBY'],
-						'LIMIT' => $wgolParts['LIMIT']
-					);
-				}
+				$queryParts = array(
+					'SELECT' => t3lib_BEfunc::getCommonSelectFields($foreign_table,$foreign_table.'.'),
+					'FROM' => $foreign_table.',pages',
+					'WHERE' => 'pages.uid='.$foreign_table.'.pid
+								AND pages.deleted=0 '.
+								t3lib_BEfunc::deleteClause($foreign_table).
+								' AND '.$pageClause.' '.
+								$wgolParts['WHERE'],
+					'GROUPBY' => $wgolParts['GROUPBY'],
+					'ORDERBY' => $wgolParts['ORDERBY'],
+					'LIMIT' => $wgolParts['LIMIT']
+				);
 			} else {
-				if ($wsid == 0) {
-					$queryParts = array(
-						'SELECT' => t3lib_BEfunc::getCommonSelectFields('pages', 'pages.'),
-						'FROM' => 'pages',
-						'WHERE' => $pageClause . t3lib_BEfunc::deleteClause('pages') . $wgolParts['WHERE'],
-						'GROUPBY' => $wgolParts['GROUPBY'],
-						'ORDERBY' => $wgolParts['ORDERBY'],
-						'LIMIT' => $wgolParts['LIMIT']
-					);
-				}
-				else {
-					$queryParts = array(
-						'SELECT' => t3lib_BEfunc::getCommonSelectFields('pages','pages.'),
-						'FROM' => 'pages pages, pages t2',
-						'WHERE' => $pageClause . t3lib_BEfunc::deleteClause('pages') .
-									t3lib_BEfunc::deleteClause('pages', 't2') .
-									' AND pages.t3ver_wsid=' . $wsid .
-									' AND pages.t3ver_oid=t2.uid AND pages.pid=-1' .
-									$wgolParts['WHERE'],
-						'GROUPBY' => $wgolParts['GROUPBY'],
-						'ORDERBY' => $wgolParts['ORDERBY'],
-						'LIMIT' => $wgolParts['LIMIT']
-					);
-				}
+				$queryParts = array(
+					'SELECT' => t3lib_BEfunc::getCommonSelectFields($foreign_table,$foreign_table.'.'),
+					'FROM' => 'pages',
+					'WHERE' => 'pages.deleted=0
+								AND '.$pageClause.' '.
+								$wgolParts['WHERE'],
+					'GROUPBY' => $wgolParts['GROUPBY'],
+					'ORDERBY' => $wgolParts['ORDERBY'],
+					'LIMIT' => $wgolParts['LIMIT']
+				);
 			}
 		}
 

@@ -1,3 +1,6 @@
+2007-10-28	Kasper Skårhøj	<kasperYYYY@typo3.com>
+	
+	* - Reverting IRRE related changes in t3lib_BEfunc done for workspaces by Dmitry. They were faulty.
 
 2007-10-28  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
