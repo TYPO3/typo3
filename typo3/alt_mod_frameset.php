@@ -51,8 +51,6 @@ require ('init.php');
 require ('template.php');
 
 
-
-
 /**
  * Script Class for rendering the frameset which keeps the navigation and list frames together for socalled "Frameset modules"
  *

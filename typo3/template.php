@@ -1370,8 +1370,10 @@ $str.=$this->docBodyTagBegin().
 						GLV_x = GLV_xRel;
 						GLV_y = GLV_yRel;
 						
-						GLV_x = GLV_xRel + (document.documentElement.scrollLeft ? document.documentElement.scrollLeft : document.body.scrollLeft);
-						GLV_y = GLV_yRel + (document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop);
+						if (!bw.safari)	{
+							GLV_x = GLV_xRel + (document.documentElement.scrollLeft ? document.documentElement.scrollLeft : document.body.scrollLeft);
+							GLV_y = GLV_yRel + (document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop);
+						}
 						
 					//	status = (GLV_x+GLV_gap-GLV_curLayerX[0]) + " | " + (GLV_y+GLV_gap-GLV_curLayerY[0]);
 						if (GLV_isVisible[1])	{

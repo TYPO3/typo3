@@ -529,7 +529,7 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 	 * @return	boolean		Returns true if the language value is allowed, otherwise false.
 	 */
 	function checkLanguageAccess($langValue)	{
-		if (strcmp($this->groupData['allowed_languages'],''))	{	// The users language list must be non-blank - otherwise all languages are allowed.
+		if (strcmp(trim($this->groupData['allowed_languages']),''))	{	// The users language list must be non-blank - otherwise all languages are allowed.
 			$langValue = intval($langValue);
 			if ($langValue != -1 && !$this->check('allowed_languages',$langValue))	{	// Language must either be explicitly allowed OR the lang Value be "-1" (all languages)
 				return FALSE;

@@ -321,6 +321,12 @@ class SC_mod_web_perm_index {
 	function doEdit()	{
 		global $BE_USER,$LANG;
 
+		if ($BE_USER->workspace!=0)	{
+				// Adding section with the permission setting matrix:
+			$this->content.=$this->doc->divider(5);
+			$this->content.=$this->doc->section('WORKSPACE WARNING','<div style="border: solid 2px black; background-color: yellow; padding: 2px 2px 2px 2px;margin: 3px 0px 20px 0px;">Permissions you set in the workspace is effective on the elements only <em>after</em> they are published! If you need to set permissions which are effective right now, you must do so in the Live workspace. (Permissions are always evaluated on the Live workspace record/placeholder of a draft version)</div>',0,1,3);
+		}
+
 			// Get usernames and groupnames
 		$be_group_Array=t3lib_BEfunc::getListGroupNames('title,uid');
 		$groupArray=array_keys($be_group_Array);
