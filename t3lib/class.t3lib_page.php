@@ -115,13 +115,17 @@ class t3lib_pageSelect {
 		// Versioning preview related:
 	var $versioningPreview = FALSE;		// If true, preview of other record versions is allowed. THIS MUST ONLY BE SET IF the page is not cached and truely previewed by a backend user!!!
 	var $versioningWorkspaceId = 0;		// Workspace ID for preview
-	var	$workspaceCache = array();
+	var $workspaceCache = array();
 
 
 		// Internal, dynamic:
 	var $error_getRootLine = '';		// Error string set by getRootLine()
 	var $error_getRootLine_failPid = 0;		// Error uid set by getRootLine()
 
+		// Internal caching
+	private $cache_getRootLine = array();
+	private $cache_getPage = array();
+	private $cache_getMountPointInfo = array();
 
 	/**
 	 * init() MUST be run directly after creating a new template-object
@@ -182,16 +186,21 @@ class t3lib_pageSelect {
 	 * @see getPage_noCheck()
 	 */
 	function getPage($uid, $disableGroupAccessCheck=FALSE)	{
+		if (is_array($this->cache_getPage[$uid][$disableGroupAccessCheck?1:0]))	{
+			return $this->cache_getPage[$uid][$disableGroupAccessCheck?1:0];
+		}
+		$result = array();
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'pages', 'uid='.intval($uid).$this->where_hid_del.($disableGroupAccessCheck ? '' : $this->where_groupAccess));
 		$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
 		$GLOBALS['TYPO3_DB']->sql_free_result($res);
 		if ($row)	{
 			$this->versionOL('pages',$row);
 			if (is_array($row))	{
-				return $this->getPageOverlay($row);
+				$result = $this->getPageOverlay($row);
+				$this->cache_getPage[$uid][$disableGroupAccessCheck?1:0] = $result;
 			}
 		}
-		return Array();
+		return $result;
 	}
 
 	/**
@@ -533,6 +542,9 @@ class t3lib_pageSelect {
 	 * @see tslib_fe::getPageAndRootline()
 	 */
 	function getRootLine($uid, $MP='', $ignoreMPerrors=FALSE)	{
+		if (is_array($this->cache_getRootLine[$uid][$MP][$ignoreMPerrors?1:0]))     {
+			return $this->cache_getRootLine[$uid][$MP][$ignoreMPerrors?1:0];
+		}
 
 			// Initialize:
 		$selFields = t3lib_div::uniqueList('pid,uid,t3ver_oid,t3ver_wsid,t3ver_state,t3ver_swapmode,title,alias,nav_title,media,layout,hidden,starttime,endtime,fe_group,extendToSubpages,doktype,TSconfig,storage_pid,is_siteroot,mount_pid,mount_pid_ol,fe_login_mode,'.$GLOBALS['TYPO3_CONF_VARS']['FE']['addRootLineFields']);
@@ -644,6 +656,8 @@ class t3lib_pageSelect {
 			$output[$c] = $val;
 		}
 
+			// Note: rootline errors are not cached
+		$this->cache_getRootLine[$uid][$MP][$ignoreMPerrors?1:0] = $output;
 		return $output;
 	}
 
@@ -702,7 +716,18 @@ class t3lib_pageSelect {
 	 * @see tslib_menu
 	 */
 	function getMountPointInfo($pageId, $pageRec=FALSE, $prevMountPids=array(), $firstPageUid=0)	{
+		$result = FALSE;
+
 		if ($GLOBALS['TYPO3_CONF_VARS']['FE']['enable_mount_pids'])	{
+
+				// Set first Page uid:
+			if (!$firstPageUid)	{
+				$firstPageUid = $pageRec['uid'];
+			}
+
+			if (isset($this->cache_getMountPointInfo[$pageId][$firstPageUid]))     {
+				return $this->cache_getMountPointInfo[$pageId][$firstPageUid];
+			}
 
 				// Get pageRec if not supplied:
 			if (!is_array($pageRec))	{
@@ -712,10 +737,6 @@ class t3lib_pageSelect {
 				$this->versionOL('pages',$pageRec);		// Only look for version overlay if page record is not supplied; This assumes that the input record is overlaid with preview version, if any!
 			}
 
-				// Set first Page uid:
-			if (!$firstPageUid)	{
-				$firstPageUid = $pageRec['uid'];
-			}
 
 				// Look for mount pid value plus other required circumstances:
 			$mount_pid = intval($pageRec['mount_pid']);
@@ -733,7 +754,7 @@ class t3lib_pageSelect {
 					$recursiveMountPid = $this->getMountPointInfo($mount_pid, $mountRec, $prevMountPids, $firstPageUid);
 
 						// Return mount point information:
-					return $recursiveMountPid ?
+					$result = $recursiveMountPid ?
 								$recursiveMountPid :
 								array(
 									'mount_pid' => $mount_pid,
@@ -743,12 +764,13 @@ class t3lib_pageSelect {
 									'mount_pid_rec' => $mountRec,
 								);
 				} else {
-					return -1;	// Means, there SHOULD have been a mount point, but there was none!
+					$result = -1;	// Means, there SHOULD have been a mount point, but there was none!
 				}
 			}
 		}
 
-		return FALSE;
+		$this->cache_getMountPointInfo[$pageId][$firstPageUid] = $result;
+		return $result;
 	}
 
 

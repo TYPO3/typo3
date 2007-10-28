@@ -1,3 +1,8 @@
+
+2007-10-28  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+
+	* Feature #6601: Speed up link rendering by implementing some local caches
+
 2007-10-27  Benjamin Mack  <mack@xnos.org>
 
 	* Fixed Bug #4662: New default behaviour for PAGE_TARGET (Thanks to Steffen Kemper)
