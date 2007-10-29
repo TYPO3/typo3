@@ -1,3 +1,6 @@
+2007-10-29	Jeff Segars	<jeff@webempoweredchurch.org>
+	* Fixed bug #5338: Error installing suggested extensions
+
 2007-10-29	Dmitry Dulepov	<dmitry@typo3.org>
 
 	* Fixed bug #6581: Fatal error in TCEForms: Fatal error: Cannot use string offset as an array
@@ -5,7 +8,7 @@
 	* Fixed bug #5347: Flexforms dosen't resolve sheets
 	* Fixed bug #3969: Missing sheets inclusion in flexforms?
 
-2007-10-28	Kasper Sk�rh�j	<kasperYYYY@typo3.com>
+2007-10-28	Kasper Skårhøj	<kasperYYYY@typo3.com>
 	
 	* - Reverting IRRE related changes in t3lib_BEfunc done for workspaces by Dmitry. They were faulty.
 	* - Modified rendering of FlexForms in t3lib_TCEforms and also processing in t3lib_tcemain so that flexforms are now fully dynamic in their nature; This is particularly the case when flexforms have sections and containers within (see the original movie-list example for instance). DHTML is used to reorganize flexform elements, delete and add new. No ajax though (not necessary). It means we finally have a permanent implementation for what was before "_DELETE_FLEX_FORM" etc buttons... Used scriptaculous and prototype for the work.
@@ -993,7 +996,7 @@
 2007-01-19  Ingmar Schlecht  <ingmar@typo3.org>
 
 	* AJAX pagetree and filetree by Benjamin Mack <bmack@xnos.org>! (Thanks also to Franz Holzinger and Stefan Regniet for their help)
-	* Patch by René Fritz regarding bidirectional mm-relations: It's now possible to save different relations to the same mm-table by means of so called "matchFields". This is used by DAM.
+	* Patch by Ren√© Fritz regarding bidirectional mm-relations: It's now possible to save different relations to the same mm-table by means of so called "matchFields". This is used by DAM.
 
 2007-01-19  Andreas Otto  <andreas.otto@dkd.de>
 
@@ -1062,7 +1065,7 @@
 
 2006-12-13  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
-	* More localization of User>Workspaces (thanks to Marc Wöhlken)
+	* More localization of User>Workspaces (thanks to Marc W√∂hlken)
 
 2006-12-14  Kasper Skaarhoj
 
@@ -1088,7 +1091,7 @@
 
 2006-12-12  Ingmar Schlecht  <ingmar@typo3.org>
 
-	* Better getRecordTitle() function introducing label_userFunc (Thanks to David Brühlmeier for this patch! See http://lists.netfielders.de/pipermail/typo3-team-core/2006-December/006521.html for details.)
+	* Better getRecordTitle() function introducing label_userFunc (Thanks to David Br√ºhlmeier for this patch! See http://lists.netfielders.de/pipermail/typo3-team-core/2006-December/006521.html for details.)
 
 2006-12-11  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
@@ -1275,7 +1278,7 @@
 
 2006-09-11  Ingmar Schlecht  <ingmar@typo3.org>
 
-	* New feature: Bidirectional MM relations. You can now edit mm-relations from both sides of the relation in the Backend TCE-Forms. Thanks to Sebastian (for writing the patch together with me) and René (for the first version of this feature)
+	* New feature: Bidirectional MM relations. You can now edit mm-relations from both sides of the relation in the Backend TCE-Forms. Thanks to Sebastian (for writing the patch together with me) and Ren√© (for the first version of this feature)
 
 2006-09-11  Michael Stucki  <michael@typo3.org>
 
