@@ -1,3 +1,10 @@
+2007-10-29	Dmitry Dulepov	<dmitry@typo3.org>
+
+	* Fixed bug #6581: Fatal error in TCEForms: Fatal error: Cannot use string offset as an array
+	* Fixed bug #6565: T3DataStructure with sheet references will not show sheetTitle,sheetDescription and sheetShortDescr
+	* Fixed bug #5347: Flexforms dosen't resolve sheets
+	* Fixed bug #3969: Missing sheets inclusion in flexforms?
+
 2007-10-27  Ingmar Schlecht  <ingmar@typo3.org>
 
 	* Fixed bug #1940: "OPEN DOCUMENTS" causes 404 error (Thanks to Christian Trabold)

@@ -2214,7 +2214,6 @@ class t3lib_TCEforms	{
 
 				$tabParts = array();
 				foreach ($tabsToTraverse as $sheet)	{
-					$sheetCfg = $dataStructArray['sheets'][$sheet];
 					list ($dataStruct, $sheet) = t3lib_div::resolveSheetDefInDS($dataStructArray,$sheet);
 
 						// Render sheet:
@@ -2237,15 +2236,13 @@ class t3lib_TCEforms	{
 								);
 						$sheetContent= '<table border="0" cellpadding="1" cellspacing="1" class="typo3-TCEforms-flexForm">'.implode('',$tRows).'</table>';
 
-			#			$item = '<div style=" position:absolute;">'.$item.'</div>';
-						//visibility:hidden;
 					} else $sheetContent='Data Structure ERROR: No ROOT element found for sheet "'.$sheet.'".';
 
 						// Add to tab:
 					$tabParts[] = array(
-						'label' => ($sheetCfg['ROOT']['TCEforms']['sheetTitle'] ? $this->sL($sheetCfg['ROOT']['TCEforms']['sheetTitle']) : $sheet),
-						'description' => ($sheetCfg['ROOT']['TCEforms']['sheetDescription'] ? $this->sL($sheetCfg['ROOT']['TCEforms']['sheetDescription']) : ''),
-						'linkTitle' => ($sheetCfg['ROOT']['TCEforms']['sheetShortDescr'] ? $this->sL($sheetCfg['ROOT']['TCEforms']['sheetShortDescr']) : ''),
+						'label' => ($dataStruct['ROOT']['TCEforms']['sheetTitle'] ? $this->sL($dataStruct['ROOT']['TCEforms']['sheetTitle']) : $sheet),
+						'description' => ($dataStruct['ROOT']['TCEforms']['sheetDescription'] ? $this->sL($dataStruct['ROOT']['TCEforms']['sheetDescription']) : ''),
+						'linkTitle' => ($dataStruct['ROOT']['TCEforms']['sheetShortDescr'] ? $this->sL($dataStruct['ROOT']['TCEforms']['sheetShortDescr']) : ''),
 						'content' => $sheetContent
 					);
 				}
