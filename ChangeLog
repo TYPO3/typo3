@@ -1,3 +1,6 @@
+2007-10-29	Jeff Segars	<jeff@webempoweredchurch.org>
+	* Fixed bug #5338: Error installing suggested extensions
+
 2007-10-29	Dmitry Dulepov	<dmitry@typo3.org>
 
 	* Fixed bug #6581: Fatal error in TCEForms: Fatal error: Cannot use string offset as an array
