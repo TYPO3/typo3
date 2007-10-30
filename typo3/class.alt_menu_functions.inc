@@ -113,11 +113,6 @@ class alt_menu_functions {
 		$selectItems[] = '<option value="">[ '.$LANG->sL('LLL:EXT:lang/locallang_core.php:buttons.selMenu_modules',1).' ]</option>';
 		$mC=0;
 
-			// Remove the 'doc' module?
-		if ($BE_USER->getTSConfigVal('options.disableDocModuleInAB'))	{
-			unset($theModules['doc']);
-		}
-
 			// Get collapsed configuration
 		if ($collapsable == 1) {
 			$config = is_array ($BE_USER->uc['moduleData']['alt_menu.php']) ? $BE_USER->uc['moduleData']['alt_menu.php'] : array();

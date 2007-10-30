@@ -399,7 +399,6 @@ $TCA['sys_language'] = Array (
 $TBE_MODULES = Array (
 	'web' => 'list,info,perm,func',
 	'file' => 'list',
-	'doc' => '',	// This should always be empty!
 	'user' => 'ws',
 	'tools' => 'em',
 	'help' => 'about,cshmanual'

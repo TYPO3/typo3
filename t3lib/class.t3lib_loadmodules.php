@@ -118,7 +118,6 @@ class t3lib_loadModules {
 			(
 			    [web] => list,info,perm,func
 			    [file] => list
-			    [doc] =>
 			    [user] =>
 			    [tools] => em,install,txphpmyadmin
 			    [help] => about
@@ -153,7 +152,6 @@ class t3lib_loadModules {
 				            [0] => list
 				        )
 
-				    [doc] => 1
 				    [user] => 1
 				    [tools] => Array
 				        (
@@ -210,8 +208,8 @@ class t3lib_loadModules {
 			if ($theMainMod && !is_null($path))	{
 				$this->modules[$mods] = $theMainMod;
 
-					// SUBMODULES - if any - are loaded (The 'doc' module cannot have submodules...)
-				if ($mods!='doc' && is_array($subMod))	{
+					// SUBMODULES - if any - are loaded
+				if (is_array($subMod))	{
 					foreach($subMod as $valsub)	{
 						$extModRelPath = $this->checkExtensionModule($mods.'_'.$valsub);
 						if ($extModRelPath)	{	// EXTENSION submodule:
@@ -235,7 +233,7 @@ class t3lib_loadModules {
 					}
 				}
 			} else {	// This must be done in order to fill out the select-lists for modules correctly!!
-				if ($mods!='doc' && is_array($subMod))	{
+				if (is_array($subMod))	{
 					foreach($subMod as $valsub)	{
 // FIXME path can only be NULL here, or not?
 						$this->checkMod($mods.'_'.$valsub,$path.$mods.'/'.$valsub);
@@ -298,12 +296,6 @@ class t3lib_loadModules {
 
 		                )
 
-		        )
-
-		    [doc] => Array
-		        (
-		            [name] => doc
-		            [script] => mod/doc/../../alt_doc.php
 		        )
 
 		    [user] => Array

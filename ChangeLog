@@ -1,5 +1,6 @@
-2007-10-27  Benjamin Mack  <mack@xnos.org>
+2007-10-30  Benjamin Mack  <mack@xnos.org>
 
+	* Moved "doc" module to sysext "opendocs"
 	* Fixed Bug #4832: Integrate the extension ter_update_check into EM (Thanks to Christian Welzel)
 
 2007-10-29	Jeff Segars	<jeff@webempoweredchurch.org>
