@@ -1,3 +1,7 @@
+2007-10-30  Oliver Hader  <oh@inpublica.de>
+
+	* (minor) Fixed bug #6613: IRRE/RTE - Creating a new child record fails if record uses htmlArea RTE
+
 2007-10-30  Benjamin Mack  <mack@xnos.org>
 
 	* Moved "doc" module to sysext "opendocs"

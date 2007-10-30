@@ -1,3 +1,7 @@
+2007-10-30  Oliver Hader  <oh@inpublica.de>
+
+	* Fixed bug #6613: IRRE/RTE - Creating a new child record fails if record uses htmlArea RTE
+
 2007-10-26  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
 	* Fixed bug 5031: htmlArea RTE incorrectly processes col tags and default proc options disallow col and colgroup tags

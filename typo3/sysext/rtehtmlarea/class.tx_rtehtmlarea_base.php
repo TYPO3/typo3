@@ -495,7 +495,9 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			
 				// Merge the list of enabled plugins with the lists from the previous RTE editing areas on the same form
 			$this->pluginEnableArrayMultiple[$pObj->RTEcounter] = $this->pluginEnableArray;
-			if ($pObj->RTEcounter > 1) $this->pluginEnableArrayMultiple[$pObj->RTEcounter] = array_unique(array_values(array_merge($this->pluginEnableArray,$this->pluginEnableArrayMultiple[$pObj->RTEcounter-1])));
+			if ($pObj->RTEcounter > 1 && isset($this->pluginEnableArrayMultiple[$pObj->RTEcounter-1]) && is_array($this->pluginEnableArrayMultiple[$pObj->RTEcounter-1])) {
+				$this->pluginEnableArrayMultiple[$pObj->RTEcounter] = array_unique(array_values(array_merge($this->pluginEnableArray,$this->pluginEnableArrayMultiple[$pObj->RTEcounter-1])));
+			}
 
 			/* =======================================
 			 * PLUGIN-SPECIFIC CONFIGURATION
