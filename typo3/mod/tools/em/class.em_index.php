@@ -470,6 +470,7 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 				2 => 'Import extensions',
 				4 => 'Translation handling',
 				3 => 'Settings',
+				5 => 'Check for extension updates',
 			),
 			'listOrder' => array(
 				'cat' => 'Category',
@@ -490,6 +491,9 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 			'display_own' => '',
 			'display_unchecked' => '',
 			'display_obsolete' => '',
+			'display_installed' => '',
+			'display_files' => '',
+
 
 			'singleDetails' => array(
 				'info' => 'Information',
@@ -573,7 +577,7 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 				$menu.='&nbsp;Group by:&nbsp;'.t3lib_BEfunc::getFuncMenu(0,'SET[listOrder]',$this->MOD_SETTINGS['listOrder'],$this->MOD_MENU['listOrder']).
 				'&nbsp;&nbsp;Show:&nbsp;'.t3lib_BEfunc::getFuncMenu(0,'SET[display_details]',$this->MOD_SETTINGS['display_details'],$this->MOD_MENU['display_details']).'<br />';
 			}
-			if (t3lib_div::inList('0,1',$this->MOD_SETTINGS['function']))	{
+			if (t3lib_div::inList('0,1,5',$this->MOD_SETTINGS['function']))	{
 				$menu.='<label for="checkDisplayShy">Display shy extensions:</label>&nbsp;&nbsp;'.t3lib_BEfunc::getFuncCheck(0,'SET[display_shy]',$this->MOD_SETTINGS['display_shy'],'','','id="checkDisplayShy"');
 			}
 			if (t3lib_div::inList('2',$this->MOD_SETTINGS['function']) && strlen($this->fe_user['username']))	{
@@ -606,6 +610,10 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 				case '4':
 					// Allows to set the translation preferences and check the status
 					$this->translationHandling();
+					break;
+				case '5':
+					// Shows a list of extensions with updates in TER
+					$this->checkForUpdates();
 					break;
 				default:
 					$this->extObjContent();
@@ -5140,6 +5148,122 @@ $EM_CONF[$_EXTKEY] = '.$this->arrayToCode($EM_CONF, 0).';
 			);
 		} else return true;
 	}
+
+
+
+	/**
+	 *  Checks if there are newer versions of installed extensions in the TER
+	 *  integrated from the extension "ter_update_check" for TYPO3 4.2 by Christian Welzel
+	 *
+	 * @return	nothing
+	 */
+	function checkForUpdates() {
+		global $LANG;
+		$content = '';
+
+		if (is_file(PATH_site.'typo3temp/extensions.xml.gz'))	{
+			$content = $this->showExtensionsToUpdate()
+			.t3lib_BEfunc::getFuncCheck(0, 'SET[display_installed]', $this->MOD_SETTINGS['display_installed'])
+			.'&nbsp;'.$LANG->sL('LLL:EXT:lang/locallang_mod_tools_em.xml:display_nle'). '<br/>'
+			.t3lib_BEfunc::getFuncCheck(0, 'SET[display_files]', $this->MOD_SETTINGS['display_files'])
+			.'&nbsp;'.$LANG->sL('LLL:EXT:lang/locallang_mod_tools_em.xml:display_files');
+			$this->content .= $this->doc->section($LANG->sL('LLL:EXT:lang/locallang_mod_tools_em.xml:header_upd_ext'), $content, 0, 1);
+
+			$content = $LANG->sL('LLL:EXT:lang/locallang_mod_tools_em.xml:note_last_update').' '.date('Y-m-d H:i',filemtime(PATH_site.'typo3temp/extensions.xml.gz')).'<br />';
+		}
+
+		$content .= $LANG->sL('LLL:EXT:lang/locallang_mod_tools_em.xml:note_last_update2');
+		$this->content .= $this->doc->section($LANG->sL('LLL:EXT:lang/locallang_mod_tools_em.xml:header_vers_ret'), $content, 0, 1);
+	}
+
+
+	/**
+	 *  Displays a list of extensions where a newer version is available
+	 *  in the TER than the one that is installed right now
+	 *  integrated from the extension "ter_update_check" for TYPO3 4.2 by Christian Welzel
+	 *
+	 * @return	nothing
+	 */
+	function showExtensionsToUpdate() {
+		global $LANG;
+		$extList = $this->getInstalledExtensions();
+
+		$content = '<table border="0" cellpadding="2" cellspacing="1">'.
+		'<tr class="bgColor5">'.
+			'<td></td>'.
+			'<td>'.$LANG->sL('LLL:EXT:lang/locallang_mod_tools_em.xml:tab_mod_name').'</td>'.
+			'<td>'.$LANG->sL('LLL:EXT:lang/locallang_mod_tools_em.xml:tab_mod_key').'</td>'.
+			'<td>'.$LANG->sL('LLL:EXT:lang/locallang_mod_tools_em.xml:tab_mod_loc_ver').'</td>'.
+			'<td>'.$LANG->sL('LLL:EXT:lang/locallang_mod_tools_em.xml:tab_mod_rem_ver').'</td>'.
+			'<td>'.$LANG->sL('LLL:EXT:lang/locallang_mod_tools_em.xml:tab_mod_location').'</td>'.
+			'<td>'.$LANG->sL('LLL:EXT:lang/locallang_mod_tools_em.xml:tab_mod_comment').'</td>'.
+		'</tr>';
+
+		foreach ($extList[0] as $name => $data)	{
+			$this->xmlhandler->searchExtensionsXML($name, '', '', false, true);
+			if (!is_array($this->xmlhandler->extensionsXML[$name]))	{
+				continue;
+			}
+
+			$v = $this->xmlhandler->extensionsXML[$name][versions];
+			$versions = array_keys($v);
+			$lastversion = end($versions);
+
+			if ((t3lib_extMgm::isLoaded($name) || $this->MOD_SETTINGS['display_installed']) &&
+				($data[EM_CONF][shy] == 0 || $this->MOD_SETTINGS['display_shy']) &&
+				$this->versionDifference($lastversion, $data[EM_CONF][version], 1))	{
+
+				$imgInfo = @getImageSize($this->getExtPath($name,$data['type']).'/ext_icon.gif');
+				if (is_array($imgInfo)) {
+					$icon = '<img src="'.$GLOBALS['BACK_PATH'].$this->typeRelPaths[$data['type']].$name.'/ext_icon.gif'.'" '.$imgInfo[3].' alt="" />';
+				} elseif ($extInfo['_ICON']) {
+					$icon = $extInfo['_ICON'];
+				} else {
+					$icon = '<img src="clear.gif" width="1" height="1" alt="" />';
+				}
+				$comment = '<table cellpadding="0" cellspacing="0" width="100%">';
+				foreach ($versions as $vk) {
+					$va = & $v[$vk];
+					if (t3lib_div::int_from_ver($vk) < t3lib_div::int_from_ver($data[EM_CONF][version]))	{
+						continue;
+					}
+					$comment .= '<tr><td valign="top" style="padding-right:2px;border-bottom:1px dotted gray">'.$vk.'</td>'.'<td valign="top" style="border-bottom:1px dotted gray">'.nl2br($va[uploadcomment]).'</td></tr>';
+				}
+				$comment .= '</table>';
+
+				$serverMD5Array = $this->serverExtensionMD5Array($name,$data);
+				if (is_array(serverMD5Array))	{
+					ksort($serverMD5Array);
+				}
+				$currentMD5Array = unserialize($data['EM_CONF']['_md5_values_when_last_written']);
+				if (is_array($currentMD5Array))	{
+					@ksort($currentMD5Array);
+				}
+				$warn = '';
+				if (strcmp(serialize($currentMD5Array), serialize($serverMD5Array)))	{
+					$warn = '<tr class="bgColor4" style="color:red"><td colspan="7">'.$GLOBALS['TBE_TEMPLATE']->rfw('<br /><strong>'.$name.': '.$LANG->sL('LLL:EXT:lang/locallang_mod_tools_em.xml:msg_warn_diff').'</strong>').'</td></tr>'."\n";
+					if ($this->MOD_SETTINGS['display_files'] == 1) {
+						$affectedFiles = $this->findMD5ArrayDiff($serverMD5Array,$currentMD5Array);
+						if (count($affectedFiles)) {
+							$warn .= '<tr class="bgColor4"><td colspan="7"><strong>'.$LANG->sL('LLL:EXT:lang/locallang_mod_tools_em.xml:msg_modified').'</strong><br />'.$GLOBALS['TBE_TEMPLATE']->rfw(implode('<br />',$affectedFiles)).'</td></tr>'."\n";
+						}
+					}
+				}
+				$content .= '<tr class="bgColor4"><td valign="top">'.$icon.'</td>'.
+'<td valign="top"><a href="?CMD[importExtInfo]='.$name.'">'.$data[EM_CONF][title].'</a></td>'.
+'<td valign="top">'.$name.'</td>'.
+'<td valign="top" align="right">'.$data[EM_CONF][version].'</td>'.
+'<td valign="top" align="right">'.$lastversion.'</td>'.
+'<td valign="top" nowrap="nowrap">'.$this->typeLabels[$data['type']].(strlen($data['doubleInstall'])>1?'<strong> '.$GLOBALS['TBE_TEMPLATE']->rfw($extInfo['doubleInstall']).'</strong>':'').'</td>'.
+'<td valign="top">'.$comment.'</td></tr>'."\n".
+$warn.
+'<tr class="bgColor4"><td colspan="7"><hr style="margin:0px" /></td></tr>'."\n";
+			}
+		}
+
+		return $content.'</table><br/>';
+	}
+
 }
 
 // Include extension?

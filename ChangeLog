@@ -1,3 +1,7 @@
+2007-10-27  Benjamin Mack  <mack@xnos.org>
+
+	* Fixed Bug #4832: Integrate the extension ter_update_check into EM (Thanks to Christian Welzel)
+
 2007-10-29	Jeff Segars	<jeff@webempoweredchurch.org>
 
 	* Fixed bug #5338: Error installing suggested extensions
