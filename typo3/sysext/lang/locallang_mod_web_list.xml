@@ -37,7 +37,7 @@
 			<label index="nextLevel">Move this page to be a subpage of the page above (Outwards)</label>
 			<label index="delete">Delete record (!)</label>
 			<label index="history">Display change history / Un-do</label>
-			<label index="versioning">Display versions</label>
+			<label index="displayVersions">Display versions</label>
 			<label index="permissions">Set permissions for page</label>
 			<label index="largeControl">Extended view</label>
 			<label index="contractView">List all tables</label>
