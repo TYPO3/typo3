@@ -1,3 +1,7 @@
+2007-10-30  Jeff Segars  <jeff@webempoweredchurch.org>
+
+	* Fixed bug #6618: Web->List: Add title to versioning symbol in extended view	(Thanks to Christian Kuhn)
+
 2007-10-30  Oliver Hader  <oh@inpublica.de>
 
 	* (minor) Fixed bug #6613: IRRE/RTE - Creating a new child record fails if record uses htmlArea RTE
