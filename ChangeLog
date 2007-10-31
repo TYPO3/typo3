@@ -1,4 +1,9 @@
-2007-10-29	Jeff Segars	<jeff@webempoweredchurch.org>
+2007-10-30  Jeff Segars  <jeff@webempoweredchurch.org>
+
+	* Fixed bug #6618: Web->List: Add title to versioning symbol in extended view	(Thanks to Christian Kuhn)
+
+2007-10-29  Jeff Segars  <jeff@webempoweredchurch.org>
+
 	* Fixed bug #5338: Error installing suggested extensions
 
 2007-10-29	Dmitry Dulepov	<dmitry@typo3.org>
