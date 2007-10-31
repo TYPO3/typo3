@@ -930,7 +930,7 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 		} else {
 			$m=strcspn ($type," [");
 			$retArr["type"]=strtolower(substr($type,0,$m));
-			if (t3lib_div::inList("int,options,file,boolean,offset",$retArr["type"]))	{
+			if (t3lib_div::inList('int,options,file,boolean,offset,user', $retArr['type']))	{
 				$p=trim(substr($type,$m));
 				$reg = array();
 				ereg("\[(.*)\]",$p,$reg);
@@ -1324,6 +1324,11 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 										$p_field.='<BR>';
 										$p_field.='<input type="file" name="upload_'.$fN.'"'.$GLOBALS["TBE_TEMPLATE"]->formWidth().' onChange="uFormUrl('.$aname.')" size="50" />';
 									}
+								break;
+								case 'user':
+									$userFunction       = $typeDat['paramstr'];
+									$userFunctionParams = array('fieldName' => $fN, 'fieldValue' => $fV);
+									$p_field            = t3lib_div::callUserFunction($userFunction, $userFunctionParams, $this, '');
 								break;
 								case 'small':
 								default:

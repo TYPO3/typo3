@@ -1931,9 +1931,9 @@ EXTENSION KEYS:
 							} else {
 								$script = '';
 							}
-							$updates = $this->updatesForm($extKey,$list[$extKey],1,$script,'<input type="hidden" name="_do_install" value="1" /><input type="hidden" name="_clrCmd" value="'.$this->CMD['clrCmd'].'" />');
-							if ($updates)	{
-								$updates = 'Before the extension can be installed the database needs to be updated with new tables or fields. Please select which operations to perform:'.$updates;
+							$dbUpdates = $this->updatesForm($extKey,$list[$extKey],1,$script,'<input type="hidden" name="_do_install" value="1" /><input type="hidden" name="_clrCmd" value="'.$this->CMD['clrCmd'].'" />');
+							if ($dbUpdates)	{
+								$updates = 'Before the extension can be installed the database needs to be updated with new tables or fields. Please select which operations to perform:'.$dbUpdates;
 								if($this->CMD['standAlone']) $updates .= '<input type="hidden" name="standAlone" value="1" />';
 								$depsolver = t3lib_div::_POST('depsolver');
 								if(is_array($depsolver['ignore'])) {
@@ -2086,7 +2086,12 @@ EXTENSION KEYS:
 						if (@is_file($absPath.'ext_conf_template.txt'))	{
 							$this->content.=$this->doc->spacer(10);
 							$this->content.=$this->doc->section('Configuration:','(<em>Notice: You may need to clear the cache after configuration of the extension. This is required if the extension adds TypoScript depending on these settings.</em>)<br /><br />',0,1);
-							$this->tsStyleConfigForm($extKey,$list[$extKey]);
+
+							if(t3lib_extMgm::isLoaded($extKey)) {
+								$this->tsStyleConfigForm($extKey,$list[$extKey]);
+							} else {
+								$this->content.= 'This extension provides additional configuration options which become available once you install it.';
+							}
 						}
 
 						// Show details:
@@ -2254,20 +2259,12 @@ EXTENSION KEYS:
 		if ($notSilent)	$updates.= $uCache;
 		$updates.= $this->checkUploadFolder($extKey,$extInfo);
 
-		$absPath = $this->getExtPath($extKey,$extInfo['type']);
-		if ($notSilent && @is_file($absPath.'ext_conf_template.txt'))	{
-			$cForm = $this->tsStyleConfigForm($extKey,$extInfo,1,$script,$updates.$addFields.'<br />');
+		if ($updates)	{
+			$updates = '</form><form action="'.htmlspecialchars($script).'" method="post">'.$updates.$addFields.'
+				<br /><input type="submit" name="write" value="Make updates" />
+			';
 		}
 
-		if ($updates || $cForm)	{
-			if ($cForm)	{
-				$updates = '</form>'.$cForm.'<form>';
-			} else {
-				$updates = '</form><form action="'.htmlspecialchars($script).'" method="post">'.$updates.$addFields.'
-					<br /><input type="submit" name="write" value="Make updates" />
-				';
-			}
-		}
 		return $updates;
 	}
 
