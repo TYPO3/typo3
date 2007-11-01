@@ -1,3 +1,7 @@
+2007-11-01  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
+
+	* Added feature #6579: Make htmlArea RTE extensible
+
 2007-10-30  Oliver Hader  <oh@inpublica.de>
 
 	* Fixed bug #6613: IRRE/RTE - Creating a new child record fails if record uses htmlArea RTE

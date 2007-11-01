@@ -1,3 +1,7 @@
+2007-11-01  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
+
+	* Added feature #6579: Make htmlArea RTE extensible
+
 2007-10-31  Ingo Renner  <ingo@typo3.org>
 
 	* Added feature 6169: Add user function support to Constant Editor

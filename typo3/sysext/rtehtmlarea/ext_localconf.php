@@ -43,6 +43,9 @@ $TYPO3_CONF_VARS['BE']['RTE_reg'][$_EXTKEY] = array('objRef' => 'EXT:'.$_EXTKEY.
 require_once(t3lib_extMgm::extPath($_EXTKEY) . 'ext_emconf.php');
 $TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['version'] = $EM_CONF[$_EXTKEY]['version'];
 
+// Initialize plugin registration array
+$TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['plugins'] = array();
+
 $_EXTCONF = unserialize($_EXTCONF);    // unserializing the configuration so we can use it here:
 
 if (strstr($_EXTCONF['defaultConfiguration'],'Minimal')) {

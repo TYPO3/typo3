@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2005-2006 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
+*  (c) 2005-2007 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -74,20 +74,18 @@ class tx_rtehtmlarea_pi2 extends tx_rtehtmlarea_base {
 	 * @param	integer		PID value of record (true parent page id)
 	 * @return	string		HTML code for RTE!
 	 */
-	function drawRTE(&$pObj,$table,$field,$row,$PA,$specConf,$thisConfig,$RTEtypeVal,$RTErelPath,$thePidValue) {
+	function drawRTE($parentObject,$table,$field,$row,$PA,$specConf,$thisConfig,$RTEtypeVal,$RTErelPath,$thePidValue) {
 		global $TSFE, $TYPO3_CONF_VARS, $TYPO3_DB;
 		
-			//call $this->transformContent
-			//call $this->triggerField
-                $this->TCEform = $pObj;
+		$this->TCEform =& $parentObject;
 		$this->client = $this->clientInfo();
 		$this->typoVersion = t3lib_div::int_from_ver(TYPO3_version);
-
+		
 		/* =======================================
 		 * INIT THE EDITOR-SETTINGS
 		 * =======================================
 		 */
-
+		 
 			// first get the http-path to typo3:
 		$this->httpTypo3Path = substr( substr( t3lib_div::getIndpEnv('TYPO3_SITE_URL'), strlen( t3lib_div::getIndpEnv('TYPO3_REQUEST_HOST') ) ), 0, -1 );
 		if (strlen($this->httpTypo3Path) == 1) {
@@ -101,23 +99,22 @@ class tx_rtehtmlarea_pi2 extends tx_rtehtmlarea_base {
 		$this->siteURL = t3lib_div::getIndpEnv('TYPO3_SITE_URL');
 			// Get the host URL
 		$this->hostURL = t3lib_div::getIndpEnv('TYPO3_REQUEST_HOST');
-
+		
 			// Element ID + pid
 		$this->elementId = $PA['itemFormElName'];
 		$this->elementParts[0] = $table;
 		$this->elementParts[1] = $row['uid'];
 		$this->tscPID = $thePidValue;
 		$this->thePid = $thePidValue;
-
+		
 			// Record "type" field value:
 		$this->typeVal = $RTEtypeVal; // TCA "type" value for record
-
 		unset($this->RTEsetup);
 		$pageTSConfig = $TSFE->getPagesTSconfig();
 		$this->RTEsetup = $pageTSConfig['RTE.'];
 		$this->thisConfig = $this->RTEsetup['default.'];
 		$this->thisConfig = $this->thisConfig['FE.'];
-
+		
 			// Special configuration (line) and default extras:
 		$this->specConf = $specConf;
 		
@@ -138,13 +135,29 @@ class tx_rtehtmlarea_pi2 extends tx_rtehtmlarea_base {
 			// Character set
 		$this->charset = $TSFE->labelsCharset;
 		$this->OutputCharset  = $TSFE->metaCharset ? $TSFE->metaCharset : $TSFE->renderCharset;
-
+		
 		/* =======================================
 		 * TOOLBAR CONFIGURATION
 		 * =======================================
 		 */
+		 
+		 	// Traverse registered plugins
+		if (is_array($TYPO3_CONF_VARS['EXTCONF'][$this->ID]['plugins'])) {
+			foreach($TYPO3_CONF_VARS['EXTCONF'][$this->ID]['plugins'] as $pluginId => $pluginObjectConfiguration) {
+				$plugin = &t3lib_div::getUserObj($pluginObjectConfiguration['objectReference']);
+				if (is_object($plugin)) {
+					if ($plugin->main($this)) {
+						$this->registeredPlugins[$pluginId] = $plugin;
+						$this->pluginButton[$pluginId] = $plugin->getPluginButtons();
+						$this->pluginList .= ','.$pluginId;
+						$this->convertToolbarForHtmlAreaArray = array_unique(array_merge($this->convertToolbarForHtmlAreaArray, $plugin->getConvertToolbarForHtmlAreaArray()));
+					}
+				}
+			}
+		}
+		
 			// htmlArea plugins list
-		$this->pluginEnableArray = array_intersect(t3lib_div::trimExplode(',', $this->pluginList , 1), t3lib_div::trimExplode(',', $TYPO3_CONF_VARS['EXTCONF'][$this->ID]['HTMLAreaPluginList'], 1));
+		$this->pluginEnabledArray = t3lib_div::trimExplode(',', $this->pluginList, 1);
 		$hidePlugins = array('TYPO3Browsers', 'UserElements', 'Acronym', 'TYPO3HtmlParser');
 		if ($this->client['BROWSER'] == 'opera') {
 			$hidePlugins[] = 'ContextMenu';
@@ -152,21 +165,24 @@ class tx_rtehtmlarea_pi2 extends tx_rtehtmlarea_base {
 			$this->thisConfig['disableEnterParagraphs'] = 1;
 		}
 		if(!t3lib_extMgm::isLoaded('static_info_tables') || in_array($this->language, t3lib_div::trimExplode(',', $TYPO3_CONF_VARS['EXTCONF'][$this->ID]['noSpellCheckLanguages']))) $hidePlugins[] = 'SpellChecker';
-		$this->pluginEnableArray = array_diff($this->pluginEnableArray, $hidePlugins);
-		$this->pluginEnableArrayMultiple = $this->pluginEnableArray;
-
+		$this->pluginEnabledArray = array_diff($this->pluginEnabledArray, $hidePlugins);
+		
 			// Toolbar
-		$this->setToolBar();
-
+		$this->settoolbar();
+		
 			// Check if some plugins need to be disabled
 		$this->setPlugins();
-
+		
+			// Merge the list of enabled plugins with the lists from the previous RTE editing areas on the same form
+		$this->pluginEnabledCumulativeArray[$this->TCEform->RTEcounter] = $this->pluginEnabledArray;
+		if ($this->TCEform->RTEcounter > 1) $this->pluginEnabledCumulativeArray[$this->TCEform->RTEcounter] = array_unique(array_values(array_merge($this->pluginEnabledArray,$this->pluginEnabledCumulativeArray[$this->TCEform->RTEcounter-1])));
+		
 		/* =======================================
 		 * PLUGIN-SPECIFIC CONFIGURATION
 		 * =======================================
 		 */
-
-		if( $this->isPluginEnable('SpellChecker') ) {
+		 
+		if( $this->isPluginEnabled('SpellChecker') ) {
 				// Set the language of the content for the SpellChecker
 			$this->spellCheckerLanguage = $TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['defaultDictionary'];
 			if($row['sys_language_uid']) {
@@ -201,7 +217,7 @@ class tx_rtehtmlarea_pi2 extends tx_rtehtmlarea_base {
 			}
 		}
 
-		if( $this->isPluginEnable('QuickTag') && trim($this->thisConfig['hideTags'])) {
+		if( $this->isPluginEnabled('QuickTag') && trim($this->thisConfig['hideTags'])) {
 			$this->quickTagHideTags = implode(',', t3lib_div::trimExplode(',', $this->thisConfig['hideTags'], 1));
 		}
 
@@ -210,7 +226,7 @@ class tx_rtehtmlarea_pi2 extends tx_rtehtmlarea_base {
 		 * =======================================
 		 */
 
-		$RTEWidth = 460+($pObj->docLarge ? 150 : 0);
+		$RTEWidth = 460+($this->TCEform->docLarge ? 150 : 0);
 		$RTEHeight = 380;
 		$editorWrapWidth = $RTEWidth . 'px';
 		$editorWrapHeight = $RTEHeight . 'px';
@@ -250,13 +266,26 @@ class tx_rtehtmlarea_pi2 extends tx_rtehtmlarea_base {
 		$this->editedContentCSS = $skinDir . '/htmlarea-edited-content.css';
 		$additionalCode_loadCSS .= '
 		<link rel="alternate stylesheet" type="text/css" href="' . $this->editedContentCSS . '" />';
+		
+			// Additional icons from registered plugins
+		foreach ($this->pluginEnabledCumulativeArray[$this->TCEform->RTEcounter] as $pluginId) {
+			if (is_object($this->registeredPlugins[$pluginId])) {
+				$pathToSkin = $this->registeredPlugins[$pluginId]->getPathToSkin();
+				if ($pathToSkin) {
+					$additionalCode_loadCSS .= '
+		<link rel="stylesheet" type="text/css" href="' . $this->httpTypo3Path . t3lib_extMgm::siteRelPath($this->registeredPlugins[$pluginId]->getExtensionKey()) . . $pathToSkin . '" />';
+				}
+			}
+		}
+		
+			// Main stylesheet
 		$additionalCode_loadCSS .= '
 		<link rel="stylesheet" type="text/css" href="' . $this->editorCSS . '" />';
-
+		
 			// Loading CSS, JavaScript files and code
 		$TSFE->additionalHeaderData['htmlArea'] = $additionalCode_loadCSS;
-		$pObj->additionalJS_initial = $this->loadJSfiles($pObj->RTEcounter);
-		$pObj->additionalJS_pre[] = $this->loadJScode($pObj->RTEcounter);
+		$this->TCEform->additionalJS_initial = $this->loadJSfiles($this->TCEform->RTEcounter);
+		$this->TCEform->additionalJS_pre[] = $this->loadJScode($this->TCEform->RTEcounter);
 
 		/* =======================================
 		 * DRAW THE EDITOR
@@ -272,20 +301,20 @@ class tx_rtehtmlarea_pi2 extends tx_rtehtmlarea_base {
 		}
 		
 			// Register RTE windows:
-		$pObj->RTEwindows[] = $PA['itemFormElName'];
-			
+		$this->TCEform->RTEwindows[] = $PA['itemFormElName'];
+		
 			// Register RTE in JS:
-		$pObj->additionalJS_post[] = $this->registerRTEinJS($pObj->RTEcounter);
+		$this->TCEform->additionalJS_post[] = $this->registerRTEinJS($this->TCEform->RTEcounter);
 		
 			// Set the save option for the RTE:
-		$pObj->additionalJS_submit[] = $this->setSaveRTE($pObj->RTEcounter, $pObj->formName, htmlspecialchars($PA['itemFormElName']));
+		$this->TCEform->additionalJS_submit[] = $this->setSaveRTE($this->TCEform->RTEcounter, $this->TCEform->formName, htmlspecialchars($PA['itemFormElName']));
 		
 			// draw the textarea
 		$visibility = 'hidden';
 		$item = $this->triggerField($PA['itemFormElName']).'
-			<div id="pleasewait' . $pObj->RTEcounter . '" class="pleasewait" style="display: none;" >' . $TSFE->csConvObj->conv($TSFE->getLLL('Please wait',$this->LOCAL_LANG), $this->charset, $TSFE->renderCharset) . '</div>
-			<div id="editorWrap' . $pObj->RTEcounter . '" class="editorWrap" style="'. htmlspecialchars($this->RTEWrapStyle). '">
-			<textarea id="RTEarea'.$pObj->RTEcounter.'" name="'.htmlspecialchars($PA['itemFormElName']).'" style="'.htmlspecialchars($this->RTEdivStyle).'">'.t3lib_div::formatForTextarea($value).'</textarea>
+			<div id="pleasewait' . $this->TCEform->RTEcounter . '" class="pleasewait" style="display: none;" >' . $TSFE->csConvObj->conv($TSFE->getLLL('Please wait',$this->LOCAL_LANG), $this->charset, $TSFE->renderCharset) . '</div>
+			<div id="editorWrap' . $this->TCEform->RTEcounter . '" class="editorWrap" style="'. htmlspecialchars($this->RTEWrapStyle). '">
+			<textarea id="RTEarea'.$this->TCEform->RTEcounter.'" name="'.htmlspecialchars($PA['itemFormElName']).'" style="'.htmlspecialchars($this->RTEdivStyle).'">'.t3lib_div::formatForTextarea($value).'</textarea>
 			</div>' . ($TYPO3_CONF_VARS['EXTCONF'][$this->ID]['enableDebugMode'] ? '<div id="HTMLAreaLog"></div>' : '') . '
 			';
 		return $item;
@@ -295,11 +324,15 @@ class tx_rtehtmlarea_pi2 extends tx_rtehtmlarea_base {
 	 * Return the JS-Code for copy the HTML-Code from the editor in the hidden input field.
 	 * This is for submit function from the form.
 	 *
-	 * @return string		the JS-Code
+	 * @param	integer		$RTEcounter: The index number of the RTE editing area.
+	 * @param	string		$form: the name of the form
+	 * @param	string		$textarea: the name of the textarea
+	 *
+	 * @return	string		the JS-Code
 	 */
-	function setSaveRTE($number, $form, $textarea) {
+	function setSaveRTE($RTEcounter, $form, $textarea) {
 		return '
-		editornumber = '.$number.';
+		editornumber = '.$RTEcounter.';
 		if (RTEarea[editornumber]) {
 			fields = document.getElementsByName(\'' . $textarea . '\');
 			field = fields.item(0);
