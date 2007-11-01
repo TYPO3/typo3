@@ -1,6 +1,7 @@
 2007-11-01  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
 	* Added feature #6579: Make htmlArea RTE extensible
+	* Added feature #6619: Let htmlArea RTE use t3lib_div::minifyJavaScript()
 
 2007-10-30  Oliver Hader  <oh@inpublica.de>
 

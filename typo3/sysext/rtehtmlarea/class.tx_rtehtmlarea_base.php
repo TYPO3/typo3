@@ -275,12 +275,12 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 	var $spellCheckerMode;
 	var $quickTagHideTags;
 	var $specConf;
-	var $toolbar = array();				// Save the buttons for the toolbar
-	var $toolbar_level_size;			// The size for each level in the toolbar:
+	var $toolbar = array();					// Save the buttons for the toolbar
+	var $toolbar_level_size;				// The size for each level in the toolbar:
 	var $toolbarOrderArray = array();
-	private $pluginEnabledArray = array();		// Array of plugin id's enabled in the current RTE editing area
-	private $pluginEnabledCumulativeArray = array();// Cumulative array of plugin id's enabled so far in any of the RTE editing areas of the form
-	private $registeredPlugins = array();		// Array of registered plugins indexed by their plugin Id's
+	protected $pluginEnabledArray = array();		// Array of plugin id's enabled in the current RTE editing area
+	protected $pluginEnabledCumulativeArray = array();	// Cumulative array of plugin id's enabled so far in any of the RTE editing areas of the form
+	protected $registeredPlugins = array();			// Array of registered plugins indexd by their plugin Id's
 	
 	/**
 	 * Returns true if the RTE is available. Here you check if the browser requirements are met.
@@ -868,11 +868,11 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			var RTEarea = new Array();
 			RTEarea[0] = new Object();
 			RTEarea[0]["version"] = "' . $TYPO3_CONF_VARS['EXTCONF'][$this->ID]['version'] . '";
-			RTEarea[0]["popupwin"] = "' . $this->writeJSFileToTypo3tempDir('EXT:' . $this->ID . '/htmlarea/popupwin' . ($TYPO3_CONF_VARS['EXTCONF'][$this->ID]['enableCompressedScripts']?'-compressed':'') .'.js', "popupwin", $TYPO3_CONF_VARS['EXTCONF'][$this->ID]['enableCompressedScripts'])  . '";'
+			RTEarea[0]["popupwin"] = "' . $this->writeTemporaryFile('EXT:' . $this->ID . '/htmlarea/popupwin.js', "popupwin") . '";'
 			. (($this->client['BROWSER'] == 'msie') ? ('
-			RTEarea[0]["htmlarea-ie"] = "' . $this->writeJSFileToTypo3tempDir('EXT:' . $this->ID . '/htmlarea/htmlarea-ie' . ($TYPO3_CONF_VARS['EXTCONF'][$this->ID]['enableCompressedScripts']?'-compressed':'') .'.js', "htmlarea-ie", $TYPO3_CONF_VARS['EXTCONF'][$this->ID]['enableCompressedScripts'])  . '";')
+			RTEarea[0]["htmlarea-ie"] = "' . $this->writeTemporaryFile('EXT:' . $this->ID . '/htmlarea/htmlarea-ie.js', "htmlarea-ie") . '";')
 			: ('
-			RTEarea[0]["htmlarea-gecko"] = "' . $this->writeJSFileToTypo3tempDir('EXT:' . $this->ID . '/htmlarea/htmlarea-gecko' . ($TYPO3_CONF_VARS['EXTCONF'][$this->ID]['enableCompressedScripts']?'-compressed':'') .'.js', "htmlarea-gecko", $TYPO3_CONF_VARS['EXTCONF'][$this->ID]['enableCompressedScripts'])  . '";')) . '
+			RTEarea[0]["htmlarea-gecko"] = "' . $this->writeTemporaryFile('EXT:' . $this->ID . '/htmlarea/htmlarea-gecko.js', "htmlarea-gecko") . '";')) . '
 			var _editor_url = "' . $this->extHttpPath . 'htmlarea";
 			var _editor_lang = "' . $this->language . '";
 			var _editor_CSS = "' . $this->editorCSS . '";
@@ -891,7 +891,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 		</script>';
 		$loadJavascriptCode .= '
 		<script type="text/javascript" src="' . $this->buildJSMainLangFile($RTEcounter) . '"></script>
-		<script type="text/javascript" src="' . $this->writeJSFileToTypo3tempDir('EXT:' . $this->ID . '/htmlarea/htmlarea' . ($TYPO3_CONF_VARS['EXTCONF'][$this->ID]['enableCompressedScripts']?'-compressed':'') .'.js', "htmlarea", $TYPO3_CONF_VARS['EXTCONF'][$this->ID]['enableCompressedScripts']) . '"></script>
+		<script type="text/javascript" src="' . $this->writeTemporaryFile('EXT:' . $this->ID . '/htmlarea/htmlarea.js', "htmlarea") . '"></script>
 		';
 		return $loadJavascriptCode;
 	}
@@ -911,7 +911,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 		foreach ($this->pluginEnabledCumulativeArray[$RTEcounter] as $pluginId) {
 			$extensionKey = is_object($this->registeredPlugins[$pluginId]) ? $this->registeredPlugins[$pluginId]->getExtensionKey() : $this->ID;
 			$loadPluginCode .= '
-			HTMLArea.loadPlugin("' . $pluginId . '", true, "' . $this->writeJSFileToTypo3tempDir('EXT:' . $extensionKey . '/htmlarea/plugins/' . $pluginId . '/' . strtolower(preg_replace('/([a-z])([A-Z])([a-z])/', "$1".'-'."$2"."$3", $pluginId)) . ($TYPO3_CONF_VARS['EXTCONF'][$this->ID]['enableCompressedScripts']?'-compressed':'') .'.js', $pluginId, $TYPO3_CONF_VARS['EXTCONF'][$this->ID]['enableCompressedScripts']) . '");';
+			HTMLArea.loadPlugin("' . $pluginId . '", true, "' . $this->writeTemporaryFile('EXT:' . $extensionKey . '/htmlarea/plugins/' . $pluginId . '/' . strtolower(preg_replace('/([a-z])([A-Z])([a-z])/', "$1".'-'."$2"."$3", $pluginId)) . '.js', $pluginId) . '");';
 		}
 		return (!$this->is_FE() ? '' : '
 		' . '/*<![CDATA[*/') . ($this->is_FE() ? '' : '
@@ -1078,7 +1078,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 		
 			// Process default style configuration
 		$configureRTEInJavascriptString .= '
-			RTEarea['.$RTEcounter.']["defaultPageStyle"] = "' . $this->hostURL . $this->buildJSFile('css', $this->buildStyleSheet(), 'css') . '";';
+			RTEarea['.$RTEcounter.']["defaultPageStyle"] = "' . $this->hostURL . $this->writeTemporaryFile('', 'defaultPageStyle', 'css', $this->buildStyleSheet()) . '";';
 			
 			// Setting the pageStyle
 		$filename = trim($this->thisConfig['contentCSS']) ? trim($this->thisConfig['contentCSS']) : 'EXT:' . $this->ID . '/htmlarea/plugins/DynamicCSS/dynamiccss.css';
@@ -1133,7 +1133,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 		
 		if ($this->isPluginEnabled('Acronym')) {
 			$configureRTEInJavascriptString .= '
-			RTEarea['.$RTEcounter.']["acronymUrl"] = "' . $this->buildJSFile('acronym_'.$this->contentLanguageUid, $this->buildJSAcronymArray()) . '";';
+			RTEarea['.$RTEcounter.']["acronymUrl"] = "' . $this->writeTemporaryFile('', 'acronym_'.$this->contentLanguageUid, 'js', $this->buildJSAcronymArray()) . '";';
 		}
 		
 		if ($this->isPluginEnabled('TYPO3Browsers')) {
@@ -1467,7 +1467,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 		
 			// Include JS arrays of configured classes
 		$configureRTEInJavascriptString .= '
-		RTEarea['.$RTEcounter.']["classesUrl"] = "' . $this->hostURL . $this->buildJSFile('classes_'.$this->language, $this->buildJSClassesArray()) . '";';
+			RTEarea['.$RTEcounter.']["classesUrl"] = "' . $this->hostURL . $this->writeTemporaryFile('', 'classes_'.$LANG->lang, 'js', $this->buildJSClassesArray()) . '";';
 		
 		return $configureRTEInJavascriptString;
 	}
@@ -1616,7 +1616,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 		$configureRTEInJavascriptString = '';
 		if (is_array($RTEProperties['classesAnchor.'])) {
 			$configureRTEInJavascriptString .= '
-			RTEarea['.$RTEcounter.']["classesAnchorUrl"] = "' . $this->buildJSFile('classesAnchor_'.$this->contentLanguageUid, $this->buildJSClassesAnchorArray()) . '";';
+			RTEarea['.$RTEcounter.']["classesAnchorUrl"] = "' . $this->writeTemporaryFile('', 'classesAnchor_'.$this->contentLanguageUid, 'js', $this->buildJSClassesAnchorArray()) . '";';
 		}
 		return $configureRTEInJavascriptString;
 	}
@@ -1659,40 +1659,43 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 	 }
 	
 	/**
-	 * Return a file name built with the label and containing the specified contents
+	 * Writes contents in a file in typo3temp/rtehtmlarea directory and returns the file name
 	 *
-	 * @return string		filename
-	 */
-	 
-	function buildJSFile($label,$contents,$ext='js') {
-		$relFilename = 'typo3temp/' . $this->ID . '_' . $label . '_' . md5($contents) . '.' . $ext;
-		$outputFilename = PATH_site . $relFilename;
-		if(!file_exists($outputFilename)) {
-			$outputHandle = fopen($outputFilename,'wb');
-			fwrite($outputHandle, $contents);
-			fclose($outputHandle);
-			t3lib_div::fixPermissions($outputFilename);
-		}
-		return $this->httpTypo3Path . $relFilename;
-	}
-	
-	/**
-	 * Return a file name built with the label and containing a cached copy of the specified file
+	 * @param	string		$sourceFileName: The name of the file from which the contents should be extracted
+	 * @param	string		$label: A label to insert at the beginning of the name of the file
+	 * @param	string		$fileExtension: The file extension of the file, defaulting to 'js'
+	 * @param	string		$contents: The contents to write into the file if no $sourceFileName is provided
 	 *
-	 * @return string		filename
+	 * @return	string		The name of the file writtten to typo3temp/rtehtmlarea
 	 */
-	 
-	function writeJSFileToTypo3tempDir($JSFile,$label,$compressed=FALSE,$ext='js') {
+	private function writeTemporaryFile($sourceFileName='', $label, $fileExtension='js', $contents='') {
 		global $TYPO3_CONF_VARS;
 		
-		$source = t3lib_div::getFileAbsFileName($JSFile);
-		$relFilename = 'typo3temp/' . $this->ID . '_' . $label . '_' . md5($JSFile . $TYPO3_CONF_VARS['EXTCONF'][$this->ID]['version']) . ($compressed ? '-compressed' : '') . '.' . $ext;
-		$destination = PATH_site . $relFilename;
-		if(!file_exists($destination)) {
-			@copy($source,$destination);
-			t3lib_div::fixPermissions($destination);
+		if ($sourceFileName) {
+			$output = '';
+			$source = t3lib_div::getFileAbsFileName($sourceFileName);
+			$inputHandle = @fopen($source, "rb");
+			while (!feof($inputHandle)) {
+				$output .= @fread($inputHandle, 8192);
+			}
+			fclose($inputHandle);
+		} else {
+			$output = $contents;
 		}
-		return ($this->thisConfig['forceHTTPS']?$this->siteURL:$this->httpTypo3Path) . $relFilename;
+		$compress = $TYPO3_CONF_VARS['EXTCONF'][$this->ID]['enableCompressedScripts'] && ($fileExtension == 'js') && ($output != '');
+		$relativeFilename = 'typo3temp/' . $this->ID . '/' . str_replace('-','_',$label) . '_' . t3lib_div::shortMD5(($TYPO3_CONF_VARS['EXTCONF'][$this->ID]['version'] . ($sourceFileName?$sourceFileName:$output)), 20) . ($compress ? '_compressed' : '') . '.' . $fileExtension;
+		$destination = PATH_site . $relativeFilename;
+		if(!file_exists($destination)) {
+			$compressedJavaScript = '';
+			if ($compress) {
+				$compressedJavaScript = t3lib_div::minifyJavaScript($output);
+			}
+			$failure = t3lib_div::writeFileToTypo3tempDir($destination, $compressedJavaScript?$compressedJavaScript:$output);
+			if ($failure)  {
+				die($failure);
+			}
+		}
+		return ($this->thisConfig['forceHTTPS']?$this->siteURL:$this->httpTypo3Path) . $relativeFilename;
 	}
 	
 	/**
@@ -1711,7 +1714,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 				$contents .= $this->buildJSLangArray($plugin) . chr(10);
 			}
 		}
-		return $this->buildJSFile($this->language.'_'.$this->OutputCharset,$contents);
+		return $this->writeTemporaryFile('', $this->language.'_'.$this->OutputCharset, 'js', $contents);
 	}
 
 	/**
