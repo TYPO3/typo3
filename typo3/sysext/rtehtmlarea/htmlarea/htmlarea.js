@@ -1410,9 +1410,13 @@ HTMLArea.prototype.popupURL = function(file) {
  ***************************************************/
 HTMLArea.getInnerText = function(el) {
 	var txt = '', i;
-	for(i=el.firstChild;i;i =i.nextSibling) {
-		if(i.nodeType == 3) txt += i.data;
-		else if(i.nodeType == 1) txt += HTMLArea.getInnerText(i);
+	if(el.firstChild) {
+		for(i=el.firstChild;i;i =i.nextSibling) {
+			if(i.nodeType == 3) txt += i.data;
+			else if(i.nodeType == 1) txt += HTMLArea.getInnerText(i);
+		}
+	} else {
+		if(el.nodeType == 3) txt = el.data;
 	}
 	return txt;
 };
@@ -2331,9 +2335,10 @@ HTMLArea._editorEvent = function(ev) {
 			switch (ev.keyCode) {
 				case 13	: // KEY enter
 					if (HTMLArea.is_gecko && !ev.shiftKey && !editor.config.disableEnterParagraphs) {
-						editor._checkInsertP();
-						HTMLArea._stopEvent(ev);
-						editor.updateToolbar();
+						if (editor._checkInsertP(ev)) HTMLArea._stopEvent(ev);
+							// update the toolbar state after some time
+						if (editor._timerToolbar) window.clearTimeout(editor._timerToolbar);
+						editor._timerToolbar = window.setTimeout("HTMLArea.updateToolbar(" + editor._editorNumber + ");", 50);
 					}
 					break;
 				case 8	: // KEY backspace

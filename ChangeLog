@@ -2,6 +2,7 @@
 
 	* Added feature #6579: Make htmlArea RTE extensible
 	* Added feature #6619: Let htmlArea RTE use t3lib_div::minifyJavaScript()
+	* Fixed bug 6476: htmlArea RTE incorrectly nests tags on return key in FF
 
 2007-10-31  Ingo Renner  <ingo@typo3.org>
 
