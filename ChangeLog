@@ -1,3 +1,8 @@
+2007-11-01  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
+
+	* Fixed bug 6476: htmlArea RTE incorrectly nests tags on return key in FF
+	* Update version number of rtehtmlarea to 1.5.5
+
 2007-10-30  Jeff Segars  <jeff@webempoweredchurch.org>
 
 	* Fixed bug #6618: Web->List: Add title to versioning symbol in extended view	(Thanks to Christian Kuhn)

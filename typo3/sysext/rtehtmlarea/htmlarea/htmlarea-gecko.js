@@ -3,7 +3,7 @@
 *
 *  (c) 2002-2004, interactivetools.com, inc.
 *  (c) 2003-2004 dynarch.com
-*  (c) 2004, 2005, 2006 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
+*  (c) 2004-2007 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -434,77 +434,62 @@ HTMLArea.prototype._checkBackspace = function() {
 /*
  * Enter event handler
  */
-HTMLArea.prototype._checkInsertP = function() {
+HTMLArea.prototype._checkInsertP = function(ev) {
+	var editor = this;
 	this.focusEditor();
-	var i, SC, left, right, r2,
-		sel   = this._getSelection(),
-		r     = this._createRange(sel),
-		p     = this.getAllAncestors(),
-		block = null,
-		a = null,
-		doc   = this._doc,
-		body  = doc.body;
-
+	var i, left, right, rangeClone,
+		sel	= this._getSelection(),
+		range	= this._createRange(sel),
+		p	= this.getAllAncestors(),
+		block	= null,
+		a	= null,
+		doc	= this._doc;
+	
 	for (i = 0; i < p.length; ++i) {
 		if (HTMLArea.isBlockElement(p[i]) && !/html|body|table|tbody|tr/i.test(p[i].tagName)) {
 			block = p[i];
 			break;
 		}
 	}
-	if (!r.collapsed) r.deleteContents();
+	if (!range.collapsed) range.deleteContents();
 	if (HTMLArea.is_safari) sel.empty();
 		else sel.removeAllRanges();
-	SC = r.startContainer;
-	if (HTMLArea.is_opera && SC.nodeType == 3 && SC.data.length == 0) SC = HTMLArea.getPrevNode(SC);
 	if (!block || /^(td|div)$/i.test(block.tagName)) {
-		left = SC;
-		for (i = SC; i && !HTMLArea.isBlockElement(i); i = HTMLArea.getPrevNode(i)) { left = i; }
-		right = SC;
-		if (HTMLArea.is_opera && right.nodeType == 3 && right.data.length == 0) right = HTMLArea.getNextNode(right);
-		if(left != body && right != body && !(block && left == block ) && !(block && right == block )) {
-			r2 = r.cloneRange();
-			if (HTMLArea.is_opera) r2.setStart(left,0);
-				else r2.setStartBefore(left);
-			r2.surroundContents(block = doc.createElement('p'));
-			if (!/\S/.test(HTMLArea.getInnerText(block))) {
-					// Remove any anchor created empty
-				a = block.lastChild;
-				if (a && /^a$/i.test(a.tagName) && !/\S/.test(a.innerHTML)) HTMLArea.removeFromParent(a);
-				block.appendChild(doc.createElement('br'));
+		if (!block) var block = doc.body;
+		if (/\S/.test(HTMLArea.getInnerText(block))) {
+			rangeClone = range.cloneRange();
+			rangeClone.setStartBefore(block.firstChild);
+			rangeClone.surroundContents(left = doc.createElement('p'));
+			if (!/\S/.test(HTMLArea.getInnerText(left))) {
+					// Remove any element created empty
+				a = left.lastChild;
+				if (a && !/\S/.test(HTMLArea.getInnerText(a))) HTMLArea.removeFromParent(a);
+				left.appendChild(doc.createElement('br'));
 			}
-			block.normalize();
-			if (HTMLArea.is_opera) {
-				SC = HTMLArea.getNextNode(block);
-				for (i = SC; i && !HTMLArea.isBlockElement(i); i = HTMLArea.getNextNode(i)) { right = i; }
-				r.setStart(SC, 0);
-				r.setEnd(right, right.length);
-			} else {
-				r.setEndAfter(right);
+			left.normalize();
+			range.setEndAfter(block.lastChild);
+			range.surroundContents(right = doc.createElement('p'));
+				// Remove any element created empty
+			a = right.previousSibling;
+			if (a && !/\S/.test(HTMLArea.getInnerText(a))) HTMLArea.removeFromParent(a);
+			if (!/\S/.test(HTMLArea.getInnerText(right))) {
+					// Remove any element created empty
+				a = right.lastChild;
+				if (a && !/\S/.test(HTMLArea.getInnerText(a))) HTMLArea.removeFromParent(a);
+				right.appendChild(doc.createElement('br'));
 			}
-			r.surroundContents(block = doc.createElement('p'));
-					// Remove any anchor created empty
-			a = block.previousSibling;
-			if (a && /^a$/i.test(a.tagName) && !/\S/.test(a.innerHTML)) HTMLArea.removeFromParent(a);
-			if (!/\S/.test(HTMLArea.getInnerText(block))) {
-					// Remove any anchor created empty
-				a = block.lastChild;
-				if (a && /^a$/i.test(a.tagName) && !/\S/.test(a.innerHTML)) HTMLArea.removeFromParent(a);
-				block.appendChild(doc.createElement('br'));
-			}
-			block.normalize();
+			right.normalize();
 		} else {
-			if (!block) block = body;
-			r = doc.createRange();
-			r.setStart(block, 0);
-			r.setEnd(block, 0);
-			r.insertNode(block = doc.createElement('p'));
-			block.appendChild(doc.createElement('br'));
+			range = doc.createRange();
+			var first = block.firstChild;
+			block.removeChild(first);
+			block.appendChild(right = doc.createElement('p'));
+			right.appendChild(first);
 		}
-		if (HTMLArea.is_opera) r.selectNode(block);
-			else r.selectNodeContents(block);
+		range.selectNodeContents(right);
 	} else {
-		if (!HTMLArea.is_opera || /\S/.test(HTMLArea.getInnerText(block))) r.setEndAfter(block);
-		var df = r.extractContents(), left_empty = false;
+		range.setEndAfter(block);
+		var df = range.extractContents(), left_empty = false;
 		if(!/\S/.test(HTMLArea.getInnerText(block))) {
 			block.innerHTML = "<br />";
 			left_empty = true;
@@ -518,22 +503,22 @@ HTMLArea.prototype._checkInsertP = function() {
 			if(/^li$/i.test(p.tagName) && left_empty && !block.nextSibling) {
 				left = block.parentNode;
 				left.removeChild(block);
-				r.setEndAfter(left);
-				r.collapse(false);
+				range.setEndAfter(left);
+				range.collapse(false);
 				p = this.convertNode(p, /^li$/i.test(left.parentNode.tagName) ? "br" : "p");
 			}
-			r.insertNode(df);
+			range.insertNode(df);
 				// Remove any anchor created empty
 			var a = p.previousSibling.lastChild;
 			if (a && /^a$/i.test(a.tagName) && !/\S/.test(a.innerHTML)) HTMLArea.removeFromParent(a);
-			if (HTMLArea.is_opera) r.selectNode(p);
-				else r.selectNodeContents(p);
+			range.selectNodeContents(p);
 		}
 	}
-	r.collapse(true);
+	range.collapse(true);
 	if (HTMLArea.is_safari) sel.setBaseAndExtent(r.startContainer,r.startOffset,r.endContainer,r.endOffset);
-		else sel.addRange(r);
+		else sel.addRange(range);
 	this.scrollToCaret();
+	return true;
 };
 
 /*
