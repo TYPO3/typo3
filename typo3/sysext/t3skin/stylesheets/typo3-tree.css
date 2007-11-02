@@ -8,7 +8,6 @@ table#typo3-browsetree {
 }
 
 ul.tree ul li.expanded ul { background: transparent url('../icons/gfx/ol/line.gif') top left repeat-y; }
-ul.tree ul li.last    	  { background: transparent url('../icons/gfx/ol/joinbottom.gif') no-repeat top left; } 
 ul.tree ul li.last > ul   { background: none; }
 ul.tree li.active, ul.tree ul li.active      { background-color: #D7DBE2 !important; }
 ul.tree li.active span a, ul.tree ul li.active span a { font-weight: bold; }

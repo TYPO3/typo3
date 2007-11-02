@@ -1,6 +1,7 @@
 2007-11-02  Ingmar Schlecht  <ingmar@typo3.org>
 
-	* Added default SVN properties and $Id$ marker to new PHP files which didn't have it yet
+	* Added default SVN properties and Id marker to new files which didn't have it yet
+	* Fixed bug #6624: Weird pagetree display with new "Not in menu" feature (Thanks to Christian Kuhn)
 
 2007-11-02  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
@@ -4472,3 +4473,7 @@ Charsets:
 - A new class "t3lib_cs" has been added. It contains homemade functions for conversion to and from a list of charsets (conversion tables found in t3lib/csconvtbl/). The conversion could be speeded up enourmously by using PHP functions but I simply didn't find any that could be used. By time we can substitute the PHP-processing with internal PHP functions if possible.
 - In TYPO3_CONF_VARS we can now set up a system charset. [BE][forceCharset] This is used a) for storage of information and b) for whole backend. Default is that charset of the current user (as always), but clearly recommended is "UTF-8"!!!
 	- The recommendation is that the forceCharset configuration is used for multilingual sites. In this way the SAME charset is ALWAYS used in the backend regardless of which language the current backend user has chosen. Thus all content in the sysmte is stored in the same charset.
+
+--------------------
+
+SVN ID: $Id$
