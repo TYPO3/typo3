@@ -273,7 +273,7 @@ class tx_rtehtmlarea_pi2 extends tx_rtehtmlarea_base {
 				$pathToSkin = $this->registeredPlugins[$pluginId]->getPathToSkin();
 				if ($pathToSkin) {
 					$additionalCode_loadCSS .= '
-		<link rel="stylesheet" type="text/css" href="' . $this->httpTypo3Path . t3lib_extMgm::siteRelPath($this->registeredPlugins[$pluginId]->getExtensionKey()) . . $pathToSkin . '" />';
+		<link rel="stylesheet" type="text/css" href="' . $this->httpTypo3Path . t3lib_extMgm::siteRelPath($this->registeredPlugins[$pluginId]->getExtensionKey()) . $pathToSkin . '" />';
 				}
 			}
 		}
