@@ -2,6 +2,7 @@
 
 	* Added default SVN properties and Id marker to new files which didn't have it yet
 	* Fixed bug #6624: Weird pagetree display with new "Not in menu" feature (Thanks to Christian Kuhn)
+	* Bug #6561 revised: Registers IMAGE_NUM and IMAGE_NUM_CURRENT contained incorrect array indizes (Thanks to Helmut Hummel)
 
 2007-11-02  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
