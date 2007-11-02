@@ -1,3 +1,7 @@
+2007-11-02  Ingmar Schlecht  <ingmar@typo3.org>
+
+	* Added default SVN properties and $Id$ marker to new PHP files which didn't have it yet
+
 2007-11-02  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
 	* Fixed feature #6579: Small correction to FE htmlArea RTE
@@ -26,18 +30,18 @@
 	* Moved "doc" module to sysext "opendocs"
 	* Fixed Bug #4832: Integrate the extension ter_update_check into EM (Thanks to Christian Welzel)
 
-2007-10-29	Jeff Segars	<jeff@webempoweredchurch.org>
+2007-10-29  Jeff Segars  <jeff@webempoweredchurch.org>
 
 	* Fixed bug #5338: Error installing suggested extensions
 
-2007-10-29	Dmitry Dulepov	<dmitry@typo3.org>
+2007-10-29  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Fixed bug #6581: Fatal error in TCEForms: Fatal error: Cannot use string offset as an array
 	* Fixed bug #6565: T3DataStructure with sheet references will not show sheetTitle,sheetDescription and sheetShortDescr
 	* Fixed bug #5347: Flexforms dosen't resolve sheets
 	* Fixed bug #3969: Missing sheets inclusion in flexforms?
 
-2007-10-28	Kasper Skårhøj	<kasperYYYY@typo3.com>
+2007-10-28  Kasper Skårhøj  <kasperYYYY@typo3.com>
 
 	* - Reverting IRRE related changes in t3lib_BEfunc done for workspaces by Dmitry. They were faulty.
 	* - Modified rendering of FlexForms in t3lib_TCEforms and also processing in t3lib_tcemain so that flexforms are now fully dynamic in their nature; This is particularly the case when flexforms have sections and containers within (see the original movie-list example for instance). DHTML is used to reorganize flexform elements, delete and add new. No ajax though (not necessary). It means we finally have a permanent implementation for what was before "_DELETE_FLEX_FORM" etc buttons... Used scriptaculous and prototype for the work.
