@@ -1260,8 +1260,9 @@ HTMLArea.prototype.setMode = function(mode) {
 			this._editMode = "wysiwyg";
 					//set gecko options
 			if (HTMLArea.is_gecko) {
-				try { this._doc.execCommand("useCSS", false, !this.config.useCSS); } catch (e) {};
-				try { this._doc.execCommand("styleWithCSS", false, this.config.useCSS); } catch (e) {};
+				if (this._doc.queryCommandEnabled("insertbronreturn")) this._doc.execCommand("insertbronreturn", false, this.config.disableEnterParagraphs);
+				if (this._doc.queryCommandEnabled("styleWithCSS")) this._doc.execCommand("styleWithCSS", false, this.config.useCSS);
+					else if (this._doc.queryCommandEnabled("useCSS")) this._doc.execCommand("useCSS", false, !this.config.useCSS);
 			}
 			break;
 		default:

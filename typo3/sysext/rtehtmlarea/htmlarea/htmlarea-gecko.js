@@ -78,8 +78,9 @@ HTMLArea.prototype._initEditMode = function () {
 			HTMLArea._addEvent(nestedObj, 'DOMAttrModified', listenerFunction);
 		}
 	}
-	try { this._doc.execCommand("useCSS", false, !this.config.useCSS); } catch (e) {};
-	try { this._doc.execCommand("styleWithCSS", false, this.config.useCSS); } catch (e) {};
+	if (this._doc.queryCommandEnabled("insertbronreturn")) this._doc.execCommand("insertbronreturn", false, this.config.disableEnterParagraphs);
+	if (this._doc.queryCommandEnabled("styleWithCSS")) this._doc.execCommand("styleWithCSS", false, this.config.useCSS);
+		else if (this._doc.queryCommandEnabled("useCSS")) this._doc.execCommand("useCSS", false, !this.config.useCSS);
 	return true;
 };
 
@@ -313,8 +314,9 @@ HTMLArea.NestedHandler = function(ev,editor,nestedObj,noOpenCloseAction) {
 						if (editor.config.sizeIncludesToolbar && editor._initialToolbarOffsetHeight != editor._toolbar.offsetHeight) {
 							editor.sizeIframe(-2);
 						}
-						try { editor._doc.execCommand("useCSS", false, !this.config.useCSS); } catch (e) {};
-						try { editor._doc.execCommand("styleWithCSS", false, this.config.useCSS); } catch (e) {};
+						if (editor._doc.queryCommandEnabled("insertbronreturn")) editor._doc.execCommand("insertbronreturn", false, editor.config.disableEnterParagraphs);
+						if (editor._doc.queryCommandEnabled("styleWithCSS")) editor._doc.execCommand("styleWithCSS", false, editor.config.useCSS);
+							else if (editor._doc.queryCommandEnabled("useCSS")) editor._doc.execCommand("useCSS", false, !editor.config.useCSS);
 					} catch(e) {
 							// If an event of a parent tab ("nested tabs") is triggered, the following lines should not be
 							// processed, because this causes some trouble on all event handlers...

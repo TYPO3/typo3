@@ -1,6 +1,7 @@
 2007-11-02  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
 	* Fixed feature #6579: Small correction to FE htmlArea RTE
+	* Remove exception catching in htmlArea RTE when setting styleWithCSS
 
 2007-11-01  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
