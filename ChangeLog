@@ -1,3 +1,7 @@
+2007-11-02  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
+
+	* Fixed bug 6640: htmlArea RTE tool bar is not updated in IE when up or down arrow is pressed
+
 2007-11-01  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
 	* Fixed bug 6476: htmlArea RTE incorrectly nests tags on return key in FF
