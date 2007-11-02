@@ -27,6 +27,8 @@
 /**
  * Logo menu
  *
+ * $Id$
+ *
  * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  */
 /**

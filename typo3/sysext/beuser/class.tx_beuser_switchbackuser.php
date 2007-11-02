@@ -24,6 +24,8 @@
 /**
  * Backend user switchback
  *
+ * $Id$
+ *
  * @author	Sebastian Kurfuerst <sebastian@garbage-group.de>
  */
 class tx_beuser_switchbackuser {

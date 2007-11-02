@@ -27,6 +27,8 @@
 /**
  * Core functions for cleaning and analysing
  *
+ * $Id$
+ *
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 /**

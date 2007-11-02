@@ -27,6 +27,8 @@
 /**
  * Module Dispatch script
  *
+ * $Id$
+ *
  * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  */
 /**

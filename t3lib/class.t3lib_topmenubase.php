@@ -27,6 +27,8 @@
 /**
  * Base class for scripts delivering content to the top menu bar/icon panel.
  *
+ * $Id$
+ *
  * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  */
 /**
