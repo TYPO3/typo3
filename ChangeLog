@@ -9,6 +9,7 @@
 	* Fixed feature #6579: Small correction to FE htmlArea RTE
 	* Remove exception catching in htmlArea RTE when setting styleWithCSS
 	* Fixed bug 6640: htmlArea RTE tool bar is not updated in IE when up or down arrow is pressed
+	* Fixed feature #6619: Add underscore rather than dash in file names
 
 2007-11-01  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
