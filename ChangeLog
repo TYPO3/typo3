@@ -1,3 +1,7 @@
+2007-11-02  Ingmar Schlecht  <ingmar@typo3.org>
+
+	* Bug #6561 revised: Registers IMAGE_NUM and IMAGE_NUM_CURRENT contained incorrect array indizes (Thanks to Helmut Hummel)
+
 2007-11-02  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
 	* Fixed bug 6640: htmlArea RTE tool bar is not updated in IE when up or down arrow is pressed

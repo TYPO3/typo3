@@ -548,14 +548,14 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 		$splitArr = $GLOBALS['TSFE']->tmpl->splitConfArray($splitArr, $imgCount);
 
 		$imageRowsFinalWidths = Array();	// contains the width of every image row
-		$imgsTag = array();		// array index 0 will be the first shown image
+		$imgsTag = array();		// array index of $imgsTag will be the same as in $imgs, but $imgsTag only contains the images that are actually shown
 		$origImages = array();
 		for ($a=0; $a<$imgCount; $a++)	{
 			$imgKey = $a+$imgStart;
 			$totalImagePath = $imgPath.$imgs[$imgKey];
 
-			$GLOBALS['TSFE']->register['IMAGE_NUM'] = $a;
-			$GLOBALS['TSFE']->register['IMAGE_NUM_CURRENT'] = $a;
+			$GLOBALS['TSFE']->register['IMAGE_NUM'] = $imgKey;	// register IMG_NUM is kept for backwards compatibility
+			$GLOBALS['TSFE']->register['IMAGE_NUM_CURRENT'] = $imgKey;
 			$GLOBALS['TSFE']->register['ORIG_FILENAME'] = $totalImagePath;
 
 			$this->cObj->data[$this->cObj->currentValKey] = $totalImagePath;
@@ -632,14 +632,14 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 						$imgConf['emptyTitleHandling'] = 'removeAttr';
 					}
 				}
-				$imgsTag[$a] = $this->cObj->IMAGE($imgConf);
+				$imgsTag[$imgKey] = $this->cObj->IMAGE($imgConf);
 			} else {
-				$imgsTag[$a] = $this->cObj->IMAGE(Array('file' => $totalImagePath)); 	// currentValKey !!!
+				$imgsTag[$imgKey] = $this->cObj->IMAGE(Array('file' => $totalImagePath)); 	// currentValKey !!!
 			}
 				// Restore our ATagParams
 			$GLOBALS['TSFE']->ATagParams = $oldATagParms;
 				// Store the original filepath
-			$origImages[$a] = $GLOBALS['TSFE']->lastImageInfo;
+			$origImages[$imgKey] = $GLOBALS['TSFE']->lastImageInfo;
 
 			$imageRowsFinalWidths[floor($a/$colCount)] += $GLOBALS['TSFE']->lastImageInfo[0];
 		}
@@ -697,24 +697,25 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 			$allRows = '';
 			$maxImageSpace = 0;
 			for ($i = $c; $i<count($imgsTag); $i=$i+$imageWrapCols)	{
+				$imgKey = $i+$imgStart;
 				$colPos = $i%$colCount;
 				if ($separateRows && $colPos == 0) {
 					$thisRow = '';
 				}
 
 					// Render one image
-				$imageSpace = $origImages[$i][0] + $border*($borderSpace+$borderThickness)*2;
-				$GLOBALS['TSFE']->register['IMAGE_NUM'] = $i;
-				$GLOBALS['TSFE']->register['IMAGE_NUM_CURRENT'] = $i;
-				$GLOBALS['TSFE']->register['ORIG_FILENAME'] = $origImages[$i]['origFile'];
-				$GLOBALS['TSFE']->register['imagewidth'] = $origImages[$i][0];
+				$imageSpace = $origImages[$imgKey][0] + $border*($borderSpace+$borderThickness)*2;
+				$GLOBALS['TSFE']->register['IMAGE_NUM'] = $imgKey;
+				$GLOBALS['TSFE']->register['IMAGE_NUM_CURRENT'] = $imgKey;
+				$GLOBALS['TSFE']->register['ORIG_FILENAME'] = $origImages[$imgKey]['origFile'];
+				$GLOBALS['TSFE']->register['imagewidth'] = $origImages[$imgKey][0];
 				$GLOBALS['TSFE']->register['imagespace'] = $imageSpace;
-				$GLOBALS['TSFE']->register['imageheight'] = $origImages[$i][1];
+				$GLOBALS['TSFE']->register['imageheight'] = $origImages[$imgKey][1];
 				if ($imageSpace > $maxImageSpace)	{
 					$maxImageSpace = $imageSpace;
 				}
 				$thisImage = '';
-				$thisImage .= $this->cObj->stdWrap($imgsTag[$i], $conf['imgTagStdWrap.']);
+				$thisImage .= $this->cObj->stdWrap($imgsTag[$imgKey], $conf['imgTagStdWrap.']);
 
 				if ($conf['captionSplit'] || $conf['imageTextSplit'])	{
 					$thisImage .= $this->cObj->stdWrap($this->cObj->cObjGet($conf['caption.'], 'caption.'), $conf['caption.']);
