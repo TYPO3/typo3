@@ -26,7 +26,7 @@
  *
  * @author Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
  *
- * TYPO3 CVS ID: $Id: class.tx_rtehtmlarea_pi1.php 2449 2007-08-15 08:12:19Z ingorenner $
+ * TYPO3 CVS ID: $Id$
  *
  */
 

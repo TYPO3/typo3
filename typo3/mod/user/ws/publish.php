@@ -27,7 +27,7 @@
 /**
  * Module: Workspace publisher
  *
- * $Id: index.php 1613 2006-07-10 09:42:27Z liels_bugs $
+ * $Id$
  *
  * @author	Dmitry Dulepov <typo3@accio.lv>
  */
