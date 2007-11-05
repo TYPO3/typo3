@@ -5,7 +5,7 @@
 2007-11-05  Ingmar Schlecht  <ingmar@typo3.org>
 
 	* Issue #6641: Renamed new page tree related TSconfig Options and switched off separateNotinmenuPages by default (Thanks to Christian Kuhn)
-	* Changing SVN property eol-style from native to LF for all .php, .html, .js, .css and .htaccess files in the core trunk
+	* Changing SVN property eol-style from native to LF for all text files in the core trunk
 
 2007-11-02  Ingmar Schlecht  <ingmar@typo3.org>
 
