@@ -377,16 +377,22 @@ HTMLArea.Config = function () {
  *	selection	: false			// will be disabled if there is no selection
  *    });
  */
-
 HTMLArea.Config.prototype.registerButton = function(id,tooltip,image,textMode,action,context,hide,selection) {
 	var the_id;
 	switch (typeof(id)) {
 		case "string": the_id = id; break;
 		case "object": the_id = id.id; break;
-		default: HTMLArea._appendToLog("ERROR [HTMLArea.Config::registerButton]: invalid arguments"); return false;
+		default: HTMLArea._appendToLog("ERROR [HTMLArea.Config::registerButton]: invalid arguments");
+			 return false;
 	}
-	if (typeof(this.customSelects[the_id]) != "undefined") HTMLArea._appendToLog("WARNING [HTMLArea.Config::registerButton]: A dropdown with the same ID " + id + " already exists.");
-	if (typeof(this.btnList[the_id]) != "undefined") HTMLArea._appendToLog("WARNING [HTMLArea.Config::registerButton]: A button with the same ID " + id + " already exists.");
+	if (typeof(this.customSelects[the_id]) != "undefined") {
+		HTMLArea._appendToLog("WARNING [HTMLArea.Config::registerButton]: A dropdown with the same ID " + id + " already exists.");
+		return false;
+	}
+	if (typeof(this.btnList[the_id]) != "undefined") {
+		HTMLArea._appendToLog("WARNING [HTMLArea.Config::registerButton]: A button with the same ID " + id + " already exists.");
+		return false;
+	}
 	switch (typeof(id)) {
 		case "string":
 			if (typeof(hide) == "undefined") var hide = false;
@@ -399,15 +405,23 @@ HTMLArea.Config.prototype.registerButton = function(id,tooltip,image,textMode,ac
 			this.btnList[id.id] = [id.tooltip, id.image, id.textMode, id.action, id.context, id.hide, id.selection];
 			break;
 	}
+	return true;
 };
 
 /*
  * Register a dropdown box with the editor configuration.
  */
-HTMLArea.Config.prototype.registerDropdown = function(object) {
-	if (typeof(this.customSelects[object.id]) != "undefined") HTMLArea._appendToLog("WARNING [HTMLArea.Config::registerDropdown]: A dropdown with the same ID " + object.id + " already exists.");
-	if (typeof(this.btnList[object.id]) != "undefined") HTMLArea._appendToLog("WARNING [HTMLArea.Config::registerDropdown]: A button with the same ID " + object.id + " already exists.");
-	this.customSelects[object.id] = object;
+HTMLArea.Config.prototype.registerDropdown = function(dropDownConfiguration) {
+	if (typeof(this.customSelects[dropDownConfiguration.id]) != "undefined") {
+		HTMLArea._appendToLog("WARNING [HTMLArea.Config::registerDropdown]: A dropdown with the same ID " + dropDownConfiguration.id + " already exists.");
+		return false;
+	}
+	if (typeof(this.btnList[dropDownConfiguration.id]) != "undefined") {
+		HTMLArea._appendToLog("WARNING [HTMLArea.Config::registerDropdown]: A button with the same ID " + dropDownConfiguration.id + " already exists.");
+		return false;
+	}
+	this.customSelects[dropDownConfiguration.id] = dropDownConfiguration;
+	return true;
 };
 
 /***************************************************
@@ -625,7 +639,7 @@ HTMLArea.prototype.createButton = function (txt,tb_line,first_cell_on_line,label
 			enabled 	: true,				// is it enabled?
 			active		: false,			// is it pressed?
 			text 		: btn[2],			// enabled in text mode?
-			cmd 		: btn[3],			// the command ID
+			cmd 		: btn[3],			// the function to be invoked
 			state		: HTMLArea.setButtonStatus,	// for changing state
 			context 	: btn[4] || null,		// enabled in a certain context?
 			selection	: btn[6],			// disabled when no selection?
@@ -794,7 +808,7 @@ HTMLArea.toolBarButtonHandler = function(ev) {
 						break;
 					default:
 						var dropdown = editor.config.customSelects[obj.name];
-						if (typeof(dropdown) != "undefined") dropdown.action(editor);
+						if (typeof(dropdown) !== "undefined") dropdown.action(editor, obj.name);
 							else HTMLArea._appendToLog("ERROR [HTMLArea::toolBarButtonHandler]: Combo box " + obj.name + " not registered.");
 				}
 		}
@@ -1305,41 +1319,34 @@ HTMLArea.prototype.setFullHTML = function(html) {
  ***************************************************/
 
 /*
- * Create the specified plugin and register it with this HTMLArea
+ * Instantiate the specified plugin and register it with the editor
+ *
+ * @param	string		plugin: the name of the plugin
+ *
+ * @return	boolean		true if the plugin was successfully registered
  */
-HTMLArea.prototype.registerPlugin = function() {
-	var plugin = arguments[0];
-	var args = [];
-	for (var i=1; i < arguments.length; ++i) { args.push(arguments[i]); }
-	this.registerPlugin2(plugin, args);
-};
-
-/*
- * A variant of the function above where the plugin arguments are already packed in an array.
- * Externally, it should be only used in the full-screen editor code, 
- * in order to initialize plugins with the same parameters as in the opener window.
- */
-HTMLArea.prototype.registerPlugin2 = function(plugin, args) {
-	if (typeof(plugin) == "string") {
+HTMLArea.prototype.registerPlugin = function(plugin) {
+	var pluginName = plugin;
+	if (typeof(plugin) === "string") {
 		var plugin = eval(plugin);
-	};
-	if (typeof(plugin) == "undefined") {
+	}
+	if (typeof(plugin) === "undefined") {
 		HTMLArea._appendToLog("ERROR [HTMLArea::registerPlugin]: Can't register undefined plugin.");
 		return false;
-	};
-	var obj = new plugin(this, args);
-	if (obj) {
-		var clone = {};
-		var info = plugin._pluginInfo;
-		for (var i in info) {
-			clone[i] = info[i];
+	}
+	var pluginInstance = new plugin(this, pluginName);
+	if (pluginInstance) {
+		var pluginInformation = plugin._pluginInfo;
+		if(!pluginInformation) {
+			pluginInformation = pluginInstance.getPluginInformation();
 		}
-		clone.instance = obj;
-		clone.args = args;
-		this.plugins[plugin._pluginInfo.name] = clone;
+		pluginInformation.instance = pluginInstance;
+		this.plugins[pluginName] = pluginInformation;
+		return true;
 	} else {
-		HTMLArea._appendToLog("ERROR [HTMLArea::registerPlugin]: Can't register plugin " + plugin.toString() + ".");
-	};
+		HTMLArea._appendToLog("ERROR [HTMLArea::registerPlugin]: Can't register plugin " + pluginName + ".");
+		return false;
+	}
 };
 
 /*
@@ -1681,11 +1688,11 @@ HTMLArea.prototype.updateToolbar = function(noStatus) {
 		}
 		if (cmd == "CreateLink") btn.state("enabled", (!text || btn.text) && (inContext || selection));
 			else btn.state("enabled", (!text || btn.text) && inContext && (selection || !btn.selection));
-
+		
 		if (typeof(cmd) == "function") { continue; };
 			// look-it-up in the custom dropdown boxes
 		var dropdown = this.config.customSelects[cmd];
-		if((!text || btn.text) && (typeof(dropdown) != "undefined")) {
+		if ((!text || btn.text) && (typeof(dropdown) !== "undefined") && (typeof(dropdown.refresh) === "function")) {
 			dropdown.refresh(this);
 			continue;
 		}
@@ -3080,3 +3087,221 @@ HTMLArea.allElementsAreDisplayed = function(elements) {
 	}
 	return true;
 };
+
+/**
+ * htmlArea plugin class using the Prototype JavaScript framework
+ */
+HTMLArea.plugin = Class.create( {
+	
+	/**
+	 * Class constructor
+	 *
+	 * @param	object		editor: instance of RTE
+	 * @param	string		pluginName: name of the plugin
+	 *
+	 * @return	boolean		true if the plugin was configured
+	 */
+	initialize : function(editor, pluginName) {
+		this.editor = editor;
+		this.editorNumber = editor._editorNumber;
+		this.editorConfiguration = editor.config;
+		this.name = pluginName;
+		return this.configurePlugin(editor);
+	},
+	
+	/**
+	 * Configures the plugin
+	 * This function is invoked by the class constructor.
+	 * This function should be redefined by the plugin subclass. Normal steps would be:
+	 *	- registering plugin ingormation with method registerPluginInformation;
+	 *	- registering any buttons with method registerButton;
+	 *	- registering any drop-down lists with method registerDropDown.
+	 *
+	 * @param	object		editor: instance of RTE
+	 *
+	 * @return	boolean		true if the plugin was configured
+	 */
+	configurePlugin : function(editor) {
+		return false;
+	},
+	
+	/**
+	 * Registers the plugin "About" information
+	 *
+	 * @param	object		pluginInformation:
+	 *					version		: the version,
+	 *					developer	: the name of the developer,
+	 *					developerUrl	: the url of the developer,
+	 *					copyrightOwner	: the name of the copyright owner,
+	 *					sponsor		: the name of the sponsor,
+	 *					sponsorUrl	: the url of the sponsor,
+	 *					license		: the type of license (should be "GPL")
+	 *
+	 * @return	boolean		true if the information was registered
+	 */
+	registerPluginInformation : function(pluginInformation) {
+		if (typeof(pluginInformation) !== "object") {
+			this.appendToLog("registerPluginInformation", "Plugin information was not provided");
+			return false;
+		} else {
+			this.pluginInformation = pluginInformation;
+			this.pluginInformation.name = this.name;
+				/* Ensure backwards compatibility */
+			this.pluginInformation.developer_url = this.pluginInformation.developerUrl;
+			this.pluginInformation.c_owner = this.pluginInformation.copyrightOwner;
+			this.pluginInformation.sponsor_url = this.pluginInformation.sponsorUrl;
+			return true;
+		}
+	},
+	
+	getPluginInformation : function() {
+		return this.pluginInformation;
+	},
+	
+	/**
+	 * Returns true if the button is enabled in the toolbar configuration
+	 *
+	 * @param	string		buttonId: identification of the button
+	 *
+	 * @return	boolean		true if the button is enabled in the toolbar configuration
+	 */
+	isButtonInToolbar : function(buttonId) {
+		var toolbar = this.editorConfiguration.toolbar;
+		var n = toolbar.length;
+		for ( var i = 0; i < n; ++i ) {
+			if (toolbar[i].join(",").indexOf(buttonId) != -1) {
+				return true;
+			}
+		}
+		return false;
+	},
+	
+	/**
+	 * Registors a button for inclusion in the toolbar
+	 *
+	 * @param	object		buttonConfiguration: the configuration object of the button:
+	 *					id		: unique id for the button
+	 *					tooltip		: tooltip for the button
+	 *					image		: image to be displayed in the toolbar
+	 *					textMode	: enable in text mode
+	 *					action		: name of the function invoked when the button is pressed
+	 *					context		: will be disabled if not inside one of listed elements
+	 *					hide		: hide in menu and show only in context menu?
+	 *					selection	: will be disabled if there is no selection?
+	 *
+	 * @return	boolean		true if the button was successfully registered
+	 */
+	registerButton : function (buttonConfiguration) {
+		if (this.isButtonInToolbar(buttonConfiguration.id)) {
+			if ((typeof(buttonConfiguration.action) === "string") && (typeof(this[buttonConfiguration.action]) === "function")) {
+				var actionFunctionReference = this.makeFunctionReference(buttonConfiguration.action);
+				buttonConfiguration.action = actionFunctionReference;
+				return this.editorConfiguration.registerButton(buttonConfiguration);
+			} else {
+				this.appendToLog("registerButton", "Function " + buttonConfiguration.action + " was not defined when registering button " + buttonConfiguration.id);
+			}
+		}
+		return false;
+	},
+	
+	/**
+	 * Registors a drop-down list for inclusion in the toolbar
+	 *
+	 * @param	object		dropDownConfiguration: the configuration object of the drop-down:
+	 *					id		: unique id for the drop-down
+	 *					tooltip		: tooltip for the drop-down
+	 *					textMode	: enable in text mode
+	 *					action		: name of the function invoked when a new option is selected
+	 *					refresh		: name of the function invoked in order to refresh the drop-down when the toolbar is updated
+	 *					context		: will be disabled if not inside one of listed elements
+	 *
+	 * @return	boolean		true if the drop-down list was successfully registered
+	 */
+	registerDropDown : function (dropDownConfiguration) {
+		if (this.isButtonInToolbar(dropDownConfiguration.id)) {
+			if (typeof((dropDownConfiguration.action) === "string") && (typeof(this[dropDownConfiguration.action]) === "function")) {
+				var actionFunctionReference = this.makeFunctionReference(dropDownConfiguration.action);
+				dropDownConfiguration.action = actionFunctionReference;
+				if (typeof(dropDownConfiguration.refresh) === "string") {
+					if (typeof(this[dropDownConfiguration.refresh]) === "function") {
+						var refreshFunctionReference = this.makeFunctionReference(dropDownConfiguration.refresh);
+						dropDownConfiguration.refresh = refreshFunctionReference;
+					} else {
+						this.appendToLog("registerDropDown", "Function " + dropDownConfiguration.refresh + " was not defined when registering drop-down " + dropDownConfiguration.id);
+						return false;
+					}
+				}
+				return this.editorConfiguration.registerDropdown(dropDownConfiguration);
+			} else {
+				this.appendToLog("registerDropDown", "Function " + dropDownConfiguration.action + " was not defined when registering drop-down " + dropDownConfiguration.id);
+			}
+		}
+		return false;
+	},
+	
+	/**
+	 * The toolbar refresh handler of the plugin
+	 * This function may be defined by the plugin subclass.
+	 * If defined, the function will be invoked whenever the toolbar state is refreshed.
+	 *
+	 * @return	boolean
+	 */
+	onUpdateToolbar : null,
+	
+	/**
+	 * The keyPress event handler
+	 * This function may be defined by the plugin subclass.
+	 * If defined, the function will be invoked whenever a key is pressed.
+	 *
+	 * @param	event		keyEvent: the event that was triggered when a key was pressed
+	 *
+	 * @return	boolean
+	 */
+	onKeyPress : null,
+	
+	/**
+	 * The onMode event handler
+	 * This function may be defined by the plugin subclass.
+	 * If defined, the function will invoked whenever the editor changes mode.
+	 *
+	 * @param	string		mode: "wysiwyg" or "textmode"
+	 *
+	 * @return	boolean
+	 */
+	onMode: null,
+	
+	/**
+	 * The onGenerate event handler
+	 * This function may be defined by the plugin subclass.
+	 * If defined, the function will invoked when the editor is initialized
+	 *
+	 * @return	boolean
+	 */
+	onGenerate : null,
+	
+	/**
+	 * Make function reference in order to avoid memory leakage in IE
+	 *
+	 * @param	string		functionName: the name of the plugin function to be invoked
+	 *
+	 * @return	function	function definition invoking the specified funcion of the plugin
+	 */
+	makeFunctionReference : function (functionName) {
+		var self = this;
+		return (function(editor, buttonId) {
+			self[functionName](editor, buttonId);});
+	},
+	
+	/**
+	 * Append an entry at the end of the troubleshooting log
+	 *
+	 * @param	string		functionName: the name of the plugin function writing to the log
+	 * @param	string		text: the text of the message
+	 *
+	 * @return	void
+	 */
+	appendToLog : function (functionName, text) {
+		HTMLArea._appendToLog("[" + this.name + "::" + functionName + "]: " + text);
+	}
+});
+

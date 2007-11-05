@@ -1,9 +1,14 @@
+2007-11-05  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
+
+	* Feature 6579 continued: Use prototype.js to create a htmlArea plugin class.
+
 2007-11-02  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
 	* Fixed feature #6579: Small correction to FE htmlArea RTE
 	* Remove exception catching in htmlArea RTE when setting styleWithCSS
 	* Fixed bug 6640: htmlArea RTE tool bar is not updated in IE when up or down arrow is pressed
 	* Fixed feature #6619: Add underscore rather than dash in file names
+	* Feature 6579 continued: Use prototype.js to create a htmlArea plugin class.
 
 2007-11-01  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 

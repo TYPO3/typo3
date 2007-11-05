@@ -591,6 +591,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 		<link rel="stylesheet" type="text/css" href="' . $this->editorCSS . '" />';
 			
 				// Loading JavaScript files and code
+			$this->TCEform->loadJavascriptLib('prototype');
 			$this->TCEform->additionalCode_pre['loadJSfiles'] = $this->loadJSfiles($this->TCEform->RTEcounter);
 			$this->TCEform->additionalJS_pre['loadJScode'] = $this->loadJScode($this->TCEform->RTEcounter);
 

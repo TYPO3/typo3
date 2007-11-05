@@ -1,3 +1,7 @@
+2007-11-05  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
+
+	* Feature 6579 continued: Use prototype.js to create a htmlArea plugin class.
+
 2007-11-05  Ingmar Schlecht  <ingmar@typo3.org>
 
 	* Issue #6641: Renamed new page tree related TSconfig Options and switched off separateNotinmenuPages by default (Thanks to Christian Kuhn)
