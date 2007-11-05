@@ -73,8 +73,8 @@ class webPageTree extends t3lib_browseTree {
 
 	var $ext_showPageId;
 	var $ext_IconMode;
-	var $ext_dontSeparateNotinmenuPages;
-	var $ext_dontAlphasortNotinmenuPages;
+	var $ext_separateNotinmenuPages;
+	var $ext_alphasortNotinmenuPages;
 	var $ajaxStatus = false; // Indicates, whether the ajax call was successful, i.e. the requested page has been found
 
 	/**
@@ -412,7 +412,7 @@ class webPageTree extends t3lib_browseTree {
 			$crazyRecursionLimiter--;
 	
 				// Not in menu:
-			if (!$this->ext_dontSeparateNotinmenuPages && (t3lib_div::inList('5,6',$row['doktype']) || $row['doktype']>=200 || $row['nav_hide']))	{
+			if ($this->ext_separateNotinmenuPages && (t3lib_div::inList('5,6',$row['doktype']) || $row['doktype']>=200 || $row['nav_hide']))	{
 				$outOfMenuPages[] = $row;
 				$outOfMenuPagesTextIndex[] = ($row['doktype']>=200 ? 'zzz'.$row['doktype'].'_' : '').$row['title'];
 			} else {
@@ -424,7 +424,7 @@ class webPageTree extends t3lib_browseTree {
 		if (count($outOfMenuPages))	{
 				// Sort out-of-menu pages:
 			$outOfMenuPages_alphabetic = array();
-			if (!$this->ext_dontAlphasortNotinmenuPages)	{
+			if ($this->ext_alphasortNotinmenuPages)	{
 				asort($outOfMenuPagesTextIndex);
 				$label_shownAlphabetically = " (alphabetic)";
 			} 

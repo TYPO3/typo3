@@ -108,8 +108,8 @@ class SC_alt_db_navframe {
 		$this->pagetree->ext_IconMode = $BE_USER->getTSConfigVal('options.pageTree.disableIconLinkToContextmenu');
 		$this->pagetree->ext_showPageId = $BE_USER->getTSConfigVal('options.pageTree.showPageIdWithTitle');
 		$this->pagetree->ext_showNavTitle = $BE_USER->getTSConfigVal('options.pageTree.showNavTitle');
-		$this->pagetree->ext_dontSeparateNotinmenuPages = $BE_USER->getTSConfigVal('options.pageTree.dontSeparateNotinmenuPages');
-		$this->pagetree->ext_dontAlphasortNotinmenuPages = $BE_USER->getTSConfigVal('options.pageTree.dontAlphasortNotinmenuPages');
+		$this->pagetree->ext_separateNotinmenuPages = $BE_USER->getTSConfigVal('options.pageTree.separateNotinmenuPages');
+		$this->pagetree->ext_alphasortNotinmenuPages = $BE_USER->getTSConfigVal('options.pageTree.alphasortNotinmenuPages');
 		$this->pagetree->thisScript = 'alt_db_navframe.php';
 		$this->pagetree->addField('alias');
 		$this->pagetree->addField('shortcut');
