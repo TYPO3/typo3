@@ -97,9 +97,6 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 		'fontsize'		=> 'FontSize',
 		'textcolor'		=> 'ForeColor',
 		'bgcolor'		=> 'HiliteColor',
-		'bold'			=> 'Bold',
-		'italic'		=> 'Italic',
-		'underline'		=> 'Underline',
 		'left'			=> 'JustifyLeft',
 		'center'		=> 'JustifyCenter',
 		'right'			=> 'JustifyRight',
@@ -123,9 +120,6 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 		'lefttoright'		=> 'LeftToRight',
 		'righttoleft'		=> 'RightToLeft',
 		'justifyfull'		=> 'JustifyFull',
-		'strikethrough'		=> 'StrikeThrough',
-		'superscript'		=> 'Superscript',
-		'subscript'		=> 'Subscript',
 		'showhelp'		=> 'ShowHelp',
 		'insertcharacter'	=> 'InsertCharacter',
 		'findreplace'		=> 'FindReplace',
@@ -469,17 +463,27 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 					if (is_object($plugin)) {
 						if ($plugin->main($this)) {
 							$this->registeredPlugins[$pluginId] = $plugin;
+								// Override buttons from previously registered plugins
+							$pluginButtons = t3lib_div::trimExplode(',', $plugin->getPluginButtons(), 1);
+							foreach ($this->pluginButton as $previousPluginId => $buttonList) {
+								$this->pluginButton[$previousPluginId] = implode(',',array_diff(t3lib_div::trimExplode(',', $this->pluginButton[$previousPluginId], 1), $pluginButtons));
+							}
 							$this->pluginButton[$pluginId] = $plugin->getPluginButtons();
 							$this->pluginList .= ','.$pluginId;
-							$this->convertToolbarForHtmlAreaArray = array_unique(array_merge($this->convertToolbarForHtmlAreaArray, $plugin->getConvertToolbarForHtmlAreaArray()));
 						}
 					}
+				}
+			}
+				// Process overrides
+			$hidePlugins = array();
+			foreach ($this->registeredPlugins as $pluginId => $plugin) {
+				if (!$this->pluginButton[$pluginId]) {
+					$hidePlugins[] = $pluginId;
 				}
 			}
 			
 				// htmlArea plugins list
 			$this->pluginEnabledArray = t3lib_div::trimExplode(',', $this->pluginList, 1);
-			$hidePlugins = array();
 			if(!t3lib_extMgm::isLoaded('static_info_tables') || in_array($this->language, t3lib_div::trimExplode(',', $TYPO3_CONF_VARS['EXTCONF'][$this->ID]['noSpellCheckLanguages']))) $hidePlugins[] = 'SpellChecker';
 			if ($this->client['BROWSER'] == 'msie') $hidePlugins[] = 'Acronym';
 			if ($this->client['BROWSER'] == 'opera') {
@@ -591,7 +595,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 		<link rel="stylesheet" type="text/css" href="' . $this->editorCSS . '" />';
 			
 				// Loading JavaScript files and code
-			$this->TCEform->loadJavascriptLib('prototype');
+			//$this->TCEform->loadJavascriptLib('prototype');
 			$this->TCEform->additionalCode_pre['loadJSfiles'] = $this->loadJSfiles($this->TCEform->RTEcounter);
 			$this->TCEform->additionalJS_pre['loadJScode'] = $this->loadJScode($this->TCEform->RTEcounter);
 
@@ -789,8 +793,8 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			// Disabling the plugins if their buttons are not in the toolbar
 		$hidePlugins = array();
 		foreach ($this->pluginButton as $pluginId => $buttonList) {
-			$buttonArray = t3lib_div::trimExplode(',', $buttonList, 1);
 			$showPlugin = false;
+			$buttonArray = t3lib_div::trimExplode(',', $buttonList, 1);
 			foreach ($buttonArray as $button) {
 				if (in_array($button, $this->toolbar)) {
 					$showPlugin = true;
@@ -815,6 +819,12 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 		}
 		$this->toolbar = array_diff($this->toolbar, $hideButtons);
 		
+			// Completing the toolbar converion array for htmlArea
+		foreach ($this->registeredPlugins as $pluginId => $plugin) {
+			if ($this->isPluginEnabled($pluginId)) {
+				$this->convertToolbarForHtmlAreaArray = array_unique(array_merge($this->convertToolbarForHtmlAreaArray, $plugin->getConvertToolbarForHtmlAreaArray()));
+			}
+		}
 			// Renaming buttons of replacement plugins
 		if( $this->isPluginEnabled('SelectColor') ) {
 			$this->convertToolbarForHtmlAreaArray['textcolor'] = 'CO-forecolor';
@@ -892,6 +902,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 		</script>';
 		$loadJavascriptCode .= '
 		<script type="text/javascript" src="' . $this->buildJSMainLangFile($RTEcounter) . '"></script>
+		<script type="text/javascript" src="'. ($this->is_FE()?'/typo3/':'') . 'contrib/prototype/prototype.js"></script>
 		<script type="text/javascript" src="' . $this->writeTemporaryFile('EXT:' . $this->ID . '/htmlarea/htmlarea.js', "htmlarea") . '"></script>
 		';
 		return $loadJavascriptCode;
@@ -1709,11 +1720,8 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 	 
 	function buildJSMainLangFile($RTEcounter) { 
 		$contents = $this->buildJSMainLangArray() . chr(10);
-		$pluginArray = t3lib_div::trimExplode(',', $this->pluginList, 1);
-		foreach ($pluginArray as $plugin) {
-			if (in_array($plugin, $this->pluginEnabledCumulativeArray[$RTEcounter])) {
-				$contents .= $this->buildJSLangArray($plugin) . chr(10);
-			}
+		foreach ($this->pluginEnabledCumulativeArray[$RTEcounter] as $pluginId) {
+			$contents .= $this->buildJSLangArray($pluginId) . chr(10);
 		}
 		return $this->writeTemporaryFile('', $this->language.'_'.$this->OutputCharset, 'js', $contents);
 	}

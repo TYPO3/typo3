@@ -296,12 +296,6 @@ HTMLArea.Config = function () {
 	this.popupURL = "popups/";
 
 	this.btnList = {
-		Bold:			["Bold", "ed_format_bold", false, function(editor) {editor.execCommand("Bold");}],
-		Italic:			["Italic", "ed_format_italic", false, function(editor) {editor.execCommand("Italic");}],
-		Underline:		["Underline", "ed_format_underline", false, function(editor) {editor.execCommand("Underline");}],
-		StrikeThrough:		["Strikethrough", "ed_format_strike", false, function(editor) {editor.execCommand("StrikeThrough");}],
-		Subscript:		["Subscript", "ed_format_sub", false, function(editor) {editor.execCommand("Subscript");}],
-		Superscript:		["Superscript", "ed_format_sup", false, function(editor) {editor.execCommand("Superscript");}],
 		JustifyLeft:		["Justify Left", "ed_align_left.gif", false, function(editor) {editor.execCommand("JustifyLeft");}],
 		JustifyCenter:		["Justify Center", "ed_align_center.gif", false, function(editor) {editor.execCommand("JustifyCenter");}],
 		JustifyRight:		["Justify Right", "ed_align_right.gif", false, function(editor) {editor.execCommand("JustifyRight");}],
@@ -332,10 +326,6 @@ HTMLArea.Config = function () {
 		// Default hotkeys
 	this.hotKeyList = {
 		a:	"SelectAll",
-		b:	"Bold",
-		i:	"Italic",
-		u:	"Underline",
-		s:	"StrikeThrough",
 		l:	"JustifyLeft",
 		e:	"JustifyCenter",
 		r:	"JustifyRight",
@@ -378,30 +368,30 @@ HTMLArea.Config = function () {
  *    });
  */
 HTMLArea.Config.prototype.registerButton = function(id,tooltip,image,textMode,action,context,hide,selection) {
-	var the_id;
+	var buttonId;
 	switch (typeof(id)) {
-		case "string": the_id = id; break;
-		case "object": the_id = id.id; break;
-		default: HTMLArea._appendToLog("ERROR [HTMLArea.Config::registerButton]: invalid arguments");
+		case "string": buttonId = id; break;
+		case "object": buttonId = id.id; break;
+		default: HTMLArea._appendToLog("[HTMLArea.Config::registerButton]: invalid arguments");
 			 return false;
 	}
-	if (typeof(this.customSelects[the_id]) != "undefined") {
-		HTMLArea._appendToLog("WARNING [HTMLArea.Config::registerButton]: A dropdown with the same ID " + id + " already exists.");
+	if (typeof(this.customSelects[buttonId]) !== "undefined") {
+		HTMLArea._appendToLog("[HTMLArea.Config::registerButton]: A dropdown with the same Id: " + buttonId + " already exists.");
 		return false;
 	}
-	if (typeof(this.btnList[the_id]) != "undefined") {
-		HTMLArea._appendToLog("WARNING [HTMLArea.Config::registerButton]: A button with the same ID " + id + " already exists.");
+	if (typeof(this.btnList[buttonId]) !== "undefined") {
+		HTMLArea._appendToLog("[HTMLArea.Config::registerButton]: A button with the same Id: " + buttonId + " already exists.");
 		return false;
 	}
 	switch (typeof(id)) {
 		case "string":
-			if (typeof(hide) == "undefined") var hide = false;
-			if (typeof(selection) == "undefined") var selection = false;
+			if (typeof(hide) === "undefined") var hide = false;
+			if (typeof(selection) === "undefined") var selection = false;
 			this.btnList[id] = [tooltip, image, textMode, action, context, hide, selection];
 			break;
 		case "object":
-			if (typeof(id.hide) == "undefined") id.hide = false;
-			if (typeof(id.selection) == "undefined") id.selection = false;
+			if (typeof(id.hide) === "undefined") id.hide = false;
+			if (typeof(id.selection) === "undefined") id.selection = false;
 			this.btnList[id.id] = [id.tooltip, id.image, id.textMode, id.action, id.context, id.hide, id.selection];
 			break;
 	}
@@ -582,7 +572,6 @@ HTMLArea.prototype.createSelect = function(txt,tb_line,first_cell_on_line,labelO
  */
 HTMLArea.prototype.createButton = function (txt,tb_line,first_cell_on_line,labelObj) {
 	var btn = null,
-		btnImg = null,
 		newObj = {
 			created : false,
 			el : null,
@@ -652,16 +641,10 @@ HTMLArea.prototype.createButton = function (txt,tb_line,first_cell_on_line,label
 			newObj["labelUsed"] = true;
 		}
 		HTMLArea._addEvents(newObj["el"],["mouseover", "mouseout", "mousedown", "click"], HTMLArea.toolBarButtonHandler);
-
-		if (typeof(btn[1]) != "string" && HTMLArea.is_ie) {
-			var btnImgContainer = document.createElement("div");
-			btnImgContainer.className = "buttonImgContainer";
-			btnImgContainer.innerHTML = '<img src="' + btn[1][0] + '" style="position: relative; top: -' + (18*(btn[1][1]+1)) + 'px; left: -' + (18*(btn[1][2]+1)) + 'px;" alt="' + btn[0] + '" />';
-			newObj["el"].appendChild(btnImgContainer);
-		} else {
-			newObj["el"].className += " " + txt;
-			if (this.plugins["TYPO3Browsers"] && (txt == "CreateLink" || txt == "InsertImage")) newObj["el"].className += "-TYPO3Browsers";
-		}
+		
+		newObj["el"].className += " " + txt;
+		if (this.plugins["TYPO3Browsers"] && (txt == "CreateLink" || txt == "InsertImage")) newObj["el"].className += "-TYPO3Browsers";
+		
 		newObj["created"] = true;
 	}
 	return newObj;
@@ -1621,6 +1604,7 @@ HTMLArea.prototype.updateToolbar = function(noStatus) {
 					}
 				}
 			}
+			this._statusBarTree.selected = null;
 			this._statusBarTree.innerHTML = '';
 			this._statusBarTree.appendChild(document.createTextNode(HTMLArea.I18N.msg["Path"] + ": ")); // clear
 			for (i = ancestors.length; --i >= 0;) {
@@ -1757,12 +1741,6 @@ HTMLArea.prototype.updateToolbar = function(noStatus) {
 			while (el && !HTMLArea.isBlockElement(el)) { el = el.parentNode; }
 			if (el) btn.state("active",(el.style.direction == ((cmd == "RightToLeft") ? "rtl" : "ltr")));
 			break;
-		    case "Bold":
-		    case "Italic":
-		    case "StrikeThrough":
-		    case "Underline":
-		    case "Subscript":
-		    case "Superscript":
 		    case "JustifyLeft":
 		    case "JustifyCenter":
 		    case "JustifyRight":
@@ -2320,6 +2298,17 @@ HTMLArea._editorEvent = function(ev) {
 					HTMLArea._stopEvent(ev);
 					return false;
 				} else {
+					for (var i in editor.plugins) {
+						var plugin = editor.plugins[i].instance;
+						if (typeof(plugin.onHotKey) === "function") {
+							if (plugin.onHotKey(key)) {
+								continue;
+							} else {
+								HTMLArea._stopEvent(ev);
+								return false;
+							}
+						}
+					}
 					editor.updateToolbar();
 				}
 			}
@@ -2583,7 +2572,7 @@ HTMLArea._hasClass = function(el, className) {
 	return false;
 };
 
-HTMLArea.RE_blockTags = /^(body|p|h1|h2|h3|h4|h5|h6|ul|ol|pre|dl|div|noscript|blockquote|form|hr|table|fieldset|address|td|tr|th|li|tbody|thead|tfoot|iframe|object)$/;
+HTMLArea.RE_blockTags = /^(body|p|h1|h2|h3|h4|h5|h6|ul|ol|pre|dl|dt|dd|div|noscript|blockquote|form|hr|table|caption|fieldset|address|td|tr|th|li|tbody|thead|tfoot|iframe|object)$/;
 HTMLArea.isBlockElement = function(el) { return el && el.nodeType == 1 && HTMLArea.RE_blockTags.test(el.nodeName.toLowerCase()); };
 HTMLArea.RE_closingTags = /^(p|span|a|li|ol|ul|dl|dt|td|th|tr|tbody|thead|tfoot|caption|colgroup|table|div|em|i|strong|b|code|cite|blockquote|q|dfn|abbr|acronym|font|center|object|embed|tt|style|script|title|head|clickenlarge)$/;
 HTMLArea.RE_noClosingTag = /^(img|br|hr|col|input|area|base|link|meta|param)$/;
@@ -3182,7 +3171,6 @@ HTMLArea.plugin = Class.create( {
 	 * @param	object		buttonConfiguration: the configuration object of the button:
 	 *					id		: unique id for the button
 	 *					tooltip		: tooltip for the button
-	 *					image		: image to be displayed in the toolbar
 	 *					textMode	: enable in text mode
 	 *					action		: name of the function invoked when the button is pressed
 	 *					context		: will be disabled if not inside one of listed elements
@@ -3260,6 +3248,17 @@ HTMLArea.plugin = Class.create( {
 	onKeyPress : null,
 	
 	/**
+	 * The hotKey event handler
+	 * This function may be defined by the plugin subclass.
+	 * If defined, the function will be invoked whenever a hot key is pressed.
+	 *
+	 * @param	event		key: the hot key that was pressed
+	 *
+	 * @return	boolean
+	 */
+	onHotKey : null,
+	
+	/**
 	 * The onMode event handler
 	 * This function may be defined by the plugin subclass.
 	 * If defined, the function will invoked whenever the editor changes mode.
@@ -3268,7 +3267,7 @@ HTMLArea.plugin = Class.create( {
 	 *
 	 * @return	boolean
 	 */
-	onMode: null,
+	onMode : null,
 	
 	/**
 	 * The onGenerate event handler

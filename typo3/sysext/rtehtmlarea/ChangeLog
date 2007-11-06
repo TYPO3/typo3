@@ -1,6 +1,7 @@
 2007-11-05  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
 	* Feature 6579 continued: Use prototype.js to create a htmlArea plugin class.
+	* Added feature #6657: Extract inline buttons from htmlArea RTE main scripts.
 
 2007-11-02  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 

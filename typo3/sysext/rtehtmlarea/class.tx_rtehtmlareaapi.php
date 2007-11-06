@@ -78,7 +78,9 @@ abstract class tx_rtehtmlareaapi {
 	 * @return	string		a modified tollbar order list
 	 */
 	public function addButtonsToToolbar() {
-		return ('bar,'.$this->pluginButtons.',linebreak,'.$this->htmlAreaRTE->defaultToolbarOrder);
+			//Add only buttons not yet in the default toolbar order
+		$addButtons = implode(',', array_diff(t3lib_div::trimExplode(',', $this->pluginButtons, 1), t3lib_div::trimExplode(',', $this->htmlAreaRTE->defaultToolbarOrder, 1)));
+		return (($addButtons ? ('bar,'  . $addButtons . ',linebreak,') : '')  . $this->htmlAreaRTE->defaultToolbarOrder);
 	}
 	
 	/**

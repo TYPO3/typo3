@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+	<meta type="array">
+		<description>Labels for Default Inline plugin of htmlArea RTE</description>
+		<type>module</type>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index="Bold-Tooltip">Bold</label>
+			<label index="Italic-Tooltip">Italic</label>
+			<label index="StrikeThrough-Tooltip">Strike-through</label>
+			<label index="Subscript-Tooltip">Subscript</label>
+			<label index="Superscript-Tooltip">Superscript</label>
+			<label index="Underline-Tooltip">Underline</label>
+		</languageKey>
+		<languageKey index="fr" type="array">
+			<label index="Bold-Tooltip">Gras</label>
+		</languageKey>
+	</data>
+	<orig_hash type="array">
+		<languageKey index="default" type="array">
+		</languageKey>
+	</orig_hash>
+	<orig_text type="array">
+		<languageKey index="default" type="array">
+		</languageKey>
+	</orig_text>
+</T3locallang>

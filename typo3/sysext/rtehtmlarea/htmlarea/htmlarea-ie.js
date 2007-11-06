@@ -191,7 +191,7 @@ HTMLArea.prototype._activeElement = function(sel) {
 			// (this happens when a node is clicked in the tree)
 		var range = sel.createRange();
 		var p_elm = this.getParentElement(sel);
-		if(p_elm.innerHTML == range.htmlText) return p_elm;
+		if(p_elm.outerHTML == range.htmlText) return p_elm;
 		return null;
     	}
 };
@@ -254,6 +254,7 @@ HTMLArea.statusBarHandler = function (ev) {
 	} else {
 		editor.selectNode(target.el);
 	}
+	editor._statusBarTree.selected = target.el;
 	editor.updateToolbar(true);
 	switch (ev.type) {
 		case "click" :

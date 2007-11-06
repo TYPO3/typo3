@@ -219,12 +219,7 @@ HTMLArea.prototype._activeElement = function(sel) {
  */
 HTMLArea.prototype._selectionEmpty = function(sel) {
 	if (!sel) return true;
-	if (typeof(sel.isCollapsed) != 'undefined') {
-		if (HTMLArea.is_opera) this._createRange(sel).collapsed;
-			else sel.isCollapsed;
-	} else {
-		return true;
-	}
+	return sel.isCollapsed;
 };
 
 /***************************************************

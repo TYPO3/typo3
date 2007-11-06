@@ -1,0 +1,7 @@
+/* Selectors for the DefaultInline plugin of htmlArea RTE */
+.htmlarea .toolbar .Bold {background-image:url("images/InlineElements/bold.gif");}
+.htmlarea .toolbar .Italic {background-image:url("images/InlineElements/italic.gif");}
+.htmlarea .toolbar .StrikeThrough {background-image:url("images/InlineElements/strikethrough.gif");}
+.htmlarea .toolbar .Subscript {background-image:url("images/InlineElements/subscript.gif");}
+.htmlarea .toolbar .Superscript {background-image:url("images/InlineElements/superscript.gif");}
+.htmlarea .toolbar .Underline {background-image:url("images/InlineElements/underline.gif");}

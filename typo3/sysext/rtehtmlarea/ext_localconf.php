@@ -46,6 +46,10 @@ $TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['version'] = $EM_CONF[$_EXTKEY]['version']
 // Initialize plugin registration array
 $TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['plugins'] = array();
 
+// Registering plugin from "inner" extensions:
+$TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['plugins']['DefaultInline'] = array();
+$TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['plugins']['DefaultInline']['objectReference'] = 'EXT:'.$_EXTKEY.'/extensions/DefaultInline/class.tx_rtehtmlarea_defaultinline.php:&tx_rtehtmlarea_defaultinline';
+
 $_EXTCONF = unserialize($_EXTCONF);    // unserializing the configuration so we can use it here:
 
 if (strstr($_EXTCONF['defaultConfiguration'],'Minimal')) {
