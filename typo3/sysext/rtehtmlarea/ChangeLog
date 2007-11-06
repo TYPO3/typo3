@@ -1,3 +1,7 @@
+2007-11-06  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
+
+	* Added SVN properties on some rtehtmlarea files
+
 2007-11-05  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
 	* Feature 6579 continued: Use prototype.js to create a htmlArea plugin class.

@@ -27,7 +27,7 @@
 /*
  * Default Inline Plugin for TYPO3 htmlArea RTE
  *
- * TYPO3 CVS ID: $Id: inline-elements.js 1809 2006-11-23 12:04:14Z ingmars $
+ * TYPO3 SVN ID: $Id $
  */
 DefaultInline = Class.create(HTMLArea.plugin, {
 	
