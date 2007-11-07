@@ -319,7 +319,7 @@ class t3lib_TCEforms_inline {
 
 		$header = $this->renderForeignRecordHeader($parentUid, $foreign_table, $rec, $config);
 		$combination = $this->renderCombinationTable($rec, $appendFormFieldNames, $config);
-		$fields = $this->fObj->getMainFields($foreign_table,$rec);
+		$fields = $this->renderMainFields($foreign_table, $rec);
 		$fields = $this->wrapFormsSection($fields);
 
 		if ($isNewRecord) {
@@ -352,6 +352,30 @@ class t3lib_TCEforms_inline {
 		$this->fObj->popFromDynNestedStack();
 
 		return $out;
+	}
+
+
+	/**
+	 * Wrapper for TCEforms::getMainFields().
+	 *
+	 * @param	string		$table: The table name
+	 * @param	array		$row: The record to be rendered
+	 * @return	string		The rendered form
+	 */
+	function renderMainFields($table, $row) {
+			// The current render depth of t3lib_TCEforms:
+		$depth = $this->fObj->renderDepth;
+			// If there is some information about already rendered palettes of our parent, store this info:
+		if (isset($this->fObj->palettesRendered[$depth][$table])) {
+			$palettesRendered = $this->fObj->palettesRendered[$depth][$table];
+		}
+			// Render the form:
+		$content = $this->fObj->getMainFields($table, $row, $depth);
+			// If there was some info about rendered palettes stored, write it back for our parent:
+		if (isset($palettesRendered)) {
+			$this->fObj->palettesRendered[$depth][$table] = $palettesRendered;
+		}
+		return $content;
 	}
 
 
@@ -594,7 +618,7 @@ class t3lib_TCEforms_inline {
 			}
 
 				// get the TCEforms interpretation of the TCA of the child table
-			$out = $this->fObj->getMainFields($comboConfig['foreign_table'], $comboRecord);
+			$out = $this->renderMainFields($comboConfig['foreign_table'], $comboRecord);
 			$out = $this->wrapFormsSection($out, array(), array('class' => 'wrapperAttention'));
 
 				// if this is a new record, add a pid value to store this record and the pointer value for the intermediate table
