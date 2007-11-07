@@ -1,3 +1,7 @@
+2007-11-07  Oliver Hader  <oh@inpublica.de>
+
+	* Fixed bug #5772: IRRE - Combination mode doesn't save new child records correctly
+
 2007-11-02  Ingmar Schlecht  <ingmar@typo3.org>
 
 	* Bug #6561 revised: Registers IMAGE_NUM and IMAGE_NUM_CURRENT contained incorrect array indizes (Thanks to Helmut Hummel)
