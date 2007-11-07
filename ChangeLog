@@ -1,3 +1,7 @@
+2007-11-07  Benjamin Mack  <mack@xnos.org>
+
+	* (minor) sysext "opendocs" is now installed by default
+
 2007-11-07  Oliver Hader  <oh@inpublica.de>
 
 	* (major) Fixed bug #5772: IRRE - Combination mode doesn't save new child records correctly
