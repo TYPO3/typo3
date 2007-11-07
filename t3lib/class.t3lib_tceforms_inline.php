@@ -586,15 +586,15 @@ class t3lib_TCEforms_inline {
 			$comboConfig = $GLOBALS['TCA'][$foreign_table]['columns'][$foreign_selector]['config'];
 			$comboRecord = array();
 
-				// record does already exist, so load it
-			if (t3lib_div::testInt($rec[$foreign_selector])) {
+				// If record does already exist, load it:
+			if ($rec[$foreign_selector] && t3lib_div::testInt($rec[$foreign_selector])) {
 				$comboRecord = $this->getRecord(
 					$this->inlineFirstPid,
 					$comboConfig['foreign_table'],
 					$rec[$foreign_selector]
 				);
 				$isNewRecord = false;
-				// it's a new record, so get some default data
+				// It is a new record, create a new record virtually:
 			} else {
 				$comboRecord = $this->getNewRecord(
 					$this->inlineFirstPid,
@@ -1535,7 +1535,18 @@ class t3lib_TCEforms_inline {
 					$localMatches += $this->arrayCompareComplex($subjectArray, $value, $type) ? 1 : 0;
 					// directly compare a value
 				} else {
-					$localMatches += isset($subjectArray[$key]) && isset($value) && $subjectArray[$key] === $value ? 1 : 0;
+					if (isset($subjectArray[$key]) && isset($value)) {
+							// Boolean match:
+						if (is_bool($value)) {
+							$localMatches += (!($subjectArray[$key] xor $value) ? 1 : 0);
+							// Value match for numbers:
+						} elseif (is_numeric($subjectArray[$key]) && is_numeric($value)) {
+							$localMatches += ($subjectArray[$key] == $value ? 1 : 0);
+							// Value and type match:
+						} else {
+							$localMatches += ($subjectArray[$key] === $value ? 1 : 0);
+						}
+					}
 				}
 
 					// if one or more matches are required ('OR'), return true after the first successful match
@@ -1675,7 +1686,7 @@ class t3lib_TCEforms_inline {
 								'foreign_table' => $table,
 								'%OR' => array(
 									'%AND' => array(
-										'appearance' => array('useCombination' => 1),
+										'appearance' => array('useCombination' => true),
 										'foreign_selector' => $field,
 									),
 									'MM' => $config['MM']
