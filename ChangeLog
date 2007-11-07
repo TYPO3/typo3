@@ -1,6 +1,7 @@
 2007-11-06  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
 	* Added SVN properties on some rtehtmlarea files
+	* Feature 6579 continued: Make InlineCSS plugin use the RTE extension and plugin API
 
 2007-11-05  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 

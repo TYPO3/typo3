@@ -3095,6 +3095,12 @@ HTMLArea.plugin = Class.create( {
 		this.editorNumber = editor._editorNumber;
 		this.editorConfiguration = editor.config;
 		this.name = pluginName;
+		try {
+			HTMLArea.I18N[this.name] = eval(this.name + "_langArray");
+			this.I18N = HTMLArea.I18N[this.name];
+		} catch(e) {
+			this.appendToLog("initialize", "The localization array for plugin " + this.name + "  could not be assigned.");
+		}
 		return this.configurePlugin(editor);
 	},
 	
@@ -3289,6 +3295,16 @@ HTMLArea.plugin = Class.create( {
 		var self = this;
 		return (function(editor, buttonId) {
 			self[functionName](editor, buttonId);});
+	},
+	/**
+	 * Localize a string
+	 *
+	 * @param	string		label: the name of the label to localize
+	 *
+	 * @return	string		the localization of the label
+	 */
+	localize : function (label) {
+		return this.I18N[label];
 	},
 	
 	/**

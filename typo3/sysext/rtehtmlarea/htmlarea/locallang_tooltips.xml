@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<!-- TYPO3 SVN ID: $Id$ -->
 <T3locallang>
 	<meta type="array">
 		<description>Labels for tooltips of htmlArea RTE</description>
@@ -6,12 +7,6 @@
 	</meta>
 	<data type="array">
 		<languageKey index="default" type="array">
-			<label index="bold">Bold</label>
-			<label index="italic">Italic</label>
-			<label index="underline">Underline</label>
-			<label index="strikethrough">Strikethrough</label>
-			<label index="subscript">Subscript</label>
-			<label index="superscript">Superscript</label>
 			<label index="justifyleft">Justify Left</label>
 			<label index="justifycenter">Justify Center</label>
 			<label index="justifyright">Justify Right</label>
@@ -48,12 +43,6 @@
 	</data>
 	<orig_hash type="array">
 		<languageKey index="default" type="array">
-			<label index="bold" type="integer">18137861</label>
-			<label index="italic" type="integer">30962801</label>
-			<label index="underline" type="integer">139620890</label>
-			<label index="strikethrough" type="integer">153527579</label>
-			<label index="subscript" type="integer">153638286</label>
-			<label index="superscript" type="integer">103903129</label>
 			<label index="justifyleft" type="integer">103035233</label>
 			<label index="justifycenter" type="integer">155705392</label>
 			<label index="justifyright" type="integer">75036879</label>

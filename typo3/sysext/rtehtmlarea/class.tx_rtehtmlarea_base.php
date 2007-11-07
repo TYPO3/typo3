@@ -128,10 +128,8 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 		'inserttag'		=> 'InsertTag',
 		'acronym'		=> 'Acronym',
 		'splitblock'		=> 'SplitBlock',
-		'blockstylelabel'	=> 'I[style]',	
+		'blockstylelabel'	=> 'I[style]',
 		'blockstyle'		=> 'DynamicCSS-class',
-		'textstylelabel'	=> 'I[text_style]',
-		'textstyle'		=> 'InlineCSS-class',
 		'toggleborders'		=> 'TO-toggle-borders',
 		'tableproperties'	=> 'TO-table-prop',
 		'rowproperties'		=> 'TO-row-prop',
@@ -206,10 +204,9 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 		'7'	=>	'xx-large',
 		);
 	
-	var $pluginList = 'TableOperations, ContextMenu, SpellChecker, SelectColor, TYPO3Browsers, InsertSmiley, FindReplace, RemoveFormat, CharacterMap, QuickTag, InlineCSS, DynamicCSS, UserElements, Acronym, TYPO3HtmlParser';
+	var $pluginList = 'TableOperations, ContextMenu, SpellChecker, SelectColor, TYPO3Browsers, InsertSmiley, FindReplace, RemoveFormat, CharacterMap, QuickTag, DynamicCSS, UserElements, Acronym, TYPO3HtmlParser';
 	
 	var $pluginButton = array(
-		'InlineCSS'		=> 'textstyle',
 		'DynamicCSS'		=> 'blockstyle',
 		'SpellChecker'		=> 'spellcheck',
 		'InsertSmiley'		=> 'emoticon',
@@ -226,7 +223,6 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 		);
 
 	var $pluginLabel = array(
-		'InlineCSS' 	=> 'textstylelabel',
 		'DynamicCSS' 	=> 'blockstylelabel',
 		);
 
@@ -469,6 +465,11 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 								$this->pluginButton[$previousPluginId] = implode(',',array_diff(t3lib_div::trimExplode(',', $this->pluginButton[$previousPluginId], 1), $pluginButtons));
 							}
 							$this->pluginButton[$pluginId] = $plugin->getPluginButtons();
+							$pluginLabels = t3lib_div::trimExplode(',', $plugin->getPluginLabels(), 1);
+							foreach ($this->pluginLabel as $previousPluginId => $labelList) {
+								$this->pluginLabel[$previousPluginId] = implode(',',array_diff(t3lib_div::trimExplode(',', $this->pluginLabel[$previousPluginId], 1), $pluginLabels));
+							}
+							$this->pluginLabel[$pluginId] = $plugin->getPluginLabels();
 							$this->pluginList .= ','.$pluginId;
 						}
 					}
@@ -1103,7 +1104,13 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 		}
 		
 			// Process classes configuration
-		if ($this->isPluginEnabled('InlineCSS') || $this->isPluginEnabled('DynamicCSS')) {
+		$classesConfigurationRequired = $this->isPluginEnabled('DynamicCSS');
+		foreach ($this->registeredPlugins as $pluginId => $plugin) {
+			if ($this->isPluginEnabled($pluginId)) {
+				$classesConfigurationRequired = $classesConfigurationRequired || $plugin->requiresClassesConfiguration();
+			}
+		}
+		if ($classesConfigurationRequired) {
 			$configureRTEInJavascriptString .= $this->buildJSClassesConfig($RTEcounter);
 		}
 		

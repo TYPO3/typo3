@@ -27,7 +27,7 @@
 /*
  * Default Inline Plugin for TYPO3 htmlArea RTE
  *
- * TYPO3 SVN ID: $Id $
+ * TYPO3 SVN ID: $Id$
  */
 DefaultInline = Class.create(HTMLArea.plugin, {
 	
@@ -56,8 +56,7 @@ DefaultInline = Class.create(HTMLArea.plugin, {
 			buttonId = button[0];
 			var buttonConfiguration = {
 				id		: buttonId,
-				tooltip		: DefaultInline.I18N[buttonId + "-Tooltip"],
-				image		: this.editor.imgURL(buttonId.toLowerCase() + ".gif", "DefaultInline"),
+				tooltip		: this.localize(buttonId + "-Tooltip"),
 				textMode	: false,
 				action		: "onButtonPress",
 				context		: button[1]
@@ -67,9 +66,6 @@ DefaultInline = Class.create(HTMLArea.plugin, {
 		return true;
 	}
 });
-
-/* The localization array for this plugin */
-DefaultInline.I18N = DefaultInline_langArray;
 
 /* The list of buttons added by this plugin */
 DefaultInline.buttonList = [

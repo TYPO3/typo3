@@ -39,10 +39,12 @@ abstract class tx_rtehtmlareaapi {
 	protected $relativePathToSkin;				// Path to the skin (css) file relative to the extension dir.
 	protected $htmlAreaRTE;					// Reference to the invoking object
 	protected $thisConfig;					// Reference to RTE PageTSConfig
-	protected $toolBar;					// Refrence to RTE toolbar array
+	protected $toolbar;					// Refrence to RTE toolbar array
 	protected $LOCAL_LANG; 					// Frontend language array
 	protected $pluginButtons = '';				// The comma-seperated list of button names that the extension id adding to the htmlArea RTE tollbar
+	protected $pluginLabels = '';				// The comma-seperated list of label names that the extension id adding to the htmlArea RTE tollbar
 	protected $convertToolbarForHtmlAreaArray = array();	// The name-converting array, converting the button names used in the RTE PageTSConfing to the button id's used by the JS scripts
+	protected $requiresClassesConfiguration = false;	// True if the extension requires the PageTSConfig Classes configuration
 	
 	/**
 	 * Returns true if the plugin is available and correctly initialized
@@ -112,11 +114,12 @@ abstract class tx_rtehtmlareaapi {
 		global $TSFE, $LANG;
 		
 		$registerRTEinJavascriptString = '';
-		foreach($this->pluginButtons as $button) {
-			if (in_array($button, $this->toolBar)) {
+		$pluginButtons = t3lib_div::trimExplode(',', $this->pluginButtons, 1);
+		foreach ($pluginButtons as $button) {
+			if (in_array($button, $this->toolbar)) {
 				if (!is_array( $this->thisConfig['buttons.']) || !is_array( $this->thisConfig['buttons.'][$button.'.'])) {
 					$registerRTEinJavascriptString .= '
-					RTEarea['.$RTEcounter.']["buttons"]["'. $button .'"] = new Object();';
+			RTEarea['.$RTEcounter.']["buttons"]["'. $button .'"] = new Object();';
 				}
 			}
 		}
@@ -142,12 +145,30 @@ abstract class tx_rtehtmlareaapi {
 	}
 	
 	/**
+	 * Returns the list of toolbar labels implemented by the plugin
+	 *
+	 * @return	string		the list of labels implemented by the plugin
+	 */
+	public function getPluginLabels() {
+		return $this->pluginLabels;
+	}
+	
+	/**
 	 * Returns the conversion array from TYPO3 button names to htmlArea button names
 	 *
 	 * @return	array		the conversion array from TYPO3 button names to htmlArea button names
 	 */
 	public function getConvertToolbarForHtmlAreaArray() {
 		return $this->convertToolbarForHtmlAreaArray;
+	}
+	
+	/**
+	 * Returns true if the extension requires the PageTSConfig Classes configuration
+	 *
+	 * @return	boolean		true if the extension requires the PageTSConfig Classes configuration
+	 */
+	public function requiresClassesConfiguration() {
+		return $this->requiresClassesConfiguration;
 	}
 
 } // end of class

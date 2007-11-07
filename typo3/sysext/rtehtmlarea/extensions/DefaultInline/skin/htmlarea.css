@@ -1,5 +1,5 @@
 /* Selectors for the DefaultInline plugin of htmlArea RTE */
-/* TYPO3 SVN ID: $Id $ */
+/* TYPO3 SVN ID: $Id$ */
 .htmlarea .toolbar .Bold {background-image:url("images/InlineElements/bold.gif");}
 .htmlarea .toolbar .Italic {background-image:url("images/InlineElements/italic.gif");}
 .htmlarea .toolbar .StrikeThrough {background-image:url("images/InlineElements/strikethrough.gif");}

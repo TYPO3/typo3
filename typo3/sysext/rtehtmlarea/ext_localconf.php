@@ -49,6 +49,8 @@ $TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['plugins'] = array();
 // Registering plugin from "inner" extensions:
 $TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['plugins']['DefaultInline'] = array();
 $TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['plugins']['DefaultInline']['objectReference'] = 'EXT:'.$_EXTKEY.'/extensions/DefaultInline/class.tx_rtehtmlarea_defaultinline.php:&tx_rtehtmlarea_defaultinline';
+$TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['plugins']['InlineCSS'] = array();
+$TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['plugins']['InlineCSS']['objectReference'] = 'EXT:'.$_EXTKEY.'/extensions/InlineCSS/class.tx_rtehtmlarea_inlinecss.php:&tx_rtehtmlarea_inlinecss';
 
 $_EXTCONF = unserialize($_EXTCONF);    // unserializing the configuration so we can use it here:
 
