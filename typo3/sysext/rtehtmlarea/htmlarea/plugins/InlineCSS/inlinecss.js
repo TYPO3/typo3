@@ -268,11 +268,8 @@ InlineCSS.addMethods({
 	generate : function(editor) {
 		var obj = editor.config.customSelects["InlineCSS-class"];
 		var classesUrl = obj["classesUrl"];
-		if (classesUrl && typeof(HTMLArea.classesLabels) == "undefined") {
-			var classesData = HTMLArea._getScript(0, false, classesUrl);
-			if (classesData) {
-				eval(classesData);
-			}
+		if (classesUrl && typeof(HTMLArea.classesLabels) === "undefined") {
+			this.getJavascriptFile(classesUrl);
 		}
 			// Let us load the style sheets
 		if (obj.loaded) {

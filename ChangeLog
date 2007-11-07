@@ -1,3 +1,7 @@
+2007-11-07  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
+
+	* Added feature #6668: Let htmlArea RTE use the Ajax request of the Prototype framework
+
 2007-11-07  Benjamin Mack  <mack@xnos.org>
 
 	* (minor) sysext "opendocs" is now installed by default

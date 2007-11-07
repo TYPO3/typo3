@@ -122,8 +122,8 @@ HTMLArea.onload = function(){
 };
 HTMLArea.loadTimer;
 HTMLArea._scripts = [];
-HTMLArea._scriptLoaded = [];
-HTMLArea._request = [];
+HTMLArea.scriptLoaded = [];
+HTMLArea.ajaxRequest = [];
 HTMLArea.loadScript = function(url, plugin) {
 	if (plugin) url = _editor_url + "/plugins/" + plugin + '/' + url;
 	if (HTMLArea.is_opera) url = _typo3_host_url + url;
@@ -135,54 +135,27 @@ if(HTMLArea.is_gecko) HTMLArea.loadScript(RTEarea[0]["htmlarea-gecko"] ? RTEarea
 if(HTMLArea.is_ie) HTMLArea.loadScript(RTEarea[0]["htmlarea-ie"] ? RTEarea[0]["htmlarea-ie"] : _editor_url + "htmlarea-ie.js");
 
 /*
- * Get a script using asynchronous XMLHttpRequest
+ * Get a script using an asynchronous request
  */
-HTMLArea.MSXML_XMLHTTP_PROGIDS = new Array("Msxml2.XMLHTTP.5.0", "Msxml2.XMLHTTP.4.0", "Msxml2.XMLHTTP.3.0", "Msxml2.XMLHTTP", "Microsoft.XMLHTTP");
-HTMLArea.XMLHTTPResponseHandler = function (i) {
-	return (function() {
+HTMLArea._getScript = function (i, asynchronous, url) {
+	if (typeof(url) === "undefined") {
 		var url = HTMLArea._scripts[i];
-		if (HTMLArea._request[i].readyState != 4) return;
-		if (HTMLArea._request[i].status == 200) { 
-			try {
-				eval(HTMLArea._request[i].responseText);
-				HTMLArea._scriptLoaded[i] = true;
-				i = null;
-			} catch (e) {
-				HTMLArea._appendToLog("ERROR [HTMLArea::getScript]: Unable to get script " + url + ": " + e);
-			}
-		} else {
-			HTMLArea._appendToLog("ERROR [HTMLArea::getScript]: Unable to get " + url + " . Server reported " + HTMLArea._request[i].status);
+	}
+	if (typeof(asynchronous) === "undefined") {
+		var asynchronous = true;
+	}
+	HTMLArea.ajaxRequest[i] = new Ajax.Request(url, {
+		asynchronous	: asynchronous,
+		method		: "get",
+		onSuccess	: function(transport) {
+			HTMLArea.scriptLoaded[i] = true;
+			return true;
+		},
+		onFailure	: function(transport) {
+			HTMLArea._appendToLog("ERROR [HTMLArea::getScript]: Unable to get " + url + " . Server reported " + HTMLArea.ajaxRequest[i].status);
+			return false;
 		}
 	});
-};
-HTMLArea._getScript = function (i,asynchronous,url) {
-	if (typeof(url) == "undefined") var url = HTMLArea._scripts[i];
-	if (typeof(asynchronous) == "undefined") var asynchronous = true;
-	if (window.XMLHttpRequest) HTMLArea._request[i] = new XMLHttpRequest();
-		else if (window.ActiveXObject) {
-			var success = false;
-			for (var k = 0; k < HTMLArea.MSXML_XMLHTTP_PROGIDS.length && !success; k++) {
-				try {
-					HTMLArea._request[i] = new ActiveXObject(HTMLArea.MSXML_XMLHTTP_PROGIDS[k]);
-					success = true;
-				} catch (e) { }
-			}
-			if (!success) return false;
-		}
-	var request = HTMLArea._request[i];
-	if (request) {
-		request.open("GET", url, asynchronous);
-		if (asynchronous) request.onreadystatechange = HTMLArea.XMLHTTPResponseHandler(i);
-		if (window.XMLHttpRequest) request.send(null);
-			else if (window.ActiveXObject) request.send();
-		if (!asynchronous) {
-			if (request.status == 200) return request.responseText;
-				else return '';
-		}
-		return true;
-	} else {
-		return false;
-	}
 };
 
 /*
@@ -191,7 +164,7 @@ HTMLArea._getScript = function (i,asynchronous,url) {
 HTMLArea.checkInitialLoad = function() {
 	var scriptsLoaded = true;
 	for (var i = HTMLArea._scripts.length; --i >= 0;) {
-		scriptsLoaded = scriptsLoaded && HTMLArea._scriptLoaded[i];
+		scriptsLoaded = scriptsLoaded && HTMLArea.scriptLoaded[i];
 	}
 	if(HTMLArea.loadTimer) window.clearTimeout(HTMLArea.loadTimer);
 	if (scriptsLoaded) {
@@ -200,12 +173,6 @@ HTMLArea.checkInitialLoad = function() {
 		HTMLArea._appendToLog("[HTMLArea::init]: Editor url set to: " + _editor_url);
 		HTMLArea._appendToLog("[HTMLArea::init]: Editor skin CSS set to: " + _editor_CSS);
 		HTMLArea._appendToLog("[HTMLArea::init]: Editor content skin CSS set to: " + _editor_edited_content_CSS);
-		if (window.ActiveXObject) {
-			for (var i = HTMLArea._scripts.length; --i >= 0;) {
-				HTMLArea._request[i].onreadystatechange = new Function();
-				HTMLArea._request[i] = null;
-			}
-		}
 	} else {
 		HTMLArea.loadTimer = window.setTimeout("HTMLArea.checkInitialLoad();", 200);
 		return false;
@@ -218,19 +185,15 @@ HTMLArea.checkInitialLoad = function() {
 HTMLArea.init = function() {
 	HTMLArea._eventCache = HTMLArea._eventCacheConstructor();
 	if (window.XMLHttpRequest || window.ActiveXObject) {
-		try { 
-			var success = true;
-			for (var i = HTMLArea._scripts.length; --i >= 0 && success;) success = success && HTMLArea._getScript(i);
-		} catch (e) {
-			HTMLArea._appendToLog("ERROR [HTMLArea::init]: Unable to use XMLHttpRequest: "+ e);
+		for (var i = HTMLArea._scripts.length; --i >= 0;) {
+			HTMLArea._getScript(i);
 		}
-		if (success) {
-			HTMLArea.checkInitialLoad();
-		} else {
-			if (HTMLArea.is_ie) window.setTimeout('if (window.document.getElementById("pleasewait1")) { window.document.getElementById("pleasewait1").innerHTML = HTMLArea.I18N.msg["ActiveX-required"]; } else { alert(HTMLArea.I18N.msg["ActiveX-required"]); };', 200);
-		}
+		HTMLArea.checkInitialLoad();
 	} else {
-		if (HTMLArea.is_ie) alert(HTMLArea.I18N.msg["ActiveX-required"]);
+		if (HTMLArea.is_ie) {
+			HTMLArea._appendToLog("ERROR [HTMLArea::init]: " + HTMLArea.I18N.msg["ActiveX-required"]);
+			alert(HTMLArea.I18N.msg["ActiveX-required"]);
+		}
 	}
 };
 
@@ -3296,6 +3259,7 @@ HTMLArea.plugin = Class.create( {
 		return (function(editor, buttonId) {
 			self[functionName](editor, buttonId);});
 	},
+	
 	/**
 	 * Localize a string
 	 *
@@ -3305,6 +3269,17 @@ HTMLArea.plugin = Class.create( {
 	 */
 	localize : function (label) {
 		return this.I18N[label];
+	},
+	
+	/**
+	 * Load a Javascript file synchronously
+	 *
+	 * @param	string		url: url of the file to load
+	 *
+	 * @return	boolean		true on success
+	 */
+	getJavascriptFile : function (url) {
+		return HTMLArea._getScript(0, false, url);
 	},
 	
 	/**
