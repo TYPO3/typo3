@@ -1,6 +1,7 @@
 2007-11-07  Oliver Hader  <oh@inpublica.de>
 
 	* (major) Fixed bug #5772: IRRE - Combination mode doesn't save new child records correctly
+	* (minor) Fixed bug #6456: IRRE - Palettes are not rendered correctly on nesting records using the same table
 
 2007-11-06  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
