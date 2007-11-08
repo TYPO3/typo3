@@ -1,3 +1,7 @@
+2007-11-08  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
+
+	* Feature #6668 continued: Some minor adjustments when htmlArea RTE uses the Ajax request
+
 2007-11-07  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
 	* Added feature #6668: Let htmlArea RTE use the Ajax request of the Prototype framework

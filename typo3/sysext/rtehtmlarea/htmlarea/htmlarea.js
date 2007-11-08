@@ -123,7 +123,6 @@ HTMLArea.onload = function(){
 HTMLArea.loadTimer;
 HTMLArea._scripts = [];
 HTMLArea.scriptLoaded = [];
-HTMLArea.ajaxRequest = [];
 HTMLArea.loadScript = function(url, plugin) {
 	if (plugin) url = _editor_url + "/plugins/" + plugin + '/' + url;
 	if (HTMLArea.is_opera) url = _typo3_host_url + url;
@@ -144,15 +143,19 @@ HTMLArea._getScript = function (i, asynchronous, url) {
 	if (typeof(asynchronous) === "undefined") {
 		var asynchronous = true;
 	}
-	HTMLArea.ajaxRequest[i] = new Ajax.Request(url, {
+	new Ajax.Request(url, {
 		asynchronous	: asynchronous,
 		method		: "get",
 		onSuccess	: function(transport) {
 			HTMLArea.scriptLoaded[i] = true;
 			return true;
 		},
+		onException	: function(transport) {
+			HTMLArea._appendToLog("ERROR [HTMLArea::getScript]: Unable to get " + url + " . Exception raised: " + transport.statusText);
+			return false;
+		},
 		onFailure	: function(transport) {
-			HTMLArea._appendToLog("ERROR [HTMLArea::getScript]: Unable to get " + url + " . Server reported " + HTMLArea.ajaxRequest[i].status);
+			HTMLArea._appendToLog("ERROR [HTMLArea::getScript]: Unable to get " + url + " . Server reported " + transport.statusText);
 			return false;
 		}
 	});
@@ -166,13 +169,14 @@ HTMLArea.checkInitialLoad = function() {
 	for (var i = HTMLArea._scripts.length; --i >= 0;) {
 		scriptsLoaded = scriptsLoaded && HTMLArea.scriptLoaded[i];
 	}
-	if(HTMLArea.loadTimer) window.clearTimeout(HTMLArea.loadTimer);
+	if (HTMLArea.loadTimer) window.clearTimeout(HTMLArea.loadTimer);
 	if (scriptsLoaded) {
 		HTMLArea.is_loaded = true;
 		HTMLArea._appendToLog("[HTMLArea::init]: All scripts successfully loaded.");
 		HTMLArea._appendToLog("[HTMLArea::init]: Editor url set to: " + _editor_url);
 		HTMLArea._appendToLog("[HTMLArea::init]: Editor skin CSS set to: " + _editor_CSS);
 		HTMLArea._appendToLog("[HTMLArea::init]: Editor content skin CSS set to: " + _editor_edited_content_CSS);
+		return true;
 	} else {
 		HTMLArea.loadTimer = window.setTimeout("HTMLArea.checkInitialLoad();", 200);
 		return false;
@@ -184,17 +188,10 @@ HTMLArea.checkInitialLoad = function() {
  */
 HTMLArea.init = function() {
 	HTMLArea._eventCache = HTMLArea._eventCacheConstructor();
-	if (window.XMLHttpRequest || window.ActiveXObject) {
-		for (var i = HTMLArea._scripts.length; --i >= 0;) {
-			HTMLArea._getScript(i);
-		}
-		HTMLArea.checkInitialLoad();
-	} else {
-		if (HTMLArea.is_ie) {
-			HTMLArea._appendToLog("ERROR [HTMLArea::init]: " + HTMLArea.I18N.msg["ActiveX-required"]);
-			alert(HTMLArea.I18N.msg["ActiveX-required"]);
-		}
+	for (var i = HTMLArea._scripts.length; --i >= 0;) {
+		HTMLArea._getScript(i);
 	}
+	HTMLArea.checkInitialLoad();
 };
 
 /*
@@ -1274,10 +1271,15 @@ HTMLArea.prototype.setFullHTML = function(html) {
 HTMLArea.prototype.registerPlugin = function(plugin) {
 	var pluginName = plugin;
 	if (typeof(plugin) === "string") {
-		var plugin = eval(plugin);
+		try {
+			var plugin = eval(plugin);
+		} catch(e) {
+			HTMLArea._appendToLog("ERROR [HTMLArea::registerPlugin]: Cannot register invalid plugin: " + e);
+			return false;
+		}
 	}
-	if (typeof(plugin) === "undefined") {
-		HTMLArea._appendToLog("ERROR [HTMLArea::registerPlugin]: Can't register undefined plugin.");
+	if (typeof(plugin) !== "function") {
+		HTMLArea._appendToLog("ERROR [HTMLArea::registerPlugin]: Cannot register undefined plugin.");
 		return false;
 	}
 	var pluginInstance = new plugin(this, pluginName);
@@ -1640,7 +1642,7 @@ HTMLArea.prototype.updateToolbar = function(noStatus) {
 			// look-it-up in the custom dropdown boxes
 		var dropdown = this.config.customSelects[cmd];
 		if ((!text || btn.text) && (typeof(dropdown) !== "undefined") && (typeof(dropdown.refresh) === "function")) {
-			dropdown.refresh(this);
+			dropdown.refresh(this, cmd);
 			continue;
 		}
 		switch (cmd) {
@@ -3112,6 +3114,11 @@ HTMLArea.plugin = Class.create( {
 		}
 	},
 	
+	/**
+	 * Returns the plugin information
+	 *
+	 * @return	object		the plugin information object
+	 */
 	getPluginInformation : function() {
 		return this.pluginInformation;
 	},
@@ -3194,6 +3201,17 @@ HTMLArea.plugin = Class.create( {
 			}
 		}
 		return false;
+	},
+	
+	/**
+	 * Returns the drop-down configuration
+	 *
+	 * @param	string		dropDownId: the unique id of the drop-down
+	 *
+	 * @return	object		the drop-down configuration object
+	 */
+	getDropDownConfiguration : function(dropDownId) {
+		return this.editorConfiguration.customSelects[dropDownId];
 	},
 	
 	/**

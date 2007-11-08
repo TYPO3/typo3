@@ -1,3 +1,7 @@
+2007-11-08  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
+
+	* Feature #6668 continued: Some minor adjustments when htmlArea RTE uses the Ajax request
+
 2007-11-08  Benjamin Mack  <mack@xnos.org>
 
 	* (cleanup) Fixed #6670: Added tabs to Page properties + cleanup (Thanks to Steffen Kamper)
