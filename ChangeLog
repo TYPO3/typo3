@@ -1,3 +1,7 @@
+2007-11-08  Oliver Hader  <oh@inpublica.de>
+
+	* Updated JavaScript frameworks in typo3/contrib: prototype (1.6.0) and script.aculo.us (1.8.0)
+
 2007-11-07  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
 	* Added feature #6668: Let htmlArea RTE use the Ajax request of the Prototype framework
