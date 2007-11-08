@@ -42,6 +42,10 @@
 			<label index="pages.cache_timeout.I.8">2 days</label>
 			<label index="pages.cache_timeout.I.9">7 days</label>
 			<label index="pages.cache_timeout.I.10">1 month</label>
+			<label index="pages.tabs.metadata">Metadata</label>
+			<label index="pages.tabs.files">Files</label>
+			<label index="pages.tabs.options">Options</label>
+			<label index="pages.tabs.mount">Mount Options</label>
 			<label index="pages.no_cache">No cache:</label>
 			<label index="pages.no_search">No search:</label>
 			<label index="pages.shortcut_mode">Shortcut mode:</label>

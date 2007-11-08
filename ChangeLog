@@ -1,3 +1,7 @@
+2007-11-08  Benjamin Mack  <mack@xnos.org>
+
+	* (cleanup) Fixed #6670: Added tabs to Page properties + cleanup (Thanks to Steffen Kamper)
+
 2007-11-08  Oliver Hader  <oh@inpublica.de>
 
 	* Updated JavaScript frameworks in typo3/contrib: prototype (1.6.0) and script.aculo.us (1.8.0)
