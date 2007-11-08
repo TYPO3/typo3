@@ -1,0 +1,76 @@
+/* - - - - - - - - - - - - - - - - - - - - -
+
+Title  : TYPO3 backend vertical menu styles
+Author : Ingo Renner <ingo@typo3.org>
+URL    : http://typo3.org
+
+Description : styles the TYPO3 backend
+
+Created  : 2007/10/25
+Modified : 2007/10/25
+
+- - - - - - - - - - - - - - - - - - - - - */
+
+
+/* - - - - - - - - - - - - - - - - - - - - -
+
+TYPO3 backend menu - vertical
+
+- - - - - - - - - - - - - - - - - - - - - */
+
+#typo3-menu,
+#typo3-menu ul {
+	list-style: none;
+	padding: 0px;
+	margin: 0px;
+}
+
+#typo3-menu {
+	padding-top: 2px;
+	padding-left: 1px;
+}
+
+#typo3-menu li {
+	clear: both;
+}
+
+#typo3-menu li div {
+	font-weight: bold;
+	background-color: #d9d9d8;
+	border: 1px solid #9ba1a8;
+	cursor: pointer;
+	height: 14px;
+	padding: 1px;
+	vertical-align: middle;
+	width: 105px;
+	margin: 3px 0px 1px;
+}
+
+#typo3-menu li ul li {
+	font-weight: normal;
+	width: 105px;
+	border-bottom: 1px dashed #9ca1a7;
+	padding: 1px 0px 2px 2px;
+	margin-left: 1px;
+	cursor: pointer;
+}
+
+#typo3-menu li ul li a {
+	text-decoration: none;
+	display: block;
+}
+
+
+#typo3-menu li ul li a img {
+	float: left;
+}
+
+
+
+
+
+
+
+
+
+

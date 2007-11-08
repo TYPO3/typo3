@@ -1,0 +1,69 @@
+/* - - - - - - - - - - - - - - - - - - - - -
+
+Title  : TYPO3 backend styles
+Author : Ingo Renner <ingo@typo3.org>
+URL    : http://typo3.org
+
+Description : styles the TYPO3 backend
+
+Created  : 2007/10/14
+Modified : 2007/10/17
+
+- - - - - - - - - - - - - - - - - - - - - */
+
+
+/* - - - - - - - - - - - - - - - - - - - - -
+
+TYPO3 backend scaffolding
+
+- - - - - - - - - - - - - - - - - - - - - */
+
+body#typo3-backend-php {
+	margin: 0px;
+	padding: 0px;
+}
+
+#typo3-backend {
+	width: 100%;
+}
+
+#typo3-logo,
+#typo3-side-menu {
+	float: left;
+	width: 130px;
+}
+
+#typo3-top-container {
+	height: 25px;
+/*	background-color: #9ba1a8; */
+}
+
+#typo3-main-container {
+	clear: both;
+}
+
+#typo3-top,
+#typo3-content {
+	margin-left: 130px;
+}
+
+#typo3-side-menu {
+	overflow: auto;
+}
+
+iframe {
+	width: 100%;
+}
+
+#typo3-content,
+#typo3-main-container,
+#typo3-main-container * iframe {
+	height: 660px;
+}
+
+
+
+
+
+
+

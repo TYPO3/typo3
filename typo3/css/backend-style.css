@@ -1,0 +1,84 @@
+/* - - - - - - - - - - - - - - - - - - - - -
+
+Title  : TYPO3 backend styles
+Author : Ingo Renner <ingo@typo3.org>
+URL    : http://typo3.org
+
+Description : styles the TYPO3 backend
+
+Created  : 2007/11/01
+Modified : 2007/11/01
+
+- - - - - - - - - - - - - - - - - - - - - */
+
+
+/* ----- Basics ----- */
+
+#typo3-backend {
+	/* background-color: #fff; */
+}
+
+#typo3-top-container {
+	background-image: url(../gfx/bar.png);
+}
+
+#typo3-logo {
+	padding: 1px 0px 0px 10px;
+}
+
+
+/* ----- Caching ----- */
+
+#cache-actions {
+	list-style: none;
+	padding: 0px;
+	margin: 15px 0px;
+}
+
+#cache-actions li {
+	padding-left: 2px;
+}
+
+#cache-actions a {
+	display: block;
+	text-decoration: none;
+	vertical-align: center;
+}
+
+
+/* ----- Logout ----- */
+
+#typo3-side-menu form,
+#login-info p {
+	text-align: center;
+}
+
+#login-info p {
+	padding-top: 5px;
+	padding-bottom: 30px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,3 +1,7 @@
+2007-11-08  Ingo Renner	<ingo@typo3.org>
+
+	* added initial cleaner backend project work (backend.php)
+
 2007-11-08  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
 	* Feature #6668 continued: Some minor adjustments when htmlArea RTE uses the Ajax request
