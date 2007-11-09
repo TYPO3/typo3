@@ -1,5 +1,6 @@
 2007-11-09  Benjamin Mack  <mack@xnos.org>
 
+	* (feature/cleanup) Refactored clickmenu to speed up the BE
 	* (bugfix) Fixed Image Generation bug. Call in t3lib_div now uses the IM wrapper to render gifs/pngs
 
 2007-11-08  Ingo Renner	<ingo@typo3.org>

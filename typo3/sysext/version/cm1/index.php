@@ -199,10 +199,7 @@ class tx_version_cm1 extends t3lib_SCbase {
 ';
 
 			// Setting up the context sensitive menu:
-		$CMparts = $this->doc->getContextMenuCode();
-		$this->doc->JScode.= $CMparts[0];
-		$this->doc->bodyTagAdditions = $CMparts[1];
-		$this->doc->postCode.= $CMparts[2];
+		$this->doc->getContextMenuCode();
 
 			// Getting input data:
 		$this->id = intval(t3lib_div::_GP('id'));		// Page id. If set, indicates activation from Web>Versioning module

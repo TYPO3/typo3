@@ -1208,8 +1208,8 @@ class clickMenu {
 					// Create JavaScript section:
 				$script=$GLOBALS['TBE_TEMPLATE']->wrapScriptTags('
 
-				if (top.content && top.content'.$frameName.' && top.content'.$frameName.'.setLayerObj)	{
-					top.content'.$frameName.'.setLayerObj(unescape("'.t3lib_div::rawurlencodeJS($CMtable).'"),'.$this->cmLevel.');
+				if (top.content && top.content'.$frameName.' && top.content'.$frameName.'.Clickmenu)	{
+					top.content'.$frameName.'.Clickmenu.populateData(unescape("'.t3lib_div::rawurlencodeJS($CMtable).'"),'.$this->cmLevel.');
 				}
 				'.(!$this->doDisplayTopFrameCM()?'hideCM();':'')
 				);
@@ -1279,7 +1279,7 @@ class clickMenu {
 				$onClick=eregi_replace('return[[:space:]]+hideCM\(\)[[:space:]]*;','',$onClick);
 				$onClick=eregi_replace('return[[:space:]]+false[[:space:]]*;','',$onClick);
 				$onClick=eregi_replace('hideCM\(\);','',$onClick);
-				if (!$i[5])	$onClick.='hideEmpty();';
+				if (!$i[5])	$onClick.='Clickmenu.hideAll();';
 
 				if ($GLOBALS['TYPO3_CONF_VARS']['BE']['useOnContextMenuHandler'])   {
 					$CSM = ' oncontextmenu="'.htmlspecialchars($onClick).';return false;"';

@@ -128,10 +128,7 @@ class SC_mod_web_info_index extends t3lib_SCbase {
 
 
 				// Setting up the context sensitive menu:
-			$CMparts=$this->doc->getContextMenuCode();
-			$this->doc->bodyTagAdditions = $CMparts[1];
-			$this->doc->JScode.=$CMparts[0];
-			$this->doc->postCode.= $CMparts[2];
+			$this->doc->getContextMenuCode();
 
 			$headerSection = $this->doc->getHeader('pages',$this->pageinfo,$this->pageinfo['_thePath']).'<br />'.
 				$LANG->sL('LLL:EXT:lang/locallang_core.php:labels.path',1).': '.

@@ -282,10 +282,7 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 		$this->doc->form = '<form action="index.php" method="post" name="pageform">';
 
 			// Setting up the context sensitive menu:
-		$CMparts = $this->doc->getContextMenuCode();
-		$this->doc->JScode.= $CMparts[0];
-		$this->doc->bodyTagAdditions = $CMparts[1];
-		$this->doc->postCode.= $CMparts[2];
+		$this->doc->getContextMenuCode();
 
 			// Add JS for dynamic tabs:
 		$this->doc->JScode.= $this->doc->getDynTabMenuJScode();

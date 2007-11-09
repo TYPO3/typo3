@@ -499,10 +499,7 @@ class SC_db_layout {
 		$this->doc->form='<form action="'.htmlspecialchars($BACK_PATH.'tce_db.php?&prErr=1&uPT=1').'" method="post" enctype="'.$GLOBALS['TYPO3_CONF_VARS']['SYS']['form_enctype'].'" name="editform" onsubmit="return TBE_EDITOR.checkSubmit(1);">';
 
 			// Setting up the context sensitive menu:
-		$CMparts = $this->doc->getContextMenuCode();
-		$this->doc->JScode.= $CMparts[0];
-		$this->doc->bodyTagAdditions = $CMparts[1];
-		$this->doc->postCode.= $CMparts[2];
+		$this->doc->getContextMenuCode();
 
 			// Set the edit_record value for internal use in this function:
 		$edit_record = $this->edit_record;
@@ -1035,10 +1032,7 @@ class SC_db_layout {
 
 
 			// For Context Sensitive Menus:
-		$CMparts = $this->doc->getContextMenuCode();
-		$this->doc->bodyTagAdditions = $CMparts[1];
-		$this->doc->JScode.= $CMparts[0];
-		$this->doc->postCode.= $CMparts[2];
+		$this->doc->getContextMenuCode();
 
 
 			// Draw the page properties.

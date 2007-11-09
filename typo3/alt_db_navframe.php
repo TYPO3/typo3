@@ -169,11 +169,8 @@ class SC_alt_db_navframe {
 			');
 
 				// Click menu code is added:
-			$CMparts=$this->doc->getContextMenuCode();
-			$this->doc->bodyTagAdditions = $CMparts[1];
+			$this->doc->getContextMenuCode();
 			$this->doc->bodyTagId = 'bodyTag';
-			$this->doc->JScode.= $CMparts[0];
-			$this->doc->postCode.= $CMparts[2];
 		}
 	}
 

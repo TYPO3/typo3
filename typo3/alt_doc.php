@@ -490,10 +490,8 @@ class SC_alt_doc {
 		).$this->doc->getDynTabMenuJScode();
 
 			// Setting up the context sensitive menu:
-		$CMparts = $this->doc->getContextMenuCode();
-		$this->doc->JScode.= $CMparts[0];
-		$this->doc->bodyTagAdditions = str_replace('onload="','onload="window.scrollTo(0,'.t3lib_div::intInRange(t3lib_div::_GP('_scrollPosition'),0,10000).');',$CMparts[1]);
-		$this->doc->postCode.= $CMparts[2];
+		$this->doc->getContextMenuCode();
+		$this->doc->bodyTagAdditions = 'onload="window.scrollTo(0,'.t3lib_div::intInRange(t3lib_div::_GP('_scrollPosition'),0,10000).');"';
 	}
 
 	/**

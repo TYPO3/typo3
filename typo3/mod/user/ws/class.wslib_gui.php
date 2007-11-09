@@ -116,12 +116,9 @@ class wslib_gui {
 	 *
 	 * The following code is <strong>required</strong> in BE module when this function is used:
 	 * <code>
-	 * 	$CMparts = $this->doc->getContextMenuCode();
-	 * 	$this->doc->JScode.= $CMparts[0];
-	 * 	$this->doc->bodyTagAdditions = $CMparts[1];
-	 * 	$this->doc->postCode.= $CMparts[2];
+	 * 	$this->doc->getContextMenuCode();
 	 * </code>
-	 * or click-menu will not be gerated properly!
+	 * or click-menu will not be generated properly!
 	 *
 	 * @param	object		$doc	Document (to use for formatting)
 	 * @param	int		$wsid	Workspace ID, If <code>null</code>, the value is obtained from current BE user

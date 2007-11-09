@@ -539,6 +539,10 @@ TABLE.ver-subtree TR.typo3-ver-noComp TD { font-style: italic; }
  * VARIOUS STAND-ALONE classes:
  *********************************************/
 
+/* context menus */
+div#contentMenu0 { z-index: 1; position: absolute; }
+div#contentMenu1 { z-index: 2; position: absolute; }
+
 /* Dimmed span tag color (disabled) */
 .typo3-dimmed { color: #666; }
 .c-na { color: #666; font-style: italic; }

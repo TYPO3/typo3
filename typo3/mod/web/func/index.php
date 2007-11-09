@@ -119,10 +119,7 @@ class SC_mod_web_func_index extends t3lib_SCbase {
 
 
 				// Setting up the context sensitive menu:
-			$CMparts=$this->doc->getContextMenuCode();
-			$this->doc->bodyTagAdditions = $CMparts[1];
-			$this->doc->JScode.=$CMparts[0];
-			$this->doc->postCode.= $CMparts[2];
+			$this->doc->getContextMenuCode();
 
 			$this->doc->form='<form action="index.php" method="post"><input type="hidden" name="id" value="'.$this->id.'" />';
 

@@ -149,10 +149,7 @@ class SC_alt_file_navframe {
 			);
 
 				// Click menu code is added:
-			$CMparts=$this->doc->getContextMenuCode();
-			$this->doc->bodyTagAdditions = $CMparts[1];
-			$this->doc->JScode.= $CMparts[0];
-			$this->doc->postCode.= $CMparts[2];
+			$this->doc->getContextMenuCode();
 		}
 	}
 

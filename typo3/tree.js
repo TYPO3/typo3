@@ -30,7 +30,8 @@
 	// please use the function in the "Tree" object for future implementations
 function refresh_nav() { window.setTimeout('Tree.refresh();',0); }
 
-	// Deprecated! Another JS function, for highlighting rows in the page tree, kept alive for backwards
+	// Deprecated since 4.1.
+	// Another JS function, for highlighting rows in the page tree, kept alive for backwards
 	// compatibility. Please use the function in the "Tree" object for future implementations.
 function hilight_row(frameSetModule, highLightID) { Tree.highlightActiveItem(frameSetModule, highlightID); }
 
@@ -171,7 +172,6 @@ var Tree = {
 // tested in IE 6, Firefox 2, Opera 9
 var DragDrop = {
 	dragID: null,
-	dragIconCSS: null,
 
 	// options needed for doing the changes when dropping
 	table: null,	// can be "pages" or "folders"
@@ -190,8 +190,6 @@ var DragDrop = {
 		$('dragIcon').innerHTML = $('dragIconID_'+elementID).innerHTML
 								+ $('dragTitleID_'+elementID).firstChild.innerHTML;
 
-		this.dragIconCSS = new GL_getObjCss('dragIcon');
-		this.dragIconCSS.whiteSpace = 'nowrap';
 		document.onmouseup   = function(event) { DragDrop.cancelDragEvent(event); };
 		document.onmousemove = function(event) { DragDrop.mouseMoveEvent(event); };
 		return false;
@@ -214,15 +212,21 @@ var DragDrop = {
 
 	cancelDragEvent: function(event) {
 		this.dragID = null;
-		if (this.dragIconCSS && this.dragIconCSS.visibility) { this.dragIconCSS.visibility = 'hidden'; }
+		if ($('dragIcon') && $('dragIcon').style.visibility == 'visible') {
+			$('dragIcon').style.visibility = 'hidden';
+		}
+
 		document.onmouseup = null;
 		document.onmousemove = null;
 	},
 
 	mouseMoveEvent: function(event) {
-		this.dragIconCSS.left = (GLV_x + 5) + 'px';
-		this.dragIconCSS.top  = (GLV_y - 5) + 'px';
-		this.dragIconCSS.visibility = 'visible';
+		if (!event) {
+			event = window.event;
+		}
+		$('dragIcon').style.left = (Event.pointerX(event) + 5) + 'px';
+		$('dragIcon').style.top  = (Event.pointerY(event) - 5) + 'px';
+		$('dragIcon').style.visibility = 'visible';
 		return false;
 	},
 
