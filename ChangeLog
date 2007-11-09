@@ -1,3 +1,7 @@
+2007-11-09  Benjamin Mack  <mack@xnos.org>
+
+        * (bugfix) Fixed Image Generation bug. Call in t3lib_div now uses the IM wrapper to render gifs/pngs
+
 2007-11-07  Oliver Hader  <oh@inpublica.de>
 
 	* Fixed bug #5772: IRRE - Combination mode doesn't save new child records correctly
