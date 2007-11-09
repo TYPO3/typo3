@@ -1,3 +1,7 @@
+2007-11-09  Benjamin Mack  <mack@xnos.org>
+
+        * (bugfix) Fixed Image Generation bug. Call in t3lib_div now uses the IM wrapper to render gifs/pngs
+
 2007-09-05  Thorsten Kahler  <thorsten.kahler@dkd.de>
 
 	* Fixed bug #4160: Moving content elements in frontent editing mode causes crash
