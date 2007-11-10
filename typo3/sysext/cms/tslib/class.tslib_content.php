@@ -2607,8 +2607,7 @@ class tslib_cObj {
 				$conf['altText.'] = $conf['alttext.'];
 			}
 			$altParam = $this->getAltParam($conf);
-
-			$theValue = '<img src="'.htmlspecialchars($GLOBALS['TSFE']->absRefPrefix.t3lib_div::rawUrlEncodeFP($info[3])).'" width="'.$info[0].'" height="'.$info[1].'"'.$this->getBorderAttr(' border="'.intval($conf['border']).'"').($conf['params']?' '.$conf['params']:'').($altParam).' />';
+			$theValue = '<img src="'.htmlspecialchars($GLOBALS['TSFE']->absRefPrefix.t3lib_div::rawUrlEncodeFP($info[3])).'" width="'.$info[0].'" height="'.$info[1].'"'.$this->getBorderAttr(' border="'.intval($conf['border']).'"').(($conf['params'] || is_array($conf['params.']))?' '.$this->stdwrap($conf['params'],$conf['params.']):'').($altParam).' />';
 			if ($conf['linkWrap'])	{
 				$theValue = $this->linkWrap($theValue,$conf['linkWrap']);
 			} elseif ($conf['imageLinkWrap']) {

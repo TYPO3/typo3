@@ -1,6 +1,7 @@
 2007-11-10  Ingmar Schlecht  <ingmar@typo3.org>
 
 	* Feature #6256: $TCA: Newline for Tabs (--div--)
+	* Feature #4280: stdWrap for params property of IMAGE
 
 2007-11-09  Benjamin Mack  <mack@xnos.org>
 
