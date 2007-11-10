@@ -1,3 +1,7 @@
+2007-11-10  Ingmar Schlecht  <ingmar@typo3.org>
+
+	* Feature #6256: $TCA: Newline for Tabs (--div--)
+
 2007-11-09  Benjamin Mack  <mack@xnos.org>
 
 	* (feature/cleanup) Refactored clickmenu to speed up the BE

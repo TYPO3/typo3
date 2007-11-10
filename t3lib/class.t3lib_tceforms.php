@@ -575,6 +575,8 @@ class t3lib_TCEforms	{
 										$this->pushToDynNestedStack('tab', $tabIdentStringMD5.'-'.($out_sheet+1));
 										$out_array[$out_sheet] = array();
 										$out_array_meta[$out_sheet]['title'] = $this->sL($parts[1]);
+ 											// Register newline for Tab
+ 										$out_array_meta[$out_sheet]['newline'] = ($parts[2] == "newline");
 									}
 								} else {	// Setting alternative title for "General" tab if "--div--" is the very first element.
 									$out_array_meta[$out_sheet]['title'] = $this->sL($parts[1]);
@@ -648,7 +650,8 @@ class t3lib_TCEforms	{
 						'label' => $out_array_meta[$idx]['title'],
 						'content' => '<table border="0" cellspacing="0" cellpadding="0" width="100%">'.
 								$resstr.
-							'</table>'
+							'</table>',
+						'newline' => $out_array_meta[$idx]['newline'], 	// Newline for this tab/sheet
 					);
 				}
 			}

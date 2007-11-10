@@ -1415,7 +1415,7 @@ $str.=$this->docBodyTagBegin().
 				$index+=1;	// Need to add one so checking for first index in JavaScript is different than if it is not set at all.
 
 					// Switch to next tab row if needed
-				if (!$foldout && $titleLenCount>$newRowCharLimit)	{	// 50 characters is probably a reasonable count of characters before switching to next row of tabs.
+				if (!$foldout && ($titleLenCount>$newRowCharLimit | ($def['newline'] === true && $titleLenCount > 0))) { // 50 characters is probably a reasonable count of characters before switching to next row of tabs.
 					$titleLenCount=0;
 					$tabRows++;
 					$options[$tabRows] = array();
