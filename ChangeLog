@@ -1,3 +1,7 @@
+2007-11-10  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
+
+	* (cleanup) Protect rtehtmlarea 'for' loops from properties possibly added by JS frameworks.
+
 2007-11-10  Ingmar Schlecht  <ingmar@typo3.org>
 
 	* Feature #6256: $TCA: Newline for Tabs (--div--) (Thanks to Malte Jansen)

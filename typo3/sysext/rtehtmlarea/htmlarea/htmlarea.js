@@ -298,12 +298,19 @@ HTMLArea.Config = function () {
 	};
 
 		// Initialize tooltips from the I18N module, generate correct image path
-	for (var i in this.btnList) {
-		var btn = this.btnList[i];
-		if (typeof(HTMLArea.I18N.tooltips[i.toLowerCase()]) != "undefined") btn[0] = HTMLArea.I18N.tooltips[i.toLowerCase()];
-		if (typeof(btn[1]) == "string") btn[1] = _editor_skin + this.imgURL + btn[1];
-			else btn[1][0] = _editor_skin + this.imgURL + btn[1][0];
-	}		
+	for (var buttonId in this.btnList) {
+		if (this.btnList.hasOwnProperty(buttonId)) {
+			var btn = this.btnList[buttonId];
+			if (typeof(HTMLArea.I18N.tooltips[buttonId.toLowerCase()]) !== "undefined") {
+				btn[0] = HTMLArea.I18N.tooltips[buttonId.toLowerCase()];
+			}
+			if (typeof(btn[1]) === "string") {
+				btn[1] = _editor_skin + this.imgURL + btn[1];
+			} else {
+				btn[1][0] = _editor_skin + this.imgURL + btn[1][0];
+			}
+		}
+	}
 	this.customSelects = {};
 };
 
@@ -509,18 +516,20 @@ HTMLArea.prototype.createSelect = function(txt,tb_line,first_cell_on_line,labelO
 			newObj["labelUsed"] = true;
 		}
 		HTMLArea._addEvent(newObj["el"], "change", HTMLArea.toolBarButtonHandler);
-
+		
 		for (var i in options) {
-			var op = document.createElement("option");
-			op.innerHTML = i;
-			op.value = options[i];
-			if (txt == "FontName" && !this.config.disablePCexamples) {
-				if (HTMLArea.is_gecko) op.setAttribute("style", "font-family:" + op.value + ";");
-					else op.style.cssText = "font-family:" + op.value + ";";
+			if (options.hasOwnProperty(i)) {
+				var op = document.createElement("option");
+				op.innerHTML = i;
+				op.value = options[i];
+				if (txt == "FontName" && !this.config.disablePCexamples) {
+					if (HTMLArea.is_gecko) op.setAttribute("style", "font-family:" + op.value + ";");
+						else op.style.cssText = "font-family:" + op.value + ";";
+				}
+				newObj["el"].appendChild(op);
 			}
-			newObj["el"].appendChild(op);
 		}
-
+		
 		newObj["created"] = true;
 	}
 
@@ -1116,18 +1125,22 @@ HTMLArea.generatePlugins = function(editorNumber) {
 		// check if any plugins have registered generate handlers
 		// check also if any plugin has a onKeyPress handler
 	editor._hasPluginWithOnKeyPressHandler = false;
-	for (var i in editor.plugins) {
-		var plugin = editor.plugins[i].instance;
-		if (typeof(plugin.onGenerate) == "function") plugin.onGenerate();
-		if (typeof(plugin.onGenerateOnce) == "function") {
-			plugin.onGenerateOnce();
-			plugin.onGenerateOnce = null;
-		}
-		if (typeof(plugin.onKeyPress) == "function") {
-			editor._hasPluginWithOnKeyPressHandler = true;
+	for (var pluginId in editor.plugins) {
+		if (editor.plugins.hasOwnProperty(pluginId)) {
+			var pluginInstance = editor.plugins[pluginId].instance;
+			if (typeof(pluginInstance.onGenerate) === "function") {
+				pluginInstance.onGenerate();
+			}
+			if (typeof(pluginInstance.onGenerateOnce) === "function") {
+				pluginInstance.onGenerateOnce();
+				pluginInstance.onGenerateOnce = null;
+			}
+			if (typeof(pluginInstance.onKeyPress) === "function") {
+				editor._hasPluginWithOnKeyPressHandler = true;
+			}
 		}
 	}
-	if (typeof(editor.onGenerate) == "function") {
+	if (typeof(editor.onGenerate) === "function") {
 		editor.onGenerate();
 		editor.onGenerate = null;
 	}
@@ -1226,9 +1239,13 @@ HTMLArea.prototype.setMode = function(mode) {
 			return false;
 	}
 	if (!(mode == "docnotwellformedmode")) this.focusEditor();
-	for (var i in this.plugins) {
-		var plugin = this.plugins[i].instance;
-		if (typeof(plugin.onMode) == "function") { plugin.onMode(mode); }
+	for (var pluginId in this.plugins) {
+		if (this.plugins.hasOwnProperty(pluginId)) {
+			var pluginInstance = this.plugins[pluginId].instance;
+			if (typeof(pluginInstance.onMode) === "function") {
+				pluginInstance.onMode(mode);
+			}
+		}
 	}
 };
 
@@ -1290,6 +1307,7 @@ HTMLArea.prototype.registerPlugin = function(plugin) {
 		}
 		pluginInformation.instance = pluginInstance;
 		this.plugins[pluginName] = pluginInformation;
+		HTMLArea._appendToLog("[HTMLArea::registerPlugin]: Plugin " + pluginName + " was successfully registered.");
 		return true;
 	} else {
 		HTMLArea._appendToLog("ERROR [HTMLArea::registerPlugin]: Can't register plugin " + pluginName + ".");
@@ -1555,7 +1573,7 @@ HTMLArea.prototype.updateToolbar = function(noStatus) {
 		text = (this._editMode == "textmode"),
 		selection = this.hasSelectedText(),
 		ancestors = null, cls = new Array(),
-		txt, txtClass, i, cmd, inContext, match, matchAny, k, j, n, commandState;
+		txt, txtClass, i, inContext, match, matchAny, k, j, n, commandState;
 	if(!text) {
 		ancestors = this.getAllAncestors();
 		if(this.config.statusBar && !noStatus) {
@@ -1601,131 +1619,142 @@ HTMLArea.prototype.updateToolbar = function(noStatus) {
 			}
 		}
 	}
-	for (i in this._toolbarObjects) {
-		var btn = this._toolbarObjects[i];
-		cmd = i;
+	for (var cmd in this._toolbarObjects) {
+		if (this._toolbarObjects.hasOwnProperty(cmd)) {
+			var btn = this._toolbarObjects[cmd];
 
-			// Determine if the button should be enabled
-		inContext = true;
-		if (btn.context && !text) {
-			inContext = false;
-			var attrs = [];
-			var contexts = [];
-			if (/(.*)\[(.*?)\]/.test(btn.context)) {
-				contexts = RegExp.$1.split(",");
-				attrs = RegExp.$2.split(",");
-			} else {
-				contexts = btn.context.split(",");
+				// Determine if the button should be enabled
+			inContext = true;
+			if (btn.context && !text) {
+				inContext = false;
+				var attrs = [];
+				var contexts = [];
+				if (/(.*)\[(.*?)\]/.test(btn.context)) {
+					contexts = RegExp.$1.split(",");
+					attrs = RegExp.$2.split(",");
+				} else {
+					contexts = btn.context.split(",");
+				}
+				for (j = contexts.length; --j >= 0;) contexts[j] = contexts[j].toLowerCase();
+				matchAny = (contexts[0] == "*");
+				for (k = 0; k < ancestors.length; ++k) {
+					if (!ancestors[k]) continue;
+					match = false;
+					for (j = contexts.length; --j >= 0;) match = match || (ancestors[k].tagName.toLowerCase() == contexts[j]);
+					if (matchAny || match) {
+						inContext = true;
+						for (j = attrs.length; --j >= 0;) {
+							if (!eval("ancestors[k]." + attrs[j])) {
+								inContext = false;
+								break;
+							}
+						}
+						if (inContext) break;
+					}
+				}
 			}
-			for (j = contexts.length; --j >= 0;) contexts[j] = contexts[j].toLowerCase();
-			matchAny = (contexts[0] == "*");
-			for (k = 0; k < ancestors.length; ++k) {
-				if (!ancestors[k]) continue;
-				match = false;
-				for (j = contexts.length; --j >= 0;) match = match || (ancestors[k].tagName.toLowerCase() == contexts[j]);
-				if (matchAny || match) {
-					inContext = true;
-					for (j = attrs.length; --j >= 0;) {
-						if (!eval("ancestors[k]." + attrs[j])) {
-							inContext = false;
+			if (cmd == "CreateLink") btn.state("enabled", (!text || btn.text) && (inContext || selection));
+				else btn.state("enabled", (!text || btn.text) && inContext && (selection || !btn.selection));
+			
+			if (typeof(cmd) == "function") { continue; };
+				// look-it-up in the custom dropdown boxes
+			var dropdown = this.config.customSelects[cmd];
+			if ((!text || btn.text) && (typeof(dropdown) !== "undefined") && (typeof(dropdown.refresh) === "function")) {
+				dropdown.refresh(this, cmd);
+				continue;
+			}
+			switch (cmd) {
+				case "FontName":
+				case "FontSize":
+					if(!text) try {
+						var value = ("" + doc.queryCommandValue(cmd)).toLowerCase();
+						if(!value) {
+							document.getElementById(btn.elementId).selectedIndex = 0;
 							break;
 						}
-					}
-					if (inContext) break;
-				}
-			}
-		}
-		if (cmd == "CreateLink") btn.state("enabled", (!text || btn.text) && (inContext || selection));
-			else btn.state("enabled", (!text || btn.text) && inContext && (selection || !btn.selection));
-		
-		if (typeof(cmd) == "function") { continue; };
-			// look-it-up in the custom dropdown boxes
-		var dropdown = this.config.customSelects[cmd];
-		if ((!text || btn.text) && (typeof(dropdown) !== "undefined") && (typeof(dropdown.refresh) === "function")) {
-			dropdown.refresh(this, cmd);
-			continue;
-		}
-		switch (cmd) {
-		    case "FontName":
-		    case "FontSize":
-			if(!text) try {
-				var value = ("" + doc.queryCommandValue(cmd)).toLowerCase();
-				if(!value) {
-					document.getElementById(btn.elementId).selectedIndex = 0;
+							// We rely on the fact that the variable in config has the same name as button name in the toolbar.
+						var options = this.config[cmd];
+						k = 0;
+						for (var j in options) {
+							if (options.hasOwnProperty(j)) {
+								if((j.toLowerCase() == value) || (options[j].substr(0, value.length).toLowerCase() == value)) {
+									document.getElementById(btn.elementId).selectedIndex = k;
+									throw "ok";
+								}
+								++k;
+							}
+						}
+						document.getElementById(btn.elementId).selectedIndex = 0;
+					} catch(e) {}
 					break;
-				}
-					// We rely on the fact that the variable in config has the same name as button name in the toolbar.
-				var options = this.config[cmd];
-				k = 0;
-				for (j in options) {
-					if((j.toLowerCase() == value) || (options[j].substr(0, value.length).toLowerCase() == value)) {
-						document.getElementById(btn.elementId).selectedIndex = k;
-						throw "ok";
+				case "FormatBlock":
+					var blocks = [ ];
+					for (var j in this.config['FormatBlock']) {
+						if (this.config['FormatBlock'].hasOwnProperty(j)) {
+							blocks[blocks.length] = this.config['FormatBlock'][j];
+						}
 					}
-					++k;
-				}
-				document.getElementById(btn.elementId).selectedIndex = 0;
-			} catch(e) {}
-			break;
-		    case "FormatBlock":
-		    	var blocks = [ ];
-			for(var i in this.config['FormatBlock']) {
-				blocks[blocks.length] = this.config['FormatBlock'][i];
+					var deepestAncestor = this._getFirstAncestor(this._getSelection(), blocks);
+					if(deepestAncestor) {
+						for(var x= 0; x < blocks.length; x++) {
+							if(blocks[x].toLowerCase() == deepestAncestor.tagName.toLowerCase()) document.getElementById(btn.elementId).selectedIndex = x;
+						}
+					} else {
+						document.getElementById(btn.elementId).selectedIndex = 0;
+					}
+					break;
+				case "TextIndicator":
+					if(!text) {
+						try {with (document.getElementById(btn.elementId).style) {
+							backgroundColor = HTMLArea._makeColor(doc.queryCommandValue((HTMLArea.is_ie || HTMLArea.is_safari) ? "BackColor" : "HiliteColor"));
+								// Mozilla
+							if(/transparent/i.test(backgroundColor)) { backgroundColor = HTMLArea._makeColor(doc.queryCommandValue("BackColor")); }
+							color = HTMLArea._makeColor(doc.queryCommandValue("ForeColor"));
+							fontFamily = doc.queryCommandValue("FontName");
+								// Check if queryCommandState is available
+							fontWeight = "normal";
+							fontStyle = "normal";
+							try { fontWeight = doc.queryCommandState("Bold") ? "bold" : "normal"; } catch(ex) { fontWeight = "normal"; };
+							try { fontStyle = doc.queryCommandState("Italic") ? "italic" : "normal"; } catch(ex) { fontStyle = "normal"; };
+						}} catch (e) {
+							// alert(e + "\n\n" + cmd);
+						}
+					}
+					break;
+				case "HtmlMode": btn.state("active", text); break;
+				case "LeftToRight":
+				case "RightToLeft":
+					var el = this.getParentElement();
+					while (el && !HTMLArea.isBlockElement(el)) { el = el.parentNode; }
+					if (el) btn.state("active",(el.style.direction == ((cmd == "RightToLeft") ? "rtl" : "ltr")));
+					break;
+				case "JustifyLeft":
+				case "JustifyCenter":
+				case "JustifyRight":
+				case "JustifyFull":
+				case "Indent":
+				case "Outdent":
+				case "InsertOrderedList":
+				case "InsertUnorderedList":
+					commandState = false;
+					if(!text) try { commandState = doc.queryCommandState(cmd); } catch(e) { commandState = false; }
+					btn.state("active",commandState);
+					break;
+				default: break;
 			}
-			var deepestAncestor = this._getFirstAncestor(this._getSelection(), blocks);
-			if(deepestAncestor) {
-				for(var x= 0; x < blocks.length; x++) {
-					if(blocks[x].toLowerCase() == deepestAncestor.tagName.toLowerCase()) document.getElementById(btn.elementId).selectedIndex = x;
-				}
-			} else {
-				document.getElementById(btn.elementId).selectedIndex = 0;
-			}
-			break;
-		    case "TextIndicator":
-			if(!text) {
-				try {with (document.getElementById(btn.elementId).style) {
-					backgroundColor = HTMLArea._makeColor(doc.queryCommandValue((HTMLArea.is_ie || HTMLArea.is_safari) ? "BackColor" : "HiliteColor"));
-						// Mozilla
-					if(/transparent/i.test(backgroundColor)) { backgroundColor = HTMLArea._makeColor(doc.queryCommandValue("BackColor")); }
-					color = HTMLArea._makeColor(doc.queryCommandValue("ForeColor"));
-					fontFamily = doc.queryCommandValue("FontName");
-						// Check if queryCommandState is available
-					fontWeight = "normal";
-					fontStyle = "normal";
-					try { fontWeight = doc.queryCommandState("Bold") ? "bold" : "normal"; } catch(ex) { fontWeight = "normal"; };
-					try { fontStyle = doc.queryCommandState("Italic") ? "italic" : "normal"; } catch(ex) { fontStyle = "normal"; };
-				}} catch (e) {
-					// alert(e + "\n\n" + cmd);
-				}
-			}
-			break;
-		    case "HtmlMode": btn.state("active", text); break;
-		    case "LeftToRight":
-		    case "RightToLeft":
-			var el = this.getParentElement();
-			while (el && !HTMLArea.isBlockElement(el)) { el = el.parentNode; }
-			if (el) btn.state("active",(el.style.direction == ((cmd == "RightToLeft") ? "rtl" : "ltr")));
-			break;
-		    case "JustifyLeft":
-		    case "JustifyCenter":
-		    case "JustifyRight":
-		    case "JustifyFull":
-		    case "Indent":
-		    case "Outdent":
-		    case "InsertOrderedList":
-		    case "InsertUnorderedList":
-			commandState = false;
-			if(!text) try { commandState = doc.queryCommandState(cmd); } catch(e) { commandState = false; }
-			btn.state("active",commandState);
-			break;
-		    default: break;
 		}
 	}
-
-	if (this._customUndo) this._undoTakeSnapshot();
-	for (i in this.plugins) {
-		var plugin = this.plugins[i].instance;
-		if (typeof(plugin.onUpdateToolbar) == "function") plugin.onUpdateToolbar();
+	
+	if (this._customUndo) {
+		this._undoTakeSnapshot();
+	}
+	for (pluginId in this.plugins) {
+		if (this.plugins.hasOwnProperty(pluginId)) {
+			var pluginInstance = this.plugins[pluginId].instance;
+			if (typeof(pluginInstance.onUpdateToolbar) === "function") {
+				pluginInstance.onUpdateToolbar();
+			}
+		}
 	}
 };
 
@@ -1952,43 +1981,45 @@ HTMLArea.insertImageDialog = function(editor,image) {
 		}
 
 		for (var field in param) {
-			var value = param[field];
-			switch (field) {
-				case "f_alt"    : img.alt = value; break;
-				case "f_border" :
-					if (parseInt(value)) {
-						img.style.borderWidth = parseInt(value)+"px";
-						img.style.borderStyle = "solid";
-					} else {
-						img.style.borderWidth = "";
-						img.style.borderStyle = "none";
-					}
-					break;
-				case "f_align"  :
-					img.style.verticalAlign = value;
-					break;
-				case "f_vert"   :
-					if (parseInt(value)) {
-						img.style.marginTop = parseInt(value)+"px";
-						img.style.marginBottom = parseInt(value)+"px";
-					} else {
-						img.style.marginTop = "";
-						img.style.marginBottom = "";
-					}
-					break;
-				case "f_horiz"  :
-					if (parseInt(value)) {
-						img.style.marginLeft = parseInt(value)+"px";
-						img.style.marginRight = parseInt(value)+"px";
-					} else {
-						img.style.marginLeft = "";
-						img.style.marginRight = "";
-					}
-					break;
-				case "f_float"  :
-					if (HTMLArea.is_ie) img.style.styleFloat = value;
-						else img.style.cssFloat = value;
-					break; 
+			if (param.hasOwnProperty(field)) {
+				var value = param[field];
+				switch (field) {
+					case "f_alt"    : img.alt = value; break;
+					case "f_border" :
+						if (parseInt(value)) {
+							img.style.borderWidth = parseInt(value)+"px";
+							img.style.borderStyle = "solid";
+						} else {
+							img.style.borderWidth = "";
+							img.style.borderStyle = "none";
+						}
+						break;
+					case "f_align"  :
+						img.style.verticalAlign = value;
+						break;
+					case "f_vert"   :
+						if (parseInt(value)) {
+							img.style.marginTop = parseInt(value)+"px";
+							img.style.marginBottom = parseInt(value)+"px";
+						} else {
+							img.style.marginTop = "";
+							img.style.marginBottom = "";
+						}
+						break;
+					case "f_horiz"  :
+						if (parseInt(value)) {
+							img.style.marginLeft = parseInt(value)+"px";
+							img.style.marginRight = parseInt(value)+"px";
+						} else {
+							img.style.marginLeft = "";
+							img.style.marginRight = "";
+						}
+						break;
+					case "f_float"  :
+						if (HTMLArea.is_ie) img.style.styleFloat = value;
+							else img.style.cssFloat = value;
+						break;
+				}
 			}
 		}
 		editor = null;
@@ -2030,23 +2061,43 @@ HTMLArea.insertTableDialog = function(editor, sel, range) {
 		var doc = editor._doc;
 		var table = doc.createElement("table");
 		for (var field in param) {
-			var value = param[field];
-			if(!value) continue;
-			switch (field) {
-				case "f_width"   : if(value != "") table.style.width = parseInt(value) + param["f_unit"]; break;
-				case "f_align"   : table.style.textAlign = value; break;
-				case "f_border"  : 
-					if(value != "") {
-						table.style.borderWidth	 = parseInt(value)+"px";
-						table.style.borderStyle = "solid";
+			if (param.hasOwnProperty(field)) {
+				var value = param[field];
+				if (value) {
+					switch (field) {
+						case "f_width"   : 
+							if(value != "") {
+								table.style.width = parseInt(value) + param["f_unit"];
+								break;
+							}
+						case "f_align"   :
+							table.style.textAlign = value;
+							break;
+						case "f_border"  :
+							if(value != "") {
+								table.style.borderWidth	 = parseInt(value)+"px";
+								table.style.borderStyle = "solid";
+							}
+							break;
+						case "f_spacing" :
+							if(value != "") {
+								table.cellSpacing = parseInt(value);
+								break;
+							}
+						case "f_padding" :
+							if(value != "") {
+								table.cellPadding = parseInt(value);
+								break;
+							}
+						case "f_float"   :
+							if (HTMLArea.is_ie) {
+								table.style.styleFloat = ((value != "not set") ? value : "");
+							} else {
+								table.style.cssFloat = ((value != "not set") ? value : "");
+							}
+							break;
 					}
-					break;
-				case "f_spacing" : if(value != "") table.cellSpacing = parseInt(value); break;
-				case "f_padding" : if(value != "") table.cellPadding = parseInt(value); break;
-				case "f_float"   : 
-					if (HTMLArea.is_ie) table.style.styleFloat = ((value != "not set") ? value : "");
-						else table.style.cssFloat = ((value != "not set") ? value : "");
-					break;
+				}
 			}
 		}
 		var cellwidth = 0;
@@ -2202,12 +2253,18 @@ HTMLArea._editorEvent = function(ev) {
 
 	if(keyEvent) {
 		if(editor._hasPluginWithOnKeyPressHandler) {
-			for (var i in editor.plugins) {
-				var plugin = editor.plugins[i].instance;
-				if (typeof(plugin.onKeyPress) == "function") {
-					if (plugin.onKeyPress(ev)) return false;
+			for (var pluginId in editor.plugins) {
+				if (editor.plugins.hasOwnProperty(pluginId)) {
+					var pluginInstance = editor.plugins[pluginId].instance;
+					if (typeof(pluginInstance.onKeyPress) === "function") {
+						if (!pluginInstance.onKeyPress(ev)) {
+							HTMLArea._stopEvent(ev);
+							return false;
+						}
+					}
 				}
 			}
+			onUpdateToolbar();
 		}
 		if(ev.ctrlKey) {
 			if(!ev.altKey) {
@@ -2263,14 +2320,14 @@ HTMLArea._editorEvent = function(ev) {
 					HTMLArea._stopEvent(ev);
 					return false;
 				} else {
-					for (var i in editor.plugins) {
-						var plugin = editor.plugins[i].instance;
-						if (typeof(plugin.onHotKey) === "function") {
-							if (plugin.onHotKey(key)) {
-								continue;
-							} else {
-								HTMLArea._stopEvent(ev);
-								return false;
+					for (var pluginId in editor.plugins) {
+						if (editor.plugins.hasOwnProperty(pluginId)) {
+							var pluginInstance = editor.plugins[pluginId].instance;
+							if (typeof(pluginInstance.onHotKey) === "function") {
+								if (!pluginInstance.onHotKey(key)) {
+									HTMLArea._stopEvent(ev);
+									return false;
+								}
 							}
 						}
 					}
@@ -2279,8 +2336,8 @@ HTMLArea._editorEvent = function(ev) {
 			}
 		} else if (ev.altKey) {
 				// check if context menu is already handling this event
-			if(editor.plugins['ContextMenu'] && editor.plugins['ContextMenu'].instance) {
-				var keys = editor.plugins['ContextMenu'].instance.keys;
+			if(editor.plugins["ContextMenu"] && editor.plugins["ContextMenu"].instance) {
+				var keys = editor.plugins["ContextMenu"].instance.keys;
 				if (keys.length > 0) {
 					var k;
 					for (var i = keys.length; --i >= 0;) {
@@ -2994,11 +3051,13 @@ HTMLArea.initEditor = function(editorNumber) {
 			config.disableBordersFieldsetInTableOperations = RTE["disableBordersFieldsetInTableOperations"] ? RTE["disableBordersFieldsetInTableOperations"] : false;
 			config.disableColorFieldsetInTableOperations = RTE["disableColorFieldsetInTableOperations"] ? RTE["disableColorFieldsetInTableOperations"] : false;
 			config.disablePCexamples = RTE["disablePCexamples"] ? RTE["disablePCexamples"] : false;
-
-			for (var plugin in RTE["plugin"]) {
-				if(RTE["plugin"][plugin]) { editor.registerPlugin(plugin); }
+			
+			for (var plugin in RTE.plugin) {
+				if (RTE.plugin.hasOwnProperty(plugin) && RTE.plugin[plugin]) {
+					editor.registerPlugin(plugin);
+				}
 			}
-
+			
 			if(RTE["defaultPageStyle"]) config.defaultPageStyle = RTE["defaultPageStyle"];
 			if(RTE["pageStyle"]) config.pageStyle = RTE["pageStyle"];
 			if(RTE["fontname"]) config.FontName = RTE["fontname"];
@@ -3021,6 +3080,7 @@ HTMLArea.initEditor = function(editorNumber) {
 			config.htmlRemoveTags = RTE["htmlRemoveTags"] ? RTE["htmlRemoveTags"] : null;
 			config.htmlRemoveTagsAndContents = RTE["htmlRemoveTagsAndContents"] ? RTE["htmlRemoveTagsAndContents"] : null;
 			config.htmlRemoveComments = RTE["htmlRemoveComments"] ? true : false;
+			config.classesUrl = RTE["classesUrl"] ? RTE["classesUrl"] : null;
 
 			editor.onGenerate = HTMLArea.onGenerateHandler(editorNumber);
 

@@ -1,3 +1,7 @@
+2007-11-10  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
+
+	* (cleanup) Protect rtehtmlarea 'for' loops from properties possibly added by JS frameworks.
+
 2007-11-08  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
 	* Feature #6668 continued: Some minor adjustments when htmlArea RTE uses the Ajax request

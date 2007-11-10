@@ -41,11 +41,21 @@
  ***************************************************/
  HTMLArea._cleanup = function (editor) {
 		// nullify envent handlers
-	for (var handler in editor.eventHandlers) editor.eventHandlers[handler] = null;
-	for (var button in editor.btnList) editor.btnList[button][3] = null;
+	for (var handler in editor.eventHandlers) {
+		if (editor.eventHandlers.hasOwnProperty(handler)) {
+			editor.eventHandlers[handler] = null;
+		}
+	}
+	for (var button in editor.btnList) {
+		if (editor.btnList.hasOwnProperty(button)) {
+			editor.btnList[button][3] = null;
+		}
+	}
 	for (var dropdown in editor.config.customSelects) {
-		dropdown.action = null;
-		dropdown.refresh = null;
+		if (editor.config.customSelects.hasOwnProperty(dropdown)) {
+			editor.config.customSelects[dropdown].action = null;
+			editor.config.customSelects[dropdown].refresh = null;
+		}
 	}
 	editor.onGenerate = null;
 	HTMLArea._editorEvent = null;
@@ -60,23 +70,26 @@
 		HTMLArea._eventCache.flush = null;
 		HTMLArea._eventCache = null;
 	}
-
+	
 		// cleaning plugin handlers
-	for (var i in editor.plugins) {
-		var plugin = editor.plugins[i].instance;
-		plugin.onGenerate = null;
-		plugin.onMode = null;
-		plugin.onKeyPress = null;
-		plugin.onSelect = null;
-		plugin.onUpdateTolbar = null;
+	for (var plugin in editor.plugins) {
+		if (editor.plugins.hasOwnProperty(plugin)) {
+			var pluginInstance = editor.plugins[plugin].instance;
+			pluginInstance.onGenerate = null;
+			pluginInstance.onMode = null;
+			pluginInstance.onKeyPress = null;
+			pluginInstance.onSelect = null;
+			pluginInstance.onUpdateTolbar = null;
+		}
 	}
-
+	
 		// cleaning the toolbar elements
-	var obj;
 	for (var txt in editor._toolbarObjects) {
-		obj = editor._toolbarObjects[txt];
-		obj["state"] = null;
-		document.getElementById(obj["elementId"])._obj = null;
+		if (editor._toolbarObjects.hasOwnProperty(txt)) {
+			var obj = editor._toolbarObjects[txt];
+			obj["state"] = null;
+			document.getElementById(obj["elementId"])._obj = null;
+		}
 	}
 
 		// cleaning the statusbar elements
