@@ -452,39 +452,11 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			 * TOOLBAR CONFIGURATION
 			 * =======================================
 			 */
-				// Traverse registered plugins
-			if (is_array($TYPO3_CONF_VARS['EXTCONF'][$this->ID]['plugins'])) {
-				foreach($TYPO3_CONF_VARS['EXTCONF'][$this->ID]['plugins'] as $pluginId => $pluginObjectConfiguration) {
-					$plugin = &t3lib_div::getUserObj($pluginObjectConfiguration['objectReference']);
-					if (is_object($plugin)) {
-						if ($plugin->main($this)) {
-							$this->registeredPlugins[$pluginId] = $plugin;
-								// Override buttons from previously registered plugins
-							$pluginButtons = t3lib_div::trimExplode(',', $plugin->getPluginButtons(), 1);
-							foreach ($this->pluginButton as $previousPluginId => $buttonList) {
-								$this->pluginButton[$previousPluginId] = implode(',',array_diff(t3lib_div::trimExplode(',', $this->pluginButton[$previousPluginId], 1), $pluginButtons));
-							}
-							$this->pluginButton[$pluginId] = $plugin->getPluginButtons();
-							$pluginLabels = t3lib_div::trimExplode(',', $plugin->getPluginLabels(), 1);
-							foreach ($this->pluginLabel as $previousPluginId => $labelList) {
-								$this->pluginLabel[$previousPluginId] = implode(',',array_diff(t3lib_div::trimExplode(',', $this->pluginLabel[$previousPluginId], 1), $pluginLabels));
-							}
-							$this->pluginLabel[$pluginId] = $plugin->getPluginLabels();
-							$this->pluginList .= ','.$pluginId;
-						}
-					}
-				}
-			}
-				// Process overrides
-			$hidePlugins = array();
-			foreach ($this->registeredPlugins as $pluginId => $plugin) {
-				if (!$this->pluginButton[$pluginId]) {
-					$hidePlugins[] = $pluginId;
-				}
-			}
 			
 				// htmlArea plugins list
 			$this->pluginEnabledArray = t3lib_div::trimExplode(',', $this->pluginList, 1);
+			$this->enableRegisteredPlugins();
+			$hidePlugins = array();
 			if(!t3lib_extMgm::isLoaded('static_info_tables') || in_array($this->language, t3lib_div::trimExplode(',', $TYPO3_CONF_VARS['EXTCONF'][$this->ID]['noSpellCheckLanguages']))) $hidePlugins[] = 'SpellChecker';
 			if ($this->client['BROWSER'] == 'msie') $hidePlugins[] = 'Acronym';
 			if ($this->client['BROWSER'] == 'opera') {
@@ -656,7 +628,46 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			// Return form item:
 		return $item;
 	}
-
+	
+	/**
+	 * Add registered plugins to the array of enabled plugins
+	 *
+	 */
+	function enableRegisteredPlugins() {
+		global $TYPO3_CONF_VARS;
+					// Traverse registered plugins
+		if (is_array($TYPO3_CONF_VARS['EXTCONF'][$this->ID]['plugins'])) {
+			foreach($TYPO3_CONF_VARS['EXTCONF'][$this->ID]['plugins'] as $pluginId => $pluginObjectConfiguration) {
+				$plugin = &t3lib_div::getUserObj($pluginObjectConfiguration['objectReference']);
+				if (is_object($plugin)) {
+					if ($plugin->main($this)) {
+						$this->registeredPlugins[$pluginId] = $plugin;
+							// Override buttons from previously registered plugins
+						$pluginButtons = t3lib_div::trimExplode(',', $plugin->getPluginButtons(), 1);
+						foreach ($this->pluginButton as $previousPluginId => $buttonList) {
+							$this->pluginButton[$previousPluginId] = implode(',',array_diff(t3lib_div::trimExplode(',', $this->pluginButton[$previousPluginId], 1), $pluginButtons));
+						}
+						$this->pluginButton[$pluginId] = $plugin->getPluginButtons();
+						$pluginLabels = t3lib_div::trimExplode(',', $plugin->getPluginLabels(), 1);
+						foreach ($this->pluginLabel as $previousPluginId => $labelList) {
+							$this->pluginLabel[$previousPluginId] = implode(',',array_diff(t3lib_div::trimExplode(',', $this->pluginLabel[$previousPluginId], 1), $pluginLabels));
+						}
+						$this->pluginLabel[$pluginId] = $plugin->getPluginLabels();
+						$this->pluginEnabledArray[] = $pluginId;
+					}
+				}
+			}
+		}
+			// Process overrides
+		$hidePlugins = array();
+		foreach ($this->registeredPlugins as $pluginId => $plugin) {
+			if (!$this->pluginButton[$pluginId]) {
+				$hidePlugins[] = $pluginId;
+			}
+		}
+		$this->pluginEnabledArray = array_diff($this->pluginEnabledArray, $hidePlugins);
+	}
+	
 	/**
 	 * Set the toolbar config (only in this PHP-Object, not in JS):
 	 *
@@ -985,12 +996,9 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			// Setting the plugin flags
 		$configureRTEInJavascriptString .= '
 			RTEarea['.$RTEcounter.']["plugin"] = new Object();';
-		$pluginArray = t3lib_div::trimExplode(',', $this->pluginList , 1);
-		foreach ($pluginArray as $pluginId) {
-			if ($this->isPluginEnabled($pluginId)) {
-				$configureRTEInJavascriptString .= '
+		foreach ($this->pluginEnabledArray as $pluginId) {
+			$configureRTEInJavascriptString .= '
 			RTEarea['.$RTEcounter.']["plugin"]["'.$pluginId.'"] = true;';
-			}
 		}
 		
 			// Setting the buttons configuration

@@ -140,24 +140,10 @@ class tx_rtehtmlarea_pi2 extends tx_rtehtmlarea_base {
 		 * TOOLBAR CONFIGURATION
 		 * =======================================
 		 */
-		 
-		 	// Traverse registered plugins
-		if (is_array($TYPO3_CONF_VARS['EXTCONF'][$this->ID]['plugins'])) {
-			foreach($TYPO3_CONF_VARS['EXTCONF'][$this->ID]['plugins'] as $pluginId => $pluginObjectConfiguration) {
-				$plugin = &t3lib_div::getUserObj($pluginObjectConfiguration['objectReference']);
-				if (is_object($plugin)) {
-					if ($plugin->main($this)) {
-						$this->registeredPlugins[$pluginId] = $plugin;
-						$this->pluginButton[$pluginId] = $plugin->getPluginButtons();
-						$this->pluginList .= ','.$pluginId;
-						$this->convertToolbarForHtmlAreaArray = array_unique(array_merge($this->convertToolbarForHtmlAreaArray, $plugin->getConvertToolbarForHtmlAreaArray()));
-					}
-				}
-			}
-		}
 		
 			// htmlArea plugins list
 		$this->pluginEnabledArray = t3lib_div::trimExplode(',', $this->pluginList, 1);
+		$this->enableRegisteredPlugins();
 		$hidePlugins = array('TYPO3Browsers', 'UserElements', 'Acronym', 'TYPO3HtmlParser');
 		if ($this->client['BROWSER'] == 'opera') {
 			$hidePlugins[] = 'ContextMenu';
@@ -175,7 +161,9 @@ class tx_rtehtmlarea_pi2 extends tx_rtehtmlarea_base {
 		
 			// Merge the list of enabled plugins with the lists from the previous RTE editing areas on the same form
 		$this->pluginEnabledCumulativeArray[$this->TCEform->RTEcounter] = $this->pluginEnabledArray;
-		if ($this->TCEform->RTEcounter > 1) $this->pluginEnabledCumulativeArray[$this->TCEform->RTEcounter] = array_unique(array_values(array_merge($this->pluginEnabledArray,$this->pluginEnabledCumulativeArray[$this->TCEform->RTEcounter-1])));
+		if ($this->TCEform->RTEcounter > 1 && isset($this->pluginEnabledCumulativeArray[$this->TCEform->RTEcounter-1]) && is_array($this->pluginEnabledCumulativeArray[$this->TCEform->RTEcounter-1])) {
+			$this->pluginEnabledCumulativeArray[$this->TCEform->RTEcounter] = array_unique(array_values(array_merge($this->pluginEnabledArray,$this->pluginEnabledCumulativeArray[$this->TCEform->RTEcounter-1])));
+		}
 		
 		/* =======================================
 		 * PLUGIN-SPECIFIC CONFIGURATION

@@ -1,6 +1,7 @@
 2007-11-10  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
 	* (cleanup) Protect rtehtmlarea 'for' loops from properties possibly added by JS frameworks.
+	* Feature #6579 continued: correction to plugin registration for FE case
 
 2007-11-08  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
