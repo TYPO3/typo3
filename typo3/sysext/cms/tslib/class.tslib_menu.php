@@ -2273,7 +2273,7 @@ class tslib_gmenu extends tslib_menu {
 					}
 
 						// Set altText
-					$this->I['altText'] = $this->mconf['disableAltText'] ? '' : $this->I['title'].$this->I['accessKey']['alt'];
+					$this->I['altText'] = $this->I['title'].$this->I['accessKey']['alt'];
 
 						// Calling extra processing function
 					$this->extProc_beforeLinking($key);
@@ -2285,7 +2285,7 @@ class tslib_gmenu extends tslib_menu {
 						$this->I['A1'] = '';
 						$this->I['A2'] = '';
 					}
-					$this->I['IMG'] = '<img src="'.$GLOBALS['TSFE']->absRefPrefix.$this->I['val']['output_file'].'" width="'.$this->I['val']['output_w'].'" height="'.$this->I['val']['output_h'].'" '.tslib_cObj::getBorderAttr('border="0"').' alt="'.htmlspecialchars($this->I['altText']).'"'.$this->I['name'].($this->I['val']['imgParams']?' '.$this->I['val']['imgParams']:'').' />';
+					$this->I['IMG'] = '<img src="'.$GLOBALS['TSFE']->absRefPrefix.$this->I['val']['output_file'].'" width="'.$this->I['val']['output_w'].'" height="'.$this->I['val']['output_h'].'" '.tslib_cObj::getBorderAttr('border="0"').($this->mconf['disableAltText'] ? '' : ' alt="'.htmlspecialchars($this->I['altText']).'"').$this->I['name'].($this->I['val']['imgParams']?' '.$this->I['val']['imgParams']:'').' />';
 
 						// Make before, middle and after parts
 					$this->I['parts'] = array();

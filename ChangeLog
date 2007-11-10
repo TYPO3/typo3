@@ -1,7 +1,8 @@
 2007-11-10  Ingmar Schlecht  <ingmar@typo3.org>
 
-	* Feature #6256: $TCA: Newline for Tabs (--div--)
-	* Feature #4280: stdWrap for params property of IMAGE
+	* Feature #6256: $TCA: Newline for Tabs (--div--) (Thanks to Malte Jansen)
+	* Minor Feature #4280: stdWrap for params property of IMAGE (Thanks to Ralf Hettinger)
+	* Bug #6682: GMENU property disableAltText clears the content of alt param, but does not remove it (Thanks to Hemlut Hummel)
 
 2007-11-09  Benjamin Mack  <mack@xnos.org>
 
