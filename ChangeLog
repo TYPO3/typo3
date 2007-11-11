@@ -1,3 +1,7 @@
+2007-11-11  Ingmar Schlecht  <ingmar@typo3.org>
+
+	* Minor code-cleanup to recent Workspace related changes
+
 2007-11-10  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
 	* (cleanup) Protect rtehtmlarea 'for' loops from properties possibly added by JS frameworks.

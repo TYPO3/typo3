@@ -553,6 +553,7 @@ div#contentMenu1 { z-index: 2; position: absolute; }
 .typo3-red-background { background-color: red; }
 TABLE.warningbox { border: solid 2px black; background-color: yellow; margin: 20px 0px 20px 0px; }
 TABLE.warningbox TD { padding: 20px 20px 20px 20px; font-weight: bold; }
+DIV.warningbox  {border: solid 2px black; background-color: yellow; padding: 10px; font-weight: bold;  margin: 10px 0px 10px 0px; }
 
 /* Various classes: */
 .nobr { white-space: nowrap; }

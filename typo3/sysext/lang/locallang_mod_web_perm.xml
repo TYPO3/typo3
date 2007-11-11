@@ -40,6 +40,8 @@
 			<label index="mlang_labels_tablabel">Page editing permissions</label>
 			<label index="mlang_labels_tabdescr">Setting of page permissions is vital for controlling backend user access to pages. You can assign a user and a group as owners of a page and set access permissions for each.</label>
 			<label index="mlang_tabs_tab">Access</label>
+			<label index="WorkspaceWarning">Workspace Warning</label>
+			<label index="WorkspaceWarningText">Permissions you set in the workspace are effective on the elements only &lt;em&gt;after&lt;/em&gt; they are published! If you need to set permissions which are effective right now, you must do so in the Live workspace. (Permissions are always evaluated on the Live workspace record/placeholder of a draft version)</label>
 		</languageKey>
 	</data>
 </T3locallang>
