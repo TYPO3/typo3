@@ -29,7 +29,11 @@
  *
  * TYPO3 SVN ID: $Id$
  */
-DefaultInline = Class.create(HTMLArea.plugin, {
+DefaultInline = HTMLArea.plugin.extend({
+		
+	constructor : function(editor, pluginName) {
+		this.base(editor, pluginName);
+	},
 	
 	/*
 	 * This function gets called by the class constructor
@@ -64,31 +68,8 @@ DefaultInline = Class.create(HTMLArea.plugin, {
 			this.registerButton(buttonConfiguration);
 		}
 		return true;
-	}
-});
-
-/* The list of buttons added by this plugin */
-DefaultInline.buttonList = [
-	["Bold", null],
-	["Italic", null],
-	["StrikeThrough", null],
-	["Subscript", null],
-	["Superscript", null],
-	["Underline", null]
-];
-
-/* The list of hotkeys handled by this plugin */
-DefaultInline.hotKeyList = {
-	b : "Bold",
-	i : "Italic",
-	s : "StrikeThrough",
-	u : "Underline"
-};
-
-/*
- * Definition of additional methods
- */
-DefaultInline.addMethods({
+	 },
+	 
 	/*
 	 * This function gets called when some inline element button was pressed.
 	 */
@@ -137,3 +118,22 @@ DefaultInline.addMethods({
 		}
 	}
 });
+
+/* The list of buttons added by this plugin */
+DefaultInline.buttonList = [
+	["Bold", null],
+	["Italic", null],
+	["StrikeThrough", null],
+	["Subscript", null],
+	["Superscript", null],
+	["Underline", null]
+];
+
+/* The list of hotkeys handled by this plugin */
+DefaultInline.hotKeyList = {
+	b : "Bold",
+	i : "Italic",
+	s : "StrikeThrough",
+	u : "Underline"
+};
+

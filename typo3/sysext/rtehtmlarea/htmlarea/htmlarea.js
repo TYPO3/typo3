@@ -122,7 +122,8 @@ HTMLArea.onload = function(){
 };
 HTMLArea.loadTimer;
 HTMLArea._scripts = [];
-HTMLArea.scriptLoaded = [];
+HTMLArea._scriptLoaded = [];
+HTMLArea._request = [];
 HTMLArea.loadScript = function(url, plugin) {
 	if (plugin) url = _editor_url + "/plugins/" + plugin + '/' + url;
 	if (HTMLArea.is_opera) url = _typo3_host_url + url;
@@ -134,31 +135,54 @@ if(HTMLArea.is_gecko) HTMLArea.loadScript(RTEarea[0]["htmlarea-gecko"] ? RTEarea
 if(HTMLArea.is_ie) HTMLArea.loadScript(RTEarea[0]["htmlarea-ie"] ? RTEarea[0]["htmlarea-ie"] : _editor_url + "htmlarea-ie.js");
 
 /*
- * Get a script using an asynchronous request
+ * Get a script using asynchronous XMLHttpRequest
  */
-HTMLArea._getScript = function (i, asynchronous, url) {
-	if (typeof(url) === "undefined") {
+HTMLArea.MSXML_XMLHTTP_PROGIDS = new Array("Msxml2.XMLHTTP.5.0", "Msxml2.XMLHTTP.4.0", "Msxml2.XMLHTTP.3.0", "Msxml2.XMLHTTP", "Microsoft.XMLHTTP");
+HTMLArea.XMLHTTPResponseHandler = function (i) {
+	return (function() {
 		var url = HTMLArea._scripts[i];
-	}
-	if (typeof(asynchronous) === "undefined") {
-		var asynchronous = true;
-	}
-	new Ajax.Request(url, {
-		asynchronous	: asynchronous,
-		method		: "get",
-		onSuccess	: function(transport) {
-			HTMLArea.scriptLoaded[i] = true;
-			return true;
-		},
-		onException	: function(transport) {
-			HTMLArea._appendToLog("ERROR [HTMLArea::getScript]: Unable to get " + url + " . Exception raised: " + transport.statusText);
-			return false;
-		},
-		onFailure	: function(transport) {
-			HTMLArea._appendToLog("ERROR [HTMLArea::getScript]: Unable to get " + url + " . Server reported " + transport.statusText);
-			return false;
+		if (HTMLArea._request[i].readyState != 4) return;
+		if (HTMLArea._request[i].status == 200) { 
+			try {
+				eval(HTMLArea._request[i].responseText);
+				HTMLArea._scriptLoaded[i] = true;
+				i = null;
+			} catch (e) {
+				HTMLArea._appendToLog("ERROR [HTMLArea::getScript]: Unable to get script " + url + ": " + e);
+			}
+		} else {
+			HTMLArea._appendToLog("ERROR [HTMLArea::getScript]: Unable to get " + url + " . Server reported " + HTMLArea._request[i].status);
 		}
 	});
+};
+HTMLArea._getScript = function (i,asynchronous,url) {
+	if (typeof(url) == "undefined") var url = HTMLArea._scripts[i];
+	if (typeof(asynchronous) == "undefined") var asynchronous = true;
+	if (window.XMLHttpRequest) HTMLArea._request[i] = new XMLHttpRequest();
+		else if (window.ActiveXObject) {
+			var success = false;
+			for (var k = 0; k < HTMLArea.MSXML_XMLHTTP_PROGIDS.length && !success; k++) {
+				try {
+					HTMLArea._request[i] = new ActiveXObject(HTMLArea.MSXML_XMLHTTP_PROGIDS[k]);
+					success = true;
+				} catch (e) { }
+			}
+			if (!success) return false;
+		}
+	var request = HTMLArea._request[i];
+	if (request) {
+		request.open("GET", url, asynchronous);
+		if (asynchronous) request.onreadystatechange = HTMLArea.XMLHTTPResponseHandler(i);
+		if (window.XMLHttpRequest) request.send(null);
+			else if (window.ActiveXObject) request.send();
+		if (!asynchronous) {
+			if (request.status == 200) return request.responseText;
+				else return '';
+		}
+		return true;
+	} else {
+		return false;
+	}
 };
 
 /*
@@ -167,16 +191,21 @@ HTMLArea._getScript = function (i, asynchronous, url) {
 HTMLArea.checkInitialLoad = function() {
 	var scriptsLoaded = true;
 	for (var i = HTMLArea._scripts.length; --i >= 0;) {
-		scriptsLoaded = scriptsLoaded && HTMLArea.scriptLoaded[i];
+		scriptsLoaded = scriptsLoaded && HTMLArea._scriptLoaded[i];
 	}
-	if (HTMLArea.loadTimer) window.clearTimeout(HTMLArea.loadTimer);
+	if(HTMLArea.loadTimer) window.clearTimeout(HTMLArea.loadTimer);
 	if (scriptsLoaded) {
 		HTMLArea.is_loaded = true;
 		HTMLArea._appendToLog("[HTMLArea::init]: All scripts successfully loaded.");
 		HTMLArea._appendToLog("[HTMLArea::init]: Editor url set to: " + _editor_url);
 		HTMLArea._appendToLog("[HTMLArea::init]: Editor skin CSS set to: " + _editor_CSS);
 		HTMLArea._appendToLog("[HTMLArea::init]: Editor content skin CSS set to: " + _editor_edited_content_CSS);
-		return true;
+		if (window.ActiveXObject) {
+			for (var i = HTMLArea._scripts.length; --i >= 0;) {
+				HTMLArea._request[i].onreadystatechange = new Function();
+				HTMLArea._request[i] = null;
+			}
+		}
 	} else {
 		HTMLArea.loadTimer = window.setTimeout("HTMLArea.checkInitialLoad();", 200);
 		return false;
@@ -188,10 +217,21 @@ HTMLArea.checkInitialLoad = function() {
  */
 HTMLArea.init = function() {
 	HTMLArea._eventCache = HTMLArea._eventCacheConstructor();
-	for (var i = HTMLArea._scripts.length; --i >= 0;) {
-		HTMLArea._getScript(i);
+	if (window.XMLHttpRequest || window.ActiveXObject) {
+		try { 
+			var success = true;
+			for (var i = HTMLArea._scripts.length; --i >= 0 && success;) success = success && HTMLArea._getScript(i);
+		} catch (e) {
+			HTMLArea._appendToLog("ERROR [HTMLArea::init]: Unable to use XMLHttpRequest: "+ e);
+		}
+		if (success) {
+			HTMLArea.checkInitialLoad();
+		} else {
+			if (HTMLArea.is_ie) window.setTimeout('if (window.document.getElementById("pleasewait1")) { window.document.getElementById("pleasewait1").innerHTML = HTMLArea.I18N.msg["ActiveX-required"]; } else { alert(HTMLArea.I18N.msg["ActiveX-required"]); };', 200);
+		}
+	} else {
+		if (HTMLArea.is_ie) alert(HTMLArea.I18N.msg["ActiveX-required"]);
 	}
-	HTMLArea.checkInitialLoad();
 };
 
 /*
@@ -3103,19 +3143,123 @@ HTMLArea.allElementsAreDisplayed = function(elements) {
 };
 
 /**
- * htmlArea plugin class using the Prototype JavaScript framework
+ *	Base, version 1.0.2
+ *	Copyright 2006, Dean Edwards
+ *	License: http://creativecommons.org/licenses/LGPL/2.1/
  */
-HTMLArea.plugin = Class.create( {
-	
-	/**
-	 * Class constructor
-	 *
-	 * @param	object		editor: instance of RTE
-	 * @param	string		pluginName: name of the plugin
-	 *
-	 * @return	boolean		true if the plugin was configured
-	 */
-	initialize : function(editor, pluginName) {
+
+HTMLArea.Base = function() {
+	if (arguments.length) {
+		if (this == window) { // cast an object to this class
+			HTMLArea.Base.prototype.extend.call(arguments[0], arguments.callee.prototype);
+		} else {
+			this.extend(arguments[0]);
+		}
+	}
+};
+
+HTMLArea.Base.version = "1.0.2";
+
+HTMLArea.Base.prototype = {
+	extend: function(source, value) {
+		var extend = HTMLArea.Base.prototype.extend;
+		if (arguments.length == 2) {
+			var ancestor = this[source];
+			// overriding?
+			if ((ancestor instanceof Function) && (value instanceof Function) &&
+				ancestor.valueOf() != value.valueOf() && /\bbase\b/.test(value)) {
+				var method = value;
+			//	var _prototype = this.constructor.prototype;
+			//	var fromPrototype = !Base._prototyping && _prototype[source] == ancestor;
+				value = function() {
+					var previous = this.base;
+				//	this.base = fromPrototype ? _prototype[source] : ancestor;
+					this.base = ancestor;
+					var returnValue = method.apply(this, arguments);
+					this.base = previous;
+					return returnValue;
+				};
+				// point to the underlying method
+				value.valueOf = function() {
+					return method;
+				};
+				value.toString = function() {
+					return String(method);
+				};
+			}
+			return this[source] = value;
+		} else if (source) {
+			var _prototype = {toSource: null};
+			// do the "toString" and other methods manually
+			var _protected = ["toString", "valueOf"];
+			// if we are prototyping then include the constructor
+			if (HTMLArea.Base._prototyping) _protected[2] = "constructor";
+			for (var i = 0; (name = _protected[i]); i++) {
+				if (source[name] != _prototype[name]) {
+					extend.call(this, name, source[name]);
+				}
+			}
+			// copy each of the source object's properties to this object
+			for (var name in source) {
+				if (!_prototype[name]) {
+					extend.call(this, name, source[name]);
+				}
+			}
+		}
+		return this;
+	},
+
+	base: function() {
+		// call this method from any other method to invoke that method's ancestor
+	}
+};
+
+HTMLArea.Base.extend = function(_instance, _static) {
+	var extend = HTMLArea.Base.prototype.extend;
+	if (!_instance) _instance = {};
+	// build the prototype
+	HTMLArea.Base._prototyping = true;
+	var _prototype = new this;
+	extend.call(_prototype, _instance);
+	var constructor = _prototype.constructor;
+	_prototype.constructor = this;
+	delete HTMLArea.Base._prototyping;
+	// create the wrapper for the constructor function
+	var klass = function() {
+		if (!HTMLArea.Base._prototyping) constructor.apply(this, arguments);
+		this.constructor = klass;
+	};
+	klass.prototype = _prototype;
+	// build the class interface
+	klass.extend = this.extend;
+	klass.implement = this.implement;
+	klass.toString = function() {
+		return String(constructor);
+	};
+	extend.call(klass, _static);
+	// single instance
+	var object = constructor ? klass : _prototype;
+	// class initialisation
+	if (object.init instanceof Function) object.init();
+	return object;
+};
+
+HTMLArea.Base.implement = function(_interface) {
+	if (_interface instanceof Function) _interface = _interface.prototype;
+	this.prototype.extend(_interface);
+};
+
+/**
+ * HTMLArea. plugin constructor
+ *
+ * @param	object		editor: instance of RTE
+ * @param	string		pluginName: name of the plugin
+ *
+ * @return	boolean		true if the plugin was configured
+ */
+HTMLArea.plugin = HTMLArea.Base.extend({
+
+	constructor : function(editor, pluginName) {
 		this.editor = editor;
 		this.editorNumber = editor._editorNumber;
 		this.editorConfiguration = editor.config;

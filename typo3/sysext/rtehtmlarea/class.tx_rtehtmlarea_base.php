@@ -568,7 +568,6 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 		<link rel="stylesheet" type="text/css" href="' . $this->editorCSS . '" />';
 			
 				// Loading JavaScript files and code
-			//$this->TCEform->loadJavascriptLib('prototype');
 			$this->TCEform->additionalCode_pre['loadJSfiles'] = $this->loadJSfiles($this->TCEform->RTEcounter);
 			$this->TCEform->additionalJS_pre['loadJScode'] = $this->loadJScode($this->TCEform->RTEcounter);
 
@@ -914,7 +913,6 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 		</script>';
 		$loadJavascriptCode .= '
 		<script type="text/javascript" src="' . $this->buildJSMainLangFile($RTEcounter) . '"></script>
-		<script type="text/javascript" src="'. ($this->is_FE()?'/typo3/':'') . 'contrib/prototype/prototype.js"></script>
 		<script type="text/javascript" src="' . $this->writeTemporaryFile('EXT:' . $this->ID . '/htmlarea/htmlarea.js', "htmlarea") . '"></script>
 		';
 		return $loadJavascriptCode;

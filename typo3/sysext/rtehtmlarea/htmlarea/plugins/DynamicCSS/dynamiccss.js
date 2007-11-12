@@ -155,7 +155,7 @@ DynamicCSS.applyCSSRule=function(editor,i18n,cssRules,cssArray){
 DynamicCSS.applyCSSIEImport = function(editor,i18n,cssIEImport,cssArray){
 	var newCssArray = new Object();
 	newCssArray = cssArray;
-	for(var i=0;i<cssIEImport.length;i++){
+	for (var i=0;i<cssIEImport.length;i++){
 		if(cssIEImport[i].imports){
 			newCssArray = DynamicCSS.applyCSSIEImport(editor,i18n,cssIEImport[i].imports,newCssArray);
 		}
@@ -313,7 +313,7 @@ DynamicCSS.prototype.updateValue = function(editor,obj) {
 		className = parent.className;
 		if(HTMLArea.reservedClassNames.test(className)) {
 			var cls = className.split(" ");
-			for(var i = cls.length; i > 0;) if(!HTMLArea.reservedClassNames.test(cls[--i])) className = cls[i];
+			for (var i = cls.length; i > 0;) if(!HTMLArea.reservedClassNames.test(cls[--i])) className = cls[i];
 		}
 	}
 	if(obj.lastTag != tagName || obj.lastClass != className){
@@ -326,19 +326,23 @@ DynamicCSS.prototype.updateValue = function(editor,obj) {
 				// style class only allowed if parent tag is not body or editor is in fullpage mode
 			if(tagName != 'body' || editor.config.fullPage){
 				if(cssArray[tagName]){
-					for(cssClass in cssArray[tagName]){
-						if(cssClass == 'none') {
-							select.options[0] = new Option(cssArray[tagName][cssClass],cssClass);
-						} else {
-							select.options[select.options.length] = new Option(cssArray[tagName][cssClass],cssClass);
-							if (!editor.config.disablePCexamples && HTMLArea.classesValues && HTMLArea.classesValues[cssClass] && !HTMLArea.classesNoShow[cssClass]) select.options[select.options.length-1].setAttribute("style", HTMLArea.classesValues[cssClass]);
+					for (cssClass in cssArray[tagName]){
+						if (cssArray[tagName].hasOwnProperty(cssClass)) {
+							if (cssClass == 'none') {
+								select.options[0] = new Option(cssArray[tagName][cssClass],cssClass);
+							} else {
+								select.options[select.options.length] = new Option(cssArray[tagName][cssClass],cssClass);
+								if (!editor.config.disablePCexamples && HTMLArea.classesValues && HTMLArea.classesValues[cssClass] && !HTMLArea.classesNoShow[cssClass]) select.options[select.options.length-1].setAttribute("style", HTMLArea.classesValues[cssClass]);
+							}
 						}
 					}
 				}
-				if(cssArray['all']){
-					for(cssClass in cssArray['all']){
-						select.options[select.options.length] = new Option(cssArray['all'][cssClass],cssClass);
-						if (!editor.config.disablePCexamples && HTMLArea.classesValues && HTMLArea.classesValues[cssClass] && !HTMLArea.classesNoShow[cssClass]) select.options[select.options.length-1].setAttribute("style", HTMLArea.classesValues[cssClass]);
+				if (cssArray['all']){
+					for (cssClass in cssArray['all']){
+						if (cssArray['all'].hasOwnProperty(cssClass)) {
+							select.options[select.options.length] = new Option(cssArray['all'][cssClass],cssClass);
+							if (!editor.config.disablePCexamples && HTMLArea.classesValues && HTMLArea.classesValues[cssClass] && !HTMLArea.classesNoShow[cssClass]) select.options[select.options.length-1].setAttribute("style", HTMLArea.classesValues[cssClass]);
+						}
 					}
 				}
 			} else {

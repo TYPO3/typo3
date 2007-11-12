@@ -29,8 +29,11 @@
  *
  * TYPO3 SVN ID: $Id$
  */
-
-InlineCSS = Class.create(HTMLArea.plugin, {
+InlineCSS = HTMLArea.plugin.extend({
+		
+	constructor : function(editor, pluginName) {
+		this.base(editor, pluginName);
+	},
 	
 	/*
 	 * This function gets called by the class constructor
@@ -72,107 +75,8 @@ InlineCSS = Class.create(HTMLArea.plugin, {
 		this.registerDropDown(dropDownConfiguration);
 		
 		return true;
-	}
-});
-
-InlineCSS.parseStyleSheet = function(editor){
-	var obj = editor.config.customSelects["InlineCSS-class"];
-	var iframe = editor._iframe.contentWindow ? editor._iframe.contentWindow.document : editor._iframe.contentDocument;
-	var newCssArray = new Object();
-	obj.loaded = true;
-	for(var i=0;i<iframe.styleSheets.length;i++){
-			// Mozilla
-            if(HTMLArea.is_gecko){
-			try{ newCssArray = InlineCSS.applyCSSRule(editor,HTMLArea.I18N.InlineCSS,iframe.styleSheets[i].cssRules,newCssArray); }
-			catch(e){ obj.loaded = false; }
-		} else {
-			try{
-					// @import StyleSheets (IE)
-				if(iframe.styleSheets[i].imports){
-					newCssArray = InlineCSS.applyCSSIEImport(editor,HTMLArea.I18N.InlineCSS,iframe.styleSheets[i].imports,newCssArray);
-				}
-				if(iframe.styleSheets[i].rules){
-					newCssArray = InlineCSS.applyCSSRule(editor,HTMLArea.I18N.InlineCSS,iframe.styleSheets[i].rules,newCssArray);
-				}
-			} catch(e) { obj.loaded = false; }
-		}
-	}
-	return newCssArray;
-};
-
-InlineCSS.applyCSSRule = function(editor,i18n,cssRules,cssArray){
-	var cssElements = new Array();
-	var cssElement = new Array();
-	var newCssArray = new Object();
-	var tagName, className, rule, k;
-	var obj = editor.config.customSelects["InlineCSS-class"];
-	newCssArray = cssArray;
-	for(rule=0;rule<cssRules.length;rule++){
-			// StyleRule
-		if(cssRules[rule].selectorText){
-			if(cssRules[rule].selectorText.search(/:+/)==-1){
-					// split equal Styles (Mozilla-specific) e.q. head, body {border:0px}
-					// for ie not relevant. returns allways one element
-				cssElements = cssRules[rule].selectorText.split(",");
-				for(k=0;k<cssElements.length;k++){
-					cssElement = cssElements[k].split(".");
-					tagName = cssElement[0].toLowerCase().trim();
-					if(!tagName) tagName = 'all';
-					className = cssElement[1];
-					if( (!obj["classesCharacter"] && (tagName == 'span')) || ((tagName != "all" || obj["showTagFreeClasses"] == true) && obj["classesCharacter"] && obj["classesCharacter"].indexOf(className) != -1)) {
-						if(!newCssArray[tagName]) newCssArray[tagName] = new Object();
-						if(className){
-							cssName = className;
-							if (HTMLArea.classesLabels) cssName = HTMLArea.classesLabels[className] ? HTMLArea.classesLabels[className] : cssName ;
-							if (tagName != 'all') cssName = '<'+cssName+'>';
-						} else {
-							className = 'none';
-							if(tagName == 'all') cssName = i18n["Default"];
-								else cssName = '<'+i18n["Default"]+'>';
-						}
-						newCssArray[tagName][className] = cssName;
-					}
-				}
-			}
-		} else {
-				// ImportRule (Mozilla)
-			if (cssRules[rule].styleSheet) {
-				newCssArray = InlineCSS.applyCSSRule(editor, i18n, cssRules[rule].styleSheet.cssRules, newCssArray);
-			}
-				// MediaRule (Mozilla)
-			if (cssRules[rule].cssRules) {
-				newCssArray = InlineCSS.applyCSSRule(editor, i18n, cssRules[rule].cssRules, newCssArray);
-			}
-		}
-	}
-	return newCssArray;
-};
-
-InlineCSS.applyCSSIEImport=function(editor,i18n,cssIEImport,cssArray){
-	var newCssArray = new Object();
-	newCssArray = cssArray;
-
-	for(var i=0;i<cssIEImport.length;i++){
-		if(cssIEImport[i].imports){
-			newCssArray = InlineCSS.applyCSSIEImport(editor,i18n,cssIEImport[i].imports,newCssArray);
-		}
-		if(cssIEImport[i].rules){
-			newCssArray = InlineCSS.applyCSSRule(editor,i18n,cssIEImport[i].rules,newCssArray);
-		}
-	}
-	return newCssArray;
-};
-
-InlineCSS.getCSSArrayLater = function(editor,instance) {
-	return (function() {
-		instance.getCSSArray(editor);
-	});
-};
-
-/*
- * Definition of additional methods
- */
-InlineCSS.addMethods({
+	},
+	
 	onSelect : function(editor, buttonId) {
 		var obj = this.editorConfiguration.customSelects[buttonId];
 		var tbobj = editor._toolbarObjects[buttonId];
@@ -439,3 +343,98 @@ InlineCSS.addMethods({
 		}
 	}
 });
+
+InlineCSS.parseStyleSheet = function(editor) {
+	var obj = editor.config.customSelects["InlineCSS-class"];
+	var iframe = editor._iframe.contentWindow ? editor._iframe.contentWindow.document : editor._iframe.contentDocument;
+	var newCssArray = new Object();
+	obj.loaded = true;
+	for(var i=0;i<iframe.styleSheets.length;i++){
+			// Mozilla
+            if(HTMLArea.is_gecko){
+			try{ newCssArray = InlineCSS.applyCSSRule(editor,HTMLArea.I18N.InlineCSS,iframe.styleSheets[i].cssRules,newCssArray); }
+			catch(e){ obj.loaded = false; }
+		} else {
+			try{
+					// @import StyleSheets (IE)
+				if(iframe.styleSheets[i].imports){
+					newCssArray = InlineCSS.applyCSSIEImport(editor,HTMLArea.I18N.InlineCSS,iframe.styleSheets[i].imports,newCssArray);
+				}
+				if(iframe.styleSheets[i].rules){
+					newCssArray = InlineCSS.applyCSSRule(editor,HTMLArea.I18N.InlineCSS,iframe.styleSheets[i].rules,newCssArray);
+				}
+			} catch(e) { obj.loaded = false; }
+		}
+	}
+	return newCssArray;
+};
+
+InlineCSS.applyCSSRule = function(editor,i18n,cssRules,cssArray){
+	var cssElements = new Array();
+	var cssElement = new Array();
+	var newCssArray = new Object();
+	var tagName, className, rule, k;
+	var obj = editor.config.customSelects["InlineCSS-class"];
+	newCssArray = cssArray;
+	for(rule=0;rule<cssRules.length;rule++){
+			// StyleRule
+		if(cssRules[rule].selectorText){
+			if(cssRules[rule].selectorText.search(/:+/)==-1){
+					// split equal Styles (Mozilla-specific) e.q. head, body {border:0px}
+					// for ie not relevant. returns allways one element
+				cssElements = cssRules[rule].selectorText.split(",");
+				for(k=0;k<cssElements.length;k++){
+					cssElement = cssElements[k].split(".");
+					tagName = cssElement[0].toLowerCase().trim();
+					if(!tagName) tagName = 'all';
+					className = cssElement[1];
+					if( (!obj["classesCharacter"] && (tagName == 'span')) || ((tagName != "all" || obj["showTagFreeClasses"] == true) && obj["classesCharacter"] && obj["classesCharacter"].indexOf(className) != -1)) {
+						if(!newCssArray[tagName]) newCssArray[tagName] = new Object();
+						if(className){
+							cssName = className;
+							if (HTMLArea.classesLabels) cssName = HTMLArea.classesLabels[className] ? HTMLArea.classesLabels[className] : cssName ;
+							if (tagName != 'all') cssName = '<'+cssName+'>';
+						} else {
+							className = 'none';
+							if(tagName == 'all') cssName = i18n["Default"];
+								else cssName = '<'+i18n["Default"]+'>';
+						}
+						newCssArray[tagName][className] = cssName;
+					}
+				}
+			}
+		} else {
+				// ImportRule (Mozilla)
+			if (cssRules[rule].styleSheet) {
+				newCssArray = InlineCSS.applyCSSRule(editor, i18n, cssRules[rule].styleSheet.cssRules, newCssArray);
+			}
+				// MediaRule (Mozilla)
+			if (cssRules[rule].cssRules) {
+				newCssArray = InlineCSS.applyCSSRule(editor, i18n, cssRules[rule].cssRules, newCssArray);
+			}
+		}
+	}
+	return newCssArray;
+};
+
+InlineCSS.applyCSSIEImport=function(editor,i18n,cssIEImport,cssArray){
+	var newCssArray = new Object();
+	newCssArray = cssArray;
+
+	for(var i=0;i<cssIEImport.length;i++){
+		if(cssIEImport[i].imports){
+			newCssArray = InlineCSS.applyCSSIEImport(editor,i18n,cssIEImport[i].imports,newCssArray);
+		}
+		if(cssIEImport[i].rules){
+			newCssArray = InlineCSS.applyCSSRule(editor,i18n,cssIEImport[i].rules,newCssArray);
+		}
+	}
+	return newCssArray;
+};
+
+InlineCSS.getCSSArrayLater = function(editor,instance) {
+	return (function() {
+		instance.getCSSArray(editor);
+	});
+};
+
