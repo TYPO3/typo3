@@ -1,3 +1,7 @@
+2007-11-12  Oliver Hader  <oh@inpublica.de>
+
+	* (minor) Fixed bug #6696: Parts of the TYPO3 back-end do not work correctly with prototype.js 1.6.0
+
 2007-11-11  Ingmar Schlecht  <ingmar@typo3.org>
 
 	* Minor code-cleanup to recent Workspace related changes

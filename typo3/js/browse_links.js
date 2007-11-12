@@ -32,7 +32,7 @@
 var BrowseLinks = {
 	elements: {},
 	addElements: function(elements) {
-		BrowseLinks.elements = $H(BrowseLinks.elements).merge(elements);
+		BrowseLinks.elements = $H(BrowseLinks.elements).merge(elements).toObject();
 	},
 	focusOpenerAndClose: function(close) {
 		if (close) {

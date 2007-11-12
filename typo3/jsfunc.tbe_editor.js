@@ -77,7 +77,7 @@ var TBE_EDITOR = {
 	// Handling of data structures:
 	addElements: function(elements) {
 		TBE_EDITOR.recentUpdatedElements = elements;
-		TBE_EDITOR.elements = $H(TBE_EDITOR.elements).merge(elements);
+		TBE_EDITOR.elements = $H(TBE_EDITOR.elements).merge(elements).toObject();
 	},
 	removeElement: function(record) {
 		if (TBE_EDITOR.elements && TBE_EDITOR.elements[record]) {

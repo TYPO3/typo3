@@ -35,7 +35,11 @@ var inline = {
 	lockedAjaxMethod: {},
 	data: {},
 
-	addToDataArray: function(object) { for (var i in object) { this.data[i] = $H(this.data[i]).merge(object[i]); } },
+	addToDataArray: function(object) {
+		$H(object).each(function(pair) {
+			inline.data[pair.key] = $H(inline.data[pair.key]).merge(pair.value).toObject();
+		});
+	},
 	setPrependFormFieldNames: function(value) {	this.prependFormFieldNames = value; },
 	setNoTitleString: function(value) { this.noTitleString = value; },
 
@@ -463,37 +467,39 @@ var inline = {
 	},
 
 	revertUnique: function(objectPrefix, elName, recordUid) {
-		var unique = this.data.unique[objectPrefix];
-		var fieldObj = elName ? document.getElementsByName(elName+'['+unique.field+']') : null;
-
-		if (unique.type == 'select') {
-			if (fieldObj && fieldObj.length) {
-				delete(this.data.unique[objectPrefix].used[recordUid])
-
-				if (unique.selector == 'select') {
-					if (!isNaN(fieldObj[0].value)) {
-						var selector = $(objectPrefix+'_selector');
-						this.readdSelectOption(selector, fieldObj[0].value, unique);
+		if (this.data.unique && this.data.unique[objectPrefix]) {
+			var unique = this.data.unique[objectPrefix];
+			var fieldObj = elName ? document.getElementsByName(elName+'['+unique.field+']') : null;
+	
+			if (unique.type == 'select') {
+				if (fieldObj && fieldObj.length) {
+					delete(this.data.unique[objectPrefix].used[recordUid])
+	
+					if (unique.selector == 'select') {
+						if (!isNaN(fieldObj[0].value)) {
+							var selector = $(objectPrefix+'_selector');
+							this.readdSelectOption(selector, fieldObj[0].value, unique);
+						}
 					}
-				}
-
-				if (!(unique.selector && unique.max == -1)) {
-					var formName = this.prependFormFieldNames+this.parseFormElementName('parts', objectPrefix, 3, 1);
-					var formObj = document.getElementsByName(formName);
-					if (formObj.length) {
-						var records = formObj[0].value.split(',');
-						var recordObj;
-							// walk through all inline records on that level and get the select field
-						for (var i=0; i<records.length; i++) {
-							recordObj = document.getElementsByName(this.prependFormFieldNames+'['+unique.table+']['+records[i]+']['+unique.field+']');
-							if (recordObj.length) this.readdSelectOption(recordObj[0], fieldObj[0].value, unique);
+	
+					if (!(unique.selector && unique.max == -1)) {
+						var formName = this.prependFormFieldNames+this.parseFormElementName('parts', objectPrefix, 3, 1);
+						var formObj = document.getElementsByName(formName);
+						if (formObj.length) {
+							var records = formObj[0].value.split(',');
+							var recordObj;
+								// walk through all inline records on that level and get the select field
+							for (var i=0; i<records.length; i++) {
+								recordObj = document.getElementsByName(this.prependFormFieldNames+'['+unique.table+']['+records[i]+']['+unique.field+']');
+								if (recordObj.length) this.readdSelectOption(recordObj[0], fieldObj[0].value, unique);
+							}
 						}
 					}
 				}
+			} else if (unique.type == 'groupdb') {
+				// alert(objectPrefix+'/'+recordUid);
+				delete(this.data.unique[objectPrefix].used[recordUid])
 			}
-		} else if (unique.type == 'groupdb') {
-			// alert(objectPrefix+'/'+recordUid);
-			delete(this.data.unique[objectPrefix].used[recordUid])
 		}
 	},
 
@@ -522,7 +528,7 @@ var inline = {
 		var beforeDeleteIsBelowMax = this.isBelowMax(objectPrefix);
 
 			// revert the unique settings if available
-		if (this.data.unique && this.data.unique[objectPrefix]) this.revertUnique(objectPrefix, elName, recordUid);
+		this.revertUnique(objectPrefix, elName, recordUid);
 
 			// if the record is new and was never saved before, just remove it from DOM
 		if (this.isNewRecord(objectId)) {
