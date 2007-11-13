@@ -305,15 +305,26 @@ class tslib_menu {
 				}
 			}
 
-				// Setting "nextActive": This is the page uid + MPvar of the NEXT page in rootline. Used to expand the menu if we are in the right branch of the tree
-				// Notice: The automatic expansion of a menu is designed to work only when no "special" modes are used.
-			if (is_array($this->tmpl->rootLine[$this->entryLevel+$this->menuNumber]))	{
-				$nextMParray = $this->MP_array;
-				if ($this->tmpl->rootLine[$this->entryLevel+$this->menuNumber]['_MOUNT_OL'])	{	// In overlay mode, add next level MPvars as well:
-					$nextMParray[] = $this->tmpl->rootLine[$this->entryLevel+$this->menuNumber]['_MP_PARAM'];
+			// Set $directoryLevel so the following evalution of the nextActive will not return
+			// an invalid value if .special=directory was set
+			$directoryLevel = 0;
+			if ($this->conf['special'] == 'directory')	{
+				$value = $GLOBALS['TSFE']->cObj->stdWrap($this->conf['special.']['value'], $this->conf['special.']['value.']);
+				if ($value=='') {
+					$value=$GLOBALS['TSFE']->page['uid'];
 				}
-				$this->nextActive = $this->tmpl->rootLine[$this->entryLevel+$this->menuNumber]['uid'].
-										(count($nextMParray)?':'.implode(',',$nextMParray):'');
+				$directoryLevel = intval($GLOBALS['TSFE']->tmpl->getRootlineLevel($value));
+			}
+
+				// Setting "nextActive": This is the page uid + MPvar of the NEXT page in rootline. Used to expand the menu if we are in the right branch of the tree
+				// Notice: The automatic expansion of a menu is designed to work only when no "special" modes (except "directory") are used.
+			$startLevel = $directoryLevel?$directoryLevel:$this->entryLevel;
+			if (is_array($this->tmpl->rootLine[$startLevel+$this->menuNumber]))	{
+				$nextMParray = $this->MP_array;
+				if ($this->tmpl->rootLine[$startLevel+$this->menuNumber]['_MOUNT_OL'])	{	// In overlay mode, add next level MPvars as well:
+					$nextMParray[] = $this->tmpl->rootLine[$startLevel+$this->menuNumber]['_MP_PARAM'];
+				}
+				$this->nextActive = $this->tmpl->rootLine[$startLevel+$this->menuNumber]['uid'].(count($nextMParray)?':'.implode(',',$nextMParray):'');
 			} else {
 				$this->nextActive = '';
 			}
@@ -354,7 +365,7 @@ class tslib_menu {
 			$altSortFieldValue = trim($this->mconf['alternativeSortingField']);
 			$altSortField = $altSortFieldValue ? $altSortFieldValue : 'sorting';
 			if ($this->menuNumber==1 && $this->conf['special'])	{		// ... only for the FIRST level of a HMENU
-				$value = $this->conf['special.']['value'];
+				$value = $this->parent_cObj->stdWrap($this->conf['special.']['value'], $this->conf['special.']['value.']);
 
 				switch($this->conf['special'])	{
 					case 'userdefined':

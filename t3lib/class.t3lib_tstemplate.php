@@ -1295,6 +1295,22 @@ class t3lib_TStemplate	{
 	}
 
 
+	/**
+	 * Returns the level of the given page in the rootline - Multiple pages can be given by separating the UIDs by comma.
+	 *
+	 * @param	string		A list of UIDs for which the rootline-level should get returned
+	 * @return	integer	The level in the rootline. If more than one page was given the lowest level will get returned.
+	 */
+	function getRootlineLevel($list)	{
+		$idx = 0;
+		foreach($this->rootLine as $page)	{
+			if (t3lib_div::inList($list, $page['uid'])) {
+				return $idx;
+			}
+			$idx++;
+		}
+		return false;
+	}
 
 
 

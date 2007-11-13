@@ -1,3 +1,7 @@
+2007-11-13  Bernhard Kraft  <kraftb@kraftb.at>
+
+	* Fixed bug #633: Menu doesn't expand if ".special" is set
+
 2007-11-13  Benjamin Mack  <mack@xnos.org>
 
 	* (minor) Fixed bug #6548: FE "Preview" Label not stylable
