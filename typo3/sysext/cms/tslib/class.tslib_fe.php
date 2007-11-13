@@ -3279,22 +3279,13 @@ if (version == "n3") {
 	 */
 	function previewInfo()	{
 		if ($this->fePreview)	{
-
 				if ($this->fePreview==2)	{
 					$text = 'Preview of workspace "'.$this->whichWorkspace(TRUE).'" ('.$this->whichWorkspace().')';
 				} else {
 					$text = 'PREVIEW!';
 				}
 
-				$stdMsg = '
-				<br />
-				<div align="center">
-					<table border="3" bordercolor="black" cellpadding="2" bgcolor="red" summary="">
-						<tr>
-							<td>&nbsp;&nbsp;<font face="Verdana" size="1"><b>'.htmlspecialchars($text).'</b></font>&nbsp;&nbsp;</td>
-						</tr>
-					</table>
-				</div>';
+				$stdMsg = '<div id="typo3-previewInfo" style="position: absolute; top: 20px; right: 20px; border: 2px solid #000; padding: 5px 150px; background: #f00; font: 1em Verdana; color: #000; font-weight: bold; z-index: 10001">'.htmlspecialchars($text).'</div>';
 
 				if ($this->fePreview==2)	{
 					$temp_content = $this->config['config']['message_preview_workspace'] ?
