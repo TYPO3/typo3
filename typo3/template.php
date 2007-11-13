@@ -455,8 +455,7 @@ class template {
 					$mMN.
 					'\';}return false;';
 
-		$sIcon = '<a href="#" onclick="'.htmlspecialchars($onClick).'">
-				<img'.t3lib_iconWorks::skinImg($backPath,'gfx/shortcut.gif','width="14" height="14"').' title="'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.makeShortcut',1).'" alt="" /></a>';
+		$sIcon = '<a href="#" onclick="'.htmlspecialchars($onClick).'"><img'.t3lib_iconWorks::skinImg($backPath,'gfx/shortcut.gif','width="14" height="14"').' title="'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.makeShortcut',1).'" alt="" /></a>';
 		return $sIcon;
 	}
 

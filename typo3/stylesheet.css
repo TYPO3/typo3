@@ -126,6 +126,7 @@ BODY#typo3-alt-toplogo-php, BODY#typo3-alt-menu-sel-php, BODY#typo3-alt-topmenu-
 	background-color: #9BA1A8;
 }
 
+body#typo3-alt-doc-php { padding: 0; margin: 0; overflow: hidden; height: 100%; }
 
 
 
@@ -143,6 +144,7 @@ DIV.typo3-bigDoc, DIV.typo3-noDoc { margin-left: 10px; margin-top: 5px; width: 7
 DIV.typo3-noDoc H2 { width: 740px; }
 DIV.typo3-mediumDoc { width: 470px; }
 DIV.typo3-smallDoc { width: 350px; }
+div.typo3-fullDoc { width: 100%; height: 100%; }
 
 
 
@@ -273,7 +275,10 @@ UL.tree LI.active UL, UL.tree UL LI.active UL	{ background-color: #f7f3ef; }
 #dragIcon { z-index: 1; position: absolute; visibility: hidden; filter: alpha(opacity=50); -moz-opacity:0.5; opacity:0.5; white-space: nowrap; }
 
 /* TCEforms */
+table.typo3-TCEforms { width: 93%; border-collapse: collapse; }
+table.typo3-TCEforms, table.typo3-TCEforms td { margin: 0; border: 0; padding: 0; }
 TABLE.typo3-TCEforms SPAN.typo3-TCEforms-recHeader { font-weight: bold; color: #333366; }
+table.typo3-TCEforms tr.typo3-TCEforms-recHeaderRow, TABLE.typo3-TCEforms tr.typo3-TCEforms-recHeaderRow td { border: 0; }
 TABLE.typo3-TCEforms SPAN.typo3-TCEforms-newToken { font-weight: bold; color: #990000; }
 TABLE.typo3-TCEforms SPAN.typo3-TCEforms-helpText { color: #666; }
 TABLE.typo3-TCEforms OPTION.c-divider { font-style: italic; color: #666; background-color: #eee; text-transform: uppercase; margin-top: 10px; border-bottom: 1px solid #666; }
@@ -288,6 +293,7 @@ TABLE.typo3-TCEforms TABLE.typo3-TCEforms-select-singlebox { margin-top: 4px; ma
 TABLE.typo3-TCEforms DIV.typo3-TCEforms-originalLanguageValue { background-color: #bbccbb; }
 TABLE.typo3-TCEforms DIV.typo3-TCEforms-diffBox { background-color: white; border: 1px solid black; }
 TABLE.typo3-TCEforms DIV.typo3-TCEforms-diffBox-header { background-color: red; font-weight: bold; }
+table.typo3-TCEforms div.typo3-dyntabmenu-tabs { margin-top: 10px; }
 
 /* TCEforms Inline-Relational-Record-Editing */
 .typo3-TCEforms DIV.inlineDiv { display: inline-block; }
@@ -339,11 +345,19 @@ BODY#typo3-alt-doc-nodoc-php P IMG { vertical-align: middle; margin-left: 5px; }
 BODY#typo3-alt-doc-nodoc-php { margin-left: 5px; }
 
 /* Record editing (alt_doc.php) */
-TABLE#typo3-altdoc-header { margin: 0px 0px 0.3em 0px; }
-DIV#typo3-altdoc-header-info-options { margin-top: 1em; display: table; width: 100%; }
-DIV#typo3-altdoc-header-info-options div { display: table-cell; }
-DIV#typo3-altdoc-header-info-options div { vertical-align: bottom; }
-DIV#typo3-altdoc-lang-selector { text-align: right; }
+div#typo3-docheader { postion: absolute; top: 0; left: 0; z-index: 5; min-width: 350px; }
+div#typo3-docheader-row1 { height: 20px; background: #cbc7c3; }
+div#typo3-docheader-row2 { background: #f3f3f9; height: 27px; line-height: 27px; border-bottom: 2px solid #595d66; }
+div#typo3-docheader div.buttonsleft  { margin: 0 0 0 3px; line-height: 16px; float: left; }
+div#typo3-docheader div.buttonsright { margin: 0 3px 0 0; line-height: 16px; float: right; }
+div#typo3-docheader img, div#typo3-docheader input { margin: 2px 3px 0; vertical-align: top; }
+div#typo3-docheader img.typo3-csh-icon { margin: 2px 15px 0 2px; }
+div#typo3-docheader select { margin: 2px 0 0; border: 0; padding: 0; height: 16px; line-height: 16px; }
+div#typo3-docheader div.pagepath { margin-left: 6px; float: left; }
+div#typo3-docheader div.infooptions { margin-right: 6px; float: right; }
+div#typo3-docbody { width: 98%; padding: 2% 0% 2% 2%; overflow: auto; top: 49px; bottom: 0; position: absolute; z-index: 2; }
+* html div#typo3-docbody { height: 90%; top: 49px; padding-top: 0; padding-bottom: 0; }
+* html div#typo3-docbody table.typo3-TCEforms { margin-top: 20px; }
 
 /* Login Screen
 

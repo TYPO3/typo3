@@ -4350,10 +4350,9 @@ class t3lib_TCEforms	{
 
 			// Wrapping all table rows for a particular record being edited:
 		$this->totalWrap='
-		<table border="0" cellspacing="0" cellpadding="0" width="'.($this->docLarge ? 440+150 : 440).'" class="typo3-TCEforms">'.
-			'<tr class="bgColor2">
-				<td><!-- --></td>
-				<td>###RECORD_ICON### <span class="typo3-TCEforms-recHeader">###TABLE_TITLE###</span> ###ID_NEW_INDICATOR### - ###RECORD_LABEL###</td>
+		<table class="typo3-TCEforms">'.
+			'<tr class="typo3-TCEforms-recHeaderRow bgColor2">
+				<td colspan="2">###RECORD_ICON### <span class="typo3-TCEforms-recHeader">###TABLE_TITLE###</span> ###ID_NEW_INDICATOR### - ###RECORD_LABEL###</td>
 			</tr>'.
 			'|'.
 			'<tr>

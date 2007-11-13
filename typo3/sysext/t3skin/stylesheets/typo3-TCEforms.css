@@ -2,15 +2,16 @@
  * typo3-TCEforms.css
  */
 
-table.typo3-TCEforms {
-	}
+div#typo3-docheader-row1 { background: url('../icons/gfx/alt_menu_mainitem_bg.gif') top left repeat-x; }
+
+table.typo3-TCEforms { }
 
 table.typo3-TCEforms .bgColor2,
 table.typo3-TCEforms tr.bgColor2 td {
 	background-color: #EFEFF4;
 	color: #212424;
 	padding-bottom: 5px;
-	}
+}
 
 table#typo3-altdoc-header input,
 .c-inputButton {
