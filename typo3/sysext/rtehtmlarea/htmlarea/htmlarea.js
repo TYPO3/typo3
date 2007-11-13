@@ -1648,8 +1648,10 @@ HTMLArea.prototype.updateToolbar = function(noStatus) {
 				if (el.className) {
 					txtClass = "";
 					cls = el.className.trim().split(" ");
-					for(j = cls.length; j > 0;) {
-						if(!HTMLArea.reservedClassNames.test(cls[--j])) { txtClass = "." + cls[j]; }
+					for (j = 0; j < cls.length; ++j) {
+						if (!HTMLArea.reservedClassNames.test(cls[j])) {
+							txtClass += "." + cls[j];
+						}
 					}
 					txt += txtClass;
 				}

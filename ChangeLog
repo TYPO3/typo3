@@ -1,3 +1,7 @@
+2007-11-13  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
+
+	* Feature #6705: htmlArea RTE: Display all classes of an element in the statusbar
+
 2007-11-13  Bernhard Kraft  <kraftb@kraftb.at>
 
 	* Fixed bug #633: Menu doesn't expand if ".special" is set
@@ -9,6 +13,9 @@
 2007-11-12  Oliver Hader  <oh@inpublica.de>
 
 	* (minor) Fixed bug #6696: Parts of the TYPO3 back-end do not work correctly with prototype.js 1.6.0
+
+2007-11-12  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
+
 	* Feature #6579 continued: Backtracking on the use of Prototype.js by htmlArea RTE.
 
 2007-11-11  Ingmar Schlecht  <ingmar@typo3.org>

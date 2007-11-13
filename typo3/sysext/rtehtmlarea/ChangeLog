@@ -1,3 +1,7 @@
+2007-11-13  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
+
+* Feature #6705: htmlArea RTE: Display all classes of an element in the statusbar
+
 2007-11-12  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
 	* Feature #6579 continued: Backtracking on the use of Prototype.js by htmlArea RTE.
