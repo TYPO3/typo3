@@ -1,3 +1,7 @@
+2007-11-14  Sebastian Kurfuerst  <sebastian@typo3.org>
+
+	* Fixed feature #529: update inline TypoScript help (Thanks to Francois Suter)
+
 2007-11-14  Benjamin Mack  <mack@xnos.org>
 
 	* (feature) Fixed #6625: Cleaner Backend / HCI: Make "alt_doc" header fixed
