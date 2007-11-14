@@ -1,6 +1,8 @@
 2007-11-14  Ingmar Schlecht  <ingmar@typo3.org>
 
 	* Cleanup-up to prior commit #529: "TypoScript help" module
+	* Added SVN properties to new files
+	* Changed position of not-in-menu checkbox so it's directly under the doktype selector
 
 2007-11-14  Ingo Renner	<ingo@typo3.org>
 

@@ -486,7 +486,7 @@ if (TYPO3_MODE=='BE')	{
 	$TCA['pages']['types'] = array (
 			// standard
 		'1' => array('showitem' =>
-				'hidden;;;;1-1-1, doktype;;2;button, title;;3;;2-2-2, subtitle, nav_hide,
+				'hidden;;;;1-1-1, doktype;;2;button, nav_hide, title;;3;;2-2-2, subtitle, 
 			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.access,
 				starttime, endtime, fe_group, extendToSubpages,
 			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.options,
