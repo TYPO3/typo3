@@ -214,6 +214,13 @@ RTE.default {
 		## Do not allow insertion of the following tags
 	buttons.inserttag.denyTags = font, underline, strike, table
 	
+		## Configuration specific to the bold and italic buttons (htmlArea RTE only)
+		## Add hotkeys associated with bold, italic, strikethrough and underline buttons
+	buttons.bold.hotKey = b
+	buttons.italic.hotKey = i
+	buttons.strikethrough.hotKey = s
+	buttons.underline.hotkey = u
+	
 		## Configuration specific to the spellcheck button or SpellCheck feature (htmlArea RTE only)
 		## Enable the use of personal dictionaries
 	enablePersonalDicts = 1

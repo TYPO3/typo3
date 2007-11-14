@@ -205,6 +205,11 @@ RTE.default {
 	disableColorFieldsetInTableOperations = 1
 	disableLayoutFieldsetInTableOperations = 1
 	disableBordersFieldsetInTableOperations = 1
+	
+		## Configuration specific to the bold and italic buttons (htmlArea RTE only)
+		## Add hotkeys associated with bold and italic buttons
+	buttons.bold.hotKey = b
+	buttons.italic.hotKey = i
 }
 
 	## front end RTE configuration for the general public (htmlArea RTE only)
