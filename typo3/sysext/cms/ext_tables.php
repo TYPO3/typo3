@@ -96,10 +96,10 @@ if (TYPO3_MODE=='BE')	{
 		'endtime' => 'endtime',
 		'fe_group' => 'fe_group',
 	);
-	
+
 	// Enable Tabs
 	$TCA['pages']['ctrl']['dividers2tabs'] = true;
-	
+
 	// Adding default value columns:
 	$TCA['pages']['ctrl']['useColumnsForDefaultValues'].=',fe_group,hidden';
 	$TCA['pages']['ctrl']['transForeignTable'] = 'pages_language_overlay';
@@ -481,32 +481,106 @@ if (TYPO3_MODE=='BE')	{
 		// Add columns to info-display list.
 	$TCA['pages']['interface']['showRecordFieldList'].=',alias,hidden,starttime,endtime,fe_group,url,target,no_cache,shortcut,keywords,description,abstract,newUntil,lastUpdated,cache_timeout';
 
-		// Setting main palette
-	$TCA['pages']['ctrl']['mainpalette']='1,15';
 
 		// Totally overriding all type-settings:
 	$TCA['pages']['types'] = array (
-		'1' => array('showitem' => 'hidden;;;;1-1-1, doktype;;2;button, title;;3;;2-2-2, subtitle, nav_hide;;;;3-3-3,--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.options, TSconfig;;6;nowrap;4-4-4, storage_pid;;7, l18n_cfg'),
-		'2' => array('showitem' => 'hidden;;;;1-1-1, doktype;;2;button, title;;3;;2-2-2, subtitle, nav_hide, nav_title, --div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.metadata, abstract;;5;;3-3-3, keywords, description, media;;;;4-4-4, --div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.options, TSconfig;;6;nowrap;5-5-5, storage_pid;;7, l18n_cfg, fe_login_mode, module, content_from_pid'),
-		'3' => array('showitem' => 'hidden;;;;1-1-1, doktype, title;;3;;2-2-2, subtitle, nav_hide, url;;;;3-3-3, urltype;;;;4-4-4, --div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.options, TSconfig;;6;nowrap;5-5-5, storage_pid;;7, l18n_cfg'),
-		'4' => array('showitem' => 'hidden;;;;1-1-1, doktype, title;;3;;2-2-2, subtitle, nav_hide, shortcut;;;;3-3-3, shortcut_mode;;;;4-4-4, --div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.options, TSconfig;;6;nowrap;5-5-5, storage_pid;;7, l18n_cfg'),
-		'5' => array('showitem' => 'hidden;;;;1-1-1, doktype;;2;button, title;;3;;2-2-2, subtitle, nav_hide, nav_title, --div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.files, media;;;;4-4-4, --div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.options, TSconfig;;6;nowrap;5-5-5, storage_pid;;7, l18n_cfg, fe_login_mode, module, content_from_pid'),
-		'7' => array('showitem' => 'hidden;;;;1-1-1, doktype;;2;button, title;;3;;2-2-2, subtitle, nav_hide, nav_title, --div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.mount, mount_pid;;;;3-3-3, mount_pid_ol, media;;;;4-4-4, --div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.options, TSconfig;;6;nowrap;5-5-5, storage_pid;;7, l18n_cfg, fe_login_mode, module, content_from_pid'),
-		'199' => array('showitem' => 'hidden;;;;1-1-1, doktype, title;;;;2-2-2, --div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.options, TSconfig;;6;nowrap;5-5-5, storage_pid;;7'),
-		'254' => array('showitem' => 'hidden;;;;1-1-1, doktype, title;LLL:EXT:lang/locallang_general.xml:LGL.title;;;2-2-2, --div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.options, TSconfig;;6;nowrap;5-5-5, storage_pid;;7, module'),
-		'255' => array('showitem' => 'hidden;;;;1-1-1, doktype, title;;;;2-2-2')
+			// standard
+		'1' => array('showitem' =>
+				'hidden;;;;1-1-1, doktype;;2;button, title;;3;;2-2-2, subtitle, nav_hide,
+			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.access,
+				starttime, endtime, fe_group, extendToSubpages,
+			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.options,
+				TSconfig;;6;nowrap;4-4-4, storage_pid;;7, l18n_cfg,
+			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.extended,
+		'),
+			// advanced
+		'2' => array('showitem' =>
+				'hidden;;;;1-1-1, doktype;;2;button, title;;3;;2-2-2, subtitle, nav_title, nav_hide,
+			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.metadata,
+				abstract;;5;;3-3-3, keywords, description,
+			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.files,
+				media,
+			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.access,
+				starttime, endtime, fe_login_mode, fe_group, extendToSubpages,
+			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.options,
+				TSconfig;;6;nowrap;6-6-6, storage_pid;;7, l18n_cfg, module, content_from_pid,
+			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.extended,
+		'),
+			// external URL
+		'3' => array('showitem' =>
+				'hidden;;;;1-1-1, doktype, title;;3;;2-2-2, subtitle, nav_hide,
+			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.url,
+				url;;;;3-3-3, urltype,
+			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.access,
+				starttime, endtime, fe_group, extendToSubpages,
+			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.options,
+				TSconfig;;6;nowrap;5-5-5, storage_pid;;7, l18n_cfg,
+			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.extended,
+		'),
+			// shortcut
+		'4' => array('showitem' =>
+				'hidden;;;;1-1-1, doktype, title;;3;;2-2-2, subtitle, nav_hide,
+			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.shortcut,
+				shortcut;;;;3-3-3, shortcut_mode,
+			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.access,
+				starttime, endtime, fe_group, extendToSubpages,
+			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.options,
+				TSconfig;;6;nowrap;5-5-5, storage_pid;;7, l18n_cfg,
+			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.extended,
+		'),
+			// not in menu
+		'5' => array('showitem' =>
+				'hidden;;;;1-1-1, doktype;;2;button, title;;3;;2-2-2, subtitle,  nav_title,
+			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.files,
+				media,
+			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.access,
+				starttime, endtime, fe_login_mode, fe_group, extendToSubpages,
+			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.options,
+				TSconfig;;6;nowrap;5-5-5, storage_pid;;7, l18n_cfg, module, content_from_pid,
+			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.extended,
+		'),
+			// mount page
+		'7' => array('showitem' =>
+				'hidden;;;;1-1-1, doktype;;2;button, title;;3;;2-2-2, subtitle, nav_title, nav_hide,
+			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.mount,
+				mount_pid;;;;3-3-3, mount_pid_ol,
+			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.files,
+				media,
+			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.access,
+				starttime, endtime, fe_login_mode, fe_group, extendToSubpages,
+			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.options,
+				TSconfig;;6;nowrap;5-5-5, storage_pid;;7, l18n_cfg, module, content_from_pid,
+			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.extended,
+		'),
+			// spacer
+		'199' => array('showitem' =>
+				'hidden;;;;1-1-1, doktype, title,
+			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.options,
+				TSconfig;;6;nowrap;5-5-5, storage_pid;;7,
+			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.extended,
+		'),
+			// sysfolder
+		'254' => array('showitem' =>
+				'hidden;;;;1-1-1, doktype, title;LLL:EXT:lang/locallang_general.xml:LGL.title,
+			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.options,
+				TSconfig;;6;nowrap;5-5-5, storage_pid;;7, module,
+			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.extended,
+		'),
+			// trash
+		'255' => array('showitem' =>
+				'hidden;;;;1-1-1, doktype, title,
+			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.extended,
+		')
 	);
+
 		// Merging palette settings:
 		// t3lib_div::array_merge() MUST be used - otherwise the keys will be re-numbered!
 	$TCA['pages']['palettes'] = t3lib_div::array_merge($TCA['pages']['palettes'],array(
-		'1' => array('showitem' => 'starttime,endtime,extendToSubpages'),
-		'15' => array('showitem' => 'fe_group'),
+		'1' => array('showitem' => 'starttime, endtime, extendToSubpages'),
 		'2' => array('showitem' => 'layout, lastUpdated, newUntil, no_search'),
 		'3' => array('showitem' => 'alias, target, no_cache, cache_timeout'),
-		'5' => array('showitem' => 'author,author_email'),
+		'5' => array('showitem' => 'author, author_email'),
 	));
-
-
 
 
 

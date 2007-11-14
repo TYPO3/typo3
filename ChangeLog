@@ -5,6 +5,7 @@
 2007-11-14  Ingo Renner	<ingo@typo3.org>
 
 	* fixed bug #6692: When letting TYPO3 generate DB table icons it can happen that transparent areas become rendered black
+	* added follow up on feature #6670: Enable Tabs in Page Properties
 
 2007-11-14  Sebastian Kurfuerst  <sebastian@typo3.org>
 
