@@ -486,7 +486,7 @@ if (TYPO3_MODE=='BE')	{
 	$TCA['pages']['types'] = array (
 			// standard
 		'1' => array('showitem' =>
-				'hidden;;;;1-1-1, doktype;;2;button, nav_hide, title;;3;;2-2-2, subtitle, 
+				'doktype;;2;button;1-1-1, hidden, nav_hide, title;;3;;2-2-2, subtitle, 
 			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.access,
 				starttime, endtime, fe_group, extendToSubpages,
 			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.options,
@@ -495,7 +495,7 @@ if (TYPO3_MODE=='BE')	{
 		'),
 			// advanced
 		'2' => array('showitem' =>
-				'hidden;;;;1-1-1, doktype;;2;button, title;;3;;2-2-2, subtitle, nav_title, nav_hide,
+				'doktype;;2;button;1-1-1, hidden, nav_hide, title;;3;;2-2-2, subtitle, nav_title,
 			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.metadata,
 				abstract;;5;;3-3-3, keywords, description,
 			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.files,
@@ -519,7 +519,7 @@ if (TYPO3_MODE=='BE')	{
 		'),
 			// shortcut
 		'4' => array('showitem' =>
-				'hidden;;;;1-1-1, doktype, title;;3;;2-2-2, subtitle, nav_hide,
+				'doktype;;2;button;1-1-1, hidden, nav_hide, title;;3;;2-2-2, subtitle,
 			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.shortcut,
 				shortcut;;;;3-3-3, shortcut_mode,
 			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.access,
@@ -530,7 +530,7 @@ if (TYPO3_MODE=='BE')	{
 		'),
 			// not in menu
 		'5' => array('showitem' =>
-				'hidden;;;;1-1-1, doktype;;2;button, title;;3;;2-2-2, subtitle,  nav_title,
+				'doktype;;2;button;1-1-1, hidden, nav_hide, title;;3;;2-2-2, subtitle,
 			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.files,
 				media,
 			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.access,
@@ -541,7 +541,7 @@ if (TYPO3_MODE=='BE')	{
 		'),
 			// mount page
 		'7' => array('showitem' =>
-				'hidden;;;;1-1-1, doktype;;2;button, title;;3;;2-2-2, subtitle, nav_title, nav_hide,
+				'doktype;;2;button;1-1-1, hidden, nav_hide, title;;3;;2-2-2, subtitle, nav_title,
 			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.mount,
 				mount_pid;;;;3-3-3, mount_pid_ol,
 			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.files,
@@ -554,21 +554,21 @@ if (TYPO3_MODE=='BE')	{
 		'),
 			// spacer
 		'199' => array('showitem' =>
-				'hidden;;;;1-1-1, doktype, title,
+				'doktype;;2;button;1-1-1, hidden, title,
 			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.options,
 				TSconfig;;6;nowrap;5-5-5, storage_pid;;7,
 			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.extended,
 		'),
 			// sysfolder
 		'254' => array('showitem' =>
-				'hidden;;;;1-1-1, doktype, title;LLL:EXT:lang/locallang_general.xml:LGL.title,
+				'doktype;;2;button;1-1-1, hidden, title;LLL:EXT:lang/locallang_general.xml:LGL.title,
 			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.options,
 				TSconfig;;6;nowrap;5-5-5, storage_pid;;7, module,
 			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.extended,
 		'),
 			// trash
 		'255' => array('showitem' =>
-				'hidden;;;;1-1-1, doktype, title,
+				'doktype;;2;button;1-1-1, hidden, title,
 			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.extended,
 		')
 	);
