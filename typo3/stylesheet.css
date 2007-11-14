@@ -281,7 +281,8 @@ TABLE.typo3-TCEforms SPAN.typo3-TCEforms-recHeader { font-weight: bold; color: #
 table.typo3-TCEforms tr.typo3-TCEforms-recHeaderRow, TABLE.typo3-TCEforms tr.typo3-TCEforms-recHeaderRow td { border: 0; }
 TABLE.typo3-TCEforms SPAN.typo3-TCEforms-newToken { font-weight: bold; color: #990000; }
 TABLE.typo3-TCEforms SPAN.typo3-TCEforms-helpText { color: #666; }
-TABLE.typo3-TCEforms OPTION.c-divider { font-style: italic; color: #666; background-color: #eee; text-transform: uppercase; margin-top: 10px; border-bottom: 1px solid #666; }
+TABLE.typo3-TCEforms OPTGROUP.c-divider { font-style: italic; color: #666; background-color: #eee; text-transform: uppercase; margin-top: 10px; padding: 0px; border-top: 1px solid #666; }
+TABLE.typo3-TCEforms OPTGROUP OPTION { font-style: normal; color: black; background-color: white; text-transform: none; border-bottom: none; padding: 0px; margin: 0px; text-indent: 0px;}
 TABLE.typo3-TCEforms TABLE.typo3-TCEforms-select-checkbox TR.c-selectedItem { background-color: #c5c1b5; }
 TABLE.typo3-TCEforms TABLE.typo3-TCEforms-select-checkbox TR.c-invalidItem { background-color: #ff6600; }
 TABLE.typo3-TCEforms TABLE.typo3-TCEforms-select-checkbox TR TD { border-bottom: 1px #999 dashed; padding: 1px 3px 1px 3px; }

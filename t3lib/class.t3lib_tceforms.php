@@ -1511,11 +1511,20 @@ class t3lib_TCEforms	{
 
 				// Compiling the <option> tag:
 			if (!($p[1] != $PA['itemFormElValue'] && is_array($uniqueIds) && in_array($p[1], $uniqueIds))) {
-				$opt[]= '<option value="'.htmlspecialchars($p[1]).'"'.
+				if(!strcmp($p[1],'--div--')) {
+					if($optGroupOpen) { // Closing last optgroup before next one starts
+						$opt[]='</optgroup>';
+					}
+					$opt[]= '<optgroup label="'.t3lib_div::deHSCentities(htmlspecialchars($p[0])).'"'.
+							($styleAttrValue ? ' style="'.htmlspecialchars($styleAttrValue).'"' : '').
+							' class="c-divider">';	
+					$optGroupOpen = true;
+				} else {
+					$opt[]= '<option value="'.htmlspecialchars($p[1]).'"'.
 							$sM.
 							($styleAttrValue ? ' style="'.htmlspecialchars($styleAttrValue).'"' : '').
-							(!strcmp($p[1],'--div--') ? ' class="c-divider"' : '').
 							'>'.t3lib_div::deHSCentities(htmlspecialchars($p[0])).'</option>';
+				}
 			}
 
 				// If there is an icon for the selector box (rendered in table under)...:
@@ -1529,6 +1538,11 @@ class t3lib_TCEforms	{
 					$c,$sM);
 			}
 			$c++;
+		}
+
+		if($optGroupOpen) { // Closing optgroup if open
+			$opt[]='</optgroup>';
+			$optGroupOpen = false;
 		}
 
 			// No-matching-value:

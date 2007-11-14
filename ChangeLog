@@ -3,6 +3,7 @@
 	* Cleanup-up to prior commit #529: "TypoScript help" module
 	* Added SVN properties to new files
 	* Minor changes to feature #6670: Enable Tabs in Page Properties
+	* Feature #6710: Use optgroups in selectorboxes
 
 2007-11-14  Ingo Renner	<ingo@typo3.org>
 
