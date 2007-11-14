@@ -67,22 +67,10 @@ DefaultInline = HTMLArea.plugin.extend({
 				tooltip		: this.localize(buttonId + "-Tooltip"),
 				textMode	: false,
 				action		: "onButtonPress",
-				context		: button[1]
+				context		: button[1],
+				hotKey		: (this.editorConfiguration.buttons[buttonId.toLowerCase()]?this.editorConfiguration.buttons[buttonId.toLowerCase()].hotKey:null)
 			};
 			this.registerButton(buttonConfiguration);
-		}
-		
-		/*
-		 * Registering the hotkeys
-		 */
-		for (var hotKey in DefaultInline.hotKeyList) {
-			if (DefaultInline.hotKeyList.hasOwnProperty(hotKey)) {
-				var hotKeyConfiguration = {
-					id	: hotKey,
-					action	: "onHotKey"
-				};
-			this.registerHotKey(hotKeyConfiguration);
-			}
 		}
 		
 		return true;
@@ -91,7 +79,9 @@ DefaultInline = HTMLArea.plugin.extend({
 	/*
 	 * This function gets called when some inline element button was pressed.
 	 */
-	onButtonPress : function (editor, buttonId, UI, param) {
+	onButtonPress : function (editor, id, UI, param) {
+			// Could be a button or its hotkey
+		var buttonId = DefaultInline.hotKeyList[id]?DefaultInline.hotKeyList[id]:id;
 		editor.focusEditor();
 		try {
 			editor._doc.execCommand(buttonId, UI, param);
@@ -101,21 +91,6 @@ DefaultInline = HTMLArea.plugin.extend({
 		}
 		editor.updateToolbar();
 		return false;
-	},
-	
-	/*
-	 * This function gets called when some hot key is pressed
-	 */
-	onHotKey : function(editor, key) {
-		if (DefaultInline.hotKeyList[key] && this.editor._toolbarObjects[DefaultInline.hotKeyList[key]]) {
-			var toolbarObject = this.editor._toolbarObjects[DefaultInline.hotKeyList[key]];
-			var toolbarHTMLObject = document.getElementById(toolbarObject.elementId);
-			if (!toolbarHTMLObject.disabled) {
-				return this.onButtonPress(this.editor, DefaultInline.hotKeyList[key]);
-			}
-		} else {
-			return true;
-		}
 	},
 	
 	/*

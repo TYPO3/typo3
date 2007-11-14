@@ -3365,15 +3365,26 @@ HTMLArea.plugin = HTMLArea.Base.extend({
 	 *					context		: will be disabled if not inside one of listed elements
 	 *					hide		: hide in menu and show only in context menu?
 	 *					selection	: will be disabled if there is no selection?
+	 *					hotkey		: hotkey character
 	 *
 	 * @return	boolean		true if the button was successfully registered
 	 */
 	registerButton : function (buttonConfiguration) {
 		if (this.isButtonInToolbar(buttonConfiguration.id)) {
 			if ((typeof(buttonConfiguration.action) === "string") && (typeof(this[buttonConfiguration.action]) === "function")) {
+				var hotKeyAction = buttonConfiguration.action;
 				var actionFunctionReference = this.makeFunctionReference(buttonConfiguration.action);
 				buttonConfiguration.action = actionFunctionReference;
-				return this.editorConfiguration.registerButton(buttonConfiguration);
+				if (this.editorConfiguration.registerButton(buttonConfiguration)) {
+					if (buttonConfiguration.hotKey) {
+						var hotKeyConfiguration = {
+							id	: buttonConfiguration.hotKey,
+							action	: hotKeyAction
+						};
+						return this.registerHotKey(hotKeyConfiguration);
+					}
+					return true;
+				}
 			} else {
 				this.appendToLog("registerButton", "Function " + buttonConfiguration.action + " was not defined when registering button " + buttonConfiguration.id);
 			}
@@ -3443,6 +3454,7 @@ HTMLArea.plugin = HTMLArea.Base.extend({
 			return this.editorConfiguration.registerHotKey(hotKeyConfiguration);
 		} else {
 			this.appendToLog("registerHotKey", "Function " + hotKeyConfiguration.action + " was not defined when registering hotkey " + hotKeyConfiguration.id);
+			return false;
 		}
 	},
 	
