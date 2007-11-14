@@ -1,3 +1,7 @@
+2007-11-14  Ingmar Schlecht  <ingmar@typo3.org>
+
+	* Cleanup-up to prior commit #529: "TypoScript help" module
+
 2007-11-14  Ingo Renner	<ingo@typo3.org>
 
 	* fixed bug #6692: When letting TYPO3 generate DB table icons it can happen that transparent areas become rendered black
