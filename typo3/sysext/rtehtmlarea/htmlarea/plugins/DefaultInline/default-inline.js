@@ -99,19 +99,20 @@ DefaultInline = HTMLArea.plugin.extend({
 	onUpdateToolbar : function () {
 		var editor = this.editor;
 		var buttonList = DefaultInline.buttonList;
-		var buttonId, button, n = buttonList.length, commandState;
+		var buttonId, n = buttonList.length, commandState;
 		for (var i = 0; i < n; ++i) {
 			buttonId = buttonList[i][0];
-			button = editor._toolbarObjects[buttonId];
-			commandState = false;
-			if ((editor._editMode != "textmode")) {
-				try {
-					commandState = editor._doc.queryCommandState(buttonId);
-				} catch(e) {
-					commandState = false;
+			if (typeof(editor._toolbarObjects[buttonId]) !== "undefined") {
+				commandState = false;
+				if ((editor._editMode != "textmode")) {
+					try {
+						commandState = editor._doc.queryCommandState(buttonId);
+					} catch(e) {
+						commandState = false;
+					}
 				}
+				editor._toolbarObjects[buttonId].state("active", commandState);
 			}
-			button.state("active", commandState);
 		}
 	}
 });

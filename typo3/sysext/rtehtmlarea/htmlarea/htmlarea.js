@@ -1802,7 +1802,7 @@ HTMLArea.prototype.updateToolbar = function(noStatus) {
 	if (this._customUndo) {
 		this._undoTakeSnapshot();
 	}
-	for (pluginId in this.plugins) {
+	for (var pluginId in this.plugins) {
 		if (this.plugins.hasOwnProperty(pluginId)) {
 			var pluginInstance = this.plugins[pluginId].instance;
 			if (typeof(pluginInstance.onUpdateToolbar) === "function") {
