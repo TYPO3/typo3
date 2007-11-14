@@ -325,16 +325,16 @@ HTMLArea.Config = function () {
 	};
 		// Default hotkeys
 	this.hotKeyList = {
-		a:	"SelectAll",
-		l:	"JustifyLeft",
-		e:	"JustifyCenter",
-		r:	"JustifyRight",
-		j:	"JustifyFull",
-		n:	"FormatBlock",
-		v:	"Paste",
-		0:	"CleanWord",
-		z:	"Undo",
-		y:	"Redo"
+		a:	{ cmd:	"SelectAll", 		action:	null},
+		l:	{ cmd:	"JustifyLeft", 		action:	null},
+		e:	{ cmd:	"JustifyCenter", 	action:	null},
+		r:	{ cmd:	"JustifyRight", 	action:	null},
+		j:	{ cmd:	"JustifyFull", 		action:	null},
+		n:	{ cmd:	"FormatBlock", 		action:	null},
+		v:	{ cmd:	"Paste", 		action:	null},
+		0:	{ cmd:	"CleanWord", 		action:	null},
+		z:	{ cmd:	"Undo", 		action:	null},
+		y:	{ cmd:	"Redo", 		action:	null}
 	};
 
 		// Initialize tooltips from the I18N module, generate correct image path
@@ -410,14 +410,26 @@ HTMLArea.Config.prototype.registerButton = function(id,tooltip,image,textMode,ac
  */
 HTMLArea.Config.prototype.registerDropdown = function(dropDownConfiguration) {
 	if (typeof(this.customSelects[dropDownConfiguration.id]) != "undefined") {
-		HTMLArea._appendToLog("WARNING [HTMLArea.Config::registerDropdown]: A dropdown with the same ID " + dropDownConfiguration.id + " already exists.");
+		HTMLArea._appendToLog("ERROR [HTMLArea.Config::registerDropdown]: A dropdown with the same ID " + dropDownConfiguration.id + " already exists.");
 		return false;
 	}
 	if (typeof(this.btnList[dropDownConfiguration.id]) != "undefined") {
-		HTMLArea._appendToLog("WARNING [HTMLArea.Config::registerDropdown]: A button with the same ID " + dropDownConfiguration.id + " already exists.");
+		HTMLArea._appendToLog("ERROR [HTMLArea.Config::registerDropdown]: A button with the same ID " + dropDownConfiguration.id + " already exists.");
 		return false;
 	}
 	this.customSelects[dropDownConfiguration.id] = dropDownConfiguration;
+	return true;
+};
+
+/*
+ * Register a hotkey with the editor configuration.
+ */
+HTMLArea.Config.prototype.registerHotKey = function(hotKeyConfiguration) {
+	if (typeof(this.hotKeyList[hotKeyConfiguration.id]) != "undefined") {
+		HTMLArea._appendToLog("ERROR [HTMLArea.Config::registerHotKey]: A hotkey with the same key " + hotKeyConfiguration.id + " already exists.");
+		return false;
+	}
+	this.hotKeyList[hotKeyConfiguration.id] = hotKeyConfiguration;
 	return true;
 };
 
@@ -2336,22 +2348,22 @@ HTMLArea._editorEvent = function(ev) {
 						return false;
 						// other hotkeys
 					default:
-						if (editor.config.hotKeyList[key]) {
-							switch (editor.config.hotKeyList[key]) {
+						if (editor.config.hotKeyList[key] && editor.config.hotKeyList[key].cmd) {
+							switch (editor.config.hotKeyList[key].cmd) {
 								case "SelectAll":
 								case "CleanWord":
-									cmd = editor.config.hotKeyList[key];
+									cmd = editor.config.hotKeyList[key].cmd;
 									break;
 								case "Paste":
 									if (HTMLArea.is_ie || HTMLArea.is_safari) {
-										cmd = editor.config.hotKeyList[key];
+										cmd = editor.config.hotKeyList[key].cmd;
 									} else if (editor.config.cleanWordOnPaste) {
 										window.setTimeout("HTMLArea.wordCleanLater(" + owner._editorNo + ", false);", 50);
 									}
 									break;
 								default:
 									if (editor._toolbarObjects[editor.config.hotKeyList[key]]) {
-										cmd = editor.config.hotKeyList[key];
+										cmd = editor.config.hotKeyList[key].cmd;
 										if(cmd == "FormatBlock") value = (HTMLArea.is_ie || HTMLArea.is_safari) ? "<p>" : "p";
 									}
 							}
@@ -2362,15 +2374,10 @@ HTMLArea._editorEvent = function(ev) {
 					HTMLArea._stopEvent(ev);
 					return false;
 				} else {
-					for (var pluginId in editor.plugins) {
-						if (editor.plugins.hasOwnProperty(pluginId)) {
-							var pluginInstance = editor.plugins[pluginId].instance;
-							if (typeof(pluginInstance.onHotKey) === "function") {
-								if (!pluginInstance.onHotKey(key)) {
-									HTMLArea._stopEvent(ev);
-									return false;
-								}
-							}
+					if (editor.config.hotKeyList[key] && editor.config.hotKeyList[key].action) {
+						if (!editor.config.hotKeyList[key].action(editor, key)) {
+							HTMLArea._stopEvent(ev);
+							return false;
 						}
 					}
 					editor.updateToolbar();
@@ -3418,6 +3425,25 @@ HTMLArea.plugin = HTMLArea.Base.extend({
 	 */
 	getDropDownConfiguration : function(dropDownId) {
 		return this.editorConfiguration.customSelects[dropDownId];
+	},
+	
+	/**
+	 * Registors a hotkey
+	 *
+	 * @param	object		hotKeyConfiguration: the configuration object of the hotkey:
+	 *					id		: the key
+	 *					action		: name of the function invoked when a hotkey is pressed
+	 *
+	 * @return	boolean		true if the hotkey was successfully registered
+	 */
+	registerHotKey : function (hotKeyConfiguration) {
+		if (typeof((hotKeyConfiguration.action) === "string") && (typeof(this[hotKeyConfiguration.action]) === "function")) {
+			var actionFunctionReference = this.makeFunctionReference(hotKeyConfiguration.action);
+			hotKeyConfiguration.action = actionFunctionReference;
+			return this.editorConfiguration.registerHotKey(hotKeyConfiguration);
+		} else {
+			this.appendToLog("registerHotKey", "Function " + hotKeyConfiguration.action + " was not defined when registering hotkey " + hotKeyConfiguration.id);
+		}
 	},
 	
 	/**

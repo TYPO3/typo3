@@ -6,6 +6,7 @@
 
 	* Feature #6705: htmlArea RTE: Display all classes of an element in the statusbar
 	* htmlArea RTE: Update manual and version  to 1.6.3dev
+	* Feature #6579 continued: Allow plugins to register hotkeys
 
 2007-11-13  Bernhard Kraft  <kraftb@kraftb.at>
 

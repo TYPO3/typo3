@@ -40,7 +40,9 @@ DefaultInline = HTMLArea.plugin.extend({
 	 */
 	configurePlugin : function (editor) {
 		
-			/* Registering plugin "About" information */
+		/*
+		 * Registering plugin "About" information
+		 */
 		var pluginInformation = {
 			version		: "1.0",
 			developer	: "Stanislas Rolland",
@@ -52,7 +54,9 @@ DefaultInline = HTMLArea.plugin.extend({
 		};
 		this.registerPluginInformation(pluginInformation);
 		
-			/* Registering the buttons */
+		/*
+		 * Registering the buttons
+		 */
 		var buttonList = DefaultInline.buttonList;
 		var n = buttonList.length;
 		for (var i = 0; i < n; ++i) {
@@ -67,6 +71,20 @@ DefaultInline = HTMLArea.plugin.extend({
 			};
 			this.registerButton(buttonConfiguration);
 		}
+		
+		/*
+		 * Registering the hotkeys
+		 */
+		for (var hotKey in DefaultInline.hotKeyList) {
+			if (DefaultInline.hotKeyList.hasOwnProperty(hotKey)) {
+				var hotKeyConfiguration = {
+					id	: hotKey,
+					action	: "onHotKey"
+				};
+			this.registerHotKey(hotKeyConfiguration);
+			}
+		}
+		
 		return true;
 	 },
 	 
@@ -88,9 +106,13 @@ DefaultInline = HTMLArea.plugin.extend({
 	/*
 	 * This function gets called when some hot key is pressed
 	 */
-	onHotKey : function(key) {
+	onHotKey : function(editor, key) {
 		if (DefaultInline.hotKeyList[key] && this.editor._toolbarObjects[DefaultInline.hotKeyList[key]]) {
-			return this.onButtonPress(this.editor, DefaultInline.hotKeyList[key]);
+			var toolbarObject = this.editor._toolbarObjects[DefaultInline.hotKeyList[key]];
+			var toolbarHTMLObject = document.getElementById(toolbarObject.elementId);
+			if (!toolbarHTMLObject.disabled) {
+				return this.onButtonPress(this.editor, DefaultInline.hotKeyList[key]);
+			}
 		} else {
 			return true;
 		}
