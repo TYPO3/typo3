@@ -3677,8 +3677,15 @@ class t3lib_TCEforms	{
 	function optionTagStyle($iconString)	{
 		if ($iconString)	{
 			list($selIconFile,$selIconInfo) = $this->getIcon($iconString);
+
+			$padLeft = $selIconInfo[0]+4;
+
+			if($padLeft >= 18 && $padLeft <= 24) {
+				$padLeft = 22; // In order to get the same padding for all option tags even if icon sizes differ a little, set it to 22 if it was between 18 and 24 pixels
+			}
+
 			$padTop = t3lib_div::intInRange(($selIconInfo[1]-12)/2,0);
-			$styleAttr = 'background-image: url('.$selIconFile.'); background-repeat: no-repeat; height: '.t3lib_div::intInRange(($selIconInfo[1]+2)-$padTop,0).'px; padding-top: '.$padTop.'px; padding-left: '.($selIconInfo[0]+4).'px;';
+			$styleAttr = 'background-image: url('.$selIconFile.'); background-repeat: no-repeat; height: '.t3lib_div::intInRange(($selIconInfo[1]+2)-$padTop,0).'px; padding-top: '.$padTop.'px; padding-left: '.$padLeft.'px;';
 			return $styleAttr;
 		}
 	}
