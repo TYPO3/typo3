@@ -50,7 +50,7 @@ require_once (PATH_t3lib.'class.t3lib_basicfilefunc.php');
  * @subpackage core
  */
 class tx_rtehtmlarea_pageTree extends rtePageTree {
-	
+
 	/**
 	 * Create the page navigation tree in HTML
 	 *
@@ -111,7 +111,7 @@ class tx_rtehtmlarea_pageTree extends rtePageTree {
  * @subpackage core
  */
 class tx_rtehtmlarea_folderTree extends rteFolderTree {
-	
+
 	/**
 	 * Wrapping the title in a link, if applicable.
 	 *
@@ -127,7 +127,7 @@ class tx_rtehtmlarea_folderTree extends rteFolderTree {
 			return '<span class="typo3-dimmed">'.$title.'</span>';
 		}
 	}
-	
+
 	/**
 	 * Create the folder navigation tree in HTML
 	 *
@@ -203,13 +203,13 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 	var $setTarget;			// Target (RTE specific)
 	var $setClass;			// Class (RTE specific)
 	var $setTitle;			// Title (RTE specific)
-	
+
 	var $contentTypo3Language;
 	var $contentTypo3Charset;
-	
+
 	var $editorNo;
 	var $buttonConfig = array();
-	
+
 	/**
 	 * Constructor:
 	 * Initializes a lot of variables, setting JavaScript functions in header etc.
@@ -230,19 +230,34 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 		$this->contentTypo3Language = t3lib_div::_GP('typo3ContentLanguage');
 		$this->contentTypo3Charset = t3lib_div::_GP('typo3ContentCharset');
 		$this->editorNo = t3lib_div::_GP('editorNo');
-		
+
 			// Find "mode"
 		$this->mode=t3lib_div::_GP('mode');
 		if (!$this->mode)	{
 			$this->mode='rte';
 		}
-		
+
+			// init hook objects:
+		if(is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/class.browse_links.php']['browseLinksHook'])) {
+			foreach($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/class.browse_links.php']['browseLinksHook'] as $classData) {
+				$processObject = &t3lib_div::getUserObj($classData);
+
+				if(!($processObject instanceof t3lib_browseLinksHook)) {
+					throw new UnexpectedValueException('$processObject must implement interface t3lib_browseLinksHook', 1195115652);
+				}
+
+				$parameters = array();
+				$processObject->init($this, $parameters);
+				$this->hookObjects[] = $processObject;
+			}
+		}
+
 			// Site URL
 		$this->siteURL = t3lib_div::getIndpEnv('TYPO3_SITE_URL');	// Current site url
-		
+
 			// the script to link to
 		$this->thisScript = t3lib_div::getIndpEnv('SCRIPT_NAME');
-		
+
 			// CurrentUrl - the current link url must be passed around if it exists
 		if ($this->mode=='wizard')	{
 			$currentLinkParts = t3lib_div::trimExplode(' ',$this->P['currentValue']);
@@ -583,6 +598,12 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 
 			// Initializing the action value, possibly removing blinded values etc:
 		$allowedItems = explode(',','page,file,url,mail,spec');
+
+			//call hook for extra options
+		foreach($this->hookObjects as $hookObject) {
+			$allowedItems = $hookObject->addAllowedItems($allowedItems);
+		}
+
 		if (is_array($this->buttonConfig['options.']) && $this->buttonConfig['options.']['removeItems']) {
 			$allowedItems = array_diff($allowedItems,t3lib_div::trimExplode(',',$this->buttonConfig['options.']['removeItems'],1));
 		} else {
@@ -592,7 +613,7 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 		if (!in_array($this->act,$allowedItems)) {
 			$this->act = current($allowedItems);
 		}
-		
+
 			// Making menu in top:
 		$menuDef = array();
 		if (!$wiz)	{
@@ -631,11 +652,17 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 			$menuDef['spec']['url'] = '#';
 			$menuDef['spec']['addParams'] = 'onclick="jumpToUrl(\'?act=spec&editorNo='.$this->editorNo.'&contentTypo3Language='.$this->contentTypo3Language.'&contentTypo3Charset='.$this->contentTypo3Charset.'\');return false;"';
 		}
+
+			// call hook for extra options
+		foreach($this->hookObjects as $hookObject) {
+			$menuDef = $hookObject->modifyMenuDefinition($menuDef);
+		}
+
 		$content .= $this->doc->getTabMenuRaw($menuDef);
 
 			// Adding the menu and header to the top of page:
 		$content.=$this->printCurrentUrl($this->curUrlInfo['info']).'<br />';
-		
+
 			// Depending on the current action we will create the actual module content for selecting a link:
 		switch($this->act)	{
 			case 'mail':
@@ -674,7 +701,7 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 			break;
 			case 'file':
 				$content.=$this->addAttributesForm();
-				
+
 				$foldertree = t3lib_div::makeInstance('tx_rtehtmlarea_folderTree');
 				$tree=$foldertree->getBrowsableTree();
 
@@ -781,9 +808,8 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 				}
 			break;
 			case 'page':
-			default:
 				$content.=$this->addAttributesForm();
-				
+
 				$pagetree = t3lib_div::makeInstance('tx_rtehtmlarea_pageTree');
 				$pagetree->ext_showNavTitle = $GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.showNavTitle');
 				$pagetree->addField('nav_title');
@@ -801,13 +827,20 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 					</table>
 					';
 			break;
+			default:
+					// call hook
+				foreach($this->hookObjects as $hookObject) {
+					$content .= $hookObject->getTab($this->act);
+				}
+
+			break;
 		}
 
 			// End page, return content:
 		$content.= $this->doc->endPage();
 		return $content;
 	}
-	
+
 	function addAttributesForm() {
 		$ltargetForm = '';
 			// Add target and class selector box and title field:
@@ -819,10 +852,10 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 		}
 		return $ltargetForm;
 	}
-	
+
 	function wrapInForm($string) {
 		global $LANG;
-		
+
 		$form = '
 			<!--
 				Selecting target for link:
@@ -844,10 +877,10 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 				</form>';
 		return $form;
 	}
-	
+
 	function addTargetSelector() {
 		global $LANG;
-		
+
 		$targetSelectorConfig = array();
 		$popupSelectorConfig = array();
 		if (is_array($this->buttonConfig['targetSelector.'])) {
@@ -856,7 +889,7 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 		if (is_array($this->buttonConfig['popupSelector.'])) {
 			$popupSelectorConfig = $this->buttonConfig['popupSelector.'];
 		}
-		
+
 		$ltarget = '';
 		if ($this->act != 'mail')	{
 			if (!($targetSelectorConfig['disabled'] && $popupSelectorConfig['disabled'])) {
@@ -877,11 +910,11 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 				$ltarget .= '
 							</td>';
 			}
-			
+
 			$ltarget .= '
 						</tr>';
 			if (!$popupSelectorConfig['disabled']) {
-				
+
 				$selectJS = 'if (document.ltargetform.popup_width.options[document.ltargetform.popup_width.selectedIndex].value>0 && document.ltargetform.popup_height.options[document.ltargetform.popup_height.selectedIndex].value>0)	{
 					document.ltargetform.ltarget.value = document.ltargetform.popup_width.options[document.ltargetform.popup_width.selectedIndex].value+\'x\'+document.ltargetform.popup_height.options[document.ltargetform.popup_height.selectedIndex].value;
 					setTarget(document.ltargetform.ltarget.value);
@@ -917,10 +950,10 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 		}
 		return $ltarget;
 	}
-	
+
 	function addClassSelector() {
 		global $LANG;
-		
+
 		$selectClass = '';
 		if ($this->classesAnchorJSOptions[$this->act]) {
 			$selectClassJS = '
@@ -948,10 +981,10 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 		}
 		return $selectClass;
 	}
-	
+
 	function addTitleSelector() {
 		global $LANG;
-		
+
 		return '
 						<tr>
 							<td>'.$LANG->getLL('anchor_title',1).':</td>
@@ -960,7 +993,7 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 							</td>
 						</tr>';
 	}
-	
+
 	/**
 	 * For TBE: Makes an upload form for uploading files to the filemount the user is browsing.
 	 * The files are uploaded to the tce_file.php script in the core which will handle the upload.
@@ -1014,7 +1047,7 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 
 		return $code;
 	}
-	
+
 	/**
 	 * For TBE: Makes a form for creating new folders in the filemount the user is browsing.
 	 * The folder creation request is sent to the tce_file.php script in the core which will handle the creation.

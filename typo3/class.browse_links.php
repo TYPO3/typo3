@@ -754,10 +754,14 @@ class browse_links {
 	 */
 	var $curUrlInfo;
 
+	/**
+	* array which holds hook objects (initialised in init() )
+	*/
+	protected $hookObjects;
 
 
 	var	$readOnly = FALSE;	// If set, all operations that changes something should be disabled. This is used for alternativeBrowsing file mounts (see options like "options.folderTree.altElementBrowserMountPoints" in browse_links.php).
-	
+
 
 	/**
 	 * Constructor:
@@ -781,6 +785,22 @@ class browse_links {
 		$this->mode=t3lib_div::_GP('mode');
 		if (!$this->mode)	{
 			$this->mode='rte';
+		}
+
+			// init hook objects:
+		$this->hookObjects = array();
+		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/class.browse_links.php']['browseLinksHook'])) {
+			foreach($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/class.browse_links.php']['browseLinksHook'] as $classData) {
+				$processObject = &t3lib_div::getUserObj($classData);
+
+				if(!($processObject instanceof t3lib_browseLinksHook)) {
+					throw new UnexpectedValueException('$processObject must implement interface t3lib_browseLinksHook', 1195039394);
+				}
+
+				$parameters = array();
+				$processObject->init($this, $parameters);
+				$this->hookObjects[] = $processObject;
+			}
 		}
 
 			// Site URL
@@ -1142,6 +1162,12 @@ class browse_links {
 
 			// Initializing the action value, possibly removing blinded values etc:
 		$allowedItems = array_diff(explode(',','page,file,url,mail,spec'),t3lib_div::trimExplode(',',$this->thisConfig['blindLinkOptions'],1));
+
+			//call hook for extra options
+		foreach($this->hookObjects as $hookObject) {
+			$allowedItems = $hookObject->addAllowedItems($allowedItems);
+		}
+
 		reset($allowedItems);
 		if (!in_array($this->act,$allowedItems))	$this->act = current($allowedItems);
 
@@ -1183,6 +1209,12 @@ class browse_links {
 			$menuDef['spec']['url'] = '#';
 			$menuDef['spec']['addParams'] = 'onclick="jumpToUrl(\'?act=spec\');return false;"';
 		}
+
+			// call hook for extra options
+		foreach($this->hookObjects as $hookObject) {
+			$menuDef = $hookObject->modifyMenuDefinition($menuDef);
+		}
+
 		$content .= $this->doc->getTabMenuRaw($menuDef);
 
 			// Adding the menu and header to the top of page:
@@ -1314,7 +1346,6 @@ class browse_links {
 				}
 			break;
 			case 'page':
-			default:
 				$pagetree = t3lib_div::makeInstance('rtePageTree');
 				$pagetree->thisScript = $this->thisScript;
 				$tree=$pagetree->getBrowsableTree();
@@ -1331,6 +1362,13 @@ class browse_links {
 						</tr>
 					</table>
 					';
+			break;
+			default:
+					//call hook
+				foreach($this->hookObjects as $hookObject) {
+					$content .= $hookObject->getTab($this->act);
+				}
+
 			break;
 		}
 
@@ -2262,6 +2300,12 @@ class browse_links {
 			$info['value']='';
 			$info['act']='page';
 		}
+
+			// let the hook have a look
+		foreach($this->hookObjects as $hookObject) {
+			$info = $hookObject->parseCurrentUrl($href, $siteUrl, $info);
+		}
+
 		return $info;
 	}
 

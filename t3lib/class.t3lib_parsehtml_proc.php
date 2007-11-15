@@ -727,6 +727,9 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 						$page = t3lib_BEfunc::getRecord('pages', $idPart);
 						if (is_array($page))	{	// Page must exist...
 							$href = $siteUrl.'?id='.$link_param;
+						} else if(strtolower(substr($link_param, 0, 7)) == 'record:') {
+								// linkHandler - allowing links to start with "record:"
+							$href = $link_param;
 						} else {
 							#$href = '';
 							$href = $siteUrl.'?id='.$link_param;
