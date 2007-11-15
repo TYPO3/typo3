@@ -269,13 +269,78 @@ if (!get_magic_quotes_gpc())	{
 // Check if the install script should be run:
 // ********************************************
 if (defined('TYPO3_enterInstallScript') && TYPO3_enterInstallScript)	{
-	if (!t3lib_extMgm::isLoaded('install'))	die('Install Tool is not loaded as an extension.<br/>You must add the key "install" to the list of installed extensions in typo3conf/localconf.php, $TYPO3_CONF_VARS["EXT"]["extList"].');
+	if (!t3lib_extMgm::isLoaded('install') && !t3lib_extMgm::isLoaded('install_old'))	die('Install Tool is not loaded as an extension.<br/>You must add the key "install" to the list of installed extensions in typo3conf/localconf.php, $TYPO3_CONF_VARS["EXT"]["extList"].');
+
+
+
+	/* <beta-code TYPO3 4.2-dev> */
+
+	session_start();
+
+	if($setInstallToolVersion = t3lib_div::_GP('installToolVersion')) {
+		if ($setInstallToolVersion === 'new') {
+			$lcBackupFileName =  PATH_typo3conf.'localconf-'.date('ymd').'.php';
+			if (!file_exists($lcBackupFileName))	{
+				if (!copy(PATH_typo3conf.'localconf.php', $lcBackupFileName)) {
+					echo 'Backup of localconf.php failed! Will not start the new install tool.';
+					exit;
+				}
+			}
+		}
+		$_SESSION['installToolVersion'] = $setInstallToolVersion==='new'?'new':'old';
+	}
+
+	if(!$_SESSION['installToolVersion']) {
+
+		$oldInstallToolLoaded = t3lib_extMgm::isLoaded('install_old');
+		$newInstallToolLoaded = t3lib_extMgm::isLoaded('install');
+
+		echo '
+			<link rel="stylesheet" href="../stylesheet.css" />
+			<p style="margin: 20px;">Please select the install tool version to use for this browser session:</p>
+			<ul>
+				<li>
+					'.($oldInstallToolLoaded?'<a href="index.php?installToolVersion=old&'.htmlspecialchars(t3lib_div::getIndpEnv('QUERY_STRING')).'">':'').'
+						Traditional Install Tool
+					'.($oldInstallToolLoaded?'</a>':' (The extension "install_old" must be installed for this to work.)').'
+				</li>
+				<li>
+					'.($newInstallToolLoaded?'<a href="index.php?installToolVersion=new&'.htmlspecialchars(t3lib_div::getIndpEnv('QUERY_STRING')).'">':'').'
+						New Install Tool for TYPO3 4.2
+					'.($newInstallToolLoaded?'</a>':' (The extension "install" must be installed for this to work.)').'<br /><b>If you choose this option, a backup of the localconf file which is named localconf-YYMMDD.php is automatically created.</b>
+				</li>
+			</ul>
+		';
+		exit();
+	}
+
+	if($_SESSION['installToolVersion'] === 'old') {
+		require_once(t3lib_extMgm::extPath('install_old').'mod/class.tx_install.php');
+		$install_check = t3lib_div::makeInstance('tx_install');
+		$install_check->allowUpdateLocalConf = 1;
+		$install_check->init();
+		exit;
+	} else {
+		require_once(t3lib_extMgm::extPath('install').'mod/class.tx_install.php');
+		$install_check = t3lib_div::makeInstance('tx_install');
+		$install_check->allowUpdateLocalConf = 1;
+		$install_check->init();
+		exit;		
+	}
+
+	/* </beta-code> */
+
+	/*
+	<original-code>
 
 	require_once(t3lib_extMgm::extPath('install').'mod/class.tx_install.php');
 	$install_check = t3lib_div::makeInstance('tx_install');
 	$install_check->allowUpdateLocalConf = 1;
 	$install_check->init();
 	exit;
+
+	</original-code> 
+	*/
 }
 
 

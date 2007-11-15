@@ -2487,7 +2487,7 @@ From sub-directory:
 	 */
 	function isGIF()	{
 		if (function_exists('imagecreatefromgif') && function_exists('imagegif') && ($this->ImageTypes() & IMG_GIF))	{	// If GIF-functions exists, also do a real test of them:
-			$im = @imagecreatefromgif(t3lib_extMgm::extPath('install').'imgs/jesus.gif');
+			$im = @imagecreatefromgif(t3lib_extMgm::extPath('install_old').'imgs/jesus.gif');
 			return $im?1:0;
 		}
 	}
@@ -2510,7 +2510,7 @@ From sub-directory:
 	 */
 	function isPNG()	{
 		if (function_exists('imagecreatefrompng') && function_exists('imagepng') && ($this->ImageTypes() & IMG_PNG))	{
-			$im = imagecreatefrompng(t3lib_extMgm::extPath('install').'imgs/jesus.png');
+			$im = imagecreatefrompng(t3lib_extMgm::extPath('install_old').'imgs/jesus.png');
 			return $im?1:0;
 		}
 	}
@@ -2749,7 +2749,7 @@ From sub-directory:
 					while(list(,$ext)=each($extArr))	{
 						if ($this->isExtensionEnabled($ext, $headCode, "Read ".strtoupper($ext)))	{
 							$imageProc->IM_commands=array();
-							$theFile = t3lib_extMgm::extPath('install').'imgs/jesus.'.$ext;
+							$theFile = t3lib_extMgm::extPath('install_old').'imgs/jesus.'.$ext;
 							if (!@is_file($theFile))	die('Error: '.$theFile.' was not a file');
 
 							$imageProc->imageMagickConvert_forceFileNameBody='read_'.$ext;
@@ -2761,7 +2761,7 @@ From sub-directory:
 
 					if ($this->isExtensionEnabled('pdf', $headCode, 'Read PDF'))	{
 						$imageProc->IM_commands=array();
-						$theFile = t3lib_extMgm::extPath('install').'imgs/pdf_from_imagemagick.pdf';
+						$theFile = t3lib_extMgm::extPath('install_old').'imgs/pdf_from_imagemagick.pdf';
 						if (!@is_file($theFile))	die('Error: '.$theFile.' was not a file');
 
 						$imageProc->imageMagickConvert_forceFileNameBody='read_pdf';
@@ -2771,7 +2771,7 @@ From sub-directory:
 					}
 					if ($this->isExtensionEnabled('ai', $headCode, 'Read AI'))	{
 						$imageProc->IM_commands=array();
-						$theFile = t3lib_extMgm::extPath('install').'imgs/typo3logotype.ai';
+						$theFile = t3lib_extMgm::extPath('install_old').'imgs/typo3logotype.ai';
 						if (!@is_file($theFile))	die('Error: '.$theFile.' was not a file');
 
 						$imageProc->imageMagickConvert_forceFileNameBody='read_ai';
@@ -2799,7 +2799,7 @@ From sub-directory:
 				if ($imActive)	{
 						// Writing GIF
 					$imageProc->IM_commands=array();
-					$theFile = t3lib_extMgm::extPath('install').'imgs/jesus.gif';
+					$theFile = t3lib_extMgm::extPath('install_old').'imgs/jesus.gif';
 					if (!@is_file($theFile))	die('Error: '.$theFile.' was not a file');
 
 					$imageProc->imageMagickConvert_forceFileNameBody='write_gif';
@@ -2818,7 +2818,7 @@ From sub-directory:
 
 						// Writing PNG
 					$imageProc->IM_commands=array();
-					$theFile = t3lib_extMgm::extPath('install').'imgs/jesus.gif';
+					$theFile = t3lib_extMgm::extPath('install_old').'imgs/jesus.gif';
 
 					$imageProc->imageMagickConvert_forceFileNameBody='write_png';
 					$fileInfo = $imageProc->imageMagickConvert($theFile,'png',"",'',"",'',"",1);
@@ -2843,7 +2843,7 @@ From sub-directory:
 				if ($imActive)	{
 						// Scaling transparent image
 					$imageProc->IM_commands=array();
-					$theFile = t3lib_extMgm::extPath('install').'imgs/jesus2_transp.gif';
+					$theFile = t3lib_extMgm::extPath('install_old').'imgs/jesus2_transp.gif';
 					if (!@is_file($theFile))	die('Error: '.$theFile.' was not a file');
 
 					$imageProc->imageMagickConvert_forceFileNameBody='scale_gif';
@@ -2860,7 +2860,7 @@ From sub-directory:
 					$this->message($headCode,'GIF to GIF, 150 pixels wide',$result[0],$result[1]);
 
 					$imageProc->IM_commands=array();
-					$theFile = t3lib_extMgm::extPath('install').'imgs/jesus2_transp.png';
+					$theFile = t3lib_extMgm::extPath('install_old').'imgs/jesus2_transp.png';
 					if (!@is_file($theFile))	die('Error: '.$theFile.' was not a file');
 
 					$imageProc->imageMagickConvert_forceFileNameBody='scale_png';
@@ -2869,7 +2869,7 @@ From sub-directory:
 					$this->message($headCode,'PNG to PNG, 150 pixels wide',$result[0],$result[1]);
 
 					$imageProc->IM_commands=array();
-					$theFile = t3lib_extMgm::extPath('install').'imgs/jesus2_transp.gif';
+					$theFile = t3lib_extMgm::extPath('install_old').'imgs/jesus2_transp.gif';
 					if (!@is_file($theFile))	die('Error: '.$theFile.' was not a file');
 					$imageProc->imageMagickConvert_forceFileNameBody='scale_jpg';
 					$fileInfo = $imageProc->imageMagickConvert($theFile,'jpg',"150",'',"",'',"",1);
@@ -2894,9 +2894,9 @@ From sub-directory:
 
 				if ($imActive)	{
 					$imageProc->IM_commands=array();
-					$input = t3lib_extMgm::extPath('install').'imgs/greenback.gif';
-					$overlay = t3lib_extMgm::extPath('install').'imgs/jesus.jpg';
-					$mask = t3lib_extMgm::extPath('install').'imgs/blackwhite_mask.gif';
+					$input = t3lib_extMgm::extPath('install_old').'imgs/greenback.gif';
+					$overlay = t3lib_extMgm::extPath('install_old').'imgs/jesus.jpg';
+					$mask = t3lib_extMgm::extPath('install_old').'imgs/blackwhite_mask.gif';
 						if (!@is_file($input))	die('Error: '.$input.' was not a file');
 						if (!@is_file($overlay))	die('Error: '.$overlay.' was not a file');
 						if (!@is_file($mask))	die('Error: '.$mask.' was not a file');
@@ -2909,9 +2909,9 @@ From sub-directory:
 
 					// Combine
 					$imageProc->IM_commands=array();
-					$input = t3lib_extMgm::extPath('install').'imgs/combine_back.jpg';
-					$overlay = t3lib_extMgm::extPath('install').'imgs/jesus.jpg';
-					$mask = t3lib_extMgm::extPath('install').'imgs/combine_mask.jpg';
+					$input = t3lib_extMgm::extPath('install_old').'imgs/combine_back.jpg';
+					$overlay = t3lib_extMgm::extPath('install_old').'imgs/jesus.jpg';
+					$mask = t3lib_extMgm::extPath('install_old').'imgs/combine_mask.jpg';
 						if (!@is_file($input))	die('Error: '.$input.' was not a file');
 						if (!@is_file($overlay))	die('Error: '.$overlay.' was not a file');
 						if (!@is_file($mask))	die('Error: '.$mask.' was not a file');
@@ -2960,7 +2960,7 @@ From sub-directory:
 
 					// GD from image with box
 					$imageProc->IM_commands=array();
-					$input = t3lib_extMgm::extPath('install').'imgs/jesus.'.$imageProc->gifExtension;
+					$input = t3lib_extMgm::extPath('install_old').'imgs/jesus.'.$imageProc->gifExtension;
 						if (!@is_file($input))	die('Error: '.$input.' was not a file');
 					$im = $imageProc->imageCreateFromFile($input);
 					$workArea=array(0,0,170,136);
@@ -3127,12 +3127,12 @@ From sub-directory:
 		$ex_rows='';
 		$errorLevels=array(-1);
 		if ($imageFile)	{
-			$verifyFile = t3lib_extMgm::extPath('install').'verify_imgs/'.basename($imageFile);
+			$verifyFile = t3lib_extMgm::extPath('install_old').'verify_imgs/'.basename($imageFile);
 #debug(array($imageFile,$this->backPath.'../'.substr($imageFile,strlen(PATH_site))),1);
 			$destImg = @getImageSize($imageFile);
 			$destImgCode ='<img src="'.$this->backPath.'../'.substr($imageFile,strlen(PATH_site)).'" '.$destImg[3].'>';
 			$verifyImg = @getImageSize($verifyFile);
-			$verifyImgCode = '<img src="'.$this->backPath.t3lib_extMgm::extRelPath('install').'verify_imgs/'.basename($verifyFile).'" '.$verifyImg[3].'>';
+			$verifyImgCode = '<img src="'.$this->backPath.t3lib_extMgm::extRelPath('install_old').'verify_imgs/'.basename($verifyFile).'" '.$verifyImg[3].'>';
 			if (!$verifyImg)	{
 				$gifVersion=1;
 				$verifyFile_alt = substr($verifyFile,0,-3).'gif';
