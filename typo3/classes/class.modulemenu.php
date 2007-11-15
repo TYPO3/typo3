@@ -534,7 +534,7 @@ class ModuleMenu {
 	 */
 	public function setLinkModules($linkModules) {
 		if(!is_bool($linkModules)) {
-			throw new InvalidArgumentException('parameter $$linkModules must be of type bool', 1193326558);
+			throw new InvalidArgumentException('parameter $linkModules must be of type bool', 1193326558);
 		}
 
 		$this->linkModules = $linkModules;

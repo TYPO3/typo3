@@ -27,13 +27,17 @@
 
 require_once ('init.php');
 require_once ('template.php');
+require_once (PATH_t3lib.'interfaces/interface.t3lib_backendtoolbaritem.php');
+
 require ('classes/class.typo3logo.php');
 require ('classes/class.modulemenu.php');
+require ('classes/class.workspaceselector.php');
 
 require_once (PATH_t3lib.'class.t3lib_loadmodules.php');
 require_once (PATH_t3lib.'class.t3lib_basicfilefunc.php');
 require_once ('class.alt_menu_functions.inc');
 $GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_misc.xml');
+
 
 /**
  * Class for rendering the TYPO3 backend version 4.2+
@@ -66,6 +70,7 @@ class TYPO3backend {
 	private $leftMenuWidth;
 	private $topHeight;
 	private $selectMenu;
+	private $toolbarItems;
 
 	/**
 	 * constructor
@@ -105,6 +110,37 @@ class TYPO3backend {
 			'css/backend-style.css',
 			'css/verticalmenu.css'
 		);
+
+		$this->toolbarItems = array();
+		$this->initializeCoreToolbarItems();
+	}
+
+	/**
+	 * initializes the core toolbar items
+	 *
+	 * @return	void
+	 */
+	private function initializeCoreToolbarItems() {
+
+		$coreToolbarItems = array(
+			'workspaceSelector' => 'WorkspaceSelector',
+			/* TODO
+			'clearCacheActions' => '',
+			'backendSearch'     => '',
+			'shortcutMenu'      => ''
+			*/
+		);
+
+		foreach($coreToolbarItems as $toolbarItemName => $toolbarItemClass) {
+			$toolbarItem = t3lib_div::makeInstance($toolbarItemClass);
+
+			if(!($toolbarItem instanceof t3lib_backendToolbarItem)) {
+				throw new UnexpectedValueException('$toolbarItem "'.$toolbarItemName.'" must implement interface t3lib_backendToolbarItem', 1195126772);
+			}
+
+			$toolbarItem->setBackend($this);
+			$this->toolbarItems[] = $toolbarItem;
+		}
 	}
 
 	/**
@@ -113,6 +149,44 @@ class TYPO3backend {
 	 * @return	void
 	 */
 	public function render()	{
+
+			// prepare the scaffolding, at this point extension still may addjavascript and css
+		$logo         = t3lib_div::makeInstance('TYPO3Logo');
+		$logo->setLogo('gfx/typo3logo_mini.png');
+
+		$menu         = $this->moduleMenu->render();
+		$cacheActions = $this->moduleMenu->renderCacheActions();
+		$logout       = $this->moduleMenu->renderLogoutButton();
+		$loginInfo    = $this->getLoggedInUserLabel();
+
+			// create backend scaffolding
+		$backendScaffolding = '
+	<div id="typo3-backend">
+		<div id="typo3-top-container">
+			<div id="typo3-logo">'.$logo->render().'</div>
+			<div id="typo3-top" class="typo3-top-toolbar">'
+				.$this->renderToolbar()
+			.'</div>
+		</div>
+		<div id="typo3-main-container">
+			<div id="typo3-side-menu">'
+				.$menu
+				.$cacheActions
+				.$logout
+				.$loginInfo
+				.'
+			</div>
+			<div id="typo3-content">
+				<iframe src="alt_intro.php" name="content" id="content" marginwidth="0" marginheight="0" frameborder="0"  scrolling="auto" noresize="noresize"></iframe>
+			</div>
+		</div>
+	</div>
+</body>
+</html>';
+
+		/******************************************************
+		 * now put the complete backend document together
+		 ******************************************************/
 
 			// set doctype
 		$GLOBALS['TBE_TEMPLATE']->docType = 'xhtml_trans';
@@ -133,6 +207,7 @@ class TYPO3backend {
 			<link rel="stylesheet" type="text/css" href="'.$cssFile.'" />
 			';
 		}
+		// TODO add CSS from $this->css
 
 			// set document title
 		$title = $TYPO3_CONF_VARS['SYS']['sitename'] ?
@@ -143,41 +218,24 @@ class TYPO3backend {
 		$this->content .= $GLOBALS['TBE_TEMPLATE']->startPage($title);
 		$this->content .= $GLOBALS['TBE_TEMPLATE']->endPage();
 
-		$logo         = t3lib_div::makeInstance('TYPO3Logo');
-		$logo->setLogo('gfx/typo3logo_mini.png');
-
-		$menu         = $this->moduleMenu->render();
-		$cacheActions = $this->moduleMenu->renderCacheActions();
-		$logout       = $this->moduleMenu->renderLogoutButton();
-		$loginInfo    = $this->getLoggedInUserLabel();
-
-			// create backend scaffolding
-			// TODO change typo3-top to render without iframe, directly into the div
-		$this->content .= '
-	<div id="typo3-backend">
-		<div id="typo3-top-container">
-			<div id="typo3-logo">'.$logo->render().'</div>
-			<div id="typo3-top" class="typo3-alt-topmenu-dummy-php">
-				&nbsp;
-			</div>
-		</div>
-		<div id="typo3-main-container">
-			<div id="typo3-side-menu">'
-				.$menu
-				.$cacheActions
-				.$logout
-				.$loginInfo
-				.'
-			</div>
-			<div id="typo3-content">
-				<iframe src="alt_intro.php" name="content" id="content" marginwidth="0" marginheight="0" frameborder="0"  scrolling="auto" noresize="noresize"></iframe>
-			</div>
-		</div>
-	</div>
-</body>
-</html>';
+		$this->content .= $backendScaffolding;
 
 		echo $this->content;
+	}
+
+	/**
+	 * renders the items in the top toolbar
+	 *
+	 * @return	string	top toolbar elements as HTML
+	 */
+	private function renderToolbar() {
+		$toolbar = '';
+
+		foreach($this->toolbarItems as $toolbarItem) {
+			$toolbar .= $toolbarItem->render();
+		}
+
+		return $toolbar;
 	}
 
 	/**
@@ -575,18 +633,108 @@ class TYPO3backend {
 
 		return $logo;
 	}
+
+	/**
+	 * adds a javascript snippet to the backend
+	 *
+	 * @param	string	javascript snippet
+	 * @return	void
+	 */
+	public function addJavascript($javascript) {
+			// TODO do we need more checks?
+		if(!is_string($javascript)) {
+			throw new InvalidArgumentException('parameter $javascript must be of type string', 1195129553);
+		}
+
+		$this->js .= $javascript;
+	}
+
+	/**
+	 * adds a javscript file to the backend after it has been checked that it exists
+	 *
+	 * @param	string	javascript file reference
+	 * @return	void
+	 */
+	public function addJavascriptFile($javascriptFile) {
+		//TODO add more checks if neccessary
+
+		if(file_exists(t3lib_div::resolveBackPath(PATH_site.$javascriptFile))) {
+
+			if(t3lib_div::isFirstPartOfStr($javascriptFile, 'typo3/')) {
+				$javascriptFile = substr($javascriptFile, 6); // make relative to typo3/
+			}
+
+			$this->jsFiles[] = $javascriptFile;
+		}
+	}
+
+	/**
+	 * adds a css snippet to the backend
+	 *
+	 * @param	string	css snippet
+	 * @return	void
+	 */
+	public function addCss($css) {
+		if(!is_string($css)) {
+			throw new InvalidArgumentException('parameter $css must be of type string', 1195129642);
+		}
+
+		$this->css .= $css;
+	}
+
+	/**
+	 * adds a css file to the backend after it has been checked that it exists
+	 *
+	 * @param	string	css file reference
+	 * @return	void
+	 */
+	public function addCssFile($cssFile) {
+		//TODO add more checks if neccessary
+
+		if(file_exists(t3lib_div::resolveBackPath(PATH_site.$cssFile))) {
+
+			if(t3lib_div::isFirstPartOfStr($cssFile, 'typo3/')) {
+				$cssFile = substr($cssFile, 6); // make relative to typo3/
+			}
+
+			$this->cssFiles[] = $cssFile;
+		}
+	}
+
+	/**
+	 * adds an item to the toolbar
+	 *
+	 * @param	string	toolbar item class reference, f.e. EXT:toolbarextension/class.tx_toolbarextension_coolitem.php:tx_toolbarExtension_coolItem
+	 */
+	public function addToolbarItem($toolbarItemName, $toolbarItemClassReference) {
+		$toolbarItem = t3lib_div::getUserObj($toolbarItemClassReference);
+
+		if(!($toolbarItem instanceof t3lib_backendToolbarItem)) {
+			throw new UnexpectedValueException('$toolbarItem "'.$toolbarItemName.'" must implement interface t3lib_backendToolbarItem', 1195125501);
+		}
+
+		$toolbarItem->setBackend($this);
+		$this->toolbarItems[$toolbarItemName] = $toolbarItem;
+	}
 }
 
 
-// Include extension?
+	// include XCLASS
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['typo3/backend.php'])	{
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['typo3/backend.php']);
 }
 
 
-
 // document generation
 $TYPO3backend = t3lib_div::makeInstance('TYPO3backend');
+
+	// include extensions which may add css, javascript or toolbar items
+if(is_array($GLOBALS['TYPO3_CONF_VARS']['typo3/backend.php']['additionalBackendItems'])) {
+	foreach($GLOBALS['TYPO3_CONF_VARS']['typo3/backend.php']['additionalBackendItems'] as $additionalBackendItem) {
+		include_once($additionalBackendItem);
+	}
+}
+
 $TYPO3backend->render();
 
 ?>
