@@ -896,6 +896,8 @@ class browse_links {
 			$P2['itemName']=$this->P['itemName'];
 			$P2['formName']=$this->P['formName'];
 			$P2['fieldChangeFunc']=$this->P['fieldChangeFunc'];
+			$P2['params']['allowedExtensions']=$this->P['params']['allowedExtensions'];
+			$P2['params']['blindLinkOptions']=$this->P['params']['blindLinkOptions'];
 			$addPassOnParams.=t3lib_div::implodeArrayForUrl('P',$P2);
 
 			$JScode.='
@@ -1162,6 +1164,7 @@ class browse_links {
 
 			// Initializing the action value, possibly removing blinded values etc:
 		$allowedItems = array_diff(explode(',','page,file,url,mail,spec'),t3lib_div::trimExplode(',',$this->thisConfig['blindLinkOptions'],1));
+		$allowedItems = array_diff($allowedItems, t3lib_div::trimExplode(',',$this->P['params']['blindLinkOptions']));
 
 			//call hook for extra options
 		foreach($this->hookObjects as $hookObject) {
@@ -1272,7 +1275,7 @@ class browse_links {
 				}
 
 				list(,,$specUid) = explode('_',$this->PM);
-				$files = $this->expandFolder($foldertree->specUIDmap[$specUid]);
+				$files = $this->expandFolder($foldertree->specUIDmap[$specUid], $this->P['params']['allowedExtensions']);
 
 				$content.= '
 
