@@ -1,0 +1,68 @@
+
+Licence of t3editor
+===================
+
+/***************************************************************
+*  Copyright notice
+*
+*  (c) 2007 Tobias Liebig <mail_typo3@etobi.de>
+*  All rights reserved
+*
+*  This script is part of the TYPO3 project. The TYPO3 project is
+*  free software; you can redistribute it and/or modify
+*  it under the terms of the GNU General Public License as published by
+*  the Free Software Foundation; either version 2 of the License, or
+*  (at your option) any later version.
+*
+*  The GNU General Public License can be found at
+*  http://www.gnu.org/copyleft/gpl.html.
+*  A copy is found in the textfile GPL.txt and important notices to the license
+*  from the author is found in LICENSE.txt distributed with these scripts.
+*
+*
+*  This script is distributed in the hope that it will be useful,
+*  but WITHOUT ANY WARRANTY; without even the implied warranty of
+*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+*  GNU General Public License for more details.
+*
+*  This copyright notice MUST APPEAR in all copies of the script!
+***************************************************************/
+
+t3editor is written by Tobias Liebig.
+
+Many thanks for help on the conceptual work, testing, feedback and providing several patches 
+to Vitaly Dutchak, Thomas Hempel and all the other people.
+
+t3editor is based on Codemirror by Marijn Haverbeke http://marijn.haverbeke.de/codemirror/
+Thanks Marjin! 
+Codemirror uses MochiKit. See http://mochikit.com/ for licence.
+
+
+This is the original licence: 
+ 
+/***************************************************************
+ Copyright (c) 2007 Marijn Haverbeke
+
+ This software is provided 'as-is', without any express or implied
+ warranty. In no event will the authors be held liable for any
+ damages arising from the use of this software.
+
+ Permission is granted to anyone to use this software for any
+ purpose, including commercial applications, and to alter it and
+ redistribute it freely, subject to the following restrictions:
+
+ 1. The origin of this software must not be misrepresented; you must
+    not claim that you wrote the original software. If you use this
+    software in a product, an acknowledgment in the product
+    documentation would be appreciated but is not required.
+
+ 2. Altered source versions must be plainly marked as such, and must
+    not be misrepresented as being the original software.
+
+ 3. This notice may not be removed or altered from any source
+    distribution.
+
+ Marijn Haverbeke
+ marijnh at gmail
+***************************************************************/
+
