@@ -1,3 +1,7 @@
+2007-11-15  Ingmar Schlecht  <ingmar@typo3.org>
+
+	* Bugfix #5683: processing of label field in backend (Thanks to Ralf Hettinger)
+
 2007-11-15  Thomas Hempel <thomas@typo3-unleashed.net>
 
 	* added new installer (ALPHA) code in typo3/sysext/install

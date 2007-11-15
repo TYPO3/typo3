@@ -1886,7 +1886,7 @@ class t3lib_BEfunc	{
 			} else {
 
 					// No userFunc: Build label
-				$t = $row[$TCA[$table]['ctrl']['label']];
+				$t = t3lib_BEfunc::getProcessedValue($table,$TCA[$table]['ctrl']['label'],$row[$TCA[$table]['ctrl']['label']],0,0,false,$row['uid'],$forceResult);
 				if ($TCA[$table]['ctrl']['label_alt'] && ($TCA[$table]['ctrl']['label_alt_force'] || !strcmp($t,'')))	{
 					$altFields=t3lib_div::trimExplode(',',$TCA[$table]['ctrl']['label_alt'],1);
 					$tA=array();
@@ -1894,7 +1894,7 @@ class t3lib_BEfunc	{
 					foreach ($altFields as $fN)	{
 						$t = trim(strip_tags($row[$fN]));
 						if (strcmp($t,''))	{
-							$t = t3lib_BEfunc::getProcessedValue($table,$fN,$t);
+							$t = t3lib_BEfunc::getProcessedValue($table,$fN,$t,0,0,false,$row['uid']);
 							if (!$TCA[$table]['ctrl']['label_alt_force'])	{
 								break;
 							}
