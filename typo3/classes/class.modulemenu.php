@@ -490,8 +490,17 @@ class ModuleMenu {
 	public function renderCacheActions() {
 		$renderedCacheActions = array('<ul id="cache-actions">');
 
-		foreach($this->cacheActions as $cacheAction) {
-			$renderedCacheActions[] = '<li><a href="'.htmlspecialchars($cacheAction['href']).'">'.$cacheAction['icon'].' '.$cacheAction['title'].'</a></li>';
+		foreach($this->cacheActions as $actionKey => $cacheAction) {
+			$js = 
+				'top.origIcon = $$(\'#action-'.$actionKey.' img\')[0].src;'.
+				'$$(\'#action-'.$actionKey.' img\')[0].src = \'gfx/spinner.gif\';'.
+				'new Ajax.Request(\''.htmlspecialchars($cacheAction['href']).'\', { '.
+					'method: \'get\', '.
+					'onComplete: function() {$$(\'#action-'.$actionKey.' img\')[0].src = top.origIcon;}'.
+				'}); '.
+				'return false;';
+
+			$renderedCacheActions[] = '<li id="action-'.$actionKey.'"><a onclick="'.$js.'" href="#'.htmlspecialchars($cacheAction['href']).'">'.$cacheAction['icon'].' '.$cacheAction['title'].'</a></li>';
 		}
 
 		$renderedCacheActions[] = '</ul>';
@@ -512,7 +521,7 @@ class ModuleMenu {
 			$this->cacheActions[] = array(
 				'id'    => 'temp_CACHED',
 				'title' => $title,
-				'href'  => $this->backPath.'tce_db.php?vC='.$GLOBALS['BE_USER']->veriCode().'&redirect='.rawurlencode(t3lib_div::getIndpEnv('TYPO3_REQUEST_SCRIPT')).'&cacheCmd=temp_CACHED',
+				'href'  => $this->backPath.'tce_db.php?vC='.$GLOBALS['BE_USER']->veriCode().'&cacheCmd=temp_CACHED',
 				'icon'  => '<img'.t3lib_iconWorks::skinImg($this->backPath, 'gfx/clear_cache_files_in_typo3c.gif', 'width="21" height="18"').' title="'.htmlspecialchars($title).'" alt="" />'
 			);
 		}
@@ -522,7 +531,7 @@ class ModuleMenu {
 		$this->cacheActions[] = array(
 			'id'    => 'all',
 			'title' => $title,
-			'href'  => $this->backPath.'tce_db.php?vC='.$GLOBALS['BE_USER']->veriCode().'&redirect='.rawurlencode(t3lib_div::getIndpEnv('TYPO3_REQUEST_SCRIPT')).'&cacheCmd=all',
+			'href'  => $this->backPath.'tce_db.php?vC='.$GLOBALS['BE_USER']->veriCode().'&cacheCmd=all',
 			'icon'  => '<img'.t3lib_iconWorks::skinImg($this->backPath, 'gfx/clear_all_cache.gif', 'width="21" height="18"').' title="'.htmlspecialchars($title).'" alt="" />'
 		);
 	}
