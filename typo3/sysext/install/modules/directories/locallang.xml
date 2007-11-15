@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+	<meta type="array">
+		<description>Directory Module</description>
+		<type>installer-module</type>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index="module_directories_title">Directories</label>
+			<label index="module_directories_description">Checks directory structure.</label>
+			
+			<label index="im_directories_typo3temp">This folder is used by both the frontend (FE) and backend (BE) interface for image manipulated files.</label>
+			<label index="im_directories_typo3temp_sub">This folder is part of the typo3temp/ section. It needs to be writable, too.</label>
+			<label index="im_directories_typo3conf">This directory contains the local configuration files of your website. TYPO3 must be able to write to these configuration files during setup and when the Extension Manager (EM) installs extensions.</label>
+			<label index="im_directories_typo3conf_ext">Location for local extensions. Must be writable if the Extension Manager is supposed to install extensions for this website.</label>
+			<label index="im_directories_typo3conf_l10n">Location for translations. Must be writable if the Extension Manager is supposed to install translations for extensions.</label>
+			<label index="im_directories_typo3_ext">Location for global extensions. Must be writable if the Extension Manager is supposed to install extensions globally in the source.</label>			
+			<label index="im_directories_uploads">Location for uploaded files from RTE + in the subdirs for tables.</label>
+			<label index="im_directories_uploads_pics">Typical location for uploaded files (images especially).</label>
+			<label index="im_directories_uploads_media">Typical location for uploaded files (non-images especially).</label>
+			<label index="im_directories_uploads_tf">Typical location for uploaded files (TS template resources).</label>
+			<label index="im_directories_fileadmin">Location for local files such as templates, independent uploads etc.</label>
+			<label index="im_directories_fileadmin_tmp">Typical temporary location for default upload of files by administrators.</label>
+			
+			<label index="im_directories_directoryNotExisting">directory "%s" does not exist and could not be created. Please create it manually.</label>
+			<label index="im_directories_fullPath">Full path: %s</label>
+			<label index="im_directories_writeable">Directory %s is writeable!</label>
+			<label index="im_directories_not_writeable">Directory %s is not writeable!</label>
+			<label index="im_directories_dirNotNeededToExist1">This directory does not necessarily have to exist but if it does it must be writable.</label>
+			<label index="im_directories_dirNotNeededToExist2">This directory does not necessarily have to exist. If it does, it can be writable or not.</label>
+			<label index="im_directories_dirMustBeWriteable">The directory %s must be writable!</label>
+			<label index="im_directories_dirCanBeWriteable">The directory %s does not necessarily have to be writable.</label>
+		</languageKey>
+	</data>
+</T3locallang>

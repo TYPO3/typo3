@@ -1,0 +1,110 @@
+h1	{
+	color: gray;
+	text-align: left;
+	font-size: 3em;
+}
+
+h2	{
+	text-align: left;
+	color: gray;
+	font-size: 2em;
+	background: none;
+}
+
+h3	{
+	background: none;
+	color: #404040;
+	border-bottom: 1px #c0c0c0 dashed;
+}
+
+input, select	{
+	background: #fff url(../../../imgs/icons/bg_input.gif) no-repeat scroll left top;
+	border: 1px solid #aaa;
+	margin-top: 2px;
+	padding:3px;
+}
+
+.categoryTreeContainer	{
+	position: fixed;
+	top: 5px;
+	left: 5px;
+	width: 240px;
+	padding: 5px;
+	border: 1px gray solid;
+	background-color: white;
+}
+
+#collapseExpandToggle	{
+	background-image: url(../../../imgs/icons/expandall.png);
+	background-repeat: no-repeat;
+	background-position: left center;
+	padding-left: 20px;
+	margin: 5px 0;
+	text-decoration: none;
+	border-top: 1px #f0f0f0 solid;
+	display: block;
+}
+
+#treeFilter	{
+	background: url(search_bubble.png) no-repeat top left;
+	border: none;
+	
+	height: 30px;
+	width: 240px;
+	
+	margin-bottom: 2px;
+	padding: 8px 17px 8px 30px;
+	
+	text-align: left;
+}
+
+.categoryTree	{
+	padding: 0;
+	list-style-type: none;
+}
+
+.categoryTree img	{
+	padding: 2px 3px 0px 2px;
+}
+
+.help_container	{
+	border-bottom: 3px gray solid;
+	width: 100%;
+	opacity: 0.9;
+	background-color: yellow;
+	padding: 5px;
+	font-size: 1.2em;
+	position: absolute;
+}
+
+#moduleContent	{
+	position: absolute;
+	left: 270px;
+	
+	opacity: 1.0;
+}
+.formElementCheckbox	{
+	display: inline;
+	margin-right: 5px;
+}
+
+.category_about	{
+	background: #c0c0c0 url(../../../imgs/icons/bg_about.png) repeat-y top left;
+	border: 4px white solid;
+	font-size: 1.4em;
+	height: 128px;
+	padding: 5px;
+}
+
+.category_about img	{
+	float: left;
+	margin: 0 5px 0 0;
+}
+
+.italic	{
+	font-style: italic;
+}
+
+.description	{
+	margin: 5px;
+}

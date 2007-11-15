@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+	<meta type="array">
+		<description>Setup Module</description>
+		<type>installer-module</type>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index="module_setup_title">Setup</label>
+			<label index="module_setup_description">This is the the central point of the TYPO3 setup center.</label>
+			
+			<label index="label_value_modified">%s modfied (new value: %s)</label>
+			<label index="label_path">path:</label>
+			<label index="label_default">default value:</label>
+			
+			<label index="msg_searchResultMessage">&lt;strong&gt;%d&lt;/strong&gt; results found for "%s"</label>
+		</languageKey>
+	</data>
+</T3locallang>

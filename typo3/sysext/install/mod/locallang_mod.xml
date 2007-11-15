@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+	<meta type="array">
+		<description>Installer</description>
+		<type>module</type>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index="mlang_labels_tablabel">Setup Center</label>
+			<label index="mlang_labels_tabdescr">Provides a simple link to the Setup Center. Notice the Install Tool (in typo3/install/) must be enabled.&lt;br /&gt;&lt;em&gt;Access for 'admin' users only!&lt;/em&gt;</label>
+			<label index="mlang_tabs_tab">Setup</label>
+
+			<!-- ERRORS and WARNINGS -->
+			<label index="msg_error_occured">An error occured. Please see details:</label>
+			
+			<label index="msg_error_nomodregister">No module register was found.</label>
+			<label index="msg_error_modulenotloaded">The requested module "%s" could not be loaded.</label>
+			<label index="msg_error_modulenotfound">The requested module "%s" was not found.</label>
+			<label index="msg_error_methodnotfound">The requested method "%s" was not found in module "%s".</label>
+			<label index="msg_error_nomoduleconfig">No config file was found for module "%s".</label>
+			<label index="msg_error_noclassfile">No class-file was found in %s for module "%s".</label>
+			<label index="msg_warning_nomaincat">No main category named "%s" was found.</label>
+			<label index="msg_warning_nosubcat">No sub category named "%s" was found. Using data from main category.</label>
+
+			<label index="msg_error_noallowupdate_flag">-&gt;allowUpdateLocalConf flag in the install object is not set and therefore 'localconf.php' cannot be altered.</label>
+			<label index="msg_error_filenotwritable">%s is not writable! Maybe a write access problem?</label>
+			<label index="msg_error_filenotmatch">'%s' was NOT written properly (written content didn't match file content) - maybe a disk space problem?</label>
+			<label index="msg_error_filenotcopy">%s could not be replaced by %s - maybe a write access problem?</label>
+			
+			<label index="no_return_value">The module "%s" didn't returned any content!</label>
+			<label index="no_method">No rendermethod was found for type "%s"</label>
+			<label index="no_data">There was nothing found for output</label>
+			<label index="no_image">No image found</label>
+			
+			<label index="msg_error_login_not_sucessful">Login was not sucessful</label>
+			<label index="msg_error_login_not_sucessful_message">The submitted password was not correct. Your md5 checksum is "%s"</label>
+			
+			<label index="login_emailwarning_true_subject">Install Tool Login at "%s"</label>
+			<label index="login_emailwarning_true_message">There has been a Install Tool login at TYPO3 site "%s" (%s) from remote address "%s" (%s).</label>
+			<label index="login_emailwarning_false_subject">Install Tool Login ATTEMPT at "%s"</label>
+			<label index="login_emailwarning_false_message">There has been a Install Tool login attempt at TYPO3 site "%s" (%s).
+Password tried was "%s"
+REMOTE_ADDR was "%s" (%s)</label>
+			
+			<!-- LABELS -->
+			<label index="label_true">OK</label>
+			<label index="label_false">Problem</label>
+			<label index="label_help">Help</label>
+			<label index="label_save">Save options</label>
+			
+			<label index="label_expandAll">expand all</label>
+			<label index="label_collapseAll">collapse all</label>
+	
+			<label index="label_login">Login</label>
+			<label index="label_setup_password">Enter the Install Tool Password</label>
+			
+			<label index="label_localconfwritten">Configuration sucessfully written to %s</label>
+			
+			<label index="label_subsectionsfound">The following subsections where found.</label>
+
+			<label index="label_deliverable_options">Settings</label>
+			<label index="label_deliverable_methods">Methods</label>
+			<label index="label_deliverable_checks">Checks</label>
+			
+			<label index="label_section">You are in section:</label>
+			
+			<label index="label_category_database">Database</label>
+			<label index="label_category_server">Server</label>
+			<label index="label_category_gfx">Graphics</label>
+			<label index="label_category_system">System</label>
+
+			<label index="label_subcategory_connection">Connection</label>
+			<label index="label_subcategory_cleanup">Clean Up</label>
+			<label index="label_subcategory_php">PHP</label>
+			<label index="label_subcategory_directories">Directories</label>
+			<label index="label_subcategory_backend">Backend</label>
+			<label index="label_subcategory_frontend">Frontend</label>
+			<label index="label_subcategory_general">General</label>
+			<label index="label_subcategory_gd">GD</label>
+			<label index="label_subcategory_igm">Image- GrapicsMagick</label>
+			<label index="label_subcategory_quality">Quality</label>
+			<label index="label_subcategory_development">Development</label>
+			
+			<!-- DESCRIPTIONS -->
+			<label index="descr_database">You are in section "Database". Here you can change and check all settings concerning your database.</label>
+			<label index="descr_server">You are in section "Server".</label>
+			<label index="descr_system">You are in section "System".</label>
+			
+			<!-- MESSAGES -->
+			<label index="msg_setup_firstcall">SECURITY:
+Make sure to protect the Install Tool with another password than "joh316".
+Better you remove the file "ENABLE_INSTALL_TOOL" in typo3conf/ directory.
+
+BTW: This Install Tool will only work if cookies are accepted by your web browser. If this dialog pops up over and over again you didn't enable cookies.
+			</label>
+			<label index="msg_login_passwordhint">The Install Tool Password is not the admin password of TYPO3.
+If you don't know the current password, you can set a new one by setting the value of $TYPO3_CONF_VARS['BE']['installToolPassword'] in typo3conf/localconf.php to the md5() hash value of the password you desire.
+			</label>			
+		</languageKey>
+	</data>
+</T3locallang>

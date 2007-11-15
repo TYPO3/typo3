@@ -1,0 +1,99 @@
+<html>
+	<head>
+		<title>TYPO3 Install - ###STEP###</title>
+		<style media="screen">
+h1	{
+	color: gray;
+	text-align: left;
+	font-size: 3em;
+}
+
+h2	{
+	text-align: left;
+	color: gray;
+	font-size: 2em;
+	background: none;
+}
+
+h3	{
+	background: none;
+	color: #404040;
+	border-bottom: 1px #c0c0c0 dashed;
+	margin: 10px 0 0 0;
+}
+
+
+#outer-block	{
+	position: relative;
+	left: 50%;
+	width: 800px;
+	border: 1px red solid;
+	margin: 20px 0 0 -400px;
+	padding: 5px 5px 30px 5px;
+}
+
+#progressbar	{
+	height: 15px;
+	width: 788px;
+	position: relative;
+	bottom: -20px;
+	left: 5px;
+	margin: 0 0 0 -370px;
+	background: #fff;
+	border: 1px solid silver;
+	margin: 0;
+	padding: 0;
+}
+
+#progressbar div	{
+	height: 11px;
+	margin: 2px;
+	padding: 0;
+}
+
+#progressbar div.mandatory	{
+	background: #ff9900;
+}
+
+#progressbar div.optional	{
+	background: #ffff00;
+}
+
+.error-header	{
+	margin-top: 10px;
+	color: red;
+	font-weight: bold;
+}
+
+.error	{
+	color: red;
+}
+
+.help_container	{
+	border-bottom: 3px gray solid;
+	opacity: 0.9;
+	background-color: yellow;
+	padding: 5px;
+	font-size: 1.2em;
+	position: absolute;
+}
+		</style>
+		
+		<script src="../contrib/prototype/prototype.js"></script>
+		<script src="../contrib/scriptaculous/scriptaculous.js?load=effects"></script>
+		<script src="../sysext/install/mod/scripts.js"></script>
+	</head>
+	<body>
+		<div id="outer-block">
+			<h1>###STEP###</h1>
+			<h2>###MSG_TITLE###</h2>
+			<div class="description">###MSG_DESCRIPTION###</div>
+			
+			###ERRORS_GENERAL###
+			
+			###CONTENT###
+				
+			###PROGRESS###
+		</div>
+	</body>
+</html>
