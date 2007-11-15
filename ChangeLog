@@ -1,5 +1,9 @@
 2007-11-15  Ingmar Schlecht  <ingmar@typo3.org>
 
+	* Release of TYPO3 4.2.0alpha2
+
+2007-11-15  Ingmar Schlecht  <ingmar@typo3.org>
+
 	* Bugfix #5683: processing of label field in backend (Thanks to Ralf Hettinger)
 	* Set left-padding of options in selectorboxes to 22 if an icon is displayed that has a width between 14 and 20 pixels. This was necessary for a good visual impression even if page and content type icon sizes vary.
 	* Made Clear Cache buttons of backend.php AJAX based, showing a nice spinner image during cache clearing
