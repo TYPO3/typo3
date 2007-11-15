@@ -3,6 +3,7 @@
 	* Feature #6712: htmlArea RTE: make hotkeys configurable in PageTSConfig
 	* Feature #6712 continued: htmlArea RTE: adding hotkeys to default configuration settings
 	* Bugfix: htmlArea RTE: Correction to InlineDefault plugin causing frame reload.
+	* Feature #6712 corected: htmlArea RTE: correction to DefaultInline plugin and enhanced API
 
 2007-11-13  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 

@@ -81,7 +81,8 @@ DefaultInline = HTMLArea.plugin.extend({
 	 */
 	onButtonPress : function (editor, id, UI, param) {
 			// Could be a button or its hotkey
-		var buttonId = DefaultInline.hotKeyList[id]?DefaultInline.hotKeyList[id]:id;
+		var buttonId = this.translateHotKey(id);
+		buttonId = buttonId ? buttonId : id;
 		editor.focusEditor();
 		try {
 			editor._doc.execCommand(buttonId, UI, param);
@@ -102,7 +103,7 @@ DefaultInline = HTMLArea.plugin.extend({
 		var buttonId, n = buttonList.length, commandState;
 		for (var i = 0; i < n; ++i) {
 			buttonId = buttonList[i][0];
-			if (typeof(editor._toolbarObjects[buttonId]) !== "undefined") {
+			if (this.isButtonInToolbar(buttonId)) {
 				commandState = false;
 				if ((editor._editMode != "textmode")) {
 					try {
@@ -126,12 +127,4 @@ DefaultInline.buttonList = [
 	["Superscript", null],
 	["Underline", null]
 ];
-
-/* The list of hotkeys handled by this plugin */
-DefaultInline.hotKeyList = {
-	b : "Bold",
-	i : "Italic",
-	s : "StrikeThrough",
-	u : "Underline"
-};
 

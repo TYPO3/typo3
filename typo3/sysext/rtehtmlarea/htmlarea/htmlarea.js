@@ -2362,14 +2362,14 @@ HTMLArea._editorEvent = function(ev) {
 									}
 									break;
 								default:
-									if (editor._toolbarObjects[editor.config.hotKeyList[key]]) {
+									if (editor._toolbarObjects[editor.config.hotKeyList[key].cmd]) {
 										cmd = editor.config.hotKeyList[key].cmd;
 										if(cmd == "FormatBlock") value = (HTMLArea.is_ie || HTMLArea.is_safari) ? "<p>" : "p";
 									}
 							}
 						}
 				}
-				if(cmd) {
+				if(cmd && !editor.config.hotKeyList[key].action) {
 					editor.execCommand(cmd, false, value);
 					HTMLArea._stopEvent(ev);
 					return false;
@@ -3347,7 +3347,8 @@ HTMLArea.plugin = HTMLArea.Base.extend({
 		var toolbar = this.editorConfiguration.toolbar;
 		var n = toolbar.length;
 		for ( var i = 0; i < n; ++i ) {
-			if (toolbar[i].join(",").indexOf(buttonId) != -1) {
+			var buttonInToolbar = new RegExp( "^(" + toolbar[i].join("|") + ")$", "i");
+			if (buttonInToolbar.test(buttonId)) {
 				return true;
 			}
 		}
@@ -3379,6 +3380,7 @@ HTMLArea.plugin = HTMLArea.Base.extend({
 					if (buttonConfiguration.hotKey) {
 						var hotKeyConfiguration = {
 							id	: buttonConfiguration.hotKey,
+							cmd	: buttonConfiguration.id,
 							action	: hotKeyAction
 						};
 						return this.registerHotKey(hotKeyConfiguration);
@@ -3456,6 +3458,25 @@ HTMLArea.plugin = HTMLArea.Base.extend({
 			this.appendToLog("registerHotKey", "Function " + hotKeyConfiguration.action + " was not defined when registering hotkey " + hotKeyConfiguration.id);
 			return false;
 		}
+	},
+	
+	/**
+	 * Returns the buttonId corresponding to the hotkey, if any
+	 *
+	 * @param	string		key: the hotkey
+	 *
+	 * @return	string		the buttonId or ""
+	 */
+	translateHotKey : function(key) {
+		if (typeof(this.editorConfiguration.hotKeyList[key]) !== "undefined") {
+			var buttonId = this.editorConfiguration.hotKeyList[key].cmd;
+			if (typeof(buttonId) !== "undefined") {
+				return buttonId;
+			} else {
+				return "";
+			}
+		}
+		return "";
 	},
 	
 	/**
