@@ -1,4 +1,5 @@
 2007-11-15  Thomas Hempel <thomas@typo3-unleashed.net>
+	* moved typo3/sysext/install to typo3/sysext/install_old
 	* added side-by-side patch to prepare core for new installer code (makes it possible to run old and new installer side by side)
 
 2007-11-15  Jeff Segars  <jeff@webempoweredchurch.org>
