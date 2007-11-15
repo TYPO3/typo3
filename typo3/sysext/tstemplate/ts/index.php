@@ -117,6 +117,19 @@ class SC_mod_web_ts_index extends t3lib_SCbase {
 		</script>
 		';
 
+			/* <beta-code TYPO3 4.2-dev> */
+
+				// include t3editor if it's loaded
+			if(t3lib_extMgm::isLoaded('t3editor')) {
+				$GLOBALS['T3_VAR']['t3editorObj'] = t3lib_div::getUserObj('EXT:t3editor/class.tx_t3editor.php:&tx_t3editor');
+
+				if(is_object($GLOBALS['T3_VAR']['t3editorObj'])) {
+					$this->doc->JScode.= $GLOBALS['T3_VAR']['t3editorObj']->getCodeJS();
+				}
+			}
+
+			/* </beta-code> */
+
 			$this->doc->postCode='
 		<script language="javascript" type="text/javascript">
 			script_ended = 1;

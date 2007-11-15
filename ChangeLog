@@ -1,4 +1,5 @@
 2007-11-15  Thomas Hempel <thomas@typo3-unleashed.net>
+
 	* added new installer (ALPHA) code in typo3/sysext/install
 	* moved typo3/sysext/install to typo3/sysext/install_old
 	* added side-by-side patch to prepare core for new installer code (makes it possible to run old and new installer side by side)
@@ -16,6 +17,7 @@
 	* enabled requestUpdate for rte_enabled
 	* added feature #6721: add the workspace selector to the cleaner backend toolbar
 	* added feature #6442: Hook in browse_links request (for linking to records)
+	* added beta glue code for t3editor
 
 2007-11-14  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 

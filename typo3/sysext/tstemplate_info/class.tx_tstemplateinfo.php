@@ -31,6 +31,11 @@
 require_once(PATH_t3lib."class.t3lib_extobjbase.php");
 
 class tx_tstemplateinfo extends t3lib_extobjbase {
+
+	/* <beta-code TYPO3 4.2-dev> */
+	private $tce_processed = false;  // indicator for t3editor, whether data is stored
+	/* </beta-code> */
+
 	function modMenu()	{
 		global $LANG;
 
@@ -234,6 +239,10 @@ class tx_tstemplateinfo extends t3lib_extobjbase {
 						// Clear the cache (note: currently only admin-users can clear the cache in tce_main.php)
 					$tce->clear_cacheCmd("all");
 
+					/* <beta-code TYPO3 4.2-dev> */
+					$this->tce_processed = true;
+					/* </beta-code> */
+
 						// re-read the template ...
 					$this->initialize_editor($this->pObj->id,$template_uid);
 				}
@@ -264,6 +273,27 @@ class tx_tstemplateinfo extends t3lib_extobjbase {
 					}
 				}
 			}
+
+			/* <beta-code TYPO3 4.2-dev> */
+
+				// if TSEditor is enabled and this POST request is an Ajax-Request
+			if(is_object($GLOBALS['T3_VAR']['t3editorObj'])
+			&& $GLOBALS['T3_VAR']['t3editorObj']->isEnabled
+			&& t3lib_div::_POST('submitAjax')) {
+
+				$GLOBALS['T3_VAR']['t3editorObj']->setBEUCdisableT3Editor(false);
+
+					// abort request here and return message
+					// @TODO: Json or other response here!?
+				if ($this->tce_processed) {
+					echo "OK";
+				} else {
+					echo "ERROR";
+				}
+				exit();
+			}
+
+			/* </beta-code> */
 
 			$theOutput.=$this->pObj->doc->spacer(5);
 			$theOutput.=$this->pObj->doc->section("Template information:",'<img src="'.$BACK_PATH.t3lib_iconWorks::getIcon("sys_template",$tplRow).'" width=18 height=16 align=top><b>'.htmlspecialchars($tplRow["title"]).'</b>'.htmlspecialchars(trim($tplRow["sitetitle"])?' - ('.$tplRow["sitetitle"].')':''),0,1);
@@ -368,7 +398,29 @@ class tx_tstemplateinfo extends t3lib_extobjbase {
 				}
 			}
 			if ($e["config"])	{
+
+				/* <beta-code TYPO3 4.2-dev> */
+
+				if(is_object($GLOBALS['T3_VAR']['t3editorObj'])
+				&& $GLOBALS['T3_VAR']['t3editorObj']->isEnabled) {
+					$outCode = $GLOBALS['T3_VAR']['t3editorObj']->getCodeEditor(
+						'data[config]',	// name
+						'fixed-font',	// class
+						t3lib_div::formatForTextarea($tplRow["config"]),	// content
+						'rows="'.$numberOfRows.'" wrap="off" '.$this->pObj->doc->formWidthText(48,"width:98%;height:60%","off"),
+						'Template: '.htmlspecialchars($tplRow["title"]).': Setup'
+					);
+				} else {
+					$outCode = '<textarea name="data[config]" rows="'.$numberOfRows.'" wrap="off" class="fixed-font enable-tab"'.$this->pObj->doc->formWidthText(48,"width:98%;height:70%","off").' class="fixed-font">'.t3lib_div::formatForTextarea($tplRow["config"]).'</textarea>';
+				}
+
+				/* </beta-code> */
+
+				/*
+				<original-code>
 				$outCode='<textarea name="data[config]" rows="'.$numberOfRows.'" wrap="off" class="fixed-font enable-tab"'.$this->pObj->doc->formWidthText(48,"width:98%;height:70%","off").' class="fixed-font">'.t3lib_div::formatForTextarea($tplRow["config"]).'</textarea>';
+				</original-code>
+				*/
 
 				if (t3lib_extMgm::isLoaded("tsconfig_help"))	{
 					$url=$BACK_PATH."wizard_tsconfig.php?mode=tsref";
