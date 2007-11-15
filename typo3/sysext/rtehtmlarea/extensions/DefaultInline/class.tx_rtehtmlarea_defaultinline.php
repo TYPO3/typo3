@@ -69,6 +69,26 @@ class tx_rtehtmlarea_defaultinline extends tx_rtehtmlareaapi {
 		$registerRTEinJavascriptString = '';
 		return $registerRTEinJavascriptString;
 	}
+	
+	/**
+	 * Return tranformed content
+	 *
+	 * @param	string		$content: The content that is about to be sent to the RTE
+	 *
+	 * @return 	string		the transformed content
+	 */
+	public function transformContent($content) {
+		
+			// Change the strong and em tags for gecko browsers
+		if ($this->htmlAreaRTE->client['BROWSER'] == 'gecko') {
+				// change <strong> to <b>
+			$content = preg_replace('/<(\/?)strong/i', "<$1b", $content);
+				// change <em> to <i>
+			$content = preg_replace('/<(\/?)em([^b>]*>)/i', "<$1i$2", $content);
+		}
+		
+		return $content;
+	}
 
 } // end of class
 

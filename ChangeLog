@@ -1,3 +1,7 @@
+2007-11-15  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
+
+	* Feature #6657 revisited: htmlArea RTE: remove em and strong remap from main script
+
 2007-11-15  Ingo Renner	<ingo@typo3.org>
 
 	* enabled requestUpdate for rte_enabled

@@ -579,12 +579,10 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 				// Transform value:
 			$value = $this->transformContent('rte',$PA['itemFormElValue'],$table,$field,$row,$specConf,$thisConfig,$RTErelPath,$thePidValue);
 			
-				// Change some tags
-			if ($this->client['BROWSER'] == 'gecko') {
-					// change <strong> to <b>
-				$value = preg_replace('/<(\/?)strong/i', "<$1b", $value);
-					// change <em> to <i>
-				$value = preg_replace('/<(\/?)em([^b>]*>)/i', "<$1i$2", $value);
+			foreach ($this->registeredPlugins as $pluginId => $plugin) {
+				if ($this->isPluginEnabled($pluginId) && method_exists($plugin, "transformContent")) {
+					$value = $plugin->transformContent($value);
+				}
 			}
 			if ($this->client['BROWSER'] == 'msie') {
 					// change <abbr> to <acronym>
