@@ -486,7 +486,7 @@ if (TYPO3_MODE=='BE')	{
 	$TCA['pages']['types'] = array (
 			// standard
 		'1' => array('showitem' =>
-				'doktype;;2;button;1-1-1, hidden, nav_hide, title;;3;;2-2-2, subtitle, 
+				'doktype;;2;button;1-1-1, hidden, nav_hide, title;;3;;2-2-2, subtitle,
 			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.access,
 				starttime, endtime, fe_group, extendToSubpages,
 			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.options,
@@ -637,7 +637,7 @@ $TCA['tt_content'] = array (
 		),
 		'mainpalette' => '1,15',
 		'thumbnail' => 'image',
-		'requestUpdate' => 'list_type',
+		'requestUpdate' => 'list_type,rte_enabled',
 		'dynamicConfigFile' => t3lib_extMgm::extPath($_EXTKEY).'tbl_tt_content.php'
 	)
 );

@@ -1,3 +1,7 @@
+2007-11-15  Ingo Renner	<ingo@typo3.org>
+
+	* enabled requestUpdate for rte_enabled
+
 2007-11-14  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
 	* Feature #6712: htmlArea RTE: make hotkeys configurable in PageTSConfig
