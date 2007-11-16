@@ -1114,9 +1114,12 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 
 					// GOING from database to Rich Text Editor:
 				case 'rte':
-						// Transform bold/italics tags to strong/em
-					if (isset($keepTags['b']))	{$keepTags['b']=array('remap'=>'STRONG');}
-					if (isset($keepTags['i']))	{$keepTags['i']=array('remap'=>'EM');}
+					
+					if (!isset($this->procOptions['transformBoldAndItalicTags']) || $this->procOptions['transformBoldAndItalicTags']) {
+							// Transform bold/italics tags to strong/em
+						if (isset($keepTags['b']))	{$keepTags['b']=array('remap'=>'STRONG');}
+						if (isset($keepTags['i']))	{$keepTags['i']=array('remap'=>'EM');}
+					}
 
 						// Transforming keepTags array so it can be understood by the HTMLcleaner function. This basically converts the format of the array from TypoScript (having .'s) to plain multi-dimensional array.
 					list($keepTags) = $this->HTMLparserConfig($this->procOptions['HTMLparser_rte.'],$keepTags);
@@ -1124,9 +1127,12 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 
 					// GOING from RTE to database:
 				case 'db':
-						// Transform strong/em back to bold/italics:
-					if (isset($keepTags['strong']))	{ $keepTags['strong']=array('remap'=>'b'); }
-					if (isset($keepTags['em']))		{ $keepTags['em']=array('remap'=>'i'); }
+					
+					if (!isset($this->procOptions['transformBoldAndItalicTags']) || $this->procOptions['transformBoldAndItalicTags']) {
+							// Transform strong/em back to bold/italics:
+						if (isset($keepTags['strong']))	{ $keepTags['strong']=array('remap'=>'b'); }
+						if (isset($keepTags['em']))	{ $keepTags['em']=array('remap'=>'i'); }
+					}
 
 						// Setting up span tags if they are allowed:
 					if (isset($keepTags['span']))		{
