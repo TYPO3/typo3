@@ -45,7 +45,7 @@ interface t3lib_localRecordListGetTableHook {
 	 * @param	localRecordList		parent localRecordList object
 	 * @return	void
 	 */
-	public function getDBlistQuery($table, $uid, $additionalWhereClause, $selectedFieldsList, $parentObject);
+	public function getDBlistQuery($table, $uid, &$additionalWhereClause, &$selectedFieldsList, &$parentObject);
 
 }
 
