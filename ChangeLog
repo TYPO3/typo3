@@ -1,3 +1,7 @@
+2007-11-16  Ingo Renner	<ingo@typo3.org>
+
+	* added feature #6545: Hook Request: db_list
+
 2007-11-15  Ingmar Schlecht  <ingmar@typo3.org>
 
 	* Release of TYPO3 4.2.0alpha2

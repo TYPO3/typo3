@@ -306,7 +306,7 @@ class localRecordList extends recordList {
 	 * @return	string		HTML table with the listing for the record.
 	 */
 	function getTable($table,$id,$rowlist)	{
-		global $TCA;
+		global $TCA, $TYPO3_CONF_VARS;
 
 			// Loading all TCA details for this table:
 		t3lib_div::loadTCA($table);
@@ -388,6 +388,19 @@ class localRecordList extends recordList {
 		$selectFields = array_intersect($selectFields,$this->makeFieldList($table,1));		// Making sure that the fields in the field-list ARE in the field-list from TCA!
 		$selFieldList = implode(',',$selectFields);		// implode it into a list of fields for the SQL-statement.
 
+			// DB-List getTable-Hook
+		if(is_array($TYPO3_CONF_VARS['SC_OPTIONS']['typo3/class.db_list_extra.inc']['getTable'])) {
+			foreach($TYPO3_CONF_VARS['SC_OPTIONS']['typo3/class.db_list_extra.inc']['getTable'] as $classData) {
+				$hookObject = &t3lib_div::getUserObj($classData);
+
+				if(!($hookObject instanceof t3lib_localRecordListGetTableHook)) {
+					throw new UnexpectedValueException('$hookObject must implement interface t3lib_localRecordListGetTableHook', 1195114460);
+				}
+
+				$hookObject->getDBlistQuery($table, $id, $addWhere, $selFieldList, $this);
+			}
+		}
+
 			// Create the SQL query for selecting the elements in the listing:
 		$queryParts = $this->makeQueryArray($table, $id,$addWhere,$selFieldList);	// (API function from class.db_list.inc)
 		$this->setTotalItems($queryParts);		// Finding the total amount of records on the page (API function from class.db_list.inc)
@@ -460,10 +473,10 @@ class localRecordList extends recordList {
 				$prevPrevUid = 0;
 				$accRows = array();	// Accumulate rows here
 				while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($result))	{
-					
+
 						// In offline workspace, look for alternative record:
 					t3lib_BEfunc::workspaceOL($table, $row, $GLOBALS['BE_USER']->workspace, TRUE);
-					
+
 					if (is_array($row))	{
 						$accRows[] = $row;
 						$currentIdList[] = $row['uid'];
@@ -520,7 +533,7 @@ class localRecordList extends recordList {
 								foreach($translations as $lRow)	{
 										// In offline workspace, look for alternative record:
 									t3lib_BEfunc::workspaceOL($table, $lRow, $GLOBALS['BE_USER']->workspace);
-									
+
 									if (is_array($lRow) && $GLOBALS['BE_USER']->checkLanguageAccess($lRow[$TCA[$table]['ctrl']['languageField']]))	{
 										$currentIdList[] = $lRow['uid'];
 										$iOut.=$this->renderListRow($table,$lRow,$cc,$titleCol,$thumbsCol,18);
@@ -991,7 +1004,7 @@ class localRecordList extends recordList {
 				$stat.=t3lib_div::callUserFunction($_funcRef,$_params,$this);
 			}
 			$cells[] = $stat;
-		}		
+		}
 
 			// Compile items into a DIV-element:
 		return '
