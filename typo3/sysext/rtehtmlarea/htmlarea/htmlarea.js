@@ -3092,7 +3092,6 @@ HTMLArea.initEditor = function(editorNumber) {
 			config = editor.config;
 
 			config.buttons = RTE["buttons"];
-
 			config.hideTableOperationsInToolbar = RTE["hideTableOperationsInToolbar"] ? RTE["hideTableOperationsInToolbar"] : false;
 			config.disableLayoutFieldsetInTableOperations = RTE["disableLayoutFieldsetInTableOperations"] ? RTE["disableLayoutFieldsetInTableOperations"] : false;
 			config.disableAlignmentFieldsetInTableOperations = RTE["disableAlignmentFieldsetInTableOperations"] ? RTE["disableAlignmentFieldsetInTableOperations"] : false;
@@ -3100,13 +3099,6 @@ HTMLArea.initEditor = function(editorNumber) {
 			config.disableBordersFieldsetInTableOperations = RTE["disableBordersFieldsetInTableOperations"] ? RTE["disableBordersFieldsetInTableOperations"] : false;
 			config.disableColorFieldsetInTableOperations = RTE["disableColorFieldsetInTableOperations"] ? RTE["disableColorFieldsetInTableOperations"] : false;
 			config.disablePCexamples = RTE["disablePCexamples"] ? RTE["disablePCexamples"] : false;
-			
-			for (var plugin in RTE.plugin) {
-				if (RTE.plugin.hasOwnProperty(plugin) && RTE.plugin[plugin]) {
-					editor.registerPlugin(plugin);
-				}
-			}
-			
 			if(RTE["defaultPageStyle"]) config.defaultPageStyle = RTE["defaultPageStyle"];
 			if(RTE["pageStyle"]) config.pageStyle = RTE["pageStyle"];
 			if(RTE["fontname"]) config.FontName = RTE["fontname"];
@@ -3130,7 +3122,13 @@ HTMLArea.initEditor = function(editorNumber) {
 			config.htmlRemoveTagsAndContents = RTE["htmlRemoveTagsAndContents"] ? RTE["htmlRemoveTagsAndContents"] : null;
 			config.htmlRemoveComments = RTE["htmlRemoveComments"] ? true : false;
 			config.classesUrl = RTE["classesUrl"] ? RTE["classesUrl"] : null;
-
+			
+			for (var plugin in RTE.plugin) {
+				if (RTE.plugin.hasOwnProperty(plugin) && RTE.plugin[plugin]) {
+					editor.registerPlugin(plugin);
+				}
+			}
+			
 			editor.onGenerate = HTMLArea.onGenerateHandler(editorNumber);
 
 			editor.generate();
@@ -3562,7 +3560,18 @@ HTMLArea.plugin = HTMLArea.Base.extend({
 	 * @return	boolean		true on success
 	 */
 	getJavascriptFile : function (url) {
-		return HTMLArea._getScript(0, false, url);
+		var script = HTMLArea._getScript(0, false, url);
+		if (script) {
+			try {
+				eval(script);
+				return true;
+			} catch(e) {
+				this.appendToLog("getJavascriptFile", "Error evaluating contents of Javascript file: " + url);
+				return false;
+			}
+		} else {
+			return false;
+		}
 	},
 	
 	/**

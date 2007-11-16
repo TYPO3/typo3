@@ -1,6 +1,7 @@
 2007-11-16  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
 	* Feature #6715: Remapping of b and i tags by RTE transformation made configurable
+	* Feature/bugfix: Change to the initialisation sequence of htmlArea RTE
 
 2007-11-16  Ingo Renner	<ingo@typo3.org>
 
