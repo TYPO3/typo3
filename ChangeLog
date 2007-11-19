@@ -1,3 +1,7 @@
+2007-11-19  Oliver Hader  <oh@inpublica.de>
+
+	* (feature) Added feature #6734: Integrate post processing for links handled by typoLink
+
 2007-11-16  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
 	* Feature #6715: Remapping of b and i tags by RTE transformation made configurable

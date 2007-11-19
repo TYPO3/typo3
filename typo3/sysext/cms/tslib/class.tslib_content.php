@@ -5326,6 +5326,19 @@ class tslib_cObj {
 				$res = $this->callUserFunction($conf['userFunc'],$conf['userFunc.'],$finalTagParts);
 			}
 
+				// Hook: Call post processing function for link rendering:
+			if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['typoLink_PostProc']) && is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['typoLink_PostProc'])) {
+				$_params = array(
+					'conf' => &$conf,
+					'linktxt' => &$linktxt,
+					'finalTag' => &$res,
+					'finalTagParts' => &$finalTagParts,
+				);
+				foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['typoLink_PostProc'] as $_funcRef) {
+					t3lib_div::callUserFunction($_funcRef, $_params, $this);
+				}
+			}
+
 				// If flag "returnLastTypoLinkUrl" set, then just return the latest URL made:
 			if ($conf['returnLast'])	{
 				switch($conf['returnLast'])	{
