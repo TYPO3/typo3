@@ -1,3 +1,7 @@
+2007-11-19  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
+
+	* Feature #6769: Enable htmlArea RTE in Safari
+
 2007-11-16  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
 	* Feature/bugfix: Change to the initialisation sequence of htmlArea RTE

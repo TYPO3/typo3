@@ -55,7 +55,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			),
 			'safari' => array (
 				1 => array (
-					'version' => 312
+					'version' => 523
 				)
 			),
 			'opera' => array (
@@ -72,7 +72,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 	
 		// Hide toolbar buttons not implemented in client browsers
 	var $hideButtonsFromClient = array (
-		'safari'	=>	array('strikethrough', 'line', 'orderedlist', 'unorderedlist'),
+		'safari'	=>	array('paste'),
 		'opera'		=>	array('copy', 'cut', 'paste'),
  		);
 	
@@ -195,13 +195,13 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 		);
 	
 	var $defaultFontSizes_safari = array(
-		'1'	=>	'xx-small',
-		'2'	=>	'x-small',
-		'3'	=>	'small',
-		'4'	=>	'medium',
-		'5'	=>	'large',
-		'6'	=>	'x-large',
-		'7'	=>	'xx-large',
+		'1'	=>	'x-small (10px)',
+		'2'	=>	'small (13px)',
+		'3'	=>	'medium (16px)',
+		'4'	=>	'large (18px)',
+		'5'	=>	'x-large (24px)',
+		'6'	=>	'xx-large (32px)',
+		'7'	=>	'xxx-large (48px)',
 		);
 	
 	var $pluginList = 'TableOperations, ContextMenu, SpellChecker, SelectColor, TYPO3Browsers, InsertSmiley, FindReplace, RemoveFormat, CharacterMap, QuickTag, DynamicCSS, UserElements, Acronym, TYPO3HtmlParser';
@@ -528,7 +528,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 				// Preloading the pageStyle
 			$filename = trim($this->thisConfig['contentCSS']) ? trim($this->thisConfig['contentCSS']) : 'EXT:' . $this->ID . '/htmlarea/plugins/DynamicCSS/dynamiccss.css';
 			$this->TCEform->additionalCode_pre['loadCSS'] = '
-		<link rel="alternate stylesheet" type="text/css" href="' . $this->getFullFileName($filename) . '" />';
+		<link rel="alternate stylesheet" type="text/css" href="' . $this->getFullFileName($filename) . '" title="HTMLArea RTE Content CSS" />';
 
 				// Loading the editor skin
 			$skinFilename = trim($this->thisConfig['skin']) ? trim($this->thisConfig['skin']) : 'EXT:' . $this->ID . '/htmlarea/skins/default/htmlarea.css';
@@ -1211,7 +1211,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 		
 		foreach ($this->defaultFontSizes as $FontSizeItem => $FontSizeLabel) {
 			if ($this->client['BROWSER'] == 'safari') {
-				$HTMLAreaFontSizes[$this->defaultFontSizes_safari[$FontSizeItem]] = $FontSizeLabel;
+				$HTMLAreaFontSizes[$FontSizeItem] = $this->defaultFontSizes_safari[$FontSizeItem];
 			} else {
 				$HTMLAreaFontSizes[$FontSizeItem] = $FontSizeLabel;
 			}
@@ -1220,13 +1220,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			$hideFontSizes =  t3lib_div::trimExplode(',', $this->cleanList($this->thisConfig['hideFontSizes']), 1);
 			foreach ($hideFontSizes as $item)  {
 				if ($HTMLAreaFontSizes[strtolower($item)]) {
-					if ($this->client['BROWSER'] == 'safari') {
-						unset($HTMLAreaFontSizes[$this->defaultFontSizes_safari[strtolower($item)]]);
-					} else {
-						unset($HTMLAreaFontSizes[strtolower($item)]);
-					}
-				} else {
-					
+					unset($HTMLAreaFontSizes[strtolower($item)]);
 				}
 			}
 		}
@@ -1966,7 +1960,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			$bInfo['BROWSER']= 'msie';
 		} elseif (strstr($useragent,'Gecko/'))	{
 			$bInfo['BROWSER']='gecko';
-		} elseif (strstr($useragent,'Safari/') &&  $TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['safari_test'] == 1) {
+		} elseif (strstr($useragent,'Safari/')) {
 			$bInfo['BROWSER']='safari';
 		} elseif (strstr($useragent,'Mozilla/4')) {
 			$bInfo['BROWSER']='net';

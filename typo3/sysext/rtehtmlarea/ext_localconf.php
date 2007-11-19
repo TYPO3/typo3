@@ -77,7 +77,6 @@ $TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['noSpellCheckLanguages'] = $_EXTCONF["noSp
 if ($_EXTCONF['plainImageMaxWidth']) $TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['plainImageMaxWidth'] = intval($_EXTCONF['plainImageMaxWidth']);
 if ($_EXTCONF['plainImageMaxHeight']) $TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['plainImageMaxHeight'] = intval($_EXTCONF['plainImageMaxHeight']);
 
-//$TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['safari_test'] = 0;
 $TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['enableInOpera9'] = $_EXTCONF['enableInOpera9'] ? $_EXTCONF['enableInOpera9'] : 0;
 
 	// Add default RTE transformation configuration

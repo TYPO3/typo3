@@ -92,7 +92,6 @@ HTMLArea.prototype._initEditMode = function () {
  * Get the current selection object
  */
 HTMLArea.prototype._getSelection = function() {
-	if (HTMLArea.is_safari) return window.getSelection();
 	return this._iframe.contentWindow.getSelection();
 };
 
@@ -102,21 +101,21 @@ HTMLArea.prototype._getSelection = function() {
 HTMLArea.prototype._createRange = function(sel) {
 	if (HTMLArea.is_safari) {
 		var range = this._doc.createRange();
-		if (typeof(sel) == "undefined") return range;
-		switch (sel.type) {
-			case "Range": 
-				range.setStart(sel.baseNode,sel.baseOffset);
-				range.setEnd(sel.extentNode,sel.extentOffset);
-				break;
-			case "Caret":
-				range.setStart(sel.baseNode,sel.baseOffset);
-				range.setEnd(sel.baseNode,sel.baseOffset);
-				break;
-			case "None":
-				range.setStart(this._doc.body,0);
-				range.setEnd(this._doc.body,0);
+		if (typeof(sel) == "undefined") {
+			return range;
+		} else if (sel.baseNode == null) {
+			range.setStart(this._doc.body,0);
+			range.setEnd(this._doc.body,0);
+			return range;
+		} else {
+			range.setStart(sel.baseNode, sel.baseOffset);
+			range.setEnd(sel.extentNode, sel.extentOffset);
+			if (range.collapsed != sel.isCollapsed) {
+				range.setStart(sel.extentNode, sel.extentOffset);
+				range.setEnd(sel.baseNode, sel.baseOffset);
+			}
+			return range;
 		}
-		return range;
 	}
 	if (typeof(sel) == "undefined") return this._doc.createRange();
 	try {
@@ -169,9 +168,11 @@ HTMLArea.prototype.selectNodeContents = function(node,pos) {
 HTMLArea.prototype.getSelectedHTML = function() {
 	var sel = this._getSelection();
 	var range = this._createRange(sel);
-	var cloneContents = "";
-	try {cloneContents = range.cloneContents();} catch(e) { }
-	return (cloneContents ? HTMLArea.getHTML(cloneContents,false,this) : "");
+	var cloneContents = range.cloneContents();
+	if (!cloneContents) {
+		cloneContents = this._doc.createDocumentFragment();
+	}
+	return HTMLArea.getHTML(cloneContents, false, this);
 };
 
 /*
@@ -185,14 +186,21 @@ HTMLArea.prototype.getSelectedHTMLContents = function() {
  * Get the deepest node that contains both endpoints of the current selection.
  */
 HTMLArea.prototype.getParentElement = function(sel,range) {
-	if(!sel) var sel = this._getSelection();
-	if (typeof(range) == "undefined") var range = this._createRange(sel);
+	if (!sel) {
+		var sel = this._getSelection();
+	}
+	if (typeof(range) === "undefined") {
+		var range = this._createRange(sel);
+	}
 	try {
 		var p = range.commonAncestorContainer;
-		if(!range.collapsed && range.startContainer == range.endContainer &&
-		    range.startOffset - range.endOffset <= 1 && range.startContainer.hasChildNodes())
+		if (!range.collapsed && range.startContainer == range.endContainer &&
+				range.startOffset - range.endOffset <= 1 && range.startContainer.hasChildNodes()) {
 			p = range.startContainer.childNodes[range.startOffset];
-		while (p.nodeType == 3) {p = p.parentNode;}
+		}
+		while (p.nodeType == 3) {
+			p = p.parentNode;
+		}
 		return p;
 	} catch (e) {
 		return this._doc.body;

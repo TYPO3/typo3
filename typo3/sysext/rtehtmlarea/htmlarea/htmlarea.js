@@ -1031,12 +1031,12 @@ HTMLArea.prototype.initIframe = function() {
 	if (!this._iframe || (!this._iframe.contentWindow && !this._iframe.contentDocument)) {
 		this._initIframeTimer = window.setTimeout("HTMLArea.initIframe(" + this._editorNumber + ");", 50);
 		return false;
-	} else if (this._iframe.contentWindow) {
+	} else if (this._iframe.contentWindow && !HTMLArea.is_safari) {
 		if (!this._iframe.contentWindow.document || !this._iframe.contentWindow.document.documentElement) {
 			this._initIframeTimer = window.setTimeout("HTMLArea.initIframe(" + this._editorNumber + ");", 50);
 			return false;
 		}
-	} else if (!this._iframe.contentDocument.documentElement) {
+	} else if (!this._iframe.contentDocument.documentElement || !this._iframe.contentDocument.body) {
 		this._initIframeTimer = window.setTimeout("HTMLArea.initIframe(" + this._editorNumber + ");", 50);
 		return false;
 	}
@@ -1141,9 +1141,17 @@ HTMLArea.prototype.stylesLoaded = function() {
 
 		// Set contents editable
 	if (docWellFormed) {
-		if (HTMLArea.is_gecko && !HTMLArea.is_safari && !HTMLArea.is_opera && !this._initEditMode()) return false;
-		if (HTMLArea.is_opera) doc.designMode = "on";
-		if (HTMLArea.is_ie || HTMLArea.is_safari) doc.body.contentEditable = true;
+		if (HTMLArea.is_gecko && !HTMLArea.is_safari && !HTMLArea.is_opera && !this._initEditMode()) {
+			return false;
+		}
+		if (HTMLArea.is_ie || HTMLArea.is_safari) {
+			doc.body.contentEditable = true;
+		}
+		if (HTMLArea.is_opera || HTMLArea.is_safari) {
+			doc.designMode = "on";
+			if (this._doc.queryCommandEnabled("insertbronreturn")) this._doc.execCommand("insertbronreturn", false, this.config.disableEnterParagraphs);
+			if (this._doc.queryCommandEnabled("styleWithCSS")) this._doc.execCommand("styleWithCSS", false, this.config.useCSS);
+		}
 		if (HTMLArea.is_ie) doc.selection.empty();
 		this._editMode = "wysiwyg";
 		if (doc.body.contentEditable || doc.designMode == "on") HTMLArea._appendToLog("[HTMLArea::initIframe]: Design mode successfully set.");
@@ -1274,7 +1282,7 @@ HTMLArea.prototype.setMode = function(mode) {
 			}
 			this._textArea.style.display = "none";
 			this._iframe.style.display = "block";
-			if(HTMLArea.is_gecko && !HTMLArea.is_safari && !HTMLArea.is_opera) this._doc.designMode = "on";
+			if (HTMLArea.is_gecko && !HTMLArea.is_safari && !HTMLArea.is_opera) this._doc.designMode = "on";
 			if(this.config.statusBar) {
 				this._statusBar.innerHTML = "";
 				this._statusBar.appendChild(this._statusBarTree);
@@ -1290,7 +1298,7 @@ HTMLArea.prototype.setMode = function(mode) {
 		default:
 			return false;
 	}
-	if (!(mode == "docnotwellformedmode")) this.focusEditor();
+	if (mode !== "docnotwellformedmode") this.focusEditor();
 	for (var pluginId in this.plugins) {
 		if (this.plugins.hasOwnProperty(pluginId)) {
 			var pluginInstance = this.plugins[pluginId].instance;
@@ -1513,7 +1521,7 @@ HTMLArea.cleanWordOnPaste = function(ev) {
 		owner = owner.parentElement;
 	}
 		// if we dropped an image dragged from the TYPO3 Browser, let's close the browser window
-	if (typeof(browserWin) != "undefined") browserWin.close();
+	if (typeof(browserWin) != "undefined" && browserWin.close) browserWin.close();
 	window.setTimeout("HTMLArea.wordCleanLater(" + owner._editorNo + ", true);", 250);
 };
 
@@ -1528,9 +1536,14 @@ HTMLArea.prototype.forceRedraw = function() {
 HTMLArea.prototype.focusEditor = function() {
 	switch (this._editMode) {
 		case "wysiwyg" :
-			try { 
-				if (HTMLArea.is_safari || HTMLArea.is_opera) this._doc.focus();
-					else this._iframe.contentWindow.focus();
+			try {
+				if (HTMLArea.is_safari) {
+					this._iframe.focus();
+				} else if (HTMLArea.is_opera) {
+					this._doc.focus();
+				} else {
+					this._iframe.contentWindow.focus();
+				}
 			} catch(e) { };
 			break;
 		case "textmode":
@@ -1623,10 +1636,11 @@ HTMLArea.updateToolbar = function(editorNumber) {
 HTMLArea.prototype.updateToolbar = function(noStatus) {
 	var doc = this._doc,
 		text = (this._editMode == "textmode"),
-		selection = this.hasSelectedText(),
+		selection = false,
 		ancestors = null, cls = new Array(),
 		txt, txtClass, i, inContext, match, matchAny, k, j, n, commandState;
 	if(!text) {
+		selection = this.hasSelectedText();
 		ancestors = this.getAllAncestors();
 		if(this.config.statusBar && !noStatus) {
 				// Unhook previous events handlers
@@ -1721,7 +1735,7 @@ HTMLArea.prototype.updateToolbar = function(noStatus) {
 				case "FontName":
 				case "FontSize":
 					if(!text) try {
-						var value = ("" + doc.queryCommandValue(cmd)).toLowerCase();
+						var value = ("" + doc.queryCommandValue(cmd)).trim().toLowerCase().replace(/\'/g, "");
 						if(!value) {
 							document.getElementById(btn.elementId).selectedIndex = 0;
 							break;
@@ -1731,7 +1745,9 @@ HTMLArea.prototype.updateToolbar = function(noStatus) {
 						k = 0;
 						for (var j in options) {
 							if (options.hasOwnProperty(j)) {
-								if((j.toLowerCase() == value) || (options[j].substr(0, value.length).toLowerCase() == value)) {
+								if ((j.toLowerCase().indexOf(value) !== -1)
+										|| (options[j].trim().substr(0, value.length).toLowerCase() == value)
+										|| ((cmd === "FontName") && (options[j].toLowerCase().indexOf(value) !== -1))) {
 									document.getElementById(btn.elementId).selectedIndex = k;
 									throw "ok";
 								}
@@ -1742,19 +1758,21 @@ HTMLArea.prototype.updateToolbar = function(noStatus) {
 					} catch(e) {}
 					break;
 				case "FormatBlock":
-					var blocks = [ ];
-					for (var j in this.config['FormatBlock']) {
-						if (this.config['FormatBlock'].hasOwnProperty(j)) {
-							blocks[blocks.length] = this.config['FormatBlock'][j];
+					if (!text) {
+						var blocks = [ ];
+						for (var j in this.config['FormatBlock']) {
+							if (this.config['FormatBlock'].hasOwnProperty(j)) {
+								blocks[blocks.length] = this.config['FormatBlock'][j];
+							}
 						}
-					}
-					var deepestAncestor = this._getFirstAncestor(this._getSelection(), blocks);
-					if(deepestAncestor) {
-						for(var x= 0; x < blocks.length; x++) {
-							if(blocks[x].toLowerCase() == deepestAncestor.tagName.toLowerCase()) document.getElementById(btn.elementId).selectedIndex = x;
+						var deepestAncestor = this._getFirstAncestor(this._getSelection(), blocks);
+						if(deepestAncestor) {
+							for(var x= 0; x < blocks.length; x++) {
+								if(blocks[x].toLowerCase() == deepestAncestor.tagName.toLowerCase()) document.getElementById(btn.elementId).selectedIndex = x;
+							}
+						} else {
+							document.getElementById(btn.elementId).selectedIndex = 0;
 						}
-					} else {
-						document.getElementById(btn.elementId).selectedIndex = 0;
 					}
 					break;
 				case "TextIndicator":
@@ -1778,9 +1796,16 @@ HTMLArea.prototype.updateToolbar = function(noStatus) {
 				case "HtmlMode": btn.state("active", text); break;
 				case "LeftToRight":
 				case "RightToLeft":
-					var el = this.getParentElement();
-					while (el && !HTMLArea.isBlockElement(el)) { el = el.parentNode; }
-					if (el) btn.state("active",(el.style.direction == ((cmd == "RightToLeft") ? "rtl" : "ltr")));
+					if (!text) {
+						var el = this.getParentElement();
+						while (el && !HTMLArea.isBlockElement(el)) { el = el.parentNode; }
+						if (el) btn.state("active",(el.style.direction == ((cmd == "RightToLeft") ? "rtl" : "ltr")));
+						break;
+					}
+				case "Paste":
+					if(!text) {
+						btn.state("enabled", doc.queryCommandEnabled('Paste'));
+					}
 					break;
 				case "JustifyLeft":
 				case "JustifyCenter":
@@ -1887,7 +1912,7 @@ HTMLArea.prototype.hasSelectedText = function() {
 HTMLArea.prototype.getAllAncestors = function() {
 	var p = this.getParentElement();
 	var a = [];
-	while (p && (p.nodeType == 1) && (p.tagName.toLowerCase() != 'body')) {
+	while (p && (p.nodeType === 1) && (p.nodeName.toLowerCase() !== "body")) {
 		a.push(p);
 		p = p.parentNode;
 	}
@@ -2228,7 +2253,7 @@ HTMLArea.prototype.execCommand = function(cmdID, UI, param) {
 	    case "Copy"		:
 	    case "Paste"	:
 		try {
-			this._doc.execCommand(cmdID,false,null);
+			this._doc.execCommand(cmdID, false, null);
 			if (cmdID == "Paste" && this.config.cleanWordOnPaste) HTMLArea._wordClean(this, this._doc.body);
 		} catch (e) {
 			if (HTMLArea.is_gecko && !HTMLArea.is_safari && !HTMLArea.is_opera) this._mozillaPasteException(cmdID, UI, param);
@@ -2460,9 +2485,13 @@ HTMLArea.prototype.scrollToCaret = function() {
 HTMLArea.prototype.getHTML = function() {
 	switch (this._editMode) {
 		case "wysiwyg":
-			if(!this.config.fullPage) { return HTMLArea.getHTML(this._doc.body,false,this); }
-				else { return this.doctype + "\n" + HTMLArea.getHTML(this._doc.documentElement,true,this); }
-		case "textmode": return this._textArea.value;
+			if (!this.config.fullPage) {
+				return HTMLArea.getHTML(this._doc.body, false, this);
+			} else {
+				return this.doctype + "\n" + HTMLArea.getHTML(this._doc.documentElement,true,this);
+			}
+		case "textmode":
+			return this._textArea.value;
 	}
 	return false;
 };
@@ -2679,7 +2708,7 @@ HTMLArea.htmlEncode = function(str) {
  * Wrapper catches a Mozilla-Exception with non well-formed html source code.
  */
 HTMLArea.getHTML = function(root, outputRoot, editor){
-	try { 
+	try {
 		return HTMLArea.getHTMLWrapper(root,outputRoot,editor); 
 	} catch(e) {
 		HTMLArea._appendToLog("The HTML document is not well-formed.");
