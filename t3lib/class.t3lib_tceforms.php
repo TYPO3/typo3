@@ -891,7 +891,9 @@ class t3lib_TCEforms	{
 
 						// Find item
 					$item='';
-					$PA['label'] = $PA['altName'] ? $PA['altName'] : $PA['fieldConf']['label'];
+					$PA['label'] = ($PA['altName'] ? $PA['altName'] : $PA['fieldConf']['label']);
+					$PA['label'] = ($PA['fieldTSConfig']['label'] ? $PA['fieldTSConfig']['label'] : $PA['label']);
+					$PA['label'] = ($PA['fieldTSConfig']['label.'][$GLOBALS['LANG']->lang] ? $PA['fieldTSConfig']['label.'][$GLOBALS['LANG']->lang] : $PA['label']);
 					$PA['label'] = $this->sL($PA['label']);
 						// JavaScript code for event handlers:
 					$PA['fieldChangeFunc']=array();
