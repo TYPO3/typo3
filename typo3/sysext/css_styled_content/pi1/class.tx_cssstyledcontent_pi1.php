@@ -101,7 +101,8 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 		} else {
 
 				// Get bodytext field content, returning blank if empty:
-			$content = trim($this->cObj->data['bodytext']);
+			$field = (isset($conf['field']) && trim($conf['field']) ? trim($conf['field']) : 'bodytext');
+			$content = trim($this->cObj->data[$field]);
 			if (!strcmp($content,''))	return '';
 
 				// Split into single lines:
@@ -148,7 +149,8 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 			$this->pi_initPIflexForm();
 
 				// Get bodytext field content
-			$content = trim($this->cObj->data['bodytext']);
+			$field = (isset($conf['field']) && trim($conf['field']) ? trim($conf['field']) : 'bodytext');
+			$content = trim($this->cObj->data[$field]);
 			if (!strcmp($content,''))	return '';
 
 				// get flexform values
@@ -178,6 +180,7 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 
 				// Split into single lines (will become table-rows):
 			$rows = t3lib_div::trimExplode(chr(10),$content);
+			reset($rows);
 
 				// Find number of columns to render:
 			$cols = t3lib_div::intInRange($this->cObj->data['cols']?$this->cObj->data['cols']:count(explode($delimiter,current($rows))),0,100);
@@ -295,7 +298,8 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 				// Get the list of files (using stdWrap function since that is easiest)
 			$lConf = array();
 			$lConf['override.']['filelist.']['field'] = 'select_key';
-			$fileList = $this->cObj->stdWrap($this->cObj->data['media'],$lConf);
+			$field = (isset($conf['field']) && trim($conf['field']) ? trim($conf['field']) : 'media');
+			$fileList = $this->cObj->stdWrap($this->cObj->data[$field],$lConf);
 
 				// Explode into an array:
 			$fileArray = t3lib_div::trimExplode(',',$fileList,1);

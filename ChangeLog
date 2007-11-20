@@ -1,3 +1,7 @@
+2007-11-20  Oliver Hader  <oh@inpublica.de>
+
+	* (feature) Added feature #6473: CSC - Extend render userFuncs by TS field property
+
 2007-11-20  Benjamin Mack  <mack@xnos.org>
 
 	* Feature #6768: Added the media field for page type "Shortcut" as well

@@ -490,6 +490,7 @@ tt_content.bullets {
 
 	20 = USER
 	20.userFunc = tx_cssstyledcontent_pi1->render_bullets
+	20.field = bodytext
 
 	20.innerStdWrap.parseFunc = < lib.parseFunc
 
@@ -513,6 +514,7 @@ tt_content.table {
 
 	20 = USER
 	20.userFunc = tx_cssstyledcontent_pi1->render_table
+	20.field = bodytext
 
 	20.color {
 		default =
@@ -562,6 +564,7 @@ tt_content.uploads {
 
 	20 = USER
 	20.userFunc = tx_cssstyledcontent_pi1->render_uploads
+	20.field = media
 
 	20.color {
 		default =
