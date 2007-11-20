@@ -96,6 +96,28 @@ HTMLArea.prototype._getSelection = function() {
 };
 
 /*
+ * Empty the selection object
+ */
+HTMLArea.prototype.emptySelection = function(sel) {
+	if (HTMLArea.is_safari) {
+		sel.empty();
+	} else {
+		sel.removeAllRanges();
+	}
+};
+
+/*
+ * Add a range to the selection
+ */
+HTMLArea.prototype.addRangeToSelection = function(sel, range) {
+	if (HTMLArea.is_safari) {
+		sel.setBaseAndExtent(range.startContainer, range.startOffset, range.endContainer, range.endOffset);
+	} else {
+		sel.addRange(range);
+	}
+};
+
+/*
  * Create a range for the current selection
  */
 HTMLArea.prototype._createRange = function(sel) {
@@ -135,13 +157,8 @@ HTMLArea.prototype.selectNode = function(node,pos) {
 	if (node.nodeType == 1 && node.tagName.toLowerCase() == "body") range.selectNodeContents(node);
 		else range.selectNode(node);
 	if ((typeof(pos) != "undefined")) range.collapse(pos);
-	if (HTMLArea.is_safari) {
-		sel.empty();
-		sel.setBaseAndExtent(range.startContainer,range.startOffset,range.endContainer,range.endOffset);
-	} else {
-		sel.removeAllRanges();
-		sel.addRange(range);
-	}
+	this.emptySelection(sel);
+	this.addRangeToSelection(sel, range);
 };
 
 /*
@@ -153,13 +170,8 @@ HTMLArea.prototype.selectNodeContents = function(node,pos) {
 	var range = this._doc.createRange();
 	range.selectNodeContents(node);
 	if ((typeof(pos) != "undefined")) range.collapse(pos);
-	if (HTMLArea.is_safari) {
-		sel.empty();
-		sel.setBaseAndExtent(range.startContainer,range.startOffset,range.endContainer,range.endOffset);
-	} else {
-		sel.removeAllRanges();
-		sel.addRange(range);
-	}
+	this.emptySelection(sel);
+	this.addRangeToSelection(sel, range);
 };
 
 /*
@@ -192,19 +204,11 @@ HTMLArea.prototype.getParentElement = function(sel,range) {
 	if (typeof(range) === "undefined") {
 		var range = this._createRange(sel);
 	}
-	try {
-		var p = range.commonAncestorContainer;
-		if (!range.collapsed && range.startContainer == range.endContainer &&
-				range.startOffset - range.endOffset <= 1 && range.startContainer.hasChildNodes()) {
-			p = range.startContainer.childNodes[range.startOffset];
-		}
-		while (p.nodeType == 3) {
-			p = p.parentNode;
-		}
-		return p;
-	} catch (e) {
-		return this._doc.body;
+	var p = range.commonAncestorContainer;
+	while (p.nodeType == 3) {
+		p = p.parentNode;
 	}
+	return p;
 };
 
 /*
@@ -246,8 +250,7 @@ HTMLArea.prototype.insertNodeAtSelection = function(toBeInserted) {
 		node = range.startContainer,
 		pos = range.startOffset,
 		selnode = toBeInserted;
-	if (HTMLArea.is_safari) sel.empty();
-		else sel.removeAllRanges();
+	this.emptySelection(sel);
 	range.deleteContents();
 	switch (node.nodeType) {
 	    case 3: // Node.TEXT_NODE: we have to split it at the caret position.
@@ -256,8 +259,7 @@ HTMLArea.prototype.insertNodeAtSelection = function(toBeInserted) {
 			range = this._createRange();
 			range.setEnd(node, pos + toBeInserted.length);
 			range.setStart(node, pos + toBeInserted.length);
-			if (HTMLArea.is_safari) sel.setBaseAndExtent(range.startContainer, range.startOffset, range.endContainer, range.endOffset);
-				else sel.addRange(range);
+			this.addRangeToSelection(sel, range);
 		} else {
 			node = node.splitText(pos);
 			if (toBeInserted.nodeType == 11) selnode = selnode.lastChild;
@@ -345,6 +347,7 @@ HTMLArea.statusBarHandler = function (ev) {
 	var editor = target.editor;
 	target.blur();
 	editor.selectNode(target.el);
+	editor._statusBarTree.selected = target.el;
 	editor.updateToolbar(true);
 	switch (ev.type) {
 		case "click" :
@@ -426,13 +429,8 @@ HTMLArea.prototype._checkBackspace = function() {
 			r.setStartBefore(newr);
 			r.setEndAfter(newr);
 			r.extractContents();
-			if(HTMLArea.is_safari) {
-				sel.empty();
-				sel.setBaseAndExtent(r.startContainer,r.startOffset,r.endContainer,r.endOffset);
-			} else {
-				sel.removeAllRanges();
-				sel.addRange(r);
-			}
+			this.emptySelection(sel);
+			this.addRangeToSelection(sel, r);
 			return true;
 		}
 	},10);
@@ -442,7 +440,7 @@ HTMLArea.prototype._checkBackspace = function() {
 /*
  * Enter event handler
  */
-HTMLArea.prototype._checkInsertP = function(ev) {
+HTMLArea.prototype._checkInsertP = function() {
 	var editor = this;
 	this.focusEditor();
 	var i, left, right, rangeClone,
@@ -459,9 +457,10 @@ HTMLArea.prototype._checkInsertP = function(ev) {
 			break;
 		}
 	}
-	if (!range.collapsed) range.deleteContents();
-	if (HTMLArea.is_safari) sel.empty();
-		else sel.removeAllRanges();
+	if (!range.collapsed) {
+		range.deleteContents();
+	}
+	this.emptySelection(sel);
 	if (!block || /^(td|div)$/i.test(block.tagName)) {
 		if (!block) var block = doc.body;
 		if (/\S/.test(HTMLArea.getInnerText(block))) {
@@ -475,8 +474,13 @@ HTMLArea.prototype._checkInsertP = function(ev) {
 				left.appendChild(doc.createElement('br'));
 			}
 			left.normalize();
+			range.setStartAfter(left);
 			range.setEndAfter(block.lastChild);
-			range.surroundContents(right = doc.createElement('p'));
+				// Working around Safari issue: The following gives a range exception
+				// range.surroundContents(right = doc.createElement('p'));
+			right = doc.createElement('p');
+			right.appendChild(range.extractContents());
+			block.appendChild(right);
 				// Remove any element created empty
 			a = right.previousSibling;
 			if (a && !/\S/.test(HTMLArea.getInnerText(a))) HTMLArea.removeFromParent(a);
@@ -490,9 +494,9 @@ HTMLArea.prototype._checkInsertP = function(ev) {
 		} else {
 			range = doc.createRange();
 			var first = block.firstChild;
-			block.removeChild(first);
+			if (first) block.removeChild(first);
 			block.appendChild(right = doc.createElement('p'));
-			right.appendChild(first);
+			if (first) right.appendChild(first);
 		}
 		range.selectNodeContents(right);
 	} else {
@@ -523,10 +527,9 @@ HTMLArea.prototype._checkInsertP = function(ev) {
 		}
 	}
 	range.collapse(true);
-	if (HTMLArea.is_safari) sel.setBaseAndExtent(r.startContainer,r.startOffset,r.endContainer,r.endOffset);
-		else sel.addRange(range);
+	this.emptySelection(sel);
+	this.addRangeToSelection(sel, range);
 	this.scrollToCaret();
-	return true;
 };
 
 /*

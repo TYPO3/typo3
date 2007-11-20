@@ -229,7 +229,7 @@ class tx_rtehtmlarea_pi2 extends tx_rtehtmlarea_base {
 			// Preloading the pageStyle
 		$filename = trim($this->thisConfig['contentCSS']) ? trim($this->thisConfig['contentCSS']) : 'EXT:' . $this->ID . '/htmlarea/plugins/DynamicCSS/dynamiccss.css';
 		$additionalCode_loadCSS = '
-		<link rel="alternate stylesheet" type="text/css" href="' . $this->getFullFileName($filename) . '" />';
+		<link rel="alternate stylesheet" type="text/css" href="' . $this->getFullFileName($filename) . '" title="HTMLArea RTE Content CSS" />';
 
 			// Loading the editor skin
 		$skinFilename = trim($this->thisConfig['skin']) ? trim($this->thisConfig['skin']) : 'EXT:' . $this->ID . '/htmlarea/skins/default/htmlarea.css';

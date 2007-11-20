@@ -2298,13 +2298,8 @@ HTMLArea.prototype.execCommand = function(cmdID, UI, param) {
 				sel = this._getSelection();
 				var r = this._createRange(sel).cloneRange();
 				r.collapse(false);
-				if(HTMLArea.is_safari) {
-					sel.empty();
-					sel.setBaseAndExtent(r.startContainer,r.startOffset,r.endContainer,r.endOffset);
-				} else {
-					sel.removeAllRanges();
-					sel.addRange(r);
-				}
+				this.emptySelection(sel);
+				this.addRangeToSelection(sel, r);
 			}
 		}
 		break;
@@ -2327,7 +2322,7 @@ HTMLArea._editorEvent = function(ev) {
 		while (owner.parentElement) { owner = owner.parentElement; }
 	}
 	var editor = RTEarea[owner._editorNo]["editor"];
-	var keyEvent = ((HTMLArea.is_ie || HTMLArea.is_safari) && ev.type == "keydown") || (!HTMLArea.is_ie && ev.type == "keypress");
+	var keyEvent = (HTMLArea.is_ie && ev.type == "keydown") || (HTMLArea.is_gecko && ev.type == "keypress");
 	editor.focusEditor();
 
 	if(keyEvent) {
@@ -2428,10 +2423,12 @@ HTMLArea._editorEvent = function(ev) {
 			switch (ev.keyCode) {
 				case 13	: // KEY enter
 					if (HTMLArea.is_gecko && !ev.shiftKey && !editor.config.disableEnterParagraphs) {
-						if (editor._checkInsertP(ev)) HTMLArea._stopEvent(ev);
+						editor._checkInsertP();
+						HTMLArea._stopEvent(ev);
 							// update the toolbar state after some time
 						if (editor._timerToolbar) window.clearTimeout(editor._timerToolbar);
 						editor._timerToolbar = window.setTimeout("HTMLArea.updateToolbar(" + editor._editorNumber + ");", 50);
+						return false;
 					}
 					break;
 				case 8	: // KEY backspace
