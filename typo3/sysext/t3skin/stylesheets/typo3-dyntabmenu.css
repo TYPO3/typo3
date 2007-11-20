@@ -19,7 +19,8 @@ DIV.typo3-dyntabmenu-divs P.c-descr {
 
 table.typo3-dyntabmenu td {
 	color: #E6E1B2;
-	border:0;
+	border: solid 1px #A2AAB8;
+	border-bottom: 0;
 	padding: 0;
 	cursor: pointer;
 	}
@@ -33,14 +34,13 @@ table.typo3-dyntabmenu td.tab {
 		}
 
 	table.typo3-dyntabmenu td.disabled,
-	table.typo3-dyntabmenu td.disabled:hover {
+	table.typo3-dyntabmenu td.disabled_over {
+		padding: 5px 10px 5px 10px;
 		color: #A2AAB8;
 		background-color: #EFEFF4;
 		}
 
 table.typo3-dyntabmenu td a {
-	border: solid 1px #A2AAB8;
-	border-bottom: 0;
 	padding: 5px 10px 5px 10px;
 	display: block;
 	width: auto;

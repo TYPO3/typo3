@@ -229,6 +229,7 @@ class t3lib_TCEforms	{
 	var $localizationMode='';			// If true, the forms are rendering only localization relevant fields of the records.
 	var $fieldOrder='';					// Overrule the field order set in TCA[types][showitem], eg for tt_content this value, 'bodytext,image', would make first the 'bodytext' field, then the 'image' field (if set for display)... and then the rest in the old order.
 	var $doPrintPalette=1;				// If set to false, palettes will NEVER be rendered.
+	var $dividers2tabs=0;				// Will be set to TCA[ctrl][dividers2tabs]
 
 	/**
 	 * Set to initialized clipboard object; Then the element browser will offer a link to paste in records from clipboard.
@@ -493,6 +494,9 @@ class t3lib_TCEforms	{
 				// Load the full TCA for the table.
 			t3lib_div::loadTCA($table);
 
+			// Loads the dividers2tabs from the $TCA
+			$this->dividers2tabs = $TCA[$table]['ctrl']['dividers2tabs'];
+			
 				// Load the description content for the table.
 			if ($this->edit_showFieldHelp || $this->doLoadTableDescr($table))	{
 				$GLOBALS['LANG']->loadSingleTableDescription($table);
@@ -517,7 +521,7 @@ class t3lib_TCEforms	{
 						// If TCEforms will render a tab menu in the next step, push the name to the tab stack:
 					$tabIdentString = '';
 					$tabIdentStringMD5 = '';
-					if (strstr($itemList, '--div--') !== false && $this->enableTabMenu && $TCA[$table]['ctrl']['dividers2tabs']) {
+					if (strstr($itemList, '--div--') !== false && $this->enableTabMenu && $this->dividers2tabs) {
 						$tabIdentString = 'TCEforms:'.$table.':'.$row['uid'];
 						$tabIdentStringMD5 = $GLOBALS['TBE_TEMPLATE']->getDynTabMenuId($tabIdentString);
 							// Remember that were currently working on the general tab:
@@ -565,7 +569,7 @@ class t3lib_TCEforms	{
 								if ($cc>0)	{
 									$out_array[$out_sheet][$out_pointer].=$this->getDivider();
 
-									if ($this->enableTabMenu && $TCA[$table]['ctrl']['dividers2tabs'])	{
+									if ($this->enableTabMenu && $this->dividers2tabs)	{
 										$this->wrapBorder($out_array[$out_sheet],$out_pointer);
 											// Remove last tab entry from the dynNestedStack:
 										$out_sheet++;
@@ -644,16 +648,16 @@ class t3lib_TCEforms	{
 				// Create parts array for the tab menu:
 			$parts = array();
 			foreach ($out_array as $idx => $sheetContent)	{
-				$resstr = implode('', $sheetContent);
-				if ($resstr) {
-					$parts[$idx] = array(
-						'label' => $out_array_meta[$idx]['title'],
-						'content' => '<table border="0" cellspacing="0" cellpadding="0" width="100%">'.
-								$resstr.
-							'</table>',
-						'newline' => $out_array_meta[$idx]['newline'], 	// Newline for this tab/sheet
-					);
-				}
+				$content = implode('', $sheetContent);
+				if ($content) {
+					// Wrap content (row) with table-tag, otherwise tab/sheet will be disabled (see getdynTabMenu() )
+					$content = '<table border="0" cellspacing="0" cellpadding="0" width="100%">'.$content.'</table>';
+ 				}
+				$parts[$idx] = array(
+					'label' => $out_array_meta[$idx]['title'],
+					'content' => $content,
+					'newline' => $out_array_meta[$idx]['newline'], 	// Newline for this tab/sheet
+				);
 			}
 
 			if (count($parts) > 1) {
@@ -3943,7 +3947,7 @@ class t3lib_TCEforms	{
 	 */
 	function getDynTabMenu($parts, $idString) {
 		if (is_object($GLOBALS['TBE_TEMPLATE']))	{
-			return $GLOBALS['TBE_TEMPLATE']->getDynTabMenu($parts, $idString);
+			return $GLOBALS['TBE_TEMPLATE']->getDynTabMenu($parts, $idString, 0, FALSE, 50, 1, FALSE, 1, $this->dividers2tabs);
 		} else {
 			$output = '';
 			foreach($parts as $singlePad)	{

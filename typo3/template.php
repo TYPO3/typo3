@@ -1392,9 +1392,10 @@ $str.=$this->docBodyTagBegin().
 	 * @param	boolean		If set, tab table cells are not allowed to wrap their content
 	 * @param	boolean		If set, the tabs will span the full width of their position
 	 * @param	integer		Default tab to open (for toggle <=0). Value corresponds to integer-array index + 1 (index zero is "1", index "1" is 2 etc.). A value of zero (or something non-existing) will result in no default tab open.
+	 * @param	boolean		If set to '1' empty tabs will be remove, If set to '2' empty tabs will be disabled 
 	 * @return	string		JavaScript section for the HTML header.
 	 */
-	function getDynTabMenu($menuItems,$identString,$toggle=0,$foldout=FALSE,$newRowCharLimit=50,$noWrap=1,$fullWidth=FALSE,$defaultTabIndex=1)	{
+	function getDynTabMenu($menuItems,$identString,$toggle=0,$foldout=FALSE,$newRowCharLimit=50,$noWrap=1,$fullWidth=FALSE,$defaultTabIndex=1,$dividers2tabs=1)	{
 		$content = '';
 
 		if (is_array($menuItems))	{
@@ -1414,7 +1415,7 @@ $str.=$this->docBodyTagBegin().
 				$index+=1;	// Need to add one so checking for first index in JavaScript is different than if it is not set at all.
 
 					// Switch to next tab row if needed
-				if (!$foldout && ($titleLenCount>$newRowCharLimit | ($def['newline'] === true && $titleLenCount > 0))) { // 50 characters is probably a reasonable count of characters before switching to next row of tabs.
+				if (!$foldout && ($titleLenCount>$newRowCharLimit | ($def['newline'] === true && $titleLenCount > 0))) {
 					$titleLenCount=0;
 					$tabRows++;
 					$options[$tabRows] = array();
@@ -1426,52 +1427,54 @@ $str.=$this->docBodyTagBegin().
 					$onclick = 'this.blur(); DTM_activate("'.$id.'","'.$index.'", '.($toggle<0?1:0).'); return false;';
 				}
 
-				$isActive = strcmp(trim($def['content']),'');
+				$isNotEmpty = strcmp(trim($def['content']),'');
 
-				if ($isActive) {
+				// "Removes" empty tabs
+				if (!$isNotEmpty && $dividers2tabs == 1) {
+					continue;
+				}
 
-					$mouseOverOut = ' onmouseover="DTM_mouseOver(this);" onmouseout="DTM_mouseOut(this);"';
+				$mouseOverOut = ' onmouseover="DTM_mouseOver(this);" onmouseout="DTM_mouseOut(this);"';
 
-					if (!$foldout)	{
-							// Create TAB cell:
-						$options[$tabRows][] = '
-								<td class="'.($isActive ? 'tab' : 'disabled').'" id="'.$id.'-'.$index.'-MENU"'.$noWrap.$mouseOverOut.'>'.
-								($isActive ? '<a href="#" onclick="'.htmlspecialchars($onclick).'"'.($def['linkTitle'] ? ' title="'.htmlspecialchars($def['linkTitle']).'"':'').'>' : '').
-								$def['icon'].
-								($def['label'] ? htmlspecialchars($def['label']) : '&nbsp;').
-								$this->icons($def['stateIcon'],'margin-left: 10px;').
-								($isActive ? '</a>' :'').
-								'</td>';
-						$titleLenCount+= strlen($def['label']);
-					} else {
-							// Create DIV layer for content:
-						$divs[] = '
-							<div class="'.($isActive ? 'tab' : 'disabled').'" id="'.$id.'-'.$index.'-MENU"'.$mouseOverOut.'>'.
-								($isActive ? '<a href="#" onclick="'.htmlspecialchars($onclick).'"'.($def['linkTitle'] ? ' title="'.htmlspecialchars($def['linkTitle']).'"':'').'>' : '').
-								$def['icon'].
-								($def['label'] ? htmlspecialchars($def['label']) : '&nbsp;').
-								($isActive ? '</a>' : '').
-								'</div>';
-					}
-
+				if (!$foldout)	{
+						// Create TAB cell:
+					$options[$tabRows][] = '
+							<td class="'.($isNotEmpty ? 'tab' : 'disabled').'" id="'.$id.'-'.$index.'-MENU"'.$noWrap.$mouseOverOut.'>'.
+							($isNotEmpty ? '<a href="#" onclick="'.htmlspecialchars($onclick).'"'.($def['linkTitle'] ? ' title="'.htmlspecialchars($def['linkTitle']).'"':'').'>' : '').
+							$def['icon'].
+							($def['label'] ? htmlspecialchars($def['label']) : '&nbsp;').
+							$this->icons($def['stateIcon'],'margin-left: 10px;').
+							($isNotEmpty ? '</a>' :'').
+							'</td>';
+					$titleLenCount+= strlen($def['label']);
+				} else {
 						// Create DIV layer for content:
 					$divs[] = '
-							<div style="display: none;" id="'.$id.'-'.$index.'-DIV" class="c-tablayer">'.
-								($def['description'] ? '<p class="c-descr">'.nl2br(htmlspecialchars($def['description'])).'</p>' : '').
-								$def['content'].
-								'</div>';
-						// Create initialization string:
-					$JSinit[] = '
-							DTM_array["'.$id.'"]['.$c.'] = "'.$id.'-'.$index.'";
-					';
-					if ($toggle==1)	{
-						$JSinit[] = '
-							if (top.DTM_currentTabs["'.$id.'-'.$index.'"]) { DTM_toggle("'.$id.'","'.$index.'",1); }
-						';
-					}
-
-					$c++;
+						<div class="'.($isNotEmpty ? 'tab' : 'disabled').'" id="'.$id.'-'.$index.'-MENU"'.$mouseOverOut.'>'.
+							($isNotEmpty ? '<a href="#" onclick="'.htmlspecialchars($onclick).'"'.($def['linkTitle'] ? ' title="'.htmlspecialchars($def['linkTitle']).'"':'').'>' : '').
+							$def['icon'].
+							($def['label'] ? htmlspecialchars($def['label']) : '&nbsp;').
+							($isNotEmpty ? '</a>' : '').
+							'</div>';
 				}
+
+					// Create DIV layer for content:
+				$divs[] = '
+						<div style="display: none;" id="'.$id.'-'.$index.'-DIV" class="c-tablayer">'.
+							($def['description'] ? '<p class="c-descr">'.nl2br(htmlspecialchars($def['description'])).'</p>' : '').
+							$def['content'].
+							'</div>';
+					// Create initialization string:
+				$JSinit[] = '
+						DTM_array["'.$id.'"]['.$c.'] = "'.$id.'-'.$index.'";
+				';
+				if ($toggle==1)	{
+					$JSinit[] = '
+						if (top.DTM_currentTabs["'.$id.'-'.$index.'"]) { DTM_toggle("'.$id.'","'.$index.'",1); }
+					';
+				}
+
+				$c++;
 			}
 
 				// Render menu:
@@ -1549,7 +1552,10 @@ $str.=$this->docBodyTagBegin().
 						for(cnt = 0; cnt < DTM_array[idBase].length ; cnt++)	{
 							if (DTM_array[idBase][cnt] != idBase+"-"+index)	{
 								document.getElementById(DTM_array[idBase][cnt]+"-DIV").style.display = "none";
-								document.getElementById(DTM_array[idBase][cnt]+"-MENU").attributes.getNamedItem("class").nodeValue = "tab";
+								// Only Overriding when Tab not disabled
+								if (document.getElementById(DTM_array[idBase][cnt]+"-MENU").attributes.getNamedItem("class").nodeValue != "disabled") {
+									document.getElementById(DTM_array[idBase][cnt]+"-MENU").attributes.getNamedItem("class").nodeValue = "tab";
+								}
 							}
 						}
 					}
