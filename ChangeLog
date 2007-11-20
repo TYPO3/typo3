@@ -1,3 +1,7 @@
+2007-11-13  Benjamin Mack  <mack@xnos.org>
+
+	* Feature #6768: Integrate ext 'Media field for page type External URL' (dkd_media4url)
+
 2007-11-19  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
 	* Feature #6769: Enable htmlArea RTE in Safari

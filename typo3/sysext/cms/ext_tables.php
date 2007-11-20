@@ -511,6 +511,8 @@ if (TYPO3_MODE=='BE')	{
 				'hidden;;;;1-1-1, doktype, title;;3;;2-2-2, subtitle, nav_hide,
 			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.url,
 				url;;;;3-3-3, urltype,
+			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.files,
+				media,
 			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.access,
 				starttime, endtime, fe_group, extendToSubpages,
 			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.options,
