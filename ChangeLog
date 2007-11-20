@@ -1,6 +1,7 @@
 2007-11-20  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Restored typo3/sysext/lang/locallang_mod_doc.xml because it was zero length and broke translations
+	* Fixed bug #6773: Allow br in flexform labels
 
 2007-11-20  Oliver Hader  <oh@inpublica.de>
 

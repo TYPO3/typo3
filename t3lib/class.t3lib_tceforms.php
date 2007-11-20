@@ -2604,8 +2604,9 @@ class t3lib_TCEforms	{
 								}
 
 									// Put row together
+									// possible linebreaks in the label through xml: \n => <br/>, usage of nl2br() not possible, so it's done through str_replace
 								$tRows[]='<div>
-									<div class="bgColor5">'.($vDEFkey=='vDEF' ? '' : $this->getLanguageIcon($table,$row,$vDEFkey)).$theTitle.'</div>
+									<div class="bgColor5">'.($vDEFkey=='vDEF' ? '' : $this->getLanguageIcon($table,$row,$vDEFkey)).str_replace('\n', '<br />', $theTitle).'</div>
 									<div class="bgColor4">'.$theFormEl.$defInfo.$this->renderVDEFDiff($editData[$key],$vDEFkey).'</div>
 								</div>';
 							}
