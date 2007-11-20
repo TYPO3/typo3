@@ -524,6 +524,8 @@ if (TYPO3_MODE=='BE')	{
 				'doktype;;2;button;1-1-1, hidden, nav_hide, title;;3;;2-2-2, subtitle,
 			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.shortcut,
 				shortcut;;;;3-3-3, shortcut_mode,
+			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.files,
+				media,
 			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.access,
 				starttime, endtime, fe_group, extendToSubpages,
 			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.options,
