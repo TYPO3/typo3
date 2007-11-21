@@ -39,13 +39,13 @@ interface t3lib_localRecordListGetTableHook {
 	 * modifies the DB list query
 	 *
 	 * @param	string		the current database table
-	 * @param	integer		the record's unique ID
+	 * @param	integer		the record's page ID
 	 * @param	string		an additional WHERE clause
 	 * @param	string		comma separated list of selected fields
 	 * @param	localRecordList		parent localRecordList object
 	 * @return	void
 	 */
-	public function getDBlistQuery($table, $uid, &$additionalWhereClause, &$selectedFieldsList, &$parentObject);
+	public function getDBlistQuery($table, $pid, &$additionalWhereClause, &$selectedFieldsList, &$parentObject);
 
 }
 
