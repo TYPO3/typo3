@@ -1,3 +1,7 @@
+2007-11-21  Bernhard Kraft  <kraftb@kraftb.at>
+
+	* Fixed bug #6785: "this->extraFormHeaders" didn't work anymore since "fixed alt_doc headers" have been introduced (#6625)
+
 2007-11-20  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
 	* Feature #6769 continued: Further adjustments and workarounds to enable htmlArea RTE in Safari

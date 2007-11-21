@@ -560,6 +560,7 @@ class SC_alt_doc {
 					$this->tceforms->printNeededJSFunctions_top().
 					$this->compileHeader().'
 	<div id="typo3-docbody">'.
+					$this->extraFormHeaders.
 					$this->compileForm($editForm).
 					$this->tceforms->printNeededJSFunctions().
 					$this->functionMenus().
@@ -972,7 +973,7 @@ class SC_alt_doc {
 		';
 
 		if (is_array($this->tceforms->extraFormHeaders))	{
-			$content .= '<div id="typo3-docheader-rowextra">'.implode(chr(10), $this->tceforms->extraFormHeaders).'</div>';
+			$this->extraFormHeaders = '<div id="typo3-docheader-rowextra">'.implode(chr(10), $this->tceforms->extraFormHeaders).'</div>';
 		}
 
 
