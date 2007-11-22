@@ -50,16 +50,14 @@ HTMLArea.prototype._initEditMode = function () {
 		isNested = true;
 		allDisplayed = HTMLArea.allElementsAreDisplayed(this.nested.sorted);
 	}
-
-	if (!HTMLArea.is_wamcom) {
+	if (!isNested || allDisplayed) {
 		try {
-			if (!isNested || allDisplayed) this._doc.designMode = "on";
-		} catch(e) { }
-	} else {
-		try { 
-			this._doc.designMode = "on"; 
+			this._doc.designMode = "on";
+			if (this._doc.queryCommandEnabled("insertbronreturn")) this._doc.execCommand("insertbronreturn", false, this.config.disableEnterParagraphs);
+			if (this._doc.queryCommandEnabled("styleWithCSS")) this._doc.execCommand("styleWithCSS", false, this.config.useCSS);
+				else if (this._doc.queryCommandEnabled("useCSS")) this._doc.execCommand("useCSS", false, !this.config.useCSS);
 		} catch(e) {
-			if (!isNested || allDisplayed) {
+			if (HTMLArea.is_wamcom) {
 				this._doc.open();
 				this._doc.close();
 				this._initIframeTimer = window.setTimeout("HTMLArea.initIframe(" + this._editorNumber + ");", 500);
@@ -78,9 +76,6 @@ HTMLArea.prototype._initEditMode = function () {
 			HTMLArea._addEvent(nestedObj, 'DOMAttrModified', listenerFunction);
 		}
 	}
-	if (this._doc.queryCommandEnabled("insertbronreturn")) this._doc.execCommand("insertbronreturn", false, this.config.disableEnterParagraphs);
-	if (this._doc.queryCommandEnabled("styleWithCSS")) this._doc.execCommand("styleWithCSS", false, this.config.useCSS);
-		else if (this._doc.queryCommandEnabled("useCSS")) this._doc.execCommand("useCSS", false, !this.config.useCSS);
 	return true;
 };
 
