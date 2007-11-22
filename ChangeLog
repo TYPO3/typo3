@@ -1,3 +1,7 @@
+2007-11-22  Bernhard Kraft  <kraftb@kraftb.at>
+
+	* Added hooks #6738: Hooks for Web>List module which allow modification/addition/removal of icons for each table and its records
+
 2007-11-22  Ingo Renner	<ingo@typo3.org>
 
 	* fixed bug #6741: Add fields cruser_id and crdate to table fe_groups, credit Malte Jansen
