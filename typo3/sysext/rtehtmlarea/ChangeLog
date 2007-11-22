@@ -1,3 +1,7 @@
+2007-11-22  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
+
+	* Feature/bugfix: htmlArea RTE: Enter paragraph on return key corrected and improved
+
 2007-11-20  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
 	* Feature #6769 continued: Further adjustments and workarounds to enable htmlArea RTE in Safari

@@ -462,7 +462,6 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			if ($this->client['BROWSER'] == 'opera') {
 				$hidePlugins[] = 'ContextMenu';
 				$this->thisConfig['hideTableOperationsInToolbar'] = 0;
-				$this->thisConfig['disableEnterParagraphs'] = 1;
 			}
 			$this->pluginEnabledArray = array_diff($this->pluginEnabledArray, $hidePlugins);
 

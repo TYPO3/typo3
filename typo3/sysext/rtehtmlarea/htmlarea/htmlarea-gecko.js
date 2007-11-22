@@ -98,22 +98,22 @@ HTMLArea.prototype._getSelection = function() {
 /*
  * Empty the selection object
  */
-HTMLArea.prototype.emptySelection = function(sel) {
+HTMLArea.prototype.emptySelection = function(selection) {
 	if (HTMLArea.is_safari) {
-		sel.empty();
+		selection.empty();
 	} else {
-		sel.removeAllRanges();
+		selection.removeAllRanges();
 	}
 };
 
 /*
  * Add a range to the selection
  */
-HTMLArea.prototype.addRangeToSelection = function(sel, range) {
+HTMLArea.prototype.addRangeToSelection = function(selection, range) {
 	if (HTMLArea.is_safari) {
-		sel.setBaseAndExtent(range.startContainer, range.startOffset, range.endContainer, range.endOffset);
+		selection.setBaseAndExtent(range.startContainer, range.startOffset, range.endContainer, range.endOffset);
 	} else {
-		sel.addRange(range);
+		selection.addRange(range);
 	}
 };
 
@@ -178,8 +178,8 @@ HTMLArea.prototype.selectNodeContents = function(node,pos) {
  * Retrieve the HTML contents of selected block
  */
 HTMLArea.prototype.getSelectedHTML = function() {
-	var sel = this._getSelection();
-	var range = this._createRange(sel);
+	var range = this._createRange(this._getSelection());
+	if (range.collapsed) return "";
 	var cloneContents = range.cloneContents();
 	if (!cloneContents) {
 		cloneContents = this._doc.createDocumentFragment();
@@ -197,18 +197,18 @@ HTMLArea.prototype.getSelectedHTMLContents = function() {
 /*
  * Get the deepest node that contains both endpoints of the current selection.
  */
-HTMLArea.prototype.getParentElement = function(sel,range) {
-	if (!sel) {
-		var sel = this._getSelection();
+HTMLArea.prototype.getParentElement = function(selection, range) {
+	if (!selection) {
+		var selection = this._getSelection();
 	}
 	if (typeof(range) === "undefined") {
-		var range = this._createRange(sel);
+		var range = this._createRange(selection);
 	}
-	var p = range.commonAncestorContainer;
-	while (p.nodeType == 3) {
-		p = p.parentNode;
+	var parentElement = range.commonAncestorContainer;
+	while (parentElement.nodeType == 3) {
+		parentElement = parentElement.parentNode;
 	}
-	return p;
+	return parentElement;
 };
 
 /*
@@ -249,9 +249,16 @@ HTMLArea.prototype.insertNodeAtSelection = function(toBeInserted) {
 		range = this._createRange(sel),
 		node = range.startContainer,
 		pos = range.startOffset,
-		selnode = toBeInserted;
+		selectNode = node;
 	this.emptySelection(sel);
 	range.deleteContents();
+	if (toBeInserted.nodeType == 11) {
+		selectNode = toBeInserted.lastChild;
+	}
+	if (node.nodeName.toLowerCase() === "table") {
+		selectNode = node.getElementsByTagName("tbody")[0];
+		selectNode = selectNode.rows[0].cells[0];
+	}
 	switch (node.nodeType) {
 	    case 3: // Node.TEXT_NODE: we have to split it at the caret position.
 		if(toBeInserted.nodeType == 3) {
@@ -262,16 +269,14 @@ HTMLArea.prototype.insertNodeAtSelection = function(toBeInserted) {
 			this.addRangeToSelection(sel, range);
 		} else {
 			node = node.splitText(pos);
-			if (toBeInserted.nodeType == 11) selnode = selnode.lastChild;
 			node = node.parentNode.insertBefore(toBeInserted, node);
-			this.selectNode(selnode, false);
+			this.selectNode(selectNode, false);
 			this.updateToolbar();
 		}
 		break;
 	    case 1:
-		if (toBeInserted.nodeType == 11) selnode = selnode.lastChild;
 		node = node.insertBefore(toBeInserted, node.childNodes[pos]);
-		this.selectNode(selnode, false);
+		this.selectNode(selectNode, false);
 		this.updateToolbar();
 		break;
 	}
@@ -452,84 +457,107 @@ HTMLArea.prototype._checkInsertP = function() {
 		doc	= this._doc;
 	
 	for (i = 0; i < p.length; ++i) {
-		if (HTMLArea.isBlockElement(p[i]) && !/html|body|table|tbody|tr/i.test(p[i].tagName)) {
+		if (HTMLArea.isBlockElement(p[i]) && !/^(html|body|table|tbody|thead|tr)$/i.test(p[i].nodeName)) {
 			block = p[i];
 			break;
 		}
 	}
+	if (block && /^(td|th|table|tbody|thead|tr)$/i.test(block.nodeName) && this.config.buttons.table && this.config.buttons.table.disableEnterParagraphs) return false;
 	if (!range.collapsed) {
 		range.deleteContents();
 	}
 	this.emptySelection(sel);
-	if (!block || /^(td|div)$/i.test(block.tagName)) {
+	if (!block || /^(td|div)$/i.test(block.nodeName)) {
 		if (!block) var block = doc.body;
-		if (/\S/.test(HTMLArea.getInnerText(block))) {
+		if (block.hasChildNodes()) {
 			rangeClone = range.cloneRange();
 			rangeClone.setStartBefore(block.firstChild);
-			rangeClone.surroundContents(left = doc.createElement('p'));
-			if (!/\S/.test(HTMLArea.getInnerText(left))) {
-					// Remove any element created empty
-				a = left.lastChild;
-				if (a && !/\S/.test(HTMLArea.getInnerText(a))) HTMLArea.removeFromParent(a);
-				left.appendChild(doc.createElement('br'));
+				// Working around Opera issue: The following gives a range exception
+				// rangeClone.surroundContents(left = doc.createElement("p"));
+			left = doc.createElement("p");
+			left.appendChild(rangeClone.extractContents());
+			if (!left.textContent && !left.getElementsByTagName("img") && !left.getElementsByTagName("table")) {
+				left.innerHTML = "<br />";
+			}
+			if (block.hasChildNodes()) {
+				left = block.insertBefore(left, block.firstChild);
+			} else {
+				left = block.appendChild(left);
 			}
 			left.normalize();
 			range.setStartAfter(left);
 			range.setEndAfter(block.lastChild);
 				// Working around Safari issue: The following gives a range exception
-				// range.surroundContents(right = doc.createElement('p'));
-			right = doc.createElement('p');
+				// range.surroundContents(right = doc.createElement("p"));
+			right = doc.createElement("p");
 			right.appendChild(range.extractContents());
-			block.appendChild(right);
-				// Remove any element created empty
-			a = right.previousSibling;
-			if (a && !/\S/.test(HTMLArea.getInnerText(a))) HTMLArea.removeFromParent(a);
-			if (!/\S/.test(HTMLArea.getInnerText(right))) {
-					// Remove any element created empty
-				a = right.lastChild;
-				if (a && !/\S/.test(HTMLArea.getInnerText(a))) HTMLArea.removeFromParent(a);
-				right.appendChild(doc.createElement('br'));
+			if (!right.textContent && !left.getElementsByTagName("img") && !left.getElementsByTagName("table")) {
+				right.innerHTML = "<br />";
 			}
+			block.appendChild(right);
 			right.normalize();
 		} else {
-			range = doc.createRange();
 			var first = block.firstChild;
 			if (first) block.removeChild(first);
-			block.appendChild(right = doc.createElement('p'));
-			if (first) right.appendChild(first);
+			right = doc.createElement("p");
+			if (HTMLArea.is_opera) {
+				right.innerHTML = "<br />";
+			}
+			right = block.appendChild(right);
 		}
-		range.selectNodeContents(right);
+		this.selectNodeContents(right, true);
 	} else {
 		range.setEndAfter(block);
 		var df = range.extractContents(), left_empty = false;
-		if(!/\S/.test(HTMLArea.getInnerText(block))) {
-			block.innerHTML = "<br />";
+		if (!/\S/.test(block.innerHTML)) {
+			if (!HTMLArea.is_opera) {
+				block.innerHTML = "<br />";
+			}
 			left_empty = true;
 		}
 		p = df.firstChild;
 		if (p) {
-			if(!/\S/.test(HTMLArea.getInnerText(p))) {
- 				if (/^h[1-6]$/i.test(p.tagName)) p = this.convertNode(p,"p");
-				p.innerHTML = "<br />";
+			if (!/\S/.test(p.innerHTML)) {
+ 				if (/^h[1-6]$/i.test(p.nodeName)) {
+					p = this.convertNode(p, "p");
+				}
+				if (!HTMLArea.is_opera) {
+					p.innerHTML = "<br />";
+				}
 			}
-			if(/^li$/i.test(p.tagName) && left_empty && !block.nextSibling) {
+			if(/^li$/i.test(p.nodeName) && left_empty && !block.nextSibling) {
 				left = block.parentNode;
 				left.removeChild(block);
 				range.setEndAfter(left);
 				range.collapse(false);
-				p = this.convertNode(p, /^li$/i.test(left.parentNode.tagName) ? "br" : "p");
+				p = this.convertNode(p, /^li$/i.test(left.parentNode.nodeName) ? "br" : "p");
 			}
 			range.insertNode(df);
 				// Remove any anchor created empty
-			var a = p.previousSibling.lastChild;
-			if (a && /^a$/i.test(a.tagName) && !/\S/.test(a.innerHTML)) HTMLArea.removeFromParent(a);
-			range.selectNodeContents(p);
+			if (p.previousSibling) {
+				var a = p.previousSibling.lastChild;
+				if (a && /^a$/i.test(a.nodeName) && !/\S/.test(a.innerHTML)) HTMLArea.removeFromParent(a);
+			}
+			this.selectNodeContents(p, true);
+		} else {
+			if (block.nodeName.toLowerCase() === "li") {
+				p = doc.createElement("li");
+			} else {
+				p = doc.createElement("p");
+			}
+			if (!HTMLArea.is_opera) {
+				p.innerHTML = "<br />";
+			}
+			if (block.nextSibling) {
+				p = block.parentNode.insertBefore(p, block.nextSibling);
+			} else {
+				p = block.parentNode.appendChild(p);
+			}
+			this.selectNodeContents(p, true);
 		}
 	}
-	range.collapse(true);
-	this.emptySelection(sel);
-	this.addRangeToSelection(sel, range);
 	this.scrollToCaret();
+	return true;
 };
 
 /*

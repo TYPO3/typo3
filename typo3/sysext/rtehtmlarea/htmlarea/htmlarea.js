@@ -2423,11 +2423,12 @@ HTMLArea._editorEvent = function(ev) {
 			switch (ev.keyCode) {
 				case 13	: // KEY enter
 					if (HTMLArea.is_gecko && !ev.shiftKey && !editor.config.disableEnterParagraphs) {
-						editor._checkInsertP();
-						HTMLArea._stopEvent(ev);
+						if (editor._checkInsertP()) {
+							HTMLArea._stopEvent(ev);
+						}
 							// update the toolbar state after some time
 						if (editor._timerToolbar) window.clearTimeout(editor._timerToolbar);
-						editor._timerToolbar = window.setTimeout("HTMLArea.updateToolbar(" + editor._editorNumber + ");", 50);
+						editor._timerToolbar = window.setTimeout("HTMLArea.updateToolbar(" + editor._editorNumber + ");", 100);
 						return false;
 					}
 					break;
