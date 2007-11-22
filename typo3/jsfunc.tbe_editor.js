@@ -444,6 +444,18 @@ var typo3form = {
 			var theFObj = new evalFunc_dummy (evallist,is_in, checkbox, checkboxValue);
 			if (checkbox_off)	{
 				if (document[TBE_EDITOR.formname][theField+"_cb"].checked)	{
+					var split = evallist.split(',');
+					for (var i = 0; split.length > i; i++) {
+						var el = split[i].replace(/ /g, '');
+						if (el == 'datetime' || el == 'date')	{
+							var now = new Date();
+							checkSetValue = Date.parse(now)/1000 - now.getTimezoneOffset()*60;
+							break;
+						} else if (el == 'time' || el == 'timesec')	{
+							checkSetValue = evalFunc_getTimeSecs(new Date());
+							break;
+						}
+					}
 					document[TBE_EDITOR.formname][theField].value=checkSetValue;
 				} else {
 					document[TBE_EDITOR.formname][theField].value=checkboxValue;

@@ -1112,12 +1112,21 @@ class t3lib_TCEforms	{
 		$paramsList = "'".$PA['itemFormElName']."','".implode(',',$evalList)."','".trim($config['is_in'])."',".(isset($config['checkbox'])?1:0).",'".$config['checkbox']."'";
 		if (isset($config['checkbox']))	{
 				// Setting default "click-checkbox" values for eval types "date" and "datetime":
-			$thisMidnight = mktime(0,0,0);
-			$checkSetValue = in_array('date',$evalList) ? $thisMidnight : '';
-			$checkSetValue = in_array('datetime',$evalList) ? time() : $checkSetValue;
-
+			$thisMidnight = gmmktime(0,0,0);
+			if (in_array('date',$evalList))	{
+				$checkSetValue = $thisMidnight;
+			} elseif (in_array('datetime',$evalList))	{
+				$checkSetValue = time();
+			} elseif (in_array('year',$evalList))	{
+				$checkSetValue = gmdate('Y');
+			}
 			$cOnClick = 'typo3form.fieldGet('.$paramsList.',1,\''.$checkSetValue.'\');'.implode('',$PA['fieldChangeFunc']);
 			$item.='<input type="checkbox"'.$this->insertDefStyle('check').' name="'.$PA['itemFormElName'].'_cb" onclick="'.htmlspecialchars($cOnClick).'" />';
+		}
+		if((in_array('date',$evalList) || in_array('datetime',$evalList)) && $PA['itemFormElValue']>0){
+				// Add server timezone offset to UTC to our stored date
+			$hoursOffset = date('O',$PA['itemFormElValue'])/100;
+			$PA['itemFormElValue'] += ($hoursOffset*60*60);
 		}
 
 		$PA['fieldChangeFunc'] = array_merge(array('typo3form.fieldGet'=>'typo3form.fieldGet('.$paramsList.');'), $PA['fieldChangeFunc']);

@@ -1488,13 +1488,17 @@ class t3lib_BEfunc	{
 	 * Usage: 1 (class t3lib_BEfunc)
 	 *
 	 * @param	integer		Time stamp, seconds
+	 * @param	boolean		Output hh:mm:ss. If false: hh:mm
 	 * @return	string		Formatted time
 	 */
-	function time($value)	{
+	function time($value, $withSeconds = TRUE)	{
 		$hh = floor($value/3600);
 		$min = floor(($value-$hh*3600)/60);
 		$sec = $value-$hh*3600-$min*60;
-		$l = sprintf('%02d',$hh).':'.sprintf('%02d',$min).':'.sprintf('%02d',$sec);
+		$l = sprintf('%02d',$hh).':'.sprintf('%02d',$min);
+		if ($withSeconds)	{
+			$l .= ':'.sprintf('%02d',$sec);
+		}
 		return $l;
 	}
 
@@ -2079,6 +2083,8 @@ class t3lib_BEfunc	{
 						if (t3lib_div::inList($theColConf['eval'],'date'))	{
 							$l = t3lib_BEfunc::date($value).' ('.(time()-$value>0?'-':'').t3lib_BEfunc::calcAge(abs(time()-$value), $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.minutesHoursDaysYears')).')';
 						} elseif (t3lib_div::inList($theColConf['eval'],'time'))	{
+							$l = t3lib_BEfunc::time($value, FALSE);
+						} elseif (t3lib_div::inList($theColConf['eval'],'timesec'))	{
 							$l = t3lib_BEfunc::time($value);
 						} elseif (t3lib_div::inList($theColConf['eval'],'datetime'))	{
 							$l = t3lib_BEfunc::datetime($value);

@@ -1,3 +1,9 @@
+2007-11-22  Ernesto Baschny  <ernst@cron-it.de>
+
+	* Fixed bugs #1697, #1465, #4849, #5183: Datetime input fields and timezone shift bug
+	* Fixed: The click-checkbox to set the current date/time did not work on fields with eval year, time and timesec.
+	* Fixed: Setting a field of eval "timesec" as a label of a table would show an integer instead of the hh:mm:ss string
+
 2007-11-22  Bernhard Kraft  <kraftb@kraftb.at>
 
 	* Added hooks #6738: Hooks for Web>List module which allow modification/addition/removal of icons for each table and its records
