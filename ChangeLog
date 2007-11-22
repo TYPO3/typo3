@@ -1,3 +1,7 @@
+2007-11-22  Ingo Renner	<ingo@typo3.org>
+
+	* fixed bug #6741: Add fields cruser_id and crdate to table fe_groups
+
 2007-11-22  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
 	* Feature/bugfix: htmlArea RTE: Enter paragraph on return key corrected and improved
