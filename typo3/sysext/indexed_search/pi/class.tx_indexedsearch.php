@@ -317,6 +317,10 @@ class tx_indexedsearch extends tslib_pibase {
 			}
 		}
 
+			// Should we use join_pages instead of long lists of uids?
+		if ($this->conf['search.']['skipExtendToSubpagesChecking'])	{
+			$this->join_pages = 1;
+		}
 
 			// Add media to search in:
 		if (strlen(trim($this->conf['search.']['mediaList'])))	{
