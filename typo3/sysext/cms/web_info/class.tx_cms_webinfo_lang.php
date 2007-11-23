@@ -337,6 +337,12 @@ class tx_cms_webinfo_lang extends t3lib_extobjbase {
 	 * @return	array		System language records in an array.
 	 */
 	function getSystemLanguages()	{
+		if (!$GLOBALS['BE_USER']->user['admin'] &&
+			strlen($GLOBALS['BE_USER']->dataLists['allowed_languages'])) {
+
+			$allowed_languages = array_flip(explode(',', $GLOBALS['BE_USER']->dataLists['allowed_languages']));
+		}
+
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 			'*',
 			'sys_language',
@@ -345,7 +351,14 @@ class tx_cms_webinfo_lang extends t3lib_extobjbase {
 
 		$outputArray = array();
 		while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
-			$outputArray[] = $row;
+			if (is_array($allowed_languages) && count($allowed_languages)) {
+				if (isset($allowed_languages[$row['uid']])) {
+					$outputArray[] = $row;
+				}
+			}
+			else {
+				$outputArray[] = $row;
+			}
 		}
 
 		return $outputArray;

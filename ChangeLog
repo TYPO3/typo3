@@ -1,3 +1,7 @@
+2007-11-23  Wolfgang Klinger <wk@plan2.net> 
+
+	* Fixed bug #6775: Page and info module ignore "Limit to language"
+
 2007-11-22  Ernesto Baschny  <ernst@cron-it.de>
 
 	* Fixed bugs #1697, #1465, #4849, #5183: Datetime input fields and timezone shift bug

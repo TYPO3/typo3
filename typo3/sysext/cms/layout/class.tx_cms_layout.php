@@ -1984,6 +1984,21 @@ class tx_cms_layout extends recordList {
 			while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
 				unset($langSelItems[$row['uid']]);
 			}
+				// Remove disallowed languages
+			if (count($langSelItems) > 1 && 
+				!$GLOBALS['BE_USER']->user['admin'] &&
+				strlen($GLOBALS['BE_USER']->dataLists['allowed_languages'])) {
+
+				$allowed_languages = array_flip(explode(',', $GLOBALS['BE_USER']->dataLists['allowed_languages']));
+
+				if (count($allowed_languages)) {
+					foreach($langSelItems as $key => $value) {
+						if (!isset($allowed_languages[$key]) && $key != 0) {
+							unset($langSelItems[$key]);
+						}
+					}
+				}
+			}
 
 				// If any languages are left, make selector:
 			if (count($langSelItems)>1)		{
