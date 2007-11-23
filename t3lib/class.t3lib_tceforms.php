@@ -282,6 +282,7 @@ class t3lib_TCEforms	{
 	var $palettesRendered=array();				// During rendering of forms this will keep track of which palettes has already been rendered (so they are not rendered twice by mistake)
 	var $hiddenFieldListArr = array();			// This array of fields will be set as hidden-fields instead of rendered normally! For instance palette fields edited in the top frame are set as hidden fields since the main form has to submit the values. The top frame actually just sets the value in the main form!
 	var $requiredFields=array();				// Used to register input-field names, which are required. (Done during rendering of the fields). This information is then used later when the JavaScript is made.
+	var $requiredAdditional=array();			// Used to register input-field names, which are required an have additional requirements (e.g. like a date/time must be positive integer). The information of this array is merged with $this->requiredFields later.
 	var $requiredElements=array();				// Used to register the min and max number of elements for selectorboxes where that apply (in the "group" type for instance)
 	var $renderDepth=0;							// Keeps track of the rendering depth of nested records.
 	var $savedSchemes=array();					// Color scheme buffer.
@@ -1048,7 +1049,6 @@ class t3lib_TCEforms	{
 		$size = t3lib_div::intInRange($config['size']?$config['size']:30,5,$this->maxInputWidth);
 		$evalList = t3lib_div::trimExplode(',',$config['eval'],1);
 
-
 		if($this->renderReadonly || $config['readOnly'])  {
 			$itemFormElValue = $PA['itemFormElValue'];
 			if (in_array('date',$evalList))	{
@@ -1068,6 +1068,13 @@ class t3lib_TCEforms	{
 
 		if (in_array('required',$evalList))	{
 			$this->requiredFields[$table.'_'.$row['uid'].'_'.$field]=$PA['itemFormElName'];
+				// Mark this field for date/time disposal:
+			foreach ($evalList as $evalItem) {
+				if ($evalItem == 'date' || $evalItem == 'datetime' || $evalItem == 'time') {
+					$this->requiredAdditional[$PA['itemFormElName']]['isPositiveNumber'] = true;
+					break;
+				}
+			}
 		}
 
 		$paramsList = "'".$PA['itemFormElName']."','".implode(',',$evalList)."','".trim($config['is_in'])."',".(isset($config['checkbox'])?1:0).",'".$config['checkbox']."'";
@@ -4658,6 +4665,9 @@ class t3lib_TCEforms	{
 				$field = $match[2];
 				$elements[$record][$field]['required'] = 1;
 				$elements[$record][$field]['requiredImg'] = $itemImgName;
+				if (isset($this->requiredAdditional[$itemName]) && is_array($this->requiredAdditional[$itemName])) {
+					$elements[$record][$field]['additional'] = $this->requiredAdditional[$itemName];
+				}
 			}
 		}
 			// range:

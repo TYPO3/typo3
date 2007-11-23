@@ -77,7 +77,9 @@ function evalFunc_outputObjValue(FObj,value)	{
 	var theEvalType = this.split(evallist, ",", index);
 	var newValue=value;
 	while (theEvalType) {
-		newValue = evalFunc.output(theEvalType, value, FObj);
+		if (theEvalType != 'required') {
+			newValue = evalFunc.output(theEvalType, value, FObj);
+		}
 		index++;
 		theEvalType = this.split(evallist, ",", index);
 	}

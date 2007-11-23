@@ -44,14 +44,13 @@ var TBE_EDITOR = {
 					'requiredImg':	''
 				}
 			}
-		
 		},
 	*/
-	
+
 	elements: {},
 	recentUpdatedElements: {},
 	actionChecks: { submit:	[] },
-	
+
 	formname: '',
 	formnameUENC: '',
 	loadTime: 0,
@@ -62,10 +61,10 @@ var TBE_EDITOR = {
 	prependFormFieldNames: 'data',
 	prependFormFieldNamesUENC: 'data',
 	prependFormFieldNamesCnt: 0,
-	
+
 	isPalettedoc: null,
 	doSaveFieldName: 0,
-	
+
 	labels: {},
 	images: {
 		req: new Image(),
@@ -87,7 +86,7 @@ var TBE_EDITOR = {
 	getElement: function(record, field, type) {
 		var result = null;
 		var element;
-		
+
 		if (TBE_EDITOR.elements && TBE_EDITOR.elements[record] && TBE_EDITOR.elements[record][field]) {
 			element = TBE_EDITOR.elements[record][field];
 			if (type) {
@@ -96,7 +95,7 @@ var TBE_EDITOR = {
 				result = element;
 			}
 		}
-		
+
 		return result;
 	},
 	checkElements: function(type, recentUpdated, record, field) {
@@ -111,7 +110,7 @@ var TBE_EDITOR = {
 				if (elementData) {
 					if (!TBE_EDITOR.checkElementByType(type, elementName, elementData)) result = 0;
 				}
-				
+
 			} else {
 				var elementFieldList, elRecIndex, elRecCnt, elFldIndex, elFldCnt;
 				var elementRecordList = $H(source).keys();
@@ -129,15 +128,16 @@ var TBE_EDITOR = {
 				}
 			}
 		}
-		
+
 		return result;
 	},
 	checkElementByType: function(type, elementName, elementData) {
 		var result = 1;
-		
+
 		if (type) {
 			if (type == 'required') {
-				if (!document[TBE_EDITOR.formname][elementName].value) {
+				var value = document[TBE_EDITOR.formname][elementName].value;
+				if (!value || elementData.additional && elementData.additional.isPositiveNumber && (isNaN(value) || Number(value) <= 0)) {
 					result = 0;
 					TBE_EDITOR.setImage('req_'+elementData.requiredImg, TBE_EDITOR.images.req);
 				}
@@ -156,13 +156,13 @@ var TBE_EDITOR = {
 				}
 			}
 		}
-		
+
 		return result;
 	},
 	addActionChecks: function(type, checks) {
 		TBE_EDITOR.actionChecks[type].push(checks);
 	},
-	
+
 	// Regular TCEforms JSbottom scripts:
 	loginRefreshed: function() {
 		var date = new Date();
@@ -224,7 +224,7 @@ var TBE_EDITOR = {
 				TBE_EDITOR.setImage(imgReqObjName,TBE_EDITOR.images.req);
 			}
 		}
-		
+
 		if (TBE_EDITOR.isPalettedoc) { TBE_EDITOR.setOriginalFormFieldValue(theField) };
 	},
 	setOriginalFormFieldValue: function(theField) {
@@ -274,7 +274,7 @@ var TBE_EDITOR = {
 		if (!TBE_EDITOR.checkElements('required', false)) { OK = 0; }
 		// $reqRangeCheck
 		if (!TBE_EDITOR.checkElements('range', false)) { OK = 0; }
-				
+
 		if (OK || sendAlert==-1) {
 			return true;
 		} else {
