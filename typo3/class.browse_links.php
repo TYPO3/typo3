@@ -755,8 +755,8 @@ class browse_links {
 	var $curUrlInfo;
 
 	/**
-	* array which holds hook objects (initialised in init() )
-	*/
+	 * array which holds hook objects (initialised in init() )
+	 */
 	protected $hookObjects;
 
 
