@@ -1,3 +1,7 @@
+2007-11-23  Ernesto Baschny  <ernst@cron-it.de>
+
+	* Fixed bug #6240: pageNotFound_handling returns empty page if specified URL cannot be retrieved. Credit to Helmut Hummel for the fix.
+
 2007-11-23  Oliver Hader  <oh@inpublica.de>
 
 	* Fixed bug #5956: TCA eval required on date field does not work

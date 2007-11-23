@@ -1390,7 +1390,7 @@
 			list($header,$content) = split("\r\n\r\n", $res, 2);
 			$content.= "\r\n";
 
-			if (false === $content) {
+			if (false === $res) {
 					// Last chance -- redirect
 				header('Location: '.t3lib_div::locationHeaderUrl($code));
 			} else {
