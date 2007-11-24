@@ -712,20 +712,21 @@ class t3lib_extMgm {
 
 	/**
 	 * Adds an entry to the "ds" array of the tt_content field "pi_flexform".
-	 * This is used by plugins to add a flexform XML reference / content for use when they are selected as plugin.
+	 * This is used by plugins to add a flexform XML reference / content for use when they are selected as plugin or content element.
 	 * Usage: 0
 	 *
-	 * @param	string		The same value as the key for the plugin
+	 * @param	string		Plugin key as used in the list_type field. Use the asterisk * to match all list_type values.
 	 * @param	string		Either a reference to a flex-form XML file (eg. "FILE:EXT:newloginbox/flexform_ds.xml") or the XML directly.
+	 * @param	string		Value of tt_content.CType (Content Type) to match. The default is "list" which corresponds to the "Insert Plugin" content element.  Use the asterisk * to match all CType values.
 	 * @return	void
 	 * @see addPlugin()
 	 */
-	function addPiFlexFormValue($piKeyToMatch,$value)	{
+	function addPiFlexFormValue($piKeyToMatch, $value, $CTypeToMatch='list')	{
 		global $TCA;
 		t3lib_div::loadTCA('tt_content');
 
 		if (is_array($TCA['tt_content']['columns']) && is_array($TCA['tt_content']['columns']['pi_flexform']['config']['ds']))	{
-			$TCA['tt_content']['columns']['pi_flexform']['config']['ds'][$piKeyToMatch] = $value;
+			$TCA['tt_content']['columns']['pi_flexform']['config']['ds'][$piKeyToMatch.','.$CTypeToMatch] = $value;
 		}
 	}
 

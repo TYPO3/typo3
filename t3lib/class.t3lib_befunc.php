@@ -1006,7 +1006,23 @@ class t3lib_BEfunc	{
 		if (is_array($ds_array))	{	// If there is a data source array, that takes precedence
 				// If a pointer field is set, take the value from that field in the $row array and use as key.
 			if ($ds_pointerField)	{
-				$srcPointer = $row[$ds_pointerField];
+
+					// Up to two pointer fields can be specified in a comma separated list.
+				$pointerFields = t3lib_div::trimExplode(',', $ds_pointerField);
+				if(count($pointerFields) == 2) { // If we have two pointer fields, the array keys should contain both field values separated by comma. The asterisk "*" catches all values. For backwards compatibility, it's also possible to specify only the value of the first defined ds_pointerField.
+					if($ds_array[$row[$pointerFields[0]].','.$row[$pointerFields[1]]]) {	// Check if we have a DS for the combination of both pointer fields values
+						$srcPointer = $row[$pointerFields[0]].','.$row[$pointerFields[1]];
+					} elseif($ds_array[$row[$pointerFields[1]].',*']) {	// Check if we have a DS for the value of the first pointer field suffixed with ",*"
+						$srcPointer = $row[$pointerFields[1]].',*';
+					} elseif($ds_array['*,'.$row[$pointerFields[1]]]) {	// Check if we have a DS for the value of the second pointer field prefixed with "*,"
+						$srcPointer = '*,'.$row[$pointerFields[1]];
+					} elseif($ds_array[$row[$pointerFields[0]]]) {	// Check if we have a DS for just the value of the first pointer field (mainly for backwards compatibility)
+						$srcPointer = $row[$pointerFields[0]];
+					}
+				} else {
+					$srcPointer = $row[$pointerFields[0]];
+				}
+
 				$srcPointer = isset($ds_array[$srcPointer]) ? $srcPointer : 'default';
 			} else $srcPointer='default';
 

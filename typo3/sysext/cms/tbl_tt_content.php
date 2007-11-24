@@ -930,7 +930,7 @@ $TCA['tt_content'] = Array (
 			'label' => 'LLL:EXT:cms/locallang_ttc.php:pi_flexform',
 			'config' => Array (
 				'type' => 'flex',
-				'ds_pointerField' => 'list_type',
+				'ds_pointerField' => 'list_type,CType',
 				'ds' => array(
 					'default' => '
 						<T3DataStructure>

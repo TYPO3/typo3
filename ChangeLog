@@ -1,3 +1,10 @@
+2007-11-24  Ingmar Schlecht  <ingmar@typo3.org>
+
+	* Feature #6770: Flexform DataStructure pointerFields:
+		* Implement option to use two ds_pointerFields so DataStructures can be switched by the combination of two field's values
+		* Enabled the new ds_pointerFields possibility for tt_content.pi_flexform, so you can specify DataStructures per (combination of) list_type and CType values
+		* Made css_styled_content register the DataStructures for the CType=table Content Element using the new ds_pointerFields instead of overriding the 'default' DS key
+
 2007-11-23  Ernesto Baschny  <ernst@cron-it.de>
 
 	* Added feature #5791: indexed_search: join_pages is now configurable via TypoScript
