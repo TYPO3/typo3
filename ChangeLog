@@ -2,6 +2,7 @@
 
 	* Fixed bug #6817: Files with extension xml are ignored as resource of a template
 	* Added feature #5530: Hook in TCEmain after all database operations
+	* Cleaned up typo3/sysext/tstemplate_info/class.tx_tstemplateinfo.php
 
 2007-11-24  Benjamin Mack  <mack@xnos.org>
 
