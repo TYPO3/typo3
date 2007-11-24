@@ -924,6 +924,17 @@ class t3lib_TCEmain	{
 
 		$this->dbAnalysisStoreExec();
 		$this->removeRegisteredFiles();
+
+		/*
+		 * Hook: processDatamap_afterAllOperations
+		 * 
+		 * Note: When this hook gets called, all operations on the submitted data have been finished.
+		 */
+		foreach($hookObjectsArr as $hookObj) {
+			if (method_exists($hookObj, 'processDatamap_afterAllOperations')) {
+				$hookObj->processDatamap_afterAllOperations($this);
+			}
+		}
 	}
 
 	/**
