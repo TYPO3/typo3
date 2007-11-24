@@ -4,11 +4,11 @@
 if (!defined ('TYPO3_MODE')) 	die ('Access denied.');
 
 $_EXTCONF = unserialize($_EXTCONF);	// unserializing the configuration so we can use it here:
-if ($_EXTCONF['setPageTSconfig'])	{
+if ($_EXTCONF['setPageTSconfig'] || !$_EXTCONF)	{
 	t3lib_extMgm::addPageTSConfig('<INCLUDE_TYPOSCRIPT: source="FILE:EXT:css_styled_content/pageTSconfig.txt">');
 }
 
-if ($_EXTCONF['removePositionTypes'])	{
+if ($_EXTCONF['removePositionTypes'] || !$_EXTCONF)	{
 	t3lib_extMgm::addPageTSConfig('
 		TCEFORM.tt_content.imageorient.types.image.removeItems = 8,9,10,17,18,25,26
 	');

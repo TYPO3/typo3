@@ -1,3 +1,7 @@
+2007-11-24  Benjamin Mack  <mack@xnos.org>
+
+	* Fix #6822: css_styled_content default EXTCONF was not loaded since it was installed by default
+
 2007-11-24  Ingmar Schlecht  <ingmar@typo3.org>
 
 	* Feature #6770: Flexform DataStructure pointerFields:
