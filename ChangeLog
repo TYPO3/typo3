@@ -17,11 +17,8 @@
 
 2007-11-23  Ernesto Baschny  <ernst@cron-it.de>
 
-	* Added feature #5791: indexed_search: join_pages is now configurable via TypoScript
-
-2007-11-23  Ernesto Baschny  <ernst@cron-it.de>
-
 	* Fixed bug #6240: pageNotFound_handling returns empty page if specified URL cannot be retrieved. Credit to Helmut Hummel for the fix.
+	* Added feature #5791: indexed_search: join_pages is now configurable via TypoScript
 
 2007-11-23  Oliver Hader  <oh@inpublica.de>
 
