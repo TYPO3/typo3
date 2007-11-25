@@ -1,3 +1,7 @@
+2007-11-25  Ingmar Schlecht  <ingmar@typo3.org>
+
+	* Fixed Bug #6828: Using outpug buffering for debug() to prevent "Headers already sent" errors
+
 2007-11-25  Benjamin Mack  <mack@xnos.org>
 
 	* Feature #6829: New general template methods for FE & BE (Thanks to Steffen Kamper)

@@ -2902,6 +2902,11 @@ class t3lib_div {
 	 * @return	void
 	 */
 	function debug($var='',$brOrHeader=0)	{
+			// buffer the output of debug if no buffering started before
+		if (ob_get_level()==0) {
+			ob_start();
+		}
+
 		if ($brOrHeader && !t3lib_div::testInt($brOrHeader))	{
 			echo '<table class="typo3-debug" border="0" cellpadding="0" cellspacing="0" bgcolor="white" style="border:0px; margin-top:3px; margin-bottom:3px;"><tr><td style="background-color:#bbbbbb; font-family: verdana,arial; font-weight: bold; font-size: 10px;">'.htmlspecialchars((string)$brOrHeader).'</td></tr><tr><td>';
 		} elseif ($brOrHeader<0)	{
