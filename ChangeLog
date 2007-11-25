@@ -1,5 +1,9 @@
 2007-11-25  Ingmar Schlecht  <ingmar@typo3.org>
 
+	* Reformatted t3editor sysext
+
+2007-11-25  Ingmar Schlecht  <ingmar@typo3.org>
+
 	* Fixed Bug #6828: Using outpug buffering for debug() to prevent "Headers already sent" errors
 
 2007-11-25  Benjamin Mack  <mack@xnos.org>

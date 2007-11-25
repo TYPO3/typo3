@@ -24,6 +24,20 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
+/**
+ * [CLASS/FUNCTION INDEX of SCRIPT]
+ *
+ *
+ *
+ *   47: class tx_t3editor
+ *   85:     public function __construct()
+ *  117:     public function getJavascriptCode()
+ *  162:     public function getCodeEditor($name, $class='', $content='', $additionalParams='', $alt='')
+ *
+ * TOTAL FUNCTIONS: 3
+ * (This index is automatically created/updated by the extension "extdeveval")
+ *
+ */
 
 /**
  * Provides a javascript-driven code editor with syntax highlighting for TS, HTML, CSS and more
@@ -38,7 +52,7 @@ class tx_t3editor {
 	 * @var string
 	 */
 	private $filepathEditorlib;
-	
+
 	/**
 	 * path to the main stylesheet
 	 *
@@ -54,7 +68,7 @@ class tx_t3editor {
 	 * @var int
 	 */
 	private $editorCounter;
-	
+
 	/**
 	 * flag to enable the t3editor
 	 *
@@ -64,7 +78,7 @@ class tx_t3editor {
 
 
 	/**
-	 * constructor
+	 * Creates a new instance of the class
 	 *
 	 * @return	void
 	 */
@@ -82,9 +96,9 @@ class tx_t3editor {
 	}
 
 	/**
-	 * Enter description here...
+	 * Sets editor enabled/disabled state
 	 *
-	 * @param	boolean		$state
+	 * @param	boolean		$state	<code>true</code> if editor is disabled
 	 * @return	void
 	 */
 	public function setBEUCdisableT3Editor($state) { //TODO better descriptive name for $state
@@ -96,14 +110,14 @@ class tx_t3editor {
 	}
 
 	/**
-	 * Enter description here...
+	 * Retrieves JavaScript code for editor
 	 *
-	 * @return	string		DESCRIPTION GOES HERE
+	 * @return	string		JavaScript code
 	 */
 	public function getJavascriptCode()	{
-		$code = ''; //TODO find a more descriptive name (low prio)
+		$code = ''; // TODO find a more descriptive name (low prio)
 
-		if($this->isEnabled) {
+		if ($this->isEnabled) {
 				// disable the obsolete tab.js to avoid conflicts
 			$GLOBALS['BE_USER']->uc['disableTabInTextarea'] = '1';
 
@@ -136,14 +150,14 @@ class tx_t3editor {
 	}
 
 	/**
-	 * Enter description here...
+	 * Generates HTML with code editor
 	 *
-	 * @param	unknown_type		$name
-	 * @param	unknown_type		$class
-	 * @param	unknown_type		$content
-	 * @param	unknown_type		$additionalParams
-	 * @param	unknown_type		$alt
-	 * @return	string		DESCRIPTION GOES HERE
+	 * @param	string		$name	Name attribute of HTML tag
+	 * @param	string		$class	Class attribute of HTML tag
+	 * @param	string		$content	Content of the editor
+	 * @param	string		$additionalParams	Any additional editor parameters
+	 * @param	string		$alt	Alt attribute
+	 * @return	string		Generated HTML code for editor
 	 */
 	public function getCodeEditor($name, $class='', $content='', $additionalParams='', $alt='') {
 		$code = '';
@@ -169,11 +183,11 @@ class tx_t3editor {
 
 		} else {
 				// fallback
-			if(!empty($class)) {
+			if (!empty($class)) {
 				$class = 'class="'.$class.'" ';
 			}
 
-			$code.= '<textarea name="'.$name.'" '.$class.$additionalParams.'>'.$content.'</textarea>';
+			$code .= '<textarea name="'.$name.'" '.$class.$additionalParams.'>'.$content.'</textarea>';
 		}
 
 		return $code;
@@ -183,9 +197,8 @@ class tx_t3editor {
 
 
 	// Include extension?
-if(defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['sysext/t3editor/class.tx_t3editor.php']) {
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['sysext/t3editor/class.tx_t3editor.php']);
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/t3editor/class.tx_t3editor.php']) {
+	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/t3editor/class.tx_t3editor.php']);
 }
-
 
 ?>
