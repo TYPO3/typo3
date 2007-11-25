@@ -1,3 +1,7 @@
+2007-11-25  Benjamin Mack  <mack@xnos.org>
+
+	* Added labels to checkbox descriptions in new EM section
+
 2007-11-24  Oliver Hader  <oh@inpublica.de>
 
 	* Fixed bug #6817: Files with extension xml are ignored as resource of a template

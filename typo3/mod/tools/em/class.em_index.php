@@ -5160,10 +5160,10 @@ $EM_CONF[$_EXTKEY] = '.$this->arrayToCode($EM_CONF, 0).';
 
 		if (is_file(PATH_site.'typo3temp/extensions.xml.gz'))	{
 			$content = $this->showExtensionsToUpdate()
-			.t3lib_BEfunc::getFuncCheck(0, 'SET[display_installed]', $this->MOD_SETTINGS['display_installed'])
-			.'&nbsp;'.$LANG->sL('LLL:EXT:lang/locallang_mod_tools_em.xml:display_nle'). '<br/>'
-			.t3lib_BEfunc::getFuncCheck(0, 'SET[display_files]', $this->MOD_SETTINGS['display_files'])
-			.'&nbsp;'.$LANG->sL('LLL:EXT:lang/locallang_mod_tools_em.xml:display_files');
+			.t3lib_BEfunc::getFuncCheck(0, 'SET[display_installed]', $this->MOD_SETTINGS['display_installed'], '', '', 'id="checkDisplayInstalled"')
+			.'&nbsp;<label for="checkDisplayInstalled">'.$LANG->sL('LLL:EXT:lang/locallang_mod_tools_em.xml:display_nle'). '</label><br/>'
+			.t3lib_BEfunc::getFuncCheck(0, 'SET[display_files]', $this->MOD_SETTINGS['display_files'], '', '', 'id="checkDisplayFiles"')
+			.'&nbsp;<label for="checkDisplayFiles">'.$LANG->sL('LLL:EXT:lang/locallang_mod_tools_em.xml:display_files').'</label>';
 			$this->content .= $this->doc->section($LANG->sL('LLL:EXT:lang/locallang_mod_tools_em.xml:header_upd_ext'), $content, 0, 1);
 
 			$content = $LANG->sL('LLL:EXT:lang/locallang_mod_tools_em.xml:note_last_update').' '.date('Y-m-d H:i',filemtime(PATH_site.'typo3temp/extensions.xml.gz')).'<br />';
