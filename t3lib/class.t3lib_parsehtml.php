@@ -216,7 +216,49 @@ class t3lib_parsehtml	{
 		return $before.$between.$after;
 	}
 
+	
+	/**
+	 * Substitutes a marker string in the input content (by a simple str_replace())
+	 *
+	 * @param	string		The content stream, typically HTML template content.
+	 * @param	string		The marker string, typically on the form "###[the marker string]###"
+	 * @param	mixed		The content to insert instead of the marker string found.
+	 * @return	string		The processed HTML content string.
+	 * @see substituteSubpart()
+	 */
+	public function substituteMarker($content, $marker, $markContent)	{
+		return str_replace($marker, $markContent, $content);
+	}
 
+
+	/**
+	 * Traverses the input $markContentArray array and for each key the marker by the same name (possibly wrapped and in upper case) will be substituted with the keys value in the array.
+	 * This is very useful if you have a data-record to substitute in some content. In particular when you use the $wrap and $uppercase values to pre-process the markers. Eg. a key name like "myfield" could effectively be represented by the marker "###MYFIELD###" if the wrap value was "###|###" and the $uppercase boolean true.
+	 *
+	 * @param	string		The content stream, typically HTML template content.
+	 * @param	array		The array of key/value pairs being marker/content values used in the substitution. For each element in this array the function will substitute a marker in the content stream with the content.
+	 * @param	string		A wrap value - [part 1] | [part 2] - for the markers before substitution
+	 * @param	boolean		If set, all marker string substitution is done with upper-case markers.
+	 * @return	string		The processed output stream
+	 * @see substituteMarker(), substituteMarkerInObject(), TEMPLATE()
+	 */
+	public function substituteMarkerArray($content, $markContentArray, $wrap='', $uppercase=0)	{
+		if (is_array($markContentArray))	{
+			$wrapArr = t3lib_div::trimExplode('|',$wrap);
+			foreach($markContentArray as $marker => $markContent)	{
+				if($uppercase)	{
+					$marker = strtoupper($marker);
+				}
+				if(count($wrapArr)>0) {
+					$marker = $wrapArr[0].$marker.$wrapArr[1];
+				}
+				$content = str_replace($marker, $markContent, $content);
+			}
+		}
+		return $content;
+	}
+
+	
 	// *******************************************'
 	// COPY FROM class.tslib_content.php: / END
 	// *******************************************'

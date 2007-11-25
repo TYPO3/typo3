@@ -1,5 +1,6 @@
 2007-11-25  Benjamin Mack  <mack@xnos.org>
 
+	* Feature #6829: New general template methods for FE & BE (Thanks to Steffen Kamper)
 	* Added labels to checkbox descriptions in new EM section
 
 2007-11-24  Oliver Hader  <oh@inpublica.de>

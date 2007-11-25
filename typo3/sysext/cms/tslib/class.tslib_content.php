@@ -215,7 +215,7 @@
  */
 
 
-  // Includes this class since it is used for parsing HTML
+  // Includes this classes since it is used for parsing HTML
 require_once(PATH_t3lib."class.t3lib_parsehtml.php");
 
 	// Object TypoScript library included:
@@ -2906,7 +2906,7 @@ class tslib_cObj {
 	 * @see substituteSubpart()
 	 */
 	function substituteMarker($content,$marker,$markContent)	{
-		return str_replace($marker,$markContent,$content);
+		return t3lib_parsehtml::substituteMarker($content,$marker,$markContent);
 	}
 
 	/**
@@ -3024,16 +3024,7 @@ class tslib_cObj {
 	 * @see substituteMarker(), substituteMarkerInObject(), TEMPLATE()
 	 */
 	function substituteMarkerArray($content,$markContentArray,$wrap='',$uppercase=0)	{
-		if (is_array($markContentArray))	{
-			reset($markContentArray);
-			$wrapArr=t3lib_div::trimExplode('|',$wrap);
-			while(list($marker,$markContent)=each($markContentArray))	{
-				if($uppercase)	$marker=strtoupper($marker);
-				if(strcmp($wrap,''))		$marker=$wrapArr[0].$marker.$wrapArr[1];
-				$content=str_replace($marker,$markContent,$content);
-			}
-		}
-		return $content;
+		return t3lib_parsehtml::substituteMarkerArray($content,$markContentArray,$wrap,$uppercase);
 	}
 
 	/**
