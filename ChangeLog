@@ -2,7 +2,7 @@
 
 	* Fixed bug #6831: Clickmenu is cut off on the left, when it does not fit in the viewport (Thanks to Helmut Hummel)
 
-2007-11-25  Ingmar Schlecht  <ingmar@typo3.org>
+2007-11-25  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Reformatted t3editor sysext
 
