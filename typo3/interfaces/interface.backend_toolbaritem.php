@@ -33,7 +33,7 @@
  * @package TYPO3
  * @subpackage t3lib
  */
-interface t3lib_backendToolbarItem {
+interface backend_toolbarItem {
 
 	/**
 	 * sets the reference to the backend object

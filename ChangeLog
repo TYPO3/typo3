@@ -1,4 +1,8 @@
-2007-11-26  Wolfgang Klinger <wk@plan2.net> 
+2007-11-26  Ingo Renner	<ingo@typo3.org>
+
+	* moved interface t3lib_backendToolbarItem to typo3/interfaces/interface.backend_toolbaritem.php
+
+2007-11-26  Wolfgang Klinger <wk@plan2.net>
 
 	* Fixed bug #6831: Clickmenu is cut off on the left, when it does not fit in the viewport (Thanks to Helmut Hummel)
 
@@ -41,7 +45,7 @@
 
 	* Fixed bug #5956: TCA eval required on date field does not work
 
-2007-11-23  Wolfgang Klinger <wk@plan2.net> 
+2007-11-23  Wolfgang Klinger <wk@plan2.net>
 
 	* Fixed bug #6775: Page and info module ignore "Limit to language"
 

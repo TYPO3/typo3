@@ -27,7 +27,7 @@
 
 require_once ('init.php');
 require_once ('template.php');
-require_once (PATH_t3lib.'interfaces/interface.t3lib_backendtoolbaritem.php');
+require_once ('interfaces/interface.backend_toolbaritem.php');
 
 require ('classes/class.typo3logo.php');
 require ('classes/class.modulemenu.php');
@@ -134,8 +134,8 @@ class TYPO3backend {
 		foreach($coreToolbarItems as $toolbarItemName => $toolbarItemClass) {
 			$toolbarItem = t3lib_div::makeInstance($toolbarItemClass);
 
-			if(!($toolbarItem instanceof t3lib_backendToolbarItem)) {
-				throw new UnexpectedValueException('$toolbarItem "'.$toolbarItemName.'" must implement interface t3lib_backendToolbarItem', 1195126772);
+			if(!($toolbarItem instanceof backend_toolbarItem)) {
+				throw new UnexpectedValueException('$toolbarItem "'.$toolbarItemName.'" must implement interface backend_toolbarItem', 1195126772);
 			}
 
 			$toolbarItem->setBackend($this);

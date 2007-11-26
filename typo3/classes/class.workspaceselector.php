@@ -33,7 +33,7 @@
  * @package TYPO3
  * @subpackage core
  */
-class WorkspaceSelector implements t3lib_backendToolbarItem {
+class WorkspaceSelector implements backend_toolbarItem {
 
 	private $changeWorkspace;
 	private $changeWorkspacePreview;
@@ -45,6 +45,11 @@ class WorkspaceSelector implements t3lib_backendToolbarItem {
 	 */
 	private $backendReference;
 
+	/**
+	 * constructor
+	 *
+	 * @return	void
+	 */
 	public function __construct() {
 		$this->changeWorkspace        = t3lib_div::_GP('changeWorkspace');
 		$this->changeWorkspacePreview = t3lib_div::_GP('changeWorkspacePreview');
