@@ -137,11 +137,14 @@ var Clickmenu = {
 					y += (dimsWindow.height - dims.height - relative.Y);
 				}
 			}
-			// adjusting the X position like Y above
+			// adjusting the X position like Y above, but align it to the left side of the viewport if it does not fit completely
 			if (dimsWindow.width - dims.width < relative.X) {
 				if (relative.X > dims.width) {
 					x -= (dims.width - 10);
-				} else {
+				} else if ((dimsWindow.width - dims.width - relative.X) < offset.left) {
+					x = offset.left;
+				}
+				else {
 					x += (dimsWindow.width - dims.width - relative.X);
 				}
 			}
