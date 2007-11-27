@@ -1800,8 +1800,8 @@ HTMLArea.prototype.updateToolbar = function(noStatus) {
 						var el = this.getParentElement();
 						while (el && !HTMLArea.isBlockElement(el)) { el = el.parentNode; }
 						if (el) btn.state("active",(el.style.direction == ((cmd == "RightToLeft") ? "rtl" : "ltr")));
-						break;
 					}
+					break;
 				case "Paste":
 					if(!text) {
 						btn.state("enabled", doc.queryCommandEnabled('Paste'));
@@ -2422,8 +2422,19 @@ HTMLArea._editorEvent = function(ev) {
 			if (HTMLArea.is_gecko) editor._detectURL(ev);
 			switch (ev.keyCode) {
 				case 13	: // KEY enter
-					if (HTMLArea.is_gecko && !ev.shiftKey && !editor.config.disableEnterParagraphs) {
-						if (editor._checkInsertP()) {
+					if (HTMLArea.is_gecko) { 
+						if (!ev.shiftKey && !editor.config.disableEnterParagraphs) {
+							if (editor._checkInsertP()) {
+								HTMLArea._stopEvent(ev);
+							}
+						} else if (HTMLArea.is_safari) {
+							var brNode = document.createElement("br");
+							editor.insertNodeAtSelection(brNode);
+							if (!brNode.nextSibling || !HTMLArea.getInnerText(brNode.nextSibling)) {
+								var secondBrNode = document.createElement("br");
+								secondBrNode = brNode.parentNode.appendChild(secondBrNode);
+								editor.selectNode(secondBrNode, false);
+							}
 							HTMLArea._stopEvent(ev);
 						}
 							// update the toolbar state after some time

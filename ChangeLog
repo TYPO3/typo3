@@ -1,3 +1,7 @@
+2007-11-27  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
+
+	* Bugfix #6836: htmlArea RTE cannot enter line break in Safari (Windows)
+
 2007-11-26  Ingo Renner	<ingo@typo3.org>
 
 	* moved interface t3lib_backendToolbarItem to typo3/interfaces/interface.backend_toolbaritem.php
