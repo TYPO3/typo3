@@ -43,7 +43,6 @@ class ModuleMenu {
 	protected $moduleLoader;
 
 	private $backPath;
-	private $cacheActions;
 	private $linkModules;
 	private $loadedModules;
 	private $fsMod; //TODO find a more descriptive name, left over from alt_menu_functions
@@ -65,9 +64,6 @@ class ModuleMenu {
 		$this->moduleLoader->load($GLOBALS['TBE_MODULES']);
 		$this->loadedModules = $this->moduleLoader->modules;
 
-			// init cache actions
-		$this->cacheActions = array();
-		$this->initCacheActions();
 	}
 
 	/**
@@ -480,60 +476,6 @@ class ModuleMenu {
 		</form>';
 
 		return $buttonForm;
-	}
-
-	/**
-	 * renders the actions to clear several caches
-	 *
-	 * @return	string	cache actions html code snippet
-	 */
-	public function renderCacheActions() {
-		$renderedCacheActions = array('<ul id="cache-actions">');
-
-		foreach($this->cacheActions as $actionKey => $cacheAction) {
-			$js = 
-				'top.origIcon = $$(\'#action-'.$actionKey.' img\')[0].src;'.
-				'$$(\'#action-'.$actionKey.' img\')[0].src = \'gfx/spinner.gif\';'.
-				'new Ajax.Request(\''.htmlspecialchars($cacheAction['href']).'\', { '.
-					'method: \'get\', '.
-					'onComplete: function() {$$(\'#action-'.$actionKey.' img\')[0].src = top.origIcon;}'.
-				'}); '.
-				'return false;';
-
-			$renderedCacheActions[] = '<li id="action-'.$actionKey.'"><a onclick="'.$js.'" href="#'.htmlspecialchars($cacheAction['href']).'">'.$cacheAction['icon'].' '.$cacheAction['title'].'</a></li>';
-		}
-
-		$renderedCacheActions[] = '</ul>';
-
-		return implode("\n", $renderedCacheActions);
-	}
-
-	/**
-	 * initializes cache actions
-	 *
-	 * @return	void
-	 */
-	private function initCacheActions() {
-
-			// Clearing of cache-files in typo3conf/ + menu
-		if ($GLOBALS['TYPO3_CONF_VARS']['EXT']['extCache'])	{
-			$title = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:rm.clearCache_allTypo3Conf');
-			$this->cacheActions[] = array(
-				'id'    => 'temp_CACHED',
-				'title' => $title,
-				'href'  => $this->backPath.'tce_db.php?vC='.$GLOBALS['BE_USER']->veriCode().'&cacheCmd=temp_CACHED',
-				'icon'  => '<img'.t3lib_iconWorks::skinImg($this->backPath, 'gfx/clear_cache_files_in_typo3c.gif', 'width="21" height="18"').' title="'.htmlspecialchars($title).'" alt="" />'
-			);
-		}
-
-			// Clear all page cache
-		$title = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:rm.clearCache_all');
-		$this->cacheActions[] = array(
-			'id'    => 'all',
-			'title' => $title,
-			'href'  => $this->backPath.'tce_db.php?vC='.$GLOBALS['BE_USER']->veriCode().'&cacheCmd=all',
-			'icon'  => '<img'.t3lib_iconWorks::skinImg($this->backPath, 'gfx/clear_all_cache.gif', 'width="21" height="18"').' title="'.htmlspecialchars($title).'" alt="" />'
-		);
 	}
 
 	/**

@@ -6,8 +6,7 @@ URL    : http://typo3.org
 
 Description : styles the TYPO3 backend
 
-Created  : 2007/10/14
-Modified : 2007/10/17
+	$Id$
 
 - - - - - - - - - - - - - - - - - - - - - */
 
@@ -59,8 +58,8 @@ iframe {
 #typo3-main-container,
 #typo3-main-container * iframe {
 	height: 660px;
+	z-index: 1;
 }
-
 
 
 

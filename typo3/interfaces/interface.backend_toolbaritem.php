@@ -49,6 +49,13 @@ interface backend_toolbarItem {
 	 * @return	string	the toolbar item rendered as HTML string
 	 */
 	public function render();
+
+	/**
+	 * returns additional attributes for the list item in the toolbar
+	 *
+	 * @return	string		list item HTML attibutes
+	 */
+	public function getAdditionalAttributes();
 }
 
 ?>

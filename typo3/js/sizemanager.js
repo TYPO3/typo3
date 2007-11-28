@@ -29,7 +29,7 @@
 var SizeManager = Class.create({
 
 	/**
-	 * registers for resize event listener and execute on DOM read
+	 * registers for resize event listener and executes on DOM ready
 	 */
 	initialize: function() {
 		Event.observe(window, 'resize', this.resizeBackend);

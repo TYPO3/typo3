@@ -1,3 +1,7 @@
+2007-11-27  Ingo Renner	<ingo@typo3.org>
+
+	* added clear cache actions menu to backend.php as part of the cleaner backend project
+
 2007-11-27  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
 	* Bugfix #6836: htmlArea RTE cannot enter line break in Safari (Windows)

@@ -186,6 +186,15 @@ class WorkspaceSelector implements backend_toolbarItem {
 	private function addJavascriptToBackend() {
 		$this->backendReference->addJavascriptFile('typo3/js/workspaces.js');
 	}
+
+	/**
+	 * returns additional attributes for the list item in the toolbar
+	 *
+	 * @return	string		list item HTML attibutes
+	 */
+	public function getAdditionalAttributes() {
+		return ' id="workspace-selector"';
+	}
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['typo3/classes/class.workspaceselector.php']) {

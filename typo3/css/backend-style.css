@@ -6,8 +6,7 @@ URL    : http://typo3.org
 
 Description : styles the TYPO3 backend
 
-Created  : 2007/11/01
-Modified : 2007/11/01
+	$Id$
 
 - - - - - - - - - - - - - - - - - - - - - */
 
@@ -27,25 +26,6 @@ Modified : 2007/11/01
 }
 
 
-/* ----- Caching ----- */
-
-#cache-actions {
-	list-style: none;
-	padding: 0px;
-	margin: 15px 0px;
-}
-
-#cache-actions li {
-	padding-left: 2px;
-}
-
-#cache-actions a {
-	display: block;
-	text-decoration: none;
-	vertical-align: center;
-}
-
-
 /* ----- Logout ----- */
 
 #typo3-side-menu form,
@@ -59,26 +39,80 @@ Modified : 2007/11/01
 }
 
 
+/* ----- Toolbar ----- */
 
+.typo3-top-toolbar {
+	padding-right: 15px;
+	text-align: right;
+}
 
+#typo3-toolbar {
+	display: inline;
+	list-style: none;
+	margin: 0px;
+	padding: 0px;
+}
 
+#typo3-toolbar li {
+	float: right;
+}
 
+.toolbar-item {
+	width: 30px;
+	height: 23px;
+	padding-top: 2px;
+	display: block;
+	text-align: center;
+	background-image: url(../gfx/toolbar_separator.png);
+	background-repeat: no-repeat;
+}
 
+.toolbar-item-active {
+	background-image: url(../gfx/toolbar_item_active_bg.png);
+}
 
+/* ----- Workspace Selector ----- */
 
+#workspace-selector {
+	padding-top: 2px;
+	margin-right: 5px;
+}
 
+/* ----- Caching ----- */
 
+#clear-cache-actions-menu ul {
+	position: absolute;
+	list-style: none;
+	padding: 2px 0px 0px;
+	margin: 0px;
+	background-color: #f9f9f9;
+	border: 1px solid #abb2bc;
+	border-top: none;
+	width: 180px;
+	right: 15px;
+}
 
+#clear-cache-actions-menu li {
+	padding-left: 3px;
+	padding-top: 2px;
+	clear: both;
+	text-align: left;
+	float: none;
+	vertical-align: middle;
+	height: 19px;
+}
 
+#clear-cache-actions-menu li img {
+	float: left;
+}
 
-
-
-
-
-
-
-
-
-
+#clear-cache-actions-menu li a {
+	text-decoration: none;
+	display: block;
+	padding-bottom: 2px;
+	padding-left: 5px;
+	float: left;
+	font-size: 11px;
+}
 
 

@@ -32,6 +32,7 @@ require_once ('interfaces/interface.backend_toolbaritem.php');
 require ('classes/class.typo3logo.php');
 require ('classes/class.modulemenu.php');
 require ('classes/class.workspaceselector.php');
+require ('classes/class.clearcachemenu.php');
 
 require_once (PATH_t3lib.'class.t3lib_loadmodules.php');
 require_once (PATH_t3lib.'class.t3lib_basicfilefunc.php');
@@ -99,6 +100,7 @@ class TYPO3backend {
 		$this->js = '';
 		$this->jsFiles = array(
 			'contrib/prototype/prototype.js',
+			'contrib/scriptaculous/scriptaculous.js?load=builder,effects,controls,dragdrop',
 			'md5.js',
 			'js/sizemanager.js',
 			'../t3lib/jsfunc.evalfield.js'
@@ -124,8 +126,8 @@ class TYPO3backend {
 
 		$coreToolbarItems = array(
 			'workspaceSelector' => 'WorkspaceSelector',
+			'clearCacheActions' => 'ClearCacheMenu'
 			/* TODO
-			'clearCacheActions' => '',
 			'backendSearch'     => '',
 			'shortcutMenu'      => ''
 			*/
@@ -139,7 +141,7 @@ class TYPO3backend {
 			}
 
 			$toolbarItem->setBackend($this);
-			$this->toolbarItems[] = $toolbarItem;
+			$this->toolbarItems[$toolbarItemName] = $toolbarItem;
 		}
 	}
 
@@ -155,7 +157,6 @@ class TYPO3backend {
 		$logo->setLogo('gfx/typo3logo_mini.png');
 
 		$menu         = $this->moduleMenu->render();
-		$cacheActions = $this->moduleMenu->renderCacheActions();
 		$logout       = $this->moduleMenu->renderLogoutButton();
 		$loginInfo    = $this->getLoggedInUserLabel();
 
@@ -171,7 +172,6 @@ class TYPO3backend {
 		<div id="typo3-main-container">
 			<div id="typo3-side-menu">'
 				.$menu
-				.$cacheActions
 				.$logout
 				.$loginInfo
 				.'
@@ -229,13 +229,17 @@ class TYPO3backend {
 	 * @return	string	top toolbar elements as HTML
 	 */
 	private function renderToolbar() {
-		$toolbar = '';
+		$toolbar = '<ul id="typo3-toolbar">';
 
-		foreach($this->toolbarItems as $toolbarItem) {
-			$toolbar .= $toolbarItem->render();
+		$toolbarItems = array_reverse($this->toolbarItems);
+
+		foreach($toolbarItems as $toolbarItem) {
+			$additionalAttributes = $toolbarItem->getAdditionalAttributes();
+
+			$toolbar .= '<li'.$additionalAttributes.'>'.$toolbarItem->render().'</li>';
 		}
 
-		return $toolbar;
+		return $toolbar.'</ul>';
 	}
 
 	/**
