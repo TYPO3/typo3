@@ -1,6 +1,7 @@
 2007-11-27  Ingo Renner	<ingo@typo3.org>
 
 	* added clear cache actions menu to backend.php as part of the cleaner backend project
+	* moved user info and logout button to the toolbar
 
 2007-11-27  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 

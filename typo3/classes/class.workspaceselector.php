@@ -137,7 +137,7 @@ class WorkspaceSelector implements backend_toolbarItem {
 		$this->changeWorkspace();
 
 		$options             = array();
-		$workspaceSelector   = '';
+		$workspaceSelector   = '<span class="toolbar-item">';
 		$availableWorkspaces = $this->getAvailableWorkspaces();
 
 			// build selector box options
@@ -176,7 +176,7 @@ class WorkspaceSelector implements backend_toolbarItem {
 						'align="top"'
 					).'</a>';
 
-		return $workspaceSelector;
+		return $workspaceSelector.'</span>';
 	}
 
 	/**

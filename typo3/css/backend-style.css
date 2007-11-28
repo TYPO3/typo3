@@ -59,7 +59,6 @@ Description : styles the TYPO3 backend
 }
 
 .toolbar-item {
-	width: 30px;
 	height: 23px;
 	padding-top: 2px;
 	display: block;
@@ -68,18 +67,40 @@ Description : styles the TYPO3 backend
 	background-repeat: no-repeat;
 }
 
+#typo3-toolbar .no-separator {
+	background-image: none;
+}
+
 .toolbar-item-active {
 	background-image: url(../gfx/toolbar_item_active_bg.png);
 }
 
+
+/* ----- logged in user ----- */
+
+#username {
+	padding-top: 5px;
+}
+
+#logout-button {
+	padding-left: 4px;
+	padding-right: 6px;
+}
+
+
 /* ----- Workspace Selector ----- */
 
-#workspace-selector {
+#workspace-selector span {
 	padding-top: 2px;
+	padding-left: 7px;
 	margin-right: 5px;
 }
 
 /* ----- Caching ----- */
+
+#clear-cache-actions-menu {
+	width: 30px;
+}
 
 #clear-cache-actions-menu ul {
 	position: absolute;

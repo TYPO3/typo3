@@ -157,8 +157,7 @@ class TYPO3backend {
 		$logo->setLogo('gfx/typo3logo_mini.png');
 
 		$menu         = $this->moduleMenu->render();
-		$logout       = $this->moduleMenu->renderLogoutButton();
-		$loginInfo    = $this->getLoggedInUserLabel();
+
 
 			// create backend scaffolding
 		$backendScaffolding = '
@@ -170,11 +169,8 @@ class TYPO3backend {
 			.'</div>
 		</div>
 		<div id="typo3-main-container">
-			<div id="typo3-side-menu">'
-				.$menu
-				.$logout
-				.$loginInfo
-				.'
+			<div id="typo3-side-menu">
+				'.$menu.'
 			</div>
 			<div id="typo3-content">
 				<iframe src="alt_intro.php" name="content" id="content" marginwidth="0" marginheight="0" frameborder="0"  scrolling="auto" noresize="noresize"></iframe>
@@ -230,10 +226,10 @@ class TYPO3backend {
 	 */
 	private function renderToolbar() {
 		$toolbar = '<ul id="typo3-toolbar">';
+		$toolbar.= '<li>'.$this->getLoggedInUserLabel().'</li>
+					<li><div id="logout-button" class="toolbar-item no-separator">'.$this->moduleMenu->renderLogoutButton().'</div></li>';
 
-		$toolbarItems = $this->toolbarItems;
-
-		foreach($toolbarItems as $toolbarItem) {
+		foreach($this->toolbarItems as $toolbarItem) {
 			$additionalAttributes = $toolbarItem->getAdditionalAttributes();
 
 			$toolbar .= '<li'.$additionalAttributes.'>'.$toolbarItem->render().'</li>';
@@ -248,14 +244,14 @@ class TYPO3backend {
 	 * @return	string		html code snippet displaying the currently logged in user
 	 */
 	private function getLoggedInUserLabel() {
-		$username = '<p id="username">['.htmlspecialchars($GLOBALS['BE_USER']->user['username']).']</p>';;
+		$username = '<div id="username" class="toolbar-item no-separator">['.htmlspecialchars($GLOBALS['BE_USER']->user['username']).']</div>';;
 
 			// superuser mode
 		if($BE_USER->user['ses_backuserid']) {
-			$username = '<p id="username" class="typo3-red-background">[SU: '.htmlspecialchars($GLOBALS['BE_USER']->user['username']).']</p>';
+			$username = '<div id="username" class="toolbar-item no-separator typo3-red-background">[SU: '.htmlspecialchars($GLOBALS['BE_USER']->user['username']).']</div>';
 		}
 
-		return '<div id="login-info">'.$username.'</div>';
+		return $username;
 	}
 
 	/**
