@@ -231,7 +231,7 @@ class TYPO3backend {
 	private function renderToolbar() {
 		$toolbar = '<ul id="typo3-toolbar">';
 
-		$toolbarItems = array_reverse($this->toolbarItems);
+		$toolbarItems = $this->toolbarItems;
 
 		foreach($toolbarItems as $toolbarItem) {
 			$additionalAttributes = $toolbarItem->getAdditionalAttributes();

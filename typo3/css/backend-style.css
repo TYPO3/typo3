@@ -43,7 +43,8 @@ Description : styles the TYPO3 backend
 
 .typo3-top-toolbar {
 	padding-right: 15px;
-	text-align: right;
+	position: absolute;
+	right: 0px;
 }
 
 #typo3-toolbar {
@@ -54,7 +55,7 @@ Description : styles the TYPO3 backend
 }
 
 #typo3-toolbar li {
-	float: right;
+	float: left;
 }
 
 .toolbar-item {
