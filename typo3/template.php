@@ -1392,7 +1392,7 @@ $str.=$this->docBodyTagBegin().
 	 * @param	boolean		If set, tab table cells are not allowed to wrap their content
 	 * @param	boolean		If set, the tabs will span the full width of their position
 	 * @param	integer		Default tab to open (for toggle <=0). Value corresponds to integer-array index + 1 (index zero is "1", index "1" is 2 etc.). A value of zero (or something non-existing) will result in no default tab open.
-	 * @param	boolean		If set to '1' empty tabs will be remove, If set to '2' empty tabs will be disabled 
+	 * @param	integer		If set to '1' empty tabs will be remove, If set to '2' empty tabs will be disabled 
 	 * @return	string		JavaScript section for the HTML header.
 	 */
 	function getDynTabMenu($menuItems,$identString,$toggle=0,$foldout=FALSE,$newRowCharLimit=50,$noWrap=1,$fullWidth=FALSE,$defaultTabIndex=1,$dividers2tabs=1)	{
