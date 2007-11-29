@@ -326,7 +326,7 @@ See <a href="http://wiki.typo3.org/index.php/TYPO3_3.8.1" target="_blank">wiki.t
 	 * @return	void
 	 */
 	function renderContent()	{
-		// PAGE CONTENT
+			// PAGE CONTENT
 		$GLOBALS['TT']->incStackPointer();
 		$GLOBALS['TT']->push($GLOBALS['TSFE']->sPre, 'PAGE');
 			$pageContent = $GLOBALS['TSFE']->cObj->cObjGet($GLOBALS['TSFE']->pSetup);
@@ -761,24 +761,57 @@ See <a href="http://wiki.typo3.org/index.php/TYPO3_3.8.1" target="_blank">wiki.t
 		';
 		}
 
-		// Should minify?
-		if ($GLOBALS['TSFE']->config['config']['minifyJS']) {
-			$minifyError = '';
-			$_scriptCode = t3lib_div::minifyJavaScript($_scriptCode,$minifyError);
-			if ($minifyError) {
-				$GLOBALS['TT']->setTSlogMessage($minifyError, 3);
+			//add inline JS
+		$_inlineJS = '';
+			// defined in TS with page.inlineJS
+		if (is_array($GLOBALS['TSFE']->pSetup['inlineJS.']))	{
+			$GLOBALS['TSFE']->inlineJS[]= $GLOBALS['TSFE']->cObj->cObjGet($GLOBALS['TSFE']->pSetup['inlineJS.'],'inlineJS.');
+		}
+			// defined in php
+		if(is_array($GLOBALS['TSFE']->inlineJS)) {
+			foreach($GLOBALS['TSFE']->inlineJS as $key=>$val) {
+				if(!is_array($val)) {
+					$_inlineJS .= chr(10).$val.chr(10);
+				}
 			}
 		}
+
+			// Should minify?
+		if ($GLOBALS['TSFE']->config['config']['minifyJS']) {
+			$minifyErrorScript = $minifyErrorInline = '';
+			$_scriptCode = t3lib_div::minifyJavaScript($_scriptCode,$minifyErrorScript);
+			if ($minifyErrorScript) {
+				$GLOBALS['TT']->setTSlogMessage($minifyErrorScript, 3);
+			}
+			if ($_inlineJS) {
+				$_inlineJS = t3lib_div::minifyJavaScript($_inlineJS,$minifyErrorInline);
+				if ($minifyErrorInline) {
+					$GLOBALS['TT']->setTSlogMessage($minifyErrorInline, 3);
+				}
+			}
+		}
+
 		if (!$GLOBALS['TSFE']->config['config']['removeDefaultJS']) {
+				// inlude default and inlineJS
 			$GLOBALS['TSFE']->content.='
 	<script type="text/javascript">
 		/*<![CDATA[*/
-	<!--'.$_scriptCode.'
+	<!--'.$_scriptCode.$_inlineJS.'
 	// -->
 		/*]]>*/
 	</script>';
 		} elseif ($GLOBALS['TSFE']->config['config']['removeDefaultJS']==='external')	{
-			$GLOBALS['TSFE']->content.= TSpagegen::inline2TempFile($_scriptCode, 'js');
+				// put default and inlineJS in external file
+			$GLOBALS['TSFE']->content.= TSpagegen::inline2TempFile($_scriptCode.$_inlineJS, 'js');
+		} else {
+				// include only inlineJS
+			$GLOBALS['TSFE']->content.='
+	<script type="text/javascript">
+		/*<![CDATA[*/
+	<!--'.$_inlineJS.'
+	// -->
+		/*]]>*/
+	</script>';
 		}
 
 		$GLOBALS['TSFE']->content.= chr(10).implode($GLOBALS['TSFE']->additionalHeaderData,chr(10)).'
@@ -816,15 +849,15 @@ See <a href="http://wiki.typo3.org/index.php/TYPO3_3.8.1" target="_blank">wiki.t
 		$GLOBALS['TSFE']->content.= chr(10).$bodyTag;
 
 
-		// Div-sections
+			// Div-sections
 		if ($GLOBALS['TSFE']->divSection)	{
 			$GLOBALS['TSFE']->content.= chr(10).$GLOBALS['TSFE']->divSection;
 		}
 
-		// Page content
+			// Page content
 		$GLOBALS['TSFE']->content.= chr(10).$pageContent;
 
-		// Ending page
+			// Ending page
 		$GLOBALS['TSFE']->content.= chr(10).'</body>';
 		if ($GLOBALS['TSFE']->pSetup['frameSet.'])	{
 			$GLOBALS['TSFE']->content.= chr(10).'</noframes>';

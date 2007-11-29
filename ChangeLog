@@ -1,5 +1,6 @@
 2007-11-29  Benjamin Mack  <mack@xnos.org>
 
+	* (feature) #6833: Possibility to add inline JS to page (Thanks to Steffen Kamper)
 	* (minor) Fixed #6825: TCEforms -- Icon for empty palettes are not displayed anymore
 
 2007-11-27  Ingo Renner	<ingo@typo3.org>
