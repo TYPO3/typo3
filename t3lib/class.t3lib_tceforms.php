@@ -82,6 +82,7 @@
  * 2745:     function setTSconfig($table,$row,$field='')
  * 2767:     function getSpecConfForField($table,$row,$field)
  * 2788:     function getSpecConfFromString($extraString, $defaultExtras)
+ * 3007:     function loadPaletteElements($table, $row, $palette, $itemList='')
  *
  *              SECTION: Display of localized content etc.
  * 2816:     function registerDefaultLanguageData($table,$rec)
@@ -740,56 +741,27 @@ class t3lib_TCEforms	{
 	 * @return	string		HTML code.
 	 */
 	function getPaletteFields($table,$row,$palette,$header='',$itemList='',$collapsedHeader='')	{
-		global $TCA;
-		if (!$this->doPrintPalette)	return '';
-
-		$out='';
-		$palParts = array();
-		t3lib_div::loadTCA($table);
-
-			// Getting excludeElements, if any.
-		if (!is_array($this->excludeElements))	{
-			$this->excludeElements = $this->getExcludeElements($table,$row,$this->getRTypeNum($table,$row));
+		if (!$this->doPrintPalette)	{
+			return '';
 		}
 
-			// Render the palette TCEform elements.
-		if ($TCA[$table] && (is_array($TCA[$table]['palettes'][$palette]) || $itemList))	{
-			$itemList = $itemList?$itemList:$TCA[$table]['palettes'][$palette]['showitem'];
-			if ($itemList)	{
-				$fields = t3lib_div::trimExplode(',',$itemList,1);
-				reset($fields);
-				while(list(,$fieldInfo)=each($fields))	{
-					$parts = t3lib_div::trimExplode(';',$fieldInfo);
-					$theField = $parts[0];
-
-					if (!in_array($theField,$this->excludeElements) && $TCA[$table]['columns'][$theField])	{
-						$this->palFieldArr[$palette][] = $theField;
-						$part = $this->getSingleField($table,$theField,$row,$parts[1],1,'',$parts[2]);
-						if (is_array($part))	{
-							$palParts[] = $part;
-						}
-					}
-				}
-			}
-		}
+		$out = '';
+		$parts = $this->loadPaletteElements($table, $row, $palette, $itemList);
 
 			// Put palette together if there are fields in it:
-		if (count($palParts))	{
+		if (count($parts))	{
 			if ($header)	{
-				$out.= $this->intoTemplate(array(
-								'HEADER' => htmlspecialchars($header)
-							),
-							$this->palFieldTemplateHeader
-						);
+				$out .= $this->intoTemplate(
+						array('HEADER' => htmlspecialchars($header)),
+						$this->palFieldTemplateHeader
+					);
 			}
 			$collapsed = $this->isPalettesCollapsed($table,$palette);
-			$out.= $this->intoTemplate(array(
-							'PALETTE' => $this->wrapPaletteField($this->printPalette($palParts), $table, $row ,$palette, $collapsed)
-						),
-						$this->palFieldTemplate
-					);
+			$out .= $this->intoTemplate(
+					array('PALETTE' => $this->wrapPaletteField($this->printPalette($parts), $table, $row ,$palette, $collapsed)),
+					$this->palFieldTemplate
+				);
 		}
-
 		return $out;
 	}
 
@@ -884,7 +856,8 @@ class t3lib_TCEforms	{
 
 						// If the field is NOT a palette field, then we might create an icon which links to a palette for the field, if one exists.
 					if (!$PA['palette'])	{
-						if ($PA['pal'] && $this->isPalettesCollapsed($table,$PA['pal']))	{
+						$paletteFields = $this->loadPaletteElements($table, $row, $PA['pal']);
+						if ($PA['pal'] && $this->isPalettesCollapsed($table,$PA['pal']) && count($paletteFields))	{
 							list($thePalIcon,$palJSfunc) = $this->wrapOpenPalette('<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/options.gif','width="18" height="16"').' border="0" title="'.htmlspecialchars($this->getLL('l_moreOptions')).'" alt="" />',$table,$row,$PA['pal'],1);
 						} else {
 							$thePalIcon = '';
@@ -3021,6 +2994,48 @@ class t3lib_TCEforms	{
 		return t3lib_BEfunc::getSpecConfParts($extraString, $defaultExtras);
 	}
 
+
+	/**
+	 * Loads the elements of a palette (collection of secondary options) in an array.
+	 *
+	 * @param	string		The table name
+	 * @param	array		The row array
+	 * @param	string		The palette number/pointer
+	 * @param	string		Optional alternative list of fields for the palette
+	 * @return	array		The palette elements
+	 */
+	public function loadPaletteElements($table, $row, $palette, $itemList='')	{
+		global $TCA;
+
+		t3lib_div::loadTCA($table);
+		$parts = array();
+
+			// Getting excludeElements, if any.
+		if (!is_array($this->excludeElements))	{
+			$this->excludeElements = $this->getExcludeElements($table, $row, $this->getRTypeNum($table,$row));
+		}
+
+			// Load the palette TCEform elements
+		if ($TCA[$table] && (is_array($TCA[$table]['palettes'][$palette]) || $itemList))	{
+			$itemList = ($itemList ? $itemList : $TCA[$table]['palettes'][$palette]['showitem']);
+			if ($itemList)	{
+				$fields = t3lib_div::trimExplode(',',$itemList,1);
+				foreach($fields as $info)	{
+					$fieldParts = t3lib_div::trimExplode(';',$info);
+					$theField = $fieldParts[0];
+
+					if (!in_array($theField,$this->excludeElements) && $TCA[$table]['columns'][$theField])	{
+						$this->palFieldArr[$palette][] = $theField;
+						$elem = $this->getSingleField($table,$theField,$row,$fieldParts[1],1,'',$fieldParts[2]);
+						if (is_array($elem))	{
+							$parts[] = $elem;
+						}
+					}
+				}
+			}
+		}
+		return $parts;
+	}
 
 
 

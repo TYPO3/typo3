@@ -1,3 +1,7 @@
+2007-11-29  Benjamin Mack  <mack@xnos.org>
+
+	* (minor) Fixed #6825: TCEforms -- Icon for empty palettes are not displayed anymore
+
 2007-11-27  Ingo Renner	<ingo@typo3.org>
 
 	* added clear cache actions menu to backend.php as part of the cleaner backend project
