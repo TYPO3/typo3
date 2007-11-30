@@ -1,3 +1,7 @@
+2007-11-30  Oliver Hader  <oh@inpublica.de>
+
+	* Fixed bug #5602: spamProtectEmailAddresses_atSubst is not recognized correctly
+
 2007-11-24  Oliver Hader  <oh@inpublica.de>
 
 	* Fixed bug #6817: Files with extension xml are ignored as resource of a template
