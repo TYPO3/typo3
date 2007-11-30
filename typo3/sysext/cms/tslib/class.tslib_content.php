@@ -5499,7 +5499,6 @@ class tslib_cObj {
 	 */
 	function getMailTo($mailAddress,$linktxt,$initP='?') {
 		if(!strcmp($linktxt,''))	{ $linktxt = $mailAddress; }
-		$linktxtIsMailAddress = ($linktxt == $mailAddress ? true : false);
 
 		$mailToUrl = 'mailto:'.$mailAddress;
 
@@ -5513,17 +5512,14 @@ class tslib_cObj {
 				if ($GLOBALS['TSFE']->config['config']['spamProtectEmailAddresses_atSubst']) {
 					$atLabel = trim($GLOBALS['TSFE']->config['config']['spamProtectEmailAddresses_atSubst']);
 				}
-				if ($linktxtIsMailAddress) {
-					$linktxt = str_replace('@',$atLabel?$atLabel:'(at)',$linktxt);
-				}
+				$spamProtectedMailAddress = str_replace('@', ($atLabel ? $atLabel : '(at)'), $mailAddress);
 
 				if ($GLOBALS['TSFE']->config['config']['spamProtectEmailAddresses_lastDotSubst']) {
 					$lastDotLabel = trim($GLOBALS['TSFE']->config['config']['spamProtectEmailAddresses_lastDotSubst']);
 					$lastDotLabel = $lastDotLabel ? $lastDotLabel : '(dot)';
-					if ($linktxtIsMailAddress) {
-						$linktxt = preg_replace('/\.([^\.]+)$/', $lastDotLabel.'$1', $linktxt);
-					}
+					$spamProtectedMailAddress = preg_replace('/\.([^\.]+)$/', $lastDotLabel.'$1', $spamProtectedMailAddress);
 				}
+				$linktxt = str_replace($mailAddress, $spamProtectedMailAddress, $linktxt);
 			}
 		} else {
 			$mailToUrl = $GLOBALS['TSFE']->absRefPrefix.$GLOBALS['TSFE']->config['mainScript'].$initP.'&jumpurl='.rawurlencode($mailToUrl).$GLOBALS['TSFE']->getMethodUrlIdToken;
