@@ -1,0 +1,99 @@
+<?php
+/***************************************************************
+*  Copyright notice
+*
+*  (c) 2007 Ingo Renner <ingo@typo3.org>
+*  All rights reserved
+*
+*  This script is part of the TYPO3 project. The TYPO3 project is
+*  free software; you can redistribute it and/or modify
+*  it under the terms of the GNU General Public License as published by
+*  the Free Software Foundation; either version 2 of the License, or
+*  (at your option) any later version.
+*
+*  The GNU General Public License can be found at
+*  http://www.gnu.org/copyleft/gpl.html.
+*  A copy is found in the textfile GPL.txt and important notices to the license
+*  from the author is found in LICENSE.txt distributed with these scripts.
+*
+*
+*  This script is distributed in the hope that it will be useful,
+*  but WITHOUT ANY WARRANTY; without even the implied warranty of
+*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+*  GNU General Public License for more details.
+*
+*  This copyright notice MUST APPEAR in all copies of the script!
+***************************************************************/
+
+
+/**
+ * class to render the backend search toolbar item menu
+ *
+ * $Id$
+ *
+ * @author	Ingo Renner <ingo@typo3.org>
+ * @package TYPO3
+ * @subpackage core
+ */
+class BackendSearchMenu implements backend_toolbarItem {
+
+	/**
+	 * reference back to the backend object
+	 *
+	 * @var	TYPO3backend
+	 */
+	private $backendReference;
+
+	/**
+	 * sets the backend reference
+	 *
+	 * @param TYPO3backend backend object reference
+	 */
+	public function setBackend(&$backendReference) {
+		$this->backendReference = $backendReference;
+	}
+
+	/**
+	 * Creates the selector for workspaces
+	 *
+	 * @return	string		workspace selector as HTML select
+	 */
+	public function render() {
+		$this->addJavascriptToBackend();
+		$searchMenu = array();
+
+		$searchMenu[] = '<a href="#" class="toolbar-item"><img'.t3lib_iconWorks::skinImg($this->backPath, 'gfx/magnifier.png', 'width="16" height="16"').' title="Search" alt="" /></a>';
+
+		$searchMenu[] = '<div style="display: none;">';
+		$searchMenu[] = '<input type="text" id="search-query" name="search-query" value="" />';
+		$searchMenu[] = '</div>';
+
+		return implode("\n", $searchMenu);
+	}
+
+	/**
+	 * adds the neccessary javascript ot the backend
+	 *
+	 * @return	void
+	 */
+	private function addJavascriptToBackend() {
+		$this->backendReference->addJavascriptFile('typo3/js/backendsearch.js');
+	}
+
+	/**
+	 * returns additional attributes for the list item in the toolbar
+	 *
+	 * @return	string		list item HTML attibutes
+	 */
+	public function getAdditionalAttributes() {
+		return ' id="backend-search-menu"';
+	}
+
+}
+
+
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['typo3/classes/class.backendsearchmenu.php'])	{
+	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['typo3/classes/class.backendsearchmenu.php']);
+}
+
+?>

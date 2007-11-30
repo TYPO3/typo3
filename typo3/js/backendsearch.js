@@ -25,11 +25,11 @@
 ***************************************************************/
 
 /**
- * class to handle the clear cache menu
+ * class to handle the backend search
  *
  * $Id$
  */
-var ClearCacheMenu = Class.create({
+var BackendSearch = Class.create({
 
 	/**
 	 * registers for resize event listener and executes on DOM ready
@@ -39,14 +39,27 @@ var ClearCacheMenu = Class.create({
 
 		Event.observe(document, 'dom:loaded', function(){
 			this.positionMenu();
-			this.toolbarItemIcon = $$('#clear-cache-actions-menu .toolbar-item img')[0].src;
+			this.toolbarItemIcon = $$('#backend-search-menu .toolbar-item img')[0].src;
 
-			Event.observe('clear-cache-actions-menu', 'click', this.toggleMenu)
+			$('search-query').observe('keypress', function(event) {
+				var keyCode;
 
-				// observe all clicks on clear cache actions in the menu
-			$$('#clear-cache-actions-menu li a').each(function(element) {
-				Event.observe(element, 'click', this.clearCache.bind(this));
+				if(!event) {
+					var event = window.event;
+				}
+
+				if(event.keyCode) {
+					keyCode = event.keyCode;
+				} else if(event.which) {
+					keyCode = event.which;
+				}
+
+				if(keyCode == Event.KEY_RETURN) {
+					this.invokeSearch();
+				}
 			}.bindAsEventListener(this));
+
+			$$('#backend-search-menu .toolbar-item')[0].observe('click', this.toggleMenu)
 		}.bindAsEventListener(this));
 	},
 
@@ -55,9 +68,9 @@ var ClearCacheMenu = Class.create({
 	 */
 	positionMenu: function() {
 		var calculatedOffset = 0;
-		var parentWidth      = $('clear-cache-actions-menu').getWidth();
-		var ownWidth         = $$('#clear-cache-actions-menu ul')[0].getWidth();
-		var parentSiblings   = $('clear-cache-actions-menu').previousSiblings();
+		var parentWidth      = $('backend-search-menu').getWidth();
+		var ownWidth         = $$('#backend-search-menu div')[0].getWidth();
+		var parentSiblings   = $('backend-search-menu').previousSiblings();
 
 		parentSiblings.each(function(toolbarItem) {
 			calculatedOffset += toolbarItem.getWidth() - 1;
@@ -71,7 +84,7 @@ var ClearCacheMenu = Class.create({
 		calculatedOffset = calculatedOffset - ownWidth + parentWidth;
 
 
-		$$('#clear-cache-actions-menu ul')[0].setStyle({
+		$$('#backend-search-menu div')[0].setStyle({
 			left: calculatedOffset + 'px'
 		});
 	},
@@ -80,13 +93,14 @@ var ClearCacheMenu = Class.create({
 	 * toggles the visibility of the menu and places it under the toolbar icon
 	 */
 	toggleMenu: function() {
-		var toolbarItem = $$('#clear-cache-actions-menu > a')[0];
-		var menu        = $$('#clear-cache-actions-menu ul')[0];
+		var toolbarItem = $$('#backend-search-menu > a')[0];
+		var menu        = $$('#backend-search-menu div')[0];
 		toolbarItem.blur();
 
 		if(!toolbarItem.hasClassName('toolbar-item-active')) {
 			toolbarItem.addClassName('toolbar-item-active');
 			Effect.Appear(menu, {duration: 0.2});
+			$('search-query').activate();
 		} else {
 			toolbarItem.removeClassName('toolbar-item-active');
 			Effect.Fade(menu, {duration: 0.1});
@@ -95,23 +109,54 @@ var ClearCacheMenu = Class.create({
 
 	/**
 	 * calls the actual clear cache URL using an asynchronious HTTP request
-	 *
-	 * @param	Event	prototype event object
 	 */
-	clearCache: function(event) {
-		$$('#clear-cache-actions-menu .toolbar-item img')[0].src = 'gfx/spinner.gif';
+	invokeSearch: function() {
+		new Ajax.Request('alt_shortcut.php?ajax=1&editPage=' + top.rawurlencode($F('search-query')), {
+			method: 'get',
+			requestHeaders: {Accept: 'application/json'},
+			onSuccess: function(transport) {
+				var jsonResponse = transport.responseText.evalJSON(true);
 
-		new Ajax.Request(Event.element(event).href, {
-			'method': 'get',
-			'onComplete': function() {
-				$$('#clear-cache-actions-menu .toolbar-item img')[0].src = this.toolbarItemIcon;
+				switch(jsonResponse.type) {
+					case 'page':
+						top.loadEditId(jsonResponse.editRecord);
+						break;
+					case 'alternative':
+						top.content.window.location.href = 'alt_doc.php?returnUrl=dummy.php&edit[' + jsonResponse.alternativeTable + '][' + jsonResponse.alternativeUid + ']=edit'
+						break;
+					case 'search':
+						this.jump(
+							unescape('db_list.php?id=' + jsonResponse.firstMountPoint + '&search_field=' + jsonResponse.searchFor + '&search_levels=4'),
+							'web_list',
+							'web'
+						);
+						break;
+				}
 			}.bind(this)
 		});
 
-		Event.stop(event);
+		$('search-query').clear();
 		this.toggleMenu();
+	},
+
+	/**
+	 * jumps to a given URL in the content iframe, taken from alt_shortcut.php
+	 *
+	 * @param	string		the URL to jump to
+	 * @param	string		module name
+	 * @param	string		main module name
+	 */
+	jump: function(url, modName, mainModName) {
+			// Clear information about which entry in nav. tree that might have been highlighted.
+		top.fsMod.navFrameHighlightedID = new Array();
+		if(top.content && top.content.nav_frame && top.content.nav_frame.refresh_nav) {
+			top.content.nav_frame.refresh_nav();
+		}
+
+		top.nextLoadModuleUrl = url;
+		top.goToModule(modName);
 	}
 
 });
 
-var TYPO3BackendClearCacheMenu = new ClearCacheMenu();
+var TYPO3BackendSearchMenu = new BackendSearch();

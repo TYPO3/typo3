@@ -55,7 +55,13 @@ Description : styles the TYPO3 backend
 }
 
 #typo3-toolbar li {
+	display: inline;
 	float: left;
+	margin-right: -1px; /* necessary for overlaying the separators with the active state background */
+}
+
+#typo3-toolbar * li {
+	display: list-item;
 }
 
 .toolbar-item {
@@ -84,7 +90,7 @@ Description : styles the TYPO3 backend
 
 #logout-button {
 	padding-left: 4px;
-	padding-right: 6px;
+	padding-right: 7px;
 }
 
 
@@ -94,6 +100,7 @@ Description : styles the TYPO3 backend
 	padding-top: 2px;
 	padding-left: 7px;
 	margin-right: 5px;
+	width: 146px;
 }
 
 /* ----- Caching ----- */
@@ -111,13 +118,10 @@ Description : styles the TYPO3 backend
 	border: 1px solid #abb2bc;
 	border-top: none;
 	width: 180px;
-	right: 15px;
 }
 
 #clear-cache-actions-menu li {
-	padding-left: 3px;
 	padding-top: 2px;
-	clear: both;
 	text-align: left;
 	float: none;
 	vertical-align: middle;
@@ -126,15 +130,78 @@ Description : styles the TYPO3 backend
 
 #clear-cache-actions-menu li img {
 	float: left;
+	padding-right: 3px;
 }
 
 #clear-cache-actions-menu li a {
 	text-decoration: none;
+	line-height: 12px;
+	vertical-align: middle;
 	display: block;
 	padding-bottom: 2px;
-	padding-left: 5px;
-	float: left;
+	padding-left: 3px;
 	font-size: 11px;
 }
+
+
+/* ----- Shortcuts ----- */
+
+#shortcut-menu {
+	width: 30px;
+}
+
+
+/* ----- Backend Search ----- */
+
+#backend-search-menu {
+	width: 30px;
+}
+
+#backend-search-menu div {
+	position: absolute;
+	padding: 3px 5px;
+	text-align: right;
+	margin: 0px;
+	background-color: #f9f9f9;
+	border: 1px solid #abb2bc;
+	border-top: none;
+	width: 180px;
+}
+
+#search-query {
+	width: 170px;
+	border: 1px #848484 solid;
+	padding: 1px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 

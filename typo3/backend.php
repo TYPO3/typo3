@@ -31,8 +31,12 @@ require_once ('interfaces/interface.backend_toolbaritem.php');
 
 require ('classes/class.typo3logo.php');
 require ('classes/class.modulemenu.php');
+
+	// core toolbar items
 require ('classes/class.workspaceselector.php');
 require ('classes/class.clearcachemenu.php');
+#require ('classes/class.shortcutmenu.php');
+require ('classes/class.backendsearchmenu.php');
 
 require_once (PATH_t3lib.'class.t3lib_loadmodules.php');
 require_once (PATH_t3lib.'class.t3lib_basicfilefunc.php');
@@ -126,11 +130,9 @@ class TYPO3backend {
 
 		$coreToolbarItems = array(
 			'workspaceSelector' => 'WorkspaceSelector',
-			'clearCacheActions' => 'ClearCacheMenu'
-			/* TODO
-			'backendSearch'     => '',
-			'shortcutMenu'      => ''
-			*/
+			'clearCacheActions' => 'ClearCacheMenu',
+#			'shortcuts'         => 'ShortcutMenu',
+			'backendSearch'     => 'BackendSearchMenu'
 		);
 
 		foreach($coreToolbarItems as $toolbarItemName => $toolbarItemClass) {

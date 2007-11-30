@@ -102,6 +102,7 @@ class SC_alt_shortcut {
 	 * @var t3lib_loadModules
 	 */
 	var $loadModules;
+	private $isAjaxCall;
 
 	/**
 	 * Document template object
@@ -137,6 +138,7 @@ class SC_alt_shortcut {
 		global $TBE_MODULES;
 
 			// Setting GPvars:
+		$this->isAjaxCall = (boolean) t3lib_div::_GP('ajax');
 		$this->modName = t3lib_div::_GP('modName');
 		$this->M_modName = t3lib_div::_GP('motherModName');
 		$this->URL = t3lib_div::_GP('URL');
@@ -273,7 +275,7 @@ class SC_alt_shortcut {
 			function changeWorkspacePreview(newstate)	{	//
 				window.location.href="alt_shortcut.php?changeWorkspacePreview="+newstate;
 			}
-			function refreshShortcuts() { 
+			function refreshShortcuts() {
 				window.location.href = document.URL;
 			}
 
@@ -446,6 +448,7 @@ class SC_alt_shortcut {
 			// Launch Edit page:
 		if ($this->theEditRec['uid'])	{
 			$this->content.=$this->doc->wrapScriptTags('top.loadEditId('.$this->theEditRec['uid'].');');
+
 		}
 
 			// Load alternative table/uid into editing form.
@@ -601,9 +604,52 @@ class SC_alt_shortcut {
 	 * @return	void
 	 */
 	function printContent()	{
+
+		/* <beta-code TYPO3 4.2-dev originalRevision="2663"> */
+
+		$content = '';
+
 		$this->content.= $this->doc->endPage();
 		$this->content = $this->doc->insertStylesAndJS($this->content);
-		echo $this->content;
+
+		if($this->editPage && $this->isAjaxCall) {
+			require_once('contrib/json/json.php');
+			$data = array();
+
+				// edit page
+			if($this->theEditRec['uid']) {
+				$data['type']       = 'page';
+				$data['editRecord'] = $this->theEditRec['uid'];
+			}
+
+				// edit alternative table/uid
+			if(count($this->alternativeTableUid) == 2
+			&& isset($GLOBALS['TCA'][$this->alternativeTableUid[0]])
+			&& t3lib_div::testInt($this->alternativeTableUid[1])) {
+				$data['type']             = 'alternative';
+				$data['alternativeTable'] = $this->alternativeTableUid[0];
+				$data['alternativeUid']   = $this->alternativeTableUid[1];
+			}
+
+				// search for something else
+			if($this->searchFor) {
+				$data['type']            = 'search';
+				$data['firstMountPoint'] = intval($GLOBALS['WEBMOUNTS'][0]);
+				$data['searchFor']       = rawurlencode($this->searchFor);
+			}
+
+			$json = new Services_JSON();
+			$content = $json->encode($data);
+
+			header('Content-type: application/json; charset=utf-8');
+			header('X-JSON: '.$content);
+		} else {
+			$content = $this->content;
+		}
+
+		/* </beta-code> */
+
+		echo $content;
 	}
 
 

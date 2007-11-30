@@ -1,3 +1,8 @@
+2007-11-30  Ingo Renner	<ingo@typo3.org>
+
+	* added positioning function for the clear cache menu which is needed to keep the menu below it's icon when new items are added to the toolbar
+	* added backend search toolbar item to backend.php
+
 2007-11-29  Benjamin Mack  <mack@xnos.org>
 
 	* (feature) #6833: Possibility to add inline JS to page (Thanks to Steffen Kamper)
