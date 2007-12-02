@@ -1,3 +1,7 @@
+2007-12-02  Ingmar Schlecht  <ingmar@typo3.org>
+
+	* Minor change to tsconfig_help sysext: A message informs admins that updating the tsconfig_help data on Windows is not possible
+
 2007-11-30  Oliver Hader  <oh@inpublica.de>
 
 	* Fixed bug #5602: spamProtectEmailAddresses_atSubst is not recognized correctly

@@ -173,77 +173,81 @@ class  tx_tsconfighelp_module1 extends t3lib_SCbase {
 
 			case 2:
 				if ($GLOBALS['BE_USER']->user['admin'])	{
-					if (t3lib_div::_GP('_rebuild'))	{
-							// remove all data from the database
-						$this->purgeSQLContents();
-	
-							// get all loaded extension keys
-						$extArray = $TYPO3_LOADED_EXT;
-	
-						$content = '<div align="left"><strong>'.$LANG->getLL('loadedTSfrom').'</strong></div><br />';
-	
-							// parse the extension names only (no need for all details from the TYPO3_LOADED_EXT table
-						foreach ($extArray as $extName => $dummy)	{
-								// check that the extension is really loaded (which should always be the case)
-							if (t3lib_extMgm::isLoaded($extName))	{
-									// extract the content.xml from the manual.sxw ZIP file
-								$manual = $this->getZIPFileContents(t3lib_extMgm::extPath($extName).'doc/manual.sxw', 'content.xml');
-	
-									// check if the manual file actually exists and if the content.xml could be loaded
-								if ($manual != '')	{
-										// if the manual file exists, proceed with the load into the SQL database
-									$content .= '<p>Extension '.$extName.'...';
-	
-										// run the extraction processing and import the data into SQL. Return the number of TS tables found in the open office doucment
-									$number = $this->loadExtensionManual($extName, $manual);
-	
-										// print a status message with a link to the openoffice manual
-									$content .= $number.' '.$LANG->getLL('sections').' (<a href="'.t3lib_div::getIndpEnv('TYPO3_SITE_URL').TYPO3_mainDir.t3lib_extMgm::extRelPath($extName).'doc/manual.sxw">manual</a>)</p>';
-								}
-							} else	{
-									// this should never happen!
-								die ("Fatal error : loaded extension not actually loaded? Please file a bug report at http://bugs.typo3.org!");
-							}
-						}
-						
-						$this->content .= $this->doc->section($LANG->getLL('rebuildTS'),$content.'<br />',0,1);
-
-							// Issue warnings about duplicate or empty obj_strings, if any
-							// An obj_string should be unique. It should appear in only one extension manual and then only once
-							// If the sum of all occurrences of a given obj_string is more than one, issue a list of duplicate entries as a warning
-						$duplicateWarnings = '';
-						$emptyWarnings = '';
-						foreach ($this->objStringsPerExtension as $obj_string => $extensions)	{
-							if (empty($obj_string))	{
-								$emptyWarnings = '<p class="typo3-red">'.$LANG->getLL('warning_manualsWithoutMarkers');
-								foreach ($extensions as $extensionKey => $counter)	{
-									$emptyWarnings .= ' '.$extensionKey.' ('.$counter.')<br />';
-								}
-								$emptyWarnings .= '</p><br />';
-							} else {
-								if (array_sum($extensions) > 1)	{
-									$duplicateWarnings .= $obj_string.':';
-									foreach ($extensions as $extensionKey => $counter)	{
-										$duplicateWarnings .= ' '.$extensionKey.' ('.$counter.')';
+					if ($GLOBALS['TYPO3_OS'] === 'WIN') {
+						$this->content .= '<p>'.$LANG->getLL('noRebuildOnWindows').'</p><br />';		
+					} else {
+						if (t3lib_div::_GP('_rebuild'))	{
+								// remove all data from the database
+							$this->purgeSQLContents();
+		
+								// get all loaded extension keys
+							$extArray = $TYPO3_LOADED_EXT;
+		
+							$content = '<div align="left"><strong>'.$LANG->getLL('loadedTSfrom').'</strong></div><br />';
+		
+								// parse the extension names only (no need for all details from the TYPO3_LOADED_EXT table
+							foreach ($extArray as $extName => $dummy)	{
+									// check that the extension is really loaded (which should always be the case)
+								if (t3lib_extMgm::isLoaded($extName))	{
+										// extract the content.xml from the manual.sxw ZIP file
+									$manual = $this->getZIPFileContents(t3lib_extMgm::extPath($extName).'doc/manual.sxw', 'content.xml');
+		
+										// check if the manual file actually exists and if the content.xml could be loaded
+									if ($manual != '')	{
+											// if the manual file exists, proceed with the load into the SQL database
+										$content .= '<p>Extension '.$extName.'...';
+		
+											// run the extraction processing and import the data into SQL. Return the number of TS tables found in the open office document
+										$number = $this->loadExtensionManual($extName, $manual);
+		
+											// print a status message with a link to the openoffice manual
+										$content .= $number.' '.$LANG->getLL('sections').' (<a href="'.t3lib_div::getIndpEnv('TYPO3_SITE_URL').TYPO3_mainDir.t3lib_extMgm::extRelPath($extName).'doc/manual.sxw">manual</a>)</p>';
 									}
-									$duplicateWarnings .= '<br />';
+								} else	{
+										// this should never happen!
+									die ("Fatal error : loaded extension not actually loaded? Please file a bug report at http://bugs.typo3.org!");
 								}
 							}
-						}
-						$warnings = $emptyWarnings;
-						if (!empty($duplicateWarnings))	{
-							$warnings .= '<p class="typo3-red">'.$LANG->getLL('warning_duplicateMarkers').'<br />'.$duplicateWarnings.'</p>';
-						}
-						if (!empty($warnings))	{
-							$this->content .= $this->doc->section($LANG->getLL('updateWarnings'),'<div>'.$warnings.'</div>',0,1);
-						}
-					}
+							
+							$this->content .= $this->doc->section($LANG->getLL('rebuildTS'),$content.'<br />',0,1);
 	
-					$content = '<p>'.$LANG->getLL('rebuildExplanation').'</p><br />';
-					$content .= $LANG->getLL('rebuild').' <input type="submit" name="_rebuild" value="Rebuild" /><br />';
-					$this->content .= $this->doc->section($LANG->getLL('rebuildTS'),$content,0,1);
+								// Issue warnings about duplicate or empty obj_strings, if any
+								// An obj_string should be unique. It should appear in only one extension manual and then only once
+								// If the sum of all occurrences of a given obj_string is more than one, issue a list of duplicate entries as a warning
+							$duplicateWarnings = '';
+							$emptyWarnings = '';
+							foreach ($this->objStringsPerExtension as $obj_string => $extensions)	{
+								if (empty($obj_string))	{
+									$emptyWarnings = '<p class="typo3-red">'.$LANG->getLL('warning_manualsWithoutMarkers');
+									foreach ($extensions as $extensionKey => $counter)	{
+										$emptyWarnings .= ' '.$extensionKey.' ('.$counter.')<br />';
+									}
+									$emptyWarnings .= '</p><br />';
+								} else {
+									if (array_sum($extensions) > 1)	{
+										$duplicateWarnings .= $obj_string.':';
+										foreach ($extensions as $extensionKey => $counter)	{
+											$duplicateWarnings .= ' '.$extensionKey.' ('.$counter.')';
+										}
+										$duplicateWarnings .= '<br />';
+									}
+								}
+							}
+							$warnings = $emptyWarnings;
+							if (!empty($duplicateWarnings))	{
+								$warnings .= '<p class="typo3-red">'.$LANG->getLL('warning_duplicateMarkers').'<br />'.$duplicateWarnings.'</p>';
+							}
+							if (!empty($warnings))	{
+								$this->content .= $this->doc->section($LANG->getLL('updateWarnings'),'<div>'.$warnings.'</div>',0,1);
+							}
+						}
+		
+						$content = '<p>'.$LANG->getLL('rebuildExplanation').'</p><br />';
+						$content .= $LANG->getLL('rebuild').' <input type="submit" name="_rebuild" value="Rebuild" /><br />';
+						$this->content .= $this->doc->section($LANG->getLL('rebuildTS'),$content,0,1);
+					}
 				} else {
-						$this->content .= 'Access to this function of the module is restricted to admins.';			
+					$this->content .= '<p>'.$LANG->getLL('adminAccessOnly').'</p><br />';		
 				}
 
 
