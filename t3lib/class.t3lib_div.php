@@ -2854,19 +2854,31 @@ class t3lib_div {
 	function view_array($array_in)	{
 		if (is_array($array_in))	{
 			$result='<table border="1" cellpadding="1" cellspacing="0" bgcolor="white">';
-			if (!count($array_in))	{$result.= '<tr><td><font face="Verdana,Arial" size="1"><b>'.htmlspecialchars("EMPTY!").'</b></font></td></tr>';}
-			while (list($key,$val)=each($array_in))	{
-				$result.= '<tr><td valign="top"><font face="Verdana,Arial" size="1">'.htmlspecialchars((string)$key).'</font></td><td>';
-				if (is_array($array_in[$key]))	{
-					$result.=t3lib_div::view_array($array_in[$key]);
-				} elseif (is_object($array_in[$key])) {
-					$result.= '<font face="Verdana,Arial" size="1">[Object '.get_class($array_in[$key]).']</font>';
-				} else {
-					$result.= '<font face="Verdana,Arial" size="1" color="red">'.nl2br(htmlspecialchars((string)$val)).'<br /></font>';
+			if (count($array_in) == 0)	{
+				$result.= '<tr><td><font face="Verdana,Arial" size="1"><b>EMPTY!</b></font></td></tr>';
+			} else	{
+				foreach ($array_in as $key => $val)	{
+					$result.= '<tr><td valign="top"><font face="Verdana,Arial" size="1">'.htmlspecialchars((string)$key).'</font></td><td>';
+					if (is_array($val))	{
+						$result.=t3lib_div::view_array($val);
+					} elseif (is_object($val))	{
+						$string = get_class($val);
+						if (method_exists($val, '__toString'))	{
+							$string .= ': '.(string)$val;
+						}
+						$result .= '<font face="Verdana,Arial" size="1" color="red">'.nl2br(htmlspecialchars($string)).'<br /></font>';
+					} else	{
+						if (gettype($val) == 'object')	{
+							$string = 'Unknown object';
+						} else	{
+							$string = (string)$val;
+						}
+						$result.= '<font face="Verdana,Arial" size="1" color="red">'.nl2br(htmlspecialchars($string)).'<br /></font>';
+					}
+					$result.= '</td></tr>';
 				}
-				$result.= '</td></tr>';
+				$result.= '</table>';
 			}
-			$result.= '</table>';
 		} else	{
 			$result  = '<table border="1" cellpadding="1" cellspacing="0" bgcolor="white">
 				<tr>

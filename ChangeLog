@@ -1,6 +1,7 @@
 2007-12-02  Ingmar Schlecht  <ingmar@typo3.org>
 
-	* Minor change to tsconfig_help sysext: A message informs admins that updating the tsconfig_help data on Windows is not possible
+	* Fixed bug #6663: Unserialized objects not debugged properly (by Francois Suter)
+	* Minor change to tsconfig_help sysext (by Francois Suter)
 
 2007-11-30  Oliver Hader  <oh@inpublica.de>
 
