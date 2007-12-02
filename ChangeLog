@@ -2,6 +2,7 @@
 
 	* Fixed bug #6663: Unserialized objects not debugged properly (by Francois Suter)
 	* Minor change to tsconfig_help sysext (by Francois Suter)
+	* Issue #6873: Added icon for pages marked as not in menu and with FE-user access restriction to t3skin (by Francois Suter)
 
 2007-11-30  Oliver Hader  <oh@inpublica.de>
 
