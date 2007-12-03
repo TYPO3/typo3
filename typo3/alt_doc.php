@@ -117,7 +117,6 @@ class SC_alt_doc {
 	var $mirror;			// GPvar (for processing only) : ?
 	var $cacheCmd;			// GPvar (for processing only) : Clear-cache cmd.
 	var $redirect;			// GPvar (for processing only) : Redirect (not used???)
-	var $disableRTE;		// GPvar (for processing only) : If set, the rich text editor is disabled in the forms.
 	var $returnNewPageId;	// GPvar (for processing only) : Boolean: If set, then the GET var "&id=" will be added to the retUrl string so that the NEW id of something is returned to the script calling the form.
 	var $vC;				// GPvar (for processing only) : Verification code, internal stuff.
 	var $uc;				// GPvar : update BE_USER->uc
@@ -272,7 +271,6 @@ class SC_alt_doc {
 		$this->mirror = t3lib_div::_GP('mirror');
 		$this->cacheCmd = t3lib_div::_GP('cacheCmd');
 		$this->redirect = t3lib_div::_GP('redirect');
-		$this->disableRTE = t3lib_div::_GP('_disableRTE');
 		$this->returnNewPageId = t3lib_div::_GP('returnNewPageId');
 		$this->vC = t3lib_div::_GP('vC');
 
@@ -292,7 +290,7 @@ class SC_alt_doc {
 			$tce->neverHideAtCopy = 1;
 		}
 		$tce->debug=0;
-		$tce->disableRTE = $this->disableRTE;
+		$tce->disableRTE = !$BE_USER->isRTE();
 
 			// Loading TCEmain with data:
 		$tce->start($this->data,$this->cmd);
@@ -435,8 +433,7 @@ class SC_alt_doc {
 			// Values NOT in this array will not be saved in the settings-array for the module.
 		$this->MOD_MENU = array(
 			'showPalettes' => '',
-			'showDescriptions' => '',
-			'disableRTE' => ''
+			'showDescriptions' => ''
 		);
 
 			// Setting virtual document name
@@ -532,7 +529,7 @@ class SC_alt_doc {
 			$this->tceforms->localizationMode = t3lib_div::inList('text,media',$this->localizationMode) ? $this->localizationMode : '';	// text,media is keywords defined in TYPO3 Core API..., see "l10n_cat"
 			$this->tceforms->returnUrl = $this->R_URI;
 			$this->tceforms->palettesCollapsed = !$this->MOD_SETTINGS['showPalettes'];
-			$this->tceforms->disableRTE = $this->MOD_SETTINGS['disableRTE'];
+			$this->tceforms->disableRTE = !$BE_USER->isRTE(); 
 			$this->tceforms->enableClickMenu = TRUE;
 			$this->tceforms->enableTabMenu = TRUE;
 
@@ -712,7 +709,7 @@ class SC_alt_doc {
 								$trData->addRawData = TRUE;
 								$trData->defVals = $this->defVals;
 								$trData->lockRecords=1;
-								$trData->disableRTE = $this->MOD_SETTINGS['disableRTE'];
+								$trData->disableRTE = !$BE_USER->isRTE();
 								$trData->prevPageID = $prevPageID;
 								$trData->fetchRecord($table,$theUid,$cmd=='new'?'new':'');	// 'new'
 								reset($trData->regTableItems_data);
@@ -1027,7 +1024,6 @@ class SC_alt_doc {
 			<input type="hidden" name="closeDoc" value="0" />
 			<input type="hidden" name="doSave" value="0" />
 			<input type="hidden" name="_serialNumber" value="'.md5(microtime()).'" />
-			<input type="hidden" name="_disableRTE" value="'.$this->tceforms->disableRTE.'" />
 			<input type="hidden" name="_scrollPosition" value="" />';
 
 		return $formContent;
@@ -1051,16 +1047,8 @@ class SC_alt_doc {
 			$funcMenus.= '<br />'.t3lib_BEfunc::getFuncCheck('','SET[showDescriptions]',$this->MOD_SETTINGS['showDescriptions'],'alt_doc.php',t3lib_div::implodeArrayForUrl('',array_merge($this->R_URL_getvars,array('SET'=>''))),'id="checkShowDescriptions"').'<label for="checkShowDescriptions">'.$LANG->sL('LLL:EXT:lang/locallang_core.php:labels.showDescriptions',1).'</label>';
 		}
 
-			// Show disable RTE checkbox:
-		if ($BE_USER->isRTE())	{
-			$funcMenus.= '<br />'.t3lib_BEfunc::getFuncCheck('','SET[disableRTE]',$this->MOD_SETTINGS['disableRTE'],'alt_doc.php',t3lib_div::implodeArrayForUrl('',array_merge($this->R_URL_getvars,array('SET'=>''))),'id="checkDisableRTE"').'<label for="checkDisableRTE">'.$LANG->sL('LLL:EXT:lang/locallang_core.php:labels.disableRTE',1).'</label>';
-		}
-
 		return '
-
-				<!--
-				 	Function menus (checkboxes for selecting options):
-				-->
+				<!-- Function menus (checkboxes for selecting options): -->
 				'.$funcMenus;
 	}
 
