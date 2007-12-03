@@ -1,3 +1,7 @@
+2007-12-02	Dmitry Dulepov	<dmitry@typo3.org>
+
+	* Fixed bug #6727: Fatal error install tool
+
 2007-12-03  Benjamin Mack  <mack@xnos.org>
 
 	* (cleanup) Fixed #6823: Removed "Disable RTE" checkbox in alt_doc.php

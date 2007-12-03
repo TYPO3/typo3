@@ -104,10 +104,10 @@ class tx_install_basics	{
 	 * @return	string		module path
 	 */
 	private function getModulePathFromClass($moduleClass)	{
-		$moduleClass = explode(':', $moduleClass);
+		$moduleClass = t3lib_div::revExplode(':', $moduleClass, 2);
 		$moduleClass = dirname($moduleClass[0]);
 		
-		return $moduleClass.'/';
+		return $moduleClass . '/';
 	}
 	
 	/**
