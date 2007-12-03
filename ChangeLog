@@ -1,4 +1,8 @@
-2007-12-01  Ingo Renner	<ingo@typo3.org>
+2007-12-02	Dmitry Dulepov	<dmitry@typo3.org>
+
+	* Changed "Clear cache" string to start with upper-case
+
+2007-12-02  Ingo Renner	<ingo@typo3.org>
 
 	* added feature #6868: Enable labels for EM extension configuration, credits Georg Ringer
 
