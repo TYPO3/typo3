@@ -1173,7 +1173,7 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 							switch($typeDat["type"])	{
 								case "int":
 								case "int+":
-									$p_field='<input type="text" name="'.$fN.'" value="'.$fV.'"'.$GLOBALS["TBE_TEMPLATE"]->formWidth(5).' onChange="uFormUrl('.$aname.')">';
+									$p_field='<input id="'.$fN.'" type="text" name="'.$fN.'" value="'.$fV.'"'.$GLOBALS["TBE_TEMPLATE"]->formWidth(5).' onChange="uFormUrl('.$aname.')">';
 									if ($typeDat["paramstr"])	{
 										$p_field.=' Range: '.$typeDat["paramstr"];
 									} elseif ($typeDat["type"]=="int+") {
@@ -1190,13 +1190,13 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 										if ($val==strtolower($params["value"]))	{$sel=" selected";}
 										$p_field.='<option value="'.htmlspecialchars($val).'"'.$sel.'>'.$val.'</option>';
 									}
-									$p_field='<select name="C'.$fN.'" onChange="document.'.$this->ext_CEformName.'[\''.$fN.'\'].value=this.options[this.selectedIndex].value; uFormUrl('.$aname.');">'.$p_field.'</select>';
+									$p_field='<select id="'.$fN.'" name="C'.$fN.'" onChange="document.'.$this->ext_CEformName.'[\''.$fN.'\'].value=this.options[this.selectedIndex].value; uFormUrl('.$aname.');">'.$p_field.'</select>';
 
 									$p_field.='<input type="text" name="'.$fN.'" value="'.$fV.'"'.$GLOBALS["TBE_TEMPLATE"]->formWidth(7).' onChange="uFormUrl('.$aname.')">';
 								break;
 								case "wrap":
 									$wArr = explode("|",$fV);
-									$p_field='<input type="text" name="'.$fN.'" value="'.$wArr[0].'"'.$GLOBALS["TBE_TEMPLATE"]->formWidth(29).' onChange="uFormUrl('.$aname.')">';
+									$p_field='<input type="text" id="'.$fN.'" name="'.$fN.'" value="'.$wArr[0].'"'.$GLOBALS["TBE_TEMPLATE"]->formWidth(29).' onChange="uFormUrl('.$aname.')">';
 									$p_field.=' | ';
 									$p_field.='<input type="text" name="W'.$fN.'" value="'.$wArr[1].'"'.$GLOBALS["TBE_TEMPLATE"]->formWidth(15).' onChange="uFormUrl('.$aname.')">';
 								break;
@@ -1227,18 +1227,18 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 											if ($val==$params["value"])	{$sel=" selected";}
 											$p_field.='<option value="'.htmlspecialchars($val).'"'.$sel.'>'.$GLOBALS["LANG"]->sL($label).'</option>';
 										}
-										$p_field='<select name="'.$fN.'" onChange="uFormUrl('.$aname.')">'.$p_field.'</select>';
+										$p_field='<select id="'.$fN.'" name="'.$fN.'" onChange="uFormUrl('.$aname.')">'.$p_field.'</select>';
 									}
 								break;
 								case "boolean":
 									$p_field='<input type="Hidden" name="'.$fN.'" value="0">';
 									$sel=""; if ($fV)	{$sel=" checked";}
-									$p_field.='<input type="Checkbox" name="'.$fN.'" value="'.($typeDat["paramstr"]?$typeDat["paramstr"]:1).'"'.$sel.' onClick="uFormUrl('.$aname.')">';
+									$p_field.='<input id="'.$fN.'" type="checkbox" name="'.$fN.'" value="'.($typeDat["paramstr"]?$typeDat["paramstr"]:1).'"'.$sel.' onClick="uFormUrl('.$aname.')">';
 								break;
 								case "comment":
 									$p_field='<input type="Hidden" name="'.$fN.'" value="#">';
 									$sel=""; if (!$fV)	{$sel=" checked";}
-									$p_field.='<input type="Checkbox" name="'.$fN.'" value=""'.$sel.' onClick="uFormUrl('.$aname.')">';
+									$p_field.='<input id="'.$fN.'" type="checkbox" name="'.$fN.'" value=""'.$sel.' onClick="uFormUrl('.$aname.')">';
 								break;
 								case "file":
 									$p_field='<option value=""></option>';
@@ -1302,7 +1302,7 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 											$p_field.='<option value="'.htmlspecialchars($val).'" selected>'.$val.'</option>';
 										}
 	//								}
-									$p_field='<select name="'.$fN.'" onChange="uFormUrl('.$aname.')">'.$p_field.'</select>';
+									$p_field='<select id="'.$fN.'" name="'.$fN.'" onChange="uFormUrl('.$aname.')">'.$p_field.'</select>';
 									$p_field.=$theImage;
 
 									if (!$this->ext_noCEUploadAndCopying)	{
@@ -1322,7 +1322,7 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 										}
 											// Upload?
 										$p_field.='<BR>';
-										$p_field.='<input type="file" name="upload_'.$fN.'"'.$GLOBALS["TBE_TEMPLATE"]->formWidth().' onChange="uFormUrl('.$aname.')" size="50" />';
+										$p_field.='<input id="'.$fN.'" type="file" name="upload_'.$fN.'"'.$GLOBALS["TBE_TEMPLATE"]->formWidth().' onChange="uFormUrl('.$aname.')" size="50" />';
 									}
 								break;
 								case 'user':
@@ -1333,7 +1333,7 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 								case 'small':
 								default:
 									$fwidth= $typeDat["type"]=="small" ? 10 : 46;
-									$p_field='<input type="text" name="'.$fN.'" value="'.$fV.'"'.$GLOBALS["TBE_TEMPLATE"]->formWidth($fwidth).' onChange="uFormUrl('.$aname.')">';
+									$p_field='<input id="'.$fN.'" type="text" name="'.$fN.'" value="'.$fV.'"'.$GLOBALS["TBE_TEMPLATE"]->formWidth($fwidth).' onChange="uFormUrl('.$aname.')">';
 								break;
 							}
 						}
@@ -1344,9 +1344,9 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 							$p_field='<span class="nobr">'.$p_field.'</span><br />';
 						}
 
-						$p_name = '<span class="typo3-dimmed">['.$params["name"].']</span><BR>';
+						$p_name = '<label for="'.$fN.'"><span class="typo3-dimmed">['.$params["name"].']</span></label><br />';
 						$p_dlabel='<span class="typo3-dimmed"><b>Default:</b> '.htmlspecialchars($params["default_value"]).'</span><BR>';
-						$p_label = '<b>'.htmlspecialchars($head).'</b>';
+						$p_label = '<label for="'.$fN.'"><b>'.htmlspecialchars($head).'</b></label>';
 						$p_descrip = $body ? htmlspecialchars($body)."<BR>" : "";
 
 						$output.='<tr>';

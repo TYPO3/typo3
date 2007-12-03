@@ -1,3 +1,7 @@
+2007-12-01  Ingo Renner	<ingo@typo3.org>
+
+	* added feature #6868: Enable labels for EM extension configuration, credits Georg Ringer
+
 2007-12-02  Ingmar Schlecht  <ingmar@typo3.org>
 
 	* Fixed bug #6663: Unserialized objects not debugged properly (by Francois Suter)
