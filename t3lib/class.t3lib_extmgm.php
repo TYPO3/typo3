@@ -258,7 +258,7 @@ class t3lib_extMgm {
 		$str = trim($str);
 		if ($str && is_array($TCA[$table]) && is_array($TCA[$table]['types']))	{
 			foreach($TCA[$table]['types'] as $k => $v)	{
-				if (!$specificTypesList || t3lib_div::inList($specificTypesList,$k))	{
+				if ($specificTypesList === '' || t3lib_div::inList($specificTypesList,$k))	{
 					if ($insert)	{
 						if (count($positionArr)) {
 							$append=true;
