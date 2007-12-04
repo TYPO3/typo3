@@ -257,7 +257,7 @@ class t3lib_extMgm {
 		t3lib_div::loadTCA($table);
 		if (trim($str) && is_array($TCA[$table]) && is_array($TCA[$table]['types']))	{
 			foreach($TCA[$table]['types'] as $k => $v)	{
-				if (!$specificTypesList || t3lib_div::inList($specificTypesList,$k))	{
+				if ($specificTypesList === '' || t3lib_div::inList($specificTypesList,$k))	{
 					if ($insert)	{
 						$append=true;
 						$showItem = t3lib_div::trimExplode(',',$TCA[$table]['types'][$k]['showitem'],1);
