@@ -499,7 +499,7 @@ class t3lib_install {
 									$fieldN = str_replace('`','',$fieldN);
 									if (!isset($FDcomp[$table][$theKey][$fieldN]))	{
 										$extraArr[$table][$theKey][$fieldN] = $fieldC;
-									} elseif (strcmp($FDcomp[$table][$theKey][$fieldN], $ignoreNotNullWhenComparing?str_replace(' NOT NULL', '', $fieldC):$fieldC))	{
+									} elseif (strcmp($FDcomp[$table][$theKey][$fieldN], $ignoreNotNullWhenComparing?str_replace(' NOT NULL', '', trim($fieldC)):trim($fieldC)))	{
 										$diffArr[$table][$theKey][$fieldN] = $fieldC;
 										$diffArr_cur[$table][$theKey][$fieldN] = $FDcomp[$table][$theKey][$fieldN];
 									}

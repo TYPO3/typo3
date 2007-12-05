@@ -1,3 +1,7 @@
+2007-12-02	Dmitry Dulepov	<dmitry@typo3.org>
+
+	* Fixed bug #6844: DB compare fails
+
 2007-12-04  Jeff Segars  <jeff@webempoweredchurch.org>
 
 	* Fixed bug #6114: t3lib_extMgm::addToAllTCATypes ignores type 0
