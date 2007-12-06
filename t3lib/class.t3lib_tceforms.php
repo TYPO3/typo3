@@ -498,7 +498,7 @@ class t3lib_TCEforms	{
 
 			// Loads the dividers2tabs from the $TCA
 			$this->dividers2tabs = $TCA[$table]['ctrl']['dividers2tabs'];
-			
+
 				// Load the description content for the table.
 			if ($this->edit_showFieldHelp || $this->doLoadTableDescr($table))	{
 				$GLOBALS['LANG']->loadSingleTableDescription($table);
@@ -1509,7 +1509,7 @@ class t3lib_TCEforms	{
 					}
 					$opt[]= '<optgroup label="'.t3lib_div::deHSCentities(htmlspecialchars($p[0])).'"'.
 							($styleAttrValue ? ' style="'.htmlspecialchars($styleAttrValue).'"' : '').
-							' class="c-divider">';	
+							' class="c-divider">';
 					$optGroupOpen = true;
 				} else {
 					$opt[]= '<option value="'.htmlspecialchars($p[1]).'"'.
@@ -2002,6 +2002,7 @@ class t3lib_TCEforms	{
 				}
 
 					// Creating the element:
+				$noList = isset($config['disable_controls']) && t3lib_div::inList($config['disable_controls'], 'list');
 				$params = array(
 					'size' => $size,
 					'dontShowMoveIcons' => ($maxitems<=1),
@@ -2010,11 +2011,13 @@ class t3lib_TCEforms	{
 					'style' => isset($config['selectedListStyle']) ? ' style="'.htmlspecialchars($config['selectedListStyle']).'"' : ' style="'.$this->defaultMultipleSelectorStyle.'"',
 					'info' => $info,
 					'thumbnails' => $thumbsnail,
-					'readOnly' => $disabled
+					'readOnly' => $disabled,
+					'noBrowser' => $noList || isset($config['disable_controls']) && t3lib_div::inList($config['disable_controls'], 'browser'),
+					'noList' => $noList,
 				);
 				$item.= $this->dbFileIcons($PA['itemFormElName'],'file',implode(',',$tempFT),$itemArray,'',$params,$PA['onFocus']);
 
-				if(!$disabled) {
+				if(!$disabled && !(isset($config['disable_controls']) && t3lib_div::inList($config['disable_controls'], 'upload'))) {
 						// Adding the upload field:
 					if ($this->edit_docModuleUpload)	$item.='<input type="file" name="'.$PA['itemFormElName_file'].'"'.$this->formWidth().' size="60" />';
 				}
@@ -2380,7 +2383,7 @@ class t3lib_TCEforms	{
 
 						// If it's a "section" or "container":
 					if ($value['type']=='array')	{
-						
+
 							// Creating IDs for form fields:
 							// It's important that the IDs "cascade" - otherwise we can't dynamically expand the flex form because this relies on simple string substitution of the first parts of the id values.
 						$thisId = t3lib_div::shortMd5(uniqid('id',true));	// This is a suffix used for forms on this level
@@ -2440,12 +2443,12 @@ class t3lib_TCEforms	{
 									$level+1,
 									$idTagPrefix
 								);
-								
+
 									// Makes a "Add new" link:
 								$onClickInsert = 'new Insertion.Bottom($("'.$idTagPrefix.'"), unescape("'.rawurlencode($newElementTemplate).'").replace(/'.$idTagPrefix.'-/g,"'.$idTagPrefix.'-idx"+Math.floor(Math.random()*100000+1)+"-")); setActionStatus("'.$idTagPrefix.'"); return false;';	// Maybe there is a better way to do this than store the HTML for the new element in rawurlencoded format - maybe it even breaks with certain charsets? But for now this works...
 								$newElementsLinks[]= '<a href="#" onclick="'.htmlspecialchars($onClickInsert).'"><img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/new_el.gif','width="11" height="12"').' alt="New" title="New" align="absmiddle" />'.htmlspecialchars(t3lib_div::fixed_lgd_cs($this->sL($nCfg['tx_templavoila']['title']),30)).'</a>';
 							}
-							
+
 								// Reverting internal variables we don't want to change:
 							$this->requiredElements = $TEMP_requiredElements;
 
@@ -2456,28 +2459,28 @@ class t3lib_TCEforms	{
 								<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/pil2right.gif','width="7" height="12"').' align="absmiddle" alt="Toggle All" title="Toggle All" /><img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/pil2right.gif','width="7" height="12"').' align="absmiddle" alt="Toggle All" title="Toggle All" />Toggle All
 							</a>
 							</div>
-							
+
 							<div id="'.$idTagPrefix.'" style="padding-left: 20px;">'.implode('',$tRows).'</div>';
 							$output.= $mayRestructureFlexforms ? '<div style="padding: 10px 5px 5px 20px;"><b>Add new:</b> '.implode(' | ',$newElementsLinks).'</div>' : '';
 							// If it's a container:
 						} else {
-							
+
 							$toggleIcon_open = '<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/pil2down.gif','width="12" height="7"').' hspace="2" alt="Open" title="Open" />';
 							$toggleIcon_close = '<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/pil2right.gif','width="7" height="12"').' hspace="2" alt="Close" title="Close" />';
-							
+
 								// Create on-click actions.
 						#	$onClickCopy = 'new Insertion.After($("'.$idTagPrefix.'"), getOuterHTML("'.$idTagPrefix.'").replace(/'.$idTagPrefix.'-/g,"'.$idTagPrefix.'-copy"+Math.floor(Math.random()*100000+1)+"-")); return false;';	// Copied elements doesn't work (well) in Safari while they do in Firefox and MSIE! UPDATE: It turned out that copying doesn't work for any browser, simply because the data from the copied form never gets submitted to the server for some reason! So I decided to simply disable copying for now. If it's requested by customers we can look to enable it again and fix the issue. There is one un-fixable problem though; Copying an element like this will violate integrity if files are attached inside that element because the file reference doesn't get an absolute path prefixed to it which would be required to have TCEmain generate a new copy of the file.
 							$onClickRemove = 'if (confirm("Are you sure?")){$("'.$idTagPrefix.'").hide();setActionStatus("'.$idPrefix.'");} return false;';
 							$onClickToggle = 'flexFormToggle("'.$idTagPrefix.'"); return false;';
-							
+
 							$onMove = 'flexFormSortable("'.$idPrefix.'")';
 								// Notice: Creating "new" elements after others seemed to be too difficult to do and since moving new elements created in the bottom is now so easy with drag'n'drop I didn't see the need.
 
 
 								// Putting together header of a section. Sections can be removed, copied, opened/closed, moved up and down:
 								// I didn't know how to make something right-aligned without a table, so I put it in a table. can be made into <div>'s if someone like to.
-								// Notice: The fact that I make a "Sortable.create" right onmousedown is that if we initialize this when rendering the form in PHP new and copied elements will not be possible to move as a sortable. But this way a new sortable is initialized everytime someone tries to move and it will always work. 
-							$ctrlHeader= '								
+								// Notice: The fact that I make a "Sortable.create" right onmousedown is that if we initialize this when rendering the form in PHP new and copied elements will not be possible to move as a sortable. But this way a new sortable is initialized everytime someone tries to move and it will always work.
+							$ctrlHeader= '
 								<table border="0" cellpadding="0" cellspacing="0" width="100%" onmousedown="'.($mayRestructureFlexforms?htmlspecialchars($onMove):'').'">
 								<tr>
 									<td>
@@ -2501,7 +2504,7 @@ class t3lib_TCEforms	{
 							$output.= '
 								<div id="'.$idTagPrefix.'" class="bgColor2">
 									<input id="'.$idTagPrefix.'-action" type="hidden" name="'.htmlspecialchars($actionFieldName).'" value=""/>
-									
+
 									'.$ctrlHeader.'
 									<div id="'.$idTagPrefix.'-content"'.($toggleClosed?' style="display:none;"':'').'>'.$this->getSingleField_typeFlex_draw(
 										$value['el'],
@@ -2515,7 +2518,7 @@ class t3lib_TCEforms	{
 										$idTagPrefix
 									).'
 									</div>
-									<input id="'.$idTagPrefix.'-toggleClosed" type="hidden" name="'.htmlspecialchars('data['.$table.']['.$row['uid'].']['.$field.']'.$formPrefix.'[_TOGGLE]').'" value="'.($toggleClosed?1:0).'" /> 
+									<input id="'.$idTagPrefix.'-toggleClosed" type="hidden" name="'.htmlspecialchars('data['.$table.']['.$row['uid'].']['.$field.']'.$formPrefix.'[_TOGGLE]').'" value="'.($toggleClosed?1:0).'" />
 								</div>';
 									// NOTICE: We are saving the toggle-state directly in the flexForm XML and "unauthorized" according to the data structure. It means that flexform XML will report unclean and a cleaning operation will remove the recorded togglestates. This is not a fatal problem. Ideally we should save the toggle states in meta-data but it is much harder to do that. And this implementation was easy to make and with no really harmful impact.
 						}
@@ -3298,7 +3301,7 @@ class t3lib_TCEforms	{
 			// Create selector box of the options
 		$sSize = $params['autoSizeMax'] ? t3lib_div::intInRange($itemArrayC+1,t3lib_div::intInRange($params['size'],1),$params['autoSizeMax']) : $params['size'];
 		if (!$selector)	{
-			$selector = '<select size="'.$sSize.'"'.$this->insertDefStyle('group').' multiple="multiple" name="'.$fName.'_list" '.$onFocus.$params['style'].$disabled.'>'.implode('',$opt).'</select>';
+			$selector = '<select ' . ($params['noList'] ? 'style="display: none"' : 'size="'.$sSize.'"'.$this->insertDefStyle('group')).' multiple="multiple" name="'.$fName.'_list" '.$onFocus.$params['style'].$disabled.'>'.implode('',$opt).'</select>';
 		}
 
 
@@ -3306,7 +3309,7 @@ class t3lib_TCEforms	{
 			'L' => array(),
 			'R' => array(),
 		);
-		if (!$params['readOnly']) {
+		if (!$params['readOnly'] && !$params['noList']) {
 			if (!$params['noBrowser'])	{
 					// check against inline uniqueness
 				$inlineParent = $this->inline->getStructureLevel(-1);
@@ -3381,8 +3384,8 @@ class t3lib_TCEforms	{
 			'
 			<tr>
 				<td valign="top">'.
-					$selector.'<br />'.
-					$this->wrapLabels($params['info']).
+					$selector.
+					($params['noList'] ? '' : '<br />'.$this->wrapLabels($params['info'])) .
 				'</td>
 				<td valign="top">'.
 					implode('<br />',$icons['L']).'</td>
@@ -4886,16 +4889,16 @@ class t3lib_TCEforms	{
 				return str;
 			}
 			function flexFormToggle(id)	{	// Toggling flexform elements on/off:
-				Element.toggle(""+id+"-content"); 
-				
+				Element.toggle(""+id+"-content");
+
 				if (Element.visible(id+"-content")) {
-					$(id+"-toggle").update(\''.$toggleIcon_open.'\') 
+					$(id+"-toggle").update(\''.$toggleIcon_open.'\')
 					$(id+"-toggleClosed").value = 0;
 				} else {
-					$(id+"-toggle").update(\''.$toggleIcon_close.'\'); 
+					$(id+"-toggle").update(\''.$toggleIcon_close.'\');
 					$(id+"-toggleClosed").value = 1;
 				}
-				
+
 			    var previewContent = "";
 			    var children = $(id+"-content").getElementsByTagName("input");
 			    for (var i = 0, length = children.length; i < length; i++) {
@@ -4931,7 +4934,7 @@ class t3lib_TCEforms	{
 			function flexFormSortable(id)	{	// Create sortables for flexform sections
  				Sortable.create(id, {tag:\'div\',constraint: false, onChange:function(){
 					setActionStatus(id);
-				} });				
+				} });
 			}
 			function setActionStatus(id)	{	// Updates the "action"-status for a section. This is used to move and delete elements.
 			    var descendants = $(id).immediateDescendants();
@@ -4943,7 +4946,7 @@ class t3lib_TCEforms	{
 					}
 			    }
 			}
-			
+
 			TBE_EDITOR.images.req.src = "'.t3lib_iconWorks::skinImg($this->backPath,'gfx/required_h.gif','',1).'";
 			TBE_EDITOR.images.cm.src = "'.t3lib_iconWorks::skinImg($this->backPath,'gfx/content_client.gif','',1).'";
 			TBE_EDITOR.images.sel.src = "'.t3lib_iconWorks::skinImg($this->backPath,'gfx/content_selected.gif','',1).'";
@@ -5231,8 +5234,8 @@ class t3lib_TCEforms	{
 	function printNeededJSFunctions()	{
 			// JS evaluation:
 		$out = $this->JSbottom($this->formName);
-		
-		
+
+
 			// Integrate JS functions for the element browser if such fields or IRRE fields were processed:
 		if ($this->printNeededJS['dbFileIcons'] || $this->inline->inlineCount)	{
 			$out.= '
