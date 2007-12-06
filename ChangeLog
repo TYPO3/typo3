@@ -1,8 +1,12 @@
-2007-12-02	Dmitry Dulepov	<dmitry@typo3.org>
+2007-12-06  Benjamin Mack  <mack@xnos.org>
+
+	* (bugfix) Fixed #1678: limit to language; still can delete and move content element (Thanks to Helmut Hummel)
+
+2007-12-05	Dmitry Dulepov	<dmitry@typo3.org>
 
 	* Fixed problems with language files in new installer (typo3/sysext/install)
 
-2007-12-02	Dmitry Dulepov	<dmitry@typo3.org>
+2007-12-04	Dmitry Dulepov	<dmitry@typo3.org>
 
 	* Fixed bug #6844: DB compare fails
 
@@ -10,7 +14,7 @@
 
 	* Fixed bug #6114: t3lib_extMgm::addToAllTCATypes ignores type 0
 	
-2007-12-02	Dmitry Dulepov	<dmitry@typo3.org>
+2007-12-03	Dmitry Dulepov	<dmitry@typo3.org>
 
 	* Fixed bug #6727: Fatal error install tool
 

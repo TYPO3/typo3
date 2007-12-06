@@ -3178,61 +3178,68 @@ class t3lib_TCEmain	{
 				$mayInsertAccess = $this->checkRecordUpdateAccess($table,$uid);
 			}
 
+				// Checking if there is anything else disallowing moving the record by checking if editing is allowed
+			$editAccess = $this->BE_USER->recordEditAccessInternals($table,$uid);
+
 				// If moving is allowed, begin the processing:
-			if ($mayMoveAccess)	{
-				if ($mayInsertAccess)	{
+			if ($editAccess)	{
+				if ($mayMoveAccess)	{
+					if ($mayInsertAccess)	{
 
-					if ($this->BE_USER->workspace!==0)	{	// Draft workspace...:
-							// Get workspace version of the source record, if any:
-						$WSversion = t3lib_BEfunc::getWorkspaceVersionOfRecord($this->BE_USER->workspace, $table, $uid, 'uid,t3ver_oid');
+						if ($this->BE_USER->workspace!==0)	{	// Draft workspace...:
+								// Get workspace version of the source record, if any:
+							$WSversion = t3lib_BEfunc::getWorkspaceVersionOfRecord($this->BE_USER->workspace, $table, $uid, 'uid,t3ver_oid');
 
-							// If no version exists and versioningWS is in version 2, a new placeholder is made automatically:
-						if (!$WSversion['uid'] && (int)$TCA[$table]['ctrl']['versioningWS']>=2 && (int)$moveRec['t3ver_state']!=3)	{
-							$this->versionizeRecord($table,$uid,'Placeholder version for moving record');
-							$WSversion = t3lib_BEfunc::getWorkspaceVersionOfRecord($this->BE_USER->workspace, $table, $uid, 'uid,t3ver_oid');	// Will not create new versions in live workspace though...
-						}
+								// If no version exists and versioningWS is in version 2, a new placeholder is made automatically:
+							if (!$WSversion['uid'] && (int)$TCA[$table]['ctrl']['versioningWS']>=2 && (int)$moveRec['t3ver_state']!=3)	{
+								$this->versionizeRecord($table,$uid,'Placeholder version for moving record');
+								$WSversion = t3lib_BEfunc::getWorkspaceVersionOfRecord($this->BE_USER->workspace, $table, $uid, 'uid,t3ver_oid');	// Will not create new versions in live workspace though...
+							}
 
-							// Check workspace permissions:
-						$workspaceAccessBlocked = array();
-						$recIsNewVersion = (int)$moveRec['t3ver_state']>0;	// Element was in "New/Deleted/Moved" so it can be moved...
-						$destRes = $this->BE_USER->workspaceAllowLiveRecordsInPID($resolvedPid,$table);
-						$canMoveRecord = $recIsNewVersion || (int)$TCA[$table]['ctrl']['versioningWS']>=2;
+								// Check workspace permissions:
+							$workspaceAccessBlocked = array();
+							$recIsNewVersion = (int)$moveRec['t3ver_state']>0;	// Element was in "New/Deleted/Moved" so it can be moved...
+							$destRes = $this->BE_USER->workspaceAllowLiveRecordsInPID($resolvedPid,$table);
+							$canMoveRecord = $recIsNewVersion || (int)$TCA[$table]['ctrl']['versioningWS']>=2;
 
-							// Workspace source check:
-						if (!$recIsNewVersion)	{
-							if ($errorCode = $this->BE_USER->workspaceCannotEditRecord($table, $WSversion['uid'] ? $WSversion['uid'] : $uid))	{
-								$workspaceAccessBlocked['src1']='Record could not be edited in workspace: '.$errorCode.' ';
-							} else {
-								if (!$canMoveRecord && $this->BE_USER->workspaceAllowLiveRecordsInPID($moveRec['pid'],$table)<=0)	{
-									$workspaceAccessBlocked['src2']='Could not remove record from table "'.$table.'" from its page "'.$moveRec['pid'].'" ';
+								// Workspace source check:
+							if (!$recIsNewVersion)	{
+								if ($errorCode = $this->BE_USER->workspaceCannotEditRecord($table, $WSversion['uid'] ? $WSversion['uid'] : $uid))	{
+									$workspaceAccessBlocked['src1']='Record could not be edited in workspace: '.$errorCode.' ';
+								} else {
+									if (!$canMoveRecord && $this->BE_USER->workspaceAllowLiveRecordsInPID($moveRec['pid'],$table)<=0)	{
+										$workspaceAccessBlocked['src2']='Could not remove record from table "'.$table.'" from its page "'.$moveRec['pid'].'" ';
+									}
 								}
 							}
-						}
 
-							// Workspace destination check:
-						if (!($destRes>0 || ($canMoveRecord && !$destRes)))	{	// All records can be inserted if $destRes is greater than zero. Only new versions can be inserted if $destRes is false. NO RECORDS can be inserted if $destRes is negative which indicates a stage not allowed for use. If "versioningWS" is version 2, moving can take place of versions.
-							$workspaceAccessBlocked['dest1']='Could not insert record from table "'.$table.'" in destination PID "'.$resolvedPid.'" ';
-						} elseif ($destRes==1 && $WSversion['uid'])	{
-							$workspaceAccessBlocked['dest2']='Could not insert other versions in destination PID ';
-						}
-
-						if (!count($workspaceAccessBlocked))	{
-							if ($WSversion['uid'] && !$recIsNewVersion && (int)$TCA[$table]['ctrl']['versioningWS']>=2)	{ // If the move operation is done on a versioned record, which is NOT new/deletd placeholder and versioningWS is in version 2, then...
-								$this->moveRecord_wsPlaceholders($table,$uid,$destPid,$WSversion['uid']);
-							} else {
-								$this->moveRecord_raw($table,$uid,$destPid);
+								// Workspace destination check:
+							if (!($destRes>0 || ($canMoveRecord && !$destRes)))	{	// All records can be inserted if $destRes is greater than zero. Only new versions can be inserted if $destRes is false. NO RECORDS can be inserted if $destRes is negative which indicates a stage not allowed for use. If "versioningWS" is version 2, moving can take place of versions.
+								$workspaceAccessBlocked['dest1']='Could not insert record from table "'.$table.'" in destination PID "'.$resolvedPid.'" ';
+							} elseif ($destRes==1 && $WSversion['uid'])	{
+								$workspaceAccessBlocked['dest2']='Could not insert other versions in destination PID ';
 							}
-						} else {
-							$this->newlog("Move attempt failed due to workspace restrictions: ".implode(' // ',$workspaceAccessBlocked),1);
+
+							if (!count($workspaceAccessBlocked))	{
+								if ($WSversion['uid'] && !$recIsNewVersion && (int)$TCA[$table]['ctrl']['versioningWS']>=2)	{ // If the move operation is done on a versioned record, which is NOT new/deletd placeholder and versioningWS is in version 2, then...
+									$this->moveRecord_wsPlaceholders($table,$uid,$destPid,$WSversion['uid']);
+								} else {
+									$this->moveRecord_raw($table,$uid,$destPid);
+								}
+							} else {
+								$this->newlog("Move attempt failed due to workspace restrictions: ".implode(' // ',$workspaceAccessBlocked),1);
+							}
+						} else {	// Live workspace - move it!
+							$this->moveRecord_raw($table,$uid,$destPid);
 						}
-					} else {	// Live workspace - move it!
-						$this->moveRecord_raw($table,$uid,$destPid);
+					} else {
+						$this->log($table,$uid,4,0,1,"Attempt to move record '%s' (%s) without having permissions to insert.",14,array($propArr['header'],$table.':'.$uid),$propArr['event_pid']);
 					}
 				} else {
-					$this->log($table,$uid,4,0,1,"Attempt to move record '%s' (%s) without having permissions to insert",14,array($propArr['header'],$table.':'.$uid),$propArr['event_pid']);
+					$this->log($table,$uid,4,0,1,"Attempt to move record '%s' (%s) without having permissions to do so.",14,array($propArr['header'],$table.':'.$uid),$propArr['event_pid']);
 				}
 			} else {
-				$this->log($table,$uid,4,0,1,"Attempt to move record '%s' (%s) without having permissions to do so",14,array($propArr['header'],$table.':'.$uid),$propArr['event_pid']);
+				$this->log($table,$uid,4,0,1,"Attempt to move record '%s' (%s) without having permissions to do so. [".$this->BE_USER->errorMsg."]",14,array($propArr['header'],$table.':'.$uid),$propArr['event_pid']);
 			}
 		}
 	}
@@ -3721,103 +3728,108 @@ class t3lib_TCEmain	{
 	function deleteRecord($table,$uid, $noRecordCheck=FALSE, $forceHardDelete=FALSE,$undeleteRecord=FALSE)	{
 		global $TCA;
 
+			// Checking if there is anything else disallowing deleting the record by checking if editing is allowed
+		$editAccess = $this->BE_USER->recordEditAccessInternals($table,$uid);
+
 		$uid = intval($uid);
 		if ($TCA[$table] && $uid)	{
-			if ($noRecordCheck || $this->doesRecordExist($table,$uid,'delete'))	{
-				$this->clear_cache($table,$uid);	// clear cache before deleting the record, else the correct page cannot be identified by clear_cache
+			if ($editAccess)	{
+				if ($noRecordCheck || $this->doesRecordExist($table,$uid,'delete'))	{
+					$this->clear_cache($table,$uid);	// clear cache before deleting the record, else the correct page cannot be identified by clear_cache
 
-				$propArr = $this->getRecordProperties($table, $uid);
-				$pagePropArr = $this->getRecordProperties('pages', $propArr['pid']);
+					$propArr = $this->getRecordProperties($table, $uid);
+					$pagePropArr = $this->getRecordProperties('pages', $propArr['pid']);
 
-				$deleteRow = $TCA[$table]['ctrl']['delete'];
-				if ($deleteRow && !$forceHardDelete)	{
-					$value = $undeleteRecord ? 0 : 1;
-					$updateFields = array(
-						$deleteRow => $value
-					);
+					$deleteRow = $TCA[$table]['ctrl']['delete'];
+					if ($deleteRow && !$forceHardDelete)	{
+						$value = $undeleteRecord ? 0 : 1;
+						$updateFields = array(
+							$deleteRow => $value
+						);
 
-					if ($TCA[$table]['ctrl']['tstamp']) {
-						$updateFields[$TCA[$table]['ctrl']['tstamp']] = time();
-					}
-
-						// If the table is sorted, then the sorting number is set very high
-					if ($TCA[$table]['ctrl']['sortby'] && !$undeleteRecord)	{
-						$updateFields[$TCA[$table]['ctrl']['sortby']] = 1000000000;
-					}
-
-						// before (un-)deleting this record, check for child records or references
-					$this->deleteRecord_procFields($table, $uid, $undeleteRecord);
-					$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table, 'uid='.intval($uid), $updateFields);
-				} else {
-
-						// Fetches all fields with flexforms and look for files to delete:
-					t3lib_div::loadTCA($table);
-					foreach($TCA[$table]['columns'] as $fieldName => $cfg)	{
-						$conf = $cfg['config'];
-
-						switch($conf['type'])	{
-							case 'flex':
-								$flexObj = t3lib_div::makeInstance('t3lib_flexformtools');
-								$flexObj->traverseFlexFormXMLData($table,$fieldName,t3lib_BEfunc::getRecordRaw($table,'uid='.intval($uid)),$this,'deleteRecord_flexFormCallBack');
-							break;
+						if ($TCA[$table]['ctrl']['tstamp']) {
+							$updateFields[$TCA[$table]['ctrl']['tstamp']] = time();
 						}
-					}
 
-						// Fetches all fields that holds references to files
-					$fileFieldArr = $this->extFileFields($table);
-					if (count($fileFieldArr))	{
-						$mres = $GLOBALS['TYPO3_DB']->exec_SELECTquery(implode(',',$fileFieldArr), $table, 'uid='.intval($uid));
-						if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($mres))	{
-							$fArray = $fileFieldArr;
-							foreach($fArray as $theField)	{	// MISSING: Support for MM file relations!
-								$this->extFileFunctions($table,$theField,$row[$theField],'deleteAll');		// This deletes files that belonged to this record.
+							// If the table is sorted, then the sorting number is set very high
+						if ($TCA[$table]['ctrl']['sortby'] && !$undeleteRecord)	{
+							$updateFields[$TCA[$table]['ctrl']['sortby']] = 1000000000;
+						}
+
+							// before (un-)deleting this record, check for child records or references
+						$this->deleteRecord_procFields($table, $uid, $undeleteRecord);
+						$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table, 'uid='.intval($uid), $updateFields);
+					} else {
+
+							// Fetches all fields with flexforms and look for files to delete:
+						t3lib_div::loadTCA($table);
+						foreach($TCA[$table]['columns'] as $fieldName => $cfg)	{
+							$conf = $cfg['config'];
+
+							switch($conf['type'])	{
+								case 'flex':
+									$flexObj = t3lib_div::makeInstance('t3lib_flexformtools');
+									$flexObj->traverseFlexFormXMLData($table,$fieldName,t3lib_BEfunc::getRecordRaw($table,'uid='.intval($uid)),$this,'deleteRecord_flexFormCallBack');
+								break;
 							}
-						} else {
-							$this->log($table,$uid,3,0,100,'Delete: Zero rows in result when trying to read filenames from record which should be deleted');
 						}
+
+							// Fetches all fields that holds references to files
+						$fileFieldArr = $this->extFileFields($table);
+						if (count($fileFieldArr))	{
+							$mres = $GLOBALS['TYPO3_DB']->exec_SELECTquery(implode(',',$fileFieldArr), $table, 'uid='.intval($uid));
+							if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($mres))	{
+								$fArray = $fileFieldArr;
+								foreach($fArray as $theField)	{	// MISSING: Support for MM file relations!
+									$this->extFileFunctions($table,$theField,$row[$theField],'deleteAll');		// This deletes files that belonged to this record.
+								}
+							} else {
+								$this->log($table,$uid,3,0,100,'Delete: Zero rows in result when trying to read filenames from record which should be deleted');
+							}
+						}
+
+							// Delete the hard way...:
+						$GLOBALS['TYPO3_DB']->exec_DELETEquery($table, 'uid='.intval($uid));
 					}
 
-						// Delete the hard way...:
-					$GLOBALS['TYPO3_DB']->exec_DELETEquery($table, 'uid='.intval($uid));
-				}
+					$state = $undeleteRecord ? 1 : 3;	// 1 means insert, 3 means delete
+					if (!$GLOBALS['TYPO3_DB']->sql_error())	{
+						if ($forceHardDelete) {
+							$message = "Record '%s' (%s) was deleted unrecoverable from page '%s' (%s)";
+						}
+						else {
+							$message = $state == 1 ?
+								"Record '%s' (%s) was restored on page '%s' (%s)" :
+								"Record '%s' (%s) was deleted from page '%s' (%s)";
+						}
+						$this->log($table, $uid, $state, 0, 0,
+									$message, 0,
+									array(
+										$propArr['header'],
+										$table.':'.$uid,
+										$pagePropArr['header'],
+										$propArr['pid']
+										),
+									$propArr['pid']);
 
-				$state = $undeleteRecord ? 1 : 3;	// 1 means insert, 3 means delete
-				if (!$GLOBALS['TYPO3_DB']->sql_error())	{
-					if ($forceHardDelete) {
-						$message = "Record '%s' (%s) was deleted unrecoverable from page '%s' (%s)";
+					} else {
+						$this->log($table,$uid,$state,0,100,$GLOBALS['TYPO3_DB']->sql_error());
 					}
-					else {
-						$message = $state == 1 ?
-							"Record '%s' (%s) was restored on page '%s' (%s)" :
-							"Record '%s' (%s) was deleted from page '%s' (%s)";
+
+						// Update reference index:
+					$this->updateRefIndex($table,$uid);
+
+						// if there are entries in the updateRefIndexStack
+					if (is_array($this->updateRefIndexStack[$table]) && is_array($this->updateRefIndexStack[$table][$uid])) {
+						while ($args = array_pop($this->updateRefIndexStack[$table][$uid])) {
+								// $args[0]: table, $args[1]: uid
+							$this->updateRefIndex($args[0], $args[1]);
+						}
+						unset($this->updateRefIndexStack[$table][$uid]);
 					}
-					$this->log($table, $uid, $state, 0, 0,
-								$message, 0,
-								array(
-									$propArr['header'],
-									$table.':'.$uid,
-									$pagePropArr['header'],
-									$propArr['pid']
-									),
-								$propArr['pid']);
 
-				} else {
-					$this->log($table,$uid,$state,0,100,$GLOBALS['TYPO3_DB']->sql_error());
-				}
-
-					// Update reference index:
-				$this->updateRefIndex($table,$uid);
-
-					// if there are entries in the updateRefIndexStack
-				if (is_array($this->updateRefIndexStack[$table]) && is_array($this->updateRefIndexStack[$table][$uid])) {
-					while ($args = array_pop($this->updateRefIndexStack[$table][$uid])) {
-							// $args[0]: table, $args[1]: uid
-						$this->updateRefIndex($args[0], $args[1]);
-					}
-					unset($this->updateRefIndexStack[$table][$uid]);
-				}
-
-			} else $this->log($table,$uid,3,0,1,'Attempt to delete record without delete-permissions');
+				} else $this->log($table,$uid,3,0,1,'Attempt to delete record without delete-permissions');
+			} else $this->log($table,$uid,3,0,1,'Attempt to delete record without delete-permissions. ['.$this->BE_USER->errorMsg.']');
 		}
 	}
 
