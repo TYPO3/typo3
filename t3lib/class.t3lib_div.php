@@ -3751,9 +3751,8 @@ class t3lib_div {
 				if ($langKey!='default')	{
 
 						// If no entry is found for the language key, then force a value depending on meta-data setting. By default an automated filename will be used:
-					if (!isset($xmlContent['data'][$langKey]))	{
-						$LOCAL_LANG[$langKey] = t3lib_div::llXmlAutoFileName($fileRef, $langKey);
-					} else {
+					$LOCAL_LANG[$langKey] = t3lib_div::llXmlAutoFileName($fileRef, $langKey);
+					if (!$LOCAL_LANG[$langKey] && isset($xmlContent['data'][$langKey]))	{
 						$LOCAL_LANG[$langKey] = $xmlContent['data'][$langKey];
 					}
 

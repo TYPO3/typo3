@@ -5,6 +5,7 @@
 2007-12-05	Dmitry Dulepov	<dmitry@typo3.org>
 
 	* Fixed problems with language files in new installer (typo3/sysext/install)
+	* Fixed bug #6903: Translated language files are not loaded
 
 2007-12-04	Dmitry Dulepov	<dmitry@typo3.org>
 
