@@ -118,6 +118,7 @@ class recordList extends t3lib_recordList {
 	var $modSharedTSconfig = array();		// Shared module configuration, used by localization features
 	var $pageRecord = array();		// Loaded with page record with version overlay if any.
 	var $hideTables = '';			// Tables which should not get listed
+	var $tableTSconfigOverTCA = array(); //TSconfig which overwrites TCA-Settings
 
 		// Internal, dynamic:
 	var $JScode = '';				// JavaScript code accumulation
@@ -225,7 +226,10 @@ class recordList extends t3lib_recordList {
 				t3lib_div::loadTCA($tableName);
 
 					// Hide tables which are configured via TSConfig not to be shown (also works for admins):
-				if (t3lib_div::inList($this->hideTables, $tableName))	continue;
+				if (isset($this->tableTSconfigOverTCA[$tableName.'.']['hideTable']) ? $this->tableTSconfigOverTCA[$tableName.'.']['hideTable'] :
+						(t3lib_div::inList($this->hideTables, $tableName) ? true : $GLOBALS['TCA'][$tableName]['ctrl']['hideTable'])) {
+					continue;
+				}
 
 					// iLimit is set depending on whether we're in single- or multi-table mode
 				if ($this->table)	{

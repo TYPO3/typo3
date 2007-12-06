@@ -6,6 +6,7 @@
 
 	* Fixed problems with language files in new installer (typo3/sysext/install)
 	* Fixed bug #6903: Translated language files are not loaded
+	* Fixed bug #6703: $TCA[table]['ctrl']['hideTable'] not implemented
 
 2007-12-04	Dmitry Dulepov	<dmitry@typo3.org>
 
