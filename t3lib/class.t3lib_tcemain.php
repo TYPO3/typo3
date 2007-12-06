@@ -3022,6 +3022,9 @@ class t3lib_TCEmain	{
 				$destPid = $resolvedPid;
 			}
 
+				// Checking if there is anything else disallowing edit
+			$editAccess = $this->BE_USER->recordEditAccessInternals($table,$uid);
+
 				// Timestamp field:
 			$updateFields = array();
 			if ($TCA[$table]['ctrl']['tstamp'])	{
@@ -3030,108 +3033,112 @@ class t3lib_TCEmain	{
 
 					// If moving is allowed, begin the processing:
 			if (!count($workspaceAccessBlocked))	{
-				if ($mayMoveAccess)	{
-					if ($destPid>=0)	{	// insert as first element on page (where uid = $destPid)
-						if ($mayInsertAccess)	{
-							if ($table!='pages' || $this->destNotInsideSelf($destPid,$uid))	{
-								$this->clear_cache($table,$uid);	// clear cache before moving
+				if ($editAccess)	{
+					if ($mayMoveAccess)	{
+						if ($destPid>=0)	{	// insert as first element on page (where uid = $destPid)
+							if ($mayInsertAccess)	{
+								if ($table!='pages' || $this->destNotInsideSelf($destPid,$uid))	{
+									$this->clear_cache($table,$uid);	// clear cache before moving
 
-								$updateFields['pid'] = $destPid;	// Setting PID
+									$updateFields['pid'] = $destPid;	// Setting PID
 
-									// table is sorted by 'sortby'
-								if ($sortRow)	{
-									$sortNumber = $this->getSortNumber($table,$uid,$destPid);
-									$updateFields[$sortRow] = $sortNumber;
-								}
-
-									// check for child records that have also to be moved
-								$this->moveRecord_procFields($table,$uid,$destPid);
-									// Create query for update:
-								$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table, 'uid='.intval($uid), $updateFields);
-
-									// Call post processing hooks:
-								foreach($hookObjectsArr as $hookObj) {
-									if (method_exists($hookObj, 'moveRecord_firstElementPostProcess')) {
-										$hookObj->moveRecord_firstElementPostProcess($table, $uid, $destPid, $moveRec, $updateFields, $this);
+										// table is sorted by 'sortby'
+									if ($sortRow)	{
+										$sortNumber = $this->getSortNumber($table,$uid,$destPid);
+										$updateFields[$sortRow] = $sortNumber;
 									}
-								}
 
-									// Logging...
-								$newPropArr = $this->getRecordProperties($table,$uid);
-								$oldpagePropArr = $this->getRecordProperties('pages',$propArr['pid']);
-								$newpagePropArr = $this->getRecordProperties('pages',$destPid);
+										// check for child records that have also to be moved
+									$this->moveRecord_procFields($table,$uid,$destPid);
+										// Create query for update:
+									$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table, 'uid='.intval($uid), $updateFields);
 
-								if ($destPid!=$propArr['pid'])	{
-									$this->log($table,$uid,4,$destPid,0,"Moved record '%s' (%s) to page '%s' (%s)",2,array($propArr['header'],$table.':'.$uid, $newpagePropArr['header'], $newPropArr['pid']),$propArr['pid']);	// Logged to old page
-									$this->log($table,$uid,4,$destPid,0,"Moved record '%s' (%s) from page '%s' (%s)",3,array($propArr['header'],$table.':'.$uid, $oldpagePropArr['header'], $propArr['pid']),$destPid);	// Logged to new page
-								} else {
-									$this->log($table,$uid,4,$destPid,0,"Moved record '%s' (%s) on page '%s' (%s)",4,array($propArr['header'],$table.':'.$uid, $oldpagePropArr['header'], $propArr['pid']),$destPid);	// Logged to new page
-								}
-								$this->clear_cache($table,$uid);	// clear cache after moving
-								$this->fixUniqueInPid($table,$uid);
-									// fixCopyAfterDuplFields
-								if ($origDestPid<0)	{$this->fixCopyAfterDuplFields($table,$uid,abs($origDestPid),1);}	// origDestPid is retrieve before it may possibly be converted to resolvePid if the table is not sorted anyway. In this way, copying records to after another records which are not sorted still lets you use this function in order to copy fields from the one before.
-							} else {
-								$destPropArr = $this->getRecordProperties('pages',$destPid);
-								$this->log($table,$uid,4,0,1,"Attempt to move page '%s' (%s) to inside of its own rootline (at page '%s' (%s))",10,array($propArr['header'],$uid, $destPropArr['header'], $destPid),$propArr['pid']);
-							}
-						}
-					} else {	// Put after another record
-						if ($sortRow)	{	// table is being sorted
-							$sortInfo = $this->getSortNumber($table,$uid,$destPid);
-							$destPid = $sortInfo['pid'];	// Setting the destPid to the new pid of the record.
-							if (is_array($sortInfo))	{	// If not an array, there was an error (which is already logged)
-								if ($mayInsertAccess)	{
-									if ($table!='pages' || $this->destNotInsideSelf($destPid,$uid))	{
-										$this->clear_cache($table,$uid);	// clear cache before moving
-
-											// We now update the pid and sortnumber
-										$updateFields['pid'] = $destPid;
-										$updateFields[$sortRow] = $sortInfo['sortNumber'];
-
-											// check for child records that have also to be moved
-										$this->moveRecord_procFields($table,$uid,$destPid);
-											// Create query for update:
-										$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table, 'uid='.intval($uid), $updateFields);
-
-											// Call post processing hooks:
-										foreach($hookObjectsArr as $hookObj) {
-											if (method_exists($hookObj, 'moveRecord_afterAnotherElementPostProcess')) {
-												$hookObj->moveRecord_afterAnotherElementPostProcess($table, $uid, $destPid, $origDestPid, $moveRec, $updateFields, $this);
-											}
+										// Call post processing hooks:
+									foreach($hookObjectsArr as $hookObj) {
+										if (method_exists($hookObj, 'moveRecord_firstElementPostProcess')) {
+											$hookObj->moveRecord_firstElementPostProcess($table, $uid, $destPid, $moveRec, $updateFields, $this);
 										}
+									}
 
-											// Logging...
-										$newPropArr = $this->getRecordProperties($table,$uid);
-										$oldpagePropArr = $this->getRecordProperties('pages',$propArr['pid']);
-										if ($destPid!=$propArr['pid'])	{
-											$newpagePropArr = $this->getRecordProperties('pages',$destPid);
-											$this->log($table,$uid,4,0,0,"Moved record '%s' (%s) to page '%s' (%s)",2,array($propArr['header'],$table.':'.$uid, $newpagePropArr['header'], $newPropArr['pid']),$propArr['pid']);	// Logged to old page
-											$this->log($table,$uid,4,0,0,"Moved record '%s' (%s) from page '%s' (%s)",3,array($propArr['header'],$table.':'.$uid, $oldpagePropArr['header'], $propArr['pid']),$destPid);	// Logged to new page
-										} else {
-											$this->log($table,$uid,4,0,0,"Moved record '%s' (%s) on page '%s' (%s)",4,array($propArr['header'],$table.':'.$uid, $oldpagePropArr['header'], $propArr['pid']),$destPid);	// Logged to new page
-										}
+										// Logging...
+									$newPropArr = $this->getRecordProperties($table,$uid);
+									$oldpagePropArr = $this->getRecordProperties('pages',$propArr['pid']);
+									$newpagePropArr = $this->getRecordProperties('pages',$destPid);
 
-											// clear cache after moving
-										$this->clear_cache($table,$uid);
-
-											// fixUniqueInPid
-										$this->fixUniqueInPid($table,$uid);
-
-											// fixCopyAfterDuplFields
-										if ($origDestPid<0)	{$this->fixCopyAfterDuplFields($table,$uid,abs($origDestPid),1);}
+									if ($destPid!=$propArr['pid'])	{
+										$this->log($table,$uid,4,$destPid,0,"Moved record '%s' (%s) to page '%s' (%s)",2,array($propArr['header'],$table.':'.$uid, $newpagePropArr['header'], $newPropArr['pid']),$propArr['pid']);	// Logged to old page
+										$this->log($table,$uid,4,$destPid,0,"Moved record '%s' (%s) from page '%s' (%s)",3,array($propArr['header'],$table.':'.$uid, $oldpagePropArr['header'], $propArr['pid']),$destPid);	// Logged to new page
 									} else {
-										$destPropArr = $this->getRecordProperties('pages',$destPid);
-										$this->log($table,$uid,4,0,1,"Attempt to move page '%s' (%s) to inside of its own rootline (at page '%s' (%s))",10,array($propArr['header'],$uid, $destPropArr['header'], $destPid),$propArr['pid']);
+										$this->log($table,$uid,4,$destPid,0,"Moved record '%s' (%s) on page '%s' (%s)",4,array($propArr['header'],$table.':'.$uid, $oldpagePropArr['header'], $propArr['pid']),$destPid);	// Logged to new page
 									}
+									$this->clear_cache($table,$uid);	// clear cache after moving
+									$this->fixUniqueInPid($table,$uid);
+										// fixCopyAfterDuplFields
+									if ($origDestPid<0)	{$this->fixCopyAfterDuplFields($table,$uid,abs($origDestPid),1);}	// origDestPid is retrieve before it may possibly be converted to resolvePid if the table is not sorted anyway. In this way, copying records to after another records which are not sorted still lets you use this function in order to copy fields from the one before.
+								} else {
+									$destPropArr = $this->getRecordProperties('pages',$destPid);
+									$this->log($table,$uid,4,0,1,"Attempt to move page '%s' (%s) to inside of its own rootline (at page '%s' (%s))",10,array($propArr['header'],$uid, $destPropArr['header'], $destPid),$propArr['pid']);
 								}
 							}
-						} else {
-							$this->log($table,$uid,4,0,1,"Attempt to move record '%s' (%s) to after another record, although the table has no sorting row.",13,array($propArr['header'],$table.':'.$uid),$propArr['event_pid']);
+						} else {	// Put after another record
+							if ($sortRow)	{	// table is being sorted
+								$sortInfo = $this->getSortNumber($table,$uid,$destPid);
+								$destPid = $sortInfo['pid'];	// Setting the destPid to the new pid of the record.
+								if (is_array($sortInfo))	{	// If not an array, there was an error (which is already logged)
+									if ($mayInsertAccess)	{
+										if ($table!='pages' || $this->destNotInsideSelf($destPid,$uid))	{
+											$this->clear_cache($table,$uid);	// clear cache before moving
+
+												// We now update the pid and sortnumber
+											$updateFields['pid'] = $destPid;
+											$updateFields[$sortRow] = $sortInfo['sortNumber'];
+
+												// check for child records that have also to be moved
+											$this->moveRecord_procFields($table,$uid,$destPid);
+												// Create query for update:
+											$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table, 'uid='.intval($uid), $updateFields);
+
+												// Call post processing hooks:
+											foreach($hookObjectsArr as $hookObj) {
+												if (method_exists($hookObj, 'moveRecord_afterAnotherElementPostProcess')) {
+													$hookObj->moveRecord_afterAnotherElementPostProcess($table, $uid, $destPid, $origDestPid, $moveRec, $updateFields, $this);
+												}
+											}
+
+												// Logging...
+											$newPropArr = $this->getRecordProperties($table,$uid);
+											$oldpagePropArr = $this->getRecordProperties('pages',$propArr['pid']);
+											if ($destPid!=$propArr['pid'])	{
+												$newpagePropArr = $this->getRecordProperties('pages',$destPid);
+												$this->log($table,$uid,4,0,0,"Moved record '%s' (%s) to page '%s' (%s)",2,array($propArr['header'],$table.':'.$uid, $newpagePropArr['header'], $newPropArr['pid']),$propArr['pid']);	// Logged to old page
+												$this->log($table,$uid,4,0,0,"Moved record '%s' (%s) from page '%s' (%s)",3,array($propArr['header'],$table.':'.$uid, $oldpagePropArr['header'], $propArr['pid']),$destPid);	// Logged to new page
+											} else {
+												$this->log($table,$uid,4,0,0,"Moved record '%s' (%s) on page '%s' (%s)",4,array($propArr['header'],$table.':'.$uid, $oldpagePropArr['header'], $propArr['pid']),$destPid);	// Logged to new page
+											}
+
+												// clear cache after moving
+											$this->clear_cache($table,$uid);
+
+												// fixUniqueInPid
+											$this->fixUniqueInPid($table,$uid);
+
+												// fixCopyAfterDuplFields
+											if ($origDestPid<0)	{$this->fixCopyAfterDuplFields($table,$uid,abs($origDestPid),1);}
+										} else {
+											$destPropArr = $this->getRecordProperties('pages',$destPid);
+											$this->log($table,$uid,4,0,1,"Attempt to move page '%s' (%s) to inside of its own rootline (at page '%s' (%s))",10,array($propArr['header'],$uid, $destPropArr['header'], $destPid),$propArr['pid']);
+										}
+									}
+								}
+							} else {
+								$this->log($table,$uid,4,0,1,"Attempt to move record '%s' (%s) to after another record, although the table has no sorting row.",13,array($propArr['header'],$table.':'.$uid),$propArr['event_pid']);
+							}
 						}
+					} else {
+						$this->log($table,$uid,4,0,1,"Attempt to move record '%s' (%s) without having permissions to do so.",14,array($propArr['header'],$table.':'.$uid),$propArr['event_pid']);
 					}
 				} else {
-					$this->log($table,$uid,4,0,1,"Attempt to move record '%s' (%s) without having permissions to do so",14,array($propArr['header'],$table.':'.$uid),$propArr['event_pid']);
+					$this->log($table,$uid,4,0,1,"Attempt to move record '%s' (%s) without having permissions to do so. [".$this->BE_USER->errorMsg."]",14,array($propArr['header'],$table.':'.$uid),$propArr['event_pid']);
 				}
 			} else {
 				$this->newlog("Move attempt failed due to workspace restrictions: ".implode(' ',$workspaceAccessBlocked),1);
@@ -3422,103 +3429,108 @@ class t3lib_TCEmain	{
 	function deleteRecord($table,$uid, $noRecordCheck=FALSE, $forceHardDelete=FALSE,$undeleteRecord=FALSE)	{
 		global $TCA;
 
+		// Checking if there is anything disallowing edit
+		$editAccess = $this->BE_USER->recordEditAccessInternals($table,$uid);
+
 		$uid = intval($uid);
 		if ($TCA[$table] && $uid)	{
-			if ($noRecordCheck || $this->doesRecordExist($table,$uid,'delete'))	{
-				$this->clear_cache($table,$uid);	// clear cache before deleting the record, else the correct page cannot be identified by clear_cache
+			if ($editAccess)	{
+				if ($noRecordCheck || ($this->doesRecordExist($table,$uid,'delete')))	{
+					$this->clear_cache($table,$uid);	// clear cache before deleting the record, else the correct page cannot be identified by clear_cache
 
-				$propArr = $this->getRecordProperties($table, $uid);
-				$pagePropArr = $this->getRecordProperties('pages', $propArr['pid']);
+					$propArr = $this->getRecordProperties($table, $uid);
+					$pagePropArr = $this->getRecordProperties('pages', $propArr['pid']);
 
-				$deleteRow = $TCA[$table]['ctrl']['delete'];
-				if ($deleteRow && !$forceHardDelete)	{
-					$value = $undeleteRecord ? 0 : 1;
-					$updateFields = array(
-						$deleteRow => $value
-					);
+					$deleteRow = $TCA[$table]['ctrl']['delete'];
+					if ($deleteRow && !$forceHardDelete)	{
+						$value = $undeleteRecord ? 0 : 1;
+						$updateFields = array(
+							$deleteRow => $value
+						);
 
-					if ($TCA[$table]['ctrl']['tstamp']) {
-						$updateFields[$TCA[$table]['ctrl']['tstamp']] = time();
-					}
-
-						// If the table is sorted, then the sorting number is set very high
-					if ($TCA[$table]['ctrl']['sortby'] && !$undeleteRecord)	{
-						$updateFields[$TCA[$table]['ctrl']['sortby']] = 1000000000;
-					}
-
-						// before (un-)deleting this record, check for child records or references
-					$this->deleteRecord_procFields($table, $uid, $undeleteRecord);
-					$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table, 'uid='.intval($uid), $updateFields);
-				} else {
-
-						// Fetches all fields with flexforms and look for files to delete:
-					t3lib_div::loadTCA($table);
-					foreach($TCA[$table]['columns'] as $fieldName => $cfg)	{
-						$conf = $cfg['config'];
-
-						switch($conf['type'])	{
-							case 'flex':
-								$flexObj = t3lib_div::makeInstance('t3lib_flexformtools');
-								$flexObj->traverseFlexFormXMLData($table,$fieldName,t3lib_BEfunc::getRecordRaw($table,'uid='.intval($uid)),$this,'deleteRecord_flexFormCallBack');
-							break;
+						if ($TCA[$table]['ctrl']['tstamp']) {
+							$updateFields[$TCA[$table]['ctrl']['tstamp']] = time();
 						}
-					}
 
-						// Fetches all fields that holds references to files
-					$fileFieldArr = $this->extFileFields($table);
-					if (count($fileFieldArr))	{
-						$mres = $GLOBALS['TYPO3_DB']->exec_SELECTquery(implode(',',$fileFieldArr), $table, 'uid='.intval($uid));
-						if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($mres))	{
-							$fArray = $fileFieldArr;
-							foreach($fArray as $theField)	{	// MISSING: Support for MM file relations!
-								$this->extFileFunctions($table,$theField,$row[$theField],'deleteAll');		// This deletes files that belonged to this record.
+							// If the table is sorted, then the sorting number is set very high
+						if ($TCA[$table]['ctrl']['sortby'] && !$undeleteRecord)	{
+							$updateFields[$TCA[$table]['ctrl']['sortby']] = 1000000000;
+						}
+
+							// before (un-)deleting this record, check for child records or references
+						$this->deleteRecord_procFields($table, $uid, $undeleteRecord);
+						$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table, 'uid='.intval($uid), $updateFields);
+					} else {
+
+							// Fetches all fields with flexforms and look for files to delete:
+						t3lib_div::loadTCA($table);
+						foreach($TCA[$table]['columns'] as $fieldName => $cfg)	{
+							$conf = $cfg['config'];
+
+							switch($conf['type'])	{
+								case 'flex':
+									$flexObj = t3lib_div::makeInstance('t3lib_flexformtools');
+									$flexObj->traverseFlexFormXMLData($table,$fieldName,t3lib_BEfunc::getRecordRaw($table,'uid='.intval($uid)),$this,'deleteRecord_flexFormCallBack');
+								break;
 							}
-						} else {
-							$this->log($table,$uid,3,0,100,'Delete: Zero rows in result when trying to read filenames from record which should be deleted');
 						}
+
+							// Fetches all fields that holds references to files
+						$fileFieldArr = $this->extFileFields($table);
+						if (count($fileFieldArr))	{
+							$mres = $GLOBALS['TYPO3_DB']->exec_SELECTquery(implode(',',$fileFieldArr), $table, 'uid='.intval($uid));
+							if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($mres))	{
+								$fArray = $fileFieldArr;
+								foreach($fArray as $theField)	{	// MISSING: Support for MM file relations!
+									$this->extFileFunctions($table,$theField,$row[$theField],'deleteAll');		// This deletes files that belonged to this record.
+								}
+							} else {
+								$this->log($table,$uid,3,0,100,'Delete: Zero rows in result when trying to read filenames from record which should be deleted');
+							}
+						}
+
+							// Delete the hard way...:
+						$GLOBALS['TYPO3_DB']->exec_DELETEquery($table, 'uid='.intval($uid));
 					}
 
-						// Delete the hard way...:
-					$GLOBALS['TYPO3_DB']->exec_DELETEquery($table, 'uid='.intval($uid));
-				}
+					$state = $undeleteRecord ? 1 : 3;	// 1 means insert, 3 means delete
+					if (!$GLOBALS['TYPO3_DB']->sql_error())	{
+						if ($forceHardDelete) {
+							$message = "Record '%s' (%s) was deleted unrecoverable from page '%s' (%s)";
+						}
+						else {
+							$message = $state == 1 ?
+								"Record '%s' (%s) was restored on page '%s' (%s)" :
+								"Record '%s' (%s) was deleted from page '%s' (%s)";
+						}
+						$this->log($table, $uid, $state, 0, 0,
+									$message, 0,
+									array(
+										$propArr['header'],
+										$table.':'.$uid,
+										$pagePropArr['header'],
+										$propArr['pid']
+										),
+									$propArr['pid']);
 
-				$state = $undeleteRecord ? 1 : 3;	// 1 means insert, 3 means delete
-				if (!$GLOBALS['TYPO3_DB']->sql_error())	{
-					if ($forceHardDelete) {
-						$message = "Record '%s' (%s) was deleted unrecoverable from page '%s' (%s)";
+					} else {
+						$this->log($table,$uid,$state,0,100,$GLOBALS['TYPO3_DB']->sql_error());
 					}
-					else {
-						$message = $state == 1 ?
-							"Record '%s' (%s) was restored on page '%s' (%s)" :
-							"Record '%s' (%s) was deleted from page '%s' (%s)";
+
+						// Update reference index:
+					$this->updateRefIndex($table,$uid);
+
+						// if there are entries in the updateRefIndexStack
+					if (is_array($this->updateRefIndexStack[$table]) && is_array($this->updateRefIndexStack[$table][$uid])) {
+						while ($args = array_pop($this->updateRefIndexStack[$table][$uid])) {
+								// $args[0]: table, $args[1]: uid
+							$this->updateRefIndex($args[0], $args[1]);
+						}
+						unset($this->updateRefIndexStack[$table][$uid]);
 					}
-					$this->log($table, $uid, $state, 0, 0,
-								$message, 0,
-								array(
-									$propArr['header'],
-									$table.':'.$uid,
-									$pagePropArr['header'],
-									$propArr['pid']
-									),
-								$propArr['pid']);
 
-				} else {
-					$this->log($table,$uid,$state,0,100,$GLOBALS['TYPO3_DB']->sql_error());
-				}
-
-					// Update reference index:
-				$this->updateRefIndex($table,$uid);
-
-					// if there are entries in the updateRefIndexStack
-				if (is_array($this->updateRefIndexStack[$table]) && is_array($this->updateRefIndexStack[$table][$uid])) {
-					while ($args = array_pop($this->updateRefIndexStack[$table][$uid])) {
-							// $args[0]: table, $args[1]: uid
-						$this->updateRefIndex($args[0], $args[1]);
-					}
-					unset($this->updateRefIndexStack[$table][$uid]);
-				}
-
-			} else $this->log($table,$uid,3,0,1,'Attempt to delete record without delete-permissions');
+				} else $this->log($table,$uid,3,0,1,'Attempt to delete record without delete-permissions.');
+			} else $this->log($table,$uid,3,0,1,'Attempt to delete record without delete-permissions. ['.$this->BE_USER->errorMsg.']');
 		}
 	}
 
