@@ -26,7 +26,6 @@
 
 	* Fixed bug #5956: TCA eval required on date field does not work
 
->>>>>>> .r2799
 2007-11-09  Benjamin Mack  <mack@xnos.org>
 
         * (bugfix) Fixed Image Generation bug. Call in t3lib_div now uses the IM wrapper to render gifs/pngs
