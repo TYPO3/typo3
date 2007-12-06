@@ -2,13 +2,13 @@
 <T3locallang>
 	<meta type="array">
 		<description>Installer Module</description>
-		<type>installer-module</type>
+		<type>module</type>
 	</meta>
 	<data type="array">
 		<languageKey index="default" type="array">
 			<label index="msg_step1_title">Welcome to TYPO3</label>
 			<label index="msg_step1_description">This is the installation wizard for the TYPO3 Content Management System. When you click "next" a few initial checks will be performed to test if your server is suitable for TYPO3.</label>
-			
+
 			<label index="msg_step2_title">Select language</label>
 			<label index="msg_step2_description">Please select the language for the installation process.</label>
 
@@ -25,7 +25,7 @@
 			<label index="label_admin_username">Enter username for administrator</label>
 			<label index="label_admin_password">Enter a password for administrator</label>
 			<label index="label_admin_password_2">Retype the password</label>
-			
+
 			<label index="msg_error_stepnotdefined">FATAL! The requested step is not defined.</label>
 			<label index="msg_error_methodnotfound">FATAL! The requested method "%s" was not found in module "%s".</label>
 
@@ -34,9 +34,6 @@
 			<label index="msg_warning_usernameexists">There is already a user with name "%s" in the database.</label>
 			<label index="msg_warning_passwordmatch">The passwords you entered don't match.</label>
 			<label index="msg_warning_emptypassword">You have to enter a password. Empty password or spaces only are *NOT* valid.</label>
-		</languageKey>
-		<languageKey index="de" type="array">
-			<label index="label_step">Schritt %d</label>
 		</languageKey>
 	</data>
 </T3locallang>

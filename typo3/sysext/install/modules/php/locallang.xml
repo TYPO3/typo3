@@ -2,7 +2,7 @@
 <T3locallang>
 	<meta type="array">
 		<description>PHP Module</description>
-		<type>installer-module</type>
+		<type>module</type>
 	</meta>
 	<data type="array">
 		<languageKey index="default" type="array">
@@ -11,7 +11,7 @@
 
 			<label index="module_php_check_version_title">PHP Version check</label>
 			<label index="module_php_check_version_description">Checks if the installed PHP version fits the needs of TYPO3</label>
-			
+
 			<label index="module_php_method_phpversion_title">PHP-Version</label>
 			<label index="module_php_error_phpversion">Your PHP version (%s) is too old. TYPO3 requires at least PHP 5.1.0</label>
 		</languageKey>

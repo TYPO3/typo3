@@ -2,13 +2,13 @@
 <T3locallang>
 	<meta type="array">
 		<description>System Module</description>
-		<type>installer-module</type>
+		<type>module</type>
 	</meta>
 	<data type="array">
 		<languageKey index="default" type="array">
 			<label index="module_system_title"></label>
 			<label index="module_system_description"></label>
-			
+
 			<!-- BACKEND -->
 
 			<label index="title_sessionTimeout">session timeout</label>
@@ -16,7 +16,7 @@
 			<label index="help_sessionTimeout">Session time out for backend users. Default is 3600 seconds = 1 hour.</label>
 
 			<!-- FRONTEND -->
-	
+
 			<!-- DEVELOPMENT -->
 			<label index="title_devIPmask">devIPmask</label>
 			<label index="description_devIPmask">Defines a list of IP addresses which will allow development-output to display.</label>

@@ -2,7 +2,7 @@
 <T3locallang>
 	<meta type="array">
 		<description>Database Module</description>
-		<type>installer-module</type>
+		<type>module</type>
 	</meta>
 	<data type="array">
 		<languageKey index="default" type="array">
@@ -10,11 +10,11 @@
 			<label index="title_typo_db_host">Database host</label>
 			<label index="description_typo_db_host">Enter the hostname where the database server can be reached.</label>
 			<label index="help_typo_db_host">The hostname is a server where the database server is running. In most cases this will be "localhost".</label>
-			
+
 			<label index="title_typo_db_username">Database username</label>
 			<label index="title_typo_db_password">Database password</label>
 			<label index="title_typo_db">TYPO3 database</label>
-			
+
 			<label index="label_database_defaulttables">Create default database tables</label>
 			<label index="label_selectdump">Please select a database dump</label>
 
