@@ -1,3 +1,7 @@
+2007-12-07	Dmitry Dulepov	<dmitry@typo3.org>
+
+	* Fixed bug #6903: Translated language files are not loaded
+
 2007-12-06  Benjamin Mack  <mack@xnos.org>
 
         * (bugfix) Fixed #1678: limit to language; still can delete and move content element (Thanks to Helmut Hummel)
