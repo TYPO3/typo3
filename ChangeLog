@@ -1,3 +1,7 @@
+2007-12-09  Oliver Hader  <oh@inpublica.de>
+
+	* Fixed bug #5994: IRRE - RTEhtmlarea is not show in child records if parent has no RTE
+
 2007-12-07	Dmitry Dulepov	<dmitry@typo3.org>
 
 	* Fixed bug #6903: Translated language files are not loaded

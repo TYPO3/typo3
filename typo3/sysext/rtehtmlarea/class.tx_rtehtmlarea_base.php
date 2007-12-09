@@ -535,8 +535,9 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 
 				// Preloading the pageStyle
 			$filename = trim($this->thisConfig['contentCSS']) ? trim($this->thisConfig['contentCSS']) : 'EXT:' . $this->ID . '/htmlarea/plugins/DynamicCSS/dynamiccss.css';
-			$pObj->additionalCode_pre['loadCSS'] = '
-		<link rel="alternate stylesheet" type="text/css" href="' . $this->getFullFileName($filename) . '" />';
+			if ($pObj->RTEcounter == 1) {
+				$pObj->additionalCode_pre['loadCSS'] = "\n\t\t".'<link rel="alternate stylesheet" type="text/css" href="' . $this->getFullFileName($filename) . '" />';
+			}
 
 				// Loading the editor skin
 			$skinFilename = trim($this->thisConfig['skin']) ? trim($this->thisConfig['skin']) : 'EXT:' . $this->ID . '/htmlarea/skins/default/htmlarea.css';
@@ -558,15 +559,15 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			}
 			$this->editorCSS = $skinFilename;
 			$this->editedContentCSS = $skinDir . '/htmlarea-edited-content.css';
-			$pObj->additionalCode_pre['loadCSS'] .= '
-		<link rel="alternate stylesheet" type="text/css" href="' . $this->editedContentCSS . '" />';
 
-			$pObj->additionalCode_pre['loadCSS'] .= '
-		<link rel="stylesheet" type="text/css" href="' . $this->editorCSS . '" />';
+			if ($pObj->RTEcounter == 1) {
+				$pObj->additionalCode_pre['loadCSS'] .= "\n\t\t".'<link rel="alternate stylesheet" type="text/css" href="' . $this->editedContentCSS . '" />';
+				$pObj->additionalCode_pre['loadCSS'] .= "\n\t\t".'<link rel="stylesheet" type="text/css" href="' . $this->editorCSS . '" />';
+					// Loading JavaScript files and code
+				$pObj->additionalCode_pre['loadJSfiles'] = $this->loadJSfiles($pObj->RTEcounter);
+				$pObj->additionalJS_pre['loadJScode'] = $this->loadJScode($pObj->RTEcounter);
+			}
 
-				// Loading JavaScript files and code
-			$pObj->additionalCode_pre['loadJSfiles'] = $this->loadJSfiles($pObj->RTEcounter);
-			$pObj->additionalJS_pre['loadJScode'] = $this->loadJScode($pObj->RTEcounter);
 
 			/* =======================================
 			 * DRAW THE EDITOR
@@ -831,30 +832,30 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 		return '
 		<script type="text/javascript">
 		/*<![CDATA[*/
-			var i=1;
+			i=1;
 			while (document.getElementById("pleasewait" + i)) {
 				document.getElementById("pleasewait" + i).style.display = "block";
 				document.getElementById("editorWrap" + i).style.visibility = "hidden";
 				i++;
 			};
-			var RTEarea = new Array();
+			RTEarea = new Array();
 			RTEarea[0] = new Object();
 			RTEarea[0]["version"] = "' . $TYPO3_CONF_VARS['EXTCONF'][$this->ID]['version'] . '";
 			RTEarea[0]["popupwin"] = "' . $this->writeJSFileToTypo3tempDir('EXT:' . $this->ID . '/htmlarea/popupwin' . ($TYPO3_CONF_VARS['EXTCONF'][$this->ID]['enableCompressedScripts']?'-compressed':'') .'.js', "popupwin", $TYPO3_CONF_VARS['EXTCONF'][$this->ID]['enableCompressedScripts'])  . '";
 			RTEarea[0]["htmlarea-gecko"] = "' . $this->writeJSFileToTypo3tempDir('EXT:' . $this->ID . '/htmlarea/htmlarea-gecko' . ($TYPO3_CONF_VARS['EXTCONF'][$this->ID]['enableCompressedScripts']?'-compressed':'') .'.js', "htmlarea-gecko", $TYPO3_CONF_VARS['EXTCONF'][$this->ID]['enableCompressedScripts'])  . '";
 			RTEarea[0]["htmlarea-ie"] = "' . $this->writeJSFileToTypo3tempDir('EXT:' . $this->ID . '/htmlarea/htmlarea-ie' . ($TYPO3_CONF_VARS['EXTCONF'][$this->ID]['enableCompressedScripts']?'-compressed':'') .'.js', "htmlarea-ie", $TYPO3_CONF_VARS['EXTCONF'][$this->ID]['enableCompressedScripts'])  . '";
-			var _editor_url = "' . $this->extHttpPath . 'htmlarea";
-			var _editor_lang = "' . $this->language . '";
-			var _editor_CSS = "' . $this->editorCSS . '";
-			var _editor_skin = "' . dirname($this->editorCSS) . '";
-			var _editor_edited_content_CSS = "' .  $this->editedContentCSS  . '";
-			var _typo3_host_url = "' . $this->hostURL . '";
-			var _editor_debug_mode = ' . ($TYPO3_CONF_VARS['EXTCONF'][$this->ID]['enableDebugMode'] ? 'true' : 'false') . ';
-			var _editor_compressed_scripts = ' . ($TYPO3_CONF_VARS['EXTCONF'][$this->ID]['enableCompressedScripts'] ? 'true' : 'false') . ';
-			var _editor_mozAllowClipboard_url = "' . ($TYPO3_CONF_VARS['EXTCONF'][$this->ID]['mozAllowClipboardURL'] ? $TYPO3_CONF_VARS['EXTCONF'][$this->ID]['mozAllowClipboardURL'] : '') . '";
-			var _spellChecker_lang = "' . $this->spellCheckerLanguage . '";
-			var _spellChecker_charset = "' . $this->spellCheckerCharset . '";
-			var _spellChecker_mode = "' . $this->spellCheckerMode . '";
+			_editor_url = "' . $this->extHttpPath . 'htmlarea";
+			_editor_lang = "' . $this->language . '";
+			_editor_CSS = "' . $this->editorCSS . '";
+			_editor_skin = "' . dirname($this->editorCSS) . '";
+			_editor_edited_content_CSS = "' .  $this->editedContentCSS  . '";
+			_typo3_host_url = "' . $this->hostURL . '";
+			_editor_debug_mode = ' . ($TYPO3_CONF_VARS['EXTCONF'][$this->ID]['enableDebugMode'] ? 'true' : 'false') . ';
+			_editor_compressed_scripts = ' . ($TYPO3_CONF_VARS['EXTCONF'][$this->ID]['enableCompressedScripts'] ? 'true' : 'false') . ';
+			_editor_mozAllowClipboard_url = "' . ($TYPO3_CONF_VARS['EXTCONF'][$this->ID]['mozAllowClipboardURL'] ? $TYPO3_CONF_VARS['EXTCONF'][$this->ID]['mozAllowClipboardURL'] : '') . '";
+			_spellChecker_lang = "' . $this->spellCheckerLanguage . '";
+			_spellChecker_charset = "' . $this->spellCheckerCharset . '";
+			_spellChecker_mode = "' . $this->spellCheckerMode . '";
 		/*]]>*/
 		</script>
 		<script type="text/javascript" src="' . $this->buildJSMainLangFile($number) . '"></script>
