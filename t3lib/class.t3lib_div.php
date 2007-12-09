@@ -2354,12 +2354,14 @@ class t3lib_div {
 			curl_setopt($ch, CURLOPT_URL, $url);
 			curl_setopt($ch, CURLOPT_HEADER, $includeHeader ? 1 : 0);
 			curl_setopt($ch, CURLOPT_NOBODY, $includeHeader == 2 ? 1 : 0);
-			curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 			curl_setopt($ch, CURLOPT_FAILONERROR, 1);
 			if (is_array($requestHeaders))	{
 				curl_setopt($ch, CURLOPT_HTTPHEADER, $requestHeaders);
 			}
+
+				// may fail (5.2.0, 5.1.5+ and 4.4.4+) when open_basedir or safe_mode are enabled
+			@curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
 
 			if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyServer'])	{
 				curl_setopt($ch, CURLOPT_PROXY, $GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyServer']);
@@ -2377,22 +2379,34 @@ class t3lib_div {
 
 		} elseif ($includeHeader)	{
 			$parsedURL = parse_url($url);
-			if (!t3lib_div::inList('ftp,ftps,http,https,gopher,telnet', $parsedURL['scheme']))	{
+			if (!t3lib_div::inList('http,https', $parsedURL['scheme']))	{
 				return false;
 			}
+			$port = intval($parsedURL['port']);
+			if ($parsedURL['scheme'] == 'http')	{
+				$port = ($port>0 ? $port : 80);
+				$scheme = '';
+			} else {
+				$port = ($port>0 ? $port : 443);
+				$scheme = 'ssl://';
+			}
 
-			$fp = @fsockopen($parsedURL['host'], ($parsedURL['port'] > 0 ? $parsedURL['port'] : 80), $errno, $errstr, 2.0);
-			if (!$fp)	{
+			$fp = @fsockopen($scheme.$parsedURL['host'], $port, $errno, $errstr, 2.0);
+			if (!$fp || $errno > 0)	{
 				return false;
 			}
 
 			$msg = 'GET ' . $parsedURL['path'] .
 					($parsedURL['query'] ? '?' . $parsedURL['query'] : '') .
 					' HTTP/1.0' . "\r\n" . 'Host: ' .
-					$parsedURL['host'] . "\r\n\r\n";
+					$parsedURL['host'] . "\r\n";
+			if (is_array($requestHeaders))	{
+				$msg .= implode("\r\n", $requestHeaders). "\r\n";
+			}
+			$msg .= "\r\n";
 			fputs($fp, $msg);
 			while (!feof($fp))	{
-				$line = fgets($fp, 2048);
+				$line = @fgets($fp, 2048);
 				$content.= $line;
 				if ($includeHeader == 2 && !strlen(trim($line)))	{
 					break;	// Stop at the first empty line (= end of header)

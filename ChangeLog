@@ -1,14 +1,22 @@
+
+2007-10-09  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+
+	* Fixed bug #5985: PHP warning in t3lib_div::getUrl when safe_mode or open_basedir is set
+	* Fixed bug in t3lib_div::getUrl: option $includeHeaders ignores option $requestHeaders
+	* Fixed bug in t3lib_div::getUrl: option $inludeHeaders doesn't work with https
+	* Fixed bug in t3lib_div::getUrl: option $inludeHeaders has a wrong default port for https
+
 2007-12-09  Oliver Hader  <oh@inpublica.de>
 
 	* Fixed bug #5994: IRRE - RTEhtmlarea is not show in child records if parent has no RTE
 
-2007-12-07	Dmitry Dulepov	<dmitry@typo3.org>
+2007-12-07  Dmitry Dulepov	<dmitry@typo3.org>
 
 	* Fixed bug #6903: Translated language files are not loaded
 
 2007-12-06  Benjamin Mack  <mack@xnos.org>
 
-        * (bugfix) Fixed #1678: limit to language; still can delete and move content element (Thanks to Helmut Hummel)
+	* Fixed bug #1678: limit to language; still can delete and move content element (Thanks to Helmut Hummel)
 
 2007-12-02	Dmitry Dulepov	<dmitry@typo3.org>
 
@@ -36,7 +44,7 @@
 
 2007-11-09  Benjamin Mack  <mack@xnos.org>
 
-        * (bugfix) Fixed Image Generation bug. Call in t3lib_div now uses the IM wrapper to render gifs/pngs
+        * Fixed image generation bug: Call in t3lib_div now uses the IM wrapper to render gifs/pngs
 
 2007-11-07  Oliver Hader  <oh@inpublica.de>
 
@@ -152,7 +160,7 @@
 
 2007-09-18  Oliver Hader  <oh@inpublica.de>
 
-	* (minor) Fixed bug #65: Thumbnails in Element Browser are only displayed if fileSuffix is lowercase
+	* Fixed bug #65: Thumbnails in Element Browser are only displayed if fileSuffix is lowercase
 
 2007-09-09  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
@@ -173,12 +181,12 @@
 
 2007-09-03  Oliver Hader  <oh@inpublica.de>
 
-	* (minor) Fixed bug #6104: IRRE - IE7: Strange behaviour with hover event of nested Tabs/IRRE-levels with relative positioned HTML elements
-	* (minor) Fixed bug #5906: IRRE - Default values defined in TCA are not used for children (thanks to Joscha Feth and Jeff Segars)
+	* Fixed bug #6104: IRRE - IE7: Strange behaviour with hover event of nested Tabs/IRRE-levels with relative positioned HTML elements
+	* Fixed bug #5906: IRRE - Default values defined in TCA are not used for children (thanks to Joscha Feth and Jeff Segars)
 
 2007-08-15  Wolfgang Klinger  <wk@plan2.net>
 
-	* (trivial) Added is_array checks in extension manager code (committed by Stucki)
+	* Added is_array checks in extension manager code (committed by Stucki)
 
 2007-08-23  Dmitry Dulepov  <dmitry@typo3.org>
 
@@ -186,7 +194,7 @@
 
 2007-08-23  Andreas Otto  <andreas.otto@dkd.de>
 
-	* (trivial) Fixed bug #4888: Invalid argument supplied for foreach()
+	* Fixed bug #4888: Invalid argument supplied for foreach()
 
 2007-08-06  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
