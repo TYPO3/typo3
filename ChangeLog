@@ -1,5 +1,5 @@
 
-2007-10-09  Martin Kutschker  <martin.t.kutschker@blackbox.net>
+2007-12-09  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
 	* Fixed bug #5985: PHP warning in t3lib_div::getUrl when safe_mode or open_basedir is set
 	* Fixed bug in t3lib_div::getUrl: option $includeHeaders ignores option $requestHeaders
@@ -18,7 +18,7 @@
 
 	* Fixed bug #1678: limit to language; still can delete and move content element (Thanks to Helmut Hummel)
 
-2007-12-02	Dmitry Dulepov	<dmitry@typo3.org>
+2007-12-02  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Fixed bug #6844: DB compare fails
 
@@ -72,7 +72,7 @@
 
 	* Fixed bug #5338: Error installing suggested extensions
 
-2007-10-29	Dmitry Dulepov	<dmitry@typo3.org>
+2007-10-29  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Fixed bug #6581: Fatal error in TCEForms: Fatal error: Cannot use string offset as an array
 	* Fixed bug #6565: T3DataStructure with sheet references will not show sheetTitle,sheetDescription and sheetShortDescr
