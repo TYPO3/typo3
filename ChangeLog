@@ -8,7 +8,6 @@
 	* Fixed bug #6903: Translated language files are not loaded
 	* Fixed bug #6703: $TCA[table]['ctrl']['hideTable'] not implemented
 	* Fixed bug #6888: Disabling some or all controls in "group" field
-	* Fixed bug #6398: enable param 'noBrowser' in TCA-config ['columns'][fieldname]['config'] / TYPE: "group"
 
 2007-12-04  Dmitry Dulepov  <dmitry@typo3.org>
 
