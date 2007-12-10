@@ -1,10 +1,7 @@
-
 2007-12-09  Martin Kutschker  <martin.t.kutschker@blackbox.net>
 
 	* Fixed bug #5985: PHP warning in t3lib_div::getUrl when safe_mode or open_basedir is set
-	* Fixed bug in t3lib_div::getUrl: option $includeHeaders ignores option $requestHeaders
-	* Fixed bug in t3lib_div::getUrl: option $inludeHeaders doesn't work with https
-	* Fixed bug in t3lib_div::getUrl: option $inludeHeaders has a wrong default port for https
+	* Fixed bugs with option $includeHeaders in t3lib_div::getUrl: Option $requestHeaders was ignored, it didn't work with https and had a wrong default port for https
 
 2007-12-09  Oliver Hader  <oh@inpublica.de>
 
