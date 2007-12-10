@@ -2,7 +2,7 @@
 
 	* (bugfix) Fixed #1678: limit to language; still can delete and move content element (Thanks to Helmut Hummel)
 
-2007-12-05	Dmitry Dulepov	<dmitry@typo3.org>
+2007-12-05  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Fixed problems with language files in new installer (typo3/sysext/install)
 	* Fixed bug #6903: Translated language files are not loaded
@@ -10,7 +10,7 @@
 	* Fixed bug #6888: Disabling some or all controls in "group" field
 	* Fixed bug #6398: enable param 'noBrowser' in TCA-config ['columns'][fieldname]['config'] / TYPE: "group"
 
-2007-12-04	Dmitry Dulepov	<dmitry@typo3.org>
+2007-12-04  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Fixed bug #6844: DB compare fails
 
@@ -18,7 +18,7 @@
 
 	* Fixed bug #6114: t3lib_extMgm::addToAllTCATypes ignores type 0
 	
-2007-12-03	Dmitry Dulepov	<dmitry@typo3.org>
+2007-12-03  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Fixed bug #6727: Fatal error install tool
 
@@ -26,7 +26,7 @@
 
 	* (cleanup) Fixed #6823: Removed "Disable RTE" checkbox in alt_doc.php
 
-2007-12-02	Dmitry Dulepov	<dmitry@typo3.org>
+2007-12-02  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Changed "Clear cache" string to start with upper-case
 
