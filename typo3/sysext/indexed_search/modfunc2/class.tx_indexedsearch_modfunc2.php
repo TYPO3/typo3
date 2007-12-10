@@ -86,10 +86,10 @@ class tx_indexedsearch_modfunc2 extends t3lib_extobjbase {
 	 * @return	string		html table with results
 	 */
 	function showStats()	{
-		global $LANG,$HTTP_GET_VARS,$TYPO3_CONF_VARS;
+		global $LANG, $TYPO3_CONF_VARS;
 
 		$conf['words']=50;	// max words in result list
-		$conf['bid']=$HTTP_GET_VARS['id'];	// pageid for several statistics
+		$conf['bid'] = intval(t3lib_div::_GET('id'));	// pageid for several statistics
 
 		$addwhere1='';	// all records
 		$addwhere2=' AND tstamp > '.(time()-30*24*60*60);	// last 30 days
@@ -123,7 +123,7 @@ class tx_indexedsearch_modfunc2 extends t3lib_extobjbase {
 
 		$queryParts['SELECT']= '*, COUNT(*) AS c';
 		$queryParts['FROM']='index_stat_word';
-		$queryParts['WHERE']=sprintf('pageid= %s '.$addwhere, $conf['bid']);
+		$queryParts['WHERE']=sprintf('pageid= %d '.$addwhere, $conf['bid']);
 		$queryParts['GROUPBY']='word';
 		$queryParts['ORDERBY']='c DESC,word';
 		$queryParts['LIMIT']=$conf['words'];
