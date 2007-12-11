@@ -71,6 +71,7 @@ REMOTE_ADDR was "%s" (%s)</label>
 
 			<label index="label_subcategory_connection">Connection</label>
 			<label index="label_subcategory_cleanup">Clean Up</label>
+			<label index="label_subcategory_analyze">Analyze</label>
 			<label index="label_subcategory_php">PHP</label>
 			<label index="label_subcategory_directories">Directories</label>
 			<label index="label_subcategory_backend">Backend</label>

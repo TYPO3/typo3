@@ -161,6 +161,15 @@ function executeMethod(module, method, extraParameters, callBack)	{
 	});
 }
 
+function displayMethodResult(data)	{
+	console.debug(data);
+	if (data.request.parameters.target)	{
+		$(data.request.parameters.target).innerHTML = data.responseText;
+	} else {
+		alert(data.responseText);
+	}
+}
+
 allOpen = false;
 
 	// add event observers

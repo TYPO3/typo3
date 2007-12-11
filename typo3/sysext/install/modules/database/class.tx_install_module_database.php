@@ -433,6 +433,132 @@ class tx_install_module_database extends tx_install_module_base	{
 
 		return true;
 	}
+	
+	/**
+	 * Compares the current database with a given SQL file. If the argument is null it uses the
+	 * default file t3lib/stddb/tables.sql.
+	 *
+	 * @param	string	$sqlFile: The file that is used for comparision; NULL for default file
+	 * @return	HTML-Code or false if an error occured
+	 */
+	public function analyzeCompareFile($sqlFile = NULL)	{
+		if (is_null($sqlFile))	{
+			$sqlFile = PATH_t3lib.'stddb/tables.sql';
+		}
+		
+		$tblFileContent = t3lib_div::getUrl($sqlFile);
+		
+			// return an error if the given file was not found
+		if (!$tblFileContent)	{
+			$this->addError(sprintf($this->get_LL('msg_database_error_filenotfound'), $sqlFile), FATAL);
+			return false;
+		}
+
+		/*
+		reset($GLOBALS['TYPO3_LOADED_EXT']);
+		foreach ($GLOBALS['TYPO3_LOADED_EXT'] as $loadedExtConf)	{
+			if (is_array($loadedExtConf) && $loadedExtConf['ext_tables.sql'])	{
+				$tblFileContent.= chr(10).chr(10).chr(10).chr(10).t3lib_div::getUrl($loadedExtConf['ext_tables.sql']);
+			}
+		}
+		
+		$t3lib_install = t3lib_div::makeInstance('t3lib_install');
+		$statements = $t3lib_install->getStatementArray($tblFileContent, 1);
+		
+		list($statements_table, $insertCount) = $t3lib_install->getCreateTables($statements, 1);
+		
+		$tblFileContent = t3lib_div::getUrl(PATH_t3lib.'stddb/tables.sql');
+		reset($GLOBALS['TYPO3_LOADED_EXT']);
+		
+		
+		
+		$fileContent = implode(
+			$t3lib_install->getStatementArray($tblFileContent,1,'^CREATE TABLE '),
+			chr(10)
+		);
+		$FDfile = $t3lib_install->getFieldDefinitions_sqlContent($fileContent);
+		
+		if (!count($FDfile))	{
+			$this->addError(sprintf('There were no "CREATE TABLE" definitions in the provided file: %s', PATH_t3lib.'stddb/tables.sql'), FATAL);
+			return false;
+		}
+		
+			// Updating database...
+		/*
+		if (is_array($this->INSTALL['database_update']))	{
+			$FDdb = $this->getFieldDefinitions_database();
+			$diff = $this->getDatabaseExtra($FDfile, $FDdb);
+			$update_statements = $this->getUpdateSuggestions($diff);
+			$diff = $this->getDatabaseExtra($FDdb, $FDfile);
+			$remove_statements = $this->getUpdateSuggestions($diff,'remove');
+
+			$this->performUpdateQueries($update_statements['add'],$this->INSTALL['database_update']);
+			$this->performUpdateQueries($update_statements['change'],$this->INSTALL['database_update']);
+			$this->performUpdateQueries($remove_statements['change'],$this->INSTALL['database_update']);
+			$this->performUpdateQueries($remove_statements['drop'],$this->INSTALL['database_update']);
+
+			$this->performUpdateQueries($update_statements['create_table'],$this->INSTALL['database_update']);
+			$this->performUpdateQueries($remove_statements['change_table'],$this->INSTALL['database_update']);
+			$this->performUpdateQueries($remove_statements['drop_table'],$this->INSTALL['database_update']);
+		}
+		*/
+
+		/*
+			// Init again / first time depending...
+		$FDdb = $t3lib_install->getFieldDefinitions_database();
+
+		$diff = $t3lib_install->getDatabaseExtra($FDfile, $FDdb);
+		$update_statements = $t3lib_install->getUpdateSuggestions($diff);
+
+		$diff = $t3lib_install->getDatabaseExtra($FDdb, $FDfile);
+		$remove_statements = $t3lib_install->getUpdateSuggestions($diff,'remove');
+
+		$tLabel = 'Update database tables and fields';
+
+		if ($remove_statements || $update_statements)	{
+			$formContent = $this->generateUpdateDatabaseForm('get_form',$update_statements,$remove_statements,$action_type);
+			$this->message($tLabel,'Table and field definitions should be updated',"
+			There seems to be a number of differencies between the database and the selected SQL-file.
+			Please select which statements you want to execute in order to update your database:<br /><br />
+			".$formContent."
+			",2);
+		} else {
+			$formContent = $this->generateUpdateDatabaseForm('get_form',$update_statements,$remove_statements,$action_type);
+			$this->message($tLabel,'Table and field definitions are OK.',"
+			The tables and fields in the current database corresponds perfectly to the database in the selected SQL-file.
+			",-1);
+		}
+		
+		return $formContent;
+		*/
+		
+		return 'Here comes the result from the database analyzer';
+	}
+	
+	
+	
+	private function displaySuggestions($arr, $excludeList='')	{
+		$out='';
+		$out.='<tr><td bgcolor="#9BA1A8" align="center"><strong>'.$this->fw('Field name:').'</strong></td><td bgcolor="#9BA1A8" align="center"><strong>'.$this->fw('Info / Suggestion for the field:').'</strong></td></tr>';
+		$fC=0;
+		if (is_array($arr))	{
+			reset($arr);
+			while(list($fieldname, $fieldContent)=each($arr))	{
+				if (!t3lib_div::inList($excludeList,$fieldname) && substr($fieldname,0,strlen($this->deletedPrefixKey))!=$this->deletedPrefixKey && substr($fieldname,-1)!='.')	{
+					$fieldContent = $this->fw($fieldContent);
+					if ($arr[$fieldname.'.'])	{
+						$fieldContent.= '<hr />';
+						$fieldContent.= '<pre>'.trim($arr[$fieldname.'.']).'</pre>';
+					}
+					$out.='<tr><td bgcolor="#ABBBB4">'.$this->fw($fieldname).'</td><td bgcolor="#ABBBB4">'.$fieldContent.'</td></tr>';
+					$fC++;
+				}
+			}
+		}
+		$out= '<table border="0" cellpadding="2" cellspacing="2">'.$out.'</table>';
+		return array($out,$fC);
+	}
+
 
 }
 

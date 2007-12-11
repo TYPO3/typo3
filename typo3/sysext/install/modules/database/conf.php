@@ -66,6 +66,13 @@ $GLOBALS['MCA']['database'] = array (
 	),
 	
 	'methods' => array (
+		'analyze_compareFile' => array (
+			'categoryMain' => 'database',
+			'categorySub' => 'analyze',
+			'tags' => array('database', 'db', 'cleanup', 'compare'),
+			'method' => 'database:analyzeCompareFile',
+			'autostart' => false
+		),
 		'cleanUp_cachedImageSizes' => array(
 			'title' => 'title_cleanUp_cachedImageSizes',
 			'description' => 'description_cleanUp_cachedImageSizes',
@@ -73,7 +80,8 @@ $GLOBALS['MCA']['database'] = array (
 			'categoryMain' => 'database',
 			'categorySub' => 'cleanup',
 			'tags' => array ('database', 'db', 'clean'),
-			'method' => 'database:cleanUpCachedImageSizes'
+			'method' => 'database:cleanUpCachedImageSizes',
+			'autostart' => false
 		),
 	),
 	

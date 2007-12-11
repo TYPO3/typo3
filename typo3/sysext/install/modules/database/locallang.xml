@@ -15,12 +15,16 @@
 			<label index="title_typo_db_password">Database password</label>
 			<label index="title_typo_db">TYPO3 database</label>
 
+			<label index="title_analyze_compareFile">Compare against default database</label>
+
 			<label index="label_database_defaulttables">Create default database tables</label>
 			<label index="label_selectdump">Please select a database dump</label>
+			<label index="label_execute">Execute</label>
 
 			<label index="msg_database_error_cantconnect">FATAL: Can't connect to database-server!</label>
 			<label index="msg_database_error_cantselectdb">FATAL: Can't select database "%s"</label>
 			<label index="msg_database_error_couldnotcreate">Could not create database with name "%s"</label>
+			<label index="msg_database_error_filenotfound">The compare-file "%s" was not found!</label>
 
 			<label index="msg_database_warning_selectdb">Please select a database or fill in a name for a new database.</label>
 			<label index="msg_database_warning_invalidname">The NEW database name "%s" was not alphanumeric, a-zA-Z0-9_-</label>

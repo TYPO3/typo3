@@ -176,11 +176,14 @@ class tx_install {
 			die();
 		}	
 		
-		if($this->env['mode'] == '123') {
-			$this->env['module'] = 'installer';
-			$this->passwordOK = true;
-		} else {
-			$this->env['module'] = $this->defaults['module'];
+			// set some default module if nothing was set
+		if (empty($this->env['module']))	{
+			if($this->env['mode'] == '123') {
+				$this->env['module'] = 'installer';
+				$this->passwordOK = true;
+			} else {
+				$this->env['module'] = $this->defaults['module'];
+			}
 		}
 			
 			// load localconf file
@@ -188,10 +191,13 @@ class tx_install {
 		
 			// do the login if mode is not 123
 		if($this->env['mode'] != '123') {
+			$this->passwordOK = false;
+			
 			$randomKey = $_COOKIE[$this->cookieName.'_key'];
 			if(!$randomKey) {
 				$randomKey = md5(uniqid(microtime()));
 				setcookie($this->cookieName.'_key', $randomKey, 0, '/');		// Cookie is set
+
 					// add a message that pops up in a JavaScript alert
 				$this->viewObj->addJSmessage($this->basicsObj->getLabel('msg_setup_firstcall'));
 			}
@@ -212,11 +218,19 @@ class tx_install {
 				$method = $this->env['method'];
 			}
 			
+				// execute given method and save the result in a local variable
 			$moduleContent = $this->basicsObj->executeMethod(array($this->env['module'], $method));
 		
+				// check if we have to handle the module content with AJAX
 			if ($this->env['ajax'] == 1)	{
 				header('X-JSON: (true)');
 				header('Content-type: text/html; charset=utf-8');
+				
+					// render errors if module returned FALSE
+				if ($moduleContent == false)	{
+					$moduleContent = $this->viewObj->renderErrors();
+				}
+				
 				echo $moduleContent;
 			} else {
 				if($moduleContent === false) {
@@ -246,7 +260,7 @@ class tx_install {
 	 * @return	boolean	true if submitted password is ok, false otherwise
 	 */
 	private function checkPassword($randomKey) {
-		$password     = t3lib_div::_GP('password');
+		$password     = t3lib_div::_GP('typo3_install_password');
 		$warningEmail = $GLOBALS['TYPO3_CONF_VARS']['BE']['warning_email_addr'];
 		$passwordOk   = false;
 		
@@ -319,7 +333,7 @@ class tx_install {
 							'label'       => 'label_setup_password',
 							'elementType' => 'password',
 							'options'     => array(
-								'name' => 'password'
+								'name' => 'typo3_install_password'
 							)
 						)
 					),
