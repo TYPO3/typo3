@@ -74,6 +74,26 @@ function sendForm(formId)	{
 	loadModuleContent(elements.categoryMain.value, elements.categorySub.value, ajaxParameters);
 }
 
+function sendMethodForm(formId, module, method, callBack)	{
+	var elements = $(formId).elements;
+	var ajaxParameters = {};
+	for (var i = 0; i < elements.length; i++)	{
+		var el = elements.item(i);
+		switch (el.type)	{
+			case 'checkbox':
+				ajaxParameters[el.name] = (el.checked == true) ? 1 : 0;
+				break;
+			case 'text':
+			default:
+				ajaxParameters[el.name] = el.value;
+				break;
+		}
+	};
+	
+	executeMethod(module, method, ajaxParameters, callBack);
+	return false;
+}
+
 function doSearch()	{
 	searchString = $('treeFilter').value;
 	$$('.tree_item').each(function(item, index)	{ item.setStyle({'fontWeight': 'normal', backgroundColor: '#fff'}) });
@@ -166,7 +186,7 @@ function displayMethodResult(data)	{
 	if (data.request.parameters.target)	{
 		$(data.request.parameters.target).innerHTML = data.responseText;
 	} else {
-		alert(data.responseText);
+		// console.debug(data.responseText);
 	}
 }
 

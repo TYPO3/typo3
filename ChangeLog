@@ -1,3 +1,14 @@
+2007-12-12	Thomas Hempel  <thomas@typo3-unleashed.net>
+
+	* Bugfix: Invalid call to viewObj
+	* Added support for fieldsets in renderMethod "form"
+	* Added ability to send forms via AJAX
+	* improved DB compare code (Thanks to Francois Suter)
+
+2007-12-11	Thomas Hempel  <thomas@typo3-unleashed.net>
+
+	* Added support for listing and calling methods in new installer
+
 2007-12-10  Ingmar Schlecht  <ingmar@typo3.org>
 
         * (security) Fixed a low-severity SQL injection in the modfunc2 of indexed_search (only exploitable by BE users, and severity limited because addslashes() was already applied to the value - yet not within a quoted string) (Thanks to Henning Pingel for findind the issue and Andreas Otto for the fix)
@@ -371,7 +382,7 @@
 	* Fixed bug #5347: Flexforms dosen't resolve sheets
 	* Fixed bug #3969: Missing sheets inclusion in flexforms?
 
-2007-10-28  Kasper Skårhøj  <kasperYYYY@typo3.com>
+2007-10-28  Kasper Skï¿½rhï¿½j  <kasperYYYY@typo3.com>
 
 	* - Reverting IRRE related changes in t3lib_BEfunc done for workspaces by Dmitry. They were faulty.
 	* - Modified rendering of FlexForms in t3lib_TCEforms and also processing in t3lib_tcemain so that flexforms are now fully dynamic in their nature; This is particularly the case when flexforms have sections and containers within (see the original movie-list example for instance). DHTML is used to reorganize flexform elements, delete and add new. No ajax though (not necessary). It means we finally have a permanent implementation for what was before "_DELETE_FLEX_FORM" etc buttons... Used scriptaculous and prototype for the work.

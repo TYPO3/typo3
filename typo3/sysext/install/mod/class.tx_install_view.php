@@ -74,7 +74,7 @@ class tx_install_view {
 	 * @var string
 	 */
 	private $lastMessage = '';
-	
+
 	/**
 	 * parent tx_install object
 	 *
@@ -82,6 +82,13 @@ class tx_install_view {
 	 */
 	private $pObj    = NULL;
 
+	/**
+	 * Last openend fieldset
+	 *
+	 * @var string
+	 */
+	private $lastFieldset = NULL;
+	
 	/**
 	 * Constructor
 	 * 
@@ -598,7 +605,7 @@ class tx_install_view {
 			$this->getAttributeString('id', $data['options']['id']).
 			$this->getAttributeString('method', $data['options']['method'], 'post');
 			
-		if(isset($data['options']['action'])) {
+		if(isset($data['options']['action']) && $data['options']['ajax'] == false) {
 			$content .= $this->getAttributeString('action', $data['options']['action']);
 		}
 		$content .= '>'."\n";
@@ -624,7 +631,18 @@ class tx_install_view {
 				}
 			}
 		}
-		$content .= '<br /><input type="submit" class="submit" value="'.$data['options']['submit'].'" /></form>';
+		
+		if (!is_null($this->lastFieldset))	{
+			$content .= '</fieldset>';
+		}
+		
+		if ($data['options']['ajax'] == true)	{
+			$content .= '<br /><button class="submit" onclick="return '.$data['options']['action'].'">'.$data['options']['submit'].'</button>';
+		} else {
+			$content .= '<br /><input type="submit" class="submit" value="'.$data['options']['submit'].'" />';
+		}
+		
+		$content .= '</form>';
 		
 		return $content;
 	}
@@ -650,47 +668,55 @@ class tx_install_view {
 	 * @return	string		HTML output
 	 */
 	public function renderFormelement($data) {
-		// var_dump(array('formelement', $data));
-		// debug($data, 'renderFormelement');
 		$content   = '';
 		$viewObj   = $this->pObj->getViewObject();
 		$basicsObj = $this->pObj->getBasicsObject();
 
-		$elementRenderMethod = 'renderFormelement'.ucfirst($data['elementType']);
-		if(method_exists($this, $elementRenderMethod)) {
-				// set the value of the field from the environment if no error is recognized for it
-				// also set an error string if error was found
-			$errors = $viewObj->getErrors();
-			if(!isset($errors['fields'][$data['options']['name']])) {
-				$environment = $this->pObj->getEnvironment();
-				if(!empty($environment[$data['options']['name']])) {
-					$data['options']['value'] = $environment[$data['options']['name']];
-				}
-				$errorStr = '';
-			} else {
-				$errorStr = $viewObj->renderErrors(true, 'fields', $data['options']['name']);
+		if ($data['elementType'] == 'fieldset')	{
+			if (!is_null($this->lastFieldset) && $this->lastFieldset != $data['label'])	{
+				$content = '</fieldset>';
 			}
 			
-				// render the form element
-			$formElementCode = $this->$elementRenderMethod($data['options']);
-			
-				// create a label if set in option
-			if(isset($data['label'])) {
-				$label = '<label for="'.$data['options']['id'].'">'.$basicsObj->getLabel($data['label'], $data['label']).'</label>';
+			$content .= '<fieldset><legend>'.$data['label'].'</legend>';
+			$this->lastFieldset = $data['label'];	
+		} else {
+		
+			$elementRenderMethod = 'renderFormelement'.ucfirst($data['elementType']);
+			if(method_exists($this, $elementRenderMethod)) {
+					// set the value of the field from the environment if no error is recognized for it
+					// also set an error string if error was found
+				$errors = $viewObj->getErrors();
+				if(!isset($errors['fields'][$data['options']['name']])) {
+					$environment = $this->pObj->getEnvironment();
+					if(!empty($environment[$data['options']['name']])) {
+						$data['options']['value'] = $environment[$data['options']['name']];
+					}
+					$errorStr = '';
+				} else {
+					$errorStr = $viewObj->renderErrors(true, 'fields', $data['options']['name']);
+				}
 				
-					// align the label (default is left)
-				switch ($data['label_align']) {
-					case 'right':
-						$formElementCode = $errorStr.$formElementCode.$label;
-						break;
-					case 'left':
-					default:
-						$formElementCode = $label.$errorStr.$formElementCode;
+					// render the form element
+				$formElementCode = $this->$elementRenderMethod($data['options']);
+				
+					// create a label if set in option
+				if(isset($data['label'])) {
+					$label = '<label for="'.$data['options']['id'].'">'.$basicsObj->getLabel($data['label'], $data['label']).'</label>';
+					
+						// align the label (default is left)
+					switch ($data['label_align']) {
+						case 'right':
+							$formElementCode = $errorStr.$formElementCode.$label;
+							break;
+						case 'left':
+						default:
+							$formElementCode = $label.$errorStr.$formElementCode;
+					}
 				}
+				
+					// return the element wrapped in a div
+				$content = '<div class="formElement formElement'.ucfirst($data['elementType']).'">'.$formElementCode.'</div>';
 			}
-			
-				// return the element wrapped in a div
-			$content = '<div class="formElement formElement'.ucfirst($data['elementType']).'">'.$formElementCode.'</div>';
 		}
 		
 		return $content;

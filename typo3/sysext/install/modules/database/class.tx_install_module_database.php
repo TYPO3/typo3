@@ -442,10 +442,10 @@ class tx_install_module_database extends tx_install_module_base	{
 	 * @return	HTML-Code or false if an error occured
 	 */
 	public function analyzeCompareFile($sqlFile = NULL)	{
+			// Load default SQL file if none is given
 		if (is_null($sqlFile))	{
 			$sqlFile = PATH_t3lib.'stddb/tables.sql';
 		}
-		
 		$tblFileContent = t3lib_div::getUrl($sqlFile);
 		
 			// return an error if the given file was not found
@@ -454,38 +454,45 @@ class tx_install_module_database extends tx_install_module_base	{
 			return false;
 		}
 
-		/*
+			// Add all SQL statements from all loaded extensions
 		reset($GLOBALS['TYPO3_LOADED_EXT']);
 		foreach ($GLOBALS['TYPO3_LOADED_EXT'] as $loadedExtConf)	{
 			if (is_array($loadedExtConf) && $loadedExtConf['ext_tables.sql'])	{
-				$tblFileContent.= chr(10).chr(10).chr(10).chr(10).t3lib_div::getUrl($loadedExtConf['ext_tables.sql']);
+				$tblFileContent .= chr(10).chr(10).chr(10).chr(10).t3lib_div::getUrl($loadedExtConf['ext_tables.sql']);
 			}
 		}
-		
+
+			// Get an instance of the t3lib_install class
 		$t3lib_install = t3lib_div::makeInstance('t3lib_install');
+		
+			// Transform string of SQL statements into an array
 		$statements = $t3lib_install->getStatementArray($tblFileContent, 1);
-		
+
+			// Get all the statements indexed for each table
 		list($statements_table, $insertCount) = $t3lib_install->getCreateTables($statements, 1);
-		
-		$tblFileContent = t3lib_div::getUrl(PATH_t3lib.'stddb/tables.sql');
-		reset($GLOBALS['TYPO3_LOADED_EXT']);
-		
-		
-		
-		$fileContent = implode(
-			$t3lib_install->getStatementArray($tblFileContent,1,'^CREATE TABLE '),
-			chr(10)
-		);
+
+			// Load default SQL file as a basis for comparison
+		// $tblFileContent = t3lib_div::getUrl(PATH_t3lib.'stddb/tables.sql');
+//		reset($GLOBALS['TYPO3_LOADED_EXT']);
+
+			// Get all create table statements
+		$fileContent = implode($t3lib_install->getStatementArray($tblFileContent, 1, '^CREATE TABLE '), chr(10));
+			// Get field definitions for each table and make sure they are clean
 		$FDfile = $t3lib_install->getFieldDefinitions_sqlContent($fileContent);
 		
 		if (!count($FDfile))	{
-			$this->addError(sprintf('There were no "CREATE TABLE" definitions in the provided file: %s', PATH_t3lib.'stddb/tables.sql'), FATAL);
+			$this->addError(sprintf($this->get_LL('msg_analyze_error_nocreatedefinitions'), PATH_t3lib.'stddb/tables.sql'), FATAL);
 			return false;
 		}
 		
 			// Updating database...
-		/*
-		if (is_array($this->INSTALL['database_update']))	{
+		if ($this->env['action'] == 'performUpdate')	{
+			// debug($this->env);
+			/*
+			 * Here the script has to perform the update of the database. The code is pasted from old install class.
+			 */
+			
+			/*
 			$FDdb = $this->getFieldDefinitions_database();
 			$diff = $this->getDatabaseExtra($FDfile, $FDdb);
 			$update_statements = $this->getUpdateSuggestions($diff);
@@ -500,65 +507,118 @@ class tx_install_module_database extends tx_install_module_base	{
 			$this->performUpdateQueries($update_statements['create_table'],$this->INSTALL['database_update']);
 			$this->performUpdateQueries($remove_statements['change_table'],$this->INSTALL['database_update']);
 			$this->performUpdateQueries($remove_statements['drop_table'],$this->INSTALL['database_update']);
+			*/
 		}
-		*/
 
-		/*
+		
 			// Init again / first time depending...
 		$FDdb = $t3lib_install->getFieldDefinitions_database();
-
 		$diff = $t3lib_install->getDatabaseExtra($FDfile, $FDdb);
 		$update_statements = $t3lib_install->getUpdateSuggestions($diff);
-
-		$diff = $t3lib_install->getDatabaseExtra($FDdb, $FDfile);
-		$remove_statements = $t3lib_install->getUpdateSuggestions($diff,'remove');
-
-		$tLabel = 'Update database tables and fields';
+			
 
 		if ($remove_statements || $update_statements)	{
-			$formContent = $this->generateUpdateDatabaseForm('get_form',$update_statements,$remove_statements,$action_type);
+			$formContent = $this->generateUpdateDatabaseForm($update_statements, $remove_statements);
+			/*
 			$this->message($tLabel,'Table and field definitions should be updated',"
 			There seems to be a number of differencies between the database and the selected SQL-file.
 			Please select which statements you want to execute in order to update your database:<br /><br />
 			".$formContent."
 			",2);
+			*/
 		} else {
-			$formContent = $this->generateUpdateDatabaseForm('get_form',$update_statements,$remove_statements,$action_type);
+			$formContent = $this->generateUpdateDatabaseForm($update_statements, $remove_statements);
+			/*
 			$this->message($tLabel,'Table and field definitions are OK.',"
 			The tables and fields in the current database corresponds perfectly to the database in the selected SQL-file.
 			",-1);
+			*/
 		}
 		
 		return $formContent;
-		*/
-		
-		return 'Here comes the result from the database analyzer';
 	}
 	
+	/**
+	 * Generates the form for selecting actions that can be performed after a comparison. 
+	 *
+	 * @param	array	$arr_update: All actions concerning database updates
+	 * @param	array	$arr_remove: All actions concerning database removales
+	 * @return	HTML with complete formcode
+	 */
+	private function generateUpdateDatabaseForm($arr_update, $arr_remove)	{
+		$content = '';
+		
+			// get elements for various states
+		$elements = array();	
+		
+			// Fields
+		$elements = array_merge($elements, $this->generateUpdateDatabaseForm_checkboxes($arr_update['add'], 'Add fields'));
+		$elements = array_merge($elements, $this->generateUpdateDatabaseForm_checkboxes($arr_update['change'], 'Changing fields', (t3lib_extMgm::isLoaded('dbal') ? false : true), $arr_update['change_currentValue']));
+		$elements = array_merge($elements, $this->generateUpdateDatabaseForm_checkboxes($arr_remove['change'], 'Remove unused fields (rename with prefix)'));
+		$elements = array_merge($elements, $this->generateUpdateDatabaseForm_checkboxes($arr_remove['drop'], 'Drop fields (really!)'));
+
+			// Tables
+		$elements = array_merge($elements, $this->generateUpdateDatabaseForm_checkboxes($arr_update['create_table'], 'Add tables'));
+		$elements = array_merge($elements, $this->generateUpdateDatabaseForm_checkboxes($arr_remove['change_table'], 'Removing tables (rename with prefix)', $this->setAllCheckBoxesByDefault));
+		$elements = array_merge($elements, $this->generateUpdateDatabaseForm_checkboxes($arr_remove['drop_table'], 'Drop tables (really!)', $this->setAllCheckBoxesByDefault));
+
+			// prepare config for rendering
+		$formConfig = array (
+			'type' => 'form',
+			'value' => array (
+				'options' => array (
+					'name' => 'form_analyzeCompareFile',
+					'id' => 'form_analyzeCompareFile',
+					'submit' => $this->get_LL('label_writechanges'),
+					'ajax' => true,
+					'action' => 'sendMethodForm(\'form_analyzeCompareFile\', \'database\', \'analyzeCompareFile\', displayMethodResult)',
+				),
+				'hidden' => array (
+					'action' => 'performUpdate',
+					'target' => $this->env['target']
+				),
+				'elements' => $elements
+			)
+		);
+		
+			// render the form in viewObj
+		$content = $this->pObj->getViewObject()->render($formConfig);
+			
+		return $content;
+	}
 	
-	
-	private function displaySuggestions($arr, $excludeList='')	{
-		$out='';
-		$out.='<tr><td bgcolor="#9BA1A8" align="center"><strong>'.$this->fw('Field name:').'</strong></td><td bgcolor="#9BA1A8" align="center"><strong>'.$this->fw('Info / Suggestion for the field:').'</strong></td></tr>';
-		$fC=0;
-		if (is_array($arr))	{
-			reset($arr);
-			while(list($fieldname, $fieldContent)=each($arr))	{
-				if (!t3lib_div::inList($excludeList,$fieldname) && substr($fieldname,0,strlen($this->deletedPrefixKey))!=$this->deletedPrefixKey && substr($fieldname,-1)!='.')	{
-					$fieldContent = $this->fw($fieldContent);
-					if ($arr[$fieldname.'.'])	{
-						$fieldContent.= '<hr />';
-						$fieldContent.= '<pre>'.trim($arr[$fieldname.'.']).'</pre>';
-					}
-					$out.='<tr><td bgcolor="#ABBBB4">'.$this->fw($fieldname).'</td><td bgcolor="#ABBBB4">'.$fieldContent.'</td></tr>';
-					$fC++;
-				}
+	private function generateUpdateDatabaseForm_checkboxes($data, $label, $checked = true, $currentValue = array())	{
+		$result = array();
+		
+		if (is_array($data))	{
+			$result[] = array(
+				'type' => 'formelement',
+				'value' => array (
+					'elementType' => 'fieldset',
+					'label' => $label
+				)
+			);
+			
+			foreach ($data as $key => $statement)	{
+				$result[] = array(
+					'type' => 'formelement',
+					
+					'value' => array (
+						'elementType' => 'checkbox',
+						'label' => htmlspecialchars($statement).'<br />'.((empty($currentValue[$key]) ? '' : '<em>Current value: '.$currentValue[$key].'</em>')),
+						'label_align' => 'right',
+						'options' => array (
+							'name' => $key,
+							'default' => $checked,
+							'id' => $key
+						)
+					)
+				);
 			}
 		}
-		$out= '<table border="0" cellpadding="2" cellspacing="2">'.$out.'</table>';
-		return array($out,$fC);
+		
+		return $result;
 	}
-
 
 }
 

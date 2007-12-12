@@ -636,13 +636,12 @@ class tx_install_basics	{
 			}
 			
 			if($hasNoErrors && !@is_writable($file)) {
-				$this->viewObj->addError(sprintf($this->getLabel('msg_filenotwriteable'), $file), FATAL);
+				$viewObj->addError(sprintf($this->getLabel('msg_filenotwriteable'), $file), FATAL);
 				$hasNoErrors = false;
 			}
 	
 				// write localconf!
 			if ($hasNoErrors)	{
-				
 				if (!t3lib_div::writeFile($tmpFile,$fileContents))	{
 					$viewObj->addError(sprintf($this->getLabel('msg_filenotwriteable'), $tmpFile), FATAL);
 					$hasNoErrors = false;

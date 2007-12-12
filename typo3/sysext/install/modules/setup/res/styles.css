@@ -17,11 +17,21 @@ h3	{
 	border-bottom: 1px #c0c0c0 dashed;
 }
 
-input, select	{
+fieldset	{
+	font-weight: bold;
+}
+
+input, select, button	{
 	background: #fff url(../../../imgs/icons/bg_input.gif) no-repeat scroll left top;
 	border: 1px solid #aaa;
 	margin-top: 2px;
 	padding:3px;
+}
+
+label em	{
+	font-style: italic;
+	display: block;
+	margin: 0px 0px 7px 20px;
 }
 
 .categoryTreeContainer	{

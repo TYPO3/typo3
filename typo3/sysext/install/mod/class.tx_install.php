@@ -212,6 +212,12 @@ class tx_install {
 		}
 		
 		if($this->passwordOK) {
+			
+				// Try to connect to the database
+			if ($GLOBALS['TYPO3_DB']->link === false)	{
+				$moduleContent = $this->basicsObj->executeMethod(array('database', 'checkDatabaseConnect'));
+			}
+			
 				// load module and execute main method
 			$method = 'main';
 			if ($this->env['method'])	{
@@ -219,8 +225,9 @@ class tx_install {
 			}
 			
 				// execute given method and save the result in a local variable
+				// This method is only be executed if we have database connection
 			$moduleContent = $this->basicsObj->executeMethod(array($this->env['module'], $method));
-		
+			
 				// check if we have to handle the module content with AJAX
 			if ($this->env['ajax'] == 1)	{
 				header('X-JSON: (true)');
