@@ -382,6 +382,12 @@ class tx_install_module_database extends tx_install_module_base	{
 		return $this->pObj->getViewObject()->render($formConfig);
 	}
 	
+	/**
+	 * Processes the request for a new admin user. This might become obsolete in the next days!
+	 *
+	 * @param unknown_type $staticFields
+	 * @return unknown
+	 */
 	public function createAdminProcess($staticFields)	{
 		if (ereg('[^[:alnum:]_-]', $this->env['createadmin_username']))	{
 			$this->addError(sprintf($this->get_LL('msg_warning_invalidusername'), $this->env['createadmin_username']), FATAL, 'fields', 'createadmin_username');
@@ -473,7 +479,7 @@ class tx_install_module_database extends tx_install_module_base	{
 
 			// Load default SQL file as a basis for comparison
 		// $tblFileContent = t3lib_div::getUrl(PATH_t3lib.'stddb/tables.sql');
-//		reset($GLOBALS['TYPO3_LOADED_EXT']);
+		// reset($GLOBALS['TYPO3_LOADED_EXT']);
 
 			// Get all create table statements
 		$fileContent = implode($t3lib_install->getStatementArray($tblFileContent, 1, '^CREATE TABLE '), chr(10));
@@ -487,27 +493,24 @@ class tx_install_module_database extends tx_install_module_base	{
 		
 			// Updating database...
 		if ($this->env['action'] == 'performUpdate')	{
-			// debug($this->env);
 			/*
 			 * Here the script has to perform the update of the database. The code is pasted from old install class.
 			 */
 			
-			/*
-			$FDdb = $this->getFieldDefinitions_database();
-			$diff = $this->getDatabaseExtra($FDfile, $FDdb);
-			$update_statements = $this->getUpdateSuggestions($diff);
-			$diff = $this->getDatabaseExtra($FDdb, $FDfile);
-			$remove_statements = $this->getUpdateSuggestions($diff,'remove');
+			$FDdb = $t3lib_install->getFieldDefinitions_database();
+			$diff = $t3lib_install->getDatabaseExtra($FDfile, $FDdb);
+			$update_statements = $t3lib_install->getUpdateSuggestions($diff);
+			$diff = $t3lib_install->getDatabaseExtra($FDdb, $FDfile);
+			$remove_statements = $t3lib_install->getUpdateSuggestions($diff,'remove');
 
-			$this->performUpdateQueries($update_statements['add'],$this->INSTALL['database_update']);
-			$this->performUpdateQueries($update_statements['change'],$this->INSTALL['database_update']);
-			$this->performUpdateQueries($remove_statements['change'],$this->INSTALL['database_update']);
-			$this->performUpdateQueries($remove_statements['drop'],$this->INSTALL['database_update']);
+			$t3lib_install->performUpdateQueries($update_statements['add'], $this->env);
+			$t3lib_install->performUpdateQueries($update_statements['change'], $this->env);
+			$t3lib_install->performUpdateQueries($remove_statements['change'], $this->env);
+			$t3lib_install->performUpdateQueries($remove_statements['drop'], $this->env);
 
-			$this->performUpdateQueries($update_statements['create_table'],$this->INSTALL['database_update']);
-			$this->performUpdateQueries($remove_statements['change_table'],$this->INSTALL['database_update']);
-			$this->performUpdateQueries($remove_statements['drop_table'],$this->INSTALL['database_update']);
-			*/
+			$t3lib_install->performUpdateQueries($update_statements['create_table'], $this->env);
+			$t3lib_install->performUpdateQueries($remove_statements['change_table'], $this->env);
+			$t3lib_install->performUpdateQueries($remove_statements['drop_table'], $this->env);
 		}
 
 		
@@ -517,22 +520,11 @@ class tx_install_module_database extends tx_install_module_base	{
 		$update_statements = $t3lib_install->getUpdateSuggestions($diff);
 			
 
+			// render form and / or message depending on result of DB compare
 		if ($remove_statements || $update_statements)	{
-			$formContent = $this->generateUpdateDatabaseForm($update_statements, $remove_statements);
-			/*
-			$this->message($tLabel,'Table and field definitions should be updated',"
-			There seems to be a number of differencies between the database and the selected SQL-file.
-			Please select which statements you want to execute in order to update your database:<br /><br />
-			".$formContent."
-			",2);
-			*/
+			$formContent = $this->get_LL('msg_database_updateneeded').'<br />'.$this->generateUpdateDatabaseForm($update_statements, $remove_statements);
 		} else {
-			$formContent = $this->generateUpdateDatabaseForm($update_statements, $remove_statements);
-			/*
-			$this->message($tLabel,'Table and field definitions are OK.',"
-			The tables and fields in the current database corresponds perfectly to the database in the selected SQL-file.
-			",-1);
-			*/
+			$formContent = $this->get_LL('msg_database_noupdateneeded');
 		}
 		
 		return $formContent;

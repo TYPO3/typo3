@@ -26,10 +26,13 @@
 			<label index="msg_database_error_cantselectdb">FATAL: Can't select database "%s"</label>
 			<label index="msg_database_error_couldnotcreate">Could not create database with name "%s"</label>
 			<label index="msg_database_error_filenotfound">The compare-file "%s" was not found!</label>
-			<label index="msg_analyze_error_nocreatedefinitions">There were no "CREATE TABLE" definitions in the provided file: %s</label>
+			<label index="msg_database_error_nocreatedefinitions">There were no "CREATE TABLE" definitions in the provided file: %s</label>
 
 			<label index="msg_database_warning_selectdb">Please select a database or fill in a name for a new database.</label>
 			<label index="msg_database_warning_invalidname">The NEW database name "%s" was not alphanumeric, a-zA-Z0-9_-</label>
+			
+			<label index="msg_database_updateneeded">Table and field definitions should be updated!&lt;br /&gt; There seems to be a number of differencies between the database and the selected SQL-file. Please select which statements you want to execute in order to update your database:</label>
+			<label index="msg_database_noupdateneeded">Table and field definitions are OK.&lt;br /&gt;The tables and fields in the current database corresponds perfectly to the database in the selected SQL-file.</label>
 		</languageKey>
 	</data>
 </T3locallang>

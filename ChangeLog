@@ -1,3 +1,7 @@
+2007-12-13	Thomas Hempel  <thomas@typo3-unleashed.net>
+
+	* Finished DB compare against stddb/tables.sql (need testing)
+
 2007-12-12	Thomas Hempel  <thomas@typo3-unleashed.net>
 
 	* Bugfix: Invalid call to viewObj

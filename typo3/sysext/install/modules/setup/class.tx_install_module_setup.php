@@ -231,15 +231,21 @@ class tx_install_module_setup extends tx_install_module_base	{
 									} else {
 										$target = $name.'_result';
 										list($module, $method) = t3lib_div::trimExplode(':', $modConfig['method']);
-										$deliverableContent = '<a href="#" onclick="executeMethod(\''.$module.'\', \''.$method.'\',  {target:\''.$target.'\'}, displayMethodResult)">'.$this->get_LL('label_execute').'</a>
-											<div id="'.$target.'"></div>';
+										$headerContent = '&nbsp;[<a href="#" onclick="executeMethod(\''.$module.'\', \''.$method.'\',  {target:\''.$target.'\'}, displayMethodResult)">'.$this->get_LL('label_execute').'</a>]';
+										$deliverableContent = '<div id="'.$target.'"></div>';
 									}
 									break;
 							}
 							
+							
 							if ($modConfig['elementType'] == 'checkbox')	{
+									// draw checkboxes in front of the caption
 								$deliverableBox = $this->pObj->getViewObject()->renderTag('h3', $deliverableContent.$this->get_LL($modConfig['title']).' '.(($helpData) ? $helpData['button'] : '')).(($helpData) ? $helpData['container'] : '').$descr;
+							} elseif ($deliverable == 'methods') {
+									// draw "execute" link after caption and target div under caption
+								$deliverableBox = $this->pObj->getViewObject()->renderTag('h3', $this->get_LL($modConfig['title']).$headerContent.' '.(($helpData) ? $helpData['button'] : '')).(($helpData) ? $helpData['container'] : '').$descr.$deliverableContent;
 							} else {
+									// draw caption and content under it (default)
 								$deliverableBox = $this->pObj->getViewObject()->renderTag('h3', $this->get_LL($modConfig['title']).' '.(($helpData) ? $helpData['button'] : '')).(($helpData) ? $helpData['container'] : '').$descr.$deliverableContent;
 							}
 							
