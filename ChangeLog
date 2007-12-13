@@ -1,3 +1,7 @@
+2007-12-13  Oliver Hader  <oh@inpublica.de>
+
+	* (major) Fixed bug #6924: t3lib_div::readLLXMLfile does not use localized content anymore 
+
 2007-12-10  Ingmar Schlecht  <ingmar@typo3.org>
 
 	* Release of TYPO3 4.1.4

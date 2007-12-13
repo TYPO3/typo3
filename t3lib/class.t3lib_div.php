@@ -3632,7 +3632,7 @@ class t3lib_div {
 			$origCharset = $csConvObj->parse_charset($csConvObj->charSetArray[$langKey] ? $csConvObj->charSetArray[$langKey] : 'iso-8859-1');
 
 				// Cache file name:
-			$hashSource = substr($fileRef,strlen(PATH_site)).'|'.date('d-m-Y H:i:s',filemtime($fileRef)).'|version=2.2';
+			$hashSource = substr($fileRef,strlen(PATH_site)).'|'.date('d-m-Y H:i:s',filemtime($fileRef)).'|version=2.3';
 			$cacheFileName = PATH_site.'typo3temp/llxml/'.
 							#str_replace('_','',ereg_replace('^.*\/','',dirname($fileRef))).
 							#'_'.basename($fileRef).
@@ -3670,7 +3670,8 @@ class t3lib_div {
 
 						// If no entry is found for the language key, then force a value depending on meta-data setting. By default an automated filename will be used:
 					$LOCAL_LANG[$langKey] = t3lib_div::llXmlAutoFileName($fileRef, $langKey);
-					if (!$LOCAL_LANG[$langKey] && isset($xmlContent['data'][$langKey]))	{
+					$localized_file = t3lib_div::getFileAbsFileName($LOCAL_LANG[$langKey]);
+					if (!@is_file($localized_file) && isset($xmlContent['data'][$langKey]))	{
 						$LOCAL_LANG[$langKey] = $xmlContent['data'][$langKey];
 					}
 
