@@ -2,24 +2,24 @@
 
 	* (major) Fixed bug #6924: t3lib_div::readLLXMLfile does not use localized content anymore 
 
-2007-12-13	Thomas Hempel  <thomas@typo3-unleashed.net>
+2007-12-13  Thomas Hempel  <thomas@typo3-unleashed.net>
 
 	* Finished DB compare against stddb/tables.sql (need testing)
 
-2007-12-12	Thomas Hempel  <thomas@typo3-unleashed.net>
+2007-12-12  Thomas Hempel  <thomas@typo3-unleashed.net>
 
 	* Bugfix: Invalid call to viewObj
 	* Added support for fieldsets in renderMethod "form"
 	* Added ability to send forms via AJAX
 	* improved DB compare code (Thanks to Francois Suter)
 
-2007-12-11	Thomas Hempel  <thomas@typo3-unleashed.net>
+2007-12-11  Thomas Hempel  <thomas@typo3-unleashed.net>
 
 	* Added support for listing and calling methods in new installer
 	
 2007-12-10  Ingmar Schlecht  <ingmar@typo3.org>
 
-        * (security) Fixed a low-severity SQL injection in the modfunc2 of indexed_search (only exploitable by BE users, and severity limited because addslashes() was already applied to the value - yet not within a quoted string) (Thanks to Henning Pingel for findind the issue and Andreas Otto for the fix)
+	* (security) Fixed a low-severity SQL injection in the modfunc2 of indexed_search (only exploitable by BE users, and severity limited because addslashes() was already applied to the value - yet not within a quoted string) (Thanks to Henning Pingel for findind the issue and Andreas Otto for the fix)
 
 2007-12-06  Benjamin Mack  <mack@xnos.org>
 
