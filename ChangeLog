@@ -4,11 +4,11 @@
 
 2007-12-10  Ingmar Schlecht  <ingmar@typo3.org>
 
-        * (security) Fixed a low-severity SQL injection in the modfunc2 of indexed_search (only exploitable by BE users, and severity limited because addslashes() was already applied to the value - yet not within a quoted string) (Thanks to Henning Pingel for findind the issue and Andreas Otto for the fix)
+	* (security) Fixed a low-severity SQL injection in the modfunc2 of indexed_search (only exploitable by BE users, and severity limited because addslashes() was already applied to the value - yet not within a quoted string) (Thanks to Henning Pingel for findind the issue and Andreas Otto for the fix)
 
 2007-11-09  Benjamin Mack  <mack@xnos.org>
 
-        * (bugfix) Fixed Image Generation bug. Call in t3lib_div now uses the IM wrapper to render gifs/pngs
+	* (bugfix) Fixed Image Generation bug. Call in t3lib_div now uses the IM wrapper to render gifs/pngs
 
 2007-09-05  Thorsten Kahler  <thorsten.kahler@dkd.de>
 
