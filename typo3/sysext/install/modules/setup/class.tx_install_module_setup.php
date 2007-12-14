@@ -226,13 +226,13 @@ class tx_install_module_setup extends tx_install_module_base	{
 									break;
 								case 'methods':
 										// the result of methods is simply printed out
+									$target = $name.'_result';
 									if ($modConfig['autostart'] == true)	{
-										$deliverableContent = $this->basicsObject->executeMethod($modConfig['method']);
+										$deliverableContent = '<div id="'.$target.'">'.$this->basicsObject->executeMethod($modConfig['method']).'</div>';
 									} else {
-										$target = $name.'_result';
 										list($module, $method) = t3lib_div::trimExplode(':', $modConfig['method']);
 										$headerContent = '&nbsp;[<a href="#" onclick="executeMethod(\''.$module.'\', \''.$method.'\',  {target:\''.$target.'\'}, displayMethodResult)">'.$this->get_LL('label_execute').'</a>]';
-										$deliverableContent = '<div id="'.$target.'"></div>';
+										$deliverableContent = '<div id="'.$target.'">'.$deliverableContent.'</div>';
 									}
 									break;
 							}

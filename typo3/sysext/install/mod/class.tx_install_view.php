@@ -369,6 +369,10 @@ class tx_install_view {
 		$class   = '';
 
 		switch($error['severity']) {
+			case WARNING:
+				$content = 'Warning! '.$content;
+				$class = ' error-warning';
+				break;
 			case FATAL:
 				$content = 'FATAL! '.$content;
 				$class   = ' error-fatal';

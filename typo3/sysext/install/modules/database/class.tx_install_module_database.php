@@ -477,10 +477,6 @@ class tx_install_module_database extends tx_install_module_base	{
 			// Get all the statements indexed for each table
 		list($statements_table, $insertCount) = $t3lib_install->getCreateTables($statements, 1);
 
-			// Load default SQL file as a basis for comparison
-		// $tblFileContent = t3lib_div::getUrl(PATH_t3lib.'stddb/tables.sql');
-		// reset($GLOBALS['TYPO3_LOADED_EXT']);
-
 			// Get all create table statements
 		$fileContent = implode($t3lib_install->getStatementArray($tblFileContent, 1, '^CREATE TABLE '), chr(10));
 			// Get field definitions for each table and make sure they are clean
@@ -491,18 +487,17 @@ class tx_install_module_database extends tx_install_module_base	{
 			return false;
 		}
 		
+		$FDdb = $t3lib_install->getFieldDefinitions_database();
+		$diff = $t3lib_install->getDatabaseExtra($FDfile, $FDdb);
+		$update_statements = $t3lib_install->getUpdateSuggestions($diff);
+		$diff = $t3lib_install->getDatabaseExtra($FDdb, $FDfile);
+		$remove_statements = $t3lib_install->getUpdateSuggestions($diff,'remove');
+		
 			// Updating database...
 		if ($this->env['action'] == 'performUpdate')	{
 			/*
 			 * Here the script has to perform the update of the database. The code is pasted from old install class.
 			 */
-			
-			$FDdb = $t3lib_install->getFieldDefinitions_database();
-			$diff = $t3lib_install->getDatabaseExtra($FDfile, $FDdb);
-			$update_statements = $t3lib_install->getUpdateSuggestions($diff);
-			$diff = $t3lib_install->getDatabaseExtra($FDdb, $FDfile);
-			$remove_statements = $t3lib_install->getUpdateSuggestions($diff,'remove');
-
 			$t3lib_install->performUpdateQueries($update_statements['add'], $this->env);
 			$t3lib_install->performUpdateQueries($update_statements['change'], $this->env);
 			$t3lib_install->performUpdateQueries($remove_statements['change'], $this->env);
@@ -511,14 +506,14 @@ class tx_install_module_database extends tx_install_module_base	{
 			$t3lib_install->performUpdateQueries($update_statements['create_table'], $this->env);
 			$t3lib_install->performUpdateQueries($remove_statements['change_table'], $this->env);
 			$t3lib_install->performUpdateQueries($remove_statements['drop_table'], $this->env);
-		}
-
 		
-			// Init again / first time depending...
-		$FDdb = $t3lib_install->getFieldDefinitions_database();
-		$diff = $t3lib_install->getDatabaseExtra($FDfile, $FDdb);
-		$update_statements = $t3lib_install->getUpdateSuggestions($diff);
-			
+				// Init again / first time depending...
+			$FDdb = $t3lib_install->getFieldDefinitions_database();
+			$diff = $t3lib_install->getDatabaseExtra($FDfile, $FDdb);
+			$update_statements = $t3lib_install->getUpdateSuggestions($diff);
+			$diff = $t3lib_install->getDatabaseExtra($FDdb, $FDfile);
+			$remove_statements = $t3lib_install->getUpdateSuggestions($diff,'remove');
+		}
 
 			// render form and / or message depending on result of DB compare
 		if ($remove_statements || $update_statements)	{
@@ -567,7 +562,7 @@ class tx_install_module_database extends tx_install_module_base	{
 				),
 				'hidden' => array (
 					'action' => 'performUpdate',
-					'target' => $this->env['target']
+					'target' => 'analyze_compareFile_result'
 				),
 				'elements' => $elements
 			)
@@ -597,7 +592,7 @@ class tx_install_module_database extends tx_install_module_base	{
 					
 					'value' => array (
 						'elementType' => 'checkbox',
-						'label' => htmlspecialchars($statement).'<br />'.((empty($currentValue[$key]) ? '' : '<em>Current value: '.$currentValue[$key].'</em>')),
+						'label' => nl2br(htmlspecialchars($statement)).'<br /><br />'.((empty($currentValue[$key]) ? '' : '<em>Current value: '.$currentValue[$key].'</em>')),
 						'label_align' => 'right',
 						'options' => array (
 							'name' => $key,

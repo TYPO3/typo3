@@ -118,3 +118,11 @@ label em	{
 .description	{
 	margin: 5px;
 }
+
+.error-fatal	{
+	color: red;
+}
+
+.error-warning	{
+	color: #AA0000;
+}

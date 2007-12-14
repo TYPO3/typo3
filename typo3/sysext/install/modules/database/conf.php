@@ -71,7 +71,7 @@ $GLOBALS['MCA']['database'] = array (
 			'categorySub' => 'analyze',
 			'tags' => array('database', 'db', 'cleanup', 'compare'),
 			'method' => 'database:analyzeCompareFile',
-			'autostart' => false
+			'autostart' => true
 		),
 		'cleanUp_cachedImageSizes' => array(
 			'title' => 'title_cleanUp_cachedImageSizes',

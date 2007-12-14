@@ -1,3 +1,8 @@
+2007-12-14	Thomas Hempel  <thomas@typo3-unleashed.net>
+
+	* Fixed wrong update meachnism in method call
+	* Fixed some small typos in database module (Thanks to Francois Suter)
+
 2007-12-13  Oliver Hader  <oh@inpublica.de>
 
 	* (major) Fixed bug #6924: t3lib_div::readLLXMLfile does not use localized content anymore 
