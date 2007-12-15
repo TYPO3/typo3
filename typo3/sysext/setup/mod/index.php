@@ -372,8 +372,15 @@ class SC_mod_user_setup_index {
 		$code[5][2] = '<input type="checkbox" name="data[thumbnailsByDefault]"'.($BE_USER->uc['thumbnailsByDefault']?' checked="checked"':'').' />';
 		$code[6][1] = $this->setLabel('helpText');
 		$code[6][2] = '<input type="checkbox" name="data[helpText]"'.($BE_USER->uc['helpText']?' checked="checked"':'').' />';
-		$code[7][1] = $this->setLabel('maxTitleLen','titleLen');
-		$code[7][2] = '<input type="text" name="data[titleLen]" value="'.$BE_USER->uc['titleLen'].'"'.$GLOBALS['TBE_TEMPLATE']->formWidth(5).' maxlength="5" />';
+		$code[7][1] = $this->setLabel('edit_showFieldHelp');
+		$code[7][2] = '<select name="data[edit_showFieldHelp]">
+			<option value=""></option>
+			<option value="icon"'.($BE_USER->uc['edit_showFieldHelp']=='icon'?' selected="selected"':'').'>'.$this->setLabel('edit_showFieldHelp_icon').'</option>
+			<option value="text"'.($BE_USER->uc['edit_showFieldHelp']=='text'?' selected="selected"':'').'>'.$this->setLabel('edit_showFieldHelp_message').'</option>
+		</select>';
+
+		$code[8][1] = $this->setLabel('maxTitleLen','titleLen');
+		$code[8][2] = '<input type="text" name="data[titleLen]" value="'.$BE_USER->uc['titleLen'].'"'.$GLOBALS['TBE_TEMPLATE']->formWidth(5).' maxlength="5" />';
 
 		$this->content.=$this->doc->section($LANG->getLL('opening').':',$this->doc->table($code),0,1);
 
@@ -399,15 +406,8 @@ class SC_mod_user_setup_index {
 		$code[4][1] = $this->setLabel('edit_docModuleUpload');
 		$code[4][2] = '<input type="checkbox" name="data[edit_docModuleUpload]"'.($BE_USER->uc['edit_docModuleUpload']?' checked="checked"':'').' />';
 
-		$code[6][1] = $this->setLabel('edit_showFieldHelp');
-		$code[6][2] = '<select name="data[edit_showFieldHelp]">
-			<option value=""></option>
-			<option value="icon"'.($BE_USER->uc['edit_showFieldHelp']=='icon'?' selected="selected"':'').'>'.$this->setLabel('edit_showFieldHelp_icon').'</option>
-			<option value="text"'.($BE_USER->uc['edit_showFieldHelp']=='text'?' selected="selected"':'').'>'.$this->setLabel('edit_showFieldHelp_message').'</option>
-		</select>';
-
-		$code[7][1] = $this->setLabel('disableCMlayers');
-		$code[7][2] = '<input type="checkbox" name="data[disableCMlayers]"'.($BE_USER->uc['disableCMlayers']?' checked="checked"':'').' />';
+		$code[6][1] = $this->setLabel('disableCMlayers');
+		$code[6][2] = '<input type="checkbox" name="data[disableCMlayers]"'.($BE_USER->uc['disableCMlayers']?' checked="checked"':'').' />';
 
 		$this->content.=$this->doc->section($LANG->getLL('edit_functions').":",$this->doc->table($code),0,1);
 

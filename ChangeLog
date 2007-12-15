@@ -1,3 +1,7 @@
+2007-12-15  Benjamin Mack  <mack@xnos.org>
+
+	* (cleanup) #6826: Removed "Show Description for Fields" checkbox in alt_doc.php
+
 2007-12-14	Thomas Hempel  <thomas@typo3-unleashed.net>
 
 	* Fixed wrong update meachnism in method call

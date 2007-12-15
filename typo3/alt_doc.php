@@ -432,8 +432,7 @@ class SC_alt_doc {
 			// If empty string it's just a variable, that'll be saved.
 			// Values NOT in this array will not be saved in the settings-array for the module.
 		$this->MOD_MENU = array(
-			'showPalettes' => '',
-			'showDescriptions' => ''
+			'showPalettes' => ''
 		);
 
 			// Setting virtual document name
@@ -538,7 +537,7 @@ class SC_alt_doc {
 			$this->tceforms->clipObj->initializeClipboard();	// Initialize - reads the clipboard content from the user session
 
 				// Setting external variables:
-			if ($BE_USER->uc['edit_showFieldHelp']!='text' && $this->MOD_SETTINGS['showDescriptions'])	$this->tceforms->edit_showFieldHelp='text';
+			$this->tceforms->edit_showFieldHelp = $BE_USER->uc['edit_showFieldHelp'];
 
 			if ($this->editRegularContentFromId)	{
 				$this->editRegularContentFromId();
@@ -1035,21 +1034,12 @@ class SC_alt_doc {
 	 * @return	string		HTML for function menus.
 	 */
 	function functionMenus()	{
-		global $BE_USER,$LANG;
-
-		$funcMenus = '';
+		global $LANG;
 
 			// Show palettes:
-		$funcMenus.= '<br /><br />'.t3lib_BEfunc::getFuncCheck('','SET[showPalettes]',$this->MOD_SETTINGS['showPalettes'],'alt_doc.php',t3lib_div::implodeArrayForUrl('',array_merge($this->R_URL_getvars,array('SET'=>''))),'id="checkShowPalettes"').'<label for="checkShowPalettes">'.$LANG->sL('LLL:EXT:lang/locallang_core.php:labels.showPalettes',1).'</label>';
-
-			// Show descriptions/help texts:
-		if ($BE_USER->uc['edit_showFieldHelp']!='text') {
-			$funcMenus.= '<br />'.t3lib_BEfunc::getFuncCheck('','SET[showDescriptions]',$this->MOD_SETTINGS['showDescriptions'],'alt_doc.php',t3lib_div::implodeArrayForUrl('',array_merge($this->R_URL_getvars,array('SET'=>''))),'id="checkShowDescriptions"').'<label for="checkShowDescriptions">'.$LANG->sL('LLL:EXT:lang/locallang_core.php:labels.showDescriptions',1).'</label>';
-		}
-
 		return '
 				<!-- Function menus (checkboxes for selecting options): -->
-				'.$funcMenus;
+				<br /><br />'.t3lib_BEfunc::getFuncCheck('','SET[showPalettes]',$this->MOD_SETTINGS['showPalettes'],'alt_doc.php',t3lib_div::implodeArrayForUrl('',array_merge($this->R_URL_getvars,array('SET'=>''))),'id="checkShowPalettes"').'<label for="checkShowPalettes">'.$LANG->sL('LLL:EXT:lang/locallang_core.php:labels.showPalettes',1).'</label>';
 	}
 
 
