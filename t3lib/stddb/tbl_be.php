@@ -250,7 +250,7 @@ $TCA['be_users'] = Array (
 				'type' => 'check',
 				'items' => Array (
 					Array('LLL:EXT:lang/locallang_tca.xml:workspace_perms_live', 0),
-					Array('LLL:EXT:lang/locallang_tca.xml:workspace_perms_live', 0),
+					Array('LLL:EXT:lang/locallang_tca.xml:workspace_perms_draft', 0),
 					Array('LLL:EXT:lang/locallang_tca.xml:workspace_perms_custom', 0),
 				),
 				'default' => 3
@@ -474,7 +474,7 @@ $TCA['be_groups'] = Array (
 				'type' => 'check',
 				'items' => Array (
 					Array('LLL:EXT:lang/locallang_tca.xml:workspace_perms_live', 0),
-					Array('LLL:EXT:lang/locallang_tca.xml:workspace_perms_live', 0),
+					Array('LLL:EXT:lang/locallang_tca.xml:workspace_perms_draft', 0),
 					Array('LLL:EXT:lang/locallang_tca.xml:workspace_perms_custom', 0),
 				),
 				'default' => 0
