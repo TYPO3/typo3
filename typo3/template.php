@@ -1395,7 +1395,7 @@ $str.=$this->docBodyTagBegin().
 	 * @param	integer		If set to '1' empty tabs will be remove, If set to '2' empty tabs will be disabled 
 	 * @return	string		JavaScript section for the HTML header.
 	 */
-	function getDynTabMenu($menuItems,$identString,$toggle=0,$foldout=FALSE,$newRowCharLimit=50,$noWrap=1,$fullWidth=FALSE,$defaultTabIndex=1,$dividers2tabs=1)	{
+	function getDynTabMenu($menuItems,$identString,$toggle=0,$foldout=FALSE,$newRowCharLimit=50,$noWrap=1,$fullWidth=FALSE,$defaultTabIndex=1,$dividers2tabs=2)	{
 		$content = '';
 
 		if (is_array($menuItems))	{

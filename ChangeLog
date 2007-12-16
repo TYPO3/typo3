@@ -1,5 +1,6 @@
 2007-12-16  Benjamin Mack  <mack@xnos.org>
 
+	* (bugfix) #6859: Taskcenter - Submodules are not shown (fixed backwards-compatibility by Malte Jansen)
 	* (bugfix) #6879: Sticky top icons in alt_doc: missing
 	   button when columnsOnly is set
 
