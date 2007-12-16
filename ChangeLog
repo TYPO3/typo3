@@ -1,3 +1,7 @@
+2007-12-16  Benjamin Mack  <mack@xnos.org>
+
+	* (bugfix) #6955: fileadmin contextual menu doesn't popup well
+
 2007-12-16  Ingo Renner	<ingo@typo3.org>
 
 	* removed width css property from workspace selector toolbar item as it caused layout issues in non english backends
