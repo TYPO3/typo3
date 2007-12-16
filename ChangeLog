@@ -1,3 +1,8 @@
+2007-12-16  Benjamin Mack  <mack@xnos.org>
+
+	* (bugfix) #6879: Sticky top icons in alt_doc: missing
+	   button when columnsOnly is set
+
 2007-12-15  Ingo Renner	<ingo@typo3.org>
 
 	* fixed bug #6921: labels in t3lib/stddb/tbl_be.php hardcoded

@@ -964,7 +964,7 @@ class SC_alt_doc {
 	<div id="typo3-docheader">
 		<div id="typo3-docheader-row1">
 			<div class="buttonsleft">'.$btns['save'].$btns['save_view'].$btns['save_close'].$btns['save_new'].'</div>
-			<div class="buttonsright">'.$docSel.$cMenu.$btns['delete'].$btns['shortcut'].$btns['history'].$btns['undo'].$btns['close'].'</div>
+			<div class="buttonsright">'.$docSel.$cMenu.$btns['delete'].$btns['shortcut'].$btns['history'].$buttons['columns_only'].$btns['undo'].$btns['close'].'</div>
 		</div>
 		';
 
