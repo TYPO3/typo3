@@ -27,7 +27,7 @@
 /**
  * Contains the class for the Install Tool
  *
- * $Id: class.tx_install.php 1739 2006-09-15 13:23:56 +0000 (Fr, 15 Sep 2006) kurfuerst $
+ * $Id$
  *
  * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  * @author	Ingmar Schlecht <ingmars@web.de>
