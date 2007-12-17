@@ -1,3 +1,7 @@
+2007-12-17  Ingmar Schlecht  <ingmar@typo3.org>
+
+	* Fixed bug #6996: Versioning in clickmenu was unavailable for non-admins due to a problem of an earlier bugfix #4160 (Thanks to Helmut Hummel for the correction)
+
 2007-12-17 Andreas Otto <andreas.otto@dkd.de>
 
 	* Feature request #6945: Login failures can be logged with t3lib_div::syslog().
@@ -24,7 +28,7 @@
 
 	* (cleanup) #6826: Removed "Show Description for Fields" checkbox in alt_doc.php
 
-2007-12-14	Thomas Hempel  <thomas@typo3-unleashed.net>
+2007-12-14  Thomas Hempel  <thomas@typo3-unleashed.net>
 
 	* Fixed wrong update meachnism in method call
 	* Fixed some small typos in database module (Thanks to Francois Suter)
