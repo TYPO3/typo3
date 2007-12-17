@@ -73,6 +73,11 @@ class tx_sv_auth extends tx_sv_authbase 	{
 				$this->writelog(255,3,3,2,
 					"Login-attempt from %s (%s), username '%s' not found!!",
 					Array($this->authInfo['REMOTE_ADDR'], $this->authInfo['REMOTE_HOST'], $this->login['uname']));	// Logout written to log
+				t3lib_div::sysLog(
+					sprintf( "Login-attempt from %s (%s), username '%s' not found!", $this->authInfo['REMOTE_ADDR'], $this->authInfo['REMOTE_HOST'], $this->login['uname'] ),
+					'Core',
+					0
+				);
 			} else {
 				if ($this->writeDevLog) 	t3lib_div::devLog('User found: '.t3lib_div::arrayToLogString($user, array($this->db_user['userid_column'],$this->db_user['username_column'])), 'tx_sv_auth');
 			}
@@ -100,6 +105,11 @@ class tx_sv_auth extends tx_sv_authbase 	{
 					$this->writelog(255,3,3,1,
 						"Login-attempt from %s (%s), username '%s', password not accepted!",
 						Array($this->authInfo['REMOTE_ADDR'], $this->authInfo['REMOTE_HOST'], $this->login['uname']));
+					t3lib_div::sysLog(
+						sprintf( "Login-attempt from %s (%s), username '%s', password not accepted!", $this->authInfo['REMOTE_ADDR'], $this->authInfo['REMOTE_HOST'], $this->login['uname'] ),
+						'Core',
+						0
+					);
 				}
 				if ($this->writeDevLog) 	t3lib_div::devLog('Password not accepted: '.$this->login['uident'], 'tx_sv_auth', 2);
 			}
@@ -111,6 +121,11 @@ class tx_sv_auth extends tx_sv_authbase 	{
 					$this->writelog(255,3,3,1,
 						"Login-attempt from %s (%s), username '%s', locked domain '%s' did not match '%s'!",
 						Array($this->authInfo['REMOTE_ADDR'], $this->authInfo['REMOTE_HOST'], $user[$this->db_user['username_column']], $user['lockToDomain'], $this->authInfo['HTTP_HOST']));
+					t3lib_div::sysLog(
+						sprintf( "Login-attempt from %s (%s), username '%s', locked domain '%s' did not match '%s'!", $this->authInfo['REMOTE_ADDR'], $this->authInfo['REMOTE_HOST'], $user[$this->db_user['username_column']], $user['lockToDomain'], $this->authInfo['HTTP_HOST'] ),
+						'Core',
+						0
+					);
 				}
 				$OK = false;
 			}

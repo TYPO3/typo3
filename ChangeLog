@@ -1,3 +1,7 @@
+2007-12-17 Andreas Otto <andreas.otto@dkd.de>
+
+	* Feature request #6945: Login failures can be logged with t3lib_div::syslog().
+
 2007-12-16  Benjamin Mack  <mack@xnos.org>
 
 	* (bugfix) #6955: fileadmin contextual menu doesn't popup well
