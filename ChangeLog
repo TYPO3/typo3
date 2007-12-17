@@ -1,6 +1,7 @@
 2007-12-17  Ingmar Schlecht  <ingmar@typo3.org>
 
 	* Fixed bug #6996: Versioning in clickmenu was unavailable for non-admins due to a problem of an earlier bugfix #4160 (Thanks to Helmut Hummel for the correction)
+	* Code cleanup: #6990 use prototype functions instead of own ones where possible in clickmenu (Thanks to Helmut Hummel)
 
 2007-12-17 Andreas Otto <andreas.otto@dkd.de>
 

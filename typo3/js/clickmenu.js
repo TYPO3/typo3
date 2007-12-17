@@ -17,42 +17,6 @@
  * This copyright notice MUST APPEAR in all copies of this script
  */
 
-
-/**
- * extends the window object to get cross-browser window dimensions
- * 
- * @return	an object with a width and height property
- */
-window.getDimensions = function() {
-	var w = window.innerWidth
-			|| document.documentElement.clientWidth
-			|| document.body.clientWidth
-			|| 0;
-	var h = window.innerHeight
-			|| document.documentElement.clientHeight
-			|| document.body.clientHeight
-			|| 0;
-	return { width: w, height: h };
-}
-
-
-/**
- * extends the window object to identify the scroll offset of the page
- *
- * @return	an object with a top and a left position property
- */
-window.getScrollOffset = function() {
-        var l = window.pageXOffset
-                || document.documentElement.scrollLeft
-                || document.body.scrollLeft
-                || 0;
-        var t = window.pageYOffset
-                || document.documentElement.scrollTop
-                || document.body.scrollTop
-                || 0;
-        return { top: t, left: l };
-}
-
 /**
  * new clickmenu code to make an AJAX call and render the 
  * AJAX result in a layer next to the mouse cursor
@@ -127,11 +91,11 @@ var Clickmenu = {
 			obj.innerHTML = data;
 			var x = this.mousePos.X;
 			var y = this.mousePos.Y;
-			var dimsWindow = window.getDimensions();
+			var dimsWindow = document.viewport.getDimensions();
 			dimsWindow.width = dimsWindow.width-20; // saving margin for scrollbars
 
 			var dims = Element.getDimensions(obj); // dimensions for the clickmenu
-			var offset = window.getScrollOffset();
+			var offset = document.viewport.getScrollOffsets();
 			var relative = { X: this.mousePos.X - offset.left, Y: this.mousePos.Y - offset.top };
 
 			// adjusting the Y position of the layer to fit it into the window frame
