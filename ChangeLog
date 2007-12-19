@@ -1,3 +1,7 @@
+2007-12-19	Thomas Hempel  <thomas@typo3-unleashed.net>
+
+	* Feature request #6988: Return errors from performUpdateQueries (Thanks to Francois Suter)
+
 2007-12-19  Ernesto Baschny <ernst@cron-it.de>
 
 	* Feature request #3822, #5065: Make hardcoded (250000 bytes) max attachment size for mailform configurable: $TYPO3_CONF_VARS['FE']['formmailMaxAttachmentSize']

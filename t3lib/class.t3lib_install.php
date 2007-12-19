@@ -733,15 +733,26 @@ class t3lib_install {
 	 *
 	 * @param	array		Array of SQL queries to execute.
 	 * @param	array		Array with keys that must match keys in $arr. Only where a key in this array is set and true will the query be executed (meant to be passed from a form checkbox)
-	 * @return	void
+	 * @return	mixed		Array with error message from database if any occured. Otherwise true if everything was executed successfully.
 	 */
 	function performUpdateQueries($arr,$keyArr)	{
+		$result = array();
 		if (is_array($arr))	{
 			foreach($arr as $key => $string)	{
 				if (isset($keyArr[$key]) && $keyArr[$key])	{
-					$GLOBALS['TYPO3_DB']->admin_query($string);
+					$res = $GLOBALS['TYPO3_DB']->admin_query($string);
+					if ($res === false)	{
+						$result[$key] = $GLOBALS['TYPO3_DB']->sql_error();
+					} else {
+						$GLOBALS['TYPO3_DB']->sql_free_result($res);
+					}
 				}
 			}
+		}
+		if (count($result) > 0)	{
+			return $result;
+		} else {
+			return true;
 		}
 	}
 
