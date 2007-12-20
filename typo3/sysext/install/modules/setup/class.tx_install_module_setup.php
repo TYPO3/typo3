@@ -330,7 +330,7 @@ class tx_install_module_setup extends tx_install_module_base	{
 				} else {
 					$content .= '<li id="item_'.$level1Key.'" class="tree_item_nosub">';
 				}
-				$content .= $this->renderTreeElement($level1Key);
+				$content .= $this->renderTreeElement($level1Key, NULL, $onlyRootDeliverables);
 				
 				if (is_array($level1Value) && !$onlyRootDeliverables)	{
 					$content .= '<ul id="'.$level1Key.'" class="subLeaf" style="display:none">';
@@ -347,14 +347,19 @@ class tx_install_module_setup extends tx_install_module_base	{
 		return $content;
 	}
 	
-	private function renderTreeElement($level1Key, $level2Key = NULL)	{
+	private function renderTreeElement($level1Key, $level2Key = NULL, $onlyRootDeliverables = false)	{
 		if(is_null($level2Key))	{
 			$label = $this->get_LL('label_category_'.$level1Key);
 		} else {
 			$label = $this->get_LL('label_subcategory_'.$level2Key);
 		}
 		
-		return '<a href="#" onclick="openLeaf(\''.$level1Key.'\'); loadModuleContent(\''.$level1Key.'\', \''.$level2Key.'\'); return false;">'.$label.'</a>';
+		$result = '<a href="#" onclick="';
+		if (!$onlyRootDeliverables)	{
+			$result .= 'openLeaf(\''.$level1Key.'\');';
+		}
+		$result .= 'loadModuleContent(\''.$level1Key.'\', \''.$level2Key.'\'); return false;">'.$label.'</a>';
+		return $result;
 	}
 	
 	
