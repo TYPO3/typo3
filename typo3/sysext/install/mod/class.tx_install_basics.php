@@ -290,12 +290,16 @@ class tx_install_basics	{
 					
 					if(is_array($modConfig[$deliverable])) {
 						foreach ($modConfig[$deliverable] as $name => $config) {
-							if(empty($config['categoryMain']) || empty($config['categorySub'])) {
+							if(empty($config['categoryMain'])) {
 								continue;
 							}
 								// finally store the stuff
+							if (empty($config['categorySub']))	{
+								$config['categorySub'] = 'root';
+							}
+
 							$this->categoryData[$config['categoryMain']][$config['categorySub']][$deliverable][$name] = $modName;
-							
+								
 								// add the labels to the label index
 							$this->pObj->addLabelIndex($config['categoryMain'], $config['categorySub'], $deliverable, $name, $config['title']);
 							$this->pObj->addLabelIndex($config['categoryMain'], $config['categorySub'], $deliverable, $name, $config['help']);
@@ -325,6 +329,7 @@ class tx_install_basics	{
 		if (!is_null($categorySub))	{
 			if (!isset($result[$categorySub]))	{
 				$this->addError(sprintf($this->getLabel('msg_warning_nosubcat'), $categorySub));
+				$result = false;
 			} else {
 				$result = $result[$categorySub];
 			}

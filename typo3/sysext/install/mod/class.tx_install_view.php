@@ -681,7 +681,9 @@ class tx_install_view {
 				$content = '</fieldset>';
 			}
 			
-			$content .= '<fieldset><legend>'.$data['label'].'</legend>';
+			$content .= '<fieldset'.
+				(isset($data['class']) ? ' class="'.htmlspecialchars($data['class']).'"' : '').
+				'><legend>'.$data['label'].'</legend>';
 			$this->lastFieldset = $data['label'];	
 		} else {
 		

@@ -214,7 +214,7 @@ class tx_install {
 		if($this->passwordOK) {
 			
 				// Try to connect to the database
-			if ($GLOBALS['TYPO3_DB']->link === false)	{
+			if ($GLOBALS['TYPO3_DB']->link === false && $this->env['mode'] != '123')	{
 				$moduleContent = $this->basicsObj->executeMethod(array('database', 'checkDatabaseConnect'));
 			}
 			

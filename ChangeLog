@@ -1,3 +1,7 @@
+2007-12-20	Thomas Hempel  <thomas@typo3-unleashed.net>
+
+	* Added meta-subcategory "root" for adding deliverables to main categories.
+
 2007-12-19	Thomas Hempel  <thomas@typo3-unleashed.net>
 
 	* Feature request #6988: Return errors from performUpdateQueries (Thanks to Francois Suter)

@@ -50,34 +50,15 @@ class tx_install_module_setup extends tx_install_module_base	{
 			
 				// create a header box for main category if sub catagory is empty
 			if (empty($this->env['categorySub']))	{
-				$aboutBoxCode = array (
-					'type' => 'box',
-					'value' => array (
-						'class' => 'category_about',
-						'elements' => array (
-							array (
-								'type' => 'image',
-								'value' => array (
-									'path' => 'imgs/icons/'.$this->env['categoryMain'].'.png'
-								)
-							),
-							array (
-								'type' => 'plain',
-								'value' => $this->get_LL('descr_'.$this->env['categoryMain'])
-							)
-						)
-					)
-				);
-				
-					// add the about box
-				$this->pObj->getViewObject()->addContent('', $this->pObj->getViewObject()->render($aboutBoxCode));
+				$this->addAboutBox();
 				
 					// get all deliverables for all modules in main category
 				$categoryDeliverables = $this->basicsObject->getCategoryModuleDeliverables($this->env['categoryMain']);
 				$subCategoryListElements = array();
 				
-					// create a link to each subcategory
+					// create a link to each subcategory (but not root)
 				foreach ($categoryDeliverables as $subCategory => $deliverables)	{
+					if ($subCategory == 'root')	continue;
 					$label = $this->get_LL('label_subcategory_'.$subCategory);
 					$subCategoryListElements[] = array (
 						'type' => 'plain',
@@ -85,47 +66,30 @@ class tx_install_module_setup extends tx_install_module_base	{
 					);
 				}
 				
-					// render a list with the links
-				$deliverableCode = $this->pObj->getViewObject()->render(array(
-					'type' => 'list',
-					'value' => $subCategoryListElements
-				));
+				if (count($subCategoryListElements) > 0)	{
+						// render a list with the links
+					$deliverableCode = $this->pObj->getViewObject()->render(array(
+						'type' => 'list',
+						'value' => $subCategoryListElements
+					));
+					
+						// add a new section to the output
+					$this->pObj->getViewObject()->addContent($this->get_LL('label_subsectionsfound'), $deliverableCode);
+				}
 				
-					// add a new section to the output
-				$this->pObj->getViewObject()->addContent($this->get_LL('label_subsectionsfound'), $deliverableCode);
+				$categoryRootDeliverables = $this->basicsObject->getCategoryModuleDeliverables($this->env['categoryMain'], 'root');
+				if (is_array($categoryRootDeliverables))	{
+					$this->pObj->getViewObject()->addContent('', $this->renderCategoryDeliverables($categoryRootDeliverables));
+				}
 				
 				$ajaxContent = $this->pObj->getViewObject()->getContent();
+			
 			} else {
 					// sub category was selected...
 				$titleSection .= ' / '.$this->get_LL('label_subcategory_'.$this->env['categorySub']);
 				$moduleDeliverables = $this->pObj->getBasicsObject()->getCategoryModuleDeliverables($this->env['categoryMain'], $this->env['categorySub']);
 				
-					// create a about box
-				$iconPath = 'imgs/icons/'.$this->env['categorySub'].'.png';
-				if (!file_exists($iconPath))	{
-					$iconPath = 'imgs/icons/'.$this->env['categoryMain'].'.png';
-				}
-				
-				$aboutBoxCode = array (
-					'type' => 'box',
-					'value' => array (
-						'class' => 'category_about',
-						'elements' => array (
-							array (
-								'type' => 'image',
-								'value' => array (
-									'path' => $iconPath
-								)
-							),
-							array (
-								'type' => 'plain',
-								'value' => $this->get_LL('descr_'.$this->env['categorySub'])
-							)
-						)
-					)
-				);
-				
-				$aboutBox = $this->pObj->getViewObject()->render($aboutBoxCode);
+				$this->addAboutBox('categorySub');
 				
 				if ($moduleDeliverables === false)	{
 						// render errors if something went wrong before
@@ -133,134 +97,9 @@ class tx_install_module_setup extends tx_install_module_base	{
 				} else {
 					$filterResults = $this->pObj->getFilterResults();
 					
-						// cycle through deliverables and execute or render them
-					foreach ($moduleDeliverables as $deliverable => $names)	{
-						$ajaxContent .= $this->pObj->getViewObject()->renderTag('h2', $this->get_LL('label_deliverable_'.$deliverable));
-						
-							// add form for saving options
-						if ($deliverable == 'options')	{
-							$formWrap = array (
-								'<form action="index.php" method="post" id="optionsForm">'.
-									'<input type="hidden" name="categoryMain" value="'.$this->env['categoryMain'].'" />'.
-									'<input type="hidden" name="categorySub" value="'.$this->env['categorySub'].'" />',
-								'<input type="button" onclick="sendForm(\'optionsForm\');" value="'.$this->get_LL('label_save').'" /></form>'
-							);
-						} else {
-							$formWrap = array('', '');
-						}
-						
-						$modifiedFields = array();
-						
-						foreach ($names as $name => $mod)	{
-							$modConfig = $GLOBALS['MCA'][$mod][$deliverable][$name];
-							
-							if (!isset($modConfig['title']))	{
-								$modConfig['title'] = 'title_'.$name;
-							}
-							if (!isset($modConfig['description']))	{
-								$modConfig['description'] = 'description_'.$name;
-							}
-							if (!isset($modConfig['help']))	{
-								$modConfig['help'] = 'help_'.$name;
-							}
-				
-							$this->pObj->getBasicsObject()->loadModule($mod);
-							
-							$helpData = $this->pObj->getViewObject()->renderHelp($this->get_LL($modConfig['help']), $name);
-							$descr = $this->pObj->getViewObject()->renderTag('div', $this->get_LL($modConfig['description']));
-							$deliverableContent = '';
-							
-							switch ($deliverable)	{
-								case 'checks':
-										// execute check and print out result in plain
-									// $this->pObj->getViewObject()->clearLastMessage();
-									$checkResult = $this->basicsObject->executeMethod($modConfig['method']);
-									$deliverableContent = $this->get_LL('label_'.(($checkResult) ? 'true' : 'false'));
-									if (!$checkResult)	{
-										$deliverableContent .= $this->pObj->getViewObject()->renderErrors();
-									} else {
-										$deliverableContent .= $this->pObj->getViewObject()->getLastMessage();
-										$this->pObj->getViewObject()->clearLastMessage();
-									}
-									break; 
-								case 'options':
-										// options are rendered as input elements
-									
-										// save data
-									if ($this->env['saveData'] && isset($this->env[$mod.':'.$name]))	{
-											// get data from environment
+						// get content from deliverables
+					$ajaxContent = $this->renderCategoryDeliverables($moduleDeliverables);
 										
-										if ($modConfig['elementType'] == 'checkbox')	{
-											$this->env[$mod.':'.$name] = intval($this->env[$mod.':'.$name]);
-										}
-										
-										$saveData = $this->env[$mod.':'.$name];
-										
-											// add only if data has really changed
-										$localConfValue = $this->basicsObject->getLocalconfValue($modConfig['value'], $modConfig['default']);
-										if ($saveData != $localConfValue)	{
-											$this->basicsObject->addToLocalconf($modConfig['value'], $saveData, $modConfig['valueType']);
-											
-											$modifiedFields[] = array (
-												'type' => 'message',
-												'value' => array (
-													'label' => sprintf($this->get_LL('label_value_modified'), $this->get_LL($modConfig['title']), $saveData)
-												)
-											);
-										}
-									}
-									
-									$options = $modConfig;
-									$inputConfig = array (
-										'elementType' => $modConfig['elementType'],
-										'options' => array_merge($modConfig, array (
-											'name' => $mod.':'.$name,
-											'value' => $this->basicsObject->getLocalconfValue($modConfig['value'], $modConfig['default']),
-											'description' => $modConfig['description'],
-											'help' => $modConfig['help']
-										))
-									);
-									
-									$descr .= $this->pObj->getViewObject()->renderTag('span', $this->get_LL('label_path').' '.$this->basicsObject->getLocalconfPath($modConfig['value']).' - '.$this->get_LL('label_default').' '.$modConfig['default'], array('class' => 'description italic'));
-									$deliverableContent = $this->pObj->getViewObject()->renderFormelement($inputConfig);
-									break;
-								case 'methods':
-										// the result of methods is simply printed out
-									$target = $name.'_result';
-									if ($modConfig['autostart'] == true)	{
-										$deliverableContent = '<div id="'.$target.'">'.$this->basicsObject->executeMethod($modConfig['method']).'</div>';
-									} else {
-										list($module, $method) = t3lib_div::trimExplode(':', $modConfig['method']);
-										$headerContent = '&nbsp;[<a href="#" onclick="executeMethod(\''.$module.'\', \''.$method.'\',  {target:\''.$target.'\'}, displayMethodResult)">'.$this->get_LL('label_execute').'</a>]';
-										$deliverableContent = '<div id="'.$target.'">'.$deliverableContent.'</div>';
-									}
-									break;
-							}
-							
-							
-							if ($modConfig['elementType'] == 'checkbox')	{
-									// draw checkboxes in front of the caption
-								$deliverableBox = $this->pObj->getViewObject()->renderTag('h3', $deliverableContent.$this->get_LL($modConfig['title']).' '.(($helpData) ? $helpData['button'] : '')).(($helpData) ? $helpData['container'] : '').$descr;
-							} elseif ($deliverable == 'methods') {
-									// draw "execute" link after caption and target div under caption
-								$deliverableBox = $this->pObj->getViewObject()->renderTag('h3', $this->get_LL($modConfig['title']).$headerContent.' '.(($helpData) ? $helpData['button'] : '')).(($helpData) ? $helpData['container'] : '').$descr.$deliverableContent;
-							} else {
-									// draw caption and content under it (default)
-								$deliverableBox = $this->pObj->getViewObject()->renderTag('h3', $this->get_LL($modConfig['title']).' '.(($helpData) ? $helpData['button'] : '')).(($helpData) ? $helpData['container'] : '').$descr.$deliverableContent;
-							}
-							
-							$paramData = array (
-								'id' => 'container_'.$name,
-								'class' => 'deliverable-box'
-							);
-							if ($filterResults[$name])	{
-								$paramData['style'] = 'background-color:#99ff99';
-							}
-							
-							$ajaxContent .= $this->pObj->getViewObject()->renderTag('div', $deliverableBox, $paramData);
-						}
-					}
-					
 						// try to write the data to localconf
 					if (!$this->basicsObject->saveLocalconf())	{
 						$ajaxContent = $this->pObj->getViewObject()->renderErrors().$ajaxContent;
@@ -302,6 +141,166 @@ class tx_install_module_setup extends tx_install_module_base	{
 	}
 	
 	
+	private function addAboutBox($category = 'categoryMain')	{
+			// create a about box
+		$categoryDescription = $this->get_LL('descr_'.$this->env[$category]);	
+		if (!empty($categoryDescription))	{
+			$aboutBoxCode = array (
+				'type' => 'box',
+				'value' => array (
+					'class' => 'category_about',
+					'elements' => array (
+						array (
+							'type' => 'image',
+							'value' => array (
+								'path' => 'imgs/icons/'.$this->env[$category].'.png'
+							)
+						),
+						array (
+							'type' => 'plain',
+							'value' => $this->get_LL('descr_'.$this->env[$category])
+						)
+					)
+				)
+			);
+			
+				// add the about box
+			$this->pObj->getViewObject()->addContent('', $this->pObj->getViewObject()->render($aboutBoxCode));
+		}
+	}
+	
+	private function renderCategoryDeliverables($deliverables)	{
+		$result = '';
+		
+		foreach ($deliverables as $deliverable => $names)	{
+			$result .= $this->pObj->getViewObject()->renderTag('h2', $this->get_LL('label_deliverable_'.$deliverable));
+			
+				// add form for saving options
+			if ($deliverable == 'options')	{
+				$formWrap = array (
+					'<form action="index.php" method="post" id="optionsForm">'.
+						'<input type="hidden" name="categoryMain" value="'.$this->env['categoryMain'].'" />'.
+						'<input type="hidden" name="categorySub" value="'.$this->env['categorySub'].'" />',
+					'<input type="button" onclick="sendForm(\'optionsForm\');" value="'.$this->get_LL('label_save').'" /></form>'
+				);
+			} else {
+				$formWrap = array('', '');
+			}
+			
+			$modifiedFields = array();
+			
+			foreach ($names as $name => $mod)	{
+				$modConfig = $GLOBALS['MCA'][$mod][$deliverable][$name];
+				
+				if (!isset($modConfig['title']))	{
+					$modConfig['title'] = 'title_'.$name;
+				}
+				if (!isset($modConfig['description']))	{
+					$modConfig['description'] = 'description_'.$name;
+				}
+				if (!isset($modConfig['help']))	{
+					$modConfig['help'] = 'help_'.$name;
+				}
+	
+				$this->pObj->getBasicsObject()->loadModule($mod);
+				
+				$helpData = $this->pObj->getViewObject()->renderHelp($this->get_LL($modConfig['help']), $name);
+				$descr = $this->pObj->getViewObject()->renderTag('div', $this->get_LL($modConfig['description']));
+				$deliverableContent = '';
+				
+				switch ($deliverable)	{
+					case 'checks':
+							// execute check and print out result in plain
+						// $this->pObj->getViewObject()->clearLastMessage();
+						$checkResult = $this->basicsObject->executeMethod($modConfig['method']);
+						$deliverableContent = $this->get_LL('label_'.(($checkResult) ? 'true' : 'false'));
+						if (!$checkResult)	{
+							$deliverableContent .= $this->pObj->getViewObject()->renderErrors();
+						} else {
+							$deliverableContent .= $this->pObj->getViewObject()->getLastMessage();
+							$this->pObj->getViewObject()->clearLastMessage();
+						}
+						break; 
+					case 'options':
+							// options are rendered as input elements
+						
+							// save data
+						if ($this->env['saveData'] && isset($this->env[$mod.':'.$name]))	{
+								// get data from environment
+							
+							if ($modConfig['elementType'] == 'checkbox')	{
+								$this->env[$mod.':'.$name] = intval($this->env[$mod.':'.$name]);
+							}
+							
+							$saveData = $this->env[$mod.':'.$name];
+							
+								// add only if data has really changed
+							$localConfValue = $this->basicsObject->getLocalconfValue($modConfig['value'], $modConfig['default']);
+							if ($saveData != $localConfValue)	{
+								$this->basicsObject->addToLocalconf($modConfig['value'], $saveData, $modConfig['valueType']);
+								
+								$modifiedFields[] = array (
+									'type' => 'message',
+									'value' => array (
+										'label' => sprintf($this->get_LL('label_value_modified'), $this->get_LL($modConfig['title']), $saveData)
+									)
+								);
+							}
+						}
+						
+						$options = $modConfig;
+						$inputConfig = array (
+							'elementType' => $modConfig['elementType'],
+							'options' => array_merge($modConfig, array (
+								'name' => $mod.':'.$name,
+								'value' => $this->basicsObject->getLocalconfValue($modConfig['value'], $modConfig['default']),
+								'description' => $modConfig['description'],
+								'help' => $modConfig['help']
+							))
+						);
+						
+						$descr .= $this->pObj->getViewObject()->renderTag('span', $this->get_LL('label_path').' '.$this->basicsObject->getLocalconfPath($modConfig['value']).' - '.$this->get_LL('label_default').' '.$modConfig['default'], array('class' => 'description italic'));
+						$deliverableContent = $this->pObj->getViewObject()->renderFormelement($inputConfig);
+						break;
+					case 'methods':
+							// the result of methods is simply printed out
+						$target = $name.'_result';
+						if ($modConfig['autostart'] == true)	{
+							$deliverableContent = '<div id="'.$target.'">'.$this->basicsObject->executeMethod($modConfig['method']).'</div>';
+						} else {
+							list($module, $method) = t3lib_div::trimExplode(':', $modConfig['method']);
+							$headerContent = '&nbsp;[<a href="#" onclick="executeMethod(\''.$module.'\', \''.$method.'\',  {target:\''.$target.'\'}, displayMethodResult)">'.$this->get_LL('label_execute').'</a>]';
+							$deliverableContent = '<div id="'.$target.'">'.$deliverableContent.'</div>';
+						}
+						break;
+				}
+				
+				
+				if ($modConfig['elementType'] == 'checkbox')	{
+						// draw checkboxes in front of the caption
+					$deliverableBox = $this->pObj->getViewObject()->renderTag('h3', $deliverableContent.$this->get_LL($modConfig['title']).' '.(($helpData) ? $helpData['button'] : '')).(($helpData) ? $helpData['container'] : '').$descr;
+				} elseif ($deliverable == 'methods') {
+						// draw "execute" link after caption and target div under caption
+					$deliverableBox = $this->pObj->getViewObject()->renderTag('h3', $this->get_LL($modConfig['title']).$headerContent.' '.(($helpData) ? $helpData['button'] : '')).(($helpData) ? $helpData['container'] : '').$descr.$deliverableContent;
+				} else {
+						// draw caption and content under it (default)
+					$deliverableBox = $this->pObj->getViewObject()->renderTag('h3', $this->get_LL($modConfig['title']).' '.(($helpData) ? $helpData['button'] : '')).(($helpData) ? $helpData['container'] : '').$descr.$deliverableContent;
+				}
+				
+				$paramData = array (
+					'id' => 'container_'.$name,
+					'class' => 'deliverable-box'
+				);
+				if ($filterResults[$name])	{
+					$paramData['style'] = 'background-color:#99ff99';
+				}
+				
+				$result .= $this->pObj->getViewObject()->renderTag('div', $deliverableBox, $paramData);
+			}
+		}
+		return $result;
+	}
+	
 	/**
 	 * Renders a collapsable tree from the collected category data.
 	 * 
@@ -323,7 +322,8 @@ class tx_install_module_setup extends tx_install_module_base	{
 			// first level
 		foreach ($data as $level1Key => $level1Value)	{
 			if (is_array($level1Value))	{
-				$content .= '<li id="item_'.$level1Key.'" class="tree_item"><a href="#" onclick="toggleElement(\''.$level1Key.'\'); return false;"><img id="img_'.$level1Key.'" src="'.$this->pObj->getBasicsObject()->getInstallerWebPath().'imgs/icons/plus.gif" /></a>'.$this->renderTreeElement($level1Key);
+				$content .= '<li id="item_'.$level1Key.'" class="tree_item"><a href="#" onclick="toggleElement(\''.$level1Key.'\'); return false;"><img id="img_'.$level1Key.'" src="'.$this->pObj->getBasicsObject()->getInstallerWebPath().'imgs/icons/plus.gif" /></a>';
+				$content .= $this->renderTreeElement($level1Key);
 				if (is_array($level1Value))	{
 					$content .= '<ul id="'.$level1Key.'" class="subLeaf" style="display:none">';
 					foreach ($level1Value as $level2Key => $level2Value)	{

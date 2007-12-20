@@ -34,9 +34,6 @@ require_once(PATH_t3lib.'class.t3lib_install.php');
  * @author	Ingo Renner	<ingo@typo3.org>
  */ 
 class tx_install_module_database extends tx_install_module_base	{
-	protected $moduleKey = 'database';
-	protected $priority  = IMPORTANT;
-	
 	/*
 	 * API FUNCTIONS
 	 */	
@@ -110,38 +107,25 @@ class tx_install_module_database extends tx_install_module_base	{
 	 */
 	
 	/**
-	 * Connects to database.
+	 * Returns form config for database connection data
 	 *
 	 * @param 	static fields for form (hidden fields)	
 	 * @return 	string
 	 */
-	public function connectDatabase($staticFields)	{
+	public function databaseConnectionData()	{
 			// get all options for this step
-		$options = array (
-			'typo_db_host'     => $GLOBALS['MCA']['database']['options']['typo_db_host'],
-			'typo_db_username' => $GLOBALS['MCA']['database']['options']['typo_db_username'],
-			'typo_db_password' => $GLOBALS['MCA']['database']['options']['typo_db_password']
-		);
 		
-		$formConfig = array (
-			'type'  => 'form',
-			'value' => array(
-				'options' => array(
-					'name'   => 'form_connectDatabase',
-					'submit' => $this->get_LL('label_next_step'),
-				),
-				'hidden'  => $staticFields
+		$elements = array(
+			'advanced' => array (
+				$this->pObj->getViewObject()->renderOption('typo_db_host', $GLOBALS['MCA']['database']['options']['typo_db_host'])
+			),
+			'normal' => array (
+				$this->pObj->getViewObject('typo_db_username', $GLOBALS['MCA']['database']['options']['typo_db_username'])->renderOption(),
+				$this->pObj->getViewObject('typo_db_password', $GLOBALS['MCA']['database']['options']['typo_db_password'])->renderOption()
 			)
 		);
 		
-		foreach ($options as $optionName => $optionConfig)	{
-			$elementConfig = $this->pObj->getViewObject()->renderOption($optionName, $optionConfig);
-			if ($elementConfig !== false)	{
-				$formConfig['value']['elements'][] = $elementConfig;
-			} 
-		}
-		
-		return $this->pObj->getViewObject()->render($formConfig);
+		return $elements;
 	}
 	
 	public function connectDatabaseProcess($staticFields)	{
