@@ -322,9 +322,17 @@ class tx_install_module_setup extends tx_install_module_base	{
 			// first level
 		foreach ($data as $level1Key => $level1Value)	{
 			if (is_array($level1Value))	{
-				$content .= '<li id="item_'.$level1Key.'" class="tree_item"><a href="#" onclick="toggleElement(\''.$level1Key.'\'); return false;"><img id="img_'.$level1Key.'" src="'.$this->pObj->getBasicsObject()->getInstallerWebPath().'imgs/icons/plus.gif" /></a>';
+				$onlyRootDeliverables = ((count($level1Value) == 1 && isset($level1Value['root'])));
+				
+				if (!$onlyRootDeliverables)	{
+					$content .= '<li id="item_'.$level1Key.'" class="tree_item">';
+					$content .= '<a href="#" onclick="toggleElement(\''.$level1Key.'\'); return false;"><img id="img_'.$level1Key.'" src="'.$this->pObj->getBasicsObject()->getInstallerWebPath().'imgs/icons/plus.gif" /></a>';
+				} else {
+					$content .= '<li id="item_'.$level1Key.'" class="tree_item_nosub">';
+				}
 				$content .= $this->renderTreeElement($level1Key);
-				if (is_array($level1Value))	{
+				
+				if (is_array($level1Value) && !$onlyRootDeliverables)	{
 					$content .= '<ul id="'.$level1Key.'" class="subLeaf" style="display:none">';
 					foreach ($level1Value as $level2Key => $level2Value)	{
 						$content .= '<li id="item_'.$level2Key.'" class="tree_item">'.$this->renderTreeElement($level1Key, $level2Key).'</li>';
