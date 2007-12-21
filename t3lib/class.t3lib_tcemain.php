@@ -5597,18 +5597,18 @@ $this->log($table,$id,6,0,0,'Stage raised...',30,array('comment'=>$comment,'stag
 						$row = 	$lookForLiveVersion;
 					}
 
-						// If the record happends to be it self
+						// If the record should be inserted after itself, keep the current sorting information:
 					if ($row['uid']==$uid)	{
 						$sortNumber = $row[$sortRow];
 					} else {
 						$subres = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-										$sortRow.',pid,uid',
-										$table,
-										'pid='.intval($row['pid']).' AND '.$sortRow.'>='.intval($row[$sortRow]).$this->deleteClause($table),
-										'',
-										$sortRow.' ASC',
-										'2'
-									);		// Fetches the next record in order to calculate the in between sortNumber
+							$sortRow.',pid,uid',
+							$table,
+							'pid='.intval($row['pid']).' AND '.$sortRow.'>='.intval($row[$sortRow]).$this->deleteClause($table),
+							'',
+							$sortRow.' ASC',
+							'2'
+						);		// Fetches the next record in order to calculate the in-between sortNumber
 						if ($GLOBALS['TYPO3_DB']->sql_num_rows($subres)==2)	{	// There was a record afterwards
 							$GLOBALS['TYPO3_DB']->sql_fetch_assoc($subres);				// Forward to the second result...
 							$subrow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($subres);	// There was a record afterwards
@@ -5619,6 +5619,7 @@ $this->log($table,$id,6,0,0,'Stage raised...',30,array('comment'=>$comment,'stag
 						} else {	// If after the last record in the list, we just add the sortInterval to the last sortvalue
 							$sortNumber = $row[$sortRow]+$this->sortIntervals;
 						}
+						$GLOBALS['TYPO3_DB']->sql_free_result($subres);
 					}
 					return Array('pid' => $row['pid'], 'sortNumber' => $sortNumber);
 				} else {
