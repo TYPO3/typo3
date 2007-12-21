@@ -1,3 +1,7 @@
+2007-12-21  Oliver Hader  <oh@inpublica.de>
+
+	* (minor) Fixed bug #6007: IRRE - Child records with image fields are not shown in m:n disposal
+
 2007-12-20	Thomas Hempel  <thomas@typo3-unleashed.net>
 
 	* Added meta-subcategory "root" for adding deliverables to main categories.

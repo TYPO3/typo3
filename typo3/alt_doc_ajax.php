@@ -80,6 +80,8 @@ class SC_alt_doc_ajax {
 	var $localizationMode;		// GP var, localization mode for TCEforms (eg. "text")
 	var $ajax = array();		// the AJAX paramerts from get/post
 
+	var $doc;					// Document template object
+
 	function init() {
 		global $BE_USER;
 
@@ -101,6 +103,12 @@ class SC_alt_doc_ajax {
 			// CLEANSE SETTINGS
 		$this->MOD_SETTINGS = t3lib_BEfunc::getModuleData($this->MOD_MENU, t3lib_div::_GP('SET'), $this->MCONF['name']);
 
+			// Create an instance of the document template object
+		$this->doc = t3lib_div::makeInstance('template');
+		$this->doc->backPath = $GLOBALS['BACK_PATH'];
+		$this->doc->docType = 'xhtml_trans';
+
+			// Initialize TCEforms (rendering the forms)
 		$this->tceforms = t3lib_div::makeInstance('t3lib_TCEforms');
 		$this->tceforms->initDefaultBEMode();
 		$this->tceforms->palettesCollapsed = !$this->MOD_SETTINGS['showPalettes'];
