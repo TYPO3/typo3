@@ -374,13 +374,15 @@ var inline = {
 			if (!records[i].length) continue;
 
 			headerObj = $(objectPrefix+'['+records[i]+']_header');
-			sortingObj[0] = headerObj.getElementsByClassName('sortingUp');
-			sortingObj[1] = headerObj.getElementsByClassName('sortingDown');
+			sortingObj[0] = Element.getElementsByClassName(headerObj, 'sortingUp');
+			sortingObj[1] = Element.getElementsByClassName(headerObj, 'sortingDown');
 
-			if (sortingObj[0].length)
-				sortingObj[0][0].style.visibility = i == 0 ? 'hidden' : 'visible';
-			if (sortingObj[1].length)
-				sortingObj[1][0].style.visibility = i == records.length-1 ? 'hidden' : 'visible';
+			if (sortingObj[0].length) {
+				sortingObj[0][0].style.visibility = (i == 0 ? 'hidden' : 'visible');
+			}
+			if (sortingObj[1].length) {
+				sortingObj[1][0].style.visibility = (i == records.length-1 ? 'hidden' : 'visible');
+			}
 		}
 	},
 
@@ -416,7 +418,9 @@ var inline = {
 
 			// if we reached the maximum off possible records after this action, hide the new buttons
 		if (!this.isBelowMax(objectPrefix)) {
-			this.hideElementsWithClassName('inlineNewButton',  this.parseFormElementName('full', objectPrefix, 0 , 1));
+			var objectParent = this.parseFormElementName('full', objectPrefix, 0 , 1);
+			var md5 = this.getObjectMD5(objectParent);
+			this.hideElementsWithClassName('.inlineNewButton'+(md5 ? '.'+md5 : ''), objectParent);
 		}
 
 		if (TBE_EDITOR) TBE_EDITOR.fieldChanged_fName(objectName, formObj);
@@ -530,18 +534,9 @@ var inline = {
 			// revert the unique settings if available
 		this.revertUnique(objectPrefix, elName, recordUid);
 
-			// if the record is new and was never saved before, just remove it from DOM
-		if (this.isNewRecord(objectId)) {
-			new Effect.Fade(objectId+'_div', { afterFinish: function() { Element.remove(objectId+'_div'); }	});
-			// if the record already exists in storage, mark it to be deleted on clicking the save button
-		} else {
-			document.getElementsByName('cmd'+shortName+'[delete]')[0].disabled = false;
-			new Effect.Fade(objectId+'_div');
-		}
-
 			// Remove from TBE_EDITOR (required fields, required range, etc.):
 		if (TBE_EDITOR && TBE_EDITOR.removeElement) {
-			inlineRecords = document.getElementsByClassName('inlineRecord', objectId+'_div');
+			inlineRecords = Element.getElementsByClassName(objectId+'_div', 'inlineRecord');
 				// Remove nested child records from TBE_EDITOR required/range checks:
 			for (i=inlineRecords.length-1; i>=0; i--) {
 				if (inlineRecords[i].value.length) {
@@ -556,6 +551,15 @@ var inline = {
 			TBE_EDITOR.removeElement(this.prependFormFieldNames+shortName);
 		}
 
+			// If the record is new and was never saved before, just remove it from DOM:
+		if (this.isNewRecord(objectId)) {
+			new Effect.Fade(objectId+'_div', { afterFinish: function() { Element.remove(objectId+'_div'); }	});
+			// If the record already exists in storage, mark it to be deleted on clicking the save button:
+		} else {
+			document.getElementsByName('cmd'+shortName+'[delete]')[0].disabled = false;
+			new Effect.Fade(objectId+'_div');
+		}
+
 		var recordCount = this.memorizeRemoveRecord(
 			this.prependFormFieldNames+this.parseFormElementName('parts', objectId, 3, 2),
 			recordUid
@@ -567,9 +571,11 @@ var inline = {
 		this.redrawSortingButtons(objectPrefix);
 
 			// if the NEW-button was hidden and now we can add again new children, show the button
-		if (!beforeDeleteIsBelowMax && this.isBelowMax(objectPrefix))
-			this.showElementsWithClassName('inlineNewButton', this.parseFormElementName('full', objectPrefix, 0 , 1));
-
+		if (!beforeDeleteIsBelowMax && this.isBelowMax(objectPrefix)) {
+			var objectParent = this.parseFormElementName('full', objectPrefix, 0 , 1);
+			var md5 = this.getObjectMD5(objectParent);
+			this.showElementsWithClassName('.inlineNewButton'+(md5 ? '.'+md5 : ''), objectParent);
+		}
 		return false;
 	},
 
@@ -692,21 +698,20 @@ var inline = {
 		selectObj.add(readdOption, document.all ? index : selectObj.options[index]);
 	},
 
-	hideElementsWithClassName: function(className, parentElement) {
-		this.setVisibilityOfElementsWithClassName('hide', className, parentElement);
+	hideElementsWithClassName: function(selector, parentElement) {
+		this.setVisibilityOfElementsWithClassName('hide', selector, parentElement);
 	},
 
-	showElementsWithClassName: function(className, parentElement) {
-		this.setVisibilityOfElementsWithClassName('show', className, parentElement);
+	showElementsWithClassName: function(selector, parentElement) {
+		this.setVisibilityOfElementsWithClassName('show', selector, parentElement);
 	},
 
-	setVisibilityOfElementsWithClassName: function(action, className, parentElement) {
-		var domObjects = document.getElementsByClassName(className, parentElement);
-		for (var i=0; i<domObjects.length; i++) {
-			if (action == 'hide')
-				new Effect.Fade(domObjects[i]);
-			else if (action = 'show')
-				new Effect.Appear(domObjects[i]);
+	setVisibilityOfElementsWithClassName: function(action, selector, parentElement) {
+		var domObjects = Selector.findChildElements($(parentElement), [selector]);
+		if (action == 'hide') { 
+			$A(domObjects).each(function(domObject) { new Effect.Fade(domObject); });
+		} else if (action == 'show') {
+			$A(domObjects).each(function(domObject) { new Effect.Appear(domObject); });
 		}
 	},
 
@@ -741,6 +746,14 @@ var inline = {
 			number = RTEarea.length-1;
 		}
 		return number;
+  	},
+
+  	getObjectMD5: function(objectPrefix) {
+  		var md5 = false;
+  		if (this.data.config && this.data.config[objectPrefix] && this.data.config[objectPrefix].md5) {
+  			md5 = this.data.config[objectPrefix].md5;
+  		}
+  		return md5
   	}
 }
 
