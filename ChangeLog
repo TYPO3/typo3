@@ -1,3 +1,7 @@
+2007-12-26  Oliver Hader  <oh@inpublica.de>
+
+	* Fixed bug #6651: IRRE - Button for creating new records disappeared on nested child records if a parent record reached the maxitems value
+
 2007-12-21  Oliver Hader  <oh@inpublica.de>
 
 	* Fixed bug #6007: IRRE - Child records with image fields are not shown in m:n disposal

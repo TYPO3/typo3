@@ -187,7 +187,10 @@ class t3lib_TCEforms_inline {
 
 			// Tell the browser what we have (using JSON later):
 		$top = $this->getStructureLevel(0);
-		$this->inlineData['config'][$nameObject] = array('table' => $foreign_table);
+		$this->inlineData['config'][$nameObject] = array(
+			'table' => $foreign_table,
+			'md5' => md5($nameObject),
+		);
 		$this->inlineData['config'][$nameObject.'['.$foreign_table.']'] = array(
 			'min' => $minitems,
 			'max' => $maxitems,
@@ -485,7 +488,8 @@ class t3lib_TCEforms_inline {
 		$isOnSymmetricSide = t3lib_loadDBGroup::isOnSymmetricSide($parentUid, $config, $rec);
 		$enableManualSorting = $tcaTableCtrl['sortby'] || $config['MM'] || (!$isOnSymmetricSide && $config['foreign_sortby']) || ($isOnSymmetricSide && $config['symmetric_sortby']) ? true : false;
 
-		$nameObjectFt = $this->inlineNames['object'].'['.$foreign_table.']';
+		$nameObject = $this->inlineNames['object'];
+		$nameObjectFt = $nameObject.'['.$foreign_table.']';
 		$nameObjectFtId = $nameObjectFt.'['.$rec['uid'].']';
 
 		$calcPerms = $GLOBALS['BE_USER']->calcPerms(
@@ -516,10 +520,11 @@ class t3lib_TCEforms_inline {
 					($isPagesTable && ($calcPerms&8))		// For pages, must have permission to create new pages here.
 					)	{
 					$onClick = "return inline.createNewRecord('".$nameObjectFt."','".$rec['uid']."')";
+					$class = ' class="inlineNewButton '.$this->inlineData['config'][$nameObject]['md5'].'"';
 					if ($config['inline']['inlineNewButtonStyle']) {
 						$style = ' style="'.$config['inline']['inlineNewButtonStyle'].'"';
 					}
-					$cells[]='<a href="#" onclick="'.htmlspecialchars($onClick).'" class="inlineNewButton"'.$style.'>'.
+					$cells[]='<a href="#" onclick="'.htmlspecialchars($onClick).'"'.$class.$style.'>'.
 							'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/new_'.($isPagesTable?'page':'el').'.gif','width="'.($isPagesTable?13:11).'" height="12"').' title="'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_web_list.xml:new'.($isPagesTable?'Page':'Record'),1).'" alt="" />'.
 							'</a>';
 				}
@@ -771,17 +776,23 @@ class t3lib_TCEforms_inline {
 	 * @return	string		The HTML code for the new record link
 	 */
 	function getNewRecordLink($objectPrefix, $conf = array()) {
-		if ($conf['inline']['inlineNewButtonStyle']) $style = ' style="'.$conf['inline']['inlineNewButtonStyle'].'"';
+		$nameObject = $this->inlineNames['object'];
+		$class = ' class="inlineNewButton '.$this->inlineData['config'][$nameObject]['md5'].'"';
+
+		if ($conf['inline']['inlineNewButtonStyle']) {
+			$style = ' style="'.$conf['inline']['inlineNewButtonStyle'].'"';
+		}
 
 		$onClick = "return inline.createNewRecord('$objectPrefix')";
 		$title = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:cm.createnew',1);
 
-		if ($conf['appearance']['newRecordLinkAddTitle'])
+		if ($conf['appearance']['newRecordLinkAddTitle']) {
 			$tableTitle .= ' '.$GLOBALS['LANG']->sL($GLOBALS['TCA'][$conf['foreign_table']]['ctrl']['title'],1);
+		}
 
 		$out = '
 				<div class="typo3-newRecordLink">
-					<a href="#" onClick="'.$onClick.'" class="inlineNewButton"'.$style.' title="'.$title.$tableTitle.'">'.
+					<a href="#" onClick="'.$onClick.'"'.$class.$style.' title="'.$title.$tableTitle.'">'.
 					'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/new_el.gif','width="11" height="12"').' alt="'.$title.$tableTitle.'" />'.
 					$title.t3lib_div::fixed_lgd_cs($tableTitle, $this->fObj->titleLen).
 					'</a>
