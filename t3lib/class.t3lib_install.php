@@ -743,7 +743,7 @@ class t3lib_install {
 					$res = $GLOBALS['TYPO3_DB']->admin_query($string);
 					if ($res === false)	{
 						$result[$key] = $GLOBALS['TYPO3_DB']->sql_error();
-					} else {
+					} elseif (is_resource($res)) {
 						$GLOBALS['TYPO3_DB']->sql_free_result($res);
 					}
 				}
