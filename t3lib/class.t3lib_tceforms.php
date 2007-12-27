@@ -2264,6 +2264,7 @@ class t3lib_TCEforms	{
 						$lang = 'l'.$lKey;	// Default language, other options are "lUK" or whatever country code (independant of system!!!)
 						$PA['_valLang'] = $langChildren && !$langDisabled ? $editData['meta']['currentLangId'] : 'DEF';	// Default language, other options are "lUK" or whatever country code (independant of system!!!)
 						$PA['_lang'] = $lang;
+						$PA['_cshFile'] = ((isset($dataStruct['ROOT']['TCEforms']) && isset($dataStruct['ROOT']['TCEforms']['cshFile'])) ? $dataStruct['ROOT']['TCEforms']['cshFile'] : '');
 
 							// Render flexform:
 						$tRows = $this->getSingleField_typeFlex_draw(
@@ -2598,8 +2599,15 @@ class t3lib_TCEforms	{
 
 									// Put row together
 									// possible linebreaks in the label through xml: \n => <br/>, usage of nl2br() not possible, so it's done through str_replace
-								$tRows[]='<div>
-									<div class="bgColor5">'.($vDEFkey=='vDEF' ? '' : $this->getLanguageIcon($table,$row,$vDEFkey)).str_replace('\n', '<br />', $theTitle).'</div>
+								$processedTitle = str_replace('\n', '<br />', $theTitle);
+								$helpText = $this->helpText_typeFlex($key, $processedTitle, $PA['_cshFile']);
+								$tRows[]='<div>' .
+									'<div class="bgColor5">' .
+									($helpText ?
+										($vDEFkey=='vDEF' ? '' : $this->getLanguageIcon($table, $row, $vDEFkey)) . '<strong>' . $processedTitle . '</strong>' . $helpText :
+										$this->helpTextIcon_typeFlex($key, $processedTitle, $PA['_cshFile']) . ($vDEFkey == 'vDEF' ? '' : $this->getLanguageIcon($table, $row, $vDEFkey)) . $processedTitle
+									) .
+									'</div>
 									<div class="bgColor4">'.$theFormEl.$defInfo.$this->renderVDEFDiff($editData[$key],$vDEFkey).'</div>
 								</div>';
 							}
@@ -4693,6 +4701,61 @@ class t3lib_TCEforms	{
 					$GLOBALS['LANG']->hscAndCharConv(strip_tags($fDat['description']),1).
 					'</span></td></tr></table>';
 		}
+	}
+
+	/**
+	 * Returns help-text ICON if configured for.
+	 *
+	 * @param	string		Field name
+	 * @param	string		Field title
+	 * @param	string		File name with CSH labels
+	 * @return	string		HTML, <a>-tag with
+	 */
+	function helpTextIcon_typeFlex($field, $fieldTitle, $cshFile) {
+		if ($this->globalShowHelp && $cshFile) {
+			$value = $GLOBALS['LANG']->sL($cshFile . ':' . $field . '.description');
+			if (trim($value)) {
+				if (substr($fieldTitle, -1, 1) == ':') {
+					$fieldTitle = substr($fieldTitle, 0, strlen($fieldTitle) - 1);
+				}
+				// CSH exists
+				$params = base64_encode(serialize(array(
+					'cshFile' => $cshFile,
+					'field' => $field,
+					'title' => $fieldTitle
+				)));
+				$aOnClick = 'vHWin=window.open(\''.$this->backPath.'view_help.php?ffID=' . $params . '\',\'viewFieldHelp\',\'height=400,width=600,status=0,menubar=0,scrollbars=1\');vHWin.focus();return false;';
+				return '<a href="#" onclick="'.htmlspecialchars($aOnClick).'">'.
+						'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/helpbubble.gif','width="14" height="14"').' hspace="2" border="0" class="absmiddle"'.($GLOBALS['CLIENT']['FORMSTYLE']?' style="cursor:help;"':'').' alt="" />'.
+						'</a>';
+			}
+		}
+		return '';
+	}
+
+	/**
+	 * Returns help text DESCRIPTION, if configured for.
+	 *
+	 * @param	string		Field name
+	 * @param	string		CSH file name
+	 * @return	string		Description for the field with cion or empty string
+	 */
+	function helpText_typeFlex($field, $fieldTitle, $cshFile) {
+		if ($this->globalShowHelp && $cshFile && $this->edit_showFieldHelp == 'text') {
+			$value = $GLOBALS['LANG']->sL($cshFile . ':' . $field . '.description');
+			if (trim($value)) {
+				return '<table border="0" cellpadding="2" cellspacing="0" width="90%"><tr><td valign="top" width="14">' .
+					$this->helpTextIcon_typeFlex(
+						$field,
+						$fieldTitle,
+						$cshFile
+					).
+					'</td><td valign="top"><span class="typo3-TCEforms-helpText-flexform">' .
+					$GLOBALS['LANG']->hscAndCharConv(strip_tags($value), 1) .
+					'</span></td></tr></table>';
+			}
+		}
+		return '';
 	}
 
 	/**

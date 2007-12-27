@@ -1,3 +1,7 @@
+2007-12-27	Dmitry Dulepov	<dmitry@typo3.org>
+
+	* Fixed bug #7028: Implement CSH for flexforms
+
 2007-12-26  Oliver Hader  <oh@inpublica.de>
 
 	* (minor) Fixed bug #6651: IRRE - Button for creating new records disappeared on nested child records if a parent record reached the maxitems value
