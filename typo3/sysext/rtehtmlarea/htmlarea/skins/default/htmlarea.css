@@ -59,22 +59,41 @@
 	width:18px;height:18px;overflow:hidden;
 	margin:0;padding:0;
 }
-.htmlarea .toolbar .Bold  {background-image:url("images/ed_format_bold.gif");}
-.htmlarea .toolbar .Italic {background-image:url("images/ed_format_italic.gif");}
-.htmlarea .toolbar .Underline {background-image:url("images/ed_format_underline.gif");}
-.htmlarea .toolbar .StrikeThrough {background-image:url("images/ed_format_strike.gif");}
-.htmlarea .toolbar .Subscript {background-image:url("images/ed_format_sub.gif");}
-.htmlarea .toolbar .Superscript {background-image:url("images/ed_format_sup.gif");}
+.htmlarea .toolbar .BiDiOverride {background-image:url("images/InlineElements/bidioverride.gif");}
+.htmlarea .toolbar .Big {background-image:url("images/InlineElements/big.gif");}
+.htmlarea .toolbar .Bold {background-image:url("images/InlineElements/bold.gif");}
+.htmlarea .toolbar .Citation {background-image:url("images/InlineElements/citation.gif");}
+.htmlarea .toolbar .Code {background-image:url("images/InlineElements/code.gif");}
+.htmlarea .toolbar .Definition {background-image:url("images/InlineElements/definition.gif");}
+.htmlarea .toolbar .DeletedText {background-image:url("images/InlineElements/deletedtext.gif");}
+.htmlarea .toolbar .Emphasis {background-image:url("images/InlineElements/emphasis.gif");}
+.htmlarea .toolbar .InsertedText {background-image:url("images/InlineElements/insertedtext.gif");}
+.htmlarea .toolbar .Italic {background-image:url("images/InlineElements/italic.gif");}
+.htmlarea .toolbar .Keyboard {background-image:url("images/InlineElements/keyboard.gif");}
+.htmlarea .toolbar .MonoSpaced {background-image:url("images/InlineElements/monospaced.gif");}
+.htmlarea .toolbar .Quotation {background-image:url("images/InlineElements/quotation.gif");}
+.htmlarea .toolbar .Sample {background-image:url("images/InlineElements/sample.gif");}
+.htmlarea .toolbar .Small {background-image:url("images/InlineElements/small.gif");}
+.htmlarea .toolbar .Span {background-image:url("images/InlineElements/span.gif");}
+.htmlarea .toolbar .StrikeThrough {background-image:url("images/InlineElements/strikethrough.gif");}
+.htmlarea .toolbar .Strong {background-image:url("images/InlineElements/strong.gif");}
+.htmlarea .toolbar .Subscript {background-image:url("images/InlineElements/subscript.gif");}
+.htmlarea .toolbar .Superscript {background-image:url("images/InlineElements/superscript.gif");}
+.htmlarea .toolbar .Underline {background-image:url("images/InlineElements/underline.gif");}
+.htmlarea .toolbar .Variable {background-image:url("images/InlineElements/variable.gif");}
 .htmlarea .toolbar .LeftToRight {background-image:url("images/ed_left_to_right.gif");}
 .htmlarea .toolbar .RightToLeft {background-image:url("images/ed_right_to_left.gif");}
-.htmlarea .toolbar .JustifyLeft, .htmlarea-context-menu .JustifyLeft {background-image:url("images/ed_align_left.gif");}
-.htmlarea .toolbar .JustifyCenter, .htmlarea-context-menu .JustifyCenter {background-image:url("images/ed_align_center.gif");}
-.htmlarea .toolbar .JustifyRight, .htmlarea-context-menu .JustifyRight {background-image:url("images/ed_align_right.gif");}
-.htmlarea .toolbar .JustifyFull, .htmlarea-context-menu .JustifyFull {background-image:url("images/ed_align_justify.gif");}
+.htmlarea .toolbar .Indent {background-image:url("images/BlockElements/indent.gif");}
+.htmlarea .toolbar .Outdent {background-image:url("images/BlockElements/outdent.gif");}
+.htmlarea .toolbar .Blockquote {background-image:url("images/BlockElements/blockquote.gif");}
+.htmlarea .toolbar .InsertParagraphBefore, .htmlarea-context-menu .InsertParagraphBefore {background-image:url("images/BlockElements/insertParagraphBefore.gif");}
+.htmlarea .toolbar .InsertParagraphAfter, .htmlarea-context-menu .InsertParagraphAfter {background-image:url("images/BlockElements/insertParagraphAfter.gif");}
+.htmlarea .toolbar .JustifyLeft, .htmlarea-context-menu .JustifyLeft {background-image:url("images/BlockElements/justifyLeft.gif");}
+.htmlarea .toolbar .JustifyCenter, .htmlarea-context-menu .JustifyCenter {background-image:url("images/BlockElements/justifyCenter.gif");}
+.htmlarea .toolbar .JustifyRight, .htmlarea-context-menu .JustifyRight {background-image:url("images/BlockElements/justifyRight.gif");}
+.htmlarea .toolbar .JustifyFull, .htmlarea-context-menu .JustifyFull {background-image:url("images/BlockElements/justifyFull.gif");}
 .htmlarea .toolbar .InsertOrderedList {background-image:url("images/ed_list_num.gif");}
 .htmlarea .toolbar .InsertUnorderedList {background-image:url("images/ed_list_bullet.gif");}
-.htmlarea .toolbar .Indent {background-image:url("images/ed_indent_more.gif");}
-.htmlarea .toolbar .Outdent {background-image:url("images/ed_indent_less.gif");}
 .htmlarea .toolbar .ForeColor {background-image:url("images/ed_color_fg.gif");}
 .htmlarea .toolbar .HiliteColor {background-image:url("images/ed_color_bg.gif");}
 .htmlarea .toolbar .CO-forecolor {background-image:url("images/SelectColor/CO-forecolor.gif");}

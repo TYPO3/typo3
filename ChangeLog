@@ -1,3 +1,7 @@
+2007-12-30  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
+
+	* Feature/bugfix: Fixing icons for Opera and adding new icons in default skin of htmlArea RTE and in t3skin/rtehtmlarea
+
 2007-12-27	Dmitry Dulepov	<dmitry@typo3.org>
 
 	* Fixed bug #7028: Implement CSH for flexforms
