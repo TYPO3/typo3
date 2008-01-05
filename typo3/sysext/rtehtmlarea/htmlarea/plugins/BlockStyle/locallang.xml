@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+	<meta type="array">
+		<description>Labels for Block Style plugin of htmlArea RTE</description>
+		<type>module</type>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index="No style">No block style</label>
+			<label index="Remove style">Remove block style</label>
+			<label index="Unknown style">Unknown block style</label>
+			<label index="Element style">Block element style</label>
+			<label index="BlockStyle-Tooltip">Apply style to the containing block</label>
+			<label index="frame-frame1">Frame with grey background</label>
+			<label index="frame-frame2">Frame with yellow background</label>
+			<label index="important">Important</label>
+			<label index="name-of-person">Name of person</label>
+			<label index="detail">Detail</label>
+			<label index="component-items">Component items</label>
+			<label index="action-items">Action items</label>
+			<label index="Technische Universitat Ilmenau">Technische Universität Ilmenau</label>
+		</languageKey>
+	</data>
+	<orig_hash type="array">
+		<languageKey index="default" type="array">
+		</languageKey>
+	</orig_hash>
+	<orig_text type="array">
+		<languageKey index="default" type="array">
+		</languageKey>
+	</orig_text>
+</T3locallang>

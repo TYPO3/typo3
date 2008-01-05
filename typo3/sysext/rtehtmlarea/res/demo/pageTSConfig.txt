@@ -118,11 +118,9 @@ RTE.default {
 		## Allow img tags
 	proc.entryHTMLparser_db.tags.img >
 	
-		## Allow align attribute
+		## Allow style attribute
 	proc.entryHTMLparser_db.tags {
-		p.fixAttrib.align.unset >
-		div.fixAttrib.align.unset >
-		p.allowedAttribs = class,style,align
+		p.allowedAttribs := addToList(style)
 		span.fixAttrib.style.unset >
 	}
 	
@@ -173,11 +171,12 @@ RTE.default {
 		## List all class selectors that are allowed on the way to the database
 	proc.allowedClasses (
 		external-link, external-link-new-window, internal-link, internal-link-new-window, download, mail,
-		align-left, align-center, align-right,
+		align-left, align-center, align-right, align-justify,
 		csc-frame-frame1, csc-frame-frame2,
 		component-items, action-items,
 		component-items-ordered, action-items-ordered,
-		important, name-of-person, detail
+		important, name-of-person, detail,
+		indent
 	)
 	
 		## classesParagraph, classesTable, classesTD, classesLinks, classesCharacter

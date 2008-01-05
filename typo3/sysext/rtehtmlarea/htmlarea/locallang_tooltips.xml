@@ -22,12 +22,12 @@
 			<label index="insertimage">Insert/Modify Image</label>
 			<label index="inserttable">Insert Table</label>
 			<label index="htmlmode">Toggle HTML Source</label>
-			<label index="popupeditor">Enlarge Editor</label>
+			<label index="popupeditor">Enlarge the editor</label>
 			<label index="about">About this editor</label>
 			<label index="showhelp">Help using editor</label>
 			<label index="textindicator">Current style</label>
-			<label index="undo">Undoes your last action</label>
-			<label index="redo">Redoes your last action</label>
+			<label index="undo">Undo the last action</label>
+			<label index="redo">Redo the last action</label>
 			<label index="cut">Cut selection</label>
 			<label index="copy">Copy selection</label>
 			<label index="paste">Paste from clipboard</label>

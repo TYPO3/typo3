@@ -2,7 +2,7 @@
 *  Copyright notice
 *
 *  Copyright (c) 2003 dynarch.com. Authored by Mihai Bazon. Sponsored by www.americanbible.org.
-*  Copyright (c) 2004, 2005 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
+*  Copyright (c) 2004-2007 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -44,7 +44,7 @@ ContextMenu.I18N = ContextMenu_langArray;
 
 ContextMenu._pluginInfo = {
 	name          : "ContextMenu",
-	version       : "1.8",
+	version       : "1.9",
 	developer     : "Mihai Bazon & Stanislas Rolland",
 	developer_url : "http://www.fructifor.ca/",
 	c_owner       : "dynarch.com & Stanislas Rolland",
@@ -114,29 +114,22 @@ ContextMenu.execCommandHandler = function(editor,opcode) {
 	});
 };
 
-ContextMenu.insertParagraphHandler = function(editor,currentTarget,after) {
+ContextMenu.blockElementsHandler = function(editor, currentTarget, buttonId) {
 	return (function() {
-		var el = currentTarget;
-		var par = el.parentNode;
-		var p = editor._doc.createElement("p");
-		p.appendChild(editor._doc.createElement("br"));
-		par.insertBefore(p, after ? el.nextSibling : el);
-		var sel = editor._getSelection();
-		var range = editor._createRange(sel);
-		if(HTMLArea.is_gecko) {
-			range.selectNodeContents(p);
-			range.collapse(true);
-			if(HTMLArea.is_safari) {
-				sel.empty();
-				sel.setBaseAndExtent(range.startContainer,range.startOffset,range.endContainer,range.endOffset);
-			} else {
-				sel.removeAllRanges();
-				sel.addRange(range);
-			}
+		var blockElements = editor.plugins.BlockElements;
+		if (blockElements) {
+			blockElements = blockElements.instance;
+			blockElements.onButtonPress(editor, buttonId, currentTarget);
 		} else {
-			range.moveToElementText(p);
-			range.collapse(true);
-			range.select();
+			var el = currentTarget;
+			var par = el.parentNode;
+			var p = editor._doc.createElement("p");
+			var after = (buttonId === "InsertParagraphAfter");
+			p.appendChild(editor._doc.createElement("br"));
+			par.insertBefore(p, after ? el.nextSibling : el);
+			var sel = editor._getSelection();
+			var range = editor._createRange(sel);
+			editor.selectNodeContents(p, true);
 		}
 	});
 };
@@ -163,8 +156,12 @@ ContextMenu.deleteElementHandler = function(editor,tmp,table) {
 	});
 };
 
-ContextMenu.prototype.pushOperations = function(opcodes,elmenus,tbo) {
+ContextMenu.prototype.pushOperations = function(opcodes, elmenus, pluginId) {
 	var editor = this.editor;
+	var pluginInstance = this.editor.plugins[pluginId];
+	if (pluginInstance) {
+		pluginInstance = pluginInstance.instance;
+	}
 	var toolbarObjects = editor._toolbarObjects;
 	var i18n = ContextMenu.I18N;
 	var btnList = editor.config.btnList;
@@ -177,10 +174,28 @@ ContextMenu.prototype.pushOperations = function(opcodes,elmenus,tbo) {
 	if (enabled && elmenus.length) elmenus.push(null);
 	for (i = opcodes.length; i > 0;) {
 		opcode = opcodes[--i];
-		if(opEnabled[opcode]) elmenus.push([i18n[opcode + "-title"],
-				(tbo ? ContextMenu.tableOperationsHandler(editor, tbo, opcode) : ContextMenu.execCommandHandler(editor, opcode)),
-				i18n[opcode + "-tooltip"],
-				btnList[opcode][1], opcode]);
+		if(opEnabled[opcode]) {
+			switch (pluginId) {
+				case "TableOperations" :
+					elmenus.push([i18n[opcode + "-title"],
+						ContextMenu.tableOperationsHandler(editor, pluginInstance, opcode),
+						i18n[opcode + "-tooltip"],
+						btnList[opcode][1], opcode]);
+					break;
+				case "BlockElements" :
+					elmenus.push([i18n[opcode + "-title"],
+						ContextMenu.blockElementsHandler(editor, null, opcode),
+						i18n[opcode + "-tooltip"],
+						btnList[opcode][1], opcode]);
+					break;
+				default :
+					elmenus.push([i18n[opcode + "-title"],
+						ContextMenu.execCommandHandler(editor, opcode),
+						i18n[opcode + "-tooltip"],
+						btnList[opcode][1], opcode]);
+					break;
+			}
+		}
 	}
 };
 
@@ -192,8 +207,8 @@ ContextMenu.prototype.getContextMenu = function(target) {
 	var btnList = config.btnList;
 	var menu = [], opcode;
 	var tbo = this.editor.plugins["TableOperations"];
-	if(tbo) tbo = tbo.instance;
-
+	if (tbo) tbo = "TableOperations";
+	
 	var selection = editor.hasSelectedText();
 	if(selection) {
 		if (toolbarObjects['Cut'] && toolbarObjects['Cut'].enabled)  {
@@ -263,7 +278,7 @@ ContextMenu.prototype.getContextMenu = function(target) {
 			opcode = "TO-cell-merge";
 			if(toolbarObjects[opcode]  && toolbarObjects[opcode].enabled)
 				menu.push([i18n[opcode + "-title"],
-				ContextMenu.tableOperationsHandler(editor,tbo,opcode),
+				ContextMenu.tableOperationsHandler(editor, this.editor.plugins.TableOperations.instance, opcode),
 				i18n[opcode + "-tooltip"],
 				btnList[opcode][1], opcode]);
 			this.pushOperations(["TO-row-split", "TO-row-delete", "TO-row-insert-under", "TO-row-insert-above", "TO-row-prop"], menu, tbo);
@@ -282,7 +297,7 @@ ContextMenu.prototype.getContextMenu = function(target) {
 			div = target;
 			break;
 		    case "body":
-		    	this.pushOperations(["JustifyFull", "JustifyRight", "JustifyCenter", "JustifyLeft"], menu, null);
+		    	this.pushOperations(["JustifyFull", "JustifyRight", "JustifyCenter", "JustifyLeft"], menu, "BlockElements");
 			break;
 		}
 	}
@@ -310,9 +325,9 @@ ContextMenu.prototype.getContextMenu = function(target) {
 		  [i18n["Remove the"] + " &lt;" + tmp.tagName.toLowerCase() + "&gt; " + i18n["Element"],
 			ContextMenu.deleteElementHandler(editor, tmp, table), i18n["Remove this node from the document"]],
 		  [i18n["Insert paragraph before"],
-			ContextMenu.insertParagraphHandler(editor, tmp, false), i18n["Insert a paragraph before the current node"]],
+			ContextMenu.blockElementsHandler(editor, tmp, "InsertParagraphBefore"), i18n["Insert a paragraph before the current node"], null, "InsertParagraphBefore"],
 		  [i18n["Insert paragraph after"],
-			ContextMenu.insertParagraphHandler(editor, tmp, true), i18n["Insert a paragraph after the current node"]]
+			ContextMenu.blockElementsHandler(editor, tmp, "InsertParagraphAfter"), i18n["Insert a paragraph after the current node"], null, "InsertParagraphAfter"]
 		);
 	}
 	return menu;

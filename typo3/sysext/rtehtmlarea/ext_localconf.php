@@ -49,8 +49,16 @@ $TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['plugins'] = array();
 // Registering plugin from "inner" extensions:
 $TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['plugins']['DefaultInline'] = array();
 $TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['plugins']['DefaultInline']['objectReference'] = 'EXT:'.$_EXTKEY.'/extensions/DefaultInline/class.tx_rtehtmlarea_defaultinline.php:&tx_rtehtmlarea_defaultinline';
+$TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['plugins']['DefaultInline']['addIconsToSkin'] = 1;
 $TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['plugins']['InlineCSS'] = array();
 $TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['plugins']['InlineCSS']['objectReference'] = 'EXT:'.$_EXTKEY.'/extensions/InlineCSS/class.tx_rtehtmlarea_inlinecss.php:&tx_rtehtmlarea_inlinecss';
+$TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['plugins']['BlockElements'] = array();
+$TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['plugins']['BlockElements']['objectReference'] = 'EXT:'.$_EXTKEY.'/extensions/BlockElements/class.tx_rtehtmlarea_blockelements.php:&tx_rtehtmlarea_blockelements';
+$TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['plugins']['BlockElements']['addIconsToSkin'] = 0;
+$TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['plugins']['DynamicCSS'] = array();
+$TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['plugins']['DynamicCSS']['objectReference'] = 'EXT:'.$_EXTKEY.'/extensions/DynamicCSS/class.tx_rtehtmlarea_dynamiccss.php:&tx_rtehtmlarea_dynamiccss';
+$TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['plugins']['BlockStyle'] = array();
+$TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['plugins']['BlockStyle']['objectReference'] = 'EXT:'.$_EXTKEY.'/extensions/BlockStyle/class.tx_rtehtmlarea_blockstyle.php:&tx_rtehtmlarea_blockstyle';
 
 $_EXTCONF = unserialize($_EXTCONF);    // unserializing the configuration so we can use it here:
 

@@ -1,3 +1,14 @@
+2008-01-05  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
+
+	* (major) Feature: Improved behaviour and configuration options of formatblock and blockstyle drop-down lists
+	* Feature:  Added buttons insertparagraphbefore, insertparagraphafter and blockquote
+	* Feature:  Added Page TSConfig RTE sub-array mutuallyExclusiveClasses
+	* Fixed issue 5952 (partial): Usability Issue with classes wrapped with <> in select lists
+	* Fixed issue 5951: Disturbing behaviour of indent/outdent and TAB
+	* Added feature 3708 (partial): support for <blockquote>
+	* Fixed issue 5977: align="center" (right or left) not any more supported by W3C
+	* Fixed issue 6837: Strange layout for header N except the first one (Safari)
+
 2007-12-30  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
 	* Feature/bugfix: Fixing icons for Opera and adding new icons in default skin of htmlArea RTE and in t3skin/rtehtmlarea

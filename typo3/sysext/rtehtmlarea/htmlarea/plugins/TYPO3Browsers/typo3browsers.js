@@ -176,8 +176,7 @@ HTMLArea.prototype.setLinkAttributes = function(node,range,cur_target,cur_class,
 	if (node.tagName && node.tagName.toLowerCase() == "a") {
 		var nodeInRange = false;
 		if (HTMLArea.is_gecko) {
-			if(!HTMLArea.is_safari && !HTMLArea.is_opera) nodeInRange = range.intersectsNode(node);
-				else nodeInRange = true;
+			nodeInRange = this.rangeIntersectsNode(range, node);
 		} else {
 			if (this._getSelection().type.toLowerCase() == "control") {
 					// we assume an image is selected
@@ -243,8 +242,7 @@ HTMLArea.prototype.cleanClassesAnchorImages = function(node) {
 	if (node.tagName && node.tagName.toLowerCase() == "a") {
 		var intersection = false;
 		if (HTMLArea.is_gecko) {
-			if (!HTMLArea.is_safari && !HTMLArea.is_opera) intersection = range.intersectsNode(node);
-				else intersection = true;
+			intersection = this.rangeIntersectsNode(range, node);
 		} else {
 			if (this._getSelection().type.toLowerCase() == "control") {
 					// we assume an image is selected

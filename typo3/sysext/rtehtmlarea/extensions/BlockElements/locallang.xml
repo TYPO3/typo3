@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<!-- TYPO3 SVN ID: $Id$ -->
+<T3locallang>
+	<meta type="array">
+		<description>Labels for BlockElements extension of htmlArea RTE</description>
+		<type>module</type>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index="No block">No block format</label>
+			<label index="Paragraph">Paragraph</label>
+			<label index="Heading 1">Heading 1</label>
+			<label index="Heading 2">Heading 2</label>
+			<label index="Heading 3">Heading 3</label>
+			<label index="Heading 4">Heading 4</label>
+			<label index="Heading 5">Heading 5</label>
+			<label index="Heading 6">Heading 6</label>
+			<label index="Preformatted">Preformatted</label>
+			<label index="Quotation">Quotation</label>
+			<label index="Address">Address</label>
+			<label index="Section">Container</label>
+		</languageKey>
+	</data>
+	<orig_hash type="array">
+		<languageKey index="default" type="array">
+		</languageKey>
+	</orig_hash>
+	<orig_text type="array">
+		<languageKey index="default" type="array">
+		</languageKey>
+	</orig_text>
+</T3locallang>

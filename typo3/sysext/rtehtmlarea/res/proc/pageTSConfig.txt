@@ -6,10 +6,10 @@
 # Assumptions:	- CSS Styled Content is installed.
 #		- XHTML output is expected.
 #
-# For documentation of RTE tranformations, see: http://typo3.org/documentation/document-library/doc_core_api/Introduction-e41faa8263/
+# For documentation of RTE tranformations, see: http://typo3.org/documentation/document-library/core-documentation/doc_core_api/4.1.0/view/5/2/
 # For documentation of Page TSConfig configuration of RTE processing, see: http://typo3.org/documentation/document-library/doc_core_api/Page_TSconfig/
 # For documentation of the HTMLparser, see: http://typo3.org/documentation/document-library/doc_core_tsref/HTMLparser/
-# For documentation of RTE settings in TCA, see: http://typo3.org/documentation/document-library/doc_core_api/Special_Configuratio-1/
+# For documentation of RTE settings in TCA, see: http://typo3.org/documentation/document-library/core-documentation/doc_core_api/4.1.0/view/4/3/#id3665895
 #
 # @author	Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
 #
@@ -27,9 +27,8 @@ RTE.default.proc {
 		## br tags in the content are assumed to be intentional.
 	dontConvBRtoParagraph = 1
 	
-		## REMAP DIV TAGS TO P TAGS
-		## For compatibility between Classic RTE and htmlArea RTE
-	remapParagraphTag = p
+		## PRESERVE DIV SECTIONS - DO NOT REMAP TO P
+	preserveDIVSections = 1
 	
 		## TAGS ALLOWED OUTSIDE P & DIV
 	allowTagsOutside = hr, address
@@ -41,9 +40,9 @@ RTE.default.proc {
 		## b and i will be remapped on exit (see below).
 		## Note that the link accessibility feature of htmlArea RTE does insert img tags.
 	allowTags (
-		a, abbr, acronym, address, blockquote, b, br, caption, center, cite, code, col, colgroup, div, em, font,
-		h1, h2, h3, h4, h5, h6, hr, i, img, li, link, ol, p, pre, q, sdfield,
-		span, strike, strong, sub, sup, table, thead, tbody, tfoot, td, th, tr, tt, u, ul
+		a, abbr, acronym, address, b, bdo, big, blockquote, br, caption, center, cite, code, col, colgroup, del, dfn, div, em, font,
+		h1, h2, h3, h4, h5, h6, hr, i, img, ins, kbd, label, li, link, ol, p, pre, q, samp, sdfield, small,
+		span, strike, strong, sub, sup, table, thead, tbody, tfoot, td, th, tr, tt, u, ul, var
 		)
 	
 		## TAGS DENIED
@@ -54,7 +53,7 @@ RTE.default.proc {
 		## Attributes class and align are always preserved
 		## Align attribute will be unset on entry (see below)
 		## This is a list of additional attributes to keep
-	keepPDIVattribs = xml:lang
+	keepPDIVattribs = id, title, dir, lang, xml:lang
 	
 		## CONTENT TO DATABASE
 	entryHTMLparser_db = 1
@@ -79,19 +78,33 @@ RTE.default.proc {
 			
 				## CLEAN ATTRIBUTES ON THE FOLLOWING TAGS
 			span.fixAttrib.style.unset = 1
-			p.fixAttrib.align.unset = 1
-			div.fixAttrib.align.unset = 1
+			p {
+				allowedAttribs = id, title, dir, lang, xml:lang, class
+				fixAttrib.align.unset = 1
+			}
+			div < .p
 			hr.allowedAttribs = class
-			b.allowedAttribs = xml:lang
-			blockquote.allowedAttribs = xml:lang
-			cite.allowedAttribs = xml:lang
-			em.allowedAttribs = xml:lang
-			i.allowedAttribs = xml:lang
-			q.allowedAttribs = xml:lang
-			strong.allowedAttribs = xml:lang
-			sub.allowedAttribs = xml:lang
-			sup.allowedAttribs = xml:lang
-			tt.allowedAttribs = xml:lang
+			b.allowedAttribs = id, title, dir, lang, xml:lang, class
+			bdo.allowedAttribs = id, title, dir, lang, xml:lang, class
+			big.allowedAttribs = id, title, dir, lang, xml:lang, class
+			blockquote.allowedAttribs = id, title, dir, lang, xml:lang, class
+			cite.allowedAttribs = id, title, dir, lang, xml:lang, class
+			code.allowedAttribs = id, title, dir, lang, xml:lang, class
+			del.allowedAttribs = id, title, dir, lang, xml:lang, class
+			dfn.allowedAttribs = id, title, dir, lang, xml:lang, class
+			em.allowedAttribs = id, title, dir, lang, xml:lang, class
+			i.allowedAttribs = id, title, dir, lang, xml:lang, class
+			ins.allowedAttribs = id, title, dir, lang, xml:lang, class
+			kbd.allowedAttribs = id, title, dir, lang, xml:lang, class
+			label.allowedAttribs = id, title, dir, lang, xml:lang, class
+			q.allowedAttribs = id, title, dir, lang, xml:lang, class
+			samp.allowedAttribs = id, title, dir, lang, xml:lang, class
+			small.allowedAttribs = id, title, dir, lang, xml:lang, class
+			strong.allowedAttribs = id, title, dir, lang, xml:lang, class
+			sub.allowedAttribs = id, title, dir, lang, xml:lang, class
+			sup.allowedAttribs = id, title, dir, lang, xml:lang, class
+			tt.allowedAttribs = id, title, dir, lang, xml:lang, class
+			var.allowedAttribs = id, title, dir, lang, xml:lang, class
 		}
 		
 			## REMOVE OPEN OFFICE META DATA TAGS, WORD 2003 TAGS AND DEPRECATED HTML TAGS

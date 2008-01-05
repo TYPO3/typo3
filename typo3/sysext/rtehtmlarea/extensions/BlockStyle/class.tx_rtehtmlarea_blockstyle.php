@@ -22,7 +22,7 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 /**
- * InlineCSS extension of htmlArea RTE
+ * Block Style extension for htmlArea RTE
  *
  * @author Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
  *
@@ -32,30 +32,30 @@
 
 require_once(t3lib_extMgm::extPath('rtehtmlarea').'class.tx_rtehtmlareaapi.php');
 
-class tx_rtehtmlarea_inlinecss extends tx_rtehtmlareaapi {
+class tx_rtehtmlarea_blockstyle extends tx_rtehtmlareaapi {
 
 	protected $extensionKey = 'rtehtmlarea';		// The key of the extension that is extending htmlArea RTE
-	protected $pluginName = 'InlineCSS';			// The name of the plugin registered by the extension
-	protected $relativePathToLocallangFile = 'extensions/InlineCSS/locallang.xml';	// Path to this main locallang file of the extension relative to the extension dir.
+	protected $pluginName = 'BlockStyle';			// The name of the plugin registered by the extension
+	protected $relativePathToLocallangFile = 'extensions/BlockStyle/locallang.xml';	// Path to this main locallang file of the extension relative to the extension dir.
 	protected $relativePathToSkin = '';			// Path to the skin (css) file relative to the extension dir.
 	protected $htmlAreaRTE;					// Reference to the invoking object
 	protected $thisConfig;					// Reference to RTE PageTSConfig
 	protected $toolbar;					// Reference to RTE toolbar array
 	protected $LOCAL_LANG; 					// Frontend language array
 	
-	protected $pluginButtons = 'textstyle';			// The comma-seperated list of button names that the extension id adding to the htmlArea RTE tollbar
-	protected $pluginLabels = 'textstylelabel';		// The comma-seperated list of label names that the extension id adding to the htmlArea RTE tollbar
+	protected $pluginButtons = 'blockstyle';		// The comma-seperated list of button names that the extension id adding to the htmlArea RTE tollbar
+	protected $pluginLabels = 'blockstylelabel';		// The comma-seperated list of label names that the extension id adding to the htmlArea RTE tollbar
 								// The name-converting array, converting the button names used in the RTE PageTSConfing to the button id's used by the JS scripts
 	protected $convertToolbarForHtmlAreaArray = array (
-		'textstylelabel'	=> 'I[text_style]',
-		'textstyle'		=> 'InlineCSS-class',
+		'blockstylelabel'	=> 'I[Block style label]',
+		'blockstyle'		=> 'BlockStyle',
 		);
 	protected $requiresClassesConfiguration = true;		// True if the extension requires the PageTSConfig Classes configuration
 
 } // end of class
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rtehtmlarea/extensions/InlineCSS/class.tx_rtehtmlarea_inlinecss.php']) {
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rtehtmlarea/extensions/InlineCSS/class.tx_rtehtmlarea_inlinecss.php']);
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rtehtmlarea/extensions/BlockStyle/class.tx_rtehtmlarea_blockstyle.php']) {
+	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rtehtmlarea/extensions/BlockStyle/class.tx_rtehtmlarea_blockstyle.php']);
 }
 
 ?>

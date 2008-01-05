@@ -29,7 +29,7 @@
  *
  * TYPO3 SVN ID: $Id$
  */
-DefaultInline = HTMLArea.plugin.extend({
+DefaultInline = HTMLArea.Plugin.extend({
 		
 	constructor : function(editor, pluginName) {
 		this.base(editor, pluginName);
@@ -79,18 +79,17 @@ DefaultInline = HTMLArea.plugin.extend({
 	/*
 	 * This function gets called when some inline element button was pressed.
 	 */
-	onButtonPress : function (editor, id, UI, param) {
+	onButtonPress : function (editor, id) {
 			// Could be a button or its hotkey
 		var buttonId = this.translateHotKey(id);
 		buttonId = buttonId ? buttonId : id;
 		editor.focusEditor();
 		try {
-			editor._doc.execCommand(buttonId, UI, param);
+			editor._doc.execCommand(buttonId, false, null);
 		}
 		catch(e) {
 			this.appendToLog("onButtonPress", e + "\n\nby execCommand(" + buttonId + ");");
 		}
-		editor.updateToolbar();
 		return false;
 	},
 	

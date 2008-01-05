@@ -74,6 +74,8 @@ var HTMLArea = function(textarea, config) {
 	}
 };
 
+HTMLArea.editorCSS = _editor_CSS;
+
 /*
  * Browser identification
  */
@@ -242,7 +244,7 @@ HTMLArea.RE_doctype = /(<!doctype((.|\n)*?)>)\n?/i;
 HTMLArea.RE_head    = /<head>((.|\n)*?)<\/head>/i;
 HTMLArea.RE_body    = /<body>((.|\n)*?)<\/body>/i;
 HTMLArea.Reg_body = new RegExp("<\/?(body)[^>]*>", "gi");
-HTMLArea.Reg_entities = new RegExp("&amp;([0-9]+);", "gi");
+HTMLArea.Reg_entities = new RegExp("&amp;#([0-9]+);", "gi");
 HTMLArea.reservedClassNames = /htmlarea/;
 HTMLArea.RE_email    = /([0-9a-z]+([a-z0-9_-]*[0-9a-z])*){1}(\.[0-9a-z]+([a-z0-9_-]*[0-9a-z])*)*@([0-9a-z]+([a-z0-9_-]*[0-9a-z])*\.)+[a-z]{2,9}/i;
 HTMLArea.RE_url      = /(https?:\/\/)?(([a-z0-9_]+:[a-z0-9_]+@)?[a-z0-9_-]{2,}(\.[a-z0-9_-]{2,})+\.[a-z]{2,5}(:[0-9]+)?(\/\S+)*)/i;
@@ -252,7 +254,6 @@ HTMLArea.RE_url      = /(https?:\/\/)?(([a-z0-9_]+:[a-z0-9_]+@)?[a-z0-9_-]{2,}(\
  */
 
 HTMLArea.Config = function () {
-	this.version = "3.0";
 	this.width = "auto";
 	this.height = "auto";
 		// enable creation of a status bar?
@@ -277,7 +278,7 @@ HTMLArea.Config = function () {
 		// content style
 	this.pageStyle = "";
 		// set to true if you want Word code to be cleaned upon Paste
-	this.cleanWordOnPaste = true;
+	this.enableWordClean = true;
 		// enable the 'Target' field in the Make Link dialog
 	this.makeLinkShowsTarget = true;
 		// remove tags (these have to be a regexp, or null if this functionality is not desired)
@@ -296,14 +297,8 @@ HTMLArea.Config = function () {
 	this.popupURL = "popups/";
 
 	this.btnList = {
-		JustifyLeft:		["Justify Left", "ed_align_left.gif", false, function(editor) {editor.execCommand("JustifyLeft");}],
-		JustifyCenter:		["Justify Center", "ed_align_center.gif", false, function(editor) {editor.execCommand("JustifyCenter");}],
-		JustifyRight:		["Justify Right", "ed_align_right.gif", false, function(editor) {editor.execCommand("JustifyRight");}],
-		JustifyFull:		["Justify Full", "ed_align_justify.gif", false, function(editor) {editor.execCommand("JustifyFull");}],
 		InsertOrderedList:	["Ordered List", "ed_list_num.gif", false, function(editor) {editor.execCommand("InsertOrderedList");}],
 		InsertUnorderedList:	["Bulleted List", "ed_list_bullet", false, function(editor) {editor.execCommand("InsertUnorderedList");}],
-		Outdent:		["Decrease Indent", "ed_indent_less.gif", false, function(editor) {editor.execCommand("Outdent");}],
-		Indent:			["Increase Indent", "ed_indent_more.gif", false, function(editor) {editor.execCommand("Indent");}],
 		ForeColor:		["Font Color", "ed_color_fg.gif",false, function(editor) {editor.execCommand("ForeColor");}],
 		HiliteColor:		["Background Color", "ed_color_bg.gif",false, function(editor) {editor.execCommand("HiliteColor");}],
 		InsertHorizontalRule:	["Horizontal Rule", "ed_hr.gif",false, function(editor) {editor.execCommand("InsertHorizontalRule");}],
@@ -314,11 +309,11 @@ HTMLArea.Config = function () {
 		SelectAll:		["SelectAll", "", true, function(editor) {editor.execCommand("SelectAll");}, null, true, false],
 		SplitBlock:		["Toggle Container Block", "ed_splitblock.gif", false, function(editor) {editor.execCommand("SplitBlock");}],
 		About:			["About this editor", "ed_about.gif", true, function(editor) {editor.execCommand("About");}],
-		Undo:			["Undoes your last action", "ed_undo.gif", false, function(editor) {editor.execCommand("Undo");}],
-		Redo:			["Redoes your last action", "ed_redo.gif", false, function(editor) {editor.execCommand("Redo");}],
-		Cut:			["Cut selection", "ed_cut.gif", false, function(editor,command,obj) {editor.execCommand("Cut");}],
-		Copy:			["Copy selection", "ed_copy.gif", false, function(editor,command,obj) {editor.execCommand("Copy");}],
-		Paste:			["Paste from clipboard", "ed_paste.gif", false, function(editor,command,obj) {editor.execCommand("Paste");}],
+		Undo:			["Undo the last action", "ed_undo.gif", false, function(editor) {editor.execCommand("Undo");}],
+		Redo:			["Redo the last action", "ed_redo.gif", false, function(editor) {editor.execCommand("Redo");}],
+		Cut:			["Cut selection", "ed_cut.gif", false, function(editor) {editor.execCommand("Cut");}],
+		Copy:			["Copy selection", "ed_copy.gif", false, function(editor) {editor.execCommand("Copy");}],
+		Paste:			["Paste from clipboard", "ed_paste.gif", false, function(editor) {editor.execCommand("Paste");}],
 		SelectAll:		["SelectAll", "", true, function(editor) {editor.execCommand("SelectAll");}, null, true, false],
 		LeftToRight:		["Direction left to right", "ed_left_to_right.gif", false, function(editor) {editor.execCommand("LeftToRight");}],
 		RightToLeft:		["Direction right to left", "ed_right_to_left.gif", false, function(editor) {editor.execCommand("RightToLeft");}]
@@ -326,11 +321,6 @@ HTMLArea.Config = function () {
 		// Default hotkeys
 	this.hotKeyList = {
 		a:	{ cmd:	"SelectAll", 		action:	null},
-		l:	{ cmd:	"JustifyLeft", 		action:	null},
-		e:	{ cmd:	"JustifyCenter", 	action:	null},
-		r:	{ cmd:	"JustifyRight", 	action:	null},
-		j:	{ cmd:	"JustifyFull", 		action:	null},
-		n:	{ cmd:	"FormatBlock", 		action:	null},
 		v:	{ cmd:	"Paste", 		action:	null},
 		0:	{ cmd:	"CleanWord", 		action:	null},
 		z:	{ cmd:	"Undo", 		action:	null},
@@ -372,9 +362,10 @@ HTMLArea.Config = function () {
  *	context		: "p"			// will be disabled if not inside a <p> element
  *	hide		: false			// hide in menu and show only in context menu
  *	selection	: false			// will be disabled if there is no selection
+ *	dialog		: true			// the button opens a dialog
  *    });
  */
-HTMLArea.Config.prototype.registerButton = function(id,tooltip,image,textMode,action,context,hide,selection) {
+HTMLArea.Config.prototype.registerButton = function(id,tooltip,image,textMode,action,context,hide,selection, dialog) {
 	var buttonId;
 	switch (typeof(id)) {
 		case "string": buttonId = id; break;
@@ -394,12 +385,14 @@ HTMLArea.Config.prototype.registerButton = function(id,tooltip,image,textMode,ac
 		case "string":
 			if (typeof(hide) === "undefined") var hide = false;
 			if (typeof(selection) === "undefined") var selection = false;
-			this.btnList[id] = [tooltip, image, textMode, action, context, hide, selection];
+			if (typeof(dialog) === "undefined") var dialog = true;
+			this.btnList[id] = [tooltip, image, textMode, action, context, hide, selection, dialog];
 			break;
 		case "object":
 			if (typeof(id.hide) === "undefined") id.hide = false;
 			if (typeof(id.selection) === "undefined") id.selection = false;
-			this.btnList[id.id] = [id.tooltip, id.image, id.textMode, id.action, id.context, id.hide, id.selection];
+			if (typeof(id.dialog) === "undefined") id.dialog = true;
+			this.btnList[id.id] = [id.tooltip, id.image, id.textMode, id.action, id.context, id.hide, id.selection, id.dialog];
 			break;
 	}
 	return true;
@@ -530,8 +523,7 @@ HTMLArea.prototype.createSelect = function(txt,tb_line,first_cell_on_line,labelO
 	switch (txt) {
 		case "FontSize":
 		case "FontName":
-		case "FormatBlock":
-			options = this.config[txt];
+			options = this.config[txt.toLowerCase()];
 			tooltip = HTMLArea.I18N.tooltips[txt.toLowerCase()];
 			cmd = txt;
 			break;
@@ -795,25 +787,35 @@ HTMLArea.toolBarButtonHandler = function(ev) {
 				HTMLArea._removeClass(target.parentNode, "buttonActive");
 				HTMLArea._removeClass(target, "buttonHover");
 				HTMLArea._removeClass(target.parentNode, "buttonHover");
-				obj.cmd(editor, obj.name, obj);
+				obj.cmd(editor, obj.name);
 				HTMLArea._stopEvent(ev);
+				if (HTMLArea.is_opera) {
+					editor._iframe.focus();
+				}
+				if (!editor.config.btnList[obj.name][7]) {
+					editor.updateToolbar();
+				}
 				break;
 			case "change":
 				editor.focusEditor();
 				var value = target.options[target.selectedIndex].value;
 				switch (obj.name) {
 					case "FontName":
-					case "FontSize": 
-						editor.execCommand(obj.name, false, value);
-						break;
-					case "FormatBlock":
-						(HTMLArea.is_ie || HTMLArea.is_safari) && (value = "<" + value + ">");
+					case "FontSize":
 						editor.execCommand(obj.name, false, value);
 						break;
 					default:
 						var dropdown = editor.config.customSelects[obj.name];
-						if (typeof(dropdown) !== "undefined") dropdown.action(editor, obj.name);
-							else HTMLArea._appendToLog("ERROR [HTMLArea::toolBarButtonHandler]: Combo box " + obj.name + " not registered.");
+						if (typeof(dropdown) !== "undefined") {
+							dropdown.action(editor, obj.name);
+							HTMLArea._stopEvent(ev);
+							if (HTMLArea.is_opera) {
+								editor._iframe.focus();
+							}
+							editor.updateToolbar();
+						} else {
+							HTMLArea._appendToLog("ERROR [HTMLArea::toolBarButtonHandler]: Combo box " + obj.name + " not registered.");
+						}
 				}
 		}
 	}
@@ -1174,8 +1176,8 @@ HTMLArea.prototype.stylesLoaded = function() {
 		HTMLArea._addEvent((this._iframe.contentWindow ? this._iframe.contentWindow : this._iframe.contentDocument), "unload", HTMLArea.removeEditorEvents);
 	}
 
-		// set cleanWordOnPaste and intercept paste, dragdrop and drop events for wordClean
-	if (this.config.cleanWordOnPaste) HTMLArea._addEvents((HTMLArea.is_ie ? doc.body : doc), ["paste","dragdrop","drop"], HTMLArea.cleanWordOnPaste, true);
+		// set enableWordClean and intercept paste, dragdrop and drop events for wordClean
+	if (this.config.enableWordClean) HTMLArea._addEvents((HTMLArea.is_ie ? doc.body : doc), ["paste","dragdrop","drop"], HTMLArea.wordClean, true);
 
 	window.setTimeout("HTMLArea.generatePlugins(" + this._editorNumber + ");", 100);
 };
@@ -1310,6 +1312,13 @@ HTMLArea.prototype.setMode = function(mode) {
 };
 
 /*
+ * Get editor mode
+ */
+HTMLArea.prototype.getMode = function() {
+	return this._editMode;
+};
+
+/*
  * Initialize iframe content when in full page mode
  */
 HTMLArea.prototype.setFullHTML = function(html) {
@@ -1411,11 +1420,6 @@ HTMLArea.loadStyle = function(style, plugin, url) {
 };
 
 /*
- * Load the editor skin
- */
-HTMLArea.loadStyle('','',_editor_CSS);
-
-/*
  * Get the url of some image
  */
 HTMLArea.prototype.imgURL = function(file, plugin) {
@@ -1513,7 +1517,7 @@ HTMLArea.wordCleanLater = function(editorNumber,doUpdateToolbar) {
 /*
  * Handler for paste, dragdrop and drop events
  */
-HTMLArea.cleanWordOnPaste = function(ev) {
+HTMLArea.wordClean = function(ev) {
 	if(!ev) var ev = window.event;
 	var target = (ev.target) ? ev.target : ev.srcElement;
 	var owner = (target.ownerDocument) ? target.ownerDocument : target;
@@ -1544,7 +1548,7 @@ HTMLArea.prototype.focusEditor = function() {
 				} else {
 					this._iframe.contentWindow.focus();
 				}
-			} catch(e) { };
+			} catch(e) { }
 			break;
 		case "textmode":
 			this._textArea.focus();
@@ -1640,7 +1644,7 @@ HTMLArea.prototype.updateToolbar = function(noStatus) {
 		ancestors = null, cls = new Array(),
 		txt, txtClass, i, inContext, match, matchAny, k, j, n, commandState;
 	if(!text) {
-		selection = this.hasSelectedText();
+		selection = !this._selectionEmpty(this._getSelection());
 		ancestors = this.getAllAncestors();
 		if(this.config.statusBar && !noStatus) {
 				// Unhook previous events handlers
@@ -1741,7 +1745,7 @@ HTMLArea.prototype.updateToolbar = function(noStatus) {
 							break;
 						}
 							// We rely on the fact that the variable in config has the same name as button name in the toolbar.
-						var options = this.config[cmd];
+						var options = this.config[cmd.toLowerCase()];
 						k = 0;
 						for (var j in options) {
 							if (options.hasOwnProperty(j)) {
@@ -1756,24 +1760,6 @@ HTMLArea.prototype.updateToolbar = function(noStatus) {
 						}
 						document.getElementById(btn.elementId).selectedIndex = 0;
 					} catch(e) {}
-					break;
-				case "FormatBlock":
-					if (!text) {
-						var blocks = [ ];
-						for (var j in this.config['FormatBlock']) {
-							if (this.config['FormatBlock'].hasOwnProperty(j)) {
-								blocks[blocks.length] = this.config['FormatBlock'][j];
-							}
-						}
-						var deepestAncestor = this._getFirstAncestor(this._getSelection(), blocks);
-						if(deepestAncestor) {
-							for(var x= 0; x < blocks.length; x++) {
-								if(blocks[x].toLowerCase() == deepestAncestor.tagName.toLowerCase()) document.getElementById(btn.elementId).selectedIndex = x;
-							}
-						} else {
-							document.getElementById(btn.elementId).selectedIndex = 0;
-						}
-					}
 					break;
 				case "TextIndicator":
 					if(!text) {
@@ -1803,16 +1789,14 @@ HTMLArea.prototype.updateToolbar = function(noStatus) {
 					}
 					break;
 				case "Paste":
-					if(!text) {
-						btn.state("enabled", doc.queryCommandEnabled('Paste'));
+					if (!text) {
+						try {
+							btn.state("enabled", doc.queryCommandEnabled('Paste'));
+						} catch(e) {
+							btn.state("enabled", false);
+						}
 					}
 					break;
-				case "JustifyLeft":
-				case "JustifyCenter":
-				case "JustifyRight":
-				case "JustifyFull":
-				case "Indent":
-				case "Outdent":
 				case "InsertOrderedList":
 				case "InsertUnorderedList":
 					commandState = false;
@@ -1869,32 +1853,6 @@ HTMLArea.getElementObject = function(el,tagName) {
 	return oEl;
 };
 
-/*
- * Make XHTML-compliant nested list
- */
-HTMLArea.prototype.makeNestedList = function(el) {
-	var previous, clone;
-	for (var i = el.firstChild; i; i = i.nextSibling) {
-		if (/^li$/i.test(i.tagName)) {
-			for (var j = i.firstChild; j; j = j.nextSibling) {
-				if (/^(ol|ul)$/i.test(j.tagName)) this.makeNestedList(j);
-			}
-		} else if (/^(ol|ul)$/i.test(i.tagName)) {
-			previous = i.previousSibling;
-			var clone = i.cloneNode(true);
-			if (!previous) {
-				previous = el.insertBefore(this._doc.createElement("li"),i);
-				previous.appendChild(clone);
-			} else {
-				previous.appendChild(clone);
-			}
-			HTMLArea.removeFromParent(i);
-			this.makeNestedList(el);
-			break;
-		}
-	}
-};
-
 /***************************************************
  *  SELECTIONS AND RANGES
  ***************************************************/
@@ -1918,6 +1876,37 @@ HTMLArea.prototype.getAllAncestors = function() {
 	}
 	a.push(this._doc.body);
 	return a;
+};
+
+/*
+ * Get the block elements containing the start and the end points of the selection
+ */
+HTMLArea.prototype.getEndBlocks = function(selection) {
+	var range = this._createRange(selection);
+	if (HTMLArea.is_gecko) {
+		var parentStart = range.startContainer;
+		var parentEnd = range.endContainer;
+	} else {
+		if (selection.type !== "Control" ) {
+			var rangeEnd = range.duplicate();
+			range.collapse(true);
+			var parentStart = range.parentElement();
+			rangeEnd.collapse(false);
+			var parentEnd = rangeEnd.parentElement();
+		} else {
+			var parentStart = range.item(0);
+			var parentEnd = parentStart;
+		}
+	}
+	while (parentStart && !HTMLArea.isBlockElement(parentStart)) {
+		parentStart = parentStart.parentNode;
+	}
+	while (parentEnd && !HTMLArea.isBlockElement(parentEnd)) {
+		parentEnd = parentEnd.parentNode;
+	}
+	return {	start	: parentStart,
+			end	: parentEnd
+	};
 };
 
 /*
@@ -2234,7 +2223,8 @@ HTMLArea.prototype.execCommand = function(cmdID, UI, param) {
 	switch (cmdID) {
 	    case "HtmlMode"	: this.setMode(); break;
 	    case "SplitBlock"	: this._doc.execCommand('FormatBlock',false,((HTMLArea.is_ie || HTMLArea.is_safari) ? "<div>" : "div")); break;
-	    case "HiliteColor"	: (HTMLArea.is_ie || HTMLArea.is_safari) && (cmdID = "BackColor");
+	    case "HiliteColor"	:
+		if (HTMLArea.is_ie || HTMLArea.is_safari) { cmdID = "BackColor"; }
 	    case "ForeColor"	:
 		var colorDialogFunctRef = HTMLArea.selectColorDialog(this, cmdID);
 		this._popupDialog("select_color.html", colorDialogFunctRef, HTMLArea._colorToRgb(this._doc.queryCommandValue(cmdID)), 200, 182);
@@ -2254,7 +2244,7 @@ HTMLArea.prototype.execCommand = function(cmdID, UI, param) {
 	    case "Paste"	:
 		try {
 			this._doc.execCommand(cmdID, false, null);
-			if (cmdID == "Paste" && this.config.cleanWordOnPaste) HTMLArea._wordClean(this, this._doc.body);
+			if (cmdID == "Paste" && this.config.enableWordClean) HTMLArea._wordClean(this, this._doc.body);
 		} catch (e) {
 			if (HTMLArea.is_gecko && !HTMLArea.is_safari && !HTMLArea.is_opera) this._mozillaPasteException(cmdID, UI, param);
 		}
@@ -2267,16 +2257,6 @@ HTMLArea.prototype.execCommand = function(cmdID, UI, param) {
 		if(el) {
 			if(el.style.direction == dir) el.style.direction = "";
 				else el.style.direction = dir;
-		}
-		break;
-	    case "Indent"	:
-	    	var el = this.getParentElement();
-		while (el && (!HTMLArea.isBlockElement(el) || /^li$/i.test(el.nodeName))) el = el.parentNode;
-	    	try { this._doc.execCommand(cmdID, UI, param); }
-			catch(e) { if (this.config.debug) alert(e + "\n\nby execCommand(" + cmdID + ");"); }
-		if (/^(ol|ul)$/i.test(el.nodeName)) {
-			this.makeNestedList(el);
-			this.selectNodeContents(el);
 		}
 		break;
 	    case "FontSize"	:
@@ -2338,7 +2318,6 @@ HTMLArea._editorEvent = function(ev) {
 					}
 				}
 			}
-			onUpdateToolbar();
 		}
 		if(ev.ctrlKey) {
 			if(!ev.altKey) {
@@ -2348,19 +2327,6 @@ HTMLArea._editorEvent = function(ev) {
 				var cmd = null;
 				var value = null;
 				switch (key) {
-						// headings
-					case '1':
-					case '2':
-					case '3':
-					case '4':
-					case '5':
-					case '6':
-						if (editor._toolbarObjects["FormatBlock"]) { 
-							cmd = "FormatBlock";
-							value = "h" + key;
-							if(HTMLArea.is_ie || HTMLArea.is_safari) value = "<" + value + ">";
-						}
-						break;
 					case ' ':
 						editor.insertHTML("&nbsp;");
 						editor.updateToolbar();
@@ -2377,19 +2343,18 @@ HTMLArea._editorEvent = function(ev) {
 								case "Paste":
 									if (HTMLArea.is_ie || HTMLArea.is_safari) {
 										cmd = editor.config.hotKeyList[key].cmd;
-									} else if (editor.config.cleanWordOnPaste) {
+									} else if (editor.config.enableWordClean) {
 										window.setTimeout("HTMLArea.wordCleanLater(" + owner._editorNo + ", false);", 50);
 									}
 									break;
 								default:
 									if (editor._toolbarObjects[editor.config.hotKeyList[key].cmd]) {
 										cmd = editor.config.hotKeyList[key].cmd;
-										if(cmd == "FormatBlock") value = (HTMLArea.is_ie || HTMLArea.is_safari) ? "<p>" : "p";
 									}
 							}
 						}
 				}
-				if(cmd && !editor.config.hotKeyList[key].action) {
+				if(cmd && !(editor.config.hotKeyList[key] && editor.config.hotKeyList[key].action)) {
 					editor.execCommand(cmd, false, value);
 					HTMLArea._stopEvent(ev);
 					return false;
@@ -2453,10 +2418,12 @@ HTMLArea._editorEvent = function(ev) {
 					editor._timerToolbar = window.setTimeout("HTMLArea.updateToolbar(" + editor._editorNumber + ");", 50);
 					break;
 				case 9: // KEY horizontal tab
-					if (HTMLArea.is_gecko) {
-						editor.execCommand( (ev.shiftKey ? "Outdent" : "Indent"), false, null);
-						HTMLArea._stopEvent(ev);
-						return false;
+					var newkey = (ev.shiftKey ? "SHIFT-" : "") + "TAB";
+					if (editor.config.hotKeyList[newkey] && editor.config.hotKeyList[newkey].action) {
+						if (!editor.config.hotKeyList[newkey].action(editor, newkey)) {
+							HTMLArea._stopEvent(ev);
+							return false;
+						}
 					}
 					break;
 				case 37: // LEFT arrow key
@@ -2665,6 +2632,14 @@ HTMLArea._removeClass = function(el, removeClassName) {
  */
 HTMLArea._addClass = function(el, addClassName) {
 	HTMLArea._removeClass(el, addClassName);
+	if (el.className && HTMLArea.classesXOR) {
+		var classNames = el.className.trim().split(" ");
+		for (var i = classNames.length; --i >= 0;) {
+			if (HTMLArea.classesXOR[addClassName] && HTMLArea.classesXOR[addClassName].test(classNames[i])) {
+				HTMLArea._removeClass(el, classNames[i]);
+			}
+		}
+	}
 	if (el.className) el.className += " " + addClassName;
 		else el.className = addClassName;
 };
@@ -2680,10 +2655,9 @@ HTMLArea._hasClass = function(el, className) {
 	}
 	return false;
 };
-
-HTMLArea.RE_blockTags = /^(body|p|h1|h2|h3|h4|h5|h6|ul|ol|pre|dl|dt|dd|div|noscript|blockquote|form|hr|table|caption|fieldset|address|td|tr|th|li|tbody|thead|tfoot|iframe|object)$/;
+HTMLArea.RE_blockTags = /^(body|p|h1|h2|h3|h4|h5|h6|ul|ol|pre|dl|dt|dd|div|noscript|blockquote|form|hr|table|caption|fieldset|address|td|tr|th|li|tbody|thead|tfoot|iframe)$/;
 HTMLArea.isBlockElement = function(el) { return el && el.nodeType == 1 && HTMLArea.RE_blockTags.test(el.nodeName.toLowerCase()); };
-HTMLArea.RE_closingTags = /^(p|span|a|li|ol|ul|dl|dt|td|th|tr|tbody|thead|tfoot|caption|colgroup|table|div|em|i|strong|b|code|cite|blockquote|q|dfn|abbr|acronym|font|center|object|embed|tt|style|script|title|head|clickenlarge)$/;
+HTMLArea.RE_closingTags = /^(p|blockquote|a|li|ol|ul|dl|dt|td|th|tr|tbody|thead|tfoot|caption|colgroup|table|div|b|bdo|big|cite|code|del|dfn|em|i|ins|kbd|label|q|samp|small|span|strike|strong|sub|sup|tt|u|var|abbr|acronym|font|center|object|embed|style|script|title|head|clickenlarge)$/;
 HTMLArea.RE_noClosingTag = /^(img|br|hr|col|input|area|base|link|meta|param)$/;
 HTMLArea.needsClosingTag = function(el) { return el && el.nodeType == 1 && !HTMLArea.RE_noClosingTag.test(el.tagName.toLowerCase()); };
 
@@ -2702,7 +2676,7 @@ HTMLArea.htmlDecode = function(str) {
 HTMLArea.htmlEncode = function(str) {
 	if (typeof(str) != 'string') str = str.toString(); // we don't need regexp for that, but.. so be it for now.
 		// Let's not do it twice
-	str = HTMLArea.htmlDecode(str);
+	//str = HTMLArea.htmlDecode(str);
 	str = str.replace(/&/g, "&amp;");
 	str = str.replace(/</g, "&lt;").replace(/>/g, "&gt;");
 	str = str.replace(/\xA0/g, "&nbsp;"); // Decimal 160, non-breaking-space
@@ -2736,7 +2710,10 @@ HTMLArea.getHTMLWrapper = function(root, outputRoot, editor) {
 	   case 9:	// DOCUMENT_NODE
 		var closed, i, config = editor.config;
 		var root_tag = (root.nodeType == 1) ? root.tagName.toLowerCase() : '';
-		if (root_tag == 'br' && config.removeTrailingBR && !root.nextSibling && HTMLArea.isBlockElement(root.parentNode) && (!root.previousSibling || root.previousSibling.nodeName.toLowerCase() != 'br')) break;
+		if (root_tag == "br" && config.removeTrailingBR && !root.nextSibling && HTMLArea.isBlockElement(root.parentNode) && (!root.previousSibling || root.previousSibling.nodeName.toLowerCase() != "br")) {
+			if (!root.previousSibling && root.parentNode && root.parentNode.nodeName.toLowerCase() == "p" && root.parentNode.className) html += "&nbsp;";
+			break;
+		}
 		if (config.htmlRemoveTagsAndContents && config.htmlRemoveTagsAndContents.test(root_tag)) break;
 		var custom_tag = (config.customTags && config.customTags.test(root_tag));
 		var empty_root = (root_tag == "clickenlarge" && !(root.firstChild && root.firstChild.nodeName.toLowerCase() == "img"));
@@ -3115,60 +3092,37 @@ HTMLArea.initEditor = function(editorNumber) {
 			HTMLArea.initTimer[editorNumber] = window.setTimeout( "HTMLArea.initEditor(" + editorNumber + ");", 150);
 		} else {
 			var RTE = RTEarea[editorNumber];
+			
+				// Get the configuration properties
 			var config = new HTMLArea.Config();
-
-				// Get the toolbar config
-			config.toolbar = RTE["toolbar"];
-
-				// create an editor for the textarea
-			RTE["editor"] = new HTMLArea(RTE["id"], config);
-			var editor = RTE["editor"];
-
+			for (var property in RTE) {
+				if (RTE.hasOwnProperty(property)) {
+					config[property] = RTE[property] ? RTE[property] : false;
+				}
+			}
+				// Create an editor for the textarea
+			var editor = new HTMLArea(RTE.id, config);
+			RTE.editor = editor;
+			
 				// Save the editornumber in the object
 			editor._typo3EditerNumber = editorNumber;
 			editor._editorNumber = editorNumber;
-			config = editor.config;
-
-			config.buttons = RTE["buttons"];
-			config.hideTableOperationsInToolbar = RTE["hideTableOperationsInToolbar"] ? RTE["hideTableOperationsInToolbar"] : false;
-			config.disableLayoutFieldsetInTableOperations = RTE["disableLayoutFieldsetInTableOperations"] ? RTE["disableLayoutFieldsetInTableOperations"] : false;
-			config.disableAlignmentFieldsetInTableOperations = RTE["disableAlignmentFieldsetInTableOperations"] ? RTE["disableAlignmentFieldsetInTableOperations"] : false;
-			config.disableSpacingFieldsetInTableOperations = RTE["disableSpacingFieldsetInTableOperations"] ? RTE["disableSpacingFieldsetInTableOperations"] : false;
-			config.disableBordersFieldsetInTableOperations = RTE["disableBordersFieldsetInTableOperations"] ? RTE["disableBordersFieldsetInTableOperations"] : false;
-			config.disableColorFieldsetInTableOperations = RTE["disableColorFieldsetInTableOperations"] ? RTE["disableColorFieldsetInTableOperations"] : false;
-			config.disablePCexamples = RTE["disablePCexamples"] ? RTE["disablePCexamples"] : false;
-			if(RTE["defaultPageStyle"]) config.defaultPageStyle = RTE["defaultPageStyle"];
-			if(RTE["pageStyle"]) config.pageStyle = RTE["pageStyle"];
-			if(RTE["fontname"]) config.FontName = RTE["fontname"];
-			if(RTE["fontsize"]) config.FontSize = RTE["fontsize"];
-			if(RTE["colors"]) config.colors = RTE["colors"];
-			if(RTE["disableColorPicker"]) config.disableColorPicker = RTE["disableColorPicker"];
-			if(RTE["paragraphs"]) config.FormatBlock = RTE["paragraphs"];
-			config.width = "auto";
-			config.height = "auto";
-			config.sizeIncludesToolbar = true;
-			config.fullPage = false;
-			config.useHTTPS = RTE["useHTTPS"] ? RTE["useHTTPS"] : false;
-			config.disableEnterParagraphs = RTE["disableEnterParagraphs"] ? RTE["disableEnterParagraphs"] : false;
-			config.removeTrailingBR = RTE["removeTrailingBR"] ? RTE["removeTrailingBR"] : false;
-			config.keepButtonGroupTogether = (RTE["keepButtonGroupTogether"] && HTMLArea.is_gecko && !HTMLArea.is_wamcom && !HTMLArea.is_opera) ? RTE["keepButtonGroupTogether"] : false;
-			config.useCSS = RTE["useCSS"] ? RTE["useCSS"] : false;
-			config.enableMozillaExtension = RTE["enableMozillaExtension"] ? RTE["enableMozillaExtension"] : false;
-			config.statusBar = RTE["statusBar"] ? RTE["statusBar"] : false;
-			config.cleanWordOnPaste = RTE["enableWordClean"] ? true : false;
-			config.htmlRemoveTags = RTE["htmlRemoveTags"] ? RTE["htmlRemoveTags"] : null;
-			config.htmlRemoveTagsAndContents = RTE["htmlRemoveTagsAndContents"] ? RTE["htmlRemoveTagsAndContents"] : null;
-			config.htmlRemoveComments = RTE["htmlRemoveComments"] ? true : false;
-			config.classesUrl = RTE["classesUrl"] ? RTE["classesUrl"] : null;
 			
-			for (var plugin in RTE.plugin) {
-				if (RTE.plugin.hasOwnProperty(plugin) && RTE.plugin[plugin]) {
+				// Override these settings if they were ever modified
+			editor.config.width = "auto";
+			editor.config.height = "auto";
+			editor.config.sizeIncludesToolbar = true;
+			editor.config.fullPage = false;
+			
+				// Register the plugins included in the configuration
+			for (var plugin in editor.config.plugin) {
+				if (editor.config.plugin.hasOwnProperty(plugin) && editor.config.plugin[plugin]) {
 					editor.registerPlugin(plugin);
 				}
 			}
 			
 			editor.onGenerate = HTMLArea.onGenerateHandler(editorNumber);
-
+			
 			editor.generate();
 			return false;
 		} 
@@ -3295,15 +3249,21 @@ HTMLArea.Base.implement = function(_interface) {
 };
 
 /**
- * HTMLArea. plugin constructor
+ * HTMLArea.plugin class
  *
- * @param	object		editor: instance of RTE
- * @param	string		pluginName: name of the plugin
+ * Every plugin should be a subclass of this class
  *
- * @return	boolean		true if the plugin was configured
  */
-HTMLArea.plugin = HTMLArea.Base.extend({
-
+HTMLArea.Plugin = HTMLArea.Base.extend({
+	
+	/**
+	 * HTMLArea.plugin constructor
+	 *
+	 * @param	object		editor: instance of RTE
+	 * @param	string		pluginName: name of the plugin
+	 *
+	 * @return	boolean		true if the plugin was configured
+	 */
 	constructor : function(editor, pluginName) {
 		this.editor = editor;
 		this.editorNumber = editor._editorNumber;
@@ -3403,6 +3363,7 @@ HTMLArea.plugin = HTMLArea.Base.extend({
 	 *					hide		: hide in menu and show only in context menu?
 	 *					selection	: will be disabled if there is no selection?
 	 *					hotkey		: hotkey character
+	 *					dialog		: if true, the button opens a dialog
 	 *
 	 * @return	boolean		true if the button was successfully registered
 	 */
@@ -3412,10 +3373,17 @@ HTMLArea.plugin = HTMLArea.Base.extend({
 				var hotKeyAction = buttonConfiguration.action;
 				var actionFunctionReference = this.makeFunctionReference(buttonConfiguration.action);
 				buttonConfiguration.action = actionFunctionReference;
+				if (!buttonConfiguration.textMode) {
+					buttonConfiguration.textMode = false;
+				}
+				if (!buttonConfiguration.dialog) {
+					buttonConfiguration.dialog = false;
+				}
 				if (this.editorConfiguration.registerButton(buttonConfiguration)) {
-					if (buttonConfiguration.hotKey) {
+					var hotKey = buttonConfiguration.hotKey ? buttonConfiguration.hotKey : ((this.editorConfiguration.buttons[buttonConfiguration.id.toLowerCase()] && this.editorConfiguration.buttons[buttonConfiguration.id.toLowerCase()].hotKey) ? this.editorConfiguration.buttons[buttonConfiguration.id.toLowerCase()].hotKey : null);
+					if (hotKey) {
 						var hotKeyConfiguration = {
-							id	: buttonConfiguration.hotKey,
+							id	: hotKey,
 							cmd	: buttonConfiguration.id,
 							action	: hotKeyAction
 						};
@@ -3448,6 +3416,9 @@ HTMLArea.plugin = HTMLArea.Base.extend({
 			if (typeof((dropDownConfiguration.action) === "string") && (typeof(this[dropDownConfiguration.action]) === "function")) {
 				var actionFunctionReference = this.makeFunctionReference(dropDownConfiguration.action);
 				dropDownConfiguration.action = actionFunctionReference;
+				if (!dropDownConfiguration.textMode) {
+					dropDownConfiguration.textMode = false;
+				}
 				if (typeof(dropDownConfiguration.refresh) === "string") {
 					if (typeof(this[dropDownConfiguration.refresh]) === "function") {
 						var refreshFunctionReference = this.makeFunctionReference(dropDownConfiguration.refresh);
@@ -3516,6 +3487,21 @@ HTMLArea.plugin = HTMLArea.Base.extend({
 	},
 	
 	/**
+	 * Returns the hotkey configuration
+	 *
+	 * @param	string		key: the hotkey
+	 *
+	 * @return	object		the hotkey configuration object
+	 */
+	getHotKeyConfiguration : function(key) {
+		if (typeof(this.editorConfiguration.hotKeyList[key]) !== "undefined") {
+			return this.editorConfiguration.hotKeyList[key];
+		} else {
+			return null;
+		}
+	},
+	
+	/**
 	 * The toolbar refresh handler of the plugin
 	 * This function may be defined by the plugin subclass.
 	 * If defined, the function will be invoked whenever the toolbar state is refreshed.
@@ -3527,7 +3513,7 @@ HTMLArea.plugin = HTMLArea.Base.extend({
 	/**
 	 * The keyPress event handler
 	 * This function may be defined by the plugin subclass.
-	 * If defined, the function will be invoked whenever a key is pressed.
+	 * If defined, the function is invoked whenever a key is pressed.
 	 *
 	 * @param	event		keyEvent: the event that was triggered when a key was pressed
 	 *
@@ -3538,7 +3524,7 @@ HTMLArea.plugin = HTMLArea.Base.extend({
 	/**
 	 * The hotKey event handler
 	 * This function may be defined by the plugin subclass.
-	 * If defined, the function will be invoked whenever a hot key is pressed.
+	 * If defined, the function is invoked whenever a hot key is pressed.
 	 *
 	 * @param	event		key: the hot key that was pressed
 	 *
@@ -3548,19 +3534,23 @@ HTMLArea.plugin = HTMLArea.Base.extend({
 	
 	/**
 	 * The onMode event handler
-	 * This function may be defined by the plugin subclass.
-	 * If defined, the function will invoked whenever the editor changes mode.
+	 * This function may be redefined by the plugin subclass.
+	 * The function is invoked whenever the editor changes mode.
 	 *
 	 * @param	string		mode: "wysiwyg" or "textmode"
 	 *
 	 * @return	boolean
 	 */
-	onMode : null,
+	onMode : function(mode) {
+		if (this.dialog && mode === "textmode" && !this.editorConfiguration.btnList[this.dialog.buttonId].textMode) {
+			this.dialog.close();
+		}
+	},
 	
 	/**
 	 * The onGenerate event handler
 	 * This function may be defined by the plugin subclass.
-	 * If defined, the function will invoked when the editor is initialized
+	 * If defined, the function is invoked when the editor is initialized
 	 *
 	 * @return	boolean
 	 */
@@ -3571,12 +3561,12 @@ HTMLArea.plugin = HTMLArea.Base.extend({
 	 *
 	 * @param	string		functionName: the name of the plugin function to be invoked
 	 *
-	 * @return	function	function definition invoking the specified funcion of the plugin
+	 * @return	function	function definition invoking the specified function of the plugin
 	 */
 	makeFunctionReference : function (functionName) {
 		var self = this;
-		return (function(editor, buttonId) {
-			self[functionName](editor, buttonId);});
+		return (function(arg1, arg2) {
+			self[functionName](arg1, arg2);});
 	},
 	
 	/**
@@ -3597,19 +3587,83 @@ HTMLArea.plugin = HTMLArea.Base.extend({
 	 *
 	 * @return	boolean		true on success
 	 */
-	getJavascriptFile : function (url) {
+	getJavascriptFile : function (url, noEval) {
 		var script = HTMLArea._getScript(0, false, url);
 		if (script) {
-			try {
-				eval(script);
-				return true;
-			} catch(e) {
-				this.appendToLog("getJavascriptFile", "Error evaluating contents of Javascript file: " + url);
-				return false;
+			if (noEval) {
+				return script;
+			} else {
+				try {
+					eval(script);
+					return true;
+				} catch(e) {
+					this.appendToLog("getJavascriptFile", "Error evaluating contents of Javascript file: " + url);
+					return false;
+				}
 			}
 		} else {
 			return false;
 		}
+	},
+	
+	/**
+	 * Open a dialog window or bring focus to it if is already opened
+	 *
+	 * @param	string		buttonId: buttonId requesting the opening of the dialog
+	 * @param	string		url: name, without extension, of the html file to be loaded into the dialog window
+	 * @param	string		action: name of the plugin function to be invoked when the dialog ends
+	 * @param	object		arguments: object of variable type to be passed to the dialog
+	 * @param	object		dimensions: object giving the width and height of the dialog window
+	 * @param	string		showScrollbars: specifies by "yes" or "no" whether or not the dialog window should have scrollbars
+	 *
+	 * @return	object		the dialog window
+	 */
+	openDialog : function (buttonId, url, action, arguments, dimensions, showScrollbars) {
+		if (this.dialog && this.dialog.hasOpenedWindow() && this.dialog.buttonId === buttonId) {
+			this.dialog.focus();
+			return this.dialog;
+		} else {
+			var actionFunctionReference = action;
+			if (typeof(action) === "string") {
+				if (typeof(this[action]) === "function") {
+					var actionFunctionReference = this.makeFunctionReference(action);
+				} else {
+					this.appendToLog("openDialog", "Function " + action + " was not defined when opening dialog for " + buttonId);
+				}
+			}
+			return new HTMLArea.Dialog(
+					this,
+					buttonId,
+					url,
+					actionFunctionReference,
+					arguments,
+					{width: (dimensions.width?dimensions.width:100), height: (dimensions.height?dimensions.height:100)},
+					(showScrollbars?showScrollbars:"no")
+				);
+		}
+	},
+	
+	/**
+	 * Make url from the name of a popup of the plugin
+	 *
+	 * @param	string		popupName: name, without extension, of the html file to be loaded into the dialog window
+	 *
+	 * @return	string		the url
+	 */
+	makeUrlFromPopupName : function(popupName) {
+		return this.editor.popupURL("plugin://" + this.name + "/" + popupName);
+	},
+	
+	/**
+	 * Make url from module path
+	 *
+	 * @param	string		modulePath: module path
+	 * @param	string		parameters: additional parameters
+	 *
+	 * @return	string		the url
+	 */
+	makeUrlFromModulePath : function(modulePath, parameters) {
+		return this.editor.popupURL(modulePath + "?" + RTEarea[this.editorNumber]["RTEtsConfigParams"] + parameters);
 	},
 	
 	/**
@@ -3622,6 +3676,330 @@ HTMLArea.plugin = HTMLArea.Base.extend({
 	 */
 	appendToLog : function (functionName, text) {
 		HTMLArea._appendToLog("[" + this.name + "::" + functionName + "]: " + text);
+	}
+});
+
+/**
+ * HTMLArea.Dialog class
+ *
+ * Every dialog should be an instance of this class
+ *
+ */
+HTMLArea.Dialog = HTMLArea.Base.extend({
+	
+	/**
+	 * HTMLArea.Dialog constructor
+	 *
+	 * @param	object		plugin: reference to the invoking plugin
+	 * @param	string		buttonId: buttonId triggering the opening of the dialog
+	 * @param	string		url: url of the html document to load into the dialog window
+	 * @param	function	action: function to be executed when the the dialog ends
+	 * @param	object		arguments: object of variable type to be passed to the dialog
+	 * @param	object		dimensions: object giving the width and height of the dialog window
+	 * @param	string		showScrollbars: specifies by "yes" or "no" whether or not the dialog window should have scrollbars
+	 *
+	 * @return	boolean		true if the dialog window was opened
+	 */
+	constructor : function (plugin, buttonId, url, action, arguments, dimensions, showScrollbars) {
+		this.window = window.window ? window.window : window.self;
+		this.plugin = plugin;
+		this.buttonId = buttonId;
+		this.action = action;
+		if (typeof(arguments) !== "undefined") {
+			this.arguments = arguments;
+		}
+		this.plugin.dialog = this;
+		
+		if (HTMLArea.Dialog[this.plugin.name] && HTMLArea.Dialog[this.plugin.name].hasOpenedWindow() && HTMLArea.Dialog[this.plugin.name].plugin != this.plugin) {
+			HTMLArea.Dialog[this.plugin.name].close();
+		}
+		HTMLArea.Dialog[this.plugin.name] = this;
+		
+		this.dialogWindow = window.open(url, this.plugin.name + "Dialog", "toolbar=no,location=no,directories=no,menubar=no,resizable=yes,top=100,left=100,dependent=yes,dialog=yes,chrome=no,width=" + dimensions.width + ",height=" + dimensions.height + ",scrollbars=" + showScrollbars);
+		if (!this.dialogWindow) {
+			this.plugin.appendToLog("openDialog", "Dialog window could not be opened with url " + url);
+			return false;
+		}
+		if (!this.dialogWindow.opener) {
+			this.dialogWindow.opener = this.window;
+		}
+		return true;
+	},
+	
+	hasOpenedWindow : function () {
+		return this.dialogWindow && !this.dialogWindow.closed;
+	},
+	
+	/**
+	 * Initialize the dialog window: load the stylesheets, localize labels, resize if required, etc.
+	 * This function MUST be invoked from the dialog window in the onLoad event handler
+	 *
+	 * @param	boolean		noResize: if true the window in not resized, but may be centered
+	 *
+	 * @return	void
+	 */
+	initialize : function (noLocalize, noResize) {
+		this.dialogWindow.HTMLArea = HTMLArea;
+		this.dialogWindow.dialog = this;
+			// Get stylesheets for the dialog window
+		this.loadStyle();
+			// Localize the labels of the popup window
+		if (!noLocalize) this.localize();
+			// Resize the dialog window to its contents
+		if (!noResize) this.resize(noResize);
+			// Capture unload and escape events
+		this.captureEvents();
+	},
+	
+	/**
+	 * Load the stylesheets in the dialog window
+	 *
+	 * @return	void
+	 */
+	loadStyle : function () {
+		var head = this.dialogWindow.document.getElementsByTagName("head")[0];
+		var link = this.dialogWindow.document.createElement("link");
+		link.rel = "stylesheet";
+		link.type = "text/css";
+		link.href = HTMLArea.editorCSS;
+		head.appendChild(link);
+	},
+	
+	/**
+	 * Localize the labels contained in the dialog window
+	 *
+	 * @return	void
+	 */
+	localize : function () {
+		var label;
+		var types = ["input", "label", "option", "select", "legend", "span", "td", "button", "div", "h1", "h2", "a"];
+		for (var type = 0; type < types.length; ++type) {
+			var elements = this.dialogWindow.document.getElementsByTagName(types[type]);
+			for (var i = elements.length; --i >= 0;) {
+				var element = elements[i];
+				if (element.firstChild && element.firstChild.data) {
+					label = this.plugin.localize(element.firstChild.data);
+					if (label) element.firstChild.data = label;
+				}
+				if (element.title) {
+					element.title = this.plugin.localize(element.title);
+				}
+					// resetting the selected option for Mozilla
+				if (types[type] == "option" && element.selected ) {
+					element.selected = false;
+					element.selected = true;
+				}
+			}
+		}
+		this.dialogWindow.document.title = this.plugin.localize(this.dialogWindow.document.title);
+	},
+	
+	/**
+	 * Resize the dialog window to its contents
+	 *
+	 * @param	boolean		noResize: if true the window in not resized, but may be centered
+	 *
+	 * @return	void
+	 */
+	resize : function (noResize) {
+			// resize if allowed
+		var dialogWindow = this.dialogWindow;
+		var content = dialogWindow.document.getElementById("content");
+		if ((HTMLArea.is_gecko && !HTMLArea.is_opera && !HTMLArea.is_safari) || (HTMLArea.is_opera && content)) {
+			var self = this;
+			setTimeout( function() {
+				try {
+					if (!noResize) {
+						dialogWindow.sizeToContent();
+					}
+				} catch(e) {
+					self.resizeToContent(content);
+				}
+					// center on parent if allowed
+				var x = dialogWindow.opener.screenX + (dialogWindow.opener.outerWidth - dialogWindow.outerWidth) / 2;
+				var y = dialogWindow.opener.screenY + (dialogWindow.opener.outerHeight - dialogWindow.outerHeight) / 2;
+				try {
+					dialogWindow.moveTo(x, y);
+				} catch(e) { }
+			}, 25);
+		} else {
+			var innerX, innerY;
+			if (dialogWindow.innerHeight) {
+					// all except Explorer
+				innerX = dialogWindow.innerWidth;
+				innerY = dialogWindow.innerHeight;
+			} else if (dialogWindow.document.documentElement && dialogWindow.document.documentElement.clientHeight) {
+					// Explorer 6 Strict Mode
+				innerX = dialogWindow.document.documentElement.clientWidth;
+				innerY = dialogWindow.document.documentElement.clientHeight;
+			} else if (document.body) {
+					// other Explorers
+				innerX = dialogWindow.document.body.clientWidth;
+				innerY = dialogWindow.document.body.clientHeight;
+			}
+			
+			var pageX, pageY;
+			var test1 = dialogWindow.document.body.scrollHeight;
+			var test2 = dialogWindow.document.body.offsetHeight
+			if (test1 > test2) {
+					// all but Explorer Mac
+				pageX = dialogWindow.document.body.scrollWidth;
+				pageY = dialogWindow.document.body.scrollHeight;
+			} else {
+					// Explorer Mac;
+					//would also work in Explorer 6 Strict, Mozilla and Safari
+				pageX = dialogWindow.document.body.offsetWidth;
+				pageY = dialogWindow.document.body.offsetHeight;
+			}
+			dialogWindow.resizeBy(pageX - innerX, pageY - innerY);
+			
+				// center on parent if allowed
+			var W = dialogWindow.document.body.offsetWidth;
+			var H = dialogWindow.document.body.offsetHeight;
+			var x = (screen.availWidth - W) / 2;
+			var y = (screen.availHeight - H) / 2;
+			dialogWindow.moveTo(x, y);
+		}
+	},
+	
+	/**
+	 * Resize the Opera dialog window to its contents, based on size of content div
+	 *
+	 * @param	object		content: reference to the div section containing the contents of the dialog window
+	 *
+	 * @return	void
+	 */
+	resizeToContent : function(content) {
+		var dialogWindow = this.dialogWindow;
+		var doc = dialogWindow.document;
+		var docElement = doc.documentElement;
+		var body = doc.body;
+		var width = 0, height = 0;
+	
+		var contentWidth = content.offsetWidth;
+		var contentHeight = content.offsetHeight;
+		dialogWindow.resizeTo( contentWidth + 200, contentHeight + 200 );
+		
+		if (dialogWindow.innerWidth) {
+			width = dialogWindow.innerWidth;
+			height = dialogWindow.innerHeight;
+		} else if (docElement && docElement.clientWidth) {
+			width = docElement.clientWidth;
+			height = docElement.clientHeight;
+		} else if (body && body.clientWidth) {
+			width = body.clientWidth;
+			height = body.clientHeight;
+		}
+		dialogWindow.resizeTo( contentWidth + ( ( contentWidth + 200 ) - width ), contentHeight + ( (contentHeight + 200 ) - (height - 16) ) );
+	},
+	
+	/**
+	 * Perform the action function when the dialog end
+	 *
+	 * @return	void
+	 */
+	performAction : function (val) {
+		if (val && this.action) {
+			this.action(val);
+		}
+	},
+	
+	/**
+	 * Bring the focus on the dialog window
+	 *
+	 * @return	void
+	 */
+	focus : function () {
+		this.dialogWindow.focus();
+	},
+	
+	/**
+	 * Close the dialog window
+	 *
+	 * @return	void
+	 */
+	close : function () {
+		if (this.hasOpenedWindow()) {
+			if (this.dialogWindow.opener && !this.dialogWindow.opener.closed) {
+				this.releaseEvents();
+			}
+			this.releaseEvents(this.dialogWindow);
+			HTMLArea.Dialog[this.plugin.name] = null;
+			this.dialogWindow.close();
+			this.dialogWindow.dialog = null;
+			this.plugin.editor.updateToolbar();
+		}
+		return false;
+	},
+	
+	/**
+	 * Make function reference in order to avoid memory leakage in IE
+	 *
+	 * @param	string		functionName: the name of the dialog function to be invoked
+	 *
+	 * @return	function	function definition invoking the specified function of the dialog
+	 */
+	makeFunctionReference : function (functionName) {
+		var self = this;
+		return (function(arg1, arg2) {
+			self[functionName](arg1, arg2);});
+	},
+	
+	/**
+	 * Escape event handler
+	 *
+	 * @param	object		ev: the event
+	 *
+	 * @return	boolean		false if the event was handled
+	 */
+	closeOnEscape : function(ev) {
+		if (!ev) var ev = window.event;
+		if (ev.keyCode == 27) {
+			if (HTMLArea.is_gecko) {
+				var parentWindow = ev.currentTarget.defaultView;
+			} else {
+				var parentWindow = ev.srcElement.parentNode.parentNode.parentWindow;
+			}
+			if (parentWindow && parentWindow.dialog) {
+				parentWindow.dialog.close();
+				return false;
+			}
+		}
+		return true;
+	},
+	
+	/**
+	 *Capture unload and escape events
+	 *
+	 * @return	void
+	 */	
+	captureEvents : function () {
+		this.unloadFunctionReference = this.makeFunctionReference("close");
+		HTMLArea._addEvent(this.dialogWindow.opener, "unload", this.unloadFunctionReference);
+		if (HTMLArea.is_gecko && this.plugin.editor._iframe.contentWindow) {
+			HTMLArea._addEvent(this.plugin.editor._iframe.contentWindow, "unload", this.unloadFunctionReference);
+		}
+		HTMLArea._addEvent(this.dialogWindow, "unload", this.unloadFunctionReference);
+		this.escapeFunctionReference = this.makeFunctionReference("closeOnEscape");
+		HTMLArea._addEvent(this.dialogWindow.document, "keypress", this.escapeFunctionReference);
+	 },
+	
+	/**
+	 * Release all event handlers that were set when the dialog window was opened
+	 *
+	 * @return	void
+	 */
+	releaseEvents : function() {
+		var opener = this.dialogWindow.opener;
+		if (opener && !opener.closed) {
+				// release the capturing of events
+			HTMLArea._removeEvent(opener, "unload", this.unloadFunctionReference);
+			HTMLArea._removeEvent(this.dialogWindow, "unload", this.unloadFunctionReference);
+			if (HTMLArea.is_gecko && this.plugin.editor._iframe.contentWindow) {
+				HTMLArea._removeEvent(this.plugin.editor._iframe.contentWindow, "unload", this.unloadFunctionReference);
+			}
+			HTMLArea._removeEvent(this.dialogWindow.document, "keypress", this.escapeFunctionReference);
+		}
 	}
 });
 

@@ -34,13 +34,14 @@ require_once(t3lib_extMgm::extPath('rtehtmlarea').'class.tx_rtehtmlareaapi.php')
 
 class tx_rtehtmlarea_defaultinline extends tx_rtehtmlareaapi {
 
-	protected $extensionKey = 'rtehtmlarea';		// The key of the extension that is extending htmlArea RTE
+	protected $extensionKey = 'rtehtmlarea';	// The key of the extension that is extending htmlArea RTE
+	protected $pluginName = 'DefaultInline';	// The name of the plugin registered by the extension
 	protected $relativePathToLocallangFile = 'extensions/DefaultInline/locallang.xml';	// Path to this main locallang file of the extension relative to the extension dir.
-	protected $relativePathToSkin = 'skin/htmlarea.css';		// Path to the skin (css) file relative to the extension dir.
-	protected $htmlAreaRTE;						// Reference to the invoking object
-	protected $thisConfig;						// Reference to RTE PageTSConfig
-	protected $toolbar;						// Reference to RTE toolbar array
-	protected $LOCAL_LANG; 						// Frontend language array
+	protected $relativePathToSkin = 'extensions/DefaultInline/skin/htmlarea.css';		// Path to the skin (css) file relative to the extension dir.
+	protected $htmlAreaRTE;				// Reference to the invoking object
+	protected $thisConfig;				// Reference to RTE PageTSConfig
+	protected $toolbar;				// Reference to RTE toolbar array
+	protected $LOCAL_LANG; 				// Frontend language array
 	
 	protected $pluginButtons = 'bold,italic,strikethrough,subscript,superscript,underline';
 	protected $convertToolbarForHtmlAreaArray = array (

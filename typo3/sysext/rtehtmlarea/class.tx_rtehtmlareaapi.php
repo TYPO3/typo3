@@ -35,16 +35,18 @@ require_once(PATH_t3lib.'class.t3lib_div.php');
 abstract class tx_rtehtmlareaapi {
 	
 	protected $extensionKey;				// The key of the extension that is extending htmlArea RTE
-	protected $relativePathToLocallangFile;			// Path to this main locallang file of the extension relative to the extension dir.
-	protected $relativePathToSkin;				// Path to the skin (css) file relative to the extension dir.
+	protected $pluginName;					// The name of the plugin registered by the extension
+	protected $relativePathToLocallangFile;			// Path to the localization file for this script, relative to the extension dir
+	protected $relativePathToSkin;				// Path to the skin (css) file that should be added to the RTE skin when the registered plugin is enabled, relative to the extension dir
 	protected $htmlAreaRTE;					// Reference to the invoking object
+	protected $rteExtensionKey;				// The extension key of the RTE
 	protected $thisConfig;					// Reference to RTE PageTSConfig
 	protected $toolbar;					// Refrence to RTE toolbar array
 	protected $LOCAL_LANG; 					// Frontend language array
-	protected $pluginButtons = '';				// The comma-seperated list of button names that the extension id adding to the htmlArea RTE tollbar
-	protected $pluginLabels = '';				// The comma-seperated list of label names that the extension id adding to the htmlArea RTE tollbar
+	protected $pluginButtons = '';				// The comma-separated list of button names that the registered plugin is adding to the htmlArea RTE toolbar
+	protected $pluginLabels = '';				// The comma-separated list of label names that the registered plugin is adding to the htmlArea RTE toolbar
 	protected $convertToolbarForHtmlAreaArray = array();	// The name-converting array, converting the button names used in the RTE PageTSConfing to the button id's used by the JS scripts
-	protected $requiresClassesConfiguration = false;	// True if the extension requires the PageTSConfig Classes configuration
+	protected $requiresClassesConfiguration = false;	// True if the registered plugin requires the PageTSConfig Classes configuration
 	
 	/**
 	 * Returns true if the plugin is available and correctly initialized
@@ -57,19 +59,21 @@ abstract class tx_rtehtmlareaapi {
 		global $TYPO3_CONF_VARS, $LANG;
 		
 		$this->htmlAreaRTE =& $parentObject;
+		$this->rteExtensionKey =& $this->htmlAreaRTE->ID;
 		$this->thisConfig =& $this->htmlAreaRTE->thisConfig;
 		$this->toolbar =& $this->htmlAreaRTE->toolbar;
 		
 			// Check if the plugin should be disabled in frontend
-		if ($this->htmlAreaRTE->is_FE() && is_array($TYPO3_CONF_VARS['EXTCONF'][$this->extensionKey]) && $TYPO3_CONF_VARS['EXTCONF'][$this->extensionKey]['disableInFE']) {
+		if ($this->htmlAreaRTE->is_FE() && $TYPO3_CONF_VARS['EXTCONF'][$this->rteExtensionKey]['plugins'][$this->pluginName]['disableInFE']) {
 			return false;
 		}
-		
 			// Localization array must be initialized here
-		if ($this->htmlAreaRTE->is_FE()) {
-			$this->LOCAL_LANG = t3lib_div::readLLfile('EXT:' . $this->extensionKey . '/' . $this->relativePathToLocallangFile, $this->htmlAreaRTE->language);
-		} else {
-			$LANG->includeLLFile('EXT:' . $this->extensionKey . '/' . $this->relativePathToLocallangFile);
+		if ($this->relativePathToLocallangFile) {
+			if ($this->htmlAreaRTE->is_FE()) {
+				$this->LOCAL_LANG = t3lib_div::readLLfile('EXT:' . $this->extensionKey . '/' . $this->relativePathToLocallangFile, $this->htmlAreaRTE->language);
+			} else {
+				$LANG->includeLLFile('EXT:' . $this->extensionKey . '/' . $this->relativePathToLocallangFile);
+			}
 		}
 		return true;
 	}
@@ -92,7 +96,7 @@ abstract class tx_rtehtmlareaapi {
 	 */
 	public function getPathToSkin() {
 		global $TYPO3_CONF_VARS;
-		if (is_array($TYPO3_CONF_VARS['EXTCONF'][$this->extensionKey]) && $TYPO3_CONF_VARS['EXTCONF'][$this->extensionKey]['addIconsToSkin']) {
+		if ($TYPO3_CONF_VARS['EXTCONF'][$this->rteExtensionKey]['plugins'][$this->pluginName]['addIconsToSkin']) {
 			return $this->relativePathToSkin;
 		} else {
 			return '';

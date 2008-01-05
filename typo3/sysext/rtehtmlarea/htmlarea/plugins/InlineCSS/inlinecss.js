@@ -29,7 +29,7 @@
  *
  * TYPO3 SVN ID: $Id$
  */
-InlineCSS = HTMLArea.plugin.extend({
+InlineCSS = HTMLArea.Plugin.extend({
 		
 	constructor : function(editor, pluginName) {
 		this.base(editor, pluginName);
@@ -134,9 +134,7 @@ InlineCSS = HTMLArea.plugin.extend({
 					}
 				}
 			}
-			editor.updateToolbar();
 		} else {
-			editor.updateToolbar();
 			alert(HTMLArea.I18N.InlineCSS['You have to select some text']);
 		}
 	},

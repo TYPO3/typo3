@@ -3,7 +3,7 @@
 *
 *  (c) 2002-2004, interactivetools.com, inc.
 *  (c) 2003-2004 dynarch.com
-*  (c) 2004, 2005, 2006 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
+*  (c) 2004-2007 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -136,13 +136,14 @@ HTMLArea.prototype.selectNode = function(node) {
 /*
  * Select ONLY the contents inside the given node
  */
-HTMLArea.prototype.selectNodeContents = function(node,pos) {
+HTMLArea.prototype.selectNodeContents = function(node, endPoint) {
 	this.focusEditor();
 	this.forceRedraw();
-	var collapsed = (typeof(pos) != "undefined");
 	var range = this._doc.body.createTextRange();
 	range.moveToElementText(node);
-	(collapsed) && range.collapse(pos);
+	if (typeof(endPoint) !== "undefined") {
+		range.collapse(endPoint);
+	}
 	range.select();
 };
 
@@ -212,11 +213,36 @@ HTMLArea.prototype._activeElement = function(sel) {
 /*
  * Determine if the current selection is empty or not.
  */
-HTMLArea.prototype._selectionEmpty = function(sel) {
-	if (!sel) return true;
-	return this._createRange(sel).htmlText == '';
+HTMLArea.prototype._selectionEmpty = function(selection) {
+	if (!selection || selection.type.toLowerCase() === "none") return true;
+	if (selection.type.toLowerCase() === "text") {
+		return !this._createRange(selection).text;
+	}
+	return !this._createRange(selection).htmlText;
 };
 
+/*
+ * Get a bookmark
+ */
+HTMLArea.prototype.getBookmark = function (range) {
+	return range.getBookmark();
+};
+
+/*
+ * Move the range to the bookmark
+ */
+HTMLArea.prototype.moveToBookmark = function (bookmark) {
+	var range = this._createRange();
+	range.moveToBookmark(bookmark);
+	return range;
+};
+
+/*
+ * Select range
+ */
+HTMLArea.prototype.selectRange = function (range) {
+	range.select();
+};
 /***************************************************
  *  DOM TREE MANIPULATION
  ***************************************************/

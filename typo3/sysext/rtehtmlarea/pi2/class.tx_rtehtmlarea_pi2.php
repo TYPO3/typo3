@@ -227,7 +227,7 @@ class tx_rtehtmlarea_pi2 extends tx_rtehtmlarea_base {
 		 * =======================================
 		 */
 			// Preloading the pageStyle
-		$filename = trim($this->thisConfig['contentCSS']) ? trim($this->thisConfig['contentCSS']) : 'EXT:' . $this->ID . '/htmlarea/plugins/DynamicCSS/dynamiccss.css';
+		$filename = trim($this->thisConfig['contentCSS']) ? trim($this->thisConfig['contentCSS']) : 'EXT:' . $this->ID . '/res/contentcss/default.css';
 		$additionalCode_loadCSS = '
 		<link rel="alternate stylesheet" type="text/css" href="' . $this->getFullFileName($filename) . '" title="HTMLArea RTE Content CSS" />';
 
@@ -255,6 +255,10 @@ class tx_rtehtmlarea_pi2 extends tx_rtehtmlarea_base {
 		$additionalCode_loadCSS .= '
 		<link rel="alternate stylesheet" type="text/css" href="' . $this->editedContentCSS . '" />';
 		
+			// Main stylesheet
+		$additionalCode_loadCSS .= '
+		<link rel="stylesheet" type="text/css" href="' . $this->editorCSS . '" />';
+		
 			// Additional icons from registered plugins
 		foreach ($this->pluginEnabledCumulativeArray[$this->TCEform->RTEcounter] as $pluginId) {
 			if (is_object($this->registeredPlugins[$pluginId])) {
@@ -265,10 +269,6 @@ class tx_rtehtmlarea_pi2 extends tx_rtehtmlarea_base {
 				}
 			}
 		}
-		
-			// Main stylesheet
-		$additionalCode_loadCSS .= '
-		<link rel="stylesheet" type="text/css" href="' . $this->editorCSS . '" />';
 		
 			// Loading CSS, JavaScript files and code
 		$TSFE->additionalHeaderData['htmlArea'] = $additionalCode_loadCSS;

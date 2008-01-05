@@ -99,6 +99,9 @@ HTMLArea.prototype.emptySelection = function(selection) {
 	} else {
 		selection.removeAllRanges();
 	}
+	if (HTMLArea.is_opera) {
+		this._iframe.focus();
+	}
 };
 
 /*
@@ -145,28 +148,89 @@ HTMLArea.prototype._createRange = function(sel) {
 /*
  * Select a node AND the contents inside the node
  */
-HTMLArea.prototype.selectNode = function(node,pos) {
+HTMLArea.prototype.selectNode = function(node, endPoint) {
 	this.focusEditor();
-	var sel = this._getSelection();
+	var selection = this._getSelection();
 	var range = this._doc.createRange();
-	if (node.nodeType == 1 && node.tagName.toLowerCase() == "body") range.selectNodeContents(node);
-		else range.selectNode(node);
-	if ((typeof(pos) != "undefined")) range.collapse(pos);
-	this.emptySelection(sel);
-	this.addRangeToSelection(sel, range);
+	if (node.nodeType == 1 && node.nodeName.toLowerCase() == "body") {
+		range.selectNodeContents(node);
+	} else {
+		range.selectNode(node);
+	}
+	if (typeof(endPoint) != "undefined") {
+		range.collapse(endPoint);
+	}
+	this.emptySelection(selection);
+	this.addRangeToSelection(selection, range);
 };
 
 /*
  * Select ONLY the contents inside the given node
  */
-HTMLArea.prototype.selectNodeContents = function(node,pos) {
+HTMLArea.prototype.selectNodeContents = function(node, endPoint) {
 	this.focusEditor();
-	var sel = this._getSelection();
+	var selection = this._getSelection();
 	var range = this._doc.createRange();
 	range.selectNodeContents(node);
-	if ((typeof(pos) != "undefined")) range.collapse(pos);
-	this.emptySelection(sel);
-	this.addRangeToSelection(sel, range);
+	if (typeof(endPoint) !== "undefined") {
+		range.collapse(endPoint);
+	}
+	this.emptySelection(selection);
+	this.addRangeToSelection(selection, range);
+};
+
+HTMLArea.prototype.rangeIntersectsNode = function(range, node) {
+	var nodeRange = this._doc.createRange();
+	try {
+		nodeRange.selectNode(node);
+	} catch (e) {
+		nodeRange.selectNodeContents(node);
+	}
+	return (range.compareBoundaryPoints(range.END_TO_START, nodeRange) == -1 && range.compareBoundaryPoints(range.START_TO_END, nodeRange) == 1);
+};
+
+/*
+ * Get the selection type
+ */
+HTMLArea.prototype.getSelectionType = function(selection) {
+		// By default set the type to "Text".
+	var type = "Text";
+	if (!selection) {
+		var selection = this._getSelection();
+	}
+			// Check if the actual selection is a Control
+	if (selection && selection.rangeCount == 1) {
+		var range = selection.getRangeAt(0) ;
+		if (range.startContainer == range.endContainer
+				&& (range.endOffset - range.startOffset) == 1
+				&& range.startContainer.nodeType == 1
+				&& /^(img|hr|li|table|tr|td|embed|object|ol|ul)$/i.test(range.startContainer.childNodes[range.startOffset].nodeName)) {
+			type = "Control";
+		}
+	}
+	return type;
+};
+
+/*
+ * Retrieves the selected element (if any), just in the case that a single element (object like and image or a table) is selected.
+ */
+HTMLArea.prototype.getSelectedElement = function(selection) {
+	var selectedElement = null;
+	if (!selection) {
+		var selection = this._getSelection();
+	}
+	if (selection && selection.anchorNode && selection.anchorNode.nodeType == 1) {
+		if (this.getSelectionType(selection) == "Control") {
+			selectedElement = selection.anchorNode.childNodes[selection.anchorOffset];
+				// For Safari, the anchor node for a control selection is the control itself
+			if (!selectedElement) {
+				selectedElement = selection.anchorNode;
+			} else if (selectedElement.nodeType != 1) {
+				return null;
+			}
+		}
+	}
+	return selectedElement;
 };
 
 /*
@@ -195,6 +259,9 @@ HTMLArea.prototype.getSelectedHTMLContents = function() {
 HTMLArea.prototype.getParentElement = function(selection, range) {
 	if (!selection) {
 		var selection = this._getSelection();
+	}
+	if (this.getSelectionType(selection) === "Control") {
+		return this.getSelectedElement(selection);
 	}
 	if (typeof(range) === "undefined") {
 		var range = this._createRange(selection);
@@ -227,6 +294,99 @@ HTMLArea.prototype._activeElement = function(sel) {
 HTMLArea.prototype._selectionEmpty = function(sel) {
 	if (!sel) return true;
 	return sel.isCollapsed;
+};
+
+/*
+ * Get a bookmark
+ * Adapted from FCKeditor
+ * This is an "intrusive" way to create a bookmark. It includes <span> tags
+ * in the range boundaries. The advantage of it is that it is possible to
+ * handle DOM mutations when moving back to the bookmark.
+ */
+HTMLArea.prototype.getBookmark = function (range) {
+		// For performance, includeNodes=true if intended to SelectBookmark.
+		// Create the bookmark info (random IDs).
+	var bookmark = {
+		startId : (new Date()).valueOf() + Math.floor(Math.random()*1000) + 'S',
+		endId   : (new Date()).valueOf() + Math.floor(Math.random()*1000) + 'E'
+	};
+	
+	var startSpan;
+	var endSpan;
+	var rangeClone = range.cloneRange();
+	
+		// For collapsed ranges, add just the start marker.
+	if (!range.collapsed ) {
+		endSpan = this._doc.createElement("span");
+		endSpan.style.display = "none";
+		endSpan.id = bookmark.endId;
+		endSpan.setAttribute("HTMLArea_bookmark", true);
+		endSpan.innerHTML = "&nbsp;";
+		rangeClone.collapse(false);
+		rangeClone.insertNode(endSpan);
+	}
+	
+	startSpan = this._doc.createElement("span");
+	startSpan.style.display = "none";
+	startSpan.id = bookmark.startId;
+	startSpan.setAttribute("HTMLArea_bookmark", true);
+	startSpan.innerHTML = "&nbsp;";
+	var rangeClone = range.cloneRange();
+	rangeClone.collapse(true);
+	rangeClone.insertNode(startSpan);
+	bookmark.startNode = startSpan;
+	bookmark.endNode = endSpan;
+		// Update the range position.
+	if (endSpan) {
+		range.setEndBefore(endSpan);
+		range.setStartAfter(startSpan);
+	} else {
+		range.setEndAfter(startSpan);
+		range.collapse(false);
+	}
+	return bookmark;
+};
+
+/*
+ * Get the end point of the bookmark
+ * Adapted from FCKeditor
+ */
+HTMLArea.prototype.getBookmarkNode = function(bookmark, endPoint) {
+	if (endPoint) {
+		return bookmark.startNode || this._doc.getElementById(bookmark.startId);
+	} else {
+		return bookmark.endNode || this._doc.getElementById(bookmark.endId);
+	}
+};
+
+/*
+ * Move the range to the bookmark
+ * Adapted from FCKeditor
+ */
+HTMLArea.prototype.moveToBookmark = function (bookmark) {
+	var startSpan  = this.getBookmarkNode(bookmark, true);
+	var endSpan    = this.getBookmarkNode(bookmark, false);
+	
+	var range = this._createRange();
+	range.setStartBefore(startSpan);
+	HTMLArea.removeFromParent(startSpan);
+		// If collapsed, the end span will not be available.
+	if (endSpan) {
+		range.setEndBefore(endSpan);
+		HTMLArea.removeFromParent(endSpan);
+	} else {
+		range.collapse(true);
+	}
+	return range;
+};
+
+/*
+ * Select range
+ */
+HTMLArea.prototype.selectRange = function (range) {
+	var selection = this._getSelection();
+	this.emptySelection(selection);
+	this.addRangeToSelection(selection, range);
 };
 
 /***************************************************
@@ -346,7 +506,7 @@ HTMLArea.statusBarHandler = function (ev) {
 	var target = (ev.target) ? ev.target : ev.srcElement;
 	var editor = target.editor;
 	target.blur();
-	editor.selectNode(target.el);
+	editor.selectNodeContents(target.el);
 	editor._statusBarTree.selected = target.el;
 	editor.updateToolbar(true);
 	switch (ev.type) {
@@ -450,7 +610,6 @@ HTMLArea.prototype._checkInsertP = function() {
 		block	= null,
 		a	= null,
 		doc	= this._doc;
-	
 	for (i = 0; i < p.length; ++i) {
 		if (HTMLArea.isBlockElement(p[i]) && !/^(html|body|table|tbody|thead|tr)$/i.test(p[i].nodeName)) {
 			block = p[i];
@@ -480,8 +639,8 @@ HTMLArea.prototype._checkInsertP = function() {
 				left = block.appendChild(left);
 			}
 			left.normalize();
-			range.setStartAfter(left);
 			range.setEndAfter(block.lastChild);
+			range.setStartAfter(left);
 				// Working around Safari issue: The following gives a range exception
 				// range.surroundContents(right = doc.createElement("p"));
 			right = doc.createElement("p");
@@ -495,7 +654,7 @@ HTMLArea.prototype._checkInsertP = function() {
 			var first = block.firstChild;
 			if (first) block.removeChild(first);
 			right = doc.createElement("p");
-			if (HTMLArea.is_opera) {
+			if (HTMLArea.is_safari || HTMLArea.is_opera) {
 				right.innerHTML = "<br />";
 			}
 			right = block.appendChild(right);
