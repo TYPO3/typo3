@@ -4,7 +4,7 @@
 *
 *  (c) 2004 Kasper Skaarhoj (kasper@typo3.com)
 *  (c) 2004 Philipp Borgmann <philipp.borgmann@gmx.de>
-*  (c) 2004-2007 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
+*  (c) 2004-2008 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -114,7 +114,6 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 		'lefttoright'		=> 'LeftToRight',
 		'righttoleft'		=> 'RightToLeft',
 		'showhelp'		=> 'ShowHelp',
-		'insertcharacter'	=> 'InsertCharacter',
 		'findreplace'		=> 'FindReplace',
 		'spellcheck'		=> 'SpellCheck',
 		'removeformat'		=> 'RemoveFormat',
@@ -191,7 +190,6 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 		'FindReplace'		=> 'findreplace',
 		'RemoveFormat'		=> 'removeformat',
 		'QuickTag'		=> 'inserttag',
-		'CharacterMap'		=> 'insertcharacter',
 		'TableOperations'	=> 'table, toggleborders, tableproperties, rowproperties, rowinsertabove, rowinsertunder, rowdelete, rowsplit,
 						columninsertbefore, columninsertafter, columndelete, columnsplit,
 						cellproperties, cellinsertbefore, cellinsertafter, celldelete, cellsplit, cellmerge',

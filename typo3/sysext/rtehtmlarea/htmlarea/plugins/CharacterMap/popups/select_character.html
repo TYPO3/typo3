@@ -4,7 +4,7 @@
 *
 *  (c) 2004 Bernhard Pfeifer novocaine@gmx.net
 *  (c) 2004 systemconcept.de. Authored by Holger Hees based on HTMLArea XTD 1.5 (http://mosforge.net/projects/htmlarea3xtd/).
-*  (c) 2005, 2006 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
+*  (c) 2005-2007 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -39,41 +39,38 @@
 <head>
 	<title>Insert special character</title>
 	<meta http-equiv="Content-Style-Type" content="text/css" />
-	<script type="text/javascript" src="../../../popups/popup.js"></script>
 	<script type="text/javascript">
 		/*<![CDATA[*/
 		<!--
-		
-		HTMLArea = window.opener.HTMLArea;
-		_editor_CSS = window.opener._editor_CSS;
-		__dlg_loadStyle(_editor_CSS);
-		CharacterMap = window.opener.CharacterMap;
-
+		var dialog = window.opener.HTMLArea.Dialog["CharacterMap"];
 		function Init() {
-			__dlg_translate(CharacterMap.I18N);
-			__dlg_init();
-			document.body.onkeypress = __dlg_close_on_esc;
+			dialog.initialize();
 			var character = '';
-			View( null, character );
-		};
-
-		var oldView = null;
-		function View(td, character) {
-			if (oldView) oldView.className = oldView.className.replace(/\s+character-hilite/, '');
-			document.getElementById( 'characterPreview' ).value = character;
-			document.getElementById( 'showCharacter' ).value = character;
-			if (td)
-			(oldView = td).className += " character-hilite";
-		};
-
-		function Set(string) {
-			var character = string;
-			if(window.opener && window.opener.Dialog) window.opener.Dialog._return(character);
+			View(null, character);
 			return false;
 		};
-
+		
+		var oldView = null;
+		function View(td, character) {
+			if (oldView) {
+				oldView.className = oldView.className.replace(/\s+character-hilite/, '');
+			}
+			document.getElementById("characterPreview").value = character;
+			document.getElementById("showCharacter").value = character;
+			if (td) {
+				oldView = td;
+				oldView.className += " character-hilite";
+			}
+		};
+		
+		function Set(string) {
+			var character = string;
+			dialog.performAction(character);
+			return false;
+		};
+		
 		function onCancel() {
-			__dlg_close(null);
+			dialog.close();
 			return false;
 		};
 		// -->
@@ -87,6 +84,7 @@
 	</style>
 </head>
 <body class="popupwin" onload="Init();">
+<div id="content">
 <div class="title">Insert special character</div>
 <form method="get" style="margin:2px; padding:2px" onSubmit="Set(document.getElementById('showCharacter').value); return false;">
 <table cellspacing="0" cellpadding="4" style="border-style: none; width: 100%;">
@@ -239,5 +237,6 @@
 		<button type="button" name="cancel" onclick="return onCancel();">Close</button>
 	</div>
 </form>
+</div>
 </body>
 </html>

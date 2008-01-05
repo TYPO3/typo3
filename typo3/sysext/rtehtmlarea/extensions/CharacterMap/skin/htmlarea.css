@@ -1,0 +1,4 @@
+/* Selectors for the InsertCharacter plugin of htmlArea RTE */
+/* TYPO3 SVN ID: $Id$ */
+.htmlarea .toolbar .InsertCharacter {background-image:url("images/insertCharacter.gif");}
+

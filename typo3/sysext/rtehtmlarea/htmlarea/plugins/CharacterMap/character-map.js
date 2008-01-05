@@ -3,7 +3,7 @@
 *
 *  (c) 2004 Bernhard Pfeifer novocaine@gmx.net
 *  (c) 2004 systemconcept.de. Authored by Holger Hees based on HTMLArea XTD 1.5 (http://mosforge.net/projects/htmlarea3xtd/).
-*  (c) 2005, 2006 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
+*  (c) 2005-2007 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -33,52 +33,73 @@
  *
  * TYPO3 CVS ID: $Id$
  */
-
-CharacterMap = function(editor) {
-	this.editor = editor;
-	var cfg = this.editor.config;
-	var actionHandlerFunctRef = CharacterMap.actionHandler(this);
-	cfg.registerButton({
-		id		: "InsertCharacter",
-		tooltip		: CharacterMap_langArray["CharacterMapTooltip"],
-		image		: editor.imgURL("ed_charmap.gif", "CharacterMap"),
-		textMode	: false,
-		action		: actionHandlerFunctRef
-	});
-};
-
-CharacterMap.I18N = CharacterMap_langArray;
-
-CharacterMap._pluginInfo = {
-	name		: "CharacterMap",
-	version		: "1.2",
-	developer	: "Holger Hees, Bernhard Pfeifer, Stanislas Rolland",
-	developer_url	: "http://www.fructifor.ca/",
-	c_owner		: "Holger Hees, Bernhard Pfeifer, Stanislas Rolland",
-	sponsor		: "System Concept GmbH, Bernhard Pfeifer, Fructifor Inc.",
-	sponsor_url	: "http://www.fructifor.ca/",
-	license		: "GPL"
-};
-
-CharacterMap.actionHandler = function(instance) {
-	return (function(editor) {
-		instance.buttonPress(editor);
-	});
-};
-
-CharacterMap.prototype.buttonPress = function(editor) {
-	var self = this;
-	var param = new Object();
-	param.editor = editor;
-	var insertCharHandlerFunctRef = CharacterMap.insertCharHandler(this);
-	editor._popupDialog( "plugin://CharacterMap/select_character", insertCharHandlerFunctRef, param, 485, 330);
-};
-
-CharacterMap.insertCharHandler = function(instance) {
-	return (function(entity) {
+CharacterMap = HTMLArea.Plugin.extend({
+		
+	constructor : function(editor, pluginName) {
+		this.base(editor, pluginName);
+	},
+	
+	/*
+	 * This function gets called by the class constructor
+	 */
+	configurePlugin : function(editor) {
+		
+		/*
+		 * Registering plugin "About" information
+		 */
+		var pluginInformation = {
+			version		: "1.3",
+			developer	: "Holger Hees, Bernhard Pfeifer, Stanislas Rolland",
+			developerUrl	: "http://www.fructifor.ca/",
+			copyrightOwner	: "Holger Hees, Bernhard Pfeifer, Stanislas Rolland",
+			sponsor		: "System Concept GmbH, Bernhard Pfeifer, Fructifor Inc.",
+			sponsorUrl	: "http://www.fructifor.ca/",
+			license		: "GPL"
+		};
+		this.registerPluginInformation(pluginInformation);
+		
+		/*
+		 * Registering the button
+		 */
+		var buttonId = "InsertCharacter";
+		var buttonConfiguration = {
+			id		: buttonId,
+			tooltip		: this.localize(buttonId + "-Tooltip"),
+			action		: "onButtonPress",
+			dialog		: true
+		};
+		this.registerButton(buttonConfiguration);
+		
+		return true;
+	 },
+	 
+	/*
+	 * This function gets called when the button was pressed.
+	 *
+	 * @param	object		editor: the editor instance
+	 * @param	string		id: the button id or the key
+	 *
+	 * @return	boolean		false if action is completed
+	 */
+	onButtonPress : function(editor, id) {
+		this.dialog = this.openDialog("InsertCharacter", this.makeUrlFromPopupName("select_character"), "insertCharacter", null, {width:485, height:330});
+		return false;
+	},
+	
+	/*
+	 * Insert the selected entity
+	 *
+	 * @param	object		entity: the chosen entity
+	 *
+	 * @return	boolean		false
+	 */
+	insertCharacter : function(entity) {
 		if (typeof(entity) != "undefined") {
-			instance.editor.focusEditor();
-			instance.editor.insertHTML(entity);
+			this.editor.focusEditor();
+			this.editor.insertHTML(entity);
+			this.dialog.focus();
 		}
-	});
-};
+		return false;
+	}
+});
+

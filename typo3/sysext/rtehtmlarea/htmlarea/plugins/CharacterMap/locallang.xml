@@ -6,7 +6,7 @@
 	</meta>
 	<data type="array">
 		<languageKey index="default" type="array">
-			<label index="CharacterMapTooltip">Insert special character</label>
+			<label index="InsertCharacter-Tooltip">Insert special character</label>
 			<label index="Insert special character">Insert special character</label>
 			<label index="HTML value:">HTML value:</label>
 			<label index="Close">Close</label>
@@ -14,7 +14,6 @@
 	</data>
 	<orig_hash type="array">
 		<languageKey index="default" type="array">
-			<label index="CharacterMapTooltip" type="integer">211069571</label>
 			<label index="Insert special character" type="integer">211069571</label>
 			<label index="HTML value:" type="integer">111194696</label>
 			<label index="Close" type="integer">222113377</label>

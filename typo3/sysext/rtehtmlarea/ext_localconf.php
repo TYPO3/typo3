@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2005-2007 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
+*  (c) 2005-2008 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -59,6 +59,9 @@ $TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['plugins']['DynamicCSS'] = array();
 $TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['plugins']['DynamicCSS']['objectReference'] = 'EXT:'.$_EXTKEY.'/extensions/DynamicCSS/class.tx_rtehtmlarea_dynamiccss.php:&tx_rtehtmlarea_dynamiccss';
 $TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['plugins']['BlockStyle'] = array();
 $TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['plugins']['BlockStyle']['objectReference'] = 'EXT:'.$_EXTKEY.'/extensions/BlockStyle/class.tx_rtehtmlarea_blockstyle.php:&tx_rtehtmlarea_blockstyle';
+$TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['plugins']['CharacterMap'] = array();
+$TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['plugins']['CharacterMap']['objectReference'] = 'EXT:'.$_EXTKEY.'/extensions/CharacterMap/class.tx_rtehtmlarea_charactermap.php:&tx_rtehtmlarea_charactermap';
+$TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['plugins']['CharacterMap']['addIconsToSkin'] = 0;
 
 $_EXTCONF = unserialize($_EXTCONF);    // unserializing the configuration so we can use it here:
 

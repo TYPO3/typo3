@@ -8,6 +8,7 @@
 	* Added feature 3708 (partial): support for <blockquote>
 	* Fixed issue 5977: align="center" (right or left) not any more supported by W3C
 	* Fixed issue 6837: Strange layout for header N except the first one (Safari)
+	* Cleanup: Character Map plugin now using new plugin API
 
 2007-12-30  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
