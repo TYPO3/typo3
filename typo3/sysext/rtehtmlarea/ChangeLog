@@ -8,6 +8,7 @@
 	* Fixed issue 5952 (complete): Usability Issue with classes wrapped with <> in select lists
 	* Added feature 6034: Improvements of inlineCSS: adding classes to inline elements without additional span
 	* Fixed issue 6839: sub and sup are added via CSS instead of tags in Safari
+	* Fixed issue 7052: Permission problem of RTE images
 
 2008-01-05  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
