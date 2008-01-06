@@ -87,6 +87,9 @@
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
+
+require_once(PATH_t3lib.'class.t3lib_parsehtml.php');
+
 class t3lib_TCEforms_inline {
 
 	/**
@@ -923,7 +926,11 @@ class t3lib_TCEforms_inline {
 			);
 		}
 
-			// add the JavaScript data that would have been added at the bottom of a regular TCEforms calls
+			// Add data that would have been added at the top of a regular TCEforms call:
+		if ($headTags = $this->getHeadTags()) {
+			$jsonArray['headData'] = $headTags;
+		}
+			// Add the JavaScript data that would have been added at the bottom of a regular TCEforms call:
 		$jsonArray['scriptCall'][] = $this->fObj->JSbottom($this->fObj->formName, true);
 			// if script.aculo.us Sortable is used, update the Observer to know the the record
 		if ($config['appearance']['useSortable'])
@@ -1827,6 +1834,41 @@ class t3lib_TCEforms_inline {
 	function getLevelMargin() {
 		$margin = ($this->inlineStyles['margin-right']+1)*2;
 		return $margin;
+	}
+
+	/**
+	 * Parses the HTML tags that would have been inserted to the <head> of a HTML document and returns the found tags as multidimensional array.
+	 *
+	 * @return	array		The parsed tags with their attributes and innerHTML parts
+	 */
+	protected function getHeadTags() {
+		$headTags = array();
+		$headDataRaw = $this->fObj->JStop();
+
+		if ($headDataRaw) {
+				// Create instance of the HTML parser:
+			$parseObj = t3lib_div::makeInstance('t3lib_parsehtml');
+				// Removes script wraps:
+			$headDataRaw = str_replace(array('/*<![CDATA[*/', '/*]]>*/'), '', $headDataRaw);
+				// Removes leading spaces of a multiline string:
+			$headDataRaw = trim(preg_replace('/(^|\r|\n)( |\t)+/', '$1', $headDataRaw));
+				// Get script and link tags:
+			$tags = array_merge(
+				$parseObj->getAllParts($parseObj->splitTags('link', $headDataRaw)),
+				$parseObj->getAllParts($parseObj->splitIntoBlock('script', $headDataRaw))
+			);
+
+			foreach ($tags as $tagData) {
+				$tagAttributes = $parseObj->get_tag_attributes($parseObj->getFirstTag($tagData), true);
+				$headTags[] = array(
+					'name' => $parseObj->getFirstTagName($tagData),
+					'attributes' => $tagAttributes[0],
+					'innerHTML'	=> $parseObj->removeFirstAndLastTag($tagData),
+				);
+			}
+		}
+
+		return $headTags;
 	}
 }
 

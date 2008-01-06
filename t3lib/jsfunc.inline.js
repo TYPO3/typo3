@@ -33,6 +33,7 @@ var inline = {
 	prependFormFieldNames: 'data',
 	noTitleString: '[No title]',
 	lockedAjaxMethod: {},
+	sourcesLoaded: {},
 	data: {},
 
 	addToDataArray: function(object) {
@@ -149,10 +150,81 @@ var inline = {
 		inline.lockedAjaxMethod[method] = false;
 	},
 
-	processAjaxResponse: function(method, xhr) {
-		inline.unlockAjaxMethod(method);
-		var json = eval('('+xhr.responseText+')');
-		for (var i in json.scriptCall) eval(json.scriptCall[i]);
+	processAjaxResponse: function(method, xhr, json) {
+		var addTag=null, restart=false, processedCount=0, element=null, errorCatch=[], sourcesWaiting=[];
+		if (!json && xhr) {
+			json = eval('('+xhr.responseText+')');
+		}
+			// If there are elements the should be added to the <HEAD> tag (e.g. for RTEhtmlarea):
+		if (json.headData) {
+			var head = inline.getDomHeadTag();
+			var headTags = inline.getDomHeadChildren(head);
+			$A(json.headData).each(function(addTag) {
+				if (!restart) {
+					if (addTag && (addTag.innerHTML || !inline.searchInDomTags(headTags, addTag))) {
+						if (addTag.name=='SCRIPT' && addTag.innerHTML && processedCount) {
+							restart = true;
+							return false;
+						} else {
+							if (addTag.name=='SCRIPT' && addTag.innerHTML) {
+								try {
+									eval(addTag.innerHTML);
+								} catch(e) {
+									errorCatch.push(e);
+								}
+							} else {
+								element = inline.createNewDomElement(addTag);
+									// Set onload handler for external JS scripts:
+								if (addTag.name=='SCRIPT' && element.src) {
+									element.onload = inline.sourceLoadedHandler(element);
+									sourcesWaiting.push(element.src);
+								}
+								head.appendChild(element);
+								processedCount++;
+							}
+							json.headData.shift();
+						}
+					}
+				}
+			});
+		}
+		if (restart || processedCount) {
+			window.setTimeout(function() { inline.reprocessAjaxResponse(method, json, sourcesWaiting); }, 40);
+		} else {
+			if (method) {
+				inline.unlockAjaxMethod(method);
+			}
+			if (json.scriptCall && json.scriptCall.length) {
+				$A(json.scriptCall).each(function(value) { eval(value); });
+			}
+		}
+	},
+
+		// Check if dynamically added scripts are loaded and restart inline.processAjaxResponse():
+	reprocessAjaxResponse: function (method, json, sourcesWaiting) {
+		var sourcesLoaded = true;
+		if (sourcesWaiting && sourcesWaiting.length) {
+			$A(sourcesWaiting).each(function(source) {
+				if (!inline.sourcesLoaded[source]) {
+					sourcesLoaded = false;
+					return false;
+				}
+			});
+		}
+		if (sourcesLoaded) {
+			$A(sourcesWaiting).each(function(source) {
+				delete(inline.sourcesLoaded[source]);
+			});
+			window.setTimeout(function() { inline.processAjaxResponse(method, null, json); }, 80);
+		} else {
+			window.setTimeout(function() { inline.reprocessAjaxResponse(method, json, sourcesWaiting); }, 40);
+		}
+	},
+
+	sourceLoadedHandler: function(element) {
+		if (element && element.src) {
+			inline.sourcesLoaded[element.src] = true;
+		}
 	},
 
 	showAjaxFailure: function(method, xhr) {
@@ -271,6 +343,57 @@ var inline = {
 			else if (method == 'after')
 				new Insertion.After(insertObject, htmlData);
 		}
+	},
+
+		// Get script and link elements from head tag:
+	getDomHeadChildren: function(head) {
+		var headTags=[];
+		$$('head script', 'head link').each(function(tag) { headTags.push(tag); });
+		return headTags;
+	},
+
+	getDomHeadTag: function() {
+		if (document && document.head) {
+			return document.head;
+		} else {
+			var head = $$('head');
+			if (head.length) {
+				return head[0];
+			}
+		}
+		return false;
+	},
+
+		// Search whether elements exist in a given haystack:
+	searchInDomTags: function(haystack, needle) {
+		var result = false;
+		$A(haystack).each(function(element) {
+			if (element.nodeName.toUpperCase()==needle.name) {
+				var attributesCount = $H(needle.attributes).keys().length;
+				var attributesFound = 0;
+				$H(needle.attributes).each(function(attribute) {
+					if (element.getAttribute && element.getAttribute(attribute.key)==attribute.value) {
+						attributesFound++;
+					}
+				});
+				if (attributesFound==attributesCount) {
+					result = true;
+					return true;
+				}
+			}
+		});
+		return result;
+	},
+
+		// Create a new DOM element:
+	createNewDomElement: function(addTag) {
+		var element = document.createElement(addTag.name);
+		if (addTag.attributes) {
+			$H(addTag.attributes).each(function(attribute) {
+				element[attribute.key] = attribute.value;
+			});
+		}
+		return element;
 	},
 
 	changeSorting: function(objectId, direction) {
