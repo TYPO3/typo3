@@ -1,3 +1,7 @@
+2007-01-06  Oliver Hader  <oh@inpublica.de>
+
+	* Post-cleanup of bug #5994: IRRE - RTEhtmlarea is not show in child records if parent has no RTE
+
 2007-12-26  Oliver Hader  <oh@inpublica.de>
 
 	* Fixed bug #6651: IRRE - Button for creating new records disappeared on nested child records if a parent record reached the maxitems value

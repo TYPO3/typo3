@@ -535,9 +535,8 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 
 				// Preloading the pageStyle
 			$filename = trim($this->thisConfig['contentCSS']) ? trim($this->thisConfig['contentCSS']) : 'EXT:' . $this->ID . '/htmlarea/plugins/DynamicCSS/dynamiccss.css';
-			if ($pObj->RTEcounter == 1) {
-				$pObj->additionalCode_pre['loadCSS'] = "\n\t\t".'<link rel="alternate stylesheet" type="text/css" href="' . $this->getFullFileName($filename) . '" />';
-			}
+			$pObj->additionalCode_pre['loadCSS'] = '
+		<link rel="alternate stylesheet" type="text/css" href="' . $this->getFullFileName($filename) . '" />';
 
 				// Loading the editor skin
 			$skinFilename = trim($this->thisConfig['skin']) ? trim($this->thisConfig['skin']) : 'EXT:' . $this->ID . '/htmlarea/skins/default/htmlarea.css';
@@ -559,15 +558,17 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			}
 			$this->editorCSS = $skinFilename;
 			$this->editedContentCSS = $skinDir . '/htmlarea-edited-content.css';
+			$pObj->additionalCode_pre['loadCSS'] .= '
+		<link rel="alternate stylesheet" type="text/css" href="' . $this->editedContentCSS . '" />';
 
-			if ($pObj->RTEcounter == 1) {
-				$pObj->additionalCode_pre['loadCSS'] .= "\n\t\t".'<link rel="alternate stylesheet" type="text/css" href="' . $this->editedContentCSS . '" />';
-				$pObj->additionalCode_pre['loadCSS'] .= "\n\t\t".'<link rel="stylesheet" type="text/css" href="' . $this->editorCSS . '" />';
-					// Loading JavaScript files and code
+			$pObj->additionalCode_pre['loadCSS'] .= '
+		<link rel="stylesheet" type="text/css" href="' . $this->editorCSS . '" />';
+
+				// Loading JavaScript files and code
+			if ($this->TCEform->RTEcounter == 1) {
 				$pObj->additionalCode_pre['loadJSfiles'] = $this->loadJSfiles($pObj->RTEcounter);
 				$pObj->additionalJS_pre['loadJScode'] = $this->loadJScode($pObj->RTEcounter);
 			}
-
 
 			/* =======================================
 			 * DRAW THE EDITOR
