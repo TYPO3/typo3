@@ -144,7 +144,7 @@ class tx_rtehtmlarea_pi2 extends tx_rtehtmlarea_base {
 			// htmlArea plugins list
 		$this->pluginEnabledArray = t3lib_div::trimExplode(',', $this->pluginList, 1);
 		$this->enableRegisteredPlugins();
-		$hidePlugins = array('TYPO3Browsers', 'UserElements', 'Acronym', 'TYPO3HtmlParser');
+		$hidePlugins = array('TYPO3Browsers', 'UserElements', 'TYPO3HtmlParser');
 		if ($this->client['BROWSER'] == 'opera') {
 			$hidePlugins[] = 'ContextMenu';
 			$this->thisConfig['hideTableOperationsInToolbar'] = 0;
@@ -281,11 +281,12 @@ class tx_rtehtmlarea_pi2 extends tx_rtehtmlarea_base {
 		 */
 			// Transform value:
 		$value = $this->transformContent('rte',$PA['itemFormElValue'],$table,$field,$row,$specConf,$thisConfig,$RTErelPath,$thePidValue);
-		if ($this->client['BROWSER'] == 'gecko') {
-				// change <strong> to <b>
-			$value = preg_replace('/<(\/?)strong/i', "<$1b", $value);
-				// change <em> to <i>
-			$value = preg_replace('/<(\/?)em([^b>]*>)/i', "<$1i$2", $value);
+		
+			// Further content transformation by registered plugins
+		foreach ($this->registeredPlugins as $pluginId => $plugin) {
+			if ($this->isPluginEnabled($pluginId) && method_exists($plugin, "transformContent")) {
+				$value = $plugin->transformContent($value);
+			}
 		}
 		
 			// Register RTE windows:

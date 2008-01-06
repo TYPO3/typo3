@@ -1,7 +1,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2005, 2006 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
+*  (c) 2005-2008 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -29,41 +29,74 @@
  *
  * TYPO3 CVS ID: $Id$
  */
+Acronym = HTMLArea.Plugin.extend({
+	
+	constructor : function(editor, pluginName) {
+		this.base(editor, pluginName);
+	},
+	
+	/*
+	 * This function gets called by the class constructor
+	 */
+	configurePlugin : function(editor) {
+		
+		this.pageTSconfiguration = this.editorConfiguration.buttons.acronym;
+		this.acronymUrl = this.pageTSconfiguration.acronymUrl;
+		this.acronymModulePath = this.pageTSconfiguration.pathAcronymModule;
+		
+		/*
+		 * Registering plugin "About" information
+		 */
+		var pluginInformation = {
+			version		: "1.6",
+			developer	: "Stanislas Rolland",
+			developerUrl	: "http://www.fructifor.ca/",
+			copyrightOwner	: "Stanislas Rolland",
+			sponsor		: "Fructifor Inc.",
+			sponsorUrl	: "http://www.fructifor.ca/",
+			license		: "GPL"
+		};
+		this.registerPluginInformation(pluginInformation);
+		
+		/*
+		 * Registering the button
+		 */
+		var buttonId = "Acronym";
+		var buttonConfiguration = {
+			id		: buttonId,
+			tooltip		: this.localize("Insert/Modify Acronym"),
+			action		: "onButtonPress",
+			dialog		: true
+		};
+		this.registerButton(buttonConfiguration);
+		
+		return true;
+	 },
+	 
+	/*
+	 * This function gets called when the button was pressed
+	 *
+	 * @param	object		editor: the editor instance
+	 * @param	string		id: the button id or the key
+	 *
+	 * @return	boolean		false if action is completed
+	 */
+	onButtonPress : function(editor, id) {
+		this.dialog = this.openDialog("Acronym", this.makeUrlFromModulePath(this.acronymModulePath), null, null, {width:570, height:280});
+		return false;
+	},
+	
+	/*
+	 * This function removes the given markup element
+	 */
+	removeMarkup : function(element) {
+		var bookmark = this.editor.getBookmark(this.editor._createRange(this.editor._getSelection()));
+		var parent = element.parentNode;
+		while (element.firstChild) {
+			parent.insertBefore(element.firstChild, element);
+		}
+		parent.removeChild(element);
+		this.editor.selectRange(this.editor.moveToBookmark(bookmark));
+	}
+});
 
-Acronym = function(editor) {
-	this.editor = editor;
-	var cfg = editor.config;
-	var actionHandlerFunctRef = Acronym.actionHandler(this);
-	cfg.registerButton("Acronym",
-				Acronym_langArray["Insert/Modify Acronym"], 
-				editor.imgURL("ed_acronym.gif", "Acronym"), 
-				false,
-				actionHandlerFunctRef
-	);
-};
-Acronym.I18N = Acronym_langArray;
-
-Acronym._pluginInfo = {
-	name		: "Acronym",
-	version		: "1.4",
-	developer	: "Stanislas Rolland",
-	developer_url	: "http://www.fructifor.ca/",
-	c_owner		: "Stanislas Rolland",
-	sponsor		: "Fructifor Inc.",
-	sponsor_url	: "http://www.fructifor.ca/",
-	license		: "GPL"
-};
-
-Acronym.actionHandler = function(instance) {
-	return (function(editor) {
-		instance.buttonPress(editor);
-	});
-};
-
-Acronym.prototype.buttonPress = function(editor) {
-	var editorNo = editor._doc._editorNo;
-	var backreturn;
-	var addUrlParams = "?" + RTEarea[editorNo]["RTEtsConfigParams"];
-	editor._popupDialog(RTEarea[0]["pathAcronymModule"] + addUrlParams + "&editorNo=" + editorNo, null, null, 570, 280);
-	return false;
-};

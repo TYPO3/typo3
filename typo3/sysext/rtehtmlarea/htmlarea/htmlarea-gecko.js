@@ -280,12 +280,16 @@ HTMLArea.prototype.getParentElement = function(selection, range) {
  * @returns null | element
  * Borrowed from Xinha (is not htmlArea) - http://xinha.gogo.co.nz/
  */
-HTMLArea.prototype._activeElement = function(sel) {
-	if(sel == null) return null;
-	if(this._selectionEmpty(sel)) return null;
-		// Check if the selection is not collapsed (something is selected) and if the anchor (start of selection) is an element.
-	if(!sel.isCollapsed && sel.anchorNode.nodeType == 1) return sel.anchorNode;
-		else return null;
+HTMLArea.prototype._activeElement = function(selection) {
+	if (this._selectionEmpty(selection)) {
+		return null;
+	}
+		// Check if the anchor (start of selection) is an element.
+	if (selection.anchorNode.nodeType == 1) {
+		return selection.anchorNode;
+	} else {
+		return null;
+	}
 };
 
 /*
@@ -400,41 +404,11 @@ HTMLArea.prototype.selectRange = function (range) {
  */
 HTMLArea.prototype.insertNodeAtSelection = function(toBeInserted) {
 	this.focusEditor();
-	var sel = this._getSelection(),
-		range = this._createRange(sel),
-		node = range.startContainer,
-		pos = range.startOffset,
-		selectNode = node;
-	this.emptySelection(sel);
+	var range = this._createRange(this._getSelection());
 	range.deleteContents();
-	if (toBeInserted.nodeType == 11) {
-		selectNode = toBeInserted.lastChild;
-	}
-	if (node.nodeName.toLowerCase() === "table") {
-		selectNode = node.getElementsByTagName("tbody")[0];
-		selectNode = selectNode.rows[0].cells[0];
-	}
-	switch (node.nodeType) {
-	    case 3: // Node.TEXT_NODE: we have to split it at the caret position.
-		if(toBeInserted.nodeType == 3) {
-			node.insertData(pos,toBeInserted.data);
-			range = this._createRange();
-			range.setEnd(node, pos + toBeInserted.length);
-			range.setStart(node, pos + toBeInserted.length);
-			this.addRangeToSelection(sel, range);
-		} else {
-			node = node.splitText(pos);
-			node = node.parentNode.insertBefore(toBeInserted, node);
-			this.selectNode(selectNode, false);
-			this.updateToolbar();
-		}
-		break;
-	    case 1:
-		node = node.insertBefore(toBeInserted, node.childNodes[pos]);
-		this.selectNode(selectNode, false);
-		this.updateToolbar();
-		break;
-	}
+	var toBeSelected = (toBeInserted.nodeType === 11) ? toBeInserted.lastChild : toBeInserted;
+	range.insertNode(toBeInserted);
+	this.selectNodeContents(toBeSelected, false);
 };
 
 /* 
@@ -446,7 +420,9 @@ HTMLArea.prototype.insertHTML = function(html) {
 	var fragment = this._doc.createDocumentFragment();
 	var div = this._doc.createElement("div");
 	div.innerHTML = html;
-	while (div.firstChild) {fragment.appendChild(div.firstChild);}
+	while (div.firstChild) {
+		fragment.appendChild(div.firstChild);
+	}
 	this.insertNodeAtSelection(fragment);
 };
 

@@ -15,6 +15,7 @@
 }
 
 /* Selectors for the Abbreviation plugin */
-abbr, acronym, span.abbr {
+abbr, acronym {
 	border-bottom:1px dashed #000;
+	cursor:help;
 }

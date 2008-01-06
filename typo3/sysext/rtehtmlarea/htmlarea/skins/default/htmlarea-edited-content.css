@@ -15,14 +15,7 @@
 }
 
 /* Selectors for the Abbreviation plugin */
-abbr, acronym, span.abbr {
- 	width:18px;
- 	height:18px;
-	background-image:url("images/Acronym/ed_acronym.gif");
-	background-repeat:no-repeat;
-	background-position:left top;
-	white-space:nowrap;
-	cursor:help;
+abbr, acronym {
 	border-bottom:1px dashed #000;
-	padding-left:19px;
+	cursor:help;
 }

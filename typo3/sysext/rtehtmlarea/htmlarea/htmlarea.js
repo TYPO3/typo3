@@ -3925,6 +3925,9 @@ HTMLArea.Dialog = HTMLArea.Base.extend({
 			}
 			this.releaseEvents(this.dialogWindow);
 			HTMLArea.Dialog[this.plugin.name] = null;
+			if (HTMLArea.is_safari) {
+				this.dialogWindow.blur();
+			}
 			this.dialogWindow.close();
 			this.dialogWindow.dialog = null;
 			this.plugin.editor.updateToolbar();

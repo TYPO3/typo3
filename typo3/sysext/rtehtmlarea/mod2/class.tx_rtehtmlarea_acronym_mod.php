@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2005-2006 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
+*  (c) 2005-2008 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is 
@@ -32,7 +32,7 @@
  * $Id$  *
  */
 
-class tx_rtehtmlarea_acronym {
+class tx_rtehtmlarea_acronym_mod {
 	var $content;
 	var $modData;
 
@@ -49,42 +49,40 @@ class tx_rtehtmlarea_acronym {
 	function init()	{
 		global $BE_USER,$LANG,$BACK_PATH;
 		
-		$this->editorNo = t3lib_div::_GP('editorNo');
-		
 		$this->doc = t3lib_div::makeInstance('template');
 		$this->doc->docType = 'xhtml_trans';
 		$this->doc->backPath = $BACK_PATH;
-		
 		if ($this->doc->styleSheetFile_post) {
 			$styleDir = dirname(dirname($this->doc->styleSheetFile_post));
 			$this->doc->styleSheetFile_post = $styleDir.'/rtehtmlarea/htmlarea.css';
 		} else {
-			$this->doc->styleSheetFile_post = $BACK_PATH . t3lib_extMgm::extRelPath('rtehtmlarea') . 'htmlarea/skins/default/htmlarea.css'; 
+			$this->doc->styleSheetFile_post = $BACK_PATH . t3lib_extMgm::extRelPath('rtehtmlarea') . 'htmlarea/skins/default/htmlarea.css';
 		}
-		
-		$this->doc->JScode = '<script type="text/javascript" src="'. $BACK_PATH . t3lib_extMgm::extRelPath('rtehtmlarea') . 'htmlarea/popups/popup.js"></script>';
-		
 		$this->doc->bodyTagAdditions = 'class="popupwin" onload="init();"';
 		$this->doc->form = '<form action="" id="acronymForm" name="acronymForm" method="POST">';
 		$JScode='
-			var editor = window.opener.RTEarea[' . $this->editorNo . ']["editor"];
-			var HTMLArea = window.opener.HTMLArea;
+			var dialog = window.opener.HTMLArea.Dialog["Acronym"];
+			var editor = dialog.plugin.editor;
 			var param = null;
 			var html = editor.getSelectedHTML();
 			var sel = editor._getSelection();
 			var range = editor._createRange(sel);
 			var abbr = editor._activeElement(sel);
+				// Working around Safari issue
+			if (!abbr && editor._statusBarTree.selected) {
+				abbr = editor._statusBarTree.selected;
+			}
 			var abbrType = null;
 			var acronyms = new Object();
 			var abbreviations = new Object();
-			if(!(abbr != null && (abbr.tagName.toLowerCase() == "acronym" || abbr.tagName.toLowerCase() == "abbr"))) { 
+			if (!(abbr != null && /^(acronym|abbr)$/i.test(abbr.nodeName))) {
 				abbr = editor._getFirstAncestor(sel, ["acronym", "abbr"]);
-				if(abbr != null && (abbr.tagName.toLowerCase() == "acronym" || abbr.tagName.toLowerCase() == "abbr")) { 
-					param = { title : abbr.title, text : abbr.innerHTML};
-					abbrType = abbr.tagName.toLowerCase();
-				} else {
-					param = { title : "", text : html};
-				}
+			}
+			if (abbr != null && /^(acronym|abbr)$/i.test(abbr.nodeName)) {
+				param = { title : abbr.title, text : abbr.innerHTML};
+				abbrType = abbr.nodeName.toLowerCase();
+			} else {
+				param = { title : "", text : html};
 			}
 			
 			function setType() {
@@ -97,21 +95,19 @@ class tx_rtehtmlarea_acronym {
 				}
 				document.getElementById("title").value = param["title"];
 				fillSelect(param["text"]);
-				__dlg_init(null, false);
+				dialog.resize();
 			}
 			
 			function init() {
-				if(abbrType != null) document.getElementById("type").style.display = "none";
+				dialog.initialize("noLocalize", "noResize");
+				var abbrData = dialog.plugin.getJavascriptFile(dialog.plugin.acronymUrl, "noEval");
+				if (abbrData) eval(abbrData);
+				if (abbrType != null) document.getElementById("type").style.display = "none";
 					else abbrType = "abbr";
-				if(HTMLArea.is_ie) document.getElementById("type").style.display = "none";
-				if(abbrType == "acronym") document.acronymForm.acronym.checked = true;
+				if (abbrType == "acronym") document.acronymForm.acronym.checked = true;
 					else  document.acronymForm.abbreviation.checked = true;
-				var acronymUrl = window.opener.RTEarea[editor._doc._editorNo]["acronymUrl"];
-				var abbrData = HTMLArea._getScript(0, false, acronymUrl);
-				if(abbrData) eval(abbrData);
 				setType();
 				HTMLArea._addEvents(document.acronymForm.title,["keypress", "keydown", "dragdrop", "drop", "paste", "change"],function(ev) { document.acronymForm.termSelector.selectedIndex=-1; document.acronymForm.acronymSelector.selectedIndex=-1; });
-				document.body.onkeypress = __dlg_close_on_esc;
 				document.getElementById("title").focus();
 			};
 			
@@ -140,16 +136,16 @@ class tx_rtehtmlarea_acronym {
 			function processAcronym(title) {
 				if (title == "" || title == null) {
 					if (abbr) {
-						var child = abbr.innerHTML;
-						abbr.parentNode.removeChild(abbr);
-						editor.insertHTML(child);
+						dialog.plugin.removeMarkup(abbr);
 					}
 				} else {
 					var doc = editor._doc;
 					if (!abbr) {
 						abbr = doc.createElement(abbrType);
 						abbr.title = title;
-						if(document.acronymForm.acronymSelector.options.length != 1 && document.acronymForm.termSelector.selectedIndex > 0 && document.acronymForm.termSelector.options[document.acronymForm.termSelector.selectedIndex].value == title) html = document.acronymForm.acronymSelector.options[document.acronymForm.acronymSelector.selectedIndex].value;
+						if(document.acronymForm.acronymSelector.options.length != 1 && document.acronymForm.termSelector.selectedIndex > 0 && document.acronymForm.termSelector.options[document.acronymForm.termSelector.selectedIndex].value == title) {
+							html = document.acronymForm.acronymSelector.options[document.acronymForm.acronymSelector.selectedIndex].value;
+						}
 						abbr.innerHTML = html;
 						if (HTMLArea.is_ie) range.pasteHTML(abbr.outerHTML);
 							else editor.insertNodeAtSelection(abbr);
@@ -162,17 +158,17 @@ class tx_rtehtmlarea_acronym {
 			
 			function onOK() {
 				processAcronym(document.getElementById("title").value);
-				__dlg_close(null);
+				dialog.close();
 				return false;
 			};
 			
 			function onDelete() {
 				processAcronym("");
-				__dlg_close(null);
+				dialog.close();
 				return false;
 			};
 			function onCancel() {
-				__dlg_close(null);
+				dialog.close();
 				return false;
 			};
 		';
@@ -254,8 +250,8 @@ class tx_rtehtmlarea_acronym {
 	}
 }
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rtehtmlarea/mod2/class.tx_rtehtmlarea_acronym.php'])	{
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rtehtmlarea/mod2/class.tx_rtehtmlarea_acronym.php']);
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rtehtmlarea/mod2/class.tx_rtehtmlarea_acronym_mod.php'])	{
+	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rtehtmlarea/mod2/class.tx_rtehtmlarea_acronym_mod.php']);
 }
 
 ?>

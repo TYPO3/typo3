@@ -62,6 +62,14 @@ $TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['plugins']['BlockStyle']['objectRefer
 $TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['plugins']['CharacterMap'] = array();
 $TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['plugins']['CharacterMap']['objectReference'] = 'EXT:'.$_EXTKEY.'/extensions/CharacterMap/class.tx_rtehtmlarea_charactermap.php:&tx_rtehtmlarea_charactermap';
 $TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['plugins']['CharacterMap']['addIconsToSkin'] = 0;
+$TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['plugins']['Acronym'] = array();
+$TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['plugins']['Acronym']['objectReference'] = 'EXT:'.$_EXTKEY.'/extensions/Acronym/class.tx_rtehtmlarea_acronym.php:&tx_rtehtmlarea_acronym';
+$TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['plugins']['Acronym']['addIconsToSkin'] = 0;
+$TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['plugins']['Acronym']['disableInFE'] = 1;
+//$TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['plugins']['InlineElements'] = array();
+//$TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['plugins']['InlineElements']['objectReference'] = 'EXT:'.$_EXTKEY.'/extensions/InlineElements/class.tx_rtehtmlarea_inlineelements.php:&tx_rtehtmlarea_inlineelements';
+//$TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['plugins']['TextStyle'] = array();
+//$TYPO3_CONF_VARS['EXTCONF']['rtehtmlarea']['plugins']['TextStyle']['objectReference'] = 'EXT:'.$_EXTKEY.'/extensions/TextStyle/class.tx_rtehtmlarea_textstyle.php:&tx_rtehtmlarea_textstyle';
 
 $_EXTCONF = unserialize($_EXTCONF);    // unserializing the configuration so we can use it here:
 
