@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<!-- TYPO3 SVN ID: $Id$ -->
+<T3locallang>
+	<meta type="array">
+		<description>Labels for Inline Elements plugin of htmlArea RTE</description>
+		<type>module</type>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index="No markup">No text format</label>
+			<label index="Remove markup">Remove text format</label>
+			<label index="FormatText-Tooltip">Apply format to selected text</label>
+			<label index="BiDiOverride-Tooltip">Bidirectionality override</label>
+			<label index="Big-Tooltip">Large text</label>
+			<label index="Bold-Tooltip">Bold</label>
+			<label index="Citation-Tooltip">Citation</label>
+			<label index="Code-Tooltip">Computer code fragment</label>
+			<label index="Definition-Tooltip">Definition</label>
+			<label index="DeletedText-Tooltip">Deleted text</label>
+			<label index="Emphasis-Tooltip">Emphasis</label>
+			<label index="Keyboard-Tooltip">Text to be entered by the user</label>
+			<label index="InsertedText-Tooltip">Inserted text</label>
+			<label index="Italic-Tooltip">Italic</label>
+			<label index="MonoSpaced-Tooltip">Monospaced text</label>
+			<label index="Quotation-Tooltip">Short inline quotation</label>
+			<label index="Sample-Tooltip">Sample program output or script</label>
+			<label index="Small-Tooltip">Small text</label>
+			<label index="Span-Tooltip">Style container</label>
+			<label index="StrikeThrough-Tooltip">Strike-through text</label>
+			<label index="Strong-Tooltip">Strong emphasis</label>
+			<label index="Subscript-Tooltip">Subscript</label>
+			<label index="Superscript-Tooltip">Superscript</label>
+			<label index="Underline-Tooltip">Underline</label>
+			<label index="Variable-Tooltip">Variable or program argument</label>
+			<label index="Technische Universitat Ilmenau">Technische Universität Ilmenau</label>
+		</languageKey>
+	</data>
+	<orig_hash type="array">
+		<languageKey index="default" type="array">
+		</languageKey>
+	</orig_hash>
+	<orig_text type="array">
+		<languageKey index="default" type="array">
+		</languageKey>
+	</orig_text>
+</T3locallang>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+	<meta type="array">
+		<description>Labels for Inline Elements plugin of htmlArea RTE</description>
+		<type>module</type>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index="No markup">No text format</label>
+			<label index="Bold">Bold</label>
+			<label index="BiDi override">BiDi override</label>
+			<label index="Large text">Large text</label>
+			<label index="Citation">Citation</label>
+			<label index="Code">Code</label>
+			<label index="Definition">Definition</label>
+			<label index="Deleted text">Deleted text</label>
+			<label index="Emphasis">Emphasis</label>
+			<label index="Inserted text">Inserted text</label>
+			<label index="Italic">Italic</label>
+			<label index="Keyboard">Keyboard</label>
+			<label index="Label">Label</label>
+			<label index="Monospaced text">Monospaced text</label>
+			<label index="Quotation">Quotation</label>
+			<label index="Sample">Sample</label>
+			<label index="Small text">Small text</label>
+			<label index="Style container">Style container</label>
+			<label index="Strike-through">Strike-through</label>
+			<label index="Strong emphasis">Strong emphasis</label>
+			<label index="Subscript">Subscript</label>
+			<label index="Superscript">Superscript</label>
+			<label index="Underline">Underline</label>
+			<label index="Variable">Variable</label>
+		</languageKey>
+	</data>
+	<orig_hash type="array">
+		<languageKey index="default" type="array">
+		</languageKey>
+	</orig_hash>
+	<orig_text type="array">
+		<languageKey index="default" type="array">
+		</languageKey>
+	</orig_text>
+</T3locallang>

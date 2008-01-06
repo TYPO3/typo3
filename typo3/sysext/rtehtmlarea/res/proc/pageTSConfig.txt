@@ -55,6 +55,9 @@ RTE.default.proc {
 		## This is a list of additional attributes to keep
 	keepPDIVattribs = id, title, dir, lang, xml:lang
 	
+		## DO NOT REMAP BOLD AND ITALIC TO STRONG AND EMPHASIS AND VICE VERSA
+	transformBoldAndItalicTags = 0
+	
 		## CONTENT TO DATABASE
 	entryHTMLparser_db = 1
 	entryHTMLparser_db {
@@ -100,10 +103,12 @@ RTE.default.proc {
 			q.allowedAttribs = id, title, dir, lang, xml:lang, class
 			samp.allowedAttribs = id, title, dir, lang, xml:lang, class
 			small.allowedAttribs = id, title, dir, lang, xml:lang, class
+			strike.allowedAttribs = id, title, dir, lang, xml:lang, class
 			strong.allowedAttribs = id, title, dir, lang, xml:lang, class
 			sub.allowedAttribs = id, title, dir, lang, xml:lang, class
 			sup.allowedAttribs = id, title, dir, lang, xml:lang, class
 			tt.allowedAttribs = id, title, dir, lang, xml:lang, class
+			u.allowedAttribs = id, title, dir, lang, xml:lang, class
 			var.allowedAttribs = id, title, dir, lang, xml:lang, class
 		}
 		
@@ -128,12 +133,6 @@ RTE.default.proc {
 	
 	exitHTMLparser_db = 1
 	exitHTMLparser_db {
-			## REMAP B AND I TAGS
-			## b and i tags are used by Mozilla/Firefox in editing mode.
-			## This must be done on exit because the default HTMLparser_db parsing executes the reverse mapping.
-		tags.b.remap = strong
-		tags.i.remap = em
-		
 			## KEEP ALL TAGS
 			## Unwanted tags were removed on entry.
 			## Without this rule, the parser will remove all tags! Presumably, this rule will be more efficient than repeating the allowTags rule
