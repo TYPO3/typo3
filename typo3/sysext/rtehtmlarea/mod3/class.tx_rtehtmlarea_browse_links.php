@@ -238,6 +238,7 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 		}
 
 			// init hook objects:
+		$this->hookObjects = array();
 		if(is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/class.browse_links.php']['browseLinksHook'])) {
 			foreach($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/class.browse_links.php']['browseLinksHook'] as $classData) {
 				$processObject = &t3lib_div::getUserObj($classData);

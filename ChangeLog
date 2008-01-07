@@ -1,3 +1,7 @@
+2008-01-06  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
+
+	* Fixed bug #6961: Errors in link creation popup window
+
 2007-01-06  Oliver Hader  <oh@inpublica.de>
 
 	* Fixed bug #5994: IRRE - RTEhtmlarea is not show in child records if parent has no RTE
