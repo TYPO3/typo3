@@ -107,9 +107,8 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 
 				// Split into single lines:
 			$lines = t3lib_div::trimExplode(chr(10),$content);
-			while(list($k)=each($lines))	{
-				$lines[$k]='
-					<li>'.$this->cObj->stdWrap($lines[$k],$conf['innerStdWrap.']).'</li>';
+			foreach($lines as &$val)	{
+				$val = '<li>'.$this->cObj->stdWrap($val,$conf['innerStdWrap.']).'</li>';
 			}
 
 				// Set header type:

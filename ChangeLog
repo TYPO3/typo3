@@ -1,5 +1,6 @@
 2008-01-08  Benjamin Mack  <mack@xnos.org>
 
+	* (bugfix) Fixed #7101: CType bullets not rendered correctly (thanks to Steffen Kamper)
 	* (bugfix) Fixed #6883: Added missing functions in typo3/template.php
 
 2008-01-08  Dmitry Dulepov  <stanislas.rolland@fructifor.ca>

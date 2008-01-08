@@ -503,6 +503,31 @@ tt_content.bullets {
 	}
 }
 
+[compatVersion = 4.2.0]
+tt_content.bullets.20 > 
+tt_content.bullets.20 = TEXT
+tt_content.bullets.20 {
+	field = bodytext
+	trim = 1
+	split{
+		token.char = 10
+		cObjNum = |*|1|| 2|*|
+		1.current = 1
+		1.parseFunc =< lib.parseFunc
+		1.wrap = <li class="odd">|</li>
+
+		2.current = 1
+		2.parseFunc =< lib.parseFunc
+		2.wrap = <li class="even">|</li>
+	}
+	dataWrap = <ul class="csc-bulletlist csc-bulletlist-{field:layout}">|</ul>
+ 	editIcons = tt_content: bodytext, [layout]
+ 	editIcons.beforeLastTag = 1
+ 	editIcons.iconTitle.data = LLL:EXT:css_styled_content/pi1/locallang.php:eIcon.bullets
+
+ 	prefixComment = 2 | Bullet list:
+}
+[end]
 
 # *****************
 # CType: table
