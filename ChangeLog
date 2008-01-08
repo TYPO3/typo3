@@ -1,3 +1,7 @@
+2008-01-08  Benjamin Mack  <mack@xnos.org>
+
+	* (bugfix) Fixed #6883: Added missing functions in typo3/template.php
+
 2008-01-08  Dmitry Dulepov  <stanislas.rolland@fructifor.ca>
 
 	* Fixed bug #6991: Enable stdWrap for wrapItemAndSub

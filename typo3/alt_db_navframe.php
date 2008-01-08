@@ -139,19 +139,15 @@ class SC_alt_db_navframe {
 			$this->doc->backPath = $BACK_PATH;
 			$this->doc->docType = 'xhtml_trans';
 
-				// Adding javascript code for AJAX (prototype), drag&drop and the pagetree
-			$this->doc->loadJavascriptLib('contrib/prototype/prototype.js');
-			$this->doc->loadJavascriptLib('tree.js');
+				// Adding javascript code for AJAX (prototype), drag&drop and the pagetree as well as the click menu code
+			$this->doc->getDragDropCode('pages');
+			$this->doc->getContextMenuCode();
 
 			$this->doc->JScode .= $this->doc->wrapScriptTags(
 			($this->currentSubScript?'top.currentSubScript=unescape("'.rawurlencode($this->currentSubScript).'");':'').'
 			// setting prefs for pagetree and drag & drop
 			Tree.thisScript    = "'.$this->pagetree->thisScript.'";
 			'.($this->doHighlight ? 'Tree.highlightClass = "'.$hlClass.'";' : '').'
-
-			DragDrop.changeURL = "'.$this->backPath.'alt_clickmenu.php";
-			DragDrop.backPath  = "'.t3lib_div::shortMD5(''.'|'.$GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']).'";
-			DragDrop.table     = "pages";
 
 			// Function, loading the list frame from navigation tree:
 			function jumpTo(id, linkObj, highlightID, bank)	{ //
@@ -168,8 +164,6 @@ class SC_alt_db_navframe {
 			'.($this->cMR?"jumpTo(top.fsMod.recentIds['web'],'');":'').'
 			');
 
-				// Click menu code is added:
-			$this->doc->getContextMenuCode();
 			$this->doc->bodyTagId = 'bodyTag';
 		}
 	}
@@ -255,7 +249,7 @@ class SC_alt_db_navframe {
 		$this->content.= t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'pagetree', $GLOBALS['BACK_PATH']);
 
 			// Adding javascript for drag & drop activation and highlighting
-		$this->content .=$this->doc->wrapScriptTags('
+		$this->content .= $this->doc->wrapScriptTags('
 			'.($this->doHighlight ? 'Tree.highlightActiveItem("",top.fsMod.navFrameHighlightedID["web"]);' : '').'
 			'.(!$this->doc->isCMlayers() ? 'Tree.activateDragDrop = false;' : 'Tree.registerDragDropHandlers();')
 		);

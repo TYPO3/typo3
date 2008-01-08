@@ -1275,7 +1275,29 @@ $str.=$this->docBodyTagBegin().
 			       Clickmenu.clickURL = "'.$this->backPath.'alt_clickmenu.php";
 			       Clickmenu.ajax     = '.($this->isCMLayers() ? 'true' : 'false' ).';';
 
-			       // return array deprecated since 4.2
+		       // return array deprecated since 4.2
+	       return array('','','');
+	}
+
+	/**
+	 * Includes the necessary javascript file (tree.js) for use on pages which have the
+	 * drag and drop functionality (usually pages and folder display trees)
+	 *
+	 * @param	string		indicator of which table the drag and drop function should work on (pages or folders)
+	 * @return	array		If values are present: [0] = A <script> section for the HTML page header, [1] = onmousemove/onload handler for HTML tag or alike, [2] = One empty <div> layer for the follow-mouse drag element
+	 */
+	function getDragDropCode($table)	{
+		$this->loadJavascriptLib('contrib/prototype/prototype.js');
+		$this->loadJavascriptLib('tree.js');
+
+			// setting prefs for drag & drop
+		$this->JScodeArray['dragdrop'] = '
+			DragDrop.changeURL = "'.$this->backPath.'alt_clickmenu.php";
+			DragDrop.backPath  = "'.t3lib_div::shortMD5(''.'|'.$GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']).'";
+			DragDrop.table     = "'.$table.'";
+		';
+
+		       // return array deprecated since 4.2
 	       return array('','','');
 	}
 
