@@ -1841,7 +1841,8 @@ class tslib_tmenu extends tslib_menu {
 		if (!$this->I['spacer'])	{
 			$this->I['theItem'].= $this->subMenu($this->I['uid'], $this->WMsubmenuObjSuffixes[$key]['sOSuffix']);
 		}
-		$this->WMresult.= $this->I['val']['wrapItemAndSub'] ? $this->tmpl->wrap($this->I['theItem'],$this->I['val']['wrapItemAndSub']) : $this->I['theItem'];
+		$part = $this->WMcObj->stdWrap($this->I['val']['wrapItemAndSub'],$this->I['val']['wrapItemAndSub.']); 
+		$this->WMresult.= $part ? $this->tmpl->wrap($this->I['theItem'],$part) : $this->I['theItem'];
 	}
 
 	/**
