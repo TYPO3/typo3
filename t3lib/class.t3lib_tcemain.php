@@ -3179,10 +3179,10 @@ class t3lib_TCEmain	{
 			}
 
 				// Checking if there is anything else disallowing moving the record by checking if editing is allowed
-			$editAccess = $this->BE_USER->recordEditAccessInternals($table,$uid);
+			$mayEditAccess = $this->BE_USER->recordEditAccessInternals($table,$uid);
 
 				// If moving is allowed, begin the processing:
-			if ($editAccess)	{
+			if ($mayEditAccess)	{
 				if ($mayMoveAccess)	{
 					if ($mayInsertAccess)	{
 
@@ -3729,11 +3729,11 @@ class t3lib_TCEmain	{
 		global $TCA;
 
 			// Checking if there is anything else disallowing deleting the record by checking if editing is allowed
-		$editAccess = $this->BE_USER->recordEditAccessInternals($table,$uid);
+		$mayEditAccess = $this->BE_USER->recordEditAccessInternals($table,$uid);
 
 		$uid = intval($uid);
 		if ($TCA[$table] && $uid)	{
-			if ($editAccess)	{
+			if ($mayEditAccess)	{
 				if ($noRecordCheck || $this->doesRecordExist($table,$uid,'delete'))	{
 					$this->clear_cache($table,$uid);	// clear cache before deleting the record, else the correct page cannot be identified by clear_cache
 
