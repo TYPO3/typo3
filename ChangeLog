@@ -1,4 +1,8 @@
-2007-01-06  Oliver Hader  <oh@inpublica.de>
+2008-01-08  Benjamin Mack  <mack@xnos.org>
+
+	* Followup for bug #1678: limit to language; made the variable names better (Thanks to Helmut Hummel)
+
+2008-01-06  Oliver Hader  <oh@inpublica.de>
 
 	* Post-cleanup of bug #5994: IRRE - RTEhtmlarea is not show in child records if parent has no RTE
 

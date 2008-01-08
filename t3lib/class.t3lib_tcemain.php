@@ -3023,7 +3023,7 @@ class t3lib_TCEmain	{
 			}
 
 				// Checking if there is anything else disallowing edit
-			$editAccess = $this->BE_USER->recordEditAccessInternals($table,$uid);
+			$mayEditAccess = $this->BE_USER->recordEditAccessInternals($table,$uid);
 
 				// Timestamp field:
 			$updateFields = array();
@@ -3033,7 +3033,7 @@ class t3lib_TCEmain	{
 
 					// If moving is allowed, begin the processing:
 			if (!count($workspaceAccessBlocked))	{
-				if ($editAccess)	{
+				if ($mayEditAccess)	{
 					if ($mayMoveAccess)	{
 						if ($destPid>=0)	{	// insert as first element on page (where uid = $destPid)
 							if ($mayInsertAccess)	{
@@ -3430,11 +3430,11 @@ class t3lib_TCEmain	{
 		global $TCA;
 
 		// Checking if there is anything disallowing edit
-		$editAccess = $this->BE_USER->recordEditAccessInternals($table,$uid);
+		$mayEditAccess = $this->BE_USER->recordEditAccessInternals($table,$uid);
 
 		$uid = intval($uid);
 		if ($TCA[$table] && $uid)	{
-			if ($editAccess)	{
+			if ($mayEditAccess)	{
 				if ($noRecordCheck || ($this->doesRecordExist($table,$uid,'delete')))	{
 					$this->clear_cache($table,$uid);	// clear cache before deleting the record, else the correct page cannot be identified by clear_cache
 
