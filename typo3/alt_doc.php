@@ -801,6 +801,7 @@ class SC_alt_doc {
 	 * Create the panel of buttons for submitting the form or otherwise perform operations.
 	 *
 	 * @return	string		HTML code, comprised of images linked to various actions.
+	 * @deprecated	since TYPO3 4.2, as there are other functions (getButtons) now for getting the button panel
 	 */
 	function makeButtonPanel()	{
 		$btns = $this->getButtons();
@@ -999,16 +1000,10 @@ class SC_alt_doc {
 	function compileForm($editForm)	{
 		global $LANG;
 
-		$panel = $this->makeButtonPanel();
-		
 		$formContent = '
-
 			<!-- EDITING FORM -->
 			'.$editForm.'
 
-			<!-- Saving buttons (same as in top) -->
-
-			'.$panel.'
 			<input type="hidden" name="returnUrl" value="'.htmlspecialchars($this->retUrl).'" />
 			<input type="hidden" name="viewUrl" value="'.htmlspecialchars($this->viewUrl).'" />';
 
@@ -1039,7 +1034,7 @@ class SC_alt_doc {
 			// Show palettes:
 		return '
 				<!-- Function menus (checkboxes for selecting options): -->
-				<br /><br />'.t3lib_BEfunc::getFuncCheck('','SET[showPalettes]',$this->MOD_SETTINGS['showPalettes'],'alt_doc.php',t3lib_div::implodeArrayForUrl('',array_merge($this->R_URL_getvars,array('SET'=>''))),'id="checkShowPalettes"').'<label for="checkShowPalettes">'.$LANG->sL('LLL:EXT:lang/locallang_core.php:labels.showPalettes',1).'</label>';
+				<br />'.t3lib_BEfunc::getFuncCheck('','SET[showPalettes]',$this->MOD_SETTINGS['showPalettes'],'alt_doc.php',t3lib_div::implodeArrayForUrl('',array_merge($this->R_URL_getvars,array('SET'=>''))),'id="checkShowPalettes"').'<label for="checkShowPalettes">'.$LANG->sL('LLL:EXT:lang/locallang_core.php:labels.showPalettes',1).'</label>';
 	}
 
 

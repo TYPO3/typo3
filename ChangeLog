@@ -1,5 +1,6 @@
 2008-01-09  Benjamin Mack  <mack@xnos.org>
 
+	* (cleanup) Fixed #6957: Removed bottom button panel in alt_doc.php
 	* (feature) Added #6995 CSH text is now displayed with CSS hover when in icon mode (Thanks to Chris Lindenmueller)
 
 2008-01-08  Benjamin Mack  <mack@xnos.org>
