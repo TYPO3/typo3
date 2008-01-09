@@ -1,3 +1,7 @@
+2008-01-09  Benjamin Mack  <mack@xnos.org>
+
+	* (feature) Added #6995 CSH text is now displayed with CSS hover when in icon mode (Thanks to Chris Lindenmueller)
+
 2008-01-08  Benjamin Mack  <mack@xnos.org>
 
 	* (bugfix) Followup for #1678: limit to language; made the variable names better (Thanks to Helmut Hummel)

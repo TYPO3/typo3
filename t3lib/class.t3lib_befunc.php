@@ -2315,63 +2315,54 @@ class t3lib_BEfunc	{
 	 */
 	function helpTextIcon($table,$field,$BACK_PATH,$force=0)	{
 		global $TCA_DESCR,$BE_USER;
-		if (is_array($TCA_DESCR[$table]) && is_array($TCA_DESCR[$table]['columns'][$field]) && ($BE_USER->uc['edit_showFieldHelp']=='icon' || $force))	{
-			$onClick = 'vHWin=window.open(\''.$BACK_PATH.'view_help.php?tfID='.($table.'.'.$field).'\',\'viewFieldHelp\',\'height=400,width=600,status=0,menubar=0,scrollbars=1\');vHWin.focus();return false;';
-			return '<a href="#" onclick="'.htmlspecialchars($onClick).'">'.
-					'<img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/helpbubble.gif','width="14" height="14"').' hspace="2" border="0" class="typo3-csh-icon" alt="" />'.
-					'</a>';
+
+		$onClick = 'vHWin=window.open(\''.$BACK_PATH.'view_help.php?tfID='.($table.'.'.$field).'\',\'viewFieldHelp\',\'height=400,width=600,status=0,menubar=0,scrollbars=1\');vHWin.focus();return false;';
+		if (is_array($TCA_DESCR[$table]) && is_array($TCA_DESCR[$table]['columns'][$field]) && (isset($BE_USER->uc['edit_showFieldHelp']) || $force)) {
+			if ($BE_USER->uc['edit_showFieldHelp'] == 'icon') {
+				$text = t3lib_BEfunc::helpText($table,$field,$BACK_PATH,'');
+				$text = '<span class="typo3-csh-inline">'.$GLOBALS['LANG']->hscAndCharConv($text, false).'</span>';
+			}
+			return '<a class="typo3-csh-link" href="#" onclick="'.htmlspecialchars($onClick).'"><img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/helpbubble.gif','width="14" height="14"').' hspace="2" border="0" class="typo3-csh-icon" alt="" />'.$text.'</a>';
 		}
 	}
 
+
 	/**
 	 * Returns CSH help text (description), if configured for.
-	 * TCA_DESCR must be loaded prior to this function and $BE_USER must have "edit_showFieldHelp" set to "text", otherwise nothing is returned
+	 * TCA_DESCR must be loaded prior to this function and $BE_USER must have "edit_showFieldHelp" set to "text",
+	 * otherwise nothing is returned
 	 * Will automatically call t3lib_BEfunc::helpTextIcon() to get the icon for the text.
 	 * Usage: 4
 	 *
 	 * @param	string		Table name
 	 * @param	string		Field name
 	 * @param	string		Back path
-	 * @param	string		Additional style-attribute content for wrapping table
+	 * @param	string		DEPRECATED: Additional style-attribute content for wrapping table (now: only in function cshItem needed)
 	 * @return	string		HTML content for help text
 	 */
 	function helpText($table,$field,$BACK_PATH,$styleAttrib='')	{
 		global $TCA_DESCR,$BE_USER;
-		if (is_array($TCA_DESCR[$table]) && is_array($TCA_DESCR[$table]['columns'][$field]) && $BE_USER->uc['edit_showFieldHelp']=='text')	{
-			$fDat = $TCA_DESCR[$table]['columns'][$field];
+		$output = '';
 
-				// Get Icon:
-			$editIcon = t3lib_BEfunc::helpTextIcon(
-									$table,
-									$field,
-									$BACK_PATH,
-									TRUE
-								);
-				// Add title?
-			$onClick = 'vHWin=window.open(\''.$BACK_PATH.'view_help.php?tfID='.($table.'.'.$field).'\',\'viewFieldHelp\',\'height=400,width=600,status=0,menubar=0,scrollbars=1\');vHWin.focus();return false;';
-			$text =
-					($fDat['alttitle'] ? '<h4><a href="#" onclick="'.htmlspecialchars($onClick).'">'.$fDat['alttitle'].'</a></h4>' : '').
-					$fDat['description'];
-
-				// More information to get?
-			if ($fDat['image_descr'] || $fDat['seeAlso'] || $fDat['details'] || $fDat['syntax'])	{ // || $fDat['image'];
-				$text.=' <a href="#" onclick="'.htmlspecialchars($onClick).'">'.
-						'<img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/rel_db.gif','width="13" height="12"').' class="absmiddle typo3-csh-more" alt="" />'.
-						'</a>';
+		if (is_array($TCA_DESCR[$table]) && is_array($TCA_DESCR[$table]['columns'][$field]))	{
+			$data = $TCA_DESCR[$table]['columns'][$field];
+				// add see also arrow 
+			if ($data['image_descr'] || $data['seeAlso'] || $data['details'] || $data['syntax'])	{
+				$arrow = '<img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/rel_db.gif','width="13" height="12"').' class="absmiddle" alt="" />';
+			}
+				// add description text
+			if ($data['description'] || $arrow) {
+				$output = '<span class="paragraph">'.$data['description'].$arrow.'</span>';
 			}
 
-				// Additional styles?
-			$params = $styleAttrib ? ' style="'.$styleAttrib.'"' : '';
-
-				// Compile table with CSH information:
-			return '<table border="0" cellpadding="2" cellspacing="0" class="typo3-csh-inline"'.$params.'>
-						<tr>
-							<td valign="top" width="14">'.$editIcon.'</td>
-							<td valign="top">'.$text.'</td>
-						</tr>
-					</table>';
+				// put header before the rest of the text
+			if ($data['alttitle']) {
+				$output = '<span class="header">'.$data['alttitle'].'</span><br />'.$output;
+			}
 		}
+		return $output;
 	}
+
 
 	/**
 	 * API for getting CSH icons/text for use in backend modules.
@@ -2382,25 +2373,38 @@ class t3lib_BEfunc	{
 	 * @param	string		Field name (CSH locallang main key)
 	 * @param	string		Back path
 	 * @param	string		Wrap code for icon-mode, splitted by "|". Not used for full-text mode.
-	 * @param	boolean		If set, the full text will never be shown (only icon). Useful for places where it will break the page if the table with full text is shown.
+	 * @param	boolean		If set, the full text will never be shown (only icon).
+	 * 				Useful for places where it will break the page if the table with full text is shown.
 	 * @param	string		Additional style-attribute content for wrapping table (full text mode only)
 	 * @return	string		HTML content for help text
 	 * @see helpText(), helpTextIcon()
 	 */
 	function cshItem($table,$field,$BACK_PATH,$wrap='',$onlyIconMode=FALSE, $styleAttrib='')	{
 		global $TCA_DESCR, $LANG, $BE_USER;
+
 		if ($BE_USER->uc['edit_showFieldHelp'])	{
 			$LANG->loadSingleTableDescription($table);
 
 			if (is_array($TCA_DESCR[$table]))	{
-					// Creating CSH icon and short description:
-				$fullText = t3lib_BEfunc::helpText($table,$field,$BACK_PATH,$styleAttrib);
-				$icon = t3lib_BEfunc::helpTextIcon($table,$field,$BACK_PATH,$onlyIconMode);
+				// Creating CSH icon and short description:
+				$fullText = t3lib_BEfunc::helpText($table,$field,$BACK_PATH,'');
+				$icon = t3lib_BEfunc::helpTextIcon($table,$field,$BACK_PATH);
 
-				if ($fullText && !$onlyIconMode)	{
-					$output = $GLOBALS['LANG']->hscAndCharConv($fullText, false);
+				if ($fullText && !$onlyIconMode && $BE_USER->uc['edit_showFieldHelp'] == 'text')	{
+
+					// Additional styles?
+					$params = $styleAttrib ? ' style="'.$styleAttrib.'"' : '';
+
+					// Compile table with CSH information:
+					$fullText = '<table border="0" cellpadding="0" cellspacing="0" class="typo3-csh-inline"'.$params.'>
+					<tr>
+					<td valign="top" width="14">'.$icon.'</td>
+					<td valign="top">'.$fullText.'</td>
+					</tr>
+					</table>';
+
+					$output = $LANG->hscAndCharConv($fullText, false);
 				} else {
-					#$output = '<span style="position:absolute; filter: alpha(opacity=50); -moz-opacity: 0.50;">'.$icon.'</span>';
 					$output = $icon;
 
 					if ($output && $wrap)	{
