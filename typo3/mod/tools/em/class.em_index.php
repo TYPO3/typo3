@@ -4073,6 +4073,7 @@ $EM_CONF[$_EXTKEY] = '.$this->arrayToCode($EM_CONF, 0).';
 	function checkDependencies($extKey, $conf, $instExtInfo) {
 		$content = '';
 		$depError = false;
+		$depIgnore = false;
 		$msg = array();
 		$depsolver = t3lib_div::_POST('depsolver');
 
@@ -4081,6 +4082,7 @@ $EM_CONF[$_EXTKEY] = '.$this->arrayToCode($EM_CONF, 0).';
 				if($depsolver['ignore'][$depK]) {
 					$msg[] = '<br />Dependency on '.$depK.' ignored as requested.
 					<input type="hidden" value="1" name="depsolver[ignore]['.$depK.']" />';
+					$depIgnore = true;
 					continue;
 				}
 				if($depK == 'php') {
@@ -4141,12 +4143,13 @@ $EM_CONF[$_EXTKEY] = '.$this->arrayToCode($EM_CONF, 0).';
 				}
 			}
 		}
-		if($depError) {
+		if($depError || $depIgnore) {
 			$content.= $this->doc->section('Dependency Error',implode('<br />',$msg),0,1,2);
 		}
 
 			// Check conflicts with other extensions:
 		$conflictError = false;
+		$conflictIgnore = false;
 		$msg = array();
 
 		if (isset($conf['constraints']['conflicts']) && is_array($conf['constraints']['conflicts'])) {
@@ -4154,6 +4157,7 @@ $EM_CONF[$_EXTKEY] = '.$this->arrayToCode($EM_CONF, 0).';
 				if($depsolver['ignore'][$conflictK]) {
 					$msg[] = '<br />Conflict with '.$conflictK.' ignored as requested.
 					<input type="hidden" value="1" name="depsolver[ignore]['.$conflictK.']" />';
+					$conflictIgnore = true;
 					continue;
 				}
 				if (t3lib_extMgm::isLoaded($conflictK))	{
@@ -4164,18 +4168,20 @@ $EM_CONF[$_EXTKEY] = '.$this->arrayToCode($EM_CONF, 0).';
 				}
 			}
 		}
-		if($conflictError) {
+		if($conflictError || $conflictIgnore) {
 			$content.= $this->doc->section('Conflict Error',implode('<br />',$msg),0,1,2);
 		}
 
 			// Check suggests on other extensions:
 		if (isset($conf['constraints']['suggests']) && is_array($conf['constraints']['suggests'])) {
 			$suggestion = false;
+			$suggestionIgnore = false;
 			$msg = array();
 			foreach($conf['constraints']['suggests'] as $suggestK => $suggestV)	{
 				if($depsolver['ignore'][$suggestK]) {
-					$msg[] = '<br />Suggestion of '.$suggestK.' acknowledged.
+					$msg[] = '<br />Suggestion of '.$suggestK.' ignored as requested.
 				<input type="hidden" value="1" name="depsolver[ignore]['.$suggestK.']" />';
+					$suggestionIgnore = true;
 					continue;
 				}
 				if (!t3lib_extMgm::isLoaded($suggestK))	{
@@ -4191,7 +4197,7 @@ $EM_CONF[$_EXTKEY] = '.$this->arrayToCode($EM_CONF, 0).';
 					$suggestion = true;
 				}
 			}
-			if($suggestion) {
+			if($suggestion || $suggestionIgnore) {
 				$content .= $this->doc->section('Extensions suggested by extension "'.$extKey.'"',implode('<br />',$msg),0,1,1);
 			}
 		}
