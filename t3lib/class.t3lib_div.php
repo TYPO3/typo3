@@ -3961,11 +3961,12 @@ class t3lib_div {
 	 * @param	mixed		Reference to be passed along (typically "$this" - being a reference to the calling object) (REFERENCE!)
 	 * @param	string		Required prefix of class or function name
 	 * @param	boolean		If set, no debug() error message is shown if class/function is not present.
-	 * @return	mixed		Content from method/function call
+	 * @return	mixed		Content from method/function call or false if the class/method/function was not found
 	 * @see getUserObj()
 	 */
 	function callUserFunction($funcName,&$params,&$ref,$checkPrefix='user_',$silent=0)	{
 		global $TYPO3_CONF_VARS;
+		$content = false;
 
 			// Check persistent object and if found, call directly and exit.
 		if (is_array($GLOBALS['T3_VAR']['callUserFunction'][$funcName]))	{

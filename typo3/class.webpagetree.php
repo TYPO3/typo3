@@ -177,7 +177,9 @@ class webPageTree extends t3lib_browseTree {
 	 */
 	function printTree($treeArr = '')   {
 		$titleLen = intval($this->BE_USER->uc['titleLen']);
-		if (!is_array($treeArr))	$treeArr = $this->tree;
+		if (!is_array($treeArr)) {
+			$treeArr = $this->tree;
+		}
 
 		$out = '
 			<!-- TYPO3 tree structure. -->
@@ -189,7 +191,7 @@ class webPageTree extends t3lib_browseTree {
 		$PM = t3lib_div::_GP('PM');
 		if(($PMpos = strpos($PM, '#')) !== false) { $PM = substr($PM, 0, $PMpos); }
 		$PM = explode('_', $PM);
-		if(($isAjaxCall = t3lib_div::_GP('ajax')) && is_array($PM) && count($PM)==4)	{
+		if((TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_AJAX) && is_array($PM) && count($PM)==4) {
 			if($PM[1])	{
 				$expandedPageUid = $PM[2];
 				$ajaxOutput = '';

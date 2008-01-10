@@ -148,7 +148,7 @@ class filelistFolderTree extends t3lib_folderTree {
 		$PM = t3lib_div::_GP('PM');
 		if(($PMpos = strpos($PM, '#')) !== false) { $PM = substr($PM, 0, $PMpos); }
 		$PM = explode('_', $PM);
-		if(($isAjaxCall = t3lib_div::_GP('ajax')) && is_array($PM) && count($PM)==4)	{
+		if((TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_AJAX) && is_array($PM) && count($PM)==4) {
 			if($PM[1])	{
 				$expandedFolderUid = $PM[2];
 				$ajaxOutput = '';

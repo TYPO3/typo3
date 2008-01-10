@@ -53,7 +53,7 @@
 
 
 $BACK_PATH = '';
-require('init.php');
+require_once('init.php');
 require('template.php');
 require_once('class.webpagetree.php');
 
@@ -81,10 +81,10 @@ class SC_alt_db_navframe {
 	var $backPath;
 
 		// Internal, static: GPvar:
-	var $ajax;							// Is set, if an AJAX call should be handled.
 	var $currentSubScript;
 	var $cMR;
 	var $setTempDBmount;			// If not '' (blank) then it will clear (0) or set (>0) Temporary DB mount.
+
 
 	/**
 	 * Initialiation of the class
@@ -98,7 +98,6 @@ class SC_alt_db_navframe {
 		$this->backPath = $BACK_PATH;
 
 			// Setting GPvars:
-		$this->ajax = t3lib_div::_GP('ajax');
 		$this->cMR = t3lib_div::_GP('cMR');
 		$this->currentSubScript = t3lib_div::_GP('currentSubScript');
 		$this->setTempDBmount = t3lib_div::_GP('setTempDBmount');
@@ -122,50 +121,58 @@ class SC_alt_db_navframe {
 
 			// Temporary DB mounts:
 		$this->initializeTemporaryDBmount();
+	}
 
-			// Use template rendering only if this is a non-AJAX call:
-		if (!$this->ajax) {
-				// Setting highlight mode:
-			$this->doHighlight = !$BE_USER->getTSConfigVal('options.pageTree.disableTitleHighlight');
 
-				// If highlighting is active, define the CSS class for the active item depending on the workspace
-			if ($this->doHighlight) {
-				if ($BE_USER->workspace === 0) $hlClass = 'active';
-				else $hlClass = 'active active-ws wsver'.$BE_USER->workspace; 
-			}
+	/**
+	 * initialization for the visual parts of the class
+	 * Use template rendering only if this is a non-AJAX call
+	 *
+	 * @return	void
+	 */
+	public function initPage() {
+ 		global $BE_USER;
 
-				// Create template object:
-			$this->doc = t3lib_div::makeInstance('template');
-			$this->doc->backPath = $BACK_PATH;
-			$this->doc->docType = 'xhtml_trans';
+			// Setting highlight mode:
+		$this->doHighlight = !$BE_USER->getTSConfigVal('options.pageTree.disableTitleHighlight');
 
-				// Adding javascript code for AJAX (prototype), drag&drop and the pagetree as well as the click menu code
-			$this->doc->getDragDropCode('pages');
-			$this->doc->getContextMenuCode();
-
-			$this->doc->JScode .= $this->doc->wrapScriptTags(
-			($this->currentSubScript?'top.currentSubScript=unescape("'.rawurlencode($this->currentSubScript).'");':'').'
-			// setting prefs for pagetree and drag & drop
-			Tree.thisScript    = "'.$this->pagetree->thisScript.'";
-			'.($this->doHighlight ? 'Tree.highlightClass = "'.$hlClass.'";' : '').'
-
-			// Function, loading the list frame from navigation tree:
-			function jumpTo(id, linkObj, highlightID, bank)	{ //
-				var theUrl = top.TS.PATH_typo3 + top.currentSubScript + "?id=" + id;
-				top.fsMod.currentBank = bank;
-
-				if (top.condensedMode) top.content.location.href = theUrl;
-				else                   parent.list_frame.location.href=theUrl;
-
-				'.($this->doHighlight ? 'Tree.highlightActiveItem("web", highlightID + "_" + bank);' : '').'
-				'.(!$GLOBALS['CLIENT']['FORMSTYLE'] ? '' : 'if (linkObj) linkObj.blur(); ').'
-				return false;
-			}
-			'.($this->cMR?"jumpTo(top.fsMod.recentIds['web'],'');":'').'
-			');
-
-			$this->doc->bodyTagId = 'bodyTag';
+			// If highlighting is active, define the CSS class for the active item depending on the workspace
+		if ($this->doHighlight) {
+			$hlClass = ($BE_USER->workspace === 0 ? 'active' : 'active active-ws wsver'.$BE_USER->workspace); 
 		}
+
+			// Create template object:
+		$this->doc = t3lib_div::makeInstance('template');
+		$this->doc->backPath = $BACK_PATH;
+		$this->doc->docType  = 'xhtml_trans';
+
+
+			// Adding javascript code for AJAX (prototype), drag&drop and the pagetree as well as the click menu code
+		$this->doc->getDragDropCode('pages');
+		$this->doc->getContextMenuCode();
+
+
+		$this->doc->JScode .= $this->doc->wrapScriptTags(
+		($this->currentSubScript?'top.currentSubScript=unescape("'.rawurlencode($this->currentSubScript).'");':'').'
+		// setting prefs for pagetree and drag & drop
+		'.($this->doHighlight ? 'Tree.highlightClass = "'.$hlClass.'";' : '').'
+
+		// Function, loading the list frame from navigation tree:
+		function jumpTo(id, linkObj, highlightID, bank)	{ //
+			var theUrl = top.TS.PATH_typo3 + top.currentSubScript + "?id=" + id;
+			top.fsMod.currentBank = bank;
+
+			if (top.condensedMode) top.content.location.href = theUrl;
+			else                   parent.list_frame.location.href=theUrl;
+
+			'.($this->doHighlight ? 'Tree.highlightActiveItem("web", highlightID + "_" + bank);' : '').'
+			'.(!$GLOBALS['CLIENT']['FORMSTYLE'] ? '' : 'if (linkObj) linkObj.blur(); ').'
+			return false;
+		}
+		'.($this->cMR?"jumpTo(top.fsMod.recentIds['web'],'');":'').'
+		');
+
+		$this->doc->bodyTagId = 'bodyTag';
 	}
 
 
@@ -179,12 +186,6 @@ class SC_alt_db_navframe {
 
 			// Produce browse-tree:
 		$tree = $this->pagetree->getBrowsableTree();
-
-			// Output only the tree if this is an AJAX call:
-		if ($this->ajax) {
-			$this->content = $LANG->csConvObj->utf8_encode($tree, $LANG->charSet);
-			return;
-		}
 
 			// Start page:
 		$this->content = $this->doc->startPage('TYPO3 Page Tree');
@@ -261,15 +262,8 @@ class SC_alt_db_navframe {
 	 * @return	void
 	 */
 	function printContent()	{
-			// If we handle an AJAX call, send headers:
-		if ($this->ajax) {
-			header('X-JSON: ('.($this->pagetree->ajaxStatus?'true':'false').')');
-			header('Content-type: text/html; charset=utf-8');
-			// If it's the regular call to fully output the tree:
-		} else {
-			$this->content.= $this->doc->endPage();
-			$this->content = $this->doc->insertStylesAndJS($this->content);
-		}
+		$this->content.= $this->doc->endPage();
+		$this->content = $this->doc->insertStylesAndJS($this->content);
 		echo $this->content;
 	}
 
@@ -324,10 +318,33 @@ class SC_alt_db_navframe {
 	 * @return	void
 	 */
 	function settingTemporaryMountPoint($pageId)	{
-		global $BE_USER;
+		$GLOBALS['BE_USER']->setAndSaveSessionData('pageTree_temporaryMountPoint',intval($pageId));
+	}
 
-			// Setting temporary mount point ID:
-		$BE_USER->setAndSaveSessionData('pageTree_temporaryMountPoint',intval($pageId));
+
+	/**********************************
+	 *
+	 * AJAX Calls
+	 *
+	 **********************************/
+
+	/**
+	 * Makes the AJAX call to expand or collapse the pagetree.
+	 * Called by typo3/ajax.php
+	 * 
+	 * @param	array	additional parameters (not used here)
+	 * @param	object	the TYPO3AJAX object of this request
+	 */
+	public function ajaxExpandCollapse($params, &$ajaxObj) {
+		global $LANG;
+
+		$this->init();
+		$tree = $this->pagetree->getBrowsableTree();
+		if (!$this->pagetree->ajaxStatus) {
+			$ajaxObj->setError($tree);
+		} else	{
+			$ajaxObj->addContent('tree', $tree);
+		}
 	}
 }
 
@@ -338,13 +355,13 @@ if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['typo3/alt_d
 }
 
 
-
-
-
-// Make instance:
-$SOBE = t3lib_div::makeInstance('SC_alt_db_navframe');
-$SOBE->init();
-$SOBE->main();
-$SOBE->printContent();
+// Make instance if it is not an AJAX call
+if (!(TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_AJAX)) {
+	$SOBE = t3lib_div::makeInstance('SC_alt_db_navframe');
+	$SOBE->init();
+	$SOBE->initPage();
+	$SOBE->main();
+	$SOBE->printContent();
+}
 
 ?>

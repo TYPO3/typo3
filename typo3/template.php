@@ -1862,13 +1862,13 @@ if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['typo3/templ
 // The backend language engine is started (ext: "lang")
 // ******************************************************
 require_once(PATH_typo3.'sysext/lang/lang.php');
-$LANG = t3lib_div::makeInstance('language');
-$LANG->init($BE_USER->uc['lang']);
+$GLOBALS['LANG'] = t3lib_div::makeInstance('language');
+$GLOBALS['LANG']->init($BE_USER->uc['lang']);
 
 
 
 // ******************************
 // The template is loaded
 // ******************************
-$TBE_TEMPLATE = t3lib_div::makeInstance('template');
+$GLOBALS['TBE_TEMPLATE'] = t3lib_div::makeInstance('template');
 ?>

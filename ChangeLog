@@ -1,3 +1,7 @@
+2008-01-10  Benjamin Mack  <mack@xnos.org>
+
+	* (feature) Added #7096: Consistent interface for AJAX calls in the TYPO3 Backend
+
 2008-01-10  Jeff Segars  <jeff@webempoweredchurch.org>
 
 	* Fixed bug #7105: Default value of image_orient is invalid (Thanks to Steffen Kamper)

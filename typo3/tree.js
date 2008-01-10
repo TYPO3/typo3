@@ -74,7 +74,8 @@ function filterTraverse (eUL,strToDim)	{
 
 
 var Tree = {
-	thisScript: null,
+	thisScript: 'ajax.php',
+	ajaxID: 'pagetree_ExpandCollapse',	// has to be either "pagetree_ExpandCollapse" or "foldertree_ExpandCollapse"
 	frameSetModule: null,
 	activateDragDrop: true,
 	highlightClass: 'active',
@@ -83,7 +84,7 @@ var Tree = {
 	load: function(params, isExpand, obj) {
 			// fallback if AJAX is not possible (e.g. IE < 6)
 		if (typeof Ajax.getTransport() != 'object') {
-			window.location.href = this.thisScript + '?PM=' + params;
+			window.location.href = this.thisScript + '?ajaxID=' + this.ajaxID + '&PM=' + params;
 			return;
 		}
 
@@ -104,16 +105,17 @@ var Tree = {
 
 		new Ajax.Request(this.thisScript, {
 			method: 'get',
-			parameters: 'ajax=1&PM=' + params,
-			onComplete: function(xhr, status) {
-				// if this is not a valid ajax response, the whole page gets refreshed
-				if (!status) return this.refresh();
-
+			parameters: 'ajaxID=' + this.ajaxID + '&PM=' + params,
+			onComplete: function(xhr) {
 				// the parent node needs to be overwritten, not the object
 				$(obj.parentNode).replace(xhr.responseText);
 				this.registerDragDropHandlers();
 				this.reSelectActiveItem();
 				filter($('_livesearch').value);
+			}.bind(this),
+			onT3Error: function(xhr) {
+				// if this is not a valid ajax response, the whole page gets refreshed
+				this.refresh();
 			}.bind(this)
 		});
 	},
@@ -122,7 +124,7 @@ var Tree = {
 	refresh: function() {
 		var r = new Date();
 		// randNum is useful so pagetree does not get cached in browser cache when refreshing
-		window.location.href = this.thisScript + '?randNum=' + r.getTime();
+		window.location.href = '?randNum=' + r.getTime();
 	},
 
 	// attaches the events to the elements needed for the drag and drop (for the titles and the icons)

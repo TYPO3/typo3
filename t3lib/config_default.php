@@ -171,6 +171,10 @@ $TYPO3_CONF_VARS = Array(
 		'flexFormXMLincludeDiffBase' => TRUE,	// If set, an additional tag with index "vXX.vDEFbase" is created for translations in flexforms holding the value of the default language when translation was changed. Used to show diff of value. This setting will change whether the system thinks flexform XML looks clean. For example when FALSE XX.vDEFbase fields will be removed in cleaning while accepted if TRUE (of course)
 		'compactFlexFormXML' => 0,				// If set, the flexform XML will not contain indentation spaces making XML more compact
 		'elementVersioningOnly' => FALSE,		// If true, only element versioning is allowed in the backend. This is recommended for new installations of TYPO3 4.2+ since "page" and "branch" versioning types are known for the drawbacks of loosing ids and "element" type versions supports moving now.
+		'AJAX' => array(				// array of key-value pairs for a unified use of AJAX calls in the TYPO3 backend. Keys are the unique ajaxIDs where the value will be resolved to call a method in an object. See ajax.php and the classes/class.typo3ajax.php for more information.
+			'pagetree_ExpandCollapse'   => 'typo3/alt_db_navframe.php:SC_alt_db_navframe->ajaxExpandCollapse',
+			'foldertree_ExpandCollapse' => 'typo3/alt_file_navframe.php:SC_alt_file_navframe->ajaxExpandCollapse',
+		),
 	),
 	'FE' => Array(			// Configuration for the TypoScript frontend (FE). Nothing here relates to the administration backend!
 		'png_to_gif' => 0,						// Boolean. Enables conversion back to gif of all png-files generated in the frontend libraries. Notice that this leaves an increased number of temporary files in typo3temp/
@@ -390,6 +394,17 @@ if(intval($TYPO3_CONF_VARS["SYS"]["setMemoryLimit"])>16) {
 }
 
 
+// setting the request type so devs exactly know what type of request it is
+define('TYPO3_REQUESTTYPE_FE', 1);
+define('TYPO3_REQUESTTYPE_BE', 2);
+define('TYPO3_REQUESTTYPE_CLI', 4);
+define('TYPO3_REQUESTTYPE_AJAX', 8);
+define('TYPO3_REQUESTTYPE',
+	(TYPO3_MODE == 'FE' ? TYPO3_REQUESTTYPE_FE : 0) |
+	(TYPO3_MODE == 'BE' ? TYPO3_REQUESTTYPE_BE : 0) |
+	((defined('TYPO3_cliMode') && TYPO3_cliMode) ? TYPO3_REQUESTTYPE_CLI : 0) |
+	($TYPO3_AJAX ? TYPO3_REQUESTTYPE_AJAX : 0)
+);
 
 // Load extensions:
 if (TYPO3_MODE=='FE' && is_object($TT)) $TT->push('Loading localconf.php extensions','');
@@ -430,6 +445,7 @@ unset($BE_USER);
 unset($TBE_MODULES_EXT);
 unset($TCA_DESCR);
 unset($LOCAL_LANG);
+unset($TYPO3_AJAX);
 
 
 	// Setting some global vars:
