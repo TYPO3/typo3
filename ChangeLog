@@ -4,6 +4,7 @@
 
 2008-01-10  Jeff Segars  <jeff@webempoweredchurch.org>
 
+	* Fixed bug #5421: Problem ignoring extension constraints
 	* Fixed bug #7105: Default value of image_orient is invalid (Thanks to Steffen Kamper)
 
 2008-01-09  Benjamin Mack  <mack@xnos.org>
