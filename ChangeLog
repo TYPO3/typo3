@@ -1,3 +1,7 @@
+2008-01-11  Oliver Hader  <oh@inpublica.de>
+
+	* (feature) Added feature #7124: Add some more functionality to new AJAX interface in the TYPO3 back-end
+
 2008-01-10  Benjamin Mack  <mack@xnos.org>
 
 	* (feature) Added #7096: Consistent interface for AJAX calls in the TYPO3 Backend

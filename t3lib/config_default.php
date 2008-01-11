@@ -172,8 +172,8 @@ $TYPO3_CONF_VARS = Array(
 		'compactFlexFormXML' => 0,				// If set, the flexform XML will not contain indentation spaces making XML more compact
 		'elementVersioningOnly' => FALSE,		// If true, only element versioning is allowed in the backend. This is recommended for new installations of TYPO3 4.2+ since "page" and "branch" versioning types are known for the drawbacks of loosing ids and "element" type versions supports moving now.
 		'AJAX' => array(				// array of key-value pairs for a unified use of AJAX calls in the TYPO3 backend. Keys are the unique ajaxIDs where the value will be resolved to call a method in an object. See ajax.php and the classes/class.typo3ajax.php for more information.
-			'pagetree_ExpandCollapse'   => 'typo3/alt_db_navframe.php:SC_alt_db_navframe->ajaxExpandCollapse',
-			'foldertree_ExpandCollapse' => 'typo3/alt_file_navframe.php:SC_alt_file_navframe->ajaxExpandCollapse',
+			'SC_alt_db_navframe::expandCollapse'   => 'typo3/alt_db_navframe.php:SC_alt_db_navframe->ajaxExpandCollapse',
+			'SC_alt_file_navframe::expandCollapse' => 'typo3/alt_file_navframe.php:SC_alt_file_navframe->ajaxExpandCollapse',
 		),
 	),
 	'FE' => Array(			// Configuration for the TypoScript frontend (FE). Nothing here relates to the administration backend!

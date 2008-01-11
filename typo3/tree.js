@@ -75,7 +75,7 @@ function filterTraverse (eUL,strToDim)	{
 
 var Tree = {
 	thisScript: 'ajax.php',
-	ajaxID: 'pagetree_ExpandCollapse',	// has to be either "pagetree_ExpandCollapse" or "foldertree_ExpandCollapse"
+	ajaxID: 'SC_alt_db_navframe::expandCollapse',	// has to be either "SC_alt_db_navframe::expandCollapse" or "SC_alt_file_navframe::expandCollapse"
 	frameSetModule: null,
 	activateDragDrop: true,
 	highlightClass: 'active',

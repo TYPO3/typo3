@@ -68,19 +68,37 @@ class TYPO3AJAX {
 
 
 	/**
+	 * overwrites the existing content with the first parameter
+	 *
+	 * @param	array	the new content
+	 * @return	mixed	the old content as array; if the new content was not an array, false is returned
+	 */
+	public function setContent($content) {
+		$oldcontent = false;
+		if (is_array($content)) {
+			$oldcontent = $this->content;
+			$this->content = $content;
+		}
+		return $oldcontent;
+	}
+
+
+	/**
 	 * adds new content
 	 *
 	 * @param	string	the new content key where the content should be added in the content array
 	 * @param	string	the new content to add
-	 * @return	string	the old content
+	 * @return	mixed	the old content; if the old content didn't exist before, false is returned
 	 */
 	public function addContent($key, $content) {
-		$oldcontent = '';
+		$oldcontent = false;
 		if (array_key_exists($key, $this->content)) {
 			$oldcontent = $this->content[$key];
 		}
-		if (!$content) {
+		if (!isset($content) || !strlen($content)) {
 			unset($this->content[$key]);
+		} elseif (!isset($key) || !strlen($key)) {
+			$this->content[] = $content;
 		} else {
 			$this->content[$key] = $content;
 		}
@@ -105,7 +123,7 @@ class TYPO3AJAX {
 	 * @return	void
 	 */
 	public function setContentFormat($format) {
-		if (t3lib_div::inArray(array('plain', 'xml', 'json'), $format)) {
+		if (t3lib_div::inArray(array('plain', 'xml', 'json', 'jsonhead', 'jsonbody'), $format)) {
 			$this->contentFormat = $format;
 		}
 	}

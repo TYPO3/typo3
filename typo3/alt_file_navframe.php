@@ -135,7 +135,7 @@ class SC_alt_file_navframe {
 		($this->currentSubScript?'top.currentSubScript=unescape("'.rawurlencode($this->currentSubScript).'");':'').'
 
 		// setting prefs for foldertree
-		Tree.ajaxID = "foldertree_ExpandCollapse";
+		Tree.ajaxID = "SC_alt_file_navframe::expandCollapse";
 
 		// Function, loading the list frame from navigation tree:
 		function jumpTo(id, linkObj, highlightID, bank)	{
@@ -214,8 +214,9 @@ class SC_alt_file_navframe {
 	 * Makes the AJAX call to expand or collapse the foldertree.
 	 * Called by typo3/ajax.php
 	 * 
-	 * @param	array	additional parameters (not used here)
-	 * @param	object	the TYPO3AJAX object of this request
+	 * @param	array		$params: additional parameters (not used here)
+	 * @param	TYPO3AJAX	&$ajaxObj: reference of the TYPO3AJAX object of this request
+	 * @return	void
 	 */
 	public function ajaxExpandCollapse($params, &$ajaxObj)	{
 		global $LANG;

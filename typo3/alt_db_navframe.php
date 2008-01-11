@@ -332,8 +332,9 @@ class SC_alt_db_navframe {
 	 * Makes the AJAX call to expand or collapse the pagetree.
 	 * Called by typo3/ajax.php
 	 * 
-	 * @param	array	additional parameters (not used here)
-	 * @param	object	the TYPO3AJAX object of this request
+	 * @param	array		$params: additional parameters (not used here)
+	 * @param	TYPO3AJAX	&$ajaxObj: reference of the TYPO3AJAX object of this request
+	 * @return	void
 	 */
 	public function ajaxExpandCollapse($params, &$ajaxObj) {
 		global $LANG;
