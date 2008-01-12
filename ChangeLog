@@ -1,3 +1,7 @@
+2008-01-11  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
+
+	* htmlArea RTE: Update manual and version to 1.6.4dev
+
 2008-01-11  Oliver Hader  <oh@inpublica.de>
 
 	* (feature) Added feature #7124: Add some more functionality to new AJAX interface in the TYPO3 back-end
@@ -22,7 +26,7 @@
 	* (bugfix) Fixed #7101: CType bullets not rendered correctly (thanks to Steffen Kamper)
 	* (bugfix) Fixed #6883: Added missing functions in typo3/template.php
 
-2008-01-08  Dmitry Dulepov  <stanislas.rolland@fructifor.ca>
+2008-01-08  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Fixed bug #6991: Enable stdWrap for wrapItemAndSub
 

@@ -1,3 +1,7 @@
+2008-01-11  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
+
+	* htmlArea RTE: Update manual and version to 1.6.4dev
+
 2008-01-07  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
 	* Fixed bug #6961: Errors in link creation popup window
