@@ -3153,7 +3153,10 @@ class t3lib_TCEforms	{
 			$prLang = $this->getAdditionalPreviewLanguages();
 			foreach($prLang as $prL)	{
 				$dlVal = t3lib_BEfunc::getProcessedValue($table,$field,$this->additionalPreviewLanguageData[$table.':'.$row['uid']][$prL['uid']][$field],0,1);
-				$item.= '<div class="typo3-TCEforms-originalLanguageValue">'.$this->getLanguageIcon($table,$row,'v'.$prL['ISOcode']).$this->previewFieldValue($dlVal, $fCfg).'&nbsp;</div>';
+
+				if(strcmp($dlVal, '')) {
+					$item.= '<div class="typo3-TCEforms-originalLanguageValue">'.$this->getLanguageIcon($table, $row, 'v'.$prL['ISOcode']).$this->previewFieldValue($dlVal, $fCfg).'&nbsp;</div>';
+				}
 			}
 
 		}
