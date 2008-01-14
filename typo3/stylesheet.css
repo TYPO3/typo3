@@ -297,7 +297,7 @@ TABLE.typo3-TCEforms DIV.typo3-TCEforms-diffBox-header { background-color: red; 
 table.typo3-TCEforms div.typo3-dyntabmenu-tabs { margin-top: 10px; }
 
 /* TCEforms Inline-Relational-Record-Editing */
-.typo3-TCEforms DIV.inlineDiv { display: inline-block; }
+.typo3-TCEforms DIV.inlineDivMSIE { display: inline-block; }
 
 /* Element Browser / RTE link selection: */
 TABLE#typo3-curUrl { font-weight: bold; width: 100%; margin-bottom: 2px; }
