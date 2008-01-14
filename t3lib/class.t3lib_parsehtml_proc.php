@@ -812,7 +812,7 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 		if ($this->TS_transform_db_safecounter<0)	return $value;
 
 			// Split the content from RTE by the occurence of these blocks:
-		$blockSplit = $this->splitIntoBlock('TABLE,BLOCKQUOTE,'.$this->headListTags,$value);
+		$blockSplit = $this->splitIntoBlock('TABLE,BLOCKQUOTE,'.($this->procOptions['preserveDIVSections']?'DIV,':'').$this->headListTags,$value);
 
 		$cc=0;
 		$aC = count($blockSplit);
@@ -837,7 +837,8 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 					// Process based on the tag:
 				switch($tagName)	{
 					case 'blockquote':	// Keep blockquotes, but clean the inside recursively in the same manner as the main code
-						$blockSplit[$k]='<'.$tagName.'>'.$this->TS_transform_db($this->removeFirstAndLastTag($blockSplit[$k]),$css).'</'.$tagName.'>'.$lastBR;
+					case 'div':		// Do the same on div sections, if they were splitted
+						$blockSplit[$k]=$tag.$this->TS_transform_db($this->removeFirstAndLastTag($blockSplit[$k]),$css).'</'.$tagName.'>'.$lastBR;
 					break;
 					case 'ol':
 					case 'ul':	// Transform lists into <typolist>-tags:
@@ -951,7 +952,7 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 	function TS_transform_rte($value,$css=0)	{
 
 			// Split the content from Database by the occurence of these blocks:
-		$blockSplit = $this->splitIntoBlock('TABLE,BLOCKQUOTE,TYPOLIST,TYPOHEAD,'.$this->headListTags,$value);
+		$blockSplit = $this->splitIntoBlock('TABLE,BLOCKQUOTE,TYPOLIST,TYPOHEAD,'.($this->procOptions['preserveDIVSections']?'DIV,':'').$this->headListTags,$value);
 
 			// Traverse the blocks
 		foreach($blockSplit as $k => $v)	{
@@ -965,9 +966,10 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 					// Based on tagname, we do transformations:
 				switch($tagName)	{
 					case 'blockquote':	// Keep blockquotes:
+					case 'div':		// Keep div sections, if they were splitted
 						$blockSplit[$k] = $tag.
-											$this->TS_transform_rte($this->removeFirstAndLastTag($blockSplit[$k]),$css).
-											'</'.$tagName.'>';
+									$this->TS_transform_rte($this->removeFirstAndLastTag($blockSplit[$k]),$css).
+									'</'.$tagName.'>';
 					break;
 					case 'typolist':	// Transform typolist blocks into OL/UL lists. Type 1 is expected to be numerical block
 						if (!isset($this->procOptions['typolist']) || $this->procOptions['typolist'])	{
@@ -998,7 +1000,7 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 			} else {	// NON-block:
 				$nextFTN = $this->getFirstTagName($blockSplit[$k+1]);
 				$singleLineBreak = $blockSplit[$k]==chr(10);
-				if (t3lib_div::inList('TABLE,BLOCKQUOTE,TYPOLIST,TYPOHEAD,'.$this->headListTags,$nextFTN))	{	// Removing linebreak if typolist/typohead
+				if (t3lib_div::inList('TABLE,BLOCKQUOTE,TYPOLIST,TYPOHEAD,'.($this->procOptions['preserveDIVSections']?'DIV,':'').$this->headListTags,$nextFTN))	{	// Removing linebreak if typolist/typohead
 					$blockSplit[$k] = ereg_replace(chr(10).'[ ]*$','',$blockSplit[$k]);
 				}
 					// If $blockSplit[$k] is blank then unset the line. UNLESS the line happend to be a single line break.
