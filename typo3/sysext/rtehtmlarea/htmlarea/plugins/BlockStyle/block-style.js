@@ -223,9 +223,6 @@ BlockStyle = HTMLArea.Plugin.extend({
 			parent = parent.parentNode;
 		}
 		
-		if (parent.className && /\S/.test(parent.className)) {
-			classNames = parent.className.trim().split(" ");
-		}
 		if (parent) {
 			tagName = parent.nodeName.toLowerCase();
 			if (parent.className && /\S/.test(parent.className)) {

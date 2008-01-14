@@ -1,3 +1,7 @@
+2008-01-14  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
+
+	* Fixed bug #7138: RTE is not rendered in Tabs
+
 2008-01-14  Ingo Renner  <ingo@typo3.org>
 
 	* fixed #6932: Unlike the default preview language, fields of additionalPreviewLanguages are shown if they are empty. credits Helmut Ummel

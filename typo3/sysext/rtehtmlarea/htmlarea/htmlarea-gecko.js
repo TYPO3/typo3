@@ -267,7 +267,7 @@ HTMLArea.prototype.getParentElement = function(selection, range) {
 		var range = this._createRange(selection);
 	}
 	var parentElement = range.commonAncestorContainer;
-	while (parentElement.nodeType == 3) {
+	while (parentElement && parentElement.nodeType == 3) {
 		parentElement = parentElement.parentNode;
 	}
 	return parentElement;

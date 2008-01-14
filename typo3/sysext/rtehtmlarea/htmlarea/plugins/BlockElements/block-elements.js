@@ -656,7 +656,7 @@ BlockElements = HTMLArea.Plugin.extend({
 	 * This function gets called when the toolbar is updated
 	 */
 	onUpdateToolbar : function () {
-		if (this.editor._editMode === "textmode") {
+		if (this.editor.getMode() === "textmode" || this.editor._doc.designMode !== "on") {
 			return false;
 		}
 		var parentElement = this.editor._statusBarTree.selected ? this.editor._statusBarTree.selected : this.editor.getParentElement();
