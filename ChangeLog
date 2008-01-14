@@ -1,3 +1,7 @@
+2008-01-15  Oliver Hader  <oh@inpublica.de>
+
+	* Fixed bug #7126: IRRE - Child records are shown floated and not as blocks in Safari
+
 2008-01-10  Jeff Segars  <jeff@webempoweredchurch.org>
 
 	* Fixed bug #5421: Problem ignoring extension constraints
