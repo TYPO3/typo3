@@ -1,3 +1,7 @@
+2008-01-15  Oliver Hader  <oh@inpublica.de>
+
+	* (feature) Added feature #7122: IRRE - Implement TYPO3AJAX handler for Inline Relational Record Editing
+
 2008-01-14  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
 	* Fixed bug #7138: RTE is not rendered in Tabs

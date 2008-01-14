@@ -359,7 +359,10 @@ class t3lib_TCEforms	{
 			'inline' => array('appearance', 'foreign_label', 'foreign_selector', 'foreign_unique', 'maxitems', 'minitems', 'size', 'autoSizeMax', 'symmetric_label'),
 		);
 
-		$this->inline = t3lib_div::makeInstance('t3lib_TCEforms_inline');
+			// Create instance of t3lib_TCEforms_inline only if this a non-IRRE-AJAX call: 
+		if (!isset($GLOBALS['ajaxID']) || strpos($GLOBALS['ajaxID'], 't3lib_TCEforms_inline::')!==0) {
+			$this->inline = t3lib_div::makeInstance('t3lib_TCEforms_inline');
+		}
 
 			// Prepare user defined objects (if any) for hooks which extend this function:
 		$this->hookObjectsMainFields = array();

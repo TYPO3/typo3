@@ -121,10 +121,10 @@ var inline = {
 	makeAjaxCall: function(method, params, lock) {
 		var max, url='', urlParams='', options={};
 		if (method && params && params.length && this.lockAjaxMethod(method, lock)) {
-			url = 'alt_doc_ajax.php';
-			urlParams += '&ajax[0]='+method;
+			url = 'ajax.php';
+			urlParams = '&ajaxID=t3lib_TCEforms_inline::'+method;
 			for (var i=0, max=params.length; i<max; i++) {
-				urlParams += '&ajax['+(i+1)+']='+params[i];
+				urlParams += '&ajax['+i+']='+params[i];
 			}
 			options = {
 				method:		'post',

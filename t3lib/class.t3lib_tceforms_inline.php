@@ -832,11 +832,98 @@ class t3lib_TCEforms_inline {
 
 
 	/**
+	 * General processor for AJAX requests concerning IRRE. 
+	 * (called by typo3/ajax.php)
+	 * 
+	 * @param	array		$params: additional parameters (not used here)
+	 * @param	TYPO3AJAX	&$ajaxObj: the TYPO3AJAX object of this request
+	 * @return	void
+	 */
+	public function processAjaxRequest($params, &$ajaxObj) {
+		$ajaxArguments = t3lib_div::_GP('ajax');
+		$ajaxIdParts = explode('::', $GLOBALS['ajaxID'], 2);
+
+		if (isset($ajaxArguments) && is_array($ajaxArguments) && count($ajaxArguments)) {
+			$ajaxMethod = $ajaxIdParts[1];
+			switch ($ajaxMethod) {
+				case 'createNewRecord':
+					$this->processAjaxRequestConstruct($ajaxArguments);
+					$ajaxObj->setContentFormat('jsonbody');
+					$ajaxObj->setContent(
+						call_user_func_array(array(&$this, $ajaxMethod), $ajaxArguments)
+					);
+					break;
+				case 'setExpandedCollapsedState':
+					$ajaxObj->setContentFormat('jsonbody');
+					call_user_func_array(array(&$this, $ajaxMethod), $ajaxArguments);
+					break;
+			}
+		}
+	}
+
+
+	/**
+	 * Construct runtime environment for Inline Relational Record Editing.
+	 * - creates an anoymous SC_alt_doc in $GLOBALS['SOBE']
+	 * - creates a t3lib_TCEforms in $GLOBALS['SOBE']->tceforms
+	 * - sets ourself as reference to $GLOBALS['SOBE']->tceforms->inline
+	 * - sets $GLOBALS['SOBE']->tceforms->RTEcounter to the current situation on client-side
+	 * 
+	 * @param	array		&$ajaxArguments: The arguments to be processed by the AJAX request
+	 * @return	void
+	 */
+	protected function processAjaxRequestConstruct(&$ajaxArguments) {
+		require_once(PATH_typo3.'template.php');
+		require_once(PATH_t3lib.'class.t3lib_tceforms.php');
+		require_once(PATH_t3lib.'class.t3lib_clipboard.php');
+
+		global $SOBE, $BE_USER;
+
+			// Create a new anonymous object:
+		$SOBE = new stdClass();
+		$SOBE->MOD_MENU = array(
+			'showPalettes' => '',
+			'showDescriptions' => '',
+			'disableRTE' => ''
+		);
+			// Setting virtual document name
+		$SOBE->MCONF['name']='xMOD_alt_doc.php';
+			// CLEANSE SETTINGS
+		$SOBE->MOD_SETTINGS = t3lib_BEfunc::getModuleData(
+			$SOBE->MOD_MENU,
+			t3lib_div::_GP('SET'),
+			$SOBE->MCONF['name']
+		);
+			// Create an instance of the document template object
+		$SOBE->doc = t3lib_div::makeInstance('template');
+		$SOBE->doc->backPath = $GLOBALS['BACK_PATH'];
+		$SOBE->doc->docType = 'xhtml_trans';
+			// Initialize TCEforms (rendering the forms)
+		$SOBE->tceforms = t3lib_div::makeInstance('t3lib_TCEforms');
+		$SOBE->tceforms->inline =& $this;
+		$SOBE->tceforms->RTEcounter = intval(array_shift($ajaxArguments));
+		$SOBE->tceforms->initDefaultBEMode();
+		$SOBE->tceforms->palettesCollapsed = !$SOBE->MOD_SETTINGS['showPalettes'];
+		$SOBE->tceforms->disableRTE = $SOBE->MOD_SETTINGS['disableRTE'];
+		$SOBE->tceforms->enableClickMenu = TRUE;
+		$SOBE->tceforms->enableTabMenu = TRUE;
+			// Clipboard is initialized:
+		$SOBE->tceforms->clipObj = t3lib_div::makeInstance('t3lib_clipboard');		// Start clipboard
+		$SOBE->tceforms->clipObj->initializeClipboard();	// Initialize - reads the clipboard content from the user session
+			// Setting external variables:
+		if ($BE_USER->uc['edit_showFieldHelp']!='text' && $SOBE->MOD_SETTINGS['showDescriptions']) {
+			$SOBE->tceforms->edit_showFieldHelp = 'text';
+		}
+	}
+
+
+	/**
 	 * Initialize environment for AJAX calls
 	 *
 	 * @param	string		$method: Name of the method to be called
 	 * @param	array		$arguments: Arguments to be delivered to the method
 	 * @return	void
+	 * @deprecated	since TYPO3 4.2.0-alpha3
 	 */
 	function initForAJAX($method, &$arguments) {
 			// Set t3lib_TCEforms::$RTEcounter to the given value:
@@ -852,7 +939,7 @@ class t3lib_TCEforms_inline {
 	 *
 	 * @param	string		$domObjectId: The calling object in hierarchy, that requested a new record.
 	 * @param	string		$foreignUid: If set, the new record should be inserted after that one.
-	 * @return	string		A JSON string
+	 * @return	array		An array to be used for JSON
 	 */
 	function createNewRecord($domObjectId, $foreignUid = 0) {
 		$this->isAjaxCall = true;
@@ -900,7 +987,7 @@ class t3lib_TCEforms_inline {
 					"alert('Access denied');",
 				)
 			);
-			return t3lib_div::array2json($jsonArray);
+			return $jsonArray;
 		}
 
 			// Encode TCEforms AJAX response with utf-8:
@@ -946,8 +1033,8 @@ class t3lib_TCEforms_inline {
 			// Remove the current level also from the dynNestedStack of TCEforms:
 		$this->fObj->popFromDynNestedStack();
 
-			// return the JSON string
-		return t3lib_div::array2json($jsonArray);
+			// Return the JSON array:
+		return $jsonArray;
 	}
 
 

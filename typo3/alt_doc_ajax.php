@@ -63,7 +63,12 @@ require_once (PATH_t3lib.'class.t3lib_transferdata.php');
 t3lib_BEfunc::lockRecords();
 
 
-
+/**
+ * Deprecated AJAX handler for Inline Relational Record Editing (IRRE).
+ * The TYPO3AJAX interface is used now instead. 
+ *
+ * @deprecated	since TYPO3 4.2.0-alpha3
+ */
 class SC_alt_doc_ajax {
 	var $content;				// Content accumulation
 	var $retUrl;				// Return URL script, processed. This contains the script (if any) that we should RETURN TO from the alt_doc.php script IF we press the close button. Thus this variable is normally passed along from the calling script so we can properly return if needed.
