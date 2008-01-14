@@ -405,17 +405,19 @@ class t3lib_htmlmail {
 	}
 
 	/**
-	 * [Describe function...]
+	 * Assembles the message by headers and content and finally send it to the provided recipient.
 	 *
-	 * @param	[type]		$recipient: ...
-	 * @return	[type]		...
+	 * @param	string		$recipient: The recipient the message should be delivered to (if blank, $this->recipient will be used instead)
+	 * @return	boolean		Returns whether the mail was sent (successfully accepted for delivery)
 	 */
-	function send($recipient)	{
-			// This function sends the mail to one $recipient
-		if ($recipient) {$this->recipient = $recipient;}
+	function send($recipient='') {
+		if ($recipient) {
+			$this->recipient = $recipient;
+		}
 		$this->setHeaders();
 		$this->setContent();
-		$this->sendTheMail();
+		$mailWasSent = $this->sendTheMail();
+		return $mailWasSent;
 	}
 
 
@@ -687,10 +689,10 @@ class t3lib_htmlmail {
 	 *
 	 * With time this function should be made such that several ways of sending the mail is possible (local MTA, smtp other).
 	 *
-	 * @return	[type]		...
+	 * @return	boolean		Returns whether the mail was sent (successfully accepted for delivery)
 	 */
-	function sendTheMail () {
-#debug(array($this->recipient,$this->subject,$this->message,$this->headers));
+	function sendTheMail() {
+		$mailWasSent = false;
 			// Sends the mail, requires the recipient, message and headers to be set.
 		if (trim($this->recipient) && trim($this->message))	{	//  && trim($this->headers)
 			$returnPath = (strlen($this->returnPath)>0)?"-f".$this->returnPath:'';
@@ -700,30 +702,38 @@ class t3lib_htmlmail {
 			}
 				//If safe mode is on, the fifth parameter to mail is not allowed, so the fix wont work on unix with safe_mode=On
 			if(!ini_get('safe_mode') && $this->forceReturnPath) {
-				mail($this->recipient,
-					  $this->subject,
-					  $this->message,
-					  $this->headers,
-					  $returnPath);
+				$mailWasSent = mail(
+					$this->recipient,
+					$this->subject,
+					$this->message,
+					$this->headers,
+					$returnPath
+				);
 			} else {
-				mail($this->recipient,
-					  $this->subject,
-					  $this->message,
-					  $this->headers);
+				$mailWasSent = mail(
+					$this->recipient,
+					$this->subject,
+					$this->message,
+					$this->headers
+				);
 			}
 				// Sending copy:
 			if ($this->recipient_copy)	{
 				if(!ini_get('safe_mode') && $this->forceReturnPath) {
-					mail( 	$this->recipient_copy,
-								$this->subject,
-								$this->message,
-								$this->headers,
-								$returnPath);
+					$mailWasSent = mail(
+						$this->recipient_copy,
+						$this->subject,
+						$this->message,
+						$this->headers,
+						$returnPath
+					);
 				} else {
-					mail( 	$this->recipient_copy,
-								$this->subject,
-								$this->message,
-								$this->headers	);
+					$mailWasSent = mail(
+						$this->recipient_copy,
+						$this->subject,
+						$this->message,
+						$this->headers
+					);
 				}
 			}
 				// Auto response
@@ -731,23 +741,27 @@ class t3lib_htmlmail {
 				$theParts = explode('/',$this->auto_respond_msg,2);
 				$theParts[1] = str_replace("/",chr(10),$theParts[1]);
 				if(!ini_get('safe_mode') && $this->forceReturnPath) {
-					mail( 	$this->from_email,
-								$theParts[0],
-								$theParts[1],
-								"From: ".$this->recipient,
-								$returnPath);
+					$mailWasSent = mail(
+						$this->from_email,
+						$theParts[0],
+						$theParts[1],
+						'From: '.$this->recipient,
+						$returnPath
+					);
 				} else {
-					mail( 	$this->from_email,
-								$theParts[0],
-								$theParts[1],
-								"From: ".$this->recipient);
+					$mailWasSent = mail(
+						$this->from_email,
+						$theParts[0],
+						$theParts[1],
+						'From: '.$this->recipient
+					);
 				}
 			}
 			if($this->returnPath) {
 				ini_restore(sendmail_from);
 			}
-			return true;
-		} else {return false;}
+		}
+		return $mailWasSent;
 	}
 
 	/**

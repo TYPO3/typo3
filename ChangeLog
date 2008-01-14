@@ -1,6 +1,7 @@
 2008-01-15  Oliver Hader  <oh@inpublica.de>
 
 	* (feature) Added feature #7122: IRRE - Implement TYPO3AJAX handler for Inline Relational Record Editing
+	* (feature) Added feature #2797: Add return value to t3lib_htmlmail::send (thanks to Steffen Kamper)
 
 2008-01-14  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
