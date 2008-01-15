@@ -384,6 +384,9 @@ class localRecordList extends recordList {
 		$selFieldList = implode(',',$selectFields);		// implode it into a list of fields for the SQL-statement.
 
 			// Create the SQL query for selecting the elements in the listing:
+		if ($this->csvOutput) {	// do not do paging when outputting as CSV
+			$this->iLimit = 0;
+		}
 		$queryParts = $this->makeQueryArray($table, $id,$addWhere,$selFieldList);	// (API function from class.db_list.inc)
 		$this->setTotalItems($queryParts);		// Finding the total amount of records on the page (API function from class.db_list.inc)
 
@@ -393,6 +396,11 @@ class localRecordList extends recordList {
 
 			// If the count query returned any number of records, we perform the real query, selecting records.
 		if ($this->totalItems)	{
+				// set the showLimit to the number of records when outputting as CSV
+			if ($this->csvOutput) {
+				$this->showLimit = $this->totalItems;
+				$this->iLimit = $this->totalItems;
+			}
 			$result = $GLOBALS['TYPO3_DB']->exec_SELECT_queryArray($queryParts);
 			$dbCount = $GLOBALS['TYPO3_DB']->sql_num_rows($result);
 		}
@@ -622,7 +630,9 @@ class localRecordList extends recordList {
 		}
 
 			// Add row to CSV list:
-		if ($this->csvOutput) $this->addToCSV($row,$table);
+		if ($this->csvOutput) {
+			$this->addToCSV($row,$table);
+		}
 
 			// Create element in table cells:
 		$iOut.=$this->addelement(1,$theIcon,$theData,$row_bgColor);
@@ -1318,14 +1328,17 @@ class localRecordList extends recordList {
 		$this->csvLines=array();
 
 			// Getting header line with field names:
-		$csvRow=array();
-		foreach($this->fieldArray as $fN)	{
-			$csvRow[]=$fN;
+		$csvRow = array();
+		foreach ($this->fieldArray as $fN) {
+			if ($fN == '_CONTROL_' || $fn == '_CLIPBOARD_') {
+					continue;
+			}
+			$csvRow[] = $fN;
 		}
 
 			// Set the header + an empty row:
 		$this->setCsvRow($csvRow);
-		$this->csvLines[]='';
+		$this->csvLines[] = '';
 	}
 
 	/**
@@ -1338,14 +1351,25 @@ class localRecordList extends recordList {
 	function addToCSV($row,$table)	{
 
 			// Traversing fields, adding values from $row:
-		$csvRow=array();
-		foreach($this->fieldArray as $fN)	{
-			if ($fN=='_PATH_')	{
-				$csvRow[]=$this->recPath($row['pid']);
-			} elseif ($fN=='_REF_')	{
-				$csvRow[]=$this->makeRef($table, $row['uid']);
-			} else {
-				$csvRow[]=$row[$fN];
+		$csvRow = array();
+		foreach ($this->fieldArray as $fN) {
+			switch ($fN) {
+				case '_PATH':
+					$csvRow[] = $this->recPath($row['pid']);
+					break;
+
+				case '_REF_':
+					$csvRow[] = $this->makeRef($table, $row['uid']);
+					break;
+
+					// remove these columns from the CSV view
+				case '_CONTROL_':
+				case '_CLIPBOARD_':
+					continue;
+					break;
+
+				default:
+					$csvRow[] = $row[$fN];
 			}
 		}
 
