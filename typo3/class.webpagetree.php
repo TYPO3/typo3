@@ -183,7 +183,7 @@ class webPageTree extends t3lib_browseTree {
 
 		$out = '
 			<!-- TYPO3 tree structure. -->
-			<ul class="tree">
+			<ul class="tree" id="treeRoot">
 		';
 
 			// -- evaluate AJAX request

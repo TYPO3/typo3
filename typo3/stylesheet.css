@@ -262,9 +262,11 @@ BODY#typo3-alt-db-navframe-php DIV.c-notice { border: 1px solid black; padding: 
 .navFrameHL { background-color: #ebebeb; }
 
 /* AJAX page tree */
-UL.tree { list-style: none; margin: 0 0 10px 0; padding: 0; }
+BODY#typo3-pagetree	{ margin: 0; padding: 0; }
+
+UL.tree 		{ list-style: none; margin: 0; padding: 0; clear: both; }
 UL.tree A		{ text-decoration: none; }
-UL.tree A.pm	{ cursor: pointer; }
+UL.tree A.pm		{ cursor: pointer; }
 UL.tree IMG		{ vertical-align: middle; }
 UL.tree UL		{ list-style: none; margin: 0; padding: 0; padding-left: 17px; }
 UL.tree UL LI	{ list-style: none; margin: 0; padding: 0; line-height: 10px; white-space: nowrap; }
@@ -273,6 +275,15 @@ UL.tree UL LI.last > UL	{ background: none; }
 UL.tree LI.active, UL.tree UL LI.active	{ background-color: #ebebeb !important; }
 UL.tree LI.active UL, UL.tree UL LI.active UL	{ background-color: #f7f3ef; }
 #dragIcon { z-index: 1; position: absolute; visibility: hidden; filter: alpha(opacity=50); -moz-opacity:0.5; opacity:0.5; white-space: nowrap; }
+
+div#treeOptions, div#treeOptions * { float: left; }
+div#treeOptions		{ width: 100%; height: 24px; background: #fff; margin: 0 0 5px; border-bottom: 1px solid #ccc; }
+div#treeFilterBox	{ width: 158px; margin-top: 2px; height: 22px; background: #fff url('gfx/search_bubble.png') no-repeat 8px 0; padding-left: 10px; }
+input#treeFilter 	{ height: 14px; width: 120px; margin: 3px 0 0 17px; border: 0; }
+img#treeFilterReset 	{ border: 0; margin: 5px 0 0 4px; cursor: pointer; visibility: hidden; }
+div#treeOptionButtons 	{ float: right; }
+div#treeOptionButtons a	{ margin: 5px 1px 0; }
+
 
 /* TCEforms */
 table.typo3-TCEforms { width: 93%; border-collapse: collapse; }

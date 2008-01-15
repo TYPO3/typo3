@@ -24,54 +24,6 @@
 *
 ***************************************************************/
 
-	// Call this function, refresh_nav(), from another script in the backend if you want
-	// to refresh the navigation frame (eg. after having changed a page title or moved pages etc.)
-	//		See t3lib_BEfunc::getSetUpdateSignal()
-	// please use the function in the "Tree" object for future implementations
-function refresh_nav() { window.setTimeout('Tree.refresh();',0); }
-
-	// Deprecated since 4.1.
-	// Another JS function, for highlighting rows in the page tree, kept alive for backwards
-	// compatibility. Please use the function in the "Tree" object for future implementations.
-function hilight_row(frameSetModule, highLightID) { Tree.highlightActiveItem(frameSetModule, highlightID); }
-
-	// Filters the tree by setting a class on items not matching search input string
-function filter(strToDim)	{
-	filterTraverse($("bodyTag").getElementsByClassName("tree")[0],strToDim);
-}
-
-
-	// returns the inner content of an item, this is need because gecko does not know the innerText property
-function getInnerText(el)	{
-	if (el.innerText)	{
-		return el.innerText;
-	} else {
-		return el.textContent;
-	}
-}
-
-function filterTraverse (eUL,strToDim)	{
-	var searchRegex = new RegExp(strToDim, "i");
-	eUL.immediateDescendants().each(function(item) {
-		item.immediateDescendants().each(function(eLI) {
-			if (eLI.nodeName=="UL")	{
-				filterTraverse(eLI,strToDim);
-			};
-			if (eLI.nodeName=="SPAN")	{
-				if (strToDim)	{
-					if (getInnerText(eLI).search(searchRegex) != -1) {
-						eLI.removeClassName("not-found");
-					} else {
-						eLI.addClassName("not-found");
-					}
-				} else {
-					eLI.removeClassName("not-found");
-				}
-			}
-		});
-	});
-}
-
 
 var Tree = {
 	thisScript: 'ajax.php',
@@ -166,7 +118,7 @@ var Tree = {
 		top.fsMod.navFrameHighlightedID[frameSetModule] = highlightID;
 		if ($(highlightID)) Element.addClassName(highlightID, this.highlightClass);
 	}
-}
+};
 
 
 
@@ -245,4 +197,74 @@ var DragDrop = {
 		var code = '<div id="dragIcon" style="visibility: hidden;">&nbsp;</div>';
 		new Insertion.Bottom(document.getElementsByTagName('body')[0], code);
 	}
+};
+
+
+
+/**
+ *
+ * @author	Ingo Renner <ingo@typo3.org>
+ **/
+var PageTreeFilter = {
+	field: 'treeFilter',
+	resetfield: 'treeFilterReset',
+
+	/**
+	 * Filters the tree by setting a class on items not matching search input string
+	 * tested in FF2, S3, IE6, IE7
+	 */
+	filter: function() {
+		var searchString = $F(this.field).toLowerCase();
+		var pages = $$('#treeRoot .dragTitle a');
+		pages.each(function(el) {
+			if (el.innerHTML.toLowerCase().include(searchString)) {
+				el.up().removeClassName('not-found');
+			} else {
+				el.up().addClassName('not-found');
+			}
+		});
+		this.toggleReset();
+	},
+
+
+	/**
+	 * toggles the visibility of the reset button
+	 */
+	toggleReset: function() {
+		var searchFieldContent = $F(this.field);
+		var resetButton = $(this.resetfield);
+
+		if (searchFieldContent != '' && resetButton.getStyle('visibility') == 'hidden') {
+			resetButton.setStyle({ visibility: 'visible'} );
+		} else if (searchFieldContent == '' && resetButton.getStyle('visibility') == 'visible') {
+			resetButton.setStyle( {visibility: 'hidden'} );
+		}
+	},
+
+	/**
+	 * resets the search field
+	 */
+	resetSearchField: function() {
+		if ($(this.resetfield).getStyle('visibility') == 'visible') {
+			$(this.field).value = '';
+			PageTreeFilter.filter('');
+		}
+	}
+};
+
+
+// Call this function, refresh_nav(), from another script in the backend if you want
+// to refresh the navigation frame (eg. after having changed a page title or moved pages etc.)
+//		See t3lib_BEfunc::getSetUpdateSignal()
+// please use the function in the "Tree" object for future implementations
+function refresh_nav() {
+	window.setTimeout('Tree.refresh();',0);
 }
+
+// Deprecated since 4.1.
+// Another JS function, for highlighting rows in the page tree, kept alive for backwards
+// compatibility. Please use the function in the "Tree" object for future implementations.
+function hilight_row(frameSetModule, highLightID) {
+	Tree.highlightActiveItem(frameSetModule, highlightID);
+}
+

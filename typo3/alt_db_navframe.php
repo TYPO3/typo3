@@ -138,7 +138,7 @@ class SC_alt_db_navframe {
 
 			// If highlighting is active, define the CSS class for the active item depending on the workspace
 		if ($this->doHighlight) {
-			$hlClass = ($BE_USER->workspace === 0 ? 'active' : 'active active-ws wsver'.$BE_USER->workspace); 
+			$hlClass = ($BE_USER->workspace === 0 ? 'active' : 'active active-ws wsver'.$BE_USER->workspace);
 		}
 
 			// Create template object:
@@ -170,9 +170,15 @@ class SC_alt_db_navframe {
 			return false;
 		}
 		'.($this->cMR?"jumpTo(top.fsMod.recentIds['web'],'');":'').'
+
+			Event.observe(window, "load", function() {
+				Event.observe(PageTreeFilter.field, "keyup", PageTreeFilter.filter.bindAsEventListener(PageTreeFilter));
+				Event.observe(PageTreeFilter.resetfield, "click", PageTreeFilter.resetSearchField.bindAsEventListener(PageTreeFilter) );
+			});
+
 		');
 
-		$this->doc->bodyTagId = 'bodyTag';
+		$this->doc->bodyTagId = 'typo3-pagetree';
 	}
 
 
@@ -189,7 +195,7 @@ class SC_alt_db_navframe {
 
 			// Start page:
 		$this->content = $this->doc->startPage('TYPO3 Page Tree');
-		
+
 			// Outputting workspace info
 		if ($GLOBALS['BE_USER']->workspace!==0 || $GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.onlineWorkspaceInfo'))	{
 			switch($GLOBALS['BE_USER']->workspace)	{
@@ -213,41 +219,43 @@ class SC_alt_db_navframe {
 			';
 		}
 
+			// adding tree options
+			$this->content .= '
+	<div id="treeOptions">';
 		if (!$GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.hideFilter'))	{
-			$this->content.= '
-					<div class="bgColor4">
-						Filter: <input type="text" value="" name="_livesearch" id="_livesearch" onkeyup="filter(this.value);"/>
-					</div><br>
-			';
+			$this->content .= '
+		<div id="treeFilterBox">
+			<input type="text" value="" name="treeFilter" id="treeFilter" />
+			<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/search_reset.png', ' width="11" height="11"').' id="treeFilterReset" alt="Reset Filter" />
+		</div>';
+
 		}
+
+		$this->content .= '
+		<div id="treeOptionButtons">
+			<a href="'.htmlspecialchars(t3lib_div::getIndpEnv('REQUEST_URI')).'"><img'.t3lib_iconWorks::skinImg('','gfx/refresh_n.gif','width="14" height="14"').' title="'.$LANG->sL('LLL:EXT:lang/locallang_core.php:labels.refresh',1).'" alt="" /></a>'.
+				// CSH icon:
+			t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'pagetree', $GLOBALS['BACK_PATH']).'
+		</div>
+	</div>';
+
 
 			// Outputting Temporary DB mount notice:
 		if ($this->active_tempMountPoint)	{
 			$this->content.= '
-				<div class="bgColor4 c-notice">
-					<img'.t3lib_iconWorks::skinImg('','gfx/icon_note.gif','width="18" height="16"').' align="top" alt="" />'.
-					'<a href="'.htmlspecialchars(t3lib_div::linkThisScript(array('setTempDBmount' => 0))).'">'.
-					$LANG->sl('LLL:EXT:lang/locallang_core.php:labels.temporaryDBmount',1).
-					'</a><br/>
-					'.$LANG->sl('LLL:EXT:lang/locallang_core.php:labels.path',1).': <span title="'.htmlspecialchars($this->active_tempMountPoint['_thePathFull']).'">'.htmlspecialchars(t3lib_div::fixed_lgd_cs($this->active_tempMountPoint['_thePath'],-50)).'</span>
-				</div>
+	<div class="bgColor4 c-notice">
+		<img'.t3lib_iconWorks::skinImg('','gfx/icon_note.gif','width="18" height="16"').' align="top" alt="" />'.
+		'<a href="'.htmlspecialchars(t3lib_div::linkThisScript(array('setTempDBmount' => 0))).'">'.
+		$LANG->sl('LLL:EXT:lang/locallang_core.php:labels.temporaryDBmount',1).
+		'</a><br/>
+		'.$LANG->sl('LLL:EXT:lang/locallang_core.php:labels.path',1).': <span title="'.htmlspecialchars($this->active_tempMountPoint['_thePathFull']).'">'.htmlspecialchars(t3lib_div::fixed_lgd_cs($this->active_tempMountPoint['_thePath'],-50)).'</span>
+	</div>
 			';
 		}
 
+
 			// Outputting page tree:
-		$this->content.= $tree;
-
-			// Outputting refresh-link
-		$this->content.= '
-			<p class="c-refresh">
-				<a href="'.htmlspecialchars(t3lib_div::getIndpEnv('REQUEST_URI')).'">'.
-				'<img'.t3lib_iconWorks::skinImg('','gfx/refresh_n.gif','width="14" height="14"').' title="'.$LANG->sL('LLL:EXT:lang/locallang_core.php:labels.refresh',1).'" alt="" />'.
-				$LANG->sL('LLL:EXT:lang/locallang_core.php:labels.refresh',1).'</a>
-			</p>
-			<br />';
-
-			// CSH icon:
-		$this->content.= t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'pagetree', $GLOBALS['BACK_PATH']);
+		$this->content .= $tree;
 
 			// Adding javascript for drag & drop activation and highlighting
 		$this->content .= $this->doc->wrapScriptTags('
@@ -331,7 +339,7 @@ class SC_alt_db_navframe {
 	/**
 	 * Makes the AJAX call to expand or collapse the pagetree.
 	 * Called by typo3/ajax.php
-	 * 
+	 *
 	 * @param	array		$params: additional parameters (not used here)
 	 * @param	TYPO3AJAX	&$ajaxObj: reference of the TYPO3AJAX object of this request
 	 * @return	void
