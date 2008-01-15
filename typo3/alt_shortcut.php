@@ -138,19 +138,19 @@ class SC_alt_shortcut {
 		global $TBE_MODULES;
 
 			// Setting GPvars:
-		$this->isAjaxCall = (boolean) t3lib_div::_GP('ajax');
-		$this->modName = t3lib_div::_GP('modName');
-		$this->M_modName = t3lib_div::_GP('motherModName');
-		$this->URL = t3lib_div::_GP('URL');
-		$this->editSC = t3lib_div::_GP('editShortcut');
+		$this->isAjaxCall             = (boolean) t3lib_div::_GP('ajax');
+		$this->modName                = t3lib_div::_GP('modName');
+		$this->M_modName              = t3lib_div::_GP('motherModName');
+		$this->URL                    = t3lib_div::_GP('URL');
+		$this->editSC                 = t3lib_div::_GP('editShortcut');
 
-		$this->deleteCategory = t3lib_div::_GP('deleteCategory');
-		$this->editPage = t3lib_div::_GP('editPage');
-		$this->changeWorkspace = t3lib_div::_GP('changeWorkspace');
+		$this->deleteCategory         = t3lib_div::_GP('deleteCategory');
+		$this->editPage               = t3lib_div::_GP('editPage');
+		$this->changeWorkspace        = t3lib_div::_GP('changeWorkspace');
 		$this->changeWorkspacePreview = t3lib_div::_GP('changeWorkspacePreview');
-		$this->editName = t3lib_div::_GP('editName');
-		$this->editGroup = t3lib_div::_GP('editGroup');
-		$this->whichItem = t3lib_div::_GP('whichItem');
+		$this->editName               = t3lib_div::_GP('editName');
+		$this->editGroup              = t3lib_div::_GP('editGroup');
+		$this->whichItem              = t3lib_div::_GP('whichItem');
 
 			// Creating modules object
 		$this->loadModules = t3lib_div::makeInstance('t3lib_loadModules');
