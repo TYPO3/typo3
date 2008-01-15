@@ -1,3 +1,7 @@
+2008-01-14  Ingo Renner  <ingo@typo3.org>
+
+	* added feature #5536: Some Hooks for tslib_content
+
 2008-01-15  Benjamin Mack  <mack@xnos.org>
 
 	* (bugfix) #2936, 5613: Improvements to clipboard copy/move selection (by Bernhard Kraft)

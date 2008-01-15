@@ -338,6 +338,7 @@ class tslib_cObj {
 	var $substMarkerCache=array();	// Caching substituteMarkerArrayCached function
 	var $recordRegister=array();	// Array that registers rendered content elements (or any table) to make sure they are not rendered recursively!
 	var $cObjHookObjectsArr = array();		// Containig hooks for userdefined cObjects
+	private $stdWrapHookObjects = array();		// Containig hook objects for stdWrap
 
 	/**
 	 * Class constructor.
@@ -358,6 +359,19 @@ class tslib_cObj {
 				$this->cObjHookObjectsArr[$classArr[0]] = &t3lib_div::getUserObj($classArr[1]);
 			}
 		}
+
+		if(is_array($TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_content.php']['stdWrap'])) {
+			foreach($TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_content.php']['stdWrap'] as $classData) {
+				$hookObject = &t3lib_div::getUserObj($classData);
+
+				if(!($hookObject instanceof tslib_content_stdWrapHook)) {
+					throw new UnexpectedValueException('$hookObject must implement interface tslib_content_stdWrapHook', 1195043965);
+				}
+
+				$this->stdWrapHookObjects[] = $hookObject;
+			}
+		}
+
 	}
 
 	/**
@@ -443,6 +457,8 @@ class tslib_cObj {
 	 * @example http://typo3.org/doc.0.html?&encryptionKey=&tx_extrepmgm_pi1[extUid]=267&tx_extrepmgm_pi1[tocEl]=153&cHash=7e74f4d331
 	 */
 	function cObjGetSingle($name,$conf,$TSkey='__')	{
+		global $TYPO3_CONF_VARS;
+
 		$content='';
 			// Checking that the function is not called eternally. This is done by interrupting at a depth of 100
 		$GLOBALS['TSFE']->cObjectDepthCounter--;
@@ -565,6 +581,20 @@ class tslib_cObj {
 						break;
 						case 'MULTIMEDIA':
 							$content.=$this->MULTIMEDIA($conf);
+						break;
+						default:
+								// call hook functions for extra processing
+							if(is_array($TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_content.php']['cObjTypeAndClassDefault']))    {
+								foreach($TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_content.php']['cObjTypeAndClassDefault'] as $classData)    {
+									$hookObject = &t3lib_div::getUserObj($classData);
+
+									if(!($hookObject instanceof tslib_content_cObjGetSingleHook)) {
+										throw new UnexpectedValueException('$hookObject must implement interface tslib_content_cObjGetSingleHook', 1195043731);
+									}
+
+									$content .= $hookObject->getSingleContentObject($name, $conf, $TSkey, $this);
+								}
+							}
 						break;
 					}
 				}
@@ -3124,6 +3154,10 @@ class tslib_cObj {
 	function stdWrap($content,$conf)	{
 		if (is_array($conf))	{
 
+			foreach($this->stdWrapHookObjects as $hookObject) {
+				$content = $hookObject->stdWrapPreProcess($content, $conf, $this);
+			}
+
 				// Setting current value, if so
 			if ($conf['setContentToCurrent']){$this->data[$this->currentValKey]=$content;}
 			if ($conf['setCurrent'] || $conf['setCurrent.']){$this->data[$this->currentValKey] = $this->stdWrap($conf['setCurrent'], $conf['setCurrent.']);}
@@ -3140,6 +3174,10 @@ class tslib_cObj {
 			if ($conf['numRows.']) {$content=$this->numRows($conf['numRows.']);}
 			if ($conf['filelist'] || $conf['filelist.'])	{$content=$this->filelist($this->stdWrap($conf['filelist'], $conf['filelist.']));}
 			if ($conf['preUserFunc'])	{$content = $this->callUserFunction($conf['preUserFunc'], $conf['preUserFunc.'], $content);}
+
+			foreach($this->stdWrapHookObjects as $hookObject)	{
+				$content = $hookObject->stdWrapOverride($content, $conf, $this);
+			}
 
 				// Overriding values, evaluating conditions
 			if ($conf['override'] || $conf['override.']){
@@ -3167,6 +3205,10 @@ class tslib_cObj {
 
 				// Call stdWrap recursively
 			if ($conf['stdWrap.'])	{ $content=$this->stdWrap($content,$conf['stdWrap.']); }
+
+			foreach($this->stdWrapHookObjects as $hookObject) {
+				$content = $hookObject->stdWrapProcess($content, $conf, $this);
+			}
 
 			if (   ($conf['required'] && (string)$content=='') || ($conf['if.'] && !$this->checkIf($conf['if.'])) || ($conf['fieldRequired'] && !trim($this->data[$conf['fieldRequired']]))    ){
 				$content = '';
@@ -3263,10 +3305,21 @@ class tslib_cObj {
 					$content ='<!--'.$substKey.'-->';
 				}
 					// Various:
-				if ($conf['prefixComment'] && !$GLOBALS['TSFE']->config['config']['disablePrefixComment'])	{$content = $this->prefixComment($conf['prefixComment'], $conf['prefixComment.'], $content);}
+				if ($conf['prefixComment'] && !$GLOBALS['TSFE']->config['config']['disablePrefixComment']) {
+					$content = $this->prefixComment($conf['prefixComment'], $conf['prefixComment.'], $content);
+				}
 
-				if ($conf['editIcons'] && $GLOBALS['TSFE']->beUserLogin){$content=$this->editIcons($content,$conf['editIcons'],$conf['editIcons.']);}
-				if ($conf['editPanel'] && $GLOBALS['TSFE']->beUserLogin){$content=$this->editPanel($content, $conf['editPanel.']);}
+				if ($conf['editIcons'] && $GLOBALS['TSFE']->beUserLogin) {
+					$content = $this->editIcons($content, $conf['editIcons'], $conf['editIcons.']);
+				}
+
+				if ($conf['editPanel'] && $GLOBALS['TSFE']->beUserLogin) {
+					$content = $this->editPanel($content, $conf['editPanel.']);
+				}
+			}
+
+			foreach($this->stdWrapHookObjects as $hookObject) {
+				$content = $hookObject->stdWrapPostProcess($content, $conf, $this);
 			}
 
 				//Debug:
@@ -4760,6 +4813,8 @@ class tslib_cObj {
 	 * @see getFieldVal()
 	 */
 	function getData($string,$fieldArray)	{
+		global $TYPO3_CONF_VARS;
+
 		if (!is_array($fieldArray))	{
 			$fieldArray=$GLOBALS['TSFE']->page;
 		}
@@ -4874,7 +4929,20 @@ class tslib_cObj {
 					break;
 				}
 			}
+
+			if(is_array($TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_content.php']['getData']))    {
+				foreach($TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_content.php']['getData'] as $classData)    {
+					$hookObject = &t3lib_div::getUserObj($classData);
+
+					if(!($hookObject instanceof tslib_content_getDataHook)) {
+						throw new UnexpectedValueException('$hookObject must implement interface tslib_content_getDataHook', 1195044480);
+					}
+
+					$retVal = $hookObject->getDataExtension($string, $fieldArray, $secVal, $retVal, $this);
+				}
+			}
 		}
+
 		return $retVal;
 	}
 
