@@ -1,7 +1,3 @@
-2008-01-15  Benjamin Mack  <mack@xnos.org>
-
-	* (bugfix) Fixed #7148 - CSV Export Improvements in List Module
-
 2008-01-15  Ingo Renner  <ingo@typo3.org>
 
 	* added feature #5536: Some Hooks for tslib_content
@@ -13,8 +9,9 @@
 	* (bugfix) #2936, 5613: Improvements to clipboard copy/move selection (by Bernhard Kraft)
 	* (cleanup) #6958: added comments in t3lib_htmlmail.php, used foreach and some better variable namings (thanks to Stefano Cecere and Steffen Kamper)
 	* (bugfix) #5482:t3lib_htmlmail.php is now initialized with empty variables
+	* (bugfix) Fixed #7148 - CSV Export Improvements in List Module
 
-2008-01-15	Dmitry Dulepov	<dmitry@typo3.org>
+2008-01-15  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Fixed bug #5660: Wrong HTTP Header on Domain Redirect (fix by Jeff Segars)
 
@@ -103,7 +100,7 @@
 
 	* Feature/bugfix: Fixing icons for Opera and adding new icons in default skin of htmlArea RTE and in t3skin/rtehtmlarea
 
-2007-12-27	Dmitry Dulepov	<dmitry@typo3.org>
+2007-12-27  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Fixed bug #7028: Implement CSH for flexforms
 
@@ -117,11 +114,11 @@
 	* (minor) Fixed bug #6007: IRRE - Child records with image fields are not shown in m:n disposal
 	* (minor) Fixed hanging recordset in t3lib_TCEmain::getSortNumber
 
-2007-12-20	Thomas Hempel  <thomas@typo3-unleashed.net>
+2007-12-20  Thomas Hempel  <thomas@typo3-unleashed.net>
 
 	* Added meta-subcategory "root" for adding deliverables to main categories.
 
-2007-12-19	Thomas Hempel  <thomas@typo3-unleashed.net>
+2007-12-19  Thomas Hempel  <thomas@typo3-unleashed.net>
 
 	* Feature request #6988: Return errors from performUpdateQueries (Thanks to Francois Suter)
 
@@ -142,7 +139,7 @@
 
 	* (bugfix) #6955: fileadmin contextual menu doesn't popup well
 
-2007-12-16  Ingo Renner	<ingo@typo3.org>
+2007-12-16  Ingo Renner  <ingo@typo3.org>
 
 	* removed width css property from workspace selector toolbar item as it caused layout issues in non english backends
 
@@ -152,7 +149,7 @@
 	* (bugfix) #6879: Sticky top icons in alt_doc: missing
 	   button when columnsOnly is set
 
-2007-12-15  Ingo Renner	<ingo@typo3.org>
+2007-12-15  Ingo Renner  <ingo@typo3.org>
 
 	* fixed bug #6921: labels in t3lib/stddb/tbl_be.php hardcoded
 
@@ -219,7 +216,7 @@
 
 	* Changed "Clear cache" string to start with upper-case
 
-2007-12-02  Ingo Renner	<ingo@typo3.org>
+2007-12-02  Ingo Renner  <ingo@typo3.org>
 
 	* added feature #6868: Enable labels for EM extension configuration, credits Georg Ringer
 
@@ -233,7 +230,7 @@
 
 	* Fixed bug #5602: spamProtectEmailAddresses_atSubst is not recognized correctly
 
-2007-11-30  Ingo Renner	<ingo@typo3.org>
+2007-11-30  Ingo Renner  <ingo@typo3.org>
 
 	* added positioning function for the clear cache menu which is needed to keep the menu below it's icon when new items are added to the toolbar
 	* added backend search toolbar item to backend.php
@@ -243,7 +240,7 @@
 	* (feature) #6833: Possibility to add inline JS to page (Thanks to Steffen Kamper)
 	* (minor) Fixed #6825: TCEforms -- Icon for empty palettes are not displayed anymore
 
-2007-11-27  Ingo Renner	<ingo@typo3.org>
+2007-11-27  Ingo Renner  <ingo@typo3.org>
 
 	* added clear cache actions menu to backend.php as part of the cleaner backend project
 	* moved user info and logout button to the toolbar
@@ -252,7 +249,7 @@
 
 	* Bugfix #6836: htmlArea RTE cannot enter line break in Safari (Windows)
 
-2007-11-26  Ingo Renner	<ingo@typo3.org>
+2007-11-26  Ingo Renner  <ingo@typo3.org>
 
 	* moved interface t3lib_backendToolbarItem to typo3/interfaces/interface.backend_toolbaritem.php
 
@@ -313,7 +310,7 @@
 
 	* Added hooks #6738: Hooks for Web>List module which allow modification/addition/removal of icons for each table and its records
 
-2007-11-22  Ingo Renner	<ingo@typo3.org>
+2007-11-22  Ingo Renner  <ingo@typo3.org>
 
 	* fixed bug #6741: Add fields cruser_id and crdate to table fe_groups, credit Malte Jansen
 	* added feature #6793: Rename User and Tools modules, credits Francois Suter
@@ -360,7 +357,7 @@
 	* Feature #6715: Remapping of b and i tags by RTE transformation made configurable
 	* Feature/bugfix: Change to the initialisation sequence of htmlArea RTE
 
-2007-11-16  Ingo Renner	<ingo@typo3.org>
+2007-11-16  Ingo Renner  <ingo@typo3.org>
 
 	* added feature #6545: Hook Request: db_list
 
@@ -388,7 +385,7 @@
 
 	* Feature #6657 revisited: htmlArea RTE: remove em and strong remap from main script
 
-2007-11-15  Ingo Renner	<ingo@typo3.org>
+2007-11-15  Ingo Renner  <ingo@typo3.org>
 
 	* enabled requestUpdate for rte_enabled
 	* added feature #6721: add the workspace selector to the cleaner backend toolbar
@@ -410,7 +407,7 @@
 	* Minor changes to feature #6670: Enable Tabs in Page Properties
 	* Feature #6710: Use optgroups in selectorboxes
 
-2007-11-14  Ingo Renner	<ingo@typo3.org>
+2007-11-14  Ingo Renner  <ingo@typo3.org>
 
 	* fixed bug #6692: When letting TYPO3 generate DB table icons it can happen that transparent areas become rendered black
 	* added follow up on feature #6670: Enable Tabs in Page Properties
@@ -465,7 +462,7 @@
 	* (feature/cleanup) Refactored clickmenu to speed up the BE
 	* (bugfix) Fixed Image Generation bug. Call in t3lib_div now uses the IM wrapper to render gifs/pngs
 
-2007-11-08  Ingo Renner	<ingo@typo3.org>
+2007-11-08  Ingo Renner  <ingo@typo3.org>
 
 	* added initial cleaner backend project work (backend.php)
 
@@ -535,7 +532,7 @@
 
 2007-10-30  Jeff Segars  <jeff@webempoweredchurch.org>
 
-	* Fixed bug #6618: Web->List: Add title to versioning symbol in extended view	(Thanks to Christian Kuhn)
+	* Fixed bug #6618: Web->List: Add title to versioning symbol in extended view (Thanks to Christian Kuhn)
 
 2007-10-30  Oliver Hader  <oh@inpublica.de>
 
@@ -2664,7 +2661,7 @@
 2006-02-28  Sebastian Kurfuerst  <sebastian@garbage-group.de>
 
 	* Fixed bug: admin panel doesn't stay on page (introduced by "Change admin panel to use get instead of post"
-	* Made static templates work again by adjusting	ext_tables_static+adt.sql (the paths to the media directory needed to be adjusted)
+	* Made static templates work again by adjusting ext_tables_static+adt.sql (the paths to the media directory needed to be adjusted)
 
 2006-02-28  Kasper Skaarhoj  <kasperYYYY@typo3.com>
 
@@ -2875,7 +2872,7 @@
 
 2006-02-10  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
-	* Remove Direct Mail code from tslib_fe and add	checkDataSubmission hook
+	* Remove Direct Mail code from tslib_fe and add checkDataSubmission hook
 
 2006-02-10  Christian Jul Jensen  <christian@jul.net>
 
