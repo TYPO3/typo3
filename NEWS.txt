@@ -1,5 +1,5 @@
 ************************************************************************
-CHANGES & IMPROVEMENTS between TYPO3 4.0 and 4.1
+CHANGES & IMPROVEMENTS between TYPO3 4.1 and 4.2
 (for technical details see ChangeLog)
 ************************************************************************
 
@@ -112,6 +112,10 @@ DBAL
 Frontend features
 =================
 
+	* New login-box System-Extension "felogin":
+		-> This is a refactored version of the "newloginbox" extension, now integrated into the core.
+		-> If you install the extension, it will replace the old login content element (CType: "Login Form").
+		-> The new plugin comes with a great new redirection framework and lots of configuration options - but still runs nicely out of the box.
 	* Roll-over (RO) on a GMENU in IE didn't work with xhtml_strict (Bug #3729)
 	* Content encoding with x-gzip is now available also for IE7
 	* Various improvements to the admin panel

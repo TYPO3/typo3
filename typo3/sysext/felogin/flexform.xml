@@ -1,0 +1,340 @@
+<T3DataStructure>
+	<meta>
+		<langDisable>0</langDisable>
+	</meta>
+	<sheets>
+		<sDEF>
+			<ROOT>
+				<TCEforms>
+					<sheetTitle>LLL:EXT:felogin/locallang_db.xml:tt_content.pi_flexform.sheet_general</sheetTitle>
+				</TCEforms>
+				<type>array</type>
+				<el>
+					<showForgotPassword>
+						<TCEforms>
+							<label>LLL:EXT:felogin/locallang_db.xml:tt_content.pi_flexform.show_forgot_password</label>
+							<config>
+								<type>check</type>
+							</config>
+						</TCEforms>
+					</showForgotPassword>
+					<showPermaLogin>
+						<TCEforms>
+							<label>LLL:EXT:felogin/locallang_db.xml:tt_content.pi_flexform.show_permalogin</label>
+							<config>
+								<default>1</default>
+								<type>check</type>
+							</config>
+						</TCEforms>
+					</showPermaLogin>
+					<pages>
+						<TCEforms>
+							<exclude>1</exclude>
+							<label>LLL:EXT:lang/locallang_general.php:LGL.startingpoint</label>
+							<config>
+								<type>group</type>
+								<internal_type>db</internal_type>
+								<allowed>pages</allowed>
+								<size>3</size>
+								<maxitems>22</maxitems>
+								<minitems>0</minitems>
+								<show_thumbs>1</show_thumbs>
+							</config>
+						</TCEforms>
+					</pages>
+
+					<recursive>
+						<TCEforms>
+							<label>LLL:EXT:lang/locallang_general.php:LGL.recursive</label>
+							<config>
+								<type>select</type>
+								<items type="array">
+									<numIndex index="0" type="array">
+										<numIndex index="0"></numIndex>
+										<numIndex index="1"></numIndex>
+									</numIndex>
+									<numIndex index="1" type="array">
+										<numIndex index="0">LLL:EXT:cms/locallang_ttc.php:recursive.I.1</numIndex>
+										<numIndex index="1">1</numIndex>
+									</numIndex>
+									<numIndex index="2" type="array">
+										<numIndex index="0">LLL:EXT:cms/locallang_ttc.php:recursive.I.2</numIndex>
+										<numIndex index="1">2</numIndex>
+									</numIndex>
+									<numIndex index="3" type="array">
+										<numIndex index="0">LLL:EXT:cms/locallang_ttc.php:recursive.I.3</numIndex>
+										<numIndex index="1">3</numIndex>
+									</numIndex>
+									<numIndex index="4" type="array">
+										<numIndex index="0">LLL:EXT:cms/locallang_ttc.php:recursive.I.4</numIndex>
+										<numIndex index="1">4</numIndex>
+									</numIndex>
+									<numIndex index="5" type="array">
+										<numIndex index="0">LLL:EXT:cms/locallang_ttc.php:recursive.I.5</numIndex>
+										<numIndex index="1">250</numIndex>
+									</numIndex>
+								</items>
+								<minitems>0</minitems>
+								<maxitems>1</maxitems>
+								<size>1</size>
+							</config>
+						</TCEforms>
+					</recursive>
+					<templateFile>
+						<TCEforms>
+							<label>LLL:EXT:felogin/locallang_db.xml:tt_content.pi_flexform.template_file</label>
+							<config>
+								<type>group</type>
+								<internal_type>file</internal_type>
+								<allowed>tmpl,html,htm</allowed>
+								<max_size>100</max_size>
+								<uploadfolder>uploads/tx_felogin</uploadfolder>
+								<maxitems>1</maxitems>
+								<size>1</size>
+								<selectedListStyle>width:180px</selectedListStyle>
+							</config>
+						</TCEforms>
+					</templateFile>
+				</el>
+			</ROOT>
+		</sDEF>
+		<s_redirect>
+			<ROOT>
+				<TCEforms>
+					<sheetTitle>LLL:EXT:felogin/locallang_db.xml:tt_content.pi_flexform.sheet_redirect</sheetTitle>
+				</TCEforms>
+				<type>array</type>
+				<el>
+					<redirectMode>
+						<TCEforms>
+							<label>LLL:EXT:felogin/locallang_db.xml:tt_content.pi_flexform.redirectMode</label>
+							<config>
+								<type>select</type>
+								<items type="array">
+									<numIndex index="0" type="array">
+										<numIndex index="0">LLL:EXT:felogin/locallang_db.xml:tt_content.pi_flexform.redirectMode.I.0</numIndex>
+										<numIndex index="1">groupLogin</numIndex>
+									</numIndex>
+									<numIndex index="1" type="array">
+										<numIndex index="0">LLL:EXT:felogin/locallang_db.xml:tt_content.pi_flexform.redirectMode.I.1</numIndex>
+										<numIndex index="1">userLogin</numIndex>
+									</numIndex>
+
+									<numIndex index="2" type="array">
+										<numIndex index="0">LLL:EXT:felogin/locallang_db.xml:tt_content.pi_flexform.redirectMode.I.2</numIndex>
+										<numIndex index="1">login</numIndex>
+									</numIndex>
+									<numIndex index="3" type="array">
+										<numIndex index="0">LLL:EXT:felogin/locallang_db.xml:tt_content.pi_flexform.redirectMode.I.3</numIndex>
+										<numIndex index="1">logout</numIndex>
+									</numIndex>
+									<numIndex index="4" type="array">
+										<numIndex index="0">LLL:EXT:felogin/locallang_db.xml:tt_content.pi_flexform.redirectMode.I.4</numIndex>
+										<numIndex index="1">loginError</numIndex>
+									</numIndex>
+									<numIndex index="5" type="array">
+										<numIndex index="0">LLL:EXT:felogin/locallang_db.xml:tt_content.pi_flexform.redirectMode.I.5</numIndex>
+										<numIndex index="1">getpost</numIndex>
+									</numIndex>
+									<numIndex index="6" type="array">
+										<numIndex index="0">LLL:EXT:felogin/locallang_db.xml:tt_content.pi_flexform.redirectMode.I.6</numIndex>
+										<numIndex index="1">referer</numIndex>
+									</numIndex>
+									<numIndex index="7" type="array">
+										<numIndex index="0">LLL:EXT:felogin/locallang_db.xml:tt_content.pi_flexform.redirectMode.I.7</numIndex>
+										<numIndex index="1">refererDomains</numIndex>
+									</numIndex>
+								</items>
+								<size>8</size>
+								<minitems>0</minitems>
+								<maxitems>8</maxitems>
+							</config>
+						</TCEforms>
+					</redirectMode>
+					<redirectFirstMethod>
+						<TCEforms>
+							<label>LLL:EXT:felogin/locallang_db.xml:tt_content.pi_flexform.redirectFirstMethod</label>
+							<config>
+								<type>check</type>
+							</config>
+						</TCEforms>
+					</redirectFirstMethod>
+					<redirectPageLogin>
+						<TCEforms>
+							<label>LLL:EXT:felogin/locallang_db.xml:tt_content.pi_flexform.redirectPageLogin</label>
+							<config>
+								<type>group</type>
+								<internal_type>db</internal_type>
+								<allowed>pages</allowed>
+								<size>1</size>
+								<maxitems>1</maxitems>
+								<minitems>0</minitems>
+								<show_thumbs>1</show_thumbs>
+							</config>
+						</TCEforms>
+					</redirectPageLogin>	      
+					<redirectPageLoginError>
+						<TCEforms>
+							<label>LLL:EXT:felogin/locallang_db.xml:tt_content.pi_flexform.redirectPageLoginError</label>
+							<config>
+								<type>group</type>
+								<internal_type>db</internal_type>
+								<allowed>pages</allowed>
+								<size>1</size>
+								<maxitems>1</maxitems>
+								<minitems>0</minitems>
+								<show_thumbs>1</show_thumbs>
+							</config>
+						</TCEforms>
+					</redirectPageLoginError>	
+					<redirectPageLogout>
+						<TCEforms>
+							<label>LLL:EXT:felogin/locallang_db.xml:tt_content.pi_flexform.redirectPageLogout</label>
+							<config>
+								<type>group</type>
+								<internal_type>db</internal_type>
+								<allowed>pages</allowed>
+								<size>1</size>
+								<maxitems>1</maxitems>
+								<minitems>0</minitems>
+								<show_thumbs>1</show_thumbs>
+							</config>
+						</TCEforms>
+					</redirectPageLogout>	
+					<redirectDisable>
+						<TCEforms>
+							<label>LLL:EXT:felogin/locallang_db.xml:tt_content.pi_flexform.redirectDisable</label>
+							<config>
+								<type>check</type>
+							</config>
+						</TCEforms>
+					</redirectDisable>
+				</el>
+			</ROOT>
+		</s_redirect>
+		<s_messages>
+			<ROOT>
+				<TCEforms>
+					<sheetTitle>LLL:EXT:felogin/locallang_db.xml:tt_content.pi_flexform.sheet_messages</sheetTitle>
+				</TCEforms>
+				<type>array</type>
+				<el>
+					<welcome_header>
+						<TCEforms>
+							<label>LLL:EXT:felogin/locallang_db.xml:tt_content.pi_flexform.welcome_header</label>
+							<config>
+								<type>input</type>
+								<size>30</size>
+							</config>
+						</TCEforms>
+					</welcome_header>
+					<welcome_message>
+						<TCEforms>
+							<label>LLL:EXT:felogin/locallang_db.xml:tt_content.pi_flexform.welcome_message</label>
+							<config>
+								<type>text</type>
+								<cols>30</cols>
+								<rows>5</rows>
+							</config>
+						</TCEforms>
+					</welcome_message>
+					<success_header>
+						<TCEforms>
+							<label>LLL:EXT:felogin/locallang_db.xml:tt_content.pi_flexform.success_header</label>
+							<config>
+								<type>input</type>
+								<size>30</size>
+							</config>
+						</TCEforms>
+					</success_header>
+					<success_message>
+						<TCEforms>
+							<label>LLL:EXT:felogin/locallang_db.xml:tt_content.pi_flexform.success_message</label>
+							<config>
+								<type>text</type>
+								<cols>30</cols>
+								<rows>5</rows>
+							</config>
+						</TCEforms>
+					</success_message>
+					<error_header>
+						<TCEforms>
+							<label>LLL:EXT:felogin/locallang_db.xml:tt_content.pi_flexform.error_header</label>
+							<config>
+								<type>input</type>
+								<size>30</size>
+							</config>
+						</TCEforms>
+					</error_header>
+					<error_message>
+						<TCEforms>
+							<label>LLL:EXT:felogin/locallang_db.xml:tt_content.pi_flexform.error_message</label>
+							<config>
+								<type>text</type>
+								<cols>30</cols>
+								<rows>5</rows>
+							</config>
+						</TCEforms>
+					</error_message>
+					<status_header>
+						<TCEforms>
+							<label>LLL:EXT:felogin/locallang_db.xml:tt_content.pi_flexform.status_header</label>
+							<config>
+								<type>input</type>
+								<size>30</size>
+							</config>
+						</TCEforms>
+					</status_header>
+					<status_message>
+						<TCEforms>
+							<label>LLL:EXT:felogin/locallang_db.xml:tt_content.pi_flexform.status_message</label>
+							<config>
+								<type>text</type>
+								<cols>30</cols>
+								<rows>5</rows>
+							</config>
+						</TCEforms>
+					</status_message>
+					<logout_header>
+						<TCEforms>
+							<label>LLL:EXT:felogin/locallang_db.xml:tt_content.pi_flexform.logout_header</label>
+							<config>
+								<type>input</type>
+								<size>30</size>
+							</config>
+						</TCEforms>
+					</logout_header>
+					<logout_message>
+						<TCEforms>
+							<label>LLL:EXT:felogin/locallang_db.xml:tt_content.pi_flexform.logout_message</label>
+							<config>
+								<type>text</type>
+								<cols>30</cols>
+								<rows>5</rows>
+							</config>
+						</TCEforms>
+					</logout_message>
+					<forgot_header>
+						<TCEforms>
+							<label>LLL:EXT:felogin/locallang_db.xml:tt_content.pi_flexform.forgot_header</label>
+							<config>
+								<type>input</type>
+								<size>30</size>
+							</config>
+						</TCEforms>
+					</forgot_header>
+					<forgot_message>
+						<TCEforms>
+							<label>LLL:EXT:felogin/locallang_db.xml:tt_content.pi_flexform.forgot_message</label>
+							<config>
+								<type>text</type>
+								<cols>30</cols>
+								<rows>5</rows>
+							</config>
+						</TCEforms>
+					</forgot_message>
+				</el>
+			</ROOT>
+		</s_messages>
+	</sheets>
+</T3DataStructure>

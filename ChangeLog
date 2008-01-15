@@ -1,3 +1,7 @@
+2008-01-15  Ingmar Schlecht  <ingmar@typo3.org>
+
+	* Added feature #6784: New login-box System-Extension "felogin". This is a refactored version of the "newloginbox" extension, now integrated into the core. (Big thanks to Steffen Kamper for writing this extension for core integration!)
+
 2008-01-15  Ingo Renner  <ingo@typo3.org>
 
 	* added feature #5536: Some Hooks for tslib_content
