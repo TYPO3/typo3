@@ -35,20 +35,22 @@ TYPO3 backend menu - vertical
 
 #typo3-menu li div {
 	font-weight: bold;
-	background-color: #d9d9d8;
 	border: 1px solid #9ba1a8;
+	background-color: #d7dbe2;
 	cursor: pointer;
 	height: 14px;
 	padding: 1px;
 	vertical-align: middle;
 	width: 105px;
-	margin: 3px 0px 1px;
+	margin: 3px 0px 3px;
 }
-
+#typo3-menu li div img {
+	vertical-align:top;
+	margin-right:2px;
+}
 #typo3-menu li ul li {
 	font-weight: normal;
 	width: 105px;
-	border-bottom: 1px dashed #9ca1a7;
 	padding: 1px 0px 2px 2px;
 	margin-left: 1px;
 	cursor: pointer;
@@ -58,12 +60,15 @@ TYPO3 backend menu - vertical
 	text-decoration: none;
 	display: block;
 }
-
+#typo3-menu a:hover {
+	color:green;
+	background-color:#fff;
+}
 
 #typo3-menu li ul li a img {
 	float: left;
+	margin-right:2px;
 }
-
 
 
 
