@@ -38,6 +38,8 @@
 			<label index="insertNewRecordHere">Insert new record here</label>
 			<label index="movePageToHere">Move page to this position</label>
 			<label index="moveElement">Move element</label>
+			<label index="moveElements">Move elements</label>
+			<label index="copyElements">Copy elements</label>
 			<label index="selectPositionOfElement">Select position of the element</label>
 			<label index="movingElement">Move element</label>
 			<label index="makeCopy">Make copy instead of moving element</label>

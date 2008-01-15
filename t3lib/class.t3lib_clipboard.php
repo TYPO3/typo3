@@ -317,8 +317,17 @@ class t3lib_clipboard {
 
 			// Button/menu header:
 		$thumb_url = t3lib_div::linkThisScript(array('CB'=>array('setThumb'=>$this->clipData['_setThumb']?0:1)));
-		$copymode_url = t3lib_div::linkThisScript(array('CB'=>array('setCopyMode'=>($this->currentMode()=='copy'?'':'copy'))));
 		$rmall_url = t3lib_div::linkThisScript(array('CB'=>array('removeAll'=>$this->current)));
+			
+			// Copymode Selector menu
+		$copymode_url = t3lib_div::linkThisScript();
+		$moveLabel = htmlspecialchars($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_misc.php:moveElements'));
+		$copyLabel = htmlspecialchars($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_misc.php:copyElements'));
+		$opt=array();
+		$opt[]='<option style="padding-left: 20px; background-image: url(\''.t3lib_iconWorks::skinImg($this->backPath, 'gfx/clip_cut.gif', '', 1).'\'); background-repeat: no-repeat;" value="" '.(($this->currentMode()=='copy')?'':'selected="selected"').'>'.$moveLabel .'</option>';
+		$opt[]='<option style="padding-left: 20px; background-image: url(\''.t3lib_iconWorks::skinImg($this->backPath, 'gfx/clip_copy.gif', '', 1).'\'); background-repeat: no-repeat;" value="1" '.(($this->currentMode()=='copy')?'selected="selected"':'').'>'.$copyLabel .'</option>';
+
+		$copymode_selector = ' <select name="CB[setCopyMode]" onchange="this.form.method=\'POST\'; this.form.action=\''.$copymode_url.'&CB[setCopyMode]=\'+(this.options[this.selectedIndex].value); this.form.submit(); return true;" >'.implode('',$opt).'</select>';
 
 			// Selector menu + clear button
 		$opt=array();
@@ -352,11 +361,11 @@ class t3lib_clipboard {
 				'<a href="'.htmlspecialchars($thumb_url).'#clip_head">'.
 					'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/thumb_'.($this->clipData['_setThumb']?'s':'n').'.gif','width="21" height="16"').' vspace="2" border="0" title="'.$this->clLabel('thumbmode_clip').'" alt="" />'.
 					'</a>'.
-				'<a href="'.htmlspecialchars($copymode_url).'#clip_head">'.
-					'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/copymode_'.($this->currentMode()=='copy'?'s':'n').'.gif','width="21" height="16"').' vspace="2" border="0" title="'.$this->clLabel('copymode').'" alt="" />'.
-					'</a>'.
 				'</td>
-				<td width="95%">'.$selector_menu.'</td>
+				<td width="95%" nowrap="nowrap">'.
+					$copymode_selector.' '.
+					$selector_menu.
+				'</td>
 				<td>'.
 				'<a href="'.htmlspecialchars($rmall_url).'#clip_head">'.
 					'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/closedok_2.gif','width="21" height="16"').' vspace="2" border="0" title="'.$LANG->sL('LLL:EXT:lang/locallang_core.php:buttons.clear',1).'" alt="" />'.

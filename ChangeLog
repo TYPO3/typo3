@@ -1,6 +1,7 @@
 2008-01-15  Benjamin Mack  <mack@xnos.org>
 
-	* (cleanup) #6958: added comments in t3lib_htmlmail.php, used foreach and some better variable namings
+	* (bugfix) #2936, 5613: Improvements to clipboard copy/move selection (by Bernhard Kraft)
+	* (cleanup) #6958: added comments in t3lib_htmlmail.php, used foreach and some better variable namings (thanks to Stefano Cecere and Steffen Kamper)
 	* (bugfix) #5482:t3lib_htmlmail.php is now initialized with empty variables
 
 2008-01-15	Dmitry Dulepov	<dmitry@typo3.org>
