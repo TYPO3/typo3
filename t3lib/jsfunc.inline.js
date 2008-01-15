@@ -659,6 +659,7 @@ var inline = {
 
 			// Remove from TBE_EDITOR (required fields, required range, etc.):
 		if (TBE_EDITOR && TBE_EDITOR.removeElement) {
+			var removeStack = [];
 			inlineRecords = Element.getElementsByClassName(objectId+'_div', 'inlineRecord');
 				// Remove nested child records from TBE_EDITOR required/range checks:
 			for (i=inlineRecords.length-1; i>=0; i--) {
@@ -667,11 +668,12 @@ var inline = {
 					childObjectId = this.data.map[inlineRecords[i].name];
 					childTable = this.data.config[childObjectId].table;
 					for (j=records.length-1; j>=0; j--) {
-						TBE_EDITOR.removeElement(this.prependFormFieldNames+'['+childTable+']['+records[j]+']');
+						removeStack.push(this.prependFormFieldNames+'['+childTable+']['+records[j]+']');
 					}
 				}
 			}
-			TBE_EDITOR.removeElement(this.prependFormFieldNames+shortName);
+			removeStack.push(this.prependFormFieldNames+shortName);
+			TBE_EDITOR.removeElementArray(removeStack);
 		}
 
 			// If the record is new and was never saved before, just remove it from DOM:

@@ -292,6 +292,7 @@ class t3lib_TCEforms	{
 	var $requiredFields=array();				// Used to register input-field names, which are required. (Done during rendering of the fields). This information is then used later when the JavaScript is made.
 	var $requiredAdditional=array();			// Used to register input-field names, which are required an have additional requirements (e.g. like a date/time must be positive integer). The information of this array is merged with $this->requiredFields later.
 	var $requiredElements=array();				// Used to register the min and max number of elements for selectorboxes where that apply (in the "group" type for instance)
+	var $requiredNested=array();				// Used to determine where $requiredFields or $requiredElements are nested (in Tabs or IRRE)
 	var $renderDepth=0;							// Keeps track of the rendering depth of nested records.
 	var $savedSchemes=array();					// Color scheme buffer.
 	var $dynNestedStack = array();				// holds the path an element is nested in (e.g. required for RTEhtmlarea)
@@ -1068,7 +1069,7 @@ class t3lib_TCEforms	{
 		foreach ($evalList as $func) {
 			switch ($func) {
 				case 'required':
-					$this->requiredFields[$table.'_'.$row['uid'].'_'.$field]=$PA['itemFormElName'];
+					$this->registerRequiredProperty('field', $table.'_'.$row['uid'].'_'.$field, $PA['itemFormElName']);
 						// Mark this field for date/time disposal:
 					if (array_intersect($evalList, array('date', 'datetime', 'time'))) {
 						 $this->requiredAdditional[$PA['itemFormElName']]['isPositiveNumber'] = true;
@@ -1844,7 +1845,7 @@ class t3lib_TCEforms	{
 		$minitems = t3lib_div::intInRange($config['minitems'],0);
 
 			// Register the required number of elements:
-		$this->requiredElements[$PA['itemFormElName']] = array($minitems,$maxitems,'imgName'=>$table.'_'.$row['uid'].'_'.$field);
+		$this->registerRequiredProperty('range', $PA['itemFormElName'], array($minitems,$maxitems,'imgName'=>$table.'_'.$row['uid'].'_'.$field));
 
 			// Get "removeItems":
 		$removeItems = t3lib_div::trimExplode(',',$PA['fieldTSConfig']['removeItems'],1);
@@ -1948,7 +1949,7 @@ class t3lib_TCEforms	{
 		}
 
 		$item.= '<input type="hidden" name="'.$PA['itemFormElName'].'_mul" value="'.($config['multiple']?1:0).'"'.$disabled.' />';
-		$this->requiredElements[$PA['itemFormElName']] = array($minitems,$maxitems,'imgName'=>$table.'_'.$row['uid'].'_'.$field);
+		$this->registerRequiredProperty('range', $PA['itemFormElName'], array($minitems,$maxitems,'imgName'=>$table.'_'.$row['uid'].'_'.$field));
 		$info='';
 
 			// "Extra" configuration; Returns configuration for the field based on settings found in the "types" fieldlist. See http://typo3.org/documentation/document-library/doc_core_api/Wizards_Configuratio/.
@@ -5049,6 +5050,12 @@ class t3lib_TCEforms	{
 			inline.addToDataArray('.t3lib_div::array2json($this->inline->inlineData).');
 			';
 		}
+			// Registered nested elements for tabs or inline levels:
+		if (count($this->requiredNested)) {
+			$out .= '
+			TBE_EDITOR.addNested('.t3lib_div::array2json($this->requiredNested).');
+			';
+		}
 			// elements which are required or have a range definition:
 		if (count($elements)) {
 			$out .= '
@@ -5056,7 +5063,7 @@ class t3lib_TCEforms	{
 			TBE_EDITOR.initRequired()
 			';
 		}
-			// $this->additionalJS_post:
+			// $this->additionalJS_submit:
 		if ($this->additionalJS_submit) {
 			$additionalJS_submit = implode('', $this->additionalJS_submit);
 			$additionalJS_submit = str_replace("\r", '', $additionalJS_submit);
@@ -5813,6 +5820,48 @@ class t3lib_TCEforms	{
 			array_shift($result);
 		}
 		return ($json ? t3lib_div::array2json($result) : $result);
+	}
+
+	/**
+	 * Takes care of registering properties in requiredFields and requiredElements.
+	 * The current hierarchy of IRRE and/or Tabs is stored. Thus, it is possible to determine,
+	 * which required field/element was filled incorrectly and show it, even if the Tab or IRRE
+	 * level is hidden.
+	 *
+	 * @param	string		$type: Type of requirement ('field' or 'range')
+	 * @param	string		$name: The name of the form field
+	 * @param	mixed		$value: For type 'field' string, for type 'range' array
+	 * @return	void
+	 */
+	protected function registerRequiredProperty($type, $name, $value) {
+		if ($type == 'field' && is_string($value)) {
+			$this->requiredFields[$name] = $value;
+				// requiredFields have name/value swapped! For backward compatibility we keep this:
+			$itemName = $value;
+		} elseif ($type == 'range' && is_array($value)) {
+			$this->requiredElements[$name] = $value;
+			$itemName = $name;
+		}
+			// Set the situation of nesting for the current field:
+		$this->registerNestedElement($itemName);
+	}
+
+	/**
+	 * Sets the current situation of nested tabs and inline levels for a given element.
+	 *
+	 * @param	string		$itemName: The element the nesting should be stored for
+	 * @param	boolean		$setLevel: Set the reverse level lookup - default: true
+	 * @return	void
+	 */
+	protected function registerNestedElement($itemName, $setLevel=true) {
+		$dynNestedStack = $this->getDynNestedStack();
+		if (count($dynNestedStack) && preg_match('/^(.+\])\[(\w+)\]$/', $itemName, $match)) {
+			array_shift($match);
+			$this->requiredNested[$itemName] = array(
+				'parts' => $match,
+				'level' => $dynNestedStack,
+			);
+		}
 	}
 }
 

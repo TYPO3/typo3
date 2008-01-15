@@ -1457,6 +1457,7 @@ $str.=$this->docBodyTagBegin().
 				}
 
 				$mouseOverOut = ' onmouseover="DTM_mouseOver(this);" onmouseout="DTM_mouseOut(this);"';
+				$requiredIcon = '<img id="'.$id.'-'.$index.'-REQ" src="clear.gif" width="10" height="10" hspace="4" alt="" />';
 
 				if (!$foldout)	{
 						// Create TAB cell:
@@ -1465,6 +1466,7 @@ $str.=$this->docBodyTagBegin().
 							($isNotEmpty ? '<a href="#" onclick="'.htmlspecialchars($onclick).'"'.($def['linkTitle'] ? ' title="'.htmlspecialchars($def['linkTitle']).'"':'').'>' : '').
 							$def['icon'].
 							($def['label'] ? htmlspecialchars($def['label']) : '&nbsp;').
+							$requiredIcon.
 							$this->icons($def['stateIcon'],'margin-left: 10px;').
 							($isNotEmpty ? '</a>' :'').
 							'</td>';
@@ -1476,6 +1478,7 @@ $str.=$this->docBodyTagBegin().
 							($isNotEmpty ? '<a href="#" onclick="'.htmlspecialchars($onclick).'"'.($def['linkTitle'] ? ' title="'.htmlspecialchars($def['linkTitle']).'"':'').'>' : '').
 							$def['icon'].
 							($def['label'] ? htmlspecialchars($def['label']) : '&nbsp;').
+							$requiredIcon.
 							($isNotEmpty ? '</a>' : '').
 							'</div>';
 				}

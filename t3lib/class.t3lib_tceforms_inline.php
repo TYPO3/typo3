@@ -489,7 +489,7 @@ class t3lib_TCEforms_inline {
 	 */
 	function renderForeignRecordHeaderControl($parentUid, $foreign_table, $rec, $config = array()) {
 			// Initialize:
-		$cells=array();
+		$cells = array();
 		$isNewItem = substr($rec['uid'], 0, 3) == 'NEW';
 
 		$tcaTableCtrl =& $GLOBALS['TCA'][$foreign_table]['ctrl'];
@@ -514,6 +514,9 @@ class t3lib_TCEforms_inline {
 
 			// This expresses the edit permissions for this particular element:
 		$permsEdit = ($isPagesTable && ($localCalcPerms&2)) || (!$isPagesTable && ($calcPerms&16));
+
+			// Icon to visualize that a required field is nested in this inline level:
+		$cells[] = '<img id="'.$nameObjectFtId.'_req" src="clear.gif" width="10" height="10" hspace="4" vspace="3" alt="" />';
 
 			// "Info": (All records)
 		if (!$isNewItem)
