@@ -1,3 +1,7 @@
+2008-01-15	Dmitry Dulepov	<dmitry@typo3.org>
+
+	* Fixed bug #5660: Wrong HTTP Header on Domain Redirect (fix by Jeff Segars)
+
 2008-01-15  Oliver Hader  <oh@inpublica.de>
 
 	* (feature) Added feature #7122: IRRE - Implement TYPO3AJAX handler for Inline Relational Record Editing

@@ -521,6 +521,7 @@ class t3lib_pageSelect {
 					$prependStr = ereg_replace('^\/','',substr($request_uri,strlen($path)));
 					$rURL.= '/'.$prependStr;
 				}
+				Header('HTTP/1.1 301 Moved Permanently');
 				Header('Location: '.t3lib_div::locationHeaderUrl($rURL));
 				exit;
 			} else {
