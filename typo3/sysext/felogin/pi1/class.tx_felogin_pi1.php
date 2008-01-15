@@ -227,7 +227,7 @@ class tx_felogin_pi1 extends tslib_pibase {
 					// Hook for general actions after after login has been confirmed (by Thomas Danzl <thomas@danzl.org>)
 				if ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['login_confirmed']) {
 					$_params = array();
-					foreach($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['newloginbox']['felogin'] as $_funcRef) {
+					foreach($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['login_confirmed'] as $_funcRef) {
 						if ($_funcRef) {
 							t3lib_div::callUserFunction($_funcRef, $_params, $this);
 						}
@@ -389,6 +389,17 @@ class tx_felogin_pi1 extends tslib_pibase {
 						break;
 					}
 				} elseif ($this->logintype === 'logout') { // after logout
+
+					// Hook for general actions after after logout has been confirmed
+					if ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['logout_confirmed']) {
+						$_params = array();
+						foreach($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['logout_confirmed'] as $_funcRef) {
+							if ($_funcRef) {
+								t3lib_div::callUserFunction($_funcRef, $_params, $this);
+							}
+						}
+					}
+				
 					switch ($redirMethod) {
 						case 'logout':
 							if ($this->conf['redirectPageLogout']) {
