@@ -22,6 +22,7 @@
 	* (minor) Fixed bug #7126: IRRE - Child records are shown floated and not as blocks in Safari
 	* (cleanup) Removed typo3/alt_doc_ajax.php (former AJAX handler of IRRE)
 	* (feature) Added feature #5899: Notify user where required elements are nested in IRRE or Tabs
+	* Updated NEWS.txt
 
 2008-01-14  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 

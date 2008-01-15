@@ -12,37 +12,110 @@ General
 Backend
 ==================
 
-	* ...
+	* New Installer
+
+	* Templates
+		-> Various enhancements to the TS object browser and TS analyzer
+		-> Added new T3Editor with syntax highlighting and other usability improvements for editing TypoScripts
+
+	* Extension Manager
+		-> Auto-update view when new back-end modules were installed
+		-> Integrate the extension ter_update_check into EM
+
+	* Workspaces
+		-> Implemented moving for elements ("Element" versions)
+		-> Workspace "swapping" for "New"-placeholders and "Deleted"-Markers is now supported
+		-> Added switch in TYPO3_CONF_VARS['BE']['elementVersioningOnly'] which allows to completely turn off page and branch versioning
+
+	* htmlArea RTE
+		-> Various bug fixes
+		-> Enable htmlArea RTE in Safari
+		-> Reduced list of plugins in EM configuration that where enabled by default
+
+	* Cleaner Backend Project
+		-> Implemented new GUI with lots of usability improvements
+		-> Enable Tabs in Page Properties
+		-> Use optgroups in selectorboxes
+
+	* TCEforms
+		-> Notify and visualize user where required elements are nested in IRRE or Tabs
 
 Compatibility
 =============
 
-	* ...
+	* t3lib_div::cvsValues() now exports like Internet RFC 4180 (embedded line-breaks allowed)
 
 Speed improvements
 ==================
 
-	* ...
+	* indexed_search with a huge page trees can now be a lot faster with the new TypoScript configuration option "skipExtendToSubpagesChecking"
+	* Added many calls to $GLOBALS['TYPO3_DB']->sql_free_result() free these memory resources
+	* Speed up link rendering by implementing some local caches
 
 Development
 ====================
 
-	* ...
+	* Add new external library "RemoveXSS" for easily filtering potential Cross Site Scripting (XSS) attacks.
+		-> Can be used by any script. Usage: $filtered_string = t3lib_div::removeXSS($input_string);
+		-> Thanks to Travis Puderbaugh <kallahar@quickwired.com> for providing this nice piece of code!
+
+	* TCEforms
+		-> Setting a field of eval "timesec" as a label of a table would show an integer instead of the hh:mm:ss string
+
+	* Workspaces
+		-> Added class.wslib_gui.php to allow using WS GUI from extensions
+		-> Added "flush" command to TCEmain API for versions so versions can be completely deleted and not only released from a workspace
+
+	* AJAX/JavaScript
+		-> Added JavaScript minification feature (new function t3lib_div::minifyJavaScript)
+		-> Updated JavaScript libraries: prototype (1.6.0) and script.aculo.us (1.8.0)
+		-> Consistent interface for AJAX calls in the TYPO3 Backend (typo3/ajax.php) 
+
+	* Hooks
+		-> Added hook to Web>Page "columns" view, allowing plugins to display "additional info" instead of "CODE:"
+		-> Added a hook to TCEforms to enable custom evaluations for input fields
+		-> Introduced a new global hook $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['recStatInfoHooks']
+			-> allows to insert HTML before a records icon in the page tree, Web>List and Web>Page modules (and possibly more places where makes sense)
+		-> Integrate post processing hook for links handled by typoLink
+		-> Web>List module: Allow modification/addition/removal of icons for each table and its records
+		-> Hook in TCEmain after all database operations
+		-> Some Hooks for tslib_content
+
+TypoScript changes
+==================
+
+	* Back-end
+		-> Removed TSconfig property TCEFORM.<table>.<field>.linkTitleToSelf.returnUrl
+		-> Added possibility to set TCAdefaults in Page TSconfig
+
+	* Front-end
+		-> Added +stdWrap for the .src parameter of "FRAME"
+		-> Added new conditions "year" and "dayofyear"
+		-> Addes possibility to define cache expire time of HMEMUs
+		-> Introduced a new TS option that makes indexing of metatags configurable (config.index_metatags)
+		-> Added stdWrap support for minW and minH of imgResource
+		-> Added minification of JavaScripts (config.minifyJS)
+		-> Constant 'PAGE_TARGET' of CSS Styled Content is cleared when compatVersion is set to 4.2.0 
 
 Database changes
 ================
 
-	* ...
+	* Replace all TINYTEXT columns with VARCHAR(255)
+	* Change index "parent" of fe_user to (pid,username) and drop the index "pid"
+	* Added fields "crdate" and "cruser_id" to tt_content
 
 DBAL
 ====
 
-	* ...
+	* typo3/sysext/adodb: Update to upstream version 4.94
 
 Frontend features
 =================
 
-	* ...
+	* Roll-over (RO) on a GMENU in IE didn't work with xhtml_strict (Bug #3729)
+	* Content encoding with x-gzip is now available also for IE7
+	* Various improvements to the admin panel
+	* Whole workspaces can be previewed now for users with no backend login by a simple link you can email
 
 Backend skin
 ============
@@ -52,7 +125,9 @@ Backend skin
 Important bugfixes
 ==================
 
-	* ...
+	* Better transliteration for hebrew (using lower-cased latin letters)
+	* pageNotFound_handling used to return an empty page if the specified URL could not be retrieved (old gremlin)
+	* "Clear FE cache" didn't clear "typo3temp/cache_pages" directory 
 
 Currently unsupported
 =====================
