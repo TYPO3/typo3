@@ -8,6 +8,7 @@
 	* added feature #7161: create a shortcut manager to delegate calls to create a new shortcut to the right target
 	* added the shortcut menu, part of the cleaner backend project
 	* added feature #7163: Make backend.php the default backend
+	* cleanup: removed typo3/alt_main_new.php and typo3/sysext/topapps as it was never finished and used
 
 2008-01-15  Benjamin Mack  <mack@xnos.org>
 
