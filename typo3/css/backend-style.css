@@ -149,6 +149,69 @@ Description : styles the TYPO3 backend
 	width: 30px;
 }
 
+#shortcut-menu .toolbar-item-menu {
+	position: absolute;
+	list-style: none;
+	padding: 2px 0px 0px;
+	margin: 0px;
+	background-color: #f9f9f9;
+	border: 1px solid #abb2bc;
+	border-top: none;
+	width: 220px;
+}
+
+#shortcut-menu .shortcut-list {
+	width: 100%;
+}
+
+#shortcut-menu .shortcut-list tr.shortcut td {
+	padding: 2px 1px;
+	line-height: 16px;
+}
+
+#shortcut-menu .shortcut-list tr.shortcut.first-row td {
+	background-image: url(../gfx/shortcutgroups-bg.png);
+	background-repeat: repeat-x;
+	padding-top: 4px;
+}
+
+#shortcut-menu .shortcut-list tr.shortcut-group td.shortcut-group-icon,
+#shortcut-menu .shortcut-list tr.shortcut td.shortcut-icon,
+#shortcut-menu .shortcut-list td.shortcut-edit,
+#shortcut-menu .shortcut-list td.shortcut-delete {
+	width: 18px;
+	text-align: center;
+	vertical-align: top;
+}
+
+#shortcut-menu .shortcut-list tr.shortcut td.shortcut-label a {
+	display: block;
+	cursor: pointer;
+}
+
+#shortcut-menu .shortcut-list tr.shortcut td.shortcut-edit img,
+#shortcut-menu .shortcut-list tr.shortcut td.shortcut-delete img {
+	display: none;
+	cursor: pointer;
+}
+
+#shortcut-menu .shortcut-list tr.shortcut:hover td.shortcut-edit img,
+#shortcut-menu .shortcut-list tr.shortcut:hover td.shortcut-delete img {
+	display: inline;
+}
+
+#shortcut-menu .shortcut-list tr.shortcut-group td.shortcut-group-icon,
+#shortcut-menu .shortcut-list tr.shortcut td.shortcut-icon {
+	padding-left: 7px;
+	vertical-align: top;
+}
+
+#shortcut-menu .shortcut-list .shortcut-group td {
+	border-top: 1px solid #a5a5a5;
+	border-bottom: 1px solid #a5a5a5;
+	background-color: #dbdbdb;
+}
+
 
 /* ----- Backend Search ----- */
 

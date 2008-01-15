@@ -106,7 +106,7 @@ class ClearCacheMenu implements backend_toolbarItem {
 
 		$cacheMenu[] = '<a href="#" class="toolbar-item"><img'.t3lib_iconWorks::skinImg($this->backPath, 'gfx/lightning.png', 'width="16" height="16"').' title="Clear Cache" alt="" /></a>';
 
-		$cacheMenu[] = '<ul style="display: none;">';
+		$cacheMenu[] = '<ul class="toolbar-item-menu" style="display: none;">';
 
 		foreach($this->cacheActions as $actionKey => $cacheAction) {
 			$cacheMenu[] = '<li><a href="'.htmlspecialchars($cacheAction['href']).'">'.$cacheAction['icon'].' '.$cacheAction['title'].'</a></li>';

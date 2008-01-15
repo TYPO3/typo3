@@ -25,22 +25,22 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-require_once ('init.php');
-require_once ('template.php');
-require_once ('interfaces/interface.backend_toolbaritem.php');
+require_once('init.php');
+require_once('template.php');
+require_once('interfaces/interface.backend_toolbaritem.php');
 
-require ('classes/class.typo3logo.php');
-require ('classes/class.modulemenu.php');
+require('classes/class.typo3logo.php');
+require('classes/class.modulemenu.php');
 
 	// core toolbar items
-require ('classes/class.workspaceselector.php');
-require ('classes/class.clearcachemenu.php');
-#require ('classes/class.shortcutmenu.php');
-require ('classes/class.backendsearchmenu.php');
+require('classes/class.workspaceselector.php');
+require('classes/class.clearcachemenu.php');
+require('classes/class.shortcutmenu.php');
+require('classes/class.backendsearchmenu.php');
 
-require_once (PATH_t3lib.'class.t3lib_loadmodules.php');
-require_once (PATH_t3lib.'class.t3lib_basicfilefunc.php');
-require_once ('class.alt_menu_functions.inc');
+require_once(PATH_t3lib.'class.t3lib_loadmodules.php');
+require_once(PATH_t3lib.'class.t3lib_basicfilefunc.php');
+require_once('class.alt_menu_functions.inc');
 $GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_misc.xml');
 
 
@@ -106,7 +106,11 @@ class TYPO3backend {
 			'contrib/prototype/prototype.js',
 			'contrib/scriptaculous/scriptaculous.js?load=builder,effects,controls,dragdrop',
 			'md5.js',
+			'js/backend.js',
+			'js/ajax.js',
+			'js/common.js',
 			'js/sizemanager.js',
+			'js/toolbarmanager.js',
 			'../t3lib/jsfunc.evalfield.js'
 		);
 
@@ -131,7 +135,7 @@ class TYPO3backend {
 		$coreToolbarItems = array(
 			'workspaceSelector' => 'WorkspaceSelector',
 			'clearCacheActions' => 'ClearCacheMenu',
-#			'shortcuts'         => 'ShortcutMenu',
+			'shortcuts'         => 'ShortcutMenu',
 			'backendSearch'     => 'BackendSearchMenu'
 		);
 
@@ -727,7 +731,7 @@ if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['typo3/backe
 }
 
 
-// document generation
+	// document generation
 $TYPO3backend = t3lib_div::makeInstance('TYPO3backend');
 
 	// include extensions which may add css, javascript or toolbar items

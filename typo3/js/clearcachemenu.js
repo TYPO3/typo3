@@ -81,12 +81,13 @@ var ClearCacheMenu = Class.create({
 	 */
 	toggleMenu: function() {
 		var toolbarItem = $$('#clear-cache-actions-menu > a')[0];
-		var menu        = $$('#clear-cache-actions-menu ul')[0];
+		var menu        = $$('#clear-cache-actions-menu .toolbar-item-menu')[0];
 		toolbarItem.blur();
 
 		if(!toolbarItem.hasClassName('toolbar-item-active')) {
 			toolbarItem.addClassName('toolbar-item-active');
 			Effect.Appear(menu, {duration: 0.2});
+			TYPO3BackendToolbarManager.hideOthers(toolbarItem);
 		} else {
 			toolbarItem.removeClassName('toolbar-item-active');
 			Effect.Fade(menu, {duration: 0.1});

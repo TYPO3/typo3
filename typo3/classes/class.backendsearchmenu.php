@@ -64,7 +64,7 @@ class BackendSearchMenu implements backend_toolbarItem {
 
 		$searchMenu[] = '<a href="#" class="toolbar-item"><img'.t3lib_iconWorks::skinImg($this->backPath, 'gfx/magnifier.png', 'width="16" height="16"').' title="Search" alt="" /></a>';
 
-		$searchMenu[] = '<div style="display: none;">';
+		$searchMenu[] = '<div class="toolbar-item-menu" style="display: none;">';
 		$searchMenu[] = '<input type="text" id="search-query" name="search-query" value="" />';
 		$searchMenu[] = '</div>';
 

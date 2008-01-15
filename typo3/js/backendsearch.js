@@ -94,16 +94,24 @@ var BackendSearch = Class.create({
 	 */
 	toggleMenu: function() {
 		var toolbarItem = $$('#backend-search-menu > a')[0];
-		var menu        = $$('#backend-search-menu div')[0];
+		var menu        = $$('#backend-search-menu .toolbar-item-menu')[0];
 		toolbarItem.blur();
 
 		if(!toolbarItem.hasClassName('toolbar-item-active')) {
 			toolbarItem.addClassName('toolbar-item-active');
 			Effect.Appear(menu, {duration: 0.2});
-			$('search-query').activate();
+			TYPO3BackendToolbarManager.hideOthers(toolbarItem);
+
+			setTimeout(function() {
+				$('search-query').activate();
+			}, 200);
 		} else {
 			toolbarItem.removeClassName('toolbar-item-active');
 			Effect.Fade(menu, {duration: 0.1});
+
+			setTimeout(function() {
+				$('search-query').clear();
+			}, 100);
 		}
 	},
 
