@@ -1,3 +1,8 @@
+2008-01-15  Benjamin Mack  <mack@xnos.org>
+
+	* (cleanup) #6958: added comments in t3lib_htmlmail.php, used foreach and some better variable namings
+	* (bugfix) #5482:t3lib_htmlmail.php is now initialized with empty variables
+
 2008-01-15	Dmitry Dulepov	<dmitry@typo3.org>
 
 	* Fixed bug #5660: Wrong HTTP Header on Domain Redirect (fix by Jeff Segars)

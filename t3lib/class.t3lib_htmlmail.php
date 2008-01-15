@@ -97,15 +97,6 @@
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
-
-
-
-
-
-
-
-
-
 /**
  * NOTES on MIME mail structures:
  *
@@ -182,63 +173,62 @@
  *         ; and is recommended for any characters not listed in
  *         ; Appendix B as "mail-safe".
  */
-
 /**
  * HTML mail class
  *
  * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
- * @package TYPO3
- * @subpackage t3lib
+ * @package	TYPO3
+ * @subpackage	t3lib
  */
 class t3lib_htmlmail {
 		// Headerinfo:
-	var $recipient = "recipient@whatever.com";
-	var $recipient_copy = "";		// This recipient (or list of...) will also receive the mail. Regard it as a copy.
-	var $subject = "This is the subject";
-	var $from_email = "sender@php-mailer.com";
-	var $from_name = "Mr. Sender";
-	var $replyto_email = "reply@mailer.com";
-	var $replyto_name = "Mr. Reply";
-	var $organisation = "Your Company";
-	var $priority = 3;   // 1 = highest, 5 = lowest, 3 = normal
-	var $mailer = "PHP mailer";	// X-mailer
-	var $alt_base64=0;
-	var $alt_8bit=0;
-	var $jumperURL_prefix ="";		// This is a prefix that will be added to all links in the mail. Example: 'http://www.mydomain.com/jump?userid=###FIELD_uid###&url='. if used, anything after url= is urlencoded.
-	var $jumperURL_useId=0;			// If set, then the array-key of the urls are inserted instead of the url itself. Smart in order to reduce link-length
-	var $mediaList="";				// If set, this is a list of the media-files (index-keys to the array) that should be represented in the html-mail
-	var $http_password="";
-	var $http_username="";
-	var $postfix_version1=false;
+	var $recipient		= '';
+	var $recipient_copy	= '';	// This recipient (or list of...) will also receive the mail. Regard it as a copy.
+	var $subject		= '';
+	var $from_email		= '';
+	var $from_name		= '';
+	var $replyto_email	= '';
+	var $replyto_name	= '';
+	var $organisation	= '';
+	var $priority		= 3;	// 1 = highest, 5 = lowest, 3 = normal
+	var $mailer			= '';	// X-mailer, set to TYPO3 Major.Minor in constructor
+	var $alt_base64		= 0;
+	var $alt_8bit		= 0;
+	var $jumperURL_prefix	= '';		// This is a prefix that will be added to all links in the mail. Example: 'http://www.mydomain.com/jump?userid=###FIELD_uid###&url='. if used, anything after url= is urlencoded.
+	var $jumperURL_useId	= 0;			// If set, then the array-key of the urls are inserted instead of the url itself. Smart in order to reduce link-length
+	var $mediaList		= '';				// If set, this is a list of the media-files (index-keys to the array) that should be represented in the html-mail
+	var $http_password	= '';
+	var $http_username	= '';
+	var $postfix_version1	= false;
 
 	// Internal
-
-/*		This is how the $theParts-array is normally looking
-	var $theParts = Array(
-		"plain" => Array (
-			"content"=> ""
+	/*
+	This is how the $theParts-array is normally looking
+	var $theParts = array(
+		'plain' => array(
+			'content' => ''
 		),
-		"html" => Array (
-			"content"=> "",
-			"path" => "",
-			"media" => Array(),
-			"hrefs" => Array()
+		'html' => array(
+			'content' => '',
+			'path' => '',
+			'media' => array(),
+			'hrefs' => array()
 		),
-		"attach" => Array ()
+		'attach' => array()
 	);
-*/
-	var $theParts = Array();
+	*/
+	var $theParts = array();
 
-	var $messageid = "";
-	var $returnPath = "";
-	var $Xid = "";
+	var $messageid = '';
+	var $returnPath = '';
+	var $Xid = '';
 	var $dontEncodeHeader = false;		// If set, the header will not be encoded
 
-	var $headers = "";
-	var $message = "";
-	var $part=0;
-	var $image_fullpath_list = "";
-	var $href_fullpath_list = "";
+	var $headers = '';
+	var $message = '';
+	var $part = 0;
+	var $image_fullpath_list = '';
+	var $href_fullpath_list = '';
 
 	var $plain_text_header = '';
 	var $html_text_header = '';
@@ -247,25 +237,26 @@ class t3lib_htmlmail {
 
 
 
-
-
-
-
-
 	/**
-	 * Constructor. If the configuration variable forceReturnPath is set, calls to mail will be called with a 5th parameter.
+	 * Constructor. If the configuration variable forceReturnPath is set, 
+	 * calls to mail will be called with a 5th parameter.
 	 * See function sendTheMail for more info
 	 *
-	 * @return	[type]		...
+	 * @return	void
 	 */
-	function t3lib_htmlmail () {
+	public function t3lib_htmlmail() {
 		$this->forceReturnPath = $GLOBALS['TYPO3_CONF_VARS']['SYS']['forceReturnPath'];
+
+		$this->mailer = 'TYPO3 '.TYPO3_version;
 	}
 
+
 	/**
-	 * @return	[type]		...
+	 * start action that sets the message ID and the charset
+	 *
+	 * @return	void
 	 */
-	function start ()	{
+	public function start() {
 		global $TYPO3_CONF_VARS;
 
 			// Sets the message id
@@ -275,13 +266,16 @@ class t3lib_htmlmail {
 		}
 		$this->messageid = md5(microtime()) . '@' . $host;
 
+
 			// Default line break for Unix systems.
 		$this->linebreak = chr(10);
-			// Line break for Windows. This is needed because PHP on Windows systems send mails via SMTP instead of using sendmail, and thus the linebreak needs to be \r\n.
-		if (TYPO3_OS=='WIN')	{
+			// Line break for Windows. This is needed because PHP on Windows systems
+			// send mails via SMTP instead of using sendmail, and thus the linebreak needs to be \r\n.
+		if (TYPO3_OS == 'WIN') {
 			$this->linebreak = chr(13).chr(10);
 		}
 
+			// Sets the Charset
 		if (!$this->charset) {
 			if (is_object($GLOBALS['TSFE']) && $GLOBALS['TSFE']->renderCharset) {
 				$this->charset = $GLOBALS['TSFE']->renderCharset;
@@ -289,7 +283,7 @@ class t3lib_htmlmail {
 				$this->charset = $GLOBALS['LANG']->charSet;
 			} elseif ($GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset']) {
 				$this->charset = $GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset'];
-			} else {
+			} else	{
 				$this->charset = $this->defaultCharset;
 			}
 		}
@@ -298,111 +292,134 @@ class t3lib_htmlmail {
 		$this->useQuotedPrintable();
 	}
 
+
 	/**
-	 * [Describe function...]
+	 * sets the header of both Plain Text and HTML mails to quoted printable
 	 *
 	 * @return	void
 	 */
-	function useQuotedPrintable()	{
+	public function useQuotedPrintable() {
 		$this->plain_text_header = 'Content-Type: text/plain; charset='.$this->charset.$this->linebreak.'Content-Transfer-Encoding: quoted-printable';
 		$this->html_text_header = 'Content-Type: text/html; charset='.$this->charset.$this->linebreak.'Content-Transfer-Encoding: quoted-printable';
 	}
 
 	/**
-	 * [Describe function...]
+	 * sets the encoding headers to base64 for both the Plain Text and HTML mail
 	 *
 	 * @return	void
 	 */
-	function useBase64()	{
+	public function useBase64() {
 		$this->plain_text_header = 'Content-Type: text/plain; charset='.$this->charset.$this->linebreak.'Content-Transfer-Encoding: base64';
 		$this->html_text_header = 'Content-Type: text/html; charset='.$this->charset.$this->linebreak.'Content-Transfer-Encoding: base64';
-		$this->alt_base64=1;
+		$this->alt_base64 = 1;
 	}
 
+
 	/**
-	 * [Describe function...]
+	 * sets the encoding to 8bit and the current charset of both the Plain Text and the HTML mail
 	 *
 	 * @return	void
 	 */
-	function use8Bit()	{
+	public function use8Bit() {
 		$this->plain_text_header = 'Content-Type: text/plain; charset='.$this->charset.$this->linebreak.'Content-Transfer-Encoding: 8bit';
 		$this->html_text_header = 'Content-Type: text/html; charset='.$this->charset.$this->linebreak.'Content-Transfer-Encoding: 8bit';
-		$this->alt_8bit=1;
+		$this->alt_8bit = 1;
 	}
 
-	/**
-	 * [Describe function...]
-	 *
-	 * @param	[type]		$content: ...
-	 * @return	[type]		...
-	 */
-	function encodeMsg($content)	{
-		return $this->alt_base64 ? $this->makeBase64($content) : ($this->alt_8bit ? $content : t3lib_div::quoted_printable($content));
-	}
 
 	/**
-	 * [Describe function...]
+	 * Encodes the message content according to the options "alt_base64" and "alt_8bit" (no need to encode here)
+	 * or to "quoted_printable" if no option is set.
 	 *
-	 * @param	[type]		$content: ...
-	 * @return	[type]		...
+	 * @param	string		$content the content that will be encoded
+	 * @return	string		the encoded content
 	 */
-	function addPlain ($content)	{
-			// Adds plain-text and qp-encodes it
-		$content=$this->substHTTPurlsInPlainText($content);
+	public function encodeMsg($content) {
+		if ($this->alt_base64) {
+			return $this->makeBase64($content);
+		} elseif ($this->alt_8bit) {
+			return $content;
+		} else	{
+			return t3lib_div::quoted_printable($content);
+		}
+	}
+
+
+	/**
+	 * Adds plain-text, replaces the HTTP urls in the plain text and then encodes it
+	 *
+	 * @param	string		$content that will be added
+	 * @return	void
+	 */
+	public function addPlain($content) {
+		$content = $this->substHTTPurlsInPlainText($content);
 		$this->setPlain($this->encodeMsg($content));
 	}
 
-	/**
-	 * [Describe function...]
-	 *
-	 * @param	[type]		$file: ...
-	 * @return	[type]		...
-	 */
-	function addAttachment($file)	{
-			// Adds an attachment to the mail
-		$theArr = $this->getExtendedURL($file);		// We fetch the content and the mime-type
-		if ($theArr)	{
-			if (!$theArr["content_type"]){$theArr["content_type"]="application/octet-stream";}
-			$temp = $this->split_fileref($file);
-			$theArr["filename"]= (($temp["file"])?$temp["file"]:(strpos(" ".$theArr["content_type"],"htm")?"index.html":"unknown"));
-			$this->theParts["attach"][]=$theArr;
-			return true;
-		} else { return false;}
-	}
 
 	/**
-	 * [Describe function...]
+	 * Adds an attachment to the mail
 	 *
-	 * @param	[type]		$file: ...
-	 * @return	[type]		...
+	 * @param	string		$file: the filename to add
+	 * @return	boolean		whether the attachment was added or not
 	 */
-	function addHTML ($file)	{
-			// Adds HTML and media, encodes it from a URL or file
+	public function addAttachment($file) {
+			// Fetching the content and the mime-type
+		$fileInfo = $this->getExtendedURL($file);
+		if ($fileInfo) {
+			if (!$fileInfo['content_type']) {
+				$fileInfo['content_type'] = 'application/octet-stream';
+			}
+			$temp = $this->split_fileref($file);
+			if ($temp['file']) {
+				$fileInfo['filename'] = $temp['file'];
+			} elseif (strpos(' '.$fileInfo['content_type'], 'htm')) {
+				$fileInfo['filename'] = 'index.html';
+			} else	{
+				$fileInfo['filename'] = 'unknown';
+			}
+			$this->theParts['attach'][] = $fileInfo;
+			return true;
+		}
+		return false;
+	}
+
+
+	/**
+	 * Adds HTML and media, encodes it from a URL or file
+	 *
+	 * @param	string		$file: the filename to add
+	 * @return	boolean		whether the attachment was added or not
+	 */
+	public function addHTML($file) {
 		$status = $this->fetchHTML($file);
-//		debug(md5($status));
-		if (!$status)	{return false;}
-		if ($this->extractFramesInfo())	{
-			return "Document was a frameset. Stopped";
+		if (!$status) {
+			return false;
+		}
+		if ($this->extractFramesInfo()) {
+			return 'Document was a frameset. Stopped';
 		}
 		$this->extractMediaLinks();
 		$this->extractHyperLinks();
 		$this->fetchHTMLMedia();
 		$this->substMediaNamesInHTML(0);	// 0 = relative
 		$this->substHREFsInHTML();
-		$this->setHTML($this->encodeMsg($this->theParts["html"]["content"]));
+		$this->setHtml($this->encodeMsg($this->theParts['html']['content']));
 	}
 
+
 	/**
-	 * External used to extract HTML-parts
+	 * Extract HTML-parts, used externally
 	 *
-	 * @param	[type]		$html: ...
-	 * @param	[type]		$url: ...
-	 * @return	[type]		...
+	 * @param	string		$html: will be added to the html "content" part
+	 * @param	string		$url: will be added to the html "path" part
+	 * @return	void
 	 */
-	function extractHtmlInit($html,$url)	{
-		$this->theParts["html"]["content"]=$html;
-		$this->theParts["html"]["path"]=$url;
+	public function extractHtmlInit($html,$url) {
+		$this->theParts['html']['content'] = $html;
+		$this->theParts['html']['path'] = $url;
 	}
+
 
 	/**
 	 * Assembles the message by headers and content and finally send it to the provided recipient.
@@ -410,7 +427,7 @@ class t3lib_htmlmail {
 	 * @param	string		$recipient: The recipient the message should be delivered to (if blank, $this->recipient will be used instead)
 	 * @return	boolean		Returns whether the mail was sent (successfully accepted for delivery)
 	 */
-	function send($recipient='') {
+	public function send($recipient) {
 		if ($recipient) {
 			$this->recipient = $recipient;
 		}
@@ -439,54 +456,55 @@ class t3lib_htmlmail {
 	 *****************************************/
 
 	/**
-	 * @return	[type]		...
+	 * Clears the header-string and sets the headers based on object-vars.
+	 * 
+	 * @return	void
 	 */
-	function setHeaders()	{
-			// Clears the header-string and sets the headers based on object-vars.
-		$this->headers = "";
+	public function setHeaders() {
+		$this->headers = '';
 			// Message_id
-		$this->add_header("Message-ID: <".$this->messageid.">");
+		$this->add_header('Message-ID: <'.$this->messageid.'>');
 			// Return path
-		if ($this->returnPath)	{
-			$this->add_header("Return-Path: ".$this->returnPath);
-			$this->add_header("Errors-To: ".$this->returnPath);
+		if ($this->returnPath) {
+			$this->add_header('Return-Path: '.$this->returnPath);
+			$this->add_header('Errors-To: '.$this->returnPath);
 		}
 			// X-id
-		if ($this->Xid)	{
-			$this->add_header("X-Typo3MID: ".$this->Xid);
+		if ($this->Xid) {
+			$this->add_header('X-Typo3MID: '.$this->Xid);
 		}
 
 			// From
-		if ($this->from_email)	{
-			if ($this->from_name)	{
+		if ($this->from_email) {
+			if ($this->from_name) {
 				$this->add_header('From: '.$this->from_name.' <'.$this->from_email.'>');
 			} else {
 				$this->add_header('From: '.$this->from_email);
 			}
 		}
 			// Reply
-		if ($this->replyto_email)	{
-			if ($this->replyto_name)	{
+		if ($this->replyto_email) {
+			if ($this->replyto_name) {
 				$this->add_header('Reply-To: '.$this->replyto_name.' <'.$this->replyto_email.'>');
 			} else {
 				$this->add_header('Reply-To: '.$this->replyto_email);
 			}
 		}
 			// Organisation
-		if ($this->organisation)	{
+		if ($this->organisation) {
 			$this->add_header('Organisation: '.$this->organisation);
 		}
 			// mailer
-		if ($this->mailer)	{
-			$this->add_header("X-Mailer: $this->mailer");
+		if ($this->mailer) {
+			$this->add_header('X-Mailer: '.$this->mailer);
 		}
 			// priority
-		if ($this->priority)	{
-			$this->add_header("X-Priority: $this->priority");
+		if ($this->priority) {
+			$this->add_header('X-Priority: '.$this->priority);
 		}
-		$this->add_header("Mime-Version: 1.0");
+		$this->add_header('Mime-Version: 1.0');
 
-		if (!$this->dontEncodeHeader)	{
+		if (!$this->dontEncodeHeader) {
 			$enc = $this->alt_base64 ? 'base64' : 'quoted_printable';	// Header must be ASCII, therefore only base64 or quoted_printable are allowed!
 				// Quote recipient and subject
 			$this->recipient = t3lib_div::encodeHeader($this->recipient,$enc,$this->charset);
@@ -494,72 +512,66 @@ class t3lib_htmlmail {
 		}
 	}
 
-	/**
-	 * [Describe function...]
-	 *
-	 * @param	[type]		$recip: ...
-	 * @return	[type]		...
-	 */
-	function setRecipient ($recip)	{
-		// Sets the recipient(s). If you supply a string, you set one recipient. If you supply an array, every value is added as a recipient.
-		if (is_array($recip))	{
-			$this->recipient = "";
-			while (list($key,) = each($recip)) {
-				$this->recipient .= $recip[$key].",";
-			}
-			$this->recipient = ereg_replace(",$","",$this->recipient);
-		} else {
-			$this->recipient = $recip;
-		}
-	}
 
 	/**
-	 * [Describe function...]
+	 * Sets the recipient(s). If you supply a string, you set one recipient. 
+	 * If you supply an array, every value is added as a recipient.
 	 *
-	 * @return	[type]		...
+	 * @param	mixed		$recipient: the recipient(s) to set
+	 * @return	void
 	 */
-	function getHTMLContentType()	{
-		return count($this->theParts["html"]["media"]) ? 'multipart/related;' : 'multipart/alternative;';
+	public function setRecipient($recipient) {
+		$this->recipient = (is_array($recipient) ? implode(',', $recipient) : $recipient);
 	}
 
+
 	/**
-	 * [Describe function...]
+	 * Returns the content type based on whether the mail has media / attachments or no
 	 *
-	 * @return	[type]		...
+	 * @return	string		the content type
 	 */
-	function setContent()	{
-			// Begins building the message-body
-		$this->message = "";
+	public function getHTMLContentType() {
+		return (count($this->theParts['html']['media']) ? 'multipart/related;' : 'multipart/alternative;');
+	}
+
+
+	/**
+	 * Begins building the message-body
+	 *
+	 * @return	void
+	 */
+	public function setContent() {
+		$this->message = '';
 		$boundary = $this->getBoundary();
-		// Setting up headers
-		if (count($this->theParts["attach"]))	{
+
+			// Setting up headers
+		if (count($this->theParts['attach'])) {	// Generate (plain/HTML) / attachments
 			$this->add_header('Content-Type: multipart/mixed;');
 			$this->add_header(' boundary="'.$boundary.'"');
 			$this->add_message("This is a multi-part message in MIME format.\n");
-			$this->constructMixed($boundary);	// Generate (plain/HTML) / attachments
-		} elseif ($this->theParts["html"]["content"]) {
+			$this->constructMixed($boundary);
+		} elseif ($this->theParts['html']['content']) {	// Generate plain/HTML mail
 			$this->add_header('Content-Type: '.$this->getHTMLContentType());
 			$this->add_header(' boundary="'.$boundary.'"');
 			$this->add_message("This is a multi-part message in MIME format.\n");
-			$this->constructHTML($boundary);		// Generate plain/HTML mail
-		} else {
+			$this->constructHTML($boundary);
+		} else {	// Generate plain only
 			$this->add_header($this->plain_text_header);
-			$this->add_message($this->getContent("plain"));	// Generate plain only
+			$this->add_message($this->getContent('plain'));	
 		}
 	}
 
+
 	/**
-	 * [Describe function...]
+	 * This functions combines the plain / HTML content with the attachments
 	 *
-	 * @param	[type]		$boundary: ...
-	 * @return	[type]		...
+	 * @param	string		$boundary: the mail boundary
+	 * @return	void
 	 */
-	function constructMixed ($boundary)	{
-			// Here (plain/HTML) is combined with the attachments
+	public function constructMixed($boundary) {
 		$this->add_message("--".$boundary);
-			// (plain/HTML) is added
-		if ($this->theParts["html"]["content"])	{
-				// HTML and plain
+
+		if ($this->theParts['html']['content']) {	// HTML and plain is added
 			$newBoundary = $this->getBoundary();
 			$this->add_message("Content-Type: ".$this->getHTMLContentType());
 			$this->add_message(' boundary="'.$newBoundary.'"');
@@ -568,103 +580,98 @@ class t3lib_htmlmail {
 		} else {	// Purely plain
 			$this->add_message($this->plain_text_header);
 			$this->add_message('');
-			$this->add_message($this->getContent("plain"));
+			$this->add_message($this->getContent('plain'));
 		}
 			// attachments are added
-		if (is_array($this->theParts["attach"]))	{
-			reset($this->theParts["attach"]);
-			while(list(,$media)=each($this->theParts["attach"]))	{
+		if (is_array($this->theParts['attach'])) {
+			foreach($this->theParts['attach'] as $media) {
 				$this->add_message("--".$boundary);
-				$this->add_message("Content-Type: ".$media["content_type"]);
-				$this->add_message(' name="'.$media["filename"].'"');
-				$this->add_message("Content-Transfer-Encoding: base64");
-				$this->add_message("Content-Disposition: attachment;");
-				$this->add_message(' filename="'.$media["filename"].'"');
+				$this->add_message("Content-Type: ".$media['content_type']);
+				$this->add_message(' name="'.$media['filename'].'"');
+				$this->add_message('Content-Transfer-Encoding: base64');
+				$this->add_message('Content-Disposition: attachment;');
+				$this->add_message(' filename="'.$media['filename'].'"');
 				$this->add_message('');
-				$this->add_message($this->makeBase64($media["content"]));
+				$this->add_message($this->makeBase64($media['content']));
 			}
 		}
 		$this->add_message("--".$boundary."--\n");
 	}
 
+
 	/**
-	 * [Describe function...]
+	 * this function creates the HTML part of the mail
 	 *
-	 * @param	[type]		$boundary: ...
-	 * @return	[type]		...
+	 * @param	string		$boundary: the boundary to use
+	 * @return	void
 	 */
-	function constructHTML ($boundary)	{
-		if (count($this->theParts["html"]["media"]))	{	// If media, then we know, the multipart/related content-type has been set before this function call...
+	public function constructHTML($boundary) {
+			// If media, then we know, the multipart/related content-type has been set before this function call
+		if (count($this->theParts['html']['media'])) {
 			$this->add_message("--".$boundary);
 				// HTML has media
 			$newBoundary = $this->getBoundary();
-			$this->add_message("Content-Type: multipart/alternative;");
+			$this->add_message('Content-Type: multipart/alternative;');
 			$this->add_message(' boundary="'.$newBoundary.'"');
 			$this->add_message('Content-Transfer-Encoding: 7bit');
 			$this->add_message('');
 
-			$this->constructAlternative($newBoundary);	// Adding the plaintext/html mix
-
+				// Adding the plaintext/html mix, and use $newBoundary
+			$this->constructAlternative($newBoundary);
 			$this->constructHTML_media($boundary);
-		} else {
-			$this->constructAlternative($boundary);	// Adding the plaintext/html mix, and if no media, then use $boundary instead of $newBoundary
+		} else	{
+				// if no media, just use the $boundary for adding plaintext/html mix
+			$this->constructAlternative($boundary);
 		}
 	}
 
+
 	/**
-	 * [Describe function...]
+	 * Here plain is combined with HTML
 	 *
-	 * @param	[type]		$boundary: ...
-	 * @return	[type]		...
+	 * @param	string		$boundary: the boundary to use
+	 * @return	void
 	 */
-	function constructAlternative($boundary)	{
-			// Here plain is combined with HTML
+	public function constructAlternative($boundary) {
 		$this->add_message("--".$boundary);
+
 			// plain is added
 		$this->add_message($this->plain_text_header);
 		$this->add_message('');
-		$this->add_message($this->getContent("plain"));
+		$this->add_message($this->getContent('plain'));
 		$this->add_message("--".$boundary);
+
 			// html is added
 		$this->add_message($this->html_text_header);
 		$this->add_message('');
-		$this->add_message($this->getContent("html"));
+		$this->add_message($this->getContent('html'));
 		$this->add_message("--".$boundary."--\n");
 	}
 
+
 	/**
-	 * [Describe function...]
+	 * Constructs the HTML-part of message if the HTML contains media
 	 *
-	 * @param	[type]		$boundary: ...
-	 * @return	[type]		...
+	 * @param	string		$boundary: the boundary to use
+	 * @return	void
 	 */
-	function constructHTML_media ($boundary)	{
-/*			// Constructs the HTML-part of message if the HTML contains media
-		$this->add_message("--".$boundary);
-			// htmlcode is added
-		$this->add_message($this->html_text_header);
-		$this->add_message('');
-		$this->add_message($this->getContent("html"));
-
-		OLD stuf...
-
-		*/
+	public function constructHTML_media($boundary) {
 			// media is added
-		if (is_array($this->theParts["html"]["media"]))	{
-			reset($this->theParts["html"]["media"]);
-			while(list($key,$media)=each($this->theParts["html"]["media"]))	{
-				if (!$this->mediaList || t3lib_div::inList($this->mediaList,$key))	{
+		if (is_array($this->theParts['html']['media'])) {
+			foreach($this->theParts['html']['media'] as $key => $media) {
+				if (!$this->mediaList || t3lib_div::inList($this->mediaList,$key)) {
 					$this->add_message("--".$boundary);
-					$this->add_message("Content-Type: ".$media["ctype"]);
-					$this->add_message("Content-ID: <part".$key.".".$this->messageid.">");
-					$this->add_message("Content-Transfer-Encoding: base64");
+					$this->add_message('Content-Type: '.$media['ctype']);
+					$this->add_message('Content-ID: <part'.$key.'.'.$this->messageid.'>');
+					$this->add_message('Content-Transfer-Encoding: base64');
 					$this->add_message('');
-					$this->add_message($this->makeBase64($media["content"]));
+					$this->add_message($this->makeBase64($media['content']));
 				}
 			}
 		}
 		$this->add_message("--".$boundary."--\n");
 	}
+
 
 	/**
 	 * Sends the mail by calling the mail() function in php. On Linux systems this will invoke the MTA
@@ -691,169 +698,161 @@ class t3lib_htmlmail {
 	 *
 	 * @return	boolean		Returns whether the mail was sent (successfully accepted for delivery)
 	 */
-	function sendTheMail() {
+	public function sendTheMail() {
 		$mailWasSent = false;
-			// Sends the mail, requires the recipient, message and headers to be set.
-		if (trim($this->recipient) && trim($this->message))	{	//  && trim($this->headers)
-			$returnPath = (strlen($this->returnPath)>0)?"-f".$this->returnPath:'';
-				//On windows the -f flag is not used (specific for Sendmail and Postfix), but instead the php.ini parameter sendmail_from is used.
-			if($this->returnPath) {
-				ini_set(sendmail_from, $this->returnPath);
-			}
-				//If safe mode is on, the fifth parameter to mail is not allowed, so the fix wont work on unix with safe_mode=On
-			if(!ini_get('safe_mode') && $this->forceReturnPath) {
-				$mailWasSent = mail(
-					$this->recipient,
+
+			// Sending the mail requires the recipient and message to be set.
+		if (!trim($this->recipient) || !trim($this->message)) {
+			return false;
+		}
+
+			// On windows the -f flag is not used (specific for Sendmail and Postfix),
+			// but instead the php.ini parameter sendmail_from is used.
+		$returnPath = (strlen($this->returnPath) > 0) ? '-f'.$this->returnPath : '';
+		if($this->returnPath) {
+			ini_set(sendmail_from, $this->returnPath);
+		}
+		// If safe mode is on, the fifth parameter to mail is not allowed, so the fix wont work on unix with safe_mode=On
+		$returnPathPossible = (!ini_get('safe_mode') && $this->forceReturnPath);
+		if ($returnPathPossible) {
+			$mailWasSent = mail($this->recipient,
+				  $this->subject,
+				  $this->message,
+				  $this->headers,
+				  $returnPath);
+		} else {
+			$mailWasSent = mail($this->recipient,
+				  $this->subject,
+				  $this->message,
+				  $this->headers);
+		}
+
+			// Sending a copy
+		if ($this->recipient_copy) {
+			if ($returnPathPossible) {
+				$mailWasSent = mail($this->recipient_copy,
 					$this->subject,
 					$this->message,
 					$this->headers,
-					$returnPath
-				);
+					$returnPath);
 			} else {
-				$mailWasSent = mail(
-					$this->recipient,
+				$mailWasSent = mail($this->recipient_copy,
 					$this->subject,
 					$this->message,
-					$this->headers
-				);
+					$this->headers);
 			}
-				// Sending copy:
-			if ($this->recipient_copy)	{
-				if(!ini_get('safe_mode') && $this->forceReturnPath) {
-					$mailWasSent = mail(
-						$this->recipient_copy,
-						$this->subject,
-						$this->message,
-						$this->headers,
-						$returnPath
-					);
-				} else {
-					$mailWasSent = mail(
-						$this->recipient_copy,
-						$this->subject,
-						$this->message,
-						$this->headers
-					);
-				}
+		}
+			// Auto response
+		if ($this->auto_respond_msg) {
+			$theParts = explode('/',$this->auto_respond_msg,2);
+			$theParts[1] = str_replace("/",chr(10),$theParts[1]);
+			if ($returnPathPossible) {
+				$mailWasSent = mail($this->from_email,
+					$theParts[0],
+					$theParts[1],
+					"From: ".$this->recipient,
+					$returnPath);
+			} else {
+				$mailWasSent = mail($this->from_email,
+					$theParts[0],
+					$theParts[1],
+					"From: ".$this->recipient);
 			}
-				// Auto response
-			if ($this->auto_respond_msg)	{
-				$theParts = explode('/',$this->auto_respond_msg,2);
-				$theParts[1] = str_replace("/",chr(10),$theParts[1]);
-				if(!ini_get('safe_mode') && $this->forceReturnPath) {
-					$mailWasSent = mail(
-						$this->from_email,
-						$theParts[0],
-						$theParts[1],
-						'From: '.$this->recipient,
-						$returnPath
-					);
-				} else {
-					$mailWasSent = mail(
-						$this->from_email,
-						$theParts[0],
-						$theParts[1],
-						'From: '.$this->recipient
-					);
-				}
-			}
-			if($this->returnPath) {
-				ini_restore(sendmail_from);
-			}
+		}
+		if ($this->returnPath) {
+			ini_restore(sendmail_from);
 		}
 		return $mailWasSent;
 	}
 
+
 	/**
-	 * [Describe function...]
+	 * Returns boundaries
 	 *
-	 * @return	[type]		...
+	 * @return	string	the boundary
 	 */
-	function getBoundary()	{
-			// Returns boundaries
+	public function getBoundary() {
 		$this->part++;
 		return 	"----------".uniqid("part_".$this->part."_");
 	}
 
-	/**
-	 * [Describe function...]
-	 *
-	 * @param	[type]		$content: ...
-	 * @return	[type]		...
-	 */
-	function setPlain ($content)	{
-			// Sets the plain-text part. No processing done.
-		$this->theParts["plain"]["content"] = $content;
-	}
 
 	/**
-	 * [Describe function...]
+	 * Sets the plain-text part. No processing done.
 	 *
-	 * @param	[type]		$content: ...
-	 * @return	[type]		...
+	 * @param	string		$content: the plain content
+	 * @return	void
 	 */
-	function setHtml ($content)	{
-			// Sets the HTML-part. No processing done.
-		$this->theParts["html"]["content"] = $content;
+	public function setPlain($content) {
+		$this->theParts['plain']['content'] = $content;
 	}
 
+
 	/**
-	 * [Describe function...]
+	 * Sets the HTML-part. No processing done.
 	 *
-	 * @param	[type]		$header: ...
-	 * @return	[type]		...
+	 * @param	string		$content: the HTML content
+	 * @return	void
 	 */
-	function add_header($header)	{
-		if (!$this->dontEncodeHeader && !stristr($header,'Content-Type') && !stristr($header,'Content-Transfer-Encoding'))	{
-				// Mail headers must be ASCII, therefore we convert the whole header to either base64 or quoted_printable
-			$parts = explode(': ',$header,2);	// Field tags must not be encoded
-			if (count($parts)==2)	{
+	public function setHtml($content) {
+		$this->theParts['html']['content'] = $content;
+	}
+
+
+	/**
+	 * Adds a header to the mail. Use this AFTER the setHeaders()-function
+	 *
+	 * @param	string		$header: the header in form of "key: value"
+	 * @return	void
+	 */
+	public function add_header($header) {
+			// Mail headers must be ASCII, therefore we convert the whole header to either base64 or quoted_printable
+		if (!$this->dontEncodeHeader && !stristr($header,'Content-Type') && !stristr($header,'Content-Transfer-Encoding')) {
+				// Field tags must not be encoded
+			$parts = explode(': ',$header,2);
+			if (count($parts) == 2) {
 				$enc = $this->alt_base64 ? 'base64' : 'quoted_printable';
-				$parts[1] = t3lib_div::encodeHeader($parts[1],$enc,$this->charset);
-				$header = implode(': ',$parts);
+				$parts[1] = t3lib_div::encodeHeader($parts[1], $enc, $this->charset);
+				$header = implode(': ', $parts);
 			}
 		}
 
-			// Adds a header to the mail. Use this AFTER the setHeaders()-function
-		$this->headers.=$header."\n";
+		$this->headers .= $header."\n";
 	}
 
-	/**
-	 * [Describe function...]
-	 *
-	 * @param	[type]		$string: ...
-	 * @return	[type]		...
-	 */
-	function add_message($string)	{
-			// Adds a line of text to the mail-body. Is normally use internally
-		$this->message.=$string."\n";
-	}
 
 	/**
-	 * [Describe function...]
+	 * Adds a line of text to the mail-body. Is normally used internally
 	 *
-	 * @param	[type]		$type: ...
-	 * @return	[type]		...
+	 * @param	string		$msg: the message to add
+	 * @return	void
 	 */
-	function getContent($type)	{
-		return $this->theParts[$type]["content"];
+	public function add_message($msg) {
+		$this->message .= $msg."\n";
 	}
 
+
 	/**
-	 * [Describe function...]
+	 * returns the content specified by the type (plain, html etc.)
 	 *
-	 * @return	[type]		...
+	 * @param	string		$type: the content type, can either plain or html
+	 * @return	void
 	 */
-	function preview()	{
-		echo nl2br(HTMLSpecialChars($this->headers));
+	public function getContent($type) {
+		return $this->theParts[$type]['content'];
+	}
+
+
+	/**
+	 * shows a preview of the email of the headers and the message
+	 *
+	 * @return	void
+	 */
+	public function preview() {
+		echo nl2br(htmlspecialchars($this->headers));
 		echo "<BR>";
-		echo nl2br(HTMLSpecialChars($this->message));
+		echo nl2br(htmlspecialchars($this->message));
 	}
-
-
-
-
-
 
 
 
@@ -869,320 +868,342 @@ class t3lib_htmlmail {
 	 ***************************************************/
 
 	/**
-	 * @param	[type]		$file: ...
-	 * @return	[type]		...
+	 * Fetches the HTML-content from either url og local serverfile
+	 * 
+	 * @param	string		$file: the file to load
+	 * @return	boolean		whether the data was fetched or not
 	 */
-	function fetchHTML($file)	{
-			// Fetches the HTML-content from either url og local serverfile
-		$this->theParts["html"]["content"] = $this->getURL($file);	// Fetches the content of the page
-		if ($this->theParts["html"]["content"])	{
+	public function fetchHTML($file) {
+			// Fetches the content of the page
+		$this->theParts['html']['content'] = $this->getURL($file);
+		if ($this->theParts['html']['content']) {
 			$addr = $this->extParseUrl($file);
  			$path = ($addr['scheme']) ? $addr['scheme'].'://'.$addr['host'].(($addr['port'])?':'.$addr['port']:'').(($addr['filepath'])?$addr['filepath']:'/') : $addr['filepath'];
-			$this->theParts["html"]["path"] = $path;
+			$this->theParts['html']['path'] = $path;
 			return true;
-		} else {
+		} else	{
 			return false;
 		}
 	}
 
+
 	/**
-	 * [Describe function...]
+	 * Fetches the mediafiles which are found by extractMediaLinks()
 	 *
-	 * @return	[type]		...
+	 * @return	void
 	 */
-	function fetchHTMLMedia()	{
-			// Fetches the mediafiles which are found by extractMediaLinks()
-		if (is_array($this->theParts["html"]["media"]))	{
-			reset ($this->theParts["html"]["media"]);
-			if (count($this->theParts["html"]["media"]) > 0)	{
-				while (list($key,$media) = each ($this->theParts["html"]["media"]))	{
-					$picdata = $this->getExtendedURL($this->theParts["html"]["media"][$key]["absRef"]);		// We fetch the content and the mime-type
-					if (is_array($picdata))	{
-						$this->theParts["html"]["media"][$key]["content"] = $picdata["content"];
-						$this->theParts["html"]["media"][$key]["ctype"] = $picdata["content_type"];
-					}
-				}
+	public function fetchHTMLMedia() {
+		if (!is_array($this->theParts['html']['media']) || !count($this->theParts['html']['media'])) return;
+		foreach ($this->theParts['html']['media'] as $key => $media) {
+				// fetching the content and the mime-type
+			$picdata = $this->getExtendedURL($this->theParts['html']['media'][$key]['absRef']);
+			if (is_array($picdata)) {
+				$this->theParts['html']['media'][$key]['content'] = $picdata['content'];
+				$this->theParts['html']['media'][$key]['ctype']   = $picdata['content_type'];
 			}
 		}
 	}
 
+
 	/**
-	 * [Describe function...]
+	 * extracts all media-links from $this->theParts['html']['content']
 	 *
-	 * @return	[type]		...
+	 * @return	void
 	 */
-	function extractMediaLinks()	{
-			// extracts all media-links from $this->theParts["html"]["content"]
-		$html_code = $this->theParts["html"]["content"];
-		$attribRegex = $this->tag_regex(Array("img","table","td","tr","body","iframe","script","input","embed"));
-		$codepieces = split($attribRegex, $html_code);	// Splits the document by the beginning of the above tags
-		$len=strlen($codepieces[0]);
+	public function extractMediaLinks() {
+		$html_code = $this->theParts['html']['content'];
+		$attribRegex = $this->tag_regex(array('img','table','td','tr','body','iframe','script','input','embed'));
+
+			// split the document by the beginning of the above tags
+		$codepieces = split($attribRegex, $html_code);
+		$len = strlen($codepieces[0]);
 		$pieces = count($codepieces);
 		$reg = array();
-		for($i=1; $i < $pieces; $i++)	{
-			$tag = strtolower(strtok(substr($html_code,$len+1,10)," "));
-			$len+=strlen($tag)+strlen($codepieces[$i])+2;
+		for ($i = 1; $i < $pieces; $i++) {
+			$tag = strtolower(strtok(substr($html_code,$len+1,10),' '));
+			$len += strlen($tag)+strlen($codepieces[$i])+2;
 			$dummy = eregi("[^>]*", $codepieces[$i], $reg);
 			$attributes = $this->get_tag_attributes($reg[0]);	// Fetches the attributes for the tag
-			$imageData=array();
-			$imageData["ref"]=($attributes["src"]) ? $attributes["src"] : $attributes["background"];	// Finds the src or background attribute
-			if ($imageData["ref"])	{
-				$imageData["quotes"]=(substr($codepieces[$i],strpos($codepieces[$i], $imageData["ref"])-1,1)=='"')?'"':'';		// Finds out if the value had quotes around it
-				$imageData["subst_str"] = $imageData["quotes"].$imageData["ref"].$imageData["quotes"];	// subst_str is the string to look for, when substituting lateron
-				if ($imageData["ref"] && !strstr($this->image_fullpath_list,"|".$imageData["subst_str"]."|"))	{
-					$this->image_fullpath_list.="|".$imageData["subst_str"]."|";
-					$imageData["absRef"] = $this->absRef($imageData["ref"]);
-					$imageData["tag"]=$tag;
-					$imageData["use_jumpurl"]=$attributes["dmailerping"]?1:0;
-					$this->theParts["html"]["media"][]=$imageData;
+			$imageData = array();
+
+				// Finds the src or background attribute
+			$imageData['ref'] = ($attributes['src'] ? $attributes['src'] : $attributes['background']);
+			if ($imageData['ref']) {
+					// find out if the value had quotes around it
+				$imageData['quotes'] = (substr($codepieces[$i], strpos($codepieces[$i], $imageData['ref'])-1,1) == '"') ? '"' : '';
+					// subst_str is the string to look for, when substituting lateron
+				$imageData['subst_str'] = $imageData['quotes'].$imageData['ref'].$imageData['quotes'];
+				if ($imageData['ref'] && !strstr($this->image_fullpath_list,"|".$imageData["subst_str"]."|")) {
+					$this->image_fullpath_list .= "|".$imageData['subst_str']."|";
+					$imageData['absRef'] = $this->absRef($imageData['ref']);
+					$imageData['tag'] = $tag;
+					$imageData['use_jumpurl'] = $attributes['dmailerping']?1:0;
+					$this->theParts['html']['media'][] = $imageData;
 				}
 			}
 		}
-			// Extracts stylesheets
-		$attribRegex = $this->tag_regex(Array("link"));
-		$codepieces = split($attribRegex, $html_code);	// Splits the document by the beginning of the above tags
+
+			// Extracting stylesheets
+		$attribRegex = $this->tag_regex(array('link'));
+			// Split the document by the beginning of the above tags
+		$codepieces = split($attribRegex, $html_code);
 		$pieces = count($codepieces);
-		for($i=1; $i < $pieces; $i++)	{
+		for ($i = 1; $i < $pieces; $i++) {
 			$dummy = eregi("[^>]*", $codepieces[$i], $reg);
-			$attributes = $this->get_tag_attributes($reg[0]);	// Fetches the attributes for the tag
-			$imageData=array();
-			if (strtolower($attributes["rel"])=="stylesheet" && $attributes["href"])	{
-				$imageData["ref"]=$attributes["href"];	// Finds the src or background attribute
-				$imageData["quotes"]=(substr($codepieces[$i],strpos($codepieces[$i], $imageData["ref"])-1,1)=='"')?'"':'';		// Finds out if the value had quotes around it
-				$imageData["subst_str"] = $imageData["quotes"].$imageData["ref"].$imageData["quotes"];	// subst_str is the string to look for, when substituting lateron
-				if ($imageData["ref"] && !strstr($this->image_fullpath_list,"|".$imageData["subst_str"]."|"))	{
-					$this->image_fullpath_list.="|".$imageData["subst_str"]."|";
-					$imageData["absRef"] = $this->absRef($imageData["ref"]);
-					$this->theParts["html"]["media"][]=$imageData;
+				// fetches the attributes for the tag
+			$attributes = $this->get_tag_attributes($reg[0]);
+			$imageData = array();
+			if (strtolower($attributes['rel']) == 'stylesheet' && $attributes['href']) {
+					// Finds the src or background attribute
+				$imageData['ref'] = $attributes['href'];
+					// Finds out if the value had quotes around it
+				$imageData['quotes'] = (substr($codepieces[$i],strpos($codepieces[$i], $imageData['ref'])-1,1) == '"') ? '"' : '';
+					// subst_str is the string to look for, when substituting lateron
+				$imageData['subst_str'] = $imageData['quotes'].$imageData['ref'].$imageData['quotes'];
+				if ($imageData['ref'] && !strstr($this->image_fullpath_list,"|".$imageData["subst_str"]."|")) {
+					$this->image_fullpath_list .= "|".$imageData["subst_str"]."|";
+					$imageData['absRef'] = $this->absRef($imageData["ref"]);
+					$this->theParts['html']['media'][] = $imageData;
 				}
 			}
 		}
+
 			// fixes javascript rollovers
 		$codepieces = split(quotemeta(".src"), $html_code);
 		$pieces = count($codepieces);
 		$expr = "^[^".quotemeta("\"").quotemeta("'")."]*";
-		for($i=1; $i < $pieces; $i++)	{
+		for($i = 1; $i < $pieces; $i++) {
 			$temp = $codepieces[$i];
 			$temp = trim(ereg_replace("=","",trim($temp)));
-			ereg ($expr,substr($temp,1,strlen($temp)),$reg);
-			$imageData["ref"] = $reg[0];
-			$imageData["quotes"] = substr($temp,0,1);
-			$imageData["subst_str"] = $imageData["quotes"].$imageData["ref"].$imageData["quotes"];	// subst_str is the string to look for, when substituting lateron
-			$theInfo = $this->split_fileref($imageData["ref"]);
-			switch ($theInfo["fileext"])	{
-				case "gif":
-				case "jpeg":
-				case "jpg":
-					if ($imageData["ref"] && !strstr($this->image_fullpath_list,"|".$imageData["subst_str"]."|"))	{
-						$this->image_fullpath_list.="|".$imageData["subst_str"]."|";
-						$imageData["absRef"] = $this->absRef($imageData["ref"]);
-						$this->theParts["html"]["media"][]=$imageData;
+			ereg($expr,substr($temp,1,strlen($temp)),$reg);
+			$imageData['ref'] = $reg[0];
+			$imageData['quotes'] = substr($temp,0,1);
+				// subst_str is the string to look for, when substituting lateron
+			$imageData['subst_str'] = $imageData['quotes'].$imageData['ref'].$imageData['quotes'];
+			$theInfo = $this->split_fileref($imageData['ref']);
+
+			switch ($theInfo['fileext']) {
+				case 'gif':
+				case 'jpeg':
+				case 'jpg':
+					if ($imageData['ref'] && !strstr($this->image_fullpath_list,"|".$imageData["subst_str"]."|")) {
+						$this->image_fullpath_list .= "|".$imageData['subst_str']."|";
+						$imageData['absRef'] = $this->absRef($imageData['ref']);
+						$this->theParts['html']['media'][] = $imageData;
 					}
 				break;
 			}
 		}
 	}
 
+
 	/**
-	 * [Describe function...]
+	 * extracts all hyper-links from $this->theParts["html"]["content"]
 	 *
-	 * @return	[type]		...
+	 * @return	void
 	 */
-	function extractHyperLinks()	{
-			// extracts all hyper-links from $this->theParts["html"]["content"]
-		$html_code = $this->theParts["html"]["content"];
-		$attribRegex = $this->tag_regex(Array("a","form","area"));
+	public function extractHyperLinks() {
+		$html_code = $this->theParts['html']['content'];
+		$attribRegex = $this->tag_regex(array('a','form','area'));
 		$codepieces = split($attribRegex, $html_code);	// Splits the document by the beginning of the above tags
-		$len=strlen($codepieces[0]);
+		$len = strlen($codepieces[0]);
 		$pieces = count($codepieces);
-		for($i=1; $i < $pieces; $i++)	{
+		for($i = 1; $i < $pieces; $i++) {
 			$tag = strtolower(strtok(substr($html_code,$len+1,10)," "));
-			$len+=strlen($tag)+strlen($codepieces[$i])+2;
+			$len += strlen($tag) + strlen($codepieces[$i]) + 2;
 
 			$dummy = eregi("[^>]*", $codepieces[$i], $reg);
-			$attributes = $this->get_tag_attributes($reg[0]);	// Fetches the attributes for the tag
-			$hrefData="";
-			if ($attributes["href"]) {$hrefData["ref"]=$attributes["href"];} else {$hrefData["ref"]=$attributes["action"];}
-			if ($hrefData["ref"])	{
-				$hrefData["quotes"]=(substr($codepieces[$i],strpos($codepieces[$i], $hrefData["ref"])-1,1)=='"')?'"':'';		// Finds out if the value had quotes around it
-				$hrefData["subst_str"] = $hrefData["quotes"].$hrefData["ref"].$hrefData["quotes"];	// subst_str is the string to look for, when substituting lateron
-				if ($hrefData["ref"] && substr(trim($hrefData["ref"]),0,1)!="#" && !strstr($this->href_fullpath_list,"|".$hrefData["subst_str"]."|"))	{
-					$this->href_fullpath_list.="|".$hrefData["subst_str"]."|";
-					$hrefData["absRef"] = $this->absRef($hrefData["ref"]);
-					$hrefData["tag"]=$tag;
-					$this->theParts["html"]["hrefs"][]=$hrefData;
+				// Fetches the attributes for the tag
+			$attributes = $this->get_tag_attributes($reg[0]);
+			$hrefData = array();
+			$hrefData['ref'] = ($attributes['href'] ? $attributes['href'] : $hrefData['ref'] = $attributes['action']);
+			if ($hrefData['ref']) {
+					// Finds out if the value had quotes around it
+				$hrefData['quotes'] = (substr($codepieces[$i],strpos($codepieces[$i], $hrefData["ref"])-1,1) == '"') ? '"' : '';
+					// subst_str is the string to look for, when substituting lateron
+				$hrefData['subst_str'] = $hrefData['quotes'].$hrefData['ref'].$hrefData['quotes'];
+				if ($hrefData['ref'] && substr(trim($hrefData['ref']),0,1) != "#" && !strstr($this->href_fullpath_list,"|".$hrefData['subst_str']."|")) {
+					$this->href_fullpath_list .= "|".$hrefData['subst_str']."|";
+					$hrefData['absRef'] = $this->absRef($hrefData['ref']);
+					$hrefData['tag'] = $tag;
+					$this->theParts['html']['hrefs'][] = $hrefData;
 				}
 			}
 		}
 			// Extracts TYPO3 specific links made by the openPic() JS function
 		$codepieces = explode("onClick=\"openPic('", $html_code);
 		$pieces = count($codepieces);
-		for($i=1; $i < $pieces; $i++)	{
+		for($i = 1; $i < $pieces; $i++) {
 			$showpic_linkArr = explode("'",$codepieces[$i]);
-			$hrefData["ref"]=$showpic_linkArr[0];
-			if ($hrefData["ref"])	{
-				$hrefData["quotes"]="'";		// Finds out if the value had quotes around it
-				$hrefData["subst_str"] = $hrefData["quotes"].$hrefData["ref"].$hrefData["quotes"];	// subst_str is the string to look for, when substituting lateron
-				if ($hrefData["ref"] && !strstr($this->href_fullpath_list,"|".$hrefData["subst_str"]."|"))	{
-					$this->href_fullpath_list.="|".$hrefData["subst_str"]."|";
-					$hrefData["absRef"] = $this->absRef($hrefData["ref"]);
-					$this->theParts["html"]["hrefs"][]=$hrefData;
+			$hrefData['ref'] = $showpic_linkArr[0];
+			if ($hrefData['ref']) {
+				$hrefData['quotes'] = "'";
+					// subst_str is the string to look for, when substituting lateron
+				$hrefData['subst_str'] = $hrefData['quotes'].$hrefData['ref'].$hrefData['quotes'];
+				if ($hrefData['ref'] && !strstr($this->href_fullpath_list,"|".$hrefData['subst_str']."|")) {
+					$this->href_fullpath_list .= "|".$hrefData['subst_str']."|";
+					$hrefData['absRef'] = $this->absRef($hrefData['ref']);
+					$this->theParts['html']['hrefs'][] = $hrefData;
 				}
 			}
 		}
 	}
 
+
 	/**
-	 * [Describe function...]
+	 * extracts all media-links from $this->theParts["html"]["content"]
 	 *
-	 * @return	[type]		...
+	 * @return	array	two-dimensional array with information about each frame
 	 */
-	function extractFramesInfo()	{
-			// extracts all media-links from $this->theParts["html"]["content"]
-		$html_code = $this->theParts["html"]["content"];
-		if (strpos(" ".$html_code,"<frame "))	{
-			$attribRegex = $this->tag_regex("frame");
-			$codepieces = split($attribRegex, $html_code, 1000000 );	// Splits the document by the beginning of the above tags
+	public function extractFramesInfo() {
+		$htmlCode = $this->theParts['html']['content'];
+		$info = array();
+		if (strpos(' '.$htmlCode,'<frame ')) {
+			$attribRegex = $this->tag_regex('frame');
+				// Splits the document by the beginning of the above tags
+			$codepieces = split($attribRegex, $htmlCode, 1000000);
 			$pieces = count($codepieces);
-			for($i=1; $i < $pieces; $i++)	{
+			for($i = 1; $i < $pieces; $i++) {
 				$dummy = eregi("[^>]*", $codepieces[$i], $reg);
-				$attributes = $this->get_tag_attributes($reg[0]);	// Fetches the attributes for the tag
-				$frame="";
-				$frame["src"]=$attributes["src"];
-				$frame["name"]=$attributes["name"];
-				$frame["absRef"] = $this->absRef($frame["src"]);
-				$theInfo[] = $frame;
+					// Fetches the attributes for the tag
+				$attributes = $this->get_tag_attributes($reg[0]);
+				$frame = array();
+				$frame['src'] = $attributes['src'];
+				$frame['name'] = $attributes['name'];
+				$frame['absRef'] = $this->absRef($frame['src']);
+				$info[] = $frame;
 			}
-			return $theInfo;
+			return $info;
 		}
 	}
 
+
 	/**
-	 * [Describe function...]
+	 * This function substitutes the media-references in $this->theParts["html"]["content"]
 	 *
-	 * @param	[type]		$absolute: ...
-	 * @return	[type]		...
+	 * @param	boolean		$absolute: If true, then the refs are substituted with http:// ref's indstead of Content-ID's (cid).
+	 * @return	void
 	 */
-	function substMediaNamesInHTML($absolute)	{
-			// This substitutes the media-references in $this->theParts["html"]["content"]
-			// If $absolute is true, then the refs are substituted with http:// ref's indstead of Content-ID's (cid).
-		if (is_array($this->theParts["html"]["media"]))	{
-			reset ($this->theParts["html"]["media"]);
-			while (list($key,$val) = each ($this->theParts["html"]["media"]))	{
-				if ($val["use_jumpurl"] && $this->jumperURL_prefix)	{
-					$theSubstVal = $this->jumperURL_prefix.t3lib_div::rawUrlEncodeFP($val['absRef']);
+	public function substMediaNamesInHTML($absolute) {
+		if (is_array($this->theParts['html']['media'])) {
+			foreach ($this->theParts['html']['media'] as $key => $val) {
+				if ($val['use_jumpurl'] && $this->jumperURL_prefix) {
+					$subst = $this->jumperURL_prefix.t3lib_div::rawUrlEncodeFP($val['absRef']);
 				} else {
-					$theSubstVal = ($absolute) ? $val["absRef"] : "cid:part".$key.".".$this->messageid;
+					$subst = ($absolute) ? $val['absRef'] : 'cid:part'.$key.'.'.$this->messageid;
 				}
-				$this->theParts["html"]["content"] = str_replace(
-						$val["subst_str"],
-						$val["quotes"].$theSubstVal.$val["quotes"],
-						$this->theParts["html"]["content"]	);
+				$this->theParts['html']['content'] = str_replace(
+					$val['subst_str'],
+					$val['quotes'] . $subst . $val['quotes'],
+					$this->theParts['html']['content']);
 			}
 		}
-		if (!$absolute)	{
+		if (!$absolute) {
 			$this->fixRollOvers();
 		}
 	}
 
+
 	/**
-	 * [Describe function...]
+	 * This function substitutes the hrefs in $this->theParts["html"]["content"]
 	 *
-	 * @return	[type]		...
+	 * @return	void
 	 */
-	function substHREFsInHTML()	{
-			// This substitutes the hrefs in $this->theParts["html"]["content"]
-		if (is_array($this->theParts["html"]["hrefs"]))	{
-			reset ($this->theParts["html"]["hrefs"]);
-			while (list($key,$val) = each ($this->theParts["html"]["hrefs"]))	{
-				if ($this->jumperURL_prefix && $val["tag"]!="form")	{	// Form elements cannot use jumpurl!
-					if ($this->jumperURL_useId)	{
-						$theSubstVal = $this->jumperURL_prefix.$key;
-					} else {
-						$theSubstVal = $this->jumperURL_prefix.t3lib_div::rawUrlEncodeFP($val['absRef']);
-					}
+	public function substHREFsInHTML() {
+		if (!is_array($this->theParts['html']['hrefs'])) return;
+		foreach ($this->theParts['html']['hrefs'] as $key => $val) {
+				// Form elements cannot use jumpurl!
+			if ($this->jumperURL_prefix && $val['tag'] != 'form') {
+				if ($this->jumperURL_useId) {
+					$substVal = $this->jumperURL_prefix.$key;
 				} else {
-					$theSubstVal = $val["absRef"];
+					$substVal = $this->jumperURL_prefix.t3lib_div::rawUrlEncodeFP($val['absRef']);
 				}
-				$this->theParts["html"]["content"] = str_replace(
-						$val["subst_str"],
-						$val["quotes"].$theSubstVal.$val["quotes"],
-						$this->theParts["html"]["content"]	);
+			} else {
+				$theSubstVal = $val['absRef'];
 			}
+			$this->theParts['html']['content'] = str_replace(
+				$val['subst_str'],
+				$val['quotes'] . $substVal . $val['quotes'],
+				$this->theParts['html']['content']);
 		}
 	}
 
+
 	/**
-	 * [Describe function...]
+	 *  This substitutes the http:// urls in plain text with links
 	 *
-	 * @param	[type]		$content: ...
-	 * @return	[type]		...
+	 * @param	string		$content: the content to use to substitute
+	 * @return	string		the changed content
 	 */
-	function substHTTPurlsInPlainText($content)	{
-			// This substitutes the http:// urls in plain text with links
-		if ($this->jumperURL_prefix)	{
-			$textpieces = explode("http://", $content);
-			$pieces = count($textpieces);
-			$textstr = $textpieces[0];
-			for($i=1; $i<$pieces; $i++)	{
-				$len=strcspn($textpieces[$i],chr(32).chr(9).chr(13).chr(10));
-				if (trim(substr($textstr,-1))=="" && $len)	{
-					$lastChar=substr($textpieces[$i],$len-1,1);
-					if (!ereg("[A-Za-z0-9\/#]",$lastChar)) {$len--;}		// Included "\/" 3/12
+	public function substHTTPurlsInPlainText($content) {
+		if (!$this->jumperURL_prefix) return $content;
 
-					$parts[0]="http://".substr($textpieces[$i],0,$len);
-					$parts[1]=substr($textpieces[$i],$len);
+		$textpieces = explode("http://", $content);
+		$pieces = count($textpieces);
+		$textstr = $textpieces[0];
+		for($i = 1; $i<$pieces; $i++) {
+			$len = strcspn($textpieces[$i],chr(32).chr(9).chr(13).chr(10));
+			if (trim(substr($textstr,-1)) == '' && $len) {
+				$lastChar = substr($textpieces[$i],$len-1,1);
+				if (!ereg("[A-Za-z0-9\/#]",$lastChar)) {
+					// Included "\/" 3/12
+					$len--;
+				}
 
-					if ($this->jumperURL_useId)	{
-						$this->theParts["plain"]["link_ids"][$i]=$parts[0];
-						$parts[0] = $this->jumperURL_prefix."-".$i;
-					} else {
-						$parts[0] = $this->jumperURL_prefix.t3lib_div::rawUrlEncodeFP($parts[0]);
-					}
-					$textstr.=$parts[0].$parts[1];
+				$parts = array();
+				$parts[0] = "http://".substr($textpieces[$i],0,$len);
+				$parts[1] = substr($textpieces[$i],$len);
+
+				if ($this->jumperURL_useId) {
+					$this->theParts['plain']['link_ids'][$i] = $parts[0];
+					$parts[0] = $this->jumperURL_prefix.'-'.$i;
 				} else {
-					$textstr.='http://'.$textpieces[$i];
+					$parts[0] = $this->jumperURL_prefix.t3lib_div::rawUrlEncodeFP($parts[0]);
 				}
+				$textstr .= $parts[0].$parts[1];
+			} else {
+				$textstr .= 'http://'.$textpieces[$i];
 			}
-			$content = $textstr;
 		}
-		return $content;
+		return $textstr;
 	}
+
 
 	/**
-	 * [Describe function...]
+	 * JavaScript rollOvers cannot support graphics inside of mail. 
+	 * If these exists we must let them refer to the absolute url. By the way:
+	 * Roll-overs seems to work only on some mail-readers and so far I've seen it
+	 * work on Netscape 4 message-center (but not 4.5!!)
 	 *
-	 * @return	[type]		...
+	 * @return	void
 	 */
-	function fixRollOvers()	{
-			// JavaScript rollOvers cannot support graphics inside of mail. If these exists we must let them refer to the absolute url. By the way: Roll-overs seems to work only on some mail-readers and so far I've seen it work on Netscape 4 message-center (but not 4.5!!)
-		$theNewContent = "";
-		$theSplit = explode(".src",$this->theParts["html"]["content"]);
-		if (count($theSplit)>1)	{
-			while(list($key,$part)=each($theSplit))	{
-				$sub = substr($part,0,200);
-				if (ereg("cid:part[^ \"']*",$sub,$reg))	{
-					$thePos = strpos($part,$reg[0]);	// The position of the string
-					ereg("cid:part([^\.]*).*",$sub,$reg2);		// Finds the id of the media...
-	 				$theSubStr = $this->theParts["html"]["media"][intval($reg2[1])]["absRef"];
-					if ($thePos && $theSubStr)	{		// ... and substitutes the javaScript rollover image with this instead
-						if (!strpos(" ".$theSubStr,"http://")) {$theSubStr = "http://";}		// If the path is NOT and url, the reference is set to nothing
-						$part = substr($part,0,$thePos).$theSubStr.substr($part,$thePos+strlen($reg[0]),strlen($part));
+	public function fixRollOvers() {
+		$newContent = '';
+		$items = explode('.src',$this->theParts['html']['content']);
+		if (count($items) <= 1)	return;
+
+		foreach($items as $key => $part) {
+			$sub = substr($part, 0, 200);
+			if (ereg("cid:part[^ \"']*",$sub,$reg)) {
+					// The position of the string
+				$thePos = strpos($part,$reg[0]);
+					// Finds the id of the media...
+				ereg("cid:part([^\.]*).*",$sub,$reg2);
+				$theSubStr = $this->theParts['html']['media'][intval($reg2[1])]['absRef'];
+				if ($thePos && $theSubStr) {
+					// ... and substitutes the javaScript rollover image with this instead
+					// If the path is NOT and url, the reference is set to nothing
+					if (!strpos(' '.$theSubStr, 'http://')) {
+						$theSubStr = 'http://';
 					}
+					$part = substr($part, 0, $thePos) . $theSubStr . substr($part,$thePos+strlen($reg[0]),strlen($part));
 				}
-				$theNewContent.= $part.((($key+1)!=count($theSplit))? ".src" : ""  );
 			}
-			$this->theParts["html"]["content"]=$theNewContent;
+			$newContent .= $part . ((($key+1) != count($items)) ? '.src' : '');
 		}
+		$this->theParts['html']['content'] = $newContent;
 	}
-
-
-
-
-
-
-
-
 
 
 
@@ -1198,84 +1219,104 @@ class t3lib_htmlmail {
 	 *******************************************/
 
 	/**
-	 * @param	[type]		$inputstr: ...
-	 * @return	[type]		...
+	 * Returns base64-encoded content, which is broken every 76 character
+	 * 
+	 * @param	string		$inputstr: the string to encode
+	 * @return	string		the encoded string
 	 */
-	function makeBase64($inputstr)	{
-			// Returns base64-encoded content, which is broken every 76 character
+	public function makeBase64($inputstr) {
 		return chunk_split(base64_encode($inputstr));
 	}
 
+
 	/**
-	 * [Describe function...]
+	 * reads the URL or file and determines the Content-type by either guessing or opening a connection to the host
 	 *
-	 * @param	[type]		$url: ...
-	 * @return	[type]		...
+	 * @param	string		$url: the URL to get information of
+	 * @return	mixed		either false or the array with information
 	 */
-	function getExtendedURL($url)	{
-			// reads the URL or file and determines the Content-type by either guessing or opening a connection to the host
-		$res["content"] = $this->getURL($url);
-		if (!$res["content"])	{return false;}
+	public function getExtendedURL($url) {
+		$res = array();
+		$res['content'] = $this->getURL($url);
+		if (!$res['content']) return false;
 		$pathInfo = parse_url($url);
-		$fileInfo = $this->split_fileref($pathInfo["path"]);
-		if ($fileInfo["fileext"] == "gif")	{$res["content_type"] = "image/gif";}
-		if ($fileInfo["fileext"] == "jpg" || $fileInfo["fileext"] == "jpeg")	{$res["content_type"] = "image/jpeg";}
-		if ($fileInfo['fileext'] == 'png') {$res['content_type'] = 'image/png';}
-		if ($fileInfo["fileext"] == "html" || $fileInfo["fileext"] == "htm")	{$res["content_type"] = "text/html";}
-		if ($fileInfo['fileext'] == 'css') {$res['content_type'] = 'text/css';}
-		if ($fileInfo["fileext"] == "swf")	{$res["content_type"] = "application/x-shockwave-flash";}
-		if (!$res["content_type"])	{$res["content_type"] = $this->getMimeType($url);}
+		$fileInfo = $this->split_fileref($pathInfo['path']);
+		switch ($fileInfo['fileext']) {
+			case 'gif':
+			case 'png':
+				$res['content_type'] = 'image/'.$fileInfo['fileext'];
+				break;
+			case 'jpg':
+			case 'jpeg':
+				$res['content_type'] = 'image/jpeg';
+				break;
+			case 'html':
+			case 'htm':
+				$res['content_type'] = 'text/html';
+				break;
+			case 'css':
+				$res['content_type'] = 'text/css';
+				break;
+			case 'swf':
+				$res['content_type'] = 'application/x-shockwave-flash';
+				break;
+			default:
+				$res['content_type'] = $this->getMimeType($url);
+		}
 		return $res;
 	}
 
+
 	/**
-	 * [Describe function...]
+	 * Adds HTTP user and password (from $this->http_username) to a URL
 	 *
-	 * @param	[type]		$url: ...
-	 * @return	[type]		...
+	 * @param	string		$url: the URL
+	 * @return	string		the URL with the added values
 	 */
-	function addUserPass($url)	{
-		$user=$this->http_username;
-		$pass=$this->http_password;
+	public function addUserPass($url) {
+		$user = $this->http_username;
+		$pass = $this->http_password;
 		$matches = array();
 		if ($user && $pass && preg_match('/^(https?:\/\/)/', $url, $matches)) {
-			$url = $matches[1].$user.':'.$pass.'@'.substr($url,strlen($matches[1]));
+			return $matches[1].$user.':'.$pass.'@'.substr($url,strlen($matches[1]));
 		}
 		return $url;
 	}
 
+
 	/**
-	 * [Describe function...]
+	 * reads a url or file
 	 *
-	 * @param	[type]		$url: ...
-	 * @return	[type]		...
+	 * @param	string		$url: the URL to fetch
+	 * @return	string		the content of the URL
 	 */
-	function getURL($url)	{
+	public function getURL($url) {
 		$url = $this->addUserPass($url);
-			// reads a url or file
 		return t3lib_div::getURL($url);
 	}
 
+
 	/**
-	 * [Describe function...]
+	 * reads a url or file and strips the HTML-tags AND removes all 
+	 * empty lines. This is used to read plain-text out of a HTML-page
 	 *
-	 * @param	[type]		$url: ...
-	 * @return	[type]		...
+	 * @param	string		$url: the URL to load
+	 * @return	the content
 	 */
-	function getStrippedURL($url)	{
-			// reads a url or file and strips the HTML-tags AND removes all empty lines. This is used to read plain-text out of a HTML-page
-		if($fd = fopen($url,"rb"))	{
-			$content = "";
-			while (!feof($fd))	{
+	public function getStrippedURL($url) {
+		$content = '';
+		if ($fd = fopen($url, "rb")) {
+			while (!feof($fd)) {
 				$line = fgetss($fd, 5000);
-				if (trim($line))	{
-					$content.=trim($line)."\n";
+				if (trim($line)) {
+					$content .= trim($line) . "\n";
 				}
 			}
-			fclose( $fd );
-			return $content;
+			fclose($fd);
 		}
+		return $content;
 	}
+
 
 	/**
 	 * This function returns the mime type of the file specified by the url
@@ -1283,7 +1324,7 @@ class t3lib_htmlmail {
 	 * @param	string		$url: the url
 	 * @return	string		$mimeType: the mime type found in the header
 	 */
-	function getMimeType($url) {
+	public function getMimeType($url) {
 		$mimeType = '';
 		$headers = trim(t3lib_div::getURL($url, 2));
 		if ($headers) {
@@ -1295,155 +1336,163 @@ class t3lib_htmlmail {
 		return $mimeType;
 	}
 
+
 	/**
-	 * [Describe function...]
+	 * Returns the absolute address of a link. This is based on 
+	 * $this->theParts["html"]["path"] being the root-address
 	 *
-	 * @param	[type]		$ref: ...
-	 * @return	[type]		...
+	 * @param	string		$ref: address to use
+	 * @return	string		the absolute address
 	 */
-	function absRef($ref)	{
-			// Returns the absolute address of a link. This is based on $this->theParts["html"]["path"] being the root-address
+	public function absRef($ref) {
 		$ref = trim($ref);
-		$urlINFO = parse_url($ref);
-		if ($urlINFO["scheme"])	{
+		$info = parse_url($ref);
+		if ($info['scheme']) {
 			return $ref;
-		} elseif (eregi("^/",$ref)){
-			$addr = parse_url($this->theParts["html"]["path"]);
+		} elseif (eregi("^/",$ref)) {
+			$addr = parse_url($this->theParts['html']['path']);
 			return  $addr['scheme'].'://'.$addr['host'].($addr['port']?':'.$addr['port']:'').$ref;
 		} else {
-			return $this->theParts["html"]["path"].$ref;	// If the reference is relative, the path is added, in order for us to fetch the content
+			// If the reference is relative, the path is added, in order for us to fetch the content
+			return $this->theParts['html']['path'] . $ref;
 		}
 	}
 
+
 	/**
-	 * [Describe function...]
+	 * Returns information about a file reference
 	 *
-	 * @param	[type]		$fileref: ...
-	 * @return	[type]		...
+	 * @param	string		$fileref: the file to use
+	 * @return	array		path, filename, filebody, fileext
 	 */
-	function split_fileref($fileref)	{
-			// Returns an array with path, filename, filebody, fileext.
-		if (	ereg("(.*/)(.*)$",$fileref,$reg)	)	{
-			$info["path"] = $reg[1];
-			$info["file"] = $reg[2];
-		} else {
-			$info["path"] = "";
-			$info["file"] = $fileref;
+	public function split_fileref($fileref) {
+		$info = array();
+		if (ereg("(.*/)(.*)$", $fileref, $reg)) {
+			$info['path'] = $reg[1];
+			$info['file'] = $reg[2];
+		} else	{
+			$info['path'] = '';
+			$info['file'] = $fileref;
 		}
-		$reg="";
-		if (	ereg("(.*)\.([^\.]*$)",$info["file"],$reg)	)	{
-			$info["filebody"] = $reg[1];
-			$info["fileext"] = strtolower($reg[2]);
-			$info["realFileext"] = $reg[2];
-		} else {
-			$info["filebody"] = $info["file"];
-			$info["fileext"] = "";
+		$reg = '';
+		if (ereg("(.*)\.([^\.]*$)", $info['file'], $reg)) {
+			$info['filebody'] = $reg[1];
+			$info['fileext'] = strtolower($reg[2]);
+			$info['realFileext'] = $reg[2];
+		} else	{
+			$info['filebody'] = $info['file'];
+			$info['fileext'] = '';
 		}
 		return $info;
 	}
 
+
 	/**
-	 * [Describe function...]
+	 * Returns an array with file or url-information
 	 *
-	 * @param	[type]		$path: ...
-	 * @return	[type]		...
+	 * @param	string		$path: url to check
+	 * @return	array		information about the path / URL
 	 */
-	function extParseUrl($path)	{
-			// Returns an array with file or url-information
+	public function extParseUrl($path) {
 		$res = parse_url($path);
-		ereg("(.*/)([^/]*)$",$res["path"],$reg);
-		$res["filepath"]=$reg[1];
-		$res["filename"]=$reg[2];
+		ereg("(.*/)([^/]*)$", $res['path'], $reg);
+		$res['filepath'] = $reg[1];
+		$res['filename'] = $reg[2];
 		return $res;
 	}
 
-	/**
-	 * [Describe function...]
-	 *
-	 * @param	[type]		$tagArray: ...
-	 * @return	[type]		...
-	 */
-	function tag_regex($tagArray)	{
-		if (!is_array($tagArray))	{
-			$tagArray=Array($tagArray);
-		}
-		$theRegex = "";
-		$c=count($tagArray);
-		while(list(,$tag)=each($tagArray))	{
-			$c--;
-			$theRegex.="<".sql_regcase($tag)."[[:space:]]".(($c)?"|":"");
-		}
-		return $theRegex;
-	}
 
 	/**
-	 * analyses a HTML-tag
-	 * $tag is either like this "<TAG OPTION ATTRIB=VALUE>" or this " OPTION ATTRIB=VALUE>" which means you can omit the tag-name
-	 * returns an array with the attributes as keys in lower-case
+	 * Creates a regular expression out of a list of tags
+	 *
+	 * @param	mixed		$tagArray: the list of tags (either as array or string if it is one tag)
+	 * @return	string		the regular expression
+	 */
+	public function tag_regex($tags) {
+		$tags = (!is_array($tags) ? array($tags) : $tags);
+		$regexp = '';
+		$c = count($tags);
+		foreach($tags as $tag) {
+			$c--;
+			$regexp .= '<' . sql_regcase($tag) . "[[:space:]]" . (($c) ? '|' : '');
+		}
+		return $regexp;
+	}
+
+
+	/**
+	 * This function analyzes a HTML tag
 	 * If an attribute is empty (like OPTION) the value of that key is just empty. Check it with is_set();
 	 *
-	 * @param	[type]		$tag: ...
-	 * @return	[type]		...
+	 * @param	string		$tag: is either like this "<TAG OPTION ATTRIB=VALUE>" or 
+	 * 				this " OPTION ATTRIB=VALUE>" which means you can omit the tag-name
+	 * @return	array		array with attributes as keys in lower-case
 	 */
-	function get_tag_attributes($tag)	{
-		$attributes = Array();
+	public function get_tag_attributes($tag) {
+		$attributes = array();
 		$tag = ltrim(eregi_replace ("^<[^ ]*","",trim($tag)));
 		$tagLen = strlen($tag);
 		$safetyCounter = 100;
 			// Find attribute
-		while ($tag)	{
-			$value = "";
+		while ($tag) {
+			$value = '';
 			$reg = split("[[:space:]=>]",$tag,2);
 			$attrib = $reg[0];
 
 			$tag = ltrim(substr($tag,strlen($attrib),$tagLen));
-			if (substr($tag,0,1)=="=")	{
+			if (substr($tag,0,1) == '=') {
 				$tag = ltrim(substr($tag,1,$tagLen));
-				if (substr($tag,0,1)=='"')	{	// Quotes around the value
+				if (substr($tag,0,1) == '"') {
+						// Quotes around the value
 					$reg = explode('"',substr($tag,1,$tagLen),2);
 					$tag = ltrim($reg[1]);
 					$value = $reg[0];
-				} else {	// No qoutes around value
+				} else {
+						// No quotes around value
 					ereg("^([^[:space:]>]*)(.*)",$tag,$reg);
 					$value = trim($reg[1]);
 					$tag = ltrim($reg[2]);
-					if (substr($tag,0,1)==">")	{
-						$tag ="";
+					if (substr($tag,0,1) == '>') {
+						$tag = '';
 					}
 				}
 			}
-			$attributes[strtolower($attrib)]=$value;
+			$attributes[strtolower($attrib)] = $value;
 			$safetyCounter--;
-			if ($safetyCounter<0)	{break;}
+			if ($safetyCounter < 0) break;
 		}
 		return $attributes;
 	}
 
+
 	/**
 	 * Implementation of quoted-printable encode.
 	 * This function was a duplicate of t3lib_div::quoted_printable, thus it's going to be removed.
+	 * Deprecated since TYPO3 4.0
 	 *
 	 * @param	string		Content to encode
 	 * @return	string		The QP encoded string
-	 * @obsolete
+	 * @deprecated since TYPO3 4.0, remove in TYPO 4.3
 	 */
-	function quoted_printable($string)	{
+	public function quoted_printable($string) {
 		return t3lib_div::quoted_printable($string, 76);
 	}
 
+
 	/**
-	 * [Describe function...]
+	 * Converts a name field
+	 * Deprecated since TYPO3 4.0
 	 *
-	 * @param	[type]		$name: ...
-	 * @return	[type]		...
-	 * @deprecated
+	 * @param	string		$name: the name
+	 * @return	string		the name
+	 * @deprecated since TYPO3 4.0, remove in TYPO3 4.3
 	 */
-	function convertName($name)	{
+	public function convertName($name) {
 		return $name;
 	}
 }
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/class.t3lib_htmlmail.php'])	{
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/class.t3lib_htmlmail.php']) {
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/class.t3lib_htmlmail.php']);
 }
 ?>
