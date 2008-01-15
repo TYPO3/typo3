@@ -96,7 +96,7 @@ class SC_index {
 	var $commandLI;				// Value of forms submit button for login.
 
 		// Internal, static:
-	var $redirectToURL;			// Set to the redirect URL of the form (may be redirect_url or "alt_main.php")
+	var $redirectToURL;			// Set to the redirect URL of the form (may be redirect_url or "backend.php")
 	var $L_vars;				// Set to the labels used for the login screen.
 
 		// Internal, dynamic:
@@ -140,8 +140,8 @@ class SC_index {
 			// Getting login labels:
 		$this->L_vars = explode('|',$TYPO3_CONF_VARS['BE']['loginLabels']);
 
-			// Setting the redirect URL to "alt_main.php" if no alternative input is given:
-		$this->redirectToURL = $this->redirect_url ? $this->redirect_url : 'alt_main.php';
+			// Setting the redirect URL to "backend.php" if no alternative input is given:
+		$this->redirectToURL = $this->redirect_url ? $this->redirect_url : 'backend.php';
 
 			// Logout?
 		if ($this->L=='OUT' && is_object($BE_USER))	{
@@ -461,6 +461,9 @@ class SC_index {
 				// Based on specific setting of interface we set the redirect script:
 			switch ($this->GPinterface)	{
 				case 'backend':
+					$this->redirectToURL = 'backend.php';
+				break;
+				case 'backend_old':
 					$this->redirectToURL = 'alt_main.php';
 				break;
 				case 'frontend':
@@ -504,14 +507,17 @@ class SC_index {
 			if (count($parts)>1)	{	// Only if more than one interface is defined will we show the selector:
 
 					// Initialize:
-				$tempLabels=explode(',',$this->L_vars[5]);
+				$tempLabels=explode(',', $this->L_vars[5]);
 				$labels=array();
-				$labels['backend']=$tempLabels[0];
-				$labels['frontend']=$tempLabels[1];
+
+				$labels['backend']     = $tempLabels[0];
+				$labels['backend_old'] = $tempLabels[2];
+				$labels['frontend']    = $tempLabels[1];
 
 				$jumpScript=array();
-				$jumpScript['backend']='alt_main.php';
-				$jumpScript['frontend']='../';
+				$jumpScript['backend']     = 'backend.php';
+				$jumpScript['backend_old'] = 'alt_main.php';
+				$jumpScript['frontend']    = '../';
 
 					// Traverse the interface keys:
 				foreach($parts as $valueStr)	{
