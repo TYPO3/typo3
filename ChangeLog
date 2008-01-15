@@ -1,4 +1,8 @@
-2008-01-14  Ingo Renner  <ingo@typo3.org>
+2008-01-15  Benjamin Mack  <mack@xnos.org>
+
+	* (bugfix) Fixed #7148 - CSV Export Improvements in List Module
+
+2008-01-15  Ingo Renner  <ingo@typo3.org>
 
 	* added feature #5536: Some Hooks for tslib_content
 
