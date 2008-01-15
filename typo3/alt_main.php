@@ -457,7 +457,7 @@ class SC_alt_main {
 	function startModule() {
 		global $BE_USER;
 		$module = preg_replace('/[^[:alnum:]_]/','',t3lib_div::_GET('module'));
-		
+
 		if (!$module)	{
 			if ($BE_USER->uc['startModule'])	{
 				$module = $BE_USER->uc['startModule'];
@@ -492,6 +492,7 @@ class SC_alt_main {
 		$GLOBALS['TBE_TEMPLATE']->JScode= '
 			<script type="text/javascript" src="md5.js"></script>
 			<script type="text/javascript" src="../t3lib/jsfunc.evalfield.js"></script>
+			<script type="text/javascript" src="js/backend.js"></script>
 			';
 		$GLOBALS['TBE_TEMPLATE']->JScode.=$GLOBALS['TBE_TEMPLATE']->wrapScriptTags($this->mainJScode);
 

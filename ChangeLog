@@ -5,6 +5,7 @@
 2008-01-15  Ingo Renner  <ingo@typo3.org>
 
 	* added feature #5536: Some Hooks for tslib_content
+	* added feature #7161: create a shortcut manager to delegate calls to create a new shortcut to the right target
 
 2008-01-15  Benjamin Mack  <mack@xnos.org>
 

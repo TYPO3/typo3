@@ -448,12 +448,12 @@ class template {
 			$mMN='&motherModName='.rawurlencode($motherModName);
 		} else $mMN='';
 
-		$onClick = 'if (top.shortcutFrame && confirm('.
-					$GLOBALS['LANG']->JScharCode($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.makeShortcut')).
-					')){top.shortcutFrame.location.href=\''.$backPath.'alt_shortcut.php?modName='.rawurlencode($modName).
-					'&URL='.rawurlencode($pathInfo['path']."?".$storeUrl).
-					$mMN.
-					'\';}return false;';
+		$onClick = 'top.ShortcutManager.createShortcut('
+			.$GLOBALS['LANG']->JScharCode($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.makeShortcut')).', '
+			.'\''.$backPath.'\', '
+			.'\''.rawurlencode($modName).'\', '
+			.'\''.rawurlencode($pathInfo['path']."?".$storeUrl).$mMN.'\''
+		.');return false;';
 
 		$sIcon = '<a href="#" onclick="'.htmlspecialchars($onClick).'"><img'.t3lib_iconWorks::skinImg($backPath,'gfx/shortcut.gif','width="14" height="14"').' title="'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.makeShortcut',1).'" alt="" /></a>';
 		return $sIcon;
@@ -1247,7 +1247,7 @@ $str.=$this->docBodyTagBegin().
 
 
  	/**
-	 * Includes a javascript library that exists in the core /typo3/ directory. The 
+	 * Includes a javascript library that exists in the core /typo3/ directory. The
 	 * backpath is automatically applied
 	 *
 	 * @param	string		$lib: Library name. Call it with the full path
@@ -1414,7 +1414,7 @@ $str.=$this->docBodyTagBegin().
 	 * @param	boolean		If set, tab table cells are not allowed to wrap their content
 	 * @param	boolean		If set, the tabs will span the full width of their position
 	 * @param	integer		Default tab to open (for toggle <=0). Value corresponds to integer-array index + 1 (index zero is "1", index "1" is 2 etc.). A value of zero (or something non-existing) will result in no default tab open.
-	 * @param	integer		If set to '1' empty tabs will be remove, If set to '2' empty tabs will be disabled 
+	 * @param	integer		If set to '1' empty tabs will be remove, If set to '2' empty tabs will be disabled
 	 * @return	string		JavaScript section for the HTML header.
 	 */
 	function getDynTabMenu($menuItems,$identString,$toggle=0,$foldout=FALSE,$newRowCharLimit=50,$noWrap=1,$fullWidth=FALSE,$defaultTabIndex=1,$dividers2tabs=2)	{
@@ -1539,7 +1539,7 @@ $str.=$this->docBodyTagBegin().
 		}
 		return $content;
 	}
-	
+
 	/**
 	 * Creates the id for dynTabMenus.
 	 *
