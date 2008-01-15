@@ -60,7 +60,7 @@ var ShortcutMenu = Class.create({
 			new Ajax.InPlaceEditor('shortcut-label-' + shortcutId, 'ajax.php?ajaxID=ShortcutMenu::saveShortcut', {
 				externalControl     : 'shortcut-edit-' + shortcutId,
 				externalControlOnly : true,
-				highlightcolor      : 'transparent',
+				highlightcolor      : '#f9f9f9',
 				onFormCustomization : this.addGroupSelect,
 				onComplete          : this.reRenderMenu.bind(this),
 				callback            : function(form, nameInputFieldValue) {
@@ -148,7 +148,7 @@ var ShortcutMenu = Class.create({
 	 * adds a select field for the groups
 	 */
 	addGroupSelect: function(inPlaceEditor, inPlaceEditorForm) {
-		var selectField = document.createElement('select');
+		var selectField = $(document.createElement('select'));
 
 			// determine the shortcut id
 		var shortcutId  = inPlaceEditorForm.identify().slice(9, -14);
@@ -204,6 +204,7 @@ var ShortcutMenu = Class.create({
 			}
 		});
 
+		inPlaceEditor._form.appendChild(document.createElement('br'));
 		inPlaceEditor._form.appendChild(selectField);
 		inPlaceEditor._form.appendChild(document.createElement('br'));
 	},
