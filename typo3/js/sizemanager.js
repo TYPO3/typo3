@@ -25,7 +25,6 @@
 ***************************************************************/
 
 
-// new div based backend classes
 var SizeManager = Class.create({
 
 	/**
