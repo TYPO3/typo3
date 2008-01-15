@@ -1,3 +1,7 @@
+2008-01-14  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
+
+	* Fixed bug #6821: Empty paragraph-tags with attributes are not editable in RTE
+
 2008-01-15  Ingmar Schlecht  <ingmar@typo3.org>
 
 	* Added feature #6784: New login-box System-Extension "felogin". This is a refactored version of the "newloginbox" extension, now integrated into the core. (Big thanks to Steffen Kamper for writing this extension for core integration!)

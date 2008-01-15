@@ -1290,8 +1290,10 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 					// Add the processed line(s)
 				$divSplit[$k] = implode(chr(10),$subLines);
 
-					// If it turns out the line is just blank (containing a &nbsp; possibly) then just make it pure blank:
-				if (trim(strip_tags($divSplit[$k]))=='&nbsp;' && !preg_match('/\<(img)(\s[^>]*)?\/?>/si', $divSplit[$k])) {
+					// If it turns out the line is just blank (containing a &nbsp; possibly) then just make it pure blank.
+					// But, prevent filtering of lines that are blank in sense above, but whose tags contain attributes.
+					// Those attributes should have been filtered before; if they are still there they must be considered as possible content.
+				if (trim(strip_tags($divSplit[$k]))=='&nbsp;' && !preg_match('/\<(img)(\s[^>]*)?\/?>/si', $divSplit[$k]) && !preg_match('/\<([^>]*)?( align| class| style| id| title| dir| lang| xml:lang)([^>]*)?>/si', trim($divSplit[$k]))) {
 					$divSplit[$k]='';
 				}
 			} else {	// outside div:
