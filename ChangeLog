@@ -1,3 +1,7 @@
+2008-01-16  Oliver Hader  <oh@inpublica.de>
+
+	* (minor) Fixed bug: Missing try/catch for actionChecks in TBE_EDITOR
+
 2008-01-16  Ingo Renner  <ingo@typo3.org>
 
 	* Release of TYPO3 4.2.0alpha3
