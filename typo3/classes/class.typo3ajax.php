@@ -49,7 +49,7 @@ class TYPO3AJAX {
 	public function init($id) {
 		global $TYPO3_CONF_VARS;
 		
-		if (isset($TYPO3_CONF_VARS['BE']['forceCharset'])) {
+		if (isset($TYPO3_CONF_VARS['BE']['forceCharset']) && trim($TYPO3_CONF_VARS['BE']['forceCharset'])) {
 			$this->charset = $TYPO3_CONF_VARS['BE']['forceCharset'];
 		}
 
