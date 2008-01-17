@@ -5060,7 +5060,7 @@ class t3lib_TCEforms	{
 		if (count($elements)) {
 			$out .= '
 			TBE_EDITOR.addElements('.t3lib_div::array2json($elements).');
-			TBE_EDITOR.initRequired()
+			TBE_EDITOR.initRequired();
 			';
 		}
 			// $this->additionalJS_submit:

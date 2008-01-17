@@ -516,7 +516,7 @@ class t3lib_TCEforms_inline {
 		$permsEdit = ($isPagesTable && ($localCalcPerms&2)) || (!$isPagesTable && ($calcPerms&16));
 
 			// Icon to visualize that a required field is nested in this inline level:
-		$cells[] = '<img id="'.$nameObjectFtId.'_req" src="clear.gif" width="10" height="10" hspace="4" vspace="3" alt="" />';
+		$cells[] = '<img name="'.$nameObjectFtId.'_req" src="clear.gif" width="10" height="10" hspace="4" vspace="3" alt="" />';
 
 			// "Info": (All records)
 		if (!$isNewItem)
