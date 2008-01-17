@@ -3,7 +3,7 @@
 *
 *  (c) 2002-2004, interactivetools.com, inc.
 *  (c) 2003-2004 dynarch.com
-*  (c) 2004-2007 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
+*  (c) 2004-2008 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -35,6 +35,9 @@
 /***************************************************
  *  IE-SPECIFIC FUNCTIONS
  ***************************************************/
+HTMLArea.prototype.isEditable = function() {
+	return this._doc.body.contentEditable;
+};
 
 /***************************************************
  *  FINAL IE CLEANUP

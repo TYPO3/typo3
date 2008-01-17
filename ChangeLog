@@ -1,3 +1,7 @@
+2008-01-17  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
+
+	* Fixed bug #7196: Status of block element buttons not updated in htmlArea RTE toolbar
+
 2008-01-17  Oliver Hader  <oh@inpublica.de>
 
 	* (major) Fixed bug #7177: Page tree is not working in IE6/IE7
@@ -19,7 +23,7 @@
 
 	* Release of TYPO3 4.2.0alpha3
 
-2008-01-14  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
+2008-01-15  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
 	* Fixed bug #6821: Empty paragraph-tags with attributes are not editable in RTE
 

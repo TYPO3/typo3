@@ -35,6 +35,9 @@
 /***************************************************
  *  GECKO-SPECIFIC FUNCTIONS
  ***************************************************/
+HTMLArea.prototype.isEditable = function() {
+	return (this._doc.designMode === "on");
+};
 
 /***************************************************
  *  MOZILLA/FIREFOX EDIT MODE INITILIZATION
