@@ -1,3 +1,7 @@
+2008-01-17  Ingo Renner  <ingo@typo3.org>
+
+	* fixed bug #7178: GUI of new backend is mixed up in IE6
+
 2008-01-16  Oliver Hader  <oh@inpublica.de>
 
 	* (minor) Fixed bug: Missing try/catch for actionChecks in TBE_EDITOR
@@ -305,9 +309,9 @@
 2007-11-24  Ingmar Schlecht  <ingmar@typo3.org>
 
 	* Feature #6770: Flexform DataStructure pointerFields:
-		* Implement option to use two ds_pointerFields so DataStructures can be switched by the combination of two field's values
-		* Enabled the new ds_pointerFields possibility for tt_content.pi_flexform, so you can specify DataStructures per (combination of) list_type and CType values
-		* Made css_styled_content register the DataStructures for the CType=table Content Element using the new ds_pointerFields instead of overriding the 'default' DS key
+	* Implement option to use two ds_pointerFields so DataStructures can be switched by the combination of two field's values
+	* Enabled the new ds_pointerFields possibility for tt_content.pi_flexform, so you can specify DataStructures per (combination of) list_type and CType values
+	* Made css_styled_content register the DataStructures for the CType=table Content Element using the new ds_pointerFields instead of overriding the 'default' DS key
 
 2007-11-23  Ernesto Baschny  <ernst@cron-it.de>
 

@@ -65,12 +65,17 @@ Description : styles the TYPO3 backend
 }
 
 .toolbar-item {
-	height: 23px;
+	display: block;
 	padding-top: 2px;
+	padding-bottom: 9px;
 	display: block;
 	text-align: center;
 	background-image: url(../gfx/toolbar_separator.png);
 	background-repeat: no-repeat;
+}
+
+.toolbar-item-menu {
+	top: 25px;
 }
 
 #typo3-toolbar .no-separator {
