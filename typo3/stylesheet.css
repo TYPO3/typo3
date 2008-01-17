@@ -618,7 +618,7 @@ TABLE.typo3-csh-inline { border: solid 1px #6f3833; background-color: #ffffff; m
 TABLE.typo3-csh-inline TR TD H4 { margin-top: 0px; margin-bottom: 0px; }
 IMG.typo3-csh-icon { vertical-align: middle; cursor: help; }
 A.typo3-csh-link { white-space: normal; }
-A.typo3-csh-link SPAN.typo3-csh-inline { display: none; position: absolute; padding: 1px 2px 2px 2px; background: #ffffff; border: 1px solid #050505; width: 200px; z-index: 100; }
+A.typo3-csh-link SPAN.typo3-csh-inline { display: none; position: absolute; padding: 1px 2px 2px 2px; background: #ffffff; border: 1px solid #050505; width: 200px; z-index: 100; color: #000000; font-weight: normal; }
 A.typo3-csh-link:hover SPAN.typo3-csh-inline { display: block; }
 SPAN.typo3-csh-inline SPAN.header, TABLE.typo3-csh-inline SPAN.header { font-weight: bold; float: left; width: 100%; background-color: #F6F2E6; }
 
