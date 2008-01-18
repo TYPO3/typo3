@@ -1,3 +1,7 @@
+2008-01-18  Oliver Hader  <oh@inpublica.de>
+
+	* (tweak) Fixed bug: Removed unused inclusion of typo3/js/ajax.js in typo3/backend.php
+
 2008-01-17  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
 	* Fixed bug #7196: Status of block element buttons not updated in htmlArea RTE toolbar

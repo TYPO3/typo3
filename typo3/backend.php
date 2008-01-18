@@ -107,7 +107,6 @@ class TYPO3backend {
 			'contrib/scriptaculous/scriptaculous.js?load=builder,effects,controls,dragdrop',
 			'md5.js',
 			'js/backend.js',
-			'js/ajax.js',
 			'js/common.js',
 			'js/sizemanager.js',
 			'js/toolbarmanager.js',
