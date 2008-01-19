@@ -115,9 +115,9 @@ class TYPO3backend {
 
 			// add default BE css
 		$this->cssFiles = array(
-			'css/backend-scaffolding.css',
-			'css/backend-style.css',
-			'css/verticalmenu.css'
+			'backend-scaffolding' => 'css/backend-scaffolding.css',
+			'backend-style'       => 'css/backend-style.css',
+			'verticalmenu'        => 'css/verticalmenu.css'
 		);
 
 		$this->toolbarItems = array();
@@ -157,7 +157,7 @@ class TYPO3backend {
 	 */
 	public function render()	{
 
-			// prepare the scaffolding, at this point extension still may addjavascript and css
+			// prepare the scaffolding, at this point extension may still add javascript and css
 		$logo         = t3lib_div::makeInstance('TYPO3Logo');
 		$logo->setLogo('gfx/typo3logo_mini.png');
 
@@ -203,7 +203,12 @@ class TYPO3backend {
 
 			// abusing the JS container to add CSS
 			// TODO fix template.php
-		foreach($this->cssFiles as $cssFile) {
+		foreach($this->cssFiles as $cssFileName => $cssFile) {
+
+			if(!empty($GLOBALS['TBE_STYLES'][$cssFileName])) {
+				$cssFile = $GLOBALS['TBE_STYLES'][$cssFileName];
+			}
+
 			$GLOBALS['TBE_TEMPLATE']->JScode .= '
 			<link rel="stylesheet" type="text/css" href="'.$cssFile.'" />
 			';
@@ -528,7 +533,7 @@ class TYPO3backend {
 	}
 
 	/**
-	 * Checking if the "&edit" variable was sent so we can open for editing the page.
+	 * Checking if the "&edit" variable was sent so we can open it for editing the page.
 	 * Code based on code from "alt_shortcut.php"
 	 *
 	 * @return	void
@@ -658,11 +663,12 @@ class TYPO3backend {
 	 * adds a javscript file to the backend after it has been checked that it exists
 	 *
 	 * @param	string	javascript file reference
-	 * @return	void
+	 * @return	boolean	true if the javascript file was successfully added, false otherwise
 	 */
 	public function addJavascriptFile($javascriptFile) {
-		//TODO add more checks if neccessary
+		$jsFileAdded = false;
 
+			//TODO add more checks if neccessary
 		if(file_exists(t3lib_div::resolveBackPath(PATH_site.$javascriptFile))) {
 
 			if(t3lib_div::isFirstPartOfStr($javascriptFile, 'typo3/')) {
@@ -670,7 +676,10 @@ class TYPO3backend {
 			}
 
 			$this->jsFiles[] = $javascriptFile;
+			$jsFileAdded     = true;
 		}
+
+		return $jsFileAdded;
 	}
 
 	/**
@@ -690,20 +699,28 @@ class TYPO3backend {
 	/**
 	 * adds a css file to the backend after it has been checked that it exists
 	 *
+	 * @param	string	the css file's name with out the .css ending
 	 * @param	string	css file reference
-	 * @return	void
+	 * @return	boolean	true if the css file was added, false otherwise
 	 */
-	public function addCssFile($cssFile) {
-		//TODO add more checks if neccessary
+	public function addCssFile($cssFileName, $cssFile) {
+		$cssFileAdded = false;
 
+			//TODO add more checks if neccessary
 		if(file_exists(t3lib_div::resolveBackPath(PATH_site.$cssFile))) {
 
 			if(t3lib_div::isFirstPartOfStr($cssFile, 'typo3/')) {
 				$cssFile = substr($cssFile, 6); // make relative to typo3/
 			}
 
-			$this->cssFiles[] = $cssFile;
+				// prevent overwriting existing css files
+			if(empty($this->cssFiles[$cssFileName])) {
+				$this->cssFiles[$cssFileName] = $cssFile;
+				$cssFileAdded = true;
+			}
 		}
+
+		return $cssFileAdded;
 	}
 
 	/**

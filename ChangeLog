@@ -1,3 +1,7 @@
+2008-01-19  Ingo Renner  <ingo@typo3.org>
+
+	* added a way to overwrite / skin the css files in backend.php
+
 2008-01-18  Oliver Hader  <oh@inpublica.de>
 
 	* (tweak) Fixed bug: Removed unused inclusion of typo3/js/ajax.js in typo3/backend.php
