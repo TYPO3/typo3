@@ -3,6 +3,7 @@
  */
 
 div#typo3-docheader-row1 {
+	background-color: #b8bdc6;
 	background: url('../icons/gfx/alt_menu_mainitem_bg.gif') top left repeat-x;
 }
 div#typo3-docheader-row2 {
