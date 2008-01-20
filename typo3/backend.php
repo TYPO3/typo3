@@ -724,12 +724,14 @@ class TYPO3backend {
 	/**
 	 * adds an item to the toolbar
 	 *
-	 * @param	string	toolbar item class reference, f.e. EXT:toolbarextension/class.tx_toolbarextension_coolitem.php:tx_toolbarExtension_coolItem
+	 * @param	string		toolbar item class reference, f.e. EXT:toolbarextension/class.tx_toolbarextension_coolitem.php:tx_toolbarExtension_coolItem
+	 * @param	backend_toolbarItem	object of an backend_toolbarItem implementation
+	 * @return	void
 	 */
 	public function addToolbarItem($toolbarItemName, $toolbarItemClassReference) {
 		$toolbarItem = t3lib_div::getUserObj($toolbarItemClassReference);
 
-		if(!($toolbarItem instanceof t3lib_backendToolbarItem)) {
+		if(!($toolbarItem instanceof backend_toolbarItem)) {
 			throw new UnexpectedValueException('$toolbarItem "'.$toolbarItemName.'" must implement interface backend_toolbarItem', 1195125501);
 		}
 
