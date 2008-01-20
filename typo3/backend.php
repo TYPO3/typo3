@@ -528,7 +528,7 @@ class TYPO3backend {
 		';
 
 			// Check editing of page:
-		$this->editPageHandling();
+		$this->handlePageEditing();
 		$this->setStartupModule();
 	}
 
@@ -538,7 +538,7 @@ class TYPO3backend {
 	 *
 	 * @return	void
 	 */
-	private function editPageHandling()	{
+	private function handlePageEditing()	{
 
 		if(!t3lib_extMgm::isLoaded('cms'))	{
 			return;
@@ -608,16 +608,14 @@ class TYPO3backend {
 		if($startModule) {
 			$this->js .= '
 			// start in module:
-		function startInModule(modName, cMR_flag, addGetVars)	{	//
-			if ($(content) && top.goToModule) {
+		function startInModule(modName, cMR_flag, addGetVars)	{
+			Event.observe(document, \'dom:loaded\', function() {
 				top.goToModule(modName, cMR_flag, addGetVars);
-			} else {
-				window.setTimeout(function() { startInModuleModule(modName, cMR_flag, addGetVars); }, 500);
-			}
+			});
 		}
 
-//		startInModule(\''.$startModule.'\', false, \''.$moduleParameters.'\');
-			'; //TODO get start module working
+		startInModule(\''.$startModule.'\', false, \''.$moduleParameters.'\');
+			';
 		}
 	}
 

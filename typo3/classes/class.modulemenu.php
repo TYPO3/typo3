@@ -374,7 +374,7 @@ class ModuleMenu {
 						}
 
 						$javascriptCommand = '
-							top.content.location=top.getModuleUrl(top.TS.PATH_typo3+"'.$this->appendQuestionmarkToLink($subModuleData['link']).'"'.$additionalJavascript.'+additionalGetVariables);
+							$(\'content\').src = top.getModuleUrl(top.TS.PATH_typo3+"'.$this->appendQuestionmarkToLink($subModuleData['link']).'"'.$additionalJavascript.'+additionalGetVariables);
 							top.fsMod.currentMainLoaded="'.$parentModuleName.'";
 						';
 
