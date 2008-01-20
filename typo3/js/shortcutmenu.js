@@ -246,6 +246,7 @@ var ShortcutMenu = Class.create({
 	 * when finished it reloads the menu
 	 */
 	createShortcut: function(backPath, moduleName, url) {
+		$$('#shortcut-menu .toolbar-item img')[0].src = 'gfx/spinner.gif';
 
 			// synchrous call to wait for it to complete and call the render
 			// method with backpath _afterwards_
@@ -255,6 +256,7 @@ var ShortcutMenu = Class.create({
 		});
 
 		this.reRenderMenu(null, null, backPath);
+		$$('#shortcut-menu .toolbar-item img')[0].src = this.toolbarItemIcon;
 	}
 
 });
