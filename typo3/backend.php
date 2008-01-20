@@ -667,12 +667,7 @@ class TYPO3backend {
 		$jsFileAdded = false;
 
 			//TODO add more checks if neccessary
-		if(file_exists(t3lib_div::resolveBackPath(PATH_site.$javascriptFile))) {
-
-			if(t3lib_div::isFirstPartOfStr($javascriptFile, 'typo3/')) {
-				$javascriptFile = substr($javascriptFile, 6); // make relative to typo3/
-			}
-
+		if(file_exists(t3lib_div::resolveBackPath(PATH_typo3.$javascriptFile))) {
 			$this->jsFiles[] = $javascriptFile;
 			$jsFileAdded     = true;
 		}
@@ -705,12 +700,7 @@ class TYPO3backend {
 		$cssFileAdded = false;
 
 			//TODO add more checks if neccessary
-		if(file_exists(t3lib_div::resolveBackPath(PATH_site.$cssFile))) {
-
-			if(t3lib_div::isFirstPartOfStr($cssFile, 'typo3/')) {
-				$cssFile = substr($cssFile, 6); // make relative to typo3/
-			}
-
+		if(file_exists(t3lib_div::resolveBackPath(PATH_typo3.$cssFile))) {
 				// prevent overwriting existing css files
 			if(empty($this->cssFiles[$cssFileName])) {
 				$this->cssFiles[$cssFileName] = $cssFile;

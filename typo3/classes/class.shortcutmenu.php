@@ -212,7 +212,7 @@ class ShortcutMenu implements backend_toolbarItem {
 	 * @return	void
 	 */
 	private function addJavascriptToBackend() {
-		$this->backendReference->addJavascriptFile('typo3/js/shortcutmenu.js');
+		$this->backendReference->addJavascriptFile('js/shortcutmenu.js');
 	}
 
 	/**

@@ -12,6 +12,7 @@
 	* fixed bug #7211: "Start in Module" does not work anymore
 	* fixed check for wrong implementation of toolbarItem interface
 	* renamed typo3/css/verticalmenu.css to modulemenu.css
+	* changed the way how javascritp and css files needed to be referenced when adding them to backend.php, now relative to typo3/
 
 2008-01-19  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 

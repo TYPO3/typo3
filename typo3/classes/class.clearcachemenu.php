@@ -123,7 +123,7 @@ class ClearCacheMenu implements backend_toolbarItem {
 	 * @return	void
 	 */
 	private function addJavascriptToBackend() {
-		$this->backendReference->addJavascriptFile('typo3/js/clearcachemenu.js');
+		$this->backendReference->addJavascriptFile('js/clearcachemenu.js');
 	}
 
 	/**
