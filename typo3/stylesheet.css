@@ -359,7 +359,7 @@ BODY#typo3-alt-doc-nodoc-php { margin-left: 5px; }
 /* Record editing (alt_doc.php) */
 div#typo3-docheader { postion: absolute; top: 0; left: 0; z-index: 5; min-width: 350px; }
 div#typo3-docheader-row1 { height: 20px; background: #cbc7c3; }
-div#typo3-docheader-row2 { background: #f3f3f9; height: 27px; line-height: 27px; border-bottom: 2px solid #595d66; }
+div#typo3-docheader-row2 { background: #e4e0db; height: 27px; line-height: 27px; border-bottom: 1px solid #000; }
 div#typo3-docheader div.buttonsleft  { margin: 0 0 0 3px; line-height: 16px; float: left; }
 div#typo3-docheader div.buttonsright { margin: 0 3px 0 0; line-height: 16px; float: right; }
 div#typo3-docheader img, div#typo3-docheader input { margin: 2px 3px 0; vertical-align: top; }
