@@ -730,7 +730,7 @@ class TYPO3backend {
 		$toolbarItem = t3lib_div::getUserObj($toolbarItemClassReference);
 
 		if(!($toolbarItem instanceof t3lib_backendToolbarItem)) {
-			throw new UnexpectedValueException('$toolbarItem "'.$toolbarItemName.'" must implement interface t3lib_backendToolbarItem', 1195125501);
+			throw new UnexpectedValueException('$toolbarItem "'.$toolbarItemName.'" must implement interface backend_toolbarItem', 1195125501);
 		}
 
 		$toolbarItem->setBackend($this);

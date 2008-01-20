@@ -1,6 +1,7 @@
 2008-01-20  Ingo Renner  <ingo@typo3.org>
 
 	* fixed bug #7211: "Start in Module" does not work anymore
+	* corrected message for wrong implementation of toolbarItem interface
 
 2008-01-19  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
