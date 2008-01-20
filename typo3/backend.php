@@ -117,7 +117,7 @@ class TYPO3backend {
 		$this->cssFiles = array(
 			'backend-scaffolding' => 'css/backend-scaffolding.css',
 			'backend-style'       => 'css/backend-style.css',
-			'verticalmenu'        => 'css/verticalmenu.css'
+			'modulemenu'          => 'css/modulemenu.css'
 		);
 
 		$this->toolbarItems = array();
