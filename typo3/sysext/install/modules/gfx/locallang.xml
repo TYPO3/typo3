@@ -6,12 +6,43 @@
 	</meta>
 	<data type="array">
 		<languageKey index="default" type="array">
-			<label index="module_gfx_title">Graphics</label>
-			<label index="module_gfx_description">Let you setup the graphic subsystem of your TYPO3 installation.</label>
+			<label index="title_module_gfx">Graphics</label>
+			<label index="description_module_gfx">
+&lt;strong&gt;What is it?&lt;/strong&gt;
+TYPO3 is known for its ability to process images on the server.&lt;br/&gt;
+In the backend interface (TBE) thumbnails are automatically generated (by ImageMagick in thumbs.php) as well as icons, menu items and pane tabs (by GDLib).&lt;br/&gt;
+In the TypoScript enabled frontend all kinds of graphical elements are processed. Typically images are scaled down to fit the pages (by ImageMagick) and menu items, graphical headers and such are generated automatically (by GDLib + ImageMagick).&lt;br/&gt;
+In addition TYPO3 is able to handle many file formats (thanks to ImageMagick), for example TIF, BMP, PCX, TGA, AI and PDF in addition to the standard web formats; JPG, GIF, PNG.&lt;br/&gt;
+&lt;br/&gt;
+In order to do this, TYPO3 uses two sets of tools:&lt;br/&gt;
+&lt;br/&gt;
+&lt;strong&gt;ImageMagick:&lt;/strong&gt;&lt;br/&gt;
+For conversion of non-web formats to webformats, combining images with alpha-masks, performing image-effects like blurring and sharpening.&lt;br/&gt;
+ImageMagick is a collection of external programs on the server called by the exec() function in PHP. TYPO3 uses three of these, namely 'convert' (converting fileformats, scaling, effects), 'combine'/'composite' (combining images with masks) and 'identify' (returns image information).&lt;br/&gt;
+Because ImageMagick are external programs, two requirements must be met: 1) The programs must be installed on the server and working and 2) if safe_mode is enabled, the programs must be located in the folder defined by the php.ini setting, &lt;em&gt;safe_mode_exec_dir&lt;/em&gt; (else they are not executed).&lt;br/&gt;
+ImageMagick is available for both Windows and Unix. The current version is 5+, but TYPO3 enthusiasts prefer an old version 4.2.9 because that version has three main advantages: It's faster in some operations, the blur-function works, the sharpen-function works. Anyway you do it, you must tell TYPO3 by configuration whether you're using version 5+ or 4.2.9. (flag: [GFX][im_version_5])&lt;br/&gt;
+ImageMagick homepage is at &lt;a target="_blank" href="http://www.imagemagick.org/"&gt;http://www.imagemagick.org/&lt;/a&gt;&lt;br/&gt;
+&lt;br/&gt;
+&lt;strong&gt;GDLib:&lt;/strong&gt;&lt;br/&gt;
+For drawing boxes and rendering text on images with truetype fonts. Also used for icons, menuitems and generally the TypoScript GIFBUILDER object is based on GDlib, but extensively utilizing ImageMagick to process intermediate results.&lt;br/&gt;
+GDLib is accessed through internal functions in PHP, so in this case, you have no safe_mode problems, but you'll need a version of PHP with GDLib compiled in. Also in order to use TrueType fonts with GDLib you'll need FreeType compiled in as well.&lt;br/&gt;
+You can get GDLib in the PNG version from &lt;a target="_blank" href="http://www.boutell.com/gd/"&gt;http://www.boutell.com/gd/&lt;/a&gt;.&lt;br/&gt;FreeType is for download at &lt;a target="_blank" href="http://www.freetype.org/"&gt;http://www.freetype.org/&lt;/a&gt;.&lt;br/&gt;
+Generally, software for TYPO3 is found at &lt;a target="_blank" href="http://typo3.sunsite.dk/software/"&gt;http://typo3.sunsite.dk/software/&lt;/a&gt; and packages listed at &lt;a target="_blank" href="http://typo3.org/1274.0.html"&gt;http://typo3.org/1274.0.html&lt;/a&gt;.&lt;br/&gt;
+&lt;br/&gt;
+You can disable all image processing options in TYPO3 ([GFX][image_processing]=0), but that would seriously disable TYPO3.			
+			</label>
 
-			<label index="title_"></label>
-			<label index="description_"></label>
-			<label index="help_"></label>
+			<label index="title_gfxOverview">Image Processing</label>
+			<label index="description_gfxOverview">
+&lt;strong&gt;Verifying the image processing capabilities of your server&lt;/strong&gt;&lt;br/&gt;
+This page performs image processing and displays the result. It's a thorough check that everything you've configured is working correctly.&lt;br/&gt;
+It's quite simple to verify your installation; Just look down the page, the images in pairs should look like each other. If some images are not alike, something is wrong. You may also notice warnings and errors if this tool found signs of any problems.&lt;br/&gt;
+&lt;br/&gt;
+The image to the right is the reference image (how it should be) and to the left the image made by your server.&lt;br/&gt;
+The reference images are made with the classic ImageMagick install based on the 4.2.9 RPM and 5.2.3 RPM. If the version 5 flag is set, the reference images are made by the 5.2.3 RPM.&lt;br/&gt;
+&lt;br/&gt;
+This test will work only if your ImageMagick/GDLib configuration allows it to. The typo3temp/ folder must be writable for all the temporary image files. They are all prefixed 'install_' so they are easy to recognize and delete afterwards.
+			</label>
 
 			<label index="title_image_processing">Image Processing</label>
 			<label index="description_image_processing">Enables image processing features.</label>

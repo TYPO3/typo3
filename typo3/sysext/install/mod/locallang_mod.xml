@@ -8,7 +8,7 @@
 		<languageKey index="default" type="array">
 			<label index="mlang_labels_tablabel">Setup Center</label>
 			<label index="mlang_labels_tabdescr">Provides a simple link to the Setup Center. Notice the Install Tool (in typo3/install/) must be enabled.&lt;br /&gt;&lt;em&gt;Access for 'admin' users only!&lt;/em&gt;</label>
-			<label index="mlang_tabs_tab">Setup</label>
+			<label index="mlang_tabs_tab">Installation</label>
 
 			<!-- ERRORS and WARNINGS -->
 			<label index="msg_error_occured">An error occured. Please see details:</label>
@@ -68,6 +68,7 @@ REMOTE_ADDR was "%s" (%s)</label>
 			<label index="label_category_server">Server</label>
 			<label index="label_category_gfx">Graphics</label>
 			<label index="label_category_system">System</label>
+			<label index="label_category_update">Update-Wizard</label>
 
 			<label index="label_subcategory_connection">Connection</label>
 			<label index="label_subcategory_cleanup">Clean Up</label>
@@ -80,12 +81,12 @@ REMOTE_ADDR was "%s" (%s)</label>
 			<label index="label_subcategory_gd">GD</label>
 			<label index="label_subcategory_igm">Image- GrapicsMagick</label>
 			<label index="label_subcategory_quality">Quality</label>
+			<label index="label_subcategory_checks">Check</label>
 			<label index="label_subcategory_development">Development</label>
 			
 			<!-- DESCRIPTIONS -->
-			<label index="descr_database">You are in section "Database". Here you can change and check all settings concerning your database.</label>
-			<label index="descr_server">You are in section "Server".</label>
-			<label index="descr_system">You are in section "System".</label>
+			<label index="description_module_server">You are in section "Server".</label>
+			<label index="description_module_system">You are in section "System".</label>
 			
 			<!-- MESSAGES -->
 			<label index="msg_setup_firstcall">SECURITY:

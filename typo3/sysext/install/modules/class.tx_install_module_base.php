@@ -92,8 +92,22 @@ class tx_install_module_base {
 	 * 
 	 * @return	void
 	 */
-	protected function addError($errorMsg, $errorSeverity = WARNING, $errorContext = 'general', $errorField = NULL, $getLL = true)	{
-		$this->basicsObject->addError($errorMsg, $errorSeverity, $errorContext, $errorField, $getLL);
+	protected function addError($errorMsg, $errorSeverity = WARNING, $errorContext = 'general', $errorField = NULL, $onTop = false)	{
+		$this->basicsObject->addError($errorMsg, $errorSeverity, $errorContext, $errorField, $onTop);
+	}
+	
+	/**
+	 * Adds an array of errors to the general error-field. This uses the local addError method with default values
+	 * for severity, context, field and onTop
+	 *
+	 * @param	array		$errors: Array with errormessages
+	 */
+	protected function addErrors($errors)	{
+		if (is_array($errors))	{
+			foreach ($errors as $error)	{
+				$this->addError($error);
+			}
+		}
 	}
 }
 

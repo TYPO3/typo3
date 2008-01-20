@@ -174,7 +174,7 @@ class tx_install {
 			$this->viewObj->addContent('', 'Install Tool deactivated.<br />You must enable it by setting a password in typo3conf/localconf.php. If you insert the line below, the password will be "joh316":<br /><br />$TYPO3_CONF_VARS[\'BE\'][\'installToolPassword\'] = \'bacb98acf97e0b6112b1d1b650b84971\';');
 			echo $this->viewObj->getDocCode();
 			die();
-		}	
+		}
 		
 			// set some default module if nothing was set
 		if (empty($this->env['module']))	{
@@ -211,6 +211,7 @@ class tx_install {
 			}
 		}
 		
+			// Let's go on with the content if everything is fine here
 		if($this->passwordOK) {
 			
 				// Try to connect to the database
@@ -218,7 +219,7 @@ class tx_install {
 				$moduleContent = $this->basicsObj->executeMethod(array('database', 'checkDatabaseConnect'));
 			}
 			
-				// load module and execute main method
+				// get the method to execute
 			$method = 'main';
 			if ($this->env['method'])	{
 				$method = $this->env['method'];
@@ -227,7 +228,7 @@ class tx_install {
 				// execute given method and save the result in a local variable
 				// This method is only be executed if we have database connection
 			$moduleContent = $this->basicsObj->executeMethod(array($this->env['module'], $method));
-			
+	
 				// check if we have to handle the module content with AJAX
 			if ($this->env['ajax'] == 1)	{
 				header('X-JSON: (true)');

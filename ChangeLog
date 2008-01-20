@@ -1,3 +1,12 @@
+2008-01-20	Thomas Hempel  ²thomas@typo3-unleashed.net>
+
+	* Installer: Renamed the tab back from "Setup" to "Installer" to avoid problems in translation tool
+	* Installer: reorganized installer module (rewrite)
+	* Installer: implemeted some features for setup module to make it usable for most cases
+	* Installer: added database checks (big thanks to Francois Suter!!!)
+	* Installer: started implementation of image checks
+	* Installer: prepared codebase for third party patches
+
 2008-01-20  Ingo Renner  <ingo@typo3.org>
 
 	* fixed bug #7211: "Start in Module" does not work anymore

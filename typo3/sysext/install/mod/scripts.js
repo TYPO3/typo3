@@ -190,6 +190,16 @@ function displayMethodResult(data)	{
 	}
 }
 
+/**
+ * This function takes a list of checkboxes (identified by their ID)
+ * and toggles them on or off depeding on the value of the flag
+ */
+function toggleCheckboxes(checkboxList, flag) {
+	for (i = 0; i < checkboxList.length; i++) {
+		$(checkboxList[i]).checked = flag;
+	}
+}
+
 allOpen = false;
 
 	// add event observers

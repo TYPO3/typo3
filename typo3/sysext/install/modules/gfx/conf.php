@@ -5,17 +5,6 @@ $GLOBALS['MCA']['gfx'] = array (
 	),
 	
 	'options' => array (
-		/*
-		'' => array (
-			'categoryMain' => 'gfx',
-			'categorySub' => 'general',
-			'tags' => array (),
-			'elementType' => 'checkbox',
-			'value' => 'LC:GFX/',
-			'default' => 1
-		),
-		*/
-	
 		/** GENERAL **/
 	
 		'image_processing' => array (
@@ -257,16 +246,15 @@ $GLOBALS['MCA']['gfx'] = array (
 			'method' => 'php:checkVersion'
 		)
 	),
+	*/
 	
 	'methods' => array (
-		'phpinfo' => array (
-			'title' => 'module_php_method_phpversion_title',
-			'description' => 'module_php_method_phpversion_description',
-			'categoryMain' => 'server',
-			'categorySub' => 'php',
-			'method' => 'php:getPHPInfo'
+		'gfxOverview' => array (
+			'categoryMain' => 'gfx',
+			'categorySub' => 'checks',
+			'method' => 'gfx:overview',
+			'autostart' => true
 		)
 	)
-	*/
 );
 ?>

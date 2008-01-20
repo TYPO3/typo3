@@ -6,28 +6,43 @@
 	</meta>
 	<data type="array">
 		<languageKey index="default" type="array">
-			<label index="msg_step1_title">Welcome to TYPO3</label>
-			<label index="msg_step1_description">This is the installation wizard for the TYPO3 Content Management System. When you click "next" a few initial checks will be performed to test if your server is suitable for TYPO3.</label>
+			<label index="msg_step0_title">Welcome to TYPO3</label>
+			<label index="msg_step0_description">This is the installation wizard for the TYPO3 Content Management System. This wizard will guide you trough the complete installation process.&lt;p&gt;Please select the language for the installation process.&lt;/p&gt;</label>
 
-			<label index="msg_step2_title">Select language</label>
-			<label index="msg_step2_description">Please select the language for the installation process.</label>
+			<label index="msg_step1_title">Database connection</label>
+			<label index="msg_step1_description">Please enter the information for connecting to your prefered database.</label>
 
-			<label index="msg_step5_title">Create admin user</label>
-			<label index="msg_step5_description">Your database is set up sucessfully. Now we have to create an admin account for logging into the backend.</label>
+			<label index="msg_step4_title">Create admin user</label>
+			<label index="msg_step4_description">Your database is set up sucessfully. Now we have to create an admin account for logging into the backend.</label>
 
-			<label index="msg_step6_title">Congratulation</label>
-			<label index="msg_step6_description">You are basically done! You can now use TYPO3 by logging into the backend or go on with some more basic settings.</label>
+			<label index="msg_step5_title">Congratulation</label>
+			<label index="msg_step5_description">You're basic setup is ready!</label>
+			<label index="msg_step5_done">Apparently you have completed the basic setup of the TYPO3 database.
+Now you can choose between these options:
+
+- &lt;a href="../../index.php"&gt;&lt;strong&gt;Go to the frontend pages&lt;/strong&gt;&lt;/a&gt;
+
+- &lt;a href="../index.php"&gt;&lt;strong&gt;Go to the backend login&lt;/strong&gt;&lt;/a&gt;
+
+- &lt;a href="index.php"&gt;&lt;strong&gt;Continue to configure TYPO3&lt;/strong&gt;&lt;/a&gt; (Recommended).
+				 This will let you analyse and verify that everything in your PHP installation is alright. Also if you want to configure TYPO3 to use all the cool features, you &lt;em&gt;must&lt;/em&gt; dig into the this!</label>
 
 			<label index="label_step">Step %d</label>
+			<label index="label_prev_step">Previous</label>
 			<label index="label_next_step">Next</label>
+			
+			<label index="label_normalFields">Normal</label>
+			<label index="label_advancedFields">Advanced</label>
+			
 			<label index="label_available_languages">Select your language</label>
 
 			<label index="label_admin_username">Enter username for administrator</label>
 			<label index="label_admin_password">Enter a password for administrator</label>
 			<label index="label_admin_password_2">Retype the password</label>
 
-			<label index="msg_error_stepnotdefined">FATAL! The requested step is not defined.</label>
-			<label index="msg_error_methodnotfound">FATAL! The requested method "%s" was not found in module "%s".</label>
+			<label index="msg_error_stepnotdefined">The requested step (%s) is not defined.</label>
+			<label index="msg_error_stepstatenotdefined">The requested state (%s) in step (%s) is not defined.</label>
+			<label index="msg_error_methodnotfound">The requested method "%s" was not found in module "%s".</label>
 
 			<label index="msg_warning_invalidusername">The username "%s" was not alphanumeric, a-zA-Z0-9_-</label>
 			<label index="msg_warning_emptyusername">The username was empty!</label>

@@ -189,9 +189,8 @@ class tx_install_basics	{
 		
 		if($moduleClassName) {
 			$modules = $this->pObj->getLoadedModules();
-			
-			
-			if(!is_object($modules[$moduleName])) {
+			if(!is_object($modules[$moduleName]))	{
+				$res = $this->loadModuleConfig($moduleName);
 				if($this->loadModuleConfig($moduleName) !== false) {
 						// try to load the language data before we load the module
 					$this->loadModuleLocallang($moduleName);
@@ -252,7 +251,7 @@ class tx_install_basics	{
 		} else if(!method_exists($moduleObj, $methodName)) {
 			$this->addError(sprintf($this->getLabel('msg_error_methodnotfound'), $methodName, $moduleName), FATAL);
 			$returnValue = false;
-		} else if($args == NULL) {
+		} else if (is_null($args)) {
 			$returnValue = $moduleObj->$methodName();
 		} else {
 			$returnValue = $moduleObj->$methodName($args);
@@ -506,6 +505,10 @@ class tx_install_basics	{
 			array_shift($path);
 		}
 		
+		if ($path[0] == 'db')	{
+			$this->addDbDataToLocalconf(array($path[1] => $value));
+		}
+		
 		$path = t3lib_div::trimExplode('/', $path[0]);
 		
 		$data = &$this->localconfCache['data'];
@@ -717,9 +720,10 @@ class tx_install_basics	{
 	 * @param	integer		$errorSeverity: The severity of the error (defined in view object!)
 	 * @param	string		$errorContext: The context of the error (general or fields)
 	 * @param	string		$errorField: The field where the error occured if errorContext is field
+	 * @param	boolean		$onTop: If true, the error message is inserted on top of the list and not at the end
 	 * @return	void
 	 */
-	public function addError($errorMsg, $errorSeverity = WARNING, $errorContext = 'general', $errorField = NULL, $getLL = true) {
+	public function addError($errorMsg, $errorSeverity = WARNING, $errorContext = 'general', $errorField = NULL, $onTop = false) {
 		$viewObj = $this->pObj->getViewObject();
 		
 		if(substr($errorMsg, 0, 4) == 'LLL:') {
@@ -729,11 +733,11 @@ class tx_install_basics	{
 		
 		switch ($errorContext) {
 			case 'fields':
-				$viewObj->addError($errorContext, $error, $errorField);
+				$viewObj->addError($errorContext, $error, $errorField, $onTop);
 				break;
 			case 'general':
 			default:
-				$viewObj->addError($errorContext, $error);
+				$viewObj->addError($errorContext, $error, '', $onTop);
 				break;
 		}
 	}

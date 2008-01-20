@@ -96,26 +96,24 @@ class tx_install_module_setup extends tx_install_module_base	{
 					$ajaxContent = $this->pObj->getViewObj()->renderErrors(true);
 				} else {
 					$filterResults = $this->pObj->getFilterResults();
-					
+						
 						// get content from deliverables
 					$ajaxContent = $this->renderCategoryDeliverables($moduleDeliverables);
-										
-						// try to write the data to localconf
-					if (!$this->basicsObject->saveLocalconf())	{
-						$ajaxContent = $this->pObj->getViewObject()->renderErrors().$ajaxContent;
-					} else {
-						$modMessage = '';
-						// var_dump($modifiedFields);
-						if (count($modifiedFields) > 0)	{
-							$modMessage = $this->pObj->getViewObject()->render(array('type' => 'list', 'value' => $modifiedFields));
-						}
-						$ajaxContent = $aboutBox.$this->pObj->getViewObject()->getLastMessage().$modMessage.$ajaxContent;
-					}
-					
 				}
 			}
+			
+				// try to write the data to localconf
+			if (!$this->basicsObject->saveLocalconf())	{
+				$ajaxContent = $this->pObj->getViewObject()->renderErrors().$ajaxContent;
+			} else {
+				$modMessage = '';
+				if (count($modifiedFields) > 0)	{
+					$modMessage = $this->pObj->getViewObject()->render(array('type' => 'list', 'value' => $modifiedFields));
+				}
+				$ajaxContent = $aboutBox.$this->pObj->getViewObject()->getLastMessage().$modMessage.$ajaxContent;
+			}
 				
-			$returnValue = $this->pObj->getViewObject()->renderTag('h1', $titleSection).$formWrap[0].$ajaxContent.$formWrap[1];
+			$returnValue = $this->pObj->getViewObject()->renderTag('h1', $titleSection).$ajaxContent;
 			
 		} else {
 				// this is the default... In other words this is only executed on first call. All other requests are done via AJAX see above...
@@ -141,10 +139,17 @@ class tx_install_module_setup extends tx_install_module_base	{
 	}
 	
 	
+	/**
+	 * Adds the about box on top of the page.
+	 * The box is not displayed if no description was found.
+	 *
+	 * @param string $category: the category for which the about should be generated
+	 */
 	private function addAboutBox($category = 'categoryMain')	{
 			// create a about box
-		$categoryDescription = $this->get_LL('descr_'.$this->env[$category]);	
-		if (!empty($categoryDescription))	{
+		$categoryDescription = $this->get_LL('description_module_'.$this->env[$category]);	
+		
+		// if (!empty($categoryDescription))	{
 			$aboutBoxCode = array (
 				'type' => 'box',
 				'value' => array (
@@ -158,7 +163,7 @@ class tx_install_module_setup extends tx_install_module_base	{
 						),
 						array (
 							'type' => 'plain',
-							'value' => $this->get_LL('descr_'.$this->env[$category])
+							'value' => $categoryDescription
 						)
 					)
 				)
@@ -166,28 +171,33 @@ class tx_install_module_setup extends tx_install_module_base	{
 			
 				// add the about box
 			$this->pObj->getViewObject()->addContent('', $this->pObj->getViewObject()->render($aboutBoxCode));
-		}
+		// }
 	}
 	
+	
+	/**
+	 * This one of the most important methods in setup. Here we render all pages and deliverables. It also
+	 * looks for changes and pushes them to the localconf cache.
+	 *
+	 * @param	array		$deliverables: The deliverable configs
+	 * @return	HTML with the rendered deliverables
+	 */
 	private function renderCategoryDeliverables($deliverables)	{
 		$result = '';
+		$this->pObj->getViewObject()->clearLastMessage();
 		
 		foreach ($deliverables as $deliverable => $names)	{
-			$result .= $this->pObj->getViewObject()->renderTag('h2', $this->get_LL('label_deliverable_'.$deliverable));
-			
-				// add form for saving options
-			if ($deliverable == 'options')	{
-				$formWrap = array (
-					'<form action="index.php" method="post" id="optionsForm">'.
-						'<input type="hidden" name="categoryMain" value="'.$this->env['categoryMain'].'" />'.
-						'<input type="hidden" name="categorySub" value="'.$this->env['categorySub'].'" />',
-					'<input type="button" onclick="sendForm(\'optionsForm\');" value="'.$this->get_LL('label_save').'" /></form>'
-				);
-			} else {
-				$formWrap = array('', '');
+			if (!empty($this->env['categorySub']))	{
+				$result .= $this->pObj->getViewObject()->renderTag('h2', $this->get_LL('label_deliverable_'.$deliverable));
 			}
 			
 			$modifiedFields = array();
+			
+			if ($deliverable == 'options')	{
+				$result .= '<form action="index.php" method="post" id="optionsForm">'.
+					'<input type="hidden" name="categoryMain" value="'.$this->env['categoryMain'].'" />'.
+					'<input type="hidden" name="categorySub" value="'.$this->env['categorySub'].'" />';
+			}
 			
 			foreach ($names as $name => $mod)	{
 				$modConfig = $GLOBALS['MCA'][$mod][$deliverable][$name];
@@ -211,15 +221,20 @@ class tx_install_module_setup extends tx_install_module_base	{
 				switch ($deliverable)	{
 					case 'checks':
 							// execute check and print out result in plain
-						// $this->pObj->getViewObject()->clearLastMessage();
 						$checkResult = $this->basicsObject->executeMethod($modConfig['method']);
-						$deliverableContent = $this->get_LL('label_'.(($checkResult) ? 'true' : 'false'));
+						$messageConfig = array(
+							'type' => 'message',
+							'value' => array (
+								'severity' => (($checkResult) ? 'ok' : 'error'),
+								'label' => (($checkResult) ? $this->pObj->getViewObject()->getLastMessage() : $this->get_LL('label_false'))
+						));
 						if (!$checkResult)	{
-							$deliverableContent .= $this->pObj->getViewObject()->renderErrors();
+							$messageConfig['value']['message'] = $this->pObj->getViewObject()->renderErrors();
 						} else {
-							$deliverableContent .= $this->pObj->getViewObject()->getLastMessage();
-							$this->pObj->getViewObject()->clearLastMessage();
+							$messageConfig['value']['message'] = $this->pObj->getViewObject()->clearLastMessage();
 						}
+						$deliverableContent = $this->pObj->getViewObject()->render($messageConfig);
+						$this->pObj->getViewObject()->clearLastMessage();
 						break; 
 					case 'options':
 							// options are rendered as input elements
@@ -261,6 +276,7 @@ class tx_install_module_setup extends tx_install_module_base	{
 						
 						$descr .= $this->pObj->getViewObject()->renderTag('span', $this->get_LL('label_path').' '.$this->basicsObject->getLocalconfPath($modConfig['value']).' - '.$this->get_LL('label_default').' '.$modConfig['default'], array('class' => 'description italic'));
 						$deliverableContent = $this->pObj->getViewObject()->renderFormelement($inputConfig);
+						
 						break;
 					case 'methods':
 							// the result of methods is simply printed out
@@ -297,7 +313,13 @@ class tx_install_module_setup extends tx_install_module_base	{
 				
 				$result .= $this->pObj->getViewObject()->renderTag('div', $deliverableBox, $paramData);
 			}
+			
+				// add form for saving options
+			if ($deliverable == 'options')	{
+				$result .= '<input type="button" onclick="sendForm(\'optionsForm\');" value="'.$this->get_LL('label_save').'" /></form>';
+			}
 		}
+		
 		return $result;
 	}
 	
@@ -310,7 +332,11 @@ class tx_install_module_setup extends tx_install_module_base	{
 	private function renderCategoryTree($data)	{
 			// add the searchbox
 		$content = '<div class="categoryTreeContainer">
-			<input type="text" id="treeFilter" value="" /><br />
+			<div id="treeOptions">
+				<div id="treeFilterBox">
+					<input type="text" id="treeFilter" value="" />
+				</div>
+			</div>
 			<span id="filterStatus"></span>
 			<a href="#" onclick="toggleAllLeafs()" id="collapseExpandToggle">
 				'.$this->get_LL('label_expandAll').'

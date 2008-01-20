@@ -559,13 +559,14 @@ class tx_install_view {
 	 * 		severity => string
 	 * 		label => string
 	 * 		message => string
+	 * 		addBR => boolean
 	 * )
 	 * 
 	 * @param	array		$data: The content that should be rendered
 	 * @return	string		HTML output
 	 */
 	private function renderMessage($data) {
-		$out = '<div'.(($data['severity']) ? ' class="severity_'.$data['severity'].'"' : '').'>';
+		$out = '<div'.(($data['severity']) ? ' class="installer-message severity_'.$data['severity'].'"' : '').'>';
 		if ($data['label'])	{
 			if (is_array($data['label']))	{
 				$tag = $data['label'][0];
@@ -576,7 +577,7 @@ class tx_install_view {
 				$label = $data['label'];
 				$br = '<br />';
 			}
-			$out .= $this->renderTag($tag, $label).$br;
+			$out .= $this->renderTag($tag, $label, array('class' => 'message-header')).(($data['addBR'] === true) ? $br : '');
 		}
 		$out .= ($data['message']) ? $this->render($data['message']) : '';	
 		$out .= '</div>';
@@ -932,12 +933,20 @@ class tx_install_view {
 	 * @param	string	error type
 	 * @param	string	error message
 	 */
-	public function addError($type, $errorMessage, $errorField = '') {
+	public function addError($type, $errorMessage, $errorField = '', $onTop = false) {
 		
-		if($type == 'fields') {
-			$this->errors[$type][$errorField][] = $errorMessage;
+		if ($onTop)	{
+			if($type == 'fields') {
+				array_unshift($this->errors[$type][$errorField], $errorMessage);
+			} else {
+				array_unshift($this->errors[$type], $errorMessage);
+			}
 		} else {
-			$this->errors[$type][] = $errorMessage;
+			if($type == 'fields') {
+				$this->errors[$type][$errorField][] = $errorMessage;
+			} else {
+				$this->errors[$type][] = $errorMessage;
+			}
 		}
 	}
 	

@@ -21,7 +21,7 @@ fieldset legend	{
 	font-weight: bold;
 }
 
-input, select, button	{
+input.bg, select.bg, button.bg	{
 	background: #fff url(../../../imgs/icons/bg_input.gif) no-repeat scroll left top;
 	border: 1px solid #aaa;
 	margin-top: 2px;
@@ -38,10 +38,8 @@ label em	{
 	position: fixed;
 	top: 5px;
 	left: 5px;
-	width: 240px;
+	width: 210px;
 	padding: 5px;
-	border: 1px gray solid;
-	background-color: white;
 }
 
 #collapseExpandToggle	{
@@ -52,25 +50,12 @@ label em	{
 	margin: 5px 0;
 	text-decoration: none;
 	border-top: 1px #f0f0f0 solid;
-	display: block;
-}
-
-#treeFilter	{
-	background: url(search_bubble.png) no-repeat top left;
-	border: none;
-	
-	height: 30px;
-	width: 240px;
-	
-	margin-bottom: 2px;
-	padding: 8px 17px 8px 30px;
-	
-	text-align: left;
 }
 
 .categoryTree	{
 	padding: 0;
 	list-style-type: none;
+	clear: left;
 }
 
 .categoryTree img	{
@@ -121,6 +106,30 @@ label em	{
 
 .description	{
 	margin: 5px;
+}
+
+.installer-message	{
+	margin-bottom: 15px;
+}
+
+.installer-message strong.message-header	{
+	display: block;
+	background-color: #d9d5c9;
+	padding: 3px;
+}
+
+.severity_ok strong.message-header	{
+	background-image: url('../../../imgs/icons/ok.png');
+	background-position: 4px 50%;
+	background-repeat: no-repeat;
+	padding-left: 24px;
+}
+
+.severity_error strong.message-header	{
+	background-image: url('../../../imgs/icons/cancel.png');
+	background-position: 4px 50%;
+	background-repeat: no-repeat;
+	padding-left: 24px;
 }
 
 .error-fatal	{
