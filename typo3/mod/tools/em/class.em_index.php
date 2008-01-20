@@ -2090,7 +2090,7 @@ EXTENSION KEYS:
 							if(t3lib_extMgm::isLoaded($extKey)) {
 								$this->tsStyleConfigForm($extKey,$list[$extKey]);
 							} else {
-								$this->content.= 'This extension provides additional configuration options which become available once you install it.';
+								$this->content.= '<img '.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/icon_note.gif', ' width="18" height="16"').' alt="Note" align="absmiddle" /> This extension provides additional configuration options which become available once you install it.';
 							}
 						}
 
