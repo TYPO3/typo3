@@ -358,13 +358,13 @@ BODY#typo3-alt-doc-nodoc-php { margin-left: 5px; }
 
 /* Record editing (alt_doc.php) */
 div#typo3-docheader { postion: absolute; top: 0; left: 0; z-index: 5; min-width: 350px; }
-div#typo3-docheader-row1 { height: 20px; background: #cbc7c3; }
+div#typo3-docheader-row1 { height: 22px; background: #cbc7c3; }
 div#typo3-docheader-row2 { background: #e4e0db; height: 27px; line-height: 27px; border-bottom: 1px solid #000; }
 div#typo3-docheader div.buttonsleft  { margin: 0 0 0 3px; line-height: 16px; float: left; }
 div#typo3-docheader div.buttonsright { margin: 0 3px 0 0; line-height: 16px; float: right; }
 div#typo3-docheader img, div#typo3-docheader input { margin: 2px 3px 0; vertical-align: top; }
 div#typo3-docheader img.typo3-csh-icon { margin: 2px 15px 0 2px; }
-div#typo3-docheader select { margin: 2px 0 0; border: 0; padding: 0; height: 16px; line-height: 16px; }
+div#typo3-docheader select { margin: 2px 0 0; }
 div#typo3-docheader div.pagepath { margin-left: 6px; float: left; }
 div#typo3-docheader div.infooptions { margin-right: 6px; float: right; }
 div#typo3-docbody { width: 98%; padding: 2% 0% 2% 2%; overflow: auto; top: 49px; bottom: 0; position: absolute; z-index: 2; }

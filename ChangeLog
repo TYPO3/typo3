@@ -15,6 +15,7 @@
 	* changed the way how javascritp and css files needed to be referenced when adding them to backend.php, now relative to typo3/
 	* added note item to EM when there may be additional configuration fields
 	* some colors from t3skin for the docheader went into the original style, fixed by moving them back to t3skin and choosing an appropriate color whn t3skin is not installed
+	* fixed minor style issues with the docheader with and without t3skin
 
 2008-01-19  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
