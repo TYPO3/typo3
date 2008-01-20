@@ -3,7 +3,7 @@
 *
 *  (c) 2002-2004, interactivetools.com, inc.
 *  (c) 2003-2004 dynarch.com
-*  (c) 2004-2007 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
+*  (c) 2004-2008 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -303,7 +303,6 @@ HTMLArea.Config = function () {
 		HiliteColor:		["Background Color", "ed_color_bg.gif",false, function(editor) {editor.execCommand("HiliteColor");}],
 		InsertHorizontalRule:	["Horizontal Rule", "ed_hr.gif",false, function(editor) {editor.execCommand("InsertHorizontalRule");}],
 		CreateLink:		["Insert Web Link", "ed_link.gif", false, function(editor) {editor.execCommand("CreateLink", true);}, "a", false, true],
-		InsertImage:		["Insert/Modify Image", "ed_image.gif", false, function(editor) {editor.execCommand("InsertImage");}],
 		InsertTable:		["Insert Table", "insert_table.gif", false, function(editor) {editor.execCommand("InsertTable");}],
 		HtmlMode:		["Toggle HTML Source", "ed_html.gif", true, function(editor) {editor.execCommand("HtmlMode");}],
 		SelectAll:		["SelectAll", "", true, function(editor) {editor.execCommand("SelectAll");}, null, true, false],
@@ -656,7 +655,7 @@ HTMLArea.prototype.createButton = function (txt,tb_line,first_cell_on_line,label
 		HTMLArea._addEvents(newObj["el"],["mouseover", "mouseout", "mousedown", "click"], HTMLArea.toolBarButtonHandler);
 		
 		newObj["el"].className += " " + txt;
-		if (this.plugins["TYPO3Browsers"] && (txt == "CreateLink" || txt == "InsertImage")) newObj["el"].className += "-TYPO3Browsers";
+		if (this.plugins["TYPO3Browsers"] && txt == "CreateLink") newObj["el"].className += "-TYPO3Browsers";
 		
 		newObj["created"] = true;
 	}
@@ -1524,9 +1523,12 @@ HTMLArea.wordClean = function(ev) {
 	while (HTMLArea.is_ie && owner.parentElement ) { // IE5.5 does not report any ownerDocument
 		owner = owner.parentElement;
 	}
-		// if we dropped an image dragged from the TYPO3 Browser, let's close the browser window
-	if (typeof(browserWin) != "undefined" && browserWin.close) browserWin.close();
-	window.setTimeout("HTMLArea.wordCleanLater(" + owner._editorNo + ", true);", 250);
+		// If we dropped an image dragged from the TYPO3 Image plugin, let's close the dialog window
+	if (typeof(HTMLArea.Dialog) != "undefined" && HTMLArea.Dialog.TYPO3Image) {
+			HTMLArea.Dialog.TYPO3Image.close();
+	} else {
+		window.setTimeout("HTMLArea.wordCleanLater(" + owner._editorNo + ", true);", 250);
+	}
 };
 
 HTMLArea.prototype.forceRedraw = function() {
@@ -2023,104 +2025,6 @@ HTMLArea.prototype._createLink = function(link) {
 };
 
 /*
- * Get the insert image action function
- */
-HTMLArea.insertImageDialog = function(editor,image) {
-	return (function(param) {
-		if (!param || typeof(param.f_url) == "undefined") return false;
-		var img = image;
-		if (!img) {
-			var sel = editor._getSelection();
-			var range = editor._createRange(sel);
-			editor._doc.execCommand("InsertImage",false,param.f_url);
-			if (HTMLArea.is_ie) {
-				img = range.parentElement();
-				if(img.tagName.toLowerCase() != "img") img = img.previousSibling;
-			} else {
-				var sel = editor._getSelection();
-				var range = editor._createRange(sel);
-				img = range.startContainer;
-				if (HTMLArea.is_opera) img = img.parentNode;
-				img = img.lastChild;
-				while(img && img.nodeName.toLowerCase() != "img") img = img.previousSibling;
-			}
-		} else {
-			img.src = param.f_url;
-		}
-
-		for (var field in param) {
-			if (param.hasOwnProperty(field)) {
-				var value = param[field];
-				switch (field) {
-					case "f_alt"    : img.alt = value; break;
-					case "f_border" :
-						if (parseInt(value)) {
-							img.style.borderWidth = parseInt(value)+"px";
-							img.style.borderStyle = "solid";
-						} else {
-							img.style.borderWidth = "";
-							img.style.borderStyle = "none";
-						}
-						break;
-					case "f_align"  :
-						img.style.verticalAlign = value;
-						break;
-					case "f_vert"   :
-						if (parseInt(value)) {
-							img.style.marginTop = parseInt(value)+"px";
-							img.style.marginBottom = parseInt(value)+"px";
-						} else {
-							img.style.marginTop = "";
-							img.style.marginBottom = "";
-						}
-						break;
-					case "f_horiz"  :
-						if (parseInt(value)) {
-							img.style.marginLeft = parseInt(value)+"px";
-							img.style.marginRight = parseInt(value)+"px";
-						} else {
-							img.style.marginLeft = "";
-							img.style.marginRight = "";
-						}
-						break;
-					case "f_float"  :
-						if (HTMLArea.is_ie) img.style.styleFloat = value;
-							else img.style.cssFloat = value;
-						break;
-				}
-			}
-		}
-		editor = null;
-		image = null;
-	});
-};
-
-/*
- * Called when the "InsertImage" button is clicked.
- * If an image is already there, it will just modify it's properties.
- */
-HTMLArea.prototype._insertImage = function(image) {
-	var outparam = null;
-	this.focusEditor();
-	if (typeof(image) == "undefined") {
-		var image = this.getParentElement();
-		if(image && !/^img$/i.test(image.tagName)) image = null;
-	}
-	if(image) outparam = {
-		f_base		: this.config.baseURL,
-		f_url		: image.getAttribute("src"),
-		f_alt		: image.alt,
-		f_border	: isNaN(parseInt(image.style.borderWidth))?"":parseInt(image.style.borderWidth),
-		f_align 	: image.style.verticalAlign,
-		f_vert		: isNaN(parseInt(image.style.marginTop))?"":parseInt(image.style.marginTop),
-		f_horiz 	: isNaN(parseInt(image.style.marginLeft))?"":parseInt(image.style.marginLeft),
- 		f_float 	: HTMLArea.is_ie ? image.style.styleFloat : image.style.cssFloat
-	};
-	var insertImageDialogFunctRef = HTMLArea.insertImageDialog(this, image);
-	this._popupDialog("insert_image.html", insertImageDialogFunctRef, outparam, 580, 460);
-};
-
-/*
  * Get the insert table action function
  */
 HTMLArea.insertTableDialog = function(editor, sel, range) {
@@ -2236,7 +2140,6 @@ HTMLArea.prototype.execCommand = function(cmdID, UI, param) {
 			else this._doc.execCommand(cmdID,UI,param);
 		break;
 	    case "InsertTable"	: this._insertTable(); break;
-	    case "InsertImage"	: this._insertImage(); break;
 	    case "About"	: this._popupDialog("about.html", null, this, 475, 350); break;
 	    case "CleanWord"	: HTMLArea._wordClean(this, this._doc.body); break;
 	    case "Cut"		:
@@ -3577,7 +3480,7 @@ HTMLArea.Plugin = HTMLArea.Base.extend({
 	 * @return	string		the localization of the label
 	 */
 	localize : function (label) {
-		return this.I18N[label];
+		return HTMLArea.I18N.dialogs[label] || HTMLArea.I18N.tooltips[label] || this.I18N[label];
 	},
 	
 	/**
@@ -3663,7 +3566,7 @@ HTMLArea.Plugin = HTMLArea.Base.extend({
 	 * @return	string		the url
 	 */
 	makeUrlFromModulePath : function(modulePath, parameters) {
-		return this.editor.popupURL(modulePath + "?" + RTEarea[this.editorNumber]["RTEtsConfigParams"] + parameters);
+		return this.editor.popupURL(modulePath + "?" + RTEarea[this.editorNumber]["RTEtsConfigParams"] + "&editorNo=" + this.editorNumber + "&sys_language_content=" + this.editorConfiguration.sys_language_content + (parameters?parameters:''));
 	},
 	
 	/**

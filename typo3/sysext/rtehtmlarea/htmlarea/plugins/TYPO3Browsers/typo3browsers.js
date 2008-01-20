@@ -32,7 +32,6 @@
 TYPO3Browsers = function(editor,args) {
 	this.editor = editor;
 	var cfg = this.editor.config;
-	cfg.btnList.InsertImage[1] = this.editor.imgURL("ed_image.gif", "TYPO3Browsers");
 	cfg.btnList.CreateLink[1] = this.editor.imgURL("ed_link.gif", "TYPO3Browsers");
 };
 
@@ -47,37 +46,6 @@ TYPO3Browsers._pluginInfo = {
 	sponsor		: "Fructifor Inc.",
 	sponsor_url 	: "http://www.fructifor.ca/",
 	license		: "GPL"
-};
-
-/*
- *  Insert Image TYPO3 RTE function.
- */
-HTMLArea.prototype.renderPopup_image = function() {
-	var editorNumber = this._editorNumber,
-		backreturn,
-		addParams = "?" + RTEarea[editorNumber]["RTEtsConfigParams"],
-		image = this.getParentElement();
-		
-	this._selectedImage = null;
-	if (image && image.tagName.toLowerCase() == "img") {
-		addParams = "?act=image" + RTEarea[editorNumber]["RTEtsConfigParams"];
-		this._selectedImage = image;
-	}
-	
-	this._popupDialog(RTEarea[0]["pathImageModule"] + addParams + "&editorNo=" + editorNumber + "&sys_language_content=" + RTEarea[editorNumber]["sys_language_content"], null, backreturn, 550, 350, null, "yes");
-	return false;
-};
-
-/*
- * Insert the Image.
- * This function is called from the typo3-image-popup.
- */
-HTMLArea.prototype.renderPopup_insertImage = function(image) {
-	this.focusEditor();
-	this.insertHTML(image);
-	this._selectedImage = null;
-	Dialog._modal.close();
-	this.updateToolbar();
 };
 
 /*
@@ -303,7 +271,7 @@ HTMLArea.prototype.nonStripBaseURL = function(url) {
 
 TYPO3Browsers.prototype.onGenerate = function() {
 	var editor = this.editor;
-	editor._insertImage = editor.renderPopup_image;
+	//editor._insertImage = editor.renderPopup_image;
 	editor._createLink = editor.renderPopup_link;
 	editor.stripBaseURL = editor.nonStripBaseURL;
 };

@@ -3,7 +3,7 @@
 *  Copyright notice
 *
 *  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
-*  (c) 2004-2006 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
+*  (c) 2004-2008 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -135,10 +135,13 @@ class tx_rtehtmlarea_image_folderTree extends t3lib_folderTree {
 class tx_rtehtmlarea_select_image extends browse_links {
 	var $extKey = 'rtehtmlarea';
 	var $content;
-	var $act;
 	var $allowedItems;
+	var $removedProperties = array();
+	var $defaultClass;
 	var $plainMaxWidth;
 	var $plainMaxHeight;
+	var $lockPlainWidth;
+	var $lockPlainHeight;
 	var $magicMaxWidth;
 	var $magicMaxHeight;
 	var $imgPath;
@@ -184,9 +187,28 @@ class tx_rtehtmlarea_select_image extends browse_links {
 		
 		if (is_array($this->thisConfig['buttons.']) && is_array($this->thisConfig['buttons.']['image.'])) {
 			$this->buttonConfig = $this->thisConfig['buttons.']['image.'];
+			if (is_array($this->buttonConfig['properties.'])) {
+				if ($this->buttonConfig['properties.']['removeItems']) {
+					$this->removedProperties = t3lib_div::trimExplode(',',$this->buttonConfig['properties.']['removeItems'],1);
+				}
+				if (is_array($this->buttonConfig['properties.']['class.']) && trim($this->buttonConfig['properties.']['class.']['default'])) {
+					$this->defaultClass = trim($this->buttonConfig['properties.']['class.']['default']);
+				}
+			}
+			
 		}
 		
-		$this->allowedItems = explode(',','magic,plain,dragdrop,image');
+		if (is_array($this->thisConfig['proc.']) && $this->thisConfig['proc.']['plainImageMode']) {
+			$plainImageMode = $this->thisConfig['proc.']['plainImageMode'];
+			$this->lockPlainWidth = ($plainImageMode == 'lockDimensions')?'true':'false';
+			$this->lockPlainHeight = ($this->lockPlainWidth || $plainImageMode == 'lockRatio' || ($plainImageMode == 'lockRatioWhenSmaller'))?'true':'false';
+		}
+		
+		$this->allowedItems = explode(',','magic,plain,image');
+		$clientInfo = t3lib_div::clientInfo();
+		if ($clientInfo['BROWSER'] !== 'opera') {
+			$this->allowedItems[] = 'dragdrop';
+		}
 		if (is_array($this->buttonConfig['options.']) && $this->buttonConfig['options.']['removeItems']) {
 			$this->allowedItems = array_diff($this->allowedItems,t3lib_div::trimExplode(',',$this->buttonConfig['options.']['removeItems'],1));
 		} else {
@@ -216,11 +238,10 @@ class tx_rtehtmlarea_select_image extends browse_links {
 			if (!$this->magicMaxHeight) $this->magicMaxHeight = 1000;
 		}
 		
-		if($this->thisConfig['classesImage']) {
+		if ($this->thisConfig['classesImage']) {
 			$classesImageArray = t3lib_div::trimExplode(',',$this->thisConfig['classesImage'],1);
 			$this->classesImageJSOptions = '<option value=""></option>';
-			reset($classesImageArray);
-			while(list(,$class)=each($classesImageArray)) {
+			foreach ($classesImageArray as $class) {
 				$this->classesImageJSOptions .= '<option value="' .$class . '">' . $class . '</option>';
 			}
 		}
@@ -298,32 +319,19 @@ class tx_rtehtmlarea_select_image extends browse_links {
 <head>
 	<title>Untitled</title>
 </head>
-<script language="javascript" type="text/javascript">
+<script type="text/javascript">
 /*<![CDATA[*/
-	var editor = window.opener.RTEarea[' . $this->editorNo . ']["editor"];
-	var HTMLArea = window.opener.HTMLArea;
-	function insertImage(file,width,height,origFile)	{
-		var styleWidth, styleHeight;
-		styleWidth = parseInt(width);
-		if (isNaN(styleWidth) || styleWidth == 0) {
-			styleWidth = "auto";
-		} else {
-			styleWidth += "px";
-		}
-		styleHeight = parseInt(height);
-		if (isNaN(styleHeight) || styleHeight == 0) {
-			styleHeight = "auto";
-		} else {
-			styleHeight += "px";
-		}
-		editor.renderPopup_insertImage(\'<img src="\'+file+\'" style="width: \'+styleWidth+\'; height: \'+styleHeight+\';"'.(($TYPO3_CONF_VARS['EXTCONF'][$this->extKey]['enableClickEnlarge'] && !(is_array($this->buttonConfig['clickEnlarge.']) && $this->buttonConfig['clickEnlarge.']['disabled']))?' clickenlargesrc="\'+origFile+\'" clickenlarge="0"':'').' />\');
+	var dialog = window.opener.HTMLArea.Dialog["TYPO3Image"];
+	var plugin = dialog.plugin;
+	function insertImage(file,width,height)	{
+		plugin.insertImage(\'<img src="\'+file+\'"' . ($this->defaultClass?(' class="'.$this->defaultClass.'"'):'') . ' width="\'+parseInt(width)+\'" height="\'+parseInt(height)+\'" />\');
 	}
 /*]]>*/
 </script>
 <body>
 <script type="text/javascript">
 /*<![CDATA[*/
-	insertImage(\''.$iurl.'\','.$imgI[0].','.$imgI[1].',\''.substr($imgInfo[3],strlen(PATH_site)).'\');
+	insertImage(\''.$iurl.'\','.$imgI[0].','.$imgI[1].');
 /*]]>*/
 </script>
 </body>
@@ -345,9 +353,10 @@ class tx_rtehtmlarea_select_image extends browse_links {
 		global $LANG,$BACK_PATH,$TYPO3_CONF_VARS;
 
 		$JScode='
-			var editor = window.opener.RTEarea[' . $this->editorNo . ']["editor"];
+			var dialog = window.opener.HTMLArea.Dialog["TYPO3Image"];
+			var plugin = dialog.plugin;
 			var HTMLArea = window.opener.HTMLArea;
-			function jumpToUrl(URL,anchor)	{	//
+			function jumpToUrl(URL,anchor)	{
 				var add_act = URL.indexOf("act=")==-1 ? "&act='.$this->act.'" : "";
 				var add_editorNo = URL.indexOf("editorNo=")==-1 ? "&editorNo='.$this->editorNo.'" : "";
 				var RTEtsConfigParams = "&RTEtsConfigParams='.rawurlencode(t3lib_div::_GP('RTEtsConfigParams')).'";
@@ -359,21 +368,8 @@ class tx_rtehtmlarea_select_image extends browse_links {
 				window.location.href = theLocation;
 				return false;
 			}
-			function insertImage(file,width,height,origFile)	{
-				var styleWidth, styleHeight;
-				styleWidth = parseInt(width);
-				if (isNaN(styleWidth) || styleWidth == 0) {
-					styleWidth = "auto";
-				} else {
-					styleWidth += "px";
-				}
-				styleHeight = parseInt(height);
-				if (isNaN(styleHeight) || styleHeight == 0) {
-					styleHeight = "auto";
-				} else {
-					styleHeight += "px";
-				}
-				editor.renderPopup_insertImage(\'<img src="\'+file+\'" style="width: \'+styleWidth+\'; height: \'+styleHeight+\';"'.(($TYPO3_CONF_VARS['EXTCONF'][$this->extKey]['enableClickEnlarge'] && !(is_array($this->buttonConfig['clickEnlarge.']) && $this->buttonConfig['clickEnlarge.']['disabled']))?' clickenlargesrc="\'+origFile+\'" clickenlarge="0"':'').' />\');
+			function insertImage(file,width,height)	{
+				plugin.insertImage(\'<img src="\'+file+\'"' . ($this->defaultClass?(' class="'.$this->defaultClass.'"'):'') . ' width="\'+parseInt(width)+\'" height="\'+parseInt(height)+\'" />\');
 			}
 			function launchView(url) {
 				var thePreviewWindow="";
@@ -383,168 +379,241 @@ class tx_rtehtmlarea_select_image extends browse_links {
 				}
 			}
 			function getCurrentImageRef() {
-				if (editor._selectedImage) {
-					return editor._selectedImage;
+				if (plugin.image) {
+					return plugin.image;
 				} else {
 					return null;
 				}
 			}
 			function printCurrentImageOptions() {
 				var classesImage = ' . ($this->thisConfig['classesImage']?'true':'false') . ';
-				if(classesImage) var styleSelector=\'<select name="iClass" style="width:140px;">' . $this->classesImageJSOptions  . '</select>\';
-				var floatSelector=\'<select name="iFloat"><option value="">' . $LANG->getLL('notSet') . '</option><option value="none">' . $LANG->getLL('nonFloating') . '</option><option value="left">' . $LANG->getLL('left') . '</option><option value="right">' . $LANG->getLL('right') . '</option></select>\';
+				if (classesImage) var styleSelector=\'<select id="iClass" name="iClass" style="width:140px;">' . $this->classesImageJSOptions  . '</select>\';
+				var floatSelector=\'<select id="iFloat" name="iFloat"><option value="">' . $LANG->getLL('notSet') . '</option><option value="none">' . $LANG->getLL('nonFloating') . '</option><option value="left">' . $LANG->getLL('left') . '</option><option value="right">' . $LANG->getLL('right') . '</option></select>\';
 				var bgColor=\' class="bgColor4"\';
 				var sz="";
 				sz+=\'<table border=0 cellpadding=1 cellspacing=1><form action="" name="imageData">\';
+				'.(in_array('class', $this->removedProperties)?'':'
 				if(classesImage) {
-					sz+=\'<tr><td\'+bgColor+\'>'.$LANG->getLL('class').': </td><td>\'+styleSelector+\'</td></tr>\';
-				}
-				sz+=\'<tr><td\'+bgColor+\'>'.$LANG->getLL('width').': </td><td><input type="text" name="iWidth" value=""'.$GLOBALS['TBE_TEMPLATE']->formWidth(4).' /></td></tr>\';
-				sz+=\'<tr><td\'+bgColor+\'>'.$LANG->getLL('height').': </td><td><input type="text" name="iHeight" value=""'.$GLOBALS['TBE_TEMPLATE']->formWidth(4).' /></td></tr>\';
-				sz+=\'<tr><td\'+bgColor+\'>'.$LANG->getLL('border').': </td><td><input type="checkbox" name="iBorder" value="1" /></td></tr>\';
-				sz+=\'<tr><td\'+bgColor+\'>'.$LANG->getLL('float').': </td><td>\'+floatSelector+\'</td></tr>\';
-				sz+=\'<tr><td\'+bgColor+\'>'.$LANG->getLL('margin_lr').': </td><td><input type="text" name="iHspace" value=""'.$GLOBALS['TBE_TEMPLATE']->formWidth(4).'></td></tr>\';
-				sz+=\'<tr><td\'+bgColor+\'>'.$LANG->getLL('margin_tb').': </td><td><input type="text" name="iVspace" value=""'.$GLOBALS['TBE_TEMPLATE']->formWidth(4).' /></td></tr>\';
-				sz+=\'<tr><td\'+bgColor+\'>'.$LANG->getLL('title').': </td><td><input type="text" name="iTitle"'.$GLOBALS['TBE_TEMPLATE']->formWidth(20).' /></td></tr>\';
-				sz+=\'<tr><td\'+bgColor+\'>'.$LANG->getLL('alt').': </td><td><input type="text" name="iAlt"'.$GLOBALS['TBE_TEMPLATE']->formWidth(20).' /></td></tr>\';
-				'.(($TYPO3_CONF_VARS['EXTCONF'][$this->extKey]['enableClickEnlarge'] && !(is_array($this->buttonConfig['clickEnlarge.']) && $this->buttonConfig['clickEnlarge.']['disabled']))?'if (selectedImageRef && selectedImageRef.getAttribute("clickenlargesrc")) sz+=\'<tr><td\'+bgColor+\'><label for="iClickEnlarge">'.$LANG->sL('LLL:EXT:cms/locallang_ttc.php:image_zoom',1).' </label></td><td><input type="checkbox" name="iClickEnlarge" id="iClickEnlarge" value="1" /></td></tr>\';':'').'				sz+=\'<tr><td><input type="submit" value="'.$LANG->getLL('update').'" onClick="return setImageProperties();"></td></tr>\';
+					sz+=\'<tr><td\'+bgColor+\'><label for="iClass">'.$LANG->getLL('class').': </label></td><td>\'+styleSelector+\'</td></tr>\';
+				}')
+				.(in_array('width', $this->removedProperties)?'':'
+				if (!(selectedImageRef && selectedImageRef.src.indexOf("RTEmagic") == -1 && '. $this->lockPlainWidth .')) {
+					sz+=\'<tr><td\'+bgColor+\'><label for="iWidth">'.$LANG->getLL('width').': </label></td><td><input type="text" id="iWidth" name="iWidth" value=""'.$GLOBALS['TBE_TEMPLATE']->formWidth(4).' /></td></tr>\';
+				}')
+				.(in_array('height', $this->removedProperties)?'':'
+				if (!(selectedImageRef && selectedImageRef.src.indexOf("RTEmagic") == -1 && '. $this->lockPlainHeight .')) {
+					sz+=\'<tr><td\'+bgColor+\'><label for="iHeight">'.$LANG->getLL('height').': </label></td><td><input type="text" id="iHeight" name="iHeight" value=""'.$GLOBALS['TBE_TEMPLATE']->formWidth(4).' /></td></tr>\';
+				}')
+				.(in_array('border', $this->removedProperties)?'':'
+				sz+=\'<tr><td\'+bgColor+\'><label for="iBorder">'.$LANG->getLL('border').': </label></td><td><input type="checkbox" id="iBorder" name="iBorder" value="1" /></td></tr>\';')
+				.(in_array('float', $this->removedProperties)?'':'
+				sz+=\'<tr><td\'+bgColor+\'><label for="iFloat">'.$LANG->getLL('float').': </label></td><td>\'+floatSelector+\'</td></tr>\';')
+				.(in_array('paddingTop', $this->removedProperties)?'':'
+				sz+=\'<tr><td\'+bgColor+\'><label for="iPaddingTop">'.$LANG->getLL('padding_top').': </label></td><td><input type="text" id="iPaddingTop" name="iPaddingTop" value=""'.$GLOBALS['TBE_TEMPLATE']->formWidth(4).'></td></tr>\';')
+				.(in_array('paddingRight', $this->removedProperties)?'':'
+				sz+=\'<tr><td\'+bgColor+\'><label for="iPaddingRight">'.$LANG->getLL('padding_right').': </label></td><td><input type="text" id="iPaddingRight" name="iPaddingRight" value=""'.$GLOBALS['TBE_TEMPLATE']->formWidth(4).' /></td></tr>\';')
+				.(in_array('paddingBottom', $this->removedProperties)?'':'
+				sz+=\'<tr><td\'+bgColor+\'><label for="iPaddingBottom">'.$LANG->getLL('padding_bottom').': </label></td><td><input type="text" id="iPaddingBottom" name="iPaddingBottom" value=""'.$GLOBALS['TBE_TEMPLATE']->formWidth(4).' /></td></tr>\';')
+				.(in_array('paddingLeft', $this->removedProperties)?'':'
+				sz+=\'<tr><td\'+bgColor+\'><label for="iPaddingLeft">'.$LANG->getLL('padding_left').': </label></td><td><input type="text" id="iPaddingLeft" name="iPaddingLeft" value=""'.$GLOBALS['TBE_TEMPLATE']->formWidth(4).' /></td></tr>\';')
+				.(in_array('title', $this->removedProperties)?'':'
+				sz+=\'<tr><td\'+bgColor+\'><label for="iTitle">'.$LANG->getLL('title').': </label></td><td><input type="text" id="iTitle" name="iTitle"'.$GLOBALS['TBE_TEMPLATE']->formWidth(20).' /></td></tr>\';')
+				.(in_array('alt', $this->removedProperties)?'':'
+				sz+=\'<tr><td\'+bgColor+\'><label for="iAlt">'.$LANG->getLL('alt').': </label></td><td><input type="text" id="iAlt" name="iAlt"'.$GLOBALS['TBE_TEMPLATE']->formWidth(20).' /></td></tr>\';')
+				.((!$TYPO3_CONF_VARS['EXTCONF'][$this->extKey]['enableClickEnlarge'] || in_array('clickenlarge', $this->removedProperties))?'':'
+				sz+=\'<tr><td\'+bgColor+\'><label for="iClickEnlarge">'.$LANG->sL('LLL:EXT:cms/locallang_ttc.php:image_zoom',1).' </label></td><td><input type="checkbox" name="iClickEnlarge" id="iClickEnlarge" value="1" /></td></tr>\';').'
+				sz+=\'<tr><td><input type="submit" value="'.$LANG->getLL('update').'" onClick="return setImageProperties();"></td></tr>\';
 				sz+=\'</form></table>\';
 				return sz;
 			}
 			function setImageProperties() {
 				var classesImage = ' . ($this->thisConfig['classesImage']?'true':'false') . ';
 				if (selectedImageRef)	{
-					if(document.imageData.iWidth.value && document.imageData.iWidth.value != "auto") {
-						selectedImageRef.style.width = document.imageData.iWidth.value + "px";
-					} else {
-						selectedImageRef.style.width = "auto";
-					}
-					selectedImageRef.removeAttribute("width");
-					if(document.imageData.iHeight.value && document.imageData.iHeight.value != "auto") {
-						selectedImageRef.style.height=document.imageData.iHeight.value + "px";
-					} else {
-						selectedImageRef.style.height = "auto";
-					}
-					selectedImageRef.removeAttribute("height");
-
-					selectedImageRef.style.paddingTop = "0px";
-					selectedImageRef.style.paddingBottom = "0px";
-					selectedImageRef.style.paddingRight = "0px";
-					selectedImageRef.style.paddingLeft = "0px";
-					selectedImageRef.style.padding = "";  // this statement ignored by Mozilla 1.3.1
-					if(document.imageData.iVspace.value != "" && !isNaN(parseInt(document.imageData.iVspace.value))) {
-						selectedImageRef.style.paddingTop = parseInt(document.imageData.iVspace.value) + "px";
-						selectedImageRef.style.paddingBottom = selectedImageRef.style.paddingTop;
-					}
-					if(document.imageData.iHspace.value != "" && !isNaN(parseInt(document.imageData.iHspace.value))) {
-						selectedImageRef.style.paddingRight = parseInt(document.imageData.iHspace.value) + "px";
-						selectedImageRef.style.paddingLeft = selectedImageRef.style.paddingRight;
-					}
-					selectedImageRef.removeAttribute("vspace");
-					selectedImageRef.removeAttribute("hspace");
-
-					selectedImageRef.title=document.imageData.iTitle.value;
-					selectedImageRef.alt=document.imageData.iAlt.value;
-
-					selectedImageRef.style.borderStyle = "none";
-					selectedImageRef.style.borderWidth = "0px";
-					selectedImageRef.style.border = "";  // this statement ignored by Mozilla 1.3.1
-					if(document.imageData.iBorder.checked) {
-						selectedImageRef.style.borderStyle = "solid";
-						selectedImageRef.style.borderWidth = "thin";
-					}
-					selectedImageRef.removeAttribute("border");
-
-					var iFloat = document.imageData.iFloat.options[document.imageData.iFloat.selectedIndex].value;
-					if (iFloat || selectedImageRef.style.cssFloat || selectedImageRef.style.styleFloat)	{
-						if(document.all) {
-							selectedImageRef.style.styleFloat = iFloat;
+					if (document.imageData.iWidth) {
+						if (document.imageData.iWidth.value && parseInt(document.imageData.iWidth.value)) {
+							selectedImageRef.style.width = "";
+							selectedImageRef.width = parseInt(document.imageData.iWidth.value);
 						} else {
-							selectedImageRef.style.cssFloat = iFloat;
+							selectedImageRef.style.width = "auto";
+						}
+					}
+					if (document.imageData.iHeight) {
+						if (document.imageData.iHeight.value && parseInt(document.imageData.iHeight.value)) {
+							selectedImageRef.style.height = "";
+							selectedImageRef.height = parseInt(document.imageData.iHeight.value);
+						} else {
+							selectedImageRef.style.height = "auto";
+						}
+					}
+					if (document.imageData.iPaddingTop) {
+						if (document.imageData.iPaddingTop.value != "" && !isNaN(parseInt(document.imageData.iPaddingTop.value))) {
+							selectedImageRef.style.paddingTop = parseInt(document.imageData.iPaddingTop.value) + "px";
+						} else {
+							selectedImageRef.style.paddingTop = "";
+						}
+					}
+					if (document.imageData.iPaddingRight) {
+						if (document.imageData.iPaddingRight.value != "" && !isNaN(parseInt(document.imageData.iPaddingRight.value))) {
+							selectedImageRef.style.paddingRight = parseInt(document.imageData.iPaddingRight.value) + "px";
+						} else {
+							selectedImageRef.style.paddingRight = "";
+						}
+					}
+					if (document.imageData.iPaddingBottom) {
+						if (document.imageData.iPaddingBottom.value != "" && !isNaN(parseInt(document.imageData.iPaddingBottom.value))) {
+							selectedImageRef.style.paddingBottom = parseInt(document.imageData.iPaddingBottom.value) + "px";
+						} else {
+							selectedImageRef.style.paddingBottom = "";
+						}
+					}
+					if (document.imageData.iPaddingLeft) {
+						if (document.imageData.iPaddingLeft.value != "" && !isNaN(parseInt(document.imageData.iPaddingLeft.value))) {
+							selectedImageRef.style.paddingLeft = parseInt(document.imageData.iPaddingLeft.value) + "px";
+						} else {
+							selectedImageRef.style.paddingLeft = "";
+						}
+					}
+					if (document.imageData.iTitle) {
+						selectedImageRef.title=document.imageData.iTitle.value;
+					}
+					if (document.imageData.iAlt) {
+						selectedImageRef.alt=document.imageData.iAlt.value;
+					}
+					
+					if (document.imageData.iBorder) {
+						selectedImageRef.style.borderStyle = "";
+						selectedImageRef.style.borderWidth = "";
+						selectedImageRef.style.border = "";  // this statement ignored by Mozilla 1.3.1
+						selectedImageRef.style.borderTopStyle = "";
+						selectedImageRef.style.borderRightStyle = "";
+						selectedImageRef.style.borderBottomStyle = "";
+						selectedImageRef.style.borderLeftStyle = "";
+						selectedImageRef.style.borderTopWidth = "";
+						selectedImageRef.style.borderRightWidth = "";
+						selectedImageRef.style.borderBottomWidth = "";
+						selectedImageRef.style.borderLeftWidth = "";
+						if(document.imageData.iBorder.checked) {
+							selectedImageRef.style.borderStyle = "solid";
+							selectedImageRef.style.borderWidth = "thin";
+						}
+						selectedImageRef.removeAttribute("border");
+					}
+					
+					if (document.imageData.iFloat) {
+						var iFloat = document.imageData.iFloat.options[document.imageData.iFloat.selectedIndex].value;
+						if (iFloat || selectedImageRef.style.cssFloat || selectedImageRef.style.styleFloat) {
+							if (document.all) {
+								selectedImageRef.style.styleFloat = (iFloat != "none") ? iFloat : "";
+							} else {
+								selectedImageRef.style.cssFloat = (iFloat != "none") ? iFloat : "";
+							}
 						}
 					}
 
-					if(classesImage) {
+					if (classesImage && document.imageData.iClass) {
 						var iClass = document.imageData.iClass.options[document.imageData.iClass.selectedIndex].value;
-						if (iClass || (selectedImageRef.attributes["class"] && selectedImageRef.attributes["class"].value))	{
+						if (iClass || (selectedImageRef.attributes["class"] && selectedImageRef.attributes["class"].value)) {
 							selectedImageRef.className = iClass;
+						} else {
+							selectedImageRef.className = "";
 						}
 					}
 					
-					'.(($TYPO3_CONF_VARS['EXTCONF'][$this->extKey]['enableClickEnlarge'] && !(is_array($this->buttonConfig['clickEnlarge.']) && $this->buttonConfig['clickEnlarge.']['disabled']))?'
-					if (document.imageData.iClickEnlarge && document.imageData.iClickEnlarge.checked) selectedImageRef.setAttribute("clickenlarge","1");
-						else selectedImageRef.setAttribute("clickenlarge","0");':'').'
-					
-					HTMLArea.edHidePopup();
+					if (document.imageData.iClickEnlarge) {
+						if (document.imageData.iClickEnlarge.checked) {
+							selectedImageRef.setAttribute("clickenlarge","1");
+						} else {
+							selectedImageRef.setAttribute("clickenlarge","0");
+						}
+					}
+					dialog.close();
 				}
 				return false;
 			}
 			function insertImagePropertiesInForm()	{
 				var classesImage = ' . ($this->thisConfig['classesImage']?'true':'false') . ';
 				if (selectedImageRef)	{
-					var styleWidth, styleHeight, paddingTop, paddingRight;
-					styleWidth = selectedImageRef.style.width ? selectedImageRef.style.width : selectedImageRef.width;
-					styleWidth = parseInt(styleWidth);
-					if (isNaN(styleWidth) || styleWidth == 0) { styleWidth = "auto"; }
-					document.imageData.iWidth.value = styleWidth;
-					styleHeight = selectedImageRef.style.height ? selectedImageRef.style.height : selectedImageRef.height;
-					styleHeight = parseInt(styleHeight);
-					if (isNaN(styleHeight) || styleHeight == 0) { styleHeight = "auto"; }
-					document.imageData.iHeight.value = styleHeight;
-
-					paddingTop = selectedImageRef.style.paddingTop ? selectedImageRef.style.paddingTop : selectedImageRef.vspace;
-					paddingTop = parseInt(paddingTop);
-					if (isNaN(paddingTop) || paddingTop < 0) { paddingTop = ""; }
-					document.imageData.iVspace.value = paddingTop;
-					paddingRight = selectedImageRef.style.paddingRight ? selectedImageRef.style.paddingRight : selectedImageRef.hspace;
-					paddingRight = parseInt(paddingRight);
-					if (isNaN(paddingRight) || paddingRight < 0) { paddingRight = ""; }
-					document.imageData.iHspace.value = paddingRight;
-
-					document.imageData.iTitle.value = selectedImageRef.title;
-					document.imageData.iAlt.value = selectedImageRef.alt;
-
-					if((selectedImageRef.style.borderStyle && selectedImageRef.style.borderStyle != "none" && selectedImageRef.style.borderStyle != "none none none none") || selectedImageRef.border) {
-						document.imageData.iBorder.checked = 1;
+					var styleWidth, styleHeight, padding;
+					if (document.imageData.iWidth) {
+						styleWidth = selectedImageRef.style.width ? selectedImageRef.style.width : selectedImageRef.width;
+						styleWidth = parseInt(styleWidth);
+						if (isNaN(styleWidth) || styleWidth == 0) { styleWidth = "auto"; }
+						document.imageData.iWidth.value = styleWidth;
 					}
-
-					var fObj=document.imageData.iFloat;
-					var value = (selectedImageRef.style.cssFloat ? selectedImageRef.style.cssFloat : selectedImageRef.style.styleFloat);
-					var l=fObj.length;
-					for (a=0;a<l;a++)	{
-						if (fObj.options[a].value == value)	{
-							fObj.selectedIndex = a;
+					if (document.imageData.iHeight) {
+						styleHeight = selectedImageRef.style.height ? selectedImageRef.style.height : selectedImageRef.height;
+						styleHeight = parseInt(styleHeight);
+						if (isNaN(styleHeight) || styleHeight == 0) { styleHeight = "auto"; }
+						document.imageData.iHeight.value = styleHeight;
+					}
+					if (document.imageData.iPaddingTop) {
+						var padding = selectedImageRef.style.paddingTop ? selectedImageRef.style.paddingTop : selectedImageRef.vspace;
+						var padding = parseInt(padding);
+						if (isNaN(padding) || padding <= 0) { padding = ""; }
+						document.imageData.iPaddingTop.value = padding;
+					}
+					if (document.imageData.iPaddingRight) {
+						padding = selectedImageRef.style.paddingRight ? selectedImageRef.style.paddingRight : selectedImageRef.hspace;
+						var padding = parseInt(padding);
+						if (isNaN(padding) || padding <= 0) { padding = ""; }
+						document.imageData.iPaddingRight.value = padding;
+					}
+					if (document.imageData.iPaddingBottom) {
+						var padding = selectedImageRef.style.paddingBottom ? selectedImageRef.style.paddingBottom : selectedImageRef.vspace;
+						var padding = parseInt(padding);
+						if (isNaN(padding) || padding <= 0) { padding = ""; }
+						document.imageData.iPaddingBottom.value = padding;
+					}
+					if (document.imageData.iPaddingLeft) {
+						var padding = selectedImageRef.style.paddingLeft ? selectedImageRef.style.paddingLeft : selectedImageRef.hspace;
+						var padding = parseInt(padding);
+						if (isNaN(padding) || padding <= 0) { padding = ""; }
+						document.imageData.iPaddingLeft.value = padding;
+					}
+					if (document.imageData.iTitle) {
+						document.imageData.iTitle.value = selectedImageRef.title;
+					}
+					if (document.imageData.iAlt) {
+						document.imageData.iAlt.value = selectedImageRef.alt;
+					}
+					if (document.imageData.iBorder) {
+						if((selectedImageRef.style.borderStyle && selectedImageRef.style.borderStyle != "none" && selectedImageRef.style.borderStyle != "none none none none") || selectedImageRef.border) {
+							document.imageData.iBorder.checked = 1;
+						}
+					}
+					if (document.imageData.iFloat) {
+						var fObj=document.imageData.iFloat;
+						var value = (selectedImageRef.style.cssFloat ? selectedImageRef.style.cssFloat : selectedImageRef.style.styleFloat);
+						var l=fObj.length;
+						for (var a=0;a<l;a++)	{
+							if (fObj.options[a].value == value) {
+								fObj.selectedIndex = a;
+							}
 						}
 					}
 
-					if(classesImage) {
+					if (classesImage && document.imageData.iClass) {
 						var fObj=document.imageData.iClass;
 						var value=selectedImageRef.className;
 						var l=fObj.length;
-						for (a=0;a<l;a++)	{
+						for (var a=0;a < l; a++)	{
 							if (fObj.options[a].value == value)	{
 								fObj.selectedIndex = a;
 							}
 						}
 					}
-					
-					'.(($TYPO3_CONF_VARS['EXTCONF'][$this->extKey]['enableClickEnlarge'] && !(is_array($this->buttonConfig['clickEnlarge.']) && $this->buttonConfig['clickEnlarge.']['disabled']))?'if (selectedImageRef.getAttribute("clickenlargesrc")) {
-						if (selectedImageRef.getAttribute("clickenlarge") == "1") document.imageData.iClickEnlarge.checked = 1;
-							else document.imageData.iClickEnlarge.removeAttribute("checked");
-					}':'').'
+					if (document.imageData.iClickEnlarge) {
+						if (selectedImageRef.getAttribute("clickenlarge") == "1") {
+							document.imageData.iClickEnlarge.checked = 1;
+						} else {
+							document.imageData.iClickEnlarge.checked = 0;
+						}
+					}
+					return false;
 				}
-				return false;
 			}
 
-			function openDragDrop()	{
-				var url = "' . $BACK_PATH . t3lib_extMgm::extRelPath($this->extKey) . 'mod3/browse_links.php?mode=filedrag&editorNo='.$this->editorNo.'&bparams=|||"+escape("gif,jpg,jpeg,png");
-				window.opener.browserWin = window.open(url,"Typo3WinBrowser","height=350,width=600,status=0,menubar=0,resizable=1,scrollbars=1");
-				HTMLArea.edHidePopup();
-			}
-
-			var selectedImageRef = getCurrentImageRef();	// Setting this to a reference to the image object.
-
-			'.($this->act=='dragdrop'?'openDragDrop();':'');
+			var selectedImageRef = getCurrentImageRef();';	// Setting this to a reference to the image object.
 
 			// Finally, add the accumulated JavaScript to the template object:
 		$this->doc->JScode = $this->doc->wrapScriptTags($JScode);
@@ -614,7 +683,7 @@ class tx_rtehtmlarea_select_image extends browse_links {
 			$menuDef['mail']['isActive'] = $this->act=='dragdrop';
 			$menuDef['mail']['label'] = $LANG->getLL('dragDropImage',1);
 			$menuDef['mail']['url'] = '#';
-			$menuDef['mail']['addParams'] = 'onClick="openDragDrop();return false;"';
+			$menuDef['mail']['addParams'] = 'onClick="jumpToUrl(\'?act=dragdrop&editorNo='.$this->editorNo.'&bparams=|||\'+escape(\'gif,jpg,jpeg,png\'));return false;"';
 		}
 		$this->content .= $this->doc->getTabMenuRaw($menuDef);
 		
@@ -645,7 +714,7 @@ class tx_rtehtmlarea_select_image extends browse_links {
 			}
 
 				// Getting flag for showing/not showing thumbnails:
-			$noThumbs = $BE_USER->getTSConfigVal('options.noThumbsInRTEimageSelect');
+			$noThumbs = $BE_USER->getTSConfigVal('options.noThumbsInRTEimageSelect') || ($this->act == 'dragdrop');
 
 			if (!$noThumbs)	{
 					// MENU-ITEMS, fetching the setting for thumbnails from File>List module:
@@ -658,11 +727,23 @@ class tx_rtehtmlarea_select_image extends browse_links {
 				$thumbNailCheck='';
 			}
 
-				// File-folders:
-			$foldertree = t3lib_div::makeInstance('tx_rtehtmlarea_image_folderTree');
-			$tree=$foldertree->getBrowsableTree();
+				// Create folder tree:
+			if ($this->act == 'dragdrop') {
+				$foldertree = t3lib_div::makeInstance('TBE_FolderTree');
+				$foldertree->thisScript=$this->thisScript;
+				$foldertree->ext_noTempRecyclerDirs = true;
+			} else {
+				$foldertree = t3lib_div::makeInstance('tx_rtehtmlarea_image_folderTree');
+			}
+			$tree = $foldertree->getBrowsableTree();
 			list(,,$specUid) = explode('_',t3lib_div::_GP('PM'));
-			$files = $this->expandFolder($foldertree->specUIDmap[$specUid],$this->act=='plain',$noThumbs?$noThumbs:!$_MOD_SETTINGS['displayThumbs']);
+			if ($this->act == 'dragdrop') {
+				$pArr = explode('|',$this->bparams);
+				$allowedTablesOrFileTypes = $pArr[3];
+				$files = $this->TBE_dragNDrop($foldertree->specUIDmap[$specUid],$pArr[3]);
+			} else {
+				$files = $this->expandFolder($foldertree->specUIDmap[$specUid],$this->act=='plain',$noThumbs?$noThumbs:!$_MOD_SETTINGS['displayThumbs']);
+			}
 			
 			$this->content.= '<table border=0 cellpadding=0 cellspacing=0>
 			<tr>
@@ -740,7 +821,7 @@ class tx_rtehtmlarea_select_image extends browse_links {
 					if (!$plainFlag)	{
 						$ATag = '<a href="#" onclick="return jumpToUrl(\'?editorNo='.$this->editorNo.'&insertMagicImage='.rawurlencode($filepath).'\');">';
 					} else {
-						$ATag = '<a href="#" onclick="return insertImage(\''.$iurl.'\','.$imgInfo[0].','.$imgInfo[1].',\''.$origFile.'\');">';
+						$ATag = '<a href="#" onclick="return insertImage(\''.$iurl.'\','.$imgInfo[0].','.$imgInfo[1].');">';
 					}
 					$ATag_e='</a>';
 					if ($plainFlag && (($imgInfo[0] > $this->plainMaxWidth) || ($imgInfo[1] > $this->plainMaxHeight)))	{
@@ -864,7 +945,119 @@ class tx_rtehtmlarea_select_image extends browse_links {
 
 		return $code;
 	}
+	
+	/**
+	 * For RTE: This displays all IMAGES (gif,png,jpg) (from extensionList) from folder. Thumbnails are shown for images.
+	 * This listing is of images located in the web-accessible paths ONLY - the listing is for drag-n-drop use in the RTE
+	 *
+	 * @param	string		The folder path to expand
+	 * @param	string		List of fileextensions to show
+	 * @return	string		HTML output
+	 */
+	function TBE_dragNDrop($expandFolder=0,$extensionList='')	{
+		global $BACK_PATH;
 
+		$expandFolder = $expandFolder ? $expandFolder : $this->expandFolder;
+		$out='';
+		if ($expandFolder && $this->checkFolder($expandFolder))	{
+			if ($this->isWebFolder($expandFolder))	{
+
+					// Read files from directory:
+				$files = t3lib_div::getFilesInDir($expandFolder,$extensionList,1,1);	// $extensionList="",$prependPath=0,$order='')
+				if (is_array($files))	{
+					$out.=$this->barheader(sprintf($GLOBALS['LANG']->getLL('files').' (%s):',count($files)));
+
+					$titleLen=intval($GLOBALS['BE_USER']->uc['titleLen']);
+					$picon='<img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/i/_icon_webfolders.gif','width="18" height="16"').' alt="" />';
+					$picon.=htmlspecialchars(t3lib_div::fixed_lgd_cs(basename($expandFolder),$titleLen));
+					$out.=$picon.'<br />';
+
+						// Init row-array:
+					$lines=array();
+
+						// Add "drag-n-drop" message:
+					$lines[]='
+						<tr>
+							<td colspan="2">'.$this->getMsgBox($GLOBALS['LANG']->getLL('findDragDrop')).'</td>
+						</tr>';
+
+		 				// Fraverse files:
+					while(list(,$filepath)=each($files))	{
+						$fI = pathinfo($filepath);
+
+							// URL of image:
+						$iurl = $this->siteURL.t3lib_div::rawurlencodeFP(substr($filepath,strlen(PATH_site)));
+
+							// Show only web-images
+						if (t3lib_div::inList('gif,jpeg,jpg,png',strtolower($fI['extension'])))	{
+							$imgInfo = @getimagesize($filepath);
+							$pDim = $imgInfo[0].'x'.$imgInfo[1].' pixels';
+
+							$ficon = t3lib_BEfunc::getFileIcon(strtolower($fI['extension']));
+							$size=' ('.t3lib_div::formatSize(filesize($filepath)).'bytes'.($pDim?', '.$pDim:'').')';
+							$icon = '<img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/fileicons/'.$ficon,'width="18" height="16"').' class="absmiddle" title="'.htmlspecialchars($fI['basename'].$size).'" alt="" />';
+							$filenameAndIcon=$icon.htmlspecialchars(t3lib_div::fixed_lgd_cs(basename($filepath),$titleLen));
+
+							if (t3lib_div::_GP('noLimit'))	{
+								$maxW=10000;
+								$maxH=10000;
+							} else {
+								$maxW=380;
+								$maxH=500;
+							}
+							$IW = $imgInfo[0];
+							$IH = $imgInfo[1];
+							if ($IW>$maxW)	{
+								$IH=ceil($IH/$IW*$maxW);
+								$IW=$maxW;
+							}
+							if ($IH>$maxH)	{
+								$IW=ceil($IW/$IH*$maxH);
+								$IH=$maxH;
+							}
+
+								// Make row:
+							$lines[]='
+								<tr class="bgColor4">
+									<td nowrap="nowrap">'.$filenameAndIcon.'&nbsp;</td>
+									<td nowrap="nowrap">'.
+									($imgInfo[0]!=$IW ? '<a href="'.htmlspecialchars(t3lib_div::linkThisScript(array('noLimit'=>'1'))).'">'.
+														'<img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/icon_warning2.gif','width="18" height="16"').' title="'.$GLOBALS['LANG']->getLL('clickToRedrawFullSize',1).'" alt="" />'.
+														'</a>':'').
+									$pDim.'&nbsp;</td>
+								</tr>';
+								// Remove hardcoded border="1"
+								// Add default class for images
+							$lines[]='
+								<tr>
+									<td colspan="2"><img src="'.$iurl.'" width="'.$IW.'" height="'.$IH.'" alt=""' . ($this->defaultClass?(' class="'.$this->defaultClass.'"'):''). ' /></td>
+								</tr>';
+							$lines[]='
+								<tr>
+									<td colspan="2"><img src="clear.gif" width="1" height="3" alt="" /></td>
+								</tr>';
+						}
+					}
+
+						// Finally, wrap all rows in a table tag:
+					$out.='
+
+
+			<!--
+				File listing / Drag-n-drop
+			-->
+						<table border="0" cellpadding="0" cellspacing="1" id="typo3-dragBox">
+							'.implode('',$lines).'
+						</table>';
+				}
+			} else {
+					// Print this warning if the folder is NOT a web folder:
+				$out.=$this->barheader($GLOBALS['LANG']->getLL('files'));
+				$out.=$this->getMsgBox($GLOBALS['LANG']->getLL('noWebFolder'),'icon_warning2');
+			}
+		}
+		return $out;
+	}
 
 }
 

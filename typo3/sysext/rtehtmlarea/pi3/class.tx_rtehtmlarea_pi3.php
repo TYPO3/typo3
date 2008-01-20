@@ -61,10 +61,18 @@ class tx_rtehtmlarea_pi3 extends tslib_pibase {
 		global $TYPO3_CONF_VARS;
 		
 		$clickenlarge = isset($this->cObj->parameters['clickenlarge']) ? $this->cObj->parameters['clickenlarge'] : 0;
-		$file = isset($this->cObj->parameters['clickenlargesrc']) ? $this->cObj->parameters['clickenlargesrc'] : '';
+		$path = $this->cObj->parameters['src'];
+		$pathPre = $TYPO3_CONF_VARS['BE']['RTE_imageStorageDir'].'RTEmagicC_';
+		if (t3lib_div::isFirstPartOfStr($path,$pathPre)) {
+				// Find original file:
+			$pI=pathinfo(substr($path,strlen($pathPre)));
+			$filename = substr($pI['basename'],0,-strlen('.'.$pI['extension']));
+			$file = $TYPO3_CONF_VARS['BE']['RTE_imageStorageDir'].'RTEmagicP_'.$filename;
+		} else {
+			$file = $this->cObj->parameters['src'];
+		}
 		
 		unset($this->cObj->parameters['clickenlarge']);
-		unset($this->cObj->parameters['clickenlargesrc']);
 		unset($this->cObj->parameters['allParams']);
 		$content = '<img '. t3lib_div::implodeAttributes($this->cObj->parameters, TRUE, TRUE) . ' />';
 		

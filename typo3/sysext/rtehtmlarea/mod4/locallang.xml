@@ -18,6 +18,10 @@
 			<label index="border">Border</label>
 			<label index="margin_tb">Margin top/bottom</label>
 			<label index="margin_lr">Margin left/right</label>
+			<label index="padding_top">Top padding</label>
+			<label index="padding_right">Right padding</label>
+			<label index="padding_bottom">Bottom padding</label>
+			<label index="padding_left">Left padding</label>
 			<label index="float">Float</label>
 			<label index="notSet">Not set</label>
 			<label index="nonFloating">Non-floating</label>

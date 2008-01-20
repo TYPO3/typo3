@@ -103,7 +103,6 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 		'line'			=> 'InsertHorizontalRule',
 		'link'			=> 'CreateLink',
 		'table'			=> 'InsertTable',
-		'image'			=> 'InsertImage',
 		'cut'			=> 'Cut',
 		'copy'			=> 'Copy',
 		'paste'			=> 'Paste',
@@ -914,7 +913,6 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 		' . '/*<![CDATA[*/') . ($this->is_FE() ? '' : '
 			RTEarea[0]["RTEtsConfigParams"] = "&RTEtsConfigParams=' . rawurlencode($this->RTEtsConfigParams()) . '";
 			RTEarea[0]["pathLinkModule"] = "../../mod3/browse_links.php";
-			RTEarea[0]["pathImageModule"] = "../../mod4/select_image.php";
 			RTEarea[0]["pathUserModule"] = "../../mod5/user.php";
 			RTEarea[0]["pathParseHtmlModule"] = "' . $this->extHttpPath . 'mod6/parse_html.php";')
 			. $loadPluginCode .  '

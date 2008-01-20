@@ -1,0 +1,197 @@
+<!--
+/***************************************************************
+*  Copyright notice
+*
+*  (c) 2002-2004, interactivetools.com, inc.
+*  (c) 2003-2004 dynarch.com
+*  (c) 2004-2008 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
+*  All rights reserved
+*
+*  This script is part of the TYPO3 project. The TYPO3 project is
+*  free software; you can redistribute it and/or modify
+*  it under the terms of the GNU General Public License as published by
+*  the Free Software Foundation; either version 2 of the License, or
+*  (at your option) any later version.
+*
+*  The GNU General Public License can be found at
+*  http://www.gnu.org/copyleft/gpl.html.
+*  A copy is found in the textfile GPL.txt and important notices to the license
+*  from the author is found in LICENSE.txt distributed with these scripts.
+*
+*
+*  This script is distributed in the hope that it will be useful,
+*  but WITHOUT ANY WARRANTY; without even the implied warranty of
+*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+*  GNU General Public License for more details.
+*
+*  This script is a modified version of a script published under the htmlArea License.
+*  A copy of the htmlArea License may be found in the textfile HTMLAREA_LICENSE.txt.
+*
+*  This copyright notice MUST APPEAR in all copies of the script!
+***************************************************************/
+/*
+ * Insert Image window for TYPO3 htmlArea RTE
+ *
+ * TYPO3 CVS ID: $Id:$
+ */
+-->
+<html class="popupwin">
+<head>
+	<title>Insert Image</title>
+	<meta http-equiv="Content-Style-Type" content="text/css" />
+	<script type="text/javascript">
+		/*<![CDATA[*/
+		<!--
+		var dialog = window.opener.HTMLArea.Dialog["DefaultImage"];
+		function Init() {
+			dialog.initialize(false, true);
+			if (dialog.plugin.removeItems) {
+				var items = dialog.plugin.removeItems;
+				for (var i = 0, length = items.length; i < length; ++i) {
+					if (document.getElementById(items[i])) document.getElementById(items[i]).style.display = "none";
+				}
+			}
+			var param = dialog.arguments;
+			if (param) {
+				document.getElementById("f_url").value = param["f_url"];
+				document.getElementById("f_alt").value = param["f_alt"];
+				document.getElementById("f_border").value = param["f_border"];
+				var select = document.getElementById("f_align");
+				for (var i = select.options.length; --i >= 0;) {
+					if (param["f_align"] == select.options[i].value) {
+						select.selectedIndex = i;
+						break;
+					}
+				}
+				document.getElementById("f_top").value = param["f_top"];
+				document.getElementById("f_right").value = param["f_right"];
+				document.getElementById("f_bottom").value = param["f_bottom"];
+				document.getElementById("f_left").value = param["f_left"];
+				var select = document.getElementById("f_float");
+				for (var i = select.options.length; --i >= 0;) {
+					if (param["f_float"] == select.options[i].value) {
+						select.selectedIndex = i;
+						break;
+					}
+				}
+				window.ipreview.location.replace(param.f_url);
+			}
+			dialog.resize();
+			document.getElementById("f_url").focus();
+			return false;
+		};
+		
+		function onOK() {
+			var required = { "f_url": "image_url_required" };
+			for (var i in required) {
+				var el = document.getElementById(i);
+				if (!el.value) {
+					alert(dialog.plugin.localize(required[i]));
+					el.focus();
+					return false;
+				}
+			}
+				// pass data back to the calling window
+			var fields = ["f_url", "f_alt", "f_align", "f_border", "f_top", "f_right", "f_bottom", "f_left", "f_float"];
+			var param = new Object();
+			for (var i in fields) {
+				var id = fields[i];
+				var el = document.getElementById(id);
+				param[id] = el.value;
+			}
+			dialog.performAction(param);
+			return false;
+		};
+		
+		function onCancel() {
+			dialog.close();
+			return false;
+		};
+		
+		function onPreview() {
+			var f_url = document.getElementById("f_url");
+			var url = f_url.value;
+			if (!url) {
+				alert(dialog.plugin.localize("image_url_first"));
+				f_url.focus();
+				return false;
+			}
+			window.ipreview.location.replace(url);
+			return false;
+		};
+		// -->
+		/*]]>*/
+	</script>
+</head>
+<body class="popupwin" onload="Init();">
+<div class="title">Insert Image</div>
+<form action="" method="get">
+	<label for="f_url" class="field">Image URL:</label>
+	<input type="text" id="f_url" name="url" size="65" title="Enter the image URL here" />
+	<button name="preview" onclick="return onPreview();" title="Preview the image in a new window">Preview</button>
+	<div class="space"></div>
+	<div id="alt">
+		<label for="f_alt" class="field">Alternate text:</label>
+		<input type="text" name="alt" id="f_alt" size="80" title="For browsers that dont support images" />
+	</div>
+	<div class="space"></div>
+	<fieldset id="layout" class="floating">
+		<legend>Layout</legend>
+		<ul>
+			<li id="align">
+				<label for="f_align" class="fl">Image alignment:</label>
+				<select class="alignment" size="1" name="align" id="f_align" title="Positioning of this image">
+					<option value="bottom">Bottom</option>
+					<option value="middle" selected="selected">Middle</option>
+					<option value="top">Top</option>
+				</select>
+			</li>
+			<li id="border">
+				<label for="f_border" class="fl">Border thickness:</label>
+				<input type="text" name="border" id="f_border" size="5" title="Leave empty for no border" />
+			</li>
+			<li id="float">
+				<label for="f_float" class="fl">Float:</label>   
+				<select class="float" size="1" name="style" id="f_float" title="Where the image should float">   
+					<option value="none">Non-floating</option>
+					<option value="left">Left</option>
+					<option value="right">Right</option>
+				</select>
+			</li>
+		</ul>
+	</fieldset>
+	<fieldset id="padding">
+		<legend>Spacing and padding</legend>
+		<ul>
+			<li id="paddingTop">
+				<label for="f_top" class="fl">Top:</label>
+				<input type="text" name="f_top" id="f_top" size="5" title="Top padding" />
+			</li>
+			<li id="paddingRight">
+				<label for="f_right" class="fl">Right:</label>
+				<input type="text" name="f_right" id="f_right" size="5" title="Right padding" />
+			</li>
+			<li id="paddingBottom">
+				<label for="f_bottom" class="fl">Bottom:</label>
+				<input type="text" name="f_bottom" id="f_bottom" size="5" title="Bottom padding" />
+			</li>
+			<li id="paddingLeft">
+				<label for="f_left" class="fl">Left:</label>
+				<input type="text" name="f_left" id="f_left" size="5" title="Left padding" />
+			</li>
+		</ul>
+	</fieldset>
+	<div class="space" style="clear: both;"></div>
+	<fieldset>
+		<legend>Image Preview</legend>
+			<div class="imagepreview">
+				<iframe name="ipreview" id="ipreview" frameborder="0" src="";></iframe>
+			</div>
+	</fieldset>
+	<div class="buttons">
+		<button type="button" name="ok" onclick="return onOK();">OK</button>
+		<button type="button" name="cancel" onclick="return onCancel();">Cancel</button>
+	</div>
+</form>
+</body>
+</html>

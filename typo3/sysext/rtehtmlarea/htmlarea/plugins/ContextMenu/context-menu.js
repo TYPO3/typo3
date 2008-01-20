@@ -2,7 +2,7 @@
 *  Copyright notice
 *
 *  Copyright (c) 2003 dynarch.com. Authored by Mihai Bazon. Sponsored by www.americanbible.org.
-*  Copyright (c) 2004-2007 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
+*  Copyright (c) 2004-2008 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -76,9 +76,16 @@ ContextMenu.tableOperationsHandler = function(editor,tbo,opcode) {
 	});
 };
 
-ContextMenu.imageHandler = function(editor,img) {
+ContextMenu.imageHandler = function(editor, currentTarget) {
 	return (function() {
-		editor._insertImage(img);
+		var obj = editor._toolbarObjects["InsertImage"];
+		obj.cmd(editor, obj.name, currentTarget);
+		if (HTMLArea.is_opera) {
+			editor._iframe.focus();
+		}
+		if (!editor.config.btnList[obj.name][7]) {
+			editor.updateToolbar();
+		}
 	});
 };
 

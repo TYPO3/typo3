@@ -1,3 +1,12 @@
+2008-01-19  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
+
+	* Added feature: Various enhancements to image dialog in htmlArea RTE
+	* Fixed bug #3957: picture drag and drop throws you out of the tab navigation
+	* Fixed bug #5490: Drag 'n drop javascript error / blank screen in IE
+	* Added feature #5885: Default image class
+	* Added feature #5902: Removing style attribute for images
+	* Added feature #6115: Enabling configuration of the "edit image" dialogue
+
 2008-01-19  Ingo Renner  <ingo@typo3.org>
 
 	* added a way to overwrite / skin the css files in backend.php
