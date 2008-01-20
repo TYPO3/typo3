@@ -1,4 +1,4 @@
-2008-01-20	Thomas Hempel  ²thomas@typo3-unleashed.net>
+2008-01-20	Thomas Hempel  <thomas@typo3-unleashed.net>
 
 	* Installer: Renamed the tab back from "Setup" to "Installer" to avoid problems in translation tool
 	* Installer: reorganized installer module (rewrite)
