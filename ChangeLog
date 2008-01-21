@@ -1,6 +1,7 @@
 2008-01-21  Ingo Renner  <ingo@typo3.org>
 
 	* fixed tab borders in TCEforms
+	* now the module menu in backend.php is as wide as in alt_main.php
 
 2008-01-20	Thomas Hempel  <thomas@typo3-unleashed.net>
 

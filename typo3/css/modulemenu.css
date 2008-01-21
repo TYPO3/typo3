@@ -41,7 +41,7 @@ TYPO3 backend menu - vertical
 	height: 14px;
 	padding: 1px;
 	vertical-align: middle;
-	width: 105px;
+	width: 118px; /* considering scrollbars this is the most we can take */
 	margin: 3px 0px 3px;
 }
 #typo3-menu li div img {
@@ -50,7 +50,7 @@ TYPO3 backend menu - vertical
 }
 #typo3-menu li ul li {
 	font-weight: normal;
-	width: 105px;
+	width: 118px;
 	padding: 1px 0px 2px 2px;
 	margin-left: 1px;
 	cursor: pointer;
