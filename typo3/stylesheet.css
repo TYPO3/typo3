@@ -196,7 +196,17 @@ TABLE#typo3-tabmenu TD.tab:hover { background: #f6eab7; }
 DIV.typo3-dyntabmenu-tabs { margin-top: 5px; padding-right: 20px; }
 DIV.typo3-dyntabmenu-divs P.c-descr { font-style: italic; padding: 3px 10px 5px 10px; background: #e7dba8; }
 TABLE.typo3-dyntabmenu TR { height: 1.5em; }
-TABLE.typo3-dyntabmenu TD { padding-left: 5px; padding-right: 5px; border: solid #555 1px; border-bottom: 0px; border-radius: 3px; -moz-border-radius: 3px; }
+TABLE.typo3-dyntabmenu TD {
+	padding-left: 5px;
+	padding-right: 5px;
+	border-radius: 3px;
+	border: 1px solid #555;
+	border-bottom: none;
+	-moz-border-radius-topleft: 3px;
+	-moz-border-radius-topright: 3px;
+	-webkit-border-top-left-radius: 3px;
+	-webkit-border-top-right-radius: 3px;
+}
 TABLE.typo3-dyntabmenu TD.tab { background: #c4d4cd; }
 TABLE.typo3-dyntabmenu TD.tabact { background: #e7dba8; }
 TABLE.typo3-dyntabmenu TD.tabact, TABLE.typo3-dyntabmenu TD.tabact_over { border-color: black; }
@@ -287,7 +297,6 @@ div#treeOptionButtons a	{ margin: 5px 1px 0; }
 
 /* TCEforms */
 table.typo3-TCEforms { width: 93%; border-collapse: collapse; }
-table.typo3-TCEforms, table.typo3-TCEforms td { margin: 0; border: 0; padding: 0; }
 TABLE.typo3-TCEforms SPAN.typo3-TCEforms-recHeader { font-weight: bold; color: #333366; }
 table.typo3-TCEforms tr.typo3-TCEforms-recHeaderRow, TABLE.typo3-TCEforms tr.typo3-TCEforms-recHeaderRow td { border: 0; }
 TABLE.typo3-TCEforms SPAN.typo3-TCEforms-newToken { font-weight: bold; color: #990000; }
