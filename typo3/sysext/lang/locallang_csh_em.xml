@@ -140,6 +140,8 @@ Normally &quot;shy&quot; is set for all extensions loaded by default according t
 			<label index="emconf_dependencies.details">The EM will manage that dependency while writing the extension list  to localconf.php. You cannot install an extension unless its dependencies has been installed already.</label>
 			<label index="emconf_conflicts.alttitle">Conflicts with other extensions?</label>
 			<label index="emconf_conflicts.description">List of extension keys of extensions with which this extension does not work (and so cannot be enabled before those other extensions are un-installed)</label>
+			<label index="emconf_suggests.alttitle">Suggested extensions</label>
+			<label index="emconf_suggests.description">List of extension keys of extensions which you may want to try in conjunction with this extension because they bring added benefits when working together.</label>
 			<label index="emconf_priority.alttitle">Requested Loading priority</label>
 			<label index="emconf_priority.description">This tells the EM to try to put the extensions as the very first in the list. Default is last.</label>
 			<label index="emconf_module.alttitle">Backend modules included</label>

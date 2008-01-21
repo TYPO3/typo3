@@ -2528,7 +2528,7 @@ EXTENSION KEYS:
 		$lines[]='<tr class="bgColor4"><td>Title:</td><td>'.$extInfo['EM_CONF']['_icon'].$extInfo['EM_CONF']['title'].'</td>'.$this->helpCol('title').'</tr>';
 		$lines[]='<tr class="bgColor4"><td>Description:</td><td>'.nl2br(htmlspecialchars($extInfo['EM_CONF']['description'])).'</td>'.$this->helpCol('description').'</tr>';
 		$lines[]='<tr class="bgColor4"><td>Author:</td><td>'.$this->wrapEmail($extInfo['EM_CONF']['author'].($extInfo['EM_CONF']['author_email'] ? ' <'.$extInfo['EM_CONF']['author_email'].'>' : ''),$extInfo['EM_CONF']['author_email']).($extInfo['EM_CONF']['author_company']?', '.$extInfo['EM_CONF']['author_company']:'').
-		'</td>'.$this->helpCol('description').'</tr>';
+		'</td>'.$this->helpCol('author').'</tr>';
 
 		$lines[]='<tr class="bgColor4"><td>Version:</td><td>'.$extInfo['EM_CONF']['version'].'</td>'.$this->helpCol('version').'</tr>';
 		$lines[]='<tr class="bgColor4"><td>Category:</td><td>'.$this->categories[$extInfo['EM_CONF']['category']].'</td>'.$this->helpCol('category').'</tr>';
@@ -2537,8 +2537,8 @@ EXTENSION KEYS:
 		$lines[]='<tr class="bgColor4"><td>Internal?</td><td>'.($extInfo['EM_CONF']['internal']?'Yes':'').'</td>'.$this->helpCol('internal').'</tr>';
 
 		$lines[]='<tr class="bgColor4"><td>Depends on:</td><td>'.$this->depToString($extInfo['EM_CONF']['constraints']).'</td>'.$this->helpCol('dependencies').'</tr>';
-		$lines[]='<tr class="bgColor4"><td>Conflicts with:</td><td>'.$this->depToString($extInfo['EM_CONF']['constraints'],'conflicts').'</td>'.$this->helpCol('dependencies').'</tr>';
-		$lines[]='<tr class="bgColor4"><td>Suggests:</td><td>'.$this->depToString($extInfo['EM_CONF']['constraints'],'suggests').'</td>'.$this->helpCol('dependencies').'</tr>';
+		$lines[]='<tr class="bgColor4"><td>Conflicts with:</td><td>'.$this->depToString($extInfo['EM_CONF']['constraints'],'conflicts').'</td>'.$this->helpCol('conflicts').'</tr>';
+		$lines[]='<tr class="bgColor4"><td>Suggests:</td><td>'.$this->depToString($extInfo['EM_CONF']['constraints'],'suggests').'</td>'.$this->helpCol('suggests').'</tr>';
 		if (!$remote)	{
 			$lines[]='<tr class="bgColor4"><td>Priority:</td><td>'.$extInfo['EM_CONF']['priority'].'</td>'.$this->helpCol('priority').'</tr>';
 			$lines[]='<tr class="bgColor4"><td>Clear cache?</td><td>'.($extInfo['EM_CONF']['clearCacheOnLoad']?'Yes':'').'</td>'.$this->helpCol('clearCacheOnLoad').'</tr>';
@@ -2888,9 +2888,14 @@ EXTENSION KEYS:
 	function helpCol($key)	{
 		global $BE_USER;
 		if ($BE_USER->uc['edit_showFieldHelp'])	{
-			$hT = trim(t3lib_BEfunc::helpText($this->descrTable,'emconf_'.$key,$this->doc->backPath));
-			return '<td>'.($hT?$hT:t3lib_BEfunc::helpTextIcon($this->descrTable,'emconf_'.$key,$this->doc->backPath)).'</td>';
-		} else {
+			if (empty($key)) {
+				return '<td>&nbsp;</td>';
+			}
+			else {
+				return t3lib_BEfunc::cshItem($this->descrTable, 'emconf_'.$key, $GLOBALS['BACK_PATH'], '<td>|</td>');
+			}
+		}
+		else {
 			return '';
 		}
 	}

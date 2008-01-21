@@ -1,3 +1,7 @@
+2008-01-21  Benjamin Mack  <mack@xnos.org>
+
+	* Fixed #7166: CSH broken in EM, Info View (Thanks to Francois Suter)
+
 2008-01-21  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
 	* Fixed JS error when opening the TYPO3 image browser and proc.plainImageMode is not set
