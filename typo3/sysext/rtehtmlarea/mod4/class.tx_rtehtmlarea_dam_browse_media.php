@@ -53,8 +53,8 @@ class tx_rtehtmlarea_dam_browse_media extends tx_dam_browse_media {
 	var $defaultClass;
 	var $plainMaxWidth;
 	var $plainMaxHeight;
-	var $lockPlainWidth;
-	var $lockPlainHeight;
+	var $lockPlainWidth = 'false';
+	var $lockPlainHeight = 'false';
 	var $magicMaxWidth;
 	var $magicMaxHeight;
 	var $imgPath;
@@ -433,7 +433,7 @@ class tx_rtehtmlarea_dam_browse_media extends tx_dam_browse_media {
 				.(in_array('alt', $this->removedProperties)?'':'
 				sz+=\'<tr><td\'+bgColor+\'><label for="iAlt">'.$LANG->getLL('alt').': </label></td><td><input type="text" id="iAlt" name="iAlt"'.$GLOBALS['TBE_TEMPLATE']->formWidth(20).' /></td></tr>\';')
 				.((!$TYPO3_CONF_VARS['EXTCONF'][$this->extKey]['enableClickEnlarge'] || in_array('clickenlarge', $this->removedProperties))?'':'
-				sz+=\'<tr><td\'+bgColor+\'><label for="iClickEnlarge">'.$LANG->sL('LLL:EXT:cms/locallang_ttc.php:image_zoom',1).' </label></td><td><input type="checkbox" name="iClickEnlarge" id="iClickEnlarge" value="1" /></td></tr>\';').'
+				sz+=\'<tr><td\'+bgColor+\'><label for="iClickEnlarge">'.$LANG->sL('LLL:EXT:cms/locallang_ttc.php:image_zoom',1).' </label></td><td><input type="checkbox" name="iClickEnlarge" id="iClickEnlarge" value="0" /></td></tr>\';').'
 				sz+=\'<tr><td><input type="submit" value="'.$LANG->getLL('update').'" onClick="return setImageProperties();"></td></tr>\';
 				sz+=\'</form></table>\';
 				return sz;
@@ -535,7 +535,7 @@ class tx_rtehtmlarea_dam_browse_media extends tx_dam_browse_media {
 						if (document.imageData.iClickEnlarge.checked) {
 							selectedImageRef.setAttribute("clickenlarge","1");
 						} else {
-							selectedImageRef.setAttribute("clickenlarge","0");
+							selectedImageRef.removeAttribute("clickenlarge");
 						}
 					}
 					dialog.close();
