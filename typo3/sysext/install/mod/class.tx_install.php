@@ -206,7 +206,7 @@ class tx_install {
 			if(md5($GLOBALS['TYPO3_CONF_VARS']['BE']['installToolPassword'].'|'.$randomKey) == $combinedKey || $this->checkPassword($randomKey)) {
 				$this->passwordOK = true;
 			} else {
-				$this->viewObj->addContent($this->basicsObj->getLabel('label_login'), $this->loginForm());
+				$this->viewObj->addContent('', $this->loginForm());
 				echo $this->viewObj->getDocCode();
 			}
 		}
@@ -314,7 +314,7 @@ class tx_install {
 					);
 				}
 
-				$this->basicsObj->addError(sprintf($this->basicsObj->getLabel('msg_error_login_not_sucessful_message'), md5($password)), FATAL, 'fields', 'password');
+				$this->basicsObj->addError(sprintf($this->basicsObj->getLabel('msg_error_login_not_sucessful_message'), md5($password)), FATAL, 'fields', 'typo3_install_password');
 			}
 		}
 		
@@ -333,21 +333,32 @@ class tx_install {
 				'options'  => array(
 					'name'   => 'form_setuplogin',
 					'submit' => $this->basicsObj->getLabel('label_login'),
+					'id' => 'formLogin'
 				),
 				'elements' => array(
+					array (
+						'type' => 'plain',
+						'value' => $this->viewObj->renderTag('h4', $this->basicsObj->getLabel('label_login'))
+					),
 					array(
 						'type'  => 'formelement',
 						'value' => array(
 							'label'       => 'label_setup_password',
+							'label_align' => 'top',
 							'elementType' => 'password',
 							'options'     => array(
-								'name' => 'typo3_install_password'
+								'name' => 'typo3_install_password',
+								'id' => 'typo3_install_password',
+								'class' => 'bg'
 							)
 						)
 					),
 					array(
-						'type'  => 'plain',
-						'value' => $this->basicsObj->getLabel('msg_login_passwordhint')
+						'type'  => 'message',
+						'value' => array(
+							'message' => $this->basicsObj->getLabel('msg_login_passwordhint'),
+							'addBR' => false
+						)
 					)
 				)
 			)

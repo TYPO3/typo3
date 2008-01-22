@@ -28,10 +28,69 @@ input.bg, select.bg, button.bg	{
 	padding:3px;
 }
 
+/** styles for login box - start **/
+form#formLogin {
+	width: 400px;
+	position: absolute;
+	left: 50%;
+	margin-left: -200px;
+	
+	background-color: #D7DBE2;
+	border: 1px solid #9BA1A8;
+	padding: 10px;
+}
+
+form#formLogin h4 {
+	font-size: 16px;
+	font-weight: bold;
+	background: none;
+	margin: 0 0 16px 0;	
+}
+
+form#formLogin .formElement {
+	background-color: white;
+	border: 1px silver solid;
+	padding: 10px 5px;
+	text-align: center;
+}
+
+form#formLogin label {
+	font-weight: bold;
+}
+
+form#formLogin .installer-message {
+	margin: 10px 0;
+	font-size: 11px;
+	font-style: italic;	
+}
+
+form#formLogin .submit {
+	font-weight: bold;
+	font-size: 12px;
+	width: 100%;
+	cursor: pointer;	
+}
+
+form#formLogin .submit:hover {
+	color: green;
+}
+
+form#formLogin ul {
+	text-align: left;
+}
+
+/** styles for login box - end **/
+
 label em	{
 	font-style: italic;
 	display: block;
 	margin: 0px 0px 7px 20px;
+}
+
+.error-header {
+	font-weight: bold;
+	color: red;
+	margin: 5px;
 }
 
 .categoryTreeContainer	{
@@ -118,6 +177,8 @@ label em	{
 	padding: 3px;
 }
 
+/** error messages **/
+
 .severity_ok strong.message-header	{
 	background-image: url('../../../imgs/icons/ok.png');
 	background-position: 4px 50%;
@@ -138,4 +199,13 @@ label em	{
 
 .error-warning	{
 	color: #AA0000;
+}
+
+/* list items */
+li.severity-fatal {
+	list-style-image: url(../../../imgs/icons/cancel.png);
+}
+
+li.severity-warning {
+	list-style-image: url(../../../imgs/icons/warning.png);
 }

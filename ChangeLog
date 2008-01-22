@@ -1,3 +1,8 @@
+2008-01-22	Thomas Hempel  <thomas@typo3-unleashed.net>
+
+	* Installer: improved the look of the login screen
+	* Installer: Smaller bugfixes and enhancements in error handling
+
 2008-01-22  Ingo Renner  <ingo@typo3.org>
 
 	* added feature: #7223: update prototype and scriptaculous to their most recent versions

@@ -33,7 +33,7 @@
 			<label index="no_image">No image found</label>
 			
 			<label index="msg_error_login_not_sucessful">Login was not sucessful</label>
-			<label index="msg_error_login_not_sucessful_message">The submitted password was not correct. Your md5 checksum is "%s"</label>
+			<label index="msg_error_login_not_sucessful_message">The submitted password was not correct.&lt;br /&gt;Your md5 checksum is "%s"</label>
 			
 			<label index="login_emailwarning_true_subject">Install Tool Login at "%s"</label>
 			<label index="login_emailwarning_true_message">There has been a Install Tool login at TYPO3 site "%s" (%s) from remote address "%s" (%s).</label>
@@ -96,8 +96,8 @@ Better you remove the file "ENABLE_INSTALL_TOOL" in typo3conf/ directory.
 BTW: This Install Tool will only work if cookies are accepted by your web browser. If this dialog pops up over and over again you didn't enable cookies.
 			</label>
 			<label index="msg_login_passwordhint">The Install Tool Password is not the admin password of TYPO3.
-If you don't know the current password, you can set a new one by setting the value of $TYPO3_CONF_VARS['BE']['installToolPassword'] in typo3conf/localconf.php to the md5() hash value of the password you desire.
-			</label>			
+			
+If you don't know the current password, you can set a new one by setting the value of $TYPO3_CONF_VARS['BE']['installToolPassword'] in typo3conf/localconf.php to the md5() hash value of the password you desire.</label>			
 		</languageKey>
 	</data>
 </T3locallang>

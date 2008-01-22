@@ -256,7 +256,6 @@ class tx_install_view {
 				$renderMethod = 'render'.ucfirst($type);
 				
 				if(method_exists($this, $renderMethod)) {	
-					
 					$content = $this->$renderMethod($data);
 				} else {
 					$content = sprintf($this->pObj->getBasicsObject()->getLabel('no_method'), $type);
@@ -330,9 +329,9 @@ class tx_install_view {
 			case 'general':
 				if(is_array($this->errors['general'])) {
 					$hasErrors = true;
-
+					
 					foreach ($this->errors['general'] as $errorItem) {
-						$content .= '<li>'.$this->renderError($errorItem).'</li>';
+						$content .= $this->renderErrorListItem($errorItem);
 					}
 				}
 				break;
@@ -341,13 +340,13 @@ class tx_install_view {
 					$hasErrors = true;
 
 					foreach ($this->errors['fields'][$reqFieldName] as $errorItem) {
-						$content .= '<li>'.$this->renderError($errorItem).'</li>';
+						$content .= $this->renderErrorListItem($errorItem);
 					}
 				}
 				break;
 		}
 		
-		$content .= '</ul><div>';
+		$content .= '</ul></div>';
 		
 		$returnValue = $content;
 		if(!$hasErrors) {
@@ -355,6 +354,28 @@ class tx_install_view {
 		}
 		
 		return $returnValue;
+	}
+	
+	/**
+	 * Renders a list item for a single error. (<li>error message</li>)
+	 *
+	 * @param	array	$errorItem: The data of the error item (array('severity', 'message'))
+	 * @return	XHTML for a single list item <li>...
+	 */
+	private function renderErrorListItem($errorItem) {
+		$result = '<li';
+		
+		switch ($errorItem['severity']) {
+			case WARNING:
+				$result .= ' class="severity-warning"';
+				break;
+			case FATAL:
+				$result .= ' class="severity-fatal"';
+				break;
+		}
+		
+		$result .= '>'.$this->renderError($errorItem).'</li>';
+		return $result;
 	}
 	
 	/**
@@ -566,7 +587,7 @@ class tx_install_view {
 	 * @return	string		HTML output
 	 */
 	private function renderMessage($data) {
-		$out = '<div'.(($data['severity']) ? ' class="installer-message severity_'.$data['severity'].'"' : '').'>';
+		$out = '<div class="installer-message'.(($data['severity']) ? ' severity_'.$data['severity'] : '').'">';
 		if ($data['label'])	{
 			if (is_array($data['label']))	{
 				$tag = $data['label'][0];
@@ -644,7 +665,7 @@ class tx_install_view {
 		if ($data['options']['ajax'] == true)	{
 			$content .= '<br /><button class="submit" onclick="return '.$data['options']['action'].'">'.$data['options']['submit'].'</button>';
 		} else {
-			$content .= '<br /><input type="submit" class="submit" value="'.$data['options']['submit'].'" />';
+			$content .= '<br /><input type="submit" class="submit bg" value="'.$data['options']['submit'].'" />';
 		}
 		
 		$content .= '</form>';
@@ -674,7 +695,6 @@ class tx_install_view {
 	 */
 	public function renderFormelement($data) {
 		$content   = '';
-		$viewObj   = $this->pObj->getViewObject();
 		$basicsObj = $this->pObj->getBasicsObject();
 
 		if ($data['elementType'] == 'fieldset')	{
@@ -692,7 +712,8 @@ class tx_install_view {
 			if(method_exists($this, $elementRenderMethod)) {
 					// set the value of the field from the environment if no error is recognized for it
 					// also set an error string if error was found
-				$errors = $viewObj->getErrors();
+				$errors = $this->getErrors();
+				
 				if(!isset($errors['fields'][$data['options']['name']])) {
 					$environment = $this->pObj->getEnvironment();
 					if(!empty($environment[$data['options']['name']])) {
@@ -700,7 +721,7 @@ class tx_install_view {
 					}
 					$errorStr = '';
 				} else {
-					$errorStr = $viewObj->renderErrors(true, 'fields', $data['options']['name']);
+					$errorStr = $this->renderErrors(true, 'fields', $data['options']['name']);
 				}
 				
 					// render the form element
@@ -712,6 +733,9 @@ class tx_install_view {
 					
 						// align the label (default is left)
 					switch ($data['label_align']) {
+						case 'top':
+							$formElementCode = $label.'<br />'.$errorStr.$formElementCode;
+							break;
 						case 'right':
 							$formElementCode = $errorStr.$formElementCode.$label;
 							break;
@@ -748,6 +772,7 @@ class tx_install_view {
 			$this->getAttributeString('id',    $data['id']).
 			$this->getAttributeString('size',  $data['size'], 20).	
 			$this->getAttributeString('value', $data['value'], '').
+			$this->getAttributeString('class', $data['class']).
 			' />';
 
 		return $content;
@@ -771,6 +796,7 @@ class tx_install_view {
 			$this->getAttributeString('name', $data['name']).
 			$this->getAttributeString('id',   $data['id']).
 			$this->getAttributeString('size', $data['size'], 20).
+			$this->getAttributeString('class', $data['class']).
 			' />';
 
 		return $content;
@@ -869,7 +895,7 @@ class tx_install_view {
 	 *
 	 * @param 	string 	$helpStr
 	 * @param	string	$id: A unique ID for the container. A random value is appended
-	 * @return	array ('button', 'conatiner')
+	 * @return	array ('button', 'container')
 	 */
 	public function renderHelp($helpStr, $id)	{
 		if (empty($helpStr))	{

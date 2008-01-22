@@ -270,7 +270,8 @@ class tx_install_module_setup extends tx_install_module_base	{
 								'name' => $mod.':'.$name,
 								'value' => $this->basicsObject->getLocalconfValue($modConfig['value'], $modConfig['default']),
 								'description' => $modConfig['description'],
-								'help' => $modConfig['help']
+								'help' => $modConfig['help'],
+								'class' => 'bg'
 							))
 						);
 						
@@ -316,7 +317,7 @@ class tx_install_module_setup extends tx_install_module_base	{
 			
 				// add form for saving options
 			if ($deliverable == 'options')	{
-				$result .= '<input type="button" onclick="sendForm(\'optionsForm\');" value="'.$this->get_LL('label_save').'" /></form>';
+				$result .= '<input type="button" class="submit bg" onclick="sendForm(\'optionsForm\');" value="'.$this->get_LL('label_save').'" /></form>';
 			}
 		}
 		
