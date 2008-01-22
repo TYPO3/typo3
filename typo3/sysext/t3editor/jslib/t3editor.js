@@ -84,24 +84,36 @@ var t3eOptions = window.t3eOptions || {};
 //   tries to colour in one shot. Setting this too high will cause the
 //   code to 'freeze' the browser for noticeable intervals.
 // passDelay gives the amount of milliseconds between colouring passes
-setdefault(t3eOptions,
-           {safeKeys: setObject("KEY_ARROW_UP", "KEY_ARROW_DOWN", "KEY_ARROW_LEFT", "KEY_ARROW_RIGHT", "KEY_END", "KEY_HOME",
-                                "KEY_PAGE_UP", "KEY_PAGE_DOWN", "KEY_SHIFT", "KEY_CTRL", "KEY_ALT", "KEY_SELECT"),
-	    reindentKeys: setObject("KEY_TAB"),
-	    reindentAfterKeys: setObject("KEY_RIGHT_SQUARE_BRACKET"),
-        stylesheet: PATH_t3e+"css/t3editor.css",
-        parser: parseTypoScript,
-	    linesPerPass: 10,
-	    passDelay: 500,
-        autoComplete: true,
-        acWords:5});
+var t3eOptions = {
+		safeKeys: 	{ "KEY_ARROW_UP":true, 
+					  "KEY_ARROW_DOWN":true, 
+					  "KEY_ARROW_LEFT":true, 
+					  "KEY_ARROW_RIGHT":true, 
+					  "KEY_END":true, 
+					  "KEY_HOME":true,
+					  "KEY_PAGE_UP":true, 
+					  "KEY_PAGE_DOWN":true, 
+					  "KEY_SHIFT":true, 
+					  "KEY_CTRL":true, 
+					  "KEY_ALT":true, 
+					  "KEY_SELECT":true
+		},
+		reindentKeys: {"KEY_TAB":true},
+		reindentAfterKeys: {"KEY_RIGHT_SQUARE_BRACKET":true},
+		stylesheet: PATH_t3e+"css/t3editor.css",
+		parser: parseTypoScript,
+		linesPerPass: 10,
+		passDelay: 200,
+		autoComplete: true,
+		acWords:5
+	};
 // These default options can be overridden by passing a set of options
 // to a specific CodeMirror constructor.
 
 var t3editor = function(){
   // The HTML elements whose content should be suffixed by a newline
   // when converting them to flat text.
-  var newlineElements = setObject("P", "DIV", "LI");
+  var newlineElements = {"P":true, "DIV":true, "LI":true};
 
   // Helper function for traverseDOM. Flattens an arbitrary DOM node
   // into an array of textnodes and <br> tags.
@@ -121,11 +133,12 @@ var t3editor = function(){
         result.push(node);
       }
       else {
-        forEach(node.childNodes, simplifyNode);
+        // forEach(node.childNodes, simplifyNode);
+        $A(node.childNodes).each(simplifyNode);
         if (!leaving && newlineElements.hasOwnProperty(node.nodeName)) {
           leaving = true;
-          el = withDocument(doc, SPAN);
-		  result.push(withDocument(doc, BR));
+          el = new Element('SPAN'); 		
+		  result.push(new Element('BR'));   
         }
       }
     }
@@ -170,7 +183,10 @@ var t3editor = function(){
       var text = "\n";
       if (part.nodeType == 3) {
         text = part.nodeValue;
-        part = withDocument(owner, partial(SPAN, {"class": "part"}, part));
+        
+        newpart = new Element('SPAN',{"class": "part"});
+        newpart.appendChild(part);
+        part = newpart;
         part.currentText = text;
       }
       part.dirty = true;
@@ -183,9 +199,13 @@ var t3editor = function(){
     // non-normalized nodes.
     function writeNode(node, c){
       var toYield = [];
-      forEach(simplifyDOM(node), function(part) {
-        toYield.push(insertPart(part));
-      });
+      var simdom = simplifyDOM(node);
+			simdom.each(
+				function(part) {
+					toYield.push(insertPart(part));
+				}
+			);
+
       return yield(toYield.join(""), c);
     }
 
@@ -214,7 +234,7 @@ var t3editor = function(){
       }
       else {
         point = pointAt(node);
-        removeElement(node);
+        Element.remove(node);
         return writeNode(node, c);
       }
     }
@@ -232,8 +252,10 @@ var t3editor = function(){
   function t3editor(theTextarea, index, options) {
    
    // Use passed options, if any, to override defaults.
-    this.options = options || {}
-    setdefault(this.options, t3eOptions);
+    this.options = options || t3eOptions; // {}
+    for (var lo in options) {
+		this.options[lo] = options[lo];
+	}
 	
     //History Array
     this.history = [];
@@ -251,28 +273,32 @@ var t3editor = function(){
 	this.index = index;
 
     // create the wrapping div
-    this.outerdiv = $(createDOM("DIV", {
-    	"class": 	"t3e_outerdiv",
-    	"id":		"t3e_"+this.textarea.getAttribute('id')
-    	}));
+    this.outerdiv = new Element("div", {
+				"class": 	"t3e_outerdiv",
+				"id":		"t3e_"+this.textarea.getAttribute('id')
+			}
+		);
 
 	// place the div before the textarea
     this.textarea.parentNode.insertBefore(this.outerdiv,$(this.textarea));
 
 	// an overlay that covers the whole editor
-	this.modalOverlay = $(createDOM("DIV", {
-    	"class": 	"t3e_modalOverlay",
-		"id":		"t3e_modalOverlay_wait"
-    	}));
+		this.modalOverlay = new Element("DIV", {
+				"class": 	"t3e_modalOverlay",
+				"id":		"t3e_modalOverlay_wait"
+			}
+		);
     this.modalOverlay.hide();
     this.modalOverlay.setStyle(this.outerdiv.getDimensions());
     this.modalOverlay.setStyle({opacity: 0.5});
     this.outerdiv.appendChild(this.modalOverlay);
 	
-	this.helpOverlay = $(createDOM("DIV", {
-    	"class": 	"t3e_modalOverlay",
-    	"id":		"t3e_modalOverlay_help"
-    	}));
+		this.helpOverlay = new Element("DIV", {
+				"class": 	"t3e_modalOverlay",
+				"id":		"t3e_modalOverlay_help"
+			}
+		);
+			// TODO: fill with senseful content, make it dynamic
     this.helpOverlay.innerHTML = "<h2>t3editor</h2>"+
 									"<p>put some helpful text here</p><br/><br/>"+
 									"<p>Hotkeys:</p>"+
@@ -288,118 +314,122 @@ var t3editor = function(){
     this.helpOverlay.hide();
 	this.outerdiv.appendChild(this.helpOverlay);
     
-	// wrapping the ilnenumbers
-    this.linenum_wrap = $(createDOM("DIV", {
-    	"class": 	"t3e_linenum_wrap"
-    	}));
-	// the "linenumber" list itself
-    this.linenum = $(createDOM("DL", {
-    	"class": 	"t3e_linenum"
-    	}));
+		// wrapping the linenumbers
+		this.linenum_wrap = new Element("DIV", {
+				"class": 	"t3e_linenum_wrap"
+			}
+		);
+		// the "linenumber" list itself
+		this.linenum = new Element("DL", {
+				"class": 	"t3e_linenum"
+			}
+		);
     this.linenum_wrap.appendChild(this.linenum);
     this.outerdiv.appendChild(this.linenum_wrap);
     
     //autocomplete box
-    this.autoCompleteBox = $(createDOM("DIV",{"class":"t3e_autoCompleteBox"}));
-    this.autoCompleteBox.hide();
-    this.outerdiv.appendChild(this.autoCompleteBox);
-    
-	// wrapping the iframe
-    this.iframe_wrap = $(createDOM("DIV", {
-    	"class": 	"t3e_iframe_wrap"
-    	}));
+		this.autoCompleteBox = new Element("DIV",{
+				"class":	"t3e_autoCompleteBox"
+			}
+		);
+		this.autoCompleteBox.hide();
+		this.outerdiv.appendChild(this.autoCompleteBox);
 
-	// the iframe (the actual "editor")
-    // display: block occasionally suppresses some Firefox bugs, so we
-    // always add it, redundant as it sounds.
-    this.iframe = $(createDOM("IFRAME", {
-    	"style": "border: 0; display: block;",
-    	"class": "t3e_iframe" 
-    	}));
+		// wrapping the iframe
+		this.iframe_wrap = new Element("DIV", {
+				"class": 	"t3e_iframe_wrap"
+			}
+		);
+
+		// the iframe (the actual "editor")
+		// display: block occasionally suppresses some Firefox bugs, so we
+		// always add it, redundant as it sounds.
+		this.iframe = new Element("IFRAME", {
+				"style":	"border: 0; display: block;",
+				"class":	"t3e_iframe" 
+			}
+		);
 
     this.iframe_wrap.appendChild(this.iframe);
     this.outerdiv.appendChild(this.iframe_wrap);
     
 	// wrapping the footer/statusline
-    this.footer_wrap = $(createDOM("DIV", {
-    	"class": 	"t3e_footer_wrap"
-    	}));
-    this.outerdiv.appendChild(this.footer_wrap);
-    
-	// this.fitem_resize = this.createFooterItem('#', false);
-    // this.footer_wrap.appendChild(this.fitem_resize);
-	
-	// footer item: show help Window
-	  // TODO make this more flexible! And get rid of inline css and unsed options!	
-    this.fitem_help = this.createFooterItem('Help', true, 'toggleHelp');
-    this.footer_wrap.appendChild(this.fitem_help);
-	
+		this.footer_wrap = new Element("DIV", {
+				"class": 	"t3e_footer_wrap"
+			}
+		);
+		this.outerdiv.appendChild(this.footer_wrap);
 
-	// footer item: options menu
-	this.fitem_options_overlay = $(createDOM("DIV", {
-    	"class": 	"t3e_footer_overlay",
-    	"id":		"t3e_footer_overlay_options"
-    	}));
-	
-	  // TODO make this more flexible! And get rid of inline css and unsed options!
-    this.fitem_options_overlay.innerHTML = '<ul>'+
-				// '<li style="color:grey"><input type="checkbox" disabled="disabled" /> Syntax highlighting</li>'+ 
-				'<li><input type="checkbox" onclick="t3e_instances['+this.index+'].fitem_options_overlay.hide();t3e_instances['+this.index+'].toggleAutoComplete();" id="t3e_autocomplete" checked="checked" /><label for="t3e_autocomplete">AutoCompletion</label></li>'+
-				'<li><span onclick="t3e_instances['+this.index+'].fitem_options_overlay.hide();t3e_instances['+this.index+'].footeritem_demo_click();">Test snippets</span></li>'+
-				'<li><input type="checkbox" onclick="t3e_instances['+this.index+'].fitem_options_overlay.hide();t3e_instances['+this.index+'].toggleFullscreen();" id="t3e_fullscreen" /> <label for="t3e_fullscreen">Fullscreen</label></li>'+
-				// '<li style="color:grey"><input type="checkbox" disabled="disabled" /> other fancy stuff</li>'+
-				'</ul>';
-    this.fitem_options_overlay.hide();
-    this.fitem_options = this.createFooterItem('Options', true, this.fitem_options_overlay);
-    this.footer_wrap.appendChild(this.fitem_options);
-    this.footer_wrap.appendChild(this.fitem_options_overlay);
-    
-	
-	// footer item: status field (total line numbers)
-    this.fitem_status = this.createFooterItem('', false);
-    this.footer_wrap.appendChild(this.fitem_status);
-    
-    // footer item: "name" of the document (taken from textarea alt-attribut), and save indicator
-    this.fitem_name = this.createFooterItem(this.documentname, false);
-    this.footer_wrap.appendChild(this.fitem_name);
-	
-	
-    
-	// window and document objects from the iframe
-	this.win = this.iframe.contentWindow;
-    this.doc = this.win.document;
-    
-	// make the iframe "editable"
-	this.doc.designMode = "on";
-    
-    this.doc.open();
-    this.doc.write("<html><head><link rel=\"stylesheet\" type=\"text/css\" href=\"" + t3eOptions.stylesheet + "\"/></head>" +
-                   "<body class=\"editbox\" spellcheck=\"false\"></body></html>");
-    this.doc.close();
+		// footer item: show help Window
+		// TODO make this more flexible! And get rid of inline css and unsed options!	
+		this.fitem_help = this.createFooterItem('Help', true, "this.toggleHelp()");
+		this.footer_wrap.appendChild(this.fitem_help);
 
+		// footer item: options menu
+		this.fitem_options_overlay = new Element("DIV", {
+				"class": 	"t3e_footer_overlay",
+				"id":		"t3e_footer_overlay_options"
+			}
+		);
 
- 	// new Resizable(this.outerdiv,{handle:$(this.fitem_resize)});
+		// TODO make this more flexible! And get rid of inline css and unsed options!
+		this.fitem_options_overlay.innerHTML = '<ul>'+
+			// '<li style="color:grey"><input type="checkbox" disabled="disabled" /> Syntax highlighting</li>'+ 
+			'<li><input type="checkbox" onclick="t3e_instances['+this.index+'].fitem_options_overlay.hide();t3e_instances['+this.index+'].toggleAutoComplete();" id="t3e_autocomplete" checked="checked" /><label for="t3e_autocomplete">AutoCompletion</label></li>'+
+			'<li><span onclick="t3e_instances['+this.index+'].fitem_options_overlay.hide();t3e_instances['+this.index+'].footeritem_demo_click();">Test snippets</span></li>'+
+			'<li><input type="checkbox" onclick="t3e_instances['+this.index+'].fitem_options_overlay.hide();t3e_instances['+this.index+'].toggleFullscreen();" id="t3e_fullscreen" /> <label for="t3e_fullscreen">Fullscreen</label></li>'+
+			// '<li style="color:grey"><input type="checkbox" disabled="disabled" /> other fancy stuff</li>'+
+			'</ul>';
+		this.fitem_options_overlay.hide();
+		this.fitem_options = this.createFooterItem('Options', true, this.fitem_options_overlay);
+		this.footer_wrap.appendChild(this.fitem_options);
+		this.footer_wrap.appendChild(this.fitem_options_overlay);
 
-    // An array of known dirty nodes, nodes that have been modified
-    // since they were last parsed.
-    this.dirty = [];
+		// footer item: status field (total line numbers)
+		this.fitem_status = this.createFooterItem('', false);
+		this.footer_wrap.appendChild(this.fitem_status);
 
-	// dimensions
-    this.width   = $(this.textarea).getDimensions().width;
-    this.height  = $(this.textarea).getDimensions().height;
+		// footer item: "name" of the document (taken from textarea alt-attribut), and save indicator
+		this.fitem_name = this.createFooterItem(this.documentname, false);
+		this.footer_wrap.appendChild(this.fitem_name);
 
-	var content = this.textarea.value;
+		// window and document objects from the iframe
+		this.win = this.iframe.contentWindow;
+		this.doc = this.win.document;
 
-	// hide the textarea
-    this.textarea.hide();
+		// make the iframe "editable"
+		this.doc.designMode = "on";
 
-    // Some browsers immediately produce a <body> in a new <iframe>,
-    // others only do so later and fire an onload event when they do.
-    if (this.doc.body) {
-      this.init(content);
-    } else {
-      connect(this.iframe, "onload", bind(function(){disconnectAll(this.iframe, "onload"); this.init(content);}, this));
-    }
+		this.doc.open();
+		this.doc.write(
+			"<html><head>"+
+			"<link rel=\"stylesheet\" type=\"text/css\" href=\"" + 
+			 t3eOptions.stylesheet + 
+			"\"/></head>" +
+			"<body class=\"editbox\" spellcheck=\"false\"></body></html>");
+		this.doc.close();
+
+		// An array of known 'dirty' nodes, nodes that have been modified
+		// since they were last parsed.
+		this.dirty = [];
+
+		// dimensions
+		this.width   = $(this.textarea).getDimensions().width;
+		this.height  = $(this.textarea).getDimensions().height;
+
+		var content = this.textarea.value;
+
+		// hide the textarea
+		this.textarea.hide();
+
+		// Some browsers immediately produce a <body> in a new <iframe>,
+		// others only do so later and fire an onload event when they do.
+		if (this.doc.body)	{
+			this.init(content);
+		} else	{
+			// connect(this.iframe, "onload", bind(function(){disconnectAll(this.iframe, "onload"); this.init(content);}, this));
+			Event.observe(this.iframe, "load", function(){ this.init(content);}.bindAsEventListener(this));
+		}
   }
 
 
@@ -414,26 +444,26 @@ var t3editor = function(){
       this.container = this.doc.body;
       
 	  // fetch key press events
-	  connect(this.doc, "onkeydown", method(this, "keyDown"));
-      connect(this.doc, "onkeyup", method(this, "keyUp"));
-	  
-	  // fetch scroll events for updateing line numbers
-	  connect(this.doc, "onscroll", method(this, "scroll"));
-      connect(this.win, "onscroll", method(this, "scroll"));
-      
-      //fetch mouse click event
-      connect(this.doc, "onclick", method(this, "click"));
-    
-      // get the form object (needed for Ajax saving)
-      var form = $(this.textarea.form)
-	  this.saveButtons = form.getInputs('submit', 'submit');
+			Event.observe(this.doc, "keydown", this.keyDown.bindAsEventListener(this));
+			Event.observe(this.doc, "keyup",   this.keyUp.bindAsEventListener(this));
 
-      // initialize ajax saving events
-      this.saveAjaxEvent = this.saveAjax.bind(this);
-      this.saveButtons.each(function(button) {
-      	Event.observe(button,'click',this.saveAjaxEvent);
-      }.bind(this));
-      
+			// fetch scroll events for updateing line numbers
+			Event.observe(this.doc, "scroll", this.scroll.bindAsEventListener(this));
+			Event.observe(this.win, "scroll", this.scroll.bindAsEventListener(this));
+
+			// fetch mouse click event
+			Event.observe(this.doc, "click", this.click.bindAsEventListener(this));
+
+			// get the form object (needed for Ajax saving)
+			var form = $(this.textarea.form)
+			this.saveButtons = form.getInputs('submit', 'submit');
+
+			// initialize ajax saving events
+			this.saveAjaxEvent = this.saveAjax.bind(this);
+			this.saveButtons.each(function(button) {
+				Event.observe(button,'click',this.saveAjaxEvent);
+			}.bind(this));
+
 	  // resize the editor
       this.resize(this.width, this.height);
 	  
@@ -465,8 +495,6 @@ var t3editor = function(){
 		
 		this.markCursorDirty();
 		this.scheduleHighlight();
-
-		// this.doc.execCommand("undo", false, null);
 	},
 	
     // toggle between the textarea and t3editor
@@ -490,9 +518,10 @@ var t3editor = function(){
 
 	// create an item for the footer line and connect an event
     createFooterItem: function(title, mouseover, clickAction)	{
-    	var item = $(createDOM("DIV", {
-    		"class": 	"t3e_footer_item"
-    	}));
+			var item = new Element("DIV", {
+					"class": 	"t3e_footer_item"
+				}
+			);
     	item.innerHTML = title;
     	
     	if (mouseover) {
@@ -500,12 +529,11 @@ var t3editor = function(){
     		Event.observe(item, "mouseover", function(e){Event.element(e).addClassName('t3e_footeritem_active');} );
     		Event.observe(item, "mouseout",  function(e){Event.element(e).removeClassName('t3e_footeritem_active');} );
 		}
-		
 		if (typeof clickAction == 'object') { // display an overlay
 			Event.observe(item, "click",  function(e){ clickAction.toggle(); } );
 		
 		} else if (typeof clickAction == 'string' && clickAction != '') {	// execute a method
-			connect(item, "onclick", method(this, clickAction+''));
+			Event.observe(item, "click",  function(e){ eval(clickAction); }.bindAsEventListener(this) );
 		}
 		
     	return item;
@@ -779,7 +807,10 @@ var t3editor = function(){
         }
         //save code and text to history object
         obj.code = this.container.innerHTML;
-        obj.text = this.getCode();
+       
+       // TODO
+       /// obj.text = this.getCode();
+       
         // check if was undo/redo than refresh history array
         if (this.currHistoryPosition+1 < this.history.length){
             this.history = this.history.slice (0,this.currHistoryPosition+1);
@@ -850,7 +881,7 @@ var t3editor = function(){
             this.pushToHistory();
             return ;
         }
-        if (this.getCode(code) != this.history[this.currHistoryPosition].text){
+        if (code != this.history[this.currHistoryPosition].code){
             this.pushToHistory();
         }
         
@@ -913,14 +944,16 @@ var t3editor = function(){
     // Split a chunk of code into lines, put them in the frame, and
     // schedule them to be coloured.
     importCode: function(code) {
-      replaceChildNodes(this.container);
+      		while ((child = this.container.firstChild)) {
+				this.container.removeChild(child);
+			}
 
       if (code == "\n" || code == "\r\n" || code == "\r"){code = '';}
       var lines = code.replace(/[ \t]/g, nbsp).replace(/\r\n?/g, "\n").split("\n");
 
       for (var i = 0; i != lines.length; i++) {
         if (i > 0)
-          this.container.appendChild(withDocument(this.doc, BR));
+          this.container.appendChild(this.win.document.createElement('BR'));
         var line = lines[i];
         if (line.length > 0)
           this.container.appendChild(this.doc.createTextNode(line));
@@ -943,16 +976,23 @@ var t3editor = function(){
         return "";
 
       var accum = [];
-      forEach(traverseDOM(this.container.firstChild), method(accum, "push"));
+      
+			tdom = traverseDOM(this.container.firstChild);
+			try	{
+				while (tmp = tdom.next()) {
+					accum.push(tmp);
+				}
+			} catch(e)	{
+				if (e != StopIteration)	throw e;
+			}
       return accum.join("").replace(nbspRegexp, " ");
     },
 
     // Intercept enter and any keys that are specified to re-indent
     // the current line.
     keyDown: function(event) {
-      var name = event.key().string;
-
-      if (name == "KEY_ENTER") {
+      var keycode = event.keyCode;
+      if (keycode == Event.KEY_RETURN)	{
             event.stop();
 			if (this.ac === 1)	{
                this.insertCurrWordAtCursor();
@@ -962,33 +1002,34 @@ var t3editor = function(){
             }
             this.updateLinenum();
 			
-   	  } else if (name == "KEY_S" && event.modifier().ctrl) { 	// save via ajax request
+   	  } else if (keycode == 83	&& event.ctrlKey) { 	// CTRL-S   save via ajax request
       		this.saveAjax();
       		event.stop();
       		return;
 			
-      } else if (name == "KEY_F11" && event.modifier().ctrl) {	// toogle fullscreen mode
+      } else if (keycode == 122	&& event.ctrlKey)	{	// CTRL-F11 toogle fullscreen mode
       		this.toggleFullscreen();
       		event.stop();
       		return;
 			
-      } else if (name == "KEY_SPACEBAR" && event.modifier().ctrl && this.options.autoComplete){ // call autocomplete if autocomplete turn on
+			// TODO
+      } else if (keycode == 32 && event.ctrlKey && this.options.autoComplete){ // CTRL-Space  call autocomplete if autocomplete turn on
         this.autoComplete();
         event.stop();
-      } else if (name=="KEY_ARROW_UP" && this.ac == 1){ // move up cursor in autocomplete box
+      } else if (keycode == 38 && this.ac == 1){ // arrow up:  move up cursor in autocomplete box
         event.stop();
         window.setTimeout('t3e_instances['+this.index+'].autoCompleteBoxMoveUpCursor()',100);
-      } else if (name=="KEY_ARROW_DOWN" && this.ac == 1){ // move down cursor in autocomplete box
+      } else if (keycode == 40 && this.ac == 1){ // Arrow down: move down cursor in autocomplete box
         event.stop();
         window.setTimeout('t3e_instances['+this.index+'].autoCompleteBoxMoveDownCursor();',100);
-      } else if (name=="KEY_ESCAPE" && this.ac === 1){ // if autocomplete box is showing. by ESC press it's hide and autocomplete is finish
+      } else if (keycode == 27 && this.ac === 1){ // Esc: if autocomplete box is showing. by ESC press it's hide and autocomplete is finish
             this.ac = 0;
             this.autoCompleteBox.hide();
-      } else if (name=='KEY_Z' && event.modifier().ctrl){
+      } else if (keycode == 90 && event.ctrlKey){
          this.undoable = 1;
          this.undo();
          event.stop();
-      } else if (name=='KEY_Y' && event.modifier().ctrl){
+      } else if (keycode == 89 && event.ctrlKey){
          this.redoable = 1;
          this.redo();
          event.stop();
@@ -999,12 +1040,31 @@ var t3editor = function(){
     // mark the node at the cursor dirty when a non-safe key is
     // released.
     keyUp: function(event) {
-      var name = event.key().string;
+      // var name = event.key().string;
+      var keycode = event.keyCode;
+      
+      // TODO
+      /*
       if (this.options.reindentAfterKeys.hasOwnProperty(name))
         this.indentAtCursor();
-      else if (!this.options.safeKeys.hasOwnProperty(name)) {
+      else */ 
+      // TODO 
+      if (
+      		keycode != 37 
+			&& keycode != 38 
+			&& keycode != 39
+			&& keycode != 40 
+			&& keycode != 35 
+			&& keycode != 36
+			&& keycode != 33
+			&& keycode != 34 
+			&& keycode != 16 
+			&& keycode != 17 
+			&& keycode != 18 
+			&& !event.ctrlKey) {
         this.markCursorDirty();
         this.checkTextModified();
+        window.setTimeout('t3e_instances['+this.index+'].checkHistoryChanges();',100);
 	  }
 	  
        if (this.ac===1){ // if autocomplete now is not finish, but started and continue typing - refresh autocomplete box
@@ -1016,7 +1076,9 @@ var t3editor = function(){
             }
        } 
       
-      if (name == "KEY_ENTER" || name == "KEY_BACKSPACE" || name == "KEY_DELETE" ){
+      if (keycode == Event.KEY_RETURN
+			 || keycode == Event.KEY_BACKSPACE
+			 || keycode == Event.KEY_DELETE )	{
           this.updateLinenum();
       }
        
@@ -1149,7 +1211,8 @@ var t3editor = function(){
         }
 	// Otherwise, we have to add a new whitespace node.
         else {
-          whiteSpace = withDocument(this.doc, function(){return SPAN({"class": "part whitespace"}, repeatString(nbsp, indentDiff))});
+             whiteSpace = new Element('SPAN',{"class": "whitespace part"});
+			whiteSpace.innerHTML = repeatString(nbsp, indentDiff);
           if (start)
             insertAfter(whiteSpace, start);
           else
@@ -1197,7 +1260,8 @@ var t3editor = function(){
     // should as unobtrusive as possible.
     scheduleHighlight: function() {
 	  if (this.highlightTimeout) clearTimeout(this.highlightTimeout);
-  	  this.highlightTimeout = setTimeout(bind(this.highlightDirty, this), this.options.passDelay);
+  	  this.highlightTimeout = setTimeout(this.highlightDirty.bind(this), this.options.passDelay);
+  	  
     },
 
     // Fetch one dirty node, and remove it from the dirty set.
@@ -1278,8 +1342,10 @@ var t3editor = function(){
     }
     // Create a part corresponding to a given token.
     function tokenPart(token){
-      var part = withDocument(document, partial(SPAN, {"class": "part " + token.style}, token.value));
-      part.currentText = token.value;
+      var part = new Element('SPAN',{"class": "part " + token.style});
+		part.update(token.value);
+		part.currentText = token.value;
+		part.innerHTML = token.value;
       return part;
     }
 
@@ -1340,7 +1406,9 @@ var t3editor = function(){
     // This forEach loops over the tokens from the parsed stream, and
     // at the same time uses the parts object to proceed through the
     // corresponding DOM nodes.
-    forEach(parsed, function(token){
+		try	{
+			while (true)	{ // stopped by StopIteration
+				token = parsed.next();
       var part = parts.nextNonEmpty();
       if (token.value == "\n"){
 	// The idea of the two streams actually staying synchronized
@@ -1401,10 +1469,17 @@ var t3editor = function(){
           }
         }
       }
-    });
+     }// while
+    } catch (e) {
+    	if (e != StopIteration) {
+        	throw e;
+    	}
+	}
     this.refreshCursorObj();
     this.initable = 1;
-    window.setTimeout ('t3e_instances['+this.index+'].checkHistoryChanges();',100);
+    
+    // window.setTimeout('t3e_instances['+this.index+'].checkHistoryChanges();',100);
+    
     // The function returns some status information that is used by
     // hightlightDirty to determine whether and where it has to
     // continue.

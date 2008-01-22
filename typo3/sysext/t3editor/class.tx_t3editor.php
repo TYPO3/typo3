@@ -127,8 +127,7 @@ class tx_t3editor {
 				'var PATH_t3e = "'.$GLOBALS['BACK_PATH']. t3lib_extmgm::extRelPath('t3editor').'"; '.
 				'</script>';
 
-			$code.= '<script src="'.$path_t3e.'/jslib/Mochi.js" type="text/javascript"></script>'.
-				'<script src="'.$path_t3e.'/jslib/util.js" type="text/javascript"></script>'.
+			$code.= '<script src="'.$path_t3e.'/jslib/util.js" type="text/javascript"></script>'.
 				'<script src="'.$path_t3e.'/jslib/select.js" type="text/javascript"></script>'.
 				'<script src="'.$path_t3e.'/jslib/stringstream.js" type="text/javascript"></script>'.
 				'<script src="'.$path_t3e.'/jslib/parsetyposcript.js" type="text/javascript"></script>'.

@@ -324,7 +324,7 @@ var select = {};
       var selection = window.getSelection();
       if (selection && selection.rangeCount > 0) {
 	var range = selection.getRangeAt(0);
-	var br = withDocument(window.document, BR);
+	var br = window.document.createElement('br');
 	range.insertNode(br);
 	range.setEndAfter(br);
 	range.collapse(false);

@@ -2,6 +2,7 @@
 
 	* added feature: #7223: update prototype and scriptaculous to their most recent versions
 	* fixed bug: #7237: There is no way to get loaded interface
+	* fixed bug; #7238: t3editor should not depend on MochiKit-Javascript-Framework
 
 2008-01-21  Benjamin Mack  <mack@xnos.org>
 

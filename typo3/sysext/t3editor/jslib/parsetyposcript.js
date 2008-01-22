@@ -34,7 +34,7 @@
 // parentheses, etc, and know when you are inside a string or comment.
 var parseTypoScript = function() {
   // Token types that can be considered to be atoms.
-  var atomicTypes = setObject("atom", "number", "variable", "string", "regexp");  
+  var atomicTypes = {"atom": true, "number": true, "variable": true, "string": true, "regexp": true};
 
   // Constructor for the lexical context objects.
   function TSLexical(indented, column, type, align, prev) {

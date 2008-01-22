@@ -36,7 +36,7 @@ function singleStringStream(string) {
 // is applied to the result of traverseDOM (see codemirror.js), and
 // the resulting stream is fed to the parser.
 function multiStringStream(source){
-  source = iter(source);
+  // source = iter(source);
   var current = "", pos = 0;
   var peeked = null, accum = "";
   var result = {peek: peek, next: next, get: get};
