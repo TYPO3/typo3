@@ -458,6 +458,10 @@ class SC_index {
 				$this->GPinterface = '';
  			}
 
+				// store interface
+			$BE_USER->uc['interfaceSetup'] = $this->GPinterface;
+			$BE_USER->writeUC();
+
 				// Based on specific setting of interface we set the redirect script:
 			switch ($this->GPinterface)	{
 				case 'backend':

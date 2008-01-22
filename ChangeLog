@@ -1,6 +1,7 @@
-2008-01-21  Ingo Renner  <ingo@typo3.org>
+2008-01-22  Ingo Renner  <ingo@typo3.org>
 
-	* updated prototype and scriptaculous
+	* added feature: #7223: update prototype and scriptaculous to their most recent versions
+	* fixed bug: #7237: There is no way to get loaded interface
 
 2008-01-21  Benjamin Mack  <mack@xnos.org>
 
