@@ -17,11 +17,15 @@ h3	{
 	border-bottom: 1px #c0c0c0 dashed;
 }
 
+p {
+	margin: 10px 0;	
+}
+
 fieldset legend	{
 	font-weight: bold;
 }
 
-input.bg, select.bg, button.bg	{
+input.bg, select.bg, button	{
 	background: #fff url(../../../imgs/icons/bg_input.gif) no-repeat scroll left top;
 	border: 1px solid #aaa;
 	margin-top: 2px;
@@ -87,12 +91,6 @@ label em	{
 	margin: 0px 0px 7px 20px;
 }
 
-.error-header {
-	font-weight: bold;
-	color: red;
-	margin: 5px;
-}
-
 .categoryTreeContainer	{
 	position: fixed;
 	top: 5px;
@@ -127,11 +125,10 @@ label em	{
 
 .help_container	{
 	border-bottom: 3px gray solid;
-	width: 100%;
+	width: 600px;
 	opacity: 0.9;
-	background-color: yellow;
+	background-color: #cccccc;
 	padding: 5px;
-	font-size: 1.2em;
 	position: absolute;
 }
 
@@ -178,6 +175,11 @@ label em	{
 }
 
 /** error messages **/
+.error-header {
+	font-weight: bold;
+	color: red;
+	margin: 5px;
+}
 
 .severity_ok strong.message-header	{
 	background-image: url('../../../imgs/icons/ok.png');

@@ -33,7 +33,7 @@ You can disable all image processing options in TYPO3 ([GFX][image_processing]=0
 			</label>
 
 			<label index="title_gfxOverview">Image Processing</label>
-			<label index="description_gfxOverview">
+			<label index="help_gfxOverview">
 &lt;strong&gt;Verifying the image processing capabilities of your server&lt;/strong&gt;&lt;br/&gt;
 This page performs image processing and displays the result. It's a thorough check that everything you've configured is working correctly.&lt;br/&gt;
 It's quite simple to verify your installation; Just look down the page, the images in pairs should look like each other. If some images are not alike, something is wrong. You may also notice warnings and errors if this tool found signs of any problems.&lt;br/&gt;

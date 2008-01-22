@@ -32,6 +32,13 @@ function toggleHelp(elementName)	{
 	}
 }
 
+function hideElement(elementId) {
+		// hide the element
+	new Effect.BlindUp(elementId, {duration: 0.3});
+		
+		// hide the "hide" button
+	$('hideBtn_'+elementId).style.display = 'none';
+}
 
 function toggleAllLeafs()	{
 	var iconUrl = expandSrc;
@@ -184,7 +191,12 @@ function executeMethod(module, method, extraParameters, callBack)	{
 function displayMethodResult(data)	{
 	console.debug(data);
 	if (data.request.parameters.target)	{
+			// display result
 		$(data.request.parameters.target).innerHTML = data.responseText;
+		
+			// show the "hide" button
+		console.debug($('hideBtn_'+data.request.parameters.target));
+		$('hideBtn_'+data.request.parameters.target).style.display = 'inline';
 	} else {
 		// console.debug(data.responseText);
 	}

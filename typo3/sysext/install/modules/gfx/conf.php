@@ -254,6 +254,36 @@ $GLOBALS['MCA']['gfx'] = array (
 			'categorySub' => 'checks',
 			'method' => 'gfx:overview',
 			'autostart' => true
+		),
+		
+		'gfxReadingImageFormats' => array (
+			'categoryMain' => 'gfx',
+			'categorySub' => 'checks',
+			'method' => 'gfx:readingImageFormats',
+		),
+		
+		'gfxWritingGIFandPNG' => array (
+			'categoryMain' => 'gfx',
+			'categorySub' => 'checks',
+			'method' => 'gfx:writingGIFandPNG',
+		),
+		
+		'gfxScalingImages' => array (
+			'categoryMain' => 'gfx',
+			'categorySub' => 'checks',
+			'method' => 'gfx:scalingImages',
+		),
+		
+		'gfxCombiningImages' => array (
+			'categoryMain' => 'gfx',
+			'categorySub' => 'checks',
+			'method' => 'gfx:combiningImages',
+		),
+		
+		'gfxGDLibraryFunctions' => array (
+			'categoryMain' => 'gfx',
+			'categorySub' => 'checks',
+			'method' => 'gfx:gdLibraryFunctions',
 		)
 	)
 );

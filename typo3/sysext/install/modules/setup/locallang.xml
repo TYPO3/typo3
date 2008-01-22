@@ -12,6 +12,9 @@
 			<label index="label_value_modified">%s modfied (new value: %s)</label>
 			<label index="label_path">path:</label>
 			<label index="label_default">default value:</label>
+			
+			<label index="label_execute">Exceute</label>
+			<label index="label_hide">Hide</label>
 
 			<label index="msg_searchResultMessage">&lt;strong&gt;%d&lt;/strong&gt; results found for "%s"</label>
 		</languageKey>

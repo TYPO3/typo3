@@ -215,7 +215,7 @@ class tx_install_module_setup extends tx_install_module_base	{
 				$this->pObj->getBasicsObject()->loadModule($mod);
 				
 				$helpData = $this->pObj->getViewObject()->renderHelp($this->get_LL($modConfig['help']), $name);
-				$descr = $this->pObj->getViewObject()->renderTag('div', $this->get_LL($modConfig['description']));
+				$descr = $this->pObj->getViewObject()->renderTag('div', $this->get_LL($modConfig['description']), array('class' => 'description'));
 				$deliverableContent = '';
 				
 				switch ($deliverable)	{
@@ -282,11 +282,14 @@ class tx_install_module_setup extends tx_install_module_base	{
 					case 'methods':
 							// the result of methods is simply printed out
 						$target = $name.'_result';
+						$hideButton = '<span style="display:none" id="hideBtn_'.$target.'">&nbsp;[<a href="#" onclick="hideElement(\''.$target.'\');">'.$this->get_LL('label_hide').'</a>]</span>';
+						
 						if ($modConfig['autostart'] == true)	{
+							$headerContent = $hideButton;
 							$deliverableContent = '<div id="'.$target.'">'.$this->basicsObject->executeMethod($modConfig['method']).'</div>';
 						} else {
 							list($module, $method) = t3lib_div::trimExplode(':', $modConfig['method']);
-							$headerContent = '&nbsp;[<a href="#" onclick="executeMethod(\''.$module.'\', \''.$method.'\',  {target:\''.$target.'\'}, displayMethodResult)">'.$this->get_LL('label_execute').'</a>]';
+							$headerContent = '&nbsp;[<a href="#" onclick="executeMethod(\''.$module.'\', \''.$method.'\',  {target:\''.$target.'\'}, displayMethodResult)">'.$this->get_LL('label_execute').'</a>]'.$hideButton;
 							$deliverableContent = '<div id="'.$target.'">'.$deliverableContent.'</div>';
 						}
 						break;
