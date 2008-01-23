@@ -64,6 +64,15 @@ $GLOBALS['MCA']['system'] = array (
 			'valueType' => 'int'
 		),
 		
+		'RTE_imageStorageDir' => array (
+			'categoryMain' => 'system',
+			'categorySub' => 'backend',
+			'tags' => array ('system', 'directory', 'rte'),
+			'elementType' => 'input',
+			'value' => 'LC:BE/RTE_imageStorageDir',
+			'default' => 'uploads/rte/'
+		),
+		
 		/** FRONTEND **/
 		
 		'png_to_gif' => array (

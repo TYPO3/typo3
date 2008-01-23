@@ -76,8 +76,8 @@ class tx_install_module_base {
 	 * 
 	 * @return	Locallang label or $index if no label was found
 	 */
-	protected function get_LL($index)	{
-		return $this->basicsObject->getLabel($index);
+	protected function get_LL($index, $alternative = '')	{
+		return $this->basicsObject->getLabel($index, $alternative);
 	}
 	
 	

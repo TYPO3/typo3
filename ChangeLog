@@ -1,3 +1,8 @@
+2008-01-23	Thomas Hempel  <thomas@typo3-unleashed.net>
+
+	* Installer: added new option BE/RTE_imageStorageDir. related to issue #7185
+	* Installer: Added some styles for deliverable lists
+
 2008-01-22	Thomas Hempel  <thomas@typo3-unleashed.net>
 
 	* Installer: Added a "hide" button to hide the results of executed methods

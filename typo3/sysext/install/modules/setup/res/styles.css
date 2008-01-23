@@ -21,6 +21,14 @@ p {
 	margin: 10px 0;	
 }
 
+label em	{
+	font-style: italic;
+	display: block;
+	margin: 0px 0px 7px 20px;
+}
+
+/* FORMS GENRAL */
+
 fieldset legend	{
 	font-weight: bold;
 }
@@ -32,7 +40,17 @@ input.bg, select.bg, button	{
 	padding:3px;
 }
 
-/** styles for login box - start **/
+/* GENERAL CLASSES */
+.italic	{
+	font-style: italic;
+}
+
+.description	{
+	margin: 5px;
+}
+
+
+/* LOGIN SCREEN */
 form#formLogin {
 	width: 400px;
 	position: absolute;
@@ -83,13 +101,8 @@ form#formLogin ul {
 	text-align: left;
 }
 
-/** styles for login box - end **/
 
-label em	{
-	font-style: italic;
-	display: block;
-	margin: 0px 0px 7px 20px;
-}
+/* CATEGORY TREE */
 
 .categoryTreeContainer	{
 	position: fixed;
@@ -123,6 +136,9 @@ label em	{
 	padding-left: 14px;
 }
 
+
+/* DELIVERABLES */
+
 .help_container	{
 	border-bottom: 3px gray solid;
 	width: 600px;
@@ -132,15 +148,32 @@ label em	{
 	position: absolute;
 }
 
+div.deliverable-box {
+	margin-bottom: 10px;
+	padding: 0 5px 5px 5px;
+}
+
+div.deliverable-box h3 {
+	background: none;
+	text-transform: uppercase;
+}
+
+div.odd {
+	background-color: #dddddd;
+}
+
+.formElementCheckbox	{
+	display: inline;
+	margin-right: 5px;
+}
+
+/* MODULE CONTENT */
+
 #moduleContent	{
 	position: absolute;
 	left: 270px;
 	
 	opacity: 1.0;
-}
-.formElementCheckbox	{
-	display: inline;
-	margin-right: 5px;
 }
 
 .category_about	{
@@ -156,13 +189,9 @@ label em	{
 	margin: 0 5px 0 0;
 }
 
-.italic	{
-	font-style: italic;
-}
 
-.description	{
-	margin: 5px;
-}
+
+/* MESSAGES */
 
 .installer-message	{
 	margin-bottom: 15px;

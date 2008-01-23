@@ -199,6 +199,7 @@ class tx_install_module_setup extends tx_install_module_base	{
 					'<input type="hidden" name="categorySub" value="'.$this->env['categorySub'].'" />';
 			}
 			
+			$odd = false;
 			foreach ($names as $name => $mod)	{
 				$modConfig = $GLOBALS['MCA'][$mod][$deliverable][$name];
 				
@@ -298,24 +299,27 @@ class tx_install_module_setup extends tx_install_module_base	{
 				
 				if ($modConfig['elementType'] == 'checkbox')	{
 						// draw checkboxes in front of the caption
-					$deliverableBox = $this->pObj->getViewObject()->renderTag('h3', $deliverableContent.$this->get_LL($modConfig['title']).' '.(($helpData) ? $helpData['button'] : '')).(($helpData) ? $helpData['container'] : '').$descr;
+					$deliverableBox = $this->pObj->getViewObject()->renderTag('h3', $deliverableContent.$this->get_LL($modConfig['title'], $name).' '.(($helpData) ? $helpData['button'] : '')).(($helpData) ? $helpData['container'] : '').$descr;
 				} elseif ($deliverable == 'methods') {
 						// draw "execute" link after caption and target div under caption
-					$deliverableBox = $this->pObj->getViewObject()->renderTag('h3', $this->get_LL($modConfig['title']).$headerContent.' '.(($helpData) ? $helpData['button'] : '')).(($helpData) ? $helpData['container'] : '').$descr.$deliverableContent;
+					$deliverableBox = $this->pObj->getViewObject()->renderTag('h3', $this->get_LL($modConfig['title'], $name).$headerContent.' '.(($helpData) ? $helpData['button'] : '')).(($helpData) ? $helpData['container'] : '').$descr.$deliverableContent;
 				} else {
 						// draw caption and content under it (default)
-					$deliverableBox = $this->pObj->getViewObject()->renderTag('h3', $this->get_LL($modConfig['title']).' '.(($helpData) ? $helpData['button'] : '')).(($helpData) ? $helpData['container'] : '').$descr.$deliverableContent;
+					$deliverableBox = $this->pObj->getViewObject()->renderTag('h3', $this->get_LL($modConfig['title'], $name).' '.(($helpData) ? $helpData['button'] : '')).(($helpData) ? $helpData['container'] : '').$descr.$deliverableContent;
 				}
 				
 				$paramData = array (
 					'id' => 'container_'.$name,
-					'class' => 'deliverable-box'
+					'class' => 'deliverable-box'.(($odd) ? ' odd' : '')
 				);
+				
 				if ($filterResults[$name])	{
 					$paramData['style'] = 'background-color:#99ff99';
 				}
 				
 				$result .= $this->pObj->getViewObject()->renderTag('div', $deliverableBox, $paramData);
+				
+				$odd = !$odd;
 			}
 			
 				// add form for saving options
