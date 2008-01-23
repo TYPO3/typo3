@@ -16,6 +16,7 @@
 			<label index="title_typo_db_username">Database username</label>
 			<label index="title_typo_db_password">Database password</label>
 			<label index="title_typo_db">TYPO3 database</label>
+			<label index="title_typo_db_new">New Database</label>
 
 			<label index="title_analyze_compareFile">Compare against default database</label>
 			<label index="title_analyze_staticTables">Reload static tables</label>
@@ -38,6 +39,7 @@
 			<label index="label_line">Line</label>
 			<label index="label_selectall">Select all</label>
 			<label index="label_deselectall">Deselect all</label>
+			<label index="label_tablecreated">The table "%s" where created successfully</label>
 
 			<label index="msg_database_error_cantconnect">Can't connect to database-server!</label>
 			<label index="msg_database_error_cantselectdb">Can't select database "%s"</label>
@@ -51,11 +53,16 @@
 			<label index="msg_database_warning_selectdb">Please select a database or fill in a name for a new database.</label>
 			<label index="msg_database_warning_invalidname">The NEW database name "%s" was not alphanumeric, a-zA-Z0-9_-</label>
 			<label index="msg_database_warning_failedstatements">Some statements failed to execute due to SQL errors. They are detailed below.</label>
+			<label index="msg_database_warning_failedstatement">The following statement could not be executed: </label>
+			<label index="msg_database_warning_tablecreatefailed">The table "%s" could not be create&lt;br /&gt;Message: %s&lt;br /&gt;Query: %s</label>
 			
 			<label index="msg_database_updateneeded">Table and field definitions should be updated!&lt;br /&gt; There seems to be a number of differences between the database and the selected SQL-file. Please select which statements you want to execute in order to update your database:</label>
 			<label index="msg_database_noupdateneeded">Table and field definitions are OK.&lt;br /&gt;The tables and fields in the current database correspond perfectly to the database in the selected SQL-file.</label>
 			<label index="msg_database_reloadstaticdata">Check in the form below for which static table you want to load or reload the data. Be careful if the table already exists: it will be dropped before the data is loaded, so any changes will be lost.</label>
 			<label index="msg_database_staticdatareloaded">Table "%s" was (re)created successfully and %d rows of data were loaded.</label>
+			<label index="msg_database_tablescreated">All tables where created successfully. See a list of created tables below.</label>
+			<label index="msg_database_admincreated">An admin user with username "%s" was created successfully.</label>
+
 		</languageKey>
 	</data>
 </T3locallang>

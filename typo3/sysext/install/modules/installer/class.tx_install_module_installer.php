@@ -171,7 +171,7 @@ class tx_install_module_installer extends tx_install_module_base	{
 					'hidden'  => array (
 						'step' => $this->step-1,
 						'mode' => '123',
-						'state' => 'post'
+						'state' => 'pre'
 					),
 				)
 			);
@@ -188,7 +188,8 @@ class tx_install_module_installer extends tx_install_module_base	{
 			'###MSG_TITLE###' => $this->get_LL('msg_step'.$this->step.'_title'),
 			'###MSG_DESCRIPTION###' => $this->get_LL('msg_step'.$this->step.'_description'),
 			'###BTN_BACK###' => $btnBack,
-			'###CONTENT###' => $stepResult
+			'###CONTENT###' => $stepResult,
+			'###PREV_RESULT###' => $this->pObj->getViewObject()->getLastMessage(true)
 		);
 		
 		if (count($this->pObj->getViewObject()->getErrors('general')) > 0)	{
@@ -221,7 +222,7 @@ class tx_install_module_installer extends tx_install_module_base	{
 			return false;
 		}
 		
-			// process pre state
+			// process pre state - result is true if this state is not configured
 		if (isset($this->stepConfig[$this->step]['pre']))	{
 			$preResult = $this->executeStepState('pre');
 		} else {
@@ -231,7 +232,7 @@ class tx_install_module_installer extends tx_install_module_base	{
 			// exit if pre checks are not sucessfull
 		if ($preResult === false)	{
 				// depending on preMode we only skip state main or stop here immediately
-			if (!isset($this->stepConfig[$this->step]['preMode']) &&Ê(!strcmp($this->stepConfig[$this->step]['preMode'], 'skipMain')))	{
+			if (!isset($this->stepConfig[$this->step]['preMode']) &&Ê($this->stepConfig[$this->step]['preMode'] != 'skipMain'))	{
 				return false;
 			} else {
 				$this->env['state'] = 'post';
@@ -243,7 +244,7 @@ class tx_install_module_installer extends tx_install_module_base	{
 		if ($this->env['state'] == 'post')	{
 				// execute process methods (has to be configured)
 			$processResult = $this->executeStepState('post');
-			$this->env['state'] = NULL;
+			$this->env['state'] = 'pre';
 			
 				// go to next step if process was ok
 			if ($processResult === true)	{
@@ -254,7 +255,7 @@ class tx_install_module_installer extends tx_install_module_base	{
 		
 			// execute main state (has to be configured!)
 		$mainResult = $this->executeStepState('main');
-		
+				
 		if ($mainResult === false)	{
 			return false;
 		}
@@ -355,6 +356,13 @@ class tx_install_module_installer extends tx_install_module_base	{
 		return $stateResult;
 	}
 	
+	/**
+	 * Receives a state config and executs the respective method and returns the result
+	 *
+	 * @param mixed $stateMethod: The method to call and the optional the type.
+	 * @param array $formElements: An array that collects the form elements for the step (PASS BY REFERENCE)
+	 * @return False if somethign went wrong, otherwise the result of the called method
+	 */
 	private function dispatchStateMethod($stateMethod, &$formElements) {
 		$result = true;
 		if ($stateMethod['type'] == 'label') {

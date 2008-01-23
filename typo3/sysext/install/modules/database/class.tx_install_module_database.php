@@ -269,7 +269,7 @@ class tx_install_module_database extends tx_install_module_base	{
 					return false;
 				}
 			} else {
-					// database coul not be selected
+					// database could not be selected
 				return false;
 			}
 			
@@ -377,13 +377,27 @@ class tx_install_module_database extends tx_install_module_base	{
 		$t3lib_install = t3lib_div::makeInstance('t3lib_install');
 		$statements = $t3lib_install->getStatementArray($tblFileContent, 1);
 		
-		list($statements_table, $insertCount) = $t3lib_install->getCreateTables($statements, 1);
+		// list($statements_table, $insertCount) = $t3lib_install->getCreateTables($statements, 1);
 		
 			// create tables and count them
 		$createCount = 0;
-		foreach ($statements as $tableName => $query)	{
+		$error = false;
+		$resultItems = array();
+		foreach ($statements as $queryIndex => $query)	{
+			
+			eregi('^create[[:space:]]*table[[:space:]]*[`]?([[:alnum:]_]*)[`]?',substr($query,0,100),$reg);
+			$tableName = trim($reg[1]);
+			
 			$res = $GLOBALS['TYPO3_DB']->admin_query($query);
-			$createCount++;
+			if (!$res) {
+				if (!array_key_exists($tableName, $resultItems)) {
+					$error = true;
+					$resultItems[$tableName] = array ('status' => 'warning', 'type' => 'plain', 'value' => sprintf($this->get_LL('msg_database_warning_tablecreatefailed'), $tableName, $GLOBALS['TYPO3_DB']->sql_error(), $query));
+				}
+			} else {
+				$resultItems[$tableName] = array ('status' => 'ok', 'type' => 'plain', 'value' => sprintf($this->get_LL('label_tablecreated'), $tableName));
+				$createCount++;
+			}
 		}
 
 			// Make a database comparison because some tables that are defined twice have not been created at this point. This applies to the "pages.*" fields defined in sysext/cms/ext_tables.sql for example.
@@ -395,10 +409,19 @@ class tx_install_module_database extends tx_install_module_base	{
 		if (is_array($update_statements['add']))	{
 			foreach ($update_statements['add'] as $statement)	{
 				$res = $GLOBALS['TYPO3_DB']->admin_query($statement);
+				if (!$res) {
+					$this->addError($this->get_LL('msg_database_warning_failedstatement').$statement);
+					$error = true;
+				}
 			}
 		}
 		
-		return true;
+		$this->pObj->getViewObject()->addMessage($this->pObj->getViewObject()->render(array(
+			array('type' => 'plain', 'value' => $this->pObj->getViewObject()->renderTag('strong', ($error) ? $this->get_LL('msg_database_warning_failedstatements') : $this->get_LL('msg_database_tablescreated'))),
+			array('type' => 'list', 'value' => $resultItems)))
+		);
+		
+		return ($error) ? false : true;
 	}
 	
 	/**
@@ -486,7 +509,9 @@ class tx_install_module_database extends tx_install_module_base	{
 		);
 									
 		$GLOBALS['TYPO3_DB']->exec_INSERTquery('be_users', $insertFields);
-
+		
+		$this->pObj->getViewObject()->addMessage(sprintf($this->get_LL('msg_database_admincreated'), strtolower($this->env['createadmin_username'])));
+		
 		return true;
 	}
 	

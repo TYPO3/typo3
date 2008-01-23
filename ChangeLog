@@ -5,6 +5,10 @@
 2008-01-23	Thomas Hempel  <thomas@typo3-unleashed.net>
 
 	* Bugfix: removed a needless comma in sysext/cms/ext_tables.sql (line 160)
+	* Installer: Improved the installer module.
+		- The result of the previous steps is now displayed
+		- Fixed some issues with "previous" button
+	* Installer: Improved database and table creation
 	* Installer: added new option BE/RTE_imageStorageDir. related to issue #7185
 	* Installer: Added some styles for deliverable lists
 

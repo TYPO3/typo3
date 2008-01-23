@@ -12,6 +12,9 @@
 			<label index="msg_step1_title">Database connection</label>
 			<label index="msg_step1_description">Please enter the information for connecting to your prefered database.</label>
 
+			<label index="msg_step2_title">Select /create database</label>
+			<label index="msg_step2_description">Please select an existing database from the dropdown box or enter a name in the input field to create a new database.</label>
+
 			<label index="msg_step4_title">Create admin user</label>
 			<label index="msg_step4_description">Your database is set up sucessfully. Now we have to create an admin account for logging into the backend.</label>
 

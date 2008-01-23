@@ -433,19 +433,19 @@ class tx_install_view {
 			foreach ($data as $singleElement) {
 				switch ($singleElement['status'])	{
 					case 'ok':
-						$style = ' style="list-style-image: url('.$this->pObj->getBasicsObject()->getInstallerWebPath().'imgs/icons/ok.png)"';
+						$style = 'list-style-image: url('.$this->pObj->getBasicsObject()->getInstallerWebPath().'imgs/icons/ok.png)';
 						break;
 					case 'warning':
-						$style = ' style="list-style-image: url('.$this->pObj->getBasicsObject()->getInstallerWebPath().'imgs/icons/warning.png)"';
+						$style = 'list-style-image: url('.$this->pObj->getBasicsObject()->getInstallerWebPath().'imgs/icons/warning.png)';
 						break;
 					default:
 						$style = '';
 						break;
 				}
-				$content .= '<li'.$style.'>'.$this->render($singleElement).'</li>';
+				$content .= $this->renderTag('li', $this->render($singleElement), array('style' => $style));
 			}
 			
-			$content = '<ul>'.$content.'</ul>';
+			$content = $this->renderTag('ul', $content);
 		}
 
 		return $content;
@@ -982,7 +982,7 @@ class tx_install_view {
 	 * @param	string	message
 	 */
 	public function addMessage($message) {
-		$this->lastMessage .= $message;
+		$this->lastMessage .= '<br />'.$message;
 	}
 	
 	/**
@@ -996,7 +996,7 @@ class tx_install_view {
 		if ($clear)	{
 			$this->clearLastMessage();
 		}
-		return $result;
+		return empty($result) ? false : $result;
 	}
 	
 	/**
