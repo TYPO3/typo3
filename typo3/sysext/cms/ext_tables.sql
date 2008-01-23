@@ -157,7 +157,7 @@ CREATE TABLE fe_users (
   PRIMARY KEY (uid),
   KEY parent (pid,username),
   KEY username (username),
-  KEY is_online (is_online),
+  KEY is_online (is_online)
 );
 
 
