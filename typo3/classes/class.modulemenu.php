@@ -105,6 +105,21 @@ class ModuleMenu {
 	}
 
 	/**
+	 * saves the menu's toggle state in the backend user's uc
+	 *
+	 * @param	array		array of parameters from the AJAX interface, currently unused
+	 * @param	TYPO3AJAX	object of type TYPO3AJAX
+	 * @return	void
+	 */
+	public function saveMenuState($params, &$ajaxObj) {
+		$menuItem = t3lib_div::_POST('menuid');
+		$state    = t3lib_div::_POST('state') === 'true' ? 1 : 0;
+
+		$GLOBALS['BE_USER']->uc['moduleData']['menuState'][$menuItem] = $state;
+		$GLOBALS['BE_USER']->writeUC();
+	}
+
+	/**
 	 * renders the backend menu as unordered list
 	 *
 	 * @return	string		menu html code to use in the backend
@@ -116,18 +131,19 @@ class ModuleMenu {
 		$rawModuleData = $this->getRawModuleData();
 
 		foreach($rawModuleData as $moduleKey => $moduleData) {
-
+			$menuState   = $GLOBALS['BE_USER']->uc['moduleData']['menuState'][$moduleKey];
 			$moduleLabel = $moduleData['title'];
+
 			if($moduleData['link'] && $this->linkModules) {
 				$moduleLabel = '<a href="#" onclick="top.goToModule(\''.$moduleData['name'].'\');'.$onBlur.'return false;">'.$moduleLabel.'</a>';
 			}
 
 				//TODO make icon a background image using css
-			$menu .= '<li><div>'.$moduleData['icon']['html'].' '.$moduleLabel.'</div>';
+			$menu .= '<li id="'.$moduleKey.'" class="menuSection"><div>'.$moduleData['icon']['html'].' '.$moduleLabel.'</div>';
 
 				// traverse submodules
 			if(is_array($moduleData['subitems'])) {
-				$menu .= $this->renderSubModules($moduleData['subitems']);
+				$menu .= $this->renderSubModules($moduleData['subitems'], $menuState);
 			}
 
 			$menu .= '</li>'."\n";
@@ -140,9 +156,10 @@ class ModuleMenu {
 	 * renders submodules
 	 *
 	 * @param	array		array of (sub)module data
+	 * @param	boolean		collapse state of menu item, defaults to false
 	 * @return	string		(sub)module html code
 	 */
-	public function renderSubModules($modules) {
+	public function renderSubModules($modules, $menuState=false) {
 		$moduleMenu = '';
 		$onBlur     = $GLOBALS['CLIENT']['FORMSTYLE'] ? 'this.blur();' : '';
 
@@ -167,7 +184,7 @@ class ModuleMenu {
 			$moduleMenu .= '<li>'.$submoduleLink.'</li>'."\n";
 		}
 
-		return '<ul>'."\n".$moduleMenu.'</ul>'."\n";
+		return '<ul'.($menuState ? ' style="display:none;"' : '').'>'."\n".$moduleMenu.'</ul>'."\n";
 	}
 
 	/**
