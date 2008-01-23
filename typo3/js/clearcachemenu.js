@@ -100,12 +100,13 @@ var ClearCacheMenu = Class.create({
 	 * @param	Event	prototype event object
 	 */
 	clearCache: function(event) {
-		$$('#clear-cache-actions-menu .toolbar-item img')[0].src = 'gfx/spinner.gif';
+		var toolbarItemIcon = $$('#clear-cache-actions-menu .toolbar-item img')[0];
+		toolbarItemIcon.src = 'gfx/spinner.gif';
 
 		new Ajax.Request(Event.element(event).href, {
 			'method': 'get',
 			'onComplete': function() {
-				$$('#clear-cache-actions-menu .toolbar-item img')[0].src = this.toolbarItemIcon;
+				toolbarItemIcon.src = this.toolbarItemIcon;
 			}.bind(this)
 		});
 
