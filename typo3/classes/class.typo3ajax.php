@@ -24,6 +24,7 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
+
 /**
  * class to hold all the information about an AJAX call and send
  * the right headers for the request type
@@ -33,45 +34,45 @@
  * @subpackage	core
  */
 class TYPO3AJAX {
-	private $id = null;
-	private $errorMessage = null;
-	private $isError = false;
-	private $content = array();
-	private $contentFormat = 'plain';	// could be 'plain' (default), 'xml', 'json', 'jsonbody' or 'jsonhead'
-	private $charset = 'utf-8';
+	private $ajaxId        = null;
+	private $errorMessage  = null;
+	private $isError       = false;
+	private $content       = array();
+	private $contentFormat = 'plain';
+	private $charset       = 'utf-8';
 
 	/**
 	 * sets the charset and the ID for the AJAX call
 	 *
-	 * @param	string	the AJAX id
+	 * @param	string		the AJAX id
 	 * @return	void
 	 */
-	public function init($id) {
+	public function __construct($ajaxId) {
 		global $TYPO3_CONF_VARS;
-		
-		if (isset($TYPO3_CONF_VARS['BE']['forceCharset']) && trim($TYPO3_CONF_VARS['BE']['forceCharset'])) {
-			$this->charset = $TYPO3_CONF_VARS['BE']['forceCharset'];
+
+		if($GLOBALS['LANG']->charSet != $this->charset) {
+			$this->charset = $GLOBALS['LANG']->charSet;
 		}
 
-		$this->id = $id;
+		$this->ajaxId = $ajaxId;
 	}
 
 
 	/**
 	 * returns the ID for the AJAX call
 	 *
-	 * @return	string	the AJAX id
+	 * @return	string		the AJAX id
 	 */
-	public function getID() {
-		return $this->id;
+	public function getAjaxID() {
+		return $this->ajaxId;
 	}
 
 
 	/**
 	 * overwrites the existing content with the first parameter
 	 *
-	 * @param	array	the new content
-	 * @return	mixed	the old content as array; if the new content was not an array, false is returned
+	 * @param	array		the new content
+	 * @return	mixed		the old content as array; if the new content was not an array, false is returned
 	 */
 	public function setContent($content) {
 		$oldcontent = false;
@@ -86,9 +87,9 @@ class TYPO3AJAX {
 	/**
 	 * adds new content
 	 *
-	 * @param	string	the new content key where the content should be added in the content array
-	 * @param	string	the new content to add
-	 * @return	mixed	the old content; if the old content didn't exist before, false is returned
+	 * @param	string		the new content key where the content should be added in the content array
+	 * @param	string		the new content to add
+	 * @return	mixed		the old content; if the old content didn't exist before, false is returned
 	 */
 	public function addContent($key, $content) {
 		$oldcontent = false;
@@ -109,7 +110,7 @@ class TYPO3AJAX {
 	/**
 	 * returns the content for the ajax call
 	 *
-	 * @return	mixed	the content for a specific key or the whole content
+	 * @return	mixed		the content for a specific key or the whole content
 	 */
 	public function getContent($key = '') {
 		return ($key && array_key_exists($key, $this->content) ? $this->content[$key] : $this->content);
@@ -118,8 +119,8 @@ class TYPO3AJAX {
 
 	/**
 	 * sets the content format for the ajax call
-	 * 
-	 * @param	string	can be one of the following keywords 'plain', '
+	 *
+	 * @param	string		can be one of 'plain' (default), 'xml', 'json', 'jsonbody' or 'jsonhead'
 	 * @return	void
 	 */
 	public function setContentFormat($format) {
@@ -132,7 +133,7 @@ class TYPO3AJAX {
 	/**
 	 * sets an error message and the error flag
 	 *
-	 * @param	string	the error message
+	 * @param	string		the error message
 	 * @return	void
 	 */
 	public function setError($errorMsg = '') {
@@ -144,7 +145,7 @@ class TYPO3AJAX {
 	/**
 	 * checks whether an error occured during the execution or not
 	 *
-	 * @return	boolean	whether this AJAX call 
+	 * @return	boolean		whether this AJAX call had errors
 	 */
 	public function isError() {
 		return $this->isError;
@@ -180,7 +181,7 @@ class TYPO3AJAX {
 	/**
 	 * renders the AJAX call in XML error style to handle with JS
 	 * the "responseXML" of the transport object will be filled with the error message then
-	 * 
+	 *
 	 * @return	void
 	 */
 	private function renderAsError() {
@@ -193,7 +194,7 @@ class TYPO3AJAX {
 	/**
 	 * renders the AJAX call with text/html headers
 	 * the content will be available in the "responseText" value of the transport object
-	 * 
+	 *
 	 * @return	void
 	 */
 	private function renderAsPlain() {
@@ -206,7 +207,7 @@ class TYPO3AJAX {
 	/**
 	 * renders the AJAX call with text/xml headers
 	 * the content will be available in the "responseXML" value of the transport object
-	 * 
+	 *
 	 * @return	void
 	 */
 	private function renderAsXML() {
@@ -220,8 +221,8 @@ class TYPO3AJAX {
 	 * renders the AJAX call with JSON evaluated headers
 	 * note that you need to have requestHeaders: {Accept: 'application/json'},
 	 * in your AJAX options of your AJAX request object in JS
-	 * 
-	 * the content will be available	
+	 *
+	 * the content will be available
 	 *    - in the second parameter of the onSuccess / onComplete callback (except when contentFormat = 'jsonbody')
 	 *    - and in the xhr.responseText as a string (except when contentFormat = 'jsonhead')
 	 *         you can evaluate this in JS with xhr.responseText.evalJSON();

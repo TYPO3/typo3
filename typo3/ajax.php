@@ -34,7 +34,11 @@ $TYPO3_AJAX = true;
 
 require('init.php');
 require('classes/class.typo3ajax.php');
+require_once(PATH_typo3.'sysext/lang/lang.php');
 
+
+$GLOBALS['LANG'] = t3lib_div::makeInstance('language');
+$GLOBALS['LANG']->init($GLOBALS['BE_USER']->uc['lang']);
 
 	// finding the script path from the variable
 $ajaxID = (string) t3lib_div::_GP('ajaxID');
@@ -42,9 +46,9 @@ $ajaxScript = $TYPO3_CONF_VARS['BE']['AJAX'][$ajaxID];
 
 
 	// instantiating the AJAX object
-$ajaxObj =& t3lib_div::makeInstance('TYPO3AJAX');
-$ajaxObj->init($ajaxID);
-$ajaxParams = array();
+$ajaxClassName = t3lib_div::makeInstanceClassName('TYPO3AJAX');
+$ajaxObj       = new $ajaxClassName($ajaxID);
+$ajaxParams    = array();
 
 
 	// evaluating the arguments and calling the AJAX method/function
