@@ -110,6 +110,7 @@ class TYPO3backend {
 			'js/common.js',
 			'js/sizemanager.js',
 			'js/toolbarmanager.js',
+			'js/modulemenu.js',
 			'../t3lib/jsfunc.evalfield.js'
 		);
 

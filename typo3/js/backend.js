@@ -1,7 +1,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2007 Ingo Renner <ingo@typo3.org>
+*  (c) 2007 - 2008 Ingo Renner <ingo@typo3.org>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -65,34 +65,6 @@ var ShortcutManager = {
 		}
 	}
 }
-
-
-
-/**
- * observes clicks on menuHeader and toggles child ul
- */
-var ModuleMenuToggle = {
-
-	toggleMenu: function() {
-		$$('#typo3-menu li.menuSection div').each(function(element) {
-			element.observe('click', function(){
-				var li    = element.up();
-				var ul    = li.down(2);
-				var state = ul.visible();
-
-					// save state
-				new Ajax.Request('ajax.php', {
-					method: 'post',
-					parameters: 'ajaxID=ModuleMenu::saveMenuState&menuid=' + li.id + '&state=' + state,
-				});
-
-				ul.toggle();
-			});
-		});
-	}
-}
-
-Event.observe(document, 'dom:loaded', ModuleMenuToggle.toggleMenu.bindAsEventListener(ModuleMenuToggle), true);
 
 
 

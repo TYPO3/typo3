@@ -1,6 +1,7 @@
 2008-01-24  Ingo Renner  <ingo@typo3.org>
 
 	* added missing description to module menu, credits Steffen Kamper
+	* fixed module menu toggling
 
 2008-01-24  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
