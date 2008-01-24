@@ -139,7 +139,7 @@ class ModuleMenu {
 			}
 
 				//TODO make icon a background image using css
-			$menu .= '<li id="'.$moduleKey.'" class="menuSection"><div>'.$moduleData['icon']['html'].' '.$moduleLabel.'</div>';
+			$menu .= '<li id="'.$moduleKey.'" class="menuSection" title="'.$moduleData['description'].'"><div>'.$moduleData['icon']['html'].' '.$moduleLabel.'</div>';
 
 				// traverse submodules
 			if(is_array($moduleData['subitems'])) {
@@ -228,7 +228,8 @@ class ModuleMenu {
 				'cssId'   => $moduleCssId,
 				'icon'    => $moduleIcon,
 				'link'    => $moduleLink,
-				'prefix'  => $moduleNavigationFramePrefix
+				'prefix'  => $moduleNavigationFramePrefix,
+				'description'   => $GLOBALS['LANG']->moduleLabels['labels'][$moduleKey.'label']
 			);
 
 			if(is_array($moduleData['sub'])) {
