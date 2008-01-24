@@ -3,6 +3,7 @@
 	* Added feature: Various enhancements to link dialogues in htmlArea RTE
 	* Fixed bug #6787: classesAnchor and classesLinks get lost when changing tab in link browser
 	* Added feature #4100: Insert/Modify Link with DAM
+	* Fixed bug #7258: htmlArea RTE crashes on missing locallang.xml
 
 2008-01-21  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
 
